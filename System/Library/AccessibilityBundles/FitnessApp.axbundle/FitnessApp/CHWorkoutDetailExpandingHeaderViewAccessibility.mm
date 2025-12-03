@@ -1,17 +1,17 @@
 @interface CHWorkoutDetailExpandingHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (int64_t)_accessibilityExpandedStatus;
 @end
 
 @implementation CHWorkoutDetailExpandingHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutDetailExpandingHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailExpandingHeaderView" hasInstanceVariable:@"_expandButton" withType:"UIButton"];
-  [v3 validateClass:@"CHWorkoutDetailExpandingHeaderView" hasInstanceVariable:@"_expanded" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutDetailExpandingHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailExpandingHeaderView" hasInstanceVariable:@"_expandButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CHWorkoutDetailExpandingHeaderView" hasInstanceVariable:@"_expanded" withType:"B"];
 }
 
 - (CGPoint)accessibilityActivationPoint

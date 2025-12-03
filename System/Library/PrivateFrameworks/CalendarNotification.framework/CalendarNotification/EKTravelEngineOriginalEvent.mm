@@ -1,5 +1,5 @@
 @interface EKTravelEngineOriginalEvent
-- (BOOL)isEqualToOriginalEvent:(id)a3;
+- (BOOL)isEqualToOriginalEvent:(id)event;
 - (id)description;
 @end
 
@@ -13,52 +13,52 @@
   v4 = [(EKTravelEngineOriginalEvent *)&v12 description];
   v5 = [v3 initWithSuperclassDescription:v4];
 
-  v6 = [(EKTravelEngineOriginalEvent *)self eventExternalURL];
-  [v5 setKey:@"eventExternalURL" withString:v6];
+  eventExternalURL = [(EKTravelEngineOriginalEvent *)self eventExternalURL];
+  [v5 setKey:@"eventExternalURL" withString:eventExternalURL];
 
-  v7 = [(EKTravelEngineOriginalEvent *)self startDate];
-  [v5 setKey:@"startDate" withDate:v7];
+  startDate = [(EKTravelEngineOriginalEvent *)self startDate];
+  [v5 setKey:@"startDate" withDate:startDate];
 
-  v8 = [(EKTravelEngineOriginalEvent *)self endDate];
-  [v5 setKey:@"endDate" withDate:v8];
+  endDate = [(EKTravelEngineOriginalEvent *)self endDate];
+  [v5 setKey:@"endDate" withDate:endDate];
 
-  v9 = [(EKTravelEngineOriginalEvent *)self locationString];
-  [v5 setKey:@"locationString" withString:v9];
+  locationString = [(EKTravelEngineOriginalEvent *)self locationString];
+  [v5 setKey:@"locationString" withString:locationString];
 
-  v10 = [v5 build];
+  build = [v5 build];
 
-  return v10;
+  return build;
 }
 
-- (BOOL)isEqualToOriginalEvent:(id)a3
+- (BOOL)isEqualToOriginalEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     goto LABEL_25;
   }
 
-  v5 = [(EKTravelEngineOriginalEvent *)self geoLocation];
-  v6 = [v4 geoLocation];
-  v7 = __54__EKTravelEngineOriginalEvent_isEqualToOriginalEvent___block_invoke_3(v6, v5, v6);
+  geoLocation = [(EKTravelEngineOriginalEvent *)self geoLocation];
+  geoLocation2 = [eventCopy geoLocation];
+  v7 = __54__EKTravelEngineOriginalEvent_isEqualToOriginalEvent___block_invoke_3(geoLocation2, geoLocation, geoLocation2);
 
   if (v7)
   {
     goto LABEL_25;
   }
 
-  v8 = [(EKTravelEngineOriginalEvent *)self transportTypeOverride];
-  if (v8 != [v4 transportTypeOverride])
+  transportTypeOverride = [(EKTravelEngineOriginalEvent *)self transportTypeOverride];
+  if (transportTypeOverride != [eventCopy transportTypeOverride])
   {
     goto LABEL_25;
   }
 
-  v9 = [(EKTravelEngineOriginalEvent *)self endDate];
-  v10 = [v4 endDate];
-  v11 = v10;
-  if (v9)
+  endDate = [(EKTravelEngineOriginalEvent *)self endDate];
+  endDate2 = [eventCopy endDate];
+  v11 = endDate2;
+  if (endDate)
   {
-    v12 = [v9 isEqualToDate:v10];
+    v12 = [endDate isEqualToDate:endDate2];
 
     if ((v12 & 1) == 0)
     {
@@ -75,12 +75,12 @@
     }
   }
 
-  v13 = [(EKTravelEngineOriginalEvent *)self locationString];
-  v14 = [v4 locationString];
-  v15 = v14;
-  if (v13)
+  locationString = [(EKTravelEngineOriginalEvent *)self locationString];
+  locationString2 = [eventCopy locationString];
+  v15 = locationString2;
+  if (locationString)
   {
-    v16 = [v13 isEqualToString:v14];
+    v16 = [locationString isEqualToString:locationString2];
 
     if ((v16 & 1) == 0)
     {
@@ -97,12 +97,12 @@
     }
   }
 
-  v17 = [(EKTravelEngineOriginalEvent *)self locationMapKitHandle];
-  v18 = [v4 locationMapKitHandle];
-  v19 = v18;
-  if (v17)
+  locationMapKitHandle = [(EKTravelEngineOriginalEvent *)self locationMapKitHandle];
+  locationMapKitHandle2 = [eventCopy locationMapKitHandle];
+  v19 = locationMapKitHandle2;
+  if (locationMapKitHandle)
   {
-    v20 = [v17 isEqualToData:v18];
+    v20 = [locationMapKitHandle isEqualToData:locationMapKitHandle2];
 
     if ((v20 & 1) == 0)
     {
@@ -119,12 +119,12 @@
     }
   }
 
-  v21 = [(EKTravelEngineOriginalEvent *)self startDate];
-  v22 = [v4 startDate];
-  v23 = v22;
-  if (v21)
+  startDate = [(EKTravelEngineOriginalEvent *)self startDate];
+  startDate2 = [eventCopy startDate];
+  v23 = startDate2;
+  if (startDate)
   {
-    v24 = [v21 isEqualToDate:v22];
+    v24 = [startDate isEqualToDate:startDate2];
 
     if ((v24 & 1) == 0)
     {
@@ -141,16 +141,16 @@
     }
   }
 
-  v25 = [(EKTravelEngineOriginalEvent *)self locationIsAConferenceRoom];
-  if (v25 != [v4 locationIsAConferenceRoom])
+  locationIsAConferenceRoom = [(EKTravelEngineOriginalEvent *)self locationIsAConferenceRoom];
+  if (locationIsAConferenceRoom != [eventCopy locationIsAConferenceRoom])
   {
     goto LABEL_25;
   }
 
-  v26 = [(EKTravelEngineOriginalEvent *)self eventExternalURL];
-  v27 = [v4 eventExternalURL];
-  v28 = v27;
-  if (!v26)
+  eventExternalURL = [(EKTravelEngineOriginalEvent *)self eventExternalURL];
+  eventExternalURL2 = [eventCopy eventExternalURL];
+  v28 = eventExternalURL2;
+  if (!eventExternalURL)
   {
 
     if (!v28)
@@ -163,7 +163,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v29 = [v26 isEqualToString:v27];
+  v29 = [eventExternalURL isEqualToString:eventExternalURL2];
 
   if ((v29 & 1) == 0)
   {
@@ -171,8 +171,8 @@ LABEL_25:
   }
 
 LABEL_23:
-  v30 = [(EKTravelEngineOriginalEvent *)self automaticGeocodingAllowed];
-  v31 = v30 ^ [v4 automaticGeocodingAllowed] ^ 1;
+  automaticGeocodingAllowed = [(EKTravelEngineOriginalEvent *)self automaticGeocodingAllowed];
+  v31 = automaticGeocodingAllowed ^ [eventCopy automaticGeocodingAllowed] ^ 1;
 LABEL_26:
 
   return v31;

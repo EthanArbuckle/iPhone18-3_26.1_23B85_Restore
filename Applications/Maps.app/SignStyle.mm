@@ -1,26 +1,26 @@
 @interface SignStyle
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultArrowMetricsForStyle:(SEL)a3;
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultJunctionArrowMetricsForStyle:(SEL)a3;
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)_scaledMetricsForStyle:(SEL)a3 baseMetrics:(unsigned int)a4;
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 contentScale:(CGSize)a5;
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 forView:(CGSize)a5;
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 contentScale:(CGSize)a5;
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 forView:(CGSize)a5;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultArrowMetricsForStyle:(SEL)style;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultJunctionArrowMetricsForStyle:(SEL)style;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)_scaledMetricsForStyle:(SEL)style baseMetrics:(unsigned int)metrics;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size contentScale:(CGSize)scale;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size forView:(CGSize)view;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size contentScale:(CGSize)scale;
++ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size forView:(CGSize)view;
 + (id)sharedSignStyle;
 - (UIColor)foregroundColor;
 @end
 
 @implementation SignStyle
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)_scaledMetricsForStyle:(SEL)a3 baseMetrics:(unsigned int)a4
++ ($84D9B426F26CE1F36C5948DD9DEACC84)_scaledMetricsForStyle:(SEL)style baseMetrics:(unsigned int)metrics
 {
-  if (a4 == 1)
+  if (metrics == 1)
   {
     memcpy(v5, a5, sizeof(v5));
     return MKGuidanceManeuverArrowMetricsApplyScale();
   }
 
-  else if (!a4)
+  else if (!metrics)
   {
 
     return memcpy(retstr, a5, sizeof($84D9B426F26CE1F36C5948DD9DEACC84));
@@ -29,51 +29,51 @@
   return result;
 }
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultJunctionArrowMetricsForStyle:(SEL)a3
++ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultJunctionArrowMetricsForStyle:(SEL)style
 {
   v4 = *&a4;
   MKDefaultJunctionManeuverMetrics();
   return [a2 _scaledMetricsForStyle:v4 baseMetrics:&v7];
 }
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultArrowMetricsForStyle:(SEL)a3
++ ($84D9B426F26CE1F36C5948DD9DEACC84)_defaultArrowMetricsForStyle:(SEL)style
 {
   v4 = *&a4;
   MKDefaultGuidanceManeuverMetrics();
   return [a2 _scaledMetricsForStyle:v4 baseMetrics:&v7];
 }
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 contentScale:(CGSize)a5
++ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size contentScale:(CGSize)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = *&a4;
+  height = scale.height;
+  width = scale.width;
+  v9 = *&size;
   [a2 _defaultArrowMetricsForStyle:?];
   return [a2 _metricsForStyle:v9 scaledToMatchReferenceSize:&v12 contentScale:width baseMetrics:{height, a6}];
 }
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 contentScale:(CGSize)a5
++ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size contentScale:(CGSize)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = *&a4;
+  height = scale.height;
+  width = scale.width;
+  v9 = *&size;
   [a2 _defaultJunctionArrowMetricsForStyle:?];
   return [a2 _metricsForStyle:v9 scaledToMatchReferenceSize:&v12 contentScale:width baseMetrics:{height, a6}];
 }
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 forView:(CGSize)a5
++ ($84D9B426F26CE1F36C5948DD9DEACC84)junctionArrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size forView:(CGSize)view
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = *&a4;
+  height = view.height;
+  width = view.width;
+  v8 = *&size;
   v17 = a6;
-  v10 = [v17 window];
-  v11 = [v10 screen];
-  if (v11)
+  window = [v17 window];
+  screen = [window screen];
+  if (screen)
   {
-    v12 = [v17 window];
-    v13 = [v12 screen];
-    [v13 scale];
+    window2 = [v17 window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v15 = v14;
   }
 
@@ -87,19 +87,19 @@
   return result;
 }
 
-+ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)a3 scaledToMatchReferenceSize:(unsigned int)a4 forView:(CGSize)a5
++ ($84D9B426F26CE1F36C5948DD9DEACC84)arrowMetricsForStyle:(SEL)style scaledToMatchReferenceSize:(unsigned int)size forView:(CGSize)view
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = *&a4;
+  height = view.height;
+  width = view.width;
+  v8 = *&size;
   v17 = a6;
-  v10 = [v17 window];
-  v11 = [v10 screen];
-  if (v11)
+  window = [v17 window];
+  screen = [window screen];
+  if (screen)
   {
-    v12 = [v17 window];
-    v13 = [v12 screen];
-    [v13 scale];
+    window2 = [v17 window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v15 = v14;
   }
 
@@ -119,7 +119,7 @@
   block[1] = 3221225472;
   block[2] = sub_100A68C00;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195E330 != -1)
   {
     dispatch_once(&qword_10195E330, block);

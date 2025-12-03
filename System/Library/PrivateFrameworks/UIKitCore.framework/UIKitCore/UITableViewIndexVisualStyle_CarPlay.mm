@@ -1,6 +1,6 @@
 @interface UITableViewIndexVisualStyle_CarPlay
 - (UITableViewIndex)tableViewIndex;
-- (UITableViewIndexVisualStyle_CarPlay)initWithTableViewIndex:(id)a3;
+- (UITableViewIndexVisualStyle_CarPlay)initWithTableViewIndex:(id)index;
 - (double)_lineSpacingForCurrentIdiom;
 - (double)indexWidth;
 - (double)minLineSpacing;
@@ -8,13 +8,13 @@
 
 @implementation UITableViewIndexVisualStyle_CarPlay
 
-- (UITableViewIndexVisualStyle_CarPlay)initWithTableViewIndex:(id)a3
+- (UITableViewIndexVisualStyle_CarPlay)initWithTableViewIndex:(id)index
 {
   v7.receiver = self;
   v7.super_class = UITableViewIndexVisualStyle_CarPlay;
-  v3 = a3;
+  indexCopy = index;
   v4 = [(UITableViewIndexVisualStyle_CarPlay *)&v7 init];
-  [(UITableViewIndexVisualStyle_CarPlay *)v4 setTableViewIndex:v3, v7.receiver, v7.super_class];
+  [(UITableViewIndexVisualStyle_CarPlay *)v4 setTableViewIndex:indexCopy, v7.receiver, v7.super_class];
 
   v5 = [off_1E70ECC18 boldSystemFontOfSize:11.0];
   [(UITableViewIndexVisualStyle_CarPlay *)v4 setFont:v5];
@@ -25,10 +25,10 @@
 - (double)indexWidth
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
   result = 15.0;
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30.0;
   }
@@ -38,16 +38,16 @@
 
 - (double)_lineSpacingForCurrentIdiom
 {
-  v2 = [(UITableViewIndexVisualStyle_CarPlay *)self tableViewIndex];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  tableViewIndex = [(UITableViewIndexVisualStyle_CarPlay *)self tableViewIndex];
+  traitCollection = [tableViewIndex traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v5 = 6.0;
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v5 = 9.0;
   }
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v6 = 16.0;
   }
@@ -63,8 +63,8 @@
 - (double)minLineSpacing
 {
   [(UITableViewIndexVisualStyle_CarPlay *)self _lineSpacingForCurrentIdiom];
-  v3 = [(UITableViewIndexVisualStyle_CarPlay *)self tableViewIndex];
-  UIRoundToViewScale(v3);
+  tableViewIndex = [(UITableViewIndexVisualStyle_CarPlay *)self tableViewIndex];
+  UIRoundToViewScale(tableViewIndex);
   v5 = v4;
 
   return v5;

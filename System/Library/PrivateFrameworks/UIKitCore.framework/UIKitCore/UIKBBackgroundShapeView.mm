@@ -1,16 +1,16 @@
 @interface UIKBBackgroundShapeView
-- (void)setPath:(id)a3;
+- (void)setPath:(id)path;
 @end
 
 @implementation UIKBBackgroundShapeView
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v6 = [(UIKBBackgroundShapeView *)self shapeLayer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  shapeLayer = [(UIKBBackgroundShapeView *)self shapeLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setPath:v5];
+  [shapeLayer setPath:cGPath];
 }
 
 @end

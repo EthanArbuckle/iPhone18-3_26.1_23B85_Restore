@@ -8,16 +8,16 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
   if (qword_27EE20D30 != -1)
   {
     swift_once();
   }
 
-  [v5 postNotificationName:qword_27EE212F0 object:0];
+  [defaultCenter postNotificationName:qword_27EE212F0 object:0];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for PADSWFrame();
   [(PADSWFrame *)&v6 dealloc];
 }

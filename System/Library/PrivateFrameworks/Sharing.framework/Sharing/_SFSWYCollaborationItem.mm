@@ -1,16 +1,16 @@
 @interface _SFSWYCollaborationItem
-- (_SFSWYCollaborationItem)initWithItemProvider:(id)a3 activityItem:(id)a4 isURLProviderSupported:(BOOL)a5;
+- (_SFSWYCollaborationItem)initWithItemProvider:(id)provider activityItem:(id)item isURLProviderSupported:(BOOL)supported;
 - (void)_loadOptionsIfNeeded;
 @end
 
 @implementation _SFSWYCollaborationItem
 
-- (_SFSWYCollaborationItem)initWithItemProvider:(id)a3 activityItem:(id)a4 isURLProviderSupported:(BOOL)a5
+- (_SFSWYCollaborationItem)initWithItemProvider:(id)provider activityItem:(id)item isURLProviderSupported:(BOOL)supported
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  supportedCopy = supported;
+  providerCopy = provider;
+  itemCopy = item;
+  if (supportedCopy)
   {
     v10 = [MEMORY[0x1E695DFF8] URLWithString:@"https://www.apple.com/icloud/"];
   }
@@ -22,18 +22,18 @@
 
   v16.receiver = self;
   v16.super_class = _SFSWYCollaborationItem;
-  v11 = [(SFCollaborationItem *)&v16 initWithItemProvider:v8 activityItem:v9 placeholderActivityItem:v10 defaultCollaboration:1];
+  v11 = [(SFCollaborationItem *)&v16 initWithItemProvider:providerCopy activityItem:itemCopy placeholderActivityItem:v10 defaultCollaboration:1];
   v12 = v11;
   if (v11)
   {
-    v11->_isURLProviderSupported = v5;
+    v11->_isURLProviderSupported = supportedCopy;
     [(SFCollaborationItem *)v11 setType:2];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __84___SFSWYCollaborationItem_initWithItemProvider_activityItem_isURLProviderSupported___block_invoke;
     v14[3] = &unk_1E788CE80;
     v15 = v12;
-    [SFCollaborationUtilities loadPendingCollaborationForItemProvider:v8 completionHandler:v14];
+    [SFCollaborationUtilities loadPendingCollaborationForItemProvider:providerCopy completionHandler:v14];
   }
 
   return v12;

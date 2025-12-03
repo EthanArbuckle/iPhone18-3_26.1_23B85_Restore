@@ -1,6 +1,6 @@
 @interface VSFailableValueTransformer
 - (NSValueTransformer)objectValueTransformer;
-- (id)transformedValue:(id)a3;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSFailableValueTransformer
@@ -16,19 +16,19 @@
   return v2;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
+  valueCopy = value;
+  v5 = valueCopy;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__2;
   v23 = __Block_byref_object_dispose__2;
   v24 = 0;
-  if (v4)
+  if (valueCopy)
   {
-    v6 = v4;
+    v6 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

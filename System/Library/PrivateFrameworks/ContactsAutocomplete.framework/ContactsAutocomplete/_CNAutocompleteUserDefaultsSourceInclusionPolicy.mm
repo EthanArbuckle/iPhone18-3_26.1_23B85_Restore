@@ -8,7 +8,7 @@
 - (BOOL)includeStewie;
 - (BOOL)includeSuggestions;
 - (BOOL)includeSupplementalResults;
-- (_CNAutocompleteUserDefaultsSourceInclusionPolicy)initWithUserDefaults:(id)a3;
+- (_CNAutocompleteUserDefaultsSourceInclusionPolicy)initWithUserDefaults:(id)defaults;
 @end
 
 @implementation _CNAutocompleteUserDefaultsSourceInclusionPolicy
@@ -16,8 +16,8 @@
 - (BOOL)includePredictions
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNDuetContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNDuetContactsInAutocomplete"];
 
   if (v3)
   {
@@ -37,8 +37,8 @@
 - (BOOL)includeSupplementalResults
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNSupplementalContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNSupplementalContactsInAutocomplete"];
 
   if (v3)
   {
@@ -55,16 +55,16 @@
   return v3 ^ 1;
 }
 
-- (_CNAutocompleteUserDefaultsSourceInclusionPolicy)initWithUserDefaults:(id)a3
+- (_CNAutocompleteUserDefaultsSourceInclusionPolicy)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v10.receiver = self;
   v10.super_class = _CNAutocompleteUserDefaultsSourceInclusionPolicy;
   v6 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
     v8 = v7;
   }
 
@@ -74,8 +74,8 @@
 - (BOOL)includeContacts
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNLocalContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNLocalContactsInAutocomplete"];
 
   if (v3)
   {
@@ -95,8 +95,8 @@
 - (BOOL)includeRecents
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNRecentContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNRecentContactsInAutocomplete"];
 
   if (v3)
   {
@@ -116,8 +116,8 @@
 - (BOOL)includeStewie
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNStewieInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNStewieInAutocomplete"];
 
   if (v3)
   {
@@ -137,8 +137,8 @@
 - (BOOL)includeSuggestions
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNSuggestedContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNSuggestedContactsInAutocomplete"];
 
   if (v3)
   {
@@ -158,8 +158,8 @@
 - (BOOL)includeLocalExtensions
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNLocalExtensionContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNLocalExtensionContactsInAutocomplete"];
 
   if (v3)
   {
@@ -179,8 +179,8 @@
 - (BOOL)includeDirectoryServers
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNServerContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNServerContactsInAutocomplete"];
 
   if (v3)
   {
@@ -200,8 +200,8 @@
 - (BOOL)includeCalendarServers
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
-  v3 = [v2 userHasOptedOutOfPreference:@"CNCalendarServerContactsInAutocomplete"];
+  userDefaults = [(_CNAutocompleteUserDefaultsSourceInclusionPolicy *)self userDefaults];
+  v3 = [userDefaults userHasOptedOutOfPreference:@"CNCalendarServerContactsInAutocomplete"];
 
   if (v3)
   {

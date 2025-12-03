@@ -1,22 +1,22 @@
 @interface MultiControlButton
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3;
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3;
-- (_TtC16MagnifierSupport18MultiControlButton)initWithFrame:(CGRect)a3;
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4;
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4;
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4;
-- (void)didTap:(id)a3;
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin;
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present;
+- (_TtC16MagnifierSupport18MultiControlButton)initWithFrame:(CGRect)frame;
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller;
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location;
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events;
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled;
+- (void)didTap:(id)tap;
 - (void)layoutSubviews;
 @end
 
 @implementation MultiControlButton
 
-- (void)addTarget:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTarget:(id)target action:(SEL)action forControlEvents:(unint64_t)events
 {
-  if (a3)
+  if (target)
   {
-    v8 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_257ED0160();
     swift_unknownObjectRelease();
@@ -25,21 +25,21 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  sub_257C3BC80(v10, a4, a5);
+  sub_257C3BC80(v10, action, events);
 
   sub_257C3A464(v10);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257C3BE6C();
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
   v4 = self + OBJC_IVAR____TtC16MagnifierSupport18MultiControlButton_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -47,61 +47,61 @@
     v5 = *(v4 + 1);
     swift_getObjectType();
     v6 = *(v5 + 8);
-    v7 = self;
+    selfCopy = self;
     v6();
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC16MagnifierSupport18MultiControlButton)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport18MultiControlButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)clickPresentationInteraction:(id)a3 presentationForPresentingViewController:(id)a4
+- (id)clickPresentationInteraction:(id)interaction presentationForPresentingViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257C3D338(v6);
+  interactionCopy = interaction;
+  controllerCopy = controller;
+  selfCopy = self;
+  v9 = sub_257C3D338(interactionCopy);
 
   return v9;
 }
 
-- (BOOL)clickPresentationInteractionShouldBegin:(id)a3
+- (BOOL)clickPresentationInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  sub_257C3C858(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  sub_257C3C858(beginCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (BOOL)clickPresentationInteractionShouldPresent:(id)a3
+- (BOOL)clickPresentationInteractionShouldPresent:(id)present
 {
-  v4 = a3;
-  v5 = self;
-  sub_257C3CB3C(v4);
+  presentCopy = present;
+  selfCopy = self;
+  sub_257C3CB3C(presentCopy);
   LOBYTE(self) = v6;
 
   return self & 1;
 }
 
-- (void)clickPresentationInteractionEnded:(id)a3 wasCancelled:(BOOL)a4
+- (void)clickPresentationInteractionEnded:(id)ended wasCancelled:(BOOL)cancelled
 {
-  v6 = a3;
-  v7 = self;
-  sub_257C3D540(a4);
+  endedCopy = ended;
+  selfCopy = self;
+  sub_257C3D540(cancelled);
 }
 
-- (id)clickPresentationInteraction:(id)a3 previewForHighlightingAtLocation:(CGPoint)a4
+- (id)clickPresentationInteraction:(id)interaction previewForHighlightingAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_257C3CEBC(v5);
+  interactionCopy = interaction;
+  selfCopy = self;
+  v7 = sub_257C3CEBC(interactionCopy);
 
   return v7;
 }

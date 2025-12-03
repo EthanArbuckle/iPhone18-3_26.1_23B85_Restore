@@ -1,11 +1,11 @@
 @interface PersonalizedItemPriorityFunction
 + (id)defaultPriorityFunction;
 + (id)defaultPriorityFunctionForAutocompleteObject;
-+ (id)priorityFunctionForGEOSortPriorityMapping:(id)a3;
-+ (int64_t)sourceSubtypeForGEOResultSubtype:(int64_t)a3;
-+ (int64_t)sourceTypeForGEOResultType:(int64_t)a3;
-- (PersonalizedItemPriorityFunction)initWithEntries:(id)a3;
-- (int64_t)priorityForPersonalizedAutocompleteItem:(id)a3;
++ (id)priorityFunctionForGEOSortPriorityMapping:(id)mapping;
++ (int64_t)sourceSubtypeForGEOResultSubtype:(int64_t)subtype;
++ (int64_t)sourceTypeForGEOResultType:(int64_t)type;
+- (PersonalizedItemPriorityFunction)initWithEntries:(id)entries;
+- (int64_t)priorityForPersonalizedAutocompleteItem:(id)item;
 @end
 
 @implementation PersonalizedItemPriorityFunction
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002A130;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195CC08 != -1)
   {
     dispatch_once(&qword_10195CC08, block);
@@ -35,12 +35,12 @@
   return v2;
 }
 
-- (int64_t)priorityForPersonalizedAutocompleteItem:(id)a3
+- (int64_t)priorityForPersonalizedAutocompleteItem:(id)item
 {
-  v4 = a3;
-  if ([v4 hasPriorityOverride])
+  itemCopy = item;
+  if ([itemCopy hasPriorityOverride])
   {
-    v5 = [v4 priorityOverride];
+    priorityOverride = [itemCopy priorityOverride];
   }
 
   else
@@ -49,8 +49,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(PersonalizedItemPriorityFunction *)self entries];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    entries = [(PersonalizedItemPriorityFunction *)self entries];
+    v7 = [entries countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -61,19 +61,19 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(entries);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
-          if ([v11 matches:v4])
+          if ([v11 matches:itemCopy])
           {
-            v5 = [v11 priority];
+            priorityOverride = [v11 priority];
 
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [entries countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -83,23 +83,23 @@
       }
     }
 
-    v5 = 0;
+    priorityOverride = 0;
   }
 
 LABEL_13:
 
-  return v5;
+  return priorityOverride;
 }
 
-- (PersonalizedItemPriorityFunction)initWithEntries:(id)a3
+- (PersonalizedItemPriorityFunction)initWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v9.receiver = self;
   v9.super_class = PersonalizedItemPriorityFunction;
   v5 = [(PersonalizedItemPriorityFunction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [entriesCopy copy];
     entries = v5->_entries;
     v5->_entries = v6;
   }
@@ -113,7 +113,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_1005F2A60;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195CC20 != -1)
   {
     dispatch_once(&qword_10195CC20, block);
@@ -124,42 +124,42 @@ LABEL_13:
   return v2;
 }
 
-+ (int64_t)sourceSubtypeForGEOResultSubtype:(int64_t)a3
++ (int64_t)sourceSubtypeForGEOResultSubtype:(int64_t)subtype
 {
-  if ((a3 - 2) > 0x1D)
+  if ((subtype - 2) > 0x1D)
   {
     return 0;
   }
 
   else
   {
-    return qword_1012130D8[a3 - 2];
+    return qword_1012130D8[subtype - 2];
   }
 }
 
-+ (int64_t)sourceTypeForGEOResultType:(int64_t)a3
++ (int64_t)sourceTypeForGEOResultType:(int64_t)type
 {
-  if ((a3 - 2) >= 9)
+  if ((type - 2) >= 9)
   {
     return 0;
   }
 
   else
   {
-    return a3 - 1;
+    return type - 1;
   }
 }
 
-+ (id)priorityFunctionForGEOSortPriorityMapping:(id)a3
++ (id)priorityFunctionForGEOSortPriorityMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v15 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v13 = v4;
-  obj = [v4 entries];
+  v13 = mappingCopy;
+  obj = [mappingCopy entries];
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -175,7 +175,7 @@ LABEL_13:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = -[PersonalizedItemPriorityFunctionEntry initWithPriority:matchesAnySourceType:sourceType:matchesAnySourceSubtype:sourceSubtype:matchBlock:]([PersonalizedItemPriorityFunctionEntry alloc], "initWithPriority:matchesAnySourceType:sourceType:matchesAnySourceSubtype:sourceSubtype:matchBlock:", [v9 priority], objc_msgSend(v9, "resultType") == 1, objc_msgSend(a1, "sourceTypeForGEOResultType:", objc_msgSend(v9, "resultType")), objc_msgSend(v9, "resultSubtype") == 1, objc_msgSend(a1, "sourceSubtypeForGEOResultSubtype:", objc_msgSend(v9, "resultSubtype")), 0);
+        v10 = -[PersonalizedItemPriorityFunctionEntry initWithPriority:matchesAnySourceType:sourceType:matchesAnySourceSubtype:sourceSubtype:matchBlock:]([PersonalizedItemPriorityFunctionEntry alloc], "initWithPriority:matchesAnySourceType:sourceType:matchesAnySourceSubtype:sourceSubtype:matchBlock:", [v9 priority], objc_msgSend(v9, "resultType") == 1, objc_msgSend(self, "sourceTypeForGEOResultType:", objc_msgSend(v9, "resultType")), objc_msgSend(v9, "resultSubtype") == 1, objc_msgSend(self, "sourceSubtypeForGEOResultSubtype:", objc_msgSend(v9, "resultSubtype")), 0);
         [v15 addObject:v10];
       }
 

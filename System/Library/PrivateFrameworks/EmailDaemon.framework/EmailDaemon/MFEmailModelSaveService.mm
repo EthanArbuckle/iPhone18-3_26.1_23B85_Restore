@@ -1,18 +1,18 @@
 @interface MFEmailModelSaveService
-+ (void)handleMessage:(id)a3 connectionState:(id)a4 reply:(id)a5;
++ (void)handleMessage:(id)message connectionState:(id)state reply:(id)reply;
 @end
 
 @implementation MFEmailModelSaveService
 
-+ (void)handleMessage:(id)a3 connectionState:(id)a4 reply:(id)a5
++ (void)handleMessage:(id)message connectionState:(id)state reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = xpc_dictionary_get_value(v8, [_MSMailServiceArguments UTF8String]);
+  messageCopy = message;
+  replyCopy = reply;
+  v10 = xpc_dictionary_get_value(messageCopy, [_MSMailServiceArguments UTF8String]);
   if (!v10)
   {
     v16 = +[NSAssertionHandler currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"MFDeliveryService.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"args"}];
+    [v16 handleFailureInMethod:a2 object:self file:@"MFDeliveryService.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"args"}];
   }
 
   v11 = _CFXPCCreateCFObjectFromXPCObject();
@@ -22,9 +22,9 @@
   v17[1] = 3221225472;
   v17[2] = sub_10005ED3C;
   v17[3] = &unk_100158578;
-  v14 = v8;
+  v14 = messageCopy;
   v18 = v14;
-  v15 = v9;
+  v15 = replyCopy;
   v19 = v15;
   [v13 mf_mailMessageFromModel:v17];
 }

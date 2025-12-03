@@ -1,24 +1,24 @@
 @interface _MRTranscriptAlignmentProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMatchedBeginning:(BOOL)a3;
-- (void)setHasMatchedEnd:(BOOL)a3;
-- (void)setHasPlayerStartTime:(BOOL)a3;
-- (void)setHasReferenceEndTime:(BOOL)a3;
-- (void)setHasReferenceStartTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMatchedBeginning:(BOOL)beginning;
+- (void)setHasMatchedEnd:(BOOL)end;
+- (void)setHasPlayerStartTime:(BOOL)time;
+- (void)setHasReferenceEndTime:(BOOL)time;
+- (void)setHasReferenceStartTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRTranscriptAlignmentProtobuf
 
-- (void)setHasPlayerStartTime:(BOOL)a3
+- (void)setHasPlayerStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasReferenceStartTime:(BOOL)a3
+- (void)setHasReferenceStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 8;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasReferenceEndTime:(BOOL)a3
+- (void)setHasReferenceEndTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMatchedBeginning:(BOOL)a3
+- (void)setHasMatchedBeginning:(BOOL)beginning
 {
-  if (a3)
+  if (beginning)
   {
     v3 = 16;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasMatchedEnd:(BOOL)a3
+- (void)setHasMatchedEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 32;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = _MRTranscriptAlignmentProtobuf;
   v4 = [(_MRTranscriptAlignmentProtobuf *)&v8 description];
-  v5 = [(_MRTranscriptAlignmentProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRTranscriptAlignmentProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_playerStartTime];
-    [v3 setObject:v7 forKey:@"playerStartTime"];
+    [dictionary setObject:v7 forKey:@"playerStartTime"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -131,7 +131,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_playerEndTime];
-  [v3 setObject:v8 forKey:@"playerEndTime"];
+  [dictionary setObject:v8 forKey:@"playerEndTime"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -147,7 +147,7 @@ LABEL_4:
 
 LABEL_13:
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_referenceStartTime];
-  [v3 setObject:v9 forKey:@"referenceStartTime"];
+  [dictionary setObject:v9 forKey:@"referenceStartTime"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -163,7 +163,7 @@ LABEL_5:
 
 LABEL_14:
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_referenceEndTime];
-  [v3 setObject:v10 forKey:@"referenceEndTime"];
+  [dictionary setObject:v10 forKey:@"referenceEndTime"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -179,23 +179,23 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_matchedBeginning];
-  [v3 setObject:v11 forKey:@"matchedBeginning"];
+  [dictionary setObject:v11 forKey:@"matchedBeginning"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_matchedEnd];
-    [v3 setObject:v5 forKey:@"matchedEnd"];
+    [dictionary setObject:v5 forKey:@"matchedEnd"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -276,14 +276,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_playerStartTime;
-    *(v4 + 44) |= 2u;
+    toCopy[2] = *&self->_playerStartTime;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -302,8 +302,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[1] = *&self->_playerEndTime;
-  *(v4 + 44) |= 1u;
+  toCopy[1] = *&self->_playerEndTime;
+  *(toCopy + 44) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -317,8 +317,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  v4[4] = *&self->_referenceStartTime;
-  *(v4 + 44) |= 8u;
+  toCopy[4] = *&self->_referenceStartTime;
+  *(toCopy + 44) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -332,8 +332,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  v4[3] = *&self->_referenceEndTime;
-  *(v4 + 44) |= 4u;
+  toCopy[3] = *&self->_referenceEndTime;
+  *(toCopy + 44) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -347,21 +347,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 40) = self->_matchedBeginning;
-  *(v4 + 44) |= 0x10u;
+  *(toCopy + 40) = self->_matchedBeginning;
+  *(toCopy + 44) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
-    *(v4 + 41) = self->_matchedEnd;
-    *(v4 + 44) |= 0x20u;
+    *(toCopy + 41) = self->_matchedEnd;
+    *(toCopy + 44) |= 0x20u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -443,107 +443,107 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_playerStartTime != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_playerStartTime != *(equalCopy + 2))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_30;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_playerEndTime != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_playerEndTime != *(equalCopy + 1))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0 || self->_referenceStartTime != *(v4 + 4))
+    if ((*(equalCopy + 44) & 8) == 0 || self->_referenceStartTime != *(equalCopy + 4))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_referenceEndTime != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_referenceEndTime != *(equalCopy + 3))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0)
+    if ((*(equalCopy + 44) & 0x10) == 0)
     {
       goto LABEL_30;
     }
 
-    v7 = *(v4 + 40);
+    v7 = *(equalCopy + 40);
     if (self->_matchedBeginning)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_30;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 44) & 0x10) != 0)
+  else if ((*(equalCopy + 44) & 0x10) != 0)
   {
     goto LABEL_30;
   }
 
-  v5 = (*(v4 + 44) & 0x20) == 0;
+  v5 = (*(equalCopy + 44) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 44) & 0x20) != 0)
+    if ((*(equalCopy + 44) & 0x20) != 0)
     {
       if (self->_matchedEnd)
       {
-        if (*(v4 + 41))
+        if (*(equalCopy + 41))
         {
           goto LABEL_38;
         }
       }
 
-      else if (!*(v4 + 41))
+      else if (!*(equalCopy + 41))
       {
 LABEL_38:
         v5 = 1;
@@ -721,15 +721,15 @@ LABEL_35:
   return v8 ^ v4 ^ v12 ^ v16 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_playerStartTime = *(v4 + 2);
+    self->_playerStartTime = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -742,14 +742,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 44) & 1) == 0)
+  else if ((*(fromCopy + 44) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_playerEndTime = *(v4 + 1);
+  self->_playerEndTime = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -762,9 +762,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_referenceStartTime = *(v4 + 4);
+  self->_referenceStartTime = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -777,9 +777,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_referenceEndTime = *(v4 + 3);
+  self->_referenceEndTime = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x10) == 0)
   {
 LABEL_6:
@@ -792,12 +792,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_matchedBeginning = *(v4 + 40);
+  self->_matchedBeginning = *(fromCopy + 40);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 44) & 0x20) != 0)
+  if ((*(fromCopy + 44) & 0x20) != 0)
   {
 LABEL_7:
-    self->_matchedEnd = *(v4 + 41);
+    self->_matchedEnd = *(fromCopy + 41);
     *&self->_has |= 0x20u;
   }
 

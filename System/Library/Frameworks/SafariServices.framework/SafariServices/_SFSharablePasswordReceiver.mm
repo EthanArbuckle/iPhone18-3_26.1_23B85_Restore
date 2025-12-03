@@ -1,16 +1,16 @@
 @interface _SFSharablePasswordReceiver
-+ (void)openPasswordManagerURL:(id)a3;
++ (void)openPasswordManagerURL:(id)l;
 @end
 
 @implementation _SFSharablePasswordReceiver
 
-+ (void)openPasswordManagerURL:(id)a3
++ (void)openPasswordManagerURL:(id)l
 {
   v3 = MEMORY[0x1E6963608];
-  v4 = a3;
-  v5 = [v3 defaultWorkspace];
+  lCopy = l;
+  defaultWorkspace = [v3 defaultWorkspace];
   v9 = 0;
-  v6 = [v5 openSensitiveURL:v4 withOptions:0 error:&v9];
+  v6 = [defaultWorkspace openSensitiveURL:lCopy withOptions:0 error:&v9];
 
   v7 = v9;
   if ((v6 & 1) == 0)

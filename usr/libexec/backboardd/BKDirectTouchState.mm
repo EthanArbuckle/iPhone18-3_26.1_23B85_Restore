@@ -1,6 +1,6 @@
 @interface BKDirectTouchState
 - (BKDirectTouchState)init;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)invalidate;
 @end
 
@@ -12,7 +12,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "invalidate: %{public}@", &v7, 0xCu);
   }
 
@@ -31,15 +31,15 @@
   self->_suppressTouchesAssertion = 0;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100082DA0;
   v3[3] = &unk_1000FD128;
   v3[4] = self;
-  v3[5] = a3;
-  [a3 appendProem:self block:v3];
+  v3[5] = formatter;
+  [formatter appendProem:self block:v3];
 }
 
 - (BKDirectTouchState)init
@@ -58,7 +58,7 @@
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"BKDirectTouchState.mm";
       v20 = 1024;

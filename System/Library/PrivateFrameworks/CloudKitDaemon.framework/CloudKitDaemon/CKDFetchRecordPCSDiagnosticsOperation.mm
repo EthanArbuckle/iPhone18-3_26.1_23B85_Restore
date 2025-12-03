@@ -1,26 +1,26 @@
 @interface CKDFetchRecordPCSDiagnosticsOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDFetchRecordPCSDiagnosticsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDFetchRecordPCSDiagnosticsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (NSArray)corruptRecords;
 - (id)activityCreate;
 - (void)_checkRecordPCSForAllZones;
 - (void)_fetchZones;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)main;
 @end
 
 @implementation CKDFetchRecordPCSDiagnosticsOperation
 
-- (CKDFetchRecordPCSDiagnosticsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchRecordPCSDiagnosticsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = CKDFetchRecordPCSDiagnosticsOperation;
-  v9 = [(CKDDatabaseOperation *)&v17 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v17 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordZoneIDs(v6, v7, v8);
+    v10 = objc_msgSend_recordZoneIDs(infoCopy, v7, v8);
     zoneIDs = v9->_zoneIDs;
     v9->_zoneIDs = v10;
 
@@ -67,14 +67,14 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Fetching Zones";
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v5 = @"Checking Record PCS";
   }
@@ -83,7 +83,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDFetchRecordPCSDiagnosticsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -115,7 +115,7 @@
 
   v14 = objc_opt_new();
   objc_msgSend_setFetchAllChanges_(v14, v15, 1);
-  v40 = self;
+  selfCopy = self;
   v18 = objc_msgSend_fetchedZones(self, v16, v17);
   v20 = objc_msgSend_valueForKeyPath_(v18, v19, @"zoneID");
 
@@ -160,8 +160,8 @@
   v41[1] = 3221225472;
   v41[2] = sub_225245FA4;
   v41[3] = &unk_278548B60;
-  v41[4] = v40;
-  objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(v40, v38, v37, v14, v41);
+  v41[4] = selfCopy;
+  objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(selfCopy, v38, v37, v14, v41);
 
   v39 = *MEMORY[0x277D85DE8];
 }
@@ -215,7 +215,7 @@
     v19 = 138544130;
     v20 = v8;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = v13;
     v25 = 2112;
@@ -227,9 +227,9 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_zoneIDs(self, v6, v7);
   v10 = objc_msgSend_setWithArray_(v5, v9, v8);
@@ -246,7 +246,7 @@
 
   v14.receiver = self;
   v14.super_class = CKDFetchRecordPCSDiagnosticsOperation;
-  [(CKDOperation *)&v14 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v14 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

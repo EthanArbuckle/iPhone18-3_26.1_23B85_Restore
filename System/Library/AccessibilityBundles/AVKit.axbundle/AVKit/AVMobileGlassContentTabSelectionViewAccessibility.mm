@@ -1,16 +1,16 @@
 @interface AVMobileGlassContentTabSelectionViewAccessibility
-- (void)selectTab:(id)a3 withReason:(unint64_t)a4;
+- (void)selectTab:(id)tab withReason:(unint64_t)reason;
 @end
 
 @implementation AVMobileGlassContentTabSelectionViewAccessibility
 
-- (void)selectTab:(id)a3 withReason:(unint64_t)a4
+- (void)selectTab:(id)tab withReason:(unint64_t)reason
 {
   v6.receiver = self;
   v6.super_class = AVMobileGlassContentTabSelectionViewAccessibility;
-  v5 = a3;
-  [(AVMobileGlassContentTabSelectionViewAccessibility *)&v6 selectTab:v5 withReason:a4];
-  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v5);
+  tabCopy = tab;
+  [(AVMobileGlassContentTabSelectionViewAccessibility *)&v6 selectTab:tabCopy withReason:reason];
+  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], tabCopy);
 }
 
 @end

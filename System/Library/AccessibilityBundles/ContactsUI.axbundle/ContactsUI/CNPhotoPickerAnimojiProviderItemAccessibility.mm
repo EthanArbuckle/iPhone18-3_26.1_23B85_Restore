@@ -1,16 +1,16 @@
 @interface CNPhotoPickerAnimojiProviderItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (NSString)_axColorVariantName;
 @end
 
 @implementation CNPhotoPickerAnimojiProviderItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPhotoPickerAnimojiProviderItem" hasInstanceMethod:@"backgroundColorVariant" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerColorVariant"];
-  [v3 validateClass:@"CNPhotoPickerColorVariant" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPhotoPickerAnimojiProviderItem" hasInstanceMethod:@"backgroundColorVariant" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerColorVariant"];
+  [validationsCopy validateClass:@"CNPhotoPickerColorVariant" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
 }
 
 - (NSString)_axColorVariantName

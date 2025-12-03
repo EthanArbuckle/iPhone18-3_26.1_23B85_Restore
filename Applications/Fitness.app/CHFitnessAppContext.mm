@@ -5,27 +5,27 @@
 - (CHFitnessAppContext)init;
 - (CHFitnessNavigationDelegate)navigationDelegate;
 - (id)seymourNavigationController;
-- (void)continueUserActivity:(id)a3;
+- (void)continueUserActivity:(id)activity;
 - (void)flushMetricEvents;
-- (void)handleWindowScene:(id)a3 with:(id)a4;
-- (void)navigateToPersonalizedWorkoutPlanCreationWithUserInfo:(id)a3;
-- (void)navigateToWorkout:(id)a3;
+- (void)handleWindowScene:(id)scene with:(id)with;
+- (void)navigateToPersonalizedWorkoutPlanCreationWithUserInfo:(id)info;
+- (void)navigateToWorkout:(id)workout;
 - (void)navigateToWorkoutPlanCreation;
-- (void)openURLContext:(id)a3;
+- (void)openURLContext:(id)context;
 - (void)seymourAppWillResignActive;
 - (void)seymourAppWillTerminate;
 - (void)seymourTabDeselected;
-- (void)seymourTabSelectedWithSelection:(int64_t)a3;
-- (void)shareSheetActivityItemsWithWorkout:(id)a3 completion:(id)a4;
+- (void)seymourTabSelectedWithSelection:(int64_t)selection;
+- (void)shareSheetActivityItemsWithWorkout:(id)workout completion:(id)completion;
 @end
 
 @implementation CHFitnessAppContext
 
-- (void)navigateToWorkout:(id)a3
+- (void)navigateToWorkout:(id)workout
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006393D4(v4, v5);
+  workoutCopy = workout;
+  selfCopy = self;
+  sub_1006393D4(workoutCopy, selfCopy);
 }
 
 - (CHFitnessNavigationDelegate)navigationDelegate
@@ -56,7 +56,7 @@
   __chkstk_darwin(v3);
   v6 = &v10 - v5;
   sub_1000066AC((self + OBJC_IVAR___CHFitnessAppContext_metricClient), *(self + OBJC_IVAR___CHFitnessAppContext_metricClient + 24));
-  v7 = self;
+  selfCopy = self;
   dispatch thunk of MetricClientProtocol.flushMetrics()();
   v8 = Promise.operation.getter();
   v9 = swift_allocObject();
@@ -69,13 +69,13 @@
 
 - (id)seymourNavigationController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AppCoordinator.rootViewController.getter();
 
   return v3;
 }
 
-- (void)handleWindowScene:(id)a3 with:(id)a4
+- (void)handleWindowScene:(id)scene with:(id)with
 {
   v7 = sub_100140278(&qword_1008E1760);
   __chkstk_darwin(v7 - 8);
@@ -86,78 +86,78 @@
   v11[2] = 0;
   v11[3] = 0;
   v11[4] = self;
-  v11[5] = a3;
-  v11[6] = a4;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  v11[5] = scene;
+  v11[6] = with;
+  sceneCopy = scene;
+  withCopy = with;
+  selfCopy = self;
   sub_100653FFC(0, 0, v9, &unk_1006FDC10, v11);
 }
 
-- (void)continueUserActivity:(id)a3
+- (void)continueUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005CB718(v4);
+  activityCopy = activity;
+  selfCopy = self;
+  sub_1005CB718(activityCopy);
 }
 
-- (void)openURLContext:(id)a3
+- (void)openURLContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005CBB48(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1005CBB48(contextCopy);
 }
 
 - (void)navigateToWorkoutPlanCreation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005CF110();
 }
 
-- (void)navigateToPersonalizedWorkoutPlanCreationWithUserInfo:(id)a3
+- (void)navigateToPersonalizedWorkoutPlanCreationWithUserInfo:(id)info
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1005CFCFC(v4);
 }
 
-- (void)seymourTabSelectedWithSelection:(int64_t)a3
+- (void)seymourTabSelectedWithSelection:(int64_t)selection
 {
-  v4 = self;
-  sub_1005D2F1C(a3);
+  selfCopy = self;
+  sub_1005D2F1C(selection);
 }
 
 - (void)seymourTabDeselected
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005D3C8C();
 }
 
 - (void)seymourAppWillResignActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005D3E3C();
 }
 
 - (void)seymourAppWillTerminate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005D3FC4();
 }
 
-- (void)shareSheetActivityItemsWithWorkout:(id)a3 completion:(id)a4
+- (void)shareSheetActivityItemsWithWorkout:(id)workout completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1005D414C(v8, sub_1005D5518, v7);
+  workoutCopy = workout;
+  selfCopy = self;
+  sub_1005D414C(workoutCopy, sub_1005D5518, v7);
 }
 
 - (BOOL)isSessionViewControllerPresented
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005D4738();
 
   return v3;

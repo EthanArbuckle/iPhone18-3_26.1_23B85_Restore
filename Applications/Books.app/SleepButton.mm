@@ -1,22 +1,22 @@
 @interface SleepButton
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
-- (_TtC5Books11SleepButton)initWithFrame:(CGRect)a3;
+- (_TtC5Books11SleepButton)initWithFrame:(CGRect)frame;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setImage:(id)image forState:(unint64_t)state;
 @end
 
 @implementation SleepButton
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  v5 = self;
-  if (a3)
+  selfCopy = self;
+  if (image)
   {
-    [a3 size];
+    [image size];
   }
 
   else
@@ -25,20 +25,20 @@
     v7 = 0;
   }
 
-  v8 = (&v5->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books11SleepButton_imageSize);
+  v8 = (&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books11SleepButton_imageSize);
   *v8 = v6;
   v8[1] = v7;
-  v9 = [(SleepButton *)v5 state];
-  v10.receiver = v5;
+  state = [(SleepButton *)selfCopy state];
+  v10.receiver = selfCopy;
   v10.super_class = type metadata accessor for SleepButton();
-  [(SleepButton *)&v10 setImage:a3 forState:v9];
+  [(SleepButton *)&v10 setImage:image forState:state];
 }
 
 - (CGSize)intrinsicContentSize
 {
   v2 = (self + OBJC_IVAR____TtC5Books11SleepButton_calculatedSize);
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books11SleepButton_calculatedSize);
-  v4 = self;
+  selfCopy = self;
   if (v3 == 0.0)
   {
     sub_1003A91B0();
@@ -56,15 +56,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003A891C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = (self + OBJC_IVAR____TtC5Books11SleepButton_calculatedSize);
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books11SleepButton_calculatedSize);
-  v5 = self;
+  selfCopy = self;
   if (v4 == 0.0)
   {
     sub_1003A91B0();
@@ -97,12 +97,12 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for SleepButton();
   v2 = v7.receiver;
-  v3 = [(SleepButton *)&v7 accessibilityTraits];
+  accessibilityTraits = [(SleepButton *)&v7 accessibilityTraits];
   if (*(v2 + OBJC_IVAR____TtC5Books11SleepButton_showsDuration) == 1)
   {
     v4 = UIAccessibilityTraitUpdatesFrequently;
 
-    if ((v4 & ~v3) != 0)
+    if ((v4 & ~accessibilityTraits) != 0)
     {
       v5 = v4;
     }
@@ -112,29 +112,29 @@
       v5 = 0;
     }
 
-    v3 |= v5;
+    accessibilityTraits |= v5;
   }
 
   else
   {
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for SleepButton();
-  [(SleepButton *)&v4 setAccessibilityTraits:a3];
+  [(SleepButton *)&v4 setAccessibilityTraits:traits];
 }
 
-- (_TtC5Books11SleepButton)initWithFrame:(CGRect)a3
+- (_TtC5Books11SleepButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books11SleepButton_fixedHeight) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books11SleepButton_internalPadding) = 0;
   v7 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Books11SleepButton_calculatedSize);

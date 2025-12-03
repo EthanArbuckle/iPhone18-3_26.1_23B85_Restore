@@ -1,14 +1,14 @@
 @interface ABVCardCardDAVValueSetter
 + (__CFDictionary)_personToGroupPropertyMap;
-+ (int)groupPropertyForPersonProperty:(int)a3;
-- (ABVCardCardDAVValueSetter)initWithGroup:(void *)a3 options:(unint64_t)a4;
-- (ABVCardCardDAVValueSetter)initWithPerson:(void *)a3 options:(unint64_t)a4;
-- (BOOL)setImageData:(id)a3 cropRectX:(int)a4 cropRectY:(int)a5 cropRectWidth:(int)a6 cropRectHeight:(int)a7;
-- (BOOL)setValue:(void *)a3 forProperty:(unsigned int)a4;
++ (int)groupPropertyForPersonProperty:(int)property;
+- (ABVCardCardDAVValueSetter)initWithGroup:(void *)group options:(unint64_t)options;
+- (ABVCardCardDAVValueSetter)initWithPerson:(void *)person options:(unint64_t)options;
+- (BOOL)setImageData:(id)data cropRectX:(int)x cropRectY:(int)y cropRectWidth:(int)width cropRectHeight:(int)height;
+- (BOOL)setValue:(void *)value forProperty:(unsigned int)property;
 - (id)imageData;
 - (void)_drainExistingProperties;
-- (void)copyParsedRecordWithSource:(void *)a3 outRecordType:(unsigned int *)a4;
-- (void)valueForProperty:(unsigned int)a3;
+- (void)copyParsedRecordWithSource:(void *)source outRecordType:(unsigned int *)type;
+- (void)valueForProperty:(unsigned int)property;
 @end
 
 @implementation ABVCardCardDAVValueSetter
@@ -29,20 +29,20 @@
   return result;
 }
 
-+ (int)groupPropertyForPersonProperty:(int)a3
++ (int)groupPropertyForPersonProperty:(int)property
 {
   value = -1;
-  CFDictionaryGetValueIfPresent([a1 _personToGroupPropertyMap], a3, &value);
+  CFDictionaryGetValueIfPresent([self _personToGroupPropertyMap], property, &value);
   return value;
 }
 
-- (void)copyParsedRecordWithSource:(void *)a3 outRecordType:(unsigned int *)a4
+- (void)copyParsedRecordWithSource:(void *)source outRecordType:(unsigned int *)type
 {
   v16[1] = *MEMORY[0x1E69E9840];
   if (!self->_recordIsGroup)
   {
     v7 = CFRetain(self->super._person);
-    if (!a4)
+    if (!type)
     {
       return v7;
     }
@@ -50,9 +50,9 @@
     goto LABEL_12;
   }
 
-  if (a3)
+  if (source)
   {
-    v6 = ABGroupCreateInSource(a3);
+    v6 = ABGroupCreateInSource(source);
   }
 
   else
@@ -61,11 +61,11 @@
   }
 
   v7 = v6;
-  v8 = [objc_opt_class() _personToGroupPropertyMap];
-  Count = CFDictionaryGetCount(v8);
+  _personToGroupPropertyMap = [objc_opt_class() _personToGroupPropertyMap];
+  Count = CFDictionaryGetCount(_personToGroupPropertyMap);
   v10 = (v16 - ((8 * Count + 15) & 0xFFFFFFFFFFFFFFF0));
   v11 = v10;
-  CFDictionaryGetKeysAndValues(v8, v16, v10);
+  CFDictionaryGetKeysAndValues(_personToGroupPropertyMap, v16, v10);
   if (Count >= 1)
   {
     do
@@ -86,18 +86,18 @@
     while (Count);
   }
 
-  if (a4)
+  if (type)
   {
 LABEL_12:
-    *a4 = self->_recordIsGroup;
+    *type = self->_recordIsGroup;
   }
 
   return v7;
 }
 
-- (void)valueForProperty:(unsigned int)a3
+- (void)valueForProperty:(unsigned int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   if (![(ABVCardCardDAVValueSetter *)self propertyIsValidForPerson:?])
   {
     return 0;
@@ -117,11 +117,11 @@ LABEL_12:
   return [(ABVCardPersonValueSetter *)&v6 valueForProperty:v3];
 }
 
-- (BOOL)setValue:(void *)a3 forProperty:(unsigned int)a4
+- (BOOL)setValue:(void *)value forProperty:(unsigned int)property
 {
   if (self->_importingToExistingGroup)
   {
-    v6 = [objc_opt_class() groupPropertyForPersonProperty:*&a4];
+    v6 = [objc_opt_class() groupPropertyForPersonProperty:*&property];
     if (v6 == -1)
     {
       return 0;
@@ -130,7 +130,7 @@ LABEL_12:
     else
     {
       v7 = v6;
-      if (ABRecordSetValue(self->super._person, v6, a3, 0))
+      if (ABRecordSetValue(self->super._person, v6, value, 0))
       {
         CFArrayAppendValue(self->super._properties, v7);
       }
@@ -143,17 +143,17 @@ LABEL_12:
   {
     v9.receiver = self;
     v9.super_class = ABVCardCardDAVValueSetter;
-    return [(ABVCardPersonValueSetter *)&v9 setValue:a3 forProperty:*&a4];
+    return [(ABVCardPersonValueSetter *)&v9 setValue:value forProperty:*&property];
   }
 }
 
 - (void)_drainExistingProperties
 {
-  v3 = [objc_opt_class() supportedProperties];
-  if (v3)
+  supportedProperties = [objc_opt_class() supportedProperties];
+  if (supportedProperties)
   {
-    v4 = v3;
-    Count = CFArrayGetCount(v3);
+    v4 = supportedProperties;
+    Count = CFArrayGetCount(supportedProperties);
     if (Count >= 1)
     {
       v6 = Count;
@@ -201,18 +201,18 @@ LABEL_19:
   }
 }
 
-- (ABVCardCardDAVValueSetter)initWithPerson:(void *)a3 options:(unint64_t)a4
+- (ABVCardCardDAVValueSetter)initWithPerson:(void *)person options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = ABVCardCardDAVValueSetter;
-  v5 = [(ABVCardPersonValueSetter *)&v8 initWithPerson:a3];
+  v5 = [(ABVCardPersonValueSetter *)&v8 initWithPerson:person];
   v6 = v5;
   if (v5)
   {
-    v5->_wallpaperSupported = (v4 & 2) != 0;
+    v5->_wallpaperSupported = (optionsCopy & 2) != 0;
     v5->_isImageSyncFailedTimeSet = [(ABVCardCardDAVValueSetter *)v5 valueForProperty:kABPersonImageSyncFailedTimeProperty]!= 0;
-    if (v4)
+    if (optionsCopy)
     {
       [(ABVCardCardDAVValueSetter *)v6 _drainExistingProperties];
     }
@@ -221,17 +221,17 @@ LABEL_19:
   return v6;
 }
 
-- (ABVCardCardDAVValueSetter)initWithGroup:(void *)a3 options:(unint64_t)a4
+- (ABVCardCardDAVValueSetter)initWithGroup:(void *)group options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = ABVCardCardDAVValueSetter;
-  v5 = [(ABVCardPersonValueSetter *)&v8 initWithPerson:a3];
+  v5 = [(ABVCardPersonValueSetter *)&v8 initWithPerson:group];
   v6 = v5;
   if (v5)
   {
     v5->_importingToExistingGroup = 1;
-    if (v4)
+    if (optionsCopy)
     {
       [(ABVCardCardDAVValueSetter *)v5 _drainExistingProperties];
     }
@@ -240,20 +240,20 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)setImageData:(id)a3 cropRectX:(int)a4 cropRectY:(int)a5 cropRectWidth:(int)a6 cropRectHeight:(int)a7
+- (BOOL)setImageData:(id)data cropRectX:(int)x cropRectY:(int)y cropRectWidth:(int)width cropRectHeight:(int)height
 {
   v33 = *MEMORY[0x1E69E9840];
   if (!self->_recordIsGroup)
   {
-    v7 = *&a7;
-    v8 = *&a6;
-    v9 = *&a5;
-    v10 = *&a4;
+    v7 = *&height;
+    v8 = *&width;
+    v9 = *&y;
+    v10 = *&x;
     v13 = ABPersonCopyImageDataWithFormat(self->super._person, 5u);
     v14 = v13;
-    if (v13 && [(__CFData *)v13 isEqualToData:a3])
+    if (v13 && [(__CFData *)v13 isEqualToData:data])
     {
-      if (ABImageUtilsOriginalSizeCropRectMatchesSyncedCropRect(self->super._person, a3, v10, v9, v8, v7))
+      if (ABImageUtilsOriginalSizeCropRectMatchesSyncedCropRect(self->super._person, data, v10, v9, v8, v7))
       {
         v15 = ABOSLogGeneral();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -300,7 +300,7 @@ LABEL_13:
 
     v20.receiver = self;
     v20.super_class = ABVCardCardDAVValueSetter;
-    [(ABVCardPersonValueSetter *)&v20 setImageData:a3 cropRectX:v10 cropRectY:v9 cropRectWidth:v8 cropRectHeight:v7];
+    [(ABVCardPersonValueSetter *)&v20 setImageData:data cropRectX:v10 cropRectY:v9 cropRectWidth:v8 cropRectHeight:v7];
     ABPersonSetImageDataDerivedFromFormatAndReturnError(self->super._person, 5);
     goto LABEL_13;
   }

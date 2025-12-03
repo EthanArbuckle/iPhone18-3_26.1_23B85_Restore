@@ -1,10 +1,10 @@
 @interface RUITextActivityIndicatorView
-- (_TtC8RemoteUI28RUITextActivityIndicatorView)initWithCoder:(id)a3;
+- (_TtC8RemoteUI28RUITextActivityIndicatorView)initWithCoder:(id)coder;
 @end
 
 @implementation RUITextActivityIndicatorView
 
-- (_TtC8RemoteUI28RUITextActivityIndicatorView)initWithCoder:(id)a3
+- (_TtC8RemoteUI28RUITextActivityIndicatorView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8RemoteUI28RUITextActivityIndicatorView_activityIndicator;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle_];

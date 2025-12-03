@@ -1,6 +1,6 @@
 @interface TUCallSoundPlayer
-- (BOOL)attemptToPlayDescriptor:(id)a3 completion:(id)a4;
-- (BOOL)attemptToPlaySoundType:(int64_t)a3 forCall:(id)a4 completion:(id)a5;
+- (BOOL)attemptToPlayDescriptor:(id)descriptor completion:(id)completion;
+- (BOOL)attemptToPlaySoundType:(int64_t)type forCall:(id)call completion:(id)completion;
 - (BOOL)isPlaying;
 - (TUCallSoundPlayer)init;
 - (void)dealloc;
@@ -11,8 +11,8 @@
 
 - (void)stopPlaying
 {
-  v3 = [(TUCallSoundPlayer *)self player];
-  [v3 stopPlaying];
+  player = [(TUCallSoundPlayer *)self player];
+  [player stopPlaying];
 
   [(TUCallSoundPlayer *)self setCurrentlyPlayingSoundType:0];
 }
@@ -46,15 +46,15 @@
   [(TUCallSoundPlayer *)&v4 dealloc];
 }
 
-- (BOOL)attemptToPlaySoundType:(int64_t)a3 forCall:(id)a4 completion:(id)a5
+- (BOOL)attemptToPlaySoundType:(int64_t)type forCall:(id)call completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [[TUCallSoundPlayerDescriptor alloc] initWithSoundType:a3 call:v8];
+  callCopy = call;
+  completionCopy = completion;
+  v10 = [[TUCallSoundPlayerDescriptor alloc] initWithSoundType:type call:callCopy];
   if (v10)
   {
-    v11 = [(TUCallSoundPlayer *)self attemptToPlayDescriptor:v10 completion:v9];
+    v11 = [(TUCallSoundPlayer *)self attemptToPlayDescriptor:v10 completion:completionCopy];
   }
 
   else
@@ -63,9 +63,9 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 134218242;
-      v16 = a3;
+      typeCopy = type;
       v17 = 2112;
-      v18 = v8;
+      v18 = callCopy;
       _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "Not playing sound since no valid sound descriptor was returned for type=%lu call=%@", &v15, 0x16u);
     }
 
@@ -76,12 +76,12 @@
   return v11;
 }
 
-- (BOOL)attemptToPlayDescriptor:(id)a3 completion:(id)a4
+- (BOOL)attemptToPlayDescriptor:(id)descriptor completion:(id)completion
 {
   *&v36[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (-[TUCallSoundPlayer isPlaying](self, "isPlaying") && (v8 = [v6 soundType], v8 == -[TUCallSoundPlayer currentlyPlayingSoundType](self, "currentlyPlayingSoundType")))
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  if (-[TUCallSoundPlayer isPlaying](self, "isPlaying") && (v8 = [descriptorCopy soundType], v8 == -[TUCallSoundPlayer currentlyPlayingSoundType](self, "currentlyPlayingSoundType")))
   {
     v9 = 0;
   }
@@ -92,37 +92,37 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v36 = v6;
+      *v36 = descriptorCopy;
       _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Playing %@", buf, 0xCu);
     }
 
-    if ([v6 audioPlayingWarmupNeeded])
+    if ([descriptorCopy audioPlayingWarmupNeeded])
     {
       v11 = CUTWeakLinkClass();
       v12 = TUDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v11 hasActiveAudioSession];
+        hasActiveAudioSession = [v11 hasActiveAudioSession];
         *buf = 67109378;
-        v36[0] = v13;
+        v36[0] = hasActiveAudioSession;
         LOWORD(v36[1]) = 2112;
-        *(&v36[1] + 2) = v6;
+        *(&v36[1] + 2) = descriptorCopy;
         _os_log_impl(&dword_1956FD000, v12, OS_LOG_TYPE_DEFAULT, "[TUCallSoundPlayer] audio stack ready: %d for %@", buf, 0x12u);
       }
 
-      if (([v11 hasActiveAudioSession] & 1) == 0 && objc_msgSend(v6, "soundType") == 1)
+      if (([v11 hasActiveAudioSession] & 1) == 0 && objc_msgSend(descriptorCopy, "soundType") == 1)
       {
         v14 = dispatch_semaphore_create(0);
-        v15 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v29 = MEMORY[0x1E69E9820];
         v30 = 3221225472;
         v31 = __56__TUCallSoundPlayer_attemptToPlayDescriptor_completion___block_invoke;
         v32 = &unk_1E7426808;
-        v16 = v6;
+        v16 = descriptorCopy;
         v33 = v16;
         v17 = v14;
         v34 = v17;
-        v18 = [v15 addObserverForName:@"TUCallAudioStackReadyNotification" object:0 queue:0 usingBlock:&v29];
+        v18 = [defaultCenter addObserverForName:@"TUCallAudioStackReadyNotification" object:0 queue:0 usingBlock:&v29];
 
         v19 = TUDefaultLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -134,8 +134,8 @@
 
         v20 = dispatch_time(0, 2000000000);
         dispatch_semaphore_wait(v17, v20);
-        v21 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v21 removeObserver:v18];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 removeObserver:v18];
 
         v22 = TUDefaultLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -147,14 +147,14 @@
       }
     }
 
-    v23 = [(TUCallSoundPlayer *)self player];
-    v24 = [v6 sound];
-    v25 = [v24 unsignedIntValue];
-    v26 = [v6 iterations];
-    [v6 pauseDuration];
-    [v23 playSound:v25 iterations:v26 pauseDurationBetweenIterations:v7 completion:?];
+    player = [(TUCallSoundPlayer *)self player];
+    sound = [descriptorCopy sound];
+    unsignedIntValue = [sound unsignedIntValue];
+    iterations = [descriptorCopy iterations];
+    [descriptorCopy pauseDuration];
+    [player playSound:unsignedIntValue iterations:iterations pauseDurationBetweenIterations:completionCopy completion:?];
 
-    -[TUCallSoundPlayer setCurrentlyPlayingSoundType:](self, "setCurrentlyPlayingSoundType:", [v6 soundType]);
+    -[TUCallSoundPlayer setCurrentlyPlayingSoundType:](self, "setCurrentlyPlayingSoundType:", [descriptorCopy soundType]);
     v9 = 1;
   }
 
@@ -181,10 +181,10 @@ intptr_t __56__TUCallSoundPlayer_attemptToPlayDescriptor_completion___block_invo
 
 - (BOOL)isPlaying
 {
-  v2 = [(TUCallSoundPlayer *)self player];
-  v3 = [v2 isPlaying];
+  player = [(TUCallSoundPlayer *)self player];
+  isPlaying = [player isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
 @end

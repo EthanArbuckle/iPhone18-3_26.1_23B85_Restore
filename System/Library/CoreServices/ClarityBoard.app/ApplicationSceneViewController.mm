@@ -1,15 +1,15 @@
 @interface ApplicationSceneViewController
-- (_TtC12ClarityBoard30ApplicationSceneViewController)initWithCoder:(id)a3;
+- (_TtC12ClarityBoard30ApplicationSceneViewController)initWithCoder:(id)coder;
 - (void)dealloc;
 - (void)loadView;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneWillDeactivate:(id)a3 withContext:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneWillDeactivate:(id)deactivate withContext:(id)context;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ApplicationSceneViewController
 
-- (_TtC12ClarityBoard30ApplicationSceneViewController)initWithCoder:(id)a3
+- (_TtC12ClarityBoard30ApplicationSceneViewController)initWithCoder:(id)coder
 {
   *&self->super.listLayoutObserver[OBJC_IVAR____TtC12ClarityBoard30ApplicationSceneViewController_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -21,9 +21,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_100056890();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ApplicationSceneViewController();
   [(ApplicationSceneViewController *)&v3 dealloc];
 }
@@ -36,10 +36,10 @@
   [(SceneViewControllerBase *)&v6 loadView];
   v5.receiver = v2;
   v5.super_class = type metadata accessor for SceneViewControllerBase();
-  v3 = [(ApplicationSceneViewController *)&v5 view];
-  if (v3)
+  view = [(ApplicationSceneViewController *)&v5 view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     objc_opt_self();
     [swift_dynamicCastObjCClassUnconditional() setRealSafeAreaInsets:{*&v2[OBJC_IVAR____TtC12ClarityBoard30ApplicationSceneViewController_safeAreaInsets], *&v2[OBJC_IVAR____TtC12ClarityBoard30ApplicationSceneViewController_safeAreaInsets + 8], *&v2[OBJC_IVAR____TtC12ClarityBoard30ApplicationSceneViewController_safeAreaInsets + 16], *&v2[OBJC_IVAR____TtC12ClarityBoard30ApplicationSceneViewController_safeAreaInsets + 24]}];
 
@@ -52,26 +52,26 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100055C60(a3);
+  selfCopy = self;
+  sub_100055C60(appear);
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100057EFC(v7);
+  sceneCopy = scene;
+  settingsCopy = settings;
+  selfCopy = self;
+  sub_100057EFC(settingsCopy);
 }
 
-- (void)sceneWillDeactivate:(id)a3 withContext:(id)a4
+- (void)sceneWillDeactivate:(id)deactivate withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100055DF8(v6, a4);
+  deactivateCopy = deactivate;
+  contextCopy = context;
+  selfCopy = self;
+  sub_100055DF8(deactivateCopy, context);
 }
 
 @end

@@ -27,32 +27,32 @@
 
 - (id)da_removeSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = [a1 substringToIndex:{objc_msgSend(a1, "length") - 1}];
+    selfCopy = [self substringToIndex:{objc_msgSend(self, "length") - 1}];
   }
 
   else
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)da_appendSlashIfNeeded
 {
-  if ([a1 hasSuffix:@"/"])
+  if ([self hasSuffix:@"/"])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [a1 stringByAppendingString:@"/"];
+    selfCopy = [self stringByAppendingString:@"/"];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (__CFString)da_stringByURLEscapingPathComponent
@@ -76,7 +76,7 @@
 
 - (id)da_trimWhiteSpace
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringTrimWhitespace(v1);
   v2 = [(__CFString *)v1 copy];
 
@@ -85,16 +85,16 @@
 
 + (id)da_newGUID
 {
-  v0 = [MEMORY[0x277CCAD78] UUID];
-  v1 = [v0 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v1;
+  return uUIDString;
 }
 
 + (id)da_new64ByteGUID
 {
-  v0 = [MEMORY[0x277CCACA8] da_newGUID];
-  v1 = [v0 mutableCopy];
+  da_newGUID = [MEMORY[0x277CCACA8] da_newGUID];
+  v1 = [da_newGUID mutableCopy];
   [v1 replaceOccurrencesOfString:@"-" withString:&stru_285AA6518 options:0 range:{0, objc_msgSend(v1, "length")}];
   v2 = [v1 stringByAppendingFormat:@"%0.*d", 64 - objc_msgSend(v1, "length"), 0];
 

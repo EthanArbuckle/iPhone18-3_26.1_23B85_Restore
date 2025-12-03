@@ -10,8 +10,8 @@
   v4.receiver = self;
   v4.super_class = SBFSiriSettings;
   [(PTSettings *)&v4 setDefaultValues];
-  v3 = [(SBFSiriSettings *)self systemAssistantExperienceSettings];
-  [v3 setDefaultValues];
+  systemAssistantExperienceSettings = [(SBFSiriSettings *)self systemAssistantExperienceSettings];
+  [systemAssistantExperienceSettings setDefaultValues];
 }
 
 + (id)settingsControllerModule

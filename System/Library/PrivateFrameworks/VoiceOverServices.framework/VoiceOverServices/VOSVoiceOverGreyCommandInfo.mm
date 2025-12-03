@@ -4,8 +4,8 @@
 + (id)_pairedDevice;
 + (id)defaultActions;
 + (id)defaultCustomizeGestures;
-+ (id)nameForAction:(id)a3;
-+ (id)symbolNameForAction:(id)a3;
++ (id)nameForAction:(id)action;
++ (id)symbolNameForAction:(id)action;
 @end
 
 @implementation VOSVoiceOverGreyCommandInfo
@@ -50,45 +50,45 @@
   return v3;
 }
 
-+ (id)nameForAction:(id)a3
++ (id)nameForAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kVOTEventCommandActivateHomeButton])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:kVOTEventCommandActivateHomeButton])
   {
     v4 = @"action.digital.crown.press";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandSimpleTap])
+  else if ([actionCopy isEqualToString:kVOTEventCommandSimpleTap])
   {
     v4 = @"action.double.tap";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandNextElement])
+  else if ([actionCopy isEqualToString:kVOTEventCommandNextElement])
   {
     v4 = @"action.swipe.left";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandPreviousElement])
+  else if ([actionCopy isEqualToString:kVOTEventCommandPreviousElement])
   {
     v4 = @"action.swipe.right";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandWatchWakeDoubleTap])
+  else if ([actionCopy isEqualToString:kVOTEventCommandWatchWakeDoubleTap])
   {
     v4 = @"action.taptic.time";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandStartStopToggle])
+  else if ([actionCopy isEqualToString:kVOTEventCommandStartStopToggle])
   {
     v4 = @"action.magic.tap";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandStingPress])
+  else if ([actionCopy isEqualToString:kVOTEventCommandStingPress])
   {
     v4 = @"action.sting.press";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandStingKeycordPress])
+  else if ([actionCopy isEqualToString:kVOTEventCommandStingKeycordPress])
   {
     v4 = @"action.sting.keycord.press";
   }
@@ -101,35 +101,35 @@
   return v4;
 }
 
-+ (id)symbolNameForAction:(id)a3
++ (id)symbolNameForAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:kVOTEventCommandActivateHomeButton])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:kVOTEventCommandActivateHomeButton])
   {
     v4 = @"applewatch.crown.fill.arrow.up";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandSimpleTap])
+  else if ([actionCopy isEqualToString:kVOTEventCommandSimpleTap])
   {
     v4 = @"hand.tap.fill";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandNextElement])
+  else if ([actionCopy isEqualToString:kVOTEventCommandNextElement])
   {
     v4 = @"chevron.left.circle.fill";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandPreviousElement])
+  else if ([actionCopy isEqualToString:kVOTEventCommandPreviousElement])
   {
     v4 = @"chevron.right.circle.fill";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandWatchWakeDoubleTap])
+  else if ([actionCopy isEqualToString:kVOTEventCommandWatchWakeDoubleTap])
   {
     v4 = @"applewatch.radiowaves.left.and.right";
   }
 
-  else if ([v3 isEqualToString:kVOTEventCommandStartStopToggle])
+  else if ([actionCopy isEqualToString:kVOTEventCommandStartStopToggle])
   {
     v4 = @"playpause.fill";
   }
@@ -137,7 +137,7 @@
   else
   {
     v4 = @"watchdock.applewatch.case";
-    if (([v3 isEqualToString:kVOTEventCommandStingPress] & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", kVOTEventCommandStingKeycordPress))
+    if (([actionCopy isEqualToString:kVOTEventCommandStingPress] & 1) == 0 && !objc_msgSend(actionCopy, "isEqualToString:", kVOTEventCommandStingKeycordPress))
     {
       v4 = 0;
     }
@@ -149,21 +149,21 @@
 + (BOOL)isVoiceOverGreyFeatureOn
 {
   v2 = _os_feature_enabled_impl();
-  v3 = [objc_opt_class() _pairedDevice];
+  _pairedDevice = [objc_opt_class() _pairedDevice];
   v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"1FD8E157-2B7C-45B6-B939-FFB8BE14E27F"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [_pairedDevice supportsCapability:v4];
 
   return v2 & v5;
 }
 
 + (id)_pairedDevice
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-  v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+  v4 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:*MEMORY[0x277D2BB30]];
+  v6 = [firstObject valueForProperty:*MEMORY[0x277D2BB30]];
   if ([v6 BOOLValue])
   {
     v7 = 0;
@@ -171,7 +171,7 @@
 
   else
   {
-    v7 = v5;
+    v7 = firstObject;
   }
 
   v8 = v7;
@@ -181,9 +181,9 @@
 
 + (BOOL)_isStingSupported
 {
-  v2 = [objc_opt_class() _pairedDevice];
+  _pairedDevice = [objc_opt_class() _pairedDevice];
   v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"15BF559D-D50B-44FE-AC84-DFBA323EC985"];
-  v4 = [v2 supportsCapability:v3];
+  v4 = [_pairedDevice supportsCapability:v3];
 
   return v4;
 }

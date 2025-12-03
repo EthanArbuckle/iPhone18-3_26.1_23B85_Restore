@@ -1,11 +1,11 @@
 @interface VNFaceAnalyzerMultiDetector
-+ (float)faceBoundingBoxScalingFactorForFaceObservation:(unint64_t)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-- (BOOL)_isFaceprintJunk:(shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)a3;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (CGRect)calculateCropRectForInputFace:(id)a3 imageBuffer:(id)a4 options:(id)a5 error:(id *)a6;
++ (float)faceBoundingBoxScalingFactorForFaceObservation:(unint64_t)observation;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
+- (BOOL)_isFaceprintJunk:(shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)junk;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (CGRect)calculateCropRectForInputFace:(id)face imageBuffer:(id)buffer options:(id)options error:(id *)error;
 - (id).cxx_construct;
-- (vImage_Buffer)prepare_vImageBufferForCVPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
+- (vImage_Buffer)prepare_vImageBufferForCVPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
 @end
 
 @implementation VNFaceAnalyzerMultiDetector
@@ -17,7 +17,7 @@
   return self;
 }
 
-- (vImage_Buffer)prepare_vImageBufferForCVPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (vImage_Buffer)prepare_vImageBufferForCVPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   v38 = 0u;
@@ -27,13 +27,13 @@
   v9 = malloc_type_calloc(v8 * v7 + 32, 1uLL, 0x4C34B024uLL);
   if (!v9)
   {
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
 
     +[VNError errorForMemoryAllocationFailure];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     return v10;
   }
 
@@ -42,10 +42,10 @@
   v9->height = 0;
   v9->width = v7;
   v9->rowBytes = v8;
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  *&v38 = CVPixelBufferGetWidth(a3);
-  *(&v38 + 1) = CVPixelBufferGetBytesPerRow(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  *&v38 = CVPixelBufferGetWidth(buffer);
+  *(&v38 + 1) = CVPixelBufferGetBytesPerRow(buffer);
   ptr = self->_mFaceFrontalizerImpl.__ptr_;
   v12 = ImageProcessing_reallocVImageBuffer(ptr + 40, v38, Height, 4);
   if ((v12 & 0x80) == 0)
@@ -169,9 +169,9 @@ LABEL_37:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = VNErrorForCVMLStatus(v12);
+      *error = VNErrorForCVMLStatus(v12);
     }
 
     v31 = v10;
@@ -182,26 +182,26 @@ LABEL_37:
   return v10;
 }
 
-- (CGRect)calculateCropRectForInputFace:(id)a3 imageBuffer:(id)a4 options:(id)a5 error:(id *)a6
+- (CGRect)calculateCropRectForInputFace:(id)face imageBuffer:(id)buffer options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 width];
-  v12 = [v9 height];
-  [v8 unalignedBoundingBox];
+  faceCopy = face;
+  bufferCopy = buffer;
+  optionsCopy = options;
+  width = [bufferCopy width];
+  height = [bufferCopy height];
+  [faceCopy unalignedBoundingBox];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [objc_opt_class() faceBoundingBoxScalingFactorForFaceObservation:{objc_msgSend(v8, "requestRevision")}];
-  v35.size.width = v18 * v11;
-  v35.origin.y = v16 * v12;
-  v35.size.height = v20 * v12;
+  [objc_opt_class() faceBoundingBoxScalingFactorForFaceObservation:{objc_msgSend(faceCopy, "requestRevision")}];
+  v35.size.width = v18 * width;
+  v35.origin.y = v16 * height;
+  v35.size.height = v20 * height;
   v22 = (v21 + -1.0);
   v23 = -(v35.size.width * v22) * 0.5;
   v24 = -(v35.size.height * v22) * 0.5;
-  v35.origin.x = v14 * v11;
+  v35.origin.x = v14 * width;
   v36 = CGRectInset(v35, v23, v24);
   v37 = CGRectIntegral(v36);
   x = v37.origin.x;
@@ -212,9 +212,9 @@ LABEL_37:
   v29 = fmaxf(0, 0);
   if (fmax(width, height) < v29)
   {
-    [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNDetectorInternalProcessOption_RecordImageTooSmallWarning"];
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNDetectorInternalProcessOption_RecordImageTooSmallWarning"];
     v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:vcvtas_u32_f32(v29)];
-    [v10 setObject:v30 forKeyedSubscript:@"VNDetectorInternalProcessOption_DesiredMinimumFacePrintingLongDimension"];
+    [optionsCopy setObject:v30 forKeyedSubscript:@"VNDetectorInternalProcessOption_DesiredMinimumFacePrintingLongDimension"];
   }
 
   v31 = x;
@@ -228,10 +228,10 @@ LABEL_37:
   return result;
 }
 
-- (BOOL)_isFaceprintJunk:(shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)a3
+- (BOOL)_isFaceprintJunk:(shared_ptr<vision::mod::ImageDescriptorBufferAbstract>)junk
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = *a3.var0;
+  v3 = *junk.var0;
   memcpy(__dst, &unk_1A603AC48, sizeof(__dst));
   if (*(v3 + 72) != 1 || (*(*v3 + 104))(v3) != 512)
   {
@@ -245,12 +245,12 @@ LABEL_37:
   return (__C + 1.2744) < 0.2;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = VNFaceAnalyzerMultiDetector;
-  if ([(VNFaceAnalyzerMultiDetectorBase *)&v8 completeInitializationForSession:v6 error:a4])
+  if ([(VNFaceAnalyzerMultiDetectorBase *)&v8 completeInitializationForSession:sessionCopy error:error])
   {
     operator new();
   }
@@ -258,11 +258,11 @@ LABEL_37:
   return 0;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (objc_opt_class() == a1)
+  optionsCopy = options;
+  if (objc_opt_class() == self)
   {
     v13 = @"VNComputeStageMain";
     v8 = +[VNComputeDeviceUtilities mostPerformantComputeDevice];
@@ -274,24 +274,24 @@ LABEL_37:
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___VNFaceAnalyzerMultiDetector;
-    v7 = objc_msgSendSuper2(&v11, sel_supportedComputeStageDevicesForOptions_error_, v6, a4);
+    v7 = objc_msgSendSuper2(&v11, sel_supportedComputeStageDevicesForOptions_error_, optionsCopy, error);
   }
 
   return v7;
 }
 
-+ (float)faceBoundingBoxScalingFactorForFaceObservation:(unint64_t)a3
++ (float)faceBoundingBoxScalingFactorForFaceObservation:(unint64_t)observation
 {
   result = 1.765;
   v4 = 1.0;
-  if (a3 - 1 < 3)
+  if (observation - 1 < 3)
   {
     v4 = 1.765;
   }
 
-  if (a3 - 3737841664u > 6 || ((1 << a3) & 0x75) == 0)
+  if (observation - 3737841664u > 6 || ((1 << observation) & 0x75) == 0)
   {
     return v4;
   }

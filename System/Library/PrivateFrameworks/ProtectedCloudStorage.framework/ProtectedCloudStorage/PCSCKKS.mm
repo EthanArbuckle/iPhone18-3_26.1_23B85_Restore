@@ -1,23 +1,23 @@
 @interface PCSCKKS
-+ (BOOL)fetchWithTimeout:(unint64_t)a3 error:(id *)a4;
-- (BOOL)shouldRetryWithSync:(id)a3;
-- (PCSCKKS)initWithIdentitySet:(_PCSIdentitySetData *)a3 dsid:(id)a4;
-- (id)createIdentityOperation:(id)a3;
-- (id)ensurePCSFieldsOperation:(id)a3;
-- (id)fetchCurrentOperation:(id)a3;
-- (id)stripOperationErrorIfPCSError:(id)a3;
-- (id)syncViewOperation:(id)a3;
-- (void)addOperations:(id)a3 completionOp:(id)a4 allOps:(id)a5 context:(id)a6;
-- (void)createIdentity:(id)a3 complete:(id)a4;
++ (BOOL)fetchWithTimeout:(unint64_t)timeout error:(id *)error;
+- (BOOL)shouldRetryWithSync:(id)sync;
+- (PCSCKKS)initWithIdentitySet:(_PCSIdentitySetData *)set dsid:(id)dsid;
+- (id)createIdentityOperation:(id)operation;
+- (id)ensurePCSFieldsOperation:(id)operation;
+- (id)fetchCurrentOperation:(id)operation;
+- (id)stripOperationErrorIfPCSError:(id)error;
+- (id)syncViewOperation:(id)operation;
+- (void)addOperations:(id)operations completionOp:(id)op allOps:(id)ops context:(id)context;
+- (void)createIdentity:(id)identity complete:(id)complete;
 - (void)dealloc;
-- (void)submitRequest:(id)a3 complete:(id)a4;
+- (void)submitRequest:(id)request complete:(id)complete;
 @end
 
 @implementation PCSCKKS
 
-+ (BOOL)fetchWithTimeout:(unint64_t)a3 error:(id *)a4
++ (BOOL)fetchWithTimeout:(unint64_t)timeout error:(id *)error
 {
-  v4 = a4;
+  errorCopy = error;
   v34[1] = *MEMORY[0x1E69E9840];
   v29 = 0;
   v30 = &v29;
@@ -29,7 +29,7 @@
   v26 = __Block_byref_object_copy__6;
   v27 = __Block_byref_object_dispose__6;
   v28 = 0;
-  v6 = [MEMORY[0x1E697AA20] controlObject:a4];
+  v6 = [MEMORY[0x1E697AA20] controlObject:error];
   if (v6)
   {
     v7 = dispatch_semaphore_create(0);
@@ -42,46 +42,46 @@
     v8 = v7;
     v20 = v8;
     [v6 rpcFetchAndProcessChangesIfNoRecentFetch:@"ProtectedCloudStorage" reply:&v16];
-    v9 = dispatch_time(0, 1000000000 * a3);
+    v9 = dispatch_time(0, 1000000000 * timeout);
     if (dispatch_semaphore_wait(v8, v9))
     {
-      if (v4)
+      if (errorCopy)
       {
         v10 = MEMORY[0x1E696ABC0];
         v11 = kPCSErrorDomain;
         v33 = *MEMORY[0x1E696A578];
         v34[0] = @"rpcFetchAndProcessChangesIfNoRecentFetch timed out";
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:{1, v16, v17, v18, v19}];
-        *v4 = [v10 errorWithDomain:v11 code:99 userInfo:v12];
+        *errorCopy = [v10 errorWithDomain:v11 code:99 userInfo:v12];
 
-        LOBYTE(v4) = 0;
+        LOBYTE(errorCopy) = 0;
       }
     }
 
     else
     {
-      if (v4)
+      if (errorCopy)
       {
         v13 = v24[5];
         if (v13)
         {
-          *v4 = v13;
+          *errorCopy = v13;
         }
       }
 
-      LOBYTE(v4) = *(v30 + 24);
+      LOBYTE(errorCopy) = *(v30 + 24);
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(errorCopy) = 0;
   }
 
   _Block_object_dispose(&v23, 8);
   _Block_object_dispose(&v29, 8);
   v14 = *MEMORY[0x1E69E9840];
-  return v4 & 1;
+  return errorCopy & 1;
 }
 
 void __34__PCSCKKS_fetchWithTimeout_error___block_invoke(uint64_t a1, void *a2)
@@ -92,30 +92,30 @@ void __34__PCSCKKS_fetchWithTimeout_error___block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (PCSCKKS)initWithIdentitySet:(_PCSIdentitySetData *)a3 dsid:(id)a4
+- (PCSCKKS)initWithIdentitySet:(_PCSIdentitySetData *)set dsid:(id)dsid
 {
-  v7 = a4;
-  if (PCSCurrentPersonaMatchesDSIDFromSet(a3))
+  dsidCopy = dsid;
+  if (PCSCurrentPersonaMatchesDSIDFromSet(set))
   {
     v11.receiver = self;
     v11.super_class = PCSCKKS;
     v8 = [(PCSCKKS *)&v11 init];
     if (v8)
     {
-      v8->_set = CFRetain(a3);
-      objc_storeStrong(&v8->_dsid, a4);
+      v8->_set = CFRetain(set);
+      objc_storeStrong(&v8->_dsid, dsid);
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -132,69 +132,69 @@ void __34__PCSCKKS_fetchWithTimeout_error___block_invoke(uint64_t a1, void *a2)
   [(PCSCKKS *)&v4 dealloc];
 }
 
-- (id)syncViewOperation:(id)a3
+- (id)syncViewOperation:(id)operation
 {
-  v3 = a3;
-  v4 = [[PCSCKKSSyncViewOperation alloc] initWithItemModifyContext:v3];
+  operationCopy = operation;
+  v4 = [[PCSCKKSSyncViewOperation alloc] initWithItemModifyContext:operationCopy];
 
   return v4;
 }
 
-- (id)fetchCurrentOperation:(id)a3
+- (id)fetchCurrentOperation:(id)operation
 {
-  v3 = a3;
-  v4 = [[PCSCKKSFetchCurrentOperation alloc] initWithItemModifyContext:v3];
+  operationCopy = operation;
+  v4 = [[PCSCKKSFetchCurrentOperation alloc] initWithItemModifyContext:operationCopy];
 
   return v4;
 }
 
-- (id)ensurePCSFieldsOperation:(id)a3
+- (id)ensurePCSFieldsOperation:(id)operation
 {
-  v3 = a3;
-  v4 = [[PCSCKKSEnsurePCSFieldsOperation alloc] initWithItemModifyContext:v3];
+  operationCopy = operation;
+  v4 = [[PCSCKKSEnsurePCSFieldsOperation alloc] initWithItemModifyContext:operationCopy];
 
   return v4;
 }
 
-- (id)createIdentityOperation:(id)a3
+- (id)createIdentityOperation:(id)operation
 {
-  v3 = a3;
-  v4 = [[PCSCKKSCreateIdentityOperation alloc] initWithItemModifyContext:v3];
+  operationCopy = operation;
+  v4 = [[PCSCKKSCreateIdentityOperation alloc] initWithItemModifyContext:operationCopy];
 
   return v4;
 }
 
-- (void)addOperations:(id)a3 completionOp:(id)a4 allOps:(id)a5 context:(id)a6
+- (void)addOperations:(id)operations completionOp:(id)op allOps:(id)ops context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  operationsCopy = operations;
+  opCopy = op;
+  opsCopy = ops;
+  contextCopy = context;
   if (addOperations_completionOp_allOps_context__once != -1)
   {
     [PCSCKKS addOperations:completionOp:allOps:context:];
   }
 
-  v13 = [v12 serviceContexts];
-  v14 = [v13 count];
+  serviceContexts = [contextCopy serviceContexts];
+  v14 = [serviceContexts count];
 
   if (v14)
   {
-    v15 = [v12 serviceContexts];
-    v16 = [v15 count];
+    serviceContexts2 = [contextCopy serviceContexts];
+    v16 = [serviceContexts2 count];
 
-    v37 = v9;
+    v37 = operationsCopy;
     if (v16 == 1)
     {
-      v17 = [v12 serviceContexts];
-      [v17 allKeys];
-      v36 = v10;
-      v19 = v18 = v9;
+      serviceContexts3 = [contextCopy serviceContexts];
+      [serviceContexts3 allKeys];
+      v36 = opCopy;
+      v19 = v18 = operationsCopy;
       v20 = [v19 objectAtIndexedSubscript:0];
 
-      v21 = [v12 serviceContexts];
-      v22 = [v21 allValues];
-      v23 = [v22 objectAtIndexedSubscript:0];
+      serviceContexts4 = [contextCopy serviceContexts];
+      allValues = [serviceContexts4 allValues];
+      v23 = [allValues objectAtIndexedSubscript:0];
 
       v24 = addOperations_completionOp_allOps_context__queue;
       block[0] = MEMORY[0x1E69E9820];
@@ -205,10 +205,10 @@ void __34__PCSCKKS_fetchWithTimeout_error___block_invoke(uint64_t a1, void *a2)
       v26 = v23;
       v43 = v26;
       v27 = &v44;
-      v44 = v12;
+      v44 = contextCopy;
       v28 = &v45;
       v29 = v18;
-      v10 = v36;
+      opCopy = v36;
       v45 = v29;
       v46 = v36;
       dispatch_sync(v24, block);
@@ -222,11 +222,11 @@ void __34__PCSCKKS_fetchWithTimeout_error___block_invoke(uint64_t a1, void *a2)
       v38[2] = __53__PCSCKKS_addOperations_completionOp_allOps_context___block_invoke_3;
       v38[3] = &unk_1E7B1A078;
       v25 = &v39;
-      v39 = v12;
+      v39 = contextCopy;
       v27 = &v40;
-      v40 = v9;
+      v40 = operationsCopy;
       v28 = &v41;
-      v41 = v10;
+      v41 = opCopy;
       dispatch_sync(v30, v38);
       v26 = 0;
       v20 = @"bulk-service-identity-creation-identifier";
@@ -257,9 +257,9 @@ void __34__PCSCKKS_fetchWithTimeout_error___block_invoke(uint64_t a1, void *a2)
     v35 = v51[5];
 
     _Block_object_dispose(&v50, 8);
-    [v35 addOperations:v11 waitUntilFinished:0];
+    [v35 addOperations:opsCopy waitUntilFinished:0];
 
-    v9 = v37;
+    operationsCopy = v37;
   }
 }
 
@@ -347,30 +347,30 @@ uint64_t __53__PCSCKKS_addOperations_completionOp_allOps_context___block_invoke_
   return result;
 }
 
-- (void)submitRequest:(id)a3 complete:(id)a4
+- (void)submitRequest:(id)request complete:(id)complete
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PCSCKKS *)self syncViewOperation:v6];
-  v9 = [(PCSCKKS *)self fetchCurrentOperation:v6];
+  requestCopy = request;
+  completeCopy = complete;
+  v8 = [(PCSCKKS *)self syncViewOperation:requestCopy];
+  v9 = [(PCSCKKS *)self fetchCurrentOperation:requestCopy];
   [v9 addSuccessDependency:v8];
-  v10 = [(PCSCKKS *)self ensurePCSFieldsOperation:v6];
+  v10 = [(PCSCKKS *)self ensurePCSFieldsOperation:requestCopy];
   [v10 addSuccessDependency:v9];
-  v11 = [(PCSCKKS *)self createIdentityOperation:v6];
+  v11 = [(PCSCKKS *)self createIdentityOperation:requestCopy];
   [v11 addSuccessDependency:v10];
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v6 serviceContexts];
-  if ([v13 count] == 1)
+  serviceContexts = [requestCopy serviceContexts];
+  if ([serviceContexts count] == 1)
   {
-    [v6 serviceContexts];
+    [requestCopy serviceContexts];
     v14 = v23 = v8;
     [v14 allKeys];
-    v15 = v22 = v7;
+    v15 = v22 = completeCopy;
     v16 = [v15 objectAtIndexedSubscript:0];
     v17 = [v12 stringWithFormat:@"CreateIdentity: %@", v16];
 
-    v7 = v22;
+    completeCopy = v22;
     v8 = v23;
   }
 
@@ -384,8 +384,8 @@ uint64_t __53__PCSCKKS_addOperations_completionOp_allOps_context___block_invoke_
   v24[2] = __34__PCSCKKS_submitRequest_complete___block_invoke;
   v24[3] = &unk_1E7B1A0A0;
   v24[4] = self;
-  v25 = v7;
-  v18 = v7;
+  v25 = completeCopy;
+  v18 = completeCopy;
   v19 = [PCSCKKSOperation operation:v17 block:v24];
   [v19 addSuccessDependency:v11];
   v26[0] = v19;
@@ -394,7 +394,7 @@ uint64_t __53__PCSCKKS_addOperations_completionOp_allOps_context___block_invoke_
   v26[3] = v10;
   v26[4] = v11;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:5];
-  [(PCSCKKS *)self addOperations:v8 completionOp:v19 allOps:v20 context:v6];
+  [(PCSCKKS *)self addOperations:v8 completionOp:v19 allOps:v20 context:requestCopy];
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -406,26 +406,26 @@ void __34__PCSCKKS_submitRequest_complete___block_invoke(uint64_t a1, uint64_t a
   (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)shouldRetryWithSync:(id)a3
+- (BOOL)shouldRetryWithSync:(id)sync
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"CKErrorDomain"];
+  syncCopy = sync;
+  domain = [syncCopy domain];
+  v5 = [domain isEqualToString:@"CKErrorDomain"];
 
   if (!v5)
   {
-    v18 = [v3 domain];
-    v19 = [v18 isEqualToString:@"securityd"];
+    domain2 = [syncCopy domain];
+    v19 = [domain2 isEqualToString:@"securityd"];
 
     if (v19)
     {
-      v20 = [v3 code] == -50;
+      v20 = [syncCopy code] == -50;
       goto LABEL_21;
     }
 
-    v21 = [v3 domain];
-    v22 = [v21 isEqualToString:@"CKKSErrorDomain"];
+    domain3 = [syncCopy domain];
+    v22 = [domain3 isEqualToString:@"CKKSErrorDomain"];
 
     if (!v22)
     {
@@ -433,26 +433,26 @@ void __34__PCSCKKS_submitRequest_complete___block_invoke(uint64_t a1, uint64_t a
       goto LABEL_31;
     }
 
-    if ([v3 code] == 12 || objc_msgSend(v3, "code") == 13)
+    if ([syncCopy code] == 12 || objc_msgSend(syncCopy, "code") == 13)
     {
       v17 = 1;
       goto LABEL_31;
     }
 
 LABEL_20:
-    v20 = [v3 code] == 14;
+    v20 = [syncCopy code] == 14;
 LABEL_21:
     v17 = v20;
     goto LABEL_31;
   }
 
-  if ([v3 code] != 2)
+  if ([syncCopy code] != 2)
   {
     goto LABEL_20;
   }
 
-  v6 = [v3 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"CKPartialErrors"];
+  userInfo = [syncCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"CKPartialErrors"];
 
   if ([v7 count])
   {
@@ -476,8 +476,8 @@ LABEL_21:
           }
 
           v13 = [v8 objectForKeyedSubscript:{*(*(&v25 + 1) + 8 * i), v25}];
-          v14 = [v13 domain];
-          v15 = [v14 isEqualToString:@"CKErrorDomain"];
+          domain4 = [v13 domain];
+          v15 = [domain4 isEqualToString:@"CKErrorDomain"];
 
           if (!v15)
           {
@@ -487,9 +487,9 @@ LABEL_28:
             goto LABEL_29;
           }
 
-          v16 = [v13 code];
+          code = [v13 code];
 
-          if (v16 != 14)
+          if (code != 14)
           {
             goto LABEL_28;
           }
@@ -698,19 +698,19 @@ void __60__PCSCKKS_createNewIdentities_roll_sync_forceSync_complete___block_invo
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createIdentity:(id)a3 complete:(id)a4
+- (void)createIdentity:(id)identity complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completeCopy = complete;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __35__PCSCKKS_createIdentity_complete___block_invoke;
   v10[3] = &unk_1E7B1A0F0;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identityCopy;
+  selfCopy = self;
+  v13 = completeCopy;
+  v8 = completeCopy;
+  v9 = identityCopy;
   [(PCSCKKS *)self submitRequest:v9 complete:v10];
 }
 
@@ -761,21 +761,21 @@ void __35__PCSCKKS_createIdentity_complete___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)stripOperationErrorIfPCSError:(id)a3
+- (id)stripOperationErrorIfPCSError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] != 1)
+  errorCopy = error;
+  if ([errorCopy code] != 1)
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:PCSCKKSOperationErrorDomain];
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:PCSCKKSOperationErrorDomain];
 
-  if (!v5 || ([v3 userInfo], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", *MEMORY[0x1E696AA08]), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!v5 || ([errorCopy userInfo], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "objectForKeyedSubscript:", *MEMORY[0x1E696AA08]), v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
 LABEL_4:
-    v7 = v3;
+    v7 = errorCopy;
   }
 
   return v7;

@@ -1,18 +1,18 @@
 @interface SBUISystemApertureLayoutGuide
-+ (BOOL)prepareLayoutGuidesForViewControllerIfNeeded:(id)a3 onlyIfEmpty:(BOOL)a4;
-+ (void)_addUnpreparedLayoutGuide:(id)a3;
-+ (void)_enumerateSystemApertureRootLayoutGuidesForViewController:(id)a3 usingBlock:(id)a4;
-+ (void)_enumerateUnpreparedSystemApertureLayoutGuides:(id)a3;
-+ (void)_removeUnpreparedLayoutGuideIfNeeded:(id)a3;
-- (BOOL)_createOrUpdateConcentricRootLayoutGuideWithWindow:(id)a3;
++ (BOOL)prepareLayoutGuidesForViewControllerIfNeeded:(id)needed onlyIfEmpty:(BOOL)empty;
++ (void)_addUnpreparedLayoutGuide:(id)guide;
++ (void)_enumerateSystemApertureRootLayoutGuidesForViewController:(id)controller usingBlock:(id)block;
++ (void)_enumerateUnpreparedSystemApertureLayoutGuides:(id)guides;
++ (void)_removeUnpreparedLayoutGuideIfNeeded:(id)needed;
+- (BOOL)_createOrUpdateConcentricRootLayoutGuideWithWindow:(id)window;
 - (BOOL)_createOrUpdateConstraintsIfIsRootAndInAWindow;
-- (BOOL)_createOrUpdateFixedFrameRootConstraintsWithWindow:(id)a3;
-- (BOOL)_createOrUpdateInsetBasedRootGuideWithWindow:(id)a3;
+- (BOOL)_createOrUpdateFixedFrameRootConstraintsWithWindow:(id)window;
+- (BOOL)_createOrUpdateInsetBasedRootGuideWithWindow:(id)window;
 - (BOOL)_requiresExplicitFrame;
 - (BOOL)_requiresFloatableFixedSize;
 - (BOOL)_requiresInitialSetup;
 - (BOOL)_requiresInsets;
-- (BOOL)constraintNeedsActivation:(id)a3;
+- (BOOL)constraintNeedsActivation:(id)activation;
 - (id)_rootGuide;
 - (id)_rootGuideView;
 - (void)_activateConstraintsWithRootLayoutGuide;
@@ -25,26 +25,26 @@
 
 - (void)activateConstraintsIfNeeded
 {
-  v3 = [(SBUISystemApertureLayoutGuide *)self owningView];
-  v4 = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
-  if ([v3 _isInAWindow])
+  owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+  _rootGuideView = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
+  if ([owningView _isInAWindow])
   {
-    if (v4)
+    if (_rootGuideView)
     {
       if (![(SBUISystemApertureLayoutGuide *)self _requiresInitialSetup])
       {
-        v5 = [(SBUISystemApertureLayoutGuide *)self constraints];
-        v6 = [v5 count];
+        constraints = [(SBUISystemApertureLayoutGuide *)self constraints];
+        v6 = [constraints count];
 
         if (v6)
         {
-          v7 = [(SBUISystemApertureLayoutGuide *)self constraints];
+          constraints2 = [(SBUISystemApertureLayoutGuide *)self constraints];
           v9[0] = MEMORY[0x1E69E9820];
           v9[1] = 3221225472;
           v9[2] = __60__SBUISystemApertureLayoutGuide_activateConstraintsIfNeeded__block_invoke;
           v9[3] = &unk_1E789E918;
           v9[4] = self;
-          v8 = [v7 bs_filter:v9];
+          v8 = [constraints2 bs_filter:v9];
 
           if ([v8 count])
           {
@@ -58,52 +58,52 @@
 
 - (id)_rootGuideView
 {
-  v2 = [(SBUISystemApertureLayoutGuide *)self owningView];
-  v3 = [v2 systemApertureElementContextPrivate];
-  v4 = [v3 layoutGuideRootView];
+  owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+  systemApertureElementContextPrivate = [owningView systemApertureElementContextPrivate];
+  layoutGuideRootView = [systemApertureElementContextPrivate layoutGuideRootView];
 
-  return v4;
+  return layoutGuideRootView;
 }
 
 - (BOOL)_requiresInitialSetup
 {
-  v3 = [(SBUISystemApertureLayoutGuide *)self constraints];
-  v4 = [v3 count];
+  constraints = [(SBUISystemApertureLayoutGuide *)self constraints];
+  v4 = [constraints count];
 
   if (!v4)
   {
     return 1;
   }
 
-  v5 = [(SBUISystemApertureLayoutGuide *)self owningView];
-  v6 = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
+  owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+  _rootGuideView = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
 
-  if (v5 == v6)
+  if (owningView == _rootGuideView)
   {
     return 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_currentRootGuideView);
-  v8 = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
-  v9 = WeakRetained != v8;
+  _rootGuideView2 = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
+  v9 = WeakRetained != _rootGuideView2;
 
   return v9;
 }
 
 - (BOOL)_createOrUpdateConstraintsIfIsRootAndInAWindow
 {
-  v3 = [(SBUISystemApertureLayoutGuide *)self owningView];
-  v4 = [v3 window];
-  v5 = v4;
-  if (v4)
+  owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+  window = [owningView window];
+  v5 = window;
+  if (window)
   {
-    v6 = v4;
+    v6 = window;
   }
 
   else
   {
     v7 = objc_opt_class();
-    v8 = v3;
+    v8 = owningView;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -125,10 +125,10 @@
     v6 = v9;
   }
 
-  v10 = [(SBUISystemApertureLayoutGuide *)self _rootGuide];
+  _rootGuide = [(SBUISystemApertureLayoutGuide *)self _rootGuide];
 
   v11 = 0;
-  if (v10 != self || !v6)
+  if (_rootGuide != self || !v6)
   {
     goto LABEL_18;
   }
@@ -169,9 +169,9 @@ LABEL_18:
 
 - (id)_rootGuide
 {
-  v3 = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
-  v4 = [(SBUISystemApertureLayoutGuide *)self identifier];
-  v5 = [v3 SBUISA_systemApertureLayoutGuideWithIdentifier:v4];
+  _rootGuideView = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
+  identifier = [(SBUISystemApertureLayoutGuide *)self identifier];
+  v5 = [_rootGuideView SBUISA_systemApertureLayoutGuideWithIdentifier:identifier];
   v6 = objc_opt_class();
   v7 = v5;
   if (v6)
@@ -194,15 +194,15 @@ LABEL_18:
 
 - (BOOL)_requiresFloatableFixedSize
 {
-  v2 = [(SBUISystemApertureLayoutGuide *)self identifier];
-  if ([v2 isEqualToString:@"SBUISystemApertureLeadingConcentricContentLayoutGuideIdentifier"])
+  identifier = [(SBUISystemApertureLayoutGuide *)self identifier];
+  if ([identifier isEqualToString:@"SBUISystemApertureLeadingConcentricContentLayoutGuideIdentifier"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"SBUISystemApertureTrailingConcentricContentLayoutGuideIdentifier"];
+    v3 = [identifier isEqualToString:@"SBUISystemApertureTrailingConcentricContentLayoutGuideIdentifier"];
   }
 
   return v3;
@@ -210,15 +210,15 @@ LABEL_18:
 
 - (BOOL)_requiresInsets
 {
-  v2 = [(SBUISystemApertureLayoutGuide *)self identifier];
-  if ([v2 isEqualToString:@"SBUISystemApertureCustomControlsContentLayoutGuideIdentifier"])
+  identifier = [(SBUISystemApertureLayoutGuide *)self identifier];
+  if ([identifier isEqualToString:@"SBUISystemApertureCustomControlsContentLayoutGuideIdentifier"])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"SBUISystemApertureLegibleContentLayoutMarginsGuideIdentifier"];
+    v3 = [identifier isEqualToString:@"SBUISystemApertureLegibleContentLayoutMarginsGuideIdentifier"];
   }
 
   return v3;
@@ -237,9 +237,9 @@ LABEL_18:
   }
 }
 
-+ (BOOL)prepareLayoutGuidesForViewControllerIfNeeded:(id)a3 onlyIfEmpty:(BOOL)a4
++ (BOOL)prepareLayoutGuidesForViewControllerIfNeeded:(id)needed onlyIfEmpty:(BOOL)empty
 {
-  v6 = a3;
+  neededCopy = needed;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -248,21 +248,21 @@ LABEL_18:
   v12[1] = 3221225472;
   v12[2] = __90__SBUISystemApertureLayoutGuide_prepareLayoutGuidesForViewControllerIfNeeded_onlyIfEmpty___block_invoke;
   v12[3] = &unk_1E789E8A8;
-  v13 = a4;
+  emptyCopy = empty;
   v12[4] = &v14;
-  [a1 _enumerateSystemApertureRootLayoutGuidesForViewController:v6 usingBlock:v12];
+  [self _enumerateSystemApertureRootLayoutGuidesForViewController:neededCopy usingBlock:v12];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __90__SBUISystemApertureLayoutGuide_prepareLayoutGuidesForViewControllerIfNeeded_onlyIfEmpty___block_invoke_2;
   v9[3] = &unk_1E789E8D0;
-  v7 = v6;
+  v7 = neededCopy;
   v10 = v7;
   v11 = &v14;
-  [a1 _enumerateUnpreparedSystemApertureLayoutGuides:v9];
-  LOBYTE(a1) = *(v15 + 24);
+  [self _enumerateUnpreparedSystemApertureLayoutGuides:v9];
+  LOBYTE(self) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
-  return a1;
+  return self;
 }
 
 uint64_t __90__SBUISystemApertureLayoutGuide_prepareLayoutGuidesForViewControllerIfNeeded_onlyIfEmpty___block_invoke(uint64_t a1, void *a2)
@@ -294,27 +294,27 @@ void __90__SBUISystemApertureLayoutGuide_prepareLayoutGuidesForViewControllerIfN
   }
 }
 
-+ (void)_addUnpreparedLayoutGuide:(id)a3
++ (void)_addUnpreparedLayoutGuide:(id)guide
 {
-  v3 = a3;
+  guideCopy = guide;
   v4 = SBUISystemApertureUnpreparedLayoutGuides;
-  v7 = v3;
+  v7 = guideCopy;
   if (!SBUISystemApertureUnpreparedLayoutGuides)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = SBUISystemApertureUnpreparedLayoutGuides;
-    SBUISystemApertureUnpreparedLayoutGuides = v5;
+    SBUISystemApertureUnpreparedLayoutGuides = weakObjectsHashTable;
 
-    v3 = v7;
+    guideCopy = v7;
     v4 = SBUISystemApertureUnpreparedLayoutGuides;
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:guideCopy];
 }
 
-+ (void)_removeUnpreparedLayoutGuideIfNeeded:(id)a3
++ (void)_removeUnpreparedLayoutGuideIfNeeded:(id)needed
 {
-  [SBUISystemApertureUnpreparedLayoutGuides removeObject:a3];
+  [SBUISystemApertureUnpreparedLayoutGuides removeObject:needed];
   if (![SBUISystemApertureUnpreparedLayoutGuides count])
   {
     v3 = SBUISystemApertureUnpreparedLayoutGuides;
@@ -322,16 +322,16 @@ void __90__SBUISystemApertureLayoutGuide_prepareLayoutGuidesForViewControllerIfN
   }
 }
 
-+ (void)_enumerateUnpreparedSystemApertureLayoutGuides:(id)a3
++ (void)_enumerateUnpreparedSystemApertureLayoutGuides:(id)guides
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [SBUISystemApertureUnpreparedLayoutGuides allObjects];
+  guidesCopy = guides;
+  allObjects = [SBUISystemApertureUnpreparedLayoutGuides allObjects];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -343,29 +343,29 @@ void __90__SBUISystemApertureLayoutGuide_prepareLayoutGuidesForViewControllerIfN
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
-        v3[2](v3, *(*(&v9 + 1) + 8 * v8++));
+        guidesCopy[2](guidesCopy, *(*(&v9 + 1) + 8 * v8++));
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-+ (void)_enumerateSystemApertureRootLayoutGuidesForViewController:(id)a3 usingBlock:(id)a4
++ (void)_enumerateSystemApertureRootLayoutGuidesForViewController:(id)controller usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 systemApertureElementContextPrivate];
-  v7 = [v6 layoutGuideRootView];
+  blockCopy = block;
+  systemApertureElementContextPrivate = [controller systemApertureElementContextPrivate];
+  layoutGuideRootView = [systemApertureElementContextPrivate layoutGuideRootView];
 
-  v8 = [v7 layoutGuides];
-  v9 = [v8 bs_compactMap:&__block_literal_global_12];
+  layoutGuides = [layoutGuideRootView layoutGuides];
+  v9 = [layoutGuides bs_compactMap:&__block_literal_global_12];
 
   v17 = 0u;
   v18 = 0u;
@@ -387,7 +387,7 @@ void __90__SBUISystemApertureLayoutGuide_prepareLayoutGuidesForViewControllerIfN
           objc_enumerationMutation(v10);
         }
 
-        v5[2](v5, *(*(&v15 + 1) + 8 * v14++));
+        blockCopy[2](blockCopy, *(*(&v15 + 1) + 8 * v14++));
       }
 
       while (v12 != v14);
@@ -425,11 +425,11 @@ void *__102__SBUISystemApertureLayoutGuide__enumerateSystemApertureRootLayoutGui
 {
   if ([(SBUISystemApertureLayoutGuide *)self _requiresInitialSetup])
   {
-    v3 = [(SBUISystemApertureLayoutGuide *)self owningView];
-    v4 = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
-    if (v4)
+    owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+    _rootGuideView = [(SBUISystemApertureLayoutGuide *)self _rootGuideView];
+    if (_rootGuideView)
     {
-      if (v3 == v4)
+      if (owningView == _rootGuideView)
       {
         [(SBUISystemApertureLayoutGuide *)self _createOrUpdateConstraintsIfIsRootAndInAWindow];
       }
@@ -454,36 +454,36 @@ void *__102__SBUISystemApertureLayoutGuide__enumerateSystemApertureRootLayoutGui
   }
 }
 
-- (BOOL)constraintNeedsActivation:(id)a3
+- (BOOL)constraintNeedsActivation:(id)activation
 {
-  v4 = a3;
-  if ([v4 isActive])
+  activationCopy = activation;
+  if ([activationCopy isActive])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 firstItem];
+    firstItem = [activationCopy firstItem];
 
-    v7 = [v4 secondItem];
-    v8 = v7;
-    if (v6 != self)
+    secondItem = [activationCopy secondItem];
+    firstItem2 = secondItem;
+    if (firstItem != self)
     {
 
-      if (v8 == self)
+      if (firstItem2 == self)
       {
-        v8 = [v4 firstItem];
+        firstItem2 = [activationCopy firstItem];
       }
 
       else
       {
-        v8 = 0;
+        firstItem2 = 0;
       }
     }
 
     v9 = objc_opt_class();
-    v10 = v8;
+    v10 = firstItem2;
     if (v9)
     {
       if (objc_opt_isKindOfClass())
@@ -502,9 +502,9 @@ void *__102__SBUISystemApertureLayoutGuide__enumerateSystemApertureRootLayoutGui
       v11 = 0;
     }
 
-    v12 = v11;
+    owningView = v11;
 
-    if (!v12)
+    if (!owningView)
     {
       v13 = objc_opt_class();
       v14 = v10;
@@ -528,14 +528,14 @@ void *__102__SBUISystemApertureLayoutGuide__enumerateSystemApertureRootLayoutGui
 
       v16 = v15;
 
-      v12 = [(SBUISystemApertureLayoutGuide *)v16 owningView];
+      owningView = [(SBUISystemApertureLayoutGuide *)v16 owningView];
     }
 
-    v17 = [(SBUISystemApertureLayoutGuide *)self owningView];
-    v18 = v17;
-    if (v12 && ([v17 isDescendantOfView:v12] & 1) == 0)
+    owningView2 = [(SBUISystemApertureLayoutGuide *)self owningView];
+    v18 = owningView2;
+    if (owningView && ([owningView2 isDescendantOfView:owningView] & 1) == 0)
     {
-      v5 = [(SBUISystemApertureLayoutGuide *)v12 isDescendantOfView:v18];
+      v5 = [(SBUISystemApertureLayoutGuide *)owningView isDescendantOfView:v18];
     }
 
     else
@@ -549,52 +549,52 @@ void *__102__SBUISystemApertureLayoutGuide__enumerateSystemApertureRootLayoutGui
 
 - (void)_activateConstraintsWithRootLayoutGuide
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBUISystemApertureLayoutGuide.m" lineNumber:220 description:@"Illegal attempt to activateConstraintsWithRootLayoutGuide when requiresInitialSetup is NO."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBUISystemApertureLayoutGuide.m" lineNumber:220 description:@"Illegal attempt to activateConstraintsWithRootLayoutGuide when requiresInitialSetup is NO."];
 }
 
-- (BOOL)_createOrUpdateFixedFrameRootConstraintsWithWindow:(id)a3
+- (BOOL)_createOrUpdateFixedFrameRootConstraintsWithWindow:(id)window
 {
   v139[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  windowCopy = window;
   if (![(SBUISystemApertureLayoutGuide *)self _requiresExplicitFrame])
   {
     [SBUISystemApertureLayoutGuide _createOrUpdateFixedFrameRootConstraintsWithWindow:a2];
   }
 
-  v6 = [v5 windowScene];
-  v7 = [v6 _FBSScene];
-  v8 = [v7 settings];
+  windowScene = [windowCopy windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
 
-  v9 = [(SBUISystemApertureLayoutGuide *)self identifier];
+  identifier = [(SBUISystemApertureLayoutGuide *)self identifier];
   v10 = MEMORY[0x1E695F058];
   v11 = *MEMORY[0x1E695F058];
-  v12 = [(SBUISystemApertureLayoutGuide *)self owningView];
-  v13 = [v12 SBUISA_layoutMode];
-  if ([v9 isEqualToString:@"SBUISystemApertureObstructedAreaLayoutGuideIdentifier"])
+  owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+  sBUISA_layoutMode = [owningView SBUISA_layoutMode];
+  if ([identifier isEqualToString:@"SBUISystemApertureObstructedAreaLayoutGuideIdentifier"])
   {
-    [v8 SBUISA_obstructedAreaLayoutFrame];
+    [settings SBUISA_obstructedAreaLayoutFrame];
 LABEL_10:
     v18 = v14;
     v19 = v15;
     v20 = v16;
     v21 = v17;
 LABEL_11:
-    [v12 bounds];
+    [owningView bounds];
     v23 = v22;
     rect_16 = v25;
     rect_24 = v24;
     v27 = v26;
-    if (v12 != v5)
+    if (owningView != windowCopy)
     {
-      [v5 convertRect:v12 toView:{v18, v19, v20, v21}];
+      [windowCopy convertRect:owningView toView:{v18, v19, v20, v21}];
       v18 = v28;
       v19 = v29;
       v20 = v30;
       v21 = v31;
     }
 
-    rect_8 = v5;
+    rect_8 = windowCopy;
     v140.origin.x = v23;
     v140.size.height = rect_16;
     v140.origin.y = rect_24;
@@ -646,90 +646,90 @@ LABEL_11:
     v149.size.width = width;
     v149.size.height = height;
     v38 = CGRectGetHeight(v149);
-    v39 = [(SBUISystemApertureLayoutGuide *)self constraints];
-    v40 = [v39 count];
+    constraints = [(SBUISystemApertureLayoutGuide *)self constraints];
+    v40 = [constraints count];
 
     if (v40)
     {
-      v41 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v42 = [v41 objectAtIndexedSubscript:0];
+      constraints2 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v42 = [constraints2 objectAtIndexedSubscript:0];
       [v42 constant];
       v44 = v43 != rect;
 
-      v45 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v46 = [v45 objectAtIndexedSubscript:1];
+      constraints3 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v46 = [constraints3 objectAtIndexedSubscript:1];
       [v46 constant];
       if (v47 != v36)
       {
         v44 = 1;
       }
 
-      v48 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v49 = [v48 objectAtIndexedSubscript:2];
+      constraints4 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v49 = [constraints4 objectAtIndexedSubscript:2];
       [v49 constant];
       if (v50 != v37)
       {
         v44 = 1;
       }
 
-      v51 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v52 = [v51 objectAtIndexedSubscript:3];
+      constraints5 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v52 = [constraints5 objectAtIndexedSubscript:3];
       [v52 constant];
       v54 = v53 != v38 || v44;
 
-      v55 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v56 = [v55 objectAtIndexedSubscript:0];
+      constraints6 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v56 = [constraints6 objectAtIndexedSubscript:0];
       [v56 setConstant:rect];
 
-      v57 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v58 = [v57 objectAtIndexedSubscript:1];
+      constraints7 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v58 = [constraints7 objectAtIndexedSubscript:1];
       [v58 setConstant:v36];
 
-      v59 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v60 = [v59 objectAtIndexedSubscript:2];
+      constraints8 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v60 = [constraints8 objectAtIndexedSubscript:2];
       [v60 setConstant:v37];
 
-      v61 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v62 = [v61 objectAtIndexedSubscript:3];
+      constraints9 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      v62 = [constraints9 objectAtIndexedSubscript:3];
       [v62 setConstant:v38];
 
-      v63 = [(SBUISystemApertureLayoutGuide *)self constraints];
-      v64 = [v63 firstObject];
-      v65 = [v64 isActive];
+      constraints10 = [(SBUISystemApertureLayoutGuide *)self constraints];
+      firstObject = [constraints10 firstObject];
+      isActive = [firstObject isActive];
 
-      if ((v65 & 1) == 0)
+      if ((isActive & 1) == 0)
       {
         v66 = MEMORY[0x1E696ACD8];
-        v67 = [(SBUISystemApertureLayoutGuide *)self constraints];
-        [v66 activateConstraints:v67];
+        constraints11 = [(SBUISystemApertureLayoutGuide *)self constraints];
+        [v66 activateConstraints:constraints11];
       }
     }
 
     else
     {
-      v128 = [(SBUISystemApertureLayoutGuide *)self centerXAnchor];
-      v126 = [v12 centerXAnchor];
-      rectc = [v128 constraintEqualToAnchor:v126 constant:rect];
+      centerXAnchor = [(SBUISystemApertureLayoutGuide *)self centerXAnchor];
+      centerXAnchor2 = [owningView centerXAnchor];
+      rectc = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:rect];
       v139[0] = rectc;
       [(SBUISystemApertureLayoutGuide *)self centerYAnchor];
-      v68 = rect_24b = v8;
-      [v12 centerYAnchor];
-      v69 = rect_16a = v9;
+      v68 = rect_24b = settings;
+      [owningView centerYAnchor];
+      v69 = rect_16a = identifier;
       v70 = [v68 constraintEqualToAnchor:v69 constant:v36];
       v139[1] = v70;
-      v71 = [(SBUISystemApertureLayoutGuide *)self widthAnchor];
-      [v71 constraintEqualToConstant:v37];
-      v73 = v72 = v12;
+      widthAnchor = [(SBUISystemApertureLayoutGuide *)self widthAnchor];
+      [widthAnchor constraintEqualToConstant:v37];
+      v73 = v72 = owningView;
       v139[2] = v73;
-      v74 = [(SBUISystemApertureLayoutGuide *)self heightAnchor];
-      v75 = [v74 constraintEqualToConstant:v38];
+      heightAnchor = [(SBUISystemApertureLayoutGuide *)self heightAnchor];
+      v75 = [heightAnchor constraintEqualToConstant:v38];
       v139[3] = v75;
       v76 = [MEMORY[0x1E695DEC8] arrayWithObjects:v139 count:4];
 
-      v12 = v72;
-      v9 = rect_16a;
+      owningView = v72;
+      identifier = rect_16a;
 
-      v8 = rect_24b;
+      settings = rect_24b;
       [(SBUISystemApertureLayoutGuide *)self setConstraints:v76];
       [MEMORY[0x1E696ACD8] activateConstraints:v76];
 
@@ -739,37 +739,37 @@ LABEL_11:
     return v54;
   }
 
-  if ([v9 isEqualToString:@"SBUISystemApertureLeadingAreaLayoutGuideIdentifier"])
+  if ([identifier isEqualToString:@"SBUISystemApertureLeadingAreaLayoutGuideIdentifier"])
   {
-    [v8 SBUISA_resolvedLeadingViewFrame];
+    [settings SBUISA_resolvedLeadingViewFrame];
     goto LABEL_10;
   }
 
-  if ([v9 isEqualToString:@"SBUISystemApertureTrailingAreaLayoutGuideIdentifier"])
+  if ([identifier isEqualToString:@"SBUISystemApertureTrailingAreaLayoutGuideIdentifier"])
   {
-    [v8 SBUISA_resolvedTrailingViewFrame];
+    [settings SBUISA_resolvedTrailingViewFrame];
     goto LABEL_10;
   }
 
-  if ([v9 isEqualToString:@"SBUISystemApertureMinimalAreaLayoutGuideIdentifier"])
+  if ([identifier isEqualToString:@"SBUISystemApertureMinimalAreaLayoutGuideIdentifier"])
   {
-    [v8 SBUISA_resolvedMinimalViewFrame];
+    [settings SBUISA_resolvedMinimalViewFrame];
     goto LABEL_10;
   }
 
   recta = v11;
-  if ([v9 isEqualToString:@"kSBUISystemApertureMinimumContentSizeLayoutMarginsGuideIdentifier"])
+  if ([identifier isEqualToString:@"kSBUISystemApertureMinimumContentSizeLayoutMarginsGuideIdentifier"])
   {
-    [v5 bounds];
-    [v5 bounds];
+    [windowCopy bounds];
+    [windowCopy bounds];
     CGRectGetMinY(v150);
-    [v5 bounds];
+    [windowCopy bounds];
     MidX = CGRectGetMidX(v151);
-    if (v13 != 2)
+    if (sBUISA_layoutMode != 2)
     {
-      v79 = [v12 SBUISA_systemApertureObstructedAreaLayoutGuide];
-      [v79 layoutFrame];
-      [v5 convertRect:v12 fromView:?];
+      sBUISA_systemApertureObstructedAreaLayoutGuide = [owningView SBUISA_systemApertureObstructedAreaLayoutGuide];
+      [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
+      [windowCopy convertRect:owningView fromView:?];
       v81 = v80;
       v83 = v82;
       v85 = v84;
@@ -782,7 +782,7 @@ LABEL_11:
       CGRectIsEmpty(v152);
     }
 
-    [v5 bounds];
+    [windowCopy bounds];
     v125 = 0;
     UIRectCenteredXInRectScale();
     v18 = v88;
@@ -792,19 +792,19 @@ LABEL_11:
     goto LABEL_43;
   }
 
-  if ([v9 isEqualToString:@"SBUISystemApertureMaximumContentSizeLayoutMarginsGuideIdentifier"])
+  if ([identifier isEqualToString:@"SBUISystemApertureMaximumContentSizeLayoutMarginsGuideIdentifier"])
   {
-    v92 = [v12 SBUISA_systemApertureObstructedAreaLayoutGuide];
-    [v92 layoutFrame];
-    [v5 convertRect:v12 fromView:?];
+    sBUISA_systemApertureObstructedAreaLayoutGuide2 = [owningView SBUISA_systemApertureObstructedAreaLayoutGuide];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide2 layoutFrame];
+    [windowCopy convertRect:owningView fromView:?];
     v94 = v93;
     MinY = v95;
     v98 = v97;
     v100 = v99;
 
-    if (v13 != 4)
+    if (sBUISA_layoutMode != 4)
     {
-      if (v13 == 3)
+      if (sBUISA_layoutMode == 3)
       {
         v105 = +[SBUISystemApertureLayoutMetrics sharedInstanceForEmbeddedDisplay];
         [v105 maximumCompactSize];
@@ -830,15 +830,15 @@ LABEL_11:
         goto LABEL_42;
       }
 
-      if (v13 != 2)
+      if (sBUISA_layoutMode != 2)
       {
-        v113 = [(SBUISystemApertureLayoutGuide *)self constraints];
-        v114 = [v113 count];
+        constraints12 = [(SBUISystemApertureLayoutGuide *)self constraints];
+        v114 = [constraints12 count];
 
         if (v114)
         {
           [(SBUISystemApertureLayoutGuide *)self layoutFrame];
-          [v5 convertRect:v12 fromView:?];
+          [windowCopy convertRect:owningView fromView:?];
           v115 = v155.origin.y;
           v116 = v155.size.width;
           v117 = v155.size.height;
@@ -861,7 +861,7 @@ LABEL_11:
       }
     }
 
-    [v5 bounds];
+    [windowCopy bounds];
     v94 = v101;
     MinY = v102;
     v98 = v103;
@@ -871,7 +871,7 @@ LABEL_42:
     [v119 maximumExpandedSize];
 
     BSRectWithSize();
-    [v5 bounds];
+    [windowCopy bounds];
     v125 = 0;
     UIRectCenteredXInRectScale();
     v160.origin.x = v120;
@@ -904,28 +904,28 @@ LABEL_43:
   return result;
 }
 
-- (BOOL)_createOrUpdateConcentricRootLayoutGuideWithWindow:(id)a3
+- (BOOL)_createOrUpdateConcentricRootLayoutGuideWithWindow:(id)window
 {
   v53[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  windowCopy = window;
   if (![(SBUISystemApertureLayoutGuide *)self _requiresFloatableFixedSize])
   {
     [SBUISystemApertureLayoutGuide _createOrUpdateConcentricRootLayoutGuideWithWindow:a2];
   }
 
-  v52 = [(SBUISystemApertureLayoutGuide *)self identifier];
-  v6 = [(SBUISystemApertureLayoutGuide *)self owningView];
-  v7 = [v6 systemApertureHostedElementContext];
-  v8 = [v7 systemApertureElement];
-  v9 = [v8 view];
+  identifier = [(SBUISystemApertureLayoutGuide *)self identifier];
+  owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+  systemApertureHostedElementContext = [owningView systemApertureHostedElementContext];
+  systemApertureElement = [systemApertureHostedElementContext systemApertureElement];
+  view = [systemApertureElement view];
 
-  v10 = [v5 windowScene];
-  v11 = [v10 _FBSScene];
-  v12 = [v11 settings];
+  windowScene = [windowCopy windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
 
-  [v12 SBUISA_obstructedAreaLayoutFrame];
+  [settings SBUISA_obstructedAreaLayoutFrame];
   v14 = v13;
-  if (![v9 isDescendantOfView:v6])
+  if (![view isDescendantOfView:owningView])
   {
     v23 = 0;
     goto LABEL_24;
@@ -936,9 +936,9 @@ LABEL_43:
   v17 = v16;
   v19 = v18;
 
-  v20 = [v6 SBUISA_layoutMode];
-  v51 = v12;
-  if ((v20 + 1) < 4)
+  sBUISA_layoutMode = [owningView SBUISA_layoutMode];
+  v51 = settings;
+  if ((sBUISA_layoutMode + 1) < 4)
   {
     v14 = v14 * 0.5;
 LABEL_5:
@@ -946,12 +946,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v20 == 3)
+  if (sBUISA_layoutMode == 3)
   {
     goto LABEL_5;
   }
 
-  if (v20 == 4)
+  if (sBUISA_layoutMode == 4)
   {
     v14 = v17;
   }
@@ -963,28 +963,28 @@ LABEL_5:
   }
 
 LABEL_6:
-  v21 = [(SBUISystemApertureLayoutGuide *)self constraints];
-  if ([v52 isEqualToString:@"SBUISystemApertureLeadingConcentricContentLayoutGuideIdentifier"])
+  constraints = [(SBUISystemApertureLayoutGuide *)self constraints];
+  if ([identifier isEqualToString:@"SBUISystemApertureLeadingConcentricContentLayoutGuideIdentifier"])
   {
-    v22 = [v9 leadingAnchor];
+    leadingAnchor = [view leadingAnchor];
     [(SBUISystemApertureLayoutGuide *)self leadingAnchor];
   }
 
   else
   {
-    v22 = [v9 trailingAnchor];
+    leadingAnchor = [view trailingAnchor];
     [(SBUISystemApertureLayoutGuide *)self trailingAnchor];
   }
   v24 = ;
-  if ([v21 count])
+  if ([constraints count])
   {
     v48 = v24;
-    v25 = [v21 objectAtIndexedSubscript:0];
+    v25 = [constraints objectAtIndexedSubscript:0];
     [v25 constant];
-    v50 = v22;
+    v50 = leadingAnchor;
     if (v26 == v14)
     {
-      v27 = [v21 objectAtIndexedSubscript:1];
+      v27 = [constraints objectAtIndexedSubscript:1];
       [v27 constant];
       v23 = v28 != v19;
     }
@@ -994,27 +994,27 @@ LABEL_6:
       v23 = 1;
     }
 
-    v35 = [v21 objectAtIndexedSubscript:0];
+    v35 = [constraints objectAtIndexedSubscript:0];
     [v35 setConstant:v14];
 
-    v36 = [v21 objectAtIndexedSubscript:1];
+    v36 = [constraints objectAtIndexedSubscript:1];
     [v36 setConstant:v19];
 
-    v37 = [(SBUISystemApertureLayoutGuide *)self constraints];
-    v38 = [v37 firstObject];
-    if ([v38 isActive])
+    constraints2 = [(SBUISystemApertureLayoutGuide *)self constraints];
+    firstObject = [constraints2 firstObject];
+    if ([firstObject isActive])
     {
     }
 
     else
     {
-      v39 = [v6 isDescendantOfView:v9];
+      v39 = [owningView isDescendantOfView:view];
 
       if (v39)
       {
         v40 = MEMORY[0x1E696ACD8];
-        v41 = [(SBUISystemApertureLayoutGuide *)self constraints];
-        [v40 activateConstraints:v41];
+        constraints3 = [(SBUISystemApertureLayoutGuide *)self constraints];
+        [v40 activateConstraints:constraints3];
       }
     }
 
@@ -1024,68 +1024,68 @@ LABEL_6:
 
   else
   {
-    v47 = [(SBUISystemApertureLayoutGuide *)self widthAnchor];
-    v46 = [v47 constraintEqualToConstant:v14];
+    widthAnchor = [(SBUISystemApertureLayoutGuide *)self widthAnchor];
+    v46 = [widthAnchor constraintEqualToConstant:v14];
     v53[0] = v46;
-    v45 = [(SBUISystemApertureLayoutGuide *)self heightAnchor];
-    v44 = [v45 constraintEqualToConstant:v19];
+    heightAnchor = [(SBUISystemApertureLayoutGuide *)self heightAnchor];
+    v44 = [heightAnchor constraintEqualToConstant:v19];
     v53[1] = v44;
-    v43 = [(SBUISystemApertureLayoutGuide *)self topAnchor];
-    v29 = [v9 topAnchor];
-    v30 = [v43 constraintEqualToAnchor:v29];
+    topAnchor = [(SBUISystemApertureLayoutGuide *)self topAnchor];
+    topAnchor2 = [view topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v53[2] = v30;
-    [v24 constraintEqualToAnchor:v22];
-    v32 = v31 = v22;
+    [v24 constraintEqualToAnchor:leadingAnchor];
+    v32 = v31 = leadingAnchor;
     v53[3] = v32;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:4];
-    v33 = v49 = v5;
+    v33 = v49 = windowCopy;
 
     v34 = v31;
     [(SBUISystemApertureLayoutGuide *)self setConstraints:v33];
     [MEMORY[0x1E696ACD8] activateConstraints:v33];
     v23 = 1;
-    v21 = v33;
-    v5 = v49;
+    constraints = v33;
+    windowCopy = v49;
   }
 
-  v12 = v51;
+  settings = v51;
 LABEL_24:
 
   return v23;
 }
 
-- (BOOL)_createOrUpdateInsetBasedRootGuideWithWindow:(id)a3
+- (BOOL)_createOrUpdateInsetBasedRootGuideWithWindow:(id)window
 {
   v76[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  windowCopy = window;
   if (![(SBUISystemApertureLayoutGuide *)self _requiresInsets])
   {
     [SBUISystemApertureLayoutGuide _createOrUpdateInsetBasedRootGuideWithWindow:a2];
   }
 
-  v6 = [(SBUISystemApertureLayoutGuide *)self identifier];
-  v7 = [(SBUISystemApertureLayoutGuide *)self owningView];
-  v8 = [v7 systemApertureHostedElementContext];
-  v10 = [v8 systemApertureElement];
-  v9 = [v10 view];
+  identifier = [(SBUISystemApertureLayoutGuide *)self identifier];
+  owningView = [(SBUISystemApertureLayoutGuide *)self owningView];
+  systemApertureHostedElementContext = [owningView systemApertureHostedElementContext];
+  systemApertureElement = [systemApertureHostedElementContext systemApertureElement];
+  view = [systemApertureElement view];
 
-  LODWORD(v10) = [v9 isDescendantOfView:v7];
-  if (v10)
+  LODWORD(systemApertureElement) = [view isDescendantOfView:owningView];
+  if (systemApertureElement)
   {
-    v11 = [v7 SBUISA_layoutMode];
-    if (v11 == 4)
+    sBUISA_layoutMode = [owningView SBUISA_layoutMode];
+    if (sBUISA_layoutMode == 4)
     {
-      if ([v6 isEqualToString:@"SBUISystemApertureLegibleContentLayoutMarginsGuideIdentifier"])
+      if ([identifier isEqualToString:@"SBUISystemApertureLegibleContentLayoutMarginsGuideIdentifier"])
       {
         v13 = +[SBUISystemApertureLayoutMetrics sharedInstanceForEmbeddedDisplay];
         [v13 expandedLegibleAreaInsets];
         goto LABEL_9;
       }
 
-      if ([v6 isEqualToString:@"SBUISystemApertureCustomControlsContentLayoutGuideIdentifier"])
+      if ([identifier isEqualToString:@"SBUISystemApertureCustomControlsContentLayoutGuideIdentifier"])
       {
-        v21 = [v9 SBUISA_systemApertureObstructedAreaLayoutGuide];
-        [v21 layoutFrame];
+        sBUISA_systemApertureObstructedAreaLayoutGuide = [view SBUISA_systemApertureObstructedAreaLayoutGuide];
+        [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
         v23 = v22;
         v25 = v24;
         v27 = v26;
@@ -1115,7 +1115,7 @@ LABEL_24:
     else
     {
       v12 = *(MEMORY[0x1E69DC5C0] + 16);
-      if (v11 != 3)
+      if (sBUISA_layoutMode != 3)
       {
         MaxY = *MEMORY[0x1E69DC5C0];
         v19 = *(MEMORY[0x1E69DC5C0] + 8);
@@ -1123,7 +1123,7 @@ LABEL_24:
         goto LABEL_15;
       }
 
-      if ([v6 isEqualToString:@"SBUISystemApertureLegibleContentLayoutMarginsGuideIdentifier"])
+      if ([identifier isEqualToString:@"SBUISystemApertureLegibleContentLayoutMarginsGuideIdentifier"])
       {
         v13 = +[SBUISystemApertureLayoutMetrics sharedInstanceForEmbeddedDisplay];
         [v13 compactLegibleAreaInsets];
@@ -1134,74 +1134,74 @@ LABEL_9:
         v20 = v17;
 
 LABEL_15:
-        v34 = [(SBUISystemApertureLayoutGuide *)self constraints];
-        if ([v34 count])
+        constraints = [(SBUISystemApertureLayoutGuide *)self constraints];
+        if ([constraints count])
         {
-          v35 = [v34 objectAtIndexedSubscript:0];
+          v35 = [constraints objectAtIndexedSubscript:0];
           [v35 setConstant:MaxY];
 
-          v36 = [v34 objectAtIndexedSubscript:1];
+          v36 = [constraints objectAtIndexedSubscript:1];
           [v36 setConstant:v19];
 
-          v37 = [v34 objectAtIndexedSubscript:2];
+          v37 = [constraints objectAtIndexedSubscript:2];
           [v37 setConstant:-v12];
 
-          v38 = [v34 objectAtIndexedSubscript:3];
+          v38 = [constraints objectAtIndexedSubscript:3];
           [v38 setConstant:-v20];
         }
 
         else
         {
-          v73 = [(SBUISystemApertureLayoutGuide *)self topAnchor];
-          v72 = [v9 topAnchor];
-          v71 = [v73 constraintEqualToAnchor:v72 constant:MaxY];
+          topAnchor = [(SBUISystemApertureLayoutGuide *)self topAnchor];
+          topAnchor2 = [view topAnchor];
+          v71 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:MaxY];
           LODWORD(v39) = 1148845916;
           v70 = [v71 SBUISA_withPriority:v39];
           v76[0] = v70;
-          v69 = [(SBUISystemApertureLayoutGuide *)self leadingAnchor];
-          v68 = [v9 leadingAnchor];
-          v67 = [v69 constraintEqualToAnchor:v68 constant:v19];
+          leadingAnchor = [(SBUISystemApertureLayoutGuide *)self leadingAnchor];
+          leadingAnchor2 = [view leadingAnchor];
+          v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v19];
           LODWORD(v40) = 1148845916;
           v66 = [v67 SBUISA_withPriority:v40];
           v76[1] = v66;
-          v65 = [(SBUISystemApertureLayoutGuide *)self bottomAnchor];
-          v64 = [v9 bottomAnchor];
-          v63 = [v65 constraintEqualToAnchor:v64 constant:-v12];
+          bottomAnchor = [(SBUISystemApertureLayoutGuide *)self bottomAnchor];
+          bottomAnchor2 = [view bottomAnchor];
+          v63 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v12];
           LODWORD(v41) = 1148845916;
           v62 = [v63 SBUISA_withPriority:v41];
           v76[2] = v62;
-          v61 = [(SBUISystemApertureLayoutGuide *)self trailingAnchor];
-          v60 = [v9 trailingAnchor];
-          v59 = [v61 constraintEqualToAnchor:v60 constant:-v20];
+          trailingAnchor = [(SBUISystemApertureLayoutGuide *)self trailingAnchor];
+          trailingAnchor2 = [view trailingAnchor];
+          v59 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v20];
           LODWORD(v42) = 1148845916;
           v58 = [v59 SBUISA_withPriority:v42];
           v76[3] = v58;
-          v57 = [(SBUISystemApertureLayoutGuide *)self topAnchor];
-          v55 = [v9 topAnchor];
-          v54 = [v57 constraintGreaterThanOrEqualToAnchor:v55];
+          topAnchor3 = [(SBUISystemApertureLayoutGuide *)self topAnchor];
+          topAnchor4 = [view topAnchor];
+          v54 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
           v76[4] = v54;
-          v53 = [(SBUISystemApertureLayoutGuide *)self leadingAnchor];
-          v52 = [v9 leadingAnchor];
-          v51 = [v53 constraintGreaterThanOrEqualToAnchor:v52];
+          leadingAnchor3 = [(SBUISystemApertureLayoutGuide *)self leadingAnchor];
+          leadingAnchor4 = [view leadingAnchor];
+          v51 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
           v76[5] = v51;
-          v50 = [(SBUISystemApertureLayoutGuide *)self bottomAnchor];
-          [v9 bottomAnchor];
-          v43 = v74 = v6;
-          [v50 constraintLessThanOrEqualToAnchor:v43];
-          v44 = v75 = v5;
+          bottomAnchor3 = [(SBUISystemApertureLayoutGuide *)self bottomAnchor];
+          [view bottomAnchor];
+          v43 = v74 = identifier;
+          [bottomAnchor3 constraintLessThanOrEqualToAnchor:v43];
+          v44 = v75 = windowCopy;
           v76[6] = v44;
-          v45 = [(SBUISystemApertureLayoutGuide *)self trailingAnchor];
-          [v9 trailingAnchor];
-          v10 = v46 = v10;
-          v47 = [v45 constraintLessThanOrEqualToAnchor:v10];
+          trailingAnchor3 = [(SBUISystemApertureLayoutGuide *)self trailingAnchor];
+          [view trailingAnchor];
+          systemApertureElement = v46 = systemApertureElement;
+          v47 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:systemApertureElement];
           v76[7] = v47;
           v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:8];
 
-          LOBYTE(v10) = v46;
-          v5 = v75;
+          LOBYTE(systemApertureElement) = v46;
+          windowCopy = v75;
 
-          v6 = v74;
-          v34 = v56;
+          identifier = v74;
+          constraints = v56;
           [(SBUISystemApertureLayoutGuide *)self setConstraints:v56];
           [MEMORY[0x1E696ACD8] activateConstraints:v56];
         }
@@ -1209,7 +1209,7 @@ LABEL_15:
         goto LABEL_19;
       }
 
-      if ([v6 isEqualToString:@"SBUISystemApertureCustomControlsContentLayoutGuideIdentifier"])
+      if ([identifier isEqualToString:@"SBUISystemApertureCustomControlsContentLayoutGuideIdentifier"])
       {
         MaxY = 5.0;
         v20 = 10.0;
@@ -1232,7 +1232,7 @@ LABEL_15:
 
 LABEL_19:
 
-  return v10;
+  return systemApertureElement;
 }
 
 - (void)_createOrUpdateConstraintsIfIsRootAndInAWindow

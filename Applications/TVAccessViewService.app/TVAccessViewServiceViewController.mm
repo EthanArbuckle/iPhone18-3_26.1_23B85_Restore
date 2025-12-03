@@ -1,15 +1,15 @@
 @interface TVAccessViewServiceViewController
-- (TVAccessViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TVAccessViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismiss;
-- (void)_willAppearInRemoteViewController:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)configureWithUserInfo:(id)a3;
+- (void)_willAppearInRemoteViewController:(id)controller;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)configureWithUserInfo:(id)info;
 @end
 
 @implementation TVAccessViewServiceViewController
 
-- (TVAccessViewServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TVAccessViewServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = TVAccessViewServiceViewController;
@@ -30,9 +30,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -43,17 +43,17 @@
   }
 }
 
-- (void)configureWithUserInfo:(id)a3
+- (void)configureWithUserInfo:(id)info
 {
-  v6 = a3;
-  v4 = [v6 objectForKey:WLKViewServiceAppBundlesKey];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:WLKViewServiceAppBundlesKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_storeStrong(&self->_bundleIDs, v4);
   }
 
-  v5 = [v6 objectForKey:WLKViewServiceAccountNameKey];
+  v5 = [infoCopy objectForKey:WLKViewServiceAccountNameKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -61,20 +61,20 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 userInfo];
-  [(TVAccessViewServiceViewController *)self configureWithUserInfo:v8];
+  completionCopy = completion;
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  [(TVAccessViewServiceViewController *)self configureWithUserInfo:userInfo];
   v9.receiver = self;
   v9.super_class = TVAccessViewServiceViewController;
-  [(TVAccessViewServiceViewController *)&v9 configureWithContext:v7 completion:v6];
+  [(TVAccessViewServiceViewController *)&v9 configureWithContext:contextCopy completion:completionCopy];
 }
 
-- (void)_willAppearInRemoteViewController:(id)a3
+- (void)_willAppearInRemoteViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = sub_1000014D4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -82,13 +82,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "TVAccessViewServiceViewController _willAppearInRemoteViewController:", buf, 2u);
   }
 
-  [v4 setShouldDisableFadeInAnimation:1];
-  [v4 setAllowsMenuButtonDismissal:1];
-  [v4 setShouldDismissOnUILock:1];
-  [v4 setAllowsAlertStacking:1];
+  [controllerCopy setShouldDisableFadeInAnimation:1];
+  [controllerCopy setAllowsMenuButtonDismissal:1];
+  [controllerCopy setShouldDismissOnUILock:1];
+  [controllerCopy setAllowsAlertStacking:1];
   v6.receiver = self;
   v6.super_class = TVAccessViewServiceViewController;
-  [(TVAccessViewServiceViewController *)&v6 _willAppearInRemoteViewController:v4];
+  [(TVAccessViewServiceViewController *)&v6 _willAppearInRemoteViewController:controllerCopy];
 }
 
 - (void)_dismiss

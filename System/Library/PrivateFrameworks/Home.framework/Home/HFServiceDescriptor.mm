@@ -1,9 +1,9 @@
 @interface HFServiceDescriptor
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFServiceDescriptor)init;
-- (HFServiceDescriptor)initWithServiceType:(id)a3 serviceSubtype:(id)a4 parentServiceDescriptor:(id)a5;
-- (HFServiceDescriptor)initWithServiceType:(id)a3 serviceSubtype:(id)a4 parentServiceDescriptorGenerator:(id)a5;
+- (HFServiceDescriptor)initWithServiceType:(id)type serviceSubtype:(id)subtype parentServiceDescriptor:(id)descriptor;
+- (HFServiceDescriptor)initWithServiceType:(id)type serviceSubtype:(id)subtype parentServiceDescriptorGenerator:(id)generator;
 - (HFServiceDescriptor)parentServiceDescriptor;
 - (unint64_t)hash;
 @end
@@ -12,27 +12,27 @@
 
 - (HFServiceDescriptor)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithServiceType_serviceSubtype_parentServiceDescriptor_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFServiceDescriptor.m" lineNumber:20 description:{@"%s is unavailable; use %@ instead", "-[HFServiceDescriptor init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFServiceDescriptor.m" lineNumber:20 description:{@"%s is unavailable; use %@ instead", "-[HFServiceDescriptor init]", v5}];
 
   return 0;
 }
 
-- (HFServiceDescriptor)initWithServiceType:(id)a3 serviceSubtype:(id)a4 parentServiceDescriptorGenerator:(id)a5
+- (HFServiceDescriptor)initWithServiceType:(id)type serviceSubtype:(id)subtype parentServiceDescriptorGenerator:(id)generator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  generatorCopy = generator;
   v17.receiver = self;
   v17.super_class = HFServiceDescriptor;
   v12 = [(HFServiceDescriptor *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceType, a3);
-    objc_storeStrong(&v13->_serviceSubtype, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_serviceType, type);
+    objc_storeStrong(&v13->_serviceSubtype, subtype);
+    v14 = [generatorCopy copy];
     parentServiceDescriptorGenerator = v13->_parentServiceDescriptorGenerator;
     v13->_parentServiceDescriptorGenerator = v14;
   }
@@ -40,16 +40,16 @@
   return v13;
 }
 
-- (HFServiceDescriptor)initWithServiceType:(id)a3 serviceSubtype:(id)a4 parentServiceDescriptor:(id)a5
+- (HFServiceDescriptor)initWithServiceType:(id)type serviceSubtype:(id)subtype parentServiceDescriptor:(id)descriptor
 {
-  v8 = a5;
+  descriptorCopy = descriptor;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__HFServiceDescriptor_initWithServiceType_serviceSubtype_parentServiceDescriptor___block_invoke;
   v12[3] = &unk_277DFA738;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(HFServiceDescriptor *)self initWithServiceType:a3 serviceSubtype:a4 parentServiceDescriptorGenerator:v12];
+  v13 = descriptorCopy;
+  v9 = descriptorCopy;
+  v10 = [(HFServiceDescriptor *)self initWithServiceType:type serviceSubtype:subtype parentServiceDescriptorGenerator:v12];
 
   return v10;
 }
@@ -59,8 +59,8 @@
   parentServiceDescriptor = self->_parentServiceDescriptor;
   if (!parentServiceDescriptor)
   {
-    v4 = [(HFServiceDescriptor *)self parentServiceDescriptorGenerator];
-    v5 = v4[2]();
+    parentServiceDescriptorGenerator = [(HFServiceDescriptor *)self parentServiceDescriptorGenerator];
+    v5 = parentServiceDescriptorGenerator[2]();
     v6 = self->_parentServiceDescriptor;
     self->_parentServiceDescriptor = v5;
 
@@ -94,19 +94,19 @@ void __34__HFServiceDescriptor_na_identity__block_invoke_2()
   qword_280E02FA8 = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

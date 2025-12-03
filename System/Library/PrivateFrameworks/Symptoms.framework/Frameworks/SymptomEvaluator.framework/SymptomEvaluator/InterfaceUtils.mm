@@ -1,44 +1,44 @@
 @interface InterfaceUtils
-+ (BOOL)interfaceIsDirectLink:(id)a3;
-+ (id)interfaceNameFromKey:(id)a3;
-+ (id)stringForInterfaceType:(int64_t)a3;
-+ (int64_t)interfaceTypeForString:(id)a3;
++ (BOOL)interfaceIsDirectLink:(id)link;
++ (id)interfaceNameFromKey:(id)key;
++ (id)stringForInterfaceType:(int64_t)type;
++ (int64_t)interfaceTypeForString:(id)string;
 @end
 
 @implementation InterfaceUtils
 
-+ (id)stringForInterfaceType:(int64_t)a3
++ (id)stringForInterfaceType:(int64_t)type
 {
-  if ((a3 - 1) > 3)
+  if ((type - 1) > 3)
   {
     return @"Other";
   }
 
   else
   {
-    return off_27898B160[a3 - 1];
+    return off_27898B160[type - 1];
   }
 }
 
-+ (int64_t)interfaceTypeForString:(id)a3
++ (int64_t)interfaceTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WiFi"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"WiFi"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Cellular"])
+  else if ([stringCopy isEqualToString:@"Cellular"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WiredEthernet"])
+  else if ([stringCopy isEqualToString:@"WiredEthernet"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Loopback"])
+  else if ([stringCopy isEqualToString:@"Loopback"])
   {
     v4 = 4;
   }
@@ -51,9 +51,9 @@
   return v4;
 }
 
-+ (id)interfaceNameFromKey:(id)a3
++ (id)interfaceNameFromKey:(id)key
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
+  v3 = [key componentsSeparatedByString:@"/"];
   if ([v3 count] == 5)
   {
     v4 = [v3 objectAtIndex:3];
@@ -68,11 +68,11 @@
   return v5;
 }
 
-+ (BOOL)interfaceIsDirectLink:(id)a3
++ (BOOL)interfaceIsDirectLink:(id)link
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  linkCopy = link;
+  if (linkCopy)
   {
     v4 = *MEMORY[0x277CBECE8];
     v5 = _SCNetworkInterfaceCreateWithBSDName();
@@ -85,7 +85,7 @@
         if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v27 = v3;
+          v27 = linkCopy;
           _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "Found Thunderbolt DirectLink interface %@", buf, 0xCu);
         }
 
@@ -105,7 +105,7 @@
           }
 
           *buf = 138412546;
-          v27 = v3;
+          v27 = linkCopy;
           v28 = 2112;
           v29 = v19;
           v10 = "Interface %@ has non-Ethernet type %@";
@@ -127,7 +127,7 @@
             }
 
             *buf = 138412546;
-            v27 = v3;
+            v27 = linkCopy;
             v28 = 2048;
             v29 = valuePtr;
             v10 = "Interface %@ has non-USB InterfaceSubFamily %llu";
@@ -146,7 +146,7 @@ LABEL_25:
             if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412547;
-              v27 = v3;
+              v27 = linkCopy;
               v28 = 2117;
               v29 = v23;
               _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEBUG, "Interface %@ has IOPath %{sensitive}@", buf, 0x16u);
@@ -162,7 +162,7 @@ LABEL_25:
           }
 
           *buf = 138412290;
-          v27 = v3;
+          v27 = linkCopy;
           v10 = "IOPath for interface %@ is NULL";
         }
 
@@ -175,7 +175,7 @@ LABEL_25:
           }
 
           *buf = 138412290;
-          v27 = v3;
+          v27 = linkCopy;
           v10 = "InterfaceSubType for %@ is NULL";
         }
       }
@@ -189,7 +189,7 @@ LABEL_25:
         }
 
         *buf = 138412290;
-        v27 = v3;
+        v27 = linkCopy;
         v10 = "InterfaceType for %@ is NULL";
       }
     }
@@ -212,7 +212,7 @@ LABEL_14:
           }
 
           *buf = 138412546;
-          v27 = v3;
+          v27 = linkCopy;
           v28 = 2080;
           v29 = v15;
           _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEFAULT, "Interface %@ is%s a DirectLink interface", buf, 0x16u);
@@ -227,7 +227,7 @@ LABEL_14:
       }
 
       *buf = 138412290;
-      v27 = v3;
+      v27 = linkCopy;
       v10 = "Error obtaining SCNetworkInterface for %@";
     }
 

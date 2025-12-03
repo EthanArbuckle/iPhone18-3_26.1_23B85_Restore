@@ -1,15 +1,15 @@
 @interface CRKWiProxDeviceRegistration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CRKWiProxDeviceRegistration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"devices options"];
   v6 = [v5 mutableCopy];
 
@@ -21,10 +21,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -53,7 +53,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKWiProxDeviceRegistration *)v8 valueForKey:v16];
+          v18 = [(CRKWiProxDeviceRegistration *)selfCopy valueForKey:v16];
           v19 = [(CRKWiProxDeviceRegistration *)v17 valueForKey:v16];
 
           if (v18 | v19)
@@ -98,10 +98,10 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(CRKWiProxDeviceRegistration *)self devices];
-  v4 = [v3 hash];
-  v5 = [(CRKWiProxDeviceRegistration *)self options];
-  v6 = [v5 hash];
+  devices = [(CRKWiProxDeviceRegistration *)self devices];
+  v4 = [devices hash];
+  options = [(CRKWiProxDeviceRegistration *)self options];
+  v6 = [options hash];
 
   return v6 ^ v4;
 }
@@ -110,9 +110,9 @@ LABEL_16:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKWiProxDeviceRegistration *)self devices];
-  v6 = [(CRKWiProxDeviceRegistration *)self options];
-  v7 = [v3 stringWithFormat:@"<%@: %p { devices = %@, options = %@ }>", v4, self, v5, v6];
+  devices = [(CRKWiProxDeviceRegistration *)self devices];
+  options = [(CRKWiProxDeviceRegistration *)self options];
+  v7 = [v3 stringWithFormat:@"<%@: %p { devices = %@, options = %@ }>", v4, self, devices, options];
 
   return v7;
 }

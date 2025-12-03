@@ -6,9 +6,9 @@
 
 - (UIFont)tagTitleFont
 {
-  v2 = [*self->feedNavImageStyler tagTitleFont];
+  tagTitleFont = [*self->feedNavImageStyler tagTitleFont];
 
-  return v2;
+  return tagTitleFont;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface IMSharedMessageSendingUtilities
 + (id)sharedInstance;
 - (BOOL)_canSendText;
-- (BOOL)_hasSubscriptionPassingTest:(id)a3;
+- (BOOL)_hasSubscriptionPassingTest:(id)test;
 - (BOOL)_isiMessageSupported;
-- (BOOL)canSendPhotos:(int)a3 videos:(int)a4 audioClips:(int)a5;
+- (BOOL)canSendPhotos:(int)photos videos:(int)videos audioClips:(int)clips;
 - (BOOL)canSendText;
 - (BOOL)isMMSEnabled;
 - (BOOL)isMessagingEnabled;
 - (BOOL)isRBMEnabled;
 - (BOOL)isRCSEnabled;
 - (BOOL)isRichMessagingEnabled;
-- (BOOL)isSupportedAttachmentUTI:(id)a3;
+- (BOOL)isSupportedAttachmentUTI:(id)i;
 - (BOOL)isiMessageEnabled;
 - (IMSharedMessageSendingUtilities)init;
 - (id)_allSubscriptions;
@@ -63,14 +63,14 @@
 
 - (void)_updateServiceAvailability
 {
-  v3 = [(IMSharedMessageSendingUtilities *)self serviceAvailability];
-  v4 = [(IMSharedMessageSendingUtilities *)self _canSendText];
-  if ([(IMSharedMessageSendingUtilities *)self serviceAvailability]!= v4)
+  serviceAvailability = [(IMSharedMessageSendingUtilities *)self serviceAvailability];
+  _canSendText = [(IMSharedMessageSendingUtilities *)self _canSendText];
+  if ([(IMSharedMessageSendingUtilities *)self serviceAvailability]!= _canSendText)
   {
-    [(IMSharedMessageSendingUtilities *)self setServiceAvailability:v4];
-    if (v3 != -1)
+    [(IMSharedMessageSendingUtilities *)self setServiceAvailability:_canSendText];
+    if (serviceAvailability != -1)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v4];
+      v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:_canSendText];
       v5 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v6, @"__kMFMessageComposeViewControllerTextMessageAvailabilityKey", 0}];
       [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
     }
@@ -79,15 +79,15 @@
 
 - (id)_managedConfigAppAllowlist
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
 
-  return MEMORY[0x1EEE66B58](v2, sel_effectiveWhitelistedAppBundleIDs);
+  return MEMORY[0x1EEE66B58](mEMORY[0x1E69ADFB8], sel_effectiveWhitelistedAppBundleIDs);
 }
 
 - (BOOL)canSendText
 {
-  v3 = [(IMSharedMessageSendingUtilities *)self _managedConfigAppAllowlist];
-  if (!v3 || (v4 = [v3 containsObject:@"com.apple.MobileSMS"]) != 0)
+  _managedConfigAppAllowlist = [(IMSharedMessageSendingUtilities *)self _managedConfigAppAllowlist];
+  if (!_managedConfigAppAllowlist || (v4 = [_managedConfigAppAllowlist containsObject:@"com.apple.MobileSMS"]) != 0)
   {
     [(IMSharedMessageSendingUtilities *)self _updateServiceAvailability];
     LOBYTE(v4) = [(IMSharedMessageSendingUtilities *)self serviceAvailability]> 0;
@@ -103,7 +103,7 @@
   return MEMORY[0x1EEE66B58](v2, sel_ctServiceSubscriptions);
 }
 
-- (BOOL)_hasSubscriptionPassingTest:(id)a3
+- (BOOL)_hasSubscriptionPassingTest:(id)test
 {
   v18 = *MEMORY[0x1E69E9840];
   if (IMSharedHelperDeviceHasMultipleSubscriptions())
@@ -112,8 +112,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(IMSharedMessageSendingUtilities *)self _allSubscriptions];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    _allSubscriptions = [(IMSharedMessageSendingUtilities *)self _allSubscriptions];
+    v6 = [_allSubscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -125,10 +125,10 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_allSubscriptions);
           }
 
-          if ((*(a3 + 2))(a3, *(*(&v13 + 1) + 8 * v9)))
+          if ((*(test + 2))(test, *(*(&v13 + 1) + 8 * v9)))
           {
             LOBYTE(v6) = 1;
             return v6;
@@ -138,7 +138,7 @@
         }
 
         while (v7 != v9);
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [_allSubscriptions countByEnumeratingWithState:&v13 objects:v17 count:16];
         v7 = v6;
         if (v6)
         {
@@ -153,9 +153,9 @@
   else
   {
     v10 = [-[IMSharedMessageSendingUtilities _allSubscriptions](self "_allSubscriptions")];
-    v11 = *(a3 + 2);
+    v11 = *(test + 2);
 
-    LOBYTE(v6) = v11(a3, v10);
+    LOBYTE(v6) = v11(test, v10);
   }
 
   return v6;
@@ -163,25 +163,25 @@
 
 - (BOOL)isMMSEnabled
 {
-  v2 = [(IMSharedMessageSendingUtilities *)self serviceAvailabilityMonitor];
+  serviceAvailabilityMonitor = [(IMSharedMessageSendingUtilities *)self serviceAvailabilityMonitor];
 
-  return [(IMServiceAvailabilityMonitoring *)v2 isMMSEnabled];
+  return [(IMServiceAvailabilityMonitoring *)serviceAvailabilityMonitor isMMSEnabled];
 }
 
 - (BOOL)isiMessageEnabled
 {
-  v2 = [(IMSharedMessageSendingUtilities *)self serviceAvailabilityMonitor];
+  serviceAvailabilityMonitor = [(IMSharedMessageSendingUtilities *)self serviceAvailabilityMonitor];
 
-  return [(IMServiceAvailabilityMonitoring *)v2 isiMessageEnabled];
+  return [(IMServiceAvailabilityMonitoring *)serviceAvailabilityMonitor isiMessageEnabled];
 }
 
 - (BOOL)isRCSEnabled
 {
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    v3 = [(IMSharedMessageSendingUtilities *)self serviceAvailabilityMonitor];
+    serviceAvailabilityMonitor = [(IMSharedMessageSendingUtilities *)self serviceAvailabilityMonitor];
 
-    return [(IMServiceAvailabilityMonitoring *)v3 isRCSEnabled];
+    return [(IMServiceAvailabilityMonitoring *)serviceAvailabilityMonitor isRCSEnabled];
   }
 
   else
@@ -193,15 +193,15 @@
 
 - (BOOL)isRBMEnabled
 {
-  v3 = [(IMSharedMessageSendingUtilities *)self isRBMSupported];
-  if (v3)
+  isRBMSupported = [(IMSharedMessageSendingUtilities *)self isRBMSupported];
+  if (isRBMSupported)
   {
     v4 = [objc_msgSend(MEMORY[0x1E695E000] "messagesAppDomain")];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
 
-      LOBYTE(v3) = [v4 BOOLValue];
+      LOBYTE(isRBMSupported) = [v4 BOOLValue];
     }
 
     else
@@ -216,11 +216,11 @@
         }
       }
 
-      LOBYTE(v3) = [(IMSharedMessageSendingUtilities *)self _hasSubscriptionPassingTest:&unk_1F1BA6568];
+      LOBYTE(isRBMSupported) = [(IMSharedMessageSendingUtilities *)self _hasSubscriptionPassingTest:&unk_1F1BA6568];
     }
   }
 
-  return v3;
+  return isRBMSupported;
 }
 
 - (BOOL)isMessagingEnabled
@@ -243,7 +243,7 @@
   return [(IMSharedMessageSendingUtilities *)self isRCSEnabled];
 }
 
-- (BOOL)isSupportedAttachmentUTI:(id)a3
+- (BOOL)isSupportedAttachmentUTI:(id)i
 {
   if ([(IMSharedMessageSendingUtilities *)self isiMessageEnabled]|| [(IMSharedMessageSendingUtilities *)self isRCSEnabled])
   {
@@ -252,15 +252,15 @@
 
   if ([(IMSharedMessageSendingUtilities *)self isMMSEnabled])
   {
-    v6 = UTTypeConformsTo(a3, *MEMORY[0x1E6963748]);
-    v7 = UTTypeConformsTo(a3, *MEMORY[0x1E6963758]) | v6;
-    v8 = UTTypeConformsTo(a3, *MEMORY[0x1E69638D8]);
-    v9 = (v7 | v8 | UTTypeConformsTo(a3, *MEMORY[0x1E69637F8])) == 0;
+    v6 = UTTypeConformsTo(i, *MEMORY[0x1E6963748]);
+    v7 = UTTypeConformsTo(i, *MEMORY[0x1E6963758]) | v6;
+    v8 = UTTypeConformsTo(i, *MEMORY[0x1E69638D8]);
+    v9 = (v7 | v8 | UTTypeConformsTo(i, *MEMORY[0x1E69637F8])) == 0;
   }
 
   else
   {
-    v9 = UTTypeConformsTo(a3, *MEMORY[0x1E69638B0]) == 0;
+    v9 = UTTypeConformsTo(i, *MEMORY[0x1E69638B0]) == 0;
   }
 
   return !v9;
@@ -268,35 +268,35 @@
 
 - (BOOL)_isiMessageSupported
 {
-  v2 = [MEMORY[0x1E699BEB8] sharedInstance];
+  mEMORY[0x1E699BEB8] = [MEMORY[0x1E699BEB8] sharedInstance];
 
-  return MEMORY[0x1EEE66B58](v2, sel_iMessageSupported);
+  return MEMORY[0x1EEE66B58](mEMORY[0x1E699BEB8], sel_iMessageSupported);
 }
 
-- (BOOL)canSendPhotos:(int)a3 videos:(int)a4 audioClips:(int)a5
+- (BOOL)canSendPhotos:(int)photos videos:(int)videos audioClips:(int)clips
 {
-  v9 = [(IMSharedMessageSendingUtilities *)self isMessagingEnabled];
-  if (v9)
+  isMessagingEnabled = [(IMSharedMessageSendingUtilities *)self isMessagingEnabled];
+  if (isMessagingEnabled)
   {
-    v10 = [(IMSharedMessageSendingUtilities *)self _isiMessageSupported];
-    v11 = [(IMSharedMessageSendingUtilities *)self isiMessageEnabled];
-    v12 = [(IMSharedMessageSendingUtilities *)self isMMSEnabled];
-    v13 = [(IMSharedMessageSendingUtilities *)self isRCSEnabled];
-    LOBYTE(v9) = 1;
-    if ((!v10 || !v11) && !v13)
+    _isiMessageSupported = [(IMSharedMessageSendingUtilities *)self _isiMessageSupported];
+    isiMessageEnabled = [(IMSharedMessageSendingUtilities *)self isiMessageEnabled];
+    isMMSEnabled = [(IMSharedMessageSendingUtilities *)self isMMSEnabled];
+    isRCSEnabled = [(IMSharedMessageSendingUtilities *)self isRCSEnabled];
+    LOBYTE(isMessagingEnabled) = 1;
+    if ((!_isiMessageSupported || !isiMessageEnabled) && !isRCSEnabled)
     {
-      if (!v12)
+      if (!isMMSEnabled)
       {
         goto LABEL_13;
       }
 
-      v14 = [(IMSharedMessageSendingUtilities *)self _maxMMSAttachmentCount];
-      if (!v14)
+      _maxMMSAttachmentCount = [(IMSharedMessageSendingUtilities *)self _maxMMSAttachmentCount];
+      if (!_maxMMSAttachmentCount)
       {
         goto LABEL_13;
       }
 
-      if (v14 < a4 + a3 + a5 || a4 >= 1 && a5 > 0)
+      if (_maxMMSAttachmentCount < videos + photos + clips || videos >= 1 && clips > 0)
       {
         goto LABEL_12;
       }
@@ -308,21 +308,21 @@
         v16 = 1.0;
       }
 
-      if (v16 < a3)
+      if (v16 < photos)
       {
 LABEL_12:
-        LOBYTE(v9) = 0;
+        LOBYTE(isMessagingEnabled) = 0;
       }
 
       else
       {
 LABEL_13:
-        LOBYTE(v9) = 1;
+        LOBYTE(isMessagingEnabled) = 1;
       }
     }
   }
 
-  return v9;
+  return isMessagingEnabled;
 }
 
 @end

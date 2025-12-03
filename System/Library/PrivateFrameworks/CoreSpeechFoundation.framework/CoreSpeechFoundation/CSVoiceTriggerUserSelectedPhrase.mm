@@ -1,12 +1,12 @@
 @interface CSVoiceTriggerUserSelectedPhrase
 - (BOOL)multiPhraseSelected;
-- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)a3 vtPreferences:(id)a4;
+- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)id vtPreferences:(id)preferences;
 - (CSVoiceTriggerUserSelectedPhraseDelegate)delegate;
 - (unint64_t)_fetchUserSelectedPhraseType;
 - (unint64_t)userSelectedPhraseType;
 - (void)_registerForNotification;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)vtPhraseTypeDidChangeNotificationReceived;
 @end
 
@@ -183,51 +183,51 @@ void __77__CSVoiceTriggerUserSelectedPhrase_vtPhraseTypeDidChangeNotificationRec
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CSVoiceTriggerUserSelectedPhrase_setDelegate___block_invoke;
   v7[3] = &unk_1E865C970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)a3 vtPreferences:(id)a4
+- (CSVoiceTriggerUserSelectedPhrase)initWithEndpointId:(id)id vtPreferences:(id)preferences
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  preferencesCopy = preferences;
   v17.receiver = self;
   v17.super_class = CSVoiceTriggerUserSelectedPhrase;
   v9 = [(CSVoiceTriggerUserSelectedPhrase *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endpointDeviceId, a3);
-    if (v8)
+    objc_storeStrong(&v9->_endpointDeviceId, id);
+    if (preferencesCopy)
     {
-      v11 = v8;
+      mEMORY[0x1E69E1480] = preferencesCopy;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69E1480] sharedPreferences];
+      mEMORY[0x1E69E1480] = [MEMORY[0x1E69E1480] sharedPreferences];
     }
 
     vtPrefrences = v10->_vtPrefrences;
-    v10->_vtPrefrences = v11;
+    v10->_vtPrefrences = mEMORY[0x1E69E1480];
 
     v13 = [CSUtils getSerialQueue:@"com.apple.com.CSUserSelectedVTPhraseMonitor" qualityOfService:33];
     queue = v10->_queue;
     v10->_queue = v13;
 
-    v15 = [(CSVoiceTriggerUserSelectedPhrase *)v10 _fetchUserSelectedPhraseType];
-    v10->_uSelectedPhraseType = v15;
-    v10->_mphSelected = [(CSVoiceTriggerUserSelectedPhrase *)v10 _isMultiPhrase:v15];
+    _fetchUserSelectedPhraseType = [(CSVoiceTriggerUserSelectedPhrase *)v10 _fetchUserSelectedPhraseType];
+    v10->_uSelectedPhraseType = _fetchUserSelectedPhraseType;
+    v10->_mphSelected = [(CSVoiceTriggerUserSelectedPhrase *)v10 _isMultiPhrase:_fetchUserSelectedPhraseType];
     [(CSVoiceTriggerUserSelectedPhrase *)v10 _registerForNotification];
   }
 

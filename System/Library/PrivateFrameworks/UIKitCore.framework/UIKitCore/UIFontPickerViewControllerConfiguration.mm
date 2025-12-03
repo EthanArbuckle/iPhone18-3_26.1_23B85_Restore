@@ -1,27 +1,27 @@
 @interface UIFontPickerViewControllerConfiguration
 + (NSPredicate)filterPredicateForFilteredLanguages:(NSArray *)filteredLanguages;
-- (BOOL)_matchesLanguageList:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (UIFontPickerViewControllerConfiguration)initWithBSXPCCoder:(id)a3;
-- (UIFontPickerViewControllerConfiguration)initWithCoder:(id)a3;
+- (BOOL)_matchesLanguageList:(id)list;
+- (BOOL)isEqual:(id)equal;
+- (UIFontPickerViewControllerConfiguration)initWithBSXPCCoder:(id)coder;
+- (UIFontPickerViewControllerConfiguration)initWithCoder:(id)coder;
 - (id)_serializedPredicate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_setPredicateFromData:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setPredicateFromData:(id)data;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)setFilteredLanguagesPredicate:(NSPredicate *)filteredLanguagesPredicate;
 @end
 
 @implementation UIFontPickerViewControllerConfiguration
 
-- (BOOL)_matchesLanguageList:(id)a3
+- (BOOL)_matchesLanguageList:(id)list
 {
-  if (a3)
+  if (list)
   {
     v4 = sub_18A4A7548();
   }
@@ -31,7 +31,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_188FB9110(v4);
 
   return v6 & 1;
@@ -39,7 +39,7 @@
 
 - (id)_serializedPredicate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188FB9458();
   v5 = v4;
 
@@ -58,71 +58,71 @@
   return v6;
 }
 
-- (void)_setPredicateFromData:(id)a3
+- (void)_setPredicateFromData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_18A4A2928();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_18A4A2928();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_188FB970C(v3, v7);
-  sub_188DBF840(v3, v7);
+  sub_188FB970C(dataCopy, v7);
+  sub_188DBF840(dataCopy, v7);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setIncludeFaces:{-[UIFontPickerViewControllerConfiguration includeFaces](self, "includeFaces")}];
   [v5 setDisplayUsingSystemFont:{-[UIFontPickerViewControllerConfiguration displayUsingSystemFont](self, "displayUsingSystemFont")}];
   [v5 setFilteredTraits:{-[UIFontPickerViewControllerConfiguration filteredTraits](self, "filteredTraits")}];
-  v6 = [(UIFontPickerViewControllerConfiguration *)self filteredLanguagesPredicate];
-  v7 = [v6 copyWithZone:a3];
+  filteredLanguagesPredicate = [(UIFontPickerViewControllerConfiguration *)self filteredLanguagesPredicate];
+  v7 = [filteredLanguagesPredicate copyWithZone:zone];
   [v5 setFilteredLanguagesPredicate:v7];
 
-  v8 = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
-  v9 = [v8 copyWithZone:a3];
+  _allowedLanguages = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
+  v9 = [_allowedLanguages copyWithZone:zone];
   [v5 set_allowedLanguages:v9];
 
-  v10 = [(UIFontPickerViewControllerConfiguration *)self _swiftPredicate];
-  v11 = [v10 copyWithZone:a3];
+  _swiftPredicate = [(UIFontPickerViewControllerConfiguration *)self _swiftPredicate];
+  v11 = [_swiftPredicate copyWithZone:zone];
   [v5 set_swiftPredicate:v11];
 
   [v5 _setHideSearchBar:{-[UIFontPickerViewControllerConfiguration _hideSearchBar](self, "_hideSearchBar")}];
-  v12 = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
-  v13 = [v12 copyWithZone:a3];
+  _tintColor = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
+  v13 = [_tintColor copyWithZone:zone];
   [v5 _setTintColor:v13];
 
   [v5 set_includeDefaultFont:{-[UIFontPickerViewControllerConfiguration _includeDefaultFont](self, "_includeDefaultFont")}];
-  v14 = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
-  [v5 set_filterFamilyName:v14];
+  _filterFamilyName = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
+  [v5 set_filterFamilyName:_filterFamilyName];
 
-  v15 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
-  [v5 set_filterFontNames:v15];
+  _filterFontNames = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
+  [v5 set_filterFontNames:_filterFontNames];
 
   [v5 set_showsSectionIndexBar:{-[UIFontPickerViewControllerConfiguration _showsSectionIndexBar](self, "_showsSectionIndexBar")}];
-  v16 = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
-  [v5 set_clientFontContextEndpoint:v16];
+  _clientFontContextEndpoint = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
+  [v5 set_clientFontContextEndpoint:_clientFontContextEndpoint];
 
-  v17 = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
-  [v5 _setClientRecentFonts:v17];
+  _clientRecentFonts = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
+  [v5 _setClientRecentFonts:_clientRecentFonts];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -132,9 +132,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(UIFontPickerViewControllerConfiguration *)self includeFaces];
-      if (v7 != [(UIFontPickerViewControllerConfiguration *)v6 includeFaces]|| (v8 = [(UIFontPickerViewControllerConfiguration *)self displayUsingSystemFont], v8 != [(UIFontPickerViewControllerConfiguration *)v6 displayUsingSystemFont]) || (v9 = [(UIFontPickerViewControllerConfiguration *)self filteredTraits], v9 != [(UIFontPickerViewControllerConfiguration *)v6 filteredTraits]))
+      v6 = equalCopy;
+      includeFaces = [(UIFontPickerViewControllerConfiguration *)self includeFaces];
+      if (includeFaces != [(UIFontPickerViewControllerConfiguration *)v6 includeFaces]|| (v8 = [(UIFontPickerViewControllerConfiguration *)self displayUsingSystemFont], v8 != [(UIFontPickerViewControllerConfiguration *)v6 displayUsingSystemFont]) || (v9 = [(UIFontPickerViewControllerConfiguration *)self filteredTraits], v9 != [(UIFontPickerViewControllerConfiguration *)v6 filteredTraits]))
       {
         v14 = 0;
 LABEL_13:
@@ -142,19 +142,19 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v10 = [(UIFontPickerViewControllerConfiguration *)self filteredLanguagesPredicate];
-      if (v10 || ([(UIFontPickerViewControllerConfiguration *)v6 filteredLanguagesPredicate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      filteredLanguagesPredicate = [(UIFontPickerViewControllerConfiguration *)self filteredLanguagesPredicate];
+      if (filteredLanguagesPredicate || ([(UIFontPickerViewControllerConfiguration *)v6 filteredLanguagesPredicate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v11 = [(UIFontPickerViewControllerConfiguration *)self filteredLanguagesPredicate];
-        v12 = [(UIFontPickerViewControllerConfiguration *)v6 filteredLanguagesPredicate];
-        if (![v11 isEqual:v12])
+        filteredLanguagesPredicate2 = [(UIFontPickerViewControllerConfiguration *)self filteredLanguagesPredicate];
+        filteredLanguagesPredicate3 = [(UIFontPickerViewControllerConfiguration *)v6 filteredLanguagesPredicate];
+        if (![filteredLanguagesPredicate2 isEqual:filteredLanguagesPredicate3])
         {
           v14 = 0;
           goto LABEL_52;
         }
 
-        v79 = v12;
-        v80 = v11;
+        v79 = filteredLanguagesPredicate3;
+        v80 = filteredLanguagesPredicate2;
         v13 = 1;
       }
 
@@ -163,21 +163,21 @@ LABEL_13:
         v13 = 0;
       }
 
-      v16 = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
-      if (v16 || ([(UIFontPickerViewControllerConfiguration *)v6 _allowedLanguages], (v78 = objc_claimAutoreleasedReturnValue()) != 0))
+      _allowedLanguages = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
+      if (_allowedLanguages || ([(UIFontPickerViewControllerConfiguration *)v6 _allowedLanguages], (v78 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v17 = v16;
-        v18 = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
-        v82 = [(UIFontPickerViewControllerConfiguration *)v6 _allowedLanguages];
-        v83 = v18;
-        if (![v18 isEqualToArray:v82])
+        v17 = _allowedLanguages;
+        _allowedLanguages2 = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
+        _allowedLanguages3 = [(UIFontPickerViewControllerConfiguration *)v6 _allowedLanguages];
+        v83 = _allowedLanguages2;
+        if (![_allowedLanguages2 isEqualToArray:_allowedLanguages3])
         {
           v14 = 0;
-          v16 = v17;
+          _allowedLanguages = v17;
           goto LABEL_47;
         }
 
-        v16 = v17;
+        _allowedLanguages = v17;
         v19 = 1;
       }
 
@@ -187,19 +187,19 @@ LABEL_13:
         v19 = 0;
       }
 
-      v81 = [(UIFontPickerViewControllerConfiguration *)self _swiftPredicate];
-      if (!v81)
+      _swiftPredicate = [(UIFontPickerViewControllerConfiguration *)self _swiftPredicate];
+      if (!_swiftPredicate)
       {
-        v76 = [(UIFontPickerViewControllerConfiguration *)v6 _swiftPredicate];
-        if (!v76)
+        _swiftPredicate2 = [(UIFontPickerViewControllerConfiguration *)v6 _swiftPredicate];
+        if (!_swiftPredicate2)
         {
           v22 = v13;
           v23 = v3;
-          v76 = 0;
+          _swiftPredicate2 = 0;
           v77 = 0;
 LABEL_32:
-          v25 = [(UIFontPickerViewControllerConfiguration *)self _hideSearchBar];
-          if (v25 != [(UIFontPickerViewControllerConfiguration *)v6 _hideSearchBar])
+          _hideSearchBar = [(UIFontPickerViewControllerConfiguration *)self _hideSearchBar];
+          if (_hideSearchBar != [(UIFontPickerViewControllerConfiguration *)v6 _hideSearchBar])
           {
             v14 = 0;
             v3 = v23;
@@ -211,9 +211,9 @@ LABEL_32:
           v73 = v3 = v23;
           if (v73 || ([(UIFontPickerViewControllerConfiguration *)v6 _tintColor], (v70 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v26 = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
-            v27 = [(UIFontPickerViewControllerConfiguration *)v6 _tintColor];
-            if (([v26 isEqual:v27] & 1) == 0)
+            _tintColor = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
+            _tintColor2 = [(UIFontPickerViewControllerConfiguration *)v6 _tintColor];
+            if (([_tintColor isEqual:_tintColor2] & 1) == 0)
             {
 
               v13 = v22;
@@ -235,8 +235,8 @@ LABEL_42:
               goto LABEL_43;
             }
 
-            v71 = v27;
-            v69 = v26;
+            v71 = _tintColor2;
+            v69 = _tintColor;
             v23 = v3;
             v72 = 1;
           }
@@ -247,8 +247,8 @@ LABEL_42:
             v72 = 0;
           }
 
-          v29 = [(UIFontPickerViewControllerConfiguration *)self _includeDefaultFont];
-          if (v29 != [(UIFontPickerViewControllerConfiguration *)v6 _includeDefaultFont])
+          _includeDefaultFont = [(UIFontPickerViewControllerConfiguration *)self _includeDefaultFont];
+          if (_includeDefaultFont != [(UIFontPickerViewControllerConfiguration *)v6 _includeDefaultFont])
           {
             v14 = 0;
             v3 = v23;
@@ -262,9 +262,9 @@ LABEL_59:
           v68 = v3 = v23;
           if (v68 || ([(UIFontPickerViewControllerConfiguration *)v6 _filterFamilyName], (v67 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v32 = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
+            _filterFamilyName = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
             v13 = v22;
-            if (!v32)
+            if (!_filterFamilyName)
             {
               v14 = 0;
               v37 = v78;
@@ -273,10 +273,10 @@ LABEL_59:
               goto LABEL_102;
             }
 
-            v66 = v32;
-            v33 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFamilyName];
+            v66 = _filterFamilyName;
+            _filterFamilyName2 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFamilyName];
             v30 = v73;
-            if (!v33)
+            if (!_filterFamilyName2)
             {
 
               v38 = v68;
@@ -296,11 +296,11 @@ LABEL_60:
               goto LABEL_61;
             }
 
-            v64 = v33;
-            v34 = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
-            v35 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFamilyName];
-            v63 = v34;
-            if (([v34 isEqualToString:v35] & 1) == 0)
+            v64 = _filterFamilyName2;
+            _filterFamilyName3 = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
+            _filterFamilyName4 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFamilyName];
+            v63 = _filterFamilyName3;
+            if (([_filterFamilyName3 isEqualToString:_filterFamilyName4] & 1) == 0)
             {
 
               v39 = v68;
@@ -322,8 +322,8 @@ LABEL_62:
                 if (!v77)
                 {
 LABEL_44:
-                  v28 = v81;
-                  if (!v81)
+                  v28 = _swiftPredicate;
+                  if (!_swiftPredicate)
                   {
 
                     v28 = 0;
@@ -347,29 +347,29 @@ LABEL_61:
               goto LABEL_62;
             }
 
-            v60 = v35;
-            v36 = 1;
+            v60 = _filterFamilyName4;
+            _filterFontNames5 = 1;
           }
 
           else
           {
             v67 = 0;
-            v36 = 0;
+            _filterFontNames5 = 0;
             v13 = v22;
           }
 
           v30 = v73;
-          v65 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
-          if (v65 || ([(UIFontPickerViewControllerConfiguration *)v6 _filterFontNames], (v56 = objc_claimAutoreleasedReturnValue()) != 0))
+          _filterFontNames = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
+          if (_filterFontNames || ([(UIFontPickerViewControllerConfiguration *)v6 _filterFontNames], (v56 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v61 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
-            if (!v61)
+            _filterFontNames2 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
+            if (!_filterFontNames2)
             {
-              v62 = v36;
+              v62 = _filterFontNames5;
               v14 = 0;
 LABEL_98:
               v31 = v71;
-              if (!v65)
+              if (!_filterFontNames)
               {
               }
 
@@ -397,13 +397,13 @@ LABEL_102:
               goto LABEL_103;
             }
 
-            v40 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFontNames];
-            if (!v40)
+            _filterFontNames3 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFontNames];
+            if (!_filterFontNames3)
             {
 
-              if (v65)
+              if (_filterFontNames)
               {
-                v42 = v65;
+                v42 = _filterFontNames;
               }
 
               else
@@ -411,7 +411,7 @@ LABEL_102:
                 v42 = v56;
               }
 
-              if (v36)
+              if (_filterFontNames5)
               {
               }
 
@@ -423,19 +423,19 @@ LABEL_102:
               goto LABEL_59;
             }
 
-            v30 = v40;
-            v62 = v36;
+            v30 = _filterFontNames3;
+            v62 = _filterFontNames5;
             v58 = v19;
-            v57 = v16;
+            v57 = _allowedLanguages;
             v59 = v3;
-            v41 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
-            v36 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFontNames];
-            if (([v41 isEqualToSet:?] & 1) == 0)
+            _filterFontNames4 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
+            _filterFontNames5 = [(UIFontPickerViewControllerConfiguration *)v6 _filterFontNames];
+            if (([_filterFontNames4 isEqualToSet:?] & 1) == 0)
             {
 
-              if (v65)
+              if (_filterFontNames)
               {
-                v43 = v65;
+                v43 = _filterFontNames;
               }
 
               else
@@ -456,34 +456,34 @@ LABEL_102:
               goto LABEL_59;
             }
 
-            v54 = v41;
+            v54 = _filterFontNames4;
             v55 = 1;
           }
 
           else
           {
-            v62 = v36;
+            v62 = _filterFontNames5;
             v58 = v19;
             v56 = 0;
-            v57 = v16;
+            v57 = _allowedLanguages;
             v59 = v3;
             v55 = 0;
           }
 
-          v44 = [(UIFontPickerViewControllerConfiguration *)self _showsSectionIndexBar];
-          if (v44 != [(UIFontPickerViewControllerConfiguration *)v6 _showsSectionIndexBar])
+          _showsSectionIndexBar = [(UIFontPickerViewControllerConfiguration *)self _showsSectionIndexBar];
+          if (_showsSectionIndexBar != [(UIFontPickerViewControllerConfiguration *)v6 _showsSectionIndexBar])
           {
             v14 = 0;
             goto LABEL_95;
           }
 
-          v46 = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
-          if (v46 || ([(UIFontPickerViewControllerConfiguration *)v6 _clientFontContextEndpoint], (v50 = objc_claimAutoreleasedReturnValue()) != 0))
+          _clientFontContextEndpoint = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
+          if (_clientFontContextEndpoint || ([(UIFontPickerViewControllerConfiguration *)v6 _clientFontContextEndpoint], (v50 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v47 = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
-            v52 = [(UIFontPickerViewControllerConfiguration *)v6 _clientFontContextEndpoint];
-            v53 = v47;
-            if (([v47 isEqual:v52] & 1) == 0)
+            _clientFontContextEndpoint2 = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
+            _clientFontContextEndpoint3 = [(UIFontPickerViewControllerConfiguration *)v6 _clientFontContextEndpoint];
+            v53 = _clientFontContextEndpoint2;
+            if (([_clientFontContextEndpoint2 isEqual:_clientFontContextEndpoint3] & 1) == 0)
             {
               v14 = 0;
               goto LABEL_126;
@@ -498,13 +498,13 @@ LABEL_102:
             v51 = 0;
           }
 
-          v48 = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
-          v49 = [(UIFontPickerViewControllerConfiguration *)v6 _clientRecentFonts];
-          v14 = [v48 isEqual:v49];
+          _clientRecentFonts = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
+          _clientRecentFonts2 = [(UIFontPickerViewControllerConfiguration *)v6 _clientRecentFonts];
+          v14 = [_clientRecentFonts isEqual:_clientRecentFonts2];
 
           if (!v51)
           {
-            if (v46)
+            if (_clientFontContextEndpoint)
             {
             }
 
@@ -517,7 +517,7 @@ LABEL_95:
             {
 LABEL_97:
               v3 = v59;
-              v16 = v57;
+              _allowedLanguages = v57;
               v19 = v58;
               v30 = v73;
               goto LABEL_98;
@@ -530,7 +530,7 @@ LABEL_96:
 
 LABEL_126:
 
-          if (!v46)
+          if (!_clientFontContextEndpoint)
           {
           }
 
@@ -543,22 +543,22 @@ LABEL_126:
         }
       }
 
-      v20 = [(UIFontPickerViewControllerConfiguration *)self _serializedPredicate];
-      v21 = [(UIFontPickerViewControllerConfiguration *)v6 _serializedPredicate];
-      if ([v20 isEqualToData:v21])
+      _serializedPredicate = [(UIFontPickerViewControllerConfiguration *)self _serializedPredicate];
+      _serializedPredicate2 = [(UIFontPickerViewControllerConfiguration *)v6 _serializedPredicate];
+      if ([_serializedPredicate isEqualToData:_serializedPredicate2])
       {
-        v74 = v20;
-        v75 = v21;
+        v74 = _serializedPredicate;
+        v75 = _serializedPredicate2;
         v22 = v13;
         v23 = v3;
         v77 = 1;
         goto LABEL_32;
       }
 
-      v24 = v81;
-      if (!v81)
+      v24 = _swiftPredicate;
+      if (!_swiftPredicate)
       {
-        v24 = v76;
+        v24 = _swiftPredicate2;
       }
 
       v14 = 0;
@@ -570,7 +570,7 @@ LABEL_126:
 LABEL_47:
 
 LABEL_48:
-      if (!v16)
+      if (!_allowedLanguages)
       {
       }
 
@@ -579,12 +579,12 @@ LABEL_48:
         goto LABEL_53;
       }
 
-      v12 = v79;
-      v11 = v80;
+      filteredLanguagesPredicate3 = v79;
+      filteredLanguagesPredicate2 = v80;
 LABEL_52:
 
 LABEL_53:
-      if (!v10)
+      if (!filteredLanguagesPredicate)
       {
       }
 
@@ -599,67 +599,67 @@ LABEL_14:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration includeFaces](self forKey:{"includeFaces"), @"IncludesFaces"}];
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration displayUsingSystemFont](self forKey:{"displayUsingSystemFont"), @"DisplaySystemFont"}];
-  [v4 encodeInt32:-[UIFontPickerViewControllerConfiguration filteredTraits](self forKey:{"filteredTraits"), @"FilteredTraits"}];
-  v5 = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
-  [v4 encodeObject:v5 forKey:@"AllowedLanguages"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration includeFaces](self forKey:{"includeFaces"), @"IncludesFaces"}];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration displayUsingSystemFont](self forKey:{"displayUsingSystemFont"), @"DisplaySystemFont"}];
+  [coderCopy encodeInt32:-[UIFontPickerViewControllerConfiguration filteredTraits](self forKey:{"filteredTraits"), @"FilteredTraits"}];
+  _allowedLanguages = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
+  [coderCopy encodeObject:_allowedLanguages forKey:@"AllowedLanguages"];
 
-  v6 = [(UIFontPickerViewControllerConfiguration *)self _serializedPredicate];
-  [v4 encodeObject:v6 forKey:@"SerializedPredicate"];
+  _serializedPredicate = [(UIFontPickerViewControllerConfiguration *)self _serializedPredicate];
+  [coderCopy encodeObject:_serializedPredicate forKey:@"SerializedPredicate"];
 
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration _hideSearchBar](self forKey:{"_hideSearchBar"), @"HideSearchBar"}];
-  v7 = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
-  [v4 encodeObject:v7 forKey:@"TintColor"];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration _hideSearchBar](self forKey:{"_hideSearchBar"), @"HideSearchBar"}];
+  _tintColor = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
+  [coderCopy encodeObject:_tintColor forKey:@"TintColor"];
 
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration _includeDefaultFont](self forKey:{"_includeDefaultFont"), @"IncludesDefaultFont"}];
-  v8 = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
-  [v4 encodeObject:v8 forKey:@"FilterFamilyNameCodingKey"];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration _includeDefaultFont](self forKey:{"_includeDefaultFont"), @"IncludesDefaultFont"}];
+  _filterFamilyName = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
+  [coderCopy encodeObject:_filterFamilyName forKey:@"FilterFamilyNameCodingKey"];
 
-  v9 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
-  [v4 encodeObject:v9 forKey:@"FilterFontNamesCodingKey"];
+  _filterFontNames = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
+  [coderCopy encodeObject:_filterFontNames forKey:@"FilterFontNamesCodingKey"];
 
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration _showsSectionIndexBar](self forKey:{"_showsSectionIndexBar"), @"ShowsSectionIndexBarCodingKey"}];
-  v10 = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
-  [v4 encodeObject:v10 forKey:@"ClientFontContextEndpointCodingKey"];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration _showsSectionIndexBar](self forKey:{"_showsSectionIndexBar"), @"ShowsSectionIndexBarCodingKey"}];
+  _clientFontContextEndpoint = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
+  [coderCopy encodeObject:_clientFontContextEndpoint forKey:@"ClientFontContextEndpointCodingKey"];
 
-  v11 = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
-  [v4 encodeObject:v11 forKey:@"ClientRecentFontsCodingKey"];
+  _clientRecentFonts = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
+  [coderCopy encodeObject:_clientRecentFonts forKey:@"ClientRecentFontsCodingKey"];
 }
 
-- (UIFontPickerViewControllerConfiguration)initWithCoder:(id)a3
+- (UIFontPickerViewControllerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = UIFontPickerViewControllerConfiguration;
   v5 = [(UIFontPickerViewControllerConfiguration *)&v15 init];
   if (v5)
   {
-    -[UIFontPickerViewControllerConfiguration setIncludeFaces:](v5, "setIncludeFaces:", [v4 decodeBoolForKey:@"IncludesFaces"]);
-    -[UIFontPickerViewControllerConfiguration setDisplayUsingSystemFont:](v5, "setDisplayUsingSystemFont:", [v4 decodeBoolForKey:@"DisplaySystemFont"]);
-    -[UIFontPickerViewControllerConfiguration setFilteredTraits:](v5, "setFilteredTraits:", [v4 decodeInt32ForKey:@"FilteredTraits"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AllowedLanguages"];
+    -[UIFontPickerViewControllerConfiguration setIncludeFaces:](v5, "setIncludeFaces:", [coderCopy decodeBoolForKey:@"IncludesFaces"]);
+    -[UIFontPickerViewControllerConfiguration setDisplayUsingSystemFont:](v5, "setDisplayUsingSystemFont:", [coderCopy decodeBoolForKey:@"DisplaySystemFont"]);
+    -[UIFontPickerViewControllerConfiguration setFilteredTraits:](v5, "setFilteredTraits:", [coderCopy decodeInt32ForKey:@"FilteredTraits"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AllowedLanguages"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_allowedLanguages:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SerializedPredicate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SerializedPredicate"];
     [(UIFontPickerViewControllerConfiguration *)v5 _setPredicateFromData:v7];
 
-    -[UIFontPickerViewControllerConfiguration _setHideSearchBar:](v5, "_setHideSearchBar:", [v4 decodeBoolForKey:@"HideSearchBar"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
+    -[UIFontPickerViewControllerConfiguration _setHideSearchBar:](v5, "_setHideSearchBar:", [coderCopy decodeBoolForKey:@"HideSearchBar"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
     [(UIFontPickerViewControllerConfiguration *)v5 _setTintColor:v8];
 
-    -[UIFontPickerViewControllerConfiguration set_includeDefaultFont:](v5, "set_includeDefaultFont:", [v4 decodeBoolForKey:@"IncludesDefaultFont"]);
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FilterFamilyNameCodingKey"];
+    -[UIFontPickerViewControllerConfiguration set_includeDefaultFont:](v5, "set_includeDefaultFont:", [coderCopy decodeBoolForKey:@"IncludesDefaultFont"]);
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FilterFamilyNameCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_filterFamilyName:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FilterFontNamesCodingKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FilterFontNamesCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_filterFontNames:v10];
 
-    -[UIFontPickerViewControllerConfiguration set_showsSectionIndexBar:](v5, "set_showsSectionIndexBar:", [v4 decodeBoolForKey:@"ShowsSectionIndexBarCodingKey"]);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClientFontContextEndpointCodingKey"];
+    -[UIFontPickerViewControllerConfiguration set_showsSectionIndexBar:](v5, "set_showsSectionIndexBar:", [coderCopy decodeBoolForKey:@"ShowsSectionIndexBarCodingKey"]);
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClientFontContextEndpointCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_clientFontContextEndpoint:v11];
 
     if (qword_1ED49FBB0 != -1)
@@ -668,80 +668,80 @@ LABEL_14:
     }
 
     v12 = _MergedGlobals_1229;
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"ClientRecentFontsCodingKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"ClientRecentFontsCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 _setClientRecentFonts:v13];
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration includeFaces](self forKey:{"includeFaces"), @"IncludesFaces"}];
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration displayUsingSystemFont](self forKey:{"displayUsingSystemFont"), @"DisplaySystemFont"}];
-  [v4 encodeInt64:-[UIFontPickerViewControllerConfiguration filteredTraits](self forKey:{"filteredTraits"), @"FilteredTraits"}];
-  v5 = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
-  [v4 encodeCollection:v5 forKey:@"AllowedLanguages"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration includeFaces](self forKey:{"includeFaces"), @"IncludesFaces"}];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration displayUsingSystemFont](self forKey:{"displayUsingSystemFont"), @"DisplaySystemFont"}];
+  [coderCopy encodeInt64:-[UIFontPickerViewControllerConfiguration filteredTraits](self forKey:{"filteredTraits"), @"FilteredTraits"}];
+  _allowedLanguages = [(UIFontPickerViewControllerConfiguration *)self _allowedLanguages];
+  [coderCopy encodeCollection:_allowedLanguages forKey:@"AllowedLanguages"];
 
-  v6 = [(UIFontPickerViewControllerConfiguration *)self _serializedPredicate];
-  [v4 encodeObject:v6 forKey:@"SerializedPredicate"];
+  _serializedPredicate = [(UIFontPickerViewControllerConfiguration *)self _serializedPredicate];
+  [coderCopy encodeObject:_serializedPredicate forKey:@"SerializedPredicate"];
 
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration _hideSearchBar](self forKey:{"_hideSearchBar"), @"HideSearchBar"}];
-  v7 = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
-  [v4 encodeObject:v7 forKey:@"TintColor"];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration _hideSearchBar](self forKey:{"_hideSearchBar"), @"HideSearchBar"}];
+  _tintColor = [(UIFontPickerViewControllerConfiguration *)self _tintColor];
+  [coderCopy encodeObject:_tintColor forKey:@"TintColor"];
 
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration _includeDefaultFont](self forKey:{"_includeDefaultFont"), @"IncludesDefaultFont"}];
-  v8 = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
-  [v4 encodeObject:v8 forKey:@"FilterFamilyNameCodingKey"];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration _includeDefaultFont](self forKey:{"_includeDefaultFont"), @"IncludesDefaultFont"}];
+  _filterFamilyName = [(UIFontPickerViewControllerConfiguration *)self _filterFamilyName];
+  [coderCopy encodeObject:_filterFamilyName forKey:@"FilterFamilyNameCodingKey"];
 
-  v9 = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
-  [v4 encodeObject:v9 forKey:@"FilterFontNamesCodingKey"];
+  _filterFontNames = [(UIFontPickerViewControllerConfiguration *)self _filterFontNames];
+  [coderCopy encodeObject:_filterFontNames forKey:@"FilterFontNamesCodingKey"];
 
-  [v4 encodeBool:-[UIFontPickerViewControllerConfiguration _showsSectionIndexBar](self forKey:{"_showsSectionIndexBar"), @"ShowsSectionIndexBarCodingKey"}];
-  v10 = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
-  [v4 encodeObject:v10 forKey:@"ClientFontContextEndpointCodingKey"];
+  [coderCopy encodeBool:-[UIFontPickerViewControllerConfiguration _showsSectionIndexBar](self forKey:{"_showsSectionIndexBar"), @"ShowsSectionIndexBarCodingKey"}];
+  _clientFontContextEndpoint = [(UIFontPickerViewControllerConfiguration *)self _clientFontContextEndpoint];
+  [coderCopy encodeObject:_clientFontContextEndpoint forKey:@"ClientFontContextEndpointCodingKey"];
 
-  v11 = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
-  [v4 encodeCollection:v11 forKey:@"ClientRecentFontsCodingKey"];
+  _clientRecentFonts = [(UIFontPickerViewControllerConfiguration *)self _clientRecentFonts];
+  [coderCopy encodeCollection:_clientRecentFonts forKey:@"ClientRecentFontsCodingKey"];
 }
 
-- (UIFontPickerViewControllerConfiguration)initWithBSXPCCoder:(id)a3
+- (UIFontPickerViewControllerConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = UIFontPickerViewControllerConfiguration;
   v5 = [(UIFontPickerViewControllerConfiguration *)&v17 init];
   if (v5)
   {
-    -[UIFontPickerViewControllerConfiguration setIncludeFaces:](v5, "setIncludeFaces:", [v4 decodeBoolForKey:@"IncludesFaces"]);
-    -[UIFontPickerViewControllerConfiguration setDisplayUsingSystemFont:](v5, "setDisplayUsingSystemFont:", [v4 decodeBoolForKey:@"DisplaySystemFont"]);
-    -[UIFontPickerViewControllerConfiguration setFilteredTraits:](v5, "setFilteredTraits:", [v4 decodeInt64ForKey:@"FilteredTraits"]);
+    -[UIFontPickerViewControllerConfiguration setIncludeFaces:](v5, "setIncludeFaces:", [coderCopy decodeBoolForKey:@"IncludesFaces"]);
+    -[UIFontPickerViewControllerConfiguration setDisplayUsingSystemFont:](v5, "setDisplayUsingSystemFont:", [coderCopy decodeBoolForKey:@"DisplaySystemFont"]);
+    -[UIFontPickerViewControllerConfiguration setFilteredTraits:](v5, "setFilteredTraits:", [coderCopy decodeInt64ForKey:@"FilteredTraits"]);
     v6 = objc_opt_class();
-    v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"AllowedLanguages"];
+    v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"AllowedLanguages"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_allowedLanguages:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SerializedPredicate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SerializedPredicate"];
     [(UIFontPickerViewControllerConfiguration *)v5 _setPredicateFromData:v8];
 
-    -[UIFontPickerViewControllerConfiguration _setHideSearchBar:](v5, "_setHideSearchBar:", [v4 decodeBoolForKey:@"HideSearchBar"]);
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
+    -[UIFontPickerViewControllerConfiguration _setHideSearchBar:](v5, "_setHideSearchBar:", [coderCopy decodeBoolForKey:@"HideSearchBar"]);
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TintColor"];
     [(UIFontPickerViewControllerConfiguration *)v5 _setTintColor:v9];
 
-    -[UIFontPickerViewControllerConfiguration set_includeDefaultFont:](v5, "set_includeDefaultFont:", [v4 decodeBoolForKey:@"IncludesDefaultFont"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FilterFamilyNameCodingKey"];
+    -[UIFontPickerViewControllerConfiguration set_includeDefaultFont:](v5, "set_includeDefaultFont:", [coderCopy decodeBoolForKey:@"IncludesDefaultFont"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FilterFamilyNameCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_filterFamilyName:v10];
 
     v11 = objc_opt_class();
-    v12 = [v4 decodeCollectionOfClass:v11 containingClass:objc_opt_class() forKey:@"FilterFontNamesCodingKey"];
+    v12 = [coderCopy decodeCollectionOfClass:v11 containingClass:objc_opt_class() forKey:@"FilterFontNamesCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_filterFontNames:v12];
 
-    -[UIFontPickerViewControllerConfiguration set_showsSectionIndexBar:](v5, "set_showsSectionIndexBar:", [v4 decodeBoolForKey:@"ShowsSectionIndexBarCodingKey"]);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClientFontContextEndpointCodingKey"];
+    -[UIFontPickerViewControllerConfiguration set_showsSectionIndexBar:](v5, "set_showsSectionIndexBar:", [coderCopy decodeBoolForKey:@"ShowsSectionIndexBarCodingKey"]);
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClientFontContextEndpointCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 set_clientFontContextEndpoint:v13];
 
     v14 = objc_opt_class();
-    v15 = [v4 decodeCollectionOfClass:v14 containingClass:objc_opt_class() forKey:@"ClientRecentFontsCodingKey"];
+    v15 = [coderCopy decodeCollectionOfClass:v14 containingClass:objc_opt_class() forKey:@"ClientRecentFontsCodingKey"];
     [(UIFontPickerViewControllerConfiguration *)v5 _setClientRecentFonts:v15];
   }
 
@@ -770,9 +770,9 @@ LABEL_14:
   objc_storeStrong(&self->_filteredLanguagesPredicate, filteredLanguagesPredicate);
   if (v8)
   {
-    v5 = [MEMORY[0x1E695DF58] supportedLanguages];
-    v6 = [v5 allObjects];
-    v7 = [v6 filteredArrayUsingPredicate:v8];
+    supportedLanguages = [MEMORY[0x1E695DF58] supportedLanguages];
+    allObjects = [supportedLanguages allObjects];
+    v7 = [allObjects filteredArrayUsingPredicate:v8];
     [(UIFontPickerViewControllerConfiguration *)self set_allowedLanguages:v7];
   }
 
@@ -784,10 +784,10 @@ LABEL_14:
 
 - (id)succinctDescription
 {
-  v2 = [(UIFontPickerViewControllerConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIFontPickerViewControllerConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -799,28 +799,28 @@ LABEL_14:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIFontPickerViewControllerConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIFontPickerViewControllerConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIFontPickerViewControllerConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIFontPickerViewControllerConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x1E698E680];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
-  [v6 setActiveMultilinePrefix:v5];
+  [v6 setActiveMultilinePrefix:prefixCopy];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -828,7 +828,7 @@ LABEL_14:
   v11[3] = &unk_1E70F35B8;
   v7 = v6;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v8 = [v7 modifyBody:v11];
   v9 = v7;
 

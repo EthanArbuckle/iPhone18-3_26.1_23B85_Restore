@@ -1,25 +1,25 @@
 @interface VTKSquareDrawItem
 - (CGRect)frame;
-- (id)initWitColor:(id)a3 frame:(CGRect)a4;
-- (void)drawAtContext:(id)a3;
+- (id)initWitColor:(id)color frame:(CGRect)frame;
+- (void)drawAtContext:(id)context;
 @end
 
 @implementation VTKSquareDrawItem
 
-- (id)initWitColor:(id)a3 frame:(CGRect)a4
+- (id)initWitColor:(id)color frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v16.receiver = self;
   v16.super_class = VTKSquareDrawItem;
   v11 = [(VTKSquareDrawItem *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_color, a3);
+    objc_storeStrong(&v11->_color, color);
     v13 = 1.0 / VTKMainScreenScale() * 0.5;
     v14 = 1.0 / VTKMainScreenScale() * 0.5;
     v17.origin.x = x;
@@ -32,18 +32,18 @@
   return v12;
 }
 
-- (void)drawAtContext:(id)a3
+- (void)drawAtContext:(id)context
 {
-  v4 = [a3 CGContext];
-  CGContextBeginPath(v4);
+  cGContext = [context CGContext];
+  CGContextBeginPath(cGContext);
   [(VTKSquareDrawItem *)self frame];
-  CGContextAddRect(v4, v8);
+  CGContextAddRect(cGContext, v8);
   v5 = VTKMainScreenScale();
-  CGContextSetLineWidth(v4, 1.0 / v5);
-  v6 = [(VTKSquareDrawItem *)self color];
-  CGContextSetStrokeColorWithColor(v4, [v6 CGColor]);
+  CGContextSetLineWidth(cGContext, 1.0 / v5);
+  color = [(VTKSquareDrawItem *)self color];
+  CGContextSetStrokeColorWithColor(cGContext, [color CGColor]);
 
-  CGContextStrokePath(v4);
+  CGContextStrokePath(cGContext);
 }
 
 - (CGRect)frame

@@ -1,5 +1,5 @@
 @interface LNDebouncer
-- (LNDebouncer)initWithDelay:(double)a3 maxDelay:(double)a4 queue:(id)a5 block:(id)a6;
+- (LNDebouncer)initWithDelay:(double)delay maxDelay:(double)maxDelay queue:(id)queue block:(id)block;
 - (void)trigger;
 @end
 
@@ -16,28 +16,28 @@
   }
 }
 
-- (LNDebouncer)initWithDelay:(double)a3 maxDelay:(double)a4 queue:(id)a5 block:(id)a6
+- (LNDebouncer)initWithDelay:(double)delay maxDelay:(double)maxDelay queue:(id)queue block:(id)block
 {
-  v12 = a5;
-  v13 = a6;
-  if (a3 < 0.0)
+  queueCopy = queue;
+  blockCopy = block;
+  if (delay < 0.0)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"delay >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"delay >= 0"}];
   }
 
-  if (a4 >= 0.0)
+  if (maxDelay >= 0.0)
   {
-    if (v12)
+    if (queueCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_10:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
-    if (v13)
+    if (blockCopy)
     {
       goto LABEL_6;
     }
@@ -45,23 +45,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"maxDelay >= 0"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"maxDelay >= 0"}];
 
-  if (!v12)
+  if (!queueCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  if (v13)
+  if (blockCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_11:
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNDebouncer.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_6:
   v32.receiver = self;
@@ -70,13 +70,13 @@ LABEL_6:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_queue, a5);
-    v15->_maxDelay = a4;
-    v16 = _Block_copy(v13);
+    objc_storeStrong(&v14->_queue, queue);
+    v15->_maxDelay = maxDelay;
+    v16 = _Block_copy(blockCopy);
     block = v15->_block;
     v15->_block = v16;
 
-    v15->_delay = a3;
+    v15->_delay = delay;
     objc_initWeak(&location, v15);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;

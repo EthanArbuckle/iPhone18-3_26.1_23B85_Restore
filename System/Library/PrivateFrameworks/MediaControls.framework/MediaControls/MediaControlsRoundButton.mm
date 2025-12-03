@@ -1,20 +1,20 @@
 @interface MediaControlsRoundButton
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)assetFrame;
 - (CGSize)assetSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MediaControlsRoundButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MediaControlsRoundButton)initWithFrame:(CGRect)frame;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
-- (void)setAsset:(id)a3;
-- (void)setAxis:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAsset:(id)asset;
+- (void)setAxis:(int64_t)axis;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGlyphState:(id)state;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setStylingProvider:(id)provider;
+- (void)setTitle:(id)title;
 - (void)updateAssetVisualStyling;
 - (void)updateContentSizeCategory;
 - (void)updateLabelVisualStyling;
@@ -25,9 +25,9 @@
 
 - (CGRect)assetFrame
 {
-  v3 = [(MediaControlsRoundButton *)self contentVerticalAlignment];
+  contentVerticalAlignment = [(MediaControlsRoundButton *)self contentVerticalAlignment];
   [(MediaControlsRoundButton *)self bounds];
-  if (v3)
+  if (contentVerticalAlignment)
   {
     UIRectCenteredXInRect();
   }
@@ -164,13 +164,13 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v5 = [(MediaControlsRoundButton *)self isEnabled];
+  isEnabled = [(MediaControlsRoundButton *)self isEnabled];
   stylingProvider = self->_stylingProvider;
-  if ((v5 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     v9 = self->_titleLabel;
-    v10 = [(MediaControlsRoundButton *)self traitCollection];
-    [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:v9 traitCollection:v10];
+    traitCollection = [(MediaControlsRoundButton *)self traitCollection];
+    [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:v9 traitCollection:traitCollection];
 
     titleLabel = self->_titleLabel;
     goto LABEL_12;
@@ -179,9 +179,9 @@ LABEL_13:
   if (!stylingProvider)
   {
 LABEL_9:
-    v8 = [(MediaControlsRoundButton *)self isEnabled];
+    isEnabled2 = [(MediaControlsRoundButton *)self isEnabled];
     titleLabel = self->_titleLabel;
-    if (v8)
+    if (isEnabled2)
     {
       v4 = 1.0;
       goto LABEL_13;
@@ -193,16 +193,16 @@ LABEL_12:
   }
 
   v7 = self->_titleLabel;
-  v11 = [(MediaControlsRoundButton *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:v7 traitCollection:v11];
+  traitCollection2 = [(MediaControlsRoundButton *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:v7 traitCollection:traitCollection2];
 }
 
-- (MediaControlsRoundButton)initWithFrame:(CGRect)a3
+- (MediaControlsRoundButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22[1] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = MediaControlsRoundButton;
@@ -226,8 +226,8 @@ LABEL_12:
     [(UILabel *)v7->_titleLabel setTextAlignment:1];
     LODWORD(v13) = 1051931443;
     [(UILabel *)v7->_titleLabel _setHyphenationFactor:v13];
-    v14 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v7->_titleLabel setTextColor:v14];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v7->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v7->_titleLabel setClipsToBounds:0];
     [(UILabel *)v7->_titleLabel controlCenterApplyPrimaryContentShadow];
@@ -248,10 +248,10 @@ LABEL_12:
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(MediaControlsRoundButton *)self assetFrame];
   v8 = v6;
   v9 = v7;
@@ -303,34 +303,34 @@ LABEL_12:
   return result;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  objc_storeStrong(&self->_asset, a3);
-  v5 = a3;
-  [(MRUAssetView *)self->_assetView setAsset:v5];
+  objc_storeStrong(&self->_asset, asset);
+  assetCopy = asset;
+  [(MRUAssetView *)self->_assetView setAsset:assetCopy];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
-  [(MediaControlsRoundButton *)self setAccessibilityLabel:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(UILabel *)self->_titleLabel setText:titleCopy];
+  [(MediaControlsRoundButton *)self setAccessibilityLabel:titleCopy];
 
   [(MediaControlsRoundButton *)self setNeedsLayout];
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  objc_storeStrong(&self->_glyphState, a3);
-  v5 = a3;
-  [(MRUAssetView *)self->_assetView setGlyphState:v5];
+  objc_storeStrong(&self->_glyphState, state);
+  stateCopy = state;
+  [(MRUAssetView *)self->_assetView setGlyphState:stateCopy];
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  self->_axis = a3;
-  if (a3)
+  self->_axis = axis;
+  if (axis)
   {
     v4 = 4;
   }
@@ -345,48 +345,48 @@ LABEL_12:
   [(MediaControlsRoundButton *)self setNeedsLayout];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUAssetView *)self->_assetView setStylingProvider:v6];
     [(MediaControlsRoundButton *)self updateLabelVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = MediaControlsRoundButton;
-  [(MediaControlsRoundButton *)&v4 setHighlighted:a3];
+  [(MediaControlsRoundButton *)&v4 setHighlighted:highlighted];
   [(MediaControlsRoundButton *)self updateAssetVisualStyling];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = MediaControlsRoundButton;
-  [(MediaControlsRoundButton *)&v4 setSelected:a3];
+  [(MediaControlsRoundButton *)&v4 setSelected:selected];
   [(MediaControlsRoundButton *)self updateAssetVisualStyling];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = MediaControlsRoundButton;
-  [(MediaControlsRoundButton *)&v4 setEnabled:a3];
+  [(MediaControlsRoundButton *)&v4 setEnabled:enabled];
   [(MediaControlsRoundButton *)self updateLabelVisualStyling];
   [(MediaControlsRoundButton *)self updateAssetVisualStyling];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MediaControlsRoundButton *)self assetFrame];
   v10 = x;
   v11 = y;
@@ -401,19 +401,19 @@ LABEL_12:
   return (*MEMORY[0x1E69DD9B8] | [(MediaControlsRoundButton *)&v3 accessibilityTraits]) & ~*MEMORY[0x1E69DD9F0];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  if (v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1)
+  beginCopy = begin;
+  view = [beginCopy view];
+  if (view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [v4 numberOfTapsRequired];
+  numberOfTapsRequired = [beginCopy numberOfTapsRequired];
 
-  if (v6 != 1)
+  if (numberOfTapsRequired != 1)
   {
 LABEL_7:
     v7 = 1;
@@ -435,8 +435,8 @@ LABEL_8:
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_volumeButtonTitleFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  mru_volumeButtonTitleFont = [MEMORY[0x1E69DB878] mru_volumeButtonTitleFont];
+  [(UILabel *)self->_titleLabel setFont:mru_volumeButtonTitleFont];
 }
 
 - (CGSize)assetSize

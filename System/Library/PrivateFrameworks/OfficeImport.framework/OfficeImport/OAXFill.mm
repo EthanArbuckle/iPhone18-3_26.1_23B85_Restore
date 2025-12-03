@@ -1,18 +1,18 @@
 @interface OAXFill
 + (id)pathGradientFillTypeEnumMap;
 + (id)presetPatternFillTypeEnumMap;
-+ (id)readBlipRefFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 forDrawable:(id)a5 drawingState:(id)a6 forBullet:(BOOL)a7;
-+ (id)readFillFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5;
-+ (id)readGradientFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readGroupFillFromXmlNode:(_xmlNode *)a3;
-+ (id)readImageFillFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 forDrawable:(id)a5 drawingState:(id)a6;
-+ (id)readLinearGradientFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readPathGradientFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readPresetPatternFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readSolidFillFromXmlNode:(_xmlNode *)a3;
++ (id)readBlipRefFromXmlNode:(_xmlNode *)node packagePart:(id)part forDrawable:(id)drawable drawingState:(id)state forBullet:(BOOL)bullet;
++ (id)readFillFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state;
++ (id)readGradientFillFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readGroupFillFromXmlNode:(_xmlNode *)node;
++ (id)readImageFillFromXmlNode:(_xmlNode *)node packagePart:(id)part forDrawable:(id)drawable drawingState:(id)state;
++ (id)readLinearGradientFillFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readPathGradientFillFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readPresetPatternFillFromXmlNode:(_xmlNode *)node drawingState:(id)state;
++ (id)readSolidFillFromXmlNode:(_xmlNode *)node;
 + (id)tileFlipModeEnumMap;
-+ (void)readGradientFillFromXmlNode:(_xmlNode *)a3 toGradientFill:(id)a4 drawingState:(id)a5;
-+ (void)readTile:(_xmlNode *)a3 tile:(id)a4;
++ (void)readGradientFillFromXmlNode:(_xmlNode *)node toGradientFill:(id)fill drawingState:(id)state;
++ (void)readTile:(_xmlNode *)tile tile:(id)a4;
 @end
 
 @implementation OAXFill
@@ -67,47 +67,47 @@
   return v2;
 }
 
-+ (id)readFillFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 drawingState:(id)a5
++ (id)readFillFromXmlNode:(_xmlNode *)node packagePart:(id)part drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3->type == XML_ELEMENT_NODE)
+  partCopy = part;
+  stateCopy = state;
+  if (node->type == XML_ELEMENT_NODE)
   {
-    if (xmlStrEqual(a3->name, "noFill"))
+    if (xmlStrEqual(node->name, "noFill"))
     {
-      v10 = [a1 readNullFillFromXmlNode:a3];
+      v10 = [self readNullFillFromXmlNode:node];
 LABEL_14:
       v11 = v10;
       goto LABEL_16;
     }
 
-    if (xmlStrEqual(a3->name, "solidFill"))
+    if (xmlStrEqual(node->name, "solidFill"))
     {
-      v10 = [a1 readSolidFillFromXmlNode:a3];
+      v10 = [self readSolidFillFromXmlNode:node];
       goto LABEL_14;
     }
 
-    if (xmlStrEqual(a3->name, "gradFill"))
+    if (xmlStrEqual(node->name, "gradFill"))
     {
-      v10 = [a1 readGradientFillFromXmlNode:a3 drawingState:v9];
+      v10 = [self readGradientFillFromXmlNode:node drawingState:stateCopy];
       goto LABEL_14;
     }
 
-    if (xmlStrEqual(a3->name, "blipFill"))
+    if (xmlStrEqual(node->name, "blipFill"))
     {
-      v10 = [a1 readImageFillFromXmlNode:a3 packagePart:v8 forDrawable:0 drawingState:v9];
+      v10 = [self readImageFillFromXmlNode:node packagePart:partCopy forDrawable:0 drawingState:stateCopy];
       goto LABEL_14;
     }
 
-    if (xmlStrEqual(a3->name, "pattFill"))
+    if (xmlStrEqual(node->name, "pattFill"))
     {
-      v10 = [a1 readPresetPatternFillFromXmlNode:a3 drawingState:v9];
+      v10 = [self readPresetPatternFillFromXmlNode:node drawingState:stateCopy];
       goto LABEL_14;
     }
 
-    if (xmlStrEqual(a3->name, "grpFill"))
+    if (xmlStrEqual(node->name, "grpFill"))
     {
-      v10 = [a1 readGroupFillFromXmlNode:a3];
+      v10 = [self readGroupFillFromXmlNode:node];
       goto LABEL_14;
     }
   }
@@ -118,41 +118,41 @@ LABEL_16:
   return v11;
 }
 
-+ (id)readBlipRefFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 forDrawable:(id)a5 drawingState:(id)a6 forBullet:(BOOL)a7
++ (id)readBlipRefFromXmlNode:(_xmlNode *)node packagePart:(id)part forDrawable:(id)drawable drawingState:(id)state forBullet:(BOOL)bullet
 {
-  v7 = a7;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 OAXMainNamespace];
-  v15 = OCXFindChild(a3, v14, "blip");
+  bulletCopy = bullet;
+  partCopy = part;
+  drawableCopy = drawable;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v15 = OCXFindChild(node, oAXMainNamespace, "blip");
 
   if (!v15)
   {
     [TCMessageException raise:OABadFormat];
   }
 
-  v16 = [v13 OCXReadRelationshipForNode:v15 attributeName:"embed" packagePart:v11];
+  v16 = [stateCopy OCXReadRelationshipForNode:v15 attributeName:"embed" packagePart:partCopy];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 targetLocation];
-    if (v7)
+    targetLocation = [v16 targetLocation];
+    if (bulletCopy)
     {
-      [v13 bulletBlipRefForURL:v18];
+      [stateCopy bulletBlipRefForURL:targetLocation];
     }
 
     else
     {
-      [v13 blipRefForURL:v18];
+      [stateCopy blipRefForURL:targetLocation];
     }
     v21 = ;
-    [OAXBlipEffects readBlipEffectsFromBlipRef:v15 toBlipRef:v21 drawingState:v13];
+    [OAXBlipEffects readBlipEffectsFromBlipRef:v15 toBlipRef:v21 drawingState:stateCopy];
   }
 
   else
   {
-    v19 = [v13 OCXReadRelationshipForNode:v15 attributeName:"link" packagePart:v11];
+    v19 = [stateCopy OCXReadRelationshipForNode:v15 attributeName:"link" packagePart:partCopy];
     v17 = v19;
     if (!v19)
     {
@@ -160,14 +160,14 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v20 = [v19 targetLocation];
-    v18 = [v20 relativeString];
+    targetLocation2 = [v19 targetLocation];
+    targetLocation = [targetLocation2 relativeString];
 
-    v21 = [OADBlipRef blipRefWithIndex:0 name:v18 blip:0];
+    v21 = [OADBlipRef blipRefWithIndex:0 name:targetLocation blip:0];
   }
 
-  v22 = [v13 OAXMainNamespace];
-  v23 = OCXFindChild(v15, v22, "extLst");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v23 = OCXFindChild(v15, oAXMainNamespace2, "extLst");
 
   if (v23)
   {
@@ -175,8 +175,8 @@ LABEL_16:
     while (v24)
     {
       v25 = CXDefaultStringAttribute(v24, CXNoNamespace, "uri", 0);
-      v26 = [v13 client];
-      [v26 readBlipExtWithURI:v25 fromNode:v24 toDrawable:v12 state:v13];
+      client = [stateCopy client];
+      [client readBlipExtWithURI:v25 fromNode:v24 toDrawable:drawableCopy state:stateCopy];
 
       v24 = OCXNextSiblingNamed(v24, "ext");
     }
@@ -189,38 +189,38 @@ LABEL_14:
   return v27;
 }
 
-+ (id)readImageFillFromXmlNode:(_xmlNode *)a3 packagePart:(id)a4 forDrawable:(id)a5 drawingState:(id)a6
++ (id)readImageFillFromXmlNode:(_xmlNode *)node packagePart:(id)part forDrawable:(id)drawable drawingState:(id)state
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  partCopy = part;
+  drawableCopy = drawable;
+  stateCopy = state;
   v13 = objc_alloc_init(OADImageFill);
-  v14 = [v12 OAXMainNamespace];
-  v15 = OCXFindChild(a3, v14, "stretch");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v15 = OCXFindChild(node, oAXMainNamespace, "stretch");
 
   if (v15)
   {
     v16 = objc_alloc_init(OADStretchTechnique);
-    [a1 readStretch:v15 stretch:v16];
+    [self readStretch:v15 stretch:v16];
     [(OADImageFill *)v13 setTechnique:v16];
   }
 
   else
   {
     v16 = objc_alloc_init(OADTileTechnique);
-    v17 = [v12 OAXMainNamespace];
-    v18 = OCXFindChild(a3, v17, "tile");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    v18 = OCXFindChild(node, oAXMainNamespace2, "tile");
 
     if (v18)
     {
-      [a1 readTile:v18 tile:v16];
+      [self readTile:v18 tile:v16];
     }
 
     [(OADImageFill *)v13 setTechnique:v16];
   }
 
-  v19 = [v12 OAXMainNamespace];
-  v20 = OCXFindChild(a3, v19, "srcRect");
+  oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+  v20 = OCXFindChild(node, oAXMainNamespace3, "srcRect");
 
   if (v20)
   {
@@ -229,12 +229,12 @@ LABEL_14:
   }
 
   v24 = 0;
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "rotWithShape", &v24))
+  if (CXOptionalBoolAttribute(node, CXNoNamespace, "rotWithShape", &v24))
   {
     [(OADImageFill *)v13 setRotateWithShape:v24];
   }
 
-  v22 = [a1 readBlipRefFromXmlNode:a3 packagePart:v10 forDrawable:v11 drawingState:v12 forBullet:0];
+  v22 = [self readBlipRefFromXmlNode:node packagePart:partCopy forDrawable:drawableCopy drawingState:stateCopy forBullet:0];
   if (v22)
   {
     [(OADImageFill *)v13 setBlipRef:v22];
@@ -243,17 +243,17 @@ LABEL_14:
   return v13;
 }
 
-+ (id)readGroupFillFromXmlNode:(_xmlNode *)a3
++ (id)readGroupFillFromXmlNode:(_xmlNode *)node
 {
   v3 = objc_alloc_init(OADGroupFill);
 
   return v3;
 }
 
-+ (id)readSolidFillFromXmlNode:(_xmlNode *)a3
++ (id)readSolidFillFromXmlNode:(_xmlNode *)node
 {
   v4 = objc_alloc_init(OADSolidFill);
-  v5 = [OAXColor readColorFromParentXmlNode:a3];
+  v5 = [OAXColor readColorFromParentXmlNode:node];
   if (v5)
   {
     [(OADSolidFill *)v4 setColor:v5];
@@ -262,70 +262,70 @@ LABEL_14:
   return v4;
 }
 
-+ (void)readGradientFillFromXmlNode:(_xmlNode *)a3 toGradientFill:(id)a4 drawingState:(id)a5
++ (void)readGradientFillFromXmlNode:(_xmlNode *)node toGradientFill:(id)fill drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 OAXMainNamespace];
-  v11 = OCXFindChild(a3, v10, "gsLst");
+  fillCopy = fill;
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v11 = OCXFindChild(node, oAXMainNamespace, "gsLst");
 
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v13 = [v9 OAXMainNamespace];
-    v26 = a1;
-    v28 = a3;
-    Child = OCXFindChild(v11, v13, "gs");
+    oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+    selfCopy = self;
+    nodeCopy = node;
+    Child = OCXFindChild(v11, oAXMainNamespace2, "gs");
 
     while (Child)
     {
-      [OAXBaseTypes readRequiredFractionFromXmlNode:Child name:"pos", v26, v28];
+      [OAXBaseTypes readRequiredFractionFromXmlNode:Child name:"pos", selfCopy, nodeCopy];
       v16 = v15;
       v17 = [OAXColor readColorFromParentXmlNode:Child];
       LODWORD(v18) = v16;
       [OADGradientFillStop addStopWithColor:v17 position:v12 toArray:v18];
-      v19 = [v9 OAXMainNamespace];
-      Child = OCXFindNextChild(Child, v19, "gs");
+      oAXMainNamespace3 = [stateCopy OAXMainNamespace];
+      Child = OCXFindNextChild(Child, oAXMainNamespace3, "gs");
     }
 
-    [v8 setStops:{v12, v26, v28}];
-    a1 = v27;
-    a3 = v29;
+    [fillCopy setStops:{v12, selfCopy, nodeCopy}];
+    self = v27;
+    node = v29;
   }
 
   v30 = 0;
-  if (CXOptionalBoolAttribute(a3, CXNoNamespace, "rotWithShape", &v30))
+  if (CXOptionalBoolAttribute(node, CXNoNamespace, "rotWithShape", &v30))
   {
-    [v8 setRotateWithShape:v30];
+    [fillCopy setRotateWithShape:v30];
   }
 
-  v20 = CXDefaultStringAttribute(a3, CXNoNamespace, "flip", 0);
+  v20 = CXDefaultStringAttribute(node, CXNoNamespace, "flip", 0);
   if (v20)
   {
-    v21 = [a1 tileFlipModeEnumMap];
-    v22 = [v21 valueForString:v20];
+    tileFlipModeEnumMap = [self tileFlipModeEnumMap];
+    v22 = [tileFlipModeEnumMap valueForString:v20];
 
-    [v8 setFlipMode:v22];
+    [fillCopy setFlipMode:v22];
   }
 
-  v23 = [v9 OAXMainNamespace];
-  v24 = OCXFindChild(a3, v23, "tileRect");
+  oAXMainNamespace4 = [stateCopy OAXMainNamespace];
+  v24 = OCXFindChild(node, oAXMainNamespace4, "tileRect");
 
   if (v24)
   {
     v25 = [OAXBaseTypes readRelativeRectFromXmlNode:v24];
-    [v8 setTileRect:v25];
+    [fillCopy setTileRect:v25];
   }
 }
 
-+ (id)readLinearGradientFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readLinearGradientFillFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADGradientFill);
-  [a1 readGradientFillFromXmlNode:a3 toGradientFill:v7 drawingState:v6];
+  [self readGradientFillFromXmlNode:node toGradientFill:v7 drawingState:stateCopy];
   v8 = objc_alloc_init(OADLinearShade);
-  v9 = [v6 OAXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "lin");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v10 = OCXFindChild(node, oAXMainNamespace, "lin");
 
   if (v10)
   {
@@ -349,13 +349,13 @@ LABEL_14:
   return v7;
 }
 
-+ (id)readPathGradientFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readPathGradientFillFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADGradientFill);
-  [a1 readGradientFillFromXmlNode:a3 toGradientFill:v7 drawingState:v6];
-  v8 = [v6 OAXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "path");
+  [self readGradientFillFromXmlNode:node toGradientFill:v7 drawingState:stateCopy];
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v9 = OCXFindChild(node, oAXMainNamespace, "path");
 
   if (!v9)
   {
@@ -366,14 +366,14 @@ LABEL_14:
   v11 = CXDefaultStringAttribute(v9, CXNoNamespace, "path", 0);
   if (v11)
   {
-    v12 = [a1 pathGradientFillTypeEnumMap];
-    v13 = [v12 valueForString:v11];
+    pathGradientFillTypeEnumMap = [self pathGradientFillTypeEnumMap];
+    v13 = [pathGradientFillTypeEnumMap valueForString:v11];
 
     [(OADPathShade *)v10 setType:v13];
   }
 
-  v14 = [v6 OAXMainNamespace];
-  v15 = OCXFindChild(v9, v14, "fillToRect");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v15 = OCXFindChild(v9, oAXMainNamespace2, "fillToRect");
 
   if (v15)
   {
@@ -386,45 +386,45 @@ LABEL_14:
   return v7;
 }
 
-+ (id)readGradientFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readGradientFillFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
-  v7 = [v6 OAXMainNamespace];
-  v8 = OCXFindChild(a3, v7, "path");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v8 = OCXFindChild(node, oAXMainNamespace, "path");
 
   if (v8)
   {
-    [a1 readPathGradientFillFromXmlNode:a3 drawingState:v6];
+    [self readPathGradientFillFromXmlNode:node drawingState:stateCopy];
   }
 
   else
   {
-    [a1 readLinearGradientFillFromXmlNode:a3 drawingState:v6];
+    [self readLinearGradientFillFromXmlNode:node drawingState:stateCopy];
   }
   v9 = ;
 
   return v9;
 }
 
-+ (void)readTile:(_xmlNode *)a3 tile:(id)a4
++ (void)readTile:(_xmlNode *)tile tile:(id)a4
 {
   v13 = a4;
-  [OAXBaseTypes readOptionalLengthFromXmlNode:a3 name:"tx"];
+  [OAXBaseTypes readOptionalLengthFromXmlNode:tile name:"tx"];
   [v13 setOffsetX:?];
-  [OAXBaseTypes readOptionalLengthFromXmlNode:a3 name:"tx"];
+  [OAXBaseTypes readOptionalLengthFromXmlNode:tile name:"tx"];
   [v13 setOffsetY:?];
-  v6 = CXDefaultFractionAttribute(a3, CXNoNamespace, "sx", 1.0);
+  v6 = CXDefaultFractionAttribute(tile, CXNoNamespace, "sx", 1.0);
   *&v6 = v6;
   [v13 setScaleX:v6];
-  v7 = CXDefaultFractionAttribute(a3, CXNoNamespace, "sy", 1.0);
+  v7 = CXDefaultFractionAttribute(tile, CXNoNamespace, "sy", 1.0);
   *&v7 = v7;
   [v13 setScaleY:v7];
-  v8 = CXDefaultStringAttribute(a3, CXNoNamespace, "flip", @"none");
-  v9 = [a1 tileFlipModeEnumMap];
-  v10 = [v9 valueForString:v8];
+  v8 = CXDefaultStringAttribute(tile, CXNoNamespace, "flip", @"none");
+  tileFlipModeEnumMap = [self tileFlipModeEnumMap];
+  v10 = [tileFlipModeEnumMap valueForString:v8];
 
   [v13 setFlipMode:v10];
-  v11 = [OAXBaseTypes readRectAlignmentFromXmlNode:a3 name:"algn"];
+  v11 = [OAXBaseTypes readRectAlignmentFromXmlNode:tile name:"algn"];
   if (v11 <= 1)
   {
     v12 = 1;
@@ -438,15 +438,15 @@ LABEL_14:
   [v13 setAlignment:v12];
 }
 
-+ (id)readPresetPatternFillFromXmlNode:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readPresetPatternFillFromXmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = objc_alloc_init(OADPatternFill);
-  v8 = CXDefaultStringAttribute(a3, CXNoNamespace, "prst", 0);
+  v8 = CXDefaultStringAttribute(node, CXNoNamespace, "prst", 0);
   if (v8)
   {
-    v9 = [a1 presetPatternFillTypeEnumMap];
-    v10 = [v9 valueForString:v8];
+    presetPatternFillTypeEnumMap = [self presetPatternFillTypeEnumMap];
+    v10 = [presetPatternFillTypeEnumMap valueForString:v8];
   }
 
   else
@@ -457,8 +457,8 @@ LABEL_14:
   v11 = objc_alloc_init(OADPresetPattern);
   [(OADPresetPattern *)v11 setType:v10];
   [(OADPatternFill *)v7 setPattern:v11];
-  v12 = [v6 OAXMainNamespace];
-  v13 = OCXFindChild(a3, v12, "fgClr");
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v13 = OCXFindChild(node, oAXMainNamespace, "fgClr");
 
   if (v13)
   {
@@ -466,8 +466,8 @@ LABEL_14:
     [(OADPatternFill *)v7 setFgColor:v14];
   }
 
-  v15 = [v6 OAXMainNamespace];
-  v16 = OCXFindChild(a3, v15, "bgClr");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v16 = OCXFindChild(node, oAXMainNamespace2, "bgClr");
 
   if (v16)
   {

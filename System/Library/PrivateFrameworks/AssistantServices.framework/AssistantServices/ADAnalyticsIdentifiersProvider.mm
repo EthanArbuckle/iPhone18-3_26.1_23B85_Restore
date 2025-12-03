@@ -1,41 +1,41 @@
 @interface ADAnalyticsIdentifiersProvider
 + (ADAnalyticsIdentifiersProvider)sharedInstance;
-+ (id)_alignToRotationCadence:(id)a3;
-+ (id)_createHomeEphemeralIdWithHomeSeed:(id)a3 withCreationTime:(id)a4;
-+ (id)_createUserEphemeralIdWithUserSeed:(id)a3 withCreationTime:(id)a4;
++ (id)_alignToRotationCadence:(id)cadence;
++ (id)_createHomeEphemeralIdWithHomeSeed:(id)seed withCreationTime:(id)time;
++ (id)_createUserEphemeralIdWithUserSeed:(id)seed withCreationTime:(id)time;
 + (id)_homeEphemeralIdNamespace;
-+ (id)_timestampToNSString:(id)a3;
++ (id)_timestampToNSString:(id)string;
 + (id)_userEphemeralIdNamespace;
-+ (int64_t)_computeSecondsSinceBirth:(id)a3;
-- (BOOL)_isAggregationIdRefreshRequired:(id)a3 forTime:(id)a4;
-- (BOOL)_isEphemeralIdRefreshRequired:(id)a3 forTime:(id)a4;
-- (id)_combineUUIDsWithUuid1:(id)a3 uuid2:(id)a4;
++ (int64_t)_computeSecondsSinceBirth:(id)birth;
+- (BOOL)_isAggregationIdRefreshRequired:(id)required forTime:(id)time;
+- (BOOL)_isEphemeralIdRefreshRequired:(id)required forTime:(id)time;
+- (id)_combineUUIDsWithUuid1:(id)uuid1 uuid2:(id)uuid2;
 - (id)_createAndSaveFixedDeviceId;
-- (id)_createDIMEphemeralIdentifiersEvent:(int64_t)a3;
+- (id)_createDIMEphemeralIdentifiersEvent:(int64_t)event;
 - (id)_createDIMEphemeralToAggregationIdentifierMapEvent;
-- (id)_fetchIdsForHomeWithCreationTime:(id)a3;
-- (id)_fetchIdsForUser:(id)a3 creationTime:(id)a4;
+- (id)_fetchIdsForHomeWithCreationTime:(id)time;
+- (id)_fetchIdsForUser:(id)user creationTime:(id)time;
 - (id)_fetchOrCreateFixedDeviceId;
-- (id)_initWithSyncCoordinator:(id)a3 withCheckpoint:(id)a4;
+- (id)_initWithSyncCoordinator:(id)coordinator withCheckpoint:(id)checkpoint;
 - (id)_readCheckpoint;
-- (id)_retrieveExistingAnalyticsIdsForUser:(id)a3;
+- (id)_retrieveExistingAnalyticsIdsForUser:(id)user;
 - (id)ephemeralIdForDefaultUser;
-- (int64_t)_refreshEphemeralIdentifiers:(BOOL)a3;
-- (unsigned)_convertDataToScaledUInt32:(id)a3;
-- (void)_asyncLogAnalyticsIdentifiersDIMEvents:(id)a3;
-- (void)_createAndTestAndSetDefaultUserEphemeralId:(id)a3 expectedValue:(id)a4 expectedValueWasCreatedBySyncPath:(BOOL)a5 withCreationTime:(id)a6;
-- (void)_publishAnalyticsIdUpdate:(id)a3 forUser:(id)a4;
+- (int64_t)_refreshEphemeralIdentifiers:(BOOL)identifiers;
+- (unsigned)_convertDataToScaledUInt32:(id)int32;
+- (void)_asyncLogAnalyticsIdentifiersDIMEvents:(id)events;
+- (void)_createAndTestAndSetDefaultUserEphemeralId:(id)id expectedValue:(id)value expectedValueWasCreatedBySyncPath:(BOOL)path withCreationTime:(id)time;
+- (void)_publishAnalyticsIdUpdate:(id)update forUser:(id)user;
 - (void)_refreshAnalyticsIds;
-- (void)_refreshAnalyticsIdsForUser:(id)a3 withTime:(id)a4;
-- (void)_testAndSetDefaultUserEphemeralId:(id)a3 creationTime:(id)a4 syncPath:(BOOL)a5 expectedValue:(id)a6;
-- (void)_writeCheckpoint:(id)a3;
-- (void)addObserver:(id)a3 foriCloudAltDSId:(id)a4;
-- (void)fetchDeviceAggregationIdWithCallback:(id)a3;
-- (void)fetchDeviceAndUserIdsForSharedUserId:(id)a3 withCallback:(id)a4;
-- (void)fetchDeviceAndUserIdsForiCloudAltDSId:(id)a3 withCallback:(id)a4;
-- (void)fetchUserAggregationIdWithCallback:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeObserver:(id)a3 foriCloudAltDSId:(id)a4;
+- (void)_refreshAnalyticsIdsForUser:(id)user withTime:(id)time;
+- (void)_testAndSetDefaultUserEphemeralId:(id)id creationTime:(id)time syncPath:(BOOL)path expectedValue:(id)value;
+- (void)_writeCheckpoint:(id)checkpoint;
+- (void)addObserver:(id)observer foriCloudAltDSId:(id)id;
+- (void)fetchDeviceAggregationIdWithCallback:(id)callback;
+- (void)fetchDeviceAndUserIdsForSharedUserId:(id)id withCallback:(id)callback;
+- (void)fetchDeviceAndUserIdsForiCloudAltDSId:(id)id withCallback:(id)callback;
+- (void)fetchUserAggregationIdWithCallback:(id)callback;
+- (void)removeObserver:(id)observer;
+- (void)removeObserver:(id)observer foriCloudAltDSId:(id)id;
 @end
 
 @implementation ADAnalyticsIdentifiersProvider
@@ -71,8 +71,8 @@
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Checkpoint has valid current user seed", buf, 2u);
   }
 
-  v7 = [(ADAnalyticsIdentifiersCheckpoint *)self->_checkpoint currentUserSeed];
-  if (!v7)
+  currentUserSeed = [(ADAnalyticsIdentifiersCheckpoint *)self->_checkpoint currentUserSeed];
+  if (!currentUserSeed)
   {
 LABEL_20:
     if (![(ADAnalyticsIdentifiersCheckpoint *)self->_checkpoint hasValidNextUserSeed:v5])
@@ -87,8 +87,8 @@ LABEL_20:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Checkpoint has valid next user seed that is usable now", buf, 2u);
     }
 
-    v7 = [(ADAnalyticsIdentifiersCheckpoint *)self->_checkpoint nextUserSeed];
-    if (!v7)
+    currentUserSeed = [(ADAnalyticsIdentifiersCheckpoint *)self->_checkpoint nextUserSeed];
+    if (!currentUserSeed)
     {
 LABEL_9:
       v9 = +[ADAnalyticsIdentifiersUtils logger];
@@ -98,12 +98,12 @@ LABEL_9:
         _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Using locally created seed", buf, 2u);
       }
 
-      v7 = self->_localUserSeed;
+      currentUserSeed = self->_localUserSeed;
     }
   }
 
-  v10 = v7;
-  v11 = [ADAnalyticsIdentifiersProvider _createUserEphemeralIdWithUserSeed:v7 withCreationTime:v5];
+  v10 = currentUserSeed;
+  v11 = [ADAnalyticsIdentifiersProvider _createUserEphemeralIdWithUserSeed:currentUserSeed withCreationTime:v5];
   v12 = self->_lastCreatedUserEphemeralId;
   [(ADAnalyticsIdentifiersProvider *)self _testAndSetDefaultUserEphemeralId:v11 creationTime:v5 syncPath:1 expectedValue:0];
   v13 = +[ADAnalyticsIdentifiersUtils logger];
@@ -121,18 +121,18 @@ LABEL_9:
   {
     [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
     v16 = v30 = v12;
-    v17 = [v16 current];
+    current = [v16 current];
 
     v18 = [ADAnalyticsDeviceAndUserIds alloc];
     fixedDeviceId = self->_fixedDeviceId;
     v20 = self->_lastCreatedUserEphemeralId;
-    v21 = [v17 value];
-    [v17 effectiveFrom];
+    value = [current value];
+    [current effectiveFrom];
     v31 = v10;
     v22 = v11;
     v24 = v23 = v5;
-    v25 = [v17 expirationDate];
-    v26 = [(ADAnalyticsDeviceAndUserIds *)v18 initWithFixedDeviceId:fixedDeviceId withUserEphemeralId:v20 withUserAggregationId:v21 withUserAggregationIdEffectiveFrom:v24 withUserAggregationIdExpiration:v25];
+    expirationDate = [current expirationDate];
+    v26 = [(ADAnalyticsDeviceAndUserIds *)v18 initWithFixedDeviceId:fixedDeviceId withUserEphemeralId:v20 withUserAggregationId:value withUserAggregationIdEffectiveFrom:v24 withUserAggregationIdExpiration:expirationDate];
 
     v5 = v23;
     v11 = v22;
@@ -161,14 +161,14 @@ LABEL_9:
   return v3;
 }
 
-- (void)_publishAnalyticsIdUpdate:(id)a3 forUser:(id)a4
+- (void)_publishAnalyticsIdUpdate:(id)update forUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  userCopy = user;
   v8 = self->_defaultUserObserverList;
-  if (v7)
+  if (userCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_iCloudIdToObserverListMap objectForKeyedSubscript:v7];
+    v9 = [(NSMutableDictionary *)self->_iCloudIdToObserverListMap objectForKeyedSubscript:userCopy];
 
     v8 = v9;
   }
@@ -193,7 +193,7 @@ LABEL_9:
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) didReceiveIDs:v6 forUser:{v7, v15}];
+        [*(*(&v15 + 1) + 8 * v14) didReceiveIDs:updateCopy forUser:{userCopy, v15}];
         v14 = v14 + 1;
       }
 
@@ -205,36 +205,36 @@ LABEL_9:
   }
 }
 
-- (id)_retrieveExistingAnalyticsIdsForUser:(id)a3
+- (id)_retrieveExistingAnalyticsIdsForUser:(id)user
 {
-  if (a3)
+  if (user)
   {
     v4 = [(NSMutableDictionary *)self->_iCloudIdToAnalyticsIdsMap objectForKeyedSubscript:?];
   }
 
   else
   {
-    v5 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
-    v6 = [v5 current];
+    aggregationIds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
+    current = [aggregationIds current];
 
     v7 = [ADAnalyticsDeviceAndUserIds alloc];
     fixedDeviceId = self->_fixedDeviceId;
     lastCreatedUserEphemeralId = self->_lastCreatedUserEphemeralId;
-    v10 = [v6 value];
-    v11 = [v6 effectiveFrom];
-    v12 = [v6 expirationDate];
-    v4 = [(ADAnalyticsDeviceAndUserIds *)v7 initWithFixedDeviceId:fixedDeviceId withUserEphemeralId:lastCreatedUserEphemeralId withUserAggregationId:v10 withUserAggregationIdEffectiveFrom:v11 withUserAggregationIdExpiration:v12];
+    value = [current value];
+    effectiveFrom = [current effectiveFrom];
+    expirationDate = [current expirationDate];
+    v4 = [(ADAnalyticsDeviceAndUserIds *)v7 initWithFixedDeviceId:fixedDeviceId withUserEphemeralId:lastCreatedUserEphemeralId withUserAggregationId:value withUserAggregationIdEffectiveFrom:effectiveFrom withUserAggregationIdExpiration:expirationDate];
   }
 
   return v4;
 }
 
-- (void)_refreshAnalyticsIdsForUser:(id)a3 withTime:(id)a4
+- (void)_refreshAnalyticsIdsForUser:(id)user withTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  timeCopy = time;
   v8 = @"Default User";
-  if (!v6)
+  if (!userCopy)
   {
     v8 = 0;
   }
@@ -242,8 +242,8 @@ LABEL_9:
   v9 = v8;
   v10 = self->_lastCreatedUserEphemeralId;
   ephemeralIdWasCreatedBySyncPath = self->_ephemeralIdWasCreatedBySyncPath;
-  v12 = [(ADAnalyticsIdentifiersProvider *)self _isEphemeralIdRefreshRequired:v6 forTime:v7];
-  v13 = [(ADAnalyticsIdentifiersProvider *)self _isAggregationIdRefreshRequired:v6 forTime:v7];
+  v12 = [(ADAnalyticsIdentifiersProvider *)self _isEphemeralIdRefreshRequired:userCopy forTime:timeCopy];
+  v13 = [(ADAnalyticsIdentifiersProvider *)self _isAggregationIdRefreshRequired:userCopy forTime:timeCopy];
   v14 = v13;
   if ((v12 & 1) != 0 || v13)
   {
@@ -267,83 +267,83 @@ LABEL_9:
 
     v58 = v14;
 
-    v17 = [(ADAnalyticsIdentifiersProvider *)self _fetchIdsForUser:v6 creationTime:v7];
-    if (!v6)
+    v17 = [(ADAnalyticsIdentifiersProvider *)self _fetchIdsForUser:userCopy creationTime:timeCopy];
+    if (!userCopy)
     {
       objc_storeStrong(&self->_analyticsIdsForDefaultUser, v17);
     }
 
     v64 = v10;
-    v18 = [v17 aggregationIds];
-    v66 = [v18 current];
+    aggregationIds = [v17 aggregationIds];
+    current = [aggregationIds current];
 
-    v19 = [v17 aggregationIds];
-    v20 = [v19 current];
-    v65 = v7;
+    aggregationIds2 = [v17 aggregationIds];
+    current2 = [aggregationIds2 current];
+    v65 = timeCopy;
     v62 = v9;
     v57 = ephemeralIdWasCreatedBySyncPath;
-    if ([v20 expirationDaysFrom:v7] <= 0)
+    if ([current2 expirationDaysFrom:timeCopy] <= 0)
     {
       [v17 aggregationIds];
       v22 = v21 = v17;
-      v23 = [v22 next];
+      next = [v22 next];
 
-      if (!v23)
+      if (!next)
       {
-        v7 = v65;
+        timeCopy = v65;
         v17 = v21;
         goto LABEL_15;
       }
 
-      v19 = [v21 aggregationIds];
-      [v19 next];
-      v7 = v65;
-      v66 = v20 = v66;
+      aggregationIds2 = [v21 aggregationIds];
+      [aggregationIds2 next];
+      timeCopy = v65;
+      current = current2 = current;
       v17 = v21;
     }
 
 LABEL_15:
-    v24 = [ADAnalyticsIdentifiersProvider _alignToRotationCadence:v7];
-    v25 = v7;
+    v24 = [ADAnalyticsIdentifiersProvider _alignToRotationCadence:timeCopy];
+    v25 = timeCopy;
     v61 = v17;
-    v26 = [v17 currentEphemeralSeed];
+    currentEphemeralSeed = [v17 currentEphemeralSeed];
     v63 = v24;
-    v27 = [ADAnalyticsIdentifiersProvider _createUserEphemeralIdWithUserSeed:v26 withCreationTime:v24];
+    v27 = [ADAnalyticsIdentifiersProvider _createUserEphemeralIdWithUserSeed:currentEphemeralSeed withCreationTime:v24];
 
     v28 = [ADAnalyticsDeviceAndUserIds alloc];
     fixedDeviceId = self->_fixedDeviceId;
-    v30 = [v66 value];
-    v31 = [v66 effectiveFrom];
-    v32 = [v66 expirationDate];
+    value = [current value];
+    effectiveFrom = [current effectiveFrom];
+    expirationDate = [current expirationDate];
     v60 = v27;
-    v33 = [(ADAnalyticsDeviceAndUserIds *)v28 initWithFixedDeviceId:fixedDeviceId withUserEphemeralId:v27 withUserAggregationId:v30 withUserAggregationIdEffectiveFrom:v31 withUserAggregationIdExpiration:v32];
+    v33 = [(ADAnalyticsDeviceAndUserIds *)v28 initWithFixedDeviceId:fixedDeviceId withUserEphemeralId:v27 withUserAggregationId:value withUserAggregationIdEffectiveFrom:effectiveFrom withUserAggregationIdExpiration:expirationDate];
 
-    if (v6)
+    if (userCopy)
     {
-      [(NSMutableDictionary *)self->_iCloudIdToAnalyticsIdsMap setObject:v33 forKey:v6];
+      [(NSMutableDictionary *)self->_iCloudIdToAnalyticsIdsMap setObject:v33 forKey:userCopy];
       v34 = &OBJC_METACLASS___ADDictationConnection;
       if (v12)
       {
-        [(NSMutableDictionary *)self->_iCloudIdToEphemeralIdCreationDateMap setObject:v63 forKey:v6];
+        [(NSMutableDictionary *)self->_iCloudIdToEphemeralIdCreationDateMap setObject:v63 forKey:userCopy];
       }
 
       v25 = v65;
       if (v58)
       {
-        [(NSMutableDictionary *)self->_iCloudIdToAggregationIdCreationDateMap setObject:v65 forKey:v6];
+        [(NSMutableDictionary *)self->_iCloudIdToAggregationIdCreationDateMap setObject:v65 forKey:userCopy];
       }
     }
 
     else
     {
-      v35 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
-      [(ADAnalyticsIdentifiersProvider *)self _createAndTestAndSetDefaultUserEphemeralId:v35 expectedValue:v64 expectedValueWasCreatedBySyncPath:v57 withCreationTime:v25];
+      ephemeralSeeds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
+      [(ADAnalyticsIdentifiersProvider *)self _createAndTestAndSetDefaultUserEphemeralId:ephemeralSeeds expectedValue:v64 expectedValueWasCreatedBySyncPath:v57 withCreationTime:v25];
 
       v34 = &OBJC_METACLASS___ADDictationConnection;
     }
 
-    v36 = [&v34[76] logger];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+    logger = [&v34[76] logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478339;
       *v68 = v62;
@@ -351,60 +351,60 @@ LABEL_15:
       v69 = v25;
       v70 = 2112;
       v71 = v63;
-      _os_log_debug_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "Created new Analytics IDs for user: %{private}@ refreshTime: %@ ephemeralCadenceTime: %@", buf, 0x20u);
+      _os_log_debug_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEBUG, "Created new Analytics IDs for user: %{private}@ refreshTime: %@ ephemeralCadenceTime: %@", buf, 0x20u);
     }
 
-    v37 = [&v34[76] logger];
-    if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
+    logger2 = [&v34[76] logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEBUG))
     {
-      v51 = [(ADAnalyticsDeviceAndUserIds *)v33 userEphemeralId];
-      v52 = [(ADAnalyticsDeviceAndUserIds *)v33 userAggregationId];
-      v53 = [(ADAnalyticsDeviceAndUserIds *)v33 userAggregationIdEffectiveFrom];
+      userEphemeralId = [(ADAnalyticsDeviceAndUserIds *)v33 userEphemeralId];
+      userAggregationId = [(ADAnalyticsDeviceAndUserIds *)v33 userAggregationId];
+      userAggregationIdEffectiveFrom = [(ADAnalyticsDeviceAndUserIds *)v33 userAggregationIdEffectiveFrom];
       [(ADAnalyticsDeviceAndUserIds *)v33 userAggregationIdExpiration];
-      v54 = v6;
+      v54 = userCopy;
       v56 = v55 = v33;
       *buf = 138478595;
-      *v68 = v51;
+      *v68 = userEphemeralId;
       *&v68[8] = 2113;
-      v69 = v52;
+      v69 = userAggregationId;
       v70 = 2112;
-      v71 = v53;
+      v71 = userAggregationIdEffectiveFrom;
       v72 = 2112;
       v73 = v56;
-      _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "EphemeralID: %{private}@ AggregationID: %{private}@ AggregationIDEffectiveFrom: %@ AggregationIDExpiration: %@", buf, 0x2Au);
+      _os_log_debug_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEBUG, "EphemeralID: %{private}@ AggregationID: %{private}@ AggregationIDEffectiveFrom: %@ AggregationIDExpiration: %@", buf, 0x2Au);
 
       v33 = v55;
-      v6 = v54;
+      userCopy = v54;
     }
 
-    v38 = [&v34[76] logger];
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
+    logger3 = [&v34[76] logger];
+    if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_debug_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "Notifying observers of new Analytics IDs", buf, 2u);
+      _os_log_debug_impl(&_mh_execute_header, logger3, OS_LOG_TYPE_DEBUG, "Notifying observers of new Analytics IDs", buf, 2u);
     }
 
-    [(ADAnalyticsIdentifiersProvider *)self _publishAnalyticsIdUpdate:v33 forUser:v6];
-    v39 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
-    v40 = [v39 current];
+    [(ADAnalyticsIdentifiersProvider *)self _publishAnalyticsIdUpdate:v33 forUser:userCopy];
+    ephemeralSeeds2 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
+    current3 = [ephemeralSeeds2 current];
 
-    v41 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
-    v42 = [v41 next];
+    ephemeralSeeds3 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
+    next2 = [ephemeralSeeds3 next];
 
     v43 = [ADAnalyticsIdentifiersCheckpoint alloc];
-    [v40 value];
-    v59 = v6;
+    [current3 value];
+    v59 = userCopy;
     v45 = v44 = v33;
-    v46 = [v40 expirationDate];
-    v47 = [v42 value];
-    v48 = [v42 effectiveFrom];
-    v49 = [v42 expirationDate];
-    v50 = [(ADAnalyticsIdentifiersCheckpoint *)v43 initWithCurrentUserSeed:v45 currentUserSeedExpirationDate:v46 nextUserSeed:v47 nextUserSeedEffectiveFromDate:v48 nextUserSeedExpirationDate:v49];
+    expirationDate2 = [current3 expirationDate];
+    value2 = [next2 value];
+    effectiveFrom2 = [next2 effectiveFrom];
+    expirationDate3 = [next2 expirationDate];
+    v50 = [(ADAnalyticsIdentifiersCheckpoint *)v43 initWithCurrentUserSeed:v45 currentUserSeedExpirationDate:expirationDate2 nextUserSeed:value2 nextUserSeedEffectiveFromDate:effectiveFrom2 nextUserSeedExpirationDate:expirationDate3];
     [(ADAnalyticsIdentifiersProvider *)self _writeCheckpoint:v50];
 
-    v6 = v59;
+    userCopy = v59;
     v10 = v64;
-    v7 = v65;
+    timeCopy = v65;
     v9 = v62;
   }
 }
@@ -417,8 +417,8 @@ LABEL_15:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(NSMutableDictionary *)self->_iCloudIdToObserverListMap allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  allKeys = [(NSMutableDictionary *)self->_iCloudIdToObserverListMap allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v5)
   {
     v6 = v5;
@@ -430,7 +430,7 @@ LABEL_15:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         [(ADAnalyticsIdentifiersProvider *)self _refreshAnalyticsIdsForUser:*(*(&v23 + 1) + 8 * v8) withTime:v3];
@@ -438,18 +438,18 @@ LABEL_15:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
-  v10 = [v9 current];
+  aggregationIds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
+  current = [aggregationIds current];
 
-  v11 = [v10 value];
-  v12 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:self->_fixedDeviceId forUserAggregationId:v11];
-  v13 = [(ADAnalyticsIdentifiersProvider *)self _combineUUIDsWithUuid1:v12 uuid2:v11];
+  value = [current value];
+  v12 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:self->_fixedDeviceId forUserAggregationId:value];
+  v13 = [(ADAnalyticsIdentifiersProvider *)self _combineUUIDsWithUuid1:v12 uuid2:value];
   v14 = [@"*^&9aM&A#^&Sn3" dataUsingEncoding:4];
   v15 = AFSecurityDigestData();
   self->_experimentBucketId = [(ADAnalyticsIdentifiersProvider *)self _convertDataToScaledUInt32:v15];
@@ -457,10 +457,10 @@ LABEL_15:
   analyticsIdsForCurrentHome = self->_analyticsIdsForCurrentHome;
   self->_analyticsIdsForCurrentHome = v16;
 
-  v18 = [(ADSynchronizedIds *)self->_analyticsIdsForCurrentHome currentEphemeralSeed];
-  if (v18)
+  currentEphemeralSeed = [(ADSynchronizedIds *)self->_analyticsIdsForCurrentHome currentEphemeralSeed];
+  if (currentEphemeralSeed)
   {
-    v19 = [ADAnalyticsIdentifiersProvider _createHomeEphemeralIdWithHomeSeed:v18 withCreationTime:self->_ephemeralIdCreationDate];
+    v19 = [ADAnalyticsIdentifiersProvider _createHomeEphemeralIdWithHomeSeed:currentEphemeralSeed withCreationTime:self->_ephemeralIdCreationDate];
     lastCreatedHomeEphemeralId = self->_lastCreatedHomeEphemeralId;
     self->_lastCreatedHomeEphemeralId = v19;
 
@@ -475,24 +475,24 @@ LABEL_15:
   }
 }
 
-- (BOOL)_isAggregationIdRefreshRequired:(id)a3 forTime:(id)a4
+- (BOOL)_isAggregationIdRefreshRequired:(id)required forTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  requiredCopy = required;
+  timeCopy = time;
+  if (requiredCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_iCloudIdToAggregationIdCreationDateMap objectForKeyedSubscript:v6];
-    if (v8)
+    aggregationIds = [(NSMutableDictionary *)self->_iCloudIdToAggregationIdCreationDateMap objectForKeyedSubscript:requiredCopy];
+    if (aggregationIds)
     {
-      v9 = +[NSCalendar currentCalendar];
-      v10 = [v9 components:8 fromDate:v8 toDate:v7 options:0];
+      current = +[NSCalendar currentCalendar];
+      v10 = [current components:8 fromDate:aggregationIds toDate:timeCopy options:0];
       v11 = +[ADAnalyticsIdentifiersUtils logger];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v15 = 134218243;
-        v16 = [v10 month];
+        month = [v10 month];
         v17 = 2113;
-        v18 = v6;
+        v18 = requiredCopy;
         _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Analytics Aggregation ID last refreshed %ld months ago for user %{private}@", &v15, 0x16u);
       }
 
@@ -501,12 +501,12 @@ LABEL_15:
 
     else
     {
-      v9 = +[ADAnalyticsIdentifiersUtils logger];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      current = +[ADAnalyticsIdentifiersUtils logger];
+      if (os_log_type_enabled(current, OS_LOG_TYPE_DEBUG))
       {
         v15 = 138477827;
-        v16 = v6;
-        _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "No Analytics Aggregation ID last creation date for user %{private}@", &v15, 0xCu);
+        month = requiredCopy;
+        _os_log_debug_impl(&_mh_execute_header, current, OS_LOG_TYPE_DEBUG, "No Analytics Aggregation ID last creation date for user %{private}@", &v15, 0xCu);
       }
 
       v12 = 1;
@@ -522,23 +522,23 @@ LABEL_15:
       goto LABEL_12;
     }
 
-    v8 = [(ADSynchronizedIds *)analyticsIdsForDefaultUser aggregationIds];
-    v9 = [v8 current];
-    v12 = [v9 expirationDaysFrom:v7]< 1;
+    aggregationIds = [(ADSynchronizedIds *)analyticsIdsForDefaultUser aggregationIds];
+    current = [aggregationIds current];
+    v12 = [current expirationDaysFrom:timeCopy]< 1;
   }
 
 LABEL_12:
   return v12;
 }
 
-- (BOOL)_isEphemeralIdRefreshRequired:(id)a3 forTime:(id)a4
+- (BOOL)_isEphemeralIdRefreshRequired:(id)required forTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
+  requiredCopy = required;
+  timeCopy = time;
   v8 = self->_ephemeralIdCreationDate;
-  if (v6)
+  if (requiredCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_iCloudIdToEphemeralIdCreationDateMap objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_iCloudIdToEphemeralIdCreationDateMap objectForKeyedSubscript:requiredCopy];
     if (!v9)
     {
       v12 = 1;
@@ -550,27 +550,27 @@ LABEL_12:
     v8 = v10;
   }
 
-  v11 = [ADAnalyticsIdentifiersProvider _alignToRotationCadence:v7];
+  v11 = [ADAnalyticsIdentifiersProvider _alignToRotationCadence:timeCopy];
   v12 = [v11 compare:v8] == 1;
 
 LABEL_6:
   return v12;
 }
 
-- (unsigned)_convertDataToScaledUInt32:(id)a3
+- (unsigned)_convertDataToScaledUInt32:(id)int32
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  if ([v3 length])
+  int32Copy = int32;
+  bytes = [int32Copy bytes];
+  if ([int32Copy length])
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      v5 = v4[v6++] | (v5 << 8);
+      v5 = bytes[v6++] | (v5 << 8);
     }
 
-    while (v6 < [v3 length]);
+    while (v6 < [int32Copy length]);
     v7 = v5 % 0x14;
   }
 
@@ -582,34 +582,34 @@ LABEL_6:
   return v7;
 }
 
-- (id)_combineUUIDsWithUuid1:(id)a3 uuid2:(id)a4
+- (id)_combineUUIDsWithUuid1:(id)uuid1 uuid2:(id)uuid2
 {
-  v5 = a4;
-  v6 = [a3 UUIDString];
-  v7 = [v6 dataUsingEncoding:4];
+  uuid2Copy = uuid2;
+  uUIDString = [uuid1 UUIDString];
+  v7 = [uUIDString dataUsingEncoding:4];
 
-  v8 = [v5 UUIDString];
-  v9 = [v8 dataUsingEncoding:4];
+  uUIDString2 = [uuid2Copy UUIDString];
+  v9 = [uUIDString2 dataUsingEncoding:4];
 
   v10 = [NSMutableData dataWithLength:16];
-  v11 = [v10 mutableBytes];
-  v12 = [v7 bytes];
-  v13 = [v9 bytes];
+  mutableBytes = [v10 mutableBytes];
+  bytes = [v7 bytes];
+  bytes2 = [v9 bytes];
   for (i = 0; i != 16; ++i)
   {
-    v11[i] = v13[i] ^ v12[i];
+    mutableBytes[i] = bytes2[i] ^ bytes[i];
   }
 
   return v10;
 }
 
-- (id)_fetchIdsForHomeWithCreationTime:(id)a3
+- (id)_fetchIdsForHomeWithCreationTime:(id)time
 {
-  v4 = a3;
-  v5 = [(ADSyncCoordinating *)self->_syncCoordinator isPartOfHome];
+  timeCopy = time;
+  isPartOfHome = [(ADSyncCoordinating *)self->_syncCoordinator isPartOfHome];
   v6 = +[ADAnalyticsIdentifiersUtils logger];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (isPartOfHome)
   {
     if (v7)
     {
@@ -623,37 +623,37 @@ LABEL_6:
       v8 = [[ADSynchronizedHomeAnalyticsIds alloc] initWithHomeEphemeralSeeds:0];
     }
 
-    v9 = [(ADSynchronizedIds *)v8 populateNullsWithCreationTime:v4];
+    v9 = [(ADSynchronizedIds *)v8 populateNullsWithCreationTime:timeCopy];
     if (v9)
     {
-      v10 = [(ADSynchronizedIds *)v8 ephemeralSeeds];
-      v11 = [v10 current];
+      ephemeralSeeds = [(ADSynchronizedIds *)v8 ephemeralSeeds];
+      current = [ephemeralSeeds current];
 
       v12 = +[ADAnalyticsIdentifiersUtils logger];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v17 = 138412290;
-        v18 = v11;
+        v18 = current;
         _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Created current home seed %@", &v17, 0xCu);
       }
 
-      [(ADSyncCoordinating *)self->_syncCoordinator addSeedForHome:0 seed:v11];
+      [(ADSyncCoordinating *)self->_syncCoordinator addSeedForHome:0 seed:current];
     }
 
     if ((v9 & 2) != 0)
     {
-      v13 = [(ADSynchronizedIds *)v8 ephemeralSeeds];
-      v14 = [v13 next];
+      ephemeralSeeds2 = [(ADSynchronizedIds *)v8 ephemeralSeeds];
+      next = [ephemeralSeeds2 next];
 
       v15 = +[ADAnalyticsIdentifiersUtils logger];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v17 = 138412290;
-        v18 = v14;
+        v18 = next;
         _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Created next home seed %@", &v17, 0xCu);
       }
 
-      [(ADSyncCoordinating *)self->_syncCoordinator addSeedForHome:0 seed:v14];
+      [(ADSyncCoordinating *)self->_syncCoordinator addSeedForHome:0 seed:next];
     }
   }
 
@@ -671,10 +671,10 @@ LABEL_6:
   return v8;
 }
 
-- (id)_fetchIdsForUser:(id)a3 creationTime:(id)a4
+- (id)_fetchIdsForUser:(id)user creationTime:(id)time
 {
-  v6 = a4;
-  v7 = a3;
+  timeCopy = time;
+  userCopy = user;
   v8 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -682,11 +682,11 @@ LABEL_6:
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Fetching user seed and aggregation ids", &v28, 2u);
   }
 
-  v9 = [(ADSyncCoordinating *)self->_syncCoordinator fetchSynchronizedAnalyticsIdsForUser:v7];
+  v9 = [(ADSyncCoordinating *)self->_syncCoordinator fetchSynchronizedAnalyticsIdsForUser:userCopy];
 
   if (v9)
   {
-    if (v7)
+    if (userCopy)
     {
       goto LABEL_11;
     }
@@ -695,7 +695,7 @@ LABEL_6:
   else
   {
     v9 = [[ADSynchronizedUserAnalyticsIds alloc] initWithUserEphemeralSeeds:0 andUserAggregationIds:0];
-    if (v7)
+    if (userCopy)
     {
       goto LABEL_11;
     }
@@ -703,37 +703,37 @@ LABEL_6:
 
   if ([(ADSynchronizedIds *)v9 setCurrentEphemeralSeedIfNil:self->_localUserSeed andCreationTime:self->_localUserSeedCreationTime])
   {
-    v10 = [(ADSynchronizedIds *)v9 ephemeralSeeds];
-    v11 = [v10 current];
+    ephemeralSeeds = [(ADSynchronizedIds *)v9 ephemeralSeeds];
+    current = [ephemeralSeeds current];
 
     v12 = +[ADAnalyticsIdentifiersUtils logger];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v28 = 138412290;
-      v29 = v11;
+      v29 = current;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Populated current user seed with local value %@", &v28, 0xCu);
     }
 
-    [(ADSyncCoordinating *)self->_syncCoordinator addSeedForUser:0 seed:v11];
+    [(ADSyncCoordinating *)self->_syncCoordinator addSeedForUser:0 seed:current];
   }
 
 LABEL_11:
-  v13 = [(ADSynchronizedIds *)v9 populateNullsWithCreationTime:v6];
+  v13 = [(ADSynchronizedIds *)v9 populateNullsWithCreationTime:timeCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [(ADSynchronizedIds *)v9 ephemeralSeeds];
-    v16 = [v15 current];
+    ephemeralSeeds2 = [(ADSynchronizedIds *)v9 ephemeralSeeds];
+    current2 = [ephemeralSeeds2 current];
 
     v17 = +[ADAnalyticsIdentifiersUtils logger];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v28 = 138412290;
-      v29 = v16;
+      v29 = current2;
       _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Created current user seed %@", &v28, 0xCu);
     }
 
-    [(ADSyncCoordinating *)self->_syncCoordinator addSeedForUser:0 seed:v16];
+    [(ADSyncCoordinating *)self->_syncCoordinator addSeedForUser:0 seed:current2];
     if ((v14 & 2) == 0)
     {
 LABEL_13:
@@ -751,18 +751,18 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v18 = [(ADSynchronizedIds *)v9 ephemeralSeeds];
-  v19 = [v18 next];
+  ephemeralSeeds3 = [(ADSynchronizedIds *)v9 ephemeralSeeds];
+  next = [ephemeralSeeds3 next];
 
   v20 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     v28 = 138412290;
-    v29 = v19;
+    v29 = next;
     _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Created next user seed %@", &v28, 0xCu);
   }
 
-  [(ADSyncCoordinating *)self->_syncCoordinator addSeedForUser:0 seed:v19];
+  [(ADSyncCoordinating *)self->_syncCoordinator addSeedForUser:0 seed:next];
   if ((v14 & 4) == 0)
   {
 LABEL_14:
@@ -775,33 +775,33 @@ LABEL_14:
   }
 
 LABEL_22:
-  v21 = [(ADSynchronizedIds *)v9 aggregationIds];
-  v22 = [v21 current];
+  aggregationIds = [(ADSynchronizedIds *)v9 aggregationIds];
+  current3 = [aggregationIds current];
 
   v23 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     v28 = 138412290;
-    v29 = v22;
+    v29 = current3;
     _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Created current aggregation id %@", &v28, 0xCu);
   }
 
-  [(ADSyncCoordinating *)self->_syncCoordinator addAggregationIdForUser:0 aggregationId:v22];
+  [(ADSyncCoordinating *)self->_syncCoordinator addAggregationIdForUser:0 aggregationId:current3];
   if ((v14 & 8) != 0)
   {
 LABEL_25:
-    v24 = [(ADSynchronizedIds *)v9 aggregationIds];
-    v25 = [v24 next];
+    aggregationIds2 = [(ADSynchronizedIds *)v9 aggregationIds];
+    next2 = [aggregationIds2 next];
 
     v26 = +[ADAnalyticsIdentifiersUtils logger];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       v28 = 138412290;
-      v29 = v25;
+      v29 = next2;
       _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "Created next aggregation id %@", &v28, 0xCu);
     }
 
-    [(ADSyncCoordinating *)self->_syncCoordinator addAggregationIdForUser:0 aggregationId:v25];
+    [(ADSyncCoordinating *)self->_syncCoordinator addAggregationIdForUser:0 aggregationId:next2];
   }
 
 LABEL_28:
@@ -809,31 +809,31 @@ LABEL_28:
   return v9;
 }
 
-- (void)_testAndSetDefaultUserEphemeralId:(id)a3 creationTime:(id)a4 syncPath:(BOOL)a5 expectedValue:(id)a6
+- (void)_testAndSetDefaultUserEphemeralId:(id)id creationTime:(id)time syncPath:(BOOL)path expectedValue:(id)value
 {
-  v14 = a3;
-  v11 = a4;
-  v12 = a6;
+  idCopy = id;
+  timeCopy = time;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_id_assignment_lock);
   lastCreatedUserEphemeralId = self->_lastCreatedUserEphemeralId;
 
-  if (lastCreatedUserEphemeralId == v12)
+  if (lastCreatedUserEphemeralId == valueCopy)
   {
-    objc_storeStrong(&self->_lastCreatedUserEphemeralId, a3);
-    objc_storeStrong(&self->_ephemeralIdCreationDate, a4);
-    self->_ephemeralIdWasCreatedBySyncPath = a5;
+    objc_storeStrong(&self->_lastCreatedUserEphemeralId, id);
+    objc_storeStrong(&self->_ephemeralIdCreationDate, time);
+    self->_ephemeralIdWasCreatedBySyncPath = path;
   }
 
   os_unfair_lock_unlock(&self->_id_assignment_lock);
 }
 
-- (void)_createAndTestAndSetDefaultUserEphemeralId:(id)a3 expectedValue:(id)a4 expectedValueWasCreatedBySyncPath:(BOOL)a5 withCreationTime:(id)a6
+- (void)_createAndTestAndSetDefaultUserEphemeralId:(id)id expectedValue:(id)value expectedValueWasCreatedBySyncPath:(BOOL)path withCreationTime:(id)time
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v7)
+  pathCopy = path;
+  idCopy = id;
+  valueCopy = value;
+  timeCopy = time;
+  if (!pathCopy)
   {
     goto LABEL_8;
   }
@@ -854,18 +854,18 @@ LABEL_28:
   if (v15)
   {
 LABEL_8:
-    v17 = [ADAnalyticsIdentifiersProvider _alignToRotationCadence:v12];
-    v18 = [v10 current];
-    v19 = [v18 value];
-    v20 = [ADAnalyticsIdentifiersProvider _createUserEphemeralIdWithUserSeed:v19 withCreationTime:v17];
+    v17 = [ADAnalyticsIdentifiersProvider _alignToRotationCadence:timeCopy];
+    current = [idCopy current];
+    value = [current value];
+    v20 = [ADAnalyticsIdentifiersProvider _createUserEphemeralIdWithUserSeed:value withCreationTime:v17];
 
-    [(ADAnalyticsIdentifiersProvider *)self _testAndSetDefaultUserEphemeralId:v20 creationTime:v17 syncPath:0 expectedValue:v11];
+    [(ADAnalyticsIdentifiersProvider *)self _testAndSetDefaultUserEphemeralId:v20 creationTime:v17 syncPath:0 expectedValue:valueCopy];
   }
 }
 
-- (int64_t)_refreshEphemeralIdentifiers:(BOOL)a3
+- (int64_t)_refreshEphemeralIdentifiers:(BOOL)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v5 = self->_lastCreatedUserEphemeralId;
   ephemeralIdWasCreatedBySyncPath = self->_ephemeralIdWasCreatedBySyncPath;
   if (v5)
@@ -884,7 +884,7 @@ LABEL_8:
     v43 = self->_analyticsIdsForDefaultUser == 0;
     v44 = self->_analyticsIdsForCurrentHome == 0;
     *buf = 67110144;
-    *v56 = v3;
+    *v56 = identifiersCopy;
     *&v56[4] = 2048;
     *&v56[6] = v7;
     *&v56[14] = 1024;
@@ -896,9 +896,9 @@ LABEL_8:
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Refreshing syncData force:%d secondsSinceBirth:%ld _analyticsIdsForDefaultUserNil:%d  _analyticsIdsForCurrentHomeNil:%d _lastCreatedBySyncPath:%d", buf, 0x24u);
   }
 
-  if (!v5 || v3 || !self->_analyticsIdsForDefaultUser)
+  if (!v5 || identifiersCopy || !self->_analyticsIdsForDefaultUser)
   {
-    if (v3 && !self->_firstRefresh)
+    if (identifiersCopy && !self->_firstRefresh)
     {
       [(ADSyncCoordinating *)self->_syncCoordinator refreshHomeAndUserDetails];
       self->_firstRefresh = 0;
@@ -909,25 +909,25 @@ LABEL_8:
     analyticsIdsForDefaultUser = self->_analyticsIdsForDefaultUser;
     self->_analyticsIdsForDefaultUser = v10;
 
-    v12 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
+    ephemeralSeeds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
     v53 = v5;
     v54 = v9;
-    [(ADAnalyticsIdentifiersProvider *)self _createAndTestAndSetDefaultUserEphemeralId:v12 expectedValue:v5 expectedValueWasCreatedBySyncPath:ephemeralIdWasCreatedBySyncPath withCreationTime:v9];
+    [(ADAnalyticsIdentifiersProvider *)self _createAndTestAndSetDefaultUserEphemeralId:ephemeralSeeds expectedValue:v5 expectedValueWasCreatedBySyncPath:ephemeralIdWasCreatedBySyncPath withCreationTime:v9];
 
-    v13 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
-    v14 = [v13 current];
+    ephemeralSeeds2 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
+    current = [ephemeralSeeds2 current];
 
-    v15 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
-    v16 = [v15 next];
+    ephemeralSeeds3 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser ephemeralSeeds];
+    next = [ephemeralSeeds3 next];
 
     v17 = [ADAnalyticsIdentifiersCheckpoint alloc];
-    v18 = [v14 value];
-    v51 = v14;
-    v19 = [v14 expirationDate];
-    v20 = [v16 value];
-    v21 = [v16 effectiveFrom];
-    v22 = [v16 expirationDate];
-    v23 = [(ADAnalyticsIdentifiersCheckpoint *)v17 initWithCurrentUserSeed:v18 currentUserSeedExpirationDate:v19 nextUserSeed:v20 nextUserSeedEffectiveFromDate:v21 nextUserSeedExpirationDate:v22];
+    value = [current value];
+    v51 = current;
+    expirationDate = [current expirationDate];
+    value2 = [next value];
+    effectiveFrom = [next effectiveFrom];
+    expirationDate2 = [next expirationDate];
+    v23 = [(ADAnalyticsIdentifiersCheckpoint *)v17 initWithCurrentUserSeed:value currentUserSeedExpirationDate:expirationDate nextUserSeed:value2 nextUserSeedEffectiveFromDate:effectiveFrom nextUserSeedExpirationDate:expirationDate2];
     [(ADAnalyticsIdentifiersProvider *)self _writeCheckpoint:v23];
 
     v24 = [ADAnalyticsIdentifiersProvider _computeSecondsSinceBirth:self->_ephemeralIdCreationDate];
@@ -950,31 +950,31 @@ LABEL_8:
 
     v52 = v24;
 
-    v26 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
-    v27 = [v26 current];
+    aggregationIds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
+    current2 = [aggregationIds current];
 
-    v28 = [v27 value];
-    v29 = [v27 effectiveFrom];
-    v30 = [v27 expirationDate];
-    v31 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:self->_fixedDeviceId forUserAggregationId:v28];
+    value3 = [current2 value];
+    effectiveFrom2 = [current2 effectiveFrom];
+    expirationDate3 = [current2 expirationDate];
+    v31 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:self->_fixedDeviceId forUserAggregationId:value3];
     v32 = +[ADAnalyticsIdentifiersUtils logger];
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
       *v56 = v31;
       *&v56[8] = 2112;
-      *&v56[10] = v28;
+      *&v56[10] = value3;
       *&v56[18] = 2112;
-      v57 = v29;
+      v57 = effectiveFrom2;
       LOWORD(v58[0]) = 2112;
-      *(v58 + 2) = v30;
+      *(v58 + 2) = expirationDate3;
       _os_log_debug_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "Aggregation id details: device:%@ user:%@ effectiveFrom:%@ expirationDate:%@", buf, 0x2Au);
     }
 
-    v49 = v30;
-    v50 = v29;
+    v49 = expirationDate3;
+    v50 = effectiveFrom2;
 
-    v33 = [(ADAnalyticsIdentifiersProvider *)self _combineUUIDsWithUuid1:v31 uuid2:v28];
+    v33 = [(ADAnalyticsIdentifiersProvider *)self _combineUUIDsWithUuid1:v31 uuid2:value3];
     v34 = [@"*^&9aM&A#^&Sn3" dataUsingEncoding:4];
     v35 = AFSecurityDigestData();
     self->_experimentBucketId = [(ADAnalyticsIdentifiersProvider *)self _convertDataToScaledUInt32:v35];
@@ -982,10 +982,10 @@ LABEL_8:
     analyticsIdsForCurrentHome = self->_analyticsIdsForCurrentHome;
     self->_analyticsIdsForCurrentHome = v36;
 
-    v38 = [(ADSynchronizedIds *)self->_analyticsIdsForCurrentHome currentEphemeralSeed];
-    if (v38)
+    currentEphemeralSeed = [(ADSynchronizedIds *)self->_analyticsIdsForCurrentHome currentEphemeralSeed];
+    if (currentEphemeralSeed)
     {
-      v39 = [ADAnalyticsIdentifiersProvider _createHomeEphemeralIdWithHomeSeed:v38 withCreationTime:self->_ephemeralIdCreationDate, v49, v50];
+      v39 = [ADAnalyticsIdentifiersProvider _createHomeEphemeralIdWithHomeSeed:currentEphemeralSeed withCreationTime:self->_ephemeralIdCreationDate, v49, v50];
       lastCreatedHomeEphemeralId = self->_lastCreatedHomeEphemeralId;
       self->_lastCreatedHomeEphemeralId = v39;
 
@@ -1030,7 +1030,7 @@ LABEL_8:
   }
 
   v10 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
+  _createAndSaveFixedDeviceId = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v10];
   v6 = v10;
   if (v6)
   {
@@ -1043,13 +1043,13 @@ LABEL_8:
     }
   }
 
-  if (!v5)
+  if (!_createAndSaveFixedDeviceId)
   {
 LABEL_13:
-    v5 = [(ADAnalyticsIdentifiersProvider *)self _createAndSaveFixedDeviceId];
+    _createAndSaveFixedDeviceId = [(ADAnalyticsIdentifiersProvider *)self _createAndSaveFixedDeviceId];
   }
 
-  return v5;
+  return _createAndSaveFixedDeviceId;
 }
 
 - (id)_createAndSaveFixedDeviceId
@@ -1084,9 +1084,9 @@ LABEL_13:
   return v2;
 }
 
-- (void)_writeCheckpoint:(id)a3
+- (void)_writeCheckpoint:(id)checkpoint
 {
-  v3 = a3;
+  checkpointCopy = checkpoint;
   v4 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -1094,9 +1094,9 @@ LABEL_13:
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "Checkpointing to Keychain", buf, 2u);
   }
 
-  v5 = [v3 archive];
+  archive = [checkpointCopy archive];
 
-  if (v5)
+  if (archive)
   {
     AFKeychainSetValueForAccountAndKey();
   }
@@ -1156,24 +1156,24 @@ LABEL_10:
 
 - (id)_createDIMEphemeralToAggregationIdentifierMapEvent
 {
-  v3 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
-  v4 = [v3 current];
+  aggregationIds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
+  current = [aggregationIds current];
 
-  v5 = [v4 effectiveFrom];
-  [v5 timeIntervalSince1970];
+  effectiveFrom = [current effectiveFrom];
+  [effectiveFrom timeIntervalSince1970];
   v7 = (v6 * 1000.0);
 
-  v8 = [v4 expirationDate];
-  [v8 timeIntervalSince1970];
+  expirationDate = [current expirationDate];
+  [expirationDate timeIntervalSince1970];
   v10 = (v9 * 1000.0);
 
-  v11 = [v4 value];
-  v12 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:self->_fixedDeviceId forUserAggregationId:v11];
+  value = [current value];
+  v12 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:self->_fixedDeviceId forUserAggregationId:value];
   v13 = objc_alloc_init(DIMSchemaDIMEphemeralToAggregationIdentifierMap);
   v14 = [[SISchemaUUID alloc] initWithNSUUID:self->_lastCreatedUserEphemeralId];
   [v13 setUserEphemeralId:v14];
 
-  v15 = [[SISchemaUUID alloc] initWithNSUUID:v11];
+  v15 = [[SISchemaUUID alloc] initWithNSUUID:value];
   [v13 setUserAggregationId:v15];
 
   v16 = [[SISchemaUUID alloc] initWithNSUUID:v12];
@@ -1187,13 +1187,13 @@ LABEL_10:
   return v17;
 }
 
-- (id)_createDIMEphemeralIdentifiersEvent:(int64_t)a3
+- (id)_createDIMEphemeralIdentifiersEvent:(int64_t)event
 {
   v5 = objc_alloc_init(DIMSchemaDIMEphemeralIdentifiers);
   v6 = [[SISchemaUUID alloc] initWithNSUUID:self->_lastCreatedUserEphemeralId];
   [v5 setUserEphemeralId:v6];
 
-  [v5 setSecondsSinceEphemeralIdCreation:a3];
+  [v5 setSecondsSinceEphemeralIdCreation:event];
   if (AFIsInternalInstall())
   {
     v7 = [[SISchemaUUID alloc] initWithNSUUID:self->_lastCreatedHomeEphemeralId];
@@ -1206,30 +1206,30 @@ LABEL_10:
   return v8;
 }
 
-- (void)removeObserver:(id)a3 foriCloudAltDSId:(id)a4
+- (void)removeObserver:(id)observer foriCloudAltDSId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  observerCopy = observer;
+  idCopy = id;
+  v8 = idCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1002C2C00;
     block[3] = &unk_10051DB68;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
+    v11 = idCopy;
+    selfCopy = self;
+    v13 = observerCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1237,45 +1237,45 @@ LABEL_10:
     v7[2] = sub_1002C2DF0;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addObserver:(id)a3 foriCloudAltDSId:(id)a4
+- (void)addObserver:(id)observer foriCloudAltDSId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  observerCopy = observer;
+  idCopy = id;
+  v8 = idCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1002C3078;
     block[3] = &unk_10051DB68;
-    v11 = v7;
-    v12 = self;
-    v13 = v6;
+    v11 = idCopy;
+    selfCopy = self;
+    v13 = observerCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)fetchUserAggregationIdWithCallback:(id)a3
+- (void)fetchUserAggregationIdWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_1002C3464;
   v17 = sub_1002C3474;
-  v5 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
-  v6 = [v5 current];
-  v18 = [v6 value];
+  aggregationIds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
+  current = [aggregationIds current];
+  value = [current value];
 
   if (v14[5])
   {
-    v4[2](v4);
+    callbackCopy[2](callbackCopy);
   }
 
   else
@@ -1294,29 +1294,29 @@ LABEL_10:
     block[3] = &unk_10051B688;
     block[4] = self;
     v11 = &v13;
-    v10 = v4;
+    v10 = callbackCopy;
     dispatch_async(queue, block);
   }
 
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)fetchDeviceAggregationIdWithCallback:(id)a3
+- (void)fetchDeviceAggregationIdWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_1002C3464;
   v18 = sub_1002C3474;
-  v5 = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
-  v6 = [v5 current];
-  v19 = [v6 value];
+  aggregationIds = [(ADSynchronizedIds *)self->_analyticsIdsForDefaultUser aggregationIds];
+  current = [aggregationIds current];
+  value = [current value];
 
   if (v15[5])
   {
     v7 = [ADAnalyticsDeviceAndUserIds deviceAggregationIdWithDeviceId:self->_fixedDeviceId forUserAggregationId:?];
-    v4[2](v4, v7);
+    callbackCopy[2](callbackCopy, v7);
   }
 
   else
@@ -1335,65 +1335,65 @@ LABEL_10:
     block[3] = &unk_10051B688;
     block[4] = self;
     v12 = &v14;
-    v11 = v4;
+    v11 = callbackCopy;
     dispatch_async(queue, block);
   }
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)fetchDeviceAndUserIdsForSharedUserId:(id)a3 withCallback:(id)a4
+- (void)fetchDeviceAndUserIdsForSharedUserId:(id)id withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  callbackCopy = callback;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002C3880;
   block[3] = &unk_10051E088;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  selfCopy = self;
+  v14 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)fetchDeviceAndUserIdsForiCloudAltDSId:(id)a3 withCallback:(id)a4
+- (void)fetchDeviceAndUserIdsForiCloudAltDSId:(id)id withCallback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  callbackCopy = callback;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002C3AD4;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = callbackCopy;
+  v9 = callbackCopy;
+  v10 = idCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_asyncLogAnalyticsIdentifiersDIMEvents:(id)a3
+- (void)_asyncLogAnalyticsIdentifiersDIMEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002C3E50;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventsCopy;
+  v6 = eventsCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)_initWithSyncCoordinator:(id)a3 withCheckpoint:(id)a4
+- (id)_initWithSyncCoordinator:(id)coordinator withCheckpoint:(id)checkpoint
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  checkpointCopy = checkpoint;
   v36.receiver = self;
   v36.super_class = ADAnalyticsIdentifiersProvider;
   v8 = [(ADAnalyticsIdentifiersProvider *)&v36 init];
@@ -1402,18 +1402,18 @@ LABEL_10:
   {
     v8->_id_assignment_lock._os_unfair_lock_opaque = 0;
     *&v8->_firstRefresh = 1;
-    if (v7)
+    if (checkpointCopy)
     {
-      v10 = v7;
+      _readCheckpoint = checkpointCopy;
     }
 
     else
     {
-      v10 = [(ADAnalyticsIdentifiersProvider *)v8 _readCheckpoint];
+      _readCheckpoint = [(ADAnalyticsIdentifiersProvider *)v8 _readCheckpoint];
     }
 
     checkpoint = v9->_checkpoint;
-    v9->_checkpoint = v10;
+    v9->_checkpoint = _readCheckpoint;
 
     v12 = objc_alloc_init(NSUUID);
     localUserSeed = v9->_localUserSeed;
@@ -1458,7 +1458,7 @@ LABEL_10:
     v33[1] = 3221225472;
     v33[2] = sub_1002C4468;
     v33[3] = &unk_10051E010;
-    v34 = v6;
+    v34 = coordinatorCopy;
     v35 = v9;
     dispatch_async(v31, v33);
   }
@@ -1466,15 +1466,15 @@ LABEL_10:
   return v9;
 }
 
-+ (id)_alignToRotationCadence:(id)a3
++ (id)_alignToRotationCadence:(id)cadence
 {
-  v3 = a3;
-  [v3 timeIntervalSince1970];
+  cadenceCopy = cadence;
+  [cadenceCopy timeIntervalSince1970];
   v5 = (v4 * 1000.0);
   v6 = 900 * (v5 / 0xDBBA0);
   if (1000 * (v5 / 0x3E8) == v5 && v6 == v5 / 0x3E8)
   {
-    v8 = v3;
+    v8 = cadenceCopy;
   }
 
   else
@@ -1487,50 +1487,50 @@ LABEL_10:
   return v9;
 }
 
-+ (int64_t)_computeSecondsSinceBirth:(id)a3
++ (int64_t)_computeSecondsSinceBirth:(id)birth
 {
-  v4 = a3;
+  birthCopy = birth;
   v5 = +[NSDate now];
   [v5 timeIntervalSince1970];
-  v6 = [a1 _computeSecondsSinceBirth:v4 forTimeInterval:?];
+  v6 = [self _computeSecondsSinceBirth:birthCopy forTimeInterval:?];
 
   return v6;
 }
 
-+ (id)_createHomeEphemeralIdWithHomeSeed:(id)a3 withCreationTime:(id)a4
++ (id)_createHomeEphemeralIdWithHomeSeed:(id)seed withCreationTime:(id)time
 {
-  v5 = a4;
-  v6 = a3;
+  timeCopy = time;
+  seedCopy = seed;
   v7 = +[ADAnalyticsIdentifiersProvider _homeEphemeralIdNamespace];
-  v8 = [ADAnalyticsIdentifiersProvider _timestampToNSString:v5];
+  v8 = [ADAnalyticsIdentifiersProvider _timestampToNSString:timeCopy];
 
-  v9 = [NSUUID ad_createV5UUIDWithNamespace:v7, v6, v8, 0];
+  v9 = [NSUUID ad_createV5UUIDWithNamespace:v7, seedCopy, v8, 0];
 
   return v9;
 }
 
-+ (id)_createUserEphemeralIdWithUserSeed:(id)a3 withCreationTime:(id)a4
++ (id)_createUserEphemeralIdWithUserSeed:(id)seed withCreationTime:(id)time
 {
-  v5 = a4;
-  v6 = a3;
+  timeCopy = time;
+  seedCopy = seed;
   v7 = +[ADAnalyticsIdentifiersProvider _userEphemeralIdNamespace];
-  v8 = [ADAnalyticsIdentifiersProvider _timestampToNSString:v5];
+  v8 = [ADAnalyticsIdentifiersProvider _timestampToNSString:timeCopy];
 
-  v9 = [NSUUID ad_createV5UUIDWithNamespace:v7, v6, v8, 0];
+  v9 = [NSUUID ad_createV5UUIDWithNamespace:v7, seedCopy, v8, 0];
 
   return v9;
 }
 
-+ (id)_timestampToNSString:(id)a3
++ (id)_timestampToNSString:(id)string
 {
   v3 = qword_100590840;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     dispatch_once(&qword_100590840, &stru_100519F10);
   }
 
-  v5 = [qword_100590838 stringFromDate:v4];
+  v5 = [qword_100590838 stringFromDate:stringCopy];
 
   return v5;
 }

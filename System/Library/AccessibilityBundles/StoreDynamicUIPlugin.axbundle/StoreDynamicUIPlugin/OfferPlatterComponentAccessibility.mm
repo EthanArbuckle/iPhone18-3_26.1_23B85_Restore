@@ -1,5 +1,5 @@
 @interface OfferPlatterComponentAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,13 +8,13 @@
 
 @implementation OfferPlatterComponentAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"infoLabel" withSwiftType:"DynamicLabel"];
-  [v3 validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"titleLabel" withSwiftType:"DynamicLabel"];
-  [v3 validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicLabel"];
-  [v3 validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"buttonView" withSwiftType:"DynamicButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"infoLabel" withSwiftType:"DynamicLabel"];
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"titleLabel" withSwiftType:"DynamicLabel"];
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicLabel"];
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.OfferPlatterComponent" hasSwiftField:@"buttonView" withSwiftType:"DynamicButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,16 +27,16 @@
 - (id)accessibilityLabel
 {
   v3 = [(OfferPlatterComponentAccessibility *)self safeSwiftValueForKey:@"infoLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(OfferPlatterComponentAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(OfferPlatterComponentAccessibility *)self safeSwiftValueForKey:@"subtitleLabel"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
 
   v9 = [(OfferPlatterComponentAccessibility *)self safeSwiftValueForKey:@"buttonView"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel4 = [v9 accessibilityLabel];
 
   v11 = __UIAXStringForVariables();
 

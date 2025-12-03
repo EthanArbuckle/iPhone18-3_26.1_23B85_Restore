@@ -1,39 +1,39 @@
 @interface UsagePoliciesHandler
-- (BOOL)submitLanEventsFor:(id)a3;
-- (BOOL)updateBandsInUniqueMOsWithReason:(id)a3;
-- (BOOL)updateTopUsedByUsage:(unint64_t)a3 withReason:(id)a4;
-- (BOOL)updateTopUsedByUsageWithReason:(id)a3;
-- (UsagePoliciesHandler)initWithPersistentContainer:(id)a3;
-- (id)cumulativeUsage:(id)a3 onField:(id)a4;
-- (id)lastUsagePolicyRunForTimespan:(unint64_t)a3 object:(id)a4;
-- (id)prefixForUniqueMOStatsFieldsforTimeSpan:(unint64_t)a3;
-- (id)updateUniqueMO:(id)a3 withConstraints:(id)a4 fromStats:(id)a5 aggregatedOn:(id)a6 withTotal:(unint64_t)a7 timespan:(unint64_t)a8 prevPercentile:(unint64_t *)a9;
-- (id)usageForTimespan:(unint64_t)a3 by:(id)a4 around:(id)a5;
-- (void)updatePoliciesTableWithReason:(id)a3 dateLessThen:(id)a4 object:(id)a5 timeSpan:(unint64_t)a6;
+- (BOOL)submitLanEventsFor:(id)for;
+- (BOOL)updateBandsInUniqueMOsWithReason:(id)reason;
+- (BOOL)updateTopUsedByUsage:(unint64_t)usage withReason:(id)reason;
+- (BOOL)updateTopUsedByUsageWithReason:(id)reason;
+- (UsagePoliciesHandler)initWithPersistentContainer:(id)container;
+- (id)cumulativeUsage:(id)usage onField:(id)field;
+- (id)lastUsagePolicyRunForTimespan:(unint64_t)timespan object:(id)object;
+- (id)prefixForUniqueMOStatsFieldsforTimeSpan:(unint64_t)span;
+- (id)updateUniqueMO:(id)o withConstraints:(id)constraints fromStats:(id)stats aggregatedOn:(id)on withTotal:(unint64_t)total timespan:(unint64_t)timespan prevPercentile:(unint64_t *)percentile;
+- (id)usageForTimespan:(unint64_t)timespan by:(id)by around:(id)around;
+- (void)updatePoliciesTableWithReason:(id)reason dateLessThen:(id)then object:(id)object timeSpan:(unint64_t)span;
 @end
 
 @implementation UsagePoliciesHandler
 
-- (UsagePoliciesHandler)initWithPersistentContainer:(id)a3
+- (UsagePoliciesHandler)initWithPersistentContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = UsagePoliciesHandler;
   v6 = [(UsagePoliciesHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, container);
     v7->_topLANUsagePercentile = 75;
   }
 
   return v7;
 }
 
-- (BOOL)updateTopUsedByUsageWithReason:(id)a3
+- (BOOL)updateTopUsedByUsageWithReason:(id)reason
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -53,7 +53,7 @@
           objc_enumerationMutation(&unk_1F483E5D8);
         }
 
-        v8 &= -[UsagePoliciesHandler updateTopUsedByUsage:withReason:](self, "updateTopUsedByUsage:withReason:", [*(*(&v12 + 1) + 8 * i) unsignedIntegerValue], v4);
+        v8 &= -[UsagePoliciesHandler updateTopUsedByUsage:withReason:](self, "updateTopUsedByUsage:withReason:", [*(*(&v12 + 1) + 8 * i) unsignedIntegerValue], reasonCopy);
       }
 
       v6 = [&unk_1F483E5D8 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -71,10 +71,10 @@
   return v8 & 1;
 }
 
-- (BOOL)updateBandsInUniqueMOsWithReason:(id)a3
+- (BOOL)updateBandsInUniqueMOsWithReason:(id)reason
 {
   v56 = *MEMORY[0x1E69E9840];
-  v32 = a3;
+  reasonCopy = reason;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -114,13 +114,13 @@
           v15 = WALogCategoryDeviceStoreHandle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
           {
-            v20 = [v10 name];
+            name = [v10 name];
             *buf = v31;
             v47 = "[UsagePoliciesHandler updateBandsInUniqueMOsWithReason:]";
             v48 = 1024;
             v49 = 60;
             v50 = 2112;
-            v51 = v20;
+            v51 = name;
             v52 = 2112;
             v53 = v14;
             _os_log_impl(&dword_1C8460000, v15, OS_LOG_TYPE_FAULT, "%{public}s::%d:unable to get all %@ objects: %@", buf, 0x26u);
@@ -179,25 +179,25 @@
 
   v22 = self->_container;
   v23 = +[PoliciesMO entity];
-  v24 = [MEMORY[0x1E695DF00] date];
-  v25 = [(WAPersistentContainer *)v22 newDatedEventObjectFor:v23 withDate:v24];
+  date = [MEMORY[0x1E695DF00] date];
+  v25 = [(WAPersistentContainer *)v22 newDatedEventObjectFor:v23 withDate:date];
 
   [v25 setPolicyType:@"UsagePoliciesHandler updateBandsInUniqueMOs"];
-  [v25 setReasonForRunning:v32];
+  [v25 setReasonForRunning:reasonCopy];
   [v25 setOutcome:v8 & 1];
   v26 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [v25 policyType];
-    v28 = [v25 date];
+    policyType = [v25 policyType];
+    date2 = [v25 date];
     *buf = 136446978;
     v47 = "[UsagePoliciesHandler updateBandsInUniqueMOsWithReason:]";
     v48 = 1024;
     v49 = 72;
     v50 = 2112;
-    v51 = v27;
+    v51 = policyType;
     v52 = 2112;
-    v53 = v28;
+    v53 = date2;
     _os_log_impl(&dword_1C8460000, v26, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Stored Policy (%@) run at (%@)", buf, 0x26u);
   }
 
@@ -205,20 +205,20 @@
   return v8 & 1;
 }
 
-- (BOOL)updateTopUsedByUsage:(unint64_t)a3 withReason:(id)a4
+- (BOOL)updateTopUsedByUsage:(unint64_t)usage withReason:(id)reason
 {
   v136 = *MEMORY[0x1E69E9840];
-  v85 = a4;
+  reasonCopy = reason;
   v118 = 0;
-  v102 = a3;
-  v5 = [UsageHelper classForTimeSpan:a3 withError:&v118];
+  usageCopy = usage;
+  v5 = [UsageHelper classForTimeSpan:usage withError:&v118];
   v84 = v118;
   if (v84)
   {
     v76 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_FAULT))
     {
-      v83 = [WADeviceAnalyticsClient timeSpanToString:v102];
+      v83 = [WADeviceAnalyticsClient timeSpanToString:usageCopy];
       *buf = 136446722;
       v122 = "[UsagePoliciesHandler updateTopUsedByUsage:withReason:]";
       v123 = 1024;
@@ -296,13 +296,13 @@
         v113 = 0;
         v103 = [*(v9 + 656) constraintsForEntity:v11];
         v101 = v11;
-        v12 = [(UsagePoliciesHandler *)self lastUsagePolicyRunForTimespan:v102 object:v11];
+        v12 = [(UsagePoliciesHandler *)self lastUsagePolicyRunForTimespan:usageCopy object:v11];
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 date_lt];
+          date_lt = [v12 date_lt];
           v15 = v13;
-          v16 = [v90 compare:v14];
+          v16 = [v90 compare:date_lt];
 
           v17 = v16 == 1;
           v13 = v15;
@@ -311,8 +311,8 @@
             v57 = WALogCategoryDeviceStoreHandle();
             if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
             {
-              v59 = [WADeviceAnalyticsClient timeSpanToString:v102];
-              v60 = [v101 name];
+              v59 = [WADeviceAnalyticsClient timeSpanToString:usageCopy];
+              name = [v101 name];
               *buf = 136446978;
               v122 = "[UsagePoliciesHandler updateTopUsedByUsage:withReason:]";
               v123 = 1024;
@@ -320,7 +320,7 @@
               v125 = 2112;
               v126 = v59;
               v127 = 2112;
-              v128 = v60;
+              v128 = name;
               _os_log_impl(&dword_1C8460000, v57, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Last Complete %@ has already been used to update %@ - skipping", buf, 0x26u);
 
               v13 = v15;
@@ -331,7 +331,7 @@
         }
 
         v91 = v13;
-        v18 = [(UsagePoliciesHandler *)self usageForTimespan:v102 by:v103 around:v90];
+        v18 = [(UsagePoliciesHandler *)self usageForTimespan:usageCopy by:v103 around:v90];
         v19 = [(UsagePoliciesHandler *)self cumulativeUsage:v18 onField:v100];
 
         if (v19)
@@ -339,8 +339,8 @@
           v20 = WALogCategoryDeviceStoreHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
           {
-            v21 = [WADeviceAnalyticsClient timeSpanToString:v102];
-            v22 = [v101 name];
+            v21 = [WADeviceAnalyticsClient timeSpanToString:usageCopy];
+            name2 = [v101 name];
             *buf = 136447234;
             v122 = "[UsagePoliciesHandler updateTopUsedByUsage:withReason:]";
             v123 = 1024;
@@ -348,7 +348,7 @@
             v125 = 2112;
             v126 = v21;
             v127 = 2112;
-            v128 = v22;
+            v128 = name2;
             v129 = 2112;
             v130 = v19;
             _os_log_impl(&dword_1C8460000, v20, OS_LOG_TYPE_DEBUG, "%{public}s::%d:%@ Usage by %@: %@", buf, 0x30u);
@@ -364,16 +364,16 @@
           {
 LABEL_60:
 
-            v53 = [v57 firstObject];
+            firstObject = [v57 firstObject];
             v9 = 0x1E830D000uLL;
             v54 = +[WAPersistentContainer defaultBinnedDateHigherEdgePropertyName];
-            v55 = [v53 objectForKeyedSubscript:v54];
-            [(UsagePoliciesHandler *)self updatePoliciesTableWithReason:v85 dateLessThen:v55 object:v101 timeSpan:v102];
+            v55 = [firstObject objectForKeyedSubscript:v54];
+            [(UsagePoliciesHandler *)self updatePoliciesTableWithReason:reasonCopy dateLessThen:v55 object:v101 timeSpan:usageCopy];
 
             v13 = v91;
-            v56 = [v91 date];
+            date = [v91 date];
 
-            v87 = v56;
+            v87 = date;
 LABEL_67:
 
             v64 = v93;
@@ -392,11 +392,11 @@ LABEL_17:
 
             v24 = *(*(&v109 + 1) + 8 * v23);
             v25 = v113;
-            v26 = [(UsagePoliciesHandler *)self topLANUsagePercentile];
+            topLANUsagePercentile = [(UsagePoliciesHandler *)self topLANUsagePercentile];
             v27 = v57;
-            v28 = [v57 lastObject];
-            v29 = [v28 objectForKeyedSubscript:@"cumulative"];
-            v30 = -[UsagePoliciesHandler updateUniqueMO:withConstraints:fromStats:aggregatedOn:withTotal:timespan:prevPercentile:](self, "updateUniqueMO:withConstraints:fromStats:aggregatedOn:withTotal:timespan:prevPercentile:", v101, v103, v24, v100, [v29 unsignedIntegerValue], v102, &v113);
+            lastObject = [v57 lastObject];
+            v29 = [lastObject objectForKeyedSubscript:@"cumulative"];
+            v30 = -[UsagePoliciesHandler updateUniqueMO:withConstraints:fromStats:aggregatedOn:withTotal:timespan:prevPercentile:](self, "updateUniqueMO:withConstraints:fromStats:aggregatedOn:withTotal:timespan:prevPercentile:", v101, v103, v24, v100, [v29 unsignedIntegerValue], usageCopy, &v113);
 
             if (!v30)
             {
@@ -408,14 +408,14 @@ LABEL_17:
               v61 = WALogCategoryDeviceStoreHandle();
               if (os_log_type_enabled(v61, OS_LOG_TYPE_FAULT))
               {
-                v62 = [v30 entity];
+                entity = [v30 entity];
                 v63 = objc_opt_class();
                 *buf = 136446978;
                 v122 = "[UsagePoliciesHandler updateTopUsedByUsage:withReason:]";
                 v123 = 1024;
                 v124 = 122;
                 v125 = 2114;
-                v126 = v62;
+                v126 = entity;
                 v127 = 2112;
                 v128 = v63;
                 _os_log_impl(&dword_1C8460000, v61, OS_LOG_TYPE_FAULT, "%{public}s::%d:This function runs on entities whose class adopts DeploymentProtocol. %{public}@ (%@) does not", buf, 0x26u);
@@ -455,10 +455,10 @@ LABEL_66:
                   v34 = &stru_1F481C4A0;
                 }
 
-                v35 = [(__CFString *)v31 bssCount];
+                bssCount = [(__CFString *)v31 bssCount];
                 *buf = 136447490;
                 v36 = @"has more than MaxBssInDeployment bss";
-                if (v35 <= 15)
+                if (bssCount <= 15)
                 {
                   v36 = &stru_1F481C4A0;
                 }
@@ -480,10 +480,10 @@ LABEL_66:
               goto LABEL_35;
             }
 
-            v37 = [(__CFString *)v31 entity];
+            entity2 = [(__CFString *)v31 entity];
             v38 = +[LANMO entity];
 
-            if (v37 == v38 && v25 < v26)
+            if (entity2 == v38 && v25 < topLANUsagePercentile)
             {
               v39 = v31;
               [(UsagePoliciesHandler *)self submitLanEventsFor:v39];
@@ -524,12 +524,12 @@ LABEL_66:
               v42 = v98;
             }
 
-            v44 = [(__CFString *)v31 entity];
+            entity3 = [(__CFString *)v31 entity];
             v45 = +[NetworkMO entity];
 
-            if (v44 == v45)
+            if (entity3 == v45)
             {
-              if (v25 < v26)
+              if (v25 < topLANUsagePercentile)
               {
                 v32 = v31;
                 ++v96;
@@ -624,7 +624,7 @@ LABEL_68:
   v98 = 0;
 LABEL_74:
 
-  if (v102 == 2 && v97 && v96)
+  if (usageCopy == 2 && v97 && v96)
   {
     v66 = MEMORY[0x1E695DF90];
     v119[0] = @"lans";
@@ -687,15 +687,15 @@ LABEL_80:
   return v84 == 0;
 }
 
-- (id)lastUsagePolicyRunForTimespan:(unint64_t)a3 object:(id)a4
+- (id)lastUsagePolicyRunForTimespan:(unint64_t)timespan object:(id)object
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(UsagePoliciesHandler *)self container];
-  v8 = [PoliciesUsageMO predicateForPolicyUsageForTimeSpan:a3 forEntity:v6];
+  objectCopy = object;
+  container = [(UsagePoliciesHandler *)self container];
+  v8 = [PoliciesUsageMO predicateForPolicyUsageForTimeSpan:timespan forEntity:objectCopy];
 
   v23 = 0;
-  v9 = [v7 mostRecentPolicyFilteredBy:v8 withError:&v23];
+  v9 = [container mostRecentPolicyFilteredBy:v8 withError:&v23];
   v10 = v23;
 
   v11 = 0;
@@ -708,22 +708,22 @@ LABEL_80:
       v13 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v12 timeSpan];
-        v15 = [v12 object];
-        v16 = [v12 date];
-        v17 = [v12 date_lt];
+        timeSpan = [v12 timeSpan];
+        object = [v12 object];
+        date = [v12 date];
+        date_lt = [v12 date_lt];
         *buf = 136447490;
         v25 = "[UsagePoliciesHandler lastUsagePolicyRunForTimespan:object:]";
         v26 = 1024;
         v27 = 208;
         v28 = 2112;
-        v29 = v14;
+        v29 = timeSpan;
         v30 = 2112;
-        v31 = v15;
+        v31 = object;
         v32 = 2112;
-        v33 = v16;
+        v33 = date;
         v34 = 2112;
-        v35 = v17;
+        v35 = date_lt;
       }
 
       v11 = v12;
@@ -754,20 +754,20 @@ LABEL_80:
   return v11;
 }
 
-- (id)usageForTimespan:(unint64_t)a3 by:(id)a4 around:(id)a5
+- (id)usageForTimespan:(unint64_t)timespan by:(id)by around:(id)around
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  byCopy = by;
+  aroundCopy = around;
   v31 = 0;
-  v10 = [UsageHelper classForTimeSpan:a3 withError:&v31];
+  v10 = [UsageHelper classForTimeSpan:timespan withError:&v31];
   v11 = v31;
   v12 = [WAPersistentContainer dimensionsForUsageEntity:[(objc_class *)v10 performSelector:sel_entity]];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v8;
+  v13 = byCopy;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v14)
   {
@@ -792,10 +792,10 @@ LABEL_80:
     while (v15);
   }
 
-  v19 = [v12 allValues];
-  v20 = [(UsagePoliciesHandler *)self container];
+  allValues = [v12 allValues];
+  container = [(UsagePoliciesHandler *)self container];
   v26 = v11;
-  v21 = [UsageMO usageOf:v19 timeSpan:a3 around:v9 onContainer:v20 withError:&v26];
+  v21 = [UsageMO usageOf:allValues timeSpan:timespan around:aroundCopy onContainer:container withError:&v26];
   v22 = v26;
 
   if (v22)
@@ -813,21 +813,21 @@ LABEL_80:
   return v23;
 }
 
-- (id)cumulativeUsage:(id)a3 onField:(id)a4
+- (id)cumulativeUsage:(id)usage onField:(id)field
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  usageCopy = usage;
+  fieldCopy = field;
+  if ([usageCopy count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     context = objc_autoreleasePoolPush();
-    v20 = v5;
+    v20 = usageCopy;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v5;
+    obj = usageCopy;
     v8 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
@@ -844,14 +844,14 @@ LABEL_80:
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 objectForKeyedSubscript:v6];
+          v14 = [v13 objectForKeyedSubscript:fieldCopy];
           v10 += [v14 unsignedIntegerValue];
 
           v15 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v13];
           v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
           [v15 setObject:v16 forKeyedSubscript:@"cumulative"];
 
-          [v7 addObject:v15];
+          [array addObject:v15];
         }
 
         v9 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -861,34 +861,34 @@ LABEL_80:
     }
 
     objc_autoreleasePoolPop(context);
-    v5 = v20;
+    usageCopy = v20;
   }
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
-- (id)updateUniqueMO:(id)a3 withConstraints:(id)a4 fromStats:(id)a5 aggregatedOn:(id)a6 withTotal:(unint64_t)a7 timespan:(unint64_t)a8 prevPercentile:(unint64_t *)a9
+- (id)updateUniqueMO:(id)o withConstraints:(id)constraints fromStats:(id)stats aggregatedOn:(id)on withTotal:(unint64_t)total timespan:(unint64_t)timespan prevPercentile:(unint64_t *)percentile
 {
   v94 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  oCopy = o;
+  constraintsCopy = constraints;
+  statsCopy = stats;
+  onCopy = on;
   v17 = objc_opt_new();
-  v18 = [(UsagePoliciesHandler *)self prefixForUniqueMOStatsFieldsforTimeSpan:a8];
-  v66 = v16;
-  v19 = [v15 objectForKeyedSubscript:v16];
+  v18 = [(UsagePoliciesHandler *)self prefixForUniqueMOStatsFieldsforTimeSpan:timespan];
+  v66 = onCopy;
+  v19 = [statsCopy objectForKeyedSubscript:onCopy];
   [v19 doubleValue];
   v21 = v20;
 
-  v22 = [v15 objectForKeyedSubscript:@"cumulative"];
+  v22 = [statsCopy objectForKeyedSubscript:@"cumulative"];
   [v22 doubleValue];
   v24 = v23;
 
@@ -896,7 +896,7 @@ LABEL_80:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v25 = v14;
+  v25 = constraintsCopy;
   v26 = [v25 countByEnumeratingWithState:&v67 objects:v93 count:16];
   if (v26)
   {
@@ -912,7 +912,7 @@ LABEL_80:
         }
 
         v30 = *(*(&v67 + 1) + 8 * i);
-        v31 = [v15 objectForKeyedSubscript:v30];
+        v31 = [statsCopy objectForKeyedSubscript:v30];
         [v17 setObject:v31 forKeyedSubscript:v30];
       }
 
@@ -922,20 +922,20 @@ LABEL_80:
     while (v27);
   }
 
-  v32 = v65;
-  v33 = [(WAPersistentContainer *)self->_container uniqueObjectFor:v65 withConstraints:v17 allowCreate:0 prefetchProperties:0 withError:0];
+  v32 = oCopy;
+  v33 = [(WAPersistentContainer *)self->_container uniqueObjectFor:oCopy withConstraints:v17 allowCreate:0 prefetchProperties:0 withError:0];
   if (!v33)
   {
     v53 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
     {
-      v54 = [v65 name];
+      name = [oCopy name];
       *buf = 136446978;
       v72 = "[UsagePoliciesHandler updateUniqueMO:withConstraints:fromStats:aggregatedOn:withTotal:timespan:prevPercentile:]";
       v73 = 1024;
       v74 = 269;
       v75 = 2114;
-      v76 = v54;
+      v76 = name;
       v77 = 2112;
       v78 = v17;
       _os_log_impl(&dword_1C8460000, v53, OS_LOG_TYPE_FAULT, "%{public}s::%d:Unexpected: cannot find %{public}@ for constraints %@", buf, 0x26u);
@@ -945,9 +945,9 @@ LABEL_80:
   }
 
   v34 = v24 * 100.0;
-  v35 = v21 * 100.0 / a7;
-  v36 = v34 / a7;
-  v37 = [v15 objectForKeyedSubscript:v66];
+  v35 = v21 * 100.0 / total;
+  v36 = v34 / total;
+  v37 = [statsCopy objectForKeyedSubscript:v66];
   v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Seconds", v18];
   [v33 setValue:v37 forKey:v38];
 
@@ -955,7 +955,7 @@ LABEL_80:
   v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@Percentage", v18];
   [v33 setValue:v39 forKey:v40];
 
-  v41 = [v15 objectForKeyedSubscript:@"cumulative"];
+  v41 = [statsCopy objectForKeyedSubscript:@"cumulative"];
   v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@CumulativeSeconds", v18];
   [v33 setValue:v41 forKey:v42];
 
@@ -963,7 +963,7 @@ LABEL_80:
   v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@CumulativePercentage", v18];
   [v33 setValue:v43 forKey:v44];
 
-  if (!a9)
+  if (!percentile)
   {
     v53 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
@@ -981,7 +981,7 @@ LABEL_20:
     goto LABEL_13;
   }
 
-  *a9 = v36;
+  *percentile = v36;
   v45 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
   {
@@ -1022,7 +1022,7 @@ LABEL_20:
     v92 = v49;
     _os_log_impl(&dword_1C8460000, loga, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Updated %@ with %@(%@): %@(%@) and %@(%@): %@(%@)", buf, 0x6Cu);
 
-    v32 = v65;
+    v32 = oCopy;
     v45 = loga;
   }
 
@@ -1034,11 +1034,11 @@ LABEL_13:
   return v50;
 }
 
-- (BOOL)submitLanEventsFor:(id)a3
+- (BOOL)submitLanEventsFor:(id)for
 {
   v77[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  forCopy = for;
+  if (!forCopy)
   {
     v7 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -1060,9 +1060,9 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v5 = [(UsagePoliciesHandler *)self container];
+  container = [(UsagePoliciesHandler *)self container];
   v62 = 0;
-  v6 = [v5 bssidCountBy:&unk_1F483E5F0 inUniqueMO:v4 withError:&v62];
+  v6 = [container bssidCountBy:&unk_1F483E5F0 inUniqueMO:forCopy withError:&v62];
   v7 = v62;
 
   if (v7)
@@ -1075,7 +1075,7 @@ LABEL_22:
       v67 = 1024;
       v68 = 303;
       v69 = 2112;
-      v70 = v4;
+      v70 = forCopy;
       v71 = 2112;
       v72 = v7;
       _os_log_impl(&dword_1C8460000, v47, OS_LOG_TYPE_ERROR, "%{public}s::%d:unable to fetch bssidCountByBandInLAN:%@ %@", buf, 0x26u);
@@ -1094,7 +1094,7 @@ LABEL_22:
       v67 = 1024;
       v68 = 304;
       v69 = 2112;
-      v70 = v4;
+      v70 = forCopy;
       v71 = 2112;
       v72 = 0;
       v43 = "%{public}s::%d:unable to fetch bssidCountByBandInLAN:%@ %@";
@@ -1108,13 +1108,13 @@ LABEL_22:
   }
 
   v76[0] = @"bssInLANCount";
-  v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[__CFString bssCount](v4, "bssCount")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[__CFString bssCount](forCopy, "bssCount")}];
   v77[0] = v8;
   v76[1] = @"ssidInLANCount";
   v9 = MEMORY[0x1E696AD98];
   container = self->_container;
   v61 = 0;
-  v11 = [(WAPersistentContainer *)container networkCountForLAN:v4 withError:&v61];
+  v11 = [(WAPersistentContainer *)container networkCountForLAN:forCopy withError:&v61];
   v7 = v61;
   v12 = [v9 numberWithUnsignedInteger:v11];
   v77[1] = v12;
@@ -1133,7 +1133,7 @@ LABEL_22:
       v67 = 1024;
       v68 = 313;
       v69 = 2112;
-      v70 = v4;
+      v70 = forCopy;
       v71 = 2112;
       v72 = v7;
       _os_log_impl(&dword_1C8460000, v15, OS_LOG_TYPE_FAULT, "%{public}s::%d:networkCountForLAN:%@ --> %@", buf, 0x26u);
@@ -1154,7 +1154,7 @@ LABEL_22:
     _os_log_impl(&dword_1C8460000, v16, OS_LOG_TYPE_DEBUG, "%{public}s::%d:submitting %@: %@", buf, 0x26u);
   }
 
-  v51 = v4;
+  v51 = forCopy;
 
   v17 = +[WAClient sharedClient];
   v48 = v14;
@@ -1186,22 +1186,22 @@ LABEL_22:
 
         v22 = *(*(&v55 + 1) + 8 * v21);
         v23 = [v22 objectForKeyedSubscript:v19];
-        v24 = [v23 shortValue];
+        shortValue = [v23 shortValue];
 
-        v53 = [(UsagePoliciesHandler *)self checkMissingBandsIn:&v59 from:v18 to:v24];
-        v25 = self;
-        v26 = [(UsagePoliciesHandler *)self container];
+        v53 = [(UsagePoliciesHandler *)self checkMissingBandsIn:&v59 from:v18 to:shortValue];
+        selfCopy = self;
+        container2 = [(UsagePoliciesHandler *)self container];
         v27 = [v22 objectForKeyedSubscript:v19];
-        v28 = [v27 shortValue];
+        shortValue2 = [v27 shortValue];
         v54 = v20;
         v29 = v19;
-        v30 = [v26 countNetworksHavingBand:v28 inLan:v51 withError:&v54];
+        v30 = [container2 countNetworksHavingBand:shortValue2 inLan:v51 withError:&v54];
         v7 = v54;
 
         if (v7)
         {
           v38 = WALogCategoryDeviceStoreHandle();
-          v4 = v51;
+          forCopy = v51;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
             v39 = [v22 objectForKeyedSubscript:@"mostRecentBand"];
@@ -1237,9 +1237,9 @@ LABEL_22:
         [v31 submitWiFiAnalytics:@"com.apple.wifi.lan" data:v36];
 
         v20 = 0;
-        *(&v59 + v24) = 1;
+        *(&v59 + shortValue) = 1;
         ++v21;
-        self = v25;
+        self = selfCopy;
         v19 = v29;
         v18 = v53;
       }
@@ -1259,66 +1259,66 @@ LABEL_22:
 
   [(UsagePoliciesHandler *)self checkMissingBandsIn:&v59 from:v18 to:3];
   v37 = 1;
-  v4 = v51;
+  forCopy = v51;
 LABEL_23:
 
   v41 = *MEMORY[0x1E69E9840];
   return v37;
 }
 
-- (void)updatePoliciesTableWithReason:(id)a3 dateLessThen:(id)a4 object:(id)a5 timeSpan:(unint64_t)a6
+- (void)updatePoliciesTableWithReason:(id)reason dateLessThen:(id)then object:(id)object timeSpan:(unint64_t)span
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(UsagePoliciesHandler *)self container];
+  objectCopy = object;
+  thenCopy = then;
+  reasonCopy = reason;
+  container = [(UsagePoliciesHandler *)self container];
   v14 = +[PoliciesUsageMO entity];
-  v15 = [MEMORY[0x1E695DF00] date];
-  v16 = [v13 newDatedEventObjectFor:v14 withDate:v15];
+  date = [MEMORY[0x1E695DF00] date];
+  v16 = [container newDatedEventObjectFor:v14 withDate:date];
 
   [v16 setPolicyType:@"updateTopUsedByUsage"];
-  [v16 setReasonForRunning:v12];
+  [v16 setReasonForRunning:reasonCopy];
 
-  [v16 setDate_lt:v11];
-  v17 = [v10 name];
+  [v16 setDate_lt:thenCopy];
+  name = [objectCopy name];
 
-  [v16 setObject:v17];
-  v18 = [WADeviceAnalyticsClient timeSpanToString:a6];
+  [v16 setObject:name];
+  v18 = [WADeviceAnalyticsClient timeSpanToString:span];
   [v16 setTimeSpan:v18];
 
   v19 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v20 = [v16 policyType];
-    v21 = [v16 date];
-    v22 = [v16 object];
-    v23 = [v16 timeSpan];
-    v24 = [v16 date_lt];
+    policyType = [v16 policyType];
+    date2 = [v16 date];
+    object = [v16 object];
+    timeSpan = [v16 timeSpan];
+    date_lt = [v16 date_lt];
     v26 = 136447746;
     v27 = "[UsagePoliciesHandler updatePoliciesTableWithReason:dateLessThen:object:timeSpan:]";
     v28 = 1024;
     v29 = 372;
     v30 = 2112;
-    v31 = v20;
+    v31 = policyType;
     v32 = 2112;
-    v33 = v21;
+    v33 = date2;
     v34 = 2112;
-    v35 = v22;
+    v35 = object;
     v36 = 2112;
-    v37 = v23;
+    v37 = timeSpan;
     v38 = 2112;
-    v39 = v24;
+    v39 = date_lt;
     _os_log_impl(&dword_1C8460000, v19, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Stored Policy (%@) run at (%@) with %@ %@ %@", &v26, 0x44u);
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)prefixForUniqueMOStatsFieldsforTimeSpan:(unint64_t)a3
+- (id)prefixForUniqueMOStatsFieldsforTimeSpan:(unint64_t)span
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3 - 1 >= 4)
+  if (span - 1 >= 4)
   {
     v4 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -1335,7 +1335,7 @@ LABEL_23:
 
   else
   {
-    v3 = off_1E830EF10[a3 - 1];
+    v3 = off_1E830EF10[span - 1];
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"latestComplete%@Usage", v3];

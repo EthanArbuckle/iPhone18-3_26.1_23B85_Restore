@@ -1,10 +1,10 @@
 @interface MSUDataAccessorSymbolicPathResolver
-+ (id)resolvedSymbol:(id)a3 error:(id *)a4;
++ (id)resolvedSymbol:(id)symbol error:(id *)error;
 + (id)symbolicPathResolver;
 - (MSUDataAccessorSymbolicPathResolver)init;
-- (id)resolve:(id)a3 error:(id *)a4;
+- (id)resolve:(id)resolve error:(id *)error;
 - (void)dealloc;
-- (void)overrideSymbol:(id)a3 resolvedPath:(id)a4;
+- (void)overrideSymbol:(id)symbol resolvedPath:(id)path;
 @end
 
 @implementation MSUDataAccessorSymbolicPathResolver
@@ -26,10 +26,10 @@
   return v2;
 }
 
-+ (id)resolvedSymbol:(id)a3 error:(id *)a4
++ (id)resolvedSymbol:(id)symbol error:(id *)error
 {
   v52[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  symbolCopy = symbol;
   if (resolvedSymbol_error__onceToken != -1)
   {
     +[MSUDataAccessorSymbolicPathResolver resolvedSymbol:error:];
@@ -37,7 +37,7 @@
 
   v7 = resolvedSymbol_error__symbolCache;
   objc_sync_enter(v7);
-  v8 = [resolvedSymbol_error__symbolCache objectForKeyedSubscript:v6];
+  v8 = [resolvedSymbol_error__symbolCache objectForKeyedSubscript:symbolCopy];
   v9 = v8;
   if (v8)
   {
@@ -46,7 +46,7 @@
     goto LABEL_34;
   }
 
-  if ([v6 isEqualToString:@"ecid"])
+  if ([symbolCopy isEqualToString:@"ecid"])
   {
     v49 = 0;
     v12 = [MSUDataAccessor ioreg:@"IODeviceTree:/chosen/manifest-properties" property:@"ECID" error:&v49];
@@ -55,8 +55,8 @@
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 length] == 8)
     {
       v13 = v12;
-      v14 = [v12 bytes];
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llX", *v14];
+      bytes = [v12 bytes];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llX", *bytes];
     }
 
     else
@@ -83,7 +83,7 @@ LABEL_24:
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:@"boardid"])
+  if ([symbolCopy isEqualToString:@"boardid"])
   {
     v15 = MGCopyAnswer();
     v16 = v15;
@@ -95,7 +95,7 @@ LABEL_24:
     goto LABEL_17;
   }
 
-  if ([v6 isEqualToString:@"chipid"])
+  if ([symbolCopy isEqualToString:@"chipid"])
   {
     v15 = MGCopyAnswer();
     v16 = v15;
@@ -113,7 +113,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([v6 isEqualToString:@"hwmodel"])
+  if ([symbolCopy isEqualToString:@"hwmodel"])
   {
     v48 = 0;
     v10 = [MSUDataAccessor hardwareModelWithError:&v48];
@@ -121,7 +121,7 @@ LABEL_17:
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"nsih"])
+  if ([symbolCopy isEqualToString:@"nsih"])
   {
     v24 = +[MSUDataAccessor sharedDataAccessor];
     v47 = 0;
@@ -131,7 +131,7 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if ([v6 isEqualToString:@"volguuid"])
+  if ([symbolCopy isEqualToString:@"volguuid"])
   {
     v46 = 0;
     v10 = [MSUDataAccessor bootUUIDWithError:&v46];
@@ -146,18 +146,18 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ([v6 isEqualToString:@"preboot"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"sourcepreboot"))
+  if ([symbolCopy isEqualToString:@"preboot"] & 1) != 0 || (objc_msgSend(symbolCopy, "isEqualToString:", @"sourcepreboot"))
   {
     v11 = 0;
     v10 = @"/private/preboot";
     goto LABEL_25;
   }
 
-  if ([v6 isEqualToString:@"iscpreboot"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"hardware"))
+  if ([symbolCopy isEqualToString:@"iscpreboot"] & 1) != 0 || (objc_msgSend(symbolCopy, "isEqualToString:", @"hardware"))
   {
 LABEL_46:
     v11 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_30;
     }
@@ -165,7 +165,7 @@ LABEL_46:
     goto LABEL_33;
   }
 
-  if ([v6 isEqualToString:@"bootobjectspath"])
+  if ([symbolCopy isEqualToString:@"bootobjectspath"])
   {
     v45 = 0;
     v25 = [MSUDataAccessor ioreg:@"IODeviceTree:/chosen" property:@"boot-objects-path" error:&v45];
@@ -187,12 +187,12 @@ LABEL_46:
     goto LABEL_24;
   }
 
-  if (![v6 isEqualToString:@"cryptex1ticketpath"])
+  if (![symbolCopy isEqualToString:@"cryptex1ticketpath"])
   {
     v34 = MSUDASharedLogger();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      [(MSUDataAccessorSymbolicPathResolver *)v6 resolvedSymbol:v34 error:v35, v36, v37, v38, v39, v40];
+      [(MSUDataAccessorSymbolicPathResolver *)symbolCopy resolvedSymbol:v34 error:v35, v36, v37, v38, v39, v40];
     }
 
     goto LABEL_46;
@@ -204,9 +204,9 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  v44 = [a1 resolvedSymbol:@"preboot" error:0];
-  v30 = [a1 resolvedSymbol:@"hwmodel" error:0];
-  v31 = [a1 resolvedSymbol:@"ecid" error:0];
+  v44 = [self resolvedSymbol:@"preboot" error:0];
+  v30 = [self resolvedSymbol:@"hwmodel" error:0];
+  v31 = [self resolvedSymbol:@"ecid" error:0];
   v32 = v31;
   if (v29 == 1 && v30 && v31)
   {
@@ -251,18 +251,18 @@ LABEL_19:
   if (v10)
   {
 LABEL_25:
-    [resolvedSymbol_error__symbolCache setObject:v10 forKeyedSubscript:v6];
+    [resolvedSymbol_error__symbolCache setObject:v10 forKeyedSubscript:symbolCopy];
     goto LABEL_34;
   }
 
 LABEL_29:
-  if (a4)
+  if (error)
   {
 LABEL_30:
     v50[0] = *MEMORY[0x277CCA068];
     v50[1] = @"symbol";
     v51[0] = @"Path symbol resolution failure";
-    v51[1] = v6;
+    v51[1] = symbolCopy;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
     v21 = [v20 mutableCopy];
 
@@ -271,7 +271,7 @@ LABEL_30:
       [v21 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
     }
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MSUDAError" code:6007 userInfo:v21];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MSUDAError" code:6007 userInfo:v21];
   }
 
 LABEL_33:
@@ -306,30 +306,30 @@ void __60__MSUDataAccessorSymbolicPathResolver_resolvedSymbol_error___block_invo
   return v2;
 }
 
-- (void)overrideSymbol:(id)a3 resolvedPath:(id)a4
+- (void)overrideSymbol:(id)symbol resolvedPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  symbolCopy = symbol;
+  pathCopy = path;
   v8 = self->_overrides;
   objc_sync_enter(v8);
   overrides = self->_overrides;
-  if (v7)
+  if (pathCopy)
   {
-    [(NSMutableDictionary *)overrides setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)overrides setObject:pathCopy forKeyedSubscript:symbolCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)overrides removeObjectForKey:v6];
+    [(NSMutableDictionary *)overrides removeObjectForKey:symbolCopy];
   }
 
   objc_sync_exit(v8);
 }
 
-- (id)resolve:(id)a3 error:(id *)a4
+- (id)resolve:(id)resolve error:(id *)error
 {
   v69[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resolveCopy = resolve;
   v63 = 0;
   v64[0] = &v63;
   v64[1] = 0x3032000000;
@@ -383,7 +383,7 @@ void __60__MSUDataAccessorSymbolicPathResolver_resolvedSymbol_error___block_invo
 
 LABEL_5:
     v22 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -395,19 +395,19 @@ LABEL_5:
   v59 = &v58;
   v60 = 0x2020000000;
   v61 = 0;
-  v23 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v24 = v59[3];
-  v25 = [v6 length];
+  v25 = [resolveCopy length];
   v49 = MEMORY[0x277D85DD0];
   v50 = 3254779904;
   v51 = __53__MSUDataAccessorSymbolicPathResolver_resolve_error___block_invoke;
   v52 = &__block_descriptor_72_e8_32s40s48s56r64r_e37_v32__0__NSTextCheckingResult_8Q16_B24l;
   v56 = &v58;
-  v26 = v6;
+  v26 = resolveCopy;
   v53 = v26;
-  v27 = v23;
+  v27 = string;
   v54 = v27;
-  v55 = self;
+  selfCopy = self;
   v57 = &v63;
   [v7 enumerateMatchesInString:v26 options:0 range:v24 usingBlock:{v25, &v49}];
   v28 = [v26 length];
@@ -436,7 +436,7 @@ LABEL_5:
   }
 
   _Block_object_dispose(&v58, 8);
-  if (!a4)
+  if (!error)
   {
 LABEL_6:
     if (!v22)
@@ -448,7 +448,7 @@ LABEL_6:
   }
 
 LABEL_20:
-  *a4 = *(v64[0] + 40);
+  *error = *(v64[0] + 40);
   if (!v22)
   {
     goto LABEL_24;
@@ -458,7 +458,7 @@ LABEL_21:
   v45 = MSUDASharedLogger();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
   {
-    [(MSUDataAccessorSymbolicPathResolver *)v6 resolve:v22 error:v45];
+    [(MSUDataAccessorSymbolicPathResolver *)resolveCopy resolve:v22 error:v45];
   }
 
 LABEL_24:

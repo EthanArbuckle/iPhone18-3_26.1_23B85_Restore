@@ -1,18 +1,18 @@
 @interface XPCProxyXPCHost
-- (void)xpcUnsafeSendMessageWithData:(id)a3 proxy:(id)a4 completionHandler:(id)a5;
+- (void)xpcUnsafeSendMessageWithData:(id)data proxy:(id)proxy completionHandler:(id)handler;
 @end
 
 @implementation XPCProxyXPCHost
 
-- (void)xpcUnsafeSendMessageWithData:(id)a3 proxy:(id)a4 completionHandler:(id)a5
+- (void)xpcUnsafeSendMessageWithData:(id)data proxy:(id)proxy completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   swift_unknownObjectRetain();
-  v8 = self;
-  if (a3)
+  selfCopy = self;
+  if (data)
   {
-    v9 = a3;
-    a3 = sub_1C9A91618();
+    dataCopy = data;
+    data = sub_1C9A91618();
     v11 = v10;
   }
 
@@ -23,9 +23,9 @@
 
   v12 = swift_allocObject();
   *(v12 + 16) = v7;
-  sub_1C9828C34(a3, v11, a4, sub_1C982F5D0, v12);
+  sub_1C9828C34(data, v11, proxy, sub_1C982F5D0, v12);
 
-  sub_1C97AA780(a3, v11);
+  sub_1C97AA780(data, v11);
   swift_unknownObjectRelease();
 }
 

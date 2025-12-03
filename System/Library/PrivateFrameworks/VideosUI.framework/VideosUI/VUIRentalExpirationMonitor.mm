@@ -1,10 +1,10 @@
 @interface VUIRentalExpirationMonitor
 + (id)sharedInstance;
 - (VUIRentalExpirationMonitor)init;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_expirationTimerDidFire:(id)a3;
-- (void)_isPlaybackUIBeingShownDidChange:(id)a3;
-- (void)_libraryContentsDidChange:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_expirationTimerDidFire:(id)fire;
+- (void)_isPlaybackUIBeingShownDidChange:(id)change;
+- (void)_libraryContentsDidChange:(id)change;
 - (void)_registerStateMachineHandlers;
 - (void)dealloc;
 - (void)startMonitoring;
@@ -54,18 +54,18 @@ void __44__VUIRentalExpirationMonitor_sharedInstance__block_invoke()
     [(TVPStateMachine *)v2->_stateMachine setLogObject:sLogObject_19];
     [(VUIRentalExpirationMonitor *)v2 _registerStateMachineHandlers];
     [(TVPStateMachine *)v2->_stateMachine setShouldAcceptEvents:1];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DF7D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DF7D8] object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = VUIPlaybackManagerIsPlaybackUIBeingShownDidChange[0];
     v11 = +[VUIPlaybackManager sharedInstance];
-    [v9 addObserver:v2 selector:sel__isPlaybackUIBeingShownDidChange_ name:v10 object:v11];
+    [defaultCenter2 addObserver:v2 selector:sel__isPlaybackUIBeingShownDidChange_ name:v10 object:v11];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = *MEMORY[0x1E69B2D08];
-    v14 = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
-    [v12 addObserver:v2 selector:sel__libraryContentsDidChange_ name:v13 object:v14];
+    autoupdatingSharedLibrary = [MEMORY[0x1E69B34E0] autoupdatingSharedLibrary];
+    [defaultCenter3 addObserver:v2 selector:sel__libraryContentsDidChange_ name:v13 object:autoupdatingSharedLibrary];
   }
 
   return v2;
@@ -75,7 +75,7 @@ void __44__VUIRentalExpirationMonitor_sharedInstance__block_invoke()
 {
   v39[2] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v3 = [(VUIRentalExpirationMonitor *)self stateMachine];
+  stateMachine = [(VUIRentalExpirationMonitor *)self stateMachine];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__VUIRentalExpirationMonitor__registerStateMachineHandlers__block_invoke_3;
@@ -99,7 +99,7 @@ void __44__VUIRentalExpirationMonitor_sharedInstance__block_invoke()
   objc_copyWeak(&v29, &location);
   v6 = v5;
   v28 = v6;
-  [v3 registerHandlerForEvent:@"Start monitoring" onState:@"Idle" withBlock:v27];
+  [stateMachine registerHandlerForEvent:@"Start monitoring" onState:@"Idle" withBlock:v27];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __59__VUIRentalExpirationMonitor__registerStateMachineHandlers__block_invoke_5_109;
@@ -107,28 +107,28 @@ void __44__VUIRentalExpirationMonitor_sharedInstance__block_invoke()
   objc_copyWeak(&v26, &location);
   v7 = v4;
   v25 = v7;
-  [v3 registerHandlerForEvent:@"Rental query did complete" onState:@"Waiting for rental query to complete" withBlock:v24];
+  [stateMachine registerHandlerForEvent:@"Rental query did complete" onState:@"Waiting for rental query to complete" withBlock:v24];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __59__VUIRentalExpirationMonitor__registerStateMachineHandlers__block_invoke_114;
   v22[3] = &unk_1E8730120;
   v8 = v7;
   v23 = v8;
-  [v3 registerHandlerForEvent:@"Application did become active" onState:@"Waiting for appropriate app state to handle expiration" withBlock:v22];
+  [stateMachine registerHandlerForEvent:@"Application did become active" onState:@"Waiting for appropriate app state to handle expiration" withBlock:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __59__VUIRentalExpirationMonitor__registerStateMachineHandlers__block_invoke_2_115;
   v20[3] = &unk_1E8730120;
   v9 = v8;
   v21 = v9;
-  [v3 registerHandlerForEvent:@"Playback UI no longer being shown" onState:@"Waiting for appropriate app state to handle expiration" withBlock:v20];
+  [stateMachine registerHandlerForEvent:@"Playback UI no longer being shown" onState:@"Waiting for appropriate app state to handle expiration" withBlock:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __59__VUIRentalExpirationMonitor__registerStateMachineHandlers__block_invoke_3_116;
   v18[3] = &unk_1E8730120;
   v10 = v6;
   v19 = v10;
-  [v3 registerHandlerForEvent:@"Expiration UI complete" onState:@"Showing expiration UI" withBlock:v18];
+  [stateMachine registerHandlerForEvent:@"Expiration UI complete" onState:@"Showing expiration UI" withBlock:v18];
   v39[0] = @"Idle";
   v39[1] = @"Waiting for earliest rental to expire";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
@@ -138,7 +138,7 @@ void __44__VUIRentalExpirationMonitor_sharedInstance__block_invoke()
   v16[3] = &unk_1E8730120;
   v12 = v10;
   v17 = v12;
-  [v3 registerHandlerForEvent:@"Library contents did change" onStates:v11 withBlock:v16];
+  [stateMachine registerHandlerForEvent:@"Library contents did change" onStates:v11 withBlock:v16];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -146,7 +146,7 @@ void __44__VUIRentalExpirationMonitor_sharedInstance__block_invoke()
   v14[3] = &unk_1E8730120;
   v13 = v12;
   v15 = v13;
-  [v3 registerHandlerForEvent:@"Rental expiration timer did fire" onState:@"Waiting for earliest rental to expire" withBlock:v14];
+  [stateMachine registerHandlerForEvent:@"Rental expiration timer did fire" onState:@"Waiting for earliest rental to expire" withBlock:v14];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&v29);
@@ -159,8 +159,8 @@ void __44__VUIRentalExpirationMonitor_sharedInstance__block_invoke()
 
 - (void)startMonitoring
 {
-  v2 = [(VUIRentalExpirationMonitor *)self stateMachine];
-  [v2 postEvent:@"Start monitoring"];
+  stateMachine = [(VUIRentalExpirationMonitor *)self stateMachine];
+  [stateMachine postEvent:@"Start monitoring"];
 }
 
 __CFString *__59__VUIRentalExpirationMonitor__registerStateMachineHandlers__block_invoke_4_107(uint64_t a1)
@@ -445,31 +445,31 @@ __CFString *__59__VUIRentalExpirationMonitor__registerStateMachineHandlers__bloc
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIRentalExpirationMonitor;
   [(VUIRentalExpirationMonitor *)&v4 dealloc];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v3 = [(VUIRentalExpirationMonitor *)self stateMachine];
-  [v3 postEvent:@"Application did become active"];
+  stateMachine = [(VUIRentalExpirationMonitor *)self stateMachine];
+  [stateMachine postEvent:@"Application did become active"];
 }
 
-- (void)_isPlaybackUIBeingShownDidChange:(id)a3
+- (void)_isPlaybackUIBeingShownDidChange:(id)change
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = +[VUIPlaybackManager sharedInstance];
-  v5 = [v4 isPlaybackUIBeingShown];
+  isPlaybackUIBeingShown = [v4 isPlaybackUIBeingShown];
 
   v6 = sLogObject_19;
   if (os_log_type_enabled(sLogObject_19, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"NO";
-    if (v5)
+    if (isPlaybackUIBeingShown)
     {
       v7 = @"YES";
     }
@@ -479,7 +479,7 @@ __CFString *__59__VUIRentalExpirationMonitor__registerStateMachineHandlers__bloc
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_DEFAULT, "isPlaybackUIBeingShown did change to %@", buf, 0xCu);
   }
 
-  if ((v5 & 1) == 0)
+  if ((isPlaybackUIBeingShown & 1) == 0)
   {
     v8 = sLogObject_19;
     if (os_log_type_enabled(sLogObject_19, OS_LOG_TYPE_DEFAULT))
@@ -531,21 +531,21 @@ void __63__VUIRentalExpirationMonitor__isPlaybackUIBeingShownDidChange___block_i
   }
 }
 
-- (void)_libraryContentsDidChange:(id)a3
+- (void)_libraryContentsDidChange:(id)change
 {
   v4 = MEMORY[0x1E69E58C0];
-  v5 = [(VUIRentalExpirationMonitor *)self stateMachine];
-  [v4 cancelPreviousPerformRequestsWithTarget:v5 selector:sel_postEvent_ object:@"Library contents did change"];
+  stateMachine = [(VUIRentalExpirationMonitor *)self stateMachine];
+  [v4 cancelPreviousPerformRequestsWithTarget:stateMachine selector:sel_postEvent_ object:@"Library contents did change"];
 
-  v6 = [(VUIRentalExpirationMonitor *)self stateMachine];
-  [v6 performSelector:sel_postEvent_ withObject:@"Library contents did change" afterDelay:1.0];
+  stateMachine2 = [(VUIRentalExpirationMonitor *)self stateMachine];
+  [stateMachine2 performSelector:sel_postEvent_ withObject:@"Library contents did change" afterDelay:1.0];
 }
 
-- (void)_expirationTimerDidFire:(id)a3
+- (void)_expirationTimerDidFire:(id)fire
 {
   [(VUIRentalExpirationMonitor *)self setEarliestExpirationTimer:0];
-  v4 = [(VUIRentalExpirationMonitor *)self stateMachine];
-  [v4 postEvent:@"Rental expiration timer did fire"];
+  stateMachine = [(VUIRentalExpirationMonitor *)self stateMachine];
+  [stateMachine postEvent:@"Rental expiration timer did fire"];
 }
 
 uint64_t __59__VUIRentalExpirationMonitor__registerStateMachineHandlers__block_invoke_2()

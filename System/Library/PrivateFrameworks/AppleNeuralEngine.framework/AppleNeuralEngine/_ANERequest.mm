@@ -1,13 +1,13 @@
 @interface _ANERequest
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 perfStats:(id)a7 procedureIndex:(id)a8;
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 procedureIndex:(id)a7;
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9;
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9 sharedEvents:(id)a10;
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9 sharedEvents:(id)a10 transactionHandle:(id)a11;
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 procedureIndex:(id)a8;
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices perfStats:(id)stats procedureIndex:(id)index;
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices procedureIndex:(id)index;
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index;
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index sharedEvents:(id)self0;
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index sharedEvents:(id)self0 transactionHandle:(id)self1;
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer procedureIndex:(id)index;
 - (BOOL)validate;
-- (_ANERequest)initWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9 sharedEvents:(id)a10 transactionHandle:(id)a11;
-- (_ANERequest)initWithVirtualModel:(void *)a3;
+- (_ANERequest)initWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index sharedEvents:(id)self0 transactionHandle:(id)self1;
+- (_ANERequest)initWithVirtualModel:(void *)model;
 - (id)description;
 - (unint64_t)ioSurfacesCount;
 - (void)validate;
@@ -18,11 +18,11 @@
 - (BOOL)validate
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = [(_ANERequest *)self inputArray];
-  v5 = [v4 count];
+  inputArray = [(_ANERequest *)self inputArray];
+  v5 = [inputArray count];
 
-  v6 = [(_ANERequest *)self outputArray];
-  v7 = [v6 count];
+  outputArray = [(_ANERequest *)self outputArray];
+  v7 = [outputArray count];
 
   if (!v5 || !v7)
   {
@@ -35,11 +35,11 @@
     goto LABEL_36;
   }
 
-  v8 = [(_ANERequest *)self inputIndexArray];
-  v9 = [v8 count];
+  inputIndexArray = [(_ANERequest *)self inputIndexArray];
+  v9 = [inputIndexArray count];
 
-  v10 = [(_ANERequest *)self outputIndexArray];
-  v11 = [v10 count];
+  outputIndexArray = [(_ANERequest *)self outputIndexArray];
+  v11 = [outputIndexArray count];
 
   if (!v9 || !v11)
   {
@@ -57,9 +57,9 @@
     v24 = +[_ANELog common];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = NSStringFromSelector(a2);
+      outputArray2 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v68 = v25;
+      v68 = outputArray2;
       v69 = 2048;
       *v70 = v5;
       *&v70[8] = 2048;
@@ -81,11 +81,11 @@ LABEL_24:
       v13 = 0;
       while (1)
       {
-        v14 = [(_ANERequest *)self inputIndexArray];
-        v15 = [v14 objectAtIndexedSubscript:v12];
-        v16 = [v15 unsignedIntegerValue];
+        inputIndexArray2 = [(_ANERequest *)self inputIndexArray];
+        v15 = [inputIndexArray2 objectAtIndexedSubscript:v12];
+        unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-        if (v16 >= 0xFF)
+        if (unsignedIntegerValue >= 0xFF)
         {
           break;
         }
@@ -96,11 +96,11 @@ LABEL_24:
           v17 = 0;
           for (i = 0; i < v7; v17 = ++i)
           {
-            v19 = [(_ANERequest *)self outputIndexArray];
-            v20 = [v19 objectAtIndexedSubscript:v17];
-            v21 = [v20 unsignedIntegerValue];
+            outputIndexArray2 = [(_ANERequest *)self outputIndexArray];
+            v20 = [outputIndexArray2 objectAtIndexedSubscript:v17];
+            unsignedIntegerValue2 = [v20 unsignedIntegerValue];
 
-            if (v21 >= 0xFF)
+            if (unsignedIntegerValue2 >= 0xFF)
             {
               v24 = +[_ANELog common];
               if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -108,17 +108,17 @@ LABEL_24:
                 goto LABEL_36;
               }
 
-              v25 = NSStringFromSelector(a2);
-              v26 = [(_ANERequest *)self outputIndexArray];
-              v31 = [v26 objectAtIndexedSubscript:v17];
+              outputArray2 = NSStringFromSelector(a2);
+              outputIndexArray3 = [(_ANERequest *)self outputIndexArray];
+              v31 = [outputIndexArray3 objectAtIndexedSubscript:v17];
               *buf = 138413314;
-              v68 = v25;
+              v68 = outputArray2;
               v69 = 1024;
               *v70 = i;
               *&v70[4] = 2112;
               *&v70[6] = v31;
               *&v70[14] = 2048;
-              *&v70[16] = v21;
+              *&v70[16] = unsignedIntegerValue2;
               *&v70[24] = 1024;
               *&v70[26] = 254;
               v32 = "%@: outputIndexArray[%u]=%@ length=%lu exceeds kANERequestMaxSymbolIndex=%d";
@@ -126,10 +126,10 @@ LABEL_24:
             }
           }
 
-          v22 = [(_ANERequest *)self procedureIndex];
-          v23 = [v22 unsignedIntegerValue];
+          procedureIndex = [(_ANERequest *)self procedureIndex];
+          unsignedIntegerValue3 = [procedureIndex unsignedIntegerValue];
 
-          if (v23 >= 0x81)
+          if (unsignedIntegerValue3 >= 0x81)
           {
             v24 = +[_ANELog common];
             if (!os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -137,14 +137,14 @@ LABEL_24:
               goto LABEL_36;
             }
 
-            v25 = NSStringFromSelector(a2);
-            v26 = [(_ANERequest *)self procedureIndex];
+            outputArray2 = NSStringFromSelector(a2);
+            outputIndexArray3 = [(_ANERequest *)self procedureIndex];
             *buf = 138413058;
-            v68 = v25;
+            v68 = outputArray2;
             v69 = 2112;
-            *v70 = v26;
+            *v70 = outputIndexArray3;
             *&v70[8] = 2048;
-            *&v70[10] = v23;
+            *&v70[10] = unsignedIntegerValue3;
             *&v70[18] = 1024;
             *&v70[20] = 128;
             v27 = "%@: self.procedureIndex=%@ length=%lu exceeds kANEMaxProcedures=%d";
@@ -153,19 +153,19 @@ LABEL_24:
             goto LABEL_30;
           }
 
-          v35 = [(_ANERequest *)self perfStatsArray];
-          v36 = [v35 count];
+          perfStatsArray = [(_ANERequest *)self perfStatsArray];
+          v36 = [perfStatsArray count];
 
           if (v36)
           {
             v24 = [MEMORY[0x1E695E0F8] mutableCopy];
             for (j = 0; j != v36; ++j)
             {
-              v38 = [(_ANERequest *)self perfStatsArray];
-              v39 = [v38 objectAtIndexedSubscript:j];
-              v40 = [v39 statType];
+              perfStatsArray2 = [(_ANERequest *)self perfStatsArray];
+              v39 = [perfStatsArray2 objectAtIndexedSubscript:j];
+              statType = [v39 statType];
 
-              if (v40 >= 3)
+              if (statType >= 3)
               {
                 v59 = +[_ANELog common];
                 if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -176,7 +176,7 @@ LABEL_24:
                   v69 = 2048;
                   *v70 = j;
                   *&v70[8] = 2048;
-                  *&v70[10] = v40;
+                  *&v70[10] = statType;
                   *&v70[18] = 2048;
                   *&v70[20] = 0;
                   *&v70[28] = 2048;
@@ -187,17 +187,17 @@ LABEL_24:
                 goto LABEL_36;
               }
 
-              v41 = [MEMORY[0x1E696AD98] numberWithInteger:v40];
+              v41 = [MEMORY[0x1E696AD98] numberWithInteger:statType];
               v42 = [v24 objectForKey:v41];
 
-              v43 = [MEMORY[0x1E696AD98] numberWithInteger:v40];
+              v43 = [MEMORY[0x1E696AD98] numberWithInteger:statType];
               if (v42)
               {
                 v44 = [v24 objectForKeyedSubscript:v43];
-                v45 = [v44 longValue];
+                longValue = [v44 longValue];
 
-                v43 = [MEMORY[0x1E696AD98] numberWithLong:v45 + 1];
-                v46 = [MEMORY[0x1E696AD98] numberWithInteger:v40];
+                v43 = [MEMORY[0x1E696AD98] numberWithLong:longValue + 1];
+                v46 = [MEMORY[0x1E696AD98] numberWithInteger:statType];
                 [v24 setObject:v43 forKeyedSubscript:v46];
               }
 
@@ -251,13 +251,13 @@ LABEL_24:
             }
           }
 
-          v53 = [(_ANERequest *)self sharedEvents];
-          v54 = [v53 signalEvents];
-          v55 = [v54 count];
+          sharedEvents = [(_ANERequest *)self sharedEvents];
+          signalEvents = [sharedEvents signalEvents];
+          v55 = [signalEvents count];
 
-          v56 = [(_ANERequest *)self sharedEvents];
-          v57 = [v56 waitEvents];
-          v58 = [v57 count];
+          sharedEvents2 = [(_ANERequest *)self sharedEvents];
+          waitEvents = [sharedEvents2 waitEvents];
+          v58 = [waitEvents count];
 
           if (v55 <= 0x40 && v58 < 0x41)
           {
@@ -268,9 +268,9 @@ LABEL_24:
           v24 = +[_ANELog common];
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            v25 = NSStringFromSelector(a2);
+            outputArray2 = NSStringFromSelector(a2);
             *buf = 138413058;
-            v68 = v25;
+            v68 = outputArray2;
             v69 = 2048;
             *v70 = v55;
             *&v70[8] = 2048;
@@ -291,17 +291,17 @@ LABEL_24:
         goto LABEL_36;
       }
 
-      v25 = NSStringFromSelector(a2);
-      v26 = [(_ANERequest *)self inputIndexArray];
-      v31 = [v26 objectAtIndexedSubscript:v12];
+      outputArray2 = NSStringFromSelector(a2);
+      outputIndexArray3 = [(_ANERequest *)self inputIndexArray];
+      v31 = [outputIndexArray3 objectAtIndexedSubscript:v12];
       *buf = 138413314;
-      v68 = v25;
+      v68 = outputArray2;
       v69 = 1024;
       *v70 = v13;
       *&v70[4] = 2112;
       *&v70[6] = v31;
       *&v70[14] = 2048;
-      *&v70[16] = v16;
+      *&v70[16] = unsignedIntegerValue;
       *&v70[24] = 1024;
       *&v70[26] = 254;
       v32 = "%@: inputIndexArray[%u]=%@ length=%lu exceeds kANERequestMaxSymbolIndex=%d";
@@ -314,12 +314,12 @@ LABEL_66:
     v24 = +[_ANELog framework];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [(_ANERequest *)self outputArray];
-      v26 = [(_ANERequest *)self outputIndexArray];
+      outputArray2 = [(_ANERequest *)self outputArray];
+      outputIndexArray3 = [(_ANERequest *)self outputIndexArray];
       *buf = 138413058;
-      v68 = v25;
+      v68 = outputArray2;
       v69 = 2112;
-      *v70 = v26;
+      *v70 = outputIndexArray3;
       *&v70[8] = 2048;
       *&v70[10] = v7;
       *&v70[18] = 2048;
@@ -341,12 +341,12 @@ LABEL_32:
     v24 = +[_ANELog framework];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [(_ANERequest *)self inputArray];
-      v26 = [(_ANERequest *)self inputIndexArray];
+      outputArray2 = [(_ANERequest *)self inputArray];
+      outputIndexArray3 = [(_ANERequest *)self inputIndexArray];
       *buf = 138413058;
-      v68 = v25;
+      v68 = outputArray2;
       v69 = 2112;
-      *v70 = v26;
+      *v70 = outputIndexArray3;
       *&v70[8] = 2048;
       *&v70[10] = v5;
       *&v70[18] = 2048;
@@ -364,135 +364,135 @@ LABEL_37:
   return result;
 }
 
-- (_ANERequest)initWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9 sharedEvents:(id)a10 transactionHandle:(id)a11
+- (_ANERequest)initWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index sharedEvents:(id)self0 transactionHandle:(id)self1
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v18 = a11;
+  inputsCopy = inputs;
+  indicesCopy = indices;
+  outputsCopy = outputs;
+  outputIndicesCopy = outputIndices;
+  bufferCopy = buffer;
+  statsCopy = stats;
+  indexCopy = index;
+  eventsCopy = events;
+  handleCopy = handle;
   v30.receiver = self;
   v30.super_class = _ANERequest;
   v19 = [(_ANERequest *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_inputArray, a3);
-    objc_storeStrong(&v20->_inputIndexArray, a4);
-    objc_storeStrong(&v20->_outputArray, a5);
-    objc_storeStrong(&v20->_outputIndexArray, a6);
-    objc_storeStrong(&v20->_weightsBuffer, a7);
-    objc_storeStrong(&v20->_perfStatsArray, a8);
-    objc_storeStrong(&v20->_procedureIndex, a9);
-    objc_storeStrong(&v20->_sharedEvents, a10);
-    objc_storeStrong(&v20->_transactionHandle, a11);
+    objc_storeStrong(&v19->_inputArray, inputs);
+    objc_storeStrong(&v20->_inputIndexArray, indices);
+    objc_storeStrong(&v20->_outputArray, outputs);
+    objc_storeStrong(&v20->_outputIndexArray, outputIndices);
+    objc_storeStrong(&v20->_weightsBuffer, buffer);
+    objc_storeStrong(&v20->_perfStatsArray, stats);
+    objc_storeStrong(&v20->_procedureIndex, index);
+    objc_storeStrong(&v20->_sharedEvents, events);
+    objc_storeStrong(&v20->_transactionHandle, handle);
   }
 
   return v20;
 }
 
-- (_ANERequest)initWithVirtualModel:(void *)a3
+- (_ANERequest)initWithVirtualModel:(void *)model
 {
   v4.receiver = self;
   v4.super_class = _ANERequest;
   return [(_ANERequest *)&v4 init];
 }
 
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 procedureIndex:(id)a8
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer procedureIndex:(id)index
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] initWithInputs:v19 inputIndices:v18 outputs:v17 outputIndices:v16 weightsBuffer:v15 perfStats:0 procedureIndex:v14 sharedEvents:0 transactionHandle:0];
+  indexCopy = index;
+  bufferCopy = buffer;
+  outputIndicesCopy = outputIndices;
+  outputsCopy = outputs;
+  indicesCopy = indices;
+  inputsCopy = inputs;
+  v20 = [[self alloc] initWithInputs:inputsCopy inputIndices:indicesCopy outputs:outputsCopy outputIndices:outputIndicesCopy weightsBuffer:bufferCopy perfStats:0 procedureIndex:indexCopy sharedEvents:0 transactionHandle:0];
 
   return v20;
 }
 
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 procedureIndex:(id)a7
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices procedureIndex:(id)index
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] initWithInputs:v16 inputIndices:v15 outputs:v14 outputIndices:v13 weightsBuffer:0 perfStats:0 procedureIndex:v12 sharedEvents:0 transactionHandle:0];
+  indexCopy = index;
+  outputIndicesCopy = outputIndices;
+  outputsCopy = outputs;
+  indicesCopy = indices;
+  inputsCopy = inputs;
+  v17 = [[self alloc] initWithInputs:inputsCopy inputIndices:indicesCopy outputs:outputsCopy outputIndices:outputIndicesCopy weightsBuffer:0 perfStats:0 procedureIndex:indexCopy sharedEvents:0 transactionHandle:0];
 
   return v17;
 }
 
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 perfStats:(id)a7 procedureIndex:(id)a8
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices perfStats:(id)stats procedureIndex:(id)index
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] initWithInputs:v19 inputIndices:v18 outputs:v17 outputIndices:v16 weightsBuffer:0 perfStats:v15 procedureIndex:v14 sharedEvents:0 transactionHandle:0];
+  indexCopy = index;
+  statsCopy = stats;
+  outputIndicesCopy = outputIndices;
+  outputsCopy = outputs;
+  indicesCopy = indices;
+  inputsCopy = inputs;
+  v20 = [[self alloc] initWithInputs:inputsCopy inputIndices:indicesCopy outputs:outputsCopy outputIndices:outputIndicesCopy weightsBuffer:0 perfStats:statsCopy procedureIndex:indexCopy sharedEvents:0 transactionHandle:0];
 
   return v20;
 }
 
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [[a1 alloc] initWithInputs:v22 inputIndices:v21 outputs:v20 outputIndices:v19 weightsBuffer:v18 perfStats:v17 procedureIndex:v16 sharedEvents:0 transactionHandle:0];
+  indexCopy = index;
+  statsCopy = stats;
+  bufferCopy = buffer;
+  outputIndicesCopy = outputIndices;
+  outputsCopy = outputs;
+  indicesCopy = indices;
+  inputsCopy = inputs;
+  v23 = [[self alloc] initWithInputs:inputsCopy inputIndices:indicesCopy outputs:outputsCopy outputIndices:outputIndicesCopy weightsBuffer:bufferCopy perfStats:statsCopy procedureIndex:indexCopy sharedEvents:0 transactionHandle:0];
 
   return v23;
 }
 
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9 sharedEvents:(id)a10
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index sharedEvents:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v25 = [[a1 alloc] initWithInputs:v24 inputIndices:v23 outputs:v22 outputIndices:v21 weightsBuffer:v20 perfStats:v19 procedureIndex:v18 sharedEvents:v17 transactionHandle:0];
+  eventsCopy = events;
+  indexCopy = index;
+  statsCopy = stats;
+  bufferCopy = buffer;
+  outputIndicesCopy = outputIndices;
+  outputsCopy = outputs;
+  indicesCopy = indices;
+  inputsCopy = inputs;
+  v25 = [[self alloc] initWithInputs:inputsCopy inputIndices:indicesCopy outputs:outputsCopy outputIndices:outputIndicesCopy weightsBuffer:bufferCopy perfStats:statsCopy procedureIndex:indexCopy sharedEvents:eventsCopy transactionHandle:0];
 
   return v25;
 }
 
-+ (id)requestWithInputs:(id)a3 inputIndices:(id)a4 outputs:(id)a5 outputIndices:(id)a6 weightsBuffer:(id)a7 perfStats:(id)a8 procedureIndex:(id)a9 sharedEvents:(id)a10 transactionHandle:(id)a11
++ (id)requestWithInputs:(id)inputs inputIndices:(id)indices outputs:(id)outputs outputIndices:(id)outputIndices weightsBuffer:(id)buffer perfStats:(id)stats procedureIndex:(id)index sharedEvents:(id)self0 transactionHandle:(id)self1
 {
-  v18 = a11;
-  v19 = a10;
-  v20 = a9;
-  v21 = a8;
-  v22 = a7;
-  v23 = a6;
-  v24 = a5;
-  v25 = a4;
-  v26 = a3;
-  v27 = [[a1 alloc] initWithInputs:v26 inputIndices:v25 outputs:v24 outputIndices:v23 weightsBuffer:v22 perfStats:v21 procedureIndex:v20 sharedEvents:v19 transactionHandle:v18];
+  handleCopy = handle;
+  eventsCopy = events;
+  indexCopy = index;
+  statsCopy = stats;
+  bufferCopy = buffer;
+  outputIndicesCopy = outputIndices;
+  outputsCopy = outputs;
+  indicesCopy = indices;
+  inputsCopy = inputs;
+  v27 = [[self alloc] initWithInputs:inputsCopy inputIndices:indicesCopy outputs:outputsCopy outputIndices:outputIndicesCopy weightsBuffer:bufferCopy perfStats:statsCopy procedureIndex:indexCopy sharedEvents:eventsCopy transactionHandle:handleCopy];
 
   return v27;
 }
 
 - (unint64_t)ioSurfacesCount
 {
-  v3 = [(_ANERequest *)self inputIndexArray];
-  v4 = [v3 count];
-  v5 = [(_ANERequest *)self outputIndexArray];
-  v6 = [v5 count] + v4;
-  v7 = [(_ANERequest *)self weightsBuffer];
-  if (v7)
+  inputIndexArray = [(_ANERequest *)self inputIndexArray];
+  v4 = [inputIndexArray count];
+  outputIndexArray = [(_ANERequest *)self outputIndexArray];
+  v6 = [outputIndexArray count] + v4;
+  weightsBuffer = [(_ANERequest *)self weightsBuffer];
+  if (weightsBuffer)
   {
     v8 = v6 + 1;
   }
@@ -510,16 +510,16 @@ LABEL_37:
   v16 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v15 = NSStringFromClass(v3);
-  v4 = [(_ANERequest *)self inputArray];
-  v5 = [(_ANERequest *)self inputIndexArray];
-  v6 = [(_ANERequest *)self outputArray];
-  v7 = [(_ANERequest *)self outputIndexArray];
-  v8 = [(_ANERequest *)self weightsBuffer];
-  v9 = [(_ANERequest *)self procedureIndex];
-  v10 = [(_ANERequest *)self perfStatsArray];
-  v11 = [(_ANERequest *)self sharedEvents];
-  v12 = [(_ANERequest *)self transactionHandle];
-  v13 = [v16 stringWithFormat:@"%@: { inputArray=%@  inputIndexArray=%@ ; outputArray=%@ ; outputIndexArray=%@ ; weightsBuffer=%@ ; procedureIndex=%@ ; perfStatsArray=%@ ; sharedEvents=%@ ; transactionHandle=%@}", v15, v4, v5, v6, v7, v8, v9, v10, v11, v12];;
+  inputArray = [(_ANERequest *)self inputArray];
+  inputIndexArray = [(_ANERequest *)self inputIndexArray];
+  outputArray = [(_ANERequest *)self outputArray];
+  outputIndexArray = [(_ANERequest *)self outputIndexArray];
+  weightsBuffer = [(_ANERequest *)self weightsBuffer];
+  procedureIndex = [(_ANERequest *)self procedureIndex];
+  perfStatsArray = [(_ANERequest *)self perfStatsArray];
+  sharedEvents = [(_ANERequest *)self sharedEvents];
+  transactionHandle = [(_ANERequest *)self transactionHandle];
+  v13 = [v16 stringWithFormat:@"%@: { inputArray=%@  inputIndexArray=%@ ; outputArray=%@ ; outputIndexArray=%@ ; weightsBuffer=%@ ; procedureIndex=%@ ; perfStatsArray=%@ ; sharedEvents=%@ ; transactionHandle=%@}", v15, inputArray, inputIndexArray, outputArray, outputIndexArray, weightsBuffer, procedureIndex, perfStatsArray, sharedEvents, transactionHandle];;
 
   return v13;
 }

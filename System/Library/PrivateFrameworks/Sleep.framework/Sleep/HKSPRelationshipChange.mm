@@ -9,11 +9,11 @@
 
 - (BOOL)isAdd
 {
-  v3 = [(HKSPChange *)self changedValue];
-  if (v3)
+  changedValue = [(HKSPChange *)self changedValue];
+  if (changedValue)
   {
-    v4 = [(HKSPChange *)self originalValue];
-    v5 = v4 == 0;
+    originalValue = [(HKSPChange *)self originalValue];
+    v5 = originalValue == 0;
   }
 
   else
@@ -26,11 +26,11 @@
 
 - (BOOL)isUpdate
 {
-  v3 = [(HKSPChange *)self changedValue];
-  if (v3)
+  changedValue = [(HKSPChange *)self changedValue];
+  if (changedValue)
   {
-    v4 = [(HKSPChange *)self originalValue];
-    v5 = v4 != 0;
+    originalValue = [(HKSPChange *)self originalValue];
+    v5 = originalValue != 0;
   }
 
   else
@@ -43,16 +43,16 @@
 
 - (BOOL)isRemove
 {
-  v3 = [(HKSPChange *)self changedValue];
-  if (v3)
+  changedValue = [(HKSPChange *)self changedValue];
+  if (changedValue)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(HKSPChange *)self originalValue];
-    v4 = v5 != 0;
+    originalValue = [(HKSPChange *)self originalValue];
+    v4 = originalValue != 0;
   }
 
   return v4;
@@ -61,12 +61,12 @@
 - (id)deepCopy
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(HKSPChange *)self property];
-  v5 = [v4 copy];
-  v6 = [(HKSPChange *)self changedValue];
-  v7 = [v6 mutableCopy];
-  v8 = [(HKSPChange *)self originalValue];
-  v9 = [v8 copyWithZone:0];
+  property = [(HKSPChange *)self property];
+  v5 = [property copy];
+  changedValue = [(HKSPChange *)self changedValue];
+  v7 = [changedValue mutableCopy];
+  originalValue = [(HKSPChange *)self originalValue];
+  v9 = [originalValue copyWithZone:0];
   v10 = [v3 initWithProperty:v5 changedValue:v7 originalValue:v9];
 
   return v10;

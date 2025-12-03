@@ -1,8 +1,8 @@
 @interface EKPreferences
 + (id)shared;
-- (BOOL)_array:(id)a3 hasSameElementAsArray:(id)a4;
+- (BOOL)_array:(id)_array hasSameElementAsArray:(id)array;
 - (EKPreferences)init;
-- (EKPreferences)initWithPreferences:(id)a3;
+- (EKPreferences)initWithPreferences:(id)preferences;
 - (NSArray)collapsedSectionIdentifiers;
 - (NSArray)customDeselectedCalendarSyncHashes;
 - (NSArray)customDeselectedCalendarSyncIdentifiers;
@@ -13,12 +13,12 @@
 - (NSArray)unselectedCalendarIdentifiersForFocusMode;
 - (NSDictionary)conferenceRoomTypeIdentifiersByMRU;
 - (double)travelEngineThrottlePeriod;
-- (void)_setDeselectedCalendarIdentifiers:(id)a3;
-- (void)_setDeselectedCalendars_iOS:(id)a3;
-- (void)setCollapsedSectionIdentifiers:(id)a3;
-- (void)setDeselectedCalendars:(id)a3 reason:(id)a4;
-- (void)setTravelEngineThrottlePeriod:(double)a3;
-- (void)setUnselectedCalendarIdentifiersForFocusMode:(id)a3;
+- (void)_setDeselectedCalendarIdentifiers:(id)identifiers;
+- (void)_setDeselectedCalendars_iOS:(id)s;
+- (void)setCollapsedSectionIdentifiers:(id)identifiers;
+- (void)setDeselectedCalendars:(id)calendars reason:(id)reason;
+- (void)setTravelEngineThrottlePeriod:(double)period;
+- (void)setUnselectedCalendarIdentifiersForFocusMode:(id)mode;
 @end
 
 @implementation EKPreferences
@@ -88,16 +88,16 @@ uint64_t __23__EKPreferences_shared__block_invoke()
   return v3;
 }
 
-- (EKPreferences)initWithPreferences:(id)a3
+- (EKPreferences)initWithPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9.receiver = self;
   v9.super_class = EKPreferences;
   v6 = [(EKPreferences *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferences, a3);
+    objc_storeStrong(&v6->_preferences, preferences);
     [(CalPreferences *)v7->_preferences registerReflectionForPreferenceWithNotificationName:@"com.apple.eventkit.debug.preference.notification.travelEngineThrottlePeriod"];
     [(CalPreferences *)v7->_preferences registerReflectionForPreferenceWithNotificationName:@"com.apple.eventkit.preference.notification.refiringReminderAlarmsEnabled"];
     [(CalPreferences *)v7->_preferences registerReflectionForPreferenceWithNotificationName:@"com.apple.eventkit.preference.notification.deselectedCalendarIdentifiers"];
@@ -129,11 +129,11 @@ uint64_t __23__EKPreferences_shared__block_invoke()
   return v5;
 }
 
-- (void)setTravelEngineThrottlePeriod:(double)a3
+- (void)setTravelEngineThrottlePeriod:(double)period
 {
-  if (a3 >= 0.0)
+  if (period >= 0.0)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:period];
     [(CalPreferences *)self->_preferences setValueForPreference:@"TravelEngineThrottlePeriod" value:v6 notificationName:@"com.apple.eventkit.debug.preference.notification.travelEngineThrottlePeriod"];
   }
 
@@ -142,16 +142,16 @@ uint64_t __23__EKPreferences_shared__block_invoke()
     v4 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKPreferences *)v4 setTravelEngineThrottlePeriod:a3];
+      [(EKPreferences *)v4 setTravelEngineThrottlePeriod:period];
     }
   }
 }
 
-- (void)setCollapsedSectionIdentifiers:(id)a3
+- (void)setCollapsedSectionIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [(CalPreferences *)self->_preferences getValueForPreference:@"CollapsedSectionIdentifiers" expectedClass:objc_opt_class()];
-  if ([(EKPreferences *)self _array:v5 hasSameElementAsArray:v4])
+  if ([(EKPreferences *)self _array:v5 hasSameElementAsArray:identifiersCopy])
   {
     v6 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
@@ -162,34 +162,34 @@ uint64_t __23__EKPreferences_shared__block_invoke()
 
   else
   {
-    [(CalPreferences *)self->_preferences setValueForPreference:@"CollapsedSectionIdentifiers" value:v4 notificationName:0];
+    [(CalPreferences *)self->_preferences setValueForPreference:@"CollapsedSectionIdentifiers" value:identifiersCopy notificationName:0];
   }
 }
 
-- (void)setDeselectedCalendars:(id)a3 reason:(id)a4
+- (void)setDeselectedCalendars:(id)calendars reason:(id)reason
 {
-  v28 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  calendarsCopy = calendars;
+  reasonCopy = reason;
   v7 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     *buf = 134218242;
-    v36 = [v5 count];
+    v36 = [calendarsCopy count];
     v37 = 2114;
-    v38 = v6;
+    v38 = reasonCopy;
     _os_log_impl(&dword_1A805E000, v8, OS_LOG_TYPE_DEFAULT, "Saving of %lu invisible calendars commencing: %{public}@", buf, 0x16u);
   }
 
-  v29 = v6;
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v29 = reasonCopy;
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(calendarsCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v5;
+  v10 = calendarsCopy;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v11)
   {
@@ -205,18 +205,18 @@ uint64_t __23__EKPreferences_shared__block_invoke()
         }
 
         v15 = *(*(&v30 + 1) + 8 * i);
-        v16 = [v15 calendarIdentifier];
+        calendarIdentifier = [v15 calendarIdentifier];
         v17 = EKLogHandle;
-        if (v16)
+        if (calendarIdentifier)
         {
           if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v36 = v16;
+            v36 = calendarIdentifier;
             _os_log_debug_impl(&dword_1A805E000, v17, OS_LOG_TYPE_DEBUG, "Saving calendar identifier [%@] of invisible calendar", buf, 0xCu);
           }
 
-          [v9 addObject:v16];
+          [v9 addObject:calendarIdentifier];
         }
 
         else if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -233,7 +233,7 @@ uint64_t __23__EKPreferences_shared__block_invoke()
     while (v12);
   }
 
-  [(EKPreferences *)v28 _setDeselectedCalendars_iOS:v10];
+  [(EKPreferences *)selfCopy _setDeselectedCalendars_iOS:v10];
   v18 = +[EKPreferences shared];
   [v18 _setDeselectedCalendarIdentifiers:v9];
 
@@ -246,17 +246,17 @@ uint64_t __23__EKPreferences_shared__block_invoke()
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setDeselectedCalendars_iOS:(id)a3
+- (void)_setDeselectedCalendars_iOS:(id)s
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  sCopy = s;
+  v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sCopy, "count")}];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(sCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = sCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v5)
   {
@@ -274,21 +274,21 @@ uint64_t __23__EKPreferences_shared__block_invoke()
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 calendarIdentifier];
-        v12 = [v10 syncHash];
+        calendarIdentifier = [v10 calendarIdentifier];
+        syncHash = [v10 syncHash];
         v13 = EKLogHandle;
-        if (v12)
+        if (syncHash)
         {
           if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v27 = v12;
+            v27 = syncHash;
             v28 = 2112;
-            v29 = v11;
+            v29 = calendarIdentifier;
             _os_log_debug_impl(&dword_1A805E000, v13, OS_LOG_TYPE_DEBUG, "Saving sync hash [%@] of invisible calendar with identifier [%@]", buf, 0x16u);
           }
 
-          [v21 addObject:v12];
+          [v21 addObject:syncHash];
         }
 
         else if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -298,20 +298,20 @@ uint64_t __23__EKPreferences_shared__block_invoke()
           _os_log_error_impl(&dword_1A805E000, v13, OS_LOG_TYPE_ERROR, "No calendar sync hash found.  Will not be able to save all calendar sync hashes.  Calendar: [%@]", buf, 0xCu);
         }
 
-        v14 = [v10 selectionSyncIdentifier];
+        selectionSyncIdentifier = [v10 selectionSyncIdentifier];
         v15 = EKLogHandle;
-        if (v14)
+        if (selectionSyncIdentifier)
         {
           if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v27 = v14;
+            v27 = selectionSyncIdentifier;
             v28 = 2112;
-            v29 = v11;
+            v29 = calendarIdentifier;
             _os_log_debug_impl(&dword_1A805E000, v15, OS_LOG_TYPE_DEBUG, "Saving sync identifier [%@] of invisible calendar with identifier [%@]", buf, 0x16u);
           }
 
-          [v4 addObject:v14];
+          [v4 addObject:selectionSyncIdentifier];
         }
 
         else if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
@@ -337,11 +337,11 @@ uint64_t __23__EKPreferences_shared__block_invoke()
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setDeselectedCalendarIdentifiers:(id)a3
+- (void)_setDeselectedCalendarIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [(CalPreferences *)self->_preferences getValueForPreference:@"LastDeselectedCalendars" expectedClass:objc_opt_class()];
-  if ([(EKPreferences *)self _array:v5 hasSameElementAsArray:v4])
+  if ([(EKPreferences *)self _array:v5 hasSameElementAsArray:identifiersCopy])
   {
     v6 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
@@ -353,26 +353,26 @@ uint64_t __23__EKPreferences_shared__block_invoke()
   else
   {
     CalAnalyticsSendEvent();
-    [(CalPreferences *)self->_preferences setValueForPreference:@"LastDeselectedCalendars" value:v4 notificationName:@"com.apple.eventkit.preference.notification.deselectedCalendarIdentifiers"];
+    [(CalPreferences *)self->_preferences setValueForPreference:@"LastDeselectedCalendars" value:identifiersCopy notificationName:@"com.apple.eventkit.preference.notification.deselectedCalendarIdentifiers"];
   }
 }
 
-- (BOOL)_array:(id)a3 hasSameElementAsArray:(id)a4
+- (BOOL)_array:(id)_array hasSameElementAsArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  _arrayCopy = _array;
+  arrayCopy = array;
+  v7 = [_arrayCopy count];
+  if (v7 == [arrayCopy count])
   {
-    if ([v5 count])
+    if ([_arrayCopy count])
     {
-      v8 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+      v8 = [MEMORY[0x1E695DFD8] setWithArray:_arrayCopy];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v9 = v6;
+      v9 = arrayCopy;
       v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
@@ -463,15 +463,15 @@ LABEL_14:
   return [(CalPreferences *)preferences getValueForPreference:@"CustomDeselectedCalendarHashes" expectedClass:v3];
 }
 
-- (void)setUnselectedCalendarIdentifiersForFocusMode:(id)a3
+- (void)setUnselectedCalendarIdentifiersForFocusMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   if (_os_feature_enabled_impl())
   {
     preferences = self->_preferences;
-    if (v5)
+    if (modeCopy)
     {
-      [(CalPreferences *)preferences setValueForPreference:@"UnselectedCalendarIdentifiersForFocusMode" value:v5 notificationName:@"com.apple.eventkit.preference.notification.UnselectedCalendarIdentifiersForFocusMode"];
+      [(CalPreferences *)preferences setValueForPreference:@"UnselectedCalendarIdentifiersForFocusMode" value:modeCopy notificationName:@"com.apple.eventkit.preference.notification.UnselectedCalendarIdentifiersForFocusMode"];
     }
 
     else

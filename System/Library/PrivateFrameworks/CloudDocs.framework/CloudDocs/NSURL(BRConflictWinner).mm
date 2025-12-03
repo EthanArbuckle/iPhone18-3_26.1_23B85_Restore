@@ -7,10 +7,10 @@
 
 - (id)br_lastEditorName
 {
-  v1 = [a1 br_lastEditorNameComponents];
-  v2 = [v1 br_formattedName];
+  br_lastEditorNameComponents = [self br_lastEditorNameComponents];
+  br_formattedName = [br_lastEditorNameComponents br_formattedName];
 
-  return v2;
+  return br_formattedName;
 }
 
 - (uint64_t)br_addFakeConflictLoserFromItemAtURL:()BRConflictWinner lastEditorDeviceName:error:

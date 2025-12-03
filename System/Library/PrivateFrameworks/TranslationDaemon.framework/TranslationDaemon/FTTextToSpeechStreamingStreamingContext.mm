@@ -1,29 +1,29 @@
 @interface FTTextToSpeechStreamingStreamingContext
-- (FTTextToSpeechStreamingStreamingContext)initWithGRPCStreamingCallContext:(id)a3;
-- (void)sendTextToSpeechStreamingStreamingRequest:(id)a3;
+- (FTTextToSpeechStreamingStreamingContext)initWithGRPCStreamingCallContext:(id)context;
+- (void)sendTextToSpeechStreamingStreamingRequest:(id)request;
 @end
 
 @implementation FTTextToSpeechStreamingStreamingContext
 
-- (FTTextToSpeechStreamingStreamingContext)initWithGRPCStreamingCallContext:(id)a3
+- (FTTextToSpeechStreamingStreamingContext)initWithGRPCStreamingCallContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = FTTextToSpeechStreamingStreamingContext;
   v6 = [(FTTextToSpeechStreamingStreamingContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_grpcContext, a3);
+    objc_storeStrong(&v6->_grpcContext, context);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)sendTextToSpeechStreamingStreamingRequest:(id)a3
+- (void)sendTextToSpeechStreamingStreamingRequest:(id)request
 {
-  v4 = [a3 flatbuffData];
+  flatbuffData = [request flatbuffData];
   [(OspreyClientStreamingContext *)self->_grpcContext writeFrame:?];
 }
 

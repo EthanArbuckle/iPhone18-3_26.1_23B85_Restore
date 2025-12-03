@@ -1,9 +1,9 @@
 @interface AKMIDKeychain
 - (AKMIDKeychain)init;
-- (BOOL)_clearLastKnownMID:(id *)a3;
-- (BOOL)updateLastKnownMID:(id)a3 error:(id *)a4;
+- (BOOL)_clearLastKnownMID:(id *)d;
+- (BOOL)updateLastKnownMID:(id)d error:(id *)error;
 - (id)_lastKnownMIDDescriptor;
-- (id)lastKnownMID:(id *)a3;
+- (id)lastKnownMID:(id *)d;
 @end
 
 @implementation AKMIDKeychain
@@ -30,31 +30,31 @@
   return v5;
 }
 
-- (id)lastKnownMID:(id *)a3
+- (id)lastKnownMID:(id *)d
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = [(AKMIDKeychain *)self _lastKnownMIDDescriptor];
+  dCopy = d;
+  _lastKnownMIDDescriptor = [(AKMIDKeychain *)self _lastKnownMIDDescriptor];
   v23 = 0;
-  keychainManager = v27->_keychainManager;
+  keychainManager = selfCopy->_keychainManager;
   v21 = 0;
-  v10 = [(AAFKeychainManager *)keychainManager keychainItemForDescriptor:v24 error:&v21];
+  v10 = [(AAFKeychainManager *)keychainManager keychainItemForDescriptor:_lastKnownMIDDescriptor error:&v21];
   objc_storeStrong(&v23, v21);
   v22 = v10;
-  v20 = [v10 value];
+  value = [v10 value];
   v18 = 0;
   v11 = 0;
   if ([v23 code] == -25300)
   {
-    v19 = [v23 domain];
+    domain = [v23 domain];
     v18 = 1;
-    v11 = [v19 isEqualToString:NSOSStatusErrorDomain];
+    v11 = [domain isEqualToString:NSOSStatusErrorDomain];
   }
 
   if (v18)
   {
-    _objc_release(v19);
+    _objc_release(domain);
   }
 
   if (v11)
@@ -63,7 +63,7 @@
     v16 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      sub_10001B098(v29, v27, v23);
+      sub_10001B098(v29, selfCopy, v23);
       _os_log_debug_impl(&_mh_execute_header, v17, v16, "%@: Last known MID not found in keychain (%@)", v29, 0x16u);
     }
 
@@ -77,10 +77,10 @@
     v14 = 0;
     v4 = objc_opt_class();
     obj = v14;
-    v9 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:v20 error:&obj];
+    v9 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:value error:&obj];
     objc_storeStrong(&v14, obj);
     v13 = v9;
-    if (v20)
+    if (value)
     {
       v28 = _objc_retain(v13);
       v15 = 1;
@@ -88,11 +88,11 @@
 
     else
     {
-      if (v25)
+      if (dCopy)
       {
         v8 = v14;
         v5 = v14;
-        *v25 = v8;
+        *dCopy = v8;
       }
 
       v28 = 0;
@@ -103,22 +103,22 @@
     objc_storeStrong(&v14, 0);
   }
 
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&value, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&_lastKnownMIDDescriptor, 0);
   v6 = v28;
 
   return v6;
 }
 
-- (BOOL)updateLastKnownMID:(id)a3 error:(id *)a4
+- (BOOL)updateLastKnownMID:(id)d error:(id *)error
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = a4;
+  objc_storeStrong(location, d);
+  errorCopy = error;
   if (location[0])
   {
     v19 = 0;
@@ -128,21 +128,21 @@
     v18 = v11;
     if (v11)
     {
-      v16 = [(AKMIDKeychain *)v23 _lastKnownMIDDescriptor];
+      _lastKnownMIDDescriptor = [(AKMIDKeychain *)selfCopy _lastKnownMIDDescriptor];
       v5 = [AAFKeychainItem alloc];
-      v15 = [v5 initWithDescriptor:v16 value:v18];
+      v15 = [v5 initWithDescriptor:_lastKnownMIDDescriptor value:v18];
       v14 = 0;
-      keychainManager = v23->_keychainManager;
+      keychainManager = selfCopy->_keychainManager;
       obj = 0;
       [(AAFKeychainManager *)keychainManager addOrUpdateKeychainItem:v15 error:&obj];
       objc_storeStrong(&v14, obj);
       if (v14)
       {
-        if (v21)
+        if (errorCopy)
         {
           v9 = v14;
           v7 = v14;
-          *v21 = v9;
+          *errorCopy = v9;
         }
 
         v24 = 0;
@@ -157,16 +157,16 @@
 
       objc_storeStrong(&v14, 0);
       objc_storeStrong(&v15, 0);
-      objc_storeStrong(&v16, 0);
+      objc_storeStrong(&_lastKnownMIDDescriptor, 0);
     }
 
     else
     {
-      if (v21)
+      if (errorCopy)
       {
         v10 = v19;
         v4 = v19;
-        *v21 = v10;
+        *errorCopy = v10;
       }
 
       v24 = 0;
@@ -179,7 +179,7 @@
 
   else
   {
-    v24 = [(AKMIDKeychain *)v23 _clearLastKnownMID:v21];
+    v24 = [(AKMIDKeychain *)selfCopy _clearLastKnownMID:errorCopy];
     v20 = 1;
   }
 
@@ -206,15 +206,15 @@
   return v3;
 }
 
-- (BOOL)_clearLastKnownMID:(id *)a3
+- (BOOL)_clearLastKnownMID:(id *)d
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v5 = [(AKMIDKeychain *)self _lastKnownMIDDescriptor];
-  [(AAFKeychainManager *)v8->_keychainManager deleteKeychainItemsForDescriptor:v5 error:v6];
-  v4 = v6 != 0;
-  objc_storeStrong(&v5, 0);
+  dCopy = d;
+  _lastKnownMIDDescriptor = [(AKMIDKeychain *)self _lastKnownMIDDescriptor];
+  [(AAFKeychainManager *)selfCopy->_keychainManager deleteKeychainItemsForDescriptor:_lastKnownMIDDescriptor error:dCopy];
+  v4 = dCopy != 0;
+  objc_storeStrong(&_lastKnownMIDDescriptor, 0);
   return v4;
 }
 

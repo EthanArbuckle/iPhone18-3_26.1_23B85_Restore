@@ -1,32 +1,32 @@
 @interface FCUIActivityPickerEducationCardView
-+ (id)_defaultPromimentViewWithBaubleDescriptions:(id)a3;
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
++ (id)_defaultPromimentViewWithBaubleDescriptions:(id)descriptions;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
 + (id)defaultEducationCardViewFallbackBaubleDescriptions;
-+ (id)defaultEducationCardViewWithProminentViewBaubleDescriptions:(id)a3 dismissAction:(id)a4;
++ (id)defaultEducationCardViewWithProminentViewBaubleDescriptions:(id)descriptions dismissAction:(id)action;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUIActivityPickerEducationCardView)initWithProminentView:(id)a3 headlineText:(id)a4 bodyText:(id)a5 dismissAction:(id)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUIActivityPickerEducationCardView)initWithProminentView:(id)view headlineText:(id)text bodyText:(id)bodyText dismissAction:(id)action;
 - (void)_configureBackgroundMaterialViewIfNecessary;
 - (void)_configureBodyLabelIfNecessary;
-- (void)_configureDismissControlIfNecessaryWithAction:(id)a3;
+- (void)_configureDismissControlIfNecessaryWithAction:(id)action;
 - (void)_configureHeadlineLabelIfNecessary;
-- (void)_handleDefaultTap:(id)a3;
-- (void)_layoutSubviewInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4;
+- (void)_handleDefaultTap:(id)tap;
+- (void)_layoutSubviewInBounds:(CGRect)bounds measuringOnly:(CGSize *)only;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesForBodyLabel;
 - (void)_updateTextAttributesForHeadlineLabel;
 - (void)_updateTextAttributesIfNecessary;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setDefaultAction:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setDefaultAction:(id)action;
 @end
 
 @implementation FCUIActivityPickerEducationCardView
 
-+ (id)_defaultPromimentViewWithBaubleDescriptions:(id)a3
++ (id)_defaultPromimentViewWithBaubleDescriptions:(id)descriptions
 {
-  v3 = a3;
-  v4 = [[FCUIActivityBaubleGroupView alloc] initWithBaubleDescriptions:v3 baubleGroupType:1];
+  descriptionsCopy = descriptions;
+  v4 = [[FCUIActivityBaubleGroupView alloc] initWithBaubleDescriptions:descriptionsCopy baubleGroupType:1];
 
   return v4;
 }
@@ -35,48 +35,48 @@
 {
   v16[4] = *MEMORY[0x277D85DE8];
   v2 = [FCUIActivityBaubleDescription alloc];
-  v3 = [MEMORY[0x277D75348] systemIndigoColor];
-  v4 = [(FCUIActivityBaubleDescription *)v2 initWithSystemImageName:@"moon.fill" tintColor:v3];
+  systemIndigoColor = [MEMORY[0x277D75348] systemIndigoColor];
+  v4 = [(FCUIActivityBaubleDescription *)v2 initWithSystemImageName:@"moon.fill" tintColor:systemIndigoColor];
   v16[0] = v4;
   v5 = [FCUIActivityBaubleDescription alloc];
-  v6 = [MEMORY[0x277D75348] systemOrangeColor];
-  v7 = [(FCUIActivityBaubleDescription *)v5 initWithSystemImageName:@"book.closed.fill" tintColor:v6];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  v7 = [(FCUIActivityBaubleDescription *)v5 initWithSystemImageName:@"book.closed.fill" tintColor:systemOrangeColor];
   v16[1] = v7;
   v8 = [FCUIActivityBaubleDescription alloc];
-  v9 = [MEMORY[0x277D75348] systemGreenColor];
-  v10 = [(FCUIActivityBaubleDescription *)v8 initWithSystemImageName:@"figure.run" tintColor:v9];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  v10 = [(FCUIActivityBaubleDescription *)v8 initWithSystemImageName:@"figure.run" tintColor:systemGreenColor];
   v16[2] = v10;
   v11 = [FCUIActivityBaubleDescription alloc];
-  v12 = [MEMORY[0x277D75348] systemMintColor];
-  v13 = [(FCUIActivityBaubleDescription *)v11 initWithSystemImageName:@"bed.double.fill" tintColor:v12];
+  systemMintColor = [MEMORY[0x277D75348] systemMintColor];
+  v13 = [(FCUIActivityBaubleDescription *)v11 initWithSystemImageName:@"bed.double.fill" tintColor:systemMintColor];
   v16[3] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:4];
 
   return v14;
 }
 
-+ (id)defaultEducationCardViewWithProminentViewBaubleDescriptions:(id)a3 dismissAction:(id)a4
++ (id)defaultEducationCardViewWithProminentViewBaubleDescriptions:(id)descriptions dismissAction:(id)action
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [a1 _defaultPromimentViewWithBaubleDescriptions:v7];
+  actionCopy = action;
+  descriptionsCopy = descriptions;
+  v8 = [self alloc];
+  v9 = [self _defaultPromimentViewWithBaubleDescriptions:descriptionsCopy];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"ACTIVITY_ONBOARDING_HEADLINE" value:&stru_285ECE868 table:0];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"ACTIVITY_ONBOARDING_BODY" value:&stru_285ECE868 table:0];
-  v14 = [v8 initWithProminentView:v9 headlineText:v11 bodyText:v13 dismissAction:v6];
+  v14 = [v8 initWithProminentView:v9 headlineText:v11 bodyText:v13 dismissAction:actionCopy];
 
   return v14;
 }
 
-- (FCUIActivityPickerEducationCardView)initWithProminentView:(id)a3 headlineText:(id)a4 bodyText:(id)a5 dismissAction:(id)a6
+- (FCUIActivityPickerEducationCardView)initWithProminentView:(id)view headlineText:(id)text bodyText:(id)bodyText dismissAction:(id)action
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  viewCopy = view;
+  textCopy = text;
+  bodyTextCopy = bodyText;
+  actionCopy = action;
   v18.receiver = self;
   v18.super_class = FCUIActivityPickerEducationCardView;
   v15 = [(FCUIActivityPickerEducationCardView *)&v18 init];
@@ -84,25 +84,25 @@
   if (v15)
   {
     [(FCUIActivityPickerEducationCardView *)v15 setAdjustsFontForContentSizeCategory:1];
-    objc_storeStrong(&v16->_prominentView, a3);
+    objc_storeStrong(&v16->_prominentView, view);
     [(FCUIActivityPickerEducationCardView *)v16 addSubview:v16->_prominentView];
     [(FCUIActivityPickerEducationCardView *)v16 _configureHeadlineLabelIfNecessary];
-    [(UILabel *)v16->_headlineLabel setText:v12];
+    [(UILabel *)v16->_headlineLabel setText:textCopy];
     [(FCUIActivityPickerEducationCardView *)v16 _configureBodyLabelIfNecessary];
-    [(UILabel *)v16->_bodyLabel setText:v13];
-    [(FCUIActivityPickerEducationCardView *)v16 _configureDismissControlIfNecessaryWithAction:v14];
+    [(UILabel *)v16->_bodyLabel setText:bodyTextCopy];
+    [(FCUIActivityPickerEducationCardView *)v16 _configureDismissControlIfNecessaryWithAction:actionCopy];
     [(FCUIActivityPickerEducationCardView *)v16 setClipsToBounds:1];
   }
 
   return v16;
 }
 
-- (void)setDefaultAction:(id)a3
+- (void)setDefaultAction:(id)action
 {
-  v10 = a3;
+  actionCopy = action;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v10 copy];
+    v4 = [actionCopy copy];
     defaultAction = self->_defaultAction;
     self->_defaultAction = v4;
 
@@ -128,13 +128,13 @@
   }
 }
 
-- (void)_layoutSubviewInBounds:(CGRect)a3 measuringOnly:(CGSize *)a4
+- (void)_layoutSubviewInBounds:(CGRect)bounds measuringOnly:(CGSize *)only
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(FCUIActivityPickerEducationCardView *)self _shouldReverseLayoutDirection];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(FCUIActivityPickerEducationCardView *)self _shouldReverseLayoutDirection];
   [(_FCUIActivityPickerOnboardingDismissControl *)self->_dismissControl sizeThatFits:width, height];
   BSRectWithSize();
   v12 = v11;
@@ -146,7 +146,7 @@
   v49 = y;
   v50 = width;
   v48 = x;
-  if (v10)
+  if (_shouldReverseLayoutDirection)
   {
     v22 = 24.0 - v17;
   }
@@ -169,7 +169,7 @@
   v25 = v21;
   v26 = v14;
   v27 = v16;
-  if (!a4)
+  if (!only)
   {
     dismissControl = self->_dismissControl;
     UIRectIntegralWithScale();
@@ -198,7 +198,7 @@
     v31 = CGRectGetMaxY(v55) + 8.0;
   }
 
-  if (!a4)
+  if (!only)
   {
     [(UIView *)self->_prominentView setFrame:v30, v31, v32, v33, 0];
   }
@@ -227,7 +227,7 @@
   v36 = [(UILabel *)self->_headlineLabel fcui_numberOfLinesInFrame:0 maximum:self->_drawingContext drawingContext:24.0, v46, v35, 1.79769313e308];
   [(UILabel *)self->_headlineLabel fcui_measuringHeightWithNumberOfLines:v36];
   v38 = v37;
-  if (!a4)
+  if (!only)
   {
     v60.origin.x = 24.0;
     v60.origin.y = v46;
@@ -248,7 +248,7 @@
   v40 = [(UILabel *)self->_bodyLabel fcui_numberOfLinesInFrame:0 maximum:self->_drawingContext drawingContext:24.0, v46, v35, 1.79769313e308];
   [(UILabel *)self->_bodyLabel fcui_measuringHeightWithNumberOfLines:v40];
   v42 = v41;
-  if (a4)
+  if (only)
   {
     v62.origin.x = v48;
     v62.origin.y = v49;
@@ -261,8 +261,8 @@
     v63.size.height = v42;
     CGRectGetMaxY(v63);
     UISizeRoundToScale();
-    a4->width = v43;
-    a4->height = v44;
+    only->width = v43;
+    only->height = v44;
   }
 
   else
@@ -281,7 +281,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6 = *MEMORY[0x277CBF3A8];
   BSRectWithSize();
@@ -304,11 +304,11 @@
   [(FCUIActivityPickerEducationCardView *)self _layoutSubviewInBounds:0 measuringOnly:?];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(_FCUIActivityPickerOnboardingDismissControl *)self->_dismissControl setAdjustsFontForContentSizeCategory:?];
     if (objc_opt_respondsToSelector())
     {
@@ -321,13 +321,13 @@
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(FCUIActivityPickerEducationCardView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(FCUIActivityPickerEducationCardView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v5 = UIContentSizeCategoryCompareToCategory(v4, self->_preferredContentSizeCategory);
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_preferredContentSizeCategory);
   if (v5)
   {
-    objc_storeStrong(&self->_preferredContentSizeCategory, v4);
+    objc_storeStrong(&self->_preferredContentSizeCategory, preferredContentSizeCategory);
     [(FCUIActivityPickerEducationCardView *)self _setNeedsTextAttributesUpdate];
     [(_FCUIActivityPickerOnboardingDismissControl *)self->_dismissControl adjustForContentSizeCategoryChange];
     if (objc_opt_respondsToSelector())
@@ -339,22 +339,22 @@
   return v5 != NSOrderedSame;
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -438,8 +438,8 @@
     [(UILabel *)self->_headlineLabel setTextAlignment:1];
     [(UILabel *)self->_headlineLabel setLineBreakMode:4];
     v5 = self->_headlineLabel;
-    v6 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v5 setTextColor:v6];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v5 setTextColor:labelColor];
 
     [(FCUIActivityPickerEducationCardView *)self addSubview:self->_headlineLabel];
 
@@ -459,8 +459,8 @@
     [(UILabel *)self->_bodyLabel setTextAlignment:1];
     [(UILabel *)self->_bodyLabel setLineBreakMode:4];
     v5 = self->_bodyLabel;
-    v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v5 setTextColor:v6];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v5 setTextColor:secondaryLabelColor];
 
     [(FCUIActivityPickerEducationCardView *)self addSubview:self->_bodyLabel];
 
@@ -468,12 +468,12 @@
   }
 }
 
-- (void)_configureDismissControlIfNecessaryWithAction:(id)a3
+- (void)_configureDismissControlIfNecessaryWithAction:(id)action
 {
   if (!self->_dismissControl)
   {
-    v4 = a3;
-    v5 = [[_FCUIActivityPickerOnboardingDismissControl alloc] initWithAction:v4];
+    actionCopy = action;
+    v5 = [[_FCUIActivityPickerOnboardingDismissControl alloc] initWithAction:actionCopy];
 
     dismissControl = self->_dismissControl;
     self->_dismissControl = v5;
@@ -484,7 +484,7 @@
   }
 }
 
-- (void)_handleDefaultTap:(id)a3
+- (void)_handleDefaultTap:(id)tap
 {
   defaultAction = self->_defaultAction;
   if (defaultAction)

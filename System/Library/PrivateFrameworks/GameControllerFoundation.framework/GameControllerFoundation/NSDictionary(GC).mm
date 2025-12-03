@@ -19,7 +19,7 @@
     [NSDictionary(GC) gc_objectForKey:ofClass:];
   }
 
-  v6 = [a1 objectForKey:?];
+  v6 = [self objectForKey:?];
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = [a3 description];
@@ -60,7 +60,7 @@
     [NSDictionary(GC) gc_objectForKey:ofClass:error:];
   }
 
-  v8 = [a1 objectForKey:?];
+  v8 = [self objectForKey:?];
   if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     if (a5)
@@ -107,7 +107,7 @@
     [NSDictionary(GC) gc_requiredObjectForKey:ofClass:];
   }
 
-  v6 = [a1 objectForKey:?];
+  v6 = [self objectForKey:?];
   if (!v6)
   {
     [(NSDictionary(GC) *)a3 gc_requiredObjectForKey:v21 ofClass:v22];
@@ -154,7 +154,7 @@
     [NSDictionary(GC) gc_requiredObjectForKey:ofClass:error:];
   }
 
-  v8 = [a1 objectForKey:?];
+  v8 = [self objectForKey:?];
   if (v8)
   {
     v9 = v8;
@@ -217,8 +217,8 @@ LABEL_5:
 
 - (void)gc_makeValuesPerformSelector:()GC withObject:
 {
-  v6 = [a1 allValues];
-  [v6 makeObjectsPerformSelector:a3 withObject:a4];
+  allValues = [self allValues];
+  [allValues makeObjectsPerformSelector:a3 withObject:a4];
 }
 
 - (uint64_t)gc_enumerateKeysAndObjectsUsingBlock:()GC
@@ -228,7 +228,7 @@ LABEL_5:
   v4[2] = __57__NSDictionary_GC__gc_enumerateKeysAndObjectsUsingBlock___block_invoke;
   v4[3] = &__block_descriptor_40_e15_v32__0_8_16_B24lu32l8;
   v4[4] = a3;
-  return [a1 enumerateKeysAndObjectsUsingBlock:v4];
+  return [self enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 - (id)gc_dictionaryByReplacingValueForKey:()GC withValue:
@@ -241,7 +241,7 @@ LABEL_5:
   }
 
   v8 = v7;
-  v9 = [a1 mutableCopy];
+  v9 = [self mutableCopy];
   [v9 setValue:v8 forKey:v6];
   v10 = [v9 copy];
 
@@ -255,7 +255,7 @@ LABEL_5:
     [NSDictionary(GC) gc_dictionaryByRemovingObjectsForKeys:];
   }
 
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 removeObjectsForKeys:a3];
   v5 = [v4 copy];
 

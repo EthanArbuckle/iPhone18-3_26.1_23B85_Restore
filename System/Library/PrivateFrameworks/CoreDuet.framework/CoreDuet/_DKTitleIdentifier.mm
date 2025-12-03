@@ -1,14 +1,14 @@
 @interface _DKTitleIdentifier
-+ (id)withTitle:(id)a3;
++ (id)withTitle:(id)title;
 @end
 
 @implementation _DKTitleIdentifier
 
-+ (id)withTitle:(id)a3
++ (id)withTitle:(id)title
 {
-  v4 = a3;
-  v5 = [a1 type];
-  v6 = [_DKIdentifier identifierWithString:v4 type:v5];
+  titleCopy = title;
+  type = [self type];
+  v6 = [_DKIdentifier identifierWithString:titleCopy type:type];
 
   return v6;
 }

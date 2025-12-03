@@ -1,57 +1,57 @@
 @interface BCAMSUIBubbleTipViewController
-- (BCAMSUIBubbleTipViewController)initWithRequest:(id)a3 placement:(id)a4 messageType:(int64_t)a5;
+- (BCAMSUIBubbleTipViewController)initWithRequest:(id)request placement:(id)placement messageType:(int64_t)type;
 - (id)messageId;
 - (id)messagePlacement;
 - (void)bc_analyticsVisibilityDidAppear;
 - (void)bc_analyticsVisibilityDidDisappear;
 - (void)bc_startImpressionEventTracking;
 - (void)bc_submitImpressionEvent;
-- (void)reportActionTriggered:(id)a3;
-- (void)setIsOnScreen:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)reportActionTriggered:(id)triggered;
+- (void)setIsOnScreen:(BOOL)screen;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation BCAMSUIBubbleTipViewController
 
-- (BCAMSUIBubbleTipViewController)initWithRequest:(id)a3 placement:(id)a4 messageType:(int64_t)a5
+- (BCAMSUIBubbleTipViewController)initWithRequest:(id)request placement:(id)placement messageType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BCAMSUIBubbleTipViewController *)self initWithRequest:v8];
+  requestCopy = request;
+  placementCopy = placement;
+  v10 = [(BCAMSUIBubbleTipViewController *)self initWithRequest:requestCopy];
   v11 = v10;
   if (v10)
   {
-    [(BCAMSUIBubbleTipViewController *)v10 setPlacement:v9];
-    [(BCAMSUIBubbleTipViewController *)v11 setBc_request:v8];
-    [(BCAMSUIBubbleTipViewController *)v11 setMessageType:a5];
+    [(BCAMSUIBubbleTipViewController *)v10 setPlacement:placementCopy];
+    [(BCAMSUIBubbleTipViewController *)v11 setBc_request:requestCopy];
+    [(BCAMSUIBubbleTipViewController *)v11 setMessageType:type];
     v11->_isOnScreen = 1;
   }
 
   return v11;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = BCAMSUIBubbleTipViewController;
-  [(BCAMSUIBubbleTipViewController *)&v4 viewDidAppear:a3];
+  [(BCAMSUIBubbleTipViewController *)&v4 viewDidAppear:appear];
   [(BCAMSUIBubbleTipViewController *)self bc_analyticsVisibilityUpdateSubtree];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = BCAMSUIBubbleTipViewController;
-  [(BCAMSUIBubbleTipViewController *)&v4 viewWillDisappear:a3];
+  [(BCAMSUIBubbleTipViewController *)&v4 viewWillDisappear:disappear];
   [(BCAMSUIBubbleTipViewController *)self bc_analyticsVisibilityUpdateSubtree];
 }
 
-- (void)setIsOnScreen:(BOOL)a3
+- (void)setIsOnScreen:(BOOL)screen
 {
-  if ([(BCAMSUIBubbleTipViewController *)self isOnScreen]!= a3)
+  if ([(BCAMSUIBubbleTipViewController *)self isOnScreen]!= screen)
   {
-    self->_isOnScreen = a3;
+    self->_isOnScreen = screen;
     if ([(BCAMSUIBubbleTipViewController *)self bc_analyticsVisibility])
     {
       if (!self->_isOnScreen || ([(BCAMSUIBubbleTipViewController *)self bc_startImpressionEventTracking], !self->_isOnScreen))
@@ -63,29 +63,29 @@
   }
 }
 
-- (void)reportActionTriggered:(id)a3
+- (void)reportActionTriggered:(id)triggered
 {
-  v15 = a3;
-  v4 = [(BCAMSUIBubbleTipViewController *)self ba_effectiveAnalyticsTracker];
-  if (v4)
+  triggeredCopy = triggered;
+  ba_effectiveAnalyticsTracker = [(BCAMSUIBubbleTipViewController *)self ba_effectiveAnalyticsTracker];
+  if (ba_effectiveAnalyticsTracker)
   {
     if ([(BCAMSUIBubbleTipViewController *)self messageType]== &dword_4 + 2)
     {
-      v5 = [(BCAMSUIBubbleTipViewController *)self presentingViewController];
-      [(BCAMSUIBubbleTipViewController *)self setMessageType:v5 == 0];
+      presentingViewController = [(BCAMSUIBubbleTipViewController *)self presentingViewController];
+      [(BCAMSUIBubbleTipViewController *)self setMessageType:presentingViewController == 0];
     }
 
-    v6 = [(BCAMSUIBubbleTipViewController *)self bc_request];
-    v7 = sub_B4B00(v6);
+    bc_request = [(BCAMSUIBubbleTipViewController *)self bc_request];
+    v7 = sub_B4B00(bc_request);
 
     v8 = +[BAEventReporter sharedReporter];
-    v9 = [v15 deepLink];
-    v10 = [v9 absoluteString];
-    v11 = [(BCAMSUIBubbleTipViewController *)self messageType];
-    v12 = [(BCAMSUIBubbleTipViewController *)self messageId];
+    deepLink = [triggeredCopy deepLink];
+    absoluteString = [deepLink absoluteString];
+    messageType = [(BCAMSUIBubbleTipViewController *)self messageType];
+    messageId = [(BCAMSUIBubbleTipViewController *)self messageId];
     v13 = [v7 count] != 0;
-    v14 = [(BCAMSUIBubbleTipViewController *)self placement];
-    [v8 emitUnifiedMessageActionEventWithTracker:v4 startDate:v10 messageType:v11 messageIdentifier:v12 hasActionable:v13 actionIdentifier:v7 placementName:v14];
+    placement = [(BCAMSUIBubbleTipViewController *)self placement];
+    [v8 emitUnifiedMessageActionEventWithTracker:ba_effectiveAnalyticsTracker startDate:absoluteString messageType:messageType messageIdentifier:messageId hasActionable:v13 actionIdentifier:v7 placementName:placement];
   }
 }
 
@@ -119,23 +119,23 @@
 
 - (void)bc_submitImpressionEvent
 {
-  v12 = [(BCAMSUIBubbleTipViewController *)self ba_effectiveAnalyticsTracker];
-  if (v12)
+  ba_effectiveAnalyticsTracker = [(BCAMSUIBubbleTipViewController *)self ba_effectiveAnalyticsTracker];
+  if (ba_effectiveAnalyticsTracker)
   {
-    v3 = [(BCAMSUIBubbleTipViewController *)self impressionStartTime];
+    impressionStartTime = [(BCAMSUIBubbleTipViewController *)self impressionStartTime];
 
-    if (v3)
+    if (impressionStartTime)
     {
-      v4 = [(BCAMSUIBubbleTipViewController *)self bc_request];
-      v5 = sub_B4B00(v4);
+      bc_request = [(BCAMSUIBubbleTipViewController *)self bc_request];
+      v5 = sub_B4B00(bc_request);
 
       v6 = +[BAEventReporter sharedReporter];
-      v7 = [(BCAMSUIBubbleTipViewController *)self impressionStartTime];
-      v8 = [(BCAMSUIBubbleTipViewController *)self messageType];
-      v9 = [(BCAMSUIBubbleTipViewController *)self messageId];
+      impressionStartTime2 = [(BCAMSUIBubbleTipViewController *)self impressionStartTime];
+      messageType = [(BCAMSUIBubbleTipViewController *)self messageType];
+      messageId = [(BCAMSUIBubbleTipViewController *)self messageId];
       v10 = [v5 count] != 0;
-      v11 = [(BCAMSUIBubbleTipViewController *)self placement];
-      [v6 emitUnifiedMessageExposureEventWithTracker:v12 startDate:v7 messageType:v8 messageIdentifier:v9 hasActionable:v10 actionIdentifier:v5 placementName:v11];
+      placement = [(BCAMSUIBubbleTipViewController *)self placement];
+      [v6 emitUnifiedMessageExposureEventWithTracker:ba_effectiveAnalyticsTracker startDate:impressionStartTime2 messageType:messageType messageIdentifier:messageId hasActionable:v10 actionIdentifier:v5 placementName:placement];
     }
   }
 
@@ -144,20 +144,20 @@
 
 - (id)messageId
 {
-  v2 = [(BCAMSUIBubbleTipViewController *)self bc_request];
-  v3 = [v2 metricsEvent];
-  v4 = [v3 underlyingDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"messageId"];
+  bc_request = [(BCAMSUIBubbleTipViewController *)self bc_request];
+  metricsEvent = [bc_request metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
+  v5 = [underlyingDictionary objectForKeyedSubscript:@"messageId"];
 
   return v5;
 }
 
 - (id)messagePlacement
 {
-  v2 = [(BCAMSUIBubbleTipViewController *)self bc_request];
-  v3 = [v2 metricsEvent];
-  v4 = [v3 underlyingDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"placement"];
+  bc_request = [(BCAMSUIBubbleTipViewController *)self bc_request];
+  metricsEvent = [bc_request metricsEvent];
+  underlyingDictionary = [metricsEvent underlyingDictionary];
+  v5 = [underlyingDictionary objectForKeyedSubscript:@"placement"];
 
   return v5;
 }

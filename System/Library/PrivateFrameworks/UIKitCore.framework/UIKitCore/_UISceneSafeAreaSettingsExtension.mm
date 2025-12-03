@@ -1,8 +1,8 @@
 @interface _UISceneSafeAreaSettingsExtension
 - (UIEdgeInsets)safeAreaEdgeInsets;
 - (_UICornerInsets)safeAreaCornerInsets;
-- (void)safeAreaCornerInsets:(_UICornerInsets *)a3;
-- (void)safeAreaEdgeInsets:(UIEdgeInsets)a3;
+- (void)safeAreaCornerInsets:(_UICornerInsets *)insets;
+- (void)safeAreaEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation _UISceneSafeAreaSettingsExtension
@@ -39,18 +39,18 @@
   return result;
 }
 
-- (void)safeAreaEdgeInsets:(UIEdgeInsets)a3
+- (void)safeAreaEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = [(_UISceneSafeAreaSettingsExtension *)self valueForProperty:sel_safeAreaEdgeInsetResolver expectedClass:objc_opt_class()];
   if (!v8)
   {
-    v9 = [[_UISceneSafeAreaEdgeInsetConcreteResolver alloc] initWithSafeAreaEdgeInsets:top, left, bottom, right];
-    [(_UISceneSafeAreaSettingsExtension *)self setValue:v9 forProperty:sel_safeAreaEdgeInsetResolver];
-    v8 = v9;
+    right = [[_UISceneSafeAreaEdgeInsetConcreteResolver alloc] initWithSafeAreaEdgeInsets:top, left, bottom, right];
+    [(_UISceneSafeAreaSettingsExtension *)self setValue:right forProperty:sel_safeAreaEdgeInsetResolver];
+    v8 = right;
   }
 }
 
@@ -71,14 +71,14 @@
   return result;
 }
 
-- (void)safeAreaCornerInsets:(_UICornerInsets *)a3
+- (void)safeAreaCornerInsets:(_UICornerInsets *)insets
 {
   v5 = [_UISceneSafeAreaCornerInsetConcreteResolver alloc];
-  bottomLeft = a3->bottomLeft;
-  v9[0] = a3->topLeft;
+  bottomLeft = insets->bottomLeft;
+  v9[0] = insets->topLeft;
   v9[1] = bottomLeft;
-  topRight = a3->topRight;
-  v9[2] = a3->bottomRight;
+  topRight = insets->topRight;
+  v9[2] = insets->bottomRight;
   v9[3] = topRight;
   v8 = [(_UISceneSafeAreaCornerInsetConcreteResolver *)v5 initWithSafeAreaCornerInsets:v9];
   [(_UISceneSafeAreaSettingsExtension *)self setValue:v8 forProperty:sel_safeAreaCornerInsetResolver];

@@ -1,28 +1,28 @@
 @interface SUCoreXPCActivityManager
 + (id)sharedInstance;
-- (BOOL)_isActivityTrackedButUnsheduledInternal:(id)a3;
-- (BOOL)addActivityInfoToPersistedState:(id)a3;
-- (BOOL)isActivityScheduled:(id)a3;
-- (BOOL)isActivityScheduledInternal:(id)a3;
-- (BOOL)isActivityTrackedButUnsheduled:(id)a3;
-- (BOOL)removeActivityFromPersistedState:(id)a3;
-- (SUCoreXPCActivityManager)initWithNameAndPersistedStateFilePath:(id)a3 persistedStateFilePath:(id)a4;
-- (id)_getActivityForNameInternal:(id)a3;
-- (id)copyOptionsForActivity:(id)a3;
+- (BOOL)_isActivityTrackedButUnsheduledInternal:(id)internal;
+- (BOOL)addActivityInfoToPersistedState:(id)state;
+- (BOOL)isActivityScheduled:(id)scheduled;
+- (BOOL)isActivityScheduledInternal:(id)internal;
+- (BOOL)isActivityTrackedButUnsheduled:(id)unsheduled;
+- (BOOL)removeActivityFromPersistedState:(id)state;
+- (SUCoreXPCActivityManager)initWithNameAndPersistedStateFilePath:(id)path persistedStateFilePath:(id)filePath;
+- (id)_getActivityForNameInternal:(id)internal;
+- (id)copyOptionsForActivity:(id)activity;
 - (id)description;
-- (id)getActivityForName:(id)a3;
-- (id)getExpectedRunDateForActivity:(id)a3;
-- (int)scheduleActivity:(id)a3;
-- (int)unscheduleActivity:(id)a3;
-- (void)eventHandler:(id)a3;
+- (id)getActivityForName:(id)name;
+- (id)getExpectedRunDateForActivity:(id)activity;
+- (int)scheduleActivity:(id)activity;
+- (int)unscheduleActivity:(id)activity;
+- (void)eventHandler:(id)handler;
 @end
 
 @implementation SUCoreXPCActivityManager
 
-- (void)eventHandler:(id)a3
+- (void)eventHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -32,7 +32,7 @@
   v5 = xpc_activity_copy_identifier();
   if (v5)
   {
-    v6 = [(SUCoreXPCActivityManager *)self managerQueue];
+    managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__SUCoreXPCActivityManager_eventHandler___block_invoke;
@@ -40,45 +40,45 @@
     block[4] = self;
     block[5] = &v17;
     block[6] = v5;
-    dispatch_sync(v6, block);
+    dispatch_sync(managerQueue, block);
 
     if (v18[5])
     {
-      v7 = [(SUCoreXPCActivityManager *)self activityQueue];
+      activityQueue = [(SUCoreXPCActivityManager *)self activityQueue];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __41__SUCoreXPCActivityManager_eventHandler___block_invoke_49;
       v13[3] = &unk_27892C8D0;
       v15 = &v17;
-      v14 = v4;
-      dispatch_sync(v7, v13);
+      v14 = handlerCopy;
+      dispatch_sync(activityQueue, v13);
 
-      v8 = v14;
+      oslog = v14;
     }
 
     else
     {
-      v11 = [(SUCoreXPCActivityManager *)self logger];
-      v8 = [v11 oslog];
+      logger = [(SUCoreXPCActivityManager *)self logger];
+      oslog = [logger oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
         v24 = v5;
-        _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "No registered activity found for event %s", buf, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "No registered activity found for event %s", buf, 0xCu);
       }
     }
   }
 
   else
   {
-    v9 = [(SUCoreXPCActivityManager *)self logger];
-    v10 = [v9 oslog];
+    logger2 = [(SUCoreXPCActivityManager *)self logger];
+    oslog2 = [logger2 oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v10, OS_LOG_TYPE_DEFAULT, "Event handler failed to copy identifier for event. Not invoking any callbacks", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "Event handler failed to copy identifier for event. Not invoking any callbacks", buf, 2u);
     }
   }
 
@@ -231,18 +231,18 @@ LABEL_14:
   }
 }
 
-- (SUCoreXPCActivityManager)initWithNameAndPersistedStateFilePath:(id)a3 persistedStateFilePath:(id)a4
+- (SUCoreXPCActivityManager)initWithNameAndPersistedStateFilePath:(id)path persistedStateFilePath:(id)filePath
 {
   v74 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v40 = a4;
+  pathCopy = path;
+  filePathCopy = filePath;
   v55.receiver = self;
   v55.super_class = SUCoreXPCActivityManager;
   v7 = [(SUCoreXPCActivityManager *)&v55 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_managerName, a3);
+    objc_storeStrong(&v7->_managerName, path);
     v9 = [objc_alloc(MEMORY[0x277D64460]) initWithCategory:@"SUCoreXPCActivityManager"];
     [(SUCoreXPCActivityManager *)v8 setLogger:v9];
 
@@ -261,8 +261,8 @@ LABEL_14:
     v61 = 0u;
     v60 = 0u;
     *label = 0u;
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@", "com.apple.sucore.sucoreactivitymanagerqueue", v41];
-    [v10 getCString:label maxLength:254 encoding:4];
+    pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@", "com.apple.sucore.sucoreactivitymanagerqueue", pathCopy];
+    [pathCopy getCString:label maxLength:254 encoding:4];
     v11 = dispatch_queue_create(label, 0);
     managerQueue = v8->_managerQueue;
     v8->_managerQueue = v11;
@@ -282,9 +282,9 @@ LABEL_14:
     v61 = 0u;
     v60 = 0u;
     *label = 0u;
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@", "com.apple.sucorexpcactivitymanager.persistedStateQueue", v41];
+    pathCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@", "com.apple.sucorexpcactivitymanager.persistedStateQueue", pathCopy];
 
-    [v13 getCString:label maxLength:254 encoding:4];
+    [pathCopy2 getCString:label maxLength:254 encoding:4];
     v14 = dispatch_queue_create(label, 0);
     persistedStateDispatchQueue = v8->_persistedStateDispatchQueue;
     v8->_persistedStateDispatchQueue = v14;
@@ -304,9 +304,9 @@ LABEL_14:
     v61 = 0u;
     v60 = 0u;
     *label = 0u;
-    v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@", "com.apple.sucorexpcactivitymanager.activityQueue", v41];
+    pathCopy3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@", "com.apple.sucorexpcactivitymanager.activityQueue", pathCopy];
 
-    [v39 getCString:label maxLength:254 encoding:4];
+    [pathCopy3 getCString:label maxLength:254 encoding:4];
     v16 = dispatch_queue_create(label, 0);
     activityQueue = v8->_activityQueue;
     v8->_activityQueue = v16;
@@ -315,7 +315,7 @@ LABEL_14:
     activities = v8->_activities;
     v8->_activities = v18;
 
-    v20 = [objc_alloc(MEMORY[0x277D64478]) initWithDispatchQueue:v8->_persistedStateDispatchQueue withPersistencePath:v40 forPolicyVersion:@"1.0"];
+    v20 = [objc_alloc(MEMORY[0x277D64478]) initWithDispatchQueue:v8->_persistedStateDispatchQueue withPersistencePath:filePathCopy forPolicyVersion:@"1.0"];
     persistedState = v8->_persistedState;
     v8->_persistedState = v20;
 
@@ -325,7 +325,7 @@ LABEL_14:
     v52 = __Block_byref_object_copy__90;
     v53 = __Block_byref_object_dispose__91;
     v54 = 0;
-    v22 = [(SUCoreXPCActivityManager *)v8 persistedStateDispatchQueue];
+    persistedStateDispatchQueue = [(SUCoreXPCActivityManager *)v8 persistedStateDispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__SUCoreXPCActivityManager_initWithNameAndPersistedStateFilePath_persistedStateFilePath___block_invoke;
@@ -333,7 +333,7 @@ LABEL_14:
     v23 = v8;
     v47 = v23;
     v48 = &v49;
-    dispatch_sync(v22, block);
+    dispatch_sync(persistedStateDispatchQueue, block);
 
     if (v50[5])
     {
@@ -356,26 +356,26 @@ LABEL_14:
             }
 
             v28 = *(*(&v42 + 1) + 8 * i);
-            v29 = [v23[2] oslog];
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+            oslog = [v23[2] oslog];
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
               v57 = v28;
-              _os_log_impl(&dword_23193C000, v29, OS_LOG_TYPE_DEFAULT, "Found perisistedActivity %@. Unregistering from XPC", buf, 0xCu);
+              _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Found perisistedActivity %@. Unregistering from XPC", buf, 0xCu);
             }
 
             v30 = objc_alloc_init(SUCoreXPCActivity);
-            v31 = [(SUCorePersistedState *)v28 activityOptions];
-            [(SUCoreXPCActivity *)v30 setActivityOptions:v31];
+            activityOptions = [(SUCorePersistedState *)v28 activityOptions];
+            [(SUCoreXPCActivity *)v30 setActivityOptions:activityOptions];
 
-            v32 = [(SUCorePersistedState *)v28 activityName];
-            [(SUCoreXPCActivity *)v30 setActivityName:v32];
+            activityName = [(SUCorePersistedState *)v28 activityName];
+            [(SUCoreXPCActivity *)v30 setActivityName:activityName];
 
             [(SUCoreXPCActivity *)v30 setHandler:0];
             [(SUCoreXPCActivity *)v30 setIsRegisteredWithXPC:0];
             bzero(buf, 0x400uLL);
-            v33 = [(SUCorePersistedState *)v28 activityName];
-            [v33 getCString:buf maxLength:1023 encoding:4];
+            activityName2 = [(SUCorePersistedState *)v28 activityName];
+            [activityName2 getCString:buf maxLength:1023 encoding:4];
 
             xpc_activity_unregister(buf);
             [(NSMutableArray *)v8->_activities addObject:v30];
@@ -388,15 +388,15 @@ LABEL_14:
       }
     }
 
-    v34 = [v23 logger];
-    v35 = [v34 oslog];
+    logger = [v23 logger];
+    oslog2 = [logger oslog];
 
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       v36 = v8->_persistedState;
       *buf = 138412290;
       v57 = v36;
-      _os_log_impl(&dword_23193C000, v35, OS_LOG_TYPE_DEFAULT, "Loaded persisted State: %@", buf, 0xCu);
+      _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "Loaded persisted State: %@", buf, 0xCu);
     }
 
     _Block_object_dispose(&v49, 8);
@@ -424,12 +424,12 @@ void __89__SUCoreXPCActivityManager_initWithNameAndPersistedStateFilePath_persis
   *(v11 + 40) = v10;
 }
 
-- (BOOL)_isActivityTrackedButUnsheduledInternal:(id)a3
+- (BOOL)_isActivityTrackedButUnsheduledInternal:(id)internal
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
-  dispatch_assert_queue_V2(v5);
+  internalCopy = internal;
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
+  dispatch_assert_queue_V2(managerQueue);
 
   v20 = 0u;
   v21 = 0u;
@@ -453,12 +453,12 @@ void __89__SUCoreXPCActivityManager_initWithNameAndPersistedStateFilePath_persis
 
         v12 = *(*(&v18 + 1) + 8 * i);
         v13 = MEMORY[0x277D643F8];
-        v14 = [v12 activityName];
-        if ([v13 stringIsEqual:v14 to:v4])
+        activityName = [v12 activityName];
+        if ([v13 stringIsEqual:activityName to:internalCopy])
         {
-          v15 = [v12 isRegisteredWithXPC];
+          isRegisteredWithXPC = [v12 isRegisteredWithXPC];
 
-          v9 |= v15 ^ 1;
+          v9 |= isRegisteredWithXPC ^ 1;
         }
 
         else
@@ -481,27 +481,27 @@ void __89__SUCoreXPCActivityManager_initWithNameAndPersistedStateFilePath_persis
   return v9 & 1;
 }
 
-- (BOOL)isActivityTrackedButUnsheduled:(id)a3
+- (BOOL)isActivityTrackedButUnsheduled:(id)unsheduled
 {
-  v4 = a3;
+  unsheduledCopy = unsheduled;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__SUCoreXPCActivityManager_isActivityTrackedButUnsheduled___block_invoke;
   block[3] = &unk_27892D598;
-  v9 = v4;
+  v9 = unsheduledCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = unsheduledCopy;
+  dispatch_sync(managerQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(unsheduledCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return unsheduledCopy;
 }
 
 uint64_t __59__SUCoreXPCActivityManager_isActivityTrackedButUnsheduled___block_invoke(uint64_t a1)
@@ -511,12 +511,12 @@ uint64_t __59__SUCoreXPCActivityManager_isActivityTrackedButUnsheduled___block_i
   return result;
 }
 
-- (BOOL)isActivityScheduledInternal:(id)a3
+- (BOOL)isActivityScheduledInternal:(id)internal
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
-  dispatch_assert_queue_V2(v5);
+  internalCopy = internal;
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
+  dispatch_assert_queue_V2(managerQueue);
 
   v19 = 0u;
   v20 = 0u;
@@ -539,12 +539,12 @@ uint64_t __59__SUCoreXPCActivityManager_isActivityTrackedButUnsheduled___block_i
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 activityName];
-        if ([v13 isEqualToString:v4])
+        activityName = [v12 activityName];
+        if ([activityName isEqualToString:internalCopy])
         {
-          v14 = [v12 isRegisteredWithXPC];
+          isRegisteredWithXPC = [v12 isRegisteredWithXPC];
 
-          v9 |= v14;
+          v9 |= isRegisteredWithXPC;
         }
 
         else
@@ -567,27 +567,27 @@ uint64_t __59__SUCoreXPCActivityManager_isActivityTrackedButUnsheduled___block_i
   return v9 & 1;
 }
 
-- (BOOL)isActivityScheduled:(id)a3
+- (BOOL)isActivityScheduled:(id)scheduled
 {
-  v4 = a3;
+  scheduledCopy = scheduled;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SUCoreXPCActivityManager_isActivityScheduled___block_invoke;
   block[3] = &unk_27892D598;
-  v9 = v4;
+  v9 = scheduledCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = scheduledCopy;
+  dispatch_sync(managerQueue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(scheduledCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return scheduledCopy;
 }
 
 uint64_t __48__SUCoreXPCActivityManager_isActivityScheduled___block_invoke(uint64_t a1)
@@ -597,12 +597,12 @@ uint64_t __48__SUCoreXPCActivityManager_isActivityScheduled___block_invoke(uint6
   return result;
 }
 
-- (BOOL)addActivityInfoToPersistedState:(id)a3
+- (BOOL)addActivityInfoToPersistedState:(id)state
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
+  dispatch_assert_queue_V2(managerQueue);
 
   v35 = 0;
   v36 = &v35;
@@ -621,13 +621,13 @@ uint64_t __48__SUCoreXPCActivityManager_isActivityScheduled___block_invoke(uint6
   v31 = __Block_byref_object_dispose__91;
   v32 = 0;
   v6 = objc_alloc_init(SUCorePersistedActivity);
-  v7 = [v4 activityOptions];
-  [(SUCorePersistedActivity *)v6 setActivityOptions:v7];
+  activityOptions = [stateCopy activityOptions];
+  [(SUCorePersistedActivity *)v6 setActivityOptions:activityOptions];
 
-  v8 = [v4 activityName];
-  [(SUCorePersistedActivity *)v6 setActivityName:v8];
+  activityName = [stateCopy activityName];
+  [(SUCorePersistedActivity *)v6 setActivityName:activityName];
 
-  v9 = [(SUCoreXPCActivityManager *)self persistedStateDispatchQueue];
+  persistedStateDispatchQueue = [(SUCoreXPCActivityManager *)self persistedStateDispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SUCoreXPCActivityManager_addActivityInfoToPersistedState___block_invoke;
@@ -635,7 +635,7 @@ uint64_t __48__SUCoreXPCActivityManager_isActivityScheduled___block_invoke(uint6
   block[4] = self;
   block[5] = v33;
   block[6] = &v27;
-  dispatch_sync(v9, block);
+  dispatch_sync(persistedStateDispatchQueue, block);
 
   v24 = 0u;
   v25 = 0u;
@@ -683,7 +683,7 @@ uint64_t __48__SUCoreXPCActivityManager_isActivityScheduled___block_invoke(uint6
   }
 
   [v28[5] addObject:v6];
-  v17 = [(SUCoreXPCActivityManager *)self persistedStateDispatchQueue];
+  persistedStateDispatchQueue2 = [(SUCoreXPCActivityManager *)self persistedStateDispatchQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__SUCoreXPCActivityManager_addActivityInfoToPersistedState___block_invoke_2;
@@ -691,7 +691,7 @@ uint64_t __48__SUCoreXPCActivityManager_isActivityScheduled___block_invoke(uint6
   v21[4] = self;
   v21[5] = &v27;
   v21[6] = &v35;
-  dispatch_sync(v17, v21);
+  dispatch_sync(persistedStateDispatchQueue2, v21);
 
   v18 = *(v36 + 24);
   _Block_object_dispose(&v27, 8);
@@ -735,11 +735,11 @@ uint64_t __60__SUCoreXPCActivityManager_addActivityInfoToPersistedState___block_
   return result;
 }
 
-- (BOOL)removeActivityFromPersistedState:(id)a3
+- (BOOL)removeActivityFromPersistedState:(id)state
 {
-  v4 = a3;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
+  dispatch_assert_queue_V2(managerQueue);
 
   v15 = 0;
   v16 = &v15;
@@ -751,7 +751,7 @@ uint64_t __60__SUCoreXPCActivityManager_addActivityInfoToPersistedState___block_
   v13[3] = __Block_byref_object_copy__90;
   v13[4] = __Block_byref_object_dispose__91;
   v14 = 0;
-  v6 = [(SUCoreXPCActivityManager *)self persistedStateDispatchQueue];
+  persistedStateDispatchQueue = [(SUCoreXPCActivityManager *)self persistedStateDispatchQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__SUCoreXPCActivityManager_removeActivityFromPersistedState___block_invoke;
@@ -759,15 +759,15 @@ uint64_t __60__SUCoreXPCActivityManager_addActivityInfoToPersistedState___block_
   v11 = v13;
   v12 = &v15;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v9);
+  v10 = stateCopy;
+  v7 = stateCopy;
+  dispatch_sync(persistedStateDispatchQueue, v9);
 
-  LOBYTE(v4) = *(v16 + 24);
+  LOBYTE(stateCopy) = *(v16 + 24);
   _Block_object_dispose(v13, 8);
 
   _Block_object_dispose(&v15, 8);
-  return v4;
+  return stateCopy;
 }
 
 void __61__SUCoreXPCActivityManager_removeActivityFromPersistedState___block_invoke(uint64_t a1)
@@ -852,27 +852,27 @@ void __61__SUCoreXPCActivityManager_removeActivityFromPersistedState___block_inv
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (int)scheduleActivity:(id)a3
+- (int)scheduleActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 3;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SUCoreXPCActivityManager_scheduleActivity___block_invoke;
   block[3] = &unk_27892D520;
-  v9 = v4;
-  v10 = self;
+  v9 = activityCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = activityCopy;
+  dispatch_sync(managerQueue, block);
 
-  LODWORD(v4) = *(v13 + 6);
+  LODWORD(activityCopy) = *(v13 + 6);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return activityCopy;
 }
 
 void __45__SUCoreXPCActivityManager_scheduleActivity___block_invoke(uint64_t a1)
@@ -1134,27 +1134,27 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (int)unscheduleActivity:(id)a3
+- (int)unscheduleActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 6;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SUCoreXPCActivityManager_unscheduleActivity___block_invoke;
   block[3] = &unk_27892D520;
   block[4] = self;
-  v9 = v4;
+  v9 = activityCopy;
   v10 = &v11;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = activityCopy;
+  dispatch_sync(managerQueue, block);
 
-  LODWORD(v4) = *(v12 + 6);
+  LODWORD(activityCopy) = *(v12 + 6);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return activityCopy;
 }
 
 void __47__SUCoreXPCActivityManager_unscheduleActivity___block_invoke(uint64_t a1)
@@ -1188,25 +1188,25 @@ void __47__SUCoreXPCActivityManager_unscheduleActivity___block_invoke(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getActivityForName:(id)a3
+- (id)getActivityForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__90;
   v16 = __Block_byref_object_dispose__91;
   v17 = 0;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__SUCoreXPCActivityManager_getActivityForName___block_invoke;
   block[3] = &unk_27892D598;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = nameCopy;
+  dispatch_sync(managerQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1224,12 +1224,12 @@ uint64_t __47__SUCoreXPCActivityManager_getActivityForName___block_invoke(uint64
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_getActivityForNameInternal:(id)a3
+- (id)_getActivityForNameInternal:(id)internal
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
-  dispatch_assert_queue_V2(v5);
+  internalCopy = internal;
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
+  dispatch_assert_queue_V2(managerQueue);
 
   v17 = 0u;
   v18 = 0u;
@@ -1251,8 +1251,8 @@ uint64_t __47__SUCoreXPCActivityManager_getActivityForName___block_invoke(uint64
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = MEMORY[0x277D643F8];
-        v12 = [v10 activityName];
-        LOBYTE(v11) = [v11 stringIsEqual:v12 to:v4];
+        activityName = [v10 activityName];
+        LOBYTE(v11) = [v11 stringIsEqual:activityName to:internalCopy];
 
         if (v11)
         {
@@ -1278,25 +1278,25 @@ LABEL_11:
   return v7;
 }
 
-- (id)copyOptionsForActivity:(id)a3
+- (id)copyOptionsForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__90;
   v16 = __Block_byref_object_dispose__91;
   v17 = 0;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SUCoreXPCActivityManager_copyOptionsForActivity___block_invoke;
   block[3] = &unk_27892D520;
   block[4] = self;
-  v10 = v4;
+  v10 = activityCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = activityCopy;
+  dispatch_sync(managerQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1320,25 +1320,25 @@ void __51__SUCoreXPCActivityManager_copyOptionsForActivity___block_invoke(uint64
   }
 }
 
-- (id)getExpectedRunDateForActivity:(id)a3
+- (id)getExpectedRunDateForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__90;
   v16 = __Block_byref_object_dispose__91;
   v17 = 0;
-  v5 = [(SUCoreXPCActivityManager *)self managerQueue];
+  managerQueue = [(SUCoreXPCActivityManager *)self managerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SUCoreXPCActivityManager_getExpectedRunDateForActivity___block_invoke;
   block[3] = &unk_27892D520;
   block[4] = self;
-  v10 = v4;
+  v10 = activityCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = activityCopy;
+  dispatch_sync(managerQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

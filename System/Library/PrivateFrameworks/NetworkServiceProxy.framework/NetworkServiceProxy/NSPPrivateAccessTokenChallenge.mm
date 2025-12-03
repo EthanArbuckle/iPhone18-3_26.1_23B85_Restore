@@ -1,44 +1,44 @@
 @interface NSPPrivateAccessTokenChallenge
-- (NSObject)initWithType:(void *)a3 issuerName:(void *)a4 redemptionContext:(void *)a5 originNames:(void *)a6 credentialContext:;
-- (NSPPrivateAccessTokenChallenge)initWithData:(id)a3;
-- (id)challengeDataForTokenType:(void *)a3 issuerName:(void *)a4 redemptionContext:(void *)a5 originInfo:(void *)a6 credentialContext:;
-- (id)initARCChallengeWithIssuerName:(id)a3;
-- (id)initARCChallengeWithIssuerName:(id)a3 redemptionContext:(id)a4 originNames:(id)a5 credentialContext:(id)a6;
-- (id)initATHMChallengeWithIssuerName:(id)a3;
-- (id)initRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5;
-- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5;
+- (NSObject)initWithType:(void *)type issuerName:(void *)name redemptionContext:(void *)context originNames:(void *)names credentialContext:;
+- (NSPPrivateAccessTokenChallenge)initWithData:(id)data;
+- (id)challengeDataForTokenType:(void *)type issuerName:(void *)name redemptionContext:(void *)context originInfo:(void *)info credentialContext:;
+- (id)initARCChallengeWithIssuerName:(id)name;
+- (id)initARCChallengeWithIssuerName:(id)name redemptionContext:(id)context originNames:(id)names credentialContext:(id)credentialContext;
+- (id)initATHMChallengeWithIssuerName:(id)name;
+- (id)initRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names;
+- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names;
 @end
 
 @implementation NSPPrivateAccessTokenChallenge
 
-- (id)challengeDataForTokenType:(void *)a3 issuerName:(void *)a4 redemptionContext:(void *)a5 originInfo:(void *)a6 credentialContext:
+- (id)challengeDataForTokenType:(void *)type issuerName:(void *)name redemptionContext:(void *)context originInfo:(void *)info credentialContext:
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  typeCopy = type;
+  nameCopy = name;
+  contextCopy = context;
+  infoCopy = info;
   v15 = objc_alloc_init(MEMORY[0x1E695DF88]);
   v27 = __rev16(a2);
   [v15 appendBytes:&v27 length:2];
-  v16 = [v11 UTF8String];
-  v26 = bswap32(strlen(v16)) >> 16;
+  uTF8String = [typeCopy UTF8String];
+  v26 = bswap32(strlen(uTF8String)) >> 16;
   [v15 appendBytes:&v26 length:2];
-  [v15 appendBytes:v16 length:strlen(v16)];
-  v25 = 32 * (v12 != 0);
+  [v15 appendBytes:uTF8String length:strlen(uTF8String)];
+  v25 = 32 * (nameCopy != 0);
   [v15 appendBytes:&v25 length:1];
-  if (v12)
+  if (nameCopy)
   {
-    [v15 appendData:v12];
+    [v15 appendData:nameCopy];
   }
 
-  if (v13)
+  if (contextCopy)
   {
-    v17 = [v13 UTF8String];
-    v24 = bswap32(strlen(v17)) >> 16;
+    uTF8String2 = [contextCopy UTF8String];
+    v24 = bswap32(strlen(uTF8String2)) >> 16;
     [v15 appendBytes:&v24 length:2];
-    v18 = strlen(v17);
+    v18 = strlen(uTF8String2);
     v19 = v15;
-    v20 = v17;
+    v20 = uTF8String2;
   }
 
   else
@@ -50,25 +50,25 @@
   }
 
   [v19 appendBytes:v20 length:v18];
-  if ([a1 tokenType] == 58796)
+  if ([self tokenType] == 58796)
   {
-    v22 = 32 * (v14 != 0);
+    v22 = 32 * (infoCopy != 0);
     [v15 appendBytes:&v22 length:1];
-    if (v14)
+    if (infoCopy)
     {
-      [v15 appendData:v14];
+      [v15 appendData:infoCopy];
     }
   }
 
   return v15;
 }
 
-- (NSPPrivateAccessTokenChallenge)initWithData:(id)a3
+- (NSPPrivateAccessTokenChallenge)initWithData:(id)data
 {
   *&v68[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     v38 = nplog_obj();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -84,8 +84,8 @@ LABEL_64:
     goto LABEL_15;
   }
 
-  v6 = [v4 length];
-  v7 = [v5 bytes];
+  v6 = [dataCopy length];
+  bytes = [v5 bytes];
   if (!v6)
   {
     v38 = nplog_obj();
@@ -100,8 +100,8 @@ LABEL_64:
     goto LABEL_64;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = bytes;
+  if (!bytes)
   {
     v38 = nplog_obj();
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -160,9 +160,9 @@ LABEL_31:
       goto LABEL_14;
     }
 
-    v25 = [(NSPPrivateAccessTokenChallenge *)v10 tokenType];
+    tokenType = [(NSPPrivateAccessTokenChallenge *)v10 tokenType];
     *buf = 67109120;
-    v68[0] = v25;
+    v68[0] = tokenType;
     v12 = "Unsupported token type %u";
     goto LABEL_30;
   }
@@ -225,9 +225,9 @@ LABEL_16:
   objc_setProperty_atomic(v10, v23, v22, 24);
 
   free(v20);
-  v24 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
+  issuerName = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
 
-  if (!v24)
+  if (!issuerName)
   {
     v11 = nplog_obj();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -295,9 +295,9 @@ LABEL_16:
     v33 = [MEMORY[0x1E695DEF0] dataWithBytes:v28 length:v29];
     objc_setProperty_atomic(v10, v34, v33, 32);
 
-    v35 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
+    redemptionContext = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
 
-    if (!v35)
+    if (!redemptionContext)
     {
       v11 = nplog_obj();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -316,9 +316,9 @@ LABEL_16:
 
   if ([(NSPPrivateAccessTokenChallenge *)v10 typeRequiresRedemptionNonce])
   {
-    v36 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionNonce];
+    redemptionNonce = [(NSPPrivateAccessTokenChallenge *)v10 redemptionNonce];
 
-    if (!v36)
+    if (!redemptionNonce)
     {
       v11 = nplog_obj();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -402,9 +402,9 @@ LABEL_16:
     v45 = [objc_getProperty(v10 v44];
     objc_setProperty_atomic(v10, v46, v45, 48);
 
-    v47 = [(NSPPrivateAccessTokenChallenge *)v10 originNames];
-    v48 = [v47 firstObject];
-    objc_setProperty_atomic(v10, v49, v48, 40);
+    originNames = [(NSPPrivateAccessTokenChallenge *)v10 originNames];
+    firstObject = [originNames firstObject];
+    objc_setProperty_atomic(v10, v49, firstObject, 40);
   }
 
   if ([(NSPPrivateAccessTokenChallenge *)v10 typeRequiresOriginName]&& !objc_getProperty(v10, v50, 64, 1))
@@ -462,9 +462,9 @@ LABEL_37:
         v53 = [MEMORY[0x1E695DEF0] dataWithBytes:v28 + 3 length:v52];
         objc_setProperty_atomic(v10, v54, v53, 56);
 
-        v55 = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
+        credentialContext = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
 
-        if (!v55)
+        if (!credentialContext)
         {
           v11 = nplog_obj();
           if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -500,20 +500,20 @@ LABEL_86:
   objc_setProperty_atomic(v10, v51, v5, 16);
   if (os_variant_allows_internal_security_policies())
   {
-    v56 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
-    v57 = [v56 containsString:@";"];
+    issuerName2 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
+    v57 = [issuerName2 containsString:@";"];
 
     if (v57)
     {
-      v58 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
-      v59 = [v58 componentsSeparatedByString:@""];;
+      issuerName3 = [(NSPPrivateAccessTokenChallenge *)v10 issuerName];
+      v59 = [issuerName3 componentsSeparatedByString:@""];;
       self = [v59 firstObject];
 
       LODWORD(v59) = [(NSPPrivateAccessTokenChallenge *)v10 tokenType];
-      v60 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
+      redemptionContext2 = [(NSPPrivateAccessTokenChallenge *)v10 redemptionContext];
       v62 = objc_getProperty(v10, v61, 64, 1);
-      v63 = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
-      v64 = [(NSPPrivateAccessTokenChallenge *)v10 challengeDataForTokenType:v59 issuerName:self redemptionContext:v60 originInfo:v62 credentialContext:v63];
+      credentialContext2 = [(NSPPrivateAccessTokenChallenge *)v10 credentialContext];
+      v64 = [(NSPPrivateAccessTokenChallenge *)v10 challengeDataForTokenType:v59 issuerName:self redemptionContext:redemptionContext2 originInfo:v62 credentialContext:credentialContext2];
 
       objc_setProperty_atomic(v10, v65, v64, 16);
       goto LABEL_16;
@@ -526,20 +526,20 @@ LABEL_17:
   return v10;
 }
 
-- (NSObject)initWithType:(void *)a3 issuerName:(void *)a4 redemptionContext:(void *)a5 originNames:(void *)a6 credentialContext:
+- (NSObject)initWithType:(void *)type issuerName:(void *)name redemptionContext:(void *)context originNames:(void *)names credentialContext:
 {
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!a1)
+  typeCopy = type;
+  nameCopy = name;
+  contextCopy = context;
+  namesCopy = names;
+  if (!self)
   {
-    v35 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
-  if (v12 && [v12 length] != 32)
+  if (nameCopy && [nameCopy length] != 32)
   {
     v38 = nplog_obj();
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -557,7 +557,7 @@ LABEL_29:
     goto LABEL_26;
   }
 
-  if (v14 && [v14 length] != 32)
+  if (namesCopy && [namesCopy length] != 32)
   {
     v38 = nplog_obj();
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -571,35 +571,35 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  v47.receiver = a1;
+  v47.receiver = self;
   v47.super_class = NSPPrivateAccessTokenChallenge;
   v15 = [&v47 init];
   if (v15)
   {
     v17 = v15;
     v15[4] = a2;
-    objc_setProperty_atomic(v15, v16, v11, 24);
-    objc_setProperty_atomic(v17, v18, v12, 32);
-    objc_setProperty_atomic(v17, v19, v13, 48);
-    v20 = [v17 originNames];
-    v21 = [v20 firstObject];
-    objc_setProperty_atomic(v17, v22, v21, 40);
+    objc_setProperty_atomic(v15, v16, typeCopy, 24);
+    objc_setProperty_atomic(v17, v18, nameCopy, 32);
+    objc_setProperty_atomic(v17, v19, contextCopy, 48);
+    originNames = [v17 originNames];
+    firstObject = [originNames firstObject];
+    objc_setProperty_atomic(v17, v22, firstObject, 40);
 
-    v23 = [v17 originNames];
-    v24 = [v23 count];
+    originNames2 = [v17 originNames];
+    v24 = [originNames2 count];
 
     if (v24)
     {
       v40 = a2;
-      v41 = v13;
-      v42 = v11;
+      v41 = contextCopy;
+      v42 = typeCopy;
       v24 = objc_alloc_init(MEMORY[0x1E696AD60]);
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v26 = [v17 originNames];
-      v27 = [v26 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      originNames3 = [v17 originNames];
+      v27 = [originNames3 countByEnumeratingWithState:&v43 objects:v48 count:16];
       if (v27)
       {
         v28 = v27;
@@ -610,7 +610,7 @@ LABEL_29:
           {
             if (*v44 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(originNames3);
             }
 
             v31 = *(*(&v43 + 1) + 8 * i);
@@ -622,51 +622,51 @@ LABEL_29:
             [v24 appendString:v31];
           }
 
-          v28 = [v26 countByEnumeratingWithState:&v43 objects:v48 count:16];
+          v28 = [originNames3 countByEnumeratingWithState:&v43 objects:v48 count:16];
         }
 
         while (v28);
       }
 
       objc_setProperty_atomic(v17, v32, v24, 64);
-      v13 = v41;
-      v11 = v42;
+      contextCopy = v41;
+      typeCopy = v42;
       a2 = v40;
     }
 
-    objc_setProperty_atomic(v17, v25, v14, 56);
-    v33 = [(NSPPrivateAccessTokenChallenge *)v17 challengeDataForTokenType:a2 issuerName:v11 redemptionContext:v12 originInfo:v24 credentialContext:v14];
+    objc_setProperty_atomic(v17, v25, namesCopy, 56);
+    v33 = [(NSPPrivateAccessTokenChallenge *)v17 challengeDataForTokenType:a2 issuerName:typeCopy redemptionContext:nameCopy originInfo:v24 credentialContext:namesCopy];
     objc_setProperty_atomic(v17, v34, v33, 16);
 
-    a1 = v17;
-    v35 = a1;
+    self = v17;
+    selfCopy = self;
     goto LABEL_19;
   }
 
-  a1 = nplog_obj();
-  if (os_log_type_enabled(a1, OS_LOG_TYPE_FAULT))
+  self = nplog_obj();
+  if (os_log_type_enabled(self, OS_LOG_TYPE_FAULT))
   {
     *buf = 0;
-    _os_log_fault_impl(&dword_1AE7E2000, a1, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
+    _os_log_fault_impl(&dword_1AE7E2000, self, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
   }
 
 LABEL_27:
-  v35 = 0;
+  selfCopy = 0;
 LABEL_19:
 
 LABEL_20:
   v36 = *MEMORY[0x1E69E9840];
-  return v35;
+  return selfCopy;
 }
 
-- (id)initRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5
+- (id)initRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names
 {
-  v5 = self;
+  selfCopy = self;
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    v5 = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:a3 issuerName:a4 redemptionContext:a5 originNames:0 credentialContext:?];
-    v6 = v5;
+    selfCopy = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:name issuerName:nonce redemptionContext:names originNames:0 credentialContext:?];
+    v6 = selfCopy;
   }
 
   else
@@ -686,14 +686,14 @@ LABEL_20:
   return v6;
 }
 
-- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)a3 redemptionNonce:(id)a4 originNames:(id)a5
+- (id)initRateLimitedRSABlindSignatureChallengeWithIssuerName:(id)name redemptionNonce:(id)nonce originNames:(id)names
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  nameCopy = name;
+  nonceCopy = nonce;
+  namesCopy = names;
+  v11 = namesCopy;
+  if (!nameCopy)
   {
     v15 = nplog_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -706,11 +706,11 @@ LABEL_20:
 
 LABEL_11:
 
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!nonceCopy)
   {
     v15 = nplog_obj();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -724,7 +724,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (![v10 count])
+  if (![namesCopy count])
   {
     v15 = nplog_obj();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -740,22 +740,22 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  self = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:v8 issuerName:v9 redemptionContext:v11 originNames:0 credentialContext:?];
-  v12 = self;
+  self = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:nameCopy issuerName:nonceCopy redemptionContext:v11 originNames:0 credentialContext:?];
+  selfCopy = self;
 LABEL_5:
 
   v13 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
-- (id)initARCChallengeWithIssuerName:(id)a3 redemptionContext:(id)a4 originNames:(id)a5 credentialContext:(id)a6
+- (id)initARCChallengeWithIssuerName:(id)name redemptionContext:(id)context originNames:(id)names credentialContext:(id)credentialContext
 {
-  v6 = self;
+  selfCopy = self;
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    v6 = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:a3 issuerName:a4 redemptionContext:a5 originNames:a6 credentialContext:?];
-    v7 = v6;
+    selfCopy = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:name issuerName:context redemptionContext:names originNames:credentialContext credentialContext:?];
+    v7 = selfCopy;
   }
 
   else
@@ -775,14 +775,14 @@ LABEL_5:
   return v7;
 }
 
-- (id)initATHMChallengeWithIssuerName:(id)a3
+- (id)initATHMChallengeWithIssuerName:(id)name
 {
-  v3 = self;
+  selfCopy = self;
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    v3 = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:a3 issuerName:0 redemptionContext:0 originNames:0 credentialContext:?];
-    v4 = v3;
+    selfCopy = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:name issuerName:0 redemptionContext:0 originNames:0 credentialContext:?];
+    v4 = selfCopy;
   }
 
   else
@@ -802,14 +802,14 @@ LABEL_5:
   return v4;
 }
 
-- (id)initARCChallengeWithIssuerName:(id)a3
+- (id)initARCChallengeWithIssuerName:(id)name
 {
-  v3 = self;
+  selfCopy = self;
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    v3 = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:a3 issuerName:0 redemptionContext:0 originNames:0 credentialContext:?];
-    v4 = v3;
+    selfCopy = [(NSPPrivateAccessTokenChallenge *)&self->super initWithType:name issuerName:0 redemptionContext:0 originNames:0 credentialContext:?];
+    v4 = selfCopy;
   }
 
   else

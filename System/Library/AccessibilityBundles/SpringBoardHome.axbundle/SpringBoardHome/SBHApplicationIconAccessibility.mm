@@ -1,5 +1,5 @@
 @interface SBHApplicationIconAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,11 +7,11 @@
 
 @implementation SBHApplicationIconAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHApplicationIcon" isKindOfClass:@"SBIcon"];
-  [v3 validateClass:@"SBHApplicationIcon" hasInstanceMethod:@"applicationPlaceholder" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHApplicationIcon" isKindOfClass:@"SBIcon"];
+  [validationsCopy validateClass:@"SBHApplicationIcon" hasInstanceMethod:@"applicationPlaceholder" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -27,9 +27,9 @@
     else
     {
       v4 = MEMORY[0x29EDB93F0];
-      v5 = [(SBHApplicationIconAccessibility *)self _accessibilityBundleIdentifier];
-      v6 = [v4 applicationProxyForIdentifier:v5];
-      v7 = [v6 bundleURL];
+      _accessibilityBundleIdentifier = [(SBHApplicationIconAccessibility *)self _accessibilityBundleIdentifier];
+      v6 = [v4 applicationProxyForIdentifier:_accessibilityBundleIdentifier];
+      bundleURL = [v6 bundleURL];
       v3 = AXSpokenNameLabelForBundleURL();
 
       if (v3)

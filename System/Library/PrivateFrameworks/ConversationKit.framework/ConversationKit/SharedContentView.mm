@@ -1,5 +1,5 @@
 @interface SharedContentView
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
 - (void)layoutSubviews;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SharedContentView.layoutSubviews()();
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  SharedContentView.convert(_:to:)(a4);
+  selfCopy = self;
+  SharedContentView.convert(_:to:)(space);
   v8 = v7;
   v10 = v9;
   v12 = v11;

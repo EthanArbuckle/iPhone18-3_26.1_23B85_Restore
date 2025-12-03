@@ -1,16 +1,16 @@
 @interface MODarwinNotifier
-- (MODarwinNotifier)initWithName:(id)a3;
-- (MODarwinNotifier)initWithUniverse:(id)a3;
+- (MODarwinNotifier)initWithName:(id)name;
+- (MODarwinNotifier)initWithUniverse:(id)universe;
 - (void)checkLockedState;
 - (void)checkManagedConfiguration;
-- (void)handleBatteryNotification:(unsigned int)a3;
-- (void)onMatchedBatteries:(unsigned int)a3;
-- (void)toggle:(BOOL)a3;
+- (void)handleBatteryNotification:(unsigned int)notification;
+- (void)onMatchedBatteries:(unsigned int)batteries;
+- (void)toggle:(BOOL)toggle;
 @end
 
 @implementation MODarwinNotifier
 
-- (MODarwinNotifier)initWithUniverse:(id)a3
+- (MODarwinNotifier)initWithUniverse:(id)universe
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -19,11 +19,11 @@
   return v6;
 }
 
-- (MODarwinNotifier)initWithName:(id)a3
+- (MODarwinNotifier)initWithName:(id)name
 {
   v9.receiver = self;
   v9.super_class = MODarwinNotifier;
-  v3 = [(MONotifier *)&v9 initWithName:a3];
+  v3 = [(MONotifier *)&v9 initWithName:name];
   v4 = v3;
   if (v3)
   {
@@ -49,32 +49,32 @@
   return v4;
 }
 
-- (void)toggle:(BOOL)a3
+- (void)toggle:(BOOL)toggle
 {
   v4 = *(&self->batteryState.adapterDescription + 5);
-  if (a3)
+  if (toggle)
   {
     if (&MCEffectiveSettingsChangedNotification && v4 < 0)
     {
-      v5 = [MCEffectiveSettingsChangedNotification UTF8String];
-      v6 = [(MONotifier *)self queue];
+      uTF8String = [MCEffectiveSettingsChangedNotification UTF8String];
+      queue = [(MONotifier *)self queue];
       handler[0] = _NSConcreteStackBlock;
       handler[1] = 3221225472;
       handler[2] = __27__MODarwinNotifier_toggle___block_invoke;
       handler[3] = &unk_100338700;
       handler[4] = self;
-      notify_register_dispatch(v5, (&self->batteryState.adapterDescription + 5), v6, handler);
+      notify_register_dispatch(uTF8String, (&self->batteryState.adapterDescription + 5), queue, handler);
     }
 
     if (*(&self->_registerForLockedState + 1) < 0)
     {
-      v7 = [(MONotifier *)self queue];
+      queue2 = [(MONotifier *)self queue];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = __27__MODarwinNotifier_toggle___block_invoke_2;
       v25[3] = &unk_100338700;
       v25[4] = self;
-      notify_register_dispatch("com.apple.sysdiagnose.sysdiagnoseStarted", (&self->_registerForLockedState + 1), v7, v25);
+      notify_register_dispatch("com.apple.sysdiagnose.sysdiagnoseStarted", (&self->_registerForLockedState + 1), queue2, v25);
     }
 
     if ((*(&self->batteryState.adapterDescription + 1) & 0x80000000) != 0)
@@ -94,15 +94,15 @@
       if (v10)
       {
         v11 = v10;
-        v12 = [(MONotifier *)self queue];
-        IONotificationPortSetDispatchQueue(v11, v12);
+        queue3 = [(MONotifier *)self queue];
+        IONotificationPortSetDispatchQueue(v11, queue3);
 
         v13 = *(&self->_sysDiagnoseToken + 1);
         v14 = IOServiceMatching("IOPMPowerSource");
-        LODWORD(v12) = IOServiceAddMatchingNotification(v13, "IOServiceFirstMatch", v14, onMatchedBatteries_bounce, self, &notification);
+        LODWORD(queue3) = IOServiceAddMatchingNotification(v13, "IOServiceFirstMatch", v14, onMatchedBatteries_bounce, self, &notification);
         v15 = _mo_log_facility_get_os_log(&MOLogFacilityDarwin);
         v16 = v15;
-        if (v12)
+        if (queue3)
         {
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
@@ -178,9 +178,9 @@
   }
 }
 
-- (void)onMatchedBatteries:(unsigned int)a3
+- (void)onMatchedBatteries:(unsigned int)batteries
 {
-  v5 = IOIteratorNext(a3);
+  v5 = IOIteratorNext(batteries);
   if (v5)
   {
     v6 = v5;
@@ -214,17 +214,17 @@
       }
 
       IOObjectRelease(v6);
-      v6 = IOIteratorNext(a3);
+      v6 = IOIteratorNext(batteries);
     }
 
     while (v6);
   }
 }
 
-- (void)handleBatteryNotification:(unsigned int)a3
+- (void)handleBatteryNotification:(unsigned int)notification
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"CurrentCapacity", kCFAllocatorDefault, 0);
-  v4 = IORegistryEntryCreateCFProperty(a3, @"MaxCapacity", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(notification, @"CurrentCapacity", kCFAllocatorDefault, 0);
+  v4 = IORegistryEntryCreateCFProperty(notification, @"MaxCapacity", kCFAllocatorDefault, 0);
   if (CFProperty)
   {
     v5 = v4 == 0;
@@ -249,11 +249,11 @@
 
   else
   {
-    v8 = [v4 intValue];
-    v9 = [CFProperty intValue];
-    if (v8)
+    intValue = [v4 intValue];
+    intValue2 = [CFProperty intValue];
+    if (intValue)
     {
-      v10 = v8;
+      v10 = intValue;
     }
 
     else
@@ -261,15 +261,15 @@
       v10 = 100;
     }
 
-    v11 = v9 * 100.0 / v10;
+    v11 = intValue2 * 100.0 / v10;
     v7 = fmaxf(fminf(v11, 100.0), 0.0);
   }
 
-  v12 = IORegistryEntryCreateCFProperty(a3, @"ExternalConnected", kCFAllocatorDefault, 0);
+  v12 = IORegistryEntryCreateCFProperty(notification, @"ExternalConnected", kCFAllocatorDefault, 0);
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
   }
 
   else
@@ -280,10 +280,10 @@
       [MODarwinNotifier handleBatteryNotification:];
     }
 
-    v14 = 0;
+    bOOLValue = 0;
   }
 
-  v16 = IORegistryEntryCreateCFProperty(a3, @"AdapterDetails", kCFAllocatorDefault, 0);
+  v16 = IORegistryEntryCreateCFProperty(notification, @"AdapterDetails", kCFAllocatorDefault, 0);
   v17 = [v16 objectForKeyedSubscript:@"Description"];
   v18 = v17;
   v19 = @"Unknown";
@@ -315,11 +315,11 @@
     v18 = @"Unknown";
   }
 
-  v20 = IORegistryEntryCreateCFProperty(a3, @"FullyCharged", kCFAllocatorDefault, 0);
+  v20 = IORegistryEntryCreateCFProperty(notification, @"FullyCharged", kCFAllocatorDefault, 0);
   v21 = v20;
   if (v20)
   {
-    v22 = [v20 BOOLValue];
+    bOOLValue2 = [v20 BOOLValue];
   }
 
   else
@@ -330,18 +330,18 @@
       [MODarwinNotifier handleBatteryNotification:];
     }
 
-    v22 = 0;
+    bOOLValue2 = 0;
   }
 
   p_isIHAEnabled = &self->managedConfigurationState.isIHAEnabled;
   v25 = *(&self->lockedState + 4);
-  v26 = v7 == *&self->managedConfigurationState.isIHAEnabled && v14 == v25;
-  if (!v26 || (LOBYTE(v25) = v14, v22 != *(&self->lockedState + 5)) || (LOBYTE(v25) = v14, v19 != *(&self->batteryState.batteryLevel + 1)) || (LOBYTE(v25) = v14, v18 != *(&self->batteryState.chargerType + 1)))
+  v26 = v7 == *&self->managedConfigurationState.isIHAEnabled && bOOLValue == v25;
+  if (!v26 || (LOBYTE(v25) = bOOLValue, bOOLValue2 != *(&self->lockedState + 5)) || (LOBYTE(v25) = bOOLValue, v19 != *(&self->batteryState.batteryLevel + 1)) || (LOBYTE(v25) = bOOLValue, v18 != *(&self->batteryState.chargerType + 1)))
   {
     *p_isIHAEnabled = v7;
     *(&self->lockedState + 3) = v25;
-    *(&self->lockedState + 4) = v14;
-    *(&self->lockedState + 5) = v22;
+    *(&self->lockedState + 4) = bOOLValue;
+    *(&self->lockedState + 5) = bOOLValue2;
     v27 = *(&self->batteryState.batteryLevel + 1);
     *(&self->batteryState.batteryLevel + 1) = v19;
 

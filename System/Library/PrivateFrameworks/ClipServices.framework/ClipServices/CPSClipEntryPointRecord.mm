@@ -1,26 +1,26 @@
 @interface CPSClipEntryPointRecord
-- (CPSClipEntryPointRecord)initWithSQLiteRow:(id)a3;
+- (CPSClipEntryPointRecord)initWithSQLiteRow:(id)row;
 @end
 
 @implementation CPSClipEntryPointRecord
 
-- (CPSClipEntryPointRecord)initWithSQLiteRow:(id)a3
+- (CPSClipEntryPointRecord)initWithSQLiteRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v13.receiver = self;
   v13.super_class = CPSClipEntryPointRecord;
   v5 = [(CPSClipEntryPointRecord *)&v13 init];
   if (v5)
   {
-    v6 = [v4 stringAtIndex:0];
+    v6 = [rowCopy stringAtIndex:0];
     appClipBundleID = v5->_appClipBundleID;
     v5->_appClipBundleID = v6;
 
-    v8 = [v4 stringAtIndex:1];
+    v8 = [rowCopy stringAtIndex:1];
     webClipIdentifier = v5->_webClipIdentifier;
     v5->_webClipIdentifier = v8;
 
-    [v4 doubleAtIndex:2];
+    [rowCopy doubleAtIndex:2];
     v5->_lastABRFetchTime = v10;
     v11 = v5;
   }

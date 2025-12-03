@@ -7,11 +7,11 @@
 - (id)tuCallDTMFUpdate
 {
   v3 = [TUCallDTMFUpdate alloc];
-  v4 = [(CXCallDTMFUpdate *)self digits];
-  v5 = [v3 initWithDigits:v4];
+  digits = [(CXCallDTMFUpdate *)self digits];
+  v5 = [v3 initWithDigits:digits];
 
-  v6 = [(CXCallDTMFUpdate *)self UUID];
-  [v5 setUUID:v6];
+  uUID = [(CXCallDTMFUpdate *)self UUID];
+  [v5 setUUID:uUID];
 
   return v5;
 }

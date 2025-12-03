@@ -1,15 +1,15 @@
 @interface SearchToolGlobalRequestXPC
 - (_TtC21SiriInformationSearch26SearchToolGlobalRequestXPC)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SearchToolGlobalRequestXPC
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SearchToolGlobalRequestXPC.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SearchToolGlobalRequestXPC.encode(with:)(coderCopy);
 }
 
 - (_TtC21SiriInformationSearch26SearchToolGlobalRequestXPC)init

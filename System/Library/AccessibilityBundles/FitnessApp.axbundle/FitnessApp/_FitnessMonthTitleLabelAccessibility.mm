@@ -17,25 +17,25 @@
   v11 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 text];
-  v5 = [v4 length];
+  text = [v3 text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [v3 text];
+    text2 = [v3 text];
     v7 = AXDateFromStringWithFormat();
 
-    v8 = AXDateStringForFormat();
+    accessibilityLabel = AXDateStringForFormat();
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = _FitnessMonthTitleLabelAccessibility;
-    v8 = [(_FitnessMonthTitleLabelAccessibility *)&v10 accessibilityLabel];
+    accessibilityLabel = [(_FitnessMonthTitleLabelAccessibility *)&v10 accessibilityLabel];
   }
 
-  return v8;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface GKThreadsafeDictionary
-- (GKThreadsafeDictionary)initWithName:(id)a3;
+- (GKThreadsafeDictionary)initWithName:(id)name;
 - (id)allKeys;
 - (id)allObjects;
 - (id)description;
 - (id)dictionaryCopy;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 objectProducerBlock:(id)a4;
-- (id)objectForKeyWillReplace:(id)a3 objectProducerBlock:(id)a4;
-- (void)asyncWriteToDictionary:(id)a3;
-- (void)readFromDictionary:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key objectProducerBlock:(id)block;
+- (id)objectForKeyWillReplace:(id)replace objectProducerBlock:(id)block;
+- (void)asyncWriteToDictionary:(id)dictionary;
+- (void)readFromDictionary:(id)dictionary;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)removeObjectsForKeys:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)writeToDictionary:(id)a3;
+- (void)removeObject:(id)object;
+- (void)removeObjectForKey:(id)key;
+- (void)removeObjectsForKeys:(id)keys;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)writeToDictionary:(id)dictionary;
 @end
 
 @implementation GKThreadsafeDictionary
 
-- (GKThreadsafeDictionary)initWithName:(id)a3
+- (GKThreadsafeDictionary)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = GKThreadsafeDictionary;
   v5 = [(GKThreadsafeDictionary *)&v12 init];
   if (v5)
   {
-    v6 = [v4 UTF8String];
-    v7 = dispatch_queue_create(v6, MEMORY[0x277D85CD8]);
+    uTF8String = [nameCopy UTF8String];
+    v7 = dispatch_queue_create(uTF8String, MEMORY[0x277D85CD8]);
     queue = v5->_queue;
     v5->_queue = v7;
 
@@ -83,9 +83,9 @@ uint64_t __36__GKThreadsafeDictionary_allObjects__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -97,10 +97,10 @@ uint64_t __36__GKThreadsafeDictionary_allObjects__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__GKThreadsafeDictionary_objectForKey___block_invoke;
   block[3] = &unk_2785E0DC0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -119,10 +119,10 @@ uint64_t __39__GKThreadsafeDictionary_objectForKey___block_invoke(void *a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)objectForKey:(id)a3 objectProducerBlock:(id)a4
+- (id)objectForKey:(id)key objectProducerBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -136,11 +136,11 @@ uint64_t __39__GKThreadsafeDictionary_objectForKey___block_invoke(void *a1)
   block[3] = &unk_2785E0DC0;
   v20 = &v21;
   block[4] = self;
-  v9 = v6;
+  v9 = keyCopy;
   v19 = v9;
   dispatch_sync(queue, block);
   v10 = v22[5];
-  if (v7 && !v10)
+  if (blockCopy && !v10)
   {
     v11 = self->_queue;
     v14[0] = MEMORY[0x277D85DD0];
@@ -150,7 +150,7 @@ uint64_t __39__GKThreadsafeDictionary_objectForKey___block_invoke(void *a1)
     v17 = &v21;
     v14[4] = self;
     v15 = v9;
-    v16 = v7;
+    v16 = blockCopy;
     dispatch_barrier_sync(v11, v14);
 
     v10 = v22[5];
@@ -197,10 +197,10 @@ void __59__GKThreadsafeDictionary_objectForKey_objectProducerBlock___block_invok
   }
 }
 
-- (id)objectForKeyWillReplace:(id)a3 objectProducerBlock:(id)a4
+- (id)objectForKeyWillReplace:(id)replace objectProducerBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  replaceCopy = replace;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -219,12 +219,12 @@ void __59__GKThreadsafeDictionary_objectForKey_objectProducerBlock___block_invok
   block[2] = __70__GKThreadsafeDictionary_objectForKeyWillReplace_objectProducerBlock___block_invoke;
   block[3] = &unk_2785E0E10;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = replaceCopy;
+  v15 = blockCopy;
   v16 = &v20;
   v17 = v18;
-  v9 = v7;
-  v10 = v6;
+  v9 = blockCopy;
+  v10 = replaceCopy;
   dispatch_barrier_sync(queue, block);
   v11 = v21[5];
 
@@ -280,62 +280,62 @@ void __70__GKThreadsafeDictionary_objectForKeyWillReplace_objectProducerBlock___
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__GKThreadsafeDictionary_setObject_forKey___block_invoke;
   block[3] = &unk_2785DDB40;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = keyCopy;
   dispatch_barrier_async(queue, block);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__GKThreadsafeDictionary_removeObjectForKey___block_invoke;
   v7[3] = &unk_2785DEBA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_barrier_async(queue, v7);
 }
 
-- (void)removeObjectsForKeys:(id)a3
+- (void)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__GKThreadsafeDictionary_removeObjectsForKeys___block_invoke;
   v7[3] = &unk_2785DEBA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keysCopy;
+  v6 = keysCopy;
   dispatch_barrier_async(queue, v7);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__GKThreadsafeDictionary_removeObject___block_invoke;
   v7[3] = &unk_2785DEBA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_barrier_async(queue, v7);
 }
 
@@ -367,45 +367,45 @@ void __39__GKThreadsafeDictionary_removeObject___block_invoke(uint64_t a1)
   dispatch_barrier_async(queue, block);
 }
 
-- (void)readFromDictionary:(id)a3
+- (void)readFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__GKThreadsafeDictionary_readFromDictionary___block_invoke;
   v7[3] = &unk_2785DDC10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)writeToDictionary:(id)a3
+- (void)writeToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__GKThreadsafeDictionary_writeToDictionary___block_invoke;
   v7[3] = &unk_2785DDC10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_barrier_sync(queue, v7);
 }
 
-- (void)asyncWriteToDictionary:(id)a3
+- (void)asyncWriteToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__GKThreadsafeDictionary_asyncWriteToDictionary___block_invoke;
   v7[3] = &unk_2785DDC10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_barrier_async(queue, v7);
 }
 

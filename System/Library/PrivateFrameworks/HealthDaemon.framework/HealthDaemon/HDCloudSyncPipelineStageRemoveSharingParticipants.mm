@@ -1,5 +1,5 @@
 @interface HDCloudSyncPipelineStageRemoveSharingParticipants
-- (HDCloudSyncRemoveSharingParticipantsOperation)_delegateToOperationForRemoveSharingParticipants:(void *)a1;
+- (HDCloudSyncRemoveSharingParticipantsOperation)_delegateToOperationForRemoveSharingParticipants:(void *)participants;
 - (void)main;
 @end
 
@@ -11,17 +11,17 @@
   if (self->_removeAllParticipants)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v4 = [(HDCloudSyncOperation *)self configuration];
-    v5 = [v4 cachedCloudState];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration cachedCloudState];
     v48 = 0;
-    v6 = [v5 zonesByIdentifierWithError:&v48];
+    v6 = [cachedCloudState zonesByIdentifierWithError:&v48];
     v7 = v48;
 
     if (v6 || !v7)
     {
       v33 = v7;
       v34 = v6;
-      v35 = self;
+      selfCopy = self;
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
@@ -63,17 +63,17 @@
               if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
               {
                 v31 = v28;
-                v32 = [v15 zoneIdentifier];
+                zoneIdentifier = [v15 zoneIdentifier];
                 *buf = 138543874;
-                v51 = v35;
+                selfCopy2 = selfCopy;
                 v52 = 2114;
-                v53 = v32;
+                v53 = zoneIdentifier;
                 v54 = 2114;
                 v55 = v18;
                 _os_log_error_impl(&dword_228986000, v31, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch CKShare for cached zone %{public}@, %{public}@", buf, 0x20u);
               }
 
-              [(HDCloudSyncOperation *)v35 finishWithSuccess:0 error:v18];
+              [(HDCloudSyncOperation *)selfCopy finishWithSuccess:0 error:v18];
 
               goto LABEL_37;
             }
@@ -82,8 +82,8 @@
             v42 = 0u;
             v39 = 0u;
             v40 = 0u;
-            v20 = [v16 participants];
-            v21 = [v20 countByEnumeratingWithState:&v39 objects:v49 count:16];
+            participants = [v16 participants];
+            v21 = [participants countByEnumeratingWithState:&v39 objects:v49 count:16];
             if (v21)
             {
               v22 = v21;
@@ -94,7 +94,7 @@
                 {
                   if (*v40 != v23)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(participants);
                   }
 
                   v25 = *(*(&v39 + 1) + 8 * j);
@@ -104,7 +104,7 @@
                   }
                 }
 
-                v22 = [v20 countByEnumeratingWithState:&v39 objects:v49 count:16];
+                v22 = [participants countByEnumeratingWithState:&v39 objects:v49 count:16];
               }
 
               while (v22);
@@ -121,7 +121,7 @@
         }
       }
 
-      v26 = [(HDCloudSyncPipelineStageRemoveSharingParticipants *)v35 _delegateToOperationForRemoveSharingParticipants:v3];
+      v26 = [(HDCloudSyncPipelineStageRemoveSharingParticipants *)selfCopy _delegateToOperationForRemoveSharingParticipants:v3];
 LABEL_37:
       v7 = v33;
       v6 = v34;
@@ -134,7 +134,7 @@ LABEL_37:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v51 = self;
+        selfCopy2 = self;
         v52 = 2114;
         v53 = v7;
         _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get cached zones, %{public}@", buf, 0x16u);
@@ -160,17 +160,17 @@ LABEL_39:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (HDCloudSyncRemoveSharingParticipantsOperation)_delegateToOperationForRemoveSharingParticipants:(void *)a1
+- (HDCloudSyncRemoveSharingParticipantsOperation)_delegateToOperationForRemoveSharingParticipants:(void *)participants
 {
-  if (a1)
+  if (participants)
   {
     v3 = a2;
     v4 = [HDCloudSyncRemoveSharingParticipantsOperation alloc];
-    v5 = [a1 configuration];
-    v6 = [a1 cloudState];
-    v7 = [(HDCloudSyncRemoveSharingParticipantsOperation *)v4 initWithConfiguration:v5 cloudState:v6 participantsToRemove:v3];
+    configuration = [participants configuration];
+    cloudState = [participants cloudState];
+    v7 = [(HDCloudSyncRemoveSharingParticipantsOperation *)v4 initWithConfiguration:configuration cloudState:cloudState participantsToRemove:v3];
 
-    [a1 delegateToOperation:v7];
+    [participants delegateToOperation:v7];
   }
 
   else

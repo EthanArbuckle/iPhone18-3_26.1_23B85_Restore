@@ -1,10 +1,10 @@
 @interface VCVideoRuleCollectionsFaceTexture
-+ (void)addRulesForU1ToCollection:(id)a3;
++ (void)addRulesForU1ToCollection:(id)collection;
 @end
 
 @implementation VCVideoRuleCollectionsFaceTexture
 
-+ (void)addRulesForU1ToCollection:(id)a3
++ (void)addRulesForU1ToCollection:(id)collection
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VCFeatureFlagManager_PersonaV2Enabled())
@@ -48,29 +48,29 @@
         objc_enumerationMutation(&unk_1F579D1A0);
       }
 
-      v10 = [*(*(&v17 + 1) + 8 * i) intValue];
+      intValue = [*(*(&v17 + 1) + 8 * i) intValue];
       v11 = [VCVideoRule alloc];
       LODWORD(v12) = 30.0;
-      v13 = [(VCVideoRule *)v11 initWithFrameWidth:v4 frameHeight:v5 frameRate:v10 payload:v12];
+      v13 = [(VCVideoRule *)v11 initWithFrameWidth:v4 frameHeight:v5 frameRate:intValue payload:v12];
       if (!v13)
       {
-        [VCVideoRuleCollectionsFaceTexture addRulesForU1ToCollection:a3];
+        [VCVideoRuleCollectionsFaceTexture addRulesForU1ToCollection:collection];
         return;
       }
 
       v14 = v13;
       v15 = [MEMORY[0x1E695DF70] arrayWithObject:v13];
-      if (v10 != 100)
+      if (intValue != 100)
       {
-        [a3 addVideoRules:v15 transportType:1 payload:v10 encodingType:1];
+        [collection addVideoRules:v15 transportType:1 payload:intValue encodingType:1];
 LABEL_19:
-        [a3 addVideoRules:v15 transportType:1 payload:v10 encodingType:2];
+        [collection addVideoRules:v15 transportType:1 payload:intValue encodingType:2];
         goto LABEL_20;
       }
 
       if (+[VCHardwareSettings supportsHEVCEncoding])
       {
-        [a3 addVideoRules:v15 transportType:1 payload:100 encodingType:1];
+        [collection addVideoRules:v15 transportType:1 payload:100 encodingType:1];
       }
 
       if (+[VCHardwareSettings supportsHEVCDecoding])

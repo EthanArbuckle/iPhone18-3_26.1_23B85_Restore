@@ -1,34 +1,34 @@
 @interface _UICollectionViewOrthogonalScrollView
-- (CGPoint)_contentOffsetForScrollingToItemAtIndexPath:(id)a3 atScrollPosition:(unint64_t)a4 additionalInsets:(NSDirectionalEdgeInsets)a5 itemFrame:(CGRect)a6;
+- (CGPoint)_contentOffsetForScrollingToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position additionalInsets:(NSDirectionalEdgeInsets)insets itemFrame:(CGRect)frame;
 - (CGPoint)_contentOffsetForScrollingToTop;
-- (CGPoint)_panGestureLocationInView:(id)a3;
-- (CGPoint)_panGestureVelocityInView:(id)a3;
-- (CGPoint)_pointByApplyingBaseContentInsetsToPoint:(CGPoint)a3;
-- (CGPoint)_pointByRemovingBaseContentInsetsFromPoint:(CGPoint)a3;
-- (CGPoint)contentOffsetAdjustedForCurrentScrollingBehavior:(CGPoint)a3 itemFrame:(CGRect)a4;
+- (CGPoint)_panGestureLocationInView:(id)view;
+- (CGPoint)_panGestureVelocityInView:(id)view;
+- (CGPoint)_pointByApplyingBaseContentInsetsToPoint:(CGPoint)point;
+- (CGPoint)_pointByRemovingBaseContentInsetsFromPoint:(CGPoint)point;
+- (CGPoint)contentOffsetAdjustedForCurrentScrollingBehavior:(CGPoint)behavior itemFrame:(CGRect)frame;
 - (UIEdgeInsets)_focusScrollableAreaInsets;
-- (id)_existingFocusItemsInRect:(CGRect)a3;
-- (id)_focusScrollBoundaryMetricsForItem:(id)a3;
+- (id)_existingFocusItemsInRect:(CGRect)rect;
+- (id)_focusScrollBoundaryMetricsForItem:(id)item;
 - (id)collectionView;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)focusItemsInRect:(CGRect)rect;
 - (unint64_t)_edgesPropagatingSafeAreaInsetsToSubviews;
 - (unint64_t)_focusPrimaryScrollableAxis;
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5;
-- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)a3;
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to;
+- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)offset;
 - (void)_notifyDidScroll;
-- (void)_scrollViewWillEndDraggingWithVelocity:(CGPoint)a3 targetContentOffset:(CGPoint *)a4;
-- (void)_willRemoveSubview:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
-- (void)configureForDescriptor:(uint64_t)a1;
+- (void)_scrollViewWillEndDraggingWithVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)_willRemoveSubview:(id)subview;
+- (void)bringSubviewToFront:(id)front;
+- (void)configureForDescriptor:(uint64_t)descriptor;
 - (void)dealloc;
-- (void)exchangeSubviewAtIndex:(int64_t)a3 withSubviewAtIndex:(int64_t)a4;
-- (void)initWithCollectionView:(uint64_t)a3 section:;
-- (void)scrollToItemAtIndexPath:(uint64_t)a3 atScrollPosition:(uint64_t)a4 additionalInsets:(double)a5 animated:(double)a6;
-- (void)sendSubviewToBack:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)exchangeSubviewAtIndex:(int64_t)index withSubviewAtIndex:(int64_t)atIndex;
+- (void)initWithCollectionView:(uint64_t)view section:;
+- (void)scrollToItemAtIndexPath:(uint64_t)path atScrollPosition:(uint64_t)position additionalInsets:(double)insets animated:(double)animated;
+- (void)sendSubviewToBack:(id)back;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UICollectionViewOrthogonalScrollView
@@ -37,27 +37,27 @@
 {
   v5.receiver = self;
   v5.super_class = _UICollectionViewOrthogonalScrollView;
-  v3 = [(UIScrollView *)&v5 _edgesPropagatingSafeAreaInsetsToSubviews];
+  _edgesPropagatingSafeAreaInsetsToSubviews = [(UIScrollView *)&v5 _edgesPropagatingSafeAreaInsetsToSubviews];
   if ([(UIScrollView *)self _contentScrollsAlongXAxis])
   {
-    v3 &= 0xFFFFFFFFFFFFFFF5;
+    _edgesPropagatingSafeAreaInsetsToSubviews &= 0xFFFFFFFFFFFFFFF5;
   }
 
   if ([(UIScrollView *)self _contentScrollsAlongYAxis])
   {
-    return v3 & 0xFFFFFFFFFFFFFFFALL;
+    return _edgesPropagatingSafeAreaInsetsToSubviews & 0xFFFFFFFFFFFFFFFALL;
   }
 
   else
   {
-    return v3;
+    return _edgesPropagatingSafeAreaInsetsToSubviews;
   }
 }
 
 - (void)_notifyDidScroll
 {
-  v3 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  if (v3 && !self->_orthogonalScrollViewFlags.isConfiguring)
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  if (collectionView && !self->_orthogonalScrollViewFlags.isConfiguring)
   {
     [(UIScrollView *)self contentOffset];
     [(_UICollectionViewOrthogonalScrollView *)self _pointByRemovingBaseContentInsetsFromPoint:?];
@@ -68,7 +68,7 @@
       descriptor->_contentOffset.y = v5;
     }
 
-    [v3 _orthogonalScrollView:self didScrollToOffset:self->_section inSection:?];
+    [collectionView _orthogonalScrollView:self didScrollToOffset:self->_section inSection:?];
   }
 
   v7.receiver = self;
@@ -87,21 +87,21 @@
   return WeakRetained;
 }
 
-- (void)initWithCollectionView:(uint64_t)a3 section:
+- (void)initWithCollectionView:(uint64_t)view section:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = _UICollectionViewOrthogonalScrollView;
   v5 = objc_msgSendSuper2(&v10, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
   v6 = v5;
   if (v5)
   {
     objc_storeWeak(v5 + 270, a2);
-    v6[271] = a3;
+    v6[271] = view;
     v7 = [[_UICollectionViewSubviewRouter alloc] initWithContainer:v6];
     v8 = v6[272];
     v6[272] = v7;
@@ -116,34 +116,34 @@
   return v6;
 }
 
-- (void)configureForDescriptor:(uint64_t)a1
+- (void)configureForDescriptor:(uint64_t)descriptor
 {
-  if (!a1)
+  if (!descriptor)
   {
     return;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 2160));
+  WeakRetained = objc_loadWeakRetained((descriptor + 2160));
   if (a2 && WeakRetained)
   {
     v104 = WeakRetained;
-    v5 = *(a1 + 2152);
-    *(a1 + 2152) = 1;
-    if (([(_UICollectionLayoutSectionDescriptor *)*(a1 + 2184) isEqualToSectionDescriptor:a2 comparingContentOffset:0]& 1) != 0)
+    v5 = *(descriptor + 2152);
+    *(descriptor + 2152) = 1;
+    if (([(_UICollectionLayoutSectionDescriptor *)*(descriptor + 2184) isEqualToSectionDescriptor:a2 comparingContentOffset:0]& 1) != 0)
     {
       goto LABEL_52;
     }
 
-    objc_storeStrong((a1 + 2184), a2);
+    objc_storeStrong((descriptor + 2184), a2);
     v6 = *(a2 + 16);
     v7 = *(a2 + 208);
     v8 = *(a2 + 216);
     v102 = *(a2 + 232);
     v103 = *(a2 + 224);
-    v10 = *(a1 + 2192);
-    v9 = *(a1 + 2200);
-    v11 = *(a1 + 2208);
-    v12 = *(a1 + 2216);
+    v10 = *(descriptor + 2192);
+    v9 = *(descriptor + 2200);
+    v11 = *(descriptor + 2208);
+    v12 = *(descriptor + 2216);
     v13 = *MEMORY[0x1E695EFF8];
     v14 = *(MEMORY[0x1E695EFF8] + 8);
     v15 = _UIPointValueForAxis(v6, v7, v8);
@@ -157,79 +157,79 @@
     v23 = v17;
     if (!v22)
     {
-      *(a1 + 2192) = v18;
-      *(a1 + 2200) = -v7;
-      *(a1 + 2208) = v17;
-      *(a1 + 2216) = v16;
-      v24 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:a1];
-      v25 = [v24 scrollManager];
+      *(descriptor + 2192) = v18;
+      *(descriptor + 2200) = -v7;
+      *(descriptor + 2208) = v17;
+      *(descriptor + 2216) = v16;
+      v24 = [_UIFocusSystemSceneComponent sceneComponentForEnvironment:descriptor];
+      scrollManager = [v24 scrollManager];
 
-      [v25 adjustTargetContentOffsetForScrollableContainer:a1 byDelta:{v7 + v9, v8 + v10}];
+      [scrollManager adjustTargetContentOffsetForScrollableContainer:descriptor byDelta:{v7 + v9, v8 + v10}];
     }
 
     v26 = *(a2 + 160);
     v27 = *(a2 + 168);
-    v28 = [a1 _isAutomaticContentOffsetAdjustmentEnabled];
-    [a1 _setAutomaticContentOffsetAdjustmentEnabled:0];
-    [a1 setFrame:{v7, v8, v103, v102}];
-    [a1 setContentSize:{v26, v27}];
-    [a1 _setAutomaticContentOffsetAdjustmentEnabled:v28];
+    _isAutomaticContentOffsetAdjustmentEnabled = [descriptor _isAutomaticContentOffsetAdjustmentEnabled];
+    [descriptor _setAutomaticContentOffsetAdjustmentEnabled:0];
+    [descriptor setFrame:{v7, v8, v103, v102}];
+    [descriptor setContentSize:{v26, v27}];
+    [descriptor _setAutomaticContentOffsetAdjustmentEnabled:_isAutomaticContentOffsetAdjustmentEnabled];
     v29 = *(a2 + 40);
     v30 = v29 == 1 && v6 == 1;
     v31 = v29 == 1 && v6 == 2;
-    [a1 setBounces:v29 != 2];
-    [a1 setAlwaysBounceHorizontal:v30];
-    [a1 setAlwaysBounceVertical:v31];
+    [descriptor setBounces:v29 != 2];
+    [descriptor setAlwaysBounceHorizontal:v30];
+    [descriptor setAlwaysBounceVertical:v31];
     v32 = *(a2 + 24);
-    [a1 setPagingEnabled:(v32 - 3) < 3];
+    [descriptor setPagingEnabled:(v32 - 3) < 3];
     v33 = *(a2 + 32);
     if (v33 == *off_1E70ECC78)
     {
       v33 = *off_1E70ECC80;
     }
 
-    [a1 setDecelerationRate:v33];
-    [a1 _setShouldPreventFocusScrollPastContentSize:{objc_msgSend(a1, "_shouldPreventFocusScrollPastContentSize")}];
+    [descriptor setDecelerationRate:v33];
+    [descriptor _setShouldPreventFocusScrollPastContentSize:{objc_msgSend(descriptor, "_shouldPreventFocusScrollPastContentSize")}];
     v34 = *(a2 + 48);
     if (v34 <= 0.0)
     {
-      v37 = [a1 maskView];
+      maskView = [descriptor maskView];
     }
 
     else
     {
       v35 = *(a2 + 8);
-      v36 = [a1 maskView];
-      v37 = v36;
+      maskView2 = [descriptor maskView];
+      maskView = maskView2;
       if ((v35 & 1) == 0)
       {
-        if (!v36)
+        if (!maskView2)
         {
-          v37 = objc_alloc_init(UIView);
+          maskView = objc_alloc_init(UIView);
           v38 = +[UIColor whiteColor];
-          [(UIView *)v37 setBackgroundColor:v38];
+          [(UIView *)maskView setBackgroundColor:v38];
 
           v39 = *MEMORY[0x1E69796E8];
-          v40 = [(UIView *)v37 layer];
-          [v40 setCornerCurve:v39];
+          layer = [(UIView *)maskView layer];
+          [layer setCornerCurve:v39];
 
-          [a1 setMaskView:v37];
+          [descriptor setMaskView:maskView];
         }
 
-        v41 = [(UIView *)v37 layer];
-        [v41 setCornerRadius:v34];
+        layer2 = [(UIView *)maskView layer];
+        [layer2 setCornerRadius:v34];
 
-        [(UIView *)v37 setFrame:*(a2 + 144), *(a2 + 152), *(a2 + 160), *(a2 + 168)];
+        [(UIView *)maskView setFrame:*(a2 + 144), *(a2 + 152), *(a2 + 160), *(a2 + 168)];
         goto LABEL_32;
       }
     }
 
-    if (!v37)
+    if (!maskView)
     {
       goto LABEL_33;
     }
 
-    [a1 setMaskView:0];
+    [descriptor setMaskView:0];
 LABEL_32:
 
 LABEL_33:
@@ -246,15 +246,15 @@ LABEL_33:
       v42 = 1;
     }
 
-    [a1 _setContentScrollsAlongXAxis:v6 & 1];
+    [descriptor _setContentScrollsAlongXAxis:v6 & 1];
     if ((v6 & 2) != 0)
     {
       v42 |= 0x18uLL;
     }
 
-    [a1 _setContentScrollsAlongYAxis:(v6 & 2) >> 1];
-    v43 = [a1 _autoScrollAssistant];
-    [v43 setAllowedDirections:v42];
+    [descriptor _setContentScrollsAlongYAxis:(v6 & 2) >> 1];
+    _autoScrollAssistant = [descriptor _autoScrollAssistant];
+    [_autoScrollAssistant setAllowedDirections:v42];
 
     [v104 frame];
     v45 = v44;
@@ -329,9 +329,9 @@ LABEL_33:
       v55 = v97;
     }
 
-    [a1 _setTouchInsets:{-v59, -v58, -v57, -v54}];
+    [descriptor _setTouchInsets:{-v59, -v58, -v57, -v54}];
     v60 = *(a2 + 56);
-    [a1 _pointByApplyingBaseContentInsetsToPoint:{v101, v100}];
+    [descriptor _pointByApplyingBaseContentInsetsToPoint:{v101, v100}];
     v62 = v61;
     v64 = v63;
     v65 = *MEMORY[0x1E695F060];
@@ -344,23 +344,23 @@ LABEL_33:
       if (v32 == 5)
       {
         dyld_program_sdk_at_least();
-        UIRoundToViewScale(a1);
+        UIRoundToViewScale(descriptor);
         v70 = v69;
         v62 = v62 + _UISetPointValueForAxis(v6, v101, v100, -v69);
         v64 = v64 + v71;
         if (v6 == 1)
         {
-          [a1 setContentInset:{v56, v70 - v92, v55, v98 + v70}];
+          [descriptor setContentInset:{v56, v70 - v92, v55, v98 + v70}];
 LABEL_51:
-          [a1 _setPagingOrigin:{v62, v64}];
-          [a1 _setInterpageSpacing:{v65, v66}];
+          [descriptor _setPagingOrigin:{v62, v64}];
+          [descriptor _setInterpageSpacing:{v65, v66}];
 LABEL_52:
           v72 = *(a2 + 96);
           v73 = *(a2 + 104);
-          [a1 _currentScreenScale];
+          [descriptor _currentScreenScale];
           v75 = _UICollectionLayoutValidatedContentOffsetForProposedContentOffsetForOrthogonalSection(a2, v72, v73, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v74);
           v77 = v76;
-          if (([a1 isTracking] & 1) != 0 || (objc_msgSend(a1, "isDecelerating") & 1) != 0 || objc_msgSend(a1, "isScrollAnimating"))
+          if (([descriptor isTracking] & 1) != 0 || (objc_msgSend(descriptor, "isDecelerating") & 1) != 0 || objc_msgSend(descriptor, "isScrollAnimating"))
           {
             v78 = *(a2 + 16);
             v79 = _UIPointValueForAxis(v78, v72, v73);
@@ -368,23 +368,23 @@ LABEL_52:
             v77 = v80;
           }
 
-          [a1 contentOffset];
+          [descriptor contentOffset];
           v82 = v81;
           v84 = v83;
-          [a1 _pointByApplyingBaseContentInsetsToPoint:{v75, v77}];
+          [descriptor _pointByApplyingBaseContentInsetsToPoint:{v75, v77}];
           v87 = vabdd_f64(v84, v86);
           if (vabdd_f64(v82, v85) >= 0.00000011920929 || v87 >= 0.00000011920929)
           {
-            [a1 setContentOffset:{v85, v86, 0.00000011920929, v87}];
+            [descriptor setContentOffset:{v85, v86, 0.00000011920929, v87}];
           }
 
           v89 = vabdd_f64(v73, v77);
           if (vabdd_f64(v72, v75) >= 0.00000011920929 || v89 >= 0.00000011920929)
           {
-            [v104 _orthogonalScrollView:a1 didScrollToOffset:*(a1 + 2168) inSection:{v75, v77}];
+            [v104 _orthogonalScrollView:descriptor didScrollToOffset:*(descriptor + 2168) inSection:{v75, v77}];
           }
 
-          *(a1 + 2152) = v5 != 0;
+          *(descriptor + 2152) = v5 != 0;
           WeakRetained = v104;
           goto LABEL_67;
         }
@@ -394,27 +394,27 @@ LABEL_52:
       }
     }
 
-    [a1 setContentInset:{v56, v99, v55, v98}];
+    [descriptor setContentInset:{v56, v99, v55, v98}];
     goto LABEL_51;
   }
 
 LABEL_67:
 }
 
-- (void)_scrollViewWillEndDraggingWithVelocity:(CGPoint)a3 targetContentOffset:(CGPoint *)a4
+- (void)_scrollViewWillEndDraggingWithVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  [(_UICollectionViewOrthogonalScrollView *)self contentOffsetAdjustedForCurrentScrollingBehavior:a4->x itemFrame:a4->y, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
-  a4->x = v5;
-  a4->y = v6;
+  [(_UICollectionViewOrthogonalScrollView *)self contentOffsetAdjustedForCurrentScrollingBehavior:offset->x itemFrame:offset->y, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  offset->x = v5;
+  offset->y = v6;
 }
 
-- (void)scrollToItemAtIndexPath:(uint64_t)a3 atScrollPosition:(uint64_t)a4 additionalInsets:(double)a5 animated:(double)a6
+- (void)scrollToItemAtIndexPath:(uint64_t)path atScrollPosition:(uint64_t)position additionalInsets:(double)insets animated:(double)animated
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 270);
-    v16 = [WeakRetained collectionViewLayout];
-    v17 = [v16 layoutAttributesForItemAtIndexPath:a2];
+    WeakRetained = objc_loadWeakRetained(self + 270);
+    collectionViewLayout = [WeakRetained collectionViewLayout];
+    v17 = [collectionViewLayout layoutAttributesForItemAtIndexPath:a2];
 
     if (v17)
     {
@@ -423,7 +423,7 @@ LABEL_67:
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      [a1 _contentOffsetForScrollingToItemAtIndexPath:a2 atScrollPosition:a3 additionalInsets:a5 itemFrame:{a6, a7, a8, v18, v20, v22, v24}];
+      [self _contentOffsetForScrollingToItemAtIndexPath:a2 atScrollPosition:path additionalInsets:insets itemFrame:{animated, a7, a8, v18, v20, v22, v24}];
       v36 = v27;
       v37 = v26;
       if (dyld_program_sdk_at_least())
@@ -436,18 +436,18 @@ LABEL_67:
           v25 = *(MEMORY[0x1E695F050] + 24);
         }
 
-        [a1 contentOffsetAdjustedForCurrentScrollingBehavior:v37 itemFrame:{v36, v19, v21, v23, v25}];
+        [self contentOffsetAdjustedForCurrentScrollingBehavior:v37 itemFrame:{v36, v19, v21, v23, v25}];
       }
 
       else
       {
-        [WeakRetained _contentOffsetForScrollingToItemAtIndexPath:a2 atScrollPosition:a3 additionalInsets:a1 itemFrame:1 containingScrollView:a5 clampToScrollableArea:{a6, a7, a8, v19, v21, v23, v25}];
+        [WeakRetained _contentOffsetForScrollingToItemAtIndexPath:a2 atScrollPosition:path additionalInsets:self itemFrame:1 containingScrollView:insets clampToScrollableArea:{animated, a7, a8, v19, v21, v23, v25}];
       }
 
-      [a1 setContentOffset:a4 animated:?];
+      [self setContentOffset:position animated:?];
       if ((dyld_program_sdk_at_least() & 1) == 0)
       {
-        [a1 frame];
+        [self frame];
         v29 = v28;
         v31 = v30;
         v33 = v32;
@@ -457,22 +457,22 @@ LABEL_67:
         v40.y = v31;
         if (!CGRectContainsPoint(v41, v40))
         {
-          [WeakRetained scrollRectToVisible:a4 animated:{v29, v31, v33, v35}];
+          [WeakRetained scrollRectToVisible:position animated:{v29, v31, v33, v35}];
         }
       }
     }
   }
 }
 
-- (CGPoint)contentOffsetAdjustedForCurrentScrollingBehavior:(CGPoint)a3 itemFrame:(CGRect)a4
+- (CGPoint)contentOffsetAdjustedForCurrentScrollingBehavior:(CGPoint)behavior itemFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  if (!CGRectIsNull(a4))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = behavior.y;
+  v9 = behavior.x;
+  if (!CGRectIsNull(frame))
   {
     [(_UICollectionViewOrthogonalScrollView *)self _pointByRemovingBaseContentInsetsFromPoint:x, y];
     x = v11;
@@ -503,28 +503,28 @@ LABEL_67:
   return result;
 }
 
-- (CGPoint)_contentOffsetForScrollingToItemAtIndexPath:(id)a3 atScrollPosition:(unint64_t)a4 additionalInsets:(NSDirectionalEdgeInsets)a5 itemFrame:(CGRect)a6
+- (CGPoint)_contentOffsetForScrollingToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position additionalInsets:(NSDirectionalEdgeInsets)insets itemFrame:(CGRect)frame
 {
-  x = a6.origin.x;
-  y = a6.origin.y;
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
+  x = frame.origin.x;
+  y = frame.origin.y;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   [(UIView *)self bounds];
   v14 = v13;
   v16 = v15;
   v52 = v18;
   v53 = v17;
-  v19 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  v20 = [v19 collectionViewLayout];
-  [v20 _supplementaryViewInsetsForScrollingToItemAtIndexPath:a3];
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout _supplementaryViewInsetsForScrollingToItemAtIndexPath:path];
   v22 = top + v21;
   v24 = leading + v23;
   v26 = bottom + v25;
   v28 = trailing + v27;
-  v29 = [(UIScrollView *)self _contentScrollableAxes];
-  if (v29 == 2)
+  _contentScrollableAxes = [(UIScrollView *)self _contentScrollableAxes];
+  if (_contentScrollableAxes == 2)
   {
     v30 = 0.0;
   }
@@ -534,7 +534,7 @@ LABEL_67:
     v30 = v28;
   }
 
-  if (v29 == 2)
+  if (_contentScrollableAxes == 2)
   {
     v31 = 0.0;
   }
@@ -544,7 +544,7 @@ LABEL_67:
     v31 = v24;
   }
 
-  if (v29 == 1)
+  if (_contentScrollableAxes == 1)
   {
     v30 = v28;
     v32 = 0.0;
@@ -555,7 +555,7 @@ LABEL_67:
     v32 = v26;
   }
 
-  if (v29 == 1)
+  if (_contentScrollableAxes == 1)
   {
     v31 = v24;
     v33 = 0.0;
@@ -566,7 +566,7 @@ LABEL_67:
     v33 = v22;
   }
 
-  if (v29)
+  if (_contentScrollableAxes)
   {
     v34 = v30;
   }
@@ -576,7 +576,7 @@ LABEL_67:
     v34 = 0.0;
   }
 
-  if (v29)
+  if (_contentScrollableAxes)
   {
     v35 = v32;
   }
@@ -586,7 +586,7 @@ LABEL_67:
     v35 = 0.0;
   }
 
-  if (v29)
+  if (_contentScrollableAxes)
   {
     v36 = v31;
   }
@@ -596,7 +596,7 @@ LABEL_67:
     v36 = 0.0;
   }
 
-  if (v29)
+  if (_contentScrollableAxes)
   {
     v37 = v33;
   }
@@ -627,12 +627,12 @@ LABEL_67:
     v40 = x;
   }
 
-  [v19 _contentOffsetFromProposedOffset:a4 forScrollingToItemWithFrame:v40 atScrollPosition:v39 additionalInsets:x containingScrollViewBounds:{*&v37, *&v36, *&v35, *&v34, *&v14, *&v16, v53, v52}];
+  [collectionView _contentOffsetFromProposedOffset:position forScrollingToItemWithFrame:v40 atScrollPosition:v39 additionalInsets:x containingScrollViewBounds:{*&v37, *&v36, *&v35, *&v34, *&v14, *&v16, v53, v52}];
   v42 = v41;
   v44 = v43;
-  v45 = [v20 _orthogonalScrollingAxis];
-  v46 = _UIPointValueForAxis(v45, v42, v44);
-  v47 = _UISetPointValueForAxis(v45, v40, v39, v46);
+  _orthogonalScrollingAxis = [collectionViewLayout _orthogonalScrollingAxis];
+  v46 = _UIPointValueForAxis(_orthogonalScrollingAxis, v42, v44);
+  v47 = _UISetPointValueForAxis(_orthogonalScrollingAxis, v40, v39, v46);
   v49 = v48;
 
   v50 = v47;
@@ -642,9 +642,9 @@ LABEL_67:
   return result;
 }
 
-- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)a3
+- (void)_autoScrollAssistantUpdateContentOffset:(CGPoint)offset
 {
-  [(_UICollectionViewOrthogonalScrollView *)self contentOffsetAdjustedForCurrentScrollingBehavior:a3.x itemFrame:a3.y, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  [(_UICollectionViewOrthogonalScrollView *)self contentOffsetAdjustedForCurrentScrollingBehavior:offset.x itemFrame:offset.y, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   v4.receiver = self;
   v4.super_class = _UICollectionViewOrthogonalScrollView;
   [(UIScrollView *)&v4 _autoScrollAssistantUpdateContentOffset:?];
@@ -658,7 +658,7 @@ LABEL_67:
   return result;
 }
 
-- (CGPoint)_pointByApplyingBaseContentInsetsToPoint:(CGPoint)a3
+- (CGPoint)_pointByApplyingBaseContentInsetsToPoint:(CGPoint)point
 {
   if (self)
   {
@@ -672,14 +672,14 @@ LABEL_67:
     top = 0.0;
   }
 
-  v5 = a3.x - left;
-  v6 = a3.y - top;
+  v5 = point.x - left;
+  v6 = point.y - top;
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (CGPoint)_pointByRemovingBaseContentInsetsFromPoint:(CGPoint)a3
+- (CGPoint)_pointByRemovingBaseContentInsetsFromPoint:(CGPoint)point
 {
   if (self)
   {
@@ -693,53 +693,53 @@ LABEL_67:
     top = 0.0;
   }
 
-  v5 = a3.x + left;
-  v6 = a3.y + top;
+  v5 = point.x + left;
+  v6 = point.y + top;
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UICollectionViewOrthogonalScrollView;
   [UIScrollView touchesBegan:sel_touchesBegan_withEvent_ withEvent:?];
-  v7 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  [v7 touchesBegan:a3 withEvent:a4];
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  [collectionView touchesBegan:began withEvent:event];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UICollectionViewOrthogonalScrollView;
   [UIScrollView touchesMoved:sel_touchesMoved_withEvent_ withEvent:?];
-  v7 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  [v7 touchesMoved:a3 withEvent:a4];
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  [collectionView touchesMoved:moved withEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UICollectionViewOrthogonalScrollView;
   [UIScrollView touchesCancelled:sel_touchesCancelled_withEvent_ withEvent:?];
-  v7 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  [v7 touchesCancelled:a3 withEvent:a4];
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  [collectionView touchesCancelled:cancelled withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = _UICollectionViewOrthogonalScrollView;
   [UIScrollView touchesEnded:sel_touchesEnded_withEvent_ withEvent:?];
-  v7 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  [v7 touchesEnded:a3 withEvent:a4];
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  [collectionView touchesEnded:ended withEvent:event];
 }
 
-- (CGPoint)_panGestureLocationInView:(id)a3
+- (CGPoint)_panGestureLocationInView:(id)view
 {
-  v4 = [(UIScrollView *)self panGestureRecognizer];
-  [v4 locationInView:a3];
+  panGestureRecognizer = [(UIScrollView *)self panGestureRecognizer];
+  [panGestureRecognizer locationInView:view];
   v6 = v5;
   v8 = v7;
 
@@ -750,10 +750,10 @@ LABEL_67:
   return result;
 }
 
-- (CGPoint)_panGestureVelocityInView:(id)a3
+- (CGPoint)_panGestureVelocityInView:(id)view
 {
-  v4 = [(UIScrollView *)self panGestureRecognizer];
-  [v4 velocityInView:a3];
+  panGestureRecognizer = [(UIScrollView *)self panGestureRecognizer];
+  [panGestureRecognizer velocityInView:view];
   v6 = v5;
   v8 = v7;
 
@@ -764,25 +764,25 @@ LABEL_67:
   return result;
 }
 
-- (id)_existingFocusItemsInRect:(CGRect)a3
+- (id)_existingFocusItemsInRect:(CGRect)rect
 {
   v6.receiver = self;
   v6.super_class = _UICollectionViewOrthogonalScrollView;
-  v3 = [(UIView *)&v6 focusItemsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 focusItemsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = [v3 bs_filter:&__block_literal_global_636];
 
   return v4;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [(_UICollectionViewOrthogonalScrollView *)self _existingFocusItemsInRect:?];
-  v9 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  v10 = [(UIView *)self coordinateSpace];
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  coordinateSpace = [(UIView *)self coordinateSpace];
   if (self)
   {
     section = self->_section;
@@ -793,20 +793,20 @@ LABEL_67:
     section = 0;
   }
 
-  v12 = [v9 _focusPromiseItemsInRect:v10 inCoordinateSpace:section inSection:{x, y, width, height}];
+  v12 = [collectionView _focusPromiseItemsInRect:coordinateSpace inCoordinateSpace:section inSection:{x, y, width, height}];
 
   v13 = [v8 arrayByAddingObjectsFromArray:v12];
 
   return v13;
 }
 
-- (id)_focusScrollBoundaryMetricsForItem:(id)a3
+- (id)_focusScrollBoundaryMetricsForItem:(id)item
 {
   [(UIScrollView *)self _canScrollX];
   [(UIScrollView *)self _canScrollY];
-  v5 = [[_UIFocusScrollBoundaryMetrics alloc] initWithFocusItem:a3 scrollView:self];
-  v6 = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
-  v7 = v6;
+  v5 = [[_UIFocusScrollBoundaryMetrics alloc] initWithFocusItem:item scrollView:self];
+  collectionView = [(_UICollectionViewOrthogonalScrollView *)&self->super.super.super.super.isa collectionView];
+  v7 = collectionView;
   if (self)
   {
     section = self->_section;
@@ -817,13 +817,13 @@ LABEL_67:
     section = 0;
   }
 
-  [v6 _updateFocusScrollBoundaryMetrics:v5 forItem:a3 inSection:section];
+  [collectionView _updateFocusScrollBoundaryMetrics:v5 forItem:item inSection:section];
 
   if (![(_UIFocusScrollBoundaryMetrics *)v5 hasDisprovedAllRelevantAssumptions])
   {
     v11.receiver = self;
     v11.super_class = _UICollectionViewOrthogonalScrollView;
-    v9 = [(UIScrollView *)&v11 _focusScrollBoundaryMetricsForItem:a3];
+    v9 = [(UIScrollView *)&v11 _focusScrollBoundaryMetricsForItem:item];
     [(_UIFocusScrollBoundaryMetrics *)v5 consumeOtherMetrics:v9];
   }
 
@@ -894,41 +894,41 @@ LABEL_8:
   return result;
 }
 
-- (void)_addSubview:(id)a3 positioned:(int64_t)a4 relativeTo:(id)a5
+- (void)_addSubview:(id)subview positioned:(int64_t)positioned relativeTo:(id)to
 {
-  v10 = a4;
+  positionedCopy = positioned;
   if (self)
   {
     subviewRouter = self->_subviewRouter;
     if (subviewRouter)
     {
-      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:a3 atPosition:&v10 relativeTo:a5 creatingBookmarkIfNecessary:1])
+      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:subview atPosition:&positionedCopy relativeTo:to creatingBookmarkIfNecessary:1])
       {
         v9.receiver = self;
         v9.super_class = _UICollectionViewOrthogonalScrollView;
-        [(UIView *)&v9 _addSubview:a3 positioned:v10 relativeTo:a5];
+        [(UIView *)&v9 _addSubview:subview positioned:positionedCopy relativeTo:to];
       }
     }
   }
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_subviewRouter;
   }
 
-  if ([(_UICollectionViewSubviewRouter *)self shouldBringSubviewToFront:a3])
+  if ([(_UICollectionViewSubviewRouter *)self shouldBringSubviewToFront:front])
   {
-    v5.receiver = v4;
+    v5.receiver = selfCopy;
     v5.super_class = _UICollectionViewOrthogonalScrollView;
-    [(UIView *)&v5 bringSubviewToFront:a3];
+    [(UIView *)&v5 bringSubviewToFront:front];
   }
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
   if (self)
   {
@@ -936,33 +936,33 @@ LABEL_8:
     if (subviewRouter)
     {
       v7 = 0;
-      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:a3 atPosition:&v7 relativeTo:0 creatingBookmarkIfNecessary:0])
+      if ([(_UICollectionViewSubviewRouter *)subviewRouter shouldAddSubview:back atPosition:&v7 relativeTo:0 creatingBookmarkIfNecessary:0])
       {
         v6.receiver = self;
         v6.super_class = _UICollectionViewOrthogonalScrollView;
-        [(UIView *)&v6 sendSubviewToBack:a3];
+        [(UIView *)&v6 sendSubviewToBack:back];
       }
     }
   }
 }
 
-- (void)exchangeSubviewAtIndex:(int64_t)a3 withSubviewAtIndex:(int64_t)a4
+- (void)exchangeSubviewAtIndex:(int64_t)index withSubviewAtIndex:(int64_t)atIndex
 {
-  v6 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_subviewRouter;
   }
 
-  if ([(_UICollectionViewSubviewRouter *)self shouldExchangeSubviewAtIndex:a3 withSubviewAtIndex:a4])
+  if ([(_UICollectionViewSubviewRouter *)self shouldExchangeSubviewAtIndex:index withSubviewAtIndex:atIndex])
   {
-    v7.receiver = v6;
+    v7.receiver = selfCopy;
     v7.super_class = _UICollectionViewOrthogonalScrollView;
-    [(UIView *)&v7 exchangeSubviewAtIndex:a3 withSubviewAtIndex:a4];
+    [(UIView *)&v7 exchangeSubviewAtIndex:index withSubviewAtIndex:atIndex];
   }
 }
 
-- (void)_willRemoveSubview:(id)a3
+- (void)_willRemoveSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = _UICollectionViewOrthogonalScrollView;
@@ -977,7 +977,7 @@ LABEL_8:
     subviewRouter = 0;
   }
 
-  [(_UICollectionViewSubviewRouter *)subviewRouter willRemoveSubview:a3];
+  [(_UICollectionViewSubviewRouter *)subviewRouter willRemoveSubview:subview];
 }
 
 - (void)dealloc

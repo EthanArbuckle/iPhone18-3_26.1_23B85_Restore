@@ -1,22 +1,22 @@
 @interface _TUINowPlayingRenderModel
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
 - (unint64_t)hash;
 @end
 
 @implementation _TUINowPlayingRenderModel
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   if (TUIRenderModelIsEqualToRenderModel(self, v6) && (v7 = -[_TUINowPlayingRenderModel playing](self, "playing"), v7 == [v6 playing]))
   {
-    v9 = [(_TUINowPlayingRenderModel *)self color];
-    v10 = [v6 color];
-    v8 = v9 == v10 || [v9 isEqual:v10];
+    color = [(_TUINowPlayingRenderModel *)self color];
+    color2 = [v6 color];
+    v8 = color == color2 || [color isEqual:color2];
   }
 
   else
@@ -29,8 +29,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_TUINowPlayingRenderModel *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(_TUINowPlayingRenderModel *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

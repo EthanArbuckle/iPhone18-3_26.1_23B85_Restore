@@ -1,7 +1,7 @@
 @interface SWCollaborationView
 - (BOOL)_shouldOverrideSymbolConfigForIWork;
 - (BOOL)_shouldOverrideSymbolConfigForVisionFreeform;
-- (SWCollaborationView)initWithButtonView:(id)a3;
+- (SWCollaborationView)initWithButtonView:(id)view;
 - (SWCollaborationView)initWithItemProvider:(NSItemProvider *)itemProvider;
 - (id)cloudSharingControllerDelegate;
 - (id)cloudSharingDelegate;
@@ -14,46 +14,46 @@
 - (void)setHeaderSubtitle:(NSString *)headerSubtitle;
 - (void)setHeaderTitle:(NSString *)headerTitle;
 - (void)setManageButtonTitle:(NSString *)manageButtonTitle;
-- (void)updatePlaceholderGlyphScale:(int64_t)a3 weight:(int64_t)a4 pointSize:(double)a5;
+- (void)updatePlaceholderGlyphScale:(int64_t)scale weight:(int64_t)weight pointSize:(double)size;
 @end
 
 @implementation SWCollaborationView
 
-- (SWCollaborationView)initWithButtonView:(id)a3
+- (SWCollaborationView)initWithButtonView:(id)view
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = SWCollaborationView;
   v6 = [(SWCollaborationView *)&v24 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v6)
   {
-    [v5 setOuterButton:v6];
-    v23 = v5;
-    objc_storeStrong(&v6->_typeErasedButtonView, a3);
+    [viewCopy setOuterButton:v6];
+    v23 = viewCopy;
+    objc_storeStrong(&v6->_typeErasedButtonView, view);
     [(SWCollaborationView *)v6 addSubview:v6->_typeErasedButtonView];
     [(UIView *)v6->_typeErasedButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
     v18 = MEMORY[0x1E696ACD8];
-    v22 = [(UIView *)v6->_typeErasedButtonView leadingAnchor];
-    v21 = [(SWCollaborationView *)v6 leadingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UIView *)v6->_typeErasedButtonView leadingAnchor];
+    leadingAnchor2 = [(SWCollaborationView *)v6 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[0] = v20;
-    v19 = [(UIView *)v6->_typeErasedButtonView trailingAnchor];
-    v7 = [(SWCollaborationView *)v6 trailingAnchor];
-    v8 = [v19 constraintEqualToAnchor:v7];
+    trailingAnchor = [(UIView *)v6->_typeErasedButtonView trailingAnchor];
+    trailingAnchor2 = [(SWCollaborationView *)v6 trailingAnchor];
+    v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[1] = v8;
-    v9 = [(UIView *)v6->_typeErasedButtonView topAnchor];
-    v10 = [(SWCollaborationView *)v6 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(UIView *)v6->_typeErasedButtonView topAnchor];
+    topAnchor2 = [(SWCollaborationView *)v6 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v25[2] = v11;
-    v12 = [(UIView *)v6->_typeErasedButtonView bottomAnchor];
-    v13 = [(SWCollaborationView *)v6 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [(UIView *)v6->_typeErasedButtonView bottomAnchor];
+    bottomAnchor2 = [(SWCollaborationView *)v6 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v25[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
     [v18 activateConstraints:v15];
 
-    v5 = v23;
+    viewCopy = v23;
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -62,21 +62,21 @@
 
 - (BOOL)_shouldOverrideSymbolConfigForVisionFreeform
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   return 0;
 }
 
 - (BOOL)_shouldOverrideSymbolConfigForIWork
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v4 = [MEMORY[0x1E695DF70] array];
-  if ([v3 length])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([bundleIdentifier length])
   {
-    v5 = [v4 containsObject:v3];
+    v5 = [array containsObject:bundleIdentifier];
   }
 
   else
@@ -160,10 +160,10 @@
   [v5 setHeaderImage:v4];
 }
 
-- (void)updatePlaceholderGlyphScale:(int64_t)a3 weight:(int64_t)a4 pointSize:(double)a5
+- (void)updatePlaceholderGlyphScale:(int64_t)scale weight:(int64_t)weight pointSize:(double)size
 {
   v8 = sub_1BBC2EF14(self, "buttonView");
-  [v8 updatePlaceHolderSymbolScale:a3 weight:a4 pointSize:a5];
+  [v8 updatePlaceHolderSymbolScale:scale weight:weight pointSize:size];
 }
 
 - (id)cloudSharingDelegate

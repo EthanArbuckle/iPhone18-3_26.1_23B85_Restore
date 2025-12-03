@@ -4,11 +4,11 @@
 + (id)_templateFactory;
 + (id)_templatePackageURL;
 + (id)supportedMetrics;
-- (BKLibraryBookshelfMetrics)initWithObserver:(id)a3;
+- (BKLibraryBookshelfMetrics)initWithObserver:(id)observer;
 - (BOOL)compactWidth;
-- (BOOL)updateIfNeededWithEnvironment:(id)a3 bookshelfLayoutMode:(unint64_t)a4 editMode:(BOOL)a5 isPopover:(BOOL)a6;
+- (BOOL)updateIfNeededWithEnvironment:(id)environment bookshelfLayoutMode:(unint64_t)mode editMode:(BOOL)editMode isPopover:(BOOL)popover;
 - (id)metricsTemplateURL;
-- (void)addSymbolsToMetricsEnvironment:(id)a3 package:(id)a4;
+- (void)addSymbolsToMetricsEnvironment:(id)environment package:(id)package;
 - (void)invalidate;
 @end
 
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004FF04;
   block[3] = &unk_100A03560;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100AF73E8 != -1)
   {
     dispatch_once(&qword_100AF73E8, block);
@@ -57,7 +57,7 @@
   block[1] = 3221225472;
   block[2] = sub_10005007C;
   block[3] = &unk_100A03560;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100AF73F8 != -1)
   {
     dispatch_once(&qword_100AF73F8, block);
@@ -68,18 +68,18 @@
   return v2;
 }
 
-- (BKLibraryBookshelfMetrics)initWithObserver:(id)a3
+- (BKLibraryBookshelfMetrics)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v12.receiver = self;
   v12.super_class = BKLibraryBookshelfMetrics;
   v5 = [(BKLibraryBookshelfMetrics *)&v12 init];
   if (v5)
   {
     v6 = [BCLayoutMetrics alloc];
-    v7 = [objc_opt_class() _templateFactory];
-    v8 = [objc_opt_class() _manager];
-    v9 = [v6 initWithObserver:v4 factory:v7 manager:v8 delegate:v5];
+    _templateFactory = [objc_opt_class() _templateFactory];
+    _manager = [objc_opt_class() _manager];
+    v9 = [v6 initWithObserver:observerCopy factory:_templateFactory manager:_manager delegate:v5];
     metrics = v5->_metrics;
     v5->_metrics = v9;
   }
@@ -87,38 +87,38 @@
   return v5;
 }
 
-- (BOOL)updateIfNeededWithEnvironment:(id)a3 bookshelfLayoutMode:(unint64_t)a4 editMode:(BOOL)a5 isPopover:(BOOL)a6
+- (BOOL)updateIfNeededWithEnvironment:(id)environment bookshelfLayoutMode:(unint64_t)mode editMode:(BOOL)editMode isPopover:(BOOL)popover
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  if (self->_bookshelfLayoutMode != a4 || self->_editMode != v7 || self->_isPopover != v6)
+  popoverCopy = popover;
+  editModeCopy = editMode;
+  environmentCopy = environment;
+  if (self->_bookshelfLayoutMode != mode || self->_editMode != editModeCopy || self->_isPopover != popoverCopy)
   {
-    self->_bookshelfLayoutMode = a4;
-    self->_editMode = v7;
-    self->_isPopover = v6;
-    v11 = [(BKLibraryBookshelfMetrics *)self metrics];
-    [v11 invalidate];
+    self->_bookshelfLayoutMode = mode;
+    self->_editMode = editModeCopy;
+    self->_isPopover = popoverCopy;
+    metrics = [(BKLibraryBookshelfMetrics *)self metrics];
+    [metrics invalidate];
   }
 
-  v12 = [(BKLibraryBookshelfMetrics *)self metrics];
-  v13 = [v12 updateIfNeededWithEnvironment:v10];
+  metrics2 = [(BKLibraryBookshelfMetrics *)self metrics];
+  v13 = [metrics2 updateIfNeededWithEnvironment:environmentCopy];
 
   return v13;
 }
 
 - (void)invalidate
 {
-  v2 = [(BKLibraryBookshelfMetrics *)self metrics];
-  [v2 invalidate];
+  metrics = [(BKLibraryBookshelfMetrics *)self metrics];
+  [metrics invalidate];
 }
 
 - (BOOL)compactWidth
 {
-  v2 = [(BKLibraryBookshelfMetrics *)self metrics];
-  v3 = [v2 compactWidth];
+  metrics = [(BKLibraryBookshelfMetrics *)self metrics];
+  compactWidth = [metrics compactWidth];
 
-  return v3;
+  return compactWidth;
 }
 
 - (id)metricsTemplateURL
@@ -128,11 +128,11 @@
   return [v2 _metricsTemplateURL];
 }
 
-- (void)addSymbolsToMetricsEnvironment:(id)a3 package:(id)a4
+- (void)addSymbolsToMetricsEnvironment:(id)environment package:(id)package
 {
-  v6 = a4;
-  v14 = a3;
-  v7 = [v6 nameForString:@"libraryEnv::layoutMode"];
+  packageCopy = package;
+  environmentCopy = environment;
+  v7 = [packageCopy nameForString:@"libraryEnv::layoutMode"];
   if ([(BKLibraryBookshelfMetrics *)self bookshelfLayoutMode]== 1)
   {
     v8 = @"grid";
@@ -143,8 +143,8 @@
     v8 = @"list";
   }
 
-  [v14 setSymbol:objc_msgSend(v6 forName:{"symbolForString:", v8), v7}];
-  v9 = [v6 nameForString:@"libraryEnv::interactionMode"];
+  [environmentCopy setSymbol:objc_msgSend(packageCopy forName:{"symbolForString:", v8), v7}];
+  v9 = [packageCopy nameForString:@"libraryEnv::interactionMode"];
   if ([(BKLibraryBookshelfMetrics *)self editMode])
   {
     v10 = @"edit";
@@ -155,8 +155,8 @@
     v10 = @"none";
   }
 
-  [v14 setSymbol:objc_msgSend(v6 forName:{"symbolForString:", v10), v9}];
-  v11 = [v6 nameForString:@"libraryEnv::popoverMode"];
+  [environmentCopy setSymbol:objc_msgSend(packageCopy forName:{"symbolForString:", v10), v9}];
+  v11 = [packageCopy nameForString:@"libraryEnv::popoverMode"];
   if ([(BKLibraryBookshelfMetrics *)self isPopover])
   {
     v12 = @"popover";
@@ -167,9 +167,9 @@
     v12 = @"none";
   }
 
-  v13 = [v6 symbolForString:v12];
+  v13 = [packageCopy symbolForString:v12];
 
-  [v14 setSymbol:v13 forName:v11];
+  [environmentCopy setSymbol:v13 forName:v11];
 }
 
 + (id)supportedMetrics

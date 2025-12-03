@@ -1,10 +1,10 @@
 @interface WBSReaderFontManager
 - (NSArray)fonts;
 - (WBSReaderFontManager)init;
-- (id)defaultFontForLanguageTag:(id)a3;
-- (id)fontWithFontFamilyName:(id)a3;
-- (void)_fontDownloadDidFinish:(id)a3;
-- (void)updateLanguageTag:(id)a3;
+- (id)defaultFontForLanguageTag:(id)tag;
+- (id)fontWithFontFamilyName:(id)name;
+- (void)_fontDownloadDidFinish:(id)finish;
+- (void)updateLanguageTag:(id)tag;
 @end
 
 @implementation WBSReaderFontManager
@@ -20,9 +20,9 @@
     languageTag = v2->_languageTag;
     v2->_languageTag = &stru_1F3A5E418;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = +[WBSReaderFontDownloadManager sharedManager];
-    [v5 addObserver:v3 selector:sel__fontDownloadDidFinish_ name:@"WBSReaderFontDownloadDidFinishNotification" object:v6];
+    [defaultCenter addObserver:v3 selector:sel__fontDownloadDidFinish_ name:@"WBSReaderFontDownloadDidFinishNotification" object:v6];
 
     v7 = v3;
   }
@@ -51,24 +51,24 @@
   return v3;
 }
 
-- (id)defaultFontForLanguageTag:(id)a3
+- (id)defaultFontForLanguageTag:(id)tag
 {
-  v4 = [WBSReaderLocalizedFonts defaultFontFamilyNameForLanguage:a3];
+  v4 = [WBSReaderLocalizedFonts defaultFontFamilyNameForLanguage:tag];
   v5 = [(WBSReaderFontManager *)self fontWithFontFamilyName:v4];
 
   return v5;
 }
 
-- (id)fontWithFontFamilyName:(id)a3
+- (id)fontWithFontFamilyName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(WBSReaderFontManager *)self fonts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  fonts = [(WBSReaderFontManager *)self fonts];
+  v6 = [fonts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -78,12 +78,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(fonts);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 familyName];
-        v11 = [v10 isEqualToString:v4];
+        familyName = [v9 familyName];
+        v11 = [familyName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -92,7 +92,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [fonts countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -107,18 +107,18 @@ LABEL_11:
   return v6;
 }
 
-- (void)updateLanguageTag:(id)a3
+- (void)updateLanguageTag:(id)tag
 {
-  v6 = a3;
+  tagCopy = tag;
   if (![(NSString *)self->_languageTag isEqualToString:?])
   {
-    objc_storeStrong(&self->_languageTag, a3);
+    objc_storeStrong(&self->_languageTag, tag);
     validatedFonts = self->_validatedFonts;
     self->_validatedFonts = 0;
   }
 }
 
-- (void)_fontDownloadDidFinish:(id)a3
+- (void)_fontDownloadDidFinish:(id)finish
 {
   validatedFonts = self->_validatedFonts;
   self->_validatedFonts = 0;

@@ -1,23 +1,23 @@
 @interface EFHTMLUtilities
-+ (id)_cssSnippetFromDictionary:(id)a3;
-+ (id)htmlSnippetWithTag:(id)a3 includeTrailingTag:(BOOL)a4 attributes:(id)a5;
++ (id)_cssSnippetFromDictionary:(id)dictionary;
++ (id)htmlSnippetWithTag:(id)tag includeTrailingTag:(BOOL)trailingTag attributes:(id)attributes;
 @end
 
 @implementation EFHTMLUtilities
 
-+ (id)_cssSnippetFromDictionary:(id)a3
++ (id)_cssSnippetFromDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AD60] string];
+  dictionaryCopy = dictionary;
+  string = [MEMORY[0x1E696AD60] string];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__EFHTMLUtilities__cssSnippetFromDictionary___block_invoke;
   v9[3] = &unk_1E8248C30;
   v11 = a2;
-  v12 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = string;
   v10 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -36,24 +36,24 @@ void __45__EFHTMLUtilities__cssSnippetFromDictionary___block_invoke(uint64_t a1,
   [*(a1 + 32) appendFormat:@"%@: %@;", v7, v5];
 }
 
-+ (id)htmlSnippetWithTag:(id)a3 includeTrailingTag:(BOOL)a4 attributes:(id)a5
++ (id)htmlSnippetWithTag:(id)tag includeTrailingTag:(BOOL)trailingTag attributes:(id)attributes
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", v9];
+  trailingTagCopy = trailingTag;
+  tagCopy = tag;
+  attributesCopy = attributes;
+  tagCopy = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", tagCopy];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __68__EFHTMLUtilities_htmlSnippetWithTag_includeTrailingTag_attributes___block_invoke;
   v17 = &unk_1E8248C58;
-  v12 = v11;
+  v12 = tagCopy;
   v18 = v12;
-  v19 = a1;
+  selfCopy = self;
   v20 = a2;
-  [v10 enumerateKeysAndObjectsUsingBlock:&v14];
-  if (v6)
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:&v14];
+  if (trailingTagCopy)
   {
-    [v12 appendFormat:@"></%@", v9, v14, v15, v16, v17];
+    [v12 appendFormat:@"></%@", tagCopy, v14, v15, v16, v17];
   }
 
   [v12 appendString:@">"];

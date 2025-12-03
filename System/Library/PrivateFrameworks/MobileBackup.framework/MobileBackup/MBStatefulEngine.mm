@@ -1,22 +1,22 @@
 @interface MBStatefulEngine
-- (BOOL)cancelWithError:(id)a3;
-- (BOOL)handleCancelation:(id *)a3;
+- (BOOL)cancelWithError:(id)error;
+- (BOOL)handleCancelation:(id *)cancelation;
 - (BOOL)hasError;
 - (MBRetryStrategy)retryStrategy;
-- (MBStatefulEngine)initWithSettingsContext:(id)a3 debugContext:(id)a4 domainManager:(id)a5;
-- (void)cleanUpAfterError:(id)a3;
+- (MBStatefulEngine)initWithSettingsContext:(id)context debugContext:(id)debugContext domainManager:(id)manager;
+- (void)cleanUpAfterError:(id)error;
 - (void)makeStateTransition;
-- (void)performRetryablePhase:(id)a3;
+- (void)performRetryablePhase:(id)phase;
 - (void)replenishRetryTokens;
 @end
 
 @implementation MBStatefulEngine
 
-- (MBStatefulEngine)initWithSettingsContext:(id)a3 debugContext:(id)a4 domainManager:(id)a5
+- (MBStatefulEngine)initWithSettingsContext:(id)context debugContext:(id)debugContext domainManager:(id)manager
 {
   v8.receiver = self;
   v8.super_class = MBStatefulEngine;
-  v5 = [(MBEngine *)&v8 initWithSettingsContext:a3 debugContext:a4 domainManager:a5];
+  v5 = [(MBEngine *)&v8 initWithSettingsContext:context debugContext:debugContext domainManager:manager];
   v6 = v5;
   if (v5)
   {
@@ -28,54 +28,54 @@
 
 - (BOOL)hasError
 {
-  v2 = [(MBStatefulEngine *)self engineError];
-  v3 = v2 != 0;
+  engineError = [(MBStatefulEngine *)self engineError];
+  v3 = engineError != 0;
 
   return v3;
 }
 
-- (BOOL)handleCancelation:(id *)a3
+- (BOOL)handleCancelation:(id *)cancelation
 {
-  v5 = [(MBEngine *)self isCanceled];
-  if (v5)
+  isCanceled = [(MBEngine *)self isCanceled];
+  if (isCanceled)
   {
-    v6 = [(MBEngine *)self cancelError];
-    if (!v6)
+    cancelError = [(MBEngine *)self cancelError];
+    if (!cancelError)
     {
       __assert_rtn("[MBStatefulEngine handleCancelation:]", "MBStatefulEngine.m", 43, "cancelError");
     }
 
-    v7 = v6;
-    [(MBStatefulEngine *)self cleanUpAfterError:v6];
-    if (a3)
+    v7 = cancelError;
+    [(MBStatefulEngine *)self cleanUpAfterError:cancelError];
+    if (cancelation)
     {
       v8 = v7;
-      *a3 = v7;
+      *cancelation = v7;
     }
   }
 
-  return v5;
+  return isCanceled;
 }
 
-- (BOOL)cancelWithError:(id)a3
+- (BOOL)cancelWithError:(id)error
 {
   v7.receiver = self;
   v7.super_class = MBStatefulEngine;
-  v4 = [(MBEngine *)&v7 cancelWithError:a3];
+  v4 = [(MBEngine *)&v7 cancelWithError:error];
   if (!v4)
   {
-    v5 = [(MBStatefulEngine *)self retryStrategy];
-    [v5 cancel];
+    retryStrategy = [(MBStatefulEngine *)self retryStrategy];
+    [retryStrategy cancel];
   }
 
   return v4;
 }
 
-- (void)cleanUpAfterError:(id)a3
+- (void)cleanUpAfterError:(id)error
 {
   if (!self->_cleanedUp)
   {
-    [(MBStatefulEngine *)self cleanUpOnceAfterError:a3];
+    [(MBStatefulEngine *)self cleanUpOnceAfterError:error];
     self->_cleanedUp = 1;
   }
 }
@@ -89,28 +89,28 @@
   }
 }
 
-- (void)performRetryablePhase:(id)a3
+- (void)performRetryablePhase:(id)phase
 {
-  v4 = a3;
-  v5 = [(MBStatefulEngine *)self injectedError];
+  phaseCopy = phase;
+  injectedError = [(MBStatefulEngine *)self injectedError];
 
-  if (v5)
+  if (injectedError)
   {
     [(MBStatefulEngine *)self setIsFinished:1];
-    v6 = [(MBStatefulEngine *)self injectedError];
-    [(MBStatefulEngine *)self setEngineError:v6];
+    injectedError2 = [(MBStatefulEngine *)self injectedError];
+    [(MBStatefulEngine *)self setEngineError:injectedError2];
 
-    v7 = [(MBStatefulEngine *)self injectedError];
-    [(MBStatefulEngine *)self cleanUpAfterError:v7];
+    injectedError3 = [(MBStatefulEngine *)self injectedError];
+    [(MBStatefulEngine *)self cleanUpAfterError:injectedError3];
   }
 
   else
   {
-    v8 = [(MBStatefulEngine *)self retryStrategy];
-    [v8 reset];
+    retryStrategy = [(MBStatefulEngine *)self retryStrategy];
+    [retryStrategy reset];
 
-    v9 = [(MBEngine *)self watchdog];
-    [v9 resume];
+    watchdog = [(MBEngine *)self watchdog];
+    [watchdog resume];
 
     v10 = objc_autoreleasePoolPush();
     v36 = 0;
@@ -119,7 +119,7 @@
     if (v11)
     {
 LABEL_4:
-      [(MBStatefulEngine *)self setIsFinished:1, v30, v32];
+      [(MBStatefulEngine *)self setIsFinished:1, selfCopy2, v32];
       [(MBStatefulEngine *)self setEngineError:v12];
     }
 
@@ -129,7 +129,7 @@ LABEL_4:
       while (1)
       {
         v35 = 0;
-        v14 = [(MBStatefulEngine *)self engineWillTransitionToNextState:&v35, v30, v32];
+        v14 = [(MBStatefulEngine *)self engineWillTransitionToNextState:&v35, selfCopy2, v32];
         v15 = v35;
         v16 = v15;
         if ((v14 & 1) == 0)
@@ -142,7 +142,7 @@ LABEL_20:
         }
 
         v34 = 0;
-        v17 = v4[2](v4, &v34);
+        v17 = phaseCopy[2](phaseCopy, &v34);
         v18 = v34;
         v16 = v18;
         if (v17)
@@ -167,7 +167,7 @@ LABEL_20:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412290;
-              v38 = v19;
+              selfCopy3 = v19;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
               v31 = v19;
               _MBLog();
@@ -177,8 +177,8 @@ LABEL_20:
           v13 = MBError_ptr;
         }
 
-        v23 = [(MBStatefulEngine *)self retryStrategy];
-        v24 = [v23 shouldRetryAfterError:v16];
+        retryStrategy2 = [(MBStatefulEngine *)self retryStrategy];
+        v24 = [retryStrategy2 shouldRetryAfterError:v16];
 
         if ((v24 & 1) == 0)
         {
@@ -189,11 +189,11 @@ LABEL_20:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v38 = self;
+          selfCopy3 = self;
           v39 = 2112;
           v40 = v16;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Retrying transition for %{public}@ after error: %@", buf, 0x16u);
-          v30 = self;
+          selfCopy2 = self;
           v32 = v16;
           _MBLog();
         }
@@ -225,7 +225,7 @@ LABEL_20:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
           *buf = 138543618;
-          v38 = self;
+          selfCopy3 = self;
           v39 = 2112;
           v40 = v16;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Not retrying transition for %{public}@ after error: %@", buf, 0x16u);
@@ -246,28 +246,28 @@ LABEL_21:
 
 - (void)replenishRetryTokens
 {
-  v2 = [(MBStatefulEngine *)self retryStrategy];
-  [v2 replenishRetryTokens];
+  retryStrategy = [(MBStatefulEngine *)self retryStrategy];
+  [retryStrategy replenishRetryTokens];
 }
 
 - (MBRetryStrategy)retryStrategy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  retryStrategy = v2->_retryStrategy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  retryStrategy = selfCopy->_retryStrategy;
   if (!retryStrategy)
   {
     v4 = [MBRetryStrategy alloc];
-    v5 = [(MBEngine *)v2 debugContext];
-    v6 = [(MBRetryStrategy *)v4 initWithDebugContext:v5 networkAvailabilityProvider:v2 engineMode:[(MBEngine *)v2 engineMode] restoreType:[(MBEngine *)v2 restoreType]];
-    v7 = v2->_retryStrategy;
-    v2->_retryStrategy = v6;
+    debugContext = [(MBEngine *)selfCopy debugContext];
+    v6 = [(MBRetryStrategy *)v4 initWithDebugContext:debugContext networkAvailabilityProvider:selfCopy engineMode:[(MBEngine *)selfCopy engineMode] restoreType:[(MBEngine *)selfCopy restoreType]];
+    v7 = selfCopy->_retryStrategy;
+    selfCopy->_retryStrategy = v6;
 
-    retryStrategy = v2->_retryStrategy;
+    retryStrategy = selfCopy->_retryStrategy;
   }
 
   v8 = retryStrategy;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }

@@ -1,17 +1,17 @@
 @interface _InternalVisionSession
 + (id)sharedInstance;
 - (id)_initInternal;
-- (void)_handleARSessionDidUpdateFrame:(id)a3;
+- (void)_handleARSessionDidUpdateFrame:(id)frame;
 - (void)_setUpARSession;
 - (void)_tearDownARSession;
-- (void)registerObserver:(id)a3 withIdentifier:(id)a4;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionShouldAttemptRelocalization:(id)a3 completion:(id)a4;
-- (void)sessionWasInterrupted:(id)a3;
-- (void)unregisterObserverWithIdentifier:(id)a3;
+- (void)registerObserver:(id)observer withIdentifier:(id)identifier;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionShouldAttemptRelocalization:(id)relocalization completion:(id)completion;
+- (void)sessionWasInterrupted:(id)interrupted;
+- (void)unregisterObserverWithIdentifier:(id)identifier;
 @end
 
 @implementation _InternalVisionSession
@@ -59,34 +59,34 @@
   return v3;
 }
 
-- (void)registerObserver:(id)a3 withIdentifier:(id)a4
+- (void)registerObserver:(id)observer withIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002565CC;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = observerCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = observerCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)unregisterObserverWithIdentifier:(id)a3
+- (void)unregisterObserverWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10025676C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
@@ -144,25 +144,25 @@
   }
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v5 = a4;
+  frameCopy = frame;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100256AB4;
   v8[3] = &unk_10098A2E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = frameCopy;
+  v7 = frameCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)sessionShouldAttemptRelocalization:(id)a3 completion:(id)a4
+- (void)sessionShouldAttemptRelocalization:(id)relocalization completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  relocalizationCopy = relocalization;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     __assert_rtn("[_InternalVisionSession sessionShouldAttemptRelocalization:completion:]", "NIServerVisionInternalSession.mm", 166, "completion");
   }
@@ -172,22 +172,22 @@
   block[1] = 3221225472;
   block[2] = sub_100256BA8;
   block[3] = &unk_10099CF08;
-  v11 = v7;
-  v9 = v7;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
-    sub_1004B16B4(v4, v5);
+    sub_1004B16B4(errorCopy, v5);
   }
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
   v3 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -197,7 +197,7 @@
   }
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
   v3 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -207,70 +207,70 @@
   }
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  v4 = a4;
+  stateCopy = state;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v4;
+    v6[1] = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#vision,Session changed state: %d", v6, 8u);
   }
 }
 
-- (void)_handleARSessionDidUpdateFrame:(id)a3
+- (void)_handleARSessionDidUpdateFrame:(id)frame
 {
-  v5 = a3;
+  frameCopy = frame;
   dispatch_assert_queue_V2(self->_queue);
   v6 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v33 = v5;
+    v33 = frameCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "#vision,Updated ARFrame: %{private}@", buf, 0xCu);
   }
 
-  v7 = [v5 camera];
-  v8 = [v7 trackingState];
+  camera = [frameCopy camera];
+  trackingState = [camera trackingState];
 
-  if (v8 != 2)
+  if (trackingState != 2)
   {
-    v8 = v8 == 1;
+    trackingState = trackingState == 1;
   }
 
-  v9 = [v5 worldTrackingState];
-  v10 = v9 == 0;
+  worldTrackingState = [frameCopy worldTrackingState];
+  v10 = worldTrackingState == 0;
 
   if (v10)
   {
-    v14 = 0;
-    v12 = 0;
+    minorRelocalization = 0;
+    majorRelocalization = 0;
   }
 
   else
   {
-    v11 = [v5 worldTrackingState];
-    v12 = [v11 majorRelocalization];
+    worldTrackingState2 = [frameCopy worldTrackingState];
+    majorRelocalization = [worldTrackingState2 majorRelocalization];
 
-    v13 = [v5 worldTrackingState];
-    v14 = [v13 minorRelocalization];
+    worldTrackingState3 = [frameCopy worldTrackingState];
+    minorRelocalization = [worldTrackingState3 minorRelocalization];
   }
 
   v15 = [NIVisionInput alloc];
-  [v5 timestamp];
+  [frameCopy timestamp];
   v17 = v16;
-  v18 = [v5 camera];
-  [v18 transform];
+  camera2 = [frameCopy camera];
+  [camera2 transform];
   v30 = v20;
   v31 = v19;
   v28 = v22;
   v29 = v21;
-  v23 = [v5 lightEstimate];
-  if (v23)
+  lightEstimate = [frameCopy lightEstimate];
+  if (lightEstimate)
   {
-    v3 = [v5 lightEstimate];
-    [v3 ambientIntensity];
+    lightEstimate2 = [frameCopy lightEstimate];
+    [lightEstimate2 ambientIntensity];
     v25 = v24;
   }
 
@@ -279,8 +279,8 @@
     v25 = *&NIARLightEstimateNotAvailable;
   }
 
-  v26 = [(NIVisionInput *)v15 initWithTimestamp:v8 devicePose:v12 trackingState:v14 lightEstimate:v17 majorRelocalization:v31 minorRelocalization:v30, v29, v28, v25];
-  if (v23)
+  v26 = [(NIVisionInput *)v15 initWithTimestamp:trackingState devicePose:majorRelocalization trackingState:minorRelocalization lightEstimate:v17 majorRelocalization:v31 minorRelocalization:v30, v29, v28, v25];
+  if (lightEstimate)
   {
   }
 

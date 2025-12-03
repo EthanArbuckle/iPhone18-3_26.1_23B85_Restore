@@ -1,44 +1,44 @@
 @interface DBLiveActivityMonitor
-- (void)activityAlertClient:(id)a3 dismissAlertProvider:(id)a4;
-- (void)activityAlertClient:(id)a3 presentAlertProvider:(id)a4 completion:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)clearLiveActivityWith:(id)a3;
+- (void)activityAlertClient:(id)client dismissAlertProvider:(id)provider;
+- (void)activityAlertClient:(id)client presentAlertProvider:(id)provider completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)clearLiveActivityWith:(id)with;
 - (void)dealloc;
 @end
 
 @implementation DBLiveActivityMonitor
 
-- (void)activityAlertClient:(id)a3 presentAlertProvider:(id)a4 completion:(id)a5
+- (void)activityAlertClient:(id)client presentAlertProvider:(id)provider completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_2481630A8(a4);
+  selfCopy = self;
+  sub_2481630A8(provider);
   _Block_release(v8);
 
   swift_unknownObjectRelease();
 }
 
-- (void)activityAlertClient:(id)a3 dismissAlertProvider:(id)a4
+- (void)activityAlertClient:(id)client dismissAlertProvider:(id)provider
 {
-  v6 = a3;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_248163A60(a4);
+  selfCopy = self;
+  sub_248163A60(provider);
 
   swift_unknownObjectRelease();
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  DBLiveActivityMonitor.addObserver(_:)(a3);
+  selfCopy = self;
+  DBLiveActivityMonitor.addObserver(_:)(observer);
   swift_unknownObjectRelease();
 }
 
-- (void)clearLiveActivityWith:(id)a3
+- (void)clearLiveActivityWith:(id)with
 {
   v3 = sub_2483812C0();
   v4 = *(v3 - 8);
@@ -56,11 +56,11 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v3, v2);
+  CFNotificationCenterRemoveEveryObserver(v3, selfCopy);
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for DBLiveActivityMonitor();
   [(DBLiveActivityMonitor *)&v4 dealloc];
 }

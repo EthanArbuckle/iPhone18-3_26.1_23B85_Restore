@@ -1,20 +1,20 @@
 @interface HDSPAnalyticsDailyReportBuilder
-+ (unint64_t)_stageDurationPercentage:(double)a3 ofTotalDuration:(double)a4;
++ (unint64_t)_stageDurationPercentage:(double)percentage ofTotalDuration:(double)duration;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)morningIndexRange;
-- (BOOL)_changedSchedule:(id)a3 withinNumberOfDays:(unint64_t)a4 currentDate:(id)a5 calendar:(id)a6;
+- (BOOL)_changedSchedule:(id)schedule withinNumberOfDays:(unint64_t)days currentDate:(id)date calendar:(id)calendar;
 - (BOOL)_didInteractWithWindDownActionsWithinLastTwoDays;
 - (BOOL)_woreWatchToSleepLastNight;
-- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)a3 daySummaries:(id)a4 breathingDisturbanceSamples:(id)a5 sleepApneaEventSamples:(id)a6 sleepApneaFeatureOnboardingRecord:(id)a7 morningIndexRange:(id)a8;
-- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)a3 daySummaries:(id)a4 morningIndexRange:(id)a5;
+- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)environment daySummaries:(id)summaries breathingDisturbanceSamples:(id)samples sleepApneaEventSamples:(id)eventSamples sleepApneaFeatureOnboardingRecord:(id)record morningIndexRange:(id)range;
+- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)environment daySummaries:(id)summaries morningIndexRange:(id)range;
 - (HDSPEnvironment)environment;
 - (double)_bucketedSleepDurationLastNight;
-- (double)_lastNightsDurationForSleepStage:(int64_t)a3;
-- (double)_sleepDurationLastNightIncludingAwake:(BOOL)a3;
+- (double)_lastNightsDurationForSleepStage:(int64_t)stage;
+- (double)_sleepDurationLastNightIncludingAwake:(BOOL)awake;
 - (id)_biologicalSex;
 - (id)_dailyReportEvent;
 - (id)_dateOfLastSuccessfulBreathingDisturbanceAnalysis;
-- (id)_userAgeForCurrentDate:(id)a3;
-- (id)_weeksSinceOnboardDate:(id)a3 currentDate:(id)a4 calendar:(id)a5;
+- (id)_userAgeForCurrentDate:(id)date;
+- (id)_weeksSinceOnboardDate:(id)date currentDate:(id)currentDate calendar:(id)calendar;
 - (id)_windDownEvents;
 - (id)analyticsManager;
 - (id)analyticsStore;
@@ -24,24 +24,24 @@
 - (id)sleepFocusConfiguration;
 - (id)sleepSchedule;
 - (id)sleepSettings;
-- (int64_t)_daysWatchWornToSleepOverLastNumberOfDays:(int64_t)a3 excludeWeekdays:(BOOL)a4 calendar:(id)a5;
+- (int64_t)_daysWatchWornToSleepOverLastNumberOfDays:(int64_t)days excludeWeekdays:(BOOL)weekdays calendar:(id)calendar;
 - (int64_t)_lastNightsNumberOfAwakeEvents;
 @end
 
 @implementation HDSPAnalyticsDailyReportBuilder
 
-- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)a3 daySummaries:(id)a4 morningIndexRange:(id)a5
+- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)environment daySummaries:(id)summaries morningIndexRange:(id)range
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v9 = a3;
-  v10 = a4;
+  var1 = range.var1;
+  var0 = range.var0;
+  environmentCopy = environment;
+  summariesCopy = summaries;
   v18.receiver = self;
   v18.super_class = HDSPAnalyticsDailyReportBuilder;
   v11 = [(HDSPAnalyticsDailyReportBuilder *)&v18 init];
   v12 = v11;
   v13 = 0;
-  if (v10 && v11)
+  if (summariesCopy && v11)
   {
     if (var0 == *MEMORY[0x277CCBBF8] && var1 == *(MEMORY[0x277CCBBF8] + 8))
     {
@@ -50,8 +50,8 @@
 
     else
     {
-      objc_storeWeak(&v11->_environment, v9);
-      v15 = [v10 copy];
+      objc_storeWeak(&v11->_environment, environmentCopy);
+      v15 = [summariesCopy copy];
       daySummaries = v12->_daySummaries;
       v12->_daySummaries = v15;
 
@@ -64,22 +64,22 @@
   return v13;
 }
 
-- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)a3 daySummaries:(id)a4 breathingDisturbanceSamples:(id)a5 sleepApneaEventSamples:(id)a6 sleepApneaFeatureOnboardingRecord:(id)a7 morningIndexRange:(id)a8
+- (HDSPAnalyticsDailyReportBuilder)initWithEnvironment:(id)environment daySummaries:(id)summaries breathingDisturbanceSamples:(id)samples sleepApneaEventSamples:(id)eventSamples sleepApneaFeatureOnboardingRecord:(id)record morningIndexRange:(id)range
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v24 = a4;
-  v16 = a3;
+  recordCopy = record;
+  eventSamplesCopy = eventSamples;
+  samplesCopy = samples;
+  summariesCopy = summaries;
+  environmentCopy = environment;
   v17 = [HDSPSleepApneaAnalyticsBuilder alloc];
-  v18 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v19 = [(HDSPAnalyticsDailyReportBuilder *)self _dateOfLastSuccessfulBreathingDisturbanceAnalysis];
-  v20 = [(HDSPSleepApneaAnalyticsBuilder *)v17 initWithBreathingDisturbanceSamples:v15 sleepApneaEventSamples:v14 sleepApneaFeatureOnboardingRecord:v13 morningIndexRange:a8.var0 gregorianCalendar:a8.var1 dateOfLastAnalysis:v18 currentDateProvider:v19, &__block_literal_global_3];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  _dateOfLastSuccessfulBreathingDisturbanceAnalysis = [(HDSPAnalyticsDailyReportBuilder *)self _dateOfLastSuccessfulBreathingDisturbanceAnalysis];
+  v20 = [(HDSPSleepApneaAnalyticsBuilder *)v17 initWithBreathingDisturbanceSamples:samplesCopy sleepApneaEventSamples:eventSamplesCopy sleepApneaFeatureOnboardingRecord:recordCopy morningIndexRange:range.var0 gregorianCalendar:range.var1 dateOfLastAnalysis:hk_gregorianCalendar currentDateProvider:_dateOfLastSuccessfulBreathingDisturbanceAnalysis, &__block_literal_global_3];
 
   sleepApneaAnalyticsBuilder = self->_sleepApneaAnalyticsBuilder;
   self->_sleepApneaAnalyticsBuilder = v20;
 
-  v22 = [(HDSPAnalyticsDailyReportBuilder *)self initWithEnvironment:v16 daySummaries:v24 morningIndexRange:a8.var0, a8.var1];
+  v22 = [(HDSPAnalyticsDailyReportBuilder *)self initWithEnvironment:environmentCopy daySummaries:summariesCopy morningIndexRange:range.var0, range.var1];
   return v22;
 }
 
@@ -91,8 +91,8 @@
   {
     v3 = objc_opt_class();
     v4 = v3;
-    v5 = [(HDSPAnalyticsDailyReportBuilder *)self daySummaries];
-    v6 = [v5 count];
+    daySummaries = [(HDSPAnalyticsDailyReportBuilder *)self daySummaries];
+    v6 = [daySummaries count];
     [(HDSPAnalyticsDailyReportBuilder *)self morningIndexRange];
     v7 = NSStringFromHKDayIndexRange();
     *buf = 138543874;
@@ -110,8 +110,8 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [(HDSPAnalyticsDailyReportBuilder *)self daySummaries];
-    v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    daySummaries2 = [(HDSPAnalyticsDailyReportBuilder *)self daySummaries];
+    v9 = [daySummaries2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v9)
     {
       v10 = v9;
@@ -122,7 +122,7 @@
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(daySummaries2);
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
@@ -140,7 +140,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v10 = [daySummaries2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v10);
@@ -148,14 +148,14 @@
   }
 
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v19 = [(HDSPAnalyticsDailyReportBuilder *)self _dailyReportEvent];
-  [v18 addObject:v19];
+  _dailyReportEvent = [(HDSPAnalyticsDailyReportBuilder *)self _dailyReportEvent];
+  [v18 addObject:_dailyReportEvent];
 
-  v20 = [(HDSPAnalyticsDailyReportBuilder *)self _windDownEvents];
-  [v18 addObjectsFromArray:v20];
+  _windDownEvents = [(HDSPAnalyticsDailyReportBuilder *)self _windDownEvents];
+  [v18 addObjectsFromArray:_windDownEvents];
 
-  v21 = [(HDSPAnalyticsDailyReportBuilder *)self analyticsStore];
-  [v21 markAllActionsAsCollected];
+  analyticsStore = [(HDSPAnalyticsDailyReportBuilder *)self analyticsStore];
+  [analyticsStore markAllActionsAsCollected];
 
   v22 = [v18 copy];
   v23 = *MEMORY[0x277D85DE8];
@@ -165,105 +165,105 @@
 
 - (id)currentDate
 {
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self environment];
-  v3 = [v2 currentDateProvider];
-  v4 = v3[2]();
+  environment = [(HDSPAnalyticsDailyReportBuilder *)self environment];
+  currentDateProvider = [environment currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
 
 - (id)healthStore
 {
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self environment];
-  v3 = [v2 healthStoreProvider];
-  v4 = [v3 healthStore];
+  environment = [(HDSPAnalyticsDailyReportBuilder *)self environment];
+  healthStoreProvider = [environment healthStoreProvider];
+  healthStore = [healthStoreProvider healthStore];
 
-  return v4;
+  return healthStore;
 }
 
 - (id)sleepSchedule
 {
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self environment];
-  v3 = [v2 sleepScheduleModelManager];
-  v4 = [v3 sleepSchedule];
+  environment = [(HDSPAnalyticsDailyReportBuilder *)self environment];
+  sleepScheduleModelManager = [environment sleepScheduleModelManager];
+  sleepSchedule = [sleepScheduleModelManager sleepSchedule];
 
-  return v4;
+  return sleepSchedule;
 }
 
 - (id)sleepSettings
 {
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self environment];
-  v3 = [v2 sleepScheduleModelManager];
-  v4 = [v3 sleepSettings];
+  environment = [(HDSPAnalyticsDailyReportBuilder *)self environment];
+  sleepScheduleModelManager = [environment sleepScheduleModelManager];
+  sleepSettings = [sleepScheduleModelManager sleepSettings];
 
-  return v4;
+  return sleepSettings;
 }
 
 - (id)sleepFocusConfiguration
 {
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self environment];
-  v3 = [v2 sleepModeManager];
-  v4 = [v3 sleepFocusModeBridge];
-  v5 = [v4 sleepFocusConfiguration:0];
+  environment = [(HDSPAnalyticsDailyReportBuilder *)self environment];
+  sleepModeManager = [environment sleepModeManager];
+  sleepFocusModeBridge = [sleepModeManager sleepFocusModeBridge];
+  v5 = [sleepFocusModeBridge sleepFocusConfiguration:0];
 
   return v5;
 }
 
 - (id)analyticsManager
 {
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self environment];
-  v3 = [v2 analyticsManager];
-  v4 = [v3 analyticsManager];
+  environment = [(HDSPAnalyticsDailyReportBuilder *)self environment];
+  analyticsManager = [environment analyticsManager];
+  v3AnalyticsManager = [analyticsManager analyticsManager];
 
-  return v4;
+  return v3AnalyticsManager;
 }
 
 - (id)analyticsStore
 {
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self analyticsManager];
-  v3 = [v2 analyticsStore];
+  analyticsManager = [(HDSPAnalyticsDailyReportBuilder *)self analyticsManager];
+  analyticsStore = [analyticsManager analyticsStore];
 
-  return v3;
+  return analyticsStore;
 }
 
 - (id)_dailyReportEvent
 {
-  v3 = [(HDSPAnalyticsDailyReportBuilder *)self currentDate];
-  v4 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  currentDate = [(HDSPAnalyticsDailyReportBuilder *)self currentDate];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
   v5 = MEMORY[0x277CCD9D0];
-  v6 = [(HDSPAnalyticsDailyReportBuilder *)self daySummaries];
-  v7 = [(HDSPAnalyticsDailyReportBuilder *)self morningIndexRange];
-  v73 = [v5 sleepMetricsForDaySummaries:v6 inMorningIndexRange:{v7, v8}];
+  daySummaries = [(HDSPAnalyticsDailyReportBuilder *)self daySummaries];
+  morningIndexRange = [(HDSPAnalyticsDailyReportBuilder *)self morningIndexRange];
+  v73 = [v5 sleepMetricsForDaySummaries:daySummaries inMorningIndexRange:{morningIndexRange, v8}];
 
   v9 = objc_alloc_init(MEMORY[0x277D62408]);
-  v10 = [(HDSPAnalyticsDailyReportBuilder *)self sleepSchedule];
-  v11 = [(HDSPAnalyticsDailyReportBuilder *)self sleepSettings];
-  v12 = [(HDSPAnalyticsDailyReportBuilder *)self analyticsManager];
-  [v9 setIsImproveHealthAndActivitySubmissionAllowed:{objc_msgSend(v12, "isImproveHealthAndActivitySubmissionAllowed")}];
+  sleepSchedule = [(HDSPAnalyticsDailyReportBuilder *)self sleepSchedule];
+  sleepSettings = [(HDSPAnalyticsDailyReportBuilder *)self sleepSettings];
+  analyticsManager = [(HDSPAnalyticsDailyReportBuilder *)self analyticsManager];
+  [v9 setIsImproveHealthAndActivitySubmissionAllowed:{objc_msgSend(analyticsManager, "isImproveHealthAndActivitySubmissionAllowed")}];
 
-  v13 = [(HDSPAnalyticsDailyReportBuilder *)self _userAgeForCurrentDate:v3];
+  v13 = [(HDSPAnalyticsDailyReportBuilder *)self _userAgeForCurrentDate:currentDate];
   [v9 setUserAge:v13];
 
-  v14 = [(HDSPAnalyticsDailyReportBuilder *)self _biologicalSex];
-  [v9 setBiologicalSex:v14];
+  _biologicalSex = [(HDSPAnalyticsDailyReportBuilder *)self _biologicalSex];
+  [v9 setBiologicalSex:_biologicalSex];
 
-  v15 = [MEMORY[0x277D62410] activePairedWatchProductType];
-  [v9 setActiveWatchProductType:v15];
+  activePairedWatchProductType = [MEMORY[0x277D62410] activePairedWatchProductType];
+  [v9 setActiveWatchProductType:activePairedWatchProductType];
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v17 = [WeakRetained sleepScheduleModelManager];
-  v18 = [v17 sleepEventRecord];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
 
-  v19 = [v18 sleepCoachingOnboardingFirstCompletedDate];
-  v20 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:v19 currentDate:v3 calendar:v4];
+  sleepCoachingOnboardingFirstCompletedDate = [sleepEventRecord sleepCoachingOnboardingFirstCompletedDate];
+  v20 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:sleepCoachingOnboardingFirstCompletedDate currentDate:currentDate calendar:hk_gregorianCalendar];
 
-  v21 = [v18 sleepTrackingOnboardingFirstCompletedDate];
-  v22 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:v21 currentDate:v3 calendar:v4];
+  sleepTrackingOnboardingFirstCompletedDate = [sleepEventRecord sleepTrackingOnboardingFirstCompletedDate];
+  v22 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:sleepTrackingOnboardingFirstCompletedDate currentDate:currentDate calendar:hk_gregorianCalendar];
 
-  v23 = [v18 sleepWindDownShortcutsOnboardingFirstCompletedDate];
-  v74 = v3;
-  v69 = v4;
-  v24 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:v23 currentDate:v3 calendar:v4];
+  sleepWindDownShortcutsOnboardingFirstCompletedDate = [sleepEventRecord sleepWindDownShortcutsOnboardingFirstCompletedDate];
+  v74 = currentDate;
+  v69 = hk_gregorianCalendar;
+  v24 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:sleepWindDownShortcutsOnboardingFirstCompletedDate currentDate:currentDate calendar:hk_gregorianCalendar];
 
   [v9 setWeeksSinceOnboardedSleepSchedule:v20];
   [v9 setWeeksSinceOnboardedSleepTracking:v22];
@@ -272,34 +272,34 @@
   v70 = v20;
   if (v20)
   {
-    v25 = 0;
+    hasOccurrences = 0;
   }
 
   else
   {
-    v25 = [v10 hasOccurrences];
+    hasOccurrences = [sleepSchedule hasOccurrences];
   }
 
-  [v9 setScheduleMigration:v25];
-  [v10 sleepDurationGoal];
+  [v9 setScheduleMigration:hasOccurrences];
+  [sleepSchedule sleepDurationGoal];
   [v9 setSleepGoal:?];
-  [v9 setWatchSleepTrackingEnabled:{objc_msgSend(v11, "sleepTracking")}];
-  [v9 setTimeInBedTrackingEnabled:{objc_msgSend(v11, "timeInBedTracking")}];
-  [v9 setBedTimeWindDownRemindersEnabled:{objc_msgSend(v11, "bedtimeReminders")}];
-  [v9 setWakeUpResultsEnabled:{objc_msgSend(v11, "wakeUpResults")}];
-  [v9 setScheduledSleepModeEnabled:{objc_msgSend(v11, "scheduledSleepMode")}];
-  [v9 setChargeRemindersEnabled:{objc_msgSend(v11, "chargingReminders")}];
+  [v9 setWatchSleepTrackingEnabled:{objc_msgSend(sleepSettings, "sleepTracking")}];
+  [v9 setTimeInBedTrackingEnabled:{objc_msgSend(sleepSettings, "timeInBedTracking")}];
+  [v9 setBedTimeWindDownRemindersEnabled:{objc_msgSend(sleepSettings, "bedtimeReminders")}];
+  [v9 setWakeUpResultsEnabled:{objc_msgSend(sleepSettings, "wakeUpResults")}];
+  [v9 setScheduledSleepModeEnabled:{objc_msgSend(sleepSettings, "scheduledSleepMode")}];
+  [v9 setChargeRemindersEnabled:{objc_msgSend(sleepSettings, "chargingReminders")}];
   [v9 setInteractedWithWindDownLast24Hrs:{-[HDSPAnalyticsDailyReportBuilder _didInteractWithWindDownActionsWithinLastTwoDays](self, "_didInteractWithWindDownActionsWithinLastTwoDays")}];
-  [v9 setUseSleepScreen:{(objc_msgSend(v11, "sleepModeOptions") >> 14) & 1}];
-  [v9 setMaxSleepCoachingVersionOnboarded:{objc_msgSend(v18, "sleepCoachingOnboardingCompletedVersion")}];
-  [v9 setMaxSleepTrackingVersionOnboarded:{objc_msgSend(v18, "sleepTrackingOnboardingCompletedVersion")}];
-  v26 = [(HDSPAnalyticsDailyReportBuilder *)self sleepFocusConfiguration];
-  v71 = v18;
-  v72 = v11;
-  v67 = v26;
-  if ([v26 hasSleepFocusMode])
+  [v9 setUseSleepScreen:{(objc_msgSend(sleepSettings, "sleepModeOptions") >> 14) & 1}];
+  [v9 setMaxSleepCoachingVersionOnboarded:{objc_msgSend(sleepEventRecord, "sleepCoachingOnboardingCompletedVersion")}];
+  [v9 setMaxSleepTrackingVersionOnboarded:{objc_msgSend(sleepEventRecord, "sleepTrackingOnboardingCompletedVersion")}];
+  sleepFocusConfiguration = [(HDSPAnalyticsDailyReportBuilder *)self sleepFocusConfiguration];
+  v71 = sleepEventRecord;
+  v72 = sleepSettings;
+  v67 = sleepFocusConfiguration;
+  if ([sleepFocusConfiguration hasSleepFocusMode])
   {
-    v27 = [v26 state] != 1;
+    v27 = [sleepFocusConfiguration state] != 1;
   }
 
   else
@@ -308,90 +308,90 @@
   }
 
   [v9 setHasSleepFocusConfigured:v27];
-  v28 = [v10 occurrenceOnDay:2];
+  v28 = [sleepSchedule occurrenceOnDay:2];
   [v9 setScheduleMonday:v28 != 0];
-  v29 = [v28 alarmConfiguration];
-  [v9 setAlarmMonday:{objc_msgSend(v29, "isEnabled")}];
+  alarmConfiguration = [v28 alarmConfiguration];
+  [v9 setAlarmMonday:{objc_msgSend(alarmConfiguration, "isEnabled")}];
 
   v66 = v28;
-  v30 = [v28 alarmConfiguration];
-  v31 = [v30 toneIdentifier];
-  [v9 setHapticToneIdentifierMonday:v31];
+  alarmConfiguration2 = [v28 alarmConfiguration];
+  toneIdentifier = [alarmConfiguration2 toneIdentifier];
+  [v9 setHapticToneIdentifierMonday:toneIdentifier];
 
   [v9 setIsDefaultScheduleMonday:{objc_msgSend(v28, "usesDefaultBedtimeAndWakeUpComponents")}];
-  v32 = [v10 occurrenceOnDay:3];
+  v32 = [sleepSchedule occurrenceOnDay:3];
   [v9 setScheduleTuesday:v32 != 0];
-  v33 = [v32 alarmConfiguration];
-  [v9 setAlarmTuesday:{objc_msgSend(v33, "isEnabled")}];
+  alarmConfiguration3 = [v32 alarmConfiguration];
+  [v9 setAlarmTuesday:{objc_msgSend(alarmConfiguration3, "isEnabled")}];
 
   v65 = v32;
-  v34 = [v32 alarmConfiguration];
-  v35 = [v34 toneIdentifier];
-  [v9 setHapticToneIdentifierTuesday:v35];
+  alarmConfiguration4 = [v32 alarmConfiguration];
+  toneIdentifier2 = [alarmConfiguration4 toneIdentifier];
+  [v9 setHapticToneIdentifierTuesday:toneIdentifier2];
 
   [v9 setIsDefaultScheduleTuesday:{objc_msgSend(v32, "usesDefaultBedtimeAndWakeUpComponents")}];
-  v36 = [v10 occurrenceOnDay:4];
+  v36 = [sleepSchedule occurrenceOnDay:4];
   [v9 setScheduleWednesday:v36 != 0];
-  v37 = [v36 alarmConfiguration];
-  [v9 setAlarmWednesday:{objc_msgSend(v37, "isEnabled")}];
+  alarmConfiguration5 = [v36 alarmConfiguration];
+  [v9 setAlarmWednesday:{objc_msgSend(alarmConfiguration5, "isEnabled")}];
 
   v64 = v36;
-  v38 = [v36 alarmConfiguration];
-  v39 = [v38 toneIdentifier];
-  [v9 setHapticToneIdentifierWednesday:v39];
+  alarmConfiguration6 = [v36 alarmConfiguration];
+  toneIdentifier3 = [alarmConfiguration6 toneIdentifier];
+  [v9 setHapticToneIdentifierWednesday:toneIdentifier3];
 
   [v9 setIsDefaultScheduleWednesday:{objc_msgSend(v36, "usesDefaultBedtimeAndWakeUpComponents")}];
-  v40 = [v10 occurrenceOnDay:5];
+  v40 = [sleepSchedule occurrenceOnDay:5];
   [v9 setScheduleThursday:v40 != 0];
-  v41 = [v40 alarmConfiguration];
-  [v9 setAlarmThursday:{objc_msgSend(v41, "isEnabled")}];
+  alarmConfiguration7 = [v40 alarmConfiguration];
+  [v9 setAlarmThursday:{objc_msgSend(alarmConfiguration7, "isEnabled")}];
 
-  v42 = [v40 alarmConfiguration];
-  v43 = [v42 toneIdentifier];
-  [v9 setHapticToneIdentifierThursday:v43];
+  alarmConfiguration8 = [v40 alarmConfiguration];
+  toneIdentifier4 = [alarmConfiguration8 toneIdentifier];
+  [v9 setHapticToneIdentifierThursday:toneIdentifier4];
 
   [v9 setIsDefaultScheduleThursday:{objc_msgSend(v40, "usesDefaultBedtimeAndWakeUpComponents")}];
-  v44 = [v10 occurrenceOnDay:6];
+  v44 = [sleepSchedule occurrenceOnDay:6];
   [v9 setScheduleFriday:v44 != 0];
-  v45 = [v44 alarmConfiguration];
-  [v9 setAlarmFriday:{objc_msgSend(v45, "isEnabled")}];
+  alarmConfiguration9 = [v44 alarmConfiguration];
+  [v9 setAlarmFriday:{objc_msgSend(alarmConfiguration9, "isEnabled")}];
 
-  v46 = [v44 alarmConfiguration];
-  v47 = [v46 toneIdentifier];
-  [v9 setHapticToneIdentifierFriday:v47];
+  alarmConfiguration10 = [v44 alarmConfiguration];
+  toneIdentifier5 = [alarmConfiguration10 toneIdentifier];
+  [v9 setHapticToneIdentifierFriday:toneIdentifier5];
 
   [v9 setIsDefaultScheduleFriday:{objc_msgSend(v44, "usesDefaultBedtimeAndWakeUpComponents")}];
-  v48 = [v10 occurrenceOnDay:7];
+  v48 = [sleepSchedule occurrenceOnDay:7];
   [v9 setScheduleSaturday:v48 != 0];
-  v49 = [v48 alarmConfiguration];
-  [v9 setAlarmSaturday:{objc_msgSend(v49, "isEnabled")}];
+  alarmConfiguration11 = [v48 alarmConfiguration];
+  [v9 setAlarmSaturday:{objc_msgSend(alarmConfiguration11, "isEnabled")}];
 
-  v50 = [v48 alarmConfiguration];
-  v51 = [v50 toneIdentifier];
-  [v9 setHapticToneIdentifierSaturday:v51];
+  alarmConfiguration12 = [v48 alarmConfiguration];
+  toneIdentifier6 = [alarmConfiguration12 toneIdentifier];
+  [v9 setHapticToneIdentifierSaturday:toneIdentifier6];
 
   [v9 setIsDefaultScheduleSaturday:{objc_msgSend(v48, "usesDefaultBedtimeAndWakeUpComponents")}];
-  v52 = [v10 occurrenceOnDay:1];
+  v52 = [sleepSchedule occurrenceOnDay:1];
   [v9 setScheduleSunday:v52 != 0];
-  v53 = [v52 alarmConfiguration];
-  [v9 setAlarmSunday:{objc_msgSend(v53, "isEnabled")}];
+  alarmConfiguration13 = [v52 alarmConfiguration];
+  [v9 setAlarmSunday:{objc_msgSend(alarmConfiguration13, "isEnabled")}];
 
-  v54 = [v52 alarmConfiguration];
-  v55 = [v54 toneIdentifier];
-  [v9 setHapticToneIdentifierSunday:v55];
+  alarmConfiguration14 = [v52 alarmConfiguration];
+  toneIdentifier7 = [alarmConfiguration14 toneIdentifier];
+  [v9 setHapticToneIdentifierSunday:toneIdentifier7];
 
   [v9 setIsDefaultScheduleSunday:{objc_msgSend(v52, "usesDefaultBedtimeAndWakeUpComponents")}];
-  [v9 setScheduleDisabled:{objc_msgSend(v10, "isEnabled") ^ 1}];
-  [v9 setScheduleChangePast24Hours:{-[HDSPAnalyticsDailyReportBuilder _changedSchedule:withinNumberOfDays:currentDate:calendar:](self, "_changedSchedule:withinNumberOfDays:currentDate:calendar:", v10, 1, v74, v69)}];
-  [v9 setScheduleChangePast7days:{-[HDSPAnalyticsDailyReportBuilder _changedSchedule:withinNumberOfDays:currentDate:calendar:](self, "_changedSchedule:withinNumberOfDays:currentDate:calendar:", v10, 7, v74, v69)}];
-  v56 = [v73 standardDeviationActualTimeAsleep];
-  [v9 setStddevActualTimeAsleep:v56];
+  [v9 setScheduleDisabled:{objc_msgSend(sleepSchedule, "isEnabled") ^ 1}];
+  [v9 setScheduleChangePast24Hours:{-[HDSPAnalyticsDailyReportBuilder _changedSchedule:withinNumberOfDays:currentDate:calendar:](self, "_changedSchedule:withinNumberOfDays:currentDate:calendar:", sleepSchedule, 1, v74, v69)}];
+  [v9 setScheduleChangePast7days:{-[HDSPAnalyticsDailyReportBuilder _changedSchedule:withinNumberOfDays:currentDate:calendar:](self, "_changedSchedule:withinNumberOfDays:currentDate:calendar:", sleepSchedule, 7, v74, v69)}];
+  standardDeviationActualTimeAsleep = [v73 standardDeviationActualTimeAsleep];
+  [v9 setStddevActualTimeAsleep:standardDeviationActualTimeAsleep];
 
-  v57 = [v73 standardDeviationScheduledTimeAsleep];
-  [v9 setStddevScheduledTimeAsleep:v57];
+  standardDeviationScheduledTimeAsleep = [v73 standardDeviationScheduledTimeAsleep];
+  [v9 setStddevScheduledTimeAsleep:standardDeviationScheduledTimeAsleep];
 
-  v58 = [v73 standardDeviationActualVsScheduledTimeAsleep];
-  [v9 setStddevActualVsScheduledTimeAsleep:v58];
+  standardDeviationActualVsScheduledTimeAsleep = [v73 standardDeviationActualVsScheduledTimeAsleep];
+  [v9 setStddevActualVsScheduledTimeAsleep:standardDeviationActualVsScheduledTimeAsleep];
 
   [v9 setDaysWornWatchToSleepInLast7Days:{-[HDSPAnalyticsDailyReportBuilder _daysWatchWornToSleepOverLastNumberOfDays:excludeWeekdays:calendar:](self, "_daysWatchWornToSleepOverLastNumberOfDays:excludeWeekdays:calendar:", 7, 0, v69)}];
   [v9 setDaysWornWatchToSleepInLast30Days:{-[HDSPAnalyticsDailyReportBuilder _daysWatchWornToSleepOverLastNumberOfDays:excludeWeekdays:calendar:](self, "_daysWatchWornToSleepOverLastNumberOfDays:excludeWeekdays:calendar:", 30, 0, v69)}];
@@ -418,10 +418,10 @@
   return v9;
 }
 
-- (int64_t)_daysWatchWornToSleepOverLastNumberOfDays:(int64_t)a3 excludeWeekdays:(BOOL)a4 calendar:(id)a5
+- (int64_t)_daysWatchWornToSleepOverLastNumberOfDays:(int64_t)days excludeWeekdays:(BOOL)weekdays calendar:(id)calendar
 {
-  v8 = a5;
-  v9 = v8;
+  calendarCopy = calendar;
+  v9 = calendarCopy;
   duration = self->_morningIndexRange.duration;
   v11 = self->_morningIndexRange.start + duration - 1;
   if (duration <= 0)
@@ -429,19 +429,19 @@
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v12 = v11 - a3 + 1;
-  v13 = [v8 hk_weekendDays];
+  v12 = v11 - days + 1;
+  hk_weekendDays = [calendarCopy hk_weekendDays];
   daySummaries = self->_daySummaries;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __102__HDSPAnalyticsDailyReportBuilder__daysWatchWornToSleepOverLastNumberOfDays_excludeWeekdays_calendar___block_invoke;
   v20[3] = &unk_279C7B9A0;
   v23 = v12;
-  v24 = a3;
-  v25 = a4;
+  daysCopy = days;
+  weekdaysCopy = weekdays;
   v21 = v9;
-  v22 = v13;
-  v15 = v13;
+  v22 = hk_weekendDays;
+  v15 = hk_weekendDays;
   v16 = v9;
   v17 = [(NSArray *)daySummaries hk_filter:v20];
   v18 = [v17 count];
@@ -502,9 +502,9 @@ uint64_t __102__HDSPAnalyticsDailyReportBuilder__daysWatchWornToSleepOverLastNum
   v8[4] = v3;
   v8[5] = 1;
   v5 = [(NSArray *)daySummaries na_firstObjectPassingTest:v8];
-  v6 = [v5 containsPeriodsWithAppleSleepTrackingData];
+  containsPeriodsWithAppleSleepTrackingData = [v5 containsPeriodsWithAppleSleepTrackingData];
 
-  return v6;
+  return containsPeriodsWithAppleSleepTrackingData;
 }
 
 BOOL __61__HDSPAnalyticsDailyReportBuilder__woreWatchToSleepLastNight__block_invoke(uint64_t a1, void *a2)
@@ -531,7 +531,7 @@ BOOL __61__HDSPAnalyticsDailyReportBuilder__woreWatchToSleepLastNight__block_inv
   return v6 + v4 * 3600.0;
 }
 
-- (double)_sleepDurationLastNightIncludingAwake:(BOOL)a3
+- (double)_sleepDurationLastNightIncludingAwake:(BOOL)awake
 {
   duration = self->_morningIndexRange.duration;
   v5 = self->_morningIndexRange.start + duration - 1;
@@ -556,7 +556,7 @@ BOOL __61__HDSPAnalyticsDailyReportBuilder__woreWatchToSleepLastNight__block_inv
   v10[1] = 3221225472;
   v10[2] = __73__HDSPAnalyticsDailyReportBuilder__sleepDurationLastNightIncludingAwake___block_invoke_2;
   v10[3] = &unk_279C7BA10;
-  v11 = a3;
+  awakeCopy = awake;
   v10[4] = &v12;
   [v7 hdsp_enumerateFirstPartyWatchSleepTrackingSegmentsWithBlock:v10];
   v8 = v13[3];
@@ -620,7 +620,7 @@ double __73__HDSPAnalyticsDailyReportBuilder__sleepDurationLastNightIncludingAwa
   return result;
 }
 
-- (double)_lastNightsDurationForSleepStage:(int64_t)a3
+- (double)_lastNightsDurationForSleepStage:(int64_t)stage
 {
   duration = self->_morningIndexRange.duration;
   v5 = self->_morningIndexRange.start + duration - 1;
@@ -646,7 +646,7 @@ double __73__HDSPAnalyticsDailyReportBuilder__sleepDurationLastNightIncludingAwa
   v10[2] = __68__HDSPAnalyticsDailyReportBuilder__lastNightsDurationForSleepStage___block_invoke_2;
   v10[3] = &unk_279C7BA38;
   v10[4] = &v11;
-  v10[5] = a3;
+  v10[5] = stage;
   [v7 hdsp_enumerateFirstPartyWatchSleepTrackingSegmentsWithBlock:v10];
   v8 = v12[3];
   _Block_object_dispose(&v11, 8);
@@ -687,16 +687,16 @@ double __68__HDSPAnalyticsDailyReportBuilder__lastNightsDurationForSleepStage___
   return result;
 }
 
-+ (unint64_t)_stageDurationPercentage:(double)a3 ofTotalDuration:(double)a4
++ (unint64_t)_stageDurationPercentage:(double)percentage ofTotalDuration:(double)duration
 {
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     return 0;
   }
 
   else
   {
-    return vcvtad_u64_f64(a3 / a4 * 100.0);
+    return vcvtad_u64_f64(percentage / duration * 100.0);
   }
 }
 
@@ -778,28 +778,28 @@ uint64_t __65__HDSPAnalyticsDailyReportBuilder__lastNightsNumberOfAwakeEvents__b
 
 - (id)_windDownEvents
 {
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v4 = [(HDSPAnalyticsDailyReportBuilder *)self analyticsStore];
-  v5 = [v4 uncollectedWindDownActions];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  analyticsStore = [(HDSPAnalyticsDailyReportBuilder *)self analyticsStore];
+  uncollectedWindDownActions = [analyticsStore uncollectedWindDownActions];
 
-  v6 = [MEMORY[0x277D62410] activePairedWatchProductType];
+  activePairedWatchProductType = [MEMORY[0x277D62410] activePairedWatchProductType];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v8 = [WeakRetained sleepScheduleModelManager];
-  v9 = [v8 sleepEventRecord];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
 
-  v10 = [v9 sleepWindDownShortcutsOnboardingFirstCompletedDate];
-  v11 = [(HDSPAnalyticsDailyReportBuilder *)self currentDate];
-  v12 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:v10 currentDate:v11 calendar:v3];
+  sleepWindDownShortcutsOnboardingFirstCompletedDate = [sleepEventRecord sleepWindDownShortcutsOnboardingFirstCompletedDate];
+  currentDate = [(HDSPAnalyticsDailyReportBuilder *)self currentDate];
+  v12 = [(HDSPAnalyticsDailyReportBuilder *)self _weeksSinceOnboardDate:sleepWindDownShortcutsOnboardingFirstCompletedDate currentDate:currentDate calendar:hk_gregorianCalendar];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __50__HDSPAnalyticsDailyReportBuilder__windDownEvents__block_invoke;
   v17[3] = &unk_279C7BA88;
-  v18 = v6;
+  v18 = activePairedWatchProductType;
   v19 = v12;
   v13 = v12;
-  v14 = v6;
-  v15 = [v5 na_map:v17];
+  v14 = activePairedWatchProductType;
+  v15 = [uncollectedWindDownActions na_map:v17];
 
   return v15;
 }
@@ -817,8 +817,8 @@ id __50__HDSPAnalyticsDailyReportBuilder__windDownEvents__block_invoke(uint64_t 
 {
   v3 = objc_alloc(MEMORY[0x277CCD570]);
   v4 = *MEMORY[0x277D62650];
-  v5 = [(HDSPAnalyticsDailyReportBuilder *)self healthStore];
-  v6 = [v3 initWithCategory:2 domainName:v4 healthStore:v5];
+  healthStore = [(HDSPAnalyticsDailyReportBuilder *)self healthStore];
+  v6 = [v3 initWithCategory:2 domainName:v4 healthStore:healthStore];
 
   v7 = [v6 dateForKey:*MEMORY[0x277D62638] error:0];
 
@@ -828,19 +828,19 @@ id __50__HDSPAnalyticsDailyReportBuilder__windDownEvents__block_invoke(uint64_t 
 - (BOOL)_didInteractWithWindDownActionsWithinLastTwoDays
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPAnalyticsDailyReportBuilder *)self currentDate];
-  v4 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-  v5 = [v3 hk_morningIndexWithCalendar:v4] - 2;
+  currentDate = [(HDSPAnalyticsDailyReportBuilder *)self currentDate];
+  hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+  v5 = [currentDate hk_morningIndexWithCalendar:hk_gregorianCalendar] - 2;
 
-  v6 = [(HDSPAnalyticsDailyReportBuilder *)self analyticsStore];
-  v7 = [v6 windDownActionsAfterMorningIndex:v5];
+  analyticsStore = [(HDSPAnalyticsDailyReportBuilder *)self analyticsStore];
+  v7 = [analyticsStore windDownActionsAfterMorningIndex:v5];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [v7 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  allValues = [v7 allValues];
+  v9 = [allValues countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -851,7 +851,7 @@ id __50__HDSPAnalyticsDailyReportBuilder__windDownEvents__block_invoke(uint64_t 
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
@@ -893,7 +893,7 @@ id __50__HDSPAnalyticsDailyReportBuilder__windDownEvents__block_invoke(uint64_t 
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v26 objects:v31 count:16];
       v19 = 0;
     }
 
@@ -911,25 +911,25 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)_changedSchedule:(id)a3 withinNumberOfDays:(unint64_t)a4 currentDate:(id)a5 calendar:(id)a6
+- (BOOL)_changedSchedule:(id)schedule withinNumberOfDays:(unint64_t)days currentDate:(id)date calendar:(id)calendar
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 lastModifiedDate];
+  scheduleCopy = schedule;
+  dateCopy = date;
+  calendarCopy = calendar;
+  lastModifiedDate = [scheduleCopy lastModifiedDate];
 
-  if (v12)
+  if (lastModifiedDate)
   {
-    v13 = [v9 lastModifiedDate];
-    v14 = [v13 hksp_isAfterDate:v10];
+    lastModifiedDate2 = [scheduleCopy lastModifiedDate];
+    v14 = [lastModifiedDate2 hksp_isAfterDate:dateCopy];
 
     if (!v14)
     {
-      v17 = [v9 lastModifiedDate];
-      v18 = [v11 components:16 fromDate:v17 toDate:v10 options:0];
+      lastModifiedDate3 = [scheduleCopy lastModifiedDate];
+      v18 = [calendarCopy components:16 fromDate:lastModifiedDate3 toDate:dateCopy options:0];
 
-      v16 = [v18 day] <= a4;
+      v16 = [v18 day] <= days;
       goto LABEL_8;
     }
 
@@ -950,20 +950,20 @@ LABEL_8:
   return v16;
 }
 
-- (id)_weeksSinceOnboardDate:(id)a3 currentDate:(id)a4 calendar:(id)a5
+- (id)_weeksSinceOnboardDate:(id)date currentDate:(id)currentDate calendar:(id)calendar
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  dateCopy = date;
+  currentDateCopy = currentDate;
+  calendarCopy = calendar;
+  if (!dateCopy)
   {
 LABEL_6:
     v11 = 0;
     goto LABEL_8;
   }
 
-  if ([v7 hksp_isAfterDate:v8])
+  if ([dateCopy hksp_isAfterDate:currentDateCopy])
   {
     v10 = HKSPLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -977,9 +977,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v12 = [v9 startOfDayForDate:v7];
-  v13 = [v9 startOfDayForDate:v8];
-  v14 = [v9 components:0x2000 fromDate:v12 toDate:v13 options:0];
+  v12 = [calendarCopy startOfDayForDate:dateCopy];
+  v13 = [calendarCopy startOfDayForDate:currentDateCopy];
+  v14 = [calendarCopy components:0x2000 fromDate:v12 toDate:v13 options:0];
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v14, "weekOfYear")}];
 
 LABEL_8:
@@ -991,9 +991,9 @@ LABEL_8:
 - (id)_biologicalSex
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(HDSPAnalyticsDailyReportBuilder *)self healthStore];
+  healthStore = [(HDSPAnalyticsDailyReportBuilder *)self healthStore];
   v12 = 0;
-  v3 = [v2 biologicalSexWithError:&v12];
+  v3 = [healthStore biologicalSexWithError:&v12];
   v4 = v12;
 
   if (v4)
@@ -1013,28 +1013,28 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v6 = [v3 biologicalSex];
-  if (v6 > 3)
+  biologicalSex = [v3 biologicalSex];
+  if (biologicalSex > 3)
   {
 LABEL_7:
     v7 = 0;
     goto LABEL_8;
   }
 
-  v7 = off_279C7BAF8[v6];
+  v7 = off_279C7BAF8[biologicalSex];
 LABEL_8:
 
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (id)_userAgeForCurrentDate:(id)a3
+- (id)_userAgeForCurrentDate:(id)date
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPAnalyticsDailyReportBuilder *)self healthStore];
+  dateCopy = date;
+  healthStore = [(HDSPAnalyticsDailyReportBuilder *)self healthStore];
   v15 = 0;
-  v6 = [v5 dateOfBirthComponentsWithError:&v15];
+  v6 = [healthStore dateOfBirthComponentsWithError:&v15];
   v7 = v15;
 
   if (v7)
@@ -1056,7 +1056,7 @@ LABEL_8:
 
   else
   {
-    v10 = [v6 hk_ageWithCurrentDate:v4];
+    v10 = [v6 hk_ageWithCurrentDate:dateCopy];
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
   }
 

@@ -1,18 +1,18 @@
 @interface THFlowBodyChunkInfo
-- (THFlowBodyChunkInfo)initWithBodyInfo:(id)a3;
+- (THFlowBodyChunkInfo)initWithBodyInfo:(id)info;
 - (void)dealloc;
 @end
 
 @implementation THFlowBodyChunkInfo
 
-- (THFlowBodyChunkInfo)initWithBodyInfo:(id)a3
+- (THFlowBodyChunkInfo)initWithBodyInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = THFlowBodyChunkInfo;
-  v4 = -[THFlowBodyChunkInfo initWithContext:geometry:](&v6, "initWithContext:geometry:", [a3 context], objc_msgSend(a3, "geometry"));
+  v4 = -[THFlowBodyChunkInfo initWithContext:geometry:](&v6, "initWithContext:geometry:", [info context], objc_msgSend(info, "geometry"));
   if (v4)
   {
-    v4->_bodyInfo = a3;
+    v4->_bodyInfo = info;
   }
 
   return v4;

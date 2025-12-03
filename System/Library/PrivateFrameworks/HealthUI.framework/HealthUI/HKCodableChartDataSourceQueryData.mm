@@ -1,25 +1,25 @@
 @interface HKCodableChartDataSourceQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFirstWeekday:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFirstWeekday:(BOOL)weekday;
+- (void)setHasStartDate:(BOOL)date;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableChartDataSourceQueryData
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -60,100 +60,100 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if (a3 >= 0x10)
+  if (string >= 0x10)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E81BCA78[a3];
+    v4 = off_1E81BCA78[string];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"quantity"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"quantity"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"distribution"])
+  else if ([typeCopy isEqualToString:@"distribution"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"sampleTypeCount"])
+  else if ([typeCopy isEqualToString:@"sampleTypeCount"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"bloodPressure"])
+  else if ([typeCopy isEqualToString:@"bloodPressure"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"insulin"])
+  else if ([typeCopy isEqualToString:@"insulin"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"handwashing"])
+  else if ([typeCopy isEqualToString:@"handwashing"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"horizontalTimePeriod"])
+  else if ([typeCopy isEqualToString:@"horizontalTimePeriod"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"timePeriodSeries"])
+  else if ([typeCopy isEqualToString:@"timePeriodSeries"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"sample"])
+  else if ([typeCopy isEqualToString:@"sample"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"sleep"])
+  else if ([typeCopy isEqualToString:@"sleep"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"activitySummary"])
+  else if ([typeCopy isEqualToString:@"activitySummary"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"notification"])
+  else if ([typeCopy isEqualToString:@"notification"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"cardioFitness"])
+  else if ([typeCopy isEqualToString:@"cardioFitness"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"electrocardiogram"])
+  else if ([typeCopy isEqualToString:@"electrocardiogram"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"stateOfMind"])
+  else if ([typeCopy isEqualToString:@"stateOfMind"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"healthChartsData"])
+  else if ([typeCopy isEqualToString:@"healthChartsData"])
   {
     v4 = 15;
   }
@@ -166,9 +166,9 @@
   return v4;
 }
 
-- (void)setHasFirstWeekday:(BOOL)a3
+- (void)setHasFirstWeekday:(BOOL)weekday
 {
-  if (a3)
+  if (weekday)
   {
     v3 = 2;
   }
@@ -187,20 +187,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableChartDataSourceQueryData;
   v4 = [(HKCodableChartDataSourceQueryData *)&v8 description];
-  v5 = [(HKCodableChartDataSourceQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableChartDataSourceQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   timeZoneName = self->_timeZoneName;
   if (timeZoneName)
   {
-    [v3 setObject:timeZoneName forKey:@"timeZoneName"];
+    [dictionary setObject:timeZoneName forKey:@"timeZoneName"];
   }
 
   queryDataObject = self->_queryDataObject;
@@ -227,8 +227,8 @@
   statisticsInterval = self->_statisticsInterval;
   if (statisticsInterval)
   {
-    v11 = [(HKCodableDateComponents *)statisticsInterval dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"statisticsInterval"];
+    dictionaryRepresentation = [(HKCodableDateComponents *)statisticsInterval dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"statisticsInterval"];
   }
 
   v12 = self->_has;
@@ -259,116 +259,116 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_timeZoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_queryDataObject)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_statisticsInterval)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_timeZoneName)
   {
-    [v4 setTimeZoneName:?];
-    v4 = v7;
+    [toCopy setTimeZoneName:?];
+    toCopy = v7;
   }
 
   if (self->_queryDataObject)
   {
     [v7 setQueryDataObject:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = *&self->_startDate;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 3) = *&self->_startDate;
+    *(toCopy + 60) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_endDate;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 1) = *&self->_endDate;
+    *(toCopy + 60) |= 1u;
   }
 
   if (self->_statisticsInterval)
   {
     [v7 setStatisticsInterval:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(v4 + 14) = self->_type;
-    *(v4 + 60) |= 8u;
+    *(toCopy + 14) = self->_type;
+    *(toCopy + 60) |= 8u;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
-    *(v4 + 2) = self->_firstWeekday;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 2) = self->_firstWeekday;
+    *(toCopy + 60) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_timeZoneName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_timeZoneName copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSData *)self->_queryDataObject copyWithZone:a3];
+  v8 = [(NSData *)self->_queryDataObject copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -386,7 +386,7 @@
     *(v5 + 60) |= 1u;
   }
 
-  v11 = [(HKCodableDateComponents *)self->_statisticsInterval copyWithZone:a3];
+  v11 = [(HKCodableDateComponents *)self->_statisticsInterval copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
@@ -407,16 +407,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   timeZoneName = self->_timeZoneName;
-  if (timeZoneName | *(v4 + 6))
+  if (timeZoneName | *(equalCopy + 6))
   {
     if (![(NSString *)timeZoneName isEqual:?])
     {
@@ -425,7 +425,7 @@
   }
 
   queryDataObject = self->_queryDataObject;
-  if (queryDataObject | *(v4 + 4))
+  if (queryDataObject | *(equalCopy + 4))
   {
     if (![(NSData *)queryDataObject isEqual:?])
     {
@@ -436,32 +436,32 @@
   has = self->_has;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_startDate != *(v4 + 3))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_startDate != *(equalCopy + 3))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_28;
   }
 
   statisticsInterval = self->_statisticsInterval;
-  if (statisticsInterval | *(v4 + 5))
+  if (statisticsInterval | *(equalCopy + 5))
   {
     if (![(HKCodableDateComponents *)statisticsInterval isEqual:?])
     {
@@ -475,21 +475,21 @@ LABEL_28:
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_type != *(v4 + 14))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_type != *(equalCopy + 14))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_28;
   }
 
-  v9 = (*(v4 + 60) & 2) == 0;
+  v9 = (*(equalCopy + 60) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_firstWeekday != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_firstWeekday != *(equalCopy + 2))
     {
       goto LABEL_28;
     }
@@ -598,38 +598,38 @@ LABEL_19:
   return v4 ^ v3 ^ v7 ^ v11 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v9 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v9 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(HKCodableChartDataSourceQueryData *)self setTimeZoneName:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HKCodableChartDataSourceQueryData *)self setQueryDataObject:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 4) != 0)
   {
-    self->_startDate = *(v4 + 3);
+    self->_startDate = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
   }
 
   if (v5)
   {
-    self->_endDate = *(v4 + 1);
+    self->_endDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
   statisticsInterval = self->_statisticsInterval;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (statisticsInterval)
   {
     if (!v7)
@@ -650,23 +650,23 @@ LABEL_19:
     statisticsInterval = [(HKCodableChartDataSourceQueryData *)self setStatisticsInterval:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
-  v8 = *(v4 + 60);
+  v8 = *(fromCopy + 60);
   if ((v8 & 8) != 0)
   {
-    self->_type = *(v4 + 14);
+    self->_type = *(fromCopy + 14);
     *&self->_has |= 8u;
-    v8 = *(v4 + 60);
+    v8 = *(fromCopy + 60);
   }
 
   if ((v8 & 2) != 0)
   {
-    self->_firstWeekday = *(v4 + 2);
+    self->_firstWeekday = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  MEMORY[0x1EEE66BB8](statisticsInterval, v4);
+  MEMORY[0x1EEE66BB8](statisticsInterval, fromCopy);
 }
 
 @end

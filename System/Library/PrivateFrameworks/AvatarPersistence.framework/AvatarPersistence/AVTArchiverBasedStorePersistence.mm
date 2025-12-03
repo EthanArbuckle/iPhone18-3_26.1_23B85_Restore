@@ -1,53 +1,53 @@
 @interface AVTArchiverBasedStorePersistence
-+ (BOOL)_createStoreEmptyFileIfNeededAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6;
-+ (BOOL)_createStoreFolderIfNeededAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6;
-+ (BOOL)_createStoreIfNeededAtLocation:(id)a3 logger:(id)a4 error:(id *)a5;
-+ (BOOL)_migrateFromPre0_5ToCurrentForStoreAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6;
-+ (BOOL)_migrateFromPre0_6ToCurrentForStoreAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6;
-+ (BOOL)_performMigrationIfNeededForStoreAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6;
-+ (BOOL)_writeContent:(id)a3 toDiskAtLocation:(id)a4 logger:(id)a5 error:(id *)a6;
-+ (BOOL)contentExistsAtLocation:(id)a3;
-+ (BOOL)isFileNotFoundError:(id)a3;
-+ (BOOL)removeFilesAtLocation:(id)a3 error:(id *)a4;
-+ (BOOL)writeContent:(id)a3 toDiskAtLocation:(id)a4 logger:(id)a5 error:(id *)a6;
-+ (id)_migrateDifferentAvatarKitVersionsForContent:(id)a3 logger:(id)a4;
-+ (id)_readContentFromDiskAtLocation:(id)a3 logger:(id)a4 error:(id *)a5;
-+ (id)readContentFromDiskAtLocation:(id)a3 logger:(id)a4 error:(id *)a5;
++ (BOOL)_createStoreEmptyFileIfNeededAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error;
++ (BOOL)_createStoreFolderIfNeededAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error;
++ (BOOL)_createStoreIfNeededAtLocation:(id)location logger:(id)logger error:(id *)error;
++ (BOOL)_migrateFromPre0_5ToCurrentForStoreAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error;
++ (BOOL)_migrateFromPre0_6ToCurrentForStoreAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error;
++ (BOOL)_performMigrationIfNeededForStoreAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error;
++ (BOOL)_writeContent:(id)content toDiskAtLocation:(id)location logger:(id)logger error:(id *)error;
++ (BOOL)contentExistsAtLocation:(id)location;
++ (BOOL)isFileNotFoundError:(id)error;
++ (BOOL)removeFilesAtLocation:(id)location error:(id *)error;
++ (BOOL)writeContent:(id)content toDiskAtLocation:(id)location logger:(id)logger error:(id *)error;
++ (id)_migrateDifferentAvatarKitVersionsForContent:(id)content logger:(id)logger;
++ (id)_readContentFromDiskAtLocation:(id)location logger:(id)logger error:(id *)error;
++ (id)readContentFromDiskAtLocation:(id)location logger:(id)logger error:(id *)error;
 @end
 
 @implementation AVTArchiverBasedStorePersistence
 
-+ (BOOL)contentExistsAtLocation:(id)a3
++ (BOOL)contentExistsAtLocation:(id)location
 {
   v4 = MEMORY[0x277CCAA00];
-  v5 = a3;
+  locationCopy = location;
   v6 = objc_alloc_init(v4);
-  v7 = [a1 dbLocationForStoreLocation:v5];
+  v7 = [self dbLocationForStoreLocation:locationCopy];
 
-  v8 = [v7 path];
-  v9 = [v6 fileExistsAtPath:v8];
+  path = [v7 path];
+  v9 = [v6 fileExistsAtPath:path];
 
   return v9;
 }
 
-+ (BOOL)removeFilesAtLocation:(id)a3 error:(id *)a4
++ (BOOL)removeFilesAtLocation:(id)location error:(id *)error
 {
   v6 = MEMORY[0x277CCAA00];
-  v7 = a3;
+  locationCopy = location;
   v8 = objc_alloc_init(v6);
-  v9 = [a1 dbLocationForStoreLocation:v7];
-  v10 = [AVTBackendVersion versionFileLocationForStoreLocation:v7];
+  v9 = [self dbLocationForStoreLocation:locationCopy];
+  v10 = [AVTBackendVersion versionFileLocationForStoreLocation:locationCopy];
 
-  v11 = [v9 path];
-  v12 = [v8 fileExistsAtPath:v11];
+  path = [v9 path];
+  v12 = [v8 fileExistsAtPath:path];
 
   v15 = 0;
-  if (!v12 || [v8 removeItemAtURL:v9 error:a4])
+  if (!v12 || [v8 removeItemAtURL:v9 error:error])
   {
-    v13 = [v10 path];
-    v14 = [v8 fileExistsAtPath:v13];
+    path2 = [v10 path];
+    v14 = [v8 fileExistsAtPath:path2];
 
-    if (!v14 || [v8 removeItemAtURL:v10 error:a4])
+    if (!v14 || [v8 removeItemAtURL:v10 error:error])
     {
       v15 = 1;
     }
@@ -56,13 +56,13 @@
   return v15;
 }
 
-+ (BOOL)isFileNotFoundError:(id)a3
++ (BOOL)isFileNotFoundError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqual:*MEMORY[0x277CCA050]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqual:*MEMORY[0x277CCA050]])
   {
-    v5 = [v3 code] == 260 || objc_msgSend(v3, "code") == 4;
+    v5 = [errorCopy code] == 260 || objc_msgSend(errorCopy, "code") == 4;
   }
 
   else
@@ -73,24 +73,24 @@
   return v5;
 }
 
-+ (id)readContentFromDiskAtLocation:(id)a3 logger:(id)a4 error:(id *)a5
++ (id)readContentFromDiskAtLocation:(id)location logger:(id)logger error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  loggerCopy = logger;
   v16 = 0;
-  v10 = [a1 _createStoreIfNeededAtLocation:v8 logger:v9 error:&v16];
+  v10 = [self _createStoreIfNeededAtLocation:locationCopy logger:loggerCopy error:&v16];
   v11 = v16;
   v12 = v11;
   if (v10)
   {
-    v13 = [a1 _readContentFromDiskAtLocation:v8 logger:v9 error:a5];
+    v13 = [self _readContentFromDiskAtLocation:locationCopy logger:loggerCopy error:error];
   }
 
-  else if (a5)
+  else if (error)
   {
     v14 = v11;
     v13 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -101,19 +101,19 @@
   return v13;
 }
 
-+ (id)_readContentFromDiskAtLocation:(id)a3 logger:(id)a4 error:(id *)a5
++ (id)_readContentFromDiskAtLocation:(id)location logger:(id)logger error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 path];
-  [v8 logReadingBackendAtPath:v10];
+  loggerCopy = logger;
+  locationCopy = location;
+  path = [locationCopy path];
+  [loggerCopy logReadingBackendAtPath:path];
 
-  v11 = [a1 dbLocationForStoreLocation:v9];
+  v11 = [self dbLocationForStoreLocation:locationCopy];
 
   v23 = 0;
   v12 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v11 options:0 error:&v23];
   v13 = v23;
-  if (v12 || ([a1 isFileNotFoundError:v13] & 1) != 0)
+  if (v12 || ([self isFileNotFoundError:v13] & 1) != 0)
   {
     if ([v12 length])
     {
@@ -123,14 +123,14 @@
 
       if (!v14)
       {
-        if (a5)
+        if (error)
         {
           v16 = v15;
-          *a5 = v15;
+          *error = v15;
         }
 
         v17 = [v15 description];
-        [v8 logReadingError:v17];
+        [loggerCopy logReadingError:v17];
 
         v14 = 0;
       }
@@ -147,14 +147,14 @@
 
   else
   {
-    if (a5)
+    if (error)
     {
       v19 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v20 = [v13 description];
-    [v8 logReadingError:v20];
+    [loggerCopy logReadingError:v20];
 
     v14 = 0;
   }
@@ -162,32 +162,32 @@
   return v14;
 }
 
-+ (BOOL)writeContent:(id)a3 toDiskAtLocation:(id)a4 logger:(id)a5 error:(id *)a6
++ (BOOL)writeContent:(id)content toDiskAtLocation:(id)location logger:(id)logger error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [v12 logSavingBackend];
+  contentCopy = content;
+  locationCopy = location;
+  loggerCopy = logger;
+  [loggerCopy logSavingBackend];
   v13 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v28 = 0;
-  v14 = [a1 _createStoreFolderIfNeededAtLocation:v11 logger:v12 fileManager:v13 error:&v28];
+  v14 = [self _createStoreFolderIfNeededAtLocation:locationCopy logger:loggerCopy fileManager:v13 error:&v28];
   v15 = v28;
   v16 = v15;
   if ((v14 & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v22 = v15;
-      *a6 = v16;
+      *error = v16;
     }
 
     v23 = [v16 description];
-    [v12 logSavingError:v23];
+    [loggerCopy logSavingError:v23];
     goto LABEL_8;
   }
 
   v27 = v15;
-  v17 = [a1 _writeContent:v10 toDiskAtLocation:v11 logger:v12 error:&v27];
+  v17 = [self _writeContent:contentCopy toDiskAtLocation:locationCopy logger:loggerCopy error:&v27];
   v18 = v27;
 
   if (!v17)
@@ -196,21 +196,21 @@
     goto LABEL_11;
   }
 
-  v19 = [a1 currentVersion];
+  currentVersion = [self currentVersion];
   v26 = v18;
-  v20 = [a1 writeVersion:v19 toDiskAtLocation:v11 error:&v26];
+  v20 = [self writeVersion:currentVersion toDiskAtLocation:locationCopy error:&v26];
   v16 = v26;
 
   if ((v20 & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v25 = v16;
-      *a6 = v16;
+      *error = v16;
     }
 
     v23 = [v16 description];
-    [v12 logErrorUpdatingVersion:v23];
+    [loggerCopy logErrorUpdatingVersion:v23];
 LABEL_8:
 
     v21 = 0;
@@ -225,31 +225,31 @@ LABEL_11:
   return v21;
 }
 
-+ (BOOL)_writeContent:(id)a3 toDiskAtLocation:(id)a4 logger:(id)a5 error:(id *)a6
++ (BOOL)_writeContent:(id)content toDiskAtLocation:(id)location logger:(id)logger error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  loggerCopy = logger;
   v23 = 0;
-  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v23];
+  v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:content requiringSecureCoding:1 error:&v23];
   v13 = v23;
   v14 = v13;
   if (v12)
   {
-    v15 = [a1 dbLocationForStoreLocation:v10];
+    v15 = [self dbLocationForStoreLocation:locationCopy];
     v22 = v14;
     v16 = [v12 writeToURL:v15 options:AVTDefaultFileProtectionDataWritingOptions() | 1 error:&v22];
     v17 = v22;
 
     if ((v16 & 1) == 0)
     {
-      if (a6)
+      if (error)
       {
         v18 = v17;
-        *a6 = v17;
+        *error = v17;
       }
 
       v19 = [v17 description];
-      [v11 logSavingError:v19];
+      [loggerCopy logSavingError:v19];
     }
 
     v14 = v17;
@@ -257,29 +257,29 @@ LABEL_11:
 
   else
   {
-    if (a6)
+    if (error)
     {
       v20 = v13;
-      *a6 = v14;
+      *error = v14;
     }
 
     v15 = [v14 description];
-    [v11 logSavingError:v15];
+    [loggerCopy logSavingError:v15];
     v16 = 0;
   }
 
   return v16;
 }
 
-+ (BOOL)_createStoreIfNeededAtLocation:(id)a3 logger:(id)a4 error:(id *)a5
++ (BOOL)_createStoreIfNeededAtLocation:(id)location logger:(id)logger error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  loggerCopy = logger;
   v10 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  if ([a1 _performMigrationIfNeededForStoreAtLocation:v8 logger:v9 fileManager:v10 error:a5] && objc_msgSend(a1, "_createStoreFolderIfNeededAtLocation:logger:fileManager:error:", v8, v9, v10, a5))
+  if ([self _performMigrationIfNeededForStoreAtLocation:locationCopy logger:loggerCopy fileManager:v10 error:error] && objc_msgSend(self, "_createStoreFolderIfNeededAtLocation:logger:fileManager:error:", locationCopy, loggerCopy, v10, error))
   {
-    v11 = [a1 dbLocationForStoreLocation:v8];
-    v12 = [a1 _createStoreEmptyFileIfNeededAtLocation:v11 logger:v9 fileManager:v10 error:a5];
+    v11 = [self dbLocationForStoreLocation:locationCopy];
+    v12 = [self _createStoreEmptyFileIfNeededAtLocation:v11 logger:loggerCopy fileManager:v10 error:error];
   }
 
   else
@@ -290,18 +290,18 @@ LABEL_11:
   return v12;
 }
 
-+ (BOOL)_performMigrationIfNeededForStoreAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6
++ (BOOL)_performMigrationIfNeededForStoreAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  locationCopy = location;
+  loggerCopy = logger;
+  managerCopy = manager;
   v30 = 0;
-  v13 = [a1 readVersionForStoreAtLocation:v10 error:&v30];
+  v13 = [self readVersionForStoreAtLocation:locationCopy error:&v30];
   v14 = v30;
-  if (v13 || ([a1 isFileNotFoundError:v14] & 1) != 0)
+  if (v13 || ([self isFileNotFoundError:v14] & 1) != 0)
   {
-    v15 = [a1 currentVersion];
-    if (!(v13 | v15) || ([v13 isEqual:v15] & 1) != 0)
+    currentVersion = [self currentVersion];
+    if (!(v13 | currentVersion) || ([v13 isEqual:currentVersion] & 1) != 0)
     {
       v16 = 1;
 LABEL_6:
@@ -310,16 +310,16 @@ LABEL_6:
     }
 
     v18 = [v13 description];
-    v19 = [v15 description];
-    [v11 logBackendVersionMismatch:v18 actual:v19];
+    v19 = [currentVersion description];
+    [loggerCopy logBackendVersionMismatch:v18 actual:v19];
 
-    if (v13 && ([v13 backendVersion], v20 >= 0.5) && (objc_msgSend(v13, "backendVersion"), v22 = v21, objc_msgSend(v15, "backendVersion"), v22 <= v23))
+    if (v13 && ([v13 backendVersion], v20 >= 0.5) && (objc_msgSend(v13, "backendVersion"), v22 = v21, objc_msgSend(currentVersion, "backendVersion"), v22 <= v23))
     {
       [v13 backendVersion];
-      if (v29 >= 0.6 || [a1 _migrateFromPre0_6ToCurrentForStoreAtLocation:v10 logger:v11 fileManager:v12 error:a6])
+      if (v29 >= 0.6 || [self _migrateFromPre0_6ToCurrentForStoreAtLocation:locationCopy logger:loggerCopy fileManager:managerCopy error:error])
       {
 LABEL_12:
-        v24 = [a1 _readContentFromDiskAtLocation:v10 logger:v11 error:a6];
+        v24 = [self _readContentFromDiskAtLocation:locationCopy logger:loggerCopy error:error];
         if (!v24)
         {
           goto LABEL_20;
@@ -328,15 +328,15 @@ LABEL_12:
         [v13 avatarKitVersion];
         if (v25 < 12.0)
         {
-          v26 = [a1 _migrateDifferentAvatarKitVersionsForContent:v24 logger:v11];
+          v26 = [self _migrateDifferentAvatarKitVersionsForContent:v24 logger:loggerCopy];
 
           v24 = v26;
         }
 
-        if ([a1 _createStoreFolderIfNeededAtLocation:v10 logger:v11 fileManager:v12 error:a6] && objc_msgSend(a1, "_writeContent:toDiskAtLocation:logger:error:", v24, v10, v11, a6))
+        if ([self _createStoreFolderIfNeededAtLocation:locationCopy logger:loggerCopy fileManager:managerCopy error:error] && objc_msgSend(self, "_writeContent:toDiskAtLocation:logger:error:", v24, locationCopy, loggerCopy, error))
         {
-          v27 = [a1 currentVersion];
-          v16 = [a1 writeVersion:v27 toDiskAtLocation:v10 error:a6];
+          currentVersion2 = [self currentVersion];
+          v16 = [self writeVersion:currentVersion2 toDiskAtLocation:locationCopy error:error];
         }
 
         else
@@ -349,7 +349,7 @@ LABEL_20:
       }
     }
 
-    else if ([a1 _migrateFromPre0_5ToCurrentForStoreAtLocation:v10 logger:v11 fileManager:v12 error:a6])
+    else if ([self _migrateFromPre0_5ToCurrentForStoreAtLocation:locationCopy logger:loggerCopy fileManager:managerCopy error:error])
     {
       goto LABEL_12;
     }
@@ -358,11 +358,11 @@ LABEL_20:
     goto LABEL_6;
   }
 
-  if (a6)
+  if (error)
   {
     v28 = v14;
     v16 = 0;
-    *a6 = v14;
+    *error = v14;
   }
 
   else
@@ -375,16 +375,16 @@ LABEL_7:
   return v16;
 }
 
-+ (BOOL)_migrateFromPre0_5ToCurrentForStoreAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6
++ (BOOL)_migrateFromPre0_5ToCurrentForStoreAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 path];
-  v11 = [v9 fileExistsAtPath:v10];
+  locationCopy = location;
+  managerCopy = manager;
+  path = [locationCopy path];
+  v11 = [managerCopy fileExistsAtPath:path];
 
   if (v11)
   {
-    v12 = [v9 removeItemAtURL:v8 error:a6];
+    v12 = [managerCopy removeItemAtURL:locationCopy error:error];
   }
 
   else
@@ -395,17 +395,17 @@ LABEL_7:
   return v12;
 }
 
-+ (BOOL)_migrateFromPre0_6ToCurrentForStoreAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6
++ (BOOL)_migrateFromPre0_6ToCurrentForStoreAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 path];
-  v11 = [v9 fileExistsAtPath:v10];
+  locationCopy = location;
+  managerCopy = manager;
+  path = [locationCopy path];
+  v11 = [managerCopy fileExistsAtPath:path];
 
   if (v11)
   {
-    v12 = [v8 path];
-    v13 = [v9 attributesOfItemAtPath:v12 error:a6];
+    path2 = [locationCopy path];
+    v13 = [managerCopy attributesOfItemAtPath:path2 error:error];
     v14 = [v13 mutableCopy];
 
     if (v14)
@@ -425,8 +425,8 @@ LABEL_7:
         v20 = AVTDefaultFileProtectionType();
         [v14 setObject:v20 forKeyedSubscript:v15];
 
-        v21 = [v8 path];
-        v19 = [v9 setAttributes:v14 ofItemAtPath:v21 error:a6];
+        path3 = [locationCopy path];
+        v19 = [managerCopy setAttributes:v14 ofItemAtPath:path3 error:error];
       }
     }
 
@@ -444,18 +444,18 @@ LABEL_7:
   return v19;
 }
 
-+ (id)_migrateDifferentAvatarKitVersionsForContent:(id)a3 logger:(id)a4
++ (id)_migrateDifferentAvatarKitVersionsForContent:(id)content logger:(id)logger
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  contentCopy = content;
+  loggerCopy = logger;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v5 records];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  records = [contentCopy records];
+  v9 = [records countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -466,45 +466,45 @@ LABEL_7:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(records);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 avatarData];
-        if ([AVTAvatarRecord canLoadAvatarWithData:v14])
+        avatarData = [v13 avatarData];
+        if ([AVTAvatarRecord canLoadAvatarWithData:avatarData])
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         else
         {
           v15 = [v13 description];
-          [v6 logDroppingUnsupportedAvatarRecord:v15];
+          [loggerCopy logDroppingUnsupportedAvatarRecord:v15];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [records countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
   v16 = [AVTArchiverBasedStoreRoot alloc];
-  v17 = [v5 domains];
-  v18 = [(AVTArchiverBasedStoreRoot *)v16 initWithDomains:v17 records:v7];
+  domains = [contentCopy domains];
+  v18 = [(AVTArchiverBasedStoreRoot *)v16 initWithDomains:domains records:array];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-+ (BOOL)_createStoreFolderIfNeededAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6
++ (BOOL)_createStoreFolderIfNeededAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 path];
-  v13 = [v11 fileExistsAtPath:v12];
+  locationCopy = location;
+  loggerCopy = logger;
+  managerCopy = manager;
+  path = [locationCopy path];
+  v13 = [managerCopy fileExistsAtPath:path];
 
   if (v13)
   {
@@ -513,14 +513,14 @@ LABEL_7:
 
   else
   {
-    v15 = [v9 path];
-    [v10 logCreatingBackendFolderAtPath:v15];
+    path2 = [locationCopy path];
+    [loggerCopy logCreatingBackendFolderAtPath:path2];
 
     v14 = 1;
-    if (([v11 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:a6] & 1) == 0)
+    if (([managerCopy createDirectoryAtURL:locationCopy withIntermediateDirectories:1 attributes:0 error:error] & 1) == 0)
     {
-      v16 = [*a6 description];
-      [v10 logErrorCreatingBackendContent:v16];
+      v16 = [*error description];
+      [loggerCopy logErrorCreatingBackendContent:v16];
 
       v14 = 0;
     }
@@ -529,13 +529,13 @@ LABEL_7:
   return v14;
 }
 
-+ (BOOL)_createStoreEmptyFileIfNeededAtLocation:(id)a3 logger:(id)a4 fileManager:(id)a5 error:(id *)a6
++ (BOOL)_createStoreEmptyFileIfNeededAtLocation:(id)location logger:(id)logger fileManager:(id)manager error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 path];
-  v13 = [v11 fileExistsAtPath:v12];
+  locationCopy = location;
+  loggerCopy = logger;
+  managerCopy = manager;
+  path = [locationCopy path];
+  v13 = [managerCopy fileExistsAtPath:path];
 
   if (v13)
   {
@@ -544,17 +544,17 @@ LABEL_7:
 
   else
   {
-    v15 = [v9 path];
-    [v10 logCreatingBackendDBAtPath:v15];
+    path2 = [locationCopy path];
+    [loggerCopy logCreatingBackendDBAtPath:path2];
 
     v16 = objc_alloc_init(MEMORY[0x277CBEA90]);
     v14 = 1;
-    v17 = [v16 writeToURL:v9 options:1 error:a6];
+    v17 = [v16 writeToURL:locationCopy options:1 error:error];
 
     if ((v17 & 1) == 0)
     {
-      v18 = [*a6 description];
-      [v10 logErrorCreatingBackendContent:v18];
+      v18 = [*error description];
+      [loggerCopy logErrorCreatingBackendContent:v18];
 
       v14 = 0;
     }

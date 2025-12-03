@@ -1,13 +1,13 @@
 @interface FPFSChangeMonitor
-- (BOOL)_activateSubscription:(id)a3 error:(id *)a4;
-- (BOOL)_queueEvents:(id)a3 markSelfEncountered:(BOOL)a4;
-- (BOOL)activateSubscription:(id)a3 error:(id *)a4;
-- (BOOL)handleFSEvent:(id)a3 indexInBatch:(unsigned int)a4 batchSize:(unsigned int)a5;
+- (BOOL)_activateSubscription:(id)subscription error:(id *)error;
+- (BOOL)_queueEvents:(id)events markSelfEncountered:(BOOL)encountered;
+- (BOOL)activateSubscription:(id)subscription error:(id *)error;
+- (BOOL)handleFSEvent:(id)event indexInBatch:(unsigned int)batch batchSize:(unsigned int)size;
 - (BOOL)hasBufferedEvents;
-- (BOOL)setUpStreamForReason:(int64_t)a3 error:(id *)a4;
-- (FPFSChangeMonitor)initWithLabel:(id)a3 workloop:(id)a4 shouldWatchRoot:(BOOL)a5;
+- (BOOL)setUpStreamForReason:(int64_t)reason error:(id *)error;
+- (FPFSChangeMonitor)initWithLabel:(id)label workloop:(id)workloop shouldWatchRoot:(BOOL)root;
 - (double)latency;
-- (fpfs_fsevent_stream)_createStreamNamed:(id)a3 since:(unint64_t)a4;
+- (fpfs_fsevent_stream)_createStreamNamed:(id)named since:(unint64_t)since;
 - (id)description;
 - (unint64_t)oldestStartingPoint;
 - (void)_cancel;
@@ -16,11 +16,11 @@
 - (void)close;
 - (void)dealloc;
 - (void)deliverBarrierEvents;
-- (void)disableSubscription:(id)a3;
-- (void)foreachSubscriptionInState:(unint64_t)a3 apply:(id)a4;
+- (void)disableSubscription:(id)subscription;
+- (void)foreachSubscriptionInState:(unint64_t)state apply:(id)apply;
 - (void)processFseventBatch;
-- (void)queueEvents:(id)a3 markSelfEncountered:(BOOL)a4;
-- (void)resetWithReason:(int64_t)a3 newFSEventID:(unint64_t)a4;
+- (void)queueEvents:(id)events markSelfEncountered:(BOOL)encountered;
+- (void)resetWithReason:(int64_t)reason newFSEventID:(unint64_t)d;
 - (void)resume;
 - (void)suspend;
 @end
@@ -53,11 +53,11 @@ uint64_t __38__FPFSChangeMonitor_hasBufferedEvents__block_invoke(uint64_t a1)
   return result;
 }
 
-- (FPFSChangeMonitor)initWithLabel:(id)a3 workloop:(id)a4 shouldWatchRoot:(BOOL)a5
+- (FPFSChangeMonitor)initWithLabel:(id)label workloop:(id)workloop shouldWatchRoot:(BOOL)root
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  labelCopy = label;
+  workloopCopy = workloop;
   v47.receiver = self;
   v47.super_class = FPFSChangeMonitor;
   v10 = [(FPFSChangeMonitor *)&v47 init];
@@ -66,23 +66,23 @@ uint64_t __38__FPFSChangeMonitor_hasBufferedEvents__block_invoke(uint64_t a1)
   {
     atomic_store(1u, &v10->_suspendCount);
     bzero(__str, 0x400uLL);
-    v12 = v8;
-    snprintf(__str, 0x400uLL, "%s: fsevents-stream", [v8 UTF8String]);
+    v12 = labelCopy;
+    snprintf(__str, 0x400uLL, "%s: fsevents-stream", [labelCopy UTF8String]);
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_UTILITY, 0);
     v15 = dispatch_queue_create(__str, v14);
     streamQueue = v11->_streamQueue;
     v11->_streamQueue = v15;
 
-    v17 = v8;
-    snprintf(__str, 0x400uLL, "%s: fsevents-process", [v8 UTF8String]);
+    v17 = labelCopy;
+    snprintf(__str, 0x400uLL, "%s: fsevents-process", [labelCopy UTF8String]);
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_attr_make_with_qos_class(v18, QOS_CLASS_UTILITY, 0);
     v20 = dispatch_queue_create(__str, v19);
     processQueue = v11->_processQueue;
     v11->_processQueue = v20;
 
-    objc_storeStrong(&v11->_delegationQueue, a4);
+    objc_storeStrong(&v11->_delegationQueue, workloop);
     v22 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, v11->_delegationQueue);
     fseventsProcessSource = v11->_fseventsProcessSource;
     v11->_fseventsProcessSource = v22;
@@ -125,7 +125,7 @@ uint64_t __38__FPFSChangeMonitor_hasBufferedEvents__block_invoke(uint64_t a1)
     }
 
     v11->_createNoDelay = v36;
-    v11->_shouldWatchRoot = a5;
+    v11->_shouldWatchRoot = root;
     v11->_optimizeOutOwnEvents = 1;
     v37 = [MEMORY[0x1E695DF70] arrayWithCapacity:5];
     subscriptions = v11->_subscriptions;
@@ -181,30 +181,30 @@ void __60__FPFSChangeMonitor_initWithLabel_workloop_shouldWatchRoot___block_invo
   [(FPFSChangeMonitor *)&v9 dealloc];
 }
 
-- (BOOL)_activateSubscription:(id)a3 error:(id *)a4
+- (BOOL)_activateSubscription:(id)subscription error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isActivated])
+  subscriptionCopy = subscription;
+  if ([subscriptionCopy isActivated])
   {
     [FPFSChangeMonitor _activateSubscription:error:];
   }
 
-  [v6 setIsActivated:1];
+  [subscriptionCopy setIsActivated:1];
   volume = self->_volume;
   if (volume)
   {
 LABEL_5:
-    v12 = [(FPFSVolume *)volume eventStreamUUID];
-    v13 = [v6 eventStreamUUID];
-    if (!v13)
+    eventStreamUUID = [(FPFSVolume *)volume eventStreamUUID];
+    eventStreamUUID2 = [subscriptionCopy eventStreamUUID];
+    if (!eventStreamUUID2)
     {
       goto LABEL_27;
     }
 
-    v14 = v13;
-    v15 = [v6 eventStreamUUID];
-    v16 = [v12 isEqual:v15];
+    v14 = eventStreamUUID2;
+    eventStreamUUID3 = [subscriptionCopy eventStreamUUID];
+    v16 = [eventStreamUUID isEqual:eventStreamUUID3];
 
     if (v16)
     {
@@ -221,9 +221,9 @@ LABEL_5:
       v21 = fp_current_or_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [v20 fp_prettyDescription];
+        fp_prettyDescription = [v20 fp_prettyDescription];
         *buf = 138412290;
-        v34 = v22;
+        v34 = fp_prettyDescription;
         v23 = 12;
         _os_log_impl(&dword_1CEFC7000, v21, OS_LOG_TYPE_INFO, "[INFO] Unable to check for FSEvent purge : %@", buf, 0xCu);
       }
@@ -235,12 +235,12 @@ LABEL_5:
 
 LABEL_26:
 
-      v29 = [v6 delegate];
-      [v29 subscription:v6 handleResetWithReason:v23];
+      delegate = [subscriptionCopy delegate];
+      [delegate subscription:subscriptionCopy handleResetWithReason:v23];
 
 LABEL_27:
-      [v6 setEventStreamUUID:v12];
-      v24 = [(FPFSChangeMonitor *)self setUpStreamForReason:3 error:a4];
+      [subscriptionCopy setEventStreamUUID:eventStreamUUID];
+      v24 = [(FPFSChangeMonitor *)self setUpStreamForReason:3 error:error];
 
       goto LABEL_28;
     }
@@ -258,14 +258,14 @@ LABEL_27:
       goto LABEL_26;
     }
 
-    v25 = [v18 previousStreamUUID];
-    v26 = [v6 eventStreamUUID];
-    if ([v25 isEqual:v26])
+    previousStreamUUID = [v18 previousStreamUUID];
+    eventStreamUUID4 = [subscriptionCopy eventStreamUUID];
+    if ([previousStreamUUID isEqual:eventStreamUUID4])
     {
-      v27 = [v18 lastPurgedEventID];
-      v28 = [v6 lastDeliveredEventID];
+      lastPurgedEventID = [v18 lastPurgedEventID];
+      lastDeliveredEventID = [subscriptionCopy lastDeliveredEventID];
 
-      if (v27 < v28)
+      if (lastPurgedEventID < lastDeliveredEventID)
       {
         v21 = fp_current_or_default_log();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -295,8 +295,8 @@ LABEL_27:
   }
 
   v8 = objc_alloc_init(FPFSVolume);
-  v9 = [v6 root];
-  v10 = [(FPFSVolume *)v8 setupForPath:v9 error:a4];
+  root = [subscriptionCopy root];
+  v10 = [(FPFSVolume *)v8 setupForPath:root error:error];
 
   if (v10)
   {
@@ -314,52 +314,52 @@ LABEL_28:
   return v24;
 }
 
-- (BOOL)activateSubscription:(id)a3 error:(id *)a4
+- (BOOL)activateSubscription:(id)subscription error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  isActivated = v7->_isActivated;
+  subscriptionCopy = subscription;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isActivated = selfCopy->_isActivated;
   if (!isActivated)
   {
-    v7->_isActivated = 1;
+    selfCopy->_isActivated = 1;
   }
 
-  v9 = [(FPFSChangeMonitor *)v7 _activateSubscription:v6 error:a4];
-  objc_sync_exit(v7);
+  v9 = [(FPFSChangeMonitor *)selfCopy _activateSubscription:subscriptionCopy error:error];
+  objc_sync_exit(selfCopy);
 
   if (!isActivated)
   {
-    [(FPFSChangeMonitor *)v7 resume];
+    [(FPFSChangeMonitor *)selfCopy resume];
   }
 
-  [(FPFSChangeMonitor *)v7 resume];
+  [(FPFSChangeMonitor *)selfCopy resume];
 
   return v9;
 }
 
-- (void)disableSubscription:(id)a3
+- (void)disableSubscription:(id)subscription
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(NSMutableArray *)v4->_subscriptions count])
+  subscriptionCopy = subscription;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_subscriptions count])
   {
-    [(NSMutableArray *)v4->_subscriptions removeObject:v7];
+    [(NSMutableArray *)selfCopy->_subscriptions removeObject:subscriptionCopy];
   }
 
-  v5 = [(NSMutableArray *)v4->_subscriptions count];
+  v5 = [(NSMutableArray *)selfCopy->_subscriptions count];
   if (!v5)
   {
-    v4->_isActivated = 0;
+    selfCopy->_isActivated = 0;
   }
 
-  v6 = [v7 isActivated];
-  objc_sync_exit(v4);
+  isActivated = [subscriptionCopy isActivated];
+  objc_sync_exit(selfCopy);
 
   if (v5)
   {
-    if (v6)
+    if (isActivated)
     {
       goto LABEL_8;
     }
@@ -367,26 +367,26 @@ LABEL_28:
     goto LABEL_7;
   }
 
-  [(FPFSChangeMonitor *)v4 suspend];
-  if ((v6 & 1) == 0)
+  [(FPFSChangeMonitor *)selfCopy suspend];
+  if ((isActivated & 1) == 0)
   {
 LABEL_7:
-    [(FPFSChangeMonitor *)v4 resume];
+    [(FPFSChangeMonitor *)selfCopy resume];
   }
 
 LABEL_8:
 }
 
-- (void)foreachSubscriptionInState:(unint64_t)a3 apply:(id)a4
+- (void)foreachSubscriptionInState:(unint64_t)state apply:(id)apply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  applyCopy = apply;
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableArray *)v8->_subscriptions copy];
-  objc_sync_exit(v8);
-  p_isa = &v8->super.isa;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableArray *)selfCopy->_subscriptions copy];
+  objc_sync_exit(selfCopy);
+  p_isa = &selfCopy->super.isa;
 
   v22 = 0u;
   v23 = 0u;
@@ -411,7 +411,7 @@ LABEL_8:
         v15 = objc_autoreleasePoolPush();
         v16 = v14;
         objc_sync_enter(v16);
-        if (([v16 state] & a3) != 0 && (v6[2](v6, v16) & 1) == 0)
+        if (([v16 state] & state) != 0 && (applyCopy[2](applyCopy, v16) & 1) == 0)
         {
           objc_sync_exit(v16);
 
@@ -509,21 +509,21 @@ uint64_t __40__FPFSChangeMonitor_oldestStartingPoint__block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (fpfs_fsevent_stream)_createStreamNamed:(id)a3 since:(unint64_t)a4
+- (fpfs_fsevent_stream)_createStreamNamed:(id)named since:(unint64_t)since
 {
   createNoDelay = self->_createNoDelay;
   subscriptions = self->_subscriptions;
-  v8 = a3;
+  namedCopy = named;
   v9 = [(NSMutableArray *)subscriptions valueForKey:@"root"];
-  v10 = [(NSURL *)self->_barrierFolderURL path];
-  if (v10)
+  path = [(NSURL *)self->_barrierFolderURL path];
+  if (path)
   {
-    v11 = [v9 arrayByAddingObject:v10];
+    v11 = [v9 arrayByAddingObject:path];
 
     v9 = v11;
   }
 
-  self->_isProcessingHistory = a4 != -1;
+  self->_isProcessingHistory = since != -1;
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -540,17 +540,17 @@ uint64_t __40__FPFSChangeMonitor_oldestStartingPoint__block_invoke(uint64_t a1, 
     v13 = 497;
   }
 
-  v14 = [v8 UTF8String];
+  uTF8String = [namedCopy UTF8String];
   [(FPFSChangeMonitor *)self latency];
-  v16 = fpfs_fsevent_stream_open(v14, fseventsCallback, self, v9, a4, v13, self->_streamQueue, v15);
+  v16 = fpfs_fsevent_stream_open(uTF8String, fseventsCallback, self, v9, since, v13, self->_streamQueue, v15);
 
   return v16;
 }
 
-- (BOOL)setUpStreamForReason:(int64_t)a3 error:(id *)a4
+- (BOOL)setUpStreamForReason:(int64_t)reason error:(id *)error
 {
   self->_drainEvents = 0;
-  v5 = [(FPFSChangeMonitor *)self oldestStartingPoint:a3];
+  v5 = [(FPFSChangeMonitor *)self oldestStartingPoint:reason];
   v6 = fp_current_or_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -569,10 +569,10 @@ uint64_t __40__FPFSChangeMonitor_oldestStartingPoint__block_invoke(uint64_t a1, 
   return v8 != 0;
 }
 
-- (BOOL)_queueEvents:(id)a3 markSelfEncountered:(BOOL)a4
+- (BOOL)_queueEvents:(id)events markSelfEncountered:(BOOL)encountered
 {
-  v4 = a4;
-  v6 = a3;
+  encounteredCopy = encountered;
+  eventsCopy = events;
   if ([(NSMutableArray *)self->_fseventsToProcess count])
   {
     v7 = [(NSMutableArray *)self->_fseventsToProcess objectAtIndexedSubscript:0];
@@ -592,7 +592,7 @@ LABEL_23:
     }
   }
 
-  v10 = [v6 objectAtIndexedSubscript:0];
+  v10 = [eventsCopy objectAtIndexedSubscript:0];
   v11 = [v10 flags] & 0xE;
 
   if (v11)
@@ -605,14 +605,14 @@ LABEL_23:
 
     [(NSMutableArray *)self->_fseventsToProcess removeAllObjects];
     fseventsToProcess = self->_fseventsToProcess;
-    v14 = [v6 objectAtIndexedSubscript:0];
+    v14 = [eventsCopy objectAtIndexedSubscript:0];
     [(NSMutableArray *)fseventsToProcess addObject:v14];
 
     dispatch_source_merge_data(self->_fseventsProcessSource, 1uLL);
     goto LABEL_23;
   }
 
-  if (v4)
+  if (encounteredCopy)
   {
     if (self->_hasMarkSelf)
     {
@@ -650,7 +650,7 @@ LABEL_19:
     [FPFSChangeMonitor _queueEvents:markSelfEncountered:];
   }
 
-  [(NSMutableArray *)self->_fseventsToProcess addObjectsFromArray:v6];
+  [(NSMutableArray *)self->_fseventsToProcess addObjectsFromArray:eventsCopy];
   if ([(NSMutableArray *)self->_fseventsToProcess count])
   {
     dispatch_source_merge_data(self->_fseventsProcessSource, 1uLL);
@@ -674,10 +674,10 @@ LABEL_24:
   return v18;
 }
 
-- (void)queueEvents:(id)a3 markSelfEncountered:(BOOL)a4
+- (void)queueEvents:(id)events markSelfEncountered:(BOOL)encountered
 {
-  v6 = a3;
-  if ([v6 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v14 = 0;
     v15 = &v14;
@@ -690,8 +690,8 @@ LABEL_24:
     block[3] = &unk_1E83C0E10;
     v12 = &v14;
     block[4] = self;
-    v11 = v6;
-    v13 = a4;
+    v11 = eventsCopy;
+    encounteredCopy = encountered;
     dispatch_sync(processQueue, block);
     if (*(v15 + 24) == 1)
     {
@@ -994,16 +994,16 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)handleFSEvent:(id)a3 indexInBatch:(unsigned int)a4 batchSize:(unsigned int)a5
+- (BOOL)handleFSEvent:(id)event indexInBatch:(unsigned int)batch batchSize:(unsigned int)size
 {
   v61 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v41 = [v8 path];
-  v9 = [v8 eventID];
-  v39 = [v8 fileID];
-  v38 = [v8 docID];
-  v10 = [v8 flags];
-  v11 = [v8 additionalDebugFlagsForHistoricalStream:self->_isProcessingHistory] | v10;
+  eventCopy = event;
+  path = [eventCopy path];
+  eventID = [eventCopy eventID];
+  fileID = [eventCopy fileID];
+  docID = [eventCopy docID];
+  flags = [eventCopy flags];
+  v11 = [eventCopy additionalDebugFlagsForHistoricalStream:self->_isProcessingHistory] | flags;
   v40 = [MEMORY[0x1E696AEC0] fpfs_initWithFSEventsFlags:v11];
   v12 = fssync_default_log();
   spid = os_signpost_id_generate(v12);
@@ -1013,17 +1013,17 @@ LABEL_13:
   v15 = spid - 1;
   if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
-    v16 = [v41 fp_prettyPath];
+    fp_prettyPath = [path fp_prettyPath];
     *buf = 138413314;
-    *&buf[4] = v16;
+    *&buf[4] = fp_prettyPath;
     *&buf[12] = 2048;
-    *&buf[14] = v39;
+    *&buf[14] = fileID;
     *&buf[22] = 1024;
-    *v56 = v38;
+    *v56 = docID;
     *&v56[4] = 2112;
     *&v56[6] = v40;
     *&v56[14] = 2048;
-    *&v56[16] = v9;
+    *&v56[16] = eventID;
     _os_signpost_emit_with_name_impl(&dword_1CEFC7000, v14, OS_SIGNPOST_INTERVAL_BEGIN, spid, "FS: event", "path %@ fileID %llu docID %u flags %@ eventID %llu", buf, 0x30u);
   }
 
@@ -1031,24 +1031,24 @@ LABEL_13:
   v17 = fp_current_or_default_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v36 = [v41 fp_prettyPath];
+    fp_prettyPath2 = [path fp_prettyPath];
     *buf = 134219778;
     *&buf[4] = section;
     *&buf[12] = 1024;
-    *&buf[14] = a4 + 1;
+    *&buf[14] = batch + 1;
     *&buf[18] = 1024;
-    *&buf[20] = a5;
+    *&buf[20] = size;
     *v56 = 2112;
-    *&v56[2] = v36;
+    *&v56[2] = fp_prettyPath2;
     *&v56[10] = 2048;
-    *&v56[12] = v39;
+    *&v56[12] = fileID;
     *&v56[20] = 1024;
-    *&v56[22] = v38;
+    *&v56[22] = docID;
     v57 = 2112;
     v58 = v40;
     v59 = 2048;
-    v60 = v9;
-    v37 = v36;
+    v60 = eventID;
+    v37 = fp_prettyPath2;
     _os_log_debug_impl(&dword_1CEFC7000, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Dequeueing event: %u/%u path:'%@' fileID:%llu docID:%u flags:%@ id:%llu", buf, 0x46u);
   }
 
@@ -1168,22 +1168,22 @@ LABEL_13:
   v44[2] = __58__FPFSChangeMonitor_handleFSEvent_indexInBatch_batchSize___block_invoke;
   v44[3] = &unk_1E83C0EA8;
   v51 = v11;
-  v49 = v9;
-  v45 = v8;
-  v46 = self;
-  v19 = v41;
+  v49 = eventID;
+  v45 = eventCopy;
+  selfCopy = self;
+  v19 = path;
   v47 = v19;
   v48 = buf;
-  v50 = v39;
-  v52 = v38;
+  v50 = fileID;
+  v52 = docID;
   [(FPFSChangeMonitor *)self foreachSubscriptionInState:2 apply:v44];
   if ((*(*&buf[8] + 24) & 1) == 0)
   {
     v20 = fp_current_or_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v19 fp_prettyPath];
-      [FPFSChangeMonitor handleFSEvent:v21 indexInBatch:v54 batchSize:v20];
+      fp_prettyPath3 = [v19 fp_prettyPath];
+      [FPFSChangeMonitor handleFSEvent:fp_prettyPath3 indexInBatch:v54 batchSize:v20];
     }
   }
 
@@ -1408,25 +1408,25 @@ LABEL_38:
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_processQueue);
   [(FPFSChangeMonitor *)self suspend];
-  v3 = self;
-  objc_sync_enter(v3);
-  fseventsProcessSource = v3->_fseventsProcessSource;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fseventsProcessSource = selfCopy->_fseventsProcessSource;
   if (fseventsProcessSource)
   {
     dispatch_resume(fseventsProcessSource);
-    v5 = v3->_fseventsProcessSource;
-    v3->_fseventsProcessSource = 0;
+    v5 = selfCopy->_fseventsProcessSource;
+    selfCopy->_fseventsProcessSource = 0;
   }
 
-  stream = v3->_stream;
+  stream = selfCopy->_stream;
   if (stream)
   {
     fpfs_fsevent_stream_close(stream);
-    v3->_stream = 0;
-    v3->_drainEvents = 1;
+    selfCopy->_stream = 0;
+    selfCopy->_drainEvents = 1;
   }
 
-  v7 = [(NSMutableArray *)v3->_subscriptions copy];
+  v7 = [(NSMutableArray *)selfCopy->_subscriptions copy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -1454,11 +1454,11 @@ LABEL_38:
     while (v9);
   }
 
-  [(NSMutableArray *)v3->_subscriptions removeAllObjects];
-  volume = v3->_volume;
-  v3->_volume = 0;
+  [(NSMutableArray *)selfCopy->_subscriptions removeAllObjects];
+  volume = selfCopy->_volume;
+  selfCopy->_volume = 0;
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x1E69E9840];
 }
 
@@ -1467,8 +1467,8 @@ LABEL_38:
   *a2 = 134218242;
   *(a2 + 4) = a3;
   *(a2 + 12) = 2112;
-  *(a2 + 14) = a1;
-  v6 = a1;
+  *(a2 + 14) = self;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1CEFC7000, a4, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx closing the %@", a2, 0x16u);
 }
 
@@ -1484,7 +1484,7 @@ void __26__FPFSChangeMonitor_close__block_invoke(uint64_t a1)
   dispatch_sync(v2, block);
 }
 
-- (void)resetWithReason:(int64_t)a3 newFSEventID:(unint64_t)a4
+- (void)resetWithReason:(int64_t)reason newFSEventID:(unint64_t)d
 {
   v16 = *MEMORY[0x1E69E9840];
   log = self->_log;
@@ -1493,7 +1493,7 @@ void __26__FPFSChangeMonitor_close__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = objc_opt_class();
-    [(FPFSChangeMonitor *)v9 resetWithReason:a3 newFSEventID:v15, v8];
+    [(FPFSChangeMonitor *)v9 resetWithReason:reason newFSEventID:v15, v8];
   }
 
   if (!atomic_fetch_add(&self->_resetCount, 1u))
@@ -1508,8 +1508,8 @@ void __26__FPFSChangeMonitor_close__block_invoke(uint64_t a1)
   v13[2] = __50__FPFSChangeMonitor_resetWithReason_newFSEventID___block_invoke;
   v13[3] = &unk_1E83C0EF0;
   v13[4] = self;
-  v13[5] = a4;
-  v13[6] = a3;
+  v13[5] = d;
+  v13[6] = reason;
   dispatch_after(v10, streamQueue, v13);
   __fp_pop_log();
 

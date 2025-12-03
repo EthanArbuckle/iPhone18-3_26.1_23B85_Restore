@@ -1,6 +1,6 @@
 @interface DELowMemoryExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DELowMemoryExtension
@@ -14,16 +14,16 @@
   return v5;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = [(DELowMemoryExtension *)self attachmentList];
-  v4 = [v3 mutableCopy];
+  attachmentList = [(DELowMemoryExtension *)self attachmentList];
+  v4 = [attachmentList mutableCopy];
   v5 = [[NSDate alloc] initWithTimeIntervalSinceNow:-1800.0];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = attachmentList;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -39,8 +39,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 modificationDate];
-        v13 = [v12 compare:v5];
+        modificationDate = [v11 modificationDate];
+        v13 = [modificationDate compare:v5];
 
         if (v13 == -1)
         {

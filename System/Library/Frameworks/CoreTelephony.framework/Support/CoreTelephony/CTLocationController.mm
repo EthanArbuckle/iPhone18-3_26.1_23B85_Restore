@@ -2,38 +2,38 @@
 - (BOOL)isCircularGeofenceSupported_sync;
 - (BOOL)isPolygonalGeofenceSupported_sync;
 - (CTLocationController)init;
-- (CTLocationController)initWithBundleIdentifier:(id)a3 withDistanceFilter:(int)a4 withDesiredAccuracy:(int)a5 withQueue:(dispatch_queue_s *)a6 withDelegate:(CTLocationControllerDelegateInterface *)a7;
-- (CTLocationController)initWithBundlePath:(id)a3 withQueue:(dispatch_queue_s *)a4 withDelegate:(CTLocationControllerDelegateInterface *)a5;
-- (id)setupPolygonalGeoFence:()vector<std:()double> :()std:(double>>> *)a3 :(id)a4 allocator<std::pair<double pair<double withName:;
+- (CTLocationController)initWithBundleIdentifier:(id)identifier withDistanceFilter:(int)filter withDesiredAccuracy:(int)accuracy withQueue:(dispatch_queue_s *)queue withDelegate:(CTLocationControllerDelegateInterface *)delegate;
+- (CTLocationController)initWithBundlePath:(id)path withQueue:(dispatch_queue_s *)queue withDelegate:(CTLocationControllerDelegateInterface *)delegate;
+- (id)setupPolygonalGeoFence:()vector<std:()double> :()std:(double>>> *)std :(id)a4 allocator<std::pair<double pair<double withName:;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5;
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4;
-- (void)locationManager:(id)a3 didExitRegion:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)locationManager:(id)manager didEnterRegion:(id)region;
+- (void)locationManager:(id)manager didExitRegion:(id)region;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error;
 - (void)requestLocation;
-- (void)setupCircularGeoFence:()pair<std:()double> :(double>)a3 pair<double withName:(id)a4;
-- (void)stopGeofence:(id)a3;
+- (void)setupCircularGeoFence:()pair<std:()double> :(double>)a3 pair<double withName:(id)name;
+- (void)stopGeofence:(id)geofence;
 @end
 
 @implementation CTLocationController
 
-- (CTLocationController)initWithBundleIdentifier:(id)a3 withDistanceFilter:(int)a4 withDesiredAccuracy:(int)a5 withQueue:(dispatch_queue_s *)a6 withDelegate:(CTLocationControllerDelegateInterface *)a7
+- (CTLocationController)initWithBundleIdentifier:(id)identifier withDistanceFilter:(int)filter withDesiredAccuracy:(int)accuracy withQueue:(dispatch_queue_s *)queue withDelegate:(CTLocationControllerDelegateInterface *)delegate
 {
-  v18 = a3;
-  v16 = a5;
-  v17 = a4;
+  identifierCopy = identifier;
+  accuracyCopy = accuracy;
+  filterCopy = filter;
   v15.receiver = self;
   v15.super_class = CTLocationController;
   v12 = [(CTLocationController *)&v15 init];
   v19 = v12;
   if (v12)
   {
-    v12->_fDelegate = a7;
-    v12->_fQueue = a6;
+    v12->_fDelegate = delegate;
+    v12->_fQueue = queue;
     operator new();
   }
 
@@ -42,16 +42,16 @@
   return v13;
 }
 
-- (CTLocationController)initWithBundlePath:(id)a3 withQueue:(dispatch_queue_s *)a4 withDelegate:(CTLocationControllerDelegateInterface *)a5
+- (CTLocationController)initWithBundlePath:(id)path withQueue:(dispatch_queue_s *)queue withDelegate:(CTLocationControllerDelegateInterface *)delegate
 {
-  v8 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = CTLocationController;
   v9 = [(CTLocationController *)&v11 init];
   if (v9)
   {
-    v9->_fDelegate = a5;
-    v9->_fQueue = a4;
+    v9->_fDelegate = delegate;
+    v9->_fQueue = queue;
     operator new();
   }
 
@@ -94,15 +94,15 @@
   return v3;
 }
 
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  regionCopy = region;
   v8 = *self->logger.__ptr_;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(__p) = 138412290;
-    *(&__p + 4) = v7;
+    *(&__p + 4) = regionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I Monitoring did start for: %@", &__p, 0xCu);
   }
 
@@ -110,9 +110,9 @@
   {
     __p = 0uLL;
     v12 = 0;
-    v9 = [v7 identifier];
-    v10 = v9;
-    sub_10000501C(&__p, [v9 UTF8String]);
+    identifier = [regionCopy identifier];
+    v10 = identifier;
+    sub_10000501C(&__p, [identifier UTF8String]);
 
     (*(self->_fDelegate->var0 + 2))(self->_fDelegate, &__p);
     if (SHIBYTE(v12) < 0)
@@ -127,26 +127,26 @@
   }
 }
 
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  managerCopy = manager;
+  regionCopy = region;
+  errorCopy = error;
+  if (regionCopy)
   {
     if (self->_fDelegate)
     {
       __p[0] = 0;
       __p[1] = 0;
       v14 = 0;
-      v11 = [v9 identifier];
-      sub_10000501C(__p, [v11 UTF8String]);
+      identifier = [regionCopy identifier];
+      sub_10000501C(__p, [identifier UTF8String]);
 
       v12 = *self->logger.__ptr_;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v10;
+        v16 = errorCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#I Monitoring failure reason: %@", buf, 0xCu);
       }
 
@@ -169,20 +169,20 @@
   }
 }
 
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  managerCopy = manager;
+  regionCopy = region;
+  v10 = regionCopy;
+  if (regionCopy)
   {
     if (self->_fDelegate)
     {
       __p[0] = 0;
       __p[1] = 0;
       v16 = 0;
-      v11 = [v9 identifier];
-      sub_10000501C(__p, [v11 UTF8String]);
+      identifier = [regionCopy identifier];
+      sub_10000501C(__p, [identifier UTF8String]);
 
       v12 = *self->logger.__ptr_;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -190,12 +190,12 @@
         *buf = 138412546;
         v18 = v10;
         v19 = 2048;
-        v20 = a4;
+        stateCopy = state;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#I Monitoring state determined for %@ : %ld", buf, 0x16u);
       }
 
       fDelegate = self->_fDelegate;
-      if (a4 == 1)
+      if (state == 1)
       {
         v14 = 2;
       }
@@ -205,7 +205,7 @@
         v14 = 1;
       }
 
-      if (a4 == 2)
+      if (state == 2)
       {
         v14 = 3;
       }
@@ -230,20 +230,20 @@
   }
 }
 
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4
+- (void)locationManager:(id)manager didEnterRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  managerCopy = manager;
+  regionCopy = region;
+  v8 = regionCopy;
+  if (regionCopy)
   {
     if (self->_fDelegate)
     {
       __p[0] = 0;
       __p[1] = 0;
       v12 = 0;
-      v9 = [v7 identifier];
-      sub_10000501C(__p, [v9 UTF8String]);
+      identifier = [regionCopy identifier];
+      sub_10000501C(__p, [identifier UTF8String]);
 
       v10 = *self->logger.__ptr_;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -272,20 +272,20 @@
   }
 }
 
-- (void)locationManager:(id)a3 didExitRegion:(id)a4
+- (void)locationManager:(id)manager didExitRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  managerCopy = manager;
+  regionCopy = region;
+  v8 = regionCopy;
+  if (regionCopy)
   {
     if (self->_fDelegate)
     {
       __p[0] = 0;
       __p[1] = 0;
       v12 = 0;
-      v9 = [v7 identifier];
-      sub_10000501C(__p, [v9 UTF8String]);
+      identifier = [regionCopy identifier];
+      sub_10000501C(__p, [identifier UTF8String]);
 
       v10 = *self->logger.__ptr_;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -314,21 +314,21 @@
   }
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
+  managerCopy = manager;
   v7 = *self->logger.__ptr_;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = a4;
+    v9[1] = status;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#I didChangeAuthStatus changed to: %d", v9, 8u);
   }
 
   fDelegate = self->_fDelegate;
   if (fDelegate)
   {
-    (*(fDelegate->var0 + 5))(fDelegate, (a4 - 3) < 2);
+    (*(fDelegate->var0 + 5))(fDelegate, (status - 3) < 2);
   }
 
   else if (os_log_type_enabled(*self->logger.__ptr_, OS_LOG_TYPE_ERROR))
@@ -337,19 +337,19 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  managerCopy = manager;
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
     if (self->_fDelegate)
     {
-      v8 = [v7 objectAtIndex:0];
+      v8 = [locationsCopy objectAtIndex:0];
       [v8 coordinate];
       v10 = v9;
 
-      v11 = [v7 objectAtIndex:0];
+      v11 = [locationsCopy objectAtIndex:0];
       [v11 coordinate];
       v13 = v12;
 
@@ -368,23 +368,23 @@
   }
 }
 
-- (void)setupCircularGeoFence:()pair<std:()double> :(double>)a3 pair<double withName:(id)a4
+- (void)setupCircularGeoFence:()pair<std:()double> :(double>)a3 pair<double withName:(id)name
 {
-  v5 = a4;
-  v6 = self;
-  v7 = v5;
+  nameCopy = name;
+  selfCopy = self;
+  v7 = nameCopy;
   operator new();
 }
 
-- (id)setupPolygonalGeoFence:()vector<std:()double> :()std:(double>>> *)a3 :(id)a4 allocator<std::pair<double pair<double withName:
+- (id)setupPolygonalGeoFence:()vector<std:()double> :()std:(double>>> *)std :(id)a4 allocator<std::pair<double pair<double withName:
 {
   v6 = a4;
   fQueue = self->_fQueue;
-  v11 = self;
+  selfCopy = self;
   __p = 0;
   v13 = 0;
   v14 = 0;
-  sub_1003BCA04(&__p, a3->var0, a3->var1, (a3->var1 - a3->var0) >> 4);
+  sub_1003BCA04(&__p, std->var0, std->var1, (std->var1 - std->var0) >> 4);
   v8 = v6;
   v17 = 0;
   v15 = v8;
@@ -393,7 +393,7 @@
   block[2] = sub_1006DE534;
   block[3] = &unk_101E26940;
   block[4] = &v17;
-  block[5] = &v11;
+  block[5] = &selfCopy;
   dispatch_sync(fQueue, block);
   v9 = v17;
 
@@ -406,10 +406,10 @@
   return v9;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   fDelegate = self->_fDelegate;
   v9 = *self->logger.__ptr_;
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
@@ -418,7 +418,7 @@
     if (v10)
     {
       v11 = 138412290;
-      v12 = v7;
+      v12 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Monitoring failure reason: %@", &v11, 0xCu);
       fDelegate = self->_fDelegate;
     }
@@ -432,9 +432,9 @@
   }
 }
 
-- (void)stopGeofence:(id)a3
+- (void)stopGeofence:(id)geofence
 {
-  v4 = a3;
+  geofenceCopy = geofence;
   v5 = *self->logger.__ptr_;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -442,8 +442,8 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I Stopping a geofence", buf, 2u);
   }
 
-  v6 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = geofenceCopy;
   operator new();
 }
 
@@ -456,7 +456,7 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I Requesting CL for current location", buf, 2u);
   }
 
-  v4 = self;
+  selfCopy = self;
   operator new();
 }
 

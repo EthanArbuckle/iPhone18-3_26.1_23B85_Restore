@@ -1,19 +1,19 @@
 @interface BTSSPPairingRequest
 - (BOOL)hasLimitedSupportForHID;
-- (BTSSPPairingRequest)initWithDevice:(id)a3 andSpecifier:(id)a4;
-- (id)sanitizeNameForAlert:(id)a3;
-- (void)acceptSSP:(int64_t)a3;
+- (BTSSPPairingRequest)initWithDevice:(id)device andSpecifier:(id)specifier;
+- (id)sanitizeNameForAlert:(id)alert;
+- (void)acceptSSP:(int64_t)p;
 - (void)dealloc;
-- (void)hidPairingResult:(id)a3;
-- (void)setPairingStyle:(int)a3 andPasskey:(id)a4;
+- (void)hidPairingResult:(id)result;
+- (void)setPairingStyle:(int)style andPasskey:(id)passkey;
 @end
 
 @implementation BTSSPPairingRequest
 
-- (BTSSPPairingRequest)initWithDevice:(id)a3 andSpecifier:(id)a4
+- (BTSSPPairingRequest)initWithDevice:(id)device andSpecifier:(id)specifier
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  specifierCopy = specifier;
   v14.receiver = self;
   v14.super_class = BTSSPPairingRequest;
   v9 = [(BTSSPPairingRequest *)&v14 init];
@@ -23,10 +23,10 @@
     alert = v9->_alert;
     v9->_alert = v10;
 
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v9->_specifier, a4);
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v9 selector:sel_hidPairingResult_ name:*MEMORY[0x277CF3210] object:0];
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v9->_specifier, specifier);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_hidPairingResult_ name:*MEMORY[0x277CF3210] object:0];
   }
 
   return v9;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   delegate = self->_delegate;
   self->_delegate = 0;
@@ -54,46 +54,46 @@
   [(BTSSPPairingRequest *)&v8 dealloc];
 }
 
-- (id)sanitizeNameForAlert:(id)a3
+- (id)sanitizeNameForAlert:(id)alert
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAC80] scannerWithString:v3];
-  v5 = [MEMORY[0x277CCA900] illegalCharacterSet];
-  [v4 setCharactersToBeSkipped:v5];
+  alertCopy = alert;
+  v4 = [MEMORY[0x277CCAC80] scannerWithString:alertCopy];
+  illegalCharacterSet = [MEMORY[0x277CCA900] illegalCharacterSet];
+  [v4 setCharactersToBeSkipped:illegalCharacterSet];
 
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
+  string2 = [MEMORY[0x277CCAB68] string];
   while (1)
   {
-    v8 = v7;
-    v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v16 = v7;
-    v10 = [v4 scanUpToCharactersFromSet:v9 intoString:&v16];
-    v7 = v16;
+    v8 = string2;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v16 = string2;
+    v10 = [v4 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v16];
+    string2 = v16;
 
     if (!v10)
     {
       break;
     }
 
-    [v6 appendString:v7];
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v12 = [v4 scanCharactersFromSet:v11 intoString:0];
+    [string appendString:string2];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v12 = [v4 scanCharactersFromSet:whitespaceAndNewlineCharacterSet2 intoString:0];
 
     if (v12)
     {
-      [v6 appendString:@" "];
+      [string appendString:@" "];
     }
   }
 
-  if ([v6 length] < 0x33)
+  if ([string length] < 0x33)
   {
-    v13 = v6;
+    v13 = string;
   }
 
   else
   {
-    v13 = [v6 substringToIndex:50];
+    v13 = [string substringToIndex:50];
   }
 
   v14 = v13;
@@ -101,36 +101,36 @@
   return v14;
 }
 
-- (void)setPairingStyle:(int)a3 andPasskey:(id)a4
+- (void)setPairingStyle:(int)style andPasskey:(id)passkey
 {
-  v79 = a4;
+  passkeyCopy = passkey;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v81 = [v6 localizedStringForKey:@"PAIRING_TITLE" value:&stru_284EE3458 table:@"SSPAlert"];
 
-  v7 = [(BluetoothDevice *)self->_device name];
-  v80 = [(BTSSPPairingRequest *)self sanitizeNameForAlert:v7];
+  name = [(BluetoothDevice *)self->_device name];
+  v80 = [(BTSSPPairingRequest *)self sanitizeNameForAlert:name];
 
-  self->_pairingStyle = a3;
+  self->_pairingStyle = style;
   objc_initWeak(location, self);
-  v8 = [(BluetoothDevice *)self->_device type];
-  v9 = [(BluetoothDevice *)self->_device productId];
-  v10 = [(BluetoothDevice *)self->_device vendorId];
-  if (v10 == 76)
+  type = [(BluetoothDevice *)self->_device type];
+  productId = [(BluetoothDevice *)self->_device productId];
+  vendorId = [(BluetoothDevice *)self->_device vendorId];
+  if (vendorId == 76)
   {
     v11 = 0;
-    v12 = v9 == 613 || v9 == 617;
+    v12 = productId == 613 || productId == 617;
   }
 
-  else if (v10 == 1452)
+  else if (vendorId == 1452)
   {
-    if ((v9 - 777) >= 6)
+    if ((productId - 777) >= 6)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = 0x39u >> (v9 - 9);
+      v11 = 0x39u >> (productId - 9);
     }
 
     v12 = 0;
@@ -143,11 +143,11 @@
   }
 
   v14 = 0;
-  if (a3 > 1)
+  if (style > 1)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(v79, "unsignedIntValue")];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(passkeyCopy, "unsignedIntValue")];
       v37 = MEMORY[0x277CCACA8];
       v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v39 = [v38 localizedStringForKey:@"PASSKEY_MESSAGE" value:&stru_284EE3458 table:@"SSPAlert"];
@@ -156,11 +156,11 @@
 
     else
     {
-      if (a3 != 3)
+      if (style != 3)
       {
         v15 = 0;
         v82 = 0;
-        if (a3 != 4)
+        if (style != 4)
         {
           goto LABEL_36;
         }
@@ -201,7 +201,7 @@
         goto LABEL_35;
       }
 
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04u", objc_msgSend(v79, "unsignedIntValue")];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04u", objc_msgSend(passkeyCopy, "unsignedIntValue")];
       v40 = MEMORY[0x277CCACA8];
       v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v39 = [v38 localizedStringForKey:@"HID_MESSAGE" value:&stru_284EE3458 table:@"SSPAlert"];
@@ -212,14 +212,14 @@
     goto LABEL_36;
   }
 
-  if (!a3)
+  if (!style)
   {
     v41 = MEMORY[0x277CCACA8];
     v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v43 = [v42 localizedStringForKey:@"JUST_WORKS_MESSAGE" value:&stru_284EE3458 table:@"SSPAlert"];
     v82 = [v41 stringWithFormat:v43, v80];
 
-    if ((v8 == 25) | (v11 | v12) & 1 && [(BTSSPPairingRequest *)self hasLimitedSupportForHID])
+    if ((type == 25) | (v11 | v12) & 1 && [(BTSSPPairingRequest *)self hasLimitedSupportForHID])
     {
       v44 = MGGetBoolAnswer();
       v45 = @"WIFI";
@@ -258,9 +258,9 @@ LABEL_35:
 
   v15 = 0;
   v82 = 0;
-  if (a3 == 1)
+  if (style == 1)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(v79, "unsignedIntValue")];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%06u", objc_msgSend(passkeyCopy, "unsignedIntValue")];
     v31 = MEMORY[0x277CCACA8];
     v32 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v33 = [v32 localizedStringForKey:@"NUMERIC_MESSAGE" value:&stru_284EE3458 table:@"SSPAlert"];
@@ -300,32 +300,32 @@ LABEL_36:
     [v53 setAdjustsFontSizeToFitWidth:1];
     [v53 setTranslatesAutoresizingMaskIntoConstraints:0];
     v59 = objc_alloc_init(MEMORY[0x277D75D28]);
-    v60 = [v59 view];
-    [v60 setFrame:{0.0, 0.0, 50.0, 50.0}];
+    view = [v59 view];
+    [view setFrame:{0.0, 0.0, 50.0, 50.0}];
 
-    v61 = [v59 view];
-    [v61 addSubview:v53];
+    view2 = [v59 view];
+    [view2 addSubview:v53];
 
-    v62 = [v53 centerXAnchor];
-    v63 = [v59 view];
-    v64 = [v63 centerXAnchor];
-    v65 = [v62 constraintEqualToAnchor:v64];
+    centerXAnchor = [v53 centerXAnchor];
+    view3 = [v59 view];
+    centerXAnchor2 = [view3 centerXAnchor];
+    v65 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v65 setActive:1];
 
-    v66 = [v53 topAnchor];
-    v67 = [v59 view];
-    v68 = [v67 topAnchor];
-    v69 = [v66 constraintEqualToAnchor:v68 constant:20.0];
+    topAnchor = [v53 topAnchor];
+    view4 = [v59 view];
+    topAnchor2 = [view4 topAnchor];
+    v69 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
     [v69 setActive:1];
 
-    v70 = [v53 bottomAnchor];
-    v71 = [v59 view];
-    v72 = [v71 bottomAnchor];
-    v73 = [v70 constraintEqualToAnchor:v72 constant:-20.0];
+    bottomAnchor = [v53 bottomAnchor];
+    view5 = [v59 view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v73 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
     [v73 setActive:1];
 
-    v74 = [v59 view];
-    [v74 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+    view6 = [v59 view];
+    [view6 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
     [v59 setPreferredContentSize:?];
 
     [(UIAlertController *)self->_alert setContentViewController:v59];
@@ -375,29 +375,29 @@ void __50__BTSSPPairingRequest_setPairingStyle_andPasskey___block_invoke_4(uint6
   [WeakRetained acceptSSP:1];
 }
 
-- (void)hidPairingResult:(id)a3
+- (void)hidPairingResult:(id)result
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   v5 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
-    v7 = [(BluetoothDevice *)self->_device name];
+    name = [resultCopy name];
+    name2 = [(BluetoothDevice *)self->_device name];
     v9 = 138412546;
-    v10 = v6;
+    v10 = name;
     v11 = 2112;
-    v12 = v7;
+    v12 = name2;
     _os_log_impl(&dword_23C0F7000, v5, OS_LOG_TYPE_DEFAULT, "Received %@ for device %@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptSSP:(int64_t)a3
+- (void)acceptSSP:(int64_t)p
 {
   pairingStyle = self->_pairingStyle;
-  if (a3 == 1)
+  if (p == 1)
   {
     if (pairingStyle == 4 || pairingStyle == 3)
     {
@@ -415,8 +415,8 @@ void __50__BTSSPPairingRequest_setPairingStyle_andPasskey___block_invoke_4(uint6
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04u", objc_msgSend(v7, "unsignedIntValue")];
     [(BluetoothDevice *)v8 setPIN:v9];
 
-    v10 = [(PSSpecifier *)self->_specifier userInfo];
-    [v10 setObject:@"entered" forKey:@"PIN-ended"];
+    userInfo = [(PSSpecifier *)self->_specifier userInfo];
+    [userInfo setObject:@"entered" forKey:@"PIN-ended"];
   }
 
   delegate = self->_delegate;
@@ -425,14 +425,14 @@ void __50__BTSSPPairingRequest_setPairingStyle_andPasskey___block_invoke_4(uint6
     v12 = self->_delegate;
     v13 = self->_device;
 
-    [v12 setSSPConfirmation:a3 forDevice:v13];
+    [v12 setSSPConfirmation:p forDevice:v13];
   }
 
   else
   {
-    v14 = [(PSSpecifier *)self->_specifier userInfo];
-    v15 = v14;
-    if (a3)
+    userInfo2 = [(PSSpecifier *)self->_specifier userInfo];
+    v15 = userInfo2;
+    if (p)
     {
       v16 = @"cancelled";
     }
@@ -442,10 +442,10 @@ void __50__BTSSPPairingRequest_setPairingStyle_andPasskey___block_invoke_4(uint6
       v16 = @"accepted";
     }
 
-    [v14 setObject:v16 forKey:@"PIN-ended"];
+    [userInfo2 setObject:v16 forKey:@"PIN-ended"];
 
-    v17 = [MEMORY[0x277CF3248] sharedInstance];
-    [v17 acceptSSP:a3 forDevice:self->_device];
+    mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+    [mEMORY[0x277CF3248] acceptSSP:p forDevice:self->_device];
   }
 }
 

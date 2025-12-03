@@ -1,28 +1,28 @@
 @interface CKLinkBalloonView
 - (BOOL)shouldShowLinkOverlayBalloonLayer;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
 - (CKBalloonDescriptor_t)backdropBalloonDescriptor;
 - (CKBalloonDescriptor_t)linkOverlayBalloonDescriptor;
 - (CKBalloonDescriptor_t)linkViewBalloonDescriptor;
-- (CKLinkBalloonView)initWithFrame:(CGRect)a3;
+- (CKLinkBalloonView)initWithFrame:(CGRect)frame;
 - (id)messageTintColor;
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)linkViewNeedsResize:(id)a3;
+- (void)linkViewNeedsResize:(id)resize;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setLinkView:(id)a3;
+- (void)setLinkView:(id)view;
 - (void)updateBalloonMasks;
 @end
 
 @implementation CKLinkBalloonView
 
-- (CKLinkBalloonView)initWithFrame:(CGRect)a3
+- (CKLinkBalloonView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKLinkBalloonView;
-  v3 = [(CKImageBalloonView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKImageBalloonView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_TtC7ChatKit18CKBalloonMaskLayer alloc];
@@ -35,29 +35,29 @@
   return v3;
 }
 
-- (void)setLinkView:(id)a3
+- (void)setLinkView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   linkView = self->_linkView;
-  if (linkView != v5)
+  if (linkView != viewCopy)
   {
-    v10 = v5;
+    v10 = viewCopy;
     if (linkView)
     {
       [(LPLinkView *)linkView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_linkView, a3);
-    v5 = v10;
+    objc_storeStrong(&self->_linkView, view);
+    viewCopy = v10;
     if (v10)
     {
       [(LPLinkView *)v10 setDelegate:self];
       [(LPLinkView *)v10 _setDisableTapGesture:1];
       [(LPLinkView *)v10 _setApplyCornerRadius:0];
       [(CKLinkBalloonView *)self addSubview:v10];
-      v7 = [(LPLinkView *)v10 layer];
-      v8 = [(CKLinkBalloonView *)self linkViewMaskLayer];
-      [v7 setMask:v8];
+      layer = [(LPLinkView *)v10 layer];
+      linkViewMaskLayer = [(CKLinkBalloonView *)self linkViewMaskLayer];
+      [layer setMask:linkViewMaskLayer];
 
       if (objc_opt_respondsToSelector())
       {
@@ -69,8 +69,8 @@
         [(LPLinkView *)v10 set_needsDominantBackgroundColor:1];
       }
 
-      v9 = [MEMORY[0x1E69DC888] clearColor];
-      [(LPLinkView *)v10 _setOverrideBackgroundColor:v9];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(LPLinkView *)v10 _setOverrideBackgroundColor:clearColor];
 
       if (objc_opt_respondsToSelector())
       {
@@ -78,19 +78,19 @@
       }
 
       [(CKLinkBalloonView *)self updateBalloonMasks];
-      v5 = v10;
+      viewCopy = v10;
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   linkView = self->_linkView;
   if (linkView)
   {
-    [(LPLinkView *)linkView sizeThatFits:a4, a5, a3.width, a3.height];
+    [(LPLinkView *)linkView sizeThatFits:insets, tailInsets, fits.width, fits.height];
     v10 = v9;
     v12 = v11;
     if ([(CKBalloonView *)self hasSuggestedActionsMenu])
@@ -121,7 +121,7 @@
 
     v21.receiver = self;
     v21.super_class = CKLinkBalloonView;
-    [(CKImageBalloonView *)&v21 sizeThatFits:a4 textAlignmentInsets:a5 tailInsets:width, height];
+    [(CKImageBalloonView *)&v21 sizeThatFits:insets textAlignmentInsets:tailInsets tailInsets:width, height];
     v10 = v17;
     v12 = v18;
   }
@@ -149,7 +149,7 @@
 
 - (void)updateBalloonMasks
 {
-  v3 = [(CKLinkBalloonView *)self traitCollection];
+  traitCollection = [(CKLinkBalloonView *)self traitCollection];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -159,9 +159,9 @@
   v33 = 0u;
   v34 = 0u;
   [(CKLinkBalloonView *)self backdropBalloonDescriptor];
-  v4 = [(CKLinkBalloonView *)self linkViewBackgroundLayer];
+  linkViewBackgroundLayer = [(CKLinkBalloonView *)self linkViewBackgroundLayer];
 
-  if (v4)
+  if (linkViewBackgroundLayer)
   {
     linkViewBackgroundLayer = self->_linkViewBackgroundLayer;
     v29 = v37;
@@ -172,12 +172,12 @@
     v26 = v34;
     v27 = v35;
     v28 = v36;
-    [(CKBalloonLayer *)linkViewBackgroundLayer updateDescriptor:&v25 traitCollection:v3];
+    [(CKBalloonLayer *)linkViewBackgroundLayer updateDescriptor:&v25 traitCollection:traitCollection];
   }
 
   else
   {
-    v6 = [(CKLinkBalloonView *)self traitCollection];
+    traitCollection2 = [(CKLinkBalloonView *)self traitCollection];
     v7 = [_TtC7ChatKit14CKBalloonLayer alloc];
     v29 = v37;
     v30 = v38;
@@ -187,12 +187,12 @@
     v26 = v34;
     v27 = v35;
     v28 = v36;
-    v8 = [(CKBalloonLayer *)v7 initWithDescriptor:&v25 traitCollection:v6];
+    v8 = [(CKBalloonLayer *)v7 initWithDescriptor:&v25 traitCollection:traitCollection2];
     v9 = self->_linkViewBackgroundLayer;
     self->_linkViewBackgroundLayer = v8;
 
-    v10 = [(CKLinkBalloonView *)self layer];
-    [v10 insertSublayer:self->_linkViewBackgroundLayer atIndex:0];
+    layer = [(CKLinkBalloonView *)self layer];
+    [layer insertSublayer:self->_linkViewBackgroundLayer atIndex:0];
   }
 
   if ([(CKLinkBalloonView *)self shouldShowLinkOverlayBalloonLayer])
@@ -217,7 +217,7 @@
       v18 = v26;
       v19 = v27;
       v20 = v28;
-      [(CKBalloonLayer *)linkOverlayBalloonLayer updateDescriptor:&v17 traitCollection:v3];
+      [(CKBalloonLayer *)linkOverlayBalloonLayer updateDescriptor:&v17 traitCollection:traitCollection];
     }
 
     else
@@ -231,13 +231,13 @@
       v18 = v26;
       v19 = v27;
       v20 = v28;
-      v14 = [(CKBalloonLayer *)v13 initWithDescriptor:&v17 traitCollection:v3];
+      v14 = [(CKBalloonLayer *)v13 initWithDescriptor:&v17 traitCollection:traitCollection];
       v15 = self->_linkOverlayBalloonLayer;
       self->_linkOverlayBalloonLayer = v14;
 
       [(CKBalloonLayer *)self->_linkOverlayBalloonLayer setAllowsHitTesting:0];
-      v16 = [(CKLinkBalloonView *)self layer];
-      [v16 addSublayer:self->_linkOverlayBalloonLayer];
+      layer2 = [(CKLinkBalloonView *)self layer];
+      [layer2 addSublayer:self->_linkOverlayBalloonLayer];
     }
   }
 
@@ -267,17 +267,17 @@
     return 0;
   }
 
-  v4 = [(CKLinkBalloonView *)self traitCollection];
-  v5 = [v4 isTranscriptBackgroundActive];
+  traitCollection = [(CKLinkBalloonView *)self traitCollection];
+  isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-  return v5 ^ 1;
+  return isTranscriptBackgroundActive ^ 1;
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v3.receiver = self;
   v3.super_class = CKLinkBalloonView;
-  [(CKBalloonView *)&v3 layoutSublayersOfLayer:a3];
+  [(CKBalloonView *)&v3 layoutSublayersOfLayer:layer];
 }
 
 - (void)layoutSubviews
@@ -295,9 +295,9 @@
     [(CKBalloonLayer *)self->_linkOverlayBalloonLayer setFrame:?];
     if ([(CKImageBalloonView *)self isScheduled])
     {
-      v11 = [(CKBalloonView *)self bubblePath];
+      bubblePath = [(CKBalloonView *)self bubblePath];
       [(CKLinkBalloonView *)self bounds];
-      [v11 tailInsetsForBubbleSize:{v12, v13}];
+      [bubblePath tailInsetsForBubbleSize:{v12, v13}];
       v14 = +[CKUIBehavior sharedBehaviors];
       [v14 linkPreviewSendLaterInsets];
 
@@ -309,40 +309,40 @@
     }
 
     [(LPLinkView *)self->_linkView setFrame:v4, v6, v8, v10];
-    v19 = [(CKImageBalloonView *)self isScheduled];
+    isScheduled = [(CKImageBalloonView *)self isScheduled];
     v20 = 1.0;
-    if (v19)
+    if (isScheduled)
     {
-      v21 = [(CKBalloonView *)self isTranscriptBackgroundActive];
+      isTranscriptBackgroundActive = [(CKBalloonView *)self isTranscriptBackgroundActive];
       v20 = 0.5;
-      if (v21)
+      if (isTranscriptBackgroundActive)
       {
         v20 = 1.0;
       }
     }
 
     [(LPLinkView *)self->_linkView setAlpha:v20];
-    v22 = [(CKLinkBalloonView *)self linkViewMaskLayer];
+    linkViewMaskLayer = [(CKLinkBalloonView *)self linkViewMaskLayer];
     [(CKLinkBalloonView *)self linkViewBalloonDescriptor];
-    [v22 updateDescriptor:v42];
+    [linkViewMaskLayer updateDescriptor:v42];
 
     [(LPLinkView *)self->_linkView bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
-    v31 = [(CKLinkBalloonView *)self linkViewMaskLayer];
-    [v31 setFrame:{v24, v26, v28, v30}];
+    linkViewMaskLayer2 = [(CKLinkBalloonView *)self linkViewMaskLayer];
+    [linkViewMaskLayer2 setFrame:{v24, v26, v28, v30}];
   }
 
-  v32 = [(CKLinkBalloonView *)self linkView];
-  [v32 frame];
+  linkView = [(CKLinkBalloonView *)self linkView];
+  [linkView frame];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [(CKLinkBalloonView *)self linkViewBackgroundLayer];
-  [v41 setFrame:{v34, v36, v38, v40}];
+  linkViewBackgroundLayer = [(CKLinkBalloonView *)self linkViewBackgroundLayer];
+  [linkViewBackgroundLayer setFrame:{v34, v36, v38, v40}];
 }
 
 - (void)prepareForDisplay
@@ -357,8 +357,8 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CKLinkBalloonView *)self linkView];
-  [v13 setContentInset:{v6, v8, v10, v12}];
+  linkView = [(CKLinkBalloonView *)self linkView];
+  [linkView setContentInset:{v6, v8, v10, v12}];
 
   if (self->_linkViewBackgroundLayer)
   {
@@ -371,7 +371,7 @@
     v17 = 0u;
     v18 = 0u;
     [(CKLinkBalloonView *)self backdropBalloonDescriptor];
-    v14 = [(CKLinkBalloonView *)self traitCollection];
+    traitCollection = [(CKLinkBalloonView *)self traitCollection];
     linkViewBackgroundLayer = self->_linkViewBackgroundLayer;
     v16[4] = v21;
     v16[5] = v22;
@@ -381,7 +381,7 @@
     v16[1] = v18;
     v16[2] = v19;
     v16[3] = v20;
-    [(CKBalloonLayer *)linkViewBackgroundLayer updateDescriptor:v16 traitCollection:v14];
+    [(CKBalloonLayer *)linkViewBackgroundLayer updateDescriptor:v16 traitCollection:traitCollection];
   }
 
   [(LPLinkView *)self->_linkView setNeedsLayout];
@@ -389,10 +389,10 @@
 
 - (id)messageTintColor
 {
-  v2 = [(CKLinkBalloonView *)self linkView];
-  v3 = [v2 _specializedBackgroundColor];
+  linkView = [(CKLinkBalloonView *)self linkView];
+  _specializedBackgroundColor = [linkView _specializedBackgroundColor];
 
-  return v3;
+  return _specializedBackgroundColor;
 }
 
 - (CKBalloonDescriptor_t)backdropBalloonDescriptor
@@ -409,9 +409,9 @@
   retstr->var2 = 0;
   retstr->var6 = -1;
   retstr->var9 = 1;
-  v12 = [(CKLinkBalloonView *)self messageTintColor];
-  v5 = [(CKLinkBalloonView *)self traitCollection];
-  v6 = [v12 resolvedColorWithTraitCollection:v5];
+  messageTintColor = [(CKLinkBalloonView *)self messageTintColor];
+  traitCollection = [(CKLinkBalloonView *)self traitCollection];
+  v6 = [messageTintColor resolvedColorWithTraitCollection:traitCollection];
   [v6 ck_imColorComponents];
   retstr->var7.red = v7;
   retstr->var7.green = v8;
@@ -489,10 +489,10 @@
     {
       if (var2 == 5)
       {
-        v8 = [(CKLinkBalloonView *)self traitCollection];
-        v9 = [v8 isTranscriptBackgroundActive];
+        traitCollection = [(CKLinkBalloonView *)self traitCollection];
+        isTranscriptBackgroundActive = [traitCollection isTranscriptBackgroundActive];
 
-        v6 = v9 ^ 1;
+        v6 = isTranscriptBackgroundActive ^ 1;
       }
     }
 
@@ -528,10 +528,10 @@
   return result;
 }
 
-- (void)linkViewNeedsResize:(id)a3
+- (void)linkViewNeedsResize:(id)resize
 {
   linkView = self->_linkView;
-  if (linkView == a3)
+  if (linkView == resize)
   {
     [(LPLinkView *)linkView setNeedsLayout];
 
@@ -539,10 +539,10 @@
   }
 }
 
-- (void)_linkViewMetadataDidBecomeComplete:(id)a3
+- (void)_linkViewMetadataDidBecomeComplete:(id)complete
 {
   linkView = self->_linkView;
-  if (linkView == a3)
+  if (linkView == complete)
   {
     [(LPLinkView *)linkView setNeedsLayout];
 

@@ -1,23 +1,23 @@
 @interface PHLocalIdentifierMapping
-- (PHLocalIdentifierMapping)initWithLocalIdentifier:(id)a3 error:(id)a4;
+- (PHLocalIdentifierMapping)initWithLocalIdentifier:(id)identifier error:(id)error;
 @end
 
 @implementation PHLocalIdentifierMapping
 
-- (PHLocalIdentifierMapping)initWithLocalIdentifier:(id)a3 error:(id)a4
+- (PHLocalIdentifierMapping)initWithLocalIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = PHLocalIdentifierMapping;
   v8 = [(PHLocalIdentifierMapping *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     localIdentifier = v8->_localIdentifier;
     v8->_localIdentifier = v9;
 
-    objc_storeStrong(&v8->_error, a4);
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v8;

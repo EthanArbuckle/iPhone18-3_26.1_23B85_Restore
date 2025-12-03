@@ -1,29 +1,29 @@
 @interface VOTElementFetcher
-- (BOOL)_wasCanceledWithCountGeneration:(unint64_t)a3;
-- (BOOL)_wasCanceledWithSearchGeneration:(unint64_t)a3;
+- (BOOL)_wasCanceledWithCountGeneration:(unint64_t)generation;
+- (BOOL)_wasCanceledWithSearchGeneration:(unint64_t)generation;
 - (VOTElementFetchDelegateProtocol)delegate;
 - (VOTElementFetcher)init;
 - (id)_debugElementCache;
-- (id)_handleOpaqueSearchForElementInDirection:(int64_t)a3 opaqueParent:(id)a4 searchType:(int64_t)a5 range:(_NSRange *)a6 matchBlock:(id)a7 resetContentOffsetInOpaqueParent:(BOOL *)a8 peeking:(BOOL)a9;
-- (id)_hitTestedElementForOriginalElement:(id)a3 hitTestPoint:(CGPoint)a4 opaqueParent:(id)a5;
-- (void)_countElementsMatchingBlock:(id)a3 generation:(id)a4;
+- (id)_handleOpaqueSearchForElementInDirection:(int64_t)direction opaqueParent:(id)parent searchType:(int64_t)type range:(_NSRange *)range matchBlock:(id)block resetContentOffsetInOpaqueParent:(BOOL *)opaqueParent peeking:(BOOL)peeking;
+- (id)_hitTestedElementForOriginalElement:(id)element hitTestPoint:(CGPoint)point opaqueParent:(id)parent;
+- (void)_countElementsMatchingBlock:(id)block generation:(id)generation;
 - (void)_forceUpdate;
 - (void)_informDelegateOfRetrieveElements;
 - (void)_initializeThread;
-- (void)_retrieveElementsWithElement:(id)a3 groupNavigationStyle:(id)a4;
-- (void)_searchForElementWithParameters:(id)a3 searchFromOpaqueElementsInRemoteParent:(BOOL)a4;
-- (void)_updateCacheWithElement:(id)a3;
+- (void)_retrieveElementsWithElement:(id)element groupNavigationStyle:(id)style;
+- (void)_searchForElementWithParameters:(id)parameters searchFromOpaqueElementsInRemoteParent:(BOOL)parent;
+- (void)_updateCacheWithElement:(id)element;
 - (void)cancelPreviousCount;
 - (void)cancelPreviousSearch;
-- (void)countElementsMatchingBlock:(id)a3;
+- (void)countElementsMatchingBlock:(id)block;
 - (void)dealloc;
 - (void)didFinishBatchPeeking;
-- (void)fillCacheWithElements:(id)a3;
+- (void)fillCacheWithElements:(id)elements;
 - (void)forceUpdate;
 - (void)invalidate;
-- (void)retrieveElementsWithElement:(id)a3 groupNavigationStyle:(BOOL)a4;
-- (void)searchForElementInDirection:(int64_t)a3 fromElement:(id)a4 needsForceCacheUpdate:(BOOL)a5 matchBlock:(id)a6 rangeMatch:(id)a7 searchType:(int64_t)a8 generation:(unint64_t)a9 startingRange:(_NSRange)a10 groupNavigationStyle:(BOOL)a11 peeking:(BOOL)a12;
-- (void)updateCacheWithElement:(id)a3;
+- (void)retrieveElementsWithElement:(id)element groupNavigationStyle:(BOOL)style;
+- (void)searchForElementInDirection:(int64_t)direction fromElement:(id)element needsForceCacheUpdate:(BOOL)update matchBlock:(id)block rangeMatch:(id)match searchType:(int64_t)type generation:(unint64_t)generation startingRange:(_NSRange)self0 groupNavigationStyle:(BOOL)self1 peeking:(BOOL)self2;
+- (void)updateCacheWithElement:(id)element;
 @end
 
 @implementation VOTElementFetcher
@@ -105,11 +105,11 @@
   [v4 setName:v3];
 }
 
-- (void)_updateCacheWithElement:(id)a3
+- (void)_updateCacheWithElement:(id)element
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  elementCopy = element;
+  v5 = elementCopy;
+  if (!elementCopy)
   {
     [(NSLock *)self->_cacheLock lock];
     [(NSMutableArray *)self->_elementCache removeAllObjects];
@@ -117,9 +117,9 @@
     goto LABEL_69;
   }
 
-  v6 = [v4 localOpaqueParent];
+  localOpaqueParent = [elementCopy localOpaqueParent];
 
-  if (!v6)
+  if (!localOpaqueParent)
   {
     if ([(VOTElementFetcher *)self triggerSignpostCollection])
     {
@@ -144,14 +144,14 @@
     v11 = [(NSMutableArray *)self->_elementCache indexOfObject:v5];
     if (v10 < 1)
     {
-      v13 = 0;
+      lastObject = 0;
       v12 = 0;
     }
 
     else
     {
       v12 = [(NSMutableArray *)*p_elementCache objectAtIndex:0];
-      v13 = [(NSMutableArray *)*p_elementCache lastObject];
+      lastObject = [(NSMutableArray *)*p_elementCache lastObject];
     }
 
     [(NSLock *)self->_cacheLock unlock];
@@ -191,7 +191,7 @@
       {
 
         v14 = v11 + (self->_cacheSize >> 1) - v10;
-        v16 = v13;
+        v16 = lastObject;
         v15 = 0;
         goto LABEL_26;
       }
@@ -255,11 +255,11 @@ LABEL_33:
         if ([v55 count])
         {
           elementCache = self->_elementCache;
-          v31 = [v55 reverseObjectEnumerator];
-          v32 = [v31 allObjects];
+          reverseObjectEnumerator = [v55 reverseObjectEnumerator];
+          allObjects = [reverseObjectEnumerator allObjects];
           p_elementCache = &self->_elementCache;
           v33 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v55 count]);
-          [(NSMutableArray *)elementCache insertObjects:v32 atIndexes:v33];
+          [(NSMutableArray *)elementCache insertObjects:allObjects atIndexes:v33];
 
           if ([(NSMutableArray *)self->_elementCache count]> self->_cacheSize)
           {
@@ -328,8 +328,8 @@ LABEL_33:
         }
 
         [(NSLock *)self->_cacheLock unlock];
-        v46 = [(VOTElementFetcher *)self delegate];
-        [v46 elementFetchFoundDirectTouchElements:v41];
+        delegate = [(VOTElementFetcher *)self delegate];
+        [delegate elementFetchFoundDirectTouchElements:v41];
 
         objc_autoreleasePoolPop(context);
         v5 = v54;
@@ -365,12 +365,12 @@ LABEL_33:
 LABEL_69:
 }
 
-- (void)updateCacheWithElement:(id)a3
+- (void)updateCacheWithElement:(id)element
 {
   *&self->_cacheSize = xmmword_10017E6A0;
   fillerThread = self->_fillerThread;
-  v5 = [a3 copyWithCache];
-  [(SCRCThread *)fillerThread performSelector:"_updateCacheWithElement:" onTarget:self cancelMask:1 count:1 objects:v5];
+  copyWithCache = [element copyWithCache];
+  [(SCRCThread *)fillerThread performSelector:"_updateCacheWithElement:" onTarget:self cancelMask:1 count:1 objects:copyWithCache];
 }
 
 - (void)_forceUpdate
@@ -404,7 +404,7 @@ LABEL_69:
   dispatch_sync(countGenerationQueue, block);
 }
 
-- (BOOL)_wasCanceledWithCountGeneration:(unint64_t)a3
+- (BOOL)_wasCanceledWithCountGeneration:(unint64_t)generation
 {
   v7 = 0;
   v8 = &v7;
@@ -416,7 +416,7 @@ LABEL_69:
   block[2] = sub_1000F42F8;
   block[3] = &unk_1001CAF10;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = generation;
   block[4] = self;
   dispatch_sync(countGenerationQueue, block);
   v4 = *(v8 + 24);
@@ -424,11 +424,11 @@ LABEL_69:
   return v4;
 }
 
-- (void)_countElementsMatchingBlock:(id)a3 generation:(id)a4
+- (void)_countElementsMatchingBlock:(id)block generation:(id)generation
 {
-  v15 = a3;
-  v6 = [a4 unsignedLongLongValue];
-  if ([(VOTElementFetcher *)self _wasCanceledWithCountGeneration:v6])
+  blockCopy = block;
+  unsignedLongLongValue = [generation unsignedLongLongValue];
+  if ([(VOTElementFetcher *)self _wasCanceledWithCountGeneration:unsignedLongLongValue])
   {
     goto LABEL_23;
   }
@@ -454,8 +454,8 @@ LABEL_69:
   v11 = 0;
   while (1)
   {
-    v12 = [(NSMutableArray *)self->_elementCache objectAtIndex:v11];
-    if ([(VOTElementFetcher *)self _wasCanceledWithCountGeneration:v6])
+    delegate = [(NSMutableArray *)self->_elementCache objectAtIndex:v11];
+    if ([(VOTElementFetcher *)self _wasCanceledWithCountGeneration:unsignedLongLongValue])
     {
       [(NSLock *)self->_cacheLock unlock];
       goto LABEL_22;
@@ -463,7 +463,7 @@ LABEL_69:
 
     v13 = +[NSNull null];
 
-    if (v12 != v13)
+    if (delegate != v13)
     {
       break;
     }
@@ -485,16 +485,16 @@ LABEL_15:
   {
     v14 = +[NSNull null];
 
-    if (v12 != v14)
+    if (delegate != v14)
     {
       [(NSLock *)self->_cacheLock unlock];
-      [(VOTElementFetcher *)self _updateCacheWithElement:v12];
+      [(VOTElementFetcher *)self _updateCacheWithElement:delegate];
       [(NSLock *)self->_cacheLock lock];
       v9 = [(NSMutableArray *)self->_elementCache count];
     }
   }
 
-  v10 += v15[2](v15, v12, 0) & 1;
+  v10 += blockCopy[2](blockCopy, delegate, 0) & 1;
   if ((50 * (v11 / 0x32)) != v11 || CFAbsoluteTimeGetCurrent() - Current <= 1.1)
   {
     goto LABEL_15;
@@ -505,24 +505,24 @@ LABEL_19:
 
 LABEL_20:
   [(NSLock *)self->_cacheLock unlock];
-  if (![(VOTElementFetcher *)self _wasCanceledWithCountGeneration:v6])
+  if (![(VOTElementFetcher *)self _wasCanceledWithCountGeneration:unsignedLongLongValue])
   {
-    v12 = [(VOTElementFetcher *)self delegate];
-    [v12 elementsCounted:v10];
+    delegate = [(VOTElementFetcher *)self delegate];
+    [delegate elementsCounted:v10];
 LABEL_22:
   }
 
 LABEL_23:
 }
 
-- (id)_handleOpaqueSearchForElementInDirection:(int64_t)a3 opaqueParent:(id)a4 searchType:(int64_t)a5 range:(_NSRange *)a6 matchBlock:(id)a7 resetContentOffsetInOpaqueParent:(BOOL *)a8 peeking:(BOOL)a9
+- (id)_handleOpaqueSearchForElementInDirection:(int64_t)direction opaqueParent:(id)parent searchType:(int64_t)type range:(_NSRange *)range matchBlock:(id)block resetContentOffsetInOpaqueParent:(BOOL *)opaqueParent peeking:(BOOL)peeking
 {
-  v14 = a4;
-  v33 = a7;
-  [v14 contentOffset];
+  parentCopy = parent;
+  blockCopy = block;
+  [parentCopy contentOffset];
   v16 = v15;
   v18 = v17;
-  if (a3 == 1)
+  if (direction == 1)
   {
     v19 = 1;
   }
@@ -532,12 +532,12 @@ LABEL_23:
     v19 = 2;
   }
 
-  v20 = [(NSMutableDictionary *)self->_opaqueElementCache objectForKey:v14];
-  v21 = [v14 opaqueElementInDirection:v19 searchType:a5 range:a6 peeking:a9 startOpaqueElement:v20];
+  v20 = [(NSMutableDictionary *)self->_opaqueElementCache objectForKey:parentCopy];
+  v21 = [parentCopy opaqueElementInDirection:v19 searchType:type range:range peeking:peeking startOpaqueElement:v20];
 
   if (v21)
   {
-    [(NSMutableDictionary *)self->_opaqueElementCache setObject:v21 forKey:v14];
+    [(NSMutableDictionary *)self->_opaqueElementCache setObject:v21 forKey:parentCopy];
   }
 
   v22 = VOTLogCommon();
@@ -551,14 +551,14 @@ LABEL_23:
   if (v21)
   {
     v23 = kAXSpacerTrait;
-    while (([v21 doesHaveTraits:v23] & 1) != 0 || (v33[2](v33, v21, 0) & 1) == 0)
+    while (([v21 doesHaveTraits:v23] & 1) != 0 || (blockCopy[2](blockCopy, v21, 0) & 1) == 0)
     {
-      v24 = [(NSMutableDictionary *)self->_opaqueElementCache objectForKey:v14];
-      v25 = [v14 opaqueElementInDirection:v19 searchType:a5 range:a6 peeking:a9 startOpaqueElement:v24];
+      v24 = [(NSMutableDictionary *)self->_opaqueElementCache objectForKey:parentCopy];
+      v25 = [parentCopy opaqueElementInDirection:v19 searchType:type range:range peeking:peeking startOpaqueElement:v24];
 
       if (v25)
       {
-        [(NSMutableDictionary *)self->_opaqueElementCache setObject:v25 forKey:v14];
+        [(NSMutableDictionary *)self->_opaqueElementCache setObject:v25 forKey:parentCopy];
       }
 
       v26 = VOTLogCommon();
@@ -587,12 +587,12 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Did not find a match, reset offset", buf, 2u);
     }
 
-    [v14 contentOffset];
+    [parentCopy contentOffset];
     if (vabdd_f64(v16, v29) >= 0.001 || vabdd_f64(v18, v28) >= 0.001)
     {
-      [v14 setContentOffset:{v16, v18}];
+      [parentCopy setContentOffset:{v16, v18}];
       v21 = 0;
-      *a8 = 1;
+      *opaqueParent = 1;
     }
 
     else
@@ -607,14 +607,14 @@ LABEL_17:
   return v21;
 }
 
-- (id)_hitTestedElementForOriginalElement:(id)a3 hitTestPoint:(CGPoint)a4 opaqueParent:(id)a5
+- (id)_hitTestedElementForOriginalElement:(id)element hitTestPoint:(CGPoint)point opaqueParent:(id)parent
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  elementCopy = element;
+  parentCopy = parent;
   v10 = [[VOTElement alloc] initWithPosition:x, y];
-  if (-[VOTElement isValid](v10, "isValid") && !-[VOTElement isEqual:](v10, "isEqual:", v8) && -[VOTElement isAccessibleElement](v10, "isAccessibleElement") && (!v9 || (-[VOTElement opaqueParent](v10, "opaqueParent"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:v9], v11, v12)))
+  if (-[VOTElement isValid](v10, "isValid") && !-[VOTElement isEqual:](v10, "isEqual:", elementCopy) && -[VOTElement isAccessibleElement](v10, "isAccessibleElement") && (!parentCopy || (-[VOTElement opaqueParent](v10, "opaqueParent"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 isEqual:parentCopy], v11, v12)))
   {
     v13 = v10;
   }
@@ -627,7 +627,7 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)_wasCanceledWithSearchGeneration:(unint64_t)a3
+- (BOOL)_wasCanceledWithSearchGeneration:(unint64_t)generation
 {
   v7 = 0;
   v8 = &v7;
@@ -639,7 +639,7 @@ LABEL_17:
   block[2] = sub_1000F4A14;
   block[3] = &unk_1001CAF10;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = generation;
   block[4] = self;
   dispatch_sync(searchGenerationQueue, block);
   v4 = *(v8 + 24);
@@ -647,80 +647,80 @@ LABEL_17:
   return v4;
 }
 
-- (void)_searchForElementWithParameters:(id)a3 searchFromOpaqueElementsInRemoteParent:(BOOL)a4
+- (void)_searchForElementWithParameters:(id)parameters searchFromOpaqueElementsInRemoteParent:(BOOL)parent
 {
-  v5 = a4;
-  v7 = a3;
-  v8 = [v7 generation];
-  if (![(VOTElementFetcher *)self _wasCanceledWithSearchGeneration:v8])
+  parentCopy = parent;
+  parametersCopy = parameters;
+  generation = [parametersCopy generation];
+  if (![(VOTElementFetcher *)self _wasCanceledWithSearchGeneration:generation])
   {
-    v152 = v5;
-    v149 = v8;
-    v166 = [v7 element];
-    v159 = [v7 searchType];
-    v161 = [v7 direction];
-    v9 = [v7 matchBlock];
-    v156 = [v7 rangeBlock];
+    v152 = parentCopy;
+    v149 = generation;
+    element = [parametersCopy element];
+    searchType = [parametersCopy searchType];
+    direction = [parametersCopy direction];
+    matchBlock = [parametersCopy matchBlock];
+    rangeBlock = [parametersCopy rangeBlock];
     v195 = 0;
     v196 = &v195;
     v197 = 0x3010000000;
     v200 = 0;
     v198 = &unk_10017883E;
-    v199 = 0;
-    v199 = [v7 startingRange];
+    startingRange = 0;
+    startingRange = [parametersCopy startingRange];
     v200 = v10;
-    v158 = [v7 needsForceCacheUpdate];
+    needsForceCacheUpdate = [parametersCopy needsForceCacheUpdate];
     v191 = 0;
     v192 = &v191;
     v193 = 0x2020000000;
     v194 = 0;
-    v155 = [v7 groupNavigationStyle];
-    v151 = [v7 peeking];
-    v153 = [v166 groupedParent];
-    v11 = [v166 opaqueParent];
-    v12 = [v166 localOpaqueParent];
-    v162 = [v166 outermostLocalOpaqueParent];
-    v165 = v11;
-    if (v11)
+    groupNavigationStyle = [parametersCopy groupNavigationStyle];
+    peeking = [parametersCopy peeking];
+    groupedParent = [element groupedParent];
+    opaqueParent = [element opaqueParent];
+    localOpaqueParent = [element localOpaqueParent];
+    outermostLocalOpaqueParent = [element outermostLocalOpaqueParent];
+    v165 = opaqueParent;
+    if (opaqueParent)
     {
-      v13 = v11;
+      fallbackOpaqueParent = opaqueParent;
     }
 
     else
     {
-      v13 = [v7 fallbackOpaqueParent];
+      fallbackOpaqueParent = [parametersCopy fallbackOpaqueParent];
     }
 
-    v160 = v12;
-    if (v12)
+    v160 = localOpaqueParent;
+    if (localOpaqueParent)
     {
-      v150 = v12;
+      fallbackLocalOpaqueParent = localOpaqueParent;
     }
 
     else
     {
-      v150 = [v7 fallbackLocalOpaqueParent];
+      fallbackLocalOpaqueParent = [parametersCopy fallbackLocalOpaqueParent];
     }
 
-    v14 = [v7 fallbackOpaqueParent];
-    if (v11 == v14 || ([v7 fallbackOpaqueParent], v4 = objc_claimAutoreleasedReturnValue(), (-[NSObject isEqual:](v11, "isEqual:", v4) & 1) != 0))
+    fallbackOpaqueParent2 = [parametersCopy fallbackOpaqueParent];
+    if (opaqueParent == fallbackOpaqueParent2 || ([parametersCopy fallbackOpaqueParent], v4 = objc_claimAutoreleasedReturnValue(), (-[NSObject isEqual:](opaqueParent, "isEqual:", v4) & 1) != 0))
     {
-      v15 = [v7 fallbackLocalOpaqueParent];
-      v16 = v15;
-      if (v160 == v15)
+      fallbackLocalOpaqueParent2 = [parametersCopy fallbackLocalOpaqueParent];
+      v16 = fallbackLocalOpaqueParent2;
+      if (v160 == fallbackLocalOpaqueParent2)
       {
 
-        if (v11 != v14)
+        if (opaqueParent != fallbackOpaqueParent2)
         {
         }
 
         goto LABEL_19;
       }
 
-      v17 = [v7 fallbackLocalOpaqueParent];
-      v18 = [(NSMutableArray *)v160 isEqual:v17];
+      fallbackLocalOpaqueParent3 = [parametersCopy fallbackLocalOpaqueParent];
+      v18 = [(NSMutableArray *)v160 isEqual:fallbackLocalOpaqueParent3];
 
-      if (v165 != v14)
+      if (v165 != fallbackOpaqueParent2)
       {
       }
 
@@ -731,23 +731,23 @@ LABEL_20:
         v180[1] = 3221225472;
         v180[2] = sub_1000F63FC;
         v180[3] = &unk_1001CAF38;
-        v186 = v161;
-        v187 = v159;
+        v186 = direction;
+        v187 = searchType;
         v180[4] = self;
         v184 = &v195;
-        v154 = v9;
+        v154 = matchBlock;
         v183 = v154;
         v185 = &v191;
-        v188 = v151;
-        v164 = v13;
+        v188 = peeking;
+        v164 = fallbackOpaqueParent;
         v181 = v164;
-        v189 = v158;
-        v19 = v7;
+        v189 = needsForceCacheUpdate;
+        v19 = parametersCopy;
         v182 = v19;
-        v190 = v155;
+        v190 = groupNavigationStyle;
         v157 = objc_retainBlock(v180);
-        v20 = v166;
-        context = v164 != 0 && (v152 || v162 != 0);
+        v20 = element;
+        context = v164 != 0 && (v152 || outermostLocalOpaqueParent != 0);
         if (context == 1)
         {
           if (v152)
@@ -757,10 +757,10 @@ LABEL_20:
 
           else
           {
-            v21 = v162;
+            v21 = outermostLocalOpaqueParent;
           }
 
-          v163 = v166;
+          v163 = element;
           if ((v157[2])(v157, v21))
           {
             goto LABEL_211;
@@ -786,18 +786,18 @@ LABEL_20:
         v179 = v163;
         v25 = [(NSMutableArray *)elementCache indexesOfObjectsPassingTest:v178];
         v148 = v25;
-        if (v161 == 1)
+        if (direction == 1)
         {
-          v26 = [v25 lastIndex];
+          lastIndex = [v25 lastIndex];
         }
 
         else
         {
-          v26 = [v25 firstIndex];
+          lastIndex = [v25 firstIndex];
         }
 
-        v27 = v26;
-        if (v26 == 0x7FFFFFFFFFFFFFFFLL)
+        v27 = lastIndex;
+        if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
         {
           v28 = VOTLogElement();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -829,7 +829,7 @@ LABEL_20:
           _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "Location of element %{public}@ in cache: %ld\nCache: %{public}@", buf, 0x20u);
         }
 
-        if ([(VOTElementFetcher *)self _wasCanceledWithSearchGeneration:v8])
+        if ([(VOTElementFetcher *)self _wasCanceledWithSearchGeneration:generation])
         {
           [(NSLock *)self->_cacheLock unlock];
 LABEL_210:
@@ -845,9 +845,9 @@ LABEL_211:
         {
           [(NSLock *)self->_cacheLock unlock];
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          v32 = [v19 clientGeneration];
-          v33 = [VOTElementFetchFoundData fetchFoundData:0 forceUpdate:v158 direction:v161 generation:v32 range:v196[2].location searchType:v196[2].length, v159];
-          [WeakRetained elementFetchFound:v33];
+          clientGeneration = [v19 clientGeneration];
+          v159 = [VOTElementFetchFoundData fetchFoundData:0 forceUpdate:needsForceCacheUpdate direction:direction generation:clientGeneration range:v196[2].location searchType:v196[2].length, searchType];
+          [WeakRetained elementFetchFound:v159];
 
 LABEL_209:
           goto LABEL_210;
@@ -857,40 +857,40 @@ LABEL_209:
         v172[1] = 3221225472;
         v172[2] = sub_1000F6654;
         v172[3] = &unk_1001CAF88;
-        v137 = v156;
+        v137 = rangeBlock;
         v174 = v137;
-        v175 = v161;
-        v177 = v158;
+        v175 = direction;
+        v177 = needsForceCacheUpdate;
         v34 = v19;
         v173 = v34;
-        v176 = v159;
+        v176 = searchType;
         v144 = objc_retainBlock(v172);
         v167[0] = _NSConcreteStackBlock;
         v167[1] = 3221225472;
         v167[2] = sub_1000F6790;
         v167[3] = &unk_1001CAFB0;
-        v169 = v159;
-        v170 = v161;
-        v171 = v158;
+        v169 = searchType;
+        v170 = direction;
+        v171 = needsForceCacheUpdate;
         v139 = v34;
         v168 = v139;
         v143 = objc_retainBlock(v167);
         v35 = (v144[2])(v144, v163, v196[2].location, v196[2].length, 0);
         if (v35)
         {
-          v36 = objc_loadWeakRetained(&self->_delegate);
-          [v36 elementFetchFound:v35];
+          searchUUID = objc_loadWeakRetained(&self->_delegate);
+          [searchUUID elementFetchFound:v35];
 LABEL_208:
 
           WeakRetained = v174;
           goto LABEL_209;
         }
 
-        v36 = [0 searchUUID];
-        v37 = (v143[2])(v143, v163, v196[2].location, v196[2].length, v36);
-        v38 = [v37 element];
+        searchUUID = [0 searchUUID];
+        v37 = (v143[2])(v143, v163, v196[2].location, v196[2].length, searchUUID);
+        element2 = [v37 element];
         v142 = v37;
-        LOBYTE(v37) = v38 == 0;
+        LOBYTE(v37) = element2 == 0;
 
         if ((v37 & 1) == 0)
         {
@@ -900,10 +900,10 @@ LABEL_208:
           goto LABEL_207;
         }
 
-        v138 = [v142 searchUUID];
+        searchUUID2 = [v142 searchUUID];
 
         v42 = [(NSMutableArray *)*p_elementCache count];
-        if (v161 == 1)
+        if (direction == 1)
         {
           v43 = 1;
         }
@@ -919,7 +919,7 @@ LABEL_208:
         v45 = &v27[v43] < v42;
         v140 = v44;
         v46 = v44 >= 0;
-        if (v161 != 1)
+        if (direction != 1)
         {
           v45 = v46;
         }
@@ -929,7 +929,7 @@ LABEL_208:
           v136 = 0;
           v131 = 0;
           v47 = 0x7FFFFFFFLL;
-          if (v161 == 1)
+          if (direction == 1)
           {
             v47 = 0;
           }
@@ -937,7 +937,7 @@ LABEL_208:
           v132 = kAXSpacerTrait;
           v133 = v47;
           v48 = -1;
-          if (v161 != 1)
+          if (direction != 1)
           {
             v48 = 1;
           }
@@ -961,7 +961,7 @@ LABEL_208:
                 {
                   if ((v157[2])(v157, v163))
                   {
-                    v36 = v138;
+                    searchUUID = searchUUID2;
                     v35 = v136;
                     goto LABEL_207;
                   }
@@ -1007,7 +1007,7 @@ LABEL_98:
 
             v66 = &v140[v134] < v135;
             v140 += v134;
-            if (v161 != 1)
+            if (direction != 1)
             {
               v66 = v140 >= 0;
             }
@@ -1018,11 +1018,11 @@ LABEL_98:
             }
           }
 
-          if (v155)
+          if (groupNavigationStyle)
           {
-            v54 = [v145 groupedParent];
-            v55 = v54;
-            if (!v54 && v153)
+            groupedParent2 = [v145 groupedParent];
+            v55 = groupedParent2;
+            if (!groupedParent2 && groupedParent)
             {
               v55 = 0;
 LABEL_124:
@@ -1046,26 +1046,26 @@ LABEL_130:
               goto LABEL_131;
             }
 
-            if (v54 && !v153 || v54 && v153 && ([v153 isEqual:v54] & 1) == 0)
+            if (groupedParent2 && !groupedParent || groupedParent2 && groupedParent && ([groupedParent isEqual:groupedParent2] & 1) == 0)
             {
               goto LABEL_124;
             }
           }
 
-          v56 = [v145 isAccessibilityOpaqueElementProvider];
-          if (v159 == 999999)
+          isAccessibilityOpaqueElementProvider = [v145 isAccessibilityOpaqueElementProvider];
+          if (searchType == 999999)
           {
             v57 = 0;
           }
 
           else
           {
-            v57 = v56;
+            v57 = isAccessibilityOpaqueElementProvider;
           }
 
-          if (v57 != 1 || v155 && ([v145 isAccessibleGroup]& 1) != 0)
+          if (v57 != 1 || groupNavigationStyle && ([v145 isAccessibleGroup]& 1) != 0)
           {
-            if (([v145 isAccessibleElement]& 1) != 0 || ([v145 isTouchContainer]& 1) != 0 || v155 && [v145 isAccessibleGroup])
+            if (([v145 isAccessibleElement]& 1) != 0 || ([v145 isTouchContainer]& 1) != 0 || groupNavigationStyle && [v145 isAccessibleGroup])
             {
               if ((*(v154 + 2))(v154, v145, v163))
               {
@@ -1087,7 +1087,7 @@ LABEL_130:
                 goto LABEL_98;
               }
 
-              if (v161 == 1 && v140 >= 1)
+              if (direction == 1 && v140 >= 1)
               {
                 v68 = [(NSMutableArray *)*p_elementCache objectAtIndex:v140 - 1];
                 v69 = +[NSNull null];
@@ -1097,12 +1097,12 @@ LABEL_130:
                 {
                   v71 = [(NSMutableArray *)*p_elementCache objectAtIndex:v140 - 1];
                   v72 = [v71 elementsInDirection:1 withCount:1];
-                  v73 = [v72 firstObject];
+                  firstObject = [v72 firstObject];
                   goto LABEL_111;
                 }
               }
 
-              else if (v161 != 1 && v140 < [(NSMutableArray *)*p_elementCache count]- 1)
+              else if (direction != 1 && v140 < [(NSMutableArray *)*p_elementCache count]- 1)
               {
                 v75 = [(NSMutableArray *)*p_elementCache objectAtIndex:v140 + 1];
                 v76 = +[NSNull null];
@@ -1112,9 +1112,9 @@ LABEL_130:
                 {
                   v71 = [(NSMutableArray *)*p_elementCache objectAtIndex:v140 + 1];
                   v72 = [v71 elementsInDirection:2 withCount:1];
-                  v73 = [v72 firstObject];
+                  firstObject = [v72 firstObject];
 LABEL_111:
-                  v74 = v73;
+                  v74 = firstObject;
 
                   if (v74)
                   {
@@ -1139,15 +1139,15 @@ LABEL_111:
               _os_log_debug_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEBUG, "Try opaque element: %@", buf, 0xCu);
             }
 
-            LOBYTE(v128) = v151;
-            v60 = [(VOTElementFetcher *)self _handleOpaqueSearchForElementInDirection:v161 opaqueParent:v145 searchType:v159 range:&v196[2] matchBlock:v154 resetContentOffsetInOpaqueParent:v192 + 3 peeking:v128];
+            LOBYTE(v128) = peeking;
+            v60 = [(VOTElementFetcher *)self _handleOpaqueSearchForElementInDirection:direction opaqueParent:v145 searchType:searchType range:&v196[2] matchBlock:v154 resetContentOffsetInOpaqueParent:v192 + 3 peeking:v128];
             if (v60)
             {
               goto LABEL_120;
             }
           }
 
-          v35 = (v144[2])(v144, v145, v196[2].location, v196[2].length, v138);
+          v35 = (v144[2])(v144, v145, v196[2].location, v196[2].length, searchUUID2);
 
           v61 = VOTLogElement();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
@@ -1169,24 +1169,24 @@ LABEL_111:
             goto LABEL_206;
           }
 
-          v62 = (v143[2])(v143, v145, v196[2].location, v196[2].length, v138);
+          v62 = (v143[2])(v143, v145, v196[2].location, v196[2].length, searchUUID2);
 
-          v63 = [v62 searchUUID];
+          searchUUID3 = [v62 searchUUID];
 
-          v64 = [v62 element];
-          v65 = v64 == 0;
+          element3 = [v62 element];
+          v65 = element3 == 0;
 
           if (!v65)
           {
             v78 = objc_loadWeakRetained(&self->_delegate);
             [v78 elementFetchFound:v62];
-            v138 = v63;
+            searchUUID2 = searchUUID3;
             v142 = v62;
             goto LABEL_206;
           }
 
           v142 = v62;
-          v138 = v63;
+          searchUUID2 = searchUUID3;
           v136 = v35;
           goto LABEL_98;
         }
@@ -1212,12 +1212,12 @@ LABEL_131:
         contexta = objc_autoreleasePoolPush();
         if (v60)
         {
-          if (![v60 isAccessibilityOpaqueElementProvider]|| v155 && ([v60 isAccessibleGroup]& 1) != 0)
+          if (![v60 isAccessibilityOpaqueElementProvider]|| groupNavigationStyle && ([v60 isAccessibleGroup]& 1) != 0)
           {
             v145 = v60;
 LABEL_142:
             v83 = objc_loadWeakRetained(&self->_delegate);
-            v84 = +[VOTElementFetchFoundData fetchFoundData:forceUpdate:direction:generation:range:searchType:](VOTElementFetchFoundData, "fetchFoundData:forceUpdate:direction:generation:range:searchType:", v145, v158, v161, [v139 clientGeneration], 0x7FFFFFFFLL, 0, v159);
+            v84 = +[VOTElementFetchFoundData fetchFoundData:forceUpdate:direction:generation:range:searchType:](VOTElementFetchFoundData, "fetchFoundData:forceUpdate:direction:generation:range:searchType:", v145, needsForceCacheUpdate, direction, [v139 clientGeneration], 0x7FFFFFFFLL, 0, searchType);
             [v83 elementFetchFound:v84];
             v85 = 0;
             v78 = 0;
@@ -1227,8 +1227,8 @@ LABEL_203:
           }
 
           v83 = v60;
-          LOBYTE(v128) = v151;
-          v145 = [(VOTElementFetcher *)self _handleOpaqueSearchForElementInDirection:v161 opaqueParent:v83 searchType:v159 range:&v196[2] matchBlock:v154 resetContentOffsetInOpaqueParent:v192 + 3 peeking:v128];
+          LOBYTE(v128) = peeking;
+          v145 = [(VOTElementFetcher *)self _handleOpaqueSearchForElementInDirection:direction opaqueParent:v83 searchType:searchType range:&v196[2] matchBlock:v154 resetContentOffsetInOpaqueParent:v192 + 3 peeking:v128];
 
           if (v145)
           {
@@ -1236,10 +1236,10 @@ LABEL_203:
             goto LABEL_142;
           }
 
-          v92 = [v139 clientGeneration];
-          BYTE1(v129) = v151;
-          LOBYTE(v129) = v155;
-          [(VOTElementFetcher *)self searchForElementInDirection:v161 fromElement:v83 needsForceCacheUpdate:0 matchBlock:v154 rangeMatch:v137 searchType:v159 generation:v92 startingRange:v196[2].location groupNavigationStyle:v196[2].length peeking:v129];
+          clientGeneration2 = [v139 clientGeneration];
+          BYTE1(v129) = peeking;
+          LOBYTE(v129) = groupNavigationStyle;
+          [(VOTElementFetcher *)self searchForElementInDirection:direction fromElement:v83 needsForceCacheUpdate:0 matchBlock:v154 rangeMatch:v137 searchType:searchType generation:clientGeneration2 startingRange:v196[2].location groupNavigationStyle:v196[2].length peeking:v129];
           v85 = 0;
           v78 = 0;
 LABEL_196:
@@ -1251,7 +1251,7 @@ LABEL_204:
 
         [(NSLock *)self->_cacheLock lock];
         v82 = *p_elementCache;
-        if (v161 == 1)
+        if (direction == 1)
         {
           [(NSMutableArray *)v82 lastObject];
         }
@@ -1265,8 +1265,8 @@ LABEL_204:
         [(NSLock *)self->_cacheLock unlock];
         if (!v152)
         {
-          v86 = [v166 remoteParent];
-          if (v86)
+          remoteParent = [element remoteParent];
+          if (remoteParent)
           {
             v87 = +[NSNull null];
             v88 = v87;
@@ -1275,7 +1275,7 @@ LABEL_204:
               if (v164)
               {
 
-                if (!v150)
+                if (!fallbackLocalOpaqueParent)
                 {
 LABEL_156:
                   [(VOTElementFetcher *)self _searchForElementWithParameters:v139 searchFromOpaqueElementsInRemoteParent:1];
@@ -1289,7 +1289,7 @@ LABEL_205:
                   v35 = v136;
 LABEL_206:
 
-                  v36 = v138;
+                  searchUUID = searchUUID2;
 LABEL_207:
 
                   goto LABEL_208;
@@ -1301,8 +1301,8 @@ LABEL_207:
 
             else
             {
-              v89 = [v166 immediateRemoteParent];
-              v90 = [v89 isEqual:v78];
+              immediateRemoteParent = [element immediateRemoteParent];
+              v90 = [immediateRemoteParent isEqual:v78];
               if (v164)
               {
                 v91 = v90;
@@ -1316,7 +1316,7 @@ LABEL_207:
               if (v91)
               {
 
-                if (!v150)
+                if (!fallbackLocalOpaqueParent)
                 {
                   goto LABEL_156;
                 }
@@ -1352,7 +1352,7 @@ LABEL_159:
 
           [(NSLock *)self->_cacheLock lock];
           v123 = *p_elementCache;
-          if (v161 == 1)
+          if (direction == 1)
           {
             [(NSMutableArray *)v123 lastObject];
           }
@@ -1372,10 +1372,10 @@ LABEL_159:
               sub_100130314();
             }
 
-            v127 = [v139 clientGeneration];
-            BYTE1(v129) = v151;
-            LOBYTE(v129) = v155;
-            [(VOTElementFetcher *)self searchForElementInDirection:v161 fromElement:v78 needsForceCacheUpdate:v158 matchBlock:v154 rangeMatch:v137 searchType:v159 generation:v127 startingRange:v196[2].location groupNavigationStyle:v196[2].length peeking:v129];
+            clientGeneration3 = [v139 clientGeneration];
+            BYTE1(v129) = peeking;
+            LOBYTE(v129) = groupNavigationStyle;
+            [(VOTElementFetcher *)self searchForElementInDirection:direction fromElement:v78 needsForceCacheUpdate:needsForceCacheUpdate matchBlock:v154 rangeMatch:v137 searchType:searchType generation:clientGeneration3 startingRange:v196[2].location groupNavigationStyle:v196[2].length peeking:v129];
             goto LABEL_165;
           }
 
@@ -1385,7 +1385,7 @@ LABEL_159:
             sub_10013037C();
           }
 
-          v83 = +[VOTElementFetchFoundData fetchFoundData:forceUpdate:direction:generation:range:searchType:](VOTElementFetchFoundData, "fetchFoundData:forceUpdate:direction:generation:range:searchType:", 0, v158, v161, [v139 clientGeneration], 0x7FFFFFFFLL, 0, v159);
+          v83 = +[VOTElementFetchFoundData fetchFoundData:forceUpdate:direction:generation:range:searchType:](VOTElementFetchFoundData, "fetchFoundData:forceUpdate:direction:generation:range:searchType:", 0, needsForceCacheUpdate, direction, [v139 clientGeneration], 0x7FFFFFFFLL, 0, searchType);
           [v83 setSearchEndedWithDifferentGroup:v141];
           v84 = objc_loadWeakRetained(&self->_delegate);
           [v84 elementFetchFound:v83];
@@ -1394,8 +1394,8 @@ LABEL_202:
           goto LABEL_203;
         }
 
-        [v166 updateVisiblePoint];
-        [v166 visiblePoint];
+        [element updateVisiblePoint];
+        [element visiblePoint];
         v97 = v96;
         v99 = v98;
         v100 = VOTLogElement();
@@ -1404,12 +1404,12 @@ LABEL_202:
           v213.x = v97;
           v213.y = v99;
           v101 = NSStringFromCGPoint(v213);
-          sub_1001303E4(v166, v101, buf, v100);
+          sub_1001303E4(element, v101, buf, v100);
         }
 
-        v102 = [v166 windowContextId];
+        windowContextId = [element windowContextId];
         v103 = +[VOTElement systemWideElement];
-        [v103 convertPoint:v102 fromContextId:{v97, v99}];
+        [v103 convertPoint:windowContextId fromContextId:{v97, v99}];
         v105 = v104;
         v107 = v106;
 
@@ -1419,14 +1419,14 @@ LABEL_202:
           v214.x = v105;
           v214.y = v107;
           v109 = NSStringFromCGPoint(v214);
-          sub_100130454(v109, v202, v102, v108);
+          sub_100130454(v109, v202, windowContextId, v108);
         }
 
         v110 = 0;
         if (v105 == CGPointZero.x)
         {
           y = CGPointZero.y;
-          v112 = v166;
+          v112 = element;
           if (v107 != y)
           {
             goto LABEL_180;
@@ -1441,13 +1441,13 @@ LABEL_202:
             v215.x = v105;
             v215.y = v107;
             v116 = NSStringFromCGPoint(v215);
-            sub_1001304D4(v166, v116, v201, v115);
+            sub_1001304D4(element, v116, v201, v115);
           }
 
           v110 = 0;
           if (v105 == CGPointZero.x)
           {
-            v112 = v166;
+            v112 = element;
             if (v107 != y)
             {
               goto LABEL_180;
@@ -1463,15 +1463,15 @@ LABEL_202:
           }
         }
 
-        v112 = v166;
+        v112 = element;
 LABEL_180:
         if (((v110 | [v112 isRemoteElement]) & 1) == 0)
         {
-          v120 = [(VOTElementFetcher *)self _hitTestedElementForOriginalElement:v112 hitTestPoint:0 opaqueParent:v105, v107];
-          v83 = v120;
-          if (*(v192 + 24) != 1 || ([v120 opaqueParent], v121 = objc_claimAutoreleasedReturnValue(), v122 = [v164 isEqual:v121], v121, v112 = v166, !v122))
+          v107 = [(VOTElementFetcher *)self _hitTestedElementForOriginalElement:v112 hitTestPoint:0 opaqueParent:v105, v107];
+          v83 = v107;
+          if (*(v192 + 24) != 1 || ([v107 opaqueParent], v121 = objc_claimAutoreleasedReturnValue(), v122 = [v164 isEqual:v121], v121, v112 = element, !v122))
           {
-            if (v83 && (!v155 || ([v112 elementIsDescendant:v83]& 1) == 0))
+            if (v83 && (!groupNavigationStyle || ([v112 elementIsDescendant:v83]& 1) == 0))
             {
               v124 = VOTLogElement();
               if (os_log_type_enabled(v124, OS_LOG_TYPE_DEBUG))
@@ -1479,9 +1479,9 @@ LABEL_180:
                 sub_100130588();
               }
 
-              BYTE1(v129) = v151;
-              LOBYTE(v129) = v155;
-              -[VOTElementFetcher searchForElementInDirection:fromElement:needsForceCacheUpdate:matchBlock:rangeMatch:searchType:generation:startingRange:groupNavigationStyle:peeking:](self, "searchForElementInDirection:fromElement:needsForceCacheUpdate:matchBlock:rangeMatch:searchType:generation:startingRange:groupNavigationStyle:peeking:", v161, v83, 1, v154, v137, v159, [v139 clientGeneration], 0x7FFFFFFFLL, 0, v129);
+              BYTE1(v129) = peeking;
+              LOBYTE(v129) = groupNavigationStyle;
+              -[VOTElementFetcher searchForElementInDirection:fromElement:needsForceCacheUpdate:matchBlock:rangeMatch:searchType:generation:startingRange:groupNavigationStyle:peeking:](self, "searchForElementInDirection:fromElement:needsForceCacheUpdate:matchBlock:rangeMatch:searchType:generation:startingRange:groupNavigationStyle:peeking:", direction, v83, 1, v154, v137, searchType, [v139 clientGeneration], 0x7FFFFFFFLL, 0, v129);
               v85 = 0;
               goto LABEL_196;
             }
@@ -1498,7 +1498,7 @@ LABEL_182:
           sub_1001305F0();
         }
 
-        v84 = +[VOTElementFetchFoundData fetchFoundData:forceUpdate:direction:generation:range:searchType:](VOTElementFetchFoundData, "fetchFoundData:forceUpdate:direction:generation:range:searchType:", 0, v158, v161, [v139 clientGeneration], 0x7FFFFFFFLL, 0, v159);
+        v84 = +[VOTElementFetchFoundData fetchFoundData:forceUpdate:direction:generation:range:searchType:](VOTElementFetchFoundData, "fetchFoundData:forceUpdate:direction:generation:range:searchType:", 0, needsForceCacheUpdate, direction, [v139 clientGeneration], 0x7FFFFFFFLL, 0, searchType);
         [v84 setSearchEndedWithDifferentGroup:v141];
         v119 = objc_loadWeakRetained(&self->_delegate);
         [v119 elementFetchFound:v84];
@@ -1512,22 +1512,22 @@ LABEL_182:
     {
     }
 
-    v14 = VOTLogElement();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    fallbackOpaqueParent2 = VOTLogElement();
+    if (os_log_type_enabled(fallbackOpaqueParent2, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [v7 fallbackOpaqueParent];
-      v41 = [v7 fallbackLocalOpaqueParent];
+      fallbackOpaqueParent3 = [parametersCopy fallbackOpaqueParent];
+      fallbackLocalOpaqueParent4 = [parametersCopy fallbackLocalOpaqueParent];
       *buf = 138544386;
       v204 = v165;
       v205 = 2114;
-      v206 = v40;
+      v206 = fallbackOpaqueParent3;
       v207 = 2114;
       v208 = v160;
       v209 = 2114;
-      v210 = v41;
+      v210 = fallbackLocalOpaqueParent4;
       v211 = 1024;
       v212 = v152;
-      _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Had to use fallback opaque parents. Opaque parent %{public}@ (fallback %{public}@), local opaque parent %{public}@ (fallback %{public}@), searchOpaqueRemoteParents %i,", buf, 0x30u);
+      _os_log_debug_impl(&_mh_execute_header, fallbackOpaqueParent2, OS_LOG_TYPE_DEBUG, "Had to use fallback opaque parents. Opaque parent %{public}@ (fallback %{public}@), local opaque parent %{public}@ (fallback %{public}@), searchOpaqueRemoteParents %i,", buf, 0x30u);
     }
 
 LABEL_19:
@@ -1550,9 +1550,9 @@ LABEL_212:
   self->_retrievingAllElements = 0;
 }
 
-- (void)countElementsMatchingBlock:(id)a3
+- (void)countElementsMatchingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1566,7 +1566,7 @@ LABEL_212:
   block[5] = &v10;
   dispatch_sync(countGenerationQueue, block);
   self->_cacheSize = 1000;
-  v6 = [v4 copy];
+  v6 = [blockCopy copy];
   fillerThread = self->_fillerThread;
   v8 = [NSNumber numberWithUnsignedLongLong:v11[3]];
   [(SCRCThread *)fillerThread performSelector:"_countElementsMatchingBlock:generation:" onTarget:self cancelMask:1 count:2 objects:v6, v8];
@@ -1574,12 +1574,12 @@ LABEL_212:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)searchForElementInDirection:(int64_t)a3 fromElement:(id)a4 needsForceCacheUpdate:(BOOL)a5 matchBlock:(id)a6 rangeMatch:(id)a7 searchType:(int64_t)a8 generation:(unint64_t)a9 startingRange:(_NSRange)a10 groupNavigationStyle:(BOOL)a11 peeking:(BOOL)a12
+- (void)searchForElementInDirection:(int64_t)direction fromElement:(id)element needsForceCacheUpdate:(BOOL)update matchBlock:(id)block rangeMatch:(id)match searchType:(int64_t)type generation:(unint64_t)generation startingRange:(_NSRange)self0 groupNavigationStyle:(BOOL)self1 peeking:(BOOL)self2
 {
-  v15 = a5;
-  v18 = a4;
-  v52 = a6;
-  v53 = a7;
+  updateCopy = update;
+  elementCopy = element;
+  blockCopy = block;
+  matchCopy = match;
   v55 = 0;
   v56[0] = &v55;
   v56[1] = 0x2020000000;
@@ -1600,9 +1600,9 @@ LABEL_212:
     sub_10013079C(v56);
   }
 
-  v21 = v18;
-  v22 = [v21 opaqueParent];
-  v23 = [v21 localOpaqueParent];
+  v21 = elementCopy;
+  opaqueParent = [v21 opaqueParent];
+  localOpaqueParent = [v21 localOpaqueParent];
   [v21 centerPoint];
   MidX = v24;
   MidY = v26;
@@ -1649,7 +1649,7 @@ LABEL_212:
     }
   }
 
-  v34 = [v21 windowContextId];
+  windowContextId = [v21 windowContextId];
   v35 = +[VOTElement systemWideElement];
   [v35 convertPoint:objc_msgSend(v21 fromContextId:{"windowContextId"), MidX, MidY}];
   v37 = v36;
@@ -1667,7 +1667,7 @@ LABEL_212:
     *buf = 138543874;
     v58 = v49;
     v59 = 1024;
-    v60 = v34;
+    v60 = windowContextId;
     v61 = 2114;
     v51 = v50;
     v62 = v50;
@@ -1678,7 +1678,7 @@ LABEL_212:
   if (!v21)
   {
     v41 = 0;
-    if (v22)
+    if (opaqueParent)
     {
       v42 = VOTLogElement();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -1686,10 +1686,10 @@ LABEL_212:
         v64.x = v37;
         v64.y = v39;
         v43 = NSStringFromCGPoint(v64);
-        sub_10013086C(v22, v43, buf, v42);
+        sub_10013086C(opaqueParent, v43, buf, v42);
       }
 
-      v41 = [(VOTElementFetcher *)self _hitTestedElementForOriginalElement:0 hitTestPoint:v22 opaqueParent:v37, v39];
+      v41 = [(VOTElementFetcher *)self _hitTestedElementForOriginalElement:0 hitTestPoint:opaqueParent opaqueParent:v37, v39];
       if (v41)
       {
         v44 = VOTLogElement();
@@ -1703,23 +1703,23 @@ LABEL_212:
     }
   }
 
-  if (v41 || !v22)
+  if (v41 || !opaqueParent)
   {
     WeakRetained = objc_alloc_init(VOTElementFetcherSearchParameters);
-    [(VOTElementFetcherSearchParameters *)WeakRetained setDirection:a3];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setDirection:direction];
     [(VOTElementFetcherSearchParameters *)WeakRetained setElement:v41];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setNeedsForceCacheUpdate:v15];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setMatchBlock:v52];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setRangeBlock:v53];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setSearchType:a8];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setStartingRange:a10.location, a10.length];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setFallbackOpaqueParent:v22];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setFallbackLocalOpaqueParent:v23];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setNeedsForceCacheUpdate:updateCopy];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setMatchBlock:blockCopy];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setRangeBlock:matchCopy];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setSearchType:type];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setStartingRange:range.location, range.length];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setFallbackOpaqueParent:opaqueParent];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setFallbackLocalOpaqueParent:localOpaqueParent];
     [(VOTElementFetcherSearchParameters *)WeakRetained setHitTestPoint:v37, v39];
     [(VOTElementFetcherSearchParameters *)WeakRetained setGeneration:*(v56[0] + 24)];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setClientGeneration:a9];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setGroupNavigationStyle:a11];
-    [(VOTElementFetcherSearchParameters *)WeakRetained setPeeking:a12];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setClientGeneration:generation];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setGroupNavigationStyle:style];
+    [(VOTElementFetcherSearchParameters *)WeakRetained setPeeking:peeking];
     if ([(VOTElementFetcher *)self shouldPerformSearchSynchronously])
     {
       [(VOTElementFetcher *)self _searchForElementWithParameters:WeakRetained];
@@ -1740,8 +1740,8 @@ LABEL_212:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v48 = [VOTElementFetchFoundData fetchFoundData:0 forceUpdate:v15 direction:a3 generation:a9 range:0x7FFFFFFFLL searchType:0, a8];
-    [(VOTElementFetcherSearchParameters *)WeakRetained elementFetchFound:v48];
+    type = [VOTElementFetchFoundData fetchFoundData:0 forceUpdate:updateCopy direction:direction generation:generation range:0x7FFFFFFFLL searchType:0, type];
+    [(VOTElementFetcherSearchParameters *)WeakRetained elementFetchFound:type];
   }
 
   _Block_object_dispose(&v55, 8);
@@ -1771,10 +1771,10 @@ LABEL_212:
   [WeakRetained elementsRetrieved:v3 finished:!self->_retrievingAllElements];
 }
 
-- (void)_retrieveElementsWithElement:(id)a3 groupNavigationStyle:(id)a4
+- (void)_retrieveElementsWithElement:(id)element groupNavigationStyle:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  styleCopy = style;
   if (!self->_retrievingAllElements)
   {
     goto LABEL_49;
@@ -1786,28 +1786,28 @@ LABEL_212:
   if (v8)
   {
     v9 = [(NSMutableArray *)self->_elementCache objectAtIndex:0];
-    v10 = [(NSMutableArray *)self->_elementCache lastObject];
+    lastObject = [(NSMutableArray *)self->_elementCache lastObject];
   }
 
   else
   {
-    v11 = [v6 opaqueParent];
-    v12 = v11;
-    if (v11)
+    opaqueParent = [elementCopy opaqueParent];
+    v12 = opaqueParent;
+    if (opaqueParent)
     {
-      v13 = v11;
+      v13 = opaqueParent;
 
-      v6 = v13;
+      elementCopy = v13;
     }
 
-    v10 = v6;
-    if (v10)
+    lastObject = elementCopy;
+    if (lastObject)
     {
-      [(NSMutableArray *)self->_elementCache addObject:v10];
+      [(NSMutableArray *)self->_elementCache addObject:lastObject];
     }
 
-    v9 = v10;
-    v6 = v10;
+    v9 = lastObject;
+    elementCopy = lastObject;
   }
 
   v14 = VOTLogElement();
@@ -1819,9 +1819,9 @@ LABEL_212:
   v15 = +[NSNull null];
 
   v16 = 1;
-  if (v10 != v15)
+  if (lastObject != v15)
   {
-    v17 = [v10 elementsInDirection:1 withCount:300];
+    v17 = [lastObject elementsInDirection:1 withCount:300];
     if (v17)
     {
       [(NSLock *)self->_cacheLock lock];
@@ -1849,7 +1849,7 @@ LABEL_212:
 
   v22 = +[NSNull null];
 
-  v43 = v6;
+  v43 = elementCopy;
   v42 = v9;
   if (v9 == v22)
   {
@@ -1869,10 +1869,10 @@ LABEL_30:
       v24 = v23;
       [(NSLock *)self->_cacheLock lock];
       v25 = self->_elementCache;
-      v26 = [v24 reverseObjectEnumerator];
-      v27 = [v26 allObjects];
+      reverseObjectEnumerator = [v24 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
       v28 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v24 count]);
-      [(NSMutableArray *)v25 insertObjects:v27 atIndexes:v28];
+      [(NSMutableArray *)v25 insertObjects:allObjects atIndexes:v28];
 
       if ([v24 count] > 0x12B)
       {
@@ -1906,7 +1906,7 @@ LABEL_30:
   v48[2] = sub_1000F78E4;
   v48[3] = &unk_1001C7778;
   v48[4] = self;
-  v49 = v7;
+  v49 = styleCopy;
   [(VOTElementFetcher *)self performAsyncBlock:v48 forThreadKey:self->_fillerThreadKey];
 
 LABEL_31:
@@ -1933,15 +1933,15 @@ LABEL_31:
 
         v38 = *(*(&v44 + 1) + 8 * i);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v38 isAccessibilityOpaqueElementProvider] && (!v7 || (objc_msgSend(v38, "isAccessibleGroup") & 1) == 0))
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [v38 isAccessibilityOpaqueElementProvider] && (!styleCopy || (objc_msgSend(v38, "isAccessibleGroup") & 1) == 0))
         {
-          v39 = [v38 visibleOpaqueElements];
-          if ([v39 count])
+          visibleOpaqueElements = [v38 visibleOpaqueElements];
+          if ([visibleOpaqueElements count])
           {
             v40 = [(NSMutableArray *)self->_elementCache indexOfObject:v38];
             if (v40 != 0x7FFFFFFFFFFFFFFFLL)
             {
-              [(NSMutableArray *)self->_elementCache replaceObjectsInRange:v40 withObjectsFromArray:1, v39];
+              [(NSMutableArray *)self->_elementCache replaceObjectsInRange:v40 withObjectsFromArray:1, visibleOpaqueElements];
             }
           }
         }
@@ -1961,21 +1961,21 @@ LABEL_31:
   }
 
   [(VOTElementFetcher *)self _informDelegateOfRetrieveElements];
-  v6 = v43;
+  elementCopy = v43;
 LABEL_49:
 }
 
-- (void)retrieveElementsWithElement:(id)a3 groupNavigationStyle:(BOOL)a4
+- (void)retrieveElementsWithElement:(id)element groupNavigationStyle:(BOOL)style
 {
   if (!self->_retrievingAllElements)
   {
-    v5 = a4;
+    styleCopy = style;
     self->_retrievingAllElements = 1;
-    v7 = a3;
+    elementCopy = element;
     [(VOTElementFetcher *)self _informDelegateOfRetrieveElements];
     fillerThread = self->_fillerThread;
-    v9 = [NSNumber numberWithBool:v5];
-    [(SCRCThread *)fillerThread performSelector:"_retrieveElementsWithElement:groupNavigationStyle:" onTarget:self cancelMask:1 count:2 objects:v7, v9];
+    v9 = [NSNumber numberWithBool:styleCopy];
+    [(SCRCThread *)fillerThread performSelector:"_retrieveElementsWithElement:groupNavigationStyle:" onTarget:self cancelMask:1 count:2 objects:elementCopy, v9];
   }
 }
 
@@ -1988,17 +1988,17 @@ LABEL_49:
   return v3;
 }
 
-- (void)fillCacheWithElements:(id)a3
+- (void)fillCacheWithElements:(id)elements
 {
   cacheLock = self->_cacheLock;
-  v5 = a3;
+  elementsCopy = elements;
   [(NSLock *)cacheLock lock];
   [(NSMutableArray *)self->_elementCache removeAllObjects];
   elementCache = self->_elementCache;
   v7 = +[NSNull null];
   [(NSMutableArray *)elementCache addObject:v7];
 
-  [(NSMutableArray *)self->_elementCache addObjectsFromArray:v5];
+  [(NSMutableArray *)self->_elementCache addObjectsFromArray:elementsCopy];
   v8 = self->_elementCache;
   v9 = +[NSNull null];
   [(NSMutableArray *)v8 addObject:v9];

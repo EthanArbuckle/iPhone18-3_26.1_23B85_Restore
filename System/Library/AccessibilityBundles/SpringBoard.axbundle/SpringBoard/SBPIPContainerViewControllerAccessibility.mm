@@ -1,42 +1,42 @@
 @interface SBPIPContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axExpandPIPWindow;
 - (BOOL)_axShrinkPIPWindow;
 - (BOOL)accessibilityActivate;
-- (id)_announcementStringForQuadrant:(int)a3;
+- (id)_announcementStringForQuadrant:(int)quadrant;
 - (id)accessibilityCustomActions;
 - (int)_quadrantForContentView;
-- (void)_postAnnouncement:(id)a3;
-- (void)interactionControllerDidEndAllInteractions:(id)a3 targetWindowScene:(id)a4;
-- (void)setNeedsLayoutForInteractionController:(id)a3 traits:(unint64_t)a4 withReason:(unint64_t)a5 behavior:(int)a6 completion:(id)a7;
+- (void)_postAnnouncement:(id)announcement;
+- (void)interactionControllerDidEndAllInteractions:(id)interactions targetWindowScene:(id)scene;
+- (void)setNeedsLayoutForInteractionController:(id)controller traits:(unint64_t)traits withReason:(unint64_t)reason behavior:(int)behavior completion:(id)completion;
 @end
 
 @implementation SBPIPContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBPIPContainerViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"setNeedsLayoutForInteractionController:traits:withReason:behavior:completion:" withFullSignature:{"v", "@", "Q", "Q", "i", "@?", 0}];
-  [v3 validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"interactionControllerDidEndAllInteractions:targetWindowScene:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBPIPContainerViewController" hasInstanceVariable:@"_contentView" withType:"UIView"];
-  [v3 validateClass:@"SBPIPPegasusContainerAdapter" hasInstanceVariable:@"_pictureInPictureViewController" withType:"PGPictureInPictureViewController"];
-  [v3 validateClass:@"SBPIPContainerViewController" hasInstanceVariable:@"_adapter" withType:"<SBPIPContainerViewControllerAdapter>"];
-  [v3 validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"SB_accessibilitySetContentViewScale:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"SB_accessibilityContentViewScale" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"PGControlsContainerView" hasInstanceMethod:@"_handleSingleTapGestureRecognizer:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"SB_accessibilityToggleStashed" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashed:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashTabHidden:left:withSpringBehavior:" withFullSignature:{"v", "B", "B", "@", 0}];
-  [v3 validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashProgress:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBPIPContainerViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"setNeedsLayoutForInteractionController:traits:withReason:behavior:completion:" withFullSignature:{"v", "@", "Q", "Q", "i", "@?", 0}];
+  [validationsCopy validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"interactionControllerDidEndAllInteractions:targetWindowScene:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBPIPContainerViewController" hasInstanceVariable:@"_contentView" withType:"UIView"];
+  [validationsCopy validateClass:@"SBPIPPegasusContainerAdapter" hasInstanceVariable:@"_pictureInPictureViewController" withType:"PGPictureInPictureViewController"];
+  [validationsCopy validateClass:@"SBPIPContainerViewController" hasInstanceVariable:@"_adapter" withType:"<SBPIPContainerViewControllerAdapter>"];
+  [validationsCopy validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"SB_accessibilitySetContentViewScale:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"SB_accessibilityContentViewScale" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"PGControlsContainerView" hasInstanceMethod:@"_handleSingleTapGestureRecognizer:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBPIPContainerViewController" hasInstanceMethod:@"SB_accessibilityToggleStashed" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashed:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashTabHidden:left:withSpringBehavior:" withFullSignature:{"v", "B", "B", "@", 0}];
+  [validationsCopy validateClass:@"PGPictureInPictureViewController" hasInstanceMethod:@"setStashProgress:" withFullSignature:{"v", "d", 0}];
 }
 
-- (void)interactionControllerDidEndAllInteractions:(id)a3 targetWindowScene:(id)a4
+- (void)interactionControllerDidEndAllInteractions:(id)interactions targetWindowScene:(id)scene
 {
   v9.receiver = self;
   v9.super_class = SBPIPContainerViewControllerAccessibility;
-  [(SBPIPContainerViewControllerAccessibility *)&v9 interactionControllerDidEndAllInteractions:a3 targetWindowScene:a4];
+  [(SBPIPContainerViewControllerAccessibility *)&v9 interactionControllerDidEndAllInteractions:interactions targetWindowScene:scene];
   PIPAXCurrentQuad = [(SBPIPContainerViewControllerAccessibility *)self _quadrantForContentView];
   v5 = MEMORY[0x29EDBA0F8];
   v6 = accessibilityLocalizedString(@"pip.window.moving.end");
@@ -47,16 +47,16 @@
   PIPAXCurrentQuad = -1;
 }
 
-- (void)setNeedsLayoutForInteractionController:(id)a3 traits:(unint64_t)a4 withReason:(unint64_t)a5 behavior:(int)a6 completion:(id)a7
+- (void)setNeedsLayoutForInteractionController:(id)controller traits:(unint64_t)traits withReason:(unint64_t)reason behavior:(int)behavior completion:(id)completion
 {
   v9 = PIPAXCurrentQuad;
   v13.receiver = self;
   v13.super_class = SBPIPContainerViewControllerAccessibility;
-  [(SBPIPContainerViewControllerAccessibility *)&v13 setNeedsLayoutForInteractionController:a3 traits:a4 withReason:a5 behavior:*&a6 completion:a7];
-  if (a5 == 128)
+  [(SBPIPContainerViewControllerAccessibility *)&v13 setNeedsLayoutForInteractionController:controller traits:traits withReason:reason behavior:*&behavior completion:completion];
+  if (reason == 128)
   {
-    v10 = [(SBPIPContainerViewControllerAccessibility *)self _quadrantForContentView];
-    PIPAXCurrentQuad = v10;
+    _quadrantForContentView = [(SBPIPContainerViewControllerAccessibility *)self _quadrantForContentView];
+    PIPAXCurrentQuad = _quadrantForContentView;
     if (v9 == -1)
     {
       v11 = accessibilityLocalizedString(@"pip.window.moving.start");
@@ -64,12 +64,12 @@
 
     else
     {
-      if (v9 == v10)
+      if (v9 == _quadrantForContentView)
       {
         return;
       }
 
-      v11 = [(SBPIPContainerViewControllerAccessibility *)self _announcementStringForQuadrant:v10];
+      v11 = [(SBPIPContainerViewControllerAccessibility *)self _announcementStringForQuadrant:_quadrantForContentView];
     }
 
     v12 = v11;
@@ -182,16 +182,16 @@ void __62__SBPIPContainerViewControllerAccessibility__axStashPIPWindow__block_in
   return 1;
 }
 
-- (void)_postAnnouncement:(id)a3
+- (void)_postAnnouncement:(id)announcement
 {
   v9[1] = *MEMORY[0x29EDCA608];
   v3 = MEMORY[0x29EDB9F30];
-  v4 = a3;
+  announcementCopy = announcement;
   v5 = [v3 alloc];
   v8 = *MEMORY[0x29EDBD860];
   v9[0] = &unk_2A230C940;
   v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  v7 = [v5 initWithString:v4 attributes:v6];
+  v7 = [v5 initWithString:announcementCopy attributes:v6];
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v7);
 }
@@ -239,16 +239,16 @@ void __62__SBPIPContainerViewControllerAccessibility__axStashPIPWindow__block_in
   }
 }
 
-- (id)_announcementStringForQuadrant:(int)a3
+- (id)_announcementStringForQuadrant:(int)quadrant
 {
-  if ((a3 - 1) > 3)
+  if ((quadrant - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityLocalizedString(off_29F2FC148[a3 - 1]);
+    v4 = accessibilityLocalizedString(off_29F2FC148[quadrant - 1]);
   }
 
   return v4;

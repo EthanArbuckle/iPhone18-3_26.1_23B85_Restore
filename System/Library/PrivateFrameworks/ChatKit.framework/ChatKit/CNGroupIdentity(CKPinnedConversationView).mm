@@ -9,7 +9,7 @@
   v31 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v20 = [a1 contacts];
+  contacts = [self contacts];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -34,7 +34,7 @@
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v11 = v20;
+        v11 = contacts;
         v12 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v12)
         {

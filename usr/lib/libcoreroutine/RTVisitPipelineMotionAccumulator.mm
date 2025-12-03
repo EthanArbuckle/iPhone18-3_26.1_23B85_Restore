@@ -1,17 +1,17 @@
 @interface RTVisitPipelineMotionAccumulator
-- (RTVisitPipelineMotionAccumulator)initWithParams:(id)a3 processInReverse:(BOOL)a4;
+- (RTVisitPipelineMotionAccumulator)initWithParams:(id)params processInReverse:(BOOL)reverse;
 - (id)getTrimDate;
-- (void)finishMotionObservations:(id)a3;
-- (void)processMotionActivity:(id)a3;
+- (void)finishMotionObservations:(id)observations;
+- (void)processMotionActivity:(id)activity;
 @end
 
 @implementation RTVisitPipelineMotionAccumulator
 
-- (RTVisitPipelineMotionAccumulator)initWithParams:(id)a3 processInReverse:(BOOL)a4
+- (RTVisitPipelineMotionAccumulator)initWithParams:(id)params processInReverse:(BOOL)reverse
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  paramsCopy = params;
+  if (!paramsCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_params, a3);
-    v10->_processActivitiesReverse = a4;
+    objc_storeStrong(&v9->_params, params);
+    v10->_processActivitiesReverse = reverse;
     v10->_foundIntervalToTrim = 0;
     v10->_runningScoreHighConfidence = 0.0;
     v10->_runningScoreMediumConfidence = 0.0;
@@ -40,19 +40,19 @@
   return v10;
 }
 
-- (void)processMotionActivity:(id)a3
+- (void)processMotionActivity:(id)activity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  activityCopy = activity;
+  v6 = activityCopy;
   if (!self->_foundIntervalToTrim)
   {
     p_lastObservedMotionActivity = &self->_lastObservedMotionActivity;
     if (self->_lastObservedMotionActivity)
     {
-      v8 = [v5 startDate];
-      v9 = [(RTMotionActivity *)self->_lastObservedMotionActivity startDate];
-      [v8 timeIntervalSinceDate:v9];
+      startDate = [activityCopy startDate];
+      startDate2 = [(RTMotionActivity *)self->_lastObservedMotionActivity startDate];
+      [startDate timeIntervalSinceDate:startDate2];
       v11 = v10;
 
       if (self->_processActivitiesReverse)
@@ -66,14 +66,14 @@
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           processActivitiesReverse = self->_processActivitiesReverse;
-          v24 = [(RTMotionActivity *)self->_lastObservedMotionActivity startDate];
-          v25 = [v6 startDate];
+          startDate3 = [(RTMotionActivity *)self->_lastObservedMotionActivity startDate];
+          startDate4 = [v6 startDate];
           v26 = 67110146;
           *v27 = processActivitiesReverse;
           *&v27[4] = 2112;
-          *&v27[6] = v24;
+          *&v27[6] = startDate3;
           v28 = 2112;
-          v29 = v25;
+          v29 = startDate4;
           v30 = 2080;
           v31 = "[RTVisitPipelineMotionAccumulator processMotionActivity:]";
           v32 = 1024;
@@ -88,9 +88,9 @@
         {
           if (!self->_intervalStartDate)
           {
-            v13 = [(RTMotionActivity *)self->_lastObservedMotionActivity startDate];
+            startDate5 = [(RTMotionActivity *)self->_lastObservedMotionActivity startDate];
             intervalStartDate = self->_intervalStartDate;
-            self->_intervalStartDate = v13;
+            self->_intervalStartDate = startDate5;
           }
 
           if ([(RTMotionActivity *)*p_lastObservedMotionActivity confidence]== 2)
@@ -142,24 +142,24 @@
 
     else
     {
-      objc_storeStrong(&self->_lastObservedMotionActivity, a3);
+      objc_storeStrong(&self->_lastObservedMotionActivity, activity);
       if (!+[RTVisitPipelineMotionAccumulator isActivityTypeMotionTrimmable:](RTVisitPipelineMotionAccumulator, "isActivityTypeMotionTrimmable:", [v6 type]))
       {
         goto LABEL_25;
       }
     }
 
-    objc_storeStrong(p_lastObservedMotionActivity, a3);
+    objc_storeStrong(p_lastObservedMotionActivity, activity);
   }
 
 LABEL_25:
 }
 
-- (void)finishMotionObservations:(id)a3
+- (void)finishMotionObservations:(id)observations
 {
   v4 = MEMORY[0x277D011B8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithType:0 confidence:2 startDate:v5];
+  observationsCopy = observations;
+  v6 = [[v4 alloc] initWithType:0 confidence:2 startDate:observationsCopy];
 
   [(RTVisitPipelineMotionAccumulator *)self processMotionActivity:v6];
 }

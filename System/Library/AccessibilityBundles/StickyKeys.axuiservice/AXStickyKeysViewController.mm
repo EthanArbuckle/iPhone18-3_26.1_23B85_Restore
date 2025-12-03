@@ -1,10 +1,10 @@
 @interface AXStickyKeysViewController
 - (AXStickyKeysViewController)init;
-- (id)_stringForKeycode:(unsigned __int16)a3 usagePage:(unsigned int)a4;
+- (id)_stringForKeycode:(unsigned __int16)keycode usagePage:(unsigned int)page;
 - (void)_removeCapsLockIfNeeded;
 - (void)dealloc;
 - (void)loadView;
-- (void)resetWithCompletion:(id)a3;
+- (void)resetWithCompletion:(id)completion;
 @end
 
 @implementation AXStickyKeysViewController
@@ -51,29 +51,29 @@
   [(AXStickyKeysViewController *)self setView:v3];
 }
 
-- (void)resetWithCompletion:(id)a3
+- (void)resetWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AXStickyKeysViewController *)self _stickyKeysView];
-  [v5 removeAllStickyKeyStringsWithCompletion:v4];
+  completionCopy = completion;
+  _stickyKeysView = [(AXStickyKeysViewController *)self _stickyKeysView];
+  [_stickyKeysView removeAllStickyKeyStringsWithCompletion:completionCopy];
 }
 
 - (void)_removeCapsLockIfNeeded
 {
   if (!UIAccessibilityIsVoiceOverRunning() || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 voiceOverKeyboardModifierChoice], v3, (v4 & 2) == 0))
   {
-    v5 = [(AXStickyKeysViewController *)self _stickyKeysView];
-    [v5 removeStickyKeyString:@"⇪"];
+    _stickyKeysView = [(AXStickyKeysViewController *)self _stickyKeysView];
+    [_stickyKeysView removeStickyKeyString:@"⇪"];
   }
 }
 
-- (id)_stringForKeycode:(unsigned __int16)a3 usagePage:(unsigned int)a4
+- (id)_stringForKeycode:(unsigned __int16)keycode usagePage:(unsigned int)page
 {
-  if (a4 != 7)
+  if (page != 7)
   {
     v4 = 0;
-    v6 = a4 == 255 || a4 == 65281;
-    if (a3 != 3 || !v6)
+    v6 = page == 255 || page == 65281;
+    if (keycode != 3 || !v6)
     {
       goto LABEL_29;
     }
@@ -83,15 +83,15 @@
   }
 
   v4 = 0;
-  if (a3 > 226)
+  if (keycode > 226)
   {
-    if (a3 > 228)
+    if (keycode > 228)
     {
-      if (a3 != 229)
+      if (keycode != 229)
       {
-        if (a3 != 230)
+        if (keycode != 230)
         {
-          if (a3 != 231)
+          if (keycode != 231)
           {
             goto LABEL_29;
           }
@@ -105,7 +105,7 @@
       goto LABEL_26;
     }
 
-    if (a3 == 227)
+    if (keycode == 227)
     {
 LABEL_27:
       v8 = "⌘";
@@ -117,9 +117,9 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  if (a3 > 224)
+  if (keycode > 224)
   {
-    if (a3 != 225)
+    if (keycode != 225)
     {
 LABEL_23:
       v8 = "⌥";
@@ -133,7 +133,7 @@ LABEL_26:
     goto LABEL_28;
   }
 
-  if (a3 == 57)
+  if (keycode == 57)
   {
     if (!UIAccessibilityIsVoiceOverRunning() || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 voiceOverKeyboardModifierChoice], v10, (v11 & 2) == 0))
     {
@@ -147,7 +147,7 @@ LABEL_17:
     goto LABEL_29;
   }
 
-  if (a3 == 224)
+  if (keycode == 224)
   {
     goto LABEL_25;
   }

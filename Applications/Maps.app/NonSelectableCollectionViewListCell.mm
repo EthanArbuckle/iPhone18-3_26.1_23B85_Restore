@@ -1,6 +1,6 @@
 @interface NonSelectableCollectionViewListCell
 + (id)reuseIdentifier;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation NonSelectableCollectionViewListCell
@@ -12,7 +12,7 @@
   return NSStringFromClass(v2);
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v4 = +[UIBackgroundConfiguration clearConfiguration];
   [(NonSelectableCollectionViewListCell *)self setBackgroundConfiguration:v4];

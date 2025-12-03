@@ -1,32 +1,32 @@
 @interface FRArticleContentPool
-- (FRArticleContentPool)initWithCloudContext:(id)a3 dataProviderFactory:(id)a4;
-- (id)_createEntryForHeadline:(id)a3;
-- (id)_entryForHeadline:(id)a3;
-- (id)contentForHeadline:(id)a3;
-- (id)flintDataProviderForHeadline:(id)a3;
-- (void)_fetchEntryForHeadline:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
+- (FRArticleContentPool)initWithCloudContext:(id)context dataProviderFactory:(id)factory;
+- (id)_createEntryForHeadline:(id)headline;
+- (id)_entryForHeadline:(id)headline;
+- (id)contentForHeadline:(id)headline;
+- (id)flintDataProviderForHeadline:(id)headline;
+- (void)_fetchEntryForHeadline:(id)headline completionQueue:(id)queue completionHandler:(id)handler;
 - (void)_flushIfNeeded;
-- (void)addInterestInArticleWithID:(id)a3;
-- (void)fetchContentForHeadline:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)fetchFlintDataProviderForHeadline:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5;
-- (void)flushContentWithArticleID:(id)a3;
-- (void)removeInterestInArticleWithID:(id)a3;
+- (void)addInterestInArticleWithID:(id)d;
+- (void)fetchContentForHeadline:(id)headline completionQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchFlintDataProviderForHeadline:(id)headline completionQueue:(id)queue completionHandler:(id)handler;
+- (void)flushContentWithArticleID:(id)d;
+- (void)removeInterestInArticleWithID:(id)d;
 @end
 
 @implementation FRArticleContentPool
 
-- (FRArticleContentPool)initWithCloudContext:(id)a3 dataProviderFactory:(id)a4
+- (FRArticleContentPool)initWithCloudContext:(id)context dataProviderFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  factoryCopy = factory;
   v18.receiver = self;
   v18.super_class = FRArticleContentPool;
   v9 = [(FRArticleContentPool *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_dataProviderFactory, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_dataProviderFactory, factory);
     v11 = objc_alloc_init(NSMutableDictionary);
     pool = v10->_pool;
     v10->_pool = v11;
@@ -43,166 +43,166 @@
   return v10;
 }
 
-- (void)addInterestInArticleWithID:(id)a3
+- (void)addInterestInArticleWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   +[NSThread isMainThread];
-  v5 = [(FRArticleContentPool *)self interests];
-  [v5 addObject:v4];
+  interests = [(FRArticleContentPool *)self interests];
+  [interests addObject:dCopy];
 
-  v6 = [(FRArticleContentPool *)self accessDates];
+  accessDates = [(FRArticleContentPool *)self accessDates];
   v7 = +[NSDate date];
-  [v6 setObject:v7 forKey:v4];
+  [accessDates setObject:v7 forKey:dCopy];
 
-  v8 = [(FRArticleContentPool *)self highWaterMark];
-  v9 = [(FRArticleContentPool *)self interests];
-  v10 = [v9 count];
+  highWaterMark = [(FRArticleContentPool *)self highWaterMark];
+  interests2 = [(FRArticleContentPool *)self interests];
+  v10 = [interests2 count];
 
-  if (v8 <= v10)
+  if (highWaterMark <= v10)
   {
     v11 = v10;
   }
 
   else
   {
-    v11 = v8;
+    v11 = highWaterMark;
   }
 
   [(FRArticleContentPool *)self setHighWaterMark:v11];
 }
 
-- (void)removeInterestInArticleWithID:(id)a3
+- (void)removeInterestInArticleWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   +[NSThread isMainThread];
-  v5 = [(FRArticleContentPool *)self interests];
-  [v5 removeObject:v4];
+  interests = [(FRArticleContentPool *)self interests];
+  [interests removeObject:dCopy];
 
-  v6 = [(FRArticleContentPool *)self accessDates];
+  accessDates = [(FRArticleContentPool *)self accessDates];
   v7 = +[NSDate date];
-  [v6 setObject:v7 forKey:v4];
+  [accessDates setObject:v7 forKey:dCopy];
 
   [(FRArticleContentPool *)self _flushIfNeeded];
 }
 
-- (id)contentForHeadline:(id)a3
+- (id)contentForHeadline:(id)headline
 {
-  v4 = a3;
+  headlineCopy = headline;
   +[NSThread isMainThread];
-  v5 = [(FRArticleContentPool *)self _entryForHeadline:v4];
+  v5 = [(FRArticleContentPool *)self _entryForHeadline:headlineCopy];
 
-  v6 = [v5 content];
+  content = [v5 content];
 
-  return v6;
+  return content;
 }
 
-- (void)fetchContentForHeadline:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)fetchContentForHeadline:(id)headline completionQueue:(id)queue completionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100031428;
   v9[3] = &unk_1000C39C0;
-  v10 = a5;
-  v8 = v10;
-  [(FRArticleContentPool *)self _fetchEntryForHeadline:a3 completionQueue:a4 completionHandler:v9];
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  [(FRArticleContentPool *)self _fetchEntryForHeadline:headline completionQueue:queue completionHandler:v9];
 }
 
-- (id)flintDataProviderForHeadline:(id)a3
+- (id)flintDataProviderForHeadline:(id)headline
 {
-  v4 = a3;
+  headlineCopy = headline;
   +[NSThread isMainThread];
-  if ([v4 contentType] == 2)
+  if ([headlineCopy contentType] == 2)
   {
-    v5 = [(FRArticleContentPool *)self _entryForHeadline:v4];
-    v6 = [v5 flintDataProvider];
+    v5 = [(FRArticleContentPool *)self _entryForHeadline:headlineCopy];
+    flintDataProvider = [v5 flintDataProvider];
   }
 
   else
   {
-    v6 = 0;
+    flintDataProvider = 0;
   }
 
-  return v6;
+  return flintDataProvider;
 }
 
-- (void)fetchFlintDataProviderForHeadline:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)fetchFlintDataProviderForHeadline:(id)headline completionQueue:(id)queue completionHandler:(id)handler
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000315D8;
   v9[3] = &unk_1000C39C0;
-  v10 = a5;
-  v8 = v10;
-  [(FRArticleContentPool *)self _fetchEntryForHeadline:a3 completionQueue:a4 completionHandler:v9];
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  [(FRArticleContentPool *)self _fetchEntryForHeadline:headline completionQueue:queue completionHandler:v9];
 }
 
-- (void)flushContentWithArticleID:(id)a3
+- (void)flushContentWithArticleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   +[NSThread isMainThread];
-  if (v5)
+  if (dCopy)
   {
-    v4 = [(FRArticleContentPool *)self pool];
-    [v4 removeObjectForKey:v5];
+    pool = [(FRArticleContentPool *)self pool];
+    [pool removeObjectForKey:dCopy];
   }
 }
 
-- (id)_entryForHeadline:(id)a3
+- (id)_entryForHeadline:(id)headline
 {
-  v4 = a3;
+  headlineCopy = headline;
   +[NSThread isMainThread];
-  v5 = [v4 articleID];
+  articleID = [headlineCopy articleID];
 
-  if (v5)
+  if (articleID)
   {
-    v6 = [(FRArticleContentPool *)self pool];
-    v7 = [v4 articleID];
-    v5 = [v6 objectForKey:v7];
+    pool = [(FRArticleContentPool *)self pool];
+    articleID2 = [headlineCopy articleID];
+    articleID = [pool objectForKey:articleID2];
 
-    if (!v5)
+    if (!articleID)
     {
-      v5 = [(FRArticleContentPool *)self _createEntryForHeadline:v4];
-      v8 = [(FRArticleContentPool *)self pool];
-      v9 = [v4 articleID];
-      [v8 setObject:v5 forKey:v9];
+      articleID = [(FRArticleContentPool *)self _createEntryForHeadline:headlineCopy];
+      pool2 = [(FRArticleContentPool *)self pool];
+      articleID3 = [headlineCopy articleID];
+      [pool2 setObject:articleID forKey:articleID3];
 
       [(FRArticleContentPool *)self _flushIfNeeded];
     }
   }
 
-  return v5;
+  return articleID;
 }
 
-- (void)_fetchEntryForHeadline:(id)a3 completionQueue:(id)a4 completionHandler:(id)a5
+- (void)_fetchEntryForHeadline:(id)headline completionQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(FRArticleContentPool *)self _createEntryForHeadline:v8];
-  v17 = v15 = v8;
-  v18 = v10;
-  v16 = v9;
+  headlineCopy = headline;
+  queueCopy = queue;
+  handlerCopy = handler;
+  [(FRArticleContentPool *)self _createEntryForHeadline:headlineCopy];
+  v17 = v15 = headlineCopy;
+  v18 = handlerCopy;
+  v16 = queueCopy;
   v11 = v17;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v14 = headlineCopy;
   FCPerformBlockOnMainThread();
 }
 
-- (id)_createEntryForHeadline:(id)a3
+- (id)_createEntryForHeadline:(id)headline
 {
-  v4 = a3;
+  headlineCopy = headline;
   v5 = objc_alloc_init(FRArticleContentPoolEntry);
-  v6 = [(FRArticleContentPool *)self context];
-  v7 = [v4 contentWithContext:v6];
+  context = [(FRArticleContentPool *)self context];
+  v7 = [headlineCopy contentWithContext:context];
   [(FRArticleContentPoolEntry *)v5 setContent:v7];
 
-  if ([v4 contentType] == 2)
+  if ([headlineCopy contentType] == 2)
   {
-    v8 = [(FRArticleContentPool *)self dataProviderFactory];
-    v9 = [(FRArticleContentPoolEntry *)v5 content];
-    v10 = [v9 anfContent];
-    v11 = [v8 flintDataProviderForANFContent:v10 headline:v4];
+    dataProviderFactory = [(FRArticleContentPool *)self dataProviderFactory];
+    content = [(FRArticleContentPoolEntry *)v5 content];
+    anfContent = [content anfContent];
+    v11 = [dataProviderFactory flintDataProviderForANFContent:anfContent headline:headlineCopy];
     [(FRArticleContentPoolEntry *)v5 setFlintDataProvider:v11];
   }
 
@@ -212,19 +212,19 @@
 - (void)_flushIfNeeded
 {
   +[NSThread isMainThread];
-  v3 = [(FRArticleContentPool *)self pool];
-  v4 = [v3 count];
-  v5 = [(FRArticleContentPool *)self highWaterMark];
+  pool = [(FRArticleContentPool *)self pool];
+  v4 = [pool count];
+  highWaterMark = [(FRArticleContentPool *)self highWaterMark];
 
-  if (v4 > v5)
+  if (v4 > highWaterMark)
   {
     v6 = +[NSMutableArray array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [(FRArticleContentPool *)self pool];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    pool2 = [(FRArticleContentPool *)self pool];
+    v8 = [pool2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -236,12 +236,12 @@
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(pool2);
           }
 
           v12 = *(*(&v21 + 1) + 8 * v11);
-          v13 = [(FRArticleContentPool *)self interests];
-          v14 = [v13 countForObject:v12];
+          interests = [(FRArticleContentPool *)self interests];
+          v14 = [interests countForObject:v12];
 
           if (!v14)
           {
@@ -252,7 +252,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [pool2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v9);
@@ -266,18 +266,18 @@
     [v6 sortUsingComparator:v20];
     while ([v6 count])
     {
-      v15 = [(FRArticleContentPool *)self pool];
-      v16 = [v15 count];
-      v17 = [(FRArticleContentPool *)self highWaterMark];
+      pool3 = [(FRArticleContentPool *)self pool];
+      v16 = [pool3 count];
+      highWaterMark2 = [(FRArticleContentPool *)self highWaterMark];
 
-      if (v16 <= v17)
+      if (v16 <= highWaterMark2)
       {
         break;
       }
 
-      v18 = [(FRArticleContentPool *)self pool];
-      v19 = [v6 firstObject];
-      [v18 removeObjectForKey:v19];
+      pool4 = [(FRArticleContentPool *)self pool];
+      firstObject = [v6 firstObject];
+      [pool4 removeObjectForKey:firstObject];
 
       [v6 fc_removeFirstObject];
     }

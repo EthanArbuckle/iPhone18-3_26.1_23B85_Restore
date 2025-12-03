@@ -1,15 +1,15 @@
 @interface JavaNetStandardSocketOptions_BooleanSocketOption
-- (JavaNetStandardSocketOptions_BooleanSocketOption)initWithNSString:(id)a3 withInt:(int)a4;
+- (JavaNetStandardSocketOptions_BooleanSocketOption)initWithNSString:(id)string withInt:(int)int;
 @end
 
 @implementation JavaNetStandardSocketOptions_BooleanSocketOption
 
-- (JavaNetStandardSocketOptions_BooleanSocketOption)initWithNSString:(id)a3 withInt:(int)a4
+- (JavaNetStandardSocketOptions_BooleanSocketOption)initWithNSString:(id)string withInt:(int)int
 {
   v7 = JavaLangBoolean_class_();
-  JreStrongAssign(&self->super.name_, a3);
+  JreStrongAssign(&self->super.name_, string);
   JreStrongAssign(&self->super.type_, v7);
-  self->super.socketOption_ = a4;
+  self->super.socketOption_ = int;
   return self;
 }
 

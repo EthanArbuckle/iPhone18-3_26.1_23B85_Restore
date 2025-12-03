@@ -1,39 +1,39 @@
 @interface TSCHRadialBodyLayoutItemPathCache
 - (CGPoint)wedgeCenterPoint;
 - (CGRect)rootedLayoutRect;
-- (TSCHRadialBodyLayoutItemPathCache)initWithSeriesIndex:(unint64_t)a3 rootedLayoutRect:(CGRect)a4 wedgeCenterPoint:(CGPoint)a5 pathLayoutRelative:(CGPath *)a6 pathTransformRelative:(CGPath *)a7 pathSelectionKnobs:(id)a8 innerRadius:(id)a9;
+- (TSCHRadialBodyLayoutItemPathCache)initWithSeriesIndex:(unint64_t)index rootedLayoutRect:(CGRect)rect wedgeCenterPoint:(CGPoint)point pathLayoutRelative:(CGPath *)relative pathTransformRelative:(CGPath *)transformRelative pathSelectionKnobs:(id)knobs innerRadius:(id)radius;
 - (void)dealloc;
 @end
 
 @implementation TSCHRadialBodyLayoutItemPathCache
 
-- (TSCHRadialBodyLayoutItemPathCache)initWithSeriesIndex:(unint64_t)a3 rootedLayoutRect:(CGRect)a4 wedgeCenterPoint:(CGPoint)a5 pathLayoutRelative:(CGPath *)a6 pathTransformRelative:(CGPath *)a7 pathSelectionKnobs:(id)a8 innerRadius:(id)a9
+- (TSCHRadialBodyLayoutItemPathCache)initWithSeriesIndex:(unint64_t)index rootedLayoutRect:(CGRect)rect wedgeCenterPoint:(CGPoint)point pathLayoutRelative:(CGPath *)relative pathTransformRelative:(CGPath *)transformRelative pathSelectionKnobs:(id)knobs innerRadius:(id)radius
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v17 = a4.origin.y;
-  v18 = a4.origin.x;
-  v21 = a8;
-  v22 = a9;
+  y = point.y;
+  x = point.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v17 = rect.origin.y;
+  v18 = rect.origin.x;
+  knobsCopy = knobs;
+  radiusCopy = radius;
   v26.receiver = self;
   v26.super_class = TSCHRadialBodyLayoutItemPathCache;
   v23 = [(TSCHRadialBodyLayoutItemPathCache *)&v26 init];
   v24 = v23;
   if (v23)
   {
-    v23->seriesIndex = a3;
+    v23->seriesIndex = index;
     v23->rootedLayoutRect.origin.x = v18;
     v23->rootedLayoutRect.origin.y = v17;
     v23->rootedLayoutRect.size.width = width;
     v23->rootedLayoutRect.size.height = height;
     v23->wedgeCenterPoint.x = x;
     v23->wedgeCenterPoint.y = y;
-    v23->pathLayoutRelative = CGPathRetain(a6);
-    v24->pathTransformRelative = CGPathRetain(a7);
-    objc_storeStrong(&v24->pathSelectionKnobs, a8);
-    objc_storeStrong(&v24->innerRadius, a9);
+    v23->pathLayoutRelative = CGPathRetain(relative);
+    v24->pathTransformRelative = CGPathRetain(transformRelative);
+    objc_storeStrong(&v24->pathSelectionKnobs, knobs);
+    objc_storeStrong(&v24->innerRadius, radius);
   }
 
   return v24;

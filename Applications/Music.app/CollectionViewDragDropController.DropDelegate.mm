@@ -1,16 +1,16 @@
 @interface CollectionViewDragDropController.DropDelegate
 - (_TtCC5Music32CollectionViewDragDropControllerP33_A2D93B940709760920FE5612D029DD8B12DropDelegate)init;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
 @end
 
 @implementation CollectionViewDragDropController.DropDelegate
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = sub_10010FC20(&unk_10118BCE0);
   __chkstk_darwin(v9 - 8);
   v11 = &v19 - v10;
-  if (a5)
+  if (path)
   {
     static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for IndexPath();
@@ -26,11 +26,11 @@
   v14 = *(&self->super.isa + OBJC_IVAR____TtCC5Music32CollectionViewDragDropControllerP33_A2D93B940709760920FE5612D029DD8B12DropDelegate_onDropSessionDidUpdate);
   if (v14)
   {
-    v15 = a3;
+    viewCopy = view;
     swift_unknownObjectRetain();
-    v16 = self;
+    selfCopy = self;
     sub_100030444(v14);
-    v17 = v14(a4, v11);
+    v17 = v14(update, v11);
     sub_100020438(v14);
 
     swift_unknownObjectRelease();

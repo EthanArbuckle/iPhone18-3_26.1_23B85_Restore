@@ -1,9 +1,9 @@
 @interface CNContactCell
 - (BOOL)hasGapBetweenSeparatorAndTrailingEdge;
-- (CNContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSArray)constantConstraints;
-- (void)_setAnimating:(BOOL)a3 clippingAdjacentCells:(BOOL)a4;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)_setAnimating:(BOOL)animating clippingAdjacentCells:(BOOL)cells;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)prepareForReuse;
 - (void)updateConstraints;
@@ -11,12 +11,12 @@
 
 @implementation CNContactCell
 
-- (void)_setAnimating:(BOOL)a3 clippingAdjacentCells:(BOOL)a4
+- (void)_setAnimating:(BOOL)animating clippingAdjacentCells:(BOOL)cells
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CNContactCell *)self layer];
-  v8 = [v7 allowsGroupBlending];
+  cellsCopy = cells;
+  animatingCopy = animating;
+  layer = [(CNContactCell *)self layer];
+  allowsGroupBlending = [layer allowsGroupBlending];
 
   if (_setAnimating_clippingAdjacentCells__onceToken != -1)
   {
@@ -27,11 +27,11 @@
   {
     v10.receiver = self;
     v10.super_class = CNContactCell;
-    [(CNContactCell *)&v10 _setAnimating:v5 clippingAdjacentCells:v4];
+    [(CNContactCell *)&v10 _setAnimating:animatingCopy clippingAdjacentCells:cellsCopy];
   }
 
-  v9 = [(CNContactCell *)self layer];
-  [v9 setAllowsGroupBlending:v8];
+  layer2 = [(CNContactCell *)self layer];
+  [layer2 setAllowsGroupBlending:allowsGroupBlending];
 }
 
 uint64_t __53__CNContactCell__setAnimating_clippingAdjacentCells___block_invoke()
@@ -41,7 +41,7 @@ uint64_t __53__CNContactCell__setAnimating_clippingAdjacentCells___block_invoke(
   return result;
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -67,16 +67,16 @@ uint64_t __53__CNContactCell__setAnimating_clippingAdjacentCells___block_invoke(
 
   if (!self->_constantConstraints)
   {
-    v3 = [(CNContactCell *)self constantConstraints];
+    constantConstraints = [(CNContactCell *)self constantConstraints];
     constantConstraints = self->_constantConstraints;
-    self->_constantConstraints = v3;
+    self->_constantConstraints = constantConstraints;
 
     [MEMORY[0x1E696ACD8] activateConstraints:self->_constantConstraints];
   }
 
-  v5 = [(CNContactCell *)self variableConstraints];
+  variableConstraints = [(CNContactCell *)self variableConstraints];
   variableConstraints = self->_variableConstraints;
-  self->_variableConstraints = v5;
+  self->_variableConstraints = variableConstraints;
 
   [MEMORY[0x1E696ACD8] activateConstraints:self->_variableConstraints];
   kdebug_trace();
@@ -88,23 +88,23 @@ uint64_t __53__CNContactCell__setAnimating_clippingAdjacentCells___block_invoke(
   [(CNContactCell *)self minCellHeight];
   if (v3 <= 0.0)
   {
-    v9 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
   else
   {
     v4 = MEMORY[0x1E696ACD8];
-    v5 = [(CNContactCell *)self contentView];
+    contentView = [(CNContactCell *)self contentView];
     [(CNContactCell *)self minCellHeight];
-    v7 = [v4 constraintWithItem:v5 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:0.0 constant:v6];
+    v7 = [v4 constraintWithItem:contentView attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:0.0 constant:v6];
 
     LODWORD(v8) = 1148829696;
     [v7 setPriority:v8];
     v11[0] = v7;
-    v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
+    array = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   }
 
-  return v9;
+  return array;
 }
 
 - (BOOL)hasGapBetweenSeparatorAndTrailingEdge
@@ -114,10 +114,10 @@ uint64_t __53__CNContactCell__setAnimating_clippingAdjacentCells___block_invoke(
     return 0;
   }
 
-  v3 = [(CNContactCell *)self traitCollection];
-  v4 = [v3 layoutDirection];
+  traitCollection = [(CNContactCell *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v4 == 1)
+  if (layoutDirection == 1)
   {
     [(CNContactCell *)self _separatorFrame];
     MinX = CGRectGetMinX(v9);
@@ -144,9 +144,9 @@ uint64_t __53__CNContactCell__setAnimating_clippingAdjacentCells___block_invoke(
 
 - (void)dealloc
 {
-  v3 = [(CNContactCell *)self contentView];
-  v4 = [v3 constraints];
-  v5 = [v4 mutableCopy];
+  contentView = [(CNContactCell *)self contentView];
+  constraints = [contentView constraints];
+  v5 = [constraints mutableCopy];
 
   [v5 addObjectsFromArray:self->_constantConstraints];
   [v5 addObjectsFromArray:self->_variableConstraints];
@@ -157,14 +157,14 @@ uint64_t __53__CNContactCell__setAnimating_clippingAdjacentCells___block_invoke(
   [(CNContactCell *)&v6 dealloc];
 }
 
-- (CNContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CNContactCell;
-  v4 = [(CNContactCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNContactCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   [(CNContactCell *)v4 setNeedsUpdateConstraints];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
   return v4;
 }

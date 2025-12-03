@@ -1,16 +1,16 @@
 @interface MKPhotoLibraryAssetDatabase
 - (id)asset;
 - (id)collections;
-- (id)identifiersForCollection:(id)a3 offset:(unint64_t)a4 limit:(unint64_t)a5;
-- (unint64_t)countForCollection:(id)a3;
-- (void)addAsset:(id)a3;
+- (id)identifiersForCollection:(id)collection offset:(unint64_t)offset limit:(unint64_t)limit;
+- (unint64_t)countForCollection:(id)collection;
+- (void)addAsset:(id)asset;
 - (void)close;
-- (void)create:(BOOL)a3;
+- (void)create:(BOOL)create;
 - (void)dealloc;
-- (void)query:(id)a3;
-- (void)remove:(id)a3;
-- (void)removeCollection:(id)a3;
-- (void)setIdentifier:(id)a3 forAsset:(id)a4;
+- (void)query:(id)query;
+- (void)remove:(id)remove;
+- (void)removeCollection:(id)collection;
+- (void)setIdentifier:(id)identifier forAsset:(id)asset;
 @end
 
 @implementation MKPhotoLibraryAssetDatabase
@@ -39,12 +39,12 @@
   }
 }
 
-- (void)query:(id)a3
+- (void)query:(id)query
 {
   ppStmt = 0;
   database = self->_database;
-  v5 = a3;
-  if (sqlite3_prepare_v2(database, [a3 UTF8String], -1, &ppStmt, 0))
+  queryCopy = query;
+  if (sqlite3_prepare_v2(database, [query UTF8String], -1, &ppStmt, 0))
   {
     v6 = +[MKLog log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)create:(BOOL)a3
+- (void)create:(BOOL)create
 {
-  if (!a3)
+  if (!create)
   {
     [(MKPhotoLibraryAssetDatabase *)self query:@"DROP TABLE IF EXISTS assets;"];
     [(MKPhotoLibraryAssetDatabase *)self query:@"DROP TABLE IF EXISTS identifiers;"];
@@ -81,18 +81,18 @@
   [(MKPhotoLibraryAssetDatabase *)self query:@"CREATE TABLE IF NOT EXISTS identifiers (identifier TEXT, collection TEXT);"];
 }
 
-- (void)addAsset:(id)a3
+- (void)addAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
+  assetCopy = asset;
+  v5 = assetCopy;
   p_database = &self->_database;
   if (self->_database)
   {
-    v20 = [v4 size];
-    v7 = [v5 path];
-    v8 = [v5 filename];
-    v22 = [v5 collection];
-    v21 = [v5 originalFilename];
+    v20 = [assetCopy size];
+    path = [v5 path];
+    filename = [v5 filename];
+    collection = [v5 collection];
+    originalFilename = [v5 originalFilename];
     v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(&unk_286AAD428, "count")}];
     if ([&unk_286AAD428 count])
     {
@@ -114,24 +114,24 @@
     if (sqlite3_prepare(*p_database, [v14 UTF8String], -1, &ppStmt, 0))
     {
       v15 = +[MKLog log];
-      v16 = v22;
+      v16 = collection;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         [MKApplicationDatabase query:];
       }
 
-      v17 = v21;
+      v17 = originalFilename;
     }
 
     else
     {
       sqlite3_bind_int64(ppStmt, 1, v20);
-      sqlite3_bind_text(ppStmt, 2, [v7 UTF8String], -1, 0);
-      sqlite3_bind_text(ppStmt, 3, [v8 UTF8String], -1, 0);
-      v16 = v22;
-      if (v22)
+      sqlite3_bind_text(ppStmt, 2, [path UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 3, [filename UTF8String], -1, 0);
+      v16 = collection;
+      if (collection)
       {
-        sqlite3_bind_text(ppStmt, 4, [v22 UTF8String], -1, 0);
+        sqlite3_bind_text(ppStmt, 4, [collection UTF8String], -1, 0);
       }
 
       else
@@ -139,10 +139,10 @@
         sqlite3_bind_null(ppStmt, 4);
       }
 
-      v17 = v21;
-      if (v21)
+      v17 = originalFilename;
+      if (originalFilename)
       {
-        sqlite3_bind_text(ppStmt, 5, [v21 UTF8String], -1, 0);
+        sqlite3_bind_text(ppStmt, 5, [originalFilename UTF8String], -1, 0);
       }
 
       else
@@ -175,8 +175,8 @@
 
   else
   {
-    v7 = +[MKLog log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    path = +[MKLog log];
+    if (os_log_type_enabled(path, OS_LOG_TYPE_ERROR))
     {
       [MKApplicationDatabase addIdentifier:];
     }
@@ -279,17 +279,17 @@ LABEL_13:
   return v10;
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   if (self->_database)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"DELETE FROM assets WHERE rowid = ?"];;
-    v6 = [v4 rowID];
+    rowID = [removeCopy rowID];
     ppStmt = 0;
     if (!sqlite3_prepare(self->_database, [v5 UTF8String], -1, &ppStmt, 0))
     {
-      sqlite3_bind_int64(ppStmt, 1, v6);
+      sqlite3_bind_int64(ppStmt, 1, rowID);
       if (sqlite3_step(ppStmt) == 101)
       {
         --self->_count;
@@ -318,10 +318,10 @@ LABEL_13:
   }
 }
 
-- (void)setIdentifier:(id)a3 forAsset:(id)a4
+- (void)setIdentifier:(id)identifier forAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  assetCopy = asset;
   database = self->_database;
   p_database = &self->_database;
   if (database)
@@ -355,10 +355,10 @@ LABEL_13:
 
     else
     {
-      sqlite3_bind_text(ppStmt, 1, [v6 UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 1, [identifierCopy UTF8String], -1, 0);
       v17 = ppStmt;
-      v18 = [v7 collection];
-      sqlite3_bind_text(v17, 2, [v18 UTF8String], -1, 0);
+      collection = [assetCopy collection];
+      sqlite3_bind_text(v17, 2, [collection UTF8String], -1, 0);
 
       if (sqlite3_step(ppStmt) == 101)
       {
@@ -426,20 +426,20 @@ LABEL_13:
   return v3;
 }
 
-- (id)identifiersForCollection:(id)a3 offset:(unint64_t)a4 limit:(unint64_t)a5
+- (id)identifiersForCollection:(id)collection offset:(unint64_t)offset limit:(unint64_t)limit
 {
-  v8 = a3;
+  collectionCopy = collection;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (self->_database)
   {
     v10 = MEMORY[0x277CCACA8];
     v11 = [&unk_286AAD470 componentsJoinedByString:{@", "}];
-    v12 = [v10 stringWithFormat:@"SELECT %@ FROM identifiers WHERE collection IS NOT NULL AND identifier IS NOT NULL AND collection = ? ORDER BY rowid ASC LIMIT %ld OFFSET %ld", v11, a5, a4];;
+    offset = [v10 stringWithFormat:@"SELECT %@ FROM identifiers WHERE collection IS NOT NULL AND identifier IS NOT NULL AND collection = ? ORDER BY rowid ASC LIMIT %ld OFFSET %ld", v11, limit, offset];;
 
     ppStmt = 0;
-    if (!sqlite3_prepare(self->_database, [v12 UTF8String], -1, &ppStmt, 0))
+    if (!sqlite3_prepare(self->_database, [offset UTF8String], -1, &ppStmt, 0))
     {
-      sqlite3_bind_text(ppStmt, 1, [v8 UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 1, [collectionCopy UTF8String], -1, 0);
       while (sqlite3_step(ppStmt) == 100)
       {
         v13 = sqlite3_column_text(ppStmt, 0);
@@ -462,8 +462,8 @@ LABEL_13:
 
   else
   {
-    v12 = +[MKLog log];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    offset = +[MKLog log];
+    if (os_log_type_enabled(offset, OS_LOG_TYPE_ERROR))
     {
       [MKApplicationDatabase addIdentifier:];
     }
@@ -472,9 +472,9 @@ LABEL_13:
   return v9;
 }
 
-- (unint64_t)countForCollection:(id)a3
+- (unint64_t)countForCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (self->_database)
   {
     ppStmt = 0;
@@ -482,7 +482,7 @@ LABEL_13:
     v6 = 0;
     if (!v5)
     {
-      sqlite3_bind_text(ppStmt, 1, [v4 UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 1, [collectionCopy UTF8String], -1, 0);
       v6 = 0;
       if (sqlite3_step(ppStmt) == 100)
       {
@@ -507,9 +507,9 @@ LABEL_13:
   return v6;
 }
 
-- (void)removeCollection:(id)a3
+- (void)removeCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   database = self->_database;
   p_database = &self->_database;
   if (database)
@@ -518,7 +518,7 @@ LABEL_13:
     ppStmt = 0;
     if (!sqlite3_prepare(*p_database, [v7 UTF8String], -1, &ppStmt, 0))
     {
-      sqlite3_bind_text(ppStmt, 1, [v4 UTF8String], -1, 0);
+      sqlite3_bind_text(ppStmt, 1, [collectionCopy UTF8String], -1, 0);
       if (sqlite3_step(ppStmt) != 101)
       {
         v8 = +[MKLog log];

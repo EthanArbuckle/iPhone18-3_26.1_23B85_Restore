@@ -6,8 +6,8 @@
 
 - (void)start
 {
-  v3 = [(DKDiagnosticController *)self result];
-  [v3 setStatusCode:&unk_2856154B8];
+  result = [(DKDiagnosticController *)self result];
+  [result setStatusCode:&unk_2856154B8];
 
   v4 = objc_alloc_init(SpeedTestConfig);
   cellularTestStartRef = self->cellularTestStartRef;

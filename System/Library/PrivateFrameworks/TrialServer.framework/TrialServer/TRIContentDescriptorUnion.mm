@@ -1,89 +1,89 @@
 @interface TRIContentDescriptorUnion
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUnion:(id)a3;
-- (TRIContentDescriptorUnion)initWithType:(unsigned __int8)a3 experiment:(id)a4 treatment:(id)a5 rollout:(id)a6 factorPackSet:(id)a7;
-- (id)copyWithReplacementExperiment:(id)a3;
-- (id)copyWithReplacementFactorPackSet:(id)a3;
-- (id)copyWithReplacementRollout:(id)a3;
-- (id)copyWithReplacementTreatment:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUnion:(id)union;
+- (TRIContentDescriptorUnion)initWithType:(unsigned __int8)type experiment:(id)experiment treatment:(id)treatment rollout:(id)rollout factorPackSet:(id)set;
+- (id)copyWithReplacementExperiment:(id)experiment;
+- (id)copyWithReplacementFactorPackSet:(id)set;
+- (id)copyWithReplacementRollout:(id)rollout;
+- (id)copyWithReplacementTreatment:(id)treatment;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRIContentDescriptorUnion
 
-- (TRIContentDescriptorUnion)initWithType:(unsigned __int8)a3 experiment:(id)a4 treatment:(id)a5 rollout:(id)a6 factorPackSet:(id)a7
+- (TRIContentDescriptorUnion)initWithType:(unsigned __int8)type experiment:(id)experiment treatment:(id)treatment rollout:(id)rollout factorPackSet:(id)set
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  experimentCopy = experiment;
+  treatmentCopy = treatment;
+  rolloutCopy = rollout;
+  setCopy = set;
   v20.receiver = self;
   v20.super_class = TRIContentDescriptorUnion;
   v17 = [(TRIContentDescriptorUnion *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_type = a3;
-    objc_storeStrong(&v17->_experiment, a4);
-    objc_storeStrong(&v18->_treatment, a5);
-    objc_storeStrong(&v18->_rollout, a6);
-    objc_storeStrong(&v18->_factorPackSet, a7);
+    v17->_type = type;
+    objc_storeStrong(&v17->_experiment, experiment);
+    objc_storeStrong(&v18->_treatment, treatment);
+    objc_storeStrong(&v18->_rollout, rollout);
+    objc_storeStrong(&v18->_factorPackSet, set);
   }
 
   return v18;
 }
 
-- (id)copyWithReplacementExperiment:(id)a3
+- (id)copyWithReplacementExperiment:(id)experiment
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:v4 treatment:self->_treatment rollout:self->_rollout factorPackSet:self->_factorPackSet];
+  experimentCopy = experiment;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:experimentCopy treatment:self->_treatment rollout:self->_rollout factorPackSet:self->_factorPackSet];
 
   return v5;
 }
 
-- (id)copyWithReplacementTreatment:(id)a3
+- (id)copyWithReplacementTreatment:(id)treatment
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:self->_experiment treatment:v4 rollout:self->_rollout factorPackSet:self->_factorPackSet];
+  treatmentCopy = treatment;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:self->_experiment treatment:treatmentCopy rollout:self->_rollout factorPackSet:self->_factorPackSet];
 
   return v5;
 }
 
-- (id)copyWithReplacementRollout:(id)a3
+- (id)copyWithReplacementRollout:(id)rollout
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:self->_experiment treatment:self->_treatment rollout:v4 factorPackSet:self->_factorPackSet];
+  rolloutCopy = rollout;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:self->_experiment treatment:self->_treatment rollout:rolloutCopy factorPackSet:self->_factorPackSet];
 
   return v5;
 }
 
-- (id)copyWithReplacementFactorPackSet:(id)a3
+- (id)copyWithReplacementFactorPackSet:(id)set
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:self->_experiment treatment:self->_treatment rollout:self->_rollout factorPackSet:v4];
+  setCopy = set;
+  v5 = [objc_alloc(objc_opt_class()) initWithType:self->_type experiment:self->_experiment treatment:self->_treatment rollout:self->_rollout factorPackSet:setCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToUnion:(id)a3
+- (BOOL)isEqualToUnion:(id)union
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  unionCopy = union;
+  v5 = unionCopy;
+  if (!unionCopy)
   {
     goto LABEL_15;
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [unionCopy type])
   {
     goto LABEL_15;
   }
 
   v7 = self->_experiment == 0;
-  v8 = [v5 experiment];
-  v9 = v8 != 0;
+  experiment = [v5 experiment];
+  v9 = experiment != 0;
 
   if (v7 == v9)
   {
@@ -93,8 +93,8 @@
   experiment = self->_experiment;
   if (experiment)
   {
-    v11 = [v5 experiment];
-    v12 = [(TRIExperimentDeployment *)experiment isEqual:v11];
+    experiment2 = [v5 experiment];
+    v12 = [(TRIExperimentDeployment *)experiment isEqual:experiment2];
 
     if (!v12)
     {
@@ -103,8 +103,8 @@
   }
 
   v13 = self->_treatment == 0;
-  v14 = [v5 treatment];
-  v15 = v14 != 0;
+  treatment = [v5 treatment];
+  v15 = treatment != 0;
 
   if (v13 == v15)
   {
@@ -114,8 +114,8 @@
   treatment = self->_treatment;
   if (treatment)
   {
-    v17 = [v5 treatment];
-    v18 = [(TRITreatmentContentDescriptor *)treatment isEqual:v17];
+    treatment2 = [v5 treatment];
+    v18 = [(TRITreatmentContentDescriptor *)treatment isEqual:treatment2];
 
     if (!v18)
     {
@@ -124,8 +124,8 @@
   }
 
   v19 = self->_rollout == 0;
-  v20 = [v5 rollout];
-  v21 = v20 != 0;
+  rollout = [v5 rollout];
+  v21 = rollout != 0;
 
   if (v19 == v21)
   {
@@ -135,8 +135,8 @@
   rollout = self->_rollout;
   if (rollout)
   {
-    v23 = [v5 rollout];
-    v24 = [(TRIRolloutDeployment *)rollout isEqual:v23];
+    rollout2 = [v5 rollout];
+    v24 = [(TRIRolloutDeployment *)rollout isEqual:rollout2];
 
     if (!v24)
     {
@@ -145,8 +145,8 @@
   }
 
   v25 = self->_factorPackSet == 0;
-  v26 = [v5 factorPackSet];
-  v27 = v26 != 0;
+  factorPackSet = [v5 factorPackSet];
+  v27 = factorPackSet != 0;
 
   if (v25 == v27)
   {
@@ -159,8 +159,8 @@ LABEL_15:
     factorPackSet = self->_factorPackSet;
     if (factorPackSet)
     {
-      v29 = [v5 factorPackSet];
-      v30 = [(TRIFactorPackSetId *)factorPackSet isEqual:v29];
+      factorPackSet2 = [v5 factorPackSet];
+      v30 = [(TRIFactorPackSetId *)factorPackSet isEqual:factorPackSet2];
     }
 
     else
@@ -172,18 +172,18 @@ LABEL_15:
   return v30 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIContentDescriptorUnion *)self isEqualToUnion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIContentDescriptorUnion *)self isEqualToUnion:v5];
   }
 
   return v6;

@@ -12,9 +12,9 @@
   }
 
   os_unfair_lock_lock(&blt_boundedWaitForActivePairedDevice_deviceLock);
-  v0 = blt_boundedWaitForActivePairedDevice_device;
+  getActivePairedDevice = blt_boundedWaitForActivePairedDevice_device;
   os_unfair_lock_unlock(&blt_boundedWaitForActivePairedDevice_deviceLock);
-  if (!v0)
+  if (!getActivePairedDevice)
   {
     v1 = blt_general_log();
     if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
@@ -22,11 +22,11 @@
       +[(NRPairedDeviceRegistry(BoundedWait) *)v1];
     }
 
-    v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v0 = [v2 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
   }
 
-  return v0;
+  return getActivePairedDevice;
 }
 
 @end

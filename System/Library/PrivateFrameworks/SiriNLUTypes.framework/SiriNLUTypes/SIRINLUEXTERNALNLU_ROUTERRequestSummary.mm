@@ -1,21 +1,21 @@
 @interface SIRINLUEXTERNALNLU_ROUTERRequestSummary
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addTurnSummaries:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTurnSummaries:(id)summaries;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALNLU_ROUTERRequestSummary
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)self setUserQuery:?];
   }
@@ -24,7 +24,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -51,13 +51,13 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((userQuery = self->_userQuery, !(userQuery | v4[2])) || -[NSString isEqual:](userQuery, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((userQuery = self->_userQuery, !(userQuery | equalCopy[2])) || -[NSString isEqual:](userQuery, "isEqual:")))
   {
     turnSummaries = self->_turnSummaries;
-    if (turnSummaries | v4[1])
+    if (turnSummaries | equalCopy[1])
     {
       v7 = [(NSMutableArray *)turnSummaries isEqual:?];
     }
@@ -76,11 +76,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_userQuery copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_userQuery copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -104,7 +104,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addTurnSummaries:v13];
 
         ++v12;
@@ -121,34 +121,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_userQuery)
   {
-    [v8 setUserQuery:?];
+    [toCopy setUserQuery:?];
   }
 
   if ([(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)self turnSummariesCount])
   {
-    [v8 clearTurnSummaries];
-    v4 = [(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)self turnSummariesCount];
-    if (v4)
+    [toCopy clearTurnSummaries];
+    turnSummariesCount = [(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)self turnSummariesCount];
+    if (turnSummariesCount)
     {
-      v5 = v4;
+      v5 = turnSummariesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)self turnSummariesAtIndex:i];
-        [v8 addTurnSummaries:v7];
+        [toCopy addTurnSummaries:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_userQuery)
   {
     PBDataWriterWriteStringField();
@@ -192,12 +192,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   userQuery = self->_userQuery;
   if (userQuery)
   {
-    [v3 setObject:userQuery forKey:@"user_query"];
+    [dictionary setObject:userQuery forKey:@"user_query"];
   }
 
   if ([(NSMutableArray *)self->_turnSummaries count])
@@ -222,8 +222,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -246,28 +246,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALNLU_ROUTERRequestSummary;
   v4 = [(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)&v8 description];
-  v5 = [(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALNLU_ROUTERRequestSummary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTurnSummaries:(id)a3
+- (void)addTurnSummaries:(id)summaries
 {
-  v4 = a3;
+  summariesCopy = summaries;
   turnSummaries = self->_turnSummaries;
-  v8 = v4;
+  v8 = summariesCopy;
   if (!turnSummaries)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_turnSummaries;
     self->_turnSummaries = v6;
 
-    v4 = v8;
+    summariesCopy = v8;
     turnSummaries = self->_turnSummaries;
   }
 
-  [(NSMutableArray *)turnSummaries addObject:v4];
+  [(NSMutableArray *)turnSummaries addObject:summariesCopy];
 }
 
 @end

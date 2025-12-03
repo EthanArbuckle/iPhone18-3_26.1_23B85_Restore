@@ -3,15 +3,15 @@
 - (BOOL)isRemoteAccessDeviceReachable;
 - (BOOL)isUsingCompanionForRemoteAccessDevice;
 - (HMDAccessory)accessory;
-- (HMDCameraResidentMessageHandler)initWithAccessory:(id)a3 logIdentifier:(id)a4;
-- (HMDCameraResidentMessageHandler)initWithAccessory:(id)a3 logIdentifier:(id)a4 messageDispatcher:(id)a5;
+- (HMDCameraResidentMessageHandler)initWithAccessory:(id)accessory logIdentifier:(id)identifier;
+- (HMDCameraResidentMessageHandler)initWithAccessory:(id)accessory logIdentifier:(id)identifier messageDispatcher:(id)dispatcher;
 - (HMDDevice)remoteAccessDevice;
-- (id)nextMessageForDeviceIdentifier:(id)a3;
-- (void)dequeueRespondedMessageForDeviceIdentifier:(id)a3;
-- (void)enqueueMessage:(id)a3 forDeviceIdentifier:(id)a4;
-- (void)sendMessageWithName:(id)a3 cameraSessionID:(id)a4 payload:(id)a5 target:(id)a6 device:(id)a7 responseQueue:(id)a8 responseHandler:(id)a9;
-- (void)sendMessageWithName:(id)a3 cameraSessionID:(id)a4 payload:(id)a5 target:(id)a6 responseQueue:(id)a7 responseHandler:(id)a8;
-- (void)sendNextMessageForDeviceIdentifier:(id)a3;
+- (id)nextMessageForDeviceIdentifier:(id)identifier;
+- (void)dequeueRespondedMessageForDeviceIdentifier:(id)identifier;
+- (void)enqueueMessage:(id)message forDeviceIdentifier:(id)identifier;
+- (void)sendMessageWithName:(id)name cameraSessionID:(id)d payload:(id)payload target:(id)target device:(id)device responseQueue:(id)queue responseHandler:(id)handler;
+- (void)sendMessageWithName:(id)name cameraSessionID:(id)d payload:(id)payload target:(id)target responseQueue:(id)queue responseHandler:(id)handler;
+- (void)sendNextMessageForDeviceIdentifier:(id)identifier;
 @end
 
 @implementation HMDCameraResidentMessageHandler
@@ -23,109 +23,109 @@
   return WeakRetained;
 }
 
-- (void)sendNextMessageForDeviceIdentifier:(id)a3
+- (void)sendNextMessageForDeviceIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraResidentMessageHandler *)self nextMessageForDeviceIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(HMDCameraResidentMessageHandler *)self nextMessageForDeviceIdentifier:identifierCopy];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [v5 shortDescription];
+      shortDescription = [v5 shortDescription];
       v13 = 138543874;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = shortDescription;
       v17 = 2112;
-      v18 = v4;
+      v18 = identifierCopy;
       _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Sending next queued message %@ to device with identifier: %@", &v13, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v11 = [(HMDCameraResidentMessageHandler *)v7 messageDispatcher];
-    [v11 sendMessage:v5];
+    messageDispatcher = [(HMDCameraResidentMessageHandler *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:v5];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextMessageForDeviceIdentifier:(id)a3
+- (id)nextMessageForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 firstObject];
+  queuedMessagesByDeviceIdentifier = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
+  v6 = [queuedMessagesByDeviceIdentifier objectForKeyedSubscript:identifierCopy];
+  firstObject = [v6 firstObject];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v7;
+  return firstObject;
 }
 
-- (void)dequeueRespondedMessageForDeviceIdentifier:(id)a3
+- (void)dequeueRespondedMessageForDeviceIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
-  v5 = [v4 objectForKeyedSubscript:v7];
+  queuedMessagesByDeviceIdentifier = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
+  v5 = [queuedMessagesByDeviceIdentifier objectForKeyedSubscript:identifierCopy];
 
   [v5 hmf_removeFirstObject];
   if (![v5 count])
   {
-    v6 = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
-    [v6 setObject:0 forKeyedSubscript:v7];
+    queuedMessagesByDeviceIdentifier2 = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
+    [queuedMessagesByDeviceIdentifier2 setObject:0 forKeyedSubscript:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)enqueueMessage:(id)a3 forDeviceIdentifier:(id)a4
+- (void)enqueueMessage:(id)message forDeviceIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
+  messageCopy = message;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  queuedMessagesByDeviceIdentifier = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
+  array = [queuedMessagesByDeviceIdentifier objectForKeyedSubscript:identifierCopy];
 
-  if (!v8)
+  if (!array)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    queuedMessagesByDeviceIdentifier2 = [(HMDCameraResidentMessageHandler *)self queuedMessagesByDeviceIdentifier];
+    [queuedMessagesByDeviceIdentifier2 setObject:array forKeyedSubscript:identifierCopy];
   }
 
-  v10 = [v8 count];
-  [v8 addObject:v11];
+  v10 = [array count];
+  [array addObject:messageCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!v10)
   {
-    [(HMDCameraResidentMessageHandler *)self sendNextMessageForDeviceIdentifier:v6];
+    [(HMDCameraResidentMessageHandler *)self sendNextMessageForDeviceIdentifier:identifierCopy];
   }
 }
 
 - (BOOL)isRemoteAccessDeviceReachable
 {
-  v2 = [(HMDCameraResidentMessageHandler *)self accessory];
-  v3 = [v2 home];
-  v4 = [v3 isRemoteAccessDeviceReachable];
+  accessory = [(HMDCameraResidentMessageHandler *)self accessory];
+  home = [accessory home];
+  isRemoteAccessDeviceReachable = [home isRemoteAccessDeviceReachable];
 
-  return v4;
+  return isRemoteAccessDeviceReachable;
 }
 
 - (BOOL)isUsingCompanionForRemoteAccessDevice
 {
-  v3 = [(HMDCameraResidentMessageHandler *)self remoteAccessDevice];
-  v4 = [(HMDCameraResidentMessageHandler *)self accessory];
-  v5 = [v4 home];
-  v6 = [v5 homeManager];
-  v7 = [v6 companionDevice];
-  v8 = [v3 isEqual:v7];
+  remoteAccessDevice = [(HMDCameraResidentMessageHandler *)self remoteAccessDevice];
+  accessory = [(HMDCameraResidentMessageHandler *)self accessory];
+  home = [accessory home];
+  homeManager = [home homeManager];
+  companionDevice = [homeManager companionDevice];
+  v8 = [remoteAccessDevice isEqual:companionDevice];
 
   return v8;
 }
@@ -133,33 +133,33 @@
 - (HMDDevice)remoteAccessDevice
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraResidentMessageHandler *)self accessory];
-  v4 = [v3 home];
+  accessory = [(HMDCameraResidentMessageHandler *)self accessory];
+  home = [accessory home];
 
-  if (v4)
+  if (home)
   {
-    v5 = [v4 homeManager];
-    v6 = [v5 companionDevice];
+    homeManager = [home homeManager];
+    companionDevice = [homeManager companionDevice];
 
-    if (v6)
+    if (companionDevice)
     {
-      v7 = v6;
+      device = companionDevice;
     }
 
     else
     {
-      v12 = [v4 primaryResident];
-      v7 = [v12 device];
+      primaryResident = [home primaryResident];
+      device = [primaryResident device];
 
-      if (v7)
+      if (device)
       {
-        v13 = v7;
+        v13 = device;
       }
 
       else
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
@@ -167,7 +167,7 @@
           v20 = 138543618;
           v21 = v17;
           v22 = 2112;
-          v23 = v4;
+          v23 = home;
           _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to find remote access device for home %@", &v20, 0x16u);
         }
 
@@ -179,7 +179,7 @@
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -190,68 +190,68 @@
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = 0;
+    device = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return device;
 }
 
-- (void)sendMessageWithName:(id)a3 cameraSessionID:(id)a4 payload:(id)a5 target:(id)a6 responseQueue:(id)a7 responseHandler:(id)a8
+- (void)sendMessageWithName:(id)name cameraSessionID:(id)d payload:(id)payload target:(id)target responseQueue:(id)queue responseHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [(HMDCameraResidentMessageHandler *)self remoteAccessDevice];
-  [(HMDCameraResidentMessageHandler *)self sendMessageWithName:v19 cameraSessionID:v18 payload:v17 target:v16 device:v20 responseQueue:v15 responseHandler:v14];
+  handlerCopy = handler;
+  queueCopy = queue;
+  targetCopy = target;
+  payloadCopy = payload;
+  dCopy = d;
+  nameCopy = name;
+  remoteAccessDevice = [(HMDCameraResidentMessageHandler *)self remoteAccessDevice];
+  [(HMDCameraResidentMessageHandler *)self sendMessageWithName:nameCopy cameraSessionID:dCopy payload:payloadCopy target:targetCopy device:remoteAccessDevice responseQueue:queueCopy responseHandler:handlerCopy];
 }
 
-- (void)sendMessageWithName:(id)a3 cameraSessionID:(id)a4 payload:(id)a5 target:(id)a6 device:(id)a7 responseQueue:(id)a8 responseHandler:(id)a9
+- (void)sendMessageWithName:(id)name cameraSessionID:(id)d payload:(id)payload target:(id)target device:(id)device responseQueue:(id)queue responseHandler:(id)handler
 {
   v60 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v19)
+  nameCopy = name;
+  dCopy = d;
+  payloadCopy = payload;
+  targetCopy = target;
+  deviceCopy = device;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (deviceCopy)
   {
-    v38 = [[HMDRemoteDeviceMessageDestination alloc] initWithTarget:v18 device:v19];
-    v41 = v17;
-    v22 = [HMDRemoteMessage secureMessageWithName:"secureMessageWithName:qualityOfService:destination:messagePayload:" qualityOfService:v15 destination:33 messagePayload:?];
-    v23 = [v22 identifier];
+    v38 = [[HMDRemoteDeviceMessageDestination alloc] initWithTarget:targetCopy device:deviceCopy];
+    v41 = payloadCopy;
+    v22 = [HMDRemoteMessage secureMessageWithName:"secureMessageWithName:qualityOfService:destination:messagePayload:" qualityOfService:nameCopy destination:33 messagePayload:?];
+    identifier = [v22 identifier];
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __123__HMDCameraResidentMessageHandler_sendMessageWithName_cameraSessionID_payload_target_device_responseQueue_responseHandler___block_invoke_12;
     v42[3] = &unk_279734780;
-    v40 = v20;
-    v43 = v20;
-    v39 = v21;
-    v47 = v21;
-    v44 = self;
-    v24 = v23;
+    v40 = queueCopy;
+    v43 = queueCopy;
+    v39 = handlerCopy;
+    v47 = handlerCopy;
+    selfCopy = self;
+    v24 = identifier;
     v45 = v24;
-    v25 = v19;
+    v25 = deviceCopy;
     v46 = v25;
     [v22 setResponseHandler:v42];
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
       v29 = v35 = v26;
       [v25 shortDescription];
-      v36 = v18;
-      v31 = v30 = v16;
+      v36 = targetCopy;
+      v31 = v30 = dCopy;
       [v22 shortDescription];
-      v32 = v37 = v15;
+      v32 = v37 = nameCopy;
       *buf = 138544130;
       v53 = v29;
       v54 = 2112;
@@ -262,20 +262,20 @@
       v59 = v32;
       _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@Enqueueing camera message for session ID %@ to %@ using %@", buf, 0x2Au);
 
-      v15 = v37;
-      v16 = v30;
-      v18 = v36;
+      nameCopy = v37;
+      dCopy = v30;
+      targetCopy = v36;
 
       v26 = v35;
     }
 
     objc_autoreleasePoolPop(v26);
-    v33 = [v25 identifier];
-    [(HMDCameraResidentMessageHandler *)v27 enqueueMessage:v22 forDeviceIdentifier:v33];
+    identifier2 = [v25 identifier];
+    [(HMDCameraResidentMessageHandler *)selfCopy2 enqueueMessage:v22 forDeviceIdentifier:identifier2];
 
-    v20 = v40;
-    v17 = v41;
-    v21 = v39;
+    queueCopy = v40;
+    payloadCopy = v41;
+    handlerCopy = v39;
   }
 
   else
@@ -285,10 +285,10 @@
     block[2] = __123__HMDCameraResidentMessageHandler_sendMessageWithName_cameraSessionID_payload_target_device_responseQueue_responseHandler___block_invoke;
     block[3] = &unk_279734578;
     block[4] = self;
-    v49 = v15;
-    v50 = v16;
-    v51 = v21;
-    dispatch_async(v20, block);
+    v49 = nameCopy;
+    v50 = dCopy;
+    v51 = handlerCopy;
+    dispatch_async(queueCopy, block);
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -364,26 +364,26 @@ void __123__HMDCameraResidentMessageHandler_sendMessageWithName_cameraSessionID_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraResidentMessageHandler)initWithAccessory:(id)a3 logIdentifier:(id)a4 messageDispatcher:(id)a5
+- (HMDCameraResidentMessageHandler)initWithAccessory:(id)accessory logIdentifier:(id)identifier messageDispatcher:(id)dispatcher
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  accessoryCopy = accessory;
+  identifierCopy = identifier;
+  dispatcherCopy = dispatcher;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
 LABEL_9:
     v19 = _HMFPreconditionFailure();
@@ -396,27 +396,27 @@ LABEL_9:
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_accessory, v8);
-    objc_storeStrong(&v13->_messageDispatcher, a5);
-    v14 = [v9 copy];
+    objc_storeWeak(&v12->_accessory, accessoryCopy);
+    objc_storeStrong(&v13->_messageDispatcher, dispatcher);
+    v14 = [identifierCopy copy];
     logIdentifier = v13->_logIdentifier;
     v13->_logIdentifier = v14;
 
     v13->_lock._os_unfair_lock_opaque = 0;
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     queuedMessagesByDeviceIdentifier = v13->_queuedMessagesByDeviceIdentifier;
-    v13->_queuedMessagesByDeviceIdentifier = v16;
+    v13->_queuedMessagesByDeviceIdentifier = dictionary;
   }
 
   return v13;
 }
 
-- (HMDCameraResidentMessageHandler)initWithAccessory:(id)a3 logIdentifier:(id)a4
+- (HMDCameraResidentMessageHandler)initWithAccessory:(id)accessory logIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  accessoryCopy = accessory;
   v8 = +[HMDMessageDispatcher defaultDispatcher];
-  v9 = [(HMDCameraResidentMessageHandler *)self initWithAccessory:v7 logIdentifier:v6 messageDispatcher:v8];
+  v9 = [(HMDCameraResidentMessageHandler *)self initWithAccessory:accessoryCopy logIdentifier:identifierCopy messageDispatcher:v8];
 
   return v9;
 }

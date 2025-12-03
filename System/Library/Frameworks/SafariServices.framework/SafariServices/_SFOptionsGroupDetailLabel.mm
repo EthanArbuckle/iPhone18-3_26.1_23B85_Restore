@@ -1,17 +1,17 @@
 @interface _SFOptionsGroupDetailLabel
-- (_SFOptionsGroupDetailLabel)initWithFrame:(CGRect)a3;
+- (_SFOptionsGroupDetailLabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation _SFOptionsGroupDetailLabel
 
-- (_SFOptionsGroupDetailLabel)initWithFrame:(CGRect)a3
+- (_SFOptionsGroupDetailLabel)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = _SFOptionsGroupDetailLabel;
-  v3 = [(_SFOptionsGroupDetailLabel *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFOptionsGroupDetailLabel *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v9[0] = objc_opt_class();
@@ -29,13 +29,13 @@
   v4.receiver = self;
   v4.super_class = _SFOptionsGroupDetailLabel;
   [(_SFOptionsGroupDetailLabel *)&v4 layoutSubviews];
-  v3 = [(_SFOptionsGroupDetailLabel *)self attributedText];
-  [(_SFOptionsGroupDetailLabel *)self setAttributedText:v3];
+  attributedText = [(_SFOptionsGroupDetailLabel *)self attributedText];
+  [(_SFOptionsGroupDetailLabel *)self setAttributedText:attributedText];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = [a3 mutableCopy];
+  v4 = [text mutableCopy];
   [v4 removeAttribute:*MEMORY[0x1E69DB650] range:{0, objc_msgSend(v4, "length")}];
   v14 = 0;
   v15 = 0;
@@ -51,8 +51,8 @@
     [v4 addAttribute:v5 value:v10 range:{v14, v15}];
   }
 
-  v11 = [(_SFOptionsGroupDetailLabel *)self attributedText];
-  v12 = [v11 isEqualToAttributedString:v4];
+  attributedText = [(_SFOptionsGroupDetailLabel *)self attributedText];
+  v12 = [attributedText isEqualToAttributedString:v4];
 
   if ((v12 & 1) == 0)
   {

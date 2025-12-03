@@ -1,7 +1,7 @@
 @interface _MKMapItemUserRatingSnippetTip
 - (NSDate)_date;
 - (NSURL)_reviewerImageURL;
-- (_MKMapItemUserRatingSnippetTip)initWithMapItem:(id)a3 review:(id)a4;
+- (_MKMapItemUserRatingSnippetTip)initWithMapItem:(id)item review:(id)review;
 @end
 
 @implementation _MKMapItemUserRatingSnippetTip
@@ -31,24 +31,24 @@
 - (NSURL)_reviewerImageURL
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(GEOMapItemTip *)self->_tip bestImageURL];
-  v4 = [v2 URLWithString:v3];
+  bestImageURL = [(GEOMapItemTip *)self->_tip bestImageURL];
+  v4 = [v2 URLWithString:bestImageURL];
 
   return v4;
 }
 
-- (_MKMapItemUserRatingSnippetTip)initWithMapItem:(id)a3 review:(id)a4
+- (_MKMapItemUserRatingSnippetTip)initWithMapItem:(id)item review:(id)review
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  reviewCopy = review;
   v11.receiver = self;
   v11.super_class = _MKMapItemUserRatingSnippetTip;
   v9 = [(_MKMapItemUserRatingSnippetTip *)&v11 self];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_mapItem, a3);
-    objc_storeStrong(&v9->_tip, a4);
+    objc_storeStrong(&v9->_mapItem, item);
+    objc_storeStrong(&v9->_tip, review);
   }
 
   return v9;

@@ -1,18 +1,18 @@
 @interface COSMLCaptureDisclosureView
-- (COSMLCaptureDisclosureView)initWithFrame:(CGRect)a3;
+- (COSMLCaptureDisclosureView)initWithFrame:(CGRect)frame;
 - (UIViewController)parentController;
 - (void)layoutSubviews;
-- (void)tappedLearnMore:(id)a3;
-- (void)userToggledSwitch:(id)a3;
+- (void)tappedLearnMore:(id)more;
+- (void)userToggledSwitch:(id)switch;
 @end
 
 @implementation COSMLCaptureDisclosureView
 
-- (COSMLCaptureDisclosureView)initWithFrame:(CGRect)a3
+- (COSMLCaptureDisclosureView)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = COSMLCaptureDisclosureView;
-  v3 = [(COSMLCaptureDisclosureView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSMLCaptureDisclosureView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIColor colorWithWhite:0.7 alpha:0.45];
@@ -74,11 +74,11 @@
   return v3;
 }
 
-- (void)userToggledSwitch:(id)a3
+- (void)userToggledSwitch:(id)switch
 {
-  v3 = [a3 isOn];
+  isOn = [switch isOn];
 
-  [COSMLCaptureDisclosureController setUserAcceptedDisclosure:v3];
+  [COSMLCaptureDisclosureController setUserAcceptedDisclosure:isOn];
 }
 
 - (void)layoutSubviews
@@ -124,7 +124,7 @@
   [(UILabel *)descriptionText setFrame:10.0, v21, v22, v18];
 }
 
-- (void)tappedLearnMore:(id)a3
+- (void)tappedLearnMore:(id)more
 {
   v4 = +[COSInternalUserStudyAssetManager detailBundle];
   v5 = [v4 localizedStringForKey:@"LEARN_MORE_TITLE" value:&stru_10026E598 table:@"User_Study"];

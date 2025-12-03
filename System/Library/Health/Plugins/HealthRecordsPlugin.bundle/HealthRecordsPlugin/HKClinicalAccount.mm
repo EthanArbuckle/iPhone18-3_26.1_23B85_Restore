@@ -1,59 +1,59 @@
 @interface HKClinicalAccount
-- (HKClinicalAccount)initWithDaemonClinicalAccount:(id)a3;
+- (HKClinicalAccount)initWithDaemonClinicalAccount:(id)account;
 @end
 
 @implementation HKClinicalAccount
 
-- (HKClinicalAccount)initWithDaemonClinicalAccount:(id)a3
+- (HKClinicalAccount)initWithDaemonClinicalAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 hkState];
-  v28 = [v3 hkClinicalAccountProvenance];
-  v5 = [v28 gateway];
-  v6 = [v5 clinicalSharingGatewayFeature];
+  accountCopy = account;
+  hkState = [accountCopy hkState];
+  hkClinicalAccountProvenance = [accountCopy hkClinicalAccountProvenance];
+  gateway = [hkClinicalAccountProvenance gateway];
+  clinicalSharingGatewayFeature = [gateway clinicalSharingGatewayFeature];
 
-  if (v6)
+  if (clinicalSharingGatewayFeature)
   {
-    v7 = [v6 status];
+    status = [clinicalSharingGatewayFeature status];
   }
 
   else
   {
-    v7 = 0;
+    status = 0;
   }
 
-  v8 = [HKClinicalSharingStatus clinicalSharingFeatureStatusWithAccountState:v4 gatewayFeatureStatus:v7];
-  v9 = [v3 clinicalSharingStatus];
-  v27 = [v9 clinicalSharingStatusWithFeatureStatus:v8];
+  v8 = [HKClinicalSharingStatus clinicalSharingFeatureStatusWithAccountState:hkState gatewayFeatureStatus:status];
+  clinicalSharingStatus = [accountCopy clinicalSharingStatus];
+  v27 = [clinicalSharingStatus clinicalSharingStatusWithFeatureStatus:v8];
 
-  v10 = [v3 credential];
-  v11 = [v10 scopes];
-  v12 = [v11 count];
+  credential = [accountCopy credential];
+  scopes = [credential scopes];
+  v12 = [scopes count];
 
-  v30 = v6;
-  v26 = v4;
+  v30 = clinicalSharingGatewayFeature;
+  v26 = hkState;
   if (v12)
   {
-    v13 = [v3 credential];
-    v14 = [v13 scopes];
-    v15 = [HKOAuth2ScopeSet scopeSetWithScopes:v14];
+    credential2 = [accountCopy credential];
+    scopes2 = [credential2 scopes];
+    v15 = [HKOAuth2ScopeSet scopeSetWithScopes:scopes2];
 
-    v16 = [v15 hasClinicalSharingScopes];
+    hasClinicalSharingScopes = [v15 hasClinicalSharingScopes];
   }
 
   else
   {
-    v16 = 0;
+    hasClinicalSharingScopes = 0;
   }
 
-  v17 = [v3 identifier];
-  v18 = [v3 isUserEnabled];
-  v19 = [v3 lastFetchDate];
-  v20 = [v3 lastFullFetchDate];
-  v21 = [v3 lastFailedFetchDate];
-  v22 = [v3 failedFetchAttemptsCount];
-  LOBYTE(v25) = v16;
-  v23 = [(HKClinicalAccount *)self initWithIdentifier:v17 state:v26 userEnabled:v18 lastFetchDate:v19 lastFullFetchDate:v20 lastFailedFetchDate:v21 failedFetchAttemptsCount:v22 clinicalSharingStatus:v27 hasClinicalSharingScopes:v25 provenance:v28];
+  identifier = [accountCopy identifier];
+  isUserEnabled = [accountCopy isUserEnabled];
+  lastFetchDate = [accountCopy lastFetchDate];
+  lastFullFetchDate = [accountCopy lastFullFetchDate];
+  lastFailedFetchDate = [accountCopy lastFailedFetchDate];
+  failedFetchAttemptsCount = [accountCopy failedFetchAttemptsCount];
+  LOBYTE(v25) = hasClinicalSharingScopes;
+  v23 = [(HKClinicalAccount *)self initWithIdentifier:identifier state:v26 userEnabled:isUserEnabled lastFetchDate:lastFetchDate lastFullFetchDate:lastFullFetchDate lastFailedFetchDate:lastFailedFetchDate failedFetchAttemptsCount:failedFetchAttemptsCount clinicalSharingStatus:v27 hasClinicalSharingScopes:v25 provenance:hkClinicalAccountProvenance];
 
   return v23;
 }

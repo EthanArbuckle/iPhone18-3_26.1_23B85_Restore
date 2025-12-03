@@ -1,6 +1,6 @@
 @interface CSSiriPreferences
 + (id)sharedPreferences;
-- (CSSiriPreferences)initWithInstanceContext:(id)a3;
+- (CSSiriPreferences)initWithInstanceContext:(id)context;
 - (id)overrideAudioSessionActiveDelay;
 - (id)serverAudioSessionActivationDelay;
 - (id)serverAudioSessionActivationDelayAboveMediaPlaybackVolumeThreshold;
@@ -13,16 +13,16 @@
 - (unint64_t)internalUserClassification
 {
   v2 = _AFBackedUpPreferencesValueForKey();
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  if (v3 >= 3)
+  if (unsignedIntegerValue >= 3)
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return unsignedIntegerValue;
   }
 }
 
@@ -120,9 +120,9 @@
   return v3;
 }
 
-- (CSSiriPreferences)initWithInstanceContext:(id)a3
+- (CSSiriPreferences)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = CSSiriPreferences;
   v5 = [(CSSiriPreferences *)&v11 init];
@@ -132,18 +132,18 @@
     queue = v5->_queue;
     v5->_queue = v6;
 
-    if (v4)
+    if (contextCopy)
     {
-      v8 = v4;
+      defaultContext = contextCopy;
     }
 
     else
     {
-      v8 = [MEMORY[0x1E698D160] defaultContext];
+      defaultContext = [MEMORY[0x1E698D160] defaultContext];
     }
 
     instanceContext = v5->_instanceContext;
-    v5->_instanceContext = v8;
+    v5->_instanceContext = defaultContext;
   }
 
   return v5;

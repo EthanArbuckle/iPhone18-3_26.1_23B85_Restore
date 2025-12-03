@@ -8,12 +8,12 @@
 {
   v6.receiver = self;
   v6.super_class = AAProximityPairingStatusPayloadB515c;
-  v3 = [(AAProximityPairingStatusPayloadB515 *)&v6 describeProperties];
+  describeProperties = [(AAProximityPairingStatusPayloadB515 *)&v6 describeProperties];
   [(AAProximityPairingStatusPayloadB515c *)self usbAudioConnected];
   NSAppendPrintF_safe();
-  v4 = v3;
+  v4 = describeProperties;
 
-  return v3;
+  return describeProperties;
 }
 
 @end

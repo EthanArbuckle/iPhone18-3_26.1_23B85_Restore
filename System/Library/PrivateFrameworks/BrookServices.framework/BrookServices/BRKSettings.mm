@@ -1,5 +1,5 @@
 @interface BRKSettings
-+ (id)_stringForConfigurationWithKey:(id)a3;
++ (id)_stringForConfigurationWithKey:(id)key;
 + (id)remindersFooterExplanationContactStoreNotAuthorized;
 + (id)remindersFooterExplanationFormat;
 + (id)remindersFooterLinkTitleContacts;
@@ -7,7 +7,7 @@
 + (id)remindersSettingFooter;
 + (id)remindersSettingTitle;
 + (id)settingsForActiveDevice;
-+ (id)settingsForDevice:(id)a3;
++ (id)settingsForDevice:(id)device;
 + (id)settingsTitle;
 + (id)timerSettingFooter;
 + (id)timerSettingTitle;
@@ -23,48 +23,48 @@
 - (BOOL)isEnabled;
 - (BOOL)isOnboardingComplete;
 - (double)brookCoolDownInterval;
-- (id)_initWithDevice:(id)a3;
-- (id)_valueForKey:(id)a3;
+- (id)_initWithDevice:(id)device;
+- (id)_valueForKey:(id)key;
 - (id)tinkerDataCollectionCredentials;
 - (unint64_t)overrideDataCollectionAuthorization;
 - (void)_BRKCancelForBRKSettingsChange;
 - (void)_BRKRegisterForBRKSettingsChange;
 - (void)_handleNPSNotification;
-- (void)_observeDefaultChanges:(BOOL)a3;
-- (void)_setValue:(id)a3 forKey:(id)a4;
+- (void)_observeDefaultChanges:(BOOL)changes;
+- (void)_setValue:(id)value forKey:(id)key;
 - (void)_setupLocationManager;
 - (void)dealloc;
-- (void)isLocationAuthFlowEnabledWithCompletionHandler:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setBrookCoolDownInterval:(double)a3;
-- (void)setOverrideDataCollectionAuthorization:(unint64_t)a3;
+- (void)isLocationAuthFlowEnabledWithCompletionHandler:(id)handler;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setBrookCoolDownInterval:(double)interval;
+- (void)setOverrideDataCollectionAuthorization:(unint64_t)authorization;
 @end
 
 @implementation BRKSettings
 
 + (id)settingsForActiveDevice
 {
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v4 = [v3 getActivePairedDevice];
-  v5 = [a1 settingsForDevice:v4];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
+  v5 = [self settingsForDevice:getActivePairedDevice];
 
   return v5;
 }
 
-+ (id)settingsForDevice:(id)a3
++ (id)settingsForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[BRKSettings alloc] _initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[BRKSettings alloc] _initWithDevice:deviceCopy];
 
   return v4;
 }
 
-- (id)_initWithDevice:(id)a3
+- (id)_initWithDevice:(id)device
 {
   v24[7] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = BRKSettings;
   v6 = [(BRKSettings *)&v23 init];
@@ -84,24 +84,24 @@
     v6->_observedKeys = v9;
 
     v6->_notifyToken = -1;
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v11 = objc_opt_new();
     npsManager = v6->_npsManager;
     v6->_npsManager = v11;
 
-    v13 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.brook" pairedDevice:v5];
+    v13 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.brook" pairedDevice:deviceCopy];
     domainAccessor = v6->_domainAccessor;
     v6->_domainAccessor = v13;
 
-    v15 = [(NPSDomainAccessor *)v6->_domainAccessor synchronize];
+    synchronize = [(NPSDomainAccessor *)v6->_domainAccessor synchronize];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, _BRKHandleNPSNotification, @"com.apple.brook.NPSSettingsDidChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v6 selector:sel__handleNPSNotification name:*MEMORY[0x277D2BC48] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__handleNPSNotification name:*MEMORY[0x277D2BC48] object:0];
 
     [(BRKSettings *)v6 _BRKRegisterForBRKSettingsChange];
-    v18 = [MEMORY[0x277D262A0] sharedConnection];
-    [v18 addObserver:v6];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] addObserver:v6];
 
     v6->_currentIsManagedConfigurationImproveHandwashingEnabled = [(BRKSettings *)v6 _isManagedConfigurationImproveHandwashingEnabled];
     [(BRKSettings *)v6 _observeDefaultChanges:1];
@@ -121,13 +121,13 @@
 - (void)_setupLocationManager
 {
   v3 = objc_initWeak(&location, self);
-  v4 = [(BRKSettings *)self locationManagerQueue];
+  locationManagerQueue = [(BRKSettings *)self locationManagerQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __36__BRKSettings__setupLocationManager__block_invoke;
   v5[3] = &unk_278D28C60;
   objc_copyWeak(&v6, &location);
-  dispatch_async(v4, v5);
+  dispatch_async(locationManagerQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -181,11 +181,11 @@ void __36__BRKSettings__setupLocationManager__block_invoke(uint64_t a1)
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.brook.NPSSettingsDidChangeNotification", 0);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  [v5 removeObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] removeObserver:self];
 
   [(BRKSettings *)self _observeDefaultChanges:0];
   [(BRKSettings *)self _BRKCancelForBRKSettingsChange];
@@ -237,17 +237,17 @@ void __47__BRKSettings__BRKRegisterForBRKSettingsChange__block_invoke(uint64_t a
 - (BOOL)isEnabled
 {
   v2 = [(BRKSettings *)self _valueForKey:@"BrookEnabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)areRemindersEnabled
 {
   v2 = [(BRKSettings *)self _valueForKey:@"BrookRemindersEnabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isDataCollectionEnabled
@@ -255,15 +255,15 @@ void __47__BRKSettings__BRKRegisterForBRKSettingsChange__block_invoke(uint64_t a
   v13 = *MEMORY[0x277D85DE8];
   if (BRKActiveDeviceIsAltAccount())
   {
-    v3 = [(BRKSettings *)self _isTinkerDataCollectionEnabled];
+    _isTinkerDataCollectionEnabled = [(BRKSettings *)self _isTinkerDataCollectionEnabled];
   }
 
   else
   {
-    v3 = [(BRKSettings *)self _isManagedConfigurationImproveHandwashingEnabled];
+    _isTinkerDataCollectionEnabled = [(BRKSettings *)self _isManagedConfigurationImproveHandwashingEnabled];
   }
 
-  v4 = v3;
+  v4 = _isTinkerDataCollectionEnabled;
   v5 = BRKLoggingObjectForDomain(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -286,8 +286,8 @@ void __47__BRKSettings__BRKRegisterForBRKSettingsChange__block_invoke(uint64_t a
 
 - (BOOL)isDataCollectionOnboardingComplete
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25F08]] != 0;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F08]] != 0;
 
   return v3;
 }
@@ -295,15 +295,15 @@ void __47__BRKSettings__BRKRegisterForBRKSettingsChange__block_invoke(uint64_t a
 - (BOOL)isOnboardingComplete
 {
   v2 = [(BRKSettings *)self _valueForKey:@"BrookOnboardingComplete"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)isLocationAuthFlowEnabledWithCompletionHandler:(id)a3
+- (void)isLocationAuthFlowEnabledWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_feature_enabled_impl();
   if ((v5 & 1) == 0)
   {
@@ -336,15 +336,15 @@ void __47__BRKSettings__BRKRegisterForBRKSettingsChange__block_invoke(uint64_t a
   if (self->_locationManagerAuthorizationStatusHasChangedOnce)
   {
     v10 = objc_initWeak(buf, self);
-    v11 = [(BRKSettings *)self locationManagerQueue];
+    locationManagerQueue = [(BRKSettings *)self locationManagerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__BRKSettings_isLocationAuthFlowEnabledWithCompletionHandler___block_invoke;
     block[3] = &unk_278D28CB0;
     objc_copyWeak(&v17, buf);
     v18 = v5;
-    v16 = v4;
-    dispatch_async(v11, block);
+    v16 = handlerCopy;
+    dispatch_async(locationManagerQueue, block);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -375,7 +375,7 @@ void __47__BRKSettings__BRKRegisterForBRKSettingsChange__block_invoke(uint64_t a
       v5 = 0;
     }
 
-    (*(v4 + 2))(v4, v5);
+    (*(handlerCopy + 2))(handlerCopy, v5);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -501,9 +501,9 @@ LABEL_14:
   return v10;
 }
 
-- (void)setBrookCoolDownInterval:(double)a3
+- (void)setBrookCoolDownInterval:(double)interval
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
   [(BRKSettings *)self _setValue:v4 forKey:@"BrookCoolDownInterval"];
 }
 
@@ -519,45 +519,45 @@ LABEL_14:
 - (unint64_t)overrideDataCollectionAuthorization
 {
   v2 = [(BRKSettings *)self _valueForKey:@"BrookOverrideDataCollectionAuthorization"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setOverrideDataCollectionAuthorization:(unint64_t)a3
+- (void)setOverrideDataCollectionAuthorization:(unint64_t)authorization
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:authorization];
   [(BRKSettings *)self _setValue:v4 forKey:@"BrookOverrideDataCollectionAuthorization"];
 }
 
 - (BOOL)isDataCollectionUploadDisabled
 {
   v2 = [(BRKSettings *)self _valueForKey:@"BrookDataCollectionUploadDisabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)tinkerDataCollectionCredentials
 {
   v2 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.brook.credentials"];
-  v3 = [v2 dictionaryRepresentation];
+  dictionaryRepresentation = [v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (BOOL)_isManagedConfigurationImproveHandwashingEnabled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25F08]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F08]] == 1;
 
   return v3;
 }
 
 - (BOOL)_isTinkerDataCollectionEnabled
 {
-  v2 = [(BRKSettings *)self tinkerDataCollectionCredentials];
-  v3 = [v2 objectForKeyedSubscript:@"urlString"];
+  tinkerDataCollectionCredentials = [(BRKSettings *)self tinkerDataCollectionCredentials];
+  v3 = [tinkerDataCollectionCredentials objectForKeyedSubscript:@"urlString"];
   v4 = v3 != 0;
 
   return v4;
@@ -565,43 +565,43 @@ LABEL_14:
 
 - (BOOL)_isManagedConfigurationImproveHealthAndActivityEnabled
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25F18]] == 1;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F18]] == 1;
 
   return v3;
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4
+- (void)_setValue:(id)value forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [(BRKSettings *)self _valueForKey:v6];
-    if (v7 != v12 && ([v7 isEqual:v12] & 1) == 0)
+    v7 = [(BRKSettings *)self _valueForKey:keyCopy];
+    if (v7 != valueCopy && ([v7 isEqual:valueCopy] & 1) == 0)
     {
       [(BRKSettings *)self _observeDefaultChanges:0];
-      [(NPSDomainAccessor *)self->_domainAccessor setObject:v12 forKey:v6];
-      v8 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+      [(NPSDomainAccessor *)self->_domainAccessor setObject:valueCopy forKey:keyCopy];
+      synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
       npsManager = self->_npsManager;
-      v10 = [MEMORY[0x277CBEB98] setWithObject:v6];
+      v10 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
       [(NPSManager *)npsManager synchronizeNanoDomain:@"com.apple.brook" keys:v10];
 
-      if ([(NSSet *)self->_observedKeys containsObject:v6])
+      if ([(NSSet *)self->_observedKeys containsObject:keyCopy])
       {
         notify_post("com.apple.brook.BRKSettingsDidChangeNotification");
       }
 
       [(BRKSettings *)self _observeDefaultChanges:1];
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v11 postNotificationName:@"BRKSettingsDidUpdateNotification" object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"BRKSettingsDidUpdateNotification" object:self];
     }
   }
 }
 
-- (id)_valueForKey:(id)a3
+- (id)_valueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [(NPSDomainAccessor *)self->_domainAccessor objectForKey:?];
   }
@@ -614,38 +614,38 @@ LABEL_14:
   return v4;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(NSSet *)self->_observedKeys containsObject:v10])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([(NSSet *)self->_observedKeys containsObject:pathCopy])
   {
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"BRKSettingsDidUpdateNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"BRKSettingsDidUpdateNotification" object:self];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = BRKSettings;
-    [(BRKSettings *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(BRKSettings *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_observeDefaultChanges:(BOOL)a3
+- (void)_observeDefaultChanges:(BOOL)changes
 {
-  if (self->_shouldObserveDefaultChanges != a3)
+  if (self->_shouldObserveDefaultChanges != changes)
   {
-    self->_shouldObserveDefaultChanges = a3;
+    self->_shouldObserveDefaultChanges = changes;
   }
 }
 
 - (void)_handleNPSNotification
 {
-  v2 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"BRKSettingsDidUpdateNotification" object:0];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"BRKSettingsDidUpdateNotification" object:0];
 }
 
 + (id)settingsTitle
@@ -720,30 +720,30 @@ LABEL_14:
   return v3;
 }
 
-+ (id)_stringForConfigurationWithKey:(id)a3
++ (id)_stringForConfigurationWithKey:(id)key
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_285413D38 table:0];
+  v6 = [v5 localizedStringForKey:keyCopy value:&stru_285413D38 table:0];
 
   return v6;
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [(BRKSettings *)self _isManagedConfigurationImproveHandwashingEnabled:a3];
+  v5 = [(BRKSettings *)self _isManagedConfigurationImproveHandwashingEnabled:notification];
   if (self->_currentIsManagedConfigurationImproveHandwashingEnabled != v5)
   {
     self->_currentIsManagedConfigurationImproveHandwashingEnabled = v5;
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"BRKSettingsDidUpdateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"BRKSettingsDidUpdateNotification" object:0];
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = BRKLoggingObjectForDomain(14);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -753,15 +753,15 @@ LABEL_14:
 
   self->_locationManagerAuthorizationStatusHasChangedOnce = 1;
   v6 = objc_initWeak(buf, self);
-  v7 = [(BRKSettings *)self locationManagerQueue];
+  locationManagerQueue = [(BRKSettings *)self locationManagerQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__BRKSettings_locationManagerDidChangeAuthorization___block_invoke;
   v9[3] = &unk_278D28CD8;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = authorizationCopy;
+  v8 = authorizationCopy;
+  dispatch_async(locationManagerQueue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);

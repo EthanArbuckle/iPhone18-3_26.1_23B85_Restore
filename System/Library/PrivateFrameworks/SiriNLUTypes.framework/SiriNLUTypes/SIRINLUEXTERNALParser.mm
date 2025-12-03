@@ -1,35 +1,35 @@
 @interface SIRINLUEXTERNALParser
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAlgorithm:(id)a3;
-- (int)StringAsParserId:(id)a3;
+- (int)StringAsAlgorithm:(id)algorithm;
+- (int)StringAsParserId:(id)id;
 - (int)algorithm;
 - (int)parserId;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasParserId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasParserId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALParser
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if (v5)
   {
-    self->_algorithm = *(v4 + 2);
+    self->_algorithm = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_parserId = *(v4 + 3);
+    self->_parserId = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 }
@@ -60,33 +60,33 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_algorithm != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_algorithm != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 2) == 0;
+  v5 = (*(equalCopy + 16) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_parserId != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_parserId != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
@@ -99,9 +99,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -119,34 +119,34 @@ LABEL_12:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_algorithm;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_algorithm;
+    *(toCopy + 16) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[3] = self->_parserId;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_parserId;
+    *(toCopy + 16) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     algorithm = self->_algorithm;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -154,13 +154,13 @@ LABEL_12:
   {
     parserId = self->_parserId;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -175,7 +175,7 @@ LABEL_12:
       v6 = off_1E8327FE8[algorithm];
     }
 
-    [v3 setObject:v6 forKey:@"algorithm"];
+    [dictionary setObject:v6 forKey:@"algorithm"];
 
     has = self->_has;
   }
@@ -193,10 +193,10 @@ LABEL_12:
       v8 = off_1E8328000[parserId];
     }
 
-    [v3 setObject:v8 forKey:@"parser_id"];
+    [dictionary setObject:v8 forKey:@"parser_id"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -205,61 +205,61 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALParser;
   v4 = [(SIRINLUEXTERNALParser *)&v8 description];
-  v5 = [(SIRINLUEXTERNALParser *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALParser *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsParserId:(id)a3
+- (int)StringAsParserId:(id)id
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PARSER_IDENTIFIER_UNSET"])
+  idCopy = id;
+  if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_UNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_OVERRIDES"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_OVERRIDES"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_SNLC"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_SNLC"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_NLV4"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_NLV4"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_CATI"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_CATI"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_SHORTCUTS_EXACT"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_SHORTCUTS_EXACT"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_UAAP"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_UAAP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_PSC"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_PSC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_LVC"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_LVC"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PARSER_IDENTIFIER_SSU"])
+  else if ([idCopy isEqualToString:@"PARSER_IDENTIFIER_SSU"])
   {
     v4 = 9;
   }
@@ -272,9 +272,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)setHasParserId:(BOOL)a3
+- (void)setHasParserId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -300,20 +300,20 @@ LABEL_12:
   }
 }
 
-- (int)StringAsAlgorithm:(id)a3
+- (int)StringAsAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ALGORITHM_TYPE_UNSET"])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"ALGORITHM_TYPE_UNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ALGORITHM_TYPE_RULE"])
+  else if ([algorithmCopy isEqualToString:@"ALGORITHM_TYPE_RULE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ALGORITHM_TYPE_MODEL"])
+  else if ([algorithmCopy isEqualToString:@"ALGORITHM_TYPE_MODEL"])
   {
     v4 = 2;
   }

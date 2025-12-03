@@ -1,39 +1,39 @@
 @interface _INPBSelectionItem
-- (BOOL)isEqual:(id)a3;
-- (_INPBSelectionItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSelectionItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setUuid:(id)a3;
-- (void)setVocabularyValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setUuid:(id)uuid;
+- (void)setVocabularyValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSelectionItem
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_uuid)
   {
-    v4 = [(_INPBSelectionItem *)self uuid];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"uuid"];
+    uuid = [(_INPBSelectionItem *)self uuid];
+    v5 = [uuid copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"uuid"];
   }
 
-  v6 = [(_INPBSelectionItem *)self value];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"value"];
+  value = [(_INPBSelectionItem *)self value];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"value"];
 
   if (self->_vocabularyValue)
   {
-    v8 = [(_INPBSelectionItem *)self vocabularyValue];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"vocabularyValue"];
+    vocabularyValue = [(_INPBSelectionItem *)self vocabularyValue];
+    v9 = [vocabularyValue copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"vocabularyValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -43,28 +43,28 @@
   return v4 ^ [(NSString *)self->_vocabularyValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBSelectionItem *)self uuid];
-  v6 = [v4 uuid];
-  if ((v5 != 0) == (v6 == 0))
+  uuid = [(_INPBSelectionItem *)self uuid];
+  uuid2 = [equalCopy uuid];
+  if ((uuid != 0) == (uuid2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBSelectionItem *)self uuid];
-  if (v7)
+  uuid3 = [(_INPBSelectionItem *)self uuid];
+  if (uuid3)
   {
-    v8 = v7;
-    v9 = [(_INPBSelectionItem *)self uuid];
-    v10 = [v4 uuid];
-    v11 = [v9 isEqual:v10];
+    v8 = uuid3;
+    uuid4 = [(_INPBSelectionItem *)self uuid];
+    uuid5 = [equalCopy uuid];
+    v11 = [uuid4 isEqual:uuid5];
 
     if (!v11)
     {
@@ -76,20 +76,20 @@
   {
   }
 
-  v5 = [(_INPBSelectionItem *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) == (v6 == 0))
+  uuid = [(_INPBSelectionItem *)self value];
+  uuid2 = [equalCopy value];
+  if ((uuid != 0) == (uuid2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBSelectionItem *)self value];
-  if (v12)
+  value = [(_INPBSelectionItem *)self value];
+  if (value)
   {
-    v13 = v12;
-    v14 = [(_INPBSelectionItem *)self value];
-    v15 = [v4 value];
-    v16 = [v14 isEqual:v15];
+    v13 = value;
+    value2 = [(_INPBSelectionItem *)self value];
+    value3 = [equalCopy value];
+    v16 = [value2 isEqual:value3];
 
     if (!v16)
     {
@@ -101,12 +101,12 @@
   {
   }
 
-  v5 = [(_INPBSelectionItem *)self vocabularyValue];
-  v6 = [v4 vocabularyValue];
-  if ((v5 != 0) != (v6 == 0))
+  uuid = [(_INPBSelectionItem *)self vocabularyValue];
+  uuid2 = [equalCopy vocabularyValue];
+  if ((uuid != 0) != (uuid2 == 0))
   {
-    v17 = [(_INPBSelectionItem *)self vocabularyValue];
-    if (!v17)
+    vocabularyValue = [(_INPBSelectionItem *)self vocabularyValue];
+    if (!vocabularyValue)
     {
 
 LABEL_20:
@@ -114,10 +114,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBSelectionItem *)self vocabularyValue];
-    v20 = [v4 vocabularyValue];
-    v21 = [v19 isEqual:v20];
+    v18 = vocabularyValue;
+    vocabularyValue2 = [(_INPBSelectionItem *)self vocabularyValue];
+    vocabularyValue3 = [equalCopy vocabularyValue];
+    v21 = [vocabularyValue2 isEqual:vocabularyValue3];
 
     if (v21)
     {
@@ -137,87 +137,87 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSelectionItem allocWithZone:](_INPBSelectionItem init];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   [(_INPBSelectionItem *)v5 setUuid:v6];
 
-  v7 = [(_INPBIntentSlotValue *)self->_value copyWithZone:a3];
+  v7 = [(_INPBIntentSlotValue *)self->_value copyWithZone:zone];
   [(_INPBSelectionItem *)v5 setValue:v7];
 
-  v8 = [(NSString *)self->_vocabularyValue copyWithZone:a3];
+  v8 = [(NSString *)self->_vocabularyValue copyWithZone:zone];
   [(_INPBSelectionItem *)v5 setVocabularyValue:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSelectionItem *)self data];
+  coderCopy = coder;
+  data = [(_INPBSelectionItem *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSelectionItem)initWithCoder:(id)a3
+- (_INPBSelectionItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSelectionItem *)self initWithData:v6];
+    self = [(_INPBSelectionItem *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBSelectionItem *)self uuid];
+  toCopy = to;
+  uuid = [(_INPBSelectionItem *)self uuid];
 
-  if (v4)
+  if (uuid)
   {
     uuid = self->_uuid;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBSelectionItem *)self value];
+  value = [(_INPBSelectionItem *)self value];
 
-  if (v6)
+  if (value)
   {
-    v7 = [(_INPBSelectionItem *)self value];
+    value2 = [(_INPBSelectionItem *)self value];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBSelectionItem *)self vocabularyValue];
+  vocabularyValue = [(_INPBSelectionItem *)self vocabularyValue];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (vocabularyValue)
   {
     vocabularyValue = self->_vocabularyValue;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setVocabularyValue:(id)a3
+- (void)setVocabularyValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   vocabularyValue = self->_vocabularyValue;
   self->_vocabularyValue = v4;
 
   MEMORY[0x1EEE66BB8](v4, vocabularyValue);
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = [a3 copy];
+  v4 = [uuid copy];
   uuid = self->_uuid;
   self->_uuid = v4;
 

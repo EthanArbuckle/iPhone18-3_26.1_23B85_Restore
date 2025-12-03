@@ -1,33 +1,33 @@
 @interface HMDAppleMediaAccessoryDependencyFactory
-- (id)deviceForIDSIdentifier:(id)a3;
-- (id)deviceWithAddress:(id)a3;
-- (id)symptomsHandlerForAccessory:(id)a3;
+- (id)deviceForIDSIdentifier:(id)identifier;
+- (id)deviceWithAddress:(id)address;
+- (id)symptomsHandlerForAccessory:(id)accessory;
 @end
 
 @implementation HMDAppleMediaAccessoryDependencyFactory
 
-- (id)symptomsHandlerForAccessory:(id)a3
+- (id)symptomsHandlerForAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [[HMDAccessorySymptomHandler alloc] initWithAccessory:v3];
+  accessoryCopy = accessory;
+  v4 = [[HMDAccessorySymptomHandler alloc] initWithAccessory:accessoryCopy];
 
   return v4;
 }
 
-- (id)deviceForIDSIdentifier:(id)a3
+- (id)deviceForIDSIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[HMDAccountRegistry sharedRegistry];
-  v5 = [v4 deviceForIDSIdentifier:v3];
+  v5 = [v4 deviceForIDSIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)deviceWithAddress:(id)a3
+- (id)deviceWithAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = +[HMDAccountRegistry sharedRegistry];
-  v5 = [v4 deviceForAddress:v3];
+  v5 = [v4 deviceForAddress:addressCopy];
 
   return v5;
 }

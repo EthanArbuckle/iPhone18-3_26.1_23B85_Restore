@@ -1,30 +1,30 @@
 @interface SYDStoreBundleMap
 + (id)disabledStoreIdentifiers;
 + (id)sharedInstance;
-- (BOOL)isCloudSyncUserDefaultEnabledForStoreIdentifier:(id)a3;
-- (BOOL)isStoreIdentifierUsedOnThisDevice:(id)a3;
-- (BOOL)shouldSyncStoreWithIdentifier:(id)a3;
+- (BOOL)isCloudSyncUserDefaultEnabledForStoreIdentifier:(id)identifier;
+- (BOOL)isStoreIdentifierUsedOnThisDevice:(id)device;
+- (BOOL)shouldSyncStoreWithIdentifier:(id)identifier;
 - (SYDStoreBundleMap)init;
-- (id)bundleIdentifiersForStoreIdentifier:(id)a3;
+- (id)bundleIdentifiersForStoreIdentifier:(id)identifier;
 - (id)generateStoreBundleMap;
 - (id)storeIdentifiersForInstalledBundles;
 - (void)clearCachedStoreBundleMap;
 - (void)dealloc;
 - (void)generateStoreBundleMapIfNecessary;
-- (void)installedAppsDidChange:(id)a3;
-- (void)setCloudSyncUserDefaultEnabled:(BOOL)a3 storeIdentifier:(id)a4;
+- (void)installedAppsDidChange:(id)change;
+- (void)setCloudSyncUserDefaultEnabled:(BOOL)enabled storeIdentifier:(id)identifier;
 @end
 
 @implementation SYDStoreBundleMap
 
 - (void)generateStoreBundleMapIfNecessary
 {
-  v3 = [(SYDStoreBundleMap *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYDStoreBundleMap *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SYDStoreBundleMap *)self cachedStoreBundleMap];
+  cachedStoreBundleMap = [(SYDStoreBundleMap *)self cachedStoreBundleMap];
 
-  if (!v4)
+  if (!cachedStoreBundleMap)
   {
     v5 = SYDGetMiscLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -32,8 +32,8 @@
       [(SYDStoreBundleMap *)v5 generateStoreBundleMapIfNecessary:v6];
     }
 
-    v13 = [(SYDStoreBundleMap *)self generateStoreBundleMap];
-    [(SYDStoreBundleMap *)self setCachedStoreBundleMap:v13];
+    generateStoreBundleMap = [(SYDStoreBundleMap *)self generateStoreBundleMap];
+    [(SYDStoreBundleMap *)self setCachedStoreBundleMap:generateStoreBundleMap];
   }
 }
 
@@ -69,14 +69,14 @@
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(SYDStoreBundleMap *)self queue];
+  queue = [(SYDStoreBundleMap *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SYDStoreBundleMap_storeIdentifiersForInstalledBundles__block_invoke;
   v6[3] = &unk_279D2F650;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -115,11 +115,11 @@ uint64_t __35__SYDStoreBundleMap_sharedInstance__block_invoke()
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v6 addObserver:v2 selector:sel_installedAppsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_installedAppsDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
 
-    v7 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v7 addObserver:v2 selector:sel_installedAppsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_installedAppsDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
   }
 
   return v2;
@@ -127,21 +127,21 @@ uint64_t __35__SYDStoreBundleMap_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SYDStoreBundleMap;
   [(SYDStoreBundleMap *)&v4 dealloc];
 }
 
-- (BOOL)shouldSyncStoreWithIdentifier:(id)a3
+- (BOOL)shouldSyncStoreWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(SYDStoreBundleMap *)self isStoreIdentifierUsedOnThisDevice:v4])
+  identifierCopy = identifier;
+  if ([(SYDStoreBundleMap *)self isStoreIdentifierUsedOnThisDevice:identifierCopy])
   {
     v5 = +[SYDTCCHelper sharedHelper];
-    v6 = [v5 isUbiquityDisabledForStoreIdentifier:v4];
+    v6 = [v5 isUbiquityDisabledForStoreIdentifier:identifierCopy];
 
     if (v6)
     {
@@ -154,7 +154,7 @@ uint64_t __35__SYDStoreBundleMap_sharedInstance__block_invoke()
 
     else
     {
-      if ([(SYDStoreBundleMap *)self isCloudSyncUserDefaultEnabledForStoreIdentifier:v4])
+      if ([(SYDStoreBundleMap *)self isCloudSyncUserDefaultEnabledForStoreIdentifier:identifierCopy])
       {
         v8 = 1;
         goto LABEL_8;
@@ -183,24 +183,24 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)isCloudSyncUserDefaultEnabledForStoreIdentifier:(id)a3
+- (BOOL)isCloudSyncUserDefaultEnabledForStoreIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v6 = [(SYDStoreBundleMap *)self queue];
+  queue = [(SYDStoreBundleMap *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__SYDStoreBundleMap_isCloudSyncUserDefaultEnabledForStoreIdentifier___block_invoke;
   v9[3] = &unk_279D2F5B0;
-  v10 = v5;
-  v11 = self;
+  v10 = identifierCopy;
+  selfCopy = self;
   v12 = &v14;
   v13 = a2;
-  v7 = v5;
-  dispatch_sync(v6, v9);
+  v7 = identifierCopy;
+  dispatch_sync(queue, v9);
 
   LOBYTE(self) = *(v15 + 24);
   _Block_object_dispose(&v14, 8);
@@ -239,20 +239,20 @@ void __69__SYDStoreBundleMap_isCloudSyncUserDefaultEnabledForStoreIdentifier___b
   }
 }
 
-- (void)setCloudSyncUserDefaultEnabled:(BOOL)a3 storeIdentifier:(id)a4
+- (void)setCloudSyncUserDefaultEnabled:(BOOL)enabled storeIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = [(SYDStoreBundleMap *)self queue];
+  identifierCopy = identifier;
+  queue = [(SYDStoreBundleMap *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__SYDStoreBundleMap_setCloudSyncUserDefaultEnabled_storeIdentifier___block_invoke;
   v10[3] = &unk_279D2F5D8;
-  v12 = self;
+  selfCopy = self;
   v13 = a2;
-  v11 = v7;
-  v14 = a3;
-  v9 = v7;
-  dispatch_sync(v8, v10);
+  v11 = identifierCopy;
+  enabledCopy = enabled;
+  v9 = identifierCopy;
+  dispatch_sync(queue, v10);
 }
 
 void __68__SYDStoreBundleMap_setCloudSyncUserDefaultEnabled_storeIdentifier___block_invoke(uint64_t a1)
@@ -306,11 +306,11 @@ void __45__SYDStoreBundleMap_disabledStoreIdentifiers__block_invoke()
   disabledStoreIdentifiers_disabledStoreIdentifiers = v0;
 }
 
-- (BOOL)isStoreIdentifierUsedOnThisDevice:(id)a3
+- (BOOL)isStoreIdentifierUsedOnThisDevice:(id)device
 {
-  v4 = a3;
-  v5 = [objc_opt_class() disabledStoreIdentifiers];
-  v6 = [v5 containsObject:v4];
+  deviceCopy = device;
+  disabledStoreIdentifiers = [objc_opt_class() disabledStoreIdentifiers];
+  v6 = [disabledStoreIdentifiers containsObject:deviceCopy];
 
   if (v6)
   {
@@ -325,8 +325,8 @@ void __45__SYDStoreBundleMap_disabledStoreIdentifiers__block_invoke()
 
   else
   {
-    v9 = [(SYDStoreBundleMap *)self storeIdentifiersForInstalledBundles];
-    v10 = [v9 containsObject:v4];
+    storeIdentifiersForInstalledBundles = [(SYDStoreBundleMap *)self storeIdentifiersForInstalledBundles];
+    v10 = [storeIdentifiersForInstalledBundles containsObject:deviceCopy];
 
     if (v10)
     {
@@ -335,32 +335,32 @@ void __45__SYDStoreBundleMap_disabledStoreIdentifiers__block_invoke()
 
     else
     {
-      v8 = [v4 hasPrefix:@"com.apple."];
+      v8 = [deviceCopy hasPrefix:@"com.apple."];
     }
   }
 
   return v8;
 }
 
-- (id)bundleIdentifiersForStoreIdentifier:(id)a3
+- (id)bundleIdentifiersForStoreIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14[0] = &v13;
   v14[1] = 0x3032000000;
   v14[2] = __Block_byref_object_copy__0;
   v14[3] = __Block_byref_object_dispose__0;
   v15 = 0;
-  v5 = [(SYDStoreBundleMap *)self queue];
+  queue = [(SYDStoreBundleMap *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SYDStoreBundleMap_bundleIdentifiersForStoreIdentifier___block_invoke;
   block[3] = &unk_279D2F600;
   block[4] = self;
   v12 = &v13;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   if ([*(v14[0] + 40) count])
   {
@@ -398,13 +398,13 @@ void __57__SYDStoreBundleMap_bundleIdentifiersForStoreIdentifier___block_invoke(
 
 - (void)clearCachedStoreBundleMap
 {
-  v3 = [(SYDStoreBundleMap *)self queue];
+  queue = [(SYDStoreBundleMap *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SYDStoreBundleMap_clearCachedStoreBundleMap__block_invoke;
   block[3] = &unk_279D2F628;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __46__SYDStoreBundleMap_clearCachedStoreBundleMap__block_invoke(uint64_t a1)
@@ -489,7 +489,7 @@ void __46__SYDStoreBundleMap_clearCachedStoreBundleMap__block_invoke(uint64_t a1
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v22 = [v20 effectiveBundleIdentifier];
+                effectiveBundleIdentifier = [v20 effectiveBundleIdentifier];
               }
 
               else
@@ -508,11 +508,11 @@ void __46__SYDStoreBundleMap_clearCachedStoreBundleMap__block_invoke(uint64_t a1
                   goto LABEL_39;
                 }
 
-                v22 = [v20 bundleIdentifier];
+                effectiveBundleIdentifier = [v20 bundleIdentifier];
               }
 
-              v23 = v22;
-              if (v22)
+              v23 = effectiveBundleIdentifier;
+              if (effectiveBundleIdentifier)
               {
                 v24 = SYDGetMiscLog();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -523,20 +523,20 @@ void __46__SYDStoreBundleMap_clearCachedStoreBundleMap__block_invoke(uint64_t a1
                 }
 
                 v25 = [objc_alloc(MEMORY[0x277D6B878]) initWithBundleRecord:v20];
-                v26 = [v25 storeIdentifiers];
-                if ([v26 count])
+                storeIdentifiers = [v25 storeIdentifiers];
+                if ([storeIdentifiers count])
                 {
                   v51 = v19;
                   v27 = SYDGetMiscLog();
                   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
                   {
-                    v37 = [v26 count];
+                    v37 = [storeIdentifiers count];
                     *buf = 134218498;
                     v66 = v37;
                     v67 = 2112;
                     v68 = v23;
                     v69 = 2112;
-                    v70 = v26;
+                    v70 = storeIdentifiers;
                     _os_log_debug_impl(&dword_26C384000, v27, OS_LOG_TYPE_DEBUG, "Found %ld store identifiers for bundle identifier: %@ %@ ", buf, 0x20u);
                   }
 
@@ -544,8 +544,8 @@ void __46__SYDStoreBundleMap_clearCachedStoreBundleMap__block_invoke(uint64_t a1
                   v55 = 0u;
                   v52 = 0u;
                   v53 = 0u;
-                  v50 = v26;
-                  v28 = v26;
+                  v50 = storeIdentifiers;
+                  v28 = storeIdentifiers;
                   v29 = [v28 countByEnumeratingWithState:&v52 objects:v64 count:16];
                   if (v29)
                   {
@@ -585,7 +585,7 @@ void __46__SYDStoreBundleMap_clearCachedStoreBundleMap__block_invoke(uint64_t a1
                   v12 = 0x277CC1000;
                   v18 = v47;
                   v17 = v48;
-                  v26 = v50;
+                  storeIdentifiers = v50;
                   v19 = v51;
                 }
 
@@ -636,18 +636,18 @@ LABEL_41:
   return v10;
 }
 
-- (void)installedAppsDidChange:(id)a3
+- (void)installedAppsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SYDStoreBundleMap *)self queue];
+  changeCopy = change;
+  queue = [(SYDStoreBundleMap *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SYDStoreBundleMap_installedAppsDidChange___block_invoke;
   v7[3] = &unk_279D2F678;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __44__SYDStoreBundleMap_installedAppsDidChange___block_invoke(uint64_t a1)

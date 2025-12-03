@@ -1,30 +1,30 @@
 @interface UAFSchemaUAFAssetSetStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (UAFSchemaUAFAssetSetStatus)initWithDictionary:(id)a3;
-- (UAFSchemaUAFAssetSetStatus)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (UAFSchemaUAFAssetSetStatus)initWithDictionary:(id)dictionary;
+- (UAFSchemaUAFAssetSetStatus)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAllAssets:(id)a3;
-- (void)addUafAssetSets:(id)a3;
-- (void)addUafAssetSubscriptions:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllAssets:(id)assets;
+- (void)addUafAssetSets:(id)sets;
+- (void)addUafAssetSubscriptions:(id)subscriptions;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UAFSchemaUAFAssetSetStatus
 
-- (UAFSchemaUAFAssetSetStatus)initWithDictionary:(id)a3
+- (UAFSchemaUAFAssetSetStatus)initWithDictionary:(id)dictionary
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v47.receiver = self;
   v47.super_class = UAFSchemaUAFAssetSetStatus;
   v5 = [(UAFSchemaUAFAssetSetStatus *)&v47 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"uafAssetSets"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"uafAssetSets"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       v6 = v7;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"uafAssetSubscriptions"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"uafAssetSubscriptions"];
     objc_opt_class();
     v34 = v15;
     if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
       v15 = v34;
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"allAssets"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"allAssets"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -169,30 +169,30 @@
   return v5;
 }
 
-- (UAFSchemaUAFAssetSetStatus)initWithJSON:(id)a3
+- (UAFSchemaUAFAssetSetStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(UAFSchemaUAFAssetSetStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(UAFSchemaUAFAssetSetStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(UAFSchemaUAFAssetSetStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -206,10 +206,10 @@
 - (id)dictionaryRepresentation
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_allAssets count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -229,16 +229,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -248,12 +248,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"allAssets"];
+    [dictionary setObject:array forKeyedSubscript:@"allAssets"];
   }
 
   if ([(NSArray *)self->_uafAssetSets count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -273,16 +273,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -292,12 +292,12 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"uafAssetSets"];
+    [dictionary setObject:array2 forKeyedSubscript:@"uafAssetSets"];
   }
 
   if ([(NSArray *)self->_uafAssetSubscriptions count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -317,16 +317,16 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v29 + 1) + 8 * k) dictionaryRepresentation];
-          if (v26)
+          dictionaryRepresentation3 = [*(*(&v29 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v20 addObject:v26];
+            [array3 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v27 = [MEMORY[0x1E695DFB0] null];
-            [v20 addObject:v27];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null3];
           }
         }
 
@@ -336,12 +336,12 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"uafAssetSubscriptions"];
+    [dictionary setObject:array3 forKeyedSubscript:@"uafAssetSubscriptions"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v29];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v29];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -351,28 +351,28 @@
   return v4 ^ [(NSArray *)self->_allAssets hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSets];
-  v6 = [v4 uafAssetSets];
-  if ((v5 != 0) == (v6 == 0))
+  uafAssetSets = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSets];
+  uafAssetSets2 = [equalCopy uafAssetSets];
+  if ((uafAssetSets != 0) == (uafAssetSets2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSets];
-  if (v7)
+  uafAssetSets3 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSets];
+  if (uafAssetSets3)
   {
-    v8 = v7;
-    v9 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSets];
-    v10 = [v4 uafAssetSets];
-    v11 = [v9 isEqual:v10];
+    v8 = uafAssetSets3;
+    uafAssetSets4 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSets];
+    uafAssetSets5 = [equalCopy uafAssetSets];
+    v11 = [uafAssetSets4 isEqual:uafAssetSets5];
 
     if (!v11)
     {
@@ -384,20 +384,20 @@
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
-  v6 = [v4 uafAssetSubscriptions];
-  if ((v5 != 0) == (v6 == 0))
+  uafAssetSets = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
+  uafAssetSets2 = [equalCopy uafAssetSubscriptions];
+  if ((uafAssetSets != 0) == (uafAssetSets2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
-  if (v12)
+  uafAssetSubscriptions = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
+  if (uafAssetSubscriptions)
   {
-    v13 = v12;
-    v14 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
-    v15 = [v4 uafAssetSubscriptions];
-    v16 = [v14 isEqual:v15];
+    v13 = uafAssetSubscriptions;
+    uafAssetSubscriptions2 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
+    uafAssetSubscriptions3 = [equalCopy uafAssetSubscriptions];
+    v16 = [uafAssetSubscriptions2 isEqual:uafAssetSubscriptions3];
 
     if (!v16)
     {
@@ -409,12 +409,12 @@
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
-  v6 = [v4 allAssets];
-  if ((v5 != 0) != (v6 == 0))
+  uafAssetSets = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
+  uafAssetSets2 = [equalCopy allAssets];
+  if ((uafAssetSets != 0) != (uafAssetSets2 == 0))
   {
-    v17 = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
-    if (!v17)
+    allAssets = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
+    if (!allAssets)
     {
 
 LABEL_20:
@@ -422,10 +422,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
-    v20 = [v4 allAssets];
-    v21 = [v19 isEqual:v20];
+    v18 = allAssets;
+    allAssets2 = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
+    allAssets3 = [equalCopy allAssets];
+    v21 = [allAssets2 isEqual:allAssets3];
 
     if (v21)
     {
@@ -445,10 +445,10 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -543,76 +543,76 @@ LABEL_18:
   }
 }
 
-- (void)addAllAssets:(id)a3
+- (void)addAllAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   allAssets = self->_allAssets;
-  v8 = v4;
+  v8 = assetsCopy;
   if (!allAssets)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_allAssets;
-    self->_allAssets = v6;
+    self->_allAssets = array;
 
-    v4 = v8;
+    assetsCopy = v8;
     allAssets = self->_allAssets;
   }
 
-  [(NSArray *)allAssets addObject:v4];
+  [(NSArray *)allAssets addObject:assetsCopy];
 }
 
-- (void)addUafAssetSubscriptions:(id)a3
+- (void)addUafAssetSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   uafAssetSubscriptions = self->_uafAssetSubscriptions;
-  v8 = v4;
+  v8 = subscriptionsCopy;
   if (!uafAssetSubscriptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_uafAssetSubscriptions;
-    self->_uafAssetSubscriptions = v6;
+    self->_uafAssetSubscriptions = array;
 
-    v4 = v8;
+    subscriptionsCopy = v8;
     uafAssetSubscriptions = self->_uafAssetSubscriptions;
   }
 
-  [(NSArray *)uafAssetSubscriptions addObject:v4];
+  [(NSArray *)uafAssetSubscriptions addObject:subscriptionsCopy];
 }
 
-- (void)addUafAssetSets:(id)a3
+- (void)addUafAssetSets:(id)sets
 {
-  v4 = a3;
+  setsCopy = sets;
   uafAssetSets = self->_uafAssetSets;
-  v8 = v4;
+  v8 = setsCopy;
   if (!uafAssetSets)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_uafAssetSets;
-    self->_uafAssetSets = v6;
+    self->_uafAssetSets = array;
 
-    v4 = v8;
+    setsCopy = v8;
     uafAssetSets = self->_uafAssetSets;
   }
 
-  [(NSArray *)uafAssetSets addObject:v4];
+  [(NSArray *)uafAssetSets addObject:setsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v13.receiver = self;
   v13.super_class = UAFSchemaUAFAssetSetStatus;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSets:v13.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(UAFSchemaUAFAssetSetStatus *)self setUafAssetSets:v7];
 
-  v8 = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  uafAssetSubscriptions = [(UAFSchemaUAFAssetSetStatus *)self uafAssetSubscriptions];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:uafAssetSubscriptions underConditions:policyCopy];
   [(UAFSchemaUAFAssetSetStatus *)self setUafAssetSubscriptions:v9];
 
-  v10 = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
-  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v10 underConditions:v4];
+  allAssets = [(UAFSchemaUAFAssetSetStatus *)self allAssets];
+  v11 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:allAssets underConditions:policyCopy];
 
   [(UAFSchemaUAFAssetSetStatus *)self setAllAssets:v11];
 

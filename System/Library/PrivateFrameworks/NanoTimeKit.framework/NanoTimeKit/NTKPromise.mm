@@ -1,67 +1,67 @@
 @interface NTKPromise
-+ (id)metalPipelinePromiseNamed:(id)a3 withBlock:(id)a4;
-+ (id)promiseNamed:(id)a3 withBackgroundPriority:(unsigned int)a4 foregroundPriority:(unsigned int)a5 block:(id)a6;
-+ (id)promiseNamed:(id)a3 withBlock:(id)a4;
-- (NTKPromise)initWithName:(id)a3 backgroundPriority:(unsigned int)a4 foregroundPriority:(unsigned int)a5 block:(id)a6;
++ (id)metalPipelinePromiseNamed:(id)named withBlock:(id)block;
++ (id)promiseNamed:(id)named withBackgroundPriority:(unsigned int)priority foregroundPriority:(unsigned int)foregroundPriority block:(id)block;
++ (id)promiseNamed:(id)named withBlock:(id)block;
+- (NTKPromise)initWithName:(id)name backgroundPriority:(unsigned int)priority foregroundPriority:(unsigned int)foregroundPriority block:(id)block;
 - (id)object;
-- (void)_beginLoadingBlock:(id)a3;
+- (void)_beginLoadingBlock:(id)block;
 @end
 
 @implementation NTKPromise
 
-+ (id)promiseNamed:(id)a3 withBlock:(id)a4
++ (id)promiseNamed:(id)named withBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NTKPromise alloc] initWithName:v6 block:v5];
+  blockCopy = block;
+  namedCopy = named;
+  v7 = [[NTKPromise alloc] initWithName:namedCopy block:blockCopy];
 
   return v7;
 }
 
-+ (id)promiseNamed:(id)a3 withBackgroundPriority:(unsigned int)a4 foregroundPriority:(unsigned int)a5 block:(id)a6
++ (id)promiseNamed:(id)named withBackgroundPriority:(unsigned int)priority foregroundPriority:(unsigned int)foregroundPriority block:(id)block
 {
-  v6 = *&a5;
-  v7 = *&a4;
-  v9 = a6;
-  v10 = a3;
-  v11 = [[NTKPromise alloc] initWithName:v10 backgroundPriority:v7 foregroundPriority:v6 block:v9];
+  v6 = *&foregroundPriority;
+  v7 = *&priority;
+  blockCopy = block;
+  namedCopy = named;
+  v11 = [[NTKPromise alloc] initWithName:namedCopy backgroundPriority:v7 foregroundPriority:v6 block:blockCopy];
 
   return v11;
 }
 
-+ (id)metalPipelinePromiseNamed:(id)a3 withBlock:(id)a4
++ (id)metalPipelinePromiseNamed:(id)named withBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NTKPromise alloc] initWithName:v6 backgroundPriority:25 foregroundPriority:33 block:v5];
+  blockCopy = block;
+  namedCopy = named;
+  v7 = [[NTKPromise alloc] initWithName:namedCopy backgroundPriority:25 foregroundPriority:33 block:blockCopy];
 
   return v7;
 }
 
-- (NTKPromise)initWithName:(id)a3 backgroundPriority:(unsigned int)a4 foregroundPriority:(unsigned int)a5 block:(id)a6
+- (NTKPromise)initWithName:(id)name backgroundPriority:(unsigned int)priority foregroundPriority:(unsigned int)foregroundPriority block:(id)block
 {
-  v11 = a3;
-  v12 = a6;
+  nameCopy = name;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = NTKPromise;
   v13 = [(NTKPromise *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_name, a3);
-    v14->_bgPriority = a4;
-    v14->_fgPriority = a5;
+    objc_storeStrong(&v13->_name, name);
+    v14->_bgPriority = priority;
+    v14->_fgPriority = foregroundPriority;
     v14->_lock_promiseState = 0;
     v14->_lock._os_unfair_lock_opaque = 0;
-    [(NTKPromise *)v14 _beginLoadingBlock:v12];
+    [(NTKPromise *)v14 _beginLoadingBlock:blockCopy];
   }
 
   return v14;
 }
 
-- (void)_beginLoadingBlock:(id)a3
+- (void)_beginLoadingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_promiseState)
   {
@@ -73,7 +73,7 @@
     v14 = __33__NTKPromise__beginLoadingBlock___block_invoke;
     v15 = &unk_278781070;
     objc_copyWeak(&v17, &location);
-    v16 = v4;
+    v16 = blockCopy;
     v6 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, bgPriority, 0, &block);
     loaderQueue = self->_loaderQueue;
     if (!loaderQueue)

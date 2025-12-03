@@ -13,8 +13,8 @@
   v4 = [(CoreDAVItem *)&v7 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVSupportedReportItem *)self report];
-  [v3 appendFormat:@"\n  Report: [%@]", v5];
+  report = [(CoreDAVSupportedReportItem *)self report];
+  [v3 appendFormat:@"\n  Report: [%@]", report];
 
   return v3;
 }
@@ -22,7 +22,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -33,7 +33,7 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[CoreDAVItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 

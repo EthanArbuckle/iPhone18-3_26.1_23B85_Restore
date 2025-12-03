@@ -1,7 +1,7 @@
 @interface ASDStoreKitExternalNotificationSheet
 + (id)sharedInstance;
 - (ASDStoreKitExternalNotificationSheet)init;
-- (void)presentSheetIfNeededForProcessHandle:(id)a3 completion:(id)a4;
+- (void)presentSheetIfNeededForProcessHandle:(id)handle completion:(id)completion;
 @end
 
 @implementation ASDStoreKitExternalNotificationSheet
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __54__ASDStoreKitExternalNotificationSheet_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D500 != -1)
   {
     dispatch_once(&qword_1ED90D500, block);
@@ -45,21 +45,21 @@ uint64_t __54__ASDStoreKitExternalNotificationSheet_sharedInstance__block_invoke
   return v2;
 }
 
-- (void)presentSheetIfNeededForProcessHandle:(id)a3 completion:(id)a4
+- (void)presentSheetIfNeededForProcessHandle:(id)handle completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  handleCopy = handle;
   serviceBroker = self->_serviceBroker;
   v14 = 0;
-  v8 = a4;
+  completionCopy = completion;
   v9 = [(ASDServiceBroker *)serviceBroker getStoreKitExternalNotificationServiceWithError:&v14];
   v10 = v14;
   if (v9)
   {
     v11 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_10];
-    [v11 presentSheetIfNeededForProcessHandle:v6 completion:v8];
+    [v11 presentSheetIfNeededForProcessHandle:handleCopy completion:completionCopy];
 
-    v8 = v11;
+    completionCopy = v11;
   }
 
   else
@@ -72,7 +72,7 @@ uint64_t __54__ASDStoreKitExternalNotificationSheet_sharedInstance__block_invoke
       _os_log_error_impl(&dword_1B8220000, v12, OS_LOG_TYPE_ERROR, "[ASDStoreKitExternalNotification] Service unavailable: %{public}@", buf, 0xCu);
     }
 
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v13 = *MEMORY[0x1E69E9840];

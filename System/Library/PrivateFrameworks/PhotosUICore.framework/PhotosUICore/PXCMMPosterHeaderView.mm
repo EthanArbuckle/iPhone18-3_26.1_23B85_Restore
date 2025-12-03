@@ -1,37 +1,37 @@
 @interface PXCMMPosterHeaderView
-+ (double)preferredHeightForWidth:(double)a3 traitCollection:(id)a4 screen:(id)a5;
-+ (void)preheatSharedValuesForPresentationStyle:(int64_t)a3;
++ (double)preferredHeightForWidth:(double)width traitCollection:(id)collection screen:(id)screen;
++ (void)preheatSharedValuesForPresentationStyle:(int64_t)style;
 - (PXCMMPosterHeaderView)init;
-- (PXCMMPosterHeaderView)initWithCoder:(id)a3;
-- (PXCMMPosterHeaderView)initWithFrame:(CGRect)a3;
-- (PXCMMPosterHeaderView)initWithPresentationStyle:(int64_t)a3;
+- (PXCMMPosterHeaderView)initWithCoder:(id)coder;
+- (PXCMMPosterHeaderView)initWithFrame:(CGRect)frame;
+- (PXCMMPosterHeaderView)initWithPresentationStyle:(int64_t)style;
 - (void)_updateFonts;
 - (void)_updateStatusString;
 - (void)_updateSubtitle;
 - (void)_updateTitle;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setViewModel:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation PXCMMPosterHeaderView
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXCMMPosterHeaderViewModelObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXCMMPosterHeaderViewModelObservationContext != context)
   {
     goto LABEL_9;
   }
 
-  if (v6)
+  if (changeCopy)
   {
     [(PXCMMPosterHeaderView *)self _updateTitle];
-    if ((v6 & 2) == 0)
+    if ((changeCopy & 2) == 0)
     {
 LABEL_4:
-      if ((v6 & 4) == 0)
+      if ((changeCopy & 4) == 0)
       {
         goto LABEL_5;
       }
@@ -40,16 +40,16 @@ LABEL_4:
     }
   }
 
-  else if ((v6 & 2) == 0)
+  else if ((changeCopy & 2) == 0)
   {
     goto LABEL_4;
   }
 
   [(PXCMMPosterHeaderView *)self _updateSubtitle];
-  if ((v6 & 4) == 0)
+  if ((changeCopy & 4) == 0)
   {
 LABEL_5:
-    if ((v6 & 8) == 0)
+    if ((changeCopy & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -59,22 +59,22 @@ LABEL_5:
 
 LABEL_12:
   [(PXCMMPosterHeaderView *)self _updateStatusString];
-  if ((v6 & 8) != 0)
+  if ((changeCopy & 8) != 0)
   {
 LABEL_6:
     [(PXCMMPosterHeaderView *)self setNeedsLayout];
   }
 
 LABEL_7:
-  if ((v6 & 0x70) != 0)
+  if ((changeCopy & 0x70) != 0)
   {
-    v9 = [(PXCMMImageView *)self->_imageView viewModel];
+    viewModel = [(PXCMMImageView *)self->_imageView viewModel];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke;
     v10[3] = &unk_1E7735200;
     v10[4] = self;
-    [v9 performChanges:v10];
+    [viewModel performChanges:v10];
   }
 
 LABEL_9:
@@ -95,15 +95,15 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
 
 - (void)_updateFonts
 {
-  v6 = [(PXCMMPosterHeaderViewSpec *)self->_spec preferredTitleFont];
+  preferredTitleFont = [(PXCMMPosterHeaderViewSpec *)self->_spec preferredTitleFont];
   [(UILabel *)self->_titleLabel setFont:?];
-  v3 = [(PXCMMPosterHeaderViewSpec *)self->_spec preferredSubtitleFont];
-  [(UILabel *)self->_subtitleLabel setFont:v3];
+  preferredSubtitleFont = [(PXCMMPosterHeaderViewSpec *)self->_spec preferredSubtitleFont];
+  [(UILabel *)self->_subtitleLabel setFont:preferredSubtitleFont];
   if ([(PXCMMPosterHeaderViewSpec *)self->_spec canShowStatus])
   {
-    v4 = [(PXCMMPosterHeaderViewSpec *)self->_spec preferredStatusFont];
-    [(UILabel *)self->_statusLabel setFont:v4];
-    v5 = [MEMORY[0x1E69DCAD8] configurationWithFont:v4];
+    preferredStatusFont = [(PXCMMPosterHeaderViewSpec *)self->_spec preferredStatusFont];
+    [(UILabel *)self->_statusLabel setFont:preferredStatusFont];
+    v5 = [MEMORY[0x1E69DCAD8] configurationWithFont:preferredStatusFont];
     [(UIImageView *)self->_statusCheckmark setSymbolConfiguration:v5];
   }
 
@@ -112,24 +112,24 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
 
 - (void)_updateStatusString
 {
-  v3 = [(PXCMMPosterHeaderViewModel *)self->_viewModel statusString];
-  [(UILabel *)self->_statusLabel setText:v3];
+  statusString = [(PXCMMPosterHeaderViewModel *)self->_viewModel statusString];
+  [(UILabel *)self->_statusLabel setText:statusString];
 
   [(PXCMMPosterHeaderView *)self setNeedsLayout];
 }
 
 - (void)_updateSubtitle
 {
-  v3 = [(PXCMMPosterHeaderViewModel *)self->_viewModel subtitle];
-  [(UILabel *)self->_subtitleLabel setText:v3];
+  subtitle = [(PXCMMPosterHeaderViewModel *)self->_viewModel subtitle];
+  [(UILabel *)self->_subtitleLabel setText:subtitle];
 
   [(PXCMMPosterHeaderView *)self setNeedsLayout];
 }
 
 - (void)_updateTitle
 {
-  v3 = [(PXCMMPosterHeaderViewModel *)self->_viewModel title];
-  [(UILabel *)self->_titleLabel setText:v3];
+  title = [(PXCMMPosterHeaderViewModel *)self->_viewModel title];
+  [(UILabel *)self->_titleLabel setText:title];
 
   [(PXCMMPosterHeaderView *)self setNeedsLayout];
 }
@@ -143,17 +143,17 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
   [(PXCMMPosterHeaderView *)self _performLayoutWithSize:v3, v4];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v6 = a3;
-  if (!v6)
+  modelCopy = model;
+  if (!modelCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
   }
 
   viewModel = self->_viewModel;
-  v8 = v6;
+  v8 = modelCopy;
   v11 = v8;
   if (viewModel == v8)
   {
@@ -166,7 +166,7 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
     if ((v9 & 1) == 0)
     {
       [(PXCMMPosterHeaderViewModel *)self->_viewModel unregisterChangeObserver:self context:PXCMMPosterHeaderViewModelObservationContext];
-      objc_storeStrong(&self->_viewModel, a3);
+      objc_storeStrong(&self->_viewModel, model);
       [(PXCMMPosterHeaderViewModel *)self->_viewModel registerChangeObserver:self context:PXCMMPosterHeaderViewModelObservationContext];
       [(PXCMMPosterHeaderView *)self _updateTitle];
       [(PXCMMPosterHeaderView *)self _updateSubtitle];
@@ -175,7 +175,7 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
   }
 }
 
-- (PXCMMPosterHeaderView)initWithPresentationStyle:(int64_t)a3
+- (PXCMMPosterHeaderView)initWithPresentationStyle:(int64_t)style
 {
   v42[2] = *MEMORY[0x1E69E9840];
   v40.receiver = self;
@@ -188,7 +188,7 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
   v9 = v8;
   if (v8)
   {
-    v8->_presentationStyle = a3;
+    v8->_presentationStyle = style;
     v10 = [[PXCMMPosterHeaderViewSpec alloc] initWithPresentationStyle:v8->_presentationStyle];
     spec = v9->_spec;
     v9->_spec = v10;
@@ -205,8 +205,8 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
 
     v16 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.4];
     v42[0] = v16;
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    v42[1] = v17;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v42[1] = clearColor;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
     [(PXGradientView *)v9->_topGradientView setColors:v18];
 
@@ -215,8 +215,8 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
     bottomGradientView = v9->_bottomGradientView;
     v9->_bottomGradientView = v19;
 
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    v41[0] = v21;
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    v41[0] = clearColor2;
     v22 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.4];
     v41[1] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
@@ -227,8 +227,8 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
     titleLabel = v9->_titleLabel;
     v9->_titleLabel = v24;
 
-    v26 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v9->_titleLabel setTextColor:v26];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v9->_titleLabel setTextColor:whiteColor];
 
     [(UILabel *)v9->_titleLabel setNumberOfLines:2];
     [(PXCMMPosterHeaderView *)v9 addSubview:v9->_titleLabel];
@@ -236,8 +236,8 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
     subtitleLabel = v9->_subtitleLabel;
     v9->_subtitleLabel = v27;
 
-    v29 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v9->_subtitleLabel setTextColor:v29];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v9->_subtitleLabel setTextColor:whiteColor2];
 
     [(PXCMMPosterHeaderView *)v9 addSubview:v9->_subtitleLabel];
     if ([(PXCMMPosterHeaderViewSpec *)v9->_spec canShowStatus])
@@ -246,8 +246,8 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
       statusLabel = v9->_statusLabel;
       v9->_statusLabel = v30;
 
-      v32 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UILabel *)v9->_statusLabel setTextColor:v32];
+      whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+      [(UILabel *)v9->_statusLabel setTextColor:whiteColor3];
 
       [(PXCMMPosterHeaderView *)v9 addSubview:v9->_statusLabel];
       v33 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v4, v5, v6, v7}];
@@ -256,14 +256,14 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
 
       v35 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
       [(UIImageView *)v9->_statusCheckmark setImage:v35];
-      v36 = [MEMORY[0x1E69DC888] whiteColor];
-      [(UIImageView *)v9->_statusCheckmark setTintColor:v36];
+      whiteColor4 = [MEMORY[0x1E69DC888] whiteColor];
+      [(UIImageView *)v9->_statusCheckmark setTintColor:whiteColor4];
 
       [(PXCMMPosterHeaderView *)v9 addSubview:v9->_statusCheckmark];
     }
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v9 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
     [(PXCMMPosterHeaderView *)v9 _updateFonts];
     v38 = objc_alloc_init(PXCMMPosterHeaderViewModel);
@@ -275,34 +275,34 @@ void __54__PXCMMPosterHeaderView_observable_didChange_context___block_invoke(uin
   return v9;
 }
 
-- (PXCMMPosterHeaderView)initWithCoder:(id)a3
+- (PXCMMPosterHeaderView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:56 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:56 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXCMMPosterHeaderView)initWithFrame:(CGRect)a3
+- (PXCMMPosterHeaderView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderView initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:52 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderView initWithFrame:]"}];
 
   abort();
 }
 
 - (PXCMMPosterHeaderView)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderView init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderView.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXCMMPosterHeaderView init]"}];
 
   abort();
 }
 
-+ (void)preheatSharedValuesForPresentationStyle:(int64_t)a3
++ (void)preheatSharedValuesForPresentationStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -322,7 +322,7 @@ LABEL_10:
     goto LABEL_6;
   }
 
-  if (a3 != 1)
+  if (style != 1)
   {
     return;
   }
@@ -365,15 +365,15 @@ void __65__PXCMMPosterHeaderView_preheatSharedValuesForPresentationStyle___block
   [v2 scaledBottomGradientBaselineOffset];
 }
 
-+ (double)preferredHeightForWidth:(double)a3 traitCollection:(id)a4 screen:(id)a5
++ (double)preferredHeightForWidth:(double)width traitCollection:(id)collection screen:(id)screen
 {
-  v7 = a5;
-  [a4 displayScale];
+  screenCopy = screen;
+  [collection displayScale];
   v9.size.height = 1.79769313e308;
   v9.origin.x = 0.0;
   v9.origin.y = 0.0;
-  v9.size.width = a3;
-  [PXPhotosDetailsHeaderTileWidget preferredHeaderContentHeightForWidth:v7 screen:CGRectGetWidth(v9)];
+  v9.size.width = width;
+  [PXPhotosDetailsHeaderTileWidget preferredHeaderContentHeightForWidth:screenCopy screen:CGRectGetWidth(v9)];
 
   PXSizeRoundToPixel();
 }

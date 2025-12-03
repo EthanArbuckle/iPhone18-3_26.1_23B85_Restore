@@ -78,8 +78,8 @@
     v9 = (2 * vcvtms_s32_f32(v8 * 0.5)) | 1;
   }
 
-  v10 = [(CIMorphologyRectangle *)self _doMinimum];
-  if (!v10)
+  _doMinimum = [(CIMorphologyRectangle *)self _doMinimum];
+  if (!_doMinimum)
   {
     v27 = 0;
     v28 = -1;
@@ -93,7 +93,7 @@
     [(CIImage *)self->inputImage extent];
     if (v12 > (v9 - 1))
     {
-      v27 = v10;
+      v27 = _doMinimum;
       v28 = 1;
       v13 = &CI::_morphmin;
 LABEL_16:

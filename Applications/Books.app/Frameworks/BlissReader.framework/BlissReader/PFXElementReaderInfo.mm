@@ -1,21 +1,21 @@
 @interface PFXElementReaderInfo
-- (PFXElementReaderInfo)initWithElementName:(const char *)a3 elementNamespace:(const char *)a4 mappingClass:(Class)a5;
+- (PFXElementReaderInfo)initWithElementName:(const char *)name elementNamespace:(const char *)namespace mappingClass:(Class)class;
 @end
 
 @implementation PFXElementReaderInfo
 
-- (PFXElementReaderInfo)initWithElementName:(const char *)a3 elementNamespace:(const char *)a4 mappingClass:(Class)a5
+- (PFXElementReaderInfo)initWithElementName:(const char *)name elementNamespace:(const char *)namespace mappingClass:(Class)class
 {
-  if (a3)
+  if (name)
   {
     v9.receiver = self;
     v9.super_class = PFXElementReaderInfo;
     result = [(PFXElementReaderInfo *)&v9 init];
     if (result)
     {
-      result->mElementName = a3;
-      result->mElementNamespace = a4;
-      result->mMappingClass = a5;
+      result->mElementName = name;
+      result->mElementNamespace = namespace;
+      result->mMappingClass = class;
     }
   }
 

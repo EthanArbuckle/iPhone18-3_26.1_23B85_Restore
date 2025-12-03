@@ -1,19 +1,19 @@
 @interface MRAnimationPathScalar
-- (MRAnimationPathScalar)initWithMCAnimationPath:(id)a3 andValue:(double)a4;
+- (MRAnimationPathScalar)initWithMCAnimationPath:(id)path andValue:(double)value;
 - (void)dealloc;
 @end
 
 @implementation MRAnimationPathScalar
 
-- (MRAnimationPathScalar)initWithMCAnimationPath:(id)a3 andValue:(double)a4
+- (MRAnimationPathScalar)initWithMCAnimationPath:(id)path andValue:(double)value
 {
   v8.receiver = self;
   v8.super_class = MRAnimationPathScalar;
   v6 = [(MRAnimationPathScalar *)&v8 init];
   if (v6)
   {
-    *(v6 + 1) = a3;
-    *(v6 + 2) = a4;
+    *(v6 + 1) = path;
+    *(v6 + 2) = value;
     *(v6 + 24) = xmmword_163840;
   }
 

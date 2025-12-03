@@ -1,43 +1,43 @@
 @interface SRTipKitSignalEmitter
-+ (void)_checkAndEmitBluetoothInvocationSourcePerVehicle:(id)a3 forRequestOptions:(id)a4 btManager:(id)a5;
-+ (void)_checkAndEmitCarPlayInvocationSourcePerVehicle:(id)a3 forRequestOptions:(id)a4 accessoryManager:(id)a5;
-+ (void)_checkAndEmitHSSignalsWithSource:(id)a3 forRequestOptions:(id)a4;
-+ (void)checkAndEmitSignalsForRequestOptions:(id)a3;
++ (void)_checkAndEmitBluetoothInvocationSourcePerVehicle:(id)vehicle forRequestOptions:(id)options btManager:(id)manager;
++ (void)_checkAndEmitCarPlayInvocationSourcePerVehicle:(id)vehicle forRequestOptions:(id)options accessoryManager:(id)manager;
++ (void)_checkAndEmitHSSignalsWithSource:(id)source forRequestOptions:(id)options;
++ (void)checkAndEmitSignalsForRequestOptions:(id)options;
 @end
 
 @implementation SRTipKitSignalEmitter
 
-+ (void)checkAndEmitSignalsForRequestOptions:(id)a3
++ (void)checkAndEmitSignalsForRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003EFF0;
   v7[3] = &unk_100166EA8;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
+  v8 = optionsCopy;
+  selfCopy = self;
+  v6 = optionsCopy;
   dispatch_async(v5, v7);
 }
 
-+ (void)_checkAndEmitHSSignalsWithSource:(id)a3 forRequestOptions:(id)a4
++ (void)_checkAndEmitHSSignalsWithSource:(id)source forRequestOptions:(id)options
 {
-  v8 = a3;
-  v5 = a4;
-  if ([v5 isForStark])
+  sourceCopy = source;
+  optionsCopy = options;
+  if ([optionsCopy isForStark])
   {
-    if ([v5 requestSource] == 8 || objc_msgSend(v5, "requestSource") == 45)
+    if ([optionsCopy requestSource] == 8 || objc_msgSend(optionsCopy, "requestSource") == 45)
     {
       v6 = @"com.apple.siri.hs.on.carplay";
 LABEL_5:
       v7 = [[BMDiscoverabilitySignalEvent alloc] initWithIdentifier:v6 bundleID:@"com.apple.siri" context:0];
-      [v8 sendEvent:v7];
+      [sourceCopy sendEvent:v7];
 
       goto LABEL_6;
     }
 
-    if ([v5 requestSource] == 10 || objc_msgSend(v5, "requestSource") == 44)
+    if ([optionsCopy requestSource] == 10 || objc_msgSend(optionsCopy, "requestSource") == 44)
     {
       v6 = @"com.apple.siri.button.on.carplay";
       goto LABEL_5;
@@ -47,17 +47,17 @@ LABEL_5:
 LABEL_6:
 }
 
-+ (void)_checkAndEmitCarPlayInvocationSourcePerVehicle:(id)a3 forRequestOptions:(id)a4 accessoryManager:(id)a5
++ (void)_checkAndEmitCarPlayInvocationSourcePerVehicle:(id)vehicle forRequestOptions:(id)options accessoryManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 connectedAccessories];
+  vehicleCopy = vehicle;
+  optionsCopy = options;
+  connectedAccessories = [manager connectedAccessories];
   v10 = objc_alloc_init(NSData);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = v9;
+  v11 = connectedAccessories;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v12)
   {
@@ -79,17 +79,17 @@ LABEL_6:
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
           {
             v18 = v17;
-            v19 = [v16 certSerial];
+            certSerial = [v16 certSerial];
             *buf = 136315394;
             v35 = "+[SRTipKitSignalEmitter _checkAndEmitCarPlayInvocationSourcePerVehicle:forRequestOptions:accessoryManager:]";
             v36 = 2112;
-            v37 = v19;
+            v37 = certSerial;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s #tipKitSignalEmitter certSerial %@", buf, 0x16u);
           }
 
-          v20 = [v16 certSerial];
+          certSerial2 = [v16 certSerial];
 
-          v10 = v20;
+          v10 = certSerial2;
           goto LABEL_13;
         }
       }
@@ -108,11 +108,11 @@ LABEL_13:
 
   v21 = objc_alloc_init(NSMutableDictionary);
   [v21 setValue:v10 forKey:@"certSerial"];
-  v22 = [v8 isHeadunitEyesFree];
+  isHeadunitEyesFree = [optionsCopy isHeadunitEyesFree];
   v23 = @"YES";
-  if ((v22 & 1) == 0)
+  if ((isHeadunitEyesFree & 1) == 0)
   {
-    if ([v8 isForBluetoothCar])
+    if ([optionsCopy isForBluetoothCar])
     {
       v23 = @"YES";
     }
@@ -124,7 +124,7 @@ LABEL_13:
   }
 
   [v21 setValue:v23 forKey:{@"isBluetoothCar", v30}];
-  if ([v8 isForStark])
+  if ([optionsCopy isForStark])
   {
     v24 = @"YES";
   }
@@ -135,12 +135,12 @@ LABEL_13:
   }
 
   [v21 setValue:v24 forKey:@"isCarPlay"];
-  if ([v8 isForStark])
+  if ([optionsCopy isForStark])
   {
-    v25 = [v8 requestSource];
-    if (v25 > 11)
+    requestSource = [optionsCopy requestSource];
+    if (requestSource > 11)
     {
-      switch(v25)
+      switch(requestSource)
       {
         case 45:
           goto LABEL_29;
@@ -156,7 +156,7 @@ LABEL_29:
 
     else
     {
-      switch(v25)
+      switch(requestSource)
       {
         case 2:
           v26 = @"com.apple.siri.lock.button";
@@ -180,7 +180,7 @@ LABEL_36:
           }
 
           v29 = [[BMDiscoverabilitySignalEvent alloc] initWithIdentifier:v26 bundleID:@"com.apple.siri" context:0 userInfo:v21];
-          [v7 sendEvent:v29];
+          [vehicleCopy sendEvent:v29];
 
           goto LABEL_39;
       }
@@ -189,7 +189,7 @@ LABEL_36:
     v27 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
     {
-      sub_1000CB990(v27, v8);
+      sub_1000CB990(v27, optionsCopy);
     }
 
     v26 = &stru_10016AE90;
@@ -199,17 +199,17 @@ LABEL_36:
 LABEL_39:
 }
 
-+ (void)_checkAndEmitBluetoothInvocationSourcePerVehicle:(id)a3 forRequestOptions:(id)a4 btManager:(id)a5
++ (void)_checkAndEmitBluetoothInvocationSourcePerVehicle:(id)vehicle forRequestOptions:(id)options btManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  vehicleCopy = vehicle;
+  optionsCopy = options;
+  managerCopy = manager;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [v9 connectedDevices];
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  connectedDevices = [managerCopy connectedDevices];
+  v11 = [connectedDevices countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -221,19 +221,19 @@ LABEL_39:
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(connectedDevices);
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
         if (([v16 ac_isEyesFree] & 1) != 0 || objc_msgSend(v16, "ac_isBluetoothVehicle"))
         {
-          v17 = [v16 address];
+          address = [v16 address];
 
-          v13 = v17;
+          v13 = address;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v12 = [connectedDevices countByEnumeratingWithState:&v24 objects:v34 count:16];
     }
 
     while (v12);
@@ -244,30 +244,30 @@ LABEL_39:
     v13 = 0;
   }
 
-  if ((([v8 isHeadunitEyesFree] & 1) != 0 || objc_msgSend(v8, "isForBluetoothCar")) && v13)
+  if ((([optionsCopy isHeadunitEyesFree] & 1) != 0 || objc_msgSend(optionsCopy, "isForBluetoothCar")) && v13)
   {
     v18 = objc_alloc_init(NSMutableDictionary);
     [v18 setValue:v13 forKey:@"btAddress"];
     [v18 setValue:@"YES" forKey:@"isBluetoothCar"];
     [v18 setValue:@"NO" forKey:@"isCarPlay"];
-    v19 = [v8 requestSource];
+    requestSource = [optionsCopy requestSource];
     v20 = &stru_10016AE90;
-    if (v19 > 7)
+    if (requestSource > 7)
     {
-      if (v19 == 8)
+      if (requestSource == 8)
       {
         v20 = @"com.apple.siri.hs.on.bt";
       }
 
       else
       {
-        if (v19 != 44)
+        if (requestSource != 44)
         {
 LABEL_24:
           v21 = AFSiriLogContextConnection;
           if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
           {
-            sub_1000CBA24(v21, v8);
+            sub_1000CBA24(v21, optionsCopy);
           }
 
           goto LABEL_28;
@@ -279,9 +279,9 @@ LABEL_24:
 
     else
     {
-      if (v19 != 2)
+      if (requestSource != 2)
       {
-        if (v19 == 5)
+        if (requestSource == 5)
         {
           v20 = @"com.apple.siri.bt.headset";
         }
@@ -306,7 +306,7 @@ LABEL_28:
     }
 
     v23 = [[BMDiscoverabilitySignalEvent alloc] initWithIdentifier:v20 bundleID:@"com.apple.siri" context:0 userInfo:v18];
-    [v7 sendEvent:v23];
+    [vehicleCopy sendEvent:v23];
   }
 }
 

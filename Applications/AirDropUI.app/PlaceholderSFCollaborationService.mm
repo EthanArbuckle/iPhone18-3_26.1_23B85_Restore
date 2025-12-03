@@ -1,11 +1,11 @@
 @interface PlaceholderSFCollaborationService
-- (BOOL)canShareFileURL:(id)a3;
+- (BOOL)canShareFileURL:(id)l;
 - (_TtC9AirDropUI33PlaceholderSFCollaborationService)init;
 @end
 
 @implementation PlaceholderSFCollaborationService
 
-- (BOOL)canShareFileURL:(id)a3
+- (BOOL)canShareFileURL:(id)l
 {
   v3 = type metadata accessor for URL();
   v4 = *(v3 - 8);

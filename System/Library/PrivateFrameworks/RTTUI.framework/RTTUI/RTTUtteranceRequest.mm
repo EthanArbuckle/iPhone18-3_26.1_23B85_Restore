@@ -1,22 +1,22 @@
 @interface RTTUtteranceRequest
-+ (id)utteranceRequestWithIndex:(unint64_t)a3 forString:(id)a4 inCellPath:(id)a5 call:(id)a6;
++ (id)utteranceRequestWithIndex:(unint64_t)index forString:(id)string inCellPath:(id)path call:(id)call;
 - (NSIndexPath)cellIndexPath;
 - (id)description;
 @end
 
 @implementation RTTUtteranceRequest
 
-+ (id)utteranceRequestWithIndex:(unint64_t)a3 forString:(id)a4 inCellPath:(id)a5 call:(id)a6
++ (id)utteranceRequestWithIndex:(unint64_t)index forString:(id)string inCellPath:(id)path call:(id)call
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  callCopy = call;
+  pathCopy = path;
+  stringCopy = string;
   v12 = objc_alloc_init(RTTUtteranceRequest);
-  [(RTTUtteranceRequest *)v12 setIndex:a3];
-  [(RTTUtteranceRequest *)v12 setString:v11];
+  [(RTTUtteranceRequest *)v12 setIndex:index];
+  [(RTTUtteranceRequest *)v12 setString:stringCopy];
 
-  [(RTTUtteranceRequest *)v12 setCellIndexPath:v10];
-  [(RTTUtteranceRequest *)v12 setCall:v9];
+  [(RTTUtteranceRequest *)v12 setCellIndexPath:pathCopy];
+  [(RTTUtteranceRequest *)v12 setCall:callCopy];
 
   return v12;
 }
@@ -27,10 +27,10 @@
   v10.receiver = self;
   v10.super_class = RTTUtteranceRequest;
   v4 = [(RTTUtteranceRequest *)&v10 description];
-  v5 = [(RTTUtteranceRequest *)self index];
-  v6 = [(RTTUtteranceRequest *)self string];
-  v7 = [(RTTUtteranceRequest *)self cellIndexPath];
-  v8 = [v3 stringWithFormat:@"%@ [%ld]=%@ - %@", v4, v5, v6, v7];
+  index = [(RTTUtteranceRequest *)self index];
+  string = [(RTTUtteranceRequest *)self string];
+  cellIndexPath = [(RTTUtteranceRequest *)self cellIndexPath];
+  v8 = [v3 stringWithFormat:@"%@ [%ld]=%@ - %@", v4, index, string, cellIndexPath];
 
   return v8;
 }

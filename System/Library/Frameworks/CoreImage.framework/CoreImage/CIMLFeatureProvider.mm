@@ -1,8 +1,8 @@
 @interface CIMLFeatureProvider
 - (CIMLFeatureProvider)init;
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
-- (void)addOject:(id)a3 forName:(id)a4;
+- (id)featureValueForName:(id)name;
+- (void)addOject:(id)oject forName:(id)name;
 - (void)dealloc;
 @end
 
@@ -24,21 +24,21 @@
 - (NSSet)featureNames
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->contents allKeys];
+  allKeys = [(NSMutableDictionary *)self->contents allKeys];
 
-  return [v2 setWithArray:v3];
+  return [v2 setWithArray:allKeys];
 }
 
-- (void)addOject:(id)a3 forName:(id)a4
+- (void)addOject:(id)oject forName:(id)name
 {
-  v6 = [(CIMLFeatureProvider *)self contents];
+  contents = [(CIMLFeatureProvider *)self contents];
 
-  [(NSMutableDictionary *)v6 setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)contents setObject:oject forKey:name];
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)[(CIMLFeatureProvider *)self contents] objectForKey:a3];
+  v3 = [(NSMutableDictionary *)[(CIMLFeatureProvider *)self contents] objectForKey:name];
   getMLMultiArrayClass();
   if (objc_opt_isKindOfClass())
   {

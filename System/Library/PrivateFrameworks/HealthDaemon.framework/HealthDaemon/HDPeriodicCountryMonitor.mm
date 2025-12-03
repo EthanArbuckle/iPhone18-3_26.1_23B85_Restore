@@ -1,50 +1,50 @@
 @interface HDPeriodicCountryMonitor
 - (HDKeyValueDomain)_lastActivePairedBuildIdentifiersDomain;
-- (HDPeriodicCountryMonitor)initWithProfile:(id)a3 nanoSyncManager:(id)a4;
-- (HDPeriodicCountryMonitor)initWithProfile:(id)a3 nanoSyncManager:(id)a4 countryCodeProvider:(id)a5 userDefaults:(id)a6;
+- (HDPeriodicCountryMonitor)initWithProfile:(id)profile nanoSyncManager:(id)manager;
+- (HDPeriodicCountryMonitor)initWithProfile:(id)profile nanoSyncManager:(id)manager countryCodeProvider:(id)provider userDefaults:(id)defaults;
 - (_HDPeriodicCountryMonitorPairedBuildIdentifiers)_currentPairedBuildIdentifiers;
 - (id)diagnosticDescription;
 - (uint64_t)_lock_enterStateIfPossible:(uint64_t)result;
 - (void)_enqueueMaintenanceOperationIfNeeded;
-- (void)_fetchCountryIfNeededWithCompletion:(uint64_t)a1;
+- (void)_fetchCountryIfNeededWithCompletion:(uint64_t)completion;
 - (void)_recordSuccessfulFetchForCurrentPairedBuilds;
 - (void)enqueueMaintenanceFetch;
-- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)a3;
-- (void)nanoSyncManager:(id)a3 pairedDevicesChanged:(id)a4;
+- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)completion;
+- (void)nanoSyncManager:(id)manager pairedDevicesChanged:(id)changed;
 @end
 
 @implementation HDPeriodicCountryMonitor
 
-- (HDPeriodicCountryMonitor)initWithProfile:(id)a3 nanoSyncManager:(id)a4
+- (HDPeriodicCountryMonitor)initWithProfile:(id)profile nanoSyncManager:(id)manager
 {
   v6 = MEMORY[0x277CBEBD0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 standardUserDefaults];
-  v10 = [(HDPeriodicCountryMonitor *)self initWithProfile:v8 nanoSyncManager:v7 countryCodeProvider:&__block_literal_global_12 userDefaults:v9];
+  managerCopy = manager;
+  profileCopy = profile;
+  standardUserDefaults = [v6 standardUserDefaults];
+  v10 = [(HDPeriodicCountryMonitor *)self initWithProfile:profileCopy nanoSyncManager:managerCopy countryCodeProvider:&__block_literal_global_12 userDefaults:standardUserDefaults];
 
   return v10;
 }
 
-- (HDPeriodicCountryMonitor)initWithProfile:(id)a3 nanoSyncManager:(id)a4 countryCodeProvider:(id)a5 userDefaults:(id)a6
+- (HDPeriodicCountryMonitor)initWithProfile:(id)profile nanoSyncManager:(id)manager countryCodeProvider:(id)provider userDefaults:(id)defaults
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  managerCopy = manager;
+  providerCopy = provider;
+  defaultsCopy = defaults;
   v27.receiver = self;
   v27.super_class = HDPeriodicCountryMonitor;
   v14 = [(HDPeriodicCountryMonitor *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    objc_storeStrong(&v15->_nanoSyncManager, a4);
-    v16 = _Block_copy(v12);
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_nanoSyncManager, manager);
+    v16 = _Block_copy(providerCopy);
     countryCodeProvider = v15->_countryCodeProvider;
     v15->_countryCodeProvider = v16;
 
-    objc_storeStrong(&v15->_userDefaults, a6);
+    objc_storeStrong(&v15->_userDefaults, defaults);
     v18 = objc_alloc(MEMORY[0x277CCDA88]);
     v19 = [(HDPeriodicCountryMonitor *)v15 hk_classNameWithTag:@"observers"];
     v20 = HKLogInfrastructure();
@@ -59,18 +59,18 @@
     observerQueue = v15->_observerQueue;
     v15->_observerQueue = v23;
 
-    [v11 addObserver:v15];
-    v25 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v25 addObject:v15];
+    [managerCopy addObserver:v15];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v15];
   }
 
   return v15;
 }
 
-- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)a3
+- (void)fetchCurrentISOCountryCodeAndNotifyObserversWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogInfrastructure();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -87,7 +87,7 @@
   os_unfair_lock_unlock(&self->_lock);
   if (v7)
   {
-    [(HDPeriodicCountryMonitor *)self _fetchCountryIfNeededWithCompletion:v4];
+    [(HDPeriodicCountryMonitor *)self _fetchCountryIfNeededWithCompletion:completionCopy];
   }
 
   else
@@ -104,7 +104,7 @@
     }
 
     v9 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"A fetch is already in progress"];
-    (*(v4 + 2))(v4, 0, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v9);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -237,18 +237,18 @@ LABEL_25:
   return result;
 }
 
-- (void)_fetchCountryIfNeededWithCompletion:(uint64_t)a1
+- (void)_fetchCountryIfNeededWithCompletion:(uint64_t)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 80);
+    v5 = *(completion + 80);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __64__HDPeriodicCountryMonitor__fetchCountryIfNeededWithCompletion___block_invoke;
     v6[3] = &unk_278614E28;
-    v6[4] = a1;
+    v6[4] = completion;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -277,11 +277,11 @@ LABEL_25:
 - (void)_enqueueMaintenanceOperationIfNeeded
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 48));
-    v2 = [(HDPeriodicCountryMonitor *)a1 _lock_enterStateIfPossible:?];
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_lock((self + 48));
+    v2 = [(HDPeriodicCountryMonitor *)self _lock_enterStateIfPossible:?];
+    os_unfair_lock_unlock((self + 48));
     if (v2)
     {
       v3 = objc_opt_class();
@@ -290,13 +290,13 @@ LABEL_25:
       v10[1] = 3221225472;
       v10[2] = __64__HDPeriodicCountryMonitor__enqueueMaintenanceOperationIfNeeded__block_invoke;
       v10[3] = &unk_278614DB0;
-      v10[4] = a1;
+      v10[4] = self;
       v5 = [HDMaintenanceOperation maintenanceOperationWithName:v4 asynchronousBlock:v10];
 
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v7 = [WeakRetained daemon];
-      v8 = [v7 maintenanceWorkCoordinator];
-      [v8 enqueueMaintenanceOperation:v5];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      daemon = [WeakRetained daemon];
+      maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+      [maintenanceWorkCoordinator enqueueMaintenanceOperation:v5];
     }
 
     else
@@ -323,7 +323,7 @@ LABEL_6:
 - (HDKeyValueDomain)_lastActivePairedBuildIdentifiersDomain
 {
   v2 = [HDKeyValueDomain alloc];
-  WeakRetained = objc_loadWeakRetained((a1 + 8));
+  WeakRetained = objc_loadWeakRetained((self + 8));
   v4 = [(HDKeyValueDomain *)v2 initWithCategory:0 domainName:@"HDPeriodicCountryMonitor_ActivePairedBuildIdentifiers" profile:WeakRetained];
 
   return v4;
@@ -331,30 +331,30 @@ LABEL_6:
 
 - (_HDPeriodicCountryMonitorPairedBuildIdentifiers)_currentPairedBuildIdentifiers
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v3 = [v2 currentOSBuild];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    currentOSBuild = [mEMORY[0x277CCDD30] currentOSBuild];
 
-    v4 = [*(a1 + 16) pairedDevicesSnapshot];
-    v5 = [v4 activeDeviceInfo];
+    pairedDevicesSnapshot = [*(self + 16) pairedDevicesSnapshot];
+    activeDeviceInfo = [pairedDevicesSnapshot activeDeviceInfo];
 
-    if (v5)
+    if (activeDeviceInfo)
     {
-      v6 = [v5 sourceBundleIdentifier];
+      sourceBundleIdentifier = [activeDeviceInfo sourceBundleIdentifier];
       v7 = MEMORY[0x277CCACA8];
-      v8 = [v5 systemBuildVersion];
-      v9 = [v7 stringWithFormat:@"%@_%@", v3, v8];
+      systemBuildVersion = [activeDeviceInfo systemBuildVersion];
+      v9 = [v7 stringWithFormat:@"%@_%@", currentOSBuild, systemBuildVersion];
 
-      v3 = v9;
+      currentOSBuild = v9;
     }
 
     else
     {
-      v6 = @"NO_ACTIVE_PAIRED_DEVICE";
+      sourceBundleIdentifier = @"NO_ACTIVE_PAIRED_DEVICE";
     }
 
-    v10 = [[_HDPeriodicCountryMonitorPairedBuildIdentifiers alloc] initWithPairingIdentifier:v6 buildIdentifier:v3];
+    v10 = [[_HDPeriodicCountryMonitorPairedBuildIdentifiers alloc] initWithPairingIdentifier:sourceBundleIdentifier buildIdentifier:currentOSBuild];
   }
 
   else
@@ -368,17 +368,17 @@ LABEL_6:
 - (void)_recordSuccessfulFetchForCurrentPairedBuilds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HDPeriodicCountryMonitor *)self _currentPairedBuildIdentifiers];
-  v4 = [v3 buildIdentifier];
-  v5 = [v3 pairingIdentifier];
-  v6 = v5;
+  _currentPairedBuildIdentifiers = [(HDPeriodicCountryMonitor *)self _currentPairedBuildIdentifiers];
+  buildIdentifier = [_currentPairedBuildIdentifiers buildIdentifier];
+  pairingIdentifier = [_currentPairedBuildIdentifiers pairingIdentifier];
+  v6 = pairingIdentifier;
   v17 = 0;
   if (self)
   {
-    v7 = v5;
-    v8 = v4;
-    v9 = [(HDPeriodicCountryMonitor *)self _lastActivePairedBuildIdentifiersDomain];
-    v10 = [v9 setString:v8 forKey:v7 error:&v17];
+    v7 = pairingIdentifier;
+    v8 = buildIdentifier;
+    _lastActivePairedBuildIdentifiersDomain = [(HDPeriodicCountryMonitor *)self _lastActivePairedBuildIdentifiersDomain];
+    v10 = [_lastActivePairedBuildIdentifiersDomain setString:v8 forKey:v7 error:&v17];
 
     v11 = v17;
   }
@@ -408,10 +408,10 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)nanoSyncManager:(id)a3 pairedDevicesChanged:(id)a4
+- (void)nanoSyncManager:(id)manager pairedDevicesChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  changedCopy = changed;
   _HKInitializeLogging();
   v6 = HKLogInfrastructure();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -419,7 +419,7 @@ LABEL_6:
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2112;
-    v12 = v5;
+    v12 = changedCopy;
     v7 = v10;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Observed paired devices snapshot change: %@", &v9, 0x16u);
   }
@@ -787,14 +787,14 @@ void __54__HDPeriodicCountryMonitor__processCountryCodeResult___block_invoke_348
   }
 
   [v3 appendFormat:@"Current State: %@\n", v6];
-  v7 = [(HDPeriodicCountryMonitor *)self lastCheckAttemptDate];
-  [v4 appendFormat:@"Last Ran: %@\n", v7];
+  lastCheckAttemptDate = [(HDPeriodicCountryMonitor *)self lastCheckAttemptDate];
+  [v4 appendFormat:@"Last Ran: %@\n", lastCheckAttemptDate];
 
-  v8 = [(HDPeriodicCountryMonitor *)self lastFetchAttemptDate];
-  [v4 appendFormat:@"Last Fetched: %@\n", v8];
+  lastFetchAttemptDate = [(HDPeriodicCountryMonitor *)self lastFetchAttemptDate];
+  [v4 appendFormat:@"Last Fetched: %@\n", lastFetchAttemptDate];
 
-  v9 = [(HDPeriodicCountryMonitor *)self lastFetchAttemptBuild];
-  [v4 appendFormat:@"Last Build: %@\n", v9];
+  lastFetchAttemptBuild = [(HDPeriodicCountryMonitor *)self lastFetchAttemptBuild];
+  [v4 appendFormat:@"Last Build: %@\n", lastFetchAttemptBuild];
 
   v10 = [v4 copy];
 

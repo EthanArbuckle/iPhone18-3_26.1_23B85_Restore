@@ -1,14 +1,14 @@
 @interface _TILanguageLikelihoodModel
 + (id)sharedLanguageLikelihoodModel;
 + (id)singletonInstance;
-+ (void)setSharedLanguageLikelihoodModel:(id)a3;
++ (void)setSharedLanguageLikelihoodModel:(id)model;
 - (_TILanguageLikelihoodModel)init;
-- (double)lastOfflineAdaptationTimeForApp:(id)a3;
-- (id)rankedLanguagesForRecipient:(id)a3;
-- (unint64_t)emojiUsageCountForApp:(id)a3 lastEmojiCountUpdateTime:(double *)a4;
-- (void)addEvidence:(id)a3 timestamp:(double)a4 adaptationType:(int)a5 forRecipient:(id)a6 app:(id)a7 language:(id)a8;
+- (double)lastOfflineAdaptationTimeForApp:(id)app;
+- (id)rankedLanguagesForRecipient:(id)recipient;
+- (unint64_t)emojiUsageCountForApp:(id)app lastEmojiCountUpdateTime:(double *)time;
+- (void)addEvidence:(id)evidence timestamp:(double)timestamp adaptationType:(int)type forRecipient:(id)recipient app:(id)app language:(id)language;
 - (void)languageLikelihoodModelRef;
-- (void)priorProbabilityForLanguages:(id)a3 recipient:(id)a4 handler:(id)a5;
+- (void)priorProbabilityForLanguages:(id)languages recipient:(id)recipient handler:(id)handler;
 @end
 
 @implementation _TILanguageLikelihoodModel
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (unint64_t)emojiUsageCountForApp:(id)a3 lastEmojiCountUpdateTime:(double *)a4
+- (unint64_t)emojiUsageCountForApp:(id)app lastEmojiCountUpdateTime:(double *)time
 {
-  v5 = a3;
+  appCopy = app;
   EmojiUsageCountForApp = [(_TILanguageLikelihoodModel *)self languageLikelihoodModelRef];
   if (EmojiUsageCountForApp)
   {
@@ -83,9 +83,9 @@
   return v7;
 }
 
-- (double)lastOfflineAdaptationTimeForApp:(id)a3
+- (double)lastOfflineAdaptationTimeForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   Current = CFAbsoluteTimeGetCurrent();
   if ([(_TILanguageLikelihoodModel *)self languageLikelihoodModelRef])
   {
@@ -96,22 +96,22 @@
   return Current;
 }
 
-- (void)priorProbabilityForLanguages:(id)a3 recipient:(id)a4 handler:(id)a5
+- (void)priorProbabilityForLanguages:(id)languages recipient:(id)recipient handler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  languagesCopy = languages;
+  recipientCopy = recipient;
+  handlerCopy = handler;
   if ([(_TILanguageLikelihoodModel *)self languageLikelihoodModelRef])
   {
     v39 = 0;
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v29 = v8;
-    v12 = v8;
+    v29 = languagesCopy;
+    v12 = languagesCopy;
     v13 = [v12 countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v13)
     {
@@ -126,7 +126,7 @@
             objc_enumerationMutation(v12);
           }
 
-          [v11 setObject:&unk_28400BE68 forKey:*(*(&v35 + 1) + 8 * i)];
+          [dictionary setObject:&unk_28400BE68 forKey:*(*(&v35 + 1) + 8 * i)];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -135,7 +135,7 @@
       while (v14);
     }
 
-    v30 = v9;
+    v30 = recipientCopy;
     LMLanguageLikelihoodModelGetLanguagePriorProbabilities();
     v33 = 0u;
     v34 = 0u;
@@ -157,7 +157,7 @@ LABEL_11:
         }
 
         v22 = *(*(&v31 + 1) + 8 * v21);
-        v23 = [v11 objectForKey:v22];
+        v23 = [dictionary objectForKey:v22];
         [v23 floatValue];
         v25 = v24;
 
@@ -178,7 +178,7 @@ LABEL_11:
           }
         }
 
-        v10[2](v10, v22, &v39, v25);
+        handlerCopy[2](handlerCopy, v22, &v39, v25);
         if (v39)
         {
           break;
@@ -197,28 +197,28 @@ LABEL_11:
       }
     }
 
-    v8 = v29;
-    v9 = v30;
+    languagesCopy = v29;
+    recipientCopy = v30;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)rankedLanguagesForRecipient:(id)a3
+- (id)rankedLanguagesForRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   if ([(_TILanguageLikelihoodModel *)self languageLikelihoodModelRef])
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     LMLanguageLikelihoodModelGetLanguagePriorProbabilities();
-    v6 = [v5 allKeys];
+    allKeys = [dictionary allKeys];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __58___TILanguageLikelihoodModel_rankedLanguagesForRecipient___block_invoke;
     v10[3] = &unk_2787322D8;
-    v11 = v5;
-    v7 = v5;
-    v8 = [v6 sortedArrayUsingComparator:v10];
+    v11 = dictionary;
+    v7 = dictionary;
+    v8 = [allKeys sortedArrayUsingComparator:v10];
   }
 
   else
@@ -229,12 +229,12 @@ LABEL_11:
   return v8;
 }
 
-- (void)addEvidence:(id)a3 timestamp:(double)a4 adaptationType:(int)a5 forRecipient:(id)a6 app:(id)a7 language:(id)a8
+- (void)addEvidence:(id)evidence timestamp:(double)timestamp adaptationType:(int)type forRecipient:(id)recipient app:(id)app language:(id)language
 {
   v19 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  evidenceCopy = evidence;
+  recipientCopy = recipient;
+  appCopy = app;
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -245,9 +245,9 @@ LABEL_11:
     v14 = TIOSLogFacility();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s [recipient=%@, app=%@] evidence = %@", "-[_TILanguageLikelihoodModel addEvidence:timestamp:adaptationType:forRecipient:app:language:]", v12, v13, v11];
+      evidenceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s [recipient=%@, app=%@] evidence = %@", "-[_TILanguageLikelihoodModel addEvidence:timestamp:adaptationType:forRecipient:app:language:]", recipientCopy, appCopy, evidenceCopy];
       *buf = 138412290;
-      v18 = v16;
+      v18 = evidenceCopy;
       _os_log_debug_impl(&dword_22CA55000, v14, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
@@ -267,14 +267,14 @@ LABEL_11:
   return [(_TILanguageLikelihoodModel *)&v3 init];
 }
 
-+ (void)setSharedLanguageLikelihoodModel:(id)a3
++ (void)setSharedLanguageLikelihoodModel:(id)model
 {
-  v4 = a3;
-  if (__testingInstance != v4)
+  modelCopy = model;
+  if (__testingInstance != modelCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance, a3);
-    v4 = v5;
+    v5 = modelCopy;
+    objc_storeStrong(&__testingInstance, model);
+    modelCopy = v5;
   }
 }
 

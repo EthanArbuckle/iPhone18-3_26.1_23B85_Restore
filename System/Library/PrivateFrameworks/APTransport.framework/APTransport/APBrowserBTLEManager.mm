@@ -1,27 +1,27 @@
 @interface APBrowserBTLEManager
-+ (id)stringForBTLEMode:(unsigned __int16)a3;
-+ (id)stringForBTLEState:(int64_t)a3;
-+ (int)createEventInfoDictionary:(id *)a3 withDeviceID:(id)a4 IPAddress:(id)a5 port:(id)a6 supportsSolo:(id)a7 rssi:(id)a8;
-- (APBrowserBTLEManager)initWithEventContext:(void *)a3;
++ (id)stringForBTLEMode:(unsigned __int16)mode;
++ (id)stringForBTLEState:(int64_t)state;
++ (int)createEventInfoDictionary:(id *)dictionary withDeviceID:(id)d IPAddress:(id)address port:(id)port supportsSolo:(id)solo rssi:(id)rssi;
+- (APBrowserBTLEManager)initWithEventContext:(void *)context;
 - (BOOL)shouldAdvertiseSourcePresence;
 - (id)createBTLEAdvertiser;
 - (id)createBTLEDiscoverer;
-- (int)copyShowInfo:(id *)a3 verbose:(BOOL)a4;
-- (int)dispatchEvent:(unsigned int)a3 withEventInfo:(id)a4;
+- (int)copyShowInfo:(id *)info verbose:(BOOL)verbose;
+- (int)dispatchEvent:(unsigned int)event withEventInfo:(id)info;
 - (int)ensureAdvertisingStarted;
 - (int)ensureAdvertisingStopped;
-- (int)ensureAdvertisingStoppedWithSeed:(int)a3;
-- (int)ensurePreferencesUpdatedWithShouldForce:(BOOL)a3;
+- (int)ensureAdvertisingStoppedWithSeed:(int)seed;
+- (int)ensurePreferencesUpdatedWithShouldForce:(BOOL)force;
 - (int)ensureScanningStarted;
 - (int)ensureScanningStopped;
-- (int)ensureScanningStoppedWithSeed:(int)a3;
-- (int)getBTLEMode:(unsigned __int16 *)a3;
-- (int)handleFoundDevice:(id)a3;
-- (int)handleLostDevice:(id)a3;
+- (int)ensureScanningStoppedWithSeed:(int)seed;
+- (int)getBTLEMode:(unsigned __int16 *)mode;
+- (int)handleFoundDevice:(id)device;
+- (int)handleLostDevice:(id)device;
 - (int)invalidate;
-- (int)setEventHandler:(void *)a3 context:(void *)a4 managerRef:(OpaqueAPBrowserBTLEManager *)a5;
-- (int)setSupportsSolo:(BOOL)a3;
-- (int)startMode:(unsigned __int16)a3;
+- (int)setEventHandler:(void *)handler context:(void *)context managerRef:(OpaqueAPBrowserBTLEManager *)ref;
+- (int)setSupportsSolo:(BOOL)solo;
+- (int)startMode:(unsigned __int16)mode;
 - (int)stop;
 - (int)update;
 - (int64_t)btleManagerState;
@@ -49,7 +49,7 @@
       OUTLINED_FUNCTION_9();
     }
 
-    v3 = self;
+    selfCopy = self;
     [(APBrowserBTLEManager *)self setBtleDiscovererSeed:[(APBrowserBTLEManager *)self btleDiscovererSeed]+ 1];
     [(APBrowserBTLEManager *)self btleDiscoverer];
     OUTLINED_FUNCTION_2_0();
@@ -68,35 +68,35 @@
   {
     if ([(APBrowserBTLEManager *)self isEnabled]&& self->_btleMode)
     {
-      v3 = [(APBrowserBTLEManager *)self ensureScanningStarted];
-      if (v3)
+      ensureScanningStarted = [(APBrowserBTLEManager *)self ensureScanningStarted];
+      if (ensureScanningStarted)
       {
-        v5 = v3;
+        ensureScanningStopped = ensureScanningStarted;
         [APBrowserBTLEManager update];
-        return v5;
+        return ensureScanningStopped;
       }
 
       if (!APSIsAPMSpeaker())
       {
         if (self->_btleMode == 2 && self->_p2pSoloSupported && ![(APBrowserBTLEManager *)self isSoloBeaconDisabled]&& [(APBrowserBTLEManager *)self shouldAdvertiseSourcePresence])
         {
-          v4 = [(APBrowserBTLEManager *)self ensureAdvertisingStarted];
-          if (v4)
+          ensureAdvertisingStarted = [(APBrowserBTLEManager *)self ensureAdvertisingStarted];
+          if (ensureAdvertisingStarted)
           {
-            v5 = v4;
+            ensureScanningStopped = ensureAdvertisingStarted;
             [APBrowserBTLEManager update];
-            return v5;
+            return ensureScanningStopped;
           }
         }
 
         else
         {
-          v7 = [(APBrowserBTLEManager *)self ensureAdvertisingStopped];
-          if (v7)
+          ensureAdvertisingStopped = [(APBrowserBTLEManager *)self ensureAdvertisingStopped];
+          if (ensureAdvertisingStopped)
           {
-            v5 = v7;
+            ensureScanningStopped = ensureAdvertisingStopped;
             [APBrowserBTLEManager update];
-            return v5;
+            return ensureScanningStopped;
           }
         }
       }
@@ -107,19 +107,19 @@
 
   else
   {
-    v6 = [(APBrowserBTLEManager *)self ensureAdvertisingStopped];
-    if (v6)
+    ensureAdvertisingStopped2 = [(APBrowserBTLEManager *)self ensureAdvertisingStopped];
+    if (ensureAdvertisingStopped2)
     {
-      v5 = v6;
+      ensureScanningStopped = ensureAdvertisingStopped2;
       [APBrowserBTLEManager update];
-      return v5;
+      return ensureScanningStopped;
     }
 
-    v5 = [(APBrowserBTLEManager *)self ensureScanningStopped];
-    if (v5)
+    ensureScanningStopped = [(APBrowserBTLEManager *)self ensureScanningStopped];
+    if (ensureScanningStopped)
     {
       [APBrowserBTLEManager update];
-      return v5;
+      return ensureScanningStopped;
     }
   }
 
@@ -133,9 +133,9 @@
 
 - (int)ensureAdvertisingStopped
 {
-  v3 = [(APBrowserBTLEManager *)self btleAdvertiserSeed];
+  btleAdvertiserSeed = [(APBrowserBTLEManager *)self btleAdvertiserSeed];
 
-  return [(APBrowserBTLEManager *)self ensureAdvertisingStoppedWithSeed:v3];
+  return [(APBrowserBTLEManager *)self ensureAdvertisingStoppedWithSeed:btleAdvertiserSeed];
 }
 
 - (id)createBTLEDiscoverer
@@ -145,24 +145,24 @@
   {
     [v3 setDispatchQueue:{-[APBrowserBTLEManager queue](self, "queue")}];
     [v3 setDiscoveryFlags:{objc_msgSend(v3, "discoveryFlags") | 0x8000000000}];
-    v4 = self;
+    selfCopy = self;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __44__APBrowserBTLEManager_createBTLEDiscoverer__block_invoke;
     v8[3] = &unk_278BC6E60;
-    v8[4] = v4;
+    v8[4] = selfCopy;
     [v3 setDeviceFoundHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __44__APBrowserBTLEManager_createBTLEDiscoverer__block_invoke_2;
     v7[3] = &unk_278BC6E60;
-    v7[4] = v4;
+    v7[4] = selfCopy;
     [v3 setDeviceLostHandler:v7];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __44__APBrowserBTLEManager_createBTLEDiscoverer__block_invoke_3;
     v6[3] = &unk_278BC6E38;
-    v6[4] = v4;
+    v6[4] = selfCopy;
     [v3 setInvalidationHandler:v6];
   }
 
@@ -218,8 +218,8 @@ uint64_t __44__APBrowserBTLEManager_createBTLEDiscoverer__block_invoke(uint64_t 
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSMutableDictionary *)[(APBrowserBTLEManager *)self btleDevices] allValues];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)[(APBrowserBTLEManager *)self btleDevices] allValues];
+  v3 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -231,13 +231,13 @@ uint64_t __44__APBrowserBTLEManager_createBTLEDiscoverer__block_invoke(uint64_t 
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v5 += [*(*(&v10 + 1) + 8 * i) airplayTargetFlags] & 1;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -252,34 +252,34 @@ uint64_t __44__APBrowserBTLEManager_createBTLEDiscoverer__block_invoke(uint64_t 
   return v5;
 }
 
-- (APBrowserBTLEManager)initWithEventContext:(void *)a3
+- (APBrowserBTLEManager)initWithEventContext:(void *)context
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (context)
   {
     v10.receiver = self;
     v10.super_class = APBrowserBTLEManager;
     v5 = [(APBrowserBTLEManager *)&v10 init];
-    v3 = v5;
+    selfCopy = v5;
     if (!v5)
     {
-      return v3;
+      return selfCopy;
     }
 
-    v5->_eventContext = a3;
+    v5->_eventContext = context;
     v6 = dispatch_queue_create("APBrowserBTLEManagerInternalQueue", 0);
-    v3->_queue = v6;
+    selfCopy->_queue = v6;
     if (v6)
     {
       v7 = dispatch_queue_create("APBrowserBTLEManagerEventQueue", 0);
-      v3->_eventQueue = v7;
+      selfCopy->_eventQueue = v7;
       if (v7)
       {
         v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v3->_btleDevices = v8;
+        selfCopy->_btleDevices = v8;
         if (v8)
         {
-          return v3;
+          return selfCopy;
         }
 
         [APBrowserBTLEManager initWithEventContext:];
@@ -423,60 +423,60 @@ void __48__APBrowserBTLEManager_ensureAdvertisingStarted__block_invoke(uint64_t 
 
 - (int)ensureScanningStopped
 {
-  v3 = [(APBrowserBTLEManager *)self btleDiscovererSeed];
+  btleDiscovererSeed = [(APBrowserBTLEManager *)self btleDiscovererSeed];
 
-  return [(APBrowserBTLEManager *)self ensureScanningStoppedWithSeed:v3];
+  return [(APBrowserBTLEManager *)self ensureScanningStoppedWithSeed:btleDiscovererSeed];
 }
 
-- (int)dispatchEvent:(unsigned int)a3 withEventInfo:(id)a4
+- (int)dispatchEvent:(unsigned int)event withEventInfo:(id)info
 {
   objc_initWeak(&location, self);
-  v7 = [(APBrowserBTLEManager *)self eventQueue];
+  eventQueue = [(APBrowserBTLEManager *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__APBrowserBTLEManager_dispatchEvent_withEventInfo___block_invoke;
   block[3] = &unk_278BC6ED8;
   objc_copyWeak(&v10, &location);
-  v11 = a3;
+  eventCopy = event;
   block[4] = self;
-  block[5] = a4;
-  dispatch_async(v7, block);
+  block[5] = info;
+  dispatch_async(eventQueue, block);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
   return 0;
 }
 
-+ (int)createEventInfoDictionary:(id *)a3 withDeviceID:(id)a4 IPAddress:(id)a5 port:(id)a6 supportsSolo:(id)a7 rssi:(id)a8
++ (int)createEventInfoDictionary:(id *)dictionary withDeviceID:(id)d IPAddress:(id)address port:(id)port supportsSolo:(id)solo rssi:(id)rssi
 {
-  if (a4)
+  if (d)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
     if (v14)
     {
       v15 = v14;
-      [v14 setObject:a4 forKeyedSubscript:@"deviceID"];
-      if (a5)
+      [v14 setObject:d forKeyedSubscript:@"deviceID"];
+      if (address)
       {
-        [v15 setObject:a5 forKeyedSubscript:@"ipAddress"];
+        [v15 setObject:address forKeyedSubscript:@"ipAddress"];
       }
 
-      if (a6)
+      if (port)
       {
-        [v15 setObject:a6 forKeyedSubscript:@"port"];
+        [v15 setObject:port forKeyedSubscript:@"port"];
       }
 
-      if (a7)
+      if (solo)
       {
-        [v15 setObject:a7 forKeyedSubscript:@"supportsSolo"];
+        [v15 setObject:solo forKeyedSubscript:@"supportsSolo"];
       }
 
-      if (a8)
+      if (rssi)
       {
-        [v15 setObject:a8 forKeyedSubscript:@"rssi"];
+        [v15 setObject:rssi forKeyedSubscript:@"rssi"];
       }
 
       v16 = 0;
-      *a3 = v15;
+      *dictionary = v15;
     }
 
     else
@@ -495,11 +495,11 @@ void __48__APBrowserBTLEManager_ensureAdvertisingStarted__block_invoke(uint64_t 
   return v16;
 }
 
-+ (id)stringForBTLEMode:(unsigned __int16)a3
++ (id)stringForBTLEMode:(unsigned __int16)mode
 {
-  if (a3 < 3u)
+  if (mode < 3u)
   {
-    return off_278BC6EF8[a3];
+    return off_278BC6EF8[mode];
   }
 
   if (gLogCategory_APBrowserBTLEManager <= 60 && (gLogCategory_APBrowserBTLEManager != -1 || _LogCategory_Initialize()))
@@ -510,11 +510,11 @@ void __48__APBrowserBTLEManager_ensureAdvertisingStarted__block_invoke(uint64_t 
   return @"Unknown";
 }
 
-+ (id)stringForBTLEState:(int64_t)a3
++ (id)stringForBTLEState:(int64_t)state
 {
-  if (a3 < 6)
+  if (state < 6)
   {
-    return off_278BC6F10[a3];
+    return off_278BC6F10[state];
   }
 
   if (gLogCategory_APBrowserBTLEManager <= 60 && (gLogCategory_APBrowserBTLEManager != -1 || _LogCategory_Initialize()))
@@ -542,14 +542,14 @@ void __48__APBrowserBTLEManager_ensureAdvertisingStarted__block_invoke(uint64_t 
   v7 = 3221225472;
   v8 = __34__APBrowserBTLEManager_invalidate__block_invoke;
   v9 = &unk_278BC6E38;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(v4, block);
   return v3;
 }
 
-- (int)startMode:(unsigned __int16)a3
+- (int)startMode:(unsigned __int16)mode
 {
-  if (!a3)
+  if (!mode)
   {
     APSLogErrorAt();
     return -72221;
@@ -564,10 +564,10 @@ void __48__APBrowserBTLEManager_ensureAdvertisingStarted__block_invoke(uint64_t 
   v7 = [OUTLINED_FUNCTION_12() ensurePreferencesUpdatedWithShouldForce:?];
   if (v7)
   {
-    v8 = v7;
+    update = v7;
 LABEL_13:
     APSLogErrorAt();
-    return v8;
+    return update;
   }
 
   if (gLogCategory_APBrowserBTLEManager <= 40 && (gLogCategory_APBrowserBTLEManager != -1 || OUTLINED_FUNCTION_7()))
@@ -578,13 +578,13 @@ LABEL_13:
   }
 
   v3[4] = v4;
-  v8 = [v3 update];
-  if (v8)
+  update = [v3 update];
+  if (update)
   {
     goto LABEL_13;
   }
 
-  return v8;
+  return update;
 }
 
 - (int)stop
@@ -601,10 +601,10 @@ LABEL_13:
   }
 
   self->_btleMode = 0;
-  v3 = [(APBrowserBTLEManager *)self update];
-  if (v3)
+  update = [(APBrowserBTLEManager *)self update];
+  if (update)
   {
-    v4 = v3;
+    v4 = update;
     goto LABEL_11;
   }
 
@@ -618,10 +618,10 @@ LABEL_11:
   return v4;
 }
 
-- (int)setEventHandler:(void *)a3 context:(void *)a4 managerRef:(OpaqueAPBrowserBTLEManager *)a5
+- (int)setEventHandler:(void *)handler context:(void *)context managerRef:(OpaqueAPBrowserBTLEManager *)ref
 {
   v8 = -72224;
-  if (![(APBrowserBTLEManager *)self isInvalidated:a3])
+  if (![(APBrowserBTLEManager *)self isInvalidated:handler])
   {
     if (self->_btleMode)
     {
@@ -636,9 +636,9 @@ LABEL_11:
       v12 = 3221225472;
       v13 = __59__APBrowserBTLEManager_setEventHandler_context_managerRef___block_invoke;
       v14 = &unk_278BC6E88;
-      v15 = self;
-      v16 = a3;
-      v17 = a4;
+      selfCopy = self;
+      handlerCopy = handler;
+      contextCopy = context;
       dispatch_sync(v9, block);
       return 0;
     }
@@ -647,7 +647,7 @@ LABEL_11:
   return v8;
 }
 
-- (int)ensurePreferencesUpdatedWithShouldForce:(BOOL)a3
+- (int)ensurePreferencesUpdatedWithShouldForce:(BOOL)force
 {
   OUTLINED_FUNCTION_6();
   if ([v5 isInvalidated])
@@ -691,8 +691,8 @@ LABEL_11:
 
   [v3 setIsEnabled:{v14, v12, v13}];
   [OUTLINED_FUNCTION_12() setIsSoloBeaconDisabled:?];
-  v10 = [v3 update];
-  if (v10)
+  update = [v3 update];
+  if (update)
   {
     APSLogErrorAt();
   }
@@ -702,10 +702,10 @@ LABEL_11:
     [OUTLINED_FUNCTION_11_0() setPreferencesUpdated:?];
   }
 
-  return v10;
+  return update;
 }
 
-- (int)setSupportsSolo:(BOOL)a3
+- (int)setSupportsSolo:(BOOL)solo
 {
   OUTLINED_FUNCTION_6();
   if ([v5 isInvalidated])
@@ -757,16 +757,16 @@ LABEL_6:
 
 LABEL_13:
   v3[10] = v4;
-  v7 = [v3 update];
-  if (v7)
+  update = [v3 update];
+  if (update)
   {
     APSLogErrorAt();
   }
 
-  return v7;
+  return update;
 }
 
-- (int)getBTLEMode:(unsigned __int16 *)a3
+- (int)getBTLEMode:(unsigned __int16 *)mode
 {
   if ([(APBrowserBTLEManager *)self isInvalidated])
   {
@@ -774,7 +774,7 @@ LABEL_13:
   }
 
   result = 0;
-  *a3 = self->_btleMode;
+  *mode = self->_btleMode;
   return result;
 }
 
@@ -794,7 +794,7 @@ LABEL_13:
       OUTLINED_FUNCTION_9();
     }
 
-    v3 = self;
+    selfCopy = self;
     [(APBrowserBTLEManager *)self setBtleAdvertiserSeed:[(APBrowserBTLEManager *)self btleAdvertiserSeed]+ 1];
     [(APBrowserBTLEManager *)self btleAdvertiser];
     OUTLINED_FUNCTION_2_0();
@@ -807,7 +807,7 @@ LABEL_13:
   return -72220;
 }
 
-- (int)ensureAdvertisingStoppedWithSeed:(int)a3
+- (int)ensureAdvertisingStoppedWithSeed:(int)seed
 {
   OUTLINED_FUNCTION_6();
   if ([v5 btleAdvertiserSeed] == v4)
@@ -826,7 +826,7 @@ LABEL_13:
   return 0;
 }
 
-- (int)ensureScanningStoppedWithSeed:(int)a3
+- (int)ensureScanningStoppedWithSeed:(int)seed
 {
   OUTLINED_FUNCTION_6();
   if ([v5 btleDiscovererSeed] == v4)
@@ -864,7 +864,7 @@ uint64_t __52__APBrowserBTLEManager_dispatchEvent_withEventInfo___block_invoke(u
   return result;
 }
 
-- (int)handleFoundDevice:(id)a3
+- (int)handleFoundDevice:(id)device
 {
   v38 = *MEMORY[0x277D85DE8];
   v36 = 0;
@@ -874,9 +874,9 @@ uint64_t __52__APBrowserBTLEManager_dispatchEvent_withEventInfo___block_invoke(u
     goto LABEL_43;
   }
 
-  if (([a3 airplayTargetFlags] & 0x20) != 0)
+  if (([device airplayTargetFlags] & 0x20) != 0)
   {
-    if (![a3 airplayTargetIPv6])
+    if (![device airplayTargetIPv6])
     {
       if (gLogCategory_APBrowserBTLEManager > 90 || gLogCategory_APBrowserBTLEManager == -1 && !_LogCategory_Initialize())
       {
@@ -886,43 +886,43 @@ uint64_t __52__APBrowserBTLEManager_dispatchEvent_withEventInfo___block_invoke(u
       goto LABEL_39;
     }
 
-    v6 = [objc_msgSend(a3 "airplayTargetIPv6")];
+    v6 = [objc_msgSend(device "airplayTargetIPv6")];
     OUTLINED_FUNCTION_13(v6, v7, v8, v9, v37);
   }
 
   else
   {
-    [a3 airplayTargetIPv4];
+    [device airplayTargetIPv4];
     IPv4AddressToCString();
   }
 
-  v10 = [a3 airplayTargetPort];
-  if (!v10)
+  airplayTargetPort = [device airplayTargetPort];
+  if (!airplayTargetPort)
   {
-    if (([a3 airplayTargetFlags] & 2) != 0)
+    if (([device airplayTargetFlags] & 2) != 0)
     {
-      v10 = 7000;
+      airplayTargetPort = 7000;
     }
 
     else
     {
-      v10 = 5000;
+      airplayTargetPort = 5000;
     }
   }
 
   if (gLogCategory_APBrowserBTLEManager <= 40 && (gLogCategory_APBrowserBTLEManager != -1 || OUTLINED_FUNCTION_7()))
   {
-    [a3 identifier];
-    v31 = [OUTLINED_FUNCTION_10() airplayTargetFlags];
+    [device identifier];
+    airplayTargetFlags = [OUTLINED_FUNCTION_10() airplayTargetFlags];
     v33 = &unk_23D38369C;
     v27 = v37;
-    v29 = v10;
+    v29 = airplayTargetPort;
     v25 = v3;
     OUTLINED_FUNCTION_5();
     LogPrintF();
   }
 
-  if (![a3 airplayTargetIPv4] && !objc_msgSend(a3, "airplayTargetIPv6") && !objc_msgSend(a3, "airplayTargetFlags"))
+  if (![device airplayTargetIPv4] && !objc_msgSend(device, "airplayTargetIPv6") && !objc_msgSend(device, "airplayTargetFlags"))
   {
     if (gLogCategory_APBrowserBTLEManager > 40 || gLogCategory_APBrowserBTLEManager == -1 && !OUTLINED_FUNCTION_7())
     {
@@ -933,47 +933,47 @@ uint64_t __52__APBrowserBTLEManager_dispatchEvent_withEventInfo___block_invoke(u
 LABEL_39:
     LogPrintF();
 LABEL_43:
-    v22 = 0;
+    update = 0;
     goto LABEL_27;
   }
 
   if (gLogCategory_APBrowserBTLEManager <= 10 && (gLogCategory_APBrowserBTLEManager != -1 || _LogCategory_Initialize()))
   {
-    [a3 identifier];
-    v11 = [OUTLINED_FUNCTION_10() bleRSSI];
-    v12 = [a3 airplayTargetFlags];
-    v34 = [a3 airplayTargetConfigSeed];
+    [device identifier];
+    bleRSSI = [OUTLINED_FUNCTION_10() bleRSSI];
+    airplayTargetFlags2 = [device airplayTargetFlags];
+    airplayTargetConfigSeed = [device airplayTargetConfigSeed];
     v35 = v37;
-    v30 = v12;
+    v30 = airplayTargetFlags2;
     v32 = &unk_23D38369C;
     v26 = v3;
-    v28 = v11;
+    v28 = bleRSSI;
     LogPrintF();
   }
 
   [(APBrowserBTLEManager *)self btleDevices:v26];
   [v3 objectForKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_10(), "identifier")}];
-  v13 = [OUTLINED_FUNCTION_10() airplayTargetConfigSeed];
-  v14 = [v3 airplayTargetConfigSeed];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](-[APBrowserBTLEManager btleDevices](self, "btleDevices"), "setObject:forKeyedSubscript:", a3, [a3 identifier]);
-  if (!v3 || v13 != v14)
+  airplayTargetConfigSeed2 = [OUTLINED_FUNCTION_10() airplayTargetConfigSeed];
+  airplayTargetConfigSeed3 = [v3 airplayTargetConfigSeed];
+  -[NSMutableDictionary setObject:forKeyedSubscript:](-[APBrowserBTLEManager btleDevices](self, "btleDevices"), "setObject:forKeyedSubscript:", device, [device identifier]);
+  if (!v3 || airplayTargetConfigSeed2 != airplayTargetConfigSeed3)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:v37];
     if (!v15)
     {
       APSLogErrorAt();
-      v22 = -72222;
+      update = -72222;
       goto LABEL_27;
     }
 
     v16 = v15;
-    v17 = [a3 identifier];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v10];
-    v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a3, "airplayTargetFlags") & 1}];
-    v20 = +[APBrowserBTLEManager createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:](APBrowserBTLEManager, "createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:", &v36, v17, v16, v18, v19, [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a3, "bleRSSI")}]);
+    identifier = [device identifier];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:airplayTargetPort];
+    v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(device, "airplayTargetFlags") & 1}];
+    v20 = +[APBrowserBTLEManager createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:](APBrowserBTLEManager, "createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:", &v36, identifier, v16, v18, v19, [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(device, "bleRSSI")}]);
     if (v20)
     {
-      v22 = v20;
+      update = v20;
     }
 
     else
@@ -984,7 +984,7 @@ LABEL_43:
         goto LABEL_26;
       }
 
-      v22 = v21;
+      update = v21;
     }
 
 LABEL_35:
@@ -993,8 +993,8 @@ LABEL_35:
   }
 
 LABEL_26:
-  v22 = [(APBrowserBTLEManager *)self update];
-  if (v22)
+  update = [(APBrowserBTLEManager *)self update];
+  if (update)
   {
     goto LABEL_35;
   }
@@ -1002,13 +1002,13 @@ LABEL_26:
 LABEL_27:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v22;
+  return update;
 }
 
-- (int)handleLostDevice:(id)a3
+- (int)handleLostDevice:(id)device
 {
   v17 = 0;
-  if (!self->_btleMode || !-[NSMutableDictionary objectForKey:](-[APBrowserBTLEManager btleDevices](self, "btleDevices"), "objectForKey:", [a3 identifier]))
+  if (!self->_btleMode || !-[NSMutableDictionary objectForKey:](-[APBrowserBTLEManager btleDevices](self, "btleDevices"), "objectForKey:", [device identifier]))
   {
     v9 = 0;
     goto LABEL_14;
@@ -1016,15 +1016,15 @@ LABEL_27:
 
   if (gLogCategory_APBrowserBTLEManager <= 40 && (gLogCategory_APBrowserBTLEManager != -1 || OUTLINED_FUNCTION_7()))
   {
-    v5 = [a3 identifier];
-    v13 = [a3 airplayTargetFlags];
+    identifier = [device identifier];
+    airplayTargetFlags = [device airplayTargetFlags];
     v15 = &unk_23D38369C;
-    v11 = v5;
+    v11 = identifier;
     OUTLINED_FUNCTION_5();
     LogPrintF();
   }
 
-  v6 = +[APBrowserBTLEManager createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:](APBrowserBTLEManager, "createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:", &v17, [a3 identifier], 0, 0, 0, 0);
+  v6 = +[APBrowserBTLEManager createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:](APBrowserBTLEManager, "createEventInfoDictionary:withDeviceID:IPAddress:port:supportsSolo:rssi:", &v17, [device identifier], 0, 0, 0, 0);
   if (v6)
   {
     v9 = v6;
@@ -1040,13 +1040,13 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  -[NSMutableDictionary removeObjectForKey:](-[APBrowserBTLEManager btleDevices](self, "btleDevices"), "removeObjectForKey:", [a3 identifier]);
+  -[NSMutableDictionary removeObjectForKey:](-[APBrowserBTLEManager btleDevices](self, "btleDevices"), "removeObjectForKey:", [device identifier]);
   if (gLogCategory_APBrowserBTLEManager <= 40 && (gLogCategory_APBrowserBTLEManager != -1 || OUTLINED_FUNCTION_7()))
   {
-    v8 = [a3 identifier];
+    identifier2 = [device identifier];
     v14 = [(NSMutableDictionary *)[(APBrowserBTLEManager *)self btleDevices] count];
-    v16 = [(APBrowserBTLEManager *)self nearbySoloDevicesCount];
-    v12 = v8;
+    nearbySoloDevicesCount = [(APBrowserBTLEManager *)self nearbySoloDevicesCount];
+    v12 = identifier2;
     OUTLINED_FUNCTION_5();
     LogPrintF();
   }
@@ -1085,7 +1085,7 @@ LABEL_14:
   return [result bluetoothState];
 }
 
-- (int)copyShowInfo:(id *)a3 verbose:(BOOL)a4
+- (int)copyShowInfo:(id *)info verbose:(BOOL)verbose
 {
   v35 = *MEMORY[0x277D85DE8];
   v6 = -72224;
@@ -1106,7 +1106,7 @@ LABEL_14:
       if (v8)
       {
         v9 = v8;
-        v27 = a3;
+        infoCopy = info;
         [v8 appendString:@"+-+ APBrowserBTLEManager state +-+\n"];
         [v9 appendString:@"\n"];
         [(APBrowserBTLEManager *)self isEnabled];
@@ -1186,22 +1186,22 @@ LABEL_14:
 
                 [v16 airplayTargetFlags];
                 v21 = CUPrintFlags32();
-                v22 = [v16 airplayTargetConfigSeed];
-                v23 = [v16 airplayTargetPort];
-                if (!v23)
+                airplayTargetConfigSeed = [v16 airplayTargetConfigSeed];
+                airplayTargetPort = [v16 airplayTargetPort];
+                if (!airplayTargetPort)
                 {
                   if (([v16 airplayTargetFlags] & 2) != 0)
                   {
-                    v23 = 7000;
+                    airplayTargetPort = 7000;
                   }
 
                   else
                   {
-                    v23 = 5000;
+                    airplayTargetPort = 5000;
                   }
                 }
 
-                [v9 appendFormat:@" data=<flags=%@ config=%-3u IP=%-45s Port=%-5hu>\n", v21, v22, v34, v23];
+                [v9 appendFormat:@" data=<flags=%@ config=%-3u IP=%-45s Port=%-5hu>\n", v21, airplayTargetConfigSeed, v34, airplayTargetPort];
               }
 
               v13 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -1217,7 +1217,7 @@ LABEL_14:
         }
 
         v6 = 0;
-        *v27 = v9;
+        *infoCopy = v9;
       }
 
       else
@@ -1234,15 +1234,15 @@ LABEL_14:
 
 - (uint64_t)createBTLEAdvertiser
 {
-  [a1 airplaySourceFlags];
+  [self airplaySourceFlags];
   OUTLINED_FUNCTION_5();
   return LogPrintF();
 }
 
 - (uint64_t)update
 {
-  [a1 isSoloBeaconDisabled];
-  [a1 nearbySoloDevicesCount];
+  [self isSoloBeaconDisabled];
+  [self nearbySoloDevicesCount];
   return LogPrintF();
 }
 

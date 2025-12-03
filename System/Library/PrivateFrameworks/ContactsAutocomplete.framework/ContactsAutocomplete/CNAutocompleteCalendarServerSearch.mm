@@ -1,11 +1,11 @@
 @interface CNAutocompleteCalendarServerSearch
 + (BOOL)isSupported;
 - (CNAutocompleteCalendarServerSearch)init;
-- (CNAutocompleteCalendarServerSearch)initWithEventStoreProvider:(id)a3 operationFactory:(id)a4;
-- (id)executeRequest:(id)a3 completionHandler:(id)a4;
-- (id)executeRequest:(id)a3 source:(id)a4 resultsFactory:(id)a5 withCompletionHandler:(id)a6;
-- (id)queryForFetchRequest:(id)a3;
-- (id)resultTransformWithFactory:(id)a3;
+- (CNAutocompleteCalendarServerSearch)initWithEventStoreProvider:(id)provider operationFactory:(id)factory;
+- (id)executeRequest:(id)request completionHandler:(id)handler;
+- (id)executeRequest:(id)request source:(id)source resultsFactory:(id)factory withCompletionHandler:(id)handler;
+- (id)queryForFetchRequest:(id)request;
+- (id)resultTransformWithFactory:(id)factory;
 @end
 
 @implementation CNAutocompleteCalendarServerSearch
@@ -33,18 +33,18 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
   return v0;
 }
 
-- (CNAutocompleteCalendarServerSearch)initWithEventStoreProvider:(id)a3 operationFactory:(id)a4
+- (CNAutocompleteCalendarServerSearch)initWithEventStoreProvider:(id)provider operationFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = CNAutocompleteCalendarServerSearch;
   v9 = [(CNAutocompleteCalendarServerSearch *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventStoreProvider, a3);
-    objc_storeStrong(&v10->_operationFactory, a4);
+    objc_storeStrong(&v9->_eventStoreProvider, provider);
+    objc_storeStrong(&v10->_operationFactory, factory);
     v11 = objc_alloc_init(MEMORY[0x277CFBEC0]);
     tokenizer = v10->_tokenizer;
     v10->_tokenizer = v11;
@@ -55,13 +55,13 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
   return v10;
 }
 
-- (id)executeRequest:(id)a3 completionHandler:(id)a4
+- (id)executeRequest:(id)request completionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fetchContext];
-  v9 = [v8 sendingAddressAccountIdentifier];
+  requestCopy = request;
+  handlerCopy = handler;
+  fetchContext = [requestCopy fetchContext];
+  sendingAddressAccountIdentifier = [fetchContext sendingAddressAccountIdentifier];
 
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
@@ -78,14 +78,14 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
     v13 = [v11 errorWithDomain:@"CNContactAutocompleteErrorDomain" code:0 userInfo:v12];
 
-    v7[2](v7, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
     v14 = objc_alloc_init(MEMORY[0x277CFBDC8]);
   }
 
   else
   {
-    v15 = [(EKEphemeralCacheEventStoreProvider *)self->_eventStoreProvider eventStore];
-    v13 = [v15 sourceWithIdentifier:v9];
+    eventStore = [(EKEphemeralCacheEventStoreProvider *)self->_eventStoreProvider eventStore];
+    v13 = [eventStore sourceWithIdentifier:sendingAddressAccountIdentifier];
 
     v16 = CNALoggingContextDebug();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -98,12 +98,12 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
         _os_log_impl(&dword_2155FE000, v16, OS_LOG_TYPE_DEFAULT, "Using source: %@", buf, 0xCu);
       }
 
-      v18 = [v6 priorityDomainForSorting];
-      v19 = [v6 fetchContext];
-      v20 = [v19 sendingAddress];
-      v21 = [CNAutocompleteResultFactory factoryWithPriorityDomain:v18 sendingAddress:v20];
+      priorityDomainForSorting = [requestCopy priorityDomainForSorting];
+      fetchContext2 = [requestCopy fetchContext];
+      sendingAddress = [fetchContext2 sendingAddress];
+      v21 = [CNAutocompleteResultFactory factoryWithPriorityDomain:priorityDomainForSorting sendingAddress:sendingAddress];
 
-      v22 = [(CNAutocompleteCalendarServerSearch *)self executeRequest:v6 source:v13 resultsFactory:v21 withCompletionHandler:v7];
+      v22 = [(CNAutocompleteCalendarServerSearch *)self executeRequest:requestCopy source:v13 resultsFactory:v21 withCompletionHandler:handlerCopy];
     }
 
     else
@@ -111,18 +111,18 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
       if (v17)
       {
         *buf = 138412290;
-        v31 = v9;
+        v31 = sendingAddressAccountIdentifier;
         _os_log_impl(&dword_2155FE000, v16, OS_LOG_TYPE_DEFAULT, "No source found for sending account identifier %@", buf, 0xCu);
       }
 
       v23 = MEMORY[0x277CCA9B8];
       v28 = *MEMORY[0x277CCA470];
-      v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not get a source from EventKit with account identifier: %@", v9];
+      v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not get a source from EventKit with account identifier: %@", sendingAddressAccountIdentifier];
       v29 = v24;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       v21 = [v23 errorWithDomain:@"CNContactAutocompleteErrorDomain" code:0 userInfo:v25];
 
-      v7[2](v7, 0, v21);
+      handlerCopy[2](handlerCopy, 0, v21);
       v22 = objc_alloc_init(MEMORY[0x277CFBDC8]);
     }
 
@@ -134,46 +134,46 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
   return v14;
 }
 
-- (id)executeRequest:(id)a3 source:(id)a4 resultsFactory:(id)a5 withCompletionHandler:(id)a6
+- (id)executeRequest:(id)request source:(id)source resultsFactory:(id)factory withCompletionHandler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v44 = a4;
-  v43 = a5;
-  v42 = a6;
-  v11 = [(CNAutocompleteCalendarServerSearch *)self queryForFetchRequest:v10];
+  requestCopy = request;
+  sourceCopy = source;
+  factoryCopy = factory;
+  handlerCopy = handler;
+  v11 = [(CNAutocompleteCalendarServerSearch *)self queryForFetchRequest:requestCopy];
   v12 = CNALoggingContextDebug();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v11 terms];
+    terms = [v11 terms];
     *buf = 138412546;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = terms;
     _os_log_impl(&dword_2155FE000, v12, OS_LOG_TYPE_DEFAULT, "Using query: %@ terms: %@", buf, 0x16u);
   }
 
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = objc_alloc_init(MEMORY[0x277CFBEE0]);
-  v16 = [(CNAutocompleteCalendarServerSearch *)self operationFactory];
+  operationFactory = [(CNAutocompleteCalendarServerSearch *)self operationFactory];
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = __97__CNAutocompleteCalendarServerSearch_executeRequest_source_resultsFactory_withCompletionHandler___block_invoke;
   v57[3] = &unk_2781C5080;
   v17 = v15;
   v58 = v17;
-  v18 = v14;
+  v18 = array;
   v59 = v18;
-  v19 = [v16 eventKitDirectorySearchOperationForSource:v44 query:v11 resultsBlock:v57];
+  v19 = [operationFactory eventKitDirectorySearchOperationForSource:sourceCopy query:v11 resultsBlock:v57];
 
   v20 = CNALoggingContextTriage();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v10 triageIdentifier];
-    v22 = [v10 searchString];
-    v23 = [v22 length];
+    triageIdentifier = [requestCopy triageIdentifier];
+    searchString = [requestCopy searchString];
+    v23 = [searchString length];
     *buf = 138543618;
-    *&buf[4] = v21;
+    *&buf[4] = triageIdentifier;
     *&buf[12] = 2048;
     *&buf[14] = v23;
     _os_log_impl(&dword_2155FE000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Calendar Servers: Will search (%lu letters)", buf, 0x16u);
@@ -196,8 +196,8 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
   v61 = __Block_byref_object_copy__3;
   v62 = __Block_byref_object_dispose__3;
   v63 = 0;
-  v28 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v28 timestamp];
+  defaultProvider = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider timestamp];
   v30 = v29;
 
   objc_initWeak(&location, v19);
@@ -208,17 +208,17 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
   objc_copyWeak(v55, &location);
   v55[1] = v25;
   v55[2] = v30;
-  v31 = v10;
+  v31 = requestCopy;
   v48 = v31;
-  v32 = v42;
+  v32 = handlerCopy;
   v53 = v32;
   v33 = v17;
   v49 = v33;
   v34 = v18;
   v54 = buf;
   v50 = v34;
-  v51 = self;
-  v35 = v43;
+  selfCopy = self;
+  v35 = factoryCopy;
   v52 = v35;
   [v19 setCompletionBlock:v47];
   v36 = objc_alloc_init(MEMORY[0x277CFBDC8]);
@@ -229,9 +229,9 @@ id __42__CNAutocompleteCalendarServerSearch_init__block_invoke()
   v37 = v19;
   v46 = v37;
   [v36 addCancelationBlock:v45];
-  v38 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v39 = *(*&buf[8] + 40);
-  *(*&buf[8] + 40) = v38;
+  *(*&buf[8] + 40) = date;
 
   [v37 start];
   objc_destroyWeak(v55);
@@ -370,16 +370,16 @@ uint64_t __97__CNAutocompleteCalendarServerSearch_executeRequest_source_resultsF
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)queryForFetchRequest:(id)a3
+- (id)queryForFetchRequest:(id)request
 {
   v4 = getEKDirectorySearchQueryClass;
-  v5 = a3;
+  requestCopy = request;
   v6 = objc_alloc_init(v4());
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(CNAutocompleteCalendarServerSearch *)self tokenizer];
-  v9 = [v5 searchString];
+  tokenizer = [(CNAutocompleteCalendarServerSearch *)self tokenizer];
+  searchString = [requestCopy searchString];
 
-  v10 = [v8 tokenizeString:v9];
+  v10 = [tokenizer tokenizeString:searchString];
   v11 = [v7 setWithArray:v10];
 
   [v6 setTerms:v11];
@@ -391,15 +391,15 @@ uint64_t __97__CNAutocompleteCalendarServerSearch_executeRequest_source_resultsF
   return v6;
 }
 
-- (id)resultTransformWithFactory:(id)a3
+- (id)resultTransformWithFactory:(id)factory
 {
-  v3 = a3;
+  factoryCopy = factory;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__CNAutocompleteCalendarServerSearch_resultTransformWithFactory___block_invoke;
   aBlock[3] = &unk_2781C50F8;
-  v9 = v3;
-  v4 = v3;
+  v9 = factoryCopy;
+  v4 = factoryCopy;
   v5 = _Block_copy(aBlock);
   v6 = [v5 copy];
 

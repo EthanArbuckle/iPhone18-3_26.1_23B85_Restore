@@ -3,16 +3,16 @@
 - (MKMapView)mapViewForPPTTest;
 - (UIScrollView)pptTestScrollView;
 - (void)pptSelectKeyboardInteractionModel;
-- (void)pptTestAutocompleteSearchForFieldItem:(id)a3;
+- (void)pptTestAutocompleteSearchForFieldItem:(id)item;
 - (void)pptTestEndNavigation;
 - (void)pptTestEnterSearchMode;
 - (void)pptTestOpenRecents;
 - (void)pptTestSearchEndEditing;
-- (void)pptTestSearchForFieldItem:(id)a3;
-- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)a3;
+- (void)pptTestSearchForFieldItem:(id)item;
+- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)index;
 - (void)pptTestStartNavigation;
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setChromeHidden:(BOOL)a3;
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated;
+- (void)setChromeHidden:(BOOL)hidden;
 @end
 
 @implementation CarTestCoordinator
@@ -20,41 +20,41 @@
 - (UIScrollView)pptTestScrollView
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  chromeViewController = [v2 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 pptTestScrollView];
+    pptTestScrollView = [topContext pptTestScrollView];
   }
 
   else
   {
-    v5 = 0;
+    pptTestScrollView = 0;
   }
 
-  return v5;
+  return pptTestScrollView;
 }
 
-- (void)pptTestUpdateTrayLayout:(unint64_t)a3 animated:(BOOL)a4
+- (void)pptTestUpdateTrayLayout:(unint64_t)layout animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = +[CarDisplayController sharedInstance];
-  v7 = [v6 chromeViewController];
-  v8 = [v7 topContext];
+  chromeViewController = [v6 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setTrayExpanded:a3 != 0 animated:v4];
+    [topContext setTrayExpanded:layout != 0 animated:animatedCopy];
   }
 }
 
 - (BOOL)pptTestCanUpdateTrayLayout
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  chromeViewController = [v2 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   LOBYTE(v2) = objc_opt_isKindOfClass();
@@ -71,21 +71,21 @@
 - (void)pptTestEndNavigation
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  chromeViewController = [v2 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 endNavigation];
+    [topContext endNavigation];
   }
 }
 
 - (void)pptTestStartNavigation
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  chromeViewController = [v2 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -103,86 +103,86 @@
 - (void)pptSelectKeyboardInteractionModel
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  chromeViewController = [v2 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 _ppt_selectKeyboardMode];
+    [topContext _ppt_selectKeyboardMode];
   }
 }
 
-- (void)pptTestSearchForFieldItem:(id)a3
+- (void)pptTestSearchForFieldItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 topContext];
+  chromeViewController = [v3 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v8 searchString];
-    [v6 pptInvokeSearch:v7];
+    v6 = topContext;
+    searchString = [itemCopy searchString];
+    [v6 pptInvokeSearch:searchString];
   }
 }
 
 - (void)pptTestSearchEndEditing
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 topContext];
+  chromeViewController = [v2 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 pptEndEditing];
+    [topContext pptEndEditing];
   }
 }
 
-- (void)pptTestAutocompleteSearchForFieldItem:(id)a3
+- (void)pptTestAutocompleteSearchForFieldItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 topContext];
+  chromeViewController = [v3 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v8 searchString];
-    [v6 pptHandleTextChange:v7];
+    v6 = topContext;
+    searchString = [itemCopy searchString];
+    [v6 pptHandleTextChange:searchString];
   }
 }
 
-- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)a3
+- (void)pptTestSearchNearbyCategoryWithIndex:(unint64_t)index
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 chromeViewController];
-  v5 = [v4 topContext];
+  chromeViewController = [v3 chromeViewController];
+  topContext = [chromeViewController topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 _ppt_selectFirstCarplayBrowseCategory];
+    [topContext _ppt_selectFirstCarplayBrowseCategory];
   }
 }
 
-- (void)setChromeHidden:(BOOL)a3
+- (void)setChromeHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
-    v4 = [(CarTestCoordinator *)self forcedAutohideToken];
+    forcedAutohideToken = [(CarTestCoordinator *)self forcedAutohideToken];
 
-    if (!v4)
+    if (!forcedAutohideToken)
     {
       v5 = +[CarDisplayController sharedInstance];
-      v7 = [v5 chromeViewController];
+      chromeViewController = [v5 chromeViewController];
 
-      v6 = [v7 acquireForcedAutohideBehaviourTokenWithBehaviour:1];
+      v6 = [chromeViewController acquireForcedAutohideBehaviourTokenWithBehaviour:1];
       [(CarTestCoordinator *)self setForcedAutohideToken:v6];
     }
   }
@@ -197,10 +197,10 @@
 - (MKMapView)mapViewForPPTTest
 {
   v2 = +[CarDisplayController sharedInstance];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 mapView];
+  chromeViewController = [v2 chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v4;
+  return mapView;
 }
 
 @end

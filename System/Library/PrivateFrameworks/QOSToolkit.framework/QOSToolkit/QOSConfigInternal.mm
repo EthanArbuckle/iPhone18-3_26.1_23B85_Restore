@@ -1,7 +1,7 @@
 @interface QOSConfigInternal
 - (NSString)locale;
 - (QOSConfigInternal)init;
-- (QOSConfigInternal)initWithAppTarget:(int64_t)a3 locale:(id)a4;
+- (QOSConfigInternal)initWithAppTarget:(int64_t)target locale:(id)locale;
 @end
 
 @implementation QOSConfigInternal
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (QOSConfigInternal)initWithAppTarget:(int64_t)a3 locale:(id)a4
+- (QOSConfigInternal)initWithAppTarget:(int64_t)target locale:(id)locale
 {
-  if (a4)
+  if (locale)
   {
     v6 = sub_261464930();
   }
@@ -52,7 +52,7 @@
   v12 = self + OBJC_IVAR___QOSConfigInternal_syncStartDelayOffsetInSecs;
   *v12 = 0;
   v12[8] = 1;
-  *(self + OBJC_IVAR___QOSConfigInternal_appTarget) = a3;
+  *(self + OBJC_IVAR___QOSConfigInternal_appTarget) = target;
   v13 = (self + OBJC_IVAR___QOSConfigInternal_locale);
   *v13 = v6;
   v13[1] = v7;

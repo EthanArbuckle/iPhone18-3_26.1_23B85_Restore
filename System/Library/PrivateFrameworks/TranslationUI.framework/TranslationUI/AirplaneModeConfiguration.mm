@@ -8,7 +8,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC13TranslationUI25AirplaneModeConfiguration_reachability);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     v5 = v3;
@@ -23,7 +23,7 @@
 
 - (void)airplaneModeChanged
 {
-  v2 = self;
+  selfCopy = self;
   AirplaneModeConfiguration.airplaneModeChanged()();
 }
 

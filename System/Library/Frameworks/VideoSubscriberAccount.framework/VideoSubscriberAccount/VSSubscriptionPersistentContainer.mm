@@ -1,10 +1,10 @@
 @interface VSSubscriptionPersistentContainer
-- (BOOL)_setupPersistenceIfNeeded:(id *)a3;
+- (BOOL)_setupPersistenceIfNeeded:(id *)needed;
 - (NSString)persistentStoreType;
 - (NSURL)persistentStoreURL;
 - (NSURL)subscriptionsPropertyListURL;
 - (VSSubscriptionPersistentContainer)init;
-- (void)_performBlock:(id)a3 andWait:(BOOL)a4;
+- (void)_performBlock:(id)block andWait:(BOOL)wait;
 - (void)_removePersistentStore;
 @end
 
@@ -54,9 +54,9 @@
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v5 = [v4 URLsForDirectory:14 inDomains:1];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
 
-    v7 = [v6 URLByAppendingPathComponent:@"videosubscriptionsd" isDirectory:1];
+    v7 = [firstObject URLByAppendingPathComponent:@"videosubscriptionsd" isDirectory:1];
     v3 = [v7 URLByAppendingPathComponent:@"VSSubscriptions.sqlite" isDirectory:0];
 
     if (!v3)
@@ -82,9 +82,9 @@
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
     v5 = [v4 URLsForDirectory:14 inDomains:1];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
 
-    v7 = [v6 URLByAppendingPathComponent:@"com.apple.spotlight" isDirectory:1];
+    v7 = [firstObject URLByAppendingPathComponent:@"com.apple.spotlight" isDirectory:1];
     v3 = [v7 URLByAppendingPathComponent:@"subscriptions.plist" isDirectory:0];
 
     if (!v3)
@@ -127,12 +127,12 @@ void __59__VSSubscriptionPersistentContainer__removePersistentStore__block_invok
   }
 }
 
-- (BOOL)_setupPersistenceIfNeeded:(id *)a3
+- (BOOL)_setupPersistenceIfNeeded:(id *)needed
 {
   v66[1] = *MEMORY[0x277D85DE8];
   if (![(VSSubscriptionPersistentContainer *)self didSetupPersistence])
   {
-    v52 = a3;
+    neededCopy = needed;
     v6 = VSDefaultLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -141,28 +141,28 @@ void __59__VSSubscriptionPersistentContainer__removePersistentStore__block_invok
     }
 
     v7 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    v8 = [(VSSubscriptionPersistentContainer *)self subscriptionsPropertyListURL];
-    v9 = [(VSSubscriptionPersistentContainer *)self persistentStoreURL];
+    subscriptionsPropertyListURL = [(VSSubscriptionPersistentContainer *)self subscriptionsPropertyListURL];
+    persistentStoreURL = [(VSSubscriptionPersistentContainer *)self persistentStoreURL];
     v10 = [MEMORY[0x277CBE450] vs_subscriptionModelForVersion:3];
-    v57 = [(VSSubscriptionPersistentContainer *)self persistentStoreType];
-    v11 = [v9 path];
-    v56 = v8;
-    v12 = [v8 path];
-    v13 = v12;
-    if (v11 && v12)
+    persistentStoreType = [(VSSubscriptionPersistentContainer *)self persistentStoreType];
+    path = [persistentStoreURL path];
+    v56 = subscriptionsPropertyListURL;
+    path2 = [subscriptionsPropertyListURL path];
+    v13 = path2;
+    if (path && path2)
     {
-      v14 = v11;
+      v14 = path;
     }
 
     else
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Unable to obtain path for sqlite or plist stores."];
-      if (!v11)
+      if (!path)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The sqlitePathOrNil parameter must not be nil."];
       }
 
-      v15 = v11;
+      v15 = path;
       if (!v13)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The plistPathOrNil parameter must not be nil."];
@@ -170,21 +170,21 @@ void __59__VSSubscriptionPersistentContainer__removePersistentStore__block_invok
     }
 
     v58 = v13;
-    v16 = [v9 URLByDeletingLastPathComponent];
-    if (!v16)
+    uRLByDeletingLastPathComponent = [persistentStoreURL URLByDeletingLastPathComponent];
+    if (!uRLByDeletingLastPathComponent)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"Unable to determine container for SQL store."];
     }
 
     v17 = 0x278B72000uLL;
-    v54 = v16;
-    v18 = [v16 path];
-    v19 = [VSOptional optionalWithObject:v18];
-    v20 = [v19 forceUnwrapObject];
+    v54 = uRLByDeletingLastPathComponent;
+    path3 = [uRLByDeletingLastPathComponent path];
+    v19 = [VSOptional optionalWithObject:path3];
+    forceUnwrapObject = [v19 forceUnwrapObject];
 
     v63 = 0;
-    v53 = v20;
-    if ([v7 fileExistsAtPath:v20 isDirectory:&v63])
+    v53 = forceUnwrapObject;
+    if ([v7 fileExistsAtPath:forceUnwrapObject isDirectory:&v63])
     {
       if (v63)
       {
@@ -211,13 +211,13 @@ void __59__VSSubscriptionPersistentContainer__removePersistentStore__block_invok
       }
 
       v62 = 0;
-      v23 = [v7 createDirectoryAtPath:v20 withIntermediateDirectories:1 attributes:0 error:&v62];
+      v23 = [v7 createDirectoryAtPath:forceUnwrapObject withIntermediateDirectories:1 attributes:0 error:&v62];
       v21 = v62;
       if (v23)
       {
 LABEL_26:
         v55 = v10;
-        if (![v7 fileExistsAtPath:v58] || (objc_msgSend(v7, "fileExistsAtPath:", v11) & 1) != 0 || -[VSSubscriptionPersistentContainer skipMigration](self, "skipMigration"))
+        if (![v7 fileExistsAtPath:v58] || (objc_msgSend(v7, "fileExistsAtPath:", path) & 1) != 0 || -[VSSubscriptionPersistentContainer skipMigration](self, "skipMigration"))
         {
           v25 = VSDefaultLogObject();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -249,11 +249,11 @@ LABEL_26:
               [VSSubscriptionPersistentContainer _setupPersistenceIfNeeded:];
             }
 
-            if (v52)
+            if (neededCopy)
             {
               v47 = v39;
               v5 = 0;
-              *v52 = v39;
+              *neededCopy = v39;
             }
 
             else
@@ -275,7 +275,7 @@ LABEL_26:
           v60 = v40;
           v51 = v41;
           v44 = v42;
-          LODWORD(v41) = [v41 migrateStoreFromURL:v56 type:v42 options:v43 withMappingModel:v31 toDestinationURL:v9 destinationType:v57 destinationOptions:0 error:&v60];
+          LODWORD(v41) = [v41 migrateStoreFromURL:v56 type:v42 options:v43 withMappingModel:v31 toDestinationURL:persistentStoreURL destinationType:persistentStoreType destinationOptions:0 error:&v60];
           v21 = v60;
 
           if (!v41)
@@ -286,10 +286,10 @@ LABEL_26:
               [VSSubscriptionPersistentContainer _setupPersistenceIfNeeded:];
             }
 
-            if (v52)
+            if (neededCopy)
             {
               v49 = v21;
-              *v52 = v21;
+              *neededCopy = v21;
             }
 
             v5 = 0;
@@ -319,7 +319,7 @@ LABEL_26:
         [v25 setObject:v29 forKey:*MEMORY[0x277CBE1D8]];
         v30 = self->_persistentStoreCoordinator;
         v59 = v21;
-        v31 = [(NSPersistentStoreCoordinator *)v30 addPersistentStoreWithType:v57 configuration:0 URL:v9 options:v25 error:&v59];
+        v31 = [(NSPersistentStoreCoordinator *)v30 addPersistentStoreWithType:persistentStoreType configuration:0 URL:persistentStoreURL options:v25 error:&v59];
         v21 = v59;
 
         v5 = v31 != 0;
@@ -347,10 +347,10 @@ LABEL_26:
             [VSSubscriptionPersistentContainer _setupPersistenceIfNeeded:];
           }
 
-          if (v52)
+          if (neededCopy)
           {
             v36 = v21;
-            *v52 = v21;
+            *neededCopy = v21;
           }
         }
 
@@ -372,24 +372,24 @@ LABEL_39:
   return 1;
 }
 
-- (void)_performBlock:(id)a3 andWait:(BOOL)a4
+- (void)_performBlock:(id)block andWait:(BOOL)wait
 {
-  v4 = a4;
-  v6 = a3;
+  waitCopy = wait;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(VSSubscriptionPersistentContainer *)self migrationQueue];
+  migrationQueue = [(VSSubscriptionPersistentContainer *)self migrationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__VSSubscriptionPersistentContainer__performBlock_andWait___block_invoke;
   v10[3] = &unk_278B74EF8;
   v10[4] = self;
-  v12 = v4;
-  v9 = v6;
+  v12 = waitCopy;
+  v9 = blockCopy;
   v11 = v9;
-  [v8 addOperationWithBlock:v10];
-  if (v4)
+  [migrationQueue addOperationWithBlock:v10];
+  if (waitCopy)
   {
-    [v8 waitUntilAllOperationsAreFinished];
+    [migrationQueue waitUntilAllOperationsAreFinished];
   }
 
   objc_autoreleasePoolPop(v7);

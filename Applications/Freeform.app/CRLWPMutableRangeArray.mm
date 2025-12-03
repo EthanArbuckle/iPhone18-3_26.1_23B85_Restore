@@ -1,52 +1,52 @@
 @interface CRLWPMutableRangeArray
-- (_NSRange)replacedTextAtRange:(_NSRange)a3 delta:(int64_t)a4;
-- (void)addRange:(_NSRange)a3;
-- (void)removeRange:(_NSRange)a3;
-- (void)removeRangesInRange:(_NSRange)a3;
-- (void)subtract:(id)a3;
-- (void)unionWith:(id)a3;
+- (_NSRange)replacedTextAtRange:(_NSRange)range delta:(int64_t)delta;
+- (void)addRange:(_NSRange)range;
+- (void)removeRange:(_NSRange)range;
+- (void)removeRangesInRange:(_NSRange)range;
+- (void)subtract:(id)subtract;
+- (void)unionWith:(id)with;
 @end
 
 @implementation CRLWPMutableRangeArray
 
-- (void)removeRangesInRange:(_NSRange)a3
+- (void)removeRangesInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
     begin = self->super._rangeVector.__begin_;
     end = self->super._rangeVector.__end_;
-    v6 = &begin[a3.location];
-    v7 = &v6[a3.length];
+    v6 = &begin[range.location];
+    v7 = &v6[range.length];
     v8 = end - v7;
     if (end != v7)
     {
-      memmove(&begin[a3.location], v7, end - v7);
+      memmove(&begin[range.location], v7, end - v7);
     }
 
     self->super._rangeVector.__end_ = (v6 + v8);
   }
 }
 
-- (void)addRange:(_NSRange)a3
+- (void)addRange:(_NSRange)range
 {
-  v42 = a3;
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL)
+  rangeCopy = range;
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     if (![(CRLWPRangeArray *)self rangeCount])
     {
-      sub_1000DACAC(&self->super._rangeVector, &v42);
+      sub_1000DACAC(&self->super._rangeVector, &rangeCopy);
       return;
     }
 
     if (length)
     {
-      v41 = v42;
+      v41 = rangeCopy;
       begin = self->super._rangeVector.__begin_;
       end = self->super._rangeVector.__end_;
-      v9 = v42.length;
-      v8 = v42.location;
+      v9 = rangeCopy.length;
+      v8 = rangeCopy.location;
       if (end == begin)
       {
         v22 = 0;
@@ -65,7 +65,7 @@
           v15 = v13->location;
           v14 = v13 + 1;
           v10 += ~(v10 >> 1);
-          if (v15 < v42.location)
+          if (v15 < rangeCopy.location)
           {
             v11 = v14;
           }
@@ -94,7 +94,7 @@
             v21 = v19->location;
             v20 = v19 + 1;
             v16 += ~(v16 >> 1);
-            if (v21 < v42.length + v42.location)
+            if (v21 < rangeCopy.length + rangeCopy.location)
             {
               v17 = v20;
             }
@@ -106,14 +106,14 @@
           }
 
           while (v16);
-          if (sub_1002BC848(v42, *v11, 1) == 0x7FFFFFFFFFFFFFFFLL)
+          if (sub_1002BC848(rangeCopy, *v11, 1) == 0x7FFFFFFFFFFFFFFFLL)
           {
             v22 = 0;
           }
 
           else
           {
-            v23 = NSUnionRange(v42, *v11);
+            v23 = NSUnionRange(rangeCopy, *v11);
             v8 = v23.location;
             v9 = v23.length;
             v41 = v23;
@@ -253,9 +253,9 @@ LABEL_46:
   }
 }
 
-- (void)removeRange:(_NSRange)a3
+- (void)removeRange:(_NSRange)range
 {
-  if (!a3.length)
+  if (!range.length)
   {
     return;
   }
@@ -265,7 +265,7 @@ LABEL_46:
   p_rangeVector = &self->super._rangeVector;
   if (end == begin)
   {
-    v14 = a3.location + a3.length;
+    v14 = range.location + range.length;
     v9 = end;
     v20 = end;
     v15 = end;
@@ -283,7 +283,7 @@ LABEL_46:
       v13 = v11->n128_u64[0];
       v12 = v11 + 1;
       v8 += ~(v8 >> 1);
-      if (v13 > a3.location)
+      if (v13 > range.location)
       {
         v8 = v10;
       }
@@ -295,7 +295,7 @@ LABEL_46:
     }
 
     while (v8);
-    v14 = a3.location + a3.length;
+    v14 = range.location + range.length;
     v15 = begin;
     do
     {
@@ -323,10 +323,10 @@ LABEL_46:
   {
     v21 = v20[-1].n128_u64[0];
     v22 = v20[-1].n128_u64[1];
-    v23 = a3.location - v21;
-    if (a3.location >= v21 && v23 < v22)
+    v23 = range.location - v21;
+    if (range.location >= v21 && v23 < v22)
     {
-      if (a3.location == v21)
+      if (range.location == v21)
       {
         --v9;
       }
@@ -357,7 +357,7 @@ LABEL_46:
 
         v39.n128_u64[0] = v36;
         v39.n128_u64[1] = v38 - v36;
-        if (a3.location == v21)
+        if (range.location == v21)
         {
           *v9 = v39;
         }
@@ -440,17 +440,17 @@ LABEL_46:
   }
 }
 
-- (_NSRange)replacedTextAtRange:(_NSRange)a3 delta:(int64_t)a4
+- (_NSRange)replacedTextAtRange:(_NSRange)range delta:(int64_t)delta
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [(CRLWPRangeArray *)self rangeCount];
-  if (v8)
+  length = range.length;
+  location = range.location;
+  rangeCount = [(CRLWPRangeArray *)self rangeCount];
+  if (rangeCount)
   {
-    v9 = v8;
+    v9 = rangeCount;
     v10 = 0;
-    v11 = length - a4 + location;
-    v38 = -a4;
+    v11 = length - delta + location;
+    v38 = -delta;
     v12 = 0x7FFFFFFFFFFFFFFFLL;
     v13 = 0x7FFFFFFFFFFFFFFFLL;
     while (1)
@@ -472,7 +472,7 @@ LABEL_46:
 
           else
           {
-            v15->length = v16 + a4;
+            v15->length = v16 + delta;
           }
 
           goto LABEL_5;
@@ -513,11 +513,11 @@ LABEL_46:
 
         if (v11 <= v17)
         {
-          if (a4 < 0 && v17 < v38)
+          if (delta < 0 && v17 < v38)
           {
             v35 = v13;
             v36 = v12;
-            v37 = a4;
+            deltaCopy = delta;
             v25 = +[CRLAssertionHandler _atomicIncrementAssertCount];
             if (qword_101AD5A10 != -1)
             {
@@ -560,16 +560,16 @@ LABEL_46:
 
             begin = self->super._rangeVector.__begin_;
             v12 = v36;
-            a4 = v37;
+            delta = deltaCopy;
             v13 = v35;
           }
 
-          v19 = v17 + a4;
+          v19 = v17 + delta;
         }
 
         else
         {
-          v19 = v18 + a4;
+          v19 = v18 + delta;
           if (location <= v19)
           {
             v20 = v19;
@@ -631,31 +631,31 @@ LABEL_40:
   return result;
 }
 
-- (void)unionWith:(id)a3
+- (void)unionWith:(id)with
 {
-  v8 = a3;
-  v4 = [v8 rangeCount];
-  if (v4)
+  withCopy = with;
+  rangeCount = [withCopy rangeCount];
+  if (rangeCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != rangeCount; ++i)
     {
-      v6 = [v8 rangeAtIndex:i];
+      v6 = [withCopy rangeAtIndex:i];
       [(CRLWPMutableRangeArray *)self addRange:v6, v7];
     }
   }
 }
 
-- (void)subtract:(id)a3
+- (void)subtract:(id)subtract
 {
-  v8 = a3;
+  subtractCopy = subtract;
   if ([(CRLWPRangeArray *)self rangeCount])
   {
-    v4 = [v8 rangeCount];
-    if (v4)
+    rangeCount = [subtractCopy rangeCount];
+    if (rangeCount)
     {
-      for (i = 0; i != v4; ++i)
+      for (i = 0; i != rangeCount; ++i)
       {
-        v6 = [v8 rangeAtIndex:i];
+        v6 = [subtractCopy rangeAtIndex:i];
         [(CRLWPMutableRangeArray *)self removeRange:v6, v7];
       }
     }

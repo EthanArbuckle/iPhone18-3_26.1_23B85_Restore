@@ -1,15 +1,15 @@
 @interface SBDeviceApplicationSceneHandleDisableMultitaskingAssertionManager
-- (id)acquireDisableMultitaskingAssertionForSceneHandle:(id)a3;
+- (id)acquireDisableMultitaskingAssertionForSceneHandle:(id)handle;
 - (void)_updateMedusaMultitaskingEnabled;
 @end
 
 @implementation SBDeviceApplicationSceneHandleDisableMultitaskingAssertionManager
 
-- (id)acquireDisableMultitaskingAssertionForSceneHandle:(id)a3
+- (id)acquireDisableMultitaskingAssertionForSceneHandle:(id)handle
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [(SBDeviceApplicationSceneHandleDisableMultitaskingAssertionManager *)a2 acquireDisableMultitaskingAssertionForSceneHandle:?];
   }
@@ -23,14 +23,14 @@
     v27[1] = 3221225472;
     v27[2] = __119__SBDeviceApplicationSceneHandleDisableMultitaskingAssertionManager_acquireDisableMultitaskingAssertionForSceneHandle___block_invoke;
     v27[3] = &unk_2783AD370;
-    v28 = v5;
+    v28 = handleCopy;
     objc_copyWeak(&v29, &location);
     v8 = [v7 assertionWithIdentifier:@"SBDeviceAppSHDisableMultitaskingAssertionManager" stateDidChangeHandler:v27];
     v9 = self->_assertion;
     self->_assertion = v8;
 
     v10 = +[SBDefaults localDefaults];
-    v11 = [v10 appSwitcherDefaults];
+    appSwitcherDefaults = [v10 appSwitcherDefaults];
 
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"chamoisWindowingEnabled"];
     v31[0] = v12;
@@ -43,7 +43,7 @@
     v23 = __119__SBDeviceApplicationSceneHandleDisableMultitaskingAssertionManager_acquireDisableMultitaskingAssertionForSceneHandle___block_invoke_3;
     v24 = &unk_2783A9CE8;
     objc_copyWeak(&v26, &location);
-    v16 = v11;
+    v16 = appSwitcherDefaults;
     v25 = v16;
     v17 = [v16 observeDefaults:v14 onQueue:MEMORY[0x277D85CD0] withBlock:&v21];
 
@@ -54,8 +54,8 @@
     assertion = self->_assertion;
   }
 
-  v18 = [v5 sceneIdentifier];
-  v19 = [(BSCompoundAssertion *)assertion acquireForReason:v18];
+  sceneIdentifier = [handleCopy sceneIdentifier];
+  v19 = [(BSCompoundAssertion *)assertion acquireForReason:sceneIdentifier];
 
   return v19;
 }
@@ -129,48 +129,48 @@ void __119__SBDeviceApplicationSceneHandleDisableMultitaskingAssertionManager_ac
 - (void)_updateMedusaMultitaskingEnabled
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 appSwitcherDefaults];
-  v5 = [v4 medusaMultitaskingEnabled];
+  appSwitcherDefaults = [v3 appSwitcherDefaults];
+  medusaMultitaskingEnabled = [appSwitcherDefaults medusaMultitaskingEnabled];
 
   v6 = +[SBDefaults localDefaults];
-  v7 = [v6 appSwitcherDefaults];
-  v8 = [v7 chamoisWindowingEnabled];
+  appSwitcherDefaults2 = [v6 appSwitcherDefaults];
+  chamoisWindowingEnabled = [appSwitcherDefaults2 chamoisWindowingEnabled];
 
-  if ([(BSCompoundAssertion *)self->_assertion isActive]&& v5)
+  if ([(BSCompoundAssertion *)self->_assertion isActive]&& medusaMultitaskingEnabled)
   {
     self->_shouldReenableMultitaskingWhenAssertionInvalidates = 1;
     v9 = +[SBDefaults localDefaults];
-    v10 = [v9 appSwitcherDefaults];
-    [v10 setMedusaMultitaskingEnabled:0];
+    appSwitcherDefaults3 = [v9 appSwitcherDefaults];
+    [appSwitcherDefaults3 setMedusaMultitaskingEnabled:0];
   }
 
   else if (([(BSCompoundAssertion *)self->_assertion isActive]& 1) == 0)
   {
-    if (!(v5 & 1 | !self->_shouldReenableMultitaskingWhenAssertionInvalidates))
+    if (!(medusaMultitaskingEnabled & 1 | !self->_shouldReenableMultitaskingWhenAssertionInvalidates))
     {
       v11 = +[SBDefaults localDefaults];
-      v12 = [v11 appSwitcherDefaults];
-      [v12 setMedusaMultitaskingEnabled:1];
+      appSwitcherDefaults4 = [v11 appSwitcherDefaults];
+      [appSwitcherDefaults4 setMedusaMultitaskingEnabled:1];
     }
 
     self->_shouldReenableMultitaskingWhenAssertionInvalidates = 0;
   }
 
-  if (([(BSCompoundAssertion *)self->_assertion isActive]& v8) == 1)
+  if (([(BSCompoundAssertion *)self->_assertion isActive]& chamoisWindowingEnabled) == 1)
   {
     self->_shouldReenableChamoisWhenAssertionInvalidates = 1;
     v16 = +[SBDefaults localDefaults];
-    v13 = [v16 appSwitcherDefaults];
-    [v13 setChamoisWindowingEnabled:0];
+    appSwitcherDefaults5 = [v16 appSwitcherDefaults];
+    [appSwitcherDefaults5 setChamoisWindowingEnabled:0];
   }
 
   else if (([(BSCompoundAssertion *)self->_assertion isActive]& 1) == 0)
   {
-    if (!(v8 & 1 | !self->_shouldReenableChamoisWhenAssertionInvalidates))
+    if (!(chamoisWindowingEnabled & 1 | !self->_shouldReenableChamoisWhenAssertionInvalidates))
     {
       v14 = +[SBDefaults localDefaults];
-      v15 = [v14 appSwitcherDefaults];
-      [v15 setChamoisWindowingEnabled:1];
+      appSwitcherDefaults6 = [v14 appSwitcherDefaults];
+      [appSwitcherDefaults6 setChamoisWindowingEnabled:1];
     }
 
     self->_shouldReenableChamoisWhenAssertionInvalidates = 0;

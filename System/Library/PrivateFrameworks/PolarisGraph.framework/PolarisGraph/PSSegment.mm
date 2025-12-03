@@ -1,29 +1,29 @@
 @interface PSSegment
-+ (id)segmentWithName:(id)a3 computeAgent:(int64_t)a4;
-- (PSSegment)initWithName:(id)a3 computeAgent:(int64_t)a4;
++ (id)segmentWithName:(id)name computeAgent:(int64_t)agent;
+- (PSSegment)initWithName:(id)name computeAgent:(int64_t)agent;
 @end
 
 @implementation PSSegment
 
-+ (id)segmentWithName:(id)a3 computeAgent:(int64_t)a4
++ (id)segmentWithName:(id)name computeAgent:(int64_t)agent
 {
-  v5 = a3;
-  v6 = [[PSSegment alloc] initWithName:v5 computeAgent:a4];
+  nameCopy = name;
+  v6 = [[PSSegment alloc] initWithName:nameCopy computeAgent:agent];
 
   return v6;
 }
 
-- (PSSegment)initWithName:(id)a3 computeAgent:(int64_t)a4
+- (PSSegment)initWithName:(id)name computeAgent:(int64_t)agent
 {
-  v6 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = PSSegment;
   v7 = [(PSSegment *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(PSSegment *)v7 setName:v6];
-    [(PSSegment *)v8 setComputeAgent:a4];
+    [(PSSegment *)v7 setName:nameCopy];
+    [(PSSegment *)v8 setComputeAgent:agent];
   }
 
   return v8;

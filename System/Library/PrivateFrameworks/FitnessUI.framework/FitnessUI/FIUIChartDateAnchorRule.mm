@@ -1,19 +1,19 @@
 @interface FIUIChartDateAnchorRule
-- (BOOL)_componentsSuccessful:(id)a3;
+- (BOOL)_componentsSuccessful:(id)successful;
 - (id)_anchorDiffComponents;
-- (id)_floorDate:(id)a3;
-- (id)generateAnchorFromDate:(id)a3;
-- (void)setCalendarUnit:(unint64_t)a3;
+- (id)_floorDate:(id)date;
+- (id)generateAnchorFromDate:(id)date;
+- (void)setCalendarUnit:(unint64_t)unit;
 @end
 
 @implementation FIUIChartDateAnchorRule
 
-- (id)generateAnchorFromDate:(id)a3
+- (id)generateAnchorFromDate:(id)date
 {
-  v4 = [(FIUIChartDateAnchorRule *)self _floorDate:a3];
-  v5 = [(FIUIChartDateAnchorRule *)self _anchorDiffComponents];
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [v6 components:252 fromDate:v4];
+  v4 = [(FIUIChartDateAnchorRule *)self _floorDate:date];
+  _anchorDiffComponents = [(FIUIChartDateAnchorRule *)self _anchorDiffComponents];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [currentCalendar components:252 fromDate:v4];
 
   if ([(FIUIChartDateAnchorRule *)self _componentsSuccessful:v7])
   {
@@ -25,11 +25,11 @@
   {
     do
     {
-      v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v8 = [v10 dateByAddingComponents:v5 toDate:v4 options:0];
+      currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v8 = [currentCalendar2 dateByAddingComponents:_anchorDiffComponents toDate:v4 options:0];
 
-      v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v9 = [v11 components:252 fromDate:v8];
+      currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v9 = [currentCalendar3 components:252 fromDate:v8];
 
       v7 = v9;
       v4 = v8;
@@ -41,22 +41,22 @@
   return v8;
 }
 
-- (void)setCalendarUnit:(unint64_t)a3
+- (void)setCalendarUnit:(unint64_t)unit
 {
-  if ((a3 & 0xFC) == 0)
+  if ((unit & 0xFC) == 0)
   {
     [FIUIChartDateAnchorRule setCalendarUnit:];
   }
 
-  self->_calendarUnit = a3;
+  self->_calendarUnit = unit;
 }
 
-- (id)_floorDate:(id)a3
+- (id)_floorDate:(id)date
 {
   v4 = MEMORY[0x1E695DEE8];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 components:252 fromDate:v5];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar components:252 fromDate:dateCopy];
 
   calendarUnit = self->_calendarUnit;
   if (calendarUnit <= 15)
@@ -98,8 +98,8 @@
     }
   }
 
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v10 = [v9 dateFromComponents:v7];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v10 = [currentCalendar2 dateFromComponents:v7];
 
   return v10;
 }
@@ -144,23 +144,23 @@
   return v4;
 }
 
-- (BOOL)_componentsSuccessful:(id)a3
+- (BOOL)_componentsSuccessful:(id)successful
 {
-  v4 = a3;
+  successfulCopy = successful;
   calendarUnit = self->_calendarUnit;
-  v6 = -1;
+  hour = -1;
   if (calendarUnit > 31)
   {
     switch(calendarUnit)
     {
       case 32:
-        v6 = [v4 hour];
+        hour = [successfulCopy hour];
         break;
       case 64:
-        v6 = [v4 minute];
+        hour = [successfulCopy minute];
         break;
       case 128:
-        v6 = [v4 second];
+        hour = [successfulCopy second];
         break;
     }
   }
@@ -170,18 +170,18 @@
     switch(calendarUnit)
     {
       case 4:
-        v6 = [v4 year];
+        hour = [successfulCopy year];
         break;
       case 8:
-        v6 = [v4 month];
+        hour = [successfulCopy month];
         break;
       case 16:
-        v6 = [v4 day];
+        hour = [successfulCopy day];
         break;
     }
   }
 
-  v7 = v6 % self->_roundingValue == 0;
+  v7 = hour % self->_roundingValue == 0;
 
   return v7;
 }

@@ -1,13 +1,13 @@
 @interface DTKPTriggerTime
-+ (int)reinitializeKperf:(id *)a3;
++ (int)reinitializeKperf:(id *)kperf;
 + (void)initialize;
-- (DTKPTriggerTime)initWithCounterAllocatorProvider:(id)a3 recountConfiguration:(id)a4;
-- (int)_configureTimer:(unsigned int)a3 actionID:(unsigned int)a4 period:(unint64_t)a5 userData:(unsigned int)a6;
-- (int)start:(id *)a3;
-- (int)stop:(id *)a3;
-- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)a3;
+- (DTKPTriggerTime)initWithCounterAllocatorProvider:(id)provider recountConfiguration:(id)configuration;
+- (int)_configureTimer:(unsigned int)timer actionID:(unsigned int)d period:(unint64_t)period userData:(unsigned int)data;
+- (int)start:(id *)start;
+- (int)stop:(id *)stop;
+- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)buffer;
 - (unsigned)_timerIDAlloc;
-- (void)_timerIDDdealloc:(unsigned int)a3;
+- (void)_timerIDDdealloc:(unsigned int)ddealloc;
 - (void)dealloc;
 @end
 
@@ -15,18 +15,18 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     DTKPSetupLogging();
   }
 }
 
-- (DTKPTriggerTime)initWithCounterAllocatorProvider:(id)a3 recountConfiguration:(id)a4
+- (DTKPTriggerTime)initWithCounterAllocatorProvider:(id)provider recountConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = DTKPTriggerTime;
-  result = [(DTKPTrigger *)&v5 initWithCounterAllocatorProvider:a3 recountConfiguration:a4];
+  result = [(DTKPTrigger *)&v5 initWithCounterAllocatorProvider:provider recountConfiguration:configuration];
   if (result)
   {
     result->_sampleRate = 0;
@@ -50,7 +50,7 @@
   [(DTKPTrigger *)&v4 dealloc];
 }
 
-+ (int)reinitializeKperf:(id *)a3
++ (int)reinitializeKperf:(id *)kperf
 {
   if (qword_27EE84258)
   {
@@ -62,10 +62,10 @@
   if (kperf_timer_count_set())
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to set the number of kperf timers: %d", *__error()];
-    v5 = a3;
+    kperfCopy2 = kperf;
     v6 = 4294966894;
 LABEL_5:
-    v7 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", v5, v6, v4);
+    v7 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", kperfCopy2, v6, v4);
 
     return v7;
   }
@@ -74,7 +74,7 @@ LABEL_5:
   if (!qword_27EE84258)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to allocate memory for kperf timers: %d.", *__error()];
-    v5 = a3;
+    kperfCopy2 = kperf;
     v6 = 4294967096;
     goto LABEL_5;
   }
@@ -83,10 +83,10 @@ LABEL_5:
   return 0;
 }
 
-- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)a3
+- (unint64_t)_recordConfigWordsIntoBuffer:(unint64_t *)buffer
 {
-  v4 = [(DTKPTrigger *)self counterAllocator];
-  v5 = [v4 recordConfigWordsIntoBuffer:a3];
+  counterAllocator = [(DTKPTrigger *)self counterAllocator];
+  v5 = [counterAllocator recordConfigWordsIntoBuffer:buffer];
 
   return v5;
 }
@@ -116,20 +116,20 @@ LABEL_6:
   return v2;
 }
 
-- (void)_timerIDDdealloc:(unsigned int)a3
+- (void)_timerIDDdealloc:(unsigned int)ddealloc
 {
-  if (a3 > 7 || !byte_27EE84260 || (*(qword_27EE84258 + a3) & 1) == 0)
+  if (ddealloc > 7 || !byte_27EE84260 || (*(qword_27EE84258 + ddealloc) & 1) == 0)
   {
     sub_24802CB98();
   }
 
-  *(qword_27EE84258 + a3) = 0;
+  *(qword_27EE84258 + ddealloc) = 0;
 }
 
-- (int)_configureTimer:(unsigned int)a3 actionID:(unsigned int)a4 period:(unint64_t)a5 userData:(unsigned int)a6
+- (int)_configureTimer:(unsigned int)timer actionID:(unsigned int)d period:(unint64_t)period userData:(unsigned int)data
 {
   result = -4;
-  if (a3 <= 7)
+  if (timer <= 7)
   {
     if (byte_27EE84260)
     {
@@ -144,27 +144,27 @@ LABEL_6:
   return result;
 }
 
-- (int)start:(id *)a3
+- (int)start:(id *)start
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  lock = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_wait(lock, 0xFFFFFFFFFFFFFFFFLL);
 
   v6 = sDTKPLogClient;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109632;
-    v27 = [(DTKPTrigger *)self triggerID];
+    triggerID = [(DTKPTrigger *)self triggerID];
     v28 = 2048;
     v29 = [(DTKPTriggerTime *)self sampleRate]/ 0x3E8;
     v30 = 2048;
-    v31 = [(DTKPTrigger *)self pmcEventCount];
+    pmcEventCount = [(DTKPTrigger *)self pmcEventCount];
     _os_log_impl(&dword_247F67000, v6, OS_LOG_TYPE_DEBUG, "DTKPTriggerTime: Starting Time Trigger (%d). Period: %lld us. PMCs: %lu", buf, 0x1Cu);
   }
 
-  v7 = [(DTKPTrigger *)self collectKernelStacks];
-  v8 = [(DTKPTrigger *)self collectUserStacks];
-  if (v7)
+  collectKernelStacks = [(DTKPTrigger *)self collectKernelStacks];
+  collectUserStacks = [(DTKPTrigger *)self collectUserStacks];
+  if (collectKernelStacks)
   {
     v9 = 5;
   }
@@ -174,7 +174,7 @@ LABEL_6:
     v9 = 1;
   }
 
-  if (v8)
+  if (collectUserStacks)
   {
     v10 = v9 | 8;
   }
@@ -197,7 +197,7 @@ LABEL_6:
     if (v13)
     {
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error setting the Time trigger samplers (0x%x)", -[DTKPTrigger samplers](self, "samplers")];
-      v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", a3, v13, v14);
+      v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", start, v13, v14);
     }
 
     else
@@ -210,9 +210,9 @@ LABEL_6:
 
       else
       {
-        v22 = [(DTKPTriggerTime *)self _timerIDAlloc];
-        self->_timerID = v22;
-        if (v22 == -1)
+        _timerIDAlloc = [(DTKPTriggerTime *)self _timerIDAlloc];
+        self->_timerID = _timerIDAlloc;
+        if (_timerIDAlloc == -1)
         {
           v18 = @"Error allocating a Time trigger ID";
           v17 = 0xFFFFFFFFLL;
@@ -220,7 +220,7 @@ LABEL_6:
 
         else
         {
-          v17 = [(DTKPTriggerTime *)self _configureTimer:v22 actionID:[(DTKPTrigger *)self actionID] period:[(DTKPTriggerTime *)self sampleRate] userData:[(DTKPTrigger *)self triggerID]];
+          v17 = [(DTKPTriggerTime *)self _configureTimer:_timerIDAlloc actionID:[(DTKPTrigger *)self actionID] period:[(DTKPTriggerTime *)self sampleRate] userData:[(DTKPTrigger *)self triggerID]];
           if (!v17)
           {
             if ([(DTKPTriggerTime *)self profileEveryThread])
@@ -229,7 +229,7 @@ LABEL_6:
               if (sysctlbyname("kperf.lightweight_pet", 0, 0, buf, 4uLL))
               {
                 v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error enabling LPET mode: %d", *__error()];
-                v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", a3, 4294967290, v23);
+                v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", start, 4294967290, v23);
 
                 goto LABEL_19;
               }
@@ -238,7 +238,7 @@ LABEL_6:
               if (kperf_timer_pet_set())
               {
                 v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error enabling the PET mode timer: %d", *__error()];
-                v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", a3, 4294967290, v25);
+                v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", start, 4294967290, v25);
 
                 goto LABEL_19;
               }
@@ -252,28 +252,28 @@ LABEL_6:
         }
       }
 
-      v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", a3, v17, v18);
+      v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", start, v17, v18);
     }
   }
 
   else
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error allocating a Time trigger action"];
-    v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", a3, 0xFFFFFFFFLL, v16);
+    v15 = DTKPSetErrorAndOrLogWithFileAndLine(1, "DTKPTriggerTime", start, 0xFFFFFFFFLL, v16);
   }
 
 LABEL_19:
-  v19 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_signal(v19);
+  lock2 = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_signal(lock2);
 
   v20 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (int)stop:(id *)a3
+- (int)stop:(id *)stop
 {
-  v4 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  lock = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_wait(lock, 0xFFFFFFFFFFFFFFFFLL);
 
   if ([(DTKPTrigger *)self actionID])
   {
@@ -287,8 +287,8 @@ LABEL_19:
     self->_timerID = -1;
   }
 
-  v5 = [(DTKPTrigger *)self lock];
-  dispatch_semaphore_signal(v5);
+  lock2 = [(DTKPTrigger *)self lock];
+  dispatch_semaphore_signal(lock2);
 
   return 0;
 }

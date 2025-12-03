@@ -1,15 +1,15 @@
 @interface _INPBCallInvite
-- (BOOL)isEqual:(id)a3;
-- (_INPBCallInvite)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCallInvite)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsInviteType:(id)a3;
+- (int)StringAsInviteType:(id)type;
 - (unint64_t)hash;
-- (void)addParticipants:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInviteType:(int)a3;
-- (void)setParticipants:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipants:(id)participants;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInviteType:(int)type;
+- (void)setParticipants:(id)participants;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCallInvite
@@ -17,30 +17,30 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBCallInvite *)self callURL];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"callURL"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  callURL = [(_INPBCallInvite *)self callURL];
+  dictionaryRepresentation = [callURL dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"callURL"];
 
   if ([(_INPBCallInvite *)self hasInviteType])
   {
-    v6 = [(_INPBCallInvite *)self inviteType];
-    if ((v6 - 1) >= 3)
+    inviteType = [(_INPBCallInvite *)self inviteType];
+    if ((inviteType - 1) >= 3)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", inviteType];
     }
 
     else
     {
-      v7 = off_1E72889B0[(v6 - 1)];
+      v7 = off_1E72889B0[(inviteType - 1)];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"inviteType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"inviteType"];
   }
 
   if ([(NSArray *)self->_participants count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -60,8 +60,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -70,12 +70,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"participants"];
+    [dictionary setObject:array forKeyedSubscript:@"participants"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -94,28 +94,28 @@
   return v4 ^ v3 ^ [(NSArray *)self->_participants hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBCallInvite *)self callURL];
-  v6 = [v4 callURL];
-  if ((v5 != 0) == (v6 == 0))
+  callURL = [(_INPBCallInvite *)self callURL];
+  callURL2 = [equalCopy callURL];
+  if ((callURL != 0) == (callURL2 == 0))
   {
     goto LABEL_15;
   }
 
-  v7 = [(_INPBCallInvite *)self callURL];
-  if (v7)
+  callURL3 = [(_INPBCallInvite *)self callURL];
+  if (callURL3)
   {
-    v8 = v7;
-    v9 = [(_INPBCallInvite *)self callURL];
-    v10 = [v4 callURL];
-    v11 = [v9 isEqual:v10];
+    v8 = callURL3;
+    callURL4 = [(_INPBCallInvite *)self callURL];
+    callURL5 = [equalCopy callURL];
+    v11 = [callURL4 isEqual:callURL5];
 
     if (!v11)
     {
@@ -127,30 +127,30 @@
   {
   }
 
-  v12 = [(_INPBCallInvite *)self hasInviteType];
-  if (v12 != [v4 hasInviteType])
+  hasInviteType = [(_INPBCallInvite *)self hasInviteType];
+  if (hasInviteType != [equalCopy hasInviteType])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBCallInvite *)self hasInviteType])
   {
-    if ([v4 hasInviteType])
+    if ([equalCopy hasInviteType])
     {
       inviteType = self->_inviteType;
-      if (inviteType != [v4 inviteType])
+      if (inviteType != [equalCopy inviteType])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v5 = [(_INPBCallInvite *)self participants];
-  v6 = [v4 participants];
-  if ((v5 != 0) != (v6 == 0))
+  callURL = [(_INPBCallInvite *)self participants];
+  callURL2 = [equalCopy participants];
+  if ((callURL != 0) != (callURL2 == 0))
   {
-    v14 = [(_INPBCallInvite *)self participants];
-    if (!v14)
+    participants = [(_INPBCallInvite *)self participants];
+    if (!participants)
     {
 
 LABEL_19:
@@ -158,10 +158,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBCallInvite *)self participants];
-    v17 = [v4 participants];
-    v18 = [v16 isEqual:v17];
+    v15 = participants;
+    participants2 = [(_INPBCallInvite *)self participants];
+    participants3 = [equalCopy participants];
+    v18 = [participants2 isEqual:participants3];
 
     if (v18)
     {
@@ -181,10 +181,10 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCallInvite allocWithZone:](_INPBCallInvite init];
-  v6 = [(_INPBURLValue *)self->_callURL copyWithZone:a3];
+  v6 = [(_INPBURLValue *)self->_callURL copyWithZone:zone];
   [(_INPBCallInvite *)v5 setCallURL:v6];
 
   if ([(_INPBCallInvite *)self hasInviteType])
@@ -192,45 +192,45 @@ LABEL_17:
     [(_INPBCallInvite *)v5 setInviteType:[(_INPBCallInvite *)self inviteType]];
   }
 
-  v7 = [(NSArray *)self->_participants copyWithZone:a3];
+  v7 = [(NSArray *)self->_participants copyWithZone:zone];
   [(_INPBCallInvite *)v5 setParticipants:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCallInvite *)self data];
+  coderCopy = coder;
+  data = [(_INPBCallInvite *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCallInvite)initWithCoder:(id)a3
+- (_INPBCallInvite)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCallInvite *)self initWithData:v6];
+    self = [(_INPBCallInvite *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBCallInvite *)self callURL];
+  toCopy = to;
+  callURL = [(_INPBCallInvite *)self callURL];
 
-  if (v5)
+  if (callURL)
   {
-    v6 = [(_INPBCallInvite *)self callURL];
+    callURL2 = [(_INPBCallInvite *)self callURL];
     PBDataWriterWriteSubmessage();
   }
 
@@ -275,47 +275,47 @@ LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   participants = self->_participants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!participants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_participants;
-    self->_participants = v6;
+    self->_participants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     participants = self->_participants;
   }
 
-  [(NSArray *)participants addObject:v4];
+  [(NSArray *)participants addObject:participantsCopy];
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
-  v4 = [a3 mutableCopy];
+  v4 = [participants mutableCopy];
   participants = self->_participants;
   self->_participants = v4;
 
   MEMORY[0x1EEE66BB8](v4, participants);
 }
 
-- (int)StringAsInviteType:(id)a3
+- (int)StringAsInviteType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ADD"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ADD"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RING"])
+  else if ([typeCopy isEqualToString:@"RING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LINK"])
+  else if ([typeCopy isEqualToString:@"LINK"])
   {
     v4 = 3;
   }
@@ -328,10 +328,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setInviteType:(int)a3
+- (void)setInviteType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -339,7 +339,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_inviteType = a3;
+    self->_inviteType = type;
   }
 }
 

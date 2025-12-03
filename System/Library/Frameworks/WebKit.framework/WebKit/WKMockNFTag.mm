@@ -1,25 +1,25 @@
 @interface WKMockNFTag
-- (WKMockNFTag)initWithNFTag:(id)a3;
-- (WKMockNFTag)initWithType:(unsigned int)a3;
-- (WKMockNFTag)initWithType:(unsigned int)a3 tagID:(id)a4;
+- (WKMockNFTag)initWithNFTag:(id)tag;
+- (WKMockNFTag)initWithType:(unsigned int)type;
+- (WKMockNFTag)initWithType:(unsigned int)type tagID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation WKMockNFTag
 
-- (WKMockNFTag)initWithNFTag:(id)a3
+- (WKMockNFTag)initWithNFTag:(id)tag
 {
   v10.receiver = self;
   v10.super_class = WKMockNFTag;
   v4 = [(WKMockNFTag *)&v10 init];
   if (v4)
   {
-    v4->_type = [a3 type];
-    v5 = [a3 tagID];
-    v6 = v5;
-    if (v5)
+    v4->_type = [tag type];
+    tagID = [tag tagID];
+    v6 = tagID;
+    if (tagID)
     {
-      v7 = v5;
+      v7 = tagID;
     }
 
     m_ptr = v4->_tagID.m_ptr;
@@ -42,9 +42,9 @@
   [(WKMockNFTag *)&v3 dealloc];
 }
 
-- (WKMockNFTag)initWithType:(unsigned int)a3
+- (WKMockNFTag)initWithType:(unsigned int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v6 = [(WKMockNFTag *)self initWithType:v3 tagID:v5];
   if (v5)
   {
@@ -53,7 +53,7 @@
   return v6;
 }
 
-- (WKMockNFTag)initWithType:(unsigned int)a3 tagID:(id)a4
+- (WKMockNFTag)initWithType:(unsigned int)type tagID:(id)d
 {
   v11.receiver = self;
   v11.super_class = WKMockNFTag;
@@ -61,14 +61,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    if (a4)
+    v6->_type = type;
+    if (d)
     {
-      v8 = a4;
+      dCopy = d;
     }
 
     m_ptr = v7->_tagID.m_ptr;
-    v7->_tagID.m_ptr = a4;
+    v7->_tagID.m_ptr = d;
     if (m_ptr)
     {
     }

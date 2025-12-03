@@ -1,18 +1,18 @@
 @interface WFURLDetector
-+ (BOOL)stringMatchesExactly:(id)a3;
-+ (id)URLsInString:(id)a3 error:(id *)a4;
++ (BOOL)stringMatchesExactly:(id)exactly;
++ (id)URLsInString:(id)string error:(id *)error;
 @end
 
 @implementation WFURLDetector
 
-+ (BOOL)stringMatchesExactly:(id)a3
++ (BOOL)stringMatchesExactly:(id)exactly
 {
-  v3 = a3;
-  if (v3)
+  exactlyCopy = exactly;
+  if (exactlyCopy)
   {
     v4 = [MEMORY[0x277CCA948] dataDetectorWithTypes:32 error:0];
-    v5 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
-    v7 = ![v5 range] && v6 == objc_msgSend(v3, "length");
+    v5 = [v4 firstMatchInString:exactlyCopy options:0 range:{0, objc_msgSend(exactlyCopy, "length")}];
+    v7 = ![v5 range] && v6 == objc_msgSend(exactlyCopy, "length");
   }
 
   else
@@ -23,12 +23,12 @@
   return v7;
 }
 
-+ (id)URLsInString:(id)a3 error:(id *)a4
++ (id)URLsInString:(id)string error:(id *)error
 {
-  v4 = [WFDataDetector resultsForString:a3 ofTypes:32 error:a4];
-  v5 = [v4 URLs];
+  v4 = [WFDataDetector resultsForString:string ofTypes:32 error:error];
+  uRLs = [v4 URLs];
 
-  return v5;
+  return uRLs;
 }
 
 @end

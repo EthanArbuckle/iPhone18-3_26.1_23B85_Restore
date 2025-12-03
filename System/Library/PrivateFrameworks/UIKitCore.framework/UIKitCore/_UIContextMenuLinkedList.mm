@@ -2,71 +2,71 @@
 - (_UIContextMenuNode)current;
 - (_UIContextMenuNode)first;
 - (id)description;
-- (id)nodeForMenu:(id)a3;
+- (id)nodeForMenu:(id)menu;
 - (id)popNode;
-- (id)removeNode:(id)a3;
-- (void)_enumerateNodes:(id)a3 inReverse:(BOOL)a4;
-- (void)addNode:(id)a3;
+- (id)removeNode:(id)node;
+- (void)_enumerateNodes:(id)nodes inReverse:(BOOL)reverse;
+- (void)addNode:(id)node;
 @end
 
 @implementation _UIContextMenuLinkedList
 
 - (_UIContextMenuNode)first
 {
-  v2 = [(_UIContextMenuLinkedList *)self nodes];
-  v3 = [v2 firstObject];
+  nodes = [(_UIContextMenuLinkedList *)self nodes];
+  firstObject = [nodes firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (_UIContextMenuNode)current
 {
-  v2 = [(_UIContextMenuLinkedList *)self nodes];
-  v3 = [v2 lastObject];
+  nodes = [(_UIContextMenuLinkedList *)self nodes];
+  lastObject = [nodes lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
-  v9 = a3;
-  v4 = [(_UIContextMenuLinkedList *)self current];
-  [v4 setNext:v9];
+  nodeCopy = node;
+  current = [(_UIContextMenuLinkedList *)self current];
+  [current setNext:nodeCopy];
 
-  v5 = [(_UIContextMenuLinkedList *)self current];
-  [v9 setPrevious:v5];
+  current2 = [(_UIContextMenuLinkedList *)self current];
+  [nodeCopy setPrevious:current2];
 
   if (!self->_nodes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     nodes = self->_nodes;
-    self->_nodes = v6;
+    self->_nodes = array;
   }
 
-  v8 = [(_UIContextMenuLinkedList *)self nodes];
-  [v8 addObject:v9];
+  nodes = [(_UIContextMenuLinkedList *)self nodes];
+  [nodes addObject:nodeCopy];
 }
 
 - (id)popNode
 {
-  v3 = [(_UIContextMenuLinkedList *)self current];
-  if (v3)
+  current = [(_UIContextMenuLinkedList *)self current];
+  if (current)
   {
-    v4 = [(_UIContextMenuLinkedList *)self nodes];
-    v5 = [(_UIContextMenuLinkedList *)self current];
-    [v4 removeObject:v5];
+    nodes = [(_UIContextMenuLinkedList *)self nodes];
+    current2 = [(_UIContextMenuLinkedList *)self current];
+    [nodes removeObject:current2];
 
-    v6 = [(_UIContextMenuLinkedList *)self current];
-    [v6 setNext:0];
+    current3 = [(_UIContextMenuLinkedList *)self current];
+    [current3 setNext:0];
   }
 
-  return v3;
+  return current;
 }
 
-- (id)removeNode:(id)a3
+- (id)removeNode:(id)node
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  nodeCopy = node;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -77,19 +77,19 @@
   v12[1] = 3221225472;
   v12[2] = __39___UIContextMenuLinkedList_removeNode___block_invoke;
   v12[3] = &unk_1E70F80B8;
-  v6 = v5;
+  v6 = array;
   v13 = v6;
-  v7 = v4;
+  v7 = nodeCopy;
   v14 = v7;
   v15 = &v16;
   [(_UIContextMenuLinkedList *)self reverseEnumerateNodes:v12];
   if (v17[5])
   {
-    v8 = [(_UIContextMenuLinkedList *)self nodes];
-    [v8 removeObjectsInArray:v6];
+    nodes = [(_UIContextMenuLinkedList *)self nodes];
+    [nodes removeObjectsInArray:v6];
 
-    v9 = [(_UIContextMenuLinkedList *)self current];
-    [v9 setNext:0];
+    current = [(_UIContextMenuLinkedList *)self current];
+    [current setNext:0];
 
     v10 = v6;
   }
@@ -104,9 +104,9 @@
   return v10;
 }
 
-- (id)nodeForMenu:(id)a3
+- (id)nodeForMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -117,7 +117,7 @@
   v8[1] = 3221225472;
   v8[2] = __40___UIContextMenuLinkedList_nodeForMenu___block_invoke;
   v8[3] = &unk_1E70F4078;
-  v5 = v4;
+  v5 = menuCopy;
   v9 = v5;
   v10 = &v11;
   [(_UIContextMenuLinkedList *)self reverseEnumerateNodes:v8];
@@ -128,10 +128,10 @@
   return v6;
 }
 
-- (void)_enumerateNodes:(id)a3 inReverse:(BOOL)a4
+- (void)_enumerateNodes:(id)nodes inReverse:(BOOL)reverse
 {
-  v6 = a3;
-  if (a4)
+  nodesCopy = nodes;
+  if (reverse)
   {
     [(_UIContextMenuLinkedList *)self current];
   }
@@ -146,8 +146,8 @@
   {
     do
     {
-      v6[2](v6, v7, &v9);
-      if (a4)
+      nodesCopy[2](nodesCopy, v7, &v9);
+      if (reverse)
       {
         [v7 previous];
       }
@@ -181,18 +181,18 @@
   if (self)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = self;
+    selfCopy = self;
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 stringWithFormat:@"<%@: %p>", v7, v5];
+    selfCopy = [v4 stringWithFormat:@"<%@: %p>", v7, selfCopy];
   }
 
   else
   {
-    v8 = @"(nil)";
+    selfCopy = @"(nil)";
   }
 
-  v17 = [v3 stringWithString:v8];
+  v17 = [v3 stringWithString:selfCopy];
 
   [v13[5] appendString:@" [ "];
   v11[0] = MEMORY[0x1E69E9820];

@@ -7,13 +7,13 @@
 
 - (void)continueButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100718540();
 }
 
 - (void)notNowButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007185F4();
 }
 

@@ -1,18 +1,18 @@
 @interface CBWiFiTableViewCell
-- (CBWiFiTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CBWiFiTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)hideRSSIStrength:(BOOL)a3;
+- (void)hideRSSIStrength:(BOOL)strength;
 - (void)layoutSubviews;
-- (void)showPasswordLock:(BOOL)a3;
+- (void)showPasswordLock:(BOOL)lock;
 @end
 
 @implementation CBWiFiTableViewCell
 
-- (CBWiFiTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CBWiFiTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v27.receiver = self;
   v27.super_class = CBWiFiTableViewCell;
-  v4 = [(CBWiFiTableViewCell *)&v27 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(CBWiFiTableViewCell *)&v27 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -70,51 +70,51 @@
   if ([(CBWiFiTableViewCell *)self networkStateChanged])
   {
     [(CBWiFiTableViewCell *)self setNetworkStateChanged:0];
-    v3 = [(CBWiFiTableViewCell *)self rssiBarsView];
-    v4 = [v3 isHidden];
+    rssiBarsView = [(CBWiFiTableViewCell *)self rssiBarsView];
+    isHidden = [rssiBarsView isHidden];
 
-    if ((v4 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
       [(CBWiFiTableViewCell *)self networkScaledRSSIStrength];
       v5 = WFSignalBarsFromScaledRSSI();
-      v6 = [(CBWiFiTableViewCell *)self rssiBarImages];
-      v7 = [v6 objectAtIndexedSubscript:v5];
-      v8 = [(CBWiFiTableViewCell *)self rssiBarsView];
-      [v8 setImage:v7];
+      rssiBarImages = [(CBWiFiTableViewCell *)self rssiBarImages];
+      v7 = [rssiBarImages objectAtIndexedSubscript:v5];
+      rssiBarsView2 = [(CBWiFiTableViewCell *)self rssiBarsView];
+      [rssiBarsView2 setImage:v7];
 
-      v9 = [(CBWiFiTableViewCell *)self rssiBarsView];
-      [v9 sizeToFit];
+      rssiBarsView3 = [(CBWiFiTableViewCell *)self rssiBarsView];
+      [rssiBarsView3 sizeToFit];
     }
 
-    v10 = [(CBWiFiTableViewCell *)self rssiBarsView];
-    [v10 removeFromSuperview];
+    rssiBarsView4 = [(CBWiFiTableViewCell *)self rssiBarsView];
+    [rssiBarsView4 removeFromSuperview];
 
     if ([(CBWiFiTableViewCell *)self showLockIcon])
     {
-      v11 = [(CBWiFiTableViewCell *)self hiddenLockView];
-      [v11 removeFromSuperview];
+      hiddenLockView = [(CBWiFiTableViewCell *)self hiddenLockView];
+      [hiddenLockView removeFromSuperview];
 
-      v12 = [(CBWiFiTableViewCell *)self accessoryIcons];
-      v13 = [(CBWiFiTableViewCell *)self lockView];
-      [v12 addArrangedSubview:v13];
+      accessoryIcons = [(CBWiFiTableViewCell *)self accessoryIcons];
+      lockView = [(CBWiFiTableViewCell *)self lockView];
+      [accessoryIcons addArrangedSubview:lockView];
 
-      v14 = [(CBWiFiTableViewCell *)self lockView];
-      [v14 sizeToFit];
+      lockView2 = [(CBWiFiTableViewCell *)self lockView];
+      [lockView2 sizeToFit];
     }
 
     else
     {
-      v15 = [(CBWiFiTableViewCell *)self lockView];
-      [v15 removeFromSuperview];
+      lockView3 = [(CBWiFiTableViewCell *)self lockView];
+      [lockView3 removeFromSuperview];
 
-      v14 = [(CBWiFiTableViewCell *)self accessoryIcons];
-      v16 = [(CBWiFiTableViewCell *)self hiddenLockView];
-      [v14 addArrangedSubview:v16];
+      lockView2 = [(CBWiFiTableViewCell *)self accessoryIcons];
+      hiddenLockView2 = [(CBWiFiTableViewCell *)self hiddenLockView];
+      [lockView2 addArrangedSubview:hiddenLockView2];
     }
 
-    v17 = [(CBWiFiTableViewCell *)self accessoryIcons];
-    v18 = [(CBWiFiTableViewCell *)self rssiBarsView];
-    [v17 addArrangedSubview:v18];
+    accessoryIcons2 = [(CBWiFiTableViewCell *)self accessoryIcons];
+    rssiBarsView5 = [(CBWiFiTableViewCell *)self rssiBarsView];
+    [accessoryIcons2 addArrangedSubview:rssiBarsView5];
   }
 }
 
@@ -134,27 +134,27 @@
   [(CBWiFiTableViewCell *)&v4 dealloc];
 }
 
-- (void)showPasswordLock:(BOOL)a3
+- (void)showPasswordLock:(BOOL)lock
 {
-  v3 = a3;
-  if ([(CBWiFiTableViewCell *)self showLockIcon]!= a3)
+  lockCopy = lock;
+  if ([(CBWiFiTableViewCell *)self showLockIcon]!= lock)
   {
-    [(CBWiFiTableViewCell *)self setShowLockIcon:v3];
+    [(CBWiFiTableViewCell *)self setShowLockIcon:lockCopy];
 
     [(CBWiFiTableViewCell *)self setNetworkStateChanged:1];
   }
 }
 
-- (void)hideRSSIStrength:(BOOL)a3
+- (void)hideRSSIStrength:(BOOL)strength
 {
-  v3 = a3;
-  v5 = [(CBWiFiTableViewCell *)self rssiBarsView];
-  v6 = [v5 isHidden];
+  strengthCopy = strength;
+  rssiBarsView = [(CBWiFiTableViewCell *)self rssiBarsView];
+  isHidden = [rssiBarsView isHidden];
 
-  if (v6 != v3)
+  if (isHidden != strengthCopy)
   {
-    v7 = [(CBWiFiTableViewCell *)self rssiBarsView];
-    [v7 setHidden:v3];
+    rssiBarsView2 = [(CBWiFiTableViewCell *)self rssiBarsView];
+    [rssiBarsView2 setHidden:strengthCopy];
 
     [(CBWiFiTableViewCell *)self setNetworkStateChanged:1];
   }

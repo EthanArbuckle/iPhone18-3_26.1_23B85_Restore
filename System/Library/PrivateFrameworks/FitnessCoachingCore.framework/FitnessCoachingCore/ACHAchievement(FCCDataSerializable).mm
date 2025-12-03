@@ -11,16 +11,16 @@
   v5 = a3;
   v6 = [[v4 alloc] initWithData:v5];
 
-  v7 = [a1 initWithCodable:v6];
+  v7 = [self initWithCodable:v6];
   return v7;
 }
 
 - (id)transportData
 {
   v0 = ACHCodableFromAchievement();
-  v1 = [v0 data];
+  data = [v0 data];
 
-  return v1;
+  return data;
 }
 
 @end

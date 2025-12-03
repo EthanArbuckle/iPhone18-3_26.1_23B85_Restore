@@ -1,18 +1,18 @@
 @interface SBHCalendarApplicationIcon
-- (SBHCalendarApplicationIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4;
-- (id)makeIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
-- (id)makeIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
+- (SBHCalendarApplicationIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d;
+- (id)makeIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
+- (id)makeIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
 - (void)dealloc;
 - (void)localeChanged;
 @end
 
 @implementation SBHCalendarApplicationIcon
 
-- (SBHCalendarApplicationIcon)initWithLeafIdentifier:(id)a3 applicationBundleID:(id)a4
+- (SBHCalendarApplicationIcon)initWithLeafIdentifier:(id)identifier applicationBundleID:(id)d
 {
   v9.receiver = self;
   v9.super_class = SBHCalendarApplicationIcon;
-  v4 = [(SBLeafIcon *)&v9 initWithLeafIdentifier:a3 applicationBundleID:a4];
+  v4 = [(SBLeafIcon *)&v9 initWithLeafIdentifier:identifier applicationBundleID:d];
   if (v4)
   {
     v5 = objc_alloc_init(SBCalendarIconImageProvider);
@@ -20,8 +20,8 @@
     v4->_imageProvider = v5;
 
     [(SBCalendarIconImageProvider *)v4->_imageProvider setDelegate:v4];
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v4 selector:sel__boldTextStatusDidChange_ name:*MEMORY[0x1E69DD898] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__boldTextStatusDidChange_ name:*MEMORY[0x1E69DD898] object:0];
   }
 
   return v4;
@@ -29,8 +29,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBHCalendarApplicationIcon;
@@ -45,28 +45,28 @@
   [(SBIcon *)&v3 localeChanged];
 }
 
-- (id)makeIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
   v11 = v9;
   v12 = v8;
   v13 = v7;
   v14 = v6;
-  v16 = a3;
-  v17 = [(SBHCalendarApplicationIcon *)self imageProvider];
-  v18 = [v17 iconImageWithInfo:v16 traitCollection:a5 options:{v14, v13, v12, v11}];
+  infoCopy = info;
+  imageProvider = [(SBHCalendarApplicationIcon *)self imageProvider];
+  v18 = [imageProvider iconImageWithInfo:infoCopy traitCollection:context options:{v14, v13, v12, v11}];
 
   return v18;
 }
 
-- (id)makeIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
   v11 = v9;
   v12 = v8;
   v13 = v7;
   v14 = v6;
-  v16 = a3;
-  v17 = [(SBHCalendarApplicationIcon *)self imageProvider];
-  v18 = [v17 iconLayerWithInfo:v16 traitCollection:a5 options:{v14, v13, v12, v11}];
+  infoCopy = info;
+  imageProvider = [(SBHCalendarApplicationIcon *)self imageProvider];
+  v18 = [imageProvider iconLayerWithInfo:infoCopy traitCollection:context options:{v14, v13, v12, v11}];
 
   return v18;
 }

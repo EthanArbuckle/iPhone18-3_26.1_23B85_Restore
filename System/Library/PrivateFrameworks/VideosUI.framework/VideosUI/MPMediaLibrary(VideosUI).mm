@@ -6,8 +6,8 @@
 
 - (BOOL)vui_isDeviceMediaLibrary
 {
-  v2 = [MEMORY[0x1E69705E8] deviceMediaLibrary];
-  v3 = v2 == a1;
+  deviceMediaLibrary = [MEMORY[0x1E69705E8] deviceMediaLibrary];
+  v3 = deviceMediaLibrary == self;
 
   return v3;
 }

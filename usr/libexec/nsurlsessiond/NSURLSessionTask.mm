@@ -1,13 +1,13 @@
 @interface NSURLSessionTask
-- (void)_nsurlsessionproxy_cancelWithError:(id)a3;
+- (void)_nsurlsessionproxy_cancelWithError:(id)error;
 @end
 
 @implementation NSURLSessionTask
 
-- (void)_nsurlsessionproxy_cancelWithError:(id)a3
+- (void)_nsurlsessionproxy_cancelWithError:(id)error
 {
-  v4 = a3;
-  objc_setAssociatedObject(self, "com.apple.nsurlsessionproxy.cancelError", v4, 0x301);
+  errorCopy = error;
+  objc_setAssociatedObject(self, "com.apple.nsurlsessionproxy.cancelError", errorCopy, 0x301);
   [(NSURLSessionTask *)self cancel];
 }
 

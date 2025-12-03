@@ -1,37 +1,37 @@
 @interface CSCoreSpeechServicesAccessoryInfo
 - (CSCoreSpeechServicesAccessoryInfo)init;
-- (CSCoreSpeechServicesAccessoryInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CSCoreSpeechServicesAccessoryInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSCoreSpeechServicesAccessoryInfo
 
-- (CSCoreSpeechServicesAccessoryInfo)initWithCoder:(id)a3
+- (CSCoreSpeechServicesAccessoryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CSCoreSpeechServicesAccessoryInfo;
   v5 = [(CSCoreSpeechServicesAccessoryInfo *)&v7 init];
   if (v5)
   {
-    v5->_supportsJustSiri = [v4 decodeBoolForKey:@"sJS"];
-    v5->_supportsAlwaysOnAccelerometer = [v4 decodeBoolForKey:@"sAlwaysOnAccelerometer"];
+    v5->_supportsJustSiri = [coderCopy decodeBoolForKey:@"sJS"];
+    v5->_supportsAlwaysOnAccelerometer = [coderCopy decodeBoolForKey:@"sAlwaysOnAccelerometer"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   supportsJustSiri = self->_supportsJustSiri;
-  v5 = a3;
-  [v5 encodeBool:supportsJustSiri forKey:@"sJS"];
-  [v5 encodeBool:self->_supportsAlwaysOnAccelerometer forKey:@"sAlwaysOnAccelerometer"];
+  coderCopy = coder;
+  [coderCopy encodeBool:supportsJustSiri forKey:@"sJS"];
+  [coderCopy encodeBool:self->_supportsAlwaysOnAccelerometer forKey:@"sAlwaysOnAccelerometer"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CSCoreSpeechServicesAccessoryInfo);
   [(CSCoreSpeechServicesAccessoryInfo *)v4 setSupportsJustSiri:self->_supportsJustSiri];

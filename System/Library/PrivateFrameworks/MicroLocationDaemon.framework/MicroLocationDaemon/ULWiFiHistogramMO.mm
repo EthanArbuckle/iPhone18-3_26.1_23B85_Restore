@@ -1,17 +1,17 @@
 @interface ULWiFiHistogramMO
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5;
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context;
 - (optional<ULWiFiHistogramDO>)convertToDO;
 @end
 
 @implementation ULWiFiHistogramMO
 
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a4;
-  v8 = [[ULWiFiHistogramMO alloc] initWithContext:a5];
-  [(ULWiFiHistogramMO *)v8 setLoi:v7];
-  [(ULWiFiHistogramMO *)v8 setTimestamp:*a3];
-  CLMicroLocationProto::WifiHistogram::ByteSize((a3 + 24));
+  mOCopy = mO;
+  v8 = [[ULWiFiHistogramMO alloc] initWithContext:context];
+  [(ULWiFiHistogramMO *)v8 setLoi:mOCopy];
+  [(ULWiFiHistogramMO *)v8 setTimestamp:*o];
+  CLMicroLocationProto::WifiHistogram::ByteSize((o + 24));
   operator new[]();
 }
 
@@ -21,11 +21,11 @@
   [(ULWiFiHistogramMO *)self timestamp];
   v17 = v4;
   v5 = [(ULWiFiHistogramMO *)self loi];
-  v6 = [v5 loiId];
-  v7 = v6;
-  if (v6)
+  loiId = [v5 loiId];
+  v7 = loiId;
+  if (loiId)
   {
-    [v6 boostUUID];
+    [loiId boostUUID];
   }
 
   else
@@ -56,14 +56,14 @@
   }
 
   CLMicroLocationProto::WifiHistogram::WifiHistogram(v16);
-  v9 = [(ULWiFiHistogramMO *)self histogram];
-  v10 = v9;
-  v11 = [v9 bytes];
-  v12 = [(ULWiFiHistogramMO *)self histogram];
-  [v12 length];
-  LOBYTE(v11) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v16, v11);
+  histogram = [(ULWiFiHistogramMO *)self histogram];
+  v10 = histogram;
+  bytes = [histogram bytes];
+  histogram2 = [(ULWiFiHistogramMO *)self histogram];
+  [histogram2 length];
+  LOBYTE(bytes) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v16, bytes);
 
-  if (v11)
+  if (bytes)
   {
     if ((v21 & 1) == 0)
     {

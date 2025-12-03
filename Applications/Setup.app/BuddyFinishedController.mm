@@ -9,21 +9,21 @@
 - (id)contentView;
 - (unint64_t)allowedTerminationSources;
 - (void)_cleanUpAppLifecycleNotifications;
-- (void)_determineStyleWithCompletion:(id)a3;
+- (void)_determineStyleWithCompletion:(id)completion;
 - (void)_invalidateWelcomeAnimationAutoStopTimer;
 - (void)_observeAppLifecycleNotifications;
 - (void)_prepareContentView;
-- (void)_shouldShowIntelligenceAnimationWithCompletion:(id)a3;
+- (void)_shouldShowIntelligenceAnimationWithCompletion:(id)completion;
 - (void)_startWelcomeAnimationAutoPauseTimer;
 - (void)dealloc;
-- (void)didEnterBackground:(id)a3;
+- (void)didEnterBackground:(id)background;
 - (void)loadView;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)setNavigationController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)setNavigationController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willEnterForeground:(id)a3;
+- (void)willEnterForeground:(id)foreground;
 @end
 
 @implementation BuddyFinishedController
@@ -42,35 +42,35 @@
 
 - (void)loadView
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = BuddyFinishedController;
   [(BuddyFinishedController *)&v3 loadView];
-  v2 = [(BuddyFinishedController *)v5 navigationItem];
-  [v2 setHidesBackButton:1];
+  navigationItem = [(BuddyFinishedController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  [(BuddyFinishedController *)v5 _prepareContentView];
+  [(BuddyFinishedController *)selfCopy _prepareContentView];
 }
 
 - (void)viewDidLoad
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   v24.receiver = self;
   v24.super_class = BuddyFinishedController;
   [(BuddyFinishedController *)&v24 viewDidLoad];
-  if ([(BuddyFinishedController *)v26 style]== 3)
+  if ([(BuddyFinishedController *)selfCopy style]== 3)
   {
-    [(BuddyFinishedController *)v26 setTitle:&stru_10032F900];
+    [(BuddyFinishedController *)selfCopy setTitle:&stru_10032F900];
   }
 
   else
   {
-    if ([(BuddyFinishedController *)v26 _shouldShowGetStartedButton])
+    if ([(BuddyFinishedController *)selfCopy _shouldShowGetStartedButton])
     {
-      objc_initWeak(&location, v26);
-      v2 = v26;
+      objc_initWeak(&location, selfCopy);
+      v2 = selfCopy;
       v3 = +[NSBundle mainBundle];
       v4 = [(NSBundle *)v3 localizedStringForKey:@"GET_STARTED" value:&stru_10032F900 table:@"Localizable"];
       v17 = _NSConcreteStackBlock;
@@ -87,166 +87,166 @@
 
     else
     {
-      v5 = v26;
+      v5 = selfCopy;
       v6 = +[NSBundle mainBundle];
       v7 = [(NSBundle *)v6 localizedStringForKey:@"GET_STARTED_IPHONE_X" value:&stru_10032F900 table:@"Localizable"];
       [(BuddyFinishedController *)v5 setInstructionalText:v7];
     }
 
-    if ([(BuddyFinishedController *)v26 drawHomeAffordance])
+    if ([(BuddyFinishedController *)selfCopy drawHomeAffordance])
     {
       v8 = [[MTLumaDodgePillView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-      [(BuddyFinishedController *)v26 setHomeAffordanceView:v8];
+      [(BuddyFinishedController *)selfCopy setHomeAffordanceView:v8];
 
-      v9 = [(BuddyFinishedController *)v26 homeAffordanceView];
-      [(MTLumaDodgePillView *)v9 setStyle:3];
+      homeAffordanceView = [(BuddyFinishedController *)selfCopy homeAffordanceView];
+      [(MTLumaDodgePillView *)homeAffordanceView setStyle:3];
 
-      v10 = [(BuddyFinishedController *)v26 view];
-      v11 = [(BuddyFinishedController *)v26 homeAffordanceView];
-      [v10 addSubview:v11];
+      view = [(BuddyFinishedController *)selfCopy view];
+      homeAffordanceView2 = [(BuddyFinishedController *)selfCopy homeAffordanceView];
+      [view addSubview:homeAffordanceView2];
     }
 
-    v12 = [(BuddyFinishedController *)v26 welcomeGradientViewProvider];
-    v13 = 0;
-    if (v12)
+    welcomeGradientViewProvider = [(BuddyFinishedController *)selfCopy welcomeGradientViewProvider];
+    _welcomeGradientShouldAdjustBuddyColor = 0;
+    if (welcomeGradientViewProvider)
     {
-      v14 = v12;
-      v13 = [(BuddyFinishedController *)v26 _welcomeGradientShouldAdjustBuddyColor];
-      v12 = v14;
+      v14 = welcomeGradientViewProvider;
+      _welcomeGradientShouldAdjustBuddyColor = [(BuddyFinishedController *)selfCopy _welcomeGradientShouldAdjustBuddyColor];
+      welcomeGradientViewProvider = v14;
     }
 
-    if (v13)
+    if (_welcomeGradientShouldAdjustBuddyColor)
     {
       v15 = [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1.0];
-      v16 = [(BuddyFinishedController *)v26 view];
-      [v16 setBackgroundColor:v15];
+      view2 = [(BuddyFinishedController *)selfCopy view];
+      [view2 setBackgroundColor:v15];
     }
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
   v29.receiver = self;
   v29.super_class = BuddyFinishedController;
   [(BuddyFinishedController *)&v29 viewDidLayoutSubviews];
-  if ([(BuddyFinishedController *)v31 style]!= 3)
+  if ([(BuddyFinishedController *)selfCopy style]!= 3)
   {
-    v2 = [(BuddyFinishedController *)v31 homeAffordanceView];
+    homeAffordanceView = [(BuddyFinishedController *)selfCopy homeAffordanceView];
 
-    if (v2)
+    if (homeAffordanceView)
     {
-      v3 = [(BuddyFinishedController *)v31 view];
-      [v3 bounds];
+      view = [(BuddyFinishedController *)selfCopy view];
+      [view bounds];
       v28.origin.y = v4;
       v28.origin.x = v5;
       v28.size.height = v6;
       v28.size.width = v7;
 
-      v8 = [(BuddyFinishedController *)v31 homeAffordanceView];
-      v9 = [(BuddyFinishedController *)v31 view];
-      [v9 bounds];
-      [(MTLumaDodgePillView *)v8 suggestedSizeForContentWidth:v10];
+      homeAffordanceView2 = [(BuddyFinishedController *)selfCopy homeAffordanceView];
+      view2 = [(BuddyFinishedController *)selfCopy view];
+      [view2 bounds];
+      [(MTLumaDodgePillView *)homeAffordanceView2 suggestedSizeForContentWidth:v10];
 
-      v11 = [(BuddyFinishedController *)v31 homeAffordanceView];
-      [(MTLumaDodgePillView *)v11 setFrame:*&v28.origin, *&v28.size];
+      homeAffordanceView3 = [(BuddyFinishedController *)selfCopy homeAffordanceView];
+      [(MTLumaDodgePillView *)homeAffordanceView3 setFrame:*&v28.origin, *&v28.size];
 
-      v12 = [(BuddyFinishedController *)v31 homeAffordanceView];
+      homeAffordanceView4 = [(BuddyFinishedController *)selfCopy homeAffordanceView];
       v13 = sub_10006A4C8();
-      [(MTLumaDodgePillView *)v12 setBounds:v13, v14, v15, v16];
+      [(MTLumaDodgePillView *)homeAffordanceView4 setBounds:v13, v14, v15, v16];
 
       CGRectGetMidX(v28);
       CGRectGetHeight(v28);
-      v17 = [(BuddyFinishedController *)v31 homeAffordanceView];
-      [(MTLumaDodgePillView *)v17 bounds];
-      v22 = [(BuddyFinishedController *)v31 homeAffordanceView:v18];
+      homeAffordanceView5 = [(BuddyFinishedController *)selfCopy homeAffordanceView];
+      [(MTLumaDodgePillView *)homeAffordanceView5 bounds];
+      v22 = [(BuddyFinishedController *)selfCopy homeAffordanceView:v18];
       [(MTLumaDodgePillView *)v22 suggestedEdgeSpacing];
       sub_10006A520();
       v26 = v23;
       v27 = v24;
 
-      v25 = [(BuddyFinishedController *)v31 homeAffordanceView];
-      [(MTLumaDodgePillView *)v25 setCenter:v26, v27];
+      homeAffordanceView6 = [(BuddyFinishedController *)selfCopy homeAffordanceView];
+      [(MTLumaDodgePillView *)homeAffordanceView6 setCenter:v26, v27];
     }
   }
 }
 
 - (id)contentView
 {
-  v2 = [(BuddyFinishedController *)self cursiveWelcomeView];
+  cursiveWelcomeView = [(BuddyFinishedController *)self cursiveWelcomeView];
 
-  if (v2)
+  if (cursiveWelcomeView)
   {
-    v9 = [(BuddyFinishedController *)self cursiveWelcomeView];
+    cursiveWelcomeView2 = [(BuddyFinishedController *)self cursiveWelcomeView];
   }
 
   else
   {
-    v3 = [(BuddyFinishedController *)self welcomeGradientViewProvider];
+    welcomeGradientViewProvider = [(BuddyFinishedController *)self welcomeGradientViewProvider];
 
-    if (v3)
+    if (welcomeGradientViewProvider)
     {
-      v4 = [(BuddyFinishedController *)self welcomeGradientViewProvider];
-      v5 = [(SASWelcomeToDeviceViewControllerProvider *)v4 viewController];
-      v9 = [v5 view];
+      welcomeGradientViewProvider2 = [(BuddyFinishedController *)self welcomeGradientViewProvider];
+      viewController = [(SASWelcomeToDeviceViewControllerProvider *)welcomeGradientViewProvider2 viewController];
+      cursiveWelcomeView2 = [viewController view];
     }
 
     else
     {
-      v6 = [(BuddyFinishedController *)self bookendAnimator];
+      bookendAnimator = [(BuddyFinishedController *)self bookendAnimator];
 
-      if (v6)
+      if (bookendAnimator)
       {
-        v9 = objc_opt_new();
+        cursiveWelcomeView2 = objc_opt_new();
       }
 
       else
       {
-        v9 = 0;
+        cursiveWelcomeView2 = 0;
       }
     }
   }
 
-  return v9;
+  return cursiveWelcomeView2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = BuddyFinishedController;
-  [(BuddyFinishedController *)&v10 viewDidAppear:a3];
-  if ([(BuddyFinishedController *)v13 style]!= 3)
+  [(BuddyFinishedController *)&v10 viewDidAppear:appear];
+  if ([(BuddyFinishedController *)selfCopy style]!= 3)
   {
-    v3 = [(BuddyFinishedController *)v13 cursiveWelcomeView];
-    [(BuddyFinishedCursiveChildWelcomeView *)v3 startAnimation];
+    cursiveWelcomeView = [(BuddyFinishedController *)selfCopy cursiveWelcomeView];
+    [(BuddyFinishedCursiveChildWelcomeView *)cursiveWelcomeView startAnimation];
 
-    v4 = [(BuddyFinishedController *)v13 welcomeGradientViewProvider];
-    [(SASWelcomeToDeviceViewControllerProvider *)v4 startAnimation];
+    welcomeGradientViewProvider = [(BuddyFinishedController *)selfCopy welcomeGradientViewProvider];
+    [(SASWelcomeToDeviceViewControllerProvider *)welcomeGradientViewProvider startAnimation];
 
     v5 = +[NSBundle mainBundle];
     v6 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"WELCOME_TO"];
     v7 = [(NSBundle *)v5 localizedStringForKey:v6 value:&stru_10032F900 table:@"Localizable"];
-    v8 = [(BuddyFinishedController *)v13 cursiveWelcomeView];
-    [(BuddyFinishedCursiveChildWelcomeView *)v8 setAccessibilityLabel:v7];
+    cursiveWelcomeView2 = [(BuddyFinishedController *)selfCopy cursiveWelcomeView];
+    [(BuddyFinishedCursiveChildWelcomeView *)cursiveWelcomeView2 setAccessibilityLabel:v7];
 
-    if ([(BuddyFinishedController *)v13 style]!= 3)
+    if ([(BuddyFinishedController *)selfCopy style]!= 3)
     {
-      v9 = [(BuddyFinishedController *)v13 findMyDisabledAlertPresenter];
-      [(BuddyFindMyDisabledAlertPresenter *)v9 presentFindMyDisabledAlertIfNeededOnViewController:v13];
+      findMyDisabledAlertPresenter = [(BuddyFinishedController *)selfCopy findMyDisabledAlertPresenter];
+      [(BuddyFindMyDisabledAlertPresenter *)findMyDisabledAlertPresenter presentFindMyDisabledAlertIfNeededOnViewController:selfCopy];
     }
   }
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = +[DMCMultiUserModeUtilities inSharediPadUserSession];
   v4 = 1;
   if (v3)
@@ -257,7 +257,7 @@
   v20 = v4 & 1;
   if (v4)
   {
-    [(BuddyFinishedController *)v22 setStyle:3];
+    [(BuddyFinishedController *)selfCopy setStyle:3];
     oslog = _BYLoggingFacility();
     v17 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -270,17 +270,17 @@
 
     objc_storeStrong(&oslog, 0);
     v7 = objc_alloc_init(sub_10006AA70());
-    [(BuddyFinishedController *)v22 setPosterboardService:v7];
+    [(BuddyFinishedController *)selfCopy setPosterboardService:v7];
 
-    v8 = [(BuddyFinishedController *)v22 posterboardService];
+    posterboardService = [(BuddyFinishedController *)selfCopy posterboardService];
     v9 = _NSConcreteStackBlock;
     v10 = -1073741824;
     v11 = 0;
     v12 = sub_10006AB84;
     v13 = &unk_10032AFF8;
-    v14 = v22;
+    v14 = selfCopy;
     v15 = location[0];
-    [(PRSService *)v8 fetchPosterConfigurationsForRole:0 completion:&v9];
+    [(PRSService *)posterboardService fetchPosterConfigurationsForRole:0 completion:&v9];
 
     objc_storeStrong(&v15, 0);
     objc_storeStrong(&v14, 0);
@@ -309,46 +309,46 @@
   }
 }
 
-- (void)setNavigationController:(id)a3
+- (void)setNavigationController:(id)controller
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyFinishedController *)v4 set_navigationController:location[0]];
+  objc_storeStrong(location, controller);
+  [(BuddyFinishedController *)selfCopy set_navigationController:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_determineStyleWithCompletion:(id)a3
+- (void)_determineStyleWithCompletion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyFinishedController *)v14 featureFlags];
-  v4 = [(BuddyFeatureFlags *)v3 isSolariumEnabled];
+  objc_storeStrong(location, completion);
+  featureFlags = [(BuddyFinishedController *)selfCopy featureFlags];
+  isSolariumEnabled = [(BuddyFeatureFlags *)featureFlags isSolariumEnabled];
 
-  if (v4)
+  if (isSolariumEnabled)
   {
-    [(BuddyFinishedController *)v14 setStyle:3];
+    [(BuddyFinishedController *)selfCopy setStyle:3];
     (*(location[0] + 2))();
   }
 
-  else if ([(BuddyFinishedController *)v14 _shouldShowCursiveAnimation])
+  else if ([(BuddyFinishedController *)selfCopy _shouldShowCursiveAnimation])
   {
-    [(BuddyFinishedController *)v14 setStyle:1];
+    [(BuddyFinishedController *)selfCopy setStyle:1];
     (*(location[0] + 2))();
   }
 
   else
   {
-    v5 = v14;
+    v5 = selfCopy;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_10006B4C4;
     v10 = &unk_10032B020;
-    v11 = v14;
+    v11 = selfCopy;
     v12 = location[0];
     [(BuddyFinishedController *)v5 _shouldShowIntelligenceAnimationWithCompletion:&v6];
     objc_storeStrong(&v12, 0);
@@ -360,19 +360,19 @@
 
 - (void)_prepareContentView
 {
-  v2 = [(BuddyFinishedController *)self style];
-  if (v2)
+  style = [(BuddyFinishedController *)self style];
+  if (style)
   {
-    if (v2 == 1)
+    if (style == 1)
     {
       v3 = [[BuddyFinishedCursiveChildWelcomeView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
       [(BuddyFinishedController *)self setCursiveWelcomeView:v3];
 
-      v4 = [(BuddyFinishedController *)self cursiveWelcomeView];
-      [(BuddyFinishedCursiveChildWelcomeView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+      cursiveWelcomeView = [(BuddyFinishedController *)self cursiveWelcomeView];
+      [(BuddyFinishedCursiveChildWelcomeView *)cursiveWelcomeView setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    else if (v2 == 2)
+    else if (style == 2)
     {
       v5 = [SASWelcomeToDeviceViewControllerProvider alloc];
       v6 = +[NSBundle mainBundle];
@@ -382,16 +382,16 @@
       v10 = [v5 initWithText:v8 finalTextColor:v9 onAnimationCompleteHandler:0];
       [(BuddyFinishedController *)self setWelcomeGradientViewProvider:v10];
 
-      v11 = [(BuddyFinishedController *)self welcomeGradientViewProvider];
-      v12 = [(SASWelcomeToDeviceViewControllerProvider *)v11 viewController];
-      v13 = [v12 view];
-      [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+      welcomeGradientViewProvider = [(BuddyFinishedController *)self welcomeGradientViewProvider];
+      viewController = [(SASWelcomeToDeviceViewControllerProvider *)welcomeGradientViewProvider viewController];
+      view = [viewController view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
       v14 = +[UIColor clearColor];
-      v15 = [(BuddyFinishedController *)self welcomeGradientViewProvider];
-      v16 = [(SASWelcomeToDeviceViewControllerProvider *)v15 viewController];
-      v17 = [v16 view];
-      [v17 setBackgroundColor:v14];
+      welcomeGradientViewProvider2 = [(BuddyFinishedController *)self welcomeGradientViewProvider];
+      viewController2 = [(SASWelcomeToDeviceViewControllerProvider *)welcomeGradientViewProvider2 viewController];
+      view2 = [viewController2 view];
+      [view2 setBackgroundColor:v14];
     }
   }
 }
@@ -403,8 +403,8 @@
   v4 = v3 > 2.0;
 
   v9 = v4;
-  v5 = [(BuddyFinishedController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle] == 2;
+  traitCollection = [(BuddyFinishedController *)self traitCollection];
+  v6 = [traitCollection userInterfaceStyle] == 2;
 
   v7 = 0;
   if (!v6)
@@ -423,29 +423,29 @@
   return v3;
 }
 
-- (void)_shouldShowIntelligenceAnimationWithCompletion:(id)a3
+- (void)_shouldShowIntelligenceAnimationWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyFinishedController *)v5 intelligenceProvider];
-  [(IntelligenceProvider *)v3 isIntelligenceEnabledWithCompletionHandler:location[0]];
+  objc_storeStrong(location, completion);
+  intelligenceProvider = [(BuddyFinishedController *)selfCopy intelligenceProvider];
+  [(IntelligenceProvider *)intelligenceProvider isIntelligenceEnabledWithCompletionHandler:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)_shouldShowGetStartedButton
 {
-  v2 = [(BuddyFinishedController *)self deviceProvider];
-  v3 = [(BYDeviceProvider *)v2 hasHomeButton];
+  deviceProvider = [(BuddyFinishedController *)self deviceProvider];
+  hasHomeButton = [(BYDeviceProvider *)deviceProvider hasHomeButton];
   v6 = 0;
   v4 = 1;
-  if ((v3 & 1) == 0)
+  if ((hasHomeButton & 1) == 0)
   {
-    v7 = [(BuddyFinishedController *)self deviceProvider];
+    deviceProvider2 = [(BuddyFinishedController *)self deviceProvider];
     v6 = 1;
-    v4 = [(BYDeviceProvider *)v7 type]== 1;
+    v4 = [(BYDeviceProvider *)deviceProvider2 type]== 1;
   }
 
   v9 = v4;
@@ -458,11 +458,11 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(BuddyFinishedController *)self _cleanUpAppLifecycleNotifications];
-  [(BuddyFinishedController *)v4 _invalidateWelcomeAnimationAutoStopTimer];
-  v2.receiver = v4;
+  [(BuddyFinishedController *)selfCopy _invalidateWelcomeAnimationAutoStopTimer];
+  v2.receiver = selfCopy;
   v2.super_class = BuddyFinishedController;
   [(BuddyFinishedController *)&v2 dealloc];
 }
@@ -486,41 +486,41 @@
   [(NSNotificationCenter *)v3 removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:0];
 }
 
-- (void)willEnterForeground:(id)a3
+- (void)willEnterForeground:(id)foreground
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyFinishedController *)v6 bookendAnimator];
+  objc_storeStrong(location, foreground);
+  bookendAnimator = [(BuddyFinishedController *)selfCopy bookendAnimator];
 
-  if (v3)
+  if (bookendAnimator)
   {
-    v4 = [(BuddyFinishedController *)v6 bookendAnimator];
-    [(BuddyFinishedControllerPresenter *)v4 continueAnimation];
+    bookendAnimator2 = [(BuddyFinishedController *)selfCopy bookendAnimator];
+    [(BuddyFinishedControllerPresenter *)bookendAnimator2 continueAnimation];
 
-    [(BuddyFinishedController *)v6 _startWelcomeAnimationAutoPauseTimer];
+    [(BuddyFinishedController *)selfCopy _startWelcomeAnimationAutoPauseTimer];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)didEnterBackground:(id)a3
+- (void)didEnterBackground:(id)background
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyFinishedController *)v5 bookendAnimator];
-  [(BuddyFinishedControllerPresenter *)v3 pauseAnimation];
+  objc_storeStrong(location, background);
+  bookendAnimator = [(BuddyFinishedController *)selfCopy bookendAnimator];
+  [(BuddyFinishedControllerPresenter *)bookendAnimator pauseAnimation];
 
-  [(BuddyFinishedController *)v5 _invalidateWelcomeAnimationAutoStopTimer];
+  [(BuddyFinishedController *)selfCopy _invalidateWelcomeAnimationAutoStopTimer];
   objc_storeStrong(location, 0);
 }
 
 - (void)_startWelcomeAnimationAutoPauseTimer
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   [(BuddyFinishedController *)self _invalidateWelcomeAnimationAutoStopTimer];
   location[0] = _BYLoggingFacility();
@@ -534,7 +534,7 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_initWeak(&from, v15);
+  objc_initWeak(&from, selfCopy);
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
@@ -542,7 +542,7 @@
   v9 = &unk_10032B048;
   objc_copyWeak(&v10, &from);
   v4 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v5 block:18.0];
-  [(BuddyFinishedController *)v15 setWelcomeAnimationTimer:v4];
+  [(BuddyFinishedController *)selfCopy setWelcomeAnimationTimer:v4];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&from);
@@ -550,11 +550,11 @@
 
 - (void)_invalidateWelcomeAnimationAutoStopTimer
 {
-  v9 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyFinishedController *)self welcomeAnimationTimer];
+  welcomeAnimationTimer = [(BuddyFinishedController *)self welcomeAnimationTimer];
 
-  if (v2)
+  if (welcomeAnimationTimer)
   {
     oslog[0] = _BYLoggingFacility();
     v7 = OS_LOG_TYPE_DEFAULT;
@@ -567,10 +567,10 @@
     }
 
     objc_storeStrong(oslog, 0);
-    v5 = [(BuddyFinishedController *)v9 welcomeAnimationTimer];
-    [(NSTimer *)v5 invalidate];
+    welcomeAnimationTimer2 = [(BuddyFinishedController *)selfCopy welcomeAnimationTimer];
+    [(NSTimer *)welcomeAnimationTimer2 invalidate];
 
-    [(BuddyFinishedController *)v9 setWelcomeAnimationTimer:0];
+    [(BuddyFinishedController *)selfCopy setWelcomeAnimationTimer:0];
   }
 }
 

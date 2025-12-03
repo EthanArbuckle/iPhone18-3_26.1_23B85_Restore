@@ -1,14 +1,14 @@
 @interface JavaNioSelectorImpl_UnaddableSet
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (unint64_t)hash;
 - (void)clear;
@@ -17,7 +17,7 @@
 
 @implementation JavaNioSelectorImpl_UnaddableSet
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   set = self->set_;
   if (!set)
@@ -25,7 +25,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)set isEqual:a3];
+  return [(JavaUtilSet *)set isEqual:equal];
 }
 
 - (unint64_t)hash
@@ -50,7 +50,7 @@
   [(JavaUtilSet *)set clear];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   set = self->set_;
   if (!set)
@@ -58,10 +58,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)set containsWithId:a3];
+  return [(JavaUtilSet *)set containsWithId:id];
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   set = self->set_;
   if (!set)
@@ -69,7 +69,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)set containsAllWithJavaUtilCollection:a3];
+  return [(JavaUtilSet *)set containsAllWithJavaUtilCollection:collection];
 }
 
 - (BOOL)isEmpty
@@ -94,7 +94,7 @@
   return [(JavaUtilSet *)set iterator];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   set = self->set_;
   if (!set)
@@ -102,10 +102,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)set removeWithId:a3];
+  return [(JavaUtilSet *)set removeWithId:id];
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   set = self->set_;
   if (!set)
@@ -113,10 +113,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)set removeAllWithJavaUtilCollection:a3];
+  return [(JavaUtilSet *)set removeAllWithJavaUtilCollection:collection];
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
   set = self->set_;
   if (!set)
@@ -124,7 +124,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)set retainAllWithJavaUtilCollection:a3];
+  return [(JavaUtilSet *)set retainAllWithJavaUtilCollection:collection];
 }
 
 - (int)size
@@ -149,7 +149,7 @@
   return [(JavaUtilSet *)set toArray];
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   set = self->set_;
   if (!set)
@@ -157,7 +157,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilSet *)set toArrayWithNSObjectArray:a3];
+  return [(JavaUtilSet *)set toArrayWithNSObjectArray:array];
 }
 
 - (void)dealloc

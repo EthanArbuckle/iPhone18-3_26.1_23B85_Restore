@@ -1,24 +1,24 @@
 @interface SCATATVRemoteInputSource
-- (BOOL)handledEvent:(id)a3;
-- (id)actionIdentifierForButtonNumber:(int64_t)a3 withType:(id)a4;
-- (id)persistentSwitchIdentifierForButtonNumber:(int64_t)a3;
-- (id)switchDisplayNameForButtonNumber:(int64_t)a3;
+- (BOOL)handledEvent:(id)event;
+- (id)actionIdentifierForButtonNumber:(int64_t)number withType:(id)type;
+- (id)persistentSwitchIdentifierForButtonNumber:(int64_t)number;
+- (id)switchDisplayNameForButtonNumber:(int64_t)number;
 @end
 
 @implementation SCATATVRemoteInputSource
 
-- (id)actionIdentifierForButtonNumber:(int64_t)a3 withType:(id)a4
+- (id)actionIdentifierForButtonNumber:(int64_t)number withType:(id)type
 {
-  v6 = a4;
-  v7 = [(SCATInputSource *)self actions];
+  typeCopy = type;
+  actions = [(SCATInputSource *)self actions];
 
-  if (v7)
+  if (actions)
   {
-    v8 = [NSNumber numberWithInteger:a3];
-    v9 = [(SCATInputSource *)self actions];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    v8 = [NSNumber numberWithInteger:number];
+    actions2 = [(SCATInputSource *)self actions];
+    v10 = [actions2 objectForKeyedSubscript:v8];
 
-    v11 = [v10 objectForKeyedSubscript:v6];
+    v11 = [v10 objectForKeyedSubscript:typeCopy];
   }
 
   else
@@ -35,28 +35,28 @@
   return v11;
 }
 
-- (id)persistentSwitchIdentifierForButtonNumber:(int64_t)a3
+- (id)persistentSwitchIdentifierForButtonNumber:(int64_t)number
 {
-  v4 = [(SCATHardwareInputSource *)self persistentSwitchIdentifiers];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  persistentSwitchIdentifiers = [(SCATHardwareInputSource *)self persistentSwitchIdentifiers];
+  v5 = [NSNumber numberWithInteger:number];
+  v6 = [persistentSwitchIdentifiers objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (id)switchDisplayNameForButtonNumber:(int64_t)a3
+- (id)switchDisplayNameForButtonNumber:(int64_t)number
 {
-  v4 = [(SCATHardwareInputSource *)self switchDisplayNames];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  switchDisplayNames = [(SCATHardwareInputSource *)self switchDisplayNames];
+  v5 = [NSNumber numberWithInteger:number];
+  v6 = [switchDisplayNames objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-- (BOOL)handledEvent:(id)a3
+- (BOOL)handledEvent:(id)event
 {
-  v5 = a3;
-  if (![v5 creatorHIDEvent])
+  eventCopy = event;
+  if (![eventCopy creatorHIDEvent])
   {
     _AXLogWithFacility();
     goto LABEL_17;
@@ -65,18 +65,18 @@
   v6 = IOHIDEventGetSenderID() + 0x7FFFFFF7E8CE6C8ELL;
   if (v6 > 3 || v6 == 2)
   {
-    v3 = [v5 accessibilityData];
-    v8 = [v3 wasPostedByAccessibility];
+    accessibilityData = [eventCopy accessibilityData];
+    wasPostedByAccessibility = [accessibilityData wasPostedByAccessibility];
   }
 
   else
   {
-    v8 = 1;
+    wasPostedByAccessibility = 1;
   }
 
   if (v6 <= 3 && v6 != 2)
   {
-    if ((v8 & 1) == 0)
+    if ((wasPostedByAccessibility & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -86,7 +86,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v8)
+  if (wasPostedByAccessibility)
   {
     goto LABEL_17;
   }
@@ -97,13 +97,13 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v10 = [v5 isDownEvent];
+  isDownEvent = [eventCopy isDownEvent];
   IntegerValue = IOHIDEventGetIntegerValue();
   v12 = [(SCATATVRemoteInputSource *)self actionIdentifierForButtonNumber:IntegerValue withType:@"SwitchActionTypeNormal"];
   v13 = [(SCATATVRemoteInputSource *)self actionIdentifierForButtonNumber:IntegerValue withType:@"SwitchActionTypeLongPress"];
   v14 = [(SCATATVRemoteInputSource *)self persistentSwitchIdentifierForButtonNumber:IntegerValue];
   v15 = [(SCATATVRemoteInputSource *)self switchDisplayNameForButtonNumber:IntegerValue];
-  [(SCATInputSource *)self _handleAction:v12 longPressAction:v13 start:v10 switchIdentifier:v14 switchDisplayName:v15];
+  [(SCATInputSource *)self _handleAction:v12 longPressAction:v13 start:isDownEvent switchIdentifier:v14 switchDisplayName:v15];
 
   v16 = 1;
 LABEL_18:

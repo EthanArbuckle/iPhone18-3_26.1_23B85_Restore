@@ -40,7 +40,7 @@
 {
   v2 = objc_autoreleasePoolPush();
   v8 = 0;
-  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a1 requiringSecureCoding:1 error:&v8];
+  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v8];
   v4 = v8;
   objc_autoreleasePoolPop(v2);
   if (v3)
@@ -78,7 +78,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_2263AA000, a2, OS_LOG_TYPE_FAULT, "Failed to serialize CDInteraction data in ATXInteractionEventProvider with error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

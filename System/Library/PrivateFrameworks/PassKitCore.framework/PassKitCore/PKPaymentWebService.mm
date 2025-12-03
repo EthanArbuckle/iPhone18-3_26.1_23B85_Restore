@@ -3,277 +3,277 @@
 + (id)sharedService;
 - (BOOL)_hasConfiguration;
 - (BOOL)_isSandboxAccount;
-- (BOOL)_isValidResponse:(id)a3 error:(id)a4;
-- (BOOL)_needsRegistrationForBrokerURL:(id)a3 shouldCheckSecureElementOwnership:(BOOL)a4;
+- (BOOL)_isValidResponse:(id)response error:(id)error;
+- (BOOL)_needsRegistrationForBrokerURL:(id)l shouldCheckSecureElementOwnership:(BOOL)ownership;
 - (BOOL)_supportsAccounts;
 - (BOOL)canBypassTrustValidation;
-- (BOOL)isChinaRegionIdentifier:(id)a3;
-- (BOOL)needsConfigurationWithSupportedRegionTimeInterval:(double)a3 unsupportedRegionTimeInterval:(double)a4;
+- (BOOL)isChinaRegionIdentifier:(id)identifier;
+- (BOOL)needsConfigurationWithSupportedRegionTimeInterval:(double)interval unsupportedRegionTimeInterval:(double)timeInterval;
 - (BOOL)registrationSetupSupportedInRegion;
 - (NSArray)delegates;
 - (NSURL)primaryBrokerURL;
-- (PKPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 archiver:(id)a5 tapToRadarDelegate:(id)a6;
-- (PKPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 tapToRadarDelegate:(id)a5;
+- (PKPaymentWebService)initWithContext:(id)context targetDevice:(id)device archiver:(id)archiver tapToRadarDelegate:(id)delegate;
+- (PKPaymentWebService)initWithContext:(id)context targetDevice:(id)device tapToRadarDelegate:(id)delegate;
 - (PKPaymentWebServiceBackgroundDelegate)backgroundDelegate;
 - (PKPaymentWebServiceContext)context;
-- (id)_brokerUrlForRegion:(id)a3 regionOut:(id *)a4;
+- (id)_brokerUrlForRegion:(id)region regionOut:(id *)out;
 - (id)_downloadCacheLocation;
-- (id)_downloadPassesWithURLs:(id)a3;
-- (id)_errorWithResult:(unint64_t)a3 response:(id)a4 data:(id)a5;
+- (id)_downloadPassesWithURLs:(id)ls;
+- (id)_errorWithResult:(unint64_t)result response:(id)response data:(id)data;
 - (id)_fakeVerificationMethodGroups;
-- (id)_movePassToDownloadCache:(id)a3;
-- (id)_passWithFileURL:(id)a3;
+- (id)_movePassToDownloadCache:(id)cache;
+- (id)_passWithFileURL:(id)l;
 - (id)_paymentDevice;
-- (id)_requestBuilderForRegion:(id)a3 regionOut:(id *)a4;
-- (id)forbiddenErrorWithResponse:(id)a3;
-- (id)removeRedundantMethodGroupsFromMethodGroups:(id)a3;
-- (id)supportedRegionFeatureOfType:(int64_t)a3 didFailOSVersionRequirements:(BOOL *)a4;
-- (id)verificationRecordForPass:(id)a3;
-- (unint64_t)_augmentSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)_auxiliaryCapabilityRegisterResultForResponse:(id)a3 error:(id)a4 successHandler:(id)a5;
-- (unint64_t)_downloadPassAtURL:(id)a3 completion:(id)a4;
-- (unint64_t)_nonceWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)_passActionGroupIncludingAppletDataWithRemoteContentPassActionGroup:(id)a3 forPass:(id)a4 forDeviceIdentifier:(id)a5 completion:(id)a6;
-- (unint64_t)_passActionGroupWithRemoteContentPassActionGroup:(id)a3 forPass:(id)a4 forDeviceIdentifier:(id)a5 completion:(id)a6;
-- (unint64_t)_passActionIncludingAppletDataWithRemoteContentPassAction:(id)a3 pass:(id)a4 completion:(id)a5;
-- (unint64_t)_passActionWithRemoteContentPassAction:(id)a3 pass:(id)a4 completion:(id)a5;
-- (unint64_t)_passActionWithRemoteContentPassAction:(id)a3 serviceProviderData:(id)a4 pass:(id)a5 completion:(id)a6;
-- (unint64_t)_performAccountApplePayTrustProtocolRequest:(id)a3 originalRequest:(id)a4 taskID:(unint64_t)a5 completion:(id)a6;
-- (unint64_t)_performAccountRequest:(id)a3 account:(id)a4 request:(id)a5 taskID:(unint64_t)a6 responseClass:(Class)a7 completion:(id)a8;
-- (unint64_t)_performAccountRequest:(id)a3 account:(id)a4 responseClass:(Class)a5 completion:(id)a6;
-- (unint64_t)_performAccountRequest:(id)a3 request:(id)a4 responseClass:(Class)a5 completion:(id)a6;
-- (unint64_t)_performAccountRequest:(id)a3 responseClass:(Class)a4 completion:(id)a5;
-- (unint64_t)_performApplePayTrustRegistrationWithURL:(id)a3 pushToken:(id)a4 completion:(id)a5;
-- (unint64_t)_performApplyRequest:(id)a3 responseClass:(Class)a4 completion:(id)a5;
-- (unint64_t)_performOptionalAccountApplePayTrustProtocolRequest:(id)a3 originalRequest:(id)a4 taskID:(unint64_t)a5 completion:(id)a6;
-- (unint64_t)_performPaymentOfferRequest:(id)a3 responseClass:(Class)a4 completion:(id)a5;
-- (unint64_t)_performRewrapRequest:(id)a3 serviceURL:(id)a4 responseHandler:(id)a5 completion:(id)a6;
-- (unint64_t)_resultForResponse:(id)a3 error:(id)a4 successHandler:(id)a5;
-- (unint64_t)_updateContextWithRegistrationType:(int64_t)a3 response:(id)a4;
-- (unint64_t)accountActionWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountBalanceHistoryWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountBankLookupWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountDeleteBeneficiaryWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountDocumentActionWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountPassDetailsRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountReportDeviceEventWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountSendReportWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountServiceCertificatesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountStatementsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountTaxFormsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountTermsDataWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountTermsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountTransactionAnswerWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountUpdateUserInfoWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountUsersWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)accountsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)addFundingSourceWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)agreementURLForPass:(id)a3 agreement:(id)a4 completion:(id)a5;
-- (unint64_t)applePayTrustSignatureRequestWithRequest:(id)a3 account:(id)a4 completion:(id)a5;
-- (unint64_t)applicationsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)applyWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)augmentSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)augmentedProductWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)authenticationTokenWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)auxiliaryCapabilityKeyCreationMetadataWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)availableCommonProductsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)availableDevicesWithCompletion:(id)a3;
-- (unint64_t)availableProductsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)browseableBankAppsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)cancelPaymentOfferWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)cancelPaymentWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)cardInfoForMerchantIdentifier:(id)a3 completion:(id)a4;
-- (unint64_t)checkAuxiliaryCapabilityRegistrationStateWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)checkMerchantStatus:(id)a3 forDomain:(id)a4 withCompletion:(id)a5;
-- (unint64_t)completeSession:(id)a3 wrappedPayment:(id)a4 pass:(id)a5 applicationData:(id)a6 completion:(id)a7;
-- (unint64_t)completeSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)configurePaymentServiceWithCompletion:(id)a3;
-- (unint64_t)confirmOffersWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)contactInformationWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)createVehicleKeyShareWithRequest:(id)a3 passTypeIdentifier:(id)a4 completion:(id)a5;
-- (unint64_t)createVirtualCardWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)createWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)createdZoneWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)credentialAccountAttesationWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)creditAccountUserInfoWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)creditRecoveryPaymentPlansWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)customizePhysicalCardWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)dailyCashEligibilityWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deleteAccountUserWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deleteAccountWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deleteApplicationWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deleteForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deleteFundingSourceWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deleteMerchantTokenWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deprovisionForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)deviceCheckInDeviceCheckInForRegion:(id)a3 completion:(id)a4;
-- (unint64_t)devicePassesSinceLastUpdatedTag:(BOOL)a3 withCompletion:(id)a4;
-- (unint64_t)discoveryBundleForURL:(id)a3 completion:(id)a4;
-- (unint64_t)discoveryManifestWithCompletion:(id)a3;
-- (unint64_t)eligibilityForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)enhancedMerchantsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)exportTransactionDataWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)featureTermsDataWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)fetchBarcodesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)fundingSourcesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)generateTopUpTokenWithRequest:(id)a3 forAccount:(id)a4 completion:(id)a5;
-- (unint64_t)inAppPaymentNonceForPass:(id)a3 completion:(id)a4;
-- (unint64_t)inAppPaymentNonceWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)initiateExternalProvisioningForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)issuerProvisioningCertificatesForRequest:(id)a3 withCompletion:(id)a4;
-- (unint64_t)merchandisingWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)moreInfoItemAtURL:(id)a3 withMetadata:(id)a4 completion:(id)a5;
-- (unint64_t)networkManifestWithCompletion:(id)a3;
-- (unint64_t)notifyIssuerAppletStateDirtyWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)passActionGroupWithRemoteContentPassActionGroup:(id)a3 forPass:(id)a4 completion:(id)a5;
-- (unint64_t)passActionWithRemoteContentPassAction:(id)a3 forDeviceIdentifier:(id)a4 passTypeIdentifier:(id)a5 passSerialNumber:(id)a6 completion:(id)a7;
-- (unint64_t)passActionWithRemoteContentPassAction:(id)a3 forPass:(id)a4 completion:(id)a5;
-- (unint64_t)passActionWithRemoteContentPassAction:(id)a3 serviceProviderData:(id)a4 pass:(id)a5 completion:(id)a6;
-- (unint64_t)passAtURL:(id)a3 completion:(id)a4;
-- (unint64_t)passAtURL:(id)a3 completionWithError:(id)a4;
-- (unint64_t)passUpgradeWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)passWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4 completion:(id)a5;
-- (unint64_t)passesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)paymentOfferCatalogWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)paymentOffersDynamicContentWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)paymentOffersWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)paymentProvisioningNonceOfType:(unint64_t)a3 completion:(id)a4;
-- (unint64_t)paymentRewardsBalancesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)paymentRewardsRedemptionsWithRequest:(id)a3 completion:(id)a4;
+- (id)_requestBuilderForRegion:(id)region regionOut:(id *)out;
+- (id)forbiddenErrorWithResponse:(id)response;
+- (id)removeRedundantMethodGroupsFromMethodGroups:(id)groups;
+- (id)supportedRegionFeatureOfType:(int64_t)type didFailOSVersionRequirements:(BOOL *)requirements;
+- (id)verificationRecordForPass:(id)pass;
+- (unint64_t)_augmentSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)_auxiliaryCapabilityRegisterResultForResponse:(id)response error:(id)error successHandler:(id)handler;
+- (unint64_t)_downloadPassAtURL:(id)l completion:(id)completion;
+- (unint64_t)_nonceWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)_passActionGroupIncludingAppletDataWithRemoteContentPassActionGroup:(id)group forPass:(id)pass forDeviceIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)_passActionGroupWithRemoteContentPassActionGroup:(id)group forPass:(id)pass forDeviceIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)_passActionIncludingAppletDataWithRemoteContentPassAction:(id)action pass:(id)pass completion:(id)completion;
+- (unint64_t)_passActionWithRemoteContentPassAction:(id)action pass:(id)pass completion:(id)completion;
+- (unint64_t)_passActionWithRemoteContentPassAction:(id)action serviceProviderData:(id)data pass:(id)pass completion:(id)completion;
+- (unint64_t)_performAccountApplePayTrustProtocolRequest:(id)request originalRequest:(id)originalRequest taskID:(unint64_t)d completion:(id)completion;
+- (unint64_t)_performAccountRequest:(id)request account:(id)account request:(id)a5 taskID:(unint64_t)d responseClass:(Class)class completion:(id)completion;
+- (unint64_t)_performAccountRequest:(id)request account:(id)account responseClass:(Class)class completion:(id)completion;
+- (unint64_t)_performAccountRequest:(id)request request:(id)a4 responseClass:(Class)class completion:(id)completion;
+- (unint64_t)_performAccountRequest:(id)request responseClass:(Class)class completion:(id)completion;
+- (unint64_t)_performApplePayTrustRegistrationWithURL:(id)l pushToken:(id)token completion:(id)completion;
+- (unint64_t)_performApplyRequest:(id)request responseClass:(Class)class completion:(id)completion;
+- (unint64_t)_performOptionalAccountApplePayTrustProtocolRequest:(id)request originalRequest:(id)originalRequest taskID:(unint64_t)d completion:(id)completion;
+- (unint64_t)_performPaymentOfferRequest:(id)request responseClass:(Class)class completion:(id)completion;
+- (unint64_t)_performRewrapRequest:(id)request serviceURL:(id)l responseHandler:(id)handler completion:(id)completion;
+- (unint64_t)_resultForResponse:(id)response error:(id)error successHandler:(id)handler;
+- (unint64_t)_updateContextWithRegistrationType:(int64_t)type response:(id)response;
+- (unint64_t)accountActionWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountBalanceHistoryWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountBankLookupWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountDeleteBeneficiaryWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountDocumentActionWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountPassDetailsRequest:(id)request completion:(id)completion;
+- (unint64_t)accountReportDeviceEventWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountSendReportWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountServiceCertificatesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountStatementsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountTaxFormsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountTermsDataWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountTermsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountTransactionAnswerWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountUpdateUserInfoWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountUsersWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountWithRequest:(id)request completion:(id)completion;
+- (unint64_t)accountsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)addFundingSourceWithRequest:(id)request completion:(id)completion;
+- (unint64_t)agreementURLForPass:(id)pass agreement:(id)agreement completion:(id)completion;
+- (unint64_t)applePayTrustSignatureRequestWithRequest:(id)request account:(id)account completion:(id)completion;
+- (unint64_t)applicationsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)applyWithRequest:(id)request completion:(id)completion;
+- (unint64_t)augmentSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)augmentedProductWithRequest:(id)request completion:(id)completion;
+- (unint64_t)authenticationTokenWithRequest:(id)request completion:(id)completion;
+- (unint64_t)auxiliaryCapabilityKeyCreationMetadataWithRequest:(id)request completion:(id)completion;
+- (unint64_t)availableCommonProductsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)availableDevicesWithCompletion:(id)completion;
+- (unint64_t)availableProductsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)browseableBankAppsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)cancelPaymentOfferWithRequest:(id)request completion:(id)completion;
+- (unint64_t)cancelPaymentWithRequest:(id)request completion:(id)completion;
+- (unint64_t)cardInfoForMerchantIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)checkAuxiliaryCapabilityRegistrationStateWithRequest:(id)request completion:(id)completion;
+- (unint64_t)checkMerchantStatus:(id)status forDomain:(id)domain withCompletion:(id)completion;
+- (unint64_t)completeSession:(id)session wrappedPayment:(id)payment pass:(id)pass applicationData:(id)data completion:(id)completion;
+- (unint64_t)completeSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)configurePaymentServiceWithCompletion:(id)completion;
+- (unint64_t)confirmOffersWithRequest:(id)request completion:(id)completion;
+- (unint64_t)contactInformationWithRequest:(id)request completion:(id)completion;
+- (unint64_t)createVehicleKeyShareWithRequest:(id)request passTypeIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)createVirtualCardWithRequest:(id)request completion:(id)completion;
+- (unint64_t)createWithRequest:(id)request completion:(id)completion;
+- (unint64_t)createdZoneWithRequest:(id)request completion:(id)completion;
+- (unint64_t)credentialAccountAttesationWithRequest:(id)request completion:(id)completion;
+- (unint64_t)creditAccountUserInfoWithRequest:(id)request completion:(id)completion;
+- (unint64_t)creditRecoveryPaymentPlansWithRequest:(id)request completion:(id)completion;
+- (unint64_t)customizePhysicalCardWithRequest:(id)request completion:(id)completion;
+- (unint64_t)dailyCashEligibilityWithRequest:(id)request completion:(id)completion;
+- (unint64_t)deleteAccountUserWithRequest:(id)request completion:(id)completion;
+- (unint64_t)deleteAccountWithRequest:(id)request completion:(id)completion;
+- (unint64_t)deleteApplicationWithRequest:(id)request completion:(id)completion;
+- (unint64_t)deleteForRequest:(id)request completion:(id)completion;
+- (unint64_t)deleteFundingSourceWithRequest:(id)request completion:(id)completion;
+- (unint64_t)deleteMerchantTokenWithRequest:(id)request completion:(id)completion;
+- (unint64_t)deprovisionForRequest:(id)request completion:(id)completion;
+- (unint64_t)deviceCheckInDeviceCheckInForRegion:(id)region completion:(id)completion;
+- (unint64_t)devicePassesSinceLastUpdatedTag:(BOOL)tag withCompletion:(id)completion;
+- (unint64_t)discoveryBundleForURL:(id)l completion:(id)completion;
+- (unint64_t)discoveryManifestWithCompletion:(id)completion;
+- (unint64_t)eligibilityForRequest:(id)request completion:(id)completion;
+- (unint64_t)enhancedMerchantsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)exportTransactionDataWithRequest:(id)request completion:(id)completion;
+- (unint64_t)featureTermsDataWithRequest:(id)request completion:(id)completion;
+- (unint64_t)fetchBarcodesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)fundingSourcesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)generateTopUpTokenWithRequest:(id)request forAccount:(id)account completion:(id)completion;
+- (unint64_t)inAppPaymentNonceForPass:(id)pass completion:(id)completion;
+- (unint64_t)inAppPaymentNonceWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)initiateExternalProvisioningForRequest:(id)request completion:(id)completion;
+- (unint64_t)issuerProvisioningCertificatesForRequest:(id)request withCompletion:(id)completion;
+- (unint64_t)merchandisingWithRequest:(id)request completion:(id)completion;
+- (unint64_t)moreInfoItemAtURL:(id)l withMetadata:(id)metadata completion:(id)completion;
+- (unint64_t)networkManifestWithCompletion:(id)completion;
+- (unint64_t)notifyIssuerAppletStateDirtyWithRequest:(id)request completion:(id)completion;
+- (unint64_t)passActionGroupWithRemoteContentPassActionGroup:(id)group forPass:(id)pass completion:(id)completion;
+- (unint64_t)passActionWithRemoteContentPassAction:(id)action forDeviceIdentifier:(id)identifier passTypeIdentifier:(id)typeIdentifier passSerialNumber:(id)number completion:(id)completion;
+- (unint64_t)passActionWithRemoteContentPassAction:(id)action forPass:(id)pass completion:(id)completion;
+- (unint64_t)passActionWithRemoteContentPassAction:(id)action serviceProviderData:(id)data pass:(id)pass completion:(id)completion;
+- (unint64_t)passAtURL:(id)l completion:(id)completion;
+- (unint64_t)passAtURL:(id)l completionWithError:(id)error;
+- (unint64_t)passUpgradeWithRequest:(id)request completion:(id)completion;
+- (unint64_t)passWithPassTypeIdentifier:(id)identifier serialNumber:(id)number completion:(id)completion;
+- (unint64_t)passesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)paymentOfferCatalogWithRequest:(id)request completion:(id)completion;
+- (unint64_t)paymentOffersDynamicContentWithRequest:(id)request completion:(id)completion;
+- (unint64_t)paymentOffersWithRequest:(id)request completion:(id)completion;
+- (unint64_t)paymentProvisioningNonceOfType:(unint64_t)type completion:(id)completion;
+- (unint64_t)paymentRewardsBalancesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)paymentRewardsRedemptionsWithRequest:(id)request completion:(id)completion;
 - (unint64_t)paymentSetupSupportedInRegion;
-- (unint64_t)paymentsWithRequest:(id)a3 account:(id)a4 completion:(id)a5;
-- (unint64_t)performAction:(id)a3 onServiceProviderPurchase:(id)a4 completion:(id)a5;
-- (unint64_t)performApplePayTrustRegistrationWithCompletion:(id)a3;
-- (unint64_t)performInstallmentAuthorizationWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)performInstallmentBindWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)performNotificationActionRequest:(id)a3 completion:(id)a4;
-- (unint64_t)performProductActionRequest:(id)a3 completion:(id)a4;
-- (unint64_t)performServiceProviderPayment:(id)a3 completion:(id)a4;
-- (unint64_t)physicalCardActionWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)physicalCardsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)prepareToProvisionForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)prepareTransactionDetailsForMerchantSession:(id)a3 secureElementIdentifier:(id)a4 amount:(id)a5 currencyCode:(id)a6 completion:(id)a7;
-- (unint64_t)promotionsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)provideEncryptedPushProvisioningTargetWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)provisionPassesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)provisionPrecursorPassForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)provisioningMethodWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)pushProvisioningSharingIdentifiersWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)pushProvisioningSharingStatusRequest:(id)a3 completion:(id)a4;
-- (unint64_t)registerAuxiliaryCapabilityWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)registerCredentialWithRequest:(id)a3 withCompletion:(id)a4;
-- (unint64_t)registerDeviceAtBrokerURL:(id)a3 withConsistencyCheckResults:(id)a4 retries:(unint64_t)a5 completion:(id)a6;
-- (unint64_t)registerDeviceWithCompletion:(id)a3;
-- (unint64_t)registerMerchantTokenPublicKeyWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)remotePaymentCredentialsForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)remotePaymentCredentialsUpdateForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)repopulateZonesWithCloudStoreZoneNames:(id)a3 completion:(id)a4;
-- (unint64_t)requestPhysicalCardWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)requestVerificationCodeForPass:(id)a3 usingChannel:(id)a4 completion:(id)a5;
-- (unint64_t)requirementsForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)resendVerificationRequest:(id)a3 completion:(id)a4;
-- (unint64_t)resolveStorefrontCountryMismatchWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)retrieveMerchantTokensUnifiedListWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)retrieveMerchantTokensWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)revokeSharedCredentialWithRequest:(id)a3 withCompletion:(id)a4;
-- (unint64_t)rewrapInAppPayment:(id)a3 merchantIdentifier:(id)a4 hostApplicationIdentifier:(id)a5 applicationData:(id)a6 pass:(id)a7 completion:(id)a8;
-- (unint64_t)rewrapInAppPaymentWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)savingsAccountStatementsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)savingsAccountUserInfoWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)schedulePaymentWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)scheduleTransferWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)selectedOffersWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)sendOwnershipTokensForReason:(unint64_t)a3 completion:(id)a4;
-- (unint64_t)serviceProviderAugmentSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)serviceProviderNonceWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5;
-- (unint64_t)serviceProviderPurchaseWithIdentifier:(id)a3 completion:(id)a4;
-- (unint64_t)serviceProviderPurchasesWithRequest:(id)a3 inRegion:(id)a4 completion:(id)a5;
-- (unint64_t)sharedAccountCloudStoreWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)shownTermsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)submitDocumentsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)submitTermsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)submitVerificationCode:(id)a3 verificationData:(id)a4 forPass:(id)a5 completion:(id)a6;
-- (unint64_t)submitVerificationEntries:(id)a3 forPass:(id)a4 completion:(id)a5;
-- (unint64_t)submitVerificationWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)supportTopicsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)tapToProvisionConfigurationForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)termsDataWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)transactionReceiptAuthorizationWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)transactionReceiptWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)transferEligibilityWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)transfersWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)unregisterDeviceWithCompanionSerialNumber:(id)a3 completion:(id)a4;
-- (unint64_t)updateAccountUserPreferencesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)updateRegistrationDataAtBrokerURL:(id)a3 completion:(id)a4;
-- (unint64_t)updateVerification:(id)a3 completion:(id)a4;
-- (unint64_t)vehicleManufacturerWithRequest:(id)a3 withCompletion:(id)a4;
-- (unint64_t)verificationChannelsForPass:(id)a3 completion:(id)a4;
-- (unint64_t)verificationOptionsForRequest:(id)a3 completion:(id)a4;
-- (unint64_t)virtualCardActionWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)virtualCardLegacyCredentialsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)virtualCardListWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)virtualCardPaymentSessionWithCompletion:(id)a3;
-- (unint64_t)virtualCardSecurityCodeActivity:(id)a3 completion:(id)a4;
-- (unint64_t)vpanNonceForPaymentPass:(id)a3 completion:(id)a4;
-- (unint64_t)vpanPaymentCredentialsForPaymentPass:(id)a3 vpanIdentifier:(id)a4 nonce:(id)a5 encryptionFields:(id)a6 merchantHost:(id)a7 regenerate:(BOOL)a8 completion:(id)a9;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_applePayTrustPublicKeyHashWithCompletion:(id)a3;
+- (unint64_t)paymentsWithRequest:(id)request account:(id)account completion:(id)completion;
+- (unint64_t)performAction:(id)action onServiceProviderPurchase:(id)purchase completion:(id)completion;
+- (unint64_t)performApplePayTrustRegistrationWithCompletion:(id)completion;
+- (unint64_t)performInstallmentAuthorizationWithRequest:(id)request completion:(id)completion;
+- (unint64_t)performInstallmentBindWithRequest:(id)request completion:(id)completion;
+- (unint64_t)performNotificationActionRequest:(id)request completion:(id)completion;
+- (unint64_t)performProductActionRequest:(id)request completion:(id)completion;
+- (unint64_t)performServiceProviderPayment:(id)payment completion:(id)completion;
+- (unint64_t)physicalCardActionWithRequest:(id)request completion:(id)completion;
+- (unint64_t)physicalCardsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)prepareToProvisionForRequest:(id)request completion:(id)completion;
+- (unint64_t)prepareTransactionDetailsForMerchantSession:(id)session secureElementIdentifier:(id)identifier amount:(id)amount currencyCode:(id)code completion:(id)completion;
+- (unint64_t)promotionsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)provideEncryptedPushProvisioningTargetWithRequest:(id)request completion:(id)completion;
+- (unint64_t)provisionPassesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)provisionPrecursorPassForRequest:(id)request completion:(id)completion;
+- (unint64_t)provisioningMethodWithRequest:(id)request completion:(id)completion;
+- (unint64_t)pushProvisioningSharingIdentifiersWithRequest:(id)request completion:(id)completion;
+- (unint64_t)pushProvisioningSharingStatusRequest:(id)request completion:(id)completion;
+- (unint64_t)registerAuxiliaryCapabilityWithRequest:(id)request completion:(id)completion;
+- (unint64_t)registerCredentialWithRequest:(id)request withCompletion:(id)completion;
+- (unint64_t)registerDeviceAtBrokerURL:(id)l withConsistencyCheckResults:(id)results retries:(unint64_t)retries completion:(id)completion;
+- (unint64_t)registerDeviceWithCompletion:(id)completion;
+- (unint64_t)registerMerchantTokenPublicKeyWithRequest:(id)request completion:(id)completion;
+- (unint64_t)remotePaymentCredentialsForRequest:(id)request completion:(id)completion;
+- (unint64_t)remotePaymentCredentialsUpdateForRequest:(id)request completion:(id)completion;
+- (unint64_t)repopulateZonesWithCloudStoreZoneNames:(id)names completion:(id)completion;
+- (unint64_t)requestPhysicalCardWithRequest:(id)request completion:(id)completion;
+- (unint64_t)requestVerificationCodeForPass:(id)pass usingChannel:(id)channel completion:(id)completion;
+- (unint64_t)requirementsForRequest:(id)request completion:(id)completion;
+- (unint64_t)resendVerificationRequest:(id)request completion:(id)completion;
+- (unint64_t)resolveStorefrontCountryMismatchWithRequest:(id)request completion:(id)completion;
+- (unint64_t)retrieveMerchantTokensUnifiedListWithRequest:(id)request completion:(id)completion;
+- (unint64_t)retrieveMerchantTokensWithRequest:(id)request completion:(id)completion;
+- (unint64_t)revokeSharedCredentialWithRequest:(id)request withCompletion:(id)completion;
+- (unint64_t)rewrapInAppPayment:(id)payment merchantIdentifier:(id)identifier hostApplicationIdentifier:(id)applicationIdentifier applicationData:(id)data pass:(id)pass completion:(id)completion;
+- (unint64_t)rewrapInAppPaymentWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)savingsAccountStatementsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)savingsAccountUserInfoWithRequest:(id)request completion:(id)completion;
+- (unint64_t)schedulePaymentWithRequest:(id)request completion:(id)completion;
+- (unint64_t)scheduleTransferWithRequest:(id)request completion:(id)completion;
+- (unint64_t)selectedOffersWithRequest:(id)request completion:(id)completion;
+- (unint64_t)sendOwnershipTokensForReason:(unint64_t)reason completion:(id)completion;
+- (unint64_t)serviceProviderAugmentSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)serviceProviderNonceWithRequest:(id)request serviceURL:(id)l completion:(id)completion;
+- (unint64_t)serviceProviderPurchaseWithIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)serviceProviderPurchasesWithRequest:(id)request inRegion:(id)region completion:(id)completion;
+- (unint64_t)sharedAccountCloudStoreWithRequest:(id)request completion:(id)completion;
+- (unint64_t)shownTermsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)submitDocumentsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)submitTermsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)submitVerificationCode:(id)code verificationData:(id)data forPass:(id)pass completion:(id)completion;
+- (unint64_t)submitVerificationEntries:(id)entries forPass:(id)pass completion:(id)completion;
+- (unint64_t)submitVerificationWithRequest:(id)request completion:(id)completion;
+- (unint64_t)supportTopicsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)tapToProvisionConfigurationForRequest:(id)request completion:(id)completion;
+- (unint64_t)termsDataWithRequest:(id)request completion:(id)completion;
+- (unint64_t)transactionReceiptAuthorizationWithRequest:(id)request completion:(id)completion;
+- (unint64_t)transactionReceiptWithRequest:(id)request completion:(id)completion;
+- (unint64_t)transferEligibilityWithRequest:(id)request completion:(id)completion;
+- (unint64_t)transfersWithRequest:(id)request completion:(id)completion;
+- (unint64_t)unregisterDeviceWithCompanionSerialNumber:(id)number completion:(id)completion;
+- (unint64_t)updateAccountUserPreferencesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)updateRegistrationDataAtBrokerURL:(id)l completion:(id)completion;
+- (unint64_t)updateVerification:(id)verification completion:(id)completion;
+- (unint64_t)vehicleManufacturerWithRequest:(id)request withCompletion:(id)completion;
+- (unint64_t)verificationChannelsForPass:(id)pass completion:(id)completion;
+- (unint64_t)verificationOptionsForRequest:(id)request completion:(id)completion;
+- (unint64_t)virtualCardActionWithRequest:(id)request completion:(id)completion;
+- (unint64_t)virtualCardLegacyCredentialsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)virtualCardListWithRequest:(id)request completion:(id)completion;
+- (unint64_t)virtualCardPaymentSessionWithCompletion:(id)completion;
+- (unint64_t)virtualCardSecurityCodeActivity:(id)activity completion:(id)completion;
+- (unint64_t)vpanNonceForPaymentPass:(id)pass completion:(id)completion;
+- (unint64_t)vpanPaymentCredentialsForPaymentPass:(id)pass vpanIdentifier:(id)identifier nonce:(id)nonce encryptionFields:(id)fields merchantHost:(id)host regenerate:(BOOL)regenerate completion:(id)completion;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_applePayTrustPublicKeyHashWithCompletion:(id)completion;
 - (void)_archiveBackgroundContext;
 - (void)_archiveContext;
-- (void)_auxiliaryRegistrationServiceURLForRequest:(id)a3 completion:(id)a4;
-- (void)_backgroundDownloadCloudStoreAssetsForItem:(id)a3 cloudStoreCoordinatorDelegate:(id)a4;
-- (void)_backgroundDownloadPassAtURL:(id)a3 fromPushTopic:(id)a4;
-- (void)_canRegisterForPeerPaymentWithCompletion:(id)a3;
+- (void)_auxiliaryRegistrationServiceURLForRequest:(id)request completion:(id)completion;
+- (void)_backgroundDownloadCloudStoreAssetsForItem:(id)item cloudStoreCoordinatorDelegate:(id)delegate;
+- (void)_backgroundDownloadPassAtURL:(id)l fromPushTopic:(id)topic;
+- (void)_canRegisterForPeerPaymentWithCompletion:(id)completion;
 - (void)_cleanupPassDownloadCache;
-- (void)_createApplePayTrustKeyWithCompletion:(id)a3;
-- (void)_deviceProvisioningDataIncludingDeviceMetadata:(BOOL)a3 withCompletion:(id)a4;
-- (void)_handleDeviceCheckInTask:(id)a3 downloadRecord:(id)a4 data:(id)a5;
-- (void)_handlePassDownloadTask:(id)a3 data:(id)a4 fromPushTopic:(id)a5;
-- (void)_handlePassListDownloadTask:(id)a3 data:(id)a4 fromPushTopic:(id)a5;
-- (void)_handleRemoteAssetDownloadForManifestItem:(id)a3 taskPassURL:(id)a4 data:(id)a5 shouldWriteData:(BOOL)a6 error:(id *)a7;
-- (void)_handleRemoteCloudStoreAssetForRecordName:(id)a3 taskRecord:(id)a4 data:(id)a5 shouldWriteData:(BOOL)a6 error:(id *)a7;
-- (void)_handleRetryAfterApplePayTrustEnrollmentWithOriginalRequest:(id)a3 completionHandler:(id)a4;
-- (void)_handleRetryAfterRegisterWithRequest:(id)a3 response:(id)a4 completionHandler:(id)a5;
-- (void)_handleRetryAfterTSMSyncForPushTopic:(id)a3 withRequest:(id)a4 taskIdentifier:(unint64_t)a5 completionHandler:(id)a6;
-- (void)_passOwnershipTokenForPaymentCredential:(id)a3 completion:(id)a4;
-- (void)_passWithData:(id)a3 response:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)_performVerificationRequest:(id)a3 selectedMethodGroup:(id)a4 selectedMethod:(id)a5 pass:(id)a6 taskID:(unint64_t)a7 completion:(id)a8;
-- (void)_recentConfiguration:(id)a3;
+- (void)_createApplePayTrustKeyWithCompletion:(id)completion;
+- (void)_deviceProvisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletion:(id)completion;
+- (void)_handleDeviceCheckInTask:(id)task downloadRecord:(id)record data:(id)data;
+- (void)_handlePassDownloadTask:(id)task data:(id)data fromPushTopic:(id)topic;
+- (void)_handlePassListDownloadTask:(id)task data:(id)data fromPushTopic:(id)topic;
+- (void)_handleRemoteAssetDownloadForManifestItem:(id)item taskPassURL:(id)l data:(id)data shouldWriteData:(BOOL)writeData error:(id *)error;
+- (void)_handleRemoteCloudStoreAssetForRecordName:(id)name taskRecord:(id)record data:(id)data shouldWriteData:(BOOL)writeData error:(id *)error;
+- (void)_handleRetryAfterApplePayTrustEnrollmentWithOriginalRequest:(id)request completionHandler:(id)handler;
+- (void)_handleRetryAfterRegisterWithRequest:(id)request response:(id)response completionHandler:(id)handler;
+- (void)_handleRetryAfterTSMSyncForPushTopic:(id)topic withRequest:(id)request taskIdentifier:(unint64_t)identifier completionHandler:(id)handler;
+- (void)_passOwnershipTokenForPaymentCredential:(id)credential completion:(id)completion;
+- (void)_passWithData:(id)data response:(id)response error:(id)error completion:(id)completion;
+- (void)_performVerificationRequest:(id)request selectedMethodGroup:(id)group selectedMethod:(id)method pass:(id)pass taskID:(unint64_t)d completion:(id)completion;
+- (void)_recentConfiguration:(id)configuration;
 - (void)_regionChanged;
-- (void)_registerIfNeededWithResponse:(id)a3 task:(id)a4 isRedirect:(BOOL)a5 completion:(id)a6;
-- (void)_renewAppleAccountWithCompletionHandler:(id)a3;
+- (void)_registerIfNeededWithResponse:(id)response task:(id)task isRedirect:(BOOL)redirect completion:(id)completion;
+- (void)_renewAppleAccountWithCompletionHandler:(id)handler;
 - (void)_resetSupportInRegionCache;
-- (void)_secureRequestBuilderForRegion:(id)a3 fields:(unint64_t)a4 completion:(id)a5;
-- (void)_shouldPerformApplePayTrustRegistrationWithCompletion:(id)a3;
-- (void)_startBackgroundURLSessionWithIdentifier:(id)a3 context:(id)a4 backgroundDelegate:(id)a5 completion:(id)a6;
-- (void)_storePassOwnershipToken:(id)a3 withIdentifier:(id)a4;
-- (void)_updateSharedServiceWithContext:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)backgroundDownloadPassesForPushTopic:(id)a3 sinceLastUpdatedTag:(BOOL)a4;
-- (void)backgroundDownloadPassesSinceLastUpdatedTag:(BOOL)a3;
-- (void)backgroundDownloadRemotePassAssets:(id)a3 forSuffixesAndScreenScales:(id)a4 cloudStoreCoordinatorDelegate:(id)a5;
-- (void)backgroundDownloadWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4;
-- (void)backgroundPerformDeviceCheckInForRegion:(id)a3 identifier:(id)a4;
-- (void)backgroundRegisterCredentialWithRequest:(id)a3;
+- (void)_secureRequestBuilderForRegion:(id)region fields:(unint64_t)fields completion:(id)completion;
+- (void)_shouldPerformApplePayTrustRegistrationWithCompletion:(id)completion;
+- (void)_startBackgroundURLSessionWithIdentifier:(id)identifier context:(id)context backgroundDelegate:(id)delegate completion:(id)completion;
+- (void)_storePassOwnershipToken:(id)token withIdentifier:(id)identifier;
+- (void)_updateSharedServiceWithContext:(id)context;
+- (void)addDelegate:(id)delegate;
+- (void)backgroundDownloadPassesForPushTopic:(id)topic sinceLastUpdatedTag:(BOOL)tag;
+- (void)backgroundDownloadPassesSinceLastUpdatedTag:(BOOL)tag;
+- (void)backgroundDownloadRemotePassAssets:(id)assets forSuffixesAndScreenScales:(id)scales cloudStoreCoordinatorDelegate:(id)delegate;
+- (void)backgroundDownloadWithPassTypeIdentifier:(id)identifier serialNumber:(id)number;
+- (void)backgroundPerformDeviceCheckInForRegion:(id)region identifier:(id)identifier;
+- (void)backgroundRegisterCredentialWithRequest:(id)request;
 - (void)dealloc;
-- (void)getHasBackgroundDownloadTaskPassesForPushTopic:(id)a3 completion:(id)a4;
-- (void)handleResponse:(id)a3 withError:(id)a4 data:(id)a5 task:(id)a6 completionHandler:(id)a7;
-- (void)handleWillPerformHTTPRedirectionWithResponse:(id)a3 originalRequest:(id)a4 redirectHandler:(id)a5;
+- (void)getHasBackgroundDownloadTaskPassesForPushTopic:(id)topic completion:(id)completion;
+- (void)handleResponse:(id)response withError:(id)error data:(id)data task:(id)task completionHandler:(id)handler;
+- (void)handleWillPerformHTTPRedirectionWithResponse:(id)response originalRequest:(id)request redirectHandler:(id)handler;
 - (void)invalidateBackgroundSession;
-- (void)processRetryRequest:(id)a3 responseData:(id)a4 orginalRequest:(id)a5 completion:(id)a6;
-- (void)removeDelegate:(id)a3;
-- (void)removeVerificationRequestRecord:(id)a3;
-- (void)setContext:(id)a3;
-- (void)setSharedService:(BOOL)a3;
-- (void)sharedPaymentServiceChanged:(id)a3;
-- (void)signNonce:(id)a3 withCompletion:(id)a4;
-- (void)startBackgroundURLSessionWithIdentifier:(id)a3 context:(id)a4 backgroundDelegate:(id)a5 completion:(id)a6;
-- (void)updateContextAndNotifyIfNeeded:(id)a3;
-- (void)updateVerificationRecord:(id)a3;
+- (void)processRetryRequest:(id)request responseData:(id)data orginalRequest:(id)orginalRequest completion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)removeVerificationRequestRecord:(id)record;
+- (void)setContext:(id)context;
+- (void)setSharedService:(BOOL)service;
+- (void)sharedPaymentServiceChanged:(id)changed;
+- (void)signNonce:(id)nonce withCompletion:(id)completion;
+- (void)startBackgroundURLSessionWithIdentifier:(id)identifier context:(id)context backgroundDelegate:(id)delegate completion:(id)completion;
+- (void)updateContextAndNotifyIfNeeded:(id)needed;
+- (void)updateVerificationRecord:(id)record;
 @end
 
 @implementation PKPaymentWebService
@@ -287,13 +287,13 @@
     if (!qword_1EB5A03D0)
     {
       v3 = +[PKPaymentService paymentService];
-      v4 = [v3 sharedPaymentWebServiceContext];
-      if (v4)
+      sharedPaymentWebServiceContext = [v3 sharedPaymentWebServiceContext];
+      if (sharedPaymentWebServiceContext)
       {
         v5 = [PKPaymentWebService alloc];
         v6 = +[PKPaymentWebServiceTargetDevice localTargetDevice];
         v7 = +[PKSharedPaymentWebServiceArchiver sharedPaymentWebServiceArchiver];
-        v8 = [(PKPaymentWebService *)v5 initWithContext:v4 targetDevice:v6 archiver:v7 tapToRadarDelegate:v3];
+        v8 = [(PKPaymentWebService *)v5 initWithContext:sharedPaymentWebServiceContext targetDevice:v6 archiver:v7 tapToRadarDelegate:v3];
         v9 = qword_1EB5A03D0;
         qword_1EB5A03D0 = v8;
 
@@ -351,9 +351,9 @@
   os_unfair_lock_unlock(&self->_lock);
   if (paymentSupportInRegion == 1)
   {
-    v4 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
-    v5 = [(PKPaymentWebService *)self context];
-    v6 = [v5 contextMeetsProvisioningEnablementPercentageThresholdForRegion:v4];
+    deviceRegion = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
+    context = [(PKPaymentWebService *)self context];
+    v6 = [context contextMeetsProvisioningEnablementPercentageThresholdForRegion:deviceRegion];
 
     if (v6)
     {
@@ -378,32 +378,32 @@
 
 - (BOOL)_isSandboxAccount
 {
-  v2 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v3 = [v2 isSandboxAccount];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  isSandboxAccount = [_appleAccountInformation isSandboxAccount];
 
-  return v3;
+  return isSandboxAccount;
 }
 
-- (unint64_t)registerAuxiliaryCapabilityWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)registerAuxiliaryCapabilityWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
-  if (v10)
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
     objc_initWeak(location, self);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __106__PKPaymentWebService_PKAuxiliaryCapabilityWebService__registerAuxiliaryCapabilityWithRequest_completion___block_invoke;
     v14[3] = &unk_1E79C8FF8;
     objc_copyWeak(v18, location);
-    v17 = v7;
-    v15 = v6;
-    v16 = v10;
-    v18[1] = v8;
+    v17 = completionCopy;
+    v15 = requestCopy;
+    v16 = deviceID;
+    v18[1] = nextTaskID;
     [(PKPaymentWebService *)self _auxiliaryRegistrationServiceURLForRequest:v15 completion:v14];
 
     objc_destroyWeak(v18);
@@ -419,14 +419,14 @@
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Missing deviceID", location, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v12 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-      (*(v7 + 2))(v7, 0, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v12);
     }
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __106__PKPaymentWebService_PKAuxiliaryCapabilityWebService__registerAuxiliaryCapabilityWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -536,26 +536,26 @@ BOOL __106__PKPaymentWebService_PKAuxiliaryCapabilityWebService__registerAuxilia
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)_auxiliaryCapabilityRegisterResultForResponse:(id)a3 error:(id)a4 successHandler:(id)a5
+- (unint64_t)_auxiliaryCapabilityRegisterResultForResponse:(id)response error:(id)error successHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v8)
+    if (errorCopy)
     {
       v11 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v7 URL];
-        v13 = [v12 absoluteString];
+        v12 = [responseCopy URL];
+        absoluteString = [v12 absoluteString];
         v15 = 138412546;
-        v16 = v13;
+        v16 = absoluteString;
         v17 = 2112;
-        v18 = v8;
+        v18 = errorCopy;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Error executing request: %@ error: %@", &v15, 0x16u);
       }
     }
@@ -563,41 +563,41 @@ BOOL __106__PKPaymentWebService_PKAuxiliaryCapabilityWebService__registerAuxilia
     goto LABEL_8;
   }
 
-  if (([v7 statusCode] - 200) > 0x63)
+  if (([responseCopy statusCode] - 200) > 0x63)
   {
 LABEL_8:
     v10 = 0;
     goto LABEL_9;
   }
 
-  v10 = v9[2](v9);
+  v10 = handlerCopy[2](handlerCopy);
 LABEL_9:
 
   return v10;
 }
 
-- (unint64_t)checkAuxiliaryCapabilityRegistrationStateWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)checkAuxiliaryCapabilityRegistrationStateWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(PKWebService *)self nextTaskID];
-    v9 = [(PKPaymentWebService *)self context];
-    v10 = [v9 deviceID];
-    if (v10)
+    nextTaskID = [(PKWebService *)self nextTaskID];
+    context = [(PKPaymentWebService *)self context];
+    deviceID = [context deviceID];
+    if (deviceID)
     {
-      [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+      [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
       objc_initWeak(location, self);
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __120__PKPaymentWebService_PKAuxiliaryCapabilityWebService__checkAuxiliaryCapabilityRegistrationStateWithRequest_completion___block_invoke;
       v14[3] = &unk_1E79C8FF8;
       objc_copyWeak(v18, location);
-      v17 = v7;
-      v15 = v6;
-      v16 = v10;
-      v18[1] = v8;
+      v17 = completionCopy;
+      v15 = requestCopy;
+      v16 = deviceID;
+      v18[1] = nextTaskID;
       [(PKPaymentWebService *)self _auxiliaryRegistrationServiceURLForRequest:v15 completion:v14];
 
       objc_destroyWeak(v18);
@@ -614,16 +614,16 @@ LABEL_9:
       }
 
       v12 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-      (*(v7 + 2))(v7, 0, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v12);
     }
   }
 
   else
   {
-    v8 = 0;
+    nextTaskID = 0;
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __120__PKPaymentWebService_PKAuxiliaryCapabilityWebService__checkAuxiliaryCapabilityRegistrationStateWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -724,28 +724,28 @@ BOOL __120__PKPaymentWebService_PKAuxiliaryCapabilityWebService__checkAuxiliaryC
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)auxiliaryCapabilityKeyCreationMetadataWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)auxiliaryCapabilityKeyCreationMetadataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(PKWebService *)self nextTaskID];
-    v9 = [(PKPaymentWebService *)self context];
-    v10 = [v9 deviceID];
-    if (v10)
+    nextTaskID = [(PKWebService *)self nextTaskID];
+    context = [(PKPaymentWebService *)self context];
+    deviceID = [context deviceID];
+    if (deviceID)
     {
-      [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+      [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
       objc_initWeak(location, self);
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __117__PKPaymentWebService_PKAuxiliaryCapabilityWebService__auxiliaryCapabilityKeyCreationMetadataWithRequest_completion___block_invoke;
       v14[3] = &unk_1E79C8FF8;
       objc_copyWeak(v18, location);
-      v17 = v7;
-      v15 = v6;
-      v16 = v10;
-      v18[1] = v8;
+      v17 = completionCopy;
+      v15 = requestCopy;
+      v16 = deviceID;
+      v18[1] = nextTaskID;
       [(PKPaymentWebService *)self _auxiliaryRegistrationServiceURLForRequest:v15 completion:v14];
 
       objc_destroyWeak(v18);
@@ -762,18 +762,18 @@ BOOL __120__PKPaymentWebService_PKAuxiliaryCapabilityWebService__checkAuxiliaryC
       }
 
       v12 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-      (*(v7 + 2))(v7, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, v12);
 
-      v8 = 0;
+      nextTaskID = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    nextTaskID = 0;
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __117__PKPaymentWebService_PKAuxiliaryCapabilityWebService__auxiliaryCapabilityKeyCreationMetadataWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -874,44 +874,44 @@ BOOL __117__PKPaymentWebService_PKAuxiliaryCapabilityWebService__auxiliaryCapabi
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)fetchBarcodesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)fetchBarcodesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
-  if (v10)
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
     objc_initWeak(&location, self);
-    v11 = [v6 pass];
-    v12 = [v11 passTypeIdentifier];
-    v13 = [v9 regionForIdentifier:v12];
-    v14 = [v13 partnerServiceURL];
+    pass = [requestCopy pass];
+    passTypeIdentifier = [pass passTypeIdentifier];
+    v13 = [context regionForIdentifier:passTypeIdentifier];
+    partnerServiceURL = [v13 partnerServiceURL];
 
-    v15 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v16 = [v6 _urlRequestWithServiceURL:v14 deviceIdentifier:v10 appleAccountInformation:v15];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v16 = [requestCopy _urlRequestWithServiceURL:partnerServiceURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __92__PKPaymentWebService_PKAuxiliaryCapabilityWebService__fetchBarcodesWithRequest_completion___block_invoke;
     v19[3] = &unk_1E79C8FD0;
     objc_copyWeak(&v21, &location);
-    v20 = v7;
-    [(PKWebService *)self performRequest:v16 taskIdentifier:v8 completionHandler:v19];
+    v20 = completionCopy;
+    [(PKWebService *)self performRequest:v16 taskIdentifier:nextTaskID completionHandler:v19];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v17 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v17);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __92__PKPaymentWebService_PKAuxiliaryCapabilityWebService__fetchBarcodesWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -971,38 +971,38 @@ BOOL __92__PKPaymentWebService_PKAuxiliaryCapabilityWebService__fetchBarcodesWit
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)_auxiliaryRegistrationServiceURLForRequest:(id)a3 completion:(id)a4
+- (void)_auxiliaryRegistrationServiceURLForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v6 pass];
-  v10 = [v9 passTypeIdentifier];
-  v11 = v10;
-  if (v10)
+  requestCopy = request;
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self context];
+  pass = [requestCopy pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  v11 = passTypeIdentifier;
+  if (passTypeIdentifier)
   {
-    v12 = v10;
+    primaryRegionIdentifier = passTypeIdentifier;
   }
 
   else
   {
-    v12 = [v8 primaryRegionIdentifier];
+    primaryRegionIdentifier = [context primaryRegionIdentifier];
   }
 
-  v13 = v12;
+  v13 = primaryRegionIdentifier;
 
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__4;
   v27 = __Block_byref_object_dispose__4;
-  v14 = [v8 regionForIdentifier:v13];
-  v28 = [v14 partnerServiceURL];
+  v14 = [context regionForIdentifier:v13];
+  partnerServiceURL = [v14 partnerServiceURL];
 
   v15 = v24[5];
   if (v15)
   {
-    v7[2](v7, v15, 0);
+    completionCopy[2](completionCopy, v15, 0);
   }
 
   else
@@ -1019,9 +1019,9 @@ BOOL __92__PKPaymentWebService_PKAuxiliaryCapabilityWebService__fetchBarcodesWit
     v17[2] = __110__PKPaymentWebService_PKAuxiliaryCapabilityWebService___auxiliaryRegistrationServiceURLForRequest_completion___block_invoke;
     v17[3] = &unk_1E79C9020;
     v21 = &v23;
-    v18 = v8;
+    v18 = context;
     v19 = v13;
-    v20 = v7;
+    v20 = completionCopy;
     [(PKPaymentWebService *)self registerDeviceWithCompletion:v17];
   }
 
@@ -1065,22 +1065,22 @@ void __110__PKPaymentWebService_PKAuxiliaryCapabilityWebService___auxiliaryRegis
   }
 }
 
-- (unint64_t)_performPaymentOfferRequest:(id)a3 responseClass:(Class)a4 completion:(id)a5
+- (unint64_t)_performPaymentOfferRequest:(id)request responseClass:(Class)class completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PKWebService *)self nextTaskID];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __91__PKPaymentWebService_PaymentOffers___performPaymentOfferRequest_responseClass_completion___block_invoke;
   v13[3] = &unk_1E79C90C8;
-  v14 = v8;
-  v15 = a4;
+  v14 = completionCopy;
+  classCopy = class;
   v13[4] = self;
-  v11 = v8;
-  [(PKWebService *)self performRequest:v9 taskIdentifier:v10 completionHandler:v13];
+  v11 = completionCopy;
+  [(PKWebService *)self performRequest:requestCopy taskIdentifier:nextTaskID completionHandler:v13];
 
-  return v10;
+  return nextTaskID;
 }
 
 void __91__PKPaymentWebService_PaymentOffers___performPaymentOfferRequest_responseClass_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1129,140 +1129,140 @@ BOOL __91__PKPaymentWebService_PaymentOffers___performPaymentOfferRequest_respon
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)paymentOfferCatalogWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)paymentOfferCatalogWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)paymentOffersDynamicContentWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)paymentOffersDynamicContentWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)paymentOffersWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)paymentOffersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)selectedOffersWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)selectedOffersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)confirmOffersWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)confirmOffersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)cancelPaymentOfferWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)cancelPaymentOfferWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)paymentRewardsBalancesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)paymentRewardsBalancesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)paymentRewardsRedemptionsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)paymentRewardsRedemptionsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)merchandisingWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)merchandisingWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [v7 _urlRequest];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _urlRequest = [requestCopy _urlRequest];
 
-  v9 = [(PKPaymentWebService *)self _performPaymentOfferRequest:v8 responseClass:objc_opt_class() completion:v6];
+  v9 = [(PKPaymentWebService *)self _performPaymentOfferRequest:_urlRequest responseClass:objc_opt_class() completion:completionCopy];
   return v9;
 }
 
-- (unint64_t)transferEligibilityWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)transferEligibilityWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)scheduleTransferWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)scheduleTransferWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__PKPaymentWebService_Savings__scheduleTransferWithRequest_completion___block_invoke;
   v12[3] = &unk_1E79CB710;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v16 = v8;
-  v9 = v7;
-  v10 = v6;
+  v13 = requestCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v16 = nextTaskID;
+  v9 = completionCopy;
+  v10 = requestCopy;
   [(PKPaymentWebService *)self _applePayTrustPublicKeyHashWithCompletion:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __71__PKPaymentWebService_Savings__scheduleTransferWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1275,98 +1275,98 @@ void __71__PKPaymentWebService_Savings__scheduleTransferWithRequest_completion__
   [*(a1 + 40) _performAccountApplePayTrustProtocolRequest:v5 originalRequest:*(a1 + 32) taskID:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (unint64_t)transfersWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)transfersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountBalanceHistoryWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountBalanceHistoryWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)dailyCashEligibilityWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)dailyCashEligibilityWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)savingsAccountStatementsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)savingsAccountStatementsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountTaxFormsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountTaxFormsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)savingsAccountUserInfoWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)savingsAccountUserInfoWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountReportDeviceEventWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountReportDeviceEventWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)discoveryManifestWithCompletion:(id)a3
+- (unint64_t)discoveryManifestWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPaymentWebService *)self context];
-  v7 = [v6 configuration];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  configuration = [context configuration];
   v8 = PKCurrentRegion();
-  v9 = [v7 discoveryManifestURLForRegion:v8];
+  v9 = [configuration discoveryManifestURLForRegion:v8];
 
   if (v9)
   {
@@ -1385,8 +1385,8 @@ void __71__PKPaymentWebService_Savings__scheduleTransferWithRequest_completion__
     v15[1] = 3221225472;
     v15[2] = __78__PKPaymentWebService_PKDiscoveryWebService__discoveryManifestWithCompletion___block_invoke;
     v15[3] = &unk_1E79CB9F0;
-    v16 = v4;
-    [(PKWebService *)self performRequest:v11 taskIdentifier:v5 completionHandler:v15];
+    v16 = completionCopy;
+    [(PKWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v15];
   }
 
   else
@@ -1398,10 +1398,10 @@ void __71__PKPaymentWebService_Savings__scheduleTransferWithRequest_completion__
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Discovery Manifest URL is nil. Not updating.", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v5;
+  return nextTaskID;
 }
 
 void __78__PKPaymentWebService_PKDiscoveryWebService__discoveryManifestWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1431,35 +1431,35 @@ void __78__PKPaymentWebService_PKDiscoveryWebService__discoveryManifestWithCompl
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)discoveryBundleForURL:(id)a3 completion:(id)a4
+- (unint64_t)discoveryBundleForURL:(id)l completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
+  completionCopy = completion;
+  lCopy = l;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v9 = objc_alloc_init(PKPaymentConfigurationRequest);
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v9];
-  v10 = [(PKPaymentConfigurationRequest *)v9 _requestWithServiceURL:v7];
+  v10 = [(PKPaymentConfigurationRequest *)v9 _requestWithServiceURL:lCopy];
 
-  [(PKWebService *)self performRequest:v10 taskIdentifier:v8 completionHandler:v6];
-  return v8;
+  [(PKWebService *)self performRequest:v10 taskIdentifier:nextTaskID completionHandler:completionCopy];
+  return nextTaskID;
 }
 
-- (unint64_t)vpanNonceForPaymentPass:(id)a3 completion:(id)a4
+- (unint64_t)vpanNonceForPaymentPass:(id)pass completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
+  passCopy = pass;
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v10 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v11 = [(PKWebService *)self nextTaskID];
-  if (v7)
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  if (completionCopy)
   {
-    if (v6)
+    if (passCopy)
     {
       v12 = PKLogFacilityTypeGetObject(7uLL);
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-      if (v9)
+      if (deviceID)
       {
         if (v13)
         {
@@ -1467,18 +1467,18 @@ void __78__PKPaymentWebService_PKDiscoveryWebService__discoveryManifestWithCompl
           _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Getting nonce for VPAN", buf, 2u);
         }
 
-        v14 = [(PKPaymentWebService *)self context];
-        v15 = [v14 primaryRegion];
-        v16 = [v15 paymentServicesURL];
+        context2 = [(PKPaymentWebService *)self context];
+        primaryRegion = [context2 primaryRegion];
+        paymentServicesURL = [primaryRegion paymentServicesURL];
 
-        v17 = [[PKPaymentCredentialNonceRequest alloc] initWithPaymentPass:v6 deviceIdentifier:v9];
-        v18 = [(PKPaymentCredentialNonceRequest *)v17 _urlRequestWithServiceURL:v16 appleAccountInformation:v10];
+        v17 = [[PKPaymentCredentialNonceRequest alloc] initWithPaymentPass:passCopy deviceIdentifier:deviceID];
+        v18 = [(PKPaymentCredentialNonceRequest *)v17 _urlRequestWithServiceURL:paymentServicesURL appleAccountInformation:_appleAccountInformation];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __64__PKPaymentWebService_VPAN__vpanNonceForPaymentPass_completion___block_invoke;
         v21[3] = &unk_1E79CB9F0;
-        v22 = v7;
-        [(PKWebService *)self performRequest:v18 taskIdentifier:v11 completionHandler:v21];
+        v22 = completionCopy;
+        [(PKWebService *)self performRequest:v18 taskIdentifier:nextTaskID completionHandler:v21];
 
         goto LABEL_16;
       }
@@ -1500,21 +1500,21 @@ void __78__PKPaymentWebService_PKDiscoveryWebService__discoveryManifestWithCompl
       }
     }
 
-    v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v7 + 2))(v7, 0, v16);
+    paymentServicesURL = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
+    (*(completionCopy + 2))(completionCopy, 0, paymentServicesURL);
     goto LABEL_16;
   }
 
-  v16 = PKLogFacilityTypeGetObject(7uLL);
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  paymentServicesURL = PKLogFacilityTypeGetObject(7uLL);
+  if (os_log_type_enabled(paymentServicesURL, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Can't retrieve VPAN nonce without a completion", buf, 2u);
+    _os_log_impl(&dword_1AD337000, paymentServicesURL, OS_LOG_TYPE_DEFAULT, "Can't retrieve VPAN nonce without a completion", buf, 2u);
   }
 
 LABEL_16:
 
-  return v11;
+  return nextTaskID;
 }
 
 void __64__PKPaymentWebService_VPAN__vpanNonceForPaymentPass_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1528,35 +1528,35 @@ void __64__PKPaymentWebService_VPAN__vpanNonceForPaymentPass_completion___block_
   (*(v8 + 16))(v8, v9, v6);
 }
 
-- (unint64_t)vpanPaymentCredentialsForPaymentPass:(id)a3 vpanIdentifier:(id)a4 nonce:(id)a5 encryptionFields:(id)a6 merchantHost:(id)a7 regenerate:(BOOL)a8 completion:(id)a9
+- (unint64_t)vpanPaymentCredentialsForPaymentPass:(id)pass vpanIdentifier:(id)identifier nonce:(id)nonce encryptionFields:(id)fields merchantHost:(id)host regenerate:(BOOL)regenerate completion:(id)completion
 {
-  v9 = a8;
-  v15 = a3;
-  v43 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v42 = a9;
-  v19 = [(PKPaymentWebService *)self context];
-  v20 = [v19 deviceID];
+  regenerateCopy = regenerate;
+  passCopy = pass;
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  fieldsCopy = fields;
+  hostCopy = host;
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v41 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v21 = [(PKWebService *)self nextTaskID];
-  v22 = v21;
-  if (v20)
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  v22 = nextTaskID;
+  if (deviceID)
   {
-    v38 = v21;
-    v39 = v16;
-    v40 = v17;
-    v23 = [(PKPaymentWebService *)self context];
-    v24 = [v23 primaryRegion];
-    v25 = [v24 paymentServicesURL];
+    v38 = nextTaskID;
+    v39 = nonceCopy;
+    v40 = fieldsCopy;
+    context2 = [(PKPaymentWebService *)self context];
+    primaryRegion = [context2 primaryRegion];
+    paymentServicesURL = [primaryRegion paymentServicesURL];
 
-    if (v9)
+    if (regenerateCopy)
     {
       v26 = objc_opt_class();
 
-      v18 = 0;
+      hostCopy = 0;
     }
 
     else
@@ -1564,31 +1564,31 @@ void __64__PKPaymentWebService_VPAN__vpanNonceForPaymentPass_completion___block_
       v26 = objc_opt_class();
     }
 
-    v37 = v18;
-    v30 = v43;
-    v32 = [[v26 alloc] initWithPaymentPass:v15 vpanIdentifier:v43 deviceIdentifier:v20 nonce:v39 encryptionFields:v40 merchantHost:v18];
-    v33 = [(PKPaymentWebService *)self _paymentDevice];
+    v37 = hostCopy;
+    v30 = identifierCopy;
+    v32 = [[v26 alloc] initWithPaymentPass:passCopy vpanIdentifier:identifierCopy deviceIdentifier:deviceID nonce:v39 encryptionFields:v40 merchantHost:hostCopy];
+    _paymentDevice = [(PKPaymentWebService *)self _paymentDevice];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __139__PKPaymentWebService_VPAN__vpanPaymentCredentialsForPaymentPass_vpanIdentifier_nonce_encryptionFields_merchantHost_regenerate_completion___block_invoke;
     v44[3] = &unk_1E79D6158;
     v45 = v32;
-    v46 = v25;
-    v31 = v41;
-    v47 = v41;
-    v48 = self;
+    v46 = paymentServicesURL;
+    v31 = _appleAccountInformation;
+    v47 = _appleAccountInformation;
+    selfCopy = self;
     v22 = v38;
     v50 = v38;
-    v29 = v42;
-    v49 = v42;
-    v34 = v25;
+    v29 = completionCopy;
+    v49 = completionCopy;
+    v34 = paymentServicesURL;
     v35 = v32;
-    v16 = v39;
+    nonceCopy = v39;
     v28 = v35;
-    [v33 rewrapDataWithCompletionHandler:v44];
+    [_paymentDevice rewrapDataWithCompletionHandler:v44];
 
-    v17 = v40;
-    v18 = v37;
+    fieldsCopy = v40;
+    hostCopy = v37;
   }
 
   else
@@ -1601,10 +1601,10 @@ void __64__PKPaymentWebService_VPAN__vpanNonceForPaymentPass_completion___block_
     }
 
     v28 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    v29 = v42;
-    (*(v42 + 2))(v42, 0, v28);
-    v30 = v43;
-    v31 = v41;
+    v29 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, v28);
+    v30 = identifierCopy;
+    v31 = _appleAccountInformation;
   }
 
   return v22;
@@ -1667,28 +1667,28 @@ void __139__PKPaymentWebService_VPAN__vpanPaymentCredentialsForPaymentPass_vpanI
 LABEL_9:
 }
 
-- (unint64_t)virtualCardPaymentSessionWithCompletion:(id)a3
+- (unint64_t)virtualCardPaymentSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self context];
-  v6 = [v5 deviceID];
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v7 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 primaryRegion];
-  v11 = [v10 paymentServicesURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context2 = [(PKPaymentWebService *)self context];
+  primaryRegion = [context2 primaryRegion];
+  paymentServicesURL = [primaryRegion paymentServicesURL];
 
-  if (v6)
+  if (deviceID)
   {
-    v12 = [[PKVPANPaymentSessionRequest alloc] initWithDeviceIdentifier:v6];
-    v13 = [(PKVPANPaymentSessionRequest *)v12 _urlRequestWithServiceURL:v11 appleAccountInformation:v7];
+    v12 = [[PKVPANPaymentSessionRequest alloc] initWithDeviceIdentifier:deviceID];
+    v13 = [(PKVPANPaymentSessionRequest *)v12 _urlRequestWithServiceURL:paymentServicesURL appleAccountInformation:_appleAccountInformation];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __69__PKPaymentWebService_VPAN__virtualCardPaymentSessionWithCompletion___block_invoke;
     v16[3] = &unk_1E79CB9F0;
-    v17 = v4;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+    v17 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
   }
 
   else
@@ -1701,10 +1701,10 @@ LABEL_9:
     }
 
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v4 + 2))(v4, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __69__PKPaymentWebService_VPAN__virtualCardPaymentSessionWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1756,22 +1756,22 @@ void __69__PKPaymentWebService_VPAN__virtualCardPaymentSessionWithCompletion___b
   }
 }
 
-- (unint64_t)accountsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [v7 accountServicesURL];
-  v9 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v10 = [v7 _urlRequestWithServiceURL:v8 AppleAccountInformation:v9];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  accountServicesURL = [requestCopy accountServicesURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v10 = [requestCopy _urlRequestWithServiceURL:accountServicesURL AppleAccountInformation:_appleAccountInformation];
 
   v11 = objc_opt_class();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PKPaymentWebService_PKAccountWebService__accountsWithRequest_completion___block_invoke;
   v15[3] = &unk_1E79DAA98;
-  v16 = v6;
-  v12 = v6;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = [(PKPaymentWebService *)self _performAccountRequest:v10 responseClass:v11 completion:v15];
 
   return v13;
@@ -1788,135 +1788,135 @@ uint64_t __75__PKPaymentWebService_PKAccountWebService__accountsWithRequest_comp
   return result;
 }
 
-- (unint64_t)accountWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)deleteAccountWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)deleteAccountWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountActionWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountActionWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountTermsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountTermsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountTermsDataWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountTermsDataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountPassDetailsRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountPassDetailsRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
-  v11 = [v7 _urlRequestWithAppleAccountInformation:v8 deviceIdentifier:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  v11 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation deviceIdentifier:deviceID];
 
-  v12 = [(PKPaymentWebService *)self _performAccountRequest:v11 responseClass:objc_opt_class() completion:v6];
+  v12 = [(PKPaymentWebService *)self _performAccountRequest:v11 responseClass:objc_opt_class() completion:completionCopy];
   return v12;
 }
 
-- (unint64_t)accountBankLookupWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountBankLookupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountStatementsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountStatementsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountDocumentActionWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountDocumentActionWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)schedulePaymentWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)schedulePaymentWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__PKPaymentWebService_PKAccountWebService__schedulePaymentWithRequest_completion___block_invoke;
   v12[3] = &unk_1E79CB710;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v16 = v8;
-  v9 = v7;
-  v10 = v6;
+  v13 = requestCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v16 = nextTaskID;
+  v9 = completionCopy;
+  v10 = requestCopy;
   [(PKPaymentWebService *)self _applePayTrustPublicKeyHashWithCompletion:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __82__PKPaymentWebService_PKAccountWebService__schedulePaymentWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1929,110 +1929,110 @@ void __82__PKPaymentWebService_PKAccountWebService__schedulePaymentWithRequest_c
   [*(a1 + 40) _performAccountApplePayTrustProtocolRequest:v5 originalRequest:*(a1 + 32) taskID:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (unint64_t)paymentsWithRequest:(id)a3 account:(id)a4 completion:(id)a5
+- (unint64_t)paymentsWithRequest:(id)request account:(id)account completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  v11 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v12 = [v10 _urlRequestWithAppleAccountInformation:v11];
+  completionCopy = completion;
+  accountCopy = account;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v12 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v13 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:v9 responseClass:objc_opt_class() completion:v8];
+  v13 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:accountCopy responseClass:objc_opt_class() completion:completionCopy];
   return v13;
 }
 
-- (unint64_t)cancelPaymentWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)cancelPaymentWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)fundingSourcesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)fundingSourcesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)addFundingSourceWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)addFundingSourceWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)deleteFundingSourceWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)deleteFundingSourceWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountServiceCertificatesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountServiceCertificatesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)customizePhysicalCardWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)customizePhysicalCardWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)requestPhysicalCardWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)requestPhysicalCardWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__PKPaymentWebService_PKAccountWebService__requestPhysicalCardWithRequest_completion___block_invoke;
   v12[3] = &unk_1E79CB710;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v16 = v8;
-  v9 = v7;
-  v10 = v6;
+  v13 = requestCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v16 = nextTaskID;
+  v9 = completionCopy;
+  v10 = requestCopy;
   [(PKPaymentWebService *)self _applePayTrustPublicKeyHashWithCompletion:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __86__PKPaymentWebService_PKAccountWebService__requestPhysicalCardWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2045,25 +2045,25 @@ void __86__PKPaymentWebService_PKAccountWebService__requestPhysicalCardWithReque
   [*(a1 + 40) _performOptionalAccountApplePayTrustProtocolRequest:v5 originalRequest:*(a1 + 32) taskID:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (unint64_t)physicalCardActionWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)physicalCardActionWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__PKPaymentWebService_PKAccountWebService__physicalCardActionWithRequest_completion___block_invoke;
   v12[3] = &unk_1E79CB710;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v16 = v8;
-  v9 = v7;
-  v10 = v6;
+  v13 = requestCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v16 = nextTaskID;
+  v9 = completionCopy;
+  v10 = requestCopy;
   [(PKPaymentWebService *)self _applePayTrustPublicKeyHashWithCompletion:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __85__PKPaymentWebService_PKAccountWebService__physicalCardActionWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2076,171 +2076,171 @@ void __85__PKPaymentWebService_PKAccountWebService__physicalCardActionWithReques
   [*(a1 + 40) _performOptionalAccountApplePayTrustProtocolRequest:v5 originalRequest:*(a1 + 32) taskID:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (unint64_t)physicalCardsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)physicalCardsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)creditAccountUserInfoWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)creditAccountUserInfoWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountUpdateUserInfoWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountUpdateUserInfoWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountDeleteBeneficiaryWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountDeleteBeneficiaryWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)createVirtualCardWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)createVirtualCardWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)virtualCardActionWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)virtualCardActionWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)virtualCardListWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)virtualCardListWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)virtualCardLegacyCredentialsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)virtualCardLegacyCredentialsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)virtualCardSecurityCodeActivity:(id)a3 completion:(id)a4
+- (unint64_t)virtualCardSecurityCodeActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  activityCopy = activity;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:activityCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [activityCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountTransactionAnswerWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountTransactionAnswerWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)applePayTrustSignatureRequestWithRequest:(id)a3 account:(id)a4 completion:(id)a5
+- (unint64_t)applePayTrustSignatureRequestWithRequest:(id)request account:(id)account completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  v11 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v12 = [v10 _urlRequestWithAppleAccountInformation:v11];
+  completionCopy = completion;
+  accountCopy = account;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v12 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v13 = [v10 responseClass];
-  v14 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:v9 responseClass:v13 completion:v8];
+  responseClass = [requestCopy responseClass];
+  v14 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:accountCopy responseClass:responseClass completion:completionCopy];
 
   return v14;
 }
 
-- (unint64_t)performInstallmentBindWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)performInstallmentBindWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)performInstallmentAuthorizationWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)performInstallmentAuthorizationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__PKPaymentWebService_PKAccountWebService__performInstallmentAuthorizationWithRequest_completion___block_invoke;
   v12[3] = &unk_1E79CB710;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v16 = v8;
-  v9 = v7;
-  v10 = v6;
+  v13 = requestCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v16 = nextTaskID;
+  v9 = completionCopy;
+  v10 = requestCopy;
   [(PKPaymentWebService *)self _applePayTrustPublicKeyHashWithCompletion:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __98__PKPaymentWebService_PKAccountWebService__performInstallmentAuthorizationWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2253,164 +2253,164 @@ void __98__PKPaymentWebService_PKAccountWebService__performInstallmentAuthorizat
   [*(a1 + 40) _performAccountApplePayTrustProtocolRequest:v5 originalRequest:*(a1 + 32) taskID:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (unint64_t)exportTransactionDataWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)exportTransactionDataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 request:v7 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 request:requestCopy responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountUsersWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountUsersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)deleteAccountUserWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)deleteAccountUserWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)updateAccountUserPreferencesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)updateAccountUserPreferencesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)sharedAccountCloudStoreWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)sharedAccountCloudStoreWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)createdZoneWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)createdZoneWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)promotionsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)promotionsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)enhancedMerchantsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)enhancedMerchantsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)accountSendReportWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)accountSendReportWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)supportTopicsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)supportTopicsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)creditRecoveryPaymentPlansWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)creditRecoveryPaymentPlansWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)authenticationTokenWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)authenticationTokenWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (void)handleResponse:(id)a3 withError:(id)a4 data:(id)a5 task:(id)a6 completionHandler:(id)a7
+- (void)handleResponse:(id)response withError:(id)error data:(id)data task:(id)task completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v34 = a5;
-  objc_initWeak(location, a6);
-  v14 = a7;
+  responseCopy = response;
+  errorCopy = error;
+  dataCopy = data;
+  objc_initWeak(location, task);
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(location);
-  v16 = [WeakRetained currentRequest];
+  currentRequest = [WeakRetained currentRequest];
 
-  v17 = [v12 statusCode];
-  if (v17 != 301)
+  statusCode = [responseCopy statusCode];
+  if (statusCode != 301)
   {
-    if (v17 == 412)
+    if (statusCode == 412)
     {
       v19 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2419,39 +2419,39 @@ void __98__PKPaymentWebService_PKAccountWebService__performInstallmentAuthorizat
         _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Received Status Code 412.", buf, 2u);
       }
 
-      v18 = [v12 pk_valueForHTTPHeaderField:@"X-Pod-Region"];
-      v20 = [(PKPaymentWebService *)self context];
-      v21 = [v20 regionForIdentifier:v18];
+      v18 = [responseCopy pk_valueForHTTPHeaderField:@"X-Pod-Region"];
+      context = [(PKPaymentWebService *)self context];
+      v21 = [context regionForIdentifier:v18];
       v22 = v21;
-      if (!v21 || ([v21 trustedServiceManagerPushTopic], (v23 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!v21 || ([v21 trustedServiceManagerPushTopic], (trustedServiceManagerPushTopic = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v24 = [v20 primaryRegion];
-        v23 = [v24 trustedServiceManagerPushTopic];
+        primaryRegion = [context primaryRegion];
+        trustedServiceManagerPushTopic = [primaryRegion trustedServiceManagerPushTopic];
       }
 
-      v25 = [v16 mutableCopy];
+      v25 = [currentRequest mutableCopy];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __76__PKPaymentWebService_handleResponse_withError_data_task_completionHandler___block_invoke;
       v43[3] = &unk_1E79DB1F0;
       v43[4] = self;
-      v26 = v23;
+      v26 = trustedServiceManagerPushTopic;
       v44 = v26;
       objc_copyWeak(&v46, location);
-      v45 = v14;
-      [(PKPaymentWebService *)self processRetryRequest:v25 responseData:v34 orginalRequest:v16 completion:v43];
+      v45 = handlerCopy;
+      [(PKPaymentWebService *)self processRetryRequest:v25 responseData:dataCopy orginalRequest:currentRequest completion:v43];
 
       objc_destroyWeak(&v46);
     }
 
-    else if (v17 == 452)
+    else if (statusCode == 452)
     {
       if (self->_handlingApplePayTrustReRegister)
       {
         v18 = objc_loadWeakRetained(location);
         v42.receiver = self;
         v42.super_class = PKPaymentWebService;
-        [(PKWebService *)&v42 handleResponse:v12 withError:v13 data:v34 task:v18 completionHandler:v14];
+        [(PKWebService *)&v42 handleResponse:responseCopy withError:errorCopy data:dataCopy task:v18 completionHandler:handlerCopy];
       }
 
       else
@@ -2472,8 +2472,8 @@ void __98__PKPaymentWebService_PKAccountWebService__performInstallmentAuthorizat
         }
 
         v18 = objc_loadWeakRetained(location);
-        v33 = [v18 originalRequest];
-        [(PKPaymentWebService *)self _handleRetryAfterApplePayTrustEnrollmentWithOriginalRequest:v33 completionHandler:v14];
+        originalRequest = [v18 originalRequest];
+        [(PKPaymentWebService *)self _handleRetryAfterApplePayTrustEnrollmentWithOriginalRequest:originalRequest completionHandler:handlerCopy];
       }
     }
 
@@ -2484,12 +2484,12 @@ void __98__PKPaymentWebService_PKAccountWebService__performInstallmentAuthorizat
       v35[1] = 3221225472;
       v35[2] = __76__PKPaymentWebService_handleResponse_withError_data_task_completionHandler___block_invoke_107;
       v35[3] = &unk_1E79DB218;
-      v40 = v14;
-      v36 = v12;
-      v37 = v13;
-      v38 = v34;
+      v40 = handlerCopy;
+      v36 = responseCopy;
+      v37 = errorCopy;
+      v38 = dataCopy;
       objc_copyWeak(&v41, location);
-      v39 = self;
+      selfCopy = self;
       [(PKPaymentWebService *)self _registerIfNeededWithResponse:v36 task:v30 isRedirect:0 completion:v35];
 
       objc_destroyWeak(&v41);
@@ -2501,7 +2501,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v27 = [v12 pk_valueForHTTPHeaderField:@"Location"];
+  v27 = [responseCopy pk_valueForHTTPHeaderField:@"Location"];
 
   v28 = PKLogFacilityTypeGetObject(7uLL);
   v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
@@ -2516,7 +2516,7 @@ LABEL_22:
     v18 = objc_loadWeakRetained(location);
     v47.receiver = self;
     v47.super_class = PKPaymentWebService;
-    [(PKWebService *)&v47 handleResponse:v12 withError:v13 data:v34 task:v18 completionHandler:v14];
+    [(PKWebService *)&v47 handleResponse:responseCopy withError:errorCopy data:dataCopy task:v18 completionHandler:handlerCopy];
     goto LABEL_22;
   }
 
@@ -2526,7 +2526,7 @@ LABEL_22:
     _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Received Status Code 301.", buf, 2u);
   }
 
-  [(PKPaymentWebService *)self _handleRetryAfterRegisterWithRequest:v16 response:v12 completionHandler:v14];
+  [(PKPaymentWebService *)self _handleRetryAfterRegisterWithRequest:currentRequest response:responseCopy completionHandler:handlerCopy];
 LABEL_23:
 
   objc_destroyWeak(location);
@@ -2576,10 +2576,10 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
     return 1;
   }
 
-  v3 = [(PKPaymentWebService *)self context];
-  v4 = [v3 devSigned];
+  context = [(PKPaymentWebService *)self context];
+  devSigned = [context devSigned];
 
-  if (v4)
+  if (devSigned)
   {
     v5 = PKLogFacilityTypeGetObject(2uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2600,29 +2600,29 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
   if ([v2 _hasRemoteLibrary])
   {
     v3 = objc_alloc_init(getNPKCompanionAgentConnectionClass_3[0]());
-    v4 = [v3 watchPaymentWebService];
+    watchPaymentWebService = [v3 watchPaymentWebService];
   }
 
   else
   {
-    v4 = 0;
+    watchPaymentWebService = 0;
   }
 
-  return v4;
+  return watchPaymentWebService;
 }
 
-- (PKPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 tapToRadarDelegate:(id)a5
+- (PKPaymentWebService)initWithContext:(id)context targetDevice:(id)device tapToRadarDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  deviceCopy = device;
   v26.receiver = self;
   v26.super_class = PKPaymentWebService;
-  v11 = [(PKWebService *)&v26 initWithTapToRadarDelegate:a5];
+  v11 = [(PKWebService *)&v26 initWithTapToRadarDelegate:delegate];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_context, a3);
-    objc_storeStrong(&v12->_targetDevice, a4);
+    objc_storeStrong(&v11->_context, context);
+    objc_storeStrong(&v12->_targetDevice, device);
     v12->_lock._os_unfair_lock_opaque = 0;
     v12->_delegateLock._os_unfair_lock_opaque = 0;
     v12->_contextLock._os_unfair_lock_opaque = 0;
@@ -2649,21 +2649,21 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
     activeRegistrationTasks = v12->_activeRegistrationTasks;
     v12->_activeRegistrationTasks = v22;
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 addObserver:v12 selector:sel__regionChanged name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__regionChanged name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v12;
 }
 
-- (PKPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 archiver:(id)a5 tapToRadarDelegate:(id)a6
+- (PKPaymentWebService)initWithContext:(id)context targetDevice:(id)device archiver:(id)archiver tapToRadarDelegate:(id)delegate
 {
-  v11 = a5;
-  v12 = [(PKPaymentWebService *)self initWithContext:a3 targetDevice:a4 tapToRadarDelegate:a6];
+  archiverCopy = archiver;
+  v12 = [(PKPaymentWebService *)self initWithContext:context targetDevice:device tapToRadarDelegate:delegate];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_archiver, a5);
+    objc_storeStrong(&v12->_archiver, archiver);
   }
 
   return v13;
@@ -2671,13 +2671,13 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_sharedService)
   {
-    v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v4 removeObserver:self name:@"PDSharedPaymentWebServiceDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"PDSharedPaymentWebServiceDidChangeNotification" object:0];
   }
 
   v5.receiver = self;
@@ -2685,12 +2685,12 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
   [(PKPaymentWebService *)&v5 dealloc];
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_contextLock);
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 
   self->_paymentSupportInRegion = 0;
   self->_registrationSupportInRegion = 0;
@@ -2698,49 +2698,49 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
   os_unfair_lock_unlock(&self->_contextLock);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v8 = v4;
+    v8 = delegateCopy;
     os_unfair_lock_lock(&self->_delegateLock);
     delegates = self->_delegates;
     if (!delegates)
     {
-      v6 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+      pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
       v7 = self->_delegates;
-      self->_delegates = v6;
+      self->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
       delegates = self->_delegates;
     }
 
     [(NSHashTable *)delegates addObject:v8];
     os_unfair_lock_unlock(&self->_delegateLock);
-    v4 = v8;
+    delegateCopy = v8;
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
+    delegateCopy = delegate;
     os_unfair_lock_lock(&self->_delegateLock);
-    [(NSHashTable *)self->_delegates removeObject:v4];
+    [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 
     os_unfair_lock_unlock(&self->_delegateLock);
   }
 }
 
-- (void)setSharedService:(BOOL)a3
+- (void)setSharedService:(BOOL)service
 {
-  self->_sharedService = a3;
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 addObserver:self selector:sel_sharedPaymentServiceChanged_ name:@"PDSharedPaymentWebServiceDidChangeNotification" object:0 suspensionBehavior:2];
+  self->_sharedService = service;
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sharedPaymentServiceChanged_ name:@"PDSharedPaymentWebServiceDidChangeNotification" object:0 suspensionBehavior:2];
 }
 
-- (void)sharedPaymentServiceChanged:(id)a3
+- (void)sharedPaymentServiceChanged:(id)changed
 {
   if (self->_sharedService)
   {
@@ -2752,26 +2752,26 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
     v8[2] = __51__PKPaymentWebService_sharedPaymentServiceChanged___block_invoke;
     v8[3] = &unk_1E79DB240;
     v9 = v6;
-    v10 = self;
+    selfCopy = self;
     v7 = v6;
     [v7 sharedPaymentWebServiceContextWithCompletion:v8];
   }
 }
 
-- (void)updateContextAndNotifyIfNeeded:(id)a3
+- (void)updateContextAndNotifyIfNeeded:(id)needed
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
     if (self->_sharedService)
     {
-      [(PKPaymentWebService *)self _updateSharedServiceWithContext:v4];
+      [(PKPaymentWebService *)self _updateSharedServiceWithContext:neededCopy];
     }
 
     else
     {
-      [(PKPaymentWebService *)self setContext:v4];
+      [(PKPaymentWebService *)self setContext:neededCopy];
     }
   }
 
@@ -2787,38 +2787,38 @@ void __76__PKPaymentWebService_handleResponse_withError_data_task_completionHand
   }
 }
 
-- (void)_updateSharedServiceWithContext:(id)a3
+- (void)_updateSharedServiceWithContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   sharedService = self->_sharedService;
-  if (v4 && sharedService)
+  if (contextCopy && sharedService)
   {
-    v6 = [(PKPaymentWebService *)self context];
-    v7 = [v6 archivedDate];
-    if (v7 && ([v4 archivedDate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToDate:", v8), v8, v9))
+    context = [(PKPaymentWebService *)self context];
+    archivedDate = [context archivedDate];
+    if (archivedDate && ([contextCopy archivedDate], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(archivedDate, "isEqualToDate:", v8), v8, v9))
     {
-      v10 = PKLogFacilityTypeGetObject(7uLL);
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      defaultCenter2 = PKLogFacilityTypeGetObject(7uLL);
+      if (os_log_type_enabled(defaultCenter2, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = PKW3CDateStringFromDate(v7);
+        v11 = PKW3CDateStringFromDate(archivedDate);
         v17 = 136315394;
         v18 = "[PKPaymentWebService _updateSharedServiceWithContext:]";
         v19 = 2112;
         v20 = v11;
-        _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "%s called, however the archivedDates matched with a value of %@. Ignoring.", &v17, 0x16u);
+        _os_log_impl(&dword_1AD337000, defaultCenter2, OS_LOG_TYPE_DEFAULT, "%s called, however the archivedDates matched with a value of %@. Ignoring.", &v17, 0x16u);
       }
     }
 
     else
     {
-      [(PKPaymentWebService *)self setContext:v4];
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v13 postNotificationName:@"PKSharedPaymentWebServiceDidChangeNotification" object:0];
+      [(PKPaymentWebService *)self setContext:contextCopy];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"PKSharedPaymentWebServiceDidChangeNotification" object:0];
 
-      v14 = [v6 configuration];
-      v15 = [v4 configuration];
-      v16 = [v14 isEqual:v15];
+      configuration = [context configuration];
+      configuration2 = [contextCopy configuration];
+      v16 = [configuration isEqual:configuration2];
 
       if (v16)
       {
@@ -2827,15 +2827,15 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 postNotificationName:@"PKSharedPaymentWebServiceRegionConfigurationChangedNotification" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 postNotificationName:@"PKSharedPaymentWebServiceRegionConfigurationChangedNotification" object:0];
     }
 
     goto LABEL_14;
   }
 
-  v6 = PKLogFacilityTypeGetObject(7uLL);
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  context = PKLogFacilityTypeGetObject(7uLL);
+  if (os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"on non-shared service";
     if (sharedService)
@@ -2847,7 +2847,7 @@ LABEL_14:
     v18 = "[PKPaymentWebService _updateSharedServiceWithContext:]";
     v19 = 2112;
     v20 = v12;
-    _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "%s called %@. Ignoring.", &v17, 0x16u);
+    _os_log_impl(&dword_1AD337000, context, OS_LOG_TYPE_DEFAULT, "%s called %@. Ignoring.", &v17, 0x16u);
   }
 
 LABEL_15:
@@ -2888,14 +2888,14 @@ LABEL_15:
   return registrationSupportInRegion == 1;
 }
 
-- (BOOL)_needsRegistrationForBrokerURL:(id)a3 shouldCheckSecureElementOwnership:(BOOL)a4
+- (BOOL)_needsRegistrationForBrokerURL:(id)l shouldCheckSecureElementOwnership:(BOOL)ownership
 {
-  v4 = a4;
+  ownershipCopy = ownership;
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentWebService *)self context];
-  v8 = [v7 registrationType];
-  if (v8 == 3)
+  lCopy = l;
+  context = [(PKPaymentWebService *)self context];
+  registrationType = [context registrationType];
+  if (registrationType == 3)
   {
     v10 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2910,8 +2910,8 @@ LABEL_8:
     goto LABEL_42;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = registrationType;
+  if (!registrationType)
   {
     v10 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2926,19 +2926,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v51 = v4;
-  v50 = self;
+  v51 = ownershipCopy;
+  selfCopy = self;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v10 addObject:@"Has Previously Registered: YES"];
-  v52 = v7;
-  if (v6)
+  v52 = context;
+  if (lCopy)
   {
-    v13 = [v7 regions];
+    regions = [context regions];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v14 = [v13 countByEnumeratingWithState:&v53 objects:v61 count:16];
+    v14 = [regions countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v14)
     {
       v15 = v14;
@@ -2951,27 +2951,27 @@ LABEL_7:
         {
           if (*v54 != v17)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(regions);
           }
 
-          v19 = [v13 objectForKeyedSubscript:*(*(&v53 + 1) + 8 * i)];
-          v20 = [v19 brokerURL];
-          if (v20)
+          v19 = [regions objectForKeyedSubscript:*(*(&v53 + 1) + 8 * i)];
+          brokerURL = [v19 brokerURL];
+          if (brokerURL)
           {
-            v21 = v20;
-            v22 = [v6 isEqual:v20];
+            v21 = brokerURL;
+            v22 = [lCopy isEqual:brokerURL];
 
             if (v22)
             {
-              v23 = [v19 certificates];
-              v24 = [v23 count] != 0;
+              certificates = [v19 certificates];
+              v24 = [certificates count] != 0;
 
               v16 |= v24;
             }
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v53 objects:v61 count:16];
+        v15 = [regions countByEnumeratingWithState:&v53 objects:v61 count:16];
       }
 
       while (v15);
@@ -2999,9 +2999,9 @@ LABEL_7:
 
   else
   {
-    v28 = [v7 primaryRegion];
-    v29 = [v28 certificates];
-    v30 = [v29 count];
+    primaryRegion = [context primaryRegion];
+    certificates2 = [primaryRegion certificates];
+    v30 = [certificates2 count];
 
     v31 = objc_alloc(MEMORY[0x1E696AEC0]);
     v27 = v30 == 0;
@@ -3017,12 +3017,12 @@ LABEL_7:
 
   if (v51)
   {
-    v35 = [(PKPaymentWebService *)v50 targetDevice];
-    v36 = [v35 secureElementOwnershipStateForCurrentUser];
+    targetDevice = [(PKPaymentWebService *)selfCopy targetDevice];
+    secureElementOwnershipStateForCurrentUser = [targetDevice secureElementOwnershipStateForCurrentUser];
 
     v37 = objc_alloc(MEMORY[0x1E696AEC0]);
     v38 = @"YES";
-    if ((v36 & 0xFFFFFFFFFFFFFFFELL) != 2)
+    if ((secureElementOwnershipStateForCurrentUser & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
       v38 = @"NO";
     }
@@ -3030,7 +3030,7 @@ LABEL_7:
     v39 = [v37 initWithFormat:@"User Owns Secure Element: %@", v38];
     [v10 addObject:v39];
 
-    v27 |= (v36 & 0xFFFFFFFFFFFFFFFELL) != 2;
+    v27 |= (secureElementOwnershipStateForCurrentUser & 0xFFFFFFFFFFFFFFFELL) != 2;
   }
 
   else
@@ -3076,44 +3076,44 @@ LABEL_7:
     _os_log_impl(&dword_1AD337000, v45, OS_LOG_TYPE_DEFAULT, "Needs Registration: %{public}@ (%{public}@)", buf, 0x16u);
   }
 
-  v7 = v52;
+  context = v52;
 LABEL_42:
 
   return v12 & 1;
 }
 
-- (BOOL)needsConfigurationWithSupportedRegionTimeInterval:(double)a3 unsupportedRegionTimeInterval:(double)a4
+- (BOOL)needsConfigurationWithSupportedRegionTimeInterval:(double)interval unsupportedRegionTimeInterval:(double)timeInterval
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = [(PKPaymentWebService *)self context];
-  v8 = [v7 configurationDate];
-  if (v8)
+  context = [(PKPaymentWebService *)self context];
+  configurationDate = [context configurationDate];
+  if (configurationDate)
   {
-    v9 = [v7 configuration];
-    if (!v9)
+    configuration = [context configuration];
+    if (!configuration)
     {
-      v10 = PKLogFacilityTypeGetObject(7uLL);
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      deviceRegion = PKLogFacilityTypeGetObject(7uLL);
+      if (os_log_type_enabled(deviceRegion, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v26) = 0;
-        _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Configuration parameters not set - Configuration needs update", &v26, 2u);
+        _os_log_impl(&dword_1AD337000, deviceRegion, OS_LOG_TYPE_DEFAULT, "Configuration parameters not set - Configuration needs update", &v26, 2u);
       }
 
       LOBYTE(v18) = 1;
       goto LABEL_34;
     }
 
-    v10 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
-    v11 = [v9 heroImageManifestURLForRegion:v10];
+    deviceRegion = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
+    v11 = [configuration heroImageManifestURLForRegion:deviceRegion];
     if (v11)
     {
       v12 = v11;
-      v13 = [PKPaymentHeroImageManifest manifestFileExistsForRegion:v10];
+      v13 = [PKPaymentHeroImageManifest manifestFileExistsForRegion:deviceRegion];
 
       if (!v13)
       {
-        v16 = PKLogFacilityTypeGetObject(7uLL);
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        date = PKLogFacilityTypeGetObject(7uLL);
+        if (os_log_type_enabled(date, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(v26) = 0;
           v17 = "Hero image manifest file does not exist - Configuration needs update";
@@ -3129,45 +3129,45 @@ LABEL_34:
       }
     }
 
-    v14 = [v9 configurationURL];
-    v15 = PKStockholmForceConfigUpdate(v14, [v7 devSigned], -[PKPaymentWebService _isSandboxAccount](self, "_isSandboxAccount"));
+    configurationURL = [configuration configurationURL];
+    v15 = PKStockholmForceConfigUpdate(configurationURL, [context devSigned], -[PKPaymentWebService _isSandboxAccount](self, "_isSandboxAccount"));
 
     if (v15)
     {
-      v16 = PKLogFacilityTypeGetObject(7uLL);
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      date = PKLogFacilityTypeGetObject(7uLL);
+      if (os_log_type_enabled(date, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v26) = 0;
         v17 = "Forcing config update - Configuration needs update";
 LABEL_21:
-        _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, v17, &v26, 2u);
+        _os_log_impl(&dword_1AD337000, date, OS_LOG_TYPE_DEFAULT, v17, &v26, 2u);
         goto LABEL_22;
       }
 
       goto LABEL_22;
     }
 
-    v16 = [MEMORY[0x1E695DF00] date];
-    v19 = [(PKPaymentWebService *)self paymentSetupSupportedInRegion];
-    if (v19)
+    date = [MEMORY[0x1E695DF00] date];
+    paymentSetupSupportedInRegion = [(PKPaymentWebService *)self paymentSetupSupportedInRegion];
+    if (paymentSetupSupportedInRegion)
     {
-      if (v19 == 1)
+      if (paymentSetupSupportedInRegion == 1)
       {
-        v20 = [v8 dateByAddingTimeInterval:a3];
+        v20 = [configurationDate dateByAddingTimeInterval:interval];
         v21 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v26 = 138412546;
           v27 = v20;
           v28 = 2050;
-          v29 = a3;
+          timeIntervalCopy = interval;
           v22 = "Region supported, next date for region configuration check: %@ used refresh interval: %{public}lu";
           goto LABEL_25;
         }
 
 LABEL_26:
 
-        [v16 timeIntervalSinceDate:v20];
+        [date timeIntervalSinceDate:v20];
         v18 = v23 > 0.0;
 
 LABEL_28:
@@ -3187,7 +3187,7 @@ LABEL_28:
         goto LABEL_33;
       }
 
-      if (v19 != 2)
+      if (paymentSetupSupportedInRegion != 2)
       {
         v21 = PKLogFacilityTypeGetObject(7uLL);
         v18 = 0;
@@ -3195,14 +3195,14 @@ LABEL_28:
       }
     }
 
-    v20 = [v8 dateByAddingTimeInterval:a4];
+    v20 = [configurationDate dateByAddingTimeInterval:timeInterval];
     v21 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138412546;
       v27 = v20;
       v28 = 2050;
-      v29 = a4;
+      timeIntervalCopy = timeInterval;
       v22 = "Region unsupported, next date for region configuration check: %@ used refresh value in the configuration: %{public}lu";
 LABEL_25:
       _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, v22, &v26, 0x16u);
@@ -3212,11 +3212,11 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v9 = PKLogFacilityTypeGetObject(7uLL);
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  configuration = PKLogFacilityTypeGetObject(7uLL);
+  if (os_log_type_enabled(configuration, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v26) = 0;
-    _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Web service never configured - Configuration needs update", &v26, 2u);
+    _os_log_impl(&dword_1AD337000, configuration, OS_LOG_TYPE_DEFAULT, "Web service never configured - Configuration needs update", &v26, 2u);
   }
 
   LOBYTE(v18) = 1;
@@ -3225,23 +3225,23 @@ LABEL_35:
   return v18;
 }
 
-- (id)supportedRegionFeatureOfType:(int64_t)a3 didFailOSVersionRequirements:(BOOL *)a4
+- (id)supportedRegionFeatureOfType:(int64_t)type didFailOSVersionRequirements:(BOOL *)requirements
 {
-  if (a4)
+  if (requirements)
   {
-    *a4 = 0;
+    *requirements = 0;
   }
 
-  v7 = [(PKPaymentWebService *)self context];
-  v8 = [v7 configuration];
+  context = [(PKPaymentWebService *)self context];
+  configuration = [context configuration];
 
-  if (v8)
+  if (configuration)
   {
-    v9 = [(PKPaymentWebService *)self targetDevice];
-    v10 = [v9 deviceRegion];
-    v11 = [v9 deviceClass];
-    v12 = [v9 deviceVersion];
-    v13 = [v8 supportedFeatureOfType:a3 inRegion:v10 osVersion:v12 deviceClass:v11 didFailOSVersionRequirements:a4];
+    targetDevice = [(PKPaymentWebService *)self targetDevice];
+    deviceRegion = [targetDevice deviceRegion];
+    deviceClass = [targetDevice deviceClass];
+    deviceVersion = [targetDevice deviceVersion];
+    v13 = [configuration supportedFeatureOfType:type inRegion:deviceRegion osVersion:deviceVersion deviceClass:deviceClass didFailOSVersionRequirements:requirements];
   }
 
   else
@@ -3255,7 +3255,7 @@ LABEL_35:
 - (NSURL)primaryBrokerURL
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentWebService *)self context];
+  context = [(PKPaymentWebService *)self context];
   v4 = PKStockholmBrokerURL();
   if (v4)
   {
@@ -3271,50 +3271,50 @@ LABEL_35:
     goto LABEL_5;
   }
 
-  v8 = [v3 primaryRegion];
-  v7 = [v8 brokerURL];
+  primaryRegion = [context primaryRegion];
+  brokerURL = [primaryRegion brokerURL];
 
-  if (!v7)
+  if (!brokerURL)
   {
-    v9 = [v3 configuration];
-    v10 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
-    v7 = [v9 brokerURLForRegion:v10];
+    configuration = [context configuration];
+    deviceRegion = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
+    brokerURL = [configuration brokerURLForRegion:deviceRegion];
 
-    if (!v7)
+    if (!brokerURL)
     {
-      v6 = PKLocalBrokerURL([v3 devSigned]);
+      v6 = PKLocalBrokerURL([context devSigned]);
 LABEL_5:
-      v7 = v6;
+      brokerURL = v6;
     }
   }
 
-  return v7;
+  return brokerURL;
 }
 
-- (id)_brokerUrlForRegion:(id)a3 regionOut:(id *)a4
+- (id)_brokerUrlForRegion:(id)region regionOut:(id *)out
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PKPaymentWebService *)self context];
-  v8 = v7;
-  if (!v6)
+  regionCopy = region;
+  context = [(PKPaymentWebService *)self context];
+  v8 = context;
+  if (!regionCopy)
   {
 LABEL_7:
-    v9 = [v8 primaryRegion];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
+    primaryRegion = [v8 primaryRegion];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
     goto LABEL_8;
   }
 
-  v9 = [v7 regionForIdentifier:v6];
-  v10 = [v9 brokerURL];
-  v11 = v10;
-  if (!v9 || !v10)
+  primaryRegion = [context regionForIdentifier:regionCopy];
+  brokerURL = [primaryRegion brokerURL];
+  primaryBrokerURL = brokerURL;
+  if (!primaryRegion || !brokerURL)
   {
     v12 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = regionCopy;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "PKPaymentWebService: error: region identifier %@ provided but not registered for region.", &v14, 0xCu);
     }
 
@@ -3322,22 +3322,22 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (a4)
+  if (out)
   {
-    objc_storeStrong(a4, v9);
+    objc_storeStrong(out, primaryRegion);
   }
 
-  return v11;
+  return primaryBrokerURL;
 }
 
-- (id)_requestBuilderForRegion:(id)a3 regionOut:(id *)a4
+- (id)_requestBuilderForRegion:(id)region regionOut:(id *)out
 {
-  v6 = a3;
-  v7 = [(PKPaymentWebService *)self context];
-  v8 = [v7 deviceID];
-  if (v8)
+  regionCopy = region;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (deviceID)
   {
-    v9 = v8;
+    v9 = deviceID;
     goto LABEL_7;
   }
 
@@ -3348,21 +3348,21 @@ LABEL_8:
     _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKPaymentWebService: error: failed to find deviceID when creating builder, falling back to SEID", buf, 2u);
   }
 
-  v10 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
-  v11 = [v10 firstObject];
+  secureElementIdentifiers = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
+  firstObject = [secureElementIdentifiers firstObject];
 
-  if (v11)
+  if (firstObject)
   {
-    v9 = v11;
+    v9 = firstObject;
 LABEL_7:
-    v12 = [(PKPaymentWebService *)self _brokerUrlForRegion:v6 regionOut:a4];
+    v12 = [(PKPaymentWebService *)self _brokerUrlForRegion:regionCopy regionOut:out];
     if (v12)
     {
-      v13 = [(PKPaymentWebService *)self _appleAccountInformation];
-      if (v13)
+      _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+      if (_appleAccountInformation)
       {
-        v14 = v13;
-        v15 = [[PKPaymentWebServiceRequestBuilder alloc] initWithBrokerURL:v12 deviceID:v9 appleAccountInformation:v13];
+        v14 = _appleAccountInformation;
+        v15 = [[PKPaymentWebServiceRequestBuilder alloc] initWithBrokerURL:v12 deviceID:v9 appleAccountInformation:_appleAccountInformation];
 LABEL_16:
 
         goto LABEL_17;
@@ -3404,16 +3404,16 @@ LABEL_17:
   return v15;
 }
 
-- (void)_secureRequestBuilderForRegion:(id)a3 fields:(unint64_t)a4 completion:(id)a5
+- (void)_secureRequestBuilderForRegion:(id)region fields:(unint64_t)fields completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  regionCopy = region;
+  completionCopy = completion;
   v32 = 0;
-  v10 = [(PKPaymentWebService *)self _requestBuilderForRegion:v8 regionOut:&v32];
+  v10 = [(PKPaymentWebService *)self _requestBuilderForRegion:regionCopy regionOut:&v32];
   if (!v10)
   {
 LABEL_8:
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_13;
   }
 
@@ -3429,11 +3429,11 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [v32 certificates];
-  if (v11)
+  certificates = [v32 certificates];
+  if (certificates)
   {
-    v12 = [(PKPaymentWebService *)self context];
-    v13 = [v12 devSigned];
+    context = [(PKPaymentWebService *)self context];
+    devSigned = [context devSigned];
     v14 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     *buf = 0;
     v27 = buf;
@@ -3446,20 +3446,20 @@ LABEL_8:
     v25[2] = __72__PKPaymentWebService__secureRequestBuilderForRegion_fields_completion___block_invoke;
     v25[3] = &unk_1E79DB290;
     v25[5] = buf;
-    v25[6] = a4;
+    v25[6] = fields;
     v25[4] = self;
     [(PKAsyncUnaryOperationComposer *)v14 addOperation:v25];
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __72__PKPaymentWebService__secureRequestBuilderForRegion_fields_completion___block_invoke_3;
     v19[3] = &unk_1E79DB2B8;
     v20 = v10;
-    v24 = v13;
-    v21 = v11;
+    v24 = devSigned;
+    v21 = certificates;
     v23 = buf;
-    v22 = v9;
-    v16 = [(PKAsyncUnaryOperationComposer *)v14 evaluateWithInput:v15 completion:v19];
+    v22 = completionCopy;
+    v16 = [(PKAsyncUnaryOperationComposer *)v14 evaluateWithInput:null completion:v19];
 
     _Block_object_dispose(buf, 8);
   }
@@ -3473,7 +3473,7 @@ LABEL_8:
       _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "PKPaymentWebService: error: failed to find certificates when creating secure builder", buf, 2u);
     }
 
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_13:
@@ -3529,19 +3529,19 @@ void __72__PKPaymentWebService__secureRequestBuilderForRegion_fields_completion_
   return [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebServiceSupportsAccounts:self];
 }
 
-- (void)_canRegisterForPeerPaymentWithCompletion:(id)a3
+- (void)_canRegisterForPeerPaymentWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKPaymentWebService *)self _canRegisterForPeerPayment])
     {
-      v4[2](v4, 1);
+      completionCopy[2](completionCopy, 1);
     }
 
     else if ([(PKPaymentWebService *)self needsRegistration])
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -3551,7 +3551,7 @@ void __72__PKPaymentWebService__secureRequestBuilderForRegion_fields_completion_
       v5[2] = __64__PKPaymentWebService__canRegisterForPeerPaymentWithCompletion___block_invoke;
       v5[3] = &unk_1E79DB2E0;
       v5[4] = self;
-      v6 = v4;
+      v6 = completionCopy;
       [(PKPaymentWebService *)self _recentConfiguration:v5];
     }
   }
@@ -3703,10 +3703,10 @@ uint64_t __64__PKPaymentWebService__canRegisterForPeerPaymentWithCompletion___bl
   return v3(v1, v2);
 }
 
-- (void)_recentConfiguration:(id)a3
+- (void)_recentConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     if ([(PKPaymentWebService *)self needsConfiguration])
     {
@@ -3715,15 +3715,15 @@ uint64_t __64__PKPaymentWebService__canRegisterForPeerPaymentWithCompletion___bl
       v7[2] = __44__PKPaymentWebService__recentConfiguration___block_invoke;
       v7[3] = &unk_1E79D1690;
       v7[4] = self;
-      v8 = v4;
+      v8 = configurationCopy;
       [(PKPaymentWebService *)self configurePaymentServiceWithCompletion:v7];
     }
 
     else
     {
-      v5 = [(PKPaymentWebService *)self context];
-      v6 = [v5 configuration];
-      (*(v4 + 2))(v4, 1, v6);
+      context = [(PKPaymentWebService *)self context];
+      configuration = [context configuration];
+      (*(configurationCopy + 2))(configurationCopy, 1, configuration);
     }
   }
 }
@@ -3737,26 +3737,26 @@ void __44__PKPaymentWebService__recentConfiguration___block_invoke(uint64_t a1, 
   (*(v5 + 16))(v5, v4, v6);
 }
 
-- (void)startBackgroundURLSessionWithIdentifier:(id)a3 context:(id)a4 backgroundDelegate:(id)a5 completion:(id)a6
+- (void)startBackgroundURLSessionWithIdentifier:(id)identifier context:(id)context backgroundDelegate:(id)delegate completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  delegateCopy = delegate;
+  completionCopy = completion;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_backgroundDelegate_completion___block_invoke;
   block[3] = &unk_1E79C4F68;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = identifierCopy;
+  v21 = contextCopy;
+  v22 = delegateCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = delegateCopy;
+  v17 = contextCopy;
+  v18 = identifierCopy;
   dispatch_sync(backgroundDownloadQueue, block);
 }
 
@@ -3868,31 +3868,31 @@ void __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_
 - (NSArray)delegates
 {
   os_unfair_lock_lock(&self->_delegateLock);
-  v3 = [(NSHashTable *)self->_delegates allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
+  v4 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_delegateLock);
 
   return v4;
 }
 
-- (id)forbiddenErrorWithResponse:(id)a3
+- (id)forbiddenErrorWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v32.receiver = self;
   v32.super_class = PKPaymentWebService;
-  v5 = [(PKWebService *)&v32 forbiddenErrorWithResponse:v4];
-  v6 = [v4 errorCode];
-  v7 = [v6 integerValue];
+  v5 = [(PKWebService *)&v32 forbiddenErrorWithResponse:responseCopy];
+  errorCode = [responseCopy errorCode];
+  integerValue = [errorCode integerValue];
 
   v8 = 0;
-  if (v7 <= 40402)
+  if (integerValue <= 40402)
   {
-    if (v7 <= 40105)
+    if (integerValue <= 40105)
     {
-      if (v7 <= 40013)
+      if (integerValue <= 40013)
       {
-        if (v7 == 40001)
+        if (integerValue == 40001)
         {
           v9 = PKLocalizedPaymentString(&cfstr_InvalidPanTitl.isa, 0);
           v8 = PKLocalizedPaymentString(&cfstr_InvalidPanMess.isa, 0);
@@ -3901,7 +3901,7 @@ void __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_
         else
         {
           v9 = 0;
-          if (v7 != 40013)
+          if (integerValue != 40013)
           {
             goto LABEL_62;
           }
@@ -3911,13 +3911,13 @@ void __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_
         }
       }
 
-      else if (v7 == 40014)
+      else if (integerValue == 40014)
       {
         v9 = PKLocalizedPaymentString(&cfstr_InvalidNameTit.isa, 0);
         v8 = PKLocalizedPaymentString(&cfstr_InvalidNameMes.isa, 0);
       }
 
-      else if (v7 == 40016)
+      else if (integerValue == 40016)
       {
         v9 = PKLocalizedPaymentString(&cfstr_SecureElementL.isa, 0);
         v8 = PKLocalizedPaymentString(&cfstr_SecureElementL_0.isa, 0);
@@ -3926,7 +3926,7 @@ void __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_
       else
       {
         v9 = 0;
-        if (v7 != 40102)
+        if (integerValue != 40102)
         {
           goto LABEL_62;
         }
@@ -3938,18 +3938,18 @@ void __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_
       goto LABEL_58;
     }
 
-    if (v7 > 40115)
+    if (integerValue > 40115)
     {
-      if (v7 != 40116)
+      if (integerValue != 40116)
       {
-        if (v7 == 40301)
+        if (integerValue == 40301)
         {
           v9 = PKLocalizedPaymentString(&cfstr_IneligibleAcco.isa, 0);
           goto LABEL_56;
         }
 
         v9 = 0;
-        if (v7 != 40307)
+        if (integerValue != 40307)
         {
           goto LABEL_62;
         }
@@ -3963,14 +3963,14 @@ void __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_
 
     else
     {
-      if (v7 == 40106)
+      if (integerValue == 40106)
       {
         v9 = PKLocalizedPaymentString(&cfstr_InvalidCscTitl.isa, 0);
         v8 = PKLocalizedPaymentString(&cfstr_InvalidCscMess.isa, 0);
         goto LABEL_58;
       }
 
-      if (v7 == 40107)
+      if (integerValue == 40107)
       {
         v9 = PKLocalizedPaymentString(&cfstr_ReaderModeErro.isa, 0);
         v10 = @"READER_MODE_ERROR_INCORRECT_CARD_DETAILS_MESSAGE";
@@ -3979,7 +3979,7 @@ void __101__PKPaymentWebService_startBackgroundURLSessionWithIdentifier_context_
       else
       {
         v9 = 0;
-        if (v7 != 40110)
+        if (integerValue != 40110)
         {
           goto LABEL_62;
         }
@@ -3996,17 +3996,17 @@ LABEL_61:
     goto LABEL_62;
   }
 
-  if (v7 <= 40500)
+  if (integerValue <= 40500)
   {
-    if (v7 <= 40453)
+    if (integerValue <= 40453)
     {
-      if (v7 == 40403)
+      if (integerValue == 40403)
       {
         v9 = PKLocalizedPaymentString(&cfstr_ProvisioningRe.isa, 0);
         v8 = PKLocalizedPaymentString(&cfstr_ProvisioningRe_0.isa, 0);
       }
 
-      else if (v7 == 40421)
+      else if (integerValue == 40421)
       {
         v9 = PKLocalizedPaymentString(&cfstr_VerificationPe.isa, 0);
         v8 = PKLocalizedPaymentString(&cfstr_VerificationPe_0.isa, 0);
@@ -4015,7 +4015,7 @@ LABEL_61:
       else
       {
         v9 = 0;
-        if (v7 != 40423)
+        if (integerValue != 40423)
         {
           goto LABEL_62;
         }
@@ -4027,9 +4027,9 @@ LABEL_61:
       goto LABEL_58;
     }
 
-    if (v7 != 40454)
+    if (integerValue != 40454)
     {
-      if (v7 == 40456)
+      if (integerValue == 40456)
       {
         v9 = PKLocalizedPaymentString(&cfstr_InvalidVerific.isa, 0);
         v8 = PKLocalizedPaymentString(&cfstr_InvalidVerific_0.isa, 0);
@@ -4038,7 +4038,7 @@ LABEL_61:
       else
       {
         v9 = 0;
-        if (v7 != 40457)
+        if (integerValue != 40457)
         {
           goto LABEL_62;
         }
@@ -4057,14 +4057,14 @@ LABEL_56:
     goto LABEL_62;
   }
 
-  if (v7 <= 60010)
+  if (integerValue <= 60010)
   {
-    if (v7 != 40501)
+    if (integerValue != 40501)
     {
-      if (v7 != 60009)
+      if (integerValue != 60009)
       {
         v9 = 0;
-        if (v7 != 60010)
+        if (integerValue != 60010)
         {
           goto LABEL_62;
         }
@@ -4089,7 +4089,7 @@ LABEL_58:
     goto LABEL_62;
   }
 
-  if (v7 == 60011)
+  if (integerValue == 60011)
   {
     AnalyticsSendEvent();
     v9 = PKLocalizedPaymentString(&cfstr_ProvisioningEr.isa, 0);
@@ -4097,10 +4097,10 @@ LABEL_58:
     goto LABEL_60;
   }
 
-  if (v7 != 60057)
+  if (integerValue != 60057)
   {
     v9 = 0;
-    if (v7 != 60104)
+    if (integerValue != 60104)
     {
       goto LABEL_62;
     }
@@ -4111,21 +4111,21 @@ LABEL_58:
   }
 
   v9 = PKLocalizedPaymentString(&cfstr_OsVersionUpdat.isa, 0);
-  v12 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceClass];
-  v13 = v12;
-  if (v12 == @"iPhone")
+  deviceClass = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceClass];
+  v13 = deviceClass;
+  if (deviceClass == @"iPhone")
   {
     goto LABEL_47;
   }
 
-  if (!v12)
+  if (!deviceClass)
   {
 LABEL_75:
     v8 = 0;
     goto LABEL_76;
   }
 
-  v14 = [(__CFString *)v12 isEqualToString:@"iPhone"];
+  v14 = [(__CFString *)deviceClass isEqualToString:@"iPhone"];
 
   if ((v14 & 1) == 0)
   {
@@ -4153,78 +4153,78 @@ LABEL_48:
 LABEL_76:
 
 LABEL_62:
-  v16 = [v4 localizedTitle];
-  if (v16)
+  localizedTitle = [responseCopy localizedTitle];
+  if (localizedTitle)
   {
   }
 
   else
   {
-    v17 = [v4 localizedDescription];
+    localizedDescription = [responseCopy localizedDescription];
 
-    if (!v17)
+    if (!localizedDescription)
     {
       goto LABEL_66;
     }
   }
 
-  v18 = [v4 localizedTitle];
+  localizedTitle2 = [responseCopy localizedTitle];
 
-  v19 = [v4 localizedDescription];
+  localizedDescription2 = [responseCopy localizedDescription];
 
-  v8 = v19;
-  v9 = v18;
+  v8 = localizedDescription2;
+  v9 = localizedTitle2;
 LABEL_66:
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  [v20 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A588]];
-  [v20 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A598]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A588]];
+  [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A598]];
   v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ - %@", v9, v8];
-  [v20 setObject:v21 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  [dictionary setObject:v21 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-  [v20 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E696AA08]];
   v22 = MEMORY[0x1E696ABC0];
-  v23 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v20];
-  v24 = [v22 errorWithDomain:@"PKPaymentWebServiceErrorDomain" code:v7 userInfo:v23];
+  v23 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
+  v24 = [v22 errorWithDomain:@"PKPaymentWebServiceErrorDomain" code:integerValue userInfo:v23];
 
   return v24;
 }
 
-- (void)signNonce:(id)a3 withCompletion:(id)a4
+- (void)signNonce:(id)nonce withCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = MEMORY[0x1E695DF88];
-    v8 = a3;
+    nonceCopy = nonce;
     v9 = objc_alloc_init(v7);
-    [v9 appendData:v8];
+    [v9 appendData:nonceCopy];
 
-    v10 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v11 = [v10 primaryAppleAccountHash];
-    [v9 appendData:v11];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    primaryAppleAccountHash = [_appleAccountInformation primaryAppleAccountHash];
+    [v9 appendData:primaryAppleAccountHash];
 
     targetDevice = self->_targetDevice;
-    v13 = [v9 SHA256Hash];
+    sHA256Hash = [v9 SHA256Hash];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __48__PKPaymentWebService_signNonce_withCompletion___block_invoke;
     v14[3] = &unk_1E79DB330;
-    v15 = v6;
-    [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:self signData:v13 signatureEntanglementMode:0 withCompletionHandler:v14];
+    v15 = completionCopy;
+    [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:self signData:sHA256Hash signatureEntanglementMode:0 withCompletionHandler:v14];
   }
 }
 
-- (void)_renewAppleAccountWithCompletionHandler:(id)a3
+- (void)_renewAppleAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   targetDevice = self->_targetDevice;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PKPaymentWebService__renewAppleAccountWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E79C4680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice renewAppleAccountWithCompletionHandler:v7];
 }
 
@@ -4249,24 +4249,24 @@ void __63__PKPaymentWebService__renewAppleAccountWithCompletionHandler___block_i
   }
 }
 
-- (void)processRetryRequest:(id)a3 responseData:(id)a4 orginalRequest:(id)a5 completion:(id)a6
+- (void)processRetryRequest:(id)request responseData:(id)data orginalRequest:(id)orginalRequest completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [MEMORY[0x1E695AC60] propertyForKey:@"overlayRequest" inRequest:a5];
+  requestCopy = request;
+  dataCopy = data;
+  completionCopy = completion;
+  v13 = [MEMORY[0x1E695AC60] propertyForKey:@"overlayRequest" inRequest:orginalRequest];
   v14 = MEMORY[0x1E696ACD0];
   v15 = objc_opt_class();
-  v16 = [v13 data];
-  v17 = [v14 unarchivedObjectOfClass:v15 fromData:v16 error:0];
+  data = [v13 data];
+  v17 = [v14 unarchivedObjectOfClass:v15 fromData:data error:0];
 
   if (v17 && [v17 requiresConfigurationForRetry])
   {
-    if (v10 && v11)
+    if (requestCopy && dataCopy)
     {
       v29 = 0;
-      v18 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v11 options:0 error:&v29];
+      v18 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v29];
       v19 = v29;
       if (v19)
       {
@@ -4292,8 +4292,8 @@ LABEL_8:
           v27[1] = 3221225472;
           v27[2] = __82__PKPaymentWebService_processRetryRequest_responseData_orginalRequest_completion___block_invoke;
           v27[3] = &unk_1E79DAF50;
-          v28 = v12;
-          [v17 _updateRequestForRetry:v10 retryFields:v18 webService:self withCompletion:v27];
+          v28 = completionCopy;
+          [v17 _updateRequestForRetry:requestCopy retryFields:v18 webService:self withCompletion:v27];
           v24 = v28;
           goto LABEL_19;
         }
@@ -4301,15 +4301,15 @@ LABEL_8:
         if (v18)
         {
 LABEL_10:
-          if (!v12)
+          if (!completionCopy)
           {
 LABEL_20:
 
             goto LABEL_21;
           }
 
-          v24 = [v10 copy];
-          (*(v12 + 2))(v12, v24);
+          v24 = [requestCopy copy];
+          (*(completionCopy + 2))(completionCopy, v24);
 LABEL_19:
 
           goto LABEL_20;
@@ -4337,10 +4337,10 @@ LABEL_19:
     }
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v26 = [v10 copy];
-    (*(v12 + 2))(v12, v26);
+    v26 = [requestCopy copy];
+    (*(completionCopy + 2))(completionCopy, v26);
   }
 
 LABEL_21:
@@ -4356,28 +4356,28 @@ void __82__PKPaymentWebService_processRetryRequest_responseData_orginalRequest_c
   }
 }
 
-- (void)handleWillPerformHTTPRedirectionWithResponse:(id)a3 originalRequest:(id)a4 redirectHandler:(id)a5
+- (void)handleWillPerformHTTPRedirectionWithResponse:(id)response originalRequest:(id)request redirectHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __100__PKPaymentWebService_handleWillPerformHTTPRedirectionWithResponse_originalRequest_redirectHandler___block_invoke;
   v9[3] = &unk_1E79C4450;
-  v10 = v7;
-  v8 = v7;
-  [(PKPaymentWebService *)self _registerIfNeededWithResponse:a3 task:0 isRedirect:1 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(PKPaymentWebService *)self _registerIfNeededWithResponse:response task:0 isRedirect:1 completion:v9];
 }
 
-- (BOOL)isChinaRegionIdentifier:(id)a3
+- (BOOL)isChinaRegionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self context];
-  v6 = [v5 regionForIdentifier:v4];
+  identifierCopy = identifier;
+  context = [(PKPaymentWebService *)self context];
+  v6 = [context regionForIdentifier:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 regionCode];
-    v8 = [v7 caseInsensitiveCompare:@"CN"] == 0;
+    regionCode = [v6 regionCode];
+    v8 = [regionCode caseInsensitiveCompare:@"CN"] == 0;
   }
 
   else
@@ -4388,21 +4388,21 @@ void __82__PKPaymentWebService_processRetryRequest_responseData_orginalRequest_c
   return v8;
 }
 
-- (unint64_t)configurePaymentServiceWithCompletion:(id)a3
+- (unint64_t)configurePaymentServiceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61__PKPaymentWebService_configurePaymentServiceWithCompletion___block_invoke;
   v8[3] = &unk_1E79DB3D0;
   v8[4] = self;
-  v9 = v4;
-  v10 = v5;
-  v6 = v4;
+  v9 = completionCopy;
+  v10 = nextTaskID;
+  v6 = completionCopy;
   [(PKPaymentWebService *)self _deviceConfigurationDataWithCompletion:v8];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __61__PKPaymentWebService_configurePaymentServiceWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4682,37 +4682,37 @@ void __61__PKPaymentWebService_configurePaymentServiceWithCompletion___block_inv
   }
 }
 
-- (unint64_t)registerDeviceWithCompletion:(id)a3
+- (unint64_t)registerDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v6 = [(PKPaymentWebService *)self registerDeviceAtBrokerURL:v5 consistencyCheckResults:0 completion:v4];
+  completionCopy = completion;
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  v6 = [(PKPaymentWebService *)self registerDeviceAtBrokerURL:primaryBrokerURL consistencyCheckResults:0 completion:completionCopy];
 
   return v6;
 }
 
-- (unint64_t)registerDeviceAtBrokerURL:(id)a3 withConsistencyCheckResults:(id)a4 retries:(unint64_t)a5 completion:(id)a6
+- (unint64_t)registerDeviceAtBrokerURL:(id)l withConsistencyCheckResults:(id)results retries:(unint64_t)retries completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PKWebService *)self nextTaskID];
+  lCopy = l;
+  resultsCopy = results;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __96__PKPaymentWebService_registerDeviceAtBrokerURL_withConsistencyCheckResults_retries_completion___block_invoke;
   v18[3] = &unk_1E79DB498;
   v18[4] = self;
-  v19 = v11;
-  v20 = v10;
-  v21 = v12;
-  v22 = v13;
-  v23 = a5;
-  v14 = v10;
-  v15 = v11;
-  v16 = v12;
+  v19 = resultsCopy;
+  v20 = lCopy;
+  v21 = completionCopy;
+  v22 = nextTaskID;
+  retriesCopy = retries;
+  v14 = lCopy;
+  v15 = resultsCopy;
+  v16 = completionCopy;
   [(PKPaymentWebService *)self _deviceRegistrationDataWithCompletion:v18];
 
-  return v13;
+  return nextTaskID;
 }
 
 void __96__PKPaymentWebService_registerDeviceAtBrokerURL_withConsistencyCheckResults_retries_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5146,10 +5146,10 @@ void __96__PKPaymentWebService_registerDeviceAtBrokerURL_withConsistencyCheckRes
   }
 }
 
-- (void)_shouldPerformApplePayTrustRegistrationWithCompletion:(id)a3
+- (void)_shouldPerformApplePayTrustRegistrationWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (PKCurrentPassbookState() <= 1 && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -5158,32 +5158,32 @@ void __96__PKPaymentWebService_registerDeviceAtBrokerURL_withConsistencyCheckRes
       v6[1] = 3221225472;
       v6[2] = __77__PKPaymentWebService__shouldPerformApplePayTrustRegistrationWithCompletion___block_invoke;
       v6[3] = &unk_1E79DB4C0;
-      v7 = v4;
+      v7 = completionCopy;
       [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice applePayTrustKeyForIdentifier:@"com.apple.wallet.applepaytrust" completion:v6];
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)_createApplePayTrustKeyWithCompletion:(id)a3
+- (void)_createApplePayTrustKeyWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = v4;
+    v11 = completionCopy;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(PKPaymentWebService *)self _appleAccountInformation];
-      v6 = [v5 aidaAlternateDSID];
-      v7 = [v6 dataUsingEncoding:4];
+      _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+      aidaAlternateDSID = [_appleAccountInformation aidaAlternateDSID];
+      v7 = [aidaAlternateDSID dataUsingEncoding:4];
 
       v8 = [PKApplePayTrustKeyRequest alloc];
-      v9 = [v7 SHA256Hash];
-      v10 = [(PKApplePayTrustKeyRequest *)v8 initWithKeyIdentifier:@"com.apple.wallet.applepaytrust" subjectIdentifier:v9];
+      sHA256Hash = [v7 SHA256Hash];
+      v10 = [(PKApplePayTrustKeyRequest *)v8 initWithKeyIdentifier:@"com.apple.wallet.applepaytrust" subjectIdentifier:sHA256Hash];
 
       [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice createApplePayTrustKeyWithRequest:v10 completion:v11];
     }
@@ -5193,33 +5193,33 @@ void __96__PKPaymentWebService_registerDeviceAtBrokerURL_withConsistencyCheckRes
       (*(v11 + 2))(v11, 0, 0);
     }
 
-    v4 = v11;
+    completionCopy = v11;
   }
 }
 
-- (unint64_t)performApplePayTrustRegistrationWithCompletion:(id)a3
+- (unint64_t)performApplePayTrustRegistrationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v6 = [(PKPaymentWebService *)self context];
-  v7 = [v6 pushToken];
-  v8 = [(PKPaymentWebService *)self _performApplePayTrustRegistrationWithURL:v5 pushToken:v7 completion:v4];
+  completionCopy = completion;
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  context = [(PKPaymentWebService *)self context];
+  pushToken = [context pushToken];
+  v8 = [(PKPaymentWebService *)self _performApplePayTrustRegistrationWithURL:primaryBrokerURL pushToken:pushToken completion:completionCopy];
 
   return v8;
 }
 
-- (unint64_t)_performApplePayTrustRegistrationWithURL:(id)a3 pushToken:(id)a4 completion:(id)a5
+- (unint64_t)_performApplePayTrustRegistrationWithURL:(id)l pushToken:(id)token completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(PKWebService *)self nextTaskID];
-  v10 = [(PKPaymentWebService *)self context];
-  v11 = [v10 deviceID];
+  lCopy = l;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (!v11)
+  if (!deviceID)
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -5233,13 +5233,13 @@ void __96__PKPaymentWebService_registerDeviceAtBrokerURL_withConsistencyCheckRes
 
     v13 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
 LABEL_11:
-    v8[2](v8, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!lCopy)
   {
     v14 = PKLogFacilityTypeGetObject(0x10uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -5254,7 +5254,7 @@ LABEL_12:
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v13 = [v15 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v16];
 
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_12;
     }
@@ -5267,14 +5267,14 @@ LABEL_12:
   v19[2] = __85__PKPaymentWebService__performApplePayTrustRegistrationWithURL_pushToken_completion___block_invoke;
   v19[3] = &unk_1E79DB4E8;
   v19[4] = self;
-  v20 = v7;
-  v21 = v11;
-  v23 = v9;
-  v22 = v8;
+  v20 = lCopy;
+  v21 = deviceID;
+  v23 = nextTaskID;
+  v22 = completionCopy;
   [(PKPaymentWebService *)self _createApplePayTrustKeyWithCompletion:v19];
 
 LABEL_13:
-  return v9;
+  return nextTaskID;
 }
 
 void __85__PKPaymentWebService__performApplePayTrustRegistrationWithURL_pushToken_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -5392,30 +5392,30 @@ uint64_t __85__PKPaymentWebService__performApplePayTrustRegistrationWithURL_push
   return result;
 }
 
-- (BOOL)_isValidResponse:(id)a3 error:(id)a4
+- (BOOL)_isValidResponse:(id)response error:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = v5;
-    v8 = [v7 statusCode];
-    v9 = v8 == 200;
-    if (v8 != 200)
+    v7 = responseCopy;
+    statusCode = [v7 statusCode];
+    v9 = statusCode == 200;
+    if (statusCode != 200)
     {
-      v10 = v8;
+      v10 = statusCode;
       v11 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = [v7 URL];
-        v13 = [v12 absoluteString];
+        absoluteString = [v12 absoluteString];
         v17 = 138412802;
-        v18 = v13;
+        v18 = absoluteString;
         v19 = 2048;
         v20 = v10;
         v21 = 2112;
-        v22 = v6;
+        v22 = errorCopy;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Error executing request: %@; statusCode: %ld; error: %@", &v17, 0x20u);
       }
     }
@@ -5426,10 +5426,10 @@ uint64_t __85__PKPaymentWebService__performApplePayTrustRegistrationWithURL_push
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       v15 = [objc_opt_class() description];
       v17 = 138412546;
-      v18 = v14;
+      v18 = localizedDescription;
       v19 = 2112;
       v20 = v15;
       _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Invalid response with error: %@; Expected 'NSHTTPURLResponse' but got '%@'", &v17, 0x16u);
@@ -5441,16 +5441,16 @@ uint64_t __85__PKPaymentWebService__performApplePayTrustRegistrationWithURL_push
   return v9;
 }
 
-- (unint64_t)_updateContextWithRegistrationType:(int64_t)a3 response:(id)a4
+- (unint64_t)_updateContextWithRegistrationType:(int64_t)type response:(id)response
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [v6 deviceIdentifier];
+  responseCopy = response;
+  deviceIdentifier = [responseCopy deviceIdentifier];
 
-  if (!v7)
+  if (!deviceIdentifier)
   {
-    v11 = PKLogFacilityTypeGetObject(7uLL);
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    context = PKLogFacilityTypeGetObject(7uLL);
+    if (!os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_27;
     }
@@ -5458,16 +5458,16 @@ uint64_t __85__PKPaymentWebService__performApplePayTrustRegistrationWithURL_push
     *buf = 0;
     v31 = "*** ERROR ***: No Device ID";
 LABEL_26:
-    _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, v31, buf, 2u);
+    _os_log_impl(&dword_1AD337000, context, OS_LOG_TYPE_DEFAULT, v31, buf, 2u);
     goto LABEL_27;
   }
 
-  v8 = [v6 primaryRegion];
+  primaryRegion = [responseCopy primaryRegion];
 
-  if (!v8)
+  if (!primaryRegion)
   {
-    v11 = PKLogFacilityTypeGetObject(7uLL);
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    context = PKLogFacilityTypeGetObject(7uLL);
+    if (!os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_27;
     }
@@ -5477,13 +5477,13 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v9 = [v6 regions];
-  v10 = [v9 count];
+  regions = [responseCopy regions];
+  v10 = [regions count];
 
   if (!v10)
   {
-    v11 = PKLogFacilityTypeGetObject(7uLL);
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    context = PKLogFacilityTypeGetObject(7uLL);
+    if (os_log_type_enabled(context, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v31 = "*** ERROR ***: Empty Regions Dictionary";
@@ -5495,14 +5495,14 @@ LABEL_27:
     goto LABEL_37;
   }
 
-  v43 = self;
-  v11 = [(PKPaymentWebService *)self context];
+  selfCopy = self;
+  context = [(PKPaymentWebService *)self context];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v12 = [v6 regions];
-  v13 = [v12 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  regions2 = [responseCopy regions];
+  v13 = [regions2 countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v13)
   {
     v14 = v13;
@@ -5513,15 +5513,15 @@ LABEL_27:
       {
         if (*v47 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(regions2);
         }
 
         v17 = *(*(&v46 + 1) + 8 * i);
-        v18 = [v6 regions];
-        v19 = [v18 objectForKeyedSubscript:v17];
+        regions3 = [responseCopy regions];
+        v19 = [regions3 objectForKeyedSubscript:v17];
 
-        v20 = [v19 certificates];
-        if ((PKPaymentCreateAndValidateTrustWithCerts(v20, 0, [v11 devSigned]) & 1) == 0)
+        certificates = [v19 certificates];
+        if ((PKPaymentCreateAndValidateTrustWithCerts(certificates, 0, [context devSigned]) & 1) == 0)
         {
           v32 = PKLogFacilityTypeGetObject(7uLL);
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -5536,7 +5536,7 @@ LABEL_27:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      v14 = [regions2 countByEnumeratingWithState:&v46 objects:v52 count:16];
       if (v14)
       {
         continue;
@@ -5546,25 +5546,25 @@ LABEL_27:
     }
   }
 
-  [(PKPaymentWebService *)v43 _resetSupportInRegionCache];
-  v21 = [v6 regions];
-  [v11 setRegions:v21];
+  [(PKPaymentWebService *)selfCopy _resetSupportInRegionCache];
+  regions4 = [responseCopy regions];
+  [context setRegions:regions4];
 
-  v22 = [v6 deviceIdentifier];
-  [v11 setDeviceID:v22];
+  deviceIdentifier2 = [responseCopy deviceIdentifier];
+  [context setDeviceID:deviceIdentifier2];
 
-  v12 = [v6 primaryRegion];
-  if (!v12)
+  regions2 = [responseCopy primaryRegion];
+  if (!regions2)
   {
-    v23 = [v6 regions];
-    v24 = [v23 allKeys];
-    v12 = [v24 lastObject];
+    regions5 = [responseCopy regions];
+    allKeys = [regions5 allKeys];
+    regions2 = [allKeys lastObject];
   }
 
-  [v11 setPrimaryRegionIdentifier:v12];
-  [v11 setRegistrationType:a3];
-  v25 = [MEMORY[0x1E695DF00] date];
-  [v11 setRegistrationDate:v25];
+  [context setPrimaryRegionIdentifier:regions2];
+  [context setRegistrationType:type];
+  date = [MEMORY[0x1E695DF00] date];
+  [context setRegistrationDate:date];
 
   v26 = PKDeviceBuildVersion();
   v44[0] = MEMORY[0x1E69E9820];
@@ -5573,33 +5573,33 @@ LABEL_27:
   v44[3] = &unk_1E79DB510;
   v19 = v26;
   v45 = v19;
-  [v11 atomicallyUpdateEveryRegion:v44];
-  v27 = [v6 maxCards];
-  v28 = v27;
-  if (v27)
+  [context atomicallyUpdateEveryRegion:v44];
+  maxCards = [responseCopy maxCards];
+  v28 = maxCards;
+  if (maxCards)
   {
-    v29 = v27;
-    v30 = [v27 unsignedIntegerValue];
+    v29 = maxCards;
+    unsignedIntegerValue = [maxCards unsignedIntegerValue];
     if (objc_opt_respondsToSelector())
     {
-      [(PKPaymentWebServiceTargetDeviceProtocol *)v43->_targetDevice setMaximumPaymentCards:v30];
+      [(PKPaymentWebServiceTargetDeviceProtocol *)selfCopy->_targetDevice setMaximumPaymentCards:unsignedIntegerValue];
     }
 
     else
     {
-      PKSetMaxPaymentCards(v30);
+      PKSetMaxPaymentCards(unsignedIntegerValue);
     }
 
     v28 = v29;
   }
 
-  v34 = [v6 environmentName];
+  environmentName = [responseCopy environmentName];
   v42 = PKStockholmEnvironmentDisplayName();
-  if (([v34 isEqualToString:?] & 1) == 0)
+  if (([environmentName isEqualToString:?] & 1) == 0)
   {
-    if ([v34 length])
+    if ([environmentName length])
     {
-      v35 = v34;
+      v35 = environmentName;
     }
 
     else
@@ -5608,57 +5608,57 @@ LABEL_27:
     }
 
     PKSetStockholmEnvironmentDisplayName(v35);
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 postNotificationName:@"PKSharedPaymentWebServiceRegionConfigurationChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PKSharedPaymentWebServiceRegionConfigurationChangedNotification" object:0];
   }
 
-  targetDevice = v43->_targetDevice;
-  v38 = [v11 TSMURLStringByPushTopic];
-  v39 = [v11 primaryRegion];
-  v40 = [v39 trustedServiceManagerPushTopic];
-  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:v43 didRegisterWithRegionMap:v38 primaryRegionTopic:v40];
+  targetDevice = selfCopy->_targetDevice;
+  tSMURLStringByPushTopic = [context TSMURLStringByPushTopic];
+  primaryRegion2 = [context primaryRegion];
+  trustedServiceManagerPushTopic = [primaryRegion2 trustedServiceManagerPushTopic];
+  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:selfCopy didRegisterWithRegionMap:tSMURLStringByPushTopic primaryRegionTopic:trustedServiceManagerPushTopic];
 
   v33 = 1;
-  v20 = v45;
+  certificates = v45;
 LABEL_36:
 
 LABEL_37:
   return v33;
 }
 
-- (unint64_t)deviceCheckInDeviceCheckInForRegion:(id)a3 completion:(id)a4
+- (unint64_t)deviceCheckInDeviceCheckInForRegion:(id)region completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
+  regionCopy = region;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v9 = objc_alloc_init(PKPaymentDeviceCheckinRequest);
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v9];
-  v10 = [(PKPaymentWebService *)self context];
-  v11 = [v10 deviceID];
-  if (v11)
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (deviceID)
   {
-    v12 = [v10 regionForIdentifier:v6];
-    v13 = [v12 brokerURL];
+    v12 = [context regionForIdentifier:regionCopy];
+    brokerURL = [v12 brokerURL];
 
-    v14 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v15 = [(PKPaymentDeviceCheckinRequest *)v9 _urlRequestWithServiceURL:v13 deviceIdentifier:v11 appleAccountInformation:v14];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v15 = [(PKPaymentDeviceCheckinRequest *)v9 _urlRequestWithServiceURL:brokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __70__PKPaymentWebService_deviceCheckInDeviceCheckInForRegion_completion___block_invoke;
     v18[3] = &unk_1E79CD770;
     v18[4] = self;
-    v19 = v7;
-    [(PKWebService *)self performRequest:v15 taskIdentifier:v8 completionHandler:v18];
+    v19 = completionCopy;
+    [(PKWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v16 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __70__PKPaymentWebService_deviceCheckInDeviceCheckInForRegion_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -5705,11 +5705,11 @@ BOOL __70__PKPaymentWebService_deviceCheckInDeviceCheckInForRegion_completion___
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)sendOwnershipTokensForReason:(unint64_t)a3 completion:(id)a4
+- (unint64_t)sendOwnershipTokensForReason:(unint64_t)reason completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PKWebService *)self nextTaskID];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x3032000000;
@@ -5722,14 +5722,14 @@ BOOL __70__PKPaymentWebService_deviceCheckInDeviceCheckInForRegion_completion___
   v25[3] = __Block_byref_object_copy__54;
   v25[4] = __Block_byref_object_dispose__54;
   v26 = 0;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
-  if (v9)
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (deviceID)
   {
     v10 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = PKPaymentSendOwnershipTokensRequestReasonToString(a3);
+      v11 = PKPaymentSendOwnershipTokensRequestReasonToString(reason);
       *buf = 138412290;
       v30 = v11;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Sending ownership tokens with reason %@", buf, 0xCu);
@@ -5749,34 +5749,34 @@ BOOL __70__PKPaymentWebService_deviceCheckInDeviceCheckInForRegion_completion___
     v23[4] = self;
     v23[5] = v25;
     [(PKAsyncUnaryOperationComposer *)v12 addOperation:v23];
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __63__PKPaymentWebService_sendOwnershipTokensForReason_completion___block_invoke_3;
     v16[3] = &unk_1E79DB580;
-    v21 = a3;
+    reasonCopy = reason;
     v19 = v27;
     v16[4] = self;
-    v17 = v9;
+    v17 = deviceID;
     v20 = v25;
-    v22 = v7;
-    v18 = v6;
-    v14 = [(PKAsyncUnaryOperationComposer *)v12 evaluateWithInput:v13 completion:v16];
+    v22 = nextTaskID;
+    v18 = completionCopy;
+    v14 = [(PKAsyncUnaryOperationComposer *)v12 evaluateWithInput:null completion:v16];
 
     goto LABEL_7;
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v12 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v6 + 2))(v6, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
 LABEL_7:
   }
 
   _Block_object_dispose(v25, 8);
   _Block_object_dispose(v27, 8);
 
-  return v7;
+  return nextTaskID;
 }
 
 void __63__PKPaymentWebService_sendOwnershipTokensForReason_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -5885,38 +5885,38 @@ void __63__PKPaymentWebService_sendOwnershipTokensForReason_completion___block_i
   }
 }
 
-- (unint64_t)repopulateZonesWithCloudStoreZoneNames:(id)a3 completion:(id)a4
+- (unint64_t)repopulateZonesWithCloudStoreZoneNames:(id)names completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
-  v11 = v10;
-  if (v6 && v10 && [v6 count])
+  namesCopy = names;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  v11 = deviceID;
+  if (namesCopy && deviceID && [namesCopy count])
   {
-    v12 = [[PKPaymentRepopulateZonesRequest alloc] initWithCloudStoreZoneNames:v6];
+    v12 = [[PKPaymentRepopulateZonesRequest alloc] initWithCloudStoreZoneNames:namesCopy];
     [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v12];
-    v13 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v14 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v15 = [(PKPaymentRepopulateZonesRequest *)v12 _urlRequestWithServiceURL:v13 deviceIdentifier:v11 appleAccountInformation:v14];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v15 = [(PKPaymentRepopulateZonesRequest *)v12 _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:v11 appleAccountInformation:_appleAccountInformation];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __73__PKPaymentWebService_repopulateZonesWithCloudStoreZoneNames_completion___block_invoke;
     v18[3] = &unk_1E79CD770;
     v18[4] = self;
-    v19 = v7;
-    [(PKWebService *)self performRequest:v15 taskIdentifier:v8 completionHandler:v18];
+    v19 = completionCopy;
+    [(PKWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v16 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __73__PKPaymentWebService_repopulateZonesWithCloudStoreZoneNames_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -5936,26 +5936,26 @@ void __73__PKPaymentWebService_repopulateZonesWithCloudStoreZoneNames_completion
   }
 }
 
-- (void)backgroundPerformDeviceCheckInForRegion:(id)a3 identifier:(id)a4
+- (void)backgroundPerformDeviceCheckInForRegion:(id)region identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  regionCopy = region;
+  identifierCopy = identifier;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__PKPaymentWebService_backgroundPerformDeviceCheckInForRegion_identifier___block_invoke;
   v12[3] = &unk_1E79C4E00;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = regionCopy;
+  v14 = identifierCopy;
   v9 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_14;
   block[3] = &unk_1E79C4428;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = identifierCopy;
+  v11 = regionCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -6042,37 +6042,37 @@ void __74__PKPaymentWebService_backgroundPerformDeviceCheckInForRegion_identifie
   }
 }
 
-- (unint64_t)updateRegistrationDataAtBrokerURL:(id)a3 completion:(id)a4
+- (unint64_t)updateRegistrationDataAtBrokerURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
+  lCopy = l;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v9 = objc_alloc_init(PKPaymentUpdateRegistrationDataRequest);
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v9];
-  v10 = [(PKPaymentWebService *)self context];
-  v11 = [v10 deviceID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v11)
+  if (deviceID)
   {
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [(PKPaymentUpdateRegistrationDataRequest *)v9 _urlRequestWithServiceURL:v6 deviceIdentifier:v11 appleAccountInformation:v12];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [(PKPaymentUpdateRegistrationDataRequest *)v9 _urlRequestWithServiceURL:lCopy deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __68__PKPaymentWebService_updateRegistrationDataAtBrokerURL_completion___block_invoke;
     v16[3] = &unk_1E79CD770;
     v16[4] = self;
-    v17 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+    v17 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __68__PKPaymentWebService_updateRegistrationDataAtBrokerURL_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -6123,42 +6123,42 @@ uint64_t __68__PKPaymentWebService_updateRegistrationDataAtBrokerURL_completion_
   return v4;
 }
 
-- (unint64_t)unregisterDeviceWithCompanionSerialNumber:(id)a3 completion:(id)a4
+- (unint64_t)unregisterDeviceWithCompanionSerialNumber:(id)number completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  numberCopy = number;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
     v11 = objc_alloc_init(PKPaymentUnregisterRequest);
     [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v11];
-    v12 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v13 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v14 = [(PKPaymentUnregisterRequest *)v11 _urlRequestWithServiceURL:v12 deviceIdentifier:v10 companionSerialNumber:v6 appleAccountInformation:v13];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v14 = [(PKPaymentUnregisterRequest *)v11 _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID companionSerialNumber:numberCopy appleAccountInformation:_appleAccountInformation];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __76__PKPaymentWebService_unregisterDeviceWithCompanionSerialNumber_completion___block_invoke;
     v17[3] = &unk_1E79CD770;
     v17[4] = self;
-    v18 = v7;
-    [(PKWebService *)self performRequest:v14 taskIdentifier:v8 completionHandler:v17];
+    v18 = completionCopy;
+    [(PKWebService *)self performRequest:v14 taskIdentifier:nextTaskID completionHandler:v17];
   }
 
   else
   {
     AnalyticsSendEvent();
-    if (v7)
+    if (completionCopy)
     {
       v15 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-      (*(v7 + 2))(v7, 0, v15);
+      (*(completionCopy + 2))(completionCopy, 0, v15);
     }
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __76__PKPaymentWebService_unregisterDeviceWithCompanionSerialNumber_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -6186,28 +6186,28 @@ void __76__PKPaymentWebService_unregisterDeviceWithCompanionSerialNumber_complet
   }
 }
 
-- (unint64_t)issuerProvisioningCertificatesForRequest:(id)a3 withCompletion:(id)a4
+- (unint64_t)issuerProvisioningCertificatesForRequest:(id)request withCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
-  v11 = v10;
-  if (!v7 || !v6 || !v10)
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  v11 = deviceID;
+  if (!completionCopy || !requestCopy || !deviceID)
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_15;
     }
 
-    if (v10)
+    if (deviceID)
     {
-      if (v6)
+      if (requestCopy)
       {
 LABEL_14:
-        (*(v7 + 2))(v7, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
         goto LABEL_15;
       }
 
@@ -6229,9 +6229,9 @@ LABEL_12:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v24 = self;
+        selfCopy = self;
         v25 = 2112;
-        v26 = v9;
+        v26 = context;
         v16 = "Failed to fetch certificates because of nil deviceID. \nWebService: %@ \nContext: %@";
         v17 = v15;
         v18 = 22;
@@ -6242,22 +6242,22 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-  v12 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v13 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v14 = [v6 _urlRequestWithServiceURL:v12 deviceIdentifier:v11 appleAccountInformation:v13];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v14 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:v11 appleAccountInformation:_appleAccountInformation];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __79__PKPaymentWebService_issuerProvisioningCertificatesForRequest_withCompletion___block_invoke;
   v20[3] = &unk_1E79D1CC8;
   v20[4] = self;
-  v21 = v9;
-  v22 = v7;
-  [(PKWebService *)self performRequest:v14 taskIdentifier:v8 completionHandler:v20];
+  v21 = context;
+  v22 = completionCopy;
+  [(PKWebService *)self performRequest:v14 taskIdentifier:nextTaskID completionHandler:v20];
 
 LABEL_15:
-  return v8;
+  return nextTaskID;
 }
 
 void __79__PKPaymentWebService_issuerProvisioningCertificatesForRequest_withCompletion___block_invoke(id *a1, void *a2, void *a3, void *a4)
@@ -6382,17 +6382,17 @@ uint64_t __79__PKPaymentWebService_issuerProvisioningCertificatesForRequest_with
   return v7();
 }
 
-- (unint64_t)remotePaymentCredentialsForRequest:(id)a3 completion:(id)a4
+- (unint64_t)remotePaymentCredentialsForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [v6 deviceProvisioningDataExpected];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  deviceProvisioningDataExpected = [requestCopy deviceProvisioningDataExpected];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__PKPaymentWebService_remotePaymentCredentialsForRequest_completion___block_invoke;
   v14[3] = &unk_1E79DB620;
-  if (v9)
+  if (deviceProvisioningDataExpected)
   {
     v10 = 240;
   }
@@ -6403,14 +6403,14 @@ uint64_t __79__PKPaymentWebService_issuerProvisioningCertificatesForRequest_with
   }
 
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v17 = v8;
-  v11 = v6;
-  v12 = v7;
+  v15 = requestCopy;
+  v16 = completionCopy;
+  v17 = nextTaskID;
+  v11 = requestCopy;
+  v12 = completionCopy;
   [(PKPaymentWebService *)self _secureRequestBuilderForRegion:0 fields:v10 completion:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __69__PKPaymentWebService_remotePaymentCredentialsForRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -6487,24 +6487,24 @@ BOOL __69__PKPaymentWebService_remotePaymentCredentialsForRequest_completion___b
   return v1;
 }
 
-- (unint64_t)remotePaymentCredentialsUpdateForRequest:(id)a3 completion:(id)a4
+- (unint64_t)remotePaymentCredentialsUpdateForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__PKPaymentWebService_remotePaymentCredentialsUpdateForRequest_completion___block_invoke;
   v12[3] = &unk_1E79DB620;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v15 = v8;
-  v9 = v6;
-  v10 = v7;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v15 = nextTaskID;
+  v9 = requestCopy;
+  v10 = completionCopy;
   [(PKPaymentWebService *)self _secureRequestBuilderForRegion:0 fields:0 completion:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __75__PKPaymentWebService_remotePaymentCredentialsUpdateForRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -6578,19 +6578,19 @@ BOOL __75__PKPaymentWebService_remotePaymentCredentialsUpdateForRequest_completi
   return v1;
 }
 
-- (unint64_t)requirementsForRequest:(id)a3 completion:(id)a4
+- (unint64_t)requirementsForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [v6 paymentCredential];
-  v10 = [v9 couldSupportSuperEasyProvisioning];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  paymentCredential = [requestCopy paymentCredential];
+  couldSupportSuperEasyProvisioning = [paymentCredential couldSupportSuperEasyProvisioning];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__PKPaymentWebService_requirementsForRequest_completion___block_invoke;
   v15[3] = &unk_1E79DB620;
-  if (v10)
+  if (couldSupportSuperEasyProvisioning)
   {
     v11 = 498;
   }
@@ -6601,14 +6601,14 @@ BOOL __75__PKPaymentWebService_remotePaymentCredentialsUpdateForRequest_completi
   }
 
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v18 = v8;
-  v12 = v6;
-  v13 = v7;
+  v16 = requestCopy;
+  v17 = completionCopy;
+  v18 = nextTaskID;
+  v12 = requestCopy;
+  v13 = completionCopy;
   [(PKPaymentWebService *)self _secureRequestBuilderForRegion:0 fields:v11 completion:v15];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __57__PKPaymentWebService_requirementsForRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -6753,25 +6753,25 @@ BOOL __57__PKPaymentWebService_requirementsForRequest_completion___block_invoke_
   return v6;
 }
 
-- (unint64_t)eligibilityForRequest:(id)a3 completion:(id)a4
+- (unint64_t)eligibilityForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [v6 region];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  region = [requestCopy region];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __56__PKPaymentWebService_eligibilityForRequest_completion___block_invoke;
   v13[3] = &unk_1E79DB620;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v16 = v8;
-  v10 = v6;
-  v11 = v7;
-  [(PKPaymentWebService *)self _secureRequestBuilderForRegion:v9 fields:256 completion:v13];
+  v14 = requestCopy;
+  v15 = completionCopy;
+  v16 = nextTaskID;
+  v10 = requestCopy;
+  v11 = completionCopy;
+  [(PKPaymentWebService *)self _secureRequestBuilderForRegion:region fields:256 completion:v13];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __56__PKPaymentWebService_eligibilityForRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -6907,25 +6907,25 @@ BOOL __56__PKPaymentWebService_eligibilityForRequest_completion___block_invoke_6
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)provisionPassesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)provisionPassesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   targetDevice = self->_targetDevice;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__PKPaymentWebService_provisionPassesWithRequest_completion___block_invoke;
   v13[3] = &unk_1E79DB6C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v16 = v8;
-  v10 = v6;
-  v11 = v7;
+  v14 = requestCopy;
+  v15 = completionCopy;
+  v16 = nextTaskID;
+  v10 = requestCopy;
+  v11 = completionCopy;
   [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:self setNewAuthRandomIfNecessaryReturningPairingState:v13];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __61__PKPaymentWebService_provisionPassesWithRequest_completion___block_invoke(uint64_t a1, char a2, void *a3, void *a4)
@@ -7196,38 +7196,38 @@ void __61__PKPaymentWebService_provisionPassesWithRequest_completion___block_inv
   AnalyticsSendEvent();
 }
 
-- (unint64_t)initiateExternalProvisioningForRequest:(id)a3 completion:(id)a4
+- (unint64_t)initiateExternalProvisioningForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [v6 region];
-    v12 = [(PKPaymentWebService *)self _brokerUrlForRegion:v11 regionOut:0];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    region = [requestCopy region];
+    v12 = [(PKPaymentWebService *)self _brokerUrlForRegion:region regionOut:0];
 
-    v13 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v14 = [v6 _urlRequestWithServiceURL:v12 deviceIdentifier:v10 appleAccountInformation:v13];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v14 = [requestCopy _urlRequestWithServiceURL:v12 deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __73__PKPaymentWebService_initiateExternalProvisioningForRequest_completion___block_invoke;
     v16[3] = &unk_1E79CD770;
     v16[4] = self;
-    v17 = v7;
-    [(PKWebService *)self performRequest:v14 taskIdentifier:v8 completionHandler:v16];
+    v17 = completionCopy;
+    [(PKWebService *)self performRequest:v14 taskIdentifier:nextTaskID completionHandler:v16];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __73__PKPaymentWebService_initiateExternalProvisioningForRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -7249,31 +7249,31 @@ void __73__PKPaymentWebService_initiateExternalProvisioningForRequest_completion
   }
 }
 
-- (unint64_t)deprovisionForRequest:(id)a3 completion:(id)a4
+- (unint64_t)deprovisionForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __56__PKPaymentWebService_deprovisionForRequest_completion___block_invoke;
     v15[3] = &unk_1E79CD770;
     v15[4] = self;
-    v16 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v15];
+    v16 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v15];
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __56__PKPaymentWebService_deprovisionForRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -7295,31 +7295,31 @@ void __56__PKPaymentWebService_deprovisionForRequest_completion___block_invoke(u
   }
 }
 
-- (unint64_t)deleteForRequest:(id)a3 completion:(id)a4
+- (unint64_t)deleteForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL appleAccountInformation:_appleAccountInformation];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __51__PKPaymentWebService_deleteForRequest_completion___block_invoke;
     v15[3] = &unk_1E79CD770;
     v15[4] = self;
-    v16 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v15];
+    v16 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v15];
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __51__PKPaymentWebService_deleteForRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -7341,20 +7341,20 @@ void __51__PKPaymentWebService_deleteForRequest_completion___block_invoke(uint64
   }
 }
 
-- (unint64_t)prepareToProvisionForRequest:(id)a3 completion:(id)a4
+- (unint64_t)prepareToProvisionForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     if (v13)
     {
@@ -7363,22 +7363,22 @@ void __51__PKPaymentWebService_deleteForRequest_completion___block_invoke(uint64
       v15[2] = __63__PKPaymentWebService_prepareToProvisionForRequest_completion___block_invoke;
       v15[3] = &unk_1E79CD770;
       v15[4] = self;
-      v16 = v7;
-      [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v15];
+      v16 = completionCopy;
+      [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v15];
     }
 
-    else if (v7)
+    else if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __63__PKPaymentWebService_prepareToProvisionForRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -7400,36 +7400,36 @@ void __63__PKPaymentWebService_prepareToProvisionForRequest_completion___block_i
   }
 }
 
-- (unint64_t)provisionPrecursorPassForRequest:(id)a3 completion:(id)a4
+- (unint64_t)provisionPrecursorPassForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__PKPaymentWebService_provisionPrecursorPassForRequest_completion___block_invoke;
     v15[3] = &unk_1E79CD770;
     v15[4] = self;
-    v16 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v15];
+    v16 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v15];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __67__PKPaymentWebService_provisionPrecursorPassForRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -7476,36 +7476,36 @@ BOOL __67__PKPaymentWebService_provisionPrecursorPassForRequest_completion___blo
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)tapToProvisionConfigurationForRequest:(id)a3 completion:(id)a4
+- (unint64_t)tapToProvisionConfigurationForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __72__PKPaymentWebService_tapToProvisionConfigurationForRequest_completion___block_invoke;
     v15[3] = &unk_1E79CD770;
     v15[4] = self;
-    v16 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v15];
+    v16 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v15];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __72__PKPaymentWebService_tapToProvisionConfigurationForRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -7552,60 +7552,60 @@ BOOL __72__PKPaymentWebService_tapToProvisionConfigurationForRequest_completion_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)verificationOptionsForRequest:(id)a3 completion:(id)a4
+- (unint64_t)verificationOptionsForRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [v6 pass];
-  v10 = [v9 passTypeIdentifier];
-  v11 = [(PKPaymentWebService *)self _requestBuilderForRegion:v10];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  pass = [requestCopy pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  v11 = [(PKPaymentWebService *)self _requestBuilderForRegion:passTypeIdentifier];
 
   if (v11)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v12 = [v6 _urlRequestWithBuilder:v11];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    v12 = [requestCopy _urlRequestWithBuilder:v11];
     if (v12)
     {
-      v13 = [v6 pass];
-      [(PKPaymentWebService *)self _performVerificationRequest:v12 selectedMethodGroup:0 selectedMethod:0 pass:v13 taskID:v8 completion:v7];
+      pass2 = [requestCopy pass];
+      [(PKPaymentWebService *)self _performVerificationRequest:v12 selectedMethodGroup:0 selectedMethod:0 pass:pass2 taskID:nextTaskID completion:completionCopy];
     }
 
     else
     {
-      if (!v7)
+      if (!completionCopy)
       {
         v12 = 0;
         goto LABEL_9;
       }
 
-      v13 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-      (*(v7 + 2))(v7, 0, 0, v13);
+      pass2 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
+      (*(completionCopy + 2))(completionCopy, 0, 0, pass2);
     }
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v12 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v12);
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v8;
+  return nextTaskID;
 }
 
-- (unint64_t)updateVerification:(id)a3 completion:(id)a4
+- (unint64_t)updateVerification:(id)verification completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [v6 pass];
-  v10 = [(PKPaymentWebService *)self verificationRecordForPass:v9];
+  verificationCopy = verification;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  pass = [verificationCopy pass];
+  v10 = [(PKPaymentWebService *)self verificationRecordForPass:pass];
   v11 = v10;
   if (v10)
   {
@@ -7614,42 +7614,42 @@ LABEL_10:
 
   else
   {
-    v12 = [PKVerificationRequestRecord verificationRequestRecordForPass:v9];
+    v12 = [PKVerificationRequestRecord verificationRequestRecordForPass:pass];
   }
 
   v13 = v12;
 
-  v14 = [v6 methodGroup];
-  v15 = [v6 method];
-  if (v14 && ([v14 needsServerRequest] & 1) == 0)
+  methodGroup = [verificationCopy methodGroup];
+  method = [verificationCopy method];
+  if (methodGroup && ([methodGroup needsServerRequest] & 1) == 0)
   {
-    [v13 setActiveMethodGroup:v14];
+    [v13 setActiveMethodGroup:methodGroup];
     [v13 setVerificationStatus:4000];
     [(PKPaymentWebService *)self updateVerificationRecord:v13];
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, v13, 0);
+      completionCopy[2](completionCopy, 1, v13, 0);
     }
   }
 
   else
   {
-    v16 = [v9 passTypeIdentifier];
+    passTypeIdentifier = [pass passTypeIdentifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __53__PKPaymentWebService_updateVerification_completion___block_invoke;
     v18[3] = &unk_1E79DB710;
-    v23 = v7;
+    v23 = completionCopy;
     v18[4] = self;
-    v19 = v6;
-    v20 = v14;
-    v21 = v15;
-    v22 = v9;
-    v24 = v8;
-    [(PKPaymentWebService *)self _secureRequestBuilderForRegion:v16 fields:256 completion:v18];
+    v19 = verificationCopy;
+    v20 = methodGroup;
+    v21 = method;
+    v22 = pass;
+    v24 = nextTaskID;
+    [(PKPaymentWebService *)self _secureRequestBuilderForRegion:passTypeIdentifier fields:256 completion:v18];
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __53__PKPaymentWebService_updateVerification_completion___block_invoke(uint64_t a1, void *a2)
@@ -7709,26 +7709,26 @@ void __53__PKPaymentWebService_updateVerification_completion___block_invoke_2(ui
   }
 }
 
-- (void)_performVerificationRequest:(id)a3 selectedMethodGroup:(id)a4 selectedMethod:(id)a5 pass:(id)a6 taskID:(unint64_t)a7 completion:(id)a8
+- (void)_performVerificationRequest:(id)request selectedMethodGroup:(id)group selectedMethod:(id)method pass:(id)pass taskID:(unint64_t)d completion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  groupCopy = group;
+  methodCopy = method;
+  passCopy = pass;
+  completionCopy = completion;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __109__PKPaymentWebService__performVerificationRequest_selectedMethodGroup_selectedMethod_pass_taskID_completion___block_invoke;
   v22[3] = &unk_1E79D1D40;
   v22[4] = self;
-  v23 = v16;
-  v24 = v14;
-  v25 = v15;
-  v26 = v17;
-  v18 = v17;
-  v19 = v15;
-  v20 = v14;
-  v21 = v16;
-  [(PKWebService *)self performRequest:a3 taskIdentifier:a7 completionHandler:v22];
+  v23 = passCopy;
+  v24 = groupCopy;
+  v25 = methodCopy;
+  v26 = completionCopy;
+  v18 = completionCopy;
+  v19 = methodCopy;
+  v20 = groupCopy;
+  v21 = passCopy;
+  [(PKWebService *)self performRequest:request taskIdentifier:d completionHandler:v22];
 }
 
 void __109__PKPaymentWebService__performVerificationRequest_selectedMethodGroup_selectedMethod_pass_taskID_completion___block_invoke(id *a1, void *a2, void *a3, void *a4)
@@ -7920,12 +7920,12 @@ LABEL_26:
   return v19;
 }
 
-- (id)removeRedundantMethodGroupsFromMethodGroups:(id)a3
+- (id)removeRedundantMethodGroupsFromMethodGroups:(id)groups
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  groupsCopy = groups;
   v4 = PKEnableGroupVerificationMethods();
-  v5 = v3;
+  v5 = groupsCopy;
   v6 = v5;
   v7 = v5;
   if (v4)
@@ -7959,11 +7959,11 @@ LABEL_26:
       }
 
       v14 = *(*(&v23 + 1) + 8 * i);
-      v15 = [v14 legacyChannelRepresentation];
-      v16 = v15;
-      if (v15)
+      legacyChannelRepresentation = [v14 legacyChannelRepresentation];
+      v16 = legacyChannelRepresentation;
+      if (legacyChannelRepresentation)
       {
-        if ([v15 type] == 5)
+        if ([legacyChannelRepresentation type] == 5)
         {
           v17 = v10;
           v10 = v14;
@@ -8152,80 +8152,80 @@ LABEL_20:
   return v30;
 }
 
-- (id)verificationRecordForPass:(id)a3
+- (id)verificationRecordForPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self context];
-  v6 = [v4 uniqueID];
+  passCopy = pass;
+  context = [(PKPaymentWebService *)self context];
+  uniqueID = [passCopy uniqueID];
 
-  v7 = [v5 verificationRequestRecordForUniqueID:v6];
+  v7 = [context verificationRequestRecordForUniqueID:uniqueID];
 
   return v7;
 }
 
-- (void)updateVerificationRecord:(id)a3
+- (void)updateVerificationRecord:(id)record
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
-    v5 = [(PKPaymentWebService *)self context];
-    v6 = [v4 passUniqueID];
-    [v5 addVerificationRequestRecord:v4 forUniqueID:v6];
+    context = [(PKPaymentWebService *)self context];
+    passUniqueID = [recordCopy passUniqueID];
+    [context addVerificationRequestRecord:recordCopy forUniqueID:passUniqueID];
 
     [(PKPaymentWebService *)self _archiveContext];
   }
 
-  if ([v4 verificationStatus] == 2)
+  if ([recordCopy verificationStatus] == 2)
   {
-    v7 = [v4 channel];
-    v8 = [v7 typeDescriptionUnlocalized];
+    channel = [recordCopy channel];
+    typeDescriptionUnlocalized = [channel typeDescriptionUnlocalized];
 
-    if (v8)
+    if (typeDescriptionUnlocalized)
     {
       v10 = @"type";
-      v11[0] = v8;
+      v11[0] = typeDescriptionUnlocalized;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
       AnalyticsSendEvent();
     }
   }
 }
 
-- (void)removeVerificationRequestRecord:(id)a3
+- (void)removeVerificationRequestRecord:(id)record
 {
-  if (a3)
+  if (record)
   {
-    v4 = a3;
-    v5 = [(PKPaymentWebService *)self context];
-    v6 = [v4 passUniqueID];
+    recordCopy = record;
+    context = [(PKPaymentWebService *)self context];
+    passUniqueID = [recordCopy passUniqueID];
 
-    [v5 removeVerificationRequestRecordForUniqueID:v6];
+    [context removeVerificationRequestRecordForUniqueID:passUniqueID];
 
     [(PKPaymentWebService *)self _archiveContext];
   }
 }
 
-- (unint64_t)submitVerificationCode:(id)a3 verificationData:(id)a4 forPass:(id)a5 completion:(id)a6
+- (unint64_t)submitVerificationCode:(id)code verificationData:(id)data forPass:(id)pass completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  codeCopy = code;
+  dataCopy = data;
+  passCopy = pass;
   v13 = MEMORY[0x1E695DF70];
-  v14 = a6;
+  completionCopy = completion;
   v15 = objc_alloc_init(v13);
-  v39 = self;
-  v16 = [(PKPaymentWebService *)self verificationRecordForPass:v12];
-  v17 = [v16 methodGroups];
+  selfCopy = self;
+  v16 = [(PKPaymentWebService *)self verificationRecordForPass:passCopy];
+  methodGroups = [v16 methodGroups];
 
-  if (v10)
+  if (codeCopy)
   {
-    v18 = [v17 pk_firstObjectPassingTest:&__block_literal_global_682];
+    v18 = [methodGroups pk_firstObjectPassingTest:&__block_literal_global_682];
     v19 = objc_alloc_init(PKPaymentVerificationSubmitMethodEntry);
-    v20 = [v18 identifier];
-    v21 = v20;
-    if (v20)
+    identifier = [v18 identifier];
+    v21 = identifier;
+    if (identifier)
     {
-      v22 = v20;
+      v22 = identifier;
     }
 
     else
@@ -8235,12 +8235,12 @@ LABEL_20:
 
     [(PKPaymentVerificationSubmitMethodEntry *)v19 setMethodGroupIdentifier:v22];
 
-    v23 = [v18 onlyMethod];
-    v24 = [v23 identifier];
-    v25 = v24;
-    if (v24)
+    onlyMethod = [v18 onlyMethod];
+    identifier2 = [onlyMethod identifier];
+    v25 = identifier2;
+    if (identifier2)
     {
-      v26 = v24;
+      v26 = identifier2;
     }
 
     else
@@ -8250,19 +8250,19 @@ LABEL_20:
 
     [(PKPaymentVerificationSubmitMethodEntry *)v19 setMethodIdentifier:v26];
 
-    [(PKPaymentVerificationSubmitMethodEntry *)v19 setVerificationCode:v10];
+    [(PKPaymentVerificationSubmitMethodEntry *)v19 setVerificationCode:codeCopy];
     [v15 addObject:v19];
   }
 
-  if (v11)
+  if (dataCopy)
   {
-    v27 = [v17 pk_firstObjectPassingTest:&__block_literal_global_691];
+    v27 = [methodGroups pk_firstObjectPassingTest:&__block_literal_global_691];
     v28 = objc_alloc_init(PKPaymentVerificationSubmitMethodEntry);
-    v29 = [v27 identifier];
-    v30 = v29;
-    if (v29)
+    identifier3 = [v27 identifier];
+    v30 = identifier3;
+    if (identifier3)
     {
-      v31 = v29;
+      v31 = identifier3;
     }
 
     else
@@ -8272,12 +8272,12 @@ LABEL_20:
 
     [(PKPaymentVerificationSubmitMethodEntry *)v28 setMethodGroupIdentifier:v31];
 
-    v32 = [v27 onlyMethod];
-    v33 = [v32 identifier];
-    v34 = v33;
-    if (v33)
+    onlyMethod2 = [v27 onlyMethod];
+    identifier4 = [onlyMethod2 identifier];
+    v34 = identifier4;
+    if (identifier4)
     {
-      v35 = v33;
+      v35 = identifier4;
     }
 
     else
@@ -8287,12 +8287,12 @@ LABEL_20:
 
     [(PKPaymentVerificationSubmitMethodEntry *)v28 setMethodIdentifier:v35];
 
-    [(PKPaymentVerificationSubmitMethodEntry *)v28 setVerificationData:v11];
+    [(PKPaymentVerificationSubmitMethodEntry *)v28 setVerificationData:dataCopy];
     [v15 addObject:v28];
   }
 
   v36 = [v15 copy];
-  v37 = [(PKPaymentWebService *)v39 submitVerificationEntries:v36 forPass:v12 completion:v14];
+  v37 = [(PKPaymentWebService *)selfCopy submitVerificationEntries:v36 forPass:passCopy completion:completionCopy];
 
   return v37;
 }
@@ -8305,28 +8305,28 @@ BOOL __82__PKPaymentWebService_submitVerificationCode_verificationData_forPass_c
   return v3;
 }
 
-- (unint64_t)submitVerificationEntries:(id)a3 forPass:(id)a4 completion:(id)a5
+- (unint64_t)submitVerificationEntries:(id)entries forPass:(id)pass completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [v9 passTypeIdentifier];
+  entriesCopy = entries;
+  passCopy = pass;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  passTypeIdentifier = [passCopy passTypeIdentifier];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68__PKPaymentWebService_submitVerificationEntries_forPass_completion___block_invoke;
   v17[3] = &unk_1E79DB7C8;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v21 = v11;
-  v13 = v8;
-  v14 = v9;
-  v15 = v10;
-  [(PKPaymentWebService *)self _secureRequestBuilderForRegion:v12 fields:0 completion:v17];
+  v18 = passCopy;
+  v19 = entriesCopy;
+  v20 = completionCopy;
+  v21 = nextTaskID;
+  v13 = entriesCopy;
+  v14 = passCopy;
+  v15 = completionCopy;
+  [(PKPaymentWebService *)self _secureRequestBuilderForRegion:passTypeIdentifier fields:0 completion:v17];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __68__PKPaymentWebService_submitVerificationEntries_forPass_completion___block_invoke(uint64_t a1, void *a2)
@@ -8500,17 +8500,17 @@ LABEL_29:
 LABEL_30:
 }
 
-- (unint64_t)verificationChannelsForPass:(id)a3 completion:(id)a4
+- (unint64_t)verificationChannelsForPass:(id)pass completion:(id)completion
 {
-  v6 = a4;
-  v7 = [PKPaymentVerificationOptionsRequest requestWithPass:a3];
+  completionCopy = completion;
+  v7 = [PKPaymentVerificationOptionsRequest requestWithPass:pass];
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__PKPaymentWebService_verificationChannelsForPass_completion___block_invoke;
   v11[3] = &unk_1E79DB7F0;
-  v12 = v6;
-  v8 = v6;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = [(PKPaymentWebService *)self verificationOptionsForRequest:v7 completion:v11];
 
   return v9;
@@ -8524,32 +8524,32 @@ void __62__PKPaymentWebService_verificationChannelsForPass_completion___block_in
   (*(v6 + 16))(v6, a2, v8, v7);
 }
 
-- (unint64_t)requestVerificationCodeForPass:(id)a3 usingChannel:(id)a4 completion:(id)a5
+- (unint64_t)requestVerificationCodeForPass:(id)pass usingChannel:(id)channel completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  channelCopy = channel;
+  passCopy = pass;
   v11 = objc_alloc_init(PKPaymentVerificationUpdateRequest);
-  [(PKPaymentVerificationUpdateRequest *)v11 setPass:v10];
+  [(PKPaymentVerificationUpdateRequest *)v11 setPass:passCopy];
 
-  [(PKPaymentVerificationUpdateRequest *)v11 setChannel:v9];
+  [(PKPaymentVerificationUpdateRequest *)v11 setChannel:channelCopy];
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v11];
-  v12 = [(PKPaymentWebService *)self updateVerification:v11 completion:v8];
+  v12 = [(PKPaymentWebService *)self updateVerification:v11 completion:completionCopy];
 
   return v12;
 }
 
-- (unint64_t)devicePassesSinceLastUpdatedTag:(BOOL)a3 withCompletion:(id)a4
+- (unint64_t)devicePassesSinceLastUpdatedTag:(BOOL)tag withCompletion:(id)completion
 {
-  v18 = a3;
+  tagCopy = tag;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v20 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPaymentWebService *)self context];
-  v19 = [v6 deviceID];
-  if (v19)
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (deviceID)
   {
-    [v6 regions];
+    [context regions];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -8570,26 +8570,26 @@ void __62__PKPaymentWebService_verificationChannelsForPass_completion___block_in
           v8 = *(*(&v27 + 1) + 8 * i);
           v9 = [obj objectForKeyedSubscript:v8];
           v10 = objc_alloc_init(PKPaymentDevicePassesRequest);
-          if (v18)
+          if (tagCopy)
           {
-            v11 = [v9 lastUpdatedTag];
-            [(PKPaymentDevicePassesRequest *)v10 setUpdatedSince:v11];
+            lastUpdatedTag = [v9 lastUpdatedTag];
+            [(PKPaymentDevicePassesRequest *)v10 setUpdatedSince:lastUpdatedTag];
           }
 
           [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-          v12 = [v9 brokerURL];
-          v13 = [(PKPaymentWebService *)self _appleAccountInformation];
-          v14 = [(PKPaymentDevicePassesRequest *)v10 _urlRequestWithServiceURL:v12 deviceIdentifier:v19 appleAccountInformation:v13];
+          brokerURL = [v9 brokerURL];
+          _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+          v14 = [(PKPaymentDevicePassesRequest *)v10 _urlRequestWithServiceURL:brokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __70__PKPaymentWebService_devicePassesSinceLastUpdatedTag_withCompletion___block_invoke;
           v23[3] = &unk_1E79DB3A8;
           v23[4] = self;
-          v24 = v6;
+          v24 = context;
           v25 = v8;
-          v26 = v5;
-          [(PKWebService *)self performRequest:v14 taskIdentifier:v20 completionHandler:v23];
+          v26 = completionCopy;
+          [(PKWebService *)self performRequest:v14 taskIdentifier:nextTaskID completionHandler:v23];
         }
 
         v21 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -8602,10 +8602,10 @@ void __62__PKPaymentWebService_verificationChannelsForPass_completion___block_in
   else
   {
     v15 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v5 + 2))(v5, 0, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v15);
   }
 
-  return v20;
+  return nextTaskID;
 }
 
 void __70__PKPaymentWebService_devicePassesSinceLastUpdatedTag_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -8712,28 +8712,28 @@ void __70__PKPaymentWebService_devicePassesSinceLastUpdatedTag_withCompletion___
   (*(*(a1 + 64) + 16))();
 }
 
-- (unint64_t)passesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)passesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 primaryRegion];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  primaryRegion = [context primaryRegion];
 
-  v11 = [v10 brokerURL];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 appleAccountInformation:v12];
+  brokerURL = [primaryRegion brokerURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:brokerURL appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__PKPaymentWebService_passesWithRequest_completion___block_invoke;
   v16[3] = &unk_1E79CD770;
   v16[4] = self;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __52__PKPaymentWebService_passesWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -8813,33 +8813,33 @@ void __52__PKPaymentWebService_passesWithRequest_completion___block_invoke_3(voi
   (*(a1[6] + 16))();
 }
 
-- (unint64_t)notifyIssuerAppletStateDirtyWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)notifyIssuerAppletStateDirtyWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 primaryRegion];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  primaryRegion = [context primaryRegion];
 
-  v11 = [(PKPaymentWebService *)self context];
-  v12 = [v11 deviceID];
+  context2 = [(PKPaymentWebService *)self context];
+  deviceID = [context2 deviceID];
 
-  if (v12)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v13 = [v10 brokerURL];
-    v14 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v15 = [v6 _urlRequestWithServiceURL:v13 deviceIdentifier:v12 appleAccountInformation:v14];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    brokerURL = [primaryRegion brokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v15 = [requestCopy _urlRequestWithServiceURL:brokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __74__PKPaymentWebService_notifyIssuerAppletStateDirtyWithRequest_completion___block_invoke;
     v17[3] = &unk_1E79CB9F0;
-    v18 = v7;
-    [(PKWebService *)self performRequest:v15 taskIdentifier:v8 retries:3 authHandling:1 completionHandler:v17];
+    v18 = completionCopy;
+    [(PKWebService *)self performRequest:v15 taskIdentifier:nextTaskID retries:3 authHandling:1 completionHandler:v17];
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 uint64_t __74__PKPaymentWebService_notifyIssuerAppletStateDirtyWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -8856,37 +8856,37 @@ uint64_t __74__PKPaymentWebService_notifyIssuerAppletStateDirtyWithRequest_compl
   return result;
 }
 
-- (unint64_t)performNotificationActionRequest:(id)a3 completion:(id)a4
+- (unint64_t)performNotificationActionRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __67__PKPaymentWebService_performNotificationActionRequest_completion___block_invoke;
     v16[3] = &unk_1E79CD770;
     v16[4] = self;
-    v17 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+    v17 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
   }
 
   else
   {
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v14);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __67__PKPaymentWebService_performNotificationActionRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -8937,18 +8937,18 @@ BOOL __67__PKPaymentWebService_performNotificationActionRequest_completion___blo
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)backgroundDownloadPassesSinceLastUpdatedTag:(BOOL)a3
+- (void)backgroundDownloadPassesSinceLastUpdatedTag:(BOOL)tag
 {
-  v3 = a3;
+  tagCopy = tag;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(PKPaymentWebService *)self context];
-  v6 = [v5 regions];
+  context = [(PKPaymentWebService *)self context];
+  regions = [context regions];
 
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [regions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -8960,38 +8960,38 @@ BOOL __67__PKPaymentWebService_performNotificationActionRequest_completion___blo
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(regions);
         }
 
-        [(PKPaymentWebService *)self backgroundDownloadPassesForPushTopic:*(*(&v11 + 1) + 8 * v10++) sinceLastUpdatedTag:v3];
+        [(PKPaymentWebService *)self backgroundDownloadPassesForPushTopic:*(*(&v11 + 1) + 8 * v10++) sinceLastUpdatedTag:tagCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [regions countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)backgroundDownloadPassesForPushTopic:(id)a3 sinceLastUpdatedTag:(BOOL)a4
+- (void)backgroundDownloadPassesForPushTopic:(id)topic sinceLastUpdatedTag:(BOOL)tag
 {
-  v6 = a3;
+  topicCopy = topic;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PKPaymentWebService_backgroundDownloadPassesForPushTopic_sinceLastUpdatedTag___block_invoke;
   v10[3] = &unk_1E79C9618;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
+  v11 = topicCopy;
+  tagCopy = tag;
   v8 = v10;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_14;
   block[3] = &unk_1E79C4428;
   v14 = v8;
-  v9 = v6;
+  v9 = topicCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -9045,20 +9045,20 @@ void __80__PKPaymentWebService_backgroundDownloadPassesForPushTopic_sinceLastUpd
   }
 }
 
-- (void)getHasBackgroundDownloadTaskPassesForPushTopic:(id)a3 completion:(id)a4
+- (void)getHasBackgroundDownloadTaskPassesForPushTopic:(id)topic completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  completionCopy = completion;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__PKPaymentWebService_getHasBackgroundDownloadTaskPassesForPushTopic_completion___block_invoke;
   block[3] = &unk_1E79C4D60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = topicCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = topicCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -9193,54 +9193,54 @@ LABEL_24:
   (*(*(a1 + 56) + 16))();
 }
 
-- (unint64_t)passAtURL:(id)a3 completion:(id)a4
+- (unint64_t)passAtURL:(id)l completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__PKPaymentWebService_passAtURL_completion___block_invoke;
   v10[3] = &unk_1E79DB890;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(PKPaymentWebService *)self passAtURL:a3 completionWithError:v10];
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = [(PKPaymentWebService *)self passAtURL:l completionWithError:v10];
 
   return v8;
 }
 
-- (unint64_t)passAtURL:(id)a3 completionWithError:(id)a4
+- (unint64_t)passAtURL:(id)l completionWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__PKPaymentWebService_passAtURL_completionWithError___block_invoke;
   v10[3] = &unk_1E79DB890;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(PKPaymentWebService *)self _downloadPassAtURL:a3 completion:v10];
+  v11 = errorCopy;
+  v7 = errorCopy;
+  v8 = [(PKPaymentWebService *)self _downloadPassAtURL:l completion:v10];
 
   return v8;
 }
 
-- (void)_backgroundDownloadPassAtURL:(id)a3 fromPushTopic:(id)a4
+- (void)_backgroundDownloadPassAtURL:(id)l fromPushTopic:(id)topic
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  topicCopy = topic;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__PKPaymentWebService__backgroundDownloadPassAtURL_fromPushTopic___block_invoke;
   v12[3] = &unk_1E79C4E00;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = lCopy;
+  v14 = topicCopy;
   v9 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_14;
   block[3] = &unk_1E79C4428;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = topicCopy;
+  v11 = lCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -9279,18 +9279,18 @@ void __66__PKPaymentWebService__backgroundDownloadPassAtURL_fromPushTopic___bloc
   [*(a1 + 32) _archiveBackgroundContext];
 }
 
-- (void)backgroundDownloadRemotePassAssets:(id)a3 forSuffixesAndScreenScales:(id)a4 cloudStoreCoordinatorDelegate:(id)a5
+- (void)backgroundDownloadRemotePassAssets:(id)assets forSuffixesAndScreenScales:(id)scales cloudStoreCoordinatorDelegate:(id)delegate
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  assetsCopy = assets;
+  scalesCopy = scales;
+  delegateCopy = delegate;
+  if (!scalesCopy)
   {
     v24 = &stru_1F227FD28;
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:PKScreenScale()];
     v25[0] = v11;
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
+    scalesCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   }
 
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
@@ -9298,19 +9298,19 @@ void __66__PKPaymentWebService__backgroundDownloadPassAtURL_fromPushTopic___bloc
   v17[1] = 3221225472;
   v17[2] = __115__PKPaymentWebService_backgroundDownloadRemotePassAssets_forSuffixesAndScreenScales_cloudStoreCoordinatorDelegate___block_invoke;
   v17[3] = &unk_1E79C9668;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v21 = v10;
+  v18 = assetsCopy;
+  selfCopy = self;
+  v20 = scalesCopy;
+  v21 = delegateCopy;
   v13 = v17;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_14;
   block[3] = &unk_1E79C4428;
   v23 = v13;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v14 = delegateCopy;
+  v15 = scalesCopy;
+  v16 = assetsCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -9715,14 +9715,14 @@ void __115__PKPaymentWebService_backgroundDownloadRemotePassAssets_forSuffixesAn
   }
 }
 
-- (unint64_t)passWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4 completion:(id)a5
+- (unint64_t)passWithPassTypeIdentifier:(id)identifier serialNumber:(id)number completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self context];
-  v13 = [v12 regionForIdentifier:v8];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  numberCopy = number;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  v13 = [context regionForIdentifier:identifierCopy];
 
   if (v13)
   {
@@ -9734,44 +9734,44 @@ void __115__PKPaymentWebService_backgroundDownloadRemotePassAssets_forSuffixesAn
     [(PKPaymentWebService *)self primaryBrokerURL];
   }
   v14 = ;
-  v15 = [[PKPaymentPassRequest alloc] initWithPassTypeID:v8 serialNumber:v10];
+  v15 = [[PKPaymentPassRequest alloc] initWithPassTypeID:identifierCopy serialNumber:numberCopy];
 
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v15];
-  v16 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v17 = [(PKPaymentPassRequest *)v15 _urlRequestWithServiceURL:v14 appleAccountInformation:v16];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v17 = [(PKPaymentPassRequest *)v15 _urlRequestWithServiceURL:v14 appleAccountInformation:_appleAccountInformation];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __74__PKPaymentWebService_passWithPassTypeIdentifier_serialNumber_completion___block_invoke;
   v20[3] = &unk_1E79CD770;
   v20[4] = self;
-  v21 = v9;
-  v18 = v9;
-  [(PKWebService *)self performRequest:v17 taskIdentifier:v11 completionHandler:v20];
+  v21 = completionCopy;
+  v18 = completionCopy;
+  [(PKWebService *)self performRequest:v17 taskIdentifier:nextTaskID completionHandler:v20];
 
-  return v11;
+  return nextTaskID;
 }
 
-- (void)backgroundDownloadWithPassTypeIdentifier:(id)a3 serialNumber:(id)a4
+- (void)backgroundDownloadWithPassTypeIdentifier:(id)identifier serialNumber:(id)number
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__PKPaymentWebService_backgroundDownloadWithPassTypeIdentifier_serialNumber___block_invoke;
   v12[3] = &unk_1E79C4E00;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = numberCopy;
   v9 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_14;
   block[3] = &unk_1E79C4428;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = numberCopy;
+  v11 = identifierCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -9819,23 +9819,23 @@ void __77__PKPaymentWebService_backgroundDownloadWithPassTypeIdentifier_serialNu
   [v8 resume];
 }
 
-- (void)backgroundRegisterCredentialWithRequest:(id)a3
+- (void)backgroundRegisterCredentialWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__PKPaymentWebService_backgroundRegisterCredentialWithRequest___block_invoke;
   v8[3] = &unk_1E79C4DD8;
   v8[4] = self;
-  v9 = v4;
+  v9 = requestCopy;
   v6 = v8;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_14;
   block[3] = &unk_1E79C4428;
   v11 = v6;
-  v7 = v4;
+  v7 = requestCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -9888,28 +9888,28 @@ void __63__PKPaymentWebService_backgroundRegisterCredentialWithRequest___block_i
   }
 }
 
-- (unint64_t)pushProvisioningSharingIdentifiersWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)pushProvisioningSharingIdentifiersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v10 = [(PKWebService *)self nextTaskID];
-  v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 deviceIdentifier:v9 appleAccountInformation:v12];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__PKPaymentWebService_pushProvisioningSharingIdentifiersWithRequest_completion___block_invoke;
   v16[3] = &unk_1E79CB9F0;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v10 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v10;
+  return nextTaskID;
 }
 
 void __80__PKPaymentWebService_pushProvisioningSharingIdentifiersWithRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -9921,28 +9921,28 @@ void __80__PKPaymentWebService_pushProvisioningSharingIdentifiersWithRequest_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)pushProvisioningSharingStatusRequest:(id)a3 completion:(id)a4
+- (unint64_t)pushProvisioningSharingStatusRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v10 = [(PKWebService *)self nextTaskID];
-  v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 deviceIdentifier:v9 appleAccountInformation:v12];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __71__PKPaymentWebService_pushProvisioningSharingStatusRequest_completion___block_invoke;
   v16[3] = &unk_1E79CB9F0;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v10 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v10;
+  return nextTaskID;
 }
 
 void __71__PKPaymentWebService_pushProvisioningSharingStatusRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -9954,53 +9954,53 @@ void __71__PKPaymentWebService_pushProvisioningSharingStatusRequest_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)provideEncryptedPushProvisioningTargetWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)provideEncryptedPushProvisioningTargetWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v10 = [(PKWebService *)self nextTaskID];
-  v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 deviceIdentifier:v9 appleAccountInformation:v12];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__PKPaymentWebService_provideEncryptedPushProvisioningTargetWithRequest_completion___block_invoke;
   v16[3] = &unk_1E79CB9F0;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v10 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v10;
+  return nextTaskID;
 }
 
-- (unint64_t)contactInformationWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)contactInformationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v10 = [(PKWebService *)self nextTaskID];
-  v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 deviceIdentifier:v9 appleAccountInformation:v12];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__PKPaymentWebService_contactInformationWithRequest_completion___block_invoke;
   v16[3] = &unk_1E79CD770;
   v16[4] = self;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v10 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v10;
+  return nextTaskID;
 }
 
 void __64__PKPaymentWebService_contactInformationWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10052,50 +10052,50 @@ BOOL __64__PKPaymentWebService_contactInformationWithRequest_completion___block_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)availableProductsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)availableProductsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
     v11 = PKProductsURL();
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      primaryBrokerURL = v11;
     }
 
     else
     {
-      v13 = [(PKPaymentWebService *)self primaryBrokerURL];
+      primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
     }
 
-    v15 = v13;
+    v15 = primaryBrokerURL;
 
-    v16 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v17 = [v6 _urlRequestWithServiceURL:v15 deviceIdentifier:v10 appleAccountInformation:v16];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v17 = [requestCopy _urlRequestWithServiceURL:v15 deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __63__PKPaymentWebService_availableProductsWithRequest_completion___block_invoke;
     v19[3] = &unk_1E79CD770;
     v19[4] = self;
-    v20 = v7;
-    [(PKWebService *)self performRequest:v17 taskIdentifier:v8 completionHandler:v19];
+    v20 = completionCopy;
+    [(PKWebService *)self performRequest:v17 taskIdentifier:nextTaskID completionHandler:v19];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v14);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __63__PKPaymentWebService_availableProductsWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10172,24 +10172,24 @@ BOOL __63__PKPaymentWebService_availableProductsWithRequest_completion___block_i
   return v6;
 }
 
-- (unint64_t)availableCommonProductsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)availableCommonProductsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v9 = [v7 _urlRequest];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _urlRequest = [requestCopy _urlRequest];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__PKPaymentWebService_availableCommonProductsWithRequest_completion___block_invoke;
   v12[3] = &unk_1E79CD770;
   v12[4] = self;
-  v13 = v6;
-  v10 = v6;
-  [(PKWebService *)self performRequest:v9 taskIdentifier:v8 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(PKWebService *)self performRequest:_urlRequest taskIdentifier:nextTaskID completionHandler:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __69__PKPaymentWebService_availableCommonProductsWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10251,50 +10251,50 @@ BOOL __69__PKPaymentWebService_availableCommonProductsWithRequest_completion___b
   return v6;
 }
 
-- (unint64_t)performProductActionRequest:(id)a3 completion:(id)a4
+- (unint64_t)performProductActionRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
     v11 = PKProductsURL();
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      primaryBrokerURL = v11;
     }
 
     else
     {
-      v13 = [(PKPaymentWebService *)self primaryBrokerURL];
+      primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
     }
 
-    v15 = v13;
+    v15 = primaryBrokerURL;
 
-    v16 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v17 = [v6 _urlRequestWithServiceURL:v15 deviceIdentifier:v10 appleAccountInformation:v16];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v17 = [requestCopy _urlRequestWithServiceURL:v15 deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __62__PKPaymentWebService_performProductActionRequest_completion___block_invoke;
     v19[3] = &unk_1E79CD770;
     v19[4] = self;
-    v20 = v7;
-    [(PKWebService *)self performRequest:v17 taskIdentifier:v8 completionHandler:v19];
+    v20 = completionCopy;
+    [(PKWebService *)self performRequest:v17 taskIdentifier:nextTaskID completionHandler:v19];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v14);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __62__PKPaymentWebService_performProductActionRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10357,37 +10357,37 @@ BOOL __62__PKPaymentWebService_performProductActionRequest_completion___block_in
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)browseableBankAppsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)browseableBankAppsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __64__PKPaymentWebService_browseableBankAppsWithRequest_completion___block_invoke;
     v16[3] = &unk_1E79CD770;
     v16[4] = self;
-    v17 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+    v17 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v14);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __64__PKPaymentWebService_browseableBankAppsWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10443,37 +10443,37 @@ BOOL __64__PKPaymentWebService_browseableBankAppsWithRequest_completion___block_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)provisioningMethodWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)provisioningMethodWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __64__PKPaymentWebService_provisioningMethodWithRequest_completion___block_invoke;
     v16[3] = &unk_1E79CD770;
     v16[4] = self;
-    v17 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+    v17 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v14);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __64__PKPaymentWebService_provisioningMethodWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10521,37 +10521,37 @@ BOOL __64__PKPaymentWebService_provisioningMethodWithRequest_completion___block_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)passUpgradeWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)passUpgradeWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v10)
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __57__PKPaymentWebService_passUpgradeWithRequest_completion___block_invoke;
     v16[3] = &unk_1E79CD770;
     v16[4] = self;
-    v17 = v7;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+    v17 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, v14, 0);
+    (*(completionCopy + 2))(completionCopy, v14, 0);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __57__PKPaymentWebService_passUpgradeWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10610,29 +10610,29 @@ BOOL __57__PKPaymentWebService_passUpgradeWithRequest_completion___block_invoke_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)paymentProvisioningNonceOfType:(unint64_t)a3 completion:(id)a4
+- (unint64_t)paymentProvisioningNonceOfType:(unint64_t)type completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PKWebService *)self nextTaskID];
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v9)
+  if (deviceID)
   {
-    v10 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v11 = [[PKPaymentProvisioningNonceRequest alloc] initWithNonceType:a3];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    v11 = [[PKPaymentProvisioningNonceRequest alloc] initWithNonceType:type];
     [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v11];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v13 = [(PKPaymentProvisioningNonceRequest *)v11 _urlRequestWithServiceURL:v10 deviceIdentifier:v9 appleAccountInformation:v12];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v13 = [(PKPaymentProvisioningNonceRequest *)v11 _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __65__PKPaymentWebService_paymentProvisioningNonceOfType_completion___block_invoke;
     v17[3] = &unk_1E79CD770;
     v17[4] = self;
-    v18 = v6;
-    [(PKWebService *)self performRequest:v13 taskIdentifier:v7 completionHandler:v17];
+    v18 = completionCopy;
+    [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v17];
   }
 
   else
@@ -10640,17 +10640,17 @@ BOOL __57__PKPaymentWebService_passUpgradeWithRequest_completion___block_invoke_
     v14 = PKLogFacilityTypeGetObject(0x25uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(PKPaymentWebService *)self context];
+      context2 = [(PKPaymentWebService *)self context];
       *buf = 138412290;
-      v20 = v15;
+      v20 = context2;
       _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Failed to get provisioning nonce, deviceID unavailable for context: %@", buf, 0xCu);
     }
 
-    v10 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v6 + 2))(v6, 0, v10);
+    primaryBrokerURL = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
+    (*(completionCopy + 2))(completionCopy, 0, primaryBrokerURL);
   }
 
-  return v7;
+  return nextTaskID;
 }
 
 void __65__PKPaymentWebService_paymentProvisioningNonceOfType_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10693,22 +10693,22 @@ BOOL __65__PKPaymentWebService_paymentProvisioningNonceOfType_completion___block
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)passActionWithRemoteContentPassAction:(id)a3 forPass:(id)a4 completion:(id)a5
+- (unint64_t)passActionWithRemoteContentPassAction:(id)action forPass:(id)pass completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 remoteContentConfiguration];
-  v12 = [v11 requiresAppletData];
+  completionCopy = completion;
+  passCopy = pass;
+  actionCopy = action;
+  remoteContentConfiguration = [actionCopy remoteContentConfiguration];
+  requiresAppletData = [remoteContentConfiguration requiresAppletData];
 
-  if (v12)
+  if (requiresAppletData)
   {
-    v13 = [(PKPaymentWebService *)self _passActionIncludingAppletDataWithRemoteContentPassAction:v10 pass:v9 completion:v8];
+    v13 = [(PKPaymentWebService *)self _passActionIncludingAppletDataWithRemoteContentPassAction:actionCopy pass:passCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:v10 pass:v9 completion:v8];
+    v13 = [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:actionCopy pass:passCopy completion:completionCopy];
   }
 
   v14 = v13;
@@ -10716,30 +10716,30 @@ BOOL __65__PKPaymentWebService_paymentProvisioningNonceOfType_completion___block
   return v14;
 }
 
-- (unint64_t)_passActionIncludingAppletDataWithRemoteContentPassAction:(id)a3 pass:(id)a4 completion:(id)a5
+- (unint64_t)_passActionIncludingAppletDataWithRemoteContentPassAction:(id)action pass:(id)pass completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self context];
-  v13 = [v12 deviceID];
+  actionCopy = action;
+  passCopy = pass;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v13)
+  if (deviceID)
   {
     targetDevice = self->_targetDevice;
-    v15 = [v9 secureElementPass];
-    v16 = [v8 remoteContentConfiguration];
-    v17 = [v16 appletDataRequiresEncryption];
+    secureElementPass = [passCopy secureElementPass];
+    remoteContentConfiguration = [actionCopy remoteContentConfiguration];
+    appletDataRequiresEncryption = [remoteContentConfiguration appletDataRequiresEncryption];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __97__PKPaymentWebService__passActionIncludingAppletDataWithRemoteContentPassAction_pass_completion___block_invoke;
     v21[3] = &unk_1E79DB8E0;
-    v24 = v10;
+    v24 = completionCopy;
     v21[4] = self;
-    v22 = v8;
-    v23 = v9;
-    [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice serviceProviderDataForSecureElementPass:v15 encrypted:v17 completion:v21];
+    v22 = actionCopy;
+    v23 = passCopy;
+    [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice serviceProviderDataForSecureElementPass:secureElementPass encrypted:appletDataRequiresEncryption completion:v21];
 
     v18 = v24;
   }
@@ -10754,10 +10754,10 @@ BOOL __65__PKPaymentWebService_paymentProvisioningNonceOfType_completion___block
     }
 
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, 0, v18);
+    (*(completionCopy + 2))(completionCopy, 0, v18);
   }
 
-  return v11;
+  return nextTaskID;
 }
 
 void __97__PKPaymentWebService__passActionIncludingAppletDataWithRemoteContentPassAction_pass_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -10785,37 +10785,37 @@ void __97__PKPaymentWebService__passActionIncludingAppletDataWithRemoteContentPa
   }
 }
 
-- (unint64_t)passActionWithRemoteContentPassAction:(id)a3 forDeviceIdentifier:(id)a4 passTypeIdentifier:(id)a5 passSerialNumber:(id)a6 completion:(id)a7
+- (unint64_t)passActionWithRemoteContentPassAction:(id)action forDeviceIdentifier:(id)identifier passTypeIdentifier:(id)typeIdentifier passSerialNumber:(id)number completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PKWebService *)self nextTaskID];
-  if (v13)
+  actionCopy = action;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  numberCopy = number;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  if (identifierCopy)
   {
     v18 = objc_alloc_init(PKPaymentRemoteContentPassActionRequest);
-    [(PKPaymentRemoteContentPassActionRequest *)v18 setAction:v12];
+    [(PKPaymentRemoteContentPassActionRequest *)v18 setAction:actionCopy];
     [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v18];
-    v19 = [(PKPaymentWebService *)self primaryBrokerURL];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
     [(PKPaymentWebService *)self _appleAccountInformation];
-    v20 = v12;
-    v22 = v21 = v17;
-    [(PKPaymentRemoteContentPassActionRequest *)v18 _urlRequestWithServiceURL:v19 deviceIdentifier:v13 passTypeIdentifier:v14 passSerialNumber:v15 appleAccountInformation:v22];
-    v23 = v26 = v14;
+    v20 = actionCopy;
+    v22 = v21 = nextTaskID;
+    [(PKPaymentRemoteContentPassActionRequest *)v18 _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:identifierCopy passTypeIdentifier:typeIdentifierCopy passSerialNumber:numberCopy appleAccountInformation:v22];
+    v23 = v26 = typeIdentifierCopy;
 
-    v17 = v21;
-    v12 = v20;
+    nextTaskID = v21;
+    actionCopy = v20;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __128__PKPaymentWebService_passActionWithRemoteContentPassAction_forDeviceIdentifier_passTypeIdentifier_passSerialNumber_completion___block_invoke;
     v28[3] = &unk_1E79CD770;
     v29 = v20;
-    v30 = v16;
-    [(PKWebService *)self performRequest:v23 taskIdentifier:v17 completionHandler:v28];
+    v30 = completionCopy;
+    [(PKWebService *)self performRequest:v23 taskIdentifier:nextTaskID completionHandler:v28];
 
-    v14 = v26;
+    typeIdentifierCopy = v26;
   }
 
   else
@@ -10827,10 +10827,10 @@ void __97__PKPaymentWebService__passActionIncludingAppletDataWithRemoteContentPa
       _os_log_impl(&dword_1AD337000, v24, OS_LOG_TYPE_DEFAULT, "Get pass action with remote content pass action, deviceID is nil", buf, 2u);
     }
 
-    (*(v16 + 2))(v16, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v17;
+  return nextTaskID;
 }
 
 void __128__PKPaymentWebService_passActionWithRemoteContentPassAction_forDeviceIdentifier_passTypeIdentifier_passSerialNumber_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -10866,54 +10866,54 @@ void __128__PKPaymentWebService_passActionWithRemoteContentPassAction_forDeviceI
   }
 }
 
-- (unint64_t)_passActionWithRemoteContentPassAction:(id)a3 pass:(id)a4 completion:(id)a5
+- (unint64_t)_passActionWithRemoteContentPassAction:(id)action pass:(id)pass completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self context];
-  v13 = [v12 deviceID];
+  actionCopy = action;
+  passCopy = pass;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v14 = [v9 passTypeIdentifier];
-  v15 = [v9 serialNumber];
-  v16 = v15;
-  if (v13)
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  serialNumber = [passCopy serialNumber];
+  v16 = serialNumber;
+  if (deviceID)
   {
     v17 = objc_alloc_init(PKPaymentRemoteContentPassActionRequest);
-    [(PKPaymentRemoteContentPassActionRequest *)v17 setAction:v8];
-    v30 = v9;
+    [(PKPaymentRemoteContentPassActionRequest *)v17 setAction:actionCopy];
+    v30 = passCopy;
     v18 = v17;
     [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v17];
-    v19 = [(PKPaymentWebService *)self primaryBrokerURL];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
     [(PKPaymentWebService *)self _appleAccountInformation];
-    v20 = v10;
-    v21 = v11;
-    v23 = v22 = v8;
-    [(PKPaymentRemoteContentPassActionRequest *)v18 _urlRequestWithServiceURL:v19 deviceIdentifier:v13 passTypeIdentifier:v14 passSerialNumber:v16 appleAccountInformation:v23];
-    v31 = v13;
-    v25 = v24 = v14;
+    v20 = completionCopy;
+    v21 = nextTaskID;
+    v23 = v22 = actionCopy;
+    [(PKPaymentRemoteContentPassActionRequest *)v18 _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID passTypeIdentifier:passTypeIdentifier passSerialNumber:v16 appleAccountInformation:v23];
+    v31 = deviceID;
+    v25 = v24 = passTypeIdentifier;
 
-    v8 = v22;
-    v11 = v21;
-    v10 = v20;
+    actionCopy = v22;
+    nextTaskID = v21;
+    completionCopy = v20;
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __78__PKPaymentWebService__passActionWithRemoteContentPassAction_pass_completion___block_invoke;
     v33[3] = &unk_1E79D1CC8;
-    v34 = v8;
+    v34 = actionCopy;
     v35 = v30;
     v36 = v20;
-    [(PKWebService *)self performRequest:v25 taskIdentifier:v11 completionHandler:v33];
+    [(PKWebService *)self performRequest:v25 taskIdentifier:nextTaskID completionHandler:v33];
 
     v26 = v31;
-    v9 = v30;
+    passCopy = v30;
   }
 
   else
   {
-    v27 = v15;
-    v24 = v14;
+    v27 = serialNumber;
+    v24 = passTypeIdentifier;
     v28 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
@@ -10921,12 +10921,12 @@ void __128__PKPaymentWebService_passActionWithRemoteContentPassAction_forDeviceI
       _os_log_impl(&dword_1AD337000, v28, OS_LOG_TYPE_DEFAULT, "Get pass action with remote content pass action, deviceID is nil", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     v26 = 0;
     v16 = v27;
   }
 
-  return v11;
+  return nextTaskID;
 }
 
 void __78__PKPaymentWebService__passActionWithRemoteContentPassAction_pass_completion___block_invoke(void *a1, void *a2, void *a3, void *a4)
@@ -10962,23 +10962,23 @@ void __78__PKPaymentWebService__passActionWithRemoteContentPassAction_pass_compl
   }
 }
 
-- (unint64_t)passActionWithRemoteContentPassAction:(id)a3 serviceProviderData:(id)a4 pass:(id)a5 completion:(id)a6
+- (unint64_t)passActionWithRemoteContentPassAction:(id)action serviceProviderData:(id)data pass:(id)pass completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v13 remoteContentConfiguration];
-  v15 = [v14 requiresAppletData];
+  dataCopy = data;
+  completionCopy = completion;
+  passCopy = pass;
+  actionCopy = action;
+  remoteContentConfiguration = [actionCopy remoteContentConfiguration];
+  requiresAppletData = [remoteContentConfiguration requiresAppletData];
 
-  if (v15)
+  if (requiresAppletData)
   {
-    v16 = [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:v13 serviceProviderData:v10 pass:v12 completion:v11];
+    v16 = [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:actionCopy serviceProviderData:dataCopy pass:passCopy completion:completionCopy];
   }
 
   else
   {
-    v16 = [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:v13 pass:v12 completion:v11];
+    v16 = [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:actionCopy pass:passCopy completion:completionCopy];
   }
 
   v17 = v16;
@@ -10986,19 +10986,19 @@ void __78__PKPaymentWebService__passActionWithRemoteContentPassAction_pass_compl
   return v17;
 }
 
-- (unint64_t)_passActionWithRemoteContentPassAction:(id)a3 serviceProviderData:(id)a4 pass:(id)a5 completion:(id)a6
+- (unint64_t)_passActionWithRemoteContentPassAction:(id)action serviceProviderData:(id)data pass:(id)pass completion:(id)completion
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PKWebService *)self nextTaskID];
-  if (v11)
+  actionCopy = action;
+  dataCopy = data;
+  passCopy = pass;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  if (dataCopy)
   {
-    [v10 setAppletData:v11];
-    [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:v10 pass:v12 completion:v13];
-    v15 = v13;
+    [actionCopy setAppletData:dataCopy];
+    [(PKPaymentWebService *)self _passActionWithRemoteContentPassAction:actionCopy pass:passCopy completion:completionCopy];
+    v15 = completionCopy;
   }
 
   else
@@ -11012,37 +11012,37 @@ void __78__PKPaymentWebService__passActionWithRemoteContentPassAction_pass_compl
     v18 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v15 localizedDescription];
+      localizedDescription = [v15 localizedDescription];
       v21 = 138412290;
-      v22 = v19;
+      v22 = localizedDescription;
       _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "Found nil service provider data; returning error: %@", &v21, 0xCu);
     }
 
-    (*(v13 + 2))(v13, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 
-  return v14;
+  return nextTaskID;
 }
 
-- (unint64_t)passActionGroupWithRemoteContentPassActionGroup:(id)a3 forPass:(id)a4 completion:(id)a5
+- (unint64_t)passActionGroupWithRemoteContentPassActionGroup:(id)group forPass:(id)pass completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKPaymentWebService *)self context];
-  v12 = [v11 deviceID];
+  completionCopy = completion;
+  passCopy = pass;
+  groupCopy = group;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v13 = [v10 remoteContentConfiguration];
-  v14 = [v13 requiresAppletData];
+  remoteContentConfiguration = [groupCopy remoteContentConfiguration];
+  requiresAppletData = [remoteContentConfiguration requiresAppletData];
 
-  if (v14)
+  if (requiresAppletData)
   {
-    v15 = [(PKPaymentWebService *)self _passActionGroupIncludingAppletDataWithRemoteContentPassActionGroup:v10 forPass:v9 forDeviceIdentifier:v12 completion:v8];
+    v15 = [(PKPaymentWebService *)self _passActionGroupIncludingAppletDataWithRemoteContentPassActionGroup:groupCopy forPass:passCopy forDeviceIdentifier:deviceID completion:completionCopy];
   }
 
   else
   {
-    v15 = [(PKPaymentWebService *)self _passActionGroupWithRemoteContentPassActionGroup:v10 forPass:v9 forDeviceIdentifier:v12 completion:v8];
+    v15 = [(PKPaymentWebService *)self _passActionGroupWithRemoteContentPassActionGroup:groupCopy forPass:passCopy forDeviceIdentifier:deviceID completion:completionCopy];
   }
 
   v16 = v15;
@@ -11050,16 +11050,16 @@ void __78__PKPaymentWebService__passActionWithRemoteContentPassAction_pass_compl
   return v16;
 }
 
-- (unint64_t)_passActionGroupIncludingAppletDataWithRemoteContentPassActionGroup:(id)a3 forPass:(id)a4 forDeviceIdentifier:(id)a5 completion:(id)a6
+- (unint64_t)_passActionGroupIncludingAppletDataWithRemoteContentPassActionGroup:(id)group forPass:(id)pass forDeviceIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PKWebService *)self nextTaskID];
-  v15 = [v11 passTypeIdentifier];
-  v16 = [v11 serialNumber];
-  if (!v12)
+  groupCopy = group;
+  passCopy = pass;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  serialNumber = [passCopy serialNumber];
+  if (!identifierCopy)
   {
     v17 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -11069,33 +11069,33 @@ void __78__PKPaymentWebService__passActionWithRemoteContentPassAction_pass_compl
     }
 
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    v13[2](v13, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 
   targetDevice = self->_targetDevice;
-  [v11 secureElementPass];
-  v19 = v30 = v14;
-  v20 = [v10 remoteContentConfiguration];
-  v28 = [v20 appletDataRequiresEncryption];
+  [passCopy secureElementPass];
+  v19 = v30 = nextTaskID;
+  remoteContentConfiguration = [groupCopy remoteContentConfiguration];
+  appletDataRequiresEncryption = [remoteContentConfiguration appletDataRequiresEncryption];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __130__PKPaymentWebService__passActionGroupIncludingAppletDataWithRemoteContentPassActionGroup_forPass_forDeviceIdentifier_completion___block_invoke;
   v31[3] = &unk_1E79DB908;
-  v32 = v10;
-  v33 = self;
-  v34 = v12;
-  v35 = v15;
-  v38 = v13;
-  v39 = v14;
-  v36 = v16;
-  v37 = v11;
-  v21 = v11;
-  v22 = v16;
-  v23 = v15;
-  v24 = v12;
-  v25 = v10;
-  v26 = v13;
-  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice serviceProviderDataForSecureElementPass:v19 encrypted:v28 completion:v31];
+  v32 = groupCopy;
+  selfCopy = self;
+  v34 = identifierCopy;
+  v35 = passTypeIdentifier;
+  v38 = completionCopy;
+  v39 = nextTaskID;
+  v36 = serialNumber;
+  v37 = passCopy;
+  v21 = passCopy;
+  v22 = serialNumber;
+  v23 = passTypeIdentifier;
+  v24 = identifierCopy;
+  v25 = groupCopy;
+  v26 = completionCopy;
+  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice serviceProviderDataForSecureElementPass:v19 encrypted:appletDataRequiresEncryption completion:v31];
 
   return v30;
 }
@@ -11181,47 +11181,47 @@ void __130__PKPaymentWebService__passActionGroupIncludingAppletDataWithRemoteCon
   }
 }
 
-- (unint64_t)_passActionGroupWithRemoteContentPassActionGroup:(id)a3 forPass:(id)a4 forDeviceIdentifier:(id)a5 completion:(id)a6
+- (unint64_t)_passActionGroupWithRemoteContentPassActionGroup:(id)group forPass:(id)pass forDeviceIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PKWebService *)self nextTaskID];
-  v15 = [v11 passTypeIdentifier];
-  v16 = [v11 serialNumber];
-  v17 = [(PKPaymentWebService *)self primaryBrokerURL];
+  groupCopy = group;
+  passCopy = pass;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  serialNumber = [passCopy serialNumber];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
   v18 = objc_alloc_init(PKPaymentRemoteContentPassActionGroupRequest);
-  [(PKPaymentRemoteContentPassActionGroupRequest *)v18 setActionGroup:v10];
+  [(PKPaymentRemoteContentPassActionGroupRequest *)v18 setActionGroup:groupCopy];
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v18];
-  if (v12)
+  if (identifierCopy)
   {
     [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v18];
     [(PKPaymentWebService *)self _appleAccountInformation];
-    v27 = v13;
-    v20 = v19 = v14;
-    [(PKPaymentRemoteContentPassActionGroupRequest *)v18 _urlRequestWithServiceURL:v17 deviceIdentifier:v12 passTypeIdentifier:v15 passSerialNumber:v16 appleAccountInformation:v20];
-    v28 = v12;
-    v22 = v21 = v15;
+    v27 = completionCopy;
+    v20 = v19 = nextTaskID;
+    [(PKPaymentRemoteContentPassActionGroupRequest *)v18 _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:identifierCopy passTypeIdentifier:passTypeIdentifier passSerialNumber:serialNumber appleAccountInformation:v20];
+    v28 = identifierCopy;
+    v22 = v21 = passTypeIdentifier;
 
-    v14 = v19;
+    nextTaskID = v19;
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __111__PKPaymentWebService__passActionGroupWithRemoteContentPassActionGroup_forPass_forDeviceIdentifier_completion___block_invoke;
     v30[3] = &unk_1E79D1CC8;
-    v31 = v10;
-    v32 = v11;
-    v13 = v27;
+    v31 = groupCopy;
+    v32 = passCopy;
+    completionCopy = v27;
     v33 = v27;
-    v23 = self;
+    selfCopy = self;
     v24 = v28;
-    [(PKWebService *)v23 performRequest:v22 taskIdentifier:v14 completionHandler:v30];
+    [(PKWebService *)selfCopy performRequest:v22 taskIdentifier:nextTaskID completionHandler:v30];
   }
 
   else
   {
     v24 = 0;
-    v21 = v15;
+    v21 = passTypeIdentifier;
     v25 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -11229,10 +11229,10 @@ void __130__PKPaymentWebService__passActionGroupIncludingAppletDataWithRemoteCon
       _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "Get pass action with remote content pass action, deviceID is nil", buf, 2u);
     }
 
-    (*(v13 + 2))(v13, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v14;
+  return nextTaskID;
 }
 
 void __111__PKPaymentWebService__passActionGroupWithRemoteContentPassActionGroup_forPass_forDeviceIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -11271,16 +11271,16 @@ void __111__PKPaymentWebService__passActionGroupWithRemoteContentPassActionGroup
   }
 }
 
-- (unint64_t)moreInfoItemAtURL:(id)a3 withMetadata:(id)a4 completion:(id)a5
+- (unint64_t)moreInfoItemAtURL:(id)l withMetadata:(id)metadata completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
+  completionCopy = completion;
+  metadataCopy = metadata;
+  lCopy = l;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v12 = objc_alloc_init(PKPaymentWebServiceRequest);
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v12];
-  v13 = PKURLByAppendingQueryParams(v10, v9);
+  v13 = PKURLByAppendingQueryParams(lCopy, metadataCopy);
 
   v14 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -11290,19 +11290,19 @@ void __111__PKPaymentWebService__passActionGroupWithRemoteContentPassActionGroup
     _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Downloading More Info Item with URL: '%@'.", buf, 0xCu);
   }
 
-  v15 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v16 = [(PKWebServiceRequest *)v12 _murlRequestWithURL:v13 appleAccountInformation:v15];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v16 = [(PKWebServiceRequest *)v12 _murlRequestWithURL:v13 appleAccountInformation:_appleAccountInformation];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __65__PKPaymentWebService_moreInfoItemAtURL_withMetadata_completion___block_invoke;
   v19[3] = &unk_1E79CD770;
   v19[4] = self;
-  v20 = v8;
-  v17 = v8;
-  [(PKWebService *)self performRequest:v16 taskIdentifier:v11 completionHandler:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [(PKWebService *)self performRequest:v16 taskIdentifier:nextTaskID completionHandler:v19];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __65__PKPaymentWebService_moreInfoItemAtURL_withMetadata_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -11390,51 +11390,51 @@ void __65__PKPaymentWebService_moreInfoItemAtURL_withMetadata_completion___block
   }
 }
 
-- (unint64_t)cardInfoForMerchantIdentifier:(id)a3 completion:(id)a4
+- (unint64_t)cardInfoForMerchantIdentifier:(id)identifier completion:(id)completion
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if (v6 && v10)
+  if (identifierCopy && deviceID)
   {
-    v34 = v7;
-    v11 = [[PKAMPCardInfoForMerchantRequest alloc] initWithMerchantIdentifier:v6];
-    v12 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v13 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v33 = v10;
-    v14 = [(PKAMPCardInfoForMerchantRequest *)v11 _urlRequestWithServiceURL:v12 deviceIdentifier:v10 appleAccountInformation:v13];
+    v34 = completionCopy;
+    v11 = [[PKAMPCardInfoForMerchantRequest alloc] initWithMerchantIdentifier:identifierCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v33 = deviceID;
+    v14 = [(PKAMPCardInfoForMerchantRequest *)v11 _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
-    v15 = [MEMORY[0x1E695AC38] sharedURLCache];
-    v16 = [v15 cachedResponseForRequest:v14];
+    mEMORY[0x1E695AC38] = [MEMORY[0x1E695AC38] sharedURLCache];
+    v16 = [mEMORY[0x1E695AC38] cachedResponseForRequest:v14];
     v17 = PDLastPaymentPassInsertionOrRemovalDate();
     if (v17 && v16)
     {
-      v31 = v15;
-      v32 = v8;
-      v18 = [v16 response];
-      v19 = [v18 allHeaderFields];
+      v31 = mEMORY[0x1E695AC38];
+      v32 = nextTaskID;
+      response = [v16 response];
+      allHeaderFields = [response allHeaderFields];
 
-      v20 = [v19 objectForKeyedSubscript:@"Date"];
+      v20 = [allHeaderFields objectForKeyedSubscript:@"Date"];
       v21 = objc_alloc_init(MEMORY[0x1E696AB78]);
       [v21 setDateFormat:@"EEEE, dd LLL yyyy HH:mm:ss zzz"];
       v22 = [v21 dateFromString:v20];
       if (!v22)
       {
 
-        v15 = v31;
-        v8 = v32;
+        mEMORY[0x1E695AC38] = v31;
+        nextTaskID = v32;
         goto LABEL_15;
       }
 
       v23 = v22;
       v30 = [v22 compare:v17];
 
-      v15 = v31;
-      v8 = v32;
+      mEMORY[0x1E695AC38] = v31;
+      nextTaskID = v32;
       if (v30 != 1)
       {
 LABEL_16:
@@ -11442,25 +11442,25 @@ LABEL_16:
         v36[1] = 3221225472;
         v36[2] = __64__PKPaymentWebService_cardInfoForMerchantIdentifier_completion___block_invoke;
         v36[3] = &unk_1E79CB9F0;
-        v7 = v34;
+        completionCopy = v34;
         v37 = v34;
-        [(PKWebService *)self performRequest:v14 taskIdentifier:v8 completionHandler:v36];
+        [(PKWebService *)self performRequest:v14 taskIdentifier:nextTaskID completionHandler:v36];
 
-        v10 = v33;
+        deviceID = v33;
         goto LABEL_17;
       }
     }
 
-    v19 = [v14 mutableCopy];
-    [v19 setCachePolicy:0];
+    allHeaderFields = [v14 mutableCopy];
+    [allHeaderFields setCachePolicy:0];
     v20 = v14;
-    v14 = [v19 copy];
+    v14 = [allHeaderFields copy];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  if (v6)
+  if (identifierCopy)
   {
     v24 = MEMORY[0x1E696ABC0];
     v38 = *MEMORY[0x1E696A578];
@@ -11489,24 +11489,24 @@ LABEL_15:
 
   v11 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:1];
   v14 = [v24 errorWithDomain:@"PKPaymentErrorDomain" code:1 userInfo:v11];
-  (*(v7 + 2))(v7, 0, v14);
+  (*(completionCopy + 2))(completionCopy, 0, v14);
 LABEL_17:
 
-  return v8;
+  return nextTaskID;
 }
 
-- (unint64_t)agreementURLForPass:(id)a3 agreement:(id)a4 completion:(id)a5
+- (unint64_t)agreementURLForPass:(id)pass agreement:(id)agreement completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [v10 passTypeIdentifier];
+  completionCopy = completion;
+  agreementCopy = agreement;
+  passCopy = pass;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  passTypeIdentifier = [passCopy passTypeIdentifier];
   v13 = [PKPaymentFetchPassLegalAgreementRequest alloc];
-  v14 = [v10 serialNumber];
+  serialNumber = [passCopy serialNumber];
 
-  v15 = [(PKPaymentFetchPassLegalAgreementRequest *)v13 initPassTypeIdentifier:v12 passSerialNumber:v14 agreement:v9];
-  v16 = [(PKPaymentWebService *)self _requestBuilderForRegion:v12];
+  v15 = [(PKPaymentFetchPassLegalAgreementRequest *)v13 initPassTypeIdentifier:passTypeIdentifier passSerialNumber:serialNumber agreement:agreementCopy];
+  v16 = [(PKPaymentWebService *)self _requestBuilderForRegion:passTypeIdentifier];
   if (v16)
   {
     [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v15];
@@ -11515,18 +11515,18 @@ LABEL_17:
     v19[2] = __64__PKPaymentWebService_agreementURLForPass_agreement_completion___block_invoke;
     v19[3] = &unk_1E79D1DE0;
     v19[4] = self;
-    v21 = v11;
-    v20 = v8;
+    v21 = nextTaskID;
+    v20 = completionCopy;
     [v15 _urlRequestWithBuilder:v16 completion:v19];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     v17 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v8 + 2))(v8, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, v17);
   }
 
-  return v11;
+  return nextTaskID;
 }
 
 void __64__PKPaymentWebService_agreementURLForPass_agreement_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -11574,11 +11574,11 @@ void __64__PKPaymentWebService_agreementURLForPass_agreement_completion___block_
   }
 }
 
-- (unint64_t)retrieveMerchantTokensUnifiedListWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)retrieveMerchantTokensUnifiedListWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   if (PKMerchantTokensDemoModeEnabled())
   {
     v9 = dispatch_time(0, 1000000000);
@@ -11587,33 +11587,33 @@ void __64__PKPaymentWebService_agreementURLForPass_agreement_completion___block_
     block[1] = 3221225472;
     block[2] = __79__PKPaymentWebService_retrieveMerchantTokensUnifiedListWithRequest_completion___block_invoke;
     block[3] = &unk_1E79C4428;
-    v24 = v7;
+    v24 = completionCopy;
     dispatch_after(v9, v10, block);
 
-    v11 = v24;
+    secureElementID = v24;
   }
 
   else
   {
-    v12 = [(PKPaymentWebService *)self context];
-    v11 = [v12 secureElementID];
+    context = [(PKPaymentWebService *)self context];
+    secureElementID = [context secureElementID];
 
-    if (v11)
+    if (secureElementID)
     {
-      v13 = [(PKPaymentWebService *)self context];
-      v14 = [v13 primaryRegion];
-      v15 = [v14 paymentServicesURL];
+      context2 = [(PKPaymentWebService *)self context];
+      primaryRegion = [context2 primaryRegion];
+      paymentServicesURL = [primaryRegion paymentServicesURL];
 
-      [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-      v16 = [(PKPaymentWebService *)self _appleAccountInformation];
-      v17 = [v6 _urlRequestWithServiceURL:v15 secureElementID:v11 appleAccountInformation:v16];
+      [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+      _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+      v17 = [requestCopy _urlRequestWithServiceURL:paymentServicesURL secureElementID:secureElementID appleAccountInformation:_appleAccountInformation];
 
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __79__PKPaymentWebService_retrieveMerchantTokensUnifiedListWithRequest_completion___block_invoke_790;
       v20[3] = &unk_1E79CB9F0;
-      v21 = v7;
-      [(PKWebService *)self performRequest:v17 taskIdentifier:v8 completionHandler:v20];
+      v21 = completionCopy;
+      [(PKWebService *)self performRequest:v17 taskIdentifier:nextTaskID completionHandler:v20];
     }
 
     else
@@ -11625,20 +11625,20 @@ void __64__PKPaymentWebService_agreementURLForPass_agreement_completion___block_
         _os_log_error_impl(&dword_1AD337000, v18, OS_LOG_TYPE_ERROR, "Cannot request merchant tokens list without a Secure Element ID", buf, 2u);
       }
 
-      if (!v7)
+      if (!completionCopy)
       {
-        v11 = 0;
+        secureElementID = 0;
         goto LABEL_10;
       }
 
-      v15 = objc_alloc_init(PKRetrieveMerchantTokensResponse);
-      (*(v7 + 2))(v7, v15, 0);
+      paymentServicesURL = objc_alloc_init(PKRetrieveMerchantTokensResponse);
+      (*(completionCopy + 2))(completionCopy, paymentServicesURL, 0);
     }
   }
 
 LABEL_10:
 
-  return v8;
+  return nextTaskID;
 }
 
 void __79__PKPaymentWebService_retrieveMerchantTokensUnifiedListWithRequest_completion___block_invoke(uint64_t a1)
@@ -11664,14 +11664,14 @@ void __79__PKPaymentWebService_retrieveMerchantTokensUnifiedListWithRequest_comp
   }
 }
 
-- (unint64_t)retrieveMerchantTokensWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)retrieveMerchantTokensWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  v10 = [(PKWebService *)self nextTaskID];
+  nextTaskID = [(PKWebService *)self nextTaskID];
   if (PKMerchantTokensDemoModeEnabled())
   {
     v11 = dispatch_time(0, 1000000000);
@@ -11680,9 +11680,9 @@ void __79__PKPaymentWebService_retrieveMerchantTokensUnifiedListWithRequest_comp
     block[1] = 3221225472;
     block[2] = __68__PKPaymentWebService_retrieveMerchantTokensWithRequest_completion___block_invoke;
     block[3] = &unk_1E79C44A0;
-    v24 = v7;
-    v23 = v6;
-    v13 = v7;
+    v24 = completionCopy;
+    v23 = requestCopy;
+    paymentServicesURL = completionCopy;
     dispatch_after(v11, v12, block);
 
     v14 = v24;
@@ -11690,24 +11690,24 @@ void __79__PKPaymentWebService_retrieveMerchantTokensUnifiedListWithRequest_comp
 
   else
   {
-    v15 = [(PKPaymentWebService *)self context];
-    v16 = [v15 primaryRegion];
-    v13 = [v16 paymentServicesURL];
+    context2 = [(PKPaymentWebService *)self context];
+    primaryRegion = [context2 primaryRegion];
+    paymentServicesURL = [primaryRegion paymentServicesURL];
 
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v17 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v14 = [v6 _urlRequestWithServiceURL:v13 deviceIdentifier:v9 appleAccountInformation:v17];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v14 = [requestCopy _urlRequestWithServiceURL:paymentServicesURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __68__PKPaymentWebService_retrieveMerchantTokensWithRequest_completion___block_invoke_792;
     v20[3] = &unk_1E79CB9F0;
-    v21 = v7;
-    v18 = v7;
-    [(PKWebService *)self performRequest:v14 taskIdentifier:v10 completionHandler:v20];
+    v21 = completionCopy;
+    v18 = completionCopy;
+    [(PKWebService *)self performRequest:v14 taskIdentifier:nextTaskID completionHandler:v20];
   }
 
-  return v10;
+  return nextTaskID;
 }
 
 void __68__PKPaymentWebService_retrieveMerchantTokensWithRequest_completion___block_invoke(uint64_t a1)
@@ -11791,27 +11791,27 @@ void __68__PKPaymentWebService_retrieveMerchantTokensWithRequest_completion___bl
   }
 }
 
-- (unint64_t)registerMerchantTokenPublicKeyWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)registerMerchantTokenPublicKeyWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v11 = [v9 secureElementID];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  secureElementID = [context secureElementID];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__PKPaymentWebService_registerMerchantTokenPublicKeyWithRequest_completion___block_invoke;
   v15[3] = &unk_1E79D1DE0;
-  v16 = v6;
-  v17 = v8;
+  v16 = completionCopy;
+  v17 = nextTaskID;
   v15[4] = self;
-  v13 = v6;
-  [v7 _urlRequestWithServiceURL:v10 secureElementID:v11 appleAccountInformation:v12 webService:self completion:v15];
+  v13 = completionCopy;
+  [requestCopy _urlRequestWithServiceURL:primaryBrokerURL secureElementID:secureElementID appleAccountInformation:_appleAccountInformation webService:self completion:v15];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __76__PKPaymentWebService_registerMerchantTokenPublicKeyWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -11906,11 +11906,11 @@ LABEL_17:
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)deleteMerchantTokenWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)deleteMerchantTokenWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   if (PKMerchantTokensDemoModeEnabled())
   {
     v9 = dispatch_time(0, 1000000000);
@@ -11919,8 +11919,8 @@ LABEL_17:
     block[1] = 3221225472;
     block[2] = __65__PKPaymentWebService_deleteMerchantTokenWithRequest_completion___block_invoke;
     block[3] = &unk_1E79C4428;
-    v21 = v7;
-    v11 = v7;
+    v21 = completionCopy;
+    paymentServicesURL = completionCopy;
     dispatch_after(v9, v10, block);
 
     v12 = v21;
@@ -11928,24 +11928,24 @@ LABEL_17:
 
   else
   {
-    v13 = [(PKPaymentWebService *)self context];
-    v14 = [v13 primaryRegion];
-    v11 = [v14 paymentServicesURL];
+    context = [(PKPaymentWebService *)self context];
+    primaryRegion = [context primaryRegion];
+    paymentServicesURL = [primaryRegion paymentServicesURL];
 
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v15 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v12 = [v6 _urlRequestWithServiceURL:v11 appleAccountInformation:v15];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v12 = [requestCopy _urlRequestWithServiceURL:paymentServicesURL appleAccountInformation:_appleAccountInformation];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__PKPaymentWebService_deleteMerchantTokenWithRequest_completion___block_invoke_2;
     v18[3] = &unk_1E79CB9F0;
-    v19 = v7;
-    v16 = v7;
-    [(PKWebService *)self performRequest:v12 taskIdentifier:v8 completionHandler:v18];
+    v19 = completionCopy;
+    v16 = completionCopy;
+    [(PKWebService *)self performRequest:v12 taskIdentifier:nextTaskID completionHandler:v18];
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 uint64_t __65__PKPaymentWebService_deleteMerchantTokenWithRequest_completion___block_invoke(uint64_t a1)
@@ -12019,24 +12019,24 @@ void __65__PKPaymentWebService_deleteMerchantTokenWithRequest_completion___block
   }
 }
 
-- (unint64_t)transactionReceiptAuthorizationWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)transactionReceiptAuthorizationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v10 = [(PKPaymentWebService *)self _appleAccountInformation];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__PKPaymentWebService_transactionReceiptAuthorizationWithRequest_completion___block_invoke;
   v13[3] = &unk_1E79D1DE0;
-  v14 = v6;
-  v15 = v8;
+  v14 = completionCopy;
+  v15 = nextTaskID;
   v13[4] = self;
-  v11 = v6;
-  [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10 webService:self completion:v13];
+  v11 = completionCopy;
+  [requestCopy _urlRequestWithServiceURL:primaryBrokerURL appleAccountInformation:_appleAccountInformation webService:self completion:v13];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __77__PKPaymentWebService_transactionReceiptAuthorizationWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -12080,22 +12080,22 @@ void __77__PKPaymentWebService_transactionReceiptAuthorizationWithRequest_comple
   }
 }
 
-- (unint64_t)transactionReceiptWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)transactionReceiptWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [v7 _urlRequest];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  _urlRequest = [requestCopy _urlRequest];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__PKPaymentWebService_transactionReceiptWithRequest_completion___block_invoke;
   v12[3] = &unk_1E79CB9F0;
-  v13 = v6;
-  v10 = v6;
-  [(PKWebService *)self performRequest:v9 taskIdentifier:v8 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(PKWebService *)self performRequest:_urlRequest taskIdentifier:nextTaskID completionHandler:v12];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __64__PKPaymentWebService_transactionReceiptWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -12134,46 +12134,46 @@ void __64__PKPaymentWebService_transactionReceiptWithRequest_completion___block_
   }
 }
 
-- (unint64_t)createVehicleKeyShareWithRequest:(id)a3 passTypeIdentifier:(id)a4 completion:(id)a5
+- (unint64_t)createVehicleKeyShareWithRequest:(id)request passTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self context];
-  v13 = [v12 deviceID];
-  if (v13)
+  requestCopy = request;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (deviceID)
   {
-    v24 = v11;
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v8];
-    v14 = [v12 regionForIdentifier:v9];
-    v15 = [v14 brokerURL];
-    v16 = v15;
-    v17 = v9;
-    if (v15)
+    v24 = nextTaskID;
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    v14 = [context regionForIdentifier:identifierCopy];
+    brokerURL = [v14 brokerURL];
+    v16 = brokerURL;
+    v17 = identifierCopy;
+    if (brokerURL)
     {
-      v18 = v15;
+      primaryBrokerURL = brokerURL;
     }
 
     else
     {
-      v18 = [(PKPaymentWebService *)self primaryBrokerURL];
+      primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
     }
 
-    v20 = v18;
+    v20 = primaryBrokerURL;
 
-    v21 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v22 = [v8 _urlRequestWithServiceURL:v20 deviceIdentifier:v13 appleAccountInformation:v21];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v22 = [requestCopy _urlRequestWithServiceURL:v20 deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __86__PKPaymentWebService_createVehicleKeyShareWithRequest_passTypeIdentifier_completion___block_invoke;
     v25[3] = &unk_1E79CB9F0;
-    v26 = v10;
-    v11 = v24;
+    v26 = completionCopy;
+    nextTaskID = v24;
     [(PKWebService *)self performRequest:v22 taskIdentifier:v24 completionHandler:v25];
 
-    v9 = v17;
+    identifierCopy = v17;
   }
 
   else
@@ -12186,10 +12186,10 @@ void __64__PKPaymentWebService_transactionReceiptWithRequest_completion___block_
     }
 
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 
-  return v11;
+  return nextTaskID;
 }
 
 void __86__PKPaymentWebService_createVehicleKeyShareWithRequest_passTypeIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -12216,28 +12216,28 @@ void __86__PKPaymentWebService_createVehicleKeyShareWithRequest_passTypeIdentifi
   }
 }
 
-- (unint64_t)vehicleManufacturerWithRequest:(id)a3 withCompletion:(id)a4
+- (unint64_t)vehicleManufacturerWithRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __69__PKPaymentWebService_vehicleManufacturerWithRequest_withCompletion___block_invoke;
   v16[3] = &unk_1E79CB9F0;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __69__PKPaymentWebService_vehicleManufacturerWithRequest_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -12284,29 +12284,29 @@ LABEL_6:
 LABEL_13:
 }
 
-- (unint64_t)registerCredentialWithRequest:(id)a3 withCompletion:(id)a4
+- (unint64_t)registerCredentialWithRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __68__PKPaymentWebService_registerCredentialWithRequest_withCompletion___block_invoke;
   v16[3] = &unk_1E79CDA40;
   v16[4] = self;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __68__PKPaymentWebService_registerCredentialWithRequest_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -12341,28 +12341,28 @@ void __68__PKPaymentWebService_registerCredentialWithRequest_withCompletion___bl
   }
 }
 
-- (unint64_t)revokeSharedCredentialWithRequest:(id)a3 withCompletion:(id)a4
+- (unint64_t)revokeSharedCredentialWithRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v7 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__PKPaymentWebService_revokeSharedCredentialWithRequest_withCompletion___block_invoke;
   v16[3] = &unk_1E79CB9F0;
-  v17 = v6;
-  v14 = v6;
-  [(PKWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __72__PKPaymentWebService_revokeSharedCredentialWithRequest_withCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -12384,27 +12384,27 @@ void __72__PKPaymentWebService_revokeSharedCredentialWithRequest_withCompletion_
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)credentialAccountAttesationWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)credentialAccountAttesationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self context];
-  v10 = [v9 deviceID];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  if ([v10 length])
+  if ([deviceID length])
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v11 = [(PKPaymentWebService *)self primaryBrokerURL];
-    v12 = [(PKPaymentWebService *)self _appleAccountInformation];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __73__PKPaymentWebService_credentialAccountAttesationWithRequest_completion___block_invoke;
     v17[3] = &unk_1E79D1DE0;
     v17[4] = self;
-    v19 = v8;
-    v18 = v7;
-    [v6 _urlRequestWithServiceURL:v11 deviceIdentifier:v10 appleAccountInformation:v12 webService:self completion:v17];
+    v19 = nextTaskID;
+    v18 = completionCopy;
+    [requestCopy _urlRequestWithServiceURL:primaryBrokerURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation webService:self completion:v17];
   }
 
   else
@@ -12417,10 +12417,10 @@ void __72__PKPaymentWebService_revokeSharedCredentialWithRequest_withCompletion_
     }
 
     v14 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 
-  return v8;
+  return nextTaskID;
 }
 
 void __73__PKPaymentWebService_credentialAccountAttesationWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -12454,20 +12454,20 @@ void __73__PKPaymentWebService_credentialAccountAttesationWithRequest_completion
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)inAppPaymentNonceForPass:(id)a3 completion:(id)a4
+- (unint64_t)inAppPaymentNonceForPass:(id)pass completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  passCopy = pass;
   v8 = objc_alloc_init(PKPaymentNonceRequest);
-  [(PKPaymentAugmentBaseRequest *)v8 setPass:v7];
+  [(PKPaymentAugmentBaseRequest *)v8 setPass:passCopy];
 
   [(PKPaymentNonceRequest *)v8 setUseLegacyGetAPI:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__PKPaymentWebService_inAppPaymentNonceForPass_completion___block_invoke;
   v12[3] = &unk_1E79DB930;
-  v13 = v6;
-  v9 = v6;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = [(PKPaymentWebService *)self inAppPaymentNonceWithRequest:v8 serviceURL:0 completion:v12];
 
   return v10;
@@ -12481,56 +12481,56 @@ void __59__PKPaymentWebService_inAppPaymentNonceForPass_completion___block_invok
   (*(v4 + 16))(v4, v5, v6);
 }
 
-- (unint64_t)inAppPaymentNonceWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)inAppPaymentNonceWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  requestCopy = request;
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
   {
-    v11 = [(PKPaymentWebService *)self context];
-    v12 = [v8 pass];
-    v13 = [v12 passTypeIdentifier];
-    v14 = [v11 regionForIdentifier:v13];
+    context = [(PKPaymentWebService *)self context];
+    pass = [requestCopy pass];
+    passTypeIdentifier = [pass passTypeIdentifier];
+    v14 = [context regionForIdentifier:passTypeIdentifier];
 
-    v9 = [v14 inAppPaymentServicesURL];
-    if (!v9)
+    lCopy = [v14 inAppPaymentServicesURL];
+    if (!lCopy)
     {
-      v9 = PKOverrideInAppPaymentServicesURL();
+      lCopy = PKOverrideInAppPaymentServicesURL();
     }
   }
 
-  v15 = [(PKPaymentWebService *)self _nonceWithRequest:v8 serviceURL:v9 completion:v10];
+  v15 = [(PKPaymentWebService *)self _nonceWithRequest:requestCopy serviceURL:lCopy completion:completionCopy];
 
   return v15;
 }
 
-- (unint64_t)_nonceWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)_nonceWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKWebService *)self nextTaskID];
+  requestCopy = request;
+  lCopy = l;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__54;
   v34 = __Block_byref_object_dispose__54;
-  v12 = [(PKPaymentWebService *)self context];
-  v35 = [v12 deviceID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__PKPaymentWebService__nonceWithRequest_serviceURL_completion___block_invoke;
   aBlock[3] = &unk_1E79DB958;
   aBlock[4] = self;
-  v13 = v8;
+  v13 = requestCopy;
   v25 = v13;
-  v14 = v9;
+  v14 = lCopy;
   v26 = v14;
   v28 = &v30;
-  v29 = v11;
-  v15 = v10;
+  v29 = nextTaskID;
+  v15 = completionCopy;
   v27 = v15;
   v16 = _Block_copy(aBlock);
   if ([v31[5] length])
@@ -12559,7 +12559,7 @@ void __59__PKPaymentWebService_inAppPaymentNonceForPass_completion___block_invok
   }
 
   _Block_object_dispose(&v30, 8);
-  return v11;
+  return nextTaskID;
 }
 
 void __63__PKPaymentWebService__nonceWithRequest_serviceURL_completion___block_invoke(uint64_t a1)
@@ -12655,53 +12655,53 @@ void __63__PKPaymentWebService__nonceWithRequest_serviceURL_completion___block_i
   }
 }
 
-- (unint64_t)augmentSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)augmentSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  requestCopy = request;
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
   {
-    v11 = [(PKPaymentWebService *)self context];
-    v12 = [v8 pass];
-    v13 = [v12 passTypeIdentifier];
-    v14 = [v11 regionForIdentifier:v13];
+    context = [(PKPaymentWebService *)self context];
+    pass = [requestCopy pass];
+    passTypeIdentifier = [pass passTypeIdentifier];
+    v14 = [context regionForIdentifier:passTypeIdentifier];
 
-    v9 = [v14 inAppPaymentServicesURL];
-    if (!v9)
+    lCopy = [v14 inAppPaymentServicesURL];
+    if (!lCopy)
     {
-      v9 = PKOverrideInAppPaymentServicesURL();
+      lCopy = PKOverrideInAppPaymentServicesURL();
     }
   }
 
-  v15 = [(PKPaymentWebService *)self _augmentSessionWithRequest:v8 serviceURL:v9 completion:v10];
+  v15 = [(PKPaymentWebService *)self _augmentSessionWithRequest:requestCopy serviceURL:lCopy completion:completionCopy];
 
   return v15;
 }
 
-- (unint64_t)_augmentSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)_augmentSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self context];
-  v13 = [v12 deviceID];
+  completionCopy = completion;
+  lCopy = l;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
 
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  v14 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v15 = [v10 _urlRequestWithServiceURL:v9 deviceIdentifier:v13 appleAccountInformation:v14];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v15 = [requestCopy _urlRequestWithServiceURL:lCopy deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__PKPaymentWebService__augmentSessionWithRequest_serviceURL_completion___block_invoke;
   v18[3] = &unk_1E79CD770;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [(PKWebService *)self performRequest:v15 taskIdentifier:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __72__PKPaymentWebService__augmentSessionWithRequest_serviceURL_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -12744,32 +12744,32 @@ BOOL __72__PKPaymentWebService__augmentSessionWithRequest_serviceURL_completion_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (unint64_t)rewrapInAppPayment:(id)a3 merchantIdentifier:(id)a4 hostApplicationIdentifier:(id)a5 applicationData:(id)a6 pass:(id)a7 completion:(id)a8
+- (unint64_t)rewrapInAppPayment:(id)payment merchantIdentifier:(id)identifier hostApplicationIdentifier:(id)applicationIdentifier applicationData:(id)data pass:(id)pass completion:(id)completion
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  completionCopy = completion;
+  passCopy = pass;
+  dataCopy = data;
+  applicationIdentifierCopy = applicationIdentifier;
+  identifierCopy = identifier;
+  paymentCopy = payment;
   v20 = objc_alloc_init(PKPaymentRewrapRequest);
-  [(PKPaymentRewrapRequestBase *)v20 setWrappedPayment:v19];
+  [(PKPaymentRewrapRequestBase *)v20 setWrappedPayment:paymentCopy];
 
-  v21 = [v15 devicePrimaryInAppPaymentApplication];
-  [(PKPaymentRewrapRequestBase *)v20 setPaymentApplication:v21];
+  devicePrimaryInAppPaymentApplication = [passCopy devicePrimaryInAppPaymentApplication];
+  [(PKPaymentRewrapRequestBase *)v20 setPaymentApplication:devicePrimaryInAppPaymentApplication];
 
-  [(PKPaymentRewrapRequest *)v20 setMerchantIdentifier:v18];
-  [(PKPaymentRewrapRequest *)v20 setHostApplicationIdentifier:v17];
+  [(PKPaymentRewrapRequest *)v20 setMerchantIdentifier:identifierCopy];
+  [(PKPaymentRewrapRequest *)v20 setHostApplicationIdentifier:applicationIdentifierCopy];
 
-  [(PKPaymentRewrapRequestBase *)v20 setApplicationData:v16];
-  [(PKPaymentRewrapRequestBase *)v20 setPass:v15];
+  [(PKPaymentRewrapRequestBase *)v20 setApplicationData:dataCopy];
+  [(PKPaymentRewrapRequestBase *)v20 setPass:passCopy];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __119__PKPaymentWebService_rewrapInAppPayment_merchantIdentifier_hostApplicationIdentifier_applicationData_pass_completion___block_invoke;
   v25[3] = &unk_1E79CE418;
-  v26 = v14;
-  v22 = v14;
+  v26 = completionCopy;
+  v22 = completionCopy;
   v23 = [(PKPaymentWebService *)self rewrapInAppPaymentWithRequest:v20 serviceURL:0 completion:v25];
 
   return v23;
@@ -12786,26 +12786,26 @@ uint64_t __119__PKPaymentWebService_rewrapInAppPayment_merchantIdentifier_hostAp
   return result;
 }
 
-- (unint64_t)rewrapInAppPaymentWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)rewrapInAppPaymentWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v8];
+  requestCopy = request;
+  completionCopy = completion;
+  lCopy = l;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__PKPaymentWebService_rewrapInAppPaymentWithRequest_serviceURL_completion___block_invoke;
   v18[3] = &unk_1E79DB9A8;
-  v19 = v8;
+  v19 = requestCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PKPaymentWebService_rewrapInAppPaymentWithRequest_serviceURL_completion___block_invoke_2;
   v15[3] = &unk_1E79CE3C8;
   v16 = v19;
-  v17 = v9;
-  v11 = v9;
+  v17 = completionCopy;
+  v11 = completionCopy;
   v12 = v19;
-  v13 = [(PKPaymentWebService *)self _performRewrapRequest:v12 serviceURL:v10 responseHandler:v18 completion:v15];
+  v13 = [(PKPaymentWebService *)self _performRewrapRequest:v12 serviceURL:lCopy responseHandler:v18 completion:v15];
 
   return v13;
 }
@@ -12849,29 +12849,29 @@ void __75__PKPaymentWebService_rewrapInAppPaymentWithRequest_serviceURL_completi
   (*(*(a1 + 40) + 16))();
 }
 
-- (unint64_t)completeSession:(id)a3 wrappedPayment:(id)a4 pass:(id)a5 applicationData:(id)a6 completion:(id)a7
+- (unint64_t)completeSession:(id)session wrappedPayment:(id)payment pass:(id)pass applicationData:(id)data completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  dataCopy = data;
+  passCopy = pass;
+  paymentCopy = payment;
+  sessionCopy = session;
   v17 = objc_alloc_init(PKPaymentCompleteSessionRequest);
-  [(PKPaymentRewrapRequestBase *)v17 setWrappedPayment:v15];
+  [(PKPaymentRewrapRequestBase *)v17 setWrappedPayment:paymentCopy];
 
-  [(PKPaymentRewrapRequestBase *)v17 setPass:v14];
-  v18 = [v14 devicePrimaryInAppPaymentApplication];
+  [(PKPaymentRewrapRequestBase *)v17 setPass:passCopy];
+  devicePrimaryInAppPaymentApplication = [passCopy devicePrimaryInAppPaymentApplication];
 
-  [(PKPaymentRewrapRequestBase *)v17 setPaymentApplication:v18];
-  [(PKPaymentCompleteSessionRequest *)v17 setMerchantSession:v16];
+  [(PKPaymentRewrapRequestBase *)v17 setPaymentApplication:devicePrimaryInAppPaymentApplication];
+  [(PKPaymentCompleteSessionRequest *)v17 setMerchantSession:sessionCopy];
 
-  [(PKPaymentRewrapRequestBase *)v17 setApplicationData:v13];
+  [(PKPaymentRewrapRequestBase *)v17 setApplicationData:dataCopy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __86__PKPaymentWebService_completeSession_wrappedPayment_pass_applicationData_completion___block_invoke;
   v22[3] = &unk_1E79DB9D0;
-  v23 = v12;
-  v19 = v12;
+  v23 = completionCopy;
+  v19 = completionCopy;
   v20 = [(PKPaymentWebService *)self completeSessionWithRequest:v17 serviceURL:0 completion:v22];
 
   return v20;
@@ -12888,26 +12888,26 @@ uint64_t __86__PKPaymentWebService_completeSession_wrappedPayment_pass_applicati
   return result;
 }
 
-- (unint64_t)completeSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)completeSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v8];
+  requestCopy = request;
+  completionCopy = completion;
+  lCopy = l;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __72__PKPaymentWebService_completeSessionWithRequest_serviceURL_completion___block_invoke;
   v18[3] = &unk_1E79DB9A8;
-  v19 = v8;
+  v19 = requestCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__PKPaymentWebService_completeSessionWithRequest_serviceURL_completion___block_invoke_2;
   v15[3] = &unk_1E79CE3C8;
   v16 = v19;
-  v17 = v9;
-  v11 = v9;
+  v17 = completionCopy;
+  v11 = completionCopy;
   v12 = v19;
-  v13 = [(PKPaymentWebService *)self _performRewrapRequest:v12 serviceURL:v10 responseHandler:v18 completion:v15];
+  v13 = [(PKPaymentWebService *)self _performRewrapRequest:v12 serviceURL:lCopy responseHandler:v18 completion:v15];
 
   return v13;
 }
@@ -12953,25 +12953,25 @@ void __72__PKPaymentWebService_completeSessionWithRequest_serviceURL_completion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (unint64_t)_performRewrapRequest:(id)a3 serviceURL:(id)a4 responseHandler:(id)a5 completion:(id)a6
+- (unint64_t)_performRewrapRequest:(id)request serviceURL:(id)l responseHandler:(id)handler completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PKWebService *)self nextTaskID];
-  v15 = [(PKPaymentWebService *)self context];
-  v16 = [v15 deviceID];
-  if (!v11)
+  requestCopy = request;
+  lCopy = l;
+  handlerCopy = handler;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  if (!lCopy)
   {
-    v17 = [v10 pass];
-    v18 = [v17 passTypeIdentifier];
-    v19 = [v15 regionForIdentifier:v18];
+    pass = [requestCopy pass];
+    passTypeIdentifier = [pass passTypeIdentifier];
+    v19 = [context regionForIdentifier:passTypeIdentifier];
 
-    v11 = [v19 inAppPaymentServicesURL];
-    if (!v11)
+    lCopy = [v19 inAppPaymentServicesURL];
+    if (!lCopy)
     {
-      v11 = PKOverrideInAppPaymentServicesURL();
+      lCopy = PKOverrideInAppPaymentServicesURL();
     }
   }
 
@@ -12980,16 +12980,16 @@ void __72__PKPaymentWebService_completeSessionWithRequest_serviceURL_completion_
   aBlock[2] = __83__PKPaymentWebService__performRewrapRequest_serviceURL_responseHandler_completion___block_invoke;
   aBlock[3] = &unk_1E79DBA70;
   aBlock[4] = self;
-  v20 = v10;
+  v20 = requestCopy;
   v33 = v20;
-  v21 = v11;
+  v21 = lCopy;
   v34 = v21;
-  v22 = v16;
+  v22 = deviceID;
   v35 = v22;
-  v38 = v14;
-  v23 = v12;
+  v38 = nextTaskID;
+  v23 = handlerCopy;
   v36 = v23;
-  v24 = v13;
+  v24 = completionCopy;
   v37 = v24;
   v25 = _Block_copy(aBlock);
   if ([v22 length])
@@ -13016,7 +13016,7 @@ void __72__PKPaymentWebService_completeSessionWithRequest_serviceURL_completion_
     [(PKPaymentWebService *)self registerDeviceWithCompletion:v28];
   }
 
-  return v14;
+  return nextTaskID;
 }
 
 void __83__PKPaymentWebService__performRewrapRequest_serviceURL_responseHandler_completion___block_invoke(uint64_t a1)
@@ -13167,28 +13167,28 @@ void __83__PKPaymentWebService__performRewrapRequest_serviceURL_responseHandler_
   }
 }
 
-- (unint64_t)availableDevicesWithCompletion:(id)a3
+- (unint64_t)availableDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPaymentWebService *)self context];
-  v7 = [v6 primaryRegion];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  primaryRegion = [context primaryRegion];
 
   v8 = objc_alloc_init(PKPaymentAvailableDevicesRequest);
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v8];
-  v9 = [v7 brokerURL];
-  v10 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v11 = [(PKPaymentAvailableDevicesRequest *)v8 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  brokerURL = [primaryRegion brokerURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v11 = [(PKPaymentAvailableDevicesRequest *)v8 _urlRequestWithServiceURL:brokerURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__PKPaymentWebService_availableDevicesWithCompletion___block_invoke;
   v14[3] = &unk_1E79CB9F0;
-  v15 = v4;
-  v12 = v4;
-  [(PKWebService *)self performRequest:v11 taskIdentifier:v5 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __54__PKPaymentWebService_availableDevicesWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -13218,29 +13218,29 @@ void __54__PKPaymentWebService_availableDevicesWithCompletion___block_invoke(uin
   }
 }
 
-- (unint64_t)checkMerchantStatus:(id)a3 forDomain:(id)a4 withCompletion:(id)a5
+- (unint64_t)checkMerchantStatus:(id)status forDomain:(id)domain withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self context];
-  v13 = [v12 primaryRegion];
+  completionCopy = completion;
+  domainCopy = domain;
+  statusCopy = status;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  primaryRegion = [context primaryRegion];
 
-  v14 = [[PKPaymentCheckMerchantRequest alloc] initWithMerchantIdentifier:v10 domainName:v9];
+  v14 = [[PKPaymentCheckMerchantRequest alloc] initWithMerchantIdentifier:statusCopy domainName:domainCopy];
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v14];
-  v15 = [v13 inAppPaymentServicesURL];
-  v16 = [(PKPaymentCheckMerchantRequest *)v14 _urlRequestWithServiceURL:v15];
+  inAppPaymentServicesURL = [primaryRegion inAppPaymentServicesURL];
+  v16 = [(PKPaymentCheckMerchantRequest *)v14 _urlRequestWithServiceURL:inAppPaymentServicesURL];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __68__PKPaymentWebService_checkMerchantStatus_forDomain_withCompletion___block_invoke;
   v19[3] = &unk_1E79CB9F0;
-  v20 = v8;
-  v17 = v8;
-  [(PKWebService *)self performRequest:v16 taskIdentifier:v11 completionHandler:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [(PKWebService *)self performRequest:v16 taskIdentifier:nextTaskID completionHandler:v19];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __68__PKPaymentWebService_checkMerchantStatus_forDomain_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -13269,33 +13269,33 @@ void __68__PKPaymentWebService_checkMerchantStatus_forDomain_withCompletion___bl
   }
 }
 
-- (unint64_t)prepareTransactionDetailsForMerchantSession:(id)a3 secureElementIdentifier:(id)a4 amount:(id)a5 currencyCode:(id)a6 completion:(id)a7
+- (unint64_t)prepareTransactionDetailsForMerchantSession:(id)session secureElementIdentifier:(id)identifier amount:(id)amount currencyCode:(id)code completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[PKPaymentPrepareTransactionDetailsRequest alloc] initWithMerchantSession:v16 secureElementIdentifier:v15 amount:v14 currencyCode:v13];
+  completionCopy = completion;
+  codeCopy = code;
+  amountCopy = amount;
+  identifierCopy = identifier;
+  sessionCopy = session;
+  v17 = [[PKPaymentPrepareTransactionDetailsRequest alloc] initWithMerchantSession:sessionCopy secureElementIdentifier:identifierCopy amount:amountCopy currencyCode:codeCopy];
 
-  v18 = [(PKWebService *)self nextTaskID];
-  v19 = [(PKPaymentWebService *)self context];
-  v20 = [v19 primaryRegion];
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  primaryRegion = [context primaryRegion];
 
-  v21 = [v20 inAppPaymentServicesURL];
-  v22 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v23 = [(PKPaymentPrepareTransactionDetailsRequest *)v17 _urlRequestWithServiceURL:v21 appleAccountInformation:v22];
+  inAppPaymentServicesURL = [primaryRegion inAppPaymentServicesURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v23 = [(PKPaymentPrepareTransactionDetailsRequest *)v17 _urlRequestWithServiceURL:inAppPaymentServicesURL appleAccountInformation:_appleAccountInformation];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __122__PKPaymentWebService_prepareTransactionDetailsForMerchantSession_secureElementIdentifier_amount_currencyCode_completion___block_invoke;
   v26[3] = &unk_1E79CD770;
   v26[4] = self;
-  v27 = v12;
-  v24 = v12;
-  [(PKWebService *)self performRequest:v23 taskIdentifier:v18 completionHandler:v26];
+  v27 = completionCopy;
+  v24 = completionCopy;
+  [(PKWebService *)self performRequest:v23 taskIdentifier:nextTaskID completionHandler:v26];
 
-  return v18;
+  return nextTaskID;
 }
 
 void __122__PKPaymentWebService_prepareTransactionDetailsForMerchantSession_secureElementIdentifier_amount_currencyCode_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -13364,70 +13364,70 @@ uint64_t __122__PKPaymentWebService_prepareTransactionDetailsForMerchantSession_
   return v2;
 }
 
-- (unint64_t)serviceProviderNonceWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)serviceProviderNonceWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  requestCopy = request;
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
   {
-    v11 = [(PKPaymentWebService *)self context];
-    v12 = [v8 pass];
-    v13 = [v12 passTypeIdentifier];
-    v14 = [v11 regionForIdentifier:v13];
+    context = [(PKPaymentWebService *)self context];
+    pass = [requestCopy pass];
+    passTypeIdentifier = [pass passTypeIdentifier];
+    v14 = [context regionForIdentifier:passTypeIdentifier];
 
-    v9 = [v14 paymentServicesURL];
+    lCopy = [v14 paymentServicesURL];
   }
 
-  v15 = [(PKPaymentWebService *)self _nonceWithRequest:v8 serviceURL:v9 completion:v10];
+  v15 = [(PKPaymentWebService *)self _nonceWithRequest:requestCopy serviceURL:lCopy completion:completionCopy];
 
   return v15;
 }
 
-- (unint64_t)serviceProviderAugmentSessionWithRequest:(id)a3 serviceURL:(id)a4 completion:(id)a5
+- (unint64_t)serviceProviderAugmentSessionWithRequest:(id)request serviceURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  requestCopy = request;
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
   {
-    v11 = [(PKPaymentWebService *)self context];
-    v12 = [v8 pass];
-    v13 = [v12 passTypeIdentifier];
-    v14 = [v11 regionForIdentifier:v13];
+    context = [(PKPaymentWebService *)self context];
+    pass = [requestCopy pass];
+    passTypeIdentifier = [pass passTypeIdentifier];
+    v14 = [context regionForIdentifier:passTypeIdentifier];
 
-    v9 = [v14 paymentServicesURL];
+    lCopy = [v14 paymentServicesURL];
   }
 
-  v15 = [(PKPaymentWebService *)self _augmentSessionWithRequest:v8 serviceURL:v9 completion:v10];
+  v15 = [(PKPaymentWebService *)self _augmentSessionWithRequest:requestCopy serviceURL:lCopy completion:completionCopy];
 
   return v15;
 }
 
-- (unint64_t)performServiceProviderPayment:(id)a3 completion:(id)a4
+- (unint64_t)performServiceProviderPayment:(id)payment completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 deviceID];
-  v10 = [v6 pass];
-  v11 = [v10 passTypeIdentifier];
-  v12 = [v8 regionForIdentifier:v11];
+  paymentCopy = payment;
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self context];
+  deviceID = [context deviceID];
+  pass = [paymentCopy pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  v12 = [context regionForIdentifier:passTypeIdentifier];
 
-  v13 = [(PKWebService *)self nextTaskID];
-  if (v9)
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  if (deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-    v14 = [v12 paymentServicesURL];
-    v15 = [(PKPaymentWebService *)self _appleAccountInformation];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:paymentCopy];
+    paymentServicesURL = [v12 paymentServicesURL];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __64__PKPaymentWebService_performServiceProviderPayment_completion___block_invoke;
     v19[3] = &unk_1E79D1DE0;
     v19[4] = self;
-    v21 = v13;
-    v20 = v7;
-    [v6 _urlRequestWithServiceURL:v14 deviceIdentifier:v9 appleAccountInformation:v15 webService:self completion:v19];
+    v21 = nextTaskID;
+    v20 = completionCopy;
+    [paymentCopy _urlRequestWithServiceURL:paymentServicesURL deviceIdentifier:deviceID appleAccountInformation:_appleAccountInformation webService:self completion:v19];
   }
 
   else
@@ -13439,10 +13439,10 @@ uint64_t __122__PKPaymentWebService_prepareTransactionDetailsForMerchantSession_
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Perform Payment, deviceID is nil", v18, 2u);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
-  return v13;
+  return nextTaskID;
 }
 
 void __64__PKPaymentWebService_performServiceProviderPayment_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -13514,49 +13514,49 @@ uint64_t __64__PKPaymentWebService_performServiceProviderPayment_completion___bl
   return v8;
 }
 
-- (unint64_t)serviceProviderPurchasesWithRequest:(id)a3 inRegion:(id)a4 completion:(id)a5
+- (unint64_t)serviceProviderPurchasesWithRequest:(id)request inRegion:(id)region completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self context];
-  v13 = v12;
-  if (!v9)
+  requestCopy = request;
+  regionCopy = region;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  context = [(PKPaymentWebService *)self context];
+  v13 = context;
+  if (!regionCopy)
   {
-    v9 = [v12 primaryRegionIdentifier];
+    regionCopy = [context primaryRegionIdentifier];
   }
 
-  v14 = [v13 regionForIdentifier:v9];
-  v15 = [v13 deviceID];
-  v16 = v15;
-  if (v14 && v15)
+  v14 = [v13 regionForIdentifier:regionCopy];
+  deviceID = [v13 deviceID];
+  v16 = deviceID;
+  if (v14 && deviceID)
   {
-    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v8];
-    v17 = [v14 paymentServicesURL];
+    [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+    paymentServicesURL = [v14 paymentServicesURL];
     [(PKPaymentWebService *)self _appleAccountInformation];
-    v28 = self;
-    v18 = v9;
+    selfCopy = self;
+    v18 = regionCopy;
     v19 = v14;
     v20 = v13;
-    v21 = v10;
-    v23 = v22 = v11;
-    v24 = [v8 _urlRequestWithServiceURL:v17 deviceIdentifier:v16 appleAccountInformation:v23];
+    v21 = completionCopy;
+    v23 = v22 = nextTaskID;
+    v24 = [requestCopy _urlRequestWithServiceURL:paymentServicesURL deviceIdentifier:v16 appleAccountInformation:v23];
 
-    v11 = v22;
-    v10 = v21;
+    nextTaskID = v22;
+    completionCopy = v21;
     v13 = v20;
     v14 = v19;
-    v9 = v18;
+    regionCopy = v18;
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __79__PKPaymentWebService_serviceProviderPurchasesWithRequest_inRegion_completion___block_invoke;
     v29[3] = &unk_1E79CD770;
     v30 = v18;
-    v31 = v10;
-    [(PKWebService *)v28 performRequest:v24 taskIdentifier:v11 completionHandler:v29];
+    v31 = completionCopy;
+    [(PKWebService *)selfCopy performRequest:v24 taskIdentifier:nextTaskID completionHandler:v29];
 
 LABEL_17:
     goto LABEL_18;
@@ -13564,7 +13564,7 @@ LABEL_17:
 
   if (v14)
   {
-    if (v15)
+    if (deviceID)
     {
       goto LABEL_8;
     }
@@ -13576,14 +13576,14 @@ LABEL_17:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v33 = v9;
+      v33 = regionCopy;
       _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "Can't ask for purchases, region %{public}@ unknown", buf, 0xCu);
     }
 
     if (v16)
     {
 LABEL_8:
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_18;
       }
@@ -13599,17 +13599,17 @@ LABEL_8:
     _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_DEFAULT, "Can't ask for purchases, no deviceID", buf, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
 LABEL_16:
     v24 = [(PKPaymentWebService *)self _errorWithResult:0 data:0];
-    (*(v10 + 2))(v10, MEMORY[0x1E695E0F0], v24);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], v24);
     goto LABEL_17;
   }
 
 LABEL_18:
 
-  return v11;
+  return nextTaskID;
 }
 
 void __79__PKPaymentWebService_serviceProviderPurchasesWithRequest_inRegion_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -13674,27 +13674,27 @@ void __79__PKPaymentWebService_serviceProviderPurchasesWithRequest_inRegion_comp
   }
 }
 
-- (unint64_t)serviceProviderPurchaseWithIdentifier:(id)a3 completion:(id)a4
+- (unint64_t)serviceProviderPurchaseWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v10 = [[PKPaymentServiceProviderPurchaseRequest alloc] initWithPurchaseIdentifier:v7];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  v10 = [[PKPaymentServiceProviderPurchaseRequest alloc] initWithPurchaseIdentifier:identifierCopy];
 
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  v11 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v12 = [(PKPaymentServiceProviderPurchaseRequest *)v10 _urlRequestWithServiceURL:v9 appleAccountInformation:v11];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v12 = [(PKPaymentServiceProviderPurchaseRequest *)v10 _urlRequestWithServiceURL:primaryBrokerURL appleAccountInformation:_appleAccountInformation];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__PKPaymentWebService_serviceProviderPurchaseWithIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79CB9F0;
-  v16 = v6;
-  v13 = v6;
-  [(PKWebService *)self performRequest:v12 taskIdentifier:v8 completionHandler:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [(PKWebService *)self performRequest:v12 taskIdentifier:nextTaskID completionHandler:v15];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __72__PKPaymentWebService_serviceProviderPurchaseWithIdentifier_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -13732,28 +13732,28 @@ void __72__PKPaymentWebService_serviceProviderPurchaseWithIdentifier_completion_
   }
 }
 
-- (unint64_t)performAction:(id)a3 onServiceProviderPurchase:(id)a4 completion:(id)a5
+- (unint64_t)performAction:(id)action onServiceProviderPurchase:(id)purchase completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPaymentWebService *)self primaryBrokerURL];
-  v13 = [[PKPaymentServiceProviderPerformActionRequest alloc] initWithAction:v10 purchase:v9];
+  completionCopy = completion;
+  purchaseCopy = purchase;
+  actionCopy = action;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  primaryBrokerURL = [(PKPaymentWebService *)self primaryBrokerURL];
+  v13 = [[PKPaymentServiceProviderPerformActionRequest alloc] initWithAction:actionCopy purchase:purchaseCopy];
 
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v13];
-  v14 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v15 = [(PKPaymentServiceProviderPerformActionRequest *)v13 _urlRequestWithServiceURL:v12 appleAccountInformation:v14];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v15 = [(PKPaymentServiceProviderPerformActionRequest *)v13 _urlRequestWithServiceURL:primaryBrokerURL appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __74__PKPaymentWebService_performAction_onServiceProviderPurchase_completion___block_invoke;
   v18[3] = &unk_1E79CB9F0;
-  v19 = v8;
-  v16 = v8;
-  [(PKWebService *)self performRequest:v15 taskIdentifier:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __74__PKPaymentWebService_performAction_onServiceProviderPurchase_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -13790,72 +13790,72 @@ void __74__PKPaymentWebService_performAction_onServiceProviderPurchase_completio
   }
 }
 
-- (unint64_t)networkManifestWithCompletion:(id)a3
+- (unint64_t)networkManifestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self context];
-  v6 = [v5 configuration];
-  v7 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
-  v8 = [v6 heroImageManifestURLForRegion:v7];
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self context];
+  configuration = [context configuration];
+  deviceRegion = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceRegion];
+  v8 = [configuration heroImageManifestURLForRegion:deviceRegion];
 
-  v9 = [(PKWebService *)self nextTaskID];
+  nextTaskID = [(PKWebService *)self nextTaskID];
   if (v8)
   {
     v10 = objc_alloc_init(PKPaymentNetworkCardImagesManifestRequest);
-    v11 = [(PKPaymentWebService *)self _appleAccountInformation];
-    v12 = [(PKPaymentNetworkCardImagesManifestRequest *)v10 _urlRequestWithServiceURL:v8 appleAccountInformation:v11];
+    _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+    v12 = [(PKPaymentNetworkCardImagesManifestRequest *)v10 _urlRequestWithServiceURL:v8 appleAccountInformation:_appleAccountInformation];
 
-    [(PKWebService *)self performRequest:v12 taskIdentifier:v9 completionHandler:v4];
+    [(PKWebService *)self performRequest:v12 taskIdentifier:nextTaskID completionHandler:completionCopy];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
-  return v9;
+  return nextTaskID;
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   v11 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v9;
+    *&buf[4] = taskCopy;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Task finish download: %@", buf, 0xCu);
   }
 
-  if (self->_backgroundSession == v8)
+  if (self->_backgroundSession == sessionCopy)
   {
-    v12 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v10];
-    v13 = [v9 taskIdentifier];
+    v12 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy];
+    taskIdentifier = [taskCopy taskIdentifier];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 originalRequest];
-      v15 = [v14 URL];
+      originalRequest = [taskCopy originalRequest];
+      v15 = [originalRequest URL];
       *buf = 134218242;
-      *&buf[4] = v13;
+      *&buf[4] = taskIdentifier;
       v52 = 2112;
       v53 = v15;
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Finished downloading task %lu: %@", buf, 0x16u);
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = [(PKPaymentWebService *)self backgroundContext];
-    v18 = [v17 backgroundDownloadRecordForTaskIdentifier:v13];
+    backgroundContext = [(PKPaymentWebService *)self backgroundContext];
+    v18 = [backgroundContext backgroundDownloadRecordForTaskIdentifier:taskIdentifier];
 
     if (!v18)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v9 taskIdentifier];
+        taskIdentifier2 = [taskCopy taskIdentifier];
         *buf = 134217984;
-        *&buf[4] = v23;
+        *&buf[4] = taskIdentifier2;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "***** No match found for task %lu *****: FILE A BUG!", buf, 0xCu);
       }
 
@@ -13863,46 +13863,46 @@ void __74__PKPaymentWebService_performAction_onServiceProviderPurchase_completio
     }
 
     v50 = v16;
-    v19 = [v18 taskType];
-    v20 = [v9 response];
-    if (v19 > 2)
+    taskType = [v18 taskType];
+    response = [taskCopy response];
+    if (taskType > 2)
     {
-      if (v19 == 4)
+      if (taskType == 4)
       {
-        [(PKWebService *)self logResponse:v20 withData:v12];
+        [(PKWebService *)self logResponse:response withData:v12];
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v9 taskIdentifier];
+          taskIdentifier3 = [taskCopy taskIdentifier];
           *buf = 134217984;
-          *&buf[4] = v34;
+          *&buf[4] = taskIdentifier3;
           _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Handling Device check in task %lu", buf, 0xCu);
         }
 
-        [(PKPaymentWebService *)self _handleDeviceCheckInTask:v9 downloadRecord:v18 data:v12];
+        [(PKPaymentWebService *)self _handleDeviceCheckInTask:taskCopy downloadRecord:v18 data:v12];
         goto LABEL_47;
       }
 
-      if (v19 == 3)
+      if (taskType == 3)
       {
         v49 = v12;
         v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<omitted>: %lu bytes", objc_msgSend(v12, "length")];
         v25 = [v24 dataUsingEncoding:4];
-        [(PKWebService *)self logResponse:v20 withData:v25];
+        [(PKWebService *)self logResponse:response withData:v25];
 
-        v26 = [v9 taskIdentifier];
+        taskIdentifier4 = [taskCopy taskIdentifier];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          *&buf[4] = v26;
+          *&buf[4] = taskIdentifier4;
           _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Handling remote asset task %lu", buf, 0xCu);
         }
 
         v27 = v18;
-        v28 = [v27 remoteAssetsByTaskIdentifier];
-        v48 = v26;
-        v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v26];
-        v30 = [v28 objectForKey:v29];
+        remoteAssetsByTaskIdentifier = [v27 remoteAssetsByTaskIdentifier];
+        v48 = taskIdentifier4;
+        v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:taskIdentifier4];
+        v30 = [remoteAssetsByTaskIdentifier objectForKey:v29];
 
         if (PKForceURLSessionRemoteAssetDownloadTaskFailure())
         {
@@ -13921,9 +13921,9 @@ void __74__PKPaymentWebService_performAction_onServiceProviderPurchase_completio
 
         else
         {
-          v42 = [v27 passURL];
+          passURL = [v27 passURL];
           *buf = 0;
-          [(PKPaymentWebService *)self _handleRemoteAssetDownloadForManifestItem:v30 taskPassURL:v42 data:v49 shouldWriteData:1 error:buf];
+          [(PKPaymentWebService *)self _handleRemoteAssetDownloadForManifestItem:v30 taskPassURL:passURL data:v49 shouldWriteData:1 error:buf];
           v16 = v50;
           if (*buf)
           {
@@ -13941,71 +13941,71 @@ void __74__PKPaymentWebService_performAction_onServiceProviderPurchase_completio
 
     else
     {
-      if (v19 == 1)
+      if (taskType == 1)
       {
-        [(PKWebService *)self logResponse:v20 withData:v12];
+        [(PKWebService *)self logResponse:response withData:v12];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [v18 pushTopic];
+          pushTopic = [v18 pushTopic];
           v16 = v50;
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [v9 taskIdentifier];
+            taskIdentifier5 = [taskCopy taskIdentifier];
             *buf = 134218242;
-            *&buf[4] = v33;
+            *&buf[4] = taskIdentifier5;
             v52 = 2112;
-            v53 = v21;
+            v53 = pushTopic;
             _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Handling passes query task %lu from push topic %@", buf, 0x16u);
           }
 
-          [(PKPaymentWebService *)self _handlePassListDownloadTask:v9 data:v12 fromPushTopic:v21];
+          [(PKPaymentWebService *)self _handlePassListDownloadTask:taskCopy data:v12 fromPushTopic:pushTopic];
           goto LABEL_32;
         }
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v44 = [v9 taskIdentifier];
+          taskIdentifier6 = [taskCopy taskIdentifier];
           v45 = objc_opt_class();
           v46 = NSStringFromClass(v45);
           *buf = 134218242;
-          *&buf[4] = v44;
+          *&buf[4] = taskIdentifier6;
           v52 = 2112;
           v53 = v46;
           _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Dropping response for task %lu of unrelated type %@", buf, 0x16u);
         }
 
-        v47 = [(PKPaymentWebService *)self backgroundContext];
-        [v47 removeBackgroundDownloadRecordForTaskIdentifier:v13];
+        backgroundContext2 = [(PKPaymentWebService *)self backgroundContext];
+        [backgroundContext2 removeBackgroundDownloadRecordForTaskIdentifier:taskIdentifier];
 
         [(PKPaymentWebService *)self _archiveBackgroundContext];
-        v39 = [(PKPaymentWebService *)self context];
-        v40 = v39;
+        context = [(PKPaymentWebService *)self context];
+        v40 = context;
         v41 = &__block_literal_global_865;
         goto LABEL_46;
       }
 
-      if (v19 == 2)
+      if (taskType == 2)
       {
-        [(PKWebService *)self logResponse:v20 withData:v12];
+        [(PKWebService *)self logResponse:response withData:v12];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [v18 pushTopic];
+          pushTopic = [v18 pushTopic];
           v16 = v50;
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v9 taskIdentifier];
+            taskIdentifier7 = [taskCopy taskIdentifier];
             *buf = 134218242;
-            *&buf[4] = v22;
+            *&buf[4] = taskIdentifier7;
             v52 = 2112;
-            v53 = v21;
+            v53 = pushTopic;
             _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Handling pass download task %lu from push topic %@", buf, 0x16u);
           }
 
-          [(PKPaymentWebService *)self _handlePassDownloadTask:v9 data:v12 fromPushTopic:v21];
+          [(PKPaymentWebService *)self _handlePassDownloadTask:taskCopy data:v12 fromPushTopic:pushTopic];
 LABEL_32:
 
 LABEL_48:
@@ -14016,25 +14016,25 @@ LABEL_48:
 
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [v9 taskIdentifier];
+          taskIdentifier8 = [taskCopy taskIdentifier];
           v36 = objc_opt_class();
           v37 = NSStringFromClass(v36);
           *buf = 134218242;
-          *&buf[4] = v35;
+          *&buf[4] = taskIdentifier8;
           v52 = 2112;
           v53 = v37;
           _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Dropping response for task %lu of unrelated type %@", buf, 0x16u);
         }
 
-        v38 = [(PKPaymentWebService *)self backgroundContext];
-        [v38 removeBackgroundDownloadRecordForTaskIdentifier:v13];
+        backgroundContext3 = [(PKPaymentWebService *)self backgroundContext];
+        [backgroundContext3 removeBackgroundDownloadRecordForTaskIdentifier:taskIdentifier];
 
         [(PKPaymentWebService *)self _archiveBackgroundContext];
-        v39 = [(PKPaymentWebService *)self context];
-        v40 = v39;
+        context = [(PKPaymentWebService *)self context];
+        v40 = context;
         v41 = &__block_literal_global_868;
 LABEL_46:
-        [v39 atomicallyUpdateEveryRegion:v41];
+        [context atomicallyUpdateEveryRegion:v41];
 
         [(PKPaymentWebService *)self _archiveContext];
 LABEL_47:
@@ -14043,13 +14043,13 @@ LABEL_47:
       }
     }
 
-    [(PKWebService *)self logResponse:v20 withData:v12];
+    [(PKWebService *)self logResponse:response withData:v12];
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v9 taskIdentifier];
+      taskIdentifier9 = [taskCopy taskIdentifier];
       *buf = 134217984;
-      *&buf[4] = v32;
+      *&buf[4] = taskIdentifier9;
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Unknown task type for task %lu", buf, 0xCu);
     }
 
@@ -14059,17 +14059,17 @@ LABEL_47:
 LABEL_49:
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_backgroundSession == v8)
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
+  if (self->_backgroundSession == sessionCopy)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = [(PKPaymentWebService *)self backgroundContext];
-    v13 = [v12 backgroundDownloadRecordForTaskIdentifier:{objc_msgSend(v9, "taskIdentifier")}];
+    backgroundContext = [(PKPaymentWebService *)self backgroundContext];
+    v13 = [backgroundContext backgroundDownloadRecordForTaskIdentifier:{objc_msgSend(taskCopy, "taskIdentifier")}];
 
     if ([v13 taskType] == 5)
     {
@@ -14077,27 +14077,27 @@ LABEL_49:
       v15 = PKLogFacilityTypeGetObject(0x17uLL);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v14 credentialIdentifier];
+        credentialIdentifier = [v14 credentialIdentifier];
         *buf = 138412546;
-        v23 = v16;
+        v23 = credentialIdentifier;
         v24 = 2048;
-        v25 = [v9 taskIdentifier];
+        taskIdentifier = [taskCopy taskIdentifier];
         _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Receiving response data for background credential registration task: %@ (%lu)", buf, 0x16u);
       }
 
-      v17 = [v14 responseData];
-      v18 = v17;
-      if (v17)
+      responseData = [v14 responseData];
+      v18 = responseData;
+      if (responseData)
       {
-        v19 = [v17 mutableCopy];
-        [v19 appendData:v10];
+        v19 = [responseData mutableCopy];
+        [v19 appendData:dataCopy];
         v20 = [v19 copy];
         [v14 setResponseData:v20];
       }
 
       else
       {
-        [v14 setResponseData:v10];
+        [v14 setResponseData:dataCopy];
       }
 
       [(PKPaymentWebService *)self _archiveContext];
@@ -14110,51 +14110,51 @@ LABEL_49:
   {
     v21.receiver = self;
     v21.super_class = PKPaymentWebService;
-    [(PKWebService *)&v21 URLSession:v8 dataTask:v9 didReceiveData:v10];
+    [(PKWebService *)&v21 URLSession:sessionCopy dataTask:taskCopy didReceiveData:dataCopy];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v108[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v11 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v9;
+    *&buf[4] = taskCopy;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Task Completed: %@", buf, 0xCu);
   }
 
-  if (self->_backgroundSession != v8)
+  if (self->_backgroundSession != sessionCopy)
   {
     v84.receiver = self;
     v84.super_class = PKPaymentWebService;
-    [(PKWebService *)&v84 URLSession:v8 task:v9 didCompleteWithError:v10];
+    [(PKWebService *)&v84 URLSession:sessionCopy task:taskCopy didCompleteWithError:errorCopy];
     goto LABEL_65;
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = [v9 response];
-  v80 = [v9 originalRequest];
-  v14 = [(PKPaymentWebService *)self backgroundContext];
-  v15 = [v14 backgroundDownloadRecordForTaskIdentifier:{objc_msgSend(v9, "taskIdentifier")}];
+  response = [taskCopy response];
+  originalRequest = [taskCopy originalRequest];
+  backgroundContext = [(PKPaymentWebService *)self backgroundContext];
+  v15 = [backgroundContext backgroundDownloadRecordForTaskIdentifier:{objc_msgSend(taskCopy, "taskIdentifier")}];
   objc_opt_class();
-  v82 = v14;
+  v82 = backgroundContext;
   v83 = v15;
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v13 statusCode];
+    statusCode = [response statusCode];
     v17 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v16 == 401)
+    if (statusCode == 401)
     {
       if (v17)
       {
-        v18 = [v9 taskIdentifier];
+        taskIdentifier = [taskCopy taskIdentifier];
         *buf = 134217984;
-        *&buf[4] = v18;
+        *&buf[4] = taskIdentifier;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Task %lu Received Status Code 401.", buf, 0xCu);
       }
 
@@ -14166,9 +14166,9 @@ LABEL_49:
         v102[2] = __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invoke;
         v102[3] = &unk_1E79DBB30;
         v102[4] = self;
-        v103 = v80;
+        v103 = originalRequest;
         v104 = v83;
-        v105 = v14;
+        v105 = backgroundContext;
         [(PKPaymentWebService *)self handleAuthenticationFailureWithCompletionHandler:v102];
       }
 
@@ -14176,9 +14176,9 @@ LABEL_49:
       {
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v83 retryCount];
+          retryCount = [v83 retryCount];
           *buf = 134217984;
-          *&buf[4] = v21;
+          *&buf[4] = retryCount;
           _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Request failed after %lu retries. Aborting.", buf, 0xCu);
         }
       }
@@ -14188,78 +14188,78 @@ LABEL_49:
     {
       if (v17)
       {
-        v19 = [v9 taskIdentifier];
-        v20 = [v9 originalRequest];
+        taskIdentifier2 = [taskCopy taskIdentifier];
+        originalRequest2 = [taskCopy originalRequest];
         *buf = 134218242;
-        *&buf[4] = v19;
+        *&buf[4] = taskIdentifier2;
         *&buf[12] = 2112;
-        *&buf[14] = v20;
+        *&buf[14] = originalRequest2;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Task %lu completed: %@", buf, 0x16u);
 
-        v14 = v82;
+        backgroundContext = v82;
       }
 
       v15 = v83;
     }
   }
 
-  v22 = [v15 taskType];
-  v23 = v22;
-  v81 = v13;
-  if (!v10)
+  taskType = [v15 taskType];
+  v23 = taskType;
+  v81 = response;
+  if (!errorCopy)
   {
-    if (v22 != 3)
+    if (taskType != 3)
     {
       goto LABEL_29;
     }
 
 LABEL_27:
-    v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "taskIdentifier")}];
+    v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(taskCopy, "taskIdentifier")}];
     v34 = v83;
-    [(PKPaymentRegisterCredentialResponse *)v34 removeRemoteURLAssetForTaskIdentifier:v33 didFail:v10 != 0];
+    [(PKPaymentRegisterCredentialResponse *)v34 removeRemoteURLAssetForTaskIdentifier:v33 didFail:errorCopy != 0];
     [(PKPaymentWebService *)self _archiveBackgroundContext];
     if (([(PKPaymentRegisterCredentialResponse *)v34 hasOutstandingRemoteAssetTasks]& 1) != 0)
     {
       v35 = v83;
 LABEL_61:
 
-      v13 = v81;
-      v14 = v82;
+      response = v81;
+      backgroundContext = v82;
       goto LABEL_62;
     }
 
     v79 = v12;
-    v40 = [(PKPaymentRegisterCredentialResponse *)v34 passURL];
-    v75 = [(PKPaymentWebService *)self _passWithFileURL:v40];
-    v41 = [(PKPaymentRegisterCredentialResponse *)v34 hasFailedRequiredRemoteAssetDownloads];
+    passURL = [(PKPaymentRegisterCredentialResponse *)v34 passURL];
+    v75 = [(PKPaymentWebService *)self _passWithFileURL:passURL];
+    hasFailedRequiredRemoteAssetDownloads = [(PKPaymentRegisterCredentialResponse *)v34 hasFailedRequiredRemoteAssetDownloads];
     v42 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v41)
+    if (hasFailedRequiredRemoteAssetDownloads)
     {
       if (v42)
       {
-        v43 = [v75 organizationName];
-        v44 = [v75 serialNumber];
+        organizationName = [v75 organizationName];
+        serialNumber = [v75 serialNumber];
         *buf = 138412546;
-        *&buf[4] = v43;
+        *&buf[4] = organizationName;
         *&buf[12] = 2112;
-        *&buf[14] = v44;
+        *&buf[14] = serialNumber;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "URLSession: Required remote assets failed to download for %@:%@ -- skipping pass ingestion", buf, 0x16u);
       }
 
-      v45 = [MEMORY[0x1E696AC08] defaultManager];
-      [v45 removeItemAtURL:v40 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager removeItemAtURL:passURL error:0];
 
-      v46 = [(PKPaymentRegisterCredentialResponse *)v34 pushTopic];
-      v47 = [(PKPaymentWebService *)self context];
-      v48 = v47;
-      if (v46)
+      pushTopic = [(PKPaymentRegisterCredentialResponse *)v34 pushTopic];
+      context = [(PKPaymentWebService *)self context];
+      v48 = context;
+      if (pushTopic)
       {
-        [v47 atomicallyUpdateRegionWithIdentifier:v46 updateBlock:&__block_literal_global_884];
+        [context atomicallyUpdateRegionWithIdentifier:pushTopic updateBlock:&__block_literal_global_884];
       }
 
       else
       {
-        [v47 atomicallyUpdateEveryRegion:&__block_literal_global_887];
+        [context atomicallyUpdateEveryRegion:&__block_literal_global_887];
       }
 
       [(PKPaymentWebService *)self _archiveContext];
@@ -14270,12 +14270,12 @@ LABEL_61:
     {
       if (v42)
       {
-        v62 = [v75 organizationName];
-        v63 = [v75 serialNumber];
+        organizationName2 = [v75 organizationName];
+        serialNumber2 = [v75 serialNumber];
         *buf = 138412546;
-        *&buf[4] = v62;
+        *&buf[4] = organizationName2;
         *&buf[12] = 2112;
-        *&buf[14] = v63;
+        *&buf[14] = serialNumber2;
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "URLSession: Asset downloads complete for %@:%@ -- delivering pass", buf, 0x16u);
       }
 
@@ -14286,17 +14286,17 @@ LABEL_61:
       v97[2] = __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invoke_880;
       v97[3] = &unk_1E79C9668;
       v98 = WeakRetained;
-      v99 = self;
+      selfCopy = self;
       v65 = v75;
       v100 = v75;
-      v101 = v40;
+      v101 = passURL;
       v66 = v97;
       *buf = MEMORY[0x1E69E9820];
       *&buf[8] = 3221225472;
       *&buf[16] = __dispatch_async_ar_block_invoke_14;
       v107 = &unk_1E79C4428;
       v108[0] = v66;
-      v46 = WeakRetained;
+      pushTopic = WeakRetained;
       dispatch_async(queue, buf);
     }
 
@@ -14305,26 +14305,26 @@ LABEL_61:
 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v9 taskIdentifier];
-    v25 = [v9 originalRequest];
-    [v25 URL];
-    v77 = self;
-    v26 = v8;
+    taskIdentifier3 = [taskCopy taskIdentifier];
+    originalRequest3 = [taskCopy originalRequest];
+    [originalRequest3 URL];
+    selfCopy2 = self;
+    v26 = sessionCopy;
     v28 = v27 = v12;
-    v29 = [v10 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     *buf = 134218498;
-    *&buf[4] = v24;
-    v14 = v82;
+    *&buf[4] = taskIdentifier3;
+    backgroundContext = v82;
     *&buf[12] = 2112;
     *&buf[14] = v28;
     *&buf[22] = 2112;
-    v107 = v29;
+    v107 = localizedDescription;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Error performing background download task %lu: %@. %@", buf, 0x20u);
 
-    v13 = v81;
+    response = v81;
     v12 = v27;
-    v8 = v26;
-    self = v77;
+    sessionCopy = v26;
+    self = selfCopy2;
   }
 
   if (v23 == 3)
@@ -14337,17 +14337,17 @@ LABEL_61:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([v83 pushTopic], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v31 = v30;
-      v32 = [(PKPaymentWebService *)self context];
-      [v32 atomicallyUpdateRegionWithIdentifier:v31 updateBlock:&__block_literal_global_876];
+      context3 = v30;
+      context2 = [(PKPaymentWebService *)self context];
+      [context2 atomicallyUpdateRegionWithIdentifier:context3 updateBlock:&__block_literal_global_876];
 
-      v14 = v82;
+      backgroundContext = v82;
     }
 
     else
     {
-      v31 = [(PKPaymentWebService *)self context];
-      [v31 atomicallyUpdateEveryRegion:&__block_literal_global_879];
+      context3 = [(PKPaymentWebService *)self context];
+      [context3 atomicallyUpdateEveryRegion:&__block_literal_global_879];
     }
 
     [(PKPaymentWebService *)self _archiveContext];
@@ -14361,7 +14361,7 @@ LABEL_61:
     v61 = v83;
     v37 = objc_loadWeakRetained(&self->_backgroundDelegate);
     v38 = 0;
-    v39 = 0;
+    action = 0;
     goto LABEL_53;
   }
 
@@ -14372,15 +14372,15 @@ LABEL_29:
     v78 = v12;
     v36 = v83;
     v37 = objc_loadWeakRetained(&self->_backgroundDelegate);
-    if (v10 || ([v36 responseData], v67 = objc_claimAutoreleasedReturnValue(), +[PKWebServiceResponse responseWithData:](PKPaymentDeviceCheckInResponse, "responseWithData:", v67), v68 = objc_claimAutoreleasedReturnValue(), v67, !v68))
+    if (errorCopy || ([v36 responseData], v67 = objc_claimAutoreleasedReturnValue(), +[PKWebServiceResponse responseWithData:](PKPaymentDeviceCheckInResponse, "responseWithData:", v67), v68 = objc_claimAutoreleasedReturnValue(), v67, !v68))
     {
       v38 = 0;
-      v39 = 0;
+      action = 0;
     }
 
     else
     {
-      v39 = [v68 action];
+      action = [v68 action];
 
       v38 = 1;
     }
@@ -14393,10 +14393,10 @@ LABEL_53:
     v91[2] = __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invoke_3;
     v91[3] = &unk_1E79D0340;
     v92 = v37;
-    v93 = self;
+    selfCopy3 = self;
     v96 = v38;
     v94 = v35;
-    v95 = v39;
+    v95 = action;
     v70 = v91;
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
@@ -14407,7 +14407,7 @@ LABEL_53:
     v33 = v35;
     dispatch_async(v69, buf);
 
-    v40 = v92;
+    passURL = v92;
     v12 = v78;
 LABEL_60:
 
@@ -14418,23 +14418,23 @@ LABEL_60:
   {
     v79 = v12;
     v33 = v83;
-    v49 = [v33 credentialIdentifier];
+    credentialIdentifier = [v33 credentialIdentifier];
     v50 = [PKPaymentRegisterCredentialResponse alloc];
-    v51 = [v33 responseData];
-    v52 = [(PKPaymentRegisterCredentialResponse *)v50 initWithData:v51];
+    responseData = [v33 responseData];
+    v52 = [(PKPaymentRegisterCredentialResponse *)v50 initWithData:responseData];
 
     v53 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [v9 taskIdentifier];
+      taskIdentifier4 = [taskCopy taskIdentifier];
       *buf = 134218754;
-      *&buf[4] = v54;
+      *&buf[4] = taskIdentifier4;
       *&buf[12] = 2112;
-      *&buf[14] = v49;
+      *&buf[14] = credentialIdentifier;
       *&buf[22] = 2112;
       v107 = v52;
       LOWORD(v108[0]) = 2112;
-      *(v108 + 2) = v10;
+      *(v108 + 2) = errorCopy;
       _os_log_impl(&dword_1AD337000, v53, OS_LOG_TYPE_DEFAULT, "Background credential registration task (%lu) for credential %@ completed with response %@, error %@", buf, 0x2Au);
     }
 
@@ -14447,12 +14447,12 @@ LABEL_60:
     aBlock[3] = &unk_1E79C7D80;
     v76 = v55;
     v86 = v76;
-    v87 = self;
-    v34 = v49;
+    selfCopy4 = self;
+    v34 = credentialIdentifier;
     v88 = v34;
-    v40 = v52;
-    v89 = v40;
-    v90 = v10;
+    passURL = v52;
+    v89 = passURL;
+    v90 = errorCopy;
     v56 = _Block_copy(aBlock);
     v57 = dispatch_get_global_queue(21, 0);
     if (PKSharingDelayAttestation())
@@ -14494,14 +14494,14 @@ LABEL_59:
   }
 
 LABEL_62:
-  [v14 removeBackgroundDownloadRecordForTaskIdentifier:{objc_msgSend(v9, "taskIdentifier", queue)}];
+  [backgroundContext removeBackgroundDownloadRecordForTaskIdentifier:{objc_msgSend(taskCopy, "taskIdentifier", queue)}];
   [(PKPaymentWebService *)self _archiveBackgroundContext];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v71 = [(PKPaymentWebService *)self backgroundContext];
-    v72 = [v71 remainingTasks];
+    backgroundContext2 = [(PKPaymentWebService *)self backgroundContext];
+    remainingTasks = [backgroundContext2 remainingTasks];
     *buf = 138412290;
-    *&buf[4] = v72;
+    *&buf[4] = remainingTasks;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Remaining background tasks: %@", buf, 0xCu);
 
     v35 = v83;
@@ -14643,15 +14643,15 @@ void __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invo
   [v2 paymentWebService:v3 deviceCheckInReturnedAction:v5 success:v4 region:v7 identifier:v6];
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v11.receiver = self;
   v11.super_class = PKPaymentWebService;
-  v6 = a3;
-  [(PKWebService *)&v11 URLSession:v6 didBecomeInvalidWithError:a4];
+  sessionCopy = session;
+  [(PKWebService *)&v11 URLSession:sessionCopy didBecomeInvalidWithError:error];
   backgroundSession = self->_backgroundSession;
 
-  if (backgroundSession == v6)
+  if (backgroundSession == sessionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_backgroundDelegate);
 
@@ -14666,13 +14666,13 @@ void __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invo
   }
 }
 
-- (void)_startBackgroundURLSessionWithIdentifier:(id)a3 context:(id)a4 backgroundDelegate:(id)a5 completion:(id)a6
+- (void)_startBackgroundURLSessionWithIdentifier:(id)identifier context:(id)context backgroundDelegate:(id)delegate completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  delegateCopy = delegate;
+  completionCopy = completion;
   if (!self->_backgroundSession)
   {
     v14 = PKLogFacilityTypeGetObject(7uLL);
@@ -14682,16 +14682,16 @@ void __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invo
       _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Starting background URL session…", buf, 2u);
     }
 
-    objc_storeStrong(&self->_backgroundContext, a4);
-    v15 = [(PKPaymentWebService *)self canBypassTrustValidation];
-    if (v15)
+    objc_storeStrong(&self->_backgroundContext, context);
+    canBypassTrustValidation = [(PKPaymentWebService *)self canBypassTrustValidation];
+    if (canBypassTrustValidation)
     {
-      v16 = [v10 stringByAppendingString:@"-nonEV"];
+      v16 = [identifierCopy stringByAppendingString:@"-nonEV"];
     }
 
     else
     {
-      v16 = v10;
+      v16 = identifierCopy;
     }
 
     v17 = v16;
@@ -14700,7 +14700,7 @@ void __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invo
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = @"YES";
-      if (v15)
+      if (canBypassTrustValidation)
       {
         v19 = @"NO";
       }
@@ -14714,22 +14714,22 @@ void __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invo
 
     v26 = v17;
 
-    [v18 set_performsEVCertCheck:!v15];
-    v20 = [MEMORY[0x1E696AAE8] mainBundle];
-    v21 = [v20 bundleIdentifier];
+    [v18 set_performsEVCertCheck:!canBypassTrustValidation];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v22 = [objc_alloc(MEMORY[0x1E698DCC8]) initWithIdentifier:v21];
+    v22 = [objc_alloc(MEMORY[0x1E698DCC8]) initWithIdentifier:bundleIdentifier];
     [v18 set_appleIDContext:v22];
     if (objc_opt_respondsToSelector())
     {
-      [v12 paymentWebService:self willCreateSessionWithConfiguration:{v18, v17}];
+      [delegateCopy paymentWebService:self willCreateSessionWithConfiguration:{v18, v17}];
     }
 
     v23 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v18 delegate:self delegateQueue:{self->_backgroundSessionDelegateQueue, v26}];
     backgroundSession = self->_backgroundSession;
     self->_backgroundSession = v23;
 
-    objc_storeWeak(&self->_backgroundDelegate, v12);
+    objc_storeWeak(&self->_backgroundDelegate, delegateCopy);
     v25 = self->_backgroundSession;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -14739,9 +14739,9 @@ void __60__PKPaymentWebService_URLSession_task_didCompleteWithError___block_invo
     [(NSURLSession *)v25 getTasksWithCompletionHandler:v28];
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -14765,13 +14765,13 @@ uint64_t __102__PKPaymentWebService__startBackgroundURLSessionWithIdentifier_con
 
 - (BOOL)_hasConfiguration
 {
-  v2 = [(PKPaymentWebService *)self context];
-  v3 = [v2 configurationDate];
+  context = [(PKPaymentWebService *)self context];
+  configurationDate = [context configurationDate];
 
-  if (v3)
+  if (configurationDate)
   {
-    v4 = [v2 configuration];
-    v5 = v4 == 0;
+    configuration = [context configuration];
+    v5 = configuration == 0;
   }
 
   else
@@ -14782,21 +14782,21 @@ uint64_t __102__PKPaymentWebService__startBackgroundURLSessionWithIdentifier_con
   return v5;
 }
 
-- (id)_passWithFileURL:(id)a3
+- (id)_passWithFileURL:(id)l
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_passesByLocalURL objectForKey:v4];
+  lCopy = l;
+  v5 = [(NSMutableDictionary *)self->_passesByLocalURL objectForKey:lCopy];
   if (!v5)
   {
-    v6 = [(PKObject *)PKPass createWithFileURL:v4 warnings:0 error:0];
+    v6 = [(PKObject *)PKPass createWithFileURL:lCopy warnings:0 error:0];
     if ([v6 passType] == 1 && (v7 = v6) != 0)
     {
       v5 = v7;
-      v8 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
-      [v5 updateDevicePaymentApplicationsWithSecureElementIdentifiers:v8];
+      secureElementIdentifiers = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
+      [v5 updateDevicePaymentApplicationsWithSecureElementIdentifiers:secureElementIdentifiers];
 
-      [(NSMutableDictionary *)self->_passesByLocalURL setObject:v5 forKey:v4];
+      [(NSMutableDictionary *)self->_passesByLocalURL setObject:v5 forKey:lCopy];
     }
 
     else
@@ -14805,7 +14805,7 @@ uint64_t __102__PKPaymentWebService__startBackgroundURLSessionWithIdentifier_con
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = lCopy;
         _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "*** ERROR ***: Couldn't find local pass %@ for downloaded asset.", &v11, 0xCu);
       }
 
@@ -14816,26 +14816,26 @@ uint64_t __102__PKPaymentWebService__startBackgroundURLSessionWithIdentifier_con
   return v5;
 }
 
-- (void)_backgroundDownloadCloudStoreAssetsForItem:(id)a3 cloudStoreCoordinatorDelegate:(id)a4
+- (void)_backgroundDownloadCloudStoreAssetsForItem:(id)item cloudStoreCoordinatorDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  delegateCopy = delegate;
   backgroundDownloadQueue = self->_backgroundDownloadQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudStoreCoordinatorDelegate___block_invoke;
   v12[3] = &unk_1E79C4E00;
-  v13 = v6;
-  v14 = v7;
-  v15 = self;
+  v13 = itemCopy;
+  v14 = delegateCopy;
+  selfCopy = self;
   v9 = v12;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __dispatch_async_ar_block_invoke_14;
   block[3] = &unk_1E79C4428;
   v17 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = delegateCopy;
+  v11 = itemCopy;
   dispatch_async(backgroundDownloadQueue, block);
 }
 
@@ -15028,32 +15028,32 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
   [v4 removeItemAtURL:*(a1 + 32) error:0];
 }
 
-- (void)_handleRemoteAssetDownloadForManifestItem:(id)a3 taskPassURL:(id)a4 data:(id)a5 shouldWriteData:(BOOL)a6 error:(id *)a7
+- (void)_handleRemoteAssetDownloadForManifestItem:(id)item taskPassURL:(id)l data:(id)data shouldWriteData:(BOOL)writeData error:(id *)error
 {
-  v8 = a6;
+  writeDataCopy = writeData;
   v30 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  if (v12)
+  itemCopy = item;
+  dataCopy = data;
+  if (itemCopy)
   {
-    v14 = [(PKPaymentWebService *)self _passWithFileURL:a4];
+    v14 = [(PKPaymentWebService *)self _passWithFileURL:l];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 dataAccessor];
-      v17 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
-      v18 = [v16 remoteAssetManagerForSEIDs:v17];
+      dataAccessor = [v14 dataAccessor];
+      secureElementIdentifiers = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
+      v18 = [dataAccessor remoteAssetManagerForSEIDs:secureElementIdentifiers];
 
       v27 = 0;
-      LOBYTE(v17) = [v18 addRemoteAssetData:v13 shouldWriteData:v8 forManifestItem:v12 error:&v27];
+      LOBYTE(secureElementIdentifiers) = [v18 addRemoteAssetData:dataCopy shouldWriteData:writeDataCopy forManifestItem:itemCopy error:&v27];
       v19 = v27;
       v20 = v27;
-      [v18 cacheRemoteAssetData:v13 forManifestItem:v12];
-      if ((v17 & 1) == 0)
+      [v18 cacheRemoteAssetData:dataCopy forManifestItem:itemCopy];
+      if ((secureElementIdentifiers & 1) == 0)
       {
-        if (a7)
+        if (error)
         {
-          objc_storeStrong(a7, v19);
+          objc_storeStrong(error, v19);
         }
 
         v21 = PKLogFacilityTypeGetObject(7uLL);
@@ -15061,8 +15061,8 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
 
         if (v22)
         {
-          v23 = [v20 userInfo];
-          v24 = [v23 objectForKey:*MEMORY[0x1E696AA08]];
+          userInfo = [v20 userInfo];
+          v24 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
           if (v24)
           {
@@ -15074,11 +15074,11 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
             v25 = v20;
           }
 
-          v26 = [v25 localizedDescription];
+          localizedDescription = [v25 localizedDescription];
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v29 = v26;
+            v29 = localizedDescription;
             _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "*** ERROR ***: Could not add asset to pass: %@", buf, 0xCu);
           }
         }
@@ -15087,45 +15087,45 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
   }
 }
 
-- (void)_handleRemoteCloudStoreAssetForRecordName:(id)a3 taskRecord:(id)a4 data:(id)a5 shouldWriteData:(BOOL)a6 error:(id *)a7
+- (void)_handleRemoteCloudStoreAssetForRecordName:(id)name taskRecord:(id)record data:(id)data shouldWriteData:(BOOL)writeData error:(id *)error
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v13 remoteAssetsByRecordName];
-  v17 = [v15 objectForKey:v14];
+  writeDataCopy = writeData;
+  dataCopy = data;
+  recordCopy = record;
+  nameCopy = name;
+  remoteAssetsByRecordName = [recordCopy remoteAssetsByRecordName];
+  v17 = [remoteAssetsByRecordName objectForKey:nameCopy];
 
-  v16 = [v13 passURL];
+  passURL = [recordCopy passURL];
 
-  [(PKPaymentWebService *)self _handleRemoteAssetDownloadForManifestItem:v17 taskPassURL:v16 data:v12 shouldWriteData:v8 error:a7];
+  [(PKPaymentWebService *)self _handleRemoteAssetDownloadForManifestItem:v17 taskPassURL:passURL data:dataCopy shouldWriteData:writeDataCopy error:error];
 }
 
-- (void)_handlePassListDownloadTask:(id)a3 data:(id)a4 fromPushTopic:(id)a5
+- (void)_handlePassListDownloadTask:(id)task data:(id)data fromPushTopic:(id)topic
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  dataCopy = data;
+  topicCopy = topic;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
   v44 = __Block_byref_object_copy__54;
   v45 = __Block_byref_object_dispose__54;
   v46 = 0;
-  v11 = [v8 response];
-  v12 = [v8 error];
+  response = [taskCopy response];
+  error = [taskCopy error];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __70__PKPaymentWebService__handlePassListDownloadTask_data_fromPushTopic___block_invoke;
   v38[3] = &unk_1E79C8FA8;
   v40 = &v41;
-  v13 = v9;
+  v13 = dataCopy;
   v39 = v13;
-  [(PKPaymentWebService *)self _resultForResponse:v11 error:v12 successHandler:v38];
+  [(PKPaymentWebService *)self _resultForResponse:response error:error successHandler:v38];
 
-  v14 = [v42[5] devicePassSerialNumbers];
-  if (v14)
+  devicePassSerialNumbers = [v42[5] devicePassSerialNumbers];
+  if (devicePassSerialNumbers)
   {
     WeakRetained = objc_loadWeakRetained(&self->_backgroundDelegate);
     v16 = dispatch_get_global_queue(21, 0);
@@ -15134,9 +15134,9 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
     v33[2] = __70__PKPaymentWebService__handlePassListDownloadTask_data_fromPushTopic___block_invoke_2;
     v33[3] = &unk_1E79C9668;
     v34 = WeakRetained;
-    v35 = self;
-    v36 = v14;
-    v37 = v10;
+    selfCopy = self;
+    v36 = devicePassSerialNumbers;
+    v37 = topicCopy;
     v17 = v33;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -15147,14 +15147,14 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
     dispatch_async(v16, block);
   }
 
-  v19 = [v42[5] passURLs];
-  if ([v19 count])
+  passURLs = [v42[5] passURLs];
+  if ([passURLs count])
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v20 = v19;
+    v20 = passURLs;
     v21 = [v20 countByEnumeratingWithState:&v29 objects:v49 count:16];
     if (v21)
     {
@@ -15168,7 +15168,7 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
             objc_enumerationMutation(v20);
           }
 
-          [(PKPaymentWebService *)self _backgroundDownloadPassAtURL:*(*(&v29 + 1) + 8 * i) fromPushTopic:v10];
+          [(PKPaymentWebService *)self _backgroundDownloadPassAtURL:*(*(&v29 + 1) + 8 * i) fromPushTopic:topicCopy];
         }
 
         v21 = [v20 countByEnumeratingWithState:&v29 objects:v49 count:16];
@@ -15188,17 +15188,17 @@ void __96__PKPaymentWebService__backgroundDownloadCloudStoreAssetsForItem_cloudS
     }
   }
 
-  v24 = [v42[5] lastUpdatedTag];
-  v25 = v24;
-  if (v10 && v24)
+  lastUpdatedTag = [v42[5] lastUpdatedTag];
+  v25 = lastUpdatedTag;
+  if (topicCopy && lastUpdatedTag)
   {
-    v26 = [(PKPaymentWebService *)self context];
+    context = [(PKPaymentWebService *)self context];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __70__PKPaymentWebService__handlePassListDownloadTask_data_fromPushTopic___block_invoke_912;
     v27[3] = &unk_1E79DB510;
     v28 = v25;
-    [v26 atomicallyUpdateRegionWithIdentifier:v10 updateBlock:v27];
+    [context atomicallyUpdateRegionWithIdentifier:topicCopy updateBlock:v27];
 
     [(PKPaymentWebService *)self _archiveContext];
   }
@@ -15216,22 +15216,22 @@ BOOL __70__PKPaymentWebService__handlePassListDownloadTask_data_fromPushTopic___
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)_handlePassDownloadTask:(id)a3 data:(id)a4 fromPushTopic:(id)a5
+- (void)_handlePassDownloadTask:(id)task data:(id)data fromPushTopic:(id)topic
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 response];
-  v12 = [v10 error];
+  topicCopy = topic;
+  dataCopy = data;
+  taskCopy = task;
+  response = [taskCopy response];
+  error = [taskCopy error];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__PKPaymentWebService__handlePassDownloadTask_data_fromPushTopic___block_invoke;
   v14[3] = &unk_1E79DBBD0;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
-  [(PKPaymentWebService *)self _passWithData:v9 response:v11 error:v12 completion:v14];
+  v15 = topicCopy;
+  v13 = topicCopy;
+  [(PKPaymentWebService *)self _passWithData:dataCopy response:response error:error completion:v14];
 }
 
 void __66__PKPaymentWebService__handlePassDownloadTask_data_fromPushTopic___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -15279,20 +15279,20 @@ void __66__PKPaymentWebService__handlePassDownloadTask_data_fromPushTopic___bloc
   }
 }
 
-- (void)_handleDeviceCheckInTask:(id)a3 downloadRecord:(id)a4 data:(id)a5
+- (void)_handleDeviceCheckInTask:(id)task downloadRecord:(id)record data:(id)data
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  recordCopy = record;
+  dataCopy = data;
+  if (dataCopy)
   {
     backgroundDownloadQueue = self->_backgroundDownloadQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__PKPaymentWebService__handleDeviceCheckInTask_downloadRecord_data___block_invoke;
     v11[3] = &unk_1E79C4E00;
-    v12 = v7;
-    v13 = v8;
-    v14 = self;
+    v12 = recordCopy;
+    v13 = dataCopy;
+    selfCopy = self;
     v10 = v11;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -15311,17 +15311,17 @@ uint64_t __68__PKPaymentWebService__handleDeviceCheckInTask_downloadRecord_data_
   return [v2 _archiveBackgroundContext];
 }
 
-- (void)_handleRetryAfterTSMSyncForPushTopic:(id)a3 withRequest:(id)a4 taskIdentifier:(unint64_t)a5 completionHandler:(id)a6
+- (void)_handleRetryAfterTSMSyncForPushTopic:(id)topic withRequest:(id)request taskIdentifier:(unint64_t)identifier completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PKWebService *)self webServiceTaskIdentifierForTaskIdentifier:a5];
+  topicCopy = topic;
+  requestCopy = request;
+  handlerCopy = handler;
+  v13 = [(PKWebService *)self webServiceTaskIdentifierForTaskIdentifier:identifier];
   v14 = objc_autoreleasePoolPush();
   os_unfair_lock_lock(&self->_delegateLock);
-  v15 = [(NSHashTable *)self->_delegates allObjects];
-  v16 = [v15 copy];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
+  v16 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_delegateLock);
   v31 = 0u;
@@ -15361,12 +15361,12 @@ uint64_t __68__PKPaymentWebService__handleDeviceCheckInTask_downloadRecord_data_
   v25[2] = __105__PKPaymentWebService__handleRetryAfterTSMSyncForPushTopic_withRequest_taskIdentifier_completionHandler___block_invoke;
   v25[3] = &unk_1E79D3B58;
   v25[4] = self;
-  v26 = v11;
-  v27 = v12;
+  v26 = requestCopy;
+  v27 = handlerCopy;
   v28 = v13;
-  v23 = v12;
-  v24 = v11;
-  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:self queueConnectionToTrustedServiceManagerForPushTopic:v10 withCompletion:v25];
+  v23 = handlerCopy;
+  v24 = requestCopy;
+  [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:self queueConnectionToTrustedServiceManagerForPushTopic:topicCopy withCompletion:v25];
 }
 
 void __105__PKPaymentWebService__handleRetryAfterTSMSyncForPushTopic_withRequest_taskIdentifier_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -15451,11 +15451,11 @@ void __105__PKPaymentWebService__handleRetryAfterTSMSyncForPushTopic_withRequest
   }
 }
 
-- (void)_handleRetryAfterRegisterWithRequest:(id)a3 response:(id)a4 completionHandler:(id)a5
+- (void)_handleRetryAfterRegisterWithRequest:(id)request response:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  handlerCopy = handler;
   v11 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -15468,11 +15468,11 @@ void __105__PKPaymentWebService__handleRetryAfterTSMSyncForPushTopic_withRequest
   v14[2] = __87__PKPaymentWebService__handleRetryAfterRegisterWithRequest_response_completionHandler___block_invoke;
   v14[3] = &unk_1E79D78E0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v12 = v10;
-  v13 = v8;
-  [(PKPaymentWebService *)self _registerIfNeededWithResponse:v9 task:0 isRedirect:1 completion:v14];
+  v15 = requestCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = requestCopy;
+  [(PKPaymentWebService *)self _registerIfNeededWithResponse:responseCopy task:0 isRedirect:1 completion:v14];
 }
 
 void __87__PKPaymentWebService__handleRetryAfterRegisterWithRequest_response_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -15529,10 +15529,10 @@ void __87__PKPaymentWebService__handleRetryAfterRegisterWithRequest_response_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_handleRetryAfterApplePayTrustEnrollmentWithOriginalRequest:(id)a3 completionHandler:(id)a4
+- (void)_handleRetryAfterApplePayTrustEnrollmentWithOriginalRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = PKLogFacilityTypeGetObject(0x10uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -15540,18 +15540,18 @@ void __87__PKPaymentWebService__handleRetryAfterRegisterWithRequest_response_com
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Enrolling Apple Pay Trust Key", buf, 2u);
   }
 
-  v9 = [v6 HTTPBody];
+  hTTPBody = [requestCopy HTTPBody];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOriginalRequest_completionHandler___block_invoke;
   v13[3] = &unk_1E79DBBF8;
   v13[4] = self;
-  v14 = v6;
-  v15 = v9;
-  v16 = v7;
-  v10 = v7;
-  v11 = v9;
-  v12 = v6;
+  v14 = requestCopy;
+  v15 = hTTPBody;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = hTTPBody;
+  v12 = requestCopy;
   [(PKPaymentWebService *)self performApplePayTrustRegistrationWithCompletion:v13];
 }
 
@@ -15670,12 +15670,12 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
   *(*(a1 + 32) + 224) = 0;
 }
 
-- (void)_registerIfNeededWithResponse:(id)a3 task:(id)a4 isRedirect:(BOOL)a5 completion:(id)a6
+- (void)_registerIfNeededWithResponse:(id)response task:(id)task isRedirect:(BOOL)redirect completion:(id)completion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  objc_initWeak(&location, a4);
-  v11 = a6;
+  responseCopy = response;
+  objc_initWeak(&location, task);
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v12 = objc_loadWeakRetained(&location);
 
@@ -15696,7 +15696,7 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
 
   os_unfair_lock_unlock(&self->_lock);
   v18 = MEMORY[0x1E695DFF8];
-  v19 = [v10 pk_valueForHTTPHeaderField:@"BrokerURL"];
+  v19 = [responseCopy pk_valueForHTTPHeaderField:@"BrokerURL"];
   v20 = [v18 URLWithString:v19];
 
   if (v17)
@@ -15704,7 +15704,7 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
     goto LABEL_5;
   }
 
-  if (v20 && a5)
+  if (v20 && redirect)
   {
     v21 = 0;
     v22 = @"Server requested registration during HTTP Redirect";
@@ -15713,12 +15713,12 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
   else
   {
     v23 = MEMORY[0x1E695DFF8];
-    v24 = [v10 pk_valueForHTTPHeaderField:@"regionbrokerurl"];
+    v24 = [responseCopy pk_valueForHTTPHeaderField:@"regionbrokerurl"];
     v25 = [v23 URLWithString:v24];
 
-    v26 = [v10 pk_valueForHTTPHeaderField:@"x-pod-region"];
-    v27 = [(PKPaymentWebService *)self context];
-    v28 = [v27 regionForIdentifier:v26];
+    v26 = [responseCopy pk_valueForHTTPHeaderField:@"x-pod-region"];
+    context = [(PKPaymentWebService *)self context];
+    v28 = [context regionForIdentifier:v26];
     v21 = v28 != 0;
 
     v22 = @"Wallet noticed missing registration during HTTP response";
@@ -15739,7 +15739,7 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
       _os_log_impl(&dword_1AD337000, v29, OS_LOG_TYPE_DEFAULT, "Request device registration because: %@", buf, 0xCu);
     }
 
-    v30 = [(PKPaymentWebService *)self targetDevice];
+    targetDevice = [(PKPaymentWebService *)self targetDevice];
     if (objc_opt_respondsToSelector())
     {
       v31 = v36;
@@ -15747,8 +15747,8 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
       v36[1] = 3221225472;
       v36[2] = __80__PKPaymentWebService__registerIfNeededWithResponse_task_isRedirect_completion___block_invoke;
       v36[3] = &unk_1E79C8E90;
-      v36[4] = v11;
-      [v30 performDeviceRegistrationForReason:v22 brokerURL:v20 completion:v36];
+      v36[4] = completionCopy;
+      [targetDevice performDeviceRegistrationForReason:v22 brokerURL:v20 completion:v36];
     }
 
     else
@@ -15759,7 +15759,7 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
         v33[1] = 3221225472;
         v33[2] = __80__PKPaymentWebService__registerIfNeededWithResponse_task_isRedirect_completion___block_invoke_948;
         v33[3] = &unk_1E79DBC20;
-        v34 = v11;
+        v34 = completionCopy;
         [(PKPaymentWebService *)self registerDeviceAtBrokerURL:v20 consistencyCheckResults:0 completion:v33];
         v32 = &v34;
         goto LABEL_19;
@@ -15770,8 +15770,8 @@ void __101__PKPaymentWebService__handleRetryAfterApplePayTrustEnrollmentWithOrig
       v35[1] = 3221225472;
       v35[2] = __80__PKPaymentWebService__registerIfNeededWithResponse_task_isRedirect_completion___block_invoke_946;
       v35[3] = &unk_1E79D62F0;
-      v35[4] = v11;
-      [v30 performDeviceRegistrationReturningContextForReason:v22 brokerURL:v20 completion:v35];
+      v35[4] = completionCopy;
+      [targetDevice performDeviceRegistrationReturningContextForReason:v22 brokerURL:v20 completion:v35];
     }
 
     v32 = (v31 + 4);
@@ -15781,7 +15781,7 @@ LABEL_19:
   }
 
 LABEL_5:
-  (*(v11 + 2))(v11, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_20:
 
   objc_destroyWeak(&location);
@@ -15863,10 +15863,10 @@ void __80__PKPaymentWebService__registerIfNeededWithResponse_task_isRedirect_com
   }
 }
 
-- (void)_applePayTrustPublicKeyHashWithCompletion:(id)a3
+- (void)_applePayTrustPublicKeyHashWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = PKLogFacilityTypeGetObject(0x10uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -15875,14 +15875,14 @@ void __80__PKPaymentWebService__registerIfNeededWithResponse_task_isRedirect_com
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Fetching Apple Pay Trust key from NearField", buf, 2u);
     }
 
-    v6 = [(PKPaymentWebService *)self targetDevice];
+    targetDevice = [(PKPaymentWebService *)self targetDevice];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __65__PKPaymentWebService__applePayTrustPublicKeyHashWithCompletion___block_invoke;
     v7[3] = &unk_1E79C4950;
     v7[4] = self;
-    v8 = v4;
-    [v6 applePayTrustKeyForIdentifier:@"com.apple.wallet.applepaytrust" completion:v7];
+    v8 = completionCopy;
+    [targetDevice applePayTrustKeyForIdentifier:@"com.apple.wallet.applepaytrust" completion:v7];
   }
 }
 
@@ -15957,10 +15957,10 @@ LABEL_6:
   (*(*(a1 + 32) + 16))(*(a1 + 32), v4);
 }
 
-- (id)_downloadPassesWithURLs:(id)a3
+- (id)_downloadPassesWithURLs:(id)ls
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lsCopy = ls;
   v5 = dispatch_queue_create("passQueue", 0);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = dispatch_group_create();
@@ -15968,7 +15968,7 @@ LABEL_6:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = lsCopy;
   v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -16042,50 +16042,50 @@ void __47__PKPaymentWebService__downloadPassesWithURLs___block_invoke_2(uint64_t
   dispatch_group_leave(v2);
 }
 
-- (void)_deviceProvisioningDataIncludingDeviceMetadata:(BOOL)a3 withCompletion:(id)a4
+- (void)_deviceProvisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletion:(id)completion
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v9 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67240192;
-    v8[1] = v4;
+    v8[1] = metadataCopy;
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "Requesting device provisioning data including metadata: %{public}d", v8, 8u);
   }
 
-  [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice paymentWebService:self provisioningDataIncludingDeviceMetadata:v4 withCompletionHandler:v6];
+  [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice paymentWebService:self provisioningDataIncludingDeviceMetadata:metadataCopy withCompletionHandler:completionCopy];
 }
 
-- (unint64_t)_downloadPassAtURL:(id)a3 completion:(id)a4
+- (unint64_t)_downloadPassAtURL:(id)l completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
+  completionCopy = completion;
+  lCopy = l;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v9 = objc_alloc_init(PKPaymentWebServiceRequest);
   [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v9];
-  v10 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v11 = [(PKWebServiceRequest *)v9 _murlRequestWithURL:v7 appleAccountInformation:v10];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v11 = [(PKWebServiceRequest *)v9 _murlRequestWithURL:lCopy appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__PKPaymentWebService__downloadPassAtURL_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
-- (void)_passWithData:(id)a3 response:(id)a4 error:(id)a5 completion:(id)a6
+- (void)_passWithData:(id)data response:(id)response error:(id)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -16096,47 +16096,47 @@ void __47__PKPaymentWebService__downloadPassesWithURLs___block_invoke_2(uint64_t
   v20[1] = 3221225472;
   v20[2] = __63__PKPaymentWebService__passWithData_response_error_completion___block_invoke;
   v20[3] = &unk_1E79DBAC0;
-  v14 = v10;
-  v22 = self;
+  v14 = dataCopy;
+  selfCopy = self;
   v23 = &v24;
   v21 = v14;
-  v15 = [(PKPaymentWebService *)self _resultForResponse:v11 error:v12 successHandler:v20];
+  v15 = [(PKPaymentWebService *)self _resultForResponse:responseCopy error:errorCopy successHandler:v20];
   if (v15 != 1)
   {
-    if (!v12)
+    if (!errorCopy)
     {
       goto LABEL_7;
     }
 
-    v16 = [v12 domain];
-    if ([v16 isEqualToString:*MEMORY[0x1E696A978]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A978]])
     {
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v17 = [v12 domain];
-    if ([v17 isEqualToString:@"PKWebServiceErrorDomain"])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:@"PKWebServiceErrorDomain"])
     {
 
       goto LABEL_8;
     }
 
-    v18 = [v12 domain];
-    v19 = [v18 isEqualToString:@"PKPaymentWebServiceErrorDomain"];
+    domain3 = [errorCopy domain];
+    v19 = [domain3 isEqualToString:@"PKPaymentWebServiceErrorDomain"];
 
     if ((v19 & 1) == 0)
     {
 LABEL_7:
       [(PKPaymentWebService *)self _errorWithResult:v15 data:v14];
-      v12 = v16 = v12;
+      errorCopy = domain = errorCopy;
       goto LABEL_8;
     }
   }
 
 LABEL_9:
-  v13[2](v13, v15, v25[5], v12);
+  completionCopy[2](completionCopy, v15, v25[5], errorCopy);
 
   _Block_object_dispose(&v24, 8);
 }
@@ -16179,47 +16179,47 @@ uint64_t __63__PKPaymentWebService__passWithData_response_error_completion___blo
   return v7;
 }
 
-- (void)_passOwnershipTokenForPaymentCredential:(id)a3 completion:(id)a4
+- (void)_passOwnershipTokenForPaymentCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  credentialCopy = credential;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     goto LABEL_14;
   }
 
-  if ([v6 isRemoteCredential])
+  if ([credentialCopy isRemoteCredential])
   {
-    v8 = [v6 remoteCredential];
+    remoteCredential = [credentialCopy remoteCredential];
   }
 
-  else if ([v6 isAccountCredential])
+  else if ([credentialCopy isAccountCredential])
   {
-    v8 = [v6 accountCredential];
+    remoteCredential = [credentialCopy accountCredential];
   }
 
   else
   {
-    if (![v6 isPeerPaymentCredential])
+    if (![credentialCopy isPeerPaymentCredential])
     {
 LABEL_12:
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_14;
     }
 
-    v8 = [v6 peerPaymentCredential];
+    remoteCredential = [credentialCopy peerPaymentCredential];
   }
 
-  v9 = v8;
-  v10 = [v8 ownershipTokenIdentifier];
+  v9 = remoteCredential;
+  ownershipTokenIdentifier = [remoteCredential ownershipTokenIdentifier];
 
-  if (!v10)
+  if (!ownershipTokenIdentifier)
   {
     goto LABEL_12;
   }
 
-  v11 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceName];
-  v12 = [v11 isEqualToString:@"Apple Watch"];
+  deviceName = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice deviceName];
+  v12 = [deviceName isEqualToString:@"Apple Watch"];
 
   if (v12 && (PKRunningInPassd() & 1) == 0)
   {
@@ -16228,10 +16228,10 @@ LABEL_12:
     v18[1] = 3221225472;
     v18[2] = __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completion___block_invoke;
     v18[3] = &unk_1E79DBC98;
-    v19 = v10;
-    v20 = v7;
+    v19 = ownershipTokenIdentifier;
+    v20 = completionCopy;
     v18[4] = self;
-    v15 = v10;
+    v15 = ownershipTokenIdentifier;
     [v14 passOwnershipTokenWithIdentifier:v15 completion:v18];
   }
 
@@ -16242,8 +16242,8 @@ LABEL_12:
     v16[1] = 3221225472;
     v16[2] = __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completion___block_invoke_3;
     v16[3] = &unk_1E79C50E0;
-    v17 = v7;
-    [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:self passOwnershipTokenWithIdentifier:v10 completion:v16];
+    v17 = completionCopy;
+    [(PKPaymentWebServiceTargetDeviceProtocol *)targetDevice paymentWebService:self passOwnershipTokenWithIdentifier:ownershipTokenIdentifier completion:v16];
   }
 
 LABEL_14:
@@ -16274,43 +16274,43 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
   }
 }
 
-- (void)_storePassOwnershipToken:(id)a3 withIdentifier:(id)a4
+- (void)_storePassOwnershipToken:(id)token withIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && v6)
+  tokenCopy = token;
+  identifierCopy = identifier;
+  if (tokenCopy && identifierCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice paymentWebService:self storePassOwnershipToken:v8 withIdentifier:v6];
+      [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice paymentWebService:self storePassOwnershipToken:tokenCopy withIdentifier:identifierCopy];
     }
 
     else
     {
       v7 = +[PKPaymentService paymentService];
-      [v7 storePassOwnershipToken:v8 withIdentifier:v6];
+      [v7 storePassOwnershipToken:tokenCopy withIdentifier:identifierCopy];
     }
   }
 }
 
-- (unint64_t)_resultForResponse:(id)a3 error:(id)a4 successHandler:(id)a5
+- (unint64_t)_resultForResponse:(id)response error:(id)error successHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  errorCopy = error;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 statusCode];
-    if (v11 == 207 || v11 == 200)
+    statusCode = [responseCopy statusCode];
+    if (statusCode == 207 || statusCode == 200)
     {
-      v12 = v10[2](v10);
+      v12 = handlerCopy[2](handlerCopy);
     }
 
     else
     {
-      v12 = [(PKPaymentWebService *)self _resultForUnexpectedStatusCode:v11];
+      v12 = [(PKPaymentWebService *)self _resultForUnexpectedStatusCode:statusCode];
     }
 
     v14 = v12;
@@ -16318,17 +16318,17 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
 
   else
   {
-    if (v9)
+    if (errorCopy)
     {
       v13 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v8 URL];
-        v17 = [v16 absoluteString];
+        v16 = [responseCopy URL];
+        absoluteString = [v16 absoluteString];
         v18 = 138412546;
-        v19 = v17;
+        v19 = absoluteString;
         v20 = 2112;
-        v21 = v9;
+        v21 = errorCopy;
         _os_log_error_impl(&dword_1AD337000, v13, OS_LOG_TYPE_ERROR, "Error executing request: %@ error: %@", &v18, 0x16u);
       }
     }
@@ -16339,27 +16339,27 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
   return v14;
 }
 
-- (id)_errorWithResult:(unint64_t)a3 response:(id)a4 data:(id)a5
+- (id)_errorWithResult:(unint64_t)result response:(id)response data:(id)data
 {
-  v6 = a4;
+  responseCopy = response;
   v7 = 0;
-  if (a3 <= 3 && a3 != 1)
+  if (result <= 3 && result != 1)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v9 = PKLocalizedPaymentString(&cfstr_UnexpectedErro.isa, 0);
     [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-    if (v6)
+    if (responseCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "statusCode")}];
+        v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(responseCopy, "statusCode")}];
         [v8 setObject:v10 forKeyedSubscript:@"PKErrorHTTPResponseStatusCodeKey"];
       }
     }
 
-    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPaymentWebServiceErrorDomain" code:a3 userInfo:v8];
+    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPaymentWebServiceErrorDomain" code:result userInfo:v8];
   }
 
   return v7;
@@ -16380,15 +16380,15 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
   return paymentDevice;
 }
 
-- (id)_movePassToDownloadCache:(id)a3
+- (id)_movePassToDownloadCache:(id)cache
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [a3 serializedFileWrapper];
-  v5 = [objc_alloc(MEMORY[0x1E696AC38]) initWithSerializedRepresentation:v4];
-  v6 = [(PKPaymentWebService *)self _downloadCacheLocation];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  serializedFileWrapper = [cache serializedFileWrapper];
+  v5 = [objc_alloc(MEMORY[0x1E696AC38]) initWithSerializedRepresentation:serializedFileWrapper];
+  _downloadCacheLocation = [(PKPaymentWebService *)self _downloadCacheLocation];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [_downloadCacheLocation path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
@@ -16397,9 +16397,9 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
 
   else
   {
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v23 = 0;
-    v12 = [v11 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v23];
+    v12 = [defaultManager2 createDirectoryAtURL:_downloadCacheLocation withIntermediateDirectories:1 attributes:0 error:&v23];
     v10 = v23;
 
     if ((v12 & 1) == 0 && v10)
@@ -16408,7 +16408,7 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = v6;
+        v25 = _downloadCacheLocation;
         _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Could not create download cache at %@", buf, 0xCu);
       }
     }
@@ -16416,7 +16416,7 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
 
   v14 = CFUUIDCreate(0);
   v15 = CFUUIDCreateString(*MEMORY[0x1E695E480], v14);
-  v16 = [v6 URLByAppendingPathComponent:v15];
+  v16 = [_downloadCacheLocation URLByAppendingPathComponent:v15];
   v17 = [v16 URLByAppendingPathExtension:@"pkpass"];
 
   CFRelease(v15);
@@ -16434,8 +16434,8 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
   }
 
   v20 = v19;
-  v21 = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
-  [v20 updateDevicePaymentApplicationsWithSecureElementIdentifiers:v21];
+  secureElementIdentifiers = [(PKPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice secureElementIdentifiers];
+  [v20 updateDevicePaymentApplicationsWithSecureElementIdentifiers:secureElementIdentifiers];
 
   return v20;
 }
@@ -16454,10 +16454,10 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
 - (void)_cleanupPassDownloadCache
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PKPaymentWebService *)self _downloadCacheLocation];
-  v5 = [v4 path];
-  v6 = [v3 enumeratorAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _downloadCacheLocation = [(PKPaymentWebService *)self _downloadCacheLocation];
+  path = [_downloadCacheLocation path];
+  v6 = [defaultManager enumeratorAtPath:path];
 
   v16 = 0u;
   v17 = 0u;
@@ -16481,7 +16481,7 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
 
         v12 = *(*(&v14 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        [v3 removeItemAtPath:v12 error:{0, v14}];
+        [defaultManager removeItemAtPath:v12 error:{0, v14}];
         objc_autoreleasePoolPop(v13);
         ++v11;
       }
@@ -16496,22 +16496,22 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
 
 - (void)_archiveContext
 {
-  v3 = [(PKPaymentWebService *)self context];
-  if (v3)
+  context = [(PKPaymentWebService *)self context];
+  if (context)
   {
-    v5 = v3;
-    v4 = [(PKPaymentWebService *)self archiver];
-    [v4 archiveContext:v5];
+    v5 = context;
+    archiver = [(PKPaymentWebService *)self archiver];
+    [archiver archiveContext:v5];
 
-    v3 = v5;
+    context = v5;
   }
 }
 
 - (void)_archiveBackgroundContext
 {
-  v4 = [(PKPaymentWebService *)self archiver];
-  v3 = [(PKPaymentWebService *)self backgroundContext];
-  [v4 archiveBackgroundContext:v3];
+  archiver = [(PKPaymentWebService *)self archiver];
+  backgroundContext = [(PKPaymentWebService *)self backgroundContext];
+  [archiver archiveBackgroundContext:backgroundContext];
 }
 
 - (PKPaymentWebServiceBackgroundDelegate)backgroundDelegate
@@ -16521,21 +16521,21 @@ void __74__PKPaymentWebService__passOwnershipTokenForPaymentCredential_completio
   return WeakRetained;
 }
 
-- (unint64_t)_performAccountApplePayTrustProtocolRequest:(id)a3 originalRequest:(id)a4 taskID:(unint64_t)a5 completion:(id)a6
+- (unint64_t)_performAccountApplePayTrustProtocolRequest:(id)request originalRequest:(id)originalRequest taskID:(unint64_t)d completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  originalRequestCopy = originalRequest;
+  completionCopy = completion;
+  requestCopy = request;
   v13 = objc_opt_class();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __112__PKPaymentWebService_PKAccount___performAccountApplePayTrustProtocolRequest_originalRequest_taskID_completion___block_invoke;
   v18[3] = &unk_1E79DDE10;
-  v19 = v10;
-  v20 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = [(PKPaymentWebService *)self _performAccountRequest:v12 taskID:a5 responseClass:v13 completion:v18];
+  v19 = originalRequestCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = originalRequestCopy;
+  v16 = [(PKPaymentWebService *)self _performAccountRequest:requestCopy taskID:d responseClass:v13 completion:v18];
 
   return v16;
 }
@@ -16557,14 +16557,14 @@ void __112__PKPaymentWebService_PKAccount___performAccountApplePayTrustProtocolR
   }
 }
 
-- (unint64_t)_performOptionalAccountApplePayTrustProtocolRequest:(id)a3 originalRequest:(id)a4 taskID:(unint64_t)a5 completion:(id)a6
+- (unint64_t)_performOptionalAccountApplePayTrustProtocolRequest:(id)request originalRequest:(id)originalRequest taskID:(unint64_t)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!a5)
+  requestCopy = request;
+  originalRequestCopy = originalRequest;
+  completionCopy = completion;
+  if (!d)
   {
-    a5 = [(PKWebService *)self nextTaskID];
+    d = [(PKWebService *)self nextTaskID];
   }
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -16572,13 +16572,13 @@ void __112__PKPaymentWebService_PKAccount___performAccountApplePayTrustProtocolR
   v16[2] = __120__PKPaymentWebService_PKAccount___performOptionalAccountApplePayTrustProtocolRequest_originalRequest_taskID_completion___block_invoke;
   v16[3] = &unk_1E79D1CC8;
   v16[4] = self;
-  v17 = v11;
-  v18 = v12;
-  v13 = v12;
-  v14 = v11;
-  [(PKWebService *)self performRequest:v10 taskIdentifier:a5 completionHandler:v16];
+  v17 = originalRequestCopy;
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = originalRequestCopy;
+  [(PKWebService *)self performRequest:requestCopy taskIdentifier:d completionHandler:v16];
 
-  return a5;
+  return d;
 }
 
 void __120__PKPaymentWebService_PKAccount___performOptionalAccountApplePayTrustProtocolRequest_originalRequest_taskID_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -16664,15 +16664,15 @@ BOOL __120__PKPaymentWebService_PKAccount___performOptionalAccountApplePayTrustP
   return *(*(*(a1 + 48) + 8) + 40) || *(*(*(a1 + 56) + 8) + 40) != 0;
 }
 
-- (unint64_t)_performAccountRequest:(id)a3 account:(id)a4 request:(id)a5 taskID:(unint64_t)a6 responseClass:(Class)a7 completion:(id)a8
+- (unint64_t)_performAccountRequest:(id)request account:(id)account request:(id)a5 taskID:(unint64_t)d responseClass:(Class)class completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
+  requestCopy = request;
+  accountCopy = account;
   v16 = a5;
-  v17 = a8;
-  if (!a6)
+  completionCopy = completion;
+  if (!d)
   {
-    a6 = [(PKWebService *)self nextTaskID];
+    d = [(PKWebService *)self nextTaskID];
   }
 
   v22[0] = MEMORY[0x1E69E9820];
@@ -16680,16 +16680,16 @@ BOOL __120__PKPaymentWebService_PKAccount___performOptionalAccountApplePayTrustP
   v22[2] = __105__PKPaymentWebService_PKAccount___performAccountRequest_account_request_taskID_responseClass_completion___block_invoke;
   v22[3] = &unk_1E79DDE88;
   v22[4] = self;
-  v23 = v15;
-  v25 = v17;
-  v26 = a7;
+  v23 = accountCopy;
+  v25 = completionCopy;
+  classCopy = class;
   v24 = v16;
-  v18 = v17;
+  v18 = completionCopy;
   v19 = v16;
-  v20 = v15;
-  [(PKWebService *)self performRequest:v14 taskIdentifier:a6 completionHandler:v22];
+  v20 = accountCopy;
+  [(PKWebService *)self performRequest:requestCopy taskIdentifier:d completionHandler:v22];
 
-  return a6;
+  return d;
 }
 
 void __105__PKPaymentWebService_PKAccount___performAccountRequest_account_request_taskID_responseClass_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -16753,76 +16753,76 @@ BOOL __105__PKPaymentWebService_PKAccount___performAccountRequest_account_reques
   return *(*(a1[7] + 8) + 40) != 0;
 }
 
-- (unint64_t)_performAccountRequest:(id)a3 responseClass:(Class)a4 completion:(id)a5
+- (unint64_t)_performAccountRequest:(id)request responseClass:(Class)class completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 taskID:[(PKWebService *)self nextTaskID] responseClass:a4 completion:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:requestCopy taskID:[(PKWebService *)self nextTaskID] responseClass:class completion:completionCopy];
 
   return v10;
 }
 
-- (unint64_t)_performAccountRequest:(id)a3 account:(id)a4 responseClass:(Class)a5 completion:(id)a6
+- (unint64_t)_performAccountRequest:(id)request account:(id)account responseClass:(Class)class completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
+  accountCopy = account;
+  requestCopy = request;
+  v13 = [(PKPaymentWebService *)self _performAccountRequest:requestCopy account:accountCopy request:0 taskID:[(PKWebService *)self nextTaskID] responseClass:class completion:completionCopy];
+
+  return v13;
+}
+
+- (unint64_t)_performAccountRequest:(id)request request:(id)a4 responseClass:(Class)class completion:(id)completion
+{
+  completionCopy = completion;
   v11 = a4;
-  v12 = a3;
-  v13 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:v11 request:0 taskID:[(PKWebService *)self nextTaskID] responseClass:a5 completion:v10];
+  requestCopy = request;
+  v13 = [(PKPaymentWebService *)self _performAccountRequest:requestCopy account:0 request:v11 taskID:[(PKWebService *)self nextTaskID] responseClass:class completion:completionCopy];
 
   return v13;
 }
 
-- (unint64_t)_performAccountRequest:(id)a3 request:(id)a4 responseClass:(Class)a5 completion:(id)a6
+- (unint64_t)generateTopUpTokenWithRequest:(id)request forAccount:(id)account completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:0 request:v11 taskID:[(PKWebService *)self nextTaskID] responseClass:a5 completion:v10];
+  completionCopy = completion;
+  accountCopy = account;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v12 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
+  v13 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:accountCopy responseClass:objc_opt_class() completion:completionCopy];
   return v13;
 }
 
-- (unint64_t)generateTopUpTokenWithRequest:(id)a3 forAccount:(id)a4 completion:(id)a5
+- (unint64_t)resolveStorefrontCountryMismatchWithRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  v11 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v12 = [v10 _urlRequestWithAppleAccountInformation:v11];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v13 = [(PKPaymentWebService *)self _performAccountRequest:v12 account:v9 responseClass:objc_opt_class() completion:v8];
-  return v13;
-}
-
-- (unint64_t)resolveStorefrontCountryMismatchWithRequest:(id)a3 completion:(id)a4
-{
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
-
-  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performAccountRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)_performApplyRequest:(id)a3 responseClass:(Class)a4 completion:(id)a5
+- (unint64_t)_performApplyRequest:(id)request responseClass:(Class)class completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PKWebService *)self nextTaskID];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__PKPaymentWebService_PKApplyWebService___performApplyRequest_responseClass_completion___block_invoke;
   v13[3] = &unk_1E79C90C8;
-  v14 = v8;
-  v15 = a4;
+  v14 = completionCopy;
+  classCopy = class;
   v13[4] = self;
-  v11 = v8;
-  [(PKWebService *)self performRequest:v9 taskIdentifier:v10 completionHandler:v13];
+  v11 = completionCopy;
+  [(PKWebService *)self performRequest:requestCopy taskIdentifier:nextTaskID completionHandler:v13];
 
-  return v10;
+  return nextTaskID;
 }
 
 void __88__PKPaymentWebService_PKApplyWebService___performApplyRequest_responseClass_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -16882,22 +16882,22 @@ BOOL __88__PKPaymentWebService_PKApplyWebService___performApplyRequest_responseC
   return *(*(*(a1 + 48) + 8) + 40) != 0;
 }
 
-- (unint64_t)applicationsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)applicationsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [v7 applyServiceURL];
-  v9 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v10 = [v7 _urlRequestWithServiceURL:v8 appleAccountInformation:v9];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  applyServiceURL = [requestCopy applyServiceURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v10 = [requestCopy _urlRequestWithServiceURL:applyServiceURL appleAccountInformation:_appleAccountInformation];
 
   v11 = objc_opt_class();
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__PKPaymentWebService_PKApplyWebService__applicationsWithRequest_completion___block_invoke;
   v15[3] = &unk_1E79E2730;
-  v16 = v6;
-  v12 = v6;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = [(PKPaymentWebService *)self _performApplyRequest:v10 responseClass:v11 completion:v15];
 
   return v13;
@@ -16914,152 +16914,152 @@ uint64_t __77__PKPaymentWebService_PKApplyWebService__applicationsWithRequest_co
   return result;
 }
 
-- (unint64_t)deleteApplicationWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)deleteApplicationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)createWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)createWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [v7 applyServiceURL];
-  v9 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v10 = [v7 _urlRequestWithServiceURL:v8 appleAccountInformation:v9];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  applyServiceURL = [requestCopy applyServiceURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v10 = [requestCopy _urlRequestWithServiceURL:applyServiceURL appleAccountInformation:_appleAccountInformation];
 
-  v11 = [(PKPaymentWebService *)self _performApplyRequest:v10 responseClass:objc_opt_class() completion:v6];
+  v11 = [(PKPaymentWebService *)self _performApplyRequest:v10 responseClass:objc_opt_class() completion:completionCopy];
   return v11;
 }
 
-- (unint64_t)applyWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)applyWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)submitDocumentsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)submitDocumentsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)submitVerificationWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)submitVerificationWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)resendVerificationRequest:(id)a3 completion:(id)a4
+- (unint64_t)resendVerificationRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)termsDataWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)termsDataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v6];
-  v8 = [v6 baseURL];
+  requestCopy = request;
+  completionCopy = completion;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  baseURL = [requestCopy baseURL];
 
-  if (!v8)
+  if (!baseURL)
   {
-    v9 = [(PKPaymentWebService *)self context];
-    v10 = [v9 primaryRegion];
-    v11 = [v10 applyServiceURL];
-    [v6 setBaseURL:v11];
+    context = [(PKPaymentWebService *)self context];
+    primaryRegion = [context primaryRegion];
+    applyServiceURL = [primaryRegion applyServiceURL];
+    [requestCopy setBaseURL:applyServiceURL];
   }
 
-  v12 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v13 = [v6 _urlRequestWithAppleAccountInformation:v12];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v13 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v14 = [(PKPaymentWebService *)self _performApplyRequest:v13 responseClass:objc_opt_class() completion:v7];
+  v14 = [(PKPaymentWebService *)self _performApplyRequest:v13 responseClass:objc_opt_class() completion:completionCopy];
   return v14;
 }
 
-- (unint64_t)featureTermsDataWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)featureTermsDataWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 primaryRegion];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v10 = [v9 applyServiceURL];
-  v11 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v12 = [v7 _urlRequestWithServiceURL:v10 appleAccountInformation:v11];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(PKPaymentWebService *)self context];
+  primaryRegion = [context primaryRegion];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  applyServiceURL = [primaryRegion applyServiceURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v12 = [requestCopy _urlRequestWithServiceURL:applyServiceURL appleAccountInformation:_appleAccountInformation];
 
-  v13 = [(PKPaymentWebService *)self _performApplyRequest:v12 responseClass:objc_opt_class() completion:v6];
+  v13 = [(PKPaymentWebService *)self _performApplyRequest:v12 responseClass:objc_opt_class() completion:completionCopy];
   return v13;
 }
 
-- (unint64_t)shownTermsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)shownTermsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)submitTermsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)submitTermsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v9 = [v7 _urlRequestWithAppleAccountInformation:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v9 = [requestCopy _urlRequestWithAppleAccountInformation:_appleAccountInformation];
 
-  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:v6];
+  v10 = [(PKPaymentWebService *)self _performApplyRequest:v9 responseClass:objc_opt_class() completion:completionCopy];
   return v10;
 }
 
-- (unint64_t)augmentedProductWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)augmentedProductWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentWebService *)self context];
-  v9 = [v8 primaryRegion];
-  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v10 = [v9 applyServiceURL];
-  v11 = [(PKPaymentWebService *)self _appleAccountInformation];
-  v12 = [v7 _urlRequestWithServiceURL:v10 appleAccountInformation:v11];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(PKPaymentWebService *)self context];
+  primaryRegion = [context primaryRegion];
+  [(PKPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  applyServiceURL = [primaryRegion applyServiceURL];
+  _appleAccountInformation = [(PKPaymentWebService *)self _appleAccountInformation];
+  v12 = [requestCopy _urlRequestWithServiceURL:applyServiceURL appleAccountInformation:_appleAccountInformation];
 
-  v13 = [(PKPaymentWebService *)self _performApplyRequest:v12 responseClass:objc_opt_class() completion:v6];
+  v13 = [(PKPaymentWebService *)self _performApplyRequest:v12 responseClass:objc_opt_class() completion:completionCopy];
   return v13;
 }
 

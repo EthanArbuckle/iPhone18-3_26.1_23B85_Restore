@@ -1,7 +1,7 @@
 @interface SHDataStreamOutput
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)processData:(id)a3 error:(id *)a4;
-- (SHDataStreamOutput)initWithDestination:(id)a3;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)processData:(id)data error:(id *)error;
+- (SHDataStreamOutput)initWithDestination:(id)destination;
 - (void)dealloc;
 @end
 
@@ -15,15 +15,15 @@
   [(SHDataStreamOutput *)&v3 dealloc];
 }
 
-- (SHDataStreamOutput)initWithDestination:(id)a3
+- (SHDataStreamOutput)initWithDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v9.receiver = self;
   v9.super_class = SHDataStreamOutput;
   v5 = [(SHDataStreamOutput *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB78] outputStreamWithURL:v4 append:0];
+    v6 = [MEMORY[0x277CBEB78] outputStreamWithURL:destinationCopy append:0];
     outputStream = v5->_outputStream;
     v5->_outputStream = v6;
 
@@ -33,14 +33,14 @@
   return v5;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   [(NSOutputStream *)self->_outputStream close];
-  v5 = [(SHDataStreamOutput *)self next];
-  if (v5)
+  next = [(SHDataStreamOutput *)self next];
+  if (next)
   {
-    v6 = [(SHDataStreamOutput *)self next];
-    v7 = [v6 closeWithError:a3];
+    next2 = [(SHDataStreamOutput *)self next];
+    v7 = [next2 closeWithError:error];
   }
 
   else
@@ -51,19 +51,19 @@
   return v7;
 }
 
-- (BOOL)processData:(id)a3 error:(id *)a4
+- (BOOL)processData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SHDataStreamOutput *)self outputStream];
-  v8 = [v6 bytes];
-  v9 = [v6 length];
+  dataCopy = data;
+  outputStream = [(SHDataStreamOutput *)self outputStream];
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
 
-  v10 = [v7 write:v8 maxLength:v9];
+  v10 = [outputStream write:bytes maxLength:v9];
   if (v10 <= 0)
   {
-    v11 = [(SHDataStreamOutput *)self outputStream];
-    v12 = [v11 streamError];
-    [SHCoreError annotateError:a4 withError:v12];
+    outputStream2 = [(SHDataStreamOutput *)self outputStream];
+    streamError = [outputStream2 streamError];
+    [SHCoreError annotateError:error withError:streamError];
   }
 
   return v10 > 0;

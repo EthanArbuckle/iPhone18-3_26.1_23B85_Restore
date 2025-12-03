@@ -1,13 +1,13 @@
 @interface CEMSystemSiriDeclaration
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4;
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error;
 @end
 
 @implementation CEMSystemSiriDeclaration
 
-- (id)dmf_installRequestWithContext:(id)a3 error:(id *)a4
+- (id)dmf_installRequestWithContext:(id)context error:(id *)error
 {
-  v6 = [a3 assetProvidersByPayloadIdentifier];
-  v7 = [(CEMSystemSiriDeclaration *)self dmf_installSynthesizedProfileRequestWithAssetProviders:v6 error:a4];
+  assetProvidersByPayloadIdentifier = [context assetProvidersByPayloadIdentifier];
+  v7 = [(CEMSystemSiriDeclaration *)self dmf_installSynthesizedProfileRequestWithAssetProviders:assetProvidersByPayloadIdentifier error:error];
 
   return v7;
 }

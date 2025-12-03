@@ -2,33 +2,33 @@
 + (AMSBagKeySet)bagKeySet;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_overrideOrClientIdentifier:(id)a3;
++ (id)_overrideOrClientIdentifier:(id)identifier;
 + (id)createBagForSubProfile;
-- (AMSMediaTokenService)initWithClientIdentifier:(id)a3 keychainAccessGroup:(id)a4 bag:(id)a5;
-- (AMSMediaTokenService)initWithClientIdentifier:(id)a3 tokenStore:(id)a4 patBasedTokenStore:(id)a5 bag:(id)a6 fetcherClass:(Class)a7;
+- (AMSMediaTokenService)initWithClientIdentifier:(id)identifier keychainAccessGroup:(id)group bag:(id)bag;
+- (AMSMediaTokenService)initWithClientIdentifier:(id)identifier tokenStore:(id)store patBasedTokenStore:(id)tokenStore bag:(id)bag fetcherClass:(Class)class;
 - (AMSURLSession)session;
-- (BOOL)_shouldRefreshMediaToken:(id)a3 bagProperties:(id)a4;
-- (BOOL)_shouldReturnMediaToken:(id)a3;
-- (BOOL)usePATBasedToken:(id)a3;
+- (BOOL)_shouldRefreshMediaToken:(id)token bagProperties:(id)properties;
+- (BOOL)_shouldReturnMediaToken:(id)token;
+- (BOOL)usePATBasedToken:(id)token;
 - (NSString)keychainAccessGroup;
 - (id)_fetchBagProperties;
-- (id)_fetchToken:(id)a3 forceRefresh:(BOOL)a4;
-- (id)_fetchTokenPromise:(id)a3 store:(id)a4;
-- (id)_tokenRequestPromiseWithPrivateAccessToken:(id)a3;
-- (id)cachedMediaToken:(id)a3;
-- (id)fetchMediaToken:(BOOL)a3;
-- (id)getCachedMediaToken:(BOOL)a3;
-- (id)getPrivateAccessToken:(id)a3;
+- (id)_fetchToken:(id)token forceRefresh:(BOOL)refresh;
+- (id)_fetchTokenPromise:(id)promise store:(id)store;
+- (id)_tokenRequestPromiseWithPrivateAccessToken:(id)token;
+- (id)cachedMediaToken:(id)token;
+- (id)fetchMediaToken:(BOOL)token;
+- (id)getCachedMediaToken:(BOOL)token;
+- (id)getPrivateAccessToken:(id)token;
 - (id)getPrivateAccessTokenChallenge;
-- (void)_fetchPatBasedToken:(id)a3 cachedMediaToken:(id)a4 finishBlock:(id)a5;
-- (void)_refreshMediaTokenIfNeeded:(id)a3 store:(id)a4 bagProperties:(id)a5;
+- (void)_fetchPatBasedToken:(id)token cachedMediaToken:(id)mediaToken finishBlock:(id)block;
+- (void)_refreshMediaTokenIfNeeded:(id)needed store:(id)store bagProperties:(id)properties;
 - (void)invalidateMediaToken;
-- (void)invalidateMediaToken:(id)a3;
+- (void)invalidateMediaToken:(id)token;
 - (void)invalidatePATMediaToken;
-- (void)setCachedMediaToken:(id)a3 patBasedToken:(BOOL)a4;
-- (void)setCachedMediaToken:(id)a3 store:(id)a4;
-- (void)setKeychainAccessGroup:(id)a3;
-- (void)setPrivateAccessTokenChallenge:(id)a3;
+- (void)setCachedMediaToken:(id)token patBasedToken:(BOOL)basedToken;
+- (void)setCachedMediaToken:(id)token store:(id)store;
+- (void)setKeychainAccessGroup:(id)group;
+- (void)setPrivateAccessTokenChallenge:(id)challenge;
 @end
 
 @implementation AMSMediaTokenService
@@ -45,28 +45,28 @@
   v27[6] = *MEMORY[0x1E69E9840];
   v25 = [(AMSMediaTokenService *)self bag];
   v24 = [v25 doubleForKey:@"token-service-backoff-interval"];
-  v23 = [v24 valuePromise];
-  v27[0] = v23;
+  valuePromise = [v24 valuePromise];
+  v27[0] = valuePromise;
   v22 = [(AMSMediaTokenService *)self bag];
   v21 = [v22 doubleForKey:@"token-service-backoff-max"];
-  v20 = [v21 valuePromise];
-  v27[1] = v20;
+  valuePromise2 = [v21 valuePromise];
+  v27[1] = valuePromise2;
   v19 = [(AMSMediaTokenService *)self bag];
   v18 = [v19 BOOLForKey:@"token-service-enabled"];
-  v16 = [v18 valuePromise];
-  v27[2] = v16;
+  valuePromise3 = [v18 valuePromise];
+  v27[2] = valuePromise3;
   v15 = [(AMSMediaTokenService *)self bag];
   v14 = [v15 doubleForKey:@"token-service-refresh-percentage"];
-  v3 = [v14 valuePromise];
-  v27[3] = v3;
+  valuePromise4 = [v14 valuePromise];
+  v27[3] = valuePromise4;
   v4 = [(AMSMediaTokenService *)self bag];
   v5 = [v4 doubleForKey:@"token-service-refresh-time"];
-  v6 = [v5 valuePromise];
-  v27[4] = v6;
+  valuePromise5 = [v5 valuePromise];
+  v27[4] = valuePromise5;
   v7 = [(AMSMediaTokenService *)self bag];
   v8 = [v7 arrayForKey:@"anonymous-rate-limiting-enabled-client-ids"];
-  v9 = [v8 valuePromise];
-  v10 = [v9 catchWithBlock:&__block_literal_global_118];
+  valuePromise6 = [v8 valuePromise];
+  v10 = [valuePromise6 catchWithBlock:&__block_literal_global_118];
   v27[5] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:6];
   v17 = [AMSPromise promiseWithAll:v11];
@@ -110,42 +110,42 @@ id __43__AMSMediaTokenService__fetchBagProperties__block_invoke_2(uint64_t a1, v
   return v21;
 }
 
-- (AMSMediaTokenService)initWithClientIdentifier:(id)a3 keychainAccessGroup:(id)a4 bag:(id)a5
+- (AMSMediaTokenService)initWithClientIdentifier:(id)identifier keychainAccessGroup:(id)group bag:(id)bag
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[AMSMediaTokenServiceStore alloc] initWithClientIdentifier:v10 keychainAccessGroup:v9 patBasedToken:0];
+  bagCopy = bag;
+  groupCopy = group;
+  identifierCopy = identifier;
+  v11 = [[AMSMediaTokenServiceStore alloc] initWithClientIdentifier:identifierCopy keychainAccessGroup:groupCopy patBasedToken:0];
   v12 = [AMSMediaTokenServiceStore alloc];
-  v13 = [@"PrivateAccessToken-" stringByAppendingString:v10];
-  v14 = [(AMSMediaTokenServiceStore *)v12 initWithClientIdentifier:v13 keychainAccessGroup:v9 patBasedToken:1];
+  v13 = [@"PrivateAccessToken-" stringByAppendingString:identifierCopy];
+  v14 = [(AMSMediaTokenServiceStore *)v12 initWithClientIdentifier:v13 keychainAccessGroup:groupCopy patBasedToken:1];
 
-  v15 = [(AMSMediaTokenService *)self initWithClientIdentifier:v10 tokenStore:v11 patBasedTokenStore:v14 bag:v8 fetcherClass:objc_opt_class()];
+  v15 = [(AMSMediaTokenService *)self initWithClientIdentifier:identifierCopy tokenStore:v11 patBasedTokenStore:v14 bag:bagCopy fetcherClass:objc_opt_class()];
   return v15;
 }
 
-- (AMSMediaTokenService)initWithClientIdentifier:(id)a3 tokenStore:(id)a4 patBasedTokenStore:(id)a5 bag:(id)a6 fetcherClass:(Class)a7
+- (AMSMediaTokenService)initWithClientIdentifier:(id)identifier tokenStore:(id)store patBasedTokenStore:(id)tokenStore bag:(id)bag fetcherClass:(Class)class
 {
   v44 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  storeCopy = store;
+  tokenStoreCopy = tokenStore;
+  bagCopy = bag;
   v39.receiver = self;
   v39.super_class = AMSMediaTokenService;
   v16 = [(AMSMediaTokenService *)&v39 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_bag, a6);
+    objc_storeStrong(&v16->_bag, bag);
     if (os_variant_has_internal_content())
     {
-      v18 = [objc_opt_class() _overrideOrClientIdentifier:v12];
+      v18 = [objc_opt_class() _overrideOrClientIdentifier:identifierCopy];
     }
 
     else
     {
-      v18 = v12;
+      v18 = identifierCopy;
     }
 
     clientIdentifier = v17->_clientIdentifier;
@@ -160,62 +160,62 @@ id __43__AMSMediaTokenService__fetchBagProperties__block_invoke_2(uint64_t a1, v
     v17->_tokenFetchPromiseSerialQueue = v22;
 
     v17->_accessLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v17->_tokenStore, a4);
-    objc_storeStrong(&v17->_patBasedtokenStore, a5);
-    objc_storeStrong(&v17->_privateAccessTokenFetcherClass, a7);
+    objc_storeStrong(&v17->_tokenStore, store);
+    objc_storeStrong(&v17->_patBasedtokenStore, tokenStore);
+    objc_storeStrong(&v17->_privateAccessTokenFetcherClass, class);
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v25 = dispatch_queue_create("com.apple.AppleMediaServices.AMSMediaTokenService", v24);
     patTokenFetchQueue = v17->_patTokenFetchQueue;
     v17->_patTokenFetchQueue = v25;
 
-    if (!v15)
+    if (!bagCopy)
     {
       v27 = +[AMSUnitTests isRunningUnitTests];
       v28 = +[AMSLogConfig sharedMediaConfig];
-      v29 = v28;
+      defaultCenter = v28;
       if (v27)
       {
         if (!v28)
         {
-          v29 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v30 = [v29 OSLogObject];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v31 = objc_opt_class();
           v38 = v31;
-          v32 = [(AMSMediaTokenService *)v17 clientIdentifier];
+          clientIdentifier = [(AMSMediaTokenService *)v17 clientIdentifier];
           *buf = 138543618;
           v41 = v31;
           v42 = 2114;
-          v43 = v32;
-          _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Bag is nil when initializing the media token service", buf, 0x16u);
+          v43 = clientIdentifier;
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Bag is nil when initializing the media token service", buf, 0x16u);
         }
 
-        v29 = [MEMORY[0x1E696AD88] defaultCenter];
-        v33 = +[AMSLogConfig sharedMediaConfig];
-        [v29 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v33 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedMediaConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
       }
 
       else
       {
         if (!v28)
         {
-          v29 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v33 = [v29 OSLogObject];
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
+        oSLogObject2 = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v34 = objc_opt_class();
           v35 = v34;
-          v36 = [(AMSMediaTokenService *)v17 clientIdentifier];
+          clientIdentifier2 = [(AMSMediaTokenService *)v17 clientIdentifier];
           *buf = 138543618;
           v41 = v34;
           v42 = 2114;
-          v43 = v36;
-          _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] Bag is nil when initializing the media token service", buf, 0x16u);
+          v43 = clientIdentifier2;
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] Bag is nil when initializing the media token service", buf, 0x16u);
         }
       }
     }
@@ -224,10 +224,10 @@ id __43__AMSMediaTokenService__fetchBagProperties__block_invoke_2(uint64_t a1, v
   return v17;
 }
 
-- (id)cachedMediaToken:(id)a3
+- (id)cachedMediaToken:(id)token
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   if (os_variant_has_internal_content() && (+[AMSDefaults mediaTokenOverride], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = +[AMSLogConfig sharedMediaConfig];
@@ -236,44 +236,44 @@ id __43__AMSMediaTokenService__fetchBagProperties__block_invoke_2(uint64_t a1, v
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [(AMSMediaTokenService *)self clientIdentifier];
+      clientIdentifier = [(AMSMediaTokenService *)self clientIdentifier];
       v11 = +[AMSDefaults mediaTokenOverride];
       v19 = 138543874;
       v20 = v8;
       v21 = 2114;
-      v22 = v10;
+      v22 = clientIdentifier;
       v23 = 2114;
       v24 = v11;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding media token. Identifier: %{public}@", &v19, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding media token. Identifier: %{public}@", &v19, 0x20u);
     }
 
-    v12 = [MEMORY[0x1E695DF00] distantFuture];
-    [v12 timeIntervalSinceNow];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [distantFuture timeIntervalSinceNow];
     v14 = v13;
     v15 = [AMSMediaToken alloc];
     v16 = +[AMSDefaults mediaTokenOverride];
-    v17 = [(AMSMediaToken *)v15 initWithString:v16 expirationDate:v12 lifetime:v14];
+    retrieveToken = [(AMSMediaToken *)v15 initWithString:v16 expirationDate:distantFuture lifetime:v14];
   }
 
   else
   {
-    v17 = [v4 retrieveToken];
+    retrieveToken = [tokenCopy retrieveToken];
   }
 
-  return v17;
+  return retrieveToken;
 }
 
 - (NSString)keychainAccessGroup
 {
-  v2 = [(AMSMediaTokenService *)self tokenStore];
-  v3 = [v2 keychainAccessGroup];
+  tokenStore = [(AMSMediaTokenService *)self tokenStore];
+  keychainAccessGroup = [tokenStore keychainAccessGroup];
 
-  return v3;
+  return keychainAccessGroup;
 }
 
 - (AMSURLSession)session
@@ -293,23 +293,23 @@ id __43__AMSMediaTokenService__fetchBagProperties__block_invoke_2(uint64_t a1, v
   return v4;
 }
 
-- (void)setCachedMediaToken:(id)a3 store:(id)a4
+- (void)setCachedMediaToken:(id)token store:(id)store
 {
-  if (a3)
+  if (token)
   {
-    [a4 storeToken:?];
+    [store storeToken:?];
   }
 
   else
   {
-    [a4 deleteToken];
+    [store deleteToken];
   }
 }
 
-- (void)setCachedMediaToken:(id)a3 patBasedToken:(BOOL)a4
+- (void)setCachedMediaToken:(id)token patBasedToken:(BOOL)basedToken
 {
-  v6 = a3;
-  if (a4)
+  tokenCopy = token;
+  if (basedToken)
   {
     [(AMSMediaTokenService *)self patBasedtokenStore];
   }
@@ -319,12 +319,12 @@ id __43__AMSMediaTokenService__fetchBagProperties__block_invoke_2(uint64_t a1, v
     [(AMSMediaTokenService *)self tokenStore];
   }
   v7 = ;
-  [(AMSMediaTokenService *)self setCachedMediaToken:v6 store:v7];
+  [(AMSMediaTokenService *)self setCachedMediaToken:tokenCopy store:v7];
 }
 
-- (id)getCachedMediaToken:(BOOL)a3
+- (id)getCachedMediaToken:(BOOL)token
 {
-  if (a3)
+  if (token)
   {
     [(AMSMediaTokenService *)self patBasedtokenStore];
   }
@@ -339,29 +339,29 @@ id __43__AMSMediaTokenService__fetchBagProperties__block_invoke_2(uint64_t a1, v
   return v5;
 }
 
-- (void)setKeychainAccessGroup:(id)a3
+- (void)setKeychainAccessGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(AMSMediaTokenService *)self tokenStore];
-  [v5 setKeychainAccessGroup:v4];
+  groupCopy = group;
+  tokenStore = [(AMSMediaTokenService *)self tokenStore];
+  [tokenStore setKeychainAccessGroup:groupCopy];
 
-  v6 = [(AMSMediaTokenService *)self patBasedtokenStore];
-  [v6 setKeychainAccessGroup:v4];
+  patBasedtokenStore = [(AMSMediaTokenService *)self patBasedtokenStore];
+  [patBasedtokenStore setKeychainAccessGroup:groupCopy];
 }
 
-- (id)fetchMediaToken:(BOOL)a3
+- (id)fetchMediaToken:(BOOL)token
 {
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSMediaTokenService *)self _fetchBagProperties];
+  _fetchBagProperties = [(AMSMediaTokenService *)self _fetchBagProperties];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__AMSMediaTokenService_fetchMediaToken___block_invoke;
   v10[3] = &unk_1E73B8FA8;
   v7 = v5;
   v11 = v7;
-  v12 = self;
-  v13 = a3;
-  [v6 addFinishBlock:v10];
+  selfCopy = self;
+  tokenCopy = token;
+  [_fetchBagProperties addFinishBlock:v10];
 
   v8 = v7;
   return v7;
@@ -422,11 +422,11 @@ void __40__AMSMediaTokenService_fetchMediaToken___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)setPrivateAccessTokenChallenge:(id)a3
+- (void)setPrivateAccessTokenChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [v4 copy];
+  v5 = [challengeCopy copy];
 
   privateAcessTokenChallenge = self->_privateAcessTokenChallenge;
   self->_privateAcessTokenChallenge = v5;
@@ -445,23 +445,23 @@ void __40__AMSMediaTokenService_fetchMediaToken___block_invoke(uint64_t a1, void
 
 - (void)invalidateMediaToken
 {
-  v3 = [(AMSMediaTokenService *)self tokenStore];
-  [(AMSMediaTokenService *)self invalidateMediaToken:v3];
+  tokenStore = [(AMSMediaTokenService *)self tokenStore];
+  [(AMSMediaTokenService *)self invalidateMediaToken:tokenStore];
 }
 
 - (void)invalidatePATMediaToken
 {
-  v3 = [(AMSMediaTokenService *)self patBasedtokenStore];
-  [(AMSMediaTokenService *)self invalidateMediaToken:v3];
+  patBasedtokenStore = [(AMSMediaTokenService *)self patBasedtokenStore];
+  [(AMSMediaTokenService *)self invalidateMediaToken:patBasedtokenStore];
 }
 
-- (void)invalidateMediaToken:(id)a3
+- (void)invalidateMediaToken:(id)token
 {
-  v4 = a3;
-  v5 = [(AMSMediaTokenService *)self cachedMediaToken:v4];
-  v6 = [v5 invalidCopy];
+  tokenCopy = token;
+  v5 = [(AMSMediaTokenService *)self cachedMediaToken:tokenCopy];
+  invalidCopy = [v5 invalidCopy];
 
-  [(AMSMediaTokenService *)self setCachedMediaToken:v6 store:v4];
+  [(AMSMediaTokenService *)self setCachedMediaToken:invalidCopy store:tokenCopy];
 }
 
 + (NSString)bagSubProfile
@@ -502,23 +502,23 @@ void __44__AMSMediaTokenService_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-- (id)_fetchTokenPromise:(id)a3 store:(id)a4
+- (id)_fetchTokenPromise:(id)promise store:(id)store
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSMediaTokenService *)self cachedMediaToken:v7];
-  v9 = [(AMSMediaTokenService *)self throttler];
-  v10 = [v9 shouldThrottle];
+  promiseCopy = promise;
+  storeCopy = store;
+  v8 = [(AMSMediaTokenService *)self cachedMediaToken:storeCopy];
+  throttler = [(AMSMediaTokenService *)self throttler];
+  shouldThrottle = [throttler shouldThrottle];
 
-  if (v10)
+  if (shouldThrottle)
   {
     v11 = objc_alloc_init(AMSMutablePromise);
     v12 = +[AMSLogConfig sharedMediaConfig];
@@ -527,17 +527,17 @@ void __44__AMSMediaTokenService_bagSubProfileVersion__block_invoke()
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [(AMSMediaTokenService *)self clientIdentifier];
+      clientIdentifier = [(AMSMediaTokenService *)self clientIdentifier];
       *buf = 138543618;
       v24 = v14;
       v25 = 2114;
-      v26 = v16;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Token request throttled. Returning cached media token if available.", buf, 0x16u);
+      v26 = clientIdentifier;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Token request throttled. Returning cached media token if available.", buf, 0x16u);
     }
 
     if (v8)
@@ -554,14 +554,14 @@ void __44__AMSMediaTokenService_bagSubProfileVersion__block_invoke()
 
   else
   {
-    v17 = [(AMSMediaTokenService *)self _tokenRequestPromiseWithPrivateAccessToken:v6];
+    v17 = [(AMSMediaTokenService *)self _tokenRequestPromiseWithPrivateAccessToken:promiseCopy];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __49__AMSMediaTokenService__fetchTokenPromise_store___block_invoke;
     v20[3] = &unk_1E73B8FF8;
     v20[4] = self;
     v21 = v8;
-    v22 = v7;
+    v22 = storeCopy;
     v11 = [v17 continueWithBlock:v20];
   }
 
@@ -733,19 +733,19 @@ LABEL_21:
   return v18;
 }
 
-- (id)_fetchToken:(id)a3 forceRefresh:(BOOL)a4
+- (id)_fetchToken:(id)token forceRefresh:(BOOL)refresh
 {
-  v6 = a3;
-  v7 = [(AMSMediaTokenService *)self tokenFetchPromiseSerialQueue];
+  tokenCopy = token;
+  tokenFetchPromiseSerialQueue = [(AMSMediaTokenService *)self tokenFetchPromiseSerialQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__AMSMediaTokenService__fetchToken_forceRefresh___block_invoke;
   v11[3] = &unk_1E73B9020;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
-  v9 = [v7 runPromiseBlock:v11];
+  v12 = tokenCopy;
+  refreshCopy = refresh;
+  v8 = tokenCopy;
+  v9 = [tokenFetchPromiseSerialQueue runPromiseBlock:v11];
 
   return v9;
 }
@@ -778,24 +778,24 @@ void __49__AMSMediaTokenService__fetchToken_forceRefresh___block_invoke(uint64_t
   }
 }
 
-- (void)_fetchPatBasedToken:(id)a3 cachedMediaToken:(id)a4 finishBlock:(id)a5
+- (void)_fetchPatBasedToken:(id)token cachedMediaToken:(id)mediaToken finishBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AMSMediaTokenService *)self getPrivateAccessTokenChallenge];
-  if (v11)
+  tokenCopy = token;
+  mediaTokenCopy = mediaToken;
+  blockCopy = block;
+  getPrivateAccessTokenChallenge = [(AMSMediaTokenService *)self getPrivateAccessTokenChallenge];
+  if (getPrivateAccessTokenChallenge)
   {
-    v12 = [(AMSMediaTokenService *)self getPrivateAccessToken:v11];
+    v12 = [(AMSMediaTokenService *)self getPrivateAccessToken:getPrivateAccessTokenChallenge];
     v13 = [v12 promiseWithTimeout:30.0];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock___block_invoke;
     v20[3] = &unk_1E73B9070;
     v20[4] = self;
-    v21 = v8;
-    v22 = v10;
+    v21 = tokenCopy;
+    v22 = blockCopy;
     [v13 addFinishBlock:v20];
   }
 
@@ -807,28 +807,28 @@ void __49__AMSMediaTokenService__fetchToken_forceRefresh___block_invoke(uint64_t
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = v16;
-      v18 = [(AMSMediaTokenService *)self clientIdentifier];
+      clientIdentifier = [(AMSMediaTokenService *)self clientIdentifier];
       *buf = 138543618;
       v24 = v16;
       v25 = 2114;
-      v26 = v18;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Token request set to PAT, but no challenge is available.", buf, 0x16u);
+      v26 = clientIdentifier;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Token request set to PAT, but no challenge is available.", buf, 0x16u);
     }
 
-    if ([(AMSMediaTokenService *)self _shouldReturnMediaToken:v9])
+    if ([(AMSMediaTokenService *)self _shouldReturnMediaToken:mediaTokenCopy])
     {
-      (*(v10 + 2))(v10, v9, 0);
+      (*(blockCopy + 2))(blockCopy, mediaTokenCopy, 0);
     }
 
     else
     {
       v19 = AMSError(406, @"Private Access Token", @"Private Access Token challenge is not available.", 0);
-      (*(v10 + 2))(v10, 0, v19);
+      (*(blockCopy + 2))(blockCopy, 0, v19);
     }
   }
 }
@@ -904,13 +904,13 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
   }
 }
 
-+ (id)_overrideOrClientIdentifier:(id)a3
++ (id)_overrideOrClientIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[AMSDefaults mediaClientIdOverrides];
-  v5 = [v4 valueForKey:v3];
-  v6 = v3;
+  v5 = [v4 valueForKey:identifierCopy];
+  v6 = identifierCopy;
   if (v5)
   {
     v7 = +[AMSLogConfig sharedMediaConfig];
@@ -919,8 +919,8 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -929,10 +929,10 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
       v15 = 2114;
       v16 = v10;
       v17 = 2112;
-      v18 = v3;
+      v18 = identifierCopy;
       v19 = 2112;
       v20 = v5;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Client identifier was manually overridden in defaults. %@ is overridden with: %@. Use amstool to clear any overrides if you did not expect this.", &v13, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Client identifier was manually overridden in defaults. %@ is overridden with: %@. Use amstool to clear any overrides if you did not expect this.", &v13, 0x2Au);
     }
 
     v6 = v5;
@@ -943,23 +943,23 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
   return v11;
 }
 
-- (void)_refreshMediaTokenIfNeeded:(id)a3 store:(id)a4 bagProperties:(id)a5
+- (void)_refreshMediaTokenIfNeeded:(id)needed store:(id)store bagProperties:(id)properties
 {
-  v9 = a4;
-  if ([(AMSMediaTokenService *)self _shouldRefreshMediaToken:a3 bagProperties:a5])
+  storeCopy = store;
+  if ([(AMSMediaTokenService *)self _shouldRefreshMediaToken:needed bagProperties:properties])
   {
-    v8 = [(AMSMediaTokenService *)self _fetchToken:v9 forceRefresh:1];
+    v8 = [(AMSMediaTokenService *)self _fetchToken:storeCopy forceRefresh:1];
   }
 }
 
-- (BOOL)_shouldRefreshMediaToken:(id)a3 bagProperties:(id)a4
+- (BOOL)_shouldRefreshMediaToken:(id)token bagProperties:(id)properties
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 isValid] && (objc_msgSend(v5, "percentageOfLifetimeRemaining"), v8 = v7, objc_msgSend(v6, "refreshPercentage"), v8 >= v9))
+  tokenCopy = token;
+  propertiesCopy = properties;
+  if (tokenCopy && [tokenCopy isValid] && (objc_msgSend(tokenCopy, "percentageOfLifetimeRemaining"), v8 = v7, objc_msgSend(propertiesCopy, "refreshPercentage"), v8 >= v9))
   {
-    [v6 refreshTime];
-    v10 = [v5 willExpireWithin:?];
+    [propertiesCopy refreshTime];
+    v10 = [tokenCopy willExpireWithin:?];
   }
 
   else
@@ -970,11 +970,11 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
   return v10;
 }
 
-- (BOOL)_shouldReturnMediaToken:(id)a3
+- (BOOL)_shouldReturnMediaToken:(id)token
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 isValid])
+  tokenCopy = token;
+  v4 = tokenCopy;
+  if (tokenCopy && [tokenCopy isValid])
   {
     v5 = [v4 isExpired] ^ 1;
   }
@@ -987,16 +987,16 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
   return v5;
 }
 
-- (id)_tokenRequestPromiseWithPrivateAccessToken:(id)a3
+- (id)_tokenRequestPromiseWithPrivateAccessToken:(id)token
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   v5 = [(AMSMediaTokenService *)self bag];
 
   if (v5)
   {
     v6 = @"sf-api-token-service-url";
-    if (v4)
+    if (tokenCopy)
     {
       v7 = @"sf-api-token-service-url-for-pat";
 
@@ -1005,14 +1005,14 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
 
     v8 = [(AMSMediaTokenService *)self bag];
     v9 = [v8 URLForKey:v6];
-    v10 = [v9 valuePromise];
+    valuePromise = [v9 valuePromise];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __67__AMSMediaTokenService__tokenRequestPromiseWithPrivateAccessToken___block_invoke;
     v18[3] = &unk_1E73B5D48;
     v18[4] = self;
-    v19 = v4;
-    v11 = [v10 thenWithBlock:v18];
+    v19 = tokenCopy;
+    v11 = [valuePromise thenWithBlock:v18];
   }
 
   else
@@ -1023,17 +1023,17 @@ void __73__AMSMediaTokenService__fetchPatBasedToken_cachedMediaToken_finishBlock
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [(AMSMediaTokenService *)self clientIdentifier];
+      clientIdentifier = [(AMSMediaTokenService *)self clientIdentifier];
       *buf = 138543618;
       v21 = v14;
       v22 = 2114;
-      v23 = v16;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Bag is nil when getting the token request", buf, 0x16u);
+      v23 = clientIdentifier;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Bag is nil when getting the token request", buf, 0x16u);
     }
 
     v6 = AMSError(200, @"Token request failed", @"No bag was provided.", 0);
@@ -1162,14 +1162,14 @@ id __67__AMSMediaTokenService__tokenRequestPromiseWithPrivateAccessToken___block
   return v9;
 }
 
-- (BOOL)usePATBasedToken:(id)a3
+- (BOOL)usePATBasedToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   if ((_os_feature_enabled_impl() & 1) != 0 || +[AMSUnitTests isRunningUnitTests])
   {
-    v5 = [v4 anonymousRateLimitingClientIds];
-    v6 = [(AMSMediaTokenService *)self clientIdentifier];
-    v7 = [v5 containsObject:v6];
+    anonymousRateLimitingClientIds = [tokenCopy anonymousRateLimitingClientIds];
+    clientIdentifier = [(AMSMediaTokenService *)self clientIdentifier];
+    v7 = [anonymousRateLimitingClientIds containsObject:clientIdentifier];
   }
 
   else
@@ -1180,12 +1180,12 @@ id __67__AMSMediaTokenService__tokenRequestPromiseWithPrivateAccessToken___block
   return v7;
 }
 
-- (id)getPrivateAccessToken:(id)a3
+- (id)getPrivateAccessToken:(id)token
 {
-  v4 = a3;
-  v5 = [(AMSMediaTokenService *)self privateAccessTokenFetcherClass];
-  v6 = [(AMSMediaTokenService *)self patTokenFetchQueue];
-  v7 = [(objc_class *)v5 fetchTokenWithChallenge:v4 dispatchQueue:v6];
+  tokenCopy = token;
+  privateAccessTokenFetcherClass = [(AMSMediaTokenService *)self privateAccessTokenFetcherClass];
+  patTokenFetchQueue = [(AMSMediaTokenService *)self patTokenFetchQueue];
+  v7 = [(objc_class *)privateAccessTokenFetcherClass fetchTokenWithChallenge:tokenCopy dispatchQueue:patTokenFetchQueue];
 
   return v7;
 }

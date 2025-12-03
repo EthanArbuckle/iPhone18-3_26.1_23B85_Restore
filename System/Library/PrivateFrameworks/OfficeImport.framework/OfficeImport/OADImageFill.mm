@@ -1,22 +1,22 @@
 @interface OADImageFill
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)rotateWithShape;
 - (OADImageFill)initWithDefaults;
 - (id)blipRef;
 - (id)color;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sourceRect;
 - (id)technique;
 - (int)dpi;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 - (void)removeUnnecessaryOverrides;
-- (void)setParent:(id)a3;
-- (void)setSourceRect:(id)a3;
-- (void)setStyleColor:(id)a3;
-- (void)setTechnique:(id)a3;
+- (void)setParent:(id)parent;
+- (void)setSourceRect:(id)rect;
+- (void)setStyleColor:(id)color;
+- (void)setTechnique:(id)technique;
 @end
 
 @implementation OADImageFill
@@ -37,11 +37,11 @@
 {
   v8.receiver = self;
   v8.super_class = OADImageFill;
-  v2 = [(OADProperties *)&v8 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v8 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADImageFill *)v2 setBlipRef:0];
+    [(OADImageFill *)initWithDefaults setBlipRef:0];
     v4 = [[OADRelativeRect alloc] initWithLeft:0.0 top:0.0 right:0.0 bottom:0.0];
     [(OADImageFill *)v3 setSourceRect:v4];
     [(OADImageFill *)v3 setDpi:72];
@@ -120,19 +120,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (LOBYTE(self->mBlipRef) == 1)
   {
-    v6 = [*&self->super.mDefinedByStyle copyWithZone:a3];
+    v6 = [*&self->super.mDefinedByStyle copyWithZone:zone];
     [v5 setBlipRef:v6];
   }
 
   v7 = *&self->mIsBlipRefOverridden;
   if (v7)
   {
-    v8 = [v7 copyWithZone:a3];
+    v8 = [v7 copyWithZone:zone];
     [v5 setSourceRect:v8];
   }
 
@@ -149,7 +149,7 @@
   v9 = *&self->mDpi;
   if (v9)
   {
-    v10 = [v9 copyWithZone:a3];
+    v10 = [v9 copyWithZone:zone];
     [v5 setTechnique:v10];
   }
 
@@ -163,21 +163,21 @@ void __33__OADImageFill_defaultProperties__block_invoke()
   +[OADImageFill defaultProperties]::defaultProperties = v0;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v4 = a3;
+  parentCopy = parent;
   v6.receiver = self;
   v6.super_class = OADImageFill;
-  [(OADProperties *)&v6 setParent:v4];
+  [(OADProperties *)&v6 setParent:parentCopy];
   if (*&self->mDpi)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 technique];
-      if ([v5 isMemberOfClass:objc_opt_class()])
+      technique = [parentCopy technique];
+      if ([technique isMemberOfClass:objc_opt_class()])
       {
-        [*&self->mDpi setParent:v5];
+        [*&self->mDpi setParent:technique];
       }
     }
   }
@@ -190,39 +190,39 @@ void __33__OADImageFill_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADImageFill *)self isBlipRefOverridden]|| [(OADImageFill *)self isSourceRectOverridden]|| [(OADImageFill *)self isDpiOverridden]|| [(OADImageFill *)self isRotateWithShapeOverridden]|| [(OADImageFill *)self isTechniqueOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v30.receiver = self;
   v30.super_class = OADImageFill;
-  [(OADProperties *)&v30 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((self->mBlipRef & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v30 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((self->mBlipRef & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
     v6 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isBlipRefOverridden];
 
     if (v6)
     {
-      v7 = [(OADImageFill *)self blipRef];
+      blipRef = [(OADImageFill *)self blipRef];
     }
 
     else
     {
-      v7 = 0;
+      blipRef = 0;
     }
 
-    v8 = [v4 possiblyInexistentOverrideForSelector:sel_isBlipRefOverridden];
+    v8 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isBlipRefOverridden];
 
     if (v8)
     {
-      v9 = [v4 blipRef];
+      blipRef2 = [valuesCopy blipRef];
     }
 
     else
     {
-      v9 = 0;
+      blipRef2 = 0;
     }
 
-    if (TCObjectEqual(v7, v9))
+    if (TCObjectEqual(blipRef, blipRef2))
     {
       v10 = *&self->super.mDefinedByStyle;
       *&self->super.mDefinedByStyle = 0;
@@ -232,37 +232,37 @@ void __33__OADImageFill_defaultProperties__block_invoke()
 
     else if ((self->mBlipRef & 1) == 0 && v6)
     {
-      [(OADImageFill *)self setBlipRef:v7];
+      [(OADImageFill *)self setBlipRef:blipRef];
     }
   }
 
-  if ([(OADImageFill *)self isSourceRectOverridden]|| ([(OADProperties *)self parent], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 != v4))
+  if ([(OADImageFill *)self isSourceRectOverridden]|| ([(OADProperties *)self parent], v11 = objc_claimAutoreleasedReturnValue(), v11, v11 != valuesCopy))
   {
     v12 = [(OADProperties *)self possiblyInexistentOverrideForSelector:sel_isSourceRectOverridden];
 
     if (v12)
     {
-      v13 = [(OADImageFill *)self sourceRect];
+      sourceRect = [(OADImageFill *)self sourceRect];
     }
 
     else
     {
-      v13 = 0;
+      sourceRect = 0;
     }
 
-    v14 = [v4 possiblyInexistentOverrideForSelector:sel_isSourceRectOverridden];
+    v14 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isSourceRectOverridden];
 
     if (v14)
     {
-      v15 = [v4 sourceRect];
+      sourceRect2 = [valuesCopy sourceRect];
     }
 
     else
     {
-      v15 = 0;
+      sourceRect2 = 0;
     }
 
-    v16 = TCObjectEqual(v13, v15);
+    v16 = TCObjectEqual(sourceRect, sourceRect2);
     v17 = *&self->mIsBlipRefOverridden;
     if (v16)
     {
@@ -271,14 +271,14 @@ void __33__OADImageFill_defaultProperties__block_invoke()
 
     else if (!v17 && v12)
     {
-      [(OADImageFill *)self setSourceRect:v13];
+      [(OADImageFill *)self setSourceRect:sourceRect];
     }
   }
 
-  if ((BYTE4(self->mSourceRect) & 1) != 0 || ([(OADProperties *)self parent], v18 = objc_claimAutoreleasedReturnValue(), v18, v18 != v4))
+  if ((BYTE4(self->mSourceRect) & 1) != 0 || ([(OADProperties *)self parent], v18 = objc_claimAutoreleasedReturnValue(), v18, v18 != valuesCopy))
   {
     v19 = [(OADImageFill *)self dpi];
-    if (v19 == [v4 dpi])
+    if (v19 == [valuesCopy dpi])
     {
       BYTE4(self->mSourceRect) = 0;
     }
@@ -289,10 +289,10 @@ void __33__OADImageFill_defaultProperties__block_invoke()
     }
   }
 
-  if ((BYTE6(self->mSourceRect) & 1) != 0 || ([(OADProperties *)self parent], v20 = objc_claimAutoreleasedReturnValue(), v20, v20 != v4))
+  if ((BYTE6(self->mSourceRect) & 1) != 0 || ([(OADProperties *)self parent], v20 = objc_claimAutoreleasedReturnValue(), v20, v20 != valuesCopy))
   {
-    v21 = [(OADImageFill *)self rotateWithShape];
-    if (v21 == [v4 rotateWithShape])
+    rotateWithShape = [(OADImageFill *)self rotateWithShape];
+    if (rotateWithShape == [valuesCopy rotateWithShape])
     {
       BYTE6(self->mSourceRect) = 0;
     }
@@ -303,35 +303,35 @@ void __33__OADImageFill_defaultProperties__block_invoke()
     }
   }
 
-  if (*&self->mDpi || ([(OADProperties *)self parent], v22 = objc_claimAutoreleasedReturnValue(), v22, v22 != v4))
+  if (*&self->mDpi || ([(OADProperties *)self parent], v22 = objc_claimAutoreleasedReturnValue(), v22, v22 != valuesCopy))
   {
-    v23 = [(OADImageFill *)self technique];
+    technique = [(OADImageFill *)self technique];
     v24 = objc_alloc_init(objc_opt_class());
 
-    v25 = [(OADImageFill *)self technique];
-    [v24 setParent:v25];
+    technique2 = [(OADImageFill *)self technique];
+    [v24 setParent:technique2];
 
     objc_storeStrong(&self->mDpi, v24);
-    v26 = [v4 possiblyInexistentOverrideForSelector:sel_isTechniqueOverridden];
+    technique3 = [valuesCopy possiblyInexistentOverrideForSelector:sel_isTechniqueOverridden];
 
-    if (v26)
+    if (technique3)
     {
-      v26 = [v4 technique];
+      technique3 = [valuesCopy technique];
     }
 
     v27 = *&self->mDpi;
-    if (v27 != v26)
+    if (v27 != technique3)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
       {
-        v29 = [objc_opt_class() defaultProperties];
+        defaultProperties = [objc_opt_class() defaultProperties];
 
-        v26 = v29;
+        technique3 = defaultProperties;
       }
 
-      [*&self->mDpi changeParentPreservingEffectiveValues:v26];
+      [*&self->mDpi changeParentPreservingEffectiveValues:technique3];
       if (isKindOfClass & 1) == 0 || ([*&self->mDpi isAnythingOverridden])
       {
         goto LABEL_52;
@@ -348,12 +348,12 @@ LABEL_52:
 
 - (void)removeUnnecessaryOverrides
 {
-  v3 = [(OADProperties *)self parent];
+  parent = [(OADProperties *)self parent];
 
-  if (v3)
+  if (parent)
   {
-    v4 = [(OADProperties *)self isMerged];
-    v5 = [(OADProperties *)self isMergedWithParent];
+    isMerged = [(OADProperties *)self isMerged];
+    isMergedWithParent = [(OADProperties *)self isMergedWithParent];
     [(OADProperties *)self setMerged:0];
     [(OADProperties *)self setMergedWithParent:0];
     if (![(OADImageFill *)self isSourceRectOverridden])
@@ -361,39 +361,39 @@ LABEL_52:
       goto LABEL_10;
     }
 
-    v6 = [(OADProperties *)self parent];
-    v7 = [(OADImageFill *)self sourceRect];
-    v8 = [v6 sourceRect];
+    parent2 = [(OADProperties *)self parent];
+    sourceRect = [(OADImageFill *)self sourceRect];
+    sourceRect2 = [parent2 sourceRect];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(objc_object *)v7 removeUnnecessaryOverrides];
+      [(objc_object *)sourceRect removeUnnecessaryOverrides];
       v9 = objc_opt_class();
       if (v9 != objc_opt_class())
       {
         goto LABEL_9;
       }
 
-      v10 = [(objc_object *)v7 isMergedWithParent];
-      [(objc_object *)v7 setMergedWithParent:0];
-      v11 = [(objc_object *)v7 isAnythingOverridden];
-      [(objc_object *)v7 setMergedWithParent:v10];
-      if (v11)
+      isMergedWithParent2 = [(objc_object *)sourceRect isMergedWithParent];
+      [(objc_object *)sourceRect setMergedWithParent:0];
+      isAnythingOverridden = [(objc_object *)sourceRect isAnythingOverridden];
+      [(objc_object *)sourceRect setMergedWithParent:isMergedWithParent2];
+      if (isAnythingOverridden)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!TCObjectEqual(v7, v8))
+    else if (!TCObjectEqual(sourceRect, sourceRect2))
     {
 LABEL_9:
 
 LABEL_10:
       if ([(OADImageFill *)self isDpiOverridden])
       {
-        v13 = [(OADProperties *)self parent];
+        parent3 = [(OADProperties *)self parent];
         v14 = [(OADImageFill *)self dpi];
-        if (v14 == [v13 dpi])
+        if (v14 == [parent3 dpi])
         {
           [(OADImageFill *)self setDpi:72];
           BYTE4(self->mSourceRect) = 0;
@@ -402,9 +402,9 @@ LABEL_10:
 
       if ([(OADImageFill *)self isRotateWithShapeOverridden])
       {
-        v15 = [(OADProperties *)self parent];
-        v16 = [(OADImageFill *)self rotateWithShape];
-        if (v16 == [v15 rotateWithShape])
+        parent4 = [(OADProperties *)self parent];
+        rotateWithShape = [(OADImageFill *)self rotateWithShape];
+        if (rotateWithShape == [parent4 rotateWithShape])
         {
           [(OADImageFill *)self setRotateWithShape:1];
           BYTE6(self->mSourceRect) = 0;
@@ -416,36 +416,36 @@ LABEL_10:
         goto LABEL_26;
       }
 
-      v17 = [(OADProperties *)self parent];
-      v18 = [(OADImageFill *)self technique];
-      v19 = [v17 technique];
+      parent5 = [(OADProperties *)self parent];
+      technique = [(OADImageFill *)self technique];
+      technique2 = [parent5 technique];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(objc_object *)v18 removeUnnecessaryOverrides];
+        [(objc_object *)technique removeUnnecessaryOverrides];
         v20 = objc_opt_class();
         if (v20 != objc_opt_class())
         {
           goto LABEL_25;
         }
 
-        v21 = [(objc_object *)v18 isMergedWithParent];
-        [(objc_object *)v18 setMergedWithParent:0];
-        v22 = [(objc_object *)v18 isAnythingOverridden];
-        [(objc_object *)v18 setMergedWithParent:v21];
-        if (v22)
+        isMergedWithParent3 = [(objc_object *)technique isMergedWithParent];
+        [(objc_object *)technique setMergedWithParent:0];
+        isAnythingOverridden2 = [(objc_object *)technique isAnythingOverridden];
+        [(objc_object *)technique setMergedWithParent:isMergedWithParent3];
+        if (isAnythingOverridden2)
         {
           goto LABEL_25;
         }
       }
 
-      else if (!TCObjectEqual(v18, v19))
+      else if (!TCObjectEqual(technique, technique2))
       {
 LABEL_25:
 
 LABEL_26:
-        [(OADProperties *)self setMerged:v4];
-        [(OADProperties *)self setMergedWithParent:v5];
+        [(OADProperties *)self setMerged:isMerged];
+        [(OADProperties *)self setMergedWithParent:isMergedWithParent];
         v24.receiver = self;
         v24.super_class = OADImageFill;
         [(OADProperties *)&v24 removeUnnecessaryOverrides];
@@ -487,22 +487,22 @@ LABEL_26:
       }
     }
 
-    v7 = [v5 foregroundColor];
+    foregroundColor = [v5 foregroundColor];
   }
 
   else
   {
 LABEL_5:
-    v7 = 0;
+    foregroundColor = 0;
   }
 
-  return v7;
+  return foregroundColor;
 }
 
-- (void)setSourceRect:(id)a3
+- (void)setSourceRect:(id)rect
 {
-  v4 = a3;
-  if (!v4)
+  rectCopy = rect;
+  if (!rectCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADImageFill setSourceRect:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADFill.mm"];
@@ -512,7 +512,7 @@ LABEL_5:
   }
 
   v7 = *&self->mIsBlipRefOverridden;
-  *&self->mIsBlipRefOverridden = v4;
+  *&self->mIsBlipRefOverridden = rectCopy;
 }
 
 - (int)dpi
@@ -531,10 +531,10 @@ LABEL_5:
   return v3;
 }
 
-- (void)setTechnique:(id)a3
+- (void)setTechnique:(id)technique
 {
-  v4 = a3;
-  if (!v4)
+  techniqueCopy = technique;
+  if (!techniqueCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OADImageFill setTechnique:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/OfficeArt/Dom/OADFill.mm"];
@@ -544,32 +544,32 @@ LABEL_5:
   }
 
   v7 = *&self->mDpi;
-  *&self->mDpi = v4;
+  *&self->mDpi = techniqueCopy;
 }
 
-- (void)setStyleColor:(id)a3
+- (void)setStyleColor:(id)color
 {
-  v8 = a3;
-  v4 = [(OADImageFill *)self blipRef];
-  v5 = [v4 effectCount];
-  if (v5)
+  colorCopy = color;
+  blipRef = [(OADImageFill *)self blipRef];
+  effectCount = [blipRef effectCount];
+  if (effectCount)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != effectCount; ++i)
     {
-      v7 = [v4 effectAtIndex:i];
-      [v7 setStyleColor:v8];
+      v7 = [blipRef effectAtIndex:i];
+      [v7 setStyleColor:colorCopy];
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADImageFill;
-  if ([(OADFill *)&v8 isEqual:v4])
+  if ([(OADFill *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (LOBYTE(self->mBlipRef) == *(v5 + 32) && (!LOBYTE(self->mBlipRef) || [*&self->super.mDefinedByStyle isEqual:v5[3]]) && TCObjectEqual(*&self->mIsBlipRefOverridden, v5[5]) && BYTE4(self->mSourceRect) == *(v5 + 52) && (!BYTE4(self->mSourceRect) || LODWORD(self->mSourceRect) == *(v5 + 12)) && BYTE6(self->mSourceRect) == *(v5 + 54) && (!BYTE6(self->mSourceRect) || BYTE5(self->mSourceRect) == *(v5 + 53)))
     {
       v6 = TCObjectEqual(*&self->mDpi, v5[7]);

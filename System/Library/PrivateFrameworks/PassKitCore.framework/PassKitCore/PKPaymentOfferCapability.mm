@@ -1,14 +1,14 @@
 @interface PKPaymentOfferCapability
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferCapability)initWithCoder:(id)a3;
-- (PKPaymentOfferCapability)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferCapability)initWithCoder:(id)coder;
+- (PKPaymentOfferCapability)initWithDictionary:(id)dictionary;
 - (id)_init;
 - (id)associatedPassUniqueID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferCapability
@@ -20,34 +20,34 @@
   return [(PKPaymentOfferCapability *)&v3 init];
 }
 
-- (PKPaymentOfferCapability)initWithDictionary:(id)a3
+- (PKPaymentOfferCapability)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     v31.receiver = self;
     v31.super_class = PKPaymentOfferCapability;
     v5 = [(PKPaymentOfferCapability *)&v31 init];
     if (v5)
     {
-      v6 = [v4 PKStringForKey:@"fpanIdentifier"];
+      v6 = [dictionaryCopy PKStringForKey:@"fpanIdentifier"];
       fpanIdentifier = v5->_fpanIdentifier;
       v5->_fpanIdentifier = v6;
 
-      v8 = [v4 PKStringForKey:@"passSerialNumber"];
+      v8 = [dictionaryCopy PKStringForKey:@"passSerialNumber"];
       passSerialNumber = v5->_passSerialNumber;
       v5->_passSerialNumber = v8;
 
-      v10 = [v4 PKStringForKey:@"passTypeIdentifier"];
+      v10 = [dictionaryCopy PKStringForKey:@"passTypeIdentifier"];
       passTypeIdentifier = v5->_passTypeIdentifier;
       v5->_passTypeIdentifier = v10;
 
-      v12 = [v4 PKStringForKey:@"merchandisingIdentifier"];
+      v12 = [dictionaryCopy PKStringForKey:@"merchandisingIdentifier"];
       merchandisingIdentifier = v5->_merchandisingIdentifier;
       v5->_merchandisingIdentifier = v12;
 
-      v14 = [v4 PKSetContaining:objc_opt_class() forKey:@"features"];
+      v14 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"features"];
       if ([v14 count])
       {
         v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -100,15 +100,15 @@
     }
 
     self = v5;
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v25 = 0;
+    selfCopy = 0;
   }
 
-  return v25;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -118,8 +118,8 @@
   [v3 setObject:self->_passSerialNumber forKeyedSubscript:@"passSerialNumber"];
   [v3 setObject:self->_passTypeIdentifier forKeyedSubscript:@"passTypeIdentifier"];
   [v3 setObject:self->_merchandisingIdentifier forKeyedSubscript:@"merchandisingIdentifier"];
-  v4 = [(NSSet *)self->_features allObjects];
-  v5 = [v4 pk_arrayByApplyingBlock:&__block_literal_global_215];
+  allObjects = [(NSSet *)self->_features allObjects];
+  v5 = [allObjects pk_arrayByApplyingBlock:&__block_literal_global_215];
   [v3 setObject:v5 forKeyedSubscript:@"features"];
 
   v6 = [v3 copy];
@@ -162,18 +162,18 @@ __CFString *__52__PKPaymentOfferCapability_dictionaryRepresentation__block_invok
   return passTypeIdentifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -343,34 +343,34 @@ __CFString *__39__PKPaymentOfferCapability_description__block_invoke(uint64_t a1
   }
 }
 
-- (PKPaymentOfferCapability)initWithCoder:(id)a3
+- (PKPaymentOfferCapability)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKPaymentOfferCapability;
   v5 = [(PKPaymentOfferCapability *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
     fpanIdentifier = v5->_fpanIdentifier;
     v5->_fpanIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchandisingIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchandisingIdentifier"];
     merchandisingIdentifier = v5->_merchandisingIdentifier;
     v5->_merchandisingIdentifier = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"features"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"features"];
     features = v5->_features;
     v5->_features = v17;
   }
@@ -378,37 +378,37 @@ __CFString *__39__PKPaymentOfferCapability_description__block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fpanIdentifier = self->_fpanIdentifier;
-  v5 = a3;
-  [v5 encodeObject:fpanIdentifier forKey:@"fpanIdentifier"];
-  [v5 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v5 encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v5 encodeObject:self->_features forKey:@"features"];
-  [v5 encodeObject:self->_merchandisingIdentifier forKey:@"merchandisingIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fpanIdentifier forKey:@"fpanIdentifier"];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_features forKey:@"features"];
+  [coderCopy encodeObject:self->_merchandisingIdentifier forKey:@"merchandisingIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_fpanIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_fpanIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_passSerialNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_passSerialNumber copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSSet *)self->_features copyWithZone:a3];
+  v12 = [(NSSet *)self->_features copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_merchandisingIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_merchandisingIdentifier copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 

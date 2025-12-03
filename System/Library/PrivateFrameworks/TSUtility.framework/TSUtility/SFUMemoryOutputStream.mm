@@ -1,17 +1,17 @@
 @interface SFUMemoryOutputStream
-- (SFUMemoryOutputStream)initWithData:(id)a3;
+- (SFUMemoryOutputStream)initWithData:(id)data;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4;
+- (void)seekToOffset:(int64_t)offset whence:(int)whence;
 @end
 
 @implementation SFUMemoryOutputStream
 
-- (SFUMemoryOutputStream)initWithData:(id)a3
+- (SFUMemoryOutputStream)initWithData:(id)data
 {
   v4 = [(SFUMemoryOutputStream *)self init];
   if (v4)
   {
-    v4->mData = a3;
+    v4->mData = data;
   }
 
   return v4;
@@ -24,9 +24,9 @@
   [(SFUMemoryOutputStream *)&v3 dealloc];
 }
 
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4
+- (void)seekToOffset:(int64_t)offset whence:(int)whence
 {
-  v4 = [TSUAssertionHandler currentHandler:a3];
+  v4 = [TSUAssertionHandler currentHandler:offset];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SFUMemoryOutputStream seekToOffset:whence:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/SFUMemoryOutputStream.m"];
 

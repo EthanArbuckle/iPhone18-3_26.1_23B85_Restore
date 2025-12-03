@@ -2,10 +2,10 @@
 - (BOOL)isPresent;
 - (BOOL)systemClientSetup;
 - (__IOHIDEventSystemClient)HIDEventSystem;
-- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)a3;
-- (id)parseHIDLocationID:(int)a3;
+- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)service;
+- (id)parseHIDLocationID:(int)d;
 - (id)temperatureData;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 - (void)systemClientRelease;
 @end
 
@@ -29,11 +29,11 @@
   return v4;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentSensorTemperature *)self temperatureData];
-  [v4 addEntriesFromDictionary:v5];
+  attributesCopy = attributes;
+  temperatureData = [(ComponentSensorTemperature *)self temperatureData];
+  [attributesCopy addEntriesFromDictionary:temperatureData];
 }
 
 - (__IOHIDEventSystemClient)HIDEventSystem
@@ -61,8 +61,8 @@
 
 - (BOOL)systemClientSetup
 {
-  v3 = [(ComponentSensorTemperature *)self HIDEventSystem];
-  if (v3)
+  hIDEventSystem = [(ComponentSensorTemperature *)self HIDEventSystem];
+  if (hIDEventSystem)
   {
     v6[0] = @"PrimaryUsagePage";
     v6[1] = @"PrimaryUsage";
@@ -73,7 +73,7 @@
     IOHIDEventSystemClientSetMatching();
   }
 
-  return v3 != 0;
+  return hIDEventSystem != 0;
 }
 
 - (void)systemClientRelease
@@ -86,23 +86,23 @@
   }
 }
 
-- (id)parseHIDLocationID:(int)a3
+- (id)parseHIDLocationID:(int)d
 {
-  if ((a3 >> 24) > 0x7F || (_DefaultRuneLocale.__runetype[a3 >> 24] & 0x200) != 0)
+  if ((d >> 24) > 0x7F || (_DefaultRuneLocale.__runetype[d >> 24] & 0x200) != 0)
   {
-    [NSString stringWithFormat:@"%3ld ", a3, v5, v6, v7];
+    [NSString stringWithFormat:@"%3ld ", d, v5, v6, v7];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%c%c%c%c", (a3 >> 24), BYTE2(a3), BYTE1(a3), a3];
+    [NSString stringWithFormat:@"%c%c%c%c", (d >> 24), BYTE2(d), BYTE1(d), d];
   }
   v3 = ;
 
   return v3;
 }
 
-- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)a3
+- (id)celsiusTemperatureFromService:(__IOHIDServiceClient *)service
 {
   v3 = IOHIDServiceClientCopyEvent();
   if (v3)

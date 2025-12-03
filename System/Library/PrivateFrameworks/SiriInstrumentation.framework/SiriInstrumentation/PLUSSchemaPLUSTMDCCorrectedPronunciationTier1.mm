@@ -1,26 +1,26 @@
 @interface PLUSSchemaPLUSTMDCCorrectedPronunciationTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSTMDCCorrectedPronunciationTier1
 
-- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PLUSSchemaPLUSTMDCCorrectedPronunciationTier1;
   v5 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"firstNamePhonemes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"firstNamePhonemes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)v5 setFirstNamePhonemes:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"lastNamePhonemes"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"lastNamePhonemes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)v5 setLastNamePhonemes:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"nicknamePhonemes"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"nicknamePhonemes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithJSON:(id)a3
+- (PLUSSchemaPLUSTMDCCorrectedPronunciationTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,31 +86,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_firstNamePhonemes)
   {
-    v4 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"firstNamePhonemes"];
+    firstNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
+    v5 = [firstNamePhonemes copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"firstNamePhonemes"];
   }
 
   if (self->_lastNamePhonemes)
   {
-    v6 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"lastNamePhonemes"];
+    lastNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
+    v7 = [lastNamePhonemes copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"lastNamePhonemes"];
   }
 
   if (self->_nicknamePhonemes)
   {
-    v8 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"nicknamePhonemes"];
+    nicknamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
+    v9 = [nicknamePhonemes copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"nicknamePhonemes"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,28 +120,28 @@
   return v4 ^ [(NSString *)self->_nicknamePhonemes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
-  v6 = [v4 firstNamePhonemes];
-  if ((v5 != 0) == (v6 == 0))
+  firstNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
+  firstNamePhonemes2 = [equalCopy firstNamePhonemes];
+  if ((firstNamePhonemes != 0) == (firstNamePhonemes2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
-  if (v7)
+  firstNamePhonemes3 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
+  if (firstNamePhonemes3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
-    v10 = [v4 firstNamePhonemes];
-    v11 = [v9 isEqual:v10];
+    v8 = firstNamePhonemes3;
+    firstNamePhonemes4 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
+    firstNamePhonemes5 = [equalCopy firstNamePhonemes];
+    v11 = [firstNamePhonemes4 isEqual:firstNamePhonemes5];
 
     if (!v11)
     {
@@ -153,20 +153,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
-  v6 = [v4 lastNamePhonemes];
-  if ((v5 != 0) == (v6 == 0))
+  firstNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
+  firstNamePhonemes2 = [equalCopy lastNamePhonemes];
+  if ((firstNamePhonemes != 0) == (firstNamePhonemes2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
-  if (v12)
+  lastNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
+  if (lastNamePhonemes)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
-    v15 = [v4 lastNamePhonemes];
-    v16 = [v14 isEqual:v15];
+    v13 = lastNamePhonemes;
+    lastNamePhonemes2 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
+    lastNamePhonemes3 = [equalCopy lastNamePhonemes];
+    v16 = [lastNamePhonemes2 isEqual:lastNamePhonemes3];
 
     if (!v16)
     {
@@ -178,12 +178,12 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
-  v6 = [v4 nicknamePhonemes];
-  if ((v5 != 0) != (v6 == 0))
+  firstNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
+  firstNamePhonemes2 = [equalCopy nicknamePhonemes];
+  if ((firstNamePhonemes != 0) != (firstNamePhonemes2 == 0))
   {
-    v17 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
-    if (!v17)
+    nicknamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
+    if (!nicknamePhonemes)
     {
 
 LABEL_20:
@@ -191,10 +191,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
-    v20 = [v4 nicknamePhonemes];
-    v21 = [v19 isEqual:v20];
+    v18 = nicknamePhonemes;
+    nicknamePhonemes2 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
+    nicknamePhonemes3 = [equalCopy nicknamePhonemes];
+    v21 = [nicknamePhonemes2 isEqual:nicknamePhonemes3];
 
     if (v21)
     {
@@ -214,68 +214,68 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
+  toCopy = to;
+  firstNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self firstNamePhonemes];
 
-  if (v4)
+  if (firstNamePhonemes)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
+  lastNamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self lastNamePhonemes];
 
-  if (v5)
+  if (lastNamePhonemes)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
+  nicknamePhonemes = [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self nicknamePhonemes];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (nicknamePhonemes)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PLUSSchemaPLUSTMDCCorrectedPronunciationTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteFirstNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteLastNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteNicknamePhonemes];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteFirstNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteLastNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteNicknamePhonemes];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteFirstNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteLastNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteNicknamePhonemes];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteFirstNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteLastNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteNicknamePhonemes];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteFirstNamePhonemes];
     [(PLUSSchemaPLUSTMDCCorrectedPronunciationTier1 *)self deleteLastNamePhonemes];

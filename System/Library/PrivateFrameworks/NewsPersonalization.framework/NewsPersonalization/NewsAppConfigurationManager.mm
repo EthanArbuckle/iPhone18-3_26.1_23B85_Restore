@@ -1,6 +1,6 @@
 @interface NewsAppConfigurationManager
 - (_TtC19NewsPersonalization27NewsAppConfigurationManager)init;
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4;
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change;
 @end
 
 @implementation NewsAppConfigurationManager
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)configurationManager:(id)a3 appConfigurationDidChange:(id)a4
+- (void)configurationManager:(id)manager appConfigurationDidChange:(id)change
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1C6C7FE6C();
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

@@ -1,5 +1,5 @@
 @interface AudioDSPUplinkSpeechMixer_v1
-- (AudioDSPUplinkSpeechMixer_v1)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)a3;
+- (AudioDSPUplinkSpeechMixer_v1)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)settings;
 - (AudioStreamBasicDescription)sampleRate;
 - (id).cxx_construct;
 - (id)processBlock;
@@ -30,12 +30,12 @@
   return v2;
 }
 
-- (AudioDSPUplinkSpeechMixer_v1)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)a3
+- (AudioDSPUplinkSpeechMixer_v1)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)settings
 {
-  v3 = self;
+  selfCopy = self;
   v57[4] = *MEMORY[0x1E69E9840];
-  mSampleRate = a3->streamDescription.mSampleRate;
-  if (a3->streamDescription.mSampleRate <= 0.0)
+  mSampleRate = settings->streamDescription.mSampleRate;
+  if (settings->streamDescription.mSampleRate <= 0.0)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -52,7 +52,7 @@ LABEL_72:
     goto LABEL_12;
   }
 
-  if (!a3->maximumFramesPerSlice)
+  if (!settings->maximumFramesPerSlice)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -72,10 +72,10 @@ LABEL_72:
   if (v6)
   {
     MEMORY[0x1E12BC390](&v54);
-    v7 = *&a3->streamDescription.mBytesPerPacket;
-    v44 = *&a3->streamDescription.mSampleRate;
+    v7 = *&settings->streamDescription.mBytesPerPacket;
+    v44 = *&settings->streamDescription.mSampleRate;
     v45 = v7;
-    v46 = *&a3->streamDescription.mBitsPerChannel;
+    v46 = *&settings->streamDescription.mBitsPerChannel;
     v47 = 1;
     std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v43, &gResourcesBasePath);
     v42 = 0;
@@ -110,11 +110,11 @@ LABEL_72:
     v28 = 0u;
     *__p = 0u;
     DSPGraph::Interpreter::Interpreter(__p);
-    std::to_string(&v24, a3->streamDescription.mSampleRate);
+    std::to_string(&v24, settings->streamDescription.mSampleRate);
     std::string::basic_string[abi:ne200100]<0>(&v50, "IO_SAMPLE_RATE");
     v51 = v24;
     memset(&v24, 0, sizeof(v24));
-    std::to_string(&v23, a3->streamDescription.mChannelsPerFrame);
+    std::to_string(&v23, settings->streamDescription.mChannelsPerFrame);
     std::string::basic_string[abi:ne200100]<0>(v52, "IO_CHANNEL_COUNT");
     v53 = v23;
     memset(&v23, 0, sizeof(v23));
@@ -265,9 +265,9 @@ LABEL_72:
     }
 
     DSPGraph::Graph::initialize(v11);
-    v16 = *&a3->streamDescription.mSampleRate;
-    v17 = *&a3->streamDescription.mBytesPerPacket;
-    *&v6->_settings.streamDescription.mBitsPerChannel = *&a3->streamDescription.mBitsPerChannel;
+    v16 = *&settings->streamDescription.mSampleRate;
+    v17 = *&settings->streamDescription.mBytesPerPacket;
+    *&v6->_settings.streamDescription.mBitsPerChannel = *&settings->streamDescription.mBitsPerChannel;
     *&v6->_settings.streamDescription.mBytesPerPacket = v17;
     *&v6->_settings.streamDescription.mSampleRate = v16;
     std::shared_ptr<DSPGraph::Graph>::operator=[abi:ne200100]<DSPGraph::Graph,std::default_delete<DSPGraph::Graph>,0>(&v6->_graph, &v42);
@@ -312,8 +312,8 @@ LABEL_72:
     std::__hash_table<std::__hash_value_type<std::string,std::function<DSPGraph::Box * ()(unsigned int,unsigned int)>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::function<DSPGraph::Box * ()(unsigned int,unsigned int)>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::function<DSPGraph::Box * ()(unsigned int,unsigned int)>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::function<DSPGraph::Box * ()(unsigned int,unsigned int)>>>>::~__hash_table(&v55);
   }
 
-  v3 = v6;
-  v10 = v3;
+  selfCopy = v6;
+  v10 = selfCopy;
 LABEL_70:
 
   return v10;

@@ -1,41 +1,41 @@
 @interface DTProcessorTraceTapServiceDelegate
-+ (void)registerCapabilities:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
 - (DTProcessorTraceTapServiceDelegate)init;
-- (DTProcessorTraceTapServiceDelegate)initWithMessageSender:(id)a3;
-- (id)createConfigWithPlist:(id)a3;
-- (id)willStartWithConfig:(id)a3;
+- (DTProcessorTraceTapServiceDelegate)initWithMessageSender:(id)sender;
+- (id)createConfigWithPlist:(id)plist;
+- (id)willStartWithConfig:(id)config;
 @end
 
 @implementation DTProcessorTraceTapServiceDelegate
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  static ProcessorTraceTapServiceDelegate.registerCapabilities(_:)(v4);
+  capabilitiesCopy = capabilities;
+  static ProcessorTraceTapServiceDelegate.registerCapabilities(_:)(capabilitiesCopy);
 }
 
-- (DTProcessorTraceTapServiceDelegate)initWithMessageSender:(id)a3
+- (DTProcessorTraceTapServiceDelegate)initWithMessageSender:(id)sender
 {
-  *(&self->super.isa + OBJC_IVAR___DTProcessorTraceTapServiceDelegate_messageSender) = a3;
+  *(&self->super.isa + OBJC_IVAR___DTProcessorTraceTapServiceDelegate_messageSender) = sender;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ProcessorTraceTapServiceDelegate();
-  v4 = a3;
+  senderCopy = sender;
   return [(DTProcessorTraceTapServiceDelegate *)&v6 init];
 }
 
-- (id)createConfigWithPlist:(id)a3
+- (id)createConfigWithPlist:(id)plist
 {
   sub_248030AE8();
   v3 = objc_allocWithZone(DTProcessorTraceTapConfig);
   sub_2480078E4(&qword_27EE84128, &unk_24803EF30);
-  v4 = [v3 initWithPlist_];
+  initWithPlist_ = [v3 initWithPlist_];
   swift_unknownObjectRelease();
 
-  return v4;
+  return initWithPlist_;
 }
 
-- (id)willStartWithConfig:(id)a3
+- (id)willStartWithConfig:(id)config
 {
   v3 = [objc_allocWithZone(DTTapMessage) init];
   [v3 setKind_];

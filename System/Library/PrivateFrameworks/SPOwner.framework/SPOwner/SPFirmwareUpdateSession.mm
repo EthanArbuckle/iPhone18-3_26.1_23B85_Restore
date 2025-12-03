@@ -3,12 +3,12 @@
 - (id)proxy;
 - (id)remoteInterface;
 - (id)serviceDescription;
-- (void)beaconsInFirmwareUpdateState:(int64_t)a3 dateInterval:(id)a4 completion:(id)a5;
-- (void)candidateBeaconsWithCompletion:(id)a3;
-- (void)connectionTokensForBeaconUUID:(id)a3 dateInterval:(id)a4 completion:(id)a5;
-- (void)firmwareUpdateStateForBeaconUUID:(id)a3 completion:(id)a4;
-- (void)initiateFirmwareUpdateForAllEligibleBeaconsWithCompletion:(id)a3;
-- (void)updateBeaconUUID:(id)a3 firmwareUpdateState:(int64_t)a4 systemVersion:(id)a5 error:(id)a6 completion:(id)a7;
+- (void)beaconsInFirmwareUpdateState:(int64_t)state dateInterval:(id)interval completion:(id)completion;
+- (void)candidateBeaconsWithCompletion:(id)completion;
+- (void)connectionTokensForBeaconUUID:(id)d dateInterval:(id)interval completion:(id)completion;
+- (void)firmwareUpdateStateForBeaconUUID:(id)d completion:(id)completion;
+- (void)initiateFirmwareUpdateForAllEligibleBeaconsWithCompletion:(id)completion;
+- (void)updateBeaconUUID:(id)d firmwareUpdateState:(int64_t)state systemVersion:(id)version error:(id)error completion:(id)completion;
 @end
 
 @implementation SPFirmwareUpdateSession
@@ -29,9 +29,9 @@
   return v2;
 }
 
-- (void)candidateBeaconsWithCompletion:(id)a3
+- (void)candidateBeaconsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -39,8 +39,8 @@
   v6[3] = &unk_279B59718;
   v6[4] = self;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPFirmwareUpdateSession: Calling firmwareUpdateCandidateBeaconsWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 
   objc_destroyWeak(&v8);
@@ -107,11 +107,11 @@ void __58__SPFirmwareUpdateSession_candidateBeaconsWithCompletion___block_invoke
   [v1 finishWithError:v2];
 }
 
-- (void)connectionTokensForBeaconUUID:(id)a3 dateInterval:(id)a4 completion:(id)a5
+- (void)connectionTokensForBeaconUUID:(id)d dateInterval:(id)interval completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  intervalCopy = interval;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -119,12 +119,12 @@ void __58__SPFirmwareUpdateSession_candidateBeaconsWithCompletion___block_invoke
   v14[3] = &unk_279B5A1D8;
   v14[4] = self;
   objc_copyWeak(&v18, &location);
-  v16 = v9;
-  v17 = v10;
-  v15 = v8;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
+  v16 = intervalCopy;
+  v17 = completionCopy;
+  v15 = dCopy;
+  v11 = intervalCopy;
+  v12 = dCopy;
+  v13 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPFirmwareUpdateSession: Calling commandKeysForUUIDs", OS_ACTIVITY_FLAG_DEFAULT, v14);
 
   objc_destroyWeak(&v18);
@@ -223,12 +223,12 @@ void __81__SPFirmwareUpdateSession_connectionTokensForBeaconUUID_dateInterval_co
   [*(a1 + 32) addObjectsFromArray:v5];
 }
 
-- (void)updateBeaconUUID:(id)a3 firmwareUpdateState:(int64_t)a4 systemVersion:(id)a5 error:(id)a6 completion:(id)a7
+- (void)updateBeaconUUID:(id)d firmwareUpdateState:(int64_t)state systemVersion:(id)version error:(id)error completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  versionCopy = version;
+  errorCopy = error;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -236,15 +236,15 @@ void __81__SPFirmwareUpdateSession_connectionTokensForBeaconUUID_dateInterval_co
   v20[3] = &unk_279B5A278;
   v20[4] = self;
   objc_copyWeak(v25, &location);
-  v25[1] = a4;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v24 = v15;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v15;
+  v25[1] = state;
+  v21 = dCopy;
+  v22 = versionCopy;
+  v23 = errorCopy;
+  v24 = completionCopy;
+  v16 = errorCopy;
+  v17 = versionCopy;
+  v18 = dCopy;
+  v19 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPFirmwareUpdateSession: Calling updateBeaconUUID:firmwareUpdateState:systemVersion:error:completion:", OS_ACTIVITY_FLAG_DEFAULT, v20);
 
   objc_destroyWeak(v25);
@@ -334,10 +334,10 @@ void __95__SPFirmwareUpdateSession_updateBeaconUUID_firmwareUpdateState_systemVe
   [v2 finishWithResult:v3];
 }
 
-- (void)beaconsInFirmwareUpdateState:(int64_t)a3 dateInterval:(id)a4 completion:(id)a5
+- (void)beaconsInFirmwareUpdateState:(int64_t)state dateInterval:(id)interval completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  intervalCopy = interval;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -345,11 +345,11 @@ void __95__SPFirmwareUpdateSession_updateBeaconUUID_firmwareUpdateState_systemVe
   v12[3] = &unk_279B5A2C8;
   v12[4] = self;
   objc_copyWeak(v15, &location);
-  v15[1] = a3;
-  v13 = v8;
-  v14 = v9;
-  v10 = v8;
-  v11 = v9;
+  v15[1] = state;
+  v13 = intervalCopy;
+  v14 = completionCopy;
+  v10 = intervalCopy;
+  v11 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPFirmwareUpdateSession: Calling beaconsInFirmwareUpdateState:since:completion:", OS_ACTIVITY_FLAG_DEFAULT, v12);
 
   objc_destroyWeak(v15);
@@ -422,9 +422,9 @@ void __80__SPFirmwareUpdateSession_beaconsInFirmwareUpdateState_dateInterval_com
   [v1 finishWithError:v2];
 }
 
-- (void)initiateFirmwareUpdateForAllEligibleBeaconsWithCompletion:(id)a3
+- (void)initiateFirmwareUpdateForAllEligibleBeaconsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -432,8 +432,8 @@ void __80__SPFirmwareUpdateSession_beaconsInFirmwareUpdateState_dateInterval_com
   v6[3] = &unk_279B59718;
   v6[4] = self;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPFirmwareUpdateSession: Calling initiateFirmwareUpdateForAllEligibleBeaconsWithCompletion:", OS_ACTIVITY_FLAG_DEFAULT, v6);
 
   objc_destroyWeak(&v8);
@@ -512,10 +512,10 @@ void __85__SPFirmwareUpdateSession_initiateFirmwareUpdateForAllEligibleBeaconsWi
   [v2 finishWithResult:v3];
 }
 
-- (void)firmwareUpdateStateForBeaconUUID:(id)a3 completion:(id)a4
+- (void)firmwareUpdateStateForBeaconUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
@@ -523,10 +523,10 @@ void __85__SPFirmwareUpdateSession_initiateFirmwareUpdateForAllEligibleBeaconsWi
   activity_block[3] = &unk_279B5A368;
   activity_block[4] = self;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = dCopy;
+  v12 = completionCopy;
+  v8 = dCopy;
+  v9 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPFirmwareUpdateSession: Calling firmwareUpdateStateForBeaconUUID:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_destroyWeak(&v13);
@@ -602,36 +602,36 @@ void __71__SPFirmwareUpdateSession_firmwareUpdateStateForBeaconUUID_completion__
 - (id)proxy
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(SPFirmwareUpdateSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPFirmwareUpdateSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPFirmwareUpdateSession *)self session];
+  session = [(SPFirmwareUpdateSession *)self session];
 
-  if (!v4)
+  if (!session)
   {
-    v5 = [(SPFirmwareUpdateSession *)self serviceDescription];
-    v6 = [objc_alloc(MEMORY[0x277D07BA8]) initWithServiceDescription:v5];
+    serviceDescription = [(SPFirmwareUpdateSession *)self serviceDescription];
+    v6 = [objc_alloc(MEMORY[0x277D07BA8]) initWithServiceDescription:serviceDescription];
     [(SPFirmwareUpdateSession *)self setSession:v6];
 
     v7 = LogCategory_FirmwareUpdate();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v5 machService];
+      machService = [serviceDescription machService];
       v14 = 138412290;
-      v15 = v8;
+      v15 = machService;
       _os_log_impl(&dword_2643D0000, v7, OS_LOG_TYPE_DEFAULT, "SPFirmwareUpdateSession: Establishing XPC connection to %@", &v14, 0xCu);
     }
 
-    v9 = [(SPFirmwareUpdateSession *)self session];
-    [v9 resume];
+    session2 = [(SPFirmwareUpdateSession *)self session];
+    [session2 resume];
   }
 
-  v10 = [(SPFirmwareUpdateSession *)self session];
-  v11 = [v10 proxy];
+  session3 = [(SPFirmwareUpdateSession *)self session];
+  proxy = [session3 proxy];
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return proxy;
 }
 
 - (id)serviceDescription
@@ -639,7 +639,7 @@ void __71__SPFirmwareUpdateSession_firmwareUpdateStateForBeaconUUID_completion__
   v3 = objc_opt_new();
   objc_storeStrong(&self->_sessionInvalidationFuture, v3);
   v4 = objc_alloc(MEMORY[0x277D07BA0]);
-  v5 = [(SPFirmwareUpdateSession *)self remoteInterface];
+  remoteInterface = [(SPFirmwareUpdateSession *)self remoteInterface];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__SPFirmwareUpdateSession_serviceDescription__block_invoke;
@@ -651,7 +651,7 @@ void __71__SPFirmwareUpdateSession_firmwareUpdateStateForBeaconUUID_completion__
   v9[3] = &unk_279B58C28;
   v10 = v12;
   v6 = v12;
-  v7 = [v4 initWithMachServiceName:@"com.apple.icloud.searchpartyd.beaconmanager" options:0 remoteObjectInterface:v5 interruptionHandler:v11 invalidationHandler:v9];
+  v7 = [v4 initWithMachServiceName:@"com.apple.icloud.searchpartyd.beaconmanager" options:0 remoteObjectInterface:remoteInterface interruptionHandler:v11 invalidationHandler:v9];
 
   return v7;
 }

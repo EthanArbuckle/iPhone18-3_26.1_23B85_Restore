@@ -1,19 +1,19 @@
 @interface CMPednetResponse
-- (void)errorStringLength:(unsigned int *)a3;
-- (void)getMachContinuousTimestamp:(unint64_t *)a3;
-- (void)getType:(char *)a3;
-- (void)writePredictionValuesToBuffer:(float *)a3 :(int64_t)a4;
+- (void)errorStringLength:(unsigned int *)length;
+- (void)getMachContinuousTimestamp:(unint64_t *)timestamp;
+- (void)getType:(char *)type;
+- (void)writePredictionValuesToBuffer:(float *)buffer :(int64_t)a4;
 @end
 
 @implementation CMPednetResponse
 
-- (void)getType:(char *)a3
+- (void)getType:(char *)type
 {
   v5 = *(*(type metadata accessor for CoreMotionPednet_Response(0) - 8) + 64);
   __chkstk_darwin();
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *((swift_isaMask & self->super.isa) + 0x58);
-  v9 = self;
+  selfCopy = self;
   v8();
   v10 = *(v7 + 1);
   v11 = v7[16];
@@ -26,7 +26,7 @@
 
   else if (v12 <= 0xFF)
   {
-    *a3 = v12;
+    *type = v12;
 
     return;
   }
@@ -34,33 +34,33 @@
   __break(1u);
 }
 
-- (void)getMachContinuousTimestamp:(unint64_t *)a3
+- (void)getMachContinuousTimestamp:(unint64_t *)timestamp
 {
   v5 = *(*(type metadata accessor for CoreMotionPednet_Response(0) - 8) + 64);
   __chkstk_darwin();
   v7 = (&v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0));
   v8 = *((swift_isaMask & self->super.isa) + 0x58);
-  v9 = self;
+  selfCopy = self;
   v8();
   v10 = *v7;
   sub_100009878(v7, type metadata accessor for CoreMotionPednet_Response);
-  *a3 = v10;
+  *timestamp = v10;
 }
 
-- (void)writePredictionValuesToBuffer:(float *)a3 :(int64_t)a4
+- (void)writePredictionValuesToBuffer:(float *)buffer :(int64_t)a4
 {
   v7 = *(*(type metadata accessor for CoreMotionPednet_Response(0) - 8) + 64);
   __chkstk_darwin();
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = *((swift_isaMask & self->super.isa) + 0x58);
-  v11 = self;
+  selfCopy = self;
   v10();
   v12 = *(v9 + 3);
 
   sub_100009878(v9, type metadata accessor for CoreMotionPednet_Response);
   if ((a4 - 0x2000000000000000) >> 62 == 3)
   {
-    memcpy(a3, (v12 + 32), 4 * a4);
+    memcpy(buffer, (v12 + 32), 4 * a4);
   }
 
   else
@@ -69,13 +69,13 @@
   }
 }
 
-- (void)errorStringLength:(unsigned int *)a3
+- (void)errorStringLength:(unsigned int *)length
 {
   v5 = *(*(type metadata accessor for CoreMotionPednet_Response(0) - 8) + 64);
   __chkstk_darwin();
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *((swift_isaMask & self->super.isa) + 0x58);
-  v9 = self;
+  selfCopy = self;
   v8();
   CoreMotionPednet_Response.errorMessage.getter();
   sub_100009878(v7, type metadata accessor for CoreMotionPednet_Response);
@@ -88,7 +88,7 @@
 
   else if (!HIDWORD(v10))
   {
-    *a3 = v10;
+    *length = v10;
 
     return;
   }

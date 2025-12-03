@@ -1,29 +1,29 @@
 @interface APOdmlXpcLifecycleHandler
-- (APOdmlXpcLifecycleHandler)initWithActivity:(id)a3;
+- (APOdmlXpcLifecycleHandler)initWithActivity:(id)activity;
 - (BOOL)continueTask;
 - (BOOL)deferTask;
 - (BOOL)finishTask;
 - (BOOL)shouldDefer;
-- (BOOL)taskCanContinueForTime:(id)a3;
+- (BOOL)taskCanContinueForTime:(id)time;
 - (BOOL)taskIsContinuing;
 - (BOOL)taskIsDeferred;
-- (void)_backgroundDeferralCheck:(id)a3 completion:(id)a4;
+- (void)_backgroundDeferralCheck:(id)check completion:(id)completion;
 - (void)endBackgroundDeferralCheck;
-- (void)startBackgroundDeferralCheckForTime:(id)a3 completionHandler:(id)a4;
+- (void)startBackgroundDeferralCheckForTime:(id)time completionHandler:(id)handler;
 @end
 
 @implementation APOdmlXpcLifecycleHandler
 
-- (APOdmlXpcLifecycleHandler)initWithActivity:(id)a3
+- (APOdmlXpcLifecycleHandler)initWithActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v11.receiver = self;
   v11.super_class = APOdmlXpcLifecycleHandler;
   v6 = [(APOdmlXpcLifecycleHandler *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpc_activity, a3);
+    objc_storeStrong(&v6->_xpc_activity, activity);
     v7->_performDeferralCheck = 0;
     v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
     workQueue = v7->_workQueue;
@@ -35,9 +35,9 @@
 
 - (BOOL)continueTask
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  xpc_activity = v2->_xpc_activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpc_activity = selfCopy->_xpc_activity;
   if (xpc_activity)
   {
     v4 = xpc_activity_set_state(xpc_activity, 4);
@@ -48,17 +48,17 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)taskIsContinuing
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = xpc_activity_get_state(v2->_xpc_activity) == 4;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = xpc_activity_get_state(selfCopy->_xpc_activity) == 4;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -76,9 +76,9 @@
 
 - (BOOL)shouldDefer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  xpc_activity = v2->_xpc_activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpc_activity = selfCopy->_xpc_activity;
   if (xpc_activity)
   {
     should_defer = xpc_activity_should_defer(xpc_activity);
@@ -89,16 +89,16 @@
     should_defer = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return should_defer;
 }
 
 - (BOOL)deferTask
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  xpc_activity = v2->_xpc_activity;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpc_activity = selfCopy->_xpc_activity;
   if (xpc_activity)
   {
     v4 = xpc_activity_set_state(xpc_activity, 3);
@@ -109,61 +109,61 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)taskIsDeferred
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = xpc_activity_get_state(v2->_xpc_activity) == 3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = xpc_activity_get_state(selfCopy->_xpc_activity) == 3;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_backgroundDeferralCheck:(id)a3 completion:(id)a4
+- (void)_backgroundDeferralCheck:(id)check completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  checkCopy = check;
+  completionCopy = completion;
   v8 = dispatch_time(0, 1000000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_260EEEA00;
   block[3] = &unk_279AC68B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = checkCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = checkCopy;
   dispatch_after(v8, MEMORY[0x277D85CD0], block);
 }
 
-- (void)startBackgroundDeferralCheckForTime:(id)a3 completionHandler:(id)a4
+- (void)startBackgroundDeferralCheckForTime:(id)time completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = self;
-  v11 = a4;
-  objc_sync_enter(v7);
-  v7->_performDeferralCheck = 1;
-  startDate = v7->_startDate;
-  v7->_startDate = v6;
-  v9 = v6;
+  timeCopy = time;
+  selfCopy = self;
+  handlerCopy = handler;
+  objc_sync_enter(selfCopy);
+  selfCopy->_performDeferralCheck = 1;
+  startDate = selfCopy->_startDate;
+  selfCopy->_startDate = timeCopy;
+  v9 = timeCopy;
 
-  objc_sync_exit(v7);
-  objc_msgSend__backgroundDeferralCheck_completion_(v7, v10, v7->_startDate, v11);
+  objc_sync_exit(selfCopy);
+  objc_msgSend__backgroundDeferralCheck_completion_(selfCopy, v10, selfCopy->_startDate, handlerCopy);
 }
 
-- (BOOL)taskCanContinueForTime:(id)a3
+- (BOOL)taskCanContinueForTime:(id)time
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (objc_msgSend_isEqualToDate_(v4, v6, v5->_startDate))
+  timeCopy = time;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (objc_msgSend_isEqualToDate_(timeCopy, v6, selfCopy->_startDate))
   {
-    IsContinuing = objc_msgSend_taskIsContinuing(v5, v7, v8);
+    IsContinuing = objc_msgSend_taskIsContinuing(selfCopy, v7, v8);
   }
 
   else
@@ -171,7 +171,7 @@
     IsContinuing = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return IsContinuing;
 }

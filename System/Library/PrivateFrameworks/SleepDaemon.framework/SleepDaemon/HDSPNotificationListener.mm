@@ -1,22 +1,22 @@
 @interface HDSPNotificationListener
 - (HDSPEnvironment)environment;
-- (HDSPNotificationListener)initWithEnvironment:(id)a3;
-- (void)_handleNotificationWithName:(id)a3 completion:(id)a4;
-- (void)_registerForStream:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)registerForLaunchNotificationWithName:(const char *)a3 key:(id)a4;
-- (void)removeObserver:(id)a3;
+- (HDSPNotificationListener)initWithEnvironment:(id)environment;
+- (void)_handleNotificationWithName:(id)name completion:(id)completion;
+- (void)_registerForStream:(id)stream;
+- (void)_withLock:(id)lock;
+- (void)addObserver:(id)observer;
+- (void)registerForLaunchNotificationWithName:(const char *)name key:(id)key;
+- (void)removeObserver:(id)observer;
 - (void)startListening;
-- (void)unregisterForLaunchNotificationWithName:(const char *)a3 key:(id)a4;
+- (void)unregisterForLaunchNotificationWithName:(const char *)name key:(id)key;
 @end
 
 @implementation HDSPNotificationListener
 
-- (HDSPNotificationListener)initWithEnvironment:(id)a3
+- (HDSPNotificationListener)initWithEnvironment:(id)environment
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = HDSPNotificationListener;
   v5 = [(HDSPNotificationListener *)&v18 init];
@@ -34,10 +34,10 @@
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v9 = objc_alloc(MEMORY[0x277D624A0]);
-    v10 = [v4 defaultCallbackScheduler];
-    v11 = [v9 initWithCallbackScheduler:v10];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v11 = [v9 initWithCallbackScheduler:defaultCallbackScheduler];
     observers = v5->_observers;
     v5->_observers = v11;
 
@@ -53,34 +53,34 @@
   return v5;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_launchNotificationRegistrationLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_launchNotificationRegistrationLock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(HKSPObserverSet *)self->_observers addObserver:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(HKSPObserverSet *)self->_observers removeObserver:?];
   }
 }
 
-- (void)registerForLaunchNotificationWithName:(const char *)a3 key:(id)a4
+- (void)registerForLaunchNotificationWithName:(const char *)name key:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -89,16 +89,16 @@
   v10 = 3221225472;
   v11 = __70__HDSPNotificationListener_registerForLaunchNotificationWithName_key___block_invoke;
   v12 = &unk_279C7D3C8;
-  v16 = a3;
-  v13 = self;
-  v7 = v6;
+  nameCopy = name;
+  selfCopy = self;
+  v7 = keyCopy;
   v14 = v7;
   v15 = &v17;
   [(HDSPNotificationListener *)self _withLock:&v9];
   if (*(v18 + 24) == 1)
   {
     v8 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_string(v8, "Notification", a3);
+    xpc_dictionary_set_string(v8, "Notification", name);
     [@"com.apple.notifyd.matching" UTF8String];
     xpc_set_event();
   }
@@ -120,9 +120,9 @@ void __70__HDSPNotificationListener_registerForLaunchNotificationWithName_key___
   *(*(a1[6] + 8) + 24) = [v2 count] == 1;
 }
 
-- (void)unregisterForLaunchNotificationWithName:(const char *)a3 key:(id)a4
+- (void)unregisterForLaunchNotificationWithName:(const char *)name key:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -131,9 +131,9 @@ void __70__HDSPNotificationListener_registerForLaunchNotificationWithName_key___
   v9 = 3221225472;
   v10 = __72__HDSPNotificationListener_unregisterForLaunchNotificationWithName_key___block_invoke;
   v11 = &unk_279C7D3C8;
-  v15 = a3;
-  v12 = self;
-  v7 = v6;
+  nameCopy = name;
+  selfCopy = self;
+  v7 = keyCopy;
   v13 = v7;
   v14 = &v16;
   [(HDSPNotificationListener *)self _withLock:&v8];
@@ -172,16 +172,16 @@ void __72__HDSPNotificationListener_unregisterForLaunchNotificationWithName_key_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForStream:(id)a3
+- (void)_registerForStream:(id)stream
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  streamCopy = stream;
+  uTF8String = [stream UTF8String];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __47__HDSPNotificationListener__registerForStream___block_invoke;
   handler[3] = &unk_279C7D3F0;
   handler[4] = self;
-  xpc_set_event_stream_handler(v6, MEMORY[0x277D85CD0], handler);
+  xpc_set_event_stream_handler(uTF8String, MEMORY[0x277D85CD0], handler);
 }
 
 void __47__HDSPNotificationListener__registerForStream___block_invoke(uint64_t a1, xpc_object_t xdict)
@@ -224,20 +224,20 @@ void __47__HDSPNotificationListener__registerForStream___block_invoke_306(uint64
   [v2 releaseAssertionWithIdentifier:*(a1 + 40)];
 }
 
-- (void)_handleNotificationWithName:(id)a3 completion:(id)a4
+- (void)_handleNotificationWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __67__HDSPNotificationListener__handleNotificationWithName_completion___block_invoke;
   v11[3] = &unk_279C7D468;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = nameCopy;
   [WeakRetained performWhenEnvironmentIsReady:v11];
 }
 

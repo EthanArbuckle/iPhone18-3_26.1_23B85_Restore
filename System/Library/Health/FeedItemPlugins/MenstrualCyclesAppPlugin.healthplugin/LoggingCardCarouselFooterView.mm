@@ -1,13 +1,13 @@
 @interface LoggingCardCarouselFooterView
-- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)doneTapped:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)doneTapped:(id)tapped;
 @end
 
 @implementation LoggingCardCarouselFooterView
 
-- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -17,26 +17,26 @@
   return result;
 }
 
-- (void)doneTapped:(id)a3
+- (void)doneTapped:(id)tapped
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v5 = a3;
-    v6 = self;
+    tappedCopy = tapped;
+    selfCopy = self;
     sub_29E222730();
     swift_unknownObjectRelease();
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v11.receiver = self;
   v11.super_class = swift_getObjectType();
-  v7 = a4;
+  eventCopy = event;
   v8 = v11.receiver;
-  v9 = [(LoggingCardCarouselFooterView *)&v11 hitTest:v7 withEvent:x, y];
+  v9 = [(LoggingCardCarouselFooterView *)&v11 hitTest:eventCopy withEvent:x, y];
   if (_UISolariumEnabled() && v9)
   {
 
@@ -58,7 +58,7 @@ LABEL_7:
   return v9;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin29LoggingCardCarouselFooterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

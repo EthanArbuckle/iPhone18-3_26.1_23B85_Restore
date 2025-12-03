@@ -1,18 +1,18 @@
 @interface NTKCurvedPickerView
-- (CGAffineTransform)_transformForAngle:(SEL)a3;
+- (CGAffineTransform)_transformForAngle:(SEL)angle;
 - (CGPoint)circleCenter;
 - (NTKCurvedPickerView)init;
-- (double)_alphaForIndex:(unint64_t)a3;
-- (double)_angleForIndex:(unint64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)viewForSideAtIndex:(unint64_t)a3;
-- (void)_setCurrentFraction:(double)a3;
-- (void)enumerateSideViewsWithBlock:(id)a3;
+- (double)_alphaForIndex:(unint64_t)index;
+- (double)_angleForIndex:(unint64_t)index;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)viewForSideAtIndex:(unint64_t)index;
+- (void)_setCurrentFraction:(double)fraction;
+- (void)enumerateSideViewsWithBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setCircleRadius:(double)a3 centerAngle:(double)a4 circleCenter:(CGPoint)a5 interior:(BOOL)a6;
-- (void)setView:(id)a3 forSideAtIndex:(unint64_t)a4;
-- (void)transitionToFraction:(double)a3 fromSideAtIndex:(unint64_t)a4 toSideAtIndex:(unint64_t)a5;
-- (void)transitionToSideAtIndex:(unint64_t)a3;
+- (void)setCircleRadius:(double)radius centerAngle:(double)angle circleCenter:(CGPoint)center interior:(BOOL)interior;
+- (void)setView:(id)view forSideAtIndex:(unint64_t)index;
+- (void)transitionToFraction:(double)fraction fromSideAtIndex:(unint64_t)index toSideAtIndex:(unint64_t)atIndex;
+- (void)transitionToSideAtIndex:(unint64_t)index;
 @end
 
 @implementation NTKCurvedPickerView
@@ -32,44 +32,44 @@
   return v2;
 }
 
-- (void)setCircleRadius:(double)a3 centerAngle:(double)a4 circleCenter:(CGPoint)a5 interior:(BOOL)a6
+- (void)setCircleRadius:(double)radius centerAngle:(double)angle circleCenter:(CGPoint)center interior:(BOOL)interior
 {
-  self->_circleRadius = a3;
-  self->_centerAngle = a4;
-  self->_interior = a6;
-  self->_circleCenter = a5;
+  self->_circleRadius = radius;
+  self->_centerAngle = angle;
+  self->_interior = interior;
+  self->_circleCenter = center;
   [(NTKCurvedPickerView *)self setNeedsLayout];
 }
 
-- (void)setView:(id)a3 forSideAtIndex:(unint64_t)a4
+- (void)setView:(id)view forSideAtIndex:(unint64_t)index
 {
-  v8 = a3;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  viewCopy = view;
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v7 = [(NSMutableDictionary *)self->_sideViews objectForKeyedSubscript:v6];
-  if (v7 != v8)
+  if (v7 != viewCopy)
   {
     [v7 removeFromSuperview];
-    if (v8)
+    if (viewCopy)
     {
-      [(NTKCurvedPickerView *)self addSubview:v8];
+      [(NTKCurvedPickerView *)self addSubview:viewCopy];
     }
 
-    [(NSMutableDictionary *)self->_sideViews setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_sideViews setObject:viewCopy forKeyedSubscript:v6];
   }
 }
 
-- (id)viewForSideAtIndex:(unint64_t)a3
+- (id)viewForSideAtIndex:(unint64_t)index
 {
   sideViews = self->_sideViews;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v5 = [(NSMutableDictionary *)sideViews objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)enumerateSideViewsWithBlock:(id)a3
+- (void)enumerateSideViewsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   [(NTKCurvedPickerView *)self numberOfSides];
   v5 = 0;
@@ -81,7 +81,7 @@
 
     if (v8)
     {
-      v4[2](v4, v5, v8, &v10);
+      blockCopy[2](blockCopy, v5, v8, &v10);
     }
 
     v9 = v10;
@@ -97,24 +97,24 @@
   while (v5 <= [(NTKCurvedPickerView *)self numberOfSides]);
 }
 
-- (void)transitionToSideAtIndex:(unint64_t)a3
+- (void)transitionToSideAtIndex:(unint64_t)index
 {
-  self->_activeSide = a3;
-  self->_transitioningSide = a3;
+  self->_activeSide = index;
+  self->_transitioningSide = index;
   [(NTKCurvedPickerView *)self _setCurrentFraction:0.0];
 }
 
-- (void)transitionToFraction:(double)a3 fromSideAtIndex:(unint64_t)a4 toSideAtIndex:(unint64_t)a5
+- (void)transitionToFraction:(double)fraction fromSideAtIndex:(unint64_t)index toSideAtIndex:(unint64_t)atIndex
 {
-  self->_activeSide = a4;
-  self->_transitioningSide = a5;
-  [(NTKCurvedPickerView *)self _setCurrentFraction:a3];
+  self->_activeSide = index;
+  self->_transitioningSide = atIndex;
+  [(NTKCurvedPickerView *)self _setCurrentFraction:fraction];
 }
 
-- (void)_setCurrentFraction:(double)a3
+- (void)_setCurrentFraction:(double)fraction
 {
   v5 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-  *&v6 = a3;
+  *&v6 = fraction;
   [v5 _solveForInput:v6];
   self->_currentFraction = v7;
   v8[0] = MEMORY[0x277D85DD0];
@@ -150,11 +150,11 @@ void __43__NTKCurvedPickerView__setCurrentFraction___block_invoke(uint64_t a1, u
   [v6 setAlpha:?];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = NTKCurvedPickerView;
-  v5 = [(NTKCurvedPickerView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(NTKCurvedPickerView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -181,8 +181,8 @@ void __43__NTKCurvedPickerView__setCurrentFraction___block_invoke(uint64_t a1, u
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NTKCurvedPickerView *)self maskView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  maskView = [(NTKCurvedPickerView *)self maskView];
+  [maskView setFrame:{v4, v6, v8, v10}];
 
   [(NTKCurvedPickerView *)self convertPoint:0 fromView:self->_circleCenter.x, self->_circleCenter.y];
   v13 = v12;
@@ -260,7 +260,7 @@ void __37__NTKCurvedPickerView_layoutSubviews__block_invoke(uint64_t a1, uint64_
   }
 }
 
-- (CGAffineTransform)_transformForAngle:(SEL)a3
+- (CGAffineTransform)_transformForAngle:(SEL)angle
 {
   [(NTKCurvedPickerView *)self bounds];
   result = CGRectIsEmpty(v20);
@@ -311,9 +311,9 @@ void __37__NTKCurvedPickerView_layoutSubviews__block_invoke(uint64_t a1, uint64_
   return result;
 }
 
-- (double)_angleForIndex:(unint64_t)a3
+- (double)_angleForIndex:(unint64_t)index
 {
-  v5 = [(NTKCurvedPickerView *)self numberOfSides];
+  numberOfSides = [(NTKCurvedPickerView *)self numberOfSides];
   activeSide = self->_activeSide;
   v7 = self->_circleRadius + self->_circleRadius;
   [(NTKCurvedPickerView *)self bounds];
@@ -323,21 +323,21 @@ void __37__NTKCurvedPickerView_layoutSubviews__block_invoke(uint64_t a1, uint64_
   if (fabs(v7) >= 0.00000011920929 && v9 >= 0.00000011920929)
   {
     v12 = asin(Width / v7);
-    return (v12 + v12) * (self->_currentFraction + ((v5 - a3 + v5 / 2 + activeSide) % v5 - v5 / 2));
+    return (v12 + v12) * (self->_currentFraction + ((numberOfSides - index + numberOfSides / 2 + activeSide) % numberOfSides - numberOfSides / 2));
   }
 
   return v10;
 }
 
-- (double)_alphaForIndex:(unint64_t)a3
+- (double)_alphaForIndex:(unint64_t)index
 {
-  if (self->_activeSide == a3)
+  if (self->_activeSide == index)
   {
     return 1.0 - self->_currentFraction;
   }
 
   result = 0.0;
-  if (self->_transitioningSide == a3)
+  if (self->_transitioningSide == index)
   {
     return self->_currentFraction;
   }

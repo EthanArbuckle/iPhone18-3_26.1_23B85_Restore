@@ -1,25 +1,25 @@
 @interface HDCorrelationQueryServer
-- (HDCorrelationQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDCorrelationQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDCorrelationQueryServer
 
-- (HDCorrelationQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDCorrelationQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   v18.receiver = self;
   v18.super_class = HDCorrelationQueryServer;
-  v12 = [(HDQueryServer *)&v18 initWithUUID:a3 configuration:v10 client:v11 delegate:a6];
+  v12 = [(HDQueryServer *)&v18 initWithUUID:d configuration:configurationCopy client:clientCopy delegate:delegate];
   if (v12)
   {
-    v13 = [v10 filterDictionary];
+    filterDictionary = [configurationCopy filterDictionary];
     dataFilters = v12->_dataFilters;
-    v12->_dataFilters = v13;
+    v12->_dataFilters = filterDictionary;
 
-    v15 = [v11 configuration];
-    [v15 applicationSDKVersionToken];
+    configuration = [clientCopy configuration];
+    [configuration applicationSDKVersionToken];
 
     dyld_version_token_get_platform();
     if (dyld_get_base_platform() == 2)
@@ -45,8 +45,8 @@
   v27.receiver = self;
   v27.super_class = HDCorrelationQueryServer;
   [(HDQueryServer *)&v27 _queue_start];
-  v3 = [(HDQueryServer *)self clientProxy];
-  v4 = [v3 remoteObjectProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  remoteObjectProxy = [clientProxy remoteObjectProxy];
 
   v25[0] = 0;
   v25[1] = v25;
@@ -61,28 +61,28 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v29 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_INFO, "%{public}@ Resuming from suspend.", buf, 0xCu);
     }
   }
 
-  v6 = [(HDQueryServer *)self newDataEntityEnumerator];
-  v7 = [(HDQueryServer *)self filter];
-  [v6 setFilter:v7];
+  newDataEntityEnumerator = [(HDQueryServer *)self newDataEntityEnumerator];
+  filter = [(HDQueryServer *)self filter];
+  [newDataEntityEnumerator setFilter:filter];
 
-  v8 = [(HDQueryServer *)self sampleAuthorizationFilter];
-  [v6 setAuthorizationFilter:v8];
+  sampleAuthorizationFilter = [(HDQueryServer *)self sampleAuthorizationFilter];
+  [newDataEntityEnumerator setAuthorizationFilter:sampleAuthorizationFilter];
 
   v24 = 0;
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __40__HDCorrelationQueryServer__queue_start__block_invoke;
   v20 = &unk_278627EF0;
-  v21 = self;
-  v9 = v4;
+  selfCopy2 = self;
+  v9 = remoteObjectProxy;
   v22 = v9;
   v23 = v25;
-  v10 = [(HDBatchedQueryServer *)self batchObjectsWithEnumerator:v6 error:&v24 handler:&v17];
+  v10 = [(HDBatchedQueryServer *)self batchObjectsWithEnumerator:newDataEntityEnumerator error:&v24 handler:&v17];
   v11 = v24;
   switch(v10)
   {
@@ -97,7 +97,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v29 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_INFO, "%{public}@: Client no longer authorized.", buf, 0xCu);
       }
 
@@ -111,7 +111,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v29 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_INFO, "%{public}@: Suspended during enumeration.", buf, 0xCu);
       }
 

@@ -1,10 +1,10 @@
 @interface TSIDSTransferFlow
 - (TSIDSTransferFlow)init;
 - (id)firstViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (void)firstViewController:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
+- (void)firstViewController:(id)controller;
 - (void)handleTransferringWatchdogExpiry;
-- (void)transferEventUpdate:(id)a3;
+- (void)transferEventUpdate:(id)update;
 @end
 
 @implementation TSIDSTransferFlow
@@ -50,21 +50,21 @@
   return v8;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(TSIDSTransferFlow *)self firstViewController];
-  (*(a3 + 2))(v5, v6);
+  controllerCopy = controller;
+  firstViewController = [(TSIDSTransferFlow *)self firstViewController];
+  (*(controller + 2))(controllerCopy, firstViewController);
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) == 0 || ([v4 isSecureIntentFailed])
+    if (objc_opt_isKindOfClass() & 1) == 0 || ([fromCopy isSecureIntentFailed])
     {
       v7 = 0;
       goto LABEL_9;
@@ -73,18 +73,18 @@
     goto LABEL_7;
   }
 
-  v5 = [(TSIDSTransferFlow *)self secureIntentProxCard];
+  secureIntentProxCard = [(TSIDSTransferFlow *)self secureIntentProxCard];
 
-  if (!v5)
+  if (!secureIntentProxCard)
   {
 LABEL_7:
-    v6 = [[TSPRXSIMTransferCompleteViewController alloc] initWithoutTargetSyncAndSelectedPlansCount:self->_selectedTransferPlansCount];
+    secureIntentProxCard2 = [[TSPRXSIMTransferCompleteViewController alloc] initWithoutTargetSyncAndSelectedPlansCount:self->_selectedTransferPlansCount];
     goto LABEL_8;
   }
 
-  v6 = [(TSIDSTransferFlow *)self secureIntentProxCard];
+  secureIntentProxCard2 = [(TSIDSTransferFlow *)self secureIntentProxCard];
 LABEL_8:
-  v7 = v6;
+  v7 = secureIntentProxCard2;
 LABEL_9:
 
   return v7;
@@ -101,14 +101,14 @@ LABEL_9:
     _os_log_impl(&dword_262AA8000, v3, OS_LOG_TYPE_DEFAULT, "handle 2 min transferring watchdog timer expired @%s", &v8, 0xCu);
   }
 
-  v4 = [(TSSIMSetupFlow *)self topViewController];
+  topViewController = [(TSSIMSetupFlow *)self topViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(TSSIMSetupFlow *)self topViewController];
-    [(TSSIMSetupFlow *)self viewControllerDidComplete:v6];
+    topViewController2 = [(TSSIMSetupFlow *)self topViewController];
+    [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController2];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -128,21 +128,21 @@ void __131__TSIDSTransferFlow_launchSecureIntentUI_descriptors_isLocalConvertFlo
   }
 }
 
-- (void)transferEventUpdate:(id)a3
+- (void)transferEventUpdate:(id)update
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v4;
+    v15 = updateCopy;
     v16 = 2080;
     v17 = "[TSIDSTransferFlow transferEventUpdate:]";
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "transfer event : %@ @%s", &v14, 0x16u);
   }
 
-  v6 = [v4 objectForKey:@"kSelectedTransferPlansCount"];
+  v6 = [updateCopy objectForKey:@"kSelectedTransferPlansCount"];
   if (v6)
   {
     objc_opt_class();
@@ -152,23 +152,23 @@ void __131__TSIDSTransferFlow_launchSecureIntentUI_descriptors_isLocalConvertFlo
     }
   }
 
-  v7 = [v4 objectForKey:@"kTransferInformationSent"];
+  v7 = [updateCopy objectForKey:@"kTransferInformationSent"];
 
   if (v7)
   {
     [(CoreTelephonyClient *)self->_client setDelegate:0];
-    v8 = [(TSSIMSetupFlow *)self topViewController];
+    topViewController = [(TSSIMSetupFlow *)self topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v10 = [(TSSIMSetupFlow *)self topViewController];
-      [(TSSIMSetupFlow *)self viewControllerDidComplete:v10];
+      topViewController2 = [(TSSIMSetupFlow *)self topViewController];
+      [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController2];
     }
   }
 
-  v11 = [v4 objectForKey:@"UpdateProxCardVisibility"];
+  v11 = [updateCopy objectForKey:@"UpdateProxCardVisibility"];
   if (v11)
   {
     objc_opt_class();
@@ -176,17 +176,17 @@ void __131__TSIDSTransferFlow_launchSecureIntentUI_descriptors_isLocalConvertFlo
     {
       if ([v11 BOOLValue])
       {
-        v12 = _TSLogDomain();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        topViewController3 = _TSLogDomain();
+        if (os_log_type_enabled(topViewController3, OS_LOG_TYPE_ERROR))
         {
-          [TSIDSTransferFlow transferEventUpdate:v12];
+          [TSIDSTransferFlow transferEventUpdate:topViewController3];
         }
       }
 
       else
       {
-        v12 = [(TSSIMSetupFlow *)self topViewController];
-        [(TSSIMSetupFlow *)self viewControllerDidComplete:v12];
+        topViewController3 = [(TSSIMSetupFlow *)self topViewController];
+        [(TSSIMSetupFlow *)self viewControllerDidComplete:topViewController3];
       }
     }
   }

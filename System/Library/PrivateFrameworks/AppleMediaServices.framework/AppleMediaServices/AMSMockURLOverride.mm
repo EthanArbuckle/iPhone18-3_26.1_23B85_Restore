@@ -1,14 +1,14 @@
 @interface AMSMockURLOverride
-+ (AMSMockURLOverride)overrideWithHost:(id)a3 usingResponse:(id)a4;
-+ (AMSMockURLOverride)overrideWithPathComponent:(id)a3 usingResponse:(id)a4;
-+ (AMSMockURLOverride)overrideWithURLRegex:(id)a3 usingResponse:(id)a4;
++ (AMSMockURLOverride)overrideWithHost:(id)host usingResponse:(id)response;
++ (AMSMockURLOverride)overrideWithPathComponent:(id)component usingResponse:(id)response;
++ (AMSMockURLOverride)overrideWithURLRegex:(id)regex usingResponse:(id)response;
 - (AMSMockURLOverride)init;
-- (BOOL)shouldOverrideURLRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_withURLMatchingHost:(id)a3 containingPath:(id)a4 queryItems:(id)a5;
-- (void)withHTTPBodyValidation:(id)a3 encoding:(int64_t)a4;
-- (void)withHTTPHeaderValidation:(id)a3;
-- (void)withURLRegexValidation:(id)a3;
+- (BOOL)shouldOverrideURLRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_withURLMatchingHost:(id)host containingPath:(id)path queryItems:(id)items;
+- (void)withHTTPBodyValidation:(id)validation encoding:(int64_t)encoding;
+- (void)withHTTPHeaderValidation:(id)validation;
+- (void)withURLRegexValidation:(id)validation;
 @end
 
 @implementation AMSMockURLOverride
@@ -32,64 +32,64 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AMSMockURLOverride);
-  v5 = [(AMSMockURLOverride *)self response];
-  [(AMSMockURLOverride *)v4 setResponse:v5];
+  response = [(AMSMockURLOverride *)self response];
+  [(AMSMockURLOverride *)v4 setResponse:response];
 
   return v4;
 }
 
-+ (AMSMockURLOverride)overrideWithHost:(id)a3 usingResponse:(id)a4
++ (AMSMockURLOverride)overrideWithHost:(id)host usingResponse:(id)response
 {
-  v5 = a4;
-  v6 = a3;
+  responseCopy = response;
+  hostCopy = host;
   v7 = objc_alloc_init(AMSMockURLOverride);
-  [(AMSMockURLOverride *)v7 withURLMatchingHost:v6];
+  [(AMSMockURLOverride *)v7 withURLMatchingHost:hostCopy];
 
-  [(AMSMockURLOverride *)v7 setResponse:v5];
+  [(AMSMockURLOverride *)v7 setResponse:responseCopy];
 
   return v7;
 }
 
-+ (AMSMockURLOverride)overrideWithPathComponent:(id)a3 usingResponse:(id)a4
++ (AMSMockURLOverride)overrideWithPathComponent:(id)component usingResponse:(id)response
 {
-  v5 = a4;
-  v6 = a3;
+  responseCopy = response;
+  componentCopy = component;
   v7 = objc_alloc_init(AMSMockURLOverride);
-  [(AMSMockURLOverride *)v7 withURLContainingPath:v6];
+  [(AMSMockURLOverride *)v7 withURLContainingPath:componentCopy];
 
-  [(AMSMockURLOverride *)v7 setResponse:v5];
+  [(AMSMockURLOverride *)v7 setResponse:responseCopy];
 
   return v7;
 }
 
-+ (AMSMockURLOverride)overrideWithURLRegex:(id)a3 usingResponse:(id)a4
++ (AMSMockURLOverride)overrideWithURLRegex:(id)regex usingResponse:(id)response
 {
-  v5 = a4;
-  v6 = a3;
+  responseCopy = response;
+  regexCopy = regex;
   v7 = objc_alloc_init(AMSMockURLOverride);
-  [(AMSMockURLOverride *)v7 withURLRegexValidation:v6];
+  [(AMSMockURLOverride *)v7 withURLRegexValidation:regexCopy];
 
-  [(AMSMockURLOverride *)v7 setResponse:v5];
+  [(AMSMockURLOverride *)v7 setResponse:responseCopy];
 
   return v7;
 }
 
-- (void)withURLRegexValidation:(id)a3
+- (void)withURLRegexValidation:(id)validation
 {
-  v4 = a3;
+  validationCopy = validation;
   v5 = [AMSMockURLRequestComparator alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__AMSMockURLOverride_withURLRegexValidation___block_invoke;
   v9[3] = &unk_1E73BA210;
-  v10 = v4;
-  v6 = v4;
+  v10 = validationCopy;
+  v6 = validationCopy;
   v7 = [(AMSMockURLRequestComparator *)v5 initWithCriteriaBlock:v9];
-  v8 = [(AMSMockURLOverride *)self comparators];
-  [v8 addObject:v7];
+  comparators = [(AMSMockURLOverride *)self comparators];
+  [comparators addObject:v7];
 }
 
 BOOL __45__AMSMockURLOverride_withURLRegexValidation___block_invoke(uint64_t a1, void *a2)
@@ -101,19 +101,19 @@ BOOL __45__AMSMockURLOverride_withURLRegexValidation___block_invoke(uint64_t a1,
   return v5 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)withHTTPHeaderValidation:(id)a3
+- (void)withHTTPHeaderValidation:(id)validation
 {
-  v4 = a3;
+  validationCopy = validation;
   v5 = [AMSMockURLRequestComparator alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__AMSMockURLOverride_withHTTPHeaderValidation___block_invoke;
   v9[3] = &unk_1E73BA238;
-  v10 = v4;
-  v6 = v4;
+  v10 = validationCopy;
+  v6 = validationCopy;
   v7 = [(AMSMockURLRequestComparator *)v5 initWithCriteriaBlock:v9];
-  v8 = [(AMSMockURLOverride *)self comparators];
-  [v8 addObject:v7];
+  comparators = [(AMSMockURLOverride *)self comparators];
+  [comparators addObject:v7];
 }
 
 uint64_t __47__AMSMockURLOverride_withHTTPHeaderValidation___block_invoke(uint64_t a1, void *a2)
@@ -132,17 +132,17 @@ uint64_t __47__AMSMockURLOverride_withHTTPHeaderValidation___block_invoke(uint64
   return v4;
 }
 
-- (void)withHTTPBodyValidation:(id)a3 encoding:(int64_t)a4
+- (void)withHTTPBodyValidation:(id)validation encoding:(int64_t)encoding
 {
-  v6 = a3;
+  validationCopy = validation;
   v7 = [AMSMockURLRequestComparator alloc];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __54__AMSMockURLOverride_withHTTPBodyValidation_encoding___block_invoke;
   v14 = &unk_1E73BA260;
-  v15 = v6;
-  v16 = a4;
-  v8 = v6;
+  v15 = validationCopy;
+  encodingCopy = encoding;
+  v8 = validationCopy;
   v9 = [(AMSMockURLRequestComparator *)v7 initWithCriteriaBlock:&v11];
   v10 = [(AMSMockURLOverride *)self comparators:v11];
   [v10 addObject:v9];
@@ -173,19 +173,19 @@ uint64_t __54__AMSMockURLOverride_withHTTPBodyValidation_encoding___block_invoke
   return v5;
 }
 
-- (BOOL)shouldOverrideURLRequest:(id)a3
+- (BOOL)shouldOverrideURLRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSMockURLOverride *)self comparators];
-  v6 = [v5 count] != 0;
+  requestCopy = request;
+  comparators = [(AMSMockURLOverride *)self comparators];
+  v6 = [comparators count] != 0;
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(AMSMockURLOverride *)self comparators];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  comparators2 = [(AMSMockURLOverride *)self comparators];
+  v8 = [comparators2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -196,13 +196,13 @@ uint64_t __54__AMSMockURLOverride_withHTTPBodyValidation_encoding___block_invoke
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(comparators2);
         }
 
-        v6 &= [*(*(&v13 + 1) + 8 * i) shouldOverrideURLRequest:v4];
+        v6 &= [*(*(&v13 + 1) + 8 * i) shouldOverrideURLRequest:requestCopy];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [comparators2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -211,25 +211,25 @@ uint64_t __54__AMSMockURLOverride_withHTTPBodyValidation_encoding___block_invoke
   return v6;
 }
 
-- (void)_withURLMatchingHost:(id)a3 containingPath:(id)a4 queryItems:(id)a5
+- (void)_withURLMatchingHost:(id)host containingPath:(id)path queryItems:(id)items
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hostCopy = host;
+  pathCopy = path;
+  itemsCopy = items;
   v11 = [AMSMockURLRequestComparator alloc];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __69__AMSMockURLOverride__withURLMatchingHost_containingPath_queryItems___block_invoke;
   v17[3] = &unk_1E73BA2D0;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v18 = hostCopy;
+  v19 = pathCopy;
+  v20 = itemsCopy;
+  v12 = itemsCopy;
+  v13 = pathCopy;
+  v14 = hostCopy;
   v15 = [(AMSMockURLRequestComparator *)v11 initWithCriteriaBlock:v17];
-  v16 = [(AMSMockURLOverride *)self comparators];
-  [v16 addObject:v15];
+  comparators = [(AMSMockURLOverride *)self comparators];
+  [comparators addObject:v15];
 }
 
 uint64_t __69__AMSMockURLOverride__withURLMatchingHost_containingPath_queryItems___block_invoke(void *a1, void *a2)

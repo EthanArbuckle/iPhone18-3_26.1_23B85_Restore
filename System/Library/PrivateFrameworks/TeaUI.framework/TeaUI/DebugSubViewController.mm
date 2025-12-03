@@ -1,5 +1,5 @@
 @interface DebugSubViewController
-- (_TtC5TeaUI22DebugSubViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5TeaUI22DebugSubViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)doDone;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -9,30 +9,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DebugSubViewController.viewDidLoad()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DebugSubViewController.viewWillLayoutSubviews()();
 }
 
 - (void)doDone
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D80A7F24();
 }
 
-- (_TtC5TeaUI22DebugSubViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI22DebugSubViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   DebugSubViewController.init(nibName:bundle:)();
 }
 

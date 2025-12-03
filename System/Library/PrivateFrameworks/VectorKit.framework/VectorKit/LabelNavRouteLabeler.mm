@@ -1,48 +1,48 @@
 @interface LabelNavRouteLabeler
-- (BOOL)_addJunctionsForTile:(const void *)a3;
-- (BOOL)_collideLabel:(id)a3 activeLabel:(id)a4 labelsToRemove:(id)a5;
-- (BOOL)_findRouteOverlappingJunctionFrom:(int64_t)a3 routeJunctions:(void *)a4 lookBackward:(BOOL)a5 firstOverlap:(int64_t *)a6 secondOverlap:(int64_t *)a7;
+- (BOOL)_addJunctionsForTile:(const void *)tile;
+- (BOOL)_collideLabel:(id)label activeLabel:(id)activeLabel labelsToRemove:(id)remove;
+- (BOOL)_findRouteOverlappingJunctionFrom:(int64_t)from routeJunctions:(void *)junctions lookBackward:(BOOL)backward firstOverlap:(int64_t *)overlap secondOverlap:(int64_t *)secondOverlap;
 - (BOOL)_updateActiveRouteRange;
 - (BOOL)needsDebugDraw;
 - (LabelNavRouteLabeler)init;
-- (RoadSignOrientationResolver)createRoadSignOrientationResolver:(id)a3 navContext:(NavContext *)a4;
+- (RoadSignOrientationResolver)createRoadSignOrientationResolver:(id)resolver navContext:(NavContext *)context;
 - (__n128)_addJunctionsForTile:;
 - (id).cxx_construct;
-- (unsigned)computeRoutePositionForPOIAtPixel:(const void *)a3 currentPosition:(unsigned __int8)a4 context:(NavContext *)a5;
-- (unsigned)orientationForRoadSign:(id)a3 roadLabel:(id)a4 navContext:(NavContext *)a5;
-- (unsigned)resolveOrientation:(NavContext *)a3 road:(id)a4 currentOrientation:(unsigned __int8)a5;
+- (unsigned)computeRoutePositionForPOIAtPixel:(const void *)pixel currentPosition:(unsigned __int8)position context:(NavContext *)context;
+- (unsigned)orientationForRoadSign:(id)sign roadLabel:(id)label navContext:(NavContext *)context;
+- (unsigned)resolveOrientation:(NavContext *)orientation road:(id)road currentOrientation:(unsigned __int8)currentOrientation;
 - (void)_addJunctionsForTile:;
-- (void)_addLabelsAtJunctions:(id)a3 withContext:(NavContext *)a4 maxLabelsToAdd:(unint64_t)a5;
-- (void)_addLabelsForJunctions:(id)a3 withContext:(NavContext *)a4 maxLabelsToAdd:(unint64_t)a5 useAllJunctions:(BOOL)a6 placeShieldsFrontToBack:(BOOL)a7;
+- (void)_addLabelsAtJunctions:(id)junctions withContext:(NavContext *)context maxLabelsToAdd:(unint64_t)add;
+- (void)_addLabelsForJunctions:(id)junctions withContext:(NavContext *)context maxLabelsToAdd:(unint64_t)add useAllJunctions:(BOOL)allJunctions placeShieldsFrontToBack:(BOOL)back;
 - (void)_addVisibleSigns;
-- (void)_createOrUpdateLabelForRoad:(id)a3 isShield:(BOOL)a4 navContext:(NavContext *)a5 hopOffsetDistance:(float)a6;
+- (void)_createOrUpdateLabelForRoad:(id)road isShield:(BOOL)shield navContext:(NavContext *)context hopOffsetDistance:(float)distance;
 - (void)_dedupOffRouteRoads;
-- (void)_generateCurrentRoadSignWithContext:(NavContext *)a3;
+- (void)_generateCurrentRoadSignWithContext:(NavContext *)context;
 - (void)_refreshGuidanceRoadNames;
 - (void)_reloadRouteJunctions;
-- (void)_tryAddLabel:(id)a3 navContext:(NavContext *)a4 labelCollisionEnabled:(BOOL)a5;
-- (void)_tryAddRoadSignForJunction:(id)a3 navContext:(NavContext *)a4 labelCollisionEnabled:(BOOL)a5;
-- (void)_tryAddRoadSignForRoad:(id)a3 isShield:(BOOL)a4 navContext:(NavContext *)a5 labelCollisionEnabled:(BOOL)a6;
+- (void)_tryAddLabel:(id)label navContext:(NavContext *)context labelCollisionEnabled:(BOOL)enabled;
+- (void)_tryAddRoadSignForJunction:(id)junction navContext:(NavContext *)context labelCollisionEnabled:(BOOL)enabled;
+- (void)_tryAddRoadSignForRoad:(id)road isShield:(BOOL)shield navContext:(NavContext *)context labelCollisionEnabled:(BOOL)enabled;
 - (void)_updateCurrentRoadInfo;
 - (void)_updatePreferredLabelPlacements;
 - (void)_updateRoadStarts;
 - (void)_updateRoadsInGuidance;
 - (void)_updateUniqueOffRouteRoads;
-- (void)clearSceneIsMemoryWarning:(BOOL)a3;
-- (void)debugDraw:(id)a3 overlayConsole:(void *)a4 navContext:(NavContext *)a5;
-- (void)drawNavOverlayDebugView:(void *)a3 navContext:(NavContext *)a4;
-- (void)drawRoadSignOrientationDebugView:(void *)a3 navContext:(NavContext *)a4;
-- (void)grabTilesFromScene:(const void *)a3;
-- (void)layoutForDisplayWithNavContext:(NavContext *)a3 labels:(void *)a4;
-- (void)layoutForStagingWithNavContext:(NavContext *)a3 avoidanceRects:(const void *)a4 options:(const LabelUpdateOptions *)a5;
+- (void)clearSceneIsMemoryWarning:(BOOL)warning;
+- (void)debugDraw:(id)draw overlayConsole:(void *)console navContext:(NavContext *)context;
+- (void)drawNavOverlayDebugView:(void *)view navContext:(NavContext *)context;
+- (void)drawRoadSignOrientationDebugView:(void *)view navContext:(NavContext *)context;
+- (void)grabTilesFromScene:(const void *)scene;
+- (void)layoutForDisplayWithNavContext:(NavContext *)context labels:(void *)labels;
+- (void)layoutForStagingWithNavContext:(NavContext *)context avoidanceRects:(const void *)rects options:(const LabelUpdateOptions *)options;
 - (void)prepareForLayoutForStaging;
-- (void)setCurrentLocationText:(id)a3;
-- (void)setDebugDisableRoadSignLimit:(BOOL)a3;
-- (void)setMaxVisibleRoadsigns:(unsigned int)a3;
-- (void)setRoute:(id)a3;
-- (void)setRouteUserOffset:(PolylineCoordinate)a3;
-- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)a3;
-- (void)styleManagerDidChange:(BOOL)a3;
+- (void)setCurrentLocationText:(id)text;
+- (void)setDebugDisableRoadSignLimit:(BOOL)limit;
+- (void)setMaxVisibleRoadsigns:(unsigned int)roadsigns;
+- (void)setRoute:(id)route;
+- (void)setRouteUserOffset:(PolylineCoordinate)offset;
+- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)manager;
+- (void)styleManagerDidChange:(BOOL)change;
 - (void)synchStagingWithDisplay;
 @end
 
@@ -187,17 +187,17 @@
 
     else
     {
-      v4 = [(VKPolylineOverlay *)self->_route routeRibbon];
-      v5 = [v4 renderRegion];
+      routeRibbon = [(VKPolylineOverlay *)self->_route routeRibbon];
+      renderRegion = [routeRibbon renderRegion];
 
-      if (v5)
+      if (renderRegion)
       {
-        v6 = [v5 snappingRegion];
+        snappingRegion = [renderRegion snappingRegion];
         v23 = 0;
         v24 = 0;
         v22 = &v23;
-        v7 = *v6;
-        if (*v6 != v6 + 8)
+        v7 = *snappingRegion;
+        if (*snappingRegion != snappingRegion + 8)
         {
           do
           {
@@ -284,11 +284,11 @@ LABEL_19:
             v7 = v15;
           }
 
-          while (v15 != (v6 + 8));
+          while (v15 != (snappingRegion + 8));
         }
 
-        v16 = *(v6 + 24);
-        v26 = *(v6 + 40);
+        v16 = *(snappingRegion + 24);
+        v26 = *(snappingRegion + 40);
         v25 = v16;
       }
 
@@ -310,9 +310,9 @@ LABEL_19:
       self->_snappingRegion._enclosingRect._minimum = v25;
       self->_snappingRegion._enclosingRect._maximum = v17;
       std::__tree<geo::Pool<gdc::FallbackNode>::Element *,std::less<geo::Pool<gdc::FallbackNode>::Element *>,std::allocator<geo::Pool<gdc::FallbackNode>::Element *>>::destroy(v23);
-      v18 = [(VKPolylineOverlay *)self->_route routeRibbon];
-      v19 = [v18 matchedSegments];
-      v20 = [v19 copy];
+      routeRibbon2 = [(VKPolylineOverlay *)self->_route routeRibbon];
+      matchedSegments = [routeRibbon2 matchedSegments];
+      v20 = [matchedSegments copy];
       v21 = self->_matchedPaths;
       self->_matchedPaths = v20;
 
@@ -379,7 +379,7 @@ LABEL_19:
   v2 = +[VKDebugSettings sharedSettings];
   if ([v2 showNavLabelOverlay])
   {
-    v3 = 1;
+    showNavLabelRouteAvoidanceOverlay = 1;
   }
 
   else
@@ -387,29 +387,29 @@ LABEL_19:
     v4 = +[VKDebugSettings sharedSettings];
     if ([v4 enableNavRoadSignOrientationDebugging])
     {
-      v3 = 1;
+      showNavLabelRouteAvoidanceOverlay = 1;
     }
 
     else
     {
       v5 = +[VKDebugSettings sharedSettings];
-      v3 = [v5 showNavLabelRouteAvoidanceOverlay];
+      showNavLabelRouteAvoidanceOverlay = [v5 showNavLabelRouteAvoidanceOverlay];
     }
   }
 
-  return v3;
+  return showNavLabelRouteAvoidanceOverlay;
 }
 
-- (void)drawNavOverlayDebugView:(void *)a3 navContext:(NavContext *)a4
+- (void)drawNavOverlayDebugView:(void *)view navContext:(NavContext *)context
 {
   v171 = *MEMORY[0x1E69E9840];
   v162 = -16776961;
-  var3 = a4->var3;
-  var4 = a4->var4;
+  var3 = context->var3;
+  var4 = context->var4;
   v7 = *(var3 + 266);
   v8 = *(var3 + 267);
   v9 = *(var4 + 13);
-  v120 = *(a4->var1 + 44);
+  v120 = *(context->var1 + 44);
   if (*(var3 + 8))
   {
     v122 = *(var4 + 12);
@@ -439,17 +439,17 @@ LABEL_19:
   route = self->_route;
   if (route)
   {
-    v17 = [(VKPolylineOverlay *)route routeRibbon];
-    v18 = [v17 renderRegion];
+    routeRibbon = [(VKPolylineOverlay *)route routeRibbon];
+    renderRegion = [routeRibbon renderRegion];
 
-    if (v18)
+    if (renderRegion)
     {
-      v19 = [(VKPolylineOverlay *)self->_route routeRibbon];
-      v20 = [v19 renderRegion];
-      v21 = [v20 snappingRegion];
+      routeRibbon2 = [(VKPolylineOverlay *)self->_route routeRibbon];
+      renderRegion2 = [routeRibbon2 renderRegion];
+      snappingRegion = [renderRegion2 snappingRegion];
 
-      v24 = *v21;
-      v23 = v21 + 1;
+      v24 = *snappingRegion;
+      v23 = snappingRegion + 1;
       v22 = v24;
       if (v24 != v23)
       {
@@ -535,17 +535,17 @@ LABEL_19:
   v167.f64[1] = v123;
   v163.n128_f64[0] = v41 / v44;
   v150 = v41 / v44;
-  md::DebugConsoleMapRect::DebugConsoleMapRect(&v156, a3, v159, &v167, v163.n128_f64, &v150);
-  *(a3 + 24) = 0x80000000;
+  md::DebugConsoleMapRect::DebugConsoleMapRect(&v156, view, v159, &v167, v163.n128_f64, &v150);
+  *(view + 24) = 0x80000000;
   v45 = *&v157;
-  *(a3 + 1) = v157;
-  *&v46 = ggl::DebugConsole::drawRectangleWithFill(a3, v158, v45);
+  *(view + 1) = v157;
+  *&v46 = ggl::DebugConsole::drawRectangleWithFill(view, v158, v45);
   v47 = self->_route;
   if (v47)
   {
-    v48 = [(VKPolylineOverlay *)v47 routeRibbon];
-    v49 = [v48 renderRegion];
-    v50 = v49 == 0;
+    routeRibbon3 = [(VKPolylineOverlay *)v47 routeRibbon];
+    renderRegion3 = [routeRibbon3 renderRegion];
+    v50 = renderRegion3 == 0;
 
     if (!v50)
     {
@@ -553,7 +553,7 @@ LABEL_19:
       v154 = -16777216;
       v153 = -1;
       v152 = -16776961;
-      v51 = a4->var3;
+      v51 = context->var3;
       v52 = *(v51 + 144);
       v53 = *v52;
       if (*(v51 + 145) - v52 < 0x11uLL)
@@ -570,7 +570,7 @@ LABEL_19:
           v167 = v53;
           v168 = v55;
           md::DebugConsoleMapRect::drawWorldSegment(&v156, &v167, &v155);
-          v56 = a4->var3;
+          v56 = context->var3;
           v52 = *(v56 + 144);
           v53 = v52[v54++];
         }
@@ -582,12 +582,12 @@ LABEL_19:
       v167 = v53;
       v168 = vsubq_f64(v57, v53);
       md::DebugConsoleMapRect::drawWorldSegment(&v156, &v167, &v155);
-      v58 = [(VKPolylineOverlay *)self->_route routeRibbon];
-      v59 = [v58 renderRegion];
-      v60 = [v59 snappingRegion];
+      routeRibbon4 = [(VKPolylineOverlay *)self->_route routeRibbon];
+      renderRegion4 = [routeRibbon4 renderRegion];
+      snappingRegion2 = [renderRegion4 snappingRegion];
 
-      v63 = *v60;
-      v62 = v60 + 1;
+      v63 = *snappingRegion2;
+      v62 = snappingRegion2 + 1;
       v61 = v63;
       if (v63 != v62)
       {
@@ -635,8 +635,8 @@ LABEL_19:
       v146 = 0;
       v147 = 0;
       memset(v144, 0, sizeof(v144));
-      v66 = [(VKPolylineOverlay *)self->_route routeRibbon];
-      obj = [v66 matchedSegments];
+      routeRibbon5 = [(VKPolylineOverlay *)self->_route routeRibbon];
+      obj = [routeRibbon5 matchedSegments];
 
       if ([obj countByEnumeratingWithState:v144 objects:v170 count:16])
       {
@@ -651,10 +651,10 @@ LABEL_19:
       v143 = 0u;
       v140 = 0u;
       v141 = 0u;
-      v69 = [(VKPolylineOverlay *)self->_route composedRoute];
-      v126 = [v69 sections];
+      composedRoute = [(VKPolylineOverlay *)self->_route composedRoute];
+      sections = [composedRoute sections];
 
-      v70 = [v126 countByEnumeratingWithState:&v140 objects:v169 count:16];
+      v70 = [sections countByEnumeratingWithState:&v140 objects:v169 count:16];
       if (v70)
       {
         v71 = *v141;
@@ -664,16 +664,16 @@ LABEL_19:
           {
             if (*v141 != v71)
             {
-              objc_enumerationMutation(v126);
+              objc_enumerationMutation(sections);
             }
 
             v73 = *(*(&v140 + 1) + 8 * j);
             if ([v73 pointCount] >= 2)
             {
-              v74 = [v73 startPointIndex];
-              v75 = [v73 endPointIndex];
-              *&v139[3] = v74;
-              *&v139[4] = v75;
+              startPointIndex = [v73 startPointIndex];
+              endPointIndex = [v73 endPointIndex];
+              *&v139[3] = startPointIndex;
+              *&v139[4] = endPointIndex;
               v139[0] = v139;
               v139[1] = v139;
               v139[2] = 0;
@@ -681,7 +681,7 @@ LABEL_19:
             }
           }
 
-          v70 = [v126 countByEnumeratingWithState:&v140 objects:v169 count:16];
+          v70 = [sections countByEnumeratingWithState:&v140 objects:v169 count:16];
         }
 
         while (v70);
@@ -727,14 +727,14 @@ LABEL_19:
             }
 
             v83 = *(*(&v135 + 1) + 8 * n);
-            v84 = [v83 navFeature];
-            v85 = [v84 routeOffset];
+            navFeature = [v83 navFeature];
+            routeOffset = [navFeature routeOffset];
             index = self->_routeUserOffset.index;
-            if (index <= v85 && (index != v85 || self->_routeUserOffset.offset <= *(&v85 + 1)))
+            if (index <= routeOffset && (index != routeOffset || self->_routeUserOffset.offset <= *(&routeOffset + 1)))
             {
               if ([v83 isJunctionLabel])
               {
-                v87 = v84;
+                v87 = navFeature;
                 v139[0] = v87;
                 std::__tree<VKLabelNavJunction * {__strong},std::less<VKLabelNavJunction * {__strong}>,geo::allocator_adapter<VKLabelNavJunction * {__strong},mdm::zone_mallocator>>::__emplace_unique_key_args<VKLabelNavJunction * {__strong},VKLabelNavJunction * const {__strong}&>(&v167, v87, v139);
                 v88 = *[v87 mercatorCoordinate];
@@ -746,14 +746,14 @@ LABEL_19:
 
               else if ([v83 isRoadLabel])
               {
-                v90 = v84;
-                v91 = [v90 navJunctionA];
-                v139[0] = v91;
-                if (v91)
+                v90 = navFeature;
+                navJunctionA = [v90 navJunctionA];
+                v139[0] = navJunctionA;
+                if (navJunctionA)
                 {
-                  std::__tree<VKLabelNavJunction * {__strong},std::less<VKLabelNavJunction * {__strong}>,geo::allocator_adapter<VKLabelNavJunction * {__strong},mdm::zone_mallocator>>::__emplace_unique_key_args<VKLabelNavJunction * {__strong},VKLabelNavJunction * const {__strong}&>(&v167, v91, v139);
-                  v92 = *[v91 mercatorCoordinate];
-                  v93 = *([v91 mercatorCoordinate] + 8);
+                  std::__tree<VKLabelNavJunction * {__strong},std::less<VKLabelNavJunction * {__strong}>,geo::allocator_adapter<VKLabelNavJunction * {__strong},mdm::zone_mallocator>>::__emplace_unique_key_args<VKLabelNavJunction * {__strong},VKLabelNavJunction * const {__strong}&>(&v167, navJunctionA, v139);
+                  v92 = *[navJunctionA mercatorCoordinate];
+                  v93 = *([navJunctionA mercatorCoordinate] + 8);
                   v163.n128_u64[0] = v92;
                   v163.n128_u64[1] = v93;
                   md::DebugConsoleMapRect::drawWorldSymbol(&v156, &v163, 2, &v152);
@@ -812,9 +812,9 @@ LABEL_19:
             }
 
             std::__tree<VKLabelNavJunction * {__strong},std::less<VKLabelNavJunction * {__strong}>,geo::allocator_adapter<VKLabelNavJunction * {__strong},mdm::zone_mallocator>>::__emplace_unique_key_args<VKLabelNavJunction * {__strong},VKLabelNavJunction * const {__strong}&>(&v167, v98, v139);
-            v102 = [v99 routeOffset];
+            routeOffset2 = [v99 routeOffset];
             v103 = self->_routeUserOffset.index;
-            if (v103 <= v102 && (v103 != v102 || self->_routeUserOffset.offset <= *(&v102 + 1)))
+            if (v103 <= routeOffset2 && (v103 != routeOffset2 || self->_routeUserOffset.offset <= *(&routeOffset2 + 1)))
             {
               v104 = *[v99 mercatorCoordinate];
               v105 = *([v99 mercatorCoordinate] + 8);
@@ -929,15 +929,15 @@ LABEL_101:
 
   v119.n128_f64[0] = v122;
   v119.n128_f64[1] = v123;
-  v167.f64[0] = *(a4->var3 + 105);
+  v167.f64[0] = *(context->var3 + 105);
   md::DebugConsoleMapRect::drawWorldArrow(&v156, v167.f64, &v162, v119, v120 * 22.0, v120 * 12.0);
 }
 
-- (void)drawRoadSignOrientationDebugView:(void *)a3 navContext:(NavContext *)a4
+- (void)drawRoadSignOrientationDebugView:(void *)view navContext:(NavContext *)context
 {
   v5 = 0;
   v140 = *MEMORY[0x1E69E9840];
-  v6 = a4->var3 + 864;
+  v6 = context->var3 + 864;
   v7 = &v136;
   do
   {
@@ -990,14 +990,14 @@ LABEL_101:
         }
 
         v22 = *(*(&v132 + 1) + 8 * i);
-        v23 = [v22 navFeature];
-        v24 = [v23 routeOffset];
+        navFeature = [v22 navFeature];
+        routeOffset = [navFeature routeOffset];
         index = self->_routeUserOffset.index;
-        if (index <= v24 && (index != v24 || self->_routeUserOffset.offset <= *(&v24 + 1)) && *[v22 label])
+        if (index <= routeOffset && (index != routeOffset || self->_routeUserOffset.offset <= *(&routeOffset + 1)) && *[v22 label])
         {
-          v26 = [v22 label];
-          v27 = *v26;
-          v28 = *(*v26 + 160);
+          label = [v22 label];
+          v27 = *label;
+          v28 = *(*label + 160);
           if (v28)
           {
             (*(*v28 + 56))(v28);
@@ -1013,19 +1013,19 @@ LABEL_101:
           *&v129 = v29;
           *(&v129 + 1) = v30;
           v130 = v31;
-          var3 = a4->var3;
+          var3 = context->var3;
           *&v136 = md::NavContext::worldPoint(*(var3 + 8), &v129, *(var3 + 13));
           *(&v136 + 1) = v33;
           v137 = v34;
           md::LabelLayoutContext::projectPointToPixel(var3, &v136, &v131);
-          v112 = v23;
+          v112 = navFeature;
           if ([v22 isRoadLabel])
           {
             if (([v112 isAwayFromRoute] & 1) == 0)
             {
-              v35 = [v112 navJunctionA];
-              v36 = [v35 outgoingRoad];
-              v37 = v36 == 0;
+              navJunctionA = [v112 navJunctionA];
+              outgoingRoad = [navJunctionA outgoingRoad];
+              v37 = outgoingRoad == 0;
 
               if (!v37)
               {
@@ -1035,12 +1035,12 @@ LABEL_101:
                 v137 = 0;
                 v40 = gm::Matrix<double,4,4>::multiplyHomogeneous<int,void>(v138, &v136);
                 v42 = v41;
-                v43 = [v112 navJunctionA];
-                v44 = [v43 mercatorCoordinate];
-                v129 = *v44;
-                v130 = *(v44 + 16);
+                navJunctionA2 = [v112 navJunctionA];
+                mercatorCoordinate = [navJunctionA2 mercatorCoordinate];
+                v129 = *mercatorCoordinate;
+                v130 = *(mercatorCoordinate + 16);
 
-                v45 = a4->var3;
+                v45 = context->var3;
                 *&v136 = md::NavContext::worldPoint(*(v45 + 8), &v129, *(v45 + 13));
                 *(&v136 + 1) = v46;
                 v137 = v47;
@@ -1048,9 +1048,9 @@ LABEL_101:
                 v48 = exp(*(&v129 + 1) * 6.28318531 + -3.14159265);
                 v49 = atan(v48);
                 v50 = geo::WGS84::unitsPerMeterAtLatitude<geo::Degrees,double>(v49 * 114.591559 + -90.0);
-                v51 = [v112 navJunctionA];
-                v52 = [v51 outgoingRoad];
-                [v52 direction3D];
+                navJunctionA3 = [v112 navJunctionA];
+                outgoingRoad2 = [navJunctionA3 outgoingRoad];
+                [outgoingRoad2 direction3D];
                 v53 = 0;
                 v54 = v40;
                 v55 = v42;
@@ -1095,9 +1095,9 @@ LABEL_101:
                 v66 = v136;
                 v67 = v137;
 
-                v68 = [v112 navJunctionA];
-                v69 = [v68 incomingRoad];
-                [v69 direction3D];
+                navJunctionA4 = [v112 navJunctionA];
+                incomingRoad = [navJunctionA4 incomingRoad];
+                [incomingRoad direction3D];
                 v70 = 0;
                 v122 = __PAIR64__(v72, v71);
                 v123 = v73;
@@ -1140,7 +1140,7 @@ LABEL_101:
                 v127 = v67;
                 v120 = v118;
                 v121 = v77;
-                v78 = a4->var3;
+                v78 = context->var3;
                 v79 = *(v78 + 13);
                 v80 = *(v78 + 8);
                 *&v136 = md::NavContext::worldPoint(v80, &v126, v79);
@@ -1152,13 +1152,13 @@ LABEL_101:
                 v137 = v84;
                 md::LabelLayoutContext::projectPointToPixel(v78, &v136, &v122);
                 v85 = v128;
-                *(a3 + 1) = v128;
-                ggl::DebugConsole::drawSymbol(a3, 2);
-                *(a3 + 1) = v85;
-                v87 = ggl::DebugConsole::drawLine(a3, &v124, v86);
-                *(a3 + 1) = v85;
-                *&v88 = ggl::DebugConsole::drawLine(a3, &v122, v87);
-                [(LabelNavRouteLabeler *)self createRoadSignOrientationResolver:v112 navContext:a4, v88];
+                *(view + 1) = v128;
+                ggl::DebugConsole::drawSymbol(view, 2);
+                *(view + 1) = v85;
+                v87 = ggl::DebugConsole::drawLine(view, &v124, v86);
+                *(view + 1) = v85;
+                *&v88 = ggl::DebugConsole::drawLine(view, &v122, v87);
+                [(LabelNavRouteLabeler *)self createRoadSignOrientationResolver:v112 navContext:context, v88];
                 v119 = v131.f32[1] + -40.0;
                 v115 = v131.f32[0] + -40.0;
                 v116 = v131.f32[0];
@@ -1199,32 +1199,32 @@ LABEL_101:
                       v106 = -16776961;
                     }
 
-                    *(a3 + 24) = v106;
+                    *(view + 24) = v106;
                     *&v126 = v95;
                     *(&v126 + 1) = v97 + -2.0;
                     *(&v126 + 2) = v96;
                     *(&v126 + 3) = v97 + 2.0;
-                    *(a3 + 2) = v95;
-                    *(a3 + 3) = v97 + -2.0;
-                    ggl::DebugConsole::drawRectangleWithFill(a3, &v126 + 2, v97 + -2.0);
+                    *(view + 2) = v95;
+                    *(view + 3) = v97 + -2.0;
+                    ggl::DebugConsole::drawRectangleWithFill(view, &v126 + 2, v97 + -2.0);
                     v92 += 4;
                   }
 
                   while (v92 != 80);
                 }
 
-                *(a3 + 24) = -1;
+                *(view + 24) = -1;
                 *&v126 = v116 + *(&v107 + 1);
                 *(&v126 + 1) = v119 + *&v107;
-                *(a3 + 2) = v116;
-                *(a3 + 3) = v119;
-                ggl::DebugConsole::drawLine(a3, &v126, v116 + *(&v107 + 1));
-                *(a3 + 24) = -16711681;
+                *(view + 2) = v116;
+                *(view + 3) = v119;
+                ggl::DebugConsole::drawLine(view, &v126, v116 + *(&v107 + 1));
+                *(view + 24) = -16711681;
                 *&v126 = v116 + (v109 * 40.0);
                 *(&v126 + 1) = v119 + (v108 * 40.0);
-                *(a3 + 2) = v116;
-                *(a3 + 3) = v119;
-                ggl::DebugConsole::drawLine(a3, &v126, v119 + (v108 * 40.0));
+                *(view + 2) = v116;
+                *(view + 3) = v119;
+                ggl::DebugConsole::drawLine(view, &v126, v119 + (v108 * 40.0));
                 v20 = 10.0;
               }
             }
@@ -1239,39 +1239,39 @@ LABEL_101:
   }
 }
 
-- (void)debugDraw:(id)a3 overlayConsole:(void *)a4 navContext:(NavContext *)a5
+- (void)debugDraw:(id)draw overlayConsole:(void *)console navContext:(NavContext *)context
 {
-  v14 = a3;
+  drawCopy = draw;
   v8 = +[VKDebugSettings sharedSettings];
-  v9 = [v8 showNavLabelOverlay];
+  showNavLabelOverlay = [v8 showNavLabelOverlay];
 
-  if (v9)
+  if (showNavLabelOverlay)
   {
-    [(LabelNavRouteLabeler *)self drawNavOverlayDebugView:a4 navContext:a5];
+    [(LabelNavRouteLabeler *)self drawNavOverlayDebugView:console navContext:context];
   }
 
   v10 = +[VKDebugSettings sharedSettings];
-  v11 = [v10 enableNavRoadSignOrientationDebugging];
+  enableNavRoadSignOrientationDebugging = [v10 enableNavRoadSignOrientationDebugging];
 
-  if (v11)
+  if (enableNavRoadSignOrientationDebugging)
   {
-    [(LabelNavRouteLabeler *)self drawRoadSignOrientationDebugView:a4 navContext:a5];
+    [(LabelNavRouteLabeler *)self drawRoadSignOrientationDebugView:console navContext:context];
   }
 
   v12 = +[VKDebugSettings sharedSettings];
-  v13 = [v12 showNavLabelRouteAvoidanceOverlay];
+  showNavLabelRouteAvoidanceOverlay = [v12 showNavLabelRouteAvoidanceOverlay];
 
-  if (v13)
+  if (showNavLabelRouteAvoidanceOverlay)
   {
-    [(VKLabelNavRoadGraph *)self->_roadGraph debugDraw:v14 overlayConsole:a4 navContext:a5];
+    [(VKLabelNavRoadGraph *)self->_roadGraph debugDraw:drawCopy overlayConsole:console navContext:context];
   }
 }
 
-- (unsigned)computeRoutePositionForPOIAtPixel:(const void *)a3 currentPosition:(unsigned __int8)a4 context:(NavContext *)a5
+- (unsigned)computeRoutePositionForPOIAtPixel:(const void *)pixel currentPosition:(unsigned __int8)position context:(NavContext *)context
 {
   if (self->_isOnRoute)
   {
-    return [(VKLabelNavRoadGraph *)self->_roadGraph computeRoutePositionForPOIAtPixel:a3 currentPosition:a4 context:a5];
+    return [(VKLabelNavRoadGraph *)self->_roadGraph computeRoutePositionForPOIAtPixel:pixel currentPosition:position context:context];
   }
 
   else
@@ -1309,7 +1309,7 @@ LABEL_101:
         atomic_fetch_add_explicit(&v5->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v6 = [(VKPolylineOverlay *)self->_route composedRoute];
+      composedRoute = [(VKPolylineOverlay *)self->_route composedRoute];
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __47__LabelNavRouteLabeler__updateActiveRouteRange__block_invoke;
@@ -1317,7 +1317,7 @@ LABEL_101:
       v48[4] = v49;
       v48[5] = &v50;
       v48[6] = next + 2;
-      [v6 forEachSnappedPath:v48];
+      [composedRoute forEachSnappedPath:v48];
 
       if (v5)
       {
@@ -1691,9 +1691,9 @@ void __47__LabelNavRouteLabeler__updateActiveRouteRange__block_invoke(uint64_t a
   }
 }
 
-- (BOOL)_findRouteOverlappingJunctionFrom:(int64_t)a3 routeJunctions:(void *)a4 lookBackward:(BOOL)a5 firstOverlap:(int64_t *)a6 secondOverlap:(int64_t *)a7
+- (BOOL)_findRouteOverlappingJunctionFrom:(int64_t)from routeJunctions:(void *)junctions lookBackward:(BOOL)backward firstOverlap:(int64_t *)overlap secondOverlap:(int64_t *)secondOverlap
 {
-  v10 = a3;
+  fromCopy = from;
   v31 = *MEMORY[0x1E69E9840];
   v27 = 0;
   v28 = 0;
@@ -1701,13 +1701,13 @@ void __47__LabelNavRouteLabeler__updateActiveRouteRange__block_invoke(uint64_t a
   *&v29[23] = 0;
   *&v29[7] = 0;
   v30 = 1065353216;
-  if (!a5)
+  if (!backward)
   {
-    v15 = a3 + 1;
-    v16 = *a4;
-    if (a3 + 1 < ((*(a4 + 1) - *a4) >> 4))
+    v15 = from + 1;
+    v16 = *junctions;
+    if (from + 1 < ((*(junctions + 1) - *junctions) >> 4))
     {
-      v17 = 16 * a3 + 24;
+      v17 = 16 * from + 24;
       while (1)
       {
         v18 = *(v16 + v17);
@@ -1720,16 +1720,16 @@ void __47__LabelNavRouteLabeler__updateActiveRouteRange__block_invoke(uint64_t a
 
         v26 = &v25;
         std::__hash_table<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::__unordered_map_hasher<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::hash<GeoCodecsConnectivityJunction *>,std::equal_to<GeoCodecsConnectivityJunction *>,true>,std::__unordered_map_equal<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::equal_to<GeoCodecsConnectivityJunction *>,std::hash<GeoCodecsConnectivityJunction *>,true>,geo::allocator_adapter<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,mdm::zone_mallocator>>::__emplace_unique_key_args<GeoCodecsConnectivityJunction *,std::piecewise_construct_t const&,std::tuple<GeoCodecsConnectivityJunction * const&>,std::tuple<>>(&v27, v18, &v26)[3] = v15++;
-        v16 = *a4;
+        v16 = *junctions;
         v17 += 16;
-        if (v15 >= (*(a4 + 1) - *a4) >> 4)
+        if (v15 >= (*(junctions + 1) - *junctions) >> 4)
         {
           goto LABEL_12;
         }
       }
 
-      *a6 = v19[3];
-      *a7 = v15;
+      *overlap = v19[3];
+      *secondOverlap = v15;
       goto LABEL_15;
     }
 
@@ -1738,15 +1738,15 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if (a3 < 0)
+  if (from < 0)
   {
     goto LABEL_12;
   }
 
-  v11 = (16 * a3) | 8;
+  v11 = (16 * from) | 8;
   while (1)
   {
-    v12 = *(*a4 + v11);
+    v12 = *(*junctions + v11);
     v25 = v12;
     v13 = std::__hash_table<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::__unordered_map_hasher<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::hash<GeoCodecsConnectivityJunction *>,std::equal_to<GeoCodecsConnectivityJunction *>,true>,std::__unordered_map_equal<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::equal_to<GeoCodecsConnectivityJunction *>,std::hash<GeoCodecsConnectivityJunction *>,true>,geo::allocator_adapter<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,mdm::zone_mallocator>>::find<GeoCodecsConnectivityJunction *>(v27, v28, v12);
     if (v13)
@@ -1755,16 +1755,16 @@ LABEL_12:
     }
 
     v26 = &v25;
-    std::__hash_table<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::__unordered_map_hasher<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::hash<GeoCodecsConnectivityJunction *>,std::equal_to<GeoCodecsConnectivityJunction *>,true>,std::__unordered_map_equal<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::equal_to<GeoCodecsConnectivityJunction *>,std::hash<GeoCodecsConnectivityJunction *>,true>,geo::allocator_adapter<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,mdm::zone_mallocator>>::__emplace_unique_key_args<GeoCodecsConnectivityJunction *,std::piecewise_construct_t const&,std::tuple<GeoCodecsConnectivityJunction * const&>,std::tuple<>>(&v27, v12, &v26)[3] = v10;
+    std::__hash_table<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::__unordered_map_hasher<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::hash<GeoCodecsConnectivityJunction *>,std::equal_to<GeoCodecsConnectivityJunction *>,true>,std::__unordered_map_equal<GeoCodecsConnectivityJunction *,std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,std::equal_to<GeoCodecsConnectivityJunction *>,std::hash<GeoCodecsConnectivityJunction *>,true>,geo::allocator_adapter<std::__hash_value_type<GeoCodecsConnectivityJunction *,long>,mdm::zone_mallocator>>::__emplace_unique_key_args<GeoCodecsConnectivityJunction *,std::piecewise_construct_t const&,std::tuple<GeoCodecsConnectivityJunction * const&>,std::tuple<>>(&v27, v12, &v26)[3] = fromCopy;
     v11 -= 16;
-    if (v10-- < 1)
+    if (fromCopy-- < 1)
     {
       goto LABEL_12;
     }
   }
 
-  *a6 = v10;
-  *a7 = v13[3];
+  *overlap = fromCopy;
+  *secondOverlap = v13[3];
 LABEL_15:
   v20 = 1;
 LABEL_16:
@@ -1780,18 +1780,18 @@ LABEL_16:
   return v20;
 }
 
-- (void)setCurrentLocationText:(id)a3
+- (void)setCurrentLocationText:(id)text
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_currentLocationText != v5)
+  textCopy = text;
+  v6 = textCopy;
+  if (self->_currentLocationText != textCopy)
   {
-    v9 = v5;
-    v7 = [(NSString *)v5 isEqualToString:?];
+    v9 = textCopy;
+    v7 = [(NSString *)textCopy isEqualToString:?];
     v6 = v9;
     if (!v7)
     {
-      objc_storeStrong(&self->_currentLocationText, a3);
+      objc_storeStrong(&self->_currentLocationText, text);
       v6 = v9;
       cntrl = self->_currentRoadSign.__cntrl_;
       self->_currentRoadSign.__ptr_ = 0;
@@ -1816,16 +1816,16 @@ LABEL_16:
       {
         v4 = currentRoadNameIndex + 1;
         v14 = [(NSMutableArray *)self->_routeRoadInfos objectAtIndexedSubscript:currentRoadNameIndex + 1];
-        v5 = [v14 routeOffset];
+        routeOffset = [v14 routeOffset];
         index = self->_routeUserOffset.index;
-        if (index < v5)
+        if (index < routeOffset)
         {
           break;
         }
 
-        if (index == v5)
+        if (index == routeOffset)
         {
-          v7 = *(&v5 + 1);
+          v7 = *(&routeOffset + 1);
           offset = self->_routeUserOffset.offset;
 
           if (offset < v7)
@@ -1851,15 +1851,15 @@ LABEL_14:
     {
       self->_currentRoadNameIndex = currentRoadNameIndex;
       v10 = [(NSMutableArray *)self->_routeRoadInfos objectAtIndexedSubscript:currentRoadNameIndex];
-      v15 = [v10 name];
+      name = [v10 name];
 
       currentRoadName = self->_currentRoadName;
-      if (currentRoadName != v15 && ![(NSString *)currentRoadName isEqualToString:?])
+      if (currentRoadName != name && ![(NSString *)currentRoadName isEqualToString:?])
       {
-        [(LabelNavRouteLabeler *)self setCurrentRoadName:v15];
+        [(LabelNavRouteLabeler *)self setCurrentRoadName:name];
         v12 = [(NSMutableArray *)self->_routeRoadInfos objectAtIndexedSubscript:self->_currentRoadNameIndex];
-        v13 = [v12 shieldGroup];
-        [(LabelNavRouteLabeler *)self setCurrentShieldGroup:v13];
+        shieldGroup = [v12 shieldGroup];
+        [(LabelNavRouteLabeler *)self setCurrentShieldGroup:shieldGroup];
       }
 
       MEMORY[0x1EEE66BE0]();
@@ -1909,8 +1909,8 @@ LABEL_14:
         v45 = 0u;
         v46 = 0u;
         v40 = v3;
-        v41 = [v3 roads];
-        v4 = [v41 countByEnumeratingWithState:&v43 objects:v61 count:16];
+        roads = [v3 roads];
+        v4 = [roads countByEnumeratingWithState:&v43 objects:v61 count:16];
         if (v4)
         {
           v5 = *v44;
@@ -1920,17 +1920,17 @@ LABEL_14:
             {
               if (*v44 != v5)
               {
-                objc_enumerationMutation(v41);
+                objc_enumerationMutation(roads);
               }
 
               v7 = *(*(&v43 + 1) + 8 * j);
               if (([v7 isOnRoute] & 1) == 0 && objc_msgSend(v7, "roadHasName") && (objc_msgSend(v7, "areLabelsDisabled") & 1) == 0)
               {
                 [v7 setSuppressRoadSignIfDeduped:0];
-                v8 = [v7 name];
-                v9 = v8;
-                v10 = [v8 UTF8String];
-                v11 = strlen(v10);
+                name = [v7 name];
+                v9 = name;
+                uTF8String = [name UTF8String];
+                v11 = strlen(uTF8String);
                 if (v11 >= 0x7FFFFFFFFFFFFFF8)
                 {
                   std::__throw_bad_array_new_length[abi:nn200100]();
@@ -1945,7 +1945,7 @@ LABEL_14:
                 *(&__dst.__r_.__value_.__s + 23) = v11;
                 if (v11)
                 {
-                  memmove(&__dst, v10, v11);
+                  memmove(&__dst, uTF8String, v11);
                 }
 
                 __dst.__r_.__value_.__s.__data_[v12] = 0;
@@ -2142,8 +2142,8 @@ LABEL_36:
 
                   else
                   {
-                    v18 = [(VKPolylineOverlay *)self->_route composedRoute];
-                    [v18 distanceFromPoint:objc_msgSend(*v16 toPoint:{"routeOffset"), objc_msgSend(v40, "routeOffset")}];
+                    composedRoute = [(VKPolylineOverlay *)self->_route composedRoute];
+                    [composedRoute distanceFromPoint:objc_msgSend(*v16 toPoint:{"routeOffset"), objc_msgSend(v40, "routeOffset")}];
                     v20 = v19;
 
                     if (v20 >= 300.0)
@@ -2162,7 +2162,7 @@ LABEL_36:
               }
             }
 
-            v4 = [v41 countByEnumeratingWithState:&v43 objects:v61 count:16];
+            v4 = [roads countByEnumeratingWithState:&v43 objects:v61 count:16];
           }
 
           while (v4);
@@ -2203,11 +2203,11 @@ LABEL_36:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 requiredLabelPlacement];
-        v6 = v10;
-        if ((v10 - 1) >= 2)
+        requiredLabelPlacement = [v9 requiredLabelPlacement];
+        v6 = requiredLabelPlacement;
+        if ((requiredLabelPlacement - 1) >= 2)
         {
-          if (v10 == 3)
+          if (requiredLabelPlacement == 3)
           {
             if (v8 == 1)
             {
@@ -2233,7 +2233,7 @@ LABEL_36:
           else
           {
             v6 = v8;
-            if (v10 != 5)
+            if (requiredLabelPlacement != 5)
             {
               continue;
             }
@@ -2245,9 +2245,9 @@ LABEL_36:
 
             else
             {
-              v12 = [(VKPolylineOverlay *)self->_route composedRoute];
-              v13 = [v12 steps];
-              v14 = [v13 objectAtIndexedSubscript:self->_stepIndex];
+              composedRoute = [(VKPolylineOverlay *)self->_route composedRoute];
+              steps = [composedRoute steps];
+              v14 = [steps objectAtIndexedSubscript:self->_stepIndex];
 
               if ([v14 drivingSide])
               {
@@ -2295,16 +2295,16 @@ LABEL_36:
         }
 
         v7 = *(*(&v20 + 1) + 8 * i);
-        v8 = [v7 outgoingRoad];
+        outgoingRoad = [v7 outgoingRoad];
         roadNamesInGuidance = self->_roadNamesInGuidance;
-        v10 = [v8 name];
-        [v8 setIsInGuidance:{-[NSMutableSet containsObject:](roadNamesInGuidance, "containsObject:", v10)}];
+        name = [outgoingRoad name];
+        [outgoingRoad setIsInGuidance:{-[NSMutableSet containsObject:](roadNamesInGuidance, "containsObject:", name)}];
 
-        [v8 setIsGuidanceStepStart:0];
-        if ([v8 isInGuidance])
+        [outgoingRoad setIsGuidanceStepStart:0];
+        if ([outgoingRoad isInGuidance])
         {
-          v11 = [v7 routeOffset];
-          v12 = COERCE_FLOAT([v7 routeOffset] >> 32) + v11;
+          routeOffset = [v7 routeOffset];
+          v12 = COERCE_FLOAT([v7 routeOffset] >> 32) + routeOffset;
           while (v4 < [(NSMutableArray *)self->_guidanceStepInfos count])
           {
             v13 = [(NSMutableArray *)self->_guidanceStepInfos objectAtIndexedSubscript:v4];
@@ -2321,15 +2321,15 @@ LABEL_36:
           if (v4 < [(NSMutableArray *)self->_guidanceStepInfos count])
           {
             v15 = [(NSMutableArray *)self->_guidanceStepInfos objectAtIndexedSubscript:v4];
-            v16 = [v15 roadName];
-            v17 = [v8 name];
-            if ([v16 isEqualToString:v17])
+            roadName = [v15 roadName];
+            name2 = [outgoingRoad name];
+            if ([roadName isEqualToString:name2])
             {
               v18 = vabdd_f64(v12, [v15 routePoint]) < 0.1;
 
               if (v18)
               {
-                [v8 setIsGuidanceStepStart:1];
+                [outgoingRoad setIsGuidanceStepStart:1];
                 ++v4;
               }
             }
@@ -2351,22 +2351,22 @@ LABEL_36:
 - (void)_updateRoadStarts
 {
   [(NSMutableArray *)self->_routeRoadInfos removeAllObjects];
-  v24 = [(LabelNavRouteLabeler *)self currentRoadName];
+  currentRoadName = [(LabelNavRouteLabeler *)self currentRoadName];
   v3 = 0;
   v4 = 0;
   v5 = 0.0;
   while (v3 < [(NSMutableArray *)self->_junctions count])
   {
     v6 = [(NSMutableArray *)self->_junctions objectAtIndexedSubscript:v3];
-    v7 = [v6 outgoingRoad];
-    v8 = v7;
-    if (!v7)
+    outgoingRoad = [v6 outgoingRoad];
+    v8 = outgoingRoad;
+    if (!outgoingRoad)
     {
       goto LABEL_17;
     }
 
-    v9 = [v7 name];
-    if (v24 == v9)
+    name = [outgoingRoad name];
+    if (currentRoadName == name)
     {
 
 LABEL_17:
@@ -2376,8 +2376,8 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v10 = [v8 name];
-    v11 = [v24 isEqualToString:v10];
+    name2 = [v8 name];
+    v11 = [currentRoadName isEqualToString:name2];
 
     if (v11)
     {
@@ -2386,18 +2386,18 @@ LABEL_17:
 
     if (v3 && v5 < 30.0)
     {
-      v12 = [(NSMutableSet *)self->_roadNamesInGuidance containsObject:v24];
+      v12 = [(NSMutableSet *)self->_roadNamesInGuidance containsObject:currentRoadName];
       v13 = v4 >= v3 ? 1 : v12;
       if ((v13 & 1) == 0)
       {
         do
         {
           v14 = [(NSMutableArray *)self->_junctions objectAtIndexedSubscript:v4];
-          v15 = [v14 outgoingRoad];
+          outgoingRoad2 = [v14 outgoingRoad];
 
-          if (([v15 areLabelsDisabled] & 1) == 0)
+          if (([outgoingRoad2 areLabelsDisabled] & 1) == 0)
           {
-            [v15 setAreLabelsDisabled:1];
+            [outgoingRoad2 setAreLabelsDisabled:1];
           }
 
           ++v4;
@@ -2410,16 +2410,16 @@ LABEL_17:
     [v8 length];
     v17 = v16;
     [v8 setIsStartOfRoadName:1];
-    v18 = [v8 name];
+    name3 = [v8 name];
 
     v19 = [VKRouteRoadInfo alloc];
-    v20 = [v8 name];
-    v21 = [v8 shieldGroup];
-    v22 = -[VKRouteRoadInfo initWithName:shieldGroup:offset:](v19, "initWithName:shieldGroup:offset:", v20, v21, [v6 routeOffset]);
+    name4 = [v8 name];
+    shieldGroup = [v8 shieldGroup];
+    v22 = -[VKRouteRoadInfo initWithName:shieldGroup:offset:](v19, "initWithName:shieldGroup:offset:", name4, shieldGroup, [v6 routeOffset]);
 
     [(NSMutableArray *)self->_routeRoadInfos addObject:v22];
     v4 = v3;
-    v24 = v18;
+    currentRoadName = name3;
 LABEL_18:
     v5 = v17;
 
@@ -2455,8 +2455,8 @@ LABEL_18:
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v23 = [v21 roads];
-          v2 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+          roads = [v21 roads];
+          v2 = [roads countByEnumeratingWithState:&v30 objects:v39 count:16];
           if (!v2)
           {
             goto LABEL_32;
@@ -2472,7 +2472,7 @@ LABEL_18:
             {
               if (*v31 != v3)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(roads);
               }
 
               v5 = *(*(&v30 + 1) + 8 * v4);
@@ -2482,8 +2482,8 @@ LABEL_18:
                 v29 = 0u;
                 v26 = 0u;
                 v27 = 0u;
-                v25 = [v21 roads];
-                v6 = [v25 countByEnumeratingWithState:&v26 objects:v38 count:16];
+                roads2 = [v21 roads];
+                v6 = [roads2 countByEnumeratingWithState:&v26 objects:v38 count:16];
                 v24 = v4;
                 if (v6)
                 {
@@ -2496,15 +2496,15 @@ LABEL_18:
                     {
                       if (*v27 != v8)
                       {
-                        objc_enumerationMutation(v25);
+                        objc_enumerationMutation(roads2);
                       }
 
                       v11 = *(*(&v26 + 1) + 8 * j);
                       if (v11 != v5)
                       {
-                        v12 = [v5 name];
-                        v13 = [v11 name];
-                        v14 = [v12 isEqualToString:v13];
+                        name = [v5 name];
+                        name2 = [v11 name];
+                        v14 = [name isEqualToString:name2];
 
                         if (v14)
                         {
@@ -2514,7 +2514,7 @@ LABEL_18:
                       }
                     }
 
-                    v6 = [v25 countByEnumeratingWithState:&v26 objects:v38 count:16];
+                    v6 = [roads2 countByEnumeratingWithState:&v26 objects:v38 count:16];
                   }
 
                   while (v6);
@@ -2550,7 +2550,7 @@ LABEL_30:
             }
 
             while (v4 != v2);
-            v2 = [v23 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v2 = [roads countByEnumeratingWithState:&v30 objects:v39 count:16];
             if (!v2)
             {
 LABEL_32:
@@ -2568,11 +2568,11 @@ LABEL_32:
   }
 }
 
-- (BOOL)_addJunctionsForTile:(const void *)a3
+- (BOOL)_addJunctionsForTile:(const void *)tile
 {
   v85 = *MEMORY[0x1E69E9840];
-  v78 = self;
-  v3 = *(*a3 + 24);
+  selfCopy = self;
+  v3 = *(*tile + 24);
   v5 = *v3;
   v4 = v3[1];
   v76 = v5;
@@ -2588,7 +2588,7 @@ LABEL_32:
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v6 = v78->_matchedPaths;
+  v6 = selfCopy->_matchedPaths;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v69 objects:v84 count:16];
   if (v7)
   {
@@ -2603,30 +2603,30 @@ LABEL_32:
         }
 
         v73 = *(*(&v69 + 1) + 8 * i);
-        v10 = [v73 road];
-        v11 = [v10 feature];
-        v12 = [v11 getRoad];
+        road = [v73 road];
+        feature = [road feature];
+        getRoad = [feature getRoad];
 
-        if (v12)
+        if (getRoad)
         {
-          v13 = [v73 road];
-          v14 = [v13 startJunction];
-          v15 = [v14 connectivityJunction];
+          road2 = [v73 road];
+          startJunction = [road2 startJunction];
+          connectivityJunction = [startJunction connectivityJunction];
 
-          v68 = v15;
-          v16 = [v73 road];
-          v17 = [v16 endJunction];
-          v18 = [v17 connectivityJunction];
+          v68 = connectivityJunction;
+          road3 = [v73 road];
+          endJunction = [road3 endJunction];
+          connectivityJunction2 = [endJunction connectivityJunction];
 
-          v67 = v18;
-          v19 = [v73 road];
-          v20 = [v19 feature];
-          v21 = [v20 feature];
-          v22 = [v21 containingTile];
-          v23 = v22;
-          if (v22)
+          v67 = connectivityJunction2;
+          road4 = [v73 road];
+          feature2 = [road4 feature];
+          v20Feature = [feature2 feature];
+          containingTile = [v20Feature containingTile];
+          v23 = containingTile;
+          if (containingTile)
           {
-            [v22 vectorTilePtr];
+            [containingTile vectorTilePtr];
           }
 
           else
@@ -2638,7 +2638,7 @@ LABEL_32:
           v24 = v76;
           if (geo::codec::TileKeyEquals((v76 + 4), (v65 + 4)) && *v24 == *v65)
           {
-            v25 = *(v12 + 8);
+            v25 = *(getRoad + 8);
             if (v25)
             {
               std::__shared_weak_count::lock(v25);
@@ -2692,8 +2692,8 @@ LABEL_32:
       while (v27);
     }
 
-    [(NSMutableArray *)v78->_junctions removeObjectsInArray:v75];
-    [(NSMutableArray *)v78->_junctions addObjectsFromArray:v75];
+    [(NSMutableArray *)selfCopy->_junctions removeObjectsInArray:v75];
+    [(NSMutableArray *)selfCopy->_junctions addObjectsFromArray:v75];
     v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v59 = 0u;
     v60 = 0u;
@@ -2716,7 +2716,7 @@ LABEL_32:
           v36 = *(*(&v57 + 1) + 8 * k);
           if ([v36 isOverpass])
           {
-            v37 = [(VKLabelNavRoadGraph *)v78->_roadGraph overpassJunctionForJunction:v36];
+            v37 = [(VKLabelNavRoadGraph *)selfCopy->_roadGraph overpassJunctionForJunction:v36];
             v38 = v37;
             if (v37 && ([v37 isOnRoute] & 1) == 0 && (objc_msgSend(v38, "isIntraRamp") & 1) == 0)
             {
@@ -2737,8 +2737,8 @@ LABEL_32:
 
     [v75 removeObjectsInArray:v31];
     [v75 addObjectsFromArray:v31];
-    [v31 removeObjectsInArray:v78->_junctions];
-    [(NSMutableArray *)v78->_junctions addObjectsFromArray:v31];
+    [v31 removeObjectsInArray:selfCopy->_junctions];
+    [(NSMutableArray *)selfCopy->_junctions addObjectsFromArray:v31];
     v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v55 = 0u;
     v56 = 0u;
@@ -2758,7 +2758,7 @@ LABEL_32:
             objc_enumerationMutation(v40);
           }
 
-          [(VKLabelNavRoadGraph *)v78->_roadGraph evaluateDualCarriagewayForJunction:*(*(&v53 + 1) + 8 * m) outputJunctionList:v39];
+          [(VKLabelNavRoadGraph *)selfCopy->_roadGraph evaluateDualCarriagewayForJunction:*(*(&v53 + 1) + 8 * m) outputJunctionList:v39];
         }
 
         v41 = [v40 countByEnumeratingWithState:&v53 objects:v80 count:16];
@@ -2794,15 +2794,15 @@ LABEL_32:
       while (v45);
     }
 
-    [v44 removeObjectsInArray:v78->_junctions];
-    [(NSMutableArray *)v78->_junctions addObjectsFromArray:v44];
-    [(NSMutableArray *)v78->_junctions sortUsingComparator:&__block_literal_global_26808];
-    [(LabelNavRouteLabeler *)v78 _updateRoadStarts];
-    [(LabelNavRouteLabeler *)v78 _updateRoadsInGuidance];
-    [(LabelNavRouteLabeler *)v78 _updatePreferredLabelPlacements];
-    [(LabelNavRouteLabeler *)v78 _initalizeCurrentRoadInfo];
-    [(LabelNavRouteLabeler *)v78 _updateUniqueOffRouteRoads];
-    [(LabelNavRouteLabeler *)v78 _dedupOffRouteRoads];
+    [v44 removeObjectsInArray:selfCopy->_junctions];
+    [(NSMutableArray *)selfCopy->_junctions addObjectsFromArray:v44];
+    [(NSMutableArray *)selfCopy->_junctions sortUsingComparator:&__block_literal_global_26808];
+    [(LabelNavRouteLabeler *)selfCopy _updateRoadStarts];
+    [(LabelNavRouteLabeler *)selfCopy _updateRoadsInGuidance];
+    [(LabelNavRouteLabeler *)selfCopy _updatePreferredLabelPlacements];
+    [(LabelNavRouteLabeler *)selfCopy _initalizeCurrentRoadInfo];
+    [(LabelNavRouteLabeler *)selfCopy _updateUniqueOffRouteRoads];
+    [(LabelNavRouteLabeler *)selfCopy _dedupOffRouteRoads];
   }
 
   if (v77)
@@ -2863,35 +2863,35 @@ uint64_t __45__LabelNavRouteLabeler__addJunctionsForTile___block_invoke(uint64_t
 {
   v50 = *MEMORY[0x1E69E9840];
   v2 = *a2;
-  if (*(*a2 + 40) == **(a1 + 8) && *(v2 + 48) == **(a1 + 16))
+  if (*(*a2 + 40) == **(self + 8) && *(v2 + 48) == **(self + 16))
   {
     v4 = objc_alloc(MEMORY[0x1E69A24E8]);
-    v5 = [**(a1 + 24) road];
-    v6 = [v5 feature];
+    road = [**(self + 24) road];
+    feature = [road feature];
     v48 = &unk_1F2A2A6E8;
-    v49 = [v4 init:v2 withMultiSectionFeatureInterface:v6];
+    v49 = [v4 init:v2 withMultiSectionFeatureInterface:feature];
 
-    v7 = **(a1 + 32);
+    v7 = **(self + 32);
     v8 = v49;
-    v9 = [v8 road];
-    v10 = [v9 feature];
-    v11 = [v10 containingTile];
-    v12 = v11;
-    if (v11)
+    road2 = [v8 road];
+    feature2 = [road2 feature];
+    containingTile = [feature2 containingTile];
+    v12 = containingTile;
+    if (containingTile)
     {
-      [v11 vectorTilePtr];
-      v13 = v40;
-      if (v41)
+      [containingTile vectorTilePtr];
+      v13 = startRouteCoordinate2;
+      if (endRouteCoordinate)
       {
-        std::__shared_weak_count::__release_shared[abi:nn200100](v41);
+        std::__shared_weak_count::__release_shared[abi:nn200100](endRouteCoordinate);
       }
     }
 
     else
     {
       v13 = 0;
-      v40 = 0;
-      v41 = 0;
+      startRouteCoordinate2 = 0;
+      endRouteCoordinate = 0;
     }
 
     if (!geo::codec::TileKeyEquals((v7 + 4), (v13 + 4)) || *v7 != *v13)
@@ -2963,14 +2963,14 @@ LABEL_40:
       }
     }
 
-    v27 = [**(a1 + 24) road];
-    v28 = [v27 isFlipped];
+    road3 = [**(self + 24) road];
+    isFlipped = [road3 isFlipped];
 
-    if ([**(a1 + 24) isPartialStart])
+    if ([**(self + 24) isPartialStart])
     {
-      v29 = [**(a1 + 24) startRouteCoordinate];
-      v30 = *(a1 + 40);
-      v31 = *v30 != v29 || vabds_f32(*(&v29 + 1), *(v30 + 4)) >= 0.00000011921;
+      startRouteCoordinate = [**(self + 24) startRouteCoordinate];
+      v30 = *(self + 40);
+      v31 = *v30 != startRouteCoordinate || vabds_f32(*(&startRouteCoordinate + 1), *(v30 + 4)) >= 0.00000011921;
     }
 
     else
@@ -2978,10 +2978,10 @@ LABEL_40:
       v31 = 0;
     }
 
-    v32 = [**(a1 + 24) isPartialEnd];
-    **(a1 + 40) = [**(a1 + 24) endRouteCoordinate];
-    v40 = [**(a1 + 24) startRouteCoordinate];
-    v41 = [**(a1 + 24) endRouteCoordinate];
+    isPartialEnd = [**(self + 24) isPartialEnd];
+    **(self + 40) = [**(self + 24) endRouteCoordinate];
+    startRouteCoordinate2 = [**(self + 24) startRouteCoordinate];
+    endRouteCoordinate = [**(self + 24) endRouteCoordinate];
     v42 = v25;
     v43 = v39;
     v44 = v37;
@@ -2990,11 +2990,11 @@ LABEL_40:
     v47 = vmovn_s64(v39);
     if (v31)
     {
-      v33 = **(a1 + 24);
-      if (v28)
+      v33 = **(self + 24);
+      if (isFlipped)
       {
         v47.i32[1] = [v33 roadRange];
-        if ((v32 & 1) == 0)
+        if ((isPartialEnd & 1) == 0)
         {
           goto LABEL_39;
         }
@@ -3003,7 +3003,7 @@ LABEL_40:
       }
 
       v47.i32[0] = [v33 roadRange];
-      if ((v32 & 1) == 0)
+      if ((isPartialEnd & 1) == 0)
       {
         goto LABEL_39;
       }
@@ -3011,24 +3011,24 @@ LABEL_40:
 
     else
     {
-      if ((v32 & 1) == 0)
+      if ((isPartialEnd & 1) == 0)
       {
 LABEL_39:
-        [*(**(a1 + 48) + 192) addRouteRoadEdge:&v40 atA:v28 ^ 1 isRouteRefineJunction:0 tile:*(a1 + 56) junctionList:**(a1 + 64)];
-        [*(**(a1 + 48) + 192) addRouteRoadEdge:&v40 atA:v28 isRouteRefineJunction:0 tile:*(a1 + 56) junctionList:**(a1 + 64)];
+        [*(**(self + 48) + 192) addRouteRoadEdge:&startRouteCoordinate2 atA:isFlipped ^ 1 isRouteRefineJunction:0 tile:*(self + 56) junctionList:**(self + 64)];
+        [*(**(self + 48) + 192) addRouteRoadEdge:&startRouteCoordinate2 atA:isFlipped isRouteRefineJunction:0 tile:*(self + 56) junctionList:**(self + 64)];
         goto LABEL_40;
       }
 
-      if (v28)
+      if (isFlipped)
       {
 LABEL_36:
-        [**(a1 + 24) roadRange];
+        [**(self + 24) roadRange];
         v47.i32[0] = v34;
         goto LABEL_39;
       }
     }
 
-    [**(a1 + 24) roadRange];
+    [**(self + 24) roadRange];
     v47.i32[1] = v35;
     goto LABEL_39;
   }
@@ -3037,23 +3037,23 @@ LABEL_36:
 - (__n128)_addJunctionsForTile:
 {
   *a2 = &unk_1F2A2A6A0;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  v4 = *(a1 + 40);
-  *(a2 + 56) = *(a1 + 56);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  v4 = *(self + 40);
+  *(a2 + 56) = *(self + 56);
   *(a2 + 40) = v4;
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
 }
 
-- (void)_addLabelsForJunctions:(id)a3 withContext:(NavContext *)a4 maxLabelsToAdd:(unint64_t)a5 useAllJunctions:(BOOL)a6 placeShieldsFrontToBack:(BOOL)a7
+- (void)_addLabelsForJunctions:(id)junctions withContext:(NavContext *)context maxLabelsToAdd:(unint64_t)add useAllJunctions:(BOOL)allJunctions placeShieldsFrontToBack:(BOOL)back
 {
-  v92 = a7;
-  v7 = a6;
+  backCopy = back;
+  allJunctionsCopy = allJunctions;
   v119 = *MEMORY[0x1E69E9840];
-  v93 = a3;
-  if (!a5)
+  junctionsCopy = junctions;
+  if (!add)
   {
     goto LABEL_107;
   }
@@ -3067,27 +3067,27 @@ LABEL_36:
     goto LABEL_107;
   }
 
-  if (v14 >= a5)
+  if (v14 >= add)
   {
-    v15 = a5;
+    addCopy = add;
   }
 
   else
   {
-    v15 = v14;
+    addCopy = v14;
   }
 
   v16 = +[VKDebugSettings sharedSettings];
-  v94 = [v16 labelCollisionDisabled];
+  labelCollisionDisabled = [v16 labelCollisionDisabled];
 
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v7)
+  if (allJunctionsCopy)
   {
     v110 = 0u;
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v18 = v93;
+    v18 = junctionsCopy;
     v19 = [v18 countByEnumeratingWithState:&v108 objects:v118 count:16];
     if (v19)
     {
@@ -3101,8 +3101,8 @@ LABEL_36:
             objc_enumerationMutation(v18);
           }
 
-          v22 = [*(*(&v108 + 1) + 8 * i) roads];
-          [v17 addObjectsFromArray:v22];
+          roads = [*(*(&v108 + 1) + 8 * i) roads];
+          [v17 addObjectsFromArray:roads];
         }
 
         v19 = [v18 countByEnumeratingWithState:&v108 objects:v118 count:16];
@@ -3114,25 +3114,25 @@ LABEL_36:
     goto LABEL_57;
   }
 
-  if (![v93 count])
+  if (![junctionsCopy count])
   {
     goto LABEL_57;
   }
 
-  for (j = 0; j < [v93 count]; ++j)
+  for (j = 0; j < [junctionsCopy count]; ++j)
   {
-    v24 = [v93 objectAtIndexedSubscript:j];
-    if ((*(*a4->var2 + 416))(a4->var2))
+    v24 = [junctionsCopy objectAtIndexedSubscript:j];
+    if ((*(*context->var2 + 416))(context->var2))
     {
-      v25 = [v24 mercatorCoordinate];
-      var3 = a4->var3;
-      v112 = md::NavContext::worldPoint(*(var3 + 8), v25, *(var3 + 13));
+      mercatorCoordinate = [v24 mercatorCoordinate];
+      var3 = context->var3;
+      v112 = md::NavContext::worldPoint(*(var3 + 8), mercatorCoordinate, *(var3 + 13));
       v113 = v27;
       v114 = v28;
       md::LabelLayoutContext::projectPointToPixel(var3, &v112, &v107);
       v29 = 0;
       v30 = 0;
-      var4 = a4->var4;
+      var4 = context->var4;
       v32 = v107.f32[0];
       v33 = var4 + 48;
       v34 = var4 + 56;
@@ -3163,9 +3163,9 @@ LABEL_36:
 
     else
     {
-      v38 = [v24 routeOffset];
+      routeOffset = [v24 routeOffset];
       index = self->_routeUserOffset.index;
-      if (index <= v38 && (index != v38 || self->_routeUserOffset.offset < *(&v38 + 1)))
+      if (index <= routeOffset && (index != routeOffset || self->_routeUserOffset.offset < *(&routeOffset + 1)))
       {
 LABEL_29:
 
@@ -3174,7 +3174,7 @@ LABEL_29:
     }
   }
 
-  v40 = [v93 count];
+  v40 = [junctionsCopy count];
   if (j >= v40)
   {
     v41 = v40;
@@ -3196,8 +3196,8 @@ LABEL_29:
   }
 
   v43 = v42 - 1;
-  v44 = [v93 objectAtIndexedSubscript:v42 - 1];
-  v45 = [v44 routeOffset];
+  v44 = [junctionsCopy objectAtIndexedSubscript:v42 - 1];
+  routeOffset2 = [v44 routeOffset];
 
   if (v41 < 2)
   {
@@ -3205,14 +3205,14 @@ LABEL_29:
   }
 
   v46 = 0;
-  v47 = *(&v45 + 1);
+  v47 = *(&routeOffset2 + 1);
   while (1)
   {
-    v48 = [v93 objectAtIndexedSubscript:v42 - 2];
-    v49 = [v48 routeOffset];
+    v48 = [junctionsCopy objectAtIndexedSubscript:v42 - 2];
+    routeOffset3 = [v48 routeOffset];
     --v42;
-    *&v50 = vabds_f32(*(&v49 + 1), v47);
-    if (v45 == v49 && *&v50 < 0.00000011921)
+    *&v50 = vabds_f32(*(&routeOffset3 + 1), v47);
+    if (routeOffset2 == routeOffset3 && *&v50 < 0.00000011921)
     {
       goto LABEL_44;
     }
@@ -3222,9 +3222,9 @@ LABEL_29:
       break;
     }
 
-    v52 = [v48 routeOffset];
-    v47 = *(&v52 + 1);
-    LODWORD(v45) = v52;
+    routeOffset4 = [v48 routeOffset];
+    v47 = *(&routeOffset4 + 1);
+    LODWORD(routeOffset2) = routeOffset4;
     v46 = 1;
 LABEL_44:
 
@@ -3238,18 +3238,18 @@ LABEL_44:
   v43 = v42;
 LABEL_47:
   v53 = 0;
-  while (v43 < [v93 count])
+  while (v43 < [junctionsCopy count])
   {
-    v54 = [v93 objectAtIndexedSubscript:v43];
-    v55 = [v54 mercatorCoordinate];
-    v56 = a4->var3;
-    v112 = md::NavContext::worldPoint(*(v56 + 8), v55, *(v56 + 13));
+    v54 = [junctionsCopy objectAtIndexedSubscript:v43];
+    mercatorCoordinate2 = [v54 mercatorCoordinate];
+    v56 = context->var3;
+    v112 = md::NavContext::worldPoint(*(v56 + 8), mercatorCoordinate2, *(v56 + 13));
     v113 = v57;
     v114 = v58;
     *&v62 = md::LabelLayoutContext::projectPointToPixel(v56, &v112, &v107);
     v59 = 0;
     v60 = 0;
-    v61 = a4->var4;
+    v61 = context->var4;
     LODWORD(v62) = v107.i32[1];
     v63 = v107.f32[0];
     v64 = v61 + 48;
@@ -3271,8 +3271,8 @@ LABEL_47:
       {
         if (v66 < v67)
         {
-          v69 = [v54 roads];
-          [v17 addObjectsFromArray:v69];
+          roads2 = [v54 roads];
+          [v17 addObjectsFromArray:roads2];
 
           goto LABEL_56;
         }
@@ -3313,7 +3313,7 @@ LABEL_59:
         objc_enumerationMutation(v71);
       }
 
-      if (self->_countVisibleRoadSigns >= self->_maxVisibleRoadSigns || v15 == 0)
+      if (self->_countVisibleRoadSigns >= self->_maxVisibleRoadSigns || addCopy == 0)
       {
         break;
       }
@@ -3321,18 +3321,18 @@ LABEL_59:
       v76 = *(*(&v103 + 1) + 8 * v74);
       if ((([v76 isOnRoute] & 1) != 0 || self->_countVisibleOffRouteRoadSigns < self->_maxVisibleOffRouteRoadSigns) && (!objc_msgSend(v76, "isOnRoute") || self->_countVisibleOnRouteRoadSigns < self->_maxVisibleOnRouteRoadSigns) && (objc_msgSend(v76, "areLabelsDisabled") & 1) == 0)
       {
-        [v76 prepareStyleVarsWithContext:a4];
+        [v76 prepareStyleVarsWithContext:context];
         if ([v76 hasVisibleSigns])
         {
-          [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v76 isShield:0 navContext:a4 labelCollisionEnabled:v94 ^ 1u];
+          [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v76 isShield:0 navContext:context labelCollisionEnabled:labelCollisionDisabled ^ 1u];
         }
 
-        if (v92 && [v76 hasVisibleShields])
+        if (backCopy && [v76 hasVisibleShields])
         {
-          [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v76 isShield:1 navContext:a4 labelCollisionEnabled:v94 ^ 1u];
+          [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v76 isShield:1 navContext:context labelCollisionEnabled:labelCollisionDisabled ^ 1u];
         }
 
-        v15 -= self->_countVisibleRoadSigns - v70 == 1;
+        addCopy -= self->_countVisibleRoadSigns - v70 == 1;
         v70 = self->_countVisibleRoadSigns;
       }
 
@@ -3349,15 +3349,15 @@ LABEL_59:
     }
   }
 
-  if (!v92)
+  if (!backCopy)
   {
     v101 = 0u;
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v77 = [v71 reverseObjectEnumerator];
+    reverseObjectEnumerator = [v71 reverseObjectEnumerator];
     v78 = v71;
-    v79 = [v77 countByEnumeratingWithState:&v99 objects:v116 count:16];
+    v79 = [reverseObjectEnumerator countByEnumeratingWithState:&v99 objects:v116 count:16];
     if (v79)
     {
       v80 = *v100;
@@ -3367,21 +3367,21 @@ LABEL_59:
         {
           if (*v100 != v80)
           {
-            objc_enumerationMutation(v77);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v82 = *(*(&v99 + 1) + 8 * k);
           if (([v82 areLabelsDisabled] & 1) == 0)
           {
-            [v82 prepareStyleVarsWithContext:a4];
+            [v82 prepareStyleVarsWithContext:context];
             if ([v82 hasVisibleShields])
             {
-              [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v82 isShield:1 navContext:a4 labelCollisionEnabled:v94 ^ 1u];
+              [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v82 isShield:1 navContext:context labelCollisionEnabled:labelCollisionDisabled ^ 1u];
             }
           }
         }
 
-        v79 = [v77 countByEnumeratingWithState:&v99 objects:v116 count:16];
+        v79 = [reverseObjectEnumerator countByEnumeratingWithState:&v99 objects:v116 count:16];
       }
 
       while (v79);
@@ -3412,8 +3412,8 @@ LABEL_59:
         if (([v87 areLabelsDisabled] & 1) == 0 && (objc_msgSend(v87, "isOnRoute") & 1) == 0)
         {
           visibleLabelsByName = self->_visibleLabelsByName;
-          v89 = [v87 name];
-          v90 = [(NSMutableDictionary *)visibleLabelsByName objectForKey:v89];
+          name = [v87 name];
+          v90 = [(NSMutableDictionary *)visibleLabelsByName objectForKey:name];
           LOBYTE(visibleLabelsByName) = v90 == 0;
 
           if ((visibleLabelsByName & 1) == 0)
@@ -3421,10 +3421,10 @@ LABEL_59:
             v91 = [v87 labelWithType:0];
             if (!v91 || ([(NSMutableArray *)self->_visibleLabels containsObject:v91]& 1) == 0)
             {
-              [v87 prepareStyleVarsWithContext:a4];
+              [v87 prepareStyleVarsWithContext:context];
               if ([v87 hasVisibleSigns])
               {
-                [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v87 isShield:0 navContext:a4 labelCollisionEnabled:v94 ^ 1u];
+                [(LabelNavRouteLabeler *)self _tryAddRoadSignForRoad:v87 isShield:0 navContext:context labelCollisionEnabled:labelCollisionDisabled ^ 1u];
               }
             }
           }
@@ -3440,11 +3440,11 @@ LABEL_59:
 LABEL_107:
 }
 
-- (void)_addLabelsAtJunctions:(id)a3 withContext:(NavContext *)a4 maxLabelsToAdd:(unint64_t)a5
+- (void)_addLabelsAtJunctions:(id)junctions withContext:(NavContext *)context maxLabelsToAdd:(unint64_t)add
 {
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a5)
+  junctionsCopy = junctions;
+  if (!add)
   {
     goto LABEL_61;
   }
@@ -3458,26 +3458,26 @@ LABEL_107:
     goto LABEL_61;
   }
 
-  if (v12 >= a5)
+  if (v12 >= add)
   {
-    v13 = a5;
+    addCopy = add;
   }
 
   else
   {
-    v13 = v12;
+    addCopy = v12;
   }
 
   v14 = +[VKDebugSettings sharedSettings];
-  v56 = [v14 labelCollisionDisabled];
+  labelCollisionDisabled = [v14 labelCollisionDisabled];
 
   v55 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0;
   v16 = 0;
   v17 = 0;
-  while (v16 < [v8 count])
+  while (v16 < [junctionsCopy count])
   {
-    v18 = [v8 objectAtIndexedSubscript:v16];
+    v18 = [junctionsCopy objectAtIndexedSubscript:v16];
     if (([v18 isOnRoute] & 1) == 0)
     {
       goto LABEL_40;
@@ -3485,15 +3485,15 @@ LABEL_107:
 
     if (v15)
     {
-      v19 = [v18 mercatorCoordinate];
-      var3 = a4->var3;
-      v62 = md::NavContext::worldPoint(*(var3 + 8), v19, *(var3 + 13));
+      mercatorCoordinate = [v18 mercatorCoordinate];
+      var3 = context->var3;
+      v62 = md::NavContext::worldPoint(*(var3 + 8), mercatorCoordinate, *(var3 + 13));
       v63 = v21;
       v64 = v22;
       *&v26 = md::LabelLayoutContext::projectPointToPixel(var3, &v62, &v61);
       v23 = 0;
       v24 = 0;
-      var4 = a4->var4;
+      var4 = context->var4;
       LODWORD(v26) = v61.i32[1];
       v27 = v61.f32[0];
       v28 = var4 + 48;
@@ -3533,17 +3533,17 @@ LABEL_107:
 
     else
     {
-      if ((*(*a4->var2 + 416))(a4->var2))
+      if ((*(*context->var2 + 416))(context->var2))
       {
-        v33 = [v18 mercatorCoordinate];
-        v34 = a4->var3;
-        v62 = md::NavContext::worldPoint(*(v34 + 8), v33, *(v34 + 13));
+        mercatorCoordinate2 = [v18 mercatorCoordinate];
+        v34 = context->var3;
+        v62 = md::NavContext::worldPoint(*(v34 + 8), mercatorCoordinate2, *(v34 + 13));
         v63 = v35;
         v64 = v36;
         md::LabelLayoutContext::projectPointToPixel(v34, &v62, &v61);
         v37 = 0;
         v38 = 0;
-        v39 = a4->var4;
+        v39 = context->var4;
         v40 = v61.f32[0];
         v41 = v39 + 48;
         v42 = v39 + 56;
@@ -3581,14 +3581,14 @@ LABEL_28:
         goto LABEL_40;
       }
 
-      v46 = [v18 routeOffset];
+      routeOffset = [v18 routeOffset];
       index = self->_routeUserOffset.index;
-      if (index > v46)
+      if (index > routeOffset)
       {
         goto LABEL_28;
       }
 
-      if (index == v46)
+      if (index == routeOffset)
       {
         if (v16 <= 2)
         {
@@ -3600,7 +3600,7 @@ LABEL_28:
           v45 = v16;
         }
 
-        if (self->_routeUserOffset.offset >= *(&v46 + 1))
+        if (self->_routeUserOffset.offset >= *(&routeOffset + 1))
         {
           goto LABEL_28;
         }
@@ -3645,7 +3645,7 @@ LABEL_44:
         objc_enumerationMutation(v49);
       }
 
-      if (self->_countVisibleRoadSigns >= self->_maxVisibleRoadSigns || v13 < 1)
+      if (self->_countVisibleRoadSigns >= self->_maxVisibleRoadSigns || addCopy < 1)
       {
         break;
       }
@@ -3653,13 +3653,13 @@ LABEL_44:
       v54 = *(*(&v57 + 1) + 8 * v52);
       if ((([v54 isOnRoute] & 1) != 0 || self->_countVisibleOffRouteRoadSigns < self->_maxVisibleOffRouteRoadSigns) && (!objc_msgSend(v54, "isOnRoute") || self->_countVisibleOnRouteRoadSigns < self->_maxVisibleOnRouteRoadSigns))
       {
-        [v54 prepareStyleVarsWithContext:a4];
+        [v54 prepareStyleVarsWithContext:context];
         if ([v54 isVisible])
         {
-          [(LabelNavRouteLabeler *)self _tryAddRoadSignForJunction:v54 navContext:a4 labelCollisionEnabled:v56 ^ 1u];
+          [(LabelNavRouteLabeler *)self _tryAddRoadSignForJunction:v54 navContext:context labelCollisionEnabled:labelCollisionDisabled ^ 1u];
         }
 
-        v13 -= self->_countVisibleRoadSigns - v48 == 1;
+        addCopy -= self->_countVisibleRoadSigns - v48 == 1;
         v48 = self->_countVisibleRoadSigns;
       }
 
@@ -3679,38 +3679,38 @@ LABEL_44:
 LABEL_61:
 }
 
-- (void)layoutForStagingWithNavContext:(NavContext *)a3 avoidanceRects:(const void *)a4 options:(const LabelUpdateOptions *)a5
+- (void)layoutForStagingWithNavContext:(NavContext *)context avoidanceRects:(const void *)rects options:(const LabelUpdateOptions *)options
 {
-  v7 = a3;
-  v8 = self;
+  contextCopy = context;
+  selfCopy = self;
   v241 = *MEMORY[0x1E69E9840];
   self->_needsLayout = 0;
-  v9 = *(*(a3->var1 + 21) + 32);
-  v8->_inOverviewMode = (*(*v9 + 88))(v9, a2);
-  std::vector<std::shared_ptr<ggl::VertexData>,geo::allocator_adapter<std::shared_ptr<ggl::VertexData>,ggl::zone_mallocator>>::clear[abi:nn200100](&v8->_activeSigns);
-  std::vector<std::shared_ptr<ggl::VertexData>,geo::allocator_adapter<std::shared_ptr<ggl::VertexData>,ggl::zone_mallocator>>::clear[abi:nn200100](&v8->_visibleSigns);
-  v186 = v8;
-  if (v8->_isOnRoute || (var2 = v7->var2, *(*(*(var2 + 3) + 336) + 163) << 16 == 393216) || (*(*var2 + 384))(var2))
+  v9 = *(*(context->var1 + 21) + 32);
+  selfCopy->_inOverviewMode = (*(*v9 + 88))(v9, a2);
+  std::vector<std::shared_ptr<ggl::VertexData>,geo::allocator_adapter<std::shared_ptr<ggl::VertexData>,ggl::zone_mallocator>>::clear[abi:nn200100](&selfCopy->_activeSigns);
+  std::vector<std::shared_ptr<ggl::VertexData>,geo::allocator_adapter<std::shared_ptr<ggl::VertexData>,ggl::zone_mallocator>>::clear[abi:nn200100](&selfCopy->_visibleSigns);
+  v186 = selfCopy;
+  if (selfCopy->_isOnRoute || (var2 = contextCopy->var2, *(*(*(var2 + 3) + 336) + 163) << 16 == 393216) || (*(*var2 + 384))(var2))
   {
-    [(LabelNavRouteLabeler *)v8 _generateCurrentRoadSignWithContext:v7];
-    ptr = v8->_currentRoadSign.__ptr_;
+    [(LabelNavRouteLabeler *)selfCopy _generateCurrentRoadSignWithContext:contextCopy];
+    ptr = selfCopy->_currentRoadSign.__ptr_;
     if (ptr)
     {
-      v12 = (*(*ptr + 16))(ptr, v7);
-      if (v8->_isCurrentRoadSignVisible)
+      v12 = (*(*ptr + 16))(ptr, contextCopy);
+      if (selfCopy->_isCurrentRoadSignVisible)
       {
-        currentRoadSign = v8->_currentRoadSign;
-        cntrl = v8->_currentRoadSign.__cntrl_;
+        currentRoadSign = selfCopy->_currentRoadSign;
+        cntrl = selfCopy->_currentRoadSign.__cntrl_;
         if (cntrl)
         {
           atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
         }
 
-        end = v8->_visibleSigns.__end_;
-        cap = v8->_visibleSigns.__cap_;
+        end = selfCopy->_visibleSigns.__end_;
+        cap = selfCopy->_visibleSigns.__cap_;
         if (end >= cap)
         {
-          begin = v8->_visibleSigns.__begin_;
+          begin = selfCopy->_visibleSigns.__begin_;
           v19 = (end - begin) >> 4;
           if ((v19 + 1) >> 60)
           {
@@ -3734,7 +3734,7 @@ LABEL_61:
             v22 = v21;
           }
 
-          anon_100 = v8->_anon_100;
+          anon_100 = selfCopy->_anon_100;
           if (v22)
           {
             v180 = currentRoadSign;
@@ -3761,7 +3761,7 @@ LABEL_61:
           v186->_visibleSigns.__end_ = v17;
           v32 = *&v186->_visibleSigns.__cap_;
           v186->_visibleSigns.__cap_ = v27;
-          v8 = v186;
+          selfCopy = v186;
           v225.__shared_weak_owners_ = v31;
           v226 = v32;
           v225.__shared_owners_ = v31;
@@ -3775,25 +3775,25 @@ LABEL_61:
           v17 = (end + 1);
         }
 
-        v8->_visibleSigns.__end_ = v17;
+        selfCopy->_visibleSigns.__end_ = v17;
       }
     }
   }
 
   else
   {
-    v25 = v8->_currentRoadSign.__cntrl_;
-    v8->_currentRoadSign.__ptr_ = 0;
-    v8->_currentRoadSign.__cntrl_ = 0;
+    v25 = selfCopy->_currentRoadSign.__cntrl_;
+    selfCopy->_currentRoadSign.__ptr_ = 0;
+    selfCopy->_currentRoadSign.__cntrl_ = 0;
     if (v25)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v25);
     }
   }
 
-  if (!*&v8->_tiles.__table_.__max_load_factor_ || !v8->_route)
+  if (!*&selfCopy->_tiles.__table_.__max_load_factor_ || !selfCopy->_route)
   {
-    [(NSMutableDictionary *)v8->_visibleLabelsByName removeAllObjects];
+    [(NSMutableDictionary *)selfCopy->_visibleLabelsByName removeAllObjects];
     [(NSMutableArray *)v186->_visibleLabels removeAllObjects];
     [(NSMutableSet *)v186->_visibleShieldGroups removeAllObjects];
     [(NSMutableArray *)v186->_fadingLabels removeAllObjects];
@@ -3801,47 +3801,47 @@ LABEL_61:
     return;
   }
 
-  if (&v8->_avoidanceRects != a4)
+  if (&selfCopy->_avoidanceRects != rects)
   {
-    std::vector<md::AvoidanceRectWithPriority,geo::allocator_adapter<md::AvoidanceRectWithPriority,mdm::zone_mallocator>>::__assign_with_size[abi:nn200100]<md::AvoidanceRectWithPriority*,md::AvoidanceRectWithPriority*>(&v8->_avoidanceRects.__begin_, *a4, *(a4 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3));
-    v8 = v186;
+    std::vector<md::AvoidanceRectWithPriority,geo::allocator_adapter<md::AvoidanceRectWithPriority,mdm::zone_mallocator>>::__assign_with_size[abi:nn200100]<md::AvoidanceRectWithPriority*,md::AvoidanceRectWithPriority*>(&selfCopy->_avoidanceRects.__begin_, *rects, *(rects + 1), 0xAAAAAAAAAAAAAAABLL * ((*(rects + 1) - *rects) >> 3));
+    selfCopy = v186;
   }
 
-  if (v8->_disableTileParseForOneLayout || !v8->_isSnappingReady)
+  if (selfCopy->_disableTileParseForOneLayout || !selfCopy->_isSnappingReady)
   {
-    p_hasPendingTilesInSnappingRegion = &v8->_hasPendingTilesInSnappingRegion;
-    v8->_areAllTilesReady = 0;
+    p_hasPendingTilesInSnappingRegion = &selfCopy->_hasPendingTilesInSnappingRegion;
+    selfCopy->_areAllTilesReady = 0;
 LABEL_50:
-    v8->_needsLayout = 1;
+    selfCopy->_needsLayout = 1;
     goto LABEL_51;
   }
 
-  if (v8->_checkIfRouteSubrangeChanged)
+  if (selfCopy->_checkIfRouteSubrangeChanged)
   {
-    if ([(LabelNavRouteLabeler *)v8 _updateActiveRouteRange])
+    if ([(LabelNavRouteLabeler *)selfCopy _updateActiveRouteRange])
     {
       [(LabelNavRouteLabeler *)v186 _reloadRouteJunctions];
     }
 
-    v8 = v186;
+    selfCopy = v186;
     v186->_checkIfRouteSubrangeChanged = 0;
   }
 
-  if (v8->_useRouteSubrange && v8->_isOnRoute)
+  if (selfCopy->_useRouteSubrange && selfCopy->_isOnRoute)
   {
-    index = v8->_routeUserOffset.index;
-    v34 = v8->_routeSubrangeEnd.index;
-    if (index >= v34 && (index != v34 || v8->_routeUserOffset.offset > v8->_routeSubrangeEnd.offset))
+    index = selfCopy->_routeUserOffset.index;
+    v34 = selfCopy->_routeSubrangeEnd.index;
+    if (index >= v34 && (index != v34 || selfCopy->_routeUserOffset.offset > selfCopy->_routeSubrangeEnd.offset))
     {
-      [(LabelNavRouteLabeler *)v8 _updateActiveRouteRange];
+      [(LabelNavRouteLabeler *)selfCopy _updateActiveRouteRange];
       [(LabelNavRouteLabeler *)v186 _reloadRouteJunctions];
-      v8 = v186;
+      selfCopy = v186;
     }
   }
 
-  if (a5->var0 || a5->var5)
+  if (options->var0 || options->var5)
   {
-    next = v8->_pendingTiles.__table_.__first_node_.__next_;
+    next = selfCopy->_pendingTiles.__table_.__first_node_.__next_;
     if (next)
     {
       v36 = 0;
@@ -3851,36 +3851,36 @@ LABEL_50:
       do
       {
         v225.std::__shared_count = vmlaq_f64(*(next[2] + 320), v181, vsubq_f64(*(next[2] + 336), *(next[2] + 320)));
-        if (md::MultiRectRegion::contains(&v8->_snappingRegion._rects.__tree_.__begin_node_, &v225))
+        if (md::MultiRectRegion::contains(&selfCopy->_snappingRegion._rects.__tree_.__begin_node_, &v225))
         {
-          [(LabelNavRouteLabeler *)v8 _addJunctionsForTile:next + 2];
+          [(LabelNavRouteLabeler *)selfCopy _addJunctionsForTile:next + 2];
           v36 = 1;
-          v8 = v186;
+          selfCopy = v186;
         }
 
         next = *next;
       }
 
       while (next);
-      v8->_hasPendingTilesInSnappingRegion = 0;
-      std::__hash_table<std::shared_ptr<md::LabelTile>,std::hash<std::shared_ptr<md::LabelTile>>,std::equal_to<std::shared_ptr<md::LabelTile>>,geo::allocator_adapter<std::shared_ptr<md::LabelTile>,mdm::zone_mallocator>>::clear(&v8->_pendingTiles);
+      selfCopy->_hasPendingTilesInSnappingRegion = 0;
+      std::__hash_table<std::shared_ptr<md::LabelTile>,std::hash<std::shared_ptr<md::LabelTile>>,std::equal_to<std::shared_ptr<md::LabelTile>>,geo::allocator_adapter<std::shared_ptr<md::LabelTile>,mdm::zone_mallocator>>::clear(&selfCopy->_pendingTiles);
       if (v36)
       {
-        [(VKLabelNavRoadGraph *)v8->_roadGraph routeJunctionsHaveChanged];
-        v8 = v186;
+        [(VKLabelNavRoadGraph *)selfCopy->_roadGraph routeJunctionsHaveChanged];
+        selfCopy = v186;
       }
     }
 
     else
     {
-      v8->_hasPendingTilesInSnappingRegion = 0;
-      std::__hash_table<std::shared_ptr<md::LabelTile>,std::hash<std::shared_ptr<md::LabelTile>>,std::equal_to<std::shared_ptr<md::LabelTile>>,geo::allocator_adapter<std::shared_ptr<md::LabelTile>,mdm::zone_mallocator>>::clear(&v8->_pendingTiles);
+      selfCopy->_hasPendingTilesInSnappingRegion = 0;
+      std::__hash_table<std::shared_ptr<md::LabelTile>,std::hash<std::shared_ptr<md::LabelTile>>,std::equal_to<std::shared_ptr<md::LabelTile>>,geo::allocator_adapter<std::shared_ptr<md::LabelTile>,mdm::zone_mallocator>>::clear(&selfCopy->_pendingTiles);
     }
   }
 
   else
   {
-    p_first_node = &v8->_pendingTiles.__table_.__first_node_;
+    p_first_node = &selfCopy->_pendingTiles.__table_.__first_node_;
     __asm { FMOV            V0.2D, #0.5 }
 
     v185 = _Q0;
@@ -3889,7 +3889,7 @@ LABEL_50:
       p_first_node = *p_first_node;
       if (!p_first_node)
       {
-        v8->_hasPendingTilesInSnappingRegion = 0;
+        selfCopy->_hasPendingTilesInSnappingRegion = 0;
         goto LABEL_273;
       }
 
@@ -3897,7 +3897,7 @@ LABEL_50:
       v225.std::__shared_count = vmlaq_f64(*(v153 + 320), v185, vsubq_f64(*(v153 + 336), *(v153 + 320)));
     }
 
-    while (!md::MultiRectRegion::contains(&v8->_snappingRegion._rects.__tree_.__begin_node_, &v225));
+    while (!md::MultiRectRegion::contains(&selfCopy->_snappingRegion._rects.__tree_.__begin_node_, &v225));
     v154 = p_first_node[3];
     v225.__vftable = v153;
     v225.__shared_owners_ = v154;
@@ -3906,21 +3906,21 @@ LABEL_50:
       atomic_fetch_add_explicit((v154 + 8), 1uLL, memory_order_relaxed);
     }
 
-    [(LabelNavRouteLabeler *)v8 _addJunctionsForTile:&v225];
-    [(VKLabelNavRoadGraph *)v8->_roadGraph routeJunctionsHaveChanged];
-    v155 = std::__hash_table<std::shared_ptr<md::LabelTile>,std::hash<std::shared_ptr<md::LabelTile>>,std::equal_to<std::shared_ptr<md::LabelTile>>,geo::allocator_adapter<std::shared_ptr<md::LabelTile>,mdm::zone_mallocator>>::erase(&v8->_pendingTiles.__table_.__bucket_list_.__ptr_, p_first_node);
+    [(LabelNavRouteLabeler *)selfCopy _addJunctionsForTile:&v225];
+    [(VKLabelNavRoadGraph *)selfCopy->_roadGraph routeJunctionsHaveChanged];
+    v155 = std::__hash_table<std::shared_ptr<md::LabelTile>,std::hash<std::shared_ptr<md::LabelTile>>,std::equal_to<std::shared_ptr<md::LabelTile>>,geo::allocator_adapter<std::shared_ptr<md::LabelTile>,mdm::zone_mallocator>>::erase(&selfCopy->_pendingTiles.__table_.__bucket_list_.__ptr_, p_first_node);
     if (v225.__shared_owners_)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v225.__shared_owners_);
     }
 
-    v8->_hasPendingTilesInSnappingRegion = 0;
+    selfCopy->_hasPendingTilesInSnappingRegion = 0;
     if (v155)
     {
       while (1)
       {
         v225.std::__shared_count = vmlaq_f64(*(v155[2] + 320), v185, vsubq_f64(*(v155[2] + 336), *(v155[2] + 320)));
-        if (md::MultiRectRegion::contains(&v8->_snappingRegion._rects.__tree_.__begin_node_, &v225))
+        if (md::MultiRectRegion::contains(&selfCopy->_snappingRegion._rects.__tree_.__begin_node_, &v225))
         {
           break;
         }
@@ -3932,32 +3932,32 @@ LABEL_50:
         }
       }
 
-      v8->_hasPendingTilesInSnappingRegion = 1;
+      selfCopy->_hasPendingTilesInSnappingRegion = 1;
     }
   }
 
 LABEL_273:
-  p_hasPendingTilesInSnappingRegion = &v8->_hasPendingTilesInSnappingRegion;
-  hasPendingTilesInSnappingRegion = v8->_hasPendingTilesInSnappingRegion;
-  v8->_areAllTilesReady = !hasPendingTilesInSnappingRegion;
+  p_hasPendingTilesInSnappingRegion = &selfCopy->_hasPendingTilesInSnappingRegion;
+  hasPendingTilesInSnappingRegion = selfCopy->_hasPendingTilesInSnappingRegion;
+  selfCopy->_areAllTilesReady = !hasPendingTilesInSnappingRegion;
   if (hasPendingTilesInSnappingRegion)
   {
     goto LABEL_50;
   }
 
 LABEL_51:
-  v8->_disableTileParseForOneLayout = 0;
-  var4 = v7->var4;
+  selfCopy->_disableTileParseForOneLayout = 0;
+  var4 = contextCopy->var4;
   v223 = *(var4 + 6);
   v43 = *(var4 + 14);
   v224 = v43;
   v44 = vdupq_n_s64(0x7FF8000000000000uLL);
   v225.std::__shared_count = v44;
   v46 = v223 == v44.__vftable && *(&v223 + 1) == v44.__shared_owners_ && v43 == 0x7FF8000000000000;
-  if (v46 || ((var3 = v7->var3, *v182 = v44, v229 = gm::Matrix<double,4,4>::multiplyHomogeneous<int,void>(var3 + 92, &v223), v230 = v48, v231 = v49, v44.__vftable = v182[0], v225.std::__shared_count = *v182, *&v229 == v182[0]) ? (v50 = v48 == v182[1]) : (v50 = 0), v50 ? (v51 = *&v49 == 0x7FF8000000000000) : (v51 = 0), v51 || (v44.__vftable = 0xBFF0CCCCCCCCCCCDLL, v49 < -1.05) || (v44.__vftable = 0x3FF0CCCCCCCCCCCDLL, v49 > 1.05)))
+  if (v46 || ((var3 = contextCopy->var3, *v182 = v44, v229 = gm::Matrix<double,4,4>::multiplyHomogeneous<int,void>(var3 + 92, &v223), v230 = v48, v231 = v49, v44.__vftable = v182[0], v225.std::__shared_count = *v182, *&v229 == v182[0]) ? (v50 = v48 == v182[1]) : (v50 = 0), v50 ? (v51 = *&v49 == 0x7FF8000000000000) : (v51 = 0), v51 || (v44.__vftable = 0xBFF0CCCCCCCCCCCDLL, v49 < -1.05) || (v44.__vftable = 0x3FF0CCCCCCCCCCCDLL, v49 > 1.05)))
   {
-    p_regenerateRoadSigns = &v8->_regenerateRoadSigns;
-    v60 = !v8->_isStylesheetAnimating && v8->_regenerateRoadSigns;
+    p_regenerateRoadSigns = &selfCopy->_regenerateRoadSigns;
+    v60 = !selfCopy->_isStylesheetAnimating && selfCopy->_regenerateRoadSigns;
     goto LABEL_82;
   }
 
@@ -3994,9 +3994,9 @@ LABEL_51:
   }
 
   while (v57 != 24);
-  p_regenerateRoadSigns = &v8->_regenerateRoadSigns;
-  v170 = !v8->_isStylesheetAnimating && v8->_regenerateRoadSigns;
-  if (!v8->_isStylesheetAnimating)
+  p_regenerateRoadSigns = &selfCopy->_regenerateRoadSigns;
+  v170 = !selfCopy->_isStylesheetAnimating && selfCopy->_regenerateRoadSigns;
+  if (!selfCopy->_isStylesheetAnimating)
   {
     *&v44.__vftable = (v58 - v56) * (*(var3 + 39) + *(var3 + 39)) / (*&v44.__vftable * (*(var3 + 266) / *(var3 + 11)));
     *&v44.__vftable = *&v44.__vftable;
@@ -4005,10 +4005,10 @@ LABEL_51:
       *&v44.__vftable = ((*(var4 + 30) * 0.5) + 7.0) * *&v44.__vftable;
       if (*&v44.__vftable < 100.0)
       {
-        minSignOffsetDistance = v8->_minSignOffsetDistance;
+        minSignOffsetDistance = selfCopy->_minSignOffsetDistance;
         if (minSignOffsetDistance < *&v44.__vftable || (*&v44.__vftable = *&v44.__vftable + 2.0, minSignOffsetDistance > *&v44.__vftable))
         {
-          v8->_minSignOffsetDistance = *&v44.__vftable;
+          selfCopy->_minSignOffsetDistance = *&v44.__vftable;
           v60 = 1;
 LABEL_82:
           v170 = v60;
@@ -4017,10 +4017,10 @@ LABEL_82:
     }
   }
 
-  v8->_countVisibleOnRouteRoadSigns = 0;
-  v8->_countVisibleOffRouteRoadSigns = 0;
-  v8->_countVisibleRoadSigns = 0;
-  [(VKLabelNavRoadGraph *)v8->_roadGraph startingLabelLayoutWithContext:v7 routeUserOffset:*&v8->_routeUserOffset, *&v44.__vftable, p_hasPendingTilesInSnappingRegion];
+  selfCopy->_countVisibleOnRouteRoadSigns = 0;
+  selfCopy->_countVisibleOffRouteRoadSigns = 0;
+  selfCopy->_countVisibleRoadSigns = 0;
+  [(VKLabelNavRoadGraph *)selfCopy->_roadGraph startingLabelLayoutWithContext:contextCopy routeUserOffset:*&selfCopy->_routeUserOffset, *&v44.__vftable, p_hasPendingTilesInSnappingRegion];
   v167 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v186->_fadingLabels];
   [(NSMutableArray *)v186->_fadingLabels removeAllObjects];
   v221 = 0u;
@@ -4045,7 +4045,7 @@ LABEL_82:
         v65 = atomic_load((*[v64 label] + 288));
         if ((v65 & 0x7FFFFFFF) != 0 && *(*[v64 label] + 316) == 1)
         {
-          [v64 layoutWithNavContext:v7];
+          [v64 layoutWithNavContext:contextCopy];
           if (*(*[v64 label] + 315) == 1)
           {
             [(NSMutableArray *)v186->_fadingLabels addObject:v64];
@@ -4078,7 +4078,7 @@ LABEL_82:
   if (v69)
   {
     v175 = *v216;
-    v168 = v7;
+    v168 = contextCopy;
     do
     {
       v70 = 0;
@@ -4091,10 +4091,10 @@ LABEL_82:
         }
 
         v71 = *(*(&v215 + 1) + 8 * v70);
-        v72 = [v71 navFeature];
+        navFeature = [v71 navFeature];
         v183 = *(*[v71 label] + 27);
-        v73 = [v71 navFeature];
-        if (([v73 isValid] & 1) == 0)
+        navFeature2 = [v71 navFeature];
+        if (([navFeature2 isValid] & 1) == 0)
         {
 
           goto LABEL_167;
@@ -4119,36 +4119,36 @@ LABEL_82:
         {
           if ([v71 isRoadLabel])
           {
-            v76 = [v71 navFeature];
+            navFeature3 = [v71 navFeature];
             v77 = *[v71 label];
             *(v77 + 316) = 1;
             *(v77 + 276) = 0;
             [(NSMutableArray *)v186->_fadingLabels addObject:v71];
             std::vector<std::shared_ptr<md::NavLabel>,geo::allocator_adapter<std::shared_ptr<md::NavLabel>,mdm::zone_mallocator>>::push_back[abi:nn200100](&v186->_activeSigns, [v71 label]);
-            [v76 recreateRoadSignWithAlignment:objc_msgSend(v71 navContext:"alignment") artworkCache:{v7, v186->_artworkCache}];
-            v78 = [v76 labelWithType:0];
+            [navFeature3 recreateRoadSignWithAlignment:objc_msgSend(v71 navContext:"alignment") artworkCache:{contextCopy, v186->_artworkCache}];
+            v78 = [navFeature3 labelWithType:0];
 
-            v79 = [v78 navFeature];
+            navFeature4 = [v78 navFeature];
 LABEL_107:
-            v80 = v79;
+            v80 = navFeature4;
 
-            v72 = v80;
+            navFeature = v80;
             v71 = v78;
             goto LABEL_111;
           }
 
           if (*p_regenerateRoadSigns && [v71 isShieldLabel])
           {
-            v76 = [v71 navFeature];
+            navFeature3 = [v71 navFeature];
             v81 = *[v71 label];
             *(v81 + 316) = 1;
             *(v81 + 276) = 0;
             [(NSMutableArray *)v186->_fadingLabels addObject:v71];
             std::vector<std::shared_ptr<md::NavLabel>,geo::allocator_adapter<std::shared_ptr<md::NavLabel>,mdm::zone_mallocator>>::push_back[abi:nn200100](&v186->_activeSigns, [v71 label]);
-            [v76 recreateRoadShieldWithNavContext:v7 artworkCache:v186->_artworkCache];
-            v78 = [v76 labelWithType:1];
+            [navFeature3 recreateRoadShieldWithNavContext:contextCopy artworkCache:v186->_artworkCache];
+            v78 = [navFeature3 labelWithType:1];
 
-            v79 = [v78 navFeature];
+            navFeature4 = [v78 navFeature];
             goto LABEL_107;
           }
         }
@@ -4156,23 +4156,23 @@ LABEL_107:
 LABEL_111:
         if (v170 && (([v71 isRoadLabel] & 1) != 0 || objc_msgSend(v71, "isShieldLabel")))
         {
-          v82 = [v71 isShieldLabel];
+          isShieldLabel = [v71 isShieldLabel];
           [v71 desiredOffsetDistance];
-          [(LabelNavRouteLabeler *)v186 _createOrUpdateLabelForRoad:v72 isShield:v82 navContext:v7 hopOffsetDistance:?];
+          [(LabelNavRouteLabeler *)v186 _createOrUpdateLabelForRoad:navFeature isShield:isShieldLabel navContext:contextCopy hopOffsetDistance:?];
         }
 
-        [v72 layoutWithNavContext:v7];
+        [navFeature layoutWithNavContext:contextCopy];
         if (*[v71 label] && *(*objc_msgSend(v71, "label") + 315) == 1)
         {
           if ([v71 isRoadLabel])
           {
             currentRoadName = v186->_currentRoadName;
-            v84 = [v72 name];
-            if ([(NSString *)currentRoadName isEqualToString:v84])
+            name = [navFeature name];
+            if ([(NSString *)currentRoadName isEqualToString:name])
             {
-              v85 = [v72 isGuidanceStepStart];
+              isGuidanceStepStart = [navFeature isGuidanceStepStart];
 
-              if ((v85 & 1) == 0)
+              if ((isGuidanceStepStart & 1) == 0)
               {
 LABEL_124:
                 if ((*(*[v71 label] + 316) & 1) == 0)
@@ -4191,8 +4191,8 @@ LABEL_124:
             }
           }
 
-          v86 = [v71 label];
-          if (*(*v86 + 313) != 1 || (*(*v86 + 314) & 1) == 0)
+          label = [v71 label];
+          if (*(*label + 313) != 1 || (*(*label + 314) & 1) == 0)
           {
             goto LABEL_124;
           }
@@ -4242,7 +4242,7 @@ LABEL_126:
                 while (v90);
               }
 
-              v7 = v168;
+              contextCopy = v168;
             }
 
             [v169 removeAllObjects];
@@ -4250,8 +4250,8 @@ LABEL_126:
 
           if ([v71 isRoadLabel] && (*(*objc_msgSend(v71, "label") + 316) & 1) == 0)
           {
-            v95 = [v71 navFeature];
-            v96 = [(LabelNavRouteLabeler *)v186 orientationForRoadSign:v95 roadLabel:v71 navContext:v7];
+            navFeature5 = [v71 navFeature];
+            v96 = [(LabelNavRouteLabeler *)v186 orientationForRoadSign:navFeature5 roadLabel:v71 navContext:contextCopy];
             if (v96 != [v71 alignment] || *p_regenerateRoadSigns)
             {
               v97 = *[v71 label];
@@ -4259,8 +4259,8 @@ LABEL_126:
               *(v97 + 276) = 0;
               [(NSMutableArray *)v186->_fadingLabels addObject:v71];
               std::vector<std::shared_ptr<md::NavLabel>,geo::allocator_adapter<std::shared_ptr<md::NavLabel>,mdm::zone_mallocator>>::push_back[abi:nn200100](&v186->_activeSigns, [v71 label]);
-              [v95 recreateRoadSignWithAlignment:v96 navContext:v7 artworkCache:v186->_artworkCache];
-              v98 = [v95 labelWithType:0];
+              [navFeature5 recreateRoadSignWithAlignment:v96 navContext:contextCopy artworkCache:v186->_artworkCache];
+              v98 = [navFeature5 labelWithType:0];
 
               v71 = v98;
             }
@@ -4268,8 +4268,8 @@ LABEL_126:
 
           if (v186->_checkOnRouteLabelsAlignment && [v71 isRoadLabel])
           {
-            v99 = [v71 navFeature];
-            if (([v99 isAwayFromRoute] & 1) != 0 || (v101 = objc_msgSend(v71, "alignment"), v101 == objc_msgSend(v99, "roadSignAlignment")) && !*p_regenerateRoadSigns)
+            navFeature6 = [v71 navFeature];
+            if (([navFeature6 isAwayFromRoute] & 1) != 0 || (v101 = objc_msgSend(v71, "alignment"), v101 == objc_msgSend(navFeature6, "roadSignAlignment")) && !*p_regenerateRoadSigns)
             {
               v100 = v71;
             }
@@ -4280,7 +4280,7 @@ LABEL_126:
               {
                 [(NSMutableArray *)v186->_fadingLabels addObject:v71];
                 std::vector<std::shared_ptr<md::NavLabel>,geo::allocator_adapter<std::shared_ptr<md::NavLabel>,mdm::zone_mallocator>>::push_back[abi:nn200100](&v186->_activeSigns, [v71 label]);
-                [v99 clearRoadSign];
+                [navFeature6 clearRoadSign];
                 v100 = 0;
               }
 
@@ -4291,8 +4291,8 @@ LABEL_126:
                 *(v102 + 276) = 0;
                 [(NSMutableArray *)v186->_fadingLabels addObject:v71];
                 std::vector<std::shared_ptr<md::NavLabel>,geo::allocator_adapter<std::shared_ptr<md::NavLabel>,mdm::zone_mallocator>>::push_back[abi:nn200100](&v186->_activeSigns, [v71 label]);
-                [v99 recreateRoadSignWithAlignment:objc_msgSend(v99 navContext:"roadSignAlignment") artworkCache:{v7, v186->_artworkCache}];
-                v100 = [v99 labelWithType:0];
+                [navFeature6 recreateRoadSignWithAlignment:objc_msgSend(navFeature6 navContext:"roadSignAlignment") artworkCache:{contextCopy, v186->_artworkCache}];
+                v100 = [navFeature6 labelWithType:0];
               }
             }
 
@@ -4302,26 +4302,26 @@ LABEL_126:
           if (v71)
           {
             visibleLabelsByName = v186->_visibleLabelsByName;
-            v104 = [v71 displayGroup];
-            [(NSMutableDictionary *)visibleLabelsByName setObject:v71 forKey:v104];
+            displayGroup = [v71 displayGroup];
+            [(NSMutableDictionary *)visibleLabelsByName setObject:v71 forKey:displayGroup];
 
             [(NSMutableArray *)v186->_visibleLabels addObject:v71];
             std::vector<std::shared_ptr<md::NavLabel>,geo::allocator_adapter<std::shared_ptr<md::NavLabel>,mdm::zone_mallocator>>::push_back[abi:nn200100](&v186->_activeSigns, [v71 label]);
-            [v68 addObject:v72];
+            [v68 addObject:navFeature];
             if ([v71 isShieldLabel])
             {
-              v105 = [v71 navFeature];
+              navFeature7 = [v71 navFeature];
               visibleShieldGroups = v186->_visibleShieldGroups;
-              v107 = [v105 shieldGroup];
-              [(NSMutableSet *)visibleShieldGroups addObject:v107];
+              shieldGroup = [navFeature7 shieldGroup];
+              [(NSMutableSet *)visibleShieldGroups addObject:shieldGroup];
             }
 
             if (([v71 isShieldLabel] & 1) == 0)
             {
               ++v186->_countVisibleRoadSigns;
-              v108 = [v72 isOnRoute];
+              isOnRoute = [navFeature isOnRoute];
               p_countVisibleOffRouteRoadSigns = &v186->_countVisibleOffRouteRoadSigns;
-              if (v108)
+              if (isOnRoute)
               {
                 p_countVisibleOffRouteRoadSigns = &v186->_countVisibleOnRouteRoadSigns;
               }
@@ -4354,8 +4354,8 @@ LABEL_167:
   v186->_checkOnRouteLabelsAlignment = 0;
   if (!v186->_isStylesheetAnimating)
   {
-    [(LabelNavRouteLabeler *)v186 _addLabelsAtJunctions:v186->_junctions withContext:v7 maxLabelsToAdd:v186->_maxVisibleRoadSigns];
-    [(LabelNavRouteLabeler *)v186 _addLabelsForJunctions:v186->_junctions withContext:v7 maxLabelsToAdd:v186->_maxVisibleRoadSigns useAllJunctions:0 placeShieldsFrontToBack:0];
+    [(LabelNavRouteLabeler *)v186 _addLabelsAtJunctions:v186->_junctions withContext:contextCopy maxLabelsToAdd:v186->_maxVisibleRoadSigns];
+    [(LabelNavRouteLabeler *)v186 _addLabelsForJunctions:v186->_junctions withContext:contextCopy maxLabelsToAdd:v186->_maxVisibleRoadSigns useAllJunctions:0 placeShieldsFrontToBack:0];
     if ((*v166 & 1) == 0)
     {
       if (v186->_shouldLabelOppositeCarriageways)
@@ -4366,19 +4366,19 @@ LABEL_167:
           goto LABEL_171;
         }
 
-        v146 = [(VKLabelNavRoadGraph *)v186->_roadGraph oppositeCarriagewayJunctions];
-        [(LabelNavRouteLabeler *)v186 _addLabelsForJunctions:v146 withContext:v7 maxLabelsToAdd:v186->_maxVisibleRoadSigns useAllJunctions:0 placeShieldsFrontToBack:0];
+        oppositeCarriagewayJunctions = [(VKLabelNavRoadGraph *)v186->_roadGraph oppositeCarriagewayJunctions];
+        [(LabelNavRouteLabeler *)v186 _addLabelsForJunctions:oppositeCarriagewayJunctions withContext:contextCopy maxLabelsToAdd:v186->_maxVisibleRoadSigns useAllJunctions:0 placeShieldsFrontToBack:0];
 
         v111 = v186;
       }
 
-      if (!(*(*v7->var2 + 416))(v7->var2))
+      if (!(*(*contextCopy->var2 + 416))(contextCopy->var2))
       {
         goto LABEL_171;
       }
 
-      v147 = [(VKLabelNavRoadGraph *)v111->_roadGraph countReadyJunctionLists];
-      v148 = v147 > 2;
+      countReadyJunctionLists = [(VKLabelNavRoadGraph *)v111->_roadGraph countReadyJunctionLists];
+      v148 = countReadyJunctionLists > 2;
       countVisibleRoadSigns = v111->_countVisibleRoadSigns;
       if (countVisibleRoadSigns >= v111->_maxOnRoadGraphRoadSigns)
       {
@@ -4387,17 +4387,17 @@ LABEL_167:
 
       if ([(VKLabelNavRoadGraph *)v111->_roadGraph countReadyJunctionLists]> 1)
       {
-        v150 = 2;
+        countReadyJunctionLists2 = 2;
       }
 
       else
       {
-        v150 = [(VKLabelNavRoadGraph *)v111->_roadGraph countReadyJunctionLists];
-        if (!v150)
+        countReadyJunctionLists2 = [(VKLabelNavRoadGraph *)v111->_roadGraph countReadyJunctionLists];
+        if (!countReadyJunctionLists2)
         {
 LABEL_259:
           countVisibleRoadSigns = v111->_countVisibleRoadSigns;
-          if (countVisibleRoadSigns < v111->_maxOnRoadGraphRoadSigns && v147 <= 2)
+          if (countVisibleRoadSigns < v111->_maxOnRoadGraphRoadSigns && countReadyJunctionLists <= 2)
           {
             v161 = 0;
             v111->_needsLayout = 1;
@@ -4422,8 +4422,8 @@ LABEL_263:
 
           else
           {
-            v161 = [(VKLabelNavRoadGraph *)v111->_roadGraph offRouteGraphJunctionsWithNavContext:v7 maxJunctions:25 isOnRoute:?];
-            [(LabelNavRouteLabeler *)v111 _addLabelsForJunctions:v161 withContext:v7 maxLabelsToAdd:v163 useAllJunctions:1 placeShieldsFrontToBack:1];
+            v161 = [(VKLabelNavRoadGraph *)v111->_roadGraph offRouteGraphJunctionsWithNavContext:contextCopy maxJunctions:25 isOnRoute:?];
+            [(LabelNavRouteLabeler *)v111 _addLabelsForJunctions:v161 withContext:contextCopy maxLabelsToAdd:v163 useAllJunctions:1 placeShieldsFrontToBack:1];
           }
 
           goto LABEL_271;
@@ -4440,10 +4440,10 @@ LABEL_263:
           break;
         }
 
-        [(LabelNavRouteLabeler *)v111 _addLabelsForJunctions:v158 withContext:v7 maxLabelsToAdd:v111->_maxOnRoadGraphRoadSigns useAllJunctions:0 placeShieldsFrontToBack:1];
+        [(LabelNavRouteLabeler *)v111 _addLabelsForJunctions:v158 withContext:contextCopy maxLabelsToAdd:v111->_maxOnRoadGraphRoadSigns useAllJunctions:0 placeShieldsFrontToBack:1];
         v159 = v111->_countVisibleRoadSigns >= v111->_maxOnRoadGraphRoadSigns;
 
-        v160 = v156++ > v150 || v159;
+        v160 = v156++ > countReadyJunctionLists2 || v159;
         v111 = v186;
         if (v160 == 1)
         {
@@ -4485,8 +4485,8 @@ LABEL_171:
           v204 = 0u;
           v205 = 0u;
           v206 = 0u;
-          v117 = [v116 roads];
-          v118 = [v117 countByEnumeratingWithState:&v203 objects:v236 count:16];
+          roads = [v116 roads];
+          v118 = [roads countByEnumeratingWithState:&v203 objects:v236 count:16];
           if (v118)
           {
             v119 = *v204;
@@ -4496,7 +4496,7 @@ LABEL_171:
               {
                 if (*v204 != v119)
                 {
-                  objc_enumerationMutation(v117);
+                  objc_enumerationMutation(roads);
                 }
 
                 v121 = *(*(&v203 + 1) + 8 * n);
@@ -4507,7 +4507,7 @@ LABEL_171:
                 }
               }
 
-              v118 = [v117 countByEnumeratingWithState:&v203 objects:v236 count:16];
+              v118 = [roads countByEnumeratingWithState:&v203 objects:v236 count:16];
             }
 
             while (v118);
@@ -4523,23 +4523,23 @@ LABEL_171:
     v122 = v186;
     if ([(VKLabelNavRoadGraph *)v186->_roadGraph countReadyJunctionLists]> 1)
     {
-      v123 = 2;
+      countReadyJunctionLists3 = 2;
     }
 
     else
     {
-      v123 = [(VKLabelNavRoadGraph *)v186->_roadGraph countReadyJunctionLists];
-      if (!v123)
+      countReadyJunctionLists3 = [(VKLabelNavRoadGraph *)v186->_roadGraph countReadyJunctionLists];
+      if (!countReadyJunctionLists3)
       {
         v176 = 0;
 LABEL_191:
-        v124 = [(VKLabelNavRoadGraph *)v122->_roadGraph offRouteJunctionList];
+        offRouteJunctionList = [(VKLabelNavRoadGraph *)v122->_roadGraph offRouteJunctionList];
 
         v193 = 0u;
         v194 = 0u;
         v191 = 0u;
         v192 = 0u;
-        v177 = v124;
+        v177 = offRouteJunctionList;
         v125 = [v177 countByEnumeratingWithState:&v191 objects:v233 count:16];
         if (v125)
         {
@@ -4558,8 +4558,8 @@ LABEL_191:
               v188 = 0u;
               v189 = 0u;
               v190 = 0u;
-              v129 = [v128 roads];
-              v130 = [v129 countByEnumeratingWithState:&v187 objects:v232 count:16];
+              roads2 = [v128 roads];
+              v130 = [roads2 countByEnumeratingWithState:&v187 objects:v232 count:16];
               if (v130)
               {
                 v131 = *v188;
@@ -4569,7 +4569,7 @@ LABEL_191:
                   {
                     if (*v188 != v131)
                     {
-                      objc_enumerationMutation(v129);
+                      objc_enumerationMutation(roads2);
                     }
 
                     v133 = *(*(&v187 + 1) + 8 * jj);
@@ -4580,7 +4580,7 @@ LABEL_191:
                     }
                   }
 
-                  v130 = [v129 countByEnumeratingWithState:&v187 objects:v232 count:16];
+                  v130 = [roads2 countByEnumeratingWithState:&v187 objects:v232 count:16];
                 }
 
                 while (v130);
@@ -4599,7 +4599,7 @@ LABEL_191:
     }
 
     v176 = 0;
-    for (kk = 1; kk <= v123; ++kk)
+    for (kk = 1; kk <= countReadyJunctionLists3; ++kk)
     {
       v135 = [(VKLabelNavRoadGraph *)v122->_roadGraph junctionListForDepth:kk];
 
@@ -4628,9 +4628,9 @@ LABEL_191:
             v197 = 0u;
             v198 = 0u;
             v184 = v139;
-            v140 = [v139 roads];
-            v141 = v123;
-            v142 = [v140 countByEnumeratingWithState:&v195 objects:v234 count:16];
+            roads3 = [v139 roads];
+            v141 = countReadyJunctionLists3;
+            v142 = [roads3 countByEnumeratingWithState:&v195 objects:v234 count:16];
             if (v142)
             {
               v143 = *v196;
@@ -4640,7 +4640,7 @@ LABEL_191:
                 {
                   if (*v196 != v143)
                   {
-                    objc_enumerationMutation(v140);
+                    objc_enumerationMutation(roads3);
                   }
 
                   v145 = *(*(&v195 + 1) + 8 * nn);
@@ -4651,13 +4651,13 @@ LABEL_191:
                   }
                 }
 
-                v142 = [v140 countByEnumeratingWithState:&v195 objects:v234 count:16];
+                v142 = [roads3 countByEnumeratingWithState:&v195 objects:v234 count:16];
               }
 
               while (v142);
             }
 
-            v123 = v141;
+            countReadyJunctionLists3 = v141;
             kk = v138;
           }
 
@@ -4678,11 +4678,11 @@ LABEL_208:
   [(LabelNavRouteLabeler *)v111 _addVisibleSigns];
 }
 
-- (void)layoutForDisplayWithNavContext:(NavContext *)a3 labels:(void *)a4
+- (void)layoutForDisplayWithNavContext:(NavContext *)context labels:(void *)labels
 {
-  v5 = *a4;
-  v6 = *(a4 + 1);
-  if (*a4 != v6)
+  v5 = *labels;
+  v6 = *(labels + 1);
+  if (*labels != v6)
   {
     while (1)
     {
@@ -4709,43 +4709,43 @@ LABEL_6:
 
     v8 = *v5;
 LABEL_5:
-    (*(*v8 + 24))(v8, a3, v4);
+    (*(*v8 + 24))(v8, context, v4);
     goto LABEL_6;
   }
 }
 
-- (unsigned)orientationForRoadSign:(id)a3 roadLabel:(id)a4 navContext:(NavContext *)a5
+- (unsigned)orientationForRoadSign:(id)sign roadLabel:(id)label navContext:(NavContext *)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 isAwayFromRoute] || objc_msgSend(v8, "roadSignAlignment") == 3)
+  signCopy = sign;
+  labelCopy = label;
+  if (![signCopy isAwayFromRoute] || objc_msgSend(signCopy, "roadSignAlignment") == 3)
   {
-    if (([v8 isAwayFromRoute] & 1) == 0 && objc_msgSend(v8, "roadSignAlignment") != 3)
+    if (([signCopy isAwayFromRoute] & 1) == 0 && objc_msgSend(signCopy, "roadSignAlignment") != 3)
     {
-      v10 = -[LabelNavRouteLabeler resolveOrientation:road:currentOrientation:](self, "resolveOrientation:road:currentOrientation:", a5, v8, [v9 alignment]);
+      alignment = -[LabelNavRouteLabeler resolveOrientation:road:currentOrientation:](self, "resolveOrientation:road:currentOrientation:", context, signCopy, [labelCopy alignment]);
 LABEL_11:
-      v12 = v10;
+      v12 = alignment;
       goto LABEL_12;
     }
 
 LABEL_10:
-    v10 = [v9 alignment];
+    alignment = [labelCopy alignment];
     goto LABEL_11;
   }
 
   v14 = 0.0;
-  if (![(VKLabelNavRoadGraph *)self->_roadGraph collideRouteWithLabel:v9 routeCrossProduct:&v14 context:a5])
+  if (![(VKLabelNavRoadGraph *)self->_roadGraph collideRouteWithLabel:labelCopy routeCrossProduct:&v14 context:context])
   {
     goto LABEL_10;
   }
 
   if (fabsf(v14) <= -0.1)
   {
-    v10 = [v8 roadSignAlignment];
+    alignment = [signCopy roadSignAlignment];
     goto LABEL_11;
   }
 
-  v11 = [v8 roadSignAlignment] - 1;
+  v11 = [signCopy roadSignAlignment] - 1;
   if (v11 > 0xC)
   {
     v12 = 0;
@@ -4761,15 +4761,15 @@ LABEL_12:
   return v12;
 }
 
-- (unsigned)resolveOrientation:(NavContext *)a3 road:(id)a4 currentOrientation:(unsigned __int8)a5
+- (unsigned)resolveOrientation:(NavContext *)orientation road:(id)road currentOrientation:(unsigned __int8)currentOrientation
 {
-  v7 = a4;
-  [(LabelNavRouteLabeler *)self createRoadSignOrientationResolver:v7 navContext:a3];
-  [v7 direction2D];
+  roadCopy = road;
+  [(LabelNavRouteLabeler *)self createRoadSignOrientationResolver:roadCopy navContext:orientation];
+  [roadCopy direction2D];
   v9 = v8;
   v11 = v10;
   v22 = __PAIR64__(LODWORD(v10), LODWORD(v8));
-  v12 = __sincosf_stret(*(a3->var3 + 105));
+  v12 = __sincosf_stret(*(orientation->var3 + 105));
   if (v22 && *&v12)
   {
     v13 = atan2f(v11, v9);
@@ -4807,21 +4807,21 @@ LABEL_12:
   return v17;
 }
 
-- (RoadSignOrientationResolver)createRoadSignOrientationResolver:(id)a3 navContext:(NavContext *)a4
+- (RoadSignOrientationResolver)createRoadSignOrientationResolver:(id)resolver navContext:(NavContext *)context
 {
   v6 = v4;
-  v12 = a3;
-  v7 = [v12 roadSignAlignment];
-  v8 = [v12 roadSignAlignment];
+  resolverCopy = resolver;
+  roadSignAlignment = [resolverCopy roadSignAlignment];
+  roadSignAlignment2 = [resolverCopy roadSignAlignment];
   v9 = 592;
-  if (v7 == 7)
+  if (roadSignAlignment == 7)
   {
     v9 = 568;
   }
 
   *v6 = self + v9;
   *(v6 + 8) = 1035122883;
-  *(v6 + 12) = v8;
+  *(v6 + 12) = roadSignAlignment2;
 
   result.var1 = v11;
   result.var2 = BYTE4(v11);
@@ -4829,10 +4829,10 @@ LABEL_12:
   return result;
 }
 
-- (void)_generateCurrentRoadSignWithContext:(NavContext *)a3
+- (void)_generateCurrentRoadSignWithContext:(NavContext *)context
 {
   v49 = *MEMORY[0x1E69E9840];
-  var1 = a3->var1;
+  var1 = context->var1;
   v7 = *(var1 + 43);
   v6 = *(var1 + 44);
   if (!v6)
@@ -4855,7 +4855,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v8 = a3->var1;
+  v8 = context->var1;
   v7 = *(v8 + 43);
   v9 = *(v8 + 44);
   if (v9)
@@ -4895,7 +4895,7 @@ LABEL_8:
     goto LABEL_50;
   }
 
-  v14 = *(a3->var3 + 8);
+  v14 = *(context->var3 + 8);
   LOBYTE(v44) = 1;
   v15 = v47[0][3];
   if (v14 >= 0x17)
@@ -5010,11 +5010,11 @@ LABEL_52:
     ptr = p_currentRoadSign->__ptr_;
     if (p_currentRoadSign->__ptr_)
     {
-      if ((*(ptr + 92) - *(ptr + 90)) <= (*(a3->var4 + 10) - *(a3->var4 + 8)))
+      if ((*(ptr + 92) - *(ptr + 90)) <= (*(context->var4 + 10) - *(context->var4 + 8)))
       {
         v37 = *(ptr + 93);
         v38 = *(ptr + 91);
-        v39 = truncf(*(a3->var1 + 44) * v13);
+        v39 = truncf(*(context->var1 + 44) * v13);
         v40 = *(ptr + 111) + v39;
         *(ptr + 80) = 0;
         *(ptr + 81) = v40;
@@ -5038,35 +5038,35 @@ LABEL_52:
   }
 }
 
-- (void)styleManagerDidChange:(BOOL)a3
+- (void)styleManagerDidChange:(BOOL)change
 {
-  if (!a3)
+  if (!change)
   {
     self->_regenerateRoadSigns = 1;
   }
 
-  self->_isStylesheetAnimating = a3;
+  self->_isStylesheetAnimating = change;
 }
 
-- (BOOL)_collideLabel:(id)a3 activeLabel:(id)a4 labelsToRemove:(id)a5
+- (BOOL)_collideLabel:(id)label activeLabel:(id)activeLabel labelsToRemove:(id)remove
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v52 = a4;
-  v46 = a5;
-  v47 = v8;
-  v50 = [v8 label];
+  labelCopy = label;
+  activeLabelCopy = activeLabel;
+  removeCopy = remove;
+  v47 = labelCopy;
+  label = [labelCopy label];
   begin = self->_avoidanceRects.__begin_;
   end = self->_avoidanceRects.__end_;
   while (begin != end)
   {
-    if (![v8 isJunctionLabel] || (*(begin + 20) & 1) != 0)
+    if (![labelCopy isJunctionLabel] || (*(begin + 20) & 1) != 0)
     {
       v11 = 0;
       v12 = 0;
-      while (*(*v50 + 368 + 4 * v12) > *(begin + v12))
+      while (*(*label + 368 + 4 * v12) > *(begin + v12))
       {
-        v13 = *(*v50 + 360 + 4 * v12) >= *(begin + v12 + 2);
+        v13 = *(*label + 360 + 4 * v12) >= *(begin + v12 + 2);
         v14 = v11 | v13;
         v11 = 1;
         v12 = 1;
@@ -5108,13 +5108,13 @@ LABEL_52:
       }
 
       v17 = *(*(&v53 + 1) + 8 * i);
-      if (v17 != v52)
+      if (v17 != activeLabelCopy)
       {
-        v18 = *v50;
-        v19 = [*(*(&v53 + 1) + 8 * i) label];
+        v18 = *label;
+        label2 = [*(*(&v53 + 1) + 8 * i) label];
         v20 = 0;
         v21 = 0;
-        v57 = *(*v19 + 424);
+        v57 = *(*label2 + 424);
         v22 = &v57;
         do
         {
@@ -5146,21 +5146,21 @@ LABEL_52:
           atomic_fetch_add_explicit(&v28->__shared_owners_, 1uLL, memory_order_relaxed);
         }
 
-        v29 = [v26 navFeature];
-        v30 = [v27 navFeature];
-        if (![v29 isOnRoute])
+        navFeature = [v26 navFeature];
+        navFeature2 = [v27 navFeature];
+        if (![navFeature isOnRoute])
         {
-          v33 = [v29 isAwayFromRoute];
+          isAwayFromRoute = [navFeature isAwayFromRoute];
           v34 = v27;
-          if ((v33 & 1) == 0)
+          if ((isAwayFromRoute & 1) == 0)
           {
-            v35 = [v30 isAwayFromRoute];
+            isAwayFromRoute2 = [navFeature2 isAwayFromRoute];
             v34 = v27;
-            if ((v35 & 1) == 0)
+            if ((isAwayFromRoute2 & 1) == 0)
             {
-              v36 = [v26 isShieldLabel];
+              isShieldLabel = [v26 isShieldLabel];
               v34 = v27;
-              if ((v36 & 1) == 0)
+              if ((isShieldLabel & 1) == 0)
               {
                 [v27 isShieldLabel];
                 v34 = v27;
@@ -5171,7 +5171,7 @@ LABEL_52:
           goto LABEL_57;
         }
 
-        if ([v30 isOnRoute])
+        if ([navFeature2 isOnRoute])
         {
           if (([v26 isShieldLabel] & 1) != 0 || (objc_msgSend(v27, "isShieldLabel") & 1) == 0)
           {
@@ -5194,12 +5194,12 @@ LABEL_52:
             v32 = 1;
           }
 
-          if ([v29 isInGuidance] && !objc_msgSend(v30, "isInGuidance"))
+          if ([navFeature isInGuidance] && !objc_msgSend(navFeature2, "isInGuidance"))
           {
             goto LABEL_55;
           }
 
-          if ([v29 isInGuidance])
+          if ([navFeature isInGuidance])
           {
             if (v32)
             {
@@ -5209,9 +5209,9 @@ LABEL_52:
 
           else
           {
-            v38 = [v30 isInGuidance];
-            LOBYTE(v31) = v38 | v31;
-            if ((v38 | v32))
+            isInGuidance = [navFeature2 isInGuidance];
+            LOBYTE(v31) = isInGuidance | v31;
+            if ((isInGuidance | v32))
             {
               goto LABEL_55;
             }
@@ -5224,15 +5224,15 @@ LABEL_52:
 
           if (([v49 isJunctionLabel] & 1) == 0)
           {
-            v39 = [v27 isJunctionLabel];
+            isJunctionLabel = [v27 isJunctionLabel];
             v34 = v27;
-            if (v39)
+            if (isJunctionLabel)
             {
               goto LABEL_57;
             }
           }
 
-          if ([v29 isStartOfRoadName] && !objc_msgSend(v30, "isStartOfRoadName"))
+          if ([navFeature isStartOfRoadName] && !objc_msgSend(navFeature2, "isStartOfRoadName"))
           {
 LABEL_55:
             v34 = v27;
@@ -5242,14 +5242,14 @@ LABEL_55:
             }
           }
 
-          else if (([v29 isStartOfRoadName] & 1) != 0 || (v40 = objc_msgSend(v30, "isStartOfRoadName"), v34 = v27, (v40 & 1) == 0))
+          else if (([navFeature isStartOfRoadName] & 1) != 0 || (v40 = objc_msgSend(navFeature2, "isStartOfRoadName"), v34 = v27, (v40 & 1) == 0))
           {
-            v41 = [v30 routeOffset];
-            v42 = [v29 routeOffset];
+            routeOffset = [navFeature2 routeOffset];
+            routeOffset2 = [navFeature routeOffset];
             v34 = v27;
-            if (v41 >= v42)
+            if (routeOffset >= routeOffset2)
             {
-              if (v41 != v42 || (v34 = v27, *(&v41 + 1) > *(&v42 + 1)))
+              if (routeOffset != routeOffset2 || (v34 = v27, *(&routeOffset + 1) > *(&routeOffset2 + 1)))
               {
 LABEL_56:
                 v34 = v49;
@@ -5265,9 +5265,9 @@ LABEL_56:
             goto LABEL_56;
           }
 
-          v37 = [v27 isShieldLabel];
+          isShieldLabel2 = [v27 isShieldLabel];
           v34 = v27;
-          if (v37)
+          if (isShieldLabel2)
           {
             goto LABEL_56;
           }
@@ -5283,7 +5283,7 @@ LABEL_57:
 
         if (v43 != v27)
         {
-          [v46 addObject:v27];
+          [removeCopy addObject:v27];
 
           continue;
         }
@@ -5308,25 +5308,25 @@ LABEL_66:
   return v44;
 }
 
-- (void)_tryAddLabel:(id)a3 navContext:(NavContext *)a4 labelCollisionEnabled:(BOOL)a5
+- (void)_tryAddLabel:(id)label navContext:(NavContext *)context labelCollisionEnabled:(BOOL)enabled
 {
-  obj = a5;
+  obj = enabled;
   v103 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  labelCopy = label;
+  v8 = labelCopy;
+  if (labelCopy)
   {
-    v84 = v7;
-    v8 = v7;
-    if (*[v7 label])
+    v84 = labelCopy;
+    v8 = labelCopy;
+    if (*[labelCopy label])
     {
-      v86 = [v84 navFeature];
+      navFeature = [v84 navFeature];
       visibleLabelsByName = self->_visibleLabelsByName;
-      v10 = [v8 displayGroup];
-      v11 = [(NSMutableDictionary *)visibleLabelsByName objectForKey:v10];
+      displayGroup = [v8 displayGroup];
+      v11 = [(NSMutableDictionary *)visibleLabelsByName objectForKey:displayGroup];
 
       v85 = v11;
-      v81 = [v11 navFeature];
+      navFeature2 = [v11 navFeature];
       if (self->_regenerateRoadSigns)
       {
 
@@ -5335,10 +5335,10 @@ LABEL_66:
 
       if ([v84 isShieldLabel])
       {
-        v12 = v86;
+        v12 = navFeature;
         visibleShieldGroups = self->_visibleShieldGroups;
-        v14 = [v12 shieldGroup];
-        LOBYTE(visibleShieldGroups) = [(NSMutableSet *)visibleShieldGroups containsObject:v14];
+        shieldGroup = [v12 shieldGroup];
+        LOBYTE(visibleShieldGroups) = [(NSMutableSet *)visibleShieldGroups containsObject:shieldGroup];
 
         if (visibleShieldGroups)
         {
@@ -5349,13 +5349,13 @@ LABEL_111:
         }
 
         v15 = self->_visibleShieldGroups;
-        v16 = [v12 shieldGroup];
-        [(NSMutableSet *)v15 addObject:v16];
+        shieldGroup2 = [v12 shieldGroup];
+        [(NSMutableSet *)v15 addObject:shieldGroup2];
       }
 
-      if (([v86 isAwayFromRoute] & 1) != 0 || objc_msgSend(v81, "isOnRoute"))
+      if (([navFeature isAwayFromRoute] & 1) != 0 || objc_msgSend(navFeature2, "isOnRoute"))
       {
-        v17 = [v86 isRamp];
+        isRamp = [navFeature isRamp];
         if (v85)
         {
           v18 = 1;
@@ -5363,7 +5363,7 @@ LABEL_111:
 
         else
         {
-          v18 = v17;
+          v18 = isRamp;
         }
 
         if ((v18 & 1) == 0)
@@ -5389,10 +5389,10 @@ LABEL_17:
               objc_enumerationMutation(v19);
             }
 
-            v23 = [*(*(&v96 + 1) + 8 * v22) navFeature];
-            v24 = [v23 name];
-            v25 = [v86 name];
-            v26 = [v24 isEqualToString:v25];
+            navFeature3 = [*(*(&v96 + 1) + 8 * v22) navFeature];
+            name = [navFeature3 name];
+            name2 = [navFeature name];
+            v26 = [name isEqualToString:name2];
 
             if (v26)
             {
@@ -5425,31 +5425,31 @@ LABEL_24:
           goto LABEL_111;
         }
 
-        if (([v86 isOnRoute] & 1) == 0 && (objc_msgSend(v81, "isAwayFromRoute") & 1) == 0)
+        if (([navFeature isOnRoute] & 1) == 0 && (objc_msgSend(navFeature2, "isAwayFromRoute") & 1) == 0)
         {
-          if ([v81 isOnRoute])
+          if ([navFeature2 isOnRoute])
           {
             goto LABEL_111;
           }
 
           if ([v84 isRoadLabel])
           {
-            v29 = [v81 intraRoadPriorityForRoadLabel];
-            v30 = [v86 intraRoadPriorityForRoadLabel];
+            intraRoadPriorityForRoadLabel = [navFeature2 intraRoadPriorityForRoadLabel];
+            intraRoadPriorityForRoadLabel2 = [navFeature intraRoadPriorityForRoadLabel];
           }
 
           else
           {
-            v29 = [v81 intraRoadPriorityForShieldLabel];
-            v30 = [v86 intraRoadPriorityForShieldLabel];
+            intraRoadPriorityForRoadLabel = [navFeature2 intraRoadPriorityForShieldLabel];
+            intraRoadPriorityForRoadLabel2 = [navFeature intraRoadPriorityForShieldLabel];
           }
 
-          if (v29 > v30)
+          if (intraRoadPriorityForRoadLabel > intraRoadPriorityForRoadLabel2)
           {
             goto LABEL_111;
           }
 
-          if (v29 == v30)
+          if (intraRoadPriorityForRoadLabel == intraRoadPriorityForRoadLabel2)
           {
             [v85 desiredOffsetDistance];
             v75 = v74;
@@ -5460,11 +5460,11 @@ LABEL_24:
             }
           }
 
-          if (*(*[v85 label] + 364) < *(a4->var4 + 21))
+          if (*(*[v85 label] + 364) < *(context->var4 + 21))
           {
-            v77 = [v84 navFeature];
-            v78 = [v85 navFeature];
-            v79 = v77 == v78;
+            navFeature4 = [v84 navFeature];
+            navFeature5 = [v85 navFeature];
+            v79 = navFeature4 == navFeature5;
 
             if (v79)
             {
@@ -5473,28 +5473,28 @@ LABEL_24:
           }
         }
 
-        if ([v81 isOnRoute])
+        if ([navFeature2 isOnRoute])
         {
-          if ([v81 isStartOfRoadName])
+          if ([navFeature2 isStartOfRoadName])
           {
-            if (![v86 isStartOfRoadName])
+            if (![navFeature isStartOfRoadName])
             {
               goto LABEL_111;
             }
 
-            v27 = [v81 routeOffset];
-            v28 = [v86 routeOffset];
-            if (v27 < v28 || v27 == v28 && *(&v27 + 1) <= *(&v28 + 1))
+            routeOffset = [navFeature2 routeOffset];
+            routeOffset2 = [navFeature routeOffset];
+            if (routeOffset < routeOffset2 || routeOffset == routeOffset2 && *(&routeOffset + 1) <= *(&routeOffset2 + 1))
             {
               goto LABEL_111;
             }
           }
 
-          else if (([v86 isStartOfRoadName] & 1) == 0)
+          else if (([navFeature isStartOfRoadName] & 1) == 0)
           {
-            v71 = [v81 routeOffset];
-            v72 = [v86 routeOffset];
-            if (v71 < v72 || v71 == v72 && *(&v71 + 1) <= *(&v72 + 1))
+            routeOffset3 = [navFeature2 routeOffset];
+            routeOffset4 = [navFeature routeOffset];
+            if (routeOffset3 < routeOffset4 || routeOffset3 == routeOffset4 && *(&routeOffset3 + 1) <= *(&routeOffset4 + 1))
             {
               goto LABEL_111;
             }
@@ -5508,17 +5508,17 @@ LABEL_24:
         }
       }
 
-      v31 = [v84 label];
-      v32 = *v31;
-      v33 = v31[1];
-      *&v95 = *v31;
+      label = [v84 label];
+      v32 = *label;
+      v33 = label[1];
+      *&v95 = *label;
       *(&v95 + 1) = v33;
       if (v33)
       {
         atomic_fetch_add_explicit(&v33->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      [v84 layoutWithNavContext:a4];
+      [v84 layoutWithNavContext:context];
       if (*(v32 + 315))
       {
         if (*(v32 + 313) == 1 && (*(v32 + 314) & 1) != 0)
@@ -5531,7 +5531,7 @@ LABEL_24:
 
           if (!obj || ![(LabelNavRouteLabeler *)self _collideLabel:v84 activeLabel:v85 labelsToRemove:v80])
           {
-            if (([v86 isAwayFromRoute] & 1) == 0)
+            if (([navFeature isAwayFromRoute] & 1) == 0)
             {
               v93 = 0u;
               v94 = 0u;
@@ -5552,13 +5552,13 @@ LABEL_24:
                     }
 
                     v37 = *(*(&v91 + 1) + 8 * i);
-                    v38 = [v37 navFeature];
-                    if ([v38 isAwayFromRoute])
+                    navFeature6 = [v37 navFeature];
+                    if ([navFeature6 isAwayFromRoute])
                     {
-                      v39 = [v37 navFeature];
-                      v40 = [v39 name];
-                      v41 = [v86 name];
-                      v42 = [v40 isEqualToString:v41];
+                      navFeature7 = [v37 navFeature];
+                      name3 = [navFeature7 name];
+                      name4 = [navFeature name];
+                      v42 = [name3 isEqualToString:name4];
 
                       if (v42 && ([v80 containsObject:v37] & 1) == 0)
                       {
@@ -5611,8 +5611,8 @@ LABEL_24:
                     {
                       [(NSMutableArray *)self->_fadingLabels addObject:v47];
                       v50 = self->_visibleLabelsByName;
-                      v51 = [v47 displayGroup];
-                      [(NSMutableDictionary *)v50 removeObjectForKey:v51];
+                      displayGroup2 = [v47 displayGroup];
+                      [(NSMutableDictionary *)v50 removeObjectForKey:displayGroup2];
 
                       [(NSMutableArray *)self->_visibleLabels removeObject:v47];
                       if ([v47 isShieldLabel])
@@ -5626,10 +5626,10 @@ LABEL_24:
                   {
                     begin = self->_activeSigns.__begin_;
                     end = self->_activeSigns.__end_;
-                    v54 = [v47 label];
+                    label2 = [v47 label];
                     if (begin != end)
                     {
-                      while (*begin != *v54)
+                      while (*begin != *label2)
                       {
                         begin += 16;
                         if (begin == end)
@@ -5682,17 +5682,17 @@ LABEL_24:
                     }
 
                     v61 = self->_visibleLabelsByName;
-                    v62 = [v47 displayGroup];
-                    [(NSMutableDictionary *)v61 removeObjectForKey:v62];
+                    displayGroup3 = [v47 displayGroup];
+                    [(NSMutableDictionary *)v61 removeObjectForKey:displayGroup3];
 
                     [(NSMutableArray *)self->_visibleLabels removeObject:v47];
                     if ([v47 isShieldLabel])
                     {
 LABEL_90:
-                      v63 = [v47 navFeature];
+                      navFeature8 = [v47 navFeature];
                       v64 = self->_visibleShieldGroups;
-                      v65 = [v63 shieldGroup];
-                      [(NSMutableSet *)v64 removeObject:v65];
+                      shieldGroup3 = [navFeature8 shieldGroup];
+                      [(NSMutableSet *)v64 removeObject:shieldGroup3];
 
                       continue;
                     }
@@ -5706,16 +5706,16 @@ LABEL_90:
             }
 
             v66 = self->_visibleLabelsByName;
-            v67 = [v84 displayGroup];
-            [(NSMutableDictionary *)v66 setObject:v84 forKey:v67];
+            displayGroup4 = [v84 displayGroup];
+            [(NSMutableDictionary *)v66 setObject:v84 forKey:displayGroup4];
 
             [(NSMutableArray *)self->_visibleLabels addObject:v84];
             if (([v84 isShieldLabel] & 1) == 0)
             {
               ++self->_countVisibleRoadSigns;
-              v68 = [v86 isOnRoute];
+              isOnRoute = [navFeature isOnRoute];
               v69 = 304;
-              if (v68)
+              if (isOnRoute)
               {
                 v69 = 296;
               }
@@ -5761,20 +5761,20 @@ LABEL_90:
 LABEL_112:
 }
 
-- (void)_tryAddRoadSignForRoad:(id)a3 isShield:(BOOL)a4 navContext:(NavContext *)a5 labelCollisionEnabled:(BOOL)a6
+- (void)_tryAddRoadSignForRoad:(id)road isShield:(BOOL)shield navContext:(NavContext *)context labelCollisionEnabled:(BOOL)enabled
 {
-  v6 = a6;
-  v8 = a4;
-  v23 = a3;
-  if (!v8)
+  enabledCopy = enabled;
+  shieldCopy = shield;
+  roadCopy = road;
+  if (!shieldCopy)
   {
     currentRoadName = self->_currentRoadName;
-    v11 = [v23 name];
-    if ([(NSString *)currentRoadName isEqualToString:v11])
+    name = [roadCopy name];
+    if ([(NSString *)currentRoadName isEqualToString:name])
     {
-      v12 = [v23 isGuidanceStepStart];
+      isGuidanceStepStart = [roadCopy isGuidanceStepStart];
 
-      if ((v12 & 1) == 0)
+      if ((isGuidanceStepStart & 1) == 0)
       {
         goto LABEL_35;
       }
@@ -5785,17 +5785,17 @@ LABEL_112:
     }
   }
 
-  if ((![v23 isRamp] || (objc_msgSend(v23, "isOnewayToJunction") & 1) == 0) && !(objc_msgSend(v23, "isOnRoute") & v8) && (v8 || (!objc_msgSend(v23, "hasVisibleShields") || (objc_msgSend(v23, "suppressRoadSignIfShieldPresent") & 1) == 0) && (objc_msgSend(v23, "suppressRoadSignIfDeduped") & 1) == 0))
+  if ((![roadCopy isRamp] || (objc_msgSend(roadCopy, "isOnewayToJunction") & 1) == 0) && !(objc_msgSend(roadCopy, "isOnRoute") & shieldCopy) && (shieldCopy || (!objc_msgSend(roadCopy, "hasVisibleShields") || (objc_msgSend(roadCopy, "suppressRoadSignIfShieldPresent") & 1) == 0) && (objc_msgSend(roadCopy, "suppressRoadSignIfDeduped") & 1) == 0))
   {
-    v13 = [v23 labelWithType:v8];
+    v13 = [roadCopy labelWithType:shieldCopy];
     if (!v13 || ([(NSMutableArray *)self->_visibleLabels containsObject:v13]& 1) == 0)
     {
       v15 = 0.0;
       for (i = 2; ; --i)
       {
         *&v14 = v15;
-        [(LabelNavRouteLabeler *)self _createOrUpdateLabelForRoad:v23 isShield:v8 navContext:a5 hopOffsetDistance:v14];
-        v17 = [v23 labelWithType:v8];
+        [(LabelNavRouteLabeler *)self _createOrUpdateLabelForRoad:roadCopy isShield:shieldCopy navContext:context hopOffsetDistance:v14];
+        v17 = [roadCopy labelWithType:shieldCopy];
 
         if (!v17)
         {
@@ -5803,14 +5803,14 @@ LABEL_112:
           goto LABEL_34;
         }
 
-        if (v8)
+        if (shieldCopy)
         {
           goto LABEL_18;
         }
 
-        if (([v23 isAwayFromRoute] & 1) != 0 || !self->_isOnRoute && (objc_msgSend(v23, "isOnRoute") & 1) == 0 && objc_msgSend(v23, "roadSignAlignment") != 3)
+        if (([roadCopy isAwayFromRoute] & 1) != 0 || !self->_isOnRoute && (objc_msgSend(roadCopy, "isOnRoute") & 1) == 0 && objc_msgSend(roadCopy, "roadSignAlignment") != 3)
         {
-          [v17 layoutWithNavContext:a5];
+          [v17 layoutWithNavContext:context];
           if (*(*[v17 label] + 315) != 1)
           {
             v13 = v17;
@@ -5818,7 +5818,7 @@ LABEL_112:
           }
         }
 
-        v18 = [(LabelNavRouteLabeler *)self orientationForRoadSign:v23 roadLabel:v17 navContext:a5];
+        v18 = [(LabelNavRouteLabeler *)self orientationForRoadSign:roadCopy roadLabel:v17 navContext:context];
         if (v18 == [v17 alignment] && !self->_regenerateRoadSigns)
         {
 LABEL_18:
@@ -5827,8 +5827,8 @@ LABEL_18:
 
         else
         {
-          [v23 recreateRoadSignWithAlignment:v18 navContext:a5 artworkCache:self->_artworkCache];
-          v13 = [v23 labelWithType:0];
+          [roadCopy recreateRoadSignWithAlignment:v18 navContext:context artworkCache:self->_artworkCache];
+          v13 = [roadCopy labelWithType:0];
 
           if (!v13)
           {
@@ -5837,10 +5837,10 @@ LABEL_18:
         }
 
         visibleLabelsByName = self->_visibleLabelsByName;
-        v20 = [v13 displayGroup];
-        v21 = [(NSMutableDictionary *)visibleLabelsByName objectForKey:v20];
+        displayGroup = [v13 displayGroup];
+        v21 = [(NSMutableDictionary *)visibleLabelsByName objectForKey:displayGroup];
 
-        [v13 layoutWithNavContext:a5];
+        [v13 layoutWithNavContext:context];
         if (![(LabelNavRouteLabeler *)self _collideLabel:v13 activeLabel:v21 labelsToRemove:0])
         {
           break;
@@ -5855,7 +5855,7 @@ LABEL_18:
         v15 = v22 + 10.0;
       }
 
-      [(LabelNavRouteLabeler *)self _tryAddLabel:v13 navContext:a5 labelCollisionEnabled:v6];
+      [(LabelNavRouteLabeler *)self _tryAddLabel:v13 navContext:context labelCollisionEnabled:enabledCopy];
 LABEL_33:
     }
 
@@ -5865,12 +5865,12 @@ LABEL_34:
 LABEL_35:
 }
 
-- (void)_createOrUpdateLabelForRoad:(id)a3 isShield:(BOOL)a4 navContext:(NavContext *)a5 hopOffsetDistance:(float)a6
+- (void)_createOrUpdateLabelForRoad:(id)road isShield:(BOOL)shield navContext:(NavContext *)context hopOffsetDistance:(float)distance
 {
-  v8 = a4;
-  v10 = a3;
-  v18 = v10;
-  if (v8)
+  shieldCopy = shield;
+  roadCopy = road;
+  v18 = roadCopy;
+  if (shieldCopy)
   {
     v15 = 20.0;
     v16 = 40.0;
@@ -5881,7 +5881,7 @@ LABEL_35:
   {
     v16 = 13.0;
     v15 = 12.0;
-    if ([v10 isOnRoute] && objc_msgSend(v18, "isStartOfRoadName"))
+    if ([roadCopy isOnRoute] && objc_msgSend(v18, "isStartOfRoadName"))
     {
       LODWORD(v11) = 1128792064;
       v17 = [(VKLabelNavRoadGraph *)self->_roadGraph isPriorRouteCollinearWithRoad:v18 distance:v11];
@@ -5921,32 +5921,32 @@ LABEL_35:
       LODWORD(v12) = 1120403456;
     }
 
-    v10 = v18;
+    roadCopy = v18;
   }
 
-  *&v11 = fmaxf(fmaxf(self->_minSignOffsetDistance, v16), a6);
+  *&v11 = fmaxf(fmaxf(self->_minSignOffsetDistance, v16), distance);
   LODWORD(v14) = 13.0;
   *&v13 = v15;
-  [v10 createLabelWithNavContext:a5 isShieldLabel:v8 desiredOffsetDistance:self->_roadGraph maxOffsetDistance:self->_artworkCache minJunctionDistance:v11 minRouteDistance:v12 roadGraph:v13 artworkCache:v14];
+  [roadCopy createLabelWithNavContext:context isShieldLabel:shieldCopy desiredOffsetDistance:self->_roadGraph maxOffsetDistance:self->_artworkCache minJunctionDistance:v11 minRouteDistance:v12 roadGraph:v13 artworkCache:v14];
 }
 
-- (void)_tryAddRoadSignForJunction:(id)a3 navContext:(NavContext *)a4 labelCollisionEnabled:(BOOL)a5
+- (void)_tryAddRoadSignForJunction:(id)junction navContext:(NavContext *)context labelCollisionEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = [(VKPolylineOverlay *)self->_route composedRoute];
-  v9 = [v8 steps];
-  v10 = [v9 objectAtIndexedSubscript:self->_stepIndex];
+  enabledCopy = enabled;
+  junctionCopy = junction;
+  composedRoute = [(VKPolylineOverlay *)self->_route composedRoute];
+  steps = [composedRoute steps];
+  v10 = [steps objectAtIndexedSubscript:self->_stepIndex];
 
-  [v12 createLabelWithNavContext:a4 isDrivingSideRight:objc_msgSend(v10 artworkCache:{"drivingSide") == 0, self->_artworkCache}];
-  v11 = [v12 junctionSign];
-  if (v11)
+  [junctionCopy createLabelWithNavContext:context isDrivingSideRight:objc_msgSend(v10 artworkCache:{"drivingSide") == 0, self->_artworkCache}];
+  junctionSign = [junctionCopy junctionSign];
+  if (junctionSign)
   {
-    [(LabelNavRouteLabeler *)self _tryAddLabel:v11 navContext:a4 labelCollisionEnabled:v5];
+    [(LabelNavRouteLabeler *)self _tryAddLabel:junctionSign navContext:context labelCollisionEnabled:enabledCopy];
   }
 }
 
-- (void)grabTilesFromScene:(const void *)a3
+- (void)grabTilesFromScene:(const void *)scene
 {
   v36 = *MEMORY[0x1E69E9840];
   v33[0] = 0;
@@ -5955,7 +5955,7 @@ LABEL_35:
   *&v34[23] = 0;
   *&v34[7] = 0;
   v35 = 1065353216;
-  v4 = *a3;
+  v4 = *scene;
   {
     qword_1ED65AC10 = 0;
     qword_1ED65AC08 = 0;
@@ -6130,26 +6130,26 @@ LABEL_13:
   route = self->_route;
   if (route)
   {
-    v4 = [(VKPolylineOverlay *)route composedRoute];
-    v5 = [v4 steps];
-    v6 = [v5 count];
+    composedRoute = [(VKPolylineOverlay *)route composedRoute];
+    steps = [composedRoute steps];
+    v6 = [steps count];
 
     stepIndex = self->_stepIndex;
     if (stepIndex < v6)
     {
       do
       {
-        v8 = [(VKPolylineOverlay *)self->_route composedRoute];
-        v9 = [v8 steps];
-        v10 = [v9 objectAtIndexedSubscript:stepIndex];
+        composedRoute2 = [(VKPolylineOverlay *)self->_route composedRoute];
+        steps2 = [composedRoute2 steps];
+        v10 = [steps2 objectAtIndexedSubscript:stepIndex];
 
-        v11 = [v10 maneuverRoadOrExitName];
-        if ([v11 length])
+        maneuverRoadOrExitName = [v10 maneuverRoadOrExitName];
+        if ([maneuverRoadOrExitName length])
         {
-          [(NSMutableSet *)self->_roadNamesInGuidance addObject:v11];
+          [(NSMutableSet *)self->_roadNamesInGuidance addObject:maneuverRoadOrExitName];
           if (stepIndex < v6 - 1)
           {
-            v12 = -[VKGuidanceStepInfo initWithRoadName:point:]([VKGuidanceStepInfo alloc], "initWithRoadName:point:", v11, [v10 endRouteCoordinate]);
+            v12 = -[VKGuidanceStepInfo initWithRoadName:point:]([VKGuidanceStepInfo alloc], "initWithRoadName:point:", maneuverRoadOrExitName, [v10 endRouteCoordinate]);
             [(NSMutableArray *)self->_guidanceStepInfos addObject:v12];
           }
         }
@@ -6162,12 +6162,12 @@ LABEL_13:
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v6 = a3;
-  if (self->_route != v6)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    objc_storeStrong(&self->_route, a3);
+    objc_storeStrong(&self->_route, route);
     self->_isSnappingReady = 0;
     matchedPaths = self->_matchedPaths;
     self->_matchedPaths = 0;
@@ -6214,10 +6214,10 @@ LABEL_13:
   [(VKLabelNavRoadGraph *)roadGraph setTiles:&self->_tiles];
 }
 
-- (void)clearSceneIsMemoryWarning:(BOOL)a3
+- (void)clearSceneIsMemoryWarning:(BOOL)warning
 {
   self->_disableTileParseForOneLayout = 1;
-  if (!a3)
+  if (!warning)
   {
     self->_isSnappingReady = 0;
     matchedPaths = self->_matchedPaths;
@@ -6238,16 +6238,16 @@ LABEL_13:
   }
 }
 
-- (void)setRouteUserOffset:(PolylineCoordinate)a3
+- (void)setRouteUserOffset:(PolylineCoordinate)offset
 {
-  *&v3 = a3.offset;
-  self->_routeUserOffset = a3;
+  *&v3 = offset.offset;
+  self->_routeUserOffset = offset;
   isOnRoute = self->_isOnRoute;
-  if (a3.offset >= 0.0)
+  if (offset.offset >= 0.0)
   {
-    index = a3.index;
-    v9 = [(VKPolylineOverlay *)self->_route composedRoute];
-    v7 = [v9 stepIndexForPointIndex:index];
+    index = offset.index;
+    composedRoute = [(VKPolylineOverlay *)self->_route composedRoute];
+    v7 = [composedRoute stepIndexForPointIndex:index];
 
     v6 = 1;
   }
@@ -6292,31 +6292,31 @@ LABEL_8:
   [(LabelNavRouteLabeler *)self _updateCurrentRoadInfo];
 }
 
-- (void)setMaxVisibleRoadsigns:(unsigned int)a3
+- (void)setMaxVisibleRoadsigns:(unsigned int)roadsigns
 {
-  if (self->_maxVisibleRoadSigns != a3 && !self->_debugDisableRoadSignLimit)
+  if (self->_maxVisibleRoadSigns != roadsigns && !self->_debugDisableRoadSignLimit)
   {
     maxVisibleOnRouteRoadSigns = self->_maxVisibleOnRouteRoadSigns;
-    v4 = a3 - maxVisibleOnRouteRoadSigns;
-    if (a3 < maxVisibleOnRouteRoadSigns)
+    v4 = roadsigns - maxVisibleOnRouteRoadSigns;
+    if (roadsigns < maxVisibleOnRouteRoadSigns)
     {
       v4 = 0;
     }
 
     self->_maxVisibleOffRouteRoadSigns = v4;
-    self->_maxVisibleRoadSigns = a3;
+    self->_maxVisibleRoadSigns = roadsigns;
     self->_debugCachedMaxVisibleOffRouteRoadSigns = v4;
     self->_debugCachedMaxVisibleOnRouteRoadSigns = maxVisibleOnRouteRoadSigns;
   }
 }
 
-- (void)setDebugDisableRoadSignLimit:(BOOL)a3
+- (void)setDebugDisableRoadSignLimit:(BOOL)limit
 {
-  if (self->_debugDisableRoadSignLimit != a3)
+  if (self->_debugDisableRoadSignLimit != limit)
   {
     v11 = v3;
-    self->_debugDisableRoadSignLimit = a3;
-    if (a3)
+    self->_debugDisableRoadSignLimit = limit;
+    if (limit)
     {
       debugCachedMaxVisibleOnRouteRoadSigns = 100;
       debugCachedMaxVisibleOffRouteRoadSigns = 100;
@@ -6340,10 +6340,10 @@ LABEL_8:
   }
 }
 
-- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)a3
+- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)manager
 {
-  ptr = *a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
+  ptr = *manager.__ptr_;
+  v5 = *(manager.__ptr_ + 1);
   if (v5)
   {
     atomic_fetch_add_explicit((v5 + 8), 1uLL, memory_order_relaxed);

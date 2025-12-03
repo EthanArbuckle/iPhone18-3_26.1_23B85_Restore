@@ -1,6 +1,6 @@
 @interface MTRGeneralDiagnosticsClusterNetworkInterface
 - (MTRGeneralDiagnosticsClusterNetworkInterface)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -26,17 +26,17 @@
     offPremiseServicesReachableIPv6 = v3->_offPremiseServicesReachableIPv6;
     v3->_offPremiseServicesReachableIPv6 = 0;
 
-    v8 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     hardwareAddress = v3->_hardwareAddress;
-    v3->_hardwareAddress = v8;
+    v3->_hardwareAddress = data;
 
-    v10 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     iPv4Addresses = v3->_iPv4Addresses;
-    v3->_iPv4Addresses = v10;
+    v3->_iPv4Addresses = array;
 
-    v12 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     iPv6Addresses = v3->_iPv6Addresses;
-    v3->_iPv6Addresses = v12;
+    v3->_iPv6Addresses = array2;
 
     type = v3->_type;
     v3->_type = &unk_284C3E588;
@@ -45,32 +45,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGeneralDiagnosticsClusterNetworkInterface);
-  v5 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self name];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setName:v5];
+  name = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self name];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setName:name];
 
-  v6 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self isOperational];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setIsOperational:v6];
+  isOperational = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self isOperational];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setIsOperational:isOperational];
 
-  v7 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self offPremiseServicesReachableIPv4];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setOffPremiseServicesReachableIPv4:v7];
+  offPremiseServicesReachableIPv4 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self offPremiseServicesReachableIPv4];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setOffPremiseServicesReachableIPv4:offPremiseServicesReachableIPv4];
 
-  v8 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self offPremiseServicesReachableIPv6];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setOffPremiseServicesReachableIPv6:v8];
+  offPremiseServicesReachableIPv6 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self offPremiseServicesReachableIPv6];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setOffPremiseServicesReachableIPv6:offPremiseServicesReachableIPv6];
 
-  v9 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self hardwareAddress];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setHardwareAddress:v9];
+  hardwareAddress = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self hardwareAddress];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setHardwareAddress:hardwareAddress];
 
-  v10 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self iPv4Addresses];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setIPv4Addresses:v10];
+  iPv4Addresses = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self iPv4Addresses];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setIPv4Addresses:iPv4Addresses];
 
-  v11 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self iPv6Addresses];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setIPv6Addresses:v11];
+  iPv6Addresses = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self iPv6Addresses];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setIPv6Addresses:iPv6Addresses];
 
-  v12 = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self type];
-  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setType:v12];
+  type = [(MTRGeneralDiagnosticsClusterNetworkInterface *)self type];
+  [(MTRGeneralDiagnosticsClusterNetworkInterface *)v4 setType:type];
 
   return v4;
 }

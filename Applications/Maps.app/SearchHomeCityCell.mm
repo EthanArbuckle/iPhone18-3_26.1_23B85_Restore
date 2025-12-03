@@ -3,11 +3,11 @@
 - (CGSize)coverPhotoSize;
 - (NSArray)guideLocationViewModels;
 - (SearchHomeCityCellDelegate)delegate;
-- (_TtC4Maps18SearchHomeCityCell)initWithCoder:(id)a3;
-- (_TtC4Maps18SearchHomeCityCell)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC4Maps18SearchHomeCityCell)initWithCoder:(id)coder;
+- (_TtC4Maps18SearchHomeCityCell)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)layoutSubviews;
-- (void)setGuideLocationViewModels:(id)a3;
+- (void)setGuideLocationViewModels:(id)models;
 @end
 
 @implementation SearchHomeCityCell
@@ -28,7 +28,7 @@
   return v2.super.isa;
 }
 
-- (void)setGuideLocationViewModels:(id)a3
+- (void)setGuideLocationViewModels:(id)models
 {
   sub_1002F8744();
   *(self + OBJC_IVAR____TtC4Maps18SearchHomeCityCell_guideLocationViewModels) = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -51,12 +51,12 @@
   return result;
 }
 
-- (_TtC4Maps18SearchHomeCityCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps18SearchHomeCityCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(self + OBJC_IVAR____TtC4Maps18SearchHomeCityCell_guideLocationViewModels) = _swiftEmptyArrayStorage;
   swift_unknownObjectWeakInit();
   v8 = self + OBJC_IVAR____TtC4Maps18SearchHomeCityCell_scrollIndex;
@@ -71,7 +71,7 @@
   return [(SearchHomeCityCell *)&v13 initWithFrame:x, y, width, height];
 }
 
-- (_TtC4Maps18SearchHomeCityCell)initWithCoder:(id)a3
+- (_TtC4Maps18SearchHomeCityCell)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC4Maps18SearchHomeCityCell_guideLocationViewModels) = _swiftEmptyArrayStorage;
   swift_unknownObjectWeakInit();
@@ -89,18 +89,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002F7388();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1002F7630();
 
   (*(v5 + 8))(v7, v4);

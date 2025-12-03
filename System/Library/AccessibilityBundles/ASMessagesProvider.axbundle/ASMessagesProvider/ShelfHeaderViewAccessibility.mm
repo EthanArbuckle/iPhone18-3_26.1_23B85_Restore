@@ -1,5 +1,5 @@
 @interface ShelfHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,13 +7,13 @@
 
 @implementation ShelfHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"eyebrowButton" withSwiftType:"DynamicTypeButton"];
-  [v3 validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"titleButton" withSwiftType:"DynamicTypeButton"];
-  [v3 validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"accessoryButton" withSwiftType:"DynamicTypeButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"eyebrowButton" withSwiftType:"DynamicTypeButton"];
+  [validationsCopy validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"titleButton" withSwiftType:"DynamicTypeButton"];
+  [validationsCopy validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"ASMessagesProvider.ShelfHeaderView" hasSwiftField:@"accessoryButton" withSwiftType:"DynamicTypeButton"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -23,8 +23,8 @@
   v3 = [(ShelfHeaderViewAccessibility *)self safeSwiftValueForKey:@"titleButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 currentAttributedTitle];
-  if ([v5 containsAttachmentsInRange:{0, objc_msgSend(v5, "length")}])
+  currentAttributedTitle = [v4 currentAttributedTitle];
+  if ([currentAttributedTitle containsAttachmentsInRange:{0, objc_msgSend(currentAttributedTitle, "length")}])
   {
     v9.receiver = self;
     v9.super_class = ShelfHeaderViewAccessibility;
@@ -49,12 +49,12 @@
   v5 = [(ShelfHeaderViewAccessibility *)self safeSwiftValueForKey:@"titleButton"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 currentAttributedTitle];
-  v8 = [v7 string];
-  v9 = [v8 stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_2A20CE038];
+  currentAttributedTitle = [v6 currentAttributedTitle];
+  string = [currentAttributedTitle string];
+  v9 = [string stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_2A20CE038];
 
-  v10 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+  v11 = [v9 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v12 = __UIAXStringForVariables();
 
@@ -63,16 +63,16 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v7.receiver = self;
   v7.super_class = ShelfHeaderViewAccessibility;
-  v4 = [(ShelfHeaderViewAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySupplementaryFooterViews = [(ShelfHeaderViewAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
   v5 = [(ShelfHeaderViewAccessibility *)self safeSwiftValueForKey:@"accessoryButton"];
-  [v3 axSafelyAddObject:v5];
+  [array axSafelyAddObject:v5];
 
-  return v3;
+  return array;
 }
 
 @end

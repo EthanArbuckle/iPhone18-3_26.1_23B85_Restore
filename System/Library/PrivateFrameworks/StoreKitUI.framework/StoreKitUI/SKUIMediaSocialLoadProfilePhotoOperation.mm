@@ -1,20 +1,20 @@
 @interface SKUIMediaSocialLoadProfilePhotoOperation
-- (SKUIMediaSocialLoadProfilePhotoOperation)initWithClientContext:(id)a3;
+- (SKUIMediaSocialLoadProfilePhotoOperation)initWithClientContext:(id)context;
 - (id)_silhouette;
 - (id)outputBlock;
 - (void)_fetchMonogram;
 - (void)_fetchPhoto;
 - (void)_fetchProfile;
-- (void)_returnPhoto:(id)a3 isFinal:(BOOL)a4;
+- (void)_returnPhoto:(id)photo isFinal:(BOOL)final;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SKUIMediaSocialLoadProfilePhotoOperation
 
-- (SKUIMediaSocialLoadProfilePhotoOperation)initWithClientContext:(id)a3
+- (SKUIMediaSocialLoadProfilePhotoOperation)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIMediaSocialLoadProfilePhotoOperation initWithClientContext:];
@@ -26,7 +26,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v7->_lock;
     v7->_lock = v8;
@@ -47,13 +47,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -63,21 +63,21 @@
 
 - (void)main
 {
-  v3 = [(SKUIMediaSocialLoadProfilePhotoOperation *)self _silhouette];
-  [(SKUIMediaSocialLoadProfilePhotoOperation *)self _returnPhoto:v3 isFinal:0];
+  _silhouette = [(SKUIMediaSocialLoadProfilePhotoOperation *)self _silhouette];
+  [(SKUIMediaSocialLoadProfilePhotoOperation *)self _returnPhoto:_silhouette isFinal:0];
 
   [(SKUIMediaSocialLoadProfilePhotoOperation *)self _fetchProfile];
 }
 
 - (void)_fetchMonogram
 {
-  v10 = [(SKUIMediaSocialProfile *)self->_profile name];
+  name = [(SKUIMediaSocialProfile *)self->_profile name];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v3 = SKUIContactsUIFramework();
-    v4 = [objc_alloc(SKUIWeakLinkedClassForString(&cfstr_Cnmonogrammer.isa v3))];
-    v5 = [v10 componentsSeparatedByString:@" "];
+    _silhouette2 = [objc_alloc(SKUIWeakLinkedClassForString(&cfstr_Cnmonogrammer.isa v3))];
+    v5 = [name componentsSeparatedByString:@" "];
     v6 = [v5 count];
     if (!v6)
     {
@@ -86,40 +86,40 @@
 
     if (v6 == 1)
     {
-      v7 = [v5 firstObject];
-      v8 = [v4 monogramForPersonWithFirstName:v7 lastName:0];
+      firstObject = [v5 firstObject];
+      _silhouette = [_silhouette2 monogramForPersonWithFirstName:firstObject lastName:0];
     }
 
     else
     {
-      v7 = [v5 firstObject];
-      v9 = [v5 lastObject];
-      v8 = [v4 monogramForPersonWithFirstName:v7 lastName:v9];
+      firstObject = [v5 firstObject];
+      lastObject = [v5 lastObject];
+      _silhouette = [_silhouette2 monogramForPersonWithFirstName:firstObject lastName:lastObject];
     }
 
-    if (!v8)
+    if (!_silhouette)
     {
 LABEL_8:
-      v8 = [(SKUIMediaSocialLoadProfilePhotoOperation *)self _silhouette];
+      _silhouette = [(SKUIMediaSocialLoadProfilePhotoOperation *)self _silhouette];
     }
 
-    [(SKUIMediaSocialLoadProfilePhotoOperation *)self _returnPhoto:v8 isFinal:1];
+    [(SKUIMediaSocialLoadProfilePhotoOperation *)self _returnPhoto:_silhouette isFinal:1];
   }
 
   else
   {
-    v4 = [(SKUIMediaSocialLoadProfilePhotoOperation *)self _silhouette];
-    [(SKUIMediaSocialLoadProfilePhotoOperation *)self _returnPhoto:v4 isFinal:1];
+    _silhouette2 = [(SKUIMediaSocialLoadProfilePhotoOperation *)self _silhouette];
+    [(SKUIMediaSocialLoadProfilePhotoOperation *)self _returnPhoto:_silhouette2 isFinal:1];
   }
 }
 
 - (void)_fetchPhoto
 {
-  v3 = [(SKUIMediaSocialProfile *)self->_profile profileImageURL];
+  profileImageURL = [(SKUIMediaSocialProfile *)self->_profile profileImageURL];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v3];
+    v4 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:profileImageURL];
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -209,20 +209,20 @@ void __57__SKUIMediaSocialLoadProfilePhotoOperation__fetchProfile__block_invoke(
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_returnPhoto:(id)a3 isFinal:(BOOL)a4
+- (void)_returnPhoto:(id)photo isFinal:(BOOL)final
 {
-  v6 = a3;
-  v7 = [(SKUIMediaSocialLoadProfilePhotoOperation *)self outputBlock];
-  if (v7)
+  photoCopy = photo;
+  outputBlock = [(SKUIMediaSocialLoadProfilePhotoOperation *)self outputBlock];
+  if (outputBlock)
   {
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__SKUIMediaSocialLoadProfilePhotoOperation__returnPhoto_isFinal___block_invoke;
     block[3] = &unk_278200A90;
-    v11 = v7;
-    v10 = v6;
-    v12 = a4;
+    v11 = outputBlock;
+    v10 = photoCopy;
+    finalCopy = final;
     dispatch_async(v8, block);
   }
 }
@@ -231,9 +231,9 @@ void __57__SKUIMediaSocialLoadProfilePhotoOperation__fetchProfile__block_invoke(
 {
   v2 = SKUIContactsUIFramework();
   v3 = [objc_alloc(SKUIWeakLinkedClassForString(&cfstr_Cnmonogrammer.isa v2))];
-  v4 = [v3 silhouetteMonogram];
+  silhouetteMonogram = [v3 silhouetteMonogram];
 
-  return v4;
+  return silhouetteMonogram;
 }
 
 - (void)initWithClientContext:.cold.1()

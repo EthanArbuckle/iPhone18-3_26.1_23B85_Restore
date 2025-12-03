@@ -1,14 +1,14 @@
 @interface HideablePregnancyArticlesFRCDataSource
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation HideablePregnancyArticlesFRCDataSource
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  HideablePregnancyArticlesFRCDataSource.pregnancyModelDidUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  HideablePregnancyArticlesFRCDataSource.pregnancyModelDidUpdate(_:)(updateCopy);
 }
 
 @end

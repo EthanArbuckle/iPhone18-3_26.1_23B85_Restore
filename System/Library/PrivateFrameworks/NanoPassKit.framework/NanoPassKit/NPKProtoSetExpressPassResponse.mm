@@ -1,25 +1,25 @@
 @interface NPKProtoSetExpressPassResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCurrentExpressPassesInformation:(id)a3;
-- (void)addCurrentUniqueIDs:(id)a3;
-- (void)addExpressPassConfigurations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNeedsUnlock:(BOOL)a3;
-- (void)setHasPending:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCurrentExpressPassesInformation:(id)information;
+- (void)addCurrentUniqueIDs:(id)ds;
+- (void)addExpressPassConfigurations:(id)configurations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNeedsUnlock:(BOOL)unlock;
+- (void)setHasPending:(BOOL)pending;
+- (void)setHasSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoSetExpressPassResponse
 
-- (void)setHasPending:(BOOL)a3
+- (void)setHasPending:(BOOL)pending
 {
-  if (a3)
+  if (pending)
   {
     v3 = 4;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 8;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNeedsUnlock:(BOOL)a3
+- (void)setHasNeedsUnlock:(BOOL)unlock
 {
-  if (a3)
+  if (unlock)
   {
     v3 = 2;
   }
@@ -62,58 +62,58 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addCurrentUniqueIDs:(id)a3
+- (void)addCurrentUniqueIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   currentUniqueIDs = self->_currentUniqueIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!currentUniqueIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_currentUniqueIDs;
     self->_currentUniqueIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     currentUniqueIDs = self->_currentUniqueIDs;
   }
 
-  [(NSMutableArray *)currentUniqueIDs addObject:v4];
+  [(NSMutableArray *)currentUniqueIDs addObject:dsCopy];
 }
 
-- (void)addCurrentExpressPassesInformation:(id)a3
+- (void)addCurrentExpressPassesInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   currentExpressPassesInformations = self->_currentExpressPassesInformations;
-  v8 = v4;
+  v8 = informationCopy;
   if (!currentExpressPassesInformations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_currentExpressPassesInformations;
     self->_currentExpressPassesInformations = v6;
 
-    v4 = v8;
+    informationCopy = v8;
     currentExpressPassesInformations = self->_currentExpressPassesInformations;
   }
 
-  [(NSMutableArray *)currentExpressPassesInformations addObject:v4];
+  [(NSMutableArray *)currentExpressPassesInformations addObject:informationCopy];
 }
 
-- (void)addExpressPassConfigurations:(id)a3
+- (void)addExpressPassConfigurations:(id)configurations
 {
-  v4 = a3;
+  configurationsCopy = configurations;
   expressPassConfigurations = self->_expressPassConfigurations;
-  v8 = v4;
+  v8 = configurationsCopy;
   if (!expressPassConfigurations)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_expressPassConfigurations;
     self->_expressPassConfigurations = v6;
 
-    v4 = v8;
+    configurationsCopy = v8;
     expressPassConfigurations = self->_expressPassConfigurations;
   }
 
-  [(NSMutableArray *)expressPassConfigurations addObject:v4];
+  [(NSMutableArray *)expressPassConfigurations addObject:configurationsCopy];
 }
 
 - (id)description
@@ -122,20 +122,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoSetExpressPassResponse;
   v4 = [(NPKProtoSetExpressPassResponse *)&v8 description];
-  v5 = [(NPKProtoSetExpressPassResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoSetExpressPassResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v12 forKey:@"pending"];
+    [dictionary setObject:v12 forKey:@"pending"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -156,7 +156,7 @@ LABEL_3:
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-  [v3 setObject:v13 forKey:@"success"];
+  [dictionary setObject:v13 forKey:@"success"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -172,53 +172,53 @@ LABEL_4:
 
 LABEL_21:
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_cancelled];
-  [v3 setObject:v14 forKey:@"cancelled"];
+  [dictionary setObject:v14 forKey:@"cancelled"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_needsUnlock];
-    [v3 setObject:v5 forKey:@"needsUnlock"];
+    [dictionary setObject:v5 forKey:@"needsUnlock"];
   }
 
 LABEL_6:
   actualUniqueID = self->_actualUniqueID;
   if (actualUniqueID)
   {
-    [v3 setObject:actualUniqueID forKey:@"actualUniqueID"];
+    [dictionary setObject:actualUniqueID forKey:@"actualUniqueID"];
   }
 
   currentUniqueIDs = self->_currentUniqueIDs;
   if (currentUniqueIDs)
   {
-    [v3 setObject:currentUniqueIDs forKey:@"currentUniqueIDs"];
+    [dictionary setObject:currentUniqueIDs forKey:@"currentUniqueIDs"];
   }
 
   actualExpressPassInformation = self->_actualExpressPassInformation;
   if (actualExpressPassInformation)
   {
-    [v3 setObject:actualExpressPassInformation forKey:@"actualExpressPassInformation"];
+    [dictionary setObject:actualExpressPassInformation forKey:@"actualExpressPassInformation"];
   }
 
   currentExpressPassesInformations = self->_currentExpressPassesInformations;
   if (currentExpressPassesInformations)
   {
-    [v3 setObject:currentExpressPassesInformations forKey:@"currentExpressPassesInformation"];
+    [dictionary setObject:currentExpressPassesInformations forKey:@"currentExpressPassesInformation"];
   }
 
   expressPassConfigurations = self->_expressPassConfigurations;
   if (expressPassConfigurations)
   {
-    [v3 setObject:expressPassConfigurations forKey:@"expressPassConfigurations"];
+    [dictionary setObject:expressPassConfigurations forKey:@"expressPassConfigurations"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -347,51 +347,51 @@ LABEL_6:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[50] = self->_pending;
-    v4[52] |= 4u;
+    toCopy[50] = self->_pending;
+    toCopy[52] |= 4u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[51] = self->_success;
-    v4[52] |= 8u;
+    toCopy[51] = self->_success;
+    toCopy[52] |= 8u;
   }
 
-  v19 = v4;
+  v19 = toCopy;
   if (self->_actualUniqueID)
   {
-    [v4 setActualUniqueID:?];
-    v4 = v19;
+    [toCopy setActualUniqueID:?];
+    toCopy = v19;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[48] = self->_cancelled;
-    v4[52] |= 1u;
+    toCopy[48] = self->_cancelled;
+    toCopy[52] |= 1u;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
-    v4[49] = self->_needsUnlock;
-    v4[52] |= 2u;
+    toCopy[49] = self->_needsUnlock;
+    toCopy[52] |= 2u;
   }
 
   if ([(NPKProtoSetExpressPassResponse *)self currentUniqueIDsCount])
   {
     [v19 clearCurrentUniqueIDs];
-    v7 = [(NPKProtoSetExpressPassResponse *)self currentUniqueIDsCount];
-    if (v7)
+    currentUniqueIDsCount = [(NPKProtoSetExpressPassResponse *)self currentUniqueIDsCount];
+    if (currentUniqueIDsCount)
     {
-      v8 = v7;
+      v8 = currentUniqueIDsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(NPKProtoSetExpressPassResponse *)self currentUniqueIDsAtIndex:i];
@@ -408,10 +408,10 @@ LABEL_6:
   if ([(NPKProtoSetExpressPassResponse *)self currentExpressPassesInformationsCount])
   {
     [v19 clearCurrentExpressPassesInformations];
-    v11 = [(NPKProtoSetExpressPassResponse *)self currentExpressPassesInformationsCount];
-    if (v11)
+    currentExpressPassesInformationsCount = [(NPKProtoSetExpressPassResponse *)self currentExpressPassesInformationsCount];
+    if (currentExpressPassesInformationsCount)
     {
-      v12 = v11;
+      v12 = currentExpressPassesInformationsCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(NPKProtoSetExpressPassResponse *)self currentExpressPassesInformationAtIndex:j];
@@ -423,10 +423,10 @@ LABEL_6:
   if ([(NPKProtoSetExpressPassResponse *)self expressPassConfigurationsCount])
   {
     [v19 clearExpressPassConfigurations];
-    v15 = [(NPKProtoSetExpressPassResponse *)self expressPassConfigurationsCount];
-    if (v15)
+    expressPassConfigurationsCount = [(NPKProtoSetExpressPassResponse *)self expressPassConfigurationsCount];
+    if (expressPassConfigurationsCount)
     {
-      v16 = v15;
+      v16 = expressPassConfigurationsCount;
       for (k = 0; k != v16; ++k)
       {
         v18 = [(NPKProtoSetExpressPassResponse *)self expressPassConfigurationsAtIndex:k];
@@ -436,10 +436,10 @@ LABEL_6:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -455,7 +455,7 @@ LABEL_6:
     v5[52] |= 8u;
   }
 
-  v8 = [(NSString *)self->_actualUniqueID copyWithZone:a3];
+  v8 = [(NSString *)self->_actualUniqueID copyWithZone:zone];
   v9 = *(v6 + 2);
   *(v6 + 2) = v8;
 
@@ -492,7 +492,7 @@ LABEL_6:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v41 + 1) + 8 * i) copyWithZone:a3];
+        v16 = [*(*(&v41 + 1) + 8 * i) copyWithZone:zone];
         [v6 addCurrentUniqueIDs:v16];
       }
 
@@ -502,7 +502,7 @@ LABEL_6:
     while (v13);
   }
 
-  v17 = [(NSData *)self->_actualExpressPassInformation copyWithZone:a3];
+  v17 = [(NSData *)self->_actualExpressPassInformation copyWithZone:zone];
   v18 = *(v6 + 1);
   *(v6 + 1) = v17;
 
@@ -525,7 +525,7 @@ LABEL_6:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v37 + 1) + 8 * j) copyWithZone:a3];
+        v24 = [*(*(&v37 + 1) + 8 * j) copyWithZone:zone];
         [v6 addCurrentExpressPassesInformation:v24];
       }
 
@@ -554,7 +554,7 @@ LABEL_6:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v33 + 1) + 8 * k) copyWithZone:{a3, v33}];
+        v30 = [*(*(&v33 + 1) + 8 * k) copyWithZone:{zone, v33}];
         [v6 addExpressPassConfigurations:v30];
       }
 
@@ -568,72 +568,72 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
   has = self->_has;
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0)
+    if ((*(equalCopy + 52) & 4) == 0)
     {
       goto LABEL_44;
     }
 
-    v14 = *(v4 + 50);
+    v14 = *(equalCopy + 50);
     if (self->_pending)
     {
-      if ((*(v4 + 50) & 1) == 0)
+      if ((*(equalCopy + 50) & 1) == 0)
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(v4 + 50))
+    else if (*(equalCopy + 50))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0)
+    if ((*(equalCopy + 52) & 8) == 0)
     {
       goto LABEL_44;
     }
 
-    v15 = *(v4 + 51);
+    v15 = *(equalCopy + 51);
     if (self->_success)
     {
-      if ((*(v4 + 51) & 1) == 0)
+      if ((*(equalCopy + 51) & 1) == 0)
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(v4 + 51))
+    else if (*(equalCopy + 51))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_44;
   }
 
   actualUniqueID = self->_actualUniqueID;
-  if (actualUniqueID | *(v4 + 2))
+  if (actualUniqueID | *(equalCopy + 2))
   {
     if (![(NSString *)actualUniqueID isEqual:?])
     {
@@ -643,37 +643,37 @@ LABEL_6:
     has = self->_has;
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
       goto LABEL_44;
     }
 
-    v16 = *(v4 + 48);
+    v16 = *(equalCopy + 48);
     if (self->_cancelled)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_44;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_44;
   }
 
   if ((has & 2) == 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_13;
     }
@@ -683,34 +683,34 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if ((*(v4 + 52) & 2) == 0)
+  if ((*(equalCopy + 52) & 2) == 0)
   {
     goto LABEL_44;
   }
 
-  v17 = *(v4 + 49);
+  v17 = *(equalCopy + 49);
   if (self->_needsUnlock)
   {
-    if ((*(v4 + 49) & 1) == 0)
+    if ((*(equalCopy + 49) & 1) == 0)
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 49))
+  else if (*(equalCopy + 49))
   {
     goto LABEL_44;
   }
 
 LABEL_13:
   currentUniqueIDs = self->_currentUniqueIDs;
-  if (currentUniqueIDs | *(v4 + 4) && ![(NSMutableArray *)currentUniqueIDs isEqual:?])
+  if (currentUniqueIDs | *(equalCopy + 4) && ![(NSMutableArray *)currentUniqueIDs isEqual:?])
   {
     goto LABEL_44;
   }
 
   actualExpressPassInformation = self->_actualExpressPassInformation;
-  if (actualExpressPassInformation | *(v4 + 1))
+  if (actualExpressPassInformation | *(equalCopy + 1))
   {
     if (![(NSData *)actualExpressPassInformation isEqual:?])
     {
@@ -719,7 +719,7 @@ LABEL_13:
   }
 
   currentExpressPassesInformations = self->_currentExpressPassesInformations;
-  if (currentExpressPassesInformations | *(v4 + 3))
+  if (currentExpressPassesInformations | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)currentExpressPassesInformations isEqual:?])
     {
@@ -728,7 +728,7 @@ LABEL_13:
   }
 
   expressPassConfigurations = self->_expressPassConfigurations;
-  if (expressPassConfigurations | *(v4 + 5))
+  if (expressPassConfigurations | *(equalCopy + 5))
   {
     v13 = [(NSMutableArray *)expressPassConfigurations isEqual:?];
   }
@@ -797,26 +797,26 @@ LABEL_11:
   return v10 ^ v11 ^ [(NSMutableArray *)self->_expressPassConfigurations hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = v4[52];
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = fromCopy[52];
   if ((v6 & 4) != 0)
   {
-    self->_pending = v4[50];
+    self->_pending = fromCopy[50];
     *&self->_has |= 4u;
-    v6 = v4[52];
+    v6 = fromCopy[52];
   }
 
   if ((v6 & 8) != 0)
   {
-    self->_success = v4[51];
+    self->_success = fromCopy[51];
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoSetExpressPassResponse *)self setActualUniqueID:?];
   }

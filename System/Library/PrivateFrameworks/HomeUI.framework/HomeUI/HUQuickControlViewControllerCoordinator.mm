@@ -1,46 +1,46 @@
 @interface HUQuickControlViewControllerCoordinator
-- (BOOL)valueSource:(id)a3 shouldOverrideValueForCharacteristic:(id)a4;
+- (BOOL)valueSource:(id)source shouldOverrideValueForCharacteristic:(id)characteristic;
 - (HUQuickControlContentHosting)controlHost;
-- (HUQuickControlViewControllerCoordinator)initWithItem:(id)a3 controlItems:(id)a4 home:(id)a5 delegate:(id)a6;
+- (HUQuickControlViewControllerCoordinator)initWithItem:(id)item controlItems:(id)items home:(id)home delegate:(id)delegate;
 - (HUQuickControlViewControllerCoordinatorDelegate)delegate;
 - (id)_itemToUseForIconAndStatus;
-- (id)_primaryStatusTextForLatestResults:(id)a3 showingSecondaryStatus:(BOOL)a4;
-- (id)_secondaryStatusTextForLatestResults:(id)a3;
-- (id)valueSource:(id)a3 overrideValueForCharacteristic:(id)a4;
-- (void)_createControlViewControllersForControlItems:(id)a3;
-- (void)_updateIconDescriptorNotifyingDelegate:(BOOL)a3;
-- (void)_updateReachabilityStateNotifiyingDelegate:(BOOL)a3;
-- (void)_updateStatusTextNotifyingDelegate:(BOOL)a3;
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4;
-- (void)setControlHost:(id)a3;
-- (void)setControlsVisible:(BOOL)a3;
-- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)a3;
+- (id)_primaryStatusTextForLatestResults:(id)results showingSecondaryStatus:(BOOL)status;
+- (id)_secondaryStatusTextForLatestResults:(id)results;
+- (id)valueSource:(id)source overrideValueForCharacteristic:(id)characteristic;
+- (void)_createControlViewControllersForControlItems:(id)items;
+- (void)_updateIconDescriptorNotifyingDelegate:(BOOL)delegate;
+- (void)_updateReachabilityStateNotifiyingDelegate:(BOOL)delegate;
+- (void)_updateStatusTextNotifyingDelegate:(BOOL)delegate;
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item;
+- (void)setControlHost:(id)host;
+- (void)setControlsVisible:(BOOL)visible;
+- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)title;
 @end
 
 @implementation HUQuickControlViewControllerCoordinator
 
-- (HUQuickControlViewControllerCoordinator)initWithItem:(id)a3 controlItems:(id)a4 home:(id)a5 delegate:(id)a6
+- (HUQuickControlViewControllerCoordinator)initWithItem:(id)item controlItems:(id)items home:(id)home delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  itemCopy = item;
+  itemsCopy = items;
+  homeCopy = home;
+  delegateCopy = delegate;
   v45.receiver = self;
   v45.super_class = HUQuickControlViewControllerCoordinator;
   v15 = [(HUQuickControlViewControllerCoordinator *)&v45 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_home, a5);
-    objc_storeWeak(&v16->_delegate, v14);
-    objc_storeStrong(&v16->_controlItems, a4);
-    if ([v11 conformsToProtocol:&unk_28251B0C8])
+    objc_storeStrong(&v15->_home, home);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_controlItems, items);
+    if ([itemCopy conformsToProtocol:&unk_28251B0C8])
     {
       v17 = MEMORY[0x277D14900];
-      v18 = v11;
+      v18 = itemCopy;
       v19 = [v17 alloc];
-      v20 = [v18 valueSource];
-      v21 = [v19 initWithOriginalValueSource:v20 overrideValueProvider:v16];
+      valueSource = [v18 valueSource];
+      v21 = [v19 initWithOriginalValueSource:valueSource overrideValueProvider:v16];
       valueSource = v16->_valueSource;
       v16->_valueSource = v21;
 
@@ -49,133 +49,133 @@
 
     else
     {
-      v23 = [v11 copy];
+      v23 = [itemCopy copy];
     }
 
     item = v16->_item;
     v16->_item = v23;
 
-    [(HUQuickControlViewControllerCoordinator *)v16 _createControlViewControllersForControlItems:v12];
-    v25 = [v11 copy];
+    [(HUQuickControlViewControllerCoordinator *)v16 _createControlViewControllersForControlItems:itemsCopy];
+    v25 = [itemCopy copy];
     reachabilityItem = v16->_reachabilityItem;
     v16->_reachabilityItem = v25;
 
     v27 = objc_alloc(MEMORY[0x277D14B08]);
-    v28 = [(HUQuickControlViewControllerCoordinator *)v16 reachabilityItem];
-    v29 = [v27 initWithDelegate:v16 sourceItem:v28];
+    reachabilityItem = [(HUQuickControlViewControllerCoordinator *)v16 reachabilityItem];
+    v29 = [v27 initWithDelegate:v16 sourceItem:reachabilityItem];
     reachabilityItemManager = v16->_reachabilityItemManager;
     v16->_reachabilityItemManager = v29;
 
     v31 = objc_alloc(MEMORY[0x277D14B08]);
-    v32 = [(HUQuickControlViewControllerCoordinator *)v16 item];
-    v33 = [v31 initWithDelegate:v16 sourceItem:v32];
+    item = [(HUQuickControlViewControllerCoordinator *)v16 item];
+    v33 = [v31 initWithDelegate:v16 sourceItem:item];
     itemManager = v16->_itemManager;
     v16->_itemManager = v33;
 
     v35 = [HUQuickControlContentCharacteristicWritingUpdateAdapter alloc];
-    v36 = [(HUQuickControlViewControllerCoordinator *)v16 itemManager];
-    v37 = [(HUQuickControlContentCharacteristicWritingUpdateAdapter *)v35 initWithItemManager:v36];
+    itemManager = [(HUQuickControlViewControllerCoordinator *)v16 itemManager];
+    v37 = [(HUQuickControlContentCharacteristicWritingUpdateAdapter *)v35 initWithItemManager:itemManager];
     characteristicWritingAdapter = v16->_characteristicWritingAdapter;
     v16->_characteristicWritingAdapter = v37;
 
-    v39 = [(HUQuickControlViewControllerCoordinator *)v16 characteristicWritingAdapter];
-    [(HUQuickControlViewController *)v16->_activeController setCharacteristicWritingDelegate:v39];
+    characteristicWritingAdapter = [(HUQuickControlViewControllerCoordinator *)v16 characteristicWritingAdapter];
+    [(HUQuickControlViewController *)v16->_activeController setCharacteristicWritingDelegate:characteristicWritingAdapter];
 
     [(HUQuickControlViewControllerCoordinator *)v16 _updateIconDescriptorNotifyingDelegate:0];
     [(HUQuickControlViewControllerCoordinator *)v16 _updateStatusTextNotifyingDelegate:0];
     [(HUQuickControlViewControllerCoordinator *)v16 _updateReachabilityStateNotifiyingDelegate:0];
-    v40 = [(HUQuickControlViewControllerCoordinator *)v16 itemManager];
-    v41 = [v40 reloadAndUpdateAllItemsFromSenderSelector:a2];
+    itemManager2 = [(HUQuickControlViewControllerCoordinator *)v16 itemManager];
+    v41 = [itemManager2 reloadAndUpdateAllItemsFromSenderSelector:a2];
 
-    v42 = [(HUQuickControlViewControllerCoordinator *)v16 reachabilityItemManager];
-    v43 = [v42 reloadAndUpdateAllItemsFromSenderSelector:a2];
+    reachabilityItemManager = [(HUQuickControlViewControllerCoordinator *)v16 reachabilityItemManager];
+    v43 = [reachabilityItemManager reloadAndUpdateAllItemsFromSenderSelector:a2];
   }
 
   return v16;
 }
 
-- (void)_createControlViewControllersForControlItems:(id)a3
+- (void)_createControlViewControllersForControlItems:(id)items
 {
-  v42 = a3;
-  v4 = [(HUQuickControlViewControllerCoordinator *)self delegate];
-  v5 = [v4 isConfiguredForNonHomeUser:self];
+  itemsCopy = items;
+  delegate = [(HUQuickControlViewControllerCoordinator *)self delegate];
+  v5 = [delegate isConfiguredForNonHomeUser:self];
 
-  if (!v5 || ([v42 na_firstObjectPassingTest:&__block_literal_global_234], v6 = objc_claimAutoreleasedReturnValue(), v7 = [HUQuickControlViewControllerConfiguration alloc], objc_msgSend(v6, "mediaRoutingIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = -[HUQuickControlViewControllerConfiguration initWithMediaRoutingIdentifier:](v7, "initWithMediaRoutingIdentifier:", v8), v8, v6, !v9))
+  if (!v5 || ([itemsCopy na_firstObjectPassingTest:&__block_literal_global_234], v6 = objc_claimAutoreleasedReturnValue(), v7 = [HUQuickControlViewControllerConfiguration alloc], objc_msgSend(v6, "mediaRoutingIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = -[HUQuickControlViewControllerConfiguration initWithMediaRoutingIdentifier:](v7, "initWithMediaRoutingIdentifier:", v8), v8, v6, !v9))
   {
     v10 = [HUQuickControlViewControllerConfiguration alloc];
-    v11 = [(HUQuickControlViewControllerCoordinator *)self home];
-    v9 = [(HUQuickControlViewControllerConfiguration *)v10 initWithHome:v11];
+    home = [(HUQuickControlViewControllerCoordinator *)self home];
+    v9 = [(HUQuickControlViewControllerConfiguration *)v10 initWithHome:home];
   }
 
-  v12 = [(HUQuickControlViewControllerCoordinator *)self valueSource];
-  [(HUQuickControlViewControllerConfiguration *)v9 setValueSource:v12];
+  valueSource = [(HUQuickControlViewControllerCoordinator *)self valueSource];
+  [(HUQuickControlViewControllerConfiguration *)v9 setValueSource:valueSource];
 
   v41 = v9;
-  v13 = [MEMORY[0x277D145C8] hu_preferredQuickControlGroupContextForControlItems:v42 configuration:v9];
-  v14 = [v13 primaryQuickControlContext];
-  if ([objc_msgSend(v14 "quickControlClass")])
+  v13 = [MEMORY[0x277D145C8] hu_preferredQuickControlGroupContextForControlItems:itemsCopy configuration:v9];
+  primaryQuickControlContext = [v13 primaryQuickControlContext];
+  if ([objc_msgSend(primaryQuickControlContext "quickControlClass")])
   {
     goto LABEL_9;
   }
 
-  v15 = [v13 alternateQuickControlContexts];
-  if (![v15 count])
+  alternateQuickControlContexts = [v13 alternateQuickControlContexts];
+  if (![alternateQuickControlContexts count])
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v16 = [v13 primaryQuickControlContext];
-  v17 = [objc_msgSend(v16 "quickControlClass")];
+  primaryQuickControlContext2 = [v13 primaryQuickControlContext];
+  v17 = [objc_msgSend(primaryQuickControlContext2 "quickControlClass")];
 
   if ((v17 & 1) == 0)
   {
     v18 = [HUQuickControlGridViewController alloc];
-    v19 = [v13 allControlItems];
-    v20 = [(HUQuickControlViewControllerCoordinator *)self home];
-    v21 = [v13 primaryQuickControlContext];
-    v22 = [v21 itemUpdater];
-    v23 = [v13 primaryQuickControlContext];
-    v24 = [v23 controlOrientation];
-    v25 = [v13 primaryQuickControlContext];
-    v26 = -[HUQuickControlGridViewController initWithControlItems:home:itemUpdater:controlOrientation:preferredControl:](v18, "initWithControlItems:home:itemUpdater:controlOrientation:preferredControl:", v19, v20, v22, v24, [v25 preferredControl]);
+    allControlItems = [v13 allControlItems];
+    home2 = [(HUQuickControlViewControllerCoordinator *)self home];
+    primaryQuickControlContext3 = [v13 primaryQuickControlContext];
+    itemUpdater = [primaryQuickControlContext3 itemUpdater];
+    primaryQuickControlContext4 = [v13 primaryQuickControlContext];
+    controlOrientation = [primaryQuickControlContext4 controlOrientation];
+    primaryQuickControlContext5 = [v13 primaryQuickControlContext];
+    v26 = -[HUQuickControlGridViewController initWithControlItems:home:itemUpdater:controlOrientation:preferredControl:](v18, "initWithControlItems:home:itemUpdater:controlOrientation:preferredControl:", allControlItems, home2, itemUpdater, controlOrientation, [primaryQuickControlContext5 preferredControl]);
     goto LABEL_11;
   }
 
 LABEL_10:
-  v39 = [v13 primaryQuickControlContext];
-  v38 = objc_alloc([v39 quickControlClass]);
-  v27 = [v13 primaryQuickControlContext];
-  [v27 controlItems];
+  primaryQuickControlContext6 = [v13 primaryQuickControlContext];
+  v38 = objc_alloc([primaryQuickControlContext6 quickControlClass]);
+  primaryQuickControlContext7 = [v13 primaryQuickControlContext];
+  [primaryQuickControlContext7 controlItems];
   v28 = v40 = self;
-  v22 = [v13 primaryQuickControlContext];
-  v23 = [v22 home];
-  v25 = [v13 primaryQuickControlContext];
-  v29 = [v25 itemUpdater];
-  v30 = [v13 primaryQuickControlContext];
-  v31 = [v30 controlOrientation];
-  v32 = [v13 primaryQuickControlContext];
-  v26 = [v38 initWithControlItems:v28 home:v23 itemUpdater:v29 controlOrientation:v31 preferredControl:{objc_msgSend(v32, "preferredControl")}];
+  itemUpdater = [v13 primaryQuickControlContext];
+  primaryQuickControlContext4 = [itemUpdater home];
+  primaryQuickControlContext5 = [v13 primaryQuickControlContext];
+  itemUpdater2 = [primaryQuickControlContext5 itemUpdater];
+  primaryQuickControlContext8 = [v13 primaryQuickControlContext];
+  controlOrientation2 = [primaryQuickControlContext8 controlOrientation];
+  primaryQuickControlContext9 = [v13 primaryQuickControlContext];
+  v26 = [v38 initWithControlItems:v28 home:primaryQuickControlContext4 itemUpdater:itemUpdater2 controlOrientation:controlOrientation2 preferredControl:{objc_msgSend(primaryQuickControlContext9, "preferredControl")}];
 
-  v21 = v28;
+  primaryQuickControlContext3 = v28;
   self = v40;
 
-  v20 = v27;
-  v19 = v39;
+  home2 = primaryQuickControlContext7;
+  allControlItems = primaryQuickControlContext6;
 LABEL_11:
 
   [(HUQuickControlViewControllerCoordinator *)self setActiveController:v26];
-  v33 = [(HUQuickControlViewControllerCoordinator *)self activeController];
-  [v33 setDelegate:self];
+  activeController = [(HUQuickControlViewControllerCoordinator *)self activeController];
+  [activeController setDelegate:self];
 
-  v34 = [(HUQuickControlViewControllerCoordinator *)self characteristicWritingAdapter];
-  v35 = [(HUQuickControlViewControllerCoordinator *)self activeController];
-  [v35 setCharacteristicWritingDelegate:v34];
+  characteristicWritingAdapter = [(HUQuickControlViewControllerCoordinator *)self characteristicWritingAdapter];
+  activeController2 = [(HUQuickControlViewControllerCoordinator *)self activeController];
+  [activeController2 setCharacteristicWritingDelegate:characteristicWritingAdapter];
 
-  v36 = [(HUQuickControlViewControllerCoordinator *)self controlHost];
-  v37 = [(HUQuickControlViewControllerCoordinator *)self activeController];
-  [v37 setQuickControlHost:v36];
+  controlHost = [(HUQuickControlViewControllerCoordinator *)self controlHost];
+  activeController3 = [(HUQuickControlViewControllerCoordinator *)self activeController];
+  [activeController3 setQuickControlHost:controlHost];
 }
 
 uint64_t __88__HUQuickControlViewControllerCoordinator__createControlViewControllersForControlItems___block_invoke(uint64_t a1, void *a2)
@@ -187,27 +187,27 @@ uint64_t __88__HUQuickControlViewControllerCoordinator__createControlViewControl
   return isKindOfClass & 1;
 }
 
-- (void)setControlHost:(id)a3
+- (void)setControlHost:(id)host
 {
-  v4 = a3;
-  objc_storeWeak(&self->_controlHost, v4);
-  [(HUQuickControlViewController *)self->_activeController setQuickControlHost:v4];
+  hostCopy = host;
+  objc_storeWeak(&self->_controlHost, hostCopy);
+  [(HUQuickControlViewController *)self->_activeController setQuickControlHost:hostCopy];
 }
 
-- (void)setControlsVisible:(BOOL)a3
+- (void)setControlsVisible:(BOOL)visible
 {
-  if (self->_controlsVisible != a3)
+  if (self->_controlsVisible != visible)
   {
-    self->_controlsVisible = a3;
+    self->_controlsVisible = visible;
     [(HUQuickControlViewController *)self->_activeController setControlsVisible:?];
   }
 }
 
-- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)a3
+- (void)setShouldIncludeRoomNameInHeaderTitle:(BOOL)title
 {
-  if (self->_shouldIncludeRoomNameInHeaderTitle != a3)
+  if (self->_shouldIncludeRoomNameInHeaderTitle != title)
   {
-    self->_shouldIncludeRoomNameInHeaderTitle = a3;
+    self->_shouldIncludeRoomNameInHeaderTitle = title;
     [(HUQuickControlViewControllerCoordinator *)self _updateStatusTextNotifyingDelegate:1];
   }
 }
@@ -228,143 +228,143 @@ uint64_t __88__HUQuickControlViewControllerCoordinator__createControlViewControl
   return v3;
 }
 
-- (void)_updateIconDescriptorNotifyingDelegate:(BOOL)a3
+- (void)_updateIconDescriptorNotifyingDelegate:(BOOL)delegate
 {
-  v3 = a3;
-  v15 = [(HUQuickControlViewControllerCoordinator *)self _itemToUseForIconAndStatus];
-  v5 = [v15 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13E88]];
+  delegateCopy = delegate;
+  _itemToUseForIconAndStatus = [(HUQuickControlViewControllerCoordinator *)self _itemToUseForIconAndStatus];
+  latestResults = [_itemToUseForIconAndStatus latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E88]];
 
-  v7 = [(HUQuickControlViewControllerCoordinator *)self activeController];
+  activeController = [(HUQuickControlViewControllerCoordinator *)self activeController];
 
-  if (v7)
+  if (activeController)
   {
-    v8 = [v15 latestResults];
-    v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D140C8]];
+    latestResults2 = [_itemToUseForIconAndStatus latestResults];
+    v9 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D140C8]];
     if (v9)
     {
       v10 = v9;
 
 LABEL_5:
-      LOBYTE(v7) = [v10 integerValue] != 2;
+      LOBYTE(activeController) = [v10 integerValue] != 2;
 
       goto LABEL_6;
     }
 
-    v11 = [v15 latestResults];
-    v10 = [v11 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+    latestResults3 = [_itemToUseForIconAndStatus latestResults];
+    v10 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D14068]];
 
     if (v10)
     {
       goto LABEL_5;
     }
 
-    LOBYTE(v7) = 0;
+    LOBYTE(activeController) = 0;
   }
 
 LABEL_6:
   iconDescriptor = self->_iconDescriptor;
   self->_iconDescriptor = v6;
 
-  self->_showIconOffState = v7;
-  if (v3)
+  self->_showIconOffState = activeController;
+  if (delegateCopy)
   {
-    v13 = [(HUQuickControlViewControllerCoordinator *)self delegate];
-    v14 = [(HUQuickControlViewControllerCoordinator *)self iconDescriptor];
-    [v13 controllerCoordinator:self didUpdateIconDescriptor:v14 showOffState:{-[HUQuickControlViewControllerCoordinator showIconOffState](self, "showIconOffState")}];
+    delegate = [(HUQuickControlViewControllerCoordinator *)self delegate];
+    iconDescriptor = [(HUQuickControlViewControllerCoordinator *)self iconDescriptor];
+    [delegate controllerCoordinator:self didUpdateIconDescriptor:iconDescriptor showOffState:{-[HUQuickControlViewControllerCoordinator showIconOffState](self, "showIconOffState")}];
   }
 }
 
-- (id)_primaryStatusTextForLatestResults:(id)a3 showingSecondaryStatus:(BOOL)a4
+- (id)_primaryStatusTextForLatestResults:(id)results showingSecondaryStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultsCopy = results;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v12 = 136315650;
     v13 = "[HUQuickControlViewControllerCoordinator _primaryStatusTextForLatestResults:showingSecondaryStatus:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = resultsCopy;
     v16 = 1024;
-    v17 = v4;
+    v17 = statusCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_INFO, "%s %@ %d", &v12, 0x1Cu);
   }
 
-  if (v4 || ([v6 objectForKeyedSubscript:*MEMORY[0x277D13E40]], (v10 = objc_claimAutoreleasedReturnValue()) == 0) && (objc_msgSend(v6, "objectForKeyedSubscript:", *MEMORY[0x277D13E68]), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (statusCopy || ([resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E40]], (v10 = objc_claimAutoreleasedReturnValue()) == 0) && (objc_msgSend(resultsCopy, "objectForKeyedSubscript:", *MEMORY[0x277D13E68]), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [(HUQuickControlViewControllerCoordinator *)self activeController];
-    v9 = [v8 overrideStatusText];
+    activeController = [(HUQuickControlViewControllerCoordinator *)self activeController];
+    overrideStatusText = [activeController overrideStatusText];
 
-    if (v9)
+    if (overrideStatusText)
     {
       goto LABEL_10;
     }
 
-    v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+    v10 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
     if (!v10)
     {
-      v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+      v10 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E20]];
     }
   }
 
-  v9 = v10;
+  overrideStatusText = v10;
 LABEL_10:
 
-  return v9;
+  return overrideStatusText;
 }
 
-- (id)_secondaryStatusTextForLatestResults:(id)a3
+- (id)_secondaryStatusTextForLatestResults:(id)results
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13E68]];
+  resultsCopy = results;
+  v5 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E68]];
   if (v5)
   {
     goto LABEL_2;
   }
 
-  v7 = [(HUQuickControlViewControllerCoordinator *)self activeController];
-  v6 = [v7 overrideSecondaryStatusText];
+  activeController = [(HUQuickControlViewControllerCoordinator *)self activeController];
+  overrideSecondaryStatusText = [activeController overrideSecondaryStatusText];
 
-  if (!v6)
+  if (!overrideSecondaryStatusText)
   {
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13E38]];
+    v5 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x277D13E38]];
 LABEL_2:
-    v6 = v5;
+    overrideSecondaryStatusText = v5;
   }
 
-  return v6;
+  return overrideSecondaryStatusText;
 }
 
-- (void)_updateStatusTextNotifyingDelegate:(BOOL)a3
+- (void)_updateStatusTextNotifyingDelegate:(BOOL)delegate
 {
-  v3 = a3;
-  v5 = [(HUQuickControlViewControllerCoordinator *)self _itemToUseForIconAndStatus];
-  v26 = [v5 latestResults];
+  delegateCopy = delegate;
+  _itemToUseForIconAndStatus = [(HUQuickControlViewControllerCoordinator *)self _itemToUseForIconAndStatus];
+  latestResults = [_itemToUseForIconAndStatus latestResults];
 
-  v6 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13E10]];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E10]];
   v7 = v6;
   if (!v6)
   {
     v6 = &unk_282492018;
   }
 
-  v8 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v8 == 1)
+  if (unsignedIntegerValue == 1)
   {
-    v11 = [(HUQuickControlViewControllerCoordinator *)self item];
+    item = [(HUQuickControlViewControllerCoordinator *)self item];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-      v10 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+      v9 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E20]];
       if (![v10 length])
       {
-        v13 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
+        v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13DE8]];
 
         v10 = v13;
       }
@@ -372,7 +372,7 @@ LABEL_2:
 
     else
     {
-      v14 = [v26 objectForKeyedSubscript:*MEMORY[0x277D13F00]];
+      v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F00]];
       if ([(HUQuickControlViewControllerCoordinator *)self shouldIncludeRoomNameInHeaderTitle])
       {
         [v14 composedString];
@@ -383,11 +383,11 @@ LABEL_2:
         [v14 serviceName];
       }
       v9 = ;
-      v10 = [(HUQuickControlViewControllerCoordinator *)self _primaryStatusTextForLatestResults:v26 showingSecondaryStatus:0];
+      v10 = [(HUQuickControlViewControllerCoordinator *)self _primaryStatusTextForLatestResults:latestResults showingSecondaryStatus:0];
     }
   }
 
-  else if (v8)
+  else if (unsignedIntegerValue)
   {
     v10 = 0;
     v9 = 0;
@@ -395,60 +395,60 @@ LABEL_2:
 
   else
   {
-    v9 = [(HUQuickControlViewControllerCoordinator *)self _primaryStatusTextForLatestResults:v26 showingSecondaryStatus:1];
-    v10 = [(HUQuickControlViewControllerCoordinator *)self _secondaryStatusTextForLatestResults:v26];
+    v9 = [(HUQuickControlViewControllerCoordinator *)self _primaryStatusTextForLatestResults:latestResults showingSecondaryStatus:1];
+    v10 = [(HUQuickControlViewControllerCoordinator *)self _secondaryStatusTextForLatestResults:latestResults];
   }
 
-  v15 = [(HUQuickControlViewControllerCoordinator *)self primaryStatusText];
-  v16 = v15;
-  if (!v15)
+  primaryStatusText = [(HUQuickControlViewControllerCoordinator *)self primaryStatusText];
+  v16 = primaryStatusText;
+  if (!primaryStatusText)
   {
-    v15 = &stru_2823E0EE8;
+    primaryStatusText = &stru_2823E0EE8;
   }
 
-  v17 = [(__CFString *)v15 isEqualToString:v9];
+  v17 = [(__CFString *)primaryStatusText isEqualToString:v9];
 
   v18 = [v9 copy];
   [(HUQuickControlViewControllerCoordinator *)self setPrimaryStatusText:v18];
 
-  v19 = [(HUQuickControlViewControllerCoordinator *)self secondaryStatusText];
-  v20 = v19;
-  if (!v19)
+  secondaryStatusText = [(HUQuickControlViewControllerCoordinator *)self secondaryStatusText];
+  v20 = secondaryStatusText;
+  if (!secondaryStatusText)
   {
-    v19 = &stru_2823E0EE8;
+    secondaryStatusText = &stru_2823E0EE8;
   }
 
-  v21 = [(__CFString *)v19 isEqualToString:v10];
+  v21 = [(__CFString *)secondaryStatusText isEqualToString:v10];
 
   v22 = [v10 copy];
   [(HUQuickControlViewControllerCoordinator *)self setSecondaryStatusText:v22];
 
-  if ((v17 & v21 & 1) == 0 && v3)
+  if ((v17 & v21 & 1) == 0 && delegateCopy)
   {
-    v23 = [(HUQuickControlViewControllerCoordinator *)self delegate];
-    v24 = [(HUQuickControlViewControllerCoordinator *)self primaryStatusText];
-    v25 = [(HUQuickControlViewControllerCoordinator *)self secondaryStatusText];
-    [v23 controllerCoordinator:self didUpdateStatusWithPrimaryText:v24 secondaryText:v25];
+    delegate = [(HUQuickControlViewControllerCoordinator *)self delegate];
+    primaryStatusText2 = [(HUQuickControlViewControllerCoordinator *)self primaryStatusText];
+    secondaryStatusText2 = [(HUQuickControlViewControllerCoordinator *)self secondaryStatusText];
+    [delegate controllerCoordinator:self didUpdateStatusWithPrimaryText:primaryStatusText2 secondaryText:secondaryStatusText2];
   }
 }
 
-- (void)_updateReachabilityStateNotifiyingDelegate:(BOOL)a3
+- (void)_updateReachabilityStateNotifiyingDelegate:(BOOL)delegate
 {
-  v3 = a3;
-  v5 = [(HUQuickControlViewControllerCoordinator *)self reachabilityItem];
-  v6 = [v5 latestResults];
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D14068]];
-  v8 = [v7 integerValue];
+  delegateCopy = delegate;
+  reachabilityItem = [(HUQuickControlViewControllerCoordinator *)self reachabilityItem];
+  latestResults = [reachabilityItem latestResults];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14068]];
+  integerValue = [v7 integerValue];
 
-  v9 = v8 != 0;
+  v9 = integerValue != 0;
   if (self->_reachable != v9)
   {
     self->_reachable = v9;
-    if (v3)
+    if (delegateCopy)
     {
-      v10 = v8 != 0;
-      v11 = [(HUQuickControlViewControllerCoordinator *)self delegate];
-      [v11 controllerCoordinator:self didUpdateReachability:v10];
+      v10 = integerValue != 0;
+      delegate = [(HUQuickControlViewControllerCoordinator *)self delegate];
+      [delegate controllerCoordinator:self didUpdateReachability:v10];
     }
 
     [(HUQuickControlViewControllerCoordinator *)self _updateStatusTextNotifyingDelegate:1];
@@ -457,21 +457,21 @@ LABEL_2:
   }
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForSourceItem:(id)a4
+- (void)itemManager:(id)manager didUpdateResultsForSourceItem:(id)item
 {
-  v9 = a4;
-  v6 = [(HUQuickControlViewControllerCoordinator *)self reachabilityItem];
+  itemCopy = item;
+  reachabilityItem = [(HUQuickControlViewControllerCoordinator *)self reachabilityItem];
 
-  if (v6 == v9)
+  if (reachabilityItem == itemCopy)
   {
     [(HUQuickControlViewControllerCoordinator *)self _updateReachabilityStateNotifiyingDelegate:1];
   }
 
   else
   {
-    v7 = [(HUQuickControlViewControllerCoordinator *)self item];
+    item = [(HUQuickControlViewControllerCoordinator *)self item];
 
-    if (v7 == v9)
+    if (item == itemCopy)
     {
       [(HUQuickControlViewControllerCoordinator *)self _updateIconDescriptorNotifyingDelegate:1];
       [(HUQuickControlViewControllerCoordinator *)self _updateStatusTextNotifyingDelegate:1];
@@ -479,26 +479,26 @@ LABEL_2:
 
     else
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"HUQuickControlViewControllerCoordinator.m" lineNumber:291 description:{@"Unknown source item %@", v9}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlViewControllerCoordinator.m" lineNumber:291 description:{@"Unknown source item %@", itemCopy}];
     }
   }
 }
 
-- (BOOL)valueSource:(id)a3 shouldOverrideValueForCharacteristic:(id)a4
+- (BOOL)valueSource:(id)source shouldOverrideValueForCharacteristic:(id)characteristic
 {
-  v5 = a4;
-  v6 = [(HUQuickControlViewControllerCoordinator *)self _controllerForControllableCharacteristic:v5];
-  v7 = [v6 overrideValueForCharacteristic:v5];
+  characteristicCopy = characteristic;
+  v6 = [(HUQuickControlViewControllerCoordinator *)self _controllerForControllableCharacteristic:characteristicCopy];
+  v7 = [v6 overrideValueForCharacteristic:characteristicCopy];
 
   return v7 != 0;
 }
 
-- (id)valueSource:(id)a3 overrideValueForCharacteristic:(id)a4
+- (id)valueSource:(id)source overrideValueForCharacteristic:(id)characteristic
 {
-  v5 = a4;
-  v6 = [(HUQuickControlViewControllerCoordinator *)self _controllerForControllableCharacteristic:v5];
-  v7 = [v6 overrideValueForCharacteristic:v5];
+  characteristicCopy = characteristic;
+  v6 = [(HUQuickControlViewControllerCoordinator *)self _controllerForControllableCharacteristic:characteristicCopy];
+  v7 = [v6 overrideValueForCharacteristic:characteristicCopy];
 
   return v7;
 }

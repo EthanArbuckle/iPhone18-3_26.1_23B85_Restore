@@ -1,73 +1,73 @@
 @interface HDWorkoutBuilderEntity
-+ (BOOL)discardBuilderWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (HDWorkoutBuilderEntity)workoutBuilderEntityWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (const)columnDefinitionsWithCount:(unint64_t *)a3;
-+ (id)createEntityForBuilderConfiguration:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)finishWorkoutBuilderWithIdentifier:(id)a3 dateInterval:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)discardBuilderWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (HDWorkoutBuilderEntity)workoutBuilderEntityWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (const)columnDefinitionsWithCount:(unint64_t *)count;
++ (id)createEntityForBuilderConfiguration:(id)configuration profile:(id)profile error:(id *)error;
++ (id)finishWorkoutBuilderWithIdentifier:(id)identifier dateInterval:(id)interval profile:(id)profile error:(id *)error;
 + (id)foreignKeys;
 + (id)privateSubEntities;
-+ (id)workoutBuilderEntitiesExcludingSessions:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (id)workoutBuilderEntitiesForSource:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (void)_workoutBuilderEntitiesForPredicate:(void *)a3 profile:(uint64_t)a4 error:;
-- (BOOL)_setupForEnumerationOfTypes:(void *)a3 interval:(void *)a4 profile:(uint64_t)a5 error:(void *)a6 handler:;
-- (BOOL)_setupForEnumerationOfTypes:(void *)a3 interval:(void *)a4 transaction:(void *)a5 error:(void *)a6 handler:;
-- (BOOL)dropFinalTemporaryTableWithTransaction:(id)a3 error:(id *)a4;
-- (BOOL)enumerateAssociatedSampleValuesOfType:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7;
-- (BOOL)enumerateAssociatedSampleValuesOfType:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 sampleHandler:(id)a7;
-- (BOOL)enumerateAssociatedSampleValuesWithCustomQueryOfType:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7;
-- (BOOL)enumerateAssociatedSamplesOfTypes:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 sampleHandler:(id)a7;
-- (BOOL)enumerateDataSourcesForProfile:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)enumerateStatisticsInTransaction:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)insertPrimaryWorkoutActivity:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)insertWorkoutActivity:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)insertWorkoutEvent:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)insertZones:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)pruneAssociatedSamplesToDateInterval:(id)a3 transaction:(id)a4 error:(id *)a5 zonesHandler:(id)a6 sampleHandler:(id)a7;
-- (BOOL)removeDataSourceWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)setArchivedState:(id)a3 forDataSourceIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-- (BOOL)setDataInterval:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)setDeviceEntity:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)setMetadata:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)setQuantityTypesIncludedWhilePaused:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)setSessionIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)setWorkoutConfiguration:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)storeStatisticsCalculator:(id)a3 anchor:(id)a4 activityUUID:(id)a5 transaction:(id)a6 error:(id *)a7;
-- (BOOL)updateTimeInZone:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)updateWorkoutActivityEndDate:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)updateWorkoutActivityMetadata:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (id)configurationWithTransaction:(id)a3 error:(id *)a4;
-- (id)dataIntervalInTransaction:(id)a3 error:(id *)a4;
-- (id)endDateInTransaction:(id)a3 error:(id *)a4;
-- (id)metadataWithTransaction:(id)a3 error:(id *)a4;
-- (id)primaryActivityInTransaction:(id)a3 error:(id *)a4;
-- (id)quantityTypesIncludedWhilePausedInTransaction:(id)a3 error:(id *)a4;
-- (id)sessionIdentifierWithTransaction:(id)a3 error:(id *)a4;
-- (id)startDateInTransaction:(id)a3 error:(id *)a4;
-- (id)workoutActivitiesInTransaction:(id)a3 error:(id *)a4;
-- (id)workoutEventsInTransaction:(id)a3 error:(id *)a4;
-- (id)zonesInTransaction:(id)a3 error:(id *)a4;
-- (uint64_t)_dropTemporaryTableWithTransaction:(void *)a3 name:(void *)a4 error:;
++ (id)workoutBuilderEntitiesExcludingSessions:(id)sessions profile:(id)profile error:(id *)error;
++ (id)workoutBuilderEntitiesForSource:(id)source profile:(id)profile error:(id *)error;
++ (void)_workoutBuilderEntitiesForPredicate:(void *)predicate profile:(uint64_t)profile error:;
+- (BOOL)_setupForEnumerationOfTypes:(void *)types interval:(void *)interval profile:(uint64_t)profile error:(void *)error handler:;
+- (BOOL)_setupForEnumerationOfTypes:(void *)types interval:(void *)interval transaction:(void *)transaction error:(void *)error handler:;
+- (BOOL)dropFinalTemporaryTableWithTransaction:(id)transaction error:(id *)error;
+- (BOOL)enumerateAssociatedSampleValuesOfType:(id)type interval:(id)interval profile:(id)profile error:(id *)error handler:(id)handler;
+- (BOOL)enumerateAssociatedSampleValuesOfType:(id)type interval:(id)interval profile:(id)profile error:(id *)error sampleHandler:(id)handler;
+- (BOOL)enumerateAssociatedSampleValuesWithCustomQueryOfType:(id)type interval:(id)interval profile:(id)profile error:(id *)error handler:(id)handler;
+- (BOOL)enumerateAssociatedSamplesOfTypes:(id)types interval:(id)interval profile:(id)profile error:(id *)error sampleHandler:(id)handler;
+- (BOOL)enumerateDataSourcesForProfile:(id)profile error:(id *)error block:(id)block;
+- (BOOL)enumerateStatisticsInTransaction:(id)transaction error:(id *)error block:(id)block;
+- (BOOL)insertPrimaryWorkoutActivity:(id)activity transaction:(id)transaction error:(id *)error;
+- (BOOL)insertWorkoutActivity:(id)activity transaction:(id)transaction error:(id *)error;
+- (BOOL)insertWorkoutEvent:(id)event transaction:(id)transaction error:(id *)error;
+- (BOOL)insertZones:(id)zones transaction:(id)transaction error:(id *)error;
+- (BOOL)pruneAssociatedSamplesToDateInterval:(id)interval transaction:(id)transaction error:(id *)error zonesHandler:(id)handler sampleHandler:(id)sampleHandler;
+- (BOOL)removeDataSourceWithIdentifier:(id)identifier profile:(id)profile error:(id *)error;
+- (BOOL)setArchivedState:(id)state forDataSourceIdentifier:(id)identifier profile:(id)profile error:(id *)error;
+- (BOOL)setDataInterval:(id)interval transaction:(id)transaction error:(id *)error;
+- (BOOL)setDeviceEntity:(id)entity transaction:(id)transaction error:(id *)error;
+- (BOOL)setMetadata:(id)metadata transaction:(id)transaction error:(id *)error;
+- (BOOL)setQuantityTypesIncludedWhilePaused:(id)paused transaction:(id)transaction error:(id *)error;
+- (BOOL)setSessionIdentifier:(id)identifier transaction:(id)transaction error:(id *)error;
+- (BOOL)setWorkoutConfiguration:(id)configuration transaction:(id)transaction error:(id *)error;
+- (BOOL)storeStatisticsCalculator:(id)calculator anchor:(id)anchor activityUUID:(id)d transaction:(id)transaction error:(id *)error;
+- (BOOL)updateTimeInZone:(id)zone transaction:(id)transaction error:(id *)error;
+- (BOOL)updateWorkoutActivityEndDate:(id)date transaction:(id)transaction error:(id *)error;
+- (BOOL)updateWorkoutActivityMetadata:(id)metadata transaction:(id)transaction error:(id *)error;
+- (id)configurationWithTransaction:(id)transaction error:(id *)error;
+- (id)dataIntervalInTransaction:(id)transaction error:(id *)error;
+- (id)endDateInTransaction:(id)transaction error:(id *)error;
+- (id)metadataWithTransaction:(id)transaction error:(id *)error;
+- (id)primaryActivityInTransaction:(id)transaction error:(id *)error;
+- (id)quantityTypesIncludedWhilePausedInTransaction:(id)transaction error:(id *)error;
+- (id)sessionIdentifierWithTransaction:(id)transaction error:(id *)error;
+- (id)startDateInTransaction:(id)transaction error:(id *)error;
+- (id)workoutActivitiesInTransaction:(id)transaction error:(id *)error;
+- (id)workoutEventsInTransaction:(id)transaction error:(id *)error;
+- (id)zonesInTransaction:(id)transaction error:(id *)error;
+- (uint64_t)_dropTemporaryTableWithTransaction:(void *)transaction name:(void *)name error:;
 @end
 
 @implementation HDWorkoutBuilderEntity
 
-+ (HDWorkoutBuilderEntity)workoutBuilderEntityWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (HDWorkoutBuilderEntity)workoutBuilderEntityWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a4;
-  v9 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:a3];
-  v10 = [v8 database];
-  v11 = [a1 anyWithPredicate:v9 healthDatabase:v10 error:a5];
+  profileCopy = profile;
+  v9 = [MEMORY[0x277D10B18] predicateWithProperty:@"uuid" equalToValue:identifier];
+  database = [profileCopy database];
+  v11 = [self anyWithPredicate:v9 healthDatabase:database error:error];
 
   return v11;
 }
 
-+ (void)_workoutBuilderEntitiesForPredicate:(void *)a3 profile:(uint64_t)a4 error:
++ (void)_workoutBuilderEntitiesForPredicate:(void *)predicate profile:(uint64_t)profile error:
 {
   v6 = a2;
-  v7 = a3;
+  predicateCopy = predicate;
   v8 = objc_opt_self();
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v7 database];
+  database = [predicateCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __76__HDWorkoutBuilderEntity__workoutBuilderEntitiesForPredicate_profile_error___block_invoke;
@@ -77,9 +77,9 @@
   v17 = v11;
   v12 = v9;
   v18 = v12;
-  LODWORD(a4) = [v8 performReadTransactionWithHealthDatabase:v10 error:a4 block:v16];
+  LODWORD(profile) = [v8 performReadTransactionWithHealthDatabase:database error:profile block:v16];
 
-  if (a4)
+  if (profile)
   {
     v13 = v12;
   }
@@ -109,25 +109,25 @@ uint64_t __76__HDWorkoutBuilderEntity__workoutBuilderEntitiesForPredicate_profil
   return v8;
 }
 
-+ (id)workoutBuilderEntitiesForSource:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)workoutBuilderEntitiesForSource:(id)source profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  profileCopy = profile;
   v10 = MEMORY[0x277D10B18];
-  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "persistentID")}];
+  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(sourceCopy, "persistentID")}];
   v12 = [v10 predicateWithProperty:@"source_id" equalToValue:v11];
 
-  v13 = [(HDWorkoutBuilderEntity *)a1 _workoutBuilderEntitiesForPredicate:v12 profile:v9 error:a5];
+  v13 = [(HDWorkoutBuilderEntity *)self _workoutBuilderEntitiesForPredicate:v12 profile:profileCopy error:error];
 
   return v13;
 }
 
-+ (id)workoutBuilderEntitiesExcludingSessions:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)workoutBuilderEntitiesExcludingSessions:(id)sessions profile:(id)profile error:(id *)error
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277D10B28] doesNotContainPredicateWithProperty:@"session" values:v8];
+  sessionsCopy = sessions;
+  profileCopy = profile;
+  v10 = [MEMORY[0x277D10B28] doesNotContainPredicateWithProperty:@"session" values:sessionsCopy];
   v11 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"session"];
   v12 = MEMORY[0x277D10B20];
   v18[0] = v11;
@@ -135,34 +135,34 @@ uint64_t __76__HDWorkoutBuilderEntity__workoutBuilderEntitiesForPredicate_profil
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
   v14 = [v12 predicateMatchingAnyPredicates:v13];
 
-  v15 = [(HDWorkoutBuilderEntity *)a1 _workoutBuilderEntitiesForPredicate:v14 profile:v9 error:a5];
+  v15 = [(HDWorkoutBuilderEntity *)self _workoutBuilderEntitiesForPredicate:v14 profile:profileCopy error:error];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-+ (id)createEntityForBuilderConfiguration:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)createEntityForBuilderConfiguration:(id)configuration profile:(id)profile error:(id *)error
 {
-  v8 = a3;
+  configurationCopy = configuration;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__156;
   v22 = __Block_byref_object_dispose__156;
   v23 = 0;
-  v9 = [a4 database];
+  database = [profile database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __76__HDWorkoutBuilderEntity_createEntityForBuilderConfiguration_profile_error___block_invoke;
   v14[3] = &unk_278623F30;
   v16 = &v18;
-  v17 = a1;
-  v10 = v8;
+  selfCopy = self;
+  v10 = configurationCopy;
   v15 = v10;
-  LODWORD(a5) = [a1 performWriteTransactionWithHealthDatabase:v9 error:a5 block:v14];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v14];
 
-  if (a5)
+  if (error)
   {
     v11 = v19[5];
   }
@@ -252,55 +252,55 @@ void __76__HDWorkoutBuilderEntity_createEntityForBuilderConfiguration_profile_er
   MEMORY[0x22AAC6B30](a2, @"should_collect_events", [*(a1 + 32) shouldCollectWorkoutEvents]);
 }
 
-+ (BOOL)discardBuilderWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)discardBuilderWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[HDDiscardWorkoutOperation alloc] initWithBuilderIdentifier:v7];
-  LOBYTE(a5) = [(HDJournalableOperation *)v9 performOrJournalWithProfile:v8 error:a5];
+  identifierCopy = identifier;
+  profileCopy = profile;
+  v9 = [[HDDiscardWorkoutOperation alloc] initWithBuilderIdentifier:identifierCopy];
+  LOBYTE(error) = [(HDJournalableOperation *)v9 performOrJournalWithProfile:profileCopy error:error];
 
-  return a5;
+  return error;
 }
 
-+ (id)finishWorkoutBuilderWithIdentifier:(id)a3 dateInterval:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)finishWorkoutBuilderWithIdentifier:(id)identifier dateInterval:(id)interval profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  profileCopy = profile;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__156;
   v29 = __Block_byref_object_dispose__156;
   v30 = 0;
-  v13 = [v12 database];
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __88__HDWorkoutBuilderEntity_finishWorkoutBuilderWithIdentifier_dateInterval_profile_error___block_invoke;
   v19[3] = &unk_278628240;
-  v24 = a1;
-  v14 = v10;
+  selfCopy = self;
+  v14 = identifierCopy;
   v20 = v14;
-  v15 = v12;
+  v15 = profileCopy;
   v21 = v15;
   v23 = &v25;
-  v16 = v11;
+  v16 = intervalCopy;
   v22 = v16;
-  LOBYTE(a1) = [a1 performReadTransactionWithHealthDatabase:v13 error:a6 block:v19];
+  LOBYTE(self) = [self performReadTransactionWithHealthDatabase:database error:error block:v19];
 
-  if (a1 & 1) != 0 && ([v26[5] performOrJournalWithProfile:v15 error:a6])
+  if (self & 1) != 0 && ([v26[5] performOrJournalWithProfile:v15 error:error])
   {
-    v17 = [v26[5] createdWorkout];
+    createdWorkout = [v26[5] createdWorkout];
   }
 
   else
   {
-    v17 = 0;
+    createdWorkout = 0;
   }
 
   _Block_object_dispose(&v25, 8);
 
-  return v17;
+  return createdWorkout;
 }
 
 BOOL __88__HDWorkoutBuilderEntity_finishWorkoutBuilderWithIdentifier_dateInterval_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -532,12 +532,12 @@ void __88__HDWorkoutBuilderEntity_finishWorkoutBuilderWithIdentifier_dateInterva
   }
 }
 
-- (id)configurationWithTransaction:(id)a3 error:(id *)a4
+- (id)configurationWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [objc_opt_class() disambiguatedDatabaseTable];
-  v9 = [v7 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ?", @"uuid", @"workout_configuration", @"source_id", @"source_version", @"device_id", @"session", @"goal_type", @"goal", @"should_collect_events", v8, *MEMORY[0x277D10A40]];
+  disambiguatedDatabaseTable = [objc_opt_class() disambiguatedDatabaseTable];
+  v9 = [v7 stringWithFormat:@"SELECT %@, %@, %@, %@, %@, %@, %@, %@, %@ FROM %@ WHERE %@ = ?", @"uuid", @"workout_configuration", @"source_id", @"source_version", @"device_id", @"session", @"goal_type", @"goal", @"should_collect_events", disambiguatedDatabaseTable, *MEMORY[0x277D10A40]];
 
   v16 = 0;
   v17 = &v16;
@@ -545,7 +545,7 @@ void __88__HDWorkoutBuilderEntity_finishWorkoutBuilderWithIdentifier_dateInterva
   v19 = __Block_byref_object_copy__156;
   v20 = __Block_byref_object_dispose__156;
   v21 = 0;
-  v10 = [v6 databaseForEntity:self];
+  v10 = [transactionCopy databaseForEntity:self];
   v14[4] = &v16;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -556,9 +556,9 @@ void __88__HDWorkoutBuilderEntity_finishWorkoutBuilderWithIdentifier_dateInterva
   v14[1] = 3221225472;
   v14[2] = __61__HDWorkoutBuilderEntity_configurationWithTransaction_error___block_invoke_2;
   v14[3] = &unk_278615530;
-  LODWORD(a4) = [v10 executeSQL:v9 error:a4 bindingHandler:v15 enumerationHandler:v14];
+  LODWORD(error) = [v10 executeSQL:v9 error:error bindingHandler:v15 enumerationHandler:v14];
 
-  if (a4)
+  if (error)
   {
     v11 = v17[5];
   }
@@ -616,10 +616,10 @@ uint64_t __61__HDWorkoutBuilderEntity_configurationWithTransaction_error___block
   return 1;
 }
 
-- (id)sessionIdentifierWithTransaction:(id)a3 error:(id *)a4
+- (id)sessionIdentifierWithTransaction:(id)transaction error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionCopy = transaction;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -628,15 +628,15 @@ uint64_t __61__HDWorkoutBuilderEntity_configurationWithTransaction_error___block
   v19 = 0;
   v20[0] = @"session";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v8 = [v6 databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
+  v8 = [transactionCopy databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__HDWorkoutBuilderEntity_sessionIdentifierWithTransaction_error___block_invoke;
   v13[3] = &unk_278620008;
   v13[4] = &v14;
-  LODWORD(a4) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:a4 handler:v13];
+  LODWORD(error) = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v8 error:error handler:v13];
 
-  if (a4)
+  if (error)
   {
     v9 = v15[5];
   }
@@ -664,44 +664,44 @@ uint64_t __65__HDWorkoutBuilderEntity_sessionIdentifierWithTransaction_error___b
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (BOOL)setSessionIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)setSessionIdentifier:(id)identifier transaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v17[0] = @"session";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v11 = [v9 databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
+  v11 = [transactionCopy databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__HDWorkoutBuilderEntity_setSessionIdentifier_transaction_error___block_invoke;
   v15[3] = &unk_2786246A0;
-  v12 = v8;
+  v12 = identifierCopy;
   v16 = v12;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:a5 bindingHandler:v15];
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:error bindingHandler:v15];
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (id)startDateInTransaction:(id)a3 error:(id *)a4
+- (id)startDateInTransaction:(id)transaction error:(id *)error
 {
-  v4 = [(HDHealthEntity *)self dateForProperty:@"start_date" transaction:a3 error:a4];
+  v4 = [(HDHealthEntity *)self dateForProperty:@"start_date" transaction:transaction error:error];
 
   return v4;
 }
 
-- (id)endDateInTransaction:(id)a3 error:(id *)a4
+- (id)endDateInTransaction:(id)transaction error:(id *)error
 {
-  v4 = [(HDHealthEntity *)self dateForProperty:@"end_date" transaction:a3 error:a4];
+  v4 = [(HDHealthEntity *)self dateForProperty:@"end_date" transaction:transaction error:error];
 
   return v4;
 }
 
-- (id)dataIntervalInTransaction:(id)a3 error:(id *)a4
+- (id)dataIntervalInTransaction:(id)transaction error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  transactionCopy = transaction;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -710,7 +710,7 @@ uint64_t __65__HDWorkoutBuilderEntity_sessionIdentifierWithTransaction_error___b
   v18 = 0;
   v19[0] = @"data_interval";
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v7 = [v5 databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
+  v7 = [transactionCopy databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__HDWorkoutBuilderEntity_dataIntervalInTransaction_error___block_invoke;
@@ -747,30 +747,30 @@ uint64_t __58__HDWorkoutBuilderEntity_dataIntervalInTransaction_error___block_in
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (BOOL)setDataInterval:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)setDataInterval:(id)interval transaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  intervalCopy = interval;
+  transactionCopy = transaction;
   v17[0] = @"data_interval";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v11 = [v9 databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
+  v11 = [transactionCopy databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__HDWorkoutBuilderEntity_setDataInterval_transaction_error___block_invoke;
   v15[3] = &unk_2786246A0;
-  v12 = v8;
+  v12 = intervalCopy;
   v16 = v12;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:a5 bindingHandler:v15];
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:error bindingHandler:v15];
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (id)quantityTypesIncludedWhilePausedInTransaction:(id)a3 error:(id *)a4
+- (id)quantityTypesIncludedWhilePausedInTransaction:(id)transaction error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  transactionCopy = transaction;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -779,7 +779,7 @@ uint64_t __58__HDWorkoutBuilderEntity_dataIntervalInTransaction_error___block_in
   v18 = 0;
   v19[0] = @"types_while_paused";
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v7 = [v5 databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
+  v7 = [transactionCopy databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __78__HDWorkoutBuilderEntity_quantityTypesIncludedWhilePausedInTransaction_error___block_invoke;
@@ -827,24 +827,24 @@ void __78__HDWorkoutBuilderEntity_quantityTypesIncludedWhilePausedInTransaction_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setQuantityTypesIncludedWhilePaused:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)setQuantityTypesIncludedWhilePaused:(id)paused transaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  pausedCopy = paused;
+  transactionCopy = transaction;
   v17[0] = @"types_while_paused";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v11 = [v9 databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
+  v11 = [transactionCopy databaseForEntityProtectionClass:{objc_msgSend(objc_opt_class(), "protectionClass")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__HDWorkoutBuilderEntity_setQuantityTypesIncludedWhilePaused_transaction_error___block_invoke;
   v15[3] = &unk_2786246A0;
-  v12 = v8;
+  v12 = pausedCopy;
   v16 = v12;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:a5 bindingHandler:v15];
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:error bindingHandler:v15];
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 uint64_t __80__HDWorkoutBuilderEntity_setQuantityTypesIncludedWhilePaused_transaction_error___block_invoke(uint64_t a1)
@@ -860,24 +860,24 @@ uint64_t __80__HDWorkoutBuilderEntity_setQuantityTypesIncludedWhilePaused_transa
   return HDSQLiteBindSecureCodingObjectToProperty();
 }
 
-- (BOOL)setMetadata:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)setMetadata:(id)metadata transaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  metadataCopy = metadata;
+  transactionCopy = transaction;
   v17[0] = @"metadata";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v11 = [v9 databaseForEntity:self];
+  v11 = [transactionCopy databaseForEntity:self];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__HDWorkoutBuilderEntity_setMetadata_transaction_error___block_invoke;
   v15[3] = &unk_2786246A0;
-  v12 = v8;
+  v12 = metadataCopy;
   v16 = v12;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:a5 bindingHandler:v15];
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:error bindingHandler:v15];
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 void __56__HDWorkoutBuilderEntity_setMetadata_transaction_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -893,12 +893,12 @@ void __56__HDWorkoutBuilderEntity_setMetadata_transaction_error___block_invoke(u
   MEMORY[0x22AAC6B40](a2, @"metadata", v4);
 }
 
-- (id)metadataWithTransaction:(id)a3 error:(id *)a4
+- (id)metadataWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [objc_opt_class() disambiguatedDatabaseTable];
-  v9 = [v7 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ?", @"metadata", v8, *MEMORY[0x277D10A40]];
+  disambiguatedDatabaseTable = [objc_opt_class() disambiguatedDatabaseTable];
+  v9 = [v7 stringWithFormat:@"SELECT %@ FROM %@ WHERE %@ = ?", @"metadata", disambiguatedDatabaseTable, *MEMORY[0x277D10A40]];
 
   v16 = 0;
   v17 = &v16;
@@ -906,7 +906,7 @@ void __56__HDWorkoutBuilderEntity_setMetadata_transaction_error___block_invoke(u
   v19 = __Block_byref_object_copy__156;
   v20 = __Block_byref_object_dispose__156;
   v21 = 0;
-  v10 = [v6 databaseForEntity:self];
+  v10 = [transactionCopy databaseForEntity:self];
   v14[4] = &v16;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -917,7 +917,7 @@ void __56__HDWorkoutBuilderEntity_setMetadata_transaction_error___block_invoke(u
   v14[1] = 3221225472;
   v14[2] = __56__HDWorkoutBuilderEntity_metadataWithTransaction_error___block_invoke_2;
   v14[3] = &unk_278615530;
-  if ([v10 executeSQL:v9 error:a4 bindingHandler:v15 enumerationHandler:v14])
+  if ([v10 executeSQL:v9 error:error bindingHandler:v15 enumerationHandler:v14])
   {
     v11 = v17[5];
     if (!v11)
@@ -959,24 +959,24 @@ uint64_t __56__HDWorkoutBuilderEntity_metadataWithTransaction_error___block_invo
   return 1;
 }
 
-- (BOOL)setDeviceEntity:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)setDeviceEntity:(id)entity transaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  entityCopy = entity;
+  transactionCopy = transaction;
   v17[0] = @"device_id";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v11 = [v9 databaseForEntity:self];
+  v11 = [transactionCopy databaseForEntity:self];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__HDWorkoutBuilderEntity_setDeviceEntity_transaction_error___block_invoke;
   v15[3] = &unk_2786246A0;
-  v12 = v8;
+  v12 = entityCopy;
   v16 = v12;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:a5 bindingHandler:v15];
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:error bindingHandler:v15];
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 void __60__HDWorkoutBuilderEntity_setDeviceEntity_transaction_error___block_invoke(uint64_t a1)
@@ -986,35 +986,35 @@ void __60__HDWorkoutBuilderEntity_setDeviceEntity_transaction_error___block_invo
   JUMPOUT(0x22AAC6B90);
 }
 
-- (BOOL)setWorkoutConfiguration:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)setWorkoutConfiguration:(id)configuration transaction:(id)transaction error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  transactionCopy = transaction;
   v17[0] = @"workout_configuration";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v11 = [v9 databaseForEntity:self];
+  v11 = [transactionCopy databaseForEntity:self];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__HDWorkoutBuilderEntity_setWorkoutConfiguration_transaction_error___block_invoke;
   v15[3] = &unk_2786246A0;
-  v12 = v8;
+  v12 = configurationCopy;
   v16 = v12;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:a5 bindingHandler:v15];
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v10 database:v11 error:error bindingHandler:v15];
 
   v13 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)enumerateAssociatedSampleValuesWithCustomQueryOfType:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)enumerateAssociatedSampleValuesWithCustomQueryOfType:(id)type interval:(id)interval profile:(id)profile error:(id *)error handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12)
+  typeCopy = type;
+  intervalCopy = interval;
+  profileCopy = profile;
+  handlerCopy = handler;
+  if (typeCopy)
   {
-    v16 = [MEMORY[0x277CBEB98] setWithObject:v12];
+    v16 = [MEMORY[0x277CBEB98] setWithObject:typeCopy];
   }
 
   else
@@ -1027,13 +1027,13 @@ void __60__HDWorkoutBuilderEntity_setDeviceEntity_transaction_error___block_invo
   v22[2] = __110__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesWithCustomQueryOfType_interval_profile_error_handler___block_invoke;
   v22[3] = &unk_278628290;
   v22[4] = self;
-  v17 = v12;
+  v17 = typeCopy;
   v23 = v17;
-  v18 = v13;
+  v18 = intervalCopy;
   v24 = v18;
-  v19 = v15;
+  v19 = handlerCopy;
   v25 = v19;
-  v20 = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v16 interval:v18 profile:v14 error:a6 handler:v22];
+  v20 = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v16 interval:v18 profile:profileCopy error:error handler:v22];
 
   return v20;
 }
@@ -1057,24 +1057,24 @@ BOOL __110__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesWithCustomQuer
   return v14;
 }
 
-- (BOOL)_setupForEnumerationOfTypes:(void *)a3 interval:(void *)a4 profile:(uint64_t)a5 error:(void *)a6 handler:
+- (BOOL)_setupForEnumerationOfTypes:(void *)types interval:(void *)interval profile:(uint64_t)profile error:(void *)error handler:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (a1)
+  typesCopy = types;
+  intervalCopy = interval;
+  errorCopy = error;
+  if (self)
   {
-    v15 = [v13 database];
+    database = [intervalCopy database];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __85__HDWorkoutBuilderEntity__setupForEnumerationOfTypes_interval_profile_error_handler___block_invoke;
     v18[3] = &unk_278628420;
-    v18[4] = a1;
+    v18[4] = self;
     v19 = v11;
-    v20 = v12;
-    v21 = v14;
-    v16 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:v15 error:a5 block:v18];
+    v20 = typesCopy;
+    v21 = errorCopy;
+    v16 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:database error:profile block:v18];
   }
 
   else
@@ -1085,15 +1085,15 @@ BOOL __110__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesWithCustomQuer
   return v16;
 }
 
-- (BOOL)enumerateAssociatedSampleValuesOfType:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 sampleHandler:(id)a7
+- (BOOL)enumerateAssociatedSampleValuesOfType:(id)type interval:(id)interval profile:(id)profile error:(id *)error sampleHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12)
+  typeCopy = type;
+  intervalCopy = interval;
+  profileCopy = profile;
+  handlerCopy = handler;
+  if (typeCopy)
   {
-    v16 = [MEMORY[0x277CBEB98] setWithObject:v12];
+    v16 = [MEMORY[0x277CBEB98] setWithObject:typeCopy];
   }
 
   else
@@ -1105,9 +1105,9 @@ BOOL __110__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesWithCustomQuer
   v20[1] = 3221225472;
   v20[2] = __101__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesOfType_interval_profile_error_sampleHandler___block_invoke;
   v20[3] = &unk_2786282E0;
-  v17 = v15;
+  v17 = handlerCopy;
   v21 = v17;
-  v18 = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v16 interval:v13 profile:v14 error:a6 handler:v20];
+  v18 = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v16 interval:intervalCopy profile:profileCopy error:error handler:v20];
 
   return v18;
 }
@@ -1124,15 +1124,15 @@ BOOL __101__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesOfType_interva
   return v8;
 }
 
-- (BOOL)enumerateAssociatedSampleValuesOfType:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)enumerateAssociatedSampleValuesOfType:(id)type interval:(id)interval profile:(id)profile error:(id *)error handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12)
+  typeCopy = type;
+  intervalCopy = interval;
+  profileCopy = profile;
+  handlerCopy = handler;
+  if (typeCopy)
   {
-    v16 = [MEMORY[0x277CBEB98] setWithObject:v12];
+    v16 = [MEMORY[0x277CBEB98] setWithObject:typeCopy];
   }
 
   else
@@ -1144,9 +1144,9 @@ BOOL __101__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesOfType_interva
   v20[1] = 3221225472;
   v20[2] = __95__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesOfType_interval_profile_error_handler___block_invoke;
   v20[3] = &unk_2786282E0;
-  v17 = v15;
+  v17 = handlerCopy;
   v21 = v17;
-  v18 = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v16 interval:v13 profile:v14 error:a6 handler:v20];
+  v18 = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v16 interval:intervalCopy profile:profileCopy error:error handler:v20];
 
   return v18;
 }
@@ -1163,24 +1163,24 @@ BOOL __95__HDWorkoutBuilderEntity_enumerateAssociatedSampleValuesOfType_interval
   return v8;
 }
 
-- (BOOL)enumerateAssociatedSamplesOfTypes:(id)a3 interval:(id)a4 profile:(id)a5 error:(id *)a6 sampleHandler:(id)a7
+- (BOOL)enumerateAssociatedSamplesOfTypes:(id)types interval:(id)interval profile:(id)profile error:(id *)error sampleHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  typesCopy = types;
+  profileCopy = profile;
+  handlerCopy = handler;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __97__HDWorkoutBuilderEntity_enumerateAssociatedSamplesOfTypes_interval_profile_error_sampleHandler___block_invoke;
   v19[3] = &unk_278628358;
-  v20 = v12;
-  v21 = v13;
-  v22 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  LOBYTE(a6) = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v17 interval:a4 profile:v16 error:a6 handler:v19];
+  v20 = typesCopy;
+  v21 = profileCopy;
+  v22 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = profileCopy;
+  v17 = typesCopy;
+  LOBYTE(error) = [(HDWorkoutBuilderEntity *)self _setupForEnumerationOfTypes:v17 interval:interval profile:v16 error:error handler:v19];
 
-  return a6;
+  return error;
 }
 
 uint64_t __97__HDWorkoutBuilderEntity_enumerateAssociatedSamplesOfTypes_interval_profile_error_sampleHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, uint64_t a5)
@@ -1309,17 +1309,17 @@ uint64_t __91__HDWorkoutBuilderEntity__createTemporaryProtectedAssociatedSampleL
   return v7;
 }
 
-- (uint64_t)_dropTemporaryTableWithTransaction:(void *)a3 name:(void *)a4 error:
+- (uint64_t)_dropTemporaryTableWithTransaction:(void *)transaction name:(void *)name error:
 {
   v24 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  transactionCopy = transaction;
+  if (self)
   {
     v9 = [v7 databaseForEntityClass:objc_opt_class()];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"DROP TABLE %@", v8];
+    transactionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"DROP TABLE %@", transactionCopy];
     v19 = 0;
-    v11 = [v9 executeUncachedSQL:v10 error:&v19 bindingHandler:0 enumerationHandler:0];
+    v11 = [v9 executeUncachedSQL:transactionCopy error:&v19 bindingHandler:0 enumerationHandler:0];
     v12 = v19;
 
     if ((v11 & 1) == 0)
@@ -1329,7 +1329,7 @@ uint64_t __91__HDWorkoutBuilderEntity__createTemporaryProtectedAssociatedSampleL
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v21 = v8;
+        v21 = transactionCopy;
         v22 = 2114;
         v23 = v12;
         _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "Failed to drop temporary table with name %{public}@ after sample enumeration: %{public}@", buf, 0x16u);
@@ -1340,10 +1340,10 @@ uint64_t __91__HDWorkoutBuilderEntity__createTemporaryProtectedAssociatedSampleL
     v15 = v14;
     if (v14)
     {
-      if (a4)
+      if (name)
       {
         v16 = v14;
-        *a4 = v15;
+        *name = v15;
       }
 
       else
@@ -1362,32 +1362,32 @@ uint64_t __91__HDWorkoutBuilderEntity__createTemporaryProtectedAssociatedSampleL
   return v11;
 }
 
-- (BOOL)_setupForEnumerationOfTypes:(void *)a3 interval:(void *)a4 transaction:(void *)a5 error:(void *)a6 handler:
+- (BOOL)_setupForEnumerationOfTypes:(void *)types interval:(void *)interval transaction:(void *)transaction error:(void *)error handler:
 {
   v115 = *MEMORY[0x277D85DE8];
   v83 = a2;
-  v84 = a3;
-  v10 = a4;
-  v80 = a6;
-  v86 = v10;
-  if (!a1)
+  typesCopy = types;
+  intervalCopy = interval;
+  errorCopy = error;
+  v86 = intervalCopy;
+  if (!self)
   {
     goto LABEL_34;
   }
 
-  v11 = [v10 protectedDatabase];
-  [v11 setPermitWritesInReadTransaction:1];
+  protectedDatabase = [intervalCopy protectedDatabase];
+  [protectedDatabase setPermitWritesInReadTransaction:1];
 
-  if (*(a1 + 16) == 1)
+  if (*(self + 16) == 1)
   {
-    v12 = *(a1 + 24);
+    v12 = *(self + 24);
     if (v12)
     {
       goto LABEL_23;
     }
   }
 
-  v13 = v10;
+  v13 = intervalCopy;
   v81 = [v13 databaseForEntityClass:objc_opt_class()];
   _HKInitializeLogging();
   v14 = *MEMORY[0x277CCC330];
@@ -1397,19 +1397,19 @@ uint64_t __91__HDWorkoutBuilderEntity__createTemporaryProtectedAssociatedSampleL
     _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "Creating tempory table for association sample list", &buf, 2u);
   }
 
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  v16 = [v15 UUIDString];
-  v78 = [v16 stringByReplacingOccurrencesOfString:@"-" withString:&stru_283BF39C8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v78 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_283BF39C8];
 
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", objc_opt_class(), v78];
-  v18 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v19 = [v18 features];
-  LODWORD(v16) = [v19 workoutTempTableChanges];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  LODWORD(uUIDString) = [features workoutTempTableChanges];
 
-  if (v16)
+  if (uUIDString)
   {
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"CREATE TEMPORARY TABLE %@ (%@ BLOB NOT NULL, %@ INTERGER NOT NULL)", v17, @"uuid", @"sample_type"];
-    v21 = [v81 executeUncachedSQL:v20 error:a5 bindingHandler:0 enumerationHandler:0];
+    v21 = [v81 executeUncachedSQL:v20 error:transaction bindingHandler:0 enumerationHandler:0];
 
     if ((v21 & 1) == 0)
     {
@@ -1422,7 +1422,7 @@ LABEL_8:
   else
   {
     v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"CREATE TEMPORARY TABLE %@ (%@ BLOB NOT NULL)", v17, @"uuid"];
-    v23 = [v81 executeUncachedSQL:v22 error:a5 bindingHandler:0 enumerationHandler:0];
+    v23 = [v81 executeUncachedSQL:v22 error:transaction bindingHandler:0 enumerationHandler:0];
 
     if ((v23 & 1) == 0)
     {
@@ -1459,18 +1459,18 @@ LABEL_8:
   v114 = &v94;
   v26 = v76;
   v112 = v26;
-  if ([HDWorkoutBuilderAssociatedObjectEntity enumerateAssociatedUUIDsForBuilder:a1 transaction:v13 error:a5 block:&buf])
+  if ([HDWorkoutBuilderAssociatedObjectEntity enumerateAssociatedUUIDsForBuilder:self transaction:v13 error:transaction block:&buf])
   {
-    if (![v101[5] count] || (v27 = (*(v26 + 2))(v26, v101[5], v95[5], a5), v28 = v101[5], v101[5] = 0, v28, v27))
+    if (![v101[5] count] || (v27 = (*(v26 + 2))(v26, v101[5], v95[5], transaction), v28 = v101[5], v101[5] = 0, v28, v27))
     {
       v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"CREATE INDEX %@_idx ON %@ (%@)", v24, v24, @"uuid"];
-      v30 = [v25 executeUncachedSQL:v29 error:a5 bindingHandler:0 enumerationHandler:0];
+      v30 = [v25 executeUncachedSQL:v29 error:transaction bindingHandler:0 enumerationHandler:0];
 
-      v31 = [MEMORY[0x277CCDD30] sharedBehavior];
-      v32 = [v31 features];
-      v33 = [v32 workoutTempTableChanges];
+      mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+      features2 = [mEMORY[0x277CCDD30]2 features];
+      workoutTempTableChanges = [features2 workoutTempTableChanges];
 
-      if (!v33)
+      if (!workoutTempTableChanges)
       {
 LABEL_16:
         if (v30)
@@ -1490,7 +1490,7 @@ LABEL_16:
       if (v30)
       {
         v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"CREATE INDEX %@_dt_idx ON %@ (%@)", v24, v24, @"sample_type"];
-        v30 = [v25 executeUncachedSQL:v34 error:a5 bindingHandler:0 enumerationHandler:0];
+        v30 = [v25 executeUncachedSQL:v34 error:transaction bindingHandler:0 enumerationHandler:0];
 
         goto LABEL_16;
       }
@@ -1506,8 +1506,8 @@ LABEL_21:
 LABEL_22:
   if (!v12)
   {
-    v57 = [v13 protectedDatabase];
-    [v57 setPermitWritesInReadTransaction:0];
+    protectedDatabase2 = [v13 protectedDatabase];
+    [protectedDatabase2 setPermitWritesInReadTransaction:0];
 
 LABEL_34:
     v58 = 0;
@@ -1515,13 +1515,13 @@ LABEL_34:
   }
 
 LABEL_23:
-  if (*(a1 + 16) == 1 && !*(a1 + 24))
+  if (*(self + 16) == 1 && !*(self + 24))
   {
-    objc_storeStrong((a1 + 24), v12);
+    objc_storeStrong((self + 24), v12);
   }
 
   v36 = v83;
-  v37 = v84;
+  v37 = typesCopy;
   v82 = v12;
   v38 = v86;
   v77 = v36;
@@ -1542,19 +1542,19 @@ LABEL_23:
   if (v37)
   {
     aBlock[0] = 0;
-    v43 = [a1 dataIntervalInTransaction:v38 error:aBlock];
+    v43 = [self dataIntervalInTransaction:v38 error:aBlock];
     v44 = aBlock[0];
     v74 = v44;
     v75 = v43;
     if (v43)
     {
-      v45 = [v37 endDate];
+      endDate = [v37 endDate];
       v73 = HDSampleEntityPredicateForStartDate(4);
 
-      v46 = [v37 startDate];
+      startDate = [v37 startDate];
       v72 = HDSampleEntityPredicateForEndDate(6);
 
-      v47 = [v75 startDate];
+      startDate2 = [v75 startDate];
       v48 = HDSampleEntityPredicateForStartDate(6);
 
       v49 = MEMORY[0x277D10B20];
@@ -1578,10 +1578,10 @@ LABEL_23:
     {
       v59 = v44;
       v60 = v59;
-      if (a5)
+      if (transaction)
       {
         v61 = v59;
-        *a5 = v60;
+        *transaction = v60;
       }
 
       else
@@ -1611,17 +1611,17 @@ LABEL_23:
     v88[1] = 3221225472;
     v88[2] = __89__HDWorkoutBuilderEntity__setupForEnumerationOfTypes_interval_transaction_error_handler___block_invoke;
     v88[3] = &unk_2786283F8;
-    v92 = v80;
+    v92 = errorCopy;
     v62 = v38;
     v89 = v62;
     v90 = v56;
     v63 = v82;
     v91 = v63;
-    v64 = [HDWorkoutBuilderAssociatedSampleTemporaryTableEntity withLocalTableName:v63 error:a5 block:v88];
-    if (!*(a1 + 24))
+    v64 = [HDWorkoutBuilderAssociatedSampleTemporaryTableEntity withLocalTableName:v63 error:transaction block:v88];
+    if (!*(self + 24))
     {
       v87 = 0;
-      v65 = [(HDWorkoutBuilderEntity *)a1 _dropTemporaryTableWithTransaction:v62 name:v63 error:&v87];
+      v65 = [(HDWorkoutBuilderEntity *)self _dropTemporaryTableWithTransaction:v62 name:v63 error:&v87];
       v66 = v87;
       if ((v65 & 1) == 0)
       {
@@ -1636,16 +1636,16 @@ LABEL_23:
       }
     }
 
-    v68 = [v62 protectedDatabase];
-    [v68 setPermitWritesInReadTransaction:0];
+    protectedDatabase3 = [v62 protectedDatabase];
+    [protectedDatabase3 setPermitWritesInReadTransaction:0];
 
     v93 = v64;
   }
 
   else
   {
-    v69 = [v38 protectedDatabase];
-    [v69 setPermitWritesInReadTransaction:0];
+    protectedDatabase4 = [v38 protectedDatabase];
+    [protectedDatabase4 setPermitWritesInReadTransaction:0];
 
     v93 = 0;
   }
@@ -1657,47 +1657,47 @@ LABEL_51:
   return v58;
 }
 
-- (BOOL)pruneAssociatedSamplesToDateInterval:(id)a3 transaction:(id)a4 error:(id *)a5 zonesHandler:(id)a6 sampleHandler:(id)a7
+- (BOOL)pruneAssociatedSamplesToDateInterval:(id)interval transaction:(id)transaction error:(id *)error zonesHandler:(id)handler sampleHandler:(id)sampleHandler
 {
   v82 = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v12 = a4;
-  v54 = a6;
-  v55 = a7;
-  v53 = v12;
-  v13 = [v12 protectedDatabase];
+  intervalCopy = interval;
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  sampleHandlerCopy = sampleHandler;
+  v53 = transactionCopy;
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  if (!v13)
+  if (!protectedDatabase)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:@"A protected data transaction is required."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"A protected data transaction is required."];
     v45 = 0;
     goto LABEL_53;
   }
 
-  v14 = [v56 startDate];
-  [v14 timeIntervalSinceReferenceDate];
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v16 = v15;
 
-  v17 = [v56 endDate];
-  [v17 timeIntervalSinceReferenceDate];
+  endDate = [intervalCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v19 = v18;
 
-  v52 = [(HDWorkoutBuilderEntity *)self workoutEventsInTransaction:v12 error:a5];
+  v52 = [(HDWorkoutBuilderEntity *)self workoutEventsInTransaction:transactionCopy error:error];
   if (!v52)
   {
     v45 = 0;
     goto LABEL_52;
   }
 
-  v20 = [(HDWorkoutBuilderEntity *)self quantityTypesIncludedWhilePausedInTransaction:v12 error:a5];
+  v20 = [(HDWorkoutBuilderEntity *)self quantityTypesIncludedWhilePausedInTransaction:transactionCopy error:error];
   if (!v20)
   {
     v45 = 0;
     goto LABEL_51;
   }
 
-  v50 = a5;
-  v51 = self;
+  errorCopy = error;
+  selfCopy = self;
   memset(v76, 0, sizeof(v76));
   v77 = 1065353216;
   v72 = 0u;
@@ -1722,7 +1722,7 @@ LABEL_51:
         objc_enumerationMutation(obj);
       }
 
-      v24 = [*(*(&v72 + 1) + 8 * i) code];
+      code = [*(*(&v72 + 1) + 8 * i) code];
       if (!*(&v76[0] + 1))
       {
         goto LABEL_25;
@@ -1732,16 +1732,16 @@ LABEL_51:
       v25.i16[0] = vaddlv_u8(v25);
       if (v25.u32[0] > 1uLL)
       {
-        v26 = v24;
-        if (*(&v76[0] + 1) <= v24)
+        v26 = code;
+        if (*(&v76[0] + 1) <= code)
         {
-          v26 = v24 % *(&v76[0] + 1);
+          v26 = code % *(&v76[0] + 1);
         }
       }
 
       else
       {
-        v26 = (*(&v76[0] + 1) - 1) & v24;
+        v26 = (*(&v76[0] + 1) - 1) & code;
       }
 
       v27 = *(*&v76[0] + 8 * v26);
@@ -1754,7 +1754,7 @@ LABEL_25:
       while (1)
       {
         v29 = v28[1];
-        if (v29 == v24)
+        if (v29 == code)
         {
           break;
         }
@@ -1785,7 +1785,7 @@ LABEL_24:
         }
       }
 
-      if (v28[2] != v24)
+      if (v28[2] != code)
       {
         goto LABEL_24;
       }
@@ -1818,11 +1818,11 @@ LABEL_28:
         }
 
         v34 = *(*(&v66 + 1) + 8 * j);
-        v35 = [v34 startDate];
-        [v35 timeIntervalSinceReferenceDate];
+        startDate2 = [v34 startDate];
+        [startDate2 timeIntervalSinceReferenceDate];
         v37 = v36;
-        v38 = [v34 endDate];
-        [v38 timeIntervalSinceReferenceDate];
+        endDate2 = [v34 endDate];
+        [endDate2 timeIntervalSinceReferenceDate];
         if (v39 >= v37)
         {
           v40 = v37;
@@ -1856,26 +1856,26 @@ LABEL_28:
   v58[1] = 3321888768;
   v58[2] = __108__HDWorkoutBuilderEntity_pruneAssociatedSamplesToDateInterval_transaction_error_zonesHandler_sampleHandler___block_invoke;
   v58[3] = &unk_283BEBAF0;
-  v60 = v54;
-  v58[4] = v51;
+  v60 = handlerCopy;
+  v58[4] = selfCopy;
   v59 = v53;
   v62 = v19;
   v63 = v16;
   std::unordered_set<_HKDataTypeCode>::unordered_set(v64, v76);
   memset(__p, 0, sizeof(__p));
   std::vector<HKRawInterval<double>>::__init_with_size[abi:ne200100]<HKRawInterval<double>*,HKRawInterval<double>*>(__p, v70.n128_i64[0], v70.n128_i64[1], (v70.n128_u64[1] - v70.n128_u64[0]) >> 4);
-  v61 = v55;
+  v61 = sampleHandlerCopy;
   v42 = v59;
   v43 = v58;
   v44 = v43;
-  if (v51)
+  if (selfCopy)
   {
     v78[0] = MEMORY[0x277D85DD0];
     v78[1] = 3221225472;
     v78[2] = __90__HDWorkoutBuilderEntity__enumerateAssociatedSamplePropertiesInTransaction_error_handler___block_invoke;
     v78[3] = &unk_2786282E0;
     v79 = v43;
-    v45 = [(HDWorkoutBuilderEntity *)v51 _setupForEnumerationOfTypes:0 interval:v42 transaction:v50 error:v78 handler:?];
+    v45 = [(HDWorkoutBuilderEntity *)selfCopy _setupForEnumerationOfTypes:0 interval:v42 transaction:errorCopy error:v78 handler:?];
   }
 
   else
@@ -2097,55 +2097,55 @@ uint64_t __90__HDWorkoutBuilderEntity__enumerateAssociatedSamplePropertiesInTran
   return v14;
 }
 
-- (BOOL)insertWorkoutEvent:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)insertWorkoutEvent:(id)event transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  eventCopy = event;
+  transactionCopy = transaction;
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[HDSQLiteEntity persistentID](self, "persistentID")}];
-  v11 = [v9 databaseForEntity:self];
-  v12 = [(HDWorkoutEventEntity *)HDWorkoutBuilderEventEntity insertPersistableWorkoutEvent:v8 ownerID:v10 database:v11 error:a5];
+  v11 = [transactionCopy databaseForEntity:self];
+  v12 = [(HDWorkoutEventEntity *)HDWorkoutBuilderEventEntity insertPersistableWorkoutEvent:eventCopy ownerID:v10 database:v11 error:error];
 
   return v12 != 0;
 }
 
-- (id)workoutEventsInTransaction:(id)a3 error:(id *)a4
+- (id)workoutEventsInTransaction:(id)transaction error:(id *)error
 {
-  v4 = [HDWorkoutBuilderEventEntity workoutEventsWithWorkoutBuilder:self transaction:a3 error:a4];
+  v4 = [HDWorkoutBuilderEventEntity workoutEventsWithWorkoutBuilder:self transaction:transaction error:error];
 
   return v4;
 }
 
-- (BOOL)insertPrimaryWorkoutActivity:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)insertPrimaryWorkoutActivity:(id)activity transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 databaseForEntityClass:objc_opt_class()];
-  LOBYTE(a5) = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity insertPrimaryActivity:v8 ownerID:[(HDSQLiteEntity *)self persistentID] database:v10 error:a5];
+  activityCopy = activity;
+  transactionCopy = transaction;
+  v10 = [transactionCopy databaseForEntityClass:objc_opt_class()];
+  LOBYTE(error) = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity insertPrimaryActivity:activityCopy ownerID:[(HDSQLiteEntity *)self persistentID] database:v10 error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)insertWorkoutActivity:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)insertWorkoutActivity:(id)activity transaction:(id)transaction error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 databaseForEntityClass:objc_opt_class()];
-  v14[0] = v8;
+  activityCopy = activity;
+  transactionCopy = transaction;
+  v10 = [transactionCopy databaseForEntityClass:objc_opt_class()];
+  v14[0] = activityCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  LOBYTE(a5) = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity insertSubActivities:v11 ownerID:[(HDSQLiteEntity *)self persistentID] database:v10 error:a5];
+  LOBYTE(error) = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity insertSubActivities:v11 ownerID:[(HDSQLiteEntity *)self persistentID] database:v10 error:error];
 
   v12 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)updateWorkoutActivityEndDate:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)updateWorkoutActivityEndDate:(id)date transaction:(id)transaction error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 UUID];
+  dateCopy = date;
+  transactionCopy = transaction;
+  uUID = [dateCopy UUID];
   v21 = 0;
-  v10 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity activityEntityWithUUID:v9 transaction:v8 error:&v21];
+  v10 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity activityEntityWithUUID:uUID transaction:transactionCopy error:&v21];
   v11 = v21;
 
   if (!v10)
@@ -2158,9 +2158,9 @@ uint64_t __90__HDWorkoutBuilderEntity__enumerateAssociatedSamplePropertiesInTran
     else
     {
       v15 = MEMORY[0x277CCA9B8];
-      v16 = [v7 UUID];
-      v17 = [v16 UUIDString];
-      v18 = [v15 hk_error:118 format:{@"Could not find activity with UUID %@", v17}];
+      uUID2 = [dateCopy UUID];
+      uUIDString = [uUID2 UUIDString];
+      v18 = [v15 hk_error:118 format:{@"Could not find activity with UUID %@", uUIDString}];
 
       v11 = v18;
       if (!v11)
@@ -2172,11 +2172,11 @@ LABEL_12:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v19 = v11;
       v14 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -2188,13 +2188,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [v7 endDate];
-  v13 = [v10 setEndDate:v12 transaction:v8 error:a5];
+  endDate = [dateCopy endDate];
+  v13 = [v10 setEndDate:endDate transaction:transactionCopy error:error];
 
   if (v13)
   {
-    [v7 duration];
-    v14 = [v10 setDuration:v8 transaction:a5 error:?];
+    [dateCopy duration];
+    v14 = [v10 setDuration:transactionCopy transaction:error error:?];
   }
 
   else
@@ -2207,37 +2207,37 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)updateWorkoutActivityMetadata:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)updateWorkoutActivityMetadata:(id)metadata transaction:(id)transaction error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 UUID];
+  metadataCopy = metadata;
+  transactionCopy = transaction;
+  uUID = [metadataCopy UUID];
   v20 = 0;
-  v10 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity activityEntityWithUUID:v9 transaction:v8 error:&v20];
+  v10 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity activityEntityWithUUID:uUID transaction:transactionCopy error:&v20];
   v11 = v20;
 
   if (v10)
   {
-    v12 = [v7 metadata];
-    v13 = [v10 setMetadata:v12 transaction:v8 error:a5];
+    metadata = [metadataCopy metadata];
+    v13 = [v10 setMetadata:metadata transaction:transactionCopy error:error];
   }
 
   else
   {
     if (v11)
     {
-      v12 = v11;
+      metadata = v11;
     }
 
     else
     {
       v14 = MEMORY[0x277CCA9B8];
-      v15 = [v7 UUID];
-      v16 = [v15 UUIDString];
-      v17 = [v14 hk_error:118 format:{@"Could not find activity with UUID %@", v16}];
+      uUID2 = [metadataCopy UUID];
+      uUIDString = [uUID2 UUIDString];
+      v17 = [v14 hk_error:118 format:{@"Could not find activity with UUID %@", uUIDString}];
 
-      v12 = v17;
-      if (!v12)
+      metadata = v17;
+      if (!metadata)
       {
         v11 = 0;
         v13 = 1;
@@ -2245,11 +2245,11 @@ LABEL_13:
       }
     }
 
-    if (a5)
+    if (error)
     {
-      v18 = v12;
+      v18 = metadata;
       v13 = 0;
-      *a5 = v12;
+      *error = metadata;
     }
 
     else
@@ -2258,7 +2258,7 @@ LABEL_13:
       v13 = 0;
     }
 
-    v11 = v12;
+    v11 = metadata;
   }
 
 LABEL_10:
@@ -2266,40 +2266,40 @@ LABEL_10:
   return v13;
 }
 
-- (id)workoutActivitiesInTransaction:(id)a3 error:(id *)a4
+- (id)workoutActivitiesInTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 databaseForEntityClass:objc_opt_class()];
-  v8 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity subActivitiesWithOwnerID:[(HDSQLiteEntity *)self persistentID] database:v7 error:a4];
+  transactionCopy = transaction;
+  v7 = [transactionCopy databaseForEntityClass:objc_opt_class()];
+  v8 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity subActivitiesWithOwnerID:[(HDSQLiteEntity *)self persistentID] database:v7 error:error];
 
   return v8;
 }
 
-- (id)primaryActivityInTransaction:(id)a3 error:(id *)a4
+- (id)primaryActivityInTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 databaseForEntityClass:objc_opt_class()];
-  v8 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity primaryWorkoutActivityForOwnerID:[(HDSQLiteEntity *)self persistentID] database:v7 error:a4];
+  transactionCopy = transaction;
+  v7 = [transactionCopy databaseForEntityClass:objc_opt_class()];
+  v8 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity primaryWorkoutActivityForOwnerID:[(HDSQLiteEntity *)self persistentID] database:v7 error:error];
 
   return v8;
 }
 
-- (BOOL)insertZones:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)insertZones:(id)zones transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  LOBYTE(a5) = [(HDWorkoutZonesEntity *)HDWorkoutBuilderZonesEntity insertZones:v8 ownerID:[(HDSQLiteEntity *)self persistentID] transaction:v9 error:a5];
+  zonesCopy = zones;
+  transactionCopy = transaction;
+  LOBYTE(error) = [(HDWorkoutZonesEntity *)HDWorkoutBuilderZonesEntity insertZones:zonesCopy ownerID:[(HDSQLiteEntity *)self persistentID] transaction:transactionCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)updateTimeInZone:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)updateTimeInZone:(id)zone transaction:(id)transaction error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 identifier];
+  zoneCopy = zone;
+  transactionCopy = transaction;
+  identifier = [zoneCopy identifier];
   v20 = 0;
-  v10 = [(HDWorkoutZonesEntity *)HDWorkoutBuilderZonesEntity zoneEntityWithZoneUUID:v9 transaction:v8 error:&v20];
+  v10 = [(HDWorkoutZonesEntity *)HDWorkoutBuilderZonesEntity zoneEntityWithZoneUUID:identifier transaction:transactionCopy error:&v20];
   v11 = v20;
 
   if (!v10)
@@ -2312,9 +2312,9 @@ LABEL_10:
     else
     {
       v14 = MEMORY[0x277CCA9B8];
-      v15 = [v7 identifier];
-      v16 = [v15 UUIDString];
-      v17 = [v14 hk_error:118 format:{@"Could not find zone with UUID %@", v16}];
+      identifier2 = [zoneCopy identifier];
+      uUIDString = [identifier2 UUIDString];
+      v17 = [v14 hk_error:118 format:{@"Could not find zone with UUID %@", uUIDString}];
 
       v13 = v17;
       if (!v13)
@@ -2327,11 +2327,11 @@ LABEL_10:
       }
     }
 
-    if (a5)
+    if (error)
     {
       v18 = v13;
       v12 = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -2343,29 +2343,29 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v7 timeInZone];
-  v12 = [v10 setTimeInZone:v8 transaction:a5 error:?];
+  [zoneCopy timeInZone];
+  v12 = [v10 setTimeInZone:transactionCopy transaction:error error:?];
 LABEL_11:
 
   return v12;
 }
 
-- (id)zonesInTransaction:(id)a3 error:(id *)a4
+- (id)zonesInTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__156;
   v16 = __Block_byref_object_dispose__156;
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(HDSQLiteEntity *)self persistentID];
+  persistentID = [(HDSQLiteEntity *)self persistentID];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__HDWorkoutBuilderEntity_zonesInTransaction_error___block_invoke;
   v11[3] = &unk_278628470;
   v11[4] = &v12;
-  if ([(HDWorkoutZonesEntity *)HDWorkoutBuilderZonesEntity enumerateZonesWithOwnerID:v7 transaction:v6 error:a4 handler:v11])
+  if ([(HDWorkoutZonesEntity *)HDWorkoutBuilderZonesEntity enumerateZonesWithOwnerID:persistentID transaction:transactionCopy error:error handler:v11])
   {
     v8 = v13[5];
   }
@@ -2381,14 +2381,14 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)storeStatisticsCalculator:(id)a3 anchor:(id)a4 activityUUID:(id)a5 transaction:(id)a6 error:(id *)a7
+- (BOOL)storeStatisticsCalculator:(id)calculator anchor:(id)anchor activityUUID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  calculatorCopy = calculator;
+  anchorCopy = anchor;
+  dCopy = d;
+  transactionCopy = transaction;
   v21 = 0;
-  v15 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity activityEntityWithUUID:v13 transaction:v14 error:&v21];
+  v15 = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity activityEntityWithUUID:dCopy transaction:transactionCopy error:&v21];
   v16 = v21;
   v17 = v16;
   if (!v15)
@@ -2400,7 +2400,7 @@ LABEL_11:
 
     else
     {
-      v17 = [MEMORY[0x277CCA9B8] hk_error:118 format:{@"Could not find activity with UUID %@", v13}];
+      v17 = [MEMORY[0x277CCA9B8] hk_error:118 format:{@"Could not find activity with UUID %@", dCopy}];
       if (!v17)
       {
         v18 = 1;
@@ -2410,11 +2410,11 @@ LABEL_10:
       }
     }
 
-    if (a7)
+    if (error)
     {
       v19 = v17;
       v18 = 0;
-      *a7 = v17;
+      *error = v17;
     }
 
     else
@@ -2426,28 +2426,28 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v18 = [(HDStatisticsCalculatorEntity *)HDWorkoutBuilderStatisticsCalculatorEntity setCalculator:v11 forOwner:v15 anchor:v12 transaction:v14 error:a7];
+  v18 = [(HDStatisticsCalculatorEntity *)HDWorkoutBuilderStatisticsCalculatorEntity setCalculator:calculatorCopy forOwner:v15 anchor:anchorCopy transaction:transactionCopy error:error];
 LABEL_11:
 
   return v18;
 }
 
-- (BOOL)enumerateStatisticsInTransaction:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)enumerateStatisticsInTransaction:(id)transaction error:(id *)error block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HDSQLiteEntity *)self persistentID];
+  transactionCopy = transaction;
+  blockCopy = block;
+  persistentID = [(HDSQLiteEntity *)self persistentID];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__HDWorkoutBuilderEntity_enumerateStatisticsInTransaction_error_block___block_invoke;
   v14[3] = &unk_2786284C0;
-  v11 = v8;
+  v11 = transactionCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = blockCopy;
   v16 = v12;
-  LOBYTE(a4) = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity enumerateActivityEntitiesForOwnerID:v10 transaction:v11 error:a4 enumerationHandler:v14];
+  LOBYTE(error) = [(HDWorkoutActivityEntity *)HDWorkoutBuilderActivityEntity enumerateActivityEntitiesForOwnerID:persistentID transaction:v11 error:error enumerationHandler:v14];
 
-  return a4;
+  return error;
 }
 
 BOOL __71__HDWorkoutBuilderEntity_enumerateStatisticsInTransaction_error_block___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2498,61 +2498,61 @@ void __71__HDWorkoutBuilderEntity_enumerateStatisticsInTransaction_error_block__
   }
 }
 
-- (BOOL)setArchivedState:(id)a3 forDataSourceIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)setArchivedState:(id)state forDataSourceIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a5 database];
+  stateCopy = state;
+  identifierCopy = identifier;
+  database = [profile database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__HDWorkoutBuilderEntity_setArchivedState_forDataSourceIdentifier_profile_error___block_invoke;
   v16[3] = &unk_27861CA28;
-  v13 = v11;
+  v13 = identifierCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = stateCopy;
   v18 = v14;
-  v19 = self;
-  LOBYTE(a6) = [(HDHealthEntity *)HDWorkoutBuilderDataSourceEntity performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  selfCopy = self;
+  LOBYTE(error) = [(HDHealthEntity *)HDWorkoutBuilderDataSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)removeDataSourceWithIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)removeDataSourceWithIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 database];
+  identifierCopy = identifier;
+  database = [profile database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__HDWorkoutBuilderEntity_removeDataSourceWithIdentifier_profile_error___block_invoke;
   v12[3] = &unk_27861CD40;
-  v10 = v8;
+  v10 = identifierCopy;
   v13 = v10;
-  v14 = self;
-  LOBYTE(a5) = [(HDHealthEntity *)HDWorkoutBuilderDataSourceEntity performWriteTransactionWithHealthDatabase:v9 error:a5 block:v12];
+  selfCopy = self;
+  LOBYTE(error) = [(HDHealthEntity *)HDWorkoutBuilderDataSourceEntity performWriteTransactionWithHealthDatabase:database error:error block:v12];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)enumerateDataSourcesForProfile:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)enumerateDataSourcesForProfile:(id)profile error:(id *)error block:(id)block
 {
-  v8 = a5;
-  v9 = [a3 database];
+  blockCopy = block;
+  database = [profile database];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__HDWorkoutBuilderEntity_enumerateDataSourcesForProfile_error_block___block_invoke;
   v12[3] = &unk_2786284E8;
   v12[4] = self;
-  v10 = v8;
+  v10 = blockCopy;
   v13 = v10;
-  LOBYTE(a4) = [(HDHealthEntity *)HDWorkoutBuilderDataSourceEntity performReadTransactionWithHealthDatabase:v9 error:a4 block:v12];
+  LOBYTE(error) = [(HDHealthEntity *)HDWorkoutBuilderDataSourceEntity performReadTransactionWithHealthDatabase:database error:error block:v12];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)dropFinalTemporaryTableWithTransaction:(id)a3 error:(id *)a4
+- (BOOL)dropFinalTemporaryTableWithTransaction:(id)transaction error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  transactionCopy = transaction;
   if (self->_finishingTemporaryTableName)
   {
     _HKInitializeLogging();
@@ -2561,13 +2561,13 @@ void __71__HDWorkoutBuilderEntity_enumerateStatisticsInTransaction_error_block__
     {
       finishingTemporaryTableName = self->_finishingTemporaryTableName;
       v12 = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
       v15 = finishingTemporaryTableName;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_INFO, "%{public}@: dropping final temporary table with name: %{public}@", &v12, 0x16u);
     }
 
-    v9 = [(HDWorkoutBuilderEntity *)self _dropTemporaryTableWithTransaction:v6 name:self->_finishingTemporaryTableName error:a4];
+    v9 = [(HDWorkoutBuilderEntity *)self _dropTemporaryTableWithTransaction:transactionCopy name:self->_finishingTemporaryTableName error:error];
   }
 
   else
@@ -2579,19 +2579,19 @@ void __71__HDWorkoutBuilderEntity_enumerateStatisticsInTransaction_error_block__
   return v9;
 }
 
-+ (const)columnDefinitionsWithCount:(unint64_t *)a3
++ (const)columnDefinitionsWithCount:(unint64_t *)count
 {
   {
-    v5 = a3;
-    a3 = v5;
+    countCopy = count;
+    count = countCopy;
     if (v4)
     {
       __cxa_atexit(__cxx_global_array_dtor_2, 0, &dword_228986000);
-      a3 = v5;
+      count = countCopy;
     }
   }
 
-  *a3 = 15;
+  *count = 15;
   return +[HDWorkoutBuilderEntity columnDefinitionsWithCount:]::columnDefinitions;
 }
 

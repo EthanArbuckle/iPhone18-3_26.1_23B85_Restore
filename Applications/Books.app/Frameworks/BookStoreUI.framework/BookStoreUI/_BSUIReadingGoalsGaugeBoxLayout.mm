@@ -1,12 +1,12 @@
 @interface _BSUIReadingGoalsGaugeBoxLayout
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 @end
 
 @implementation _BSUIReadingGoalsGaugeBoxLayout
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  if (a3 < 4)
+  if (kind < 4)
   {
     return 0;
   }
@@ -15,10 +15,10 @@
   v6 = v5;
   v8 = v7;
   v9 = [(_BSUIReadingGoalsGaugeBoxLayout *)self box];
-  v10 = [v9 identifier];
+  identifier = [v9 identifier];
   v11 = [(_BSUIReadingGoalsGaugeBoxLayout *)self box];
-  v12 = [v11 readingGoalsGaugeMetrics];
-  v13 = [BSUIReadingGoalsGaugeView renderModelWithIdentifier:v10 metrics:v12];
+  readingGoalsGaugeMetrics = [v11 readingGoalsGaugeMetrics];
+  v13 = [BSUIReadingGoalsGaugeView renderModelWithIdentifier:identifier metrics:readingGoalsGaugeMetrics];
 
   [v13 setSize:{v6, v8}];
   return v13;

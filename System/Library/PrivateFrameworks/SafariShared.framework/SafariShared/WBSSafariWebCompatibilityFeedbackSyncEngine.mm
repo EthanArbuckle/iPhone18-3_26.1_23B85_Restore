@@ -1,11 +1,11 @@
 @interface WBSSafariWebCompatibilityFeedbackSyncEngine
-+ (id)stringForCategory:(int64_t)a3;
-+ (id)stringForSubCategory:(int64_t)a3;
-+ (id)subCategoriesForIssueCategory:(int64_t)a3;
-+ (id)telemetryStringForCategory:(int64_t)a3;
-+ (id)telemetryStringForSubCategory:(int64_t)a3;
++ (id)stringForCategory:(int64_t)category;
++ (id)stringForSubCategory:(int64_t)category;
++ (id)subCategoriesForIssueCategory:(int64_t)category;
++ (id)telemetryStringForCategory:(int64_t)category;
++ (id)telemetryStringForSubCategory:(int64_t)category;
 - (WBSSafariWebCompatibilityFeedbackSyncEngine)init;
-- (void)saveWebCompatibilityFeedback:(id)a3 completionHandler:(id)a4;
+- (void)saveWebCompatibilityFeedback:(id)feedback completionHandler:(id)handler;
 @end
 
 @implementation WBSSafariWebCompatibilityFeedbackSyncEngine
@@ -27,11 +27,11 @@
   return v2;
 }
 
-+ (id)stringForCategory:(int64_t)a3
++ (id)stringForCategory:(int64_t)category
 {
-  if (a3 <= 1)
+  if (category <= 1)
   {
-    if (a3 > 1)
+    if (category > 1)
     {
       goto LABEL_7;
     }
@@ -39,46 +39,46 @@
     goto LABEL_6;
   }
 
-  if (a3 == 2 || a3 == 3)
+  if (category == 2 || category == 3)
   {
 LABEL_6:
-    a1 = _WBSLocalizedString();
+    self = _WBSLocalizedString();
   }
 
 LABEL_7:
 
-  return a1;
+  return self;
 }
 
-+ (id)telemetryStringForCategory:(int64_t)a3
++ (id)telemetryStringForCategory:(int64_t)category
 {
-  if ((a3 - 1) > 2)
+  if ((category - 1) > 2)
   {
     return @"Site is not usable";
   }
 
   else
   {
-    return off_1E7FC46D8[a3 - 1];
+    return off_1E7FC46D8[category - 1];
   }
 }
 
-+ (id)subCategoriesForIssueCategory:(int64_t)a3
++ (id)subCategoriesForIssueCategory:(int64_t)category
 {
-  if (a3 > 2)
+  if (category > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1E7FC46F0[a3];
+    return qword_1E7FC46F0[category];
   }
 }
 
-+ (id)stringForSubCategory:(int64_t)a3
++ (id)stringForSubCategory:(int64_t)category
 {
-  switch(a3)
+  switch(category)
   {
     case 1:
     case 2:
@@ -108,32 +108,32 @@ LABEL_7:
   return v4;
 }
 
-+ (id)telemetryStringForSubCategory:(int64_t)a3
++ (id)telemetryStringForSubCategory:(int64_t)category
 {
-  if ((a3 - 1) > 0xF)
+  if ((category - 1) > 0xF)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7FC4708[a3 - 1];
+    return off_1E7FC4708[category - 1];
   }
 }
 
-- (void)saveWebCompatibilityFeedback:(id)a3 completionHandler:(id)a4
+- (void)saveWebCompatibilityFeedback:(id)feedback completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __94__WBSSafariWebCompatibilityFeedbackSyncEngine_saveWebCompatibilityFeedback_completionHandler___block_invoke;
   v11[3] = &unk_1E7FB6F08;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = feedbackCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = feedbackCopy;
   dispatch_async(internalQueue, v11);
 }
 

@@ -1,27 +1,27 @@
 @interface DDCreateEventAction
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action;
 @end
 
 @implementation DDCreateEventAction
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  [a3 setEditViewDelegate:{0, a4}];
-  v5 = [(DDAction *)self viewController];
-  [v5 setAction:0];
+  [controller setEditViewDelegate:{0, action}];
+  viewController = [(DDAction *)self viewController];
+  [viewController setAction:0];
 
   [(DDAction *)self setViewController:0];
-  v6 = [(DDAction *)self delegate];
-  if (v6)
+  delegate = [(DDAction *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(DDAction *)self delegate];
+    v7 = delegate;
+    delegate2 = [(DDAction *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(DDAction *)self delegate];
-      [v10 actionDidFinish:self];
+      delegate3 = [(DDAction *)self delegate];
+      [delegate3 actionDidFinish:self];
     }
   }
 }

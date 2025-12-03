@@ -1,35 +1,35 @@
 @interface SKUIOfferView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)a3 context:(id)a4;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)descriptor context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)offerViewStateDescription;
-- (SKUIOfferView)initWithFrame:(CGRect)a3;
+- (SKUIOfferView)initWithFrame:(CGRect)frame;
 - (SKUIOfferViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_buttonAction:(id)a3;
-- (void)_cancelConfirmationAction:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_buttonAction:(id)action;
+- (void)_cancelConfirmationAction:(id)action;
 - (void)_sendWillAnimate;
-- (void)_showConfirmationAction:(id)a3;
-- (void)itemOfferButtonDidAnimateTransition:(id)a3;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)_showConfirmationAction:(id)action;
+- (void)itemOfferButtonDidAnimateTransition:(id)transition;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SKUIOfferView
 
-- (SKUIOfferView)initWithFrame:(CGRect)a3
+- (SKUIOfferView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -44,62 +44,62 @@
 
   v24.receiver = self;
   v24.super_class = SKUIOfferView;
-  v16 = [(SKUIViewReuseView *)&v24 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseView *)&v24 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
-    buttonElements = v16->_buttonElements;
-    v16->_buttonElements = v17;
+    buttonElements = height->_buttonElements;
+    height->_buttonElements = v17;
 
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    metadataViews = v16->_metadataViews;
-    v16->_metadataViews = v19;
+    metadataViews = height->_metadataViews;
+    height->_metadataViews = v19;
 
     v21 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    offerButtonViews = v16->_offerButtonViews;
-    v16->_offerButtonViews = v21;
+    offerButtonViews = height->_offerButtonViews;
+    height->_offerButtonViews = v21;
 
-    [(SKUIOfferView *)v16 setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    [(SKUIOfferView *)v16 setPreservesSuperviewLayoutMargins:0];
+    [(SKUIOfferView *)height setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
+    [(SKUIOfferView *)height setPreservesSuperviewLayoutMargins:0];
   }
 
-  return v16;
+  return height;
 }
 
 - (NSString)offerViewStateDescription
 {
-  v3 = [(SKUIOfferView *)self offerButtonViews];
-  v4 = [v3 count];
+  offerButtonViews = [(SKUIOfferView *)self offerButtonViews];
+  v4 = [offerButtonViews count];
 
   if (v4 == 1)
   {
-    v5 = [(SKUIOfferView *)self offerButtonViews];
-    v6 = [v5 firstObject];
+    offerButtonViews2 = [(SKUIOfferView *)self offerButtonViews];
+    firstObject = [offerButtonViews2 firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 offerButtonStateDescription];
+      offerButtonStateDescription = [firstObject offerButtonStateDescription];
     }
 
     else
     {
-      v7 = &stru_2827FFAC8;
+      offerButtonStateDescription = &stru_2827FFAC8;
     }
   }
 
   else
   {
-    v7 = &stru_2827FFAC8;
+    offerButtonStateDescription = &stru_2827FFAC8;
   }
 
-  return v7;
+  return offerButtonStateDescription;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -120,11 +120,11 @@
   v20[1] = 3221225472;
   v20[2] = __64__SKUIOfferView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v20[3] = &unk_2781F95A0;
-  v17 = v8;
+  v17 = contextCopy;
   v22 = &v24;
-  v23 = a4;
+  reasonCopy = reason;
   v21 = v17;
-  [v7 enumerateChildrenUsingBlock:v20];
+  [elementCopy enumerateChildrenUsingBlock:v20];
   v18 = *(v25 + 24);
 
   _Block_object_dispose(&v24, 8);
@@ -138,17 +138,17 @@ uint64_t __64__SKUIOfferView_prefetchResourcesForViewElement_reason_context___bl
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIOfferView preferredSizeForViewElement:context:];
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -159,10 +159,10 @@ uint64_t __64__SKUIOfferView_prefetchResourcesForViewElement_reason_context___bl
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -178,20 +178,20 @@ uint64_t __64__SKUIOfferView_prefetchResourcesForViewElement_reason_context___bl
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
-  *&v27[3] = a4;
-  v18 = [v9 labelLayoutCache];
+  *&v27[3] = width;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __59__SKUIOfferView_requestLayoutForViewElement_width_context___block_invoke;
   v21[3] = &unk_278200DD0;
-  v25 = a1;
-  v19 = v9;
+  selfCopy = self;
+  v19 = contextCopy;
   v22 = v19;
-  v20 = v18;
-  v26 = a4;
+  v20 = labelLayoutCache;
+  widthCopy = width;
   v23 = v20;
   v24 = v27;
-  [v8 enumerateChildrenUsingBlock:v21];
+  [elementCopy enumerateChildrenUsingBlock:v21];
 
   _Block_object_dispose(v27, 8);
 }
@@ -249,10 +249,10 @@ LABEL_12:
 LABEL_13:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -275,7 +275,7 @@ LABEL_13:
   v73[0] = 0;
   v73[1] = v73;
   v73[2] = 0x2020000000;
-  *&v73[3] = a3;
+  *&v73[3] = width;
   v69 = 0;
   v70 = &v69;
   v71 = 0x2020000000;
@@ -302,15 +302,15 @@ LABEL_13:
   v40[1] = 3221225472;
   v40[2] = __55__SKUIOfferView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v40[3] = &unk_278200DF8;
-  v18 = v8;
-  v50 = a3;
+  v18 = contextCopy;
+  widthCopy = width;
   v41 = v18;
   v43 = &v55;
   v44 = &v60;
   v45 = &v64;
   v46 = v73;
   v47 = &v69;
-  v19 = v7;
+  v19 = elementCopy;
   v42 = v19;
   v48 = &v51;
   v49 = &v74;
@@ -324,9 +324,9 @@ LABEL_13:
 
   else
   {
-    v23 = [v19 isCompactModeEnabled];
+    isCompactModeEnabled = [v19 isCompactModeEnabled];
     v22 = v65;
-    if (v23)
+    if (isCompactModeEnabled)
     {
       v65[4] = v75[4] + 10.0 + v65[4];
     }
@@ -365,13 +365,13 @@ LABEL_13:
   }
 
   v28 = v26 + v22[4] + v56[4];
-  if (v28 < a3)
+  if (v28 < width)
   {
-    a3 = v28;
+    width = v28;
   }
 
-  v29 = [v19 attributes];
-  v30 = [v29 objectForKey:@"supportsPlayButton"];
+  attributes = [v19 attributes];
+  v30 = [attributes objectForKey:@"supportsPlayButton"];
   if ([v30 BOOLValue])
   {
     v31 = *(v52 + 24);
@@ -382,8 +382,8 @@ LABEL_13:
       v33 = *&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1;
       if (*&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_0 == v21 && *&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1 == v20)
       {
-        v34 = [MEMORY[0x277D75348] blackColor];
-        v35 = [SKUIItemOfferButton playImageWithTintColor:v34];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        v35 = [SKUIItemOfferButton playImageWithTintColor:blackColor];
         [v35 size];
         sizeThatFitsWidth_viewElement_context__sPlayButtonSize_0 = v36;
         sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1 = v37;
@@ -392,7 +392,7 @@ LABEL_13:
         v33 = *&sizeThatFitsWidth_viewElement_context__sPlayButtonSize_1;
       }
 
-      a3 = a3 + v32 + 20.0;
+      width = width + v32 + 20.0;
       if (v33 >= v24)
       {
         v24 = v33;
@@ -412,10 +412,10 @@ LABEL_13:
   _Block_object_dispose(v73, 8);
   _Block_object_dispose(&v74, 8);
 
-  v38 = a3;
+  widthCopy2 = width;
   v39 = v24;
   result.height = v39;
-  result.width = v38;
+  result.width = widthCopy2;
   return result;
 }
 
@@ -563,34 +563,34 @@ LABEL_13:
 LABEL_31:
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SKUIOfferView *)self buttonElements];
-  [v10 removeAllObjects];
+  elementCopy = element;
+  contextCopy = context;
+  buttonElements = [(SKUIOfferView *)self buttonElements];
+  [buttonElements removeAllObjects];
 
-  v11 = [(SKUIOfferView *)self buyButtonDescriptorToButton];
-  [v11 removeAllObjects];
+  buyButtonDescriptorToButton = [(SKUIOfferView *)self buyButtonDescriptorToButton];
+  [buyButtonDescriptorToButton removeAllObjects];
 
-  v12 = [(SKUIOfferView *)self metadataViews];
-  [v12 removeAllObjects];
+  metadataViews = [(SKUIOfferView *)self metadataViews];
+  [metadataViews removeAllObjects];
 
-  v13 = [(SKUIOfferView *)self offerButtonViews];
-  [v13 removeAllObjects];
+  offerButtonViews = [(SKUIOfferView *)self offerButtonViews];
+  [offerButtonViews removeAllObjects];
 
   [(SKUIOfferView *)self setHlsID:0];
-  v14 = [(SKUIOfferView *)self hlsPlayButton];
-  [v14 removeFromSuperview];
+  hlsPlayButton = [(SKUIOfferView *)self hlsPlayButton];
+  [hlsPlayButton removeFromSuperview];
 
   [(SKUIOfferView *)self setHlsPlayButton:0];
   [(SKUIOfferView *)self setShowingConfirmation:0];
   [(SKUIOfferView *)self setNotices:0];
-  -[SKUIOfferView setCompactModeEnabled:](self, "setCompactModeEnabled:", [v8 isCompactModeEnabled]);
-  v15 = [v8 style];
-  v16 = [v15 elementAlignment];
+  -[SKUIOfferView setCompactModeEnabled:](self, "setCompactModeEnabled:", [elementCopy isCompactModeEnabled]);
+  style = [elementCopy style];
+  elementAlignment = [style elementAlignment];
 
-  if (v16 == 3)
+  if (elementAlignment == 3)
   {
     v17 = 3;
   }
@@ -605,12 +605,12 @@ LABEL_31:
   v20[1] = 3221225472;
   v20[2] = __53__SKUIOfferView_reloadWithViewElement_width_context___block_invoke;
   v20[3] = &unk_2781F95C8;
-  v24 = a4;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v18 = v9;
-  v19 = v8;
+  widthCopy = width;
+  v21 = elementCopy;
+  v22 = contextCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  v19 = elementCopy;
   [(SKUIViewReuseView *)self modifyUsingBlock:v20];
 }
 
@@ -921,19 +921,19 @@ LABEL_45:
   }
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v23 = a5;
+  animatedCopy = animated;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v22 = a4;
-  v24 = [v22 clientContext];
+  stateCopy = state;
+  contextCopy = context;
+  clientContext = [contextCopy clientContext];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(SKUIOfferView *)self buyButtonDescriptorToButton];
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  buyButtonDescriptorToButton = [(SKUIOfferView *)self buyButtonDescriptorToButton];
+  v9 = [buyButtonDescriptorToButton countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v9)
   {
 
@@ -951,26 +951,26 @@ LABEL_17:
     {
       if (*v26 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(buyButtonDescriptorToButton);
       }
 
       v14 = *(*(&v25 + 1) + 8 * i);
-      if ([v14 canPersonalizeUsingItemState:v7])
+      if ([v14 canPersonalizeUsingItemState:stateCopy])
       {
-        v15 = [(SKUIOfferView *)self buyButtonDescriptorToButton];
-        v16 = [v15 objectForKey:v14];
+        buyButtonDescriptorToButton2 = [(SKUIOfferView *)self buyButtonDescriptorToButton];
+        v16 = [buyButtonDescriptorToButton2 objectForKey:v14];
 
-        [v16 setValuesUsingBuyButtonDescriptor:v14 itemState:v7 clientContext:v24 animated:v23];
-        v17 = [(SKUIOfferView *)self notices];
+        [v16 setValuesUsingBuyButtonDescriptor:v14 itemState:stateCopy clientContext:clientContext animated:animatedCopy];
+        notices = [(SKUIOfferView *)self notices];
 
-        if (v17)
+        if (notices)
         {
-          v18 = [(SKUIOfferView *)self notices];
-          v19 = [v18 objectForKey:v16];
+          notices2 = [(SKUIOfferView *)self notices];
+          v19 = [notices2 objectForKey:v16];
 
           if (v19)
           {
-            [v19 setHidden:{-[SKUIOfferView _shouldHideNoticesWithBuyButtonDescriptor:context:](self, "_shouldHideNoticesWithBuyButtonDescriptor:context:", v14, v22)}];
+            [v19 setHidden:{-[SKUIOfferView _shouldHideNoticesWithBuyButtonDescriptor:context:](self, "_shouldHideNoticesWithBuyButtonDescriptor:context:", v14, contextCopy)}];
           }
         }
 
@@ -978,7 +978,7 @@ LABEL_17:
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v10 = [buyButtonDescriptorToButton countByEnumeratingWithState:&v25 objects:v29 count:16];
   }
 
   while (v10);
@@ -1015,8 +1015,8 @@ LABEL_18:
     v14 = v12 - v4 - v6;
     v142 = 0u;
     v143 = 0u;
-    v15 = [(SKUIOfferView *)self offerButtonViews];
-    v16 = [v15 countByEnumeratingWithState:&v140 objects:v147 count:16];
+    offerButtonViews = [(SKUIOfferView *)self offerButtonViews];
+    v16 = [offerButtonViews countByEnumeratingWithState:&v140 objects:v147 count:16];
     v17 = MEMORY[0x277CBF3A0];
     v127 = v11;
     if (v16)
@@ -1032,7 +1032,7 @@ LABEL_18:
         {
           if (*v141 != v20)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(offerButtonViews);
           }
 
           v24 = *(*(&v140 + 1) + 8 * i);
@@ -1046,7 +1046,7 @@ LABEL_18:
           }
         }
 
-        v18 = [v15 countByEnumeratingWithState:&v140 objects:v147 count:16];
+        v18 = [offerButtonViews countByEnumeratingWithState:&v140 objects:v147 count:16];
       }
 
       while (v18);
@@ -1082,8 +1082,8 @@ LABEL_18:
     v118 = v29;
     v138 = 0uLL;
     v139 = 0uLL;
-    v30 = [(SKUIOfferView *)self metadataViews];
-    v31 = [v30 countByEnumeratingWithState:&v136 objects:v146 count:16];
+    metadataViews = [(SKUIOfferView *)self metadataViews];
+    v31 = [metadataViews countByEnumeratingWithState:&v136 objects:v146 count:16];
     v32 = v126;
     if (v31)
     {
@@ -1097,7 +1097,7 @@ LABEL_18:
         {
           if (*v137 != v34)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(metadataViews);
           }
 
           v38 = *(*(&v136 + 1) + 8 * j);
@@ -1118,7 +1118,7 @@ LABEL_18:
           v28 = v28 + v41;
         }
 
-        v33 = [v30 countByEnumeratingWithState:&v136 objects:v146 count:16];
+        v33 = [metadataViews countByEnumeratingWithState:&v136 objects:v146 count:16];
       }
 
       while (v33);
@@ -1136,8 +1136,8 @@ LABEL_18:
     v133 = 0u;
     v134 = 0u;
     v135 = 0u;
-    v45 = [(SKUIOfferView *)self offerButtonViews];
-    v46 = [v45 countByEnumeratingWithState:&v132 objects:v145 count:16];
+    offerButtonViews2 = [(SKUIOfferView *)self offerButtonViews];
+    v46 = [offerButtonViews2 countByEnumeratingWithState:&v132 objects:v145 count:16];
     v47 = v124;
     if (v46)
     {
@@ -1165,7 +1165,7 @@ LABEL_18:
         {
           if (*v133 != v50)
           {
-            objc_enumerationMutation(v45);
+            objc_enumerationMutation(offerButtonViews2);
           }
 
           v52 = *(*(&v132 + 1) + 8 * k);
@@ -1184,8 +1184,8 @@ LABEL_18:
             v58 = floorf(v57);
             SKUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(v49, v58, v53, v55, v47, v125, v126, v127);
             [v52 setFrame:?];
-            v59 = [(SKUIOfferView *)self notices];
-            v60 = [v59 objectForKey:v52];
+            notices = [(SKUIOfferView *)self notices];
+            v60 = [notices objectForKey:v52];
 
             v121 = v56;
             v123 = v54;
@@ -1193,7 +1193,7 @@ LABEL_18:
             if (v60)
             {
               v61 = v49;
-              v62 = [(SKUIOfferView *)self isCompactModeEnabled];
+              isCompactModeEnabled = [(SKUIOfferView *)self isCompactModeEnabled];
               [v60 sizeThatFits:{v54 + 10.0, 1.79769313e308}];
               v65 = v64;
               if (v63 >= v54 + 10.0)
@@ -1208,7 +1208,7 @@ LABEL_18:
 
               v115 = v66;
               v120 = v64;
-              if (v62)
+              if (isCompactModeEnabled)
               {
                 v149.origin.x = v49;
                 v149.origin.y = v58;
@@ -1354,7 +1354,7 @@ LABEL_18:
           }
         }
 
-        v48 = [v45 countByEnumeratingWithState:&v132 objects:v145 count:16];
+        v48 = [offerButtonViews2 countByEnumeratingWithState:&v132 objects:v145 count:16];
       }
 
       while (v48);
@@ -1364,8 +1364,8 @@ LABEL_18:
     v131 = 0u;
     v128 = 0u;
     v129 = 0u;
-    v95 = [(SKUIOfferView *)self metadataViews];
-    v96 = [v95 countByEnumeratingWithState:&v128 objects:v144 count:16];
+    metadataViews2 = [(SKUIOfferView *)self metadataViews];
+    v96 = [metadataViews2 countByEnumeratingWithState:&v128 objects:v144 count:16];
     if (v96)
     {
       v97 = v96;
@@ -1378,7 +1378,7 @@ LABEL_18:
         {
           if (*v129 != v100)
           {
-            objc_enumerationMutation(v95);
+            objc_enumerationMutation(metadataViews2);
           }
 
           v102 = *(*(&v128 + 1) + 8 * m);
@@ -1404,7 +1404,7 @@ LABEL_18:
           v99 = CGRectGetMaxY(v160);
         }
 
-        v97 = [v95 countByEnumeratingWithState:&v128 objects:v144 count:16];
+        v97 = [metadataViews2 countByEnumeratingWithState:&v128 objects:v144 count:16];
       }
 
       while (v97);
@@ -1412,10 +1412,10 @@ LABEL_18:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v62 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -1423,8 +1423,8 @@ LABEL_18:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v7 = [(SKUIOfferView *)self metadataViews];
-  v8 = [v7 countByEnumeratingWithState:&v56 objects:v61 count:16];
+  metadataViews = [(SKUIOfferView *)self metadataViews];
+  v8 = [metadataViews countByEnumeratingWithState:&v56 objects:v61 count:16];
   v9 = v6;
   v10 = v5;
   if (v8)
@@ -1439,7 +1439,7 @@ LABEL_18:
       {
         if (*v57 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(metadataViews);
         }
 
         [*(*(&v56 + 1) + 8 * i) sizeThatFits:{width, height}];
@@ -1450,7 +1450,7 @@ LABEL_18:
         }
       }
 
-      v11 = [v7 countByEnumeratingWithState:&v56 objects:v61 count:16];
+      v11 = [metadataViews countByEnumeratingWithState:&v56 objects:v61 count:16];
     }
 
     while (v11);
@@ -1460,8 +1460,8 @@ LABEL_18:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v16 = [(SKUIOfferView *)self offerButtonViews];
-  v17 = [v16 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  offerButtonViews = [(SKUIOfferView *)self offerButtonViews];
+  v17 = [offerButtonViews countByEnumeratingWithState:&v52 objects:v60 count:16];
   v18 = v6;
   v19 = v5;
   v49 = v6;
@@ -1478,7 +1478,7 @@ LABEL_18:
       {
         if (*v53 != v21)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(offerButtonViews);
         }
 
         v23 = *(*(&v52 + 1) + 8 * j);
@@ -1489,16 +1489,16 @@ LABEL_18:
           v18 = v24;
         }
 
-        v27 = [(SKUIOfferView *)self notices];
-        v28 = [v27 objectForKey:v23];
+        notices = [(SKUIOfferView *)self notices];
+        v28 = [notices objectForKey:v23];
 
         if (v28)
         {
-          v29 = [(SKUIOfferView *)self isCompactModeEnabled];
+          isCompactModeEnabled = [(SKUIOfferView *)self isCompactModeEnabled];
           [v28 sizeThatFits:{v26, 1.79769313e308}];
           v32 = v6 >= v31 ? v6 : v31;
-          v6 = v29 ? v31 : v32;
-          if (v29)
+          v6 = isCompactModeEnabled ? v31 : v32;
+          if (isCompactModeEnabled)
           {
             v5 = v30;
           }
@@ -1507,7 +1507,7 @@ LABEL_18:
         v19 = v19 + v26 + 10.0;
       }
 
-      v20 = [v16 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v20 = [offerButtonViews countByEnumeratingWithState:&v52 objects:v60 count:16];
     }
 
     while (v20);
@@ -1530,11 +1530,11 @@ LABEL_18:
     }
   }
 
-  v34 = [(SKUIOfferView *)self offerButtonViews];
-  v35 = [v34 count];
+  offerButtonViews2 = [(SKUIOfferView *)self offerButtonViews];
+  v35 = [offerButtonViews2 count];
 
-  v36 = [(SKUIOfferView *)self metadataViews];
-  v37 = [v36 count];
+  metadataViews2 = [(SKUIOfferView *)self metadataViews];
+  v37 = [metadataViews2 count];
 
   v38 = v35 <= 0 || v37 == 0;
   v39 = v10 + v19 + 10.0;
@@ -1572,64 +1572,64 @@ LABEL_18:
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SKUIOfferView *)self hlsPlayButton];
-  if (v8 && (v9 = v8, -[SKUIOfferView hlsPlayButton](self, "hlsPlayButton"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEnabled], v10, v9, v11) && (-[SKUIOfferView hlsPlayButton](self, "hlsPlayButton"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "frame"), v24 = CGRectInset(v23, -10.0, -11.0), v13 = v24.origin.x, v14 = v24.origin.y, width = v24.size.width, height = v24.size.height, v12, v25.origin.x = v13, v25.origin.y = v14, v25.size.width = width, v25.size.height = height, v22.x = x, v22.y = y, CGRectContainsPoint(v25, v22)))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  hlsPlayButton = [(SKUIOfferView *)self hlsPlayButton];
+  if (hlsPlayButton && (v9 = hlsPlayButton, -[SKUIOfferView hlsPlayButton](self, "hlsPlayButton"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEnabled], v10, v9, v11) && (-[SKUIOfferView hlsPlayButton](self, "hlsPlayButton"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "frame"), v24 = CGRectInset(v23, -10.0, -11.0), v13 = v24.origin.x, v14 = v24.origin.y, width = v24.size.width, height = v24.size.height, v12, v25.origin.x = v13, v25.origin.y = v14, v25.size.width = width, v25.size.height = height, v22.x = x, v22.y = y, CGRectContainsPoint(v25, v22)))
   {
-    v17 = [(SKUIOfferView *)self hlsPlayButton];
+    hlsPlayButton2 = [(SKUIOfferView *)self hlsPlayButton];
   }
 
   else
   {
     v20.receiver = self;
     v20.super_class = SKUIOfferView;
-    v17 = [(SKUIOfferView *)&v20 hitTest:v7 withEvent:x, y];
+    hlsPlayButton2 = [(SKUIOfferView *)&v20 hitTest:eventCopy withEvent:x, y];
   }
 
-  v18 = v17;
+  v18 = hlsPlayButton2;
 
   return v18;
 }
 
-- (void)itemOfferButtonDidAnimateTransition:(id)a3
+- (void)itemOfferButtonDidAnimateTransition:(id)transition
 {
-  v6 = a3;
+  transitionCopy = transition;
   if ([(SKUIOfferView *)self isShowingConfirmation])
   {
-    v4 = [v6 isShowingConfirmation];
+    isShowingConfirmation = [transitionCopy isShowingConfirmation];
   }
 
   else
   {
-    v4 = 0;
+    isShowingConfirmation = 0;
   }
 
-  [(SKUIOfferView *)self setShowingConfirmation:v4];
-  v5 = [(SKUIOfferView *)self delegate];
+  [(SKUIOfferView *)self setShowingConfirmation:isShowingConfirmation];
+  delegate = [(SKUIOfferView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 offerViewDidAnimateTransition:self];
+    [delegate offerViewDidAnimateTransition:self];
   }
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIOfferView *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || [v5 offerViewAnimateTransition:self])
+  transitionCopy = transition;
+  delegate = [(SKUIOfferView *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate offerViewAnimateTransition:self])
   {
-    [v4 frame];
+    [transitionCopy frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SKUIOfferView *)self offerButtonViews];
-    v15 = [v14 indexOfObjectIdenticalTo:v4];
+    offerButtonViews = [(SKUIOfferView *)self offerButtonViews];
+    v15 = [offerButtonViews indexOfObjectIdenticalTo:transitionCopy];
 
     if (v15 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1639,7 +1639,7 @@ LABEL_18:
       v70.size.width = v11;
       v70.size.height = v13;
       MaxX = CGRectGetMaxX(v70);
-      [v4 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+      [transitionCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
       v19 = v18;
       v21 = v20;
       ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
@@ -1650,9 +1650,9 @@ LABEL_18:
           v7 = MaxX - v19;
         }
 
-        [v4 setFrame:{v7, v9, v19, v21}];
-        v23 = [(SKUIOfferView *)self offerButtonViews];
-        v24 = [v23 count];
+        [transitionCopy setFrame:{v7, v9, v19, v21}];
+        offerButtonViews2 = [(SKUIOfferView *)self offerButtonViews];
+        v24 = [offerButtonViews2 count];
 
         if (storeShouldReverseLayoutDirection())
         {
@@ -1673,8 +1673,8 @@ LABEL_18:
         {
           do
           {
-            v28 = [(SKUIOfferView *)self offerButtonViews];
-            v29 = [v28 objectAtIndex:v27];
+            offerButtonViews3 = [(SKUIOfferView *)self offerButtonViews];
+            v29 = [offerButtonViews3 objectAtIndex:v27];
 
             if (([v29 isHidden] & 1) == 0)
             {
@@ -1707,8 +1707,8 @@ LABEL_18:
           v67 = 0u;
           v64 = 0u;
           v65 = 0u;
-          v37 = [(SKUIOfferView *)self metadataViews];
-          v38 = [v37 countByEnumeratingWithState:&v64 objects:v68 count:16];
+          metadataViews = [(SKUIOfferView *)self metadataViews];
+          v38 = [metadataViews countByEnumeratingWithState:&v64 objects:v68 count:16];
           if (v38)
           {
             v39 = v38;
@@ -1719,7 +1719,7 @@ LABEL_18:
               {
                 if (*v65 != v40)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(metadataViews);
                 }
 
                 v42 = *(*(&v64 + 1) + 8 * i);
@@ -1742,7 +1742,7 @@ LABEL_18:
                 [v42 setFrame:{v52 + 10.0, v46, v48, v50}];
               }
 
-              v39 = [v37 countByEnumeratingWithState:&v64 objects:v68 count:16];
+              v39 = [metadataViews countByEnumeratingWithState:&v64 objects:v68 count:16];
             }
 
             while (v39);
@@ -1757,7 +1757,7 @@ LABEL_18:
           v7 = MaxX - v19;
         }
 
-        [v4 setFrame:{v7, v9, v19, v21}];
+        [transitionCopy setFrame:{v7, v9, v19, v21}];
         if (storeShouldReverseLayoutDirection())
         {
           v71.origin.x = v7;
@@ -1777,8 +1777,8 @@ LABEL_18:
           v53 = v15 + 1;
           do
           {
-            v54 = [(SKUIOfferView *)self offerButtonViews];
-            v55 = [v54 objectAtIndex:v53 - 2];
+            offerButtonViews4 = [(SKUIOfferView *)self offerButtonViews];
+            v55 = [offerButtonViews4 objectAtIndex:v53 - 2];
 
             if (([v55 isHidden] & 1) == 0)
             {
@@ -1822,32 +1822,32 @@ LABEL_18:
     }
   }
 
-  -[SKUIOfferView setShowingConfirmation:](self, "setShowingConfirmation:", [v4 isShowingConfirmation]);
+  -[SKUIOfferView setShowingConfirmation:](self, "setShowingConfirmation:", [transitionCopy isShowingConfirmation]);
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIOfferView *)self buttonElements];
-  v6 = [v5 objectForKey:v4];
+  actionCopy = action;
+  buttonElements = [(SKUIOfferView *)self buttonElements];
+  v6 = [buttonElements objectForKey:actionCopy];
 
-  v7 = [(SKUIOfferView *)self hlsPlayButton];
+  hlsPlayButton = [(SKUIOfferView *)self hlsPlayButton];
 
-  if (v7 == v4 && v6)
+  if (hlsPlayButton == actionCopy && v6)
   {
     v8 = objc_alloc_init(MEMORY[0x277D69C68]);
-    v9 = [(SKUIOfferView *)self hlsID];
+    hlsID = [(SKUIOfferView *)self hlsID];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __31__SKUIOfferView__buttonAction___block_invoke;
     v16[3] = &unk_278200E48;
     v17 = v6;
-    v18 = v9;
-    v10 = v9;
+    v18 = hlsID;
+    v10 = hlsID;
     [v8 isRemovedSystemApplicationWithBundleIdentifier:@"com.apple.tv" completionBlock:v16];
 
-    v11 = v17;
+    delegate = v17;
 LABEL_12:
 
     goto LABEL_13;
@@ -1857,14 +1857,14 @@ LABEL_12:
   {
     v8 = SKUICollectionViewCellForView(self);
     v10 = SKUICollectionViewForView(v8);
-    v11 = [v10 delegate];
-    v12 = [(SKUIOfferView *)self offerViewStateDescription];
+    delegate = [v10 delegate];
+    offerViewStateDescription = [(SKUIOfferView *)self offerViewStateDescription];
 
-    if (v12)
+    if (offerViewStateDescription)
     {
       v19 = @"action";
-      v13 = [(SKUIOfferView *)self offerViewStateDescription];
-      v20[0] = v13;
+      offerViewStateDescription2 = [(SKUIOfferView *)self offerViewStateDescription];
+      v20[0] = offerViewStateDescription2;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     }
 
@@ -1876,7 +1876,7 @@ LABEL_12:
     if (objc_opt_respondsToSelector())
     {
       v15 = [v10 indexPathForCell:v8];
-      [v11 collectionView:v10 didConfirmButtonElement:v6 withClickInfo:v14 forItemAtIndexPath:v15];
+      [delegate collectionView:v10 didConfirmButtonElement:v6 withClickInfo:v14 forItemAtIndexPath:v15];
     }
 
     else
@@ -1926,53 +1926,53 @@ void __31__SKUIOfferView__buttonAction___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_cancelConfirmationAction:(id)a3
+- (void)_cancelConfirmationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(SKUIOfferView *)self setShowingConfirmation:0];
-  [(SKUIOfferView *)self bringSubviewToFront:v4];
+  [(SKUIOfferView *)self bringSubviewToFront:actionCopy];
   [(SKUIOfferView *)self _sendWillAnimate];
-  [v4 setShowingConfirmation:0 animated:1];
+  [actionCopy setShowingConfirmation:0 animated:1];
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIOfferView *)self buttonElements];
-  v6 = [v5 objectForKey:v4];
+  actionCopy = action;
+  buttonElements = [(SKUIOfferView *)self buttonElements];
+  v6 = [buttonElements objectForKey:actionCopy];
 
   if (v6)
   {
     v9 = @"action";
-    v7 = [(SKUIOfferView *)self offerViewStateDescription];
-    v10[0] = v7;
+    offerViewStateDescription = [(SKUIOfferView *)self offerViewStateDescription];
+    v10[0] = offerViewStateDescription;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
     [v6 dispatchEvent:@"buyInitiate" eventAttribute:@"onbuyinitiate" canBubble:1 isCancelable:1 extraInfo:v8 completionBlock:0];
   }
 
-  [(SKUIOfferView *)self bringSubviewToFront:v4];
+  [(SKUIOfferView *)self bringSubviewToFront:actionCopy];
   [(SKUIOfferView *)self _sendWillAnimate];
-  [v4 setShowingConfirmation:1 animated:1];
+  [actionCopy setShowingConfirmation:1 animated:1];
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 buttonTitleStyle];
-  v8 = v7;
-  if (v7)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v8 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v9 = v7;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = v9;
+  v10 = style;
 
   v11 = SKUIViewElementFontWithStyle(v10);
   if (!v11)
@@ -1980,38 +1980,38 @@ void __31__SKUIOfferView__buttonAction___block_invoke_2(uint64_t a1)
     v11 = [MEMORY[0x277D74300] systemFontOfSize:9.0];
   }
 
-  v12 = [v6 tintColor];
-  v13 = SKUIViewElementPlainColorWithStyle(v10, v12);
+  tintColor = [contextCopy tintColor];
+  v13 = SKUIViewElementPlainColorWithStyle(v10, tintColor);
 
   if (!v13)
   {
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   }
 
-  v14 = [v5 buttonViewType] == 9;
-  v15 = [v5 buttonText];
-  v16 = [v15 attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v14 style:v10];
+  v14 = [buttonCopy buttonViewType] == 9;
+  buttonText = [buttonCopy buttonText];
+  v16 = [buttonText attributedStringWithDefaultFont:v11 foregroundColor:v13 textAlignment:v14 style:v10];
 
   return v16;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
-  v9 = [v6 tintColor];
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
+  tintColor = [contextCopy tintColor];
 
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  v10 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  v11 = [v5 labelViewStyle];
-  if (v11 > 5)
+  labelViewStyle = [labelCopy labelViewStyle];
+  if (labelViewStyle > 5)
   {
     goto LABEL_20;
   }
 
-  if (((1 << v11) & 0x13) != 0)
+  if (((1 << labelViewStyle) & 0x13) != 0)
   {
     if (v8)
     {
@@ -2027,9 +2027,9 @@ void __31__SKUIOfferView__buttonAction___block_invoke_2(uint64_t a1)
       if (!v10)
       {
 LABEL_11:
-        v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
+        blackColor = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
 LABEL_19:
-        v10 = v12;
+        v10 = blackColor;
       }
     }
 
@@ -2038,7 +2038,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (((1 << v11) & 0x24) != 0)
+  if (((1 << labelViewStyle) & 0x24) != 0)
   {
     if (v8)
     {
@@ -2057,7 +2057,7 @@ LABEL_20:
       }
     }
 
-    v12 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     goto LABEL_19;
   }
 
@@ -2073,37 +2073,37 @@ LABEL_20:
 
   v13 = 1;
 LABEL_21:
-  v14 = [v5 text];
-  v15 = [v14 attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v13 style:v7];
+  text = [labelCopy text];
+  v15 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 textAlignment:v13 style:style];
 
   return v15;
 }
 
 - (void)_sendWillAnimate
 {
-  v3 = [(SKUIOfferView *)self delegate];
+  delegate = [(SKUIOfferView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 offerViewWillAnimateTransition:self];
+    [delegate offerViewWillAnimateTransition:self];
   }
 }
 
-- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)a3 context:(id)a4
+- (BOOL)_shouldHideNoticesWithBuyButtonDescriptor:(id)descriptor context:(id)context
 {
-  v4 = a3;
-  v5 = [v4 itemIdentifier];
-  v6 = [v4 storeIdentifier];
+  descriptorCopy = descriptor;
+  itemIdentifier = [descriptorCopy itemIdentifier];
+  storeIdentifier = [descriptorCopy storeIdentifier];
 
-  if (!v6 && v5)
+  if (!storeIdentifier && itemIdentifier)
   {
-    v6 = [[SKUIStoreIdentifier alloc] initWithLongLong:v5];
+    storeIdentifier = [[SKUIStoreIdentifier alloc] initWithLongLong:itemIdentifier];
   }
 
   v10 = 0;
-  if (v6)
+  if (storeIdentifier)
   {
     v7 = +[SKUIItemStateCenter defaultCenter];
-    v8 = [v7 stateForItemWithStoreIdentifier:v6];
+    v8 = [v7 stateForItemWithStoreIdentifier:storeIdentifier];
 
     v9 = [v8 state] & 0xF;
     if (v9)

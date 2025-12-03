@@ -1,20 +1,20 @@
 @interface _SFSettingsAlertControl
 - (SFSettingsAlertItemViewDelegate)delegate;
-- (_SFSettingsAlertControl)initWithFrame:(CGRect)a3;
+- (_SFSettingsAlertControl)initWithFrame:(CGRect)frame;
 - (_SFSettingsAlertItem)item;
 - (void)_updateBackgroundView;
-- (void)setDefaultBackgroundMode:(int64_t)a3;
-- (void)setHidesSeparator:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setDefaultBackgroundMode:(int64_t)mode;
+- (void)setHidesSeparator:(BOOL)separator;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation _SFSettingsAlertControl
 
-- (_SFSettingsAlertControl)initWithFrame:(CGRect)a3
+- (_SFSettingsAlertControl)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = _SFSettingsAlertControl;
-  v3 = [(_SFSettingsAlertControl *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFSettingsAlertControl *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,28 +35,28 @@
   return v4;
 }
 
-- (void)setHidesSeparator:(BOOL)a3
+- (void)setHidesSeparator:(BOOL)separator
 {
-  if (self->_hidesSeparator != a3)
+  if (self->_hidesSeparator != separator)
   {
-    self->_hidesSeparator = a3;
+    self->_hidesSeparator = separator;
     [(_SFSettingsAlertControl *)self _updateBackgroundView];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = _SFSettingsAlertControl;
-  [(_SFSettingsAlertControl *)&v4 setHighlighted:a3];
+  [(_SFSettingsAlertControl *)&v4 setHighlighted:highlighted];
   [(_SFSettingsAlertControl *)self _updateBackgroundView];
 }
 
-- (void)setDefaultBackgroundMode:(int64_t)a3
+- (void)setDefaultBackgroundMode:(int64_t)mode
 {
-  if (self->_defaultBackgroundMode != a3)
+  if (self->_defaultBackgroundMode != mode)
   {
-    self->_defaultBackgroundMode = a3;
+    self->_defaultBackgroundMode = mode;
     [(_SFSettingsAlertControl *)self _updateBackgroundView];
   }
 }
@@ -65,22 +65,22 @@
 {
   if (([(_SFSettingsAlertControl *)self isHighlighted]& 1) != 0 || ([(_SFSettingsAlertControl *)self isFocused]& 1) != 0)
   {
-    v3 = 1;
+    defaultBackgroundMode = 1;
   }
 
   else if (self->_hidesSeparator)
   {
-    v3 = 0;
+    defaultBackgroundMode = 0;
   }
 
   else
   {
-    v3 = [(_SFSettingsAlertControl *)self defaultBackgroundMode];
+    defaultBackgroundMode = [(_SFSettingsAlertControl *)self defaultBackgroundMode];
   }
 
   backgroundView = self->_backgroundView;
 
-  [(_SFSettingsAlertItemBackgroundView *)backgroundView setMode:v3];
+  [(_SFSettingsAlertItemBackgroundView *)backgroundView setMode:defaultBackgroundMode];
 }
 
 - (SFSettingsAlertItemViewDelegate)delegate

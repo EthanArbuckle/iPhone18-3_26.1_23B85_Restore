@@ -1,31 +1,31 @@
 @interface TSWSelfContainedWPViewController
 - (TSKDocumentRoot)documentRoot;
-- (TSWSelfContainedWPViewController)initWithStorage:(id)a3 fontSize:(float)a4 textColor:(id)a5;
+- (TSWSelfContainedWPViewController)initWithStorage:(id)storage fontSize:(float)size textColor:(id)color;
 - (void)dealloc;
-- (void)interactiveCanvasControllerDidLayout:(id)a3;
-- (void)layoutWithFrame:(CGRect)a3;
+- (void)interactiveCanvasControllerDidLayout:(id)layout;
+- (void)layoutWithFrame:(CGRect)frame;
 - (void)loadView;
-- (void)overrideFontColorOfSmartFields:(id)a3;
-- (void)p_alignScrollViewForHeight:(double)a3;
+- (void)overrideFontColorOfSmartFields:(id)fields;
+- (void)p_alignScrollViewForHeight:(double)height;
 - (void)p_cleanup;
-- (void)setParagraphAlignment:(unsigned int)a3;
+- (void)setParagraphAlignment:(unsigned int)alignment;
 @end
 
 @implementation TSWSelfContainedWPViewController
 
-- (TSWSelfContainedWPViewController)initWithStorage:(id)a3 fontSize:(float)a4 textColor:(id)a5
+- (TSWSelfContainedWPViewController)initWithStorage:(id)storage fontSize:(float)size textColor:(id)color
 {
   v24.receiver = self;
   v24.super_class = TSWSelfContainedWPViewController;
   v8 = [(TSWSelfContainedWPViewController *)&v24 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [a3 copyWithContext:{objc_msgSend(a3, "context")}];
+    v9 = [storage copyWithContext:{objc_msgSend(storage, "context")}];
     v8->mStorage = v9;
-    v10 = a4;
-    v11 = [[TSSPropertyMap alloc] initWithPropertiesAndValues:{17, *&v10, 18, +[TSUColor colorWithUIColor:](TSUColor, "colorWithUIColor:", a5), 102, 0, 87, 0, 88, 0, 85, objc_msgSend([TSWPLineSpacing alloc], "initWithMode:amount:", 0, 1.0), 104, 0, 98, +[UIColor clearColor](UIColor, "clearColor"), 0}];
-    v12 = [[TSSPropertyMap alloc] initWithPropertiesAndValues:{17, *&v10, 18, +[TSUColor colorWithUIColor:](TSUColor, "colorWithUIColor:", a5), 0}];
-    [a3 range];
+    sizeCopy = size;
+    v11 = [[TSSPropertyMap alloc] initWithPropertiesAndValues:{17, *&sizeCopy, 18, +[TSUColor colorWithUIColor:](TSUColor, "colorWithUIColor:", color), 102, 0, 87, 0, 88, 0, 85, objc_msgSend([TSWPLineSpacing alloc], "initWithMode:amount:", 0, 1.0), 104, 0, 98, +[UIColor clearColor](UIColor, "clearColor"), 0}];
+    v12 = [[TSSPropertyMap alloc] initWithPropertiesAndValues:{17, *&sizeCopy, 18, +[TSUColor colorWithUIColor:](TSUColor, "colorWithUIColor:", color), 0}];
+    [storage range];
     if (v13)
     {
       v14 = 0;
@@ -33,24 +33,24 @@
       {
         v22 = v14;
         v23 = 0;
-        v15 = [a3 paragraphStyleAtCharIndex:v14 effectiveRange:&v22];
+        v15 = [storage paragraphStyleAtCharIndex:v14 effectiveRange:&v22];
         v16 = [objc_msgSend(v15 "stylesheet")];
         [(TSWPStorage *)v9 setParagraphStyle:v16 forCharRange:v22 undoTransaction:v23, 0];
         v14 += v23;
-        [a3 range];
+        [storage range];
       }
 
       while (v14 < v17);
     }
 
-    v18 = [(TSWPStorage *)v9 range];
+    range = [(TSWPStorage *)v9 range];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_4C060;
     v21[3] = &unk_45BAA8;
     v21[4] = v12;
     v21[5] = v9;
-    [(TSWPStorage *)v9 enumerateWithAttributeKind:3 inRange:v18 usingBlock:v19, v21];
+    [(TSWPStorage *)v9 enumerateWithAttributeKind:3 inRange:range usingBlock:v19, v21];
   }
 
   return v8;
@@ -98,22 +98,22 @@
   [(TSWSelfContainedWPViewController *)&v3 dealloc];
 }
 
-- (void)overrideFontColorOfSmartFields:(id)a3
+- (void)overrideFontColorOfSmartFields:(id)fields
 {
-  v5 = [(TSWSelfContainedWPViewController *)self storage];
-  v6 = [(TSWPStorage *)[(TSWSelfContainedWPViewController *)self storage] range];
+  storage = [(TSWSelfContainedWPViewController *)self storage];
+  range = [(TSWPStorage *)[(TSWSelfContainedWPViewController *)self storage] range];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_4C38C;
   v8[3] = &unk_45BAD0;
-  v8[4] = a3;
-  [(TSWPStorage *)v5 enumerateWithAttributeKind:3 inRange:v6 usingBlock:v7, v8];
+  v8[4] = fields;
+  [(TSWPStorage *)storage enumerateWithAttributeKind:3 inRange:range usingBlock:v7, v8];
 }
 
-- (void)layoutWithFrame:(CGRect)a3
+- (void)layoutWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   [-[TSWSelfContainedWPViewController view](self "view")];
   if (![(TSWSelfContainedWPViewController *)self editorGeometry])
   {
@@ -137,18 +137,18 @@
   [v9 invalidateSize];
 }
 
-- (void)setParagraphAlignment:(unsigned int)a3
+- (void)setParagraphAlignment:(unsigned int)alignment
 {
-  v3 = *&a3;
+  v3 = *&alignment;
   v5 = [(TSWPStorage *)[(TSWSelfContainedWPViewController *)self storage] paragraphStyleAtCharIndex:0 effectiveRange:0];
   v10 = [[TSSPropertyMap alloc] initWithPropertiesAndValues:{86, v3, 0}];
   v6 = [objc_msgSend(v5 "stylesheet")];
-  v7 = [(TSWSelfContainedWPViewController *)self storage];
-  v8 = [(TSWPStorage *)[(TSWSelfContainedWPViewController *)self storage] range];
-  [(TSWPStorage *)v7 setParagraphStyle:v6 forCharRange:v8 undoTransaction:v9, 0];
+  storage = [(TSWSelfContainedWPViewController *)self storage];
+  range = [(TSWPStorage *)[(TSWSelfContainedWPViewController *)self storage] range];
+  [(TSWPStorage *)storage setParagraphStyle:v6 forCharRange:range undoTransaction:v9, 0];
 }
 
-- (void)p_alignScrollViewForHeight:(double)a3
+- (void)p_alignScrollViewForHeight:(double)height
 {
   [-[TSWSelfContainedWPViewController view](self "view")];
   v6 = v5;
@@ -159,24 +159,24 @@
   {
     [(TSWSelfContainedWPViewController *)self maximumHeight];
     *&v12 = v12;
-    v13 = a3;
-    a3 = fminf(fminf(*&v12, INFINITY), v13);
+    heightCopy = height;
+    height = fminf(fminf(*&v12, INFINITY), heightCopy);
   }
 
-  [(TSWSelfContainedWPViewControllerDelegate *)[(TSWSelfContainedWPViewController *)self delegate] selfContainedWPViewController:self didChangeSize:v10, a3];
-  v14 = [(TSWSelfContainedWPViewController *)self view];
+  [(TSWSelfContainedWPViewControllerDelegate *)[(TSWSelfContainedWPViewController *)self delegate] selfContainedWPViewController:self didChangeSize:v10, height];
+  view = [(TSWSelfContainedWPViewController *)self view];
 
-  [v14 setFrame:{v6, v8, v10, a3}];
+  [view setFrame:{v6, v8, v10, height}];
 }
 
 - (TSKDocumentRoot)documentRoot
 {
-  v2 = [(TSWPStorage *)self->mStorage context];
+  context = [(TSWPStorage *)self->mStorage context];
 
-  return [v2 documentRoot];
+  return [context documentRoot];
 }
 
-- (void)interactiveCanvasControllerDidLayout:(id)a3
+- (void)interactiveCanvasControllerDidLayout:(id)layout
 {
   [-[TSWSelfContainedWPViewController view](self view];
   v5 = v4;

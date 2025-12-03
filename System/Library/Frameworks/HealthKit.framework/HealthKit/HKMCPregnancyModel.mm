@@ -1,130 +1,130 @@
 @interface HKMCPregnancyModel
-+ (id)descriptionFromState:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HKMCPregnancyModel)initWithCoder:(id)a3;
-- (HKMCPregnancyModel)initWithState:(int64_t)a3 pregnancyStartDate:(id)a4 pregnancyEndDate:(id)a5 estimatedDueDate:(id)a6 pregnancyDuration:(id)a7 physiologicalWashoutEndDate:(id)a8 behavioralWashoutEndDate:(id)a9 trimesters:(id)a10 sample:(id)a11 educationalStepsCompletedDate:(id)a12;
++ (id)descriptionFromState:(int64_t)state;
+- (BOOL)isEqual:(id)equal;
+- (HKMCPregnancyModel)initWithCoder:(id)coder;
+- (HKMCPregnancyModel)initWithState:(int64_t)state pregnancyStartDate:(id)date pregnancyEndDate:(id)endDate estimatedDueDate:(id)dueDate pregnancyDuration:(id)duration physiologicalWashoutEndDate:(id)washoutEndDate behavioralWashoutEndDate:(id)behavioralWashoutEndDate trimesters:(id)self0 sample:(id)self1 educationalStepsCompletedDate:(id)self2;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCPregnancyModel
 
-- (HKMCPregnancyModel)initWithState:(int64_t)a3 pregnancyStartDate:(id)a4 pregnancyEndDate:(id)a5 estimatedDueDate:(id)a6 pregnancyDuration:(id)a7 physiologicalWashoutEndDate:(id)a8 behavioralWashoutEndDate:(id)a9 trimesters:(id)a10 sample:(id)a11 educationalStepsCompletedDate:(id)a12
+- (HKMCPregnancyModel)initWithState:(int64_t)state pregnancyStartDate:(id)date pregnancyEndDate:(id)endDate estimatedDueDate:(id)dueDate pregnancyDuration:(id)duration physiologicalWashoutEndDate:(id)washoutEndDate behavioralWashoutEndDate:(id)behavioralWashoutEndDate trimesters:(id)self0 sample:(id)self1 educationalStepsCompletedDate:(id)self2
 {
-  v45 = a4;
-  v44 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dueDateCopy = dueDate;
+  durationCopy = duration;
+  washoutEndDateCopy = washoutEndDate;
+  behavioralWashoutEndDateCopy = behavioralWashoutEndDate;
+  trimestersCopy = trimesters;
+  sampleCopy = sample;
+  completedDateCopy = completedDate;
   v46.receiver = self;
   v46.super_class = HKMCPregnancyModel;
   v25 = [(HKMCPregnancyModel *)&v46 init];
   v26 = v25;
   if (v25)
   {
-    v25->_state = a3;
-    v27 = [v45 copy];
+    v25->_state = state;
+    v27 = [dateCopy copy];
     pregnancyStartDate = v26->_pregnancyStartDate;
     v26->_pregnancyStartDate = v27;
 
-    v29 = [v44 copy];
+    v29 = [endDateCopy copy];
     pregnancyEndDate = v26->_pregnancyEndDate;
     v26->_pregnancyEndDate = v29;
 
-    v31 = [v18 copy];
+    v31 = [dueDateCopy copy];
     estimatedDueDate = v26->_estimatedDueDate;
     v26->_estimatedDueDate = v31;
 
-    v33 = [v19 copy];
+    v33 = [durationCopy copy];
     pregnancyDuration = v26->_pregnancyDuration;
     v26->_pregnancyDuration = v33;
 
-    v35 = [v20 copy];
+    v35 = [washoutEndDateCopy copy];
     physiologicalWashoutEndDate = v26->_physiologicalWashoutEndDate;
     v26->_physiologicalWashoutEndDate = v35;
 
-    v37 = [v21 copy];
+    v37 = [behavioralWashoutEndDateCopy copy];
     behavioralWashoutEndDate = v26->_behavioralWashoutEndDate;
     v26->_behavioralWashoutEndDate = v37;
 
-    v39 = [v22 copy];
+    v39 = [trimestersCopy copy];
     trimesters = v26->_trimesters;
     v26->_trimesters = v39;
 
-    v41 = [v23 copy];
+    v41 = [sampleCopy copy];
     sample = v26->_sample;
     v26->_sample = v41;
 
-    objc_storeStrong(&v26->_educationalStepsCompletedDate, a12);
+    objc_storeStrong(&v26->_educationalStepsCompletedDate, completedDate);
   }
 
   return v26;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"State"];
-  [v5 encodeObject:self->_pregnancyStartDate forKey:@"PregnancyStartDate"];
-  [v5 encodeObject:self->_pregnancyEndDate forKey:@"PregnancyEndDate"];
-  [v5 encodeObject:self->_estimatedDueDate forKey:@"EstimatedDueDate"];
-  [v5 encodeObject:self->_pregnancyDuration forKey:@"PregnancyDuration"];
-  [v5 encodeObject:self->_physiologicalWashoutEndDate forKey:@"PhysiologicalWashoutEnd"];
-  [v5 encodeObject:self->_behavioralWashoutEndDate forKey:@"BehavioralWashoutEnd"];
-  [v5 encodeObject:self->_trimesters forKey:@"Trimesters"];
-  [v5 encodeObject:self->_sample forKey:@"Sample"];
-  [v5 encodeObject:self->_educationalStepsCompletedDate forKey:@"EducationalStepsCompletedDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"State"];
+  [coderCopy encodeObject:self->_pregnancyStartDate forKey:@"PregnancyStartDate"];
+  [coderCopy encodeObject:self->_pregnancyEndDate forKey:@"PregnancyEndDate"];
+  [coderCopy encodeObject:self->_estimatedDueDate forKey:@"EstimatedDueDate"];
+  [coderCopy encodeObject:self->_pregnancyDuration forKey:@"PregnancyDuration"];
+  [coderCopy encodeObject:self->_physiologicalWashoutEndDate forKey:@"PhysiologicalWashoutEnd"];
+  [coderCopy encodeObject:self->_behavioralWashoutEndDate forKey:@"BehavioralWashoutEnd"];
+  [coderCopy encodeObject:self->_trimesters forKey:@"Trimesters"];
+  [coderCopy encodeObject:self->_sample forKey:@"Sample"];
+  [coderCopy encodeObject:self->_educationalStepsCompletedDate forKey:@"EducationalStepsCompletedDate"];
 }
 
-- (HKMCPregnancyModel)initWithCoder:(id)a3
+- (HKMCPregnancyModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = HKMCPregnancyModel;
   v5 = [(HKMCPregnancyModel *)&v26 init];
   if (v5)
   {
-    v5->_state = [v4 decodeIntegerForKey:@"State"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PregnancyStartDate"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"State"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PregnancyStartDate"];
     pregnancyStartDate = v5->_pregnancyStartDate;
     v5->_pregnancyStartDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PregnancyEndDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PregnancyEndDate"];
     pregnancyEndDate = v5->_pregnancyEndDate;
     v5->_pregnancyEndDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EstimatedDueDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EstimatedDueDate"];
     estimatedDueDate = v5->_estimatedDueDate;
     v5->_estimatedDueDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PregnancyDuration"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PregnancyDuration"];
     pregnancyDuration = v5->_pregnancyDuration;
     v5->_pregnancyDuration = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PhysiologicalWashoutEnd"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PhysiologicalWashoutEnd"];
     physiologicalWashoutEndDate = v5->_physiologicalWashoutEndDate;
     v5->_physiologicalWashoutEndDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BehavioralWashoutEnd"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BehavioralWashoutEnd"];
     behavioralWashoutEndDate = v5->_behavioralWashoutEndDate;
     v5->_behavioralWashoutEndDate = v16;
 
     v18 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"Trimesters"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"Trimesters"];
     trimesters = v5->_trimesters;
     v5->_trimesters = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Sample"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Sample"];
     sample = v5->_sample;
     v5->_sample = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EducationalStepsCompletedDate"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EducationalStepsCompletedDate"];
     educationalStepsCompletedDate = v5->_educationalStepsCompletedDate;
     v5->_educationalStepsCompletedDate = v23;
   }
@@ -143,8 +143,8 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = [(HKMCPregnancyModel *)self trimesters];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    trimesters = [(HKMCPregnancyModel *)self trimesters];
+    v6 = [trimesters countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
@@ -155,14 +155,14 @@
         {
           if (*v23 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(trimesters);
           }
 
           v10 = [*(*(&v22 + 1) + 8 * i) description];
           [v4 appendFormat:@"%@, ", v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v7 = [trimesters countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v7);
@@ -189,15 +189,15 @@
   return v17;
 }
 
-+ (id)descriptionFromState:(int64_t)a3
++ (id)descriptionFromState:(int64_t)state
 {
   v3 = @"none";
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"ongoing";
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     return @"post-pregnancy";
   }
@@ -208,10 +208,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v28 = 1;
   }
@@ -221,9 +221,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMCPregnancyModel *)self state];
-      if (v6 != [(HKMCPregnancyModel *)v5 state])
+      v5 = equalCopy;
+      state = [(HKMCPregnancyModel *)self state];
+      if (state != [(HKMCPregnancyModel *)v5 state])
       {
         goto LABEL_33;
       }
@@ -258,9 +258,9 @@
 
       if (((physiologicalWashoutEndDate = self->_physiologicalWashoutEndDate, v16 = v5->_physiologicalWashoutEndDate, physiologicalWashoutEndDate == v16) || v16 && [(NSDate *)physiologicalWashoutEndDate isEqualToDate:?]) && ((behavioralWashoutEndDate = self->_behavioralWashoutEndDate, v18 = v5->_behavioralWashoutEndDate, behavioralWashoutEndDate == v18) || v18 && [(NSDate *)behavioralWashoutEndDate isEqualToDate:?]) && ((trimesters = self->_trimesters, v20 = v5->_trimesters, trimesters == v20) || v20 && [(NSArray *)trimesters isEqualToArray:?]))
       {
-        v21 = [(HKObject *)self->_sample UUID];
-        v22 = [(HKObject *)v5->_sample UUID];
-        if (v21 == v22)
+        uUID = [(HKObject *)self->_sample UUID];
+        uUID2 = [(HKObject *)v5->_sample UUID];
+        if (uUID == uUID2)
         {
           educationalStepsCompletedDate = self->_educationalStepsCompletedDate;
           v31 = v5->_educationalStepsCompletedDate;
@@ -273,12 +273,12 @@
 
         else
         {
-          v23 = [(HKObject *)v5->_sample UUID];
-          if (v23)
+          uUID3 = [(HKObject *)v5->_sample UUID];
+          if (uUID3)
           {
-            v24 = [(HKObject *)self->_sample UUID];
-            v25 = [(HKObject *)v5->_sample UUID];
-            if ([v24 isEqual:v25])
+            uUID4 = [(HKObject *)self->_sample UUID];
+            uUID5 = [(HKObject *)v5->_sample UUID];
+            if ([uUID4 isEqual:uUID5])
             {
               v26 = self->_educationalStepsCompletedDate;
               v27 = v5->_educationalStepsCompletedDate;

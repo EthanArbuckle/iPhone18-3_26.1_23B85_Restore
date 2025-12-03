@@ -1,17 +1,17 @@
 @interface MontrealNNDescription
-- (MontrealNNDescription)descriptionWithIndent:(id)a3;
+- (MontrealNNDescription)descriptionWithIndent:(id)indent;
 - (id)description;
-- (void)checkForValidity:(id)a3;
+- (void)checkForValidity:(id)validity;
 @end
 
 @implementation MontrealNNDescription
 
-- (MontrealNNDescription)descriptionWithIndent:(id)a3
+- (MontrealNNDescription)descriptionWithIndent:(id)indent
 {
-  v4 = a3;
-  v7 = objc_msgSend_indentByFactor_(v4, v5, 1, v6);
+  indentCopy = indent;
+  v7 = objc_msgSend_indentByFactor_(indentCopy, v5, 1, v6);
   v11 = objc_msgSend_string(MEMORY[0x1E696AD60], v8, v9, v10);
-  v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v12, @"\r %@ {", v13, v4);
+  v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v12, @"\r %@ {", v13, indentCopy);
   objc_msgSend_appendString_(v11, v15, v14, v16);
 
   if (objc_msgSend_conformsToProtocol_(self, v17, &unk_1F10C6690, v18))
@@ -19,7 +19,7 @@
     objc_msgSend_description_indent_(self, v19, v11, v7);
   }
 
-  v21 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v19, @"\r %@ }", v20, v4);
+  v21 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v19, @"\r %@ }", v20, indentCopy);
   objc_msgSend_appendString_(v11, v22, v21, v23);
 
   return v11;
@@ -33,15 +33,15 @@
   return v7;
 }
 
-- (void)checkForValidity:(id)a3
+- (void)checkForValidity:(id)validity
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  validityCopy = validity;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v47, v51, 16);
+  v5 = objc_msgSend_countByEnumeratingWithState_objects_count_(validityCopy, v4, &v47, v51, 16);
   if (v5)
   {
     v8 = v5;
@@ -53,7 +53,7 @@
       {
         if (*v48 != v9)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(validityCopy);
         }
 
         v19 = *(*(&v47 + 1) + 8 * i);
@@ -97,7 +97,7 @@
         }
       }
 
-      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v6, &v47, v51, 16);
+      v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(validityCopy, v6, &v47, v51, 16);
     }
 
     while (v8);

@@ -15,7 +15,7 @@
 
 + (MPSNNForwardLossNode)nodeWithSource:(MPSNNImageNode *)source labels:(MPSNNImageNode *)labels weights:(MPSNNImageNode *)weights lossDescriptor:(MPSCNNLossDescriptor *)descriptor
 {
-  v10 = [a1 alloc];
+  v10 = [self alloc];
   v14 = objc_msgSend_initWithSource_labels_weights_lossDescriptor_(v10, v11, source, labels, weights, descriptor, v12, v13);
 
   return v14;
@@ -23,7 +23,7 @@
 
 + (MPSNNForwardLossNode)nodeWithSource:(MPSNNImageNode *)source labels:(MPSNNImageNode *)labels lossDescriptor:(MPSCNNLossDescriptor *)descriptor
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v12 = objc_msgSend_initWithSource_labels_weights_lossDescriptor_(v8, v9, source, labels, 0, descriptor, v10, v11);
 
   return v12;
@@ -39,7 +39,7 @@
     v32 = objc_msgSend_objectAtIndexedSubscript_(sourceNodes, v26, 2, v27, v28, v29, v30, v31);
   }
 
-  v33 = [a1 alloc];
+  v33 = [self alloc];
   v37 = objc_msgSend_initWithSource_labels_weights_lossDescriptor_(v33, v34, v11, v18, v32, descriptor, v35, v36);
 
   return v37;

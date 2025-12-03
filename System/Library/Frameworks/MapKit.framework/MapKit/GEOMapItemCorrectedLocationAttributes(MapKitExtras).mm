@@ -9,47 +9,47 @@
 
 - (id)_addressFormattedAsShortenedAddress
 {
-  v1 = [a1 correctedAddress];
-  v2 = [v1 formattedAddressLines];
-  v3 = [v2 firstObject];
+  correctedAddress = [self correctedAddress];
+  formattedAddressLines = [correctedAddress formattedAddressLines];
+  firstObject = [formattedAddressLines firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)_addressFormattedAsSinglelineAddress
 {
-  v1 = [a1 correctedAddress];
-  v2 = [v1 formattedAddressLines];
-  v3 = [v2 firstObject];
+  correctedAddress = [self correctedAddress];
+  formattedAddressLines = [correctedAddress formattedAddressLines];
+  firstObject = [formattedAddressLines firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)_addressFormattedAsName
 {
-  v1 = [a1 correctedAddress];
-  v2 = [v1 formattedAddressLines];
-  v3 = [v2 firstObject];
+  correctedAddress = [self correctedAddress];
+  formattedAddressLines = [correctedAddress formattedAddressLines];
+  firstObject = [formattedAddressLines firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)_formattedPostalAddress
 {
-  v2 = [a1 correctedAddress];
-  v3 = [v2 structuredAddress];
+  correctedAddress = [self correctedAddress];
+  structuredAddress = [correctedAddress structuredAddress];
 
-  if (v3)
+  if (structuredAddress)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695CF30]);
-    if ([v3 hasFullThoroughfare])
+    if ([structuredAddress hasFullThoroughfare])
     {
-      v5 = [v3 fullThoroughfare];
-      v6 = [v5 mutableCopy];
+      fullThoroughfare = [structuredAddress fullThoroughfare];
+      v6 = [fullThoroughfare mutableCopy];
 
-      v7 = [a1 correctedAddressSecondaryStreetLine];
-      v8 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v9 = [v7 stringByTrimmingCharactersInSet:v8];
+      correctedAddressSecondaryStreetLine = [self correctedAddressSecondaryStreetLine];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v9 = [correctedAddressSecondaryStreetLine stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       if ([v9 length])
       {
@@ -61,34 +61,34 @@
       [v4 setStreet:v11];
     }
 
-    if ([v3 hasLocality])
+    if ([structuredAddress hasLocality])
     {
-      v12 = [v3 locality];
-      [v4 setCity:v12];
+      locality = [structuredAddress locality];
+      [v4 setCity:locality];
     }
 
-    if ([v3 hasAdministrativeArea])
+    if ([structuredAddress hasAdministrativeArea])
     {
-      v13 = [v3 administrativeArea];
-      [v4 setState:v13];
+      administrativeArea = [structuredAddress administrativeArea];
+      [v4 setState:administrativeArea];
     }
 
-    if ([v3 hasPostCode])
+    if ([structuredAddress hasPostCode])
     {
-      v14 = [v3 postCode];
-      [v4 setPostalCode:v14];
+      postCode = [structuredAddress postCode];
+      [v4 setPostalCode:postCode];
     }
 
-    if ([v3 hasCountry])
+    if ([structuredAddress hasCountry])
     {
-      v15 = [v3 country];
-      [v4 setCountry:v15];
+      country = [structuredAddress country];
+      [v4 setCountry:country];
     }
 
-    if ([v3 hasCountryCode])
+    if ([structuredAddress hasCountryCode])
     {
-      v16 = [v3 countryCode];
-      [v4 setISOCountryCode:v16];
+      countryCode = [structuredAddress countryCode];
+      [v4 setISOCountryCode:countryCode];
     }
 
     v17 = [MEMORY[0x1E695CF68] stringFromPostalAddress:v4 style:0];

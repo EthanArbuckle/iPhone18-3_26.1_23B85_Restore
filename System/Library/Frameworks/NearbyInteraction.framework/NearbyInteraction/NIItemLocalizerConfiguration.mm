@@ -1,32 +1,32 @@
 @interface NIItemLocalizerConfiguration
-- (BOOL)canUpdateToConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NIItemLocalizerConfiguration)initWithCoder:(id)a3;
-- (NIItemLocalizerConfiguration)initWithItemUUID:(id)a3 preferredUpdateRate:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)canUpdateToConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
+- (NIItemLocalizerConfiguration)initWithCoder:(id)coder;
+- (NIItemLocalizerConfiguration)initWithItemUUID:(id)d preferredUpdateRate:(int64_t)rate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIItemLocalizerConfiguration
 
-- (NIItemLocalizerConfiguration)initWithItemUUID:(id)a3 preferredUpdateRate:(int64_t)a4
+- (NIItemLocalizerConfiguration)initWithItemUUID:(id)d preferredUpdateRate:(int64_t)rate
 {
-  v7 = a3;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = NIItemLocalizerConfiguration;
-  v8 = [(NIConfiguration *)&v14 initInternal];
-  v9 = v8;
-  if (v8)
+  initInternal = [(NIConfiguration *)&v14 initInternal];
+  v9 = initInternal;
+  if (initInternal)
   {
-    objc_storeStrong(v8 + 5, a3);
-    v10 = [NIDiscoveryToken generateTokenWithUUID:v7];
+    objc_storeStrong(initInternal + 5, d);
+    v10 = [NIDiscoveryToken generateTokenWithUUID:dCopy];
     discoveryToken = v9->_discoveryToken;
     v9->_discoveryToken = v10;
 
-    v9->_preferredUpdateRate = a4;
+    v9->_preferredUpdateRate = rate;
     debugParameters = v9->_debugParameters;
     v9->_debugParameters = 0;
 
@@ -36,11 +36,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NIItemLocalizerConfiguration;
-  v4 = [(NIConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(NIConfiguration *)&v7 copyWithZone:zone];
   [v4 setItemUUID:self->_itemUUID];
   [v4 setDiscoveryToken:self->_discoveryToken];
   [v4 setPreferredUpdateRate:self->_preferredUpdateRate];
@@ -51,33 +51,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NIItemLocalizerConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_itemUUID forKey:@"itemUUID"];
-  [v4 encodeObject:self->_discoveryToken forKey:@"discoveryToken"];
-  [v4 encodeInteger:self->_preferredUpdateRate forKey:@"preferredUpdateRate"];
-  [v4 encodeObject:self->_debugParameters forKey:@"debugParameters"];
-  [v4 encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_itemUUID forKey:@"itemUUID"];
+  [coderCopy encodeObject:self->_discoveryToken forKey:@"discoveryToken"];
+  [coderCopy encodeInteger:self->_preferredUpdateRate forKey:@"preferredUpdateRate"];
+  [coderCopy encodeObject:self->_debugParameters forKey:@"debugParameters"];
+  [coderCopy encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
 }
 
-- (NIItemLocalizerConfiguration)initWithCoder:(id)a3
+- (NIItemLocalizerConfiguration)initWithCoder:(id)coder
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = NIItemLocalizerConfiguration;
-  v5 = [(NIConfiguration *)&v21 initWithCoder:v4];
+  v5 = [(NIConfiguration *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemUUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemUUID"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"discoveryToken"];
-      if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8 = [v4 decodeIntegerForKey:@"preferredUpdateRate"], +[NIInternalUtils isIntValidNearbyObjectUpdateRate:](NIInternalUtils, "isIntValidNearbyObjectUpdateRate:", v8)))
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"discoveryToken"];
+      if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8 = [coderCopy decodeIntegerForKey:@"preferredUpdateRate"], +[NIInternalUtils isIntValidNearbyObjectUpdateRate:](NIInternalUtils, "isIntValidNearbyObjectUpdateRate:", v8)))
       {
         v9 = MEMORY[0x1E695DFD8];
         v23[0] = objc_opt_class();
@@ -90,8 +90,8 @@
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
         v14 = [v12 setWithArray:v13];
 
-        v15 = [v4 decodeDictionaryWithKeysOfClasses:v11 objectsOfClasses:v14 forKey:@"debugParameters"];
-        v16 = [v4 decodeBoolForKey:@"cameraAssistanceEnabled"];
+        v15 = [coderCopy decodeDictionaryWithKeysOfClasses:v11 objectsOfClasses:v14 forKey:@"debugParameters"];
+        v16 = [coderCopy decodeBoolForKey:@"cameraAssistanceEnabled"];
         objc_storeStrong(&v5->_itemUUID, v6);
         objc_storeStrong(&v5->_discoveryToken, v7);
         v5->_preferredUpdateRate = v8;
@@ -123,19 +123,19 @@
   return v18;
 }
 
-- (BOOL)canUpdateToConfiguration:(id)a3
+- (BOOL)canUpdateToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (!configurationCopy)
   {
     goto LABEL_12;
   }
 
-  if (self != v4)
+  if (self != configurationCopy)
   {
-    v6 = [(NIItemLocalizerConfiguration *)v4 itemUUID];
-    if (v6)
+    itemUUID = [(NIItemLocalizerConfiguration *)configurationCopy itemUUID];
+    if (itemUUID)
     {
       v7 = 0;
     }
@@ -145,11 +145,11 @@
       v7 = self->_itemUUID == 0;
     }
 
-    v9 = [(NIItemLocalizerConfiguration *)v5 itemUUID];
-    v10 = [v9 isEqual:self->_itemUUID];
+    itemUUID2 = [(NIItemLocalizerConfiguration *)v5 itemUUID];
+    v10 = [itemUUID2 isEqual:self->_itemUUID];
 
-    v11 = [(NIItemLocalizerConfiguration *)v5 discoveryToken];
-    if (v11)
+    discoveryToken = [(NIItemLocalizerConfiguration *)v5 discoveryToken];
+    if (discoveryToken)
     {
       v12 = 0;
     }
@@ -159,13 +159,13 @@
       v12 = self->_discoveryToken == 0;
     }
 
-    v13 = [(NIItemLocalizerConfiguration *)v5 discoveryToken];
-    v14 = [v13 isEqual:self->_discoveryToken];
+    discoveryToken2 = [(NIItemLocalizerConfiguration *)v5 discoveryToken];
+    v14 = [discoveryToken2 isEqual:self->_discoveryToken];
 
-    v15 = [(NIItemLocalizerConfiguration *)v5 isCameraAssistanceEnabled];
+    isCameraAssistanceEnabled = [(NIItemLocalizerConfiguration *)v5 isCameraAssistanceEnabled];
     if ((v7 | v10))
     {
-      v8 = (v12 | v14) & (v15 == self->_cameraAssistanceEnabled);
+      v8 = (v12 | v14) & (isCameraAssistanceEnabled == self->_cameraAssistanceEnabled);
       goto LABEL_13;
     }
 
@@ -180,13 +180,13 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 == self)
     {
       LOBYTE(v10) = 1;
@@ -194,11 +194,11 @@ LABEL_13:
 
     else if ([(NIItemLocalizerConfiguration *)self canUpdateToConfiguration:v5])
     {
-      v6 = [(NIItemLocalizerConfiguration *)v5 preferredUpdateRate];
+      preferredUpdateRate = [(NIItemLocalizerConfiguration *)v5 preferredUpdateRate];
       preferredUpdateRate = self->_preferredUpdateRate;
       debugParameters = v5->_debugParameters;
       v9 = self->_debugParameters;
-      v10 = (v6 == preferredUpdateRate) & (((debugParameters | v9) == 0) | [(NSDictionary *)debugParameters isEqualToDictionary:v9]);
+      v10 = (preferredUpdateRate == preferredUpdateRate) & (((debugParameters | v9) == 0) | [(NSDictionary *)debugParameters isEqualToDictionary:v9]);
     }
 
     else
@@ -228,8 +228,8 @@ LABEL_13:
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIItemLocalizerConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIItemLocalizerConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }
@@ -237,10 +237,10 @@ LABEL_13:
 - (id)descriptionInternal
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSUUID *)self->_itemUUID UUIDString];
+  uUIDString = [(NSUUID *)self->_itemUUID UUIDString];
   v5 = CUPrintNSObjectMasked();
-  v6 = [(NIDiscoveryToken *)self->_discoveryToken descriptionInternal];
-  v7 = [v3 stringWithFormat:@"<ItemUUID: %@, discoveryToken: %@, updateRate: %s, camera: %d, debug-params: %@>>", v5, v6, +[NIInternalUtils NINearbyObjectUpdateRateToString:](NIInternalUtils, "NINearbyObjectUpdateRateToString:", self->_preferredUpdateRate), self->_cameraAssistanceEnabled, self->_debugParameters];
+  descriptionInternal = [(NIDiscoveryToken *)self->_discoveryToken descriptionInternal];
+  v7 = [v3 stringWithFormat:@"<ItemUUID: %@, discoveryToken: %@, updateRate: %s, camera: %d, debug-params: %@>>", v5, descriptionInternal, +[NIInternalUtils NINearbyObjectUpdateRateToString:](NIInternalUtils, "NINearbyObjectUpdateRateToString:", self->_preferredUpdateRate), self->_cameraAssistanceEnabled, self->_debugParameters];
 
   return v7;
 }

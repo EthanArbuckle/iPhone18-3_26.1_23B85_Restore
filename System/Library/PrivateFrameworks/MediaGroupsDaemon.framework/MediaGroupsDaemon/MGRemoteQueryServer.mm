@@ -1,9 +1,9 @@
 @interface MGRemoteQueryServer
-- (MGRemoteQueryServer)initWithHomeHash:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5;
+- (MGRemoteQueryServer)initWithHomeHash:(id)hash delegate:(id)delegate dispatchQueue:(id)queue;
 - (MGRemoteQueryServerDelegate)delegate;
 - (NSString)description;
-- (id)_clientAdd:(id)a3;
-- (id)_clientFind:(id)a3;
+- (id)_clientAdd:(id)add;
+- (id)_clientFind:(id)find;
 - (id)_prepareListenerAdvertisement;
 - (id)_prepareListenerIdentity;
 - (id)_prepareListenerParameters;
@@ -11,53 +11,53 @@
 - (unint64_t)_transactionCount;
 - (unint64_t)_unsafe_transactionCount;
 - (unsigned)_connectionLimit;
-- (void)_clientRemove:(id)a3;
-- (void)_handleNewConnection:(id)a3;
+- (void)_clientRemove:(id)remove;
+- (void)_handleNewConnection:(id)connection;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_prepareListenerHTTP:(id)a3;
+- (void)_prepareListenerHTTP:(id)p;
 - (void)_prepareListenerHandlers;
 - (void)_startListener;
 - (void)_updateConnectionLimit;
-- (void)clientInvalidated:(id)a3;
-- (void)clientLostTransaction:(id)a3;
+- (void)clientInvalidated:(id)invalidated;
+- (void)clientLostTransaction:(id)transaction;
 - (void)dealloc;
 @end
 
 @implementation MGRemoteQueryServer
 
-- (MGRemoteQueryServer)initWithHomeHash:(id)a3 delegate:(id)a4 dispatchQueue:(id)a5
+- (MGRemoteQueryServer)initWithHomeHash:(id)hash delegate:(id)delegate dispatchQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = MGRemoteQueryServer;
   v11 = [(MGRemoteQueryServer *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v9);
-    objc_storeStrong(&v12->_dispatchQueue, a5);
-    v13 = [MEMORY[0x277CBEA60] array];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_dispatchQueue, queue);
+    array = [MEMORY[0x277CBEA60] array];
     clients = v12->_clients;
-    v12->_clients = v13;
+    v12->_clients = array;
 
     error = v12->_error;
     v12->_error = 0;
 
     v12->_invalidated = 0;
-    v16 = [v8 copy];
+    v16 = [hashCopy copy];
     homeHash = v12->_homeHash;
     v12->_homeHash = v16;
 
-    v18 = [(MGRemoteQueryServer *)v12 dispatchQueue];
+    dispatchQueue = [(MGRemoteQueryServer *)v12 dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__MGRemoteQueryServer_initWithHomeHash_delegate_dispatchQueue___block_invoke;
     block[3] = &unk_27989ED90;
     v21 = v12;
-    dispatch_async(v18, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   return v12;
@@ -76,18 +76,18 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MGRemoteQueryServer *)self clients];
-  v7 = [v6 count];
-  v8 = [(MGRemoteQueryServer *)self _unsafe_transactionCount];
-  v9 = [(MGRemoteQueryServer *)self listener];
-  v10 = [(MGRemoteQueryServer *)self invalidated];
+  clients = [(MGRemoteQueryServer *)self clients];
+  v7 = [clients count];
+  _unsafe_transactionCount = [(MGRemoteQueryServer *)self _unsafe_transactionCount];
+  listener = [(MGRemoteQueryServer *)self listener];
+  invalidated = [(MGRemoteQueryServer *)self invalidated];
   v11 = 78;
-  if (v10)
+  if (invalidated)
   {
     v11 = 89;
   }
 
-  v12 = [v3 stringWithFormat:@"<%@: %p, _clients = %lu, _transactions = %lu, _listener = %@, _invalidated = %c>", v5, self, v7, v8, v9, v11];
+  v12 = [v3 stringWithFormat:@"<%@: %p, _clients = %lu, _transactions = %lu, _listener = %@, _invalidated = %c>", v5, self, v7, _unsafe_transactionCount, listener, v11];
 
   return v12;
 }
@@ -95,22 +95,22 @@
 - (void)_startListener
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryServer *)self listener];
+  listener = [(MGRemoteQueryServer *)self listener];
 
-  if (v4)
+  if (listener)
   {
-    v5 = MGLogForCategory(5);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _prepareListenerParameters = MGLogForCategory(5);
+    if (os_log_type_enabled(_prepareListenerParameters, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(MGRemoteQueryServer *)self listener];
+      listener2 = [(MGRemoteQueryServer *)self listener];
       v11 = 134218242;
-      v12 = self;
+      selfCopy3 = self;
       v13 = 2112;
-      v14 = v6;
-      _os_log_error_impl(&dword_25863A000, v5, OS_LOG_TYPE_ERROR, "%p server already listening %@", &v11, 0x16u);
+      v14 = listener2;
+      _os_log_error_impl(&dword_25863A000, _prepareListenerParameters, OS_LOG_TYPE_ERROR, "%p server already listening %@", &v11, 0x16u);
 LABEL_10:
     }
   }
@@ -119,21 +119,21 @@ LABEL_10:
   {
     if (![(MGRemoteQueryServer *)self invalidated])
     {
-      v5 = [(MGRemoteQueryServer *)self _prepareListenerParameters];
-      v6 = [(MGRemoteQueryServer *)self _prepareListenerAdvertisement];
-      v7 = nw_listener_create(v5);
+      _prepareListenerParameters = [(MGRemoteQueryServer *)self _prepareListenerParameters];
+      listener2 = [(MGRemoteQueryServer *)self _prepareListenerAdvertisement];
+      v7 = nw_listener_create(_prepareListenerParameters);
       [(MGRemoteQueryServer *)self setListener:v7];
-      v8 = [(MGRemoteQueryServer *)self dispatchQueue];
-      nw_listener_set_queue(v7, v8);
+      dispatchQueue2 = [(MGRemoteQueryServer *)self dispatchQueue];
+      nw_listener_set_queue(v7, dispatchQueue2);
 
-      nw_listener_set_advertise_descriptor(v7, v6);
+      nw_listener_set_advertise_descriptor(v7, listener2);
       [(MGRemoteQueryServer *)self _updateConnectionLimit];
       [(MGRemoteQueryServer *)self _prepareListenerHandlers];
       v9 = MGLogForCategory(5);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 134218496;
-        v12 = self;
+        selfCopy3 = self;
         v13 = 2048;
         v14 = 1;
         v15 = 2048;
@@ -145,12 +145,12 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v5 = MGLogForCategory(5);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    _prepareListenerParameters = MGLogForCategory(5);
+    if (os_log_type_enabled(_prepareListenerParameters, OS_LOG_TYPE_ERROR))
     {
       v11 = 134217984;
-      v12 = self;
-      _os_log_error_impl(&dword_25863A000, v5, OS_LOG_TYPE_ERROR, "%p server invalidated, not starting", &v11, 0xCu);
+      selfCopy3 = self;
+      _os_log_error_impl(&dword_25863A000, _prepareListenerParameters, OS_LOG_TYPE_ERROR, "%p server invalidated, not starting", &v11, 0xCu);
     }
   }
 
@@ -166,25 +166,25 @@ LABEL_10:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_25863A000, v3, OS_LOG_TYPE_DEFAULT, "%p server invalidating", buf, 0xCu);
     }
 
     [(MGRemoteQueryServer *)self setInvalidated:1];
-    v4 = [MEMORY[0x277CBEA60] array];
-    [(MGRemoteQueryServer *)self setClients:v4];
+    array = [MEMORY[0x277CBEA60] array];
+    [(MGRemoteQueryServer *)self setClients:array];
 
-    v5 = [(MGRemoteQueryServer *)self listener];
+    listener = [(MGRemoteQueryServer *)self listener];
     [(MGRemoteQueryServer *)self setListener:0];
-    v6 = [(MGRemoteQueryServer *)self dispatchQueue];
-    if (v5)
+    dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+    if (listener)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __34__MGRemoteQueryServer__invalidate__block_invoke;
       block[3] = &unk_27989ED90;
-      v9 = v5;
-      dispatch_async(v6, block);
+      v9 = listener;
+      dispatch_async(dispatchQueue, block);
     }
 
     else
@@ -203,17 +203,17 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25863A000, v3, OS_LOG_TYPE_DEFAULT, "%p server invalidated", buf, 0xCu);
   }
 
-  v4 = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__MGRemoteQueryServer__invalidated__block_invoke;
   block[3] = &unk_27989ED90;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(dispatchQueue, block);
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -234,12 +234,12 @@ void __35__MGRemoteQueryServer__invalidated__block_invoke(uint64_t a1)
 
 - (id)_prepareListenerParameters
 {
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = MEMORY[0x259C85F90](*MEMORY[0x277CD9230]);
-  v5 = [(MGRemoteQueryServer *)self _prepareListenerTLS];
-  secure_tcp = nw_parameters_create_secure_tcp(v5, v4);
+  _prepareListenerTLS = [(MGRemoteQueryServer *)self _prepareListenerTLS];
+  secure_tcp = nw_parameters_create_secure_tcp(_prepareListenerTLS, v4);
   nw_parameters_set_include_peer_to_peer(secure_tcp, 0);
   nw_parameters_set_local_only(secure_tcp, 1);
   nw_parameters_set_server_mode();
@@ -252,8 +252,8 @@ void __35__MGRemoteQueryServer__invalidated__block_invoke(uint64_t a1)
 
 - (id)_prepareListenerTLS
 {
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -281,8 +281,8 @@ void __42__MGRemoteQueryServer__prepareListenerTLS__block_invoke(uint64_t a1, id
 
 - (id)_prepareListenerIdentity
 {
-  v2 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v2);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   SelfSignedIdentity = _CFHTTPServerCreateSelfSignedIdentity();
   if (SelfSignedIdentity)
@@ -300,43 +300,43 @@ void __42__MGRemoteQueryServer__prepareListenerTLS__block_invoke(uint64_t a1, id
   return v5;
 }
 
-- (void)_prepareListenerHTTP:(id)a3
+- (void)_prepareListenerHTTP:(id)p
 {
-  v4 = a3;
-  v5 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  pCopy = p;
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   protocol = nw_http_messaging_create_options();
-  v6 = nw_parameters_copy_default_protocol_stack(v4);
+  v6 = nw_parameters_copy_default_protocol_stack(pCopy);
 
   nw_protocol_stack_prepend_application_protocol(v6, protocol);
 }
 
 - (id)_prepareListenerAdvertisement
 {
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 1];
-  v5 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 1];
-  v7 = [v6 UTF8String];
+  uTF8String2 = [v6 UTF8String];
 
   dictionary = nw_txt_record_create_dictionary();
-  v9 = [@"v" UTF8String];
-  v10 = strlen(v5);
-  nw_txt_record_set_key(dictionary, v9, v5, v10);
-  v11 = [@"m" UTF8String];
-  v12 = strlen(v7);
-  nw_txt_record_set_key(dictionary, v11, v7, v12);
-  v13 = [(MGRemoteQueryServer *)self homeHash];
-  if ([v13 length])
+  uTF8String3 = [@"v" UTF8String];
+  v10 = strlen(uTF8String);
+  nw_txt_record_set_key(dictionary, uTF8String3, uTF8String, v10);
+  uTF8String4 = [@"m" UTF8String];
+  v12 = strlen(uTF8String2);
+  nw_txt_record_set_key(dictionary, uTF8String4, uTF8String2, v12);
+  homeHash = [(MGRemoteQueryServer *)self homeHash];
+  if ([homeHash length])
   {
-    v14 = [v13 UTF8String];
-    v15 = [@"h" UTF8String];
-    v16 = strlen(v14);
-    nw_txt_record_set_key(dictionary, v15, v14, v16);
+    uTF8String5 = [homeHash UTF8String];
+    uTF8String6 = [@"h" UTF8String];
+    v16 = strlen(uTF8String5);
+    nw_txt_record_set_key(dictionary, uTF8String6, uTF8String5, v16);
   }
 
   bonjour_service = nw_advertise_descriptor_create_bonjour_service(0, [@"_mediagroups._tcp" UTF8String], 0);
@@ -347,8 +347,8 @@ void __42__MGRemoteQueryServer__prepareListenerTLS__block_invoke(uint64_t a1, id
 
 - (void)_prepareListenerHandlers
 {
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   objc_initWeak(&location, self);
   v10 = 0;
@@ -356,7 +356,7 @@ void __42__MGRemoteQueryServer__prepareListenerTLS__block_invoke(uint64_t a1, id
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
-  v15 = [(MGRemoteQueryServer *)self listener];
+  listener = [(MGRemoteQueryServer *)self listener];
   v4 = v11[5];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -430,12 +430,12 @@ void __47__MGRemoteQueryServer__prepareListenerHandlers__block_invoke_16(uint64_
   }
 }
 
-- (void)_handleNewConnection:(id)a3
+- (void)_handleNewConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   if ([(MGRemoteQueryServer *)self invalidated])
   {
@@ -445,17 +445,17 @@ void __47__MGRemoteQueryServer__prepareListenerHandlers__block_invoke_16(uint64_
       *location = 134218242;
       *&location[4] = self;
       v17 = 2112;
-      v18 = v4;
+      v18 = connectionCopy;
       _os_log_error_impl(&dword_25863A000, v6, OS_LOG_TYPE_ERROR, "%p server invalidated, not handling %@", location, 0x16u);
     }
 
-    nw_connection_cancel(v4);
+    nw_connection_cancel(connectionCopy);
   }
 
   else
   {
-    v7 = [(MGRemoteQueryServer *)self _clientFind:v4];
-    if (v7 || (-[MGRemoteQueryServer clients](self, "clients"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v10 != -1) && (-[MGRemoteQueryServer _clientAdd:](self, "_clientAdd:", v4), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    v7 = [(MGRemoteQueryServer *)self _clientFind:connectionCopy];
+    if (v7 || (-[MGRemoteQueryServer clients](self, "clients"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v10 != -1) && (-[MGRemoteQueryServer _clientAdd:](self, "_clientAdd:", connectionCopy), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = MGLogForCategory(5);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -465,7 +465,7 @@ void __47__MGRemoteQueryServer__prepareListenerHandlers__block_invoke_16(uint64_
         v17 = 2048;
         v18 = v7;
         v19 = 2112;
-        v20 = v4;
+        v20 = connectionCopy;
         _os_log_debug_impl(&dword_25863A000, v8, OS_LOG_TYPE_DEBUG, "%p server attempting to use client %p to service new connection %@", location, 0x20u);
       }
 
@@ -476,7 +476,7 @@ void __47__MGRemoteQueryServer__prepareListenerHandlers__block_invoke_16(uint64_
       v13[3] = &unk_27989EF98;
       objc_copyWeak(&v15, location);
       v13[4] = self;
-      v14 = v4;
+      v14 = connectionCopy;
       [v7 addNewConnection:v14 completion:v13];
 
       objc_destroyWeak(&v15);
@@ -491,11 +491,11 @@ void __47__MGRemoteQueryServer__prepareListenerHandlers__block_invoke_16(uint64_
         *location = 134218242;
         *&location[4] = self;
         v17 = 2112;
-        v18 = v4;
+        v18 = connectionCopy;
         _os_log_error_impl(&dword_25863A000, v11, OS_LOG_TYPE_ERROR, "%p server has no client to handle new connection %@", location, 0x16u);
       }
 
-      nw_connection_cancel(v4);
+      nw_connection_cancel(connectionCopy);
       [(MGRemoteQueryServer *)self _updateConnectionLimit];
     }
   }
@@ -579,35 +579,35 @@ LABEL_13:
   [v4 _updateConnectionLimit];
 }
 
-- (id)_clientAdd:(id)a3
+- (id)_clientAdd:(id)add
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  addCopy = add;
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = nw_connection_copy_endpoint(v4);
+  v6 = nw_connection_copy_endpoint(addCopy);
   v7 = [MGRemoteQueryServerClient alloc];
-  v8 = [(MGRemoteQueryServer *)self dispatchQueue];
-  v9 = [(MGRemoteQueryServerClient *)v7 initWithPeer:v6 delegate:self dispatchQueue:v8];
+  dispatchQueue2 = [(MGRemoteQueryServer *)self dispatchQueue];
+  v9 = [(MGRemoteQueryServerClient *)v7 initWithPeer:v6 delegate:self dispatchQueue:dispatchQueue2];
 
-  v10 = [(MGRemoteQueryServer *)self clients];
-  v11 = [v10 arrayByAddingObject:v9];
+  clients = [(MGRemoteQueryServer *)self clients];
+  v11 = [clients arrayByAddingObject:v9];
 
   [(MGRemoteQueryServer *)self setClients:v11];
   v12 = MGLogForCategory(5);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v15 = 134219010;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
     v18 = [v11 count];
     v19 = 2048;
-    v20 = [(MGRemoteQueryServer *)self _transactionCount];
+    _transactionCount = [(MGRemoteQueryServer *)self _transactionCount];
     v21 = 2048;
     v22 = v9;
     v23 = 2112;
-    v24 = v4;
+    v24 = addCopy;
     _os_log_debug_impl(&dword_25863A000, v12, OS_LOG_TYPE_DEBUG, "%p server now %lu/%lu clients after adding client %p for connection %@", &v15, 0x34u);
   }
 
@@ -616,14 +616,14 @@ LABEL_13:
   return v9;
 }
 
-- (id)_clientFind:(id)a3
+- (id)_clientFind:(id)find
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  findCopy = find;
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = nw_connection_copy_endpoint(v4);
+  v6 = nw_connection_copy_endpoint(findCopy);
   v7 = nw_endpoint_copy_address_string(v6);
   if (v7)
   {
@@ -643,11 +643,11 @@ LABEL_13:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [(MGRemoteQueryServer *)self clients];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    clients = [(MGRemoteQueryServer *)self clients];
+    v11 = [clients countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
-      v22 = v4;
+      v22 = findCopy;
       v12 = *v24;
       do
       {
@@ -655,15 +655,15 @@ LABEL_13:
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(clients);
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 peer];
+          peer = [v14 peer];
           type = nw_endpoint_get_type(v6);
-          if (type == nw_endpoint_get_type(v15))
+          if (type == nw_endpoint_get_type(peer))
           {
-            v17 = nw_endpoint_copy_address_string(v15);
+            v17 = nw_endpoint_copy_address_string(peer);
             if (v17)
             {
               v18 = v17;
@@ -684,12 +684,12 @@ LABEL_13:
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v11 = [clients countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v11);
 LABEL_22:
-      v4 = v22;
+      findCopy = v22;
     }
   }
 
@@ -703,29 +703,29 @@ LABEL_22:
   return v11;
 }
 
-- (void)_clientRemove:(id)a3
+- (void)_clientRemove:(id)remove
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  removeCopy = remove;
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [(MGRemoteQueryServer *)self clients];
-  v7 = [v6 mutableCopy];
+  clients = [(MGRemoteQueryServer *)self clients];
+  v7 = [clients mutableCopy];
 
-  [v7 removeObject:v4];
+  [v7 removeObject:removeCopy];
   [(MGRemoteQueryServer *)self setClients:v7];
   v8 = MGLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 134218752;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = [v7 count];
     v14 = 2048;
-    v15 = [(MGRemoteQueryServer *)self _transactionCount];
+    _transactionCount = [(MGRemoteQueryServer *)self _transactionCount];
     v16 = 2048;
-    v17 = v4;
+    v17 = removeCopy;
     _os_log_debug_impl(&dword_25863A000, v8, OS_LOG_TYPE_DEBUG, "%p server now %lu/%lu clients after removing client %p", &v10, 0x2Au);
   }
 
@@ -733,35 +733,35 @@ LABEL_22:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientLostTransaction:(id)a3
+- (void)clientLostTransaction:(id)transaction
 {
-  v4 = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__MGRemoteQueryServer_clientLostTransaction___block_invoke;
   block[3] = &unk_27989ED90;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)clientInvalidated:(id)a3
+- (void)clientInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = [(MGRemoteQueryServer *)self dispatchQueue];
+  invalidatedCopy = invalidated;
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__MGRemoteQueryServer_clientInvalidated___block_invoke;
   v7[3] = &unk_27989EE80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = invalidatedCopy;
+  v6 = invalidatedCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 - (unint64_t)_transactionCount
 {
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   return [(MGRemoteQueryServer *)self _unsafe_transactionCount];
 }
@@ -773,8 +773,8 @@ LABEL_22:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(MGRemoteQueryServer *)self clients];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  clients = [(MGRemoteQueryServer *)self clients];
+  v3 = [clients countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -786,13 +786,13 @@ LABEL_22:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(clients);
         }
 
         v5 += [*(*(&v10 + 1) + 8 * i) transactionCount];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [clients countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -809,14 +809,14 @@ LABEL_22:
 
 - (void)_updateConnectionLimit
 {
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v5 = [(MGRemoteQueryServer *)self listener];
-  if (![(MGRemoteQueryServer *)self invalidated]&& v5)
+  listener = [(MGRemoteQueryServer *)self listener];
+  if (![(MGRemoteQueryServer *)self invalidated]&& listener)
   {
-    v4 = [(MGRemoteQueryServer *)self listener];
-    nw_listener_set_new_connection_limit(v4, [(MGRemoteQueryServer *)self _connectionLimit]);
+    listener2 = [(MGRemoteQueryServer *)self listener];
+    nw_listener_set_new_connection_limit(listener2, [(MGRemoteQueryServer *)self _connectionLimit]);
   }
 
   MEMORY[0x2821F96F8]();
@@ -825,25 +825,25 @@ LABEL_22:
 - (unsigned)_connectionLimit
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(MGRemoteQueryServer *)self dispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  dispatchQueue = [(MGRemoteQueryServer *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v4 = [(MGRemoteQueryServer *)self _transactionCount];
-  if (v4 >= 0x15)
+  _transactionCount = [(MGRemoteQueryServer *)self _transactionCount];
+  if (_transactionCount >= 0x15)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = 20 - v4;
+    v5 = 20 - _transactionCount;
   }
 
   v6 = MGLogForCategory(5);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134218240;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = v5;
     _os_log_debug_impl(&dword_25863A000, v6, OS_LOG_TYPE_DEBUG, "%p server allowing %lu new connections", &v9, 0x16u);

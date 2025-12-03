@@ -1,15 +1,15 @@
 @interface CKConversationListEmbeddedNewMessageTableViewCell
-- (CKConversationListEmbeddedNewMessageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CKConversationListEmbeddedNewMessageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CKConversationListEmbeddedNewMessageTableViewCell
 
-- (CKConversationListEmbeddedNewMessageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKConversationListEmbeddedNewMessageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CKConversationListEmbeddedNewMessageTableViewCell;
-  v4 = [(CKConversationListNewMessageCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKConversationListNewMessageCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -19,13 +19,13 @@
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = CKConversationListEmbeddedNewMessageTableViewCell;
-  v5 = [(CKConversationListEmbeddedNewMessageTableViewCell *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
-  v6 = [(CKConversationListNewMessageCell *)self closeButton];
-  if (v5 == v6)
+  v5 = [(CKConversationListEmbeddedNewMessageTableViewCell *)&v10 hitTest:event withEvent:test.x, test.y];
+  closeButton = [(CKConversationListNewMessageCell *)self closeButton];
+  if (v5 == closeButton)
   {
     v7 = v5;
   }

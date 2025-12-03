@@ -1,24 +1,24 @@
 @interface NetworkProfilePickerView.Coordinator
 - (_TtCV46AddDevicesToAutomatedDeviceEnrollmentExtension24NetworkProfilePickerView11Coordinator)init;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
 @end
 
 @implementation NetworkProfilePickerView.Coordinator
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   sub_10008C9BC();
   v6 = sub_10008DD3C();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_10007C494(v6);
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = self;
+  cancelledCopy = cancelled;
+  selfCopy = self;
   sub_10007C768();
 }
 

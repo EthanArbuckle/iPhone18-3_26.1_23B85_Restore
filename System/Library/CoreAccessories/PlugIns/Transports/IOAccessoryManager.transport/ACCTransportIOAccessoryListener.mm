@@ -1,5 +1,5 @@
 @interface ACCTransportIOAccessoryListener
-- (ACCTransportIOAccessoryListener)initWithDelegate:(id)a3;
+- (ACCTransportIOAccessoryListener)initWithDelegate:(id)delegate;
 - (ACCTransportIOAccessoryListenerProtocol)delegate;
 - (void)_startListeningForIOAccessoryAuthCPClass;
 - (void)_startListeningForIOAccessoryConfigStreamClass;
@@ -20,16 +20,16 @@
 
 @implementation ACCTransportIOAccessoryListener
 
-- (ACCTransportIOAccessoryListener)initWithDelegate:(id)a3
+- (ACCTransportIOAccessoryListener)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = ACCTransportIOAccessoryListener;
   v5 = [(ACCTransportIOAccessoryListener *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_create("com.apple.ACCTransport.IOAccessoryListener", 0);
     ioAccessoryListenerQueue = v6->_ioAccessoryListenerQueue;
     v6->_ioAccessoryListenerQueue = v7;

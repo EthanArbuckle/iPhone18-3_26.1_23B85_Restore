@@ -1,25 +1,25 @@
 @interface DDRemoteHeaderView
 - (DDRemoteAction)action;
-- (DDRemoteHeaderView)initWithAction:(id)a3;
-- (void)DDRemoteActionDidTerminateWithError:(id)a3;
+- (DDRemoteHeaderView)initWithAction:(id)action;
+- (void)DDRemoteActionDidTerminateWithError:(id)error;
 - (void)dealloc;
 - (void)loadRemoteView;
-- (void)removeLoadingViewToShowView:(id)a3;
+- (void)removeLoadingViewToShowView:(id)view;
 - (void)showErrorView;
 - (void)showLoadingView;
 - (void)showRemoteView;
 - (void)unloadRemoteAction;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation DDRemoteHeaderView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     self->_shouldDeferPresenting = 0;
-    v5 = a3;
+    windowCopy = window;
     [(DDRemoteHeaderView *)self showRemoteView];
   }
 
@@ -33,7 +33,7 @@
 
   v8.receiver = self;
   v8.super_class = DDRemoteHeaderView;
-  [(DDRemoteHeaderView *)&v8 willMoveToWindow:a3];
+  [(DDRemoteHeaderView *)&v8 willMoveToWindow:window];
 }
 
 - (void)dealloc
@@ -44,16 +44,16 @@
   [(DDRemoteHeaderView *)&v3 dealloc];
 }
 
-- (DDRemoteHeaderView)initWithAction:(id)a3
+- (DDRemoteHeaderView)initWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v13.receiver = self;
   v13.super_class = DDRemoteHeaderView;
   v5 = [(DDRemoteHeaderView *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(DDRemoteHeaderView *)v5 setAction:v4];
+    [(DDRemoteHeaderView *)v5 setAction:actionCopy];
     [(DDRemoteHeaderView *)v6 loadRemoteView];
     v6->_loaded = 0;
     v7 = dispatch_time(0, 800000000);
@@ -103,16 +103,16 @@ uint64_t __37__DDRemoteHeaderView_initWithAction___block_invoke(uint64_t a1)
     [(DDRemoteActionManagerViewController *)v20 loadRemoteAction];
   }
 
-  v5 = [(DDRemoteHeaderView *)self action];
+  action = [(DDRemoteHeaderView *)self action];
   v6 = [DDRemoteActionContext alloc];
-  v7 = [v5 url];
-  v8 = [v5 result];
-  v9 = [v5 context];
-  v10 = [v5 associatedResults];
-  v11 = [v5 associatedVisualResults];
-  v12 = [v5 handleString];
-  v13 = [objc_opt_class() menuHeaderViewProviderClass];
-  v14 = [(DDRemoteActionContext *)v6 initWithURL:v7 result:v8 context:v9 associatedResults:v10 associatedVisualResults:v11 contactHandle:v12 className:v13];
+  v7 = [action url];
+  result = [action result];
+  context = [action context];
+  associatedResults = [action associatedResults];
+  associatedVisualResults = [action associatedVisualResults];
+  handleString = [action handleString];
+  menuHeaderViewProviderClass = [objc_opt_class() menuHeaderViewProviderClass];
+  v14 = [(DDRemoteActionContext *)v6 initWithURL:v7 result:result context:context associatedResults:associatedResults associatedVisualResults:associatedVisualResults contactHandle:handleString className:menuHeaderViewProviderClass];
 
   v15 = objc_alloc_init(MEMORY[0x277CCA9D8]);
   objc_initWeak(&location, self);
@@ -190,34 +190,34 @@ void __36__DDRemoteHeaderView_loadRemoteView__block_invoke_2(uint64_t a1, int a2
   if (self->_loaded && !self->_displayed && !self->_shouldDeferPresenting)
   {
     self->_displayed = 1;
-    v8 = [(DDRemoteActionHostViewController *)self->_remoteViewController view];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(DDRemoteHeaderView *)self addSubview:v8];
-    v4 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:5 relatedBy:0 toItem:v8 attribute:5 multiplier:1.0 constant:0.0];
+    view = [(DDRemoteActionHostViewController *)self->_remoteViewController view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(DDRemoteHeaderView *)self addSubview:view];
+    v4 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:5 relatedBy:0 toItem:view attribute:5 multiplier:1.0 constant:0.0];
     [v4 setActive:1];
 
-    v5 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:6 relatedBy:0 toItem:v8 attribute:6 multiplier:1.0 constant:0.0];
+    v5 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:6 relatedBy:0 toItem:view attribute:6 multiplier:1.0 constant:0.0];
     [v5 setActive:1];
 
-    v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:3 relatedBy:0 toItem:v8 attribute:3 multiplier:1.0 constant:0.0];
+    v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
     [v6 setActive:1];
 
-    v7 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:4 relatedBy:0 toItem:v8 attribute:4 multiplier:1.0 constant:0.0];
+    v7 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:0.0];
     [v7 setActive:1];
 
-    [(DDRemoteHeaderView *)self removeLoadingViewToShowView:v8];
+    [(DDRemoteHeaderView *)self removeLoadingViewToShowView:view];
   }
 }
 
 - (void)unloadRemoteAction
 {
-  v3 = [(DDRemoteHeaderView *)self request];
+  request = [(DDRemoteHeaderView *)self request];
 
-  if (v3)
+  if (request)
   {
-    v4 = [(DDRemoteHeaderView *)self extension];
-    v5 = [(DDRemoteHeaderView *)self request];
-    [v4 cancelExtensionRequestWithIdentifier:v5];
+    extension = [(DDRemoteHeaderView *)self extension];
+    request2 = [(DDRemoteHeaderView *)self request];
+    [extension cancelExtensionRequestWithIdentifier:request2];
 
     [(DDRemoteHeaderView *)self setRequest:0];
   }
@@ -227,9 +227,9 @@ void __36__DDRemoteHeaderView_loadRemoteView__block_invoke_2(uint64_t a1, int a2
 {
   if (!self->_loadingView)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     loadingDate = self->_loadingDate;
-    self->_loadingDate = v3;
+    self->_loadingDate = date;
 
     v5 = objc_alloc_init(MEMORY[0x277D750E8]);
     [(UIView *)v5 setActivityIndicatorViewStyle:100];
@@ -262,21 +262,21 @@ void __36__DDRemoteHeaderView_loadRemoteView__block_invoke_2(uint64_t a1, int a2
   }
 }
 
-- (void)removeLoadingViewToShowView:(id)a3
+- (void)removeLoadingViewToShowView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (self->_loadingView)
   {
     [(NSDate *)self->_loadingDate timeIntervalSinceNow];
     v6 = fmin(v5 + 0.3, 0.0);
-    [v4 setAlpha:0.0];
+    [viewCopy setAlpha:0.0];
     v7 = MEMORY[0x277D75D18];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __50__DDRemoteHeaderView_removeLoadingViewToShowView___block_invoke;
     v9[3] = &unk_278290BC8;
-    v10 = v4;
-    v11 = self;
+    v10 = viewCopy;
+    selfCopy = self;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__DDRemoteHeaderView_removeLoadingViewToShowView___block_invoke_2;
@@ -345,18 +345,18 @@ void __50__DDRemoteHeaderView_removeLoadingViewToShowView___block_invoke_2(uint6
     v16 = [MEMORY[0x277D74300] fontWithDescriptor:v15 size:14.0];
     [v3 setFont:v16];
 
-    v17 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v3 setTextColor:v17];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v3 setTextColor:secondaryLabelColor];
 
     [v3 setTextAlignment:1];
-    v18 = [(DDRemoteHeaderView *)self action];
-    v19 = [v18 result];
+    action = [(DDRemoteHeaderView *)self action];
+    result = [action result];
 
-    if (v19)
+    if (result)
     {
       v20 = +[DDDetectionController sharedController];
-      v21 = [(DDRemoteHeaderView *)self action];
-      v22 = [v20 attributedTitleForResult:objc_msgSend(v21 updaterBlock:{"result"), 0}];
+      action2 = [(DDRemoteHeaderView *)self action];
+      v22 = [v20 attributedTitleForResult:objc_msgSend(action2 updaterBlock:{"result"), 0}];
 
       if (!v22)
       {
@@ -366,8 +366,8 @@ void __50__DDRemoteHeaderView_removeLoadingViewToShowView___block_invoke_2(uint6
 
     else
     {
-      v23 = [(DDRemoteHeaderView *)self action];
-      v24 = [v23 url];
+      action3 = [(DDRemoteHeaderView *)self action];
+      v24 = [action3 url];
 
       if (!v24)
       {
@@ -375,8 +375,8 @@ void __50__DDRemoteHeaderView_removeLoadingViewToShowView___block_invoke_2(uint6
       }
 
       v25 = +[DDDetectionController sharedController];
-      v26 = [(DDRemoteHeaderView *)self action];
-      v27 = [v26 url];
+      action4 = [(DDRemoteHeaderView *)self action];
+      v27 = [action4 url];
       v22 = [v25 attributedTitleForURL:v27 updaterBlock:0];
 
       if (!v22)
@@ -452,9 +452,9 @@ void __35__DDRemoteHeaderView_showErrorView__block_invoke_3(uint64_t a1)
   *(v3 + 408) = 0;
 }
 
-- (void)DDRemoteActionDidTerminateWithError:(id)a3
+- (void)DDRemoteActionDidTerminateWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     [(DDRemoteHeaderView *)self showErrorView];
   }

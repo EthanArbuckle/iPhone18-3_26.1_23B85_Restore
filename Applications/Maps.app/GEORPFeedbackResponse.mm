@@ -1,22 +1,22 @@
 @interface GEORPFeedbackResponse
-- (void)enumerateFeedbackInfosUsingBlock:(id)a3;
+- (void)enumerateFeedbackInfosUsingBlock:(id)block;
 @end
 
 @implementation GEORPFeedbackResponse
 
-- (void)enumerateFeedbackInfosUsingBlock:(id)a3
+- (void)enumerateFeedbackInfosUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
-  v5 = [(GEORPFeedbackResponse *)self feedbackResult];
-  v6 = [v5 queryResult];
-  v7 = [v6 feedbackInfos];
+  feedbackResult = [(GEORPFeedbackResponse *)self feedbackResult];
+  queryResult = [feedbackResult queryResult];
+  feedbackInfos = [queryResult feedbackInfos];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v7;
+  v8 = feedbackInfos;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v9)
   {
@@ -31,7 +31,7 @@ LABEL_3:
         objc_enumerationMutation(v8);
       }
 
-      v4[2](v4, *(*(&v13 + 1) + 8 * v12), &v17);
+      blockCopy[2](blockCopy, *(*(&v13 + 1) + 8 * v12), &v17);
       if (v17)
       {
         break;

@@ -1,15 +1,15 @@
 @interface _LSBundleIDValidationToken
-+ (BOOL)isToken:(void *)a3 correctForBundleIdentifier:(void *)a4 connection:;
-- (id)initWithBundleIdentifier:(id)a1;
++ (BOOL)isToken:(void *)token correctForBundleIdentifier:(void *)identifier connection:;
+- (id)initWithBundleIdentifier:(id)identifier;
 @end
 
 @implementation _LSBundleIDValidationToken
 
-- (id)initWithBundleIdentifier:(id)a1
+- (id)initWithBundleIdentifier:(id)identifier
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifier)
   {
     if (!v3)
     {
@@ -17,38 +17,38 @@
     }
 
     v5 = [(__CFString *)v3 dataUsingEncoding:4];
-    v7.receiver = a1;
+    v7.receiver = identifier;
     v7.super_class = _LSBundleIDValidationToken;
-    a1 = objc_msgSendSuper2(&v7, sel_initWithPayload_, v5);
+    identifier = objc_msgSendSuper2(&v7, sel_initWithPayload_, v5);
   }
 
-  return a1;
+  return identifier;
 }
 
-+ (BOOL)isToken:(void *)a3 correctForBundleIdentifier:(void *)a4 connection:
++ (BOOL)isToken:(void *)token correctForBundleIdentifier:(void *)identifier connection:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   objc_opt_self();
   if (v6)
   {
-    if (!v7 || ([v7 dataUsingEncoding:4], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[_LSValidationToken isCorrectForPayload:](v6, v9), v9, (v10 & 1) == 0))
+    if (!tokenCopy || ([tokenCopy dataUsingEncoding:4], v9 = objc_claimAutoreleasedReturnValue(), v10 = -[_LSValidationToken isCorrectForPayload:](v6, v9), v9, (v10 & 1) == 0))
     {
-      v11 = [v8 _xpcConnection];
-      v12 = _LSCopyBundleIdentifierForXPCConnection(v11, 1);
+      _xpcConnection = [identifierCopy _xpcConnection];
+      _xpcConnection2 = _LSCopyBundleIdentifierForXPCConnection(_xpcConnection, 1);
 
-      v13 = [v12 dataUsingEncoding:4];
+      v13 = [_xpcConnection2 dataUsingEncoding:4];
       v14 = v13 && ([(_LSValidationToken *)v6 isCorrectForPayload:v13]& 1) != 0;
 
       goto LABEL_12;
     }
   }
 
-  else if (v8)
+  else if (identifierCopy)
   {
-    v12 = [v8 _xpcConnection];
-    v14 = _LSXPCConnectionMayMapDatabase(v12) != 0;
+    _xpcConnection2 = [identifierCopy _xpcConnection];
+    v14 = _LSXPCConnectionMayMapDatabase(_xpcConnection2) != 0;
 LABEL_12:
 
     goto LABEL_13;

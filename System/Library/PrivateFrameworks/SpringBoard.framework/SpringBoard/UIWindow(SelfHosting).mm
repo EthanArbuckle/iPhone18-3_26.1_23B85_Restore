@@ -8,7 +8,7 @@
 - (id)sb_hostWrapperForUseInWindow:()SelfHosting hostRequester:
 {
   v6 = a4;
-  v7 = [a1 sb_hostWrapperForUseInOrientation:objc_msgSend(a3 hostRequester:{"interfaceOrientation"), v6}];
+  v7 = [self sb_hostWrapperForUseInOrientation:objc_msgSend(a3 hostRequester:{"interfaceOrientation"), v6}];
 
   return v7;
 }
@@ -16,10 +16,10 @@
 - (id)sb_hostWrapperForUseInOrientation:()SelfHosting hostRequester:
 {
   v6 = a4;
-  v7 = [a1 windowScene];
-  v8 = [v7 _FBSScene];
-  v9 = [v8 identifier];
-  v10 = [SBWindowSelfHostWrapper wrapperForWindow:a1 orientation:a3 hostRequester:v6 sceneIdentifier:v9];
+  windowScene = [self windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  identifier = [_FBSScene identifier];
+  v10 = [SBWindowSelfHostWrapper wrapperForWindow:self orientation:a3 hostRequester:v6 sceneIdentifier:identifier];
 
   return v10;
 }

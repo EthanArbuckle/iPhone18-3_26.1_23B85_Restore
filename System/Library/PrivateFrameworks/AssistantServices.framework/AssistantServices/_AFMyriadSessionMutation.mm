@@ -1,5 +1,5 @@
 @interface _AFMyriadSessionMutation
-- (_AFMyriadSessionMutation)initWithBase:(id)a3;
+- (_AFMyriadSessionMutation)initWithBase:(id)base;
 - (id)getCurrentElectionAdvertisementData;
 - (id)getCurrentElectionAdvertisementId;
 - (id)getElectionAdvertisementDataByIds;
@@ -13,60 +13,60 @@
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_electionAdvertisementDataByIds;
+    electionAdvertisementDataByIds = self->_electionAdvertisementDataByIds;
   }
 
   else
   {
-    v2 = [(AFMyriadSession *)self->_base electionAdvertisementDataByIds];
+    electionAdvertisementDataByIds = [(AFMyriadSession *)self->_base electionAdvertisementDataByIds];
   }
 
-  return v2;
+  return electionAdvertisementDataByIds;
 }
 
 - (id)getCurrentElectionAdvertisementData
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_currentElectionAdvertisementData;
+    currentElectionAdvertisementData = self->_currentElectionAdvertisementData;
   }
 
   else
   {
-    v2 = [(AFMyriadSession *)self->_base currentElectionAdvertisementData];
+    currentElectionAdvertisementData = [(AFMyriadSession *)self->_base currentElectionAdvertisementData];
   }
 
-  return v2;
+  return currentElectionAdvertisementData;
 }
 
 - (id)getCurrentElectionAdvertisementId
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_currentElectionAdvertisementId;
+    currentElectionAdvertisementId = self->_currentElectionAdvertisementId;
   }
 
   else
   {
-    v2 = [(AFMyriadSession *)self->_base currentElectionAdvertisementId];
+    currentElectionAdvertisementId = [(AFMyriadSession *)self->_base currentElectionAdvertisementId];
   }
 
-  return v2;
+  return currentElectionAdvertisementId;
 }
 
 - (id)getSessionId
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_sessionId;
+    sessionId = self->_sessionId;
   }
 
   else
   {
-    v2 = [(AFMyriadSession *)self->_base sessionId];
+    sessionId = [(AFMyriadSession *)self->_base sessionId];
   }
 
-  return v2;
+  return sessionId;
 }
 
 - (unint64_t)getGeneration
@@ -82,16 +82,16 @@
   }
 }
 
-- (_AFMyriadSessionMutation)initWithBase:(id)a3
+- (_AFMyriadSessionMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFMyriadSessionMutation;
   v6 = [(_AFMyriadSessionMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

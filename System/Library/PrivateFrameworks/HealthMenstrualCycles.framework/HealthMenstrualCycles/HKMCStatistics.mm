@@ -1,41 +1,41 @@
 @interface HKMCStatistics
 + (id)_emptyStatistics;
-- (BOOL)isEqual:(id)a3;
-- (HKMCStatistics)initWithCoder:(id)a3;
-- (HKMCStatistics)initWithNumberOfCycles:(int64_t)a3 firstMenstruationStartDayIndex:(id)a4 lastMenstruationStartDayIndex:(id)a5 cycleLengthMedian:(id)a6 cycleLengthLowerPercentile:(id)a7 cycleLengthUpperPercentile:(id)a8 menstruationLengthMedian:(id)a9 menstruationLengthLowerPercentile:(id)a10 menstruationLengthUpperPercentile:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (HKMCStatistics)initWithCoder:(id)coder;
+- (HKMCStatistics)initWithNumberOfCycles:(int64_t)cycles firstMenstruationStartDayIndex:(id)index lastMenstruationStartDayIndex:(id)dayIndex cycleLengthMedian:(id)median cycleLengthLowerPercentile:(id)percentile cycleLengthUpperPercentile:(id)upperPercentile menstruationLengthMedian:(id)lengthMedian menstruationLengthLowerPercentile:(id)self0 menstruationLengthUpperPercentile:(id)self1;
 - (NSString)hk_redactedDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMCStatistics
 
-- (HKMCStatistics)initWithNumberOfCycles:(int64_t)a3 firstMenstruationStartDayIndex:(id)a4 lastMenstruationStartDayIndex:(id)a5 cycleLengthMedian:(id)a6 cycleLengthLowerPercentile:(id)a7 cycleLengthUpperPercentile:(id)a8 menstruationLengthMedian:(id)a9 menstruationLengthLowerPercentile:(id)a10 menstruationLengthUpperPercentile:(id)a11
+- (HKMCStatistics)initWithNumberOfCycles:(int64_t)cycles firstMenstruationStartDayIndex:(id)index lastMenstruationStartDayIndex:(id)dayIndex cycleLengthMedian:(id)median cycleLengthLowerPercentile:(id)percentile cycleLengthUpperPercentile:(id)upperPercentile menstruationLengthMedian:(id)lengthMedian menstruationLengthLowerPercentile:(id)self0 menstruationLengthUpperPercentile:(id)self1
 {
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v17 = a10;
-  v18 = a11;
+  indexCopy = index;
+  dayIndexCopy = dayIndex;
+  medianCopy = median;
+  percentileCopy = percentile;
+  upperPercentileCopy = upperPercentile;
+  lengthMedianCopy = lengthMedian;
+  lowerPercentileCopy = lowerPercentile;
+  lengthUpperPercentileCopy = lengthUpperPercentile;
   v29.receiver = self;
   v29.super_class = HKMCStatistics;
   v19 = [(HKMCStatistics *)&v29 init];
   v20 = v19;
   if (v19)
   {
-    v19->_numberOfCycles = a3;
-    objc_storeStrong(&v19->_firstMenstruationStartDayIndex, a4);
-    objc_storeStrong(&v20->_lastMenstruationStartDayIndex, a5);
-    objc_storeStrong(&v20->_cycleLengthMedian, a6);
-    objc_storeStrong(&v20->_cycleLengthLowerPercentile, a7);
-    objc_storeStrong(&v20->_cycleLengthUpperPercentile, a8);
-    objc_storeStrong(&v20->_menstruationLengthMedian, a9);
-    objc_storeStrong(&v20->_menstruationLengthLowerPercentile, a10);
-    objc_storeStrong(&v20->_menstruationLengthUpperPercentile, a11);
+    v19->_numberOfCycles = cycles;
+    objc_storeStrong(&v19->_firstMenstruationStartDayIndex, index);
+    objc_storeStrong(&v20->_lastMenstruationStartDayIndex, dayIndex);
+    objc_storeStrong(&v20->_cycleLengthMedian, median);
+    objc_storeStrong(&v20->_cycleLengthLowerPercentile, percentile);
+    objc_storeStrong(&v20->_cycleLengthUpperPercentile, upperPercentile);
+    objc_storeStrong(&v20->_menstruationLengthMedian, lengthMedian);
+    objc_storeStrong(&v20->_menstruationLengthLowerPercentile, lowerPercentile);
+    objc_storeStrong(&v20->_menstruationLengthUpperPercentile, lengthUpperPercentile);
   }
 
   return v20;
@@ -43,64 +43,64 @@
 
 + (id)_emptyStatistics
 {
-  v2 = [[a1 alloc] initWithNumberOfCycles:0 firstMenstruationStartDayIndex:0 lastMenstruationStartDayIndex:0 cycleLengthMedian:0 cycleLengthLowerPercentile:0 cycleLengthUpperPercentile:0 menstruationLengthMedian:0 menstruationLengthLowerPercentile:0 menstruationLengthUpperPercentile:0];
+  v2 = [[self alloc] initWithNumberOfCycles:0 firstMenstruationStartDayIndex:0 lastMenstruationStartDayIndex:0 cycleLengthMedian:0 cycleLengthLowerPercentile:0 cycleLengthUpperPercentile:0 menstruationLengthMedian:0 menstruationLengthLowerPercentile:0 menstruationLengthUpperPercentile:0];
 
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   numberOfCycles = self->_numberOfCycles;
-  v5 = a3;
-  [v5 encodeInteger:numberOfCycles forKey:@"NumberOfCycles"];
-  [v5 encodeObject:self->_firstMenstruationStartDayIndex forKey:@"FirstMenstruationStartDayIndex"];
-  [v5 encodeObject:self->_lastMenstruationStartDayIndex forKey:@"LastMenstruationStartDayIndex"];
-  [v5 encodeObject:self->_cycleLengthMedian forKey:@"CycleLengthMedian"];
-  [v5 encodeObject:self->_cycleLengthLowerPercentile forKey:@"CycleLengthLowerPercentile"];
-  [v5 encodeObject:self->_cycleLengthUpperPercentile forKey:@"CycleLengthUpperPercentile"];
-  [v5 encodeObject:self->_menstruationLengthMedian forKey:@"MenstruationLengthMedian"];
-  [v5 encodeObject:self->_menstruationLengthLowerPercentile forKey:@"MenstruationLengthLowerPercentile"];
-  [v5 encodeObject:self->_menstruationLengthUpperPercentile forKey:@"MenstruationLengthUpperPercentile"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:numberOfCycles forKey:@"NumberOfCycles"];
+  [coderCopy encodeObject:self->_firstMenstruationStartDayIndex forKey:@"FirstMenstruationStartDayIndex"];
+  [coderCopy encodeObject:self->_lastMenstruationStartDayIndex forKey:@"LastMenstruationStartDayIndex"];
+  [coderCopy encodeObject:self->_cycleLengthMedian forKey:@"CycleLengthMedian"];
+  [coderCopy encodeObject:self->_cycleLengthLowerPercentile forKey:@"CycleLengthLowerPercentile"];
+  [coderCopy encodeObject:self->_cycleLengthUpperPercentile forKey:@"CycleLengthUpperPercentile"];
+  [coderCopy encodeObject:self->_menstruationLengthMedian forKey:@"MenstruationLengthMedian"];
+  [coderCopy encodeObject:self->_menstruationLengthLowerPercentile forKey:@"MenstruationLengthLowerPercentile"];
+  [coderCopy encodeObject:self->_menstruationLengthUpperPercentile forKey:@"MenstruationLengthUpperPercentile"];
 }
 
-- (HKMCStatistics)initWithCoder:(id)a3
+- (HKMCStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = HKMCStatistics;
   v5 = [(HKMCStatistics *)&v23 init];
   if (v5)
   {
-    v5->_numberOfCycles = [v4 decodeIntegerForKey:@"NumberOfCycles"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FirstMenstruationStartDayIndex"];
+    v5->_numberOfCycles = [coderCopy decodeIntegerForKey:@"NumberOfCycles"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FirstMenstruationStartDayIndex"];
     firstMenstruationStartDayIndex = v5->_firstMenstruationStartDayIndex;
     v5->_firstMenstruationStartDayIndex = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastMenstruationStartDayIndex"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastMenstruationStartDayIndex"];
     lastMenstruationStartDayIndex = v5->_lastMenstruationStartDayIndex;
     v5->_lastMenstruationStartDayIndex = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CycleLengthMedian"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CycleLengthMedian"];
     cycleLengthMedian = v5->_cycleLengthMedian;
     v5->_cycleLengthMedian = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CycleLengthLowerPercentile"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CycleLengthLowerPercentile"];
     cycleLengthLowerPercentile = v5->_cycleLengthLowerPercentile;
     v5->_cycleLengthLowerPercentile = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CycleLengthUpperPercentile"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CycleLengthUpperPercentile"];
     cycleLengthUpperPercentile = v5->_cycleLengthUpperPercentile;
     v5->_cycleLengthUpperPercentile = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MenstruationLengthMedian"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MenstruationLengthMedian"];
     menstruationLengthMedian = v5->_menstruationLengthMedian;
     v5->_menstruationLengthMedian = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MenstruationLengthLowerPercentile"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MenstruationLengthLowerPercentile"];
     menstruationLengthLowerPercentile = v5->_menstruationLengthLowerPercentile;
     v5->_menstruationLengthLowerPercentile = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MenstruationLengthUpperPercentile"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MenstruationLengthUpperPercentile"];
     menstruationLengthUpperPercentile = v5->_menstruationLengthUpperPercentile;
     v5->_menstruationLengthUpperPercentile = v20;
   }
@@ -128,10 +128,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -141,25 +141,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(HKMCStatistics *)self numberOfCycles];
-      if (v6 == [(HKMCStatistics *)v5 numberOfCycles])
+      numberOfCycles = [(HKMCStatistics *)self numberOfCycles];
+      if (numberOfCycles == [(HKMCStatistics *)equalCopy numberOfCycles])
       {
-        v7 = [(HKMCStatistics *)self firstMenstruationStartDayIndex];
-        v8 = [(HKMCStatistics *)v5 firstMenstruationStartDayIndex];
-        v84 = v7 != v8;
-        if (v7 != v8)
+        firstMenstruationStartDayIndex = [(HKMCStatistics *)self firstMenstruationStartDayIndex];
+        firstMenstruationStartDayIndex2 = [(HKMCStatistics *)equalCopy firstMenstruationStartDayIndex];
+        v84 = firstMenstruationStartDayIndex != firstMenstruationStartDayIndex2;
+        if (firstMenstruationStartDayIndex != firstMenstruationStartDayIndex2)
         {
-          v86 = [(HKMCStatistics *)v5 firstMenstruationStartDayIndex];
-          if (!v86)
+          firstMenstruationStartDayIndex3 = [(HKMCStatistics *)equalCopy firstMenstruationStartDayIndex];
+          if (!firstMenstruationStartDayIndex3)
           {
             v11 = 0;
 
             goto LABEL_105;
           }
 
-          v9 = [(HKMCStatistics *)self firstMenstruationStartDayIndex];
-          v10 = [(HKMCStatistics *)v5 firstMenstruationStartDayIndex];
-          if (![v9 isEqual:v10])
+          firstMenstruationStartDayIndex4 = [(HKMCStatistics *)self firstMenstruationStartDayIndex];
+          firstMenstruationStartDayIndex5 = [(HKMCStatistics *)equalCopy firstMenstruationStartDayIndex];
+          if (![firstMenstruationStartDayIndex4 isEqual:firstMenstruationStartDayIndex5])
           {
             v11 = 0;
 LABEL_55:
@@ -168,20 +168,20 @@ LABEL_104:
             goto LABEL_105;
           }
 
-          v80 = v10;
-          v81 = v9;
+          v80 = firstMenstruationStartDayIndex5;
+          v81 = firstMenstruationStartDayIndex4;
         }
 
-        v12 = [(HKMCStatistics *)self lastMenstruationStartDayIndex];
-        v13 = [(HKMCStatistics *)v5 lastMenstruationStartDayIndex];
-        if (v12 != v13)
+        lastMenstruationStartDayIndex = [(HKMCStatistics *)self lastMenstruationStartDayIndex];
+        lastMenstruationStartDayIndex2 = [(HKMCStatistics *)equalCopy lastMenstruationStartDayIndex];
+        if (lastMenstruationStartDayIndex != lastMenstruationStartDayIndex2)
         {
-          v14 = [(HKMCStatistics *)v5 lastMenstruationStartDayIndex];
-          if (!v14)
+          lastMenstruationStartDayIndex3 = [(HKMCStatistics *)equalCopy lastMenstruationStartDayIndex];
+          if (!lastMenstruationStartDayIndex3)
           {
 
             v11 = 0;
-            if (v7 == v8)
+            if (firstMenstruationStartDayIndex == firstMenstruationStartDayIndex2)
             {
               v84 = 0;
               goto LABEL_103;
@@ -199,11 +199,11 @@ LABEL_103:
             goto LABEL_105;
           }
 
-          v3 = v14;
-          v15 = [(HKMCStatistics *)self lastMenstruationStartDayIndex];
-          v78 = [(HKMCStatistics *)v5 lastMenstruationStartDayIndex];
-          v79 = v15;
-          if (![v15 isEqual:?])
+          v3 = lastMenstruationStartDayIndex3;
+          lastMenstruationStartDayIndex4 = [(HKMCStatistics *)self lastMenstruationStartDayIndex];
+          lastMenstruationStartDayIndex5 = [(HKMCStatistics *)equalCopy lastMenstruationStartDayIndex];
+          v79 = lastMenstruationStartDayIndex4;
+          if (![lastMenstruationStartDayIndex4 isEqual:?])
           {
             v11 = 0;
 LABEL_53:
@@ -212,18 +212,18 @@ LABEL_53:
           }
         }
 
-        v16 = [(HKMCStatistics *)self cycleLengthMedian];
-        [(HKMCStatistics *)v5 cycleLengthMedian];
-        v83 = v82 = v16;
-        v17 = v16 != v83;
-        if (v16 != v83)
+        cycleLengthMedian = [(HKMCStatistics *)self cycleLengthMedian];
+        [(HKMCStatistics *)equalCopy cycleLengthMedian];
+        v83 = v82 = cycleLengthMedian;
+        v17 = cycleLengthMedian != v83;
+        if (cycleLengthMedian != v83)
         {
-          v18 = [(HKMCStatistics *)v5 cycleLengthMedian];
-          if (!v18)
+          cycleLengthMedian2 = [(HKMCStatistics *)equalCopy cycleLengthMedian];
+          if (!cycleLengthMedian2)
           {
 
             v11 = 0;
-            if (v12 != v13)
+            if (lastMenstruationStartDayIndex != lastMenstruationStartDayIndex2)
             {
               LOBYTE(v24) = 1;
               goto LABEL_99;
@@ -241,11 +241,11 @@ LABEL_100:
             goto LABEL_101;
           }
 
-          v73 = v18;
-          v19 = [(HKMCStatistics *)self cycleLengthMedian];
-          v74 = [(HKMCStatistics *)v5 cycleLengthMedian];
-          v75 = v19;
-          if (![v19 isEqual:?])
+          v73 = cycleLengthMedian2;
+          cycleLengthMedian3 = [(HKMCStatistics *)self cycleLengthMedian];
+          cycleLengthMedian4 = [(HKMCStatistics *)equalCopy cycleLengthMedian];
+          v75 = cycleLengthMedian3;
+          if (![cycleLengthMedian3 isEqual:?])
           {
             v11 = 0;
             v20 = v82;
@@ -253,10 +253,10 @@ LABEL_100:
           }
         }
 
-        v21 = [(HKMCStatistics *)self cycleLengthLowerPercentile];
-        v77 = [(HKMCStatistics *)v5 cycleLengthLowerPercentile];
-        v69 = v21 != v77;
-        if (v21 == v77)
+        cycleLengthLowerPercentile = [(HKMCStatistics *)self cycleLengthLowerPercentile];
+        cycleLengthLowerPercentile2 = [(HKMCStatistics *)equalCopy cycleLengthLowerPercentile];
+        v69 = cycleLengthLowerPercentile != cycleLengthLowerPercentile2;
+        if (cycleLengthLowerPercentile == cycleLengthLowerPercentile2)
         {
           v70 = v17;
           v68 = v3;
@@ -264,8 +264,8 @@ LABEL_100:
 
         else
         {
-          v22 = [(HKMCStatistics *)v5 cycleLengthLowerPercentile];
-          if (!v22)
+          cycleLengthLowerPercentile3 = [(HKMCStatistics *)equalCopy cycleLengthLowerPercentile];
+          if (!cycleLengthLowerPercentile3)
           {
 
             v11 = 0;
@@ -281,13 +281,13 @@ LABEL_100:
           }
 
           v70 = v17;
-          v65 = v22;
-          v23 = [(HKMCStatistics *)self cycleLengthLowerPercentile];
-          v66 = [(HKMCStatistics *)v5 cycleLengthLowerPercentile];
-          v67 = v23;
-          if (![v23 isEqual:?])
+          v65 = cycleLengthLowerPercentile3;
+          cycleLengthLowerPercentile4 = [(HKMCStatistics *)self cycleLengthLowerPercentile];
+          cycleLengthLowerPercentile5 = [(HKMCStatistics *)equalCopy cycleLengthLowerPercentile];
+          v67 = cycleLengthLowerPercentile4;
+          if (![cycleLengthLowerPercentile4 isEqual:?])
           {
-            v76 = v21;
+            v76 = cycleLengthLowerPercentile;
             v11 = 0;
             v20 = v82;
             goto LABEL_51;
@@ -296,23 +296,23 @@ LABEL_100:
           v68 = v3;
         }
 
-        v25 = [(HKMCStatistics *)self cycleLengthUpperPercentile];
-        v71 = [(HKMCStatistics *)v5 cycleLengthUpperPercentile];
-        v72 = v25;
-        v26 = v25 != v71;
-        v76 = v21;
-        if (v25 != v71)
+        cycleLengthUpperPercentile = [(HKMCStatistics *)self cycleLengthUpperPercentile];
+        cycleLengthUpperPercentile2 = [(HKMCStatistics *)equalCopy cycleLengthUpperPercentile];
+        v72 = cycleLengthUpperPercentile;
+        v26 = cycleLengthUpperPercentile != cycleLengthUpperPercentile2;
+        v76 = cycleLengthLowerPercentile;
+        if (cycleLengthUpperPercentile != cycleLengthUpperPercentile2)
         {
-          v27 = [(HKMCStatistics *)v5 cycleLengthUpperPercentile];
-          if (!v27)
+          cycleLengthUpperPercentile3 = [(HKMCStatistics *)equalCopy cycleLengthUpperPercentile];
+          if (!cycleLengthUpperPercentile3)
           {
 
-            v37 = v21;
+            v37 = cycleLengthLowerPercentile;
             v11 = 0;
             v3 = v68;
             v20 = v82;
             v30 = v70;
-            if (v37 != v77)
+            if (v37 != cycleLengthLowerPercentile2)
             {
               LOBYTE(v38) = 1;
               goto LABEL_93;
@@ -344,8 +344,8 @@ LABEL_97:
 
 LABEL_98:
 
-              v24 = v12 != v13;
-              if (v12 != v13)
+              v24 = lastMenstruationStartDayIndex != lastMenstruationStartDayIndex2;
+              if (lastMenstruationStartDayIndex != lastMenstruationStartDayIndex2)
               {
 LABEL_99:
 
@@ -365,11 +365,11 @@ LABEL_94:
             goto LABEL_95;
           }
 
-          v63 = v27;
-          v28 = [(HKMCStatistics *)self cycleLengthUpperPercentile];
-          v29 = [(HKMCStatistics *)v5 cycleLengthUpperPercentile];
-          v64 = v28;
-          if (![v28 isEqual:v29])
+          v63 = cycleLengthUpperPercentile3;
+          cycleLengthUpperPercentile4 = [(HKMCStatistics *)self cycleLengthUpperPercentile];
+          cycleLengthUpperPercentile5 = [(HKMCStatistics *)equalCopy cycleLengthUpperPercentile];
+          v64 = cycleLengthUpperPercentile4;
+          if (![cycleLengthUpperPercentile4 isEqual:cycleLengthUpperPercentile5])
           {
             v11 = 0;
             v20 = v82;
@@ -377,7 +377,7 @@ LABEL_50:
 
             v3 = v68;
             v30 = v70;
-            if (v76 == v77)
+            if (v76 == cycleLengthLowerPercentile2)
             {
               goto LABEL_95;
             }
@@ -388,14 +388,14 @@ LABEL_51:
             {
 LABEL_52:
 
-              if (v12 != v13)
+              if (lastMenstruationStartDayIndex != lastMenstruationStartDayIndex2)
               {
                 goto LABEL_53;
               }
 
 LABEL_101:
 
-              if (v7 == v8)
+              if (firstMenstruationStartDayIndex == firstMenstruationStartDayIndex2)
               {
                 goto LABEL_103;
               }
@@ -406,26 +406,26 @@ LABEL_101:
             goto LABEL_98;
           }
 
-          v60 = v29;
+          v60 = cycleLengthUpperPercentile5;
         }
 
-        v31 = [(HKMCStatistics *)self menstruationLengthMedian];
-        v32 = [(HKMCStatistics *)v5 menstruationLengthMedian];
-        v33 = v32;
-        if (v31 == v32)
+        menstruationLengthMedian = [(HKMCStatistics *)self menstruationLengthMedian];
+        menstruationLengthMedian2 = [(HKMCStatistics *)equalCopy menstruationLengthMedian];
+        v33 = menstruationLengthMedian2;
+        if (menstruationLengthMedian == menstruationLengthMedian2)
         {
-          v62 = v32;
+          v62 = menstruationLengthMedian2;
         }
 
         else
         {
-          v34 = [(HKMCStatistics *)v5 menstruationLengthMedian];
-          if (!v34)
+          menstruationLengthMedian3 = [(HKMCStatistics *)equalCopy menstruationLengthMedian];
+          if (!menstruationLengthMedian3)
           {
 
             v11 = 0;
             v20 = v82;
-            if (v72 != v71)
+            if (v72 != cycleLengthUpperPercentile2)
             {
               goto LABEL_87;
             }
@@ -433,16 +433,16 @@ LABEL_101:
             goto LABEL_90;
           }
 
-          v59 = v34;
+          v59 = menstruationLengthMedian3;
           v62 = v33;
-          v35 = [(HKMCStatistics *)self menstruationLengthMedian];
-          v57 = [(HKMCStatistics *)v5 menstruationLengthMedian];
-          v58 = v35;
-          if (![v35 isEqual:?])
+          menstruationLengthMedian4 = [(HKMCStatistics *)self menstruationLengthMedian];
+          menstruationLengthMedian5 = [(HKMCStatistics *)equalCopy menstruationLengthMedian];
+          v58 = menstruationLengthMedian4;
+          if (![menstruationLengthMedian4 isEqual:?])
           {
             v11 = 0;
             v20 = v82;
-            v36 = v71;
+            v36 = cycleLengthUpperPercentile2;
 LABEL_85:
 
             if (v72 != v36)
@@ -471,42 +471,42 @@ LABEL_90:
           }
         }
 
-        v39 = [(HKMCStatistics *)self menstruationLengthLowerPercentile];
-        v61 = [(HKMCStatistics *)v5 menstruationLengthLowerPercentile];
-        if (v39 == v61)
+        menstruationLengthLowerPercentile = [(HKMCStatistics *)self menstruationLengthLowerPercentile];
+        menstruationLengthLowerPercentile2 = [(HKMCStatistics *)equalCopy menstruationLengthLowerPercentile];
+        if (menstruationLengthLowerPercentile == menstruationLengthLowerPercentile2)
         {
-          v56 = v31;
+          v56 = menstruationLengthMedian;
         }
 
         else
         {
-          v40 = [(HKMCStatistics *)v5 menstruationLengthLowerPercentile];
-          if (!v40)
+          menstruationLengthLowerPercentile3 = [(HKMCStatistics *)equalCopy menstruationLengthLowerPercentile];
+          if (!menstruationLengthLowerPercentile3)
           {
             v11 = 0;
             v20 = v82;
             goto LABEL_82;
           }
 
-          v53 = v39;
-          v55 = v40;
-          v41 = [(HKMCStatistics *)self menstruationLengthLowerPercentile];
-          v42 = [(HKMCStatistics *)v5 menstruationLengthLowerPercentile];
-          if (([v41 isEqual:v42] & 1) == 0)
+          v53 = menstruationLengthLowerPercentile;
+          v55 = menstruationLengthLowerPercentile3;
+          menstruationLengthLowerPercentile4 = [(HKMCStatistics *)self menstruationLengthLowerPercentile];
+          menstruationLengthLowerPercentile5 = [(HKMCStatistics *)equalCopy menstruationLengthLowerPercentile];
+          if (([menstruationLengthLowerPercentile4 isEqual:menstruationLengthLowerPercentile5] & 1) == 0)
           {
 
             v11 = 0;
             v48 = v62;
 LABEL_69:
-            if (v31 != v48)
+            if (menstruationLengthMedian != v48)
             {
             }
 
-            if (v72 != v71)
+            if (v72 != cycleLengthUpperPercentile2)
             {
             }
 
-            if (v76 != v77)
+            if (v76 != cycleLengthLowerPercentile2)
             {
             }
 
@@ -514,15 +514,15 @@ LABEL_69:
             {
             }
 
-            if (v12 != v13)
+            if (lastMenstruationStartDayIndex != lastMenstruationStartDayIndex2)
             {
             }
 
 LABEL_54:
 
-            v10 = v80;
-            v9 = v81;
-            if (v7 != v8)
+            firstMenstruationStartDayIndex5 = v80;
+            firstMenstruationStartDayIndex4 = v81;
+            if (firstMenstruationStartDayIndex != firstMenstruationStartDayIndex2)
             {
               goto LABEL_55;
             }
@@ -532,72 +532,72 @@ LABEL_105:
             goto LABEL_106;
           }
 
-          v56 = v31;
-          v51 = v42;
-          v52 = v41;
-          v39 = v53;
+          v56 = menstruationLengthMedian;
+          v51 = menstruationLengthLowerPercentile5;
+          v52 = menstruationLengthLowerPercentile4;
+          menstruationLengthLowerPercentile = v53;
         }
 
-        v43 = [(HKMCStatistics *)self menstruationLengthUpperPercentile];
-        v44 = [(HKMCStatistics *)v5 menstruationLengthUpperPercentile];
-        v11 = v43 == v44;
-        if (v43 == v44)
+        menstruationLengthUpperPercentile = [(HKMCStatistics *)self menstruationLengthUpperPercentile];
+        menstruationLengthUpperPercentile2 = [(HKMCStatistics *)equalCopy menstruationLengthUpperPercentile];
+        v11 = menstruationLengthUpperPercentile == menstruationLengthUpperPercentile2;
+        if (menstruationLengthUpperPercentile == menstruationLengthUpperPercentile2)
         {
         }
 
         else
         {
-          v54 = v44;
-          v45 = [(HKMCStatistics *)v5 menstruationLengthUpperPercentile];
-          if (v45)
+          v54 = menstruationLengthUpperPercentile2;
+          menstruationLengthUpperPercentile3 = [(HKMCStatistics *)equalCopy menstruationLengthUpperPercentile];
+          if (menstruationLengthUpperPercentile3)
           {
-            v85 = v45;
-            v46 = [(HKMCStatistics *)self menstruationLengthUpperPercentile];
-            v47 = [(HKMCStatistics *)v5 menstruationLengthUpperPercentile];
-            v11 = [v46 isEqual:v47];
+            v85 = menstruationLengthUpperPercentile3;
+            menstruationLengthUpperPercentile4 = [(HKMCStatistics *)self menstruationLengthUpperPercentile];
+            menstruationLengthUpperPercentile5 = [(HKMCStatistics *)equalCopy menstruationLengthUpperPercentile];
+            v11 = [menstruationLengthUpperPercentile4 isEqual:menstruationLengthUpperPercentile5];
 
-            if (v39 != v61)
+            if (menstruationLengthLowerPercentile != menstruationLengthLowerPercentile2)
             {
             }
 
             v48 = v62;
-            v31 = v56;
+            menstruationLengthMedian = v56;
             goto LABEL_69;
           }
         }
 
-        if (v39 == v61)
+        if (menstruationLengthLowerPercentile == menstruationLengthLowerPercentile2)
         {
 
           v33 = v62;
-          v31 = v56;
+          menstruationLengthMedian = v56;
           v49 = v56 == v62;
           v20 = v82;
           goto LABEL_84;
         }
 
         v20 = v82;
-        v31 = v56;
+        menstruationLengthMedian = v56;
 LABEL_82:
 
         v33 = v62;
-        v49 = v31 == v62;
+        v49 = menstruationLengthMedian == v62;
 LABEL_84:
-        v36 = v71;
+        v36 = cycleLengthUpperPercentile2;
         if (!v49)
         {
           goto LABEL_85;
         }
 
-        v29 = v60;
-        if (v72 == v71)
+        cycleLengthUpperPercentile5 = v60;
+        if (v72 == cycleLengthUpperPercentile2)
         {
 LABEL_92:
 
           v3 = v68;
           v38 = v69;
           v30 = v70;
-          if (v76 != v77)
+          if (v76 != cycleLengthLowerPercentile2)
           {
 LABEL_93:
 

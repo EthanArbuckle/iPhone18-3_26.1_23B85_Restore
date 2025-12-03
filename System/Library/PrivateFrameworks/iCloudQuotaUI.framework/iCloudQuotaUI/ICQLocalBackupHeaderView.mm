@@ -1,5 +1,5 @@
 @interface ICQLocalBackupHeaderView
-- (ICQLocalBackupHeaderView)initWithSpecifier:(id)a3;
+- (ICQLocalBackupHeaderView)initWithSpecifier:(id)specifier;
 - (void)hideSpinner;
 - (void)layoutSubviews;
 - (void)showSpinner;
@@ -7,23 +7,23 @@
 
 @implementation ICQLocalBackupHeaderView
 
-- (ICQLocalBackupHeaderView)initWithSpecifier:(id)a3
+- (ICQLocalBackupHeaderView)initWithSpecifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = ICQLocalBackupHeaderView;
-  v3 = [(ICQSubtitleHeaderView *)&v14 initWithSpecifier:a3];
+  v3 = [(ICQSubtitleHeaderView *)&v14 initWithSpecifier:specifier];
   v4 = v3;
   if (v3)
   {
-    v5 = [(ICQSubtitleHeaderView *)v3 titleLabel];
+    titleLabel = [(ICQSubtitleHeaderView *)v3 titleLabel];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"BACKUP_OPTIONS" value:&stru_28844FC60 table:@"BackupInfo"];
-    v8 = [v7 uppercaseString];
-    [v5 setText:v8];
+    uppercaseString = [v7 uppercaseString];
+    [titleLabel setText:uppercaseString];
 
-    v9 = [(ICQSubtitleHeaderView *)v4 titleLabel];
-    v10 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v9 setTextColor:v10];
+    titleLabel2 = [(ICQSubtitleHeaderView *)v4 titleLabel];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [titleLabel2 setTextColor:secondaryLabelColor];
 
     v11 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     spinner = v4->_spinner;
@@ -57,8 +57,8 @@
   v23.receiver = self;
   v23.super_class = ICQLocalBackupHeaderView;
   [(ICQSubtitleHeaderView *)&v23 layoutSubviews];
-  v3 = [(ICQSubtitleHeaderView *)self titleLabel];
-  [v3 frame];
+  titleLabel = [(ICQSubtitleHeaderView *)self titleLabel];
+  [titleLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -67,12 +67,12 @@
   [(UIActivityIndicatorView *)self->_spinner frame];
   v13 = v12;
   v15 = v14;
-  v16 = [(ICQLocalBackupHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(ICQLocalBackupHeaderView *)self _shouldReverseLayoutDirection];
   v17 = v5;
   v18 = v7;
   v19 = v9;
   v20 = v11;
-  if (v16)
+  if (_shouldReverseLayoutDirection)
   {
     v21 = CGRectGetMinX(*&v17) + -6.0 - v13;
   }

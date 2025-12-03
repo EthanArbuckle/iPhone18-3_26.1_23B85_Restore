@@ -23,20 +23,20 @@
 
 - (id)anyDestinationID
 {
-  v2 = [a1 phoneNumberStrings];
-  v3 = [a1 emailAddressStrings];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
-  v5 = [v4 firstObject];
+  phoneNumberStrings = [self phoneNumberStrings];
+  emailAddressStrings = [self emailAddressStrings];
+  v4 = [phoneNumberStrings arrayByAddingObjectsFromArray:emailAddressStrings];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (id)faceTimeQuicklookURL
 {
   v1 = MEMORY[0x1E695DFF8];
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 identifier];
-  v4 = [v2 stringWithFormat:@"addressbook://%@", v3];
+  identifier = [self identifier];
+  v4 = [v2 stringWithFormat:@"addressbook://%@", identifier];
   v5 = [v1 URLWithString:v4];
 
   return v5;
@@ -44,8 +44,8 @@
 
 - (id)phoneNumberStrings
 {
-  v1 = [a1 phoneNumbers];
-  v2 = [v1 arrayByApplyingSelector:sel_value];
+  phoneNumbers = [self phoneNumbers];
+  v2 = [phoneNumbers arrayByApplyingSelector:sel_value];
   v3 = [v2 arrayByApplyingSelector:sel_stringValue];
 
   return v3;
@@ -53,8 +53,8 @@
 
 - (id)phoneNumberLastFourDigitStrings
 {
-  v1 = [a1 phoneNumbers];
-  v2 = [v1 arrayByApplyingSelector:sel_value];
+  phoneNumbers = [self phoneNumbers];
+  v2 = [phoneNumbers arrayByApplyingSelector:sel_value];
   v3 = [v2 arrayByApplyingSelector:sel_lastFourDigits];
 
   return v3;
@@ -62,8 +62,8 @@
 
 - (id)emailAddressStrings
 {
-  v1 = [a1 emailAddresses];
-  v2 = [v1 arrayByApplyingSelector:sel_value];
+  emailAddresses = [self emailAddresses];
+  v2 = [emailAddresses arrayByApplyingSelector:sel_value];
 
   return v2;
 }

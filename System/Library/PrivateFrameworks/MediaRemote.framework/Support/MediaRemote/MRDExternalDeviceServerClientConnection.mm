@@ -1,50 +1,50 @@
 @interface MRDExternalDeviceServerClientConnection
 - (BOOL)_wantsLibraryCommands;
-- (BOOL)hasAccessToPlayerPath:(id)a3;
-- (BOOL)isAllowedToSendMessageType:(unint64_t)a3;
+- (BOOL)hasAccessToPlayerPath:(id)path;
+- (BOOL)isAllowedToSendMessageType:(unint64_t)type;
 - (BOOL)isDestinationLocal;
-- (BOOL)removePendingPlaybackSessionMigrateEvent:(id)a3;
+- (BOOL)removePendingPlaybackSessionMigrateEvent:(id)event;
 - (MRAVEndpoint)destinationEndpoint;
-- (MRDExternalDeviceServerClientConnection)initWithConnection:(id)a3 replyQueue:(id)a4;
+- (MRDExternalDeviceServerClientConnection)initWithConnection:(id)connection replyQueue:(id)queue;
 - (MRDExternalDeviceServerClientConnectionDelegate)serverDelegate;
 - (NSArray)discoverySessionConfigurations;
 - (NSArray)registeredVirtualVoiceInputDevices;
 - (NSArray)virtualTouchDevices;
 - (NSString)debugDescription;
 - (NSString)description;
-- (id)exportContentItemArtworkUpdates:(id)a3 forPlayerPath:(id)a4;
-- (id)exportContentItems:(id)a3 forPlayerPath:(id)a4;
-- (id)exportNowPlayingState:(id)a3 forPlayerPath:(id)a4;
-- (id)exportPlaybackQueue:(id)a3 forPlayerPath:(id)a4;
-- (id)exportSupportedCommands:(id)a3;
-- (id)gameControllerWithID:(unint64_t)a3;
+- (id)exportContentItemArtworkUpdates:(id)updates forPlayerPath:(id)path;
+- (id)exportContentItems:(id)items forPlayerPath:(id)path;
+- (id)exportNowPlayingState:(id)state forPlayerPath:(id)path;
+- (id)exportPlaybackQueue:(id)queue forPlayerPath:(id)path;
+- (id)exportSupportedCommands:(id)commands;
+- (id)gameControllerWithID:(unint64_t)d;
 - (id)label;
-- (id)outputDevicesForEndpoint:(id)a3;
-- (id)virtualTouchDeviceWithID:(unint64_t)a3;
-- (unint64_t)addGameController:(id)a3;
-- (unint64_t)addVirtualTouchDevice:(id)a3;
-- (unint64_t)virtualTouchIDWithPackedID:(unint64_t)a3;
+- (id)outputDevicesForEndpoint:(id)endpoint;
+- (id)virtualTouchDeviceWithID:(unint64_t)d;
+- (unint64_t)addGameController:(id)controller;
+- (unint64_t)addVirtualTouchDevice:(id)device;
+- (unint64_t)virtualTouchIDWithPackedID:(unint64_t)d;
 - (unsigned)connectOptions;
-- (unsigned)discoveryModeForConfiguration:(id)a3;
-- (void)_handleEndpointDidDisconnect:(id)a3;
-- (void)addLyricsEvent:(id)a3;
-- (void)addPendingPlaybackSessionMigrateEvent:(id)a3 playerPath:(id)a4;
-- (void)addRegisteredVirtualVoiceInputDevice:(unsigned int)a3;
-- (void)addVolumeEvent:(_MRHIDButtonEvent)a3;
+- (unsigned)discoveryModeForConfiguration:(id)configuration;
+- (void)_handleEndpointDidDisconnect:(id)disconnect;
+- (void)addLyricsEvent:(id)event;
+- (void)addPendingPlaybackSessionMigrateEvent:(id)event playerPath:(id)path;
+- (void)addRegisteredVirtualVoiceInputDevice:(unsigned int)device;
+- (void)addVolumeEvent:(_MRHIDButtonEvent)event;
 - (void)dealloc;
-- (void)flushLyricsEvents:(id)a3;
-- (void)flushPendingPlaybackSessionMigrateEvents:(id)a3;
-- (void)flushVolumeEvents:(id)a3;
-- (void)gameController:(id)a3 propertiesDidChange:(id)a4;
-- (void)localizeDestinationOrigin:(id)a3 completion:(id)a4;
-- (void)localizeDestinationPlayerPath:(id)a3 completion:(id)a4;
+- (void)flushLyricsEvents:(id)events;
+- (void)flushPendingPlaybackSessionMigrateEvents:(id)events;
+- (void)flushVolumeEvents:(id)events;
+- (void)gameController:(id)controller propertiesDidChange:(id)change;
+- (void)localizeDestinationOrigin:(id)origin completion:(id)completion;
+- (void)localizeDestinationPlayerPath:(id)path completion:(id)completion;
 - (void)removeAllVirtualTouchDevices;
-- (void)removeGameController:(unint64_t)a3;
-- (void)removeLyricsEvent:(id)a3;
-- (void)requestConnectedDestinationEndpoint:(id)a3;
-- (void)requestDestinationEndpoint:(id)a3;
-- (void)setDestinationEndpoint:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)removeGameController:(unint64_t)controller;
+- (void)removeLyricsEvent:(id)event;
+- (void)requestConnectedDestinationEndpoint:(id)endpoint;
+- (void)requestDestinationEndpoint:(id)endpoint;
+- (void)setDestinationEndpoint:(id)endpoint;
+- (void)setLabel:(id)label;
 - (void)unregisterAllVirtualVoiceInputDevices;
 @end
 
@@ -52,19 +52,19 @@
 
 - (MRAVEndpoint)destinationEndpoint
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_destinationEndpoint;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_destinationEndpoint;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (MRDExternalDeviceServerClientConnection)initWithConnection:(id)a3 replyQueue:(id)a4
+- (MRDExternalDeviceServerClientConnection)initWithConnection:(id)connection replyQueue:(id)queue
 {
   v25.receiver = self;
   v25.super_class = MRDExternalDeviceServerClientConnection;
-  v4 = [(MRDExternalDeviceServerClientConnection *)&v25 initWithConnection:a3 replyQueue:a4];
+  v4 = [(MRDExternalDeviceServerClientConnection *)&v25 initWithConnection:connection replyQueue:queue];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -125,23 +125,23 @@
 {
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
-  v5 = [(MRDExternalDeviceServerClientConnection *)self connection];
-  v6 = [v3 initWithFormat:@"<%@:%p %@", v4, self, v5];
+  connection = [(MRDExternalDeviceServerClientConnection *)self connection];
+  v6 = [v3 initWithFormat:@"<%@:%p %@", v4, self, connection];
 
-  v7 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
+  destinationOutputDeviceUID = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
 
-  if (v7)
+  if (destinationOutputDeviceUID)
   {
-    v8 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
-    [v6 appendFormat:@"destination=%@", v8];
+    destinationOutputDeviceUID2 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
+    [v6 appendFormat:@"destination=%@", destinationOutputDeviceUID2];
   }
 
-  v9 = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
+  destinationGroupUID = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
 
-  if (v9)
+  if (destinationGroupUID)
   {
-    v10 = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
-    [v6 appendFormat:@"destinationGroup=%@", v10];
+    destinationGroupUID2 = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
+    [v6 appendFormat:@"destinationGroup=%@", destinationGroupUID2];
   }
 
   [v6 appendString:@">"];
@@ -179,10 +179,10 @@
 
   v4 = objc_opt_class();
   v26 = NSStringFromClass(v4);
-  v28 = [(MRDExternalDeviceServerClientConnection *)self deviceInfo];
+  deviceInfo = [(MRDExternalDeviceServerClientConnection *)self deviceInfo];
   v25 = MRCreateIndentedDebugDescriptionFromObject();
-  v27 = [(MRDExternalDeviceServerClientConnection *)self supportedMessages];
-  v24 = [v27 lastSupportedMessageType];
+  supportedMessages = [(MRDExternalDeviceServerClientConnection *)self supportedMessages];
+  lastSupportedMessageType = [supportedMessages lastSupportedMessageType];
   virtualTouchDevices = self->_virtualTouchDevices;
   v19 = MRCreateIndentedDebugDescriptionFromArray();
   registeredVirtualVoiceInputDevices = self->_registeredVirtualVoiceInputDevices;
@@ -191,27 +191,27 @@
   pinPairingToken = self->_pinPairingToken;
   sessionPeer = self->_sessionPeer;
   WeakRetained = objc_loadWeakRetained(&self->_serverDelegate);
-  v8 = [(MRDExternalDeviceServerClientConnection *)self subscribedPlayerPaths];
+  subscribedPlayerPaths = [(MRDExternalDeviceServerClientConnection *)self subscribedPlayerPaths];
   v9 = MRCreateIndentedDebugDescriptionFromArray();
-  v10 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
-  v11 = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
-  v12 = [(MRDExternalDeviceServerClientConnection *)self destinationEndpoint];
-  v13 = [(MRDExternalDeviceServerClientConnection *)self connection];
+  destinationOutputDeviceUID = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
+  destinationGroupUID = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
+  destinationEndpoint = [(MRDExternalDeviceServerClientConnection *)self destinationEndpoint];
+  connection = [(MRDExternalDeviceServerClientConnection *)self connection];
   v14 = v3;
   v23 = v3;
-  v15 = v13;
-  v16 = [NSString stringWithFormat:@"<%@ %p {\n    deviceInfo = %@\n    lastSupportedMessageType = %ld\n    virtualTouchDevices = %@\n    registeredVirtualVoiceInputDevices = %@\n    playbackQueueRequests = %@\n    sessionPeer = %@\n    pinPairingToken = %@\n    serverDelegate = %@\n    registeredUpdates = %@\n    subscribedPlayerPaths = %@\n    destinationOutputDeviceUID = %@\n    destinationGroupID = %@\n    destinationEndpoint = %@\n    connection = %@\n}>", v26, self, v25, v24, v19, v7, playbackQueueRequests, sessionPeer, pinPairingToken, WeakRetained, v14, v9, v10, v11, v12, v13];
+  v15 = connection;
+  v16 = [NSString stringWithFormat:@"<%@ %p {\n    deviceInfo = %@\n    lastSupportedMessageType = %ld\n    virtualTouchDevices = %@\n    registeredVirtualVoiceInputDevices = %@\n    playbackQueueRequests = %@\n    sessionPeer = %@\n    pinPairingToken = %@\n    serverDelegate = %@\n    registeredUpdates = %@\n    subscribedPlayerPaths = %@\n    destinationOutputDeviceUID = %@\n    destinationGroupID = %@\n    destinationEndpoint = %@\n    connection = %@\n}>", v26, self, v25, lastSupportedMessageType, v19, v7, playbackQueueRequests, sessionPeer, pinPairingToken, WeakRetained, v14, v9, destinationOutputDeviceUID, destinationGroupUID, destinationEndpoint, connection];
 
   return v16;
 }
 
 - (unsigned)connectOptions
 {
-  v2 = [(MRDExternalDeviceServerClientConnection *)self connectUserInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ConnectOptions"];
-  v4 = [v3 intValue];
+  connectUserInfo = [(MRDExternalDeviceServerClientConnection *)self connectUserInfo];
+  v3 = [connectUserInfo objectForKeyedSubscript:@"ConnectOptions"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (NSArray)virtualTouchDevices
@@ -258,30 +258,30 @@
   return v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   obj = self;
   objc_sync_enter(obj);
   label = obj->_label;
-  obj->_label = v4;
+  obj->_label = labelCopy;
 
   objc_sync_exit(obj);
 }
 
 - (id)label
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_label;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_label;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (unint64_t)addGameController:(id)a3
+- (unint64_t)addGameController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = self->_gameControllerDeviceIDCounter + 1;
   self->_gameControllerDeviceIDCounter = v5;
   serialQueue = self->_serialQueue;
@@ -291,9 +291,9 @@
   block[2] = sub_1000A56E0;
   block[3] = &unk_1004B6AC0;
   block[4] = self;
-  v12 = v4;
+  v12 = controllerCopy;
   v13 = v5;
-  v8 = v4;
+  v8 = controllerCopy;
   dispatch_sync(serialQueue, block);
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -306,7 +306,7 @@
   return v7;
 }
 
-- (id)gameControllerWithID:(unint64_t)a3
+- (id)gameControllerWithID:(unint64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -321,7 +321,7 @@
   block[3] = &unk_1004B6980;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = d;
   dispatch_sync(serialQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -329,7 +329,7 @@
   return v4;
 }
 
-- (void)removeGameController:(unint64_t)a3
+- (void)removeGameController:(unint64_t)controller
 {
   serialQueue = self->_serialQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -337,13 +337,13 @@
   v4[2] = sub_1000A5958;
   v4[3] = &unk_1004B7650;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = controller;
   dispatch_sync(serialQueue, v4);
 }
 
-- (unint64_t)addVirtualTouchDevice:(id)a3
+- (unint64_t)addVirtualTouchDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = self->_deviceIDCounter + 1;
   self->_deviceIDCounter = v5;
   serialQueue = self->_serialQueue;
@@ -353,15 +353,15 @@
   block[2] = sub_1000A5A88;
   block[3] = &unk_1004B6AC0;
   block[4] = self;
-  v11 = v4;
+  v11 = deviceCopy;
   v12 = v5;
-  v8 = v4;
+  v8 = deviceCopy;
   dispatch_sync(serialQueue, block);
 
   return v7;
 }
 
-- (id)virtualTouchDeviceWithID:(unint64_t)a3
+- (id)virtualTouchDeviceWithID:(unint64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -375,7 +375,7 @@
   block[2] = sub_1000A5C34;
   block[3] = &unk_1004B7A60;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = d;
   block[4] = self;
   dispatch_sync(serialQueue, block);
   v4 = v8[5];
@@ -395,7 +395,7 @@
   dispatch_sync(serialQueue, block);
 }
 
-- (void)addRegisteredVirtualVoiceInputDevice:(unsigned int)a3
+- (void)addRegisteredVirtualVoiceInputDevice:(unsigned int)device
 {
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
@@ -403,7 +403,7 @@
   block[2] = sub_1000A5FBC;
   block[3] = &unk_1004B87D0;
   block[4] = self;
-  v9 = a3;
+  deviceCopy = device;
   dispatch_sync(serialQueue, block);
   objc_initWeak(&location, self);
   v5 = &_dispatch_main_q;
@@ -464,47 +464,47 @@
   _Block_object_dispose(&v13, 8);
 }
 
-- (unint64_t)virtualTouchIDWithPackedID:(unint64_t)a3
+- (unint64_t)virtualTouchIDWithPackedID:(unint64_t)d
 {
   packedDeviceIDToDeviceIDMapping = self->_packedDeviceIDToDeviceIDMapping;
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:d];
   v5 = [(NSMutableDictionary *)packedDeviceIDToDeviceIDMapping objectForKey:v4];
-  v6 = [v5 longLongValue];
+  longLongValue = [v5 longLongValue];
 
-  return v6;
+  return longLongValue;
 }
 
-- (void)addLyricsEvent:(id)a3
+- (void)addLyricsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A64A0;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)removeLyricsEvent:(id)a3
+- (void)removeLyricsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A6554;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)flushLyricsEvents:(id)a3
+- (void)flushLyricsEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -538,7 +538,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        eventsCopy[2](eventsCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 
@@ -552,21 +552,21 @@
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)addVolumeEvent:(_MRHIDButtonEvent)a3
+- (void)addVolumeEvent:(_MRHIDButtonEvent)event
 {
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A698C;
   block[3] = &unk_1004B9D48;
-  v5 = a3;
+  eventCopy = event;
   block[4] = self;
   dispatch_sync(serialQueue, block);
 }
 
-- (void)flushVolumeEvents:(id)a3
+- (void)flushVolumeEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -586,38 +586,38 @@
   dispatch_sync(serialQueue, block);
   if (*(v12 + 24) == 1)
   {
-    v4[2](v4, 0xE90000000CLL, 0);
+    eventsCopy[2](eventsCopy, 0xE90000000CLL, 0);
   }
 
   if (*(v8 + 24) == 1)
   {
-    v4[2](v4, 0xEA0000000CLL, 0);
+    eventsCopy[2](eventsCopy, 0xEA0000000CLL, 0);
   }
 
   _Block_object_dispose(&v7, 8);
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)addPendingPlaybackSessionMigrateEvent:(id)a3 playerPath:(id)a4
+- (void)addPendingPlaybackSessionMigrateEvent:(id)event playerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  pathCopy = path;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A6C58;
   block[3] = &unk_1004B69D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = pathCopy;
+  v9 = pathCopy;
+  v10 = eventCopy;
   dispatch_sync(serialQueue, block);
 }
 
-- (BOOL)removePendingPlaybackSessionMigrateEvent:(id)a3
+- (BOOL)removePendingPlaybackSessionMigrateEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -628,9 +628,9 @@
   block[2] = sub_1000A6DD8;
   block[3] = &unk_1004B78D8;
   block[4] = self;
-  v9 = v4;
+  v9 = eventCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = eventCopy;
   dispatch_sync(serialQueue, block);
   LOBYTE(serialQueue) = *(v12 + 24);
 
@@ -638,10 +638,10 @@
   return serialQueue;
 }
 
-- (void)flushPendingPlaybackSessionMigrateEvents:(id)a3
+- (void)flushPendingPlaybackSessionMigrateEvents:(id)events
 {
-  v4 = a3;
-  if (v4)
+  eventsCopy = events;
+  if (eventsCopy)
   {
     v18 = 0;
     v19 = &v18;
@@ -676,9 +676,9 @@
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v10 first];
-          v12 = [v10 second];
-          v4[2](v4, v11, v12);
+          first = [v10 first];
+          second = [v10 second];
+          eventsCopy[2](eventsCopy, first, second);
         }
 
         v7 = [v6 countByEnumeratingWithState:&v13 objects:v24 count:16];
@@ -691,55 +691,55 @@
   }
 }
 
-- (void)localizeDestinationPlayerPath:(id)a3 completion:(id)a4
+- (void)localizeDestinationPlayerPath:(id)path completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000A71BC;
   v8[3] = &unk_1004B9D98;
-  v9 = a3;
-  v10 = a4;
-  v6 = v9;
-  v7 = v10;
+  pathCopy = path;
+  completionCopy = completion;
+  v6 = pathCopy;
+  v7 = completionCopy;
   [(MRDExternalDeviceServerClientConnection *)self requestConnectedDestinationEndpoint:v8];
 }
 
-- (void)localizeDestinationOrigin:(id)a3 completion:(id)a4
+- (void)localizeDestinationOrigin:(id)origin completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MRPlayerPath alloc] initWithOrigin:v7 client:0 player:0];
+  completionCopy = completion;
+  originCopy = origin;
+  v8 = [[MRPlayerPath alloc] initWithOrigin:originCopy client:0 player:0];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000A7384;
   v10[3] = &unk_1004B9DC0;
-  v11 = v6;
-  v9 = v6;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(MRDExternalDeviceServerClientConnection *)self localizeDestinationPlayerPath:v8 completion:v10];
 }
 
-- (void)requestConnectedDestinationEndpoint:(id)a3
+- (void)requestConnectedDestinationEndpoint:(id)endpoint
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000A7478;
   v4[3] = &unk_1004B9E10;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MRDExternalDeviceServerClientConnection *)v5 requestDestinationEndpoint:v4];
+  selfCopy = self;
+  endpointCopy = endpoint;
+  v3 = endpointCopy;
+  [(MRDExternalDeviceServerClientConnection *)selfCopy requestDestinationEndpoint:v4];
 }
 
-- (void)requestDestinationEndpoint:(id)a3
+- (void)requestDestinationEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(MRDExternalDeviceServerClientConnection *)self destinationEndpoint];
-  if (v5)
+  endpointCopy = endpoint;
+  destinationEndpoint = [(MRDExternalDeviceServerClientConnection *)self destinationEndpoint];
+  if (destinationEndpoint)
   {
-    if (v4)
+    if (endpointCopy)
     {
-      v4[2](v4, v5);
+      endpointCopy[2](endpointCopy, destinationEndpoint);
     }
   }
 
@@ -750,31 +750,31 @@
     v12 = 3221225472;
     v13 = sub_1000A7710;
     v14 = &unk_1004B9E10;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = endpointCopy;
     v7 = objc_retainBlock(&v11);
     v8 = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID:v11];
 
     v9 = +[MRDAutoConnectionController sharedConnectionController];
     if (v8)
     {
-      v10 = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
-      [v9 discoverGroup:v10 reason:v6 queue:&_dispatch_main_q completion:v7];
+      destinationGroupUID = [(MRDExternalDeviceServerClientConnection *)self destinationGroupUID];
+      [v9 discoverGroup:destinationGroupUID reason:v6 queue:&_dispatch_main_q completion:v7];
     }
 
     else
     {
-      v10 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
-      [v9 discoverOutputDevice:v10 reason:v6 queue:&_dispatch_main_q completion:v7];
+      destinationGroupUID = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
+      [v9 discoverOutputDevice:destinationGroupUID reason:v6 queue:&_dispatch_main_q completion:v7];
     }
   }
 }
 
 - (BOOL)isDestinationLocal
 {
-  v3 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
+  destinationOutputDeviceUID = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
 
-  if (!v3)
+  if (!destinationOutputDeviceUID)
   {
     return 1;
   }
@@ -782,27 +782,27 @@
   v4 = +[MROrigin localOrigin];
   v5 = [MRDeviceInfoRequest deviceInfoForOrigin:v4];
 
-  v6 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
-  v7 = [v5 WHAIdentifier];
-  v8 = [v6 isEqualToString:v7];
+  destinationOutputDeviceUID2 = [(MRDExternalDeviceServerClientConnection *)self destinationOutputDeviceUID];
+  wHAIdentifier = [v5 WHAIdentifier];
+  v8 = [destinationOutputDeviceUID2 isEqualToString:wHAIdentifier];
 
   return v8;
 }
 
-- (void)setDestinationEndpoint:(id)a3
+- (void)setDestinationEndpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  destinationEndpoint = v6->_destinationEndpoint;
-  if (destinationEndpoint != v5)
+  endpointCopy = endpoint;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  destinationEndpoint = selfCopy->_destinationEndpoint;
+  if (destinationEndpoint != endpointCopy)
   {
     if (destinationEndpoint)
     {
       v8 = +[NSNotificationCenter defaultCenter];
-      [v8 removeObserver:v6 name:MRAVEndpointDidDisconnectNotification object:v6->_destinationEndpoint];
+      [v8 removeObserver:selfCopy name:MRAVEndpointDidDisconnectNotification object:selfCopy->_destinationEndpoint];
 
-      v9 = v6->_destinationEndpoint;
+      v9 = selfCopy->_destinationEndpoint;
     }
 
     else
@@ -810,23 +810,23 @@
       v9 = 0;
     }
 
-    v10 = [(MRAVEndpoint *)v9 debugName];
+    debugName = [(MRAVEndpoint *)v9 debugName];
 
-    if (v10)
+    if (debugName)
     {
       v11 = _MRLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(MRAVEndpoint *)v6->_destinationEndpoint debugName];
-        v13 = [(MRAVEndpoint *)v5 debugName];
+        debugName2 = [(MRAVEndpoint *)selfCopy->_destinationEndpoint debugName];
+        debugName3 = [(MRAVEndpoint *)endpointCopy debugName];
         *buf = 138544130;
-        v25 = v6;
+        v25 = selfCopy;
         v26 = 2114;
         v27 = @"destinationEndpoint";
         v28 = 2112;
-        v29 = v12;
+        v29 = debugName2;
         v30 = 2112;
-        v31 = v13;
+        v31 = debugName3;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ from <%@> to <%@>", buf, 0x2Au);
       }
     }
@@ -836,96 +836,96 @@
       v11 = _MRLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(MRAVEndpoint *)v5 debugName];
+        debugName4 = [(MRAVEndpoint *)endpointCopy debugName];
         *buf = 138543874;
-        v25 = v6;
+        v25 = selfCopy;
         v26 = 2114;
         v27 = @"destinationEndpoint";
         v28 = 2112;
-        v29 = v14;
+        v29 = debugName4;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", buf, 0x20u);
       }
     }
 
-    objc_storeStrong(&v6->_destinationEndpoint, a3);
-    if (v6->_destinationEndpoint || (v15 = [[NSError alloc] initWithMRError:24], -[MRDExternalDeviceServerClientConnection disconnectWithError:](v6, "disconnectWithError:", v15), v15, v6->_destinationEndpoint))
+    objc_storeStrong(&selfCopy->_destinationEndpoint, endpoint);
+    if (selfCopy->_destinationEndpoint || (v15 = [[NSError alloc] initWithMRError:24], -[MRDExternalDeviceServerClientConnection disconnectWithError:](selfCopy, "disconnectWithError:", v15), v15, selfCopy->_destinationEndpoint))
     {
       v16 = +[NSNotificationCenter defaultCenter];
-      [v16 addObserver:v6 selector:"_handleEndpointDidDisconnect:" name:MRAVEndpointDidDisconnectNotification object:v6->_destinationEndpoint];
+      [v16 addObserver:selfCopy selector:"_handleEndpointDidDisconnect:" name:MRAVEndpointDidDisconnectNotification object:selfCopy->_destinationEndpoint];
     }
 
-    if ([(NSString *)v6->_label length])
+    if ([(NSString *)selfCopy->_label length])
     {
-      v17 = [(MRAVEndpoint *)v6->_destinationEndpoint debugName];
-      label = v6->_label;
-      v6->_label = v17;
+      debugName5 = [(MRAVEndpoint *)selfCopy->_destinationEndpoint debugName];
+      label = selfCopy->_label;
+      selfCopy->_label = debugName5;
     }
 
     else
     {
-      label = [(MRDExternalDeviceServerClientConnection *)v6 label];
-      v19 = [(MRAVEndpoint *)v6->_destinationEndpoint debugName];
-      v20 = v19;
+      label = [(MRDExternalDeviceServerClientConnection *)selfCopy label];
+      debugName6 = [(MRAVEndpoint *)selfCopy->_destinationEndpoint debugName];
+      v20 = debugName6;
       v21 = &stru_1004D2058;
       if (label)
       {
         v21 = label;
       }
 
-      v22 = [NSString stringWithFormat:@"%@-%@", v21, v19];
-      v23 = v6->_label;
-      v6->_label = v22;
+      v22 = [NSString stringWithFormat:@"%@-%@", v21, debugName6];
+      v23 = selfCopy->_label;
+      selfCopy->_label = v22;
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)_wantsLibraryCommands
 {
-  v3 = [(MRDExternalDeviceServerClientConnection *)self deviceInfo];
-  v4 = [v3 isGizmo];
+  deviceInfo = [(MRDExternalDeviceServerClientConnection *)self deviceInfo];
+  isGizmo = [deviceInfo isGizmo];
 
-  if (v4)
+  if (isGizmo)
   {
     return 1;
   }
 
-  v6 = [(MRDExternalDeviceServerClientConnection *)self deviceInfo];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.TVRemote"];
+  deviceInfo2 = [(MRDExternalDeviceServerClientConnection *)self deviceInfo];
+  bundleIdentifier = [deviceInfo2 bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.TVRemote"];
 
   return v8;
 }
 
-- (id)exportNowPlayingState:(id)a3 forPlayerPath:(id)a4
+- (id)exportNowPlayingState:(id)state forPlayerPath:(id)path
 {
-  v4 = a3;
-  if (a3)
+  stateCopy = state;
+  if (state)
   {
-    v6 = a4;
-    v7 = v4;
-    v4 = [v7 copy];
-    v8 = [v7 supportedCommands];
-    v9 = [(MRDExternalDeviceServerClientConnection *)self exportSupportedCommands:v8];
-    [v4 setSupportedCommands:v9];
+    pathCopy = path;
+    v7 = stateCopy;
+    stateCopy = [v7 copy];
+    supportedCommands = [v7 supportedCommands];
+    v9 = [(MRDExternalDeviceServerClientConnection *)self exportSupportedCommands:supportedCommands];
+    [stateCopy setSupportedCommands:v9];
 
-    v10 = [v7 playbackQueue];
+    playbackQueue = [v7 playbackQueue];
 
-    v11 = [(MRDExternalDeviceServerClientConnection *)self exportPlaybackQueue:v10 forPlayerPath:v6];
+    v11 = [(MRDExternalDeviceServerClientConnection *)self exportPlaybackQueue:playbackQueue forPlayerPath:pathCopy];
 
-    [v4 setPlaybackQueue:v11];
+    [stateCopy setPlaybackQueue:v11];
   }
 
-  return v4;
+  return stateCopy;
 }
 
-- (id)exportSupportedCommands:(id)a3
+- (id)exportSupportedCommands:(id)commands
 {
-  v4 = a3;
+  commandsCopy = commands;
   if ([(MRDExternalDeviceServerClientConnection *)self _wantsLibraryCommands])
   {
-    v5 = v4;
+    v5 = commandsCopy;
   }
 
   else
@@ -935,27 +935,27 @@
     v7[2] = sub_1000A7DBC;
     v7[3] = &unk_1004B9E38;
     v8 = &off_1004E0E80;
-    v5 = [v4 msv_filter:v7];
+    v5 = [commandsCopy msv_filter:v7];
   }
 
   return v5;
 }
 
-- (id)exportPlaybackQueue:(id)a3 forPlayerPath:(id)a4
+- (id)exportPlaybackQueue:(id)queue forPlayerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  queueCopy = queue;
+  pathCopy = path;
+  if (queueCopy)
   {
-    v8 = [v6 range];
-    v10 = [MRPlaybackQueueRequest defaultPlaybackQueueRequestWithRange:v8, v9];
+    range = [queueCopy range];
+    v10 = [MRPlaybackQueueRequest defaultPlaybackQueueRequestWithRange:range, v9];
     v11 = MRPlaybackQueueCreateFromRequest();
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v11 contentItems];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    contentItems = [v11 contentItems];
+    v13 = [contentItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -966,21 +966,21 @@
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(contentItems);
           }
 
-          v17 = [*(*(&v21 + 1) + 8 * i) metadata];
-          [v17 setDeviceSpecificUserInfo:0];
+          metadata = [*(*(&v21 + 1) + 8 * i) metadata];
+          [metadata setDeviceSpecificUserInfo:0];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [contentItems countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
     }
 
-    v18 = [(MRDExternalDeviceServerClientConnection *)self playbackQueueRequests];
-    v19 = [v18 existingSubscriptionControllerForPlayerPath:v7];
+    playbackQueueRequests = [(MRDExternalDeviceServerClientConnection *)self playbackQueueRequests];
+    v19 = [playbackQueueRequests existingSubscriptionControllerForPlayerPath:pathCopy];
 
     [v19 subscribeToPlaybackQueue:v11 forRequest:v10];
   }
@@ -993,16 +993,16 @@
   return v11;
 }
 
-- (id)exportContentItems:(id)a3 forPlayerPath:(id)a4
+- (id)exportContentItems:(id)items forPlayerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  pathCopy = path;
+  if ([itemsCopy count])
   {
-    v8 = [(MRDExternalDeviceServerClientConnection *)self playbackQueueRequests];
-    v9 = [v8 existingSubscriptionControllerForPlayerPath:v7];
+    playbackQueueRequests = [(MRDExternalDeviceServerClientConnection *)self playbackQueueRequests];
+    v9 = [playbackQueueRequests existingSubscriptionControllerForPlayerPath:pathCopy];
 
-    [v9 filteredContentItemsBySubscriptionsForContentItems:v6];
+    [v9 filteredContentItemsBySubscriptionsForContentItems:itemsCopy];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -1022,8 +1022,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v19 + 1) + 8 * v14) metadata];
-          [v15 setDeviceSpecificUserInfo:0];
+          metadata = [*(*(&v19 + 1) + 8 * v14) metadata];
+          [metadata setDeviceSpecificUserInfo:0];
 
           v14 = v14 + 1;
         }
@@ -1056,16 +1056,16 @@
   return v16;
 }
 
-- (id)exportContentItemArtworkUpdates:(id)a3 forPlayerPath:(id)a4
+- (id)exportContentItemArtworkUpdates:(id)updates forPlayerPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  updatesCopy = updates;
+  pathCopy = path;
+  if ([updatesCopy count])
   {
-    v8 = [(MRDExternalDeviceServerClientConnection *)self playbackQueueRequests];
-    v9 = [v8 existingSubscriptionControllerForPlayerPath:v7];
+    playbackQueueRequests = [(MRDExternalDeviceServerClientConnection *)self playbackQueueRequests];
+    v9 = [playbackQueueRequests existingSubscriptionControllerForPlayerPath:pathCopy];
 
-    v10 = [v9 filteredContentItemsBySubscriptionsForContentItems:v6];
+    v10 = [v9 filteredContentItemsBySubscriptionsForContentItems:updatesCopy];
   }
 
   else
@@ -1088,31 +1088,31 @@
   return v11;
 }
 
-- (unsigned)discoveryModeForConfiguration:(id)a3
+- (unsigned)discoveryModeForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_discoveryModes objectForKeyedSubscript:v4];
-  v7 = [v6 intValue];
+  configurationCopy = configuration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_discoveryModes objectForKeyedSubscript:configurationCopy];
+  intValue = [v6 intValue];
 
-  objc_sync_exit(v5);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return intValue;
 }
 
 - (NSArray)discoverySessionConfigurations
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_discoveryModes allKeys];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_discoveryModes allKeys];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allKeys;
 }
 
-- (id)outputDevicesForEndpoint:(id)a3
+- (id)outputDevicesForEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -1128,12 +1128,12 @@
   v5 = objc_retainBlock(v8);
   if ((v5[2])())
   {
-    [v4 resolvedOutputDevices];
+    [endpointCopy resolvedOutputDevices];
   }
 
   else
   {
-    [v4 outputDevices];
+    [endpointCopy outputDevices];
   }
   v6 = ;
 
@@ -1142,36 +1142,36 @@
   return v6;
 }
 
-- (BOOL)hasAccessToPlayerPath:(id)a3
+- (BOOL)hasAccessToPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MRDExternalDeviceServerClientConnection *)self connection];
-  v6 = [v5 hasAccessToPlayerPath:v4];
+  pathCopy = path;
+  connection = [(MRDExternalDeviceServerClientConnection *)self connection];
+  v6 = [connection hasAccessToPlayerPath:pathCopy];
 
   return v6;
 }
 
-- (BOOL)isAllowedToSendMessageType:(unint64_t)a3
+- (BOOL)isAllowedToSendMessageType:(unint64_t)type
 {
-  v4 = [(MRDExternalDeviceServerClientConnection *)self connection];
-  LOBYTE(a3) = [v4 isAllowedToSendMessageType:a3];
+  connection = [(MRDExternalDeviceServerClientConnection *)self connection];
+  LOBYTE(type) = [connection isAllowedToSendMessageType:type];
 
-  return a3;
+  return type;
 }
 
-- (void)_handleEndpointDidDisconnect:(id)a3
+- (void)_handleEndpointDidDisconnect:(id)disconnect
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [disconnect userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
   [(MRDExternalDeviceServerClientConnection *)self disconnectWithError:v5];
   [(MRDExternalDeviceServerClientConnection *)self setDestinationEndpoint:0];
 }
 
-- (void)gameController:(id)a3 propertiesDidChange:(id)a4
+- (void)gameController:(id)controller propertiesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  changeCopy = change;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1182,7 +1182,7 @@
   block[2] = sub_1000A8890;
   block[3] = &unk_1004B78D8;
   block[4] = self;
-  v9 = v6;
+  v9 = controllerCopy;
   v14 = v9;
   v15 = &v16;
   dispatch_sync(serialQueue, block);
@@ -1194,7 +1194,7 @@
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_serverDelegate);
-      [v12 externalDeviceClient:self gameController:v17[3] propertiesChanged:v7];
+      [v12 externalDeviceClient:self gameController:v17[3] propertiesChanged:changeCopy];
     }
   }
 

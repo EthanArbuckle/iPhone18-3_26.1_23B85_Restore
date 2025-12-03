@@ -1,6 +1,6 @@
 @interface DBCameraWindow
 - (BOOL)isHidden;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation DBCameraWindow
@@ -12,10 +12,10 @@
   return [(DBCameraWindow *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  DBCameraWindow.isHidden.setter(a3);
+  selfCopy = self;
+  DBCameraWindow.isHidden.setter(hidden);
 }
 
 @end

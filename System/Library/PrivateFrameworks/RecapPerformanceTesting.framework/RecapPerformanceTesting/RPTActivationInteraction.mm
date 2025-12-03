@@ -1,33 +1,33 @@
 @interface RPTActivationInteraction
 - (CGPoint)actionPoint;
-- (id)initForAction:(unint64_t)a3 window:(id)a4;
+- (id)initForAction:(unint64_t)action window:(id)window;
 - (id)reversedInteraction;
-- (void)invokeWithComposer:(id)a3 duration:(double)a4;
+- (void)invokeWithComposer:(id)composer duration:(double)duration;
 @end
 
 @implementation RPTActivationInteraction
 
-- (id)initForAction:(unint64_t)a3 window:(id)a4
+- (id)initForAction:(unint64_t)action window:(id)window
 {
-  v7 = a4;
+  windowCopy = window;
   v11.receiver = self;
   v11.super_class = RPTActivationInteraction;
   v8 = [(RPTActivationInteraction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_action = a3;
-    objc_storeStrong(&v8->_window, a4);
+    v8->_action = action;
+    objc_storeStrong(&v8->_window, window);
   }
 
   return v9;
 }
 
-- (void)invokeWithComposer:(id)a3 duration:(double)a4
+- (void)invokeWithComposer:(id)composer duration:(double)duration
 {
-  v5 = a3;
+  composerCopy = composer;
   [(RPTActivationInteraction *)self actionPoint];
-  [v5 pointerOrFingerTap:?];
+  [composerCopy pointerOrFingerTap:?];
 }
 
 - (id)reversedInteraction
@@ -39,19 +39,19 @@
 
 - (CGPoint)actionPoint
 {
-  v3 = [(RPTActivationInteraction *)self action];
-  v4 = [(RPTActivationInteraction *)self window];
-  v5 = v4;
-  if (v3)
+  action = [(RPTActivationInteraction *)self action];
+  window = [(RPTActivationInteraction *)self window];
+  v5 = window;
+  if (action)
   {
-    [v4 _rpt_safeVisibleFrameOfScreen];
+    [window _rpt_safeVisibleFrameOfScreen];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    v14 = [(RPTActivationInteraction *)self window];
-    [v14 frame];
+    window2 = [(RPTActivationInteraction *)self window];
+    [window2 frame];
     v28 = CGRectInset(v27, -10.0, -10.0);
     x = v28.origin.x;
     y = v28.origin.y;
@@ -92,7 +92,7 @@
 
   else
   {
-    [v4 rpt_accessibilityActivationPointAttribute];
+    [window rpt_accessibilityActivationPointAttribute];
     MaxX = v21;
     MinY = v22;
   }

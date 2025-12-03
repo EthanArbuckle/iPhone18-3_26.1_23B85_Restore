@@ -1,18 +1,18 @@
 @interface GAXCircleShapeRecognizer
-+ (id)smoothPathForFingerPath:(id)a3 probabilityOfMatch:(double *)a4;
++ (id)smoothPathForFingerPath:(id)path probabilityOfMatch:(double *)match;
 @end
 
 @implementation GAXCircleShapeRecognizer
 
-+ (id)smoothPathForFingerPath:(id)a3 probabilityOfMatch:(double *)a4
++ (id)smoothPathForFingerPath:(id)path probabilityOfMatch:(double *)match
 {
-  v5 = a3;
-  [v5 bounds];
+  pathCopy = path;
+  [pathCopy bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 boundsCenter];
+  [pathCopy boundsCenter];
   v15 = v14;
   v17 = v16;
   v34.origin.x = v7;
@@ -30,7 +30,7 @@
   {
     v22 = 0;
     v25 = 0.0;
-    if (!a4)
+    if (!match)
     {
       goto LABEL_8;
     }
@@ -56,7 +56,7 @@
     v27[5] = &v28;
     *&v27[8] = v19 * 0.5;
     *&v27[9] = v19;
-    [v5 enumerateElementsUsingBlock:v27];
+    [pathCopy enumerateElementsUsingBlock:v27];
     v21 = v29[3];
     if (v21 >= 0.2)
     {
@@ -79,13 +79,13 @@
     v25 = v21 / -0.2 * 2.0 + 1.0;
     _Block_object_dispose(&v28, 8);
     _Block_object_dispose(v32, 8);
-    if (!a4)
+    if (!match)
     {
       goto LABEL_8;
     }
   }
 
-  *a4 = v25;
+  *match = v25;
 LABEL_8:
 
   return v22;

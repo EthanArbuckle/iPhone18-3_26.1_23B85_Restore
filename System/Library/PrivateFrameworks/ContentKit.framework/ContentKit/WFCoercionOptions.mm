@@ -1,39 +1,39 @@
 @interface WFCoercionOptions
 + (id)new;
-+ (id)optionsWithDictionary:(id)a3;
-+ (void)registerDefaultDisallowedCoercionPath:(id)a3;
-- (BOOL)coercionPathIsDisallowed:(id)a3;
++ (id)optionsWithDictionary:(id)dictionary;
++ (void)registerDefaultDisallowedCoercionPath:(id)path;
+- (BOOL)coercionPathIsDisallowed:(id)disallowed;
 - (BOOL)shouldContinueLoadingWebContentIfExternalResourcesAreDenied;
-- (WFCoercionOptions)initWithDictionary:(id)a3;
+- (WFCoercionOptions)initWithDictionary:(id)dictionary;
 - (WFContentPermissionRequestor)permissionRequestor;
 - (id)itemClassPrioritizationType;
-- (id)optionsByAddingContentsOfOptions:(id)a3;
+- (id)optionsByAddingContentsOfOptions:(id)options;
 - (id)preferredTypes;
 @end
 
 @implementation WFCoercionOptions
 
-- (id)optionsByAddingContentsOfOptions:(id)a3
+- (id)optionsByAddingContentsOfOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(WFCoercionOptions *)self dictionary];
-  v6 = [v5 mutableCopy];
+  optionsCopy = options;
+  dictionary = [(WFCoercionOptions *)self dictionary];
+  v6 = [dictionary mutableCopy];
 
-  v7 = [v4 dictionary];
+  dictionary2 = [optionsCopy dictionary];
 
-  [v6 addEntriesFromDictionary:v7];
+  [v6 addEntriesFromDictionary:dictionary2];
   v8 = [WFCoercionOptions optionsWithDictionary:v6];
 
   return v8;
 }
 
-- (WFCoercionOptions)initWithDictionary:(id)a3
+- (WFCoercionOptions)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFCoercionOptions.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCoercionOptions.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
   }
 
   v12.receiver = self;
@@ -41,7 +41,7 @@
   v6 = [(WFCoercionOptions *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [dictionaryCopy copy];
     dictionary = v6->_dictionary;
     v6->_dictionary = v7;
 
@@ -51,10 +51,10 @@
   return v6;
 }
 
-+ (id)optionsWithDictionary:(id)a3
++ (id)optionsWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[WFCoercionOptions alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[WFCoercionOptions alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
@@ -78,15 +78,15 @@ uint64_t __24__WFCoercionOptions_new__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)coercionPathIsDisallowed:(id)a3
+- (BOOL)coercionPathIsDisallowed:(id)disallowed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFCoercionOptions *)self dictionary];
-  v6 = [v5 objectForKey:@"WFCoercionOptionIgnoreDefaultDisallowedCoercionPaths"];
-  v7 = [v6 BOOLValue];
+  disallowedCopy = disallowed;
+  dictionary = [(WFCoercionOptions *)self dictionary];
+  v6 = [dictionary objectForKey:@"WFCoercionOptionIgnoreDefaultDisallowedCoercionPaths"];
+  bOOLValue = [v6 BOOLValue];
 
-  if ((v7 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v23 = 0u;
     v24 = 0u;
@@ -107,7 +107,7 @@ LABEL_4:
           objc_enumerationMutation(v8);
         }
 
-        if (WFCoercionPathContainsPath(v4, *(*(&v21 + 1) + 8 * v12)))
+        if (WFCoercionPathContainsPath(disallowedCopy, *(*(&v21 + 1) + 8 * v12)))
         {
           goto LABEL_20;
         }
@@ -130,7 +130,7 @@ LABEL_4:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v5 objectForKey:{@"WFCoercionOptionDisallowedCoercionPaths", 0}];
+  v8 = [dictionary objectForKey:{@"WFCoercionOptionDisallowedCoercionPaths", 0}];
   v13 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
@@ -144,7 +144,7 @@ LABEL_13:
         objc_enumerationMutation(v8);
       }
 
-      if (WFCoercionPathContainsPath(v4, *(*(&v17 + 1) + 8 * v15)))
+      if (WFCoercionPathContainsPath(disallowedCopy, *(*(&v17 + 1) + 8 * v15)))
       {
         break;
       }
@@ -170,14 +170,14 @@ LABEL_21:
   return v13;
 }
 
-+ (void)registerDefaultDisallowedCoercionPath:(id)a3
++ (void)registerDefaultDisallowedCoercionPath:(id)path
 {
   v3 = registerDefaultDisallowedCoercionPath__onceToken;
-  v4 = a3;
-  v6 = v4;
+  pathCopy = path;
+  v6 = pathCopy;
   if (v3 == -1)
   {
-    v5 = v4;
+    v5 = pathCopy;
   }
 
   else
@@ -198,24 +198,24 @@ uint64_t __84__WFCoercionOptions_DisallowedCoercionPaths__registerDefaultDisallo
 
 - (id)preferredTypes
 {
-  v2 = [(WFCoercionOptions *)self dictionary];
-  v3 = [v2 objectForKey:@"WFCoercionOptionPreferredTypes"];
+  dictionary = [(WFCoercionOptions *)self dictionary];
+  v3 = [dictionary objectForKey:@"WFCoercionOptionPreferredTypes"];
 
   return v3;
 }
 
 - (id)itemClassPrioritizationType
 {
-  v2 = [(WFCoercionOptions *)self dictionary];
-  v3 = [v2 objectForKey:@"WFCoercionOptionItemClassPrioritizationType"];
+  dictionary = [(WFCoercionOptions *)self dictionary];
+  v3 = [dictionary objectForKey:@"WFCoercionOptionItemClassPrioritizationType"];
 
   return v3;
 }
 
 - (WFContentPermissionRequestor)permissionRequestor
 {
-  v2 = [(WFCoercionOptions *)self dictionary];
-  v3 = [v2 objectForKey:@"PermissionRequestor"];
+  dictionary = [(WFCoercionOptions *)self dictionary];
+  v3 = [dictionary objectForKey:@"PermissionRequestor"];
   v4 = v3;
   if (v3)
   {
@@ -234,11 +234,11 @@ uint64_t __84__WFCoercionOptions_DisallowedCoercionPaths__registerDefaultDisallo
 
 - (BOOL)shouldContinueLoadingWebContentIfExternalResourcesAreDenied
 {
-  v2 = [(WFCoercionOptions *)self dictionary];
-  v3 = [v2 objectForKey:@"ContinueLoadingWebContentIfExternalResourcesAreDenied"];
-  v4 = [v3 BOOLValue];
+  dictionary = [(WFCoercionOptions *)self dictionary];
+  v3 = [dictionary objectForKey:@"ContinueLoadingWebContentIfExternalResourcesAreDenied"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

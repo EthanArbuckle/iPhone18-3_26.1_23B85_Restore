@@ -1,19 +1,19 @@
 @interface NSGrammarCheckingResult
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3;
-- (NSGrammarCheckingResult)initWithCoder:(id)a3;
-- (NSGrammarCheckingResult)initWithRange:(_NSRange)a3 details:(id)a4;
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset;
+- (NSGrammarCheckingResult)initWithCoder:(id)coder;
+- (NSGrammarCheckingResult)initWithRange:(_NSRange)range details:(id)details;
 - (_NSRange)range;
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3;
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSGrammarCheckingResult
 
-- (NSGrammarCheckingResult)initWithRange:(_NSRange)a3 details:(id)a4
+- (NSGrammarCheckingResult)initWithRange:(_NSRange)range details:(id)details
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = NSGrammarCheckingResult;
@@ -23,7 +23,7 @@
   {
     v7->_range.location = location;
     v7->_range.length = length;
-    v7->_details = [a4 copy];
+    v7->_details = [details copy];
   }
 
   return v8;
@@ -38,21 +38,21 @@
   [(NSGrammarCheckingResult *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [(NSGrammarCheckingResult *)self grammarDetails];
-  if ([a3 allowsKeyedCoding])
+  grammarDetails = [(NSGrammarCheckingResult *)self grammarDetails];
+  if ([coder allowsKeyedCoding])
   {
-    v22 = self;
-    v23 = a3;
+    selfCopy = self;
+    coderCopy = coder;
     v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v5;
-    v27 = [v5 countByEnumeratingWithState:&v35 objects:v34 count:16];
+    obj = grammarDetails;
+    v27 = [grammarDetails countByEnumeratingWithState:&v35 objects:v34 count:16];
     if (v27)
     {
       v25 = *v36;
@@ -93,9 +93,9 @@
                 v16 = v15;
                 if (v14)
                 {
-                  v17 = [(NSValue *)v15 rangeValue];
+                  rangeValue = [(NSValue *)v15 rangeValue];
                   v19 = v18;
-                  [v8 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", v17), @"NSGrammarRangeLocation"}];
+                  [v8 setObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", rangeValue), @"NSGrammarRangeLocation"}];
                   v16 = [NSNumber numberWithUnsignedInteger:v19];
                   v20 = v8;
                   v21 = @"NSGrammarRangeLength";
@@ -128,26 +128,26 @@
       while (v27);
     }
 
-    [(NSTextCheckingResult *)v22 encodeRangeWithCoder:v23];
-    [v23 encodeObject:v26 forKey:@"NSModifiedGrammarDetails"];
+    [(NSTextCheckingResult *)selfCopy encodeRangeWithCoder:coderCopy];
+    [coderCopy encodeObject:v26 forKey:@"NSModifiedGrammarDetails"];
   }
 
   else
   {
-    [(NSTextCheckingResult *)self encodeRangeWithCoder:a3];
+    [(NSTextCheckingResult *)self encodeRangeWithCoder:coder];
 
-    [a3 encodeObject:v5];
+    [coder encodeObject:grammarDetails];
   }
 }
 
-- (NSGrammarCheckingResult)initWithCoder:(id)a3
+- (NSGrammarCheckingResult)initWithCoder:(id)coder
 {
   v50 = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v7;
-    v9 = [a3 containsValueForKey:@"NSModifiedGrammarDetails"];
+    v9 = [coder containsValueForKey:@"NSModifiedGrammarDetails"];
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = objc_opt_class();
@@ -155,8 +155,8 @@
     v14 = [v10 setWithObjects:{v11, v12, v13, objc_opt_class(), 0}];
     if (v9)
     {
-      v15 = [a3 decodeObjectOfClasses:v14 forKey:@"NSModifiedGrammarDetails"];
-      v16 = [MEMORY[0x1E695DF70] array];
+      v15 = [coder decodeObjectOfClasses:v14 forKey:@"NSModifiedGrammarDetails"];
+      array = [MEMORY[0x1E695DF70] array];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
@@ -165,12 +165,12 @@
       v38 = [v15 countByEnumeratingWithState:&v46 objects:v45 count:16];
       if (!v38)
       {
-        return [(NSGrammarCheckingResult *)self initWithRange:v6 details:v8, v16];
+        return [(NSGrammarCheckingResult *)self initWithRange:v6 details:v8, array];
       }
 
       v34 = v8;
       v36 = *v47;
-      v37 = v16;
+      v37 = array;
       while (1)
       {
         v17 = 0;
@@ -231,7 +231,7 @@
             while (v21);
           }
 
-          v16 = v37;
+          array = v37;
           [v37 addObject:v19];
 
           v17 = v39 + 1;
@@ -242,17 +242,17 @@
         if (!v38)
         {
           v8 = v34;
-          return [(NSGrammarCheckingResult *)self initWithRange:v6 details:v8, v16];
+          return [(NSGrammarCheckingResult *)self initWithRange:v6 details:v8, array];
         }
       }
     }
 
-    v30 = [a3 decodeObjectOfClasses:v14 forKey:@"NSGrammarDetails"];
+    decodeObject = [coder decodeObjectOfClasses:v14 forKey:@"NSGrammarDetails"];
   }
 
   else
   {
-    v28 = [a3 versionForClassName:@"NSTextCheckingResult"];
+    v28 = [coder versionForClassName:@"NSTextCheckingResult"];
     if (v28 != 1)
     {
       v32 = v28;
@@ -262,13 +262,13 @@
       return 0;
     }
 
-    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:a3];
+    v6 = [(NSTextCheckingResult *)self decodeRangeWithCoder:coder];
     v8 = v29;
-    v30 = [a3 decodeObject];
+    decodeObject = [coder decodeObject];
   }
 
-  v16 = v30;
-  return [(NSGrammarCheckingResult *)self initWithRange:v6 details:v8, v16];
+  array = decodeObject;
+  return [(NSGrammarCheckingResult *)self initWithRange:v6 details:v8, array];
 }
 
 - (_NSRange)range
@@ -281,24 +281,24 @@
   return result;
 }
 
-- (id)resultByAdjustingRangesWithOffset:(int64_t)a3
+- (id)resultByAdjustingRangesWithOffset:(int64_t)offset
 {
-  v6 = [(NSGrammarCheckingResult *)self range];
+  range = [(NSGrammarCheckingResult *)self range];
   v8 = v7;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (range != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && v6 < -a3)
+    if (offset < 0 && range < -offset)
     {
-      v12 = v6;
+      v12 = range;
       v13 = _NSFullMethodName(self, a2);
       v16.location = v12;
       v16.length = v8;
-      v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v13, a3, NSStringFromRange(v16)), 0}];
+      v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v13, offset, NSStringFromRange(v16)), 0}];
       objc_exception_throw(v14);
     }
 
-    v9 = v6 + a3;
+    v9 = range + offset;
   }
 
   v10 = [objc_alloc(objc_opt_class()) initWithRange:v9 details:{v7, -[NSGrammarCheckingResult grammarDetails](self, "grammarDetails")}];
@@ -306,20 +306,20 @@
   return v10;
 }
 
-- (BOOL)_adjustRangesWithOffset:(int64_t)a3
+- (BOOL)_adjustRangesWithOffset:(int64_t)offset
 {
   location = self->_range.location;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a3 < 0 && location < -a3)
+    if (offset < 0 && location < -offset)
     {
       p_range = &self->_range;
       v7 = _NSFullMethodName(self, a2);
-      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, a3, NSStringFromRange(*p_range)), 0}];
+      v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: %ld invalid offset for range %@", v7, offset, NSStringFromRange(*p_range)), 0}];
       objc_exception_throw(v8);
     }
 
-    self->_range.location = location + a3;
+    self->_range.location = location + offset;
   }
 
   return 1;

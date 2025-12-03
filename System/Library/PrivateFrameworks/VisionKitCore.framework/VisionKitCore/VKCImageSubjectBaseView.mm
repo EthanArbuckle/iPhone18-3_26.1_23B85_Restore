@@ -1,5 +1,5 @@
 @interface VKCImageSubjectBaseView
-- (BOOL)subjectExistsAtPoint:(CGPoint)a3;
+- (BOOL)subjectExistsAtPoint:(CGPoint)point;
 - (CALayer)pulseLayer;
 - (CGRect)imageBounds;
 - (CGRect)subjectFrame;
@@ -9,50 +9,50 @@
 - (UIBezierPath)normalizedSubjectPath;
 - (UIBezierPath)subjectPathInBoundsCoordinates;
 - (VKCImageAnalysisResult)analysisResult;
-- (VKCImageSubjectBaseView)initWithFrame:(CGRect)a3;
+- (VKCImageSubjectBaseView)initWithFrame:(CGRect)frame;
 - (VKCImageSubjectBaseViewDelegate)baseSubjectDelegate;
-- (id)cachedSubjectForIndexSet:(id)a3;
-- (id)convertNormalizedPathToBoundsCoordinates:(id)a3;
-- (id)imageSubjectPathWithIndexes:(id)a3;
-- (id)indexOfSubjectAtPoint:(CGPoint)a3;
+- (id)cachedSubjectForIndexSet:(id)set;
+- (id)convertNormalizedPathToBoundsCoordinates:(id)coordinates;
+- (id)imageSubjectPathWithIndexes:(id)indexes;
+- (id)indexOfSubjectAtPoint:(CGPoint)point;
 - (id)loadPulsePackage;
-- (id)opacityAnimationFromValue:(double)a3 toValue:(double)a4;
-- (void)_loadSubjectMaskIfNecessaryWithCompletion:(id)a3;
+- (id)opacityAnimationFromValue:(double)value toValue:(double)toValue;
+- (void)_loadSubjectMaskIfNecessaryWithCompletion:(id)completion;
 - (void)_updateForImageBoundsChange;
 - (void)clearCachedSubject;
-- (void)configureMaskForCurrentSubjectContextWithLayer:(id)a3 animated:(BOOL)a4;
-- (void)configurePulseAnimationWithViewScale:(double)a3;
-- (void)configureSubjectLiftAtPoint:(CGPoint)a3;
-- (void)loadImageSubjectIfNecessaryWithCompletion:(id)a3;
-- (void)loadImageSubjectWithIndexes:(id)a3 completion:(id)a4;
+- (void)configureMaskForCurrentSubjectContextWithLayer:(id)layer animated:(BOOL)animated;
+- (void)configurePulseAnimationWithViewScale:(double)scale;
+- (void)configureSubjectLiftAtPoint:(CGPoint)point;
+- (void)loadImageSubjectIfNecessaryWithCompletion:(id)completion;
+- (void)loadImageSubjectWithIndexes:(id)indexes completion:(id)completion;
 - (void)loadPulsePackage;
-- (void)loadSubjectMaskIfNecessaryWithCompletion:(id)a3;
-- (void)sendSubjectAnalyticsEventWithEventType:(int64_t)a3 interactionType:(int64_t)a4 subjectFound:(BOOL)a5 processingDuration:(double)a6;
-- (void)setActiveSubjectIndexSet:(id)a3 animated:(BOOL)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setCachedSubject:(id)a3 forIndexSet:(id)a4;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setCustomImageForRemoveBackground:(id)a3;
-- (void)setGlowLayerActive:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setRecognitionResult:(id)a3;
-- (void)setSubjectContext:(id)a3;
-- (void)setUsesLightDimmingViewInLightMode:(BOOL)a3;
-- (void)showPulseAnimationWithViewScale:(double)a3;
+- (void)loadSubjectMaskIfNecessaryWithCompletion:(id)completion;
+- (void)sendSubjectAnalyticsEventWithEventType:(int64_t)type interactionType:(int64_t)interactionType subjectFound:(BOOL)found processingDuration:(double)duration;
+- (void)setActiveSubjectIndexSet:(id)set animated:(BOOL)animated;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCachedSubject:(id)subject forIndexSet:(id)set;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setCustomImageForRemoveBackground:(id)background;
+- (void)setGlowLayerActive:(BOOL)active;
+- (void)setHidden:(BOOL)hidden;
+- (void)setRecognitionResult:(id)result;
+- (void)setSubjectContext:(id)context;
+- (void)setUsesLightDimmingViewInLightMode:(BOOL)mode;
+- (void)showPulseAnimationWithViewScale:(double)scale;
 - (void)updateDimmingColorForAppearance;
 - (void)updateForImageBoundsChangeIfNecessary;
 - (void)updateGlowLayerForActiveSubjectIndexSet;
-- (void)updateMaskForCurrentSubjectIndexesAnimated:(BOOL)a3;
+- (void)updateMaskForCurrentSubjectIndexesAnimated:(BOOL)animated;
 @end
 
 @implementation VKCImageSubjectBaseView
 
-- (VKCImageSubjectBaseView)initWithFrame:(CGRect)a3
+- (VKCImageSubjectBaseView)initWithFrame:(CGRect)frame
 {
   v40[1] = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = VKCImageSubjectBaseView;
-  v3 = [(VKCImageBaseOverlayView *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKCImageBaseOverlayView *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6979398]);
@@ -89,11 +89,11 @@
 
     [(CALayer *)v3->_imageHighlightLayerContainer setAllowsGroupOpacity:1];
     [(CALayer *)v3->_imageHighlightLayerContainerShadow setAllowsGroupOpacity:1];
-    v18 = [MEMORY[0x1E69DC888] blackColor];
-    -[CALayer setShadowColor:](v3->_imageHighlightLayerContainer, "setShadowColor:", [v18 CGColor]);
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    -[CALayer setShadowColor:](v3->_imageHighlightLayerContainer, "setShadowColor:", [blackColor CGColor]);
 
-    v19 = [MEMORY[0x1E69DC888] blackColor];
-    -[CALayer setShadowColor:](v3->_imageHighlightLayerContainerShadow, "setShadowColor:", [v19 CGColor]);
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    -[CALayer setShadowColor:](v3->_imageHighlightLayerContainerShadow, "setShadowColor:", [blackColor2 CGColor]);
 
     [(CALayer *)v3->_imageHighlightLayerContainer addSublayer:v3->_imageHighlightLayerContainerShadow];
     [(CALayer *)v3->_imageHighlightLayerContainerShadow addSublayer:v3->_imageHighlightLayer];
@@ -106,17 +106,17 @@
     [v21 setValue:&unk_1F2C390C8 forKeyPath:*MEMORY[0x1E6979BA8]];
     v40[0] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-    v23 = [(CALayer *)v3->_imageHighlightLayer mask];
-    [v23 setFilters:v22];
+    mask = [(CALayer *)v3->_imageHighlightLayer mask];
+    [mask setFilters:v22];
 
-    v24 = [(VKCImageSubjectBaseView *)v3 layer];
-    [v24 addSublayer:v3->_colorLayer];
+    layer = [(VKCImageSubjectBaseView *)v3 layer];
+    [layer addSublayer:v3->_colorLayer];
 
-    v25 = [(VKCImageSubjectBaseView *)v3 layer];
-    [v25 addSublayer:v3->_imageHighlightLayerContainer];
+    layer2 = [(VKCImageSubjectBaseView *)v3 layer];
+    [layer2 addSublayer:v3->_imageHighlightLayerContainer];
 
-    v26 = [(VKCImageSubjectBaseView *)v3 layer];
-    [v26 addSublayer:v3->_glowLayer];
+    layer3 = [(VKCImageSubjectBaseView *)v3 layer];
+    [layer3 addSublayer:v3->_glowLayer];
 
     v27 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v28 = dispatch_queue_create("VKImageSubjectBaseViewBackground", v27);
@@ -157,36 +157,36 @@ void __41__VKCImageSubjectBaseView_initWithFrame___block_invoke(uint64_t a1)
 
 - (UIBezierPath)normalizedSubjectPath
 {
-  v3 = [(VKCImageSubjectBaseView *)self subjectContext];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
   [(VKCImageBaseOverlayView *)self contentsRect];
-  v4 = [v3 normalizedPathForActiveSubjectsWithContentsRect:1 topLevelOnly:?];
+  v4 = [subjectContext normalizedPathForActiveSubjectsWithContentsRect:1 topLevelOnly:?];
 
   return v4;
 }
 
 - (UIBezierPath)subjectPathInBoundsCoordinates
 {
-  v3 = [(VKCImageSubjectBaseView *)self subjectContext];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
   [(VKCImageBaseOverlayView *)self contentsRect];
-  v4 = [v3 normalizedPathForActiveSubjectsWithContentsRect:1 topLevelOnly:?];
+  v4 = [subjectContext normalizedPathForActiveSubjectsWithContentsRect:1 topLevelOnly:?];
 
   v5 = [(VKCImageSubjectBaseView *)self convertNormalizedPathToBoundsCoordinates:v4];
 
   return v5;
 }
 
-- (id)convertNormalizedPathToBoundsCoordinates:(id)a3
+- (id)convertNormalizedPathToBoundsCoordinates:(id)coordinates
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  if (v4)
+  coordinatesCopy = coordinates;
+  v5 = [coordinatesCopy copy];
+  if (coordinatesCopy)
   {
     [(VKCImageSubjectBaseView *)self bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v4 copy];
+    v14 = [coordinatesCopy copy];
 
     memset(&v19, 0, sizeof(v19));
     CGAffineTransformMakeScale(&v19, v11, v13);
@@ -203,68 +203,68 @@ void __41__VKCImageSubjectBaseView_initWithFrame___block_invoke(uint64_t a1)
 
 - (CALayer)pulseLayer
 {
-  v2 = [(VKCImageSubjectBaseView *)self pulsePackage];
-  v3 = [v2 rootLayer];
+  pulsePackage = [(VKCImageSubjectBaseView *)self pulsePackage];
+  rootLayer = [pulsePackage rootLayer];
 
-  return v3;
+  return rootLayer;
 }
 
-- (void)setGlowLayerActive:(BOOL)a3
+- (void)setGlowLayerActive:(BOOL)active
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (active)
   {
-    v4 = a3;
-    v5 = [(VKCImageSubjectBaseView *)self subjectContext];
+    activeCopy = active;
+    subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-    if (v5)
+    if (subjectContext)
     {
-      if (self->_glowLayerActive == v4)
+      if (self->_glowLayerActive == activeCopy)
       {
         return;
       }
 
-      self->_glowLayerActive = v4;
-      v6 = [(VKCImageSubjectBaseView *)self window];
-      v7 = [v6 screen];
-      [v7 scale];
+      self->_glowLayerActive = activeCopy;
+      window = [(VKCImageSubjectBaseView *)self window];
+      screen = [window screen];
+      [screen scale];
       v9 = v8;
 
       v10 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-        v12 = [v11 vk_indexString];
+        activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+        vk_indexString = [activeSubjectIndexSet vk_indexString];
         *buf = 138412546;
-        v41 = v12;
+        selfCopy3 = vk_indexString;
         v42 = 2112;
-        v43 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_1B4335000, v10, OS_LOG_TYPE_DEFAULT, "Activating glow for indexes: %@, : %@", buf, 0x16u);
       }
 
-      v13 = [(VKCImageSubjectBaseView *)self subjectContext];
-      v14 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+      subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
+      activeSubjectIndexSet2 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
       [(VKCImageBaseOverlayView *)self contentsRect];
       v16 = v15;
       v18 = v17;
       v20 = v19;
       v22 = v21;
-      [(VKCImageSubjectBaseView *)self setActiveGlowLayerIndexSet:v14];
-      if ([v14 count]== 1)
+      [(VKCImageSubjectBaseView *)self setActiveGlowLayerIndexSet:activeSubjectIndexSet2];
+      if ([activeSubjectIndexSet2 count]== 1)
       {
-        v23 = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
-        v24 = [(VKCImageSubjectBaseView *)self glowLayer];
+        subjectPathInBoundsCoordinates = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
+        glowLayer = [(VKCImageSubjectBaseView *)self glowLayer];
         [(UIView *)self vk_viewPointRatioFromWindow];
-        [v24 beginAnimationWithViewScale:v23 screenScale:0 path:1 index:&unk_1F2C38E18 count:? identifier:?];
+        [glowLayer beginAnimationWithViewScale:subjectPathInBoundsCoordinates screenScale:0 path:1 index:&unk_1F2C38E18 count:? identifier:?];
       }
 
       else
       {
-        if (![v14 count])
+        if (![activeSubjectIndexSet2 count])
         {
-          v30 = [v13 allSubjectIndexes];
+          allSubjectIndexes = [subjectContext2 allSubjectIndexes];
 
-          v14 = v30;
+          activeSubjectIndexSet2 = allSubjectIndexes;
         }
 
         v31[0] = MEMORY[0x1E69E9820];
@@ -275,14 +275,14 @@ void __41__VKCImageSubjectBaseView_initWithFrame___block_invoke(uint64_t a1)
         v36 = v18;
         v37 = v20;
         v38 = v22;
-        v32 = v13;
-        v33 = self;
+        v32 = subjectContext2;
+        selfCopy2 = self;
         v39 = v9;
-        v14 = v14;
-        v34 = v14;
-        [v14 enumerateIndexesUsingBlock:v31];
+        activeSubjectIndexSet2 = activeSubjectIndexSet2;
+        v34 = activeSubjectIndexSet2;
+        [activeSubjectIndexSet2 enumerateIndexesUsingBlock:v31];
 
-        v23 = v32;
+        subjectPathInBoundsCoordinates = v32;
       }
 
       goto LABEL_15;
@@ -292,7 +292,7 @@ void __41__VKCImageSubjectBaseView_initWithFrame___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1B4335000, v25, OS_LOG_TYPE_DEFAULT, "Trying to set the glow layer active, but no subject context exists: %@", buf, 0xCu);
     }
   }
@@ -303,27 +303,27 @@ void __41__VKCImageSubjectBaseView_initWithFrame___block_invoke(uint64_t a1)
   }
 
   self->_glowLayerActive = 0;
-  v26 = [(VKCImageSubjectBaseView *)self glowLayer];
-  [v26 stopAnimationAnimated:1];
+  glowLayer2 = [(VKCImageSubjectBaseView *)self glowLayer];
+  [glowLayer2 stopAnimationAnimated:1];
 
   [(VKCImageSubjectBaseView *)self setActiveGlowLayerIndexSet:0];
-  v14 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  activeSubjectIndexSet2 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
+  if (os_log_type_enabled(activeSubjectIndexSet2, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-    v28 = [v27 vk_indexString];
+    activeSubjectIndexSet3 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+    vk_indexString2 = [activeSubjectIndexSet3 vk_indexString];
     *buf = 138412546;
-    v41 = v28;
+    selfCopy3 = vk_indexString2;
     v42 = 2112;
-    v43 = self;
-    _os_log_impl(&dword_1B4335000, v14, OS_LOG_TYPE_DEFAULT, "Deactivating glow for indexes: %@, %@", buf, 0x16u);
+    selfCopy4 = self;
+    _os_log_impl(&dword_1B4335000, activeSubjectIndexSet2, OS_LOG_TYPE_DEFAULT, "Deactivating glow for indexes: %@, %@", buf, 0x16u);
   }
 
-  v13 = v14;
+  subjectContext2 = activeSubjectIndexSet2;
 LABEL_15:
 
-  v29 = [(VKCImageSubjectBaseView *)self baseSubjectDelegate];
-  [v29 subjectBaseViewGlowLayerActiveDidChange:self];
+  baseSubjectDelegate = [(VKCImageSubjectBaseView *)self baseSubjectDelegate];
+  [baseSubjectDelegate subjectBaseViewGlowLayerActiveDidChange:self];
 
   [(VKCImageSubjectBaseView *)self sendSubjectAnalyticsEventWithEventType:1 interactionType:0 subjectFound:1 processingDuration:0.0];
 }
@@ -346,12 +346,12 @@ void __46__VKCImageSubjectBaseView_setGlowLayerActive___block_invoke(uint64_t a1
 
 - (void)updateGlowLayerForActiveSubjectIndexSet
 {
-  v3 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v4 = [(VKCImageSubjectBaseView *)self activeGlowLayerIndexSet];
-  v5 = [v3 convertIndexSetToConcreteSubjectIndexes:v4];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  activeGlowLayerIndexSet = [(VKCImageSubjectBaseView *)self activeGlowLayerIndexSet];
+  v5 = [subjectContext convertIndexSetToConcreteSubjectIndexes:activeGlowLayerIndexSet];
 
-  v6 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-  v7 = [v3 convertIndexSetToConcreteSubjectIndexes:v6];
+  activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+  v7 = [subjectContext convertIndexSetToConcreteSubjectIndexes:activeSubjectIndexSet];
 
   v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v9 = objc_alloc_init(MEMORY[0x1E696AD50]);
@@ -381,9 +381,9 @@ void __46__VKCImageSubjectBaseView_setGlowLayerActive___block_invoke(uint64_t a1
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(VKCImageSubjectBaseView *)self window];
-  v24 = [v23 screen];
-  [v24 scale];
+  window = [(VKCImageSubjectBaseView *)self window];
+  screen = [window screen];
+  [screen scale];
   v26 = v25;
 
   v42[0] = 0;
@@ -395,13 +395,13 @@ void __46__VKCImageSubjectBaseView_setGlowLayerActive___block_invoke(uint64_t a1
   v30 = 3221225472;
   v31 = __66__VKCImageSubjectBaseView_updateGlowLayerForActiveSubjectIndexSet__block_invoke_3;
   v32 = &unk_1E7BE4CA8;
-  v28 = v3;
+  v28 = subjectContext;
   v36 = v16;
   v37 = v18;
   v38 = v20;
   v39 = v22;
   v33 = v28;
-  v34 = self;
+  selfCopy = self;
   v40 = v26;
   v35 = v42;
   v41 = v27;
@@ -471,58 +471,58 @@ void __66__VKCImageSubjectBaseView_updateGlowLayerForActiveSubjectIndexSet__bloc
   [v7 beginAnimationWithViewScale:v6 screenScale:v12 path:v13 index:v14 count:v9 identifier:v10];
 }
 
-- (void)setActiveSubjectIndexSet:(id)a3 animated:(BOOL)a4
+- (void)setActiveSubjectIndexSet:(id)set animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  setCopy = set;
   v7 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 vk_indexString];
+    vk_indexString = [setCopy vk_indexString];
     v11 = 138412546;
-    v12 = v8;
+    v12 = vk_indexString;
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v7, OS_LOG_TYPE_DEFAULT, "Setting Active subject indexes: %@, %@", &v11, 0x16u);
   }
 
-  v9 = [v6 copy];
-  v10 = [(VKCImageSubjectBaseView *)self subjectContext];
-  [v10 setActiveSubjectIndexes:v9];
+  v9 = [setCopy copy];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  [subjectContext setActiveSubjectIndexes:v9];
 
-  [(VKCImageSubjectBaseView *)self updateMaskForCurrentSubjectIndexesAnimated:v4];
+  [(VKCImageSubjectBaseView *)self updateMaskForCurrentSubjectIndexesAnimated:animatedCopy];
 }
 
 - (NSIndexSet)activeSubjectIndexSet
 {
-  v2 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v3 = [v2 activeSubjectIndexes];
-  v4 = [v3 copy];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  activeSubjectIndexes = [subjectContext activeSubjectIndexes];
+  v4 = [activeSubjectIndexes copy];
 
   return v4;
 }
 
-- (void)showPulseAnimationWithViewScale:(double)a3
+- (void)showPulseAnimationWithViewScale:(double)scale
 {
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  [(VKCImageSubjectBaseView *)self configurePulseAnimationWithViewScale:a3];
-  v33 = [(VKCImageSubjectBaseView *)self pulsePackage];
-  v5 = [v33 rootLayer];
-  [v5 setDisableUpdateMask:2];
-  v6 = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
-  [v6 bounds];
+  [(VKCImageSubjectBaseView *)self configurePulseAnimationWithViewScale:scale];
+  pulsePackage = [(VKCImageSubjectBaseView *)self pulsePackage];
+  rootLayer = [pulsePackage rootLayer];
+  [rootLayer setDisableUpdateMask:2];
+  subjectPathInBoundsCoordinates = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
+  [subjectPathInBoundsCoordinates bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(VKCImageSubjectBaseView *)self burstPoint];
-  if (v15)
+  burstPoint = [(VKCImageSubjectBaseView *)self burstPoint];
+  if (burstPoint)
   {
-    v16 = [(VKCImageSubjectBaseView *)self burstPoint];
-    [v16 vk_pointValue];
+    burstPoint2 = [(VKCImageSubjectBaseView *)self burstPoint];
+    [burstPoint2 vk_pointValue];
     v18 = v17;
     v20 = v19;
   }
@@ -539,51 +539,51 @@ void __66__VKCImageSubjectBaseView_updateGlowLayerForActiveSubjectIndexSet__bloc
   v25 = VKMDistance(v22, v24, 0.5, 0.5);
   v26 = (fmax(fmin(v25 + v25, 1.0), 0.0) + 1.0) * 0.5;
   *&v26 = v26;
-  [v5 setSpeed:v26];
-  v27 = [(VKCImageSubjectBaseView *)self layer];
-  v28 = [v5 superlayer];
-  [v27 convertPoint:v28 toLayer:{v18, v20}];
+  [rootLayer setSpeed:v26];
+  layer = [(VKCImageSubjectBaseView *)self layer];
+  superlayer = [rootLayer superlayer];
+  [layer convertPoint:superlayer toLayer:{v18, v20}];
   v30 = v29;
   v32 = v31;
 
-  [v5 setPosition:{v30, v32}];
-  [v5 setBeginTime:CACurrentMediaTime()];
+  [rootLayer setPosition:{v30, v32}];
+  [rootLayer setBeginTime:CACurrentMediaTime()];
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)configurePulseAnimationWithViewScale:(double)a3
+- (void)configurePulseAnimationWithViewScale:(double)scale
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v4 = [(VKCImageSubjectBaseView *)self pulsePackage];
-  if (v4)
+  pulsePackage = [(VKCImageSubjectBaseView *)self pulsePackage];
+  if (pulsePackage)
   {
-    v5 = v4;
+    loadPulsePackage = pulsePackage;
     goto LABEL_4;
   }
 
-  v5 = [(VKCImageSubjectBaseView *)self loadPulsePackage];
-  [(VKCImageSubjectBaseView *)self setPulsePackage:v5];
-  v6 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-  v7 = [v5 rootLayer];
-  [v6 addSublayer:v7];
+  loadPulsePackage = [(VKCImageSubjectBaseView *)self loadPulsePackage];
+  [(VKCImageSubjectBaseView *)self setPulsePackage:loadPulsePackage];
+  imageHighlightLayer = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+  rootLayer = [loadPulsePackage rootLayer];
+  [imageHighlightLayer addSublayer:rootLayer];
 
-  if (v5)
+  if (loadPulsePackage)
   {
 LABEL_4:
-    v8 = [v5 rootLayer];
-    v9 = [v5 publishedObjectWithName:@"sharpLayer"];
-    v10 = [v5 publishedObjectWithName:@"blurLayer"];
+    rootLayer2 = [loadPulsePackage rootLayer];
+    v9 = [loadPulsePackage publishedObjectWithName:@"sharpLayer"];
+    v10 = [loadPulsePackage publishedObjectWithName:@"blurLayer"];
     v11 = v10;
-    if (v8 && v9 && v10)
+    if (rootLayer2 && v9 && v10)
     {
-      v12 = [MEMORY[0x1E6979518] disableActions];
+      disableActions = [MEMORY[0x1E6979518] disableActions];
       [MEMORY[0x1E6979518] setDisableActions:1];
-      v13 = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
-      [v13 bounds];
+      subjectPathInBoundsCoordinates = [(VKCImageSubjectBaseView *)self subjectPathInBoundsCoordinates];
+      [subjectPathInBoundsCoordinates bounds];
       v15 = v14;
       v17 = v16;
 
-      [v8 bounds];
+      [rootLayer2 bounds];
       memset(&v31.c, 0, 32);
       if (v15 / v18 >= v17 / v19)
       {
@@ -599,7 +599,7 @@ LABEL_4:
       v21 = VKMRandomBetween(0.0, 6.28318531);
       CGAffineTransformMakeRotation(&v31, v21);
       v30 = v31;
-      [v8 setAffineTransform:&v30];
+      [rootLayer2 setAffineTransform:&v30];
       memset(&v30, 0, sizeof(v30));
       CGAffineTransformMakeScale(&v30, v20 * 3.0, v20 * 3.0);
       v29 = v30;
@@ -622,7 +622,7 @@ LABEL_4:
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
       [v11 setFilters:v27];
 
-      [MEMORY[0x1E6979518] setDisableActions:v12];
+      [MEMORY[0x1E6979518] setDisableActions:disableActions];
     }
 
     else
@@ -637,10 +637,10 @@ LABEL_4:
     goto LABEL_15;
   }
 
-  v5 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+  loadPulsePackage = os_log_create("com.apple.VisionKit", "com.apple.VisionKit");
+  if (os_log_type_enabled(loadPulsePackage, OS_LOG_TYPE_FAULT))
   {
-    [VKCImageSubjectBaseView configurePulseAnimationWithViewScale:v5];
+    [VKCImageSubjectBaseView configurePulseAnimationWithViewScale:loadPulsePackage];
   }
 
 LABEL_15:
@@ -680,8 +680,8 @@ id __64__VKCImageSubjectBaseView_configurePulseAnimationWithViewScale___block_in
 
 - (CGSize)imageSize
 {
-  v2 = [(VKCImageSubjectBaseView *)self subjectContext];
-  [v2 imageSize];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  [subjectContext imageSize];
   v4 = v3;
   v6 = v5;
 
@@ -692,32 +692,32 @@ id __64__VKCImageSubjectBaseView_configurePulseAnimationWithViewScale___block_in
   return result;
 }
 
-- (void)setSubjectContext:(id)a3
+- (void)setSubjectContext:(id)context
 {
-  v5 = a3;
-  if (self->_subjectContext != v5)
+  contextCopy = context;
+  if (self->_subjectContext != contextCopy)
   {
-    objc_storeStrong(&self->_subjectContext, a3);
+    objc_storeStrong(&self->_subjectContext, context);
     [(VKCImageSubjectBaseView *)self setBurstPoint:0];
     [(VKCImageSubjectBaseView *)self clearCachedSubject];
     subjectContext = self->_subjectContext;
-    v7 = [(VKCImageSubjectBaseView *)self analysisResult];
-    [v7 setCachedSubjectContext:subjectContext];
+    analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
+    [analysisResult setCachedSubjectContext:subjectContext];
 
-    v8 = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
-    v9 = [v8 vk_cgImage];
+    customImageForRemoveBackground = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
+    vk_cgImage = [customImageForRemoveBackground vk_cgImage];
 
-    v10 = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
-    v11 = [v10 vk_imageOrientation];
+    customImageForRemoveBackground2 = [(VKCImageSubjectBaseView *)self customImageForRemoveBackground];
+    vk_imageOrientation = [customImageForRemoveBackground2 vk_imageOrientation];
 
     v22 = 0u;
     v23 = 0u;
     v21 = 0u;
-    vk_transformToImageOrientation(v11, &v21);
-    if (!v9)
+    vk_transformToImageOrientation(vk_imageOrientation, &v21);
+    if (!vk_cgImage)
     {
-      v12 = [(VKCImageSubjectContext *)self->_subjectContext request];
-      v9 = [v12 CGImage];
+      request = [(VKCImageSubjectContext *)self->_subjectContext request];
+      vk_cgImage = [request CGImage];
 
       vk_transformToImageOrientation([(VKCImageSubjectContext *)self->_subjectContext imageOrientation], &v18);
       v21 = v18;
@@ -725,79 +725,79 @@ id __64__VKCImageSubjectBaseView_configurePulseAnimationWithViewScale___block_in
       v23 = v20;
     }
 
-    v13 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-    [v13 setContents:v9];
+    imageHighlightLayer = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+    [imageHighlightLayer setContents:vk_cgImage];
 
     v15 = v21;
     v16 = v22;
     v17 = v23;
-    v14 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+    imageHighlightLayer2 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
     v18 = v15;
     v19 = v16;
     v20 = v17;
-    [v14 setAffineTransform:&v18];
+    [imageHighlightLayer2 setAffineTransform:&v18];
 
     [(VKCImageSubjectBaseView *)self updateMaskForCurrentSubjectIndexesAnimated:0];
     [(VKCImageSubjectBaseView *)self updateForImageBoundsChangeIfNecessary];
   }
 }
 
-- (void)configureSubjectLiftAtPoint:(CGPoint)a3
+- (void)configureSubjectLiftAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v24 = [(VKCImageSubjectBaseView *)self subjectContext];
+  y = point.y;
+  x = point.x;
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
   [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:x, y];
-  v6 = [v24 indexOfSubjectAtNormalizedPoint:?];
+  v6 = [subjectContext indexOfSubjectAtNormalizedPoint:?];
   [(VKCImageBaseOverlayView *)self contentsRect];
-  v7 = [v24 normalizedPathForSubjectAtIndex:v6 contentsRect:1 topLevelOnly:?];
+  v7 = [subjectContext normalizedPathForSubjectAtIndex:v6 contentsRect:1 topLevelOnly:?];
   [v7 bounds];
   v12 = VKMCenterOfRect(v8, v9, v10, v11);
   v14 = v13;
-  v15 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
-  [v15 frame];
+  imageHighlightLayerContainer = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
+  [imageHighlightLayerContainer frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  [v15 setAnchorPoint:{v12, v14}];
-  [v15 setFrame:{v17, v19, v21, v23}];
+  [imageHighlightLayerContainer setAnchorPoint:{v12, v14}];
+  [imageHighlightLayerContainer setFrame:{v17, v19, v21, v23}];
 }
 
-- (void)updateMaskForCurrentSubjectIndexesAnimated:(BOOL)a3
+- (void)updateMaskForCurrentSubjectIndexesAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(VKCImageSubjectBaseView *)self imageHighlightLayerMask];
-  [(VKCImageSubjectBaseView *)self configureMaskForCurrentSubjectContextWithLayer:v5 animated:v3];
+  animatedCopy = animated;
+  imageHighlightLayerMask = [(VKCImageSubjectBaseView *)self imageHighlightLayerMask];
+  [(VKCImageSubjectBaseView *)self configureMaskForCurrentSubjectContextWithLayer:imageHighlightLayerMask animated:animatedCopy];
 }
 
-- (void)configureMaskForCurrentSubjectContextWithLayer:(id)a3 animated:(BOOL)a4
+- (void)configureMaskForCurrentSubjectContextWithLayer:(id)layer animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  layerCopy = layer;
   [(VKCImageBaseOverlayView *)self contentsRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-  [v15 bounds];
+  imageHighlightLayer = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+  [imageHighlightLayer bounds];
   v44 = v17;
   v45 = v16;
   v42 = v19;
   v43 = v18;
 
-  v20 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v21 = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
-  v22 = [v20 normalizedPathForSubjectWithIndexSet:v21 contentsRect:0 topLevelOnly:{0.0, 0.0, 1.0, 1.0}];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  activeSubjectIndexSet = [(VKCImageSubjectBaseView *)self activeSubjectIndexSet];
+  v22 = [subjectContext normalizedPathForSubjectWithIndexSet:activeSubjectIndexSet contentsRect:0 topLevelOnly:{0.0, 0.0, 1.0, 1.0}];
 
   memset(&v54, 0, sizeof(v54));
   CGAffineTransformMakeTranslation(&v54, -0.5, -0.5);
-  v23 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-  v24 = v23;
-  if (v23)
+  imageHighlightLayer2 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+  v24 = imageHighlightLayer2;
+  if (imageHighlightLayer2)
   {
-    [v23 affineTransform];
+    [imageHighlightLayer2 affineTransform];
   }
 
   else
@@ -827,52 +827,52 @@ id __64__VKCImageSubjectBaseView_configurePulseAnimationWithViewScale___block_in
   v53 = t2;
   [v22 vk_applyTransform:&t2];
   v25 = objc_alloc_init(MEMORY[0x1E69794A0]);
-  v26 = [v6 sublayers];
-  v27 = [v26 reverseObjectEnumerator];
-  v28 = [v27 allObjects];
+  sublayers = [layerCopy sublayers];
+  reverseObjectEnumerator = [sublayers reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __83__VKCImageSubjectBaseView_configureMaskForCurrentSubjectContextWithLayer_animated___block_invoke;
   v49[3] = &unk_1E7BE4CD0;
   v49[4] = self;
-  v29 = [v28 vk_objectPassingTest:v49];
+  v29 = [allObjects vk_objectPassingTest:v49];
 
-  [v6 setFrame:{v45, v44, v43, v42}];
+  [layerCopy setFrame:{v45, v44, v43, v42}];
   [v25 setFrame:{v45, v44, v43, v42}];
   [v25 setPath:{objc_msgSend(v22, "vk_CGPath")}];
-  v30 = [MEMORY[0x1E69DC888] whiteColor];
-  [v25 setFillColor:{objc_msgSend(v30, "CGColor")}];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v25 setFillColor:{objc_msgSend(whiteColor, "CGColor")}];
 
   v31 = *MEMORY[0x1E69797F8];
   [v25 setFillRule:*MEMORY[0x1E69797F8]];
-  v32 = [(VKCImageSubjectBaseView *)self intersectionMask];
+  intersectionMask = [(VKCImageSubjectBaseView *)self intersectionMask];
   [MEMORY[0x1E6979518] begin];
-  if ([v29 path] && v4)
+  if ([v29 path] && animatedCopy)
   {
-    v41 = v4;
-    v33 = v6;
+    v41 = animatedCopy;
+    v33 = layerCopy;
     [MEMORY[0x1E6979518] setDisableActions:1];
     v34 = [MEMORY[0x1E69DC728] vk_pathFromCGPath:{objc_msgSend(v29, "path")}];
     v35 = [v22 vk_intersectAndFlattenWithPath:v34];
 
     if (([v35 isEmpty] & 1) == 0)
     {
-      [v32 setFrame:{v45, v44, v43, v42}];
-      [v32 setPath:{objc_msgSend(v35, "vk_CGPath")}];
-      v36 = [MEMORY[0x1E69DC888] whiteColor];
-      [v32 setFillColor:{objc_msgSend(v36, "CGColor")}];
+      [intersectionMask setFrame:{v45, v44, v43, v42}];
+      [intersectionMask setPath:{objc_msgSend(v35, "vk_CGPath")}];
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      [intersectionMask setFillColor:{objc_msgSend(whiteColor2, "CGColor")}];
 
-      [v32 setFillRule:v31];
-      [v32 setHidden:0];
+      [intersectionMask setFillRule:v31];
+      [intersectionMask setHidden:0];
     }
 
-    v6 = v33;
-    v4 = v41;
+    layerCopy = v33;
+    animatedCopy = v41;
   }
 
-  [v6 addSublayer:v25];
+  [layerCopy addSublayer:v25];
   [MEMORY[0x1E6979518] commit];
-  if (!v4)
+  if (!animatedCopy)
   {
     if (v29)
     {
@@ -889,7 +889,7 @@ id __64__VKCImageSubjectBaseView_configurePulseAnimationWithViewScale___block_in
   if (!v29)
   {
 LABEL_14:
-    [v32 setHidden:1];
+    [intersectionMask setHidden:1];
     goto LABEL_15;
   }
 
@@ -903,7 +903,7 @@ LABEL_14:
   v46[3] = &unk_1E7BE4768;
   v40 = v29;
   v47 = v40;
-  v48 = v32;
+  v48 = intersectionMask;
   [v39 setCompletionBlock:v46];
   [v40 addAnimation:v38 forKey:@"fade-out"];
   [MEMORY[0x1E6979518] commit];
@@ -928,46 +928,46 @@ uint64_t __83__VKCImageSubjectBaseView_configureMaskForCurrentSubjectContextWith
   return [v2 setHidden:1];
 }
 
-- (id)opacityAnimationFromValue:(double)a3 toValue:(double)a4
+- (id)opacityAnimationFromValue:(double)value toValue:(double)toValue
 {
   v6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v6 setDuration:0.2];
   [v6 setFillMode:*MEMORY[0x1E69797E0]];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   [v6 setFromValue:v7];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:toValue];
   [v6 setToValue:v8];
 
   return v6;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = VKCImageSubjectBaseView;
-  [(VKCImageSubjectBaseView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VKCImageSubjectBaseView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(VKCImageSubjectBaseView *)self updateForImageBoundsChangeIfNecessary];
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
   v4.receiver = self;
   v4.super_class = VKCImageSubjectBaseView;
-  [(VKCImageBaseOverlayView *)&v4 setContentsRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VKCImageBaseOverlayView *)&v4 setContentsRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(VKCImageSubjectBaseView *)self updateForImageBoundsChangeIfNecessary];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5.receiver = self;
   v5.super_class = VKCImageSubjectBaseView;
-  [(VKCImageSubjectBaseView *)&v5 setHidden:a3];
+  [(VKCImageSubjectBaseView *)&v5 setHidden:hidden];
   if ([(VKCImageSubjectBaseView *)self isHidden])
   {
     [(VKCImageSubjectBaseView *)self setGlowLayerActive:0];
-    v4 = [(VKCImageSubjectBaseView *)self pulseLayer];
-    [v4 removeAllAnimations];
+    pulseLayer = [(VKCImageSubjectBaseView *)self pulseLayer];
+    [pulseLayer removeAllAnimations];
   }
 }
 
@@ -976,10 +976,10 @@ uint64_t __83__VKCImageSubjectBaseView_configureMaskForCurrentSubjectContextWith
   [(VKCImageSubjectBaseView *)self imageBounds];
   if (VKMRectIsFinite(v3, v4, v5, v6))
   {
-    v7 = [(VKCImageSubjectBaseView *)self subjectContext];
-    v8 = [v7 subjectCount];
+    subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+    subjectCount = [subjectContext subjectCount];
 
-    if (v8)
+    if (subjectCount)
     {
 
       [(VKCImageSubjectBaseView *)self _updateForImageBoundsChange];
@@ -992,56 +992,56 @@ uint64_t __83__VKCImageSubjectBaseView_configureMaskForCurrentSubjectContextWith
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(VKCImageSubjectBaseView *)self updateMaskForCurrentSubjectIndexesAnimated:0];
-  v53 = [(VKCImageSubjectBaseView *)self colorLayer];
-  v3 = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
-  v4 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
-  v5 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainerShadow];
-  v6 = [(VKCImageSubjectBaseView *)self glowLayer];
+  colorLayer = [(VKCImageSubjectBaseView *)self colorLayer];
+  imageHighlightLayer = [(VKCImageSubjectBaseView *)self imageHighlightLayer];
+  imageHighlightLayerContainer = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
+  imageHighlightLayerContainerShadow = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainerShadow];
+  glowLayer = [(VKCImageSubjectBaseView *)self glowLayer];
   [(VKCImageSubjectBaseView *)self imageBounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(VKCImageSubjectBaseView *)self subjectContext];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
   [(VKCImageBaseOverlayView *)self contentsRect];
-  v16 = [v15 normalizedPathForActiveSubjectsWithContentsRect:1 topLevelOnly:?];
+  v16 = [subjectContext normalizedPathForActiveSubjectsWithContentsRect:1 topLevelOnly:?];
   [v16 bounds];
   v51 = v18;
   v52 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v53 setFrame:{v8, v10, v12, v14}];
+  [colorLayer setFrame:{v8, v10, v12, v14}];
   v23 = VKMCenterOfRect(v8, v10, v12, v14);
   v25 = v24;
   v26 = VKMMultiplyPointScalar(v12, v14, 1.1);
-  [v4 setFrame:{VKMRectWithCenterAndSize(v23, v25, v26)}];
-  [v4 bounds];
-  [v5 setFrame:?];
-  v27 = [v4 superlayer];
-  [v4 convertRect:v27 fromLayer:{v8, v10, v12, v14}];
-  [v3 setFrame:?];
+  [imageHighlightLayerContainer setFrame:{VKMRectWithCenterAndSize(v23, v25, v26)}];
+  [imageHighlightLayerContainer bounds];
+  [imageHighlightLayerContainerShadow setFrame:?];
+  superlayer = [imageHighlightLayerContainer superlayer];
+  [imageHighlightLayerContainer convertRect:superlayer fromLayer:{v8, v10, v12, v14}];
+  [imageHighlightLayer setFrame:?];
 
-  [v3 bounds];
+  [imageHighlightLayer bounds];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [v3 mask];
-  [v36 setFrame:{v29, v31, v33, v35}];
+  mask = [imageHighlightLayer mask];
+  [mask setFrame:{v29, v31, v33, v35}];
 
-  [v53 bounds];
+  [colorLayer bounds];
   VKMRectFromNormalizedSubrect(v37, v38, v39, v40, v52, v51, v20, v22);
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  v49 = [v53 mask];
-  [v49 setFrame:{v42, v44, v46, v48}];
+  mask2 = [colorLayer mask];
+  [mask2 setFrame:{v42, v44, v46, v48}];
 
-  v50 = [v6 superlayer];
-  [v50 bounds];
-  [v6 setFrame:?];
+  superlayer2 = [glowLayer superlayer];
+  [superlayer2 bounds];
+  [glowLayer setFrame:?];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -1065,17 +1065,17 @@ uint64_t __83__VKCImageSubjectBaseView_configureMaskForCurrentSubjectContextWith
 
 - (CGRect)subjectFrame
 {
-  v3 = [(VKCImageSubjectBaseView *)self subjectContext];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-  if (v3)
+  if (subjectContext)
   {
     [(VKCImageSubjectBaseView *)self imageBounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(VKCImageSubjectBaseView *)self subjectContext];
-    [v12 normalizedCropRect];
+    subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
+    [subjectContext2 normalizedCropRect];
     VKMRectFromNormalizedSubrect(v5, v7, v9, v11, v13, v14, v15, v16);
     v18 = v17;
     v20 = v19;
@@ -1102,98 +1102,98 @@ uint64_t __83__VKCImageSubjectBaseView_configureMaskForCurrentSubjectContextWith
   return result;
 }
 
-- (void)setRecognitionResult:(id)a3
+- (void)setRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v16.receiver = self;
   v16.super_class = VKCImageSubjectBaseView;
-  v5 = [(VKCImageBaseOverlayView *)&v16 recognitionResult];
+  recognitionResult = [(VKCImageBaseOverlayView *)&v16 recognitionResult];
 
-  if (v5 != v4)
+  if (recognitionResult != resultCopy)
   {
     v15.receiver = self;
     v15.super_class = VKCImageSubjectBaseView;
-    [(VKCImageBaseOverlayView *)&v15 setRecognitionResult:v4];
+    [(VKCImageBaseOverlayView *)&v15 setRecognitionResult:resultCopy];
     v6 = objc_opt_class();
-    v7 = VKDynamicCast(v6, v4);
-    v8 = [v7 cachedCustomImageForRemoveBackground];
+    v7 = VKDynamicCast(v6, resultCopy);
+    cachedCustomImageForRemoveBackground = [v7 cachedCustomImageForRemoveBackground];
 
-    if (v8)
+    if (cachedCustomImageForRemoveBackground)
     {
-      [(VKCImageSubjectBaseView *)self setCustomImageForRemoveBackground:v8];
+      [(VKCImageSubjectBaseView *)self setCustomImageForRemoveBackground:cachedCustomImageForRemoveBackground];
     }
 
     [(VKCImageSubjectBaseView *)self setLoadMaskRequestStatus:0];
-    v9 = [(VKCImageSubjectBaseView *)self analysisResult];
-    v10 = [v9 cachedSubjectContext];
-    [(VKCImageSubjectBaseView *)self setSubjectContext:v10];
+    analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
+    cachedSubjectContext = [analysisResult cachedSubjectContext];
+    [(VKCImageSubjectBaseView *)self setSubjectContext:cachedSubjectContext];
 
-    v11 = [(VKCImageSubjectBaseView *)self analysisResult];
-    v12 = [v11 request];
-    -[VKCImageSubjectBaseView setImageOrientation:](self, "setImageOrientation:", [v12 imageOrientation]);
+    analysisResult2 = [(VKCImageSubjectBaseView *)self analysisResult];
+    request = [analysisResult2 request];
+    -[VKCImageSubjectBaseView setImageOrientation:](self, "setImageOrientation:", [request imageOrientation]);
 
     [(VKCImageSubjectBaseView *)self setGlowLayerActive:0];
     [(VKCImageSubjectBaseView *)self setLoadMaskIndex:[(VKCImageSubjectBaseView *)self loadMaskIndex]+ 1];
-    v13 = [(VKCImageSubjectBaseView *)self colorLayer];
-    [v13 setOpacity:0.0];
+    colorLayer = [(VKCImageSubjectBaseView *)self colorLayer];
+    [colorLayer setOpacity:0.0];
 
-    v14 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
-    [v14 setOpacity:0.0];
+    imageHighlightLayerContainer = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainer];
+    [imageHighlightLayerContainer setOpacity:0.0];
 
     [(VKCImageSubjectBaseView *)self beginImageSubjectAnalysisWithDelayIfNecessary];
   }
 }
 
-- (void)setCustomImageForRemoveBackground:(id)a3
+- (void)setCustomImageForRemoveBackground:(id)background
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_customImageForRemoveBackground != v5)
+  backgroundCopy = background;
+  if (self->_customImageForRemoveBackground != backgroundCopy)
   {
     v6 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.interaction");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412546;
-      v9 = v5;
+      v9 = backgroundCopy;
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4335000, v6, OS_LOG_TYPE_DEFAULT, "Setting custom image for remove background: %@, %@", &v8, 0x16u);
     }
 
-    objc_storeStrong(&self->_customImageForRemoveBackground, a3);
-    if (v5)
+    objc_storeStrong(&self->_customImageForRemoveBackground, background);
+    if (backgroundCopy)
     {
-      v7 = [(VKCImageSubjectBaseView *)self analysisResult];
-      [v7 setCachedCustomImageForRemoveBackground:v5];
+      analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
+      [analysisResult setCachedCustomImageForRemoveBackground:backgroundCopy];
     }
 
     [(VKCImageSubjectBaseView *)self updateMaskForCurrentSubjectIndexesAnimated:0];
   }
 }
 
-- (void)setUsesLightDimmingViewInLightMode:(BOOL)a3
+- (void)setUsesLightDimmingViewInLightMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     [(VKCImageSubjectBaseView *)self updateDimmingColorForAppearance];
-    v4 = [(VKCImageSubjectBaseView *)self traitChangeRegistration];
+    traitChangeRegistration = [(VKCImageSubjectBaseView *)self traitChangeRegistration];
 
-    if (!v4)
+    if (!traitChangeRegistration)
     {
-      v9 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-      v5 = [(VKCImageSubjectBaseView *)self registerForTraitChanges:v9 withTarget:self action:sel_updateDimmingColorForAppearance];
+      systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+      v5 = [(VKCImageSubjectBaseView *)self registerForTraitChanges:systemTraitsAffectingColorAppearance withTarget:self action:sel_updateDimmingColorForAppearance];
       [(VKCImageSubjectBaseView *)self setTraitChangeRegistration:v5];
     }
   }
 
   else
   {
-    v6 = [(VKCImageSubjectBaseView *)self traitChangeRegistration];
+    traitChangeRegistration2 = [(VKCImageSubjectBaseView *)self traitChangeRegistration];
 
-    if (v6)
+    if (traitChangeRegistration2)
     {
-      v7 = [(VKCImageSubjectBaseView *)self traitChangeRegistration];
-      [(VKCImageSubjectBaseView *)self unregisterForTraitChanges:v7];
+      traitChangeRegistration3 = [(VKCImageSubjectBaseView *)self traitChangeRegistration];
+      [(VKCImageSubjectBaseView *)self unregisterForTraitChanges:traitChangeRegistration3];
     }
 
     v8 = [MEMORY[0x1E69DD1B8] appearanceClassForType:0];
@@ -1220,67 +1220,67 @@ void __62__VKCImageSubjectBaseView_setUsesLightDimmingViewInLightMode___block_in
   [(VKCImageSubjectBaseView *)self set_cachedSubject:0];
 }
 
-- (void)setCachedSubject:(id)a3 forIndexSet:(id)a4
+- (void)setCachedSubject:(id)subject forIndexSet:(id)set
 {
-  v6 = a3;
-  [(VKCImageSubjectBaseView *)self set_cachedSubjectIndexSet:a4];
-  [(VKCImageSubjectBaseView *)self set_cachedSubject:v6];
+  subjectCopy = subject;
+  [(VKCImageSubjectBaseView *)self set_cachedSubjectIndexSet:set];
+  [(VKCImageSubjectBaseView *)self set_cachedSubject:subjectCopy];
 }
 
-- (id)cachedSubjectForIndexSet:(id)a3
+- (id)cachedSubjectForIndexSet:(id)set
 {
-  v4 = a3;
-  v5 = [(VKCImageSubjectBaseView *)self _cachedSubjectIndexSet];
-  v6 = [v5 isEqualToIndexSet:v4];
+  setCopy = set;
+  _cachedSubjectIndexSet = [(VKCImageSubjectBaseView *)self _cachedSubjectIndexSet];
+  v6 = [_cachedSubjectIndexSet isEqualToIndexSet:setCopy];
 
   if (v6)
   {
-    v7 = [(VKCImageSubjectBaseView *)self _cachedSubject];
+    _cachedSubject = [(VKCImageSubjectBaseView *)self _cachedSubject];
   }
 
   else
   {
-    v7 = 0;
+    _cachedSubject = 0;
   }
 
-  return v7;
+  return _cachedSubject;
 }
 
 - (void)updateDimmingColorForAppearance
 {
-  v3 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  v15 = [v3 colorWithAlphaComponent:0.8];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  v15 = [secondarySystemBackgroundColor colorWithAlphaComponent:0.8];
 
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v5 = [v4 colorWithAlphaComponent:0.7];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  v5 = [systemBackgroundColor colorWithAlphaComponent:0.7];
 
-  v6 = [(VKCImageSubjectBaseView *)self traitCollection];
-  v7 = [v6 vk_isDark];
+  traitCollection = [(VKCImageSubjectBaseView *)self traitCollection];
+  vk_isDark = [traitCollection vk_isDark];
 
   v8 = v15;
-  if (v7)
+  if (vk_isDark)
   {
     v8 = v5;
   }
 
-  v9 = [v8 CGColor];
-  v10 = [(VKCImageSubjectBaseView *)self colorLayer];
-  [v10 setBackgroundColor:v9];
+  cGColor = [v8 CGColor];
+  colorLayer = [(VKCImageSubjectBaseView *)self colorLayer];
+  [colorLayer setBackgroundColor:cGColor];
 
-  v11 = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainerShadow];
-  v12 = v11;
-  if (v7)
+  imageHighlightLayerContainerShadow = [(VKCImageSubjectBaseView *)self imageHighlightLayerContainerShadow];
+  v12 = imageHighlightLayerContainerShadow;
+  if (vk_isDark)
   {
-    [v11 setShadowOpacity:0.0];
+    [imageHighlightLayerContainerShadow setShadowOpacity:0.0];
   }
 
   else
   {
-    [v11 setShadowRadius:30.0];
+    [imageHighlightLayerContainerShadow setShadowRadius:30.0];
     LODWORD(v13) = 1050253722;
     [v12 setShadowOpacity:v13];
-    v14 = [MEMORY[0x1E69DC888] blackColor];
-    [v12 setShadowColor:{objc_msgSend(v14, "CGColor")}];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [v12 setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
     [v12 setShadowOffset:{0.0, 5.0}];
   }
@@ -1289,33 +1289,33 @@ void __62__VKCImageSubjectBaseView_setUsesLightDimmingViewInLightMode___block_in
 - (VKCImageAnalysisResult)analysisResult
 {
   v3 = objc_opt_class();
-  v4 = [(VKCImageBaseOverlayView *)self recognitionResult];
-  v5 = VKDynamicCast(v3, v4);
+  recognitionResult = [(VKCImageBaseOverlayView *)self recognitionResult];
+  v5 = VKDynamicCast(v3, recognitionResult);
 
   return v5;
 }
 
-- (BOOL)subjectExistsAtPoint:(CGPoint)a3
+- (BOOL)subjectExistsAtPoint:(CGPoint)point
 {
-  v3 = [(VKCImageSubjectBaseView *)self indexOfSubjectAtPoint:a3.x, a3.y];
+  v3 = [(VKCImageSubjectBaseView *)self indexOfSubjectAtPoint:point.x, point.y];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)indexOfSubjectAtPoint:(CGPoint)a3
+- (id)indexOfSubjectAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCImageSubjectBaseView *)self subjectContext];
+  y = point.y;
+  x = point.x;
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-  if (v6)
+  if (subjectContext)
   {
     [(VKCImageBaseOverlayView *)self normalizedPointFromViewPoint:x, y];
     v8 = v7;
     v10 = v9;
-    v11 = [(VKCImageSubjectBaseView *)self subjectContext];
-    v12 = [v11 indexOfSubjectAtNormalizedPoint:{v8, v10}];
+    subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
+    v12 = [subjectContext2 indexOfSubjectAtNormalizedPoint:{v8, v10}];
   }
 
   else
@@ -1328,65 +1328,65 @@ void __62__VKCImageSubjectBaseView_setUsesLightDimmingViewInLightMode___block_in
 
 - (NSIndexSet)allSubjectsIndexSet
 {
-  v2 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v3 = [v2 allSubjectIndexes];
-  v4 = [v3 copy];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  allSubjectIndexes = [subjectContext allSubjectIndexes];
+  v4 = [allSubjectIndexes copy];
 
   return v4;
 }
 
-- (void)loadSubjectMaskIfNecessaryWithCompletion:(id)a3
+- (void)loadSubjectMaskIfNecessaryWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(VKCImageSubjectBaseView *)self subjectContext];
+  completionCopy = completion;
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-  if (v4)
+  if (subjectContext)
   {
-    if (v5)
+    if (completionCopy)
     {
-      v5[2]();
+      completionCopy[2]();
     }
   }
 
   else
   {
-    [(VKCImageSubjectBaseView *)self _loadSubjectMaskIfNecessaryWithCompletion:v5];
+    [(VKCImageSubjectBaseView *)self _loadSubjectMaskIfNecessaryWithCompletion:completionCopy];
   }
 }
 
-- (void)_loadSubjectMaskIfNecessaryWithCompletion:(id)a3
+- (void)_loadSubjectMaskIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(VKCImageSubjectBaseView *)self analysisResult];
+  completionCopy = completion;
+  analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
   if (![(VKCImageSubjectBaseView *)self loadMaskRequestStatus])
   {
-    v6 = [(VKCImageSubjectBaseView *)self subjectContext];
-    if (v6 || !v5)
+    subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+    if (subjectContext || !analysisResult)
     {
     }
 
     else if ([(VKCImageSubjectBaseView *)self subjectHighlightFeatureFlagEnabled])
     {
-      v7 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v8 = ([(VKCImageSubjectBaseView *)self loadMaskIndex]+ 1);
       [(VKCImageSubjectBaseView *)self setLoadMaskIndex:v8];
       [(VKCImageSubjectBaseView *)self setLoadMaskRequestStatus:1];
-      v9 = [(VKCImageSubjectBaseView *)self baseSubjectDelegate];
-      [v9 subjectBaseViewDidBeginSubjectAnalysis:self];
+      baseSubjectDelegate = [(VKCImageSubjectBaseView *)self baseSubjectDelegate];
+      [baseSubjectDelegate subjectBaseViewDidBeginSubjectAnalysis:self];
 
       objc_initWeak(&location, self);
-      v10 = [(VKCImageSubjectBaseView *)self backgroundQueue];
+      backgroundQueue = [(VKCImageSubjectBaseView *)self backgroundQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __69__VKCImageSubjectBaseView__loadSubjectMaskIfNecessaryWithCompletion___block_invoke;
       v12[3] = &unk_1E7BE4D98;
-      v13 = v7;
-      v11 = v7;
+      v13 = date;
+      v11 = date;
       objc_copyWeak(v16, &location);
-      v14 = v5;
-      v15 = v4;
+      v14 = analysisResult;
+      v15 = completionCopy;
       v16[1] = v8;
-      dispatch_async(v10, v12);
+      dispatch_async(backgroundQueue, v12);
 
       objc_destroyWeak(v16);
       objc_destroyWeak(&location);
@@ -1733,25 +1733,25 @@ LABEL_4:
   }
 }
 
-- (void)loadImageSubjectIfNecessaryWithCompletion:(id)a3
+- (void)loadImageSubjectIfNecessaryWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VKCImageSubjectBaseView *)self subjectContext];
-  v6 = [v5 activeSubjectIndexes];
+  completionCopy = completion;
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
+  activeSubjectIndexes = [subjectContext activeSubjectIndexes];
 
-  v7 = [(VKCImageSubjectBaseView *)self cachedSubjectForIndexSet:v6];
+  v7 = [(VKCImageSubjectBaseView *)self cachedSubjectForIndexSet:activeSubjectIndexes];
   if (v7)
   {
-    v4[2](v4, v7);
+    completionCopy[2](completionCopy, v7);
     v8 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 vk_indexString];
+      vk_indexString = [activeSubjectIndexes vk_indexString];
       *buf = 138412546;
-      v16 = v9;
+      v16 = vk_indexString;
       v17 = 2112;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4335000, v8, OS_LOG_TYPE_DEFAULT, "Found Cached subject for indexSet: %@, %@", buf, 0x16u);
     }
   }
@@ -1761,11 +1761,11 @@ LABEL_4:
     v10 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 vk_indexString];
+      vk_indexString2 = [activeSubjectIndexes vk_indexString];
       *buf = 138412546;
-      v16 = v11;
+      v16 = vk_indexString2;
       v17 = 2112;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4335000, v10, OS_LOG_TYPE_DEFAULT, "Did not find subject for indexSet, creating: %@, %@", buf, 0x16u);
     }
 
@@ -1774,8 +1774,8 @@ LABEL_4:
     v12[2] = __69__VKCImageSubjectBaseView_loadImageSubjectIfNecessaryWithCompletion___block_invoke;
     v12[3] = &unk_1E7BE4DC0;
     v12[4] = self;
-    v13 = v6;
-    v14 = v4;
+    v13 = activeSubjectIndexes;
+    v14 = completionCopy;
     [(VKCImageSubjectBaseView *)self loadImageSubjectWithIndexes:v13 completion:v12];
   }
 }
@@ -1792,13 +1792,13 @@ void __69__VKCImageSubjectBaseView_loadImageSubjectIfNecessaryWithCompletion___b
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)loadImageSubjectWithIndexes:(id)a3 completion:(id)a4
+- (void)loadImageSubjectWithIndexes:(id)indexes completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VKCImageSubjectBaseView *)self analysisResult];
-  v9 = [(VKCImageSubjectBaseView *)self subjectContext];
+  indexesCopy = indexes;
+  completionCopy = completion;
+  analysisResult = [(VKCImageSubjectBaseView *)self analysisResult];
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
@@ -1806,12 +1806,12 @@ void __69__VKCImageSubjectBaseView_loadImageSubjectIfNecessaryWithCompletion___b
   v34[4] = __Block_byref_object_dispose__4;
   v35 = 0;
   objc_initWeak(&location, self);
-  v10 = [v9 request];
+  request = [subjectContext request];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__VKCImageSubjectBaseView_loadImageSubjectWithIndexes_completion___block_invoke;
   aBlock[3] = &unk_1E7BE4DE8;
-  v11 = v7;
+  v11 = completionCopy;
   v31 = v11;
   v32 = v34;
   v12 = _Block_copy(aBlock);
@@ -1819,17 +1819,17 @@ void __69__VKCImageSubjectBaseView_loadImageSubjectIfNecessaryWithCompletion___b
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v37 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B4335000, v13, OS_LOG_TYPE_DEFAULT, "Attempting to generate subject image, but no subject analysis exists: %@", buf, 0xCu);
   }
 
-  if (!v10 || !v8)
+  if (!request || !analysisResult)
   {
     goto LABEL_22;
   }
 
   v14 = ![(VKCImageSubjectBaseView *)self subjectHighlightFeatureFlagEnabled];
-  if (!v6)
+  if (!indexesCopy)
   {
     LOBYTE(v14) = 1;
   }
@@ -1839,11 +1839,11 @@ void __69__VKCImageSubjectBaseView_loadImageSubjectIfNecessaryWithCompletion___b
     goto LABEL_22;
   }
 
-  if ([v6 count])
+  if ([indexesCopy count])
   {
-    v15 = [v9 convertExternalIndexSetToInternal:v6];
+    v15 = [subjectContext convertExternalIndexSetToInternal:indexesCopy];
     v16 = [v15 count];
-    if (v16 != [v6 count])
+    if (v16 != [indexesCopy count])
     {
       v17 = [v15 count];
       log = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
@@ -1853,7 +1853,7 @@ void __69__VKCImageSubjectBaseView_loadImageSubjectIfNecessaryWithCompletion___b
         if (v18)
         {
           *buf = 138412290;
-          v37 = self;
+          selfCopy3 = self;
           v19 = log;
           _os_log_impl(&dword_1B4335000, log, OS_LOG_TYPE_DEFAULT, "Subject image request contains one of more invalid indexes, ignoring invalid indexes: %@", buf, 0xCu);
         }
@@ -1869,42 +1869,42 @@ void __69__VKCImageSubjectBaseView_loadImageSubjectIfNecessaryWithCompletion___b
         if (v18)
         {
           *buf = 138412290;
-          v37 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1B4335000, log, OS_LOG_TYPE_DEFAULT, "Subject image request indexes contain no valid indexes, returning nil: %@", buf, 0xCu);
         }
 
-        v19 = v10;
-        v10 = 0;
+        v19 = request;
+        request = 0;
       }
     }
   }
 
   else
   {
-    [v9 allSubjectIndexes];
-    v6 = v15 = v6;
+    [subjectContext allSubjectIndexes];
+    indexesCopy = v15 = indexesCopy;
   }
 
-  if (v9 && v10)
+  if (subjectContext && request)
   {
-    [v10 setMaskOnly:0];
-    [v10 setCropToFit:1];
-    v20 = [(VKCImageSubjectBaseView *)self subjectContext];
-    v21 = [v20 madSubjectIndexesForVKSubjectIndexes:v6];
-    [v10 setSelectedIndexSet:v21];
+    [request setMaskOnly:0];
+    [request setCropToFit:1];
+    subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
+    v21 = [subjectContext2 madSubjectIndexesForVKSubjectIndexes:indexesCopy];
+    [request setSelectedIndexSet:v21];
 
-    v22 = [(VKCImageSubjectBaseView *)self removeBackgroundRequestHandler];
+    removeBackgroundRequestHandler = [(VKCImageSubjectBaseView *)self removeBackgroundRequestHandler];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __66__VKCImageSubjectBaseView_loadImageSubjectWithIndexes_completion___block_invoke_219;
     v24[3] = &unk_1E7BE4E10;
     objc_copyWeak(&v29, &location);
-    v25 = v8;
+    v25 = analysisResult;
     v27 = v12;
-    v10 = v10;
-    v26 = v10;
+    request = request;
+    v26 = request;
     v28 = v34;
-    [v22 performRequest:v10 completion:v24];
+    [removeBackgroundRequestHandler performRequest:request completion:v24];
 
     objc_destroyWeak(&v29);
   }
@@ -1991,17 +1991,17 @@ void __66__VKCImageSubjectBaseView_loadImageSubjectWithIndexes_completion___bloc
   }
 }
 
-- (id)imageSubjectPathWithIndexes:(id)a3
+- (id)imageSubjectPathWithIndexes:(id)indexes
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VKCImageSubjectBaseView *)self subjectContext];
+  indexesCopy = indexes;
+  subjectContext = [(VKCImageSubjectBaseView *)self subjectContext];
 
-  if (v5)
+  if (subjectContext)
   {
-    v6 = [(VKCImageSubjectBaseView *)self subjectContext];
+    subjectContext2 = [(VKCImageSubjectBaseView *)self subjectContext];
     [(VKCImageBaseOverlayView *)self contentsRect];
-    v7 = [v6 normalizedPathForSubjectWithIndexSet:v4 contentsRect:1 topLevelOnly:?];
+    v7 = [subjectContext2 normalizedPathForSubjectWithIndexSet:indexesCopy contentsRect:1 topLevelOnly:?];
 
     v8 = [(VKCImageSubjectBaseView *)self convertNormalizedPathToBoundsCoordinates:v7];
   }
@@ -2012,7 +2012,7 @@ void __66__VKCImageSubjectBaseView_loadImageSubjectWithIndexes_completion___bloc
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4335000, v9, OS_LOG_TYPE_DEFAULT, "Attempting to access subject path, but no subject analysis exists: %@", &v11, 0xCu);
     }
 
@@ -2022,16 +2022,16 @@ void __66__VKCImageSubjectBaseView_loadImageSubjectWithIndexes_completion___bloc
   return v8;
 }
 
-- (void)sendSubjectAnalyticsEventWithEventType:(int64_t)a3 interactionType:(int64_t)a4 subjectFound:(BOOL)a5 processingDuration:(double)a6
+- (void)sendSubjectAnalyticsEventWithEventType:(int64_t)type interactionType:(int64_t)interactionType subjectFound:(BOOL)found processingDuration:(double)duration
 {
-  v7 = a5;
+  foundCopy = found;
   v11 = [VKAnalyticsSubjectEvent alloc];
-  v12 = [(VKCImageBaseOverlayView *)self baseDelegate];
-  v13 = [v12 customAnalyticsIdentifier];
-  v15 = [(VKAnalyticsSubjectEvent *)v11 initWithEventType:a3 interactionType:a4 subjectFound:v7 processingDuration:v13 customIdentifier:a6];
+  baseDelegate = [(VKCImageBaseOverlayView *)self baseDelegate];
+  customAnalyticsIdentifier = [baseDelegate customAnalyticsIdentifier];
+  v15 = [(VKAnalyticsSubjectEvent *)v11 initWithEventType:type interactionType:interactionType subjectFound:foundCopy processingDuration:customAnalyticsIdentifier customIdentifier:duration];
 
-  v14 = [(VKCImageSubjectBaseView *)self baseSubjectDelegate];
-  [v14 subjectBaseView:self analyticsEventOccurred:v15];
+  baseSubjectDelegate = [(VKCImageSubjectBaseView *)self baseSubjectDelegate];
+  [baseSubjectDelegate subjectBaseView:self analyticsEventOccurred:v15];
 }
 
 - (VKCImageSubjectBaseViewDelegate)baseSubjectDelegate
@@ -2045,7 +2045,7 @@ void __66__VKCImageSubjectBaseView_loadImageSubjectWithIndexes_completion___bloc
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B4335000, a2, OS_LOG_TYPE_ERROR, "Error getting pulse animation package: %@", &v2, 0xCu);
 }
 

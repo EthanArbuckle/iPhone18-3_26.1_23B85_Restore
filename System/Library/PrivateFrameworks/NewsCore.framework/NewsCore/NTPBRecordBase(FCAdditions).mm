@@ -14,15 +14,15 @@
   {
     v6 = a4;
     v7 = a3;
-    v8 = [a1 cacheLifetimeHint];
-    if (v8 == 2)
+    cacheLifetimeHint = [self cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
     v10 = [v6 assetHandleForCKAssetURLString:v7 lifetimeHint:v9];
@@ -39,8 +39,8 @@
 - (BOOL)fc_isCachedAgeGreaterThan:()FCAdditions
 {
   v3 = MEMORY[0x1E695DF00];
-  v4 = [a1 fetchDate];
-  v5 = [v3 dateWithPBDate:v4];
+  fetchDate = [self fetchDate];
+  v5 = [v3 dateWithPBDate:fetchDate];
   [v5 fc_timeIntervalUntilNow];
   v7 = v6 > a2;
 
@@ -50,8 +50,8 @@
 - (BOOL)fc_isCachedAgeLessThan:()FCAdditions
 {
   v3 = MEMORY[0x1E695DF00];
-  v4 = [a1 fetchDate];
-  v5 = [v3 dateWithPBDate:v4];
+  fetchDate = [self fetchDate];
+  v5 = [v3 dateWithPBDate:fetchDate];
   [v5 fc_timeIntervalUntilNow];
   v7 = v6 < a2;
 
@@ -61,13 +61,13 @@
 - (BOOL)fc_isNewerThan:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 modificationDate];
-  [v5 timeIntervalSince1970];
+  modificationDate = [self modificationDate];
+  [modificationDate timeIntervalSince1970];
   v7 = v6;
 
-  v8 = [v4 modificationDate];
+  modificationDate2 = [v4 modificationDate];
 
-  [v8 timeIntervalSince1970];
+  [modificationDate2 timeIntervalSince1970];
   v10 = v9;
 
   return v7 > v10 + 0.001;
@@ -77,8 +77,8 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v2 = [FCContentManifest alloc];
-  v3 = [a1 identifier];
-  v8[0] = v3;
+  identifier = [self identifier];
+  v8[0] = identifier;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v5 = [(FCContentManifest *)v2 initWithRecordIDs:v4];
 

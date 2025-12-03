@@ -1,31 +1,31 @@
 @interface ATXAppInterruptionsEventProvider
-- (ATXAppInterruptionsEventProvider)initWithModeEventProvider:(id)a3;
-- (BOOL)appLaunchEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4;
-- (BOOL)notificationEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4;
-- (BOOL)successfullyCalculatedAppSessionInterruptions:(id)a3;
-- (double)globalPopularityOfInterruptingEntity:(id)a3;
-- (double)modeAppInterruptionsClassConditionalProbabilityByEntity:(id)a3;
-- (double)modePopularityOfInterruptingEntity:(id)a3;
-- (double)ratioOfModePopularityToGlobalPopularityOfInterruptingEntity:(id)a3;
-- (id)dateIntervalFromAppLaunchEvent:(id)a3;
-- (id)dateIntervalFromNotificationEvent:(id)a3;
-- (unint64_t)globalAppInterruptionsCountByEntity:(id)a3;
-- (unint64_t)modeAppInterruptionsCountByEntity:(id)a3;
-- (void)trackAppSessionInterruption:(id)a3;
+- (ATXAppInterruptionsEventProvider)initWithModeEventProvider:(id)provider;
+- (BOOL)appLaunchEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event;
+- (BOOL)notificationEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event;
+- (BOOL)successfullyCalculatedAppSessionInterruptions:(id)interruptions;
+- (double)globalPopularityOfInterruptingEntity:(id)entity;
+- (double)modeAppInterruptionsClassConditionalProbabilityByEntity:(id)entity;
+- (double)modePopularityOfInterruptingEntity:(id)entity;
+- (double)ratioOfModePopularityToGlobalPopularityOfInterruptingEntity:(id)entity;
+- (id)dateIntervalFromAppLaunchEvent:(id)event;
+- (id)dateIntervalFromNotificationEvent:(id)event;
+- (unint64_t)globalAppInterruptionsCountByEntity:(id)entity;
+- (unint64_t)modeAppInterruptionsCountByEntity:(id)entity;
+- (void)trackAppSessionInterruption:(id)interruption;
 @end
 
 @implementation ATXAppInterruptionsEventProvider
 
-- (ATXAppInterruptionsEventProvider)initWithModeEventProvider:(id)a3
+- (ATXAppInterruptionsEventProvider)initWithModeEventProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = ATXAppInterruptionsEventProvider;
   v6 = [(ATXAppInterruptionsEventProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modeEventProvider, a3);
+    objc_storeStrong(&v6->_modeEventProvider, provider);
     v8 = objc_opt_new();
     globalInterruptedAppSessionsAccumulator = v7->_globalInterruptedAppSessionsAccumulator;
     v7->_globalInterruptedAppSessionsAccumulator = v8;
@@ -38,10 +38,10 @@
   return v7;
 }
 
-- (BOOL)successfullyCalculatedAppSessionInterruptions:(id)a3
+- (BOOL)successfullyCalculatedAppSessionInterruptions:(id)interruptions
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptionsCopy = interruptions;
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-1209600.0];
   v6 = objc_opt_new();
   v7 = [v6 appLaunchesSinceDate:v5];
@@ -78,9 +78,9 @@
   v27[1] = 3221225472;
   v27[2] = __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSessionInterruptions___block_invoke_2;
   v27[3] = &unk_27859EF38;
-  v15 = v4;
+  v15 = interruptionsCopy;
   v28 = v15;
-  v29 = self;
+  selfCopy = self;
   v16 = [v14 sinkWithCompletion:v30 shouldContinue:v27];
   v17 = *(v32[0] + 40);
   if (v17)
@@ -263,14 +263,14 @@ uint64_t __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSession
   return v4 ^ 1u;
 }
 
-- (id)dateIntervalFromNotificationEvent:(id)a3
+- (id)dateIntervalFromNotificationEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x277CBEAA8];
-    v5 = v3;
+    v5 = eventCopy;
     v6 = [v4 alloc];
     [v5 timestamp];
     v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
@@ -290,19 +290,19 @@ uint64_t __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSession
   return v12;
 }
 
-- (id)dateIntervalFromAppLaunchEvent:(id)a3
+- (id)dateIntervalFromAppLaunchEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x277CCA970];
-    v5 = v3;
+    v5 = eventCopy;
     v6 = [v4 alloc];
-    v7 = [v5 appSessionStartTime];
-    v8 = [v5 appSessionStartTime];
+    appSessionStartTime = [v5 appSessionStartTime];
+    appSessionStartTime2 = [v5 appSessionStartTime];
 
-    v9 = [v6 initWithStartDate:v7 endDate:v8];
+    v9 = [v6 initWithStartDate:appSessionStartTime endDate:appSessionStartTime2];
   }
 
   else
@@ -313,16 +313,16 @@ uint64_t __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSession
   return v9;
 }
 
-- (void)trackAppSessionInterruption:(id)a3
+- (void)trackAppSessionInterruption:(id)interruption
 {
-  v8 = a3;
+  interruptionCopy = interruption;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ATXInterruptedAppSessionAccumulator *)self->_globalInterruptedAppSessionsAccumulator handleNotificationEvent:v8];
-    if ([(ATXAppInterruptionsEventProvider *)self notificationEventOccurredWhileInMode:v8 modeTransitionEvent:self->_mostRecentModeEvent])
+    [(ATXInterruptedAppSessionAccumulator *)self->_globalInterruptedAppSessionsAccumulator handleNotificationEvent:interruptionCopy];
+    if ([(ATXAppInterruptionsEventProvider *)self notificationEventOccurredWhileInMode:interruptionCopy modeTransitionEvent:self->_mostRecentModeEvent])
     {
-      [(ATXInterruptedAppSessionAccumulator *)self->_modeInterruptedAppSessionsAccumulator handleNotificationEvent:v8];
+      [(ATXInterruptedAppSessionAccumulator *)self->_modeInterruptedAppSessionsAccumulator handleNotificationEvent:interruptionCopy];
     }
   }
 
@@ -333,32 +333,32 @@ uint64_t __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSession
     {
       globalInterruptedAppSessionsAccumulator = self->_globalInterruptedAppSessionsAccumulator;
       v5 = objc_opt_new();
-      [(ATXInterruptedAppSessionAccumulator *)globalInterruptedAppSessionsAccumulator handleNextAppLaunch:v8 dimensionSet:v5];
+      [(ATXInterruptedAppSessionAccumulator *)globalInterruptedAppSessionsAccumulator handleNextAppLaunch:interruptionCopy dimensionSet:v5];
 
-      if ([(ATXAppInterruptionsEventProvider *)self appLaunchEventOccurredWhileInMode:v8 modeTransitionEvent:self->_mostRecentModeEvent])
+      if ([(ATXAppInterruptionsEventProvider *)self appLaunchEventOccurredWhileInMode:interruptionCopy modeTransitionEvent:self->_mostRecentModeEvent])
       {
         modeInterruptedAppSessionsAccumulator = self->_modeInterruptedAppSessionsAccumulator;
         v7 = objc_opt_new();
-        [(ATXInterruptedAppSessionAccumulator *)modeInterruptedAppSessionsAccumulator handleNextAppLaunch:v8 dimensionSet:v7];
+        [(ATXInterruptedAppSessionAccumulator *)modeInterruptedAppSessionsAccumulator handleNextAppLaunch:interruptionCopy dimensionSet:v7];
       }
     }
   }
 }
 
-- (BOOL)notificationEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4
+- (BOOL)notificationEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  modeCopy = mode;
   v8 = [v6 alloc];
-  [v7 timestamp];
+  [modeCopy timestamp];
   v10 = v9;
 
   v11 = [v8 initWithTimeIntervalSinceReferenceDate:v10];
   [v11 timeIntervalSince1970];
   v13 = v12;
-  v14 = [v5 startDate];
-  [v14 timeIntervalSince1970];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSince1970];
   if (v13 <= v15)
   {
     v20 = 0;
@@ -368,23 +368,23 @@ uint64_t __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSession
   {
     [v11 timeIntervalSince1970];
     v17 = v16;
-    v18 = [v5 endDate];
-    [v18 timeIntervalSince1970];
+    endDate = [eventCopy endDate];
+    [endDate timeIntervalSince1970];
     v20 = v17 < v19;
   }
 
   return v20;
 }
 
-- (BOOL)appLaunchEventOccurredWhileInMode:(id)a3 modeTransitionEvent:(id)a4
+- (BOOL)appLaunchEventOccurredWhileInMode:(id)mode modeTransitionEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 appSessionStartTime];
-  [v7 timeIntervalSince1970];
+  modeCopy = mode;
+  eventCopy = event;
+  appSessionStartTime = [modeCopy appSessionStartTime];
+  [appSessionStartTime timeIntervalSince1970];
   v9 = v8;
-  v10 = [v6 startDate];
-  [v10 timeIntervalSince1970];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSince1970];
   if (v9 <= v11)
   {
     v17 = 0;
@@ -392,74 +392,74 @@ uint64_t __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSession
 
   else
   {
-    v12 = [v5 appSessionStartTime];
-    [v12 timeIntervalSince1970];
+    appSessionStartTime2 = [modeCopy appSessionStartTime];
+    [appSessionStartTime2 timeIntervalSince1970];
     v14 = v13;
-    v15 = [v6 endDate];
-    [v15 timeIntervalSince1970];
+    endDate = [eventCopy endDate];
+    [endDate timeIntervalSince1970];
     v17 = v14 < v16;
   }
 
   return v17;
 }
 
-- (unint64_t)globalAppInterruptionsCountByEntity:(id)a3
+- (unint64_t)globalAppInterruptionsCountByEntity:(id)entity
 {
   globalInterruptedAppSessionsAccumulator = self->_globalInterruptedAppSessionsAccumulator;
-  v4 = a3;
-  v5 = [(ATXInterruptedAppSessionAccumulator *)globalInterruptedAppSessionsAccumulator countedSetContainingInterruptingAppBundleIds];
-  v6 = [v5 countForObject:v4];
+  entityCopy = entity;
+  countedSetContainingInterruptingAppBundleIds = [(ATXInterruptedAppSessionAccumulator *)globalInterruptedAppSessionsAccumulator countedSetContainingInterruptingAppBundleIds];
+  v6 = [countedSetContainingInterruptingAppBundleIds countForObject:entityCopy];
 
   return v6;
 }
 
-- (unint64_t)modeAppInterruptionsCountByEntity:(id)a3
+- (unint64_t)modeAppInterruptionsCountByEntity:(id)entity
 {
   modeInterruptedAppSessionsAccumulator = self->_modeInterruptedAppSessionsAccumulator;
-  v4 = a3;
-  v5 = [(ATXInterruptedAppSessionAccumulator *)modeInterruptedAppSessionsAccumulator countedSetContainingInterruptingAppBundleIds];
-  v6 = [v5 countForObject:v4];
+  entityCopy = entity;
+  countedSetContainingInterruptingAppBundleIds = [(ATXInterruptedAppSessionAccumulator *)modeInterruptedAppSessionsAccumulator countedSetContainingInterruptingAppBundleIds];
+  v6 = [countedSetContainingInterruptingAppBundleIds countForObject:entityCopy];
 
   return v6;
 }
 
-- (double)globalPopularityOfInterruptingEntity:(id)a3
+- (double)globalPopularityOfInterruptingEntity:(id)entity
 {
-  v4 = [(ATXAppInterruptionsEventProvider *)self globalAppInterruptionsCountByEntity:a3];
-  v5 = [(ATXInterruptedAppSessionAccumulator *)self->_globalInterruptedAppSessionsAccumulator numberOfInterruptingAppSessions];
+  v4 = [(ATXAppInterruptionsEventProvider *)self globalAppInterruptionsCountByEntity:entity];
+  numberOfInterruptingAppSessions = [(ATXInterruptedAppSessionAccumulator *)self->_globalInterruptedAppSessionsAccumulator numberOfInterruptingAppSessions];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (numberOfInterruptingAppSessions)
     {
-      return v4 / v5;
+      return v4 / numberOfInterruptingAppSessions;
     }
   }
 
   return result;
 }
 
-- (double)modePopularityOfInterruptingEntity:(id)a3
+- (double)modePopularityOfInterruptingEntity:(id)entity
 {
-  v4 = [(ATXAppInterruptionsEventProvider *)self modeAppInterruptionsCountByEntity:a3];
-  v5 = [(ATXInterruptedAppSessionAccumulator *)self->_modeInterruptedAppSessionsAccumulator numberOfInterruptingAppSessions];
+  v4 = [(ATXAppInterruptionsEventProvider *)self modeAppInterruptionsCountByEntity:entity];
+  numberOfInterruptingAppSessions = [(ATXInterruptedAppSessionAccumulator *)self->_modeInterruptedAppSessionsAccumulator numberOfInterruptingAppSessions];
   result = 0.0;
   if (v4)
   {
-    if (v5)
+    if (numberOfInterruptingAppSessions)
     {
-      return v4 / v5;
+      return v4 / numberOfInterruptingAppSessions;
     }
   }
 
   return result;
 }
 
-- (double)modeAppInterruptionsClassConditionalProbabilityByEntity:(id)a3
+- (double)modeAppInterruptionsClassConditionalProbabilityByEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(ATXAppInterruptionsEventProvider *)self globalAppInterruptionsCountByEntity:v4];
-  v6 = [(ATXAppInterruptionsEventProvider *)self modeAppInterruptionsCountByEntity:v4];
+  entityCopy = entity;
+  v5 = [(ATXAppInterruptionsEventProvider *)self globalAppInterruptionsCountByEntity:entityCopy];
+  v6 = [(ATXAppInterruptionsEventProvider *)self modeAppInterruptionsCountByEntity:entityCopy];
 
   result = 0.0;
   if (v6)
@@ -473,12 +473,12 @@ uint64_t __82__ATXAppInterruptionsEventProvider_successfullyCalculatedAppSession
   return result;
 }
 
-- (double)ratioOfModePopularityToGlobalPopularityOfInterruptingEntity:(id)a3
+- (double)ratioOfModePopularityToGlobalPopularityOfInterruptingEntity:(id)entity
 {
-  v4 = a3;
-  [(ATXAppInterruptionsEventProvider *)self modePopularityOfInterruptingEntity:v4];
+  entityCopy = entity;
+  [(ATXAppInterruptionsEventProvider *)self modePopularityOfInterruptingEntity:entityCopy];
   v6 = v5;
-  [(ATXAppInterruptionsEventProvider *)self globalPopularityOfInterruptingEntity:v4];
+  [(ATXAppInterruptionsEventProvider *)self globalPopularityOfInterruptingEntity:entityCopy];
   v8 = v7;
 
   result = 0.0;

@@ -1,46 +1,46 @@
 @interface SDAirDropHandlerWalletItems
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerWalletItems)initWithTransfer:(id)a3;
+- (SDAirDropHandlerWalletItems)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
-- (void)importPassesWithCompletion:(id)a3;
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4;
+- (void)importPassesWithCompletion:(id)completion;
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion;
 - (void)triggerImport;
 - (void)updatePossibleActions;
 @end
 
 @implementation SDAirDropHandlerWalletItems
 
-- (SDAirDropHandlerWalletItems)initWithTransfer:(id)a3
+- (SDAirDropHandlerWalletItems)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerWalletItems;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.Passbook"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.Passbook"];
 }
 
 - (BOOL)canHandleTransfer
 {
-  v3 = [(SDAirDropHandler *)self isJustFiles];
+  isJustFiles = [(SDAirDropHandler *)self isJustFiles];
   v4 = SFWalletAppAvailable();
   if (![(objc_class *)off_100970FC0() isPassLibraryAvailable])
   {
     return 0;
   }
 
-  v5 = v3 & v4;
-  v6 = [(objc_class *)off_100970FC8() canAddPasses];
+  v5 = isJustFiles & v4;
+  canAddPasses = [(objc_class *)off_100970FC8() canAddPasses];
   v7 = 0;
-  if (v5 == 1 && v6)
+  if (v5 == 1 && canAddPasses)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [(SDAirDropHandler *)self transfer];
-    v9 = [v8 metaData];
-    v10 = [v9 rawFiles];
+    transfer = [(SDAirDropHandler *)self transfer];
+    metaData = [transfer metaData];
+    rawFiles = [metaData rawFiles];
 
-    v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v11 = [rawFiles countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
@@ -53,13 +53,13 @@
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(rawFiles);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
           v18 = [v17 objectForKeyedSubscript:v14];
           v19 = [v17 objectForKeyedSubscript:v15];
-          v20 = [v19 pathExtension];
+          pathExtension = [v19 pathExtension];
 
           LODWORD(v19) = SFIsPass();
           if (!v19)
@@ -69,7 +69,7 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v12 = [rawFiles countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v12)
         {
           continue;
@@ -95,40 +95,40 @@ LABEL_15:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  v5 = [(SDAirDropHandler *)self transfer];
-  v6 = [v5 metaData];
-  v7 = [v6 itemsDescription];
-  if ([v7 length])
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  itemsDescription = [metaData itemsDescription];
+  if ([itemsDescription length])
   {
-    v8 = [(SDAirDropHandler *)self transfer];
-    v9 = [v8 metaData];
-    v10 = [v9 itemsDescription];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    metaData2 = [transfer2 metaData];
+    itemsDescription2 = [metaData2 itemsDescription];
   }
 
   else
   {
-    v10 = 0;
+    itemsDescription2 = 0;
   }
 
   v11 = 0;
-  if (v4 != 1 || !v10)
+  if (totalSharedItemsCount != 1 || !itemsDescription2)
   {
     goto LABEL_10;
   }
 
   v11 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:&off_100910100];
-  v12 = [(SDAirDropHandler *)self isModernProgress];
+  isModernProgress = [(SDAirDropHandler *)self isModernProgress];
   v13 = SFLocalizedStringForKey();
-  if (v12)
+  if (isModernProgress)
   {
-    [NSString localizedStringWithFormat:v13, v10, v21];
+    [NSString localizedStringWithFormat:v13, itemsDescription2, v21];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v13, v3, v10];
+    [NSString localizedStringWithFormat:v13, senderName, itemsDescription2];
   }
   v14 = ;
 
@@ -136,7 +136,7 @@ LABEL_15:
   {
 LABEL_10:
     v22 = @"PASS";
-    v15 = [NSNumber numberWithUnsignedInteger:v4];
+    v15 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
     v23 = v15;
     v16 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     v24 = v16;
@@ -147,12 +147,12 @@ LABEL_10:
     v19 = SFLocalizedStringForKey();
     if (v15)
     {
-      [NSString localizedStringWithFormat:v19, v4, v21];
+      [NSString localizedStringWithFormat:v19, totalSharedItemsCount, v21];
     }
 
     else
     {
-      [NSString localizedStringWithFormat:v19, v3, v4];
+      [NSString localizedStringWithFormat:v19, senderName, totalSharedItemsCount];
     }
     v14 = ;
 
@@ -167,24 +167,24 @@ LABEL_10:
   v20.receiver = self;
   v20.super_class = SDAirDropHandlerWalletItems;
   [(SDAirDropHandler *)&v20 updatePossibleActions];
-  v3 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v3)
+  if (bundleProxy)
   {
-    v4 = [(SDAirDropHandler *)self bundleProxy];
-    v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:v4];
+    bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+    v5 = [(SDAirDropHandler *)self defaultActionForBundleProxy:bundleProxy2];
   }
 
   else
   {
     v6 = [SFAirDropAction alloc];
-    v4 = [(SDAirDropHandler *)self transfer];
-    v7 = [v4 identifier];
+    bundleProxy2 = [(SDAirDropHandler *)self transfer];
+    identifier = [bundleProxy2 identifier];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [(SDAirDropHandler *)self singleItemActionTitle];
-    v11 = [(SDAirDropHandler *)self singleItemActionTitle];
-    v5 = [v6 initWithTransferIdentifier:v7 actionIdentifier:v9 title:v10 singleItemTitle:v11 type:1];
+    singleItemActionTitle = [(SDAirDropHandler *)self singleItemActionTitle];
+    singleItemActionTitle2 = [(SDAirDropHandler *)self singleItemActionTitle];
+    v5 = [v6 initWithTransferIdentifier:identifier actionIdentifier:v9 title:singleItemActionTitle singleItemTitle:singleItemActionTitle2 type:1];
   }
 
   objc_initWeak(&location, self);
@@ -196,8 +196,8 @@ LABEL_10:
   [v5 setActionHandler:&v14];
   v21 = v5;
   v12 = [NSArray arrayWithObjects:&v21 count:1, v14, v15, v16, v17];
-  v13 = [(SDAirDropHandler *)self transfer];
-  [v13 setPossibleActions:v12];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v12];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -216,22 +216,22 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)importPassesWithCompletion:(id)a3
+- (void)importPassesWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if ([(objc_class *)off_100970FC0() isPassLibraryAvailable]&& [(objc_class *)off_100970FC8() canAddPasses])
   {
-    v23 = v5;
+    v23 = completionCopy;
     v22 = objc_alloc_init(off_100970FC0());
     v24 = objc_opt_new();
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v6 = [(SDAirDropHandler *)self transfer];
-    v7 = [v6 completedURLs];
+    transfer = [(SDAirDropHandler *)self transfer];
+    completedURLs = [transfer completedURLs];
 
-    v8 = [v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
+    v8 = [completedURLs countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v8)
     {
       v9 = v8;
@@ -242,7 +242,7 @@ LABEL_10:
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(completedURLs);
           }
 
           v12 = *(*(&v30 + 1) + 8 * i);
@@ -285,7 +285,7 @@ LABEL_10:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
+        v9 = [completedURLs countByEnumeratingWithState:&v30 objects:v36 count:16];
       }
 
       while (v9);
@@ -296,7 +296,7 @@ LABEL_10:
     v25[2] = sub_100133668;
     v25[3] = &unk_1008D11C8;
     v26 = v24;
-    v5 = v23;
+    completionCopy = v23;
     v27 = v23;
     v19 = v24;
     [v22 addPasses:v19 withCompletionHandler:v25];
@@ -313,18 +313,18 @@ LABEL_10:
     v21 = +[NSAssertionHandler currentHandler];
     [v21 handleFailureInMethod:a2 object:self file:@"SDAirDropHandlerWalletItems.m" lineNumber:161 description:{@"%@ not supported on this platform", objc_opt_class()}];
 
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100133798;
   v6[3] = &unk_1008D11F0;
-  v7 = a4;
-  v5 = v7;
+  completionCopy = completion;
+  v5 = completionCopy;
   [(SDAirDropHandlerWalletItems *)self importPassesWithCompletion:v6];
 }
 

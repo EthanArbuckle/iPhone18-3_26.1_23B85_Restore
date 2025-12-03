@@ -1,25 +1,25 @@
 @interface CellularWcdmaRrcConnCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)establishCauseAtIndex:(unint64_t)a3;
-- (unsigned)releaseCauseAtIndex:(unint64_t)a3;
-- (unsigned)rlfCauseAtIndex:(unint64_t)a3;
-- (unsigned)rlfCauseSensorAtIndex:(unint64_t)a3;
-- (unsigned)rrcConnReqCauseAtIndex:(unint64_t)a3;
-- (void)addConnReqRel:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)establishCauseAtIndex:(unint64_t)index;
+- (unsigned)releaseCauseAtIndex:(unint64_t)index;
+- (unsigned)rlfCauseAtIndex:(unint64_t)index;
+- (unsigned)rlfCauseSensorAtIndex:(unint64_t)index;
+- (unsigned)rrcConnReqCauseAtIndex:(unint64_t)index;
+- (void)addConnReqRel:(id)rel;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDrbEstComp:(BOOL)a3;
-- (void)setHasDurationSeconds:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasRrcSetupComp:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDrbEstComp:(BOOL)comp;
+- (void)setHasDurationSeconds:(BOOL)seconds;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasRrcSetupComp:(BOOL)comp;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularWcdmaRrcConnCount
@@ -36,9 +36,9 @@
   [(CellularWcdmaRrcConnCount *)&v3 dealloc];
 }
 
-- (void)setHasDurationSeconds:(BOOL)a3
+- (void)setHasDurationSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -51,23 +51,23 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)rrcConnReqCauseAtIndex:(unint64_t)a3
+- (unsigned)rrcConnReqCauseAtIndex:(unint64_t)index
 {
   p_rrcConnReqCauses = &self->_rrcConnReqCauses;
   count = self->_rrcConnReqCauses.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rrcConnReqCauses->list[a3];
+  return p_rrcConnReqCauses->list[index];
 }
 
-- (void)setHasRrcSetupComp:(BOOL)a3
+- (void)setHasRrcSetupComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 32;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasDrbEstComp:(BOOL)a3
+- (void)setHasDrbEstComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 2;
   }
@@ -95,83 +95,83 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)rlfCauseSensorAtIndex:(unint64_t)a3
+- (unsigned)rlfCauseSensorAtIndex:(unint64_t)index
 {
   p_rlfCauseSensors = &self->_rlfCauseSensors;
   count = self->_rlfCauseSensors.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rlfCauseSensors->list[a3];
+  return p_rlfCauseSensors->list[index];
 }
 
-- (unsigned)establishCauseAtIndex:(unint64_t)a3
+- (unsigned)establishCauseAtIndex:(unint64_t)index
 {
   p_establishCauses = &self->_establishCauses;
   count = self->_establishCauses.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_establishCauses->list[a3];
+  return p_establishCauses->list[index];
 }
 
-- (unsigned)releaseCauseAtIndex:(unint64_t)a3
+- (unsigned)releaseCauseAtIndex:(unint64_t)index
 {
   p_releaseCauses = &self->_releaseCauses;
   count = self->_releaseCauses.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_releaseCauses->list[a3];
+  return p_releaseCauses->list[index];
 }
 
-- (unsigned)rlfCauseAtIndex:(unint64_t)a3
+- (unsigned)rlfCauseAtIndex:(unint64_t)index
 {
   p_rlfCauses = &self->_rlfCauses;
   count = self->_rlfCauses.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_rlfCauses->list[a3];
+  return p_rlfCauses->list[index];
 }
 
-- (void)addConnReqRel:(id)a3
+- (void)addConnReqRel:(id)rel
 {
-  v4 = a3;
+  relCopy = rel;
   connReqRels = self->_connReqRels;
-  v8 = v4;
+  v8 = relCopy;
   if (!connReqRels)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_connReqRels;
     self->_connReqRels = v6;
 
-    v4 = v8;
+    relCopy = v8;
     connReqRels = self->_connReqRels;
   }
 
-  [(NSMutableArray *)connReqRels addObject:v4];
+  [(NSMutableArray *)connReqRels addObject:relCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 64;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 8;
   }
@@ -199,9 +199,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 16;
   }
@@ -219,8 +219,8 @@
   v7.receiver = self;
   v7.super_class = CellularWcdmaRrcConnCount;
   v3 = [(CellularWcdmaRrcConnCount *)&v7 description];
-  v4 = [(CellularWcdmaRrcConnCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularWcdmaRrcConnCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -295,8 +295,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -352,9 +352,9 @@ LABEL_22:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -523,31 +523,31 @@ LABEL_37:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[16] = self->_timestamp;
-    *(v4 + 180) |= 1u;
+    toCopy[16] = self->_timestamp;
+    *(toCopy + 180) |= 1u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 37) = self->_durationSeconds;
-    *(v4 + 180) |= 4u;
+    *(toCopy + 37) = self->_durationSeconds;
+    *(toCopy + 180) |= 4u;
   }
 
-  v28 = v4;
+  v28 = toCopy;
   if ([(CellularWcdmaRrcConnCount *)self rrcConnReqCausesCount])
   {
     [v28 clearRrcConnReqCauses];
-    v6 = [(CellularWcdmaRrcConnCount *)self rrcConnReqCausesCount];
-    if (v6)
+    rrcConnReqCausesCount = [(CellularWcdmaRrcConnCount *)self rrcConnReqCausesCount];
+    if (rrcConnReqCausesCount)
     {
-      v7 = v6;
+      v7 = rrcConnReqCausesCount;
       for (i = 0; i != v7; ++i)
       {
         [v28 addRrcConnReqCause:{-[CellularWcdmaRrcConnCount rrcConnReqCauseAtIndex:](self, "rrcConnReqCauseAtIndex:", i)}];
@@ -572,10 +572,10 @@ LABEL_37:
   if ([(CellularWcdmaRrcConnCount *)self rlfCauseSensorsCount])
   {
     [v28 clearRlfCauseSensors];
-    v10 = [(CellularWcdmaRrcConnCount *)self rlfCauseSensorsCount];
-    if (v10)
+    rlfCauseSensorsCount = [(CellularWcdmaRrcConnCount *)self rlfCauseSensorsCount];
+    if (rlfCauseSensorsCount)
     {
-      v11 = v10;
+      v11 = rlfCauseSensorsCount;
       for (j = 0; j != v11; ++j)
       {
         [v28 addRlfCauseSensor:{-[CellularWcdmaRrcConnCount rlfCauseSensorAtIndex:](self, "rlfCauseSensorAtIndex:", j)}];
@@ -586,10 +586,10 @@ LABEL_37:
   if ([(CellularWcdmaRrcConnCount *)self establishCausesCount])
   {
     [v28 clearEstablishCauses];
-    v13 = [(CellularWcdmaRrcConnCount *)self establishCausesCount];
-    if (v13)
+    establishCausesCount = [(CellularWcdmaRrcConnCount *)self establishCausesCount];
+    if (establishCausesCount)
     {
-      v14 = v13;
+      v14 = establishCausesCount;
       for (k = 0; k != v14; ++k)
       {
         [v28 addEstablishCause:{-[CellularWcdmaRrcConnCount establishCauseAtIndex:](self, "establishCauseAtIndex:", k)}];
@@ -600,10 +600,10 @@ LABEL_37:
   if ([(CellularWcdmaRrcConnCount *)self releaseCausesCount])
   {
     [v28 clearReleaseCauses];
-    v16 = [(CellularWcdmaRrcConnCount *)self releaseCausesCount];
-    if (v16)
+    releaseCausesCount = [(CellularWcdmaRrcConnCount *)self releaseCausesCount];
+    if (releaseCausesCount)
     {
-      v17 = v16;
+      v17 = releaseCausesCount;
       for (m = 0; m != v17; ++m)
       {
         [v28 addReleaseCause:{-[CellularWcdmaRrcConnCount releaseCauseAtIndex:](self, "releaseCauseAtIndex:", m)}];
@@ -614,10 +614,10 @@ LABEL_37:
   if ([(CellularWcdmaRrcConnCount *)self rlfCausesCount])
   {
     [v28 clearRlfCauses];
-    v19 = [(CellularWcdmaRrcConnCount *)self rlfCausesCount];
-    if (v19)
+    rlfCausesCount = [(CellularWcdmaRrcConnCount *)self rlfCausesCount];
+    if (rlfCausesCount)
     {
-      v20 = v19;
+      v20 = rlfCausesCount;
       for (n = 0; n != v20; ++n)
       {
         [v28 addRlfCause:{-[CellularWcdmaRrcConnCount rlfCauseAtIndex:](self, "rlfCauseAtIndex:", n)}];
@@ -628,10 +628,10 @@ LABEL_37:
   if ([(CellularWcdmaRrcConnCount *)self connReqRelsCount])
   {
     [v28 clearConnReqRels];
-    v22 = [(CellularWcdmaRrcConnCount *)self connReqRelsCount];
-    if (v22)
+    connReqRelsCount = [(CellularWcdmaRrcConnCount *)self connReqRelsCount];
+    if (connReqRelsCount)
     {
-      v23 = v22;
+      v23 = connReqRelsCount;
       for (ii = 0; ii != v23; ++ii)
       {
         v25 = [(CellularWcdmaRrcConnCount *)self connReqRelAtIndex:ii];
@@ -681,9 +681,9 @@ LABEL_37:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -737,7 +737,7 @@ LABEL_37:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v14 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v6 addConnReqRel:v14];
       }
 
@@ -783,44 +783,44 @@ LABEL_19:
   }
 
 LABEL_20:
-  v16 = [(NSData *)self->_plmn copyWithZone:a3, v19];
+  v16 = [(NSData *)self->_plmn copyWithZone:zone, v19];
   v17 = *(v6 + 20);
   *(v6 + 20) = v16;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
-  v5 = *(v4 + 180);
+  v5 = *(equalCopy + 180);
   if (*&self->_has)
   {
-    if ((*(v4 + 180) & 1) == 0 || self->_timestamp != *(v4 + 16))
+    if ((*(equalCopy + 180) & 1) == 0 || self->_timestamp != *(equalCopy + 16))
     {
       goto LABEL_46;
     }
   }
 
-  else if (*(v4 + 180))
+  else if (*(equalCopy + 180))
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 180) & 4) == 0 || self->_durationSeconds != *(v4 + 37))
+    if ((*(equalCopy + 180) & 4) == 0 || self->_durationSeconds != *(equalCopy + 37))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 180) & 4) != 0)
+  else if ((*(equalCopy + 180) & 4) != 0)
   {
     goto LABEL_46;
   }
@@ -832,29 +832,29 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v6 = *(v4 + 180);
+  v6 = *(equalCopy + 180);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 180) & 0x20) == 0 || self->_rrcSetupComp != *(v4 + 43))
+    if ((*(equalCopy + 180) & 0x20) == 0 || self->_rrcSetupComp != *(equalCopy + 43))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 180) & 0x20) != 0)
+  else if ((*(equalCopy + 180) & 0x20) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 180) & 2) == 0 || self->_drbEstComp != *(v4 + 36))
+    if ((*(equalCopy + 180) & 2) == 0 || self->_drbEstComp != *(equalCopy + 36))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 180) & 2) != 0)
+  else if ((*(equalCopy + 180) & 2) != 0)
   {
     goto LABEL_46;
   }
@@ -880,7 +880,7 @@ LABEL_46:
   }
 
   connReqRels = self->_connReqRels;
-  if (connReqRels | *(v4 + 17))
+  if (connReqRels | *(equalCopy + 17))
   {
     if (![(NSMutableArray *)connReqRels isEqual:?])
     {
@@ -888,48 +888,48 @@ LABEL_46:
     }
   }
 
-  v8 = *(v4 + 180);
+  v8 = *(equalCopy + 180);
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 180) & 0x40) == 0 || self->_subsId != *(v4 + 44))
+    if ((*(equalCopy + 180) & 0x40) == 0 || self->_subsId != *(equalCopy + 44))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 180) & 0x40) != 0)
+  else if ((*(equalCopy + 180) & 0x40) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 180) & 8) == 0 || self->_numSubs != *(v4 + 38))
+    if ((*(equalCopy + 180) & 8) == 0 || self->_numSubs != *(equalCopy + 38))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 180) & 8) != 0)
+  else if ((*(equalCopy + 180) & 8) != 0)
   {
     goto LABEL_46;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 180) & 0x10) == 0 || self->_psPref != *(v4 + 42))
+    if ((*(equalCopy + 180) & 0x10) == 0 || self->_psPref != *(equalCopy + 42))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 180) & 0x10) != 0)
+  else if ((*(equalCopy + 180) & 0x10) != 0)
   {
     goto LABEL_46;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 20))
+  if (plmn | *(equalCopy + 20))
   {
     v10 = [(NSData *)plmn isEqual:?];
   }
@@ -1036,28 +1036,28 @@ LABEL_18:
   return v14 ^ v12 ^ v13 ^ [(NSData *)self->_plmn hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 180);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 180);
   if (v6)
   {
-    self->_timestamp = *(v4 + 16);
+    self->_timestamp = *(fromCopy + 16);
     *&self->_has |= 1u;
-    v6 = *(v4 + 180);
+    v6 = *(fromCopy + 180);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_durationSeconds = *(v4 + 37);
+    self->_durationSeconds = *(fromCopy + 37);
     *&self->_has |= 4u;
   }
 
-  v7 = [v4 rrcConnReqCausesCount];
-  if (v7)
+  rrcConnReqCausesCount = [fromCopy rrcConnReqCausesCount];
+  if (rrcConnReqCausesCount)
   {
-    v8 = v7;
+    v8 = rrcConnReqCausesCount;
     for (i = 0; i != v8; ++i)
     {
       -[CellularWcdmaRrcConnCount addRrcConnReqCause:](self, "addRrcConnReqCause:", [v5 rrcConnReqCauseAtIndex:i]);
@@ -1078,40 +1078,40 @@ LABEL_18:
     *&self->_has |= 2u;
   }
 
-  v11 = [v5 rlfCauseSensorsCount];
-  if (v11)
+  rlfCauseSensorsCount = [v5 rlfCauseSensorsCount];
+  if (rlfCauseSensorsCount)
   {
-    v12 = v11;
+    v12 = rlfCauseSensorsCount;
     for (j = 0; j != v12; ++j)
     {
       -[CellularWcdmaRrcConnCount addRlfCauseSensor:](self, "addRlfCauseSensor:", [v5 rlfCauseSensorAtIndex:j]);
     }
   }
 
-  v14 = [v5 establishCausesCount];
-  if (v14)
+  establishCausesCount = [v5 establishCausesCount];
+  if (establishCausesCount)
   {
-    v15 = v14;
+    v15 = establishCausesCount;
     for (k = 0; k != v15; ++k)
     {
       -[CellularWcdmaRrcConnCount addEstablishCause:](self, "addEstablishCause:", [v5 establishCauseAtIndex:k]);
     }
   }
 
-  v17 = [v5 releaseCausesCount];
-  if (v17)
+  releaseCausesCount = [v5 releaseCausesCount];
+  if (releaseCausesCount)
   {
-    v18 = v17;
+    v18 = releaseCausesCount;
     for (m = 0; m != v18; ++m)
     {
       -[CellularWcdmaRrcConnCount addReleaseCause:](self, "addReleaseCause:", [v5 releaseCauseAtIndex:m]);
     }
   }
 
-  v20 = [v5 rlfCausesCount];
-  if (v20)
+  rlfCausesCount = [v5 rlfCausesCount];
+  if (rlfCausesCount)
   {
-    v21 = v20;
+    v21 = rlfCausesCount;
     for (n = 0; n != v21; ++n)
     {
       -[CellularWcdmaRrcConnCount addRlfCause:](self, "addRlfCause:", [v5 rlfCauseAtIndex:n]);

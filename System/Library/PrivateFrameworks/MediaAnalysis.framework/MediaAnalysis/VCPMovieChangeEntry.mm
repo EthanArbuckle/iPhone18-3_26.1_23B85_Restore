@@ -3,8 +3,8 @@
 - (CGRect)bestPlaybackRect;
 - (void)dealloc;
 - (void)publish;
-- (void)setKeyFrameTime:(id *)a3;
-- (void)setSummaryTimeRange:(id *)a3;
+- (void)setKeyFrameTime:(id *)time;
+- (void)setSummaryTimeRange:(id *)range;
 @end
 
 @implementation VCPMovieChangeEntry
@@ -29,8 +29,8 @@
     v2 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v2))
     {
-      v3 = [(PHAsset *)self->_asset localIdentifier];
-      v4 = v3;
+      localIdentifier = [(PHAsset *)self->_asset localIdentifier];
+      v4 = localIdentifier;
       if (self->_imageOnly)
       {
         v5 = @"(thumbnail analysis results)";
@@ -42,7 +42,7 @@
       }
 
       *buf = 138412546;
-      *&buf[4] = v3;
+      *&buf[4] = localIdentifier;
       *&buf[12] = 2112;
       *&buf[14] = v5;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v2, "[%@] Publishing Movie asset %@", buf, 0x16u);
@@ -50,8 +50,8 @@
   }
 
   v102 = +[MADStateHandler sharedStateHandler];
-  v6 = [(PHAsset *)self->_asset localIdentifier];
-  v7 = v6;
+  localIdentifier2 = [(PHAsset *)self->_asset localIdentifier];
+  v7 = localIdentifier2;
   if (self->_imageOnly)
   {
     v8 = @"(thumbnail analysis results)";
@@ -62,15 +62,15 @@
     v8 = &stru_1002890F8;
   }
 
-  [v102 addBreadcrumb:{@"[%@] Publishing Movie asset %@", v6, v8}];
+  [v102 addBreadcrumb:{@"[%@] Publishing Movie asset %@", localIdentifier2, v8}];
 
   v103 = [PHAssetChangeRequest changeRequestForAsset:self->_asset];
-  v9 = [(PHAsset *)self->_asset vcp_modificationDate];
-  [v103 setMediaAnalysisTimeStamp:v9];
+  vcp_modificationDate = [(PHAsset *)self->_asset vcp_modificationDate];
+  [v103 setMediaAnalysisTimeStamp:vcp_modificationDate];
 
   v10 = MediaAnalysisVersion;
   [v103 setMediaAnalysisImageVersion:MediaAnalysisVersion];
-  v11 = self;
+  selfCopy3 = self;
   if (self->_imageCaption && +[VCPVideoCaptionAnalyzer mode]== 1)
   {
     if (MediaAnalysisLogLevel() >= 7)
@@ -78,87 +78,87 @@
       v12 = VCPLogToOSLogType[7];
       if (os_log_type_enabled(&_os_log_default, v12))
       {
-        v13 = [(PHAsset *)self->_asset localIdentifier];
+        localIdentifier3 = [(PHAsset *)self->_asset localIdentifier];
         imageCaption = self->_imageCaption;
         *buf = 138412546;
-        *&buf[4] = v13;
+        *&buf[4] = localIdentifier3;
         *&buf[12] = 2112;
         *&buf[14] = imageCaption;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "[%@] Publish image caption [%@]", buf, 0x16u);
 
-        v11 = self;
+        selfCopy3 = self;
       }
     }
 
-    [v103 setGeneratedAssetDescription:v11->_imageCaption analysisVersion:VCPPhotosCaptionProcessingVersion sourceType:1];
+    [v103 setGeneratedAssetDescription:selfCopy3->_imageCaption analysisVersion:VCPPhotosCaptionProcessingVersion sourceType:1];
   }
 
-  if (v11->_imageEmbeddingVersion)
+  if (selfCopy3->_imageEmbeddingVersion)
   {
     [v103 setImageEmbeddingVersion:?];
   }
 
-  if (!v11->_imageOnly)
+  if (!selfCopy3->_imageOnly)
   {
-    if (v11->_videoCaption && +[VCPVideoCaptionAnalyzer mode]== 1)
+    if (selfCopy3->_videoCaption && +[VCPVideoCaptionAnalyzer mode]== 1)
     {
       if (MediaAnalysisLogLevel() >= 7)
       {
         v15 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v15))
         {
-          v16 = v11;
-          videoCaption = v11->_videoCaption;
-          v18 = [(PHAsset *)v16->_asset localIdentifier];
+          v16 = selfCopy3;
+          videoCaption = selfCopy3->_videoCaption;
+          localIdentifier4 = [(PHAsset *)v16->_asset localIdentifier];
           *buf = 138412546;
           *&buf[4] = videoCaption;
           *&buf[12] = 2112;
-          *&buf[14] = v18;
+          *&buf[14] = localIdentifier4;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "publish video caption [%@] to movie %@", buf, 0x16u);
 
-          v11 = self;
+          selfCopy3 = self;
         }
       }
 
-      [v103 setGeneratedAssetDescription:v11->_videoCaption analysisVersion:VCPPhotosCaptionProcessingVersion sourceType:2];
+      [v103 setGeneratedAssetDescription:selfCopy3->_videoCaption analysisVersion:VCPPhotosCaptionProcessingVersion sourceType:2];
     }
 
-    if (v11->_videoEmbeddingVersion)
+    if (selfCopy3->_videoEmbeddingVersion)
     {
       [v103 setVideoEmbeddingVersion:?];
     }
 
     [v103 setMediaAnalysisVersion:v10];
-    v19 = *&v11->_summaryTimeRange.start.epoch;
-    *buf = *&v11->_summaryTimeRange.start.value;
+    v19 = *&selfCopy3->_summaryTimeRange.start.epoch;
+    *buf = *&selfCopy3->_summaryTimeRange.start.value;
     *&buf[16] = v19;
-    v115 = *&v11->_summaryTimeRange.duration.timescale;
+    v115 = *&selfCopy3->_summaryTimeRange.duration.timescale;
     [v103 setBestVideoTimeRange:buf];
-    *&v20 = v11->_autoplayScore;
+    *&v20 = selfCopy3->_autoplayScore;
     [v103 setAutoplaySuggestionScore:v20];
-    *&v21 = v11->_videoScore;
+    *&v21 = selfCopy3->_videoScore;
     [v103 setVideoScore:v21];
-    *&v22 = v11->_activityScore;
+    *&v22 = selfCopy3->_activityScore;
     [v103 setActivityScore:v22];
-    [v103 setFaceCount:v11->_faceCount];
-    [v103 setAudioClassification:v11->_audioClassification];
-    [v103 setScreenTimeDeviceImageSensitivity:v11->_screenTimeDeviceImageSensitivity];
-    *buf = *&v11->_keyFrameTime.value;
-    *&buf[16] = v11->_keyFrameTime.epoch;
+    [v103 setFaceCount:selfCopy3->_faceCount];
+    [v103 setAudioClassification:selfCopy3->_audioClassification];
+    [v103 setScreenTimeDeviceImageSensitivity:selfCopy3->_screenTimeDeviceImageSensitivity];
+    *buf = *&selfCopy3->_keyFrameTime.value;
+    *&buf[16] = selfCopy3->_keyFrameTime.epoch;
     if (CMTimeGetSeconds(buf) != 0.0)
     {
-      keyFrameResource = v11->_keyFrameResource;
-      *buf = *&v11->_keyFrameTime.value;
-      *&buf[16] = v11->_keyFrameTime.epoch;
+      keyFrameResource = selfCopy3->_keyFrameResource;
+      *buf = *&selfCopy3->_keyFrameTime.value;
+      *&buf[16] = selfCopy3->_keyFrameTime.epoch;
       [v103 setBestKeyFrame:keyFrameResource time:buf];
     }
 
-    [v103 setBestPlaybackRectWithNormalizedRect:{v11->_bestPlaybackRect.origin.x, v11->_bestPlaybackRect.origin.y, v11->_bestPlaybackRect.size.width, v11->_bestPlaybackRect.size.height}];
+    [v103 setBestPlaybackRectWithNormalizedRect:{selfCopy3->_bestPlaybackRect.origin.x, selfCopy3->_bestPlaybackRect.origin.y, selfCopy3->_bestPlaybackRect.size.width, selfCopy3->_bestPlaybackRect.size.height}];
     v111 = 0u;
     v112 = 0u;
     v109 = 0u;
     v110 = 0u;
-    v24 = v11->_humanActions;
+    v24 = selfCopy3->_humanActions;
     v25 = [(NSDictionary *)v24 countByEnumeratingWithState:&v109 objects:v113 count:16];
     if (v25)
     {
@@ -183,12 +183,12 @@
           {
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, type))
             {
-              v36 = [(PHAsset *)self->_asset localIdentifier];
-              v37 = [v29 localIdentifier];
+              localIdentifier5 = [(PHAsset *)self->_asset localIdentifier];
+              localIdentifier6 = [v29 localIdentifier];
               *buf = 138412546;
-              *&buf[4] = v36;
+              *&buf[4] = localIdentifier5;
               *&buf[12] = 2112;
-              *&buf[14] = v37;
+              *&buf[14] = localIdentifier6;
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "   [%@] reset action traits for PHFace %@", buf, 0x16u);
             }
 
@@ -199,12 +199,12 @@
           {
             if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v27))
             {
-              v33 = [(PHAsset *)self->_asset localIdentifier];
-              v34 = [v29 localIdentifier];
+              localIdentifier7 = [(PHAsset *)self->_asset localIdentifier];
+              localIdentifier8 = [v29 localIdentifier];
               *buf = 138412546;
-              *&buf[4] = v33;
+              *&buf[4] = localIdentifier7;
               *&buf[12] = 2112;
-              *&buf[14] = v34;
+              *&buf[14] = localIdentifier8;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v27, "   [%@] publish action traits for PHFace %@", buf, 0x16u);
             }
 
@@ -219,67 +219,67 @@
       while (v25);
     }
 
-    v38 = self;
+    selfCopy12 = self;
     sceneClassifications = self->_sceneClassifications;
     if (sceneClassifications)
     {
       v40 = VCPPhotosSceneProcessingVersionInternal();
-      v41 = [(PHAsset *)self->_asset adjustmentVersion];
-      [v103 setSceneClassifications:sceneClassifications ofType:2 version:v40 timestamp:v41];
+      adjustmentVersion = [(PHAsset *)self->_asset adjustmentVersion];
+      [v103 setSceneClassifications:sceneClassifications ofType:2 version:v40 timestamp:adjustmentVersion];
 
-      v38 = self;
+      selfCopy12 = self;
     }
 
-    if (v38->_audioClassifications && ([(PHAsset *)v38->_asset mediaSubtypes]& 0x20000) == 0)
+    if (selfCopy12->_audioClassifications && ([(PHAsset *)selfCopy12->_asset mediaSubtypes]& 0x20000) == 0)
     {
       if (MediaAnalysisLogLevel() >= 7)
       {
         v42 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v42))
         {
-          v43 = [(NSSet *)v38->_audioClassifications count];
-          v44 = [(PHAsset *)v38->_asset localIdentifier];
+          v43 = [(NSSet *)selfCopy12->_audioClassifications count];
+          localIdentifier9 = [(PHAsset *)selfCopy12->_asset localIdentifier];
           *buf = 67109378;
           *&buf[4] = v43;
           *&buf[8] = 2112;
-          *&buf[10] = v44;
+          *&buf[10] = localIdentifier9;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v42, "publish %d audio classifications to movie %@", buf, 0x12u);
 
-          v38 = self;
+          selfCopy12 = self;
         }
       }
 
-      audioClassifications = v38->_audioClassifications;
+      audioClassifications = selfCopy12->_audioClassifications;
       v46 = VCPPhotosSceneProcessingVersionInternal();
-      v47 = [(PHAsset *)v38->_asset adjustmentVersion];
-      [v103 setSceneClassifications:audioClassifications ofType:3 version:v46 timestamp:v47];
+      adjustmentVersion2 = [(PHAsset *)selfCopy12->_asset adjustmentVersion];
+      [v103 setSceneClassifications:audioClassifications ofType:3 version:v46 timestamp:adjustmentVersion2];
 
-      v38 = self;
+      selfCopy12 = self;
     }
 
-    if (v38->_facesToAdd || v38->_animalsToAdd)
+    if (selfCopy12->_facesToAdd || selfCopy12->_animalsToAdd)
     {
       typea = +[NSMutableArray array];
-      v48 = [(NSArray *)v38->_facesToAdd count];
-      if (v48 == [(NSArray *)v38->_faceThumbnailIds count])
+      v48 = [(NSArray *)selfCopy12->_facesToAdd count];
+      if (v48 == [(NSArray *)selfCopy12->_faceThumbnailIds count])
       {
         v49 = 0;
         v104 = VCPLogToOSLogType[7];
         v50 = &_os_log_default;
         v99 = VCPLogToOSLogType[3];
-        while (v49 < [(NSArray *)v38->_facesToAdd count])
+        while (v49 < [(NSArray *)selfCopy12->_facesToAdd count])
         {
-          v51 = [(NSArray *)v38->_facesToAdd objectAtIndexedSubscript:v49];
-          v52 = [(NSArray *)v38->_faceThumbnailIds objectAtIndexedSubscript:v49];
+          v51 = [(NSArray *)selfCopy12->_facesToAdd objectAtIndexedSubscript:v49];
+          v52 = [(NSArray *)selfCopy12->_faceThumbnailIds objectAtIndexedSubscript:v49];
           v53 = +[PHFaceChangeRequest creationRequestForFace];
-          v54 = [v53 placeholderForCreatedFace];
-          if (v54)
+          placeholderForCreatedFace = [v53 placeholderForCreatedFace];
+          if (placeholderForCreatedFace)
           {
             [v53 setGroupingIdentifier:kVideoFaceGroupIdentifier];
             [v53 setFaceprint:v51];
             [v53 setDetectionType:1];
-            v55 = [(PHAsset *)v38->_asset faceAdjustmentVersion];
-            [v53 setAdjustmentVersion:v55];
+            faceAdjustmentVersion = [(PHAsset *)selfCopy12->_asset faceAdjustmentVersion];
+            [v53 setAdjustmentVersion:faceAdjustmentVersion];
 
             [v53 setFaceAlgorithmVersion:15];
             [v53 setCenterX:0.5];
@@ -306,20 +306,20 @@
               [v53 setDetectionTraits:v62];
             }
 
-            [typea addObject:v54];
+            [typea addObject:placeholderForCreatedFace];
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v50, v104))
             {
-              v100 = [v54 localIdentifier];
+              localIdentifier10 = [placeholderForCreatedFace localIdentifier];
               v63 = v50;
-              v64 = [(PHAsset *)self->_asset localIdentifier];
+              localIdentifier11 = [(PHAsset *)self->_asset localIdentifier];
               v65 = self->_humanActionsForFacesToAdd;
               v66 = [NSNumber numberWithInt:v49];
               v67 = [(NSDictionary *)v65 objectForKeyedSubscript:v66];
               v68 = [v67 count];
               *buf = 138412802;
-              *&buf[4] = v100;
+              *&buf[4] = localIdentifier10;
               *&buf[12] = 2112;
-              *&buf[14] = v64;
+              *&buf[14] = localIdentifier11;
               *&buf[22] = 1024;
               *&buf[24] = v68;
               _os_log_impl(&_mh_execute_header, v63, v104, "Created new video PHFace [%@] for asset [%@], with %d traits", buf, 0x1Cu);
@@ -335,7 +335,7 @@
           }
 
           ++v49;
-          v38 = self;
+          selfCopy12 = self;
         }
       }
 
@@ -344,8 +344,8 @@
         v69 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v69))
         {
-          v70 = [(NSArray *)v38->_facesToAdd count];
-          v71 = [(NSArray *)v38->_faceThumbnailIds count];
+          v70 = [(NSArray *)selfCopy12->_facesToAdd count];
+          v71 = [(NSArray *)selfCopy12->_faceThumbnailIds count];
           *buf = 134218240;
           *&buf[4] = v70;
           *&buf[12] = 2048;
@@ -354,8 +354,8 @@
         }
       }
 
-      v72 = [(NSArray *)v38->_animalsToAdd count];
-      if (v72 == [(NSArray *)v38->_animalThumbnailIds count])
+      v72 = [(NSArray *)selfCopy12->_animalsToAdd count];
+      if (v72 == [(NSArray *)selfCopy12->_animalThumbnailIds count])
       {
         v73 = 0;
         v74 = VCPLogToOSLogType[7];
@@ -363,30 +363,30 @@
         v105 = VCPLogToOSLogType[3];
         while (1)
         {
-          if (v73 >= [(NSArray *)v38->_animalsToAdd count])
+          if (v73 >= [(NSArray *)selfCopy12->_animalsToAdd count])
           {
             goto LABEL_97;
           }
 
-          v75 = [(NSArray *)v38->_animalsToAdd objectAtIndexedSubscript:v73];
-          v76 = [(NSArray *)v38->_animalThumbnailIds objectAtIndexedSubscript:v73];
+          v75 = [(NSArray *)selfCopy12->_animalsToAdd objectAtIndexedSubscript:v73];
+          v76 = [(NSArray *)selfCopy12->_animalThumbnailIds objectAtIndexedSubscript:v73];
           v77 = +[PHFaceChangeRequest creationRequestForFace];
-          v78 = [v77 placeholderForCreatedFace];
-          if (v78)
+          placeholderForCreatedFace2 = [v77 placeholderForCreatedFace];
+          if (placeholderForCreatedFace2)
           {
             [v77 setGroupingIdentifier:kVideoFaceGroupIdentifier];
             [v77 setFaceprint:v75];
-            v79 = [(NSArray *)v38->_animalsType objectAtIndexedSubscript:v73];
-            v80 = [v79 integerValue];
+            v79 = [(NSArray *)selfCopy12->_animalsType objectAtIndexedSubscript:v73];
+            integerValue = [v79 integerValue];
 
-            if ((v80 & 0x200000000) != 0)
+            if ((integerValue & 0x200000000) != 0)
             {
               v84 = 4;
-              v81 = self;
+              selfCopy10 = self;
 LABEL_88:
               [v77 setDetectionType:v84];
-              v85 = [(PHAsset *)v81->_asset faceAdjustmentVersion];
-              [v77 setAdjustmentVersion:v85];
+              faceAdjustmentVersion2 = [(PHAsset *)selfCopy10->_asset faceAdjustmentVersion];
+              [v77 setAdjustmentVersion:faceAdjustmentVersion2];
 
               [v77 setFaceAlgorithmVersion:15];
               [v77 setCenterX:0.5];
@@ -400,25 +400,25 @@ LABEL_88:
                 [v77 setThumbnailIdentifier:v76];
               }
 
-              [typea addObject:v78];
+              [typea addObject:placeholderForCreatedFace2];
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v74))
               {
-                v86 = [v78 localIdentifier];
-                v87 = [(PHAsset *)self->_asset localIdentifier];
+                localIdentifier12 = [placeholderForCreatedFace2 localIdentifier];
+                localIdentifier13 = [(PHAsset *)self->_asset localIdentifier];
                 *buf = 138412802;
-                *&buf[4] = v86;
+                *&buf[4] = localIdentifier12;
                 *&buf[12] = 2112;
                 *&buf[14] = v76;
                 *&buf[22] = 2112;
-                *&buf[24] = v87;
+                *&buf[24] = localIdentifier13;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v74, "Created new video PHFace-Animal [%@][%@] for asset [%@]", buf, 0x20u);
               }
 
               goto LABEL_93;
             }
 
-            v81 = self;
-            if ((v80 & 0x400000000) != 0)
+            selfCopy10 = self;
+            if ((integerValue & 0x400000000) != 0)
             {
               v84 = 3;
               goto LABEL_88;
@@ -445,7 +445,7 @@ LABEL_85:
 LABEL_93:
 
           ++v73;
-          v38 = self;
+          selfCopy12 = self;
         }
       }
 
@@ -454,8 +454,8 @@ LABEL_93:
         v88 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v88))
         {
-          v89 = [(NSArray *)v38->_animalsToAdd count];
-          v90 = [(NSArray *)v38->_animalThumbnailIds count];
+          v89 = [(NSArray *)selfCopy12->_animalsToAdd count];
+          v90 = [(NSArray *)selfCopy12->_animalThumbnailIds count];
           *buf = 134218240;
           *&buf[4] = v89;
           *&buf[12] = 2048;
@@ -471,35 +471,35 @@ LABEL_97:
         if (os_log_type_enabled(&_os_log_default, v91))
         {
           v92 = [typea count];
-          v93 = [(PHAsset *)v38->_asset localIdentifier];
+          localIdentifier14 = [(PHAsset *)selfCopy12->_asset localIdentifier];
           *buf = 67109378;
           *&buf[4] = v92;
           *&buf[8] = 2112;
-          *&buf[10] = v93;
+          *&buf[10] = localIdentifier14;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v91, "setFacesFromEntireVideo %d human+animals for asset [%@]", buf, 0x12u);
         }
       }
 
       [v103 setTemporalFaces:typea];
 
-      v38 = self;
+      selfCopy12 = self;
     }
 
-    if ([(PHAsset *)v38->_asset mad_isEligibleForComputeSync])
+    if ([(PHAsset *)selfCopy12->_asset mad_isEligibleForComputeSync])
     {
-      [v103 setLocalAnalysisStage:v38->_analysisStage];
-      [v103 setComputeSyncMediaAnalysisPayload:v38->_computeSyncPayload];
+      [v103 setLocalAnalysisStage:selfCopy12->_analysisStage];
+      [v103 setComputeSyncMediaAnalysisPayload:selfCopy12->_computeSyncPayload];
       if (MediaAnalysisLogLevel() >= 7)
       {
         v94 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v94))
         {
-          v95 = [(PHAsset *)v38->_asset localIdentifier];
-          v96 = v38;
-          analysisStage = v38->_analysisStage;
+          localIdentifier15 = [(PHAsset *)selfCopy12->_asset localIdentifier];
+          v96 = selfCopy12;
+          analysisStage = selfCopy12->_analysisStage;
           v98 = [(NSData *)v96->_computeSyncPayload length];
           *buf = 138412802;
-          *&buf[4] = v95;
+          *&buf[4] = localIdentifier15;
           *&buf[12] = 1024;
           *&buf[14] = analysisStage;
           *&buf[18] = 1024;
@@ -520,19 +520,19 @@ LABEL_97:
   return self;
 }
 
-- (void)setSummaryTimeRange:(id *)a3
+- (void)setSummaryTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_summaryTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_summaryTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_summaryTimeRange.start.epoch = v4;
   *&self->_summaryTimeRange.start.value = v3;
 }
 
-- (void)setKeyFrameTime:(id *)a3
+- (void)setKeyFrameTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_keyFrameTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_keyFrameTime.epoch = time->var3;
   *&self->_keyFrameTime.value = v3;
 }
 

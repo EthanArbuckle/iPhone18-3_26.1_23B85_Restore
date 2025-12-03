@@ -1,68 +1,68 @@
 @interface NNMKContentAttributedStringHTMLParser
-+ (CGSize)_scaledDownSize:(CGSize)result maxWidth:(double)a4;
-+ (id)_scaleAndPrepareImageForClient:(id)a3 maxWidth:(double)a4 screenScale:(double)a5;
-+ (id)attachmentAttributedStringWithContentId:(id)a3 mergingAttributes:(id)a4;
-+ (id)imageAttachmentAttributedStringWithContentId:(id)a3 imageSize:(CGSize)a4 mergingAttributes:(id)a5;
-+ (id)trimAttributedString:(id)a3;
-- (BOOL)_validateURLsAndHTMLTagsInParsedString:(id)a3 urlsFound:(id *)a4;
-- (BOOL)isElementBlocked:(id)a3 attributeQueryBlock:(id)a4;
-- (BOOL)isElementIgnorable:(id)a3;
-- (BOOL)isWebLink:(id)a3;
++ (CGSize)_scaledDownSize:(CGSize)result maxWidth:(double)width;
++ (id)_scaleAndPrepareImageForClient:(id)client maxWidth:(double)width screenScale:(double)scale;
++ (id)attachmentAttributedStringWithContentId:(id)id mergingAttributes:(id)attributes;
++ (id)imageAttachmentAttributedStringWithContentId:(id)id imageSize:(CGSize)size mergingAttributes:(id)attributes;
++ (id)trimAttributedString:(id)string;
+- (BOOL)_validateURLsAndHTMLTagsInParsedString:(id)string urlsFound:(id *)found;
+- (BOOL)isElementBlocked:(id)blocked attributeQueryBlock:(id)block;
+- (BOOL)isElementIgnorable:(id)ignorable;
+- (BOOL)isWebLink:(id)link;
 - (NSDataDetector)dataDetector;
-- (id)_parseHTMLBody:(id)a3 encoding:(unint64_t)a4 maxLength:(unint64_t)a5 maxImageWidth:(double)a6 partiallyParsed:(BOOL *)a7 imageAttachmentsLoaded:(id *)a8 urlsForValidation:(id)a9 urlsFound:(id *)a10;
-- (id)_parsePlainTextBody:(id)a3 encoding:(unint64_t)a4;
-- (void)_addDataDetectionAttributes:(id)a3;
-- (void)_appendComponentWithKey:(id)a3 from:(id)a4 to:(id)a5;
-- (void)appendImageWithSource:(id)a3 width:(double)a4 height:(double)a5 stringAttributes:(id)a6;
-- (void)appendString:(id)a3 stringAttributes:(id)a4;
+- (id)_parseHTMLBody:(id)body encoding:(unint64_t)encoding maxLength:(unint64_t)length maxImageWidth:(double)width partiallyParsed:(BOOL *)parsed imageAttachmentsLoaded:(id *)loaded urlsForValidation:(id)validation urlsFound:(id *)self0;
+- (id)_parsePlainTextBody:(id)body encoding:(unint64_t)encoding;
+- (void)_addDataDetectionAttributes:(id)attributes;
+- (void)_appendComponentWithKey:(id)key from:(id)from to:(id)to;
+- (void)appendImageWithSource:(id)source width:(double)width height:(double)height stringAttributes:(id)attributes;
+- (void)appendString:(id)string stringAttributes:(id)attributes;
 - (void)dataDetector;
 @end
 
 @implementation NNMKContentAttributedStringHTMLParser
 
-+ (id)attachmentAttributedStringWithContentId:(id)a3 mergingAttributes:(id)a4
++ (id)attachmentAttributedStringWithContentId:(id)id mergingAttributes:(id)attributes
 {
-  if (a4)
+  if (attributes)
   {
-    v4 = a4;
+    attributesCopy = attributes;
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEC10];
+    attributesCopy = MEMORY[0x277CBEC10];
   }
 
-  v5 = a3;
-  v6 = [v4 mutableCopy];
-  [v6 setObject:v5 forKeyedSubscript:@"NNMKInlineAttachment"];
+  idCopy = id;
+  v6 = [attributesCopy mutableCopy];
+  [v6 setObject:idCopy forKeyedSubscript:@"NNMKInlineAttachment"];
 
   v7 = objc_alloc(MEMORY[0x277CCA898]);
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 65532];
-  v9 = [v7 initWithString:v8 attributes:v6];
+  65532 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 65532];
+  v9 = [v7 initWithString:65532 attributes:v6];
 
   return v9;
 }
 
-+ (id)imageAttachmentAttributedStringWithContentId:(id)a3 imageSize:(CGSize)a4 mergingAttributes:(id)a5
++ (id)imageAttachmentAttributedStringWithContentId:(id)id imageSize:(CGSize)size mergingAttributes:(id)attributes
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v20[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a5)
+  idCopy = id;
+  if (attributes)
   {
-    v9 = a5;
+    attributesCopy = attributes;
   }
 
   else
   {
-    v9 = MEMORY[0x277CBEC10];
+    attributesCopy = MEMORY[0x277CBEC10];
   }
 
-  v10 = [v9 mutableCopy];
-  if (v8)
+  v10 = [attributesCopy mutableCopy];
+  if (idCopy)
   {
-    v11 = v8;
+    v11 = idCopy;
   }
 
   else
@@ -79,25 +79,25 @@
   [v10 setObject:v13 forKeyedSubscript:@"NNMKInlineImage"];
 
   v14 = objc_alloc(MEMORY[0x277CCA898]);
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 65532];
-  v16 = [v14 initWithString:v15 attributes:v10];
+  65532 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 65532];
+  v16 = [v14 initWithString:65532 attributes:v10];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-+ (id)trimAttributedString:(id)a3
++ (id)trimAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy)
   {
-    v5 = [v3 string];
-    for (i = 0; i < [v5 length]; ++i)
+    string = [stringCopy string];
+    for (i = 0; i < [string length]; ++i)
     {
-      v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v8 = [v7 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", i)}];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v8 = [whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", i)}];
 
       if (!v8)
       {
@@ -105,16 +105,16 @@
       }
     }
 
-    v9 = [v5 length];
-    v10 = [v5 length];
+    v9 = [string length];
+    v10 = [string length];
     if (v10 > i)
     {
       v9 = v10 + 1;
       do
       {
-        v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
         v12 = v9 - 2;
-        v13 = [v11 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v9 - 2)}];
+        v13 = [whitespaceAndNewlineCharacterSet2 characterIsMember:{objc_msgSend(string, "characterAtIndex:", v9 - 2)}];
 
         --v9;
         if (v13)
@@ -142,11 +142,11 @@
   return v15;
 }
 
-- (id)_parseHTMLBody:(id)a3 encoding:(unint64_t)a4 maxLength:(unint64_t)a5 maxImageWidth:(double)a6 partiallyParsed:(BOOL *)a7 imageAttachmentsLoaded:(id *)a8 urlsForValidation:(id)a9 urlsFound:(id *)a10
+- (id)_parseHTMLBody:(id)body encoding:(unint64_t)encoding maxLength:(unint64_t)length maxImageWidth:(double)width partiallyParsed:(BOOL *)parsed imageAttachmentsLoaded:(id *)loaded urlsForValidation:(id)validation urlsFound:(id *)self0
 {
   lock = self->_lock;
-  v17 = a9;
-  v18 = a3;
+  validationCopy = validation;
+  bodyCopy = body;
   [(NSLock *)lock lock];
   v19 = objc_alloc_init(MEMORY[0x277CCAB48]);
   parsedAttributedString = self->_parsedAttributedString;
@@ -156,17 +156,17 @@
   imageAtachmentsDataByContentId = self->_imageAtachmentsDataByContentId;
   self->_imageAtachmentsDataByContentId = v21;
 
-  self->_maxLength = a5;
-  self->_maxImageWidth = a6;
-  self->_partiallyParsed = a7;
-  if (a7)
+  self->_maxLength = length;
+  self->_maxImageWidth = width;
+  self->_partiallyParsed = parsed;
+  if (parsed)
   {
-    *a7 = 0;
+    *parsed = 0;
   }
 
-  [(NNMKHTMLParser *)self parseHTMLBody:v18 encoding:a4];
+  [(NNMKHTMLParser *)self parseHTMLBody:bodyCopy encoding:encoding];
 
-  v23 = [(NNMKContentAttributedStringHTMLParser *)self _validateURLsAndHTMLTagsInParsedString:v17 urlsFound:a10];
+  v23 = [(NNMKContentAttributedStringHTMLParser *)self _validateURLsAndHTMLTagsInParsedString:validationCopy urlsFound:found];
   v24 = 0;
   if (![(NNMKHTMLParser *)self containsBlockedElements]&& v23)
   {
@@ -175,17 +175,17 @@
   }
 
   [(NSLock *)self->_lock unlock];
-  if (a8)
+  if (loaded)
   {
-    *a8 = self->_imageAtachmentsDataByContentId;
+    *loaded = self->_imageAtachmentsDataByContentId;
   }
 
   return v24;
 }
 
-- (id)_parsePlainTextBody:(id)a3 encoding:(unint64_t)a4
+- (id)_parsePlainTextBody:(id)body encoding:(unint64_t)encoding
 {
-  [(NSLock *)self->_lock lock:a3];
+  [(NSLock *)self->_lock lock:body];
   v5 = objc_alloc_init(MEMORY[0x277CCAB48]);
   parsedAttributedString = self->_parsedAttributedString;
   self->_parsedAttributedString = v5;
@@ -223,21 +223,21 @@
   return dataDetector;
 }
 
-- (BOOL)isElementBlocked:(id)a3 attributeQueryBlock:(id)a4
+- (BOOL)isElementBlocked:(id)blocked attributeQueryBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  blockedCopy = blocked;
+  blockCopy = block;
   LOBYTE(v7) = 1;
-  if ([v5 compare:@"table" options:1])
+  if ([blockedCopy compare:@"table" options:1])
   {
-    if ([v5 compare:@"img" options:1])
+    if ([blockedCopy compare:@"img" options:1])
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v8 = v6[2](v6, @"src");
+      v8 = blockCopy[2](blockCopy, @"src");
       if ([v8 hasPrefix:@"cid:"])
       {
         LOBYTE(v7) = 0;
@@ -253,57 +253,57 @@
   return v7;
 }
 
-- (BOOL)isElementIgnorable:(id)a3
+- (BOOL)isElementIgnorable:(id)ignorable
 {
-  v3 = a3;
+  ignorableCopy = ignorable;
   v4 = 1;
-  if ([v3 compare:@"head" options:1])
+  if ([ignorableCopy compare:@"head" options:1])
   {
-    v4 = [v3 compare:@"style" options:1] == 0;
+    v4 = [ignorableCopy compare:@"style" options:1] == 0;
   }
 
   return v4;
 }
 
-- (void)appendImageWithSource:(id)a3 width:(double)a4 height:(double)a5 stringAttributes:(id)a6
+- (void)appendImageWithSource:(id)source width:(double)width height:(double)height stringAttributes:(id)attributes
 {
-  v26 = a3;
-  v10 = a6;
-  if ([v26 hasPrefix:@"cid:"])
+  sourceCopy = source;
+  attributesCopy = attributes;
+  if ([sourceCopy hasPrefix:@"cid:"])
   {
-    v11 = [v26 substringFromIndex:{objc_msgSend(@"cid:", "length")}];
+    uUIDString = [sourceCopy substringFromIndex:{objc_msgSend(@"cid:", "length")}];
   }
 
-  else if ([v26 hasPrefix:@"data:"])
+  else if ([sourceCopy hasPrefix:@"data:"])
   {
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v12 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v13 = [v26 rangeOfString:{@";base64, "}];
-    v15 = [v26 substringFromIndex:v13 + v14];
+    v13 = [sourceCopy rangeOfString:{@";base64, "}];
+    v15 = [sourceCopy substringFromIndex:v13 + v14];
     v16 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v15 options:0];
     if (v16)
     {
-      v17 = [(NNMKContentAttributedStringHTMLParser *)self imageAtachmentsDataByContentId];
-      [v17 setObject:v16 forKeyedSubscript:v11];
+      imageAtachmentsDataByContentId = [(NNMKContentAttributedStringHTMLParser *)self imageAtachmentsDataByContentId];
+      [imageAtachmentsDataByContentId setObject:v16 forKeyedSubscript:uUIDString];
     }
   }
 
   else
   {
-    v11 = 0;
+    uUIDString = 0;
   }
 
   v18 = objc_opt_class();
   [(NNMKContentAttributedStringHTMLParser *)self maxImageWidth];
-  [v18 _scaledDownSize:a4 maxWidth:{a5, v19}];
+  [v18 _scaledDownSize:width maxWidth:{height, v19}];
   v21 = v20;
   v23 = v22;
   if (self->_maxLength == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableAttributedString *)self->_parsedAttributedString length]< self->_maxLength)
   {
-    v24 = [objc_opt_class() imageAttachmentAttributedStringWithContentId:v11 imageSize:v10 mergingAttributes:{v21, v23}];
-    v25 = [(NNMKContentAttributedStringHTMLParser *)self parsedAttributedString];
-    [v25 appendAttributedString:v24];
+    v24 = [objc_opt_class() imageAttachmentAttributedStringWithContentId:uUIDString imageSize:attributesCopy mergingAttributes:{v21, v23}];
+    parsedAttributedString = [(NNMKContentAttributedStringHTMLParser *)self parsedAttributedString];
+    [parsedAttributedString appendAttributedString:v24];
   }
 
   else
@@ -313,38 +313,38 @@
   }
 }
 
-- (void)appendString:(id)a3 stringAttributes:(id)a4
+- (void)appendString:(id)string stringAttributes:(id)attributes
 {
-  v11 = a3;
-  v6 = a4;
+  stringCopy = string;
+  attributesCopy = attributes;
   maxLength = self->_maxLength;
   if (maxLength != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = maxLength - [(NSMutableAttributedString *)self->_parsedAttributedString length];
-    if ([v11 length] > v8)
+    if ([stringCopy length] > v8)
     {
-      v9 = [v11 substringToIndex:v8];
+      v9 = [stringCopy substringToIndex:v8];
 
       *self->_partiallyParsed = 1;
       [(NNMKHTMLParser *)self setCancelled:1];
-      v11 = v9;
+      stringCopy = v9;
     }
   }
 
-  v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v11 attributes:v6];
+  v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:stringCopy attributes:attributesCopy];
   [(NSMutableAttributedString *)self->_parsedAttributedString appendAttributedString:v10];
 }
 
-- (void)_addDataDetectionAttributes:(id)a3
+- (void)_addDataDetectionAttributes:(id)attributes
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  attributesCopy = attributes;
   v28 = 0;
   v4 = DDScannerCreate();
   if (v4)
   {
     v5 = v4;
-    [v3 string];
+    [attributesCopy string];
     if (DDScannerScanString())
     {
       v24 = 0u;
@@ -357,7 +357,7 @@
       {
         v8 = v7;
         cf = v5;
-        v23 = v3;
+        v23 = attributesCopy;
         v9 = 0;
         v10 = *v25;
         v11 = *MEMORY[0x277D041D8];
@@ -390,7 +390,7 @@
         while (v8);
 
         CFRelease(cf);
-        v3 = v23;
+        attributesCopy = v23;
         if (v9)
         {
           [v23 dd_replaceResultAttributesWithSimpleLinksForTypes:7 context:0];
@@ -414,45 +414,45 @@ LABEL_19:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendComponentWithKey:(id)a3 from:(id)a4 to:(id)a5
+- (void)_appendComponentWithKey:(id)key from:(id)from to:(id)to
 {
-  v8 = a5;
-  v7 = [a4 objectForKeyedSubscript:a3];
+  toCopy = to;
+  v7 = [from objectForKeyedSubscript:key];
   if (v7)
   {
-    if ([v8 length])
+    if ([toCopy length])
     {
-      [v8 appendFormat:@", %@", v7];
+      [toCopy appendFormat:@", %@", v7];
     }
 
     else
     {
-      [v8 appendString:v7];
+      [toCopy appendString:v7];
     }
   }
 }
 
-+ (id)_scaleAndPrepareImageForClient:(id)a3 maxWidth:(double)a4 screenScale:(double)a5
++ (id)_scaleAndPrepareImageForClient:(id)client maxWidth:(double)width screenScale:(double)scale
 {
   v7 = MEMORY[0x277CBEB28];
-  v8 = a3;
-  v9 = [v7 data];
-  v10 = UIImageJPEGRepresentation(v8, 0.9);
+  clientCopy = client;
+  data = [v7 data];
+  v10 = UIImageJPEGRepresentation(clientCopy, 0.9);
 
-  v11 = a4 * a5;
-  *&v11 = a4 * a5;
-  [NNMKImageUtility scaleImageFromData:v10 destinationData:v9 maxWidth:v11];
+  v11 = width * scale;
+  *&v11 = width * scale;
+  [NNMKImageUtility scaleImageFromData:v10 destinationData:data maxWidth:v11];
 
-  v12 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:v9];
+  v12 = [objc_alloc(MEMORY[0x277D755B8]) initWithData:data];
 
   return v12;
 }
 
-+ (CGSize)_scaledDownSize:(CGSize)result maxWidth:(double)a4
++ (CGSize)_scaledDownSize:(CGSize)result maxWidth:(double)width
 {
-  if (result.width > a4)
+  if (result.width > width)
   {
-    v4 = a4 / result.width;
+    v4 = width / result.width;
     result.width = result.width * v4;
     result.height = result.height * v4;
   }
@@ -460,16 +460,16 @@ LABEL_19:
   return result;
 }
 
-- (BOOL)_validateURLsAndHTMLTagsInParsedString:(id)a3 urlsFound:(id *)a4
+- (BOOL)_validateURLsAndHTMLTagsInParsedString:(id)string urlsFound:(id *)found
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = [MEMORY[0x277CBEB58] set];
-  v32 = self;
-  v8 = [(NSMutableAttributedString *)self->_parsedAttributedString string];
-  if (![v8 length])
+  selfCopy = self;
+  string = [(NSMutableAttributedString *)self->_parsedAttributedString string];
+  if (![string length])
   {
     v25 = 1;
-    if (!a4)
+    if (!found)
     {
       goto LABEL_28;
     }
@@ -477,25 +477,25 @@ LABEL_19:
     goto LABEL_27;
   }
 
-  v28 = a4;
+  foundCopy = found;
   v29 = v7;
   v9 = 0;
   v10 = 0x277CCA000uLL;
-  v31 = v6;
-  v30 = v8;
+  v31 = stringCopy;
+  v30 = string;
   while (1)
   {
-    v11 = [*(v10 + 2304) whitespaceAndNewlineCharacterSet];
-    v12 = [v8 rangeOfCharacterFromSet:v11 options:0 range:{v9, objc_msgSend(v8, "length") - v9}];
+    whitespaceAndNewlineCharacterSet = [*(v10 + 2304) whitespaceAndNewlineCharacterSet];
+    v12 = [string rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet options:0 range:{v9, objc_msgSend(string, "length") - v9}];
 
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = [v8 length];
+      v12 = [string length];
     }
 
-    v13 = [v8 substringWithRange:{v9, v12 - v9}];
+    v13 = [string substringWithRange:{v9, v12 - v9}];
     v14 = v13;
-    if (v6)
+    if (stringCopy)
     {
       if (([v13 isEqualToString:@"<b>"] & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"<i>") & 1) != 0 || (objc_msgSend(v14, "hasPrefix:", @"<br") & 1) != 0 || (objc_msgSend(v14, "hasPrefix:", @"<img") & 1) != 0 || (objc_msgSend(v14, "hasPrefix:", @"<div") & 1) != 0 || (objc_msgSend(v14, "hasPrefix:", @"<span") & 1) != 0 || (objc_msgSend(v14, "hasPrefix:", @"<p") & 1) != 0 || objc_msgSend(v14, "hasPrefix:", @"<font"))
       {
@@ -503,18 +503,18 @@ LABEL_19:
       }
     }
 
-    v15 = [*(v10 + 2304) punctuationCharacterSet];
-    v16 = [v15 mutableCopy];
+    punctuationCharacterSet = [*(v10 + 2304) punctuationCharacterSet];
+    v16 = [punctuationCharacterSet mutableCopy];
 
     [v16 removeCharactersInString:@"?/}&"];
     [v16 addCharactersInString:@"<>"];
     v17 = [v14 stringByTrimmingCharactersInSet:v16];
-    if (([v17 hasPrefix:@"http:"] & 1) != 0 || (objc_msgSend(v17, "hasPrefix:", @"https:") & 1) != 0 || (objc_msgSend(v17, "hasPrefix:", @"mailto:") & 1) != 0 || (objc_msgSend(v17, "hasPrefix:", @"ftp:") & 1) != 0 || -[NNMKContentAttributedStringHTMLParser isWebLink:](v32, "isWebLink:", v17))
+    if (([v17 hasPrefix:@"http:"] & 1) != 0 || (objc_msgSend(v17, "hasPrefix:", @"https:") & 1) != 0 || (objc_msgSend(v17, "hasPrefix:", @"mailto:") & 1) != 0 || (objc_msgSend(v17, "hasPrefix:", @"ftp:") & 1) != 0 || -[NNMKContentAttributedStringHTMLParser isWebLink:](selfCopy, "isWebLink:", v17))
     {
       v18 = v10;
-      if (v6)
+      if (stringCopy)
       {
-        v19 = [v6 containsObject:v17] ^ 1;
+        v19 = [stringCopy containsObject:v17] ^ 1;
       }
 
       else
@@ -525,18 +525,18 @@ LABEL_19:
 
       v20 = [v14 rangeOfString:v17];
       v22 = v21;
-      parsedAttributedString = v32->_parsedAttributedString;
+      parsedAttributedString = selfCopy->_parsedAttributedString;
       v24 = [MEMORY[0x277CCABB0] numberWithBool:v19];
       [(NSMutableAttributedString *)parsedAttributedString addAttribute:@"NNMKCollapsableURL" value:v24 range:v20 + v9, v22];
 
-      v6 = v31;
+      stringCopy = v31;
       v10 = v18;
-      v8 = v30;
+      string = v30;
     }
 
     v9 = v12 + 1;
 
-    if (v12 + 1 >= [v8 length])
+    if (v12 + 1 >= [string length])
     {
       v25 = 1;
       goto LABEL_26;
@@ -545,13 +545,13 @@ LABEL_19:
 
   v25 = 0;
 LABEL_26:
-  a4 = v28;
+  found = foundCopy;
   v7 = v29;
-  if (v28)
+  if (foundCopy)
   {
 LABEL_27:
     v26 = v7;
-    *a4 = v7;
+    *found = v7;
   }
 
 LABEL_28:
@@ -559,12 +559,12 @@ LABEL_28:
   return v25;
 }
 
-- (BOOL)isWebLink:(id)a3
+- (BOOL)isWebLink:(id)link
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NNMKContentAttributedStringHTMLParser *)self dataDetector];
-  v6 = [v5 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  linkCopy = link;
+  dataDetector = [(NNMKContentAttributedStringHTMLParser *)self dataDetector];
+  v6 = [dataDetector matchesInString:linkCopy options:0 range:{0, objc_msgSend(linkCopy, "length")}];
 
   v15 = 0u;
   v16 = 0u;
@@ -611,7 +611,7 @@ LABEL_11:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25B19F000, a2, OS_LOG_TYPE_ERROR, "Error instantiating NSDataDetector: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

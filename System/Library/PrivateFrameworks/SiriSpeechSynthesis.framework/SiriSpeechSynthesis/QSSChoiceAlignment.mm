@@ -1,8 +1,8 @@
 @interface QSSChoiceAlignment
 - (NSArray)post_itn_choice_indices;
 - (NSArray)pre_itn_token_to_post_itn_char_alignments;
-- (Offset<siri::speech::schema_fb::ChoiceAlignment>)addObjectToBuffer:(void *)a3;
-- (QSSChoiceAlignment)initWithFlatbuffData:(id)a3 root:(const ChoiceAlignment *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::ChoiceAlignment>)addObjectToBuffer:(void *)buffer;
+- (QSSChoiceAlignment)initWithFlatbuffData:(id)data root:(const ChoiceAlignment *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -37,19 +37,19 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::ChoiceAlignment>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ChoiceAlignment>)addObjectToBuffer:(void *)buffer
 {
   v35 = *MEMORY[0x277D85DE8];
   memset(&v32, 0, sizeof(v32));
-  v5 = [(QSSChoiceAlignment *)self post_itn_choice_indices];
-  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v32, [v5 count]);
+  post_itn_choice_indices = [(QSSChoiceAlignment *)self post_itn_choice_indices];
+  std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v32, [post_itn_choice_indices count]);
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [(QSSChoiceAlignment *)self post_itn_choice_indices];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  post_itn_choice_indices2 = [(QSSChoiceAlignment *)self post_itn_choice_indices];
+  v7 = [post_itn_choice_indices2 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v7)
   {
     v8 = *v29;
@@ -59,14 +59,14 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(post_itn_choice_indices2);
         }
 
-        v27 = [*(*(&v28 + 1) + 8 * i) intValue];
-        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v32, &v27);
+        intValue = [*(*(&v28 + 1) + 8 * i) intValue];
+        std::vector<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v32, &intValue);
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v7 = [post_itn_choice_indices2 countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v7);
@@ -82,9 +82,9 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
     begin = v32.__begin_;
   }
 
-  v21 = flatbuffers::FlatBufferBuilder::CreateVector<int>(a3, begin, v32.__end_ - v32.__begin_);
-  v11 = [(QSSChoiceAlignment *)self pre_itn_token_to_post_itn_char_alignments];
-  v12 = [v11 count];
+  v21 = flatbuffers::FlatBufferBuilder::CreateVector<int>(buffer, begin, v32.__end_ - v32.__begin_);
+  pre_itn_token_to_post_itn_char_alignments = [(QSSChoiceAlignment *)self pre_itn_token_to_post_itn_char_alignments];
+  v12 = [pre_itn_token_to_post_itn_char_alignments count];
   if (v12)
   {
     if (!(v12 >> 62))
@@ -104,25 +104,25 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
   {
     *v24;
     *v24;
-    [**(&v23 + 1) addObjectToBuffer:a3];
+    [**(&v23 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v13 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 8);
-  v15 = *(a3 + 12);
-  v16 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v21);
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v13 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 8);
+  v15 = *(buffer + 12);
+  v16 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v21);
   if (v13)
   {
-    v17 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v13);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v17);
+    v17 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v13);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v17);
   }
 
-  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v14 - v15 + v16);
+  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v14 - v15 + v16);
   if (v32.__begin_)
   {
     operator delete(v32.__begin_);
@@ -134,10 +134,10 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
 
 - (NSArray)pre_itn_token_to_post_itn_char_alignments
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"pre_itn_token_to_post_itn_char_alignments"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"pre_itn_token_to_post_itn_char_alignments"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -154,7 +154,7 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
           do
           {
             v11 = [[QSSRepeatedItnAlignment alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -165,18 +165,18 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"pre_itn_token_to_post_itn_char_alignments"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"pre_itn_token_to_post_itn_char_alignments"];
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)post_itn_choice_indices
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"post_itn_choice_indices"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"post_itn_choice_indices"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -195,7 +195,7 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
             v11 = *v10->var0;
             v10 += 4;
             v12 = [MEMORY[0x277CCABB0] numberWithInt:v11];
-            [v3 addObject:v12];
+            [array addObject:v12];
 
             v9 -= 4;
           }
@@ -205,48 +205,48 @@ flatbuffers::DetachedBuffer *__34__QSSChoiceAlignment_flatbuffData__block_invoke
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"post_itn_choice_indices"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"post_itn_choice_indices"];
   }
 
-  return v3;
+  return array;
 }
 
-- (QSSChoiceAlignment)initWithFlatbuffData:(id)a3 root:(const ChoiceAlignment *)a4 verify:(BOOL)a5
+- (QSSChoiceAlignment)initWithFlatbuffData:(id)data root:(const ChoiceAlignment *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSChoiceAlignment;
   v10 = [(QSSChoiceAlignment *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -268,9 +268,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -2,16 +2,16 @@
 - (BOOL)isSecondaryToolbarVisible;
 - (PXSecondaryToolbarActionHandler)actionHandler;
 - (PXSecondaryToolbarController)init;
-- (PXSecondaryToolbarController)initWithContainerView:(id)a3 styleGuideProvider:(id)a4;
+- (PXSecondaryToolbarController)initWithContainerView:(id)view styleGuideProvider:(id)provider;
 - (PXSecondaryToolbarControllerUpdateDelegate)updateDelegate;
 - (UIEdgeInsets)containerViewAdditionalEdgeInsets;
-- (UIEdgeInsets)containerViewAdditionalEdgeInsetsWhenVisible:(BOOL)a3;
+- (UIEdgeInsets)containerViewAdditionalEdgeInsetsWhenVisible:(BOOL)visible;
 - (UIEdgeInsets)padding;
 - (int64_t)overrideUserInterfaceStyle;
 - (void)_invalidateAccessoryViewsLayout;
 - (void)_invalidateContentLayout;
 - (void)_invalidateLegibilityGradient;
-- (void)_replaceAccessoryView:(id)a3 with:(id)a4;
+- (void)_replaceAccessoryView:(id)view with:(id)with;
 - (void)_updateAccessoryViewsLayout;
 - (void)_updateContentLayout;
 - (void)_updateLegibilityGradient;
@@ -22,21 +22,21 @@
 - (void)invalidateSecondaryToolbarLayout;
 - (void)invalidateViewOpacity;
 - (void)removeFromContainerView;
-- (void)setAlpha:(double)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setContainerView:(id)a3;
-- (void)setContentScrollViewController:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setHeight:(double)a3;
-- (void)setIsAtTop:(BOOL)a3;
-- (void)setIsShowingGradient:(BOOL)a3;
-- (void)setLeadingAccessoryView:(id)a3;
-- (void)setLegibilityGradientEnabled:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBackdropGroupName:(id)name;
+- (void)setContainerView:(id)view;
+- (void)setContentScrollViewController:(id)controller;
+- (void)setContentView:(id)view;
+- (void)setHeight:(double)height;
+- (void)setIsAtTop:(BOOL)top;
+- (void)setIsShowingGradient:(BOOL)gradient;
+- (void)setLeadingAccessoryView:(id)view;
+- (void)setLegibilityGradientEnabled:(BOOL)enabled;
 - (void)setNeedsUpdate;
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3;
-- (void)setStretched:(BOOL)a3;
-- (void)setTabBarAccessoryPlacement:(id)a3;
-- (void)setTrailingAccessoryView:(id)a3;
+- (void)setOverrideUserInterfaceStyle:(int64_t)style;
+- (void)setStretched:(BOOL)stretched;
+- (void)setTabBarAccessoryPlacement:(id)placement;
+- (void)setTrailingAccessoryView:(id)view;
 - (void)updateIfNeeded;
 @end
 
@@ -46,11 +46,11 @@
 {
   if (!self->_willUpdate)
   {
-    v4 = [(PXSecondaryToolbarController *)self containerView];
-    [v4 setNeedsLayout];
+    containerView = [(PXSecondaryToolbarController *)self containerView];
+    [containerView setNeedsLayout];
 
-    v5 = [(PXSecondaryToolbarController *)self updateDelegate];
-    [v5 secondaryToolbarControllerSetNeedsUpdate:self];
+    updateDelegate = [(PXSecondaryToolbarController *)self updateDelegate];
+    [updateDelegate secondaryToolbarControllerSetNeedsUpdate:self];
   }
 }
 
@@ -63,31 +63,31 @@
 
 - (void)_invalidateContentLayout
 {
-  v2 = [(PXSecondaryToolbarController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContentLayout];
+  updater = [(PXSecondaryToolbarController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContentLayout];
 }
 
 - (void)invalidateSecondaryToolbarLayout
 {
-  v2 = [(PXSecondaryToolbarController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSecondaryToolbarLayout];
+  updater = [(PXSecondaryToolbarController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSecondaryToolbarLayout];
 }
 
 - (void)invalidateViewOpacity
 {
-  v2 = [(PXSecondaryToolbarController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewOpacity];
+  updater = [(PXSecondaryToolbarController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewOpacity];
 }
 
 - (void)_updateLegibilityGradient
 {
-  v3 = [(PXSecondaryToolbarController *)self contentScrollViewController];
-  [v3 constrainedVisibleRect];
+  contentScrollViewController = [(PXSecondaryToolbarController *)self contentScrollViewController];
+  [contentScrollViewController constrainedVisibleRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 contentBounds];
+  [contentScrollViewController contentBounds];
   v38.origin.x = v12;
   v38.origin.y = v13;
   v38.size.width = v14;
@@ -97,8 +97,8 @@
   v37.size.width = v9;
   v37.size.height = v11;
   v16 = CGRectContainsRect(v37, v38);
-  v17 = [v3 scrollView];
-  [v17 px_scrollDistanceFromEdge:3];
+  scrollView = [contentScrollViewController scrollView];
+  [scrollView px_scrollDistanceFromEdge:3];
   v19 = v18;
   WeakRetained = objc_loadWeakRetained(&self->_styleGuideProvider);
   [WeakRetained secondaryToolbarControllerScrollableContentPadding:self];
@@ -121,7 +121,7 @@
       v33 = 3221225472;
       v34 = __57__PXSecondaryToolbarController__updateLegibilityGradient__block_invoke;
       v35 = &unk_1E774C648;
-      v36 = self;
+      selfCopy = self;
       v25 = &v32;
       goto LABEL_10;
     }
@@ -135,10 +135,10 @@
     v28 = 3221225472;
     v29 = __57__PXSecondaryToolbarController__updateLegibilityGradient__block_invoke_2;
     v30 = &unk_1E774C648;
-    v31 = self;
+    selfCopy2 = self;
     v25 = &v27;
 LABEL_10:
-    [v24 animateWithDuration:4 delay:v25 options:0 animations:0.2 completion:{0.0, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36}];
+    [v24 animateWithDuration:4 delay:v25 options:0 animations:0.2 completion:{0.0, v27, v28, v29, v30, selfCopy2, v32, v33, v34, v35, selfCopy}];
     [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
   }
 }
@@ -147,15 +147,15 @@ LABEL_10:
 {
   if (self->_willUpdate)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXSecondaryToolbarController.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"!_willUpdate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSecondaryToolbarController.m" lineNumber:163 description:{@"Invalid parameter not satisfying: %@", @"!_willUpdate"}];
   }
 
   self->_willUpdate = 1;
   [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
   self->_willUpdate = 0;
-  v5 = [(PXSecondaryToolbarController *)self updater];
-  [v5 updateIfNeeded];
+  updater = [(PXSecondaryToolbarController *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_updatePositioning
@@ -167,8 +167,8 @@ LABEL_10:
   v6 = objc_loadWeakRetained(&self->_styleGuideProvider);
   -[PXSecondaryToolbarController setPlacement:](self, "setPlacement:", [v6 secondaryToolbarControllerToolbarPlacement:self]);
 
-  v7 = [(PXSecondaryToolbarController *)self placement];
-  if (v7 == 4)
+  placement = [(PXSecondaryToolbarController *)self placement];
+  if (placement == 4)
   {
     v8 = 0;
     v11 = *off_1E7721FA8;
@@ -180,7 +180,7 @@ LABEL_10:
 
   else
   {
-    v8 = v7 == 1;
+    v8 = placement == 1;
     v9 = objc_loadWeakRetained(&self->_styleGuideProvider);
     [v9 secondaryToolbarControllerToolbarPadding:self];
     v11 = v10;
@@ -200,16 +200,16 @@ LABEL_10:
 
 - (void)_updateSecondaryToolbarLayout
 {
-  v3 = [(PXSecondaryToolbarController *)self containerView];
-  v4 = [(PXSecondaryToolbarController *)self secondaryToolbar];
+  containerView = [(PXSecondaryToolbarController *)self containerView];
+  secondaryToolbar = [(PXSecondaryToolbarController *)self secondaryToolbar];
   [(PXSecondaryToolbarController *)self padding];
-  [v3 safeAreaInsets];
-  [v3 bounds];
+  [containerView safeAreaInsets];
+  [containerView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   rect = v11;
-  [v3 bringSubviewToFront:v4];
+  [containerView bringSubviewToFront:secondaryToolbar];
   [(PXSecondaryToolbarController *)self height];
   if ([(PXSecondaryToolbarController *)self isAtTop])
   {
@@ -219,8 +219,8 @@ LABEL_10:
 
   else if ([(PXSecondaryToolbarController *)self placement]== 3)
   {
-    v13 = [(PXSecondaryToolbarController *)self tabBarAccessoryPlacement];
-    [v13 rectInCoordinateSpace:v3];
+    tabBarAccessoryPlacement = [(PXSecondaryToolbarController *)self tabBarAccessoryPlacement];
+    [tabBarAccessoryPlacement rectInCoordinateSpace:containerView];
   }
 
   else
@@ -230,7 +230,7 @@ LABEL_10:
     v18.size.width = v10;
     v18.size.height = rect;
     CGRectGetMaxY(v18);
-    [v3 layoutMargins];
+    [containerView layoutMargins];
     [(PXSecondaryToolbarController *)self height];
   }
 
@@ -289,24 +289,24 @@ void __61__PXSecondaryToolbarController__updateSecondaryToolbarLayout__block_inv
 {
   [(PXSecondaryToolbarController *)self contentView];
   objc_claimAutoreleasedReturnValue();
-  v3 = [(PXSecondaryToolbarController *)self secondaryToolbar];
-  [v3 bounds];
+  secondaryToolbar = [(PXSecondaryToolbarController *)self secondaryToolbar];
+  [secondaryToolbar bounds];
 
   PXRectGetCenter();
 }
 
 - (void)_invalidateAccessoryViewsLayout
 {
-  v2 = [(PXSecondaryToolbarController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAccessoryViewsLayout];
+  updater = [(PXSecondaryToolbarController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAccessoryViewsLayout];
 }
 
 - (void)_updateAccessoryViewsLayout
 {
   [(PXSecondaryToolbarController *)self containerView];
   [objc_claimAutoreleasedReturnValue() effectiveUserInterfaceLayoutDirection];
-  v3 = [(PXSecondaryToolbarController *)self secondaryToolbar];
-  [v3 frame];
+  secondaryToolbar = [(PXSecondaryToolbarController *)self secondaryToolbar];
+  [secondaryToolbar frame];
 
   WeakRetained = objc_loadWeakRetained(&self->_styleGuideProvider);
   [WeakRetained secondaryToolbarControllerMaximumAccessoryViewPaddingToContentView:self];
@@ -333,15 +333,15 @@ void __59__PXSecondaryToolbarController__updateAccessoryViewsLayout__block_invok
 {
   [(PXSecondaryToolbarController *)self alpha];
   v4 = v3;
-  v5 = [(PXSecondaryToolbarController *)self toolbarContainerView];
-  [v5 setAlpha:v4];
+  toolbarContainerView = [(PXSecondaryToolbarController *)self toolbarContainerView];
+  [toolbarContainerView setAlpha:v4];
 }
 
 - (UIEdgeInsets)containerViewAdditionalEdgeInsets
 {
-  v3 = [(PXSecondaryToolbarController *)self isSecondaryToolbarVisible];
+  isSecondaryToolbarVisible = [(PXSecondaryToolbarController *)self isSecondaryToolbarVisible];
 
-  [(PXSecondaryToolbarController *)self containerViewAdditionalEdgeInsetsWhenVisible:v3];
+  [(PXSecondaryToolbarController *)self containerViewAdditionalEdgeInsetsWhenVisible:isSecondaryToolbarVisible];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -351,16 +351,16 @@ void __59__PXSecondaryToolbarController__updateAccessoryViewsLayout__block_invok
 
 - (BOOL)isSecondaryToolbarVisible
 {
-  v3 = [(PXSecondaryToolbarController *)self secondaryToolbar];
-  v8 = v4 > 0.0 && ([v3 isHidden] & 1) == 0 && (-[PXSecondaryToolbarController contentView](self, "contentView"), v5 = [v3 alpha];
+  secondaryToolbar = [(PXSecondaryToolbarController *)self secondaryToolbar];
+  v8 = v4 > 0.0 && ([secondaryToolbar isHidden] & 1) == 0 && (-[PXSecondaryToolbarController contentView](self, "contentView"), v5 = [secondaryToolbar alpha];
 
   return v8;
 }
 
 - (void)invalidatePositioning
 {
-  v2 = [(PXSecondaryToolbarController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePositioning];
+  updater = [(PXSecondaryToolbarController *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePositioning];
 }
 
 - (void)_invalidateLegibilityGradient
@@ -387,15 +387,15 @@ void __61__PXSecondaryToolbarController__invalidateLegibilityGradient__block_inv
   return WeakRetained;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   backdropGroupName = self->_backdropGroupName;
-  if (backdropGroupName != v4)
+  if (backdropGroupName != nameCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)backdropGroupName isEqual:v4];
-    v4 = v9;
+    v9 = nameCopy;
+    v6 = [(NSString *)backdropGroupName isEqual:nameCopy];
+    nameCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -403,82 +403,82 @@ void __61__PXSecondaryToolbarController__invalidateLegibilityGradient__block_inv
       self->_backdropGroupName = v7;
 
       [(PXSecondaryToolbarController *)self backdropGroupNameDidChange];
-      v4 = v9;
+      nameCopy = v9;
     }
   }
 }
 
-- (void)setIsShowingGradient:(BOOL)a3
+- (void)setIsShowingGradient:(BOOL)gradient
 {
-  if (self->_isShowingGradient != a3)
+  if (self->_isShowingGradient != gradient)
   {
-    self->_isShowingGradient = a3;
+    self->_isShowingGradient = gradient;
     [(PXSecondaryToolbarController *)self isShowingGradientDidChange];
   }
 }
 
-- (void)setLegibilityGradientEnabled:(BOOL)a3
+- (void)setLegibilityGradientEnabled:(BOOL)enabled
 {
-  if (self->_legibilityGradientEnabled != a3)
+  if (self->_legibilityGradientEnabled != enabled)
   {
-    self->_legibilityGradientEnabled = a3;
+    self->_legibilityGradientEnabled = enabled;
     [(PXSecondaryToolbarController *)self _updateLegibilityGradient];
   }
 }
 
-- (void)setContentScrollViewController:(id)a3
+- (void)setContentScrollViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   contentScrollViewController = self->_contentScrollViewController;
-  if (contentScrollViewController != v5)
+  if (contentScrollViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXScrollViewController *)contentScrollViewController unregisterObserver:self];
-    objc_storeStrong(&self->_contentScrollViewController, a3);
+    objc_storeStrong(&self->_contentScrollViewController, controller);
     [(PXScrollViewController *)self->_contentScrollViewController registerObserver:self];
     [(PXSecondaryToolbarController *)self _updateLegibilityGradient];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
-  if (self->_height != a3)
+  if (self->_height != height)
   {
-    self->_height = a3;
+    self->_height = height;
     [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
   }
 }
 
-- (void)setStretched:(BOOL)a3
+- (void)setStretched:(BOOL)stretched
 {
-  if (self->_stretched != a3)
+  if (self->_stretched != stretched)
   {
-    self->_stretched = a3;
+    self->_stretched = stretched;
     [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
   }
 }
 
-- (void)setIsAtTop:(BOOL)a3
+- (void)setIsAtTop:(BOOL)top
 {
-  if (self->_isAtTop != a3)
+  if (self->_isAtTop != top)
   {
-    self->_isAtTop = a3;
+    self->_isAtTop = top;
     [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
   }
 }
 
-- (UIEdgeInsets)containerViewAdditionalEdgeInsetsWhenVisible:(BOOL)a3
+- (UIEdgeInsets)containerViewAdditionalEdgeInsetsWhenVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(PXSecondaryToolbarController *)self updater];
-  [v5 updateIfNeeded];
+  visibleCopy = visible;
+  updater = [(PXSecondaryToolbarController *)self updater];
+  [updater updateIfNeeded];
 
   v6 = *MEMORY[0x1E69DDCE0];
   v7 = *(MEMORY[0x1E69DDCE0] + 8);
   v9 = *(MEMORY[0x1E69DDCE0] + 16);
   v8 = *(MEMORY[0x1E69DDCE0] + 24);
-  if (![(PXSecondaryToolbarController *)self isAtTop]&& ![(PXSecondaryToolbarController *)self isFloating]&& v3)
+  if (![(PXSecondaryToolbarController *)self isAtTop]&& ![(PXSecondaryToolbarController *)self isFloating]&& visibleCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_styleGuideProvider);
     v11 = [WeakRetained secondaryToolbarControllerWantsPaddingAppliedToContainerAdditionalEdgeInsets:self];
@@ -511,12 +511,12 @@ void __61__PXSecondaryToolbarController__invalidateLegibilityGradient__block_inv
   return result;
 }
 
-- (void)setTabBarAccessoryPlacement:(id)a3
+- (void)setTabBarAccessoryPlacement:(id)placement
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_tabBarAccessoryPlacement != v5 && ([(PXDisplayRect *)v5 isEqual:?]& 1) == 0)
+  placementCopy = placement;
+  v6 = placementCopy;
+  if (self->_tabBarAccessoryPlacement != placementCopy && ([(PXDisplayRect *)placementCopy isEqual:?]& 1) == 0)
   {
     v7 = PLUIGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -529,44 +529,44 @@ void __61__PXSecondaryToolbarController__invalidateLegibilityGradient__block_inv
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEBUG, "[PXSecondaryToolbarController]: updating tab bar accessory placement from %@ to %@", &v9, 0x16u);
     }
 
-    objc_storeStrong(&self->_tabBarAccessoryPlacement, a3);
+    objc_storeStrong(&self->_tabBarAccessoryPlacement, placement);
     [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
   }
 }
 
-- (void)setOverrideUserInterfaceStyle:(int64_t)a3
+- (void)setOverrideUserInterfaceStyle:(int64_t)style
 {
-  v4 = [(PXSecondaryToolbarController *)self secondaryToolbar];
-  [v4 setOverrideUserInterfaceStyle:a3];
+  secondaryToolbar = [(PXSecondaryToolbarController *)self secondaryToolbar];
+  [secondaryToolbar setOverrideUserInterfaceStyle:style];
 }
 
 - (int64_t)overrideUserInterfaceStyle
 {
-  v2 = [(PXSecondaryToolbarController *)self secondaryToolbar];
-  v3 = [v2 overrideUserInterfaceStyle];
+  secondaryToolbar = [(PXSecondaryToolbarController *)self secondaryToolbar];
+  overrideUserInterfaceStyle = [secondaryToolbar overrideUserInterfaceStyle];
 
-  return v3;
+  return overrideUserInterfaceStyle;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_alpha != a3)
+  if (self->_alpha != alpha)
   {
-    self->_alpha = a3;
+    self->_alpha = alpha;
     [(PXSecondaryToolbarController *)self invalidateViewOpacity];
   }
 }
 
-- (void)_replaceAccessoryView:(id)a3 with:(id)a4
+- (void)_replaceAccessoryView:(id)view with:(id)with
 {
-  v7 = a4;
-  [a3 removeFromSuperview];
-  if (v7)
+  withCopy = with;
+  [view removeFromSuperview];
+  if (withCopy)
   {
-    v6 = [(PXSecondaryToolbarController *)self toolbarContainerView];
-    [v6 addSubview:v7];
+    toolbarContainerView = [(PXSecondaryToolbarController *)self toolbarContainerView];
+    [toolbarContainerView addSubview:withCopy];
 
-    [v7 setHitTestDirectionalInsets:{-20.0, -20.0, -20.0, -20.0}];
+    [withCopy setHitTestDirectionalInsets:{-20.0, -20.0, -20.0, -20.0}];
   }
 
   [(PXSecondaryToolbarController *)self invalidatePositioning];
@@ -574,106 +574,106 @@ void __61__PXSecondaryToolbarController__invalidateLegibilityGradient__block_inv
   [(PXSecondaryToolbarController *)self invalidateViewOpacity];
 }
 
-- (void)setTrailingAccessoryView:(id)a3
+- (void)setTrailingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   trailingAccessoryView = self->_trailingAccessoryView;
-  if (trailingAccessoryView != v5)
+  if (trailingAccessoryView != viewCopy)
   {
-    v10 = v5;
-    [(PXSecondaryToolbarController *)self _replaceAccessoryView:trailingAccessoryView with:v5];
-    objc_storeStrong(&self->_trailingAccessoryView, a3);
+    v10 = viewCopy;
+    [(PXSecondaryToolbarController *)self _replaceAccessoryView:trailingAccessoryView with:viewCopy];
+    objc_storeStrong(&self->_trailingAccessoryView, view);
     v7 = MEMORY[0x1E69DCAB0];
-    v8 = [MEMORY[0x1E69DCF48] capsuleShape];
-    v9 = [v7 styleWithShape:v8];
+    capsuleShape = [MEMORY[0x1E69DCF48] capsuleShape];
+    v9 = [v7 styleWithShape:capsuleShape];
     [(UIView *)self->_trailingAccessoryView setHoverStyle:v9];
 
-    v5 = v10;
+    viewCopy = v10;
   }
 }
 
-- (void)setLeadingAccessoryView:(id)a3
+- (void)setLeadingAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   leadingAccessoryView = self->_leadingAccessoryView;
-  if (leadingAccessoryView != v5)
+  if (leadingAccessoryView != viewCopy)
   {
-    v10 = v5;
-    [(PXSecondaryToolbarController *)self _replaceAccessoryView:leadingAccessoryView with:v5];
-    objc_storeStrong(&self->_leadingAccessoryView, a3);
+    v10 = viewCopy;
+    [(PXSecondaryToolbarController *)self _replaceAccessoryView:leadingAccessoryView with:viewCopy];
+    objc_storeStrong(&self->_leadingAccessoryView, view);
     v7 = MEMORY[0x1E69DCAB0];
-    v8 = [MEMORY[0x1E69DCF48] capsuleShape];
-    v9 = [v7 styleWithShape:v8];
+    capsuleShape = [MEMORY[0x1E69DCF48] capsuleShape];
+    v9 = [v7 styleWithShape:capsuleShape];
     [(UIView *)self->_leadingAccessoryView setHoverStyle:v9];
 
-    v5 = v10;
+    viewCopy = v10;
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     if (self->_contentView)
     {
-      v7 = [(PXSecondaryToolbarController *)self secondaryToolbar];
-      [v7 addSubview:self->_contentView];
+      secondaryToolbar = [(PXSecondaryToolbarController *)self secondaryToolbar];
+      [secondaryToolbar addSubview:self->_contentView];
     }
 
     [(PXSecondaryToolbarController *)self _invalidateContentLayout];
     [(PXSecondaryToolbarController *)self invalidateSecondaryToolbarLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v5 = a3;
-  if (self->_containerView != v5)
+  viewCopy = view;
+  if (self->_containerView != viewCopy)
   {
-    v6 = v5;
+    v6 = viewCopy;
     [(PXSecondaryToolbarController *)self removeFromContainerView];
-    objc_storeStrong(&self->_containerView, a3);
+    objc_storeStrong(&self->_containerView, view);
     [(UIView *)self->_containerView addSubview:self->_toolbarContainerView];
     [(PXSecondaryToolbarController *)self _updateSecondaryToolbarLayout];
     [(PXSecondaryToolbarController *)self _updateLegibilityGradient];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (void)removeFromContainerView
 {
-  v3 = [(PXSecondaryToolbarController *)self toolbarContainerView];
-  [v3 removeFromSuperview];
+  toolbarContainerView = [(PXSecondaryToolbarController *)self toolbarContainerView];
+  [toolbarContainerView removeFromSuperview];
 
   [(UIView *)self->_gradientView removeFromSuperview];
   gradientView = self->_gradientView;
   self->_gradientView = 0;
 }
 
-- (PXSecondaryToolbarController)initWithContainerView:(id)a3 styleGuideProvider:(id)a4
+- (PXSecondaryToolbarController)initWithContainerView:(id)view styleGuideProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = PXSecondaryToolbarController;
   v9 = [(PXSecondaryToolbarController *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_containerView, a3);
-    objc_storeStrong(&v10->_legibilityContainerView, a3);
+    objc_storeStrong(&v9->_containerView, view);
+    objc_storeStrong(&v10->_legibilityContainerView, view);
     v11 = objc_alloc_init(PXHitTestTransparentView);
     toolbarContainerView = v10->_toolbarContainerView;
     v10->_toolbarContainerView = &v11->super;
 
     [(UIView *)v10->_containerView addSubview:v10->_toolbarContainerView];
-    objc_storeWeak(&v10->_styleGuideProvider, v8);
+    objc_storeWeak(&v10->_styleGuideProvider, providerCopy);
     v10->_alpha = 1.0;
     v13 = [[off_1E7721940 alloc] initWithTarget:v10 needsUpdateSelector:sel_setNeedsUpdate];
     updater = v10->_updater;
@@ -696,8 +696,8 @@ void __61__PXSecondaryToolbarController__invalidateLegibilityGradient__block_inv
 
 - (PXSecondaryToolbarController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSecondaryToolbarController.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXSecondaryToolbarController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSecondaryToolbarController.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXSecondaryToolbarController init]"}];
 
   abort();
 }

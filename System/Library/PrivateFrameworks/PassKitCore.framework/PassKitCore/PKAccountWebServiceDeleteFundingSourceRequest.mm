@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceDeleteFundingSourceRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceDeleteFundingSourceRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -30,7 +30,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v11 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))

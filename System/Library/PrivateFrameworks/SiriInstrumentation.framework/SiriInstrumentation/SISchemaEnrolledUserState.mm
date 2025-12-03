@@ -1,25 +1,25 @@
 @interface SISchemaEnrolledUserState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaEnrolledUserState)initWithDictionary:(id)a3;
-- (SISchemaEnrolledUserState)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaEnrolledUserState)initWithDictionary:(id)dictionary;
+- (SISchemaEnrolledUserState)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaEnrolledUserState
 
-- (SISchemaEnrolledUserState)initWithDictionary:(id)a3
+- (SISchemaEnrolledUserState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaEnrolledUserState;
   v5 = [(SISchemaEnrolledUserState *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriLinkedSpeechID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriLinkedSpeechID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(SISchemaEnrolledUserState *)v5 setSiriLinkedSpeechID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"personalization"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"personalization"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SISchemaEnrolledUserState)initWithJSON:(id)a3
+- (SISchemaEnrolledUserState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaEnrolledUserState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaEnrolledUserState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaEnrolledUserState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,57 +77,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_personalization)
   {
-    v4 = [(SISchemaEnrolledUserState *)self personalization];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    personalization = [(SISchemaEnrolledUserState *)self personalization];
+    dictionaryRepresentation = [personalization dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"personalization"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"personalization"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"personalization"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"personalization"];
     }
   }
 
   if (self->_siriLinkedSpeechID)
   {
-    v7 = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"siriLinkedSpeechID"];
+    siriLinkedSpeechID = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
+    v8 = [siriLinkedSpeechID copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"siriLinkedSpeechID"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
-  v6 = [v4 siriLinkedSpeechID];
-  if ((v5 != 0) == (v6 == 0))
+  siriLinkedSpeechID = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
+  siriLinkedSpeechID2 = [equalCopy siriLinkedSpeechID];
+  if ((siriLinkedSpeechID != 0) == (siriLinkedSpeechID2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
-  if (v7)
+  siriLinkedSpeechID3 = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
+  if (siriLinkedSpeechID3)
   {
-    v8 = v7;
-    v9 = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
-    v10 = [v4 siriLinkedSpeechID];
-    v11 = [v9 isEqual:v10];
+    v8 = siriLinkedSpeechID3;
+    siriLinkedSpeechID4 = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
+    siriLinkedSpeechID5 = [equalCopy siriLinkedSpeechID];
+    v11 = [siriLinkedSpeechID4 isEqual:siriLinkedSpeechID5];
 
     if (!v11)
     {
@@ -139,12 +139,12 @@
   {
   }
 
-  v5 = [(SISchemaEnrolledUserState *)self personalization];
-  v6 = [v4 personalization];
-  if ((v5 != 0) != (v6 == 0))
+  siriLinkedSpeechID = [(SISchemaEnrolledUserState *)self personalization];
+  siriLinkedSpeechID2 = [equalCopy personalization];
+  if ((siriLinkedSpeechID != 0) != (siriLinkedSpeechID2 == 0))
   {
-    v12 = [(SISchemaEnrolledUserState *)self personalization];
-    if (!v12)
+    personalization = [(SISchemaEnrolledUserState *)self personalization];
+    if (!personalization)
     {
 
 LABEL_15:
@@ -152,10 +152,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(SISchemaEnrolledUserState *)self personalization];
-    v15 = [v4 personalization];
-    v16 = [v14 isEqual:v15];
+    v13 = personalization;
+    personalization2 = [(SISchemaEnrolledUserState *)self personalization];
+    personalization3 = [equalCopy personalization];
+    v16 = [personalization2 isEqual:personalization3];
 
     if (v16)
     {
@@ -175,36 +175,36 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
+  toCopy = to;
+  siriLinkedSpeechID = [(SISchemaEnrolledUserState *)self siriLinkedSpeechID];
 
-  if (v4)
+  if (siriLinkedSpeechID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaEnrolledUserState *)self personalization];
+  personalization = [(SISchemaEnrolledUserState *)self personalization];
 
-  if (v5)
+  if (personalization)
   {
-    v6 = [(SISchemaEnrolledUserState *)self personalization];
+    personalization2 = [(SISchemaEnrolledUserState *)self personalization];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaEnrolledUserState;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaEnrolledUserState *)self personalization:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaEnrolledUserState *)self deletePersonalization];
   }

@@ -10,13 +10,13 @@
 - (NSString)name;
 - (NSString)type;
 - (NSString)value;
-- (id)listItemAtIndex:(int)a3;
+- (id)listItemAtIndex:(int)index;
 - (int)length;
 - (int)selectedIndex;
 - (int)size;
 - (unsigned)completeLength;
-- (void)_activateItemAtIndex:(int)a3;
-- (void)_activateItemAtIndex:(int)a3 allowMultipleSelection:(BOOL)a4;
+- (void)_activateItemAtIndex:(int)index;
+- (void)_activateItemAtIndex:(int)index allowMultipleSelection:(BOOL)selection;
 - (void)add:(DOMHTMLElement *)element before:(DOMHTMLElement *)before;
 - (void)remove:(int)index;
 - (void)setAutofocus:(BOOL)autofocus;
@@ -30,7 +30,7 @@
 
 @implementation DOMHTMLSelectElement
 
-- (void)_activateItemAtIndex:(int)a3
+- (void)_activateItemAtIndex:(int)index
 {
   if (self)
   {
@@ -41,7 +41,7 @@
   }
 }
 
-- (void)_activateItemAtIndex:(int)a3 allowMultipleSelection:(BOOL)a4
+- (void)_activateItemAtIndex:(int)index allowMultipleSelection:(BOOL)selection
 {
   if (self)
   {
@@ -646,7 +646,7 @@ LABEL_22:
   return *(WebCore::HTMLSelectElement::listItems(self) + 12);
 }
 
-- (id)listItemAtIndex:(int)a3
+- (id)listItemAtIndex:(int)index
 {
   if (self)
   {
@@ -654,14 +654,14 @@ LABEL_22:
   }
 
   result = WebCore::HTMLSelectElement::listItems(self);
-  if (*(result + 3) <= a3)
+  if (*(result + 3) <= index)
   {
     __break(0xC471u);
   }
 
   else
   {
-    v5 = *(*result + 8 * a3);
+    v5 = *(*result + 8 * index);
     if (v5)
     {
       v6 = *(v5 + 8);

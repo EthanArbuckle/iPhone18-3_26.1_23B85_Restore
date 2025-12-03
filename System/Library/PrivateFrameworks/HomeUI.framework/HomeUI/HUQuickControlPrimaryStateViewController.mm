@@ -4,7 +4,7 @@
 - (id)controlToViewValueTransformer;
 - (id)createInteractionCoordinator;
 - (id)createViewProfile;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUQuickControlPrimaryStateViewController
@@ -16,21 +16,21 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = HUQuickControlPrimaryStateViewController;
-  [(HUQuickControlSingleControlViewController *)&v10 viewWillAppear:a3];
+  [(HUQuickControlSingleControlViewController *)&v10 viewWillAppear:appear];
   if (![(HUQuickControlSingleControlViewController *)self hasSetControlSize])
   {
-    v4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+    viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v6 = [(HUQuickControlPrimaryStateViewController *)self view];
-      [v6 frame];
+      view = [(HUQuickControlPrimaryStateViewController *)self view];
+      [view frame];
       v9 = HUViewSizeSubclassForViewSize(v7, v8);
 
       [(HUQuickControlSingleControlViewController *)self setControlSize:[HUQuickControlUtilities sliderQuickControlSizeForViewSizeSubclass:v9]];
@@ -40,7 +40,7 @@
 
 - (id)createInteractionCoordinator
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -57,8 +57,8 @@
   }
 
   v7 = objc_alloc(*v5);
-  v8 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v9 = [v7 initWithProfile:v8];
+  viewProfile2 = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  v9 = [v7 initWithProfile:viewProfile2];
 
   v10 = [objc_alloc(*v6) initWithControlView:v9 delegate:self];
 
@@ -67,8 +67,8 @@
 
 - (id)createViewProfile
 {
-  v3 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v4 = [HUQuickControlUtilities shouldDisplayQuickControlAsPushButton:v3 preferredControl:[(HUQuickControlViewController *)self preferredControl]];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  v4 = [HUQuickControlUtilities shouldDisplayQuickControlAsPushButton:controlItem preferredControl:[(HUQuickControlViewController *)self preferredControl]];
 
   if (v4)
   {
@@ -124,14 +124,14 @@ uint64_t __73__HUQuickControlPrimaryStateViewController_controlToViewValueTransf
 
 - (BOOL)_isCharacteristicTypeRotationDirection
 {
-  v2 = [(HUQuickControlSingleControlViewController *)self controlItem];
-  v3 = [v2 characteristicOptions];
-  v4 = [v3 characteristicTypesForUsage:0];
-  v5 = [v4 allObjects];
-  v6 = [v5 firstObject];
+  controlItem = [(HUQuickControlSingleControlViewController *)self controlItem];
+  characteristicOptions = [controlItem characteristicOptions];
+  v4 = [characteristicOptions characteristicTypesForUsage:0];
+  allObjects = [v4 allObjects];
+  firstObject = [allObjects firstObject];
 
-  LOBYTE(v2) = [v6 isEqualToString:*MEMORY[0x277CCFA18]];
-  return v2;
+  LOBYTE(controlItem) = [firstObject isEqualToString:*MEMORY[0x277CCFA18]];
+  return controlItem;
 }
 
 @end

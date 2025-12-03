@@ -1,20 +1,20 @@
 @interface REMListCalDAVNotificationContext
 - (NSArray)calDAVNotifications;
-- (REMListCalDAVNotificationContext)initWithList:(id)a3;
+- (REMListCalDAVNotificationContext)initWithList:(id)list;
 @end
 
 @implementation REMListCalDAVNotificationContext
 
-- (REMListCalDAVNotificationContext)initWithList:(id)a3
+- (REMListCalDAVNotificationContext)initWithList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = REMListCalDAVNotificationContext;
   v6 = [(REMListCalDAVNotificationContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_list, a3);
+    objc_storeStrong(&v6->_list, list);
   }
 
   return v7;
@@ -22,12 +22,12 @@
 
 - (NSArray)calDAVNotifications
 {
-  v2 = [(REMListCalDAVNotificationContext *)self list];
-  v3 = [v2 calDAVNotifications];
-  v4 = v3;
-  if (v3)
+  list = [(REMListCalDAVNotificationContext *)self list];
+  calDAVNotifications = [list calDAVNotifications];
+  v4 = calDAVNotifications;
+  if (calDAVNotifications)
   {
-    v5 = v3;
+    v5 = calDAVNotifications;
   }
 
   else

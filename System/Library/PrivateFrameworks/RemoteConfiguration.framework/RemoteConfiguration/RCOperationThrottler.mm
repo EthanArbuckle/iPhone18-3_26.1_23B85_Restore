@@ -1,12 +1,12 @@
 @interface RCOperationThrottler
 - (BOOL)suspended;
 - (RCOperationThrottler)init;
-- (RCOperationThrottler)initWithDelegate:(id)a3;
-- (RCOperationThrottler)initWithDelegate:(id)a3 updateQueue:(id)a4;
-- (void)addCompletionForCurrentOperation:(id)a3;
+- (RCOperationThrottler)initWithDelegate:(id)delegate;
+- (RCOperationThrottler)initWithDelegate:(id)delegate updateQueue:(id)queue;
+- (void)addCompletionForCurrentOperation:(id)operation;
 - (void)dealloc;
-- (void)setSuspended:(BOOL)a3;
-- (void)tickleWithCompletion:(id)a3;
+- (void)setSuspended:(BOOL)suspended;
+- (void)tickleWithCompletion:(id)completion;
 @end
 
 @implementation RCOperationThrottler
@@ -37,26 +37,26 @@
   objc_exception_throw(v6);
 }
 
-- (RCOperationThrottler)initWithDelegate:(id)a3
+- (RCOperationThrottler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  delegateCopy = delegate;
+  if (!delegateCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCOperationThrottler initWithDelegate:];
   }
 
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_BACKGROUND, 0);
   v6 = dispatch_queue_create(0, v5);
-  v7 = [(RCOperationThrottler *)self initWithDelegate:v4 updateQueue:v6];
+  v7 = [(RCOperationThrottler *)self initWithDelegate:delegateCopy updateQueue:v6];
 
   return v7;
 }
 
-- (RCOperationThrottler)initWithDelegate:(id)a3 updateQueue:(id)a4
+- (RCOperationThrottler)initWithDelegate:(id)delegate updateQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (!delegateCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCOperationThrottler initWithDelegate:updateQueue:];
   }
@@ -67,14 +67,14 @@
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (delegateCopy)
     {
       objc_initWeak(&location, v8);
-      objc_initWeak(&from, v6);
+      objc_initWeak(&from, delegateCopy);
       v10 = dispatch_group_create();
       objc_storeStrong(&v9->_handlerSynchronizationGroup, v10);
-      objc_storeStrong(&v9->_serialQueue, a4);
-      v11 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, v7);
+      objc_storeStrong(&v9->_serialQueue, queue);
+      v11 = dispatch_source_create(MEMORY[0x277D85CE8], 0, 0, queueCopy);
       dispatchSource = v9->_dispatchSource;
       v9->_dispatchSource = v11;
       v13 = v11;
@@ -89,7 +89,7 @@
       objc_copyWeak(&v24, &from);
       objc_copyWeak(&v25, &location);
       objc_copyWeak(&v26, &v27);
-      v15 = v7;
+      v15 = queueCopy;
       v23 = v15;
       dispatch_source_set_event_handler(v13, handler);
       dispatch_group_enter(v14);
@@ -210,11 +210,11 @@ void __53__RCOperationThrottler_initWithDelegate_updateQueue___block_invoke_5(ui
   [(RCOperationThrottler *)&v3 dealloc];
 }
 
-- (void)tickleWithCompletion:(id)a3
+- (void)tickleWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    dispatch_group_notify(self->_handlerSynchronizationGroup, self->_serialQueue, a3);
+    dispatch_group_notify(self->_handlerSynchronizationGroup, self->_serialQueue, completion);
   }
 
   dispatchSource = self->_dispatchSource;
@@ -222,38 +222,38 @@ void __53__RCOperationThrottler_initWithDelegate_updateQueue___block_invoke_5(ui
   dispatch_source_merge_data(dispatchSource, 1uLL);
 }
 
-- (void)addCompletionForCurrentOperation:(id)a3
+- (void)addCompletionForCurrentOperation:(id)operation
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  operationCopy = operation;
+  if (!operationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [RCOperationThrottler addCompletionForCurrentOperation:];
   }
 
-  dispatch_async(self->_serialQueue, v4);
+  dispatch_async(self->_serialQueue, operationCopy);
 }
 
 - (BOOL)suspended
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  suspended = v2->_suspended;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suspended = selfCopy->_suspended;
+  objc_sync_exit(selfCopy);
 
   return suspended;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   obj = self;
   objc_sync_enter(obj);
   v4 = obj;
-  if (obj->_suspended != v3)
+  if (obj->_suspended != suspendedCopy)
   {
-    obj->_suspended = v3;
+    obj->_suspended = suspendedCopy;
     dispatchSource = obj->_dispatchSource;
-    if (v3)
+    if (suspendedCopy)
     {
       dispatch_suspend(dispatchSource);
     }

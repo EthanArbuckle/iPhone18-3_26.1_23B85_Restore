@@ -1,18 +1,18 @@
 @interface BCUIAvocadoViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axKeySuffixForParts:(unint64_t)a3;
-- (id)_axLabelForBatteryDevice:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axKeySuffixForParts:(unint64_t)parts;
+- (id)_axLabelForBatteryDevice:(id)device;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5;
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator;
 @end
 
 @implementation BCUIAvocadoViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BCUIAvocadoViewController" hasInstanceMethod:@"invalidateBatteryDeviceState" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BCUIAvocadoViewController" hasInstanceMethod:@"_configureBatteryDeviceView:withBatteryDevice:transitionCoordinator:" withFullSignature:{"v", "@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BCUIAvocadoViewController" hasInstanceMethod:@"invalidateBatteryDeviceState" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BCUIAvocadoViewController" hasInstanceMethod:@"_configureBatteryDeviceView:withBatteryDevice:transitionCoordinator:" withFullSignature:{"v", "@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,18 +23,18 @@
   AXPerformSafeBlock();
 }
 
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  deviceCopy = device;
+  coordinatorCopy = coordinator;
   v22.receiver = self;
   v22.super_class = BCUIAvocadoViewControllerAccessibility;
-  [(BCUIAvocadoViewControllerAccessibility *)&v22 _configureBatteryDeviceView:v8 withBatteryDevice:v9 transitionCoordinator:v10];
+  [(BCUIAvocadoViewControllerAccessibility *)&v22 _configureBatteryDeviceView:viewCopy withBatteryDevice:deviceCopy transitionCoordinator:coordinatorCopy];
   objc_opt_class();
   v11 = __UIAccessibilityCastAsClass();
 
-  v12 = [v11 name];
+  name = [v11 name];
   v13 = [(BCUIAvocadoViewControllerAccessibility *)self _axLabelForBatteryDevice:v11];
   v14 = MEMORY[0x29EDBA0F8];
   v15 = accessibilityLocalizedString(@"battery.center.device.percent");
@@ -69,28 +69,28 @@
   }
 
   v21 = __UIAXStringForVariables();
-  [v8 setAccessibilityLabel:{v21, v13, v17, v18, v19, v20, @"__AXStringForVariablesSentinel"}];
+  [viewCopy setAccessibilityLabel:{v21, v13, v17, v18, v19, v20, @"__AXStringForVariablesSentinel"}];
 
-  [v8 setIsAccessibilityElement:v11 != 0];
-  [v8 setAccessibilityTraits:*MEMORY[0x29EDC7FD0]];
+  [viewCopy setIsAccessibilityElement:v11 != 0];
+  [viewCopy setAccessibilityTraits:*MEMORY[0x29EDC7FD0]];
 }
 
-- (id)_axLabelForBatteryDevice:(id)a3
+- (id)_axLabelForBatteryDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 vendor];
-  v6 = [v4 accessoryCategory];
-  v7 = [v4 safeIntegerForKey:@"transportType"];
-  if (v5 == 2)
+  deviceCopy = device;
+  vendor = [deviceCopy vendor];
+  accessoryCategory = [deviceCopy accessoryCategory];
+  v7 = [deviceCopy safeIntegerForKey:@"transportType"];
+  if (vendor == 2)
   {
     v16 = @"battery.center.beats";
     goto LABEL_32;
   }
 
-  if (v5 != 1)
+  if (vendor != 1)
   {
-    v17 = v6 - 1;
-    if ((v6 - 1) < 0xA)
+    v17 = accessoryCategory - 1;
+    if ((accessoryCategory - 1) < 0xA)
     {
       v18 = off_29F2A7890;
 LABEL_30:
@@ -104,11 +104,11 @@ LABEL_31:
   }
 
   v8 = v7;
-  v9 = [v4 productIdentifier];
-  v10 = [v4 parts];
+  productIdentifier = [deviceCopy productIdentifier];
+  parts = [deviceCopy parts];
   if (v8 == 2)
   {
-    if (v9 == *MEMORY[0x29EDBFCE0] || v9 == *MEMORY[0x29EDBFD30])
+    if (productIdentifier == *MEMORY[0x29EDBFCE0] || productIdentifier == *MEMORY[0x29EDBFD30])
     {
       v16 = @"battery.center.case";
       goto LABEL_32;
@@ -122,11 +122,11 @@ LABEL_31:
     goto LABEL_28;
   }
 
-  v11 = v10;
+  v11 = parts;
   v12 = *MEMORY[0x29EDBFCF8];
-  if (v9 == *MEMORY[0x29EDBFCD8] || v9 == *MEMORY[0x29EDBFCF0] || v9 == v12)
+  if (productIdentifier == *MEMORY[0x29EDBFCD8] || productIdentifier == *MEMORY[0x29EDBFCF0] || productIdentifier == v12)
   {
-    if (v9 == v12)
+    if (productIdentifier == v12)
     {
       v15 = [@"battery.center.airpods" stringByAppendingString:@".pro"];
     }
@@ -147,56 +147,56 @@ LABEL_31:
     goto LABEL_28;
   }
 
-  if (v9 == *MEMORY[0x29EDBFCE8])
+  if (productIdentifier == *MEMORY[0x29EDBFCE8])
   {
     v16 = @"battery.center.beats.x";
     goto LABEL_32;
   }
 
-  if (v9 == *MEMORY[0x29EDBFD00])
+  if (productIdentifier == *MEMORY[0x29EDBFD00])
   {
     v16 = @"battery.center.powerbeats";
     goto LABEL_32;
   }
 
-  if (v9 == *MEMORY[0x29EDBFD08])
+  if (productIdentifier == *MEMORY[0x29EDBFD08])
   {
     v16 = @"battery.center.beats.solo";
     goto LABEL_32;
   }
 
-  if (v9 == *MEMORY[0x29EDBFD10])
+  if (productIdentifier == *MEMORY[0x29EDBFD10])
   {
     v16 = @"battery.center.powerbeats.4";
     goto LABEL_32;
   }
 
-  if (v9 == *MEMORY[0x29EDBFD18])
+  if (productIdentifier == *MEMORY[0x29EDBFD18])
   {
     v16 = @"battery.center.beats.solo.pro";
     goto LABEL_32;
   }
 
-  if (v9 == *MEMORY[0x29EDBFD20])
+  if (productIdentifier == *MEMORY[0x29EDBFD20])
   {
     v16 = @"battery.center.beats.studio";
     goto LABEL_32;
   }
 
-  if (v9 == *MEMORY[0x29EDBFD28])
+  if (productIdentifier == *MEMORY[0x29EDBFD28])
   {
-    v23 = [(BCUIAvocadoViewControllerAccessibility *)self _axKeySuffixForParts:v10];
+    v23 = [(BCUIAvocadoViewControllerAccessibility *)self _axKeySuffixForParts:parts];
     v16 = @"battery.center.beats.powerbeats.pro";
     v24 = [@"battery.center.beats.powerbeats.pro" stringByAppendingString:v23];
 
     goto LABEL_32;
   }
 
-  if (v9 != *MEMORY[0x29EDBFCD0])
+  if (productIdentifier != *MEMORY[0x29EDBFCD0])
   {
 LABEL_28:
-    v17 = v6 - 1;
-    if ((v6 - 1) < 0xA)
+    v17 = accessoryCategory - 1;
+    if ((accessoryCategory - 1) < 0xA)
     {
       v18 = off_29F2A7840;
       goto LABEL_30;
@@ -212,12 +212,12 @@ LABEL_32:
   return v21;
 }
 
-- (id)_axKeySuffixForParts:(unint64_t)a3
+- (id)_axKeySuffixForParts:(unint64_t)parts
 {
   v3 = @".left";
   v4 = @".case";
-  v5 = a3 & 3;
-  if ((a3 & 4) == 0)
+  v5 = parts & 3;
+  if ((parts & 4) == 0)
   {
     v4 = &stru_2A21231E0;
   }
@@ -232,7 +232,7 @@ LABEL_32:
     v3 = v4;
   }
 
-  if (a3)
+  if (parts)
   {
     return v3;
   }

@@ -1,5 +1,5 @@
 @interface DOCShareButton
-- (_TtC26DocumentManagerExecutablesP33_D84699134F2F83A5DD978A1B1F3ADA5814DOCShareButton)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutablesP33_D84699134F2F83A5DD978A1B1F3ADA5814DOCShareButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 - (void)updateConfiguration;
@@ -18,7 +18,7 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   DOCShareButton.updateConfiguration()();
 }
 
@@ -32,7 +32,7 @@
   [v2 _setContinuousCornerRadius_];
 }
 
-- (_TtC26DocumentManagerExecutablesP33_D84699134F2F83A5DD978A1B1F3ADA5814DOCShareButton)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutablesP33_D84699134F2F83A5DD978A1B1F3ADA5814DOCShareButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

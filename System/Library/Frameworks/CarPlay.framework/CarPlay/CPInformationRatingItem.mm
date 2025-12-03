@@ -1,8 +1,8 @@
 @interface CPInformationRatingItem
-- (CPInformationRatingItem)initWithCoder:(id)a3;
+- (CPInformationRatingItem)initWithCoder:(id)coder;
 - (CPInformationRatingItem)initWithRating:(NSNumber *)rating maximumRating:(NSNumber *)maximumRating title:(NSString *)title detail:(NSString *)detail;
 - (void)_santizeRatingItem;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPInformationRatingItem
@@ -68,19 +68,19 @@
   MEMORY[0x2821F96F8](v10, maximumRating);
 }
 
-- (CPInformationRatingItem)initWithCoder:(id)a3
+- (CPInformationRatingItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPInformationRatingItem;
-  v5 = [(CPInformationItem *)&v11 initWithCoder:v4];
+  v5 = [(CPInformationItem *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationRatingItemRatingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationRatingItemRatingKey"];
     rating = v5->_rating;
     v5->_rating = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationRatingItemMaximumRatingKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPInformationRatingItemMaximumRatingKey"];
     maximumRating = v5->_maximumRating;
     v5->_maximumRating = v8;
   }
@@ -88,17 +88,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPInformationRatingItem;
-  v4 = a3;
-  [(CPInformationItem *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPInformationItem *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPInformationRatingItem *)self rating:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPInformationRatingItemRatingKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPInformationRatingItemRatingKey"];
 
-  v6 = [(CPInformationRatingItem *)self maximumRating];
-  [v4 encodeObject:v6 forKey:@"kCPInformationRatingItemMaximumRatingKey"];
+  maximumRating = [(CPInformationRatingItem *)self maximumRating];
+  [coderCopy encodeObject:maximumRating forKey:@"kCPInformationRatingItemMaximumRatingKey"];
 }
 
 @end

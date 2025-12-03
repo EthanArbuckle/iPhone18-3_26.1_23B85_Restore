@@ -1,27 +1,27 @@
 @interface WaypointBaseRichDialView
-- ($F19C7D1BACA455C0923872420114D4F8)_layoutConstantsForDevice:(SEL)a3;
+- ($F19C7D1BACA455C0923872420114D4F8)_layoutConstantsForDevice:(SEL)device;
 - (UIImageView)waypointView;
 - (UIView)needleView;
 - (WaypointRichComplicationTicksView)ticksView;
 - (id)_defaultSmartWaypointImage;
 - (id)_defaultWaypointImage;
 - (id)_deletedWaypointImage;
-- (id)_pointSizeConfigurationForSymbol:(id)a3;
-- (id)_tickColorForWaypointColor:(id)a3;
-- (id)_waypointImageForSymbol:(id)a3;
+- (id)_pointSizeConfigurationForSymbol:(id)symbol;
+- (id)_tickColorForWaypointColor:(id)color;
+- (id)_waypointImageForSymbol:(id)symbol;
 - (id)_waypointPrivacyRedactionImage;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)monochromeAccentViews;
-- (void)_configureSampleTemplateWithImageProvider:(id)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)_configureSampleTemplateWithImageProvider:(id)provider;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation WaypointBaseRichDialView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v44.receiver = self;
   v44.super_class = WaypointBaseRichDialView;
   v5 = [(WaypointBaseRichDialView *)&v44 init];
@@ -31,7 +31,7 @@
     v7 = *(v5 + 69);
     *(v5 + 69) = v6;
 
-    objc_msgSend__layoutConstantsForDevice_(v5, v8, v4, v9);
+    objc_msgSend__layoutConstantsForDevice_(v5, v8, deviceCopy, v9);
     *(v5 + 472) = v39;
     v10 = v40;
     v11 = v41;
@@ -40,7 +40,7 @@
     *(v5 + 504) = v11;
     *(v5 + 520) = v12;
     *(v5 + 488) = v10;
-    v15 = objc_msgSend__symbolSizeAdjustmentsForDevice_(v5, v13, v4, v14);
+    v15 = objc_msgSend__symbolSizeAdjustmentsForDevice_(v5, v13, deviceCopy, v14);
     v16 = *(v5 + 68);
     *(v5 + 68) = v15;
 
@@ -147,19 +147,19 @@
   return v15;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v6 = a3;
+  providerCopy = provider;
   v253.receiver = self;
   v253.super_class = WaypointBaseRichDialView;
-  [(NanoCompassBaseRichView *)&v253 configureWithImageProvider:v6 reason:a4];
-  v10 = objc_msgSend_metadata(v6, v7, v8, v9);
+  [(NanoCompassBaseRichView *)&v253 configureWithImageProvider:providerCopy reason:reason];
+  v10 = objc_msgSend_metadata(providerCopy, v7, v8, v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"showSampleData", v12);
   v17 = objc_msgSend_BOOLValue(v13, v14, v15, v16);
 
   if (!v17)
   {
-    v21 = objc_msgSend_metadata(v6, v18, v19, v20);
+    v21 = objc_msgSend_metadata(providerCopy, v18, v19, v20);
     v24 = objc_msgSend_objectForKeyedSubscript_(v21, v22, @"heading", v23);
 
     v28 = objc_msgSend_null(MEMORY[0x277CBEB68], v25, v26, v27);
@@ -171,7 +171,7 @@
       v24 = 0;
     }
 
-    v35 = objc_msgSend_metadata(v6, v32, v33, v34);
+    v35 = objc_msgSend_metadata(providerCopy, v32, v33, v34);
     v38 = objc_msgSend_objectForKeyedSubscript_(v35, v36, @"waypoint", v37);
 
     v42 = objc_msgSend_null(MEMORY[0x277CBEB68], v39, v40, v41);
@@ -183,7 +183,7 @@
       v38 = 0;
     }
 
-    v49 = objc_msgSend_metadata(v6, v46, v47, v48);
+    v49 = objc_msgSend_metadata(providerCopy, v46, v47, v48);
     v52 = objc_msgSend_objectForKeyedSubscript_(v49, v50, @"location", v51);
 
     v56 = objc_msgSend_null(MEMORY[0x277CBEB68], v53, v54, v55);
@@ -196,23 +196,23 @@
       v52 = 0;
     }
 
-    v63 = objc_msgSend_metadata(v6, v60, v61, v62);
+    v63 = objc_msgSend_metadata(providerCopy, v60, v61, v62);
     v66 = objc_msgSend_objectForKeyedSubscript_(v63, v64, @"nodata", v65);
     v70 = objc_msgSend_BOOLValue(v66, v67, v68, v69);
 
-    v74 = objc_msgSend_metadata(v6, v71, v72, v73);
+    v74 = objc_msgSend_metadata(providerCopy, v71, v72, v73);
     v77 = objc_msgSend_objectForKeyedSubscript_(v74, v75, @"inactive", v76);
     v249 = objc_msgSend_BOOLValue(v77, v78, v79, v80);
 
-    v84 = objc_msgSend_metadata(v6, v81, v82, v83);
+    v84 = objc_msgSend_metadata(providerCopy, v81, v82, v83);
     v87 = objc_msgSend_objectForKeyedSubscript_(v84, v85, @"alwayson", v86);
     v91 = objc_msgSend_BOOLValue(v87, v88, v89, v90);
 
-    v95 = objc_msgSend_metadata(v6, v92, v93, v94);
+    v95 = objc_msgSend_metadata(providerCopy, v92, v93, v94);
     v98 = objc_msgSend_objectForKeyedSubscript_(v95, v96, @"smart", v97);
     v102 = objc_msgSend_BOOLValue(v98, v99, v100, v101);
 
-    v106 = objc_msgSend_metadata(v6, v103, v104, v105);
+    v106 = objc_msgSend_metadata(providerCopy, v103, v104, v105);
     v109 = objc_msgSend_objectForKeyedSubscript_(v106, v107, @"showPrivacyRedaction", v108);
     v113 = objc_msgSend_BOOLValue(v109, v110, v111, v112);
 
@@ -380,7 +380,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  objc_msgSend__configureSampleTemplateWithImageProvider_(self, v18, v6, v20);
+  objc_msgSend__configureSampleTemplateWithImageProvider_(self, v18, providerCopy, v20);
 LABEL_42:
 }
 
@@ -403,9 +403,9 @@ LABEL_42:
   objc_msgSend_setCenter_(v27, v28, v29, v30, v7, v9);
 }
 
-- (id)_pointSizeConfigurationForSymbol:(id)a3
+- (id)_pointSizeConfigurationForSymbol:(id)symbol
 {
-  v5 = objc_msgSend_valueForKey_(self->_symbolSizeAdjustments, a2, a3, v3);
+  v5 = objc_msgSend_valueForKey_(self->_symbolSizeAdjustments, a2, symbol, v3);
   v9 = v5;
   if (v5)
   {
@@ -422,13 +422,13 @@ LABEL_42:
   return v11;
 }
 
-- (void)_configureSampleTemplateWithImageProvider:(id)a3
+- (void)_configureSampleTemplateWithImageProvider:(id)provider
 {
-  v4 = a3;
-  v8 = objc_msgSend_metadata(v4, v5, v6, v7);
+  providerCopy = provider;
+  v8 = objc_msgSend_metadata(providerCopy, v5, v6, v7);
   v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"symbol", v10);
 
-  v15 = objc_msgSend_metadata(v4, v12, v13, v14);
+  v15 = objc_msgSend_metadata(providerCopy, v12, v13, v14);
 
   v18 = objc_msgSend_objectForKeyedSubscript_(v15, v16, @"color", v17);
 
@@ -463,15 +463,15 @@ LABEL_42:
   objc_msgSend_setImage_(v74, v75, v70, v76);
 }
 
-- (id)_tickColorForWaypointColor:(id)a3
+- (id)_tickColorForWaypointColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v12 = 0.0;
   v13 = 0.0;
   v10 = 0.0;
   v11 = 0.0;
-  v8 = v3;
-  if (objc_msgSend_getHue_saturation_brightness_alpha_(v3, v4, &v13, &v12, &v11, &v10))
+  v8 = colorCopy;
+  if (objc_msgSend_getHue_saturation_brightness_alpha_(colorCopy, v4, &v13, &v12, &v11, &v10))
   {
     v8 = objc_msgSend_colorWithHue_saturation_brightness_alpha_(MEMORY[0x277D75348], v5, v6, v7, v13, v12 * 0.8, v11 * 0.9, v10);
   }
@@ -550,10 +550,10 @@ LABEL_42:
   return waypointPrivacyRedactionImage;
 }
 
-- (id)_waypointImageForSymbol:(id)a3
+- (id)_waypointImageForSymbol:(id)symbol
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKey_(self->_waypointSymbolCache, v5, v4, v6);
+  symbolCopy = symbol;
+  v7 = objc_msgSend_objectForKey_(self->_waypointSymbolCache, v5, symbolCopy, v6);
   v10 = v7;
   if (v7)
   {
@@ -562,15 +562,15 @@ LABEL_42:
 
   else
   {
-    v12 = objc_msgSend__pointSizeConfigurationForSymbol_(self, v8, v4, v9);
-    v11 = objc_msgSend__systemImageNamed_withConfiguration_(MEMORY[0x277D755B8], v13, v4, v12);
-    objc_msgSend_setObject_forKey_(self->_waypointSymbolCache, v14, v11, v4);
+    v12 = objc_msgSend__pointSizeConfigurationForSymbol_(self, v8, symbolCopy, v9);
+    v11 = objc_msgSend__systemImageNamed_withConfiguration_(MEMORY[0x277D755B8], v13, symbolCopy, v12);
+    objc_msgSend_setObject_forKey_(self->_waypointSymbolCache, v14, v11, symbolCopy);
   }
 
   return v11;
 }
 
-- ($F19C7D1BACA455C0923872420114D4F8)_layoutConstantsForDevice:(SEL)a3
+- ($F19C7D1BACA455C0923872420114D4F8)_layoutConstantsForDevice:(SEL)device
 {
   objc_opt_class();
   result = NSRequestConcreteImplementation();

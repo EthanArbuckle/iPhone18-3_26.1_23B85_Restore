@@ -1,8 +1,8 @@
 @interface DownloadPolicy
 - (SSDownloadPolicy)downloadPolicy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setPolicyData:(id)a3;
+- (void)setPolicyData:(id)data;
 @end
 
 @implementation DownloadPolicy
@@ -32,15 +32,15 @@
           v4 = +[SSLogConfig sharedConfig];
         }
 
-        v5 = [v4 shouldLog];
+        shouldLog = [v4 shouldLog];
         if ([v4 shouldLogToDisk])
         {
-          v6 = v5 | 2;
+          v6 = shouldLog | 2;
         }
 
         else
         {
-          v6 = v5;
+          v6 = shouldLog;
         }
 
         if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -79,18 +79,18 @@
   return result;
 }
 
-- (void)setPolicyData:(id)a3
+- (void)setPolicyData:(id)data
 {
-  [(DownloadPolicy *)self setValue:a3 forProperty:@"policy_data"];
+  [(DownloadPolicy *)self setValue:data forProperty:@"policy_data"];
 
   self->_cachedPolicy = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = DownloadPolicy;
-  return [(DownloadPolicy *)&v4 copyWithZone:a3];
+  return [(DownloadPolicy *)&v4 copyWithZone:zone];
 }
 
 @end

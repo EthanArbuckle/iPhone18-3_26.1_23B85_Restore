@@ -17,13 +17,13 @@
     v6 = NSTemporaryDirectory();
     v7 = [v6 stringByAppendingPathComponent:@"PodcastsAVAssetCache"];
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 fileExistsAtPath:v7];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager fileExistsAtPath:v7];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
-      [v10 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:0];
     }
 
     v11 = MEMORY[0x1E6987E30];

@@ -1,79 +1,79 @@
 @interface NEFilterRule
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NEFilterRule)initWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NEFilterRule)initWithCoder:(id)coder;
 - (NEFilterRule)initWithNetworkRule:(NENetworkRule *)networkRule action:(NEFilterAction)action;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEFilterRule
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEFilterRule allocWithZone:a3];
+  v4 = [NEFilterRule allocWithZone:zone];
   networkRule = self->_networkRule;
   action = self->_action;
 
   return [(NEFilterRule *)v4 initWithNetworkRule:networkRule action:action];
 }
 
-- (NEFilterRule)initWithCoder:(id)a3
+- (NEFilterRule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NEFilterRule;
   v5 = [(NEFilterRule *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rule"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rule"];
     networkRule = v5->_networkRule;
     v5->_networkRule = v6;
 
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   networkRule = self->_networkRule;
-  v5 = a3;
-  [v5 encodeObject:networkRule forKey:@"rule"];
-  [v5 encodeInteger:self->_action forKey:@"action"];
+  coderCopy = coder;
+  [coderCopy encodeObject:networkRule forKey:@"rule"];
+  [coderCopy encodeInteger:self->_action forKey:@"action"];
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NENetworkRule *)self->_networkRule checkValidityAndCollectErrors:v4];
-  v6 = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
-  if (v6)
+  errorsCopy = errors;
+  v5 = [(NENetworkRule *)self->_networkRule checkValidityAndCollectErrors:errorsCopy];
+  matchRemoteHostOrNetworkEndpoint = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
+  if (matchRemoteHostOrNetworkEndpoint)
   {
-    v7 = v6;
-    v8 = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
-    type = nw_endpoint_get_type(v8);
+    v7 = matchRemoteHostOrNetworkEndpoint;
+    matchRemoteHostOrNetworkEndpoint2 = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
+    type = nw_endpoint_get_type(matchRemoteHostOrNetworkEndpoint2);
 
     if (type == nw_endpoint_type_address)
     {
-      v10 = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
-      port = nw_endpoint_get_port(v10);
+      matchRemoteHostOrNetworkEndpoint3 = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
+      port = nw_endpoint_get_port(matchRemoteHostOrNetworkEndpoint3);
 
       if (!port)
       {
-        v12 = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
-        address = nw_endpoint_get_address(v12);
+        matchRemoteHostOrNetworkEndpoint4 = [(NENetworkRule *)self->_networkRule matchRemoteHostOrNetworkEndpoint];
+        address = nw_endpoint_get_address(matchRemoteHostOrNetworkEndpoint4);
         if (NEIsWildcardAddress(&address->sa_len) && [(NENetworkRule *)self->_networkRule matchProtocol]== NENetworkRuleProtocolAny)
         {
-          v15 = [(NENetworkRule *)self->_networkRule matchDirection];
+          matchDirection = [(NENetworkRule *)self->_networkRule matchDirection];
 
-          if (v15)
+          if (matchDirection)
           {
             goto LABEL_7;
           }
 
-          v12 = NEResourcesCopyLocalizedNSString(@"FILTER_RULE_INVALID_NETWORK_RULE", @"FILTER_RULE_INVALID_NETWORK_RULE");
-          [v4 addObject:v12];
+          matchRemoteHostOrNetworkEndpoint4 = NEResourcesCopyLocalizedNSString(@"FILTER_RULE_INVALID_NETWORK_RULE", @"FILTER_RULE_INVALID_NETWORK_RULE");
+          [errorsCopy addObject:matchRemoteHostOrNetworkEndpoint4];
           v5 = 0;
         }
       }

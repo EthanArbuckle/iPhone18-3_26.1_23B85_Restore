@@ -1,7 +1,7 @@
 @interface TSCH3DExtrusionDoubleBevelGenerator
 + (id)generator;
 - (TSCH3DExtrusionDoubleBevelGenerator)init;
-- (float)scaleUValueAtIndex:(int64_t)a3;
+- (float)scaleUValueAtIndex:(int64_t)index;
 - (id).cxx_construct;
 - (int64_t)bottomSlices;
 - (tvec3<float>)bottomDirection;
@@ -19,7 +19,7 @@
 
 + (id)generator
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -256,9 +256,9 @@
   }
 }
 
-- (float)scaleUValueAtIndex:(int64_t)a3
+- (float)scaleUValueAtIndex:(int64_t)index
 {
-  v3 = sin((1.0 - ((a3 + 1) / self->_bevelSlices)) * 1.57079633);
+  v3 = sin((1.0 - ((index + 1) / self->_bevelSlices)) * 1.57079633);
   v4 = sin(v3 * 1.57079633);
   v5 = sin(v4 * 1.57079633);
   return v5 + ((1.0 - v5) * 0.94);

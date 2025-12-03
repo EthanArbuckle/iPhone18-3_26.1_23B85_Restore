@@ -58,24 +58,24 @@
 
 - (id)client
 {
-  v2 = [(GKVoiceChatService *)self voiceChatService];
-  v3 = [v2 getClient];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  getClient = [voiceChatService getClient];
 
-  return v3;
+  return getClient;
 }
 
 - (void)setClient:(id)client
 {
   v4 = client;
-  v5 = [(GKVoiceChatService *)self voiceChatService];
-  [v5 setClient:v4 gkVoiceChatService:self];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  [voiceChatService setClient:v4 gkVoiceChatService:self];
 }
 
 - (BOOL)startVoiceChatWithParticipantID:(NSString *)participantID error:(NSError *)error
 {
   v6 = participantID;
-  v7 = [(GKVoiceChatService *)self voiceChatService];
-  LOBYTE(error) = [v7 startVoiceChatWithParticipantID:v6 error:error];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  LOBYTE(error) = [voiceChatService startVoiceChatWithParticipantID:v6 error:error];
 
   return error;
 }
@@ -83,15 +83,15 @@
 - (void)stopVoiceChatWithParticipantID:(NSString *)participantID
 {
   v4 = participantID;
-  v5 = [(GKVoiceChatService *)self voiceChatService];
-  [v5 stopVoiceChatWithParticipantID:v4];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  [voiceChatService stopVoiceChatWithParticipantID:v4];
 }
 
 - (BOOL)acceptCallID:(NSInteger)callID error:(NSError *)error
 {
   v5 = callID;
-  v6 = [(GKVoiceChatService *)self voiceChatService];
-  LOBYTE(error) = [v6 acceptCallID:v5 error:error];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  LOBYTE(error) = [voiceChatService acceptCallID:v5 error:error];
 
   return error;
 }
@@ -99,30 +99,30 @@
 - (void)denyCallID:(NSInteger)callID
 {
   v3 = callID;
-  v4 = [(GKVoiceChatService *)self voiceChatService];
-  [v4 denyCallID:v3];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  [voiceChatService denyCallID:v3];
 }
 
 - (void)receivedData:(NSData *)arbitraryData fromParticipantID:(NSString *)participantID
 {
   v6 = participantID;
   v7 = arbitraryData;
-  v8 = [(GKVoiceChatService *)self voiceChatService];
-  [v8 receivedData:v7 fromParticipantID:v6];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  [voiceChatService receivedData:v7 fromParticipantID:v6];
 }
 
 - (BOOL)isMicrophoneMuted
 {
-  v2 = [(GKVoiceChatService *)self voiceChatService];
-  v3 = [v2 isMicrophoneMuted];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  isMicrophoneMuted = [voiceChatService isMicrophoneMuted];
 
-  return v3;
+  return isMicrophoneMuted;
 }
 
 - (float)remoteParticipantVolume
 {
-  v2 = [(GKVoiceChatService *)self voiceChatService];
-  [v2 remoteParticipantVolume];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  [voiceChatService remoteParticipantVolume];
   v4 = v3;
 
   return v4;
@@ -130,31 +130,31 @@
 
 - (void)setRemoteParticipantVolume:(float)remoteParticipantVolume
 {
-  v5 = [(GKVoiceChatService *)self voiceChatService];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
   *&v4 = remoteParticipantVolume;
-  [v5 setRemoteParticipantVolume:v4];
+  [voiceChatService setRemoteParticipantVolume:v4];
 }
 
 - (BOOL)isOutputMeteringEnabled
 {
-  v2 = [(GKVoiceChatService *)self voiceChatService];
-  v3 = [v2 isOutputMeteringEnabled];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  isOutputMeteringEnabled = [voiceChatService isOutputMeteringEnabled];
 
-  return v3;
+  return isOutputMeteringEnabled;
 }
 
 - (BOOL)isInputMeteringEnabled
 {
-  v2 = [(GKVoiceChatService *)self voiceChatService];
-  v3 = [v2 isInputMeteringEnabled];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  isInputMeteringEnabled = [voiceChatService isInputMeteringEnabled];
 
-  return v3;
+  return isInputMeteringEnabled;
 }
 
 - (float)outputMeterLevel
 {
-  v2 = [(GKVoiceChatService *)self voiceChatService];
-  [v2 outputMeterLevel];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  [voiceChatService outputMeterLevel];
   v4 = v3;
 
   return v4;
@@ -162,8 +162,8 @@
 
 - (float)inputMeterLevel
 {
-  v2 = [(GKVoiceChatService *)self voiceChatService];
-  [v2 inputMeterLevel];
+  voiceChatService = [(GKVoiceChatService *)self voiceChatService];
+  [voiceChatService inputMeterLevel];
   v4 = v3;
 
   return v4;

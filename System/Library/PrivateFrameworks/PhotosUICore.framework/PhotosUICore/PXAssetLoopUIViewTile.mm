@@ -11,13 +11,13 @@
 - (void)_updateVideoSession;
 - (void)becomeReusable;
 - (void)dealloc;
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setBestPlaybackTimeRange:(id *)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setImageRequester:(id)a3;
-- (void)setVideoSession:(id)a3;
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setBestPlaybackTimeRange:(id *)range;
+- (void)setCornerRadius:(double)radius;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setImageRequester:(id)requester;
+- (void)setVideoSession:(id)session;
 @end
 
 @implementation PXAssetLoopUIViewTile
@@ -44,11 +44,11 @@
   return result;
 }
 
-- (void)setBestPlaybackTimeRange:(id *)a3
+- (void)setBestPlaybackTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_bestPlaybackTimeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_bestPlaybackTimeRange.start.epoch = *&range->var0.var3;
   *&self->_bestPlaybackTimeRange.duration.timescale = v4;
   *&self->_bestPlaybackTimeRange.start.value = v3;
 }
@@ -72,24 +72,24 @@
   [(PXAssetLoopUIViewTile *)&v4 dealloc];
 }
 
-- (void)setVideoSession:(id)a3
+- (void)setVideoSession:(id)session
 {
-  v5 = a3;
-  if (self->_videoSession != v5)
+  sessionCopy = session;
+  if (self->_videoSession != sessionCopy)
   {
     v6 = +[PXVideoSessionManager sharedInstance];
     [v6 checkInVideoSession:self->_videoSession];
 
     [(PXVideoSession *)self->_videoSession unregisterChangeObserver:self context:VideoSessionContext_27800];
-    objc_storeStrong(&self->_videoSession, a3);
+    objc_storeStrong(&self->_videoSession, session);
     [(PXVideoSession *)self->_videoSession registerChangeObserver:self context:VideoSessionContext_27800];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __41__PXAssetLoopUIViewTile_setVideoSession___block_invoke;
     v7[3] = &unk_1E7731938;
     v7[4] = self;
-    [(PXVideoSession *)v5 performChanges:v7 withPresentationContext:0 presenter:0];
-    [(PXVideoSessionUIView *)self->_videoView setVideoSession:v5];
+    [(PXVideoSession *)sessionCopy performChanges:v7 withPresentationContext:0 presenter:0];
+    [(PXVideoSessionUIView *)self->_videoView setVideoSession:sessionCopy];
     [(PXAssetLoopUIViewTile *)self _updateDesiredDynamicRange];
   }
 }
@@ -104,83 +104,83 @@ void __41__PXAssetLoopUIViewTile_setVideoSession___block_invoke(uint64_t a1, voi
 
 - (void)_updateDesiredDynamicRange
 {
-  v3 = [(PXAssetLoopUIViewTile *)self imageRequester];
-  v10 = [v3 asset];
+  imageRequester = [(PXAssetLoopUIViewTile *)self imageRequester];
+  asset = [imageRequester asset];
 
-  if (([v10 mediaSubtypes] & 0x100000) != 0)
+  if (([asset mediaSubtypes] & 0x100000) != 0)
   {
-    v4 = [(PXAssetLoopUIViewTile *)self videoSession];
-    v5 = [v4 playState];
+    videoSession = [(PXAssetLoopUIViewTile *)self videoSession];
+    playState = [videoSession playState];
 
-    v6 = [(PXAssetLoopUIViewTile *)self view];
-    v7 = [v6 layer];
-    v8 = [v7 context];
+    view = [(PXAssetLoopUIViewTile *)self view];
+    layer = [view layer];
+    context = [layer context];
 
     LODWORD(v9) = 1065361605;
-    if (v5 != 3)
+    if (playState != 3)
     {
       *&v9 = 1.0;
     }
 
-    [v8 setDesiredDynamicRange:v9];
+    [context setDesiredDynamicRange:v9];
   }
 }
 
 - (void)_reloadVideoSessionIfNecessary
 {
-  v3 = [(PXAssetLoopUIViewTile *)self imageRequester];
-  v4 = [v3 asset];
+  imageRequester = [(PXAssetLoopUIViewTile *)self imageRequester];
+  asset = [imageRequester asset];
 
-  v5 = [(PXAssetLoopUIViewTile *)self imageRequester];
-  v6 = [v5 mediaProvider];
+  imageRequester2 = [(PXAssetLoopUIViewTile *)self imageRequester];
+  mediaProvider = [imageRequester2 mediaProvider];
 
-  v7 = 0;
-  if (v4 && v6)
+  window = 0;
+  if (asset && mediaProvider)
   {
-    v8 = [(PXAssetLoopUIViewTile *)self view];
-    v7 = [(PXVideoSessionManagerDisplayAssetOptions *)v8 window];
-    if (v7)
+    view = [(PXAssetLoopUIViewTile *)self view];
+    window = [(PXVideoSessionManagerDisplayAssetOptions *)view window];
+    if (window)
     {
-      v9 = [(PXAssetLoopUIViewTile *)self view];
-      if ([v9 isHidden])
+      view2 = [(PXAssetLoopUIViewTile *)self view];
+      if ([view2 isHidden])
       {
 
 LABEL_9:
-        v7 = 0;
+        window = 0;
         goto LABEL_10;
       }
 
-      v10 = [(PXAssetLoopUIViewTile *)self desiredPlayState];
+      desiredPlayState = [(PXAssetLoopUIViewTile *)self desiredPlayState];
 
-      if (v10 != 1)
+      if (desiredPlayState != 1)
       {
         goto LABEL_9;
       }
 
-      v8 = objc_alloc_init(PXVideoSessionManagerDisplayAssetOptions);
-      [(PXVideoSessionManagerDisplayAssetOptions *)v8 setShouldStabilizeLivePhotosIfPossible:1];
-      [(PXVideoSessionManagerDisplayAssetOptions *)v8 setShouldCrossfadeLivePhotosWhenLooping:1];
+      view = objc_alloc_init(PXVideoSessionManagerDisplayAssetOptions);
+      [(PXVideoSessionManagerDisplayAssetOptions *)view setShouldStabilizeLivePhotosIfPossible:1];
+      [(PXVideoSessionManagerDisplayAssetOptions *)view setShouldCrossfadeLivePhotosWhenLooping:1];
       [(PXAssetLoopUIViewTile *)self bestPlaybackTimeRange];
       v18[0] = v18[3];
       v18[1] = v18[4];
       v18[2] = v18[5];
-      [(PXVideoSessionManagerDisplayAssetOptions *)v8 setLivePhotoLoopTimeRange:v18];
+      [(PXVideoSessionManagerDisplayAssetOptions *)view setLivePhotoLoopTimeRange:v18];
       v11 = +[PXVideoSessionManager sharedInstance];
-      v7 = [v11 videoSessionForAsset:v4 withOptions:v8 mediaProvider:v6];
+      window = [v11 videoSessionForAsset:asset withOptions:view mediaProvider:mediaProvider];
 
       v12 = MEMORY[0x1E69E9820];
       v13 = 3221225472;
       v14 = __55__PXAssetLoopUIViewTile__reloadVideoSessionIfNecessary__block_invoke;
       v15 = &unk_1E772CEB8;
-      v16 = v4;
-      v17 = self;
-      [v7 performChanges:&v12 withPresentationContext:0 presenter:0];
-      [v7 loadIfNeededWithPriority:{0, v12, v13, v14, v15}];
+      v16 = asset;
+      selfCopy = self;
+      [window performChanges:&v12 withPresentationContext:0 presenter:0];
+      [window loadIfNeededWithPriority:{0, v12, v13, v14, v15}];
     }
   }
 
 LABEL_10:
-  [(PXAssetLoopUIViewTile *)self setVideoSession:v7];
+  [(PXAssetLoopUIViewTile *)self setVideoSession:window];
 }
 
 void __55__PXAssetLoopUIViewTile__reloadVideoSessionIfNecessary__block_invoke(uint64_t a1, void *a2)
@@ -222,20 +222,20 @@ void __55__PXAssetLoopUIViewTile__reloadVideoSessionIfNecessary__block_invoke(ui
 
 - (void)_updateVideoSession
 {
-  v3 = [(PXAssetLoopUIViewTile *)self desiredPlayState];
-  v4 = [(PXAssetLoopUIViewTile *)self videoSession];
-  v6 = v4;
-  if (v3 != 1)
+  desiredPlayState = [(PXAssetLoopUIViewTile *)self desiredPlayState];
+  videoSession = [(PXAssetLoopUIViewTile *)self videoSession];
+  v6 = videoSession;
+  if (desiredPlayState != 1)
   {
     v5 = &__block_literal_global_12;
     goto LABEL_5;
   }
 
-  if (v4)
+  if (videoSession)
   {
     v5 = &__block_literal_global_1476;
 LABEL_5:
-    [v4 performChanges:v5 withPresentationContext:0 presenter:0];
+    [videoSession performChanges:v5 withPresentationContext:0 presenter:0];
     goto LABEL_6;
   }
 
@@ -256,7 +256,7 @@ LABEL_6:
   [(PXVideoSessionUIView *)self->_videoView bounds];
   v16 = v15;
   v18 = v17;
-  v19 = [(PXAssetLoopUIViewTile *)self imageRequester];
+  imageRequester = [(PXAssetLoopUIViewTile *)self imageRequester];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __46__PXAssetLoopUIViewTile__updateImageRequester__block_invoke;
@@ -269,7 +269,7 @@ LABEL_6:
   v20[9] = v14;
   v20[10] = v16;
   v20[11] = v18;
-  [v19 performChanges:v20];
+  [imageRequester performChanges:v20];
 }
 
 void __46__PXAssetLoopUIViewTile__updateImageRequester__block_invoke(double *a1, void *a2)
@@ -287,33 +287,33 @@ void __46__PXAssetLoopUIViewTile__updateImageRequester__block_invoke(double *a1,
   [(PXAssetLoopUIViewTile *)self cornerRadius];
   if (v3 <= 0.0)
   {
-    v9 = [(_PXAssetLoopUIView *)self->_view layer];
-    [v9 setCornerRadius:0.0];
+    layer = [(_PXAssetLoopUIView *)self->_view layer];
+    [layer setCornerRadius:0.0];
   }
 
   else
   {
     [(PXAssetLoopUIViewTile *)self cornerRadius];
     v5 = v4;
-    v6 = [(_PXAssetLoopUIView *)self->_view layer];
-    [v6 setCornerRadius:v5];
+    layer2 = [(_PXAssetLoopUIView *)self->_view layer];
+    [layer2 setCornerRadius:v5];
 
     v7 = *MEMORY[0x1E69796E8];
-    v8 = [(_PXAssetLoopUIView *)self->_view layer];
-    [v8 setCornerCurve:v7];
+    layer3 = [(_PXAssetLoopUIView *)self->_view layer];
+    [layer3 setCornerCurve:v7];
 
-    v9 = [(_PXAssetLoopUIView *)self->_view layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer = [(_PXAssetLoopUIView *)self->_view layer];
+    [layer setAllowsGroupOpacity:0];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ImageRequesterContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ImageRequesterContext == context)
   {
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
       v14[5] = MEMORY[0x1E69E9820];
       v14[6] = 3221225472;
@@ -323,7 +323,7 @@ void __46__PXAssetLoopUIViewTile__updateImageRequester__block_invoke(double *a1,
       px_dispatch_on_main_queue();
     }
 
-    if (v6)
+    if (changeCopy)
     {
       v10 = v14;
       v14[0] = MEMORY[0x1E69E9820];
@@ -339,15 +339,15 @@ LABEL_9:
 
   else
   {
-    if (VideoSessionContext_27800 != a5)
+    if (VideoSessionContext_27800 != context)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXAssetLoopUIViewTile.m" lineNumber:172 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetLoopUIViewTile.m" lineNumber:172 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
       v10 = v13;
       v13[0] = MEMORY[0x1E69E9820];
@@ -369,43 +369,43 @@ void __54__PXAssetLoopUIViewTile_observable_didChange_context___block_invoke(uin
   [*(*(a1 + 32) + 32) setContentsRect:?];
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
-  if (self->_desiredPlayState != a3)
+  if (self->_desiredPlayState != state)
   {
-    self->_desiredPlayState = a3;
+    self->_desiredPlayState = state;
     [(PXAssetLoopUIViewTile *)self _updateVideoSession];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(PXAssetLoopUIViewTile *)self _updateLayer];
   }
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_imageRequester != v5)
+  requesterCopy = requester;
+  v6 = requesterCopy;
+  if (self->_imageRequester != requesterCopy)
   {
-    v10 = v5;
-    v7 = [(PXImageRequester *)v5 isEqual:?];
+    v10 = requesterCopy;
+    v7 = [(PXImageRequester *)requesterCopy isEqual:?];
     v6 = v10;
     if ((v7 & 1) == 0)
     {
-      v8 = [(PXVideoSession *)self->_videoSession contentProvider];
-      [v8 cancelLoading];
+      contentProvider = [(PXVideoSession *)self->_videoSession contentProvider];
+      [contentProvider cancelLoading];
 
       [(PXImageRequester *)self->_imageRequester unregisterChangeObserver:self context:ImageRequesterContext];
-      objc_storeStrong(&self->_imageRequester, a3);
+      objc_storeStrong(&self->_imageRequester, requester);
       [(PXImageRequester *)self->_imageRequester registerChangeObserver:self context:ImageRequesterContext];
-      v9 = [(PXImageRequester *)self->_imageRequester image];
-      [(PXVideoSessionUIView *)self->_videoView setPlaceholderImage:v9];
+      image = [(PXImageRequester *)self->_imageRequester image];
+      [(PXVideoSessionUIView *)self->_videoView setPlaceholderImage:image];
 
       [(PXAssetLoopUIViewTile *)self _updateImageRequester];
       [(PXAssetLoopUIViewTile *)self _reloadVideoSessionIfNecessary];
@@ -438,17 +438,17 @@ void __54__PXAssetLoopUIViewTile_observable_didChange_context___block_invoke(uin
     objc_copyWeak(&v24, &location);
     [(_PXAssetLoopUIView *)self->_view setVisibilityChangeHandler:&v20];
     v11 = [PXAssetsSceneSettings sharedInstance:v20];
-    v12 = [v11 showBordersOnAnimatedContent];
+    showBordersOnAnimatedContent = [v11 showBordersOnAnimatedContent];
 
-    if (v12)
+    if (showBordersOnAnimatedContent)
     {
-      v13 = [MEMORY[0x1E69DC888] greenColor];
-      v14 = [v13 CGColor];
-      v15 = [(_PXAssetLoopUIView *)self->_view layer];
-      [v15 setBorderColor:v14];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      cGColor = [greenColor CGColor];
+      layer = [(_PXAssetLoopUIView *)self->_view layer];
+      [layer setBorderColor:cGColor];
 
-      v16 = [(_PXAssetLoopUIView *)self->_view layer];
-      [v16 setBorderWidth:4.0];
+      layer2 = [(_PXAssetLoopUIView *)self->_view layer];
+      [layer2 setBorderWidth:4.0];
     }
 
     v17 = [[PXVideoSessionUIView alloc] initWithFrame:v5, v6, v7, v8];
@@ -472,11 +472,11 @@ void __29__PXAssetLoopUIViewTile_view__block_invoke(uint64_t a1)
   [WeakRetained _reloadVideoSessionIfNecessary];
 }
 
-- (void)didApplyGeometry:(PXTileGeometry *)a3 withUserData:(id)a4
+- (void)didApplyGeometry:(PXTileGeometry *)geometry withUserData:(id)data
 {
-  [(PXVideoSessionUIView *)self->_videoView setContentsRect:a3->contentsRect.origin.x, a3->contentsRect.origin.y, a3->contentsRect.size.width, a3->contentsRect.size.height];
-  [(PXAssetLoopUIViewTile *)self setDesiredContentsRect:a3->contentsRect.origin.x, a3->contentsRect.origin.y, a3->contentsRect.size.width, a3->contentsRect.size.height];
-  [(PXAssetLoopUIViewTile *)self setContentSize:a3->contentSize.width, a3->contentSize.height];
+  [(PXVideoSessionUIView *)self->_videoView setContentsRect:geometry->contentsRect.origin.x, geometry->contentsRect.origin.y, geometry->contentsRect.size.width, geometry->contentsRect.size.height];
+  [(PXAssetLoopUIViewTile *)self setDesiredContentsRect:geometry->contentsRect.origin.x, geometry->contentsRect.origin.y, geometry->contentsRect.size.width, geometry->contentsRect.size.height];
+  [(PXAssetLoopUIViewTile *)self setContentSize:geometry->contentSize.width, geometry->contentSize.height];
 
   [(PXAssetLoopUIViewTile *)self _updateImageRequester];
 }

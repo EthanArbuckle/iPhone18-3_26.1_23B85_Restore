@@ -1,29 +1,29 @@
 @interface WorkingLatencyURLSessionDelegate
 - (BOOL)checkLimits;
-- (WorkingLatencyURLSessionDelegate)initWithConfiguration:(id)a3 testName:(id)a4 queue:(id)a5 testEndpoint:(id)a6 resultsObject:(id)a7 resultsDelegate:(id)a8 urlSessions:(id)a9 tcpKey:(id)a10 tlsKey:(id)a11 reqrespKey:(id)a12 selfKey:(id)a13;
+- (WorkingLatencyURLSessionDelegate)initWithConfiguration:(id)configuration testName:(id)name queue:(id)queue testEndpoint:(id)endpoint resultsObject:(id)object resultsDelegate:(id)delegate urlSessions:(id)sessions tcpKey:(id)self0 tlsKey:(id)self1 reqrespKey:(id)self2 selfKey:(id)self3;
 - (int64_t)currentResponsivenessConfidenceValue;
 - (int64_t)getProbeTimeout;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)executeTaskWithRequest:(id)a3 completionHandler:(id)a4;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)executeTaskWithRequest:(id)request completionHandler:(id)handler;
 - (void)scheduleNewTaskForeign;
 - (void)scheduleNewTaskSelf;
-- (void)waitForSaturation:(id)a3;
+- (void)waitForSaturation:(id)saturation;
 @end
 
 @implementation WorkingLatencyURLSessionDelegate
 
-- (WorkingLatencyURLSessionDelegate)initWithConfiguration:(id)a3 testName:(id)a4 queue:(id)a5 testEndpoint:(id)a6 resultsObject:(id)a7 resultsDelegate:(id)a8 urlSessions:(id)a9 tcpKey:(id)a10 tlsKey:(id)a11 reqrespKey:(id)a12 selfKey:(id)a13
+- (WorkingLatencyURLSessionDelegate)initWithConfiguration:(id)configuration testName:(id)name queue:(id)queue testEndpoint:(id)endpoint resultsObject:(id)object resultsDelegate:(id)delegate urlSessions:(id)sessions tcpKey:(id)self0 tlsKey:(id)self1 reqrespKey:(id)self2 selfKey:(id)self3
 {
-  v19 = a3;
-  v55 = a9;
+  configurationCopy = configuration;
+  sessionsCopy = sessions;
   v56.receiver = self;
   v56.super_class = WorkingLatencyURLSessionDelegate;
-  v20 = [(LatencyURLSessionDelegate *)&v56 initWithConfiguration:v19 testName:a4 queue:a5 testEndpoint:a6 resultsObject:a7 resultsDelegate:a8 tcpKey:a10 tlsKey:a11 reqrespKey:a12 selfKey:a13];
+  v20 = [(LatencyURLSessionDelegate *)&v56 initWithConfiguration:configurationCopy testName:name queue:queue testEndpoint:endpoint resultsObject:object resultsDelegate:delegate tcpKey:key tlsKey:tlsKey reqrespKey:reqrespKey selfKey:selfKey];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_workingSessions, a9);
+    objc_storeStrong(&v20->_workingSessions, sessions);
     v21->_probeLoadConnections = 1;
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
     tcpTmpArray = v21->_tcpTmpArray;
@@ -69,12 +69,12 @@
     selfTrim = v21->_selfTrim;
     v21->_selfTrim = v48;
 
-    v50 = [[LatencySaturationDetection alloc] initWithConfig:v19];
+    v50 = [[LatencySaturationDetection alloc] initWithConfig:configurationCopy];
     saturation = v21->_saturation;
     v21->_saturation = v50;
 
     v21->_saturation_reached = 0;
-    v21->_exit_value = 60000.0 / [v19 latencyCriteria];
+    v21->_exit_value = 60000.0 / [configurationCopy latencyCriteria];
     v52 = [MEMORY[0x277CBEAA8] now];
     start = v21->_start;
     v21->_start = v52;
@@ -87,13 +87,13 @@
 
 - (int64_t)getProbeTimeout
 {
-  v3 = [(NetworkQualityExecutions *)self->super._execution currentThroughput];
+  currentThroughput = [(NetworkQualityExecutions *)self->super._execution currentThroughput];
   if (![(NetworkQualityExecutions *)self->super._execution currentThroughput])
   {
     return 1000000000;
   }
 
-  v4 = 24000.0 / ((v3 * 5.0) / 100.0);
+  v4 = 24000.0 / ((currentThroughput * 5.0) / 100.0);
   if (v4 > 1.0)
   {
     v4 = 1.0;
@@ -119,7 +119,7 @@
       [v7 setDelegate:self];
       [v7 set_hostOverride:self->super._testEndpoint];
       [(NSMutableArray *)self->super._tasks addObject:v7];
-      v8 = [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout];
+      getProbeTimeout = [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout];
       netqual_log_init();
       v9 = os_log_netqual;
       if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_DEFAULT))
@@ -141,31 +141,31 @@
         v27 = 1024;
         v28 = v12;
         v29 = 2048;
-        v30 = v8 / 0xF4240;
+        v30 = getProbeTimeout / 0xF4240;
         _os_log_impl(&dword_25B962000, v11, OS_LOG_TYPE_DEFAULT, "%s:%u - Created Self WorkingLatencyTask %@ on session %@, task-count %u session-count %u next in %llu ms", buf, 0x3Cu);
       }
 
       [v7 resume];
-      v13 = dispatch_time(0, v8);
-      v14 = [(NSOperationQueue *)self->super._queue underlyingQueue];
+      v13 = dispatch_time(0, getProbeTimeout);
+      underlyingQueue = [(NSOperationQueue *)self->super._queue underlyingQueue];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __55__WorkingLatencyURLSessionDelegate_scheduleNewTaskSelf__block_invoke_240;
       v15[3] = &unk_279969378;
       v15[4] = self;
-      dispatch_after(v13, v14, v15);
+      dispatch_after(v13, underlyingQueue, v15);
     }
 
     else
     {
       v3 = dispatch_time(0, [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout]);
-      v4 = [(NSOperationQueue *)self->super._queue underlyingQueue];
+      underlyingQueue2 = [(NSOperationQueue *)self->super._queue underlyingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __55__WorkingLatencyURLSessionDelegate_scheduleNewTaskSelf__block_invoke;
       block[3] = &unk_279969378;
       block[4] = self;
-      dispatch_after(v3, v4, block);
+      dispatch_after(v3, underlyingQueue2, block);
     }
   }
 
@@ -179,14 +179,14 @@
   {
     if ([(NSMutableArray *)self->super._tasks count]<= 0x32 && [(NSMutableArray *)self->super._sessions count]< 0x33)
     {
-      v5 = [(NetworkQualityExecutions *)self->super._execution createDefaultNSURLSessionConfiguration];
-      v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v5 delegate:self delegateQueue:self->super._queue];
+      createDefaultNSURLSessionConfiguration = [(NetworkQualityExecutions *)self->super._execution createDefaultNSURLSessionConfiguration];
+      v6 = [MEMORY[0x277CCAD30] sessionWithConfiguration:createDefaultNSURLSessionConfiguration delegate:self delegateQueue:self->super._queue];
       [(NSMutableArray *)self->super._sessions addObject:v6];
       v7 = [v6 dataTaskWithRequest:self->super._request];
       [v7 setDelegate:self];
       [v7 set_hostOverride:self->super._testEndpoint];
       [(NSMutableArray *)self->super._tasks addObject:v7];
-      v8 = [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout];
+      getProbeTimeout = [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout];
       netqual_log_init();
       v9 = os_log_netqual;
       if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_DEFAULT))
@@ -208,89 +208,89 @@
         v28 = 1024;
         v29 = v12;
         v30 = 2048;
-        v31 = v8 / 0xF4240;
+        v31 = getProbeTimeout / 0xF4240;
         _os_log_impl(&dword_25B962000, v11, OS_LOG_TYPE_DEFAULT, "%s:%u - Created Foreign WorkingLatencyTask %@ on session %@, task-count %u session-count %u next in %llu ms", buf, 0x3Cu);
       }
 
       [v7 resume];
-      v13 = dispatch_time(0, v8);
-      v14 = [(NSOperationQueue *)self->super._queue underlyingQueue];
+      v13 = dispatch_time(0, getProbeTimeout);
+      underlyingQueue = [(NSOperationQueue *)self->super._queue underlyingQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __58__WorkingLatencyURLSessionDelegate_scheduleNewTaskForeign__block_invoke_241;
       v16[3] = &unk_279969378;
       v16[4] = self;
-      dispatch_after(v13, v14, v16);
+      dispatch_after(v13, underlyingQueue, v16);
     }
 
     else
     {
       v3 = dispatch_time(0, [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout]);
-      v4 = [(NSOperationQueue *)self->super._queue underlyingQueue];
+      underlyingQueue2 = [(NSOperationQueue *)self->super._queue underlyingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __58__WorkingLatencyURLSessionDelegate_scheduleNewTaskForeign__block_invoke;
       block[3] = &unk_279969378;
       block[4] = self;
-      dispatch_after(v3, v4, block);
+      dispatch_after(v3, underlyingQueue2, block);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)executeTaskWithRequest:(id)a3 completionHandler:(id)a4
+- (void)executeTaskWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = MEMORY[0x25F873620](a4);
+  requestCopy = request;
+  v7 = MEMORY[0x25F873620](handler);
   completionHandler = self->super._completionHandler;
   self->super._completionHandler = v7;
 
   request = self->super._request;
-  self->super._request = v6;
-  v10 = v6;
+  self->super._request = requestCopy;
+  v10 = requestCopy;
 
   v11 = dispatch_time(0, [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout]);
-  v12 = [(NSOperationQueue *)self->super._queue underlyingQueue];
+  underlyingQueue = [(NSOperationQueue *)self->super._queue underlyingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__WorkingLatencyURLSessionDelegate_executeTaskWithRequest_completionHandler___block_invoke;
   block[3] = &unk_279969378;
   block[4] = self;
-  dispatch_after(v11, v12, block);
+  dispatch_after(v11, underlyingQueue, block);
 
   v13 = dispatch_time(0, [(WorkingLatencyURLSessionDelegate *)self getProbeTimeout]);
-  v14 = [(NSOperationQueue *)self->super._queue underlyingQueue];
+  underlyingQueue2 = [(NSOperationQueue *)self->super._queue underlyingQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__WorkingLatencyURLSessionDelegate_executeTaskWithRequest_completionHandler___block_invoke_2;
   v15[3] = &unk_279969378;
   v15[4] = self;
-  dispatch_after(v13, v14, v15);
+  dispatch_after(v13, underlyingQueue2, v15);
 }
 
-- (void)waitForSaturation:(id)a3
+- (void)waitForSaturation:(id)saturation
 {
-  v4 = MEMORY[0x25F873620](a3, a2);
+  v4 = MEMORY[0x25F873620](saturation, a2);
   saturationHandler = self->super._saturationHandler;
   self->super._saturationHandler = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  [(NSMutableArray *)self->super._tasks removeObject:a4];
+  sessionCopy = session;
+  errorCopy = error;
+  [(NSMutableArray *)self->super._tasks removeObject:task];
   if (!self->super._canceled)
   {
-    if ([(NSMutableArray *)self->super._sessions indexOfObject:v8]!= 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)self->super._sessions indexOfObject:sessionCopy]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v8 invalidateAndCancel];
+      [sessionCopy invalidateAndCancel];
     }
 
-    if (v9)
+    if (errorCopy)
     {
       netqual_log_init();
       if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
@@ -300,7 +300,7 @@
 
       if (!self->super._canceled)
       {
-        objc_storeStrong(&self->super._error, a5);
+        objc_storeStrong(&self->super._error, error);
         error = self->super._error;
         (*(self->super._completionHandler + 2))();
       }
@@ -308,20 +308,20 @@
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
   v209 = *MEMORY[0x277D85DE8];
-  v8 = COERCE_DOUBLE(a3);
-  v9 = a4;
-  v10 = a5;
+  v8 = COERCE_DOUBLE(session);
+  taskCopy = task;
+  metricsCopy = metrics;
   if (!self->_saturation_reached && ![(WorkingLatencyURLSessionDelegate *)self checkLimits])
   {
-    v11 = [(LatencyURLSessionDelegate *)self didFinishCollectingMetrics:v10 task:v9];
+    v11 = [(LatencyURLSessionDelegate *)self didFinishCollectingMetrics:metricsCopy task:taskCopy];
     if ((v11 & 0x80000000) == 0)
     {
       v12 = v11;
-      v13 = [v10 transactionMetrics];
-      v170 = [v13 objectAtIndex:v12];
+      transactionMetrics = [metricsCopy transactionMetrics];
+      v170 = [transactionMetrics objectAtIndex:v12];
 
       if ([(NSMutableArray *)self->_workingSessions indexOfObject:*&v8]!= 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -338,7 +338,7 @@
             *&buf[18] = 2080;
             *&buf[20] = "[WorkingLatencyURLSessionDelegate URLSession:task:didFinishCollectingMetrics:]";
             *&buf[28] = 2112;
-            *&buf[30] = v9;
+            *&buf[30] = taskCopy;
             *&buf[38] = 2112;
             v192 = v8;
             _os_log_impl(&dword_25B962000, v33, OS_LOG_TYPE_DEFAULT, "%s:%u - %s - request for task %@ was not reused on session %@", buf, 0x30u);
@@ -362,8 +362,8 @@ LABEL_109:
         selfTmpArray = self->_selfTmpArray;
         v15 = MEMORY[0x277CCABB0];
         obj = [v170 responseEndDate];
-        v168 = [v170 requestStartDate];
-        [obj timeIntervalSinceDate:v168];
+        requestStartDate = [v170 requestStartDate];
+        [obj timeIntervalSinceDate:requestStartDate];
         v17 = [v15 numberWithInt:(v16 * 1000.0)];
         v18 = selfTmpArray;
         v19 = v17;
@@ -371,64 +371,64 @@ LABEL_109:
         goto LABEL_63;
       }
 
-      v20 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
-      obj = [v20 valueForKey:self->super._tcpKey];
+      workingLatencyResults = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
+      obj = [workingLatencyResults valueForKey:self->super._tcpKey];
 
       if (!obj)
       {
         obj = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v21 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
-        [v21 setObject:obj forKey:self->super._tcpKey];
+        workingLatencyResults2 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
+        [workingLatencyResults2 setObject:obj forKey:self->super._tcpKey];
       }
 
-      v22 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
-      v168 = [v22 valueForKey:self->super._tlsKey];
+      workingLatencyResults3 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
+      requestStartDate = [workingLatencyResults3 valueForKey:self->super._tlsKey];
 
-      if (!v168)
+      if (!requestStartDate)
       {
-        v168 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v23 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
-        [v23 setObject:v168 forKey:self->super._tlsKey];
+        requestStartDate = objc_alloc_init(MEMORY[0x277CBEB18]);
+        workingLatencyResults4 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
+        [workingLatencyResults4 setObject:requestStartDate forKey:self->super._tlsKey];
       }
 
-      v24 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-      v164 = [v24 valueForKey:@"ecn_values"];
+      mutableOtherValues = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+      v164 = [mutableOtherValues valueForKey:@"ecn_values"];
 
       if (!v164)
       {
         v164 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v25 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-        [v25 setObject:v164 forKey:@"ecn_values"];
+        mutableOtherValues2 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+        [mutableOtherValues2 setObject:v164 forKey:@"ecn_values"];
       }
 
-      v26 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-      v162 = [v26 valueForKey:@"l4s_enablement"];
+      mutableOtherValues3 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+      v162 = [mutableOtherValues3 valueForKey:@"l4s_enablement"];
 
       if (!v162)
       {
         v162 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v27 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-        [v27 setObject:v162 forKey:@"l4s_enablement"];
+        mutableOtherValues4 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+        [mutableOtherValues4 setObject:v162 forKey:@"l4s_enablement"];
       }
 
       report = [v170 _establishmentReport];
       if (!report)
       {
 LABEL_28:
-        v39 = [v170 networkProtocolName];
-        if (v39)
+        networkProtocolName = [v170 networkProtocolName];
+        if (networkProtocolName)
         {
-          v40 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-          v41 = [v40 objectForKey:@"protocols_seen"];
+          mutableOtherValues5 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+          v41 = [mutableOtherValues5 objectForKey:@"protocols_seen"];
 
           if (!v41)
           {
             v41 = objc_alloc_init(MEMORY[0x277CBEB38]);
-            v42 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-            [v42 setValue:v41 forKey:@"protocols_seen"];
+            mutableOtherValues6 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+            [mutableOtherValues6 setValue:v41 forKey:@"protocols_seen"];
           }
 
-          v43 = [v41 objectForKey:v39];
+          v43 = [v41 objectForKey:networkProtocolName];
           if (v43)
           {
             v44 = v43;
@@ -441,22 +441,22 @@ LABEL_28:
 
           v45 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v44, "intValue") + 1}];
 
-          [v41 setObject:v45 forKey:v39];
+          [v41 setObject:v45 forKey:networkProtocolName];
         }
 
-        v46 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-        v47 = [v46 objectForKey:@"proxy_state"];
+        mutableOtherValues7 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+        v47 = [mutableOtherValues7 objectForKey:@"proxy_state"];
 
         if (!v47)
         {
           v47 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v48 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-          [v48 setValue:v47 forKey:@"proxy_state"];
+          mutableOtherValues8 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+          [mutableOtherValues8 setValue:v47 forKey:@"proxy_state"];
         }
 
-        v49 = [v170 isProxyConnection];
+        isProxyConnection = [v170 isProxyConnection];
         v50 = @"not_proxied";
-        if (v49)
+        if (isProxyConnection)
         {
           v50 = @"proxied";
         }
@@ -476,19 +476,19 @@ LABEL_28:
         v54 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v53, "intValue") + 1}];
 
         [v47 setObject:v54 forKey:v51];
-        v55 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-        v56 = [v55 objectForKey:@"interface-type"];
+        mutableOtherValues9 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+        v56 = [mutableOtherValues9 objectForKey:@"interface-type"];
 
         if (!v56)
         {
           v56 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v57 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-          [v57 setValue:v56 forKey:@"interface-type"];
+          mutableOtherValues10 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+          [mutableOtherValues10 setValue:v56 forKey:@"interface-type"];
         }
 
-        v58 = [v170 _interfaceName];
-        v59 = v58;
-        [v58 UTF8String];
+        _interfaceName = [v170 _interfaceName];
+        v59 = _interfaceName;
+        [_interfaceName UTF8String];
         v60 = nw_interface_create_with_name();
 
         v61 = MEMORY[0x277CCACA8];
@@ -508,14 +508,14 @@ LABEL_28:
         v66 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v65, "intValue") + 1}];
 
         [v56 setObject:v66 forKey:v63];
-        v67 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-        v68 = [v67 objectForKey:@"rat"];
+        mutableOtherValues11 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+        v68 = [mutableOtherValues11 objectForKey:@"rat"];
 
         if (!v68)
         {
           v68 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v69 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-          [v69 setValue:v68 forKey:@"rat"];
+          mutableOtherValues12 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+          [mutableOtherValues12 setValue:v68 forKey:@"rat"];
         }
 
         if (nw_interface_get_radio_type())
@@ -543,19 +543,19 @@ LABEL_28:
         v73 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v72, "intValue") + 1}];
 
         [v68 setObject:v73 forKey:v70];
-        v74 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-        v75 = [v74 objectForKey:@"multipath"];
+        mutableOtherValues13 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+        v75 = [mutableOtherValues13 objectForKey:@"multipath"];
 
         if (!v75)
         {
           v75 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v76 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
-          [v76 setValue:v75 forKey:@"multipath"];
+          mutableOtherValues14 = [(NetworkQualityExecutionsResult *)self->super._results mutableOtherValues];
+          [mutableOtherValues14 setValue:v75 forKey:@"multipath"];
         }
 
-        v77 = [v170 isMultipath];
+        isMultipath = [v170 isMultipath];
         v78 = @"disabled";
-        if (v77)
+        if (isMultipath)
         {
           v78 = @"negotiated";
         }
@@ -578,29 +578,29 @@ LABEL_28:
         v165 = self->super._reqrespKey;
         h2TmpArray = self->_h2TmpArray;
         v84 = MEMORY[0x277CCABB0];
-        v85 = [v170 responseEndDate];
-        v86 = [v170 requestStartDate];
-        [v85 timeIntervalSinceDate:v86];
+        responseEndDate = [v170 responseEndDate];
+        requestStartDate2 = [v170 requestStartDate];
+        [responseEndDate timeIntervalSinceDate:requestStartDate2];
         v88 = [v84 numberWithInt:(v87 * 1000.0)];
         [(NSMutableArray *)h2TmpArray addObject:v88];
 
         v19 = v164;
 LABEL_63:
 
-        v89 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
-        v169 = [v89 valueForKey:v165];
+        workingLatencyResults5 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
+        v169 = [workingLatencyResults5 valueForKey:v165];
 
         if (!v169)
         {
           v169 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v90 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
-          [v90 setObject:v169 forKey:v165];
+          workingLatencyResults6 = [(NetworkQualityExecutionsResult *)self->super._results workingLatencyResults];
+          [workingLatencyResults6 setObject:v169 forKey:v165];
         }
 
         v91 = MEMORY[0x277CCABB0];
-        v92 = [v170 responseEndDate];
-        v93 = [v170 requestStartDate];
-        [v92 timeIntervalSinceDate:v93];
+        responseEndDate2 = [v170 responseEndDate];
+        requestStartDate3 = [v170 requestStartDate];
+        [responseEndDate2 timeIntervalSinceDate:requestStartDate3];
         v95 = [v91 numberWithInt:(v94 * 1000.0)];
         [v169 addObject:v95];
 
@@ -707,8 +707,8 @@ LABEL_108:
         if (os_log_type_enabled(v123, OS_LOG_TYPE_DEFAULT))
         {
           saturation_reached = self->_saturation_reached;
-          v125 = [(NetworkQualityExecutions *)self->super._execution throughputSaturated];
-          v126 = [(NetworkQualityExecutions *)self->super._execution throughputMetExitCriteria];
+          throughputSaturated = [(NetworkQualityExecutions *)self->super._execution throughputSaturated];
+          throughputMetExitCriteria = [(NetworkQualityExecutions *)self->super._execution throughputMetExitCriteria];
           *buf = 136318210;
           *&buf[4] = "[WorkingLatencyURLSessionDelegate URLSession:task:didFinishCollectingMetrics:]";
           *&buf[12] = 1024;
@@ -732,9 +732,9 @@ LABEL_108:
           v203 = 1024;
           v204 = saturation_reached;
           v205 = 1024;
-          v206 = v125;
+          v206 = throughputSaturated;
           v207 = 1024;
-          v208 = v126;
+          v208 = throughputMetExitCriteria;
           _os_log_impl(&dword_25B962000, v123, OS_LOG_TYPE_DEFAULT, "%s:%u - Responsiveness: %.3f, Saturated: %.3f tcpMean: %.3f tlsMean: %.3f rrMean %.3f foreignMean %.3f srrMean %.3f sd=%d sr=%d exec->ts=%d, exec->tmec=%d", buf, 0x70u);
         }
 
@@ -744,18 +744,18 @@ LABEL_108:
         results = self->super._results;
         if (isDownlink)
         {
-          v131 = [(NetworkQualityResult *)results downlinkResponsiveness];
-          [v131 setValue:v129];
+          downlinkResponsiveness = [(NetworkQualityResult *)results downlinkResponsiveness];
+          [downlinkResponsiveness setValue:v129];
 
           v132 = MEMORY[0x277CCABB0];
-          v133 = [(NetworkQualityResult *)self->super._results downlinkResponsiveness];
-          v134 = [v133 value];
-          v135 = [v132 numberWithLong:{+[NetworkQualityResult ratingForResponsivenessScore:](NetworkQualityResult, "ratingForResponsivenessScore:", objc_msgSend(v134, "integerValue"))}];
-          v136 = [(NetworkQualityResult *)self->super._results downlinkResponsiveness];
-          [v136 setRating:v135];
+          downlinkResponsiveness2 = [(NetworkQualityResult *)self->super._results downlinkResponsiveness];
+          value = [downlinkResponsiveness2 value];
+          v135 = [v132 numberWithLong:{+[NetworkQualityResult ratingForResponsivenessScore:](NetworkQualityResult, "ratingForResponsivenessScore:", objc_msgSend(value, "integerValue"))}];
+          downlinkResponsiveness3 = [(NetworkQualityResult *)self->super._results downlinkResponsiveness];
+          [downlinkResponsiveness3 setRating:v135];
 
-          v137 = [(NetworkQualityResult *)self->super._results downlinkResponsiveness];
-          [v137 updateConfidence:{-[WorkingLatencyURLSessionDelegate currentResponsivenessConfidenceValue](self, "currentResponsivenessConfidenceValue")}];
+          downlinkResponsiveness4 = [(NetworkQualityResult *)self->super._results downlinkResponsiveness];
+          [downlinkResponsiveness4 updateConfidence:{-[WorkingLatencyURLSessionDelegate currentResponsivenessConfidenceValue](self, "currentResponsivenessConfidenceValue")}];
 
           if (v113 >= 0.00000011921)
           {
@@ -796,18 +796,18 @@ LABEL_108:
 
         else
         {
-          v146 = [(NetworkQualityResult *)results uplinkResponsiveness];
-          [v146 setValue:v129];
+          uplinkResponsiveness = [(NetworkQualityResult *)results uplinkResponsiveness];
+          [uplinkResponsiveness setValue:v129];
 
           v147 = MEMORY[0x277CCABB0];
-          v148 = [(NetworkQualityResult *)self->super._results uplinkResponsiveness];
-          v149 = [v148 value];
-          v150 = [v147 numberWithLong:{+[NetworkQualityResult ratingForResponsivenessScore:](NetworkQualityResult, "ratingForResponsivenessScore:", objc_msgSend(v149, "integerValue"))}];
-          v151 = [(NetworkQualityResult *)self->super._results uplinkResponsiveness];
-          [v151 setRating:v150];
+          uplinkResponsiveness2 = [(NetworkQualityResult *)self->super._results uplinkResponsiveness];
+          value2 = [uplinkResponsiveness2 value];
+          v150 = [v147 numberWithLong:{+[NetworkQualityResult ratingForResponsivenessScore:](NetworkQualityResult, "ratingForResponsivenessScore:", objc_msgSend(value2, "integerValue"))}];
+          uplinkResponsiveness3 = [(NetworkQualityResult *)self->super._results uplinkResponsiveness];
+          [uplinkResponsiveness3 setRating:v150];
 
-          v152 = [(NetworkQualityResult *)self->super._results uplinkResponsiveness];
-          [v152 updateConfidence:{-[WorkingLatencyURLSessionDelegate currentResponsivenessConfidenceValue](self, "currentResponsivenessConfidenceValue")}];
+          uplinkResponsiveness4 = [(NetworkQualityResult *)self->super._results uplinkResponsiveness];
+          [uplinkResponsiveness4 updateConfidence:{-[WorkingLatencyURLSessionDelegate currentResponsivenessConfidenceValue](self, "currentResponsivenessConfidenceValue")}];
 
           if (v113 >= 0.00000011921)
           {
@@ -881,7 +881,7 @@ LABEL_105:
       enumerate_block[3] = &unk_2799695D8;
       v175 = buf;
       v176 = &v187;
-      v174 = v10;
+      v174 = metricsCopy;
       v177 = &v183;
       v178 = &v179;
       nw_establishment_report_enumerate_protocols(report, enumerate_block);
@@ -924,7 +924,7 @@ LABEL_27:
       }
 
       v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v188[3]];
-      [v168 addObject:v36];
+      [requestStartDate addObject:v36];
 
       v37 = self->_tlsTmpArray;
       v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v188[3]];

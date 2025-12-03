@@ -1,13 +1,13 @@
 @interface CNPredicate
-+ (id)_convertSuggestions:(uint64_t)a1 withSortOrder:(void *)a2 mutableObjects:;
++ (id)_convertSuggestions:(uint64_t)suggestions withSortOrder:(void *)order mutableObjects:;
 + (id)os_log;
-- (CNPredicate)initWithCoder:(id)a3;
-- (CNPredicate)initWithPredicate:(id)a3;
+- (CNPredicate)initWithCoder:(id)coder;
+- (CNPredicate)initWithPredicate:(id)predicate;
 - (NSString)description;
-- (id)suggestedContactsWithSortOrder:(void *)a3 keysToFetch:(unsigned int)a4 mutableObjects:(void *)a5 service:(void *)a6 error:;
-- (void)_convertContactMatches:(void *)a3 withService:(void *)a4 intoSuggestions:;
-- (void)encodeWithCoder:(id)a3;
-- (void)mainStoreDidFetchContacts:(id)a3 unifiedFetch:(BOOL)a4;
+- (id)suggestedContactsWithSortOrder:(void *)order keysToFetch:(unsigned int)fetch mutableObjects:(void *)objects service:(void *)service error:;
+- (void)_convertContactMatches:(void *)matches withService:(void *)service intoSuggestions:;
+- (void)encodeWithCoder:(id)coder;
+- (void)mainStoreDidFetchContacts:(id)contacts unifiedFetch:(BOOL)fetch;
 @end
 
 @implementation CNPredicate
@@ -33,17 +33,17 @@ uint64_t __32__CNPredicate_Suggested__os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)_convertSuggestions:(uint64_t)a1 withSortOrder:(void *)a2 mutableObjects:
++ (id)_convertSuggestions:(uint64_t)suggestions withSortOrder:(void *)order mutableObjects:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = a2;
+  orderCopy = order;
   objc_opt_self();
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(orderCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = v2;
+  v4 = orderCopy;
   v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
@@ -59,18 +59,18 @@ uint64_t __32__CNPredicate_Suggested__os_log__block_invoke()
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 mainStoreLinkedIdentifier];
+        mainStoreLinkedIdentifier = [v9 mainStoreLinkedIdentifier];
 
-        if (v10)
+        if (mainStoreLinkedIdentifier)
         {
           v19 = @"CNContactMainStoreLinkedIdentifier";
-          v11 = [v9 mainStoreLinkedIdentifier];
-          v20 = v11;
-          v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
+          mainStoreLinkedIdentifier2 = [v9 mainStoreLinkedIdentifier];
+          v20 = mainStoreLinkedIdentifier2;
+          mainStoreLinkedIdentifier = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
         }
 
-        v12 = [v9 contact];
-        v13 = CNContactFromSGContact(v12, v10);
+        contact = [v9 contact];
+        v13 = CNContactFromSGContact(contact, mainStoreLinkedIdentifier);
 
         if (v13)
         {
@@ -87,15 +87,15 @@ uint64_t __32__CNPredicate_Suggested__os_log__block_invoke()
   return v3;
 }
 
-- (id)suggestedContactsWithSortOrder:(void *)a3 keysToFetch:(unsigned int)a4 mutableObjects:(void *)a5 service:(void *)a6 error:
+- (id)suggestedContactsWithSortOrder:(void *)order keysToFetch:(unsigned int)fetch mutableObjects:(void *)objects service:(void *)service error:
 {
   v76 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v8 = a5;
-  v53 = v8;
-  if (a1)
+  orderCopy = order;
+  objectsCopy = objects;
+  v53 = objectsCopy;
+  if (self)
   {
-    if (!v8)
+    if (!objectsCopy)
     {
       if (CNGuardOSLog_cn_once_token_0_0 != -1)
       {
@@ -110,10 +110,10 @@ uint64_t __32__CNPredicate_Suggested__os_log__block_invoke()
     }
 
     v10 = &unk_1F098FE90;
-    v52 = a1;
-    if ([v52 conformsToProtocol:v10])
+    selfCopy = self;
+    if ([selfCopy conformsToProtocol:v10])
     {
-      v11 = v52;
+      v11 = selfCopy;
     }
 
     else
@@ -123,16 +123,16 @@ uint64_t __32__CNPredicate_Suggested__os_log__block_invoke()
 
     v51 = v11;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v68 = 0;
     v69 = &v68;
     v70 = 0x3032000000;
     v71 = __Block_byref_object_copy__0;
     v72 = __Block_byref_object_dispose__0;
     v73 = 0;
-    v13 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v14 = [v13 watchdog];
-    v15 = [v14 statusForEvent:*MEMORY[0x1E6996600]] == 0;
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    watchdog = [currentEnvironment watchdog];
+    v15 = [watchdog statusForEvent:*MEMORY[0x1E6996600]] == 0;
 
     if (!v15)
     {
@@ -156,13 +156,13 @@ LABEL_61:
     v67[2] = __98__CNPredicate_Suggested__suggestedContactsWithSortOrder_keysToFetch_mutableObjects_service_error___block_invoke;
     v67[3] = &unk_1E7412358;
     v67[5] = &v68;
-    v67[4] = v52;
+    v67[4] = selfCopy;
     v18 = [v67 copy];
     v19 = objc_opt_self();
     v20 = _Block_copy(v19);
     [v48 push:v20];
 
-    if ([v52 augmentMainStoreResults])
+    if ([selfCopy augmentMainStoreResults])
     {
       v21 = objc_opt_new();
       v65[0] = MEMORY[0x1E69E9820];
@@ -171,7 +171,7 @@ LABEL_61:
       v65[3] = &unk_1E7412380;
       v22 = v21;
       v66 = v22;
-      [v50 enumerateObjectsUsingBlock:v65];
+      [orderCopy enumerateObjectsUsingBlock:v65];
       if (suggestedContactsWithSortOrder_keysToFetch_mutableObjects_service_error__cn_once_token_6 != -1)
       {
         [CNPredicate suggestedContactsWithSortOrder:keysToFetch:mutableObjects:service:error:];
@@ -181,7 +181,7 @@ LABEL_61:
       v43 = suggestedContactsWithSortOrder_keysToFetch_mutableObjects_service_error__cn_once_object_6;
       if ([v43 intersectsKeyVector:v22])
       {
-        [v52 mainStoreContactIdentifiers];
+        [selfCopy mainStoreContactIdentifiers];
         v63 = 0u;
         v64 = 0u;
         v61 = 0u;
@@ -233,7 +233,7 @@ LABEL_61:
 
                     v33 = [CNContactSuggestionMatch suggestionFromContactMatch:*(*(&v56 + 1) + 8 * j)];
                     [v33 setMainStoreLinkedIdentifier:v25];
-                    [v12 addObject:v33];
+                    [array addObject:v33];
                   }
 
                   v30 = [v29 countByEnumeratingWithState:&v56 objects:v74 count:16];
@@ -276,11 +276,11 @@ LABEL_37:
     {
       v35 = v69 + 5;
       v55 = v69[5];
-      v36 = [v51 suggestionsWithSortOrder:a2 mutableObjects:a4 service:v53 error:&v55];
+      v36 = [v51 suggestionsWithSortOrder:a2 mutableObjects:fetch service:v53 error:&v55];
       objc_storeStrong(v35, v55);
       if ([v36 count])
       {
-        [v12 addObjectsFromArray:v36];
+        [array addObjectsFromArray:v36];
 LABEL_52:
         v16 = v23;
         goto LABEL_53;
@@ -311,15 +311,15 @@ LABEL_54:
           }
 
           v17 = 0;
-          if (a6)
+          if (service)
           {
-            *a6 = v69[5];
+            *service = v69[5];
           }
         }
 
         else
         {
-          v17 = [CNPredicate _convertSuggestions:v12 withSortOrder:? mutableObjects:?];
+          v17 = [CNPredicate _convertSuggestions:array withSortOrder:? mutableObjects:?];
         }
 
         [v48 popAllWithHandler:&__block_literal_global_110];
@@ -330,11 +330,11 @@ LABEL_54:
 
       v37 = v69 + 5;
       v54 = v69[5];
-      v36 = [v51 sgContactMatchesWithSortOrder:a2 mutableObjects:a4 service:v53 error:&v54];
+      v36 = [v51 sgContactMatchesWithSortOrder:a2 mutableObjects:fetch service:v53 error:&v54];
       objc_storeStrong(v37, v54);
       if ([v36 count])
       {
-        [(CNPredicate *)v52 _convertContactMatches:v36 withService:v53 intoSuggestions:v12];
+        [(CNPredicate *)selfCopy _convertContactMatches:v36 withService:v53 intoSuggestions:array];
         goto LABEL_52;
       }
 
@@ -436,15 +436,15 @@ uint64_t __21__CNPredicate_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNPredicate)initWithPredicate:(id)a3
+- (CNPredicate)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v10.receiver = self;
   v10.super_class = CNPredicate;
   v5 = [(CNPredicate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [predicateCopy copy];
     cn_predicate = v5->_cn_predicate;
     v5->_cn_predicate = v6;
 
@@ -455,24 +455,24 @@ uint64_t __21__CNPredicate_os_log__block_invoke()
   return v5;
 }
 
-- (CNPredicate)initWithCoder:(id)a3
+- (CNPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CNPredicate;
-  v5 = [(CNPredicate *)&v17 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cn_predicate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cn_predicate"];
     v7 = [v6 copy];
     cn_predicate = v5->_cn_predicate;
     v5->_cn_predicate = v7;
 
-    v5->_augmentMainStoreResults = [v4 decodeBoolForKey:@"_augmentMainStoreResults"];
+    v5->_augmentMainStoreResults = [coderCopy decodeBoolForKey:@"_augmentMainStoreResults"];
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"_mainStoreContactIdentifiers"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_mainStoreContactIdentifiers"];
     v13 = [v12 copy];
     mainStoreContactIdentifiers = v5->_mainStoreContactIdentifiers;
     v5->_mainStoreContactIdentifiers = v13;
@@ -483,29 +483,29 @@ uint64_t __21__CNPredicate_os_log__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_cn_predicate forKey:{@"_cn_predicate", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_augmentMainStoreResults forKey:@"_augmentMainStoreResults"];
-  [v4 encodeObject:self->_mainStoreContactIdentifiers forKey:@"_mainStoreContactIdentifiers"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_cn_predicate forKey:{@"_cn_predicate", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_augmentMainStoreResults forKey:@"_augmentMainStoreResults"];
+  [coderCopy encodeObject:self->_mainStoreContactIdentifiers forKey:@"_mainStoreContactIdentifiers"];
 }
 
-- (void)mainStoreDidFetchContacts:(id)a3 unifiedFetch:(BOOL)a4
+- (void)mainStoreDidFetchContacts:(id)contacts unifiedFetch:(BOOL)fetch
 {
-  v6 = a3;
-  if ([v6 count])
+  contactsCopy = contacts;
+  if ([contactsCopy count])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__CNPredicate_mainStoreDidFetchContacts_unifiedFetch___block_invoke;
     v8[3] = &unk_1E7412B30;
     v8[4] = self;
-    v9 = a4;
-    v7 = [v6 _cn_flatMap:v8];
+    fetchCopy = fetch;
+    v7 = [contactsCopy _cn_flatMap:v8];
     [(CNPredicate *)self setMainStoreContactIdentifiers:v7];
   }
 }
@@ -549,21 +549,21 @@ id __54__CNPredicate_mainStoreDidFetchContacts_unifiedFetch___block_invoke(uint6
 - (NSString)description
 {
   v2 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
-- (void)_convertContactMatches:(void *)a3 withService:(void *)a4 intoSuggestions:
+- (void)_convertContactMatches:(void *)matches withService:(void *)service intoSuggestions:
 {
-  if (a1)
+  if (self)
   {
-    v6 = a4;
-    v7 = a3;
+    serviceCopy = service;
+    matchesCopy = matches;
     v8 = [a2 _cn_map:&__block_literal_global_39];
-    [CNContactSuggestionMatch fetchLinkedIdentifiersForContactSuggestionMatches:v8 fromSuggestionService:v7];
+    [CNContactSuggestionMatch fetchLinkedIdentifiersForContactSuggestionMatches:v8 fromSuggestionService:matchesCopy];
 
-    [v6 addObjectsFromArray:v8];
+    [serviceCopy addObjectsFromArray:v8];
   }
 }
 

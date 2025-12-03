@@ -1,40 +1,40 @@
 @interface MPSectionedIdentifierListPosition
-+ (id)positionForHeadOfSection:(id)a3;
-+ (id)positionForItem:(id)a3 inSection:(id)a4;
-+ (id)positionForTailOfSection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MPSectionedIdentifierListPosition)initWithCoder:(id)a3;
++ (id)positionForHeadOfSection:(id)section;
++ (id)positionForItem:(id)item inSection:(id)section;
++ (id)positionForTailOfSection:(id)section;
+- (BOOL)isEqual:(id)equal;
+- (MPSectionedIdentifierListPosition)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSectionedIdentifierListPosition
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entryType = self->_entryType;
-  v5 = a3;
-  [v5 encodeInteger:entryType forKey:@"t"];
-  [v5 encodeObject:self->_sectionIdentifier forKey:@"sid"];
-  [v5 encodeObject:self->_itemIdentifier forKey:@"iid"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:entryType forKey:@"t"];
+  [coderCopy encodeObject:self->_sectionIdentifier forKey:@"sid"];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:@"iid"];
 }
 
-- (MPSectionedIdentifierListPosition)initWithCoder:(id)a3
+- (MPSectionedIdentifierListPosition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MPSectionedIdentifierListPosition;
   v5 = [(MPSectionedIdentifierListPosition *)&v11 init];
   if (v5)
   {
-    v5->_entryType = [v4 decodeIntegerForKey:@"t"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+    v5->_entryType = [coderCopy decodeIntegerForKey:@"t"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
     sectionIdentifier = v5->_sectionIdentifier;
     v5->_sectionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iid"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v8;
   }
@@ -42,10 +42,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -55,7 +55,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_entryType == v5->_entryType)
       {
@@ -145,42 +145,42 @@ LABEL_15:
   return [(MPSectionedIdentifierListPosition *)&v3 init];
 }
 
-+ (id)positionForTailOfSection:(id)a3
++ (id)positionForTailOfSection:(id)section
 {
-  v3 = a3;
-  v4 = [[MPSectionedIdentifierListPosition alloc] _init];
-  v4[3] = 4;
-  v5 = v4[1];
-  v4[1] = v3;
+  sectionCopy = section;
+  _init = [[MPSectionedIdentifierListPosition alloc] _init];
+  _init[3] = 4;
+  v5 = _init[1];
+  _init[1] = sectionCopy;
 
-  return v4;
+  return _init;
 }
 
-+ (id)positionForHeadOfSection:(id)a3
++ (id)positionForHeadOfSection:(id)section
 {
-  v3 = a3;
-  v4 = [[MPSectionedIdentifierListPosition alloc] _init];
-  v4[3] = 2;
-  v5 = v4[1];
-  v4[1] = v3;
+  sectionCopy = section;
+  _init = [[MPSectionedIdentifierListPosition alloc] _init];
+  _init[3] = 2;
+  v5 = _init[1];
+  _init[1] = sectionCopy;
 
-  return v4;
+  return _init;
 }
 
-+ (id)positionForItem:(id)a3 inSection:(id)a4
++ (id)positionForItem:(id)item inSection:(id)section
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MPSectionedIdentifierListPosition alloc] _init];
-  v7[3] = 3;
-  v8 = v7[1];
-  v7[1] = v6;
-  v9 = v6;
+  itemCopy = item;
+  sectionCopy = section;
+  _init = [[MPSectionedIdentifierListPosition alloc] _init];
+  _init[3] = 3;
+  v8 = _init[1];
+  _init[1] = sectionCopy;
+  v9 = sectionCopy;
 
-  v10 = v7[2];
-  v7[2] = v5;
+  v10 = _init[2];
+  _init[2] = itemCopy;
 
-  return v7;
+  return _init;
 }
 
 @end

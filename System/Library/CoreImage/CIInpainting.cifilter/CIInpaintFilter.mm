@@ -10,22 +10,22 @@
 + (id)defaultExcludeMaskSurroundMultiplier;
 + (id)defaultFeatherAmount;
 + (id)defaultRefinementModel;
-+ (id)loadModel:(id)a3;
++ (id)loadModel:(id)model;
 + (id)loadModelConfig;
-+ (id)loadRefinementModel:(id)a3;
-+ (id)refine:(id)a3 hires:(id)a4 mask:(id)a5 colorSpace:(CGColorSpace *)a6 orientation:(int)a7 hint:(id)a8 scale:(float)a9 dumpImageIndex:(int)a10;
-+ (id)repairTile:(id)a3 mask:(id)a4 colorSpace:(CGColorSpace *)a5 orientation:(int)a6 hint:(id)a7 version:(int)a8 scale:(float)a9 dumpImageIndex:(int)a10 dumpTileIndex:(int)a11;
++ (id)loadRefinementModel:(id)model;
++ (id)refine:(id)refine hires:(id)hires mask:(id)mask colorSpace:(CGColorSpace *)space orientation:(int)orientation hint:(id)hint scale:(float)scale dumpImageIndex:(int)self0;
++ (id)repairTile:(id)tile mask:(id)mask colorSpace:(CGColorSpace *)space orientation:(int)orientation hint:(id)hint version:(int)version scale:(float)scale dumpImageIndex:(int)self0 dumpTileIndex:(int)self1;
 + (id)userDefaults;
-+ (int)modelDimensionForVersion:(int)a3 hint:(id)a4;
++ (int)modelDimensionForVersion:(int)version hint:(id)hint;
 - (CGRect)outputMaskSurroundExtent;
 - (double)maskCoverage;
 - (double)maskToSurroundRatio;
 - (float)dilateSize;
 - (float)estimateFinalQuality;
 - (float)featherAmount;
-- (id)blendBack:(id)a3 mask:(id)a4;
+- (id)blendBack:(id)back mask:(id)mask;
 - (id)outputImage;
-- (id)outputImageAndRect:(CGRect *)a3 strategy:(id *)a4 allowDump:(BOOL)a5;
+- (id)outputImageAndRect:(CGRect *)rect strategy:(id *)strategy allowDump:(BOOL)dump;
 - (id)outputStrategy;
 @end
 
@@ -52,8 +52,8 @@
     __cxa_guard_release(&qword_18D60);
   }
 
-  v2 = [qword_18D58 dictionaryRepresentation];
-  v3 = [v2 objectForKeyedSubscript:@"CIInpaintFilter.smallBlurSize"];
+  dictionaryRepresentation = [qword_18D58 dictionaryRepresentation];
+  v3 = [dictionaryRepresentation objectForKeyedSubscript:@"CIInpaintFilter.smallBlurSize"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), v4 = 2.0, (objc_opt_isKindOfClass()))
   {
@@ -77,10 +77,10 @@
 
 + (NSNumber)defaultRefinementMultipass
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  userDefaults = [self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
 
-  v4 = [v3 objectForKeyedSubscript:@"CIInpaintFilter.inputRefinementMultipass"];
+  v4 = [dictionaryRepresentation objectForKeyedSubscript:@"CIInpaintFilter.inputRefinementMultipass"];
   if (v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 BOOLValue]);
@@ -92,7 +92,7 @@
       v10 = 138543618;
       v11 = v7;
       v12 = 1024;
-      v13 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: CIInpaintModel.inputRefinementMultipass default set to %d.", &v10, 0x12u);
     }
 
@@ -110,10 +110,10 @@
 
 + (NSNumber)defaultMaskDilateSize
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  userDefaults = [self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
 
-  v4 = [v3 objectForKeyedSubscript:@"CIInpaintFilter.inputMaskDilateSize"];
+  v4 = [dictionaryRepresentation objectForKeyedSubscript:@"CIInpaintFilter.inputMaskDilateSize"];
   if (v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 intValue]);
@@ -125,7 +125,7 @@
       v10 = 138543618;
       v11 = v7;
       v12 = 1024;
-      v13 = [v5 intValue];
+      intValue = [v5 intValue];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: CIInpaintModel.inputMaskDilateSize default set to %d.", &v10, 0x12u);
     }
 
@@ -143,10 +143,10 @@
 
 + (id)defaultFeatherAmount
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  userDefaults = [self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
 
-  v4 = [v3 objectForKeyedSubscript:@"CIInpaintFilter.inputFeatherAmount"];
+  v4 = [dictionaryRepresentation objectForKeyedSubscript:@"CIInpaintFilter.inputFeatherAmount"];
   if (v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     [v4 floatValue];
@@ -178,10 +178,10 @@
 
 + (NSNumber)defaultMaskToSurroundRatio
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  userDefaults = [self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
 
-  v4 = [v3 objectForKeyedSubscript:@"CIInpaintFilter.inputMaskToSurroundRatio"];
+  v4 = [dictionaryRepresentation objectForKeyedSubscript:@"CIInpaintFilter.inputMaskToSurroundRatio"];
   if (v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     [v4 floatValue];
@@ -213,10 +213,10 @@
 
 + (id)defaultExcludeMaskSurroundMultiplier
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  userDefaults = [self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
 
-  v4 = [v3 objectForKeyedSubscript:@"CIInpaintFilter.inputExcludeMaskSurroundMultiplier"];
+  v4 = [dictionaryRepresentation objectForKeyedSubscript:@"CIInpaintFilter.inputExcludeMaskSurroundMultiplier"];
   if (v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     [v4 floatValue];
@@ -248,10 +248,10 @@
 
 + (id)defaultRefinementModel
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  userDefaults = [self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
 
-  v4 = [v3 objectForKeyedSubscript:@"CIInpaintFilter.inputRefinementModel"];
+  v4 = [dictionaryRepresentation objectForKeyedSubscript:@"CIInpaintFilter.inputRefinementModel"];
   if (v4 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 BOOLValue]);
@@ -263,7 +263,7 @@
       v10 = 138543618;
       v11 = v7;
       v12 = 1024;
-      v13 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: CIInpaintModel.inputRefinementModel default set to %d.", &v10, 0x12u);
     }
 
@@ -281,10 +281,10 @@
 
 + (BOOL)dumpInpaintImages
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  userDefaults = [self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
 
-  v4 = [v3 objectForKeyedSubscript:@"dumpInpaintImages"];
+  v4 = [dictionaryRepresentation objectForKeyedSubscript:@"dumpInpaintImages"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 hasPrefix:@"/"] & 1) != 0 || (objc_msgSend(v4, "isEqual:", &__kCFBooleanTrue) & 1) != 0 || (objc_msgSend(v4, "isEqual:", &off_152D8))
   {
@@ -307,8 +307,8 @@
     __cxa_guard_release(&qword_18D70);
   }
 
-  v2 = [qword_18D68 dictionaryRepresentation];
-  v3 = [v2 objectForKeyedSubscript:@"refineQualityBar"];
+  dictionaryRepresentation = [qword_18D68 dictionaryRepresentation];
+  v3 = [dictionaryRepresentation objectForKeyedSubscript:@"refineQualityBar"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), v4 = 0.75, (objc_opt_isKindOfClass()))
   {
@@ -338,8 +338,8 @@
     __cxa_guard_release(&qword_18D80);
   }
 
-  v2 = [qword_18D78 dictionaryRepresentation];
-  v3 = [v2 objectForKeyedSubscript:@"maskMarginFactor"];
+  dictionaryRepresentation = [qword_18D78 dictionaryRepresentation];
+  v3 = [dictionaryRepresentation objectForKeyedSubscript:@"maskMarginFactor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -387,12 +387,12 @@
   v50[2] = &off_15390;
   v49[2] = kCIAttributeMax;
   v49[3] = kCIAttributeDefault;
-  v3 = [a1 defaultMaskToSurroundRatio];
+  defaultMaskToSurroundRatio = [self defaultMaskToSurroundRatio];
   v4 = &off_153A0;
-  v31 = v3;
-  if (v3)
+  v31 = defaultMaskToSurroundRatio;
+  if (defaultMaskToSurroundRatio)
   {
-    v4 = v3;
+    v4 = defaultMaskToSurroundRatio;
   }
 
   v50[3] = v4;
@@ -417,12 +417,12 @@
   v46[2] = &off_153C0;
   v45[2] = kCIAttributeMax;
   v45[3] = kCIAttributeDefault;
-  v5 = [a1 defaultExcludeMaskSurroundMultiplier];
+  defaultExcludeMaskSurroundMultiplier = [self defaultExcludeMaskSurroundMultiplier];
   v6 = &off_153D0;
-  v28 = v5;
-  if (v5)
+  v28 = defaultExcludeMaskSurroundMultiplier;
+  if (defaultExcludeMaskSurroundMultiplier)
   {
-    v6 = v5;
+    v6 = defaultExcludeMaskSurroundMultiplier;
   }
 
   v46[3] = v6;
@@ -475,11 +475,11 @@
   v54[6] = v23;
   v53[7] = @"inputRefinementModel";
   v37 = kCIAttributeDefault;
-  v9 = [a1 defaultRefinementModel];
-  v22 = v9;
-  if (v9)
+  defaultRefinementModel = [self defaultRefinementModel];
+  v22 = defaultRefinementModel;
+  if (defaultRefinementModel)
   {
-    v10 = v9;
+    v10 = defaultRefinementModel;
   }
 
   else
@@ -498,11 +498,11 @@
   v36[2] = &__kCFBooleanTrue;
   v35[2] = kCIAttributeMax;
   v35[3] = kCIAttributeDefault;
-  v11 = [a1 defaultRefinementMultipass];
-  v12 = v11;
-  if (v11)
+  defaultRefinementMultipass = [self defaultRefinementMultipass];
+  v12 = defaultRefinementMultipass;
+  if (defaultRefinementMultipass)
   {
-    v13 = v11;
+    v13 = defaultRefinementMultipass;
   }
 
   else
@@ -521,12 +521,12 @@
   v34[2] = &off_153E0;
   v33[2] = kCIAttributeMax;
   v33[3] = kCIAttributeDefault;
-  v15 = [a1 defaultFeatherAmount];
-  v16 = v15;
+  defaultFeatherAmount = [self defaultFeatherAmount];
+  v16 = defaultFeatherAmount;
   v17 = &off_15338;
-  if (v15)
+  if (defaultFeatherAmount)
   {
-    v17 = v15;
+    v17 = defaultFeatherAmount;
   }
 
   v34[3] = v17;
@@ -543,7 +543,7 @@
   block[1] = 3221225472;
   block[2] = sub_3FCC;
   block[3] = &unk_144E0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_18D88 != -1)
   {
     dispatch_once(&qword_18D88, block);
@@ -554,19 +554,19 @@
   return v2;
 }
 
-+ (id)loadModel:(id)a3
++ (id)loadModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = modelCopy;
 LABEL_14:
     v9 = v5;
     goto LABEL_18;
   }
 
-  if (v4)
+  if (modelCopy)
   {
     v6 = sub_A028();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -584,7 +584,7 @@ LABEL_14:
     v18[1] = 3221225472;
     v18[2] = sub_4450;
     v18[3] = &unk_144E0;
-    v18[4] = a1;
+    v18[4] = self;
     if (qword_18DA0 != -1)
     {
       dispatch_once(&qword_18DA0, v18);
@@ -594,10 +594,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7 = v4;
-  v8 = [a1 loadModelConfig];
+  v7 = modelCopy;
+  loadModelConfig = [self loadModelConfig];
   v19 = 0;
-  v9 = [MLModel modelWithContentsOfURL:v7 configuration:v8 error:&v19];
+  v9 = [MLModel modelWithContentsOfURL:v7 configuration:loadModelConfig error:&v19];
   v10 = v19;
 
   v11 = [v9 valueForKeyPath:@"modelDescription.metadata.MLModelDescriptionKey"];
@@ -607,13 +607,13 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = [objc_opt_class() description];
-      v14 = [v7 path];
+      path = [v7 path];
       *buf = 138543874;
       v21 = v13;
       v22 = 2114;
       v23 = v11;
       v24 = 2114;
-      v25 = v14;
+      v25 = path;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: CIInpaintFilter using inpaint model %{public}@ at path: %{public}@.", buf, 0x20u);
     }
   }
@@ -624,8 +624,8 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v15 = [objc_opt_class() description];
-      v16 = [v7 path];
-      sub_B6D4(v15, v16, buf);
+      path2 = [v7 path];
+      sub_B6D4(v15, path2, buf);
     }
   }
 
@@ -634,15 +634,15 @@ LABEL_18:
   return v9;
 }
 
-+ (id)loadRefinementModel:(id)a3
++ (id)loadRefinementModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v4;
+  v6 = modelCopy;
   if ((isKindOfClass & 1) == 0)
   {
-    if (v4 == &__kCFBooleanFalse || v4 == &off_152F0)
+    if (modelCopy == &__kCFBooleanFalse || modelCopy == &off_152F0)
     {
       v8 = 0;
       goto LABEL_12;
@@ -652,7 +652,7 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = sub_4904;
     block[3] = &unk_144E0;
-    block[4] = a1;
+    block[4] = self;
     if (qword_18DB0 != -1)
     {
       dispatch_once(&qword_18DB0, block);
@@ -723,14 +723,14 @@ LABEL_12:
   return fminf(fmaxf(v3, 0.0), 500.0);
 }
 
-+ (int)modelDimensionForVersion:(int)a3 hint:(id)a4
++ (int)modelDimensionForVersion:(int)version hint:(id)hint
 {
-  v5 = a4;
-  if (a3)
+  hintCopy = hint;
+  if (version)
   {
-    if (a3 == 1)
+    if (version == 1)
     {
-      v6 = [CIInpaintFilter loadModel:v5];
+      v6 = [CIInpaintFilter loadModel:hintCopy];
       v7 = sub_4E4C(v6);
     }
 
@@ -748,45 +748,45 @@ LABEL_12:
   return v7;
 }
 
-+ (id)repairTile:(id)a3 mask:(id)a4 colorSpace:(CGColorSpace *)a5 orientation:(int)a6 hint:(id)a7 version:(int)a8 scale:(float)a9 dumpImageIndex:(int)a10 dumpTileIndex:(int)a11
++ (id)repairTile:(id)tile mask:(id)mask colorSpace:(CGColorSpace *)space orientation:(int)orientation hint:(id)hint version:(int)version scale:(float)scale dumpImageIndex:(int)self0 dumpTileIndex:(int)self1
 {
-  v12 = *&a8;
-  v88 = a3;
-  v16 = a4;
-  v17 = a7;
-  v87 = v17;
+  v12 = *&version;
+  tileCopy = tile;
+  maskCopy = mask;
+  hintCopy = hint;
+  v87 = hintCopy;
   v18 = CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3);
   space = v18;
-  if (a5)
+  if (space)
   {
-    v19 = a5;
+    spaceCopy = space;
   }
 
   else
   {
-    v19 = v18;
+    spaceCopy = v18;
   }
 
-  v86 = v19;
+  v86 = spaceCopy;
   v20 = &ApplyOldInpaintModel__metaData;
-  v21 = [CIInpaintFilter modelDimensionForVersion:v12 hint:v17];
-  v22 = [v16 imageByApplyingFilter:@"CIColorThreshold" withInputParameters:&off_15410];
+  v21 = [CIInpaintFilter modelDimensionForVersion:v12 hint:hintCopy];
+  v22 = [maskCopy imageByApplyingFilter:@"CIColorThreshold" withInputParameters:&off_15410];
 
   if (v12 != 1)
   {
     if (v12)
     {
-      v49 = [v88 imageByInsertingIntermediate];
+      imageByInsertingIntermediate = [tileCopy imageByInsertingIntermediate];
       goto LABEL_22;
     }
 
     v84 = [NSBundle bundleForClass:objc_opt_class()];
-    if (v17)
+    if (hintCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = v17;
+        v23 = hintCopy;
 LABEL_15:
         v87 = v23;
         v24 = [v84 pathForResource:? ofType:?];
@@ -815,7 +815,7 @@ LABEL_15:
           }
         }
 
-        v49 = [ApplyOldInpaintModel apply:v88 mask:v22 tileSize:v21 model:v25];
+        imageByInsertingIntermediate = [ApplyOldInpaintModel apply:tileCopy mask:v22 tileSize:v21 model:v25];
         goto LABEL_21;
       }
 
@@ -832,8 +832,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v84 = [CIInpaintFilter loadModel:v17];
-  v24 = [v88 imageByColorMatchingWorkingSpaceToColorSpace:v86];
+  v84 = [CIInpaintFilter loadModel:hintCopy];
+  v24 = [tileCopy imageByColorMatchingWorkingSpaceToColorSpace:v86];
   v20 = &CGAffineTransformMakeScale_ptr;
   v25 = [CIColorKernel cachedKernelWithString:@"kernel vec4 CIIP_pre (__sample s, __sample mask) { float m = (mask.r > 0.01) ? 1.0 : 0.0 return vec4(0.5 - m, (clamp(s.rgb, 0.0, 1.0)*2.0 - 1.0)*(1.0 - m)); }"];;
   [v24 extent];
@@ -863,17 +863,17 @@ LABEL_15:
   v47 = [NSArray arrayWithObjects:&v91 count:1];
   v48 = [v38 applyWithExtent:v47 arguments:{v40, v42, v44, v46}];
 
-  v49 = [v48 imageByColorMatchingColorSpaceToWorkingSpace:v86];
+  imageByInsertingIntermediate = [v48 imageByColorMatchingColorSpaceToWorkingSpace:v86];
 
 LABEL_21:
 LABEL_22:
-  if (a10)
+  if (index)
   {
-    v54 = sub_58F8(a10, a11, "inpaint");
-    LODWORD(v20) = llroundf(a9 * 100.0);
+    v54 = sub_58F8(index, tileIndex, "inpaint");
+    LODWORD(v20) = llroundf(scale * 100.0);
     v55 = [NSString stringWithFormat:@"%@_inrgb_scale%d.png", v54, v20];
     v56 = sub_59F8(v22);
-    v57 = v88;
+    v57 = tileCopy;
     v58 = v56;
     [v57 extent];
     v60 = v59;
@@ -908,51 +908,51 @@ LABEL_22:
       v75 = [v76 applyWithExtent:v77 arguments:{x, y, width, height}];
     }
 
-    sub_5B28(v75, v86, v55, a6);
+    sub_5B28(v75, v86, v55, orientation);
     v78 = [NSString stringWithFormat:@"%@_inmask_scale%d.png", v54, v20];
 
-    sub_5D84(v22, v78, a6);
+    sub_5D84(v22, v78, orientation);
     v89[0] = kCIInputBackgroundImageKey;
     v89[1] = kCIInputMaskImageKey;
     v90[0] = v57;
     v90[1] = v22;
     v79 = [NSDictionary dictionaryWithObjects:v90 forKeys:v89 count:2];
-    v80 = [v49 imageByApplyingFilter:@"CIBlendWithRedMask" withInputParameters:v79];
+    v80 = [imageByInsertingIntermediate imageByApplyingFilter:@"CIBlendWithRedMask" withInputParameters:v79];
 
     v81 = [NSString stringWithFormat:@"%@_outblend_scale%d.png", v54, v20];
 
-    sub_5B28(v80, v86, v81, a6);
+    sub_5B28(v80, v86, v81, orientation);
   }
 
   CGColorSpaceRelease(space);
 
-  return v49;
+  return imageByInsertingIntermediate;
 }
 
-+ (id)refine:(id)a3 hires:(id)a4 mask:(id)a5 colorSpace:(CGColorSpace *)a6 orientation:(int)a7 hint:(id)a8 scale:(float)a9 dumpImageIndex:(int)a10
++ (id)refine:(id)refine hires:(id)hires mask:(id)mask colorSpace:(CGColorSpace *)space orientation:(int)orientation hint:(id)hint scale:(float)scale dumpImageIndex:(int)self0
 {
-  v14 = a3;
-  v15 = a4;
-  v178 = a5;
-  v173 = a8;
+  refineCopy = refine;
+  hiresCopy = hires;
+  maskCopy = mask;
+  hintCopy = hint;
   v16 = CGColorSpaceCreateWithName(kCGColorSpaceDisplayP3);
   space = v16;
-  if (a6)
+  if (space)
   {
-    v17 = a6;
+    spaceCopy = space;
   }
 
   else
   {
-    v17 = v16;
+    spaceCopy = v16;
   }
 
-  v18 = sub_7148(v14, v17);
+  v18 = sub_7148(refineCopy, spaceCopy);
 
-  v181 = sub_7148(v15, v17);
+  v181 = sub_7148(hiresCopy, spaceCopy);
   v180 = v18;
 
-  v170 = [CIInpaintFilter loadRefinementModel:v173];
+  v170 = [CIInpaintFilter loadRefinementModel:hintCopy];
   v182 = sub_4E4C(v170);
   v188 = [CIFilter filterWithName:@"CICoreMLModelFilter"];
   [v188 setValue:v170 forKey:@"inputModel"];
@@ -972,28 +972,28 @@ LABEL_22:
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [v171 imageByClampingToExtent];
+  imageByClampingToExtent = [v171 imageByClampingToExtent];
 
   v33 = [CIVector vectorWithValues:&unk_DAE8 count:25];
-  v199 = v17;
+  v199 = spaceCopy;
   *&v205.a = @"inputWeights";
   *&v206.a = v33;
   v34 = [NSDictionary dictionaryWithObjects:&v206 forKeys:&v205 count:1];
-  v35 = [v32 imageByApplyingFilter:@"CIConvolution5X5" withInputParameters:v34];
+  v35 = [imageByClampingToExtent imageByApplyingFilter:@"CIConvolution5X5" withInputParameters:v34];
 
   v177 = [v35 imageByCroppingToRect:{v25, v27, v29, v31}];
 
   [v181 extent];
   v37 = v182;
   v183 = llround(v38 / v182);
-  v39 = v17;
-  v40 = a10;
+  v39 = spaceCopy;
+  indexCopy2 = index;
   v41 = 0;
   if (v183 >= 1)
   {
     v42 = 0;
     v43 = 1;
-    LODWORD(v36) = llroundf(a9 * 100.0);
+    LODWORD(v36) = llroundf(scale * 100.0);
     v194 = v36;
     v44 = v183;
     do
@@ -1011,9 +1011,9 @@ LABEL_22:
         v190 = sub_742C(v180, v46, v45, v37, v37);
         v189 = v41;
         v197 = sub_742C(v181, v47, v45, v37, v37);
-        v196 = sub_742C(v178, v47, v45, v37, v37);
+        v196 = sub_742C(maskCopy, v47, v45, v37, v37);
         v48 = sub_7510(v196, 0.125);
-        if (v40)
+        if (indexCopy2)
         {
           if (v183 == 1)
           {
@@ -1025,19 +1025,19 @@ LABEL_22:
             v49 = v198;
           }
 
-          v50 = sub_58F8(v40, v49, "refine");
-          v51 = [NSString stringWithFormat:@"%@_inlr_scale%d.png", v50, v194];
+          v50 = sub_58F8(indexCopy2, v49, "refine");
+          v194 = [NSString stringWithFormat:@"%@_inlr_scale%d.png", v50, v194];
           v52 = sub_75B4(v190, v39);
-          sub_5B28(v52, v39, v51, a7);
+          sub_5B28(v52, v39, v194, orientation);
 
-          v53 = [NSString stringWithFormat:@"%@_inhr_scale%d.png", v50, v194];
+          v1942 = [NSString stringWithFormat:@"%@_inhr_scale%d.png", v50, v194];
 
           v54 = sub_75B4(v197, v199);
-          sub_5B28(v54, v199, v53, a7);
+          sub_5B28(v54, v199, v1942, orientation);
 
-          v55 = [NSString stringWithFormat:@"%@_inmask_scale%d.png", v50, v194];
+          v1943 = [NSString stringWithFormat:@"%@_inmask_scale%d.png", v50, v194];
 
-          sub_5D84(v196, v55, a7);
+          sub_5D84(v196, v1943, orientation);
         }
 
         v193 = sub_742C(v179, v47, v45, v37, v37);
@@ -1063,8 +1063,8 @@ LABEL_22:
         v67 = [NSDictionary dictionaryWithObjects:v204 forKeys:v203 count:3];
         [v188 setValue:v67 forKey:@"inputImage"];
 
-        v68 = [v188 outputImage];
-        v69 = sub_72F0(v68);
+        outputImage = [v188 outputImage];
+        v69 = sub_72F0(outputImage);
 
         v200 = v69;
         [v200 extent];
@@ -1072,9 +1072,9 @@ LABEL_22:
         v73 = v72;
         v75 = v74;
         v77 = v76;
-        v78 = [v200 imageByClampingToExtent];
+        imageByClampingToExtent2 = [v200 imageByClampingToExtent];
 
-        v79 = [v78 imageByApplyingGaussianBlurWithSigma:v23];
+        v79 = [imageByClampingToExtent2 imageByApplyingGaussianBlurWithSigma:v23];
 
         v80 = [v79 imageByCroppingToRect:{v71, v73, v75, v77}];
 
@@ -1156,7 +1156,7 @@ LABEL_22:
 
         v152 = [CIImage imageWithYCCImage:v151 matrix:601 fullRange:1 precision:8 colorSpace:0];
 
-        if (a10)
+        if (index)
         {
           if (v183 == 1)
           {
@@ -1168,10 +1168,10 @@ LABEL_22:
             v153 = v198;
           }
 
-          v154 = sub_58F8(a10, v153, "refine");
-          v155 = [NSString stringWithFormat:@"%@_out_scale%d.png", v154, v194];
+          v154 = sub_58F8(index, v153, "refine");
+          v1944 = [NSString stringWithFormat:@"%@_out_scale%d.png", v154, v194];
           v156 = sub_75B4(v152, v199);
-          sub_5B28(v156, v199, v155, a7);
+          sub_5B28(v156, v199, v1944, orientation);
 
           v201[0] = kCIInputBackgroundImageKey;
           v201[1] = kCIInputMaskImageKey;
@@ -1180,10 +1180,10 @@ LABEL_22:
           v157 = [NSDictionary dictionaryWithObjects:v202 forKeys:v201 count:2];
           v158 = [v152 imageByApplyingFilter:@"CIBlendWithRedMask" withInputParameters:v157];
 
-          v159 = [NSString stringWithFormat:@"%@_outblend_scale%d.png", v154, v194];
+          v1945 = [NSString stringWithFormat:@"%@_outblend_scale%d.png", v154, v194];
 
           v160 = sub_75B4(v158, v199);
-          sub_5B28(v160, v199, v159, a7);
+          sub_5B28(v160, v199, v1945, orientation);
         }
 
         v161 = v152;
@@ -1207,7 +1207,7 @@ LABEL_22:
         v44 = v185 - 1;
         v41 = v163;
         v39 = v199;
-        v40 = a10;
+        indexCopy2 = index;
       }
 
       while (v185 != 1);
@@ -1219,12 +1219,12 @@ LABEL_22:
     while (v175 + 1 != v183);
   }
 
-  if (v40)
+  if (indexCopy2)
   {
-    v164 = sub_58F8(v40, 0, "refine");
-    v165 = [NSString stringWithFormat:@"%@_result_scale%d.png", v164, llroundf(a9 * 200.0)];
+    v164 = sub_58F8(indexCopy2, 0, "refine");
+    v165 = [NSString stringWithFormat:@"%@_result_scale%d.png", v164, llroundf(scale * 200.0)];
     v166 = sub_75B4(v41, v39);
-    sub_5B28(v166, v39, v165, a7);
+    sub_5B28(v166, v39, v165, orientation);
 
     v39 = v199;
   }
@@ -1236,10 +1236,10 @@ LABEL_22:
   return v167;
 }
 
-- (id)blendBack:(id)a3 mask:(id)a4
+- (id)blendBack:(id)back mask:(id)mask
 {
-  v6 = a3;
-  v7 = a4;
+  backCopy = back;
+  maskCopy = mask;
   [(CIImage *)self->inputImage extent];
   v9 = v8;
   v11 = v10;
@@ -1249,13 +1249,13 @@ LABEL_22:
   [v16 extent];
   if (CGRectIsEmpty(v48))
   {
-    v17 = v7;
+    v17 = maskCopy;
   }
 
   else
   {
     v18 = sub_59F8(self->inputExcludeMask);
-    v19 = v7;
+    v19 = maskCopy;
     v20 = v18;
     [v19 extent];
     v22 = v21;
@@ -1297,7 +1297,7 @@ LABEL_22:
   v45[0] = inputImage;
   v45[1] = v17;
   v40 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:2];
-  v41 = [v6 imageByApplyingFilter:@"CIBlendWithRedMask" withInputParameters:v40];
+  v41 = [backCopy imageByApplyingFilter:@"CIBlendWithRedMask" withInputParameters:v40];
 
   v42 = [v41 imageByCroppingToRect:{v9, v11, v13, v15}];
 
@@ -1336,16 +1336,16 @@ LABEL_22:
     inputVersion = self->inputVersion;
     if (inputVersion)
     {
-      v24 = [(NSNumber *)inputVersion intValue];
+      intValue = [(NSNumber *)inputVersion intValue];
     }
 
     else
     {
-      v24 = 1;
+      intValue = 1;
     }
 
     v43 = v19;
-    v25 = [CIInpaintFilter modelDimensionForVersion:v24 hint:self->inputModel];
+    v25 = [CIInpaintFilter modelDimensionForVersion:intValue hint:self->inputModel];
     v17 = 0.0;
     if (v25)
     {
@@ -1353,8 +1353,8 @@ LABEL_22:
       v42 = v26;
       [(CIInpaintFilter *)self maskCoverage];
       v41 = v27;
-      v28 = [(CIInpaintFilter *)self inputExcludeMaskSurroundMultiplier];
-      [v28 doubleValue];
+      inputExcludeMaskSurroundMultiplier = [(CIInpaintFilter *)self inputExcludeMaskSurroundMultiplier];
+      [inputExcludeMaskSurroundMultiplier doubleValue];
       v30 = v29;
 
       v31 = v30 <= 1.0 || IsEmpty;
@@ -1392,9 +1392,9 @@ LABEL_22:
       v56.size.height = height;
       if (!CGRectIsEmpty(v56))
       {
-        v34 = [(NSNumber *)self->inputRefinementMultipass BOOLValue];
-        v35 = [(CIInpaintFilter *)self inputRefinementModel];
-        v36 = [CIInpaintFilter loadRefinementModel:v35];
+        bOOLValue = [(NSNumber *)self->inputRefinementMultipass BOOLValue];
+        inputRefinementModel = [(CIInpaintFilter *)self inputRefinementModel];
+        v36 = [CIInpaintFilter loadRefinementModel:inputRefinementModel];
 
         +[CIInpaintFilter getRefineQualityBar];
         v38 = v37;
@@ -1406,7 +1406,7 @@ LABEL_22:
           if (v36)
           {
             v39 = fmin(*v49 + *v49, 1.0);
-            if (((v39 <= v38) & v34) == 1)
+            if (((v39 <= v38) & bOOLValue) == 1)
             {
               v39 = fmin(v39 + v39, 1.0);
             }
@@ -1421,9 +1421,9 @@ LABEL_22:
   return v17;
 }
 
-- (id)outputImageAndRect:(CGRect *)a3 strategy:(id *)a4 allowDump:(BOOL)a5
+- (id)outputImageAndRect:(CGRect *)rect strategy:(id *)strategy allowDump:(BOOL)dump
 {
-  v150 = a5;
+  dumpCopy = dump;
   [(CIImage *)self->inputImage extent];
   v157 = v7;
   v158 = v6;
@@ -1481,9 +1481,9 @@ LABEL_22:
     v18 = v28;
   }
 
-  v29 = [(CIImage *)v18 imageByCroppingToRect:v158, v157, v156, v155];
+  v155 = [(CIImage *)v18 imageByCroppingToRect:v158, v157, v156, v155];
 
-  [v29 extent];
+  [v155 extent];
   v30 = v169.origin.x;
   v31 = v169.origin.y;
   v32 = v169.size.width;
@@ -1494,24 +1494,24 @@ LABEL_22:
     goto LABEL_68;
   }
 
-  v148 = [(CIImage *)self->inputExcludeMask imageByCroppingToRect:v158, v157, v156, v155];
-  [v148 extent];
+  v1552 = [(CIImage *)self->inputExcludeMask imageByCroppingToRect:v158, v157, v156, v155];
+  [v1552 extent];
   v144 = v170.origin.y;
   v146 = v170.origin.x;
   v139 = v170.size.height;
   v142 = v170.size.width;
   IsEmpty = CGRectIsEmpty(v170);
   v36 = +[CIImage blackImage];
-  v37 = [v29 imageByCompositingOverImage:v36];
+  v37 = [v155 imageByCompositingOverImage:v36];
   v38 = [v37 imageByCroppingToRect:{v158, v157, v156, v155}];
 
-  v29 = v38;
-  v152 = v29;
+  v155 = v38;
+  v152 = v155;
   if (!IsEmpty)
   {
-    v39 = [(CIInpaintFilter *)self inputExcludeMask];
-    v40 = v29;
-    v41 = v39;
+    inputExcludeMask = [(CIInpaintFilter *)self inputExcludeMask];
+    v40 = v155;
+    v41 = inputExcludeMask;
     v153 = v40;
     [v40 extent];
     v43 = v42;
@@ -1574,20 +1574,20 @@ LABEL_19:
   inputVersion = self->inputVersion;
   if (inputVersion)
   {
-    v62 = [(NSNumber *)inputVersion intValue];
+    intValue = [(NSNumber *)inputVersion intValue];
   }
 
   else
   {
-    v62 = 1;
+    intValue = 1;
   }
 
-  v63 = [CIInpaintFilter modelDimensionForVersion:v62 hint:self->inputModel];
+  v63 = [CIInpaintFilter modelDimensionForVersion:intValue hint:self->inputModel];
   if (!v63)
   {
     size = CGRectNull.size;
-    a3->origin = CGRectNull.origin;
-    a3->size = size;
+    rect->origin = CGRectNull.origin;
+    rect->size = size;
     v75 = sub_A028();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
     {
@@ -1604,8 +1604,8 @@ LABEL_19:
   v65 = v64;
   [(CIInpaintFilter *)self maskCoverage];
   v67 = v66;
-  v68 = [(CIInpaintFilter *)self inputExcludeMaskSurroundMultiplier];
-  [v68 doubleValue];
+  inputExcludeMaskSurroundMultiplier = [(CIInpaintFilter *)self inputExcludeMaskSurroundMultiplier];
+  [inputExcludeMaskSurroundMultiplier doubleValue];
   v70 = v69;
 
   v71 = v70 <= 1.0 || IsEmpty;
@@ -1656,16 +1656,16 @@ LABEL_19:
       if (!v78 || (v79 = CFGetTypeID(v78), v79 == CGColorSpaceGetTypeID()) && CGColorSpaceGetModel(v78) == kCGColorSpaceModelRGB)
       {
 LABEL_42:
-        v80 = [(CIImage *)self->inputImage properties];
-        v81 = [v80 objectForKeyedSubscript:@"Orientation"];
-        v147 = [v81 intValue];
+        properties = [(CIImage *)self->inputImage properties];
+        v81 = [properties objectForKeyedSubscript:@"Orientation"];
+        intValue2 = [v81 intValue];
 
-        LOBYTE(v80) = [(NSNumber *)self->inputRefinementMultipass BOOLValue];
-        v82 = [(CIInpaintFilter *)self inputRefinementModel];
-        v140 = v80;
-        v83 = [CIInpaintFilter loadRefinementModel:v82];
+        LOBYTE(properties) = [(NSNumber *)self->inputRefinementMultipass BOOLValue];
+        inputRefinementModel = [(CIInpaintFilter *)self inputRefinementModel];
+        v140 = properties;
+        v83 = [CIInpaintFilter loadRefinementModel:inputRefinementModel];
 
-        if (+[CIInpaintFilter dumpInpaintImages]&& v150)
+        if (+[CIInpaintFilter dumpInpaintImages]&& dumpCopy)
         {
           v84 = ++dword_18DD8;
         }
@@ -1690,7 +1690,7 @@ LABEL_42:
         v93 = v90;
         *&v94 = v93;
         v143 = v92;
-        v95 = [CIInpaintFilter repairTile:v145 mask:v92 colorSpace:v78 orientation:v147 hint:self->inputModel version:v62 scale:v94 dumpImageIndex:v84 dumpTileIndex:?];
+        v95 = [CIInpaintFilter repairTile:v145 mask:v92 colorSpace:v78 orientation:intValue2 hint:self->inputModel version:intValue scale:v94 dumpImageIndex:v84 dumpTileIndex:?];
         v96 = v95;
         if (v90 <= v86 && v83)
         {
@@ -1713,16 +1713,16 @@ LABEL_42:
             *&v105 = v97;
             LODWORD(v135) = v84;
             v106 = v103;
-            v96 = [CIInpaintFilter refine:v104 hires:v141 mask:v103 colorSpace:v78 orientation:v147 hint:self->inputRefinementModel scale:v105 dumpImageIndex:v135];
+            v96 = [CIInpaintFilter refine:v104 hires:v141 mask:v103 colorSpace:v78 orientation:intValue2 hint:self->inputRefinementModel scale:v105 dumpImageIndex:v135];
 
             v107 = sub_951C(v96, v89, *&v87, *(&v87 + 1), v88, 1.0 / v101);
-            *a4 = [NSString stringWithFormat:@"One Tile, Refined4, Scale %.3f", fmin(v100 + v100, 1.0)];
+            *strategy = [NSString stringWithFormat:@"One Tile, Refined4, Scale %.3f", fmin(v100 + v100, 1.0)];
           }
 
           else
           {
             v107 = sub_951C(v99, v89, *&v87, *(&v87 + 1), v88, 1.0 / v97);
-            *a4 = [NSString stringWithFormat:@"One Tile, Refined, Scale %.3f", *&v100];
+            *strategy = [NSString stringWithFormat:@"One Tile, Refined, Scale %.3f", *&v100];
             v96 = v99;
           }
         }
@@ -1730,7 +1730,7 @@ LABEL_42:
         else
         {
           v107 = sub_951C(v95, v89, *&v87, *(&v87 + 1), v88, 1.0 / v90);
-          *a4 = [NSString stringWithFormat:@"One Tile, Scale %.3f", *&v90];
+          *strategy = [NSString stringWithFormat:@"One Tile, Scale %.3f", *&v90];
         }
 
         inputMaskImage = v154;
@@ -1746,7 +1746,7 @@ LABEL_42:
 
         if (v84)
         {
-          v112 = [(CIImage *)self->inputImage imageByCroppingToRect:v109, v111, v110];
+          v110 = [(CIImage *)self->inputImage imageByCroppingToRect:v109, v111, v110];
           v180.origin.y = v157;
           v180.origin.x = v158;
           v180.size.height = v155;
@@ -1759,12 +1759,12 @@ LABEL_42:
             v113 = sub_9644(self->inputImage, v158, v157, v156, v155);
             v114 = [v113 imageByCroppingToRect:{v109, v111, v110}];
 
-            v112 = v114;
+            v110 = v114;
           }
 
           v115 = sub_58F8(v84, 0, "inpaint");
-          v116 = [NSString stringWithFormat:@"%@_in_full.png", v115];
-          sub_5B28(v112, v78, v116, v147);
+          v115 = [NSString stringWithFormat:@"%@_in_full.png", v115];
+          sub_5B28(v110, v78, v115, intValue2);
           v117 = [v152 imageByCroppingToRect:{v109, v111, v110}];
           v181.origin.y = v157;
           v181.origin.x = v158;
@@ -1781,9 +1781,9 @@ LABEL_42:
             v117 = v119;
           }
 
-          v120 = [NSString stringWithFormat:@"%@_mask_full.png", v115];
+          v1152 = [NSString stringWithFormat:@"%@_mask_full.png", v115];
 
-          sub_5D84(v117, v120, v147);
+          sub_5D84(v117, v1152, intValue2);
         }
 
         if ([(NSNumber *)self->inputShowSurround BOOLValue])
@@ -1794,8 +1794,8 @@ LABEL_42:
           if (!CGRectIsEmpty(v182))
           {
             v159[0] = kCIInputExtentKey;
-            v121 = [CIVector vectorWithCGRect:v109, v111, v110];
-            v160[0] = v121;
+            v1102 = [CIVector vectorWithCGRect:v109, v111, v110];
+            v160[0] = v1102;
             v160[1] = &off_15350;
             v159[1] = kCIInputRadiusKey;
             v159[2] = kCIInputColorKey;
@@ -1805,26 +1805,26 @@ LABEL_42:
             v160[3] = &off_15368;
             v123 = [NSDictionary dictionaryWithObjects:v160 forKeys:v159 count:4];
             v124 = [CIFilter filterWithName:@"CIRoundedRectangleStrokeGenerator" withInputParameters:v123];
-            v125 = [v124 outputImage];
+            outputImage = [v124 outputImage];
 
-            v126 = [v125 imageByCompositingOverImage:v34];
+            v126 = [outputImage imageByCompositingOverImage:v34];
 
-            v127 = [(CIInpaintFilter *)self inputImage];
-            [v127 extent];
+            inputImage = [(CIInpaintFilter *)self inputImage];
+            [inputImage extent];
             v34 = [v126 imageByCroppingToRect:?];
           }
         }
 
-        a3->origin.x = v109;
-        *&a3->origin.y = v111;
-        a3->size.height = v110;
-        if (v150)
+        rect->origin.x = v109;
+        *&rect->origin.y = v111;
+        rect->size.height = v110;
+        if (dumpCopy)
         {
           v128 = sub_A028();
           if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
           {
             v129 = [objc_opt_class() description];
-            v130 = *a4;
+            v130 = *strategy;
             *buf = 138543618;
             *&buf[4] = v129;
             *&buf[12] = 2114;

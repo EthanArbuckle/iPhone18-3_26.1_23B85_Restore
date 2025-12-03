@@ -6,34 +6,34 @@
 
 - (void)standardizeCSPersons
 {
-  v2 = [a1 attributeSet];
-  v3 = [v2 authors];
+  attributeSet = [self attributeSet];
+  authors = [attributeSet authors];
 
-  if (!v3)
+  if (!authors)
   {
-    v4 = [a1 copyReconstructedAuthors];
-    v5 = [a1 attributeSet];
-    [v5 setAuthors:v4];
+    copyReconstructedAuthors = [self copyReconstructedAuthors];
+    attributeSet2 = [self attributeSet];
+    [attributeSet2 setAuthors:copyReconstructedAuthors];
   }
 
-  v6 = [a1 attributeSet];
-  v7 = [v6 primaryRecipients];
+  attributeSet3 = [self attributeSet];
+  primaryRecipients = [attributeSet3 primaryRecipients];
 
-  if (!v7)
+  if (!primaryRecipients)
   {
-    v8 = [a1 copyReconstructedPrimaryRecipients];
-    v9 = [a1 attributeSet];
-    [v9 setPrimaryRecipients:v8];
+    copyReconstructedPrimaryRecipients = [self copyReconstructedPrimaryRecipients];
+    attributeSet4 = [self attributeSet];
+    [attributeSet4 setPrimaryRecipients:copyReconstructedPrimaryRecipients];
   }
 
-  v10 = [a1 attributeSet];
-  v11 = [v10 additionalRecipients];
+  attributeSet5 = [self attributeSet];
+  additionalRecipients = [attributeSet5 additionalRecipients];
 
-  if (!v11)
+  if (!additionalRecipients)
   {
-    v13 = [a1 copyReconstructedAdditionalRecipients];
-    v12 = [a1 attributeSet];
-    [v12 setAdditionalRecipients:v13];
+    copyReconstructedAdditionalRecipients = [self copyReconstructedAdditionalRecipients];
+    attributeSet6 = [self attributeSet];
+    [attributeSet6 setAdditionalRecipients:copyReconstructedAdditionalRecipients];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface CPLBGSTActivitiesReport
 - (CPLBGSTActivitiesReport)init;
-- (CPLBGSTActivitiesReport)initWithCoder:(id)a3;
-- (id)_reportForTaskWithIdentifier:(id)a3;
-- (id)lastSubmitDateForTaskWithIdentifier:(id)a3;
-- (id)statusesWithNow:(id)a3 prefix:(id)a4;
-- (void)didAcquireTaskWithIdentifier:(id)a3;
-- (void)didCancelTaskWithIdentifier:(id)a3;
-- (void)didDeferTaskWithIdentifier:(id)a3;
-- (void)didErrorTaskWithIdentifier:(id)a3;
-- (void)didExpireTaskWithIdentifier:(id)a3 reason:(unint64_t)a4;
-- (void)didFinishTaskWithIdentifier:(id)a3;
-- (void)didSubmitTaskWithIdentifier:(id)a3;
-- (void)didUpdateTaskWithIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CPLBGSTActivitiesReport)initWithCoder:(id)coder;
+- (id)_reportForTaskWithIdentifier:(id)identifier;
+- (id)lastSubmitDateForTaskWithIdentifier:(id)identifier;
+- (id)statusesWithNow:(id)now prefix:(id)prefix;
+- (void)didAcquireTaskWithIdentifier:(id)identifier;
+- (void)didCancelTaskWithIdentifier:(id)identifier;
+- (void)didDeferTaskWithIdentifier:(id)identifier;
+- (void)didErrorTaskWithIdentifier:(id)identifier;
+- (void)didExpireTaskWithIdentifier:(id)identifier reason:(unint64_t)reason;
+- (void)didFinishTaskWithIdentifier:(id)identifier;
+- (void)didSubmitTaskWithIdentifier:(id)identifier;
+- (void)didUpdateTaskWithIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLBGSTActivitiesReport
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (CPLBGSTActivitiesReport)initWithCoder:(id)a3
+- (CPLBGSTActivitiesReport)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -51,7 +51,7 @@
 
   v7 = objc_opt_class();
   v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"reports"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"reports"];
   reportPerIdentifier = v6->_reportPerIdentifier;
   v6->_reportPerIdentifier = v9;
 
@@ -69,93 +69,93 @@ LABEL_4:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     sub_10018FEC0(self, a2);
   }
 
-  [v5 encodeObject:self->_reportPerIdentifier forKey:@"reports"];
+  [coderCopy encodeObject:self->_reportPerIdentifier forKey:@"reports"];
 }
 
-- (id)_reportForTaskWithIdentifier:(id)a3
+- (id)_reportForTaskWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_reportPerIdentifier objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_reportPerIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (!v5)
   {
-    v6 = [[CPLBGSTActivityReport alloc] initWithTaskIdentifier:v4];
-    [(NSMutableDictionary *)self->_reportPerIdentifier setObject:v6 forKeyedSubscript:v4];
+    v6 = [[CPLBGSTActivityReport alloc] initWithTaskIdentifier:identifierCopy];
+    [(NSMutableDictionary *)self->_reportPerIdentifier setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_reportPerIdentifier objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_reportPerIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v7;
 }
 
-- (void)didSubmitTaskWithIdentifier:(id)a3
+- (void)didSubmitTaskWithIdentifier:(id)identifier
 {
-  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
+  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
   [v3 didSubmit];
 }
 
-- (void)didUpdateTaskWithIdentifier:(id)a3
+- (void)didUpdateTaskWithIdentifier:(id)identifier
 {
-  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
+  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
   [v3 didUpdate];
 }
 
-- (void)didCancelTaskWithIdentifier:(id)a3
+- (void)didCancelTaskWithIdentifier:(id)identifier
 {
-  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
+  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
   [v3 didCancel];
 }
 
-- (void)didAcquireTaskWithIdentifier:(id)a3
+- (void)didAcquireTaskWithIdentifier:(id)identifier
 {
-  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
+  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
   [v3 didAcquire];
 }
 
-- (void)didExpireTaskWithIdentifier:(id)a3 reason:(unint64_t)a4
+- (void)didExpireTaskWithIdentifier:(id)identifier reason:(unint64_t)reason
 {
-  v5 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
-  [v5 didExpireWithReason:a4];
+  v5 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
+  [v5 didExpireWithReason:reason];
 }
 
-- (void)didDeferTaskWithIdentifier:(id)a3
+- (void)didDeferTaskWithIdentifier:(id)identifier
 {
-  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
+  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
   [v3 didDefer];
 }
 
-- (void)didErrorTaskWithIdentifier:(id)a3
+- (void)didErrorTaskWithIdentifier:(id)identifier
 {
-  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
+  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
   [v3 didError];
 }
 
-- (void)didFinishTaskWithIdentifier:(id)a3
+- (void)didFinishTaskWithIdentifier:(id)identifier
 {
-  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:a3];
+  v3 = [(CPLBGSTActivitiesReport *)self _reportForTaskWithIdentifier:identifier];
   [v3 didFinish];
 }
 
-- (id)statusesWithNow:(id)a3 prefix:(id)a4
+- (id)statusesWithNow:(id)now prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a4;
+  nowCopy = now;
+  prefixCopy = prefix;
   v8 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableDictionary count](self->_reportPerIdentifier, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(NSMutableDictionary *)self->_reportPerIdentifier allKeys];
-  v10 = [v9 sortedArrayUsingSelector:"compare:"];
+  allKeys = [(NSMutableDictionary *)self->_reportPerIdentifier allKeys];
+  v10 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
@@ -172,7 +172,7 @@ LABEL_4:
         }
 
         v15 = [(NSMutableDictionary *)self->_reportPerIdentifier objectForKeyedSubscript:*(*(&v19 + 1) + 8 * i)];
-        v16 = [v15 statusWithNow:v6 prefix:v7];
+        v16 = [v15 statusWithNow:nowCopy prefix:prefixCopy];
 
         [v8 addObject:v16];
       }
@@ -188,12 +188,12 @@ LABEL_4:
   return v17;
 }
 
-- (id)lastSubmitDateForTaskWithIdentifier:(id)a3
+- (id)lastSubmitDateForTaskWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_reportPerIdentifier objectForKeyedSubscript:a3];
-  v4 = [v3 lastSubmitDate];
+  v3 = [(NSMutableDictionary *)self->_reportPerIdentifier objectForKeyedSubscript:identifier];
+  lastSubmitDate = [v3 lastSubmitDate];
 
-  return v4;
+  return lastSubmitDate;
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface TVAppRemovalService
-- (BOOL)_anyDownloadsExistAtPaths:(id)a3;
-- (void)_clearPreferencesForApplicationID:(id)a3;
-- (void)removeAppWithReply:(id)a3;
+- (BOOL)_anyDownloadsExistAtPaths:(id)paths;
+- (void)_clearPreferencesForApplicationID:(id)d;
+- (void)removeAppWithReply:(id)reply;
 @end
 
 @implementation TVAppRemovalService
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   NSLog(@"Running app removal...");
   v5 = +[NSBundle mainBundle];
-  v6 = [v5 bundleIdentifier];
-  [v6 UTF8String];
+  bundleIdentifier = [v5 bundleIdentifier];
+  [bundleIdentifier UTF8String];
 
   v7 = tcc_identity_create();
   v8 = dispatch_group_create();
@@ -60,8 +60,8 @@
     if ([v21 _hasItems])
     {
       v72 = v18;
-      v73 = v4;
-      v74 = self;
+      v73 = replyCopy;
+      selfCopy = self;
       v76 = v12;
       v78 = v7;
       v91 = 0u;
@@ -69,8 +69,8 @@
       v89 = 0u;
       v90 = 0u;
       v71 = v21;
-      v26 = [v21 items];
-      v27 = [v26 countByEnumeratingWithState:&v89 objects:v98 count:16];
+      items = [v21 items];
+      v27 = [items countByEnumeratingWithState:&v89 objects:v98 count:16];
       v28 = &NSLog_ptr;
       if (v27)
       {
@@ -85,7 +85,7 @@
           {
             if (*v90 != v30)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(items);
             }
 
             v34 = *(*(&v89 + 1) + 8 * i);
@@ -102,7 +102,7 @@
                 v39 = v30;
                 v40 = v36;
                 v41 = v31;
-                v42 = v26;
+                v42 = items;
                 v43 = v35;
                 v44 = [[SSRentalCheckinRequest alloc] initWithAccountIdentifier:v43 rentalKeyIdentifier:v40];
 
@@ -118,7 +118,7 @@
                 v47 = dispatch_time(0, 3000000000);
                 dispatch_semaphore_wait(v46, v47);
 
-                v26 = v42;
+                items = v42;
                 v31 = v41;
                 v32 = v80;
 
@@ -127,7 +127,7 @@
             }
           }
 
-          v29 = [v26 countByEnumeratingWithState:&v89 objects:v98 count:16];
+          v29 = [items countByEnumeratingWithState:&v89 objects:v98 count:16];
         }
 
         while (v29);
@@ -136,8 +136,8 @@
       v12 = v76;
       v7 = v78;
       v18 = v72;
-      v4 = v73;
-      self = v74;
+      replyCopy = v73;
+      self = selfCopy;
       v15 = &NSLog_ptr;
       v20 = &NSLog_ptr;
       v21 = v71;
@@ -169,15 +169,15 @@
     v77 = v12;
     v79 = v7;
     v55 = v18;
-    v75 = self;
-    v56 = v4;
+    selfCopy2 = self;
+    v56 = replyCopy;
     v57 = objc_alloc_init(NSMutableArray);
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v58 = [v49 items];
-    v59 = [v58 countByEnumeratingWithState:&v83 objects:v96 count:16];
+    items2 = [v49 items];
+    v59 = [items2 countByEnumeratingWithState:&v83 objects:v96 count:16];
     if (v59)
     {
       v60 = v59;
@@ -189,7 +189,7 @@
         {
           if (*v84 != v61)
           {
-            objc_enumerationMutation(v58);
+            objc_enumerationMutation(items2);
           }
 
           v64 = [*(*(&v83 + 1) + 8 * j) valueForProperty:v62];
@@ -199,18 +199,18 @@
           }
         }
 
-        v60 = [v58 countByEnumeratingWithState:&v83 objects:v96 count:16];
+        v60 = [items2 countByEnumeratingWithState:&v83 objects:v96 count:16];
       }
 
       while (v60);
     }
 
-    v65 = [v49 items];
+    items3 = [v49 items];
     v18 = v55;
-    [v55 removeItems:v65];
+    [v55 removeItems:items3];
 
-    v4 = v56;
-    self = v75;
+    replyCopy = v56;
+    self = selfCopy2;
     v12 = v77;
     v7 = v79;
     if ([v57 count])
@@ -221,7 +221,7 @@
         sleep(1u);
       }
 
-      while ([(TVAppRemovalService *)v75 _anyDownloadsExistAtPaths:v57]);
+      while ([(TVAppRemovalService *)selfCopy2 _anyDownloadsExistAtPaths:v57]);
       NSLog(@"Done waiting for downloads to be deleted");
     }
   }
@@ -236,25 +236,25 @@
   v67 = [NSArray arrayWithObjects:v95 count:2];
   v68 = [v66 initWithDownloadKinds:v67];
 
-  v69 = [v68 downloads];
+  downloads = [v68 downloads];
   NSLog(@"Cancel downloads if needed...");
-  if ([v69 count])
+  if ([downloads count])
   {
-    [v68 cancelDownloads:v69 completionBlock:0];
+    [v68 cancelDownloads:downloads completionBlock:0];
   }
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001884;
   block[3] = &unk_1000042D8;
-  v82 = v4;
-  v70 = v4;
+  v82 = replyCopy;
+  v70 = replyCopy;
   dispatch_group_notify(v12, &_dispatch_main_q, block);
 }
 
-- (void)_clearPreferencesForApplicationID:(id)a3
+- (void)_clearPreferencesForApplicationID:(id)d
 {
-  applicationID = a3;
+  applicationID = d;
   v3 = CFPreferencesCopyKeyList(applicationID, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
   if ([(__CFArray *)v3 count])
   {
@@ -262,14 +262,14 @@
   }
 }
 
-- (BOOL)_anyDownloadsExistAtPaths:(id)a3
+- (BOOL)_anyDownloadsExistAtPaths:(id)paths
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  pathsCopy = paths;
+  v4 = [pathsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -281,7 +281,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -298,7 +298,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [pathsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;

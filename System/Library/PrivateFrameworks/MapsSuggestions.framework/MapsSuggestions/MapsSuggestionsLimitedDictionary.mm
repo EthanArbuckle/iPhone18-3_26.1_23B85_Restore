@@ -1,24 +1,24 @@
 @interface MapsSuggestionsLimitedDictionary
-- (MapsSuggestionsLimitedDictionary)initWithMaximumCapacity:(unint64_t)a3;
+- (MapsSuggestionsLimitedDictionary)initWithMaximumCapacity:(unint64_t)capacity;
 - (NSString)description;
 - (NSString)uniqueName;
 - (double)totalHitRatio;
-- (id)objectForKeyedSubscript:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
 - (unint64_t)count;
-- (unint64_t)hitsOnKey:(id)a3;
+- (unint64_t)hitsOnKey:(id)key;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
-- (void)triggerFired:(id)a3;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
+- (void)triggerFired:(id)fired;
 @end
 
 @implementation MapsSuggestionsLimitedDictionary
 
-- (MapsSuggestionsLimitedDictionary)initWithMaximumCapacity:(unint64_t)a3
+- (MapsSuggestionsLimitedDictionary)initWithMaximumCapacity:(unint64_t)capacity
 {
-  v3 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (capacity)
   {
     v16.receiver = self;
     v16.super_class = MapsSuggestionsLimitedDictionary;
@@ -26,16 +26,16 @@
     v6 = v5;
     if (v5)
     {
-      v5->_maxCapacity = a3;
-      v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+      v5->_maxCapacity = capacity;
+      v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
       dict = v6->_dict;
       v6->_dict = v7;
 
-      v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:a3];
+      v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:capacity];
       hits = v6->_hits;
       v6->_hits = v9;
 
-      v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+      v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
       order = v6->_order;
       v6->_order = v11;
 
@@ -43,8 +43,8 @@
       v6->_totalMisses = 0;
     }
 
-    v3 = v6;
-    v13 = v3;
+    selfCopy = v6;
+    v13 = selfCopy;
   }
 
   else
@@ -69,31 +69,31 @@
   return v13;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  subscriptCopy = subscript;
+  if (subscriptCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_hits objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_hits objectForKey:subscriptCopy];
     v7 = v6;
     if (v6)
     {
       v8 = [v6 unsignedIntegerValue] + 1;
-      hits = v5->_hits;
+      hits = selfCopy->_hits;
       v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-      [(NSMutableDictionary *)hits setObject:v10 forKey:v4];
+      [(NSMutableDictionary *)hits setObject:v10 forKey:subscriptCopy];
 
       if (MapsSuggestionsLoggingIsVerbose())
       {
         v11 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          [(MapsSuggestionsLimitedDictionary *)v5 totalHitRatio];
+          [(MapsSuggestionsLimitedDictionary *)selfCopy totalHitRatio];
           v17 = 138412802;
-          v18 = v4;
+          v18 = subscriptCopy;
           v19 = 1024;
           *v20 = v8;
           *&v20[4] = 2048;
@@ -102,8 +102,8 @@
         }
       }
 
-      ++v5->_totalHits;
-      v13 = [(NSMutableDictionary *)v5->_dict objectForKey:v4];
+      ++selfCopy->_totalHits;
+      v13 = [(NSMutableDictionary *)selfCopy->_dict objectForKey:subscriptCopy];
     }
 
     else
@@ -113,9 +113,9 @@
         v14 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          [(MapsSuggestionsLimitedDictionary *)v5 totalHitRatio];
+          [(MapsSuggestionsLimitedDictionary *)selfCopy totalHitRatio];
           v17 = 138412546;
-          v18 = v4;
+          v18 = subscriptCopy;
           v19 = 2048;
           *v20 = v15;
           _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "MISSED '%@' (total ratio: %.2f)", &v17, 0x16u);
@@ -123,16 +123,16 @@
       }
 
       v13 = 0;
-      ++v5->_totalMisses;
+      ++selfCopy->_totalMisses;
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v5 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_ERROR))
+    selfCopy = GEOFindOrCreateLog();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       v17 = 136446978;
       v18 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsLimitedDictionary.m";
@@ -142,7 +142,7 @@
       *&v20[6] = "[MapsSuggestionsLimitedDictionary objectForKeyedSubscript:]";
       v21 = 2082;
       v22 = "nil == (key)";
-      _os_log_impl(&dword_1C5126000, &v5->super, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a key", &v17, 0x26u);
+      _os_log_impl(&dword_1C5126000, &selfCopy->super, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a key", &v17, 0x26u);
     }
 
     v13 = 0;
@@ -151,12 +151,12 @@
   return v13;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  if (!subscriptCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -175,7 +175,7 @@
     goto LABEL_13;
   }
 
-  if (!v6)
+  if (!objectCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -196,39 +196,39 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSMutableArray *)v8->_order indexOfObject:v7];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSMutableArray *)selfCopy->_order indexOfObject:subscriptCopy];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)v8->_order removeObjectAtIndex:v9];
+    [(NSMutableArray *)selfCopy->_order removeObjectAtIndex:v9];
   }
 
-  if ([(NSMutableArray *)v8->_order count]+ 1 > v8->_maxCapacity)
+  if ([(NSMutableArray *)selfCopy->_order count]+ 1 > selfCopy->_maxCapacity)
   {
-    v10 = [(NSMutableArray *)v8->_order firstObject];
-    [(NSMutableArray *)v8->_order removeObjectAtIndex:0];
-    [(NSMutableDictionary *)v8->_dict removeObjectForKey:v10];
-    [(NSMutableDictionary *)v8->_hits removeObjectForKey:v10];
+    firstObject = [(NSMutableArray *)selfCopy->_order firstObject];
+    [(NSMutableArray *)selfCopy->_order removeObjectAtIndex:0];
+    [(NSMutableDictionary *)selfCopy->_dict removeObjectForKey:firstObject];
+    [(NSMutableDictionary *)selfCopy->_hits removeObjectForKey:firstObject];
   }
 
-  [(NSMutableDictionary *)v8->_dict setObject:v6 forKey:v7];
-  [(NSMutableDictionary *)v8->_hits setObject:&unk_1F4470F78 forKey:v7];
-  [(NSMutableArray *)v8->_order addObject:v7];
-  objc_sync_exit(v8);
+  [(NSMutableDictionary *)selfCopy->_dict setObject:objectCopy forKey:subscriptCopy];
+  [(NSMutableDictionary *)selfCopy->_hits setObject:&unk_1F4470F78 forKey:subscriptCopy];
+  [(NSMutableArray *)selfCopy->_order addObject:subscriptCopy];
+  objc_sync_exit(selfCopy);
 
 LABEL_14:
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_dict removeObjectForKey:v5];
-  [(NSMutableDictionary *)v4->_hits removeObjectForKey:v5];
-  [(NSMutableArray *)v4->_order removeObject:v5];
-  objc_sync_exit(v4);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_dict removeObjectForKey:keyCopy];
+  [(NSMutableDictionary *)selfCopy->_hits removeObjectForKey:keyCopy];
+  [(NSMutableArray *)selfCopy->_order removeObject:keyCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)removeAllObjects
@@ -244,26 +244,26 @@ LABEL_14:
 
 - (unint64_t)count
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_dict count];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_dict count];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (unint64_t)hitsOnKey:(id)a3
+- (unint64_t)hitsOnKey:(id)key
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_hits objectForKey:v4];
-    v7 = [v6 unsignedIntegerValue];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_hits objectForKey:keyCopy];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -282,18 +282,18 @@ LABEL_14:
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a key", &v10, 0x26u);
     }
 
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (double)totalHitRatio
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  totalHits = v2->_totalHits;
-  v4 = v2->_totalMisses + totalHits;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  totalHits = selfCopy->_totalHits;
+  v4 = selfCopy->_totalMisses + totalHits;
   if (v4)
   {
     v5 = totalHits / v4;
@@ -304,7 +304,7 @@ LABEL_14:
     v5 = 0.0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -312,20 +312,20 @@ LABEL_14:
 - (NSString)description
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   context = objc_autoreleasePoolPush();
-  v21.receiver = v2;
+  v21.receiver = selfCopy;
   v21.super_class = MapsSuggestionsLimitedDictionary;
   v3 = [(MapsSuggestionsLimitedDictionary *)&v21 description];
   v4 = [v3 mutableCopy];
 
-  [v4 appendFormat:@"(%u){ ", -[NSMutableDictionary count](v2->_dict, "count")];
+  [v4 appendFormat:@"(%u){ ", -[NSMutableDictionary count](selfCopy->_dict, "count")];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = v2->_order;
+  obj = selfCopy->_order;
   v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v5)
   {
@@ -340,10 +340,10 @@ LABEL_14:
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [(NSMutableDictionary *)v2->_hits objectForKeyedSubscript:v8];
-        v10 = [v9 unsignedIntegerValue];
-        v11 = [(NSMutableDictionary *)v2->_dict objectForKeyedSubscript:v8];
-        [v4 appendFormat:@"'%@' (%u hits) => '%@', ", v8, v10, v11];
+        v9 = [(NSMutableDictionary *)selfCopy->_hits objectForKeyedSubscript:v8];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
+        v11 = [(NSMutableDictionary *)selfCopy->_dict objectForKeyedSubscript:v8];
+        [v4 appendFormat:@"'%@' (%u hits) => '%@', ", v8, unsignedIntegerValue, v11];
       }
 
       v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v17 objects:v22 count:16];
@@ -352,25 +352,25 @@ LABEL_14:
     while (v5);
   }
 
-  [(MapsSuggestionsLimitedDictionary *)v2 totalHitRatio];
+  [(MapsSuggestionsLimitedDictionary *)selfCopy totalHitRatio];
   [v4 appendFormat:@"} (hit ratio: %.2f)", v12];
   v13 = [v4 copy];
 
   objc_autoreleasePoolPop(context);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (void)triggerFired:(id)a3
+- (void)triggerFired:(id)fired
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(MapsSuggestionsLimitedDictionary *)self uniqueName];
+    uniqueName = [(MapsSuggestionsLimitedDictionary *)self uniqueName];
     v6 = 138412290;
-    v7 = v5;
+    v7 = uniqueName;
     _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "Throwing away all content for %@", &v6, 0xCu);
   }
 

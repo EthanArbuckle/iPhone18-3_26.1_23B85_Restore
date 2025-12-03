@@ -2,18 +2,18 @@
 + (id)sharedMonitor;
 - (NTKGreenfieldCompanionAppInstallationMonitor)init;
 - (id)_existingPlaceholderItemIds;
-- (id)_queue_calculatePendingRemovalItemIdsWithExistingPlaceholderIds:(id)a3;
+- (id)_queue_calculatePendingRemovalItemIdsWithExistingPlaceholderIds:(id)ids;
 - (id)_queue_fetchInstalledWatchAppsItemIds;
 - (id)_queue_fetchNotInstalledWatchAppStatus;
 - (void)_reloadInstallingAppsOnPhoneAndWatch;
-- (void)_removePlaceholderComplicationWithItemIds:(id)a3;
+- (void)_removePlaceholderComplicationWithItemIds:(id)ids;
 - (void)_toggleObserving;
-- (void)applicationInstallsDidCancel:(id)a3;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationsDidFailToInstall:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
+- (void)applicationInstallsDidCancel:(id)cancel;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationsDidFailToInstall:(id)install;
+- (void)applicationsDidInstall:(id)install;
 - (void)dealloc;
-- (void)fetchInstalledAppsOnWatchWithCompletionBlock:(id)a3;
+- (void)fetchInstalledAppsOnWatchWithCompletionBlock:(id)block;
 - (void)handleAddFaceManagerDidUpdateFaceLibrary;
 - (void)start;
 @end
@@ -58,9 +58,9 @@ void __61__NTKGreenfieldCompanionAppInstallationMonitor_sharedMonitor__block_inv
 {
   if (!self->_isRunning)
   {
-    v3 = [MEMORY[0x277CBBAE8] currentDevice];
+    currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
     v4 = +[NTKCompanionFaceCollectionsManager sharedInstance];
-    v5 = [v4 sharedFaceCollectionForDevice:v3 forCollectionIdentifier:@"LibraryFaces"];
+    v5 = [v4 sharedFaceCollectionForDevice:currentDevice forCollectionIdentifier:@"LibraryFaces"];
     library = self->_library;
     self->_library = v5;
 
@@ -87,8 +87,8 @@ void __61__NTKGreenfieldCompanionAppInstallationMonitor_sharedMonitor__block_inv
 - (void)dealloc
 {
   [(NTKFaceCollection *)self->_library removeObserver:self];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -97,16 +97,16 @@ void __61__NTKGreenfieldCompanionAppInstallationMonitor_sharedMonitor__block_inv
   [(NTKGreenfieldCompanionAppInstallationMonitor *)&v5 dealloc];
 }
 
-- (void)fetchInstalledAppsOnWatchWithCompletionBlock:(id)a3
+- (void)fetchInstalledAppsOnWatchWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __93__NTKGreenfieldCompanionAppInstallationMonitor_fetchInstalledAppsOnWatchWithCompletionBlock___block_invoke;
   block[3] = &unk_27877E960;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -454,8 +454,8 @@ void __93__NTKGreenfieldCompanionAppInstallationMonitor_fetchInstalledAppsOnWatc
     [NTKGreenfieldCompanionAppInstallationMonitor _toggleObserving];
   }
 
-  v3 = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _existingPlaceholderItemIds];
-  v4 = [v3 count];
+  _existingPlaceholderItemIds = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _existingPlaceholderItemIds];
+  v4 = [_existingPlaceholderItemIds count];
 
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -471,8 +471,8 @@ void __93__NTKGreenfieldCompanionAppInstallationMonitor_fetchInstalledAppsOnWatc
     CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
     if (self->_isObservingApplicationWorkspace)
     {
-      v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      [v11 removeObserver:self];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+      [defaultWorkspace removeObserver:self];
 
       self->_isObservingApplicationWorkspace = 0;
       v12 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
@@ -502,8 +502,8 @@ LABEL_20:
 
   if (!self->_isObservingApplicationWorkspace)
   {
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v6 addObserver:self];
+    defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace2 addObserver:self];
 
     self->_isObservingApplicationWorkspace = 1;
     v7 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
@@ -537,15 +537,15 @@ LABEL_20:
 - (void)_reloadInstallingAppsOnPhoneAndWatch
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _existingPlaceholderItemIds];
+  _existingPlaceholderItemIds = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _existingPlaceholderItemIds];
   serialQueue = self->_serialQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __84__NTKGreenfieldCompanionAppInstallationMonitor__reloadInstallingAppsOnPhoneAndWatch__block_invoke;
   v6[3] = &unk_27877E438;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
+  v7 = _existingPlaceholderItemIds;
+  v5 = _existingPlaceholderItemIds;
   dispatch_async(serialQueue, v6);
 }
 
@@ -599,22 +599,22 @@ void __85__NTKGreenfieldCompanionAppInstallationMonitor__queue_fetchInstalledWat
 - (id)_queue_fetchNotInstalledWatchAppStatus
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
   v4 = dispatch_semaphore_create(0);
-  v5 = [MEMORY[0x277CBBAE8] currentDevice];
-  v6 = [v5 pdrDevice];
-  v7 = [v6 pairingID];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  pdrDevice = [currentDevice pdrDevice];
+  pairingID = [pdrDevice pairingID];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __86__NTKGreenfieldCompanionAppInstallationMonitor__queue_fetchNotInstalledWatchAppStatus__block_invoke;
   v16 = &unk_278781CC8;
   v17 = v4;
-  v18 = v2;
-  v8 = v2;
+  v18 = dictionary;
+  v8 = dictionary;
   v9 = v4;
-  [v3 enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v7 options:1 withBlock:&v13];
+  [mEMORY[0x277CEAF80] enumerateLocallyAvailableApplicationsForDeviceWithPairingID:pairingID options:1 withBlock:&v13];
   v10 = dispatch_time(0, 5000000000);
   dispatch_semaphore_wait(v9, v10);
   v11 = [v8 copy];
@@ -661,25 +661,25 @@ LABEL_8:
   return v9;
 }
 
-- (id)_queue_calculatePendingRemovalItemIdsWithExistingPlaceholderIds:(id)a3
+- (id)_queue_calculatePendingRemovalItemIdsWithExistingPlaceholderIds:(id)ids
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idsCopy = ids;
   dispatch_assert_queue_V2(self->_serialQueue);
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(NTKGreenfieldCompanionAppInstallationMonitor *)v4 _queue_calculatePendingRemovalItemIdsWithExistingPlaceholderIds:v5];
+    [(NTKGreenfieldCompanionAppInstallationMonitor *)idsCopy _queue_calculatePendingRemovalItemIdsWithExistingPlaceholderIds:v5];
   }
 
-  v24 = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _queue_fetchInstalledWatchAppsItemIds];
-  v6 = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _queue_fetchNotInstalledWatchAppStatus];
+  _queue_fetchInstalledWatchAppsItemIds = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _queue_fetchInstalledWatchAppsItemIds];
+  _queue_fetchNotInstalledWatchAppStatus = [(NTKGreenfieldCompanionAppInstallationMonitor *)self _queue_fetchNotInstalledWatchAppStatus];
   v23 = [MEMORY[0x277CBEB58] set];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = idsCopy;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v7)
   {
@@ -698,14 +698,14 @@ LABEL_8:
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = [objc_alloc(MEMORY[0x277CC1E70]) initWithStoreItemIdentifier:objc_msgSend(v12 error:{"unsignedLongLongValue"), 0}];
-        v14 = [v13 applicationState];
-        v15 = [v24 containsObject:v12];
-        v16 = [v6 objectForKeyedSubscript:v12];
+        applicationState = [v13 applicationState];
+        v15 = [_queue_fetchInstalledWatchAppsItemIds containsObject:v12];
+        v16 = [_queue_fetchNotInstalledWatchAppStatus objectForKeyedSubscript:v12];
         v17 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v21;
-          v30 = v14;
+          v30 = applicationState;
           v31 = 1024;
           v32 = v15;
           v33 = 2112;
@@ -713,7 +713,7 @@ LABEL_8:
           _os_log_impl(&dword_22D9C5000, v17, OS_LOG_TYPE_DEFAULT, "NTKGreenfieldCompanionAppInstallationMonitor: enumerateInstalledApplicationsOnPairedDevice: decision time:\n\t[phoneAppState=%@]\n\t[installedOnWatch=%d]\n\t[watchAppStatus=%@\n", buf, 0x1Cu);
         }
 
-        if ((v15 & 1) != 0 || !(v14 | v16) || v16 && (v18 = [v16 installStatus], v18 <= 4) && v18 != 1)
+        if ((v15 & 1) != 0 || !(applicationState | v16) || v16 && (v18 = [v16 installStatus], v18 <= 4) && v18 != 1)
         {
           [v23 addObject:{v12, v21}];
         }
@@ -782,9 +782,9 @@ void __75__NTKGreenfieldCompanionAppInstallationMonitor__existingPlaceholderItem
   }
 }
 
-- (void)_removePlaceholderComplicationWithItemIds:(id)a3
+- (void)_removePlaceholderComplicationWithItemIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (![(NTKFaceCollection *)self->_library hasLoaded])
   {
@@ -807,7 +807,7 @@ void __75__NTKGreenfieldCompanionAppInstallationMonitor__existingPlaceholderItem
       v10[3] = &unk_278780C38;
       v7 = v6;
       v11 = v7;
-      v12 = v4;
+      v12 = idsCopy;
       v13 = &v14;
       [v7 enumerateComplicationSlotsWithBlock:v10];
       if (*(v15 + 24) == 1)
@@ -861,15 +861,15 @@ void __90__NTKGreenfieldCompanionAppInstallationMonitor__removePlaceholderCompli
   }
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  startCopy = start;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = startCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "NTKGreenfieldCompanionAppInstallationMonitor: applicationInstallsDidStart: %@", buf, 0xCu);
   }
 
@@ -881,15 +881,15 @@ void __90__NTKGreenfieldCompanionAppInstallationMonitor__removePlaceholderCompli
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = installCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "NTKGreenfieldCompanionAppInstallationMonitor: applicationsDidInstall: %@", buf, 0xCu);
   }
 
@@ -901,15 +901,15 @@ void __90__NTKGreenfieldCompanionAppInstallationMonitor__removePlaceholderCompli
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)applicationsDidFailToInstall:(id)a3
+- (void)applicationsDidFailToInstall:(id)install
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = installCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "NTKGreenfieldCompanionAppInstallationMonitor: applicationsDidFailToInstall: %@", buf, 0xCu);
   }
 
@@ -921,15 +921,15 @@ void __90__NTKGreenfieldCompanionAppInstallationMonitor__removePlaceholderCompli
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)applicationInstallsDidCancel:(id)a3
+- (void)applicationInstallsDidCancel:(id)cancel
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = cancelCopy;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "NTKGreenfieldCompanionAppInstallationMonitor: applicationInstallsDidCancel: %@", buf, 0xCu);
   }
 

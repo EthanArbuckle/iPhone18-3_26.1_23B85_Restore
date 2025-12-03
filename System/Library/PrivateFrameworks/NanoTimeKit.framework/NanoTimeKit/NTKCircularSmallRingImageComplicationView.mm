@@ -1,17 +1,17 @@
 @interface NTKCircularSmallRingImageComplicationView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
-+ (double)_imageScaleForTemplate:(id)a3;
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
++ (double)_imageScaleForTemplate:(id)template;
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block;
 - (void)_updateForTemplateChange;
 - (void)layoutSubviews;
-- (void)updateRingWithProgressProvider:(id)a3;
+- (void)updateRingWithProgressProvider:(id)provider;
 @end
 
 @implementation NTKCircularSmallRingImageComplicationView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -33,12 +33,12 @@
   v10.super_class = NTKCircularSmallRingImageComplicationView;
   [(NTKCircularSmallRingComplicationView *)&v10 layoutSubviews];
   [(NTKCircularSmallRingImageComplicationView *)self bounds];
-  v3 = [(NTKCircularComplicationView *)self complicationTemplate];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
   objc_opt_class();
   v4 = 1.0;
   if (objc_opt_isKindOfClass())
   {
-    [objc_opt_class() _imageScaleForTemplate:v3];
+    [objc_opt_class() _imageScaleForTemplate:complicationTemplate];
     v4 = v5;
   }
 
@@ -48,24 +48,24 @@
   [(CDComplicationImageView *)imageView setTransform:&v9];
   v7 = self->_imageView;
   [(CDComplicationImageView *)v7 bounds];
-  v8 = [(NTKCircularComplicationView *)self device];
+  device = [(NTKCircularComplicationView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   [(CDComplicationImageView *)v7 ntk_setBoundsAndPositionFromFrame:?];
 }
 
-+ (double)_imageScaleForTemplate:(id)a3
++ (double)_imageScaleForTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__NTKCircularSmallRingImageComplicationView__imageScaleForTemplate___block_invoke;
   v10[3] = &unk_27877DDA0;
-  v11 = v3;
+  v11 = templateCopy;
   v4 = MEMORY[0x277CBBB68];
-  v5 = v3;
-  v6 = [v4 sharedRenderingContext];
-  v7 = [v6 device];
-  __68__NTKCircularSmallRingImageComplicationView__imageScaleForTemplate___block_invoke(v10, v7);
+  v5 = templateCopy;
+  sharedRenderingContext = [v4 sharedRenderingContext];
+  device = [sharedRenderingContext device];
+  __68__NTKCircularSmallRingImageComplicationView__imageScaleForTemplate___block_invoke(v10, device);
 
   v8 = *&_imageScaleForTemplate___scale;
   return v8;
@@ -133,17 +133,17 @@ uint64_t __68__NTKCircularSmallRingImageComplicationView__imageScaleForTemplate_
 
 - (void)_updateForTemplateChange
 {
-  v3 = [(NTKCircularComplicationView *)self complicationTemplate];
-  v4 = [v3 imageProvider];
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
+  imageProvider = [complicationTemplate imageProvider];
   imageView = self->_imageView;
-  v6 = [(CDComplicationImageView *)imageView imageProvider];
-  v7 = [off_27877BE78 existingImageView:imageView supportsImageProvider:v6];
+  imageProvider2 = [(CDComplicationImageView *)imageView imageProvider];
+  v7 = [off_27877BE78 existingImageView:imageView supportsImageProvider:imageProvider2];
 
   v8 = self->_imageView;
   if ((v7 & 1) == 0)
   {
     [(CDComplicationImageView *)v8 removeFromSuperview];
-    v9 = [off_27877BE78 viewForImageProvider:v4];
+    v9 = [off_27877BE78 viewForImageProvider:imageProvider];
     v10 = self->_imageView;
     self->_imageView = v9;
 
@@ -159,19 +159,19 @@ uint64_t __68__NTKCircularSmallRingImageComplicationView__imageScaleForTemplate_
     }
   }
 
-  [(CDComplicationImageView *)v8 setImageProvider:v4];
+  [(CDComplicationImageView *)v8 setImageProvider:imageProvider];
   [(NTKCircularComplicationView *)self _updateImageViewColor:self->_imageView];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v11 = [v3 progressProvider];
+    progressProvider = [complicationTemplate progressProvider];
     progressProvider = self->_progressProvider;
-    if (v11 != progressProvider)
+    if (progressProvider != progressProvider)
     {
       [(CLKProgressProvider *)progressProvider stopUpdatesForToken:self->_progressUpdateToken];
-      objc_storeStrong(&self->_progressProvider, v11);
+      objc_storeStrong(&self->_progressProvider, progressProvider);
       objc_initWeak(&location, self);
-      objc_initWeak(&from, v11);
+      objc_initWeak(&from, progressProvider);
       v13 = self->_progressProvider;
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
@@ -183,7 +183,7 @@ uint64_t __68__NTKCircularSmallRingImageComplicationView__imageScaleForTemplate_
       progressUpdateToken = self->_progressUpdateToken;
       self->_progressUpdateToken = v14;
 
-      [(NTKCircularSmallRingImageComplicationView *)self updateRingWithProgressProvider:v11, v18, v19, v20, v21];
+      [(NTKCircularSmallRingImageComplicationView *)self updateRingWithProgressProvider:progressProvider, v18, v19, v20, v21];
       objc_destroyWeak(&v23);
       objc_destroyWeak(&v22);
       objc_destroyWeak(&from);
@@ -194,9 +194,9 @@ uint64_t __68__NTKCircularSmallRingImageComplicationView__imageScaleForTemplate_
   else
   {
     v16 = [NTKRing alloc];
-    [v3 fillFraction];
-    v11 = -[NTKRing initWithFillFraction:style:](v16, "initWithFillFraction:style:", [v3 ringStyle], v17);
-    [(NTKCircularSmallRingComplicationView *)self updateRingWithRingDescription:v11];
+    [complicationTemplate fillFraction];
+    progressProvider = -[NTKRing initWithFillFraction:style:](v16, "initWithFillFraction:style:", [complicationTemplate ringStyle], v17);
+    [(NTKCircularSmallRingComplicationView *)self updateRingWithRingDescription:progressProvider];
   }
 
   [(NTKCircularSmallRingImageComplicationView *)self setNeedsLayout];
@@ -209,46 +209,46 @@ void __69__NTKCircularSmallRingImageComplicationView__updateForTemplateChange__b
   [WeakRetained updateRingWithProgressProvider:v2];
 }
 
-- (void)updateRingWithProgressProvider:(id)a3
+- (void)updateRingWithProgressProvider:(id)provider
 {
-  v14 = a3;
-  v4 = [(NTKCircularComplicationView *)self timeTravelDate];
-  v5 = v4;
-  if (v4)
+  providerCopy = provider;
+  timeTravelDate = [(NTKCircularComplicationView *)self timeTravelDate];
+  v5 = timeTravelDate;
+  if (timeTravelDate)
   {
-    v6 = v4;
+    complicationDate = timeTravelDate;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBBAD8] complicationDate];
+    complicationDate = [MEMORY[0x277CBBAD8] complicationDate];
   }
 
-  v7 = v6;
+  v7 = complicationDate;
 
   v8 = [NTKRing alloc];
-  [v14 progressFractionForNow:v7];
+  [providerCopy progressFractionForNow:v7];
   v10 = v9;
-  v11 = [(NTKCircularComplicationView *)self complicationTemplate];
-  v12 = -[NTKRing initWithFillFraction:style:](v8, "initWithFillFraction:style:", [v11 ringStyle], v10);
+  complicationTemplate = [(NTKCircularComplicationView *)self complicationTemplate];
+  v12 = -[NTKRing initWithFillFraction:style:](v8, "initWithFillFraction:style:", [complicationTemplate ringStyle], v10);
 
-  [v14 backgroundRingAlpha];
+  [providerCopy backgroundRingAlpha];
   if (v13 >= 0.0)
   {
-    [v14 backgroundRingAlpha];
+    [providerCopy backgroundRingAlpha];
     [(NTKRing *)v12 setBackgroundRingAlpha:?];
   }
 
   [(NTKCircularSmallRingComplicationView *)self updateRingWithRingDescription:v12];
 }
 
-- (void)_enumerateForegroundColoringViewsWithBlock:(id)a3
+- (void)_enumerateForegroundColoringViewsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKCircularSmallRingImageComplicationView;
-  v4 = a3;
-  [(NTKCircularSmallRingComplicationView *)&v5 _enumerateForegroundColoringViewsWithBlock:v4];
-  v4[2](v4, self->_imageView);
+  blockCopy = block;
+  [(NTKCircularSmallRingComplicationView *)&v5 _enumerateForegroundColoringViewsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_imageView);
 }
 
 @end

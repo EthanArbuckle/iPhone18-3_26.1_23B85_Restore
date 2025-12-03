@@ -4,38 +4,38 @@
 + (NSSet)legacySTIXFontNames;
 + (id)createDefaultEnvironment;
 + (id)i_operatorDictionaryURL;
-+ (id)propertyListWithData:(id)a3 error:(id *)a4;
++ (id)propertyListWithData:(id)data error:(id *)error;
 - (BOOL)fontsLoadedCorrectly;
 - (BOOL)i_requiresLegacySTIXFonts;
-- (BOOL)needsToReloadFontsWhenAddingFontNamed:(id)a3;
-- (EQKitEnvironment)initWithConfig:(id)a3;
-- (EQKitEnvironment)initWithData:(id)a3;
+- (BOOL)needsToReloadFontsWhenAddingFontNamed:(id)named;
+- (EQKitEnvironment)initWithConfig:(id)config;
+- (EQKitEnvironment)initWithData:(id)data;
 - (NSData)data;
 - (NSString)mathFontName;
-- (__CTFont)defaultFontOfSize:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (__CTFont)defaultFontOfSize:(double)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)i_configCopy;
 - (id)i_fontsDictionary;
 - (id)i_mathFontName;
 - (void)beginLayout;
 - (void)dealloc;
 - (void)endLayout;
-- (void)setMathFontName:(id)a3;
-- (void)setUsesLegacySTIXFonts:(BOOL)a3;
+- (void)setMathFontName:(id)name;
+- (void)setUsesLegacySTIXFonts:(BOOL)fonts;
 @end
 
 @implementation EQKitEnvironment
 
-- (EQKitEnvironment)initWithConfig:(id)a3
+- (EQKitEnvironment)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v17.receiver = self;
   v17.super_class = EQKitEnvironment;
   v6 = [(EQKitEnvironment *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = +[EQKitEnvironment i_operatorDictionaryURL];
     v7->_operatorDictionary = EQKit::Config::Operator::Dictionary::dictionaryFromURL(v8, v9);
 
@@ -44,13 +44,13 @@
     v12 = EQKitUtilDynamicCast(v10, v11);
     EQKit::Environment::Version::Version(&v16, v12);
 
-    v13 = [(EQKitEnvironment *)v7 i_fontsDictionary];
+    i_fontsDictionary = [(EQKitEnvironment *)v7 i_fontsDictionary];
     if (v16 <= 4)
     {
       v14 = +[EQKitEnvironment defaultMathFontName];
-      [v13 setObject:v14 forKeyedSubscript:@"mathFontName"];
+      [i_fontsDictionary setObject:v14 forKeyedSubscript:@"mathFontName"];
 
-      [v13 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"requiresLegacySTIXFonts"];
+      [i_fontsDictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"requiresLegacySTIXFonts"];
     }
 
     operator new();
@@ -59,10 +59,10 @@
   return 0;
 }
 
-- (EQKitEnvironment)initWithData:(id)a3
+- (EQKitEnvironment)initWithData:(id)data
 {
   v8 = 0;
-  v4 = [EQKitEnvironment propertyListWithData:a3 error:&v8];
+  v4 = [EQKitEnvironment propertyListWithData:data error:&v8];
   v5 = v8;
   v6 = [(EQKitEnvironment *)self initWithConfig:v4];
 
@@ -110,11 +110,11 @@
   [(EQKitEnvironment *)&v9 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [EQKitEnvironment alloc];
-  v5 = [(EQKitEnvironment *)self i_configCopy];
-  v6 = [(EQKitEnvironment *)v4 initWithConfig:v5];
+  i_configCopy = [(EQKitEnvironment *)self i_configCopy];
+  v6 = [(EQKitEnvironment *)v4 initWithConfig:i_configCopy];
 
   return v6;
 }
@@ -128,12 +128,12 @@
   return v3;
 }
 
-+ (id)propertyListWithData:(id)a3 error:(id *)a4
++ (id)propertyListWithData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v10 = 0;
   v6 = objc_opt_class();
-  v7 = [MEMORY[0x277CCAC58] propertyListWithData:v5 options:1 format:&v10 error:a4];
+  v7 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:1 format:&v10 error:error];
   v8 = EQKitUtilDynamicCast(v6, v7);
 
   return v8;
@@ -145,7 +145,7 @@
   block[1] = 3221225472;
   block[2] = __38__EQKitEnvironment_defaultEnvironment__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[EQKitEnvironment defaultEnvironment]::onceToken != -1)
   {
     dispatch_once(&+[EQKitEnvironment defaultEnvironment]::onceToken, block);
@@ -165,13 +165,13 @@ uint64_t __38__EQKitEnvironment_defaultEnvironment__block_invoke(uint64_t a1)
 
 + (id)createDefaultEnvironment
 {
-  v2 = [a1 defaultEnvironmentData];
-  if (!v2 || (v6 = 0, [EQKitEnvironment propertyListWithData:v2 error:&v6], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  defaultEnvironmentData = [self defaultEnvironmentData];
+  if (!defaultEnvironmentData || (v6 = 0, [EQKitEnvironment propertyListWithData:defaultEnvironmentData error:&v6], (dictionary = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v4 = [[EQKitEnvironment alloc] initWithConfig:v3];
+  v4 = [[EQKitEnvironment alloc] initWithConfig:dictionary];
 
   return v4;
 }
@@ -207,14 +207,14 @@ void __42__EQKitEnvironment_defaultEnvironmentData__block_invoke()
   }
 }
 
-- (void)setUsesLegacySTIXFonts:(BOOL)a3
+- (void)setUsesLegacySTIXFonts:(BOOL)fonts
 {
-  v3 = a3;
-  if ([(EQKitEnvironment *)self i_requiresLegacySTIXFonts]!= a3)
+  fontsCopy = fonts;
+  if ([(EQKitEnvironment *)self i_requiresLegacySTIXFonts]!= fonts)
   {
-    v6 = [(EQKitEnvironment *)self i_fontsDictionary];
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-    [v6 setObject:v5 forKeyedSubscript:@"requiresLegacySTIXFonts"];
+    i_fontsDictionary = [(EQKitEnvironment *)self i_fontsDictionary];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:fontsCopy];
+    [i_fontsDictionary setObject:v5 forKeyedSubscript:@"requiresLegacySTIXFonts"];
 
     [(EQKitEnvironment *)self reloadFonts];
   }
@@ -239,17 +239,17 @@ uint64_t __39__EQKitEnvironment_legacySTIXFontNames__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setMathFontName:(id)a3
+- (void)setMathFontName:(id)name
 {
-  v8 = a3;
-  v4 = [(EQKitEnvironment *)self mathFontName];
-  v5 = [v4 isEqualToString:v8];
+  nameCopy = name;
+  mathFontName = [(EQKitEnvironment *)self mathFontName];
+  v5 = [mathFontName isEqualToString:nameCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(EQKitEnvironment *)self i_fontsDictionary];
-    v7 = [v8 copy];
-    [v6 setObject:v7 forKeyedSubscript:@"mathFontName"];
+    i_fontsDictionary = [(EQKitEnvironment *)self i_fontsDictionary];
+    v7 = [nameCopy copy];
+    [i_fontsDictionary setObject:v7 forKeyedSubscript:@"mathFontName"];
 
     if (![(EQKitEnvironment *)self usesLegacySTIXFonts])
     {
@@ -260,11 +260,11 @@ uint64_t __39__EQKitEnvironment_legacySTIXFontNames__block_invoke()
 
 - (NSString)mathFontName
 {
-  v2 = [(EQKitEnvironment *)self i_mathFontName];
-  v3 = v2;
-  if (v2)
+  i_mathFontName = [(EQKitEnvironment *)self i_mathFontName];
+  v3 = i_mathFontName;
+  if (i_mathFontName)
   {
-    v4 = v2;
+    v4 = i_mathFontName;
   }
 
   else
@@ -277,19 +277,19 @@ uint64_t __39__EQKitEnvironment_legacySTIXFontNames__block_invoke()
   return v5;
 }
 
-- (BOOL)needsToReloadFontsWhenAddingFontNamed:(id)a3
+- (BOOL)needsToReloadFontsWhenAddingFontNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   if ([(EQKitEnvironment *)self usesLegacySTIXFonts])
   {
-    v5 = +[EQKitEnvironment legacySTIXFontNames];
-    v6 = [v5 containsObject:v4];
+    mathFontName = +[EQKitEnvironment legacySTIXFontNames];
+    v6 = [mathFontName containsObject:namedCopy];
   }
 
   else
   {
-    v5 = [(EQKitEnvironment *)self mathFontName];
-    v6 = [v5 isEqualToString:v4];
+    mathFontName = [(EQKitEnvironment *)self mathFontName];
+    v6 = [mathFontName isEqualToString:namedCopy];
   }
 
   v7 = v6;
@@ -304,13 +304,13 @@ uint64_t __39__EQKitEnvironment_legacySTIXFontNames__block_invoke()
   return v2();
 }
 
-- (__CTFont)defaultFontOfSize:(double)a3
+- (__CTFont)defaultFontOfSize:(double)size
 {
   v6 = 0;
   v7 = 1;
   v8 = 0;
   v9 = 3;
-  v10 = a3;
+  sizeCopy = size;
   v11 = 0;
   v12 = 0;
   v3 = EQKit::Font::Manager::fontCollection(self->_fontManager);
@@ -349,9 +349,9 @@ uint64_t __39__EQKitEnvironment_legacySTIXFontNames__block_invoke()
 
 - (id)i_mathFontName
 {
-  v2 = [(EQKitEnvironment *)self i_fontsDictionary];
+  i_fontsDictionary = [(EQKitEnvironment *)self i_fontsDictionary];
   v3 = objc_opt_class();
-  v4 = [v2 objectForKeyedSubscript:@"mathFontName"];
+  v4 = [i_fontsDictionary objectForKeyedSubscript:@"mathFontName"];
   v5 = EQKitUtilDynamicCast(v3, v4);
 
   return v5;
@@ -359,22 +359,22 @@ uint64_t __39__EQKitEnvironment_legacySTIXFontNames__block_invoke()
 
 - (BOOL)i_requiresLegacySTIXFonts
 {
-  v2 = [(EQKitEnvironment *)self i_fontsDictionary];
+  i_fontsDictionary = [(EQKitEnvironment *)self i_fontsDictionary];
   v3 = objc_opt_class();
-  v4 = [v2 objectForKeyedSubscript:@"requiresLegacySTIXFonts"];
+  v4 = [i_fontsDictionary objectForKeyedSubscript:@"requiresLegacySTIXFonts"];
   v5 = EQKitUtilDynamicCast(v3, v4);
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (void)beginLayout

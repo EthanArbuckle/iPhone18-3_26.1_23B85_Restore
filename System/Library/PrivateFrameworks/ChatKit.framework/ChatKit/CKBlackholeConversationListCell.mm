@@ -1,16 +1,16 @@
 @interface CKBlackholeConversationListCell
-- (CKBlackholeConversationListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForConversation:(id)a3;
+- (CKBlackholeConversationListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForConversation:(id)conversation;
 - (void)prepareForReuse;
 @end
 
 @implementation CKBlackholeConversationListCell
 
-- (CKBlackholeConversationListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKBlackholeConversationListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v52.receiver = self;
   v52.super_class = CKBlackholeConversationListCell;
-  v4 = [(CKBlackholeConversationListCell *)&v52 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKBlackholeConversationListCell *)&v52 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -20,75 +20,75 @@
     fromLabel = v5->_fromLabel;
     v5->_fromLabel = v6;
 
-    v8 = [(CKBlackholeConversationListCell *)v5 contentView];
-    [v8 addSubview:v5->_fromLabel];
+    contentView = [(CKBlackholeConversationListCell *)v5 contentView];
+    [contentView addSubview:v5->_fromLabel];
 
     [(UILabel *)v5->_fromLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v9 = v5->_fromLabel;
     v10 = +[CKUIBehavior sharedBehaviors];
-    v11 = [v10 conversationListSummaryFont];
-    [(UILabel *)v9 setFont:v11];
+    conversationListSummaryFont = [v10 conversationListSummaryFont];
+    [(UILabel *)v9 setFont:conversationListSummaryFont];
 
-    v12 = [(UILabel *)v5->_fromLabel topAnchor];
-    v13 = [(CKBlackholeConversationListCell *)v5 contentView];
-    v14 = [v13 layoutMarginsGuide];
-    v15 = [v14 topAnchor];
-    v16 = [v12 constraintEqualToAnchor:v15];
+    topAnchor = [(UILabel *)v5->_fromLabel topAnchor];
+    contentView2 = [(CKBlackholeConversationListCell *)v5 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v16 setActive:1];
 
-    v17 = [(UILabel *)v5->_fromLabel leftAnchor];
-    v18 = [(CKBlackholeConversationListCell *)v5 contentView];
-    v19 = [v18 layoutMarginsGuide];
-    v20 = [v19 leftAnchor];
-    v21 = [v17 constraintEqualToAnchor:v20];
+    leftAnchor = [(UILabel *)v5->_fromLabel leftAnchor];
+    contentView3 = [(CKBlackholeConversationListCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    leftAnchor2 = [layoutMarginsGuide2 leftAnchor];
+    v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v21 setActive:1];
 
-    v22 = [(UILabel *)v5->_fromLabel rightAnchor];
-    v23 = [(CKBlackholeConversationListCell *)v5 contentView];
-    v24 = [v23 layoutMarginsGuide];
-    v25 = [v24 rightAnchor];
-    v26 = [v22 constraintEqualToAnchor:v25];
+    rightAnchor = [(UILabel *)v5->_fromLabel rightAnchor];
+    contentView4 = [(CKBlackholeConversationListCell *)v5 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    rightAnchor2 = [layoutMarginsGuide3 rightAnchor];
+    v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v26 setActive:1];
 
     v27 = objc_alloc_init(MEMORY[0x1E69DC918]);
     dateLabel = v5->_dateLabel;
     v5->_dateLabel = v27;
 
-    v29 = [(CKBlackholeConversationListCell *)v5 contentView];
-    [v29 addSubview:v5->_dateLabel];
+    contentView5 = [(CKBlackholeConversationListCell *)v5 contentView];
+    [contentView5 addSubview:v5->_dateLabel];
 
     [(UIDateLabel *)v5->_dateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v30 = v5->_dateLabel;
     v31 = +[CKUIBehavior sharedBehaviors];
-    v32 = [v31 conversationListDateFont];
-    [(UIDateLabel *)v30 setFont:v32];
+    conversationListDateFont = [v31 conversationListDateFont];
+    [(UIDateLabel *)v30 setFont:conversationListDateFont];
 
     v33 = v5->_dateLabel;
     v34 = +[CKUIBehavior sharedBehaviors];
-    v35 = [v34 theme];
-    v36 = [v35 conversationListSummaryColor];
-    [(UIDateLabel *)v33 setTextColor:v36];
+    theme = [v34 theme];
+    conversationListSummaryColor = [theme conversationListSummaryColor];
+    [(UIDateLabel *)v33 setTextColor:conversationListSummaryColor];
 
-    v37 = [(UIDateLabel *)v5->_dateLabel topAnchor];
-    v38 = [(UILabel *)v5->_fromLabel bottomAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    topAnchor3 = [(UIDateLabel *)v5->_dateLabel topAnchor];
+    bottomAnchor = [(UILabel *)v5->_fromLabel bottomAnchor];
+    v39 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     [v39 setActive:1];
 
-    v40 = [(UIDateLabel *)v5->_dateLabel leftAnchor];
-    v41 = [(UILabel *)v5->_fromLabel leftAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    leftAnchor3 = [(UIDateLabel *)v5->_dateLabel leftAnchor];
+    leftAnchor4 = [(UILabel *)v5->_fromLabel leftAnchor];
+    v42 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     [v42 setActive:1];
 
-    v43 = [(UIDateLabel *)v5->_dateLabel rightAnchor];
-    v44 = [(UILabel *)v5->_fromLabel rightAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    rightAnchor3 = [(UIDateLabel *)v5->_dateLabel rightAnchor];
+    rightAnchor4 = [(UILabel *)v5->_fromLabel rightAnchor];
+    v45 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     [v45 setActive:1];
 
-    v46 = [(UIDateLabel *)v5->_dateLabel bottomAnchor];
-    v47 = [(CKBlackholeConversationListCell *)v5 contentView];
-    v48 = [v47 layoutMarginsGuide];
-    v49 = [v48 bottomAnchor];
-    v50 = [v46 constraintEqualToAnchor:v49];
+    bottomAnchor2 = [(UIDateLabel *)v5->_dateLabel bottomAnchor];
+    contentView6 = [(CKBlackholeConversationListCell *)v5 contentView];
+    layoutMarginsGuide4 = [contentView6 layoutMarginsGuide];
+    bottomAnchor3 = [layoutMarginsGuide4 bottomAnchor];
+    v50 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     [v50 setActive:1];
   }
 
@@ -104,15 +104,15 @@
   [(UIDateLabel *)self->_dateLabel setDate:0];
 }
 
-- (void)configureForConversation:(id)a3
+- (void)configureForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [v4 rawAddressedName];
-  [(UILabel *)self->_fromLabel setText:v5];
+  conversationCopy = conversation;
+  rawAddressedName = [conversationCopy rawAddressedName];
+  [(UILabel *)self->_fromLabel setText:rawAddressedName];
 
-  v6 = [v4 date];
+  date = [conversationCopy date];
 
-  [(UIDateLabel *)self->_dateLabel setDate:v6];
+  [(UIDateLabel *)self->_dateLabel setDate:date];
 
   [(CKBlackholeConversationListCell *)self setNeedsLayout];
 }

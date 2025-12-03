@@ -1,11 +1,11 @@
 @interface QLItemSingleDataProvider
 - (_TtC15HealthRecordsUI24QLItemSingleDataProvider)init;
-- (id)provideDataForItem:(id)a3;
+- (id)provideDataForItem:(id)item;
 @end
 
 @implementation QLItemSingleDataProvider
 
-- (id)provideDataForItem:(id)a3
+- (id)provideDataForItem:(id)item
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC15HealthRecordsUI24QLItemSingleDataProvider_data);
   v4 = *&self->data[OBJC_IVAR____TtC15HealthRecordsUI24QLItemSingleDataProvider_data];

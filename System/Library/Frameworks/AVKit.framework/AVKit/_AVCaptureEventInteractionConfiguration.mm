@@ -2,10 +2,10 @@
 - (_AVCaptureEventInteractionConfiguration)init;
 - (unsigned)_systemSoundIDForCurrentCaptureType;
 - (unsigned)_systemSoundIDForDelaySound;
-- (void)setCaptureDelayDuration:(double)a3;
-- (void)setCaptureDelaySoundURL:(id)a3;
-- (void)setCurrentCaptureType:(int64_t)a3;
-- (void)setCustomSoundURL:(id)a3 forType:(int64_t)a4;
+- (void)setCaptureDelayDuration:(double)duration;
+- (void)setCaptureDelaySoundURL:(id)l;
+- (void)setCurrentCaptureType:(int64_t)type;
+- (void)setCustomSoundURL:(id)l forType:(int64_t)type;
 @end
 
 @implementation _AVCaptureEventInteractionConfiguration
@@ -48,12 +48,12 @@
   return v3;
 }
 
-- (void)setCustomSoundURL:(id)a3 forType:(int64_t)a4
+- (void)setCustomSoundURL:(id)l forType:(int64_t)type
 {
-  if (a3)
+  if (l)
   {
     outSystemSoundID = 0;
-    if (AudioServicesCreateSystemSoundID(a3, &outSystemSoundID))
+    if (AudioServicesCreateSystemSoundID(l, &outSystemSoundID))
     {
       v6 = _AVLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -67,7 +67,7 @@
 
     captureSounds = self->_captureSounds;
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     [(NSMutableDictionary *)captureSounds setObject:v15 forKey:v16];
   }
 
@@ -82,7 +82,7 @@
 
     v9 = self->_captureSounds;
     defaultSoundsByCaptureType = self->_defaultSoundsByCaptureType;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v11 = [(NSDictionary *)defaultSoundsByCaptureType objectForKeyedSubscript:v10];
     v12 = v11;
     if (!v11)
@@ -90,7 +90,7 @@
       v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:1117];
     }
 
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     [(NSMutableDictionary *)v9 setObject:v12 forKey:v13];
 
     if (!v11)
@@ -99,32 +99,32 @@
   }
 }
 
-- (void)setCaptureDelayDuration:(double)a3
+- (void)setCaptureDelayDuration:(double)duration
 {
-  if (self->_captureDelayDuration != a3)
+  if (self->_captureDelayDuration != duration)
   {
-    self->_captureDelayDuration = a3;
+    self->_captureDelayDuration = duration;
   }
 }
 
-- (void)setCaptureDelaySoundURL:(id)a3
+- (void)setCaptureDelaySoundURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   captureDelaySoundURL = self->_captureDelaySoundURL;
   p_captureDelaySoundURL = &self->_captureDelaySoundURL;
-  if (captureDelaySoundURL != v5)
+  if (captureDelaySoundURL != lCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_captureDelaySoundURL, a3);
-    v5 = v8;
+    v8 = lCopy;
+    objc_storeStrong(p_captureDelaySoundURL, l);
+    lCopy = v8;
   }
 }
 
-- (void)setCurrentCaptureType:(int64_t)a3
+- (void)setCurrentCaptureType:(int64_t)type
 {
-  if (self->_currentCaptureType != a3)
+  if (self->_currentCaptureType != type)
   {
-    self->_currentCaptureType = a3;
+    self->_currentCaptureType = type;
   }
 }
 

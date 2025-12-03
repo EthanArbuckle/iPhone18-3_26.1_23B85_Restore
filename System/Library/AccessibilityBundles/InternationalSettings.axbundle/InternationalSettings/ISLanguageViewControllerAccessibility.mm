@@ -1,22 +1,22 @@
 @interface ISLanguageViewControllerAccessibility
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation ISLanguageViewControllerAccessibility
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = ISLanguageViewControllerAccessibility;
-  v4 = [(ISLanguageViewControllerAccessibility *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  v6 = [v5 attributedText];
+  v4 = [(ISLanguageViewControllerAccessibility *)&v11 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  attributedText = [textLabel attributedText];
 
-  v7 = [v6 attributesAtIndex:0 effectiveRange:0];
+  v7 = [attributedText attributesAtIndex:0 effectiveRange:0];
   v8 = [v7 objectForKey:*MEMORY[0x29EDB9530]];
 
-  v9 = [v4 textLabel];
-  [v9 setAccessibilityLanguage:v8];
+  textLabel2 = [v4 textLabel];
+  [textLabel2 setAccessibilityLanguage:v8];
 
   return v4;
 }

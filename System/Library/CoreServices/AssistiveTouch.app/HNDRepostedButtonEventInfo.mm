@@ -1,22 +1,22 @@
 @interface HNDRepostedButtonEventInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation HNDRepostedButtonEventInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HNDRepostedButtonEventInfo *)self timestamp];
-    if (v6 == [v5 timestamp])
+    v5 = equalCopy;
+    timestamp = [(HNDRepostedButtonEventInfo *)self timestamp];
+    if (timestamp == [v5 timestamp])
     {
-      v7 = [(HNDRepostedButtonEventInfo *)self buttonMask];
-      v8 = v7 == [v5 buttonMask];
+      buttonMask = [(HNDRepostedButtonEventInfo *)self buttonMask];
+      v8 = buttonMask == [v5 buttonMask];
     }
 
     else

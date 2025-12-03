@@ -1,42 +1,42 @@
 @interface ProvisioningPrecursorEducationViewController
-- (_TtC9PassKitUI44ProvisioningPrecursorEducationViewController)initWithContext:(int64_t)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (_TtC9PassKitUI44ProvisioningPrecursorEducationViewController)initWithContext:(int64_t)context;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
 @end
 
 @implementation ProvisioningPrecursorEducationViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD239020();
 }
 
-- (_TtC9PassKitUI44ProvisioningPrecursorEducationViewController)initWithContext:(int64_t)a3
+- (_TtC9PassKitUI44ProvisioningPrecursorEducationViewController)initWithContext:(int64_t)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
-  v5 = self;
+  continueCopy = continue;
+  selfCopy = self;
   sub_1BD23A3A8();
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v6 = self;
-  v4 = [(ProvisioningPrecursorEducationViewController *)v6 view];
-  if (v4)
+  selfCopy = self;
+  view = [(ProvisioningPrecursorEducationViewController *)selfCopy view];
+  if (view)
   {
-    v5 = v4;
-    [v4 setUserInteractionEnabled_];
+    v5 = view;
+    [view setUserInteractionEnabled_];
 
-    [(PKExplanationViewController *)v6 showSpinner:1];
+    [(PKExplanationViewController *)selfCopy showSpinner:1];
   }
 
   else

@@ -1,21 +1,21 @@
 @interface SearchUIHorizontallyScrollingCardSectionRowModel
 - (BOOL)hasLeadingImage;
-- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6 builder:(id)a7;
-- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4 builder:(id)a5;
+- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier builder:(id)builder;
+- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResults:(id)results itemIdentifier:(id)identifier builder:(id)builder;
 - (id)cardSection;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SearchUIHorizontallyScrollingCardSectionRowModel
 
-- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResults:(id)a3 itemIdentifier:(id)a4 builder:(id)a5
+- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResults:(id)results itemIdentifier:(id)identifier builder:(id)builder
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  resultsCopy = results;
+  builderCopy = builder;
   v36.receiver = self;
   v36.super_class = SearchUIHorizontallyScrollingCardSectionRowModel;
-  v10 = [(SearchUIRowModel *)&v36 initWithResults:v8 itemIdentifier:a4];
+  v10 = [(SearchUIRowModel *)&v36 initWithResults:resultsCopy itemIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
@@ -25,8 +25,8 @@
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v25 = v8;
-    obj = v8;
+    v25 = resultsCopy;
+    obj = resultsCopy;
     v13 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v13)
     {
@@ -63,7 +63,7 @@
                   objc_enumerationMutation(v17);
                 }
 
-                v22 = [v9 buildRowModelFromCardSection:*(*(&v28 + 1) + 8 * v21) result:v16];
+                v22 = [builderCopy buildRowModelFromCardSection:*(*(&v28 + 1) + 8 * v21) result:v16];
                 [v12 addObject:v22];
 
                 ++v21;
@@ -90,21 +90,21 @@
     [(SearchUIHorizontallyScrollingCardSectionRowModel *)v24 setCardSectionRowModels:v12];
     v24->_numberOfRows = 1;
 
-    v8 = v25;
+    resultsCopy = v25;
   }
 
   return v11;
 }
 
-- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResult:(id)a3 cardSection:(id)a4 queryId:(unint64_t)a5 itemIdentifier:(id)a6 builder:(id)a7
+- (SearchUIHorizontallyScrollingCardSectionRowModel)initWithResult:(id)result cardSection:(id)section queryId:(unint64_t)id itemIdentifier:(id)identifier builder:(id)builder
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  resultCopy = result;
+  sectionCopy = section;
+  builderCopy = builder;
   v29.receiver = self;
   v29.super_class = SearchUIHorizontallyScrollingCardSectionRowModel;
-  v15 = [(SearchUIRowModel *)&v29 initWithResult:v12 cardSection:v13 queryId:a5 itemIdentifier:a6];
+  v15 = [(SearchUIRowModel *)&v29 initWithResult:resultCopy cardSection:sectionCopy queryId:id itemIdentifier:identifier];
   if (v15)
   {
     v16 = objc_opt_new();
@@ -112,8 +112,8 @@
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = [v13 cardSections];
-    v18 = [v17 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    cardSections = [sectionCopy cardSections];
+    v18 = [cardSections countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v18)
     {
       v19 = v18;
@@ -125,34 +125,34 @@
         {
           if (*v26 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(cardSections);
           }
 
-          v22 = [v14 buildRowModelFromCardSection:*(*(&v25 + 1) + 8 * v21) result:v12];
+          v22 = [builderCopy buildRowModelFromCardSection:*(*(&v25 + 1) + 8 * v21) result:resultCopy];
           [v16 addObject:v22];
 
           ++v21;
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v19 = [cardSections countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v19);
     }
 
     [(SearchUIHorizontallyScrollingCardSectionRowModel *)v15 setCardSectionRowModels:v16];
-    if ([v13 numberOfRows])
+    if ([sectionCopy numberOfRows])
     {
-      v23 = [v13 numberOfRows];
+      numberOfRows = [sectionCopy numberOfRows];
     }
 
     else
     {
-      v23 = 1;
+      numberOfRows = 1;
     }
 
-    v15->_numberOfRows = v23;
+    v15->_numberOfRows = numberOfRows;
   }
 
   return v15;
@@ -160,29 +160,29 @@
 
 - (id)cardSection
 {
-  v2 = [(SearchUIHorizontallyScrollingCardSectionRowModel *)self cardSectionRowModels];
-  v3 = [v2 firstObject];
-  v4 = [v3 cardSection];
+  cardSectionRowModels = [(SearchUIHorizontallyScrollingCardSectionRowModel *)self cardSectionRowModels];
+  firstObject = [cardSectionRowModels firstObject];
+  cardSection = [firstObject cardSection];
 
-  return v4;
+  return cardSection;
 }
 
 - (BOOL)hasLeadingImage
 {
-  v2 = [(SearchUIHorizontallyScrollingCardSectionRowModel *)self cardSectionRowModels];
-  v3 = [v2 firstObject];
-  v4 = [v3 hasLeadingImage];
+  cardSectionRowModels = [(SearchUIHorizontallyScrollingCardSectionRowModel *)self cardSectionRowModels];
+  firstObject = [cardSectionRowModels firstObject];
+  hasLeadingImage = [firstObject hasLeadingImage];
 
-  return v4;
+  return hasLeadingImage;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SearchUIHorizontallyScrollingCardSectionRowModel;
-  v4 = [(SearchUIRowModel *)&v7 copyWithZone:a3];
-  v5 = [(SearchUIHorizontallyScrollingCardSectionRowModel *)self cardSectionRowModels];
-  [v4 setCardSectionRowModels:v5];
+  v4 = [(SearchUIRowModel *)&v7 copyWithZone:zone];
+  cardSectionRowModels = [(SearchUIHorizontallyScrollingCardSectionRowModel *)self cardSectionRowModels];
+  [v4 setCardSectionRowModels:cardSectionRowModels];
 
   return v4;
 }

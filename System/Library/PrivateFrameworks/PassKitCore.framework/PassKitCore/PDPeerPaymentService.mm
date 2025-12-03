@@ -1,108 +1,108 @@
 @interface PDPeerPaymentService
-- (PDPeerPaymentService)initWithConnection:(id)a3 server:(id)a4;
-- (id)_displayNameForAddress:(id)a3;
+- (PDPeerPaymentService)initWithConnection:(id)connection server:(id)server;
+- (id)_displayNameForAddress:(id)address;
 - (void)_notifyPendingRequestsChangedObservers;
 - (void)_notifyRecurringPaymentsChangedObservers;
 - (void)_notifyUserInfoChangedObservers;
 - (void)_removeAllNotificationsForPeerPaymentPendingRequests;
 - (void)_removeAllNotificationsForPeerPaymentRecurringPayments;
-- (void)_removeNotificationsForPeerPaymentPendingRequestWithRequestTokens:(id)a3;
-- (void)_removeNotificationsForPeerPaymentRecurringPaymentsWithIdentifiers:(id)a3;
-- (void)_scheduleNotificationsForPeerPaymentPendingRequests:(id)a3;
-- (void)accountWithCompletion:(id)a3;
-- (void)balanceForPass:(id)a3 completion:(id)a4;
-- (void)checkTLKsMissingWithCompletion:(id)a3;
-- (void)cloudStoreStatusWithCompletion:(id)a3;
-- (void)counterpartImageDataForTransactionWithIdentifier:(id)a3 completion:(id)a4;
-- (void)counterpartImageDataWithCompletion:(id)a3;
-- (void)counterpartImageDataWithIdentifier:(id)a3 completion:(id)a4;
+- (void)_removeNotificationsForPeerPaymentPendingRequestWithRequestTokens:(id)tokens;
+- (void)_removeNotificationsForPeerPaymentRecurringPaymentsWithIdentifiers:(id)identifiers;
+- (void)_scheduleNotificationsForPeerPaymentPendingRequests:(id)requests;
+- (void)accountWithCompletion:(id)completion;
+- (void)balanceForPass:(id)pass completion:(id)completion;
+- (void)checkTLKsMissingWithCompletion:(id)completion;
+- (void)cloudStoreStatusWithCompletion:(id)completion;
+- (void)counterpartImageDataForTransactionWithIdentifier:(id)identifier completion:(id)completion;
+- (void)counterpartImageDataWithCompletion:(id)completion;
+- (void)counterpartImageDataWithIdentifier:(id)identifier completion:(id)completion;
 - (void)dealloc;
-- (void)deleteAccountWithCompletion:(id)a3;
-- (void)deleteAllCounterpartImageDataWithCompletion:(id)a3;
-- (void)deleteAllRecurringPaymentsWithCompletion:(id)a3;
-- (void)deletePeerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)a3;
-- (void)deletePeerPaymentPendingRequestsForRequestTokens:(id)a3 completion:(id)a4;
-- (void)deletePreferencesWithCompletion:(id)a3;
-- (void)deleteRecurringPaymentsForIdentifiers:(id)a3 completion:(id)a4;
-- (void)deleteUserInfoWithCompletion:(id)a3;
-- (void)downloadPassIfNecessaryWithCompletion:(id)a3;
-- (void)encryptData:(id)a3 usingCertificateWithDestination:(unint64_t)a4 completion:(id)a5;
-- (void)encryptionCertificateForDestination:(unint64_t)a3 forceUpdate:(BOOL)a4 completion:(id)a5;
-- (void)fetchUserInfoWithCompletion:(id)a3;
-- (void)hasRecurringPayments:(id)a3;
-- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)a3;
-- (void)insertOrUpdateDeviceOriginatedNearbyPeerPaymentTransactionWithIdentifier:(id)a3 memo:(id)a4 counterpartAppearanceData:(id)a5 completion:(id)a6;
-- (void)insertOrUpdateNearbyPeerPaymentSetupNotificationWithTransactionIdentifier:(id)a3 amount:(id)a4 currency:(id)a5 senderName:(id)a6 completion:(id)a7;
-- (void)insertOrUpdatePeerPaymentPendingRequests:(id)a3 shouldScheduleNotifications:(BOOL)a4 completion:(id)a5;
-- (void)insertOrUpdateRecurringPayments:(id)a3 completion:(id)a4;
-- (void)insertOrUpdateUserInfo:(id)a3 completion:(id)a4;
-- (void)lastUsedAlternateFundingSourcePassUniqueIdentifier:(id)a3;
-- (void)peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)a3;
-- (void)peerPaymentPendingRequestsForRequestTokens:(id)a3 completion:(id)a4;
-- (void)performRecurringPaymentAction:(unint64_t)a3 identifier:(id)a4 completion:(id)a5;
-- (void)preferencesWithCompletion:(id)a3;
-- (void)presentIdentityVerificationFlowWithResponseData:(id)a3 orientation:(id)a4 completion:(id)a5;
-- (void)presentPeerPaymentTermsAndConditionsWithTermsURL:(id)a3 termsIdentifier:(id)a4 passUniqueID:(id)a5 orientation:(id)a6 completion:(id)a7;
-- (void)presentReceiverFlowWithOrientation:(id)a3 host:(unint64_t)a4 completion:(id)a5;
-- (void)presentRegistrationFlowWithAccount:(id)a3 amount:(id)a4 state:(unint64_t)a5 senderAddress:(id)a6 orientation:(id)a7 hostSceneIdentifier:(id)a8 hostSceneBundleIdentifier:(id)a9 completion:(id)a10;
-- (void)presentSenderFlowWithHost:(unint64_t)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)receivedPeerPaymentMessageData:(id)a3 handler:(id)a4;
-- (void)recurringPaymentsWithCompletion:(id)a3;
-- (void)registerDeviceWithCompletion:(id)a3;
-- (void)registerDeviceWithForceReregister:(BOOL)a3 completion:(id)a4;
-- (void)registerDeviceWithRegistrationURL:(id)a3 pushToken:(id)a4 forceReregister:(BOOL)a5 completion:(id)a6;
-- (void)registrationStatusWithCompletion:(id)a3;
-- (void)remoteRegistrationRequest:(id)a3 forHandle:(id)a4 completion:(id)a5;
-- (void)reportFailureDiagnostic:(id)a3 completion:(id)a4;
-- (void)resetApplePayManateeViewWithCompletion:(id)a3;
-- (void)setIdsSharingManager:(id)a3;
-- (void)setLastUsedAlternateFundingSourcePassUniqueIdentifier:(id)a3 handler:(id)a4;
-- (void)setPeerPaymentAccountManager:(id)a3;
-- (void)setPeerPaymentWebServiceCoordinator:(id)a3;
-- (void)setPreferences:(id)a3 completion:(id)a4;
-- (void)unregisterDeviceWithCompletion:(id)a3;
-- (void)updateAccountAndAssociatedAccountsWithCompletion:(id)a3;
-- (void)updateAccountWithCompletion:(id)a3;
-- (void)updateAssociatedAccountsWithCompletion:(id)a3;
-- (void)updateAutoReloadAmount:(id)a3 threshold:(id)a4 identifier:(id)a5 completion:(id)a6;
-- (void)updateMessageReceivedDate:(id)a3 forTransactionWithIdentifier:(id)a4 handler:(id)a5;
-- (void)updateMockAccountBalanceByAddingAmount:(id)a3 completion:(id)a4;
-- (void)updatePreferencesWithCompletion:(id)a3;
-- (void)updateRecurringPaymentMemo:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)updateRecurringPaymentStatus:(unint64_t)a3 identifier:(id)a4 completion:(id)a5;
-- (void)updateRecurringPaymentsWithCompletion:(id)a3;
-- (void)userInfoWithCompletion:(id)a3;
-- (void)usingSynchronousProxy:(BOOL)a3 fetchSharedPeerPaymentWebServiceContextWithHandler:(id)a4;
-- (void)usingSynchronousProxy:(BOOL)a3 setSharedPeerPaymentWebServiceContext:(id)a4 withCompletion:(id)a5;
+- (void)deleteAccountWithCompletion:(id)completion;
+- (void)deleteAllCounterpartImageDataWithCompletion:(id)completion;
+- (void)deleteAllRecurringPaymentsWithCompletion:(id)completion;
+- (void)deletePeerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)completion;
+- (void)deletePeerPaymentPendingRequestsForRequestTokens:(id)tokens completion:(id)completion;
+- (void)deletePreferencesWithCompletion:(id)completion;
+- (void)deleteRecurringPaymentsForIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deleteUserInfoWithCompletion:(id)completion;
+- (void)downloadPassIfNecessaryWithCompletion:(id)completion;
+- (void)encryptData:(id)data usingCertificateWithDestination:(unint64_t)destination completion:(id)completion;
+- (void)encryptionCertificateForDestination:(unint64_t)destination forceUpdate:(BOOL)update completion:(id)completion;
+- (void)fetchUserInfoWithCompletion:(id)completion;
+- (void)hasRecurringPayments:(id)payments;
+- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)handler;
+- (void)insertOrUpdateDeviceOriginatedNearbyPeerPaymentTransactionWithIdentifier:(id)identifier memo:(id)memo counterpartAppearanceData:(id)data completion:(id)completion;
+- (void)insertOrUpdateNearbyPeerPaymentSetupNotificationWithTransactionIdentifier:(id)identifier amount:(id)amount currency:(id)currency senderName:(id)name completion:(id)completion;
+- (void)insertOrUpdatePeerPaymentPendingRequests:(id)requests shouldScheduleNotifications:(BOOL)notifications completion:(id)completion;
+- (void)insertOrUpdateRecurringPayments:(id)payments completion:(id)completion;
+- (void)insertOrUpdateUserInfo:(id)info completion:(id)completion;
+- (void)lastUsedAlternateFundingSourcePassUniqueIdentifier:(id)identifier;
+- (void)peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)completion;
+- (void)peerPaymentPendingRequestsForRequestTokens:(id)tokens completion:(id)completion;
+- (void)performRecurringPaymentAction:(unint64_t)action identifier:(id)identifier completion:(id)completion;
+- (void)preferencesWithCompletion:(id)completion;
+- (void)presentIdentityVerificationFlowWithResponseData:(id)data orientation:(id)orientation completion:(id)completion;
+- (void)presentPeerPaymentTermsAndConditionsWithTermsURL:(id)l termsIdentifier:(id)identifier passUniqueID:(id)d orientation:(id)orientation completion:(id)completion;
+- (void)presentReceiverFlowWithOrientation:(id)orientation host:(unint64_t)host completion:(id)completion;
+- (void)presentRegistrationFlowWithAccount:(id)account amount:(id)amount state:(unint64_t)state senderAddress:(id)address orientation:(id)orientation hostSceneIdentifier:(id)identifier hostSceneBundleIdentifier:(id)bundleIdentifier completion:(id)self0;
+- (void)presentSenderFlowWithHost:(unint64_t)host userInfo:(id)info completion:(id)completion;
+- (void)receivedPeerPaymentMessageData:(id)data handler:(id)handler;
+- (void)recurringPaymentsWithCompletion:(id)completion;
+- (void)registerDeviceWithCompletion:(id)completion;
+- (void)registerDeviceWithForceReregister:(BOOL)reregister completion:(id)completion;
+- (void)registerDeviceWithRegistrationURL:(id)l pushToken:(id)token forceReregister:(BOOL)reregister completion:(id)completion;
+- (void)registrationStatusWithCompletion:(id)completion;
+- (void)remoteRegistrationRequest:(id)request forHandle:(id)handle completion:(id)completion;
+- (void)reportFailureDiagnostic:(id)diagnostic completion:(id)completion;
+- (void)resetApplePayManateeViewWithCompletion:(id)completion;
+- (void)setIdsSharingManager:(id)manager;
+- (void)setLastUsedAlternateFundingSourcePassUniqueIdentifier:(id)identifier handler:(id)handler;
+- (void)setPeerPaymentAccountManager:(id)manager;
+- (void)setPeerPaymentWebServiceCoordinator:(id)coordinator;
+- (void)setPreferences:(id)preferences completion:(id)completion;
+- (void)unregisterDeviceWithCompletion:(id)completion;
+- (void)updateAccountAndAssociatedAccountsWithCompletion:(id)completion;
+- (void)updateAccountWithCompletion:(id)completion;
+- (void)updateAssociatedAccountsWithCompletion:(id)completion;
+- (void)updateAutoReloadAmount:(id)amount threshold:(id)threshold identifier:(id)identifier completion:(id)completion;
+- (void)updateMessageReceivedDate:(id)date forTransactionWithIdentifier:(id)identifier handler:(id)handler;
+- (void)updateMockAccountBalanceByAddingAmount:(id)amount completion:(id)completion;
+- (void)updatePreferencesWithCompletion:(id)completion;
+- (void)updateRecurringPaymentMemo:(id)memo identifier:(id)identifier completion:(id)completion;
+- (void)updateRecurringPaymentStatus:(unint64_t)status identifier:(id)identifier completion:(id)completion;
+- (void)updateRecurringPaymentsWithCompletion:(id)completion;
+- (void)userInfoWithCompletion:(id)completion;
+- (void)usingSynchronousProxy:(BOOL)proxy fetchSharedPeerPaymentWebServiceContextWithHandler:(id)handler;
+- (void)usingSynchronousProxy:(BOOL)proxy setSharedPeerPaymentWebServiceContext:(id)context withCompletion:(id)completion;
 @end
 
 @implementation PDPeerPaymentService
 
-- (PDPeerPaymentService)initWithConnection:(id)a3 server:(id)a4
+- (PDPeerPaymentService)initWithConnection:(id)connection server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   v17.receiver = self;
   v17.super_class = PDPeerPaymentService;
-  v8 = [(PDPeerPaymentService *)&v17 initWithConnection:v6];
+  v8 = [(PDPeerPaymentService *)&v17 initWithConnection:connectionCopy];
   if (v8)
   {
-    v9 = [[PKEntitlementWhitelist alloc] initWithConnection:v6];
+    v9 = [[PKEntitlementWhitelist alloc] initWithConnection:connectionCopy];
     whitelist = v8->_whitelist;
     v8->_whitelist = v9;
 
-    v11 = sub_10000444C(v7);
+    v11 = sub_10000444C(serverCopy);
     v12 = sub_100004440(v11);
     remoteInterfacePresenter = v8->_remoteInterfacePresenter;
     v8->_remoteInterfacePresenter = v12;
 
     v14 = PKPeerPaymentServiceInterface();
-    [v6 setRemoteObjectInterface:v14];
+    [connectionCopy setRemoteObjectInterface:v14];
 
     v15 = PDPeerPaymentServiceInterface();
-    [v6 setExportedInterface:v15];
+    [connectionCopy setExportedInterface:v15];
 
-    [v6 setExportedObject:v8];
+    [connectionCopy setExportedObject:v8];
   }
 
   return v8;
@@ -117,71 +117,71 @@
   [(PDPeerPaymentService *)&v3 dealloc];
 }
 
-- (void)setIdsSharingManager:(id)a3
+- (void)setIdsSharingManager:(id)manager
 {
-  v5 = a3;
-  if (self->_idsSharingManager != v5)
+  managerCopy = manager;
+  if (self->_idsSharingManager != managerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_idsSharingManager, a3);
-    v5 = v6;
+    v6 = managerCopy;
+    objc_storeStrong(&self->_idsSharingManager, manager);
+    managerCopy = v6;
   }
 }
 
-- (void)setPeerPaymentAccountManager:(id)a3
+- (void)setPeerPaymentAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   peerPaymentAccountManager = self->_peerPaymentAccountManager;
-  if (peerPaymentAccountManager != v5)
+  if (peerPaymentAccountManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     if (peerPaymentAccountManager)
     {
       [(PDPeerPaymentAccountManager *)peerPaymentAccountManager unregisterObserver:self];
     }
 
-    objc_storeStrong(&self->_peerPaymentAccountManager, a3);
+    objc_storeStrong(&self->_peerPaymentAccountManager, manager);
     peerPaymentAccountManager = [(PDPeerPaymentAccountManager *)self->_peerPaymentAccountManager registerObserver:self];
-    v5 = v7;
+    managerCopy = v7;
   }
 
-  _objc_release_x1(peerPaymentAccountManager, v5);
+  _objc_release_x1(peerPaymentAccountManager, managerCopy);
 }
 
-- (void)setPeerPaymentWebServiceCoordinator:(id)a3
+- (void)setPeerPaymentWebServiceCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   peerPaymentWebServiceCoordinator = self->_peerPaymentWebServiceCoordinator;
-  if (peerPaymentWebServiceCoordinator != v5)
+  if (peerPaymentWebServiceCoordinator != coordinatorCopy)
   {
-    v7 = v5;
+    v7 = coordinatorCopy;
     if (peerPaymentWebServiceCoordinator)
     {
       [(PDPeerPaymentWebServiceCoordinator *)peerPaymentWebServiceCoordinator unregisterObserver:self];
     }
 
-    objc_storeStrong(&self->_peerPaymentWebServiceCoordinator, a3);
+    objc_storeStrong(&self->_peerPaymentWebServiceCoordinator, coordinator);
     peerPaymentWebServiceCoordinator = [(PDPeerPaymentWebServiceCoordinator *)self->_peerPaymentWebServiceCoordinator registerObserver:self];
-    v5 = v7;
+    coordinatorCopy = v7;
   }
 
-  _objc_release_x1(peerPaymentWebServiceCoordinator, v5);
+  _objc_release_x1(peerPaymentWebServiceCoordinator, coordinatorCopy);
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 fetchSharedPeerPaymentWebServiceContextWithHandler:(id)a4
+- (void)usingSynchronousProxy:(BOOL)proxy fetchSharedPeerPaymentWebServiceContextWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (v6)
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess]& 1) != 0)
     {
-      if (v4)
+      if (proxyCopy)
       {
         v7 = objc_autoreleasePoolPush();
-        v8 = [(PDPeerPaymentWebServiceCoordinator *)self->_peerPaymentWebServiceCoordinator sharedPeerPaymentWebService];
-        v9 = [v8 context];
-        v6[2](v6, v9);
+        sharedPeerPaymentWebService = [(PDPeerPaymentWebServiceCoordinator *)self->_peerPaymentWebServiceCoordinator sharedPeerPaymentWebService];
+        context = [sharedPeerPaymentWebService context];
+        handlerCopy[2](handlerCopy, context);
 
         objc_autoreleasePoolPop(v7);
       }
@@ -194,7 +194,7 @@
         v12[2] = sub_100139140;
         v12[3] = &unk_10083C820;
         v12[4] = self;
-        v13 = v6;
+        v13 = handlerCopy;
         dispatch_async(v11, v12);
       }
     }
@@ -209,25 +209,25 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Client is not entitled for method: %s", buf, 0xCu);
       }
 
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
 
-- (void)usingSynchronousProxy:(BOOL)a3 setSharedPeerPaymentWebServiceContext:(id)a4 withCompletion:(id)a5
+- (void)usingSynchronousProxy:(BOOL)proxy setSharedPeerPaymentWebServiceContext:(id)context withCompletion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  proxyCopy = proxy;
+  contextCopy = context;
+  completionCopy = completion;
   if (([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess]& 1) != 0)
   {
-    if (v6)
+    if (proxyCopy)
     {
       v10 = objc_autoreleasePoolPush();
-      [(PDPeerPaymentWebServiceCoordinator *)self->_peerPaymentWebServiceCoordinator updateSharedWebServiceContext:v8];
-      if (v9)
+      [(PDPeerPaymentWebServiceCoordinator *)self->_peerPaymentWebServiceCoordinator updateSharedWebServiceContext:contextCopy];
+      if (completionCopy)
       {
-        v9[2](v9);
+        completionCopy[2](completionCopy);
       }
 
       objc_autoreleasePoolPop(v10);
@@ -241,8 +241,8 @@
       block[2] = sub_100139380;
       block[3] = &unk_10083D320;
       block[4] = self;
-      v14 = v8;
-      v15 = v9;
+      v14 = contextCopy;
+      v15 = completionCopy;
       dispatch_async(v12, block);
     }
   }
@@ -257,17 +257,17 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Client is not entitled for method: %s", buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)accountWithCompletion:(id)a3
+- (void)accountWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -275,7 +275,7 @@
     v7[2] = sub_1001394F0;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -286,10 +286,10 @@
   }
 }
 
-- (void)preferencesWithCompletion:(id)a3
+- (void)preferencesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -297,7 +297,7 @@
     v7[2] = sub_100139734;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -308,10 +308,10 @@
   }
 }
 
-- (void)updateAccountWithCompletion:(id)a3
+- (void)updateAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -319,7 +319,7 @@
     v7[2] = sub_100139974;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -330,10 +330,10 @@
   }
 }
 
-- (void)updateAssociatedAccountsWithCompletion:(id)a3
+- (void)updateAssociatedAccountsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -341,7 +341,7 @@
     v7[2] = sub_100139BB4;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -352,10 +352,10 @@
   }
 }
 
-- (void)updateAccountAndAssociatedAccountsWithCompletion:(id)a3
+- (void)updateAccountAndAssociatedAccountsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -363,7 +363,7 @@
     v7[2] = sub_100139DF4;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -374,10 +374,10 @@
   }
 }
 
-- (void)updatePreferencesWithCompletion:(id)a3
+- (void)updatePreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -385,7 +385,7 @@
     v7[2] = sub_10013A034;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -396,11 +396,11 @@
   }
 }
 
-- (void)updateMockAccountBalanceByAddingAmount:(id)a3 completion:(id)a4
+- (void)updateMockAccountBalanceByAddingAmount:(id)amount completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  amountCopy = amount;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = dispatch_get_global_queue(21, 0);
     v10[0] = _NSConcreteStackBlock;
@@ -408,8 +408,8 @@
     v10[2] = sub_10013A29C;
     v10[3] = &unk_10083D320;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = amountCopy;
+    v12 = completionCopy;
     v9 = v10;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -420,73 +420,73 @@
   }
 }
 
-- (void)deleteAccountWithCompletion:(id)a3
+- (void)deleteAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013A4D8;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)deletePreferencesWithCompletion:(id)a3
+- (void)deletePreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013A714;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)setPreferences:(id)a3 completion:(id)a4
+- (void)setPreferences:(id)preferences completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  preferencesCopy = preferences;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10013A974;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = preferencesCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = preferencesCopy;
   dispatch_async(v8, block);
 }
 
-- (void)registrationStatusWithCompletion:(id)a3
+- (void)registrationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -494,7 +494,7 @@
     v7[2] = sub_10013ABBC;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -505,11 +505,11 @@
   }
 }
 
-- (void)presentIdentityVerificationFlowWithResponseData:(id)a3 orientation:(id)a4 completion:(id)a5
+- (void)presentIdentityVerificationFlowWithResponseData:(id)data orientation:(id)orientation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  orientationCopy = orientation;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v17[0] = _NSConcreteStackBlock;
@@ -517,24 +517,24 @@
     v17[2] = sub_10013AF10;
     v17[3] = &unk_1008482C0;
     v17[4] = self;
-    v18 = v9;
-    v19 = v10;
+    v18 = orientationCopy;
+    v19 = completionCopy;
     v11 = objc_retainBlock(v17);
     v12 = v11;
-    if (v8)
+    if (dataCopy)
     {
-      (v11[2])(v11, v8);
+      (v11[2])(v11, dataCopy);
     }
 
     else
     {
-      v14 = [(PDPeerPaymentService *)self peerPaymentWebServiceCoordinator];
+      peerPaymentWebServiceCoordinator = [(PDPeerPaymentService *)self peerPaymentWebServiceCoordinator];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_10013B0A8;
       v15[3] = &unk_1008482E8;
       v16 = v12;
-      [v14 identityVerificationResponseWithCompletion:v15];
+      [peerPaymentWebServiceCoordinator identityVerificationResponseWithCompletion:v15];
     }
   }
 
@@ -548,22 +548,22 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Client is not entitled for method: %s", buf, 0xCu);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)presentRegistrationFlowWithAccount:(id)a3 amount:(id)a4 state:(unint64_t)a5 senderAddress:(id)a6 orientation:(id)a7 hostSceneIdentifier:(id)a8 hostSceneBundleIdentifier:(id)a9 completion:(id)a10
+- (void)presentRegistrationFlowWithAccount:(id)account amount:(id)amount state:(unint64_t)state senderAddress:(id)address orientation:(id)orientation hostSceneIdentifier:(id)identifier hostSceneBundleIdentifier:(id)bundleIdentifier completion:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  accountCopy = account;
+  amountCopy = amount;
+  addressCopy = address;
+  orientationCopy = orientation;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v23 = PDDefaultQueue();
@@ -572,14 +572,14 @@
     block[2] = sub_10013B34C;
     block[3] = &unk_100848310;
     block[4] = self;
-    v26 = v16;
-    v27 = v17;
-    v33 = a5;
-    v28 = v18;
-    v29 = v19;
-    v30 = v20;
-    v31 = v21;
-    v32 = v22;
+    v26 = accountCopy;
+    v27 = amountCopy;
+    stateCopy = state;
+    v28 = addressCopy;
+    v29 = orientationCopy;
+    v30 = identifierCopy;
+    v31 = bundleIdentifierCopy;
+    v32 = completionCopy;
     dispatch_async(v23, block);
   }
 
@@ -593,20 +593,20 @@
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Client is not entitled for method: %s", buf, 0xCu);
     }
 
-    if (v22)
+    if (completionCopy)
     {
-      (*(v22 + 2))(v22, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)presentPeerPaymentTermsAndConditionsWithTermsURL:(id)a3 termsIdentifier:(id)a4 passUniqueID:(id)a5 orientation:(id)a6 completion:(id)a7
+- (void)presentPeerPaymentTermsAndConditionsWithTermsURL:(id)l termsIdentifier:(id)identifier passUniqueID:(id)d orientation:(id)orientation completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  identifierCopy = identifier;
+  dCopy = d;
+  orientationCopy = orientation;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v17 = PDDefaultQueue();
@@ -614,12 +614,12 @@
     v19[1] = 3221225472;
     v19[2] = sub_10013B654;
     v19[3] = &unk_10083DD98;
-    v20 = v12;
-    v21 = v13;
-    v22 = self;
-    v23 = v14;
-    v24 = v15;
-    v25 = v16;
+    v20 = lCopy;
+    v21 = identifierCopy;
+    selfCopy = self;
+    v23 = dCopy;
+    v24 = orientationCopy;
+    v25 = completionCopy;
     dispatch_async(v17, v19);
   }
 
@@ -633,17 +633,17 @@
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Client is not entitled for method: %s", buf, 0xCu);
     }
 
-    if (v16)
+    if (completionCopy)
     {
-      (*(v16 + 2))(v16, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)receivedPeerPaymentMessageData:(id)a3 handler:(id)a4
+- (void)receivedPeerPaymentMessageData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v8 = dispatch_get_global_queue(21, 0);
@@ -652,8 +652,8 @@
     v11[2] = sub_10013B900;
     v11[3] = &unk_10083D320;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = dataCopy;
+    v13 = handlerCopy;
     v9 = v11;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -671,18 +671,18 @@
       sub_1005C1F60(v10);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)updateMessageReceivedDate:(id)a3 forTransactionWithIdentifier:(id)a4 handler:(id)a5
+- (void)updateMessageReceivedDate:(id)date forTransactionWithIdentifier:(id)identifier handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v11 = dispatch_get_global_queue(21, 0);
@@ -691,9 +691,9 @@
     v14[2] = sub_10013BEC0;
     v14[3] = &unk_10083E468;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
-    v17 = v10;
+    v15 = dateCopy;
+    v16 = identifierCopy;
+    v17 = handlerCopy;
     v12 = v14;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -711,39 +711,39 @@
       sub_1005C1FA4(v13);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)balanceForPass:(id)a3 completion:(id)a4
+- (void)balanceForPass:(id)pass completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
-    v8 = [(PDPeerPaymentService *)self peerPaymentWebServiceCoordinator];
+    peerPaymentWebServiceCoordinator = [(PDPeerPaymentService *)self peerPaymentWebServiceCoordinator];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10013C1D4;
     v9[3] = &unk_10083D6B8;
-    v10 = v6;
-    v11 = v7;
-    [v8 accountWithPreventingServerFetch:1 completion:v9];
+    v10 = passCopy;
+    v11 = completionCopy;
+    [peerPaymentWebServiceCoordinator accountWithPreventingServerFetch:1 completion:v9];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)lastUsedAlternateFundingSourcePassUniqueIdentifier:(id)a3
+- (void)lastUsedAlternateFundingSourcePassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -751,7 +751,7 @@
     v7[2] = sub_10013C3A4;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -762,32 +762,32 @@
   }
 }
 
-- (void)setLastUsedAlternateFundingSourcePassUniqueIdentifier:(id)a3 handler:(id)a4
+- (void)setLastUsedAlternateFundingSourcePassUniqueIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10013C5C8;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = handlerCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = handlerCopy;
+  v11 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (void)downloadPassIfNecessaryWithCompletion:(id)a3
+- (void)downloadPassIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -796,7 +796,7 @@
     v7[2] = sub_10013C844;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -806,15 +806,15 @@
     dispatch_async(v5, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)registerDeviceWithCompletion:(id)a3
+- (void)registerDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -823,7 +823,7 @@
     v7[2] = sub_10013C9D8;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -833,15 +833,15 @@
     dispatch_async(v5, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)registerDeviceWithForceReregister:(BOOL)a3 completion:(id)a4
+- (void)registerDeviceWithForceReregister:(BOOL)reregister completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v7 = dispatch_get_global_queue(21, 0);
@@ -850,8 +850,8 @@
     v9[2] = sub_10013CBE4;
     v9[3] = &unk_100848388;
     v9[4] = self;
-    v11 = a3;
-    v10 = v6;
+    reregisterCopy = reregister;
+    v10 = completionCopy;
     v8 = v9;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -861,17 +861,17 @@
     dispatch_async(v7, block);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)registerDeviceWithRegistrationURL:(id)a3 pushToken:(id)a4 forceReregister:(BOOL)a5 completion:(id)a6
+- (void)registerDeviceWithRegistrationURL:(id)l pushToken:(id)token forceReregister:(BOOL)reregister completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  tokenCopy = token;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v13 = dispatch_get_global_queue(21, 0);
@@ -880,10 +880,10 @@
     v15[2] = sub_10013CE48;
     v15[3] = &unk_100840BF8;
     v15[4] = self;
-    v16 = v10;
-    v17 = v11;
-    v19 = a5;
-    v18 = v12;
+    v16 = lCopy;
+    v17 = tokenCopy;
+    reregisterCopy = reregister;
+    v18 = completionCopy;
     v14 = v15;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -893,15 +893,15 @@
     dispatch_async(v13, block);
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    (*(v12 + 2))(v12, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)unregisterDeviceWithCompletion:(id)a3
+- (void)unregisterDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -910,7 +910,7 @@
     v7[2] = sub_10013CFE4;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -920,15 +920,15 @@
     dispatch_async(v5, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)a3
+- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -937,7 +937,7 @@
     v7[2] = sub_10013D1DC;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -947,15 +947,15 @@
     dispatch_async(v5, block);
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)cloudStoreStatusWithCompletion:(id)a3
+- (void)cloudStoreStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -964,7 +964,7 @@
     v7[2] = sub_10013D3D8;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -974,15 +974,15 @@
     dispatch_async(v5, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
-- (void)checkTLKsMissingWithCompletion:(id)a3
+- (void)checkTLKsMissingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -991,7 +991,7 @@
     v7[2] = sub_10013D5D0;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1001,15 +1001,15 @@
     dispatch_async(v5, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)resetApplePayManateeViewWithCompletion:(id)a3
+- (void)resetApplePayManateeViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v5 = dispatch_get_global_queue(21, 0);
@@ -1018,7 +1018,7 @@
     v7[2] = sub_10013D7C8;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1028,17 +1028,17 @@
     dispatch_async(v5, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)remoteRegistrationRequest:(id)a3 forHandle:(id)a4 completion:(id)a5
+- (void)remoteRegistrationRequest:(id)request forHandle:(id)handle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  handleCopy = handle;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v11 = dispatch_get_global_queue(21, 0);
@@ -1047,9 +1047,9 @@
     v13[2] = sub_10013DA04;
     v13[3] = &unk_10083E468;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    v14 = requestCopy;
+    v15 = handleCopy;
+    v16 = completionCopy;
     v12 = v13;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1059,359 +1059,359 @@
     dispatch_async(v11, block);
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)peerPaymentPendingRequestsForRequestTokens:(id)a3 completion:(id)a4
+- (void)peerPaymentPendingRequestsForRequestTokens:(id)tokens completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10013DC00;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = tokensCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = tokensCopy;
   dispatch_async(v8, block);
 }
 
-- (void)peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)a3
+- (void)peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013DE40;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)insertOrUpdatePeerPaymentPendingRequests:(id)a3 shouldScheduleNotifications:(BOOL)a4 completion:(id)a5
+- (void)insertOrUpdatePeerPaymentPendingRequests:(id)requests shouldScheduleNotifications:(BOOL)notifications completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  requestsCopy = requests;
+  completionCopy = completion;
   v10 = dispatch_get_global_queue(21, 0);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10013E0B4;
   v14[3] = &unk_10083E128;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
+  v15 = requestsCopy;
+  v16 = completionCopy;
+  notificationsCopy = notifications;
   v11 = v14;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v19 = v11;
-  v12 = v9;
-  v13 = v8;
+  v12 = completionCopy;
+  v13 = requestsCopy;
   dispatch_async(v10, block);
 }
 
-- (void)deletePeerPaymentPendingRequestsForRequestTokens:(id)a3 completion:(id)a4
+- (void)deletePeerPaymentPendingRequestsForRequestTokens:(id)tokens completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10013E570;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = tokensCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = tokensCopy;
   dispatch_async(v8, block);
 }
 
-- (void)deletePeerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)a3
+- (void)deletePeerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013E7B0;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)recurringPaymentsWithCompletion:(id)a3
+- (void)recurringPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013E9F4;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)updateAutoReloadAmount:(id)a3 threshold:(id)a4 identifier:(id)a5 completion:(id)a6
+- (void)updateAutoReloadAmount:(id)amount threshold:(id)threshold identifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  amountCopy = amount;
+  thresholdCopy = threshold;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14 = dispatch_get_global_queue(21, 0);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10013ECA4;
   v20[3] = &unk_10083FD78;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
+  v21 = amountCopy;
+  v22 = thresholdCopy;
+  v23 = identifierCopy;
+  v24 = completionCopy;
   v15 = v20;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v26 = v15;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v16 = completionCopy;
+  v17 = identifierCopy;
+  v18 = thresholdCopy;
+  v19 = amountCopy;
   dispatch_async(v14, block);
 }
 
-- (void)updateRecurringPaymentsWithCompletion:(id)a3
+- (void)updateRecurringPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013EEE8;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)insertOrUpdateRecurringPayments:(id)a3 completion:(id)a4
+- (void)insertOrUpdateRecurringPayments:(id)payments completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  paymentsCopy = payments;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10013F150;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = paymentsCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = paymentsCopy;
   dispatch_async(v8, block);
 }
 
-- (void)deleteRecurringPaymentsForIdentifiers:(id)a3 completion:(id)a4
+- (void)deleteRecurringPaymentsForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10013F3B0;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifiersCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = identifiersCopy;
   dispatch_async(v8, block);
 }
 
-- (void)deleteAllRecurringPaymentsWithCompletion:(id)a3
+- (void)deleteAllRecurringPaymentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013F5F0;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)performRecurringPaymentAction:(unint64_t)a3 identifier:(id)a4 completion:(id)a5
+- (void)performRecurringPaymentAction:(unint64_t)action identifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = dispatch_get_global_queue(21, 0);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10013F860;
   v14[3] = &unk_10083F918;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
+  v15 = identifierCopy;
+  v16 = completionCopy;
+  actionCopy = action;
   v11 = v14;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v19 = v11;
-  v12 = v9;
-  v13 = v8;
+  v12 = completionCopy;
+  v13 = identifierCopy;
   dispatch_async(v10, block);
 }
 
-- (void)updateRecurringPaymentMemo:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)updateRecurringPaymentMemo:(id)memo identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memoCopy = memo;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(21, 0);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10013FAF4;
   v16[3] = &unk_10083E468;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v17 = memoCopy;
+  v18 = identifierCopy;
+  v19 = completionCopy;
   v12 = v16;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v21 = v12;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v13 = completionCopy;
+  v14 = identifierCopy;
+  v15 = memoCopy;
   dispatch_async(v11, block);
 }
 
-- (void)updateRecurringPaymentStatus:(unint64_t)a3 identifier:(id)a4 completion:(id)a5
+- (void)updateRecurringPaymentStatus:(unint64_t)status identifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = dispatch_get_global_queue(21, 0);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10013FD68;
   v14[3] = &unk_10083F918;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a3;
+  v15 = identifierCopy;
+  v16 = completionCopy;
+  statusCopy = status;
   v11 = v14;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v19 = v11;
-  v12 = v9;
-  v13 = v8;
+  v12 = completionCopy;
+  v13 = identifierCopy;
   dispatch_async(v10, block);
 }
 
-- (void)hasRecurringPayments:(id)a3
+- (void)hasRecurringPayments:(id)payments
 {
-  v4 = a3;
+  paymentsCopy = payments;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10013FFAC;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = paymentsCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = paymentsCopy;
   dispatch_async(v5, block);
 }
 
-- (void)_removeNotificationsForPeerPaymentRecurringPaymentsWithIdentifiers:(id)a3
+- (void)_removeNotificationsForPeerPaymentRecurringPaymentsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing notifications for peer payment recurring payment identifiers: %@", buf, 0xCu);
   }
 
@@ -1419,7 +1419,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -1461,17 +1461,17 @@
   [(PDUserNotificationManager *)self->_userNotificationManager removeUserNotificationsOfType:73];
 }
 
-- (void)encryptionCertificateForDestination:(unint64_t)a3 forceUpdate:(BOOL)a4 completion:(id)a5
+- (void)encryptionCertificateForDestination:(unint64_t)destination forceUpdate:(BOOL)update completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10014040C;
   v12[3] = &unk_10083F440;
-  v13 = v8;
-  v14 = a3;
-  v15 = a4;
+  v13 = completionCopy;
+  destinationCopy = destination;
+  updateCopy = update;
   v12[4] = self;
   v10 = v12;
   block[0] = _NSConcreteStackBlock;
@@ -1479,38 +1479,38 @@
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v17 = v10;
-  v11 = v8;
+  v11 = completionCopy;
   dispatch_async(v9, block);
 }
 
-- (void)encryptData:(id)a3 usingCertificateWithDestination:(unint64_t)a4 completion:(id)a5
+- (void)encryptData:(id)data usingCertificateWithDestination:(unint64_t)destination completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   v10 = dispatch_get_global_queue(21, 0);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10014067C;
   v14[3] = &unk_10083F918;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
+  v15 = dataCopy;
+  v16 = completionCopy;
+  destinationCopy = destination;
   v11 = v14;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v19 = v11;
-  v12 = v9;
-  v13 = v8;
+  v12 = completionCopy;
+  v13 = dataCopy;
   dispatch_async(v10, block);
 }
 
-- (void)presentSenderFlowWithHost:(unint64_t)a3 userInfo:(id)a4 completion:(id)a5
+- (void)presentSenderFlowWithHost:(unint64_t)host userInfo:(id)info completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v10 = PDDefaultQueue();
@@ -1519,9 +1519,9 @@
     v12[2] = sub_100140944;
     v12[3] = &unk_10083F918;
     v12[4] = self;
-    v15 = a3;
-    v13 = v8;
-    v14 = v9;
+    hostCopy = host;
+    v13 = infoCopy;
+    v14 = completionCopy;
     dispatch_async(v10, v12);
   }
 
@@ -1535,17 +1535,17 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Client is not entitled for method: %s", buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)presentReceiverFlowWithOrientation:(id)a3 host:(unint64_t)a4 completion:(id)a5
+- (void)presentReceiverFlowWithOrientation:(id)orientation host:(unint64_t)host completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  orientationCopy = orientation;
+  completionCopy = completion;
   if ([(PKEntitlementWhitelist *)self->_whitelist peerPaymentAllAccess])
   {
     v10 = PDDefaultQueue();
@@ -1554,9 +1554,9 @@
     v12[2] = sub_100140B9C;
     v12[3] = &unk_10083F918;
     v12[4] = self;
-    v13 = v8;
-    v15 = a4;
-    v14 = v9;
+    v13 = orientationCopy;
+    hostCopy = host;
+    v14 = completionCopy;
     dispatch_async(v10, v12);
   }
 
@@ -1570,187 +1570,187 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Client is not entitled for method: %s", buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)insertOrUpdateDeviceOriginatedNearbyPeerPaymentTransactionWithIdentifier:(id)a3 memo:(id)a4 counterpartAppearanceData:(id)a5 completion:(id)a6
+- (void)insertOrUpdateDeviceOriginatedNearbyPeerPaymentTransactionWithIdentifier:(id)identifier memo:(id)memo counterpartAppearanceData:(id)data completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  memoCopy = memo;
+  dataCopy = data;
+  completionCopy = completion;
   v14 = dispatch_get_global_queue(21, 0);
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100140DD8;
   v20[3] = &unk_10083FD78;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
+  v21 = identifierCopy;
+  v22 = memoCopy;
+  v23 = dataCopy;
+  v24 = completionCopy;
   v15 = v20;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v26 = v15;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
+  v16 = completionCopy;
+  v17 = dataCopy;
+  v18 = memoCopy;
+  v19 = identifierCopy;
   dispatch_async(v14, block);
 }
 
-- (void)insertOrUpdateNearbyPeerPaymentSetupNotificationWithTransactionIdentifier:(id)a3 amount:(id)a4 currency:(id)a5 senderName:(id)a6 completion:(id)a7
+- (void)insertOrUpdateNearbyPeerPaymentSetupNotificationWithTransactionIdentifier:(id)identifier amount:(id)amount currency:(id)currency senderName:(id)name completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  amountCopy = amount;
+  currencyCopy = currency;
+  nameCopy = name;
+  completionCopy = completion;
   v17 = dispatch_get_global_queue(21, 0);
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1001410B4;
   v24[3] = &unk_10083DD98;
   v24[4] = self;
-  v25 = v12;
-  v26 = v13;
-  v27 = v14;
-  v28 = v15;
-  v29 = v16;
+  v25 = identifierCopy;
+  v26 = amountCopy;
+  v27 = currencyCopy;
+  v28 = nameCopy;
+  v29 = completionCopy;
   v18 = v24;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v31 = v18;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
+  v19 = completionCopy;
+  v20 = nameCopy;
+  v21 = currencyCopy;
+  v22 = amountCopy;
+  v23 = identifierCopy;
   dispatch_async(v17, block);
 }
 
-- (void)counterpartImageDataWithCompletion:(id)a3
+- (void)counterpartImageDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100141450;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)counterpartImageDataWithIdentifier:(id)a3 completion:(id)a4
+- (void)counterpartImageDataWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001416D0;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (void)counterpartImageDataForTransactionWithIdentifier:(id)a3 completion:(id)a4
+- (void)counterpartImageDataForTransactionWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100141950;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   dispatch_async(v8, block);
 }
 
-- (void)deleteAllCounterpartImageDataWithCompletion:(id)a3
+- (void)deleteAllCounterpartImageDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100141BAC;
   v8[3] = &unk_10083DCB8;
   v8[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v6 = v8;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v11 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   dispatch_async(v5, block);
 }
 
-- (void)reportFailureDiagnostic:(id)a3 completion:(id)a4
+- (void)reportFailureDiagnostic:(id)diagnostic completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  diagnosticCopy = diagnostic;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100141E14;
   v12[3] = &unk_10083D320;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = diagnosticCopy;
+  v14 = completionCopy;
   v9 = v12;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000056A8;
   block[3] = &unk_10083D648;
   v16 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = completionCopy;
+  v11 = diagnosticCopy;
   dispatch_async(v8, block);
 }
 
-- (void)userInfoWithCompletion:(id)a3
+- (void)userInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -1758,7 +1758,7 @@
     v7[2] = sub_100142054;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1769,10 +1769,10 @@
   }
 }
 
-- (void)fetchUserInfoWithCompletion:(id)a3
+- (void)fetchUserInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -1780,7 +1780,7 @@
     v7[2] = sub_100142288;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1791,11 +1791,11 @@
   }
 }
 
-- (void)insertOrUpdateUserInfo:(id)a3 completion:(id)a4
+- (void)insertOrUpdateUserInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = dispatch_get_global_queue(21, 0);
     v10[0] = _NSConcreteStackBlock;
@@ -1803,8 +1803,8 @@
     v10[2] = sub_1001424E8;
     v10[3] = &unk_10083D320;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = infoCopy;
+    v12 = completionCopy;
     v9 = v10;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1815,10 +1815,10 @@
   }
 }
 
-- (void)deleteUserInfoWithCompletion:(id)a3
+- (void)deleteUserInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = dispatch_get_global_queue(21, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -1826,7 +1826,7 @@
     v7[2] = sub_10014271C;
     v7[3] = &unk_10083DCB8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     v6 = v7;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1837,17 +1837,17 @@
   }
 }
 
-- (id)_displayNameForAddress:(id)a3
+- (id)_displayNameForAddress:(id)address
 {
-  v3 = a3;
-  if (v3)
+  addressCopy = address;
+  if (addressCopy)
   {
     v4 = +[PKContactResolver defaultContactResolver];
-    v5 = [v4 contactForHandle:v3];
-    v6 = [PKPeerPaymentCounterpartHandleFormatter displayNameForCounterpartHandle:v3 contact:v5];
+    v5 = [v4 contactForHandle:addressCopy];
+    v6 = [PKPeerPaymentCounterpartHandleFormatter displayNameForCounterpartHandle:addressCopy contact:v5];
     if (!v6)
     {
-      v6 = v3;
+      v6 = addressCopy;
     }
   }
 
@@ -1859,14 +1859,14 @@
   return v6;
 }
 
-- (void)_scheduleNotificationsForPeerPaymentPendingRequests:(id)a3
+- (void)_scheduleNotificationsForPeerPaymentPendingRequests:(id)requests
 {
-  v3 = a3;
+  requestsCopy = requests;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v4 = [requestsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1880,19 +1880,19 @@
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 status];
-        v12 = v11;
-        if (v11 == v7)
+        status = [v10 status];
+        v12 = status;
+        if (status == v7)
         {
         }
 
         else
         {
-          if (v11)
+          if (status)
           {
             v13 = v7 == 0;
           }
@@ -1908,7 +1908,7 @@
             goto LABEL_17;
           }
 
-          v14 = [v11 isEqualToString:v7];
+          v14 = [status isEqualToString:v7];
 
           if (!v14)
           {
@@ -1916,16 +1916,16 @@
           }
         }
 
-        v15 = [v10 actions];
-        v16 = [v15 containsObject:v8];
+        actions = [v10 actions];
+        v16 = [actions containsObject:v8];
 
         if (!v16)
         {
           continue;
         }
 
-        v17 = [v10 requestToken];
-        v12 = [PDPeerPaymentPendingRequestReceivedUserNotification notificationIdentifierForRequestToken:v17];
+        requestToken = [v10 requestToken];
+        v12 = [PDPeerPaymentPendingRequestReceivedUserNotification notificationIdentifierForRequestToken:requestToken];
 
         userNotificationManager = self->_userNotificationManager;
         v21[0] = _NSConcreteStackBlock;
@@ -1938,7 +1938,7 @@
 LABEL_17:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v5 = [requestsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v5);
@@ -1954,23 +1954,23 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Removing all notifications for peer payment pending requests", buf, 2u);
   }
 
-  v4 = [(PDPeerPaymentService *)self peerPaymentAccountManager];
+  peerPaymentAccountManager = [(PDPeerPaymentService *)self peerPaymentAccountManager];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100142E90;
   v5[3] = &unk_10083DAE0;
   v5[4] = self;
-  [v4 peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:v5];
+  [peerPaymentAccountManager peerPaymentPendingRequestsForPeerPaymentAccountWithCompletion:v5];
 }
 
-- (void)_removeNotificationsForPeerPaymentPendingRequestWithRequestTokens:(id)a3
+- (void)_removeNotificationsForPeerPaymentPendingRequestWithRequestTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = tokensCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing notifications for peer payment pending requests with tokens: %@", buf, 0xCu);
   }
 
@@ -1978,7 +1978,7 @@ LABEL_17:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = tokensCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

@@ -1,47 +1,47 @@
 @interface SBPhysicalButtonCompletionHandler
-- (BOOL)completeWithResult:(unint64_t)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(void *)a1;
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1;
+- (BOOL)completeWithResult:(unint64_t)result;
+- (id)descriptionBuilderWithMultilinePrefix:(void *)prefix;
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix;
 - (id)succinctDescriptionBuilder;
 - (void)dealloc;
-- (void)initWithIdentifier:(uint64_t)a3 button:(void *)a4 block:;
+- (void)initWithIdentifier:(uint64_t)identifier button:(void *)button block:;
 @end
 
 @implementation SBPhysicalButtonCompletionHandler
 
-- (void)initWithIdentifier:(uint64_t)a3 button:(void *)a4 block:
+- (void)initWithIdentifier:(uint64_t)identifier button:(void *)button block:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  buttonCopy = button;
+  if (self)
   {
     if (!v7)
     {
       [SBPhysicalButtonCompletionHandler initWithIdentifier:? button:? block:?];
     }
 
-    if (!v8)
+    if (!buttonCopy)
     {
       [SBPhysicalButtonCompletionHandler initWithIdentifier:? button:? block:?];
     }
 
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = SBPhysicalButtonCompletionHandler;
-    a1 = objc_msgSendSuper2(&v14, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v14, sel_init);
+    if (self)
     {
       v9 = [v7 copy];
-      v10 = a1[3];
-      a1[3] = v9;
+      v10 = self[3];
+      self[3] = v9;
 
-      a1[2] = a3;
-      v11 = [v8 copy];
-      v12 = a1[1];
-      a1[1] = v11;
+      self[2] = identifier;
+      v11 = [buttonCopy copy];
+      v12 = self[1];
+      self[1] = v11;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
@@ -49,7 +49,7 @@
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = _NSStringFromUIPhysicalButton();
-  v7 = [v4 stringWithFormat:@"Client code must invalidate <%@:%p> (%@: %@) before dealloc", v5, a1, v6, *(a1 + 24)];
+  v7 = [v4 stringWithFormat:@"Client code must invalidate <%@:%p> (%@: %@) before dealloc", v5, self, v6, *(self + 24)];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -61,7 +61,7 @@
     v13 = 2114;
     v14 = v10;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"SBPhysicalButtonCompletionHandler.m";
     v19 = 1024;
@@ -76,7 +76,7 @@
   __break(0);
 }
 
-- (BOOL)completeWithResult:(unint64_t)a3
+- (BOOL)completeWithResult:(unint64_t)result
 {
   v19 = *MEMORY[0x277D85DE8];
   block = self->_block;
@@ -86,7 +86,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = _NSStringFromUIPhysicalButton();
-      v8 = NSStringFromSBPhysicalButtonResult(a3);
+      v8 = NSStringFromSBPhysicalButtonResult(result);
       identifier = self->_identifier;
       v13 = 138543874;
       v14 = v7;
@@ -101,37 +101,37 @@
     v11 = self->_block;
     self->_block = 0;
 
-    (v10)[2](v10, self, a3);
+    (v10)[2](v10, self, result);
   }
 
   return block != 0;
 }
 
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    v1 = [(SBPhysicalButtonCompletionHandler *)a1 succinctDescriptionBuilder];
-    v2 = [v1 build];
+    succinctDescriptionBuilder = [(SBPhysicalButtonCompletionHandler *)prefix succinctDescriptionBuilder];
+    build = [succinctDescriptionBuilder build];
   }
 
   else
   {
-    v2 = 0;
+    build = 0;
   }
 
-  return v2;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CF0C00] builderWithObject:a1];
+    v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
     v3 = _NSStringFromUIPhysicalButton();
     [v2 appendString:v3 withName:@"button"];
 
-    [v2 appendString:*(a1 + 24) withName:@"identifier"];
+    [v2 appendString:*(self + 24) withName:@"identifier"];
   }
 
   else
@@ -142,15 +142,15 @@
   return v2;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(void *)a1
+- (id)descriptionBuilderWithMultilinePrefix:(void *)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    a1 = [(SBPhysicalButtonCompletionHandler *)a1 succinctDescriptionBuilder];
+    prefix = [(SBPhysicalButtonCompletionHandler *)prefix succinctDescriptionBuilder];
     v1 = vars8;
   }
 
-  return a1;
+  return prefix;
 }
 
 - (void)initWithIdentifier:(const char *)a1 button:block:.cold.1(const char *a1)

@@ -1,36 +1,36 @@
 @interface VCMediaNegotiationBlobV2StreamGroup
-+ (BOOL)isValidStreamGroupIDFromConfig:(id)a3 defaultConfig:(id)a4;
-+ (id)defaultsForStreamGroup:(unsigned int)a3;
-+ (id)defaultsForStreamGroupCustom:(unsigned int)a3;
-+ (id)negotiationCipherSuiteAsString:(unsigned int)a3;
-+ (unsigned)streamGroupFromStreamGroupID:(unsigned int)a3;
-+ (unsigned)streamGroupIDFromStreamGroup:(unsigned int)a3;
-+ (void)updateParentStreamIDForGroupConfig:(id)a3;
-- (BOOL)appendStreamsToStreamGroupConfig:(id)a3 streamGroupID:(unsigned int)a4 rtpSampleRates:(id)a5;
-- (BOOL)isDefaultPayloadConfigsWithStreamGroupConfig:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isUsedPayloadConfigAtIndex:(id)a3 streamGroupConfig:(id)a4 rtpTimestampRate:(unsigned int *)a5;
-- (BOOL)setupPayloadsWithGroupConfig:(id)a3;
-- (BOOL)setupStreamsWithGroupConfig:(id)a3;
-- (BOOL)updatePayloadConfigsWithStreamGroupConfig:(id)a3 rtpSampleRates:(id)a4;
-- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)a3;
-- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)a3 defaultConfig:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)customPayloadConfigStateWithStreamGroupConfig:(id)a3;
++ (BOOL)isValidStreamGroupIDFromConfig:(id)config defaultConfig:(id)defaultConfig;
++ (id)defaultsForStreamGroup:(unsigned int)group;
++ (id)defaultsForStreamGroupCustom:(unsigned int)custom;
++ (id)negotiationCipherSuiteAsString:(unsigned int)string;
++ (unsigned)streamGroupFromStreamGroupID:(unsigned int)d;
++ (unsigned)streamGroupIDFromStreamGroup:(unsigned int)group;
++ (void)updateParentStreamIDForGroupConfig:(id)config;
+- (BOOL)appendStreamsToStreamGroupConfig:(id)config streamGroupID:(unsigned int)d rtpSampleRates:(id)rates;
+- (BOOL)isDefaultPayloadConfigsWithStreamGroupConfig:(id)config;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isUsedPayloadConfigAtIndex:(id)index streamGroupConfig:(id)config rtpTimestampRate:(unsigned int *)rate;
+- (BOOL)setupPayloadsWithGroupConfig:(id)config;
+- (BOOL)setupStreamsWithGroupConfig:(id)config;
+- (BOOL)updatePayloadConfigsWithStreamGroupConfig:(id)config rtpSampleRates:(id)rates;
+- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)config;
+- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)config defaultConfig:(id)defaultConfig;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)customPayloadConfigStateWithStreamGroupConfig:(id)config;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)getStreamGroupConfig:(id *)a3;
+- (int)getStreamGroupConfig:(id *)config;
 - (unint64_t)hash;
-- (unsigned)codecIndexForType:(int64_t)a3 inPayloadConfigurations:(id)a4;
-- (void)addPayloads:(id)a3;
-- (void)addStreams:(id)a3;
-- (void)appendV2PayloadsToStreamConfig:(id)a3 streamGroupConfig:(id)a4;
-- (void)copyTo:(id)a3;
+- (unsigned)codecIndexForType:(int64_t)type inPayloadConfigurations:(id)configurations;
+- (void)addPayloads:(id)payloads;
+- (void)addStreams:(id)streams;
+- (void)appendV2PayloadsToStreamConfig:(id)config streamGroupConfig:(id)groupConfig;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4;
-- (void)updateDefaultPayloadConfigsWithConfig:(id)a3 rtpSampleRates:(id)a4;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file prefix:(id)prefix;
+- (void)updateDefaultPayloadConfigsWithConfig:(id)config rtpSampleRates:(id)rates;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2StreamGroup
@@ -46,7 +46,7 @@
   [(VCMediaNegotiationBlobV2StreamGroup *)&v3 dealloc];
 }
 
-- (void)addPayloads:(id)a3
+- (void)addPayloads:(id)payloads
 {
   payloads = self->_payloads;
   if (!payloads)
@@ -55,10 +55,10 @@
     self->_payloads = payloads;
   }
 
-  [(NSMutableArray *)payloads addObject:a3];
+  [(NSMutableArray *)payloads addObject:payloads];
 }
 
-- (void)addStreams:(id)a3
+- (void)addStreams:(id)streams
 {
   streams = self->_streams;
   if (!streams)
@@ -67,7 +67,7 @@
     self->_streams = streams;
   }
 
-  [(NSMutableArray *)streams addObject:a3];
+  [(NSMutableArray *)streams addObject:streams];
 }
 
 - (id)description
@@ -81,10 +81,10 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_streamGroup), @"streamGroup"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_streamGroup), @"streamGroup"}];
   }
 
   if ([(NSMutableArray *)self->_payloads count])
@@ -118,7 +118,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"payloads"];
+    [dictionary setObject:v4 forKey:@"payloads"];
   }
 
   if ([(NSMutableArray *)self->_streams count])
@@ -152,19 +152,19 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"streams"];
+    [dictionary setObject:v10 forKey:@"streams"];
   }
 
   settingsU1 = self->_settingsU1;
   if (settingsU1)
   {
-    [v3 setObject:-[VCMediaNegotiationBlobV2SettingsU1 dictionaryRepresentation](settingsU1 forKey:{"dictionaryRepresentation"), @"settingsU1"}];
+    [dictionary setObject:-[VCMediaNegotiationBlobV2SettingsU1 dictionaryRepresentation](settingsU1 forKey:{"dictionaryRepresentation"), @"settingsU1"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x1E69E9840];
   if (*&self->_has)
@@ -234,38 +234,38 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 6) = self->_streamGroup;
-    *(a3 + 40) |= 1u;
+    *(to + 6) = self->_streamGroup;
+    *(to + 40) |= 1u;
   }
 
   if ([(VCMediaNegotiationBlobV2StreamGroup *)self payloadsCount])
   {
-    [a3 clearPayloads];
-    v5 = [(VCMediaNegotiationBlobV2StreamGroup *)self payloadsCount];
-    if (v5)
+    [to clearPayloads];
+    payloadsCount = [(VCMediaNegotiationBlobV2StreamGroup *)self payloadsCount];
+    if (payloadsCount)
     {
-      v6 = v5;
+      v6 = payloadsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addPayloads:{-[VCMediaNegotiationBlobV2StreamGroup payloadsAtIndex:](self, "payloadsAtIndex:", i)}];
+        [to addPayloads:{-[VCMediaNegotiationBlobV2StreamGroup payloadsAtIndex:](self, "payloadsAtIndex:", i)}];
       }
     }
   }
 
   if ([(VCMediaNegotiationBlobV2StreamGroup *)self streamsCount])
   {
-    [a3 clearStreams];
-    v8 = [(VCMediaNegotiationBlobV2StreamGroup *)self streamsCount];
-    if (v8)
+    [to clearStreams];
+    streamsCount = [(VCMediaNegotiationBlobV2StreamGroup *)self streamsCount];
+    if (streamsCount)
     {
-      v9 = v8;
+      v9 = streamsCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addStreams:{-[VCMediaNegotiationBlobV2StreamGroup streamsAtIndex:](self, "streamsAtIndex:", j)}];
+        [to addStreams:{-[VCMediaNegotiationBlobV2StreamGroup streamsAtIndex:](self, "streamsAtIndex:", j)}];
       }
     }
   }
@@ -273,14 +273,14 @@
   if (self->_settingsU1)
   {
 
-    [a3 setSettingsU1:?];
+    [to setSettingsU1:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -307,7 +307,7 @@
           objc_enumerationMutation(payloads);
         }
 
-        v12 = [*(*(&v26 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v26 + 1) + 8 * i) copyWithZone:zone];
         [v6 addPayloads:v12];
       }
 
@@ -336,7 +336,7 @@
           objc_enumerationMutation(streams);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:a3];
+        v18 = [*(*(&v21 + 1) + 8 * j) copyWithZone:zone];
         [v6 addStreams:v18];
       }
 
@@ -346,24 +346,24 @@
     while (v15);
   }
 
-  v6[2] = [(VCMediaNegotiationBlobV2SettingsU1 *)self->_settingsU1 copyWithZone:a3];
+  v6[2] = [(VCMediaNegotiationBlobV2SettingsU1 *)self->_settingsU1 copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_streamGroup != *(a3 + 6))
+      if ((*(equal + 40) & 1) == 0 || self->_streamGroup != *(equal + 6))
       {
         goto LABEL_13;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
 LABEL_13:
       LOBYTE(v5) = 0;
@@ -371,13 +371,13 @@ LABEL_13:
     }
 
     payloads = self->_payloads;
-    if (!(payloads | *(a3 + 1)) || (v5 = [(NSMutableArray *)payloads isEqual:?]) != 0)
+    if (!(payloads | *(equal + 1)) || (v5 = [(NSMutableArray *)payloads isEqual:?]) != 0)
     {
       streams = self->_streams;
-      if (!(streams | *(a3 + 4)) || (v5 = [(NSMutableArray *)streams isEqual:?]) != 0)
+      if (!(streams | *(equal + 4)) || (v5 = [(NSMutableArray *)streams isEqual:?]) != 0)
       {
         settingsU1 = self->_settingsU1;
-        if (settingsU1 | *(a3 + 2))
+        if (settingsU1 | *(equal + 2))
         {
 
           LOBYTE(v5) = [(VCMediaNegotiationBlobV2SettingsU1 *)settingsU1 isEqual:?];
@@ -411,12 +411,12 @@ LABEL_13:
   return v4 ^ v5 ^ [(VCMediaNegotiationBlobV2SettingsU1 *)self->_settingsU1 hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (*(a3 + 40))
+  if (*(from + 40))
   {
-    self->_streamGroup = *(a3 + 6);
+    self->_streamGroup = *(from + 6);
     *&self->_has |= 1u;
   }
 
@@ -424,7 +424,7 @@ LABEL_13:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = *(a3 + 1);
+  v5 = *(from + 1);
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v22 count:16];
   if (v6)
   {
@@ -452,7 +452,7 @@ LABEL_13:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = *(a3 + 4);
+  v10 = *(from + 4);
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v11)
   {
@@ -477,7 +477,7 @@ LABEL_13:
   }
 
   settingsU1 = self->_settingsU1;
-  v16 = *(a3 + 2);
+  v16 = *(from + 2);
   if (settingsU1)
   {
     if (v16)
@@ -492,14 +492,14 @@ LABEL_13:
   }
 }
 
-- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)a3 defaultConfig:(id)a4
+- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)config defaultConfig:(id)defaultConfig
 {
   v6 = [(VCMediaNegotiationBlobV2StreamGroup *)self init];
   if (v6)
   {
-    if ([VCMediaNegotiationBlobV2StreamGroup isValidStreamGroupIDFromConfig:a3 defaultConfig:a4])
+    if ([VCMediaNegotiationBlobV2StreamGroup isValidStreamGroupIDFromConfig:config defaultConfig:defaultConfig])
     {
-      v7 = +[VCMediaNegotiationBlobV2StreamGroup streamGroupFromStreamGroupID:](VCMediaNegotiationBlobV2StreamGroup, "streamGroupFromStreamGroupID:", [a3 groupID]);
+      v7 = +[VCMediaNegotiationBlobV2StreamGroup streamGroupFromStreamGroupID:](VCMediaNegotiationBlobV2StreamGroup, "streamGroupFromStreamGroupID:", [config groupID]);
       if (v7)
       {
         v8 = v7;
@@ -508,12 +508,12 @@ LABEL_13:
           [(VCMediaNegotiationBlobV2StreamGroup *)v6 setStreamGroup:v8];
         }
 
-        if ([a3 u1Config])
+        if ([config u1Config])
         {
-          v9 = -[VCMediaNegotiationBlobV2SettingsU1 initWithU1Config:]([VCMediaNegotiationBlobV2SettingsU1 alloc], "initWithU1Config:", [a3 u1Config]);
+          v9 = -[VCMediaNegotiationBlobV2SettingsU1 initWithU1Config:]([VCMediaNegotiationBlobV2SettingsU1 alloc], "initWithU1Config:", [config u1Config]);
           if (!v9)
           {
-            [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:a3 defaultConfig:?];
+            [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:config defaultConfig:?];
             goto LABEL_17;
           }
 
@@ -521,31 +521,31 @@ LABEL_13:
           [(VCMediaNegotiationBlobV2StreamGroup *)v6 setSettingsU1:v9];
         }
 
-        if ([(VCMediaNegotiationBlobV2StreamGroup *)v6 setupPayloadsWithGroupConfig:a3])
+        if ([(VCMediaNegotiationBlobV2StreamGroup *)v6 setupPayloadsWithGroupConfig:config])
         {
-          if ([(VCMediaNegotiationBlobV2StreamGroup *)v6 setupStreamsWithGroupConfig:a3])
+          if ([(VCMediaNegotiationBlobV2StreamGroup *)v6 setupStreamsWithGroupConfig:config])
           {
             return v6;
           }
 
-          [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:a3 defaultConfig:?];
+          [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:config defaultConfig:?];
         }
 
         else
         {
-          [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:a3 defaultConfig:?];
+          [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:config defaultConfig:?];
         }
       }
 
       else
       {
-        [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:a3 defaultConfig:?];
+        [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:config defaultConfig:?];
       }
     }
 
     else
     {
-      [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:a3 defaultConfig:?];
+      [VCMediaNegotiationBlobV2StreamGroup(Utils) initWithStreamGroupConfig:config defaultConfig:?];
     }
 
 LABEL_17:
@@ -556,13 +556,13 @@ LABEL_17:
   return v6;
 }
 
-- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)a3
+- (VCMediaNegotiationBlobV2StreamGroup)initWithStreamGroupConfig:(id)config
 {
-  v5 = +[VCMediaNegotiationBlobV2StreamGroup defaultsForStreamGroup:](VCMediaNegotiationBlobV2StreamGroup, "defaultsForStreamGroup:", +[VCMediaNegotiationBlobV2StreamGroup streamGroupFromStreamGroupID:](VCMediaNegotiationBlobV2StreamGroup, "streamGroupFromStreamGroupID:", [a3 groupID]));
+  v5 = +[VCMediaNegotiationBlobV2StreamGroup defaultsForStreamGroup:](VCMediaNegotiationBlobV2StreamGroup, "defaultsForStreamGroup:", +[VCMediaNegotiationBlobV2StreamGroup streamGroupFromStreamGroupID:](VCMediaNegotiationBlobV2StreamGroup, "streamGroupFromStreamGroupID:", [config groupID]));
   if (v5)
   {
 
-    return [(VCMediaNegotiationBlobV2StreamGroup *)self initWithStreamGroupConfig:a3 defaultConfig:v5];
+    return [(VCMediaNegotiationBlobV2StreamGroup *)self initWithStreamGroupConfig:config defaultConfig:v5];
   }
 
   else
@@ -573,7 +573,7 @@ LABEL_17:
       v7 = VRTraceErrorLogLevelToCSTR();
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(VCMediaNegotiationBlobV2StreamGroup(Utils) *)v7 initWithStreamGroupConfig:a3];
+        [(VCMediaNegotiationBlobV2StreamGroup(Utils) *)v7 initWithStreamGroupConfig:config];
       }
     }
 
@@ -581,10 +581,10 @@ LABEL_17:
   }
 }
 
-- (int)getStreamGroupConfig:(id *)a3
+- (int)getStreamGroupConfig:(id *)config
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!config)
   {
     [(VCMediaNegotiationBlobV2StreamGroup(Utils) *)&v17 getStreamGroupConfig:?];
 LABEL_20:
@@ -611,8 +611,8 @@ LABEL_20:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [(VCMediaNegotiationBlobV2StreamGroup *)self streams];
-  v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  streams = [(VCMediaNegotiationBlobV2StreamGroup *)self streams];
+  v9 = [(NSMutableArray *)streams countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -623,7 +623,7 @@ LABEL_5:
     {
       if (*v21 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(streams);
       }
 
       if ([*(*(&v20 + 1) + 8 * v12) usesPayloadConfigsWithGroupID:{+[VCMediaNegotiationBlobV2StreamGroup streamGroupIDFromStreamGroup:](VCMediaNegotiationBlobV2StreamGroup, "streamGroupIDFromStreamGroup:", self->_streamGroup)}])
@@ -633,7 +633,7 @@ LABEL_5:
 
       if (v10 == ++v12)
       {
-        v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        v10 = [(NSMutableArray *)streams countByEnumeratingWithState:&v20 objects:v19 count:16];
         if (v10)
         {
           goto LABEL_5;
@@ -643,8 +643,8 @@ LABEL_5:
       }
     }
 
-    v13 = [MEMORY[0x1E695DF70] array];
-    if ([(VCMediaNegotiationBlobV2StreamGroup *)self updatePayloadConfigsWithStreamGroupConfig:v7 rtpSampleRates:v13])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([(VCMediaNegotiationBlobV2StreamGroup *)self updatePayloadConfigsWithStreamGroupConfig:v7 rtpSampleRates:array])
     {
       goto LABEL_13;
     }
@@ -654,9 +654,9 @@ LABEL_5:
   }
 
 LABEL_11:
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
 LABEL_13:
-  if (![(VCMediaNegotiationBlobV2StreamGroup *)self appendStreamsToStreamGroupConfig:v7 streamGroupID:v16 rtpSampleRates:v13])
+  if (![(VCMediaNegotiationBlobV2StreamGroup *)self appendStreamsToStreamGroupConfig:v7 streamGroupID:v16 rtpSampleRates:array])
   {
     [VCMediaNegotiationBlobV2StreamGroup(Utils) getStreamGroupConfig:];
     goto LABEL_20;
@@ -664,23 +664,23 @@ LABEL_13:
 
   [VCMediaNegotiationBlobV2StreamGroup updateParentStreamIDForGroupConfig:v7];
   v14 = 0;
-  *a3 = v7;
+  *config = v7;
   return v14;
 }
 
-- (unsigned)codecIndexForType:(int64_t)a3 inPayloadConfigurations:(id)a4
+- (unsigned)codecIndexForType:(int64_t)type inPayloadConfigurations:(id)configurations
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (configurations)
   {
-    if ([a4 count])
+    if ([configurations count])
     {
       v6 = 0;
       v7 = 0;
-      while ([objc_msgSend(a4 objectAtIndexedSubscript:{v6), "codecType"}] != a3)
+      while ([objc_msgSend(configurations objectAtIndexedSubscript:{v6), "codecType"}] != type)
       {
         v6 = ++v7;
-        if ([a4 count] <= v7)
+        if ([configurations count] <= v7)
         {
           return -1;
         }
@@ -702,13 +702,13 @@ LABEL_13:
   return v7;
 }
 
-- (void)appendV2PayloadsToStreamConfig:(id)a3 streamGroupConfig:(id)a4
+- (void)appendV2PayloadsToStreamConfig:(id)config streamGroupConfig:(id)groupConfig
 {
-  if (a4)
+  if (groupConfig)
   {
-    if (a3)
+    if (config)
     {
-      if ([a4 groupID] == 1835623282)
+      if ([groupConfig groupID] == 1835623282)
       {
         v7 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:1835623282];
         v8 = [(VCMediaNegotiationBlobV2StreamGroup *)self codecIndexForType:20 inPayloadConfigurations:v7];
@@ -726,9 +726,9 @@ LABEL_13:
             if (v10)
             {
               v11 = v10;
-              [a3 addCodec:v9];
+              [config addCodec:v9];
 
-              [a4 addCodecConfig:v11];
+              [groupConfig addCodecConfig:v11];
             }
           }
         }
@@ -747,7 +747,7 @@ LABEL_13:
   }
 }
 
-- (BOOL)appendStreamsToStreamGroupConfig:(id)a3 streamGroupID:(unsigned int)a4 rtpSampleRates:(id)a5
+- (BOOL)appendStreamsToStreamGroupConfig:(id)config streamGroupID:(unsigned int)d rtpSampleRates:(id)rates
 {
   v71 = *MEMORY[0x1E69E9840];
   v67 = 0u;
@@ -760,7 +760,7 @@ LABEL_13:
   {
     v6 = 0;
     v36 = *v68;
-    v41 = a3;
+    configCopy = config;
     while (2)
     {
       v7 = 0;
@@ -772,7 +772,7 @@ LABEL_13:
         }
 
         v42 = *(*(&v67 + 1) + 8 * v7);
-        v8 = [v42 streamConfigWithPayloadConfigs:objc_msgSend(a3 payloadConfigSampleRates:"codecConfigs") streamGroupID:{a5, a4}];
+        v8 = [v42 streamConfigWithPayloadConfigs:objc_msgSend(config payloadConfigSampleRates:"codecConfigs") streamGroupID:{rates, d}];
         if (!v8)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -781,8 +781,8 @@ LABEL_13:
             v29 = *MEMORY[0x1E6986650];
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
             {
-              v30 = [v42 streamIndex];
-              v31 = FourccToCStr(a4);
+              streamIndex = [v42 streamIndex];
+              v31 = FourccToCStr(d);
               *buf = 136316162;
               v52 = v28;
               v53 = 2080;
@@ -790,7 +790,7 @@ LABEL_13:
               v55 = 1024;
               v56 = 183;
               v57 = 1024;
-              v58 = v30;
+              v58 = streamIndex;
               v59 = 2080;
               *v60 = v31;
               _os_log_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Failed to process the stream config (streamIndex=%d) for streamGroupID=%s. Skipping remaining streams", buf, 0x2Cu);
@@ -805,7 +805,7 @@ LABEL_13:
         v40 = v6;
         if ([v8 v2StreamID])
         {
-          [(VCMediaNegotiationBlobV2StreamGroup *)self appendV2PayloadsToStreamConfig:v9 streamGroupConfig:a3];
+          [(VCMediaNegotiationBlobV2StreamGroup *)self appendV2PayloadsToStreamConfig:v9 streamGroupConfig:config];
         }
 
         v44 = [MEMORY[0x1E695DFA8] set];
@@ -814,8 +814,8 @@ LABEL_13:
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v45 = [v9 codecs];
-        v11 = [v45 countByEnumeratingWithState:&v62 objects:v61 count:16];
+        codecs = [v9 codecs];
+        v11 = [codecs countByEnumeratingWithState:&v62 objects:v61 count:16];
         if (v11)
         {
           v12 = v11;
@@ -826,11 +826,11 @@ LABEL_13:
             {
               if (*v63 != v13)
               {
-                objc_enumerationMutation(v45);
+                objc_enumerationMutation(codecs);
               }
 
               v15 = *(*(&v62 + 1) + 8 * i);
-              v16 = [objc_msgSend(a3 "codecConfigs")];
+              v16 = [objc_msgSend(config "codecConfigs")];
               if ([v16 cipherSuite] < 4)
               {
                 v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v16, "cipherSuite")}];
@@ -845,9 +845,9 @@ LABEL_13:
                   v18 = *MEMORY[0x1E6986650];
                   if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
                   {
-                    v19 = [v16 cipherSuite];
-                    v20 = [v42 streamIndex];
-                    v21 = FourccToCStr(a4);
+                    cipherSuite = [v16 cipherSuite];
+                    streamIndex2 = [v42 streamIndex];
+                    v21 = FourccToCStr(d);
                     *buf = 136316418;
                     v52 = v17;
                     v53 = 2080;
@@ -855,10 +855,10 @@ LABEL_13:
                     v55 = 1024;
                     v56 = 194;
                     v57 = 1024;
-                    v58 = v19;
+                    v58 = cipherSuite;
                     v59 = 1024;
-                    *v60 = v20;
-                    a3 = v41;
+                    *v60 = streamIndex2;
+                    config = configCopy;
                     *&v60[4] = 2080;
                     *&v60[6] = v21;
                     _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unknown cipherSuite=%d (streamIndex=%d) for streamGroupID=%s. Skipping remaining streams", buf, 0x32u);
@@ -872,7 +872,7 @@ LABEL_13:
               [v22 addObject:v23];
             }
 
-            v12 = [v45 countByEnumeratingWithState:&v62 objects:v61 count:16];
+            v12 = [codecs countByEnumeratingWithState:&v62 objects:v61 count:16];
           }
 
           while (v12);
@@ -921,8 +921,8 @@ LABEL_13:
           while (v25);
         }
 
-        a3 = v41;
-        [v41 addStreamConfig:v9];
+        config = configCopy;
+        [configCopy addStreamConfig:v9];
         v7 = v39 + 1;
       }
 
@@ -938,42 +938,42 @@ LABEL_13:
   }
 
 LABEL_39:
-  v32 = [objc_msgSend(a3 "streamConfigs")];
+  v32 = [objc_msgSend(config "streamConfigs")];
   if (!v32)
   {
-    [VCMediaNegotiationBlobV2StreamGroup(Utils) appendStreamsToStreamGroupConfig:a4 streamGroupID:? rtpSampleRates:?];
+    [VCMediaNegotiationBlobV2StreamGroup(Utils) appendStreamsToStreamGroupConfig:d streamGroupID:? rtpSampleRates:?];
   }
 
   return v32 != 0;
 }
 
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4
+- (void)printWithLogFile:(void *)file prefix:(id)prefix
 {
   v50 = *MEMORY[0x1E69E9840];
   v31 = 0;
   v6 = [(VCMediaNegotiationBlobV2StreamGroup *)self getStreamGroupConfig:&v31];
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@Stream Group: ", objc_msgSend(-[VCMediaNegotiationBlobV2StreamGroup data](self, "data"), "length"), a4];
+  prefixCopy = prefix;
+  prefix = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@Stream Group: ", objc_msgSend(-[VCMediaNegotiationBlobV2StreamGroup data](self, "data"), "length"), prefix];
   if (v31)
   {
     v9 = FourccToCStr([v31 groupID]);
     v10 = FourccToCStr([v31 mediaType]);
-    [v8 appendFormat:@"groupID='%s' mediaType='%s' subtype='%s'", v9, v10, FourccToCStr(objc_msgSend(v31, "mediaSubtype"))];
+    [prefix appendFormat:@"groupID='%s' mediaType='%s' subtype='%s'", v9, v10, FourccToCStr(objc_msgSend(v31, "mediaSubtype"))];
     if ([v31 syncGroupID])
     {
-      [v8 appendFormat:@" syncGroupID='%s'", FourccToCStr(objc_msgSend(v31, "syncGroupID"))];
+      [prefix appendFormat:@" syncGroupID='%s'", FourccToCStr(objc_msgSend(v31, "syncGroupID"))];
     }
 
-    [v8 appendFormat:@" encodeDecodeFeatures=%@", objc_msgSend(objc_msgSend(v31, "u1Config"), "videoFeatureStringsFixedPosition")];
+    [prefix appendFormat:@" encodeDecodeFeatures=%@", objc_msgSend(objc_msgSend(v31, "u1Config"), "videoFeatureStringsFixedPosition")];
   }
 
   else
   {
-    [v8 appendFormat:@"Skipping (result=%x)", v6];
+    [prefix appendFormat:@"Skipping (result=%x)", v6];
   }
 
-  v11 = [v8 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "%s\n", v12, v13, v14, v15, v16, v17, v11);
+  uTF8String = [prefix UTF8String];
+  VRLogfilePrintWithTimestamp(file, "%s\n", v12, v13, v14, v15, v16, v17, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v18 = VRTraceErrorLogLevelToCSTR();
@@ -987,7 +987,7 @@ LABEL_39:
       v46 = 1024;
       v47 = 236;
       v48 = 2112;
-      v49 = v8;
+      v49 = prefix;
       _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@", buf, 0x26u);
     }
   }
@@ -998,8 +998,8 @@ LABEL_39:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v20 = [v31 streamConfigs];
-    v21 = [v20 countByEnumeratingWithState:&v38 objects:v37 count:16];
+    streamConfigs = [v31 streamConfigs];
+    v21 = [streamConfigs countByEnumeratingWithState:&v38 objects:v37 count:16];
     if (v21)
     {
       v22 = v21;
@@ -1010,13 +1010,13 @@ LABEL_39:
         {
           if (*v39 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(streamConfigs);
           }
 
-          +[VCMediaNegotiationBlobV2StreamGroupStream printWithLogFile:prefix:streamConfig:](VCMediaNegotiationBlobV2StreamGroupStream, "printWithLogFile:prefix:streamConfig:", a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  ", v7], *(*(&v38 + 1) + 8 * i));
+          +[VCMediaNegotiationBlobV2StreamGroupStream printWithLogFile:prefix:streamConfig:](VCMediaNegotiationBlobV2StreamGroupStream, "printWithLogFile:prefix:streamConfig:", file, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  ", prefixCopy], *(*(&v38 + 1) + 8 * i));
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v38 objects:v37 count:16];
+        v22 = [streamConfigs countByEnumeratingWithState:&v38 objects:v37 count:16];
       }
 
       while (v22);
@@ -1026,8 +1026,8 @@ LABEL_39:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v25 = [v31 codecConfigs];
-    v26 = [v25 countByEnumeratingWithState:&v33 objects:v32 count:16];
+    codecConfigs = [v31 codecConfigs];
+    v26 = [codecConfigs countByEnumeratingWithState:&v33 objects:v32 count:16];
     if (v26)
     {
       v27 = v26;
@@ -1038,13 +1038,13 @@ LABEL_39:
         {
           if (*v34 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(codecConfigs);
           }
 
-          +[VCMediaNegotiationBlobV2StreamGroupPayload printWithLogFile:prefix:payloadConfig:](VCMediaNegotiationBlobV2StreamGroupPayload, "printWithLogFile:prefix:payloadConfig:", a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  ", v7], *(*(&v33 + 1) + 8 * j));
+          +[VCMediaNegotiationBlobV2StreamGroupPayload printWithLogFile:prefix:payloadConfig:](VCMediaNegotiationBlobV2StreamGroupPayload, "printWithLogFile:prefix:payloadConfig:", file, [MEMORY[0x1E696AEC0] stringWithFormat:@"%@  ", prefixCopy], *(*(&v33 + 1) + 8 * j));
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v33 objects:v32 count:16];
+        v27 = [codecConfigs countByEnumeratingWithState:&v33 objects:v32 count:16];
       }
 
       while (v27);
@@ -1052,9 +1052,9 @@ LABEL_39:
   }
 }
 
-+ (id)defaultsForStreamGroup:(unsigned int)a3
++ (id)defaultsForStreamGroup:(unsigned int)group
 {
-  switch(a3)
+  switch(group)
   {
     case 0u:
       return 0;
@@ -1153,13 +1153,13 @@ LABEL_29:
   }
 }
 
-+ (id)defaultsForStreamGroupCustom:(unsigned int)a3
++ (id)defaultsForStreamGroupCustom:(unsigned int)custom
 {
-  if (a3 <= 1684108340)
+  if (custom <= 1684108340)
   {
-    if (a3 > 1684108338)
+    if (custom > 1684108338)
     {
-      if (a3 == 1684108339)
+      if (custom == 1684108339)
       {
         v4 = 1684108339;
         v6 = 1835365473;
@@ -1176,7 +1176,7 @@ LABEL_29:
 
     else
     {
-      if (a3 == 1684108337)
+      if (custom == 1684108337)
       {
         v5 = 1751474550;
         v4 = 1684108337;
@@ -1184,7 +1184,7 @@ LABEL_29:
 
       else
       {
-        if (a3 != 1684108338)
+        if (custom != 1684108338)
         {
           goto LABEL_26;
         }
@@ -1201,9 +1201,9 @@ LABEL_23:
     return [VCMediaNegotiatorStreamGroupConfiguration streamGroupConfigWithGroupID:v4 mediaType:v6 subtype:v5 syncGroupID:1835623282 cipherSuite:3];
   }
 
-  if (a3 > 1986618417)
+  if (custom > 1986618417)
   {
-    switch(a3)
+    switch(custom)
     {
       case 0x76696432u:
         v4 = 1986618418;
@@ -1222,7 +1222,7 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  if (a3 == 1684108341)
+  if (custom == 1684108341)
   {
     v4 = 1684108341;
     v6 = 1835365473;
@@ -1230,7 +1230,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a3 == 1986618417)
+  if (custom == 1986618417)
   {
     v4 = 1986618417;
     goto LABEL_22;
@@ -1242,22 +1242,22 @@ LABEL_26:
     v8 = VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCMediaNegotiationBlobV2StreamGroup(Utils) *)v8 defaultsForStreamGroupCustom:a3];
+      [(VCMediaNegotiationBlobV2StreamGroup(Utils) *)v8 defaultsForStreamGroupCustom:custom];
     }
   }
 
   return 0;
 }
 
-- (BOOL)isDefaultPayloadConfigsWithStreamGroupConfig:(id)a3
+- (BOOL)isDefaultPayloadConfigsWithStreamGroupConfig:(id)config
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 streamConfigs];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  streamConfigs = [config streamConfigs];
+  v5 = [streamConfigs countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1268,10 +1268,10 @@ LABEL_3:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(streamConfigs);
       }
 
-      v9 = +[VCMediaNegotiationBlobV2StreamGroupStream isDefaultPayloadConfigsWithStreamConfig:payloadConfigs:streamGroupID:](VCMediaNegotiationBlobV2StreamGroupStream, "isDefaultPayloadConfigsWithStreamConfig:payloadConfigs:streamGroupID:", *(*(&v12 + 1) + 8 * v8), [a3 codecConfigs], objc_msgSend(a3, "groupID"));
+      v9 = +[VCMediaNegotiationBlobV2StreamGroupStream isDefaultPayloadConfigsWithStreamConfig:payloadConfigs:streamGroupID:](VCMediaNegotiationBlobV2StreamGroupStream, "isDefaultPayloadConfigsWithStreamConfig:payloadConfigs:streamGroupID:", *(*(&v12 + 1) + 8 * v8), [config codecConfigs], objc_msgSend(config, "groupID"));
       if (!v9)
       {
         break;
@@ -1279,7 +1279,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v6 = [streamConfigs countByEnumeratingWithState:&v12 objects:v11 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1299,10 +1299,10 @@ LABEL_9:
   return v9;
 }
 
-- (id)customPayloadConfigStateWithStreamGroupConfig:(id)a3
+- (id)customPayloadConfigStateWithStreamGroupConfig:(id)config
 {
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(a3, "codecConfigs"), "count")}];
-  if ([objc_msgSend(a3 "codecConfigs")])
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(config, "codecConfigs"), "count")}];
+  if ([objc_msgSend(config "codecConfigs")])
   {
     v5 = 1;
     v6 = MEMORY[0x1E695E110];
@@ -1311,20 +1311,20 @@ LABEL_9:
       [v4 addObject:v6];
     }
 
-    while ([objc_msgSend(a3 "codecConfigs")] > v5++);
+    while ([objc_msgSend(config "codecConfigs")] > v5++);
   }
 
   return v4;
 }
 
-- (BOOL)setupStreamsWithGroupConfig:(id)a3
+- (BOOL)setupStreamsWithGroupConfig:(id)config
 {
   v19 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = [a3 streamConfigs];
+  obj = [config streamConfigs];
   v5 = [obj countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v5)
   {
@@ -1340,7 +1340,7 @@ LABEL_9:
           objc_enumerationMutation(obj);
         }
 
-        v9 = -[VCMediaNegotiationBlobV2StreamGroupStream initWithStreamConfig:payloadConfigs:streamGroupID:]([VCMediaNegotiationBlobV2StreamGroupStream alloc], "initWithStreamConfig:payloadConfigs:streamGroupID:", *(*(&v15 + 1) + 8 * v8), [a3 codecConfigs], objc_msgSend(a3, "groupID"));
+        v9 = -[VCMediaNegotiationBlobV2StreamGroupStream initWithStreamConfig:payloadConfigs:streamGroupID:]([VCMediaNegotiationBlobV2StreamGroupStream alloc], "initWithStreamConfig:payloadConfigs:streamGroupID:", *(*(&v15 + 1) + 8 * v8), [config codecConfigs], objc_msgSend(config, "groupID"));
         if (!v9)
         {
           [VCMediaNegotiationBlobV2StreamGroup(Utils) setupStreamsWithGroupConfig:];
@@ -1367,15 +1367,15 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)isUsedPayloadConfigAtIndex:(id)a3 streamGroupConfig:(id)a4 rtpTimestampRate:(unsigned int *)a5
+- (BOOL)isUsedPayloadConfigAtIndex:(id)index streamGroupConfig:(id)config rtpTimestampRate:(unsigned int *)rate
 {
   v19 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a4 streamConfigs];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  streamConfigs = [config streamConfigs];
+  v8 = [streamConfigs countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1387,13 +1387,13 @@ LABEL_9:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(streamConfigs);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
         if ([objc_msgSend(v12 "codecs")])
         {
-          *a5 = [v12 rtpTimestampRate];
+          *rate = [v12 rtpTimestampRate];
           LOBYTE(v8) = 1;
           return v8;
         }
@@ -1402,7 +1402,7 @@ LABEL_9:
       }
 
       while (v9 != v11);
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v8 = [streamConfigs countByEnumeratingWithState:&v15 objects:v14 count:16];
       v9 = v8;
       if (v8)
       {
@@ -1416,7 +1416,7 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)setupPayloadsWithGroupConfig:(id)a3
+- (BOOL)setupPayloadsWithGroupConfig:(id)config
 {
   v23 = *MEMORY[0x1E69E9840];
   v16 = 0;
@@ -1424,7 +1424,7 @@ LABEL_9:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [a3 codecConfigs];
+  obj = [config codecConfigs];
   v5 = [obj countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v5)
   {
@@ -1441,13 +1441,13 @@ LABEL_3:
       }
 
       v10 = *(*(&v19 + 1) + 8 * v9);
-      if (!-[VCMediaNegotiationBlobV2StreamGroup isUsedPayloadConfigAtIndex:streamGroupConfig:rtpTimestampRate:](self, "isUsedPayloadConfigAtIndex:streamGroupConfig:rtpTimestampRate:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], a3, &v16))
+      if (!-[VCMediaNegotiationBlobV2StreamGroup isUsedPayloadConfigAtIndex:streamGroupConfig:rtpTimestampRate:](self, "isUsedPayloadConfigAtIndex:streamGroupConfig:rtpTimestampRate:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7], config, &v16))
       {
         break;
       }
 
       v11 = [VCMediaNegotiationBlobV2StreamGroupPayload alloc];
-      v12 = -[VCMediaNegotiationBlobV2StreamGroupPayload initWithPayloadConfig:index:rtpSampleRate:streamGroupID:](v11, "initWithPayloadConfig:index:rtpSampleRate:streamGroupID:", v10, v7, v16, [a3 groupID]);
+      v12 = -[VCMediaNegotiationBlobV2StreamGroupPayload initWithPayloadConfig:index:rtpSampleRate:streamGroupID:](v11, "initWithPayloadConfig:index:rtpSampleRate:streamGroupID:", v10, v7, v16, [config groupID]);
       if (!v12)
       {
         [VCMediaNegotiationBlobV2StreamGroup(Utils) setupPayloadsWithGroupConfig:];
@@ -1477,7 +1477,7 @@ LABEL_3:
   return 1;
 }
 
-- (BOOL)updatePayloadConfigsWithStreamGroupConfig:(id)a3 rtpSampleRates:(id)a4
+- (BOOL)updatePayloadConfigsWithStreamGroupConfig:(id)config rtpSampleRates:(id)rates
 {
   v30 = *MEMORY[0x1E69E9840];
   v6 = [VCMediaNegotiationBlobV2StreamGroup streamGroupIDFromStreamGroup:self->_streamGroup];
@@ -1487,8 +1487,8 @@ LABEL_3:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [(VCMediaNegotiationBlobV2StreamGroup *)self payloads];
-  v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v25 count:16];
+  payloads = [(VCMediaNegotiationBlobV2StreamGroup *)self payloads];
+  v8 = [(NSMutableArray *)payloads countByEnumeratingWithState:&v26 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1500,7 +1500,7 @@ LABEL_3:
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(payloads);
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
@@ -1513,12 +1513,12 @@ LABEL_3:
 
         v15 = v14;
         v16 = [v13 rtpSampleRateWithStreamGroupID:v6];
-        [a4 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v16)}];
-        [a3 addCodecConfig:v15];
+        [rates addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v16)}];
+        [config addCodecConfig:v15];
         v10 = (v10 + 1);
       }
 
-      v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v26 objects:v25 count:16];
+      v9 = [(NSMutableArray *)payloads countByEnumeratingWithState:&v26 objects:v25 count:16];
       if (v9)
       {
         continue;
@@ -1541,8 +1541,8 @@ LABEL_3:
     {
       if ([objc_msgSend(v22 objectAtIndexedSubscript:{v17), "codecType"}] != 102 || +[VCHardwareSettings supportsHEVCEncoding](VCHardwareSettings, "supportsHEVCEncoding"))
       {
-        [a4 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v21)}];
-        [a3 addCodecConfig:{objc_msgSend(v22, "objectAtIndex:", v17)}];
+        [rates addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v21)}];
+        [config addCodecConfig:{objc_msgSend(v22, "objectAtIndex:", v17)}];
       }
 
       v17 = v18;
@@ -1554,7 +1554,7 @@ LABEL_3:
   return 1;
 }
 
-- (void)updateDefaultPayloadConfigsWithConfig:(id)a3 rtpSampleRates:(id)a4
+- (void)updateDefaultPayloadConfigsWithConfig:(id)config rtpSampleRates:(id)rates
 {
   v18 = *MEMORY[0x1E69E9840];
   v7 = [VCMediaNegotiationBlobV2StreamGroupPayload defaultPayloadConfigurationsForStreamGroupID:[VCMediaNegotiationBlobV2StreamGroup streamGroupIDFromStreamGroup:self->_streamGroup]];
@@ -1578,8 +1578,8 @@ LABEL_3:
           objc_enumerationMutation(v7);
         }
 
-        [a3 addCodecConfig:*(*(&v14 + 1) + 8 * v12)];
-        [a4 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v8)}];
+        [config addCodecConfig:*(*(&v14 + 1) + 8 * v12)];
+        [rates addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v8)}];
         ++v12;
       }
 
@@ -1591,19 +1591,19 @@ LABEL_3:
   }
 }
 
-+ (void)updateParentStreamIDForGroupConfig:(id)a3
++ (void)updateParentStreamIDForGroupConfig:(id)config
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 streamConfigs];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  streamConfigs = [config streamConfigs];
+  v4 = [streamConfigs countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    streamID = 0;
     v7 = *v12;
     do
     {
@@ -1611,87 +1611,87 @@ LABEL_3:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(streamConfigs);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([v9 isTemporalStream])
         {
-          if (v6)
+          if (streamID)
           {
-            [v9 setParentStreamID:v6];
+            [v9 setParentStreamID:streamID];
           }
 
-          v6 = [v9 streamID];
+          streamID = [v9 streamID];
         }
 
         else
         {
-          v6 = 0;
+          streamID = 0;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v5 = [streamConfigs countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (id)negotiationCipherSuiteAsString:(unsigned int)a3
++ (id)negotiationCipherSuiteAsString:(unsigned int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown (%d)", *&a3];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown (%d)", *&string];
   }
 
   else
   {
-    return off_1E85F84A8[a3];
+    return off_1E85F84A8[string];
   }
 }
 
-+ (BOOL)isValidStreamGroupIDFromConfig:(id)a3 defaultConfig:(id)a4
++ (BOOL)isValidStreamGroupIDFromConfig:(id)config defaultConfig:(id)defaultConfig
 {
-  if (!a4)
+  if (!defaultConfig)
   {
     return 0;
   }
 
-  v6 = [a3 mediaType];
-  if (v6 != [a4 mediaType])
+  mediaType = [config mediaType];
+  if (mediaType != [defaultConfig mediaType])
   {
     return 0;
   }
 
-  v7 = [a3 mediaSubtype];
-  if (v7 != [a4 mediaSubtype])
+  mediaSubtype = [config mediaSubtype];
+  if (mediaSubtype != [defaultConfig mediaSubtype])
   {
     return 0;
   }
 
-  v8 = [a3 syncGroupID];
-  return v8 == [a4 syncGroupID];
+  syncGroupID = [config syncGroupID];
+  return syncGroupID == [defaultConfig syncGroupID];
 }
 
-+ (unsigned)streamGroupFromStreamGroupID:(unsigned int)a3
++ (unsigned)streamGroupFromStreamGroupID:(unsigned int)d
 {
-  result = a3;
-  if (a3 > 1835623281)
+  result = d;
+  if (d > 1835623281)
   {
-    if (a3 > 1936290408)
+    if (d > 1936290408)
     {
-      if (a3 - 1986618417 < 4)
+      if (d - 1986618417 < 4)
       {
         return result;
       }
 
-      if (a3 == 1936290409)
+      if (d == 1936290409)
       {
         return 11;
       }
 
-      if (a3 == 1937339233)
+      if (d == 1937339233)
       {
         return 4;
       }
@@ -1699,7 +1699,7 @@ LABEL_3:
 
     else
     {
-      switch(a3)
+      switch(d)
       {
         case 0x6D696372u:
           return 2;
@@ -1713,19 +1713,19 @@ LABEL_3:
     return 0;
   }
 
-  if (a3 > 1667330163)
+  if (d > 1667330163)
   {
-    if (a3 - 1684108337 < 5)
+    if (d - 1684108337 < 5)
     {
       return result;
     }
 
-    if (a3 == 1667330164)
+    if (d == 1667330164)
     {
       return 7;
     }
 
-    if (a3 == 1718909044)
+    if (d == 1718909044)
     {
       v4 = !VCFeatureFlagManager_PersonaV2Enabled();
       v5 = 12;
@@ -1736,14 +1736,14 @@ LABEL_3:
     return 0;
   }
 
-  if (a3 != 1650745716)
+  if (d != 1650745716)
   {
-    if (a3 == 1667329381)
+    if (d == 1667329381)
     {
       return 1;
     }
 
-    if (a3 == 1667329399)
+    if (d == 1667329399)
     {
       return 5;
     }
@@ -1766,18 +1766,18 @@ LABEL_24:
   }
 }
 
-+ (unsigned)streamGroupIDFromStreamGroup:(unsigned int)a3
++ (unsigned)streamGroupIDFromStreamGroup:(unsigned int)group
 {
-  if (a3 <= 14)
+  if (group <= 14)
   {
     result = 1667329381;
-    if (a3 <= 5)
+    if (group <= 5)
     {
-      if (a3 <= 2)
+      if (group <= 2)
       {
-        if (a3 != 1)
+        if (group != 1)
         {
-          if (a3 == 2)
+          if (group == 2)
           {
             return 1835623282;
           }
@@ -1786,12 +1786,12 @@ LABEL_24:
         }
       }
 
-      else if (a3 == 3)
+      else if (group == 3)
       {
         return 1935897189;
       }
 
-      else if (a3 == 4)
+      else if (group == 4)
       {
         return 1937339233;
       }
@@ -1804,14 +1804,14 @@ LABEL_24:
       return result;
     }
 
-    if (a3 <= 10)
+    if (group <= 10)
     {
-      if (a3 == 6)
+      if (group == 6)
       {
         return 1835623287;
       }
 
-      if (a3 == 7)
+      if (group == 7)
       {
         return 1667330164;
       }
@@ -1819,14 +1819,14 @@ LABEL_24:
       return 0;
     }
 
-    if (a3 == 11)
+    if (group == 11)
     {
       return 1936290409;
     }
 
-    if (a3 != 12)
+    if (group != 12)
     {
-      if (a3 == 14)
+      if (group == 14)
       {
         return 1650745716;
       }
@@ -1837,22 +1837,22 @@ LABEL_24:
     return 1718909044;
   }
 
-  if (a3 <= 1684108339)
+  if (group <= 1684108339)
   {
-    if (a3 > 1684108336)
+    if (group > 1684108336)
     {
-      if (a3 != 1684108337 && a3 != 1684108338)
+      if (group != 1684108337 && group != 1684108338)
       {
         v5 = 1684108339;
         goto LABEL_25;
       }
 
-      return a3;
+      return group;
     }
 
-    if (a3 != 15)
+    if (group != 15)
     {
-      if (a3 == 16)
+      if (group == 16)
       {
         return 1650745716;
       }
@@ -1863,28 +1863,28 @@ LABEL_24:
     return 1718909044;
   }
 
-  if (a3 > 1986618417)
+  if (group > 1986618417)
   {
-    if (a3 != 1986618418 && a3 != 1986618419)
+    if (group != 1986618418 && group != 1986618419)
     {
       v3 = 25652;
       goto LABEL_24;
     }
 
-    return a3;
+    return group;
   }
 
-  if (a3 == 1684108340 || a3 == 1684108341)
+  if (group == 1684108340 || group == 1684108341)
   {
-    return a3;
+    return group;
   }
 
   v3 = 25649;
 LABEL_24:
   v5 = v3 | 0x76690000;
 LABEL_25:
-  result = a3;
-  if (a3 != v5)
+  result = group;
+  if (group != v5)
   {
     return 0;
   }

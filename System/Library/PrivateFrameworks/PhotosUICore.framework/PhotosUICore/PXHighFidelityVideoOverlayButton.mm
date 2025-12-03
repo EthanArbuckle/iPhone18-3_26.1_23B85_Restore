@@ -1,23 +1,23 @@
 @interface PXHighFidelityVideoOverlayButton
-- (PXHighFidelityVideoOverlayButton)initWithConfiguration:(id)a3;
-- (void)_playButtonTapped:(id)a3;
+- (PXHighFidelityVideoOverlayButton)initWithConfiguration:(id)configuration;
+- (void)_playButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setShowAsPause:(BOOL)a3;
-- (void)setTarget:(id)a3 action:(SEL)a4;
+- (void)setShowAsPause:(BOOL)pause;
+- (void)setTarget:(id)target action:(SEL)action;
 @end
 
 @implementation PXHighFidelityVideoOverlayButton
 
-- (void)setShowAsPause:(BOOL)a3
+- (void)setShowAsPause:(BOOL)pause
 {
-  if (self->_showAsPause != a3)
+  if (self->_showAsPause != pause)
   {
     v16 = v5;
     v17 = v4;
     v18 = v3;
-    v11 = a3;
-    self->_showAsPause = a3;
-    if (a3 && ![(PXHighFidelityVideoOverlayButton *)self _didConfigureForPause])
+    pauseCopy = pause;
+    self->_showAsPause = pause;
+    if (pause && ![(PXHighFidelityVideoOverlayButton *)self _didConfigureForPause])
     {
       v13 = [MEMORY[0x1E69DCAB8] px_playOverlayImage:5];
       [(UIButton *)self->_button setImage:v13 forState:4];
@@ -25,7 +25,7 @@
       [(PXHighFidelityVideoOverlayButton *)self _setDidConfigureForPause:1];
     }
 
-    [(UIButton *)self->_button setSelected:v11, v8, v7, v6, v16, v17, v18, v9];
+    [(UIButton *)self->_button setSelected:pauseCopy, v8, v7, v6, v16, v17, v18, v9];
     backdropView = self->_backdropView;
     button = self->_button;
 
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)_playButtonTapped:(id)a3
+- (void)_playButtonTapped:(id)tapped
 {
-  v9 = a3;
+  tappedCopy = tapped;
   [(PXHighFidelityVideoOverlayButton *)self _playButtonDeactivate:?];
   WeakRetained = objc_loadWeakRetained(&self->_target);
   v5 = objc_opt_respondsToSelector();
@@ -54,24 +54,24 @@
       action = 0;
     }
 
-    [v6 performSelector:action withObject:v9];
+    [v6 performSelector:action withObject:tappedCopy];
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  objc_storeWeak(&self->_target, a3);
-  if (a4)
+  objc_storeWeak(&self->_target, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v6;
+  self->_action = actionCopy;
 }
 
 - (void)layoutSubviews
@@ -88,9 +88,9 @@
   [(UIImageView *)self->_overlayPlayBackground setFrame:v4, v6, v8, v10];
 }
 
-- (PXHighFidelityVideoOverlayButton)initWithConfiguration:(id)a3
+- (PXHighFidelityVideoOverlayButton)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [MEMORY[0x1E69DCAB8] px_playOverlayImage:0];
   v7 = objc_alloc(MEMORY[0x1E69DC738]);
   v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -103,7 +103,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_overlayConfiguration, a3);
+    objc_storeStrong(&v9->_overlayConfiguration, configuration);
     objc_storeStrong(&v10->_button, v8);
     [v8 addTarget:v10 action:sel__playButtonTapped_ forControlEvents:64];
     [v8 addTarget:v10 action:sel__playButtonActivate_ forControlEvents:1];
@@ -112,7 +112,7 @@
     [v8 setDeliversTouchesForGesturesToSuperview:0];
     [(PXHighFidelityVideoOverlayButton *)v10 addSubview:v10->_button];
     [(PXHighFidelityVideoOverlayButton *)v10 setAutoresizingMask:45];
-    if ([v5 style] <= 1)
+    if ([configurationCopy style] <= 1)
     {
       v11 = [MEMORY[0x1E69DCAB8] px_playOverlayImage:1];
       v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];

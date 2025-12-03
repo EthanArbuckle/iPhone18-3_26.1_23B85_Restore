@@ -1,8 +1,8 @@
 @interface SBInCallPresentationRequestServer
 - (SBInCallPresentationRequestServer)init;
 - (SBInCallPresentationRequestServerDelegate)delegate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)presentWithConfiguration:(id)a3 completion:(id)a4;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)presentWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation SBInCallPresentationRequestServer
@@ -47,22 +47,22 @@ void __41__SBInCallPresentationRequestServer_init__block_invoke(uint64_t a1, voi
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogInCallPresentation();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v6;
+    v21 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Received Connection: %{public}@", buf, 0xCu);
   }
 
   clientAuthenticator = self->_clientAuthenticator;
-  v9 = [v6 remoteProcess];
-  v10 = [v9 auditToken];
-  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:v10];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  LODWORD(clientAuthenticator) = [(FBServiceClientAuthenticator *)clientAuthenticator authenticateAuditToken:auditToken];
 
   if (clientAuthenticator)
   {
@@ -71,9 +71,9 @@ void __41__SBInCallPresentationRequestServer_init__block_invoke(uint64_t a1, voi
     v15 = 3221225472;
     v16 = __79__SBInCallPresentationRequestServer_listener_didReceiveConnection_withContext___block_invoke;
     v17 = &unk_2783A92D8;
-    v12 = v6;
+    v12 = connectionCopy;
     v18 = v12;
-    v19 = self;
+    selfCopy = self;
     dispatch_sync(queue, &v14);
     [v12 activate];
   }
@@ -86,7 +86,7 @@ void __41__SBInCallPresentationRequestServer_init__block_invoke(uint64_t a1, voi
       [SBInCallPresentationRequestServer listener:v13 didReceiveConnection:? withContext:?];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -182,11 +182,11 @@ void __79__SBInCallPresentationRequestServer_listener_didReceiveConnection_withC
   }
 }
 
-- (void)presentWithConfiguration:(id)a3 completion:(id)a4
+- (void)presentWithConfiguration:(id)configuration completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = +[_SBInCallPresentationRequestServerTarget currentTarget];
   v9 = SBLogInCallPresentation();
   v10 = v9;
@@ -195,25 +195,25 @@ void __79__SBInCallPresentationRequestServer_listener_didReceiveConnection_withC
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v6;
+      v14 = configurationCopy;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Received presentation request with config: %{public}@", &v13, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v8 clientIdentifier];
-    [WeakRetained inCallPresentationRequestServer:self clientWithIdentifier:v12 requestsPresentationWithConfiguration:v6 completion:v7];
+    clientIdentifier = [v8 clientIdentifier];
+    [WeakRetained inCallPresentationRequestServer:self clientWithIdentifier:clientIdentifier requestsPresentationWithConfiguration:configurationCopy completion:completionCopy];
   }
 
   else
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [SBInCallPresentationRequestServer presentWithConfiguration:v6 completion:v10];
+      [SBInCallPresentationRequestServer presentWithConfiguration:configurationCopy completion:v10];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }

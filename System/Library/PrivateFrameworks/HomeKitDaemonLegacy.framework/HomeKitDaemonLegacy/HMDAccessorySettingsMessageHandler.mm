@@ -1,21 +1,21 @@
 @interface HMDAccessorySettingsMessageHandler
 + (id)logCategory;
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5;
-- (BOOL)_decodeUpdateValueMessagePayload:(id)a3 outValue:(id *)a4;
-- (BOOL)processReplaceConstraintMessage:(id)a3 outConstraintsToAdd:(id *)a4 outConstraintIdsToRemove:(id *)a5;
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver;
+- (BOOL)_decodeUpdateValueMessagePayload:(id)payload outValue:(id *)value;
+- (BOOL)processReplaceConstraintMessage:(id)message outConstraintsToAdd:(id *)add outConstraintIdsToRemove:(id *)remove;
 - (HMDAccessorySettingsMessageController)messageController;
-- (HMDAccessorySettingsMessageHandler)initWithQueue:(id)a3 delegate:(id)a4;
+- (HMDAccessorySettingsMessageHandler)initWithQueue:(id)queue delegate:(id)delegate;
 - (NSUUID)messageTargetUUID;
-- (void)_handleAddConstraint:(id)a3;
-- (void)_handleRemoveConstraint:(id)a3;
-- (void)_handleReplaceConstraints:(id)a3;
-- (void)_handleReplaceConstraintsForKeyPath:(id)a3;
-- (void)_handleSettingUpdateValue:(id)a3;
-- (void)_handleSettingUpdateValueByKeyPath:(id)a3;
-- (void)_handleUpdatedConstraints:(id)a3;
-- (void)notifyOfUpdatedValue:(id)a3 settingKeyPath:(id)a4;
-- (void)relayReplaceConstraints:(id)a3 constraintIdsToRemove:(id)a4 keyPath:(id)a5 destination:(id)a6 completion:(id)a7;
-- (void)relayUpdateValue:(id)a3 keyPath:(id)a4 destination:(id)a5 completion:(id)a6;
+- (void)_handleAddConstraint:(id)constraint;
+- (void)_handleRemoveConstraint:(id)constraint;
+- (void)_handleReplaceConstraints:(id)constraints;
+- (void)_handleReplaceConstraintsForKeyPath:(id)path;
+- (void)_handleSettingUpdateValue:(id)value;
+- (void)_handleSettingUpdateValueByKeyPath:(id)path;
+- (void)_handleUpdatedConstraints:(id)constraints;
+- (void)notifyOfUpdatedValue:(id)value settingKeyPath:(id)path;
+- (void)relayReplaceConstraints:(id)constraints constraintIdsToRemove:(id)remove keyPath:(id)path destination:(id)destination completion:(id)completion;
+- (void)relayUpdateValue:(id)value keyPath:(id)path destination:(id)destination completion:(id)completion;
 @end
 
 @implementation HMDAccessorySettingsMessageHandler
@@ -27,11 +27,11 @@
   return WeakRetained;
 }
 
-- (void)notifyOfUpdatedValue:(id)a3 settingKeyPath:(id)a4
+- (void)notifyOfUpdatedValue:(id)value settingKeyPath:(id)path
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v8 = MEMORY[0x277D0F848];
@@ -40,48 +40,48 @@
     v10 = encodeRootObject();
     v19[1] = *MEMORY[0x277CD0F88];
     v20[0] = v10;
-    v20[1] = v7;
+    v20[1] = pathCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
     v12 = [v8 entitledMessageWithName:v9 messagePayload:v11];
 
     v13 = objc_alloc(MEMORY[0x277D0F820]);
-    v14 = [(HMDAccessorySettingsMessageHandler *)self messageController];
-    v15 = [v14 messageTargetUUID];
-    v16 = [v13 initWithTarget:v15];
+    messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
+    messageTargetUUID = [messageController messageTargetUUID];
+    v16 = [v13 initWithTarget:messageTargetUUID];
     [v12 setDestination:v16];
 
-    v17 = [(HMDAccessorySettingsMessageHandler *)self messageDispatcher];
-    [v17 sendMessage:v12 completionHandler:0];
+    messageDispatcher = [(HMDAccessorySettingsMessageHandler *)self messageDispatcher];
+    [messageDispatcher sendMessage:v12 completionHandler:0];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relayReplaceConstraints:(id)a3 constraintIdsToRemove:(id)a4 keyPath:(id)a5 destination:(id)a6 completion:(id)a7
+- (void)relayReplaceConstraints:(id)constraints constraintIdsToRemove:(id)remove keyPath:(id)path destination:(id)destination completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v30 = a4;
-  v31 = a5;
-  v13 = a6;
-  v14 = a7;
-  v29 = v12;
-  if (v13)
+  constraintsCopy = constraints;
+  removeCopy = remove;
+  pathCopy = path;
+  destinationCopy = destination;
+  completionCopy = completion;
+  v29 = constraintsCopy;
+  if (destinationCopy)
   {
-    v15 = [MEMORY[0x277CD1F58] _encodedConstraintsToAdd:v12];
-    v28 = [v30 na_map:&__block_literal_global_46_190280];
-    v16 = [MEMORY[0x277CD1F58] _replaceConstraintsPayloadWithAdditions:v15 removals:v28 keyPath:v31];
-    v17 = [HMDRemoteMessage secureMessageWithName:*MEMORY[0x277CCED80] qualityOfService:25 destination:v13 messagePayload:v16];
+    v15 = [MEMORY[0x277CD1F58] _encodedConstraintsToAdd:constraintsCopy];
+    v28 = [removeCopy na_map:&__block_literal_global_46_190280];
+    v16 = [MEMORY[0x277CD1F58] _replaceConstraintsPayloadWithAdditions:v15 removals:v28 keyPath:pathCopy];
+    v17 = [HMDRemoteMessage secureMessageWithName:*MEMORY[0x277CCED80] qualityOfService:25 destination:destinationCopy messagePayload:v16];
     objc_initWeak(&location, self);
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __115__HMDAccessorySettingsMessageHandler_relayReplaceConstraints_constraintIdsToRemove_keyPath_destination_completion___block_invoke_2;
     v32[3] = &unk_2797355F8;
     objc_copyWeak(&v34, &location);
-    v33 = v14;
+    v33 = completionCopy;
     [v17 setResponseHandler:v32];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -94,8 +94,8 @@
     }
 
     objc_autoreleasePoolPop(v18);
-    v22 = [(HMDAccessorySettingsMessageHandler *)v19 messageDispatcher];
-    [v22 sendMessage:v17 completionHandler:0];
+    messageDispatcher = [(HMDAccessorySettingsMessageHandler *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:v17 completionHandler:0];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(&location);
@@ -104,7 +104,7 @@
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -116,7 +116,7 @@
 
     objc_autoreleasePoolPop(v23);
     v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
-    (*(v14 + 2))(v14, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -140,41 +140,41 @@ void __115__HMDAccessorySettingsMessageHandler_relayReplaceConstraints_constrain
   }
 }
 
-- (void)relayUpdateValue:(id)a3 keyPath:(id)a4 destination:(id)a5 completion:(id)a6
+- (void)relayUpdateValue:(id)value keyPath:(id)path destination:(id)destination completion:(id)completion
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v27 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v11)
+  valueCopy = value;
+  pathCopy = path;
+  destinationCopy = destination;
+  completionCopy = completion;
+  if (destinationCopy)
   {
     v37 = *MEMORY[0x277CCEDA8];
-    v13 = v10;
-    if (!v10)
+    null = valueCopy;
+    if (!valueCopy)
     {
-      v13 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
     v14 = encodeRootObject();
     v38[0] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
 
-    if (!v10)
+    if (!valueCopy)
     {
     }
 
-    v16 = [HMDRemoteMessage secureMessageWithName:*MEMORY[0x277CCED98] qualityOfService:25 destination:v11 messagePayload:v15, v27];
+    pathCopy = [HMDRemoteMessage secureMessageWithName:*MEMORY[0x277CCED98] qualityOfService:25 destination:destinationCopy messagePayload:v15, pathCopy];
     objc_initWeak(&location, self);
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __86__HMDAccessorySettingsMessageHandler_relayUpdateValue_keyPath_destination_completion___block_invoke;
     v29[3] = &unk_2797355F8;
     objc_copyWeak(&v31, &location);
-    v30 = v12;
-    [v16 setResponseHandler:v29];
+    v30 = completionCopy;
+    [pathCopy setResponseHandler:v29];
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -182,13 +182,13 @@ void __115__HMDAccessorySettingsMessageHandler_relayReplaceConstraints_constrain
       *buf = 138543618;
       v34 = v20;
       v35 = 2112;
-      v36 = v16;
+      v36 = pathCopy;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_INFO, "%{public}@Relaying update value message. %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v17);
-    v21 = [(HMDAccessorySettingsMessageHandler *)v18 messageDispatcher];
-    [v21 sendMessage:v16 completionHandler:0];
+    messageDispatcher = [(HMDAccessorySettingsMessageHandler *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:pathCopy completionHandler:0];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -197,7 +197,7 @@ void __115__HMDAccessorySettingsMessageHandler_relayReplaceConstraints_constrain
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -208,8 +208,8 @@ void __115__HMDAccessorySettingsMessageHandler_relayReplaceConstraints_constrain
     }
 
     objc_autoreleasePoolPop(v22);
-    v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:{54, v27}];
-    (*(v12 + 2))(v12, 0, 0, v15);
+    v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:{54, pathCopy}];
+    (*(completionCopy + 2))(completionCopy, 0, 0, v15);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -274,82 +274,82 @@ void __86__HMDAccessorySettingsMessageHandler_relayUpdateValue_keyPath_destinati
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleReplaceConstraintsForKeyPath:(id)a3
+- (void)_handleReplaceConstraintsForKeyPath:(id)path
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_stringForKey:*MEMORY[0x277CD0F88]];
+  pathCopy = path;
+  messagePayload = [pathCopy messagePayload];
+  v6 = [messagePayload hmf_stringForKey:*MEMORY[0x277CD0F88]];
 
   if (v6)
   {
-    v7 = [(HMDAccessorySettingsMessageHandler *)self messageController];
-    if (![v4 isRemote])
+    messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
+    if (![pathCopy isRemote])
     {
 LABEL_7:
       v27 = 0;
       v28 = 0;
-      v11 = [(HMDAccessorySettingsMessageHandler *)self processReplaceConstraintMessage:v4 outConstraintsToAdd:&v28 outConstraintIdsToRemove:&v27];
+      v11 = [(HMDAccessorySettingsMessageHandler *)self processReplaceConstraintMessage:pathCopy outConstraintsToAdd:&v28 outConstraintIdsToRemove:&v27];
       v12 = v28;
       v13 = v27;
       if (v11)
       {
-        v14 = [v4 remoteSourceDevice];
-        v15 = [v14 productInfo];
-        v16 = [v15 productClass];
-        v17 = [v4 isRemote];
+        remoteSourceDevice = [pathCopy remoteSourceDevice];
+        productInfo = [remoteSourceDevice productInfo];
+        productClass = [productInfo productClass];
+        isRemote = [pathCopy isRemote];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __74__HMDAccessorySettingsMessageHandler__handleReplaceConstraintsForKeyPath___block_invoke;
         v25[3] = &unk_2797359D8;
-        v26 = v4;
-        [v7 onMessageReplaceConstraintsWithAdditions:v12 constraintIdsToRemove:v13 keyPath:v6 senderProductClass:v16 isRemote:v17 completion:v25];
+        v26 = pathCopy;
+        [messageController onMessageReplaceConstraintsWithAdditions:v12 constraintIdsToRemove:v13 keyPath:v6 senderProductClass:productClass isRemote:isRemote completion:v25];
       }
 
       goto LABEL_15;
     }
 
-    v8 = [v7 home];
-    if (!v8)
+    home = [messageController home];
+    if (!home)
     {
       v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
-      [v4 respondWithError:v12];
+      [pathCopy respondWithError:v12];
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v9 = v8;
-    v10 = [v4 userForHome:v8];
-    if (v10 && ([v7 canUser:v10 editConstraintsForSettingWithKeyPath:v6] & 1) != 0)
+    v9 = home;
+    v10 = [pathCopy userForHome:home];
+    if (v10 && ([messageController canUser:v10 editConstraintsForSettingWithKeyPath:v6] & 1) != 0)
     {
 
       goto LABEL_7;
     }
 
     v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:10];
-    [v4 respondWithError:v23];
+    [pathCopy respondWithError:v23];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v4 messagePayload];
+      messagePayload2 = [pathCopy messagePayload];
       *buf = 138543618;
       v30 = v21;
       v31 = 2112;
-      v32 = v22;
+      v32 = messagePayload2;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Missing key path from accessory settings update message: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
-    v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
-    [v4 respondWithError:v7];
+    messageController = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
+    [pathCopy respondWithError:messageController];
   }
 
 LABEL_16:
@@ -371,35 +371,35 @@ uint64_t __74__HMDAccessorySettingsMessageHandler__handleReplaceConstraintsForKe
   }
 }
 
-- (void)_handleReplaceConstraints:(id)a3
+- (void)_handleReplaceConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [(HMDAccessorySettingsMessageHandler *)self messageController];
-  v6 = [v4 destination];
-  v7 = [v6 target];
-  v8 = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
-  v9 = [v7 isEqual:v8];
+  constraintsCopy = constraints;
+  messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
+  destination = [constraintsCopy destination];
+  target = [destination target];
+  messageTargetUUID = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
+  v9 = [target isEqual:messageTargetUUID];
 
   if (!v9)
   {
-    if ([v4 isRemote])
+    if ([constraintsCopy isRemote])
     {
-      v10 = [v5 home];
-      if (!v10)
+      home = [messageController home];
+      if (!home)
       {
         v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
-        [v4 respondWithError:v17];
+        [constraintsCopy respondWithError:v17];
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v11 = v10;
-      v12 = [v4 userForHome:v10];
-      if (!v12 || ([v4 destination], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "target"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v5, "canUser:editConstraintsForSetting:", v12, v14), v14, v13, !v15))
+      v11 = home;
+      v12 = [constraintsCopy userForHome:home];
+      if (!v12 || ([constraintsCopy destination], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "target"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(messageController, "canUser:editConstraintsForSetting:", v12, v14), v14, v13, !v15))
       {
         v25 = [MEMORY[0x277CCA9B8] hmErrorWithCode:10];
-        [v4 respondWithError:v25];
+        [constraintsCopy respondWithError:v25];
 
         goto LABEL_14;
       }
@@ -407,29 +407,29 @@ LABEL_13:
 
     v28 = 0;
     v29 = 0;
-    v16 = [(HMDAccessorySettingsMessageHandler *)self processReplaceConstraintMessage:v4 outConstraintsToAdd:&v29 outConstraintIdsToRemove:&v28];
+    v16 = [(HMDAccessorySettingsMessageHandler *)self processReplaceConstraintMessage:constraintsCopy outConstraintsToAdd:&v29 outConstraintIdsToRemove:&v28];
     v17 = v29;
     v18 = v28;
     if (v16)
     {
-      v19 = [v4 destination];
-      v20 = [v19 target];
-      v21 = [v4 remoteSourceDevice];
-      v22 = [v21 productInfo];
-      v23 = [v22 productClass];
-      v24 = [v4 isRemote];
+      destination2 = [constraintsCopy destination];
+      target2 = [destination2 target];
+      remoteSourceDevice = [constraintsCopy remoteSourceDevice];
+      productInfo = [remoteSourceDevice productInfo];
+      productClass = [productInfo productClass];
+      isRemote = [constraintsCopy isRemote];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __64__HMDAccessorySettingsMessageHandler__handleReplaceConstraints___block_invoke;
       v26[3] = &unk_2797359D8;
-      v27 = v4;
-      [v5 onMessageReplaceConstraintsWithAdditions:v17 constraintIdsToRemove:v18 settingIdentifier:v20 senderProductClass:v23 isRemote:v24 completion:v26];
+      v27 = constraintsCopy;
+      [messageController onMessageReplaceConstraintsWithAdditions:v17 constraintIdsToRemove:v18 settingIdentifier:target2 senderProductClass:productClass isRemote:isRemote completion:v26];
     }
 
     goto LABEL_13;
   }
 
-  [(HMDAccessorySettingsMessageHandler *)self _handleReplaceConstraintsForKeyPath:v4];
+  [(HMDAccessorySettingsMessageHandler *)self _handleReplaceConstraintsForKeyPath:constraintsCopy];
 LABEL_14:
 }
 
@@ -447,18 +447,18 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleReplaceConstraints___bl
   }
 }
 
-- (BOOL)processReplaceConstraintMessage:(id)a3 outConstraintsToAdd:(id *)a4 outConstraintIdsToRemove:(id *)a5
+- (BOOL)processReplaceConstraintMessage:(id)message outConstraintsToAdd:(id *)add outConstraintIdsToRemove:(id *)remove
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [v8 arrayForKey:*MEMORY[0x277CCED28]];
+  messageCopy = message;
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = [messageCopy arrayForKey:*MEMORY[0x277CCED28]];
   if (v10)
   {
     if ([v10 hmf_objectsAreKindOfClass:objc_opt_class()])
     {
-      v52 = a4;
-      v53 = a5;
+      addCopy = add;
+      removeCopy = remove;
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
@@ -479,7 +479,7 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleReplaceConstraints___bl
             }
 
             v16 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v55 + 1) + 8 * i)];
-            [v9 addObject:v16];
+            [array addObject:v16];
           }
 
           v13 = [v11 countByEnumeratingWithState:&v55 objects:v60 count:16];
@@ -488,7 +488,7 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleReplaceConstraints___bl
         while (v13);
       }
 
-      v17 = [v8 dataForKey:*MEMORY[0x277CCED18]];
+      v17 = [messageCopy dataForKey:*MEMORY[0x277CCED18]];
       if (v17)
       {
         v18 = MEMORY[0x277CCAAC8];
@@ -519,8 +519,8 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleReplaceConstraints___bl
         {
 
           v27 = v26;
-          *v52 = v26;
-          *v53 = [v9 copy];
+          *addCopy = v26;
+          *removeCopy = [array copy];
           v28 = 1;
           v23 = v24;
 LABEL_30:
@@ -529,7 +529,7 @@ LABEL_30:
         }
 
         v45 = objc_autoreleasePoolPush();
-        v46 = self;
+        selfCopy = self;
         v47 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
@@ -543,28 +543,28 @@ LABEL_30:
 
         objc_autoreleasePoolPop(v45);
         v49 = [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-        [v8 respondWithError:v49];
+        [messageCopy respondWithError:v49];
       }
 
       else
       {
         v40 = objc_autoreleasePoolPush();
-        v41 = self;
+        selfCopy2 = self;
         v42 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
         {
           v43 = HMFGetLogIdentifier();
-          v44 = [v8 messagePayload];
+          messagePayload = [messageCopy messagePayload];
           *buf = 138543618;
           v62 = v43;
           v63 = 2112;
-          v64 = v44;
+          v64 = messagePayload;
           _os_log_impl(&dword_2531F8000, v42, OS_LOG_TYPE_INFO, "%{public}@Missing serialized constraints to add in message payload: %@", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v40);
         v23 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-        [v8 respondWithError:v23];
+        [messageCopy respondWithError:v23];
       }
 
       v28 = 0;
@@ -572,7 +572,7 @@ LABEL_30:
     }
 
     v36 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy3 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
@@ -592,16 +592,16 @@ LABEL_30:
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy4 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v32 = HMFGetLogIdentifier();
-      v33 = [v8 messagePayload];
+      messagePayload2 = [messageCopy messagePayload];
       *buf = 138543618;
       v62 = v32;
       v63 = 2112;
-      v64 = v33;
+      v64 = messagePayload2;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_INFO, "%{public}@Missing constraints to remove in message payload: %@", buf, 0x16u);
     }
 
@@ -611,7 +611,7 @@ LABEL_30:
   }
 
   v17 = [v34 hmErrorWithCode:v35];
-  [v8 respondWithError:v17];
+  [messageCopy respondWithError:v17];
   v28 = 0;
 LABEL_31:
 
@@ -619,11 +619,11 @@ LABEL_31:
   return v28;
 }
 
-- (void)_handleUpdatedConstraints:(id)a3
+- (void)_handleUpdatedConstraints:(id)constraints
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dataForKey:*MEMORY[0x277CCED20]];
+  constraintsCopy = constraints;
+  v5 = [constraintsCopy dataForKey:*MEMORY[0x277CCED20]];
   if (v5)
   {
     v6 = MEMORY[0x277CCAAC8];
@@ -652,18 +652,18 @@ LABEL_31:
 
     if (v14)
     {
-      v15 = [v4 messagePayload];
-      v16 = [v15 hmf_stringForKey:*MEMORY[0x277CD0F88]];
+      messagePayload = [constraintsCopy messagePayload];
+      v16 = [messagePayload hmf_stringForKey:*MEMORY[0x277CD0F88]];
 
       if (v16)
       {
-        v17 = [(HMDAccessorySettingsMessageHandler *)self messageController];
+        messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __64__HMDAccessorySettingsMessageHandler__handleUpdatedConstraints___block_invoke;
         v33[3] = &unk_2797359D8;
-        v34 = v4;
-        [v17 onMessageUpdateConstraints:v14 keyPath:v16 completion:v33];
+        v34 = constraintsCopy;
+        [messageController onMessageUpdateConstraints:v14 keyPath:v16 completion:v33];
 
         v18 = v34;
       }
@@ -671,7 +671,7 @@ LABEL_31:
       else
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -683,14 +683,14 @@ LABEL_31:
 
         objc_autoreleasePoolPop(v28);
         v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-        [v4 respondWithError:v18];
+        [constraintsCopy respondWithError:v18];
       }
     }
 
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -704,29 +704,29 @@ LABEL_31:
 
       objc_autoreleasePoolPop(v24);
       v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-      [v4 respondWithError:v16];
+      [constraintsCopy respondWithError:v16];
     }
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy3 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v4 messagePayload];
+      messagePayload2 = [constraintsCopy messagePayload];
       *buf = 138543618;
       v38 = v22;
       v39 = 2112;
-      v40 = v23;
+      v40 = messagePayload2;
       _os_log_impl(&dword_2531F8000, v21, OS_LOG_TYPE_INFO, "%{public}@Missing serialized constraints in message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
     v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2 description:@"Constraint not found" reason:@"Missing serialized constraint in update message" suggestion:0];
-    [v4 respondWithError:v11];
+    [constraintsCopy respondWithError:v11];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -746,28 +746,28 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleUpdatedConstraints___bl
   }
 }
 
-- (void)_handleRemoveConstraint:(id)a3
+- (void)_handleRemoveConstraint:(id)constraint
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dataForKey:*MEMORY[0x277CCED20]];
+  constraintCopy = constraint;
+  v5 = [constraintCopy dataForKey:*MEMORY[0x277CCED20]];
   if (v5)
   {
     v6 = [MEMORY[0x277CCAAC8] deserializeObjectWithData:v5 allowedClass:objc_opt_class() frameworkClasses:MEMORY[0x277CBEBF8]];
     if (v6)
     {
-      v7 = [v4 messagePayload];
-      v8 = [v7 hmf_stringForKey:*MEMORY[0x277CD0F88]];
+      messagePayload = [constraintCopy messagePayload];
+      v8 = [messagePayload hmf_stringForKey:*MEMORY[0x277CD0F88]];
 
       if (v8)
       {
-        v9 = [(HMDAccessorySettingsMessageHandler *)self messageController];
+        messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __62__HMDAccessorySettingsMessageHandler__handleRemoveConstraint___block_invoke;
         v25[3] = &unk_2797359D8;
-        v26 = v4;
-        [v9 onMessageRemoveConstraint:v6 keyPath:v8 completion:v25];
+        v26 = constraintCopy;
+        [messageController onMessageRemoveConstraint:v6 keyPath:v8 completion:v25];
 
         v10 = v26;
       }
@@ -775,7 +775,7 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleUpdatedConstraints___bl
       else
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -787,14 +787,14 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleUpdatedConstraints___bl
 
         objc_autoreleasePoolPop(v20);
         v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-        [v4 respondWithError:v10];
+        [constraintCopy respondWithError:v10];
       }
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy2 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -806,29 +806,29 @@ uint64_t __64__HMDAccessorySettingsMessageHandler__handleUpdatedConstraints___bl
 
       objc_autoreleasePoolPop(v16);
       v8 = [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-      [v4 respondWithError:v8];
+      [constraintCopy respondWithError:v8];
     }
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v4 messagePayload];
+      messagePayload2 = [constraintCopy messagePayload];
       *buf = 138543618;
       v28 = v14;
       v29 = 2112;
-      v30 = v15;
+      v30 = messagePayload2;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Missing serialized constraint in message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
     v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2 description:@"Constraint not found" reason:@"Missing serialized constraint in remove message" suggestion:0];
-    [v4 respondWithError:v6];
+    [constraintCopy respondWithError:v6];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -848,28 +848,28 @@ uint64_t __62__HMDAccessorySettingsMessageHandler__handleRemoveConstraint___bloc
   }
 }
 
-- (void)_handleAddConstraint:(id)a3
+- (void)_handleAddConstraint:(id)constraint
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dataForKey:*MEMORY[0x277CCED20]];
+  constraintCopy = constraint;
+  v5 = [constraintCopy dataForKey:*MEMORY[0x277CCED20]];
   if (v5)
   {
     v6 = [MEMORY[0x277CCAAC8] deserializeObjectWithData:v5 allowedClass:objc_opt_class() frameworkClasses:MEMORY[0x277CBEBF8]];
     if (v6)
     {
-      v7 = [v4 messagePayload];
-      v8 = [v7 hmf_stringForKey:*MEMORY[0x277CD0F88]];
+      messagePayload = [constraintCopy messagePayload];
+      v8 = [messagePayload hmf_stringForKey:*MEMORY[0x277CD0F88]];
 
       if (v8)
       {
-        v9 = [(HMDAccessorySettingsMessageHandler *)self messageController];
+        messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __59__HMDAccessorySettingsMessageHandler__handleAddConstraint___block_invoke;
         v25[3] = &unk_2797359D8;
-        v26 = v4;
-        [v9 onMessageAddConstraint:v6 keyPath:v8 completion:v25];
+        v26 = constraintCopy;
+        [messageController onMessageAddConstraint:v6 keyPath:v8 completion:v25];
 
         v10 = v26;
       }
@@ -877,7 +877,7 @@ uint64_t __62__HMDAccessorySettingsMessageHandler__handleRemoveConstraint___bloc
       else
       {
         v20 = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -889,14 +889,14 @@ uint64_t __62__HMDAccessorySettingsMessageHandler__handleRemoveConstraint___bloc
 
         objc_autoreleasePoolPop(v20);
         v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-        [v4 respondWithError:v10];
+        [constraintCopy respondWithError:v10];
       }
     }
 
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy2 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -908,29 +908,29 @@ uint64_t __62__HMDAccessorySettingsMessageHandler__handleRemoveConstraint___bloc
 
       objc_autoreleasePoolPop(v16);
       v8 = [MEMORY[0x277CCA9B8] hmErrorWithCode:43];
-      [v4 respondWithError:v8];
+      [constraintCopy respondWithError:v8];
     }
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v4 messagePayload];
+      messagePayload2 = [constraintCopy messagePayload];
       *buf = 138543618;
       v28 = v14;
       v29 = 2112;
-      v30 = v15;
+      v30 = messagePayload2;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Missing serialized constraint in message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
     v6 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2 description:@"Constraint not found" reason:@"Missing serialized constraint in add message" suggestion:0];
-    [v4 respondWithError:v6];
+    [constraintCopy respondWithError:v6];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -950,27 +950,27 @@ uint64_t __59__HMDAccessorySettingsMessageHandler__handleAddConstraint___block_i
   }
 }
 
-- (void)_handleSettingUpdateValueByKeyPath:(id)a3
+- (void)_handleSettingUpdateValueByKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 messagePayload];
+  pathCopy = path;
+  messagePayload = [pathCopy messagePayload];
   v21 = 0;
-  v6 = [(HMDAccessorySettingsMessageHandler *)self _decodeUpdateValueMessagePayload:v5 outValue:&v21];
+  v6 = [(HMDAccessorySettingsMessageHandler *)self _decodeUpdateValueMessagePayload:messagePayload outValue:&v21];
   v7 = v21;
 
   if (v6)
   {
-    v8 = [v4 messagePayload];
-    v9 = [v8 hmf_stringForKey:*MEMORY[0x277CD0F88]];
+    messagePayload2 = [pathCopy messagePayload];
+    v9 = [messagePayload2 hmf_stringForKey:*MEMORY[0x277CD0F88]];
 
     if (v9)
     {
-      v10 = [(HMDAccessorySettingsMessageHandler *)self messageController];
-      v11 = [v4 remoteSourceDevice];
-      v12 = [v11 version];
-      v13 = [v4 remoteSourceDevice];
-      v14 = [v13 productInfo];
-      v15 = [v14 productClass];
+      messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
+      remoteSourceDevice = [pathCopy remoteSourceDevice];
+      version = [remoteSourceDevice version];
+      remoteSourceDevice2 = [pathCopy remoteSourceDevice];
+      productInfo = [remoteSourceDevice2 productInfo];
+      productClass = [productInfo productClass];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __73__HMDAccessorySettingsMessageHandler__handleSettingUpdateValueByKeyPath___block_invoke;
@@ -978,14 +978,14 @@ uint64_t __59__HMDAccessorySettingsMessageHandler__handleAddConstraint___block_i
       v18[4] = self;
       v16 = v9;
       v19 = v16;
-      v20 = v4;
-      [v10 onMessageUpdateValue:v7 settingKeyPath:v16 senderVersion:v12 senderProductClass:v15 completion:v18];
+      v20 = pathCopy;
+      [messageController onMessageUpdateValue:v7 settingKeyPath:v16 senderVersion:version senderProductClass:productClass completion:v18];
     }
 
     else
     {
       v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
-      [v4 respondWithError:v17];
+      [pathCopy respondWithError:v17];
 
       v16 = 0;
     }
@@ -994,7 +994,7 @@ uint64_t __59__HMDAccessorySettingsMessageHandler__handleAddConstraint___block_i
   else
   {
     v16 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    [v4 respondWithError:v16];
+    [pathCopy respondWithError:v16];
   }
 }
 
@@ -1056,49 +1056,49 @@ void __73__HMDAccessorySettingsMessageHandler__handleSettingUpdateValueByKeyPath
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSettingUpdateValue:(id)a3
+- (void)_handleSettingUpdateValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HMDAccessorySettingsMessageHandler *)self messageController];
-  v6 = [v4 destination];
-  v7 = [v6 target];
-  v8 = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
-  v9 = [v7 isEqual:v8];
+  valueCopy = value;
+  messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
+  destination = [valueCopy destination];
+  target = [destination target];
+  messageTargetUUID = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
+  v9 = [target isEqual:messageTargetUUID];
 
   if (v9)
   {
-    [(HMDAccessorySettingsMessageHandler *)self _handleSettingUpdateValueByKeyPath:v4];
+    [(HMDAccessorySettingsMessageHandler *)self _handleSettingUpdateValueByKeyPath:valueCopy];
   }
 
   else
   {
-    v10 = [v4 messagePayload];
+    messagePayload = [valueCopy messagePayload];
     v23 = 0;
-    v11 = [(HMDAccessorySettingsMessageHandler *)self _decodeUpdateValueMessagePayload:v10 outValue:&v23];
+    v11 = [(HMDAccessorySettingsMessageHandler *)self _decodeUpdateValueMessagePayload:messagePayload outValue:&v23];
     v12 = v23;
 
     if (v11)
     {
-      v20 = [v4 destination];
-      v13 = [v20 target];
-      v14 = [v4 remoteSourceDevice];
-      v15 = [v14 version];
-      v16 = [v4 remoteSourceDevice];
-      v17 = [v16 productInfo];
-      v18 = [v17 productClass];
+      destination2 = [valueCopy destination];
+      target2 = [destination2 target];
+      remoteSourceDevice = [valueCopy remoteSourceDevice];
+      version = [remoteSourceDevice version];
+      remoteSourceDevice2 = [valueCopy remoteSourceDevice];
+      productInfo = [remoteSourceDevice2 productInfo];
+      productClass = [productInfo productClass];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __64__HMDAccessorySettingsMessageHandler__handleSettingUpdateValue___block_invoke;
       v21[3] = &unk_279735580;
       v21[4] = self;
-      v22 = v4;
-      [v5 onMessageUpdateValue:v12 settingIdentifier:v13 senderVersion:v15 senderProductClass:v18 completion:v21];
+      v22 = valueCopy;
+      [messageController onMessageUpdateValue:v12 settingIdentifier:target2 senderVersion:version senderProductClass:productClass completion:v21];
     }
 
     else
     {
       v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      [v4 respondWithError:v19];
+      [valueCopy respondWithError:v19];
 
       v12 = v19;
     }
@@ -1170,17 +1170,17 @@ void __64__HMDAccessorySettingsMessageHandler__handleSettingUpdateValue___block_
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDAccessorySettingsMessageHandler *)self messageController];
-  v3 = [v2 messageTargetUUID];
+  messageController = [(HMDAccessorySettingsMessageHandler *)self messageController];
+  messageTargetUUID = [messageController messageTargetUUID];
 
-  return v3;
+  return messageTargetUUID;
 }
 
-- (BOOL)_decodeUpdateValueMessagePayload:(id)a3 outValue:(id *)a4
+- (BOOL)_decodeUpdateValueMessagePayload:(id)payload outValue:(id *)value
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 hmf_dataForKey:*MEMORY[0x277CCEDA8]];
+  payloadCopy = payload;
+  v7 = [payloadCopy hmf_dataForKey:*MEMORY[0x277CCEDA8]];
   if (v7)
   {
     v23 = 0;
@@ -1189,22 +1189,22 @@ void __64__HMDAccessorySettingsMessageHandler__handleSettingUpdateValue___block_
     v10 = v8 != 0;
     if (v8)
     {
-      v11 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v8 == v11)
+      if (v8 == null)
       {
 
         v8 = 0;
       }
 
       v12 = v8;
-      *a4 = v8;
+      *value = v8;
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -1223,7 +1223,7 @@ void __64__HMDAccessorySettingsMessageHandler__handleSettingUpdateValue___block_
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1231,7 +1231,7 @@ void __64__HMDAccessorySettingsMessageHandler__handleSettingUpdateValue___block_
       *buf = 138543618;
       v25 = v16;
       v26 = 2112;
-      v27 = v6;
+      v27 = payloadCopy;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_ERROR, "%{public}@Missing serialized value from payload: %@", buf, 0x16u);
     }
 
@@ -1243,28 +1243,28 @@ void __64__HMDAccessorySettingsMessageHandler__handleSettingUpdateValue___block_
   return v10;
 }
 
-- (HMDAccessorySettingsMessageHandler)initWithQueue:(id)a3 delegate:(id)a4
+- (HMDAccessorySettingsMessageHandler)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HMDAccessorySettingsMessageHandler;
   v9 = [(HMDAccessorySettingsMessageHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    objc_storeWeak(&v10->_messageController, v8);
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeWeak(&v10->_messageController, delegateCopy);
   }
 
   return v10;
 }
 
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver
 {
   v36[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  messageCopy = message;
+  receiverCopy = receiver;
   v8 = [HMDUserMessagePolicy userMessagePolicyWithUserPrivilege:4 remoteAccessRequired:0];
   v9 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v36[0] = v9;
@@ -1277,11 +1277,11 @@ void __64__HMDAccessorySettingsMessageHandler__handleSettingUpdateValue___block_
   v35 = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
 
-  v14 = [v6 name];
+  name = [messageCopy name];
   v15 = *MEMORY[0x277CCED98];
   v16 = HMFEqualObjects();
 
-  v17 = [v6 name];
+  name2 = [messageCopy name];
   if (v16)
   {
     v18 = &selRef__handleSettingUpdateValue_;
@@ -1300,7 +1300,7 @@ LABEL_6:
   v20 = *MEMORY[0x277CCED80];
   v21 = HMFEqualObjects();
 
-  v17 = [v6 name];
+  name2 = [messageCopy name];
   if (v21)
   {
     v18 = &selRef__handleReplaceConstraints_;
@@ -1311,7 +1311,7 @@ LABEL_6:
   v29 = *MEMORY[0x277CCED10];
   v30 = HMFEqualObjects();
 
-  v17 = [v6 name];
+  name2 = [messageCopy name];
   if (v30)
   {
     v18 = &selRef__handleAddConstraint_;
@@ -1324,7 +1324,7 @@ LABEL_14:
   v31 = *MEMORY[0x277CCED78];
   v32 = HMFEqualObjects();
 
-  v17 = [v6 name];
+  name2 = [messageCopy name];
   if (v32)
   {
     v18 = &selRef__handleRemoveConstraint_;
@@ -1337,7 +1337,7 @@ LABEL_14:
 
   if (v34)
   {
-    v17 = [v6 name];
+    name2 = [messageCopy name];
     v19 = 2;
     v22 = v13;
     v18 = &selRef__handleUpdatedConstraints_;

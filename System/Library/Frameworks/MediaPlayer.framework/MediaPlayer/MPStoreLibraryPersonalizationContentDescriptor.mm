@@ -2,9 +2,9 @@
 + (id)_lightweightPersonalizationPropertiesForLyrics;
 + (id)_lightweightPersonalizationPropertiesForPlaybackPosition;
 + (id)_lightweightPersonalizationPropertiesForStoreAsset;
-+ (id)lightweightPersonalizationPropertiesForModelClass:(Class)a3;
-+ (id)requiredLightweightPersonalizationPropertiesForModelClass:(Class)a3 requestedProperties:(id)a4;
-- (MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)a3 personalizationStyle:(int64_t)a4;
++ (id)lightweightPersonalizationPropertiesForModelClass:(Class)class;
++ (id)requiredLightweightPersonalizationPropertiesForModelClass:(Class)class requestedProperties:(id)properties;
+- (MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)model personalizationStyle:(int64_t)style;
 - (id)description;
 @end
 
@@ -47,11 +47,11 @@
   return v3;
 }
 
-+ (id)requiredLightweightPersonalizationPropertiesForModelClass:(Class)a3 requestedProperties:(id)a4
++ (id)requiredLightweightPersonalizationPropertiesForModelClass:(Class)class requestedProperties:(id)properties
 {
   v34[9] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  propertiesCopy = properties;
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v34[0] = @"MPModelPropertySongHasCloudSyncSource";
     v34[1] = @"MPModelPropertySongKeepLocalEnableState";
@@ -74,7 +74,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v33[0] = @"MPModelPropertyAlbumKeepLocalEnableState";
     v33[1] = @"MPModelPropertyAlbumKeepLocalManagedStatus";
@@ -90,7 +90,7 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v32[0] = @"MPModelPropertyPlaylistKeepLocalEnableState";
     v32[1] = @"MPModelPropertyPlaylistKeepLocalManagedStatus";
@@ -106,10 +106,10 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v12 = [v5 relationships];
-    v13 = [v12 objectForKey:@"MPModelRelationshipTVEpisodePlaybackPosition"];
+    relationships = [propertiesCopy relationships];
+    v13 = [relationships objectForKey:@"MPModelRelationshipTVEpisodePlaybackPosition"];
 
     if (v13)
     {
@@ -137,10 +137,10 @@ LABEL_26:
     goto LABEL_7;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v16 = [v5 relationships];
-    v13 = [v16 objectForKey:@"MPModelRelationshipMoviePlaybackPosition"];
+    relationships2 = [propertiesCopy relationships];
+    v13 = [relationships2 objectForKey:@"MPModelRelationshipMoviePlaybackPosition"];
 
     if (v13)
     {
@@ -164,7 +164,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v23[0] = @"MPModelPropertyArtistIsFavorite";
     v23[1] = @"MPModelPropertyArtistIsDisliked";
@@ -182,7 +182,7 @@ LABEL_8:
   return v10;
 }
 
-+ (id)lightweightPersonalizationPropertiesForModelClass:(Class)a3
++ (id)lightweightPersonalizationPropertiesForModelClass:(Class)class
 {
   v58[7] = *MEMORY[0x1E69E9840];
   v57[0] = @"MPModelRelationshipGenericSong";
@@ -204,14 +204,14 @@ LABEL_8:
   v43 = +[MPModelFileAsset allSupportedProperties];
   v55[0] = v43;
   v54[1] = @"MPModelRelationshipSongStoreAsset";
-  v42 = [a1 _lightweightPersonalizationPropertiesForStoreAsset];
-  v55[1] = v42;
+  _lightweightPersonalizationPropertiesForStoreAsset = [self _lightweightPersonalizationPropertiesForStoreAsset];
+  v55[1] = _lightweightPersonalizationPropertiesForStoreAsset;
   v54[2] = @"MPModelRelationshipSongPlaybackPosition";
-  v41 = [a1 _lightweightPersonalizationPropertiesForPlaybackPosition];
-  v55[2] = v41;
+  _lightweightPersonalizationPropertiesForPlaybackPosition = [self _lightweightPersonalizationPropertiesForPlaybackPosition];
+  v55[2] = _lightweightPersonalizationPropertiesForPlaybackPosition;
   v54[3] = @"MPModelRelationshipSongLyrics";
-  v39 = [a1 _lightweightPersonalizationPropertiesForLyrics];
-  v55[3] = v39;
+  _lightweightPersonalizationPropertiesForLyrics = [self _lightweightPersonalizationPropertiesForLyrics];
+  v55[3] = _lightweightPersonalizationPropertiesForLyrics;
   v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:4];
   v36 = [(MPPropertySet *)v4 initWithProperties:v38 relationships:v37];
   v58[0] = v36;
@@ -229,11 +229,11 @@ LABEL_8:
   v35 = +[MPModelFileAsset allSupportedProperties];
   v52[0] = v35;
   v51[1] = @"MPModelRelationshipTVEpisodeStoreAsset";
-  v34 = [a1 _lightweightPersonalizationPropertiesForStoreAsset];
-  v52[1] = v34;
+  _lightweightPersonalizationPropertiesForStoreAsset2 = [self _lightweightPersonalizationPropertiesForStoreAsset];
+  v52[1] = _lightweightPersonalizationPropertiesForStoreAsset2;
   v51[2] = @"MPModelRelationshipTVEpisodePlaybackPosition";
-  v33 = [a1 _lightweightPersonalizationPropertiesForPlaybackPosition];
-  v52[2] = v33;
+  _lightweightPersonalizationPropertiesForPlaybackPosition2 = [self _lightweightPersonalizationPropertiesForPlaybackPosition];
+  v52[2] = _lightweightPersonalizationPropertiesForPlaybackPosition2;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:3];
   v30 = [(MPPropertySet *)v5 initWithProperties:v32 relationships:v31];
   v58[1] = v30;
@@ -251,12 +251,12 @@ LABEL_8:
   v29 = +[MPModelFileAsset allSupportedProperties];
   v49[0] = v29;
   v48[1] = @"MPModelRelationshipMovieStoreAsset";
-  v28 = [a1 _lightweightPersonalizationPropertiesForStoreAsset];
-  v49[1] = v28;
+  _lightweightPersonalizationPropertiesForStoreAsset3 = [self _lightweightPersonalizationPropertiesForStoreAsset];
+  v49[1] = _lightweightPersonalizationPropertiesForStoreAsset3;
   v48[2] = @"MPModelRelationshipMoviePlaybackPosition";
-  v24 = a1;
-  v27 = [a1 _lightweightPersonalizationPropertiesForPlaybackPosition];
-  v49[2] = v27;
+  selfCopy = self;
+  _lightweightPersonalizationPropertiesForPlaybackPosition3 = [self _lightweightPersonalizationPropertiesForPlaybackPosition];
+  v49[2] = _lightweightPersonalizationPropertiesForPlaybackPosition3;
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:3];
   v7 = [(MPPropertySet *)v6 initWithProperties:v26 relationships:v25];
   v58[2] = v7;
@@ -303,7 +303,7 @@ LABEL_8:
   v58[6] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:7];
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v17 = @"MPModelRelationshipGenericSong";
 LABEL_11:
@@ -313,51 +313,51 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v17 = @"MPModelRelationshipGenericTVEpisode";
     goto LABEL_11;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v17 = @"MPModelRelationshipGenericMovie";
     goto LABEL_11;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v17 = @"MPModelRelationshipGenericAlbum";
     goto LABEL_11;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v17 = @"MPModelRelationshipGenericPlaylist";
     goto LABEL_11;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v21 = [MPPropertySet alloc];
     v18 = [(MPPropertySet *)v21 initWithProperties:MEMORY[0x1E695E0F0] relationships:v16];
     goto LABEL_12;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v17 = @"MPModelRelationshipGenericTVSeason";
     goto LABEL_11;
   }
 
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v17 = @"MPModelRelationshipGenericArtist";
     goto LABEL_11;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:v24 file:@"MPStoreLibraryPersonalizationContentDescriptor.m" lineNumber:121 description:{@"No personalization properties for modelClass: %@", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MPStoreLibraryPersonalizationContentDescriptor.m" lineNumber:121 description:{@"No personalization properties for modelClass: %@", class}];
 
   v19 = 0;
 LABEL_13:
@@ -368,22 +368,22 @@ LABEL_13:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MPModelObject *)self->_model identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"<MPStoreLibraryPersonalizationContentDescriptor %p modelObject.identifiers=%@>", self, v5];
+  identifiers = [(MPModelObject *)self->_model identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"<MPStoreLibraryPersonalizationContentDescriptor %p modelObject.identifiers=%@>", self, humanDescription];
 
   return v6;
 }
 
-- (MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)a3 personalizationStyle:(int64_t)a4
+- (MPStoreLibraryPersonalizationContentDescriptor)initWithModel:(id)model personalizationStyle:(int64_t)style
 {
-  v7 = a3;
+  modelCopy = model;
   v8 = [(MPStoreLibraryPersonalizationContentDescriptor *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_model, a3);
-    v9->_personalizationStyle = a4;
+    objc_storeStrong(&v8->_model, model);
+    v9->_personalizationStyle = style;
   }
 
   return v9;

@@ -1,10 +1,10 @@
 @interface BSXPCServiceConnectionRootServerContext
-+ (void)uniqueServerContextWithEndpointDescription:(uint64_t)a1;
++ (void)uniqueServerContextWithEndpointDescription:(uint64_t)description;
 @end
 
 @implementation BSXPCServiceConnectionRootServerContext
 
-+ (void)uniqueServerContextWithEndpointDescription:(uint64_t)a1
++ (void)uniqueServerContextWithEndpointDescription:(uint64_t)description
 {
   v30 = *MEMORY[0x1E69E9840];
   v2 = a2;

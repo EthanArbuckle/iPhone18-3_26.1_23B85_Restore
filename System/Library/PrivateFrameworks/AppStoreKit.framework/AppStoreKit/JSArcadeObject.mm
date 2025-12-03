@@ -1,27 +1,27 @@
 @interface JSArcadeObject
 - (_TtC11AppStoreKit14JSArcadeObject)init;
-- (id)getDownloadPackGames:(id)a3;
-- (id)getMarketingItemFromMarketingItems:(id)a3;
-- (id)getMarketingItemWithTimeout:(id)a3 :(id)a4;
-- (id)getRecentlyPlayedGamesWithTimeout:(id)a3;
+- (id)getDownloadPackGames:(id)games;
+- (id)getMarketingItemFromMarketingItems:(id)items;
+- (id)getMarketingItemWithTimeout:(id)timeout :(id)a4;
+- (id)getRecentlyPlayedGamesWithTimeout:(id)timeout;
 @end
 
 @implementation JSArcadeObject
 
-- (id)getMarketingItemFromMarketingItems:(id)a3
+- (id)getMarketingItemFromMarketingItems:(id)items
 {
   sub_1E13006E4(0, &qword_1EE1E2DB8);
-  v4 = a3;
+  itemsCopy = items;
   v5 = sub_1E1AF6D4C();
   v6 = sub_1E1AF6D5C();
 
   return v6;
 }
 
-- (id)getMarketingItemWithTimeout:(id)a3 :(id)a4
+- (id)getMarketingItemWithTimeout:(id)timeout :(id)a4
 {
   sub_1E13006E4(0, &qword_1EE1E2DB8);
-  v6 = a3;
+  timeoutCopy = timeout;
   v7 = a4;
   v8 = sub_1E1AF6D4C();
   v9 = sub_1E1AF6D5C();
@@ -29,22 +29,22 @@
   return v9;
 }
 
-- (id)getRecentlyPlayedGamesWithTimeout:(id)a3
+- (id)getRecentlyPlayedGamesWithTimeout:(id)timeout
 {
   sub_1E13006E4(0, &qword_1EE1E2DB8);
-  v5 = a3;
-  v6 = self;
+  timeoutCopy = timeout;
+  selfCopy = self;
   v7 = sub_1E1AF6D4C();
   v8 = sub_1E1AF6D5C();
 
   return v8;
 }
 
-- (id)getDownloadPackGames:(id)a3
+- (id)getDownloadPackGames:(id)games
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1E16E0148(v4);
+  gamesCopy = games;
+  selfCopy = self;
+  v6 = sub_1E16E0148(gamesCopy);
 
   return v6;
 }

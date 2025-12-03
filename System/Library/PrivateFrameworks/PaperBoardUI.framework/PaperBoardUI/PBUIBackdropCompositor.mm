@@ -1,6 +1,6 @@
 @interface PBUIBackdropCompositor
 - (PBUIBackdropCompositor)init;
-- (id)applyEffect:(id)a3 toImage:(id)a4 error:(id *)a5;
+- (id)applyEffect:(id)effect toImage:(id)image error:(id *)error;
 @end
 
 @implementation PBUIBackdropCompositor
@@ -12,18 +12,18 @@
   return [(PBUIBackdropCompositor *)&v3 init];
 }
 
-- (id)applyEffect:(id)a3 toImage:(id)a4 error:(id *)a5
+- (id)applyEffect:(id)effect toImage:(id)image error:(id *)error
 {
-  v6 = a3;
-  v7 = [a4 pbui_CGImageBackedImage];
-  v8 = [v7 CGImage];
-  if (v6)
+  effectCopy = effect;
+  pbui_CGImageBackedImage = [image pbui_CGImageBackedImage];
+  cGImage = [pbui_CGImageBackedImage CGImage];
+  if (effectCopy)
   {
-    v9 = v6[3];
-    v16 = v6[2];
+    v9 = effectCopy[3];
+    v16 = effectCopy[2];
     v17 = v9;
-    v10 = v6[5];
-    v18 = v6[4];
+    v10 = effectCopy[5];
+    v18 = effectCopy[4];
     v19 = v10;
   }
 
@@ -36,18 +36,18 @@
   }
 
   v11 = PBUIBackdropInputSettingsForWallpaperBackdropParameters(&v16);
-  if (v8)
+  if (cGImage)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__PBUIBackdropCompositor_applyEffect_toImage_error___block_invoke;
     v13[3] = &unk_278362F40;
-    v14 = v6;
+    v14 = effectCopy;
     v15 = v11;
-    v8 = [v7 pbui_imageByManipulatingInDeviceColorSpaceWithBlock:v13];
+    cGImage = [pbui_CGImageBackedImage pbui_imageByManipulatingInDeviceColorSpaceWithBlock:v13];
   }
 
-  return v8;
+  return cGImage;
 }
 
 id __52__PBUIBackdropCompositor_applyEffect_toImage_error___block_invoke(uint64_t a1, void *a2)

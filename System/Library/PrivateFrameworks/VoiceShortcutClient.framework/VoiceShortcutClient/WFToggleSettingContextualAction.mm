@@ -1,38 +1,38 @@
 @interface WFToggleSettingContextualAction
-- (BOOL)isEqual:(id)a3;
-- (WFToggleSettingContextualAction)initWithCoder:(id)a3;
-- (WFToggleSettingContextualAction)initWithSetting:(unint64_t)a3 operation:(unint64_t)a4 unconfigured:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (WFToggleSettingContextualAction)initWithCoder:(id)coder;
+- (WFToggleSettingContextualAction)initWithSetting:(unint64_t)setting operation:(unint64_t)operation unconfigured:(BOOL)unconfigured;
 - (id)_staticDisplayStringForDecoding;
 - (id)associatedSettingsPreference;
-- (id)displayStringForSetting:(unint64_t)a3 operation:(unint64_t)a4;
+- (id)displayStringForSetting:(unint64_t)setting operation:(unint64_t)operation;
 - (id)settingBiomeStreamIdentifier;
 - (id)uniqueIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFToggleSettingContextualAction
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = WFToggleSettingContextualAction;
-  v4 = a3;
-  [(WFContextualAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_setting forKey:{@"setting", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_operation forKey:@"operation"];
+  coderCopy = coder;
+  [(WFContextualAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_setting forKey:{@"setting", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_operation forKey:@"operation"];
 }
 
-- (WFToggleSettingContextualAction)initWithCoder:(id)a3
+- (WFToggleSettingContextualAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFToggleSettingContextualAction;
-  v5 = [(WFContextualAction *)&v10 initWithCoder:v4];
+  v5 = [(WFContextualAction *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"setting"];
-    v7 = [v4 decodeIntegerForKey:@"operation"];
+    v6 = [coderCopy decodeIntegerForKey:@"setting"];
+    v7 = [coderCopy decodeIntegerForKey:@"operation"];
     v5->_setting = v6;
     v5->_operation = v7;
     v8 = v5;
@@ -41,21 +41,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = WFToggleSettingContextualAction;
-  if ([(WFContextualAction *)&v10 isEqual:v4])
+  if ([(WFContextualAction *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 setting];
-      if (v6 == [(WFToggleSettingContextualAction *)self setting])
+      setting = [v5 setting];
+      if (setting == [(WFToggleSettingContextualAction *)self setting])
       {
-        v7 = [v5 operation];
-        v8 = v7 == [(WFToggleSettingContextualAction *)self operation];
+        operation = [v5 operation];
+        v8 = operation == [(WFToggleSettingContextualAction *)self operation];
 LABEL_9:
 
         goto LABEL_10;
@@ -93,34 +93,34 @@ LABEL_10:
 
 - (id)associatedSettingsPreference
 {
-  v2 = [(WFToggleSettingContextualAction *)self setting];
-  if (v2 > 8)
+  setting = [(WFToggleSettingContextualAction *)self setting];
+  if (setting > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7B004D8[v2];
+    return off_1E7B004D8[setting];
   }
 }
 
 - (id)uniqueIdentifier
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(WFToggleSettingContextualAction *)self operation];
-  if (v3 > 2)
+  operation = [(WFToggleSettingContextualAction *)self operation];
+  if (operation > 2)
   {
     v4 = @"unknown_operation";
   }
 
   else
   {
-    v4 = off_1E7B004C0[v3];
+    v4 = off_1E7B004C0[operation];
   }
 
-  v5 = [(WFContextualAction *)self identifier];
-  v10[0] = v5;
+  identifier = [(WFContextualAction *)self identifier];
+  v10[0] = identifier;
   v10[1] = v4;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
 
@@ -135,139 +135,139 @@ LABEL_10:
 {
   if ([(WFToggleSettingContextualAction *)self operation]!= 2)
   {
-    v2 = 0;
+    identifier = 0;
     goto LABEL_27;
   }
 
-  v4 = [(WFToggleSettingContextualAction *)self setting];
-  if (v4 <= 4)
+  setting = [(WFToggleSettingContextualAction *)self setting];
+  if (setting <= 4)
   {
-    if (v4 <= 1)
+    if (setting <= 1)
     {
-      if (v4)
+      if (setting)
       {
-        if (v4 != 1)
+        if (setting != 1)
         {
           goto LABEL_27;
         }
 
         v5 = WFBiomeLibrary();
-        v6 = [v5 Device];
-        v7 = [v6 Power];
-        v8 = [v7 EnergyMode];
+        device = [v5 Device];
+        power = [device Power];
+        energyMode = [power EnergyMode];
       }
 
       else
       {
         v5 = WFBiomeLibrary();
-        v6 = [v5 Device];
-        v7 = [v6 Wireless];
-        v8 = [v7 AirplaneMode];
+        device = [v5 Device];
+        power = [device Wireless];
+        energyMode = [power AirplaneMode];
       }
 
       goto LABEL_25;
     }
 
-    if (v4 == 2)
+    if (setting == 2)
     {
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 Display];
-      v8 = [v7 Appearance];
+      device = [v5 Device];
+      power = [device Display];
+      energyMode = [power Appearance];
       goto LABEL_25;
     }
 
-    if (v4 == 3)
+    if (setting == 3)
     {
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 Display];
-      [v7 AlwaysOn];
+      device = [v5 Device];
+      power = [device Display];
+      [power AlwaysOn];
     }
 
     else
     {
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 Wireless];
-      [v7 WiFiAvailabilityStatus];
+      device = [v5 Device];
+      power = [device Wireless];
+      [power WiFiAvailabilityStatus];
     }
 
     goto LABEL_7;
   }
 
-  if (v4 <= 6)
+  if (setting <= 6)
   {
-    if (v4 == 5)
+    if (setting == 5)
     {
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 Wireless];
-      [v7 BluetoothPowerEnabled];
+      device = [v5 Device];
+      power = [device Wireless];
+      [power BluetoothPowerEnabled];
     }
 
     else
     {
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 Wireless];
-      [v7 CellularDataEnabled];
+      device = [v5 Device];
+      power = [device Wireless];
+      [power CellularDataEnabled];
     }
 
-    v8 = LABEL_7:;
+    energyMode = LABEL_7:;
     goto LABEL_25;
   }
 
-  switch(v4)
+  switch(setting)
   {
     case 7:
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 Display];
-      v8 = [v7 TrueTone];
+      device = [v5 Device];
+      power = [device Display];
+      energyMode = [power TrueTone];
       break;
     case 8:
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 Display];
-      v8 = [v7 NightShift];
+      device = [v5 Device];
+      power = [device Display];
+      energyMode = [power NightShift];
       break;
     case 9:
       v5 = WFBiomeLibrary();
-      v6 = [v5 Device];
-      v7 = [v6 SilentMode];
-      v2 = [v7 identifier];
+      device = [v5 Device];
+      power = [device SilentMode];
+      identifier = [power identifier];
       goto LABEL_26;
     default:
       goto LABEL_27;
   }
 
 LABEL_25:
-  v9 = v8;
-  v2 = [v8 identifier];
+  v9 = energyMode;
+  identifier = [energyMode identifier];
 
 LABEL_26:
 LABEL_27:
 
-  return v2;
+  return identifier;
 }
 
 - (id)_staticDisplayStringForDecoding
 {
-  v3 = [(WFToggleSettingContextualAction *)self setting];
-  v4 = [(WFToggleSettingContextualAction *)self operation];
+  setting = [(WFToggleSettingContextualAction *)self setting];
+  operation = [(WFToggleSettingContextualAction *)self operation];
 
-  return [(WFToggleSettingContextualAction *)self displayStringForSetting:v3 operation:v4];
+  return [(WFToggleSettingContextualAction *)self displayStringForSetting:setting operation:operation];
 }
 
-- (id)displayStringForSetting:(unint64_t)a3 operation:(unint64_t)a4
+- (id)displayStringForSetting:(unint64_t)setting operation:(unint64_t)operation
 {
   v6 = 0;
-  if (a3 > 4)
+  if (setting > 4)
   {
-    if (a3 <= 6)
+    if (setting <= 6)
     {
-      if (a3 == 5)
+      if (setting == 5)
       {
         v9 = @"Contextual Action Title: Bluetooth";
         v10 = @"Bluetooth";
@@ -282,7 +282,7 @@ LABEL_27:
 
     else
     {
-      switch(a3)
+      switch(setting)
       {
         case 7uLL:
           v9 = @"Contextual Action Title: True Tone";
@@ -304,11 +304,11 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  if (a3 <= 1)
+  if (setting <= 1)
   {
-    if (a3)
+    if (setting)
     {
-      if (a3 != 1)
+      if (setting != 1)
       {
         goto LABEL_27;
       }
@@ -324,7 +324,7 @@ LABEL_27:
 
   else
   {
-    if (a3 == 2)
+    if (setting == 2)
     {
       v9 = @"Contextual Action Title: Dark Mode";
       v10 = @"Dark Mode";
@@ -333,7 +333,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (a3 != 3)
+    if (setting != 3)
     {
       v7 = +[WFDevice currentDevice];
       v8 = [v7 hasCapability:@"WAPI"];
@@ -360,7 +360,7 @@ LABEL_25:
 LABEL_26:
   v6 = v12;
 LABEL_27:
-  switch(a4)
+  switch(operation)
   {
     case 2uLL:
       v20 = MEMORY[0x1E696AEC0];
@@ -372,7 +372,7 @@ LABEL_27:
       v18 = WFLocalizedStringWithKey(@"Turn Off (System Setting)", @"Turn Off %@");
       v15 = [v17 stringWithFormat:v18, v6];
 
-      if (a3 != 2)
+      if (setting != 2)
       {
         goto LABEL_38;
       }
@@ -384,7 +384,7 @@ LABEL_27:
       v14 = WFLocalizedStringWithKey(@"Turn On (System Setting)", @"Turn On %@");
       v15 = [v13 stringWithFormat:v14, v6];
 
-      if (a3 != 2)
+      if (setting != 2)
       {
         goto LABEL_38;
       }
@@ -405,17 +405,17 @@ LABEL_38:
   return v15;
 }
 
-- (WFToggleSettingContextualAction)initWithSetting:(unint64_t)a3 operation:(unint64_t)a4 unconfigured:(BOOL)a5
+- (WFToggleSettingContextualAction)initWithSetting:(unint64_t)setting operation:(unint64_t)operation unconfigured:(BOOL)unconfigured
 {
-  v5 = a5;
+  unconfiguredCopy = unconfigured;
   v8 = 0;
   v56[2] = *MEMORY[0x1E69E9840];
   v9 = @"OnValue";
-  if (a3 > 4)
+  if (setting > 4)
   {
-    if (a3 > 6)
+    if (setting > 6)
     {
-      if (a3 == 7)
+      if (setting == 7)
       {
         v15 = WFLocalizedStringWithKey(@"Contextual Action Title: True Tone", @"True Tone");
         v14 = @"true_tone";
@@ -423,7 +423,7 @@ LABEL_38:
         v18 = @"truetone";
       }
 
-      else if (a3 == 8)
+      else if (setting == 8)
       {
         v15 = WFLocalizedStringWithKey(@"Contextual Action Title: Night Shift", @"Night Shift");
         v14 = @"night_shift";
@@ -436,7 +436,7 @@ LABEL_38:
         v14 = 0;
         v15 = 0;
         v16 = 0;
-        if (a3 != 9)
+        if (setting != 9)
         {
           goto LABEL_27;
         }
@@ -452,7 +452,7 @@ LABEL_38:
       goto LABEL_26;
     }
 
-    if (a3 == 5)
+    if (setting == 5)
     {
       v15 = WFLocalizedStringWithKey(@"Contextual Action Title: Bluetooth", @"Bluetooth");
       v8 = @"is.workflow.actions.bluetooth.set";
@@ -468,14 +468,14 @@ LABEL_25:
     v18 = @"antenna.radiowaves.left.and.right";
   }
 
-  else if (a3 <= 1)
+  else if (setting <= 1)
   {
-    if (a3)
+    if (setting)
     {
       v14 = 0;
       v15 = 0;
       v16 = 0;
-      if (a3 != 1)
+      if (setting != 1)
       {
         goto LABEL_27;
       }
@@ -495,7 +495,7 @@ LABEL_25:
     }
   }
 
-  else if (a3 == 2)
+  else if (setting == 2)
   {
     v15 = WFLocalizedStringWithKey(@"Contextual Action Title: Dark Mode", @"Dark Mode");
     v14 = @"dark_mode";
@@ -505,7 +505,7 @@ LABEL_25:
 
   else
   {
-    if (a3 != 3)
+    if (setting != 3)
     {
       v10 = +[WFDevice currentDevice];
       v11 = [v10 hasCapability:@"WAPI"];
@@ -537,12 +537,12 @@ LABEL_25:
 LABEL_26:
   v16 = [WFContextualActionIcon iconWithSystemName:v18];
 LABEL_27:
-  v47 = a4;
+  operationCopy = operation;
   v48 = v14;
-  switch(a4)
+  switch(operation)
   {
     case 2uLL:
-      v19 = v5;
+      v19 = unconfiguredCopy;
       v33 = MEMORY[0x1E696AEC0];
       v34 = WFLocalizedStringWithKey(@"Toggle (System Setting)", @"%@");
       v22 = [v33 stringWithFormat:v34, v15];
@@ -557,16 +557,16 @@ LABEL_39:
       v37[1] = v38;
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
 
-      v5 = v19;
+      unconfiguredCopy = v19;
       goto LABEL_40;
     case 1uLL:
-      v19 = v5;
+      v19 = unconfiguredCopy;
       v28 = MEMORY[0x1E696AEC0];
       v29 = WFLocalizedStringWithKey(@"Turn Off (System Setting)", @"Turn Off %@");
       v22 = [v28 stringWithFormat:v29, v15];
 
       v23 = WFLocalizedStringWithKey(@"Turn Off (System Setting, Subtitle)", @"Turn Off");
-      if (a3 == 2)
+      if (setting == 2)
       {
         v30 = WFLocalizedString(@"Set to Light");
 
@@ -586,13 +586,13 @@ LABEL_39:
       v37 = &v53;
       goto LABEL_39;
     case 0uLL:
-      v19 = v5;
+      v19 = unconfiguredCopy;
       v20 = MEMORY[0x1E696AEC0];
       v21 = WFLocalizedStringWithKey(@"Turn On (System Setting)", @"Turn On %@");
       v22 = [v20 stringWithFormat:v21, v15];
 
       v23 = WFLocalizedStringWithKey(@"Turn On (System Setting, Subtitle)", @"Turn On");
-      if (a3 == 2)
+      if (setting == 2)
       {
         v24 = WFLocalizedString(@"Set to Dark");
 
@@ -624,7 +624,7 @@ LABEL_43:
   v23 = 0;
   v31 = MEMORY[0x1E695E0F0];
 LABEL_40:
-  if (a3 == 3 && v5)
+  if (setting == 3 && unconfiguredCopy)
   {
     v32 = WFLocalizedString(@"Turn On & Off");
     goto LABEL_43;
@@ -644,8 +644,8 @@ LABEL_44:
   v42 = v41;
   if (v41)
   {
-    v41->_setting = a3;
-    v41->_operation = v47;
+    v41->_setting = setting;
+    v41->_operation = operationCopy;
     v43 = v41;
   }
 

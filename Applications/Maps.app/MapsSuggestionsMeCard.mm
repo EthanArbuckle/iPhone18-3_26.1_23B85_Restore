@@ -1,10 +1,10 @@
 @interface MapsSuggestionsMeCard
-- (BOOL)_maps_canAddShortcutForMapItem:(id)a3;
-- (id)_maps_shortcutForMapItem:(id)a3;
-- (id)_maps_shortcutForMapItem:(id)a3 fromShortcuts:(id)a4;
-- (id)_maps_shortcutForSuggestionsEntry:(id)a3;
-- (id)_maps_shortcutIncludingHiddenForMapItem:(id)a3;
-- (id)_maps_shortcutOrderedEntries:(id)a3;
+- (BOOL)_maps_canAddShortcutForMapItem:(id)item;
+- (id)_maps_shortcutForMapItem:(id)item;
+- (id)_maps_shortcutForMapItem:(id)item fromShortcuts:(id)shortcuts;
+- (id)_maps_shortcutForSuggestionsEntry:(id)entry;
+- (id)_maps_shortcutIncludingHiddenForMapItem:(id)item;
+- (id)_maps_shortcutOrderedEntries:(id)entries;
 - (int64_t)_maps_firstValidMoveIndex;
 @end
 
@@ -16,8 +16,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(MapsSuggestionsMeCard *)self shortcutsForAll];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  shortcutsForAll = [(MapsSuggestionsMeCard *)self shortcutsForAll];
+  v3 = [shortcutsForAll countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -32,11 +32,11 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(shortcutsForAll);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v7) type];
-        if (v9 > 5 || ((1 << v9) & 0x2C) == 0)
+        type = [*(*(&v12 + 1) + 8 * v7) type];
+        if (type > 5 || ((1 << type) & 0x2C) == 0)
         {
           v5 = v8;
           goto LABEL_15;
@@ -47,7 +47,7 @@
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [shortcutsForAll countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -67,11 +67,11 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)_maps_canAddShortcutForMapItem:(id)a3
+- (BOOL)_maps_canAddShortcutForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isCurrentLocation] & 1) == 0)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy && ([itemCopy isCurrentLocation] & 1) == 0)
   {
     v7 = [(MapsSuggestionsMeCard *)self _maps_shortcutForMapItem:v5];
 
@@ -86,9 +86,9 @@ LABEL_15:
   return v6;
 }
 
-- (id)_maps_shortcutOrderedEntries:(id)a3
+- (id)_maps_shortcutOrderedEntries:(id)entries
 {
-  v19 = a3;
+  entriesCopy = entries;
   v4 = +[NSMutableArray array];
   v24 = 0u;
   v25 = 0u;
@@ -114,7 +114,7 @@ LABEL_15:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v19;
+        v10 = entriesCopy;
         v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
@@ -154,29 +154,29 @@ LABEL_15:
   return v16;
 }
 
-- (id)_maps_shortcutForMapItem:(id)a3 fromShortcuts:(id)a4
+- (id)_maps_shortcutForMapItem:(id)item fromShortcuts:(id)shortcuts
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isCurrentLocation])
+  itemCopy = item;
+  shortcutsCopy = shortcuts;
+  if ([itemCopy isCurrentLocation])
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [v5 _geoMapItem];
-    if (v8)
+    _geoMapItem = [itemCopy _geoMapItem];
+    if (_geoMapItem)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v9 = v6;
+      v9 = shortcutsCopy;
       v7 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
-        v18 = v6;
+        v18 = shortcutsCopy;
         v10 = *v20;
         while (2)
         {
@@ -188,11 +188,11 @@ LABEL_15:
             }
 
             v12 = *(*(&v19 + 1) + 8 * i);
-            v13 = [v12 geoMapItem];
-            if (v13)
+            geoMapItem = [v12 geoMapItem];
+            if (geoMapItem)
             {
-              v14 = v13;
-              v15 = [v12 geoMapItem];
+              v14 = geoMapItem;
+              geoMapItem2 = [v12 geoMapItem];
               IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
 
               if (IsEqualToMapItemForPurpose)
@@ -213,7 +213,7 @@ LABEL_15:
         }
 
 LABEL_16:
-        v6 = v18;
+        shortcutsCopy = v18;
       }
     }
 
@@ -226,36 +226,36 @@ LABEL_16:
   return v7;
 }
 
-- (id)_maps_shortcutIncludingHiddenForMapItem:(id)a3
+- (id)_maps_shortcutIncludingHiddenForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MapsSuggestionsMeCard *)self shortcutsForAllIncludingHidden];
-  v6 = [(MapsSuggestionsMeCard *)self _maps_shortcutForMapItem:v4 fromShortcuts:v5];
+  itemCopy = item;
+  shortcutsForAllIncludingHidden = [(MapsSuggestionsMeCard *)self shortcutsForAllIncludingHidden];
+  v6 = [(MapsSuggestionsMeCard *)self _maps_shortcutForMapItem:itemCopy fromShortcuts:shortcutsForAllIncludingHidden];
 
   return v6;
 }
 
-- (id)_maps_shortcutForMapItem:(id)a3
+- (id)_maps_shortcutForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MapsSuggestionsMeCard *)self shortcutsForAll];
-  v6 = [(MapsSuggestionsMeCard *)self _maps_shortcutForMapItem:v4 fromShortcuts:v5];
+  itemCopy = item;
+  shortcutsForAll = [(MapsSuggestionsMeCard *)self shortcutsForAll];
+  v6 = [(MapsSuggestionsMeCard *)self _maps_shortcutForMapItem:itemCopy fromShortcuts:shortcutsForAll];
 
   return v6;
 }
 
-- (id)_maps_shortcutForSuggestionsEntry:(id)a3
+- (id)_maps_shortcutForSuggestionsEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 shortcutIdentifier];
-  if (v5)
+  entryCopy = entry;
+  shortcutIdentifier = [entryCopy shortcutIdentifier];
+  if (shortcutIdentifier)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(MapsSuggestionsMeCard *)self shortcutsForAll];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    shortcutsForAll = [(MapsSuggestionsMeCard *)self shortcutsForAll];
+    v7 = [shortcutsForAll countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = *v13;
@@ -265,18 +265,18 @@ LABEL_16:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(shortcutsForAll);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if (sub_100BB4984(v10, v4))
+          if (sub_100BB4984(v10, entryCopy))
           {
             v7 = v10;
             goto LABEL_12;
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [shortcutsForAll countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;

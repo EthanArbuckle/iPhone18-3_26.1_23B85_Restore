@@ -6,7 +6,7 @@
 
 - (double)preferredArtworkAspectRatio
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100B01D5C();
 
   return v3;

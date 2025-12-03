@@ -1,6 +1,6 @@
 @interface HMDAddAccessoryPairingSharedUserOperation
 + (id)logCategory;
-- (BOOL)mainWithError:(id *)a3;
+- (BOOL)mainWithError:(id *)error;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 @end
@@ -9,10 +9,10 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackgroundOperation *)self operationUUID];
-  v3 = [v2 UUIDString];
+  operationUUID = [(HMDBackgroundOperation *)self operationUUID];
+  uUIDString = [operationUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)attributeDescriptions
@@ -20,31 +20,31 @@
   v13[1] = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = HMDAddAccessoryPairingSharedUserOperation;
-  v3 = [(HMDAccessoryBackgroundOperation *)&v12 attributeDescriptions];
+  attributeDescriptions = [(HMDAccessoryBackgroundOperation *)&v12 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDBackgroundOperation *)self userData];
-  v6 = [v5 objectForKey:@"sharedUserUUIDKey"];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v6 = [userData objectForKey:@"sharedUserUUIDKey"];
   v7 = [v4 initWithName:@"sharedUserUUID" value:v6];
   v13[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  v9 = [v3 arrayByAddingObjectsFromArray:v8];
+  v9 = [attributeDescriptions arrayByAddingObjectsFromArray:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (BOOL)mainWithError:(id *)a3
+- (BOOL)mainWithError:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
   v35.receiver = self;
   v35.super_class = HMDAddAccessoryPairingSharedUserOperation;
   v5 = [(HMDAddAccessoryPairingOperation *)&v35 mainWithError:?];
-  v6 = [(HMDBackgroundOperation *)self userData];
-  v7 = [v6 objectForKeyedSubscript:@"sharedUserUUIDKey"];
+  userData = [(HMDBackgroundOperation *)self userData];
+  v7 = [userData objectForKeyedSubscript:@"sharedUserUUIDKey"];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   v11 = v10;
   if (v5)
@@ -52,16 +52,16 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMDAccessoryBackgroundOperation *)v9 accessoryUUID];
-      v14 = [(HMDAccessoryBackgroundOperation *)v9 accessoryIdentifier];
+      accessoryUUID = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryUUID];
+      accessoryIdentifier = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryIdentifier];
       *buf = 138544130;
       *&buf[4] = v12;
       *&buf[12] = 2112;
       *&buf[14] = v7;
       *&buf[22] = 2112;
-      v37 = v13;
+      v37 = accessoryUUID;
       *v38 = 2112;
-      *&v38[2] = v14;
+      *&v38[2] = accessoryIdentifier;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Successfully added pairing for the shared user: %@ on the accessory : %@/%@", buf, 0x2Au);
     }
 
@@ -77,23 +77,23 @@
     *v38 = __Block_byref_object_dispose__256344;
     *&v38[8] = 0;
     v15 = +[HMDCoreData sharedInstance];
-    v16 = [(HMDAccessoryBackgroundOperation *)v9 homeUUID];
-    v17 = [v15 contextWithHomeUUID:v16];
+    homeUUID = [(HMDAccessoryBackgroundOperation *)selfCopy homeUUID];
+    v17 = [v15 contextWithHomeUUID:homeUUID];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __59__HMDAddAccessoryPairingSharedUserOperation_mainWithError___block_invoke;
     v26[3] = &unk_278687D38;
-    v26[4] = v9;
+    v26[4] = selfCopy;
     v29 = buf;
     v27 = v7;
     v30 = &v31;
     v18 = v17;
     v28 = v18;
     [v18 unsafeSynchronousBlock:v26];
-    if (a3)
+    if (error)
     {
-      *a3 = *(*&buf[8] + 40);
+      *error = *(*&buf[8] + 40);
     }
 
     v19 = *(v32 + 24);
@@ -107,17 +107,17 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [(HMDAccessoryBackgroundOperation *)v9 accessoryUUID];
-      v22 = [(HMDAccessoryBackgroundOperation *)v9 accessoryIdentifier];
-      v23 = *a3;
+      accessoryUUID2 = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryUUID];
+      accessoryIdentifier2 = [(HMDAccessoryBackgroundOperation *)selfCopy accessoryIdentifier];
+      v23 = *error;
       *buf = 138544386;
       *&buf[4] = v20;
       *&buf[12] = 2112;
       *&buf[14] = v7;
       *&buf[22] = 2112;
-      v37 = v21;
+      v37 = accessoryUUID2;
       *v38 = 2112;
-      *&v38[2] = v22;
+      *&v38[2] = accessoryIdentifier2;
       *&v38[10] = 2112;
       *&v38[12] = v23;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unable to add pairing for shared user : %@ for accessory: %@/%@, error: %@", buf, 0x34u);

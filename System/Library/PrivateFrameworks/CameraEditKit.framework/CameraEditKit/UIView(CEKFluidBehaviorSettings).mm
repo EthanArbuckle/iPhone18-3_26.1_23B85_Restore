@@ -10,10 +10,10 @@
   v15 = a3;
   v9 = a5;
   v10 = a6;
-  v11 = [v15 behaviorType];
-  if ((v11 - 1) >= 2)
+  behaviorType = [v15 behaviorType];
+  if ((behaviorType - 1) >= 2)
   {
-    if (v11)
+    if (behaviorType)
     {
       goto LABEL_6;
     }
@@ -69,11 +69,11 @@ LABEL_6:
 
   if (a4 == 3)
   {
-    v12 = a1;
+    selfCopy2 = self;
     v13 = v17;
     v14 = 0;
 LABEL_11:
-    [v12 cek_animateWithSettings:v13 interactive:v14 animations:v10 completion:v11];
+    [selfCopy2 cek_animateWithSettings:v13 interactive:v14 animations:v10 completion:v11];
     goto LABEL_15;
   }
 
@@ -84,7 +84,7 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    v12 = a1;
+    selfCopy2 = self;
     v13 = v17;
     v14 = 1;
     goto LABEL_11;

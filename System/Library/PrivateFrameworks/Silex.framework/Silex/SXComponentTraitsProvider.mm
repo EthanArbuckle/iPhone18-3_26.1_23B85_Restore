@@ -1,43 +1,43 @@
 @interface SXComponentTraitsProvider
-- (SXComponentTraitsProvider)initWithDOMObjectProvider:(id)a3;
-- (unint64_t)traitsForComponent:(id)a3;
+- (SXComponentTraitsProvider)initWithDOMObjectProvider:(id)provider;
+- (unint64_t)traitsForComponent:(id)component;
 @end
 
 @implementation SXComponentTraitsProvider
 
-- (SXComponentTraitsProvider)initWithDOMObjectProvider:(id)a3
+- (SXComponentTraitsProvider)initWithDOMObjectProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SXComponentTraitsProvider;
   v6 = [(SXComponentTraitsProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_DOMObjectProvider, a3);
+    objc_storeStrong(&v6->_DOMObjectProvider, provider);
   }
 
   return v7;
 }
 
-- (unint64_t)traitsForComponent:(id)a3
+- (unint64_t)traitsForComponent:(id)component
 {
-  v4 = a3;
-  v5 = [v4 traits];
-  v6 = [v4 style];
+  componentCopy = component;
+  traits = [componentCopy traits];
+  style = [componentCopy style];
 
-  if (v6)
+  if (style)
   {
-    v7 = [(SXComponentTraitsProvider *)self DOMObjectProvider];
-    v8 = [v7 componentStyleForComponent:v4];
+    dOMObjectProvider = [(SXComponentTraitsProvider *)self DOMObjectProvider];
+    v8 = [dOMObjectProvider componentStyleForComponent:componentCopy];
 
     if (([v8 traits] & 6) != 0)
     {
-      v5 |= 0x2AuLL;
+      traits |= 0x2AuLL;
     }
   }
 
-  return v5;
+  return traits;
 }
 
 @end

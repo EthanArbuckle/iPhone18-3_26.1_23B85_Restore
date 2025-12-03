@@ -1,27 +1,27 @@
 @interface CRLLabelView_mi
-- (_TtC8Freeform15CRLLabelView_mi)initWithCoder:(id)a3;
-- (_TtC8Freeform15CRLLabelView_mi)initWithFrame:(CGRect)a3;
+- (_TtC8Freeform15CRLLabelView_mi)initWithCoder:(id)coder;
+- (_TtC8Freeform15CRLLabelView_mi)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CRLLabelView_mi
 
-- (_TtC8Freeform15CRLLabelView_mi)initWithFrame:(CGRect)a3
+- (_TtC8Freeform15CRLLabelView_mi)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CRLLabelView_mi();
   return [(CRLLabelView_mi *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC8Freeform15CRLLabelView_mi)initWithCoder:(id)a3
+- (_TtC8Freeform15CRLLabelView_mi)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRLLabelView_mi();
-  v4 = a3;
-  v5 = [(CRLLabelView_mi *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CRLLabelView_mi *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

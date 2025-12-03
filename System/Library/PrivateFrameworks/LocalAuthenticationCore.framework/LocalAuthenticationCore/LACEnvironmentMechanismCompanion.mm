@@ -1,20 +1,20 @@
 @interface LACEnvironmentMechanismCompanion
-+ (id)companionForUser:(unsigned int)a3 type:(int64_t)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (LACEnvironmentMechanismCompanion)initWithAvailabilityError:(id)a3 companionType:(int64_t)a4 stateHash:(id)a5;
-- (LACEnvironmentMechanismCompanion)initWithCoder:(id)a3;
++ (id)companionForUser:(unsigned int)user type:(int64_t)type error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (LACEnvironmentMechanismCompanion)initWithAvailabilityError:(id)error companionType:(int64_t)type stateHash:(id)hash;
+- (LACEnvironmentMechanismCompanion)initWithCoder:(id)coder;
 - (id)descriptionDetails;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACEnvironmentMechanismCompanion
 
-- (LACEnvironmentMechanismCompanion)initWithAvailabilityError:(id)a3 companionType:(int64_t)a4 stateHash:(id)a5
+- (LACEnvironmentMechanismCompanion)initWithAvailabilityError:(id)error companionType:(int64_t)type stateHash:(id)hash
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = NSStringFromLACCompanionType(a4);
-  switch(a4)
+  hashCopy = hash;
+  errorCopy = error;
+  v11 = NSStringFromLACCompanionType(type);
+  switch(type)
   {
     case 1:
       v12 = @"applewatch";
@@ -32,68 +32,68 @@
 
   v15.receiver = self;
   v15.super_class = LACEnvironmentMechanismCompanion;
-  v13 = [(LACEnvironmentMechanism *)&v15 initWithAvailabilityError:v10 localizedName:v11 iconSystemName:v12];
+  v13 = [(LACEnvironmentMechanism *)&v15 initWithAvailabilityError:errorCopy localizedName:v11 iconSystemName:v12];
 
   if (v13)
   {
-    v13->_companionType = a4;
-    objc_storeStrong(&v13->_stateHash, a5);
+    v13->_companionType = type;
+    objc_storeStrong(&v13->_stateHash, hash);
   }
 
   return v13;
 }
 
-+ (id)companionForUser:(unsigned int)a3 type:(int64_t)a4 error:(id *)a5
++ (id)companionForUser:(unsigned int)user type:(int64_t)type error:(id *)error
 {
-  v6 = a4;
+  typeCopy = type;
   v18 = *MEMORY[0x1E69E9840];
   v8 = [LACError errorWithCode:-1000 debugDescription:@"companions not supported"];
   v9 = LACLogEnvironment();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v13[0] = 67109634;
-    v13[1] = a3;
+    v13[1] = user;
     v14 = 1024;
-    v15 = v6;
+    v15 = typeCopy;
     v16 = 2114;
     v17 = v8;
     _os_log_error_impl(&dword_1B0233000, v9, OS_LOG_TYPE_ERROR, "companionForUser:%u type:%d -> %{public}@", v13, 0x18u);
   }
 
-  if (a5)
+  if (error)
   {
     v10 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = LACEnvironmentMechanismCompanion;
-  v4 = a3;
-  [(LACEnvironmentMechanism *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LACEnvironmentMechanism *)&v9 encodeWithCoder:coderCopy];
   v5 = [(LACEnvironmentMechanismCompanion *)self companionType:v9.receiver];
   v6 = NSStringFromSelector(sel_companionType);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:v5 forKey:v6];
 
-  v7 = [(LACEnvironmentMechanismCompanion *)self stateHash];
+  stateHash = [(LACEnvironmentMechanismCompanion *)self stateHash];
   v8 = NSStringFromSelector(sel_stateHash);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:stateHash forKey:v8];
 }
 
-- (LACEnvironmentMechanismCompanion)initWithCoder:(id)a3
+- (LACEnvironmentMechanismCompanion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_availabilityError);
-  v6 = [v4 decodeObjectForKey:v5];
+  v6 = [coderCopy decodeObjectForKey:v5];
   v7 = NSStringFromSelector(sel_companionType);
-  v8 = [v4 decodeIntegerForKey:v7];
+  v8 = [coderCopy decodeIntegerForKey:v7];
   v9 = NSStringFromSelector(sel_stateHash);
-  v10 = [v4 decodeObjectForKey:v9];
+  v10 = [coderCopy decodeObjectForKey:v9];
 
   v11 = [(LACEnvironmentMechanismCompanion *)self initWithAvailabilityError:v6 companionType:v8 stateHash:v10];
   return v11;
@@ -108,13 +108,13 @@
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v6 = [v3 arrayWithArray:v5];
 
-  v7 = [(LACEnvironmentMechanismCompanion *)self stateHash];
+  stateHash = [(LACEnvironmentMechanismCompanion *)self stateHash];
 
-  if (v7)
+  if (stateHash)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(LACEnvironmentMechanismCompanion *)self stateHash];
-    v10 = [v8 stringWithFormat:@"stateHash: %@", v9];
+    stateHash2 = [(LACEnvironmentMechanismCompanion *)self stateHash];
+    v10 = [v8 stringWithFormat:@"stateHash: %@", stateHash2];
     [v6 addObject:v10];
   }
 
@@ -123,10 +123,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -135,24 +135,24 @@
   {
     v13.receiver = self;
     v13.super_class = LACEnvironmentMechanismCompanion;
-    if ([(LACEnvironmentMechanism *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(LACEnvironmentMechanism *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(LACEnvironmentMechanismCompanion *)self companionType];
-      if (v6 == [(LACEnvironmentMechanismCompanion *)v5 companionType])
+      v5 = equalCopy;
+      companionType = [(LACEnvironmentMechanismCompanion *)self companionType];
+      if (companionType == [(LACEnvironmentMechanismCompanion *)v5 companionType])
       {
-        v7 = [(LACEnvironmentMechanismCompanion *)self stateHash];
-        v8 = [(LACEnvironmentMechanismCompanion *)v5 stateHash];
-        if (v7 == v8)
+        stateHash = [(LACEnvironmentMechanismCompanion *)self stateHash];
+        stateHash2 = [(LACEnvironmentMechanismCompanion *)v5 stateHash];
+        if (stateHash == stateHash2)
         {
           v11 = 1;
         }
 
         else
         {
-          v9 = [(LACEnvironmentMechanismCompanion *)self stateHash];
-          v10 = [(LACEnvironmentMechanismCompanion *)v5 stateHash];
-          v11 = [v9 isEqualToData:v10];
+          stateHash3 = [(LACEnvironmentMechanismCompanion *)self stateHash];
+          stateHash4 = [(LACEnvironmentMechanismCompanion *)v5 stateHash];
+          v11 = [stateHash3 isEqualToData:stateHash4];
         }
       }
 

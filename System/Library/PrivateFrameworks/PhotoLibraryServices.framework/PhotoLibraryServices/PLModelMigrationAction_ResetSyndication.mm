@@ -1,17 +1,17 @@
 @interface PLModelMigrationAction_ResetSyndication
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetSyndication
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E69BF2A0];
-  v8 = [(PLModelMigrationActionCore *)self pathManager];
-  v9 = [v8 libraryURL];
-  v10 = [v7 wellKnownPhotoLibraryIdentifierForURL:v9];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  v10 = [v7 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
   v11 = PLStringFromWellKnownPhotoLibraryIdentifier();
   v12 = PLMigrationGetLog();
@@ -24,11 +24,11 @@
 
   v13 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
   [v13 becomeCurrentWithPendingUnitCount:1];
-  v14 = [(PLModelMigrationActionCore *)self pathManager];
+  pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
   if (v10 == 3)
   {
     v25 = 0;
-    v15 = PLResetSyndicationLibraryWithManagedObjectContext(v6, v14, &v25);
+    v15 = PLResetSyndicationLibraryWithManagedObjectContext(contextCopy, pathManager2, &v25);
     v16 = v25;
 
     [v13 resignCurrent];
@@ -45,7 +45,7 @@
     v19 = NSStringFromClass(v18);
     v24 = 0;
     v17 = 1;
-    v20 = PLDeleteGuestAssetsInLibraryWithManagedObjectContext(v6, v14, v19, 1, &v24);
+    v20 = PLDeleteGuestAssetsInLibraryWithManagedObjectContext(contextCopy, pathManager2, v19, 1, &v24);
     v16 = v24;
 
     [v13 resignCurrent];
@@ -66,10 +66,10 @@
   v17 = 3;
 LABEL_10:
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v22 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
   return v17;

@@ -9,7 +9,7 @@
 {
   NSLog(&cfstr_ActionsetCanno.isa);
 
-  return [a1 hf_showInHomeDashboard];
+  return [self hf_showInHomeDashboard];
 }
 
 - (uint64_t)hf_updateIsFavorite:()HFFavoritableAdoption

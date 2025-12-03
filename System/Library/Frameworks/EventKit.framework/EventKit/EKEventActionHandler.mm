@@ -1,13 +1,13 @@
 @interface EKEventActionHandler
-+ (id)_displayStringForDate:(id)a3;
++ (id)_displayStringForDate:(id)date;
 + (id)_logHandle;
 + (id)sharedInstance;
-- (id)_intentForAction:(id)a3 onEvent:(id)a4;
-- (id)createEventIntentForEvent:(id)a3 withSuggestionsInfoUniqueKey:(id)a4;
-- (void)donateInteractionForAction:(id)a3 onEvent:(id)a4;
-- (void)donatePredictiveAction:(id)a3 forEvent:(id)a4;
-- (void)handleEventCreation:(id)a3;
-- (void)removeInteractionsForCalendar:(id)a3;
+- (id)_intentForAction:(id)action onEvent:(id)event;
+- (id)createEventIntentForEvent:(id)event withSuggestionsInfoUniqueKey:(id)key;
+- (void)donateInteractionForAction:(id)action onEvent:(id)event;
+- (void)donatePredictiveAction:(id)action forEvent:(id)event;
+- (void)handleEventCreation:(id)creation;
+- (void)removeInteractionsForCalendar:(id)calendar;
 @end
 
 @implementation EKEventActionHandler
@@ -50,139 +50,139 @@ uint64_t __34__EKEventActionHandler__logHandle__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)handleEventCreation:(id)a3
+- (void)handleEventCreation:(id)creation
 {
-  v4 = a3;
-  [(EKEventActionHandler *)self donateInteractionForAction:@"createEvent" onEvent:v4];
-  [(EKEventActionHandler *)self donatePredictiveAction:@"createEvent" forEvent:v4];
+  creationCopy = creation;
+  [(EKEventActionHandler *)self donateInteractionForAction:@"createEvent" onEvent:creationCopy];
+  [(EKEventActionHandler *)self donatePredictiveAction:@"createEvent" forEvent:creationCopy];
 }
 
-- (void)removeInteractionsForCalendar:(id)a3
+- (void)removeInteractionsForCalendar:(id)calendar
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  calendarCopy = calendar;
   v4 = MEMORY[0x1E696E8B8];
-  v5 = [v3 calendarIdentifier];
-  [v4 deleteInteractionsWithGroupIdentifier:v5 completion:0];
+  calendarIdentifier = [calendarCopy calendarIdentifier];
+  [v4 deleteInteractionsWithGroupIdentifier:calendarIdentifier completion:0];
 
-  v6 = [objc_opt_class() _logHandle];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  _logHandle = [objc_opt_class() _logHandle];
+  if (os_log_type_enabled(_logHandle, OS_LOG_TYPE_INFO))
   {
-    v7 = [v3 calendarIdentifier];
+    calendarIdentifier2 = [calendarCopy calendarIdentifier];
     v9 = 138412290;
-    v10 = v7;
-    _os_log_impl(&dword_1A805E000, v6, OS_LOG_TYPE_INFO, "Deleting previous interactions on calendar %@", &v9, 0xCu);
+    v10 = calendarIdentifier2;
+    _os_log_impl(&dword_1A805E000, _logHandle, OS_LOG_TYPE_INFO, "Deleting previous interactions on calendar %@", &v9, 0xCu);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_intentForAction:(id)a3 onEvent:(id)a4
+- (id)_intentForAction:(id)action onEvent:(id)event
 {
-  v5 = a3;
-  v6 = [EKDuetSignalEventSerializer serializedEventWithEvent:a4];
-  v7 = [objc_alloc(MEMORY[0x1E696E880]) initWithDomain:@"Calendar" verb:v5 parametersByName:v6];
+  actionCopy = action;
+  v6 = [EKDuetSignalEventSerializer serializedEventWithEvent:event];
+  v7 = [objc_alloc(MEMORY[0x1E696E880]) initWithDomain:@"Calendar" verb:actionCopy parametersByName:v6];
 
   return v7;
 }
 
-- (void)donateInteractionForAction:(id)a3 onEvent:(id)a4
+- (void)donateInteractionForAction:(id)action onEvent:(id)event
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(EKEventActionHandler *)self _intentForAction:a3 onEvent:v6];
+  eventCopy = event;
+  v7 = [(EKEventActionHandler *)self _intentForAction:action onEvent:eventCopy];
   if (v7)
   {
-    v8 = [v6 calendarItemIdentifier];
-    v9 = [v7 verb];
-    v10 = [v9 isEqualToString:@"deleteEvent"];
+    calendarItemIdentifier = [eventCopy calendarItemIdentifier];
+    verb = [v7 verb];
+    v10 = [verb isEqualToString:@"deleteEvent"];
 
     if (v10)
     {
       v11 = MEMORY[0x1E696E8B8];
-      v24[0] = v8;
+      v24[0] = calendarItemIdentifier;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
       [v11 deleteInteractionsWithIdentifiers:v12 completion:0];
 
-      v13 = [objc_opt_class() _logHandle];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+      _logHandle = [objc_opt_class() _logHandle];
+      if (os_log_type_enabled(_logHandle, OS_LOG_TYPE_INFO))
       {
         v20 = 138412290;
-        v21 = v8;
-        _os_log_impl(&dword_1A805E000, v13, OS_LOG_TYPE_INFO, "Deleting previous interactions on event %@", &v20, 0xCu);
+        v21 = calendarItemIdentifier;
+        _os_log_impl(&dword_1A805E000, _logHandle, OS_LOG_TYPE_INFO, "Deleting previous interactions on event %@", &v20, 0xCu);
       }
     }
 
     v14 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:v7 response:0];
-    [v14 setIdentifier:v8];
-    v15 = [v6 calendar];
-    v16 = [v15 calendarIdentifier];
-    [v14 setGroupIdentifier:v16];
+    [v14 setIdentifier:calendarItemIdentifier];
+    calendar = [eventCopy calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    [v14 setGroupIdentifier:calendarIdentifier];
 
     [v14 donateInteractionWithCompletion:0];
-    v17 = [objc_opt_class() _logHandle];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    _logHandle2 = [objc_opt_class() _logHandle];
+    if (os_log_type_enabled(_logHandle2, OS_LOG_TYPE_INFO))
     {
-      v18 = [v7 verb];
+      verb2 = [v7 verb];
       v20 = 138412546;
-      v21 = v18;
+      v21 = verb2;
       v22 = 2112;
-      v23 = v8;
-      _os_log_impl(&dword_1A805E000, v17, OS_LOG_TYPE_INFO, "Donated interaction for action %@ on event %@", &v20, 0x16u);
+      v23 = calendarItemIdentifier;
+      _os_log_impl(&dword_1A805E000, _logHandle2, OS_LOG_TYPE_INFO, "Donated interaction for action %@ on event %@", &v20, 0x16u);
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)donatePredictiveAction:(id)a3 forEvent:(id)a4
+- (void)donatePredictiveAction:(id)action forEvent:(id)event
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:@"com.apple.mobilecal"];
+  actionCopy = action;
+  eventCopy = event;
+  bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+  bundleIdentifier = [bundleRecordForCurrentProcess bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:@"com.apple.mobilecal"];
 
-  if (v9 && [v15 isEqualToString:@"createEvent"])
+  if (v9 && [actionCopy isEqualToString:@"createEvent"])
   {
-    v10 = [(EKEventActionHandler *)self createEventIntentForEvent:v6];
+    v10 = [(EKEventActionHandler *)self createEventIntentForEvent:eventCopy];
     v11 = [objc_alloc(MEMORY[0x1E696E8B8]) initWithIntent:v10 response:0];
-    v12 = [v6 calendarItemIdentifier];
-    [v11 setIdentifier:v12];
+    calendarItemIdentifier = [eventCopy calendarItemIdentifier];
+    [v11 setIdentifier:calendarItemIdentifier];
 
-    v13 = [v6 calendar];
-    v14 = [v13 calendarIdentifier];
-    [v11 setGroupIdentifier:v14];
+    calendar = [eventCopy calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    [v11 setGroupIdentifier:calendarIdentifier];
 
     [v11 donateInteractionWithCompletion:0];
   }
 }
 
-+ (id)_displayStringForDate:(id)a3
++ (id)_displayStringForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (_displayStringForDate__onceToken != -1)
   {
     +[EKEventActionHandler _displayStringForDate:];
   }
 
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = a1;
-  objc_sync_enter(v6);
-  v7 = [v5 localeIdentifier];
-  v8 = [_displayStringForDate__cachedLocale localeIdentifier];
-  v9 = [v7 isEqual:v8];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  localeIdentifier = [currentLocale localeIdentifier];
+  localeIdentifier2 = [_displayStringForDate__cachedLocale localeIdentifier];
+  v9 = [localeIdentifier isEqual:localeIdentifier2];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"EEEMMMdjmm" options:0 locale:v5];
+    v10 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"EEEMMMdjmm" options:0 locale:currentLocale];
     [_displayStringForDate__dateFormatter setDateFormat:v10];
 
-    objc_storeStrong(&_displayStringForDate__cachedLocale, v5);
+    objc_storeStrong(&_displayStringForDate__cachedLocale, currentLocale);
   }
 
-  v11 = [_displayStringForDate__dateFormatter stringFromDate:v4];
-  objc_sync_exit(v6);
+  v11 = [_displayStringForDate__dateFormatter stringFromDate:dateCopy];
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
@@ -194,52 +194,52 @@ uint64_t __46__EKEventActionHandler__displayStringForDate___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)createEventIntentForEvent:(id)a3 withSuggestionsInfoUniqueKey:(id)a4
+- (id)createEventIntentForEvent:(id)event withSuggestionsInfoUniqueKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  keyCopy = key;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v5 startDate];
-  [v8 timeIntervalSinceReferenceDate];
+  startDate = [eventCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v10 = v9;
-  v11 = [v5 startTimeZone];
-  v12 = [v11 name];
-  v13 = [v7 stringWithFormat:@"%f#%@", v10, v12];
+  startTimeZone = [eventCopy startTimeZone];
+  name = [startTimeZone name];
+  v13 = [v7 stringWithFormat:@"%f#%@", v10, name];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [v5 endDateUnadjustedForLegacyClients];
-  [v15 timeIntervalSinceReferenceDate];
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+  [endDateUnadjustedForLegacyClients timeIntervalSinceReferenceDate];
   v17 = v16;
-  v18 = [v5 endTimeZone];
-  v19 = [v18 name];
-  v20 = [v14 stringWithFormat:@"%f#%@", v17, v19];
+  endTimeZone = [eventCopy endTimeZone];
+  name2 = [endTimeZone name];
+  v20 = [v14 stringWithFormat:@"%f#%@", v17, name2];
 
-  if (v6)
+  if (keyCopy)
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@#%@", v13, v6];
+    keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@#%@", v13, keyCopy];
 
-    v13 = v21;
+    v13 = keyCopy;
   }
 
   v22 = objc_alloc_init(EKUICreateEventIntent);
   v23 = objc_alloc(MEMORY[0x1E696E910]);
   v24 = objc_opt_class();
-  v25 = [v5 startDate];
-  v26 = [v24 _displayStringForDate:v25];
+  startDate2 = [eventCopy startDate];
+  v26 = [v24 _displayStringForDate:startDate2];
   v27 = [v23 initWithIdentifier:v13 displayString:v26];
 
   v28 = objc_alloc(MEMORY[0x1E696E910]);
   v29 = objc_opt_class();
-  v30 = [v5 endDateUnadjustedForLegacyClients];
-  v31 = [v29 _displayStringForDate:v30];
+  endDateUnadjustedForLegacyClients2 = [eventCopy endDateUnadjustedForLegacyClients];
+  v31 = [v29 _displayStringForDate:endDateUnadjustedForLegacyClients2];
   v32 = [v28 initWithIdentifier:v20 displayString:v31];
 
-  v33 = [v5 title];
-  [(EKUICreateEventIntent *)v22 setTitle:v33];
+  title = [eventCopy title];
+  [(EKUICreateEventIntent *)v22 setTitle:title];
 
   [(EKUICreateEventIntent *)v22 setStartDate:v27];
   [(EKUICreateEventIntent *)v22 setEndDate:v32];
-  v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isAllDay")}];
+  v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(eventCopy, "isAllDay")}];
   [(EKUICreateEventIntent *)v22 setAllDay:v34];
 
   [(EKUICreateEventIntent *)v22 _setLaunchId:@"com.apple.mobilecal"];
@@ -247,27 +247,27 @@ uint64_t __46__EKEventActionHandler__displayStringForDate___block_invoke()
   v36 = [v35 localizedStringForKey:@"Create event" value:&stru_1F1B49D68 table:0];
   [(EKUICreateEventIntent *)v22 setSuggestedInvocationPhrase:v36];
 
-  v37 = [v5 structuredLocation];
+  structuredLocation = [eventCopy structuredLocation];
 
-  if (v37)
+  if (structuredLocation)
   {
-    v38 = [v5 structuredLocation];
-    v39 = [v38 title];
-    [(EKUICreateEventIntent *)v22 setLocationName:v39];
+    structuredLocation2 = [eventCopy structuredLocation];
+    title2 = [structuredLocation2 title];
+    [(EKUICreateEventIntent *)v22 setLocationName:title2];
 
-    v40 = [v5 structuredLocation];
-    v41 = [v40 address];
-    [(EKUICreateEventIntent *)v22 setLocationAddress:v41];
+    structuredLocation3 = [eventCopy structuredLocation];
+    address = [structuredLocation3 address];
+    [(EKUICreateEventIntent *)v22 setLocationAddress:address];
 
-    v42 = [v5 structuredLocation];
-    v43 = [v42 geoLocation];
+    structuredLocation4 = [eventCopy structuredLocation];
+    geoLocation = [structuredLocation4 geoLocation];
 
-    if (v43)
+    if (geoLocation)
     {
       v44 = objc_alloc(EKWeakLinkClass());
-      v45 = [v5 structuredLocation];
-      v46 = [v45 geoLocation];
-      v47 = [v44 initWithLocation:v46 addressDictionary:0 region:0 areasOfInterest:0];
+      structuredLocation5 = [eventCopy structuredLocation];
+      geoLocation2 = [structuredLocation5 geoLocation];
+      v47 = [v44 initWithLocation:geoLocation2 addressDictionary:0 region:0 areasOfInterest:0];
       [(EKUICreateEventIntent *)v22 setGeolocation:v47];
     }
   }

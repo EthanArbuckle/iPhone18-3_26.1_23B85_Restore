@@ -1,25 +1,25 @@
 @interface SiriUISiriStatusViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformMagicTap;
 - (CGRect)_defaultFocusRegionFrame;
 - (CGRect)accessibilityFrame;
 - (unsigned)_accessibilityMediaAnalysisOptions;
 - (void)accessibilityElementDidLoseFocus;
 - (void)dealloc;
-- (void)setMode:(int64_t)a3;
+- (void)setMode:(int64_t)mode;
 @end
 
 @implementation SiriUISiriStatusViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriUISiriStatusView" hasInstanceMethod:@"initWithFrame: screen: textInputEnabled: configuration:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "B", "@", 0}];
-  [v3 validateClass:@"SiriUISiriStatusView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_touchInputView" withType:"UIView"];
-  [v3 validateClass:@"AFUISiriView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AFUISiriViewController" hasInstanceMethod:@"_session" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AFUISiriSession" hasInstanceMethod:@"cancelRequest" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriUISiriStatusView" hasInstanceMethod:@"initWithFrame: screen: textInputEnabled: configuration:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "B", "@", 0}];
+  [validationsCopy validateClass:@"SiriUISiriStatusView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriUISiriStatusView" hasInstanceVariable:@"_touchInputView" withType:"UIView"];
+  [validationsCopy validateClass:@"AFUISiriView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AFUISiriViewController" hasInstanceMethod:@"_session" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AFUISiriSession" hasInstanceMethod:@"cancelRequest" withFullSignature:{"v", 0}];
 }
 
 - (void)dealloc
@@ -33,12 +33,12 @@
   [(SiriUISiriStatusViewAccessibility *)&v3 dealloc];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = SiriUISiriStatusViewAccessibility;
   [(SiriUISiriStatusViewAccessibility *)&v10 setMode:?];
-  if (a3 == 1)
+  if (mode == 1)
   {
     _UIAccessibilityBlockPostingOfNotification();
     _UIAccessibilityBlockPostingOfNotification();
@@ -52,7 +52,7 @@
   else
   {
     accessibilityLocalizedString(@"listen.button.label");
-    if (a3 == 2)
+    if (mode == 2)
       v5 = {;
       [(SiriUISiriStatusViewAccessibility *)self setAccessibilityLabel:v5];
 

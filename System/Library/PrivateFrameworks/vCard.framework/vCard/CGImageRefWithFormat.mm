@@ -1,11 +1,11 @@
 @interface CGImageRefWithFormat
-- (CGImageRefWithFormat)initWithImage:(CGImage *)a3 andFormat:(__CFString *)sourceImageFormatUTI;
+- (CGImageRefWithFormat)initWithImage:(CGImage *)image andFormat:(__CFString *)sourceImageFormatUTI;
 - (void)dealloc;
 @end
 
 @implementation CGImageRefWithFormat
 
-- (CGImageRefWithFormat)initWithImage:(CGImage *)a3 andFormat:(__CFString *)sourceImageFormatUTI
+- (CGImageRefWithFormat)initWithImage:(CGImage *)image andFormat:(__CFString *)sourceImageFormatUTI
 {
   v10.receiver = self;
   v10.super_class = CGImageRefWithFormat;
@@ -13,11 +13,11 @@
   v7 = v6;
   if (v6)
   {
-    v6->_imageRef = a3;
+    v6->_imageRef = image;
     v6->_sourceImageFormatUTI = sourceImageFormatUTI;
-    if (a3)
+    if (image)
     {
-      CFRetain(a3);
+      CFRetain(image);
       sourceImageFormatUTI = v7->_sourceImageFormatUTI;
     }
 

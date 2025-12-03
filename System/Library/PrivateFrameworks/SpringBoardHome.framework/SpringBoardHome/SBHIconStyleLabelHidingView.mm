@@ -1,19 +1,19 @@
 @interface SBHIconStyleLabelHidingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (SBHIconStyleLabelHidingView)initWithTarget:(id)a3 action:(SEL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (SBHIconStyleLabelHidingView)initWithTarget:(id)target action:(SEL)action;
 - (void)_layoutSegmentedControl;
-- (void)_setupViewsForTarget:(id)a3 action:(SEL)a4;
+- (void)_setupViewsForTarget:(id)target action:(SEL)action;
 - (void)layoutSubviews;
-- (void)setShouldUseLargeIcons:(BOOL)a3;
+- (void)setShouldUseLargeIcons:(BOOL)icons;
 @end
 
 @implementation SBHIconStyleLabelHidingView
 
-- (SBHIconStyleLabelHidingView)initWithTarget:(id)a3 action:(SEL)a4
+- (SBHIconStyleLabelHidingView)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v10.receiver = self;
   v10.super_class = SBHIconStyleLabelHidingView;
   v7 = [(SBHIconStyleLabelHidingView *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -21,34 +21,34 @@
   if (v7)
   {
     v7->_animationCount = 0;
-    [(SBHIconStyleLabelHidingView *)v7 _setupViewsForTarget:v6 action:a4];
+    [(SBHIconStyleLabelHidingView *)v7 _setupViewsForTarget:targetCopy action:action];
   }
 
   return v8;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UISegmentedControl *)self->_segmentedControl sizeThatFits:a3.width, a3.height];
+  [(UISegmentedControl *)self->_segmentedControl sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UISegmentedControl *)self->_segmentedControl systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(UISegmentedControl *)self->_segmentedControl systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)setShouldUseLargeIcons:(BOOL)a3
+- (void)setShouldUseLargeIcons:(BOOL)icons
 {
-  if (self->_shouldUseLargeIcons != a3)
+  if (self->_shouldUseLargeIcons != icons)
   {
     [(SBHIconStyleLabelHidingView *)self willChangeValueForKey:@"shouldUseLargeIcons"];
-    self->_shouldUseLargeIcons = a3;
+    self->_shouldUseLargeIcons = icons;
     [(SBHIconStyleLabelHidingView *)self didChangeValueForKey:@"shouldUseLargeIcons"];
 
     [(SBHIconStyleLabelHidingView *)self _layoutSegmentedControl];
@@ -80,9 +80,9 @@
   [(UISegmentedControl *)segmentedControl setFrame:?];
 }
 
-- (void)_setupViewsForTarget:(id)a3 action:(SEL)a4
+- (void)_setupViewsForTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   if (!self->_segmentedControl)
   {
     objc_initWeak(&location, self);
@@ -113,7 +113,7 @@
     self->_segmentedControl = v17;
 
     [(UISegmentedControl *)self->_segmentedControl sizeToFit];
-    [(UISegmentedControl *)self->_segmentedControl addTarget:v6 action:a4 forControlEvents:4096];
+    [(UISegmentedControl *)self->_segmentedControl addTarget:targetCopy action:action forControlEvents:4096];
     [(SBHIconStyleLabelHidingView *)self addSubview:self->_segmentedControl];
     [(UISegmentedControl *)self->_segmentedControl bounds];
     [(SBHIconStyleLabelHidingView *)self setFrame:?];

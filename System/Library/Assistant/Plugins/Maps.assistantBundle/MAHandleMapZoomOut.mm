@@ -1,13 +1,13 @@
 @interface MAHandleMapZoomOut
-- (id)_performWithServiceHelper:(id)a3;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (id)_performWithServiceHelper:(id)helper;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleMapZoomOut
 
-- (id)_performWithServiceHelper:(id)a3
+- (id)_performWithServiceHelper:(id)helper
 {
-  v3 = a3;
+  helperCopy = helper;
   v4 = +[MKMapService sharedService];
   [v4 captureUserAction:1003 onTarget:802 eventValue:0];
 
@@ -16,7 +16,7 @@
   v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v6 = [MKMapItem urlForMapItem:0 options:v5];
 
-  LODWORD(v5) = [v3 openSensitiveURL:v6];
+  LODWORD(v5) = [helperCopy openSensitiveURL:v6];
   v7 = objc_alloc_init(SACommandFailed);
   if (v5)
   {
@@ -28,14 +28,14 @@
   return v7;
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v8 = a3;
-  v6 = [(MAHandleMapZoomOut *)self _performWithServiceHelper:a4];
-  if (v8)
+  completionCopy = completion;
+  v6 = [(MAHandleMapZoomOut *)self _performWithServiceHelper:helper];
+  if (completionCopy)
   {
-    v7 = [v6 dictionary];
-    v8[2](v8, v7);
+    dictionary = [v6 dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 }
 

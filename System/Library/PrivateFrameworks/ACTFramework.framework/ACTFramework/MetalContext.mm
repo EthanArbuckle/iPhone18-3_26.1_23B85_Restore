@@ -1,18 +1,18 @@
 @interface MetalContext
-+ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3;
-- (BOOL)writeMetalTextureToData:(void *)a3 texture:(id)a4 mipmapLevel:(int)a5;
-- (BOOL)writeMetalTextureToFile:(const char *)a3 texture:(id)a4 mipmapLevel:(int)a5;
++ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format;
+- (BOOL)writeMetalTextureToData:(void *)data texture:(id)texture mipmapLevel:(int)level;
+- (BOOL)writeMetalTextureToFile:(const char *)file texture:(id)texture mipmapLevel:(int)level;
 - (MetalContext)init;
-- (MetalContext)initWithDevice:(id)a3 library:(id)a4 commandQueue:(id)a5;
-- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 plane:(unint64_t)a7;
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 plane:(unint64_t)a5;
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 textureSize:(CGSize)a5 plane:(unint64_t)a6;
-- (id)newBufferWithPixelFormat:(unint64_t)a3 width:(int)a4 data:(const void *)a5;
-- (id)newTextureWithPixelFormat:(unint64_t)a3 width:(int)a4 height:(int)a5;
-- (id)readBufferFromFile:(const char *)a3 width:(int)a4 pixelFormat:(unint64_t)a5;
-- (id)readTextureFromFile:(const char *)a3 width:(int)a4 height:(int)a5 pixelFormat:(unint64_t)a6;
-- (int)writeMetalBufferToFile:(const char *)a3 buffer:(id)a4;
-- (void)copyMTLBufferToMTLTexture:(id)a3 bytesPerRow:(unint64_t)a4 texture:(id)a5;
+- (MetalContext)initWithDevice:(id)device library:(id)library commandQueue:(id)queue;
+- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height plane:(unint64_t)plane;
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format plane:(unint64_t)plane;
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format textureSize:(CGSize)size plane:(unint64_t)plane;
+- (id)newBufferWithPixelFormat:(unint64_t)format width:(int)width data:(const void *)data;
+- (id)newTextureWithPixelFormat:(unint64_t)format width:(int)width height:(int)height;
+- (id)readBufferFromFile:(const char *)file width:(int)width pixelFormat:(unint64_t)format;
+- (id)readTextureFromFile:(const char *)file width:(int)width height:(int)height pixelFormat:(unint64_t)format;
+- (int)writeMetalBufferToFile:(const char *)file buffer:(id)buffer;
+- (void)copyMTLBufferToMTLTexture:(id)texture bytesPerRow:(unint64_t)row texture:(id)a5;
 @end
 
 @implementation MetalContext
@@ -92,16 +92,16 @@ LABEL_10:
   return v25;
 }
 
-- (MetalContext)initWithDevice:(id)a3 library:(id)a4 commandQueue:(id)a5
+- (MetalContext)initWithDevice:(id)device library:(id)library commandQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  deviceCopy = device;
+  libraryCopy = library;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = MetalContext;
   v12 = [(MetalContext *)&v17 init];
   v13 = v12;
-  if (!v12 || (objc_storeStrong(&v12->_device, a3), v13->_device) && (objc_storeStrong(&v13->_library, a4), v13->_library) && (objc_storeStrong(&v13->_commandQueue, a5), v13->_commandQueue) || sub_23C4741CC())
+  if (!v12 || (objc_storeStrong(&v12->_device, device), v13->_device) && (objc_storeStrong(&v13->_library, library), v13->_library) && (objc_storeStrong(&v13->_commandQueue, queue), v13->_commandQueue) || sub_23C4741CC())
   {
     v14 = v13;
   }
@@ -116,18 +116,18 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)writeMetalTextureToFile:(const char *)a3 texture:(id)a4 mipmapLevel:(int)a5
+- (BOOL)writeMetalTextureToFile:(const char *)file texture:(id)texture mipmapLevel:(int)level
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v11 = v7;
+  textureCopy = texture;
+  v11 = textureCopy;
   v12 = 0;
-  if (!a3 || !v7 || a5 < 0)
+  if (!file || !textureCopy || level < 0)
   {
     goto LABEL_9;
   }
 
-  if (objc_msgSend_mipmapLevelCount(v7, v8, v9, v10) <= a5)
+  if (objc_msgSend_mipmapLevelCount(textureCopy, v8, v9, v10) <= level)
   {
     v12 = 0;
     goto LABEL_9;
@@ -136,15 +136,15 @@ LABEL_10:
   objc_msgSend_pixelFormat(v11, v13, v14, v15);
   MTLPixelFormatGetInfoForDevice();
   v16 = v33;
-  v20 = objc_msgSend_width(v11, v17, v18, v19) >> a5;
-  v24 = objc_msgSend_height(v11, v21, v22, v23) >> a5;
+  v20 = objc_msgSend_width(v11, v17, v18, v19) >> level;
+  v24 = objc_msgSend_height(v11, v21, v22, v23) >> level;
   v12 = malloc_type_malloc(v20 * v33 * v24, 0x100004077774924uLL);
   memset(v32, 0, sizeof(v32));
   v33 = v20;
   v34 = v24;
   v35 = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v11, v25, v12, v20 * v16, v32, a5);
-  v26 = fopen(a3, "wb");
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v11, v25, v12, v20 * v16, v32, level);
+  v26 = fopen(file, "wb");
   if (!v26)
   {
     v30 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -173,16 +173,16 @@ LABEL_11:
   return v28;
 }
 
-- (int)writeMetalBufferToFile:(const char *)a3 buffer:(id)a4
+- (int)writeMetalBufferToFile:(const char *)file buffer:(id)buffer
 {
-  v5 = a4;
-  v6 = fopen(a3, "wb");
+  bufferCopy = buffer;
+  v6 = fopen(file, "wb");
   if (v6)
   {
     v7 = v6;
-    v8 = v5;
+    v8 = bufferCopy;
     v12 = objc_msgSend_contents(v8, v9, v10, v11);
-    v16 = objc_msgSend_length(v5, v13, v14, v15);
+    v16 = objc_msgSend_length(bufferCopy, v13, v14, v15);
     if (fwrite(v12, 1uLL, v16, v7) == v16)
     {
       v17 = 0;
@@ -212,16 +212,16 @@ LABEL_11:
   return v17;
 }
 
-- (id)newTextureWithPixelFormat:(unint64_t)a3 width:(int)a4 height:(int)a5
+- (id)newTextureWithPixelFormat:(unint64_t)format width:(int)width height:(int)height
 {
-  if (a5 == 1)
+  if (height == 1)
   {
-    v8 = objc_msgSend_textureBufferDescriptorWithPixelFormat_width_resourceOptions_usage_(MEMORY[0x277CD7058], a2, a3, a4, 0, 19);
+    v8 = objc_msgSend_textureBufferDescriptorWithPixelFormat_width_resourceOptions_usage_(MEMORY[0x277CD7058], a2, format, width, 0, 19);
   }
 
   else
   {
-    v8 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x277CD7058], a2, a3, a4, a5, 0);
+    v8 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x277CD7058], a2, format, width, height, 0);
     objc_msgSend_setUsage_(v8, v9, 19, v10);
   }
 
@@ -230,14 +230,14 @@ LABEL_11:
   return v11;
 }
 
-- (id)newBufferWithPixelFormat:(unint64_t)a3 width:(int)a4 data:(const void *)a5
+- (id)newBufferWithPixelFormat:(unint64_t)format width:(int)width data:(const void *)data
 {
-  v8 = objc_msgSend_bytesPerPixelForTextureFormat_(MetalContext, a2, a3, *&a4) * a4;
+  v8 = objc_msgSend_bytesPerPixelForTextureFormat_(MetalContext, a2, format, *&width) * width;
   device = self->_device;
-  if (a5)
+  if (data)
   {
 
-    return objc_msgSend_newBufferWithBytes_length_options_(device, v7, a5, v8, 0);
+    return objc_msgSend_newBufferWithBytes_length_options_(device, v7, data, v8, 0);
   }
 
   else
@@ -247,24 +247,24 @@ LABEL_11:
   }
 }
 
-- (id)readTextureFromFile:(const char *)a3 width:(int)a4 height:(int)a5 pixelFormat:(unint64_t)a6
+- (id)readTextureFromFile:(const char *)file width:(int)width height:(int)height pixelFormat:(unint64_t)format
 {
-  v7 = *&a5;
-  v8 = *&a4;
+  v7 = *&height;
+  v8 = *&width;
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = objc_msgSend_bytesPerPixelForTextureFormat_(MetalContext, a2, a6, *&a4) * a4;
+  widthCopy = width;
+  v12 = objc_msgSend_bytesPerPixelForTextureFormat_(MetalContext, a2, format, *&width) * width;
   __ptr = malloc_type_malloc(v12 * v7, 0x100004077774924uLL);
   if (__ptr)
   {
-    v13 = fopen(a3, "rb");
+    v13 = fopen(file, "rb");
     if (v13)
     {
       v15 = v13;
-      v16 = objc_msgSend_newTextureWithPixelFormat_width_height_(self, v14, a6, v8, v7);
+      v16 = objc_msgSend_newTextureWithPixelFormat_width_height_(self, v14, format, v8, v7);
       fread(__ptr, v12 * v7, 1uLL, v15);
       memset(v22, 0, 24);
-      v22[3] = v11;
+      v22[3] = widthCopy;
       if (v7 == 1)
       {
         v23 = vdupq_n_s64(1uLL);
@@ -302,14 +302,14 @@ LABEL_10:
   return v16;
 }
 
-- (id)readBufferFromFile:(const char *)a3 width:(int)a4 pixelFormat:(unint64_t)a5
+- (id)readBufferFromFile:(const char *)file width:(int)width pixelFormat:(unint64_t)format
 {
-  v7 = objc_msgSend_bytesPerPixelForTextureFormat_(MetalContext, a2, a5, *&a4) * a4;
+  v7 = objc_msgSend_bytesPerPixelForTextureFormat_(MetalContext, a2, format, *&width) * width;
   v8 = malloc_type_malloc(v7, 0x100004077774924uLL);
   if (v8)
   {
     v9 = v8;
-    v10 = fopen(a3, "rb");
+    v10 = fopen(file, "rb");
     if (v10)
     {
       v11 = v10;
@@ -340,15 +340,15 @@ LABEL_7:
   return v13;
 }
 
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 plane:(unint64_t)a5
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format plane:(unint64_t)plane
 {
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(texture);
   if (IOSurface)
   {
     v9 = IOSurface;
-    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, a5);
-    HeightOfPlane = IOSurfaceGetHeightOfPlane(v9, a5);
-    v13 = objc_msgSend_bindIOSurfaceToMTL2DTexture_pixelFormat_width_height_plane_(self, v12, v9, a4, WidthOfPlane, HeightOfPlane, a5);
+    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, plane);
+    HeightOfPlane = IOSurfaceGetHeightOfPlane(v9, plane);
+    v13 = objc_msgSend_bindIOSurfaceToMTL2DTexture_pixelFormat_width_height_plane_(self, v12, v9, format, WidthOfPlane, HeightOfPlane, plane);
   }
 
   else
@@ -360,16 +360,16 @@ LABEL_7:
   return v13;
 }
 
-- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)a3 pixelFormat:(unint64_t)a4 textureSize:(CGSize)a5 plane:(unint64_t)a6
+- (id)bindPixelBufferToMTL2DTexture:(__CVBuffer *)texture pixelFormat:(unint64_t)format textureSize:(CGSize)size plane:(unint64_t)plane
 {
-  height = a5.height;
-  width = a5.width;
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  height = size.height;
+  width = size.width;
+  IOSurface = CVPixelBufferGetIOSurface(texture);
   if (IOSurface)
   {
     v12 = IOSurface;
-    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, a6);
-    HeightOfPlane = IOSurfaceGetHeightOfPlane(v12, a6);
+    WidthOfPlane = IOSurfaceGetWidthOfPlane(IOSurface, plane);
+    HeightOfPlane = IOSurfaceGetHeightOfPlane(v12, plane);
     if (width > WidthOfPlane)
     {
       sub_23C4742EC();
@@ -379,7 +379,7 @@ LABEL_7:
     {
       if (height <= HeightOfPlane)
       {
-        v16 = objc_msgSend_bindIOSurfaceToMTL2DTexture_pixelFormat_width_height_plane_(self, v15, v12, a4, width, height, a6);
+        v16 = objc_msgSend_bindIOSurfaceToMTL2DTexture_pixelFormat_width_height_plane_(self, v15, v12, format, width, height, plane);
         goto LABEL_5;
       }
 
@@ -398,11 +398,11 @@ LABEL_5:
   return v16;
 }
 
-- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)a3 pixelFormat:(unint64_t)a4 width:(unint64_t)a5 height:(unint64_t)a6 plane:(unint64_t)a7
+- (id)bindIOSurfaceToMTL2DTexture:(__IOSurface *)texture pixelFormat:(unint64_t)format width:(unint64_t)width height:(unint64_t)height plane:(unint64_t)plane
 {
-  v10 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x277CD7058], a2, a4, a5, a6, 0);
+  v10 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x277CD7058], a2, format, width, height, 0);
   v13 = v10;
-  if (!v10 || (objc_msgSend_setUsage_(v10, v11, 23, v12), (v15 = objc_msgSend_newTextureWithDescriptor_iosurface_plane_(self->_device, v14, v13, a3, a7)) == 0))
+  if (!v10 || (objc_msgSend_setUsage_(v10, v11, 23, v12), (v15 = objc_msgSend_newTextureWithDescriptor_iosurface_plane_(self->_device, v14, v13, texture, plane)) == 0))
   {
     sub_23C4743AC();
     v15 = 0;
@@ -411,19 +411,19 @@ LABEL_5:
   return v15;
 }
 
-- (void)copyMTLBufferToMTLTexture:(id)a3 bytesPerRow:(unint64_t)a4 texture:(id)a5
+- (void)copyMTLBufferToMTLTexture:(id)texture bytesPerRow:(unint64_t)row texture:(id)a5
 {
   commandQueue = self->_commandQueue;
   v8 = a5;
-  v9 = a3;
+  textureCopy = texture;
   v13 = objc_msgSend_commandBuffer(commandQueue, v10, v11, v12);
   v17 = objc_msgSend_blitCommandEncoder(v13, v14, v15, v16);
-  v21 = objc_msgSend_height(v8, v18, v19, v20) * a4;
+  v21 = objc_msgSend_height(v8, v18, v19, v20) * row;
   v44[0] = objc_msgSend_width(v8, v22, v23, v24);
   v44[1] = objc_msgSend_height(v8, v25, v26, v27);
   v44[2] = objc_msgSend_depth(v8, v28, v29, v30);
   memset(v43, 0, sizeof(v43));
-  objc_msgSend_copyFromBuffer_sourceOffset_sourceBytesPerRow_sourceBytesPerImage_sourceSize_toTexture_destinationSlice_destinationLevel_destinationOrigin_(v17, v31, v9, 0, a4, v21, v44, v8, 0, 0, v43);
+  objc_msgSend_copyFromBuffer_sourceOffset_sourceBytesPerRow_sourceBytesPerImage_sourceSize_toTexture_destinationSlice_destinationLevel_destinationOrigin_(v17, v31, textureCopy, 0, row, v21, v44, v8, 0, 0, v43);
 
   objc_msgSend_endEncoding(v17, v32, v33, v34);
   objc_msgSend_addCompletedHandler_(v13, v35, &unk_284F097D0, v36);
@@ -431,10 +431,10 @@ LABEL_5:
   objc_msgSend_waitUntilCompleted(v13, v40, v41, v42);
 }
 
-+ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)a3
++ (unint64_t)bytesPerPixelForTextureFormat:(unint64_t)format
 {
-  v3 = a3 - 62;
-  if (a3 - 62 <= 0x3F)
+  v3 = format - 62;
+  if (format - 62 <= 0x3F)
   {
     if (((1 << v3) & 0xF00C1F0FLL) != 0)
     {
@@ -452,19 +452,19 @@ LABEL_5:
     }
   }
 
-  if (a3 <= 0x3C)
+  if (format <= 0x3C)
   {
-    if (((1 << a3) & 0x80743D00000) != 0)
+    if (((1 << format) & 0x80743D00000) != 0)
     {
       return 2;
     }
 
-    if (((1 << a3) & 0x7402) != 0)
+    if (((1 << format) & 0x7402) != 0)
     {
       return 1;
     }
 
-    if (((1 << a3) & 0x10E0000000000000) != 0)
+    if (((1 << format) & 0x10E0000000000000) != 0)
     {
       return 4;
     }
@@ -474,14 +474,14 @@ LABEL_5:
   return 0;
 }
 
-- (BOOL)writeMetalTextureToData:(void *)a3 texture:(id)a4 mipmapLevel:(int)a5
+- (BOOL)writeMetalTextureToData:(void *)data texture:(id)texture mipmapLevel:(int)level
 {
-  v7 = a4;
-  v11 = v7;
+  textureCopy = texture;
+  v11 = textureCopy;
   v12 = 0;
-  if (v7 && (a5 & 0x80000000) == 0)
+  if (textureCopy && (level & 0x80000000) == 0)
   {
-    if (objc_msgSend_mipmapLevelCount(v7, v8, v9, v10) <= a5)
+    if (objc_msgSend_mipmapLevelCount(textureCopy, v8, v9, v10) <= level)
     {
       v12 = 0;
     }
@@ -490,15 +490,15 @@ LABEL_5:
     {
       objc_msgSend_pixelFormat(v11, v13, v14, v15);
       MTLPixelFormatGetInfoForDevice();
-      v19 = objc_msgSend_width(v11, v16, v17, v18) >> a5;
+      v19 = objc_msgSend_width(v11, v16, v17, v18) >> level;
       v23 = objc_msgSend_height(v11, v20, v21, v22);
       memset(v27, 0, sizeof(v27));
       v24 = v19 * v28;
       v28 = v19;
       v12 = 1;
-      v29 = v23 >> a5;
+      v29 = v23 >> level;
       v30 = 1;
-      objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v11, v25, a3, v24, v27, a5);
+      objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v11, v25, data, v24, v27, level);
     }
   }
 

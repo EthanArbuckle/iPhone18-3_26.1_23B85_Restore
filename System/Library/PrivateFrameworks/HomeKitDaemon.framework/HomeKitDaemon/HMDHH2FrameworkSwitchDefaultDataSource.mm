@@ -1,13 +1,13 @@
 @interface HMDHH2FrameworkSwitchDefaultDataSource
 - (BOOL)isHH2Enabled;
-- (id)controller:(id)a3 cloudDatabaseWithContainerID:(id)a4;
+- (id)controller:(id)controller cloudDatabaseWithContainerID:(id)d;
 - (unint64_t)setupMode;
-- (void)initiateDaemonRelaunchToHH2:(BOOL)a3;
+- (void)initiateDaemonRelaunchToHH2:(BOOL)h2;
 @end
 
 @implementation HMDHH2FrameworkSwitchDefaultDataSource
 
-- (void)initiateDaemonRelaunchToHH2:(BOOL)a3
+- (void)initiateDaemonRelaunchToHH2:(BOOL)h2
 {
   v5 = dispatch_time(0, 1000000000);
   v6 = dispatch_get_global_queue(0, 0);
@@ -15,7 +15,7 @@
   v7[1] = 3221225472;
   v7[2] = __70__HMDHH2FrameworkSwitchDefaultDataSource_initiateDaemonRelaunchToHH2___block_invoke;
   v7[3] = &unk_27867E0C8;
-  v8 = a3;
+  h2Copy = h2;
   v9 = 1;
   v7[4] = self;
   dispatch_after(v5, v6, v7);
@@ -62,25 +62,25 @@ void __70__HMDHH2FrameworkSwitchDefaultDataSource_initiateDaemonRelaunchToHH2___
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)controller:(id)a3 cloudDatabaseWithContainerID:(id)a4
+- (id)controller:(id)controller cloudDatabaseWithContainerID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  dCopy = d;
   v8 = +[HMDDatabase defaultDatabase];
-  v9 = [v8 localDatabase];
+  localDatabase = [v8 localDatabase];
 
-  if (v9)
+  if (localDatabase)
   {
-    v10 = [objc_alloc(MEMORY[0x277D170E0]) initWithContainerID:v7];
+    v10 = [objc_alloc(MEMORY[0x277D170E0]) initWithContainerID:dCopy];
     [v10 setSubscriptionPushRegistrationAction:1];
-    v11 = [objc_alloc(MEMORY[0x277D17048]) initWithLocalDatabase:v9 configuration:v10 error:0];
+    v11 = [objc_alloc(MEMORY[0x277D17048]) initWithLocalDatabase:localDatabase configuration:v10 error:0];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {

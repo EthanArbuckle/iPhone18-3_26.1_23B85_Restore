@@ -1,24 +1,24 @@
 @interface ATServiceProxy
-- (ATServiceProxy)initWithConnection:(id)a3;
+- (ATServiceProxy)initWithConnection:(id)connection;
 - (id)messageLinks;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)service:(id)a3 willOpenMessageLink:(id)a4;
-- (void)service:(id)a3 willOpenMessageLink:(id)a4 completion:(id)a5;
+- (void)service:(id)service willOpenMessageLink:(id)link;
+- (void)service:(id)service willOpenMessageLink:(id)link completion:(id)completion;
 @end
 
 @implementation ATServiceProxy
 
-- (void)service:(id)a3 willOpenMessageLink:(id)a4
+- (void)service:(id)service willOpenMessageLink:(id)link
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  linkCopy = link;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(ATService *)self observers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  observers = [(ATService *)self observers];
+  v7 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -30,14 +30,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) service:self willOpenMessageLink:v5];
+        [*(*(&v12 + 1) + 8 * v10++) service:self willOpenMessageLink:linkCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -46,17 +46,17 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 willOpenMessageLink:(id)a4 completion:(id)a5
+- (void)service:(id)service willOpenMessageLink:(id)link completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  linkCopy = link;
+  completionCopy = completion;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(ATService *)self observers];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  observers = [(ATService *)self observers];
+  v10 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -68,20 +68,20 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(observers);
         }
 
-        [*(*(&v15 + 1) + 8 * v13++) service:self willOpenMessageLink:v7];
+        [*(*(&v15 + 1) + 8 * v13++) service:self willOpenMessageLink:linkCopy];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  v8[2](v8, 0);
+  completionCopy[2](completionCopy, 0);
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -171,21 +171,21 @@ void __30__ATServiceProxy_messageLinks__block_invoke_65(uint64_t a1, uint64_t a2
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ATServiceProxy *)self connection];
-  v6 = [v5 remoteObjectProxy];
+  observerCopy = observer;
+  connection = [(ATServiceProxy *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__ATServiceProxy_addObserver___block_invoke;
   v8[3] = &unk_278C6D9C0;
   v8[4] = self;
-  [v6 connectWithCompletion:v8];
+  [remoteObjectProxy connectWithCompletion:v8];
 
   v7.receiver = self;
   v7.super_class = ATServiceProxy;
-  [(ATService *)&v7 addObserver:v4];
+  [(ATService *)&v7 addObserver:observerCopy];
 }
 
 void __30__ATServiceProxy_addObserver___block_invoke(uint64_t a1, uint64_t a2)
@@ -219,17 +219,17 @@ void __30__ATServiceProxy_addObserver___block_invoke(uint64_t a1, uint64_t a2)
   [(ATServiceProxy *)&v4 dealloc];
 }
 
-- (ATServiceProxy)initWithConnection:(id)a3
+- (ATServiceProxy)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = ATServiceProxy;
   v5 = [(ATService *)&v15 init];
   if (v5)
   {
-    if (v4)
+    if (connectionCopy)
     {
-      v6 = v4;
+      v6 = connectionCopy;
       connection = v5->_connection;
       v5->_connection = v6;
     }

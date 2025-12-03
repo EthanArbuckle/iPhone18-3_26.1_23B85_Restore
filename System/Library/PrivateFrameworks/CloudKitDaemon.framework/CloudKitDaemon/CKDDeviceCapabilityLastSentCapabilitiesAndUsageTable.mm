@@ -1,9 +1,9 @@
 @interface CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable
 + (id)dbProperties;
-- (BOOL)updateLastSentCapabilities:(id)a3 capabilitySetSavedDate:(id)a4 withError:(id *)a5;
-- (BOOL)updateUsageSavedDate:(id)a3 withError:(id *)a4;
-- (CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable)initWithContainerID:(id)a3;
-- (id)lastSentCapabilityAndUsageWithError:(id *)a3;
+- (BOOL)updateLastSentCapabilities:(id)capabilities capabilitySetSavedDate:(id)date withError:(id *)error;
+- (BOOL)updateUsageSavedDate:(id)date withError:(id *)error;
+- (CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable)initWithContainerID:(id)d;
+- (id)lastSentCapabilityAndUsageWithError:(id *)error;
 @end
 
 @implementation CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable
@@ -25,27 +25,27 @@
   return v2;
 }
 
-- (CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable)initWithContainerID:(id)a3
+- (CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable)initWithContainerID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable;
   v6 = [(CKSQLiteCacheTable *)&v9 initWithLogicalTableName:@"LastSentTable" entryCountLimit:1 dataSizeLimit:0 expirationTime:0.0 expireDelay:86400.0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerID, a3);
+    objc_storeStrong(&v6->_containerID, d);
   }
 
   return v7;
 }
 
-- (BOOL)updateLastSentCapabilities:(id)a3 capabilitySetSavedDate:(id)a4 withError:(id *)a5
+- (BOOL)updateLastSentCapabilities:(id)capabilities capabilitySetSavedDate:(id)date withError:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v12 = a4;
-  if (!v9)
+  capabilitiesCopy = capabilities;
+  dateCopy = date;
+  if (!capabilitiesCopy)
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable.m", 81, @"capabilitySet must not be nil");
@@ -55,11 +55,11 @@
   v27[1] = 3221225472;
   v27[2] = sub_2251495DC;
   v27[3] = &unk_278546800;
-  v13 = v9;
+  v13 = capabilitiesCopy;
   v28 = v13;
-  v14 = v12;
+  v14 = dateCopy;
   v29 = v14;
-  v30 = self;
+  selfCopy = self;
   v16 = objc_msgSend_performTransaction_(self, v15, v27);
   if (v16)
   {
@@ -79,7 +79,7 @@
       v34 = v16;
       _os_log_error_impl(&dword_22506F000, v21, OS_LOG_TYPE_ERROR, "Failed to update last sent capabilities and date for containerID %@: %@", buf, 0x16u);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -87,11 +87,11 @@
       goto LABEL_8;
     }
 
-    if (a5)
+    if (error)
     {
 LABEL_8:
       v18 = v16;
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -101,11 +101,11 @@ LABEL_9:
   return v16 == 0;
 }
 
-- (BOOL)updateUsageSavedDate:(id)a3 withError:(id *)a4
+- (BOOL)updateUsageSavedDate:(id)date withError:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKDDeviceCapabilityLastSentCapabilitiesAndUsageTable.m", 102, @"date must not be nil");
@@ -115,9 +115,9 @@ LABEL_9:
   v24 = 3221225472;
   v25 = sub_2251498F4;
   v26 = &unk_278546180;
-  v10 = v9;
+  v10 = dateCopy;
   v27 = v10;
-  v28 = self;
+  selfCopy = self;
   v12 = objc_msgSend_performTransaction_(self, v11, &v23);
   if (v12)
   {
@@ -137,7 +137,7 @@ LABEL_9:
       v32 = v12;
       _os_log_error_impl(&dword_22506F000, v17, OS_LOG_TYPE_ERROR, "Failed to update usage saved date for containerID %@: %@", buf, 0x16u);
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -145,11 +145,11 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_8:
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -159,7 +159,7 @@ LABEL_9:
   return v12 == 0;
 }
 
-- (id)lastSentCapabilityAndUsageWithError:(id *)a3
+- (id)lastSentCapabilityAndUsageWithError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v15 = 0;
@@ -193,11 +193,11 @@ LABEL_9:
       _os_log_error_impl(&dword_22506F000, v6, OS_LOG_TYPE_ERROR, "Failed to fetch last sent capabilities and usage date for containerID %@: %@", buf, 0x16u);
     }
 
-    if (a3)
+    if (error)
     {
       v9 = v5;
       v10 = 0;
-      *a3 = v5;
+      *error = v5;
     }
 
     else

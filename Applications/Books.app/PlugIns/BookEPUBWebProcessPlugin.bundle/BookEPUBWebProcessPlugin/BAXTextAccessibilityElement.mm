@@ -1,52 +1,52 @@
 @interface BAXTextAccessibilityElement
-- (BAXTextAccessibilityElement)initWithReferenceElement:(id)a3 container:(id)a4;
-- (BAXTextAccessibilityElement)initWithReferenceElement:(id)a3 container:(id)a4 attributedValue:(id)a5 accessibilityFrame:(CGRect)a6;
-- (BOOL)_accessibilityTextOperationAction:(id)a3;
+- (BAXTextAccessibilityElement)initWithReferenceElement:(id)element container:(id)container;
+- (BAXTextAccessibilityElement)initWithReferenceElement:(id)element container:(id)container attributedValue:(id)value accessibilityFrame:(CGRect)frame;
+- (BOOL)_accessibilityTextOperationAction:(id)action;
 - (BOOL)isVisible;
-- (CGRect)accessibilityBoundsForTextMarkers:(id)a3;
-- (CGRect)accessibilityFrameForLineNumber:(int64_t)a3;
-- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)a3;
-- (_NSRange)_accessibilityRangeForTextMarker:(id)a3;
+- (CGRect)accessibilityBoundsForTextMarkers:(id)markers;
+- (CGRect)accessibilityFrameForLineNumber:(int64_t)number;
+- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)number;
+- (_NSRange)_accessibilityRangeForTextMarker:(id)marker;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)_rangeForVisibleContent;
-- (id)_accessibilityLineEndMarker:(id)a3;
-- (id)_accessibilityLineStartMarker:(id)a3;
-- (id)_accessibilityNextMarker:(id)a3;
-- (id)_accessibilityObjectForTextMarker:(id)a3;
-- (id)_accessibilityPreviousMarker:(id)a3;
-- (id)_accessibilityTextMarkerForPosition:(int64_t)a3;
+- (id)_accessibilityLineEndMarker:(id)marker;
+- (id)_accessibilityLineStartMarker:(id)marker;
+- (id)_accessibilityNextMarker:(id)marker;
+- (id)_accessibilityObjectForTextMarker:(id)marker;
+- (id)_accessibilityPreviousMarker:(id)marker;
+- (id)_accessibilityTextMarkerForPosition:(int64_t)position;
 - (id)_accessibilityTextMarkerRange;
 - (id)_accessibilityTextMarkerRangeForSelection;
 - (id)_accessibilityTextOperations;
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5;
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences;
 - (id)_stringForVisibleContent;
-- (id)accessibilityArrayOfTextForTextMarkers:(id)a3;
-- (id)accessibilityAttributedContentForLineNumber:(int64_t)a3;
-- (id)accessibilityContentForLineNumber:(int64_t)a3;
-- (id)accessibilityStringForTextMarkers:(id)a3;
-- (id)stringForTextMarkers:(id)a3;
-- (id)textMarkerForPoint:(CGPoint)a3;
+- (id)accessibilityArrayOfTextForTextMarkers:(id)markers;
+- (id)accessibilityAttributedContentForLineNumber:(int64_t)number;
+- (id)accessibilityContentForLineNumber:(int64_t)number;
+- (id)accessibilityStringForTextMarkers:(id)markers;
+- (id)stringForTextMarkers:(id)markers;
+- (id)textMarkerForPoint:(CGPoint)point;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityDecreaseSelection:(id)a3;
-- (void)_accessibilityIncreaseSelection:(id)a3;
-- (void)_accessibilityModifySelection:(id)a3 increase:(BOOL)a4;
-- (void)_accessibilityMoveSelectionToMarker:(id)a3;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilityDecreaseSelection:(id)selection;
+- (void)_accessibilityIncreaseSelection:(id)selection;
+- (void)_accessibilityModifySelection:(id)selection increase:(BOOL)increase;
+- (void)_accessibilityMoveSelectionToMarker:(id)marker;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 - (void)_checkActions;
 - (void)trimElementSpanningPageBoundary;
 @end
 
 @implementation BAXTextAccessibilityElement
 
-- (BAXTextAccessibilityElement)initWithReferenceElement:(id)a3 container:(id)a4
+- (BAXTextAccessibilityElement)initWithReferenceElement:(id)element container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  elementCopy = element;
+  containerCopy = container;
+  if (containerCopy)
   {
     v13.receiver = self;
     v13.super_class = BAXTextAccessibilityElement;
-    v8 = [(BAXTextAccessibilityElement *)&v13 initWithAccessibilityContainer:v7];
+    v8 = [(BAXTextAccessibilityElement *)&v13 initWithAccessibilityContainer:containerCopy];
   }
 
   else
@@ -59,32 +59,32 @@
   v9 = v8;
   if (v8)
   {
-    [(BAXTextAccessibilityElement *)v8 setReferenceElement:v6];
-    v10 = [v6 accessibilityAttributedValue];
-    [(BAXTextAccessibilityElement *)v9 setAccessibilityAttributedValue:v10];
+    [(BAXTextAccessibilityElement *)v8 setReferenceElement:elementCopy];
+    accessibilityAttributedValue = [elementCopy accessibilityAttributedValue];
+    [(BAXTextAccessibilityElement *)v9 setAccessibilityAttributedValue:accessibilityAttributedValue];
 
-    [v6 accessibilityFrame];
+    [elementCopy accessibilityFrame];
     [(BAXTextAccessibilityElement *)v9 setAccessibilityFrame:?];
-    -[BAXTextAccessibilityElement setAccessibilityTraits:](v9, "setAccessibilityTraits:", [v6 accessibilityTraits]);
+    -[BAXTextAccessibilityElement setAccessibilityTraits:](v9, "setAccessibilityTraits:", [elementCopy accessibilityTraits]);
   }
 
   return v9;
 }
 
-- (BAXTextAccessibilityElement)initWithReferenceElement:(id)a3 container:(id)a4 attributedValue:(id)a5 accessibilityFrame:(CGRect)a6
+- (BAXTextAccessibilityElement)initWithReferenceElement:(id)element container:(id)container attributedValue:(id)value accessibilityFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (v14)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  elementCopy = element;
+  containerCopy = container;
+  valueCopy = value;
+  if (containerCopy)
   {
     v20.receiver = self;
     v20.super_class = BAXTextAccessibilityElement;
-    v16 = [(BAXTextAccessibilityElement *)&v20 initWithAccessibilityContainer:v14];
+    v16 = [(BAXTextAccessibilityElement *)&v20 initWithAccessibilityContainer:containerCopy];
   }
 
   else
@@ -97,10 +97,10 @@
   v17 = v16;
   if (v16)
   {
-    [(BAXTextAccessibilityElement *)v16 setReferenceElement:v13];
-    [(BAXTextAccessibilityElement *)v17 setAccessibilityAttributedValue:v15];
+    [(BAXTextAccessibilityElement *)v16 setReferenceElement:elementCopy];
+    [(BAXTextAccessibilityElement *)v17 setAccessibilityAttributedValue:valueCopy];
     [(BAXTextAccessibilityElement *)v17 setAccessibilityFrame:x, y, width, height];
-    -[BAXTextAccessibilityElement setAccessibilityTraits:](v17, "setAccessibilityTraits:", [v13 accessibilityTraits]);
+    -[BAXTextAccessibilityElement setAccessibilityTraits:](v17, "setAccessibilityTraits:", [elementCopy accessibilityTraits]);
   }
 
   return v17;
@@ -111,11 +111,11 @@
   v9.receiver = self;
   v9.super_class = BAXTextAccessibilityElement;
   v3 = UIAccessibilityTraitWebContent | [(BAXTextAccessibilityElement *)&v9 accessibilityTraits];
-  v4 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v5 = [v4 accessibilityTraits];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  accessibilityTraits = [referenceElement accessibilityTraits];
   v6 = UIAccessibilityTraitHeader;
 
-  if ((v6 & v5) != 0)
+  if ((v6 & accessibilityTraits) != 0)
   {
     v7 = v6;
   }
@@ -128,11 +128,11 @@
   return v3 | v7;
 }
 
-- (_NSRange)_accessibilityRangeForTextMarker:(id)a3
+- (_NSRange)_accessibilityRangeForTextMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 _accessibilityRangeForTextMarker:v4];
+  markerCopy = marker;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement _accessibilityRangeForTextMarker:markerCopy];
   v8 = v7;
 
   v9 = v6;
@@ -144,39 +144,39 @@
 
 - (id)_accessibilityTextMarkerRange
 {
-  v2 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v3 = [v2 _accessibilityTextMarkerRange];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  _accessibilityTextMarkerRange = [referenceElement _accessibilityTextMarkerRange];
 
-  return v3;
+  return _accessibilityTextMarkerRange;
 }
 
-- (id)stringForTextMarkers:(id)a3
+- (id)stringForTextMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 stringForTextMarkers:v4];
+  markersCopy = markers;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement stringForTextMarkers:markersCopy];
 
   return v6;
 }
 
-- (id)accessibilityStringForTextMarkers:(id)a3
+- (id)accessibilityStringForTextMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 accessibilityStringForTextMarkers:v4];
+  markersCopy = markers;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement accessibilityStringForTextMarkers:markersCopy];
 
   return v6;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)a3
+- (_NSRange)_accessibilityRangeForLineNumber:(int64_t)number
 {
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-    v8 = [v7 _accessibilityRangeForLineNumber:a3];
+    referenceElement2 = [(BAXTextAccessibilityElement *)self referenceElement];
+    v8 = [referenceElement2 _accessibilityRangeForLineNumber:number];
     v10 = v9;
 
     v11 = v8;
@@ -194,15 +194,15 @@
   return result;
 }
 
-- (id)accessibilityContentForLineNumber:(int64_t)a3
+- (id)accessibilityContentForLineNumber:(int64_t)number
 {
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-    v8 = [v7 accessibilityContentForLineNumber:a3];
+    referenceElement2 = [(BAXTextAccessibilityElement *)self referenceElement];
+    v8 = [referenceElement2 accessibilityContentForLineNumber:number];
   }
 
   else
@@ -213,15 +213,15 @@
   return v8;
 }
 
-- (id)accessibilityAttributedContentForLineNumber:(int64_t)a3
+- (id)accessibilityAttributedContentForLineNumber:(int64_t)number
 {
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-    v8 = [v7 accessibilityAttributedContentForLineNumber:a3];
+    referenceElement2 = [(BAXTextAccessibilityElement *)self referenceElement];
+    v8 = [referenceElement2 accessibilityAttributedContentForLineNumber:number];
   }
 
   else
@@ -232,15 +232,15 @@
   return v8;
 }
 
-- (CGRect)accessibilityFrameForLineNumber:(int64_t)a3
+- (CGRect)accessibilityFrameForLineNumber:(int64_t)number
 {
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-    [v7 accessibilityFrameForLineNumber:a3];
+    referenceElement2 = [(BAXTextAccessibilityElement *)self referenceElement];
+    [referenceElement2 accessibilityFrameForLineNumber:number];
     x = v8;
     y = v10;
     width = v12;
@@ -266,11 +266,11 @@
   return result;
 }
 
-- (CGRect)accessibilityBoundsForTextMarkers:(id)a3
+- (CGRect)accessibilityBoundsForTextMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v5 accessibilityBoundsForTextMarkers:v4];
+  markersCopy = markers;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement accessibilityBoundsForTextMarkers:markersCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -287,78 +287,78 @@
   return result;
 }
 
-- (id)_accessibilityLineEndMarker:(id)a3
+- (id)_accessibilityLineEndMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 _accessibilityLineEndMarker:v4];
+  markerCopy = marker;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement _accessibilityLineEndMarker:markerCopy];
 
   return v6;
 }
 
-- (id)_accessibilityLineStartMarker:(id)a3
+- (id)_accessibilityLineStartMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 _accessibilityLineStartMarker:v4];
+  markerCopy = marker;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement _accessibilityLineStartMarker:markerCopy];
 
   return v6;
 }
 
-- (id)accessibilityArrayOfTextForTextMarkers:(id)a3
+- (id)accessibilityArrayOfTextForTextMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 accessibilityArrayOfTextForTextMarkers:v4];
+  markersCopy = markers;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement accessibilityArrayOfTextForTextMarkers:markersCopy];
 
   return v6;
 }
 
-- (id)_accessibilityNextMarker:(id)a3
+- (id)_accessibilityNextMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 _accessibilityNextMarker:v4];
+  markerCopy = marker;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement _accessibilityNextMarker:markerCopy];
 
   return v6;
 }
 
-- (id)_accessibilityPreviousMarker:(id)a3
+- (id)_accessibilityPreviousMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 _accessibilityPreviousMarker:v4];
+  markerCopy = marker;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement _accessibilityPreviousMarker:markerCopy];
 
   return v6;
 }
 
-- (id)_accessibilityObjectForTextMarker:(id)a3
+- (id)_accessibilityObjectForTextMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 _accessibilityObjectForTextMarker:v4];
+  markerCopy = marker;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement _accessibilityObjectForTextMarker:markerCopy];
 
   return v6;
 }
 
-- (id)_accessibilityTextMarkerForPosition:(int64_t)a3
+- (id)_accessibilityTextMarkerForPosition:(int64_t)position
 {
-  v4 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v5 = [v4 _accessibilityTextMarkerForPosition:a3];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v5 = [referenceElement _accessibilityTextMarkerForPosition:position];
 
   return v5;
 }
 
-- (BOOL)_accessibilityTextOperationAction:(id)a3
+- (BOOL)_accessibilityTextOperationAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = +[BEAccessibilityReadingState currentReadingState];
-  v5 = [v4 performableOperations];
+  performableOperations = [v4 performableOperations];
 
-  v6 = [v5 containsObject:v3];
+  v6 = [performableOperations containsObject:actionCopy];
   if (v6)
   {
-    [BEAXWebContentUtilities performNativeAction:v3];
+    [BEAXWebContentUtilities performNativeAction:actionCopy];
   }
 
   return v6;
@@ -367,78 +367,78 @@
 - (id)_accessibilityTextOperations
 {
   v2 = +[BEAccessibilityReadingState currentReadingState];
-  v3 = [v2 performableOperations];
+  performableOperations = [v2 performableOperations];
 
-  return v3;
+  return performableOperations;
 }
 
-- (void)_accessibilityIncreaseSelection:(id)a3
+- (void)_accessibilityIncreaseSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v5 _accessibilityIncreaseSelection:v4];
+  selectionCopy = selection;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement _accessibilityIncreaseSelection:selectionCopy];
 }
 
-- (void)_accessibilityDecreaseSelection:(id)a3
+- (void)_accessibilityDecreaseSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v5 _accessibilityDecreaseSelection:v4];
+  selectionCopy = selection;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement _accessibilityDecreaseSelection:selectionCopy];
 }
 
-- (void)_accessibilityModifySelection:(id)a3 increase:(BOOL)a4
+- (void)_accessibilityModifySelection:(id)selection increase:(BOOL)increase
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v7 _accessibilityModifySelection:v6 increase:v4];
+  increaseCopy = increase;
+  selectionCopy = selection;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement _accessibilityModifySelection:selectionCopy increase:increaseCopy];
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v2 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v3 = [v2 _accessibilitySelectedTextRange];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  _accessibilitySelectedTextRange = [referenceElement _accessibilitySelectedTextRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = _accessibilitySelectedTextRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v5 _accessibilitySetSelectedTextRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement _accessibilitySetSelectedTextRange:{location, length}];
 }
 
 - (id)_accessibilityTextMarkerRangeForSelection
 {
-  v2 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v3 = [v2 _accessibilityTextMarkerRangeForSelection];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  _accessibilityTextMarkerRangeForSelection = [referenceElement _accessibilityTextMarkerRangeForSelection];
 
-  return v3;
+  return _accessibilityTextMarkerRangeForSelection;
 }
 
-- (id)textMarkerForPoint:(CGPoint)a3
+- (id)textMarkerForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v6 = [v5 textMarkerForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v6 = [referenceElement textMarkerForPoint:{x, y}];
 
   return v6;
 }
 
-- (void)_accessibilityMoveSelectionToMarker:(id)a3
+- (void)_accessibilityMoveSelectionToMarker:(id)marker
 {
-  v4 = a3;
+  markerCopy = marker;
   [(BAXTextAccessibilityElement *)self _checkActions];
-  v5 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v5 _accessibilityMoveSelectionToMarker:v4];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement _accessibilityMoveSelectionToMarker:markerCopy];
 }
 
 - (void)_checkActions
@@ -453,14 +453,14 @@
 
 - (void)trimElementSpanningPageBoundary
 {
-  v3 = [(BAXTextAccessibilityElement *)self _rangeForVisibleContent];
+  _rangeForVisibleContent = [(BAXTextAccessibilityElement *)self _rangeForVisibleContent];
   v5 = v4;
-  v6 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v8 = [v6 attributedStringForRange:{v3, v5}];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v8 = [referenceElement attributedStringForRange:{_rangeForVisibleContent, v5}];
 
   [(BAXTextAccessibilityElement *)self setAccessibilityAttributedValue:v8];
-  v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v7 frameForRange:{v3, v5}];
+  referenceElement2 = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement2 frameForRange:{_rangeForVisibleContent, v5}];
   [(BAXTextAccessibilityElement *)self setAccessibilityFrame:?];
 }
 
@@ -470,8 +470,8 @@
   v4 = v3;
   [(BAXTextAccessibilityElement *)self accessibilityFrame];
   v6 = v4 + v5;
-  v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-  [v7 accessibilityVisibleContentRect];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  [referenceElement accessibilityVisibleContentRect];
   v9 = v6 > v8;
 
   v10 = +[BEAccessibilityReadingState currentReadingState];
@@ -491,8 +491,8 @@
     v16 = v15;
     [(BAXTextAccessibilityElement *)self accessibilityFrame];
     v18 = v16 + v17;
-    v19 = [(BAXTextAccessibilityElement *)self referenceElement];
-    [v19 accessibilityVisibleContentRect];
+    referenceElement2 = [(BAXTextAccessibilityElement *)self referenceElement];
+    [referenceElement2 accessibilityVisibleContentRect];
     v9 = v18 < v20;
   }
 
@@ -504,36 +504,36 @@
   v21 = CGRectEqualToRect(v26, v28);
   if (!v21 && v9)
   {
-    v22 = [(BAXTextAccessibilityElement *)self referenceElement];
-    [v22 accessibilityFrame];
+    referenceElement3 = [(BAXTextAccessibilityElement *)self referenceElement];
+    [referenceElement3 accessibilityFrame];
     v21 = v23 == 0.0;
   }
 
   return !v21;
 }
 
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v11 = [v10 _accessibilityTextRectsForSpeakThisStringRange:location string:length wantsSentences:{v9, v5}];
+  sentencesCopy = sentences;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  v11 = [referenceElement _accessibilityTextRectsForSpeakThisStringRange:location string:length wantsSentences:{stringCopy, sentencesCopy}];
 
   return v11;
 }
 
 - (_NSRange)_rangeForVisibleContent
 {
-  v3 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v4 = [v3 accessibilityVisibleCharacterRange];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  accessibilityVisibleCharacterRange = [referenceElement accessibilityVisibleCharacterRange];
   v6 = v5;
 
-  v7 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v8 = [v7 elementTextRange];
+  referenceElement2 = [(BAXTextAccessibilityElement *)self referenceElement];
+  elementTextRange = [referenceElement2 elementTextRange];
 
-  v9 = v4 + v8;
+  v9 = accessibilityVisibleCharacterRange + elementTextRange;
   v10 = v6;
   result.length = v10;
   result.location = v9;
@@ -542,13 +542,13 @@
 
 - (id)_stringForVisibleContent
 {
-  v3 = [(BAXTextAccessibilityElement *)self referenceElement];
-  v4 = [(BAXTextAccessibilityElement *)self _rangeForVisibleContent];
-  v6 = [v3 attributedStringForRange:{v4, v5}];
+  referenceElement = [(BAXTextAccessibilityElement *)self referenceElement];
+  _rangeForVisibleContent = [(BAXTextAccessibilityElement *)self _rangeForVisibleContent];
+  v6 = [referenceElement attributedStringForRange:{_rangeForVisibleContent, v5}];
 
-  v7 = [v6 string];
+  string = [v6 string];
 
-  return v7;
+  return string;
 }
 
 @end

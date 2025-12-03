@@ -2,8 +2,8 @@
 - (WORaceDelegate)raceDelegate;
 - (WORacePositionProvider)init;
 - (void)accumulatorDidStop;
-- (void)recoverFrom:(id)a3;
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)recoverFrom:(id)from;
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
 @end
 
 @implementation WORacePositionProvider
@@ -18,24 +18,24 @@
 
 - (void)accumulatorDidStop
 {
-  v2 = self;
+  selfCopy = self;
   RacePositionProvider.accumulatorDidStop()();
 }
 
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v5 = a5 - 3;
-  if (a5 - 3 <= 6 && ((0x6Fu >> v5) & 1) != 0)
+  v5 = toState - 3;
+  if (toState - 3 <= 6 && ((0x6Fu >> v5) & 1) != 0)
   {
     *(self + OBJC_IVAR___WORacePositionProvider_shouldProcessLocations) = 0x1000000uLL >> (8 * v5);
   }
 }
 
-- (void)recoverFrom:(id)a3
+- (void)recoverFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  RacePositionProvider.recoverFrom(_:)(v4);
+  fromCopy = from;
+  selfCopy = self;
+  RacePositionProvider.recoverFrom(_:)(fromCopy);
 }
 
 - (WORacePositionProvider)init

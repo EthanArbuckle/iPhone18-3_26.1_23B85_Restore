@@ -1,7 +1,7 @@
 @interface HAP2AccessoryServerPairingDriverMFiCertWorkItem
 + (id)checkCertificate;
-- (void)cancelWithError:(id)a3;
-- (void)runForPairingDriver:(id)a3;
+- (void)cancelWithError:(id)error;
+- (void)runForPairingDriver:(id)driver;
 @end
 
 @implementation HAP2AccessoryServerPairingDriverMFiCertWorkItem
@@ -13,19 +13,19 @@
   return v2;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  v5 = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
+  operationQueue = [(HAP2AccessoryServerPairingDriverWorkItem *)self operationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HAP2AccessoryServerPairingDriverMFiCertWorkItem_cancelWithError___block_invoke;
   v7[3] = &unk_2786D6EB0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = errorCopy;
   v8 = v6;
-  [v5 addBlock:v7];
+  [operationQueue addBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -43,31 +43,31 @@ void __67__HAP2AccessoryServerPairingDriverMFiCertWorkItem_cancelWithError___blo
   }
 }
 
-- (void)runForPairingDriver:(id)a3
+- (void)runForPairingDriver:(id)driver
 {
-  v4 = a3;
-  v5 = [v4 pairingSession];
-  v6 = [v5 getCertificate];
+  driverCopy = driver;
+  pairingSession = [driverCopy pairingSession];
+  getCertificate = [pairingSession getCertificate];
 
-  v7 = [v4 delegate];
-  if (v7)
+  delegate = [driverCopy delegate];
+  if (delegate)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [MEMORY[0x277D0F770] currentActivity];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentActivity = [MEMORY[0x277D0F770] currentActivity];
     objc_initWeak(&location, self);
-    v10 = [v4 accessoryServer];
-    v11 = [v10 model];
+    accessoryServer = [driverCopy accessoryServer];
+    model = [accessoryServer model];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __71__HAP2AccessoryServerPairingDriverMFiCertWorkItem_runForPairingDriver___block_invoke;
     v14[3] = &unk_2786D3230;
     objc_copyWeak(&v18, &location);
-    v12 = v9;
+    v12 = currentActivity;
     v15 = v12;
-    v16 = v4;
-    v13 = v8;
+    v16 = driverCopy;
+    v13 = date;
     v17 = v13;
-    [v7 pairingDriver:v16 validatePairingCert:v6 model:v11 completion:v14];
+    [delegate pairingDriver:v16 validatePairingCert:getCertificate model:model completion:v14];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);

@@ -1,16 +1,16 @@
 @interface ScheduleAlertCell
-- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithFrame:(CGRect)a3;
+- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ScheduleAlertCell
 
-- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithFrame:(CGRect)a3
+- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_29E7544C8();
   sub_29E7544B8();
   sub_29E754468();
@@ -32,12 +32,12 @@
   v10[1] = 0;
   v14.receiver = self;
   v14.super_class = v11;
-  v12 = [(SleepCollectionViewListCell *)&v14 initWithFrame:x, y, width, height];
+  height = [(SleepCollectionViewListCell *)&v14 initWithFrame:x, y, width, height];
 
-  return v12;
+  return height;
 }
 
-- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPlugin17ScheduleAlertCell)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -59,8 +59,8 @@
   v7[1] = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for ScheduleAlertCell();
-  v8 = a3;
-  v9 = [(SleepCollectionViewListCell *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(SleepCollectionViewListCell *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

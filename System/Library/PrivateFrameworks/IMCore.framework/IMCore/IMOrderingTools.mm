@@ -1,24 +1,24 @@
 @interface IMOrderingTools
 - (id)currentJsonArray;
-- (id)messageDictionariesFromItemsInChat:(id)a3 withEventKey:(id)a4;
-- (void)printChangeInItemsToJSON:(id)a3;
-- (void)printChangeInItemsToJSONFromChat:(id)a3;
-- (void)setUpJSONFileForChatGUID:(id)a3;
-- (void)startTrackingChat:(id)a3;
-- (void)writeDataToJSONFile:(id)a3;
+- (id)messageDictionariesFromItemsInChat:(id)chat withEventKey:(id)key;
+- (void)printChangeInItemsToJSON:(id)n;
+- (void)printChangeInItemsToJSONFromChat:(id)chat;
+- (void)setUpJSONFileForChatGUID:(id)d;
+- (void)startTrackingChat:(id)chat;
+- (void)writeDataToJSONFile:(id)file;
 @end
 
 @implementation IMOrderingTools
 
-- (void)startTrackingChat:(id)a3
+- (void)startTrackingChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v7 = objc_msgSend_sharedInstance(MEMORY[0x1E69A60F0], v5, v6);
   isInternalInstall = objc_msgSend_isInternalInstall(v7, v8, v9);
 
   if (isInternalInstall)
   {
-    v13 = objc_msgSend_guid(v4, v11, v12);
+    v13 = objc_msgSend_guid(chatCopy, v11, v12);
     objc_msgSend_setUpJSONFileForChatGUID_(self, v14, v13);
 
     v17 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v15, v16);
@@ -36,14 +36,14 @@
   }
 }
 
-- (void)setUpJSONFileForChatGUID:(id)a3
+- (void)setUpJSONFileForChatGUID:(id)d
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_alphanumericCharacterSet(MEMORY[0x1E696AB08], v5, v6);
   v10 = objc_msgSend_invertedSet(v7, v8, v9);
 
-  v12 = objc_msgSend_componentsSeparatedByCharactersInSet_(v4, v11, v10);
+  v12 = objc_msgSend_componentsSeparatedByCharactersInSet_(dCopy, v11, v10);
   v14 = objc_msgSend_componentsJoinedByString_(v12, v13, &stru_1F1B76F98);
 
   v17 = objc_msgSend_pathToDirectoryOfJSONFile(self, v15, v16);
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v34 = v4;
+      v34 = dCopy;
       v35 = 2112;
       v36 = v25;
       _os_log_impl(&dword_1A823F000, v31, OS_LOG_TYPE_INFO, "JSON File for chatGUID %@ can be found at this path: %@", buf, 0x16u);
@@ -71,19 +71,19 @@
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)printChangeInItemsToJSONFromChat:(id)a3
+- (void)printChangeInItemsToJSONFromChat:(id)chat
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  chatCopy = chat;
   v7 = objc_msgSend_date(MEMORY[0x1E695DF00], v5, v6);
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v13 = objc_msgSend_guid(v4, v11, v12);
+      v13 = objc_msgSend_guid(chatCopy, v11, v12);
       v14 = MEMORY[0x1E696AD98];
-      v17 = objc_msgSend_chatItems(v4, v15, v16);
+      v17 = objc_msgSend_chatItems(chatCopy, v15, v16);
       v20 = objc_msgSend_count(v17, v18, v19);
       v22 = objc_msgSend_numberWithUnsignedInteger_(v14, v21, v20);
       *buf = 138412802;
@@ -96,7 +96,7 @@
     }
   }
 
-  v23 = objc_msgSend_chatItems(v4, v8, v9);
+  v23 = objc_msgSend_chatItems(chatCopy, v8, v9);
   v26 = objc_msgSend_count(v23, v24, v25) == 0;
 
   if (!v26)
@@ -104,7 +104,7 @@
     v29 = MEMORY[0x1E696AEC0];
     objc_msgSend_timeIntervalSinceReferenceDate(v7, v27, v28);
     v32 = objc_msgSend_stringWithFormat_(v29, v30, @"ItemsChangedEvent-%f", v31);
-    v34 = objc_msgSend_messageDictionariesFromItemsInChat_withEventKey_(self, v33, v4, v32);
+    v34 = objc_msgSend_messageDictionariesFromItemsInChat_withEventKey_(self, v33, chatCopy, v32);
     v37 = objc_msgSend_currentJsonArray(self, v35, v36);
     objc_msgSend_addObject_(v37, v38, v34);
     if (IMOSLoggingEnabled())
@@ -126,22 +126,22 @@
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)printChangeInItemsToJSON:(id)a3
+- (void)printChangeInItemsToJSON:(id)n
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nCopy = n;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = nCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Print change in items %@", &v11, 0xCu);
     }
   }
 
-  v8 = objc_msgSend_object(v4, v5, v6);
+  v8 = objc_msgSend_object(nCopy, v5, v6);
   objc_msgSend_printChangeInItemsToJSONFromChat_(self, v9, v8);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -181,14 +181,14 @@ LABEL_9:
   return v10;
 }
 
-- (void)writeDataToJSONFile:(id)a3
+- (void)writeDataToJSONFile:(id)file
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   v7 = objc_msgSend_jsonFilePath(self, v5, v6);
   if (objc_msgSend_length(v7, v8, v9))
   {
-    v11 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x1E696ACB0], v10, v4, 1, 0);
+    v11 = objc_msgSend_dataWithJSONObject_options_error_(MEMORY[0x1E696ACB0], v10, fileCopy, 1, 0);
     objc_msgSend_writeToFile_atomically_(v11, v12, v7, 1);
   }
 
@@ -206,18 +206,18 @@ LABEL_9:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messageDictionariesFromItemsInChat:(id)a3 withEventKey:(id)a4
+- (id)messageDictionariesFromItemsInChat:(id)chat withEventKey:(id)key
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  chatCopy = chat;
   v8 = [v5 alloc];
-  v11 = objc_msgSend_chatItems(v7, v9, v10);
+  v11 = objc_msgSend_chatItems(chatCopy, v9, v10);
   v14 = objc_msgSend_count(v11, v12, v13);
   v16 = objc_msgSend_initWithCapacity_(v8, v15, v14);
 
-  objc_msgSend_addObject_(v16, v17, v6);
-  v20 = objc_msgSend_chatItems(v7, v18, v19);
+  objc_msgSend_addObject_(v16, v17, keyCopy);
+  v20 = objc_msgSend_chatItems(chatCopy, v18, v19);
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;

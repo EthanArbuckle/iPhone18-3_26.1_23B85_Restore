@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __78__UIViewController_AppCardPresentation__ck_canDismissAndPresentSimultaneously__block_invoke_2;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (ck_canDismissAndPresentSimultaneously_onceToken != -1)
   {
     dispatch_once(&ck_canDismissAndPresentSimultaneously_onceToken, block);
@@ -37,7 +37,7 @@
   v2[1] = 3221225472;
   v2[2] = __97__UIViewController_AppCardPresentation__ck_dismissViewControllerAllowingSimultaneousPresentation__block_invoke;
   v2[3] = &unk_1E72EBA18;
-  v2[4] = a1;
+  v2[4] = self;
   return [MEMORY[0x1E69DD258] _performWithoutDeferringTransitionsAllowingAnimation:1 actions:v2];
 }
 
@@ -50,7 +50,7 @@
   v13[1] = 3221225472;
   v13[2] = __130__UIViewController_AppCardPresentation__ck_presentAppCardContainerViewControllerSimultaniously_animated_presentCompletionHandler___block_invoke;
   v13[3] = &unk_1E72F0150;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v8;
   v16 = a4;
   v15 = v9;

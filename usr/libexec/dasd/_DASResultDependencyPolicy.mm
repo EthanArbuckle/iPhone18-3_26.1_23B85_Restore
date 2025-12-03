@@ -1,7 +1,7 @@
 @interface _DASResultDependencyPolicy
 + (id)policyInstance;
 - (_DASResultDependencyPolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASResultDependencyPolicy
@@ -37,11 +37,11 @@
   return v3;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = [(_DASActivityDependencyManager *)self->_dependencyManager areDependenciesSatisfiedFor:a3, a4];
+  state = [(_DASActivityDependencyManager *)self->_dependencyManager areDependenciesSatisfiedFor:activity, state];
   v6 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
-  if (v5)
+  if (state)
   {
     v7 = 0;
   }
@@ -51,7 +51,7 @@
     v7 = 100;
   }
 
-  v8 = [NSNumber numberWithBool:v5];
+  v8 = [NSNumber numberWithBool:state];
   v9 = [NSPredicate predicateWithFormat:@"dependencySatisfaction == %@", v8];
   [(_DASPolicyResponseRationale *)v6 addRationaleWithCondition:v9];
 

@@ -1,41 +1,41 @@
 @interface DataMigrationPlugin
 - (BOOL)isConcurrent;
-- (DataMigrationPlugin)initWithIdentifier:(id)a3 fileSystemRep:(id)a4 isUserAgnostic:(BOOL)a5;
+- (DataMigrationPlugin)initWithIdentifier:(id)identifier fileSystemRep:(id)rep isUserAgnostic:(BOOL)agnostic;
 - (double)appropriateTimeIntervalBeforeReboot;
-- (id)_performOneMigrationWithParameters:(id)a3 watchdogCoordinator:(id)a4 needsRetry:(BOOL *)a5;
+- (id)_performOneMigrationWithParameters:(id)parameters watchdogCoordinator:(id)coordinator needsRetry:(BOOL *)retry;
 - (id)description;
-- (id)performMigrationWithParameters:(id)a3 watchdogCoordinator:(id)a4 countOfAttempts:(unint64_t *)a5;
+- (id)performMigrationWithParameters:(id)parameters watchdogCoordinator:(id)coordinator countOfAttempts:(unint64_t *)attempts;
 @end
 
 @implementation DataMigrationPlugin
 
-- (DataMigrationPlugin)initWithIdentifier:(id)a3 fileSystemRep:(id)a4 isUserAgnostic:(BOOL)a5
+- (DataMigrationPlugin)initWithIdentifier:(id)identifier fileSystemRep:(id)rep isUserAgnostic:(BOOL)agnostic
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  repCopy = rep;
   v17.receiver = self;
   v17.super_class = DataMigrationPlugin;
   v11 = [(DataMigrationPlugin *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_rep, a4);
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_rep, rep);
     rep = v12->_rep;
     if (rep)
     {
-      v14 = [(DMPluginFileSystemRep *)rep name];
+      name = [(DMPluginFileSystemRep *)rep name];
     }
 
     else
     {
-      v14 = @"<absent plugin>";
+      name = @"<absent plugin>";
     }
 
     name = v12->_name;
-    v12->_name = &v14->isa;
+    v12->_name = &name->isa;
 
-    v12->_isUserAgnostic = a5;
+    v12->_isUserAgnostic = agnostic;
     v12->_pidReceiptTimeout = 5.0;
   }
 
@@ -82,8 +82,8 @@
 
 - (BOOL)isConcurrent
 {
-  v2 = [(DataMigrationPlugin *)self identifierOfDependency];
-  v3 = v2 != 0;
+  identifierOfDependency = [(DataMigrationPlugin *)self identifierOfDependency];
+  v3 = identifierOfDependency != 0;
 
   return v3;
 }
@@ -103,8 +103,8 @@
 
   if ([(DataMigrationPlugin *)self isConcurrent])
   {
-    v4 = [(DataMigrationPlugin *)self identifierOfDependency];
-    v5 = [NSString stringWithFormat:@"concurrent after %@", v4];
+    identifierOfDependency = [(DataMigrationPlugin *)self identifierOfDependency];
+    v5 = [NSString stringWithFormat:@"concurrent after %@", identifierOfDependency];
     [v3 addObject:v5];
   }
 
@@ -116,19 +116,19 @@
     v6 = v7;
   }
 
-  v8 = [(DataMigrationPlugin *)self identifier];
-  v9 = [NSString stringWithFormat:@"%@%@", v8, v6];
+  identifier = [(DataMigrationPlugin *)self identifier];
+  v9 = [NSString stringWithFormat:@"%@%@", identifier, v6];
 
   return v9;
 }
 
-- (id)performMigrationWithParameters:(id)a3 watchdogCoordinator:(id)a4 countOfAttempts:(unint64_t *)a5
+- (id)performMigrationWithParameters:(id)parameters watchdogCoordinator:(id)coordinator countOfAttempts:(unint64_t *)attempts
 {
-  v8 = a3;
-  v9 = a4;
-  *a5 = 1;
+  parametersCopy = parameters;
+  coordinatorCopy = coordinator;
+  *attempts = 1;
   v21 = 0;
-  v10 = [(DataMigrationPlugin *)self _performOneMigrationWithParameters:v8 watchdogCoordinator:v9 needsRetry:&v21];
+  v10 = [(DataMigrationPlugin *)self _performOneMigrationWithParameters:parametersCopy watchdogCoordinator:coordinatorCopy needsRetry:&v21];
   if (v21)
   {
     v11 = v10 == 0;
@@ -145,9 +145,9 @@
     while (!__CFADD__(v12++, 1))
     {
       _DMLogFunc();
-      ++*a5;
+      ++*attempts;
       v21 = 0;
-      v10 = [(DataMigrationPlugin *)self _performOneMigrationWithParameters:v8 watchdogCoordinator:v9 needsRetry:&v21, self];
+      v10 = [(DataMigrationPlugin *)self _performOneMigrationWithParameters:parametersCopy watchdogCoordinator:coordinatorCopy needsRetry:&v21, self];
       if (v21)
       {
         v14 = v10 == 0;
@@ -165,9 +165,9 @@
     }
 
     rep = self->_rep;
-    v17 = [v8 dispositionSupersetOfContext];
+    dispositionSupersetOfContext = [parametersCopy dispositionSupersetOfContext];
     v18 = [NSString stringWithFormat:@"%@ — Crashed", self];
-    v15 = [DMIncident incidentWithKind:2 responsiblePluginRep:rep userDataDisposition:v17 details:v18];
+    v15 = [DMIncident incidentWithKind:2 responsiblePluginRep:rep userDataDisposition:dispositionSupersetOfContext details:v18];
 
     v19 = +[DMDiagnostics sharedInstance];
     [v19 captureDiagnosticsForIncident:v15 async:1];
@@ -182,10 +182,10 @@ LABEL_12:
   return v15;
 }
 
-- (id)_performOneMigrationWithParameters:(id)a3 watchdogCoordinator:(id)a4 needsRetry:(BOOL *)a5
+- (id)_performOneMigrationWithParameters:(id)parameters watchdogCoordinator:(id)coordinator needsRetry:(BOOL *)retry
 {
-  v8 = a3;
-  v9 = a4;
+  parametersCopy = parameters;
+  coordinatorCopy = coordinator;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
@@ -212,11 +212,11 @@ LABEL_12:
   v20 = v30;
   v17[4] = self;
   v21 = &v24;
-  v13 = v8;
+  v13 = parametersCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = coordinatorCopy;
   v19 = v14;
-  v23 = a5;
+  retryCopy = retry;
   [v14 callRunEventBlock:v17 forPlugin:self];
   v15 = v25[5];
 

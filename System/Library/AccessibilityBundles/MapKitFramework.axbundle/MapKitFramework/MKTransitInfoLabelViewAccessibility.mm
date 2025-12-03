@@ -1,30 +1,30 @@
 @interface MKTransitInfoLabelViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axLabelFromLabelItems:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axLabelFromLabelItems:(id)items;
 - (id)accessibilityLabel;
 @end
 
 @implementation MKTransitInfoLabelViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GEOPDTransitLabel"];
-  [v3 validateClass:@"GEOPDTransitLabel" hasInstanceMethod:@"hasLabelArtwork" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GEOPDTransitLabel" hasInstanceMethod:@"labelArtwork" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GEOPBTransitArtwork" hasInstanceMethod:@"hasAccessibilityString" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"GEOPBTransitArtwork" hasInstanceMethod:@"accessibilityString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GEOPDTransitLabel"];
+  [validationsCopy validateClass:@"GEOPDTransitLabel" hasInstanceMethod:@"hasLabelArtwork" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GEOPDTransitLabel" hasInstanceMethod:@"labelArtwork" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GEOPBTransitArtwork" hasInstanceMethod:@"hasAccessibilityString" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"GEOPBTransitArtwork" hasInstanceMethod:@"accessibilityString" withFullSignature:{"@", 0}];
 }
 
-- (id)_axLabelFromLabelItems:(id)a3
+- (id)_axLabelFromLabelItems:(id)items
 {
   v26 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  itemsCopy = items;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v4 = [itemsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v4)
   {
     v6 = 0;
@@ -41,7 +41,7 @@
     {
       if (*v22 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(itemsCopy);
       }
 
       v9 = *(*(&v21 + 1) + 8 * v8);
@@ -51,19 +51,19 @@
         v10 = v9;
         if ([v10 dataType] == 1)
         {
-          v11 = [v10 dataValue];
-          if (v11 > 3)
+          dataValue = [v10 dataValue];
+          if (dataValue > 3)
           {
-            if (v11 > 5)
+            if (dataValue > 5)
             {
-              if (v11 == 6)
+              if (dataValue == 6)
               {
                 v12 = @"ACCESS_TYPE_RAMP";
               }
 
               else
               {
-                if (v11 != 7)
+                if (dataValue != 7)
                 {
                   _AXAssert();
                   v15 = 0;
@@ -74,7 +74,7 @@
               }
             }
 
-            else if (v11 == 4)
+            else if (dataValue == 4)
             {
               v12 = @"ACCESS_TYPE_UP_ESCALATOR";
             }
@@ -85,9 +85,9 @@
             }
           }
 
-          else if (v11 > 1)
+          else if (dataValue > 1)
           {
-            if (v11 == 2)
+            if (dataValue == 2)
             {
               v12 = @"ACCESS_TYPE_ELEVATOR";
             }
@@ -98,7 +98,7 @@
             }
           }
 
-          else if (v11)
+          else if (dataValue)
           {
             v12 = @"ACCESS_TYPE_EASEMENT";
           }
@@ -154,7 +154,7 @@ LABEL_34:
     }
 
     while (v5 != v8);
-    v17 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v17 = [itemsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     v5 = v17;
   }
 
@@ -168,10 +168,10 @@ LABEL_40:
 
 - (id)accessibilityLabel
 {
-  v3 = [(MKTransitInfoLabelViewAccessibility *)self labelItems];
-  if (v3)
+  labelItems = [(MKTransitInfoLabelViewAccessibility *)self labelItems];
+  if (labelItems)
   {
-    v4 = [(MKTransitInfoLabelViewAccessibility *)self _axLabelFromLabelItems:v3];
+    v4 = [(MKTransitInfoLabelViewAccessibility *)self _axLabelFromLabelItems:labelItems];
   }
 
   else

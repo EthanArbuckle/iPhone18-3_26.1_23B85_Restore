@@ -1,78 +1,78 @@
 @interface VNImageBuffer
-+ (CGRect)computeCenterCropRectFromCropRect:(CGRect)result inImageSize:(CGSize)a4 calculatedScaleX:(double *)a5 calculatedScaleY:(double *)a6;
++ (CGRect)computeCenterCropRectFromCropRect:(CGRect)result inImageSize:(CGSize)size calculatedScaleX:(double *)x calculatedScaleY:(double *)y;
 + (const)mapOrientationToRotationDegrees;
-+ (uint64_t)_VNVTPixelTransferImageForSource:(CGFloat)a3 destinationBuffer:(CGFloat)a4 cropRect:(uint64_t)a5 performCrop:(__CVBuffer *)a6 vtSessionManager:(__CVBuffer *)a7 error:(int)a8;
++ (uint64_t)_VNVTPixelTransferImageForSource:(CGFloat)source destinationBuffer:(CGFloat)buffer cropRect:(uint64_t)rect performCrop:(__CVBuffer *)crop vtSessionManager:(__CVBuffer *)manager error:(int)error;
 - ($C89D6CB792F036C1FD5C44B3A3669EAC)timingInfo;
-- (BOOL)getCameraIntrinsicsAvailable:(id *)a3;
-- (BOOL)getCameraOpticalCenterIfAvailable:(CGPoint *)a3;
-- (BOOL)getPixelFocalLengthIfAvailable:(float *)a3;
-- (CGAffineTransform)_calculateTranslationTransformForOrientedCropWithOrientation:(double)a3 unorientedSubsampledFullImageRect:(double)a4 unorientedSubsampledOriginalCrop:(double)a5;
+- (BOOL)getCameraIntrinsicsAvailable:(id *)available;
+- (BOOL)getCameraOpticalCenterIfAvailable:(CGPoint *)available;
+- (BOOL)getPixelFocalLengthIfAvailable:(float *)available;
+- (CGAffineTransform)_calculateTranslationTransformForOrientedCropWithOrientation:(double)orientation unorientedSubsampledFullImageRect:(double)rect unorientedSubsampledOriginalCrop:(double)crop;
 - (CGRect)fullImageBufferRect;
-- (CGRect)makeClippedRectAgainstImageExtentUsingOriginalRect:(CGRect)a3;
-- (CVPixelBufferRef)_createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:(size_t)a3 height:(uint64_t)a4 format:(void *)a5 options:(_BYTE *)a6 outPooled:(void *)a7 error:;
+- (CGRect)makeClippedRectAgainstImageExtentUsingOriginalRect:(CGRect)rect;
+- (CVPixelBufferRef)_createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:(size_t)with height:(uint64_t)height format:(void *)format options:(_BYTE *)options outPooled:(void *)pooled error:;
 - (NSNumber)sceneStabilityMetric;
-- (VNImageBuffer)bufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 options:(id)a6 error:(id *)a7 pixelBufferRepsCacheKey:(id *)a8;
-- (VNImageBuffer)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5;
-- (VNImageBuffer)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
-- (VNImageBuffer)initWithCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5;
-- (VNImageBuffer)initWithCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
-- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7;
-- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5;
-- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6;
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7;
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 options:(id)a4;
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5;
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
-- (VNImageBuffer)initWithData:(id)a3 orientation:(unsigned int)a4 options:(id)a5;
-- (VNImageBuffer)initWithData:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
-- (VNImageBuffer)initWithURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5;
-- (VNImageBuffer)initWithURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6;
-- (__CVBuffer)createBufferWithMaxSideLengthOf:(unint64_t)a3 pixelFormat:(unsigned int)a4 options:(id)a5 error:(id *)a6;
-- (__CVBuffer)createCroppedBufferWithMaxSideLengthOf:(unint64_t)a3 cropRect:(CGRect)a4 pixelFormat:(unsigned int)a5 options:(id)a6 error:(id *)a7 pixelBufferRepsCacheKey:(id *)a8;
-- (__CVBuffer)cropAndScaleBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 cropRect:(CGRect)a5 format:(unsigned int)a6 imageCropAndScaleOption:(unint64_t)a7 options:(id)a8 error:(id *)a9 calculatedNormalizedOriginOffset:(CGPoint *)a10 calculatedScaleX:(double *)a11 calculatedScaleY:(double *)a12 pixelBufferRepsCacheKey:(id *)a13;
-- (id)_optionsWithOverridingOptions:(uint64_t)a1;
-- (id)augmentedBuffersWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 options:(id)a6 augmentationOptions:(id)a7 error:(id *)a8;
-- (id)augmentedCroppedBuffersWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 cropRect:(CGRect)a6 options:(id)a7 augmentationOptions:(id)a8 error:(id *)a9;
+- (VNImageBuffer)bufferWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format options:(id)options error:(id *)error pixelBufferRepsCacheKey:(id *)key;
+- (VNImageBuffer)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options;
+- (VNImageBuffer)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageBuffer)initWithCIImage:(id)image orientation:(unsigned int)orientation options:(id)options;
+- (VNImageBuffer)initWithCIImage:(id)image orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options;
+- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options;
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer options:(id)options;
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options;
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageBuffer)initWithData:(id)data orientation:(unsigned int)orientation options:(id)options;
+- (VNImageBuffer)initWithData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (VNImageBuffer)initWithURL:(id)l orientation:(unsigned int)orientation options:(id)options;
+- (VNImageBuffer)initWithURL:(id)l orientation:(unsigned int)orientation options:(id)options session:(id)session;
+- (__CVBuffer)createBufferWithMaxSideLengthOf:(unint64_t)of pixelFormat:(unsigned int)format options:(id)options error:(id *)error;
+- (__CVBuffer)createCroppedBufferWithMaxSideLengthOf:(unint64_t)of cropRect:(CGRect)rect pixelFormat:(unsigned int)format options:(id)options error:(id *)error pixelBufferRepsCacheKey:(id *)key;
+- (__CVBuffer)cropAndScaleBufferWithWidth:(unint64_t)width height:(unint64_t)height cropRect:(CGRect)rect format:(unsigned int)format imageCropAndScaleOption:(unint64_t)option options:(id)options error:(id *)error calculatedNormalizedOriginOffset:(CGPoint *)self0 calculatedScaleX:(double *)self1 calculatedScaleY:(double *)self2 pixelBufferRepsCacheKey:(id *)self3;
+- (id)_optionsWithOverridingOptions:(uint64_t)options;
+- (id)augmentedBuffersWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format options:(id)options augmentationOptions:(id)augmentationOptions error:(id *)error;
+- (id)augmentedCroppedBuffersWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format cropRect:(CGRect)rect options:(id)options augmentationOptions:(id)augmentationOptions error:(id *)error;
 - (id)debugQuickLookObject;
 - (id)fileURL;
-- (id)initWithOptions:(int)a3 orientation:(void *)a4 session:;
+- (id)initWithOptions:(int)options orientation:(void *)orientation session:;
 - (id)sequencedRequestPreviousObservationsKey;
 - (int)aspect;
-- (int)aspectForRegionOfInterest:(CGRect)a3;
-- (uint64_t)_cropCIImage:(CVPixelBufferRef *)a3 outBuffer:(unint64_t)a4 width:(unint64_t)a5 height:(int)a6 format:(int)a7 cropRect:(void *)a8 performCrop:(double)a9 options:(double)a10 rotate90CCW:(double)a11 error:(double)a12;
-- (uint64_t)_cropCVPixelBuffer:(CVPixelBufferRef *)a3 outBuffer:(unint64_t)a4 width:(unint64_t)a5 height:(int)a6 format:(int)a7 cropRect:(void *)a8 performCrop:(CGFloat)a9 options:(CGFloat)a10 rotate90CCW:(CGFloat)a11 error:(CGFloat)a12;
-- (uint64_t)_cropImageSourceManager:(CVPixelBufferRef *)a3 outBuffer:(unint64_t)a4 width:(unint64_t)a5 height:(int)a6 format:(int)a7 cropRect:(void *)a8 performCrop:(double)a9 options:(double)a10 rotate90CCW:(double)a11 error:(double)a12;
-- (uint64_t)_croppedBufferWithWidth:(uint64_t)a3 height:(uint64_t)a4 format:(void *)a5 cropRect:(void *)a6 options:(void *)a7 error:(char)a8 pixelBufferRepsCacheKey:(CGFloat)a9 rotate90CCW:(CGFloat)a10;
+- (int)aspectForRegionOfInterest:(CGRect)interest;
+- (uint64_t)_cropCIImage:(CVPixelBufferRef *)image outBuffer:(unint64_t)buffer width:(unint64_t)width height:(int)height format:(int)format cropRect:(void *)rect performCrop:(double)crop options:(double)self0 rotate90CCW:(double)self1 error:(double)self2;
+- (uint64_t)_cropCVPixelBuffer:(CVPixelBufferRef *)buffer outBuffer:(unint64_t)outBuffer width:(unint64_t)width height:(int)height format:(int)format cropRect:(void *)rect performCrop:(CGFloat)crop options:(CGFloat)self0 rotate90CCW:(CGFloat)self1 error:(CGFloat)self2;
+- (uint64_t)_cropImageSourceManager:(CVPixelBufferRef *)manager outBuffer:(unint64_t)buffer width:(unint64_t)width height:(int)height format:(int)format cropRect:(void *)rect performCrop:(double)crop options:(double)self0 rotate90CCW:(double)self1 error:(double)self2;
+- (uint64_t)_croppedBufferWithWidth:(uint64_t)width height:(uint64_t)height format:(void *)format cropRect:(void *)rect options:(void *)options error:(char)error pixelBufferRepsCacheKey:(CGFloat)key rotate90CCW:(CGFloat)self0;
 - (uint64_t)calculateOrientationCorrectedImageDimensions;
 - (unint64_t)height;
 - (unint64_t)width;
 - (void)_baseCIImage;
-- (void)_isRectOutOfBounds:(CGFloat)a3;
+- (void)_isRectOutOfBounds:(CGFloat)bounds;
 - (void)dealloc;
 @end
 
 @implementation VNImageBuffer
 
-- (id)augmentedCroppedBuffersWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 cropRect:(CGRect)a6 options:(id)a7 augmentationOptions:(id)a8 error:(id *)a9
+- (id)augmentedCroppedBuffersWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format cropRect:(CGRect)rect options:(id)options augmentationOptions:(id)augmentationOptions error:(id *)error
 {
-  width = a6.size.width;
-  rect = a6.size.height;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  width = rect.size.width;
+  rect = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v286[9] = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  v214 = a8;
+  optionsCopy = options;
+  augmentationOptionsCopy = augmentationOptions;
   v206 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v212 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [(VNImageBuffer *)self width];
-  v13 = [(VNImageBuffer *)self height];
+  width = [(VNImageBuffer *)self width];
+  height = [(VNImageBuffer *)self height];
   v288.origin.x = x;
   v288.origin.y = y;
   v288.size.width = width;
   v288.size.height = rect;
-  v14 = v12;
-  v15 = v13;
+  v14 = width;
+  v15 = height;
   if (CGRectIsInfinite(v288))
   {
     v204 = 0;
@@ -82,8 +82,8 @@
   {
     v289.origin.x = 0.0;
     v289.origin.y = 0.0;
-    v289.size.width = v12;
-    v289.size.height = v13;
+    v289.size.width = width;
+    v289.size.height = height;
     v290.origin.x = x;
     v290.origin.y = y;
     v290.size.width = width;
@@ -101,18 +101,18 @@
   v286[7] = @"VNImageBufferAugmentationExposure";
   v286[8] = @"VNImageBufferAugmentationRandomCrop";
   v205 = [MEMORY[0x1E695DEC8] arrayWithObjects:v286 count:9];
-  v210 = [(VNImageBuffer *)self _optionsWithOverridingOptions:v11];
+  v210 = [(VNImageBuffer *)self _optionsWithOverridingOptions:optionsCopy];
 
-  v16 = [v214 allKeys];
-  v17 = [v16 firstObjectCommonWithArray:v205];
+  allKeys = [augmentationOptionsCopy allKeys];
+  v17 = [allKeys firstObjectCommonWithArray:v205];
   v18 = v17 == 0;
 
   if (!v18)
   {
-    v220 = [v214 objectForKey:@"VNImageBufferAugmentationApplePipeline"];
+    v220 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationApplePipeline"];
     if (v220)
     {
-      texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a3 height:a4 pixelFormatType:a5 error:a9];
+      texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:format error:error];
       if (!texture[0])
       {
         goto LABEL_219;
@@ -134,13 +134,13 @@
 
       else
       {
-        v24 = [(VNImageBuffer *)self _baseCIImage];
-        v22 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:[(VNImageBuffer *)self height] height:875704422 pixelFormatType:a9 error:?];
+        _baseCIImage = [(VNImageBuffer *)self _baseCIImage];
+        v22 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:[(VNImageBuffer *)self height] height:875704422 pixelFormatType:error error:?];
         if (v22)
         {
           v25 = self->_passedInCIContext;
-          v26 = [(VNImageBuffer *)self session];
-          v27 = [v26 vnciContextManager];
+          session = [(VNImageBuffer *)self session];
+          vnciContextManager = [session vnciContextManager];
 
           if (v25)
           {
@@ -149,7 +149,7 @@
 
           else
           {
-            v29 = [(VNCIContextManager *)v27 waitAndGetAvailableContextFromOptions:0 error:?];
+            v29 = [(VNCIContextManager *)vnciContextManager waitAndGetAvailableContextFromOptions:0 error:?];
             v30 = v29;
             if (v29)
             {
@@ -165,9 +165,9 @@
             v28 = v30;
           }
 
-          [(CIContext *)v25 render:v24 toCVPixelBuffer:v22];
+          [(CIContext *)v25 render:_baseCIImage toCVPixelBuffer:v22];
           v22 = CFAutorelease(v22);
-          [(VNCIContextManager *)v27 releaseContext:v28];
+          [(VNCIContextManager *)vnciContextManager releaseContext:v28];
         }
       }
 
@@ -176,7 +176,7 @@
         goto LABEL_219;
       }
 
-      if (![(VNImageBuffer *)self _cropCVPixelBuffer:v22 outBuffer:texture width:a3 height:a4 format:a5 cropRect:v204 performCrop:v20 options:x rotate90CCW:y error:width, rect, 0, a9])
+      if (![(VNImageBuffer *)self _cropCVPixelBuffer:v22 outBuffer:texture width:width height:height format:format cropRect:v204 performCrop:v20 options:x rotate90CCW:y error:width, rect, 0, error])
       {
         goto LABEL_219;
       }
@@ -184,16 +184,16 @@
       [v206 addObject:texture[0]];
       CVPixelBufferRelease(texture[0]);
       texture[0] = 0;
-      texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a3 height:a4 pixelFormatType:a5 error:a9];
+      texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:format error:error];
       if (!texture[0])
       {
         goto LABEL_219;
       }
 
-      v32 = [(VNImageBuffer *)self _baseCIImage];
-      v33 = [(VNImageBuffer *)&self->super.isa _cropCIImage:v32 outBuffer:texture width:a3 height:a4 format:a5 cropRect:v204 performCrop:v20 options:x rotate90CCW:y error:width, rect, 0, a9];
+      _baseCIImage2 = [(VNImageBuffer *)self _baseCIImage];
+      error = [(VNImageBuffer *)&self->super.isa _cropCIImage:_baseCIImage2 outBuffer:texture width:width height:height format:format cropRect:v204 performCrop:v20 options:x rotate90CCW:y error:width, rect, 0, error];
 
-      if ((v33 & 1) == 0)
+      if ((error & 1) == 0)
       {
         goto LABEL_219;
       }
@@ -203,8 +203,8 @@
       texture[0] = 0;
       if (self->_imageSourceManager)
       {
-        texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a3 height:a4 pixelFormatType:a5 error:a9];
-        if (!texture[0] || ![(VNImageBuffer *)self _cropImageSourceManager:texture outBuffer:a3 width:a4 height:a5 format:v204 cropRect:v20 performCrop:x options:y rotate90CCW:width error:rect, 0, a9])
+        texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:format error:error];
+        if (!texture[0] || ![(VNImageBuffer *)self _cropImageSourceManager:texture outBuffer:width width:height height:format format:v204 cropRect:v20 performCrop:x options:y rotate90CCW:width error:rect, 0, error])
         {
           goto LABEL_219;
         }
@@ -214,10 +214,10 @@
       }
     }
 
-    v34 = [(VNImageBuffer *)self _baseCIImage];
-    [v212 addObject:v34];
+    _baseCIImage3 = [(VNImageBuffer *)self _baseCIImage];
+    [v212 addObject:_baseCIImage3];
 
-    v35 = [v214 objectForKey:@"VNImageBufferAugmentationBlur"];
+    v35 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationBlur"];
 
     v221 = v35;
     if (v35)
@@ -254,12 +254,12 @@
 
       if (v45)
       {
-        v242 = [v45 intValue];
+        intValue = [v45 intValue];
       }
 
       else
       {
-        v242 = 10;
+        intValue = 10;
       }
 
       v46 = [v221 objectForKey:@"VNImageBufferAugmentationOptionRandomSeed"];
@@ -272,7 +272,7 @@
 
       else
       {
-        v47 = (v40 - v44) / v242;
+        v47 = (v40 - v44) / intValue;
       }
 
       v48 = [MEMORY[0x1E695F648] filterWithName:@"CIDiscBlur"];
@@ -299,19 +299,19 @@
             }
 
             v52 = *(*(&v275 + 1) + 8 * v51);
-            v53 = [v52 imageByClampingToExtent];
-            [v48 setValue:v53 forKey:v228];
+            imageByClampingToExtent = [v52 imageByClampingToExtent];
+            [v48 setValue:imageByClampingToExtent forKey:v228];
 
-            v55 = v242;
+            v55 = intValue;
             for (i = v44; v55; --v55)
             {
               *&v54 = i;
               v57 = [MEMORY[0x1E696AD98] numberWithFloat:v54];
               [v48 setValue:v57 forKey:v50];
 
-              v58 = [v48 outputImage];
+              outputImage = [v48 outputImage];
               [v52 extent];
-              v59 = [v58 imageByCroppingToRect:?];
+              v59 = [outputImage imageByCroppingToRect:?];
 
               [v36 addObject:v59];
               if (v46)
@@ -338,7 +338,7 @@
       v212 = v36;
     }
 
-    v60 = [v214 objectForKey:@"VNImageBufferAugmentationExposure"];
+    v60 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationExposure"];
 
     v222 = v60;
     if (v60)
@@ -375,12 +375,12 @@
 
       if (v70)
       {
-        v243 = [v70 intValue];
+        intValue2 = [v70 intValue];
       }
 
       else
       {
-        v243 = 10;
+        intValue2 = 10;
       }
 
       v71 = [v222 objectForKey:@"VNImageBufferAugmentationOptionRandomSeed"];
@@ -393,7 +393,7 @@
 
       else
       {
-        v72 = (v65 - v69) / v243;
+        v72 = (v65 - v69) / intValue2;
       }
 
       v73 = [MEMORY[0x1E695F648] filterWithName:@"CIExposureAdjust"];
@@ -418,15 +418,15 @@
             }
 
             [v73 setValue:*(*(&v271 + 1) + 8 * j) forKey:v233];
-            v78 = v243;
+            v78 = intValue2;
             for (k = v69; v78; --v78)
             {
               *&v77 = k;
               v80 = [MEMORY[0x1E696AD98] numberWithFloat:v77];
               [v73 setValue:v80 forKey:v75];
 
-              v81 = [v73 outputImage];
-              [v61 addObject:v81];
+              outputImage2 = [v73 outputImage];
+              [v61 addObject:outputImage2];
 
               if (v71)
               {
@@ -449,7 +449,7 @@
       v212 = v61;
     }
 
-    v82 = [v214 objectForKey:@"VNImageBufferAugmentationShear"];
+    v82 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationShear"];
 
     v223 = v82;
     if (v82)
@@ -486,12 +486,12 @@
 
       if (v92)
       {
-        v244 = [v92 intValue];
+        intValue3 = [v92 intValue];
       }
 
       else
       {
-        v244 = 10;
+        intValue3 = 10;
       }
 
       v93 = [v223 objectForKey:@"VNImageBufferAugmentationOptionRandomSeed"];
@@ -504,7 +504,7 @@
 
       else
       {
-        v94 = (v87 - v91) / v244;
+        v94 = (v87 - v91) / intValue3;
       }
 
       v269 = 0u;
@@ -526,10 +526,10 @@
               objc_enumerationMutation(v234);
             }
 
-            if (v244)
+            if (intValue3)
             {
               v98 = *(*(&v267 + 1) + 8 * m);
-              v99 = v244;
+              v99 = intValue3;
               v100 = v91;
               do
               {
@@ -568,7 +568,7 @@
       v212 = v83;
     }
 
-    v103 = [v214 objectForKey:@"VNImageBufferAugmentationRotation"];
+    v103 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationRotation"];
 
     v224 = v103;
     if (v103)
@@ -605,12 +605,12 @@
 
       if (v113)
       {
-        v245 = [v113 intValue];
+        intValue4 = [v113 intValue];
       }
 
       else
       {
-        v245 = 10;
+        intValue4 = 10;
       }
 
       v114 = [v224 objectForKey:@"VNImageBufferAugmentationOptionRandomSeed"];
@@ -623,7 +623,7 @@
 
       else
       {
-        v115 = (v108 - v112) / v245;
+        v115 = (v108 - v112) / intValue4;
       }
 
       v116 = [MEMORY[0x1E695F648] filterWithName:@"CIStraightenFilter"];
@@ -648,14 +648,14 @@
             }
 
             [v116 setValue:*(*(&v260 + 1) + 8 * n) forKey:v235];
-            v120 = v245;
+            v120 = intValue4;
             for (ii = v112; v120; --v120)
             {
               v122 = [MEMORY[0x1E696AD98] numberWithDouble:ii * 3.14159265 / 180.0];
               [v116 setValue:v122 forKey:v118];
 
-              v123 = [v116 outputImage];
-              [v104 addObject:v123];
+              outputImage3 = [v116 outputImage];
+              [v104 addObject:outputImage3];
 
               if (v114)
               {
@@ -678,7 +678,7 @@
       v212 = v104;
     }
 
-    v203 = [v214 objectForKey:@"VNImageBufferAugmentationNoise"];
+    v203 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationNoise"];
 
     if (v203)
     {
@@ -715,12 +715,12 @@
       v133 = v132;
       if (v132)
       {
-        v241 = [v132 intValue];
+        intValue5 = [v132 intValue];
       }
 
       else
       {
-        v241 = 10;
+        intValue5 = 10;
       }
 
       v134 = [v203 objectForKey:@"VNImageBufferAugmentationOptionRandomSeed"];
@@ -733,7 +733,7 @@
 
       else
       {
-        v135 = (v127 - v131) / v241;
+        v135 = (v127 - v131) / intValue5;
       }
 
       v231 = [MEMORY[0x1E695F648] filterWithName:@"CIRandomGenerator"];
@@ -763,27 +763,27 @@
             }
 
             v142 = *(*(&v256 + 1) + 8 * jj);
-            v143 = [v231 outputImage];
-            [v136 setValue:v143 forKey:v139];
+            outputImage4 = [v231 outputImage];
+            [v136 setValue:outputImage4 forKey:v139];
 
             v144 = [MEMORY[0x1E695F610] colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
             [v136 setValue:v144 forKey:v225];
 
-            v145 = [v142 imageByClampingToExtent];
-            [v137 setValue:v145 forKey:v219];
+            imageByClampingToExtent2 = [v142 imageByClampingToExtent];
+            [v137 setValue:imageByClampingToExtent2 forKey:v219];
 
-            v147 = v241;
+            v147 = intValue5;
             for (kk = v131; v147; --v147)
             {
               *&v146 = kk;
               v149 = [MEMORY[0x1E696AD98] numberWithFloat:v146];
               [v136 setValue:v149 forKey:v140];
 
-              v150 = [v136 outputImage];
-              [v137 setValue:v150 forKey:v139];
+              outputImage5 = [v136 outputImage];
+              [v137 setValue:outputImage5 forKey:v139];
 
-              v151 = [v137 outputImage];
-              [v246 addObject:v151];
+              outputImage6 = [v137 outputImage];
+              [v246 addObject:outputImage6];
 
               if (v134)
               {
@@ -806,9 +806,9 @@
       v212 = v246;
     }
 
-    v152 = [v214 objectForKey:@"VNImageBufferAugmentationFlipHorizontal"];
+    v152 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationFlipHorizontal"];
 
-    v153 = [v214 objectForKey:@"VNImageBufferAugmentationFlipVertical"];
+    v153 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationFlipVertical"];
 
     if (v152 != 0 || v153 != 0)
     {
@@ -859,7 +859,7 @@
       v212 = v154;
     }
 
-    v220 = [v214 objectForKey:@"VNImageBufferAugmentationRandomCrop"];
+    v220 = [augmentationOptionsCopy objectForKey:@"VNImageBufferAugmentationRandomCrop"];
 
     if (v220)
     {
@@ -895,34 +895,34 @@
       v174 = v173;
       if (v173)
       {
-        v167 = [v173 intValue];
+        intValue6 = [v173 intValue];
       }
 
       else
       {
-        v167 = 10;
+        intValue6 = 10;
       }
 
       v175 = [v220 objectForKey:@"VNImageBufferAugmentationOptionRandomSeed"];
 
       if (v175)
       {
-        v176 = [v175 intValue];
+        intValue7 = [v175 intValue];
       }
 
       else
       {
-        v176 = 0;
+        intValue7 = 0;
       }
 
-      srand(v176);
+      srand(intValue7);
 
-      v168 = fmaxf((v169 - v166) / v167, 0.001);
+      v168 = fmaxf((v169 - v166) / intValue6, 0.001);
     }
 
     else
     {
-      v167 = 10;
+      intValue6 = 10;
       v168 = 0.001;
       v166 = 0.1;
       v169 = 0.1;
@@ -959,8 +959,8 @@
               {
                 while (1)
                 {
-                  v187 = [(VNImageBuffer *)self height];
-                  v188 = [(VNImageBuffer *)self width];
+                  height2 = [(VNImageBuffer *)self height];
+                  width2 = [(VNImageBuffer *)self width];
                   v189 = 1.0 - v184;
                   v190 = width * v189;
                   v191 = ceilf(v190);
@@ -969,15 +969,15 @@
                   *&v189 = ceilf(*&v189);
                   v186 = *&v189;
                   v192 = fminf(v191, *&v189) < 1.0;
-                  if (a9 && v192)
+                  if (error && v192)
                   {
                     v201 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"RandomCrop produced an invalid crop for width %f height %f", *&v185, *&v186];
-                    *a9 = [VNError errorWithCode:14 message:v201];
+                    *error = [VNError errorWithCode:14 message:v201];
 
                     goto LABEL_218;
                   }
 
-                  if (v167)
+                  if (intValue6)
                   {
                     break;
                   }
@@ -990,13 +990,13 @@ LABEL_206:
                   }
                 }
 
-                v193 = v187 - v186;
-                v194 = v188 - v185;
-                v195 = v167;
+                v193 = height2 - v186;
+                v194 = width2 - v185;
+                v195 = intValue6;
                 while (1)
                 {
                   v196 = random();
-                  texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a3 height:a4 pixelFormatType:a5 error:a9];
+                  texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:format error:error];
                   if (!texture[0])
                   {
                     break;
@@ -1005,7 +1005,7 @@ LABEL_206:
                   v197 = vcvts_n_f32_s64(v196, 0x1FuLL);
                   v198 = v194 * v197;
                   *&v197 = v193 * v197;
-                  if (![(VNImageBuffer *)&self->super.isa _cropCIImage:v183 outBuffer:texture width:a3 height:a4 format:a5 cropRect:v204 performCrop:v210 options:ceilf(v198) rotate90CCW:ceilf(*&v197) error:v185, v186, 0, a9])
+                  if (![(VNImageBuffer *)&self->super.isa _cropCIImage:v183 outBuffer:texture width:width height:height format:format cropRect:v204 performCrop:v210 options:ceilf(v198) rotate90CCW:ceilf(*&v197) error:v185, v186, 0, error])
                   {
                     break;
                   }
@@ -1035,8 +1035,8 @@ LABEL_198:
 
             else
             {
-              texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a3 height:a4 pixelFormatType:a5 error:a9];
-              if (!texture[0] || ![(VNImageBuffer *)&self->super.isa _cropCIImage:v183 outBuffer:texture width:a3 height:a4 format:a5 cropRect:v204 performCrop:v210 options:x rotate90CCW:y error:width, rect, 0, a9])
+              texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:format error:error];
+              if (!texture[0] || ![(VNImageBuffer *)&self->super.isa _cropCIImage:v183 outBuffer:texture width:width height:height format:format cropRect:v204 performCrop:v210 options:x rotate90CCW:y error:width, rect, 0, error])
               {
                 goto LABEL_218;
               }
@@ -1058,13 +1058,13 @@ LABEL_198:
       }
     }
 
-    texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a3 height:a4 pixelFormatType:a5 error:a9];
+    texture[0] = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:width height:height pixelFormatType:format error:error];
     if (texture[0])
     {
-      v199 = [(VNImageBuffer *)self _baseCIImage];
-      v200 = [(VNImageBuffer *)&self->super.isa _cropCIImage:v199 outBuffer:texture width:a3 height:a4 format:a5 cropRect:v204 performCrop:v210 options:x rotate90CCW:y error:width, rect, 0, a9];
+      _baseCIImage4 = [(VNImageBuffer *)self _baseCIImage];
+      error2 = [(VNImageBuffer *)&self->super.isa _cropCIImage:_baseCIImage4 outBuffer:texture width:width height:height format:format cropRect:v204 performCrop:v210 options:x rotate90CCW:y error:width, rect, 0, error];
 
-      if (v200)
+      if (error2)
       {
         [v206 addObject:texture[0]];
         CVPixelBufferRelease(texture[0]);
@@ -1080,10 +1080,10 @@ LABEL_219:
     goto LABEL_220;
   }
 
-  if (a9)
+  if (error)
   {
     [VNError errorWithCode:14 message:@"The augmentationOptions do not conatain any of the VNImageBufferAugmentation keys"];
-    *a9 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -1096,12 +1096,12 @@ LABEL_221:
   return v23;
 }
 
-- (id)_optionsWithOverridingOptions:(uint64_t)a1
+- (id)_optionsWithOverridingOptions:(uint64_t)options
 {
   v3 = a2;
-  if (a1)
+  if (options)
   {
-    v4 = [*(a1 + 88) mutableCopy];
+    v4 = [*(options + 88) mutableCopy];
     [v4 addEntriesFromDictionary:v3];
     v5 = [v4 copy];
   }
@@ -1114,45 +1114,45 @@ LABEL_221:
   return v5;
 }
 
-- (uint64_t)_cropCVPixelBuffer:(CVPixelBufferRef *)a3 outBuffer:(unint64_t)a4 width:(unint64_t)a5 height:(int)a6 format:(int)a7 cropRect:(void *)a8 performCrop:(CGFloat)a9 options:(CGFloat)a10 rotate90CCW:(CGFloat)a11 error:(CGFloat)a12
+- (uint64_t)_cropCVPixelBuffer:(CVPixelBufferRef *)buffer outBuffer:(unint64_t)outBuffer width:(unint64_t)width height:(int)height format:(int)format cropRect:(void *)rect performCrop:(CGFloat)crop options:(CGFloat)self0 rotate90CCW:(CGFloat)self1 error:(CGFloat)self2
 {
-  v134.x = a9;
-  v134.y = a10;
-  v135 = a11;
-  v136 = a12;
-  v25 = a8;
-  if (a1 && [VNValidationUtilities validateNonNilOptionsDictionary:v25 selector:sel__cropCVPixelBuffer_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error_ error:a14])
+  v134.x = crop;
+  v134.y = options;
+  wCopy = w;
+  errorCopy = error;
+  rectCopy = rect;
+  if (self && [VNValidationUtilities validateNonNilOptionsDictionary:rectCopy selector:sel__cropCVPixelBuffer_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error_ error:a14])
   {
-    [VNError VNAssert:a3 != 0 log:@"Internal error: missing target buffer for crop operations"];
-    v108 = a6;
-    v110 = a4;
-    v111 = a5;
-    v109 = a3;
-    [a1 fullImageBufferRect];
-    v145.origin.x = a9;
-    v145.origin.y = a10;
-    v145.size.width = a11;
-    v145.size.height = a12;
+    [VNError VNAssert:buffer != 0 log:@"Internal error: missing target buffer for crop operations"];
+    heightCopy = height;
+    outBufferCopy = outBuffer;
+    widthCopy = width;
+    bufferCopy = buffer;
+    [self fullImageBufferRect];
+    v145.origin.x = crop;
+    v145.origin.y = options;
+    v145.size.width = w;
+    v145.size.height = error;
     v139 = CGRectIntersection(v138, v145);
     height = v139.size.height;
-    if (a10 >= 0.0)
+    if (options >= 0.0)
     {
       v27 = 0.0;
     }
 
     else
     {
-      v27 = -a10;
+      v27 = -options;
     }
 
-    if (a9 >= 0.0)
+    if (crop >= 0.0)
     {
       v28 = 0.0;
     }
 
     else
     {
-      v28 = -a9;
+      v28 = -crop;
     }
 
     v132.f64[0] = v28;
@@ -1160,13 +1160,13 @@ LABEL_221:
     rect = v139.size.width;
     *&v133 = v139.size.width;
     *(&v133 + 1) = *&v139.size.height;
-    v29 = [(VNImageBuffer *)a1 _isRectOutOfBounds:a9, a10, a11, a12];
-    if (v29)
+    error = [(VNImageBuffer *)self _isRectOutOfBounds:crop, options, w, error];
+    if (error)
     {
-      v30 = a4 / a11;
-      v31 = a5 / a12;
+      v30 = outBuffer / w;
+      v31 = width / error;
       v28 = v28 * v30;
-      v27 = (a12 - (v27 + height)) * v31;
+      v27 = (error - (v27 + height)) * v31;
       v132.f64[0] = v28;
       v132.f64[1] = v27;
       height = height * v31;
@@ -1175,30 +1175,30 @@ LABEL_221:
       *(&v133 + 1) = height;
     }
 
-    [a1 fullImageBufferRect];
+    [self fullImageBufferRect];
     v146.origin = v134;
-    v146.size.width = v135;
-    v146.size.height = v136;
+    v146.size.width = wCopy;
+    v146.size.height = errorCopy;
     v141 = CGRectIntersection(v140, v146);
     x = v141.origin.x;
     y = v141.origin.y;
     width = v141.size.width;
-    v35 = v141.size.height;
+    widthCopy3 = v141.size.height;
     v134.x = v141.origin.x;
     v134.y = v141.origin.y;
-    v135 = v141.size.width;
-    v136 = v141.size.height;
-    v36 = [a1 orientation];
+    wCopy = v141.size.width;
+    errorCopy = v141.size.height;
+    orientation = [self orientation];
     v37 = CVPixelBufferGetWidth(a2);
     v38 = CVPixelBufferGetHeight(a2);
     objc_opt_self();
     v45 = v37;
     v46 = v38;
-    if (v36 <= 4)
+    if (orientation <= 4)
     {
-      if (v36 > 2)
+      if (orientation > 2)
       {
-        if (v36 == 3)
+        if (orientation == 3)
         {
           v47 = v45 - (x + width);
           goto LABEL_34;
@@ -1209,22 +1209,22 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      if (v36 == 1)
+      if (orientation == 1)
       {
 LABEL_32:
-        y = v46 - (y + v35);
+        y = v46 - (y + widthCopy3);
         goto LABEL_33;
       }
 
-      if (v36 == 2)
+      if (orientation == 2)
       {
-        y = v46 - (y + v35);
+        y = v46 - (y + widthCopy3);
         v47 = v45 - (x + width);
 LABEL_34:
-        v51 = width;
+        widthCopy2 = width;
 LABEL_35:
         v131 = 0;
-        v52 = [VNValidationUtilities getOptionalObject:&v131 ofClass:objc_opt_class() forKey:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight" inOptions:v25 error:a14];
+        v52 = [VNValidationUtilities getOptionalObject:&v131 ofClass:objc_opt_class() forKey:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight" inOptions:rectCopy error:a14];
         v53 = v131;
         if (!v52)
         {
@@ -1237,16 +1237,16 @@ LABEL_75:
         v107 = v53;
         if (v53)
         {
-          v54 = [v53 integerValue];
+          integerValue = [v53 integerValue];
         }
 
         else
         {
-          v54 = 1;
+          integerValue = 1;
         }
 
         v130 = -1;
-        if ((VNCalculateFeatureCropOrientationFromSuperpositionOfFeatureWithImageOrientations(v36, v54, &v130, a13, a14) & 1) == 0)
+        if ((VNCalculateFeatureCropOrientationFromSuperpositionOfFeatureWithImageOrientations(orientation, integerValue, &v130, a13, a14) & 1) == 0)
         {
           v48 = 0;
 LABEL_74:
@@ -1254,29 +1254,29 @@ LABEL_74:
           goto LABEL_75;
         }
 
-        v55 = *v109;
-        PixelFormatType = CVPixelBufferGetPixelFormatType(*v109);
+        v55 = *bufferCopy;
+        PixelFormatType = CVPixelBufferGetPixelFormatType(*bufferCopy);
         v56 = CVPixelBufferGetWidth(v55);
         cf = v55;
         v57 = CVPixelBufferGetHeight(v55);
-        v58 = [a1 session];
-        v106 = [v58 vnvtSessionManager];
+        session = [self session];
+        vnvtSessionManager = [session vnvtSessionManager];
         v59 = v47;
         v60 = y;
-        v61 = v51;
-        v62 = v35;
+        v61 = widthCopy2;
+        v62 = widthCopy3;
         r2 = v56;
         v63 = v57;
 
         if (v130 == 1)
         {
-          if (v29)
+          if (error)
           {
             v142.origin.x = v28;
             v142.origin.y = v27;
             v142.size.width = rect;
             v142.size.height = height;
-            v64 = v106;
+            v64 = vnvtSessionManager;
             v143 = CGRectIntegral(v142);
             v147.origin.x = 0.0;
             v147.origin.y = 0.0;
@@ -1291,10 +1291,10 @@ LABEL_74:
             v65 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:*(&v133 + 1) height:PixelFormatType pixelFormatType:a14 error:?];
             if (v65)
             {
-              if (([(VNImageBuffer *)v59 _VNVTPixelTransferImageForSource:v60 destinationBuffer:v61 cropRect:v62 performCrop:VNImageBuffer vtSessionManager:a2 error:v65, a7, v106, a14]& 1) != 0)
+              if (([(VNImageBuffer *)v59 _VNVTPixelTransferImageForSource:v60 destinationBuffer:v61 cropRect:v62 performCrop:VNImageBuffer vtSessionManager:a2 error:v65, format, vnvtSessionManager, a14]& 1) != 0)
               {
                 v66 = CVPixelBufferGetPixelFormatType(v65);
-                v67 = [(VNVTSessionManager *)v106 waitAndGetAvailablePixelRotationSessionForInputPixelFormat:v66 outputPixelFormat:PixelFormatType rotation:0 flipHorizontal:0 flipVertical:0 error:a14];
+                v67 = [(VNVTSessionManager *)vnvtSessionManager waitAndGetAvailablePixelRotationSessionForInputPixelFormat:v66 outputPixelFormat:PixelFormatType rotation:0 flipHorizontal:0 flipVertical:0 error:a14];
                 if (v67)
                 {
                   v68 = VTPixelRotationSessionRotateSubImage();
@@ -1302,23 +1302,23 @@ LABEL_74:
                   {
                     v89 = 1;
 LABEL_69:
-                    [(VNVTSessionManager *)v106 releasePixelRotationSession:v67];
+                    [(VNVTSessionManager *)vnvtSessionManager releasePixelRotationSession:v67];
                     CVPixelBufferRelease(v65);
 
                     if (v89)
                     {
 LABEL_70:
-                      if (v108 == 1278226488)
+                      if (heightCopy == 1278226488)
                       {
-                        *v109 = 0;
+                        *bufferCopy = 0;
                         v114[0] = MEMORY[0x1E69E9820];
                         v114[1] = 3221225472;
                         v114[2] = __113__VNImageBuffer__cropCVPixelBuffer_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error___block_invoke_2;
                         v114[3] = &__block_descriptor_60_e25_B24__0____CVBuffer__8__16l;
-                        v114[4] = v110;
-                        v114[5] = v111;
+                        v114[4] = outBufferCopy;
+                        v114[5] = widthCopy;
                         v115 = 1278226488;
-                        v114[6] = v109;
+                        v114[6] = bufferCopy;
                         VNExecuteBlockWithPixelBuffer(cf, 0, v114, a14);
                       }
 
@@ -1355,8 +1355,8 @@ LABEL_73:
 
           else
           {
-            v64 = v106;
-            if (([(VNImageBuffer *)v59 _VNVTPixelTransferImageForSource:v60 destinationBuffer:v61 cropRect:v62 performCrop:VNImageBuffer vtSessionManager:a2 error:cf, a7, v106, a14]& 1) != 0)
+            v64 = vnvtSessionManager;
+            if (([(VNImageBuffer *)v59 _VNVTPixelTransferImageForSource:v60 destinationBuffer:v61 cropRect:v62 performCrop:VNImageBuffer vtSessionManager:a2 error:cf, format, vnvtSessionManager, a14]& 1) != 0)
             {
               goto LABEL_70;
             }
@@ -1368,23 +1368,23 @@ LABEL_73:
           if (v130 >= 9)
           {
             v73 = objc_alloc(MEMORY[0x1E696AEC0]);
-            v74 = [v73 initWithFormat:@"VNImageBuffer - wrong crop orientation for rotation: %d", v130];
-            v64 = v106;
+            v130 = [v73 initWithFormat:@"VNImageBuffer - wrong crop orientation for rotation: %d", v130];
+            v64 = vnvtSessionManager;
             if (a14)
             {
-              *a14 = [VNError errorForInternalErrorWithLocalizedDescription:v74];
+              *a14 = [VNError errorForInternalErrorWithLocalizedDescription:v130];
             }
 
-            v75 = [v74 UTF8String];
-            VNValidatedLog(4, @"%s", v76, v77, v78, v79, v80, v81, v75);
+            uTF8String = [v130 UTF8String];
+            VNValidatedLog(4, @"%s", v76, v77, v78, v79, v80, v81, uTF8String);
             v137 = 0;
 
             goto LABEL_73;
           }
 
-          v82 = [objc_opt_class() mapOrientationToRotationDegrees];
-          v85 = *(v82 + 8);
-          v83 = v82 + 8;
+          mapOrientationToRotationDegrees = [objc_opt_class() mapOrientationToRotationDegrees];
+          v85 = *(mapOrientationToRotationDegrees + 8);
+          v83 = mapOrientationToRotationDegrees + 8;
           v84 = v85;
           if (!v85)
           {
@@ -1409,41 +1409,41 @@ LABEL_73:
             v93 = v130 == 2 || v130 == 5;
             if (v130 <= 4)
             {
-              v94 = v110;
+              v94 = outBufferCopy;
             }
 
             else
             {
-              v94 = v111;
+              v94 = widthCopy;
             }
 
             if (v130 <= 4)
             {
-              v95 = v111;
+              v95 = widthCopy;
             }
 
             else
             {
-              v95 = v110;
+              v95 = outBufferCopy;
             }
 
             v96 = v130 == 7 || v130 == 4;
             recta = v96;
-            v97 = [(VNImageBuffer *)a1 _createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:v94 height:v95 format:PixelFormatType options:v25 outPooled:0 error:a14];
-            v64 = v106;
+            v97 = [(VNImageBuffer *)self _createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:v94 height:v95 format:PixelFormatType options:rectCopy outPooled:0 error:a14];
+            v64 = vnvtSessionManager;
             if (v97)
             {
-              if (([(VNImageBuffer *)v59 _VNVTPixelTransferImageForSource:v60 destinationBuffer:v61 cropRect:v62 performCrop:VNImageBuffer vtSessionManager:a2 error:v97, a7, v106, a14]& 1) != 0 && (v98 = CVPixelBufferGetPixelFormatType(v97), [(VNVTSessionManager *)v106 waitAndGetAvailablePixelRotationSessionForInputPixelFormat:v98 outputPixelFormat:PixelFormatType rotation:v91 flipHorizontal:v93 flipVertical:recta error:a14], (v99 = objc_claimAutoreleasedReturnValue()) != 0))
+              if (([(VNImageBuffer *)v59 _VNVTPixelTransferImageForSource:v60 destinationBuffer:v61 cropRect:v62 performCrop:VNImageBuffer vtSessionManager:a2 error:v97, format, vnvtSessionManager, a14]& 1) != 0 && (v98 = CVPixelBufferGetPixelFormatType(v97), [(VNVTSessionManager *)vnvtSessionManager waitAndGetAvailablePixelRotationSessionForInputPixelFormat:v98 outputPixelFormat:PixelFormatType rotation:v91 flipHorizontal:v93 flipVertical:recta error:a14], (v99 = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 v116[0] = MEMORY[0x1E69E9820];
                 v116[1] = 3221225472;
                 v118 = v132;
                 v116[2] = __113__VNImageBuffer__cropCVPixelBuffer_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error___block_invoke;
                 v116[3] = &unk_1E77B2AA8;
-                v129 = v29;
+                v129 = error;
                 v119 = v133;
                 v120 = cf;
-                v124 = v54;
+                v124 = integerValue;
                 v121 = r2;
                 v122 = v63;
                 v100 = v99;
@@ -1468,7 +1468,7 @@ LABEL_73:
               }
 
               CVPixelBufferRelease(v97);
-              [(VNVTSessionManager *)v106 releasePixelRotationSession:v100];
+              [(VNVTSessionManager *)vnvtSessionManager releasePixelRotationSession:v100];
 
               if ((v101 & 1) == 0)
               {
@@ -1482,12 +1482,12 @@ LABEL_73:
           else
           {
 LABEL_64:
-            v64 = v106;
+            v64 = vnvtSessionManager;
             if (a14)
             {
               v87 = objc_alloc(MEMORY[0x1E696AEC0]);
-              v88 = [v87 initWithFormat:@"Invalid crop orientation: %d", v130];
-              *a14 = [VNError errorForInternalErrorWithLocalizedDescription:v88];
+              v1302 = [v87 initWithFormat:@"Invalid crop orientation: %d", v130];
+              *a14 = [VNError errorForInternalErrorWithLocalizedDescription:v1302];
             }
           }
         }
@@ -1501,16 +1501,16 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (v36 > 6)
+    if (orientation > 6)
     {
-      if (v36 == 7)
+      if (orientation == 7)
       {
         v50 = x + width;
         v49 = y;
         goto LABEL_29;
       }
 
-      if (v36 != 8)
+      if (orientation != 8)
       {
         goto LABEL_31;
       }
@@ -1520,9 +1520,9 @@ LABEL_31:
 
     else
     {
-      if (v36 != 5)
+      if (orientation != 5)
       {
-        v49 = v45 - (y + v35);
+        v49 = v45 - (y + widthCopy3);
         v50 = x + width;
 LABEL_29:
         y = v46 - v50;
@@ -1530,13 +1530,13 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v47 = v45 - (y + v35);
+      v47 = v45 - (y + widthCopy3);
     }
 
     y = x;
 LABEL_30:
-    v51 = v35;
-    v35 = width;
+    widthCopy2 = widthCopy3;
+    widthCopy3 = width;
     goto LABEL_35;
   }
 
@@ -1548,36 +1548,36 @@ LABEL_76:
 
 - (void)_baseCIImage
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[3];
+    v2 = self[3];
     if (v2)
     {
       v3 = v2;
 LABEL_6:
-      v1 = v3;
+      selfCopy = v3;
       goto LABEL_7;
     }
 
-    if (a1[2])
+    if (self[2])
     {
       v3 = [MEMORY[0x1E695F658] imageWithCVImageBuffer:?];
       goto LABEL_6;
     }
 
-    v5 = a1[5];
+    v5 = self[5];
     if (v5)
     {
       v6 = *(v5 + 64);
       if (v6)
       {
-        v1 = [MEMORY[0x1E695F658] imageWithContentsOfURL:v6];
+        selfCopy = [MEMORY[0x1E695F658] imageWithContentsOfURL:v6];
       }
 
       else
       {
-        v7 = v1[5];
+        v7 = selfCopy[5];
         if (v7)
         {
           v8 = *(v7 + 72);
@@ -1588,33 +1588,33 @@ LABEL_6:
           v8 = 0;
         }
 
-        v1 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
 LABEL_7:
 
-  return v1;
+  return selfCopy;
 }
 
-- (uint64_t)_cropCIImage:(CVPixelBufferRef *)a3 outBuffer:(unint64_t)a4 width:(unint64_t)a5 height:(int)a6 format:(int)a7 cropRect:(void *)a8 performCrop:(double)a9 options:(double)a10 rotate90CCW:(double)a11 error:(double)a12
+- (uint64_t)_cropCIImage:(CVPixelBufferRef *)image outBuffer:(unint64_t)buffer width:(unint64_t)width height:(int)height format:(int)format cropRect:(void *)rect performCrop:(double)crop options:(double)self0 rotate90CCW:(double)self1 error:(double)self2
 {
   v24 = a2;
-  v25 = a8;
-  if (a1 && [VNValidationUtilities validateNonNilOptionsDictionary:v25 selector:sel__cropCIImage_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error_ error:a14])
+  rectCopy = rect;
+  if (self && [VNValidationUtilities validateNonNilOptionsDictionary:rectCopy selector:sel__cropCIImage_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error_ error:a14])
   {
-    [VNError VNAssert:a3 != 0 log:@"Internal error: missing target buffer for crop operations"];
-    v26 = [a1 orientation];
+    [VNError VNAssert:image != 0 log:@"Internal error: missing target buffer for crop operations"];
+    orientation = [self orientation];
     memset(&v73, 0, sizeof(v73));
     if (v24)
     {
-      [v24 imageTransformForCGOrientation:v26];
+      [v24 imageTransformForCGOrientation:orientation];
     }
 
     else
@@ -1624,37 +1624,37 @@ LABEL_7:
 
     CGAffineTransformInvert(&v73, &v72);
     v72 = v73;
-    v75.origin.x = a9;
-    v75.origin.y = a10;
-    v75.size.width = a11;
-    v75.size.height = a12;
+    v75.origin.x = crop;
+    v75.origin.y = options;
+    v75.size.width = w;
+    v75.size.height = error;
     v76 = CGRectApplyAffineTransform(v75, &v72);
     x = v76.origin.x;
     y = v76.origin.y;
     width = v76.size.width;
     height = v76.size.height;
     v71 = 0;
-    v32 = [VNValidationUtilities getOptionalObject:&v71 ofClass:objc_opt_class() forKey:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight" inOptions:v25 error:a14];
+    v32 = [VNValidationUtilities getOptionalObject:&v71 ofClass:objc_opt_class() forKey:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight" inOptions:rectCopy error:a14];
     v33 = v71;
     if (v32)
     {
       v67 = v33;
       if (v33)
       {
-        v34 = [v33 integerValue];
+        integerValue = [v33 integerValue];
       }
 
       else
       {
-        v34 = 1;
+        integerValue = 1;
       }
 
       v70 = -1;
-      if (VNCalculateFeatureCropOrientationFromSuperpositionOfFeatureWithImageOrientations(v26, v34, &v70, a13, a14))
+      if (VNCalculateFeatureCropOrientationFromSuperpositionOfFeatureWithImageOrientations(orientation, integerValue, &v70, a13, a14))
       {
-        v66 = a1[7];
-        v35 = [a1 session];
-        v65 = [v35 vnciContextManager];
+        v66 = self[7];
+        session = [self session];
+        vnciContextManager = [session vnciContextManager];
 
         if (v66)
         {
@@ -1663,7 +1663,7 @@ LABEL_7:
 
         else
         {
-          v36 = [(VNCIContextManager *)v65 waitAndGetAvailableContextFromOptions:v25 error:a14];
+          v36 = [(VNCIContextManager *)vnciContextManager waitAndGetAvailableContextFromOptions:rectCopy error:a14];
           v64 = v36;
           if (v36)
           {
@@ -1679,10 +1679,10 @@ LABEL_7:
         }
 
         v38 = v24;
-        if (a7)
+        if (format)
         {
-          v39 = [MEMORY[0x1E695F658] clearImage];
-          v40 = [v38 imageByCompositingOverImage:v39];
+          clearImage = [MEMORY[0x1E695F658] clearImage];
+          v40 = [v38 imageByCompositingOverImage:clearImage];
 
           v41 = [v40 imageByCroppingToRect:{x, y, width, height}];
 
@@ -1691,31 +1691,31 @@ LABEL_7:
 
         if (v70 <= 4)
         {
-          v42 = a4;
+          widthCopy = buffer;
         }
 
         else
         {
-          v42 = a5;
+          widthCopy = width;
         }
 
         if (v70 <= 4)
         {
-          v43 = a5;
+          bufferCopy2 = width;
         }
 
         else
         {
-          v43 = a4;
+          bufferCopy2 = buffer;
         }
 
-        v44 = v43;
-        v45 = v42;
-        if (width != v42 || height != v44)
+        v44 = bufferCopy2;
+        v45 = widthCopy;
+        if (width != widthCopy || height != v44)
         {
           v46 = v45 / width;
           v47 = v44 / height;
-          if (a7)
+          if (format)
           {
             v48 = *MEMORY[0x1E695EFF8];
             v49 = *(MEMORY[0x1E695EFF8] + 8);
@@ -1762,10 +1762,10 @@ LABEL_7:
 
         if (v59)
         {
-          v60 = VNColorspaceForFormat(a6, 0);
-          v61 = *a3;
-          v62 = CVPixelBufferGetWidth(*a3);
-          [v66 render:v59 toCVPixelBuffer:v61 bounds:v60 colorSpace:{0.0, 0.0, v62, CVPixelBufferGetHeight(*a3)}];
+          v60 = VNColorspaceForFormat(height, 0);
+          v61 = *image;
+          v62 = CVPixelBufferGetWidth(*image);
+          [v66 render:v59 toCVPixelBuffer:v61 bounds:v60 colorSpace:{0.0, 0.0, v62, CVPixelBufferGetHeight(*image)}];
           CGColorSpaceRelease(v60);
         }
 
@@ -1779,7 +1779,7 @@ LABEL_7:
           v74 = 0;
         }
 
-        [(VNCIContextManager *)v65 releaseContext:v64];
+        [(VNCIContextManager *)vnciContextManager releaseContext:v64];
         if (v59)
         {
           v74 = 1;
@@ -1810,24 +1810,24 @@ LABEL_7:
   return v27;
 }
 
-- (uint64_t)_cropImageSourceManager:(CVPixelBufferRef *)a3 outBuffer:(unint64_t)a4 width:(unint64_t)a5 height:(int)a6 format:(int)a7 cropRect:(void *)a8 performCrop:(double)a9 options:(double)a10 rotate90CCW:(double)a11 error:(double)a12
+- (uint64_t)_cropImageSourceManager:(CVPixelBufferRef *)manager outBuffer:(unint64_t)buffer width:(unint64_t)width height:(int)height format:(int)format cropRect:(void *)rect performCrop:(double)crop options:(double)self0 rotate90CCW:(double)self1 error:(double)self2
 {
   v121 = *MEMORY[0x1E69E9840];
   v111 = a2;
-  v25 = a8;
-  if (!a1 || ![VNValidationUtilities validateNonNilOptionsDictionary:v25 selector:sel__cropImageSourceManager_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error_ error:a14])
+  rectCopy = rect;
+  if (!self || ![VNValidationUtilities validateNonNilOptionsDictionary:rectCopy selector:sel__cropImageSourceManager_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error_ error:a14])
   {
     goto LABEL_9;
   }
 
-  if (a3)
+  if (manager)
   {
-    v109 = [a1 orientation];
+    orientation = [self orientation];
     v117 = 0;
-    v26 = [VNValidationUtilities getOptionalObject:&v117 ofClass:objc_opt_class() forKey:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight" inOptions:v25 error:a14];
+    v26 = [VNValidationUtilities getOptionalObject:&v117 ofClass:objc_opt_class() forKey:@"VNImageBufferOption_FeatureOrientationRelativeToUpRight" inOptions:rectCopy error:a14];
     v27 = v117;
     v110 = v27;
-    if (!v26 || (!v27 ? (v28 = 1) : (v28 = [v27 integerValue]), v116 = -1, (VNCalculateFeatureCropOrientationFromSuperpositionOfFeatureWithImageOrientations(v109, v28, &v116, a13, a14) & 1) == 0))
+    if (!v26 || (!v27 ? (v28 = 1) : (v28 = [v27 integerValue]), v116 = -1, (VNCalculateFeatureCropOrientationFromSuperpositionOfFeatureWithImageOrientations(orientation, v28, &v116, a13, a14) & 1) == 0))
     {
       LOBYTE(v29) = 0;
 LABEL_75:
@@ -1838,59 +1838,59 @@ LABEL_75:
     [VNError VNAssert:1 log:@"Internal error: needToUpscale cannot be NULL"];
     if (v28 <= 4)
     {
-      v30 = a4;
+      widthCopy = buffer;
     }
 
     else
     {
-      v30 = a5;
+      widthCopy = width;
     }
 
-    v31 = v30;
+    v31 = widthCopy;
     if (v28 <= 4)
     {
-      v32 = a5;
+      bufferCopy2 = width;
     }
 
     else
     {
-      v32 = a4;
+      bufferCopy2 = buffer;
     }
 
     if (a13)
     {
-      v33 = a12;
+      wCopy = error;
     }
 
     else
     {
-      v33 = a11;
+      wCopy = w;
     }
 
     if (a13)
     {
-      v34 = a11;
+      errorCopy2 = w;
     }
 
     else
     {
-      v34 = a12;
+      errorCopy2 = error;
     }
 
-    v35 = v31 / v33;
-    if (v35 >= v32 / v34)
+    v35 = v31 / wCopy;
+    if (v35 >= bufferCopy2 / errorCopy2)
     {
       v36 = v35;
     }
 
     else
     {
-      v36 = v32 / v34;
+      v36 = bufferCopy2 / errorCopy2;
     }
 
-    v106 = a6;
-    v104 = a4;
-    v105 = a5;
+    heightCopy = height;
+    bufferCopy3 = buffer;
+    widthCopy3 = width;
     if (v36 <= 0.125)
     {
       v37 = 8;
@@ -1912,39 +1912,39 @@ LABEL_75:
     }
 
     options = v37;
-    v29 = v25;
+    v29 = rectCopy;
     v38 = [(CGImage *)v29 objectForKeyedSubscript:@"VNImageBufferOption_DownscaleCGInterpolationQuality"];
     v39 = v38;
     if (v38)
     {
-      v40 = [v38 intValue];
+      intValue = [v38 intValue];
     }
 
     else
     {
-      v40 = 4;
+      intValue = 4;
     }
 
     v41 = [(CGImage *)v29 objectForKeyedSubscript:@"VNImageBufferOption_UpscaleCGInterpolationQuality"];
 
     if (v41)
     {
-      v42 = [v41 intValue];
+      intValue2 = [v41 intValue];
     }
 
     else
     {
-      v42 = 4;
+      intValue2 = 4;
     }
 
     if (v36 <= 1.0)
     {
-      v43 = v40;
+      v43 = intValue;
     }
 
     else
     {
-      v43 = v42;
+      v43 = intValue2;
     }
 
     quality = v43;
@@ -1953,20 +1953,20 @@ LABEL_75:
     v45 = v44;
     if (v44)
     {
-      v46 = [v44 BOOLValue];
+      bOOLValue = [v44 BOOLValue];
     }
 
     else
     {
-      v46 = 0;
+      bOOLValue = 0;
     }
 
     v47 = [(CGImage *)v29 objectForKeyedSubscript:@"VNImageBufferOption_RequiresDepth"];
-    v48 = [v47 BOOLValue];
+    bOOLValue2 = [v47 BOOLValue];
 
-    if (!v48 || (a7 & 1) != 0 || *(a1 + 96))
+    if (!bOOLValue2 || (format & 1) != 0 || *(self + 96))
     {
-      if ((v48 & a7) == 1)
+      if ((bOOLValue2 & format) == 1)
       {
         if (a14)
         {
@@ -1983,33 +1983,33 @@ LABEL_74:
 
     else
     {
-      os_unfair_lock_lock((a1 + 104));
+      os_unfair_lock_lock((self + 104));
       if (v111)
       {
         v49 = [v111 _cgImageSourceAtAddress:v111 + 32 forSubSampleFactor:1 protectedWithUnfairLock:v111 + 12 operatingInLowPriority:0 error:0];
         if (v49)
         {
           v50 = +[VNDepthRepresentation depthRepresentationForImageSource:orientation:](VNDepthRepresentation, "depthRepresentationForImageSource:orientation:", v49, [v111 exifOrientation]);
-          v51 = *(a1 + 96);
-          *(a1 + 96) = v50;
+          v51 = *(self + 96);
+          *(self + 96) = v50;
         }
       }
 
-      os_unfair_lock_unlock((a1 + 104));
+      os_unfair_lock_unlock((self + 104));
     }
 
-    if (v106 > 1111970368)
+    if (heightCopy > 1111970368)
     {
-      if (v106 != 1111970369 && v106 != 1278226488)
+      if (heightCopy != 1111970369 && heightCopy != 1278226488)
       {
         v52 = 1380401729;
 LABEL_64:
-        if (v106 != v52)
+        if (heightCopy != v52)
         {
-          v61 = [(VNImageSourceManager *)v111 ciImageWithSubSampleFactor:v46 useLowPriority:a14 error:?];
+          v61 = [(VNImageSourceManager *)v111 ciImageWithSubSampleFactor:bOOLValue useLowPriority:a14 error:?];
           if (v61)
           {
-            LOBYTE(v29) = [(VNImageBuffer *)a1 _cropCIImage:v61 outBuffer:a3 width:v104 height:v105 format:v106 cropRect:a7 performCrop:v29 options:(a9 * (1.0 / options)) rotate90CCW:(a10 * (1.0 / options)) error:(a11 * (1.0 / options)), (a12 * (1.0 / options)), a13, a14];
+            LOBYTE(v29) = [(VNImageBuffer *)self _cropCIImage:v61 outBuffer:manager width:bufferCopy3 height:widthCopy3 format:heightCopy cropRect:format performCrop:v29 options:(crop * (1.0 / options)) rotate90CCW:(options * (1.0 / options)) error:(w * (1.0 / options)), (error * (1.0 / options)), a13, a14];
           }
 
           else
@@ -2022,7 +2022,7 @@ LABEL_64:
       }
     }
 
-    else if (v106 != 32 && v106 != 40)
+    else if (heightCopy != 32 && heightCopy != 40)
     {
       v52 = 1094862674;
       goto LABEL_64;
@@ -2079,18 +2079,18 @@ LABEL_73:
     image = v29;
     Width = CGImageGetWidth(v29);
     Height = CGImageGetHeight(v29);
-    if (v109 < 5)
+    if (orientation < 5)
     {
-      v64 = [a1 width];
+      width = [self width];
     }
 
     else
     {
-      v64 = [a1 height];
+      width = [self height];
     }
 
     v65 = Width;
-    v66 = 1.0 / round(v64 / Width);
+    v66 = 1.0 / round(width / Width);
     v67 = MEMORY[0x1E695EFD0];
     v68 = *(MEMORY[0x1E695EFD0] + 16);
     *&v120.a = *MEMORY[0x1E695EFD0];
@@ -2099,9 +2099,9 @@ LABEL_73:
     *&v119.a = *&v120.a;
     *&v119.c = v68;
     *&v119.tx = *&v120.tx;
-    if (!a7)
+    if (!format)
     {
-      [a1 fullImageBufferRect];
+      [self fullImageBufferRect];
       v77 = v76 * v66;
       v79 = v78 * v66;
       if (a13)
@@ -2118,20 +2118,20 @@ LABEL_73:
         v79 = v123.size.height;
       }
 
-      CGAffineTransformMakeScale(&v115, v104 / v77, v105 / v79);
+      CGAffineTransformMakeScale(&v115, bufferCopy3 / v77, widthCopy3 / v79);
       v120 = v115;
       goto LABEL_114;
     }
 
-    v69 = a11 * v66;
-    v70 = (a9 * v66);
-    v71 = (a10 * v66);
+    v69 = w * v66;
+    v70 = (crop * v66);
+    v71 = (options * v66);
     v72 = v69;
-    v73 = (a12 * v66);
+    v73 = (error * v66);
     memset(&v115, 0, sizeof(v115));
-    if (v109 <= 4)
+    if (orientation <= 4)
     {
-      switch(v109)
+      switch(orientation)
       {
         case 2:
           t1.b = 0.0;
@@ -2187,28 +2187,28 @@ LABEL_141:
 
           [(VNImageBuffer *)&v119 _calculateTranslationTransformForOrientedCropWithOrientation:v116 unorientedSubsampledFullImageRect:0.0 unorientedSubsampledOriginalCrop:0.0, v65, Height, x, y, v84, v85];
           CGImageRelease(image);
-          v87 = v104 / v85;
+          v87 = bufferCopy3 / v85;
           if (v116 < 5)
           {
-            v87 = v104 / v84;
+            v87 = bufferCopy3 / v84;
           }
 
-          v88 = v105 / v84;
+          v88 = widthCopy3 / v84;
           if (v116 < 5)
           {
-            v88 = v105 / v85;
+            v88 = widthCopy3 / v85;
           }
 
           CGAffineTransformMakeScale(&v120, v87, v88);
           image = v86;
 LABEL_114:
-          v89 = *a3;
+          v89 = *manager;
           LODWORD(v115.a) = 0;
           CVPixelBufferLockBaseAddress(v89, 0);
           BytesPerRow = CVPixelBufferGetBytesPerRow(v89);
           BaseAddress = CVPixelBufferGetBaseAddress(v89);
-          v92 = VNColorspaceForFormat(v106, &v115);
-          v93 = CGBitmapContextCreate(BaseAddress, v104, v105, 8uLL, BytesPerRow, v92, LODWORD(v115.a));
+          v92 = VNColorspaceForFormat(heightCopy, &v115);
+          v93 = CGBitmapContextCreate(BaseAddress, bufferCopy3, widthCopy3, 8uLL, BytesPerRow, v92, LODWORD(v115.a));
           CVPixelBufferUnlockBaseAddress(v89, 0);
           CGColorSpaceRelease(v92);
           if (v93)
@@ -2341,10 +2341,10 @@ LABEL_128:
 
     else
     {
-      if (v109 <= 6)
+      if (orientation <= 6)
       {
         *&t1.a = xmmword_1A6038B80;
-        if (v109 == 5)
+        if (orientation == 5)
         {
           *&t1.c = xmmword_1A6038B90;
           t1.tx = Height;
@@ -2361,7 +2361,7 @@ LABEL_128:
         goto LABEL_108;
       }
 
-      if (v109 == 7)
+      if (orientation == 7)
       {
         *&t1.a = xmmword_1A6038B70;
         t1.c = 1.0;
@@ -2369,7 +2369,7 @@ LABEL_128:
         goto LABEL_106;
       }
 
-      if (v109 == 8)
+      if (orientation == 8)
       {
         *&t1.a = xmmword_1A6038B70;
         *&t1.c = xmmword_1A6038B90;
@@ -2407,7 +2407,7 @@ LABEL_76:
   return v29 & 1;
 }
 
-- (CGAffineTransform)_calculateTranslationTransformForOrientedCropWithOrientation:(double)a3 unorientedSubsampledFullImageRect:(double)a4 unorientedSubsampledOriginalCrop:(double)a5
+- (CGAffineTransform)_calculateTranslationTransformForOrientedCropWithOrientation:(double)orientation unorientedSubsampledFullImageRect:(double)rect unorientedSubsampledOriginalCrop:(double)crop
 {
   if (a7 >= 0.0)
   {
@@ -2429,7 +2429,7 @@ LABEL_76:
     v11 = -a8;
   }
 
-  v12 = a5 - a9;
+  v12 = crop - a9;
   if (a2 > 4)
   {
     v12 = a6;
@@ -2439,7 +2439,7 @@ LABEL_76:
   v14 = a6 - a10;
   if (a2 <= 4)
   {
-    a5 = v14;
+    crop = v14;
   }
 
   if (v12 >= 0.0)
@@ -2447,14 +2447,14 @@ LABEL_76:
     v13 = 0.0;
   }
 
-  if (a5 >= 0.0)
+  if (crop >= 0.0)
   {
     v15 = 0.0;
   }
 
   else
   {
-    v15 = -a5;
+    v15 = -crop;
   }
 
   v16 = MEMORY[0x1E695EFD0];
@@ -2536,18 +2536,18 @@ LABEL_29:
   return retstr;
 }
 
-- (void)_isRectOutOfBounds:(CGFloat)a3
+- (void)_isRectOutOfBounds:(CGFloat)bounds
 {
   if (result)
   {
     [result fullImageBufferRect];
     v11.origin.x = a2;
-    v11.origin.y = a3;
+    v11.origin.y = bounds;
     v11.size.width = a4;
     v11.size.height = a5;
     v10 = CGRectIntersection(v9, v11);
     v12.origin.x = a2;
-    v12.origin.y = a3;
+    v12.origin.y = bounds;
     v12.size.width = a4;
     v12.size.height = a5;
     return !CGRectContainsRect(v10, v12);
@@ -2556,15 +2556,15 @@ LABEL_29:
   return result;
 }
 
-+ (uint64_t)_VNVTPixelTransferImageForSource:(CGFloat)a3 destinationBuffer:(CGFloat)a4 cropRect:(uint64_t)a5 performCrop:(__CVBuffer *)a6 vtSessionManager:(__CVBuffer *)a7 error:(int)a8
++ (uint64_t)_VNVTPixelTransferImageForSource:(CGFloat)source destinationBuffer:(CGFloat)buffer cropRect:(uint64_t)rect performCrop:(__CVBuffer *)crop vtSessionManager:(__CVBuffer *)manager error:(int)error
 {
   v61 = *MEMORY[0x1E69E9840];
   v55 = a9;
   objc_opt_self();
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a6);
-  v17 = CVPixelBufferGetPixelFormatType(a7);
-  v51 = a6;
-  v52 = a7;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(crop);
+  v17 = CVPixelBufferGetPixelFormatType(manager);
+  cropCopy = crop;
+  managerCopy = manager;
   if (!v55)
   {
     v29 = 0;
@@ -2657,12 +2657,12 @@ LABEL_21:
   }
 
   v34 = v29[3];
-  if (a8)
+  if (error)
   {
-    v62.origin.x = a1;
+    v62.origin.x = self;
     v62.origin.y = a2;
-    v62.size.width = a3;
-    v62.size.height = a4;
+    v62.size.width = source;
+    v62.size.height = buffer;
     DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v62);
   }
 
@@ -2691,7 +2691,7 @@ LABEL_33:
 
   else
   {
-    v39 = VTPixelTransferSessionTransferImage(v34, v51, v52);
+    v39 = VTPixelTransferSessionTransferImage(v34, cropCopy, managerCopy);
     if (!v39)
     {
       v40 = 1;
@@ -2726,41 +2726,41 @@ LABEL_41:
   return v40;
 }
 
-- (CVPixelBufferRef)_createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:(size_t)a3 height:(uint64_t)a4 format:(void *)a5 options:(_BYTE *)a6 outPooled:(void *)a7 error:
+- (CVPixelBufferRef)_createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:(size_t)with height:(uint64_t)height format:(void *)format options:(_BYTE *)options outPooled:(void *)pooled error:
 {
-  v12 = a5;
-  v55 = v12;
-  if (!a1)
+  formatCopy = format;
+  v55 = formatCopy;
+  if (!self)
   {
     goto LABEL_63;
   }
 
-  v13 = v12;
+  v13 = formatCopy;
   v14 = [v13 valueForKey:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
-  if (a6)
+  if (options)
   {
-    *a6 = v15;
+    *options = bOOLValue;
   }
 
-  if (!v15)
+  if (!bOOLValue)
   {
-    a1 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a2 height:a3 pixelFormatType:a4 error:a7];
+    self = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:a2 height:with pixelFormatType:height error:pooled];
     goto LABEL_63;
   }
 
-  v54 = [(__CVBuffer *)a1 session];
-  v16 = [v54 vncvPixelBufferPoolManager];
-  v17 = v16;
-  if (!v16)
+  session = [(__CVBuffer *)self session];
+  vncvPixelBufferPoolManager = [session vncvPixelBufferPoolManager];
+  v17 = vncvPixelBufferPoolManager;
+  if (!vncvPixelBufferPoolManager)
   {
-    a1 = 0;
+    self = 0;
     goto LABEL_62;
   }
 
-  os_unfair_lock_lock(v16 + 2);
-  v18 = a4 ^ __ROR8__(a3 ^ __ROR8__(a2, 51), 51);
+  os_unfair_lock_lock(vncvPixelBufferPoolManager + 2);
+  v18 = height ^ __ROR8__(with ^ __ROR8__(a2, 51), 51);
   v19 = *&v17[6]._os_unfair_lock_opaque;
   v20 = MEMORY[0x1E6966130];
   if (v19)
@@ -2789,7 +2789,7 @@ LABEL_41:
         v25 = i[1];
         if (v25 == v18)
         {
-          if (i[2] == a2 && i[3] == a3 && *(i + 8) == a4)
+          if (i[2] == a2 && i[3] == with && *(i + 8) == height)
           {
             goto LABEL_51;
           }
@@ -2823,8 +2823,8 @@ LABEL_41:
   objc_opt_self();
   v26 = objc_alloc(MEMORY[0x1E695DF90]);
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a2];
-  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
-  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a4];
+  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:with];
+  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:height];
   v30 = [v26 initWithObjectsAndKeys:{v27, *MEMORY[0x1E6966208], v28, *MEMORY[0x1E69660B8], v29, *v20, 0}];
 
   if (VNIOSurfaceBackedPixelBufferAttributes::onceToken != -1)
@@ -2838,9 +2838,9 @@ LABEL_41:
   if (v31)
   {
 
-    if (a7)
+    if (pooled)
     {
-      *a7 = [VNError errorForCVReturnCode:v31 width:a2 height:a3 pixelFormat:a4 localizedDescription:@"Failed to create CVPixelBufferPool"];
+      *pooled = [VNError errorForCVReturnCode:v31 width:a2 height:with pixelFormat:height localizedDescription:@"Failed to create CVPixelBufferPool"];
     }
   }
 
@@ -2911,7 +2911,7 @@ LABEL_49:
     }
   }
 
-  if (i[2] != a2 || i[3] != a3 || *(i + 8) != a4)
+  if (i[2] != a2 || i[3] != with || *(i + 8) != height)
   {
     goto LABEL_49;
   }
@@ -2935,25 +2935,25 @@ LABEL_51:
   if (v45)
   {
     VNValidatedLog(4, @"VNCVPixelBufferHelper: Failed to create CVPixelBuffer from pool (%p): %d", v38, v39, v40, v41, v42, v43, v37);
-    if (a7)
+    if (pooled)
     {
       v46 = CVPixelBufferPoolGetAttributes(v37);
       v47 = [v46 objectForKeyedSubscript:*MEMORY[0x1E6966208]];
-      v48 = [v47 unsignedLongValue];
+      unsignedLongValue = [v47 unsignedLongValue];
       v49 = [v46 objectForKeyedSubscript:*MEMORY[0x1E69660B8]];
-      v50 = [v49 unsignedLongValue];
+      unsignedLongValue2 = [v49 unsignedLongValue];
       v51 = [v46 objectForKeyedSubscript:*v20];
-      *a7 = +[VNError errorForCVReturnCode:width:height:pixelFormat:localizedDescription:](VNError, "errorForCVReturnCode:width:height:pixelFormat:localizedDescription:", v44, v48, v50, [v51 unsignedIntValue], @"Failed to create CVPixelBufferPool.");
+      *pooled = +[VNError errorForCVReturnCode:width:height:pixelFormat:localizedDescription:](VNError, "errorForCVReturnCode:width:height:pixelFormat:localizedDescription:", v44, unsignedLongValue, unsignedLongValue2, [v51 unsignedIntValue], @"Failed to create CVPixelBufferPool.");
     }
 
 LABEL_60:
-    a1 = 0;
+    self = 0;
   }
 
   else
   {
-    v52 = [VNCVPixelBufferHelper _validatePixelBuffer:a7 error:?];
-    a1 = poolOut;
+    v52 = [VNCVPixelBufferHelper _validatePixelBuffer:pooled error:?];
+    self = poolOut;
     if ((v52 & 1) == 0)
     {
       CVPixelBufferRelease(poolOut);
@@ -2965,7 +2965,7 @@ LABEL_60:
 LABEL_62:
 
 LABEL_63:
-  return a1;
+  return self;
 }
 
 BOOL __113__VNImageBuffer__cropCVPixelBuffer_outBuffer_width_height_format_cropRect_performCrop_options_rotate90CCW_error___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -3136,9 +3136,9 @@ BOOL __113__VNImageBuffer__cropCVPixelBuffer_outBuffer_width_height_format_cropR
   return v13 == 0;
 }
 
-- (id)augmentedBuffersWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 options:(id)a6 augmentationOptions:(id)a7 error:(id *)a8
+- (id)augmentedBuffersWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format options:(id)options augmentationOptions:(id)augmentationOptions error:(id *)error
 {
-  v8 = [(VNImageBuffer *)self augmentedCroppedBuffersWithWidth:a3 height:a4 format:*&a5 cropRect:a6 options:a7 augmentationOptions:a8 error:*MEMORY[0x1E695F040], *(MEMORY[0x1E695F040] + 8), *(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)];
+  v8 = [(VNImageBuffer *)self augmentedCroppedBuffersWithWidth:width height:height format:*&format cropRect:options options:augmentationOptions augmentationOptions:error error:*MEMORY[0x1E695F040], *(MEMORY[0x1E695F040] + 8), *(MEMORY[0x1E695F040] + 16), *(MEMORY[0x1E695F040] + 24)];
 
   return v8;
 }
@@ -3185,69 +3185,69 @@ LABEL_6:
   return v6;
 }
 
-- (__CVBuffer)createCroppedBufferWithMaxSideLengthOf:(unint64_t)a3 cropRect:(CGRect)a4 pixelFormat:(unsigned int)a5 options:(id)a6 error:(id *)a7 pixelBufferRepsCacheKey:(id *)a8
+- (__CVBuffer)createCroppedBufferWithMaxSideLengthOf:(unint64_t)of cropRect:(CGRect)rect pixelFormat:(unsigned int)format options:(id)options error:(id *)error pixelBufferRepsCacheKey:(id *)key
 {
-  v10 = *&a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a6;
-  v18 = width;
-  v19 = height;
+  v10 = *&format;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  ofCopy2 = width;
+  ofCopy = height;
   if (width <= height)
   {
-    if (v19 > a3)
+    if (ofCopy > of)
     {
-      v18 = (width / height * a3);
-      v19 = a3;
+      ofCopy2 = (width / height * of);
+      ofCopy = of;
     }
   }
 
-  else if (v18 > a3)
+  else if (ofCopy2 > of)
   {
-    v19 = (height / width * a3);
-    v18 = a3;
+    ofCopy = (height / width * of);
+    ofCopy2 = of;
   }
 
-  v20 = [(VNImageBuffer *)self croppedBufferWithWidth:v18 height:v19 format:v10 cropRect:v17 options:a7 error:a8 pixelBufferRepsCacheKey:x, y, width, height];
+  height = [(VNImageBuffer *)self croppedBufferWithWidth:ofCopy2 height:ofCopy format:v10 cropRect:optionsCopy options:error error:key pixelBufferRepsCacheKey:x, y, width, height];
 
-  return v20;
+  return height;
 }
 
-- (__CVBuffer)createBufferWithMaxSideLengthOf:(unint64_t)a3 pixelFormat:(unsigned int)a4 options:(id)a5 error:(id *)a6
+- (__CVBuffer)createBufferWithMaxSideLengthOf:(unint64_t)of pixelFormat:(unsigned int)format options:(id)options error:(id *)error
 {
-  v7 = *&a4;
-  v10 = a5;
-  v11 = [(VNImageBuffer *)self width];
-  v12 = [(VNImageBuffer *)self height];
-  v13 = v12;
-  if (v11 <= v12)
+  v7 = *&format;
+  optionsCopy = options;
+  ofCopy2 = [(VNImageBuffer *)self width];
+  height = [(VNImageBuffer *)self height];
+  ofCopy = height;
+  if (ofCopy2 <= height)
   {
-    if (v12 > a3)
+    if (height > of)
     {
-      v11 = ((a3 * v11) / v12);
-      v13 = a3;
+      ofCopy2 = ((of * ofCopy2) / height);
+      ofCopy = of;
     }
   }
 
-  else if (v11 > a3)
+  else if (ofCopy2 > of)
   {
-    v13 = ((a3 * v12) / v11);
-    v11 = a3;
+    ofCopy = ((of * height) / ofCopy2);
+    ofCopy2 = of;
   }
 
-  v14 = [(VNImageBuffer *)self bufferWithWidth:v11 height:v13 format:v7 options:v10 error:a6];
+  v14 = [(VNImageBuffer *)self bufferWithWidth:ofCopy2 height:ofCopy format:v7 options:optionsCopy error:error];
 
   return v14;
 }
 
-- (CGRect)makeClippedRectAgainstImageExtentUsingOriginalRect:(CGRect)a3
+- (CGRect)makeClippedRectAgainstImageExtentUsingOriginalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VNImageBuffer *)self fullImageBufferRect];
   v11 = x;
   v12 = y;
@@ -3273,14 +3273,14 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)getCameraIntrinsicsAvailable:(id *)a3
+- (BOOL)getCameraIntrinsicsAvailable:(id *)available
 {
   v4 = [(NSDictionary *)self->_options objectForKeyedSubscript:@"VNImageOptionCameraIntrinsics"];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7.location = 0;
     v7.length = 48;
-    CFDataGetBytes(v4, v7, a3);
+    CFDataGetBytes(v4, v7, available);
     v5 = 1;
   }
 
@@ -3292,7 +3292,7 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)getCameraOpticalCenterIfAvailable:(CGPoint *)a3
+- (BOOL)getCameraOpticalCenterIfAvailable:(CGPoint *)available
 {
   v10 = 0u;
   memset(v9, 0, sizeof(v9));
@@ -3300,34 +3300,34 @@ LABEL_6:
   if (v5)
   {
     v6 = *&v10;
-    a3->x = (v6 / [(VNImageBuffer *)self width]);
+    available->x = (v6 / [(VNImageBuffer *)self width]);
     v7 = *(&v10 + 1);
-    a3->y = (v7 / [(VNImageBuffer *)self height]);
+    available->y = (v7 / [(VNImageBuffer *)self height]);
   }
 
   return v5;
 }
 
-- (BOOL)getPixelFocalLengthIfAvailable:(float *)a3
+- (BOOL)getPixelFocalLengthIfAvailable:(float *)available
 {
   memset(v6, 0, sizeof(v6));
   v4 = [(VNImageBuffer *)self getCameraIntrinsicsAvailable:v6];
   if (v4)
   {
-    *a3 = *v6;
+    *available = *v6;
   }
 
   return v4;
 }
 
-- (int)aspectForRegionOfInterest:(CGRect)a3
+- (int)aspectForRegionOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v6 = [(VNImageBuffer *)self width:a3.origin.x];
-  v7 = [(VNImageBuffer *)self height];
+  height = interest.size.height;
+  width = interest.size.width;
+  v6 = [(VNImageBuffer *)self width:interest.origin.x];
+  height = [(VNImageBuffer *)self height];
   v8 = width * v6;
-  v9 = height * v7;
+  v9 = height * height;
   if (v8 < v9)
   {
     return 1;
@@ -3341,16 +3341,16 @@ LABEL_6:
 
 - (int)aspect
 {
-  v3 = [(VNImageBuffer *)self width];
-  v4 = [(VNImageBuffer *)self height];
-  if (v3 < v4)
+  width = [(VNImageBuffer *)self width];
+  height = [(VNImageBuffer *)self height];
+  if (width < height)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 > v4);
+    return 2 * (width > height);
   }
 }
 
@@ -3487,121 +3487,121 @@ LABEL_6:
   return result;
 }
 
-- (__CVBuffer)cropAndScaleBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 cropRect:(CGRect)a5 format:(unsigned int)a6 imageCropAndScaleOption:(unint64_t)a7 options:(id)a8 error:(id *)a9 calculatedNormalizedOriginOffset:(CGPoint *)a10 calculatedScaleX:(double *)a11 calculatedScaleY:(double *)a12 pixelBufferRepsCacheKey:(id *)a13
+- (__CVBuffer)cropAndScaleBufferWithWidth:(unint64_t)width height:(unint64_t)height cropRect:(CGRect)rect format:(unsigned int)format imageCropAndScaleOption:(unint64_t)option options:(id)options error:(id *)error calculatedNormalizedOriginOffset:(CGPoint *)self0 calculatedScaleX:(double *)self1 calculatedScaleY:(double *)self2 pixelBufferRepsCacheKey:(id *)self3
 {
-  v15 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v23 = a8;
-  v24 = 0;
+  v15 = *&format;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  optionsCopy = options;
+  heightCopy3 = 0;
   v25 = 0;
   v26 = *MEMORY[0x1E695EFF8];
   v27 = *(MEMORY[0x1E695EFF8] + 8);
   v56 = 1.0;
   v55 = 1.0;
-  if (a7 <= 1)
+  if (option <= 1)
   {
-    if (!a7)
+    if (!option)
     {
-      [VNImageBuffer computeCenterCropRectFromCropRect:&v56 inImageSize:&v55 calculatedScaleX:x calculatedScaleY:y, width, height, a3, a4];
+      [VNImageBuffer computeCenterCropRectFromCropRect:&v56 inImageSize:&v55 calculatedScaleX:x calculatedScaleY:y, width, height, width, height];
       x = v33;
       y = v34;
       v25 = 0;
       v26 = v33 / width;
-      v24 = a4;
-      v30 = a3;
+      heightCopy3 = height;
+      widthCopy2 = width;
       width = v35;
       v27 = v34 / height;
       height = v36;
       goto LABEL_20;
     }
 
-    if (a7 != 1)
+    if (option != 1)
     {
       goto LABEL_16;
     }
 
-    v28 = a3 / width;
+    v28 = width / width;
     v56 = v28;
-    v29 = a4 / height;
+    v29 = height / height;
     v55 = v29;
     v25 = 0;
     if (v28 < v29)
     {
-      v24 = (height * v28);
-      v55 = a3 / width;
+      heightCopy3 = (height * v28);
+      v55 = width / width;
 LABEL_12:
-      v30 = a3;
+      widthCopy2 = width;
       goto LABEL_20;
     }
 
-    v30 = (width * v29);
-    v56 = a4 / height;
+    widthCopy2 = (width * v29);
+    v56 = height / height;
   }
 
   else
   {
-    if (a7 == 2)
+    if (option == 2)
     {
       v25 = 0;
       goto LABEL_11;
     }
 
-    if (a7 != 257)
+    if (option != 257)
     {
-      if (a7 == 258)
+      if (option == 258)
       {
-        v56 = a3 / height;
-        v55 = a4 / width;
+        v56 = width / height;
+        v55 = height / width;
         v25 = 1;
 LABEL_11:
-        v24 = a4;
+        heightCopy3 = height;
         goto LABEL_12;
       }
 
 LABEL_16:
-      v30 = 0;
+      widthCopy2 = 0;
       goto LABEL_20;
     }
 
-    v31 = a3 / height;
+    v31 = width / height;
     v56 = v31;
-    v32 = a4 / width;
+    v32 = height / width;
     v55 = v32;
     if (v31 < v32)
     {
-      v24 = (width * v31);
-      v55 = a3 / height;
+      heightCopy3 = (width * v31);
+      v55 = width / height;
       v25 = 1;
       goto LABEL_12;
     }
 
-    v30 = (height * v32);
-    v56 = a4 / width;
+    widthCopy2 = (height * v32);
+    v56 = height / width;
     v25 = 1;
   }
 
-  v24 = a4;
+  heightCopy3 = height;
 LABEL_20:
-  v37 = [(VNImageBuffer *)self _croppedBufferWithWidth:v30 height:v24 format:v15 cropRect:v23 options:a9 error:a13 pixelBufferRepsCacheKey:v25 rotate90CCW:x, y, width, height];
-  v38 = v37;
-  if (!v37)
+  height = [(VNImageBuffer *)self _croppedBufferWithWidth:widthCopy2 height:heightCopy3 format:v15 cropRect:optionsCopy options:error error:key pixelBufferRepsCacheKey:v25 rotate90CCW:x, y, width, height];
+  v38 = height;
+  if (!height)
   {
 LABEL_35:
     v40 = 0;
     goto LABEL_36;
   }
 
-  if (a7 - 257 >= 2 && a7 != 1)
+  if (option - 257 >= 2 && option != 1)
   {
-    v40 = v37;
+    v40 = height;
     goto LABEL_28;
   }
 
   v54 = 0;
-  v39 = [(VNImageBuffer *)self _createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:a3 height:a4 format:v15 options:v23 outPooled:&v54 error:a9];
+  v39 = [(VNImageBuffer *)self _createPotentiallyPooledIOSurfaceBackedPixelBufferWithWith:width height:height format:v15 options:optionsCopy outPooled:&v54 error:error];
   v40 = v39;
   if (!v39)
   {
@@ -3623,11 +3623,11 @@ LABEL_35:
   v43[3] = &unk_1E77B2B18;
   v44 = v15;
   v45 = v54;
-  v43[6] = a4;
+  v43[6] = height;
   v43[7] = v38;
   v43[4] = &v46;
-  v43[5] = a3;
-  v41 = VNExecuteBlockWithPixelBuffer(v39, 0, v43, a9);
+  v43[5] = width;
+  v41 = VNExecuteBlockWithPixelBuffer(v39, 0, v43, error);
   v26 = v47[6];
   v27 = v47[7];
   CVPixelBufferRelease(v38);
@@ -3640,20 +3640,20 @@ LABEL_35:
 
   _Block_object_dispose(&v46, 8);
 LABEL_28:
-  if (a10)
+  if (offset)
   {
-    a10->x = v26;
-    a10->y = v27;
+    offset->x = v26;
+    offset->y = v27;
   }
 
-  if (a11)
+  if (x)
   {
-    *a11 = v56;
+    *x = v56;
   }
 
-  if (a12)
+  if (y)
   {
-    *a12 = v55;
+    *y = v55;
   }
 
 LABEL_36:
@@ -3661,23 +3661,23 @@ LABEL_36:
   return v40;
 }
 
-- (uint64_t)_croppedBufferWithWidth:(uint64_t)a3 height:(uint64_t)a4 format:(void *)a5 cropRect:(void *)a6 options:(void *)a7 error:(char)a8 pixelBufferRepsCacheKey:(CGFloat)a9 rotate90CCW:(CGFloat)a10
+- (uint64_t)_croppedBufferWithWidth:(uint64_t)width height:(uint64_t)height format:(void *)format cropRect:(void *)rect options:(void *)options error:(char)error pixelBufferRepsCacheKey:(CGFloat)key rotate90CCW:(CGFloat)self0
 {
-  v38 = a5;
-  if (!a1)
+  formatCopy = format;
+  if (!self)
   {
     v34 = 0;
     goto LABEL_28;
   }
 
-  v22 = a1[2];
+  v22 = self[2];
   if (!v22)
   {
     goto LABEL_9;
   }
 
   PixelFormatType = CVPixelBufferGetPixelFormatType(v22);
-  v24 = PixelFormatType;
+  heightCopy = PixelFormatType;
   if (PixelFormatType > 792872768)
   {
     if (PixelFormatType == 792872769)
@@ -3701,23 +3701,23 @@ LABEL_36:
   if (PixelFormatType != v25)
   {
 LABEL_9:
-    v24 = a4;
+    heightCopy = height;
   }
 
 LABEL_10:
-  v26 = [VNImageBufferCache cacheKeyWithBufferFormat:v24 width:a2 height:a3 cropRect:a9, a10, a11, a12];
+  v26 = [VNImageBufferCache cacheKeyWithBufferFormat:heightCopy width:a2 height:width cropRect:key, w, a11, a12];
   v27 = [v26 hash];
-  if (a3 && a2 && a11 >= 1.0 && a12 >= 1.0)
+  if (width && a2 && a11 >= 1.0 && a12 >= 1.0)
   {
     v28 = v27;
-    [a1 fullImageBufferRect];
-    v59.origin.x = a9;
-    v59.origin.y = a10;
+    [self fullImageBufferRect];
+    v59.origin.x = key;
+    v59.origin.y = w;
     v59.size.width = a11;
     v59.size.height = a12;
     if (CGRectIntersectsRect(v58, v59))
     {
-      v29 = v24 | ((a3 | (a2 << 16)) << 32);
+      v29 = heightCopy | ((width | (a2 << 16)) << 32);
       v54 = 0;
       v55 = &v54;
       v56 = 0x2020000000;
@@ -3727,31 +3727,31 @@ LABEL_10:
       aBlock[2] = __114__VNImageBuffer__croppedBufferWithWidth_height_format_cropRect_options_error_pixelBufferRepsCacheKey_rotate90CCW___block_invoke;
       aBlock[3] = &unk_1E77B2AF0;
       v43 = a2;
-      v44 = a3;
+      widthCopy = width;
       v42 = &v54;
-      aBlock[4] = a1;
+      aBlock[4] = self;
       v30 = v26;
       v40 = v30;
       v45 = v28;
-      v46 = a12 | (((a10 << 16) | (a9 << 32) | a11) << 16);
+      v46 = a12 | (((w << 16) | (key << 32) | a11) << 16);
       v47 = v29;
-      v48 = a9;
-      v49 = a10;
+      keyCopy = key;
+      wCopy = w;
       v50 = a11;
       v51 = a12;
-      v41 = v38;
-      v52 = v24;
-      v53 = a8;
+      v41 = formatCopy;
+      v52 = heightCopy;
+      errorCopy = error;
       v31 = _Block_copy(aBlock);
       kdebug_trace();
-      v32 = VNExecuteBlock(v31, a6);
+      v32 = VNExecuteBlock(v31, rect);
       kdebug_trace();
       if (v32)
       {
-        if (a7)
+        if (options)
         {
           v33 = v30;
-          *a7 = v30;
+          *options = v30;
         }
 
         v34 = v55[3];
@@ -3766,7 +3766,7 @@ LABEL_10:
       goto LABEL_27;
     }
 
-    if (a6)
+    if (rect)
     {
       v35 = [VNError errorWithCode:4 message:@"Cropping failed. Specifed ROI is outside of input image bounds with no intersection."];
       goto LABEL_23;
@@ -3777,7 +3777,7 @@ LABEL_24:
     goto LABEL_27;
   }
 
-  if (!a6)
+  if (!rect)
   {
     goto LABEL_24;
   }
@@ -3785,7 +3785,7 @@ LABEL_24:
   v35 = [VNError errorWithCode:3 message:@"Operation failed due to attempt to crop zero or near zero dimensioned area"];
 LABEL_23:
   v34 = 0;
-  *a6 = v35;
+  *rect = v35;
 LABEL_27:
 
 LABEL_28:
@@ -4053,28 +4053,28 @@ LABEL_36:
   return v6;
 }
 
-- (VNImageBuffer)bufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 format:(unsigned int)a5 options:(id)a6 error:(id *)a7 pixelBufferRepsCacheKey:(id *)a8
+- (VNImageBuffer)bufferWithWidth:(unint64_t)width height:(unint64_t)height format:(unsigned int)format options:(id)options error:(id *)error pixelBufferRepsCacheKey:(id *)key
 {
-  v10 = *&a5;
-  v14 = a6;
+  v10 = *&format;
+  optionsCopy = options;
   if (*&self->_origPixelBuffer == 0 && !self->_imageSourceManager)
   {
-    if (a7)
+    if (error)
     {
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Failed to create image for processing"];
-      *a7 = [VNError errorWithCode:3 message:v16];
+      *error = [VNError errorWithCode:3 message:v16];
 
-      a7 = 0;
+      error = 0;
     }
   }
 
   else
   {
     [(VNImageBuffer *)self fullImageBufferRect];
-    a7 = [(VNImageBuffer *)self croppedBufferWithWidth:a3 height:a4 format:v10 cropRect:v14 options:a7 error:a8 pixelBufferRepsCacheKey:?];
+    error = [(VNImageBuffer *)self croppedBufferWithWidth:width height:height format:v10 cropRect:optionsCopy options:error error:key pixelBufferRepsCacheKey:?];
   }
 
-  return a7;
+  return error;
 }
 
 - (void)dealloc
@@ -4097,16 +4097,16 @@ LABEL_36:
   [(VNImageBuffer *)&v5 dealloc];
 }
 
-- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7
+- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v9 = *&a5;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(VNImageBuffer *)self initWithCMSampleBuffer:a3 orientation:v9 options:v13 session:v14];
+  v9 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
+  sessionCopy = session;
+  v15 = [(VNImageBuffer *)self initWithCMSampleBuffer:buffer orientation:v9 options:optionsCopy session:sessionCopy];
   if (v15)
   {
-    v16 = [VNDepthRepresentation depthRepresentationForDepthData:v12 orientation:v9];
+    v16 = [VNDepthRepresentation depthRepresentationForDepthData:dataCopy orientation:v9];
     depthRepresentation = v15->_depthRepresentation;
     v15->_depthRepresentation = v16;
 
@@ -4116,108 +4116,108 @@ LABEL_36:
   return v15;
 }
 
-- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  valuePtr = a4;
-  v10 = a5;
-  v11 = a6;
-  if (!CMSampleBufferIsValid(a3) || !CMSampleBufferDataIsReady(a3))
+  valuePtr = orientation;
+  optionsCopy = options;
+  sessionCopy = session;
+  if (!CMSampleBufferIsValid(buffer) || !CMSampleBufferDataIsReady(buffer))
   {
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!orientation)
   {
-    v12 = CMGetAttachment(a3, *MEMORY[0x1E696DE78], 0);
+    v12 = CMGetAttachment(buffer, *MEMORY[0x1E696DE78], 0);
     if (v12)
     {
       CFNumberGetValue(v12, kCFNumberIntType, &valuePtr);
     }
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
     goto LABEL_10;
   }
 
-  v14 = [(VNImageBuffer *)self initWithCVPixelBuffer:ImageBuffer orientation:valuePtr options:v10 session:v11];
+  v14 = [(VNImageBuffer *)self initWithCVPixelBuffer:ImageBuffer orientation:valuePtr options:optionsCopy session:sessionCopy];
   if (!v14)
   {
     self = 0;
 LABEL_10:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  CFRetain(a3);
-  v14->_origSampleBuffer = a3;
+  CFRetain(buffer);
+  v14->_origSampleBuffer = buffer;
   self = v14;
-  v15 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v15;
+  return selfCopy;
 }
 
-- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5
+- (VNImageBuffer)initWithCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&orientation;
+  optionsCopy = options;
   v9 = objc_alloc_init(VNSession);
-  v10 = [(VNImageBuffer *)self initWithCMSampleBuffer:a3 orientation:v5 options:v8 session:v9];
+  v10 = [(VNImageBuffer *)self initWithCMSampleBuffer:buffer orientation:v5 options:optionsCopy session:v9];
 
   return v10;
 }
 
-- (VNImageBuffer)initWithURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageBuffer)initWithURL:(id)l orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[VNImageSourceManager alloc] initWithImageURL:v10];
+  lCopy = l;
+  optionsCopy = options;
+  sessionCopy = session;
+  v13 = [[VNImageSourceManager alloc] initWithImageURL:lCopy];
   v14 = v13;
   if (!v13)
   {
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!orientation)
   {
-    a4 = [(VNImageSourceManager *)v13 exifOrientation];
+    orientation = [(VNImageSourceManager *)v13 exifOrientation];
   }
 
-  v15 = [(VNImageBuffer *)&self->super.isa initWithOptions:v11 orientation:a4 session:v12];
+  v15 = [(VNImageBuffer *)&self->super.isa initWithOptions:optionsCopy orientation:orientation session:sessionCopy];
   v16 = v15;
   if (!v15)
   {
     self = 0;
 LABEL_7:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
   objc_storeStrong(v15 + 5, v14);
   kdebug_trace();
   self = v16;
-  v17 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)initWithOptions:(int)a3 orientation:(void *)a4 session:
+- (id)initWithOptions:(int)options orientation:(void *)orientation session:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  orientationCopy = orientation;
+  if (self)
   {
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = VNImageBuffer;
     v9 = objc_msgSendSuper2(&v23, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
-      objc_storeStrong(v9 + 1, a4);
+      objc_storeStrong(v9 + 1, orientation);
       if (v7)
       {
         v10 = [v7 copy];
@@ -4228,20 +4228,20 @@ LABEL_8:
         v10 = MEMORY[0x1E695E0F8];
       }
 
-      v11 = a1[11];
-      a1[11] = v10;
+      v11 = self[11];
+      self[11] = v10;
 
       v12 = objc_alloc_init(VNImageBufferCache);
-      v13 = a1[6];
-      a1[6] = v12;
+      v13 = self[6];
+      self[6] = v12;
 
       v14 = [v7 objectForKeyedSubscript:@"VNImageOptionCIContext"];
-      v15 = a1[7];
-      a1[7] = v14;
+      v15 = self[7];
+      self[7] = v14;
 
       v16 = v7;
       objc_opt_self();
-      if (!a3)
+      if (!options)
       {
         v17 = [v16 objectForKeyedSubscript:@"VNImageOptionProperties"];
         objc_opt_class();
@@ -4252,107 +4252,107 @@ LABEL_8:
 
           if (v19 && ([v17 objectForKeyedSubscript:v18], v20 = objc_claimAutoreleasedReturnValue(), (v19 = v20) != 0))
           {
-            a3 = [v20 intValue];
+            options = [v20 intValue];
           }
 
           else
           {
-            a3 = 1;
+            options = 1;
           }
         }
 
         else
         {
-          a3 = 0;
+          options = 0;
         }
       }
 
-      if ((a3 - 1) >= 8)
+      if ((options - 1) >= 8)
       {
-        v21 = 1;
+        optionsCopy = 1;
       }
 
       else
       {
-        v21 = a3;
+        optionsCopy = options;
       }
 
-      *(a1 + 16) = v21;
-      *(a1 + 26) = 0;
+      *(self + 16) = optionsCopy;
+      *(self + 26) = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (VNImageBuffer)initWithURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5
+- (VNImageBuffer)initWithURL:(id)l orientation:(unsigned int)orientation options:(id)options
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&orientation;
+  lCopy = l;
+  optionsCopy = options;
   v10 = objc_alloc_init(VNSession);
-  v11 = [(VNImageBuffer *)self initWithURL:v8 orientation:v6 options:v9 session:v10];
+  v11 = [(VNImageBuffer *)self initWithURL:lCopy orientation:v6 options:optionsCopy session:v10];
 
   return v11;
 }
 
-- (VNImageBuffer)initWithData:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageBuffer)initWithData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [[VNImageSourceManager alloc] initWithImageData:v10];
+  dataCopy = data;
+  optionsCopy = options;
+  sessionCopy = session;
+  v13 = [[VNImageSourceManager alloc] initWithImageData:dataCopy];
   v14 = v13;
   if (!v13)
   {
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!orientation)
   {
-    a4 = [(VNImageSourceManager *)v13 exifOrientation];
+    orientation = [(VNImageSourceManager *)v13 exifOrientation];
   }
 
-  v15 = [(VNImageBuffer *)&self->super.isa initWithOptions:v11 orientation:a4 session:v12];
+  v15 = [(VNImageBuffer *)&self->super.isa initWithOptions:optionsCopy orientation:orientation session:sessionCopy];
   v16 = v15;
   if (!v15)
   {
     self = 0;
 LABEL_7:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
   objc_storeStrong(v15 + 5, v14);
   kdebug_trace();
   self = v16;
-  v17 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v17;
+  return selfCopy;
 }
 
-- (VNImageBuffer)initWithData:(id)a3 orientation:(unsigned int)a4 options:(id)a5
+- (VNImageBuffer)initWithData:(id)data orientation:(unsigned int)orientation options:(id)options
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
   v10 = objc_alloc_init(VNSession);
-  v11 = [(VNImageBuffer *)self initWithData:v8 orientation:v6 options:v9 session:v10];
+  v11 = [(VNImageBuffer *)self initWithData:dataCopy orientation:v6 options:optionsCopy session:v10];
 
   return v11;
 }
 
-- (VNImageBuffer)initWithCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageBuffer)initWithCIImage:(id)image orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(VNImageBuffer *)&self->super.isa initWithOptions:v12 orientation:a4 session:v13];
+  imageCopy = image;
+  optionsCopy = options;
+  sessionCopy = session;
+  v14 = [(VNImageBuffer *)&self->super.isa initWithOptions:optionsCopy orientation:orientation session:sessionCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(v14 + 3, a3);
+    objc_storeStrong(v14 + 3, image);
     kdebug_trace();
     v16 = v15;
   }
@@ -4360,25 +4360,25 @@ LABEL_8:
   return v15;
 }
 
-- (VNImageBuffer)initWithCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5
+- (VNImageBuffer)initWithCIImage:(id)image orientation:(unsigned int)orientation options:(id)options
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = a5;
+  v6 = *&orientation;
+  imageCopy = image;
+  optionsCopy = options;
   v10 = objc_alloc_init(VNSession);
-  v11 = [(VNImageBuffer *)self initWithCIImage:v8 orientation:v6 options:v9 session:v10];
+  v11 = [(VNImageBuffer *)self initWithCIImage:imageCopy orientation:v6 options:optionsCopy session:v10];
 
   return v11;
 }
 
-- (VNImageBuffer)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageBuffer)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(VNImageBuffer *)&self->super.isa initWithOptions:v10 orientation:a4 session:v11];
+  optionsCopy = options;
+  sessionCopy = session;
+  v12 = [(VNImageBuffer *)&self->super.isa initWithOptions:optionsCopy orientation:orientation session:sessionCopy];
   if (v12)
   {
-    v13 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:a3];
+    v13 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:image];
     origCIImage = v12->_origCIImage;
     v12->_origCIImage = v13;
 
@@ -4389,26 +4389,26 @@ LABEL_8:
   return v12;
 }
 
-- (VNImageBuffer)initWithCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5
+- (VNImageBuffer)initWithCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&orientation;
+  optionsCopy = options;
   v9 = objc_alloc_init(VNSession);
-  v10 = [(VNImageBuffer *)self initWithCGImage:a3 orientation:v5 options:v8 session:v9];
+  v10 = [(VNImageBuffer *)self initWithCGImage:image orientation:v5 options:optionsCopy session:v9];
 
   return v10;
 }
 
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6 session:(id)a7
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v9 = *&a5;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(VNImageBuffer *)self initWithCVPixelBuffer:a3 orientation:v9 options:v13 session:v14];
+  v9 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
+  sessionCopy = session;
+  v15 = [(VNImageBuffer *)self initWithCVPixelBuffer:buffer orientation:v9 options:optionsCopy session:sessionCopy];
   if (v15)
   {
-    v16 = [VNDepthRepresentation depthRepresentationForDepthData:v12 orientation:v9];
+    v16 = [VNDepthRepresentation depthRepresentationForDepthData:dataCopy orientation:v9];
     depthRepresentation = v15->_depthRepresentation;
     v15->_depthRepresentation = v16;
 
@@ -4418,24 +4418,24 @@ LABEL_8:
   return v15;
 }
 
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 depthData:(id)a4 orientation:(unsigned int)a5 options:(id)a6
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer depthData:(id)data orientation:(unsigned int)orientation options:(id)options
 {
-  v7 = *&a5;
-  v10 = a4;
-  v11 = a6;
+  v7 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
   v12 = objc_alloc_init(VNSession);
-  v13 = [(VNImageBuffer *)self initWithCVPixelBuffer:a3 depthData:v10 orientation:v7 options:v11 session:v12];
+  v13 = [(VNImageBuffer *)self initWithCVPixelBuffer:buffer depthData:dataCopy orientation:v7 options:optionsCopy session:v12];
 
   return v13;
 }
 
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session
 {
-  v10 = a5;
-  v11 = a6;
-  if (a3 && (self = [(VNImageBuffer *)&self->super.isa initWithOptions:v10 orientation:a4 session:v11]) != 0)
+  optionsCopy = options;
+  sessionCopy = session;
+  if (buffer && (self = [(VNImageBuffer *)&self->super.isa initWithOptions:optionsCopy orientation:orientation session:sessionCopy]) != 0)
   {
-    v12 = CVPixelBufferRetain(a3);
+    v12 = CVPixelBufferRetain(buffer);
     self->_origPixelBuffer = v12;
     Width = CVPixelBufferGetWidth(v12);
     Height = CVPixelBufferGetHeight(self->_origPixelBuffer);
@@ -4448,51 +4448,51 @@ LABEL_8:
 
     kdebug_trace();
     self = self;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&orientation;
+  optionsCopy = options;
   v9 = objc_alloc_init(VNSession);
-  v10 = [(VNImageBuffer *)self initWithCVPixelBuffer:a3 orientation:v5 options:v8 session:v9];
+  v10 = [(VNImageBuffer *)self initWithCVPixelBuffer:buffer orientation:v5 options:optionsCopy session:v9];
 
   return v10;
 }
 
-- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)a3 options:(id)a4
+- (VNImageBuffer)initWithCVPixelBuffer:(__CVBuffer *)buffer options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v7 = objc_alloc_init(VNSession);
-  v8 = [(VNImageBuffer *)self initWithCVPixelBuffer:a3 orientation:0 options:v6 session:v7];
+  v8 = [(VNImageBuffer *)self initWithCVPixelBuffer:buffer orientation:0 options:optionsCopy session:v7];
 
   return v8;
 }
 
 - (CGRect)fullImageBufferRect
 {
-  v3 = [(VNImageBuffer *)self width];
-  v4 = [(VNImageBuffer *)self height];
+  width = [(VNImageBuffer *)self width];
+  height = [(VNImageBuffer *)self height];
   v5 = 0.0;
   v6 = 0.0;
-  v7 = v3;
-  result.size.height = v4;
+  v7 = width;
+  result.size.height = height;
   result.size.width = v7;
   result.origin.y = v6;
   result.origin.x = v5;
   return result;
 }
 
-+ (CGRect)computeCenterCropRectFromCropRect:(CGRect)result inImageSize:(CGSize)a4 calculatedScaleX:(double *)a5 calculatedScaleY:(double *)a6
++ (CGRect)computeCenterCropRectFromCropRect:(CGRect)result inImageSize:(CGSize)size calculatedScaleX:(double *)x calculatedScaleY:(double *)y
 {
   if (result.size.width == 0.0 || result.size.height == 0.0)
   {
@@ -4501,11 +4501,11 @@ LABEL_8:
 
   else
   {
-    v6 = a4.width / result.size.width;
-    v7 = a4.height / result.size.height;
-    v8 = a4.width / result.size.width < a4.height / result.size.height;
-    v9 = a4.height / (a4.width / result.size.width);
-    v10 = a4.width / v7;
+    v6 = size.width / result.size.width;
+    v7 = size.height / result.size.height;
+    v8 = size.width / result.size.width < size.height / result.size.height;
+    v9 = size.height / (size.width / result.size.width);
+    v10 = size.width / v7;
     if (v8)
     {
       result.origin.x = result.origin.x + (result.size.width - v10) * 0.5;
@@ -4526,14 +4526,14 @@ LABEL_8:
       result.size.height = v9;
     }
 
-    if (a5)
+    if (x)
     {
-      *a5 = v6;
+      *x = v6;
     }
 
-    if (a6)
+    if (y)
     {
-      *a6 = v7;
+      *y = v7;
     }
   }
 

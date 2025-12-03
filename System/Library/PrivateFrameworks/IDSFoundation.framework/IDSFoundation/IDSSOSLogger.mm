@@ -1,31 +1,31 @@
 @interface IDSSOSLogger
-+ (id)loggerWithURLString:(id)a3;
++ (id)loggerWithURLString:(id)string;
 - (IDSRateLimiter)rateLimiter;
-- (IDSSOSLogger)initWithSOSURLString:(id)a3;
+- (IDSSOSLogger)initWithSOSURLString:(id)string;
 - (id)deviceSOSIdentifier;
-- (void)logMetric:(id)a3;
+- (void)logMetric:(id)metric;
 @end
 
 @implementation IDSSOSLogger
 
-+ (id)loggerWithURLString:(id)a3
++ (id)loggerWithURLString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSOSURLString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithSOSURLString:stringCopy];
 
   return v5;
 }
 
-- (IDSSOSLogger)initWithSOSURLString:(id)a3
+- (IDSSOSLogger)initWithSOSURLString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = IDSSOSLogger;
   v6 = [(IDSSOSLogger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sosURLString, a3);
+    objc_storeStrong(&v6->_sosURLString, string);
   }
 
   return v7;
@@ -47,9 +47,9 @@
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringGUID];
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
     v6 = qword_1EB2BBF70;
-    qword_1EB2BBF70 = v5;
+    qword_1EB2BBF70 = stringGUID;
 
     v7 = [MEMORY[0x1E695DF00] now];
     v8 = qword_1EB2BBF78;
@@ -68,13 +68,13 @@
 
     if (v12 == -1)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringGUID];
+      stringGUID2 = [MEMORY[0x1E696AEC0] stringGUID];
       v14 = qword_1EB2BBF70;
-      qword_1EB2BBF70 = v13;
+      qword_1EB2BBF70 = stringGUID2;
 
-      v15 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v16 = qword_1EB2BBF78;
-      qword_1EB2BBF78 = v15;
+      qword_1EB2BBF78 = date;
     }
 
     os_unfair_lock_unlock(&unk_1EB2BBF68);
@@ -99,46 +99,46 @@
   return rateLimiter;
 }
 
-- (void)logMetric:(id)a3
+- (void)logMetric:(id)metric
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 || ([0 operationID], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
+  metricCopy = metric;
+  if (metricCopy || ([0 operationID], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
   {
-    v5 = [(IDSSOSLogger *)self rateLimiter];
-    v6 = [v5 underLimitForItem:@"SOSRateLimitItem"];
+    rateLimiter = [(IDSSOSLogger *)self rateLimiter];
+    v6 = [rateLimiter underLimitForItem:@"SOSRateLimitItem"];
 
     if (v6)
     {
-      v7 = v4;
-      v8 = [v7 sosType];
-      v9 = v8;
+      v7 = metricCopy;
+      sosType = [v7 sosType];
+      v9 = sosType;
       v10 = @"warn";
-      if (v8 != 1)
+      if (sosType != 1)
       {
         v10 = 0;
       }
 
-      if (!v8)
+      if (!sosType)
       {
         v10 = @"fatal";
       }
 
       v11 = v10;
-      v12 = [v7 sosDomain];
-      if (v12 > 2 || v9 > 1)
+      sosDomain = [v7 sosDomain];
+      if (sosDomain > 2 || v9 > 1)
       {
         v14 = 0;
       }
 
       else
       {
-        v13 = off_1E77E1D90[v12];
+        v13 = off_1E77E1D90[sosDomain];
         v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
         [v14 setObject:v11 forKeyedSubscript:@"errorType"];
         [v14 setObject:v13 forKeyedSubscript:@"domain"];
-        v15 = [v7 operationID];
-        [v14 setObject:v15 forKeyedSubscript:@"operationId"];
+        operationID = [v7 operationID];
+        [v14 setObject:operationID forKeyedSubscript:@"operationId"];
 
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", objc_msgSend(v7, "sosError")];
         [v14 setObject:v16 forKeyedSubscript:@"errorCode"];
@@ -147,29 +147,29 @@
       if (v14)
       {
         v18 = MEMORY[0x1E696AEC0];
-        v19 = [MEMORY[0x1E69A60B8] sharedInstance];
-        v20 = [v19 productName];
-        v21 = [MEMORY[0x1E69A60B8] sharedInstance];
-        v22 = [v21 productVersion];
-        v23 = [MEMORY[0x1E69A60B8] sharedInstance];
-        v24 = [v23 productBuildVersion];
-        v25 = [v18 stringWithFormat:@"%@, %@, %@", v20, v22, v24];
+        mEMORY[0x1E69A60B8] = [MEMORY[0x1E69A60B8] sharedInstance];
+        productName = [mEMORY[0x1E69A60B8] productName];
+        mEMORY[0x1E69A60B8]2 = [MEMORY[0x1E69A60B8] sharedInstance];
+        productVersion = [mEMORY[0x1E69A60B8]2 productVersion];
+        mEMORY[0x1E69A60B8]3 = [MEMORY[0x1E69A60B8] sharedInstance];
+        productBuildVersion = [mEMORY[0x1E69A60B8]3 productBuildVersion];
+        v25 = [v18 stringWithFormat:@"%@, %@, %@", productName, productVersion, productBuildVersion];
         [v14 setObject:v25 forKeyedSubscript:@"osv"];
 
-        v26 = [MEMORY[0x1E69A60B8] sharedInstance];
-        v27 = [v26 model];
+        mEMORY[0x1E69A60B8]4 = [MEMORY[0x1E69A60B8] sharedInstance];
+        model = [mEMORY[0x1E69A60B8]4 model];
 
-        if (v27)
+        if (model)
         {
-          [v14 setObject:v27 forKeyedSubscript:@"hwv"];
+          [v14 setObject:model forKeyedSubscript:@"hwv"];
         }
 
-        v28 = [(IDSSOSLogger *)self deviceSOSIdentifier];
-        [v14 setObject:v28 forKeyedSubscript:@"id"];
+        deviceSOSIdentifier = [(IDSSOSLogger *)self deviceSOSIdentifier];
+        [v14 setObject:deviceSOSIdentifier forKeyedSubscript:@"id"];
 
         v29 = MEMORY[0x1E696AF78];
-        v30 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-        v31 = [v29 sessionWithConfiguration:v30];
+        ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+        v31 = [v29 sessionWithConfiguration:ephemeralSessionConfiguration];
 
         v32 = MEMORY[0x1E696AD68];
         v33 = [MEMORY[0x1E695DFF8] URLWithString:self->_sosURLString];
@@ -182,14 +182,14 @@
         if (v35)
         {
           [v34 setHTTPBody:v35];
-          v37 = [MEMORY[0x1E69A6138] serverBag];
-          if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+          serverBag = [MEMORY[0x1E69A6138] serverBag];
+          if (os_log_type_enabled(serverBag, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
             v43 = v14;
             v44 = 2112;
             v45 = v34;
-            _os_log_impl(&dword_1A7AD9000, v37, OS_LOG_TYPE_DEFAULT, "Posting SOS! {payload: %@, request: %@}", buf, 0x16u);
+            _os_log_impl(&dword_1A7AD9000, serverBag, OS_LOG_TYPE_DEFAULT, "Posting SOS! {payload: %@, request: %@}", buf, 0x16u);
           }
 
           v39[0] = MEMORY[0x1E69E9820];

@@ -1,102 +1,102 @@
 @interface CWFNearbySyncNetwork
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNearbySyncNetwork:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNearbySyncNetwork:(id)network;
 - (BOOL)isNearbyBrokenBackhaulStateSyncable;
 - (BOOL)isNearbyRecommendable;
 - (BOOL)isNearbySyncable;
-- (CWFNearbySyncNetwork)initWithCoder:(id)a3;
-- (CWFNearbySyncNetwork)initWithExternalForm:(id)a3;
+- (CWFNearbySyncNetwork)initWithCoder:(id)coder;
+- (CWFNearbySyncNetwork)initWithExternalForm:(id)form;
 - (CWFNetworkProfile)knownNetworkProfile;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)externalForm;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setKnownNetworkProfile:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setKnownNetworkProfile:(id)profile;
 @end
 
 @implementation CWFNearbySyncNetwork
 
 - (CWFNetworkProfile)knownNetworkProfile
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CWFNetworkProfile *)v2->_knownNetworkProfile copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(CWFNetworkProfile *)selfCopy->_knownNetworkProfile copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isNearbySyncable
 {
-  v3 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  v4 = [v3 isNearbySyncable];
-  if ([v3 isPSK])
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  isNearbySyncable = [knownNetworkProfile isNearbySyncable];
+  if ([knownNetworkProfile isPSK])
   {
-    v5 = [(CWFNearbySyncNetwork *)self password];
-    v6 = v5 != 0;
+    password = [(CWFNearbySyncNetwork *)self password];
+    v6 = password != 0;
 
-    v4 &= v6;
+    isNearbySyncable &= v6;
   }
 
-  return v4;
+  return isNearbySyncable;
 }
 
 - (BOOL)isNearbyBrokenBackhaulStateSyncable
 {
-  v2 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  v3 = [v2 brokenBackhaulState] == 1;
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  v3 = [knownNetworkProfile brokenBackhaulState] == 1;
 
   return v3;
 }
 
-- (void)setKnownNetworkProfile:(id)a3
+- (void)setKnownNetworkProfile:(id)profile
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 filteredNearbySyncableNetworkProfile];
-  knownNetworkProfile = v4->_knownNetworkProfile;
-  v4->_knownNetworkProfile = v5;
+  profileCopy = profile;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  filteredNearbySyncableNetworkProfile = [profileCopy filteredNearbySyncableNetworkProfile];
+  knownNetworkProfile = selfCopy->_knownNetworkProfile;
+  selfCopy->_knownNetworkProfile = filteredNearbySyncableNetworkProfile;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isNearbyRecommendable
 {
-  v3 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  v4 = [v3 isNearbyRecommendable];
-  if ([v3 isCaptive])
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  isNearbyRecommendable = [knownNetworkProfile isNearbyRecommendable];
+  if ([knownNetworkProfile isCaptive])
   {
-    v5 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-    v6 = v5 != 0;
+    captivePortalCredentials = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+    v6 = captivePortalCredentials != 0;
 
-    v4 &= v6;
+    isNearbyRecommendable &= v6;
   }
 
-  return v4;
+  return isNearbyRecommendable;
 }
 
-- (CWFNearbySyncNetwork)initWithExternalForm:(id)a3
+- (CWFNearbySyncNetwork)initWithExternalForm:(id)form
 {
-  v4 = a3;
+  formCopy = form;
   v5 = [(CWFNearbySyncNetwork *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"KnownNetwork"];
+    v6 = [formCopy objectForKeyedSubscript:@"KnownNetwork"];
     if (v6)
     {
       v7 = [[CWFNetworkProfile alloc] initWithExternalForm:v6];
       [(CWFNearbySyncNetwork *)v5 setKnownNetworkProfile:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"Password"];
+    v8 = [formCopy objectForKeyedSubscript:@"Password"];
     [(CWFNearbySyncNetwork *)v5 setPassword:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"CaptivePortalCredentials"];
+    v9 = [formCopy objectForKeyedSubscript:@"CaptivePortalCredentials"];
     [(CWFNearbySyncNetwork *)v5 setCaptivePortalCredentials:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"Channel"];
+    v10 = [formCopy objectForKeyedSubscript:@"Channel"];
     if (v10)
     {
       v11 = v10;
@@ -115,53 +115,53 @@
 
 - (id)externalForm
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  v5 = [v4 externalForm];
-  [v3 setObject:v5 forKeyedSubscript:@"KnownNetwork"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  externalForm = [knownNetworkProfile externalForm];
+  [dictionary setObject:externalForm forKeyedSubscript:@"KnownNetwork"];
 
-  v6 = [(CWFNearbySyncNetwork *)self password];
-  [v3 setObject:v6 forKeyedSubscript:@"Password"];
+  password = [(CWFNearbySyncNetwork *)self password];
+  [dictionary setObject:password forKeyedSubscript:@"Password"];
 
-  v7 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-  [v3 setObject:v7 forKeyedSubscript:@"CaptivePortalCredentials"];
+  captivePortalCredentials = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+  [dictionary setObject:captivePortalCredentials forKeyedSubscript:@"CaptivePortalCredentials"];
 
-  v8 = [(CWFNearbySyncNetwork *)self channel];
-  v9 = [v8 externalForm];
-  [v3 setObject:v9 forKeyedSubscript:@"Channel"];
+  channel = [(CWFNearbySyncNetwork *)self channel];
+  externalForm2 = [channel externalForm];
+  [dictionary setObject:externalForm2 forKeyedSubscript:@"Channel"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  v5 = [(CWFNearbySyncNetwork *)self channel];
-  v6 = [(CWFNearbySyncNetwork *)self password];
-  v7 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-  v8 = [v3 stringWithFormat:@"network=%@, channel=%@, hasPassword=%d, hasCaptivePortalCreds=%d, syncable=%d, recommendable=%d", v4, v5, v6 != 0, v7 != 0, -[CWFNearbySyncNetwork isNearbySyncable](self, "isNearbySyncable"), -[CWFNearbySyncNetwork isNearbyRecommendable](self, "isNearbyRecommendable")];
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  channel = [(CWFNearbySyncNetwork *)self channel];
+  password = [(CWFNearbySyncNetwork *)self password];
+  captivePortalCredentials = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+  v8 = [v3 stringWithFormat:@"network=%@, channel=%@, hasPassword=%d, hasCaptivePortalCreds=%d, syncable=%d, recommendable=%d", knownNetworkProfile, channel, password != 0, captivePortalCredentials != 0, -[CWFNearbySyncNetwork isNearbySyncable](self, "isNearbySyncable"), -[CWFNearbySyncNetwork isNearbyRecommendable](self, "isNearbyRecommendable")];
 
   return v8;
 }
 
-- (BOOL)isEqualToNearbySyncNetwork:(id)a3
+- (BOOL)isEqualToNearbySyncNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  v6 = [v4 knownNetworkProfile];
-  if (v5 != v6)
+  networkCopy = network;
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  knownNetworkProfile2 = [networkCopy knownNetworkProfile];
+  if (knownNetworkProfile != knownNetworkProfile2)
   {
-    v7 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-    if (!v7)
+    knownNetworkProfile3 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+    if (!knownNetworkProfile3)
     {
       v20 = 0;
       goto LABEL_44;
     }
 
-    v8 = v7;
-    v9 = [v4 knownNetworkProfile];
-    if (!v9)
+    v8 = knownNetworkProfile3;
+    knownNetworkProfile4 = [networkCopy knownNetworkProfile];
+    if (!knownNetworkProfile4)
     {
       v20 = 0;
 LABEL_43:
@@ -169,9 +169,9 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v10 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-    v11 = [v4 knownNetworkProfile];
-    if (![v10 isEqual:v11])
+    knownNetworkProfile5 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+    knownNetworkProfile6 = [networkCopy knownNetworkProfile];
+    if (![knownNetworkProfile5 isEqual:knownNetworkProfile6])
     {
       v20 = 0;
 LABEL_42:
@@ -179,30 +179,30 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v47 = v11;
-    v48 = v10;
-    v49 = v9;
+    v47 = knownNetworkProfile6;
+    v48 = knownNetworkProfile5;
+    v49 = knownNetworkProfile4;
     v50 = v8;
   }
 
-  v12 = [(CWFNearbySyncNetwork *)self channel];
-  v13 = [v4 channel];
-  if (v12 != v13)
+  channel = [(CWFNearbySyncNetwork *)self channel];
+  channel2 = [networkCopy channel];
+  if (channel != channel2)
   {
-    v14 = [(CWFNearbySyncNetwork *)self channel];
-    if (v14)
+    channel3 = [(CWFNearbySyncNetwork *)self channel];
+    if (channel3)
     {
-      v15 = v14;
-      v16 = [v4 channel];
-      if (v16)
+      v15 = channel3;
+      channel4 = [networkCopy channel];
+      if (channel4)
       {
-        v17 = v16;
-        v18 = [(CWFNearbySyncNetwork *)self channel];
-        v19 = [v4 channel];
-        if ([v18 isEqual:v19])
+        v17 = channel4;
+        channel5 = [(CWFNearbySyncNetwork *)self channel];
+        channel6 = [networkCopy channel];
+        if ([channel5 isEqual:channel6])
         {
-          v41 = v19;
-          v42 = v18;
+          v41 = channel6;
+          v42 = channel5;
           v43 = v17;
           v44 = v15;
           goto LABEL_12;
@@ -217,53 +217,53 @@ LABEL_32:
   }
 
 LABEL_12:
-  v21 = [(CWFNearbySyncNetwork *)self password];
-  v46 = [v4 password];
-  if (v21 == v46)
+  password = [(CWFNearbySyncNetwork *)self password];
+  password2 = [networkCopy password];
+  if (password == password2)
   {
-    v45 = v21;
+    v45 = password;
     goto LABEL_20;
   }
 
-  v22 = [(CWFNearbySyncNetwork *)self password];
-  if (!v22)
+  password3 = [(CWFNearbySyncNetwork *)self password];
+  if (!password3)
   {
 
     goto LABEL_30;
   }
 
-  v23 = v22;
-  v45 = v21;
-  v24 = [v4 password];
-  if (!v24)
+  v23 = password3;
+  v45 = password;
+  password4 = [networkCopy password];
+  if (!password4)
   {
 LABEL_29:
 
 LABEL_30:
-    if (v12 != v13)
+    if (channel != channel2)
     {
     }
 
     goto LABEL_32;
   }
 
-  v25 = [(CWFNearbySyncNetwork *)self password];
-  v26 = [v4 password];
-  if (([v25 isEqual:v26] & 1) == 0)
+  password5 = [(CWFNearbySyncNetwork *)self password];
+  password6 = [networkCopy password];
+  if (([password5 isEqual:password6] & 1) == 0)
   {
 
     goto LABEL_29;
   }
 
-  v37 = v26;
-  v38 = v25;
-  v39 = v24;
+  v37 = password6;
+  v38 = password5;
+  v39 = password4;
   v40 = v23;
 LABEL_20:
-  v27 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-  v28 = [v4 captivePortalCredentials];
-  v29 = v28;
-  if (v27 == v28)
+  captivePortalCredentials = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+  captivePortalCredentials2 = [networkCopy captivePortalCredentials];
+  v29 = captivePortalCredentials2;
+  if (captivePortalCredentials == captivePortalCredentials2)
   {
 
     v20 = 1;
@@ -271,19 +271,19 @@ LABEL_20:
 
   else
   {
-    v30 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-    if (v30)
+    captivePortalCredentials3 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+    if (captivePortalCredentials3)
     {
-      v36 = v30;
-      v31 = [v4 captivePortalCredentials];
-      if (v31)
+      v36 = captivePortalCredentials3;
+      captivePortalCredentials4 = [networkCopy captivePortalCredentials];
+      if (captivePortalCredentials4)
       {
-        v35 = v31;
-        v32 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-        v33 = [v4 captivePortalCredentials];
-        v20 = [v32 isEqual:v33];
+        v35 = captivePortalCredentials4;
+        captivePortalCredentials5 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+        captivePortalCredentials6 = [networkCopy captivePortalCredentials];
+        v20 = [captivePortalCredentials5 isEqual:captivePortalCredentials6];
 
-        v31 = v35;
+        captivePortalCredentials4 = v35;
       }
 
       else
@@ -299,20 +299,20 @@ LABEL_20:
     }
   }
 
-  if (v45 != v46)
+  if (v45 != password2)
   {
   }
 
-  if (v12 != v13)
+  if (channel != channel2)
   {
   }
 
 LABEL_41:
-  v9 = v49;
+  knownNetworkProfile4 = v49;
   v8 = v50;
-  v11 = v47;
-  v10 = v48;
-  if (v5 != v6)
+  knownNetworkProfile6 = v47;
+  knownNetworkProfile5 = v48;
+  if (knownNetworkProfile != knownNetworkProfile2)
   {
     goto LABEL_42;
   }
@@ -322,18 +322,18 @@ LABEL_44:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFNearbySyncNetwork *)self isEqualToNearbySyncNetwork:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFNearbySyncNetwork *)self isEqualToNearbySyncNetwork:v5];
   }
 
   return v6;
@@ -341,68 +341,68 @@ LABEL_44:
 
 - (unint64_t)hash
 {
-  v3 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  v4 = [v3 hash];
-  v5 = [(CWFNearbySyncNetwork *)self channel];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CWFNearbySyncNetwork *)self password];
-  v8 = [v7 hash];
-  v9 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-  v10 = v8 ^ [v9 hash];
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  v4 = [knownNetworkProfile hash];
+  channel = [(CWFNearbySyncNetwork *)self channel];
+  v6 = [channel hash] ^ v4;
+  password = [(CWFNearbySyncNetwork *)self password];
+  v8 = [password hash];
+  captivePortalCredentials = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+  v10 = v8 ^ [captivePortalCredentials hash];
 
   return v6 ^ v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFNearbySyncNetwork allocWithZone:?]];
-  v5 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  [(CWFNearbySyncNetwork *)v4 setKnownNetworkProfile:v5];
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  [(CWFNearbySyncNetwork *)v4 setKnownNetworkProfile:knownNetworkProfile];
 
-  v6 = [(CWFNearbySyncNetwork *)self channel];
-  [(CWFNearbySyncNetwork *)v4 setChannel:v6];
+  channel = [(CWFNearbySyncNetwork *)self channel];
+  [(CWFNearbySyncNetwork *)v4 setChannel:channel];
 
-  v7 = [(CWFNearbySyncNetwork *)self password];
-  [(CWFNearbySyncNetwork *)v4 setPassword:v7];
+  password = [(CWFNearbySyncNetwork *)self password];
+  [(CWFNearbySyncNetwork *)v4 setPassword:password];
 
-  v8 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-  [(CWFNearbySyncNetwork *)v4 setCaptivePortalCredentials:v8];
+  captivePortalCredentials = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+  [(CWFNearbySyncNetwork *)v4 setCaptivePortalCredentials:captivePortalCredentials];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
-  [v4 encodeObject:v5 forKey:@"_knownNetworkProfile"];
+  coderCopy = coder;
+  knownNetworkProfile = [(CWFNearbySyncNetwork *)self knownNetworkProfile];
+  [coderCopy encodeObject:knownNetworkProfile forKey:@"_knownNetworkProfile"];
 
-  v6 = [(CWFNearbySyncNetwork *)self channel];
-  [v4 encodeObject:v6 forKey:@"_channel"];
+  channel = [(CWFNearbySyncNetwork *)self channel];
+  [coderCopy encodeObject:channel forKey:@"_channel"];
 
-  v7 = [(CWFNearbySyncNetwork *)self password];
-  [v4 encodeObject:v7 forKey:@"_password"];
+  password = [(CWFNearbySyncNetwork *)self password];
+  [coderCopy encodeObject:password forKey:@"_password"];
 
-  v8 = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
-  [v4 encodeObject:v8 forKey:@"_captivePortalCredentials"];
+  captivePortalCredentials = [(CWFNearbySyncNetwork *)self captivePortalCredentials];
+  [coderCopy encodeObject:captivePortalCredentials forKey:@"_captivePortalCredentials"];
 }
 
-- (CWFNearbySyncNetwork)initWithCoder:(id)a3
+- (CWFNearbySyncNetwork)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CWFNearbySyncNetwork;
   v5 = [(CWFNearbySyncNetwork *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_knownNetworkProfile"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_knownNetworkProfile"];
     [(CWFNearbySyncNetwork *)v5 setKnownNetworkProfile:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
     [(CWFNearbySyncNetwork *)v5 setChannel:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_password"];
     [(CWFNearbySyncNetwork *)v5 setPassword:v8];
 
     v9 = MEMORY[0x1E695DFD8];
@@ -410,7 +410,7 @@ LABEL_44:
     v16[1] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"_captivePortalCredentials"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_captivePortalCredentials"];
     [(CWFNearbySyncNetwork *)v5 setCaptivePortalCredentials:v12];
   }
 

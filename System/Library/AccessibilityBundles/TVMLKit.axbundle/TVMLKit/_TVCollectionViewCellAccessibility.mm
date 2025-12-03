@@ -1,5 +1,5 @@
 @interface _TVCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityAncestorFocusParcel;
 - (id)_accessibilityFrameDelegate;
 - (id)_atvaccessibilityCollectionViewCellSemanticContext;
@@ -10,13 +10,13 @@
 
 @implementation _TVCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVCollectionViewCell" isKindOfClass:@"TVContainerCollectionViewCell"];
-  [v3 validateClass:@"TVContainerCollectionViewCell" hasInstanceMethod:@"allowsFocus" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_TVCardFloatingContentView"];
-  [v3 validateClass:@"_TVCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVCollectionViewCell" isKindOfClass:@"TVContainerCollectionViewCell"];
+  [validationsCopy validateClass:@"TVContainerCollectionViewCell" hasInstanceMethod:@"allowsFocus" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_TVCardFloatingContentView"];
+  [validationsCopy validateClass:@"_TVCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
 }
 
 - (void)prepareForReuse
@@ -36,43 +36,43 @@
 
   if ([(_TVCollectionViewCellAccessibility *)self isAccessibilityElement]&& ([(_TVCollectionViewCellAccessibility *)self superview], v3 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v3, (isKindOfClass & 1) != 0))
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _TVCollectionViewCellAccessibility;
-    v5 = [(_TVCollectionViewCellAccessibility *)&v7 _accessibilityAncestorFocusParcel];
+    selfCopy = [(_TVCollectionViewCellAccessibility *)&v7 _accessibilityAncestorFocusParcel];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = _TVCollectionViewCellAccessibility;
-  v3 = [(_TVCollectionViewCellAccessibility *)&v7 accessibilityTraits];
-  v4 = [(_TVCollectionViewCellAccessibility *)self isAccessibilityElement];
+  accessibilityTraits = [(_TVCollectionViewCellAccessibility *)&v7 accessibilityTraits];
+  isAccessibilityElement = [(_TVCollectionViewCellAccessibility *)self isAccessibilityElement];
   v5 = *MEMORY[0x29EDC7F70];
-  if (!v4)
+  if (!isAccessibilityElement)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [(_TVCollectionViewCellAccessibility *)self accessibilityUserDefinedLabel];
-  if (![v3 length] && -[_TVCollectionViewCellAccessibility isAccessibilityElement](self, "isAccessibilityElement"))
+  accessibilityUserDefinedLabel = [(_TVCollectionViewCellAccessibility *)self accessibilityUserDefinedLabel];
+  if (![accessibilityUserDefinedLabel length] && -[_TVCollectionViewCellAccessibility isAccessibilityElement](self, "isAccessibilityElement"))
   {
-    v4 = [(_TVCollectionViewCellAccessibility *)self _accessibilityValueForKey:@"cachedTextForSubhierarchy"];
+    accessibilityLabel = [(_TVCollectionViewCellAccessibility *)self _accessibilityValueForKey:@"cachedTextForSubhierarchy"];
 
-    if (![v4 length])
+    if (![accessibilityLabel length])
     {
       [(_TVCollectionViewCellAccessibility *)self _accessibilityCollectionViewCellContentSubviews];
       v14 = 0u;
@@ -86,7 +86,7 @@
         v8 = *v15;
 LABEL_6:
         v9 = 0;
-        v10 = v4;
+        v10 = accessibilityLabel;
         while (1)
         {
           if (*v15 != v8)
@@ -94,15 +94,15 @@ LABEL_6:
             objc_enumerationMutation(v5);
           }
 
-          v4 = [*(*(&v14 + 1) + 8 * v9) accessibilityLabel];
+          accessibilityLabel = [*(*(&v14 + 1) + 8 * v9) accessibilityLabel];
 
-          if ([v4 length])
+          if ([accessibilityLabel length])
           {
             break;
           }
 
           ++v9;
-          v10 = v4;
+          v10 = accessibilityLabel;
           if (v7 == v9)
           {
             v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -116,22 +116,22 @@ LABEL_6:
         }
       }
 
-      if (![v4 length])
+      if (![accessibilityLabel length])
       {
         v11 = [(_TVCollectionViewCellAccessibility *)self _accessibilityTextForSubhierarchyIncludingHeaders:0 focusableItems:0 exclusions:0];
 
-        v4 = v11;
+        accessibilityLabel = v11;
       }
 
-      [(_TVCollectionViewCellAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:@"cachedTextForSubhierarchy", v14];
+      [(_TVCollectionViewCellAccessibility *)self _accessibilitySetRetainedValue:accessibilityLabel forKey:@"cachedTextForSubhierarchy", v14];
     }
 
-    v3 = v4;
+    accessibilityUserDefinedLabel = accessibilityLabel;
   }
 
   v12 = *MEMORY[0x29EDCA608];
 
-  return v3;
+  return accessibilityUserDefinedLabel;
 }
 
 - (id)_accessibilityFrameDelegate
@@ -141,23 +141,23 @@ LABEL_6:
   v3 = [(_TVCollectionViewCellAccessibility *)self safeValueForKey:@"contentView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 subviews];
-  v6 = [v5 count];
+  subviews = [v4 subviews];
+  v6 = [subviews count];
 
   if (v6 == 1)
   {
-    v7 = [v4 subviews];
-    v8 = [v7 firstObject];
+    subviews2 = [v4 subviews];
+    firstObject = [subviews2 firstObject];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = _TVCollectionViewCellAccessibility;
-    v8 = [(_TVCollectionViewCellAccessibility *)&v10 _accessibilityFrameDelegate];
+    firstObject = [(_TVCollectionViewCellAccessibility *)&v10 _accessibilityFrameDelegate];
   }
 
-  return v8;
+  return firstObject;
 }
 
 - (id)_atvaccessibilityCollectionViewCellSemanticContext
@@ -168,9 +168,9 @@ LABEL_6:
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = [v4 axFilterObjectsUsingBlock:&__block_literal_global_323];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     v7 = MEMORY[0x29EDB8EA0];
   }

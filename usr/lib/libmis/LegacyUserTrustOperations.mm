@@ -1,16 +1,16 @@
 @interface LegacyUserTrustOperations
 - (_TtC3mis25LegacyUserTrustOperations)init;
-- (id)getAuxiliarySignatureWithTeamId:(id)a3;
-- (id)getUserTrustedUUIDsAndReturnError:(id *)a3;
+- (id)getAuxiliarySignatureWithTeamId:(id)id;
+- (id)getUserTrustedUUIDsAndReturnError:(id *)error;
 @end
 
 @implementation LegacyUserTrustOperations
 
-- (id)getAuxiliarySignatureWithTeamId:(id)a3
+- (id)getAuxiliarySignatureWithTeamId:(id)id
 {
   v4 = sub_1B9DD2998();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1B9DB3FFC(v4, v6);
   v10 = v9;
 
@@ -29,10 +29,10 @@
   return v11;
 }
 
-- (id)getUserTrustedUUIDsAndReturnError:(id *)a3
+- (id)getUserTrustedUUIDsAndReturnError:(id *)error
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC3mis25LegacyUserTrustOperations_utdb);
-  v4 = self;
+  selfCopy = self;
   sub_1B9DA77D0();
 
   v5 = sub_1B9DD2A68();

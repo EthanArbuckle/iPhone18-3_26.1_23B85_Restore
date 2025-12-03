@@ -1,5 +1,5 @@
 @interface DayNavigationViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation DayNavigationViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DayNavigationViewCell" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DayNavigationViewCell" hasInstanceMethod:@"circled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DayNavigationViewCell" hasInstanceMethod:@"isToday" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DayNavigationViewCell" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DayNavigationViewCell" hasInstanceMethod:@"circled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DayNavigationViewCell" hasInstanceMethod:@"isToday" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -35,15 +35,15 @@
 {
   v5.receiver = self;
   v5.super_class = DayNavigationViewCellAccessibility;
-  v3 = [(DayNavigationViewCellAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(DayNavigationViewCellAccessibility *)&v5 accessibilityTraits];
   if ([(DayNavigationViewCellAccessibility *)self _axIsCircled])
   {
-    return (*MEMORY[0x29EDC7FC0] | v3) & ~*MEMORY[0x29EDC7FA8];
+    return (*MEMORY[0x29EDC7FC0] | accessibilityTraits) & ~*MEMORY[0x29EDC7FA8];
   }
 
   else
   {
-    return *MEMORY[0x29EDC7F70] | v3;
+    return *MEMORY[0x29EDC7F70] | accessibilityTraits;
   }
 }
 

@@ -1,11 +1,11 @@
 @interface AAFKeybagLockAssertion
-+ (id)lockWithError:(id *)a3;
++ (id)lockWithError:(id *)error;
 - (void)unlock;
 @end
 
 @implementation AAFKeybagLockAssertion
 
-+ (id)lockWithError:(id *)a3
++ (id)lockWithError:(id *)error
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(AAFKeybagLockAssertion);
@@ -53,9 +53,9 @@
       [(AAFKeybagLockAssertion *)&v12 lockWithError:v9];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = v12;
+      *error = v12;
     }
 
     else
@@ -82,22 +82,22 @@
 
 - (void)unlock
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _AAFLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     [(AAFKeybagLockAssertion *)v3 unlock];
   }
 
-  assertionRef = v2->_assertionRef;
+  assertionRef = selfCopy->_assertionRef;
   if (assertionRef)
   {
     CFRelease(assertionRef);
-    v2->_assertionRef = 0;
+    selfCopy->_assertionRef = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 + (void)lockWithError:(uint64_t *)a1 .cold.2(uint64_t *a1, NSObject *a2)

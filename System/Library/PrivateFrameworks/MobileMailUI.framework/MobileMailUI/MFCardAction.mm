@@ -1,14 +1,14 @@
 @interface MFCardAction
-+ (id)cardActionWithTitle:(id)a3 shortTitle:(id)a4 imageName:(id)a5 tintColor:(id)a6 handler:(id)a7;
++ (id)cardActionWithTitle:(id)title shortTitle:(id)shortTitle imageName:(id)name tintColor:(id)color handler:(id)handler;
 - (void)executeHandler;
 - (void)executeHandlerIfEnabled;
 @end
 
 @implementation MFCardAction
 
-+ (id)cardActionWithTitle:(id)a3 shortTitle:(id)a4 imageName:(id)a5 tintColor:(id)a6 handler:(id)a7
++ (id)cardActionWithTitle:(id)title shortTitle:(id)shortTitle imageName:(id)name tintColor:(id)color handler:(id)handler
 {
-  v7 = [a1 cardActionWithTitle:a3 shortTitle:a4 imageName:a5 tintColor:a6 handlerEnabled:1 handler:a7];
+  v7 = [self cardActionWithTitle:title shortTitle:shortTitle imageName:name tintColor:color handlerEnabled:1 handler:handler];
 
   return v7;
 }
@@ -24,10 +24,10 @@
 
 - (void)executeHandler
 {
-  v3 = [(MFCardAction *)self handler];
-  if (v3)
+  handler = [(MFCardAction *)self handler];
+  if (handler)
   {
-    v3[2](v3, self);
+    handler[2](handler, self);
   }
 }
 

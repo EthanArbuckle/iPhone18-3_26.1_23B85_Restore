@@ -1,37 +1,37 @@
 @interface HUHomeStatusDetailsItemManager
-- (BOOL)_shouldHideHomeKitObject:(id)a3;
-- (BOOL)_shouldUseSoftwareUpdateSectionForItem:(id)a3;
-- (BOOL)hasSymptomsHandlerForMediaProfileContainer:(id)a3;
+- (BOOL)_shouldHideHomeKitObject:(id)object;
+- (BOOL)_shouldUseSoftwareUpdateSectionForItem:(id)item;
+- (BOOL)hasSymptomsHandlerForMediaProfileContainer:(id)container;
 - (BOOL)isAccessoriesWithIssuesStatusItem;
 - (BOOL)isDisplayingRoomLevelStatus;
 - (BOOL)isFirmwareUpdateStatusItem;
 - (BOOL)isLowBatteryStatusItem;
 - (BOOL)isNoResponseStatusItem;
 - (BOOL)isResidentDeviceStatusItem;
-- (BOOL)shouldHideItem:(id)a3;
+- (BOOL)shouldHideItem:(id)item;
 - (BOOL)shouldReloadItemProvidersOnSourceItemChange;
 - (BOOL)shouldShowAccessoryTiles;
-- (BOOL)shouldShowRoomNameForItem:(id)a3;
+- (BOOL)shouldShowRoomNameForItem:(id)item;
 - (BOOL)shouldShowServiceGroupTiles;
-- (BOOL)shouldUseTitleDescriptionStyleForItem:(id)a3;
+- (BOOL)shouldUseTitleDescriptionStyleForItem:(id)item;
 - (NSMutableSet)representedHomeKitObjects;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_comparatorForSectionIdentifier:(id)a3;
-- (id)_identifierForSection:(unint64_t)a3;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)_minimumPriorityNumberForItem:(id)a3;
-- (id)_roomForItem:(id)a3;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_comparatorForSectionIdentifier:(id)identifier;
+- (id)_identifierForSection:(unint64_t)section;
+- (id)_itemsToHideInSet:(id)set;
+- (id)_minimumPriorityNumberForItem:(id)item;
+- (id)_roomForItem:(id)item;
 - (id)_sectionComparator;
-- (id)_sectionIdentifierForItem:(id)a3;
-- (id)_separateSectionIdentifierForItem:(id)a3;
-- (id)_titleForSectionWithIdentifier:(id)a3;
-- (id)matchingItemForHomeKitObject:(id)a3;
+- (id)_sectionIdentifierForItem:(id)item;
+- (id)_separateSectionIdentifierForItem:(id)item;
+- (id)_titleForSectionWithIdentifier:(id)identifier;
+- (id)matchingItemForHomeKitObject:(id)object;
 - (id)statusItem;
-- (int64_t)_effectivePriorityForItem:(id)a3;
+- (int64_t)_effectivePriorityForItem:(id)item;
 - (unint64_t)_numberOfSections;
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3;
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items;
 - (void)_willUpdateSections;
-- (void)maintainMinimumPriorityForItem:(id)a3;
+- (void)maintainMinimumPriorityForItem:(id)item;
 - (void)resetItemPrioritiesToDefaults;
 @end
 
@@ -42,9 +42,9 @@
   representedHomeKitObjects = self->_representedHomeKitObjects;
   if (!representedHomeKitObjects)
   {
-    v4 = [(HFItemManager *)self sourceItem];
-    v5 = [v4 latestResults];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D14078]];
+    sourceItem = [(HFItemManager *)self sourceItem];
+    latestResults = [sourceItem latestResults];
+    v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14078]];
     v7 = [v6 mutableCopy];
     v8 = v7;
     if (v7)
@@ -66,62 +66,62 @@
   return representedHomeKitObjects;
 }
 
-- (BOOL)shouldUseTitleDescriptionStyleForItem:(id)a3
+- (BOOL)shouldUseTitleDescriptionStyleForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
-  v6 = [v5 items];
-  if ([v6 containsObject:v4] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  itemCopy = item;
+  residentDeviceStatusItemProvider = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
+  items = [residentDeviceStatusItemProvider items];
+  if ([items containsObject:itemCopy] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(HUHomeStatusDetailsItemManager *)self noRemoteAccessItem];
-    v7 = v8 == v4;
+    noRemoteAccessItem = [(HUHomeStatusDetailsItemManager *)self noRemoteAccessItem];
+    v7 = noRemoteAccessItem == itemCopy;
   }
 
   return v7;
 }
 
-- (BOOL)shouldShowRoomNameForItem:(id)a3
+- (BOOL)shouldShowRoomNameForItem:(id)item
 {
-  v4 = [(HUHomeStatusDetailsItemManager *)self _sectionIdentifierForItem:a3];
-  v5 = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:v4];
+  v4 = [(HUHomeStatusDetailsItemManager *)self _sectionIdentifierForItem:item];
+  cachedRoomNamesByIdentifier = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
+  allKeys = [cachedRoomNamesByIdentifier allKeys];
+  v7 = [allKeys containsObject:v4];
 
   return v7 ^ 1;
 }
 
-- (void)maintainMinimumPriorityForItem:(id)a3
+- (void)maintainMinimumPriorityForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
+  itemCopy = item;
+  minimumPriorityItemTuples = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
 
-  if (!v5)
+  if (!minimumPriorityItemTuples)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     [(HUHomeStatusDetailsItemManager *)self setMinimumPriorityItemTuples:v6];
   }
 
-  v7 = [v4 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
+  latestResults = [itemCopy latestResults];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
 
   if (v8)
   {
-    v9 = [v8 integerValue];
-    if (v9 >= [(HUHomeStatusDetailsItemManager *)self _effectivePriorityForItem:v4])
+    integerValue = [v8 integerValue];
+    if (integerValue >= [(HUHomeStatusDetailsItemManager *)self _effectivePriorityForItem:itemCopy])
     {
-      v10 = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
+      minimumPriorityItemTuples2 = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __65__HUHomeStatusDetailsItemManager_maintainMinimumPriorityForItem___block_invoke;
       v14[3] = &unk_277DC1308;
-      v11 = v4;
+      v11 = itemCopy;
       v15 = v11;
-      v12 = [v10 na_firstObjectPassingTest:v14];
+      v12 = [minimumPriorityItemTuples2 na_firstObjectPassingTest:v14];
 
       if (v12)
       {
@@ -131,8 +131,8 @@
       else
       {
         v12 = -[HUHomeStatusDetailsItemAndPriorityTuple initWithItem:priority:]([HUHomeStatusDetailsItemAndPriorityTuple alloc], "initWithItem:priority:", v11, [v8 integerValue]);
-        v13 = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
-        [v13 addObject:v12];
+        minimumPriorityItemTuples3 = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
+        [minimumPriorityItemTuples3 addObject:v12];
       }
     }
   }
@@ -146,15 +146,15 @@ uint64_t __65__HUHomeStatusDetailsItemManager_maintainMinimumPriorityForItem___b
   return v4;
 }
 
-- (BOOL)hasSymptomsHandlerForMediaProfileContainer:(id)a3
+- (BOOL)hasSymptomsHandlerForMediaProfileContainer:(id)container
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D14810] isAnyKindOfGroup:v3];
-  v5 = [MEMORY[0x277D14810] isContainedWithinAGroup:v3];
+  containerCopy = container;
+  v4 = [MEMORY[0x277D14810] isAnyKindOfGroup:containerCopy];
+  v5 = [MEMORY[0x277D14810] isContainedWithinAGroup:containerCopy];
   if ((v4 & 1) != 0 || !v5)
   {
-    v7 = [v3 accessories];
-    v6 = [v7 na_any:&__block_literal_global_204];
+    accessories = [containerCopy accessories];
+    v6 = [accessories na_any:&__block_literal_global_204];
   }
 
   else
@@ -176,29 +176,29 @@ BOOL __77__HUHomeStatusDetailsItemManager_hasSymptomsHandlerForMediaProfileConta
 
 - (void)resetItemPrioritiesToDefaults
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
-  [v2 removeAllObjects];
+  minimumPriorityItemTuples = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
+  [minimumPriorityItemTuples removeAllObjects];
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v37[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_alloc(MEMORY[0x277D142F8]);
-  v6 = [(HUHomeStatusDetailsItemManager *)self statusItem];
-  v7 = [v6 room];
-  v8 = v7;
-  if (v7)
+  statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
+  room = [statusItem room];
+  v8 = room;
+  if (room)
   {
-    v9 = v7;
+    v9 = room;
   }
 
   else
   {
-    v9 = v4;
+    v9 = homeCopy;
   }
 
-  v10 = [v5 initWithAccessoryContainer:v9 inHome:v4];
+  v10 = [v5 initWithAccessoryContainer:v9 inHome:homeCopy];
 
   if ([(HUHomeStatusDetailsItemManager *)self shouldShowAccessoryTiles])
   {
@@ -211,16 +211,16 @@ BOOL __77__HUHomeStatusDetailsItemManager_hasSymptomsHandlerForMediaProfileConta
   }
 
   [v10 setObjectLevel:v11];
-  v12 = [objc_alloc(MEMORY[0x277D149C8]) initWithHome:v4];
+  v12 = [objc_alloc(MEMORY[0x277D149C8]) initWithHome:homeCopy];
   [(HUHomeStatusDetailsItemManager *)self setResidentDeviceStatusItemProvider:v12];
 
-  v13 = [objc_alloc(MEMORY[0x277D148C8]) initWithHome:v4];
+  v13 = [objc_alloc(MEMORY[0x277D148C8]) initWithHome:homeCopy];
   [(HUHomeStatusDetailsItemManager *)self setNoRemoteAccessItem:v13];
 
   v14 = objc_alloc(MEMORY[0x277D14B40]);
   v15 = MEMORY[0x277CBEB98];
-  v16 = [(HUHomeStatusDetailsItemManager *)self noRemoteAccessItem];
-  v17 = [v15 setWithObject:v16];
+  noRemoteAccessItem = [(HUHomeStatusDetailsItemManager *)self noRemoteAccessItem];
+  v17 = [v15 setWithObject:noRemoteAccessItem];
   v18 = [v14 initWithItems:v17];
 
   objc_initWeak(&location, self);
@@ -250,12 +250,12 @@ BOOL __77__HUHomeStatusDetailsItemManager_hasSymptomsHandlerForMediaProfileConta
   objc_copyWeak(&v29, &location);
   v22 = v19;
   v28 = v22;
-  v23 = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
-  [v23 setFilter:v27];
+  residentDeviceStatusItemProvider = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
+  [residentDeviceStatusItemProvider setFilter:v27];
 
   v37[0] = v10;
-  v24 = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
-  v37[1] = v24;
+  residentDeviceStatusItemProvider2 = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
+  v37[1] = residentDeviceStatusItemProvider2;
   v37[2] = v18;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:3];
 
@@ -518,53 +518,53 @@ uint64_t __61__HUHomeStatusDetailsItemManager__buildItemProvidersForHome___block
 
 - (unint64_t)_numberOfSections
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self cachedSectionIdentifiers];
-  v3 = [v2 count];
+  cachedSectionIdentifiers = [(HUHomeStatusDetailsItemManager *)self cachedSectionIdentifiers];
+  v3 = [cachedSectionIdentifiers count];
 
   return v3;
 }
 
-- (id)_identifierForSection:(unint64_t)a3
+- (id)_identifierForSection:(unint64_t)section
 {
-  v4 = [(HUHomeStatusDetailsItemManager *)self cachedSectionIdentifiers];
-  if ([v4 count] <= a3)
+  cachedSectionIdentifiers = [(HUHomeStatusDetailsItemManager *)self cachedSectionIdentifiers];
+  if ([cachedSectionIdentifiers count] <= section)
   {
-    NSLog(&cfstr_ReceivedIdenti.isa, a3, [v4 count]);
+    NSLog(&cfstr_ReceivedIdenti.isa, section, [cachedSectionIdentifiers count]);
   }
 
-  if ([v4 count] <= a3)
+  if ([cachedSectionIdentifiers count] <= section)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [cachedSectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   return v5;
 }
 
-- (id)_titleForSectionWithIdentifier:(id)a3
+- (id)_titleForSectionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
-  if (v5)
+  identifierCopy = identifier;
+  cachedRoomNamesByIdentifier = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
+  if (cachedRoomNamesByIdentifier)
   {
-    v6 = v5;
-    v7 = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v6 = cachedRoomNamesByIdentifier;
+    cachedRoomNamesByIdentifier2 = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
+    v8 = [cachedRoomNamesByIdentifier2 objectForKeyedSubscript:identifierCopy];
 
     if (v8)
     {
-      v9 = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
-      v10 = [v9 objectForKeyedSubscript:v4];
+      cachedRoomNamesByIdentifier3 = [(HUHomeStatusDetailsItemManager *)self cachedRoomNamesByIdentifier];
+      v10 = [cachedRoomNamesByIdentifier3 objectForKeyedSubscript:identifierCopy];
 
       goto LABEL_13;
     }
   }
 
-  if ([v4 isEqualToString:@"UrgentServices"])
+  if ([identifierCopy isEqualToString:@"UrgentServices"])
   {
     v11 = @"HUStatusDetailsUrgentSectionTitle";
 LABEL_12:
@@ -572,19 +572,19 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"GeneralServices"])
+  if ([identifierCopy isEqualToString:@"GeneralServices"])
   {
     v11 = @"HUStatusDetailsGeneralSectionTitle";
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"LowBattery"])
+  if ([identifierCopy isEqualToString:@"LowBattery"])
   {
     v11 = @"HUStatusDetailsLowBatterySectionTitle";
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"SoftwareUpdateInfo"])
+  if ([identifierCopy isEqualToString:@"SoftwareUpdateInfo"])
   {
     v11 = @"HUStatusDetailsSoftwareUpdateSectionTitle";
     goto LABEL_12;
@@ -596,75 +596,75 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)_shouldUseSoftwareUpdateSectionForItem:(id)a3
+- (BOOL)_shouldUseSoftwareUpdateSectionForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUHomeStatusDetailsItemManager *)self softwareUpdateItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  softwareUpdateItemProvider = [(HUHomeStatusDetailsItemManager *)self softwareUpdateItemProvider];
+  items = [softwareUpdateItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   return v7;
 }
 
-- (id)_separateSectionIdentifierForItem:(id)a3
+- (id)_separateSectionIdentifierForItem:(id)item
 {
-  v4 = a3;
-  if (![(HUHomeStatusDetailsItemManager *)self _shouldUseSeparateSectionForItem:v4])
+  itemCopy = item;
+  if (![(HUHomeStatusDetailsItemManager *)self _shouldUseSeparateSectionForItem:itemCopy])
   {
     goto LABEL_11;
   }
 
-  v5 = [(HUHomeStatusDetailsItemManager *)self noRemoteAccessItem];
-  v6 = v5;
-  if (v5 == v4)
+  noRemoteAccessItem = [(HUHomeStatusDetailsItemManager *)self noRemoteAccessItem];
+  v6 = noRemoteAccessItem;
+  if (noRemoteAccessItem == itemCopy)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 containsObject:v4];
+  residentDeviceStatusItemProvider = [(HUHomeStatusDetailsItemManager *)self residentDeviceStatusItemProvider];
+  items = [residentDeviceStatusItemProvider items];
+  v9 = [items containsObject:itemCopy];
 
   if (v9)
   {
 LABEL_8:
-    v14 = @"ResidentDevice";
+    uUIDString = @"ResidentDevice";
     goto LABEL_12;
   }
 
-  v10 = [(HUHomeStatusDetailsItemManager *)self firmwareUpdateItemProvider];
-  v11 = [v10 instructionsItem];
+  firmwareUpdateItemProvider = [(HUHomeStatusDetailsItemManager *)self firmwareUpdateItemProvider];
+  instructionsItem = [firmwareUpdateItemProvider instructionsItem];
 
-  if (v11 == v4)
+  if (instructionsItem == itemCopy)
   {
-    v14 = @"FirmwareUpdateInstructions";
+    uUIDString = @"FirmwareUpdateInstructions";
     goto LABEL_12;
   }
 
-  if ([v4 conformsToProtocol:&unk_2824C0788])
+  if ([itemCopy conformsToProtocol:&unk_2824C0788])
   {
-    v12 = [v4 homeKitObject];
-    v13 = [v12 uniqueIdentifier];
-    v14 = [v13 UUIDString];
+    homeKitObject = [itemCopy homeKitObject];
+    uniqueIdentifier = [homeKitObject uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
 
     goto LABEL_12;
   }
 
-  NSLog(&cfstr_UnexpectedItem_2.isa, v4);
+  NSLog(&cfstr_UnexpectedItem_2.isa, itemCopy);
 LABEL_11:
-  v14 = 0;
+  uUIDString = 0;
 LABEL_12:
 
-  return v14;
+  return uUIDString;
 }
 
-- (id)_roomForItem:(id)a3
+- (id)_roomForItem:(id)item
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2824C0788])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_2824C0788])
   {
-    v5 = v4;
+    v5 = itemCopy;
   }
 
   else
@@ -679,10 +679,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [v6 homeKitObject];
-  if ([v8 conformsToProtocol:&unk_282547DB8])
+  homeKitObject = [v6 homeKitObject];
+  if ([homeKitObject conformsToProtocol:&unk_282547DB8])
   {
-    v9 = v8;
+    v9 = homeKitObject;
   }
 
   else
@@ -694,76 +694,76 @@ LABEL_12:
 
   if (!v10)
   {
-    v12 = [v7 homeKitObject];
+    homeKitObject2 = [v7 homeKitObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v14 = [v7 homeKitObject];
+      homeKitObject3 = [v7 homeKitObject];
       if ([(HUHomeStatusDetailsItemManager *)self isDisplayingRoomLevelStatus])
       {
-        v15 = [(HUHomeStatusDetailsItemManager *)self statusItem];
-        v11 = [v15 room];
+        statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
+        room = [statusItem room];
       }
 
       else
       {
-        v15 = [v14 services];
-        v16 = [v15 firstObject];
-        v11 = [v16 hf_parentRoom];
+        statusItem = [homeKitObject3 services];
+        firstObject = [statusItem firstObject];
+        room = [firstObject hf_parentRoom];
       }
 
       goto LABEL_16;
     }
 
 LABEL_13:
-    v11 = 0;
+    room = 0;
     goto LABEL_17;
   }
 
-  v11 = [v10 hf_parentRoom];
+  room = [v10 hf_parentRoom];
 LABEL_16:
 
 LABEL_17:
 
-  return v11;
+  return room;
 }
 
-- (id)_sectionIdentifierForItem:(id)a3
+- (id)_sectionIdentifierForItem:(id)item
 {
-  v4 = a3;
-  if ([(HUHomeStatusDetailsItemManager *)self _shouldUseSeparateSectionForItem:v4])
+  itemCopy = item;
+  if ([(HUHomeStatusDetailsItemManager *)self _shouldUseSeparateSectionForItem:itemCopy])
   {
-    v5 = [(HUHomeStatusDetailsItemManager *)self _separateSectionIdentifierForItem:v4];
+    v5 = [(HUHomeStatusDetailsItemManager *)self _separateSectionIdentifierForItem:itemCopy];
   }
 
   else
   {
-    v6 = [(HUHomeStatusDetailsItemManager *)self firmwareUpdateItemProvider];
-    v7 = [v6 items];
-    v8 = [v7 containsObject:v4];
+    firmwareUpdateItemProvider = [(HUHomeStatusDetailsItemManager *)self firmwareUpdateItemProvider];
+    items = [firmwareUpdateItemProvider items];
+    v8 = [items containsObject:itemCopy];
 
     if (v8)
     {
       v5 = @"FirmwareUpdateAppPunchOut";
     }
 
-    else if ([(HUHomeStatusDetailsItemManager *)self _shouldUseSoftwareUpdateSectionForItem:v4])
+    else if ([(HUHomeStatusDetailsItemManager *)self _shouldUseSoftwareUpdateSectionForItem:itemCopy])
     {
       v5 = @"SoftwareUpdateInfo";
     }
 
     else
     {
-      v9 = [(HUHomeStatusDetailsItemManager *)self _roomForItem:v4];
-      v10 = [v9 uniqueIdentifier];
-      v11 = [v10 UUIDString];
-      v12 = v11;
+      v9 = [(HUHomeStatusDetailsItemManager *)self _roomForItem:itemCopy];
+      uniqueIdentifier = [v9 uniqueIdentifier];
+      uUIDString = [uniqueIdentifier UUIDString];
+      v12 = uUIDString;
       v13 = @"GeneralServices";
-      if (v11)
+      if (uUIDString)
       {
-        v13 = v11;
+        v13 = uUIDString;
       }
 
       v5 = v13;
@@ -773,12 +773,12 @@ LABEL_17:
   return v5;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v10.receiver = self;
   v10.super_class = HUHomeStatusDetailsItemManager;
-  v4 = a3;
-  v5 = [(HFItemManager *)&v10 _itemsToHideInSet:v4];
+  setCopy = set;
+  v5 = [(HFItemManager *)&v10 _itemsToHideInSet:setCopy];
   v6 = [v5 mutableCopy];
 
   v9[0] = MEMORY[0x277D85DD0];
@@ -786,27 +786,27 @@ LABEL_17:
   v9[2] = __52__HUHomeStatusDetailsItemManager__itemsToHideInSet___block_invoke;
   v9[3] = &unk_277DB85D8;
   v9[4] = self;
-  v7 = [v4 na_filter:v9];
+  v7 = [setCopy na_filter:v9];
 
   [v6 unionSet:v7];
 
   return v6;
 }
 
-- (void)_didFinishUpdateTransactionWithAffectedItems:(id)a3
+- (void)_didFinishUpdateTransactionWithAffectedItems:(id)items
 {
   v23.receiver = self;
   v23.super_class = HUHomeStatusDetailsItemManager;
-  v5 = a3;
-  [(HFItemManager *)&v23 _didFinishUpdateTransactionWithAffectedItems:v5];
+  itemsCopy = items;
+  [(HFItemManager *)&v23 _didFinishUpdateTransactionWithAffectedItems:itemsCopy];
   v6 = [(HFItemManager *)self sourceItem:v23.receiver];
-  v7 = [v5 containsObject:v6];
+  v7 = [itemsCopy containsObject:v6];
 
   if (v7)
   {
-    v8 = [(HFItemManager *)self sourceItem];
-    v9 = [v8 latestResults];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D14078]];
+    sourceItem = [(HFItemManager *)self sourceItem];
+    latestResults = [sourceItem latestResults];
+    v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14078]];
     v11 = v10;
     if (v10)
     {
@@ -820,29 +820,29 @@ LABEL_17:
 
     v13 = v12;
 
-    v14 = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
-    v15 = [v14 isEqual:v13];
+    representedHomeKitObjects = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
+    v15 = [representedHomeKitObjects isEqual:v13];
 
     if ((v15 & 1) == 0)
     {
       if ([(HUHomeStatusDetailsItemManager *)self shouldReloadItemProvidersOnSourceItemChange])
       {
         [(HUHomeStatusDetailsItemManager *)self setRepresentedHomeKitObjects:0];
-        v16 = [(HFItemManager *)self itemProviders];
-        v17 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:v16 senderSelector:a2];
+        itemProviders = [(HFItemManager *)self itemProviders];
+        v17 = [(HFItemManager *)self reloadAndUpdateItemsForProviders:itemProviders senderSelector:a2];
       }
 
       else
       {
-        v18 = [(HFItemManager *)self sourceItem];
-        v19 = [v18 latestResults];
-        v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
-        v21 = [v20 BOOLValue];
+        sourceItem2 = [(HFItemManager *)self sourceItem];
+        latestResults2 = [sourceItem2 latestResults];
+        v20 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+        bOOLValue = [v20 BOOLValue];
 
-        if ((v21 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
-          v22 = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
-          [v22 unionSet:v13];
+          representedHomeKitObjects2 = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
+          [representedHomeKitObjects2 unionSet:v13];
 
           [(HFItemManager *)self recalculateVisibilityAndSortAllItems];
         }
@@ -866,14 +866,14 @@ LABEL_17:
   v5 = v4;
   v6 = v3;
   v7 = _Block_copy(aBlock);
-  v8 = [(HFItemManager *)self itemProviders];
+  itemProviders = [(HFItemManager *)self itemProviders];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __53__HUHomeStatusDetailsItemManager__willUpdateSections__block_invoke_2;
   v18 = &unk_277DC13A8;
   v19 = v7;
   v9 = v7;
-  [v8 na_each:&v15];
+  [itemProviders na_each:&v15];
 
   v10 = objc_alloc(MEMORY[0x277CCAC98]);
   v11 = [(HUHomeStatusDetailsItemManager *)self _sectionComparator:v15];
@@ -932,9 +932,9 @@ void __53__HUHomeStatusDetailsItemManager__willUpdateSections__block_invoke_2(ui
   }
 
   v3 = qword_27C838030;
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 hf_orderedRooms];
-  v6 = [v5 na_map:&__block_literal_global_348];
+  home = [(HFItemManager *)self home];
+  hf_orderedRooms = [home hf_orderedRooms];
+  v6 = [hf_orderedRooms na_map:&__block_literal_global_348];
 
   v7 = [v3 arrayByAddingObjectsFromArray:v6];
   v8 = [MEMORY[0x277D14CE8] comparatorWithSortedObjects:v7];
@@ -965,15 +965,15 @@ id __52__HUHomeStatusDetailsItemManager__sectionComparator__block_invoke_3(uint6
   return v3;
 }
 
-- (id)_comparatorForSectionIdentifier:(id)a3
+- (id)_comparatorForSectionIdentifier:(id)identifier
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v19[0] = @"UrgentServices";
   v19[1] = @"GeneralServices";
   v19[2] = @"LowBattery";
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:identifierCopy];
 
   if (v6)
   {
@@ -984,7 +984,7 @@ id __52__HUHomeStatusDetailsItemManager__sectionComparator__block_invoke_3(uint6
   v18[0] = @"FirmwareUpdateInstructions";
   v18[1] = @"FirmwareUpdateAppPunchOut";
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-  v9 = [v8 containsObject:v4];
+  v9 = [v8 containsObject:identifierCopy];
 
   if (v9)
   {
@@ -993,14 +993,14 @@ id __52__HUHomeStatusDetailsItemManager__sectionComparator__block_invoke_3(uint6
 
   else
   {
-    if ([v4 isEqualToString:@"SoftwareUpdateInfo"])
+    if ([identifierCopy isEqualToString:@"SoftwareUpdateInfo"])
     {
       v11 = MEMORY[0x277D14CE8];
       v17 = objc_opt_class();
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
       v16.receiver = self;
       v16.super_class = HUHomeStatusDetailsItemManager;
-      v13 = [(HFItemManager *)&v16 _comparatorForSectionIdentifier:v4];
+      v13 = [(HFItemManager *)&v16 _comparatorForSectionIdentifier:identifierCopy];
       v7 = [v11 comparatorWithSortedClasses:v12 secondaryComparator:v13];
 
       goto LABEL_9;
@@ -1008,7 +1008,7 @@ id __52__HUHomeStatusDetailsItemManager__sectionComparator__block_invoke_3(uint6
 
     v15.receiver = self;
     v15.super_class = HUHomeStatusDetailsItemManager;
-    v10 = [(HFItemManager *)&v15 _comparatorForSectionIdentifier:v4];
+    v10 = [(HFItemManager *)&v15 _comparatorForSectionIdentifier:identifierCopy];
   }
 
   v7 = v10;
@@ -1031,11 +1031,11 @@ uint64_t __66__HUHomeStatusDetailsItemManager__comparatorForSectionIdentifier___
   return v10;
 }
 
-- (id)matchingItemForHomeKitObject:(id)a3
+- (id)matchingItemForHomeKitObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
-  v5 = v4;
+  v5 = objectCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -1052,8 +1052,8 @@ uint64_t __66__HUHomeStatusDetailsItemManager__comparatorForSectionIdentifier___
   {
     if ([v7 hf_isCamera] && (objc_msgSend(v7, "cameraProfiles"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
     {
-      v10 = [v7 cameraProfiles];
-      v11 = [v10 firstObject];
+      cameraProfiles = [v7 cameraProfiles];
+      firstObject = [cameraProfiles firstObject];
     }
 
     else
@@ -1063,8 +1063,8 @@ uint64_t __66__HUHomeStatusDetailsItemManager__comparatorForSectionIdentifier___
         goto LABEL_14;
       }
 
-      v10 = [v7 home];
-      v12 = [v10 hf_mediaSystemForAccessory:v7];
+      cameraProfiles = [v7 home];
+      v12 = [cameraProfiles hf_mediaSystemForAccessory:v7];
       v13 = v12;
       if (v12)
       {
@@ -1076,23 +1076,23 @@ uint64_t __66__HUHomeStatusDetailsItemManager__comparatorForSectionIdentifier___
         v14 = v5;
       }
 
-      v11 = v14;
+      firstObject = v14;
 
       v5 = v13;
     }
 
-    v5 = v11;
+    v5 = firstObject;
   }
 
 LABEL_14:
-  v15 = [(HFItemManager *)self allDisplayedItems];
+  allDisplayedItems = [(HFItemManager *)self allDisplayedItems];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __63__HUHomeStatusDetailsItemManager_matchingItemForHomeKitObject___block_invoke;
   v19[3] = &unk_277DB85D8;
   v20 = v5;
   v16 = v5;
-  v17 = [v15 na_firstObjectPassingTest:v19];
+  v17 = [allDisplayedItems na_firstObjectPassingTest:v19];
 
   return v17;
 }
@@ -1126,17 +1126,17 @@ uint64_t __63__HUHomeStatusDetailsItemManager_matchingItemForHomeKitObject___blo
   return v8;
 }
 
-- (BOOL)shouldHideItem:(id)a3
+- (BOOL)shouldHideItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
-      v11 = [v10 na_any:&__block_literal_global_359];
+      representedHomeKitObjects = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
+      v11 = [representedHomeKitObjects na_any:&__block_literal_global_359];
 
       if (!v11 || ![(HUHomeStatusDetailsItemManager *)self isFirmwareUpdateStatusItem])
       {
@@ -1149,7 +1149,7 @@ uint64_t __63__HUHomeStatusDetailsItemManager_matchingItemForHomeKitObject___blo
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v12 = v4;
+        v12 = itemCopy;
         if ([v12 conformsToProtocol:&unk_2824C0788])
         {
           v13 = v12;
@@ -1160,55 +1160,55 @@ uint64_t __63__HUHomeStatusDetailsItemManager_matchingItemForHomeKitObject___blo
           v13 = 0;
         }
 
-        v5 = v13;
+        latestResults2 = v13;
 
-        if (v5)
+        if (latestResults2)
         {
-          v14 = [v5 homeKitObject];
-          v15 = [(HUHomeStatusDetailsItemManager *)self _shouldHideHomeKitObject:v14];
+          homeKitObject = [latestResults2 homeKitObject];
+          v15 = [(HUHomeStatusDetailsItemManager *)self _shouldHideHomeKitObject:homeKitObject];
 
           if (v15)
           {
-            v9 = 1;
+            bOOLValue = 1;
 LABEL_19:
 
             goto LABEL_20;
           }
         }
 
-        v6 = [v12 latestResults];
-        v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
-        v9 = [v7 BOOLValue];
+        latestResults = [v12 latestResults];
+        v6LatestResults = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+        bOOLValue = [v6LatestResults BOOLValue];
         goto LABEL_17;
       }
     }
 
-    v5 = [v4 latestResults];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
-    v9 = [v6 BOOLValue];
+    latestResults2 = [itemCopy latestResults];
+    latestResults = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+    bOOLValue = [latestResults BOOLValue];
 LABEL_18:
 
-    v12 = v5;
+    v12 = latestResults2;
     goto LABEL_19;
   }
 
   if ([(HUHomeStatusDetailsItemManager *)self isFirmwareUpdateStatusItem])
   {
-    v5 = [(HUHomeStatusDetailsItemManager *)self firmwareUpdateItemProvider];
-    v6 = [v5 instructionsItem];
-    v7 = [v6 latestResults];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
-    v9 = [v8 BOOLValue];
+    latestResults2 = [(HUHomeStatusDetailsItemManager *)self firmwareUpdateItemProvider];
+    latestResults = [latestResults2 instructionsItem];
+    v6LatestResults = [latestResults latestResults];
+    v8 = [v6LatestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+    bOOLValue = [v8 BOOLValue];
 
 LABEL_17:
     goto LABEL_18;
   }
 
 LABEL_7:
-  v9 = 1;
+  bOOLValue = 1;
 LABEL_20:
 
-  return v9;
+  return bOOLValue;
 }
 
 uint64_t __49__HUHomeStatusDetailsItemManager_shouldHideItem___block_invoke(uint64_t a1, void *a2)
@@ -1249,18 +1249,18 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_shouldHideHomeKitObject:(id)a3
+- (BOOL)_shouldHideHomeKitObject:(id)object
 {
-  v4 = a3;
-  v6 = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
-  v5 = [v6 count];
+  objectCopy = object;
+  representedHomeKitObjects = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
+  v5 = [representedHomeKitObjects count];
 
-  LOBYTE(v6) = 1;
-  if (v4 && v5)
+  LOBYTE(representedHomeKitObjects) = 1;
+  if (objectCopy && v5)
   {
     if ([(HUHomeStatusDetailsItemManager *)self isDisplayingRoomLevelStatus])
     {
-      v7 = v4;
+      v7 = objectCopy;
       v8 = &unk_282547DB8;
       if ([v7 conformsToProtocol:v8])
       {
@@ -1279,10 +1279,10 @@ LABEL_6:
         goto LABEL_19;
       }
 
-      v11 = [(HUHomeStatusDetailsItemManager *)self statusItem];
-      v12 = [v11 room];
-      v13 = [v10 hf_parentRoom];
-      v14 = [v12 isEqual:v13];
+      statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
+      room = [statusItem room];
+      hf_parentRoom = [v10 hf_parentRoom];
+      v14 = [room isEqual:hf_parentRoom];
 
       if (v14)
       {
@@ -1292,12 +1292,12 @@ LABEL_6:
 
     else
     {
-      v15 = [(HUHomeStatusDetailsItemManager *)self statusItem];
-      v16 = [v15 latestResults];
-      v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
-      v18 = [v17 integerValue];
+      statusItem2 = [(HUHomeStatusDetailsItemManager *)self statusItem];
+      latestResults = [statusItem2 latestResults];
+      v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
+      integerValue = [v17 integerValue];
 
-      v19 = v4;
+      v19 = objectCopy;
       v20 = &unk_28259DE80;
       if ([v19 conformsToProtocol:v20])
       {
@@ -1311,21 +1311,21 @@ LABEL_6:
 
       v22 = v21;
 
-      if (![v22 hf_hasSetVisibleInHomeStatus] || (objc_msgSend(v22, "hf_isVisibleInHomeStatus") & 1) != 0 || v18 >= 2)
+      if (![v22 hf_hasSetVisibleInHomeStatus] || (objc_msgSend(v22, "hf_isVisibleInHomeStatus") & 1) != 0 || integerValue >= 2)
       {
 
 LABEL_19:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = v4;
-          v24 = [v23 services];
+          v23 = objectCopy;
+          services = [v23 services];
           v34[0] = MEMORY[0x277D85DD0];
           v34[1] = 3221225472;
           v34[2] = __59__HUHomeStatusDetailsItemManager__shouldHideHomeKitObject___block_invoke;
           v34[3] = &unk_277DB9560;
           v34[4] = self;
-          LOBYTE(v6) = [v24 na_all:v34];
+          LOBYTE(representedHomeKitObjects) = [services na_all:v34];
 
           goto LABEL_27;
         }
@@ -1341,7 +1341,7 @@ LABEL_19:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = v4;
+          accessory = objectCopy;
           goto LABEL_25;
         }
 
@@ -1349,7 +1349,7 @@ LABEL_19:
         if (objc_opt_isKindOfClass())
         {
 LABEL_22:
-          v26 = [v4 accessory];
+          accessory = [objectCopy accessory];
         }
 
         else
@@ -1357,37 +1357,37 @@ LABEL_22:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v6 = 0;
+            representedHomeKitObjects = 0;
             goto LABEL_26;
           }
 
-          v26 = [v4 hf_linkedAccessory];
+          accessory = [objectCopy hf_linkedAccessory];
         }
 
 LABEL_25:
-        v6 = v26;
+        representedHomeKitObjects = accessory;
 LABEL_26:
-        v27 = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
+        representedHomeKitObjects2 = [(HUHomeStatusDetailsItemManager *)self representedHomeKitObjects];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __59__HUHomeStatusDetailsItemManager__shouldHideHomeKitObject___block_invoke_2;
         v30[3] = &unk_277DC13F0;
         v33 = v25;
-        v31 = v4;
-        v32 = v6;
-        v28 = v6;
-        LODWORD(v6) = [v27 na_any:v30] ^ 1;
+        v31 = objectCopy;
+        v32 = representedHomeKitObjects;
+        v28 = representedHomeKitObjects;
+        LODWORD(representedHomeKitObjects) = [representedHomeKitObjects2 na_any:v30] ^ 1;
 
         goto LABEL_27;
       }
     }
 
-    LOBYTE(v6) = 1;
+    LOBYTE(representedHomeKitObjects) = 1;
   }
 
 LABEL_27:
 
-  return v6;
+  return representedHomeKitObjects;
 }
 
 uint64_t __59__HUHomeStatusDetailsItemManager__shouldHideHomeKitObject___block_invoke_2(uint64_t a1, void *a2)
@@ -1440,55 +1440,55 @@ LABEL_13:
   return v4;
 }
 
-- (int64_t)_effectivePriorityForItem:(id)a3
+- (int64_t)_effectivePriorityForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
+  itemCopy = item;
+  latestResults = [itemCopy latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EC8]];
 
-  v7 = [(HUHomeStatusDetailsItemManager *)self _minimumPriorityNumberForItem:v4];
+  v7 = [(HUHomeStatusDetailsItemManager *)self _minimumPriorityNumberForItem:itemCopy];
 
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
     if (v7)
     {
 LABEL_3:
-      v9 = [v7 integerValue];
+      integerValue2 = [v7 integerValue];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v8 = -1;
+    integerValue = -1;
     if (v7)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = -1;
+  integerValue2 = -1;
 LABEL_6:
-  if (v9 > v8)
+  if (integerValue2 > integerValue)
   {
-    v8 = v9;
+    integerValue = integerValue2;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (id)_minimumPriorityNumberForItem:(id)a3
+- (id)_minimumPriorityNumberForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
+  itemCopy = item;
+  minimumPriorityItemTuples = [(HUHomeStatusDetailsItemManager *)self minimumPriorityItemTuples];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___block_invoke;
   v10[3] = &unk_277DC1308;
-  v6 = v4;
+  v6 = itemCopy;
   v11 = v6;
-  v7 = [v5 na_firstObjectPassingTest:v10];
+  v7 = [minimumPriorityItemTuples na_firstObjectPassingTest:v10];
 
   if (v7)
   {
@@ -1514,10 +1514,10 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
 - (id)statusItem
 {
   objc_opt_class();
-  v3 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -1532,16 +1532,16 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
 
 - (BOOL)isDisplayingRoomLevelStatus
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self statusItem];
-  v3 = [v2 room];
-  v4 = v3 != 0;
+  statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
+  room = [statusItem room];
+  v4 = room != 0;
 
   return v4;
 }
 
 - (BOOL)isNoResponseStatusItem
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self statusItem];
+  statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1550,7 +1550,7 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
 
 - (BOOL)isAccessoriesWithIssuesStatusItem
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self statusItem];
+  statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1559,7 +1559,7 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
 
 - (BOOL)isFirmwareUpdateStatusItem
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self statusItem];
+  statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1568,7 +1568,7 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
 
 - (BOOL)isLowBatteryStatusItem
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self statusItem];
+  statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1577,7 +1577,7 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
 
 - (BOOL)isResidentDeviceStatusItem
 {
-  v2 = [(HUHomeStatusDetailsItemManager *)self statusItem];
+  statusItem = [(HUHomeStatusDetailsItemManager *)self statusItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1591,7 +1591,7 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
     return 1;
   }
 
-  v5 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1600,7 +1600,7 @@ uint64_t __64__HUHomeStatusDetailsItemManager__minimumPriorityNumberForItem___bl
 
   else
   {
-    v6 = [(HFItemManager *)self sourceItem];
+    sourceItem2 = [(HFItemManager *)self sourceItem];
     objc_opt_class();
     v3 = (objc_opt_isKindOfClass() & 1) != 0 || [(HUHomeStatusDetailsItemManager *)self isAccessoriesWithIssuesStatusItem];
   }

@@ -1,11 +1,11 @@
 @interface TKVirtualTokenExtension
 + (BOOL)isAvailable;
-+ (id)extensionsWithMatchingAttributes:(id)a3 error:(id *)a4;
++ (id)extensionsWithMatchingAttributes:(id)attributes error:(id *)error;
 - (TKVirtualTokenExtension)init;
-- (id)_extensionContextForUUID:(id)a3;
-- (id)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 error:(id *)a5;
-- (void)cancelExtensionRequestWithIdentifier:(id)a3;
-- (void)removeContext:(id)a3;
+- (id)_extensionContextForUUID:(id)d;
+- (id)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items error:(id *)error;
+- (void)cancelExtensionRequestWithIdentifier:(id)identifier;
+- (void)removeContext:(id)context;
 @end
 
 @implementation TKVirtualTokenExtension
@@ -64,26 +64,26 @@
   return v3;
 }
 
-- (void)removeContext:(id)a3
+- (void)removeContext:(id)context
 {
-  v8 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(TKVirtualTokenExtension *)self contexts];
-  v5 = [v4 objectForKeyedSubscript:v8];
+  contexts = [(TKVirtualTokenExtension *)self contexts];
+  v5 = [contexts objectForKeyedSubscript:contextCopy];
 
   if (v5)
   {
-    v6 = [v5 connection];
-    [v6 invalidate];
+    connection = [v5 connection];
+    [connection invalidate];
 
-    v7 = [(TKVirtualTokenExtension *)self contexts];
-    [v7 setObject:0 forKeyedSubscript:v8];
+    contexts2 = [(TKVirtualTokenExtension *)self contexts];
+    [contexts2 setObject:0 forKeyedSubscript:contextCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 error:(id *)a5
+- (id)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items error:(id *)error
 {
   v6 = objc_alloc_init(TKTokenDriverHostContext);
   v7 = +[NSUUID UUID];
@@ -96,8 +96,8 @@
   [(TKVirtualTokenContext *)v11 setConnection:v10];
   [(TKTokenDriverHostContext *)v6 setVirtualTokenDelegate:v11];
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(TKVirtualTokenExtension *)self contexts];
-  [v12 setObject:v11 forKeyedSubscript:v7];
+  contexts = [(TKVirtualTokenExtension *)self contexts];
+  [contexts setObject:v11 forKeyedSubscript:v7];
 
   os_unfair_lock_unlock(&self->_lock);
   v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TKTokenDriverHostProtocol];
@@ -119,7 +119,7 @@
   v21 = 3221225472;
   v22 = sub_10000A8F4;
   v23 = &unk_100038760;
-  v24 = self;
+  selfCopy = self;
   v16 = v15;
   v25 = v16;
   [v10 setInvalidationHandler:&v20];
@@ -130,39 +130,39 @@
   return v16;
 }
 
-- (id)_extensionContextForUUID:(id)a3
+- (id)_extensionContextForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(TKVirtualTokenExtension *)self contexts];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  contexts = [(TKVirtualTokenExtension *)self contexts];
+  v6 = [contexts objectForKeyedSubscript:dCopy];
 
-  v7 = [v6 hostContext];
+  hostContext = [v6 hostContext];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v7;
+  return hostContext;
 }
 
-- (void)cancelExtensionRequestWithIdentifier:(id)a3
+- (void)cancelExtensionRequestWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(TKVirtualTokenExtension *)self requestCancellationBlock];
+  identifierCopy = identifier;
+  requestCancellationBlock = [(TKVirtualTokenExtension *)self requestCancellationBlock];
 
-  if (v4)
+  if (requestCancellationBlock)
   {
-    v5 = [(TKVirtualTokenExtension *)self requestCancellationBlock];
-    (v5)[2](v5, v6, 0);
+    requestCancellationBlock2 = [(TKVirtualTokenExtension *)self requestCancellationBlock];
+    (requestCancellationBlock2)[2](requestCancellationBlock2, identifierCopy, 0);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(TKVirtualTokenExtension *)self removeContext:v6];
+    [(TKVirtualTokenExtension *)self removeContext:identifierCopy];
   }
 }
 
-+ (id)extensionsWithMatchingAttributes:(id)a3 error:(id *)a4
++ (id)extensionsWithMatchingAttributes:(id)attributes error:(id *)error
 {
   v4 = objc_alloc_init(TKVirtualTokenExtension);
   v7 = v4;

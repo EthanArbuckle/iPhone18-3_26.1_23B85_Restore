@@ -1,56 +1,56 @@
 @interface CLKVideoPlayerView
 - (BOOL)_readyToPerformRequest;
 - (BOOL)isPlaybackReady;
-- (CLKVideoPlayerView)initWithFrame:(CGRect)a3;
+- (CLKVideoPlayerView)initWithFrame:(CGRect)frame;
 - (CLKVideoPlayerViewDelegate)delegate;
-- (id)_createPlayerItemForVideoURL:(id)a3;
-- (void)_handleDidPlayToEndTime:(id)a3;
+- (id)_createPlayerItemForVideoURL:(id)l;
+- (void)_handleDidPlayToEndTime:(id)time;
 - (void)_hidePausedView;
-- (void)_loadVideo:(id)a3;
-- (void)_observePlayerItem:(id)a3;
+- (void)_loadVideo:(id)video;
+- (void)_observePlayerItem:(id)item;
 - (void)_pause;
 - (void)_performNextRequest;
-- (void)_periodicTimeObserverChanged:(id *)a3;
+- (void)_periodicTimeObserverChanged:(id *)changed;
 - (void)_play;
 - (void)_preroll;
-- (void)_queueVideo:(id)a3;
-- (void)_seekToTime:(id *)a3;
+- (void)_queueVideo:(id)video;
+- (void)_seekToTime:(id *)time;
 - (void)_showPausedView;
 - (void)_stopObservingPlayerItem;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)loadVideo:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)loadVideo:(id)video;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
 - (void)prepareNextQueuedVideo;
 - (void)preroll;
-- (void)queueVideo:(id)a3;
+- (void)queueVideo:(id)video;
 - (void)resetRequestState;
-- (void)seekToTime:(id *)a3;
-- (void)seekToTime:(id *)a3 tolerance:(id *)a4;
-- (void)setGravityResize:(int64_t)a3;
-- (void)setPausedViewEnabled:(BOOL)a3;
+- (void)seekToTime:(id *)time;
+- (void)seekToTime:(id *)time tolerance:(id *)tolerance;
+- (void)setGravityResize:(int64_t)resize;
+- (void)setPausedViewEnabled:(BOOL)enabled;
 @end
 
 @implementation CLKVideoPlayerView
 
-- (CLKVideoPlayerView)initWithFrame:(CGRect)a3
+- (CLKVideoPlayerView)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = CLKVideoPlayerView;
-  v3 = [(CLKVideoPlayerView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CLKVideoPlayerView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v3)
   {
     return v3;
   }
 
-  v4 = [getAVAudioSessionClass() sharedInstance];
-  [v4 setRequiresNoAudioResources:1 error:0];
+  sharedInstance = [getAVAudioSessionClass() sharedInstance];
+  [sharedInstance setRequiresNoAudioResources:1 error:0];
 
-  v5 = [getAVAudioSessionClass() sharedInstance];
+  sharedInstance2 = [getAVAudioSessionClass() sharedInstance];
   v6 = getAVAudioSessionCategoryAmbient();
-  [v5 setCategory:v6 withOptions:1 error:0];
+  [sharedInstance2 setCategory:v6 withOptions:1 error:0];
 
   v3[545] = 1;
   *(v3 + 70) = 1;
@@ -83,12 +83,12 @@
   *(v3 + 52) = v12;
 
   [*(v3 + 52) _setCALayerDestinationIsTVOut:1];
-  v14 = [*(v3 + 51) layer];
-  [v14 setPlayer:*(v3 + 52)];
+  layer = [*(v3 + 51) layer];
+  [layer setPlayer:*(v3 + 52)];
 
   [v3 setGravityResize:*(v3 + 70)];
-  v15 = [*(v3 + 51) layer];
-  [v15 addObserver:v3 forKeyPath:@"readyForDisplay" options:0 context:&kCLKVideoPlayerLayerKVOContext];
+  layer2 = [*(v3 + 51) layer];
+  [layer2 addObserver:v3 forKeyPath:@"readyForDisplay" options:0 context:&kCLKVideoPlayerLayerKVOContext];
 
   objc_initWeak(&location, v3);
   _CMTimeMakeWithSeconds(0xFFFFFFFFLL, 0.0);
@@ -106,7 +106,7 @@
   v19 = *(v3 + 58);
   *(v3 + 58) = v18;
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -130,7 +130,7 @@
   if (v21)
   {
     v24 = *v21;
-    [v20 addObserver:v3 selector:sel__handleDidPlayToEndTime_ name:v24 object:0];
+    [defaultCenter addObserver:v3 selector:sel__handleDidPlayToEndTime_ name:v24 object:0];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -154,12 +154,12 @@ void __36__CLKVideoPlayerView_initWithFrame___block_invoke(uint64_t a1, __int128
 - (void)dealloc
 {
   [(AVQueuePlayer *)self->_player removeTimeObserver:self->_periodicTimeObserver];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CLKVideoPlayerView *)self _stopObservingPlayerItem];
-  v4 = [(_CLKPlayerView *)self->_playerView layer];
-  [v4 removeObserver:self forKeyPath:@"readyForDisplay" context:&kCLKVideoPlayerLayerKVOContext];
+  layer = [(_CLKPlayerView *)self->_playerView layer];
+  [layer removeObserver:self forKeyPath:@"readyForDisplay" context:&kCLKVideoPlayerLayerKVOContext];
 
   v5.receiver = self;
   v5.super_class = CLKVideoPlayerView;
@@ -180,15 +180,15 @@ void __36__CLKVideoPlayerView_initWithFrame___block_invoke(uint64_t a1, __int128
   }
 }
 
-- (void)setGravityResize:(int64_t)a3
+- (void)setGravityResize:(int64_t)resize
 {
-  self->_gravityResize = a3;
-  if (a3 == 1)
+  self->_gravityResize = resize;
+  if (resize == 1)
   {
     goto LABEL_7;
   }
 
-  if (a3)
+  if (resize)
   {
     v7 = 0;
     goto LABEL_12;
@@ -236,14 +236,14 @@ LABEL_7:
 
   v7 = *v4;
 LABEL_12:
-  v8 = [(_CLKPlayerView *)self->_playerView layer];
-  [v8 setVideoGravity:v7];
+  layer = [(_CLKPlayerView *)self->_playerView layer];
+  [layer setVideoGravity:v7];
 }
 
-- (void)_observePlayerItem:(id)a3
+- (void)_observePlayerItem:(id)item
 {
-  objc_storeStrong(&self->_observedItem, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_observedItem, item);
+  itemCopy = item;
   [(AVPlayerItem *)self->_observedItem addObserver:self forKeyPath:@"status" options:0 context:&kCLKVideoPlayerViewKVOContext];
 }
 
@@ -254,42 +254,42 @@ LABEL_12:
   self->_observedItem = 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &kCLKVideoPlayerViewKVOContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &kCLKVideoPlayerViewKVOContext)
   {
-    if (self->_observedItem == v11)
+    if (self->_observedItem == objectCopy)
     {
-      if ([v10 isEqualToString:@"status"])
+      if ([pathCopy isEqualToString:@"status"])
       {
         if ([(AVPlayerItem *)self->_playerItem status]== AVPlayerItemStatusReadyToPlay)
         {
           [(CLKVideoPlayerView *)self _stopObservingPlayerItem];
           [(CLKVideoPlayerView *)self _performNextRequest];
-          v13 = [(CLKVideoPlayerView *)self delegate];
+          delegate = [(CLKVideoPlayerView *)self delegate];
           v14 = objc_opt_respondsToSelector();
 
           if (v14)
           {
-            v15 = [(CLKVideoPlayerView *)self delegate];
-            [v15 videoPlayerViewWillBeginPlaying:self];
+            delegate2 = [(CLKVideoPlayerView *)self delegate];
+            [delegate2 videoPlayerViewWillBeginPlaying:self];
           }
         }
       }
     }
   }
 
-  else if (a6 == &kCLKVideoPlayerLayerKVOContext)
+  else if (context == &kCLKVideoPlayerLayerKVOContext)
   {
-    if ([v10 isEqualToString:@"readyForDisplay"])
+    if ([pathCopy isEqualToString:@"readyForDisplay"])
     {
-      v16 = [(_CLKPlayerView *)self->_playerView layer];
-      v17 = [v16 isReadyForDisplay];
+      layer = [(_CLKPlayerView *)self->_playerView layer];
+      isReadyForDisplay = [layer isReadyForDisplay];
 
-      if (v17)
+      if (isReadyForDisplay)
       {
         [(CLKVideoPlayerView *)self _performNextRequest];
       }
@@ -300,19 +300,19 @@ LABEL_12:
   {
     v18.receiver = self;
     v18.super_class = CLKVideoPlayerView;
-    [(CLKVideoPlayerView *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CLKVideoPlayerView *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_handleDidPlayToEndTime:(id)a3
+- (void)_handleDidPlayToEndTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   if ([(AVQueuePlayer *)self->_player actionAtItemEnd]== 1)
   {
-    v5 = [v4 object];
+    object = [timeCopy object];
     playerItem = self->_playerItem;
 
-    if (v5 == playerItem)
+    if (object == playerItem)
     {
       [(CLKVideoPlayerView *)self _pause];
       v11 = block;
@@ -330,10 +330,10 @@ LABEL_10:
 
   if (![(AVQueuePlayer *)self->_player actionAtItemEnd])
   {
-    v7 = [v4 object];
+    object2 = [timeCopy object];
     v8 = self->_playerItem;
 
-    if (v7 == v8)
+    if (object2 == v8)
     {
       queuedItem = self->_queuedItem;
       if (queuedItem)
@@ -392,13 +392,13 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
   [v2 videoPlayerViewDidPauseAfterPlayingVideoToEnd:*(a1 + 32)];
 }
 
-- (void)_periodicTimeObserverChanged:(id *)a3
+- (void)_periodicTimeObserverChanged:(id *)changed
 {
   p_willBeginPlayingTime = &self->_willBeginPlayingTime;
   if (self->_willBeginPlayingTime.timescale >= 1)
   {
-    v8 = *&a3->var0;
-    var3 = a3->var3;
+    v8 = *&changed->var0;
+    var3 = changed->var3;
     v6 = *&p_willBeginPlayingTime->value;
     epoch = self->_willBeginPlayingTime.epoch;
     if (_CMTimeCompare(&v8, &v6))
@@ -412,8 +412,8 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
       *&p_willBeginPlayingTime->value = v8;
       p_willBeginPlayingTime->epoch = var3;
       kdebug_trace();
-      v5 = [(CLKVideoPlayerView *)self delegate];
-      [v5 videoPlayerViewDidBeginPlaying:self];
+      delegate = [(CLKVideoPlayerView *)self delegate];
+      [delegate videoPlayerViewDidBeginPlaying:self];
     }
   }
 }
@@ -425,8 +425,8 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
     return 0;
   }
 
-  v3 = [(_CLKPlayerView *)self->_playerView layer];
-  if ([v3 isReadyForDisplay])
+  layer = [(_CLKPlayerView *)self->_playerView layer];
+  if ([layer isReadyForDisplay])
   {
     v4 = self->_servicingRequest == 0;
   }
@@ -492,10 +492,10 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
   self->_pausedView = 0;
 }
 
-- (void)setPausedViewEnabled:(BOOL)a3
+- (void)setPausedViewEnabled:(BOOL)enabled
 {
-  self->_pausedViewEnabled = a3;
-  if (!a3)
+  self->_pausedViewEnabled = enabled;
+  if (!enabled)
   {
     [(CLKVideoPlayerView *)self _hidePausedView];
   }
@@ -503,11 +503,11 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
 
 - (BOOL)isPlaybackReady
 {
-  v3 = [(AVQueuePlayer *)self->_player currentItem];
-  if (v3 == self->_playerItem)
+  currentItem = [(AVQueuePlayer *)self->_player currentItem];
+  if (currentItem == self->_playerItem)
   {
-    v5 = [(AVQueuePlayer *)self->_player currentItem];
-    v4 = [v5 status] == 1 && -[AVQueuePlayer status](self->_player, "status") == 1 && (*(self + 544) & 4) == 0;
+    currentItem2 = [(AVQueuePlayer *)self->_player currentItem];
+    v4 = [currentItem2 status] == 1 && -[AVQueuePlayer status](self->_player, "status") == 1 && (*(self + 544) & 4) == 0;
   }
 
   else
@@ -529,10 +529,10 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
   *(self + 544) &= ~4u;
 }
 
-- (void)loadVideo:(id)a3
+- (void)loadVideo:(id)video
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = [a3 url];
+  v4 = [video url];
   v5 = CLKLoggingObjectForDomain(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -544,10 +544,10 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
   [(CLKVideoPlayerView *)self _loadVideo:v4];
 }
 
-- (void)queueVideo:(id)a3
+- (void)queueVideo:(id)video
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a3 url];
+  v3 = [video url];
   v4 = CLKLoggingObjectForDomain(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -602,30 +602,30 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
   }
 }
 
-- (void)seekToTime:(id *)a3
+- (void)seekToTime:(id *)time
 {
   getkCMTimePositiveInfinity(&v6);
-  v5 = *a3;
+  v5 = *time;
   [(CLKVideoPlayerView *)self seekToTime:&v5 tolerance:&v6];
 }
 
-- (void)seekToTime:(id *)a3 tolerance:(id *)a4
+- (void)seekToTime:(id *)time tolerance:(id *)tolerance
 {
   kdebug_trace();
-  var3 = a4->var3;
-  *&self->_seekWithTolerance.value = *&a4->var0;
+  var3 = tolerance->var3;
+  *&self->_seekWithTolerance.value = *&tolerance->var0;
   self->_seekWithTolerance.epoch = var3;
   if ([(CLKVideoPlayerView *)self _readyToPerformRequest])
   {
-    v10 = *&a3->var0;
-    v11 = a3->var3;
+    v10 = *&time->var0;
+    v11 = time->var3;
     [(CLKVideoPlayerView *)self _seekToTime:&v10];
   }
 
   else
   {
-    v10 = *&a3->var0;
-    v11 = a3->var3;
+    v10 = *&time->var0;
+    v11 = time->var3;
     v8 = [MEMORY[0x277CCAE60] valueWithCMTime:&v10];
     seekRequested = self->_seekRequested;
     self->_seekRequested = v8;
@@ -648,12 +648,12 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
   }
 }
 
-- (id)_createPlayerItemForVideoURL:(id)a3
+- (id)_createPlayerItemForVideoURL:(id)l
 {
-  v5 = a3;
-  if (([(NSURL *)self->_assetURL isEqual:v5]& 1) == 0)
+  lCopy = l;
+  if (([(NSURL *)self->_assetURL isEqual:lCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_assetURL, a3);
+    objc_storeStrong(&self->_assetURL, l);
     v19 = 0;
     v20 = &v19;
     v21 = 0x2050000000;
@@ -672,7 +672,7 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
 
     v7 = v6;
     _Block_object_dispose(&v19, 8);
-    v8 = [v6 URLAssetWithURL:v5 options:0];
+    v8 = [v6 URLAssetWithURL:lCopy options:0];
     asset = self->_asset;
     self->_asset = v8;
   }
@@ -702,12 +702,12 @@ void __46__CLKVideoPlayerView__handleDidPlayToEndTime___block_invoke_18(uint64_t
 
 - (void)_preroll
 {
-  v3 = [getAVAudioSessionClass() sharedInstance];
-  [v3 setRequiresNoAudioResources:1 error:0];
+  sharedInstance = [getAVAudioSessionClass() sharedInstance];
+  [sharedInstance setRequiresNoAudioResources:1 error:0];
 
-  v4 = [getAVAudioSessionClass() sharedInstance];
+  sharedInstance2 = [getAVAudioSessionClass() sharedInstance];
   v5 = getAVAudioSessionCategoryAmbient();
-  [v4 setCategory:v5 withOptions:1 error:0];
+  [sharedInstance2 setCategory:v5 withOptions:1 error:0];
 
   self->_servicingRequest = 2;
   kdebug_trace();
@@ -741,12 +741,12 @@ uint64_t __30__CLKVideoPlayerView__preroll__block_invoke(uint64_t a1, uint64_t a
 
 - (void)_play
 {
-  v3 = [getAVAudioSessionClass() sharedInstance];
-  [v3 setRequiresNoAudioResources:1 error:0];
+  sharedInstance = [getAVAudioSessionClass() sharedInstance];
+  [sharedInstance setRequiresNoAudioResources:1 error:0];
 
-  v4 = [getAVAudioSessionClass() sharedInstance];
+  sharedInstance2 = [getAVAudioSessionClass() sharedInstance];
   v5 = getAVAudioSessionCategoryAmbient();
-  [v4 setCategory:v5 withOptions:1 error:0];
+  [sharedInstance2 setCategory:v5 withOptions:1 error:0];
 
   kdebug_trace();
   player = self->_player;
@@ -782,14 +782,14 @@ uint64_t __30__CLKVideoPlayerView__preroll__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (void)_seekToTime:(id *)a3
+- (void)_seekToTime:(id *)time
 {
-  v5 = [getAVAudioSessionClass() sharedInstance];
-  [v5 setRequiresNoAudioResources:1 error:0];
+  sharedInstance = [getAVAudioSessionClass() sharedInstance];
+  [sharedInstance setRequiresNoAudioResources:1 error:0];
 
-  v6 = [getAVAudioSessionClass() sharedInstance];
+  sharedInstance2 = [getAVAudioSessionClass() sharedInstance];
   v7 = getAVAudioSessionCategoryAmbient();
-  [v6 setCategory:v7 withOptions:1 error:0];
+  [sharedInstance2 setCategory:v7 withOptions:1 error:0];
 
   self->_servicingRequest = 1;
   kdebug_trace();
@@ -799,8 +799,8 @@ uint64_t __30__CLKVideoPlayerView__preroll__block_invoke(uint64_t a1, uint64_t a
   v12[2] = __34__CLKVideoPlayerView__seekToTime___block_invoke;
   v12[3] = &unk_278A1FD38;
   v12[4] = self;
-  v13 = *a3;
-  v11 = *a3;
+  v13 = *time;
+  v11 = *time;
   seekWithTolerance = self->_seekWithTolerance;
   v9 = self->_seekWithTolerance;
   [(AVQueuePlayer *)player seekToTime:&v11 toleranceBefore:&seekWithTolerance toleranceAfter:&v9 completionHandler:v12];
@@ -834,9 +834,9 @@ uint64_t __34__CLKVideoPlayerView__seekToTime___block_invoke(uint64_t a1)
   return [*(a1 + 32) _performNextRequest];
 }
 
-- (void)_loadVideo:(id)a3
+- (void)_loadVideo:(id)video
 {
-  v4 = a3;
+  videoCopy = video;
   [(CLKVideoPlayerView *)self resetRequestState];
   [(CLKVideoPlayerView *)self _stopObservingPlayerItem];
   [(CLKVideoPlayerView *)self _pause];
@@ -847,16 +847,16 @@ uint64_t __34__CLKVideoPlayerView__seekToTime___block_invoke(uint64_t a1)
   queuedItem = self->_queuedItem;
   self->_queuedItem = 0;
 
-  if (v4)
+  if (videoCopy)
   {
-    v7 = [getAVAudioSessionClass() sharedInstance];
-    [v7 setRequiresNoAudioResources:1 error:0];
+    sharedInstance = [getAVAudioSessionClass() sharedInstance];
+    [sharedInstance setRequiresNoAudioResources:1 error:0];
 
-    v8 = [getAVAudioSessionClass() sharedInstance];
+    sharedInstance2 = [getAVAudioSessionClass() sharedInstance];
     v9 = getAVAudioSessionCategoryAmbient();
-    [v8 setCategory:v9 withOptions:1 error:0];
+    [sharedInstance2 setCategory:v9 withOptions:1 error:0];
 
-    v10 = [(CLKVideoPlayerView *)self _createPlayerItemForVideoURL:v4];
+    v10 = [(CLKVideoPlayerView *)self _createPlayerItemForVideoURL:videoCopy];
     v11 = self->_playerItem;
     self->_playerItem = v10;
 
@@ -880,16 +880,16 @@ uint64_t __34__CLKVideoPlayerView__seekToTime___block_invoke(uint64_t a1)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(CLKVideoPlayerView *)v4 _loadVideo:v14, v15, v16, v17, v18, v19, v20];
+        [(CLKVideoPlayerView *)videoCopy _loadVideo:v14, v15, v16, v17, v18, v19, v20];
       }
     }
   }
 }
 
-- (void)_queueVideo:(id)a3
+- (void)_queueVideo:(id)video
 {
-  v4 = a3;
-  if (v4)
+  videoCopy = video;
+  if (videoCopy)
   {
     if (self->_playerItem)
     {
@@ -898,21 +898,21 @@ uint64_t __34__CLKVideoPlayerView__seekToTime___block_invoke(uint64_t a1)
         v5 = CLKLoggingObjectForDomain(0);
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
         {
-          [(CLKVideoPlayerView *)v4 _queueVideo:v5, v6, v7, v8, v9, v10, v11];
+          [(CLKVideoPlayerView *)videoCopy _queueVideo:v5, v6, v7, v8, v9, v10, v11];
         }
       }
 
       else
       {
-        v12 = [getAVAudioSessionClass() sharedInstance];
-        [v12 setRequiresNoAudioResources:1 error:0];
+        sharedInstance = [getAVAudioSessionClass() sharedInstance];
+        [sharedInstance setRequiresNoAudioResources:1 error:0];
 
-        v13 = [getAVAudioSessionClass() sharedInstance];
+        sharedInstance2 = [getAVAudioSessionClass() sharedInstance];
         v14 = getAVAudioSessionCategoryAmbient();
-        [v13 setCategory:v14 withOptions:1 error:0];
+        [sharedInstance2 setCategory:v14 withOptions:1 error:0];
 
         kdebug_trace();
-        v15 = [(CLKVideoPlayerView *)self _createPlayerItemForVideoURL:v4];
+        v15 = [(CLKVideoPlayerView *)self _createPlayerItemForVideoURL:videoCopy];
         queuedItem = self->_queuedItem;
         self->_queuedItem = v15;
 
@@ -935,7 +935,7 @@ uint64_t __34__CLKVideoPlayerView__seekToTime___block_invoke(uint64_t a1)
         {
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            [(CLKVideoPlayerView *)v4 _loadVideo:v19, v20, v21, v22, v23, v24, v25];
+            [(CLKVideoPlayerView *)videoCopy _loadVideo:v19, v20, v21, v22, v23, v24, v25];
           }
         }
 
@@ -945,7 +945,7 @@ uint64_t __34__CLKVideoPlayerView__seekToTime___block_invoke(uint64_t a1)
 
     else
     {
-      [(CLKVideoPlayerView *)self _loadVideo:v4];
+      [(CLKVideoPlayerView *)self _loadVideo:videoCopy];
     }
   }
 }

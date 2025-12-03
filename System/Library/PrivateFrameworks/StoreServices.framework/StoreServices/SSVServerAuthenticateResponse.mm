@@ -1,27 +1,27 @@
 @interface SSVServerAuthenticateResponse
-- (SSVServerAuthenticateResponse)initWithXPCEncoding:(id)a3;
+- (SSVServerAuthenticateResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSVServerAuthenticateResponse
 
-- (SSVServerAuthenticateResponse)initWithXPCEncoding:(id)a3
+- (SSVServerAuthenticateResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
+  encodingCopy = encoding;
   v12.receiver = self;
   v12.super_class = SSVServerAuthenticateResponse;
   v5 = [(SSVServerAuthenticateResponse *)&v12 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = SSXPCDictionaryCopyCFObjectWithClass(v4, "0");
+    v6 = SSXPCDictionaryCopyCFObjectWithClass(encodingCopy, "0");
     authenticatedAccountIdentifier = v5->_authenticatedAccountIdentifier;
     v5->_authenticatedAccountIdentifier = v6;
 
-    v5->_performedButtonIndex = xpc_dictionary_get_int64(v4, "1");
-    v5->_selectedButtonIndex = xpc_dictionary_get_int64(v4, "3");
+    v5->_performedButtonIndex = xpc_dictionary_get_int64(encodingCopy, "1");
+    v5->_selectedButtonIndex = xpc_dictionary_get_int64(encodingCopy, "3");
     objc_opt_class();
-    v8 = SSXPCDictionaryCopyCFObjectWithClass(v4, "2");
+    v8 = SSXPCDictionaryCopyCFObjectWithClass(encodingCopy, "2");
     if (v8)
     {
       v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v8];

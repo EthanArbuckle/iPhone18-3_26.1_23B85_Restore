@@ -1,6 +1,6 @@
 @interface DMDSetAppAllowUserToHideOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4;
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier;
 - (void)waitUntilFinished;
 @end
 
@@ -20,15 +20,15 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  requestCopy = request;
   v8 = +[DMDAppController sharedController];
-  v9 = [v7 allowUserToHide];
+  allowUserToHide = [requestCopy allowUserToHide];
 
   v13 = 0;
-  v10 = [v8 setAllowUserToHide:v9 forBundleIdentifier:v6 error:&v13];
+  v10 = [v8 setAllowUserToHide:allowUserToHide forBundleIdentifier:identifierCopy error:&v13];
 
   v11 = v13;
   if (v10)

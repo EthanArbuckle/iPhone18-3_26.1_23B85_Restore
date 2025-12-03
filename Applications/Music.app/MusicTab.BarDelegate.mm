@@ -1,73 +1,73 @@
 @interface MusicTab.BarDelegate
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab;
 - (_TtCC5Music8MusicTab11BarDelegate)init;
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5;
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4;
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5;
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4;
-- (void)tabBarControllerDidEndEditing:(id)a3;
-- (void)tabBarControllerWillBeginEditing:(id)a3;
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers;
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group;
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session;
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs;
+- (void)tabBarControllerDidEndEditing:(id)editing;
+- (void)tabBarControllerWillBeginEditing:(id)editing;
 @end
 
 @implementation MusicTab.BarDelegate
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10003EBC4(v8, v9, a5);
+  controllerCopy = controller;
+  tabCopy = tab;
+  previousTabCopy = previousTab;
+  selfCopy = self;
+  sub_10003EBC4(controllerCopy, tabCopy, previousTab);
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1003CE700(v6, v7);
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
+  v9 = sub_1003CE700(controllerCopy, tabCopy);
 
   return v9 & 1;
 }
 
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers
 {
   sub_100009F78(0, &qword_101183D40);
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_1003CE9C4(v9, v10, v8);
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
+  sub_1003CE9C4(controllerCopy, tabCopy, v8);
 
   v12.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
   return v12.super.isa;
 }
 
-- (void)tabBarControllerWillBeginEditing:(id)a3
+- (void)tabBarControllerWillBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003CDB28(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1003CDB28(editingCopy);
 }
 
-- (void)tabBarControllerDidEndEditing:(id)a3
+- (void)tabBarControllerDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003CDB9C(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_1003CDB9C(editingCopy);
 }
 
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 managingTabGroup];
-  if (!v7)
+  controllerCopy = controller;
+  groupCopy = group;
+  managingTabGroup = [groupCopy managingTabGroup];
+  if (!managingTabGroup)
   {
-    v7 = v6;
+    managingTabGroup = groupCopy;
   }
 
   v8 = swift_dynamicCastObjCProtocolConditional();
@@ -76,43 +76,43 @@
     v9 = v8;
     if ([v8 respondsToSelector:"tabBarController:displayOrderDidChangeForGroup:"])
     {
-      [v9 tabBarController:v5 displayOrderDidChangeForGroup:v6];
+      [v9 tabBarController:controllerCopy displayOrderDidChangeForGroup:groupCopy];
     }
 
-    v10 = v7;
+    v10 = managingTabGroup;
   }
 
   else
   {
-    v10 = v5;
-    v5 = v6;
-    v6 = v7;
+    v10 = controllerCopy;
+    controllerCopy = groupCopy;
+    groupCopy = managingTabGroup;
   }
 }
 
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs
 {
   sub_100009F78(0, &qword_101181F70);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  sub_1003CEAF0(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1003CEAF0(controllerCopy, v6);
 }
 
-- (void)tabBarController:(id)a3 tab:(id)a4 acceptItemsFromDropSession:(id)a5
+- (void)tabBarController:(id)controller tab:(id)tab acceptItemsFromDropSession:(id)session
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v10 = Strong;
-    v11 = a3;
-    v12 = a4;
+    controllerCopy = controller;
+    tabCopy = tab;
     swift_unknownObjectRetain();
-    v13 = self;
-    v14 = [v12 managingTabGroup];
-    if (!v14)
+    selfCopy = self;
+    managingTabGroup = [tabCopy managingTabGroup];
+    if (!managingTabGroup)
     {
-      v14 = v12;
+      managingTabGroup = tabCopy;
     }
 
     v15 = swift_dynamicCastObjCProtocolConditional();
@@ -122,11 +122,11 @@
 
       if ([v16 respondsToSelector:"tabBarController:tab:acceptItemsFromDropSession:"])
       {
-        [v16 tabBarController:v11 tab:v12 acceptItemsFromDropSession:a5];
+        [v16 tabBarController:controllerCopy tab:tabCopy acceptItemsFromDropSession:session];
       }
 
       swift_unknownObjectRelease();
-      v14 = v13;
+      managingTabGroup = selfCopy;
     }
 
     else
@@ -137,13 +137,13 @@
   }
 }
 
-- (unint64_t)tabBarController:(id)a3 tab:(id)a4 operationForAcceptingItemsFromDropSession:(id)a5
+- (unint64_t)tabBarController:(id)controller tab:(id)tab operationForAcceptingItemsFromDropSession:(id)session
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  tabCopy = tab;
   swift_unknownObjectRetain();
-  v10 = self;
-  v11 = sub_1003CE190(v8, v9, a5);
+  selfCopy = self;
+  v11 = sub_1003CE190(controllerCopy, tabCopy, session);
 
   swift_unknownObjectRelease();
   return v11;

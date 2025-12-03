@@ -1,11 +1,11 @@
 @interface PBBProtoHandshake
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoHandshake
@@ -16,31 +16,31 @@
   v8.receiver = self;
   v8.super_class = PBBProtoHandshake;
   v4 = [(PBBProtoHandshake *)&v8 description];
-  v5 = [(PBBProtoHandshake *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoHandshake *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_position];
-  [v3 setObject:v4 forKey:@"position"];
+  [dictionary setObject:v4 forKey:@"position"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v5 forKey:@"version"];
+  [dictionary setObject:v5 forKey:@"version"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_state];
-  [v3 setObject:v6 forKey:@"state"];
+  [dictionary setObject:v6 forKey:@"state"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   position = self->_position;
-  v7 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   version = self->_version;
   PBDataWriterWriteUint32Field();
@@ -48,35 +48,35 @@
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_position;
-  *(a3 + 4) = self->_version;
-  *(a3 + 3) = self->_state;
+  *(to + 2) = self->_position;
+  *(to + 4) = self->_version;
+  *(to + 3) = self->_state;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_position;
   *(result + 4) = self->_version;
   *(result + 3) = self->_state;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_position == v4[2] && self->_version == v4[4] && self->_state == v4[3];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_position == equalCopy[2] && self->_version == equalCopy[4] && self->_state == equalCopy[3];
 
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_position = *(a3 + 2);
-  self->_version = *(a3 + 4);
-  self->_state = *(a3 + 3);
+  self->_position = *(from + 2);
+  self->_version = *(from + 4);
+  self->_state = *(from + 3);
 }
 
 @end

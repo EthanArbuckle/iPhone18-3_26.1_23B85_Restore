@@ -1,11 +1,11 @@
 @interface CLSHolidayCalendarEventRulesFactory
-+ (id)_allEventRulesForEventRulesDictionaries:(id)a3 deviceRegionCode:(id)a4;
++ (id)_allEventRulesForEventRulesDictionaries:(id)dictionaries deviceRegionCode:(id)code;
 + (id)_baseURL;
-+ (id)_eventRulesDictionariesForURL:(id)a3;
-+ (id)allSupportedCountryCodesInDeviceRegion:(id)a3;
-+ (id)eventRulesForSourcesURL:(id)a3 deviceRegionCode:(id)a4;
-+ (id)eventRulesInDeviceRegion:(id)a3;
-+ (id)eventRulesURLForSourceURL:(id)a3;
++ (id)_eventRulesDictionariesForURL:(id)l;
++ (id)allSupportedCountryCodesInDeviceRegion:(id)region;
++ (id)eventRulesForSourcesURL:(id)l deviceRegionCode:(id)code;
++ (id)eventRulesInDeviceRegion:(id)region;
++ (id)eventRulesURLForSourceURL:(id)l;
 @end
 
 @implementation CLSHolidayCalendarEventRulesFactory
@@ -18,11 +18,11 @@
   return v3;
 }
 
-+ (id)_eventRulesDictionariesForURL:(id)a3
++ (id)_eventRulesDictionariesForURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
   v12 = 0;
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:a3 error:&v12];
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:l error:&v12];
   v4 = v12;
   v5 = v4;
   if (v3)
@@ -43,14 +43,14 @@
   else
   {
     v7 = +[CLSLogging sharedLogging];
-    v8 = [v7 loggingConnection];
+    loggingConnection = [v7 loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 localizedDescription];
+      localizedDescription = [v5 localizedDescription];
       *buf = 138412290;
-      v14 = v9;
-      _os_log_impl(&dword_22F907000, v8, OS_LOG_TYPE_INFO, "Error reading the holiday rules file: %@", buf, 0xCu);
+      v14 = localizedDescription;
+      _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Error reading the holiday rules file: %@", buf, 0xCu);
     }
 
     v10 = 0;
@@ -59,17 +59,17 @@
   return v10;
 }
 
-+ (id)_allEventRulesForEventRulesDictionaries:(id)a3 deviceRegionCode:(id)a4
++ (id)_allEventRulesForEventRulesDictionaries:(id)dictionaries deviceRegionCode:(id)code
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  dictionariesCopy = dictionaries;
+  codeCopy = code;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = dictionariesCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -86,8 +86,8 @@
 
         v13 = *(*(&v17 + 1) + 8 * i);
         v14 = [CLSHolidayCalendarEventRule alloc];
-        v15 = [(CLSHolidayCalendarEventRule *)v14 initWithEventDescription:v13 deviceRegionCode:v6, v17];
-        [v7 addObject:v15];
+        v15 = [(CLSHolidayCalendarEventRule *)v14 initWithEventDescription:v13 deviceRegionCode:codeCopy, v17];
+        [array addObject:v15];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -96,19 +96,19 @@
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-+ (id)allSupportedCountryCodesInDeviceRegion:(id)a3
++ (id)allSupportedCountryCodesInDeviceRegion:(id)region
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  regionCopy = region;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6 = [a1 _baseURL];
-  v7 = [a1 eventRulesURLForSourceURL:v6];
+  _baseURL = [self _baseURL];
+  v7 = [self eventRulesURLForSourceURL:_baseURL];
 
-  v8 = [a1 _eventRulesDictionariesForURL:v7];
-  v9 = [a1 _allEventRulesForEventRulesDictionaries:v8 deviceRegionCode:v4];
+  v8 = [self _eventRulesDictionariesForURL:v7];
+  v9 = [self _allEventRulesForEventRulesDictionaries:v8 deviceRegionCode:regionCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -127,8 +127,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * i) explicitlySupportedCountryCodes];
-        [v5 addObjectsFromArray:v14];
+        explicitlySupportedCountryCodes = [*(*(&v16 + 1) + 8 * i) explicitlySupportedCountryCodes];
+        [v5 addObjectsFromArray:explicitlySupportedCountryCodes];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -140,33 +140,33 @@
   return v5;
 }
 
-+ (id)eventRulesURLForSourceURL:(id)a3
++ (id)eventRulesURLForSourceURL:(id)l
 {
-  v3 = [a3 URLByAppendingPathComponent:@"all_v2"];
+  v3 = [l URLByAppendingPathComponent:@"all_v2"];
   v4 = [v3 URLByAppendingPathExtension:@"plist"];
 
   return v4;
 }
 
-+ (id)eventRulesInDeviceRegion:(id)a3
++ (id)eventRulesInDeviceRegion:(id)region
 {
-  v4 = a3;
-  v5 = [a1 _baseURL];
-  v6 = [a1 eventRulesForSourcesURL:v5 deviceRegionCode:v4];
+  regionCopy = region;
+  _baseURL = [self _baseURL];
+  v6 = [self eventRulesForSourcesURL:_baseURL deviceRegionCode:regionCopy];
 
   return v6;
 }
 
-+ (id)eventRulesForSourcesURL:(id)a3 deviceRegionCode:(id)a4
++ (id)eventRulesForSourcesURL:(id)l deviceRegionCode:(id)code
 {
-  v6 = a4;
-  if (a3)
+  codeCopy = code;
+  if (l)
   {
-    v7 = [a1 eventRulesURLForSourceURL:a3];
+    v7 = [self eventRulesURLForSourceURL:l];
     if (v7)
     {
-      v8 = [a1 _eventRulesDictionariesForURL:v7];
-      v9 = [a1 _allEventRulesForEventRulesDictionaries:v8 deviceRegionCode:v6];
+      v8 = [self _eventRulesDictionariesForURL:v7];
+      v9 = [self _allEventRulesForEventRulesDictionaries:v8 deviceRegionCode:codeCopy];
     }
 
     else
@@ -178,12 +178,12 @@
   else
   {
     v10 = +[CLSLogging sharedLogging];
-    v11 = [v10 loggingConnection];
+    loggingConnection = [v10 loggingConnection];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *v13 = 0;
-      _os_log_error_impl(&dword_22F907000, v11, OS_LOG_TYPE_ERROR, "Sources URL is nil. Returning no eventRules.", v13, 2u);
+      _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Sources URL is nil. Returning no eventRules.", v13, 2u);
     }
 
     v9 = MEMORY[0x277CBEBF8];

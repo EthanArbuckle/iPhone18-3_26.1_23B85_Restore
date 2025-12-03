@@ -1,34 +1,34 @@
 @interface NTKBigNumeralsDigitalStyleEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKBigNumeralsDigitalStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_C628 + a3);
+    return *(&off_C628 + value);
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_C640 + a3);
+    return *(&off_C640 + value);
   }
 }
 

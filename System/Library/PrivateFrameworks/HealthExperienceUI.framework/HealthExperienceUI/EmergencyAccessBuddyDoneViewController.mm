@@ -1,7 +1,7 @@
 @interface EmergencyAccessBuddyDoneViewController
-- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)didTapDone:(id)a3;
+- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)didTapDone:(id)done;
 - (void)viewDidLoad;
 @end
 
@@ -17,10 +17,10 @@
   sub_1BA337D8C();
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
   sub_1BA338540();
@@ -28,14 +28,14 @@
   __swift_destroy_boxed_opaque_existential_1(&v5);
 }
 
-- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI38EmergencyAccessBuddyDoneViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,20 +1,20 @@
 @interface CKDeviceCapabilityCheckResult
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDeviceCapabilityCheckResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CKDeviceCapabilityCheckResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CKDeviceCapabilityCheckResult.encode(with:)(coderCopy);
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKDeviceCapabilityCheckResult.hash.getter();
 
   return v3;

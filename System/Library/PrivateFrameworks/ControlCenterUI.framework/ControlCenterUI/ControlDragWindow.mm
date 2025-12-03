@@ -1,13 +1,13 @@
 @interface ControlDragWindow
-- (_TtC15ControlCenterUI17ControlDragWindow)initWithCoder:(id)a3;
-- (_TtC15ControlCenterUI17ControlDragWindow)initWithFrame:(CGRect)a3;
-- (void)beginTrackingPlatterView:(id)a3;
-- (void)stopTrackingPlatterView:(id)a3;
+- (_TtC15ControlCenterUI17ControlDragWindow)initWithCoder:(id)coder;
+- (_TtC15ControlCenterUI17ControlDragWindow)initWithFrame:(CGRect)frame;
+- (void)beginTrackingPlatterView:(id)view;
+- (void)stopTrackingPlatterView:(id)view;
 @end
 
 @implementation ControlDragWindow
 
-- (_TtC15ControlCenterUI17ControlDragWindow)initWithCoder:(id)a3
+- (_TtC15ControlCenterUI17ControlDragWindow)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC15ControlCenterUI17ControlDragWindow_platterViews;
   *(&self->super.super.super.super.isa + v3) = [objc_opt_self() weakObjectsHashTable];
@@ -16,30 +16,30 @@
   return result;
 }
 
-- (void)beginTrackingPlatterView:(id)a3
+- (void)beginTrackingPlatterView:(id)view
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI17ControlDragWindow_platterViews);
-  v5 = a3;
-  v8 = self;
+  viewCopy = view;
+  selfCopy = self;
   [v4 addObject_];
-  v6 = [(ControlDragWindow *)v8 rootViewController];
-  v7 = [v6 view];
+  rootViewController = [(ControlDragWindow *)selfCopy rootViewController];
+  view = [rootViewController view];
 
-  [v7 addSubview_];
-  [(ControlDragWindow *)v8 setHidden:0];
+  [view addSubview_];
+  [(ControlDragWindow *)selfCopy setHidden:0];
 }
 
-- (void)stopTrackingPlatterView:(id)a3
+- (void)stopTrackingPlatterView:(id)view
 {
-  v4 = a3;
-  v6 = self;
-  [v4 removeFromSuperview];
+  viewCopy = view;
+  selfCopy = self;
+  [viewCopy removeFromSuperview];
   v5 = OBJC_IVAR____TtC15ControlCenterUI17ControlDragWindow_platterViews;
-  [*(&v6->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI17ControlDragWindow_platterViews) removeObject_];
-  -[ControlDragWindow setHidden:](v6, sel_setHidden_, [*(&v6->super.super.super.super.isa + v5) count] == 0);
+  [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC15ControlCenterUI17ControlDragWindow_platterViews) removeObject_];
+  -[ControlDragWindow setHidden:](selfCopy, sel_setHidden_, [*(&selfCopy->super.super.super.super.isa + v5) count] == 0);
 }
 
-- (_TtC15ControlCenterUI17ControlDragWindow)initWithFrame:(CGRect)a3
+- (_TtC15ControlCenterUI17ControlDragWindow)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

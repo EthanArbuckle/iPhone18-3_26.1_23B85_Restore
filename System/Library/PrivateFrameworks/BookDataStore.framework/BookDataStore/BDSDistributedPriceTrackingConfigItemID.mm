@@ -1,21 +1,21 @@
 @interface BDSDistributedPriceTrackingConfigItemID
-- (BDSDistributedPriceTrackingConfigItemID)initWithAdamID:(id)a3 isAudiobook:(BOOL)a4;
-- (BDSDistributedPriceTrackingConfigItemID)initWithCoder:(id)a3;
+- (BDSDistributedPriceTrackingConfigItemID)initWithAdamID:(id)d isAudiobook:(BOOL)audiobook;
+- (BDSDistributedPriceTrackingConfigItemID)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSDistributedPriceTrackingConfigItemID
 
-- (BDSDistributedPriceTrackingConfigItemID)initWithAdamID:(id)a3 isAudiobook:(BOOL)a4
+- (BDSDistributedPriceTrackingConfigItemID)initWithAdamID:(id)d isAudiobook:(BOOL)audiobook
 {
-  v6 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BDSDistributedPriceTrackingConfigItemID;
   v7 = [(BDSDistributedPriceTrackingConfigItemID *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     v9 = v8;
     if (v8)
     {
@@ -29,7 +29,7 @@
 
     objc_storeStrong(&v7->_adamID, v10);
 
-    v7->_isAudiobook = a4;
+    v7->_isAudiobook = audiobook;
   }
 
   return v7;
@@ -48,26 +48,26 @@
     v4 = @"B";
   }
 
-  v5 = [(BDSDistributedPriceTrackingConfigItemID *)self adamID];
-  v6 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+  adamID = [(BDSDistributedPriceTrackingConfigItemID *)self adamID];
+  v6 = [v3 stringWithFormat:@"%@.%@", v4, adamID];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(BDSDistributedPriceTrackingConfigItemID *)self adamID];
-  [v5 encodeObject:v4 forKey:@"adamID"];
+  coderCopy = coder;
+  adamID = [(BDSDistributedPriceTrackingConfigItemID *)self adamID];
+  [coderCopy encodeObject:adamID forKey:@"adamID"];
 
-  [v5 encodeBool:-[BDSDistributedPriceTrackingConfigItemID isAudiobook](self forKey:{"isAudiobook"), @"isAudiobook"}];
+  [coderCopy encodeBool:-[BDSDistributedPriceTrackingConfigItemID isAudiobook](self forKey:{"isAudiobook"), @"isAudiobook"}];
 }
 
-- (BDSDistributedPriceTrackingConfigItemID)initWithCoder:(id)a3
+- (BDSDistributedPriceTrackingConfigItemID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
-  v6 = [v4 decodeBoolForKey:@"isAudiobook"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adamID"];
+  v6 = [coderCopy decodeBoolForKey:@"isAudiobook"];
 
   v7 = [(BDSDistributedPriceTrackingConfigItemID *)self initWithAdamID:v5 isAudiobook:v6];
   return v7;

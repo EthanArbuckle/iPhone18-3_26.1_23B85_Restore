@@ -1,29 +1,29 @@
 @interface PLBackgroundJobDeferredRenderDerivativesBaseWorker
 + (id)_criteriaToUse;
 - (NSSet)deferredProcessingStatesHandled;
-- (PLBackgroundJobDeferredRenderDerivativesBaseWorker)initWithLibraryBundle:(id)a3;
+- (PLBackgroundJobDeferredRenderDerivativesBaseWorker)initWithLibraryBundle:(id)bundle;
 - (id)_predicateToFetchDeferredAssets;
 - (id)imageConversionClient;
 - (id)taskIdentifier;
 - (id)videoConversionClient;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
 @end
 
 @implementation PLBackgroundJobDeferredRenderDerivativesBaseWorker
 
 + (id)_criteriaToUse
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -38,14 +38,14 @@
   v18[1] = 3221225472;
   v18[2] = __93__PLBackgroundJobDeferredRenderDerivativesBaseWorker_performWorkOnItem_inLibrary_completion___block_invoke;
   v18[3] = &unk_1E7572F58;
-  v11 = v8;
+  v11 = itemCopy;
   v19 = v11;
-  v12 = v9;
+  v12 = libraryCopy;
   v20 = v12;
-  v21 = self;
+  selfCopy = self;
   v23 = v27;
   v24 = v25;
-  v22 = v10;
+  v22 = completionCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__PLBackgroundJobDeferredRenderDerivativesBaseWorker_performWorkOnItem_inLibrary_completion___block_invoke_77;
@@ -273,12 +273,12 @@ LABEL_20:
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _criteriaToUse];
-  if ([v7 containsObject:v8])
+  libraryCopy = library;
+  criteriasCopy = criterias;
+  _criteriaToUse = [objc_opt_class() _criteriaToUse];
+  if ([criteriasCopy containsObject:_criteriaToUse])
   {
     v15 = 0;
     v16 = &v15;
@@ -291,21 +291,21 @@ LABEL_20:
     v12[2] = __105__PLBackgroundJobDeferredRenderDerivativesBaseWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke;
     v12[3] = &unk_1E7578820;
     v12[4] = self;
-    v13 = v6;
+    v13 = libraryCopy;
     v14 = &v15;
     [v13 performBlockAndWait:v12];
     v9 = [PLBackgroundJobWorkerPendingWorkItems alloc];
-    v10 = [(PLBackgroundJobWorkerPendingWorkItems *)v9 initWithCriteria:v8 workItemsNeedingProcessing:v16[5]];
+    initWithZeroWorkItemsForValidCriteria = [(PLBackgroundJobWorkerPendingWorkItems *)v9 initWithCriteria:_criteriaToUse workItemsNeedingProcessing:v16[5]];
 
     _Block_object_dispose(&v15, 8);
   }
 
   else
   {
-    v10 = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
+    initWithZeroWorkItemsForValidCriteria = [[PLBackgroundJobWorkerPendingWorkItems alloc] initWithZeroWorkItemsForValidCriteria];
   }
 
-  return v10;
+  return initWithZeroWorkItemsForValidCriteria;
 }
 
 void __105__PLBackgroundJobDeferredRenderDerivativesBaseWorker_workItemsNeedingProcessingInLibrary_validCriterias___block_invoke(uint64_t a1)
@@ -347,7 +347,7 @@ void __105__PLBackgroundJobDeferredRenderDerivativesBaseWorker_workItemsNeedingP
 
 - (id)taskIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
@@ -384,23 +384,23 @@ void __105__PLBackgroundJobDeferredRenderDerivativesBaseWorker_workItemsNeedingP
 
 - (id)_predicateToFetchDeferredAssets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (NSSet)deferredProcessingStatesHandled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (PLBackgroundJobDeferredRenderDerivativesBaseWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobDeferredRenderDerivativesBaseWorker)initWithLibraryBundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PLBackgroundJobDeferredRenderDerivativesBaseWorker;
-  v3 = [(PLBackgroundJobWorker *)&v7 initWithLibraryBundle:a3];
+  v3 = [(PLBackgroundJobWorker *)&v7 initWithLibraryBundle:bundle];
   if (v3)
   {
     v4 = objc_alloc_init(PLAtomicProgressIvar);

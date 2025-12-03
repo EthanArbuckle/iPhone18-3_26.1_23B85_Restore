@@ -1,10 +1,10 @@
 @interface NSInflectionRuleExplicit
-- (BOOL)isEqual:(id)a3;
-- (NSInflectionRuleExplicit)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSInflectionRuleExplicit)initWithCoder:(id)coder;
 - (NSInflectionRuleExplicit)initWithMorphology:(NSMorphology *)morphology;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSInflectionRuleExplicit
@@ -14,13 +14,13 @@
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSInflectionRuleExplicit;
-  v4 = [(NSInflectionRule *)&v6 _init];
-  if (v4)
+  _init = [(NSInflectionRule *)&v6 _init];
+  if (_init)
   {
-    v4->_morphology = [(NSMorphology *)morphology copy];
+    _init->_morphology = [(NSMorphology *)morphology copy];
   }
 
-  return v4;
+  return _init;
 }
 
 - (void)dealloc
@@ -32,28 +32,28 @@
   [(NSInflectionRuleExplicit *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(NSInflectionRuleExplicit *)self morphology];
+  morphology = [(NSInflectionRuleExplicit *)self morphology];
 
-  [a3 encodeObject:v4 forKey:@"NS.Morphology"];
+  [coder encodeObject:morphology forKey:@"NS.Morphology"];
 }
 
-- (NSInflectionRuleExplicit)initWithCoder:(id)a3
+- (NSInflectionRuleExplicit)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = NSInflectionRuleExplicit;
-  v4 = [(NSInflectionRule *)&v6 _init];
-  if (v4)
+  _init = [(NSInflectionRule *)&v6 _init];
+  if (_init)
   {
-    v4->_morphology = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.Morphology"];
+    _init->_morphology = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.Morphology"];
   }
 
-  return v4;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -61,10 +61,10 @@
     return 0;
   }
 
-  v5 = [(NSInflectionRuleExplicit *)self morphology];
-  v6 = [a3 morphology];
+  morphology = [(NSInflectionRuleExplicit *)self morphology];
+  morphology2 = [equal morphology];
 
-  return [(NSMorphology *)v5 isEqual:v6];
+  return [(NSMorphology *)morphology isEqual:morphology2];
 }
 
 - (id)description

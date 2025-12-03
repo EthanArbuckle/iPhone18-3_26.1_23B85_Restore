@@ -3,9 +3,9 @@
 - (HMDMediaGroupsAggregatorBackupReceiver)init;
 - (HMDMediaGroupsAggregatorBackupReceiverDelegate)delegate;
 - (id)logIdentifier;
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4;
-- (void)handleGroupsBackupDataMessage:(id)a3;
-- (void)registerForMessagesWithHome:(id)a3 messageDispatcher:(id)a4;
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher;
+- (void)handleGroupsBackupDataMessage:(id)message;
+- (void)registerForMessagesWithHome:(id)home messageDispatcher:(id)dispatcher;
 @end
 
 @implementation HMDMediaGroupsAggregatorBackupReceiver
@@ -19,18 +19,18 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaGroupsAggregatorBackupReceiver *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDMediaGroupsAggregatorBackupReceiver *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)handleGroupsBackupDataMessage:(id)a3
+- (void)handleGroupsBackupDataMessage:(id)message
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -38,31 +38,31 @@
     v28 = 138543618;
     v29 = v8;
     v30 = 2112;
-    v31 = v4;
+    v31 = messageCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Handling backup group data message: %@", &v28, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 messagePayload];
-  v10 = v9;
-  if (v9)
+  messagePayload = [messageCopy messagePayload];
+  v10 = messagePayload;
+  if (messagePayload)
   {
-    v11 = [v9 hmf_arrayForKey:@"HMDMediaGroupsBackupDataKey"];
+    v11 = [messagePayload hmf_arrayForKey:@"HMDMediaGroupsBackupDataKey"];
     if (v11)
     {
-      v12 = [(HMDMediaGroupsAggregatorBackupReceiver *)v6 delegate];
-      if (v12)
+      delegate = [(HMDMediaGroupsAggregatorBackupReceiver *)selfCopy delegate];
+      if (delegate)
       {
-        v13 = v12;
-        [v12 didReceiveBackupData:v11 forBackupReceiver:v6];
-        [v4 respondWithSuccess];
+        v13 = delegate;
+        [delegate didReceiveBackupData:v11 forBackupReceiver:selfCopy];
+        [messageCopy respondWithSuccess];
       }
 
       else
       {
         v22 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
         v23 = objc_autoreleasePoolPush();
-        v24 = v6;
+        v24 = selfCopy;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
@@ -75,7 +75,7 @@
         }
 
         objc_autoreleasePoolPop(v23);
-        [v4 respondWithError:v22];
+        [messageCopy respondWithError:v22];
 
         v13 = 0;
       }
@@ -85,7 +85,7 @@
     {
       v13 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
       v18 = objc_autoreleasePoolPush();
-      v19 = v6;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -100,7 +100,7 @@
       }
 
       objc_autoreleasePoolPop(v18);
-      [v4 respondWithError:v13];
+      [messageCopy respondWithError:v13];
     }
   }
 
@@ -108,7 +108,7 @@
   {
     v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:8];
     v14 = objc_autoreleasePoolPush();
-    v15 = v6;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -116,45 +116,45 @@
       v28 = 138543874;
       v29 = v17;
       v30 = 2112;
-      v31 = v4;
+      v31 = messageCopy;
       v32 = 2112;
       v33 = v11;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to get message payload from group backup data message: %@ error: %@", &v28, 0x20u);
     }
 
     objc_autoreleasePoolPop(v14);
-    [v4 respondWithError:v11];
+    [messageCopy respondWithError:v11];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForMessagesWithHome:(id)a3 messageDispatcher:(id)a4
+- (void)registerForMessagesWithHome:(id)home messageDispatcher:(id)dispatcher
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  dispatcherCopy = dispatcher;
+  homeCopy = home;
   v8 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
   v9 = [HMDXPCMessagePolicy policyWithEntitlements:5];
-  v10 = [HMDUserMessagePolicy userMessagePolicyWithHome:v7 userPrivilege:3 remoteAccessRequired:0];
+  v10 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:3 remoteAccessRequired:0];
 
   v13[0] = v8;
   v13[1] = v9;
   v13[2] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
-  [v6 registerForMessage:@"HMDMediaGroupsBackupDataMessage" receiver:self policies:v11 selector:sel_handleGroupsBackupDataMessage_];
+  [dispatcherCopy registerForMessage:@"HMDMediaGroupsBackupDataMessage" receiver:self policies:v11 selector:sel_handleGroupsBackupDataMessage_];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3 messageDispatcher:(id)a4
+- (void)configureWithHome:(id)home messageDispatcher:(id)dispatcher
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [v8 uuid];
-  [(HMDMediaGroupsAggregatorBackupReceiver *)self setIdentifier:v7];
+  dispatcherCopy = dispatcher;
+  homeCopy = home;
+  uuid = [homeCopy uuid];
+  [(HMDMediaGroupsAggregatorBackupReceiver *)self setIdentifier:uuid];
 
-  [(HMDMediaGroupsAggregatorBackupReceiver *)self registerForMessagesWithHome:v8 messageDispatcher:v6];
+  [(HMDMediaGroupsAggregatorBackupReceiver *)self registerForMessagesWithHome:homeCopy messageDispatcher:dispatcherCopy];
 }
 
 - (HMDMediaGroupsAggregatorBackupReceiver)init

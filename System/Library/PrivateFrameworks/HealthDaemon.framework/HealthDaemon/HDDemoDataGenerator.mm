@@ -1,21 +1,21 @@
 @interface HDDemoDataGenerator
-- (BOOL)isDemoDataTimeInWeekend:(double)a3 calendar:(id)a4;
+- (BOOL)isDemoDataTimeInWeekend:(double)weekend calendar:(id)calendar;
 - (HDDemoDataGenerator)init;
-- (HDDemoDataGenerator)initWithProfile:(id)a3 configuration:(id)a4 queue:(id)a5;
-- (HDDemoDataGenerator)initWithProfile:(id)a3 queue:(id)a4;
+- (HDDemoDataGenerator)initWithProfile:(id)profile configuration:(id)configuration queue:(id)queue;
+- (HDDemoDataGenerator)initWithProfile:(id)profile queue:(id)queue;
 - (HDKeyValueDomain)_keyValueDomain;
 - (HDProfile)profile;
-- (double)_timeIntervalFromInitialGenerationPeriod:(void *)a3 currentDate:;
+- (double)_timeIntervalFromInitialGenerationPeriod:(void *)period currentDate:;
 - (id)_phoneProvenance;
-- (id)_unarchiveDataWithClass:(uint64_t)a3 error:;
-- (id)currentDateFromCurrentTime:(double)a3;
+- (id)_unarchiveDataWithClass:(uint64_t)class error:;
+- (id)currentDateFromCurrentTime:(double)time;
 - (int64_t)firstSampleDayOfYear;
-- (uint64_t)_archiveObject:(uint64_t)a3 error:;
+- (uint64_t)_archiveObject:(uint64_t)object error:;
 - (uint64_t)_queue_unarchivePluginGenerators;
-- (void)_insertIntoDatabaseObjectCollection:(void *)a3 fromPerson:;
-- (void)_queue_generateDataForDemoPerson:(void *)a3 startDate:(void *)a4 endDate:(uint64_t)a5 firstRun:(void *)a6 completionHandler:;
-- (void)_queue_runDemoDataGeneratorForDemoPerson:(void *)a3 endDate:(void *)a4 completion:;
-- (void)generateThroughEndDate:(id)a3 completion:(id)a4;
+- (void)_insertIntoDatabaseObjectCollection:(void *)collection fromPerson:;
+- (void)_queue_generateDataForDemoPerson:(void *)person startDate:(void *)date endDate:(uint64_t)endDate firstRun:(void *)run completionHandler:;
+- (void)_queue_runDemoDataGeneratorForDemoPerson:(void *)person endDate:(void *)date completion:;
+- (void)generateThroughEndDate:(id)date completion:(id)completion;
 @end
 
 @implementation HDDemoDataGenerator
@@ -30,62 +30,62 @@
   return 0;
 }
 
-- (HDDemoDataGenerator)initWithProfile:(id)a3 queue:(id)a4
+- (HDDemoDataGenerator)initWithProfile:(id)profile queue:(id)queue
 {
   v6 = MEMORY[0x277CBEBD0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 standardUserDefaults];
-  v10 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:v9];
-  v11 = [(HDDemoDataGenerator *)self initWithProfile:v8 configuration:v10 queue:v7];
+  queueCopy = queue;
+  profileCopy = profile;
+  standardUserDefaults = [v6 standardUserDefaults];
+  v10 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:standardUserDefaults];
+  v11 = [(HDDemoDataGenerator *)self initWithProfile:profileCopy configuration:v10 queue:queueCopy];
 
   return v11;
 }
 
-- (HDDemoDataGenerator)initWithProfile:(id)a3 configuration:(id)a4 queue:(id)a5
+- (HDDemoDataGenerator)initWithProfile:(id)profile configuration:(id)configuration queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  configurationCopy = configuration;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = HDDemoDataGenerator;
   v11 = [(HDDemoDataGenerator *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeWeak(&v11->_profile, profileCopy);
+    objc_storeStrong(&v12->_queue, queue);
     v13 = objc_alloc(MEMORY[0x277CBEA80]);
     v14 = [v13 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
     gregorianCalendar = v12->_gregorianCalendar;
     v12->_gregorianCalendar = v14;
 
     v16 = v12->_gregorianCalendar;
-    v17 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [(NSCalendar *)v16 setTimeZone:v17];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [(NSCalendar *)v16 setTimeZone:systemTimeZone];
 
     v12->_isGeneratingDemoData = 0;
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
     appProvenances = v12->_appProvenances;
     v12->_appProvenances = v18;
 
-    objc_storeStrong(&v12->_configuration, a4);
+    objc_storeStrong(&v12->_configuration, configuration);
   }
 
   return v12;
 }
 
-- (void)generateThroughEndDate:(id)a3 completion:(id)a4
+- (void)generateThroughEndDate:(id)date completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   v9 = [(HKDaemonTransaction *)HDDaemonTransaction transactionWithOwner:self activityName:@"demo-data-generation"];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__HDDemoDataGenerator_generateThroughEndDate_completion___block_invoke;
   aBlock[3] = &unk_278626F10;
   v20 = v9;
-  v21 = v8;
+  v21 = completionCopy;
   v10 = v9;
   v11 = _Block_copy(aBlock);
   queue = self->_queue;
@@ -96,8 +96,8 @@
   v17 = v11;
   v18 = a2;
   v15[4] = self;
-  v16 = v7;
-  v13 = v7;
+  v16 = dateCopy;
+  v13 = dateCopy;
   v14 = v11;
   dispatch_async(queue, v15);
 }
@@ -130,45 +130,45 @@ void __57__HDDemoDataGenerator_generateThroughEndDate_completion___block_invoke_
   }
 }
 
-- (void)_queue_runDemoDataGeneratorForDemoPerson:(void *)a3 endDate:(void *)a4 completion:
+- (void)_queue_runDemoDataGeneratorForDemoPerson:(void *)person endDate:(void *)date completion:
 {
   v250 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  personCopy = person;
+  dateCopy = date;
+  if (self)
   {
-    v10 = [*(a1 + 96) shouldGenerateMedicalID];
+    shouldGenerateMedicalID = [*(self + 96) shouldGenerateMedicalID];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __83__HDDemoDataGenerator__queue_runDemoDataGeneratorForDemoPerson_endDate_completion___block_invoke;
     aBlock[3] = &unk_278626F38;
-    aBlock[4] = a1;
-    v224 = v9;
+    aBlock[4] = self;
+    v224 = dateCopy;
     v11 = _Block_copy(aBlock);
-    if (*(a1 + 72))
+    if (*(self + 72))
     {
 LABEL_104:
 
       goto LABEL_105;
     }
 
-    v216 = v9;
-    v217 = v8;
+    v216 = dateCopy;
+    v217 = personCopy;
     v218 = v7;
-    *(a1 + 72) = 1;
+    *(self + 72) = 1;
     v12 = objc_opt_class();
     v248[0] = 0;
-    v13 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v12 error:v248];
+    v13 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v12 error:v248];
     v14 = v248[0];
-    v15 = *(a1 + 48);
-    *(a1 + 48) = v13;
+    v15 = *(self + 48);
+    *(self + 48) = v13;
 
     v16 = off_27860E000;
     v17 = MEMORY[0x277CCC2B8];
     v215 = v11;
-    v214 = v10;
-    if (!*(a1 + 48))
+    v214 = shouldGenerateMedicalID;
+    if (!*(self + 48))
     {
       _HKInitializeLogging();
       v86 = *v17;
@@ -185,28 +185,28 @@ LABEL_104:
 
     v18 = objc_opt_class();
     *&v244 = v14;
-    v19 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v18 error:&v244];
+    v19 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v18 error:&v244];
     v20 = v244;
 
-    v21 = *(a1 + 216);
-    *(a1 + 216) = v19;
+    v21 = *(self + 216);
+    *(self + 216) = v19;
 
-    if (*(a1 + 216))
+    if (*(self + 216))
     {
       v22 = objc_opt_class();
       *&v240 = v20;
-      v23 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v22 error:&v240];
+      v23 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v22 error:&v240];
       v14 = v240;
 
-      v24 = *(a1 + 104);
-      *(a1 + 104) = v23;
+      v24 = *(self + 104);
+      *(self + 104) = v23;
 
-      v25 = *(a1 + 104);
-      WeakRetained = objc_loadWeakRetained((a1 + 80));
-      v27 = [(HDDemoDataGenerator *)a1 _phoneProvenance];
-      [v25 setProfile:WeakRetained provenance:v27];
+      v25 = *(self + 104);
+      WeakRetained = objc_loadWeakRetained((self + 80));
+      _phoneProvenance = [(HDDemoDataGenerator *)self _phoneProvenance];
+      [v25 setProfile:WeakRetained provenance:_phoneProvenance];
 
-      if (!*(a1 + 104))
+      if (!*(self + 104))
       {
         _HKInitializeLogging();
         v90 = *MEMORY[0x277CCC2B8];
@@ -223,24 +223,24 @@ LABEL_104:
 
       v28 = objc_opt_class();
       v239 = v14;
-      v29 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v28 error:&v239];
+      v29 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v28 error:&v239];
       v20 = v239;
 
-      v30 = *(a1 + 112);
-      *(a1 + 112) = v29;
+      v30 = *(self + 112);
+      *(self + 112) = v29;
 
-      if (*(a1 + 112))
+      if (*(self + 112))
       {
         v31 = objc_opt_class();
         v238 = v20;
-        v32 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v31 error:&v238];
+        v32 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v31 error:&v238];
         v14 = v238;
 
-        v33 = *(a1 + 120);
-        *(a1 + 120) = v32;
+        v33 = *(self + 120);
+        *(self + 120) = v32;
 
         v16 = off_27860E000;
-        if (!*(a1 + 120))
+        if (!*(self + 120))
         {
           _HKInitializeLogging();
           v86 = *MEMORY[0x277CCC2B8];
@@ -257,23 +257,23 @@ LABEL_104:
 
         v34 = objc_opt_class();
         v237 = v14;
-        v35 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v34 error:&v237];
+        v35 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v34 error:&v237];
         v20 = v237;
 
-        v36 = *(a1 + 128);
-        *(a1 + 128) = v35;
+        v36 = *(self + 128);
+        *(self + 128) = v35;
 
-        if (*(a1 + 128))
+        if (*(self + 128))
         {
           v37 = objc_opt_class();
           v236 = v20;
-          v38 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v37 error:&v236];
+          v38 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v37 error:&v236];
           v14 = v236;
 
-          v39 = *(a1 + 136);
-          *(a1 + 136) = v38;
+          v39 = *(self + 136);
+          *(self + 136) = v38;
 
-          if (!*(a1 + 136))
+          if (!*(self + 136))
           {
             _HKInitializeLogging();
             v86 = *MEMORY[0x277CCC2B8];
@@ -290,23 +290,23 @@ LABEL_104:
 
           v40 = objc_opt_class();
           v235 = v14;
-          v41 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v40 error:&v235];
+          v41 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v40 error:&v235];
           v20 = v235;
 
-          v42 = *(a1 + 144);
-          *(a1 + 144) = v41;
+          v42 = *(self + 144);
+          *(self + 144) = v41;
 
-          if (*(a1 + 144))
+          if (*(self + 144))
           {
             v43 = objc_opt_class();
             v234 = v20;
-            v44 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v43 error:&v234];
+            v44 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v43 error:&v234];
             v14 = v234;
 
-            v45 = *(a1 + 152);
-            *(a1 + 152) = v44;
+            v45 = *(self + 152);
+            *(self + 152) = v44;
 
-            if (!*(a1 + 152))
+            if (!*(self + 152))
             {
               _HKInitializeLogging();
               v86 = *MEMORY[0x277CCC2B8];
@@ -323,23 +323,23 @@ LABEL_104:
 
             v46 = objc_opt_class();
             v233 = v14;
-            v47 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v46 error:&v233];
+            v47 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v46 error:&v233];
             v20 = v233;
 
-            v48 = *(a1 + 160);
-            *(a1 + 160) = v47;
+            v48 = *(self + 160);
+            *(self + 160) = v47;
 
-            if (*(a1 + 160))
+            if (*(self + 160))
             {
               v49 = objc_opt_class();
               v232 = v20;
-              v50 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v49 error:&v232];
+              v50 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v49 error:&v232];
               v14 = v232;
 
-              v51 = *(a1 + 168);
-              *(a1 + 168) = v50;
+              v51 = *(self + 168);
+              *(self + 168) = v50;
 
-              if (!*(a1 + 168))
+              if (!*(self + 168))
               {
                 _HKInitializeLogging();
                 v86 = *MEMORY[0x277CCC2B8];
@@ -356,23 +356,23 @@ LABEL_104:
 
               v52 = objc_opt_class();
               v231 = v14;
-              v53 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v52 error:&v231];
+              v53 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v52 error:&v231];
               v20 = v231;
 
-              v54 = *(a1 + 176);
-              *(a1 + 176) = v53;
+              v54 = *(self + 176);
+              *(self + 176) = v53;
 
-              if (*(a1 + 176))
+              if (*(self + 176))
               {
                 v55 = objc_opt_class();
                 v230 = v20;
-                v56 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v55 error:&v230];
+                v56 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v55 error:&v230];
                 v14 = v230;
 
-                v57 = *(a1 + 184);
-                *(a1 + 184) = v56;
+                v57 = *(self + 184);
+                *(self + 184) = v56;
 
-                if (!*(a1 + 184))
+                if (!*(self + 184))
                 {
                   _HKInitializeLogging();
                   v86 = *MEMORY[0x277CCC2B8];
@@ -389,23 +389,23 @@ LABEL_104:
 
                 v58 = objc_opt_class();
                 v229 = v14;
-                v59 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v58 error:&v229];
+                v59 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v58 error:&v229];
                 v20 = v229;
 
-                v60 = *(a1 + 192);
-                *(a1 + 192) = v59;
+                v60 = *(self + 192);
+                *(self + 192) = v59;
 
-                if (*(a1 + 192))
+                if (*(self + 192))
                 {
                   v61 = objc_opt_class();
                   v228 = v20;
-                  v62 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v61 error:&v228];
+                  v62 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v61 error:&v228];
                   v14 = v228;
 
-                  v63 = *(a1 + 200);
-                  *(a1 + 200) = v62;
+                  v63 = *(self + 200);
+                  *(self + 200) = v62;
 
-                  if (!*(a1 + 200))
+                  if (!*(self + 200))
                   {
                     _HKInitializeLogging();
                     v86 = *MEMORY[0x277CCC2B8];
@@ -420,40 +420,40 @@ LABEL_104:
                     goto LABEL_32;
                   }
 
-                  v64 = objc_loadWeakRetained((a1 + 80));
-                  [*(a1 + 200) setProfile:v64];
+                  v64 = objc_loadWeakRetained((self + 80));
+                  [*(self + 200) setProfile:v64];
 
                   v65 = objc_opt_class();
                   v227 = v14;
-                  v66 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v65 error:&v227];
+                  v66 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v65 error:&v227];
                   v20 = v227;
 
-                  v67 = *(a1 + 208);
-                  *(a1 + 208) = v66;
+                  v67 = *(self + 208);
+                  *(self + 208) = v66;
 
-                  if (*(a1 + 208))
+                  if (*(self + 208))
                   {
                     v68 = objc_opt_class();
                     v226 = v20;
-                    v69 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v68 error:&v226];
+                    v69 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v68 error:&v226];
                     v14 = v226;
 
-                    v70 = *(a1 + 224);
-                    *(a1 + 224) = v69;
+                    v70 = *(self + 224);
+                    *(self + 224) = v69;
 
-                    if (*(a1 + 224))
+                    if (*(self + 224))
                     {
                       v71 = objc_opt_class();
                       v225 = v14;
-                      v72 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v71 error:&v225];
+                      v72 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v71 error:&v225];
                       v73 = v225;
 
-                      v74 = *(a1 + 232);
-                      *(a1 + 232) = v72;
+                      v74 = *(self + 232);
+                      *(self + 232) = v72;
 
-                      if (*(a1 + 232))
+                      if (*(self + 232))
                       {
-                        if ([(HDDemoDataGenerator *)a1 _queue_unarchivePluginGenerators])
+                        if ([(HDDemoDataGenerator *)self _queue_unarchivePluginGenerators])
                         {
                           _HKInitializeLogging();
                           v75 = *MEMORY[0x277CCC2B8];
@@ -463,23 +463,23 @@ LABEL_104:
                             _os_log_impl(&dword_228986000, v75, OS_LOG_TYPE_DEFAULT, "Successfully restored state from last demo data generation", buf, 2u);
                           }
 
-                          v76 = [*(a1 + 48) lastRunDate];
+                          lastRunDate = [*(self + 48) lastRunDate];
 
-                          if (v76)
+                          if (lastRunDate)
                           {
-                            v77 = [*(a1 + 48) lastRunDate];
-                            [v8 timeIntervalSinceDate:v77];
+                            lastRunDate2 = [*(self + 48) lastRunDate];
+                            [personCopy timeIntervalSinceDate:lastRunDate2];
                             v79 = v78;
 
                             _HKInitializeLogging();
                             v80 = *MEMORY[0x277CCC2B8];
                             if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
                             {
-                              v81 = *(a1 + 48);
+                              v81 = *(self + 48);
                               v82 = v80;
-                              v83 = [v81 lastSampleDate];
+                              lastSampleDate = [v81 lastSampleDate];
                               LODWORD(buf[0]) = 138412290;
-                              *(buf + 4) = v83;
+                              *(buf + 4) = lastSampleDate;
                               _os_log_impl(&dword_228986000, v82, OS_LOG_TYPE_DEFAULT, "Last sample date: %@", buf, 0xCu);
                             }
 
@@ -492,117 +492,117 @@ LABEL_104:
                               _os_log_impl(&dword_228986000, v84, OS_LOG_TYPE_DEFAULT, "Elapsed time since last run date: %.2f hr", buf, 0xCu);
                             }
 
-                            v85 = [*(a1 + 48) lastSampleDate];
+                            lastSampleDate2 = [*(self + 48) lastSampleDate];
                             v11 = v215;
-                            [(HDDemoDataGenerator *)a1 _queue_generateDataForDemoPerson:v7 startDate:v85 endDate:v8 firstRun:0 completionHandler:v215];
+                            [(HDDemoDataGenerator *)self _queue_generateDataForDemoPerson:v7 startDate:lastSampleDate2 endDate:personCopy firstRun:0 completionHandler:v215];
 LABEL_103:
 
-                            v9 = v216;
+                            dateCopy = v216;
                             goto LABEL_104;
                           }
 
 LABEL_67:
                           v91 = objc_alloc_init(HDDemoDataGeneratorState);
-                          v92 = *(a1 + 48);
-                          *(a1 + 48) = v91;
+                          v92 = *(self + 48);
+                          *(self + 48) = v91;
 
                           v93 = objc_alloc_init(HDDemoDataStatisticsSampleGenerator);
-                          v94 = *(a1 + 216);
-                          *(a1 + 216) = v93;
+                          v94 = *(self + 216);
+                          *(self + 216) = v93;
 
                           v95 = objc_alloc_init(HDDemoDataActivitySampleGenerator);
-                          v96 = *(a1 + 104);
-                          *(a1 + 104) = v95;
+                          v96 = *(self + 104);
+                          *(self + 104) = v95;
 
-                          v97 = *(a1 + 104);
-                          v98 = objc_loadWeakRetained((a1 + 80));
-                          v99 = [(HDDemoDataGenerator *)a1 _phoneProvenance];
-                          [v97 setProfile:v98 provenance:v99];
+                          v97 = *(self + 104);
+                          v98 = objc_loadWeakRetained((self + 80));
+                          _phoneProvenance2 = [(HDDemoDataGenerator *)self _phoneProvenance];
+                          [v97 setProfile:v98 provenance:_phoneProvenance2];
 
                           v100 = objc_alloc_init(HDDemoDataAudioExposureSampleGenerator);
-                          v101 = *(a1 + 120);
-                          *(a1 + 120) = v100;
+                          v101 = *(self + 120);
+                          *(self + 120) = v100;
 
                           v102 = objc_alloc_init(HDDemoDataAudiogramSampleGenerator);
-                          v103 = *(a1 + 128);
-                          *(a1 + 128) = v102;
+                          v103 = *(self + 128);
+                          *(self + 128) = v102;
 
                           v104 = objc_alloc_init(HDDemoDataAlcoholSampleGenerator);
-                          v105 = *(a1 + 112);
-                          *(a1 + 112) = v104;
+                          v105 = *(self + 112);
+                          *(self + 112) = v104;
 
                           v106 = objc_alloc_init(HDDemoDataBodySampleGenerator);
-                          v107 = *(a1 + 136);
-                          *(a1 + 136) = v106;
+                          v107 = *(self + 136);
+                          *(self + 136) = v106;
 
                           v108 = objc_alloc_init(HDDemoDataFoodSampleGenerator);
-                          v109 = *(a1 + 144);
-                          *(a1 + 144) = v108;
+                          v109 = *(self + 144);
+                          *(self + 144) = v108;
 
                           v110 = objc_alloc_init(HDDemoDataHealthDocumentSampleGenerator);
-                          v111 = *(a1 + 152);
-                          *(a1 + 152) = v110;
+                          v111 = *(self + 152);
+                          *(self + 152) = v110;
 
                           v112 = objc_alloc_init(HDDemoDataHeartSampleGenerator);
-                          v113 = *(a1 + 160);
-                          *(a1 + 160) = v112;
+                          v113 = *(self + 160);
+                          *(self + 160) = v112;
 
-                          v114 = *(a1 + 160);
-                          v115 = objc_loadWeakRetained((a1 + 80));
-                          v116 = [(HDDemoDataGenerator *)a1 _phoneProvenance];
-                          [v114 setProfile:v115 provenance:v116];
+                          v114 = *(self + 160);
+                          v115 = objc_loadWeakRetained((self + 80));
+                          _phoneProvenance3 = [(HDDemoDataGenerator *)self _phoneProvenance];
+                          [v114 setProfile:v115 provenance:_phoneProvenance3];
 
                           v117 = objc_alloc_init(HDDemoDataMindfulnessSampleGenerator);
-                          v118 = *(a1 + 168);
-                          *(a1 + 168) = v117;
+                          v118 = *(self + 168);
+                          *(self + 168) = v117;
 
                           v119 = objc_alloc_init(HDDemoDataMobilitySampleGenerator);
-                          v120 = *(a1 + 176);
-                          *(a1 + 176) = v119;
+                          v120 = *(self + 176);
+                          *(self + 176) = v119;
 
-                          v121 = objc_loadWeakRetained((a1 + 80));
-                          [*(a1 + 176) setProfile:v121];
+                          v121 = objc_loadWeakRetained((self + 80));
+                          [*(self + 176) setProfile:v121];
 
                           v122 = objc_alloc_init(HDDemoDataOtherAndAdditionalSampleGenerator);
-                          v123 = *(a1 + 184);
-                          *(a1 + 184) = v122;
+                          v123 = *(self + 184);
+                          *(self + 184) = v122;
 
                           v124 = objc_alloc_init(HDDemoDataPathologySampleGenerator);
-                          v125 = *(a1 + 192);
-                          *(a1 + 192) = v124;
+                          v125 = *(self + 192);
+                          *(self + 192) = v124;
 
                           v126 = objc_alloc_init(HDDemoDataReproductiveHealthSampleGenerator);
-                          v127 = *(a1 + 200);
-                          *(a1 + 200) = v126;
+                          v127 = *(self + 200);
+                          *(self + 200) = v126;
 
-                          v128 = objc_loadWeakRetained((a1 + 80));
-                          [*(a1 + 200) setProfile:v128];
+                          v128 = objc_loadWeakRetained((self + 80));
+                          [*(self + 200) setProfile:v128];
 
                           v129 = objc_alloc_init(HDDemoDataSleepSampleGenerator);
-                          v130 = *(a1 + 208);
-                          *(a1 + 208) = v129;
+                          v130 = *(self + 208);
+                          *(self + 208) = v129;
 
                           v131 = objc_alloc_init(HDDemoDataSymptomsSampleGenerator);
-                          v132 = *(a1 + 224);
-                          *(a1 + 224) = v131;
+                          v132 = *(self + 224);
+                          *(self + 224) = v131;
 
                           v133 = objc_alloc_init(v16[330]);
-                          v134 = *(a1 + 232);
-                          *(a1 + 232) = v133;
+                          v134 = *(self + 232);
+                          *(self + 232) = v133;
 
                           v135 = objc_alloc_init(MEMORY[0x277CBEB18]);
                           v221 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                          v136 = objc_loadWeakRetained((a1 + 80));
-                          v137 = [v136 daemon];
-                          v138 = [v137 pluginManager];
-                          v139 = [v138 pluginsConformingToProtocol:&unk_283D71558];
-                          v140 = [v139 allValues];
+                          v136 = objc_loadWeakRetained((self + 80));
+                          daemon = [v136 daemon];
+                          pluginManager = [daemon pluginManager];
+                          v139 = [pluginManager pluginsConformingToProtocol:&unk_283D71558];
+                          allValues = [v139 allValues];
 
                           v246 = 0u;
                           v247 = 0u;
                           v244 = 0u;
                           v245 = 0u;
-                          obj = v140;
+                          obj = allValues;
                           v141 = [obj countByEnumeratingWithState:&v244 objects:buf count:16];
                           if (v141)
                           {
@@ -617,12 +617,12 @@ LABEL_67:
                                   objc_enumerationMutation(obj);
                                 }
 
-                                v144 = [*(*(&v244 + 1) + 8 * i) demoDataGeneratorClasses];
+                                demoDataGeneratorClasses = [*(*(&v244 + 1) + 8 * i) demoDataGeneratorClasses];
                                 v240 = 0u;
                                 v241 = 0u;
                                 v242 = 0u;
                                 v243 = 0u;
-                                v145 = [v144 countByEnumeratingWithState:&v240 objects:v248 count:16];
+                                v145 = [demoDataGeneratorClasses countByEnumeratingWithState:&v240 objects:v248 count:16];
                                 if (v145)
                                 {
                                   v146 = v145;
@@ -633,23 +633,23 @@ LABEL_67:
                                     {
                                       if (*v241 != v147)
                                       {
-                                        objc_enumerationMutation(v144);
+                                        objc_enumerationMutation(demoDataGeneratorClasses);
                                       }
 
                                       v149 = objc_alloc_init(*(*(&v240 + 1) + 8 * j));
-                                      v150 = objc_loadWeakRetained((a1 + 80));
-                                      [v149 setDemoDataGenerationContextWithProfile:v150 generatorState:*(a1 + 48)];
+                                      v150 = objc_loadWeakRetained((self + 80));
+                                      [v149 setDemoDataGenerationContextWithProfile:v150 generatorState:*(self + 48)];
 
                                       [v135 addObject:v149];
                                     }
 
-                                    v146 = [v144 countByEnumeratingWithState:&v240 objects:v248 count:16];
+                                    v146 = [demoDataGeneratorClasses countByEnumeratingWithState:&v240 objects:v248 count:16];
                                   }
 
                                   while (v146);
                                 }
 
-                                [v221 addObjectsFromArray:v144];
+                                [v221 addObjectsFromArray:demoDataGeneratorClasses];
                               }
 
                               v142 = [obj countByEnumeratingWithState:&v244 objects:buf count:16];
@@ -658,20 +658,20 @@ LABEL_67:
                             while (v142);
                           }
 
-                          v151 = *(a1 + 32);
-                          *(a1 + 32) = v221;
+                          v151 = *(self + 32);
+                          *(self + 32) = v221;
                           v152 = v221;
 
-                          v153 = *(a1 + 24);
-                          *(a1 + 24) = v135;
+                          v153 = *(self + 24);
+                          *(self + 24) = v135;
 
                           v248[0] = *MEMORY[0x277CCE598];
                           v154 = v218;
-                          v155 = [v154 firstName];
-                          v156 = v155;
-                          if (v155)
+                          firstName = [v154 firstName];
+                          v156 = firstName;
+                          if (firstName)
                           {
-                            v157 = v155;
+                            v157 = firstName;
                           }
 
                           else
@@ -681,11 +681,11 @@ LABEL_67:
 
                           *&buf[0] = v157;
                           v248[1] = *MEMORY[0x277CCE5A0];
-                          v158 = [v154 lastName];
-                          v159 = v158;
-                          if (v158)
+                          lastName = [v154 lastName];
+                          v159 = lastName;
+                          if (lastName)
                           {
-                            v160 = v158;
+                            v160 = lastName;
                           }
 
                           else
@@ -696,45 +696,45 @@ LABEL_67:
                           *(&buf[0] + 1) = v160;
                           v222 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:buf forKeys:v248 count:2];
 
-                          v161 = objc_loadWeakRetained((a1 + 80));
+                          v161 = objc_loadWeakRetained((self + 80));
                           v162 = [HDKeyValueDomain healthAppUserDefaultsDomainWithProfile:v161];
 
                           [v162 setPropertyListValue:v222 forKey:*MEMORY[0x277CCE5A8] error:0];
                           v163 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB08]];
-                          v164 = objc_loadWeakRetained((a1 + 80));
-                          v165 = [v164 userCharacteristicsManager];
+                          v164 = objc_loadWeakRetained((self + 80));
+                          userCharacteristicsManager = [v164 userCharacteristicsManager];
                           v166 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v154, "biologicalSex")}];
-                          [v165 setUserCharacteristic:v166 forType:v163 error:0];
+                          [userCharacteristicsManager setUserCharacteristic:v166 forType:v163 error:0];
 
                           v167 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB10]];
-                          v168 = objc_loadWeakRetained((a1 + 80));
-                          v169 = [v168 userCharacteristicsManager];
+                          v168 = objc_loadWeakRetained((self + 80));
+                          userCharacteristicsManager2 = [v168 userCharacteristicsManager];
                           v170 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v154, "bloodType")}];
-                          [v169 setUserCharacteristic:v170 forType:v167 error:0];
+                          [userCharacteristicsManager2 setUserCharacteristic:v170 forType:v167 error:0];
 
                           v171 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB20]];
-                          v172 = objc_loadWeakRetained((a1 + 80));
-                          v173 = [v172 userCharacteristicsManager];
+                          v172 = objc_loadWeakRetained((self + 80));
+                          userCharacteristicsManager3 = [v172 userCharacteristicsManager];
                           v174 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v154, "fitzpatrickSkinType")}];
-                          [v173 setUserCharacteristic:v174 forType:v171 error:0];
+                          [userCharacteristicsManager3 setUserCharacteristic:v174 forType:v171 error:0];
 
                           v175 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB18]];
-                          v176 = objc_loadWeakRetained((a1 + 80));
-                          v177 = [v176 userCharacteristicsManager];
-                          v178 = [v154 birthDateComponents];
+                          v176 = objc_loadWeakRetained((self + 80));
+                          userCharacteristicsManager4 = [v176 userCharacteristicsManager];
+                          birthDateComponents = [v154 birthDateComponents];
 
-                          [v177 setUserCharacteristic:v178 forType:v175 error:0];
+                          [userCharacteristicsManager4 setUserCharacteristic:birthDateComponents forType:v175 error:0];
                           v179 = MEMORY[0x277CCC2B8];
                           if (v214)
                           {
                             [v154 updateMedicalIDData];
                             v180 = v154;
-                            v181 = objc_loadWeakRetained((a1 + 80));
-                            v182 = [v181 medicalIDDataManager];
-                            v183 = [v180 medicalIDData];
+                            v181 = objc_loadWeakRetained((self + 80));
+                            medicalIDDataManager = [v181 medicalIDDataManager];
+                            medicalIDData = [v180 medicalIDData];
 
                             v248[0] = 0;
-                            v184 = [v182 updateMedicalIDWithLocalData:v183 error:v248];
+                            v184 = [medicalIDDataManager updateMedicalIDWithLocalData:medicalIDData error:v248];
                             v185 = v248[0];
 
                             if ((v184 & 1) == 0)
@@ -750,10 +750,10 @@ LABEL_67:
                             }
                           }
 
-                          v8 = v217;
-                          v187 = [*(a1 + 96) generationPeriodInDays];
-                          v188 = [*(a1 + 56) startOfDayForDate:v8];
-                          [v8 timeIntervalSinceDate:v188];
+                          personCopy = v217;
+                          generationPeriodInDays = [*(self + 96) generationPeriodInDays];
+                          v188 = [*(self + 56) startOfDayForDate:personCopy];
+                          [personCopy timeIntervalSinceDate:v188];
                           v190 = v189;
 
                           if (v190 < 0.0)
@@ -770,16 +770,16 @@ LABEL_67:
                             _os_log_impl(&dword_228986000, v191, OS_LOG_TYPE_DEFAULT, "Seconds elapsed today: %f", buf, 0xCu);
                           }
 
-                          v192 = v190 + [(HDDemoDataGenerator *)a1 _timeIntervalFromInitialGenerationPeriod:v187 currentDate:v8];
+                          v192 = v190 + [(HDDemoDataGenerator *)self _timeIntervalFromInitialGenerationPeriod:generationPeriodInDays currentDate:personCopy];
 
-                          v193 = *(a1 + 56);
-                          v194 = [v8 dateByAddingTimeInterval:-v192];
+                          v193 = *(self + 56);
+                          v194 = [personCopy dateByAddingTimeInterval:-v192];
                           v195 = [v193 startOfDayForDate:v194];
-                          [*(a1 + 48) setFirstSampleDate:v195];
+                          [*(self + 48) setFirstSampleDate:v195];
 
-                          v85 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:1442102400.0];
-                          v196 = [*(a1 + 48) firstSampleDate];
-                          LODWORD(v194) = [v196 hk_isBeforeDate:v85];
+                          lastSampleDate2 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:1442102400.0];
+                          firstSampleDate = [*(self + 48) firstSampleDate];
+                          LODWORD(v194) = [firstSampleDate hk_isBeforeDate:lastSampleDate2];
 
                           v7 = v218;
                           if (v194)
@@ -788,42 +788,42 @@ LABEL_67:
                             v197 = *v179;
                             if (os_log_type_enabled(*v179, OS_LOG_TYPE_DEFAULT))
                             {
-                              v198 = *(a1 + 48);
+                              v198 = *(self + 48);
                               v199 = v197;
-                              v200 = [v198 firstSampleDate];
+                              firstSampleDate2 = [v198 firstSampleDate];
                               LODWORD(buf[0]) = 138412290;
-                              *(buf + 4) = v200;
+                              *(buf + 4) = firstSampleDate2;
                               _os_log_impl(&dword_228986000, v199, OS_LOG_TYPE_DEFAULT, "We have a pre-historic current date (%@), setting to something sane.", buf, 0xCu);
                             }
 
-                            v201 = [*(a1 + 56) startOfDayForDate:v85];
-                            [*(a1 + 48) setFirstSampleDate:v201];
+                            v201 = [*(self + 56) startOfDayForDate:lastSampleDate2];
+                            [*(self + 48) setFirstSampleDate:v201];
 
-                            v202 = [*(a1 + 96) generationPeriodInDays];
-                            v203 = [*(a1 + 48) firstSampleDate];
-                            v204 = [(HDDemoDataGenerator *)a1 _timeIntervalFromInitialGenerationPeriod:v202 currentDate:v203];
+                            generationPeriodInDays2 = [*(self + 96) generationPeriodInDays];
+                            firstSampleDate3 = [*(self + 48) firstSampleDate];
+                            v204 = [(HDDemoDataGenerator *)self _timeIntervalFromInitialGenerationPeriod:generationPeriodInDays2 currentDate:firstSampleDate3];
 
-                            v205 = [*(a1 + 48) firstSampleDate];
-                            v206 = [v205 dateByAddingTimeInterval:v204];
+                            firstSampleDate4 = [*(self + 48) firstSampleDate];
+                            v206 = [firstSampleDate4 dateByAddingTimeInterval:v204];
 
-                            v8 = v206;
+                            personCopy = v206;
                           }
 
                           _HKInitializeLogging();
                           v207 = *v179;
                           if (os_log_type_enabled(*v179, OS_LOG_TYPE_DEFAULT))
                           {
-                            v208 = *(a1 + 48);
+                            v208 = *(self + 48);
                             v209 = v207;
-                            v210 = [v208 firstSampleDate];
+                            firstSampleDate5 = [v208 firstSampleDate];
                             LODWORD(buf[0]) = 138412290;
-                            *(buf + 4) = v210;
+                            *(buf + 4) = firstSampleDate5;
                             _os_log_impl(&dword_228986000, v209, OS_LOG_TYPE_DEFAULT, "First sample date: %@", buf, 0xCu);
                           }
 
-                          v211 = [*(a1 + 48) firstSampleDate];
+                          firstSampleDate6 = [*(self + 48) firstSampleDate];
                           v11 = v215;
-                          [(HDDemoDataGenerator *)a1 _queue_generateDataForDemoPerson:v154 startDate:v211 endDate:v8 firstRun:1 completionHandler:v215];
+                          [(HDDemoDataGenerator *)self _queue_generateDataForDemoPerson:v154 startDate:firstSampleDate6 endDate:personCopy firstRun:1 completionHandler:v215];
 
                           goto LABEL_103;
                         }
@@ -1128,12 +1128,12 @@ LABEL_21:
   return result;
 }
 
-- (double)_timeIntervalFromInitialGenerationPeriod:(void *)a3 currentDate:
+- (double)_timeIntervalFromInitialGenerationPeriod:(void *)period currentDate:
 {
-  v5 = a3;
+  periodCopy = period;
   if (a2 == -1)
   {
-    v6 = ([*(a1 + 56) ordinalityOfUnit:16 inUnit:4 forDate:v5] - 1);
+    v6 = ([*(self + 56) ordinalityOfUnit:16 inUnit:4 forDate:periodCopy] - 1);
   }
 
   else
@@ -1146,38 +1146,38 @@ LABEL_21:
   return v7;
 }
 
-- (void)_queue_generateDataForDemoPerson:(void *)a3 startDate:(void *)a4 endDate:(uint64_t)a5 firstRun:(void *)a6 completionHandler:
+- (void)_queue_generateDataForDemoPerson:(void *)person startDate:(void *)date endDate:(uint64_t)endDate firstRun:(void *)run completionHandler:
 {
   v250 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v215 = a6;
-  *(a1 + 64) = 0;
-  v14 = DisplayNameForHDDemoDataProfileType([*(a1 + 96) profileType]);
+  personCopy = person;
+  dateCopy = date;
+  runCopy = run;
+  *(self + 64) = 0;
+  v14 = DisplayNameForHDDemoDataProfileType([*(self + 96) profileType]);
   v218 = v11;
   v15 = NSStringFromHKBiologicalSex([v11 biologicalSex]);
-  v216 = v13;
-  v217 = v12;
-  [v13 timeIntervalSinceDate:v12];
+  v216 = dateCopy;
+  v217 = personCopy;
+  [dateCopy timeIntervalSinceDate:personCopy];
   v17 = v16;
-  [*(a1 + 48) setFirstRun:a5];
-  [*(a1 + 48) setFinished:0];
-  [*(a1 + 48) startTime];
-  [*(a1 + 48) setCurrentTime:?];
-  [*(a1 + 48) startTime];
-  [*(a1 + 48) setEndTime:v18 + v17 * 0.0000115740741];
+  [*(self + 48) setFirstRun:endDate];
+  [*(self + 48) setFinished:0];
+  [*(self + 48) startTime];
+  [*(self + 48) setCurrentTime:?];
+  [*(self + 48) startTime];
+  [*(self + 48) setEndTime:v18 + v17 * 0.0000115740741];
   _HKInitializeLogging();
   v19 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
     v20 = v19;
-    v21 = [v14 lowercaseString];
-    v22 = [v15 lowercaseString];
+    lowercaseString = [v14 lowercaseString];
+    lowercaseString2 = [v15 lowercaseString];
     *buf = 138412802;
-    *&buf[4] = v21;
+    *&buf[4] = lowercaseString;
     *&buf[12] = 2112;
-    *&buf[14] = v22;
+    *&buf[14] = lowercaseString2;
     *&buf[22] = 2048;
     *&v236 = v17 * 0.0000115740741;
     _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "Generating %@ %@ (gender) demo data for %.2f days", buf, 0x20u);
@@ -1196,7 +1196,7 @@ LABEL_21:
   v24 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v25 = *(a1 + 48);
+    v25 = *(self + 48);
     v26 = v24;
     [v25 startTime];
     *buf = 134217984;
@@ -1208,10 +1208,10 @@ LABEL_21:
   v28 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v29 = *(a1 + 48);
+    v29 = *(self + 48);
     v30 = v28;
     [v29 startTime];
-    v31 = [a1 currentDateFromCurrentTime:?];
+    v31 = [self currentDateFromCurrentTime:?];
     *buf = 138412290;
     *&buf[4] = v31;
     _os_log_impl(&dword_228986000, v30, OS_LOG_TYPE_DEFAULT, "When started Start date: %@", buf, 0xCu);
@@ -1221,7 +1221,7 @@ LABEL_21:
   v32 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v33 = *(a1 + 48);
+    v33 = *(self + 48);
     v34 = v32;
     [v33 currentTime];
     *buf = 134217984;
@@ -1233,10 +1233,10 @@ LABEL_21:
   v36 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v37 = *(a1 + 48);
+    v37 = *(self + 48);
     v38 = v36;
     [v37 currentTime];
-    v39 = [a1 currentDateFromCurrentTime:?];
+    v39 = [self currentDateFromCurrentTime:?];
     *buf = 138412290;
     *&buf[4] = v39;
     _os_log_impl(&dword_228986000, v38, OS_LOG_TYPE_DEFAULT, "When started Current date: %@", buf, 0xCu);
@@ -1246,7 +1246,7 @@ LABEL_21:
   v40 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v41 = *(a1 + 48);
+    v41 = *(self + 48);
     v42 = v40;
     [v41 endTime];
     *buf = 134217984;
@@ -1260,47 +1260,47 @@ LABEL_21:
   v44 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v45 = *(a1 + 48);
+    v45 = *(self + 48);
     v46 = v44;
     [v45 endTime];
-    v47 = [a1 currentDateFromCurrentTime:?];
+    v47 = [self currentDateFromCurrentTime:?];
     *buf = 138412290;
     *&buf[4] = v47;
     _os_log_impl(&dword_228986000, v46, OS_LOG_TYPE_DEFAULT, "When started End date: %@", buf, 0xCu);
   }
 
-  v48 = [MEMORY[0x277CBEB18] array];
-  v49 = *(a1 + 104);
-  v50 = *(a1 + 112);
-  v51 = *(a1 + 224);
-  *buf = *(a1 + 216);
+  array = [MEMORY[0x277CBEB18] array];
+  v49 = *(self + 104);
+  v50 = *(self + 112);
+  v51 = *(self + 224);
+  *buf = *(self + 216);
   *&buf[8] = v49;
-  v236 = *(a1 + 120);
-  v52 = *(a1 + 136);
+  v236 = *(self + 120);
+  v52 = *(self + 136);
   *&buf[16] = v50;
   v237 = v52;
-  v53 = *(a1 + 160);
-  v238 = *(a1 + 144);
+  v53 = *(self + 160);
+  v238 = *(self + 144);
   v239 = v53;
-  v54 = *(a1 + 184);
-  v240 = *(a1 + 176);
+  v54 = *(self + 184);
+  v240 = *(self + 176);
   v241 = v54;
-  v55 = *(a1 + 192);
-  v243 = *(a1 + 200);
+  v55 = *(self + 192);
+  v243 = *(self + 200);
   v242 = v55;
-  v56 = *(a1 + 232);
+  v56 = *(self + 232);
   v244 = v51;
   v245 = v56;
   v57 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:17];
-  [v48 addObjectsFromArray:v57];
+  [array addObjectsFromArray:v57];
 
-  [v48 addObjectsFromArray:*(a1 + 24)];
-  objc_storeStrong((a1 + 16), v48);
+  [array addObjectsFromArray:*(self + 24)];
+  objc_storeStrong((self + 16), array);
   v233 = 0u;
   v234 = 0u;
   v231 = 0u;
   v232 = 0u;
-  v58 = *(a1 + 16);
+  v58 = *(self + 16);
   v59 = [v58 countByEnumeratingWithState:&v231 objects:&v246 count:16];
   if (v59)
   {
@@ -1319,7 +1319,7 @@ LABEL_21:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v63 setupWithDemoDataGenerator:a1];
+          [v63 setupWithDemoDataGenerator:self];
         }
       }
 
@@ -1329,30 +1329,30 @@ LABEL_21:
     while (v60);
   }
 
-  v64 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v64 setObject:&unk_283CB3D08 forKey:?];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:&unk_283CB3D08 forKey:?];
 
   Current = CFAbsoluteTimeGetCurrent();
-  if ([*(a1 + 48) isFinished])
+  if ([*(self + 48) isFinished])
   {
     goto LABEL_27;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 80));
-  v99 = [WeakRetained dataManager];
-  [v99 openObserverTransaction];
+  WeakRetained = objc_loadWeakRetained((self + 80));
+  dataManager = [WeakRetained dataManager];
+  [dataManager openObserverTransaction];
 
-  v225 = a1;
-  if (a5)
+  selfCopy = self;
+  if (endDate)
   {
-    v100 = *(a1 + 88);
+    v100 = *(self + 88);
     v101 = objc_autoreleasePoolPush();
     v102 = objc_alloc_init(HDDemoDataBaseSampleGeneratorObjectCollection);
     v246 = 0u;
     v247 = 0u;
     v248 = 0u;
     v249 = 0u;
-    v103 = *(a1 + 16);
+    v103 = *(self + 16);
     v104 = [v103 countByEnumeratingWithState:&v246 objects:buf count:16];
     if (v104)
     {
@@ -1368,8 +1368,8 @@ LABEL_21:
           }
 
           v108 = *(*(&v246 + 1) + 8 * j);
-          v109 = [v225[6] firstSampleDate];
-          [v108 generateFirstRunObjectsForDemoPerson:v100 firstDate:v109 objectCollection:v102];
+          firstSampleDate = [selfCopy[6] firstSampleDate];
+          [v108 generateFirstRunObjectsForDemoPerson:v100 firstDate:firstSampleDate objectCollection:v102];
         }
 
         v105 = [v103 countByEnumeratingWithState:&v246 objects:buf count:16];
@@ -1378,8 +1378,8 @@ LABEL_21:
       while (v105);
     }
 
-    a1 = v225;
-    [(HDDemoDataGenerator *)v225 _insertIntoDatabaseObjectCollection:v102 fromPerson:v100];
+    self = selfCopy;
+    [(HDDemoDataGenerator *)selfCopy _insertIntoDatabaseObjectCollection:v102 fromPerson:v100];
 
     objc_autoreleasePoolPop(v101);
   }
@@ -1387,17 +1387,17 @@ LABEL_21:
   v220 = *MEMORY[0x277CBE5C0];
   while (2)
   {
-    v222 = *(a1 + 88);
+    v222 = *(self + 88);
     context = objc_autoreleasePoolPush();
     v110 = objc_alloc_init(HDDemoDataBaseSampleGeneratorObjectCollection);
     v111 = 0;
     for (k = 0; ; ++k)
     {
       v113 = objc_autoreleasePoolPush();
-      v114 = [a1 generatorState];
-      v115 = [v114 isExercising];
+      generatorState = [self generatorState];
+      isExercising = [generatorState isExercising];
 
-      if (v115)
+      if (isExercising)
       {
         [v222 timeIncrementDuringExercise];
       }
@@ -1408,10 +1408,10 @@ LABEL_21:
       }
 
       v117 = v116;
-      [*(a1 + 48) currentTime];
+      [*(self + 48) currentTime];
       v119 = v117 + v118;
-      [*(a1 + 48) endTime];
-      v120 = *(a1 + 48);
+      [*(self + 48) endTime];
+      v120 = *(self + 48);
       if (v119 > v121)
       {
         break;
@@ -1419,24 +1419,24 @@ LABEL_21:
 
       [v120 currentTime];
       v123 = v122;
-      v124 = *(a1 + 48);
+      v124 = *(self + 48);
       [v124 currentTime];
       [v124 setCurrentTime:v117 + v125];
-      v126 = [*(a1 + 48) firstSampleDate];
-      [*(a1 + 48) currentTime];
-      v128 = [v126 dateByAddingTimeInterval:v127 * 86400.0];
+      firstSampleDate2 = [*(self + 48) firstSampleDate];
+      [*(self + 48) currentTime];
+      v128 = [firstSampleDate2 dateByAddingTimeInterval:v127 * 86400.0];
 
       v111 = v128;
-      v129 = [a1 generatorState];
-      v130 = [v129 workoutConfiguration];
+      generatorState2 = [self generatorState];
+      workoutConfiguration = [generatorState2 workoutConfiguration];
 
       v223 = k;
-      if (v130)
+      if (workoutConfiguration)
       {
-        v131 = [a1 generatorState];
-        [v131 currentTime];
+        generatorState3 = [self generatorState];
+        [generatorState3 currentTime];
         v133 = v132;
-        [v130 endTime];
+        [workoutConfiguration endTime];
         v135 = v134;
 
         if (v133 <= v135)
@@ -1444,37 +1444,37 @@ LABEL_21:
           goto LABEL_93;
         }
 
-        v136 = [a1 generatorState];
-        [v136 setWorkoutConfiguration:0];
+        generatorState4 = [self generatorState];
+        [generatorState4 setWorkoutConfiguration:0];
       }
 
       else
       {
         v137 = MEMORY[0x277CCABB0];
-        v138 = [a1 generatorState];
-        v139 = [v137 numberWithInteger:{objc_msgSend(v138, "calendarDay")}];
+        generatorState5 = [self generatorState];
+        v139 = [v137 numberWithInteger:{objc_msgSend(generatorState5, "calendarDay")}];
 
-        v140 = [a1 demoPerson];
-        v141 = [v140 workoutPrototypesByCalendarDay];
+        demoPerson = [self demoPerson];
+        workoutPrototypesByCalendarDay = [demoPerson workoutPrototypesByCalendarDay];
         v224 = v139;
-        v142 = [v141 objectForKeyedSubscript:v139];
+        v142 = [workoutPrototypesByCalendarDay objectForKeyedSubscript:v139];
 
-        v143 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        v144 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:v143];
+        standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        v144 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:standardUserDefaults2];
 
         v221 = v113;
         if ([v144 shouldEnsureRecentWorkoutHasRoute])
         {
-          v145 = [a1 generatorState];
-          v146 = [v145 currentDate];
+          generatorState6 = [self generatorState];
+          currentDate = [generatorState6 currentDate];
 
           v147 = [MEMORY[0x277CBEA80] calendarWithIdentifier:v220];
-          if ([v147 isDateInYesterday:v146])
+          if ([v147 isDateInYesterday:currentDate])
           {
             v148 = +[HDDemoDataWorkoutPrototype yogaAndRunningPrototypes];
           }
 
-          else if ([v147 isDateInToday:v146])
+          else if ([v147 isDateInToday:currentDate])
           {
             v148 = MEMORY[0x277CBEBF8];
           }
@@ -1484,7 +1484,7 @@ LABEL_21:
             v148 = 0;
           }
 
-          a1 = v225;
+          self = selfCopy;
         }
 
         else
@@ -1504,12 +1504,12 @@ LABEL_21:
 
         v150 = v149;
 
-        v151 = [a1 generatorState];
-        [v151 currentTime];
+        generatorState7 = [self generatorState];
+        [generatorState7 currentTime];
         v153 = v152;
 
-        v154 = [a1 generatorState];
-        v155 = [v154 currentDay];
+        generatorState8 = [self generatorState];
+        currentDay = [generatorState8 currentDay];
 
         v233 = 0u;
         v234 = 0u;
@@ -1521,7 +1521,7 @@ LABEL_21:
         {
           v157 = v156;
           v158 = *v232;
-          v159 = v155;
+          v159 = currentDay;
           do
           {
             for (m = 0; m != v157; ++m)
@@ -1537,12 +1537,12 @@ LABEL_21:
               [v161 duration];
               v165 = v164;
               v166 = [MEMORY[0x277CBEB98] setWithArray:&unk_283CAFB98];
-              v167 = [MEMORY[0x277CBEA80] currentCalendar];
-              v168 = [MEMORY[0x277CBEAA8] date];
-              v169 = [v167 dateByAddingUnit:16 value:-90 toDate:v168 options:0];
+              currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+              date = [MEMORY[0x277CBEAA8] date];
+              v169 = [currentCalendar dateByAddingUnit:16 value:-90 toDate:date options:0];
 
-              v170 = [MEMORY[0x277CCDD30] sharedBehavior];
-              if ([v170 isAppleWatch] & 1) != 0 || (objc_msgSend(v166, "containsObject:", v224))
+              mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+              if ([mEMORY[0x277CCDD30] isAppleWatch] & 1) != 0 || (objc_msgSend(v166, "containsObject:", v224))
               {
                 v171 = 0;
               }
@@ -1559,8 +1559,8 @@ LABEL_21:
               if (v174 && (v171 & 1) == 0)
               {
                 v175 = [[HDDemoDataGeneratorWorkoutConfiguration alloc] initWithPrototype:v161 currentDemoDataTime:v153];
-                v176 = [v225 generatorState];
-                [v176 setWorkoutConfiguration:v175];
+                generatorState9 = [selfCopy generatorState];
+                [generatorState9 setWorkoutConfiguration:v175];
               }
             }
 
@@ -1570,22 +1570,22 @@ LABEL_21:
           while (v157);
         }
 
-        v136 = v224;
-        a1 = v225;
-        v130 = 0;
+        generatorState4 = v224;
+        self = selfCopy;
+        workoutConfiguration = 0;
         v113 = v221;
         k = v223;
       }
 
 LABEL_93:
-      [*(a1 + 48) currentTime];
+      [*(self + 48) currentTime];
       v178 = v177;
-      if ([*(a1 + 48) currentDay] != v177)
+      if ([*(self + 48) currentDay] != v177)
       {
-        [*(a1 + 48) setCurrentDay:v178];
-        [*(a1 + 216) randomDoubleFromGenerator];
+        [*(self + 48) setCurrentDay:v178];
+        [*(self + 216) randomDoubleFromGenerator];
         [v222 setRestingHeartRate:(v179 * 10.0) + 50];
-        [*(a1 + 216) randomDoubleFromGenerator];
+        [*(self + 216) randomDoubleFromGenerator];
         [v222 setExerciseIntensityPercentage:fabs(v180 * 0.2) + 0.6];
       }
 
@@ -1593,7 +1593,7 @@ LABEL_93:
       v230 = 0u;
       v227 = 0u;
       v228 = 0u;
-      v181 = *(a1 + 16);
+      v181 = *(self + 16);
       v182 = [v181 countByEnumeratingWithState:&v227 objects:&v246 count:16];
       if (v182)
       {
@@ -1609,8 +1609,8 @@ LABEL_93:
             }
 
             v186 = *(*(&v227 + 1) + 8 * n);
-            v187 = *(a1 + 88);
-            [*(a1 + 48) currentTime];
+            v187 = *(self + 88);
+            [*(self + 48) currentTime];
             [v186 generateObjectsForDemoPerson:v187 fromTime:v111 toTime:v110 currentDate:v123 objectCollection:v188];
           }
 
@@ -1639,10 +1639,10 @@ LABEL_93:
     }
 
     [v120 setFinished:1];
-    v189 = [*(a1 + 48) firstSampleDate];
-    [*(a1 + 48) currentTime];
-    v191 = [v189 dateByAddingTimeInterval:v190 * 86400.0];
-    [*(a1 + 48) setLastSampleDate:v191];
+    firstSampleDate3 = [*(self + 48) firstSampleDate];
+    [*(self + 48) currentTime];
+    v191 = [firstSampleDate3 dateByAddingTimeInterval:v190 * 86400.0];
+    [*(self + 48) setLastSampleDate:v191];
 
     objc_autoreleasePoolPop(v113);
 LABEL_107:
@@ -1655,24 +1655,24 @@ LABEL_107:
       _os_log_impl(&dword_228986000, v192, OS_LOG_TYPE_DEFAULT, "Last sample date for iteration: %@", buf, 0xCu);
     }
 
-    [(HDDemoDataGenerator *)a1 _insertIntoDatabaseObjectCollection:v110 fromPerson:v222];
+    [(HDDemoDataGenerator *)self _insertIntoDatabaseObjectCollection:v110 fromPerson:v222];
 
     objc_autoreleasePoolPop(context);
-    v193 = objc_loadWeakRetained((a1 + 80));
-    v194 = [v193 dataManager];
-    [v194 closeObserverTransaction];
+    v193 = objc_loadWeakRetained((self + 80));
+    dataManager2 = [v193 dataManager];
+    [dataManager2 closeObserverTransaction];
 
-    [*(a1 + 48) currentTime];
+    [*(self + 48) currentTime];
     v196 = v195;
-    [*(a1 + 48) startTime];
+    [*(self + 48) startTime];
     v198 = v196 - v197;
-    [*(a1 + 48) endTime];
+    [*(self + 48) endTime];
     v200 = v199;
-    [*(a1 + 48) startTime];
+    [*(self + 48) startTime];
     v202 = v198 / (v200 - v201) * 100.0;
-    v203 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v204 = [MEMORY[0x277CCABB0] numberWithDouble:v202];
-    [v203 setObject:v204 forKey:@"HealthDemoDataProgressKey"];
+    [standardUserDefaults3 setObject:v204 forKey:@"HealthDemoDataProgressKey"];
 
     _HKInitializeLogging();
     v205 = *MEMORY[0x277CCC2B8];
@@ -1683,11 +1683,11 @@ LABEL_107:
       _os_log_impl(&dword_228986000, v205, OS_LOG_TYPE_DEFAULT, "Current demo data generation progress: %.1f%%", buf, 0xCu);
     }
 
-    if (![*(a1 + 48) isFinished])
+    if (![*(self + 48) isFinished])
     {
-      v206 = objc_loadWeakRetained((a1 + 80));
-      v207 = [v206 dataManager];
-      [v207 openObserverTransaction];
+      v206 = objc_loadWeakRetained((self + 80));
+      dataManager3 = [v206 dataManager];
+      [dataManager3 openObserverTransaction];
 
       continue;
     }
@@ -1701,11 +1701,11 @@ LABEL_27:
   v66 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v67 = *(a1 + 48);
+    v67 = *(self + 48);
     v68 = v66;
-    v69 = [v67 lastSampleDate];
+    lastSampleDate = [v67 lastSampleDate];
     *buf = 138412290;
-    *&buf[4] = v69;
+    *&buf[4] = lastSampleDate;
     _os_log_impl(&dword_228986000, v68, OS_LOG_TYPE_DEFAULT, "When ended Last sample date: %@", buf, 0xCu);
   }
 
@@ -1713,7 +1713,7 @@ LABEL_27:
   v70 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v71 = *(a1 + 48);
+    v71 = *(self + 48);
     v72 = v70;
     [v71 startTime];
     *buf = 134217984;
@@ -1725,10 +1725,10 @@ LABEL_27:
   v74 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v75 = *(a1 + 48);
+    v75 = *(self + 48);
     v76 = v74;
     [v75 startTime];
-    v77 = [a1 currentDateFromCurrentTime:?];
+    v77 = [self currentDateFromCurrentTime:?];
     *buf = 138412290;
     *&buf[4] = v77;
     _os_log_impl(&dword_228986000, v76, OS_LOG_TYPE_DEFAULT, "When ended Start date: %@", buf, 0xCu);
@@ -1738,7 +1738,7 @@ LABEL_27:
   v78 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v79 = *(a1 + 48);
+    v79 = *(self + 48);
     v80 = v78;
     [v79 currentTime];
     *buf = 134217984;
@@ -1750,10 +1750,10 @@ LABEL_27:
   v82 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v83 = *(a1 + 48);
+    v83 = *(self + 48);
     v84 = v82;
     [v83 currentTime];
-    v85 = [a1 currentDateFromCurrentTime:?];
+    v85 = [self currentDateFromCurrentTime:?];
     *buf = 138412290;
     *&buf[4] = v85;
     _os_log_impl(&dword_228986000, v84, OS_LOG_TYPE_DEFAULT, "When ended Current date: %@", buf, 0xCu);
@@ -1763,7 +1763,7 @@ LABEL_27:
   v86 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v87 = *(a1 + 48);
+    v87 = *(self + 48);
     v88 = v86;
     [v87 endTime];
     *buf = 134217984;
@@ -1776,10 +1776,10 @@ LABEL_27:
   v91 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v92 = *(a1 + 48);
+    v92 = *(self + 48);
     v93 = v91;
     [v92 endTime];
-    v94 = [a1 currentDateFromCurrentTime:?];
+    v94 = [self currentDateFromCurrentTime:?];
     *buf = 138412290;
     *&buf[4] = v94;
     _os_log_impl(&dword_228986000, v93, OS_LOG_TYPE_DEFAULT, "When ended End date: %@", buf, 0xCu);
@@ -1812,20 +1812,20 @@ LABEL_115:
   v208 = *MEMORY[0x277CCC2B8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_DEFAULT))
   {
-    v209 = *(a1 + 64);
+    v209 = *(self + 64);
     *buf = 134217984;
     *&buf[4] = v209;
     _os_log_impl(&dword_228986000, v208, OS_LOG_TYPE_DEFAULT, "Total samples written: %ld", buf, 0xCu);
   }
 
-  v210 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v210 setObject:&unk_283CB43B0 forKey:@"HealthDemoDataProgressKey"];
+  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults4 setObject:&unk_283CB43B0 forKey:@"HealthDemoDataProgressKey"];
 
-  [*(a1 + 48) currentTime];
-  [*(a1 + 48) setStartTime:?];
-  if (v215)
+  [*(self + 48) currentTime];
+  [*(self + 48) setStartTime:?];
+  if (runCopy)
   {
-    v215[2](v215, *(a1 + 64), v90);
+    runCopy[2](runCopy, *(self + 64), v90);
   }
 
   v211 = *MEMORY[0x277D85DE8];
@@ -1834,50 +1834,50 @@ LABEL_115:
 - (id)_phoneProvenance
 {
   v38 = *MEMORY[0x277D85DE8];
-  WeakRetained = objc_loadWeakRetained((a1 + 80));
-  v3 = [WeakRetained sourceManager];
+  WeakRetained = objc_loadWeakRetained((self + 80));
+  sourceManager = [WeakRetained sourceManager];
   v35 = 0;
-  v4 = [v3 localDeviceSourceWithError:&v35];
+  v4 = [sourceManager localDeviceSourceWithError:&v35];
   v5 = v35;
 
   if (v4)
   {
-    v6 = objc_loadWeakRetained((a1 + 80));
-    v7 = [v6 deviceManager];
+    v6 = objc_loadWeakRetained((self + 80));
+    deviceManager = [v6 deviceManager];
     v34 = v5;
-    v8 = [v7 deviceEntityForNoDeviceWithError:&v34];
+    v8 = [deviceManager deviceEntityForNoDeviceWithError:&v34];
     v9 = v34;
 
     if (v8)
     {
-      v10 = objc_loadWeakRetained((a1 + 80));
-      v11 = [v10 daemon];
-      v12 = [v11 behavior];
+      v10 = objc_loadWeakRetained((self + 80));
+      daemon = [v10 daemon];
+      behavior = [daemon behavior];
 
-      v32 = objc_loadWeakRetained((a1 + 80));
-      v30 = [v32 currentSyncIdentityPersistentID];
-      v13 = [v12 currentDeviceProductType];
+      v32 = objc_loadWeakRetained((self + 80));
+      currentSyncIdentityPersistentID = [v32 currentSyncIdentityPersistentID];
+      currentDeviceProductType = [behavior currentDeviceProductType];
       v14 = @"UnknownDevice";
-      v31 = v13;
-      if (v13)
+      v31 = currentDeviceProductType;
+      if (currentDeviceProductType)
       {
-        v14 = v13;
+        v14 = currentDeviceProductType;
       }
 
       v29 = v14;
-      v15 = [v12 currentOSBuild];
-      v16 = v15;
+      currentOSBuild = [behavior currentOSBuild];
+      v16 = currentOSBuild;
       v17 = @"UnknownBuild";
-      if (v15)
+      if (currentOSBuild)
       {
-        v17 = v15;
+        v17 = currentOSBuild;
       }
 
       v28 = v17;
       v33 = v9;
-      if (v12)
+      if (behavior)
       {
-        [v12 currentOSVersionStruct];
+        [behavior currentOSVersionStruct];
       }
 
       else
@@ -1886,12 +1886,12 @@ LABEL_115:
         v37 = 0;
       }
 
-      v21 = [v12 currentOSVersion];
-      v22 = [v12 localTimeZone];
-      v23 = [v22 name];
+      currentOSVersion = [behavior currentOSVersion];
+      localTimeZone = [behavior localTimeZone];
+      name = [localTimeZone name];
       v24 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v4, "persistentID")}];
       v25 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "persistentID")}];
-      v19 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:0 syncIdentity:v30 productType:v29 systemBuild:v28 operatingSystemVersion:&buf sourceVersion:v21 timeZoneName:v23 sourceID:v24 deviceID:v25 contributorReference:0];
+      v19 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:0 syncIdentity:currentSyncIdentityPersistentID productType:v29 systemBuild:v28 operatingSystemVersion:&buf sourceVersion:currentOSVersion timeZoneName:name sourceID:v24 deviceID:v25 contributorReference:0];
 
       v9 = v33;
     }
@@ -1931,61 +1931,61 @@ LABEL_115:
   return v19;
 }
 
-- (void)_insertIntoDatabaseObjectCollection:(void *)a3 fromPerson:
+- (void)_insertIntoDatabaseObjectCollection:(void *)collection fromPerson:
 {
   v66 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = [v5 objectsFromPhone];
-  v8 = [v5 objectsFromWatch];
-  v55 = [v5 objectsFromPhoneApps];
-  v56 = [(HDDemoDataGenerator *)a1 _phoneProvenance];
+  collectionCopy = collection;
+  objectsFromPhone = [v5 objectsFromPhone];
+  objectsFromWatch = [v5 objectsFromWatch];
+  objectsFromPhoneApps = [v5 objectsFromPhoneApps];
+  _phoneProvenance = [(HDDemoDataGenerator *)self _phoneProvenance];
   v9 = MEMORY[0x277CCACA8];
-  v54 = v6;
-  v10 = [v6 firstName];
-  v11 = [v9 stringWithFormat:@"%@'s Watch", v10];
+  v54 = collectionCopy;
+  firstName = [collectionCopy firstName];
+  v11 = [v9 stringWithFormat:@"%@'s Watch", firstName];
 
-  WeakRetained = objc_loadWeakRetained((a1 + 80));
-  v13 = [WeakRetained sourceManager];
+  WeakRetained = objc_loadWeakRetained((self + 80));
+  sourceManager = [WeakRetained sourceManager];
   v14 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"];
   v63 = 0;
   v53 = v11;
-  v15 = [v13 sourceForAppleDeviceWithUUID:v14 identifier:@"com.apple.health.demo_watch" name:v11 productType:@"Watch1 createIfNecessary:2" error:{1, &v63}];
+  v15 = [sourceManager sourceForAppleDeviceWithUUID:v14 identifier:@"com.apple.health.demo_watch" name:v11 productType:@"Watch1 createIfNecessary:2" error:{1, &v63}];
   v16 = v63;
 
   if (v15)
   {
-    v17 = objc_loadWeakRetained((a1 + 80));
-    v18 = [v17 deviceManager];
+    v17 = objc_loadWeakRetained((self + 80));
+    deviceManager = [v17 deviceManager];
     v62 = v16;
-    v19 = [v18 deviceEntityForNoDeviceWithError:&v62];
+    v19 = [deviceManager deviceEntityForNoDeviceWithError:&v62];
     v51 = v62;
 
     v52 = v15;
     if (v19)
     {
-      v49 = v7;
-      v20 = objc_loadWeakRetained((a1 + 80));
-      v21 = [v20 daemon];
-      v22 = [v21 behavior];
+      v49 = objectsFromPhone;
+      v20 = objc_loadWeakRetained((self + 80));
+      daemon = [v20 daemon];
+      behavior = [daemon behavior];
 
-      v47 = objc_loadWeakRetained((a1 + 80));
-      v46 = [v47 currentSyncIdentityPersistentID];
-      v23 = [v22 currentOSBuild];
-      v24 = v23;
+      v47 = objc_loadWeakRetained((self + 80));
+      currentSyncIdentityPersistentID = [v47 currentSyncIdentityPersistentID];
+      currentOSBuild = [behavior currentOSBuild];
+      v24 = currentOSBuild;
       v25 = @"UnknownBuild";
-      if (v23)
+      if (currentOSBuild)
       {
-        v25 = v23;
+        v25 = currentOSBuild;
       }
 
       v45 = v25;
       v50 = v5;
-      v48 = v8;
+      v48 = objectsFromWatch;
       v26 = v19;
-      if (v22)
+      if (behavior)
       {
-        [v22 currentOSVersionStruct];
+        [behavior currentOSVersionStruct];
       }
 
       else
@@ -1994,17 +1994,17 @@ LABEL_115:
         v65 = 0;
       }
 
-      v31 = [v22 currentOSVersion];
-      v32 = [v22 localTimeZone];
-      v33 = [v32 name];
+      currentOSVersion = [behavior currentOSVersion];
+      localTimeZone = [behavior localTimeZone];
+      name = [localTimeZone name];
       v34 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v52, "persistentID")}];
       v35 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v19, "persistentID")}];
-      v28 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:0 syncIdentity:v46 productType:@"Watch1 systemBuild:2" operatingSystemVersion:v45 sourceVersion:&buf timeZoneName:v31 sourceID:v33 deviceID:v34 contributorReference:v35, 0];
+      v28 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:0 syncIdentity:currentSyncIdentityPersistentID productType:@"Watch1 systemBuild:2" operatingSystemVersion:v45 sourceVersion:&buf timeZoneName:currentOSVersion sourceID:name deviceID:v34 contributorReference:v35, 0];
 
-      v7 = v49;
+      objectsFromPhone = v49;
       v5 = v50;
-      v8 = v48;
-      v29 = v56;
+      objectsFromWatch = v48;
+      v29 = _phoneProvenance;
     }
 
     else
@@ -2012,7 +2012,7 @@ LABEL_115:
       v26 = 0;
       _HKInitializeLogging();
       v30 = *MEMORY[0x277CCC2B8];
-      v29 = v56;
+      v29 = _phoneProvenance;
       if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138543362;
@@ -2043,7 +2043,7 @@ LABEL_15:
   }
 
   v28 = 0;
-  v29 = v56;
+  v29 = _phoneProvenance;
 LABEL_16:
 
   if (v28 && v29)
@@ -2052,35 +2052,35 @@ LABEL_16:
     v61[1] = 3221225472;
     v61[2] = __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___block_invoke;
     v61[3] = &unk_278626F60;
-    v61[4] = a1;
-    [v55 enumerateKeysAndObjectsWithOptions:0 usingBlock:v61];
-    *(a1 + 64) += [v7 count];
-    v36 = objc_loadWeakRetained((a1 + 80));
-    v37 = [v36 dataManager];
+    v61[4] = self;
+    [objectsFromPhoneApps enumerateKeysAndObjectsWithOptions:0 usingBlock:v61];
+    *(self + 64) += [objectsFromPhone count];
+    v36 = objc_loadWeakRetained((self + 80));
+    dataManager = [v36 dataManager];
     v60 = 0;
-    v38 = [v37 insertDataObjects:v7 withProvenance:v29 creationDate:1 skipInsertionFilter:&v60 error:CFAbsoluteTimeGetCurrent()];
+    v38 = [dataManager insertDataObjects:objectsFromPhone withProvenance:v29 creationDate:1 skipInsertionFilter:&v60 error:CFAbsoluteTimeGetCurrent()];
     v39 = v60;
 
     if (v38)
     {
-      *(a1 + 64) += [v8 count];
-      v40 = objc_loadWeakRetained((a1 + 80));
-      v41 = [v40 dataManager];
+      *(self + 64) += [objectsFromWatch count];
+      v40 = objc_loadWeakRetained((self + 80));
+      dataManager2 = [v40 dataManager];
       v59 = v39;
-      [v41 insertDataObjects:v8 withProvenance:v28 creationDate:1 skipInsertionFilter:&v59 error:CFAbsoluteTimeGetCurrent()];
+      [dataManager2 insertDataObjects:objectsFromWatch withProvenance:v28 creationDate:1 skipInsertionFilter:&v59 error:CFAbsoluteTimeGetCurrent()];
       v42 = v59;
 
       v58[0] = MEMORY[0x277D85DD0];
       v58[1] = 3221225472;
       v58[2] = __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___block_invoke_389;
       v58[3] = &unk_278626F88;
-      v58[4] = a1;
+      v58[4] = self;
       [v5 enumerateObjectAssociations:v58];
       v57[0] = MEMORY[0x277D85DD0];
       v57[1] = 3221225472;
       v57[2] = __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___block_invoke_392;
       v57[3] = &unk_278626F88;
-      v57[4] = a1;
+      v57[4] = self;
       [v5 enumerateLooseObjectAssociations:v57];
       v39 = v42;
     }
@@ -2097,7 +2097,7 @@ LABEL_16:
       }
     }
 
-    v29 = v56;
+    v29 = _phoneProvenance;
   }
 
   v44 = *MEMORY[0x277D85DE8];
@@ -2306,23 +2306,23 @@ void __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___
 - (HDKeyValueDomain)_keyValueDomain
 {
   v2 = [HDKeyValueDomain alloc];
-  WeakRetained = objc_loadWeakRetained((a1 + 80));
+  WeakRetained = objc_loadWeakRetained((self + 80));
   v4 = [(HDKeyValueDomain *)v2 initWithCategory:3 domainName:@"DemoData" profile:WeakRetained];
 
   return v4;
 }
 
-- (uint64_t)_archiveObject:(uint64_t)a3 error:
+- (uint64_t)_archiveObject:(uint64_t)object error:
 {
   v5 = a2;
-  v6 = [(HDDemoDataGenerator *)a1 _keyValueDomain];
+  _keyValueDomain = [(HDDemoDataGenerator *)self _keyValueDomain];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:a3];
+  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:object];
 
   if (v9)
   {
-    v10 = [v6 setData:v9 forKey:v8 error:a3];
+    v10 = [_keyValueDomain setData:v9 forKey:v8 error:object];
   }
 
   else
@@ -2333,14 +2333,14 @@ void __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___
   return v10;
 }
 
-- (id)_unarchiveDataWithClass:(uint64_t)a3 error:
+- (id)_unarchiveDataWithClass:(uint64_t)class error:
 {
-  v5 = [(HDDemoDataGenerator *)a1 _keyValueDomain];
+  _keyValueDomain = [(HDDemoDataGenerator *)self _keyValueDomain];
   v6 = NSStringFromClass(a2);
-  v7 = [v5 dataForKey:v6 error:a3];
+  v7 = [_keyValueDomain dataForKey:v6 error:class];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a2 fromData:v7 error:a3];
+    v8 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:a2 fromData:v7 error:class];
   }
 
   else
@@ -2359,7 +2359,7 @@ void __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = *(a1 + 32);
+  v3 = *(self + 32);
   v4 = [v3 countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v4)
   {
@@ -2379,7 +2379,7 @@ void __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___
 
         v10 = *(*(&v19 + 1) + 8 * v8);
         v18 = v9;
-        v11 = [(HDDemoDataGenerator *)a1 _unarchiveDataWithClass:v10 error:&v18];
+        v11 = [(HDDemoDataGenerator *)self _unarchiveDataWithClass:v10 error:&v18];
         v6 = v18;
 
         if (!v11)
@@ -2402,8 +2402,8 @@ void __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___
           goto LABEL_15;
         }
 
-        WeakRetained = objc_loadWeakRetained((a1 + 80));
-        [v11 setDemoDataGenerationContextWithProfile:WeakRetained generatorState:*(a1 + 48)];
+        WeakRetained = objc_loadWeakRetained((self + 80));
+        [v11 setDemoDataGenerationContextWithProfile:WeakRetained generatorState:*(self + 48)];
 
         [v2 addObject:v11];
         ++v8;
@@ -2426,7 +2426,7 @@ void __70__HDDemoDataGenerator__insertIntoDatabaseObjectCollection_fromPerson___
     v6 = 0;
   }
 
-  objc_storeStrong((a1 + 24), v2);
+  objc_storeStrong((self + 24), v2);
   v23 = 1;
 LABEL_15:
 
@@ -2458,26 +2458,26 @@ void __43__HDDemoDataGenerator_firstSampleDayOfYear__block_invoke(uint64_t a1)
   _MergedGlobals_216 = [v2 ordinalityOfUnit:16 inUnit:4 forDate:v3];
 }
 
-- (id)currentDateFromCurrentTime:(double)a3
+- (id)currentDateFromCurrentTime:(double)time
 {
-  v4 = [(HDDemoDataGeneratorState *)self->_generatorState firstSampleDate];
-  v5 = [v4 dateByAddingTimeInterval:a3 * 86400.0];
+  firstSampleDate = [(HDDemoDataGeneratorState *)self->_generatorState firstSampleDate];
+  v5 = [firstSampleDate dateByAddingTimeInterval:time * 86400.0];
 
   return v5;
 }
 
-- (BOOL)isDemoDataTimeInWeekend:(double)a3 calendar:(id)a4
+- (BOOL)isDemoDataTimeInWeekend:(double)weekend calendar:(id)calendar
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HDDemoDataGenerator *)self currentDateFromCurrentTime:a3];
-  v8 = [v6 components:512 fromDate:v7];
+  calendarCopy = calendar;
+  v7 = [(HDDemoDataGenerator *)self currentDateFromCurrentTime:weekend];
+  v8 = [calendarCopy components:512 fromDate:v7];
 
   if (v8 && [v8 weekday] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v6 hk_weekendDays];
+    hk_weekendDays = [calendarCopy hk_weekendDays];
     v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "weekday")}];
-    v10 = [v11 containsObject:v12];
+    v10 = [hk_weekendDays containsObject:v12];
   }
 
   else
@@ -2490,7 +2490,7 @@ void __43__HDDemoDataGenerator_firstSampleDayOfYear__block_invoke(uint64_t a1)
       v16 = objc_opt_class();
       v17 = MEMORY[0x277CCABB0];
       v18 = v16;
-      v19 = [v17 numberWithDouble:a3];
+      v19 = [v17 numberWithDouble:weekend];
       v20 = 138543618;
       v21 = v16;
       v22 = 2114;

@@ -1,9 +1,9 @@
 @interface AKAuthenticatableResource
 - (AKAuthenticatableResource)init;
-- (AKAuthenticatableResource)initWithCoder:(id)a3;
-- (AKAuthenticatableResource)initWithResourceType:(int64_t)a3 resourceName:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AKAuthenticatableResource)initWithCoder:(id)coder;
+- (AKAuthenticatableResource)initWithResourceType:(int64_t)type resourceName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKAuthenticatableResource
@@ -26,74 +26,74 @@
   return v3;
 }
 
-- (AKAuthenticatableResource)initWithResourceType:(int64_t)a3 resourceName:(id)a4
+- (AKAuthenticatableResource)initWithResourceType:(int64_t)type resourceName:(id)name
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(AKAuthenticatableResource *)v4 init];
-  objc_storeStrong(&v10, v10);
-  if (v10)
+  objc_storeStrong(&location, name);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKAuthenticatableResource *)v4 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v10->_resourceType = v8;
-    objc_storeStrong(&v10->_resourceName, location);
+    selfCopy->_resourceType = typeCopy;
+    objc_storeStrong(&selfCopy->_resourceName, location);
   }
 
-  v6 = MEMORY[0x1E69E5928](v10);
+  v6 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (AKAuthenticatableResource)initWithCoder:(id)a3
+- (AKAuthenticatableResource)initWithCoder:(id)coder
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
-  v10 = [(AKAuthenticatableResource *)v3 init];
-  objc_storeStrong(&v10, v10);
-  if (v10)
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKAuthenticatableResource *)v3 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeIntegerForKey:@"resourceType"];
-    v10->_resourceType = v4;
+    selfCopy->_resourceType = v4;
     v5 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"resourceName"];
-    resourceName = v10->_resourceName;
-    v10->_resourceName = v5;
+    resourceName = selfCopy->_resourceName;
+    selfCopy->_resourceName = v5;
     MEMORY[0x1E69E5920](resourceName);
   }
 
-  v8 = MEMORY[0x1E69E5928](v10);
+  v8 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeInteger:v4->_resourceType forKey:@"resourceType"];
-  [location[0] encodeObject:v4->_resourceName forKey:@"resourceName"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeInteger:selfCopy->_resourceType forKey:@"resourceType"];
+  [location[0] encodeObject:selfCopy->_resourceName forKey:@"resourceName"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v8 = self;
+  selfCopy = self;
   v7[2] = a2;
-  v7[1] = a3;
-  v7[0] = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v7[0] + 1) = v8->_resourceType;
-  v3 = [(NSString *)v8->_resourceName copy];
+  v7[1] = zone;
+  v7[0] = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v7[0] + 1) = selfCopy->_resourceType;
+  v3 = [(NSString *)selfCopy->_resourceName copy];
   v4 = *(v7[0] + 2);
   *(v7[0] + 2) = v3;
   MEMORY[0x1E69E5920](v4);

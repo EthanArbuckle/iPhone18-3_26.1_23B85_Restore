@@ -1,18 +1,18 @@
 @interface ABPKAlgOutput
-- (ABPKAlgOutput)initWithConfig:(id)a3;
+- (ABPKAlgOutput)initWithConfig:(id)config;
 @end
 
 @implementation ABPKAlgOutput
 
-- (ABPKAlgOutput)initWithConfig:(id)a3
+- (ABPKAlgOutput)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v15.receiver = self;
   v15.super_class = ABPKAlgOutput;
   v5 = [(ABPKAlgOutput *)&v15 init];
   if (v5)
   {
-    if ([v4 algMode] == 4)
+    if ([configCopy algMode] == 4)
     {
       v6 = [[ABPK2dSkeleton alloc] initWithType:1];
       [(ABPKAlgOutput *)v5 setRawDetection2dSkeletonABPK:v6];

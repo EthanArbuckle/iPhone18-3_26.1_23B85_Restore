@@ -1,8 +1,8 @@
 @interface MDLVertexAttribute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MDLVertexAttribute)init;
 - (MDLVertexAttribute)initWithName:(NSString *)name format:(MDLVertexFormat)format offset:(NSUInteger)offset bufferIndex:(NSUInteger)bufferIndex;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -50,9 +50,9 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(MDLVertexAttribute, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(MDLVertexAttribute, a2, zone);
   name = self->_name;
   offset = self->_offset;
   bufferIndex = self->_bufferIndex;
@@ -61,10 +61,10 @@
   return objc_msgSend_initWithName_format_offset_bufferIndex_(v4, v5, name, format, offset, bufferIndex);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -74,7 +74,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v7 = objc_msgSend_isEqualToString_(self->_name, v6, v5[1]) && self->_offset == v5[2] && self->_bufferIndex == v5[3] && self->_format == v5[4];
     }
 

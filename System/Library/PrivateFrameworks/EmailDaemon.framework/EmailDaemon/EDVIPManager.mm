@@ -1,43 +1,43 @@
 @interface EDVIPManager
 + (OS_os_log)log;
 + (id)_contactDescriptors;
-- (BOOL)_isVIPForContact:(id)a3 orAddresses:(id)a4;
+- (BOOL)_isVIPForContact:(id)contact orAddresses:(id)addresses;
 - (BOOL)hasVIPs;
-- (BOOL)isVIPAddress:(id)a3;
+- (BOOL)isVIPAddress:(id)address;
 - (CNContactStore)contactStore;
 - (EAEmailAddressSet)allVIPEmailAddresses;
-- (EDVIPManager)initWithDirectoryURL:(id)a3 accountsProvider:(id)a4 delegate:(id)a5;
-- (EDVIPManager)initWithDirectoryURL:(id)a3 keyValueStore:(id)a4 accountsProvider:(id)a5 contactStore:(id)a6 delegate:(id)a7;
+- (EDVIPManager)initWithDirectoryURL:(id)l accountsProvider:(id)provider delegate:(id)delegate;
+- (EDVIPManager)initWithDirectoryURL:(id)l keyValueStore:(id)store accountsProvider:(id)provider contactStore:(id)contactStore delegate:(id)delegate;
 - (EDVIPManagerDelegate)delegate;
 - (NSSet)allVIPs;
 - (id)_allVIPEmailAddresses;
-- (id)_cloudKeyForIdentifier:(id)a3;
-- (id)_contactForName:(id)a3 emailAddresses:(id)a4;
-- (id)_contactFromContacts:(id)a3 matchingMostAddresses:(id)a4;
-- (id)_partiallyRedactedVIPDictionary:(id)a3;
+- (id)_cloudKeyForIdentifier:(id)identifier;
+- (id)_contactForName:(id)name emailAddresses:(id)addresses;
+- (id)_contactFromContacts:(id)contacts matchingMostAddresses:(id)addresses;
+- (id)_partiallyRedactedVIPDictionary:(id)dictionary;
 - (id)_serializedData;
-- (id)_validatedCloudVIPFromStore:(id)a3 withCloudKey:(id)a4;
+- (id)_validatedCloudVIPFromStore:(id)store withCloudKey:(id)key;
 - (id)_vipsDictionary;
 - (id)allVIPWaitForResult;
-- (id)vipWithIdentifier:(id)a3;
-- (void)_accountsChanged:(id)a3;
+- (id)vipWithIdentifier:(id)identifier;
+- (void)_accountsChanged:(id)changed;
 - (void)_initializeKVSStore;
-- (void)_keyValueStoreChanged:(id)a3;
+- (void)_keyValueStoreChanged:(id)changed;
 - (void)_loadVIPs;
 - (void)_mergeVIPs;
-- (void)_removeVIPsWithIdentifiers:(id)a3;
+- (void)_removeVIPsWithIdentifiers:(id)identifiers;
 - (void)_saveVIPs;
 - (void)_saveVIPsLocally;
 - (void)_serializedData;
 - (void)_synchronizeKVStore;
 - (void)_updateCloudWithLocal;
-- (void)_updateLocalWithCloud:(id)a3 refresh:(BOOL)a4;
+- (void)_updateLocalWithCloud:(id)cloud refresh:(BOOL)refresh;
 - (void)dealloc;
-- (void)gatherStatisticsWithVIPCount:(unint64_t)a3;
-- (void)getAllVIPsWithCompletion:(id)a3;
-- (void)removeVIPsWithEmailAddresses:(id)a3;
-- (void)removeVIPsWithIdentifiers:(id)a3;
-- (void)saveVIPs:(id)a3;
+- (void)gatherStatisticsWithVIPCount:(unint64_t)count;
+- (void)getAllVIPsWithCompletion:(id)completion;
+- (void)removeVIPsWithEmailAddresses:(id)addresses;
+- (void)removeVIPsWithIdentifiers:(id)identifiers;
+- (void)saveVIPs:(id)ps;
 @end
 
 @implementation EDVIPManager
@@ -50,14 +50,14 @@
   v12 = __Block_byref_object_copy__53;
   v13 = __Block_byref_object_dispose__53;
   v14 = 0;
-  v3 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__EDVIPManager_allVIPEmailAddresses__block_invoke;
   v8[3] = &unk_1E8251C30;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_barrier_sync(v3, v8);
+  dispatch_barrier_sync(operationQueue, v8);
 
   v4 = v10[5];
   if (v4)
@@ -116,7 +116,7 @@ void __36__EDVIPManager_allVIPEmailAddresses__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __19__EDVIPManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_110 != -1)
   {
     dispatch_once(&log_onceToken_110, block);
@@ -135,36 +135,36 @@ void __19__EDVIPManager_log__block_invoke(uint64_t a1)
   log_log_110 = v1;
 }
 
-- (EDVIPManager)initWithDirectoryURL:(id)a3 accountsProvider:(id)a4 delegate:(id)a5
+- (EDVIPManager)initWithDirectoryURL:(id)l accountsProvider:(id)provider delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v11 = [MEMORY[0x1E696AFB8] additionalStoreWithIdentifier:@"com.apple.mail.vipsenders"];
-  v12 = [(EDVIPManager *)self initWithDirectoryURL:v8 keyValueStore:v11 accountsProvider:v9 contactStore:0 delegate:v10];
+  v12 = [(EDVIPManager *)self initWithDirectoryURL:lCopy keyValueStore:v11 accountsProvider:providerCopy contactStore:0 delegate:delegateCopy];
 
   return v12;
 }
 
-- (EDVIPManager)initWithDirectoryURL:(id)a3 keyValueStore:(id)a4 accountsProvider:(id)a5 contactStore:(id)a6 delegate:(id)a7
+- (EDVIPManager)initWithDirectoryURL:(id)l keyValueStore:(id)store accountsProvider:(id)provider contactStore:(id)contactStore delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  storeCopy = store;
+  providerCopy = provider;
+  contactStoreCopy = contactStore;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = EDVIPManager;
   v17 = [(EDVIPManager *)&v27 init];
   if (v17)
   {
-    v18 = [v12 URLByAppendingPathComponent:@"VIPs.plist" isDirectory:0];
+    v18 = [lCopy URLByAppendingPathComponent:@"VIPs.plist" isDirectory:0];
     plistURL = v17->_plistURL;
     v17->_plistURL = v18;
 
-    objc_storeStrong(&v17->_keyValueStore, a4);
-    objc_storeStrong(&v17->_contactStore, a6);
-    objc_storeStrong(&v17->_accountsProvider, a5);
+    objc_storeStrong(&v17->_keyValueStore, store);
+    objc_storeStrong(&v17->_contactStore, contactStore);
+    objc_storeStrong(&v17->_accountsProvider, provider);
     v20 = dispatch_queue_create("com.apple.email.edvipmanager", MEMORY[0x1E69E96A8]);
     operationQueue = v17->_operationQueue;
     v17->_operationQueue = v20;
@@ -175,11 +175,11 @@ void __19__EDVIPManager_log__block_invoke(uint64_t a1)
     v17->_notificationQueue = v23;
 
     v17->_initializeLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v17->_delegate, v16);
-    if (v14 && ![v14 hasActiveAccounts])
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    if (providerCopy && ![providerCopy hasActiveAccounts])
     {
-      v25 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v25 addObserver:v17 selector:sel__accountsChanged_ name:*MEMORY[0x1E699B070] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v17 selector:sel__accountsChanged_ name:*MEMORY[0x1E699B070] object:0];
     }
 
     else
@@ -246,17 +246,17 @@ void __35__EDVIPManager__initializeKVSStore__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_partiallyRedactedVIPDictionary:(id)a3
+- (id)_partiallyRedactedVIPDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__EDVIPManager__partiallyRedactedVIPDictionary___block_invoke;
   v7[3] = &unk_1E8255B38;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -318,8 +318,8 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = EDVIPManager;
@@ -343,23 +343,23 @@ LABEL_10:
 
 - (BOOL)hasVIPs
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __23__EDVIPManager_hasVIPs__block_invoke;
   v5[3] = &unk_1E8251C30;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(operationQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __23__EDVIPManager_hasVIPs__block_invoke(uint64_t a1)
@@ -369,25 +369,25 @@ uint64_t __23__EDVIPManager_hasVIPs__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)vipWithIdentifier:(id)a3
+- (id)vipWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__53;
   v16 = __Block_byref_object_dispose__53;
   v17 = 0;
-  v5 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__EDVIPManager_vipWithIdentifier___block_invoke;
   block[3] = &unk_1E8251C08;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(operationQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -411,14 +411,14 @@ void __34__EDVIPManager_vipWithIdentifier___block_invoke(void *a1)
   v12 = __Block_byref_object_copy__53;
   v13 = __Block_byref_object_dispose__53;
   v14 = 0;
-  v3 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __23__EDVIPManager_allVIPs__block_invoke;
   v8[3] = &unk_1E8251C30;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v3, v8);
+  dispatch_sync(operationQueue, v8);
 
   v4 = v10[5];
   if (v4)
@@ -447,9 +447,9 @@ void __23__EDVIPManager_allVIPs__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (void)getAllVIPsWithCompletion:(id)a3
+- (void)getAllVIPsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(EDVIPManager *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDVIPManager getAllVIPsWithCompletion:]", "EDVIPManager.m", 172, "0");
 }
@@ -461,11 +461,11 @@ void __37__EDVIPManager__allVIPEmailAddresses__block_invoke(uint64_t a1, uint64_
   [v3 unionSet:?];
 }
 
-- (BOOL)isVIPAddress:(id)a3
+- (BOOL)isVIPAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(EDVIPManager *)self allVIPEmailAddresses];
-  v6 = [v5 containsObject:v4];
+  addressCopy = address;
+  allVIPEmailAddresses = [(EDVIPManager *)self allVIPEmailAddresses];
+  v6 = [allVIPEmailAddresses containsObject:addressCopy];
 
   return v6;
 }
@@ -478,14 +478,14 @@ void __37__EDVIPManager__allVIPEmailAddresses__block_invoke(uint64_t a1, uint64_
   v10 = __Block_byref_object_copy__53;
   v11 = __Block_byref_object_dispose__53;
   v12 = 0;
-  v3 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__EDVIPManager_allVIPWaitForResult__block_invoke;
   v6[3] = &unk_1E8251C30;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(operationQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -503,35 +503,35 @@ void __35__EDVIPManager_allVIPWaitForResult__block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (void)saveVIPs:(id)a3
+- (void)saveVIPs:(id)ps
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(EDVIPManager *)self keyValueStore];
+  psCopy = ps;
+  keyValueStore = [(EDVIPManager *)self keyValueStore];
 
-  if (!v6)
+  if (!keyValueStore)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EDVIPManager.m" lineNumber:212 description:@"Modification of VIPs only supported when syncing is enabled"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDVIPManager.m" lineNumber:212 description:@"Modification of VIPs only supported when syncing is enabled"];
   }
 
   v7 = +[EDVIPManager log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v5 count];
+    v16 = [psCopy count];
     _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "save VIPs with count %lu", buf, 0xCu);
   }
 
-  v8 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __25__EDVIPManager_saveVIPs___block_invoke;
   v12[3] = &unk_1E8250128;
-  v13 = v5;
-  v14 = self;
-  v9 = v5;
-  dispatch_barrier_async(v8, v12);
+  v13 = psCopy;
+  selfCopy = self;
+  v9 = psCopy;
+  dispatch_barrier_async(operationQueue, v12);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -764,25 +764,25 @@ void __25__EDVIPManager_saveVIPs___block_invoke_60(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isVIPForContact:(id)a3 orAddresses:(id)a4
+- (BOOL)_isVIPForContact:(id)contact orAddresses:(id)addresses
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDVIPManager *)self _allVIPEmailAddresses];
-  if ([v7 intersectsSet:v8])
+  contactCopy = contact;
+  addressesCopy = addresses;
+  _allVIPEmailAddresses = [(EDVIPManager *)self _allVIPEmailAddresses];
+  if ([addressesCopy intersectsSet:_allVIPEmailAddresses])
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [v6 emailAddresses];
-    v11 = [v10 valueForKey:@"value"];
+    emailAddresses = [contactCopy emailAddresses];
+    v11 = [emailAddresses valueForKey:@"value"];
 
     if ([v11 count])
     {
       v12 = [objc_alloc(MEMORY[0x1E699AFD8]) initWithArray:v11];
-      v9 = [v12 intersectsSet:v8];
+      v9 = [v12 intersectsSet:_allVIPEmailAddresses];
     }
 
     else
@@ -794,48 +794,48 @@ void __25__EDVIPManager_saveVIPs___block_invoke_60(uint64_t a1)
   return v9;
 }
 
-- (void)removeVIPsWithIdentifiers:(id)a3
+- (void)removeVIPsWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v6 = [(EDVIPManager *)self keyValueStore];
+  identifiersCopy = identifiers;
+  keyValueStore = [(EDVIPManager *)self keyValueStore];
 
-  if (!v6)
+  if (!keyValueStore)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EDVIPManager.m" lineNumber:305 description:@"Modification of VIPs only supported when syncing is enabled"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDVIPManager.m" lineNumber:305 description:@"Modification of VIPs only supported when syncing is enabled"];
   }
 
-  v7 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__EDVIPManager_removeVIPsWithIdentifiers___block_invoke;
   v10[3] = &unk_1E8250128;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
-  dispatch_barrier_async(v7, v10);
+  v11 = identifiersCopy;
+  v8 = identifiersCopy;
+  dispatch_barrier_async(operationQueue, v10);
 }
 
-- (void)removeVIPsWithEmailAddresses:(id)a3
+- (void)removeVIPsWithEmailAddresses:(id)addresses
 {
-  v5 = a3;
-  v6 = [(EDVIPManager *)self keyValueStore];
+  addressesCopy = addresses;
+  keyValueStore = [(EDVIPManager *)self keyValueStore];
 
-  if (!v6)
+  if (!keyValueStore)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"EDVIPManager.m" lineNumber:312 description:@"Modification of VIPs only supported when syncing is enabled"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDVIPManager.m" lineNumber:312 description:@"Modification of VIPs only supported when syncing is enabled"];
   }
 
-  v7 = [(EDVIPManager *)self operationQueue];
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__EDVIPManager_removeVIPsWithEmailAddresses___block_invoke;
   v10[3] = &unk_1E8250128;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
-  dispatch_barrier_async(v7, v10);
+  v11 = addressesCopy;
+  v8 = addressesCopy;
+  dispatch_barrier_async(operationQueue, v10);
 }
 
 void __45__EDVIPManager_removeVIPsWithEmailAddresses___block_invoke(uint64_t a1)
@@ -858,24 +858,24 @@ uint64_t __45__EDVIPManager_removeVIPsWithEmailAddresses___block_invoke_2(uint64
   return v5;
 }
 
-- (void)_removeVIPsWithIdentifiers:(id)a3
+- (void)_removeVIPsWithIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[EDVIPManager log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = identifiersCopy;
     _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "remove VIPs with identifiers %@", buf, 0xCu);
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = identifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -909,7 +909,7 @@ uint64_t __45__EDVIPManager_removeVIPsWithEmailAddresses___block_invoke_2(uint64
   self->_cachedEmailAddresses = 0;
 
   [(EDVIPManager *)self _saveVIPs];
-  v14 = [(EDVIPManager *)self notificationQueue];
+  notificationQueue = [(EDVIPManager *)self notificationQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __43__EDVIPManager__removeVIPsWithIdentifiers___block_invoke;
@@ -917,7 +917,7 @@ uint64_t __45__EDVIPManager_removeVIPsWithEmailAddresses___block_invoke_2(uint64
   v17[4] = self;
   v18 = v6;
   v15 = v6;
-  dispatch_async(v14, v17);
+  dispatch_async(notificationQueue, v17);
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -942,13 +942,13 @@ void __43__EDVIPManager__removeVIPsWithIdentifiers___block_invoke(uint64_t a1)
   vipsByIdentifier = self->_vipsByIdentifier;
   self->_vipsByIdentifier = v3;
 
-  v5 = [(EDVIPManager *)self _vipsDictionary];
+  _vipsDictionary = [(EDVIPManager *)self _vipsDictionary];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __25__EDVIPManager__loadVIPs__block_invoke;
   v6[3] = &unk_1E8255B38;
   v6[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v6];
+  [_vipsDictionary enumerateKeysAndObjectsUsingBlock:v6];
 }
 
 void __25__EDVIPManager__loadVIPs__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -967,8 +967,8 @@ void __25__EDVIPManager__loadVIPs__block_invoke(uint64_t a1, void *a2, void *a3)
 - (id)_vipsDictionary
 {
   v3 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v4 = [(EDVIPManager *)self plistURL];
-  v5 = [v3 initWithContentsOfURL:v4];
+  plistURL = [(EDVIPManager *)self plistURL];
+  v5 = [v3 initWithContentsOfURL:plistURL];
 
   if (v5)
   {
@@ -993,7 +993,7 @@ void __25__EDVIPManager__loadVIPs__block_invoke(uint64_t a1, void *a2, void *a3)
 - (void)_saveVIPsLocally
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1C61EF000, log, OS_LOG_TYPE_ERROR, "Failed to write serialized entries: %{public}@", buf, 0xCu);
 }
 
@@ -1018,8 +1018,8 @@ void __25__EDVIPManager__loadVIPs__block_invoke(uint64_t a1, void *a2, void *a3)
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = [v5 count];
-      v10 = [v7 ef_publicDescription];
-      [(EDVIPManager *)v10 _serializedData:buf];
+      ef_publicDescription = [v7 ef_publicDescription];
+      [(EDVIPManager *)ef_publicDescription _serializedData:buf];
     }
   }
 
@@ -1125,18 +1125,18 @@ void __37__EDVIPManager__updateCloudWithLocal__block_invoke(uint64_t a1, uint64_
 LABEL_13:
 }
 
-- (void)_keyValueStoreChanged:(id)a3
+- (void)_keyValueStoreChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(EDVIPManager *)self operationQueue];
+  changedCopy = changed;
+  operationQueue = [(EDVIPManager *)self operationQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__EDVIPManager__keyValueStoreChanged___block_invoke;
   v7[3] = &unk_1E8250128;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_barrier_async(operationQueue, v7);
 }
 
 void __38__EDVIPManager__keyValueStoreChanged___block_invoke(uint64_t a1)
@@ -1197,12 +1197,12 @@ LABEL_13:
 
 - (void)_synchronizeKVStore
 {
-  v2 = [(EDVIPManager *)self keyValueStore];
-  v3 = [v2 synchronize];
+  keyValueStore = [(EDVIPManager *)self keyValueStore];
+  synchronize = [keyValueStore synchronize];
 
   v4 = +[EDVIPManager log];
   v5 = v4;
-  if (v3)
+  if (synchronize)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -1217,11 +1217,11 @@ LABEL_13:
   }
 }
 
-- (void)_updateLocalWithCloud:(id)a3 refresh:(BOOL)a4
+- (void)_updateLocalWithCloud:(id)cloud refresh:(BOOL)refresh
 {
-  v4 = a4;
+  refreshCopy = refresh;
   v91 = *MEMORY[0x1E69E9840];
-  v64 = a3;
+  cloudCopy = cloud;
   v6 = +[EDVIPManager log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1231,7 +1231,7 @@ LABEL_13:
     _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "local store has %lu VIPs before updating from cloud", buf, 0xCu);
   }
 
-  v71 = self;
+  selfCopy = self;
 
   v8 = +[EDVIPManager log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1240,11 +1240,11 @@ LABEL_13:
   }
 
   v65 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v4)
+  if (refreshCopy)
   {
     v15 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v16 = [(NSMutableDictionary *)self->_vipsByIdentifier allKeys];
-    v67 = [v15 initWithArray:v16];
+    allKeys = [(NSMutableDictionary *)self->_vipsByIdentifier allKeys];
+    v67 = [v15 initWithArray:allKeys];
   }
 
   else
@@ -1252,12 +1252,12 @@ LABEL_13:
     v67 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
 
-  v66 = [(EDVIPManager *)self keyValueStore];
+  keyValueStore = [(EDVIPManager *)self keyValueStore];
   v85 = 0u;
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = v64;
+  obj = cloudCopy;
   v17 = [obj countByEnumeratingWithState:&v83 objects:v88 count:16];
   if (v17)
   {
@@ -1276,7 +1276,7 @@ LABEL_13:
         if ([v19 hasPrefix:@"VIP_"])
         {
           v20 = [v19 stringByReplacingOccurrencesOfString:@"VIP_" withString:&stru_1F45B4608 options:8 range:{0, objc_msgSend(v19, "length")}];
-          v21 = [(EDVIPManager *)self _validatedCloudVIPFromStore:v66 withCloudKey:v19];
+          v21 = [(EDVIPManager *)self _validatedCloudVIPFromStore:keyValueStore withCloudKey:v19];
           v22 = v21;
           if (v21)
           {
@@ -1285,13 +1285,13 @@ LABEL_13:
             v25 = [v22 objectForKeyedSubscript:@"a"];
             v26 = [v24 initWithArray:v25];
 
-            v27 = [(NSMutableDictionary *)v71->_vipsByIdentifier objectForKeyedSubscript:v20];
+            v27 = [(NSMutableDictionary *)selfCopy->_vipsByIdentifier objectForKeyedSubscript:v20];
             v28 = v27;
             if (v27)
             {
-              v29 = [v27 name];
-              v30 = v29;
-              if (v23 && ([v29 isEqualToString:v23] & 1) == 0)
+              name = [v27 name];
+              v30 = name;
+              if (v23 && ([name isEqualToString:v23] & 1) == 0)
               {
                 v36 = v23;
 
@@ -1304,13 +1304,13 @@ LABEL_13:
                 v31 = 0;
               }
 
-              v32 = [v28 emailAddresses];
-              if ([v26 count] && (objc_msgSend(v26, "isSubsetOfSet:", v32) & 1) == 0)
+              emailAddresses = [v28 emailAddresses];
+              if ([v26 count] && (objc_msgSend(v26, "isSubsetOfSet:", emailAddresses) & 1) == 0)
               {
-                v37 = [v32 mutableCopy];
+                v37 = [emailAddresses mutableCopy];
                 [v37 unionSet:v26];
 
-                v32 = v37;
+                emailAddresses = v37;
               }
 
               else if (!v31)
@@ -1319,15 +1319,15 @@ LABEL_13:
                 goto LABEL_33;
               }
 
-              v35 = [objc_alloc(MEMORY[0x1E699AF30]) initWithIdentifier:v20 name:v30 emailAddresses:v32];
+              v35 = [objc_alloc(MEMORY[0x1E699AF30]) initWithIdentifier:v20 name:v30 emailAddresses:emailAddresses];
             }
 
             else
             {
               v30 = [v26 mutableCopy];
-              v32 = [(EDVIPManager *)v71 _contactForName:v23 emailAddresses:v26];
-              v33 = [v32 emailAddresses];
-              v34 = [v33 valueForKey:@"value"];
+              emailAddresses = [(EDVIPManager *)selfCopy _contactForName:v23 emailAddresses:v26];
+              v32EmailAddresses = [emailAddresses emailAddresses];
+              v34 = [v32EmailAddresses valueForKey:@"value"];
 
               if ([v34 count])
               {
@@ -1360,7 +1360,7 @@ LABEL_33:
             [v67 addObject:v20];
           }
 
-          self = v71;
+          self = selfCopy;
           continue;
         }
       }
@@ -1371,7 +1371,7 @@ LABEL_33:
     while (v17);
   }
 
-  v38 = v71;
+  v38 = selfCopy;
   if ([v65 count] || objc_msgSend(v67, "count"))
   {
     v39 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -1381,13 +1381,13 @@ LABEL_33:
     v80[1] = 3221225472;
     v80[2] = __46__EDVIPManager__updateLocalWithCloud_refresh___block_invoke;
     v80[3] = &unk_1E82590D0;
-    v80[4] = v71;
+    v80[4] = selfCopy;
     v42 = v39;
     v81 = v42;
     v43 = v41;
     v82 = v43;
     [v65 enumerateKeysAndObjectsUsingBlock:v80];
-    [(EAEmailAddressSet *)v71->_cachedEmailAddresses unionSet:v43];
+    [(EAEmailAddressSet *)selfCopy->_cachedEmailAddresses unionSet:v43];
     if ([v67 count])
     {
       v78 = 0u;
@@ -1409,13 +1409,13 @@ LABEL_33:
             }
 
             v48 = *(*(&v76 + 1) + 8 * j);
-            v49 = [(NSMutableDictionary *)v71->_vipsByIdentifier objectForKeyedSubscript:v48];
+            v49 = [(NSMutableDictionary *)selfCopy->_vipsByIdentifier objectForKeyedSubscript:v48];
             if (v49)
             {
               [v40 addObject:v49];
             }
 
-            [(NSMutableDictionary *)v71->_vipsByIdentifier removeObjectForKey:v48];
+            [(NSMutableDictionary *)selfCopy->_vipsByIdentifier removeObjectForKey:v48];
           }
 
           v45 = [v44 countByEnumeratingWithState:&v76 objects:v87 count:16];
@@ -1424,24 +1424,24 @@ LABEL_33:
         while (v45);
       }
 
-      cachedEmailAddresses = v71->_cachedEmailAddresses;
-      v71->_cachedEmailAddresses = 0;
+      cachedEmailAddresses = selfCopy->_cachedEmailAddresses;
+      selfCopy->_cachedEmailAddresses = 0;
     }
 
-    [(EDVIPManager *)v71 _saveVIPsLocally];
-    v51 = [(EDVIPManager *)v71 notificationQueue];
+    [(EDVIPManager *)selfCopy _saveVIPsLocally];
+    notificationQueue = [(EDVIPManager *)selfCopy notificationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __46__EDVIPManager__updateLocalWithCloud_refresh___block_invoke_2;
     block[3] = &unk_1E8250720;
     v73 = v42;
     v74 = v40;
-    v75 = v71;
+    v75 = selfCopy;
     v52 = v40;
     v53 = v42;
-    dispatch_async(v51, block);
+    dispatch_async(notificationQueue, block);
 
-    v38 = v71;
+    v38 = selfCopy;
   }
 
   v54 = +[EDVIPManager log];
@@ -1456,7 +1456,7 @@ LABEL_33:
   v56 = +[EDVIPManager log];
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
   {
-    [(EDVIPManager *)v71 _updateLocalWithCloud:v56 refresh:v57, v58, v59, v60, v61, v62];
+    [(EDVIPManager *)selfCopy _updateLocalWithCloud:v56 refresh:v57, v58, v59, v60, v61, v62];
   }
 
   v63 = *MEMORY[0x1E69E9840];
@@ -1494,7 +1494,7 @@ void __46__EDVIPManager__updateLocalWithCloud_refresh___block_invoke_2(void *a1)
   v9 = *MEMORY[0x1E69E9840];
   v3 = *(a2 + 8);
   v5 = 138412546;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2112;
   v8 = v3;
   _os_log_debug_impl(&dword_1C61EF000, log, OS_LOG_TYPE_DEBUG, "merge VIPs from cloud: %@ and local: %@", &v5, 0x16u);
@@ -1870,12 +1870,12 @@ LABEL_74:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_cloudKeyForIdentifier:(id)a3
+- (id)_cloudKeyForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = [@"VIP_" stringByAppendingString:v3];
+    v4 = [@"VIP_" stringByAppendingString:identifierCopy];
   }
 
   else
@@ -1886,9 +1886,9 @@ LABEL_74:
   return v4;
 }
 
-- (id)_validatedCloudVIPFromStore:(id)a3 withCloudKey:(id)a4
+- (id)_validatedCloudVIPFromStore:(id)store withCloudKey:(id)key
 {
-  v4 = [a3 dictionaryForKey:a4];
+  v4 = [store dictionaryForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1954,29 +1954,29 @@ BOOL __57__EDVIPManager__validatedCloudVIPFromStore_withCloudKey___block_invoke(
   return (isKindOfClass & 1) == 0;
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
   if ([(EDAccountsProvider *)self->_accountsProvider hasActiveAccounts])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E699B070] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E699B070] object:0];
 
     [(EDVIPManager *)self _initializeKVSStore];
   }
 }
 
-- (id)_contactForName:(id)a3 emailAddresses:(id)a4
+- (id)_contactForName:(id)name emailAddresses:(id)addresses
 {
   v54 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v34 = a4;
-  v6 = [(EDVIPManager *)self contactStore];
+  nameCopy = name;
+  addressesCopy = addresses;
+  contactStore = [(EDVIPManager *)self contactStore];
   v7 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v34;
+  obj = addressesCopy;
   v8 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v8)
   {
@@ -1991,8 +1991,8 @@ BOOL __57__EDVIPManager__validatedCloudVIPFromStore_withCloudKey___block_invoke(
         }
 
         v11 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:*(*(&v48 + 1) + 8 * i)];
-        v12 = [objc_opt_class() _contactDescriptors];
-        v13 = [v6 unifiedContactsMatchingPredicate:v11 keysToFetch:v12 error:0];
+        _contactDescriptors = [objc_opt_class() _contactDescriptors];
+        v13 = [contactStore unifiedContactsMatchingPredicate:v11 keysToFetch:_contactDescriptors error:0];
         [v7 addObjectsFromArray:v13];
       }
 
@@ -2005,35 +2005,35 @@ BOOL __57__EDVIPManager__validatedCloudVIPFromStore_withCloudKey___block_invoke(
   v14 = [v7 count];
   if (v14 == 1)
   {
-    v18 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     goto LABEL_46;
   }
 
   if (!v14)
   {
-    v15 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:v36];
-    v16 = [objc_opt_class() _contactDescriptors];
-    v17 = [v6 unifiedContactsMatchingPredicate:v15 keysToFetch:v16 error:0];
+    v15 = [MEMORY[0x1E695CD58] predicateForContactsMatchingName:nameCopy];
+    _contactDescriptors2 = [objc_opt_class() _contactDescriptors];
+    v17 = [contactStore unifiedContactsMatchingPredicate:v15 keysToFetch:_contactDescriptors2 error:0];
     [v7 addObjectsFromArray:v17];
 
     if ([v7 count])
     {
-      v18 = [v7 firstObject];
+      firstObject = [v7 firstObject];
     }
 
     else
     {
-      v18 = 0;
+      firstObject = 0;
     }
 
     goto LABEL_45;
   }
 
-  v15 = [MEMORY[0x1E6996790] componentsFromString:v36];
+  v15 = [MEMORY[0x1E6996790] componentsFromString:nameCopy];
   v39 = v15;
-  v40 = [v15 givenName];
-  v19 = [v15 familyName];
-  if (v40 | v19)
+  givenName = [v15 givenName];
+  familyName = [v15 familyName];
+  if (givenName | familyName)
   {
     v46 = 0u;
     v47 = 0u;
@@ -2057,11 +2057,11 @@ LABEL_16:
         }
 
         v22 = *(*(&v44 + 1) + 8 * v21);
-        v23 = [0 givenName];
-        v24 = [0 familyName];
-        v25 = [v23 isEqualToString:v40];
-        v26 = v19;
-        v27 = [v24 isEqualToString:v19];
+        givenName2 = [0 givenName];
+        familyName2 = [0 familyName];
+        v25 = [givenName2 isEqualToString:givenName];
+        v26 = familyName;
+        v27 = [familyName2 isEqualToString:familyName];
         if (v25 & v27)
         {
           break;
@@ -2098,7 +2098,7 @@ LABEL_16:
         }
 
         v15 = v39;
-        v19 = v26;
+        familyName = v26;
 
         if (v37 == ++v21)
         {
@@ -2112,13 +2112,13 @@ LABEL_16:
         }
       }
 
-      v18 = v22;
+      firstObject = v22;
 
       v15 = v39;
-      v19 = v26;
+      familyName = v26;
 
       v30 = v41;
-      if (v18)
+      if (firstObject)
       {
         goto LABEL_42;
       }
@@ -2144,7 +2144,7 @@ LABEL_37:
     {
       v31 = 0;
 LABEL_41:
-      v18 = v30;
+      firstObject = v30;
       v30 = v31;
 LABEL_42:
 
@@ -2152,7 +2152,7 @@ LABEL_42:
     }
   }
 
-  v18 = [(EDVIPManager *)self _contactFromContacts:v7 matchingMostAddresses:obj];
+  firstObject = [(EDVIPManager *)self _contactFromContacts:v7 matchingMostAddresses:obj];
 LABEL_44:
 
 LABEL_45:
@@ -2160,31 +2160,31 @@ LABEL_46:
 
   v32 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return firstObject;
 }
 
-- (id)_contactFromContacts:(id)a3 matchingMostAddresses:(id)a4
+- (id)_contactFromContacts:(id)contacts matchingMostAddresses:(id)addresses
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v21 = [v6 count];
+  contactsCopy = contacts;
+  addressesCopy = addresses;
+  v21 = [addressesCopy count];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v5;
+  obj = contactsCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v7)
   {
 
 LABEL_16:
-    v9 = [obj firstObject];
+    firstObject = [obj firstObject];
     goto LABEL_17;
   }
 
   v8 = 0;
-  v9 = 0;
+  firstObject = 0;
   v10 = *v24;
   while (2)
   {
@@ -2197,11 +2197,11 @@ LABEL_16:
 
       v12 = *(*(&v23 + 1) + 8 * i);
       v13 = objc_alloc(MEMORY[0x1E699AFD8]);
-      v14 = [v12 emailAddresses];
-      v15 = [v14 valueForKey:@"value"];
+      emailAddresses = [v12 emailAddresses];
+      v15 = [emailAddresses valueForKey:@"value"];
       v16 = [v13 initWithArray:v15];
 
-      [v16 intersectSet:v6];
+      [v16 intersectSet:addressesCopy];
       v17 = [v16 count];
       if (v17 > v8)
       {
@@ -2210,12 +2210,12 @@ LABEL_16:
         if (v17 == v21)
         {
 
-          v9 = v18;
+          firstObject = v18;
           goto LABEL_13;
         }
 
         v8 = v17;
-        v9 = v18;
+        firstObject = v18;
       }
     }
 
@@ -2230,7 +2230,7 @@ LABEL_16:
 
 LABEL_13:
 
-  if (!v9)
+  if (!firstObject)
   {
     goto LABEL_16;
   }
@@ -2239,7 +2239,7 @@ LABEL_17:
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return firstObject;
 }
 
 + (id)_contactDescriptors
@@ -2271,13 +2271,13 @@ void __35__EDVIPManager__contactDescriptors__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)gatherStatisticsWithVIPCount:(unint64_t)a3
+- (void)gatherStatisticsWithVIPCount:(unint64_t)count
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__EDVIPManager_gatherStatisticsWithVIPCount___block_invoke;
   aBlock[3] = &__block_descriptor_40_e8_v12__0B8l;
-  aBlock[4] = a3;
+  aBlock[4] = count;
   v4 = _Block_copy(aBlock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -2354,7 +2354,7 @@ void __35__EDVIPManager__initializeKVSStore__block_invoke_cold_1(void *a1, uint8
   *buf = 134218242;
   *(buf + 4) = a3;
   *(buf + 6) = 2114;
-  *(buf + 14) = a1;
+  *(buf + 14) = self;
   _os_log_error_impl(&dword_1C61EF000, log, OS_LOG_TYPE_ERROR, "Failed to serialize %lu entries: %{public}@", buf, 0x16u);
 }
 

@@ -1,8 +1,8 @@
 @interface CHInteraction
 - (CHInteraction)init;
-- (void)deleteInteractionWithCall:(id)a3;
-- (void)deleteInteractionWithCalls:(id)a3;
-- (void)donateCallHistoryInteractionWithCall:(id)a3;
+- (void)deleteInteractionWithCall:(id)call;
+- (void)deleteInteractionWithCalls:(id)calls;
+- (void)donateCallHistoryInteractionWithCall:(id)call;
 @end
 
 @implementation CHInteraction
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (void)donateCallHistoryInteractionWithCall:(id)a3
+- (void)donateCallHistoryInteractionWithCall:(id)call
 {
-  v65 = a3;
+  callCopy = call;
   context = objc_autoreleasePoolPush();
   v3 = +[CHLogServer sharedInstance];
   v4 = [v3 logHandleForDomain:"intent"];
@@ -32,14 +32,14 @@
   v5 = v4;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v65 uniqueId];
+    uniqueId = [callCopy uniqueId];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = uniqueId;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Adding interaction for call %{public}@", &buf, 0xCu);
   }
 
-  v7 = [v65 serviceProvider];
-  v62 = sub_1000264B0(v7);
+  serviceProvider = [callCopy serviceProvider];
+  v62 = sub_1000264B0(serviceProvider);
 
   if (v62)
   {
@@ -61,7 +61,7 @@
     v91[3] = v10;
     v57 = [NSArray arrayWithObjects:v91 count:4];
 
-    v90 = v65;
+    v90 = callCopy;
     v11 = [NSArray arrayWithObjects:&v90 count:1];
     v79 = 0;
     v64 = [v58 contactsByHandleForCalls:v11 keyDescriptors:v57 error:&v79];
@@ -70,12 +70,12 @@
     if (v64)
     {
       v63 = objc_alloc_init(NSMutableArray);
-      v12 = [v65 remoteParticipantHandles];
+      remoteParticipantHandles = [callCopy remoteParticipantHandles];
       v77 = 0u;
       v78 = 0u;
       v76 = 0u;
       v75 = 0u;
-      v13 = [v12 countByEnumeratingWithState:&v75 objects:v89 count:16];
+      v13 = [remoteParticipantHandles countByEnumeratingWithState:&v75 objects:v89 count:16];
       if (v13)
       {
         v14 = *v76;
@@ -85,21 +85,21 @@
           {
             if (*v76 != v14)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(remoteParticipantHandles);
             }
 
             v16 = *(*(&v75 + 1) + 8 * i);
             if ([v16 type] - 4 >= 0xFFFFFFFFFFFFFFFELL)
             {
               v17 = [v64 objectForKeyedSubscript:v16];
-              v18 = [v17 firstObject];
+              firstObject = [v17 firstObject];
 
-              v19 = [v65 isoCountryCode];
-              v20 = sub_10002608C(v16, v18, v19);
+              isoCountryCode = [callCopy isoCountryCode];
+              v20 = sub_10002608C(v16, firstObject, isoCountryCode);
 
-              if (v18)
+              if (firstObject)
               {
-                v21 = [NSPersonNameComponents componentsForContact:v18];
+                v21 = [NSPersonNameComponents componentsForContact:firstObject];
               }
 
               else
@@ -108,15 +108,15 @@
               }
 
               v22 = [INPerson alloc];
-              v23 = [v18 identifier];
+              identifier = [firstObject identifier];
               LOBYTE(v55) = 0;
-              v24 = [v22 initWithPersonHandle:v20 nameComponents:v21 displayName:0 image:0 contactIdentifier:v23 customIdentifier:0 isMe:v55];
+              v24 = [v22 initWithPersonHandle:v20 nameComponents:v21 displayName:0 image:0 contactIdentifier:identifier customIdentifier:0 isMe:v55];
 
               [v63 addObject:v24];
             }
           }
 
-          v13 = [v12 countByEnumeratingWithState:&v75 objects:v89 count:16];
+          v13 = [remoteParticipantHandles countByEnumeratingWithState:&v75 objects:v89 count:16];
         }
 
         while (v13);
@@ -132,49 +132,49 @@
       }
 
       v28 = +[CHLogServer sharedInstance];
-      v12 = [v28 logHandleForDomain:"intent"];
+      remoteParticipantHandles = [v28 logHandleForDomain:"intent"];
 
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(remoteParticipantHandles, OS_LOG_TYPE_ERROR))
       {
-        sub_100034974(v56, v12);
+        sub_100034974(v56, remoteParticipantHandles);
       }
 
       v63 = 0;
     }
 
 LABEL_27:
-    v29 = sub_10002661C([v65 ttyType]);
-    v30 = sub_100026638([v65 mediaType]);
+    v29 = sub_10002661C([callCopy ttyType]);
+    v30 = sub_100026638([callCopy mediaType]);
     v31 = objc_alloc_init(INStartCallIntentDonationMetadata);
-    v32 = [v65 timeToEstablish];
-    [v32 doubleValue];
+    timeToEstablish = [callCopy timeToEstablish];
+    [timeToEstablish doubleValue];
     [v31 setTimeToEstablish:?];
 
-    [v65 duration];
+    [callCopy duration];
     [v31 setCallDuration:?];
-    v33 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v65 callStatus]);
+    v33 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [callCopy callStatus]);
     [v31 setRecentCallStatus:v33];
 
-    v34 = [v65 disconnectedCause];
-    [v31 setDisconnectedReason:v34];
+    disconnectedCause = [callCopy disconnectedCause];
+    [v31 setDisconnectedReason:disconnectedCause];
 
     v35 = [[INStartCallIntent alloc] initWithAudioRoute:0 destinationType:1 preferredCallProvider:v62 contacts:v63 recordTypeForRedialing:0 ttyType:v29 callCapability:v30];
     [v35 _setLaunchId:@"com.apple.InCallService"];
     [v35 _setExtensionBundleId:@"com.apple.TelephonyUtilities.PhoneIntentHandler"];
-    v36 = [v65 notificationThreadIdentifier];
-    [v35 setNotificationThreadIdentifier:v36];
+    notificationThreadIdentifier = [callCopy notificationThreadIdentifier];
+    [v35 setNotificationThreadIdentifier:notificationThreadIdentifier];
 
     [v35 setDonationMetadata:v31];
     v37 = [[INInteraction alloc] initWithIntent:v35 response:0];
-    v38 = [v65 interactionDateInterval];
-    [v37 setDateInterval:v38];
+    interactionDateInterval = [callCopy interactionDateInterval];
+    [v37 setDateInterval:interactionDateInterval];
 
-    [v37 setDirection:{sub_100026510(objc_msgSend(v65, "callStatus"))}];
-    v39 = [v65 uniqueId];
-    [v37 setIdentifier:v39];
+    [v37 setDirection:{sub_100026510(objc_msgSend(callCopy, "callStatus"))}];
+    uniqueId2 = [callCopy uniqueId];
+    [v37 setIdentifier:uniqueId2];
 
     [v37 setIntentHandlingStatus:3];
-    if ([v65 callStatus] == 8)
+    if ([callCopy callStatus] == 8)
     {
       location = 0;
       p_location = &location;
@@ -194,8 +194,8 @@ LABEL_27:
 
       v41 = v40;
       _Block_object_dispose(&location, 8);
-      v42 = [v40 appIntentsStream];
-      v43 = [v42 name];
+      appIntentsStream = [v40 appIntentsStream];
+      name = [appIntentsStream name];
 
       location = 0;
       p_location = &location;
@@ -225,7 +225,7 @@ LABEL_27:
 
       v47 = *v44;
       v48 = v47;
-      if (v43 && v47)
+      if (name && v47)
       {
         v49 = +[NSDistributedNotificationCenter defaultCenter];
         objc_initWeak(&location, v49);
@@ -241,11 +241,11 @@ LABEL_27:
         v69[1] = 3221225472;
         v69[2] = sub_100025784;
         v69[3] = &unk_100051970;
-        v70 = v65;
+        v70 = callCopy;
         objc_copyWeak(&v74, &location);
         p_buf = &buf;
         v71 = v48;
-        v72 = v43;
+        v72 = name;
         v51 = [v50 addObserverForName:v71 object:v72 queue:0 usingBlock:v69];
         v52 = *(*(&buf + 1) + 40);
         *(*(&buf + 1) + 40) = v51;
@@ -257,7 +257,7 @@ LABEL_27:
       }
     }
 
-    [v65 uniqueId];
+    [callCopy uniqueId];
     v66[0] = _NSConcreteStackBlock;
     v66[1] = 3221225472;
     v66[2] = sub_1000258F4;
@@ -286,27 +286,27 @@ LABEL_38:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)deleteInteractionWithCall:(id)a3
+- (void)deleteInteractionWithCall:(id)call
 {
-  if (a3)
+  if (call)
   {
-    v6 = a3;
-    v4 = a3;
-    v5 = [NSArray arrayWithObjects:&v6 count:1];
+    callCopy = call;
+    callCopy2 = call;
+    v5 = [NSArray arrayWithObjects:&callCopy count:1];
 
-    [(CHInteraction *)self deleteInteractionWithCalls:v5, v6];
+    [(CHInteraction *)self deleteInteractionWithCalls:v5, callCopy];
   }
 }
 
-- (void)deleteInteractionWithCalls:(id)a3
+- (void)deleteInteractionWithCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   v5 = @"com.apple.InCallService";
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100025D28;
   v15[3] = &unk_1000510F8;
-  v6 = v4;
+  v6 = callsCopy;
   v16 = v6;
   v7 = objc_retainBlock(v15);
   if ([v6 count])
@@ -325,8 +325,8 @@ LABEL_38:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Removing %lu donated interactions for bundle identifier %@", buf, 0x16u);
     }
 
-    v12 = [(CHInteraction *)self searchableIndex];
-    [v12 deleteInteractionsWithIdentifiers:v6 bundleID:v5 protectionClass:0 completionHandler:v7];
+    searchableIndex = [(CHInteraction *)self searchableIndex];
+    [searchableIndex deleteInteractionsWithIdentifiers:v6 bundleID:v5 protectionClass:0 completionHandler:v7];
   }
 
   else
@@ -346,8 +346,8 @@ LABEL_38:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Removing all donated interactions for bundle identifier %@", buf, 0xCu);
     }
 
-    v12 = [(CHInteraction *)self searchableIndex];
-    [v12 deleteAllInteractionsWithBundleID:v5 protectionClass:0 completionHandler:v7];
+    searchableIndex = [(CHInteraction *)self searchableIndex];
+    [searchableIndex deleteAllInteractionsWithBundleID:v5 protectionClass:0 completionHandler:v7];
   }
 
 LABEL_7:

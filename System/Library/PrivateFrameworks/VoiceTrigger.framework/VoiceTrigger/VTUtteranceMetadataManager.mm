@@ -1,31 +1,31 @@
 @interface VTUtteranceMetadataManager
-+ (BOOL)_audioDirectoryNeedsUpgrade:(id)a3;
-+ (BOOL)isUtteranceImplicitlyTrained:(id)a3;
-+ (id)_getBaseMetaDictionaryForUtterancePath:(id)a3;
-+ (id)recordedTimeStampOfFile:(id)a3;
-+ (void)_saveMetaVersionFileAtPath:(id)a3;
-+ (void)_upgradeLocaleDirectoryIfNecessary:(id)a3;
-+ (void)_upgradeUtteranceMeta:(id)a3;
-+ (void)_writeMetaDict:(id)a3 forUtterancePath:(id)a4;
-+ (void)saveMetaVersionFileAtSATAudioDirectory:(id)a3;
-+ (void)saveUtteranceMetadataForUtterance:(id)a3 isExplicitEnrollment:(BOOL)a4 isHandheldEnrollment:(BOOL)a5 withBiometricResult:(unint64_t)a6;
-+ (void)upgradeMetaFilesIfNecessaaryAtSATRoot:(id)a3;
++ (BOOL)_audioDirectoryNeedsUpgrade:(id)upgrade;
++ (BOOL)isUtteranceImplicitlyTrained:(id)trained;
++ (id)_getBaseMetaDictionaryForUtterancePath:(id)path;
++ (id)recordedTimeStampOfFile:(id)file;
++ (void)_saveMetaVersionFileAtPath:(id)path;
++ (void)_upgradeLocaleDirectoryIfNecessary:(id)necessary;
++ (void)_upgradeUtteranceMeta:(id)meta;
++ (void)_writeMetaDict:(id)dict forUtterancePath:(id)path;
++ (void)saveMetaVersionFileAtSATAudioDirectory:(id)directory;
++ (void)saveUtteranceMetadataForUtterance:(id)utterance isExplicitEnrollment:(BOOL)enrollment isHandheldEnrollment:(BOOL)handheldEnrollment withBiometricResult:(unint64_t)result;
++ (void)upgradeMetaFilesIfNecessaaryAtSATRoot:(id)root;
 @end
 
 @implementation VTUtteranceMetadataManager
 
-+ (id)recordedTimeStampOfFile:(id)a3
++ (id)recordedTimeStampOfFile:(id)file
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 path];
-  v5 = [v4 stringByDeletingPathExtension];
-  v6 = [v5 stringByAppendingPathExtension:@"json"];
+  fileCopy = file;
+  path = [fileCopy path];
+  stringByDeletingPathExtension = [path stringByDeletingPathExtension];
+  v6 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"json"];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(v5) = [v7 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(stringByDeletingPathExtension) = [defaultManager fileExistsAtPath:v6];
 
-  if (v5)
+  if (stringByDeletingPathExtension)
   {
     v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
     if (v8)
@@ -39,7 +39,7 @@
         if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v21 = v3;
+          v21 = fileCopy;
           v22 = 2114;
           v23 = v10;
           _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_DEFAULT, "Json-Err reading metaVersionFile: %{public}@: err: %{public}@", buf, 0x16u);
@@ -98,16 +98,16 @@
   return v12;
 }
 
-+ (BOOL)isUtteranceImplicitlyTrained:(id)a3
++ (BOOL)isUtteranceImplicitlyTrained:(id)trained
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  trainedCopy = trained;
+  v4 = trainedCopy;
+  if (trainedCopy)
   {
     v5 = MEMORY[0x277CBEA90];
-    v6 = [(__CFString *)v3 path];
-    v7 = [v5 dataWithContentsOfFile:v6];
+    path = [(__CFString *)trainedCopy path];
+    v7 = [v5 dataWithContentsOfFile:path];
 
     if (v7)
     {
@@ -184,13 +184,13 @@
   return v11;
 }
 
-+ (void)_upgradeUtteranceMeta:(id)a3
++ (void)_upgradeUtteranceMeta:(id)meta
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  metaCopy = meta;
+  if (metaCopy)
   {
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:metaCopy];
     if (v5)
     {
       v25 = 0;
@@ -209,12 +209,12 @@
 
       else
       {
-        v11 = [MEMORY[0x277CBEB38] dictionary];
-        v12 = [v4 path];
-        v13 = [v12 stringByReplacingOccurrencesOfString:@".json" withString:@".wav"];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        path = [metaCopy path];
+        v13 = [path stringByReplacingOccurrencesOfString:@".json" withString:@".wav"];
 
         v24 = v13;
-        [v11 setObject:v13 forKeyedSubscript:@"utteranceWav"];
+        [dictionary setObject:v13 forKeyedSubscript:@"utteranceWav"];
         v14 = [v6 objectForKeyedSubscript:@"productType"];
         if (!v14)
         {
@@ -222,14 +222,14 @@
         }
 
         v23 = v14;
-        [v11 setObject:v14 forKeyedSubscript:@"productType"];
+        [dictionary setObject:v14 forKeyedSubscript:@"productType"];
         v15 = [v6 objectForKeyedSubscript:@"productVersion"];
         if (!v15)
         {
           v15 = +[VTUtilities deviceProductVersion];
         }
 
-        [v11 setObject:v15 forKeyedSubscript:@"productVersion"];
+        [dictionary setObject:v15 forKeyedSubscript:@"productVersion"];
         v16 = [v6 objectForKeyedSubscript:@"trainingType"];
         v17 = v16;
         if (v16)
@@ -244,7 +244,7 @@
             v18 = @"implicit";
           }
 
-          [v11 setObject:v18 forKeyedSubscript:@"trainingType"];
+          [dictionary setObject:v18 forKeyedSubscript:@"trainingType"];
         }
 
         v19 = [v6 objectForKeyedSubscript:@"handheld"];
@@ -261,11 +261,11 @@
             v21 = @"far-field";
           }
 
-          [v11 setObject:v21 forKeyedSubscript:@"handheld"];
+          [dictionary setObject:v21 forKeyedSubscript:@"handheld"];
         }
 
-        v22 = [v4 path];
-        [a1 _writeMetaDict:v11 forUtterancePath:v22];
+        path2 = [metaCopy path];
+        [self _writeMetaDict:dictionary forUtterancePath:path2];
       }
     }
 
@@ -275,7 +275,7 @@
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = v4;
+        v27 = metaCopy;
         _os_log_impl(&dword_223A31000, v10, OS_LOG_TYPE_DEFAULT, "ERR: Unexpected. metaData is nil while the uttMetaPath exists at: %{public}@", buf, 0xCu);
       }
     }
@@ -292,13 +292,13 @@
   }
 }
 
-+ (BOOL)_audioDirectoryNeedsUpgrade:(id)a3
++ (BOOL)_audioDirectoryNeedsUpgrade:(id)upgrade
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [a3 URLByAppendingPathComponent:@"meta_version.json"];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  v3 = [upgrade URLByAppendingPathComponent:@"meta_version.json"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v3 path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
@@ -352,19 +352,19 @@
   return v11;
 }
 
-+ (void)_upgradeLocaleDirectoryIfNecessary:(id)a3
++ (void)_upgradeLocaleDirectoryIfNecessary:(id)necessary
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v3 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:1 forLanguageCode:a3];
+  v3 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:1 forLanguageCode:necessary];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
   if ([VTUtteranceMetadataManager _audioDirectoryNeedsUpgrade:v4])
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v45[0] = *MEMORY[0x277CBE8E8];
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
     v39 = 0;
-    v34 = v5;
-    v7 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v6 options:0 error:&v39];
+    v34 = defaultManager;
+    v7 = [defaultManager contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:v6 options:0 error:&v39];
     v8 = v39;
 
     if (v8)
@@ -421,41 +421,41 @@ LABEL_8:
       }
 
       v17 = *(*(&v35 + 1) + 8 * v15);
-      v18 = [v17 absoluteString];
-      v19 = [v18 lastPathComponent];
+      absoluteString = [v17 absoluteString];
+      lastPathComponent = [absoluteString lastPathComponent];
 
-      if ([v19 isEqualToString:@"enrollment_completed"] & 1) != 0 || (objc_msgSend(v19, "isEqualToString:", v13))
+      if ([lastPathComponent isEqualToString:@"enrollment_completed"] & 1) != 0 || (objc_msgSend(lastPathComponent, "isEqualToString:", v13))
       {
         goto LABEL_11;
       }
 
       v20 = v13;
-      v21 = [v17 path];
-      v22 = [v21 pathExtension];
-      v23 = [v22 isEqualToString:@"wav"];
+      path = [v17 path];
+      pathExtension = [path pathExtension];
+      v23 = [pathExtension isEqualToString:@"wav"];
 
       if (v23)
       {
-        v24 = [v21 stringByReplacingOccurrencesOfString:@".wav" withString:@".json"];
+        v24 = [path stringByReplacingOccurrencesOfString:@".wav" withString:@".json"];
         if (([v34 fileExistsAtPath:v24] & 1) == 0)
         {
           v27 = VTLogContextFacilityVoiceTrigger;
           if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v42 = v21;
+            v42 = path;
             _os_log_impl(&dword_223A31000, v27, OS_LOG_TYPE_DEFAULT, "Missing meta-file: Creating new Meta file for audio file: %{public}@", buf, 0xCu);
           }
 
-          v16 = [a1 _getBaseMetaDictionaryForUtterancePath:v21];
-          [a1 _writeMetaDict:v16 forUtterancePath:v21];
+          v16 = [self _getBaseMetaDictionaryForUtterancePath:path];
+          [self _writeMetaDict:v16 forUtterancePath:path];
 
           goto LABEL_10;
         }
       }
 
-      v25 = [v17 pathExtension];
-      v26 = [v25 isEqualToString:@"json"];
+      pathExtension2 = [v17 pathExtension];
+      v26 = [pathExtension2 isEqualToString:@"json"];
 
       if (v26)
       {
@@ -483,10 +483,10 @@ LABEL_11:
 LABEL_25:
 }
 
-+ (void)_saveMetaVersionFileAtPath:(id)a3
++ (void)_saveMetaVersionFileAtPath:(id)path
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v11 = @"meta_version";
   v12[0] = &unk_283715440;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
@@ -506,21 +506,21 @@ LABEL_25:
 
   else
   {
-    [v5 writeToURL:v3 atomically:0];
+    [v5 writeToURL:pathCopy atomically:0];
   }
 }
 
-+ (void)upgradeMetaFilesIfNecessaaryAtSATRoot:(id)a3
++ (void)upgradeMetaFilesIfNecessaaryAtSATRoot:(id)root
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  rootCopy = root;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = *MEMORY[0x277CBE868];
   v33[0] = *MEMORY[0x277CBE8E8];
   v33[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
   v27 = 0;
-  v7 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:v6 options:0 error:&v27];
+  v7 = [defaultManager contentsOfDirectoryAtURL:rootCopy includingPropertiesForKeys:v6 options:0 error:&v27];
   v8 = v27;
 
   if (!v8)
@@ -537,8 +537,8 @@ LABEL_25:
     }
 
     v11 = v10;
-    v19 = v4;
-    v20 = v3;
+    v19 = defaultManager;
+    v20 = rootCopy;
     v12 = *v24;
 LABEL_7:
     v13 = 0;
@@ -557,14 +557,14 @@ LABEL_7:
       v16 = v21;
       if (v16)
       {
-        v17 = v16;
+        lastPathComponent = v16;
         v18 = VTLogContextFacilityVoiceTrigger;
         if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
           v30 = v14;
           v31 = 2114;
-          v32 = v17;
+          v32 = lastPathComponent;
           _os_log_impl(&dword_223A31000, v18, OS_LOG_TYPE_DEFAULT, "Error determining if file is dir-entry: url=%{public}@, err=%{public}@", buf, 0x16u);
         }
       }
@@ -576,8 +576,8 @@ LABEL_7:
           goto LABEL_9;
         }
 
-        v17 = [v14 lastPathComponent];
-        [VTUtteranceMetadataManager _upgradeLocaleDirectoryIfNecessary:v17];
+        lastPathComponent = [v14 lastPathComponent];
+        [VTUtteranceMetadataManager _upgradeLocaleDirectoryIfNecessary:lastPathComponent];
       }
 
 LABEL_9:
@@ -586,8 +586,8 @@ LABEL_9:
         v11 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (!v11)
         {
-          v4 = v19;
-          v3 = v20;
+          defaultManager = v19;
+          rootCopy = v20;
           goto LABEL_18;
         }
 
@@ -600,7 +600,7 @@ LABEL_9:
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = v3;
+    v30 = rootCopy;
     v31 = 2114;
     v32 = v8;
     _os_log_impl(&dword_223A31000, v9, OS_LOG_TYPE_DEFAULT, "Error reading contents of SAT root: %{public}@: err: %{public}@", buf, 0x16u);
@@ -609,23 +609,23 @@ LABEL_9:
 LABEL_18:
 }
 
-+ (void)saveMetaVersionFileAtSATAudioDirectory:(id)a3
++ (void)saveMetaVersionFileAtSATAudioDirectory:(id)directory
 {
-  v3 = [a3 URLByAppendingPathComponent:@"meta_version.json"];
+  v3 = [directory URLByAppendingPathComponent:@"meta_version.json"];
   [VTUtteranceMetadataManager _saveMetaVersionFileAtPath:v3];
 }
 
-+ (void)_writeMetaDict:(id)a3 forUtterancePath:(id)a4
++ (void)_writeMetaDict:(id)dict forUtterancePath:(id)path
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dictCopy = dict;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (v5)
+    if (dictCopy)
     {
       v14 = 0;
-      v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v5 options:1 error:&v14];
+      v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictCopy options:1 error:&v14];
       v8 = v14;
       if (v8)
       {
@@ -638,15 +638,15 @@ LABEL_13:
         }
 
         v10 = v9;
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 138543362;
-        v16 = v11;
+        v16 = localizedDescription;
         _os_log_impl(&dword_223A31000, v10, OS_LOG_TYPE_DEFAULT, "::: Error creating json Metadata: %{public}@", buf, 0xCu);
       }
 
       else
       {
-        v10 = [v6 stringByReplacingOccurrencesOfString:@".wav" withString:@".json"];
+        v10 = [pathCopy stringByReplacingOccurrencesOfString:@".wav" withString:@".json"];
         [v7 writeToFile:v10 atomically:0];
       }
 
@@ -677,11 +677,11 @@ LABEL_10:
 LABEL_14:
 }
 
-+ (id)_getBaseMetaDictionaryForUtterancePath:(id)a3
++ (id)_getBaseMetaDictionaryForUtterancePath:(id)path
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v10[0] = @"productType";
     v4 = +[VTUtilities deviceProductType];
@@ -690,7 +690,7 @@ LABEL_14:
     v5 = +[VTUtilities deviceProductVersion];
     v10[2] = @"utteranceWav";
     v11[1] = v5;
-    v11[2] = v3;
+    v11[2] = pathCopy;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:3];
   }
 
@@ -709,18 +709,18 @@ LABEL_14:
   return v6;
 }
 
-+ (void)saveUtteranceMetadataForUtterance:(id)a3 isExplicitEnrollment:(BOOL)a4 isHandheldEnrollment:(BOOL)a5 withBiometricResult:(unint64_t)a6
++ (void)saveUtteranceMetadataForUtterance:(id)utterance isExplicitEnrollment:(BOOL)enrollment isHandheldEnrollment:(BOOL)handheldEnrollment withBiometricResult:(unint64_t)result
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  if (v10)
+  handheldEnrollmentCopy = handheldEnrollment;
+  enrollmentCopy = enrollment;
+  utteranceCopy = utterance;
+  if (utteranceCopy)
   {
     v11 = MEMORY[0x277CBEB38];
-    v12 = [a1 _getBaseMetaDictionaryForUtterancePath:v10];
+    v12 = [self _getBaseMetaDictionaryForUtterancePath:utteranceCopy];
     v13 = [v11 dictionaryWithDictionary:v12];
 
-    if (v8)
+    if (enrollmentCopy)
     {
       v14 = @"explicit";
     }
@@ -731,7 +731,7 @@ LABEL_14:
     }
 
     [v13 setObject:v14 forKeyedSubscript:@"trainingType"];
-    if (v7)
+    if (handheldEnrollmentCopy)
     {
       v15 = @"near-field";
     }
@@ -745,10 +745,10 @@ LABEL_14:
     v16 = +[VTSpeakerIdUtilities timeStampWithSaltGrain];
     [v13 setObject:v16 forKeyedSubscript:@"grainedDate"];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:result];
     [v13 setObject:v17 forKeyedSubscript:@"otherSourceProfileMatch"];
 
-    [a1 _writeMetaDict:v13 forUtterancePath:v10];
+    [self _writeMetaDict:v13 forUtterancePath:utteranceCopy];
   }
 
   else

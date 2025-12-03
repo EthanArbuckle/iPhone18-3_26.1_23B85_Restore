@@ -1,24 +1,24 @@
 @interface _IMDBatchFetchingMessageIndexingJob
-- (BOOL)runWithCompletion:(id)a3;
-- (_IMDBatchFetchingMessageIndexingJob)initWithAggregateIndexingJob:(id)a3 batchFetcher:(id)a4;
+- (BOOL)runWithCompletion:(id)completion;
+- (_IMDBatchFetchingMessageIndexingJob)initWithAggregateIndexingJob:(id)job batchFetcher:(id)fetcher;
 @end
 
 @implementation _IMDBatchFetchingMessageIndexingJob
 
-- (_IMDBatchFetchingMessageIndexingJob)initWithAggregateIndexingJob:(id)a3 batchFetcher:(id)a4
+- (_IMDBatchFetchingMessageIndexingJob)initWithAggregateIndexingJob:(id)job batchFetcher:(id)fetcher
 {
-  v7 = a3;
-  v8 = a4;
+  jobCopy = job;
+  fetcherCopy = fetcher;
   v19.receiver = self;
   v19.super_class = _IMDBatchFetchingMessageIndexingJob;
   v9 = [(_IMDBatchFetchingMessageIndexingJob *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_job, a3);
+    objc_storeStrong(&v9->_job, job);
     v11 = [IMDThreadSafeMessageDictionaryMapper alloc];
     v14 = objc_msgSend_timing(v10->_job, v12, v13);
-    v16 = objc_msgSend_initWithBatchFetcher_timingCollection_(v11, v15, v8, v14);
+    v16 = objc_msgSend_initWithBatchFetcher_timingCollection_(v11, v15, fetcherCopy, v14);
     mapper = v10->_mapper;
     v10->_mapper = v16;
   }
@@ -26,9 +26,9 @@
   return v10;
 }
 
-- (BOOL)runWithCompletion:(id)a3
+- (BOOL)runWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = objc_msgSend_job(self, v5, v6);
   v10 = objc_msgSend_timing(v7, v8, v9);
   objc_msgSend_startTimingForKey_(v10, v11, @"total time for indexing messages");
@@ -56,7 +56,7 @@
   if (v25)
   {
     v26 = objc_msgSend_job(self, v23, v24);
-    objc_msgSend_finishWithCompletion_(v26, v27, v4);
+    objc_msgSend_finishWithCompletion_(v26, v27, completionCopy);
   }
 
   return v25;

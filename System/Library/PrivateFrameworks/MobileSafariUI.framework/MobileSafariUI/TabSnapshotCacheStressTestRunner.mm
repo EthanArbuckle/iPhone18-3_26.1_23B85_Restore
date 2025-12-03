@@ -1,21 +1,21 @@
 @interface TabSnapshotCacheStressTestRunner
 - (TabSnapshotCacheStressTestRunnerDelegate)delegate;
-- (id)_mutableOrderedSetOfUUIDsWithCount:(unint64_t)a3;
-- (id)_mutatedUUIDsFromUUIDs:(id)a3;
+- (id)_mutableOrderedSetOfUUIDsWithCount:(unint64_t)count;
+- (id)_mutatedUUIDsFromUUIDs:(id)ds;
 - (void)_runIteration;
 - (void)start;
-- (void)tabSnapshotCache:(id)a3 didCacheSnapshotWithIdentifier:(id)a4;
-- (void)tabSnapshotCache:(id)a3 requestSnapshotWithIdentifier:(id)a4 completion:(id)a5;
+- (void)tabSnapshotCache:(id)cache didCacheSnapshotWithIdentifier:(id)identifier;
+- (void)tabSnapshotCache:(id)cache requestSnapshotWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation TabSnapshotCacheStressTestRunner
 
-- (id)_mutableOrderedSetOfUUIDsWithCount:(unint64_t)a3
+- (id)_mutableOrderedSetOfUUIDsWithCount:(unint64_t)count
 {
   for (i = [MEMORY[0x277CBEB40] orderedSet];
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    [i addObject:v5];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [i addObject:uUID];
   }
 
   return i;
@@ -26,18 +26,18 @@
   v18 = *MEMORY[0x277D85DE8];
   if (!start_temporaryCacheDirectoryURL)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v3 temporaryDirectory];
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    v6 = [v5 globallyUniqueString];
-    v7 = [v4 URLByAppendingPathComponent:v6 isDirectory:1];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    temporaryDirectory = [defaultManager temporaryDirectory];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    globallyUniqueString = [processInfo globallyUniqueString];
+    v7 = [temporaryDirectory URLByAppendingPathComponent:globallyUniqueString isDirectory:1];
     v8 = start_temporaryCacheDirectoryURL;
     start_temporaryCacheDirectoryURL = v7;
   }
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [start_temporaryCacheDirectoryURL absoluteString];
-  [v9 _web_createDirectoryAtPathWithIntermediateDirectories:v10 attributes:0];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  absoluteString = [start_temporaryCacheDirectoryURL absoluteString];
+  [defaultManager2 _web_createDirectoryAtPathWithIntermediateDirectories:absoluteString attributes:0];
 
   v11 = [TabSnapshotCache alloc];
   v12 = [(TabSnapshotCache *)v11 initWithThumbnailCacheDirectoryURL:start_temporaryCacheDirectoryURL];
@@ -57,11 +57,11 @@
   [(TabSnapshotCacheStressTestRunner *)self _runIteration];
 }
 
-- (id)_mutatedUUIDsFromUUIDs:(id)a3
+- (id)_mutatedUUIDsFromUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  dsCopy = ds;
+  v5 = dsCopy;
+  if (dsCopy && [dsCopy count])
   {
     v6 = [v5 count];
     v7 = rand() % v6;
@@ -120,7 +120,7 @@
   }
 }
 
-- (void)tabSnapshotCache:(id)a3 didCacheSnapshotWithIdentifier:(id)a4
+- (void)tabSnapshotCache:(id)cache didCacheSnapshotWithIdentifier:(id)identifier
 {
   cachesUntilNextIteration = self->_cachesUntilNextIteration;
   if (cachesUntilNextIteration)
@@ -130,22 +130,22 @@
 
   else
   {
-    [(TabSnapshotCacheStressTestRunner *)self _runIteration:a3];
+    [(TabSnapshotCacheStressTestRunner *)self _runIteration:cache];
   }
 }
 
-- (void)tabSnapshotCache:(id)a3 requestSnapshotWithIdentifier:(id)a4 completion:(id)a5
+- (void)tabSnapshotCache:(id)cache requestSnapshotWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__TabSnapshotCacheStressTestRunner_tabSnapshotCache_requestSnapshotWithIdentifier_completion___block_invoke;
   v10[3] = &unk_2781D56B0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 

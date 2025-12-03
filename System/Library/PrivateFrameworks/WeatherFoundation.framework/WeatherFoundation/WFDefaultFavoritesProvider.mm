@@ -1,22 +1,22 @@
 @interface WFDefaultFavoritesProvider
-- (WFDefaultFavoritesProvider)initWithDelegate:(id)a3 persistence:(id)a4;
+- (WFDefaultFavoritesProvider)initWithDelegate:(id)delegate persistence:(id)persistence;
 - (WFFavoriteLocationProviderDelegate)delegate;
-- (id)locationFromCity:(id)a3;
+- (id)locationFromCity:(id)city;
 - (id)locations;
 @end
 
 @implementation WFDefaultFavoritesProvider
 
-- (WFDefaultFavoritesProvider)initWithDelegate:(id)a3 persistence:(id)a4
+- (WFDefaultFavoritesProvider)initWithDelegate:(id)delegate persistence:(id)persistence
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = WFDefaultFavoritesProvider;
   v6 = [(WFDefaultFavoritesProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, v5);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v8 = v7;
   }
 
@@ -26,11 +26,11 @@
 - (id)locations
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CEC588] sharedManager];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 localeIdentifier];
-  v7 = [v4 defaultCitiesForLocaleCode:v6];
+  array = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277CEC588] = [MEMORY[0x277CEC588] sharedManager];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v7 = [mEMORY[0x277CEC588] defaultCitiesForLocaleCode:localeIdentifier];
 
   if (v7 || ([MEMORY[0x277CEC588] sharedManager], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEAF8], "currentLocale"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKey:", *MEMORY[0x277CBE690]), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "defaultCitiesForLocaleCode:", v10), v7 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v7))
   {
@@ -56,7 +56,7 @@
             }
 
             v15 = [(WFDefaultFavoritesProvider *)self locationFromCity:*(*(&v17 + 1) + 8 * i), v17];
-            [v3 addObject:v15];
+            [array addObject:v15];
           }
 
           v12 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -67,20 +67,20 @@
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (id)locationFromCity:(id)a3
+- (id)locationFromCity:(id)city
 {
-  v3 = a3;
+  cityCopy = city;
   v4 = objc_alloc_init(WFLocation);
-  v5 = [v3 name];
-  [(WFLocation *)v4 setCity:v5];
+  name = [cityCopy name];
+  [(WFLocation *)v4 setCity:name];
 
   v6 = objc_alloc(MEMORY[0x277CE41F8]);
-  [v3 latitude];
+  [cityCopy latitude];
   v8 = v7;
-  [v3 longitude];
+  [cityCopy longitude];
   v10 = v9;
 
   v11 = [v6 initWithLatitude:v8 longitude:v10];

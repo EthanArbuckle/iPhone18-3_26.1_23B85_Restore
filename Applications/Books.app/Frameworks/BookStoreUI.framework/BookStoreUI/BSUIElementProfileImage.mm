@@ -1,6 +1,6 @@
 @interface BSUIElementProfileImage
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation BSUIElementProfileImage
@@ -17,16 +17,16 @@
   return v3;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  [v8 floatForAttribute:60 node:var0];
-  [v9 setCornerRadius:?];
-  v10 = [v8 colorForAttribute:126 node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  [attributesCopy floatForAttribute:60 node:var0];
+  [boxCopy setCornerRadius:?];
+  v10 = [attributesCopy colorForAttribute:126 node:var0];
 
-  [v9 setMaskColor:v10];
+  [boxCopy setMaskColor:v10];
 }
 
 @end

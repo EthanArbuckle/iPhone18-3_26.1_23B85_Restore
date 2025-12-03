@@ -1,50 +1,50 @@
 @interface PXCuratedLibraryEventTracker
-- (PXCuratedLibraryEventTracker)initWithViewModel:(id)a3 layout:(id)a4;
-- (PXCuratedLibraryEventTracker)initWithViewName:(id)a3;
+- (PXCuratedLibraryEventTracker)initWithViewModel:(id)model layout:(id)layout;
+- (PXCuratedLibraryEventTracker)initWithViewName:(id)name;
 - (void)_configureTimerForSlowScrollRegimeUpdatesIfNeeded;
 - (void)_invalidateCurrentAllPhotosZoomState;
 - (void)_invalidateCurrentlyViewedZoomLevel;
 - (void)_invalidateDominantObjectReference;
 - (void)_invalidateFirstTimeExperienceReadinessLogging;
-- (void)_logDidEndViewingAllPhotosZoomStateName:(id)a3;
-- (void)_logDidStartViewingAllPhotosZoomStateName:(id)a3;
-- (void)_logDidStartViewingZoomLevel:(int64_t)a3;
+- (void)_logDidEndViewingAllPhotosZoomStateName:(id)name;
+- (void)_logDidStartViewingAllPhotosZoomStateName:(id)name;
+- (void)_logDidStartViewingZoomLevel:(int64_t)level;
 - (void)_updateCurrentAllPhotosZoomState;
 - (void)_updateCurrentlyViewedZoomLevel;
 - (void)_updateDominantObjectReference;
 - (void)_updateFirstTimeExperienceReadinessLogging;
 - (void)dealloc;
-- (void)logAnalysisProgress:(float)a3;
-- (void)logLibraryItemsCount:(int64_t)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAnalysisProgress:(float)a3;
-- (void)setCurrentAllPhotosZoomStateName:(id)a3;
-- (void)setCurrentlyViewedZoomLevel:(int64_t)a3;
-- (void)setDominantObjectReference:(id)a3;
-- (void)setLibraryItemsCount:(int64_t)a3;
+- (void)logAnalysisProgress:(float)progress;
+- (void)logLibraryItemsCount:(int64_t)count;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAnalysisProgress:(float)progress;
+- (void)setCurrentAllPhotosZoomStateName:(id)name;
+- (void)setCurrentlyViewedZoomLevel:(int64_t)level;
+- (void)setDominantObjectReference:(id)reference;
+- (void)setLibraryItemsCount:(int64_t)count;
 @end
 
 @implementation PXCuratedLibraryEventTracker
 
 - (void)_invalidateCurrentAllPhotosZoomState
 {
-  v2 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentAllPhotosZoomState];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentAllPhotosZoomState];
 }
 
 - (void)_invalidateDominantObjectReference
 {
-  v2 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDominantObjectReference];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDominantObjectReference];
 }
 
 - (void)_updateCurrentAllPhotosZoomState
 {
   if ([(PXViewControllerEventTracker *)self isViewVisible]&& [(PXCuratedLibraryEventTracker *)self currentlyViewedZoomLevel]== 4)
   {
-    v3 = [(PXCuratedLibraryEventTracker *)self viewModel];
-    v4 = [v3 zoomablePhotosViewModel];
-    v5 = v4;
+    viewModel = [(PXCuratedLibraryEventTracker *)self viewModel];
+    zoomablePhotosViewModel = [viewModel zoomablePhotosViewModel];
+    v5 = zoomablePhotosViewModel;
     v17 = 0;
     v15 = 0u;
     v16 = 0u;
@@ -52,13 +52,13 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    if (v4)
+    if (zoomablePhotosViewModel)
     {
-      [v4 zoomState];
+      [zoomablePhotosViewModel zoomState];
     }
 
     v6 = 0;
-    if (![v3 zoomLevelTransitionPhase] && BYTE11(v14) == 1 && (BYTE8(v14) & 1) == 0)
+    if (![viewModel zoomLevelTransitionPhase] && BYTE11(v14) == 1 && (BYTE8(v14) & 1) == 0)
     {
       if ([v5 isDisplayingIndividualItems])
       {
@@ -92,20 +92,20 @@
 
 - (void)_updateDominantObjectReference
 {
-  v3 = [(PXCuratedLibraryEventTracker *)self viewModel];
-  if ([v3 scrollRegime] || objc_msgSend(v3, "zoomLevelTransitionPhase"))
+  viewModel = [(PXCuratedLibraryEventTracker *)self viewModel];
+  if ([viewModel scrollRegime] || objc_msgSend(viewModel, "zoomLevelTransitionPhase"))
   {
     [(PXViewControllerEventTracker *)self isViewVisible];
-    v4 = 0;
+    dominantObjectReference = 0;
   }
 
   else
   {
-    v5 = [v3 zoomablePhotosViewModel];
-    v6 = v5;
-    if (v5)
+    zoomablePhotosViewModel = [viewModel zoomablePhotosViewModel];
+    v6 = zoomablePhotosViewModel;
+    if (zoomablePhotosViewModel)
     {
-      [v5 zoomState];
+      [zoomablePhotosViewModel zoomState];
       v7 = BYTE8(v12);
     }
 
@@ -121,51 +121,51 @@
       v10 = 0u;
     }
 
-    v4 = 0;
+    dominantObjectReference = 0;
     if ([(PXViewControllerEventTracker *)self isViewVisible]&& (v7 & 1) == 0)
     {
-      v8 = [(PXCuratedLibraryEventTracker *)self layout];
-      v4 = [v8 dominantObjectReference];
+      layout = [(PXCuratedLibraryEventTracker *)self layout];
+      dominantObjectReference = [layout dominantObjectReference];
     }
   }
 
-  [(PXCuratedLibraryEventTracker *)self setDominantObjectReference:v4, v9, v10, v11, v12, v13, v14, v15];
+  [(PXCuratedLibraryEventTracker *)self setDominantObjectReference:dominantObjectReference, v9, v10, v11, v12, v13, v14, v15];
 }
 
 - (void)_invalidateCurrentlyViewedZoomLevel
 {
-  v2 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentlyViewedZoomLevel];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentlyViewedZoomLevel];
 }
 
 - (void)_updateCurrentlyViewedZoomLevel
 {
   if ([(PXViewControllerEventTracker *)self isViewVisible])
   {
-    v3 = [(PXCuratedLibraryEventTracker *)self viewModel];
-    v4 = [v3 zoomLevel];
+    viewModel = [(PXCuratedLibraryEventTracker *)self viewModel];
+    zoomLevel = [viewModel zoomLevel];
   }
 
   else
   {
-    v4 = 0;
+    zoomLevel = 0;
   }
 
-  [(PXCuratedLibraryEventTracker *)self setCurrentlyViewedZoomLevel:v4];
+  [(PXCuratedLibraryEventTracker *)self setCurrentlyViewedZoomLevel:zoomLevel];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (CuratedLibraryViewModelObserverContext == a5)
+  observableCopy = observable;
+  if (CuratedLibraryViewModelObserverContext == context)
   {
-    v9 = (a4 >> 2) & 1;
-    a5 = ((a4 >> 13) & 1);
-    LODWORD(v10) = (a4 & 0x2800) != 0;
-    if ((a4 & 0x800) != 0)
+    v9 = (change >> 2) & 1;
+    context = ((change >> 13) & 1);
+    LODWORD(v10) = (change & 0x2800) != 0;
+    if ((change & 0x800) != 0)
     {
       [(PXCuratedLibraryEventTracker *)self _configureTimerForSlowScrollRegimeUpdatesIfNeeded];
-      if (((a4 >> 2) & 1) == 0)
+      if (((change >> 2) & 1) == 0)
       {
         goto LABEL_10;
       }
@@ -177,7 +177,7 @@ LABEL_12:
       v11[3] = &unk_1E7737B78;
       v12 = v9;
       v11[4] = self;
-      v13 = a5;
+      contextCopy = context;
       v14 = v10;
       [(PXCuratedLibraryEventTracker *)self performChanges:v11];
       goto LABEL_13;
@@ -192,20 +192,20 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (operator|| == a5)
+  if (operator|| == context)
   {
     LOBYTE(v9) = 0;
-    LOBYTE(a5) = a4 & 1;
-    LODWORD(v10) = a4 & 1;
+    LOBYTE(context) = change & 1;
+    LODWORD(v10) = change & 1;
     goto LABEL_9;
   }
 
-  if (EventTrackerObserverContext == a5)
+  if (EventTrackerObserverContext == context)
   {
-    LOBYTE(a5) = 0;
-    v10 = (a4 >> 3) & 1;
+    LOBYTE(context) = 0;
+    v10 = (change >> 3) & 1;
     LOBYTE(v9) = v10;
-    if (((a4 >> 3) & 1) == 0)
+    if (((change >> 3) & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -215,12 +215,12 @@ LABEL_9:
 
   v15.receiver = self;
   v15.super_class = PXCuratedLibraryEventTracker;
-  [(PXMediaViewControllerEventTracker *)&v15 observable:v8 didChange:a4 context:a5];
+  [(PXMediaViewControllerEventTracker *)&v15 observable:observableCopy didChange:change context:context];
   LOBYTE(v9) = 0;
-  LOBYTE(a5) = 0;
+  LOBYTE(context) = 0;
   LODWORD(v10) = 0;
 LABEL_10:
-  if ((a5 & 1) != 0 || v10)
+  if ((context & 1) != 0 || v10)
   {
     goto LABEL_12;
   }
@@ -247,9 +247,9 @@ void __61__PXCuratedLibraryEventTracker_observable_didChange_context___block_inv
   }
 }
 
-- (void)logAnalysisProgress:(float)a3
+- (void)logAnalysisProgress:(float)progress
 {
-  if (a3 >= 0.0)
+  if (progress >= 0.0)
   {
     v7 = v3;
     v8 = v4;
@@ -258,29 +258,29 @@ void __61__PXCuratedLibraryEventTracker_observable_didChange_context___block_inv
     v5[2] = __52__PXCuratedLibraryEventTracker_logAnalysisProgress___block_invoke;
     v5[3] = &unk_1E77467C0;
     v5[4] = self;
-    v6 = a3;
+    progressCopy = progress;
     [(PXCuratedLibraryEventTracker *)self performChanges:v5];
   }
 }
 
-- (void)logLibraryItemsCount:(int64_t)a3
+- (void)logLibraryItemsCount:(int64_t)count
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __53__PXCuratedLibraryEventTracker_logLibraryItemsCount___block_invoke;
   v3[3] = &unk_1E7749D78;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = count;
   [(PXCuratedLibraryEventTracker *)self performChanges:v3];
 }
 
 - (void)_configureTimerForSlowScrollRegimeUpdatesIfNeeded
 {
-  v3 = [(PXCuratedLibraryEventTracker *)self viewModel];
-  v4 = [v3 scrollRegime];
+  viewModel = [(PXCuratedLibraryEventTracker *)self viewModel];
+  scrollRegime = [viewModel scrollRegime];
 
   slowScrollRegimeTimer = self->_slowScrollRegimeTimer;
-  if (v4 == 1)
+  if (scrollRegime == 1)
   {
     if (!slowScrollRegimeTimer)
     {
@@ -295,9 +295,9 @@ void __61__PXCuratedLibraryEventTracker_observable_didChange_context___block_inv
       v8 = self->_slowScrollRegimeTimer;
       self->_slowScrollRegimeTimer = v7;
 
-      v9 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v9 addTimer:self->_slowScrollRegimeTimer forMode:*MEMORY[0x1E695DA28]];
-      [v9 addTimer:self->_slowScrollRegimeTimer forMode:*MEMORY[0x1E69DE760]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop addTimer:self->_slowScrollRegimeTimer forMode:*MEMORY[0x1E695DA28]];
+      [mainRunLoop addTimer:self->_slowScrollRegimeTimer forMode:*MEMORY[0x1E69DE760]];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -332,22 +332,22 @@ void __81__PXCuratedLibraryEventTracker__configureTimerForSlowScrollRegimeUpdate
   [WeakRetained _invalidateDominantObjectReference];
 }
 
-- (void)setDominantObjectReference:(id)a3
+- (void)setDominantObjectReference:(id)reference
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_dominantObjectReference != v5)
+  referenceCopy = reference;
+  v6 = referenceCopy;
+  if (self->_dominantObjectReference != referenceCopy)
   {
-    v10 = v5;
-    v7 = [(PXSectionedObjectReference *)v5 isEqual:?];
+    v10 = referenceCopy;
+    v7 = [(PXSectionedObjectReference *)referenceCopy isEqual:?];
     v6 = v10;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_dominantObjectReference, a3);
+      objc_storeStrong(&self->_dominantObjectReference, reference);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [(PXSectionedObjectReference *)v10 asset];
+        asset = [(PXSectionedObjectReference *)v10 asset];
       }
 
       else
@@ -355,20 +355,20 @@ void __81__PXCuratedLibraryEventTracker__configureTimerForSlowScrollRegimeUpdate
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [(PXSectionedObjectReference *)v10 assetCollection];
-          v8 = 0;
+          assetCollection = [(PXSectionedObjectReference *)v10 assetCollection];
+          asset = 0;
 LABEL_9:
-          [(PXMediaViewControllerEventTracker *)self setDisplayedAsset:v8];
-          [(PXMediaViewControllerEventTracker *)self setDisplayedAssetCollection:v9];
+          [(PXMediaViewControllerEventTracker *)self setDisplayedAsset:asset];
+          [(PXMediaViewControllerEventTracker *)self setDisplayedAssetCollection:assetCollection];
 
           v6 = v10;
           goto LABEL_10;
         }
 
-        v8 = 0;
+        asset = 0;
       }
 
-      v9 = 0;
+      assetCollection = 0;
       goto LABEL_9;
     }
   }
@@ -376,43 +376,43 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_logDidEndViewingAllPhotosZoomStateName:(id)a3
+- (void)_logDidEndViewingAllPhotosZoomStateName:(id)name
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E6991F28];
-  v5 = a3;
-  v6 = [(PXCuratedLibraryEventTracker *)self currentAllPhotosZoomStateSignpost];
+  nameCopy = name;
+  currentAllPhotosZoomStateSignpost = [(PXCuratedLibraryEventTracker *)self currentAllPhotosZoomStateSignpost];
   v7 = *MEMORY[0x1E6991C98];
   v10 = *MEMORY[0x1E6991E40];
-  v11[0] = v5;
+  v11[0] = nameCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9 = [(PXUserInterfaceElementEventTracker *)self finalPayloadWithPayload:v8];
-  [v4 endSignpost:v6 forEventName:v7 withPayload:v9];
+  [v4 endSignpost:currentAllPhotosZoomStateSignpost forEventName:v7 withPayload:v9];
 
   [(PXCuratedLibraryEventTracker *)self setCurrentAllPhotosZoomStateSignpost:0];
 }
 
-- (void)_logDidStartViewingAllPhotosZoomStateName:(id)a3
+- (void)_logDidStartViewingAllPhotosZoomStateName:(id)name
 {
   if ([(PXCuratedLibraryEventTracker *)self currentAllPhotosZoomStateSignpost])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"self.currentAllPhotosZoomStateSignpost == CPAnalyticsSignpostIDNull"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"self.currentAllPhotosZoomStateSignpost == CPAnalyticsSignpostIDNull"}];
   }
 
-  v5 = [MEMORY[0x1E6991F28] startSignpost];
+  startSignpost = [MEMORY[0x1E6991F28] startSignpost];
 
-  [(PXCuratedLibraryEventTracker *)self setCurrentAllPhotosZoomStateSignpost:v5];
+  [(PXCuratedLibraryEventTracker *)self setCurrentAllPhotosZoomStateSignpost:startSignpost];
 }
 
-- (void)setCurrentAllPhotosZoomStateName:(id)a3
+- (void)setCurrentAllPhotosZoomStateName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_currentAllPhotosZoomStateName != v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (self->_currentAllPhotosZoomStateName != nameCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = nameCopy;
+    v6 = [(NSString *)nameCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -436,13 +436,13 @@ LABEL_10:
   }
 }
 
-- (void)_logDidStartViewingZoomLevel:(int64_t)a3
+- (void)_logDidStartViewingZoomLevel:(int64_t)level
 {
   v7 = *MEMORY[0x1E69E9840];
   if ([(PXCuratedLibraryEventTracker *)self currentZoomLevelSignpost])
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"self.currentZoomLevelSignpost == CPAnalyticsSignpostIDNull"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"self.currentZoomLevelSignpost == CPAnalyticsSignpostIDNull"}];
   }
 
   -[PXCuratedLibraryEventTracker setCurrentZoomLevelSignpost:](self, "setCurrentZoomLevelSignpost:", [MEMORY[0x1E6991F28] startSignpost]);
@@ -450,20 +450,20 @@ LABEL_10:
   PXCuratedLibraryAnalyticsViewNameForZoomLevel();
 }
 
-- (void)setCurrentlyViewedZoomLevel:(int64_t)a3
+- (void)setCurrentlyViewedZoomLevel:(int64_t)level
 {
   currentlyViewedZoomLevel = self->_currentlyViewedZoomLevel;
-  if (currentlyViewedZoomLevel != a3)
+  if (currentlyViewedZoomLevel != level)
   {
     if (currentlyViewedZoomLevel)
     {
       [(PXCuratedLibraryEventTracker *)self _logDidEndViewingZoomLevel:?];
     }
 
-    self->_currentlyViewedZoomLevel = a3;
-    if (a3)
+    self->_currentlyViewedZoomLevel = level;
+    if (level)
     {
-      [(PXCuratedLibraryEventTracker *)self _logDidStartViewingZoomLevel:a3];
+      [(PXCuratedLibraryEventTracker *)self _logDidStartViewingZoomLevel:level];
     }
 
     [(PXCuratedLibraryEventTracker *)self _invalidateCurrentAllPhotosZoomState];
@@ -481,9 +481,9 @@ LABEL_10:
       self->_loggedFirstTimeExperience = 1;
       [(PXCuratedLibraryEventTracker *)self firstTimeExperienceAnalysisProgress];
       v5 = v4;
-      v6 = [(PXCuratedLibraryEventTracker *)self firstTimeExperienceLibraryItemsCount];
-      v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v8 = [v7 integerForKey:@"LastCuratedLibraryFirstTimeExperienceReadinessLogged"];
+      firstTimeExperienceLibraryItemsCount = [(PXCuratedLibraryEventTracker *)self firstTimeExperienceLibraryItemsCount];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v8 = [standardUserDefaults integerForKey:@"LastCuratedLibraryFirstTimeExperienceReadinessLogged"];
 
       if (v8 < 1 || (+[PXCuratedLibrarySettings sharedInstance](PXCuratedLibrarySettings, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 firstTimeExperienceAlwaysLogReadiness], v9, v10))
       {
@@ -501,8 +501,8 @@ LABEL_10:
         v13 = [(PXUserInterfaceElementEventTracker *)self finalPayloadWithPayload:0];
         [v12 sendEvent:v11 withPayload:v13];
 
-        v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-        [v14 setInteger:1 forKey:@"LastCuratedLibraryFirstTimeExperienceReadinessLogged"];
+        standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+        [standardUserDefaults2 setInteger:1 forKey:@"LastCuratedLibraryFirstTimeExperienceReadinessLogged"];
 
         v15 = @"YES";
       }
@@ -527,7 +527,7 @@ LABEL_10:
         v21 = 2112;
         v22 = v18;
         v23 = 2048;
-        v24 = v6;
+        v24 = firstTimeExperienceLibraryItemsCount;
         _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEFAULT, "[CuratedLibraryEventTracker]: FTE did log <%@> isReady <%@> for library size <%li>", &v19, 0x20u);
       }
     }
@@ -536,37 +536,37 @@ LABEL_10:
 
 - (void)_invalidateFirstTimeExperienceReadinessLogging
 {
-  v2 = [(PXUserInterfaceElementEventTracker *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateFirstTimeExperienceReadinessLogging];
+  updater = [(PXUserInterfaceElementEventTracker *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFirstTimeExperienceReadinessLogging];
 }
 
-- (void)setAnalysisProgress:(float)a3
+- (void)setAnalysisProgress:(float)progress
 {
-  if (self->_analysisProgress != a3)
+  if (self->_analysisProgress != progress)
   {
-    self->_analysisProgress = a3;
+    self->_analysisProgress = progress;
     if (self->_firstTimeExperienceAnalysisProgress < 0.0)
     {
-      self->_firstTimeExperienceAnalysisProgress = a3;
+      self->_firstTimeExperienceAnalysisProgress = progress;
       [(PXCuratedLibraryEventTracker *)self _invalidateFirstTimeExperienceReadinessLogging];
     }
   }
 }
 
-- (void)setLibraryItemsCount:(int64_t)a3
+- (void)setLibraryItemsCount:(int64_t)count
 {
-  if (a3 < 0)
+  if (count < 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"libraryItemsCount >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"libraryItemsCount >= 0"}];
   }
 
-  if (self->_libraryItemsCount != a3)
+  if (self->_libraryItemsCount != count)
   {
-    self->_libraryItemsCount = a3;
+    self->_libraryItemsCount = count;
     if (self->_firstTimeExperienceLibraryItemsCount < 0)
     {
-      self->_firstTimeExperienceLibraryItemsCount = a3;
+      self->_firstTimeExperienceLibraryItemsCount = count;
 
       [(PXCuratedLibraryEventTracker *)self _invalidateFirstTimeExperienceReadinessLogging];
     }
@@ -584,10 +584,10 @@ LABEL_10:
   [(PXCuratedLibraryEventTracker *)&v4 dealloc];
 }
 
-- (PXCuratedLibraryEventTracker)initWithViewModel:(id)a3 layout:(id)a4
+- (PXCuratedLibraryEventTracker)initWithViewModel:(id)model layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  layoutCopy = layout;
   v14.receiver = self;
   v14.super_class = PXCuratedLibraryEventTracker;
   v9 = [(PXMediaViewControllerEventTracker *)&v14 initWithViewName:@"CuratedLibrary"];
@@ -599,27 +599,27 @@ LABEL_10:
     v10->_analysisProgress = -1.0;
     v10->_firstTimeExperienceAnalysisProgress = -1.0;
     v10->_firstTimeExperienceLibraryItemsCount = -1;
-    objc_storeStrong(&v10->_viewModel, a3);
+    objc_storeStrong(&v10->_viewModel, model);
     [(PXCuratedLibraryViewModel *)v10->_viewModel registerChangeObserver:v10 context:CuratedLibraryViewModelObserverContext];
-    v11 = [(PXCuratedLibraryViewModel *)v10->_viewModel zoomablePhotosViewModel];
-    [v11 registerChangeObserver:v10 context:operator||];
+    zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)v10->_viewModel zoomablePhotosViewModel];
+    [zoomablePhotosViewModel registerChangeObserver:v10 context:operator||];
 
-    objc_storeStrong(&v10->_layout, a4);
-    v12 = [(PXUserInterfaceElementEventTracker *)v10 updater];
-    [v12 addUpdateSelector:sel__updateFirstTimeExperienceReadinessLogging];
-    [v12 addUpdateSelector:sel__updateCurrentlyViewedZoomLevel];
-    [v12 addUpdateSelector:sel__updateCurrentAllPhotosZoomState];
-    [v12 addUpdateSelector:sel__updateDominantObjectReference];
+    objc_storeStrong(&v10->_layout, layout);
+    updater = [(PXUserInterfaceElementEventTracker *)v10 updater];
+    [updater addUpdateSelector:sel__updateFirstTimeExperienceReadinessLogging];
+    [updater addUpdateSelector:sel__updateCurrentlyViewedZoomLevel];
+    [updater addUpdateSelector:sel__updateCurrentAllPhotosZoomState];
+    [updater addUpdateSelector:sel__updateDominantObjectReference];
   }
 
   return v10;
 }
 
-- (PXCuratedLibraryEventTracker)initWithViewName:(id)a3
+- (PXCuratedLibraryEventTracker)initWithViewName:(id)name
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXCuratedLibraryEventTracker initWithViewName:]"}];
+  nameCopy = name;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryEventTracker.m" lineNumber:76 description:{@"%s is not available as initializer", "-[PXCuratedLibraryEventTracker initWithViewName:]"}];
 
   abort();
 }

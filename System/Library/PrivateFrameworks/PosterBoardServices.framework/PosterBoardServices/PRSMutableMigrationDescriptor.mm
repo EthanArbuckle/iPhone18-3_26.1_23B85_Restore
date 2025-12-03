@@ -1,32 +1,32 @@
 @interface PRSMutableMigrationDescriptor
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PRSMutableMigrationDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PRSMigrationDescriptor);
-  v5 = [(PRSMigrationDescriptor *)self isHomeScreenDim];
-  [(PRSMigrationDescriptor *)v4 setHomeScreenDim:v5];
+  isHomeScreenDim = [(PRSMigrationDescriptor *)self isHomeScreenDim];
+  [(PRSMigrationDescriptor *)v4 setHomeScreenDim:isHomeScreenDim];
 
-  v6 = [(PRSMigrationDescriptor *)self homeScreenTintColor];
-  [(PRSMigrationDescriptor *)v4 setHomeScreenTintColor:v6];
+  homeScreenTintColor = [(PRSMigrationDescriptor *)self homeScreenTintColor];
+  [(PRSMigrationDescriptor *)v4 setHomeScreenTintColor:homeScreenTintColor];
 
-  v7 = [(PRSMigrationDescriptor *)self homeScreenIconTintSource];
-  [(PRSMigrationDescriptor *)v4 setHomeScreenIconTintSource:v7];
+  homeScreenIconTintSource = [(PRSMigrationDescriptor *)self homeScreenIconTintSource];
+  [(PRSMigrationDescriptor *)v4 setHomeScreenIconTintSource:homeScreenIconTintSource];
 
-  v8 = [(PRSMigrationDescriptor *)self homeScreenIconSize];
-  [(PRSMigrationDescriptor *)v4 setHomeScreenIconSize:v8];
+  homeScreenIconSize = [(PRSMigrationDescriptor *)self homeScreenIconSize];
+  [(PRSMigrationDescriptor *)v4 setHomeScreenIconSize:homeScreenIconSize];
 
-  v9 = [(PRSMigrationDescriptor *)self homeScreenIconStyle];
-  [(PRSMigrationDescriptor *)v4 setHomeScreenIconStyle:v9];
+  homeScreenIconStyle = [(PRSMigrationDescriptor *)self homeScreenIconStyle];
+  [(PRSMigrationDescriptor *)v4 setHomeScreenIconStyle:homeScreenIconStyle];
 
-  v10 = [(PRSMigrationDescriptor *)self homeScreenIconStyleVariant];
-  [(PRSMigrationDescriptor *)v4 setHomeScreenIconStyleVariant:v10];
+  homeScreenIconStyleVariant = [(PRSMigrationDescriptor *)self homeScreenIconStyleVariant];
+  [(PRSMigrationDescriptor *)v4 setHomeScreenIconStyleVariant:homeScreenIconStyleVariant];
 
-  v11 = [(PRSMigrationDescriptor *)self homeScreenIconStyleVariantsForStyles];
-  [(PRSMigrationDescriptor *)v4 setHomeScreenIconStyleVariantsForStyles:v11];
+  homeScreenIconStyleVariantsForStyles = [(PRSMigrationDescriptor *)self homeScreenIconStyleVariantsForStyles];
+  [(PRSMigrationDescriptor *)v4 setHomeScreenIconStyleVariantsForStyles:homeScreenIconStyleVariantsForStyles];
 
   return v4;
 }

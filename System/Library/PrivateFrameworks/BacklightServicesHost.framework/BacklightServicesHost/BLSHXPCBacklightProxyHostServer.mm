@@ -1,16 +1,16 @@
 @interface BLSHXPCBacklightProxyHostServer
-+ (BLSHXPCBacklightProxyHostServer)serverWithLocalBacklightProxy:(id)a3;
++ (BLSHXPCBacklightProxyHostServer)serverWithLocalBacklightProxy:(id)proxy;
 + (id)domainSpecification;
-- (BLSHXPCBacklightProxyHostServer)initWithLocalBacklightProxy:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (BLSHXPCBacklightProxyHostServer)initWithLocalBacklightProxy:(id)proxy;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation BLSHXPCBacklightProxyHostServer
 
-+ (BLSHXPCBacklightProxyHostServer)serverWithLocalBacklightProxy:(id)a3
++ (BLSHXPCBacklightProxyHostServer)serverWithLocalBacklightProxy:(id)proxy
 {
-  v3 = a3;
-  v4 = [[BLSHXPCBacklightProxyHostServer alloc] initWithLocalBacklightProxy:v3];
+  proxyCopy = proxy;
+  v4 = [[BLSHXPCBacklightProxyHostServer alloc] initWithLocalBacklightProxy:proxyCopy];
   v5 = bls_backlight_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -65,16 +65,16 @@ void __54__BLSHXPCBacklightProxyHostServer_domainSpecification__block_invoke()
   }
 }
 
-- (BLSHXPCBacklightProxyHostServer)initWithLocalBacklightProxy:(id)a3
+- (BLSHXPCBacklightProxyHostServer)initWithLocalBacklightProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   v28.receiver = self;
   v28.super_class = BLSHXPCBacklightProxyHostServer;
   v6 = [(BLSHXPCBacklightProxyHostServer *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localBacklightProxy, a3);
+    objc_storeStrong(&v6->_localBacklightProxy, proxy);
     v8 = +[BLSHXPCBacklightProxyHostServer domainSpecification];
     v9 = bls_backlight_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -82,9 +82,9 @@ void __54__BLSHXPCBacklightProxyHostServer_domainSpecification__block_invoke()
       [(BLSHXPCBacklightProxyHostServer *)v7 initWithLocalBacklightProxy:v8, v9];
     }
 
-    v10 = [MEMORY[0x277CF0A00] serviceQuality];
-    v11 = [MEMORY[0x277CF0C18] serial];
-    v12 = [v11 serviceClass:objc_msgSend(v10 relativePriority:{"serviceClass"), objc_msgSend(v10, "relativePriority")}];
+    serviceQuality = [MEMORY[0x277CF0A00] serviceQuality];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v12 = [serial serviceClass:objc_msgSend(serviceQuality relativePriority:{"serviceClass"), objc_msgSend(serviceQuality, "relativePriority")}];
     v13 = BSDispatchQueueCreate();
     callbackQueue = v7->_callbackQueue;
     v7->_callbackQueue = v13;
@@ -135,15 +135,15 @@ void __63__BLSHXPCBacklightProxyHostServer_initWithLocalBacklightProxy___block_i
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __77__BLSHXPCBacklightProxyHostServer_listener_didReceiveConnection_withContext___block_invoke;
   v12 = &unk_27841EBB8;
-  v13 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = connectionCopy;
   v14 = v7;
   [v7 configureConnection:&v9];
   [v7 activate];

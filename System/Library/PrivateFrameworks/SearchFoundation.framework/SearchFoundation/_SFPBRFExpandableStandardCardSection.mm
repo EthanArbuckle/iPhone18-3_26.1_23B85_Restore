@@ -1,40 +1,40 @@
 @interface _SFPBRFExpandableStandardCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFExpandableStandardCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFExpandableStandardCardSection)initWithFacade:(id)a3;
-- (_SFPBRFExpandableStandardCardSection)initWithJSON:(id)a3;
+- (_SFPBRFExpandableStandardCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFExpandableStandardCardSection)initWithFacade:(id)facade;
+- (_SFPBRFExpandableStandardCardSection)initWithJSON:(id)n;
 - (_SFPBRFSummaryItemStandardCardSection)summary_item_standard_card_section;
 - (id)dictionaryRepresentation;
-- (void)addExpanding_component_content:(id)a3;
-- (void)setExpanding_component_content:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addExpanding_component_content:(id)expanding_component_content;
+- (void)setExpanding_component_content:(id)expanding_component_content;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFExpandableStandardCardSection
 
-- (_SFPBRFExpandableStandardCardSection)initWithFacade:(id)a3
+- (_SFPBRFExpandableStandardCardSection)initWithFacade:(id)facade
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFExpandableStandardCardSection *)self init];
   if (v5)
   {
-    if ([v4 hasSummary_item_standard_card_section])
+    if ([facadeCopy hasSummary_item_standard_card_section])
     {
-      v6 = [v4 summary_item_standard_card_section];
+      summary_item_standard_card_section = [facadeCopy summary_item_standard_card_section];
 
-      if (v6)
+      if (summary_item_standard_card_section)
       {
         v7 = [_SFPBRFSummaryItemStandardCardSection alloc];
-        v8 = [v4 summary_item_standard_card_section];
-        v9 = [(_SFPBRFSummaryItemStandardCardSection *)v7 initWithFacade:v8];
+        summary_item_standard_card_section2 = [facadeCopy summary_item_standard_card_section];
+        v9 = [(_SFPBRFSummaryItemStandardCardSection *)v7 initWithFacade:summary_item_standard_card_section2];
         [(_SFPBRFExpandableStandardCardSection *)v5 setSummary_item_standard_card_section:v9];
       }
     }
 
-    v10 = [v4 expanding_component_content];
-    if (v10)
+    expanding_component_content = [facadeCopy expanding_component_content];
+    if (expanding_component_content)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -48,7 +48,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v4 expanding:0 component:?content];
+    v12 = [facadeCopy expanding:0 component:?content];
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
@@ -84,16 +84,16 @@
   return v5;
 }
 
-- (_SFPBRFExpandableStandardCardSection)initWithDictionary:(id)a3
+- (_SFPBRFExpandableStandardCardSection)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = _SFPBRFExpandableStandardCardSection;
   v5 = [(_SFPBRFExpandableStandardCardSection *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"summaryItemStandardCardSection"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"summaryItemStandardCardSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       [(_SFPBRFExpandableStandardCardSection *)v5 setSummary_item_standard_card_section:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"expandingComponentContent"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"expandingComponentContent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,30 +154,30 @@
   return v5;
 }
 
-- (_SFPBRFExpandableStandardCardSection)initWithJSON:(id)a3
+- (_SFPBRFExpandableStandardCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFExpandableStandardCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFExpandableStandardCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFExpandableStandardCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -191,10 +191,10 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_expanding_component_contents count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -214,16 +214,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -233,52 +233,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"expandingComponentContent"];
+    [dictionary setObject:array forKeyedSubscript:@"expandingComponentContent"];
   }
 
   if (self->_summary_item_standard_card_section)
   {
-    v12 = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    summary_item_standard_card_section = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
+    dictionaryRepresentation2 = [summary_item_standard_card_section dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"summaryItemStandardCardSection"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"summaryItemStandardCardSection"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"summaryItemStandardCardSection"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"summaryItemStandardCardSection"];
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
-  v6 = [v4 summary_item_standard_card_section];
-  if ((v5 != 0) == (v6 == 0))
+  summary_item_standard_card_section = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
+  summary_item_standard_card_section2 = [equalCopy summary_item_standard_card_section];
+  if ((summary_item_standard_card_section != 0) == (summary_item_standard_card_section2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
-  if (v7)
+  summary_item_standard_card_section3 = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
+  if (summary_item_standard_card_section3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
-    v10 = [v4 summary_item_standard_card_section];
-    v11 = [v9 isEqual:v10];
+    v8 = summary_item_standard_card_section3;
+    summary_item_standard_card_section4 = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
+    summary_item_standard_card_section5 = [equalCopy summary_item_standard_card_section];
+    v11 = [summary_item_standard_card_section4 isEqual:summary_item_standard_card_section5];
 
     if (!v11)
     {
@@ -290,12 +290,12 @@
   {
   }
 
-  v5 = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
-  v6 = [v4 expanding_component_contents];
-  if ((v5 != 0) != (v6 == 0))
+  summary_item_standard_card_section = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
+  summary_item_standard_card_section2 = [equalCopy expanding_component_contents];
+  if ((summary_item_standard_card_section != 0) != (summary_item_standard_card_section2 == 0))
   {
-    v12 = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
-    if (!v12)
+    expanding_component_contents = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
+    if (!expanding_component_contents)
     {
 
 LABEL_15:
@@ -303,10 +303,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
-    v15 = [v4 expanding_component_contents];
-    v16 = [v14 isEqual:v15];
+    v13 = expanding_component_contents;
+    expanding_component_contents2 = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
+    expanding_component_contents3 = [equalCopy expanding_component_contents];
+    v16 = [expanding_component_contents2 isEqual:expanding_component_contents3];
 
     if (v16)
     {
@@ -326,22 +326,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
-  if (v5)
+  toCopy = to;
+  summary_item_standard_card_section = [(_SFPBRFExpandableStandardCardSection *)self summary_item_standard_card_section];
+  if (summary_item_standard_card_section)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
+  expanding_component_contents = [(_SFPBRFExpandableStandardCardSection *)self expanding_component_contents];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [expanding_component_contents countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -353,7 +353,7 @@ LABEL_13:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(expanding_component_contents);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -362,7 +362,7 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [expanding_component_contents countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -371,27 +371,27 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addExpanding_component_content:(id)a3
+- (void)addExpanding_component_content:(id)expanding_component_content
 {
-  v4 = a3;
+  expanding_component_contentCopy = expanding_component_content;
   expanding_component_contents = self->_expanding_component_contents;
-  v8 = v4;
+  v8 = expanding_component_contentCopy;
   if (!expanding_component_contents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_expanding_component_contents;
-    self->_expanding_component_contents = v6;
+    self->_expanding_component_contents = array;
 
-    v4 = v8;
+    expanding_component_contentCopy = v8;
     expanding_component_contents = self->_expanding_component_contents;
   }
 
-  [(NSArray *)expanding_component_contents addObject:v4];
+  [(NSArray *)expanding_component_contents addObject:expanding_component_contentCopy];
 }
 
-- (void)setExpanding_component_content:(id)a3
+- (void)setExpanding_component_content:(id)expanding_component_content
 {
-  v4 = [a3 copy];
+  v4 = [expanding_component_content copy];
   expanding_component_contents = self->_expanding_component_contents;
   self->_expanding_component_contents = v4;
 

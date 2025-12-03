@@ -4,8 +4,8 @@
 - (NSString)sharedContainerIdentifier;
 - (NSURL)url;
 - (void)appSessionDidTerminate;
-- (void)privacyAcknowledgementNotification:(id)a3;
-- (void)startAppSessionWithApplicationGroupIdentifier:(id)a3 enableUploads:(BOOL)a4;
+- (void)privacyAcknowledgementNotification:(id)notification;
+- (void)startAppSessionWithApplicationGroupIdentifier:(id)identifier enableUploads:(BOOL)uploads;
 @end
 
 @implementation BAAppManager
@@ -22,28 +22,28 @@
   return v3;
 }
 
-- (void)startAppSessionWithApplicationGroupIdentifier:(id)a3 enableUploads:(BOOL)a4
+- (void)startAppSessionWithApplicationGroupIdentifier:(id)identifier enableUploads:(BOOL)uploads
 {
   v6 = sub_1E1780();
   v8 = v7;
-  *(&self->super.isa + OBJC_IVAR___BAAppManager_enableUploads) = a4;
-  v10 = self;
+  *(&self->super.isa + OBJC_IVAR___BAAppManager_enableUploads) = uploads;
+  selfCopy = self;
   sub_110B44(v6, v8);
 
   sub_110D58();
   sub_110E60();
-  v9 = *(&v10->super.isa + OBJC_IVAR___BAAppManager_appSessionManager);
+  v9 = *(&selfCopy->super.isa + OBJC_IVAR___BAAppManager_appSessionManager);
   sub_1E0B00();
 }
 
 - (void)appSessionDidTerminate
 {
   v2 = *(&self->super.isa + OBJC_IVAR___BAAppManager_appSessionManager);
-  v3 = self;
+  selfCopy = self;
   sub_1E0AF0(1.0);
 }
 
-- (void)privacyAcknowledgementNotification:(id)a3
+- (void)privacyAcknowledgementNotification:(id)notification
 {
   v3 = sub_1E0860();
   v4 = *(v3 - 8);
@@ -62,7 +62,7 @@
   v5 = *(v4 + 64);
   __chkstk_darwin(v3);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   AppManager.url.getter(v7);
 
   sub_1E0900(v9);
@@ -74,7 +74,7 @@
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   sub_112F3C();
 
   v3 = sub_1E1770();

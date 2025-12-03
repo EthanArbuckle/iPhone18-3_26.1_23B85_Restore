@@ -1,27 +1,27 @@
 @interface MetricsQuotaClient
 - (_TtC33iCloudSubscriptionOptimizerClient18MetricsQuotaClient)init;
 - (id)failsafeDelayedOfferJsonContext;
-- (id)parseDelayedOfferFromJson:(id)a3;
-- (void)logFailsafeEvent:(id)a3;
-- (void)newOffer:(id)a3 andCallback:(id)a4;
+- (id)parseDelayedOfferFromJson:(id)json;
+- (void)logFailsafeEvent:(id)event;
+- (void)newOffer:(id)offer andCallback:(id)callback;
 @end
 
 @implementation MetricsQuotaClient
 
-- (void)newOffer:(id)a3 andCallback:(id)a4
+- (void)newOffer:(id)offer andCallback:(id)callback
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(callback);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_275A30A68(v8, sub_275A331F8, v7);
+  offerCopy = offer;
+  selfCopy = self;
+  sub_275A30A68(offerCopy, sub_275A331F8, v7);
 }
 
-- (id)parseDelayedOfferFromJson:(id)a3
+- (id)parseDelayedOfferFromJson:(id)json
 {
   sub_275A3D934();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_275A32030();
 
   return v5;
@@ -29,7 +29,7 @@
 
 - (id)failsafeDelayedOfferJsonContext
 {
-  v2 = self;
+  selfCopy = self;
   sub_275A32994();
   v4 = v3;
 
@@ -46,10 +46,10 @@
   return v5;
 }
 
-- (void)logFailsafeEvent:(id)a3
+- (void)logFailsafeEvent:(id)event
 {
   sub_275A3D934();
-  v4 = self;
+  selfCopy = self;
   sub_275A32D5C();
 }
 

@@ -1,32 +1,32 @@
 @interface UITextCheckingController
 - (BOOL)continuousSpellCheckingEnabled;
-- (BOOL)foundApostropheAfterRange:(_NSRange)a3;
-- (BOOL)performFinalGrammarCheckingWithAutocorrection:(BOOL)a3;
-- (UITextCheckingController)initWithClient:(id)a3;
-- (_NSRange)nsRangeForTextRange:(id)a3;
+- (BOOL)foundApostropheAfterRange:(_NSRange)range;
+- (BOOL)performFinalGrammarCheckingWithAutocorrection:(BOOL)autocorrection;
+- (UITextCheckingController)initWithClient:(id)client;
+- (_NSRange)nsRangeForTextRange:(id)range;
 - (_NSRange)selectedRange;
-- (_NSRange)terminatedSentenceRangeInTextRange:(id)a3;
-- (id)annotatedStringWithValidAnnotationsForAnnotatedString:(id)a3;
-- (id)annotatedSubstringForRange:(id)a3;
+- (_NSRange)terminatedSentenceRangeInTextRange:(id)range;
+- (id)annotatedStringWithValidAnnotationsForAnnotatedString:(id)string;
+- (id)annotatedSubstringForRange:(id)range;
 - (id)textChecker;
 - (id)validAnnotations;
-- (void)_addCorrectionUnderlinesForCandidates:(id)a3 ranges:(id)a4 inSentenceRange:(id)a5;
-- (void)_addGrammarAttributesForRange:(_NSRange)a3 details:(id)a4 inAnnotatedString:(id)a5;
-- (void)_handleGrammarCheckingResults:(id)a3 sequenceNumber:(int64_t)a4 forSentenceRange:(id)a5 autocorrectionCount:(unint64_t *)a6;
-- (void)_pauseTimer:(id)a3;
-- (void)checkGrammarForSentenceInRange:(id)a3 onPause:(BOOL)a4;
-- (void)checkSpellingForSelectionChangeFromRange:(_NSRange)a3;
-- (void)checkSpellingForWordInRange:(id)a3;
+- (void)_addCorrectionUnderlinesForCandidates:(id)candidates ranges:(id)ranges inSentenceRange:(id)range;
+- (void)_addGrammarAttributesForRange:(_NSRange)range details:(id)details inAnnotatedString:(id)string;
+- (void)_handleGrammarCheckingResults:(id)results sequenceNumber:(int64_t)number forSentenceRange:(id)range autocorrectionCount:(unint64_t *)count;
+- (void)_pauseTimer:(id)timer;
+- (void)checkGrammarForSentenceInRange:(id)range onPause:(BOOL)pause;
+- (void)checkSpellingForSelectionChangeFromRange:(_NSRange)range;
+- (void)checkSpellingForWordInRange:(id)range;
 - (void)dealloc;
-- (void)didChangeSelectionFromRange:(id)a3;
-- (void)feedbackForGrammarMarkersFromWordsInRange:(id)a3 replacementText:(id)a4;
+- (void)didChangeSelectionFromRange:(id)range;
+- (void)feedbackForGrammarMarkersFromWordsInRange:(id)range replacementText:(id)text;
 - (void)invalidate;
 - (void)invalidateTimers;
 - (void)preheatTextChecker;
-- (void)removeGrammarAnnotationFromWordAtPosition:(id)a3;
-- (void)removeGrammarMarkersFromWordsInRange:(id)a3;
-- (void)removeSpellingMarkersFromWordInRange:(id)a3;
-- (void)willReplaceTextInRange:(id)a3 withText:(id)a4;
+- (void)removeGrammarAnnotationFromWordAtPosition:(id)position;
+- (void)removeGrammarMarkersFromWordsInRange:(id)range;
+- (void)removeSpellingMarkersFromWordInRange:(id)range;
+- (void)willReplaceTextInRange:(id)range withText:(id)text;
 @end
 
 @implementation UITextCheckingController
@@ -60,10 +60,10 @@
   }
 }
 
-- (UITextCheckingController)initWithClient:(id)a3
+- (UITextCheckingController)initWithClient:(id)client
 {
-  v5 = a3;
-  if (v5)
+  clientCopy = client;
+  if (clientCopy)
   {
     v15.receiver = self;
     v15.super_class = UITextCheckingController;
@@ -71,9 +71,9 @@
     self = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_client, a3);
-      v7 = [MEMORY[0x1E695DF00] distantPast];
-      [v7 timeIntervalSinceReferenceDate];
+      objc_storeStrong(&v6->_client, client);
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
+      [distantPast timeIntervalSinceReferenceDate];
       self->_lastPauseTimer = v8;
 
       self->_selectedRangeFromPreviousUnchecked = xmmword_18A678470;
@@ -211,25 +211,25 @@ void __44__UITextCheckingController_validAnnotations__block_invoke()
   }
 }
 
-- (_NSRange)nsRangeForTextRange:(id)a3
+- (_NSRange)nsRangeForTextRange:(id)range
 {
   v3 = 0;
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3)
+  if (range)
   {
     client = self->_client;
     if (client)
     {
-      v7 = a3;
-      v8 = [(UITextCheckingClient *)client beginningOfDocument];
-      v9 = [v7 start];
-      v4 = [(UITextCheckingClient *)client offsetFromPosition:v8 toPosition:v9];
+      rangeCopy = range;
+      beginningOfDocument = [(UITextCheckingClient *)client beginningOfDocument];
+      start = [rangeCopy start];
+      v4 = [(UITextCheckingClient *)client offsetFromPosition:beginningOfDocument toPosition:start];
 
       v10 = self->_client;
-      v11 = [v7 start];
-      v12 = [v7 end];
+      start2 = [rangeCopy start];
+      v12 = [rangeCopy end];
 
-      v3 = [(UITextCheckingClient *)v10 offsetFromPosition:v11 toPosition:v12];
+      v3 = [(UITextCheckingClient *)v10 offsetFromPosition:start2 toPosition:v12];
     }
   }
 
@@ -245,8 +245,8 @@ void __44__UITextCheckingController_validAnnotations__block_invoke()
   client = self->_client;
   if (client)
   {
-    v4 = [(UITextCheckingClient *)client selectedTextRange];
-    v5 = [(UITextCheckingController *)self nsRangeForTextRange:v4];
+    selectedTextRange = [(UITextCheckingClient *)client selectedTextRange];
+    v5 = [(UITextCheckingController *)self nsRangeForTextRange:selectedTextRange];
     v7 = v6;
 
     v8 = v5;
@@ -264,23 +264,23 @@ void __44__UITextCheckingController_validAnnotations__block_invoke()
   return result;
 }
 
-- (id)annotatedStringWithValidAnnotationsForAnnotatedString:(id)a3
+- (id)annotatedStringWithValidAnnotationsForAnnotatedString:(id)string
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
-    v6 = [(UITextCheckingController *)self validAnnotations];
-    v7 = [MEMORY[0x1E695DF70] array];
+    validAnnotations = [(UITextCheckingController *)self validAnnotations];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [v5 length];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __82__UITextCheckingController_annotatedStringWithValidAnnotationsForAnnotatedString___block_invoke;
     v23[3] = &unk_1E7126770;
-    v9 = v6;
+    v9 = validAnnotations;
     v24 = v9;
-    v10 = v7;
+    v10 = array;
     v25 = v10;
     [v5 enumerateAttributesInRange:0 options:v8 usingBlock:{0x100000, v23}];
     if ([v10 count])
@@ -367,21 +367,21 @@ void __82__UITextCheckingController_annotatedStringWithValidAnnotationsForAnnota
   }
 }
 
-- (id)annotatedSubstringForRange:(id)a3
+- (id)annotatedSubstringForRange:(id)range
 {
   v3 = 0;
-  if (a3 && self->_client)
+  if (range && self->_client)
   {
-    v5 = a3;
-    v6 = [v5 start];
-    v7 = [v5 end];
+    rangeCopy = range;
+    start = [rangeCopy start];
+    v7 = [rangeCopy end];
 
-    v8 = [(UITextCheckingClient *)self->_client endOfDocument];
-    v9 = v8;
+    endOfDocument = [(UITextCheckingClient *)self->_client endOfDocument];
+    v9 = endOfDocument;
     v3 = 0;
-    if (v6 && v7 && v8)
+    if (start && v7 && endOfDocument)
     {
-      if ([(UITextCheckingClient *)self->_client comparePosition:v6 toPosition:v8]== -1)
+      if ([(UITextCheckingClient *)self->_client comparePosition:start toPosition:endOfDocument]== -1)
       {
         if ([(UITextCheckingClient *)self->_client comparePosition:v7 toPosition:v9]== 1)
         {
@@ -390,7 +390,7 @@ void __82__UITextCheckingController_annotatedStringWithValidAnnotationsForAnnota
           v7 = v10;
         }
 
-        v11 = [(UITextCheckingClient *)self->_client textRangeFromPosition:v6 toPosition:v7];
+        v11 = [(UITextCheckingClient *)self->_client textRangeFromPosition:start toPosition:v7];
         if (v11)
         {
           v12 = [(UITextCheckingClient *)self->_client annotatedSubstringForRange:v11];
@@ -414,55 +414,55 @@ void __82__UITextCheckingController_annotatedStringWithValidAnnotationsForAnnota
   return v3;
 }
 
-- (void)checkSpellingForWordInRange:(id)a3
+- (void)checkSpellingForWordInRange:(id)range
 {
-  v14 = a3;
-  v4 = [(UITextCheckingController *)self textChecker];
-  if (v14)
+  rangeCopy = range;
+  textChecker = [(UITextCheckingController *)self textChecker];
+  if (rangeCopy)
   {
     client = self->_client;
-    if (client && v4 != 0)
+    if (client && textChecker != 0)
     {
-      v7 = [(UITextCheckingClient *)client textInRange:v14];
+      v7 = [(UITextCheckingClient *)client textInRange:rangeCopy];
       v8 = [v7 length];
       v9 = +[UITextChecker keyboardLanguages];
-      v10 = [v4 rangeOfMisspelledWordInString:v7 range:0 startingAt:v8 wrap:0 languages:{0, v9}];
+      v10 = [textChecker rangeOfMisspelledWordInString:v7 range:0 startingAt:v8 wrap:0 languages:{0, v9}];
 
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [(UITextCheckingClient *)self->_client removeAnnotation:*off_1E70ECA00 forRange:v14];
+        [(UITextCheckingClient *)self->_client removeAnnotation:*off_1E70ECA00 forRange:rangeCopy];
       }
 
       else
       {
-        v11 = [(UITextCheckingController *)self annotatedSubstringForRange:v14];
+        v11 = [(UITextCheckingController *)self annotatedSubstringForRange:rangeCopy];
         v12 = v11;
         if (v11 && [v11 length])
         {
           v13 = [v12 mutableCopy];
           [v13 addAttribute:*off_1E70ECA00 value:&unk_1EFE338C8 range:{0, objc_msgSend(v13, "length")}];
-          [(UITextCheckingClient *)self->_client replaceRange:v14 withAnnotatedString:v13 relativeReplacementRange:0x7FFFFFFFFFFFFFFFLL, 0];
+          [(UITextCheckingClient *)self->_client replaceRange:rangeCopy withAnnotatedString:v13 relativeReplacementRange:0x7FFFFFFFFFFFFFFFLL, 0];
         }
       }
     }
   }
 }
 
-- (void)_addGrammarAttributesForRange:(_NSRange)a3 details:(id)a4 inAnnotatedString:(id)a5
+- (void)_addGrammarAttributesForRange:(_NSRange)range details:(id)details inAnnotatedString:(id)string
 {
-  location = a3.location;
+  location = range.location;
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
-  v33 = [v7 length];
+  detailsCopy = details;
+  stringCopy = string;
+  v33 = [stringCopy length];
   v8 = +[UITextChecker keyboardLanguages];
-  v36 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = v6;
+  v9 = detailsCopy;
   v10 = [v9 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v10)
   {
@@ -552,23 +552,23 @@ LABEL_22:
                     v23 = v43;
                     if (objc_opt_respondsToSelector())
                     {
-                      v24 = [v22 rangeValue];
-                      if (v33 < v24 + location)
+                      rangeValue = [v22 rangeValue];
+                      if (v33 < rangeValue + location)
                       {
                         v43 = 0;
                         v39 = 0x7FFFFFFFFFFFFFFFLL;
                         goto LABEL_51;
                       }
 
-                      v39 = v24 + location;
-                      if (v24 + location + v25 <= v33)
+                      v39 = rangeValue + location;
+                      if (rangeValue + location + v25 <= v33)
                       {
                         v23 = v25;
                       }
 
                       else
                       {
-                        v23 = v33 - (v24 + location);
+                        v23 = v33 - (rangeValue + location);
                       }
 
                       if (!v23)
@@ -581,13 +581,13 @@ LABEL_50:
 LABEL_31:
                       v38 = v22;
                       v26 = [off_1E70ECBA0 alloc];
-                      [v7 string];
-                      v28 = v27 = v7;
+                      [stringCopy string];
+                      v28 = v27 = stringCopy;
                       [v28 substringWithRange:{v39, v23}];
                       v29 = v43 = v23;
                       v30 = [v26 initWithPrimaryString:v29 alternativeStrings:v16];
 
-                      v7 = v27;
+                      stringCopy = v27;
                       [v27 addAttribute:@"NSGrammarCorrections" value:v16 range:{v39, v43}];
                       if (v17)
                       {
@@ -603,17 +603,17 @@ LABEL_31:
                       v22 = v38;
                       if (v40)
                       {
-                        [v7 addAttribute:@"NSGrammarTargetPair" value:v40 range:{v39, v43}];
+                        [stringCopy addAttribute:@"NSGrammarTargetPair" value:v40 range:{v39, v43}];
                       }
 
                       if (v21)
                       {
-                        [v7 addAttribute:@"NSGrammarConfidenceScore" value:v21 range:{v39, v43}];
+                        [stringCopy addAttribute:@"NSGrammarConfidenceScore" value:v21 range:{v39, v43}];
                       }
 
-                      if (v36)
+                      if (firstObject)
                       {
-                        [v7 addAttribute:@"NSGrammarLanguage" value:v36 range:{v39, v43}];
+                        [stringCopy addAttribute:@"NSGrammarLanguage" value:firstObject range:{v39, v43}];
                       }
 
                       if (qword_1ED49AE20 != -1)
@@ -623,9 +623,9 @@ LABEL_31:
 
                       if (byte_1ED49AD63 == 1)
                       {
-                        [v7 addAttribute:v32 value:&unk_1EFE338E0 range:{v39, v43}];
+                        [stringCopy addAttribute:v32 value:&unk_1EFE338E0 range:{v39, v43}];
                         v22 = v38;
-                        [v7 addAttribute:v31 value:v30 range:{v39, v43}];
+                        [stringCopy addAttribute:v31 value:v30 range:{v39, v43}];
                       }
 
                       v9 = v35;
@@ -677,46 +677,46 @@ LABEL_53:
 LABEL_58:
 }
 
-- (void)_addCorrectionUnderlinesForCandidates:(id)a3 ranges:(id)a4 inSentenceRange:(id)a5
+- (void)_addCorrectionUnderlinesForCandidates:(id)candidates ranges:(id)ranges inSentenceRange:(id)range
 {
-  v37 = a3;
-  v8 = a4;
-  v9 = a5;
+  candidatesCopy = candidates;
+  rangesCopy = ranges;
+  rangeCopy = range;
   v10 = +[UIKeyboardImpl activeInstance];
-  v11 = [v10 _textChoicesAssistant];
+  _textChoicesAssistant = [v10 _textChoicesAssistant];
 
-  if (self->_client && v11 && +[UITextSelectionDisplayInteraction isTextAccelerationUIEnabled])
+  if (self->_client && _textChoicesAssistant && +[UITextSelectionDisplayInteraction isTextAccelerationUIEnabled])
   {
-    v34 = v11;
+    v34 = _textChoicesAssistant;
     if (+[UIKeyboard usesInputSystemUI])
     {
-      v33 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     else
     {
-      v33 = 0;
+      dictionary = 0;
     }
 
-    v32 = v8;
-    if ([v37 count])
+    v32 = rangesCopy;
+    if ([candidatesCopy count])
     {
       v12 = 0;
-      v35 = v9;
+      v35 = rangeCopy;
       do
       {
-        if (v12 >= [v8 count])
+        if (v12 >= [rangesCopy count])
         {
           break;
         }
 
-        v13 = [v8 objectAtIndex:v12];
-        v14 = [v13 rangeValue];
+        v13 = [rangesCopy objectAtIndex:v12];
+        rangeValue = [v13 rangeValue];
         v16 = v15;
 
         client = self->_client;
-        v18 = [v9 start];
-        v19 = [(UITextCheckingClient *)client positionFromPosition:v18 offset:v14];
+        start = [rangeCopy start];
+        v19 = [(UITextCheckingClient *)client positionFromPosition:start offset:rangeValue];
 
         if (v19)
         {
@@ -727,7 +727,7 @@ LABEL_58:
             if (v21)
             {
               v22 = v21;
-              v23 = [v37 objectAtIndex:v12];
+              v23 = [candidatesCopy objectAtIndex:v12];
               if (objc_opt_respondsToSelector())
               {
                 [v23 setConfidence:2];
@@ -736,22 +736,22 @@ LABEL_58:
               v24 = objc_alloc(MEMORY[0x1E69D9588]);
               v36 = [v24 initWithAutocorrection:v23 alternateCorrections:MEMORY[0x1E695E0F0]];
               v25 = [MEMORY[0x1E69D9570] listWithCorrections:?];
-              v26 = [v23 input];
-              [v34 adjustRangesAfterPosition:v19 byOffset:{v16 - objc_msgSend(v26, "length")}];
+              input = [v23 input];
+              [v34 adjustRangesAfterPosition:v19 byOffset:{v16 - objc_msgSend(input, "length")}];
 
               [v34 addUnderlineForCandidate:v23 range:v22];
               [v34 addList:v25 forCandidate:v23];
-              if (v33)
+              if (dictionary)
               {
-                v27 = [v23 candidate];
-                v28 = [v23 input];
-                [v33 setObject:v27 forKey:v28];
+                candidate = [v23 candidate];
+                input2 = [v23 input];
+                [dictionary setObject:candidate forKey:input2];
               }
 
-              v8 = v32;
+              rangesCopy = v32;
             }
 
-            v9 = v35;
+            rangeCopy = v35;
           }
         }
 
@@ -763,55 +763,55 @@ LABEL_58:
         ++v12;
       }
 
-      while (v12 < [v37 count]);
+      while (v12 < [candidatesCopy count]);
     }
 
-    if ([v37 count])
+    if ([candidatesCopy count])
     {
-      v29 = [v37 copy];
+      v29 = [candidatesCopy copy];
       v30 = _recentGrammarCandidates;
       _recentGrammarCandidates = v29;
     }
 
-    v11 = v34;
-    if (v33 && [v33 count])
+    _textChoicesAssistant = v34;
+    if (dictionary && [dictionary count])
     {
       v31 = +[UIKeyboardImpl activeInstance];
-      [v31 handleGrammarCorrectionEntries:v33];
+      [v31 handleGrammarCorrectionEntries:dictionary];
 
-      v8 = v32;
+      rangesCopy = v32;
     }
   }
 }
 
-- (void)_handleGrammarCheckingResults:(id)a3 sequenceNumber:(int64_t)a4 forSentenceRange:(id)a5 autocorrectionCount:(unint64_t *)a6
+- (void)_handleGrammarCheckingResults:(id)results sequenceNumber:(int64_t)number forSentenceRange:(id)range autocorrectionCount:(unint64_t *)count
 {
   v82 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v58 = [MEMORY[0x1E695DF70] array];
-  v57 = [MEMORY[0x1E695DF70] array];
-  v59 = [(UITextCheckingController *)self textChecker];
-  if (self->_prechangeCheckingSequenceNumber <= a4)
+  resultsCopy = results;
+  rangeCopy = range;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  textChecker = [(UITextCheckingController *)self textChecker];
+  if (self->_prechangeCheckingSequenceNumber <= number)
   {
-    v12 = [(UITextCheckingController *)self annotatedSubstringForRange:v11];
+    v12 = [(UITextCheckingController *)self annotatedSubstringForRange:rangeCopy];
     v13 = v12;
     if (v12 && [v12 length])
     {
-      v69 = self;
-      v53 = v11;
+      selfCopy = self;
+      v53 = rangeCopy;
       v51 = v13;
       v70 = [v13 mutableCopy];
       v14 = +[UIKeyboardImpl activeInstance];
-      v62 = [v14 autocorrectionPreferenceForTraits];
+      autocorrectionPreferenceForTraits = [v14 autocorrectionPreferenceForTraits];
       v50 = v14;
-      v15 = [v14 smartPunctuationController];
+      smartPunctuationController = [v14 smartPunctuationController];
       v76 = 0u;
       v77 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v54 = v10;
-      v16 = v10;
+      v54 = resultsCopy;
+      v16 = resultsCopy;
       v17 = [v16 countByEnumeratingWithState:&v76 objects:v81 count:16];
       if (v17)
       {
@@ -829,11 +829,11 @@ LABEL_58:
             v21 = *(*(&v76 + 1) + 8 * i);
             if ([v21 resultType] == 4)
             {
-              v22 = [v21 range];
+              range = [v21 range];
               v24 = v23;
-              v25 = [v21 grammarDetails];
-              v26 = _detailsByApplyingSmartQuotes(v25, v15);
-              [(UITextCheckingController *)v69 _addGrammarAttributesForRange:v22 details:v24 inAnnotatedString:v26, v70];
+              grammarDetails = [v21 grammarDetails];
+              v26 = _detailsByApplyingSmartQuotes(grammarDetails, smartPunctuationController);
+              [(UITextCheckingController *)selfCopy _addGrammarAttributesForRange:range details:v24 inAnnotatedString:v26, v70];
             }
           }
 
@@ -843,7 +843,7 @@ LABEL_58:
         while (v18);
       }
 
-      v52 = a6;
+      countCopy = count;
 
       v74 = 0u;
       v75 = 0u;
@@ -864,7 +864,7 @@ LABEL_58:
         v55 = *off_1E70EC9F8;
         range1 = 0x7FFFFFFFFFFFFFFFLL;
         range1_8 = v27;
-        v30 = v62;
+        v30 = autocorrectionPreferenceForTraits;
         do
         {
           for (j = 0; j != v29; ++j)
@@ -875,27 +875,27 @@ LABEL_58:
             }
 
             v32 = *(*(&v72 + 1) + 8 * j);
-            v33 = [v32 range];
+            range2 = [v32 range];
             v35 = v34;
-            v36 = [v32 replacementString];
-            v37 = _stringByApplyingSmartQuotes(v36, v15);
+            replacementString = [v32 replacementString];
+            v37 = _stringByApplyingSmartQuotes(replacementString, smartPunctuationController);
 
             v38 = [v37 length];
             if (v30)
             {
               v39 = v38;
               v40 = [v32 resultType] != 512 || v37 == 0;
-              if (!v40 && ((v68 & 0x8000000000000000) == 0 || v33 >= -v68))
+              if (!v40 && ((v68 & 0x8000000000000000) == 0 || range2 >= -v68))
               {
                 ++v67;
-                v41 = v33 + v68;
+                v41 = range2 + v68;
                 if (v41 >= v64 + v65)
                 {
                   if (v41 + v35 <= [v70 length])
                   {
-                    [v59 recordResponse:4 toGrammarDetailInAnnotatedString:v70 range:{v41, v35}];
-                    v42 = [v70 string];
-                    v66 = [v42 substringWithRange:{v41, v35}];
+                    [textChecker recordResponse:4 toGrammarDetailInAnnotatedString:v70 range:{v41, v35}];
+                    string = [v70 string];
+                    v66 = [string substringWithRange:{v41, v35}];
 
                     [v70 replaceCharactersInRange:v41 withString:{v35, v37}];
                     v44.location = [v32 range];
@@ -929,10 +929,10 @@ LABEL_58:
                       [v70 removeAttribute:@"NSGrammarUserDescription" range:{v41, v39}];
                       [v70 removeAttribute:v55 range:{v41, v39}];
                       v48 = [MEMORY[0x1E696B098] valueWithRange:{v41, v39}];
-                      [v58 addObject:v48];
+                      [array addObject:v48];
 
                       v49 = [objc_alloc(MEMORY[0x1E69D95F0]) initWithCandidate:v37 forInput:v66];
-                      [v57 addObject:v49];
+                      [array2 addObject:v49];
 
                       v47 = v66;
                       v46 = v68;
@@ -942,13 +942,13 @@ LABEL_58:
 
                     v64 = v41;
                     v65 = v39;
-                    v30 = v62;
+                    v30 = autocorrectionPreferenceForTraits;
                   }
 
                   else
                   {
                     v27 = range1_8;
-                    v30 = v62;
+                    v30 = autocorrectionPreferenceForTraits;
                   }
                 }
               }
@@ -968,53 +968,53 @@ LABEL_58:
         range1 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      v11 = v53;
-      [(UITextCheckingClient *)v69->_client replaceRange:v53 withAnnotatedString:v70 relativeReplacementRange:range1, length];
+      rangeCopy = v53;
+      [(UITextCheckingClient *)selfCopy->_client replaceRange:v53 withAnnotatedString:v70 relativeReplacementRange:range1, length];
       v13 = v51;
-      if (v52)
+      if (countCopy)
       {
-        *v52 = v67;
+        *countCopy = v67;
       }
 
-      [(UITextCheckingController *)v69 _addCorrectionUnderlinesForCandidates:v57 ranges:v58 inSentenceRange:v53];
+      [(UITextCheckingController *)selfCopy _addCorrectionUnderlinesForCandidates:array2 ranges:array inSentenceRange:v53];
 
-      v10 = v54;
+      resultsCopy = v54;
     }
 
-    else if (a6)
+    else if (count)
     {
-      *a6 = 0;
+      *count = 0;
     }
   }
 
-  else if (a6)
+  else if (count)
   {
-    *a6 = 0;
+    *count = 0;
   }
 }
 
-- (void)checkGrammarForSentenceInRange:(id)a3 onPause:(BOOL)a4
+- (void)checkGrammarForSentenceInRange:(id)range onPause:(BOOL)pause
 {
-  v4 = a4;
+  pauseCopy = pause;
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(UITextCheckingController *)self textChecker];
-  v8 = v7;
-  if (v6)
+  rangeCopy = range;
+  textChecker = [(UITextCheckingController *)self textChecker];
+  v8 = textChecker;
+  if (rangeCopy)
   {
-    if (self->_client && v7 != 0)
+    if (self->_client && textChecker != 0)
     {
       v10 = +[UITextChecker keyboardLanguages];
-      v11 = [v10 firstObject];
+      firstObject = [v10 firstObject];
 
-      if ([UITextChecker grammarCheckingEnabledForLanguage:v11])
+      if ([UITextChecker grammarCheckingEnabledForLanguage:firstObject])
       {
-        v12 = [(UITextCheckingClient *)self->_client textInRange:v6];
+        v12 = [(UITextCheckingClient *)self->_client textInRange:rangeCopy];
         v13 = v12;
         if (v12 && [v12 length])
         {
-          v14 = self;
-          if (v4)
+          selfCopy = self;
+          if (pauseCopy)
           {
             v29 = @"IgnoreTermination";
             v15 = [MEMORY[0x1E696AD98] numberWithInteger:2];
@@ -1032,13 +1032,13 @@ LABEL_58:
           v25[1] = 3221225472;
           v25[2] = __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___block_invoke;
           v25[3] = &unk_1E71273F0;
-          v28 = v4;
-          v18 = v14;
+          v28 = pauseCopy;
+          v18 = selfCopy;
           v26 = v18;
-          v19 = v6;
+          v19 = rangeCopy;
           v27 = v19;
-          [v8 requestGrammarCheckingOfString:v13 range:0 language:v17 options:v11 completionHandler:{v16, v25}];
-          if (!v4)
+          [v8 requestGrammarCheckingOfString:v13 range:0 language:v17 options:firstObject completionHandler:{v16, v25}];
+          if (!pauseCopy)
           {
             if (qword_1ED49AE50 != -1)
             {
@@ -1055,7 +1055,7 @@ LABEL_58:
               v22 = v18;
               v23 = v22;
               v24 = v19;
-              [v8 requestProofreadingReviewOfString:v13 range:0 language:v20 options:v11 completionHandler:{MEMORY[0x1E695E0F8], v21}];
+              [v8 requestProofreadingReviewOfString:v13 range:0 language:v20 options:firstObject completionHandler:{MEMORY[0x1E695E0F8], v21}];
             }
           }
         }
@@ -1185,10 +1185,10 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeGrammarMarkersFromWordsInRange:(id)a3
+- (void)removeGrammarMarkersFromWordsInRange:(id)range
 {
-  v4 = a3;
-  if (v4 && self->_client)
+  rangeCopy = range;
+  if (rangeCopy && self->_client)
   {
     if (qword_1ED49AE20 != -1)
     {
@@ -1197,7 +1197,7 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
 
     if (byte_1ED49AD63 == 1)
     {
-      v5 = [(UITextCheckingController *)self annotatedSubstringForRange:v4];
+      v5 = [(UITextCheckingController *)self annotatedSubstringForRange:rangeCopy];
       v6 = [v5 length];
       v19 = 0;
       v20 = 0;
@@ -1216,8 +1216,8 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
             if (v12)
             {
               client = self->_client;
-              v14 = [v4 start];
-              v15 = [(UITextCheckingClient *)client positionFromPosition:v14 offset:v19];
+              start = [rangeCopy start];
+              v15 = [(UITextCheckingClient *)client positionFromPosition:start offset:v19];
 
               if (v15)
               {
@@ -1254,19 +1254,19 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
   }
 }
 
-- (void)removeGrammarAnnotationFromWordAtPosition:(id)a3
+- (void)removeGrammarAnnotationFromWordAtPosition:(id)position
 {
-  v4 = a3;
-  if (v4)
+  positionCopy = position;
+  if (positionCopy)
   {
     client = self->_client;
     if (client)
     {
-      v9 = v4;
-      v6 = [(UITextCheckingClient *)client tokenizer];
-      v7 = [v6 rangeEnclosingPosition:v9 withGranularity:1 inDirection:0];
+      v9 = positionCopy;
+      tokenizer = [(UITextCheckingClient *)client tokenizer];
+      v7 = [tokenizer rangeEnclosingPosition:v9 withGranularity:1 inDirection:0];
 
-      if (v7 || (-[UITextCheckingClient tokenizer](self->_client, "tokenizer"), v8 = objc_claimAutoreleasedReturnValue(), [v8 rangeEnclosingPosition:v9 withGranularity:1 inDirection:1], v7 = objc_claimAutoreleasedReturnValue(), v8, v4 = v9, v7))
+      if (v7 || (-[UITextCheckingClient tokenizer](self->_client, "tokenizer"), v8 = objc_claimAutoreleasedReturnValue(), [v8 rangeEnclosingPosition:v9 withGranularity:1 inDirection:1], v7 = objc_claimAutoreleasedReturnValue(), v8, positionCopy = v9, v7))
       {
         [(UITextCheckingClient *)self->_client removeAnnotation:@"NSGrammarAutocorrected" forRange:v7];
         [(UITextCheckingClient *)self->_client removeAnnotation:@"NSGrammarCorrections" forRange:v7];
@@ -1275,27 +1275,27 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
         [(UITextCheckingClient *)self->_client removeAnnotation:@"NSGrammarTargetPair" forRange:v7];
         [(UITextCheckingClient *)self->_client removeAnnotation:@"NSGrammarLanguage" forRange:v7];
 
-        v4 = v9;
+        positionCopy = v9;
       }
     }
   }
 }
 
-- (BOOL)performFinalGrammarCheckingWithAutocorrection:(BOOL)a3
+- (BOOL)performFinalGrammarCheckingWithAutocorrection:(BOOL)autocorrection
 {
-  v3 = a3;
+  autocorrectionCopy = autocorrection;
   v35[1] = *MEMORY[0x1E69E9840];
-  v5 = [(UITextCheckingController *)self textChecker];
-  if (v5 && self->_client)
+  textChecker = [(UITextCheckingController *)self textChecker];
+  if (textChecker && self->_client)
   {
     v6 = +[UITextChecker keyboardLanguages];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
 
-    if ([UITextChecker grammarCheckingEnabledForLanguage:v7])
+    if ([UITextChecker grammarCheckingEnabledForLanguage:firstObject])
     {
-      v8 = [(UITextCheckingClient *)self->_client tokenizer];
-      v9 = [(UITextCheckingClient *)self->_client endOfDocument];
-      v10 = [v8 rangeEnclosingPosition:v9 withGranularity:2 inDirection:1];
+      tokenizer = [(UITextCheckingClient *)self->_client tokenizer];
+      endOfDocument = [(UITextCheckingClient *)self->_client endOfDocument];
+      v10 = [tokenizer rangeEnclosingPosition:endOfDocument withGranularity:2 inDirection:1];
 
       if (v10)
       {
@@ -1303,9 +1303,9 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
         v12 = v11;
         if (v11 && [v11 length])
         {
-          v13 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v27 = v10;
-          if (v3)
+          if (autocorrectionCopy)
           {
             v34 = @"ControlRepeatedAutocorrections";
             v35[0] = MEMORY[0x1E695E110];
@@ -1319,7 +1319,7 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
 
           v25 = v14;
           v26 = v12;
-          v16 = [v5 finalResultsFromCheckingString:v12 range:0 language:objc_msgSend(v12 options:{"length"), v7, v14}];
+          v16 = [textChecker finalResultsFromCheckingString:v12 range:0 language:objc_msgSend(v12 options:{"length"), firstObject, v14}];
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
@@ -1339,13 +1339,13 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
                 }
 
                 v21 = *(*(&v29 + 1) + 8 * i);
-                v22 = [v21 resultType];
-                if (v22 != 4 && (v22 != 512 || !v3))
+                resultType = [v21 resultType];
+                if (resultType != 4 && (resultType != 512 || !autocorrectionCopy))
                 {
                   continue;
                 }
 
-                [v13 addObject:v21];
+                [array addObject:v21];
               }
 
               v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -1354,13 +1354,13 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
             while (v18);
           }
 
-          if (v13)
+          if (array)
           {
             v10 = v27;
-            if ([v13 count])
+            if ([array count])
             {
               v28 = 0;
-              [(UITextCheckingController *)self _handleGrammarCheckingResults:v13 sequenceNumber:self->_prechangeCheckingSequenceNumber forSentenceRange:v27 autocorrectionCount:&v28];
+              [(UITextCheckingController *)self _handleGrammarCheckingResults:array sequenceNumber:self->_prechangeCheckingSequenceNumber forSentenceRange:v27 autocorrectionCount:&v28];
               v15 = v28 != 0;
             }
 
@@ -1405,25 +1405,25 @@ void __67__UITextCheckingController_checkGrammarForSentenceInRange_onPause___blo
   return v15;
 }
 
-- (void)removeSpellingMarkersFromWordInRange:(id)a3
+- (void)removeSpellingMarkersFromWordInRange:(id)range
 {
-  if (a3)
+  if (range)
   {
     client = self->_client;
     if (client)
     {
-      [(UITextCheckingClient *)client removeAnnotation:*off_1E70ECA00 forRange:a3];
+      [(UITextCheckingClient *)client removeAnnotation:*off_1E70ECA00 forRange:range];
     }
   }
 }
 
-- (BOOL)foundApostropheAfterRange:(_NSRange)a3
+- (BOOL)foundApostropheAfterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   client = self->_client;
-  v7 = [(UITextCheckingClient *)client beginningOfDocument];
-  v8 = [(UITextCheckingClient *)client positionFromPosition:v7 offset:location + length];
+  beginningOfDocument = [(UITextCheckingClient *)client beginningOfDocument];
+  v8 = [(UITextCheckingClient *)client positionFromPosition:beginningOfDocument offset:location + length];
 
   if (!v8)
   {
@@ -1461,9 +1461,9 @@ LABEL_10:
   return v13;
 }
 
-- (_NSRange)terminatedSentenceRangeInTextRange:(id)a3
+- (_NSRange)terminatedSentenceRangeInTextRange:(id)range
 {
-  v3 = [(UITextCheckingClient *)self->_client textInRange:a3];
+  v3 = [(UITextCheckingClient *)self->_client textInRange:range];
   v4 = [v3 length];
   v5 = v4;
   if (qword_1ED49ADE8 == -1)
@@ -1538,13 +1538,13 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
   qword_1ED49ADE0 = v4;
 }
 
-- (void)_pauseTimer:(id)a3
+- (void)_pauseTimer:(id)timer
 {
-  v10 = [a3 userInfo];
+  userInfo = [timer userInfo];
   [(UITextCheckingController *)self invalidateTimers];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   self->_lastPauseTimer = v4;
-  if (self->_client && [(UITextCheckingController *)self continuousSpellCheckingEnabled]&& v10)
+  if (self->_client && [(UITextCheckingController *)self continuousSpellCheckingEnabled]&& userInfo)
   {
     if (qword_1ED49AE58 != -1)
     {
@@ -1553,14 +1553,14 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
 
     if (byte_1ED49AD67 == 1)
     {
-      v5 = [(UITextCheckingClient *)self->_client tokenizer];
-      v6 = [v10 start];
-      v7 = [v5 rangeEnclosingPosition:v6 withGranularity:2 inDirection:0];
+      tokenizer = [(UITextCheckingClient *)self->_client tokenizer];
+      start = [userInfo start];
+      v7 = [tokenizer rangeEnclosingPosition:start withGranularity:2 inDirection:0];
 
-      if (v7 && [v10 isEqual:v7])
+      if (v7 && [userInfo isEqual:v7])
       {
-        [(UITextCheckingController *)self removeGrammarMarkersFromWordsInRange:v10];
-        [(UITextCheckingController *)self checkGrammarForSentenceInRange:v10 onPause:1];
+        [(UITextCheckingController *)self removeGrammarMarkersFromWordsInRange:userInfo];
+        [(UITextCheckingController *)self checkGrammarForSentenceInRange:userInfo onPause:1];
         v8 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__pauseTimer_ selector:0 userInfo:0 repeats:0.5];
         pauseTimer = self->_pauseTimer;
         self->_pauseTimer = v8;
@@ -1569,13 +1569,13 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
   }
 }
 
-- (void)checkSpellingForSelectionChangeFromRange:(_NSRange)a3
+- (void)checkSpellingForSelectionChangeFromRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = self->_previousCheckedSentenceRange.location;
   v7 = self->_previousCheckedSentenceRange.length;
-  v9 = a3.location == self->_selectedRangeFromPreviousUnchecked.location && a3.length == self->_selectedRangeFromPreviousUnchecked.length;
+  v9 = range.location == self->_selectedRangeFromPreviousUnchecked.location && range.length == self->_selectedRangeFromPreviousUnchecked.length;
   [(UITextCheckingController *)self invalidateTimers];
   self->_selectedRangeFromPreviousUnchecked = xmmword_18A678470;
   self->_previousCheckedSentenceRange = xmmword_18A678470;
@@ -1585,10 +1585,10 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
   }
 
   v53 = v6;
-  v10 = [(UITextCheckingController *)self selectedRange];
-  v12 = v10;
+  selectedRange = [(UITextCheckingController *)self selectedRange];
+  v12 = selectedRange;
   v13 = v11;
-  if (v10 == self->_previousCheckedSelectedRange.location && v11 == self->_previousCheckedSelectedRange.length)
+  if (selectedRange == self->_previousCheckedSelectedRange.location && v11 == self->_previousCheckedSelectedRange.length)
   {
     v54 = 0;
   }
@@ -1598,7 +1598,7 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
     add = atomic_fetch_add(&qword_1ED49AE18, 1uLL);
     self->_previousCheckedSelectedRange.length = v11;
     self->_prechangeCheckingSequenceNumber = add + 1;
-    self->_previousCheckedSelectedRange.location = v10;
+    self->_previousCheckedSelectedRange.location = selectedRange;
     v54 = v11 == 0;
   }
 
@@ -1610,16 +1610,16 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
   else
   {
     client = self->_client;
-    v16 = [(UITextCheckingClient *)client beginningOfDocument];
-    v17 = [(UITextCheckingClient *)client positionFromPosition:v16 offset:location];
+    beginningOfDocument = [(UITextCheckingClient *)client beginningOfDocument];
+    v17 = [(UITextCheckingClient *)client positionFromPosition:beginningOfDocument offset:location];
 
-    v18 = [(UITextCheckingClient *)self->_client tokenizer];
-    v55 = [v18 rangeEnclosingPosition:v17 withGranularity:1 inDirection:0];
+    tokenizer = [(UITextCheckingClient *)self->_client tokenizer];
+    v55 = [tokenizer rangeEnclosingPosition:v17 withGranularity:1 inDirection:0];
 
     if (!v55)
     {
-      v19 = [(UITextCheckingClient *)self->_client tokenizer];
-      v55 = [v19 rangeEnclosingPosition:v17 withGranularity:1 inDirection:1];
+      tokenizer2 = [(UITextCheckingClient *)self->_client tokenizer];
+      v55 = [tokenizer2 rangeEnclosingPosition:v17 withGranularity:1 inDirection:1];
 
       if (!v55)
       {
@@ -1638,8 +1638,8 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
         {
           v21 = [(UITextCheckingClient *)self->_client positionFromPosition:v17 offset:-1];
 
-          v22 = [(UITextCheckingClient *)self->_client tokenizer];
-          v55 = [v22 rangeEnclosingPosition:v21 withGranularity:1 inDirection:1];
+          tokenizer3 = [(UITextCheckingClient *)self->_client tokenizer];
+          v55 = [tokenizer3 rangeEnclosingPosition:v21 withGranularity:1 inDirection:1];
 
           v17 = v21;
         }
@@ -1648,16 +1648,16 @@ void __63__UITextCheckingController_terminatedSentenceRangeInTextRange___block_i
   }
 
   v23 = self->_client;
-  v24 = [(UITextCheckingClient *)v23 beginningOfDocument];
-  v25 = [(UITextCheckingClient *)v23 positionFromPosition:v24 offset:v12];
+  beginningOfDocument2 = [(UITextCheckingClient *)v23 beginningOfDocument];
+  v25 = [(UITextCheckingClient *)v23 positionFromPosition:beginningOfDocument2 offset:v12];
 
-  v26 = [(UITextCheckingClient *)self->_client tokenizer];
-  v27 = [v26 rangeEnclosingPosition:v25 withGranularity:1 inDirection:0];
+  tokenizer4 = [(UITextCheckingClient *)self->_client tokenizer];
+  v27 = [tokenizer4 rangeEnclosingPosition:v25 withGranularity:1 inDirection:0];
 
   if (!v27)
   {
-    v28 = [(UITextCheckingClient *)self->_client tokenizer];
-    v27 = [v28 rangeEnclosingPosition:v25 withGranularity:1 inDirection:1];
+    tokenizer5 = [(UITextCheckingClient *)self->_client tokenizer];
+    v27 = [tokenizer5 rangeEnclosingPosition:v25 withGranularity:1 inDirection:1];
   }
 
   v29 = [(UITextCheckingController *)self nsRangeForTextRange:v55];
@@ -1683,11 +1683,11 @@ LABEL_30:
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
     v33 = self->_client;
-    v34 = [(UITextCheckingClient *)v33 beginningOfDocument];
-    v35 = [(UITextCheckingClient *)v33 positionFromPosition:v34 offset:location];
+    beginningOfDocument3 = [(UITextCheckingClient *)v33 beginningOfDocument];
+    v35 = [(UITextCheckingClient *)v33 positionFromPosition:beginningOfDocument3 offset:location];
 
-    v36 = [(UITextCheckingClient *)self->_client tokenizer];
-    v37 = [v36 rangeEnclosingPosition:v35 withGranularity:2 inDirection:0];
+    tokenizer6 = [(UITextCheckingClient *)self->_client tokenizer];
+    v37 = [tokenizer6 rangeEnclosingPosition:v35 withGranularity:2 inDirection:0];
 
     if (v37 || (-[UITextCheckingClient tokenizer](self->_client, "tokenizer"), v38 = objc_claimAutoreleasedReturnValue(), [v38 rangeEnclosingPosition:v35 withGranularity:2 inDirection:1], v37 = objc_claimAutoreleasedReturnValue(), v38, v37))
     {
@@ -1752,29 +1752,29 @@ LABEL_54:
   }
 }
 
-- (void)didChangeSelectionFromRange:(id)a3
+- (void)didChangeSelectionFromRange:(id)range
 {
-  v5 = [(UITextCheckingController *)self nsRangeForTextRange:a3];
+  v5 = [(UITextCheckingController *)self nsRangeForTextRange:range];
 
   [(UITextCheckingController *)self checkSpellingForSelectionChangeFromRange:v5, v4];
 }
 
-- (void)feedbackForGrammarMarkersFromWordsInRange:(id)a3 replacementText:(id)a4
+- (void)feedbackForGrammarMarkersFromWordsInRange:(id)range replacementText:(id)text
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(UITextCheckingController *)self textChecker];
-  if (v14 && self->_client && v7)
+  rangeCopy = range;
+  textCopy = text;
+  textChecker = [(UITextCheckingController *)self textChecker];
+  if (rangeCopy && self->_client && textChecker)
   {
-    v8 = [(UITextCheckingController *)self annotatedSubstringForRange:v14];
+    v8 = [(UITextCheckingController *)self annotatedSubstringForRange:rangeCopy];
     v9 = v8;
     if (v8 && [v8 length])
     {
       v10 = [v9 attribute:@"NSGrammarAutocorrected" atIndex:0 effectiveRange:0];
       v11 = v10;
-      if (v6 && v10)
+      if (textCopy && v10)
       {
-        if ([v6 isEqualToString:v10])
+        if ([textCopy isEqualToString:v10])
         {
           v12 = 5;
         }
@@ -1784,21 +1784,21 @@ LABEL_54:
           v12 = 3;
         }
 
-        [v7 recordResponse:v12 toGrammarDetailInAnnotatedString:v9 range:{0, objc_msgSend(v9, "length")}];
-        v13 = [v14 start];
-        [(UITextCheckingController *)self removeGrammarAnnotationFromWordAtPosition:v13];
+        [textChecker recordResponse:v12 toGrammarDetailInAnnotatedString:v9 range:{0, objc_msgSend(v9, "length")}];
+        start = [rangeCopy start];
+        [(UITextCheckingController *)self removeGrammarAnnotationFromWordAtPosition:start];
       }
     }
   }
 }
 
-- (void)willReplaceTextInRange:(id)a3 withText:(id)a4
+- (void)willReplaceTextInRange:(id)range withText:(id)text
 {
-  v7 = a3;
-  v6 = a4;
-  if ([(UITextCheckingController *)self rangeIsSuitableForGrammarAutocorrections:v7])
+  rangeCopy = range;
+  textCopy = text;
+  if ([(UITextCheckingController *)self rangeIsSuitableForGrammarAutocorrections:rangeCopy])
   {
-    [(UITextCheckingController *)self feedbackForGrammarMarkersFromWordsInRange:v7 replacementText:v6];
+    [(UITextCheckingController *)self feedbackForGrammarMarkersFromWordsInRange:rangeCopy replacementText:textCopy];
   }
 }
 

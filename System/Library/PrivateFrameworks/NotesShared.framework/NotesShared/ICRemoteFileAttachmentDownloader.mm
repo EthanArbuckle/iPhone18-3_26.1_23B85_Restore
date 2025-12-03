@@ -1,15 +1,15 @@
 @interface ICRemoteFileAttachmentDownloader
 + (BOOL)needsToDownloadRemoteFileAttachments;
-+ (id)allUndownloadedLegacyAttachmentsInContext:(id)a3;
++ (id)allUndownloadedLegacyAttachmentsInContext:(id)context;
 + (id)sharedDownloader;
 + (void)initializeDownloaderAfterDelayIfNecessary;
 + (void)releaseSharedDownloaderIfPossible;
 - (ICRemoteFileAttachmentDownloader)init;
 - (void)dealloc;
-- (void)downloadRemoteFileForAttachment:(id)a3;
-- (void)downloadRemoteFileForAttachmentObjectID:(id)a3;
+- (void)downloadRemoteFileForAttachment:(id)attachment;
+- (void)downloadRemoteFileForAttachmentObjectID:(id)d;
 - (void)downloadUndownloadedLegacyAttachments;
-- (void)reachabilityChanged:(id)a3;
+- (void)reachabilityChanged:(id)changed;
 - (void)resumeDownloadsAfterDelay;
 @end
 
@@ -17,22 +17,22 @@
 
 + (void)initializeDownloaderAfterDelayIfNecessary
 {
-  v3 = [MEMORY[0x277D361D8] appLifeCycleHandler];
-  [v3 cancelBlocksWithStringIdentifier:@"ICRemoteFileAttachmentDownloaderDispatchAfterIdentifier"];
+  appLifeCycleHandler = [MEMORY[0x277D361D8] appLifeCycleHandler];
+  [appLifeCycleHandler cancelBlocksWithStringIdentifier:@"ICRemoteFileAttachmentDownloaderDispatchAfterIdentifier"];
 
-  v4 = [MEMORY[0x277D361D8] appLifeCycleHandler];
+  appLifeCycleHandler2 = [MEMORY[0x277D361D8] appLifeCycleHandler];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __77__ICRemoteFileAttachmentDownloader_initializeDownloaderAfterDelayIfNecessary__block_invoke;
   v5[3] = &__block_descriptor_40_e5_v8__0l;
-  v5[4] = a1;
-  [v4 dispatchAfter:@"ICRemoteFileAttachmentDownloaderDispatchAfterIdentifier" stringIdentifier:v5 withBlock:5.0];
+  v5[4] = self;
+  [appLifeCycleHandler2 dispatchAfter:@"ICRemoteFileAttachmentDownloaderDispatchAfterIdentifier" stringIdentifier:v5 withBlock:5.0];
 }
 
 + (id)sharedDownloader
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = sSharedDownloader;
   if (!sSharedDownloader)
   {
@@ -44,7 +44,7 @@
   }
 
   v6 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -73,20 +73,20 @@ id __77__ICRemoteFileAttachmentDownloader_initializeDownloaderAfterDelayIfNecess
 
 + (void)releaseSharedDownloaderIfPossible
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (sSharedDownloader)
   {
-    v3 = [sSharedDownloader operationQueue];
-    if ([v3 operationCount])
+    operationQueue = [sSharedDownloader operationQueue];
+    if ([operationQueue operationCount])
     {
     }
 
     else
     {
-      v4 = [v2 needsToDownloadRemoteFileAttachments];
+      needsToDownloadRemoteFileAttachments = [selfCopy needsToDownloadRemoteFileAttachments];
 
-      if ((v4 & 1) == 0)
+      if ((needsToDownloadRemoteFileAttachments & 1) == 0)
       {
         v5 = os_log_create("com.apple.notes", "Media");
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -100,7 +100,7 @@ id __77__ICRemoteFileAttachmentDownloader_initializeDownloaderAfterDelayIfNecess
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 + (BOOL)needsToDownloadRemoteFileAttachments
@@ -110,21 +110,21 @@ id __77__ICRemoteFileAttachmentDownloader_initializeDownloaderAfterDelayIfNecess
   v13 = 0x2020000000;
   v14 = 0;
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 workerManagedObjectContext];
+  workerManagedObjectContext = [v3 workerManagedObjectContext];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ICRemoteFileAttachmentDownloader_needsToDownloadRemoteFileAttachments__block_invoke;
   v7[3] = &unk_278196870;
-  v10 = a1;
-  v5 = v4;
+  selfCopy = self;
+  v5 = workerManagedObjectContext;
   v8 = v5;
   v9 = &v11;
   [v5 performBlockAndWait:v7];
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(workerManagedObjectContext) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return workerManagedObjectContext;
 }
 
 void __72__ICRemoteFileAttachmentDownloader_needsToDownloadRemoteFileAttachments__block_invoke(uint64_t a1)
@@ -133,19 +133,19 @@ void __72__ICRemoteFileAttachmentDownloader_needsToDownloadRemoteFileAttachments
   *(*(*(a1 + 40) + 8) + 24) = [v2 count] != 0;
 }
 
-+ (id)allUndownloadedLegacyAttachmentsInContext:(id)a3
++ (id)allUndownloadedLegacyAttachmentsInContext:(id)context
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  contextCopy = context;
   v5 = [v3 predicateWithFormat:@"%K != nil", @"remoteFileURLString"];
   v11[0] = v5;
-  v6 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsInContext:v4];
+  v6 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsInContext:contextCopy];
   v11[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
 
   v8 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v7];
-  v9 = [(ICBaseAttachment *)ICAttachment attachmentsMatchingPredicate:v8 context:v4];
+  v9 = [(ICBaseAttachment *)ICAttachment attachmentsMatchingPredicate:v8 context:contextCopy];
 
   return v9;
 }
@@ -163,23 +163,23 @@ void __72__ICRemoteFileAttachmentDownloader_needsToDownloadRemoteFileAttachments
       [ICRemoteFileAttachmentDownloader init];
     }
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(ICRemoteFileAttachmentDownloader *)v2 setOperationsByAttachmentIdentifier:v4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(ICRemoteFileAttachmentDownloader *)v2 setOperationsByAttachmentIdentifier:dictionary];
 
     v5 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [(ICRemoteFileAttachmentDownloader *)v2 setOperationQueue:v5];
 
-    v6 = [(ICRemoteFileAttachmentDownloader *)v2 operationQueue];
-    [v6 setMaxConcurrentOperationCount:2];
+    operationQueue = [(ICRemoteFileAttachmentDownloader *)v2 operationQueue];
+    [operationQueue setMaxConcurrentOperationCount:2];
 
-    v7 = [(ICRemoteFileAttachmentDownloader *)v2 operationQueue];
-    [v7 setName:@"RemoteFileAttachmentDownloader"];
+    operationQueue2 = [(ICRemoteFileAttachmentDownloader *)v2 operationQueue];
+    [operationQueue2 setName:@"RemoteFileAttachmentDownloader"];
 
     [(ICRemoteFileAttachmentDownloader *)v2 resumeDownloadsAfterDelay];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277D36350];
-    v10 = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
-    [v8 addObserver:v2 selector:sel_reachabilityChanged_ name:v9 object:v10];
+    mEMORY[0x277D36240] = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
+    [defaultCenter addObserver:v2 selector:sel_reachabilityChanged_ name:v9 object:mEMORY[0x277D36240]];
   }
 
   return v2;
@@ -191,10 +191,10 @@ void __72__ICRemoteFileAttachmentDownloader_needsToDownloadRemoteFileAttachments
   v6 = 3221225472;
   v7 = __43__ICRemoteFileAttachmentDownloader_dealloc__block_invoke;
   v8 = &unk_278194B00;
-  v9 = self;
+  selfCopy = self;
   performBlockOnMainThreadAndWait();
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICRemoteFileAttachmentDownloader;
@@ -268,15 +268,15 @@ void __73__ICRemoteFileAttachmentDownloader_downloadUndownloadedLegacyAttachment
   [objc_opt_class() releaseSharedDownloaderIfPossible];
 }
 
-- (void)downloadRemoteFileForAttachment:(id)a3
+- (void)downloadRemoteFileForAttachment:(id)attachment
 {
-  v4 = [a3 objectID];
-  [(ICRemoteFileAttachmentDownloader *)self downloadRemoteFileForAttachmentObjectID:v4];
+  objectID = [attachment objectID];
+  [(ICRemoteFileAttachmentDownloader *)self downloadRemoteFileForAttachmentObjectID:objectID];
 }
 
-- (void)downloadRemoteFileForAttachmentObjectID:(id)a3
+- (void)downloadRemoteFileForAttachmentObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -290,17 +290,17 @@ void __73__ICRemoteFileAttachmentDownloader_downloadUndownloadedLegacyAttachment
   v29 = __Block_byref_object_dispose__51;
   v30 = 0;
   v5 = +[ICNoteContext sharedContext];
-  v6 = [v5 workerManagedObjectContext];
+  workerManagedObjectContext = [v5 workerManagedObjectContext];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __76__ICRemoteFileAttachmentDownloader_downloadRemoteFileForAttachmentObjectID___block_invoke;
   v19[3] = &unk_278199818;
-  v7 = v4;
+  v7 = dCopy;
   v20 = v7;
-  v8 = v6;
+  v8 = workerManagedObjectContext;
   v21 = v8;
-  v22 = self;
+  selfCopy = self;
   v23 = &v25;
   v24 = &v31;
   [v8 performBlockAndWait:v19];
@@ -320,13 +320,13 @@ void __73__ICRemoteFileAttachmentDownloader_downloadUndownloadedLegacyAttachment
     v17 = &v25;
     v18 = &v31;
     v15 = v7;
-    v16 = self;
+    selfCopy2 = self;
     v11 = [v10 blockOperationWithBlock:v14];
-    v12 = [(ICRemoteFileAttachmentDownloader *)self operationsByAttachmentIdentifier];
-    [v12 setObject:v11 forKeyedSubscript:v32[5]];
+    operationsByAttachmentIdentifier = [(ICRemoteFileAttachmentDownloader *)self operationsByAttachmentIdentifier];
+    [operationsByAttachmentIdentifier setObject:v11 forKeyedSubscript:v32[5]];
 
-    v13 = [(ICRemoteFileAttachmentDownloader *)self operationQueue];
-    [v13 addOperation:v11];
+    operationQueue = [(ICRemoteFileAttachmentDownloader *)self operationQueue];
+    [operationQueue addOperation:v11];
   }
 
   _Block_object_dispose(&v25, 8);
@@ -570,12 +570,12 @@ LABEL_10:
   }
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
-  v4 = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
-  v5 = [v4 currentReachabilityStatus];
+  mEMORY[0x277D36240] = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
+  currentReachabilityStatus = [mEMORY[0x277D36240] currentReachabilityStatus];
 
-  if ((v5 - 1) <= 1)
+  if ((currentReachabilityStatus - 1) <= 1)
   {
 
     [(ICRemoteFileAttachmentDownloader *)self resumeDownloadsAfterDelay];

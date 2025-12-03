@@ -1,45 +1,45 @@
 @interface _TVListViewController
-+ (id)_shadowCollectionElementForCollectionElement:(id)a3;
-- (BOOL)_relatedElementIsGridAtIndexPath:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldHandleLongPressForItemAtIndexPath:(id)a4;
-- (BOOL)listCell:(id)a3 shouldAppearSelectedForPreviouslyFocusedView:(id)a4;
-- (CGSize)_expectedCellSizeForElement:(id)a3 inSectionIndex:(int64_t)a4;
-- (CGSize)_expectedHeaderCellSizeForElement:(id)a3 section:(int64_t)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (CGSize)expectedCellSizeForElement:(id)a3 atIndexPath:(id)a4;
-- (Class)cellClassForElement:(id)a3;
-- (UIEdgeInsets)_marginForHeaderCellForElement:(id)a3 section:(int64_t)a4;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
++ (id)_shadowCollectionElementForCollectionElement:(id)element;
+- (BOOL)_relatedElementIsGridAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHandleLongPressForItemAtIndexPath:(id)path;
+- (BOOL)listCell:(id)cell shouldAppearSelectedForPreviouslyFocusedView:(id)view;
+- (CGSize)_expectedCellSizeForElement:(id)element inSectionIndex:(int64_t)index;
+- (CGSize)_expectedHeaderCellSizeForElement:(id)element section:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (CGSize)expectedCellSizeForElement:(id)element atIndexPath:(id)path;
+- (Class)cellClassForElement:(id)element;
+- (UIEdgeInsets)_marginForHeaderCellForElement:(id)element section:(int64_t)section;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (_TVListViewControllerDelegate)delegate;
-- (id)_cachedViewControllerForElement:(id)a3;
-- (id)_previewControllerWithElement:(id)a3 previewElement:(id *)a4;
-- (id)_relatedContentElementForIndexPath:(id)a3;
-- (id)_viewControllerForElement:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)impressionableElementsContainedInDocument:(id)a3;
-- (id)makeCollectionViewWithFrame:(CGRect)a3;
+- (id)_cachedViewControllerForElement:(id)element;
+- (id)_previewControllerWithElement:(id)element previewElement:(id *)previewElement;
+- (id)_relatedContentElementForIndexPath:(id)path;
+- (id)_viewControllerForElement:(id)element;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)impressionableElementsContainedInDocument:(id)document;
+- (id)makeCollectionViewWithFrame:(CGRect)frame;
 - (void)_delayedUpdatePreview;
 - (void)_updateCellMetrics;
-- (void)_updatedPreviewWithItemAtIndexPath:(id)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_updatedPreviewWithItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didUpdateCollectionViewByNeedingReload:(BOOL)a3 focusUpdate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)templateControllerDidUpdateFocusFromView:(id)a3;
-- (void)updateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)updateSupplementaryViewsForSectionAtOldIndex:(int64_t)a3 oldElement:(id)a4 withNewIndex:(int64_t)a5 newElement:(id)a6 requiresReload:(BOOL *)a7 requiresRelayout:(BOOL *)a8;
-- (void)updateViewLayoutAnimated:(BOOL)a3 relayout:(BOOL)a4;
-- (void)updateVisibleCell:(id)a3 atIndexPath:(id)a4 withElement:(id)a5;
-- (void)updateWithViewElement:(id)a3 cellMetrics:(TVCellMetrics *)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didUpdateCollectionViewByNeedingReload:(BOOL)reload focusUpdate:(BOOL)update;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)templateControllerDidUpdateFocusFromView:(id)view;
+- (void)updateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)updateSupplementaryViewsForSectionAtOldIndex:(int64_t)index oldElement:(id)element withNewIndex:(int64_t)newIndex newElement:(id)newElement requiresReload:(BOOL *)reload requiresRelayout:(BOOL *)relayout;
+- (void)updateViewLayoutAnimated:(BOOL)animated relayout:(BOOL)relayout;
+- (void)updateVisibleCell:(id)cell atIndexPath:(id)path withElement:(id)element;
+- (void)updateWithViewElement:(id)element cellMetrics:(TVCellMetrics *)metrics;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _TVListViewController
@@ -52,31 +52,31 @@
   [(_TVMLCollectionViewController *)&v3 dealloc];
 }
 
-- (void)updateWithViewElement:(id)a3 cellMetrics:(TVCellMetrics *)a4
+- (void)updateWithViewElement:(id)element cellMetrics:(TVCellMetrics *)metrics
 {
-  v6 = a3;
-  v7 = [v6 appDocument];
-  v8 = [v7 templateElement];
-  v9 = [v8 tv_elementType];
+  elementCopy = element;
+  appDocument = [elementCopy appDocument];
+  templateElement = [appDocument templateElement];
+  tv_elementType = [templateElement tv_elementType];
 
-  if (v9 == 74)
+  if (tv_elementType == 74)
   {
     self->_configureForStackTemplate = 1;
   }
 
-  v10 = [v6 sections];
-  v11 = [v10 firstObject];
+  sections = [elementCopy sections];
+  firstObject = [sections firstObject];
 
-  v12 = [v11 firstItemElement];
+  firstItemElement = [firstObject firstItemElement];
   secondCellIndexPath = self->_secondCellIndexPath;
   self->_secondCellIndexPath = 0;
 
-  if ([v12 tv_elementType] == 55 && objc_msgSend(v12, "tv_textStyle") == 3)
+  if ([firstItemElement tv_elementType] == 55 && objc_msgSend(firstItemElement, "tv_textStyle") == 3)
   {
-    if ([v11 numberOfItems] < 2)
+    if ([firstObject numberOfItems] < 2)
     {
-      v16 = [v6 sections];
-      v17 = [v16 count];
+      sections2 = [elementCopy sections];
+      v17 = [sections2 count];
 
       if (v17 < 2)
       {
@@ -88,13 +88,13 @@
       *(&v32 + 1) = __Block_byref_object_copy__5;
       *&v33 = __Block_byref_object_dispose__5;
       *(&v33 + 1) = 0;
-      v18 = [v6 sections];
+      sections3 = [elementCopy sections];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __59___TVListViewController_updateWithViewElement_cellMetrics___block_invoke;
       v41[3] = &unk_279D708A8;
       v41[4] = &cellSize;
-      [v18 enumerateObjectsUsingBlock:v41];
+      [sections3 enumerateObjectsUsingBlock:v41];
 
       v19 = [*(*&cellSize.height + 40) copy];
       v20 = self->_secondCellIndexPath;
@@ -120,30 +120,30 @@ LABEL_10:
   self->_previewUpdated = 0;
   v40.receiver = self;
   v40.super_class = _TVListViewController;
-  v22 = *&a4->cellMargin.top;
-  v37 = *&a4->cellInsetAlt.bottom;
+  v22 = *&metrics->cellMargin.top;
+  v37 = *&metrics->cellInsetAlt.bottom;
   v38 = v22;
-  v39 = *&a4->cellMargin.bottom;
-  v23 = *&a4->cellInset.top;
-  v33 = *&a4->cellPadding.bottom;
+  v39 = *&metrics->cellMargin.bottom;
+  v23 = *&metrics->cellInset.top;
+  v33 = *&metrics->cellPadding.bottom;
   v34 = v23;
-  v24 = *&a4->cellInsetAlt.top;
-  v35 = *&a4->cellInset.bottom;
+  v24 = *&metrics->cellInsetAlt.top;
+  v35 = *&metrics->cellInset.bottom;
   v36 = v24;
-  v25 = *&a4->cellPadding.top;
-  cellSize = a4->cellSize;
+  v25 = *&metrics->cellPadding.top;
+  cellSize = metrics->cellSize;
   v32 = v25;
-  [(_TVMLCollectionViewController *)&v40 updateWithViewElement:v6 cellMetrics:&cellSize];
-  v26 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+  [(_TVMLCollectionViewController *)&v40 updateWithViewElement:elementCopy cellMetrics:&cellSize];
+  lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
 
-  if (!v26)
+  if (!lastFocusedIndexPath)
   {
-    v27 = [(_TVMLCollectionViewController *)self collectionElement];
-    v28 = [v27 sections];
+    collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+    sections4 = [collectionElement sections];
 
-    if ([v28 count])
+    if ([sections4 count])
     {
-      v29 = [v28 objectAtIndex:0];
+      v29 = [sections4 objectAtIndex:0];
     }
 
     else
@@ -164,24 +164,24 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = _TVListViewController;
   [(_TVMLCollectionViewController *)&v4 viewDidLoad];
-  v3 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-  [v3 setCollectionGradientMask:5];
+  collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+  [collectionWrappingView setCollectionGradientMask:5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = _TVListViewController;
-  [(_TVListViewController *)&v16 viewWillAppear:a3];
+  [(_TVListViewController *)&v16 viewWillAppear:appear];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(_TVMLCollectionViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v6 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -193,39 +193,39 @@ LABEL_10:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(_TVMLCollectionViewController *)self collectionView];
-        [v11 deselectItemAtIndexPath:v10 animated:0];
+        collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+        [collectionView2 deselectItemAtIndexPath:v10 animated:0];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v7 = [indexPathsForSelectedItems countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = _TVListViewController;
-  [(_TVMLCollectionViewController *)&v8 viewDidAppear:a3];
-  v4 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-  if (v4 && !self->_pendingPreviewIndexPath)
+  [(_TVMLCollectionViewController *)&v8 viewDidAppear:appear];
+  lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+  if (lastFocusedIndexPath && !self->_pendingPreviewIndexPath)
   {
     lastPreviewedIndexPath = self->_lastPreviewedIndexPath;
 
     if (!lastPreviewedIndexPath)
     {
-      v6 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+      lastFocusedIndexPath2 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
       pendingPreviewIndexPath = self->_pendingPreviewIndexPath;
-      self->_pendingPreviewIndexPath = v6;
+      self->_pendingPreviewIndexPath = lastFocusedIndexPath2;
 
       [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedUpdatePreview object:0];
       [(_TVListViewController *)self performSelector:sel__delayedUpdatePreview withObject:0 afterDelay:0.0];
@@ -237,12 +237,12 @@ LABEL_10:
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = _TVListViewController;
   [(_TVListViewController *)&v5 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedUpdatePreview object:0];
   }
@@ -256,49 +256,49 @@ LABEL_10:
   [(_TVListViewController *)self _updateCellMetrics];
 }
 
-- (id)makeCollectionViewWithFrame:(CGRect)a3
+- (id)makeCollectionViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_alloc_init(_TVCollectionViewFlowLayout);
   [(UICollectionViewFlowLayout *)v8 setScrollDirection:0];
   [(UICollectionViewFlowLayout *)v8 setMinimumInteritemSpacing:0.0];
   [(UICollectionViewFlowLayout *)v8 setSectionInset:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-  v9 = [(_TVCollectionView *)[_TVListView alloc] initWithFrame:v8 collectionViewLayout:x, y, width, height];
-  [(_TVListView *)v9 setAutoresizingMask:18];
-  [(_TVListView *)v9 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"TVListHeaderViewIdentifier"];
-  [(_TVCollectionView *)v9 setDelegate:self];
-  [(_TVListView *)v9 setDataSource:self];
-  [(_TVListView *)v9 setBackgroundColor:0];
-  [(_TVListView *)v9 setOpaque:0];
-  [(_TVListView *)v9 setClipsToBounds:0];
-  [(_TVListView *)v9 setShowsVerticalScrollIndicator:0];
-  [(_TVListView *)v9 setConfigureForStackTemplate:self->_configureForStackTemplate];
+  height = [(_TVCollectionView *)[_TVListView alloc] initWithFrame:v8 collectionViewLayout:x, y, width, height];
+  [(_TVListView *)height setAutoresizingMask:18];
+  [(_TVListView *)height registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"TVListHeaderViewIdentifier"];
+  [(_TVCollectionView *)height setDelegate:self];
+  [(_TVListView *)height setDataSource:self];
+  [(_TVListView *)height setBackgroundColor:0];
+  [(_TVListView *)height setOpaque:0];
+  [(_TVListView *)height setClipsToBounds:0];
+  [(_TVListView *)height setShowsVerticalScrollIndicator:0];
+  [(_TVListView *)height setConfigureForStackTemplate:self->_configureForStackTemplate];
 
-  return v9;
+  return height;
 }
 
-- (void)updateViewLayoutAnimated:(BOOL)a3 relayout:(BOOL)a4
+- (void)updateViewLayoutAnimated:(BOOL)animated relayout:(BOOL)relayout
 {
-  v5 = [(_TVMLCollectionViewController *)self collectionView:a3];
-  v8 = [v5 collectionViewLayout];
+  v5 = [(_TVMLCollectionViewController *)self collectionView:animated];
+  collectionViewLayout = [v5 collectionViewLayout];
 
-  v6 = [(_TVMLCollectionViewController *)self collectionElement];
-  v7 = [v6 style];
-  [v7 tv_interitemSpacing];
-  [v8 setMinimumLineSpacing:?];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  style = [collectionElement style];
+  [style tv_interitemSpacing];
+  [collectionViewLayout setMinimumLineSpacing:?];
 
   [(_TVListViewController *)self _updateCellMetrics];
 }
 
-- (Class)cellClassForElement:(id)a3
+- (Class)cellClassForElement:(id)element
 {
-  v3 = a3;
-  if ([v3 elementType] != 53 && objc_msgSend(v3, "elementType") != 14 && objc_msgSend(v3, "tv_elementType") == 55)
+  elementCopy = element;
+  if ([elementCopy elementType] != 53 && objc_msgSend(elementCopy, "elementType") != 14 && objc_msgSend(elementCopy, "tv_elementType") == 55)
   {
-    [v3 tv_textStyle];
+    [elementCopy tv_textStyle];
   }
 
   v4 = objc_opt_class();
@@ -306,10 +306,10 @@ LABEL_10:
   return v4;
 }
 
-- (CGSize)expectedCellSizeForElement:(id)a3 atIndexPath:(id)a4
+- (CGSize)expectedCellSizeForElement:(id)element atIndexPath:(id)path
 {
-  v6 = a3;
-  -[_TVListViewController _expectedCellSizeForElement:inSectionIndex:](self, "_expectedCellSizeForElement:inSectionIndex:", v6, [a4 section]);
+  elementCopy = element;
+  -[_TVListViewController _expectedCellSizeForElement:inSectionIndex:](self, "_expectedCellSizeForElement:inSectionIndex:", elementCopy, [path section]);
   v8 = v7;
   v10 = v9;
 
@@ -320,50 +320,50 @@ LABEL_10:
   return result;
 }
 
-- (void)updateVisibleCell:(id)a3 atIndexPath:(id)a4 withElement:(id)a5
+- (void)updateVisibleCell:(id)cell atIndexPath:(id)path withElement:(id)element
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 tv_elementType] == 53 || objc_msgSend(v10, "tv_elementType") == 14)
+  cellCopy = cell;
+  pathCopy = path;
+  elementCopy = element;
+  if ([elementCopy tv_elementType] == 53 || objc_msgSend(elementCopy, "tv_elementType") == 14)
   {
-    v11 = [(_TVListViewController *)self _viewControllerForElement:v10];
+    v11 = [(_TVListViewController *)self _viewControllerForElement:elementCopy];
     v12 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v13 = [v12 _viewControllerFromElement:v10 existingController:v11];
+    v13 = [v12 _viewControllerFromElement:elementCopy existingController:v11];
   }
 
-  else if (v8 && [v10 tv_elementType] == 55 && objc_msgSend(v10, "tv_textStyle") == 3)
+  else if (cellCopy && [elementCopy tv_elementType] == 55 && objc_msgSend(elementCopy, "tv_textStyle") == 3)
   {
-    v14 = [v8 contentView];
-    v15 = [v14 subviews];
-    v16 = [v15 firstObject];
+    contentView = [cellCopy contentView];
+    subviews = [contentView subviews];
+    firstObject = [subviews firstObject];
 
     v17 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v18 = [v17 _viewFromElement:v10 existingView:v16];
+    v18 = [v17 _viewFromElement:elementCopy existingView:firstObject];
 
-    [v8 setDisabled:{objc_msgSend(v10, "isDisabled")}];
-    [v8 setNeedsLayout];
+    [cellCopy setDisabled:{objc_msgSend(elementCopy, "isDisabled")}];
+    [cellCopy setNeedsLayout];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = _TVListViewController;
-    [(_TVMLCollectionViewController *)&v19 updateVisibleCell:v8 atIndexPath:v9 withElement:v10];
+    [(_TVMLCollectionViewController *)&v19 updateVisibleCell:cellCopy atIndexPath:pathCopy withElement:elementCopy];
   }
 }
 
-- (void)updateSupplementaryViewsForSectionAtOldIndex:(int64_t)a3 oldElement:(id)a4 withNewIndex:(int64_t)a5 newElement:(id)a6 requiresReload:(BOOL *)a7 requiresRelayout:(BOOL *)a8
+- (void)updateSupplementaryViewsForSectionAtOldIndex:(int64_t)index oldElement:(id)element withNewIndex:(int64_t)newIndex newElement:(id)newElement requiresReload:(BOOL *)reload requiresRelayout:(BOOL *)relayout
 {
-  v39 = a6;
+  newElementCopy = newElement;
   v13 = MEMORY[0x277CCAA70];
-  v14 = a4;
-  v15 = [v13 indexPathForItem:0 inSection:a3];
-  v16 = [v39 header];
-  if (v16)
+  elementCopy = element;
+  v15 = [v13 indexPathForItem:0 inSection:index];
+  header = [newElementCopy header];
+  if (header)
   {
-    v17 = [v39 header];
-    [(_TVListViewController *)self _expectedHeaderCellSizeForElement:v17 section:a5];
+    header2 = [newElementCopy header];
+    [(_TVListViewController *)self _expectedHeaderCellSizeForElement:header2 section:newIndex];
     v19 = v18;
     v21 = v20;
   }
@@ -374,13 +374,13 @@ LABEL_10:
     v21 = *(MEMORY[0x277CBF3A8] + 8);
   }
 
-  v22 = [v14 header];
+  header3 = [elementCopy header];
 
   v23 = MEMORY[0x277D767D8];
-  if (v22)
+  if (header3)
   {
-    v24 = [(_TVMLCollectionViewController *)self collectionView];
-    v25 = [v24 layoutAttributesForSupplementaryElementOfKind:*v23 atIndexPath:v15];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    v25 = [collectionView layoutAttributesForSupplementaryElementOfKind:*v23 atIndexPath:v15];
     [v25 frame];
     v27 = v26;
     v29 = v28;
@@ -394,77 +394,77 @@ LABEL_10:
 
   if (v19 == v27 && v21 == v29)
   {
-    v31 = [(_TVMLCollectionViewController *)self collectionView];
-    v32 = [v31 _visibleSupplementaryViewOfKind:*v23 atIndexPath:v15];
+    collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+    v32 = [collectionView2 _visibleSupplementaryViewOfKind:*v23 atIndexPath:v15];
 
     if (v32)
     {
       v33 = MEMORY[0x277CCAE60];
-      v34 = [v39 header];
-      [(_TVListViewController *)self _marginForHeaderCellForElement:v34 section:a5];
+      header4 = [newElementCopy header];
+      [(_TVListViewController *)self _marginForHeaderCellForElement:header4 section:newIndex];
       v35 = [v33 valueWithUIEdgeInsets:?];
       [v32 setValue:v35 forTVViewStyle:@"padding"];
 
       v36 = +[TVInterfaceFactory sharedInterfaceFactory];
-      v37 = [v39 header];
-      v38 = [v36 _viewFromElement:v37 existingView:v32];
+      header5 = [newElementCopy header];
+      v38 = [v36 _viewFromElement:header5 existingView:v32];
     }
   }
 
   else
   {
-    *a7 = 1;
+    *reload = 1;
   }
 }
 
-- (void)didUpdateCollectionViewByNeedingReload:(BOOL)a3 focusUpdate:(BOOL)a4
+- (void)didUpdateCollectionViewByNeedingReload:(BOOL)reload focusUpdate:(BOOL)update
 {
-  v4 = a4;
-  v5 = a3;
+  updateCopy = update;
+  reloadCopy = reload;
   v50 = *MEMORY[0x277D85DE8];
   lastPreviewedIndexPath = self->_lastPreviewedIndexPath;
   self->_lastPreviewedIndexPath = 0;
 
-  v8 = [(_TVMLCollectionViewController *)self collectionElement];
-  v9 = [v8 isDisabled];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  isDisabled = [collectionElement isDisabled];
 
-  if (!v9)
+  if (!isDisabled)
   {
-    if (v4)
+    if (updateCopy)
     {
       [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedUpdatePreview object:0];
       pendingPreviewIndexPath = self->_pendingPreviewIndexPath;
       self->_pendingPreviewIndexPath = 0;
 
-      v12 = [MEMORY[0x277D759A0] mainScreen];
-      v13 = [v12 focusedView];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      focusedView = [mainScreen focusedView];
 
-      v14 = [(_TVMLCollectionViewController *)self collectionView];
-      if ([v13 isDescendantOfView:v14])
+      collectionView = [(_TVMLCollectionViewController *)self collectionView];
+      if ([focusedView isDescendantOfView:collectionView])
       {
       }
 
       else
       {
-        v20 = [(_TVListViewController *)self parentViewController];
+        parentViewController = [(_TVListViewController *)self parentViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v22 = [(_TVMLCollectionViewController *)self collectionView];
-          v23 = [v22 remembersLastFocusedIndexPath];
+          collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+          remembersLastFocusedIndexPath = [collectionView2 remembersLastFocusedIndexPath];
 
-          if (v23)
+          if (remembersLastFocusedIndexPath)
           {
             v47 = 0u;
             v48 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v24 = [(_TVMLCollectionViewController *)self collectionView];
-            v25 = [v24 visibleCells];
+            collectionView3 = [(_TVMLCollectionViewController *)self collectionView];
+            visibleCells = [collectionView3 visibleCells];
 
-            v26 = [v25 countByEnumeratingWithState:&v45 objects:v49 count:16];
+            v26 = [visibleCells countByEnumeratingWithState:&v45 objects:v49 count:16];
             if (v26)
             {
               v27 = v26;
@@ -475,7 +475,7 @@ LABEL_10:
                 {
                   if (*v46 != v28)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(visibleCells);
                   }
 
                   v30 = *(*(&v45 + 1) + 8 * i);
@@ -486,21 +486,21 @@ LABEL_10:
                   }
                 }
 
-                v27 = [v25 countByEnumeratingWithState:&v45 objects:v49 count:16];
+                v27 = [visibleCells countByEnumeratingWithState:&v45 objects:v49 count:16];
               }
 
               while (v27);
             }
           }
 
-          v31 = [(_TVListViewController *)self parentViewController];
-          v32 = [v31 setNeedsFocusUpdateToList];
+          parentViewController2 = [(_TVListViewController *)self parentViewController];
+          setNeedsFocusUpdateToList = [parentViewController2 setNeedsFocusUpdateToList];
 
-          if ((v32 & 1) == 0)
+          if ((setNeedsFocusUpdateToList & 1) == 0)
           {
-            v33 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+            lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
             v34 = self->_pendingPreviewIndexPath;
-            self->_pendingPreviewIndexPath = v33;
+            self->_pendingPreviewIndexPath = lastFocusedIndexPath;
 
             [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedUpdatePreview object:0];
             if (self->_pendingPreviewIndexPath)
@@ -511,10 +511,10 @@ LABEL_10:
         }
       }
 
-      v35 = [(_TVMLCollectionViewController *)self collectionView];
-      [v35 _setRemembersPreviouslyFocusedItem:0];
+      collectionView4 = [(_TVMLCollectionViewController *)self collectionView];
+      [collectionView4 _setRemembersPreviouslyFocusedItem:0];
 
-      if (v5)
+      if (reloadCopy)
       {
         goto LABEL_33;
       }
@@ -522,9 +522,9 @@ LABEL_10:
       goto LABEL_35;
     }
 
-    v15 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    lastFocusedIndexPath2 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
 
-    if (!v15)
+    if (!lastFocusedIndexPath2)
     {
       goto LABEL_32;
     }
@@ -535,29 +535,29 @@ LABEL_10:
       goto LABEL_29;
     }
 
-    v17 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-    v18 = [(NSIndexPath *)v16 isEqual:v17];
+    lastFocusedIndexPath3 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    v18 = [(NSIndexPath *)v16 isEqual:lastFocusedIndexPath3];
 
     if ((v18 & 1) == 0)
     {
-      v39 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+      lastFocusedIndexPath4 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
       v40 = self->_pendingPreviewIndexPath;
-      self->_pendingPreviewIndexPath = v39;
+      self->_pendingPreviewIndexPath = lastFocusedIndexPath4;
 
-      if (v5)
+      if (reloadCopy)
       {
         goto LABEL_33;
       }
 
 LABEL_35:
-      v41 = [MEMORY[0x277CCAB58] indexSet];
+      indexSet = [MEMORY[0x277CCAB58] indexSet];
       cachedListChildViewControllers = self->_cachedListChildViewControllers;
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __76___TVListViewController_didUpdateCollectionViewByNeedingReload_focusUpdate___block_invoke;
       v43[3] = &unk_279D708D0;
-      v44 = v41;
-      v38 = v41;
+      v44 = indexSet;
+      v38 = indexSet;
       [(NSMutableArray *)cachedListChildViewControllers enumerateObjectsUsingBlock:v43];
       [(NSMutableArray *)self->_cachedListChildViewControllers removeObjectsAtIndexes:v38];
 
@@ -574,25 +574,25 @@ LABEL_35:
     else
     {
 LABEL_29:
-      v36 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+      lastFocusedIndexPath5 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
       v19 = self->_lastPreviewedIndexPath;
-      self->_lastPreviewedIndexPath = v36;
+      self->_lastPreviewedIndexPath = lastFocusedIndexPath5;
     }
 
     goto LABEL_31;
   }
 
-  v10 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+  lastFocusedIndexPath6 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
 
-  if (v10)
+  if (lastFocusedIndexPath6)
   {
 LABEL_31:
-    v37 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-    [(_TVListViewController *)self _updatedPreviewWithItemAtIndexPath:v37];
+    lastFocusedIndexPath7 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    [(_TVListViewController *)self _updatedPreviewWithItemAtIndexPath:lastFocusedIndexPath7];
   }
 
 LABEL_32:
-  if (!v5)
+  if (!reloadCopy)
   {
     goto LABEL_35;
   }
@@ -603,31 +603,31 @@ LABEL_33:
 LABEL_36:
 }
 
-- (void)updateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)updateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 nextFocusedIndexPath];
-  v7 = [(_TVMLCollectionViewController *)self collectionElement];
-  v8 = [v7 sections];
+  contextCopy = context;
+  nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
 
-  v9 = [v6 section];
-  if (v9 >= [v8 count] || (v10 = objc_msgSend(v6, "item"), objc_msgSend(v8, "objectAtIndexedSubscript:", objc_msgSend(v6, "section")), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "numberOfItems"), v11, v13 = v6, v10 >= v12))
+  section = [nextFocusedIndexPath section];
+  if (section >= [sections count] || (v10 = objc_msgSend(nextFocusedIndexPath, "item"), objc_msgSend(sections, "objectAtIndexedSubscript:", objc_msgSend(nextFocusedIndexPath, "section")), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "numberOfItems"), v11, v13 = nextFocusedIndexPath, v10 >= v12))
   {
 
     v13 = 0;
   }
 
-  if (v6)
+  if (nextFocusedIndexPath)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = [(_TVMLCollectionViewController *)self collectionView];
-    v15 = [v14 visibleCells];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    v16 = [v15 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v16 = [visibleCells countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v16)
     {
       v17 = v16;
@@ -638,7 +638,7 @@ LABEL_36:
         {
           if (*v32 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(visibleCells);
           }
 
           v20 = *(*(&v31 + 1) + 8 * i);
@@ -649,7 +649,7 @@ LABEL_36:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v17 = [visibleCells countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v17);
@@ -657,15 +657,15 @@ LABEL_36:
 
     self->_secondIndexPathFocused = 0;
     [(_TVMLCollectionViewController *)self setLastFocusedIndexPath:v13];
-    v21 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
     pendingPreviewIndexPath = self->_pendingPreviewIndexPath;
-    self->_pendingPreviewIndexPath = v21;
+    self->_pendingPreviewIndexPath = lastFocusedIndexPath;
 
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__delayedUpdatePreview object:0];
     [(_TVListViewController *)self performSelector:sel__delayedUpdatePreview withObject:0 afterDelay:0.1];
-    if ([v5 focusHeading] == 1 && self->_secondCellIndexPath && objc_msgSend(v13, "isEqual:"))
+    if ([contextCopy focusHeading] == 1 && self->_secondCellIndexPath && objc_msgSend(v13, "isEqual:"))
     {
-      v23 = 0;
+      _remembersPreviouslyFocusedItem = 0;
       self->_secondIndexPathFocused = 1;
       goto LABEL_21;
     }
@@ -673,12 +673,12 @@ LABEL_36:
     goto LABEL_20;
   }
 
-  v24 = [(_TVMLCollectionViewController *)self collectionView];
-  if ([v24 remembersLastFocusedIndexPath])
+  collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+  if ([collectionView2 remembersLastFocusedIndexPath])
   {
 
 LABEL_20:
-    v23 = 0;
+    _remembersPreviouslyFocusedItem = 0;
     goto LABEL_21;
   }
 
@@ -688,40 +688,40 @@ LABEL_20:
 
   else
   {
-    v28 = [(UIViewController *)self->_previewController tv_associatedIKViewElement];
-    v29 = [v28 tv_elementType];
+    tv_associatedIKViewElement = [(UIViewController *)self->_previewController tv_associatedIKViewElement];
+    tv_elementType = [tv_associatedIKViewElement tv_elementType];
 
-    if (v29 != 14)
+    if (tv_elementType != 14)
     {
       goto LABEL_20;
     }
   }
 
-  v30 = [(_TVMLCollectionViewController *)self collectionView];
-  v23 = [v30 _remembersPreviouslyFocusedItem];
+  collectionView3 = [(_TVMLCollectionViewController *)self collectionView];
+  _remembersPreviouslyFocusedItem = [collectionView3 _remembersPreviouslyFocusedItem];
 
 LABEL_21:
-  v25 = [(_TVMLCollectionViewController *)self collectionView];
-  v26 = [v25 remembersLastFocusedIndexPath];
+  collectionView4 = [(_TVMLCollectionViewController *)self collectionView];
+  remembersLastFocusedIndexPath = [collectionView4 remembersLastFocusedIndexPath];
 
-  if (v23 != v26)
+  if (_remembersPreviouslyFocusedItem != remembersLastFocusedIndexPath)
   {
-    v27 = [(_TVMLCollectionViewController *)self collectionView];
-    [v27 _setRemembersPreviouslyFocusedItem:v23];
+    collectionView5 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView5 _setRemembersPreviouslyFocusedItem:_remembersPreviouslyFocusedItem];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(_TVMLCollectionViewController *)self collectionElement];
-  v8 = [v7 sections];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v9 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 prototypeForItemAtIndex:{objc_msgSend(v6, "row")}];
-  v11 = [v6 section];
+  v10 = [v9 prototypeForItemAtIndex:{objc_msgSend(pathCopy, "row")}];
+  section = [pathCopy section];
 
-  [(_TVListViewController *)self _expectedCellSizeForElement:v10 inSectionIndex:v11];
+  [(_TVListViewController *)self _expectedCellSizeForElement:v10 inSectionIndex:section];
   v13 = v12;
   v15 = v14;
 
@@ -732,20 +732,20 @@ LABEL_21:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v6 = [(_TVMLCollectionViewController *)self collectionElement:a3];
-  v7 = [v6 sections];
-  v8 = [v7 objectAtIndexedSubscript:a5];
+  v6 = [(_TVMLCollectionViewController *)self collectionElement:view];
+  sections = [v6 sections];
+  v8 = [sections objectAtIndexedSubscript:index];
 
-  v9 = [v8 firstItemElement];
+  firstItemElement = [v8 firstItemElement];
   v10 = MEMORY[0x277D768C8];
   v11 = *(MEMORY[0x277D768C8] + 8);
   v12 = *(MEMORY[0x277D768C8] + 24);
-  if ([v9 tv_elementType] == 53 || objc_msgSend(v9, "tv_elementType") == 14 || (v15 = *v10, v17 = v10[2], objc_msgSend(v9, "tv_elementType") == 55) && objc_msgSend(v9, "tv_textStyle") == 3)
+  if ([firstItemElement tv_elementType] == 53 || objc_msgSend(firstItemElement, "tv_elementType") == 14 || (v15 = *v10, v17 = v10[2], objc_msgSend(firstItemElement, "tv_elementType") == 55) && objc_msgSend(firstItemElement, "tv_textStyle") == 3)
   {
-    v13 = [v9 style];
-    [v13 tv_margin];
+    style = [firstItemElement style];
+    [style tv_margin];
     v15 = v14;
     v17 = v16;
   }
@@ -761,14 +761,14 @@ LABEL_21:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = [(_TVMLCollectionViewController *)self collectionElement:a3];
-  v8 = [v7 sections];
-  v9 = [v8 objectAtIndex:a5];
+  v7 = [(_TVMLCollectionViewController *)self collectionElement:view];
+  sections = [v7 sections];
+  v9 = [sections objectAtIndex:section];
 
-  v10 = [v9 header];
-  [(_TVListViewController *)self _expectedHeaderCellSizeForElement:v10 section:a5];
+  header = [v9 header];
+  [(_TVListViewController *)self _expectedHeaderCellSizeForElement:header section:section];
   v12 = v11;
   v14 = v13;
 
@@ -779,41 +779,41 @@ LABEL_21:
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = _TVListViewController;
-  [(_TVMLCollectionViewController *)&v18 collectionView:a3 willDisplayCell:v8 forItemAtIndexPath:v9];
+  [(_TVMLCollectionViewController *)&v18 collectionView:view willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v8 viewController];
-    if (v10)
+    viewController = [cellCopy viewController];
+    if (viewController)
     {
-      v11 = [(_TVListViewController *)self childViewControllers];
-      v12 = [v11 containsObject:v10];
+      childViewControllers = [(_TVListViewController *)self childViewControllers];
+      v12 = [childViewControllers containsObject:viewController];
 
       if ((v12 & 1) == 0)
       {
-        [(_TVListViewController *)self addChildViewController:v10];
-        [v10 didMoveToParentViewController:self];
+        [(_TVListViewController *)self addChildViewController:viewController];
+        [viewController didMoveToParentViewController:self];
       }
     }
   }
 
-  v13 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-  if ([v13 isEqual:v9] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && -[_TVListViewController _relatedElementIsGridAtIndexPath:](self, "_relatedElementIsGridAtIndexPath:", v9))
+  lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+  if ([lastFocusedIndexPath isEqual:pathCopy] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && -[_TVListViewController _relatedElementIsGridAtIndexPath:](self, "_relatedElementIsGridAtIndexPath:", pathCopy))
   {
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    v15 = [v14 focusedView];
-    v16 = [(_TVMLCollectionViewController *)self collectionView];
-    v17 = [v15 isDescendantOfView:v16];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    focusedView = [mainScreen focusedView];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    v17 = [focusedView isDescendantOfView:collectionView];
 
     if ((v17 & 1) == 0)
     {
-      [v8 setShouldAppearSelected:1];
+      [cellCopy setShouldAppearSelected:1];
     }
   }
 
@@ -822,28 +822,28 @@ LABEL_21:
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v13.receiver = self;
   v13.super_class = _TVListViewController;
-  [(_TVMLCollectionViewController *)&v13 collectionView:a3 didEndDisplayingCell:v8 forItemAtIndexPath:a5];
+  [(_TVMLCollectionViewController *)&v13 collectionView:view didEndDisplayingCell:cellCopy forItemAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 viewController];
-    if (v9)
+    viewController = [cellCopy viewController];
+    if (viewController)
     {
-      v10 = [(_TVListViewController *)self childViewControllers];
-      if ([v10 containsObject:v9])
+      childViewControllers = [(_TVListViewController *)self childViewControllers];
+      if ([childViewControllers containsObject:viewController])
       {
-        v11 = [v9 view];
-        v12 = [v11 isDescendantOfView:v8];
+        view = [viewController view];
+        v12 = [view isDescendantOfView:cellCopy];
 
         if (v12)
         {
-          [v9 willMoveToParentViewController:0];
-          [v9 removeFromParentViewController];
+          [viewController willMoveToParentViewController:0];
+          [viewController removeFromParentViewController];
         }
       }
 
@@ -854,38 +854,38 @@ LABEL_21:
   }
 }
 
-- (void)templateControllerDidUpdateFocusFromView:(id)a3
+- (void)templateControllerDidUpdateFocusFromView:(id)view
 {
   previewController = self->_previewController;
-  v5 = a3;
-  v6 = [(UIViewController *)previewController view];
-  v7 = [v5 isDescendantOfView:v6];
+  viewCopy = view;
+  view = [(UIViewController *)previewController view];
+  v7 = [viewCopy isDescendantOfView:view];
 
   if (v7)
   {
-    v8 = [(_TVMLCollectionViewController *)self collectionView];
-    v9 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-    v6 = [v8 cellForItemAtIndexPath:v9];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    view = [collectionView cellForItemAtIndexPath:lastFocusedIndexPath];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 updateFloatingViewControlStateForPreviouslyFocusedView:v6];
+      [view updateFloatingViewControlStateForPreviouslyFocusedView:view];
     }
   }
 
-  v15 = [(_TVMLCollectionViewController *)self collectionView];
-  if (([v15 remembersLastFocusedIndexPath] & 1) == 0)
+  collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+  if (([collectionView2 remembersLastFocusedIndexPath] & 1) == 0)
   {
-    v10 = [(_TVListViewController *)self isAlwaysSoftFocusEnabled];
-    if (v10 || (-[UIViewController tv_associatedIKViewElement](self->_previewController, "tv_associatedIKViewElement"), v6 = objc_claimAutoreleasedReturnValue(), [v6 tv_elementType] == 14))
+    isAlwaysSoftFocusEnabled = [(_TVListViewController *)self isAlwaysSoftFocusEnabled];
+    if (isAlwaysSoftFocusEnabled || (-[UIViewController tv_associatedIKViewElement](self->_previewController, "tv_associatedIKViewElement"), view = objc_claimAutoreleasedReturnValue(), [view tv_elementType] == 14))
     {
-      v11 = [MEMORY[0x277D759A0] mainScreen];
-      v12 = [v11 focusedView];
-      v13 = [(UIViewController *)self->_previewController view];
-      v14 = [v12 isDescendantOfView:v13];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      focusedView = [mainScreen focusedView];
+      view2 = [(UIViewController *)self->_previewController view];
+      v14 = [focusedView isDescendantOfView:view2];
 
-      if (v10)
+      if (isAlwaysSoftFocusEnabled)
       {
 
         if (!v14)
@@ -903,8 +903,8 @@ LABEL_21:
         }
       }
 
-      v15 = [(_TVMLCollectionViewController *)self collectionView];
-      [v15 _setRemembersPreviouslyFocusedItem:1];
+      collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+      [collectionView2 _setRemembersPreviouslyFocusedItem:1];
     }
 
     else
@@ -913,76 +913,76 @@ LABEL_21:
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldHandleLongPressForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHandleLongPressForItemAtIndexPath:(id)path
 {
-  v4 = [(_TVListViewController *)self traitCollection:a3];
+  v4 = [(_TVListViewController *)self traitCollection:view];
   v5 = [v4 forceTouchCapability] != 2;
 
   return v5;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   v8.receiver = self;
   v8.super_class = _TVListViewController;
-  [(_TVMLCollectionViewController *)&v8 scrollViewDidScroll:v4];
-  v5 = [(_TVListViewController *)self delegate];
+  [(_TVMLCollectionViewController *)&v8 scrollViewDidScroll:scrollCopy];
+  delegate = [(_TVListViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_TVListViewController *)self delegate];
-    [v7 listViewController:self didScrollWithScrollView:v4];
+    delegate2 = [(_TVListViewController *)self delegate];
+    [delegate2 listViewController:self didScrollWithScrollView:scrollCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   v9.receiver = self;
   v9.super_class = _TVListViewController;
-  [(_TVMLCollectionViewController *)&v9 scrollViewWillEndDragging:a3 withVelocity:a4.x targetContentOffset:a4.y];
+  [(_TVMLCollectionViewController *)&v9 scrollViewWillEndDragging:dragging withVelocity:velocity.x targetContentOffset:velocity.y];
   if (self->_secondIndexPathFocused)
   {
-    v7 = [(_TVMLCollectionViewController *)self collectionView];
-    [v7 contentInset];
-    a5->y = -v8;
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView contentInset];
+    offset->y = -v8;
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_TVMLCollectionViewController *)self collectionElement];
-  v9 = [v8 sections];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v7, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v10 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v11 = [v10 elementForItemAtIndex:{objc_msgSend(v7, "item")}];
+  v11 = [v10 elementForItemAtIndex:{objc_msgSend(pathCopy, "item")}];
   if ([v11 tv_elementType] == 53 || objc_msgSend(v11, "tv_elementType") == 14)
   {
-    v12 = [v11 elementName];
-    v13 = [v6 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v7];
+    elementName = [v11 elementName];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:elementName forIndexPath:pathCopy];
 
     v14 = [(_TVListViewController *)self _viewControllerForElement:v11];
-    v15 = [v14 view];
+    view = [v14 view];
     [v13 bounds];
-    [v15 setFrame:?];
-    [v15 setAutoresizingMask:18];
+    [view setFrame:?];
+    [view setAutoresizingMask:18];
     [v13 setViewController:v14];
   }
 
   else if ([v11 tv_elementType] == 55 && objc_msgSend(v11, "tv_textStyle") == 3)
   {
-    v17 = [v11 elementName];
-    v13 = [v6 dequeueReusableCellWithReuseIdentifier:v17 forIndexPath:v7];
+    elementName2 = [v11 elementName];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:elementName2 forIndexPath:pathCopy];
 
     v18 = +[TVInterfaceFactory sharedInterfaceFactory];
     v19 = [v18 _viewFromElement:v11 existingView:0];
 
     [v13 setDisabled:{objc_msgSend(v11, "isDisabled")}];
-    v20 = [v13 contentView];
-    [v20 addSubview:v19];
+    contentView = [v13 contentView];
+    [contentView addSubview:v19];
 
     [v13 setNeedsLayout];
   }
@@ -991,7 +991,7 @@ LABEL_21:
   {
     v21.receiver = self;
     v21.super_class = _TVListViewController;
-    v13 = [(_TVMLCollectionViewController *)&v21 collectionView:v6 cellForItemAtIndexPath:v7];
+    v13 = [(_TVMLCollectionViewController *)&v21 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
     if ([v11 tv_elementType] == 23)
     {
       objc_opt_class();
@@ -1005,56 +1005,56 @@ LABEL_21:
   return v13;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_TVMLCollectionViewController *)self collectionElement];
-  v12 = [v11 sections];
-  v13 = [v12 objectAtIndex:{objc_msgSend(v8, "section")}];
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v13 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v14 = [v10 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"TVListHeaderViewIdentifier" forIndexPath:v8];
+  v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"TVListHeaderViewIdentifier" forIndexPath:pathCopy];
 
   [v14 transferLayoutStylesFromElement:v13];
   v15 = MEMORY[0x277CCAE60];
-  v16 = [v13 header];
-  v17 = [v8 section];
+  header = [v13 header];
+  section = [pathCopy section];
 
-  [(_TVListViewController *)self _marginForHeaderCellForElement:v16 section:v17];
+  [(_TVListViewController *)self _marginForHeaderCellForElement:header section:section];
   v18 = [v15 valueWithUIEdgeInsets:?];
   [v14 setValue:v18 forTVViewStyle:@"padding"];
 
   [v14 tv_setAssociatedIKViewElement:0];
   v19 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v20 = [v13 header];
-  v21 = [v19 _viewFromElement:v20 existingView:v14];
+  header2 = [v13 header];
+  v21 = [v19 _viewFromElement:header2 existingView:v14];
 
   return v14;
 }
 
-- (BOOL)listCell:(id)a3 shouldAppearSelectedForPreviouslyFocusedView:(id)a4
+- (BOOL)listCell:(id)cell shouldAppearSelectedForPreviouslyFocusedView:(id)view
 {
   v6 = MEMORY[0x277D759A0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 mainScreen];
-  v10 = [v9 focusedView];
+  viewCopy = view;
+  cellCopy = cell;
+  mainScreen = [v6 mainScreen];
+  focusedView = [mainScreen focusedView];
 
-  v11 = [(UIViewController *)self->_previewController view];
-  LOBYTE(v9) = [v10 isDescendantOfView:v11];
+  view = [(UIViewController *)self->_previewController view];
+  LOBYTE(mainScreen) = [focusedView isDescendantOfView:view];
 
-  v12 = [(_TVMLCollectionViewController *)self collectionView];
-  v13 = [v10 isDescendantOfView:v12];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  v13 = [focusedView isDescendantOfView:collectionView];
 
-  v14 = [(_TVMLCollectionViewController *)self collectionView];
-  v15 = [v7 isDescendantOfView:v14];
+  collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+  v15 = [viewCopy isDescendantOfView:collectionView2];
 
-  v16 = [(UIViewController *)self->_previewController view];
-  v17 = [v7 isDescendantOfView:v16];
+  view2 = [(UIViewController *)self->_previewController view];
+  v17 = [viewCopy isDescendantOfView:view2];
 
-  v18 = (v8 == v7) & v9;
-  v19 = (v15 | v17) & ((v9 | v13) ^ 1);
+  v18 = (cellCopy == viewCopy) & mainScreen;
+  v19 = (v15 | v17) & ((mainScreen | v13) ^ 1);
   if ([(_TVListViewController *)self isAlwaysSoftFocusEnabled])
   {
     v20 = v18 | v19;
@@ -1062,32 +1062,32 @@ LABEL_21:
 
   else
   {
-    v21 = [(UIViewController *)self->_previewController tv_associatedIKViewElement];
-    v20 = ([v21 tv_elementType] == 14) & (v18 | v19);
+    tv_associatedIKViewElement = [(UIViewController *)self->_previewController tv_associatedIKViewElement];
+    v20 = ([tv_associatedIKViewElement tv_elementType] == 14) & (v18 | v19);
   }
 
   return v20 & 1;
 }
 
-- (id)impressionableElementsContainedInDocument:(id)a3
+- (id)impressionableElementsContainedInDocument:(id)document
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_TVMLCollectionViewController *)self collectionElement];
-  v6 = [v5 appDocument];
-  v7 = [v6 isEqual:v4];
+  documentCopy = document;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  appDocument = [collectionElement appDocument];
+  v7 = [appDocument isEqual:documentCopy];
 
   if (v7)
   {
-    v8 = [(_TVMLCollectionViewController *)self collectionView];
-    v9 = [v8 visibleCells];
+    collectionView = [(_TVMLCollectionViewController *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = v9;
+    v11 = visibleCells;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -1102,8 +1102,8 @@ LABEL_21:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v22 + 1) + 8 * i) tv_impressionableElementsForDocument:{v4, v22}];
-          [v10 addObjectsFromArray:v16];
+          v16 = [*(*(&v22 + 1) + 8 * i) tv_impressionableElementsForDocument:{documentCopy, v22}];
+          [array addObjectsFromArray:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -1112,14 +1112,14 @@ LABEL_21:
       while (v13);
     }
 
-    v17 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-    v18 = [v17 headerView];
-    v19 = [v18 tv_impressionableElementsForDocument:v4];
-    [v10 addObjectsFromArray:v19];
+    collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+    headerView = [collectionWrappingView headerView];
+    v19 = [headerView tv_impressionableElementsForDocument:documentCopy];
+    [array addObjectsFromArray:v19];
 
-    if ([v10 count])
+    if ([array count])
     {
-      v20 = [MEMORY[0x277CBEA60] arrayWithArray:v10];
+      v20 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     }
 
     else
@@ -1136,21 +1136,21 @@ LABEL_21:
   return v20;
 }
 
-+ (id)_shadowCollectionElementForCollectionElement:(id)a3
++ (id)_shadowCollectionElementForCollectionElement:(id)element
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  elementCopy = element;
   v4 = objc_alloc_init(_TVShadowViewElement);
-  v15 = [[_TVShadowViewElementID alloc] initWithViewElement:v3];
+  v15 = [[_TVShadowViewElementID alloc] initWithViewElement:elementCopy];
   [(_TVShadowViewElement *)v4 setElementID:?];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v16 = v3;
-  v6 = [v3 sections];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v16 = elementCopy;
+  sections = [elementCopy sections];
+  v7 = [sections countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1161,7 +1161,7 @@ LABEL_21:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sections);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -1175,7 +1175,7 @@ LABEL_21:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [sections countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -1192,23 +1192,23 @@ LABEL_21:
 - (void)_updateCellMetrics
 {
   v68 = *MEMORY[0x277D85DE8];
-  v3 = [(_TVMLCollectionViewController *)self collectionView];
-  v4 = [v3 collectionViewLayout];
+  collectionView = [(_TVMLCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v5 = [(_TVMLCollectionViewController *)self collectionElement];
-  v6 = [v5 style];
-  [v6 tv_padding];
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  style = [collectionElement style];
+  [style tv_padding];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_TVMLCollectionViewController *)self collectionElement];
-  v12 = [v11 style];
-  [v12 tv_width];
-  v59 = v4;
+  collectionElement2 = [(_TVMLCollectionViewController *)self collectionElement];
+  style2 = [collectionElement2 style];
+  [style2 tv_width];
+  v59 = collectionViewLayout;
   if (v13 == 0.0)
   {
-    v14 = [(_TVMLCollectionViewController *)self collectionView];
-    [v14 bounds];
+    collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+    [collectionView2 bounds];
     v16 = v15 - v8 - v10;
   }
 
@@ -1219,17 +1219,17 @@ LABEL_21:
 
   cachedCellWidth = self->_cachedCellWidth;
   self->_cachedCellWidth = v16;
-  v60 = self;
+  selfCopy = self;
   v61 = objc_opt_new();
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v18 = [(_TVMLCollectionViewController *)self collectionElement];
-  v19 = [v18 sections];
+  collectionElement3 = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement3 sections];
 
-  obj = v19;
-  v20 = [v19 countByEnumeratingWithState:&v63 objects:v67 count:16];
+  obj = sections;
+  v20 = [sections countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1252,8 +1252,8 @@ LABEL_21:
           while (1)
           {
             v28 = [v26 elementForItemAtIndex:v27];
-            v29 = [v28 elementName];
-            v30 = [v29 isEqualToString:v24];
+            elementName = [v28 elementName];
+            v30 = [elementName isEqualToString:v24];
 
             if (v30)
             {
@@ -1268,8 +1268,8 @@ LABEL_21:
 
           if (v28)
           {
-            v31 = [v28 style];
-            [v31 tv_height];
+            style3 = [v28 style];
+            [style3 tv_height];
             v33 = v32;
 
             if (v33 <= 2.22044605e-16)
@@ -1277,15 +1277,15 @@ LABEL_21:
               v36 = +[TVInterfaceFactory sharedInterfaceFactory];
               v34 = [v36 _viewFromElement:v28 existingView:0];
 
-              v37 = [v28 style];
-              [v37 tv_padding];
+              style4 = [v28 style];
+              [style4 tv_padding];
               v39 = v38;
               v41 = v40;
 
-              [v34 sizeThatFits:{v60->_cachedCellWidth, 0.0}];
+              [v34 sizeThatFits:{selfCopy->_cachedCellWidth, 0.0}];
               v43 = v41 + v39 + v42;
-              v44 = [v28 style];
-              [v44 tv_minHeight];
+              style5 = [v28 style];
+              [style5 tv_minHeight];
               v46 = v45;
 
               if (v43 < v46 && v46 > 2.22044605e-16)
@@ -1293,8 +1293,8 @@ LABEL_21:
                 v43 = v46;
               }
 
-              v48 = [v28 style];
-              [v48 tv_maxHeight];
+              style6 = [v28 style];
+              [style6 tv_maxHeight];
               v50 = v49;
 
               if (v43 <= v50 || v50 <= 2.22044605e-16)
@@ -1342,17 +1342,17 @@ LABEL_30:
   }
 
   v55 = v54;
-  cachedListItemLockupHeightsBySection = v60->_cachedListItemLockupHeightsBySection;
+  cachedListItemLockupHeightsBySection = selfCopy->_cachedListItemLockupHeightsBySection;
   if (cachedListItemLockupHeightsBySection == v55)
   {
-    objc_storeStrong(&v60->_cachedListItemLockupHeightsBySection, v54);
+    objc_storeStrong(&selfCopy->_cachedListItemLockupHeightsBySection, v54);
     v58 = v16 == cachedCellWidth;
   }
 
   else
   {
     v57 = [(NSDictionary *)cachedListItemLockupHeightsBySection isEqualToDictionary:v55];
-    objc_storeStrong(&v60->_cachedListItemLockupHeightsBySection, v54);
+    objc_storeStrong(&selfCopy->_cachedListItemLockupHeightsBySection, v54);
     v58 = v57 && v16 == cachedCellWidth;
   }
 
@@ -1364,10 +1364,10 @@ LABEL_30:
 
 - (void)_delayedUpdatePreview
 {
-  v3 = [(_TVListViewController *)self view];
-  v4 = [v3 window];
+  view = [(_TVListViewController *)self view];
+  window = [view window];
 
-  if (v4)
+  if (window)
   {
     pendingPreviewIndexPath = self->_pendingPreviewIndexPath;
     v6 = pendingPreviewIndexPath;
@@ -1387,13 +1387,13 @@ LABEL_30:
       objc_storeStrong(&self->_lastPreviewedIndexPath, pendingPreviewIndexPath);
       if (v6)
       {
-        v8 = [(_TVMLCollectionViewController *)self collectionElement];
-        v9 = [v8 sections];
-        v10 = [v9 objectAtIndex:{-[NSIndexPath section](v6, "section")}];
+        collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+        sections = [collectionElement sections];
+        v10 = [sections objectAtIndex:{-[NSIndexPath section](v6, "section")}];
 
         v11 = [v10 elementForItemAtIndex:{-[NSIndexPath row](v6, "row")}];
-        v12 = [(_TVMLCollectionViewController *)self collectionView];
-        v13 = [v12 cellForItemAtIndexPath:v6];
+        collectionView = [(_TVMLCollectionViewController *)self collectionView];
+        v13 = [collectionView cellForItemAtIndexPath:v6];
 
         objc_initWeak(&location, self);
         v14[0] = MEMORY[0x277D85DD0];
@@ -1411,31 +1411,31 @@ LABEL_30:
   }
 }
 
-- (BOOL)_relatedElementIsGridAtIndexPath:(id)a3
+- (BOOL)_relatedElementIsGridAtIndexPath:(id)path
 {
-  v3 = [(_TVListViewController *)self _relatedContentElementForIndexPath:a3];
-  v4 = [v3 children];
-  v5 = [v4 firstObject];
-  v6 = [v5 tv_elementType] == 14;
+  v3 = [(_TVListViewController *)self _relatedContentElementForIndexPath:path];
+  children = [v3 children];
+  firstObject = [children firstObject];
+  v6 = [firstObject tv_elementType] == 14;
 
   return v6;
 }
 
-- (id)_relatedContentElementForIndexPath:(id)a3
+- (id)_relatedContentElementForIndexPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_TVMLCollectionViewController *)self collectionElement];
-  v6 = [v5 sections];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+  sections = [collectionElement sections];
+  v7 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = [v7 elementForItemAtIndex:{objc_msgSend(v4, "row")}];
+  v8 = [v7 elementForItemAtIndex:{objc_msgSend(pathCopy, "row")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 children];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  children = [v8 children];
+  v10 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -1445,7 +1445,7 @@ LABEL_30:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(children);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -1456,7 +1456,7 @@ LABEL_30:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         continue;
@@ -1471,16 +1471,16 @@ LABEL_11:
   return v10;
 }
 
-- (void)_updatedPreviewWithItemAtIndexPath:(id)a3
+- (void)_updatedPreviewWithItemAtIndexPath:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_TVListViewController *)self delegate];
+  pathCopy = path;
+  delegate = [(_TVListViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_TVListViewController *)self _relatedContentElementForIndexPath:v4];
+    v7 = [(_TVListViewController *)self _relatedContentElementForIndexPath:pathCopy];
     if (v7)
     {
       v30 = 0;
@@ -1504,10 +1504,10 @@ LABEL_11:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v10 = [(_TVMLCollectionViewController *)self collectionElement];
-      v11 = [v10 children];
+      collectionElement = [(_TVMLCollectionViewController *)self collectionElement];
+      children = [collectionElement children];
 
-      v7 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [children countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v7)
       {
         v12 = *v27;
@@ -1517,7 +1517,7 @@ LABEL_11:
           {
             if (*v27 != v12)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(children);
             }
 
             v14 = *(*(&v26 + 1) + 8 * i);
@@ -1528,7 +1528,7 @@ LABEL_11:
             }
           }
 
-          v7 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          v7 = [children countByEnumeratingWithState:&v26 objects:v31 count:16];
           if (v7)
           {
             continue;
@@ -1569,11 +1569,11 @@ LABEL_21:
       if (v8 != self->_previewController)
       {
         objc_storeStrong(&self->_previewController, v8);
-        v17 = [(_TVMLCollectionViewController *)self collectionView];
-        [v17 _setRemembersPreviouslyFocusedItem:0];
+        collectionView = [(_TVMLCollectionViewController *)self collectionView];
+        [collectionView _setRemembersPreviouslyFocusedItem:0];
 
-        v18 = [(_TVListViewController *)self delegate];
-        [v18 listViewController:self updatePreviewViewController:v8];
+        delegate2 = [(_TVListViewController *)self delegate];
+        [delegate2 listViewController:self updatePreviewViewController:v8];
       }
     }
 
@@ -1583,13 +1583,13 @@ LABEL_21:
       [(UIViewController *)self->_previewController setAlwaysSoftFocusEnabled:0];
     }
 
-    v19 = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
-    if ([v19 isEqual:v4] && (-[_TVListViewController isAlwaysSoftFocusEnabled](self, "isAlwaysSoftFocusEnabled") || -[IKViewElement tv_elementType](v9, "tv_elementType") == 14))
+    lastFocusedIndexPath = [(_TVMLCollectionViewController *)self lastFocusedIndexPath];
+    if ([lastFocusedIndexPath isEqual:pathCopy] && (-[_TVListViewController isAlwaysSoftFocusEnabled](self, "isAlwaysSoftFocusEnabled") || -[IKViewElement tv_elementType](v9, "tv_elementType") == 14))
     {
-      v20 = [MEMORY[0x277D759A0] mainScreen];
-      v21 = [v20 focusedView];
-      v22 = [(UIViewController *)self->_previewController view];
-      v23 = [v21 isDescendantOfView:v22];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      focusedView = [mainScreen focusedView];
+      view = [(UIViewController *)self->_previewController view];
+      v23 = [focusedView isDescendantOfView:view];
 
       if (!v23)
       {
@@ -1598,13 +1598,13 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v24 = [(_TVMLCollectionViewController *)self collectionView];
-      v19 = [v24 cellForItemAtIndexPath:v4];
+      collectionView2 = [(_TVMLCollectionViewController *)self collectionView];
+      lastFocusedIndexPath = [collectionView2 cellForItemAtIndexPath:pathCopy];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v19 setShouldAppearSelected:1];
+        [lastFocusedIndexPath setShouldAppearSelected:1];
       }
     }
 
@@ -1614,12 +1614,12 @@ LABEL_34:
 LABEL_35:
 }
 
-- (id)_previewControllerWithElement:(id)a3 previewElement:(id *)a4
+- (id)_previewControllerWithElement:(id)element previewElement:(id *)previewElement
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 children];
-  v8 = [v7 count];
+  elementCopy = element;
+  children = [elementCopy children];
+  v8 = [children count];
 
   if (!v8)
   {
@@ -1631,9 +1631,9 @@ LABEL_35:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v34 = v6;
-  v9 = [v6 children];
-  v37 = [v9 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v34 = elementCopy;
+  children2 = [elementCopy children];
+  v37 = [children2 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (!v37)
   {
     v23 = 0;
@@ -1649,7 +1649,7 @@ LABEL_35:
     {
       if (*v39 != v36)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(children2);
       }
 
       v12 = *(*(&v38 + 1) + 8 * v11);
@@ -1660,10 +1660,10 @@ LABEL_35:
         if (![*(*(&v38 + 1) + 8 * v11) updateType])
         {
           v23 = self->_previewController;
-          if (a4)
+          if (previewElement)
           {
             v33 = v12;
-            *a4 = v12;
+            *previewElement = v12;
           }
 
           goto LABEL_47;
@@ -1676,7 +1676,7 @@ LABEL_35:
       {
         if (self->_previewUpdated)
         {
-          v18 = [(UIViewController *)self->_previewController view];
+          view = [(UIViewController *)self->_previewController view];
           LOBYTE(v15) = 1;
           goto LABEL_25;
         }
@@ -1692,8 +1692,8 @@ LABEL_35:
       v16 = +[TVInterfaceFactory sharedInterfaceFactory];
       if (v15)
       {
-        v35 = [(UIViewController *)self->_previewController view];
-        v17 = v35;
+        view2 = [(UIViewController *)self->_previewController view];
+        v17 = view2;
       }
 
       else
@@ -1701,15 +1701,15 @@ LABEL_35:
         v17 = 0;
       }
 
-      v18 = [v16 _viewFromElement:v12 existingView:v17];
+      view = [v16 _viewFromElement:v12 existingView:v17];
       if (v15)
       {
       }
 
-      v19 = [(UIViewController *)self->_previewController view];
+      view3 = [(UIViewController *)self->_previewController view];
 
       v20 = v15 ^ 1;
-      if (v18 != v19)
+      if (view != view3)
       {
         v20 = 1;
       }
@@ -1722,14 +1722,14 @@ LABEL_35:
 
 LABEL_25:
       previewController = self->_previewController;
-      if (v18)
+      if (view)
       {
-        v22 = [(UIViewController *)previewController view];
+        view4 = [(UIViewController *)previewController view];
 
-        if (v18 == v22)
+        if (view == view4)
         {
           v23 = self->_previewController;
-          if (!a4)
+          if (!previewElement)
           {
             goto LABEL_38;
           }
@@ -1738,9 +1738,9 @@ LABEL_25:
         else
         {
           v23 = objc_alloc_init(MEMORY[0x277D75D28]);
-          [(UIViewController *)v23 setView:v18];
+          [(UIViewController *)v23 setView:view];
           [(UIViewController *)v23 tv_setAssociatedIKViewElement:v12];
-          if (!a4)
+          if (!previewElement)
           {
             goto LABEL_38;
           }
@@ -1749,11 +1749,11 @@ LABEL_25:
 
       else
       {
-        v24 = v9;
-        v25 = a4;
-        v26 = [(UIViewController *)previewController tv_associatedIKViewElement];
-        v27 = v26;
-        if ((v15 & 1) != 0 || [v26 tv_elementType] == 17 && objc_msgSend(v12, "tv_elementType") == 17)
+        v24 = children2;
+        previewElementCopy = previewElement;
+        tv_associatedIKViewElement = [(UIViewController *)previewController tv_associatedIKViewElement];
+        v27 = tv_associatedIKViewElement;
+        if ((v15 & 1) != 0 || [tv_associatedIKViewElement tv_elementType] == 17 && objc_msgSend(v12, "tv_elementType") == 17)
         {
           v28 = self->_previewController;
         }
@@ -1766,10 +1766,10 @@ LABEL_25:
         v29 = +[TVInterfaceFactory sharedInterfaceFactory];
         v23 = [v29 _viewControllerFromElement:v12 existingController:v28];
 
-        a4 = v25;
-        v9 = v24;
+        previewElement = previewElementCopy;
+        children2 = v24;
         v10 = &OBJC_IVAR___TVTimeRange__endDate;
-        if (!a4)
+        if (!previewElement)
         {
           goto LABEL_38;
         }
@@ -1778,7 +1778,7 @@ LABEL_25:
       if (v23)
       {
         v31 = v12;
-        *a4 = v12;
+        *previewElement = v12;
 
         goto LABEL_47;
       }
@@ -1794,7 +1794,7 @@ LABEL_38:
     }
 
     while (v37 != v11);
-    v30 = [v9 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    v30 = [children2 countByEnumeratingWithState:&v38 objects:v42 count:16];
     v23 = 0;
     v37 = v30;
     if (v30)
@@ -1807,20 +1807,20 @@ LABEL_38:
 
 LABEL_47:
 
-  v6 = v34;
+  elementCopy = v34;
 LABEL_48:
 
   return v23;
 }
 
-- (id)_viewControllerForElement:(id)a3
+- (id)_viewControllerForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(_TVListViewController *)self _cachedViewControllerForElement:v4];
+  elementCopy = element;
+  v5 = [(_TVListViewController *)self _cachedViewControllerForElement:elementCopy];
   if (!v5)
   {
     v7 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v5 = [v7 _viewControllerFromElement:v4 existingController:0];
+    v5 = [v7 _viewControllerFromElement:elementCopy existingController:0];
 
     if (v5)
     {
@@ -1844,10 +1844,10 @@ LABEL_48:
   return v5;
 }
 
-- (id)_cachedViewControllerForElement:(id)a3
+- (id)_cachedViewControllerForElement:(id)element
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1868,10 +1868,10 @@ LABEL_48:
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [_TVShadowViewElementID alloc];
-        v11 = [v9 tv_associatedIKViewElement];
-        v12 = [(_TVShadowViewElementID *)v10 initWithViewElement:v11];
+        tv_associatedIKViewElement = [v9 tv_associatedIKViewElement];
+        v12 = [(_TVShadowViewElementID *)v10 initWithViewElement:tv_associatedIKViewElement];
 
-        v13 = [[_TVShadowViewElementID alloc] initWithViewElement:v4];
+        v13 = [[_TVShadowViewElementID alloc] initWithViewElement:elementCopy];
         if ([(_TVShadowViewElementID *)v12 isEqual:v13])
         {
           v6 = v9;
@@ -1895,34 +1895,34 @@ LABEL_11:
   return v6;
 }
 
-- (CGSize)_expectedCellSizeForElement:(id)a3 inSectionIndex:(int64_t)a4
+- (CGSize)_expectedCellSizeForElement:(id)element inSectionIndex:(int64_t)index
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  elementCopy = element;
   cachedCellWidth = self->_cachedCellWidth;
-  v8 = [v6 style];
-  [v8 tv_padding];
+  style = [elementCopy style];
+  [style tv_padding];
   v10 = v9;
   v12 = v11;
 
-  if ([v6 tv_elementType] == 53 || objc_msgSend(v6, "tv_elementType") == 14)
+  if ([elementCopy tv_elementType] == 53 || objc_msgSend(elementCopy, "tv_elementType") == 14)
   {
-    v13 = [(_TVListViewController *)self _viewControllerForElement:v6];
-    v14 = [v13 view];
-    [v14 sizeThatFits:{cachedCellWidth, 0.0}];
+    v13 = [(_TVListViewController *)self _viewControllerForElement:elementCopy];
+    view = [v13 view];
+    [view sizeThatFits:{cachedCellWidth, 0.0}];
     cachedCellWidth = v15;
     v17 = v16;
 
     goto LABEL_4;
   }
 
-  if ([v6 tv_elementType] == 55 && objc_msgSend(v6, "tv_textStyle") == 3)
+  if ([elementCopy tv_elementType] == 55 && objc_msgSend(elementCopy, "tv_textStyle") == 3)
   {
     v20 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v21 = [v20 _viewFromElement:v6 existingView:0];
+    v21 = [v20 _viewFromElement:elementCopy existingView:0];
 
-    v22 = [v6 style];
-    [v22 tv_padding];
+    style2 = [elementCopy style];
+    [style2 tv_padding];
     v24 = v23;
     v26 = v25;
 
@@ -1933,11 +1933,11 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  v28 = [v6 tv_elementType];
-  v29 = [v6 style];
-  [v29 tv_height];
+  tv_elementType = [elementCopy tv_elementType];
+  style3 = [elementCopy style];
+  [style3 tv_height];
   v17 = v30;
-  if (v28 == 52)
+  if (tv_elementType == 52)
   {
     if (v30 == 0.0)
     {
@@ -1950,8 +1950,8 @@ LABEL_11:
 
   if (v17 <= 2.22044605e-16)
   {
-    v31 = [v6 elementName];
-    v32 = [v31 isEqualToString:*MEMORY[0x277D1AF50]];
+    elementName = [elementCopy elementName];
+    v32 = [elementName isEqualToString:*MEMORY[0x277D1AF50]];
 
     v17 = 0.0;
     if (!v32)
@@ -1960,7 +1960,7 @@ LABEL_11:
     }
 
     cachedListItemLockupHeightsBySection = self->_cachedListItemLockupHeightsBySection;
-    v34 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v34 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     v35 = [(NSDictionary *)cachedListItemLockupHeightsBySection objectForKey:v34];
     [v35 doubleValue];
     v37 = v36;
@@ -1983,8 +1983,8 @@ LABEL_18:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v38 = [v6 children];
-  v39 = [v38 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  children = [elementCopy children];
+  v39 = [children countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (!v39)
   {
 
@@ -2007,7 +2007,7 @@ LABEL_18:
     {
       if (*v58 != v44)
       {
-        objc_enumerationMutation(v38);
+        objc_enumerationMutation(children);
       }
 
       v46 = *(*(&v57 + 1) + 8 * i);
@@ -2015,11 +2015,11 @@ LABEL_18:
       {
         [v46 height];
         v48 = v47;
-        v49 = [v46 style];
-        [v49 tv_margin];
+        style4 = [v46 style];
+        [style4 tv_margin];
         v51 = v48 + fmax(v50, v10);
-        v52 = [v46 style];
-        [v52 tv_margin];
+        style5 = [v46 style];
+        [style5 tv_margin];
         v17 = v51 + fmax(v53, v12);
       }
 
@@ -2042,7 +2042,7 @@ LABEL_18:
       }
     }
 
-    v40 = [v38 countByEnumeratingWithState:&v57 objects:v61 count:16];
+    v40 = [children countByEnumeratingWithState:&v57 objects:v61 count:16];
   }
 
   while (v40);
@@ -2086,17 +2086,17 @@ LABEL_4:
   return result;
 }
 
-- (CGSize)_expectedHeaderCellSizeForElement:(id)a3 section:(int64_t)a4
+- (CGSize)_expectedHeaderCellSizeForElement:(id)element section:(int64_t)section
 {
   cachedCellWidth = self->_cachedCellWidth;
-  if (a3)
+  if (element)
   {
-    v7 = a3;
-    [(_TVListViewController *)self _marginForHeaderCellForElement:v7 section:a4];
+    elementCopy = element;
+    [(_TVListViewController *)self _marginForHeaderCellForElement:elementCopy section:section];
     v9 = v8;
     v11 = v10;
     v12 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v13 = [v12 _viewFromElement:v7 existingView:0];
+    v13 = [v12 _viewFromElement:elementCopy existingView:0];
 
     [v13 sizeThatFits:{cachedCellWidth, 0.0}];
     cachedCellWidth = v14;
@@ -2115,26 +2115,26 @@ LABEL_4:
   return result;
 }
 
-- (UIEdgeInsets)_marginForHeaderCellForElement:(id)a3 section:(int64_t)a4
+- (UIEdgeInsets)_marginForHeaderCellForElement:(id)element section:(int64_t)section
 {
-  v6 = [a3 style];
-  [v6 tv_margin];
+  style = [element style];
+  [style tv_margin];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  if (!a4)
+  if (!section)
   {
-    v15 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-    v16 = [v15 headerView];
+    collectionWrappingView = [(_TVMLCollectionViewController *)self collectionWrappingView];
+    headerView = [collectionWrappingView headerView];
 
-    if (v16)
+    if (headerView)
     {
-      v17 = [(_TVMLCollectionViewController *)self collectionWrappingView];
-      v18 = [v17 headerView];
+      collectionWrappingView2 = [(_TVMLCollectionViewController *)self collectionWrappingView];
+      headerView2 = [collectionWrappingView2 headerView];
 
-      [v18 tv_margin];
+      [headerView2 tv_margin];
       v8 = fmax(v8 - v19, 0.0);
     }
   }

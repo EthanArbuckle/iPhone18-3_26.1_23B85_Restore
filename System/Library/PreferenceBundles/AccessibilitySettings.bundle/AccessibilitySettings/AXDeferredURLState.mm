@@ -1,7 +1,7 @@
 @interface AXDeferredURLState
 - (AXDeferredURLState)init;
 - (NSDictionary)resourcesDictionary;
-- (void)setResourcesDictionary:(id)a3;
+- (void)setResourcesDictionary:(id)dictionary;
 @end
 
 @implementation AXDeferredURLState
@@ -24,9 +24,9 @@
   return v4.super.isa;
 }
 
-- (void)setResourcesDictionary:(id)a3
+- (void)setResourcesDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = sub_19BF74();
   }

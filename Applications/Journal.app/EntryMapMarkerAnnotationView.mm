@@ -1,8 +1,8 @@
 @interface EntryMapMarkerAnnotationView
 - (MKAnnotation)annotation;
-- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithCoder:(id)a3;
-- (void)setAnnotation:(id)a3;
+- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithCoder:(id)coder;
+- (void)setAnnotation:(id)annotation;
 @end
 
 @implementation EntryMapMarkerAnnotationView
@@ -11,23 +11,23 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for EntryMapMarkerAnnotationView();
-  v2 = [(EntryMapMarkerAnnotationView *)&v4 annotation];
+  annotation = [(EntryMapMarkerAnnotationView *)&v4 annotation];
 
-  return v2;
+  return annotation;
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100726AAC(a3);
+  selfCopy = self;
+  sub_100726AAC(annotation);
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal28EntryMapMarkerAnnotationView_geotaggablesCount) = 0;
@@ -46,20 +46,20 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for EntryMapMarkerAnnotationView();
-  v7 = [(EntryMapMarkerAnnotationView *)&v9 initWithAnnotation:a3 reuseIdentifier:v6];
+  v7 = [(EntryMapMarkerAnnotationView *)&v9 initWithAnnotation:annotation reuseIdentifier:v6];
 
   swift_unknownObjectRelease();
   return v7;
 }
 
-- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithCoder:(id)a3
+- (_TtC7Journal28EntryMapMarkerAnnotationView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal28EntryMapMarkerAnnotationView_geotaggablesCount) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Journal28EntryMapMarkerAnnotationView_allowsClustering) = 1;
   v7.receiver = self;
   v7.super_class = type metadata accessor for EntryMapMarkerAnnotationView();
-  v4 = a3;
-  v5 = [(EntryMapMarkerAnnotationView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(EntryMapMarkerAnnotationView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

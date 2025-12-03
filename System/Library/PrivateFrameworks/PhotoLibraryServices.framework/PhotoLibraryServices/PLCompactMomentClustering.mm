@@ -1,24 +1,24 @@
 @interface PLCompactMomentClustering
-- (PLCompactMomentClustering)initWithDataManager:(id)a3 frequentLocations:(id)a4;
-- (id)_assetClustersFromDataClusters:(id)a3;
-- (id)_clusterAssetsWithUnusableLocation:(id)a3;
-- (id)_clusterAssetsWithUsableLocation:(id)a3;
-- (id)_mergeAssetClustersWithLocation:(id)a3 withAssetClustersWithoutLocation:(id)a4;
-- (id)_processedLocationTypeByAssetUUIDFromAssets:(id)a3;
-- (id)_runDBSCANClusteringWithAssets:(id)a3;
-- (id)_shareStateByAssetUUIDFromAssets:(id)a3 momentHasMixedOwnership:(BOOL *)a4;
-- (id)assetsByLocationTypeFromAssets:(id)a3;
-- (id)createAssetClustersForAssetsInDay:(id)a3;
-- (id)newAssetClusterFromAssetsSortedByDate:(id)a3;
-- (unsigned)_validLocationTypeForBucketingAssets:(unsigned __int16)a3;
+- (PLCompactMomentClustering)initWithDataManager:(id)manager frequentLocations:(id)locations;
+- (id)_assetClustersFromDataClusters:(id)clusters;
+- (id)_clusterAssetsWithUnusableLocation:(id)location;
+- (id)_clusterAssetsWithUsableLocation:(id)location;
+- (id)_mergeAssetClustersWithLocation:(id)location withAssetClustersWithoutLocation:(id)withoutLocation;
+- (id)_processedLocationTypeByAssetUUIDFromAssets:(id)assets;
+- (id)_runDBSCANClusteringWithAssets:(id)assets;
+- (id)_shareStateByAssetUUIDFromAssets:(id)assets momentHasMixedOwnership:(BOOL *)ownership;
+- (id)assetsByLocationTypeFromAssets:(id)assets;
+- (id)createAssetClustersForAssetsInDay:(id)day;
+- (id)newAssetClusterFromAssetsSortedByDate:(id)date;
+- (unsigned)_validLocationTypeForBucketingAssets:(unsigned __int16)assets;
 - (void)dealloc;
 @end
 
 @implementation PLCompactMomentClustering
 
-- (id)_clusterAssetsWithUnusableLocation:(id)a3
+- (id)_clusterAssetsWithUnusableLocation:(id)location
 {
-  if (![a3 count])
+  if (![location count])
   {
     return MEMORY[0x1E695E0F0];
   }
@@ -26,29 +26,29 @@
   v4 = [(PLDataClustering *)[PLDBSCANClustering alloc] initWithDistanceBlock:&__block_literal_global_246];
   [(PLDataDensityClustering *)v4 setMaximumDistance:10800.0];
   [(PLDataDensityClustering *)v4 setMinimumNumberOfObjects:1];
-  v5 = [(PLDBSCANClustering *)v4 performWithDataset:a3 progressBlock:0];
+  v5 = [(PLDBSCANClustering *)v4 performWithDataset:location progressBlock:0];
 
   return v5;
 }
 
-- (id)_clusterAssetsWithUsableLocation:(id)a3
+- (id)_clusterAssetsWithUsableLocation:(id)location
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (![a3 count])
+  if (![location count])
   {
     return MEMORY[0x1E695E0F0];
   }
 
   if ([(NSSet *)self->_locationsOfInterest count]|| [(NSSet *)self->_frequentLocations count])
   {
-    v5 = [(PLCompactMomentClustering *)self _processedLocationTypeByAssetUUIDFromAssets:a3];
-    v6 = [v5 allValues];
-    v7 = [v6 firstObject];
+    v5 = [(PLCompactMomentClustering *)self _processedLocationTypeByAssetUUIDFromAssets:location];
+    allValues = [v5 allValues];
+    firstObject = [allValues firstObject];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v8 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -60,10 +60,10 @@
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          if (![*(*(&v22 + 1) + 8 * v11) isEqualToNumber:v7])
+          if (![*(*(&v22 + 1) + 8 * v11) isEqualToNumber:firstObject])
           {
             v12 = 1;
             goto LABEL_16;
@@ -73,7 +73,7 @@
         }
 
         while (v9 != v11);
-        v9 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v9)
         {
           continue;
@@ -94,7 +94,7 @@
 
 LABEL_16:
   v21 = 0;
-  v14 = [(PLCompactMomentClustering *)self _shareStateByAssetUUIDFromAssets:a3 momentHasMixedOwnership:&v21];
+  v14 = [(PLCompactMomentClustering *)self _shareStateByAssetUUIDFromAssets:location momentHasMixedOwnership:&v21];
   v15 = [PLDBSCANClustering alloc];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -107,7 +107,7 @@ LABEL_16:
   v16 = [(PLDataClustering *)v15 initWithDistanceBlock:v18];
   [(PLDataDensityClustering *)v16 setMaximumDistance:10800.0];
   [(PLDataDensityClustering *)v16 setMinimumNumberOfObjects:1];
-  v13 = [(PLDBSCANClustering *)v16 performWithDataset:a3 progressBlock:0];
+  v13 = [(PLDBSCANClustering *)v16 performWithDataset:location progressBlock:0];
 
   return v13;
 }
@@ -168,29 +168,29 @@ double __62__PLCompactMomentClustering__clusterAssetsWithUsableLocation___block_
   return v7;
 }
 
-- (id)_shareStateByAssetUUIDFromAssets:(id)a3 momentHasMixedOwnership:(BOOL *)a4
+- (id)_shareStateByAssetUUIDFromAssets:(id)assets momentHasMixedOwnership:(BOOL *)ownership
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
-  v7 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = assets;
+  v7 = [assets countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v7)
   {
     v15 = 0;
-    if (!a4)
+    if (!ownership)
     {
-      return v6;
+      return dictionary;
     }
 
     goto LABEL_9;
   }
 
   v8 = v7;
-  v17 = a4;
+  ownershipCopy = ownership;
   v9 = 0;
   v10 = 0;
   v11 = *v20;
@@ -204,10 +204,10 @@ double __62__PLCompactMomentClustering__clusterAssetsWithUsableLocation___block_
       }
 
       v13 = *(*(&v19 + 1) + 8 * i);
-      v14 = [v13 shareState];
-      [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", v14), objc_msgSend(v13, "uuid")}];
-      v9 |= v14 != 2;
-      v10 |= v14 == 2;
+      shareState = [v13 shareState];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", shareState), objc_msgSend(v13, "uuid")}];
+      v9 |= shareState != 2;
+      v10 |= shareState == 2;
     }
 
     v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -215,38 +215,38 @@ double __62__PLCompactMomentClustering__clusterAssetsWithUsableLocation___block_
 
   while (v8);
   v15 = v9 & v10;
-  a4 = v17;
-  if (v17)
+  ownership = ownershipCopy;
+  if (ownershipCopy)
   {
 LABEL_9:
-    *a4 = v15 & 1;
+    *ownership = v15 & 1;
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (unsigned)_validLocationTypeForBucketingAssets:(unsigned __int16)a3
+- (unsigned)_validLocationTypeForBucketingAssets:(unsigned __int16)assets
 {
-  if ((a3 - 1) > 4)
+  if ((assets - 1) > 4)
   {
     return 6;
   }
 
   else
   {
-    return word_19C60B0F0[(a3 - 1)];
+    return word_19C60B0F0[(assets - 1)];
   }
 }
 
-- (id)_processedLocationTypeByAssetUUIDFromAssets:(id)a3
+- (id)_processedLocationTypeByAssetUUIDFromAssets:(id)assets
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -257,35 +257,35 @@ LABEL_9:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(assets);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(PLCompactMomentClustering *)self _validLocationTypeForBucketingAssets:[PLMomentGenerationUtils locationTypeForAsset:v10 locationsOfInterest:self->_locationsOfInterest frequentLocations:self->_frequentLocations]];
-        [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", v11), objc_msgSend(v10, "uuid")}];
+        [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", v11), objc_msgSend(v10, "uuid")}];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [assets countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_assetClustersFromDataClusters:(id)a3
+- (id)_assetClustersFromDataClusters:(id)clusters
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 count];
+  v4 = [clusters count];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
   context = objc_autoreleasePoolPush();
-  obj = a3;
+  obj = clusters;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v6 = [clusters countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -301,9 +301,9 @@ LABEL_9:
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = [v10 approximateRegionWithMaximumRadius:100.0];
-        v12 = [v10 objects];
+        objects = [v10 objects];
         v21 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"pl_date" ascending:1];
-        v13 = -[PLAssetCluster initWithAssetsSortedByDate:region:]([PLAssetCluster alloc], "initWithAssetsSortedByDate:region:", [v12 sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v21, 1)}], v11);
+        v13 = -[PLAssetCluster initWithAssetsSortedByDate:region:]([PLAssetCluster alloc], "initWithAssetsSortedByDate:region:", [objects sortedArrayUsingDescriptors:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v21, 1)}], v11);
         [v5 addObject:v13];
       }
 
@@ -317,17 +317,17 @@ LABEL_9:
   return v5;
 }
 
-- (id)_mergeAssetClustersWithLocation:(id)a3 withAssetClustersWithoutLocation:(id)a4
+- (id)_mergeAssetClustersWithLocation:(id)location withAssetClustersWithoutLocation:(id)withoutLocation
 {
   v60 = *MEMORY[0x1E69E9840];
-  v37 = [a3 count];
-  v41 = [MEMORY[0x1E695DF90] dictionary];
+  v37 = [location count];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = a4;
-  v40 = [a4 countByEnumeratingWithState:&v53 objects:v59 count:16];
+  obj = withoutLocation;
+  v40 = [withoutLocation countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v40)
   {
     v39 = *v54;
@@ -343,14 +343,14 @@ LABEL_9:
 
         v43 = v5;
         v6 = *(*(&v53 + 1) + 8 * v5);
-        v7 = [v6 startDate];
+        startDate = [v6 startDate];
         v42 = v6;
-        v8 = [v6 endDate];
+        endDate = [v6 endDate];
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v9 = [a3 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        v9 = [location countByEnumeratingWithState:&v49 objects:v58 count:16];
         if (v9)
         {
           v10 = v9;
@@ -366,10 +366,10 @@ LABEL_9:
             {
               if (*v50 != v12)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(location);
               }
 
-              [objc_msgSend(v8 earlierDate:{objc_msgSend(*(*(&v49 + 1) + 8 * v15), "endDate")), "timeIntervalSinceDate:", objc_msgSend(v7, "laterDate:", objc_msgSend(*(*(&v49 + 1) + 8 * v15), "startDate"))}];
+              [objc_msgSend(endDate earlierDate:{objc_msgSend(*(*(&v49 + 1) + 8 * v15), "endDate")), "timeIntervalSinceDate:", objc_msgSend(startDate, "laterDate:", objc_msgSend(*(*(&v49 + 1) + 8 * v15), "startDate"))}];
               if (v17 > v14)
               {
                 v14 = v17;
@@ -382,7 +382,7 @@ LABEL_9:
 
             while (v10 != v15);
             v11 += v10;
-            v10 = [a3 countByEnumeratingWithState:&v49 objects:v58 count:16];
+            v10 = [location countByEnumeratingWithState:&v49 objects:v58 count:16];
           }
 
           while (v10);
@@ -394,14 +394,14 @@ LABEL_9:
         }
 
         v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v13];
-        v19 = [v41 objectForKeyedSubscript:v18];
-        if (!v19)
+        array = [dictionary objectForKeyedSubscript:v18];
+        if (!array)
         {
-          v19 = [MEMORY[0x1E695DF70] array];
-          [v41 setObject:v19 forKeyedSubscript:v18];
+          array = [MEMORY[0x1E695DF70] array];
+          [dictionary setObject:array forKeyedSubscript:v18];
         }
 
-        [v19 addObject:v42];
+        [array addObject:v42];
         v5 = v43 + 1;
       }
 
@@ -412,13 +412,13 @@ LABEL_9:
     while (v40);
   }
 
-  v20 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v37)
   {
     for (i = 0; i != v37; ++i)
     {
-      v22 = [a3 objectAtIndexedSubscript:i];
-      v23 = [v41 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", i)}];
+      v22 = [location objectAtIndexedSubscript:i];
+      v23 = [dictionary objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", i)}];
       if (v23)
       {
         v24 = v23;
@@ -453,16 +453,16 @@ LABEL_9:
         if ([v25 count])
         {
           [v25 sortUsingDescriptors:{objc_msgSend(objc_msgSend(v25, "firstObject"), "assetComparisonSortDescriptors")}];
-          v30 = [v22 location];
-          if (v30)
+          location = [v22 location];
+          if (location)
           {
             v31 = objc_alloc(MEMORY[0x1E695FBB0]);
-            [v30 coordinate];
-            v30 = [v31 initWithCenter:objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0] radius:"UUID") identifier:{"UUIDString"), v32, v33, 0.0}];
+            [location coordinate];
+            location = [v31 initWithCenter:objc_msgSend(objc_msgSend(MEMORY[0x1E696AFB0] radius:"UUID") identifier:{"UUIDString"), v32, v33, 0.0}];
           }
 
-          v34 = [[PLAssetCluster alloc] initWithAssetsSortedByDate:v25 region:v30];
-          [v20 addObject:v34];
+          v34 = [[PLAssetCluster alloc] initWithAssetsSortedByDate:v25 region:location];
+          [array2 addObject:v34];
         }
 
         else
@@ -472,35 +472,35 @@ LABEL_9:
 
       else
       {
-        [v20 addObject:v22];
+        [array2 addObject:v22];
       }
     }
   }
 
-  v35 = [v41 objectForKeyedSubscript:&unk_1F0FBA7B0];
+  v35 = [dictionary objectForKeyedSubscript:&unk_1F0FBA7B0];
   if (v35)
   {
-    [v20 addObjectsFromArray:v35];
+    [array2 addObjectsFromArray:v35];
   }
 
-  return v20;
+  return array2;
 }
 
-- (id)_runDBSCANClusteringWithAssets:(id)a3
+- (id)_runDBSCANClusteringWithAssets:(id)assets
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (![a3 count])
+  if (![assets count])
   {
     return MEMORY[0x1E695E0F0];
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v7 = [assets countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -511,7 +511,7 @@ LABEL_9:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(assets);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
@@ -529,23 +529,23 @@ LABEL_9:
           v14 = 1;
         }
 
-        if (!v14 || (latitude == 40.0 ? (v15 = longitude == -100.0) : (v15 = 0), v16 = v5, v15))
+        if (!v14 || (latitude == 40.0 ? (v15 = longitude == -100.0) : (v15 = 0), v16 = array, v15))
         {
 LABEL_16:
-          v16 = v6;
+          v16 = array2;
         }
 
         [v16 addObject:v11];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [assets countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v8);
   }
 
-  v17 = [(PLCompactMomentClustering *)self _clusterAssetsWithUsableLocation:v5];
-  v18 = [(PLCompactMomentClustering *)self _clusterAssetsWithUnusableLocation:v6];
+  v17 = [(PLCompactMomentClustering *)self _clusterAssetsWithUsableLocation:array];
+  v18 = [(PLCompactMomentClustering *)self _clusterAssetsWithUnusableLocation:array2];
   v19 = [(PLCompactMomentClustering *)self _assetClustersFromDataClusters:v17];
   v20 = [(PLCompactMomentClustering *)self _assetClustersFromDataClusters:v18];
   if ([v19 count])
@@ -566,46 +566,46 @@ LABEL_16:
   return v22;
 }
 
-- (id)createAssetClustersForAssetsInDay:(id)a3
+- (id)createAssetClustersForAssetsInDay:(id)day
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __63__PLCompactMomentClustering_createAssetClustersForAssetsInDay___block_invoke;
   v57[3] = &unk_1E7564548;
   v57[4] = v6;
-  [a3 enumerateObjectsUsingBlock:v57];
+  [day enumerateObjectsUsingBlock:v57];
   if ([v6 count])
   {
-    v7 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __63__PLCompactMomentClustering_createAssetClustersForAssetsInDay___block_invoke_2;
     v56[3] = &unk_1E7564570;
-    v56[4] = a3;
-    v56[5] = v5;
-    v56[6] = v7;
+    v56[4] = day;
+    v56[5] = array;
+    v56[6] = indexSet;
     [v6 enumerateKeysAndObjectsUsingBlock:v56];
-    a3 = [a3 mutableCopy];
-    [a3 removeObjectsAtIndexes:v7];
+    day = [day mutableCopy];
+    [day removeObjectsAtIndexes:indexSet];
   }
 
   else
   {
-    v8 = a3;
+    dayCopy = day;
   }
 
-  v44 = [a3 count];
+  v44 = [day count];
   if (v44 < 0x801)
   {
-    [v5 addObjectsFromArray:{-[PLCompactMomentClustering _runDBSCANClusteringWithAssets:](self, "_runDBSCANClusteringWithAssets:", a3)}];
+    [array addObjectsFromArray:{-[PLCompactMomentClustering _runDBSCANClusteringWithAssets:](self, "_runDBSCANClusteringWithAssets:", day)}];
   }
 
   else
   {
-    [objc_msgSend(objc_msgSend(a3 "lastObject")];
+    [objc_msgSend(objc_msgSend(day "lastObject")];
     v10 = v9;
     Log = PLMomentsGetLog();
     v12 = os_log_type_enabled(Log, OS_LOG_TYPE_INFO);
@@ -621,10 +621,10 @@ LABEL_16:
       v25 = 0;
       v26 = 0;
       v41 = v44 - 1;
-      v42 = self;
+      selfCopy = self;
       v27 = 2048;
-      v47 = v5;
-      v43 = a3;
+      v47 = array;
+      dayCopy2 = day;
       do
       {
         while (1)
@@ -634,7 +634,7 @@ LABEL_16:
             v27 = v44 - v25;
           }
 
-          v28 = -[PLCompactMomentClustering _runDBSCANClusteringWithAssets:](self, "_runDBSCANClusteringWithAssets:", [a3 subarrayWithRange:{v25, v27}]);
+          v28 = -[PLCompactMomentClustering _runDBSCANClusteringWithAssets:](self, "_runDBSCANClusteringWithAssets:", [day subarrayWithRange:{v25, v27}]);
           v29 = [v28 count];
           v52 = 0u;
           v53 = 0u;
@@ -648,9 +648,9 @@ LABEL_16:
 
           v26 = 0;
           v25 += v27;
-          self = v42;
-          v5 = v47;
-          a3 = v43;
+          self = selfCopy;
+          array = v47;
+          day = dayCopy2;
           if (v25 > v41)
           {
             goto LABEL_24;
@@ -664,7 +664,7 @@ LABEL_16:
         v33 = 0;
         v34 = *v53;
         v35 = v29 - 1;
-        v5 = v47;
+        array = v47;
         do
         {
           v36 = 0;
@@ -694,14 +694,14 @@ LABEL_16:
 
             else if (v37 || !v26)
             {
-              [v5 addObject:v38];
+              [array addObject:v38];
             }
 
             else
             {
               v59[0] = v26;
               v59[1] = v38;
-              v5 = v47;
+              array = v47;
               [v47 addObject:{+[PLAssetCluster mergedCluster:](PLAssetCluster, "mergedCluster:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v59, 2))}];
               v26 = 0;
             }
@@ -719,14 +719,14 @@ LABEL_16:
         v27 = v45;
         v25 = v45 + v46;
         v26 = v33;
-        self = v42;
-        a3 = v43;
+        self = selfCopy;
+        day = dayCopy2;
       }
 
       while (v45 + v46 <= v41);
       if (v33)
       {
-        [v5 addObject:v33];
+        [array addObject:v33];
       }
     }
 
@@ -748,7 +748,7 @@ LABEL_16:
           _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_INFO, "[MomentsGeneration].CompactMoments Trying to split based off of home/work/frequentLocation before defaulting to tagging as one cluster.", buf, 2u);
         }
 
-        v14 = -[PLCompactMomentClustering assetsByLocationTypeFromAssets:](self, "assetsByLocationTypeFromAssets:", [MEMORY[0x1E695DFD8] setWithArray:a3]);
+        v14 = -[PLCompactMomentClustering assetsByLocationTypeFromAssets:](self, "assetsByLocationTypeFromAssets:", [MEMORY[0x1E695DFD8] setWithArray:day]);
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
@@ -781,7 +781,7 @@ LABEL_16:
               }
 
               v23 = -[PLCompactMomentClustering newAssetClusterFromAssetsSortedByDate:](self, "newAssetClusterFromAssetsSortedByDate:", [v20 sortedArrayUsingDescriptors:v22]);
-              [v5 addObject:v23];
+              [array addObject:v23];
             }
 
             v16 = [v14 countByEnumeratingWithState:&v48 objects:v58 count:16];
@@ -800,16 +800,16 @@ LABEL_16:
           _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_INFO, "[MomentsGeneration].CompactMoments Not trying to split cluster based off locationType since locationsOfInterest and frequentLocations are empty. Tagging as one cluster.", buf, 2u);
         }
 
-        v40 = [(PLCompactMomentClustering *)self newAssetClusterFromAssetsSortedByDate:a3];
-        [v5 addObject:v40];
+        v40 = [(PLCompactMomentClustering *)self newAssetClusterFromAssetsSortedByDate:day];
+        [array addObject:v40];
       }
     }
   }
 
 LABEL_24:
-  [v5 sortUsingDescriptors:{+[PLAssetCluster sortByTimeSortDescriptors](PLAssetCluster, "sortByTimeSortDescriptors")}];
+  [array sortUsingDescriptors:{+[PLAssetCluster sortByTimeSortDescriptors](PLAssetCluster, "sortByTimeSortDescriptors")}];
 
-  return v5;
+  return array;
 }
 
 uint64_t __63__PLCompactMomentClustering_createAssetClustersForAssetsInDay___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -845,16 +845,16 @@ uint64_t __63__PLCompactMomentClustering_createAssetClustersForAssetsInDay___blo
   return [v6 addIndexes:a3];
 }
 
-- (id)assetsByLocationTypeFromAssets:(id)a3
+- (id)assetsByLocationTypeFromAssets:(id)assets
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(PLCompactMomentClustering *)self _processedLocationTypeByAssetUUIDFromAssets:a3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [(PLCompactMomentClustering *)self _processedLocationTypeByAssetUUIDFromAssets:assets];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [assets countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -865,36 +865,36 @@ uint64_t __63__PLCompactMomentClustering_createAssetClustersForAssetsInDay___blo
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(assets);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [objc_msgSend(v6 objectForKeyedSubscript:{objc_msgSend(v11, "uuid")), "unsignedShortValue"}];
-        v13 = [v5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", v12)}];
+        v13 = [dictionary objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", v12)}];
         if (!v13)
         {
           v13 = [MEMORY[0x1E695DFA8] set];
-          [v5 setObject:v13 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", v12)}];
+          [dictionary setObject:v13 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedShort:", v12)}];
         }
 
         [v13 addObject:v11];
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [assets countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (id)newAssetClusterFromAssetsSortedByDate:(id)a3
+- (id)newAssetClusterFromAssetsSortedByDate:(id)date
 {
   v4 = [+[PLDataCluster clusterWithObjects:](PLDataCluster approximateRegionWithMaximumRadius:"approximateRegionWithMaximumRadius:", 100.0];
   v5 = [PLAssetCluster alloc];
 
-  return [(PLAssetCluster *)v5 initWithAssetsSortedByDate:a3 region:v4];
+  return [(PLAssetCluster *)v5 initWithAssetsSortedByDate:date region:v4];
 }
 
 - (void)dealloc
@@ -904,18 +904,18 @@ uint64_t __63__PLCompactMomentClustering_createAssetClustersForAssetsInDay___blo
   [(PLCompactMomentClustering *)&v3 dealloc];
 }
 
-- (PLCompactMomentClustering)initWithDataManager:(id)a3 frequentLocations:(id)a4
+- (PLCompactMomentClustering)initWithDataManager:(id)manager frequentLocations:(id)locations
 {
   v11.receiver = self;
   v11.super_class = PLCompactMomentClustering;
   v6 = [(PLCompactMomentClustering *)&v11 init];
   if (v6)
   {
-    v7 = [a3 locationsOfInterest];
-    v6->_locationsOfInterest = v7;
-    v8 = v7;
-    v6->_frequentLocations = a4;
-    v9 = a4;
+    locationsOfInterest = [manager locationsOfInterest];
+    v6->_locationsOfInterest = locationsOfInterest;
+    v8 = locationsOfInterest;
+    v6->_frequentLocations = locations;
+    locationsCopy = locations;
   }
 
   return v6;

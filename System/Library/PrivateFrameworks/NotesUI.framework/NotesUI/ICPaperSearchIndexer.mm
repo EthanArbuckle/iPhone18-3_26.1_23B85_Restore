@@ -1,11 +1,11 @@
 @interface ICPaperSearchIndexer
 + (id)shared;
 - (ICPaperSearchIndexer)init;
-- (void)cancelEverythingWithCompletion:(id)a3;
-- (void)needsToUpdateIndexWithManagedObjectContext:(NSManagedObjectContext *)a3 completionHandler:(id)a4;
-- (void)updateIndexForAttachment:(NSManagedObjectID *)a3 userInitiated:(BOOL)a4 managedObjectContext:(NSManagedObjectContext *)a5 completionHandler:(id)a6;
-- (void)updateIndexForAttachments:(NSSet *)a3 userInitiated:(BOOL)a4 managedObjectContext:(NSManagedObjectContext *)a5 completionHandler:(id)a6;
-- (void)updateIndexWithManagedObjectContext:(NSManagedObjectContext *)a3 completionHandler:(id)a4;
+- (void)cancelEverythingWithCompletion:(id)completion;
+- (void)needsToUpdateIndexWithManagedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler;
+- (void)updateIndexForAttachment:(NSManagedObjectID *)attachment userInitiated:(BOOL)initiated managedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler;
+- (void)updateIndexForAttachments:(NSSet *)attachments userInitiated:(BOOL)initiated managedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler;
+- (void)updateIndexWithManagedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler;
 @end
 
 @implementation ICPaperSearchIndexer
@@ -30,14 +30,14 @@
   return [(ICPaperSearchIndexer *)&v3 init];
 }
 
-- (void)needsToUpdateIndexWithManagedObjectContext:(NSManagedObjectContext *)a3 completionHandler:(id)a4
+- (void)needsToUpdateIndexWithManagedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9F60);
   MEMORY[0x1EEE9AC00]();
   v8 = &v16 - v7;
-  v9 = _Block_copy(a4);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
-  v10[2] = a3;
+  v10[2] = context;
   v10[3] = v9;
   v10[4] = self;
   v11 = sub_1D4419F94();
@@ -52,19 +52,19 @@
   v13[3] = 0;
   v13[4] = &unk_1D44373D0;
   v13[5] = v12;
-  v14 = a3;
-  v15 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1D4315CE0(0, 0, v8, &unk_1D44373D8, v13);
 }
 
-- (void)updateIndexWithManagedObjectContext:(NSManagedObjectContext *)a3 completionHandler:(id)a4
+- (void)updateIndexWithManagedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9F60);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = context;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1D4419F94();
@@ -79,21 +79,21 @@
   v14[3] = 0;
   v14[4] = &unk_1D44373B0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_1D4315CE0(0, 0, v9, &unk_1D44373B8, v14);
 }
 
-- (void)updateIndexForAttachments:(NSSet *)a3 userInitiated:(BOOL)a4 managedObjectContext:(NSManagedObjectContext *)a5 completionHandler:(id)a6
+- (void)updateIndexForAttachments:(NSSet *)attachments userInitiated:(BOOL)initiated managedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9F60);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  *(v15 + 16) = a3;
-  *(v15 + 24) = a4;
-  *(v15 + 32) = a5;
+  *(v15 + 16) = attachments;
+  *(v15 + 24) = initiated;
+  *(v15 + 32) = context;
   *(v15 + 40) = v14;
   *(v15 + 48) = self;
   v16 = sub_1D4419F94();
@@ -108,22 +108,22 @@
   v18[3] = 0;
   v18[4] = &unk_1D4437390;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a5;
-  v21 = self;
+  attachmentsCopy = attachments;
+  contextCopy = context;
+  selfCopy = self;
   sub_1D4315CE0(0, 0, v13, &unk_1D4437398, v18);
 }
 
-- (void)updateIndexForAttachment:(NSManagedObjectID *)a3 userInitiated:(BOOL)a4 managedObjectContext:(NSManagedObjectContext *)a5 completionHandler:(id)a6
+- (void)updateIndexForAttachment:(NSManagedObjectID *)attachment userInitiated:(BOOL)initiated managedObjectContext:(NSManagedObjectContext *)context completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9F60);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  *(v15 + 16) = a3;
-  *(v15 + 24) = a4;
-  *(v15 + 32) = a5;
+  *(v15 + 16) = attachment;
+  *(v15 + 24) = initiated;
+  *(v15 + 32) = context;
   *(v15 + 40) = v14;
   *(v15 + 48) = self;
   v16 = sub_1D4419F94();
@@ -138,18 +138,18 @@
   v18[3] = 0;
   v18[4] = &unk_1D4437370;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a5;
-  v21 = self;
+  attachmentCopy = attachment;
+  contextCopy = context;
+  selfCopy = self;
   sub_1D4315CE0(0, 0, v13, &unk_1D4437378, v18);
 }
 
-- (void)cancelEverythingWithCompletion:(id)a3
+- (void)cancelEverythingWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC7C9F60);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -165,7 +165,7 @@
   v12[3] = 0;
   v12[4] = &unk_1D4436C08;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1D4315CE0(0, 0, v7, &unk_1D4436C10, v12);
 }
 

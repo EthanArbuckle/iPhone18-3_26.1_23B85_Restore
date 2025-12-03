@@ -1,9 +1,9 @@
 @interface PDSchoolworkCollaborationStateChangeManager
 - (PDSchoolworkCollaborationStateChangeManager)init;
-- (id)_buildEventForAttachment:(id)a3 recipientPersonID:(id)a4;
-- (id)_buildStateChangeForAttachment:(id)a3 ownerPersonID:(id)a4;
-- (id)_fetchExistingStateForAttachment:(id)a3 withOwnerPersonID:(id)a4;
-- (void)_saveEventsForHandoutAttachmentID:(id)a3 recipientPersonID:(id)a4;
+- (id)_buildEventForAttachment:(id)attachment recipientPersonID:(id)d;
+- (id)_buildStateChangeForAttachment:(id)attachment ownerPersonID:(id)d;
+- (id)_fetchExistingStateForAttachment:(id)attachment withOwnerPersonID:(id)d;
+- (void)_saveEventsForHandoutAttachmentID:(id)d recipientPersonID:(id)iD;
 @end
 
 @implementation PDSchoolworkCollaborationStateChangeManager
@@ -19,15 +19,15 @@
   objc_exception_throw(v6);
 }
 
-- (id)_buildStateChangeForAttachment:(id)a3 ownerPersonID:(id)a4
+- (id)_buildStateChangeForAttachment:(id)attachment ownerPersonID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 completionStatus];
+  attachmentCopy = attachment;
+  dCopy = d;
+  completionStatus = [attachmentCopy completionStatus];
   v9 = 0;
-  if (v8 > 2)
+  if (completionStatus > 2)
   {
-    if ((v8 - 3) < 2)
+    if ((completionStatus - 3) < 2)
     {
       goto LABEL_21;
     }
@@ -35,19 +35,19 @@
 
   else
   {
-    if (!v8)
+    if (!completionStatus)
     {
       goto LABEL_21;
     }
 
-    if (v8 == 1)
+    if (completionStatus == 1)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 2;
+      v9 = completionStatus == 2;
     }
   }
 
@@ -63,12 +63,12 @@
 
   v11 = database;
   v12 = objc_opt_class();
-  v13 = [v6 parentObjectID];
-  v14 = [(PDDatabase *)v11 select:v12 identity:v13];
+  parentObjectID = [attachmentCopy parentObjectID];
+  v14 = [(PDDatabase *)v11 select:v12 identity:parentObjectID];
 
   if (v14)
   {
-    v15 = [(PDSchoolworkCollaborationStateChangeManager *)self _fetchExistingStateForAttachment:v6 withOwnerPersonID:v7];
+    v15 = [(PDSchoolworkCollaborationStateChangeManager *)self _fetchExistingStateForAttachment:attachmentCopy withOwnerPersonID:dCopy];
     CLSInitLog();
     v16 = CLSLogHandout;
     if (os_log_type_enabled(CLSLogHandout, OS_LOG_TYPE_DEBUG))
@@ -85,11 +85,11 @@
 
       v23 = clientBundleID;
       v24 = v16;
-      v25 = [v6 objectID];
+      objectID = [attachmentCopy objectID];
       v31 = 138413058;
       v32 = clientBundleID;
       v33 = 2112;
-      v34 = v25;
+      v34 = objectID;
       v35 = 2112;
       v36 = v15;
       v37 = 2048;
@@ -110,9 +110,9 @@
       }
 
       v18 = sub_1000711FC(v17);
-      v19 = [v18 objectID];
+      objectID2 = [v18 objectID];
 
-      v9 = [PDSchoolworkCollaborationStateAdaptor setActivityState:v9 forAttachment:v6 forHandout:v14 senderPersonID:v19 withStates:v15];
+      v9 = [PDSchoolworkCollaborationStateAdaptor setActivityState:v9 forAttachment:attachmentCopy forHandout:v14 senderPersonID:objectID2 withStates:v15];
     }
 
     else
@@ -139,14 +139,14 @@
 
       v27 = v26;
       v28 = v20;
-      v29 = [v6 objectID];
-      v30 = [v6 parentObjectID];
+      objectID3 = [attachmentCopy objectID];
+      parentObjectID2 = [attachmentCopy parentObjectID];
       v31 = 138412802;
       v32 = v26;
       v33 = 2112;
-      v34 = v29;
+      v34 = objectID3;
       v35 = 2112;
-      v36 = v30;
+      v36 = parentObjectID2;
       _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "SaveCollabState (Client %@): attachment: %@ missing parent handout: %@", &v31, 0x20u);
     }
 
@@ -158,10 +158,10 @@ LABEL_21:
   return v9;
 }
 
-- (id)_buildEventForAttachment:(id)a3 recipientPersonID:(id)a4
+- (id)_buildEventForAttachment:(id)attachment recipientPersonID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  dCopy = d;
   if (self)
   {
     database = self->_database;
@@ -177,8 +177,8 @@ LABEL_21:
     goto LABEL_9;
   }
 
-  v9 = [v6 completionStatus];
-  if (v9 == 1)
+  completionStatus = [attachmentCopy completionStatus];
+  if (completionStatus == 1)
   {
     if (self)
     {
@@ -192,8 +192,8 @@ LABEL_21:
 
     v14 = v13;
     v15 = objc_opt_class();
-    v16 = [v6 parentObjectID];
-    v17 = [(PDDatabase *)v14 select:v15 identity:v16];
+    parentObjectID = [attachmentCopy parentObjectID];
+    v17 = [(PDDatabase *)v14 select:v15 identity:parentObjectID];
 
     if (sub_100175D74(v17))
     {
@@ -215,12 +215,12 @@ LABEL_21:
       v19 = 0;
     }
 
-    v11 = sub_100017A50(v19, v6, v18, v7);
+    v11 = sub_100017A50(v19, attachmentCopy, v18, dCopy);
 
     goto LABEL_10;
   }
 
-  if (v9 == 2)
+  if (completionStatus == 2)
   {
     if (self)
     {
@@ -232,7 +232,7 @@ LABEL_21:
       v10 = 0;
     }
 
-    v11 = sub_100017A50(v10, v6, 105, v7);
+    v11 = sub_100017A50(v10, attachmentCopy, 105, dCopy);
   }
 
   else
@@ -246,10 +246,10 @@ LABEL_10:
   return v11;
 }
 
-- (id)_fetchExistingStateForAttachment:(id)a3 withOwnerPersonID:(id)a4
+- (id)_fetchExistingStateForAttachment:(id)attachment withOwnerPersonID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  dCopy = d;
   if (self)
   {
     database = self->_database;
@@ -261,8 +261,8 @@ LABEL_10:
   }
 
   v9 = database;
-  v10 = [v6 objectID];
-  v11 = sub_100163860(v9, v10, v7);
+  objectID = [attachmentCopy objectID];
+  v11 = sub_100163860(v9, objectID, dCopy);
 
   if (![v11 count])
   {
@@ -272,15 +272,15 @@ LABEL_10:
     if (os_log_type_enabled(CLSLogHandout, OS_LOG_TYPE_DEBUG))
     {
       v25 = v12;
-      v26 = [v6 objectID];
+      objectID2 = [attachmentCopy objectID];
       *buf = 138412290;
-      v34 = v26;
+      v34 = objectID2;
       _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "SaveCollabState : no states for %@, creating default state", buf, 0xCu);
     }
 
     v13 = objc_opt_new();
-    v14 = [v6 parentObjectID];
-    v15 = sub_100175C6C(v9, v14);
+    parentObjectID = [attachmentCopy parentObjectID];
+    v15 = sub_100175C6C(v9, parentObjectID);
 
     v30 = 0u;
     v31 = 0u;
@@ -303,7 +303,7 @@ LABEL_10:
 
           v21 = *(*(&v28 + 1) + 8 * i);
           v22 = objc_autoreleasePoolPush();
-          v23 = sub_1000AC900(PDSchoolworkCollaborationStateAdaptor, v6, v7, v21);
+          v23 = sub_1000AC900(PDSchoolworkCollaborationStateAdaptor, attachmentCopy, dCopy, v21);
           [v13 addObjectsFromArray:v23];
 
           objc_autoreleasePoolPop(v22);
@@ -321,18 +321,18 @@ LABEL_10:
   return v11;
 }
 
-- (void)_saveEventsForHandoutAttachmentID:(id)a3 recipientPersonID:(id)a4
+- (void)_saveEventsForHandoutAttachmentID:(id)d recipientPersonID:(id)iD
 {
-  v6 = a3;
-  v22 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v20 = objc_opt_new();
-  v21 = self;
+  selfCopy = self;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(PDSchoolworkCollaborationStateChangeManager *)self pendingAttachmentEvents];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  pendingAttachmentEvents = [(PDSchoolworkCollaborationStateChangeManager *)self pendingAttachmentEvents];
+  v8 = [pendingAttachmentEvents countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -344,22 +344,22 @@ LABEL_10:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(pendingAttachmentEvents);
         }
 
         v12 = *(*(&v23 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 attachmentID];
-        if ([v14 isEqualToString:v6])
+        attachmentID = [v12 attachmentID];
+        if ([attachmentID isEqualToString:dCopy])
         {
-          v15 = [v12 recipientPersonID];
-          v16 = [v15 isEqualToString:v22];
+          recipientPersonID = [v12 recipientPersonID];
+          v16 = [recipientPersonID isEqualToString:iDCopy];
 
           if (v16)
           {
-            if (v21)
+            if (selfCopy)
             {
-              database = v21->_database;
+              database = selfCopy->_database;
             }
 
             else
@@ -381,15 +381,15 @@ LABEL_10:
       }
 
       while (v9 != v11);
-      v18 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v18 = [pendingAttachmentEvents countByEnumeratingWithState:&v23 objects:v27 count:16];
       v9 = v18;
     }
 
     while (v18);
   }
 
-  v19 = [(PDSchoolworkCollaborationStateChangeManager *)v21 pendingAttachmentEvents];
-  [v19 removeObjectsInArray:v20];
+  pendingAttachmentEvents2 = [(PDSchoolworkCollaborationStateChangeManager *)selfCopy pendingAttachmentEvents];
+  [pendingAttachmentEvents2 removeObjectsInArray:v20];
 }
 
 @end

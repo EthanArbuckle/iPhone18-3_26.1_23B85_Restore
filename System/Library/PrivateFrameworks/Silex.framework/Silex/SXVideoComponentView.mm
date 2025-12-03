@@ -1,89 +1,89 @@
 @interface SXVideoComponentView
 - (BOOL)allowHierarchyRemoval;
 - (BOOL)canEnterFullscreen;
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3;
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier;
 - (BOOL)videoPlayerIsMoreThan50PercentVisible;
-- (BOOL)videoPlayerViewControllerShouldStartPlayback:(id)a3;
+- (BOOL)videoPlayerViewControllerShouldStartPlayback:(id)playback;
 - (CGRect)transitionContentFrame;
-- (SXVideoComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 sceneStateMonitor:(id)a9 resourceDataSource:(id)a10 reachabilityProvider:(id)a11 scrollObserverManager:(id)a12 videoPlayerViewControllerManager:(id)a13 bookmarkManager:(id)a14 prerollAdFactory:(id)a15;
-- (id)videoAdForVideoPlayerViewController:(id)a3;
-- (id)videoForVideoPlayerViewController:(id)a3;
+- (SXVideoComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor sceneStateMonitor:(id)stateMonitor resourceDataSource:(id)self0 reachabilityProvider:(id)self1 scrollObserverManager:(id)self2 videoPlayerViewControllerManager:(id)self3 bookmarkManager:(id)self4 prerollAdFactory:(id)self5;
+- (id)videoAdForVideoPlayerViewController:(id)controller;
+- (id)videoForVideoPlayerViewController:(id)controller;
 - (void)discardContents;
 - (void)enterFullscreen;
-- (void)loadComponent:(id)a3;
+- (void)loadComponent:(id)component;
 - (void)loadPosterFrameImage;
 - (void)pauseMediaPlayback;
 - (void)pauseMediaPlaybackForDisappearance;
 - (void)pausePrerollIfNeeded;
 - (void)playButtonTapped;
-- (void)prepareForTransitionType:(unint64_t)a3;
-- (void)presentComponentWithChanges:(id)a3;
-- (void)reachabilityChanged:(BOOL)a3;
+- (void)prepareForTransitionType:(unint64_t)type;
+- (void)presentComponentWithChanges:(id)changes;
+- (void)reachabilityChanged:(BOOL)changed;
 - (void)registerAsMediaPlaybackDelegate;
 - (void)registerForViewportDynamicBoundsChanges;
 - (void)renderContents;
-- (void)setupVideoPlayerViewController:(id)a3;
+- (void)setupVideoPlayerViewController:(id)controller;
 - (void)showPosterFrame;
 - (void)unloadVideoPlayerIfShowingAd;
 - (void)unregisterForViewportDynamicBoundsChanges;
-- (void)videoPlayerViewController:(id)a3 resumedPlaybackOfVideo:(id)a4;
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4;
-- (void)viewport:(id)a3 dynamicBoundsDidChangeFromBounds:(CGRect)a4;
-- (void)viewport:(id)a3 interfaceOrientationChangedFromOrientation:(int64_t)a4;
-- (void)visibilityStateDidChangeFromState:(int64_t)a3;
+- (void)videoPlayerViewController:(id)controller resumedPlaybackOfVideo:(id)video;
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state;
+- (void)viewport:(id)viewport dynamicBoundsDidChangeFromBounds:(CGRect)bounds;
+- (void)viewport:(id)viewport interfaceOrientationChangedFromOrientation:(int64_t)orientation;
+- (void)visibilityStateDidChangeFromState:(int64_t)state;
 @end
 
 @implementation SXVideoComponentView
 
-- (SXVideoComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 sceneStateMonitor:(id)a9 resourceDataSource:(id)a10 reachabilityProvider:(id)a11 scrollObserverManager:(id)a12 videoPlayerViewControllerManager:(id)a13 bookmarkManager:(id)a14 prerollAdFactory:(id)a15
+- (SXVideoComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor sceneStateMonitor:(id)stateMonitor resourceDataSource:(id)self0 reachabilityProvider:(id)self1 scrollObserverManager:(id)self2 videoPlayerViewControllerManager:(id)self3 bookmarkManager:(id)self4 prerollAdFactory:(id)self5
 {
-  v17 = a8;
-  v32 = a9;
-  v31 = a10;
-  v30 = a11;
-  v29 = a12;
-  v18 = a13;
-  v19 = a14;
-  v20 = a15;
+  monitorCopy = monitor;
+  stateMonitorCopy = stateMonitor;
+  sourceCopy = source;
+  reachabilityProviderCopy = reachabilityProvider;
+  managerCopy = manager;
+  controllerManagerCopy = controllerManager;
+  bookmarkManagerCopy = bookmarkManager;
+  adFactoryCopy = adFactory;
   v33.receiver = self;
   v33.super_class = SXVideoComponentView;
-  v21 = [(SXMediaComponentView *)&v33 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6 analyticsReporting:a7 appStateMonitor:v17];
+  v21 = [(SXMediaComponentView *)&v33 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory analyticsReporting:reporting appStateMonitor:monitorCopy];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_resourceDataSource, a10);
-    objc_storeStrong(&v22->_reachabilityProvider, a11);
-    objc_storeStrong(&v22->_appStateMonitor, a8);
-    objc_storeStrong(&v22->_sceneStateMonitor, a9);
-    objc_storeStrong(&v22->_scrollObserverManager, a12);
-    objc_storeStrong(&v22->_videoPlayerViewControllerManager, a13);
-    objc_storeStrong(&v22->_bookmarkManager, a14);
-    objc_storeStrong(&v22->_prerollAdFactory, a15);
+    objc_storeStrong(&v21->_resourceDataSource, source);
+    objc_storeStrong(&v22->_reachabilityProvider, reachabilityProvider);
+    objc_storeStrong(&v22->_appStateMonitor, monitor);
+    objc_storeStrong(&v22->_sceneStateMonitor, stateMonitor);
+    objc_storeStrong(&v22->_scrollObserverManager, manager);
+    objc_storeStrong(&v22->_videoPlayerViewControllerManager, controllerManager);
+    objc_storeStrong(&v22->_bookmarkManager, bookmarkManager);
+    objc_storeStrong(&v22->_prerollAdFactory, adFactory);
   }
 
   return v22;
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v42.receiver = self;
   v42.super_class = SXVideoComponentView;
-  [(SXComponentView *)&v42 loadComponent:v4];
-  v5 = [(SXVideoComponentView *)self videoPlayerViewController];
-  if (!v5)
+  [(SXComponentView *)&v42 loadComponent:componentCopy];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  if (!videoPlayerViewController)
   {
-    v6 = [(SXVideoComponentView *)self posterFrame];
+    posterFrame = [(SXVideoComponentView *)self posterFrame];
 
-    if (v6)
+    if (posterFrame)
     {
       goto LABEL_4;
     }
 
-    v7 = [(SXComponentView *)self DOMObjectProvider];
-    v8 = [(SXComponentView *)self component];
-    v9 = [v8 resourceIdentifier];
-    v5 = [v7 resourceForIdentifier:v9];
+    dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+    component = [(SXComponentView *)self component];
+    resourceIdentifier = [component resourceIdentifier];
+    videoPlayerViewController = [dOMObjectProvider resourceForIdentifier:resourceIdentifier];
 
     objc_initWeak(&location, self);
     v35 = 0;
@@ -92,8 +92,8 @@
     v38 = __Block_byref_object_copy__1;
     v39 = __Block_byref_object_dispose__1;
     v40 = 0;
-    v10 = [(SXVideoComponentView *)self videoPlayerViewControllerManager];
-    v11 = [v5 URL];
+    videoPlayerViewControllerManager = [(SXVideoComponentView *)self videoPlayerViewControllerManager];
+    v11 = [videoPlayerViewController URL];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __38__SXVideoComponentView_loadComponent___block_invoke;
@@ -101,7 +101,7 @@
     objc_copyWeak(&v34, &location);
     v33[4] = self;
     v33[5] = &v35;
-    v12 = [v10 videoPlayerViewControllerForURL:v11 receiveOwnershipBlock:v33];
+    v12 = [videoPlayerViewControllerManager videoPlayerViewControllerForURL:v11 receiveOwnershipBlock:v33];
     v13 = v36[5];
     v36[5] = v12;
 
@@ -118,47 +118,47 @@
       objc_destroyWeak(&from);
     }
 
-    v14 = [(SXVideoComponentView *)self appStateMonitor];
+    appStateMonitor = [(SXVideoComponentView *)self appStateMonitor];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __38__SXVideoComponentView_loadComponent___block_invoke_3;
     v28[3] = &unk_1E84FEC28;
     objc_copyWeak(&v29, &location);
-    [v14 performOnApplicationDidEnterBackground:v28];
+    [appStateMonitor performOnApplicationDidEnterBackground:v28];
 
-    v15 = [(SXVideoComponentView *)self reachabilityProvider];
-    [v15 addReachabilityObserver:self];
+    reachabilityProvider = [(SXVideoComponentView *)self reachabilityProvider];
+    [reachabilityProvider addReachabilityObserver:self];
 
-    v16 = [(SXComponentView *)self viewport];
-    [v16 addViewportChangeListener:self forOptions:8];
+    viewport = [(SXComponentView *)self viewport];
+    [viewport addViewportChangeListener:self forOptions:8];
 
     [(SXMediaComponentView *)self setIsDisplayingMedia:1];
     v17 = [SXVideoComponentAnalyticsReporting alloc];
-    v18 = [(SXComponentView *)self component];
-    v19 = [(SXMediaComponentView *)self analyticsReporting];
-    v20 = [(SXVideoComponentAnalyticsReporting *)v17 initWithComponent:v18 analyticsProviding:v19];
+    component2 = [(SXComponentView *)self component];
+    analyticsReporting = [(SXMediaComponentView *)self analyticsReporting];
+    v20 = [(SXVideoComponentAnalyticsReporting *)v17 initWithComponent:component2 analyticsProviding:analyticsReporting];
     [(SXVideoComponentView *)self setVideoComponentAnalyticsReporter:v20];
 
-    v21 = [v36[5] analyticsRouter];
+    analyticsRouter = [v36[5] analyticsRouter];
 
-    if (v21)
+    if (analyticsRouter)
     {
-      v22 = [v36[5] analyticsRouter];
-      [(SXVideoComponentView *)self setAnalyticsRouter:v22];
+      analyticsRouter2 = [v36[5] analyticsRouter];
+      [(SXVideoComponentView *)self setAnalyticsRouter:analyticsRouter2];
 
-      v23 = [(SXVideoComponentView *)self analyticsRouter];
-      v24 = [(SXVideoComponentView *)self videoComponentAnalyticsReporter];
-      [v23 setAnalyticsReporter:v24 forPlaybackLocation:2];
+      analyticsRouter3 = [(SXVideoComponentView *)self analyticsRouter];
+      videoComponentAnalyticsReporter = [(SXVideoComponentView *)self videoComponentAnalyticsReporter];
+      [analyticsRouter3 setAnalyticsReporter:videoComponentAnalyticsReporter forPlaybackLocation:2];
 
-      v25 = [(SXVideoComponentView *)self analyticsRouter];
-      [v25 setCurrentPlaybackLocation:2];
+      analyticsRouter4 = [(SXVideoComponentView *)self analyticsRouter];
+      [analyticsRouter4 setCurrentPlaybackLocation:2];
     }
 
     else
     {
       v26 = [SXVideoAnalyticsRouter alloc];
-      v25 = [(SXVideoComponentView *)self videoComponentAnalyticsReporter];
-      v27 = [(SXVideoAnalyticsRouter *)v26 initWithInitiatedPlaybackLocation:2 analyticsReporter:v25];
+      analyticsRouter4 = [(SXVideoComponentView *)self videoComponentAnalyticsReporter];
+      v27 = [(SXVideoAnalyticsRouter *)v26 initWithInitiatedPlaybackLocation:2 analyticsReporter:analyticsRouter4];
       [(SXVideoComponentView *)self setAnalyticsRouter:v27];
     }
 
@@ -244,28 +244,28 @@ void __38__SXVideoComponentView_loadComponent___block_invoke_3(uint64_t a1)
   [WeakRetained unloadVideoPlayerIfShowingAd];
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v11.receiver = self;
   v11.super_class = SXVideoComponentView;
-  [(SXComponentView *)&v11 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
-  v4 = [(SXVideoComponentView *)self posterFrame];
-  v5 = [(SXComponentView *)self contentView];
-  [v5 bounds];
-  [v4 setFrame:?];
+  [(SXComponentView *)&v11 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
+  posterFrame = [(SXVideoComponentView *)self posterFrame];
+  contentView = [(SXComponentView *)self contentView];
+  [contentView bounds];
+  [posterFrame setFrame:?];
 
-  v6 = [(SXVideoComponentView *)self videoPlayerViewController];
-  v7 = [v6 view];
-  v8 = [(SXComponentView *)self contentView];
-  [v8 bounds];
-  [v7 setFrame:?];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  view = [videoPlayerViewController view];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 bounds];
+  [view setFrame:?];
 
-  v9 = [(SXVideoComponentView *)self presentationBlock];
+  presentationBlock = [(SXVideoComponentView *)self presentationBlock];
 
-  if (v9)
+  if (presentationBlock)
   {
-    v10 = [(SXVideoComponentView *)self presentationBlock];
-    v10[2]();
+    presentationBlock2 = [(SXVideoComponentView *)self presentationBlock];
+    presentationBlock2[2]();
 
     [(SXVideoComponentView *)self setPresentationBlock:0];
   }
@@ -284,33 +284,33 @@ void __38__SXVideoComponentView_loadComponent___block_invoke_3(uint64_t a1)
   v12.receiver = self;
   v12.super_class = SXVideoComponentView;
   [(SXComponentView *)&v12 discardContents];
-  v3 = [(SXVideoComponentView *)self thumbnailRequestCancelHandler];
+  thumbnailRequestCancelHandler = [(SXVideoComponentView *)self thumbnailRequestCancelHandler];
 
-  if (v3)
+  if (thumbnailRequestCancelHandler)
   {
-    v4 = [(SXVideoComponentView *)self thumbnailRequestCancelHandler];
-    v4[2]();
+    thumbnailRequestCancelHandler2 = [(SXVideoComponentView *)self thumbnailRequestCancelHandler];
+    thumbnailRequestCancelHandler2[2]();
 
     [(SXVideoComponentView *)self setThumbnailRequestCancelHandler:0];
   }
 
-  v5 = [(SXVideoComponentView *)self posterFrame];
-  [v5 setImage:0];
+  posterFrame = [(SXVideoComponentView *)self posterFrame];
+  [posterFrame setImage:0];
 
-  v6 = [(SXVideoComponentView *)self videoPlayerViewController];
-  v7 = [v6 isPlaying];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  isPlaying = [videoPlayerViewController isPlaying];
 
-  if ((v7 & 1) == 0)
+  if ((isPlaying & 1) == 0)
   {
-    v8 = [(SXVideoComponentView *)self videoPlayerViewController];
-    [v8 willMoveToParentViewController:0];
+    videoPlayerViewController2 = [(SXVideoComponentView *)self videoPlayerViewController];
+    [videoPlayerViewController2 willMoveToParentViewController:0];
 
-    v9 = [(SXVideoComponentView *)self videoPlayerViewController];
-    v10 = [v9 view];
-    [v10 removeFromSuperview];
+    videoPlayerViewController3 = [(SXVideoComponentView *)self videoPlayerViewController];
+    view = [videoPlayerViewController3 view];
+    [view removeFromSuperview];
 
-    v11 = [(SXVideoComponentView *)self videoPlayerViewController];
-    [v11 removeFromParentViewController];
+    videoPlayerViewController4 = [(SXVideoComponentView *)self videoPlayerViewController];
+    [videoPlayerViewController4 removeFromParentViewController];
 
     [(SXVideoComponentView *)self setVideoPlayerViewController:0];
     [(SXVideoComponentView *)self showPosterFrame];
@@ -319,40 +319,40 @@ void __38__SXVideoComponentView_loadComponent___block_invoke_3(uint64_t a1)
 
 - (void)showPosterFrame
 {
-  v3 = [(SXVideoComponentView *)self posterFrame];
+  posterFrame = [(SXVideoComponentView *)self posterFrame];
 
-  if (!v3)
+  if (!posterFrame)
   {
     v4 = [SXPosterFrameView alloc];
-    v5 = [(SXComponentView *)self contentView];
-    [v5 bounds];
+    contentView = [(SXComponentView *)self contentView];
+    [contentView bounds];
     v6 = [(SXPosterFrameView *)v4 initWithFrame:?];
     [(SXVideoComponentView *)self setPosterFrame:v6];
 
-    v7 = [(SXVideoComponentView *)self posterFrame];
-    v8 = [v7 playButton];
-    [v8 addTarget:self action:sel_playButtonTapped forControlEvents:64];
+    posterFrame2 = [(SXVideoComponentView *)self posterFrame];
+    playButton = [posterFrame2 playButton];
+    [playButton addTarget:self action:sel_playButtonTapped forControlEvents:64];
 
-    v9 = [(SWReachabilityProvider *)self->_reachabilityProvider isNetworkReachable];
-    v10 = [(SXVideoComponentView *)self posterFrame];
-    v11 = [v10 playButton];
-    [v11 setEnabled:v9];
+    isNetworkReachable = [(SWReachabilityProvider *)self->_reachabilityProvider isNetworkReachable];
+    posterFrame3 = [(SXVideoComponentView *)self posterFrame];
+    playButton2 = [posterFrame3 playButton];
+    [playButton2 setEnabled:isNetworkReachable];
   }
 
-  v13 = [(SXComponentView *)self contentView];
-  v12 = [(SXVideoComponentView *)self posterFrame];
-  [v13 addSubview:v12];
+  contentView2 = [(SXComponentView *)self contentView];
+  posterFrame4 = [(SXVideoComponentView *)self posterFrame];
+  [contentView2 addSubview:posterFrame4];
 }
 
 - (void)loadPosterFrameImage
 {
-  v3 = [(SXComponentView *)self DOMObjectProvider];
-  v4 = [(SXComponentView *)self component];
-  v5 = [v4 stillImageIdentifier];
-  v6 = [v3 imageResourceForIdentifier:v5];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  stillImageIdentifier = [component stillImageIdentifier];
+  v6 = [dOMObjectProvider imageResourceForIdentifier:stillImageIdentifier];
 
-  v7 = [(SXVideoComponentView *)self posterFrame];
-  [v7 bounds];
+  posterFrame = [(SXVideoComponentView *)self posterFrame];
+  [posterFrame bounds];
   v9 = v8;
   v11 = v10;
 
@@ -374,15 +374,15 @@ void __38__SXVideoComponentView_loadComponent___block_invoke_3(uint64_t a1)
 
   objc_initWeak(&location, self);
   v16 = [SXImageRequest alloc];
-  v17 = [(SXComponentView *)self component];
-  v18 = [v17 stillImageIdentifier];
+  component2 = [(SXComponentView *)self component];
+  stillImageIdentifier2 = [component2 stillImageIdentifier];
   v19 = [v6 URL];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __44__SXVideoComponentView_loadPosterFrameImage__block_invoke;
   v26 = &unk_1E84FEF88;
   objc_copyWeak(&v27, &location);
-  v20 = [(SXImageRequest *)v16 initWithImageIdentifier:v18 imageQualities:4 url:v19 size:1 preserveColorspace:&v23 loadingBlock:v9, v11];
+  v20 = [(SXImageRequest *)v16 initWithImageIdentifier:stillImageIdentifier2 imageQualities:4 url:v19 size:1 preserveColorspace:&v23 loadingBlock:v9, v11];
 
   v21 = [(SXVideoComponentView *)self resourceDataSource:v23];
   v22 = [v21 loadImagesForImageRequest:v20 completionBlock:0];
@@ -408,128 +408,128 @@ void __44__SXVideoComponentView_loadPosterFrameImage__block_invoke(uint64_t a1, 
 {
   v5 = objc_alloc_init(MEMORY[0x1E69CE130]);
   [(SXVideoComponentView *)self setupVideoPlayerViewController:v5];
-  v3 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v3 playWithButtonTapped:1];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  [videoPlayerViewController playWithButtonTapped:1];
 
-  v4 = [(SXVideoComponentView *)self posterFrame];
-  [v4 removeFromSuperview];
+  posterFrame = [(SXVideoComponentView *)self posterFrame];
+  [posterFrame removeFromSuperview];
 }
 
 - (void)unloadVideoPlayerIfShowingAd
 {
-  v3 = [(SXVideoComponentView *)self videoPlayerViewController];
-  if (v3)
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  if (videoPlayerViewController)
   {
-    v13 = v3;
-    v4 = [v3 mode] == 1;
-    v3 = v13;
+    v13 = videoPlayerViewController;
+    v4 = [videoPlayerViewController mode] == 1;
+    videoPlayerViewController = v13;
     if (v4)
     {
-      v5 = [v13 presentedViewController];
+      presentedViewController = [v13 presentedViewController];
 
-      v3 = v13;
-      if (!v5)
+      videoPlayerViewController = v13;
+      if (!presentedViewController)
       {
         [v13 willUnload];
         [v13 willMoveToParentViewController:0];
-        v6 = [v13 view];
-        [v6 removeFromSuperview];
+        view = [v13 view];
+        [view removeFromSuperview];
 
         [v13 removeFromParentViewController];
         [(SXVideoComponentView *)self setVideoPlayerViewController:0];
-        v7 = [(SXVideoComponentView *)self posterFrame];
-        if (!v7)
+        posterFrame = [(SXVideoComponentView *)self posterFrame];
+        if (!posterFrame)
         {
-          v7 = objc_alloc_init(SXPosterFrameView);
-          [(SXVideoComponentView *)self setPosterFrame:v7];
+          posterFrame = objc_alloc_init(SXPosterFrameView);
+          [(SXVideoComponentView *)self setPosterFrame:posterFrame];
         }
 
-        v8 = [(SXComponentView *)self contentView];
-        [v8 addSubview:v7];
+        contentView = [(SXComponentView *)self contentView];
+        [contentView addSubview:posterFrame];
 
-        v9 = [(SXVideoComponentView *)self posterFrame];
-        v10 = [(SXComponentView *)self contentView];
-        [v10 bounds];
-        [v9 setFrame:?];
+        posterFrame2 = [(SXVideoComponentView *)self posterFrame];
+        contentView2 = [(SXComponentView *)self contentView];
+        [contentView2 bounds];
+        [posterFrame2 setFrame:?];
 
-        v11 = [(SXPosterFrameView *)v7 playButton];
-        [v11 addTarget:self action:sel_playButtonTapped forControlEvents:64];
+        playButton = [(SXPosterFrameView *)posterFrame playButton];
+        [playButton addTarget:self action:sel_playButtonTapped forControlEvents:64];
 
-        v12 = [(SXPosterFrameView *)v7 image];
+        image = [(SXPosterFrameView *)posterFrame image];
 
-        if (!v12)
+        if (!image)
         {
           [(SXVideoComponentView *)self loadPosterFrameImage];
         }
 
-        v3 = v13;
+        videoPlayerViewController = v13;
       }
     }
   }
 }
 
-- (void)setupVideoPlayerViewController:(id)a3
+- (void)setupVideoPlayerViewController:(id)controller
 {
-  [(SXVideoComponentView *)self setVideoPlayerViewController:a3];
-  v4 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v4 setDelegate:self];
+  [(SXVideoComponentView *)self setVideoPlayerViewController:controller];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  [videoPlayerViewController setDelegate:self];
 
-  v5 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v5 setDataSource:self];
+  videoPlayerViewController2 = [(SXVideoComponentView *)self videoPlayerViewController];
+  [videoPlayerViewController2 setDataSource:self];
 
-  v6 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v6 setFullscreenBehavior:0];
+  videoPlayerViewController3 = [(SXVideoComponentView *)self videoPlayerViewController];
+  [videoPlayerViewController3 setFullscreenBehavior:0];
 
   [(SXVideoComponentView *)self registerAsMediaPlaybackDelegate];
-  v7 = [(SXComponentView *)self presentationDelegate];
-  v16 = [v7 presentingContentViewController];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  presentingContentViewController = [presentationDelegate presentingContentViewController];
 
-  v8 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v16 addChildViewController:v8];
+  videoPlayerViewController4 = [(SXVideoComponentView *)self videoPlayerViewController];
+  [presentingContentViewController addChildViewController:videoPlayerViewController4];
 
-  v9 = [(SXComponentView *)self contentView];
-  v10 = [(SXVideoComponentView *)self videoPlayerViewController];
-  v11 = [v10 view];
-  [v9 addSubview:v11];
+  contentView = [(SXComponentView *)self contentView];
+  videoPlayerViewController5 = [(SXVideoComponentView *)self videoPlayerViewController];
+  view = [videoPlayerViewController5 view];
+  [contentView addSubview:view];
 
-  v12 = [(SXVideoComponentView *)self videoPlayerViewController];
-  v13 = [v12 view];
-  v14 = [(SXComponentView *)self contentView];
-  [v14 bounds];
-  [v13 setFrame:?];
+  videoPlayerViewController6 = [(SXVideoComponentView *)self videoPlayerViewController];
+  view2 = [videoPlayerViewController6 view];
+  contentView2 = [(SXComponentView *)self contentView];
+  [contentView2 bounds];
+  [view2 setFrame:?];
 
-  v15 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v15 didMoveToParentViewController:v16];
+  videoPlayerViewController7 = [(SXVideoComponentView *)self videoPlayerViewController];
+  [videoPlayerViewController7 didMoveToParentViewController:presentingContentViewController];
 }
 
-- (id)videoForVideoPlayerViewController:(id)a3
+- (id)videoForVideoPlayerViewController:(id)controller
 {
-  v4 = [(SXComponentView *)self DOMObjectProvider];
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 resourceIdentifier];
-  v7 = [v4 resourceForIdentifier:v6];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  resourceIdentifier = [component resourceIdentifier];
+  v7 = [dOMObjectProvider resourceForIdentifier:resourceIdentifier];
 
   v8 = [SXVideoProvider alloc];
   v9 = [v7 URL];
   v10 = [(SXVideoProvider *)v8 initWithURL:v9];
 
-  v11 = [(SXVideoComponentView *)self analyticsRouter];
-  [(SXVideoProvider *)v10 setAnalyticsReporter:v11];
+  analyticsRouter = [(SXVideoComponentView *)self analyticsRouter];
+  [(SXVideoProvider *)v10 setAnalyticsReporter:analyticsRouter];
 
   return v10;
 }
 
-- (id)videoAdForVideoPlayerViewController:(id)a3
+- (id)videoAdForVideoPlayerViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 allowsPrerollAds];
+  controllerCopy = controller;
+  component = [(SXComponentView *)self component];
+  allowsPrerollAds = [component allowsPrerollAds];
 
-  if (v6)
+  if (allowsPrerollAds)
   {
-    v7 = [(SXVideoComponentView *)self prerollAdFactory];
-    v8 = [(SXVideoComponentView *)self analyticsRouter];
-    v9 = [v7 createVideoAdProviderForComponentView:self videoPlayerViewController:v4 analyticsReporter:v8];
+    prerollAdFactory = [(SXVideoComponentView *)self prerollAdFactory];
+    analyticsRouter = [(SXVideoComponentView *)self analyticsRouter];
+    v9 = [prerollAdFactory createVideoAdProviderForComponentView:self videoPlayerViewController:controllerCopy analyticsReporter:analyticsRouter];
   }
 
   else
@@ -540,42 +540,42 @@ void __44__SXVideoComponentView_loadPosterFrameImage__block_invoke(uint64_t a1, 
   return v9;
 }
 
-- (void)videoPlayerViewController:(id)a3 resumedPlaybackOfVideo:(id)a4
+- (void)videoPlayerViewController:(id)controller resumedPlaybackOfVideo:(id)video
 {
-  [(SXVideoComponentView *)self registerAsMediaPlaybackDelegate:a3];
+  [(SXVideoComponentView *)self registerAsMediaPlaybackDelegate:controller];
 
   [(SXVideoComponentView *)self pausePrerollIfNeeded];
 }
 
-- (BOOL)videoPlayerViewControllerShouldStartPlayback:(id)a3
+- (BOOL)videoPlayerViewControllerShouldStartPlayback:(id)playback
 {
-  v5 = ![v4 mode] && (-[SXComponentView visibilityState](self, "visibilityState") == 1 || (-[SXVideoComponentView videoPlayerViewController](self, "videoPlayerViewController"), v6 = v4 = a3;
+  v5 = ![v4 mode] && (-[SXComponentView visibilityState](self, "visibilityState") == 1 || (-[SXVideoComponentView videoPlayerViewController](self, "videoPlayerViewController"), v6 = v4 = playback;
 
   return v5;
 }
 
 - (void)registerAsMediaPlaybackDelegate
 {
-  v4 = [(SXComponentView *)self presentationDelegate];
-  v3 = [v4 mediaPlaybackController];
-  [(SXMediaPlaybackController *)v3 registerMediaPlayBack:?];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  mediaPlaybackController = [presentationDelegate mediaPlaybackController];
+  [(SXMediaPlaybackController *)mediaPlaybackController registerMediaPlayBack:?];
 }
 
 - (void)pauseMediaPlayback
 {
-  v2 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v2 pause];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  [videoPlayerViewController pause];
 }
 
 - (void)pauseMediaPlaybackForDisappearance
 {
-  v3 = [(SXVideoComponentView *)self videoPlayerViewController];
-  v4 = [v3 isFullscreenInProgress];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  isFullscreenInProgress = [videoPlayerViewController isFullscreenInProgress];
 
-  if ((v4 & 1) == 0)
+  if ((isFullscreenInProgress & 1) == 0)
   {
-    v5 = [(SXVideoComponentView *)self videoPlayerViewController];
-    [v5 pause];
+    videoPlayerViewController2 = [(SXVideoComponentView *)self videoPlayerViewController];
+    [videoPlayerViewController2 pause];
   }
 }
 
@@ -583,8 +583,8 @@ void __44__SXVideoComponentView_loadPosterFrameImage__block_invoke(uint64_t a1, 
 {
   if (![(SXVideoComponentView *)self isReceivingViewportDynamicBoundsChanges])
   {
-    v3 = [(SXComponentView *)self viewport];
-    [v3 addViewportChangeListener:self forOptions:2];
+    viewport = [(SXComponentView *)self viewport];
+    [viewport addViewportChangeListener:self forOptions:2];
   }
 
   [(SXVideoComponentView *)self setIsReceivingViewportDynamicBoundsChanges:1];
@@ -594,78 +594,78 @@ void __44__SXVideoComponentView_loadPosterFrameImage__block_invoke(uint64_t a1, 
 {
   if ([(SXVideoComponentView *)self isReceivingViewportDynamicBoundsChanges])
   {
-    v3 = [(SXComponentView *)self viewport];
-    [v3 removeViewportChangeListener:self forOptions:2];
+    viewport = [(SXComponentView *)self viewport];
+    [viewport removeViewportChangeListener:self forOptions:2];
   }
 
   [(SXVideoComponentView *)self setIsReceivingViewportDynamicBoundsChanges:0];
 }
 
-- (void)viewport:(id)a3 dynamicBoundsDidChangeFromBounds:(CGRect)a4
+- (void)viewport:(id)viewport dynamicBoundsDidChangeFromBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewportCopy = viewport;
   if ([-[SXVideoComponentView superclass](self "superclass")])
   {
     v11.receiver = self;
     v11.super_class = SXVideoComponentView;
-    [(SXMediaComponentView *)&v11 viewport:v9 dynamicBoundsDidChangeFromBounds:x, y, width, height];
+    [(SXMediaComponentView *)&v11 viewport:viewportCopy dynamicBoundsDidChangeFromBounds:x, y, width, height];
   }
 
   if ([(SXVideoComponentView *)self videoPlayerIsMoreThan50PercentVisible]&& [(SXVideoComponentView *)self shouldAutoPlayWhenVisible])
   {
     [(SXVideoComponentView *)self setShouldAutoPlayWhenVisible:0];
-    v10 = [(SXVideoComponentView *)self videoPlayerViewController];
-    [v10 playWithButtonTapped:0];
+    videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+    [videoPlayerViewController playWithButtonTapped:0];
   }
 
   [(SXVideoComponentView *)self pausePrerollIfNeeded];
 }
 
-- (void)viewport:(id)a3 appearStateChangedFromState:(unint64_t)a4
+- (void)viewport:(id)viewport appearStateChangedFromState:(unint64_t)state
 {
-  if (![a3 appearState])
+  if (![viewport appearState])
   {
-    v5 = [(SXVideoComponentView *)self videoPlayerViewController];
-    v6 = [v5 isFullscreenInProgress];
+    videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+    isFullscreenInProgress = [videoPlayerViewController isFullscreenInProgress];
 
-    if ((v6 & 1) == 0)
+    if ((isFullscreenInProgress & 1) == 0)
     {
-      v7 = [(SXVideoComponentView *)self videoPlayerViewController];
-      [v7 pause];
+      videoPlayerViewController2 = [(SXVideoComponentView *)self videoPlayerViewController];
+      [videoPlayerViewController2 pause];
 
       [(SXVideoComponentView *)self unloadVideoPlayerIfShowingAd];
     }
   }
 }
 
-- (void)viewport:(id)a3 interfaceOrientationChangedFromOrientation:(int64_t)a4
+- (void)viewport:(id)viewport interfaceOrientationChangedFromOrientation:(int64_t)orientation
 {
-  v5 = a3;
-  v6 = [(SXComponentView *)self presentationDelegate];
-  v8 = [v6 fullscreenVideoPlaybackManager];
+  viewportCopy = viewport;
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  fullscreenVideoPlaybackManager = [presentationDelegate fullscreenVideoPlaybackManager];
 
-  v7 = [v5 interfaceOrientation];
-  if ((v7 - 3) > 1)
+  interfaceOrientation = [viewportCopy interfaceOrientation];
+  if ((interfaceOrientation - 3) > 1)
   {
-    [(SXFullscreenVideoPlaybackManager *)v8 removeCandidate:?];
+    [(SXFullscreenVideoPlaybackManager *)fullscreenVideoPlaybackManager removeCandidate:?];
   }
 
   else
   {
-    [(SXFullscreenVideoPlaybackManager *)v8 addCandidate:?];
+    [(SXFullscreenVideoPlaybackManager *)fullscreenVideoPlaybackManager addCandidate:?];
   }
 }
 
 - (BOOL)videoPlayerIsMoreThan50PercentVisible
 {
-  v3 = [(SXVideoComponentView *)self videoPlayerViewController];
-  v4 = [v3 isFullscreenInProgress];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  isFullscreenInProgress = [videoPlayerViewController isFullscreenInProgress];
 
-  if (v4)
+  if (isFullscreenInProgress)
   {
     return 1;
   }
@@ -675,8 +675,8 @@ void __44__SXVideoComponentView_loadPosterFrameImage__block_invoke(uint64_t a1, 
     return 0;
   }
 
-  v6 = [(SXComponentView *)self viewport];
-  [v6 dynamicBounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport dynamicBounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -700,48 +700,48 @@ void __44__SXVideoComponentView_loadPosterFrameImage__block_invoke(uint64_t a1, 
 
 - (void)pausePrerollIfNeeded
 {
-  v4 = [(SXVideoComponentView *)self videoPlayerViewController];
-  if ([v4 mode] == 1)
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  if ([videoPlayerViewController mode] == 1)
   {
-    v3 = [(SXVideoComponentView *)self videoPlayerIsMoreThan50PercentVisible];
+    videoPlayerIsMoreThan50PercentVisible = [(SXVideoComponentView *)self videoPlayerIsMoreThan50PercentVisible];
 
-    if (v3)
+    if (videoPlayerIsMoreThan50PercentVisible)
     {
       return;
     }
 
-    v4 = [(SXVideoComponentView *)self videoPlayerViewController];
-    [v4 pause];
+    videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+    [videoPlayerViewController pause];
   }
 }
 
-- (void)visibilityStateDidChangeFromState:(int64_t)a3
+- (void)visibilityStateDidChangeFromState:(int64_t)state
 {
   v7.receiver = self;
   v7.super_class = SXVideoComponentView;
   [(SXMediaComponentView *)&v7 visibilityStateDidChangeFromState:?];
   if ([(SXComponentView *)self visibilityState]== 1)
   {
-    v5 = [(SXComponentView *)self viewport];
-    [v5 addViewportChangeListener:self forOptions:64];
+    viewport = [(SXComponentView *)self viewport];
+    [viewport addViewportChangeListener:self forOptions:64];
 LABEL_6:
 
     return;
   }
 
-  v6 = [(SXComponentView *)self visibilityState];
-  if (a3 == 1 && v6 == 2)
+  visibilityState = [(SXComponentView *)self visibilityState];
+  if (state == 1 && visibilityState == 2)
   {
-    v5 = [(SXComponentView *)self viewport];
-    [v5 removeViewportChangeListener:self forOptions:64];
+    viewport = [(SXComponentView *)self viewport];
+    [viewport removeViewportChangeListener:self forOptions:64];
     goto LABEL_6;
   }
 }
 
 - (BOOL)canEnterFullscreen
 {
-  v3 = [(SXComponentView *)self viewport];
-  [v3 dynamicBounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport dynamicBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -760,10 +760,10 @@ LABEL_6:
   y = v34.origin.y;
   width = v34.size.width;
   height = v34.size.height;
-  v20 = [(SXVideoComponentView *)self videoPlayerViewController];
-  v21 = [v20 isPlaying];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  isPlaying = [videoPlayerViewController isPlaying];
 
-  v22 = [v3 interfaceOrientation];
+  interfaceOrientation = [viewport interfaceOrientation];
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
@@ -771,13 +771,13 @@ LABEL_6:
   v23 = CGRectGetHeight(v35);
   [(SXComponentView *)self absoluteFrame];
   v24 = CGRectGetHeight(v36);
-  v25 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   if (objc_opt_respondsToSelector())
   {
-    v26 = [MEMORY[0x1E69DC938] currentDevice];
-    v27 = [v26 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    v28 = v27 == 0;
+    v28 = userInterfaceIdiom == 0;
   }
 
   else
@@ -787,9 +787,9 @@ LABEL_6:
 
   v29 = v24 * 0.1;
 
-  if ((v22 - 3) < 2)
+  if ((interfaceOrientation - 3) < 2)
   {
-    v30 = v21;
+    v30 = isPlaying;
   }
 
   else
@@ -812,16 +812,16 @@ LABEL_6:
 
 - (void)enterFullscreen
 {
-  v2 = [(SXVideoComponentView *)self videoPlayerViewController];
-  [v2 enterFullscreenWithCompletionBlock:0];
+  videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+  [videoPlayerViewController enterFullscreenWithCompletionBlock:0];
 }
 
 - (CGRect)transitionContentFrame
 {
-  v3 = [(SXComponentView *)self DOMObjectProvider];
-  v4 = [(SXComponentView *)self component];
-  v5 = [v4 stillImageIdentifier];
-  v6 = [v3 imageResourceForIdentifier:v5];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  stillImageIdentifier = [component stillImageIdentifier];
+  v6 = [dOMObjectProvider imageResourceForIdentifier:stillImageIdentifier];
 
   [(SXComponentView *)self contentFrame];
   [v6 sizeThatFills:{v7, v8}];
@@ -854,65 +854,65 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 stillImageIdentifier];
-  v7 = [v4 isEqualToString:v6];
+  identifierCopy = identifier;
+  component = [(SXComponentView *)self component];
+  stillImageIdentifier = [component stillImageIdentifier];
+  v7 = [identifierCopy isEqualToString:stillImageIdentifier];
 
   return v7;
 }
 
-- (void)prepareForTransitionType:(unint64_t)a3
+- (void)prepareForTransitionType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v5 = [(SXVideoComponentView *)self videoPlayerViewController];
-    [v5 willMoveToParentViewController:0];
+    videoPlayerViewController = [(SXVideoComponentView *)self videoPlayerViewController];
+    [videoPlayerViewController willMoveToParentViewController:0];
 
-    v6 = [(SXVideoComponentView *)self videoPlayerViewController];
-    [v6 removeFromParentViewController];
+    videoPlayerViewController2 = [(SXVideoComponentView *)self videoPlayerViewController];
+    [videoPlayerViewController2 removeFromParentViewController];
   }
 }
 
-- (void)reachabilityChanged:(BOOL)a3
+- (void)reachabilityChanged:(BOOL)changed
 {
-  v3 = a3;
-  if (a3 && [(SXComponentView *)self hasRenderedContents])
+  changedCopy = changed;
+  if (changed && [(SXComponentView *)self hasRenderedContents])
   {
-    v5 = [(SXVideoComponentView *)self posterFrame];
-    v6 = [v5 image];
-    if (v6)
+    posterFrame = [(SXVideoComponentView *)self posterFrame];
+    image = [posterFrame image];
+    if (image)
     {
     }
 
     else
     {
-      v7 = [(SXVideoComponentView *)self thumbnailRequestCancelHandler];
+      thumbnailRequestCancelHandler = [(SXVideoComponentView *)self thumbnailRequestCancelHandler];
 
-      if (!v7)
+      if (!thumbnailRequestCancelHandler)
       {
         [(SXVideoComponentView *)self loadPosterFrameImage];
       }
     }
   }
 
-  v9 = [(SXVideoComponentView *)self posterFrame];
-  v8 = [v9 playButton];
-  [v8 setEnabled:v3];
+  posterFrame2 = [(SXVideoComponentView *)self posterFrame];
+  playButton = [posterFrame2 playButton];
+  [playButton setEnabled:changedCopy];
 }
 
 - (BOOL)allowHierarchyRemoval
 {
-  v2 = self;
+  selfCopy = self;
   v6.receiver = self;
   v6.super_class = SXVideoComponentView;
-  v3 = [(SXComponentView *)&v6 allowHierarchyRemoval];
-  v4 = [(SXVideoComponentView *)v2 videoPlayerViewController];
-  LOBYTE(v2) = v4 == 0;
+  allowHierarchyRemoval = [(SXComponentView *)&v6 allowHierarchyRemoval];
+  videoPlayerViewController = [(SXVideoComponentView *)selfCopy videoPlayerViewController];
+  LOBYTE(selfCopy) = videoPlayerViewController == 0;
 
-  return v2 & v3;
+  return selfCopy & allowHierarchyRemoval;
 }
 
 @end

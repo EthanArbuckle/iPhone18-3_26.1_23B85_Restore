@@ -1,14 +1,14 @@
 @interface App
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation App
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_100001F70(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_100001F70(eventCopy);
 }
 
 @end

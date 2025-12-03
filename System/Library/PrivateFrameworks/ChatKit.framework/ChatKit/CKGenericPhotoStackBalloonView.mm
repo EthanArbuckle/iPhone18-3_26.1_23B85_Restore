@@ -1,21 +1,21 @@
 @interface CKGenericPhotoStackBalloonView
 + (id)genericStackView;
-- (BOOL)_scrollLeadingAnimated:(BOOL)a3;
-- (BOOL)_scrollTrailingAnimated:(BOOL)a3;
-- (BOOL)pageLeftAnimated:(BOOL)a3;
-- (BOOL)pageRightAnimated:(BOOL)a3;
+- (BOOL)_scrollLeadingAnimated:(BOOL)animated;
+- (BOOL)_scrollTrailingAnimated:(BOOL)animated;
+- (BOOL)pageLeftAnimated:(BOOL)animated;
+- (BOOL)pageRightAnimated:(BOOL)animated;
 - (CKGradientReferenceView)gradientReferenceView;
-- (double)horizontalContentMarginForSize:(CGSize)a3;
+- (double)horizontalContentMarginForSize:(CGSize)size;
 - (id)_createStackView;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setDataSourceManager:(id)a3;
-- (void)setHasHighlightOverlay:(BOOL)a3 animated:(BOOL)a4 autoDismiss:(BOOL)a5;
-- (void)setHorizontalContentMarginAdjustment:(double)a3 edge:(int64_t)a4;
-- (void)setMediaProvider:(id)a3;
-- (void)tapGestureRecognized:(id)a3;
+- (void)setDataSourceManager:(id)manager;
+- (void)setHasHighlightOverlay:(BOOL)overlay animated:(BOOL)animated autoDismiss:(BOOL)dismiss;
+- (void)setHorizontalContentMarginAdjustment:(double)adjustment edge:(int64_t)edge;
+- (void)setMediaProvider:(id)provider;
+- (void)tapGestureRecognized:(id)recognized;
 @end
 
 @implementation CKGenericPhotoStackBalloonView
@@ -34,9 +34,9 @@
   [(CKBalloonView *)&v5 prepareForDisplay];
   if (!self->_stackView)
   {
-    v3 = [(CKGenericPhotoStackBalloonView *)self _createStackView];
+    _createStackView = [(CKGenericPhotoStackBalloonView *)self _createStackView];
     stackView = self->_stackView;
-    self->_stackView = v3;
+    self->_stackView = _createStackView;
 
     [(CKGenericPhotoStackBalloonView *)self addSubview:self->_stackView];
   }
@@ -47,18 +47,18 @@
   }
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   if (CKIsRunningInMacCatalyst())
   {
-    v5 = [(CKGenericPhotoStackBalloonView *)self stackView];
+    stackView = [(CKGenericPhotoStackBalloonView *)self stackView];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(CKGenericPhotoStackBalloonView *)self stackView];
-      v7 = [v6 isPlayingInlineVideo];
+      stackView2 = [(CKGenericPhotoStackBalloonView *)self stackView];
+      isPlayingInlineVideo = [stackView2 isPlayingInlineVideo];
 
-      if (v7)
+      if (isPlayingInlineVideo)
       {
         goto LABEL_7;
       }
@@ -71,26 +71,26 @@
 
   v8.receiver = self;
   v8.super_class = CKGenericPhotoStackBalloonView;
-  [(CKBalloonView *)&v8 tapGestureRecognized:v4];
+  [(CKBalloonView *)&v8 tapGestureRecognized:recognizedCopy];
 LABEL_7:
 }
 
-- (void)setHasHighlightOverlay:(BOOL)a3 animated:(BOOL)a4 autoDismiss:(BOOL)a5
+- (void)setHasHighlightOverlay:(BOOL)overlay animated:(BOOL)animated autoDismiss:(BOOL)dismiss
 {
-  v5 = a3;
+  overlayCopy = overlay;
   v7.receiver = self;
   v7.super_class = CKGenericPhotoStackBalloonView;
-  [(CKBalloonView *)&v7 setHasHighlightOverlay:a3 animated:a4 autoDismiss:a5];
+  [(CKBalloonView *)&v7 setHasHighlightOverlay:overlay animated:animated autoDismiss:dismiss];
   if (objc_opt_respondsToSelector())
   {
-    [(PXMessagesStackView *)self->_stackView setSelectionOverlayEnabled:v5];
+    [(PXMessagesStackView *)self->_stackView setSelectionOverlayEnabled:overlayCopy];
   }
 }
 
-- (double)horizontalContentMarginForSize:(CGSize)a3
+- (double)horizontalContentMarginForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_opt_respondsToSelector();
   stackView = self->_stackView;
   if (v6)
@@ -114,68 +114,68 @@ LABEL_7:
   return result;
 }
 
-- (void)setHorizontalContentMarginAdjustment:(double)a3 edge:(int64_t)a4
+- (void)setHorizontalContentMarginAdjustment:(double)adjustment edge:(int64_t)edge
 {
   if (objc_opt_respondsToSelector())
   {
-    if (a4)
+    if (edge)
     {
-      if (a4 != 1)
+      if (edge != 1)
       {
         return;
       }
 
-      v7 = 0.0;
+      adjustmentCopy = 0.0;
     }
 
     else
     {
-      v7 = a3;
-      a3 = 0.0;
+      adjustmentCopy = adjustment;
+      adjustment = 0.0;
     }
 
-    [(PXMessagesStackView *)self->_stackView setLeftEdgeHorizontalContentMarginAdjustment:v7];
+    [(PXMessagesStackView *)self->_stackView setLeftEdgeHorizontalContentMarginAdjustment:adjustmentCopy];
     stackView = self->_stackView;
 
-    [(PXMessagesStackView *)stackView setRightEdgeHorizontalContentMarginAdjustment:a3];
+    [(PXMessagesStackView *)stackView setRightEdgeHorizontalContentMarginAdjustment:adjustment];
   }
 }
 
-- (BOOL)_scrollTrailingAnimated:(BOOL)a3
+- (BOOL)_scrollTrailingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [(PXMessagesStackView *)self->_stackView currentIndex]+ 1;
   stackView = self->_stackView;
 
-  return [(PXMessagesStackView *)stackView scrollToIndex:v5 animated:v3];
+  return [(PXMessagesStackView *)stackView scrollToIndex:v5 animated:animatedCopy];
 }
 
-- (BOOL)_scrollLeadingAnimated:(BOOL)a3
+- (BOOL)_scrollLeadingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PXMessagesStackView *)self->_stackView currentIndex];
-  if (v5)
+  animatedCopy = animated;
+  currentIndex = [(PXMessagesStackView *)self->_stackView currentIndex];
+  if (currentIndex)
   {
-    v6 = v5 - 1;
+    v6 = currentIndex - 1;
     stackView = self->_stackView;
 
-    LOBYTE(v5) = [(PXMessagesStackView *)stackView scrollToIndex:v6 animated:v3];
+    LOBYTE(currentIndex) = [(PXMessagesStackView *)stackView scrollToIndex:v6 animated:animatedCopy];
   }
 
-  return v5;
+  return currentIndex;
 }
 
-- (BOOL)pageRightAnimated:(BOOL)a3
+- (BOOL)pageRightAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CKGenericPhotoStackBalloonView *)self effectiveUserInterfaceLayoutDirection];
-  if (v5 == 1)
+  animatedCopy = animated;
+  effectiveUserInterfaceLayoutDirection = [(CKGenericPhotoStackBalloonView *)self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
 
-    return [(CKGenericPhotoStackBalloonView *)self _scrollLeadingAnimated:v3];
+    return [(CKGenericPhotoStackBalloonView *)self _scrollLeadingAnimated:animatedCopy];
   }
 
-  else if (v5)
+  else if (effectiveUserInterfaceLayoutDirection)
   {
     return 0;
   }
@@ -183,21 +183,21 @@ LABEL_7:
   else
   {
 
-    return [(CKGenericPhotoStackBalloonView *)self _scrollTrailingAnimated:v3];
+    return [(CKGenericPhotoStackBalloonView *)self _scrollTrailingAnimated:animatedCopy];
   }
 }
 
-- (BOOL)pageLeftAnimated:(BOOL)a3
+- (BOOL)pageLeftAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CKGenericPhotoStackBalloonView *)self effectiveUserInterfaceLayoutDirection];
-  if (v5 == 1)
+  animatedCopy = animated;
+  effectiveUserInterfaceLayoutDirection = [(CKGenericPhotoStackBalloonView *)self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
 
-    return [(CKGenericPhotoStackBalloonView *)self _scrollTrailingAnimated:v3];
+    return [(CKGenericPhotoStackBalloonView *)self _scrollTrailingAnimated:animatedCopy];
   }
 
-  else if (v5)
+  else if (effectiveUserInterfaceLayoutDirection)
   {
     return 0;
   }
@@ -205,7 +205,7 @@ LABEL_7:
   else
   {
 
-    return [(CKGenericPhotoStackBalloonView *)self _scrollLeadingAnimated:v3];
+    return [(CKGenericPhotoStackBalloonView *)self _scrollLeadingAnimated:animatedCopy];
   }
 }
 
@@ -256,10 +256,10 @@ LABEL_7:
 
 - (void)prepareForReuse
 {
-  v3 = [(CKGenericPhotoStackBalloonView *)self stackView];
+  stackView = [(CKGenericPhotoStackBalloonView *)self stackView];
   if (objc_opt_respondsToSelector())
   {
-    [v3 prepareForReuse];
+    [stackView prepareForReuse];
   }
 
   v4.receiver = self;
@@ -271,11 +271,11 @@ LABEL_7:
 {
   v3 = objc_alloc(MEMORY[0x1E69C36A0]);
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v5 = [(CKGenericPhotoStackBalloonView *)self mediaProvider];
-  [v4 setMediaProvider:v5];
+  mediaProvider = [(CKGenericPhotoStackBalloonView *)self mediaProvider];
+  [v4 setMediaProvider:mediaProvider];
 
-  v6 = [(CKGenericPhotoStackBalloonView *)self dataSourceManager];
-  [v4 setDataSourceManager:v6];
+  dataSourceManager = [(CKGenericPhotoStackBalloonView *)self dataSourceManager];
+  [v4 setDataSourceManager:dataSourceManager];
 
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 stackBalloonVerticalInset];
@@ -284,36 +284,36 @@ LABEL_7:
   return v4;
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
     [(PXMessagesStackView *)self->_stackView setMediaProvider:self->_mediaProvider];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setDataSourceManager:(id)a3
+- (void)setDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   dataSourceManager = self->_dataSourceManager;
-  if (dataSourceManager != v5)
+  if (dataSourceManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PXAssetsDataSourceManager *)dataSourceManager unregisterChangeObserver:self context:DataSourceManagerObservationContext];
-    objc_storeStrong(&self->_dataSourceManager, a3);
+    objc_storeStrong(&self->_dataSourceManager, manager);
     [(PXAssetsDataSourceManager *)self->_dataSourceManager registerChangeObserver:self context:DataSourceManagerObservationContext];
     [(PXMessagesStackView *)self->_stackView setDataSourceManager:self->_dataSourceManager];
-    v5 = v7;
+    managerCopy = v7;
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 2) != 0 && DataSourceManagerObservationContext == a5)
+  if ((change & 2) != 0 && DataSourceManagerObservationContext == context)
   {
     [(CKGenericPhotoStackBalloonView *)self _additionalItemsCountDidChange];
   }

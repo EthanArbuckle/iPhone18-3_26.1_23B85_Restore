@@ -1,13 +1,13 @@
 @interface HFItemSection
 + (NAIdentity)na_identity;
-+ (id)filterSections:(id)a3 toDisplayedItems:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)filterSections:(id)sections toDisplayedItems:(id)items;
+- (BOOL)isEqual:(id)equal;
 - (HFItemSection)init;
-- (HFItemSection)initWithIdentifier:(id)a3;
+- (HFItemSection)initWithIdentifier:(id)identifier;
 - (HFItemSectionAccessoryButtonHeaderDelegate)headerAccessoryButtonDelegate;
 - (NSArray)items;
 - (NSString)description;
-- (id)_createCopyMutable:(BOOL)a3;
+- (id)_createCopyMutable:(BOOL)mutable;
 - (unint64_t)hash;
 @end
 
@@ -15,20 +15,20 @@
 
 - (HFItemSection)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithIdentifier_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFItemSection.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HFItemSection init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemSection.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HFItemSection init]", v5}];
 
   return 0;
 }
 
-- (HFItemSection)initWithIdentifier:(id)a3
+- (HFItemSection)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (![v5 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFItemSection.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier.length"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFItemSection.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"identifier.length"}];
   }
 
   v11.receiver = self;
@@ -36,7 +36,7 @@
   v6 = [(HFItemSection *)&v11 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
   }
@@ -44,47 +44,47 @@
   return v6;
 }
 
-- (id)_createCopyMutable:(BOOL)a3
+- (id)_createCopyMutable:(BOOL)mutable
 {
   v4 = off_277DEFDC0;
-  if (!a3)
+  if (!mutable)
   {
     v4 = off_277DEFC28;
   }
 
   v5 = objc_alloc(*v4);
-  v6 = [(HFItemSection *)self identifier];
-  v7 = [v5 initWithIdentifier:v6];
+  identifier = [(HFItemSection *)self identifier];
+  v7 = [v5 initWithIdentifier:identifier];
 
-  v8 = [(HFItemSection *)self headerTitle];
-  [v7 setHeaderTitle:v8];
+  headerTitle = [(HFItemSection *)self headerTitle];
+  [v7 setHeaderTitle:headerTitle];
 
-  v9 = [(HFItemSection *)self headerSecondaryText];
-  [v7 setHeaderSecondaryText:v9];
+  headerSecondaryText = [(HFItemSection *)self headerSecondaryText];
+  [v7 setHeaderSecondaryText:headerSecondaryText];
 
-  v10 = [(HFItemSection *)self attributedHeaderTitle];
-  [v7 setAttributedHeaderTitle:v10];
+  attributedHeaderTitle = [(HFItemSection *)self attributedHeaderTitle];
+  [v7 setAttributedHeaderTitle:attributedHeaderTitle];
 
-  v11 = [(HFItemSection *)self headerAccessoryButtonTitle];
-  [v7 setHeaderAccessoryButtonTitle:v11];
+  headerAccessoryButtonTitle = [(HFItemSection *)self headerAccessoryButtonTitle];
+  [v7 setHeaderAccessoryButtonTitle:headerAccessoryButtonTitle];
 
-  v12 = [(HFItemSection *)self headerAccessoryButtonDelegate];
-  [v7 setHeaderAccessoryButtonDelegate:v12];
+  headerAccessoryButtonDelegate = [(HFItemSection *)self headerAccessoryButtonDelegate];
+  [v7 setHeaderAccessoryButtonDelegate:headerAccessoryButtonDelegate];
 
   [v7 setHideAccessoryButton:{-[HFItemSection hideAccessoryButton](self, "hideAccessoryButton")}];
   [v7 setHideHeaderText:{-[HFItemSection hideHeaderText](self, "hideHeaderText")}];
   [v7 setForceShowHeaderTitle:{-[HFItemSection forceShowHeaderTitle](self, "forceShowHeaderTitle")}];
-  v13 = [(HFItemSection *)self footerTitle];
-  [v7 setFooterTitle:v13];
+  footerTitle = [(HFItemSection *)self footerTitle];
+  [v7 setFooterTitle:footerTitle];
 
-  v14 = [(HFItemSection *)self attributedFooterTitle];
-  [v7 setAttributedFooterTitle:v14];
+  attributedFooterTitle = [(HFItemSection *)self attributedFooterTitle];
+  [v7 setAttributedFooterTitle:attributedFooterTitle];
 
-  v15 = [(HFItemSection *)self items];
-  [v7 setItems:v15];
+  items = [(HFItemSection *)self items];
+  [v7 setItems:items];
 
-  v16 = [(HFItemSection *)self userInfo];
-  [v7 setUserInfo:v16];
+  userInfo = [(HFItemSection *)self userInfo];
+  [v7 setUserInfo:userInfo];
 
   return v7;
 }
@@ -92,42 +92,42 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFItemSection *)self identifier];
-  v5 = [v3 appendObject:v4 withName:@"identifier"];
+  identifier = [(HFItemSection *)self identifier];
+  v5 = [v3 appendObject:identifier withName:@"identifier"];
 
-  v6 = [(HFItemSection *)self headerTitle];
-  v7 = [v3 appendObject:v6 withName:@"headerTitle"];
+  headerTitle = [(HFItemSection *)self headerTitle];
+  v7 = [v3 appendObject:headerTitle withName:@"headerTitle"];
 
-  v8 = [(HFItemSection *)self headerSecondaryText];
-  v9 = [v3 appendObject:v8 withName:@"headerSecondaryText"];
+  headerSecondaryText = [(HFItemSection *)self headerSecondaryText];
+  v9 = [v3 appendObject:headerSecondaryText withName:@"headerSecondaryText"];
 
-  v10 = [(HFItemSection *)self attributedHeaderTitle];
-  v11 = [v3 appendObject:v10 withName:@"attributedHeaderTitle"];
+  attributedHeaderTitle = [(HFItemSection *)self attributedHeaderTitle];
+  v11 = [v3 appendObject:attributedHeaderTitle withName:@"attributedHeaderTitle"];
 
-  v12 = [(HFItemSection *)self headerAccessoryButtonTitle];
-  v13 = [v3 appendObject:v12 withName:@"headerAccessoryButtonTitle"];
+  headerAccessoryButtonTitle = [(HFItemSection *)self headerAccessoryButtonTitle];
+  v13 = [v3 appendObject:headerAccessoryButtonTitle withName:@"headerAccessoryButtonTitle"];
 
-  v14 = [(HFItemSection *)self headerAccessoryButtonDelegate];
-  v15 = [v3 appendObject:v14 withName:@"headerAccessoryButtonDelegate"];
+  headerAccessoryButtonDelegate = [(HFItemSection *)self headerAccessoryButtonDelegate];
+  v15 = [v3 appendObject:headerAccessoryButtonDelegate withName:@"headerAccessoryButtonDelegate"];
 
   v16 = [v3 appendBool:-[HFItemSection hideAccessoryButton](self withName:{"hideAccessoryButton"), @"hideAccessoryButton"}];
   v17 = [v3 appendBool:-[HFItemSection hideHeaderText](self withName:{"hideHeaderText"), @"hideHeaderText"}];
   v18 = [v3 appendBool:-[HFItemSection forceShowHeaderTitle](self withName:{"forceShowHeaderTitle"), @"forceShowHeaderTitle"}];
-  v19 = [(HFItemSection *)self footerTitle];
-  v20 = [v3 appendObject:v19 withName:@"footerTitle"];
+  footerTitle = [(HFItemSection *)self footerTitle];
+  v20 = [v3 appendObject:footerTitle withName:@"footerTitle"];
 
-  v21 = [(HFItemSection *)self attributedFooterTitle];
-  v22 = [v3 appendObject:v21 withName:@"attributedFooterTitle"];
+  attributedFooterTitle = [(HFItemSection *)self attributedFooterTitle];
+  v22 = [v3 appendObject:attributedFooterTitle withName:@"attributedFooterTitle"];
 
-  v23 = [(HFItemSection *)self items];
-  v24 = [v3 appendObject:v23 withName:@"items"];
+  items = [(HFItemSection *)self items];
+  v24 = [v3 appendObject:items withName:@"items"];
 
-  v25 = [(HFItemSection *)self userInfo];
-  v26 = [v3 appendObject:v25 withName:@"userInfo"];
+  userInfo = [(HFItemSection *)self userInfo];
+  v26 = [v3 appendObject:userInfo withName:@"userInfo"];
 
-  v27 = [v3 build];
+  build = [v3 build];
 
-  return v27;
+  return build;
 }
 
 - (NSArray)items
@@ -268,33 +268,33 @@ void __28__HFItemSection_na_identity__block_invoke()
   _MergedGlobals_236 = v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-+ (id)filterSections:(id)a3 toDisplayedItems:(id)a4
++ (id)filterSections:(id)sections toDisplayedItems:(id)items
 {
-  v5 = a4;
+  itemsCopy = items;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__HFItemSection_filterSections_toDisplayedItems___block_invoke;
   v9[3] = &unk_277DF7328;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 na_map:v9];
+  v10 = itemsCopy;
+  v6 = itemsCopy;
+  v7 = [sections na_map:v9];
 
   return v7;
 }

@@ -1,38 +1,38 @@
 @interface CMContinuityCaptureParticipantInfo
-- (BOOL)isEqual:(id)a3;
-- (CMContinuityCaptureParticipantInfo)initWithCoder:(id)a3;
-- (CMContinuityCaptureParticipantInfo)initWithDictionary:(id)a3;
-- (CMContinuityCaptureParticipantInfo)initWithMRParticipant:(id)a3;
-- (CMContinuityCaptureParticipantInfo)initWithSocialProfileIdentifier:(id)a3 displayName:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CMContinuityCaptureParticipantInfo)initWithCoder:(id)coder;
+- (CMContinuityCaptureParticipantInfo)initWithDictionary:(id)dictionary;
+- (CMContinuityCaptureParticipantInfo)initWithMRParticipant:(id)participant;
+- (CMContinuityCaptureParticipantInfo)initWithSocialProfileIdentifier:(id)identifier displayName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMContinuityCaptureParticipantInfo
 
-- (CMContinuityCaptureParticipantInfo)initWithMRParticipant:(id)a3
+- (CMContinuityCaptureParticipantInfo)initWithMRParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [v5 identifier];
-  v7 = [v4 identity];
+  participantCopy = participant;
+  identity = [participantCopy identity];
+  identifier = [identity identifier];
+  identity2 = [participantCopy identity];
 
-  v8 = [v7 displayName];
-  v9 = [(CMContinuityCaptureParticipantInfo *)self initWithSocialProfileIdentifier:v6 displayName:v8];
+  displayName = [identity2 displayName];
+  v9 = [(CMContinuityCaptureParticipantInfo *)self initWithSocialProfileIdentifier:identifier displayName:displayName];
 
   return v9;
 }
 
-- (CMContinuityCaptureParticipantInfo)initWithSocialProfileIdentifier:(id)a3 displayName:(id)a4
+- (CMContinuityCaptureParticipantInfo)initWithSocialProfileIdentifier:(id)identifier displayName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -54,7 +54,7 @@ LABEL_3:
   v10 = [(CMContinuityCaptureParticipantInfo *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     socialProfileIdentifier = v10->_socialProfileIdentifier;
     v10->_socialProfileIdentifier = v11;
 
@@ -66,29 +66,29 @@ LABEL_3:
   return v10;
 }
 
-- (CMContinuityCaptureParticipantInfo)initWithDictionary:(id)a3
+- (CMContinuityCaptureParticipantInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"displayName"];
-  v6 = [v4 objectForKey:@"socialProfileIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"displayName"];
+  v6 = [dictionaryCopy objectForKey:@"socialProfileIdentifier"];
 
   v7 = [(CMContinuityCaptureParticipantInfo *)self initWithSocialProfileIdentifier:v6 displayName:v5];
   return v7;
 }
 
-- (CMContinuityCaptureParticipantInfo)initWithCoder:(id)a3
+- (CMContinuityCaptureParticipantInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CMContinuityCaptureParticipantInfo;
   v5 = [(CMContinuityCaptureParticipantInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"socialProfileIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"socialProfileIdentifier"];
     socialProfileIdentifier = v5->_socialProfileIdentifier;
     v5->_socialProfileIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v8;
   }
@@ -96,55 +96,55 @@ LABEL_3:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
-  [v4 encodeObject:v5 forKey:@"socialProfileIdentifier"];
+  coderCopy = coder;
+  socialProfileIdentifier = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
+  [coderCopy encodeObject:socialProfileIdentifier forKey:@"socialProfileIdentifier"];
 
-  v6 = [(CMContinuityCaptureParticipantInfo *)self displayName];
-  [v4 encodeObject:v6 forKey:@"displayName"];
+  displayName = [(CMContinuityCaptureParticipantInfo *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  socialProfileIdentifier = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
+  v6 = [socialProfileIdentifier copy];
   [v4 setSocialProfileIdentifier:v6];
 
-  v7 = [(CMContinuityCaptureParticipantInfo *)self displayName];
-  v8 = [v7 copy];
+  displayName = [(CMContinuityCaptureParticipantInfo *)self displayName];
+  v8 = [displayName copy];
   [v4 setDisplayName:v8];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if ([(CMContinuityCaptureParticipantInfo *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(CMContinuityCaptureParticipantInfo *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(CMContinuityCaptureParticipantInfo *)self displayName];
-    v7 = [(CMContinuityCaptureParticipantInfo *)v5 displayName];
-    if (v6 | v7 && ![v6 isEqual:v7])
+    v5 = equalCopy;
+    displayName = [(CMContinuityCaptureParticipantInfo *)self displayName];
+    displayName2 = [(CMContinuityCaptureParticipantInfo *)v5 displayName];
+    if (displayName | displayName2 && ![displayName isEqual:displayName2])
     {
       v10 = 0;
     }
 
     else
     {
-      v8 = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
-      v9 = [(CMContinuityCaptureParticipantInfo *)v5 socialProfileIdentifier];
-      if (v8 | v9)
+      socialProfileIdentifier = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
+      socialProfileIdentifier2 = [(CMContinuityCaptureParticipantInfo *)v5 socialProfileIdentifier];
+      if (socialProfileIdentifier | socialProfileIdentifier2)
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [socialProfileIdentifier isEqual:socialProfileIdentifier2];
       }
 
       else
@@ -165,9 +165,9 @@ LABEL_3:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(CMContinuityCaptureParticipantInfo *)self displayName];
-  v5 = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
-  v6 = [v3 initWithFormat:@"<CMContinuityCaptureParticipantInfo displayName:%@ socialProfileIdentifier:%@>", v4, v5];
+  displayName = [(CMContinuityCaptureParticipantInfo *)self displayName];
+  socialProfileIdentifier = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
+  v6 = [v3 initWithFormat:@"<CMContinuityCaptureParticipantInfo displayName:%@ socialProfileIdentifier:%@>", displayName, socialProfileIdentifier];
 
   return v6;
 }
@@ -175,21 +175,21 @@ LABEL_3:
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
+  socialProfileIdentifier = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
 
-  if (v4)
+  if (socialProfileIdentifier)
   {
-    v5 = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
-    v6 = [v5 copy];
+    socialProfileIdentifier2 = [(CMContinuityCaptureParticipantInfo *)self socialProfileIdentifier];
+    v6 = [socialProfileIdentifier2 copy];
     [v3 setObject:v6 forKeyedSubscript:@"socialProfileIdentifier"];
   }
 
-  v7 = [(CMContinuityCaptureParticipantInfo *)self displayName];
+  displayName = [(CMContinuityCaptureParticipantInfo *)self displayName];
 
-  if (v7)
+  if (displayName)
   {
-    v8 = [(CMContinuityCaptureParticipantInfo *)self displayName];
-    v9 = [v8 copy];
+    displayName2 = [(CMContinuityCaptureParticipantInfo *)self displayName];
+    v9 = [displayName2 copy];
     [v3 setObject:v9 forKeyedSubscript:@"displayName"];
   }
 

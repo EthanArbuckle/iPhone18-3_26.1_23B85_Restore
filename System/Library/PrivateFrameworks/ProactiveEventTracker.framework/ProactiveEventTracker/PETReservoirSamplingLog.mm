@@ -1,18 +1,18 @@
 @interface PETReservoirSamplingLog
 - (BOOL)_lock;
 - (BOOL)_readHeader;
-- (PETReservoirSamplingLog)initWithPath:(id)a3 limit:(unint64_t)a4;
-- (PETReservoirSamplingLog)initWithStore:(id)a3 limit:(unint64_t)a4;
-- (id)initInMemoryWithLimit:(unint64_t)a3;
+- (PETReservoirSamplingLog)initWithPath:(id)path limit:(unint64_t)limit;
+- (PETReservoirSamplingLog)initWithStore:(id)store limit:(unint64_t)limit;
+- (id)initInMemoryWithLimit:(unint64_t)limit;
 - (void)_clearLocked;
-- (void)_enumerateItemsWithBlockLocked:(id)a3;
+- (void)_enumerateItemsWithBlockLocked:(id)locked;
 - (void)_gc;
 - (void)_unlock;
 - (void)clear;
 - (void)dealloc;
-- (void)enumerateAndClearItemsWithBlock:(id)a3;
-- (void)enumerateItemsWithBlock:(id)a3;
-- (void)log:(id)a3;
+- (void)enumerateAndClearItemsWithBlock:(id)block;
+- (void)enumerateItemsWithBlock:(id)block;
+- (void)log:(id)log;
 @end
 
 @implementation PETReservoirSamplingLog
@@ -32,12 +32,12 @@
   return [(PETReservoirSamplingLogStore *)store lock];
 }
 
-- (void)enumerateAndClearItemsWithBlock:(id)a3
+- (void)enumerateAndClearItemsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(PETReservoirSamplingLog *)self _lock])
   {
-    [(PETReservoirSamplingLog *)self _enumerateItemsWithBlockLocked:v4];
+    [(PETReservoirSamplingLog *)self _enumerateItemsWithBlockLocked:blockCopy];
     [(PETReservoirSamplingLog *)self _clearLocked];
     [(PETReservoirSamplingLog *)self _unlock];
   }
@@ -76,9 +76,9 @@
   }
 }
 
-- (void)_enumerateItemsWithBlockLocked:(id)a3
+- (void)_enumerateItemsWithBlockLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   v17 = 0;
   v5 = [(PETReservoirSamplingLogStore *)self->_store remap:&v17];
   if (v5)
@@ -110,7 +110,7 @@
           if (v17 >= v10[1] + *v10)
           {
             v13 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v8 + *v10 length:v10[1] freeWhenDone:0];
-            v4[2](v4, v13, &v16);
+            lockedCopy[2](lockedCopy, v13, &v16);
             v14 = v16;
 
             if (v14)
@@ -139,12 +139,12 @@
   }
 }
 
-- (void)enumerateItemsWithBlock:(id)a3
+- (void)enumerateItemsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(PETReservoirSamplingLog *)self _lock])
   {
-    [(PETReservoirSamplingLog *)self _enumerateItemsWithBlockLocked:v4];
+    [(PETReservoirSamplingLog *)self _enumerateItemsWithBlockLocked:blockCopy];
     [(PETReservoirSamplingLog *)self _unlock];
   }
 }
@@ -204,10 +204,10 @@
   }
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  logCopy = log;
   if ([(PETReservoirSamplingLog *)self _lock])
   {
     v27 = 0;
@@ -221,13 +221,13 @@
       limit = self->_limit;
       if (v6 < limit)
       {
-        v9 = [(PETReservoirSamplingLogStore *)self->_store currentLength];
-        if ([(PETReservoirSamplingLogStore *)self->_store appendData:v4 andReturnMapPointer:&v26])
+        currentLength = [(PETReservoirSamplingLogStore *)self->_store currentLength];
+        if ([(PETReservoirSamplingLogStore *)self->_store appendData:logCopy andReturnMapPointer:&v26])
         {
           if (v26)
           {
-            *(v26 + 8 * *(v26 + 8) + 16) = v9;
-            v10 = [v4 length];
+            *(v26 + 8 * *(v26 + 8) + 16) = currentLength;
+            v10 = [logCopy length];
             v11 = v26;
             v12 = *(v26 + 8);
             *(v26 + 8 * v12 + 20) = v10;
@@ -262,13 +262,13 @@ LABEL_13:
       v17 = v15 % v7;
       if (limit > (v15 % v7))
       {
-        v18 = [(PETReservoirSamplingLogStore *)self->_store currentLength];
-        if ([(PETReservoirSamplingLogStore *)self->_store appendData:v4 andReturnMapPointer:&v26])
+        currentLength2 = [(PETReservoirSamplingLogStore *)self->_store currentLength];
+        if ([(PETReservoirSamplingLogStore *)self->_store appendData:logCopy andReturnMapPointer:&v26])
         {
           if (v26)
           {
-            *(v26 + 8 * v17 + 16) = v18;
-            v19 = [v4 length];
+            *(v26 + 8 * v17 + 16) = currentLength2;
+            v19 = [logCopy length];
             v20 = v26;
             *(v26 + 8 * v17 + 20) = v19;
             v21 = *(v20 + 8) + 1;
@@ -297,10 +297,10 @@ LABEL_15:
 {
   if ([(PETReservoirSamplingLog *)self _lock])
   {
-    v3 = [(PETReservoirSamplingLogStore *)self->_store currentLength];
+    currentLength = [(PETReservoirSamplingLogStore *)self->_store currentLength];
     v12 = 0;
     store = self->_store;
-    if (v3)
+    if (currentLength)
     {
       v5 = [(PETReservoirSamplingLogStore *)store remap:&v12];
       if (v5)
@@ -354,42 +354,42 @@ LABEL_15:
   [(PETReservoirSamplingLog *)&v3 dealloc];
 }
 
-- (id)initInMemoryWithLimit:(unint64_t)a3
+- (id)initInMemoryWithLimit:(unint64_t)limit
 {
   v5 = objc_opt_new();
-  v6 = [(PETReservoirSamplingLog *)self initWithStore:v5 limit:a3];
+  v6 = [(PETReservoirSamplingLog *)self initWithStore:v5 limit:limit];
 
   return v6;
 }
 
-- (PETReservoirSamplingLog)initWithPath:(id)a3 limit:(unint64_t)a4
+- (PETReservoirSamplingLog)initWithPath:(id)path limit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [[PETReservoirSamplingLogStoreFile alloc] initWithPath:v6];
+  pathCopy = path;
+  v7 = [[PETReservoirSamplingLogStoreFile alloc] initWithPath:pathCopy];
 
-  v8 = [(PETReservoirSamplingLog *)self initWithStore:v7 limit:a4];
+  v8 = [(PETReservoirSamplingLog *)self initWithStore:v7 limit:limit];
   return v8;
 }
 
-- (PETReservoirSamplingLog)initWithStore:(id)a3 limit:(unint64_t)a4
+- (PETReservoirSamplingLog)initWithStore:(id)store limit:(unint64_t)limit
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (a4 - 0xFFFFFFFF > 0xFFFFFFFF00000001)
+  storeCopy = store;
+  v9 = storeCopy;
+  if (limit - 0xFFFFFFFF > 0xFFFFFFFF00000001)
   {
-    if (v8)
+    if (storeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_12:
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PETReservoirSamplingLog.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"limit > 0 && limit < UINT32_MAX"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PETReservoirSamplingLog.m" lineNumber:236 description:{@"Invalid parameter not satisfying: %@", @"limit > 0 && limit < UINT32_MAX"}];
 
   if (!v9)
   {
@@ -404,8 +404,8 @@ LABEL_3:
   if (v10)
   {
     pthread_mutex_init(&v10->_lock, 0);
-    objc_storeStrong(&self->_store, a3);
-    self->_limit = a4;
+    objc_storeStrong(&self->_store, store);
+    self->_limit = limit;
     self->_rng = xmmword_1DF7521D0;
     if (![(PETReservoirSamplingLog *)self _readHeader])
     {
@@ -432,11 +432,11 @@ LABEL_3:
   }
 
   self = self;
-  v11 = self;
+  selfCopy = self;
 LABEL_13:
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 @end

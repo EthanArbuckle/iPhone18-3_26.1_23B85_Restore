@@ -1,50 +1,50 @@
 @interface CKAssociatedStickerTranscriptCell
-- (CKAssociatedStickerTranscriptCell)initWithFrame:(CGRect)a3;
+- (CKAssociatedStickerTranscriptCell)initWithFrame:(CGRect)frame;
 - (double)rotation;
 - (int64_t)cachedStickerReactionRandomizationSource;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
-- (void)doubleTapGestureRecognized:(id)a3;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
+- (void)doubleTapGestureRecognized:(id)recognized;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)layoutSubviewsForDrawer;
-- (void)longPressGestureRecognized:(id)a3;
-- (void)performDroppedWiggle:(id)a3;
-- (void)performHide:(id)a3;
-- (void)performInsertion:(id)a3;
-- (void)performReload:(id)a3 completion:(id)a4;
-- (void)performRevealAnimated:(BOOL)a3 completion:(id)a4;
+- (void)longPressGestureRecognized:(id)recognized;
+- (void)performDroppedWiggle:(id)wiggle;
+- (void)performHide:(id)hide;
+- (void)performInsertion:(id)insertion;
+- (void)performReload:(id)reload completion:(id)completion;
+- (void)performRevealAnimated:(BOOL)animated completion:(id)completion;
 - (void)performWiggleAnimationIfNeeded;
 - (void)prepareForReuse;
-- (void)setAssociatedItemView:(id)a3;
-- (void)setChatItemGUID:(id)a3;
-- (void)setGestureRecognizersEnabled:(BOOL)a3;
-- (void)setStickerViewHidden:(BOOL)a3;
+- (void)setAssociatedItemView:(id)view;
+- (void)setChatItemGUID:(id)d;
+- (void)setGestureRecognizersEnabled:(BOOL)enabled;
+- (void)setStickerViewHidden:(BOOL)hidden;
 @end
 
 @implementation CKAssociatedStickerTranscriptCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v15.receiver = self;
   v15.super_class = CKAssociatedStickerTranscriptCell;
-  v12 = a3;
-  [(CKAssociatedMessageTranscriptCell *)&v15 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 sticker];
-  [(CKAssociatedStickerTranscriptCell *)self setSticker:v13];
+  itemCopy = item;
+  [(CKAssociatedMessageTranscriptCell *)&v15 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  sticker = [itemCopy sticker];
+  [(CKAssociatedStickerTranscriptCell *)self setSticker:sticker];
 
-  -[CKAssociatedStickerTranscriptCell setGestureRecognizersEnabled:](self, "setGestureRecognizersEnabled:", [v12 isFromMe] ^ 1);
-  -[CKAssociatedStickerTranscriptCell setIsReaction:](self, "setIsReaction:", [v12 isReaction]);
-  -[CKAssociatedStickerTranscriptCell setStickerReactionIndex:](self, "setStickerReactionIndex:", [v12 stickerReactionIndex]);
-  v14 = [v12 guid];
+  -[CKAssociatedStickerTranscriptCell setGestureRecognizersEnabled:](self, "setGestureRecognizersEnabled:", [itemCopy isFromMe] ^ 1);
+  -[CKAssociatedStickerTranscriptCell setIsReaction:](self, "setIsReaction:", [itemCopy isReaction]);
+  -[CKAssociatedStickerTranscriptCell setStickerReactionIndex:](self, "setStickerReactionIndex:", [itemCopy stickerReactionIndex]);
+  guid = [itemCopy guid];
 
-  [(CKAssociatedStickerTranscriptCell *)self setChatItemGUID:v14];
+  [(CKAssociatedStickerTranscriptCell *)self setChatItemGUID:guid];
 }
 
-- (CKAssociatedStickerTranscriptCell)initWithFrame:(CGRect)a3
+- (CKAssociatedStickerTranscriptCell)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CKAssociatedStickerTranscriptCell;
-  v3 = [(CKTranscriptMessageContentCell *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptMessageContentCell *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v3 action:sel_longPressGestureRecognized_];
@@ -65,33 +65,33 @@
   return v3;
 }
 
-- (void)setAssociatedItemView:(id)a3
+- (void)setAssociatedItemView:(id)view
 {
-  v4 = a3;
-  v5 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  viewCopy = view;
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
 
-  if (v5 != v4)
+  if (associatedItemView != viewCopy)
   {
-    v6 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+    associatedItemView2 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
 
-    if (v6)
+    if (associatedItemView2)
     {
-      v7 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-      v8 = [(CKAssociatedStickerTranscriptCell *)self longPressGestureRecognizer];
-      [v7 removeGestureRecognizer:v8];
+      associatedItemView3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+      longPressGestureRecognizer = [(CKAssociatedStickerTranscriptCell *)self longPressGestureRecognizer];
+      [associatedItemView3 removeGestureRecognizer:longPressGestureRecognizer];
 
-      v9 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-      v10 = [(CKAssociatedStickerTranscriptCell *)self tapGestureRecognizer];
-      [v9 removeGestureRecognizer:v10];
+      associatedItemView4 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+      tapGestureRecognizer = [(CKAssociatedStickerTranscriptCell *)self tapGestureRecognizer];
+      [associatedItemView4 removeGestureRecognizer:tapGestureRecognizer];
     }
 
     v20.receiver = self;
     v20.super_class = CKAssociatedStickerTranscriptCell;
-    [(CKAssociatedMessageTranscriptCell *)&v20 setAssociatedItemView:v4];
-    if (v4)
+    [(CKAssociatedMessageTranscriptCell *)&v20 setAssociatedItemView:viewCopy];
+    if (viewCopy)
     {
-      [v4 setHidden:0];
-      v11 = [v4 layer];
+      [viewCopy setHidden:0];
+      layer = [viewCopy layer];
       v12 = *(MEMORY[0x1E69792E8] + 80);
       v19[4] = *(MEMORY[0x1E69792E8] + 64);
       v19[5] = v12;
@@ -104,34 +104,34 @@
       v15 = *(MEMORY[0x1E69792E8] + 48);
       v19[2] = *(MEMORY[0x1E69792E8] + 32);
       v19[3] = v15;
-      [v11 setTransform:v19];
+      [layer setTransform:v19];
 
-      v16 = [v4 layer];
-      [v16 removeAllAnimations];
+      layer2 = [viewCopy layer];
+      [layer2 removeAllAnimations];
 
-      v17 = [(CKAssociatedStickerTranscriptCell *)self longPressGestureRecognizer];
-      [v4 addGestureRecognizer:v17];
+      longPressGestureRecognizer2 = [(CKAssociatedStickerTranscriptCell *)self longPressGestureRecognizer];
+      [viewCopy addGestureRecognizer:longPressGestureRecognizer2];
 
-      v18 = [(CKAssociatedStickerTranscriptCell *)self tapGestureRecognizer];
-      [v4 addGestureRecognizer:v18];
+      tapGestureRecognizer2 = [(CKAssociatedStickerTranscriptCell *)self tapGestureRecognizer];
+      [viewCopy addGestureRecognizer:tapGestureRecognizer2];
 
       [(CKAssociatedStickerTranscriptCell *)self setGestureRecognizersEnabled:1];
     }
   }
 }
 
-- (void)setGestureRecognizersEnabled:(BOOL)a3
+- (void)setGestureRecognizersEnabled:(BOOL)enabled
 {
-  if (self->_gestureRecognizersEnabled != a3)
+  if (self->_gestureRecognizersEnabled != enabled)
   {
-    v3 = a3;
-    self->_gestureRecognizersEnabled = a3;
-    v5 = [(CKAssociatedStickerTranscriptCell *)self longPressGestureRecognizer];
-    [v5 setEnabled:v3];
+    enabledCopy = enabled;
+    self->_gestureRecognizersEnabled = enabled;
+    longPressGestureRecognizer = [(CKAssociatedStickerTranscriptCell *)self longPressGestureRecognizer];
+    [longPressGestureRecognizer setEnabled:enabledCopy];
 
     gestureRecognizersEnabled = self->_gestureRecognizersEnabled;
-    v7 = [(CKAssociatedStickerTranscriptCell *)self tapGestureRecognizer];
-    [v7 setEnabled:gestureRecognizersEnabled];
+    tapGestureRecognizer = [(CKAssociatedStickerTranscriptCell *)self tapGestureRecognizer];
+    [tapGestureRecognizer setEnabled:gestureRecognizersEnabled];
   }
 }
 
@@ -140,8 +140,8 @@
   v4.receiver = self;
   v4.super_class = CKAssociatedStickerTranscriptCell;
   [(CKAssociatedMessageTranscriptCell *)&v4 prepareForReuse];
-  v3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v3 setHidden:0];
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView setHidden:0];
 
   [(CKAssociatedStickerTranscriptCell *)self setGestureRecognizersEnabled:1];
   [(CKAssociatedStickerTranscriptCell *)self setSticker:0];
@@ -149,16 +149,16 @@
 
 - (double)rotation
 {
-  v2 = [(CKAssociatedStickerTranscriptCell *)self cachedStickerReactionRandomizationSource];
+  cachedStickerReactionRandomizationSource = [(CKAssociatedStickerTranscriptCell *)self cachedStickerReactionRandomizationSource];
 
-  [CKAssociatedMessageChatItem rotationForGUIDHash:v2];
+  [CKAssociatedMessageChatItem rotationForGUIDHash:cachedStickerReactionRandomizationSource];
   return result;
 }
 
-- (void)setChatItemGUID:(id)a3
+- (void)setChatItemGUID:(id)d
 {
   self->_cachedStickerReactionRandomizationSource = 0;
-  v4 = [a3 copy];
+  v4 = [d copy];
   chatItemGUID = self->_chatItemGUID;
   self->_chatItemGUID = v4;
 }
@@ -168,8 +168,8 @@
   result = self->_cachedStickerReactionRandomizationSource;
   if (!result)
   {
-    v4 = [(CKAssociatedStickerTranscriptCell *)self chatItemGUID];
-    self->_cachedStickerReactionRandomizationSource = [v4 hash];
+    chatItemGUID = [(CKAssociatedStickerTranscriptCell *)self chatItemGUID];
+    self->_cachedStickerReactionRandomizationSource = [chatItemGUID hash];
 
     return self->_cachedStickerReactionRandomizationSource;
   }
@@ -179,8 +179,8 @@
 
 - (void)layoutSubviewsForAlignmentContents
 {
-  v3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  v4 = [v3 layer];
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  layer = [associatedItemView layer];
   v5 = *(MEMORY[0x1E69792E8] + 80);
   v72 = *(MEMORY[0x1E69792E8] + 64);
   v73 = v5;
@@ -193,18 +193,18 @@
   v8 = *(MEMORY[0x1E69792E8] + 48);
   v70 = *(MEMORY[0x1E69792E8] + 32);
   v71 = v8;
-  [v4 setTransform:&v68];
+  [layer setTransform:&v68];
 
   v67.receiver = self;
   v67.super_class = CKAssociatedStickerTranscriptCell;
   [(CKAssociatedMessageTranscriptCell *)&v67 layoutSubviewsForAlignmentContents];
-  v9 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v9 frame];
+  associatedItemView2 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  LODWORD(v9) = [(CKAssociatedStickerTranscriptCell *)self isReaction];
+  LODWORD(associatedItemView2) = [(CKAssociatedStickerTranscriptCell *)self isReaction];
   [(CKAssociatedMessageTranscriptCell *)self adjustedContentAlignmentRect];
   v17 = v16;
   v19 = v18;
@@ -216,12 +216,12 @@
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  if (v9)
+  if (associatedItemView2)
   {
-    v34 = [(CKAssociatedStickerTranscriptCell *)self stickerReactionIndex];
-    v35 = [(CKAssociatedMessageTranscriptCell *)self parentIsFromMe];
+    stickerReactionIndex = [(CKAssociatedStickerTranscriptCell *)self stickerReactionIndex];
+    parentIsFromMe = [(CKAssociatedMessageTranscriptCell *)self parentIsFromMe];
     [(CKAssociatedMessageTranscriptCell *)self stickerReactionInsetsForParent];
-    [CKAssociatedMessageChatItem locationForStickerReactionWithParentFrame:v34 reactionIndex:v35 parentIsFromMe:v27 insets:v29, v31, v33, v36, v37, v38, v39];
+    [CKAssociatedMessageChatItem locationForStickerReactionWithParentFrame:stickerReactionIndex reactionIndex:parentIsFromMe parentIsFromMe:v27 insets:v29, v31, v33, v36, v37, v38, v39];
     v41 = v40;
     [(CKAssociatedMessageTranscriptCell *)self cumulativeAssociatedOffset];
     v43 = v41 + v42;
@@ -264,12 +264,12 @@
     v45 = v55 + v57 + v58;
   }
 
-  v59 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  associatedItemView3 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
   [(CKAssociatedMessageTranscriptCell *)self parentSize];
   v61 = v60;
   v63 = v62;
   [(CKAssociatedMessageTranscriptCell *)self geometryDescriptor];
-  [CKAssociatedMessageChatItem applyTransformToView:v59 viewFrame:&v68 parentSize:v45 forGeometryDescriptor:v11, v13, v15, v61, v63];
+  [CKAssociatedMessageChatItem applyTransformToView:associatedItemView3 viewFrame:&v68 parentSize:v45 forGeometryDescriptor:v11, v13, v15, v61, v63];
 }
 
 - (void)layoutSubviewsForDrawer
@@ -282,16 +282,16 @@
   }
 }
 
-- (void)performHide:(id)a3
+- (void)performHide:(id)hide
 {
-  v4 = a3;
-  v5 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v5 ck_performHideAnimated:1 completion:v4];
+  hideCopy = hide;
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView ck_performHideAnimated:1 completion:hideCopy];
 }
 
 - (void)performWiggleAnimationIfNeeded
 {
-  v6 = [a1 uniqueID];
+  uniqueID = [self uniqueID];
   OUTLINED_FUNCTION_0_9();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
 }
@@ -327,15 +327,15 @@ void __67__CKAssociatedStickerTranscriptCell_performWiggleAnimationIfNeeded__blo
   }
 }
 
-- (void)performDroppedWiggle:(id)a3
+- (void)performDroppedWiggle:(id)wiggle
 {
   v21[7] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6979390];
-  v4 = a3;
+  wiggleCopy = wiggle;
   v5 = [v3 animationWithKeyPath:@"transform.rotation.z"];
   [v5 setValues:&unk_1F04E70C8];
-  v6 = [v5 values];
-  v7 = 1.0 / [v6 count];
+  values = [v5 values];
+  v7 = 1.0 / [values count];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
   v21[0] = v8;
@@ -363,51 +363,51 @@ void __67__CKAssociatedStickerTranscriptCell_performWiggleAnimationIfNeeded__blo
   [v5 setFillMode:*MEMORY[0x1E69797E0]];
   LODWORD(v17) = 1.0;
   [v5 setSpeed:v17];
-  v18 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  v19 = [v18 layer];
-  [v19 addAnimation:v5 forKey:@"transform.rotation.z"];
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  layer = [associatedItemView layer];
+  [layer addAnimation:v5 forKey:@"transform.rotation.z"];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.6];
-  [MEMORY[0x1E6979518] setCompletionBlock:v4];
+  [MEMORY[0x1E6979518] setCompletionBlock:wiggleCopy];
 
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)performRevealAnimated:(BOOL)a3 completion:(id)a4
+- (void)performRevealAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v7 ck_performRevealAnimated:v4 completion:v6];
+  animatedCopy = animated;
+  completionCopy = completion;
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView ck_performRevealAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)performReload:(id)a3 completion:(id)a4
+- (void)performReload:(id)reload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v8 bounds];
+  reloadCopy = reload;
+  completionCopy = completion;
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v8 center];
+  [associatedItemView center];
   v33 = v17;
   v31 = v18;
-  if (v6)
+  if (reloadCopy)
   {
-    v6[2](v6);
+    reloadCopy[2](reloadCopy);
   }
 
   [(CKAssociatedStickerTranscriptCell *)self setNeedsLayout];
   [(CKAssociatedStickerTranscriptCell *)self layoutIfNeeded];
-  [v8 bounds];
+  [associatedItemView bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  [v8 center];
+  [associatedItemView center];
   v32 = v27;
   v30 = v28;
   v42.origin.x = v10;
@@ -420,29 +420,29 @@ void __67__CKAssociatedStickerTranscriptCell_performWiggleAnimationIfNeeded__blo
   v43.size.height = v26;
   if (CGRectEqualToRect(v42, v43) || v33 == v32 && v31 == v30)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
   else
   {
-    [v8 setBounds:{v10, v12, v14, v16}];
-    [v8 setCenter:{v33, v31}];
+    [associatedItemView setBounds:{v10, v12, v14, v16}];
+    [associatedItemView setCenter:{v33, v31}];
     v29 = MEMORY[0x1E69DD250];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __62__CKAssociatedStickerTranscriptCell_performReload_completion___block_invoke;
     v34[3] = &unk_1E72ECB00;
-    v35 = v8;
+    v35 = associatedItemView;
     v36 = v20;
     v37 = v22;
     v38 = v24;
     v39 = v26;
     v40 = v32;
     v41 = v30;
-    [v29 animateWithDuration:0 delay:v34 options:v7 animations:0.25 completion:0.0];
+    [v29 animateWithDuration:0 delay:v34 options:completionCopy animations:0.25 completion:0.0];
   }
 }
 
@@ -456,33 +456,33 @@ uint64_t __62__CKAssociatedStickerTranscriptCell_performReload_completion___bloc
   return [v2 setCenter:{v3, v4}];
 }
 
-- (void)setStickerViewHidden:(BOOL)a3
+- (void)setStickerViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  associatedItemView = [(CKAssociatedMessageTranscriptCell *)self associatedItemView];
+  [associatedItemView setHidden:hiddenCopy];
 }
 
-- (void)doubleTapGestureRecognized:(id)a3
+- (void)doubleTapGestureRecognized:(id)recognized
 {
-  v4 = [(CKAssociatedMessageTranscriptCell *)self delegate];
-  [v4 associatedMessageTranscriptCellDoubleTapped:self];
+  delegate = [(CKAssociatedMessageTranscriptCell *)self delegate];
+  [delegate associatedMessageTranscriptCellDoubleTapped:self];
 }
 
-- (void)longPressGestureRecognized:(id)a3
+- (void)longPressGestureRecognized:(id)recognized
 {
-  if ([a3 state] == 1)
+  if ([recognized state] == 1)
   {
-    v4 = [(CKAssociatedMessageTranscriptCell *)self delegate];
-    [v4 associatedMessageTranscriptCellLongTouched:self];
+    delegate = [(CKAssociatedMessageTranscriptCell *)self delegate];
+    [delegate associatedMessageTranscriptCellLongTouched:self];
   }
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  if (a3)
+  if (insertion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(insertion + 2))(insertion, 1);
   }
 }
 

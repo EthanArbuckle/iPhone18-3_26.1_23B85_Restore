@@ -1,28 +1,28 @@
 @interface NFPromise
 + (NFPromise)new;
-+ (id)asDelay:(double)a3 onQueue:(id)a4 withError:(id)a5;
-+ (id)asDelay:(double)a3 onQueue:(id)a4 withValue:(id)a5;
++ (id)asDelay:(double)delay onQueue:(id)queue withError:(id)error;
++ (id)asDelay:(double)delay onQueue:(id)queue withValue:(id)value;
 + (id)asVoid;
-+ (id)asVoid:(id)a3;
++ (id)asVoid:(id)void;
 - (NFPromise)init;
-- (NFPromise)initWithError:(id)a3;
-- (NFPromise)initWithResolver:(id)a3;
-- (NFPromise)initWithValue:(id)a3;
-- (id)alwaysOn:(id)a3 always:(id)a4;
+- (NFPromise)initWithError:(id)error;
+- (NFPromise)initWithResolver:(id)resolver;
+- (NFPromise)initWithValue:(id)value;
+- (id)alwaysOn:(id)on always:(id)always;
 - (id)delay;
 - (id)delayOn;
 - (id)error;
 - (id)errorOn;
-- (id)errorOn:(id)a3 error:(id)a4;
+- (id)errorOn:(id)on error:(id)error;
 - (id)pipe;
 - (id)pipeOn;
 - (id)resolve;
 - (id)resolveOn;
 - (id)then;
 - (id)thenOn;
-- (id)thenOn:(id)a3 then:(id)a4;
-- (id)timeoutAfter:(double)a3;
-- (id)timeoutAfter:(double)a3 on:(id)a4;
+- (id)thenOn:(id)on then:(id)then;
+- (id)timeoutAfter:(double)after;
+- (id)timeoutAfter:(double)after on:(id)on;
 - (void)dealloc;
 @end
 
@@ -83,9 +83,9 @@
   objc_exception_throw(v6);
 }
 
-- (NFPromise)initWithResolver:(id)a3
+- (NFPromise)initWithResolver:(id)resolver
 {
-  v4 = a3;
+  resolverCopy = resolver;
   v13.receiver = self;
   v13.super_class = NFPromise;
   v5 = [(NFPromise *)&v13 init];
@@ -105,7 +105,7 @@
     v9[2] = __30__NFPromise_initWithResolver___block_invoke_2;
     v9[3] = &unk_27997DB00;
     v10 = v12;
-    (*(v4 + 2))(v4, v11, v9);
+    (*(resolverCopy + 2))(resolverCopy, v11, v9);
   }
 
   return v5;
@@ -127,15 +127,15 @@ void __30__NFPromise_initWithResolver___block_invoke_2(uint64_t a1, void *a2)
   [v4 reject:v3];
 }
 
-- (NFPromise)initWithValue:(id)a3
+- (NFPromise)initWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = NFPromise;
   v5 = [(NFPromise *)&v9 init];
   if (v5)
   {
-    v6 = [[NFPromiseSeal alloc] initWithValue:v4];
+    v6 = [[NFPromiseSeal alloc] initWithValue:valueCopy];
     seal = v5->_seal;
     v5->_seal = v6;
   }
@@ -145,20 +145,20 @@ void __30__NFPromise_initWithResolver___block_invoke_2(uint64_t a1, void *a2)
 
 + (NFPromise)new
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
 
   return [v2 initWithValue:0];
 }
 
-- (NFPromise)initWithError:(id)a3
+- (NFPromise)initWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = NFPromise;
   v5 = [(NFPromise *)&v9 init];
   if (v5)
   {
-    v6 = [[NFPromiseSeal alloc] initWithError:v4];
+    v6 = [[NFPromiseSeal alloc] initWithError:errorCopy];
     seal = v5->_seal;
     v5->_seal = v6;
   }
@@ -166,20 +166,20 @@ void __30__NFPromise_initWithResolver___block_invoke_2(uint64_t a1, void *a2)
   return v5;
 }
 
-- (id)thenOn:(id)a3 then:(id)a4
+- (id)thenOn:(id)on then:(id)then
 {
-  v6 = a3;
-  v7 = a4;
+  onCopy = on;
+  thenCopy = then;
   v8 = [NFPromise alloc];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __25__NFPromise_thenOn_then___block_invoke;
   v13[3] = &unk_27997DB78;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = onCopy;
+  v15 = thenCopy;
+  v9 = thenCopy;
+  v10 = onCopy;
   v11 = [(NFPromise *)v8 initWithResolver:v13];
 
   return v11;
@@ -246,22 +246,22 @@ void __25__NFPromise_thenOn_then___block_invoke_3(uint64_t a1)
   [v2 resolveOn:*(a1 + 40) reject:*(a1 + 48) resolve:*(a1 + 56)];
 }
 
-- (id)errorOn:(id)a3 error:(id)a4
+- (id)errorOn:(id)on error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NFPromise *)self seal];
-  [v8 resolveOn:v7 reject:v6 resolve:&__block_literal_global_24];
+  errorCopy = error;
+  onCopy = on;
+  seal = [(NFPromise *)self seal];
+  [seal resolveOn:onCopy reject:errorCopy resolve:&__block_literal_global_24];
 
   return self;
 }
 
-- (id)alwaysOn:(id)a3 always:(id)a4
+- (id)alwaysOn:(id)on always:(id)always
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NFPromise *)self seal];
-  [v8 alwaysOn:v7 always:v6];
+  alwaysCopy = always;
+  onCopy = on;
+  seal = [(NFPromise *)self seal];
+  [seal alwaysOn:onCopy always:alwaysCopy];
 
   return self;
 }
@@ -507,28 +507,28 @@ id __20__NFPromise_delayOn__block_invoke(uint64_t a1, void *a2, double a3)
   return v8;
 }
 
-+ (id)asVoid:(id)a3
++ (id)asVoid:(id)void
 {
-  v3 = a3;
-  v4 = [[NFPromise alloc] initWithError:v3];
+  voidCopy = void;
+  v4 = [[NFPromise alloc] initWithError:voidCopy];
 
   return v4;
 }
 
-+ (id)asDelay:(double)a3 onQueue:(id)a4 withValue:(id)a5
++ (id)asDelay:(double)delay onQueue:(id)queue withValue:(id)value
 {
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  valueCopy = value;
   v9 = [NFPromise alloc];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __46__NFPromise_Delay__asDelay_onQueue_withValue___block_invoke;
   v14[3] = &unk_27997DE38;
-  v17 = a3;
-  v15 = v7;
-  v16 = v8;
-  v10 = v8;
-  v11 = v7;
+  delayCopy = delay;
+  v15 = queueCopy;
+  v16 = valueCopy;
+  v10 = valueCopy;
+  v11 = queueCopy;
   v12 = [(NFPromise *)v9 initWithResolver:v14];
 
   return v12;
@@ -549,20 +549,20 @@ void __46__NFPromise_Delay__asDelay_onQueue_withValue___block_invoke(uint64_t a1
   dispatch_after(v4, v5, v7);
 }
 
-+ (id)asDelay:(double)a3 onQueue:(id)a4 withError:(id)a5
++ (id)asDelay:(double)delay onQueue:(id)queue withError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  errorCopy = error;
   v9 = [NFPromise alloc];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __46__NFPromise_Delay__asDelay_onQueue_withError___block_invoke;
   v14[3] = &unk_27997DE38;
-  v17 = a3;
-  v15 = v7;
-  v16 = v8;
-  v10 = v8;
-  v11 = v7;
+  delayCopy = delay;
+  v15 = queueCopy;
+  v16 = errorCopy;
+  v10 = errorCopy;
+  v11 = queueCopy;
   v12 = [(NFPromise *)v9 initWithResolver:v14];
 
   return v12;
@@ -583,26 +583,26 @@ void __46__NFPromise_Delay__asDelay_onQueue_withError___block_invoke(uint64_t a1
   dispatch_after(v5, v6, v8);
 }
 
-- (id)timeoutAfter:(double)a3
+- (id)timeoutAfter:(double)after
 {
   v5 = zalgo();
-  v6 = [(NFPromise *)self timeoutAfter:v5 on:a3];
+  v6 = [(NFPromise *)self timeoutAfter:v5 on:after];
 
   return v6;
 }
 
-- (id)timeoutAfter:(double)a3 on:(id)a4
+- (id)timeoutAfter:(double)after on:(id)on
 {
-  v6 = a4;
+  onCopy = on;
   v7 = [NFPromise alloc];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__NFPromise_Timeout__timeoutAfter_on___block_invoke;
   v11[3] = &unk_27997DE38;
   v11[4] = self;
-  v12 = v6;
-  v13 = a3;
-  v8 = v6;
+  v12 = onCopy;
+  afterCopy = after;
+  v8 = onCopy;
   v9 = [(NFPromise *)v7 initWithResolver:v11];
 
   return v9;

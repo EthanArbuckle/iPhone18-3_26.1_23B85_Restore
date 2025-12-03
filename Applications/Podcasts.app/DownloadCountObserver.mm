@@ -1,23 +1,23 @@
 @interface DownloadCountObserver
 - (_TtC8Podcasts21DownloadCountObserver)init;
 - (void)dealloc;
-- (void)downloadManagerDidUpdateDownload:(void *)a1;
+- (void)downloadManagerDidUpdateDownload:(void *)download;
 @end
 
 @implementation DownloadCountObserver
 
-- (void)downloadManagerDidUpdateDownload:(void *)a1
+- (void)downloadManagerDidUpdateDownload:(void *)download
 {
-  v1 = a1;
+  downloadCopy = download;
   sub_10034E218();
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC8Podcasts21DownloadCountObserver_downloadsNotifier);
-  v3 = self;
-  [v2 unregisterForUpdates:v3];
-  v4.receiver = v3;
+  selfCopy = self;
+  [v2 unregisterForUpdates:selfCopy];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for DownloadCountObserver();
   [(DownloadCountObserver *)&v4 dealloc];
 }

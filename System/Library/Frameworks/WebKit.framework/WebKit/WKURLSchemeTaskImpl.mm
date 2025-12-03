@@ -1,28 +1,28 @@
 @interface WKURLSchemeTaskImpl
 - (WKFrameInfo)_frame;
 - (WKURLSchemeTaskImpl)init;
-- (uint64_t)_didPerformRedirection:(WTF *)this newRequest:(void *)a2;
-- (uint64_t)_didPerformRedirection:(uint64_t)a1 newRequest:;
-- (uint64_t)_willPerformRedirection:(uint64_t)a1 newRequest:completionHandler:;
+- (uint64_t)_didPerformRedirection:(WTF *)this newRequest:(void *)request;
+- (uint64_t)_didPerformRedirection:(uint64_t)redirection newRequest:;
+- (uint64_t)_willPerformRedirection:(uint64_t)redirection newRequest:completionHandler:;
 - (uint64_t)_willPerformRedirection:newRequest:completionHandler:;
 - (uint64_t)didFailWithError:(WTF *)this;
-- (uint64_t)didFailWithError:(uint64_t)a1;
+- (uint64_t)didFailWithError:(uint64_t)error;
 - (uint64_t)didFinish;
 - (uint64_t)didReceiveData:(WTF *)this;
-- (uint64_t)didReceiveData:(uint64_t)a1;
+- (uint64_t)didReceiveData:(uint64_t)data;
 - (uint64_t)didReceiveResponse:(WTF *)this;
-- (uint64_t)didReceiveResponse:(uint64_t)a1;
-- (void)_didPerformRedirection:(id)a3 newRequest:(id)a4;
-- (void)_didPerformRedirection:(void *)a1 newRequest:;
-- (void)_willPerformRedirection:(id)a3 newRequest:(id)a4 completionHandler:(id)a5;
+- (uint64_t)didReceiveResponse:(uint64_t)response;
+- (void)_didPerformRedirection:(id)redirection newRequest:(id)request;
+- (void)_didPerformRedirection:(void *)redirection newRequest:;
+- (void)_willPerformRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didFailWithError:(id)a3;
-- (void)didFailWithError:(void *)a1;
+- (void)didFailWithError:(id)error;
+- (void)didFailWithError:(void *)error;
 - (void)didFinish;
-- (void)didReceiveData:(id)a3;
-- (void)didReceiveData:(void *)a1;
-- (void)didReceiveResponse:(id)a3;
-- (void)didReceiveResponse:(void *)a1;
+- (void)didReceiveData:(id)data;
+- (void)didReceiveData:(void *)data;
+- (void)didReceiveResponse:(id)response;
+- (void)didReceiveResponse:(void *)response;
 @end
 
 @implementation WKURLSchemeTaskImpl
@@ -46,30 +46,30 @@
   }
 }
 
-- (void)_willPerformRedirection:(id)a3 newRequest:(id)a4 completionHandler:(id)a5
+- (void)_willPerformRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   if (self)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  if (a3)
+  if (redirection)
   {
-    v10 = a3;
+    redirectionCopy = redirection;
   }
 
-  if (a4)
+  if (request)
   {
-    v11 = a4;
+    requestCopy = request;
   }
 
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = WTF::fastMalloc(0x30);
   *v13 = &unk_1F10F8828;
   v13[1] = self;
   v13[2] = self;
-  v13[3] = a3;
-  v13[4] = a4;
+  v13[3] = redirection;
+  v13[4] = request;
   v13[5] = v12;
   v15 = v13;
   ExceptionTypeFromMainRunLoop = getExceptionTypeFromMainRunLoop(&v15);
@@ -83,23 +83,23 @@
   _Block_release(0);
 }
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
   if (self)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  if (a3)
+  if (response)
   {
-    v6 = a3;
+    responseCopy = response;
   }
 
   v7 = WTF::fastMalloc(0x20);
   *v7 = &unk_1F10F8878;
   v7[1] = self;
   v7[2] = self;
-  v7[3] = a3;
+  v7[3] = response;
   v9 = v7;
   ExceptionTypeFromMainRunLoop = getExceptionTypeFromMainRunLoop(&v9);
   if (v9)
@@ -110,23 +110,23 @@
   raiseExceptionIfNecessary(ExceptionTypeFromMainRunLoop);
 }
 
-- (void)didReceiveData:(id)a3
+- (void)didReceiveData:(id)data
 {
   if (self)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  if (a3)
+  if (data)
   {
-    v6 = a3;
+    dataCopy = data;
   }
 
   v7 = WTF::fastMalloc(0x20);
   *v7 = &unk_1F10F88A0;
   v7[1] = self;
   v7[2] = self;
-  v7[3] = a3;
+  v7[3] = data;
   v9 = v7;
   ExceptionTypeFromMainRunLoop = getExceptionTypeFromMainRunLoop(&v9);
   if (v9)
@@ -139,33 +139,33 @@
 
 - (void)didFinish
 {
-  v2 = a1[1];
-  *a1 = &unk_1F10F88C8;
-  a1[1] = 0;
+  v2 = self[1];
+  *self = &unk_1F10F88C8;
+  self[1] = 0;
   if (v2)
   {
   }
 
-  return a1;
+  return self;
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
   if (self)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  if (a3)
+  if (error)
   {
-    v8 = a3;
+    errorCopy = error;
   }
 
   v6 = WTF::fastMalloc(0x20);
   *v6 = &unk_1F10F88F0;
   v6[1] = self;
   v6[2] = self;
-  v6[3] = a3;
+  v6[3] = error;
   v9 = v6;
   ExceptionTypeFromMainRunLoop = getExceptionTypeFromMainRunLoop(&v9);
   if (v9)
@@ -176,29 +176,29 @@
   raiseExceptionIfNecessary(ExceptionTypeFromMainRunLoop);
 }
 
-- (void)_didPerformRedirection:(id)a3 newRequest:(id)a4
+- (void)_didPerformRedirection:(id)redirection newRequest:(id)request
 {
   if (self)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  if (a3)
+  if (redirection)
   {
-    v8 = a3;
+    redirectionCopy = redirection;
   }
 
-  if (a4)
+  if (request)
   {
-    v9 = a4;
+    requestCopy = request;
   }
 
   v10 = WTF::fastMalloc(0x28);
   *v10 = &unk_1F10F8918;
   v10[1] = self;
   v10[2] = self;
-  v10[3] = a3;
-  v10[4] = a4;
+  v10[3] = redirection;
+  v10[4] = request;
   v12 = v10;
   ExceptionTypeFromMainRunLoop = getExceptionTypeFromMainRunLoop(&v12);
   if (v12)
@@ -228,13 +228,13 @@
   return result;
 }
 
-- (uint64_t)_willPerformRedirection:(uint64_t)a1 newRequest:completionHandler:
+- (uint64_t)_willPerformRedirection:(uint64_t)redirection newRequest:completionHandler:
 {
-  v2 = *(a1 + 16);
-  WebCore::ResourceResponse::ResourceResponse(v12, *(a1 + 24));
-  MEMORY[0x19EB06210](v11, *(a1 + 32));
-  v3 = *(a1 + 40);
-  *(a1 + 40) = 0;
+  v2 = *(redirection + 16);
+  WebCore::ResourceResponse::ResourceResponse(v12, *(redirection + 24));
+  MEMORY[0x19EB06210](v11, *(redirection + 32));
+  v3 = *(redirection + 40);
+  *(redirection + 40) = 0;
   v4 = WTF::fastMalloc(0x10);
   *v4 = &unk_1F10F8850;
   v4[1] = v3;
@@ -261,29 +261,29 @@
 
 - (uint64_t)_willPerformRedirection:newRequest:completionHandler:
 {
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   v2 = WebCore::ResourceRequest::nsURLRequest();
   v3 = *(v1 + 16);
 
   return v3(v1, v2);
 }
 
-- (void)didReceiveResponse:(void *)a1
+- (void)didReceiveResponse:(void *)response
 {
-  *a1 = &unk_1F10F8878;
-  v2 = a1[3];
-  a1[3] = 0;
+  *response = &unk_1F10F8878;
+  v2 = response[3];
+  response[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = response[1];
+  response[1] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return response;
 }
 
 - (uint64_t)didReceiveResponse:(WTF *)this
@@ -304,10 +304,10 @@
   return WTF::fastFree(this, a2);
 }
 
-- (uint64_t)didReceiveResponse:(uint64_t)a1
+- (uint64_t)didReceiveResponse:(uint64_t)response
 {
-  v1 = *(a1 + 16);
-  WebCore::ResourceResponse::ResourceResponse(v6, *(a1 + 24));
+  v1 = *(response + 16);
+  WebCore::ResourceResponse::ResourceResponse(v6, *(response + 24));
   v3 = WebKit::WebURLSchemeTask::didReceiveResponse(v1 + 8, v6);
   v4 = v7;
   v7 = 0;
@@ -319,22 +319,22 @@
   return v3;
 }
 
-- (void)didReceiveData:(void *)a1
+- (void)didReceiveData:(void *)data
 {
-  *a1 = &unk_1F10F88A0;
-  v2 = a1[3];
-  a1[3] = 0;
+  *data = &unk_1F10F88A0;
+  v2 = data[3];
+  data[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = data[1];
+  data[1] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return data;
 }
 
 - (uint64_t)didReceiveData:(WTF *)this
@@ -355,10 +355,10 @@
   return WTF::fastFree(this, a2);
 }
 
-- (uint64_t)didReceiveData:(uint64_t)a1
+- (uint64_t)didReceiveData:(uint64_t)data
 {
-  v2 = *(a1 + 16);
-  v6 = *(a1 + 24);
+  v2 = *(data + 16);
+  v6 = *(data + 24);
   WebCore::SharedBuffer::create<NSData *>(&v6, a2, &v7);
   v3 = WebKit::WebURLSchemeTask::didReceiveData(v2 + 8, &v7);
   v4 = v7;
@@ -374,7 +374,7 @@
 
 - (uint64_t)didFinish
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   WebCore::ResourceErrorBase::ResourceErrorBase(&v9, 0);
   v12 = 0;
   v13 = 1;
@@ -409,22 +409,22 @@
   return v3;
 }
 
-- (void)didFailWithError:(void *)a1
+- (void)didFailWithError:(void *)error
 {
-  *a1 = &unk_1F10F88F0;
-  v2 = a1[3];
-  a1[3] = 0;
+  *error = &unk_1F10F88F0;
+  v2 = error[3];
+  error[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = error[1];
+  error[1] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return error;
 }
 
 - (uint64_t)didFailWithError:(WTF *)this
@@ -445,10 +445,10 @@
   return WTF::fastFree(this, a2);
 }
 
-- (uint64_t)didFailWithError:(uint64_t)a1
+- (uint64_t)didFailWithError:(uint64_t)error
 {
-  v1 = *(a1 + 16);
-  MEMORY[0x19EB04D40](&v9, *(a1 + 24));
+  v1 = *(error + 16);
+  MEMORY[0x19EB04D40](&v9, *(error + 24));
   v3 = WebKit::WebURLSchemeTask::didComplete((v1 + 8), &v9);
   v4 = v12;
   v12 = 0;
@@ -480,31 +480,31 @@
   return v3;
 }
 
-- (void)_didPerformRedirection:(void *)a1 newRequest:
+- (void)_didPerformRedirection:(void *)redirection newRequest:
 {
-  *a1 = &unk_1F10F8918;
-  v2 = a1[4];
-  a1[4] = 0;
+  *redirection = &unk_1F10F8918;
+  v2 = redirection[4];
+  redirection[4] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[3];
-  a1[3] = 0;
+  v3 = redirection[3];
+  redirection[3] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = redirection[1];
+  redirection[1] = 0;
   if (v4)
   {
   }
 
-  return a1;
+  return redirection;
 }
 
-- (uint64_t)_didPerformRedirection:(WTF *)this newRequest:(void *)a2
+- (uint64_t)_didPerformRedirection:(WTF *)this newRequest:(void *)request
 {
   *this = &unk_1F10F8918;
   v3 = *(this + 4);
@@ -525,14 +525,14 @@
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, request);
 }
 
-- (uint64_t)_didPerformRedirection:(uint64_t)a1 newRequest:
+- (uint64_t)_didPerformRedirection:(uint64_t)redirection newRequest:
 {
-  v2 = *(a1 + 16);
-  WebCore::ResourceResponse::ResourceResponse(v8, *(a1 + 24));
-  MEMORY[0x19EB06210](v7, *(a1 + 32));
+  v2 = *(redirection + 16);
+  WebCore::ResourceResponse::ResourceResponse(v8, *(redirection + 24));
+  MEMORY[0x19EB06210](v7, *(redirection + 32));
   v3 = WebKit::WebURLSchemeTask::didPerformRedirection(v2 + 8, v8, v7);
   WebCore::ResourceRequest::~ResourceRequest(v7);
   v5 = v9;

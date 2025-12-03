@@ -1,12 +1,12 @@
 @interface EditorialCardCollectionViewCell
-- (_TtC23ShelfKitCollectionViews31EditorialCardCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC23ShelfKitCollectionViews31EditorialCardCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation EditorialCardCollectionViewCell
 
-- (_TtC23ShelfKitCollectionViews31EditorialCardCollectionViewCell)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews31EditorialCardCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews31EditorialCardCollectionViewCell_objectGraph) = 0;
   v3 = (self + OBJC_IVAR____TtC23ShelfKitCollectionViews31EditorialCardCollectionViewCell_separatorInset);
@@ -21,13 +21,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_2378A8();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_237B48();
 }
 

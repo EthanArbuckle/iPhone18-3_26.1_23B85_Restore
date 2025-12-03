@@ -1,6 +1,6 @@
 @interface CNUICachingPosterArchiver
 + (CNUICachingPosterArchiver)sharedArchiver;
-- (id)unarchiveConfigurationFromData:(id)a3 error:(id *)a4;
+- (id)unarchiveConfigurationFromData:(id)data error:(id *)error;
 - (void)releasePosterConfigurations;
 @end
 
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (id)unarchiveConfigurationFromData:(id)a3 error:(id *)a4
+- (id)unarchiveConfigurationFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = sub_1A34C9690();
   v9 = v8;
 
@@ -36,7 +36,7 @@
 - (void)releasePosterConfigurations
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CNUICachingPosterArchiver_cache);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   [*(v2 + 16) removeAllObjects];
   os_unfair_lock_unlock((v2 + 24));

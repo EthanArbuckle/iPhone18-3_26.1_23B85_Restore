@@ -1,32 +1,32 @@
 @interface CKPinnedConversationRichLinkBubble
-- (CKPinnedConversationRichLinkBubble)initWithRichLinkActivityItem:(id)a3;
+- (CKPinnedConversationRichLinkBubble)initWithRichLinkActivityItem:(id)item;
 - (UIEdgeInsets)contentViewPadding;
 - (void)_updateLinkMetadata;
 - (void)_updatePillCornerRadius;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)linkViewNeedsResize:(id)a3;
-- (void)setActivityItem:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)linkViewNeedsResize:(id)resize;
+- (void)setActivityItem:(id)item;
 @end
 
 @implementation CKPinnedConversationRichLinkBubble
 
-- (CKPinnedConversationRichLinkBubble)initWithRichLinkActivityItem:(id)a3
+- (CKPinnedConversationRichLinkBubble)initWithRichLinkActivityItem:(id)item
 {
-  v5 = a3;
-  v6 = [v5 linkPreviewContentView];
-  [v6 setDelegate:self];
+  itemCopy = item;
+  linkPreviewContentView = [itemCopy linkPreviewContentView];
+  [linkPreviewContentView setDelegate:self];
   v11.receiver = self;
   v11.super_class = CKPinnedConversationRichLinkBubble;
-  v7 = [(CKPinnedConversationTailedActivityItemView *)&v11 initWithActivityItem:v5 contentView:v6 needsContentViewStroke:0];
+  v7 = [(CKPinnedConversationTailedActivityItemView *)&v11 initWithActivityItem:itemCopy contentView:linkPreviewContentView needsContentViewStroke:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_richLinkActivityItem, a3);
-    objc_storeStrong(&v8->_linkView, v6);
+    objc_storeStrong(&v7->_richLinkActivityItem, item);
+    objc_storeStrong(&v8->_linkView, linkPreviewContentView);
     [(CKPinnedConversationRichLinkBubble *)v8 addSubview:v8->_linkView];
     [(CKPinnedConversationRichLinkBubble *)v8 _updatePillCornerRadius];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v8 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v8;
@@ -54,45 +54,45 @@
   self->_pillCornerRadius = v4;
 }
 
-- (void)setActivityItem:(id)a3
+- (void)setActivityItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v6.receiver = self;
   v6.super_class = CKPinnedConversationRichLinkBubble;
-  [(CKPinnedConversationTailedActivityItemView *)&v6 setActivityItem:v5];
+  [(CKPinnedConversationTailedActivityItemView *)&v6 setActivityItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_richLinkActivityItem, a3);
+    objc_storeStrong(&self->_richLinkActivityItem, item);
     [(CKPinnedConversationRichLinkBubble *)self _updateLinkMetadata];
   }
 }
 
 - (void)_updateLinkMetadata
 {
-  v7 = [(CKPinnedConversationRichLinkBubble *)self richLinkActivityItem];
-  v3 = [v7 message];
-  v4 = [v7 chatContext];
-  v5 = [v3 richLinkDataSourceWithChatContext:v4];
+  richLinkActivityItem = [(CKPinnedConversationRichLinkBubble *)self richLinkActivityItem];
+  message = [richLinkActivityItem message];
+  chatContext = [richLinkActivityItem chatContext];
+  v5 = [message richLinkDataSourceWithChatContext:chatContext];
 
-  v6 = [v5 richLinkMetadata];
-  [(LPLinkView *)self->_linkView setMetadata:v6];
+  richLinkMetadata = [v5 richLinkMetadata];
+  [(LPLinkView *)self->_linkView setMetadata:richLinkMetadata];
   [(CKPinnedConversationRichLinkBubble *)self setNeedsLayout];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   [(CKPinnedConversationRichLinkBubble *)self _updatePillCornerRadius];
 
   [(CKPinnedConversationRichLinkBubble *)self setNeedsLayout];
 }
 
-- (void)linkViewNeedsResize:(id)a3
+- (void)linkViewNeedsResize:(id)resize
 {
-  v4 = [(CKPinnedConversationTailedActivityItemView *)self activityItemViewDelegate];
+  activityItemViewDelegate = [(CKPinnedConversationTailedActivityItemView *)self activityItemViewDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 activityItemViewNeedsResize:self];
+    [activityItemViewDelegate activityItemViewNeedsResize:self];
   }
 }
 

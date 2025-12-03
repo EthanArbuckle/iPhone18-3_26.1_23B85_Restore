@@ -4,8 +4,8 @@
 - (BOOL)startService;
 - (BOOL)stopService;
 - (MXHangTracerService)init;
-- (id)getDiagnosticsForClient:(id)a3 dateString:(id)a4;
-- (void)unarchiveHangTracerDataForDateString:(id)a3;
+- (id)getDiagnosticsForClient:(id)client dateString:(id)string;
+- (void)unarchiveHangTracerDataForDateString:(id)string;
 @end
 
 @implementation MXHangTracerService
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __46__MXHangTracerService_sharedHangTracerService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedHangTracerService_onceToken != -1)
   {
     dispatch_once(&sharedHangTracerService_onceToken, block);
@@ -121,14 +121,14 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
 {
   v23 = *MEMORY[0x277D85DE8];
   [(NSMutableArray *)self->_hangTracerDataPaths removeAllObjects];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = +[MXUtilities containerPath];
   v5 = [&unk_286A1CB00 objectAtIndexedSubscript:3];
   v6 = [v4 stringByAppendingPathComponent:v5];
-  v7 = [(MXService *)self currentClient];
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  currentClient = [(MXService *)self currentClient];
+  v8 = [v6 stringByAppendingPathComponent:currentClient];
   v20 = 0;
-  v9 = [v3 contentsOfDirectoryAtPath:v8 error:&v20];
+  v9 = [defaultManager contentsOfDirectoryAtPath:v8 error:&v20];
   v10 = v20;
 
   if (v10)
@@ -162,11 +162,11 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
   return v10 == 0;
 }
 
-- (void)unarchiveHangTracerDataForDateString:(id)a3
+- (void)unarchiveHangTracerDataForDateString:(id)string
 {
   v55 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF CONTAINS %@", v37];
+  stringCopy = string;
+  stringCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF CONTAINS %@", stringCopy];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   unarchivedHangTracerData = self->_unarchivedHangTracerData;
   self->_unarchivedHangTracerData = v5;
@@ -175,8 +175,8 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v35 = v4;
-  obj = [(NSMutableArray *)self->_hangTracerDataPaths filteredArrayUsingPredicate:v4];
+  v35 = stringCopy;
+  obj = [(NSMutableArray *)self->_hangTracerDataPaths filteredArrayUsingPredicate:stringCopy];
   v39 = [obj countByEnumeratingWithState:&v42 objects:v54 count:16];
   if (v39)
   {
@@ -199,18 +199,18 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
           *buf = 138412546;
           v47 = v8;
           v48 = 2112;
-          v49 = v37;
+          v49 = stringCopy;
           _os_log_impl(&dword_258D95000, MXHangTracerServiceLogHandle, OS_LOG_TYPE_DEFAULT, "Found log file: %@ for date: %@", buf, 0x16u);
         }
 
-        v10 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v11 = +[MXUtilities containerPath];
         v12 = [&unk_286A1CB18 objectAtIndexedSubscript:3];
         v13 = [v11 stringByAppendingPathComponent:v12];
-        v14 = [(MXService *)self currentClient];
-        v15 = [v13 stringByAppendingPathComponent:v14];
+        currentClient = [(MXService *)self currentClient];
+        v15 = [v13 stringByAppendingPathComponent:currentClient];
         v16 = [v15 stringByAppendingPathComponent:v8];
-        v17 = [v10 contentsAtPath:v16];
+        v17 = [defaultManager contentsAtPath:v16];
 
         v18 = v17;
         if (v17)
@@ -234,10 +234,10 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
           else
           {
             v25 = +[MXUtilities getServicesDateFormatter];
-            v26 = [v21 datestamp];
-            v27 = [v25 stringFromDate:v26];
+            datestamp = [v21 datestamp];
+            v27 = [v25 stringFromDate:datestamp];
 
-            if ([v37 isEqualToString:v27] && (v28 = objc_msgSend(v21, "sourceID"), v28 == -[MXService sourceID](self, "sourceID")))
+            if ([stringCopy isEqualToString:v27] && (v28 = objc_msgSend(v21, "sourceID"), v28 == -[MXService sourceID](self, "sourceID")))
             {
               v29 = self->_MXHangTracerServiceLogHandle;
               if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -255,16 +255,16 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
               if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
               {
                 v31 = v30;
-                v32 = [v21 sourceID];
-                v33 = [(MXService *)self sourceID];
+                sourceID = [v21 sourceID];
+                sourceID2 = [(MXService *)self sourceID];
                 *buf = 134218754;
-                v47 = v32;
+                v47 = sourceID;
                 v48 = 2048;
-                v49 = v33;
+                v49 = sourceID2;
                 v50 = 2112;
                 v51 = v27;
                 v52 = 2112;
-                v53 = v37;
+                v53 = stringCopy;
                 _os_log_error_impl(&dword_258D95000, v31, OS_LOG_TYPE_ERROR, "Bad source type: (%ld, expected %ld) or date string: (%@, expected %@)", buf, 0x2Au);
               }
             }
@@ -295,11 +295,11 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getDiagnosticsForClient:(id)a3 dateString:(id)a4
+- (id)getDiagnosticsForClient:(id)client dateString:(id)string
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  stringCopy = string;
   if (!self->_unarchivedHangTracerData)
   {
     MXHangTracerServiceLogHandle = self->_MXHangTracerServiceLogHandle;
@@ -309,10 +309,10 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
       _os_log_impl(&dword_258D95000, MXHangTracerServiceLogHandle, OS_LOG_TYPE_DEFAULT, "Unarchived hang tracer data not yet set, running unarchive.", buf, 2u);
     }
 
-    [(MXHangTracerService *)self unarchiveHangTracerDataForDateString:v7];
+    [(MXHangTracerService *)self unarchiveHangTracerDataForDateString:stringCopy];
   }
 
-  v31 = v7;
+  v31 = stringCopy;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v36 = 0u;
   v37 = 0u;
@@ -334,13 +334,13 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
         }
 
         v15 = *(*(&v36 + 1) + 8 * i);
-        v16 = [v15 metrics];
-        v17 = [v16 objectForKey:v6];
+        metrics = [v15 metrics];
+        v17 = [metrics objectForKey:clientCopy];
 
         if (v17)
         {
-          v18 = [v15 metrics];
-          v19 = [v18 objectForKey:v6];
+          metrics2 = [v15 metrics];
+          v19 = [metrics2 objectForKey:clientCopy];
           [v9 addObject:v19];
         }
       }
@@ -357,7 +357,7 @@ uint64_t __46__MXHangTracerService_sharedHangTracerService__block_invoke(uint64_
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = v6;
+      v42 = clientCopy;
       _os_log_impl(&dword_258D95000, v20, OS_LOG_TYPE_DEFAULT, "Found hang diagnostics for client: %@", buf, 0xCu);
     }
 

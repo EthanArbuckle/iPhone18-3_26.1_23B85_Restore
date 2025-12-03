@@ -1,11 +1,11 @@
 @interface SBRenderImage
-- (SBRenderImage)initWithRenderImage:(_CARenderImage *)a3;
+- (SBRenderImage)initWithRenderImage:(_CARenderImage *)image;
 - (void)dealloc;
 @end
 
 @implementation SBRenderImage
 
-- (SBRenderImage)initWithRenderImage:(_CARenderImage *)a3
+- (SBRenderImage)initWithRenderImage:(_CARenderImage *)image
 {
   v5.receiver = self;
   v5.super_class = SBRenderImage;

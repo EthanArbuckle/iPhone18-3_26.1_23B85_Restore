@@ -1,20 +1,20 @@
 @interface NSProgressRegistrar
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (NSProgressRegistrar)initWithQueue:(id)a3 rootFileAccessNode:(id)a4;
-- (void)_getRemoteProcessWithAuditToken:(id *)a3 canReadItemAtURL:(id)a4 completionHandler:(id)a5;
-- (void)addPublisher:(id)a3 forID:(id)a4 acknowledgementAppBundleIDs:(id)a5 category:(id)a6 fileURL:(id)a7 initialValues:(id)a8 completionHandler:(id)a9;
-- (void)addSubscriber:(id)a3 forID:(id)a4 appBundleID:(id)a5 category:(id)a6 completionHandler:(id)a7;
-- (void)addSubscriber:(id)a3 forID:(id)a4 appBundleID:(id)a5 fileURL:(id)a6 completionHandler:(id)a7;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (NSProgressRegistrar)initWithQueue:(id)queue rootFileAccessNode:(id)node;
+- (void)_getRemoteProcessWithAuditToken:(id *)token canReadItemAtURL:(id)l completionHandler:(id)handler;
+- (void)addPublisher:(id)publisher forID:(id)d acknowledgementAppBundleIDs:(id)ds category:(id)category fileURL:(id)l initialValues:(id)values completionHandler:(id)handler;
+- (void)addSubscriber:(id)subscriber forID:(id)d appBundleID:(id)iD category:(id)category completionHandler:(id)handler;
+- (void)addSubscriber:(id)subscriber forID:(id)d appBundleID:(id)iD fileURL:(id)l completionHandler:(id)handler;
 - (void)dealloc;
-- (void)observePublisherForID:(id)a3 values:(id)a4 forKeys:(id)a5;
-- (void)observePublisherUserInfoForID:(id)a3 value:(id)a4 forKey:(id)a5;
-- (void)removePublisherForID:(id)a3;
-- (void)removeSubscriberForID:(id)a3;
+- (void)observePublisherForID:(id)d values:(id)values forKeys:(id)keys;
+- (void)observePublisherUserInfoForID:(id)d value:(id)value forKey:(id)key;
+- (void)removePublisherForID:(id)d;
+- (void)removeSubscriberForID:(id)d;
 @end
 
 @implementation NSProgressRegistrar
 
-- (NSProgressRegistrar)initWithQueue:(id)a3 rootFileAccessNode:(id)a4
+- (NSProgressRegistrar)initWithQueue:(id)queue rootFileAccessNode:(id)node
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -23,14 +23,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_queue = a3;
-    dispatch_retain(a3);
+    v6->_queue = queue;
+    dispatch_retain(queue);
     v7->_publishersByID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7->_publisherTransactionsByID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7->_subscribersByID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7->_subscriberTransactionsByID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7->_pendingFileSubscriberIDs = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v7->_rootFileAccessNode = a4;
+    v7->_rootFileAccessNode = node;
   }
 
   return v7;
@@ -51,20 +51,20 @@
   [(NSProgressRegistrar *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v7[6] = *MEMORY[0x1E69E9840];
-  [a4 setExportedObject:self];
-  [a4 setExportedInterface:{+[NSProgress _registrarInterface](NSProgress, "_registrarInterface")}];
-  [a4 _setQueue:self->_queue];
+  [connection setExportedObject:self];
+  [connection setExportedInterface:{+[NSProgress _registrarInterface](NSProgress, "_registrarInterface")}];
+  [connection _setQueue:self->_queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__NSProgressRegistrar_listener_shouldAcceptNewConnection___block_invoke;
   v7[3] = &unk_1E69F2080;
   v7[4] = self;
-  v7[5] = a4;
-  [a4 setInvalidationHandler:v7];
-  [a4 resume];
+  v7[5] = connection;
+  [connection setInvalidationHandler:v7];
+  [connection resume];
   return 1;
 }
 
@@ -147,7 +147,7 @@ uint64_t __58__NSProgressRegistrar_listener_shouldAcceptNewConnection___block_in
   return result;
 }
 
-- (void)addPublisher:(id)a3 forID:(id)a4 acknowledgementAppBundleIDs:(id)a5 category:(id)a6 fileURL:(id)a7 initialValues:(id)a8 completionHandler:(id)a9
+- (void)addPublisher:(id)publisher forID:(id)d acknowledgementAppBundleIDs:(id)ds category:(id)category fileURL:(id)l initialValues:(id)values completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
   v16 = _NSProgressIPCDebugLog();
@@ -157,49 +157,49 @@ uint64_t __58__NSProgressRegistrar_listener_shouldAcceptNewConnection___block_in
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218755;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
-      v30 = a4;
+      dCopy = d;
       v31 = 2113;
-      v32 = a7;
+      lCopy = l;
       v33 = 2114;
-      v34 = a6;
+      categoryCopy = category;
       _os_log_debug_impl(&dword_18075C000, v17, OS_LOG_TYPE_DEBUG, "<NSProgressSubscriberProxy %p> Add publisher ID %{public}@ for URL %{private}@ in category %{public}@", buf, 0x2Au);
     }
   }
 
   v18 = +[NSXPCConnection currentConnection];
-  v19 = [(NSMutableDictionary *)self->_publishersByID objectForKey:a4];
+  v19 = [(NSMutableDictionary *)self->_publishersByID objectForKey:d];
   if (!v19)
   {
-    v19 = [[NSProgressPublisherProxy alloc] initWithForwarder:a3 onConnection:v18 publisherID:a4 values:a8];
-    [(NSMutableDictionary *)self->_publishersByID setObject:v19 forKey:a4];
+    v19 = [[NSProgressPublisherProxy alloc] initWithForwarder:publisher onConnection:v18 publisherID:d values:values];
+    [(NSMutableDictionary *)self->_publishersByID setObject:v19 forKey:d];
 
     [+[NSString stringWithFormat:](NSString UTF8String:@"Pub: %@ (%d cat: %@ URL: %@)"];
     v20 = os_transaction_create();
-    [(NSMutableDictionary *)self->_publisherTransactionsByID setObject:v20 forKey:a4];
+    [(NSMutableDictionary *)self->_publisherTransactionsByID setObject:v20 forKey:d];
   }
 
-  v21 = [a5 mutableCopy];
-  if (a6)
+  v21 = [ds mutableCopy];
+  if (category)
   {
     subscribersByID = self->_subscribersByID;
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __119__NSProgressRegistrar_addPublisher_forID_acknowledgementAppBundleIDs_category_fileURL_initialValues_completionHandler___block_invoke;
     v26[3] = &unk_1E69F20A8;
-    v26[4] = a6;
+    v26[4] = category;
     v26[5] = v19;
-    v26[6] = a4;
-    v26[7] = a8;
+    v26[6] = d;
+    v26[7] = values;
     v26[8] = v21;
     [(NSMutableDictionary *)subscribersByID enumerateKeysAndObjectsUsingBlock:v26];
-    [(NSProgressPublisherProxy *)v19 setCategory:a6];
+    [(NSProgressPublisherProxy *)v19 setCategory:category];
   }
 
-  if (a7)
+  if (l)
   {
-    v23 = [(NSFileAccessNode *)self->_rootFileAccessNode descendantForFileURL:a7];
+    v23 = [(NSFileAccessNode *)self->_rootFileAccessNode descendantForFileURL:l];
     if (v23)
     {
       v24 = v23;
@@ -208,15 +208,15 @@ uint64_t __58__NSProgressRegistrar_listener_shouldAcceptNewConnection___block_in
       v25[2] = __119__NSProgressRegistrar_addPublisher_forID_acknowledgementAppBundleIDs_category_fileURL_initialValues_completionHandler___block_invoke_2;
       v25[3] = &unk_1E69F20D0;
       v25[4] = v19;
-      v25[5] = a4;
-      v25[6] = a8;
+      v25[5] = d;
+      v25[6] = values;
       v25[7] = v21;
       [v23 forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:v25];
       [(NSProgressPublisherProxy *)v19 setItemLocation:v24];
     }
   }
 
-  (*(a9 + 2))(a9, v21);
+  (*(handler + 2))(handler, v21);
 }
 
 uint64_t __119__NSProgressRegistrar_addPublisher_forID_acknowledgementAppBundleIDs_category_fileURL_initialValues_completionHandler___block_invoke(void *a1, uint64_t a2, void *a3)
@@ -253,38 +253,38 @@ uint64_t __119__NSProgressRegistrar_addPublisher_forID_acknowledgementAppBundleI
   return result;
 }
 
-- (void)observePublisherUserInfoForID:(id)a3 value:(id)a4 forKey:(id)a5
+- (void)observePublisherUserInfoForID:(id)d value:(id)value forKey:(id)key
 {
   v15[8] = *MEMORY[0x1E69E9840];
-  v9 = [(NSMutableDictionary *)self->_publishersByID objectForKey:a3];
+  v9 = [(NSMutableDictionary *)self->_publishersByID objectForKey:d];
   if (v9)
   {
     v10 = v9;
-    [v9 observeUserInfoValue:a4 forKey:a5];
-    v11 = [v10 category];
-    if (v11)
+    [v9 observeUserInfoValue:value forKey:key];
+    category = [v10 category];
+    if (category)
     {
       subscribersByID = self->_subscribersByID;
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __66__NSProgressRegistrar_observePublisherUserInfoForID_value_forKey___block_invoke;
       v15[3] = &unk_1E69F20F8;
-      v15[4] = v11;
-      v15[5] = a3;
-      v15[6] = a4;
-      v15[7] = a5;
+      v15[4] = category;
+      v15[5] = d;
+      v15[6] = value;
+      v15[7] = key;
       [(NSMutableDictionary *)subscribersByID enumerateKeysAndObjectsUsingBlock:v15];
     }
 
-    v13 = [v10 itemLocation];
+    itemLocation = [v10 itemLocation];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __66__NSProgressRegistrar_observePublisherUserInfoForID_value_forKey___block_invoke_2;
     v14[3] = &unk_1E69F2120;
-    v14[4] = a3;
-    v14[5] = a4;
-    v14[6] = a5;
-    [v13 forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:v14];
+    v14[4] = d;
+    v14[5] = value;
+    v14[6] = key;
+    [itemLocation forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:v14];
   }
 }
 
@@ -303,38 +303,38 @@ uint64_t __66__NSProgressRegistrar_observePublisherUserInfoForID_value_forKey___
   return result;
 }
 
-- (void)observePublisherForID:(id)a3 values:(id)a4 forKeys:(id)a5
+- (void)observePublisherForID:(id)d values:(id)values forKeys:(id)keys
 {
   v15[8] = *MEMORY[0x1E69E9840];
-  v9 = [(NSMutableDictionary *)self->_publishersByID objectForKey:a3];
+  v9 = [(NSMutableDictionary *)self->_publishersByID objectForKey:d];
   if (v9)
   {
     v10 = v9;
-    [v9 observeValues:a4 forKeys:a5];
-    v11 = [v10 category];
-    if (v11)
+    [v9 observeValues:values forKeys:keys];
+    category = [v10 category];
+    if (category)
     {
       subscribersByID = self->_subscribersByID;
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __60__NSProgressRegistrar_observePublisherForID_values_forKeys___block_invoke;
       v15[3] = &unk_1E69F20F8;
-      v15[4] = v11;
-      v15[5] = a3;
-      v15[6] = a4;
-      v15[7] = a5;
+      v15[4] = category;
+      v15[5] = d;
+      v15[6] = values;
+      v15[7] = keys;
       [(NSMutableDictionary *)subscribersByID enumerateKeysAndObjectsUsingBlock:v15];
     }
 
-    v13 = [v10 itemLocation];
+    itemLocation = [v10 itemLocation];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __60__NSProgressRegistrar_observePublisherForID_values_forKeys___block_invoke_2;
     v14[3] = &unk_1E69F2120;
-    v14[4] = a3;
-    v14[5] = a4;
-    v14[6] = a5;
-    [v13 forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:v14];
+    v14[4] = d;
+    v14[5] = values;
+    v14[6] = keys;
+    [itemLocation forEachProgressSubscriberOfItemOrContainingItemPerformProcedure:v14];
   }
 }
 
@@ -353,7 +353,7 @@ uint64_t __60__NSProgressRegistrar_observePublisherForID_values_forKeys___block_
   return result;
 }
 
-- (void)removePublisherForID:(id)a3
+- (void)removePublisherForID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = _NSProgressIPCDebugLog();
@@ -363,33 +363,33 @@ uint64_t __60__NSProgressRegistrar_observePublisherForID_values_forKeys___block_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218242;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = a3;
+      dCopy = d;
       _os_log_debug_impl(&dword_18075C000, v6, OS_LOG_TYPE_DEBUG, "<NSProgressSubscriberProxy %p> Remove publisher ID %{public}@", buf, 0x16u);
     }
   }
 
-  v7 = [(NSMutableDictionary *)self->_publishersByID objectForKey:a3];
+  v7 = [(NSMutableDictionary *)self->_publishersByID objectForKey:d];
   if (v7)
   {
     v8 = v7;
-    v9 = [v7 category];
-    if (v9)
+    category = [v7 category];
+    if (category)
     {
       subscribersByID = self->_subscribersByID;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __44__NSProgressRegistrar_removePublisherForID___block_invoke;
       v11[3] = &unk_1E69F2148;
-      v11[4] = v9;
-      v11[5] = a3;
+      v11[4] = category;
+      v11[5] = d;
       [(NSMutableDictionary *)subscribersByID enumerateKeysAndObjectsUsingBlock:v11];
     }
 
     [v8 setItemLocation:0];
-    [(NSMutableDictionary *)self->_publishersByID removeObjectForKey:a3];
-    [(NSMutableDictionary *)self->_publisherTransactionsByID removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_publishersByID removeObjectForKey:d];
+    [(NSMutableDictionary *)self->_publisherTransactionsByID removeObjectForKey:d];
   }
 }
 
@@ -406,7 +406,7 @@ uint64_t __44__NSProgressRegistrar_removePublisherForID___block_invoke(uint64_t 
   return result;
 }
 
-- (void)addSubscriber:(id)a3 forID:(id)a4 appBundleID:(id)a5 category:(id)a6 completionHandler:(id)a7
+- (void)addSubscriber:(id)subscriber forID:(id)d appBundleID:(id)iD category:(id)category completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
   v13 = _NSProgressIPCDebugLog();
@@ -418,11 +418,11 @@ uint64_t __44__NSProgressRegistrar_removePublisherForID___block_invoke(uint64_t 
       *v24 = 134218754;
       *&v24[4] = self;
       *&v24[12] = 2048;
-      *&v24[14] = a3;
+      *&v24[14] = subscriber;
       *&v24[22] = 2114;
-      *&v24[24] = a4;
+      *&v24[24] = d;
       v25 = 2114;
-      v26 = a6;
+      categoryCopy = category;
       _os_log_debug_impl(&dword_18075C000, v15, OS_LOG_TYPE_DEBUG, "<NSProgressRegistrar %p> Add subscriber %p forID: %{public}@ in category %{public}@", v24, 0x2Au);
     }
   }
@@ -443,25 +443,25 @@ uint64_t __44__NSProgressRegistrar_removePublisherForID___block_invoke(uint64_t 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *&buf[4] = a6;
+      *&buf[4] = category;
       *&buf[12] = 2112;
-      *&buf[14] = a5;
+      *&buf[14] = iD;
       *&buf[22] = 2112;
-      *&buf[24] = a4;
+      *&buf[24] = d;
       _os_log_error_impl(&dword_18075C000, v18, OS_LOG_TYPE_ERROR, "sandboxing denied subscription to progress on category %@ (bundle id %@, %@)", buf, 0x20u);
     }
   }
 
-  v19 = [(NSMutableDictionary *)self->_subscribersByID objectForKey:a4];
+  v19 = [(NSMutableDictionary *)self->_subscribersByID objectForKey:d];
   if (!v19)
   {
-    v19 = [[NSProgressSubscriberProxy alloc] initWithForwarder:a3 onConnection:v17 subscriberID:a4 appBundleID:a5];
-    [(NSProgressSubscriberProxy *)v19 setCategory:a6];
-    [(NSMutableDictionary *)self->_subscribersByID setObject:v19 forKey:a4];
+    v19 = [[NSProgressSubscriberProxy alloc] initWithForwarder:subscriber onConnection:v17 subscriberID:d appBundleID:iD];
+    [(NSProgressSubscriberProxy *)v19 setCategory:category];
+    [(NSMutableDictionary *)self->_subscribersByID setObject:v19 forKey:d];
 
     [+[NSString stringWithFormat:](NSString UTF8String:@"Sub: %@ (%d bundle: %@ cat: %@)"];
     v20 = os_transaction_create();
-    [(NSMutableDictionary *)self->_subscriberTransactionsByID setObject:v20 forKey:a4];
+    [(NSMutableDictionary *)self->_subscriberTransactionsByID setObject:v20 forKey:d];
   }
 
   publishersByID = self->_publishersByID;
@@ -469,10 +469,10 @@ uint64_t __44__NSProgressRegistrar_removePublisherForID___block_invoke(uint64_t 
   v22[1] = 3221225472;
   v22[2] = __82__NSProgressRegistrar_addSubscriber_forID_appBundleID_category_completionHandler___block_invoke;
   v22[3] = &unk_1E69F2170;
-  v22[4] = a6;
+  v22[4] = category;
   v22[5] = v19;
   [(NSMutableDictionary *)publishersByID enumerateKeysAndObjectsUsingBlock:v22];
-  (*(a7 + 2))(a7);
+  (*(handler + 2))(handler);
 }
 
 uint64_t __82__NSProgressRegistrar_addSubscriber_forID_appBundleID_category_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -490,7 +490,7 @@ uint64_t __82__NSProgressRegistrar_addSubscriber_forID_appBundleID_category_comp
   return result;
 }
 
-- (void)_getRemoteProcessWithAuditToken:(id *)a3 canReadItemAtURL:(id)a4 completionHandler:(id)a5
+- (void)_getRemoteProcessWithAuditToken:(id *)token canReadItemAtURL:(id)l completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
   v9 = *MEMORY[0x1E69E9BD0];
@@ -498,28 +498,28 @@ uint64_t __82__NSProgressRegistrar_addSubscriber_forID_appBundleID_category_comp
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v10 = *&a3->var0[4];
-  v35 = *a3->var0;
+  v10 = *&token->var0[4];
+  v35 = *token->var0;
   v36 = v10;
   v11 = sandbox_check_by_audit_token();
-  v12 = [objc_msgSend(a4 "lastPathComponent")];
+  v12 = [objc_msgSend(l "lastPathComponent")];
   if (!((v11 != 0) | v12 & 1))
   {
     *(v25 + 24) = 1;
 LABEL_19:
-    (*(a5 + 2))(a5, (*(v25 + 24) != 0) | (v12 & 1));
+    (*(handler + 2))(handler, (*(v25 + 24) != 0) | (v12 & 1));
     goto LABEL_20;
   }
 
   *&v35 = 0;
   *(&v35 + 1) = &v35;
   *&v36 = 0x2020000000;
-  *(&v36 + 1) = [a4 fileSystemRepresentation];
+  *(&v36 + 1) = [l fileSystemRepresentation];
   v13 = *(*(&v35 + 1) + 24);
   if (v13)
   {
-    v14 = *&a3->var0[4];
-    v33 = *a3->var0;
+    v14 = *&token->var0[4];
+    v33 = *token->var0;
     v34 = v14;
     v23 = v13;
     v15 = sandbox_check_by_audit_token() == 0;
@@ -535,18 +535,18 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  for (i = [a4 URLByDeletingLastPathComponent]; i; i = objc_msgSend(i, "URLByDeletingLastPathComponent"))
+  for (i = [l URLByDeletingLastPathComponent]; i; i = objc_msgSend(i, "URLByDeletingLastPathComponent"))
   {
     if ([i checkResourceIsReachableAndReturnError:0])
     {
-      v17 = [i fileSystemRepresentation];
-      *(*(&v35 + 1) + 24) = v17;
-      if (v17)
+      fileSystemRepresentation = [i fileSystemRepresentation];
+      *(*(&v35 + 1) + 24) = fileSystemRepresentation;
+      if (fileSystemRepresentation)
       {
-        v18 = *&a3->var0[4];
-        v33 = *a3->var0;
+        v18 = *&token->var0[4];
+        v33 = *token->var0;
         v34 = v18;
-        v23 = v17;
+        v23 = fileSystemRepresentation;
         *(v25 + 24) = sandbox_check_by_audit_token() == 0;
       }
 
@@ -561,24 +561,24 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v19 = [(NSFileAccessNode *)self->_rootFileAccessNode descendantForFileURL:a4];
-  v20 = [v19 itemProvider];
-  v21 = v20;
-  if (v20)
+  v19 = [(NSFileAccessNode *)self->_rootFileAccessNode descendantForFileURL:l];
+  itemProvider = [v19 itemProvider];
+  v21 = itemProvider;
+  if (itemProvider)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
-    v22 = *&a3->var0[4];
-    v29 = *a3->var0;
+    v22 = *&token->var0[4];
+    v29 = *token->var0;
     v28[2] = __90__NSProgressRegistrar__getRemoteProcessWithAuditToken_canReadItemAtURL_completionHandler___block_invoke;
     v28[3] = &unk_1E69F2198;
     v28[5] = &v35;
     v28[6] = &v24;
     v30 = v22;
     v31 = v9;
-    v28[4] = a5;
+    v28[4] = handler;
     v32 = v12;
-    [v20 providePhysicalURLForURL:a4 completionHandler:v28];
+    [itemProvider providePhysicalURLForURL:l completionHandler:v28];
   }
 
   [v19 removeSelfIfUseless];
@@ -613,7 +613,7 @@ uint64_t __90__NSProgressRegistrar__getRemoteProcessWithAuditToken_canReadItemAt
   return (*(*(a1 + 32) + 16))(*(a1 + 32), v3 & 1);
 }
 
-- (void)addSubscriber:(id)a3 forID:(id)a4 appBundleID:(id)a5 fileURL:(id)a6 completionHandler:(id)a7
+- (void)addSubscriber:(id)subscriber forID:(id)d appBundleID:(id)iD fileURL:(id)l completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
   v13 = _NSProgressIPCDebugLog();
@@ -625,20 +625,20 @@ uint64_t __90__NSProgressRegistrar__getRemoteProcessWithAuditToken_canReadItemAt
       *buf = 134218755;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = subscriber;
       *&buf[22] = 2114;
-      *&buf[24] = a4;
+      *&buf[24] = d;
       v21 = 2113;
-      v22 = a6;
+      lCopy = l;
       _os_log_debug_impl(&dword_18075C000, v15, OS_LOG_TYPE_DEBUG, "<NSProgressRegistrar %p> Add subscriber %p forID: %{public}@ for URL %{private}@", buf, 0x2Au);
     }
   }
 
   v16 = +[NSXPCConnection currentConnection];
-  if (a6)
+  if (l)
   {
     v17 = v16;
-    [(NSMutableSet *)self->_pendingFileSubscriberIDs addObject:a4];
+    [(NSMutableSet *)self->_pendingFileSubscriberIDs addObject:d];
     [+[NSString stringWithFormat:](NSString UTF8String:@"Sub: %@ (%d bundle: %@ URL: %@)"];
     v18 = os_transaction_create();
     if (v17)
@@ -656,19 +656,19 @@ uint64_t __90__NSProgressRegistrar__getRemoteProcessWithAuditToken_canReadItemAt
     v19[2] = __81__NSProgressRegistrar_addSubscriber_forID_appBundleID_fileURL_completionHandler___block_invoke;
     v19[3] = &unk_1E69F2210;
     v19[4] = self;
-    v19[5] = a4;
+    v19[5] = d;
     v19[6] = v18;
-    v19[7] = a6;
-    v19[8] = a5;
-    v19[9] = a3;
+    v19[7] = l;
+    v19[8] = iD;
+    v19[9] = subscriber;
     v19[10] = v17;
-    v19[11] = a7;
-    [(NSProgressRegistrar *)self _getRemoteProcessWithAuditToken:buf canReadItemAtURL:a6 completionHandler:v19];
+    v19[11] = handler;
+    [(NSProgressRegistrar *)self _getRemoteProcessWithAuditToken:buf canReadItemAtURL:l completionHandler:v19];
   }
 
   else
   {
-    (*(a7 + 2))(a7);
+    (*(handler + 2))(handler);
   }
 }
 
@@ -795,32 +795,32 @@ uint64_t __81__NSProgressRegistrar_addSubscriber_forID_appBundleID_fileURL_compl
   return [v3 addPublisher:a2 forID:v4 withValues:v5 isOld:1];
 }
 
-- (void)removeSubscriberForID:(id)a3
+- (void)removeSubscriberForID:(id)d
 {
   v10[5] = *MEMORY[0x1E69E9840];
-  v5 = [(NSMutableDictionary *)self->_subscribersByID objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_subscribersByID objectForKey:d];
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 appBundleID];
-    if (v7)
+    appBundleID = [v5 appBundleID];
+    if (appBundleID)
     {
-      v8 = v7;
-      v9 = [v6 itemLocation];
+      v8 = appBundleID;
+      itemLocation = [v6 itemLocation];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __45__NSProgressRegistrar_removeSubscriberForID___block_invoke;
       v10[3] = &unk_1E69F21E8;
       v10[4] = v8;
-      [v9 forEachProgressPublisherOfItemOrContainedItemPerformProcedure:v10];
+      [itemLocation forEachProgressPublisherOfItemOrContainedItemPerformProcedure:v10];
     }
 
     [v6 setItemLocation:0];
-    [(NSMutableDictionary *)self->_subscribersByID removeObjectForKey:a3];
-    [(NSMutableDictionary *)self->_subscriberTransactionsByID removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_subscribersByID removeObjectForKey:d];
+    [(NSMutableDictionary *)self->_subscriberTransactionsByID removeObjectForKey:d];
   }
 
-  [(NSMutableSet *)self->_pendingFileSubscriberIDs removeObject:a3];
+  [(NSMutableSet *)self->_pendingFileSubscriberIDs removeObject:d];
 }
 
 @end

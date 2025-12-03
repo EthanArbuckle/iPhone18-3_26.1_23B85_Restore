@@ -1,17 +1,17 @@
 @interface EQKitMathMLBinaryNode
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLBinaryNode)initWithFirst:(id)a3 second:(id)a4;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (EQKitMathMLBinaryNode)initWithFirst:(id)first second:(id)second;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLBinaryNode
 
-- (EQKitMathMLBinaryNode)initWithFirst:(id)a3 second:(id)a4
+- (EQKitMathMLBinaryNode)initWithFirst:(id)first second:(id)second
 {
-  if (a3)
+  if (first)
   {
-    if (a4)
+    if (second)
     {
       goto LABEL_3;
     }
@@ -20,7 +20,7 @@
   else
   {
     [EQKitMathMLBinaryNode initWithFirst:a2 second:self];
-    if (a4)
+    if (second)
     {
       goto LABEL_3;
     }
@@ -33,8 +33,8 @@ LABEL_3:
   v8 = [(EQKitMathMLBinaryNode *)&v10 init];
   if (v8)
   {
-    v8->mFirst = a3;
-    v8->mSecond = a4;
+    v8->mFirst = first;
+    v8->mSecond = second;
     [(EQKitMathMLNode *)v8->mFirst setParent:v8];
     [(EQKitMathMLNode *)v8->mSecond setParent:v8];
   }
@@ -42,9 +42,9 @@ LABEL_3:
   return v8;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v7 = [a4 parseChildrenAsArrayFromXMLNode:?];
+  v7 = [parser parseChildrenAsArrayFromXMLNode:?];
   if ([v7 count] == 2)
   {
     v8 = [v7 objectAtIndex:0];
@@ -55,7 +55,7 @@ LABEL_3:
 
   else
   {
-    [a4 reportError:5 withNode:a3];
+    [parser reportError:5 withNode:node];
 
     return 0;
   }

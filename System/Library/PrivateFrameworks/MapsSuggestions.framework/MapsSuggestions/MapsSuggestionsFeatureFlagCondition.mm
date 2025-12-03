@@ -1,28 +1,28 @@
 @interface MapsSuggestionsFeatureFlagCondition
 - (BOOL)isTrue;
-- (MapsSuggestionsFeatureFlagCondition)initWithFeatureFlag:(id)a3;
+- (MapsSuggestionsFeatureFlagCondition)initWithFeatureFlag:(id)flag;
 @end
 
 @implementation MapsSuggestionsFeatureFlagCondition
 
-- (MapsSuggestionsFeatureFlagCondition)initWithFeatureFlag:(id)a3
+- (MapsSuggestionsFeatureFlagCondition)initWithFeatureFlag:(id)flag
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  flagCopy = flag;
+  if (flagCopy)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"MapsSuggestionsFeatureFlagCondition_%@", v5];
+    flagCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"MapsSuggestionsFeatureFlagCondition_%@", flagCopy];
     v11.receiver = self;
     v11.super_class = MapsSuggestionsFeatureFlagCondition;
-    v7 = [(MapsSuggestionsBaseCondition *)&v11 initWithName:v6];
+    v7 = [(MapsSuggestionsBaseCondition *)&v11 initWithName:flagCopy];
 
     if (v7)
     {
-      objc_storeStrong(&v7->_featureFlag, a3);
+      objc_storeStrong(&v7->_featureFlag, flag);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -41,10 +41,10 @@
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a feature flag", buf, 0x26u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)isTrue

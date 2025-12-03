@@ -1,6 +1,6 @@
 @interface EKPersistentParticipant
 + (id)defaultPropertiesToLoad;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)semanticIdentifier;
 - (id)url;
 @end
@@ -41,12 +41,12 @@ void __50__EKPersistentParticipant_defaultPropertiesToLoad__block_invoke()
 
 - (id)url
 {
-  v3 = [(EKPersistentParticipant *)self URLString];
-  if (v3)
+  uRLString = [(EKPersistentParticipant *)self URLString];
+  if (uRLString)
   {
     v4 = MEMORY[0x1E695DFF8];
-    v5 = [(EKPersistentParticipant *)self URLString];
-    v6 = [v4 URLWithString:v5];
+    uRLString2 = [(EKPersistentParticipant *)self URLString];
+    v6 = [v4 URLWithString:uRLString2];
   }
 
   else
@@ -59,56 +59,56 @@ void __50__EKPersistentParticipant_defaultPropertiesToLoad__block_invoke()
 
 - (id)semanticIdentifier
 {
-  v3 = [(EKPersistentParticipant *)self emailAddress];
-  v4 = v3;
-  if (v3)
+  emailAddress = [(EKPersistentParticipant *)self emailAddress];
+  v4 = emailAddress;
+  if (emailAddress)
   {
-    v5 = v3;
+    v5 = emailAddress;
   }
 
   else
   {
-    v6 = [(EKPersistentParticipant *)self phoneNumber];
-    v7 = v6;
-    if (v6)
+    phoneNumber = [(EKPersistentParticipant *)self phoneNumber];
+    v7 = phoneNumber;
+    if (phoneNumber)
     {
-      v5 = v6;
+      v5 = phoneNumber;
     }
 
     else
     {
-      v8 = [(EKPersistentParticipant *)self URLString];
-      v9 = v8;
-      if (v8)
+      uRLString = [(EKPersistentParticipant *)self URLString];
+      v9 = uRLString;
+      if (uRLString)
       {
-        v5 = v8;
+        v5 = uRLString;
       }
 
       else
       {
-        v10 = [(EKPersistentParticipant *)self displayNameRaw];
-        v11 = v10;
-        if (v10)
+        displayNameRaw = [(EKPersistentParticipant *)self displayNameRaw];
+        v11 = displayNameRaw;
+        if (displayNameRaw)
         {
-          v5 = v10;
+          v5 = displayNameRaw;
         }
 
         else
         {
-          v12 = [(EKPersistentParticipant *)self firstName];
-          v13 = [(EKPersistentParticipant *)self lastName];
-          if (v12 | v13)
+          firstName = [(EKPersistentParticipant *)self firstName];
+          lastName = [(EKPersistentParticipant *)self lastName];
+          if (firstName | lastName)
           {
-            v14 = [MEMORY[0x1E696AD60] string];
-            v15 = v14;
-            if (v12)
+            string = [MEMORY[0x1E696AD60] string];
+            v15 = string;
+            if (firstName)
             {
-              [v14 appendFormat:@"FIRST=%@;", v12];
+              [string appendFormat:@"FIRST=%@;", firstName];
             }
 
-            if (v13)
+            if (lastName)
             {
-              [v15 appendFormat:@"LAST=%@;", v13];
+              [v15 appendFormat:@"LAST=%@;", lastName];
             }
 
             v5 = [v15 copy];
@@ -126,7 +126,7 @@ void __50__EKPersistentParticipant_defaultPropertiesToLoad__block_invoke()
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

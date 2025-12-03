@@ -1,30 +1,30 @@
 @interface TLKButton
-+ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)a3 withSize:(CGImage *)a4;
-+ (id)blurColorForColor:(id)a3;
-+ (id)blurColorForImage:(id)a3 forButtonSize:(CGSize)a4 withOffsetRight:(float)a5 withOffsetBottom:(float)a6;
++ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)statistics withSize:(CGImage *)size;
++ (id)blurColorForColor:(id)color;
++ (id)blurColorForImage:(id)image forButtonSize:(CGSize)size withOffsetRight:(float)right withOffsetBottom:(float)bottom;
 - (CGSize)fixedSize;
 - (CGSize)intrinsicContentSize;
 - (TLKButton)init;
 - (UIImage)imageOnImageView;
 - (UIView)containerView;
 - (id)_innerProgressLayer;
-- (id)_newShapeViewWithBounds:(CGRect)a3 lineWidth:(double)a4;
+- (id)_newShapeViewWithBounds:(CGRect)bounds lineWidth:(double)width;
 - (id)_outerProgressLayer;
 - (id)iconColor;
 - (void)_beginIndeterminateAnimation;
 - (void)_updateInnerProgressLayerStroke;
-- (void)addTarget:(id)a3 forAction:(SEL)a4;
+- (void)addTarget:(id)target forAction:(SEL)action;
 - (void)beginIndeterminateAnimation;
 - (void)didMoveToWindow;
 - (void)endIndeterminateAnimation;
-- (void)hideProgressAnimated:(BOOL)a3;
+- (void)hideProgressAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setButtonSelectionState:(BOOL)a3;
-- (void)setContainerView:(id)a3;
-- (void)setOverlayImage:(id)a3;
-- (void)setProgress:(float)a3 animated:(BOOL)a4;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setButtonSelectionState:(BOOL)state;
+- (void)setContainerView:(id)view;
+- (void)setOverlayImage:(id)image;
+- (void)setProgress:(float)progress animated:(BOOL)animated;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateOuterProgressLayerStroke;
 @end
 
@@ -40,20 +40,20 @@
     v3 = objc_opt_new();
     [(TLKButton *)v2 setBackgroundView:v3];
 
-    v4 = [(TLKButton *)v2 backgroundView];
-    [(TLKButton *)v2 addSubview:v4];
+    backgroundView = [(TLKButton *)v2 backgroundView];
+    [(TLKButton *)v2 addSubview:backgroundView];
 
     v5 = objc_opt_new();
     [(TLKButton *)v2 setImageView:v5];
 
-    v6 = [(TLKButton *)v2 imageView];
-    [(TLKButton *)v2 addSubview:v6];
+    imageView = [(TLKButton *)v2 imageView];
+    [(TLKButton *)v2 addSubview:imageView];
 
     v7 = [TLKTapContainerButton buttonWithType:0];
     [(TLKButton *)v2 setButton:v7];
 
-    v8 = [(TLKButton *)v2 button];
-    [(TLKButton *)v2 addSubview:v8];
+    button = [(TLKButton *)v2 button];
+    [(TLKButton *)v2 addSubview:button];
 
     [(TLKButton *)v2 setToggled:0];
   }
@@ -63,21 +63,21 @@
 
 - (UIImage)imageOnImageView
 {
-  v2 = [(TLKButton *)self imageView];
-  v3 = [v2 imageView];
-  v4 = [v3 image];
+  imageView = [(TLKButton *)self imageView];
+  v2ImageView = [imageView imageView];
+  image = [v2ImageView image];
 
-  return v4;
+  return image;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKButton;
-  [(TLKButton *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKButton *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKButton *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKButton *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -85,11 +85,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKButton *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKButton *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -105,17 +105,17 @@ LABEL_5:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v35.receiver = self;
   v35.super_class = TLKButton;
-  v4 = a3;
-  [(UIView *)&v35 tlk_updateForAppearance:v4];
+  appearanceCopy = appearance;
+  [(UIView *)&v35 tlk_updateForAppearance:appearanceCopy];
   [(TLKButton *)self setButtonSelectionState:[(TLKButton *)self isToggled]];
   if (self->_overlayImage)
   {
-    v5 = [(TLKButton *)self backgroundView];
-    [v4 disableAppearanceForView:v5];
+    backgroundView = [(TLKButton *)self backgroundView];
+    [appearanceCopy disableAppearanceForView:backgroundView];
 
     [(TLKButton *)self intrinsicContentSize];
     v7 = v6;
@@ -124,12 +124,12 @@ LABEL_5:
     v11 = v10;
     v13 = v12;
     v14 = self->_overlayImage;
-    v15 = [(TLKButton *)self imageView];
-    [v15 setProminence:1];
+    imageView = [(TLKButton *)self imageView];
+    [imageView setProminence:1];
 
     v16 = [TLKAppearance appearanceWithStyle:2];
-    v17 = [(TLKButton *)self imageView];
-    [v16 overrideAppearanceForView:v17];
+    imageView2 = [(TLKButton *)self imageView];
+    [v16 overrideAppearanceForView:imageView2];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -141,37 +141,37 @@ LABEL_5:
     v34 = v13;
     v29[4] = self;
     v30 = v14;
-    v18 = v14;
+    button = v14;
     [TLKUtilities dispatchAsyncIfNecessary:v29];
   }
 
   else
   {
-    v19 = [(TLKButton *)self imageView];
-    [TLKAppearance disableAppearanceOverrideForView:v19];
+    imageView3 = [(TLKButton *)self imageView];
+    [TLKAppearance disableAppearanceOverrideForView:imageView3];
 
-    v20 = [v4 quaternaryColor];
-    v21 = [(TLKButton *)self backgroundView];
-    [v21 setBackgroundColor:v20];
+    quaternaryColor = [appearanceCopy quaternaryColor];
+    backgroundView2 = [(TLKButton *)self backgroundView];
+    [backgroundView2 setBackgroundColor:quaternaryColor];
 
-    v22 = [(TLKButton *)self backgroundView];
-    [v4 enableAppearanceForView:v22];
+    backgroundView3 = [(TLKButton *)self backgroundView];
+    [appearanceCopy enableAppearanceForView:backgroundView3];
 
-    v23 = [v4 isDark] ^ 1;
-    v24 = [(TLKButton *)self imageView];
-    [v24 setProminence:v23];
+    v23 = [appearanceCopy isDark] ^ 1;
+    imageView4 = [(TLKButton *)self imageView];
+    [imageView4 setProminence:v23];
 
     [(TLKButton *)self _updateInnerProgressLayerStroke];
     [(TLKButton *)self updateOuterProgressLayerStroke];
-    v18 = [(TLKButton *)self button];
-    [v4 enableAppearanceForContainer:v18];
+    button = [(TLKButton *)self button];
+    [appearanceCopy enableAppearanceForContainer:button];
   }
 
   [(TLKButton *)self intrinsicContentSize];
   v26 = v25 * 0.5;
-  v27 = [(TLKButton *)self backgroundView];
-  v28 = [v27 layer];
-  [v28 setCornerRadius:v26];
+  backgroundView4 = [(TLKButton *)self backgroundView];
+  layer = [backgroundView4 layer];
+  [layer setCornerRadius:v26];
 }
 
 void __37__TLKButton_tlk_updateForAppearance___block_invoke(uint64_t a1)
@@ -212,32 +212,32 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setOverlayImage:(id)a3
+- (void)setOverlayImage:(id)image
 {
-  v5 = a3;
-  if (v5 && self->_overlayImage != v5)
+  imageCopy = image;
+  if (imageCopy && self->_overlayImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overlayImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_overlayImage, image);
     [(UIView *)self tlk_updateWithCurrentAppearance];
     [(TLKButton *)self setButtonSelectionState:[(TLKButton *)self isToggled]];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v4 = a3;
-  v5 = [(TLKButton *)self button];
-  [v5 setContainerView:v4];
+  viewCopy = view;
+  button = [(TLKButton *)self button];
+  [button setContainerView:viewCopy];
 }
 
 - (UIView)containerView
 {
-  v2 = [(TLKButton *)self button];
-  v3 = [v2 containerView];
+  button = [(TLKButton *)self button];
+  containerView = [button containerView];
 
-  return v3;
+  return containerView;
 }
 
 - (CGSize)intrinsicContentSize
@@ -245,13 +245,13 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   [(TLKButton *)self fixedSize];
   if (v4 == *MEMORY[0x1E695F060] && v3 == *(MEMORY[0x1E695F060] + 8))
   {
-    v8 = [(TLKButton *)self toggledImage];
-    [v8 size];
+    toggledImage = [(TLKButton *)self toggledImage];
+    [toggledImage size];
     v10 = v9;
     v12 = v11;
 
-    v13 = [(TLKButton *)self untoggledImage];
-    [v13 size];
+    untoggledImage = [(TLKButton *)self untoggledImage];
+    [untoggledImage size];
     v15 = v14;
     v17 = v16;
 
@@ -305,14 +305,14 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKButton *)self backgroundView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundView = [(TLKButton *)self backgroundView];
+  [backgroundView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(TLKButton *)self button];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  button = [(TLKButton *)self button];
+  [button setFrame:{v4, v6, v8, v10}];
 
-  v13 = [(TLKButton *)self imageView];
-  [v13 intrinsicContentSize];
+  imageView = [(TLKButton *)self imageView];
+  [imageView intrinsicContentSize];
   v15 = v14;
   v17 = v16;
 
@@ -320,17 +320,17 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   v18 = CGRectGetMidX(v22) - v15 * 0.5;
   [(TLKButton *)self bounds];
   v19 = CGRectGetMidY(v23) - v17 * 0.5;
-  v20 = [(TLKButton *)self imageView];
-  [v20 setFrame:{v18, v19, v15, v17}];
+  imageView2 = [(TLKButton *)self imageView];
+  [imageView2 setFrame:{v18, v19, v15, v17}];
 }
 
-- (void)hideProgressAnimated:(BOOL)a3
+- (void)hideProgressAnimated:(BOOL)animated
 {
-  v4 = [(TLKButton *)self _outerProgressLayer];
-  [v4 setHidden:1];
+  _outerProgressLayer = [(TLKButton *)self _outerProgressLayer];
+  [_outerProgressLayer setHidden:1];
 
-  v5 = [(TLKButton *)self _innerProgressLayer];
-  [v5 setHidden:1];
+  _innerProgressLayer = [(TLKButton *)self _innerProgressLayer];
+  [_innerProgressLayer setHidden:1];
 
   if (self->_indeterminate)
   {
@@ -340,47 +340,47 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setButtonSelectionState:(BOOL)a3
+- (void)setButtonSelectionState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = [TLKImage alloc];
   v6 = &OBJC_IVAR___TLKButton__untoggledImage;
-  if (v3)
+  if (stateCopy)
   {
     v6 = &OBJC_IVAR___TLKButton__toggledImage;
   }
 
   v8 = [(TLKImage *)v5 initWithImage:*(&self->super.super.super.isa + *v6)];
-  self->_toggled = v3;
-  v7 = [(TLKButton *)self imageView];
-  [v7 setTlkImage:v8];
+  self->_toggled = stateCopy;
+  imageView = [(TLKButton *)self imageView];
+  [imageView setTlkImage:v8];
 
   [(TLKButton *)self invalidateIntrinsicContentSize];
   [(TLKButton *)self setNeedsLayout];
 }
 
-- (void)setProgress:(float)a3 animated:(BOOL)a4
+- (void)setProgress:(float)progress animated:(BOOL)animated
 {
   [(TLKButton *)self showPlayIndicator:0];
-  v7 = [(TLKButton *)self _outerProgressLayer];
-  [v7 setHidden:1];
+  _outerProgressLayer = [(TLKButton *)self _outerProgressLayer];
+  [_outerProgressLayer setHidden:1];
 
-  v8 = [(TLKButton *)self _innerProgressLayer];
-  [v8 setHidden:0];
+  _innerProgressLayer = [(TLKButton *)self _innerProgressLayer];
+  [_innerProgressLayer setHidden:0];
 
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    if (a3 > 0.00000011921 && self->_indeterminate)
+    if (progress > 0.00000011921 && self->_indeterminate)
     {
       [(TLKButton *)self endIndeterminateAnimation];
     }
 
-    self->_progress = fmax(fmin(a3, 1.0), 0.0);
-    v12 = [(TLKButton *)self _innerProgressLayer];
-    v9 = [(TLKButton *)self outerProgressLayer];
-    [v9 removeAllAnimations];
+    self->_progress = fmax(fmin(progress, 1.0), 0.0);
+    _innerProgressLayer2 = [(TLKButton *)self _innerProgressLayer];
+    outerProgressLayer = [(TLKButton *)self outerProgressLayer];
+    [outerProgressLayer removeAllAnimations];
 
-    if (a4)
+    if (animated)
     {
       v10 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeEnd"];
       [v10 setDuration:0.2];
@@ -389,13 +389,13 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
       v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_progress];
       [v10 setToValue:v11];
 
-      [v12 addAnimation:v10 forKey:0];
+      [_innerProgressLayer2 addAnimation:v10 forKey:0];
     }
 
     else
     {
-      [v12 removeAllAnimations];
-      [v12 setStrokeEnd:self->_progress];
+      [_innerProgressLayer2 removeAllAnimations];
+      [_innerProgressLayer2 setStrokeEnd:self->_progress];
     }
   }
 }
@@ -406,8 +406,8 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   outerProgressLayer = self->_outerProgressLayer;
   if (self->_indeterminate)
   {
-    v4 = [(CAShapeLayer *)outerProgressLayer animationKeys];
-    v5 = [v4 count];
+    animationKeys = [(CAShapeLayer *)outerProgressLayer animationKeys];
+    v5 = [animationKeys count];
 
     if (v5)
     {
@@ -421,9 +421,9 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
     self->_indeterminate = 1;
   }
 
-  v6 = [(TLKButton *)self window];
+  window = [(TLKButton *)self window];
 
-  if (v6)
+  if (window)
   {
 
     [(TLKButton *)self _beginIndeterminateAnimation];
@@ -434,38 +434,38 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
 {
   if (self->_indeterminate)
   {
-    v3 = [(TLKButton *)self _outerProgressLayer];
-    [v3 setStrokeStart:0.0];
-    [v3 removeAllAnimations];
-    v4 = [(TLKButton *)self _outerProgressLayer];
+    _outerProgressLayer = [(TLKButton *)self _outerProgressLayer];
+    [_outerProgressLayer setStrokeStart:0.0];
+    [_outerProgressLayer removeAllAnimations];
+    _outerProgressLayer2 = [(TLKButton *)self _outerProgressLayer];
     CGAffineTransformMakeRotation(&v7, -1.57079633);
-    [v4 setAffineTransform:&v7];
+    [_outerProgressLayer2 setAffineTransform:&v7];
 
     self->_indeterminate = 0;
     [(TLKButton *)self updateOuterProgressLayerStroke];
-    v5 = [(TLKButton *)self _outerProgressLayer];
-    [v5 setHidden:1];
+    _outerProgressLayer3 = [(TLKButton *)self _outerProgressLayer];
+    [_outerProgressLayer3 setHidden:1];
 
-    v6 = [(TLKButton *)self _innerProgressLayer];
-    [v6 setHidden:1];
+    _innerProgressLayer = [(TLKButton *)self _innerProgressLayer];
+    [_innerProgressLayer setHidden:1];
   }
 }
 
 - (void)_beginIndeterminateAnimation
 {
-  v3 = [(TLKButton *)self _outerProgressLayer];
-  [v3 setHidden:0];
+  _outerProgressLayer = [(TLKButton *)self _outerProgressLayer];
+  [_outerProgressLayer setHidden:0];
 
-  v4 = [(TLKButton *)self _innerProgressLayer];
-  [v4 setHidden:1];
+  _innerProgressLayer = [(TLKButton *)self _innerProgressLayer];
+  [_innerProgressLayer setHidden:1];
 
   [(TLKButton *)self updateOuterProgressLayerStroke];
-  v5 = [(TLKButton *)self _outerProgressLayer];
-  [v5 removeAllAnimations];
+  _outerProgressLayer2 = [(TLKButton *)self _outerProgressLayer];
+  [_outerProgressLayer2 removeAllAnimations];
 
-  v6 = [(TLKButton *)self _outerProgressLayer];
+  _outerProgressLayer3 = [(TLKButton *)self _outerProgressLayer];
   CGAffineTransformMakeRotation(&v24, -1.57079633);
-  [v6 setAffineTransform:&v24];
+  [_outerProgressLayer3 setAffineTransform:&v24];
 
   v7 = objc_opt_new();
   v8 = 0.0;
@@ -507,16 +507,16 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
     v8 = v8 + 1.0;
   }
 
-  v13 = [MEMORY[0x1E6979308] animation];
-  [v13 setDuration:1.0];
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setDuration:1.0];
   LODWORD(v14) = 2139095039;
-  [v13 setRepeatCount:v14];
+  [animation setRepeatCount:v14];
   v15 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-  [v13 setTimingFunction:v15];
+  [animation setTimingFunction:v15];
 
-  [v13 setAnimations:v7];
-  v16 = [(TLKButton *)self outerProgressLayer];
-  [v16 addAnimation:v13 forKey:0];
+  [animation setAnimations:v7];
+  outerProgressLayer = [(TLKButton *)self outerProgressLayer];
+  [outerProgressLayer addAnimation:animation forKey:0];
 }
 
 - (id)_outerProgressLayer
@@ -530,26 +530,26 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
     self->_outerProgressLayer = v6;
 
     v8 = self->_outerProgressLayer;
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setBackgroundColor:](v8, "setBackgroundColor:", [v9 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setBackgroundColor:](v8, "setBackgroundColor:", [clearColor CGColor]);
 
     v10 = self->_outerProgressLayer;
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v10, "setFillColor:", [v11 CGColor]);
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v10, "setFillColor:", [clearColor2 CGColor]);
 
     innerProgressLayer = self->_innerProgressLayer;
-    v13 = [(TLKButton *)self button];
-    v14 = [v13 layer];
-    v15 = v14;
+    button = [(TLKButton *)self button];
+    layer = [button layer];
+    v15 = layer;
     v16 = self->_outerProgressLayer;
     if (innerProgressLayer)
     {
-      [v14 insertSublayer:v16 below:self->_innerProgressLayer];
+      [layer insertSublayer:v16 below:self->_innerProgressLayer];
     }
 
     else
     {
-      [v14 addSublayer:v16];
+      [layer addSublayer:v16];
     }
 
     [(TLKButton *)self updateOuterProgressLayerStroke];
@@ -570,18 +570,18 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
     self->_innerProgressLayer = v6;
 
     v8 = self->_innerProgressLayer;
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setBackgroundColor:](v8, "setBackgroundColor:", [v9 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setBackgroundColor:](v8, "setBackgroundColor:", [clearColor CGColor]);
 
     v10 = MEMORY[0x1E69DC888];
     v11 = self->_innerProgressLayer;
-    v12 = [v10 clearColor];
-    -[CAShapeLayer setFillColor:](v11, "setFillColor:", [v12 CGColor]);
+    clearColor2 = [v10 clearColor];
+    -[CAShapeLayer setFillColor:](v11, "setFillColor:", [clearColor2 CGColor]);
 
     [(CAShapeLayer *)v11 setStrokeEnd:0.0];
-    v13 = [(TLKButton *)self button];
-    v14 = [v13 layer];
-    [v14 addSublayer:self->_innerProgressLayer];
+    button = [(TLKButton *)self button];
+    layer = [button layer];
+    [layer addSublayer:self->_innerProgressLayer];
 
     [(TLKButton *)self _updateInnerProgressLayerStroke];
     innerProgressLayer = self->_innerProgressLayer;
@@ -592,28 +592,28 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
 
 - (void)updateOuterProgressLayerStroke
 {
-  v9 = [(TLKButton *)self iconColor];
+  iconColor = [(TLKButton *)self iconColor];
   outerProgressLayer = self->_outerProgressLayer;
-  v4 = v9;
-  -[CAShapeLayer setStrokeColor:](outerProgressLayer, "setStrokeColor:", [v9 CGColor]);
+  v4 = iconColor;
+  -[CAShapeLayer setStrokeColor:](outerProgressLayer, "setStrokeColor:", [iconColor CGColor]);
   v5 = self->_outerProgressLayer;
-  v6 = [(TLKButton *)self backgroundView];
-  v7 = [v6 layer];
-  v8 = [v7 compositingFilter];
-  [(CAShapeLayer *)v5 setCompositingFilter:v8];
+  backgroundView = [(TLKButton *)self backgroundView];
+  layer = [backgroundView layer];
+  compositingFilter = [layer compositingFilter];
+  [(CAShapeLayer *)v5 setCompositingFilter:compositingFilter];
 }
 
 - (void)_updateInnerProgressLayerStroke
 {
-  v9 = [(TLKButton *)self iconColor];
+  iconColor = [(TLKButton *)self iconColor];
   innerProgressLayer = self->_innerProgressLayer;
-  v4 = v9;
-  -[CAShapeLayer setStrokeColor:](innerProgressLayer, "setStrokeColor:", [v9 CGColor]);
+  v4 = iconColor;
+  -[CAShapeLayer setStrokeColor:](innerProgressLayer, "setStrokeColor:", [iconColor CGColor]);
   v5 = self->_innerProgressLayer;
-  v6 = [(TLKButton *)self backgroundView];
-  v7 = [v6 layer];
-  v8 = [v7 compositingFilter];
-  [(CAShapeLayer *)v5 setCompositingFilter:v8];
+  backgroundView = [(TLKButton *)self backgroundView];
+  layer = [backgroundView layer];
+  compositingFilter = [layer compositingFilter];
+  [(CAShapeLayer *)v5 setCompositingFilter:compositingFilter];
 }
 
 - (id)iconColor
@@ -624,19 +624,19 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (id)_newShapeViewWithBounds:(CGRect)a3 lineWidth:(double)a4
+- (id)_newShapeViewWithBounds:(CGRect)bounds lineWidth:(double)width
 {
-  v14 = CGRectInset(a3, a4 * 0.5, a4 * 0.5);
+  v14 = CGRectInset(bounds, width * 0.5, width * 0.5);
   x = v14.origin.x;
   y = v14.origin.y;
   width = v14.size.width;
   height = v14.size.height;
-  v9 = [MEMORY[0x1E69794A0] layer];
-  [v9 setFrame:{x, y, width, height}];
+  layer = [MEMORY[0x1E69794A0] layer];
+  [layer setFrame:{x, y, width, height}];
   CGAffineTransformMakeRotation(&v13, -1.57079633);
-  [v9 setAffineTransform:&v13];
-  v10 = v9;
-  [v10 setLineWidth:a4];
+  [layer setAffineTransform:&v13];
+  v10 = layer;
+  [v10 setLineWidth:width];
   [v10 bounds];
   v11 = CGPathCreateWithEllipseInRect(v15, 0);
   [v10 setPath:v11];
@@ -646,33 +646,33 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   return v10;
 }
 
-- (void)addTarget:(id)a3 forAction:(SEL)a4
+- (void)addTarget:(id)target forAction:(SEL)action
 {
-  v6 = a3;
-  v7 = [(TLKButton *)self button];
-  [v7 addTarget:v6 action:a4 forControlEvents:64];
+  targetCopy = target;
+  button = [(TLKButton *)self button];
+  [button addTarget:targetCopy action:action forControlEvents:64];
 }
 
-+ (id)blurColorForImage:(id)a3 forButtonSize:(CGSize)a4 withOffsetRight:(float)a5 withOffsetBottom:(float)a6
++ (id)blurColorForImage:(id)image forButtonSize:(CGSize)size withOffsetRight:(float)right withOffsetBottom:(float)bottom
 {
-  width = a4.width;
-  v11 = a3;
-  v12 = a3;
-  v13 = [v12 CGImage];
-  [v12 scale];
+  width = size.width;
+  imageCopy = image;
+  imageCopy2 = image;
+  cGImage = [imageCopy2 CGImage];
+  [imageCopy2 scale];
   v15 = v14;
-  [v12 size];
+  [imageCopy2 size];
   v17 = v15 * v16;
-  [v12 size];
+  [imageCopy2 size];
   v19 = v18;
 
   v20 = width * v15;
-  v28.origin.x = v17 - a5 * v15 - v20;
-  v28.origin.y = v15 * v19 - a6 * v15 - v20;
+  v28.origin.x = v17 - right * v15 - v20;
+  v28.origin.y = v15 * v19 - bottom * v15 - v20;
   v28.size.width = v20;
   v28.size.height = v20;
   v29 = CGRectIntegral(v28);
-  v21 = CGImageCreateWithImageInRect(v13, v29);
+  v21 = CGImageCreateWithImageInRect(cGImage, v29);
   v26 = 0u;
   v22 = objc_opt_class();
   if (v22)
@@ -687,20 +687,20 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
 
   CGImageRelease(v21);
   v23 = [MEMORY[0x1E69DC888] colorWithRed:v26 green:0.0 blue:0.0 alpha:?];
-  v24 = [a1 blurColorForColor:v23];
+  v24 = [self blurColorForColor:v23];
 
   return v24;
 }
 
-+ (id)blurColorForColor:(id)a3
++ (id)blurColorForColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v10 = 0.0;
   v11 = 0.0;
   v8 = 0;
   v9 = 0;
-  v4 = v3;
-  if ([v3 getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8])
+  v4 = colorCopy;
+  if ([colorCopy getHue:&v11 saturation:&v10 brightness:&v9 alpha:&v8])
   {
     v10 = v10 * 1.8;
     v5 = [MEMORY[0x1E69DC888] colorWithHue:v11 saturation:? brightness:? alpha:?];
@@ -711,7 +711,7 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-+ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)a3 withSize:(CGImage *)a4
++ ($8452678F12DBC466148836A9D382CAFC)_calculateStatistics:(SEL)statistics withSize:(CGImage *)size
 {
   height = a5.height;
   width = a5.width;
@@ -729,7 +729,7 @@ void __37__TLKButton_tlk_updateForAppearance___block_invoke_2(uint64_t a1)
   v57.size.height = height;
   v57.origin.x = 0.0;
   v57.origin.y = 0.0;
-  CGContextDrawImage(v15, v57, a4);
+  CGContextDrawImage(v15, v57, size);
   CGContextRelease(v15);
   CGColorSpaceRelease(DeviceRGB);
   v16 = 0;

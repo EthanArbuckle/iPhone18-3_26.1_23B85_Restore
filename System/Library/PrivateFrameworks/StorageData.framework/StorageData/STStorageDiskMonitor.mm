@@ -1,8 +1,8 @@
 @interface STStorageDiskMonitor
 + (id)sharedMonitor;
 - (STStorageDiskMonitor)init;
-- (void)_sendNotify:(id)a3;
-- (void)sendNotify:(id)a3;
+- (void)_sendNotify:(id)notify;
+- (void)sendNotify:(id)notify;
 - (void)startMonitor;
 - (void)stopMonitor;
 - (void)sync;
@@ -48,24 +48,24 @@ uint64_t __37__STStorageDiskMonitor_sharedMonitor__block_invoke()
   return v3;
 }
 
-- (void)_sendNotify:(id)a3
+- (void)_sendNotify:(id)notify
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 postNotificationName:v4 object:0];
+  notifyCopy = notify;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotificationName:notifyCopy object:0];
 }
 
-- (void)sendNotify:(id)a3
+- (void)sendNotify:(id)notify
 {
-  v4 = a3;
+  notifyCopy = notify;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__STStorageDiskMonitor_sendNotify___block_invoke;
   v6[3] = &unk_279D1CEB0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notifyCopy;
+  v5 = notifyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -85,12 +85,12 @@ uint64_t __35__STStorageDiskMonitor_sendNotify___block_invoke(uint64_t a1)
   v17 = deviceSize;
   GetDeviceSpace(&v17, &deviceSize);
   v4 = +[STStorageCacheDelete sharedMonitor];
-  v5 = [v4 totalPurgeable];
+  totalPurgeable = [v4 totalPurgeable];
 
   v7 = deviceSize;
   v6 = v17;
   STLog(1, @"disk space tot: %lld, free: %lld, purge: %lld", v8, v9, v10, v11, v12, v13, v17);
-  v14 = [[STStorageSpace alloc] initWithTotal:v6 free:v7 purgeable:v5];
+  v14 = [[STStorageSpace alloc] initWithTotal:v6 free:v7 purgeable:totalPurgeable];
   storageSpace = self->_storageSpace;
   self->_storageSpace = v14;
 
@@ -99,13 +99,13 @@ uint64_t __35__STStorageDiskMonitor_sendNotify___block_invoke(uint64_t a1)
 
 - (void)updateDiskSpace
 {
-  v3 = [(STStorageSpace *)self->_storageSpace availableBytes];
+  availableBytes = [(STStorageSpace *)self->_storageSpace availableBytes];
   [(STStorageDiskMonitor *)self sync];
-  v4 = [(STStorageSpace *)self->_storageSpace availableBytes];
-  v5 = v4 - v3;
-  if (v4 - v3 < 0)
+  availableBytes2 = [(STStorageSpace *)self->_storageSpace availableBytes];
+  v5 = availableBytes2 - availableBytes;
+  if (availableBytes2 - availableBytes < 0)
   {
-    v5 = v3 - v4;
+    v5 = availableBytes - availableBytes2;
   }
 
   if (v5 > self->_updateDelta)
@@ -117,21 +117,21 @@ uint64_t __35__STStorageDiskMonitor_sendNotify___block_invoke(uint64_t a1)
 
 - (void)startMonitor
 {
-  v3 = [(STStorageDiskMonitor *)self diskSizeTimer];
-  if (!v3)
+  diskSizeTimer = [(STStorageDiskMonitor *)self diskSizeTimer];
+  if (!diskSizeTimer)
   {
     v4 = dispatch_get_global_queue(9, 0);
-    v3 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
+    diskSizeTimer = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v4);
 
-    [(STStorageDiskMonitor *)self setDiskSizeTimer:v3];
-    dispatch_source_set_timer(v3, 0, 0xB2D05E00uLL, 0x1DCD6500uLL);
+    [(STStorageDiskMonitor *)self setDiskSizeTimer:diskSizeTimer];
+    dispatch_source_set_timer(diskSizeTimer, 0, 0xB2D05E00uLL, 0x1DCD6500uLL);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __36__STStorageDiskMonitor_startMonitor__block_invoke;
     handler[3] = &unk_279D1CE88;
     handler[4] = self;
-    dispatch_source_set_event_handler(v3, handler);
-    dispatch_resume(v3);
+    dispatch_source_set_event_handler(diskSizeTimer, handler);
+    dispatch_resume(diskSizeTimer);
   }
 
   v5 = +[STStorageCacheDelete sharedMonitor];

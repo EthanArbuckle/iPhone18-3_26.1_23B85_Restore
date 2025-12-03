@@ -1,41 +1,41 @@
 @interface AMSBagActiveAccountProvider
-+ (id)_storefrontPromiseResultForAccountMediaType:(id)a3 account:(id)a4;
-- (BOOL)associatedAccountIsEqualToAccount:(id)a3 forMediaType:(id)a4;
-- (id)_activeAccountInStore:(id)a3 forMediaType:(id)a4;
-- (id)_handleFetchedLocalAccount:(id)a3 fetchError:(id)a4 mustContainStorefront:(BOOL)a5 mediaType:(id)a6 error:(id *)a7;
-- (id)bagAccountForAccountMediaType:(id)a3;
-- (id)bagAccountPromiseForAccountMediaType:(id)a3;
-- (id)bagStorefrontForAccountMediaType:(id)a3;
-- (id)bagStorefrontPromiseForAccountMediaType:(id)a3;
-- (void)_bagAccountForAccountMediaType:(id)a3 mustContainStorefront:(BOOL)a4 sync:(BOOL)a5 completion:(id)a6;
-- (void)_localAccountInStore:(id)a3 mediaType:(id)a4 mustContainStorefront:(BOOL)a5 sync:(BOOL)a6 completion:(id)a7;
++ (id)_storefrontPromiseResultForAccountMediaType:(id)type account:(id)account;
+- (BOOL)associatedAccountIsEqualToAccount:(id)account forMediaType:(id)type;
+- (id)_activeAccountInStore:(id)store forMediaType:(id)type;
+- (id)_handleFetchedLocalAccount:(id)account fetchError:(id)error mustContainStorefront:(BOOL)storefront mediaType:(id)type error:(id *)a7;
+- (id)bagAccountForAccountMediaType:(id)type;
+- (id)bagAccountPromiseForAccountMediaType:(id)type;
+- (id)bagStorefrontForAccountMediaType:(id)type;
+- (id)bagStorefrontPromiseForAccountMediaType:(id)type;
+- (void)_bagAccountForAccountMediaType:(id)type mustContainStorefront:(BOOL)storefront sync:(BOOL)sync completion:(id)completion;
+- (void)_localAccountInStore:(id)store mediaType:(id)type mustContainStorefront:(BOOL)storefront sync:(BOOL)sync completion:(id)completion;
 @end
 
 @implementation AMSBagActiveAccountProvider
 
-- (BOOL)associatedAccountIsEqualToAccount:(id)a3 forMediaType:(id)a4
+- (BOOL)associatedAccountIsEqualToAccount:(id)account forMediaType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 ams_isLocalAccount])
+  accountCopy = account;
+  typeCopy = type;
+  if ([accountCopy ams_isLocalAccount])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 accountType];
-    v9 = [v8 identifier];
-    v10 = [MEMORY[0x1E6959A48] ams_accountTypeIdentifierForMediaType:v6];
-    v7 = [v9 isEqualToString:v10];
+    accountType = [accountCopy accountType];
+    identifier = [accountType identifier];
+    v10 = [MEMORY[0x1E6959A48] ams_accountTypeIdentifierForMediaType:typeCopy];
+    v7 = [identifier isEqualToString:v10];
   }
 
   return v7;
 }
 
-- (id)bagAccountForAccountMediaType:(id)a3
+- (id)bagAccountForAccountMediaType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -47,16 +47,16 @@
   v7[2] = __61__AMSBagActiveAccountProvider_bagAccountForAccountMediaType___block_invoke;
   v7[3] = &unk_1E73B4258;
   v7[4] = &v8;
-  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:v4 mustContainStorefront:0 sync:1 completion:v7];
+  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:typeCopy mustContainStorefront:0 sync:1 completion:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-- (id)bagStorefrontForAccountMediaType:(id)a3
+- (id)bagStorefrontForAccountMediaType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -68,46 +68,46 @@
   v8[2] = __64__AMSBagActiveAccountProvider_bagStorefrontForAccountMediaType___block_invoke;
   v8[3] = &unk_1E73B4258;
   v8[4] = &v9;
-  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:v4 mustContainStorefront:1 sync:1 completion:v8];
+  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:typeCopy mustContainStorefront:1 sync:1 completion:v8];
   if (v10[5])
   {
-    v5 = [AMSBagActiveAccountProvider _storefrontPromiseResultForAccountMediaType:v4 account:?];
-    v6 = [v5 result];
+    v5 = [AMSBagActiveAccountProvider _storefrontPromiseResultForAccountMediaType:typeCopy account:?];
+    result = [v5 result];
   }
 
   else
   {
-    v6 = 0;
+    result = 0;
   }
 
   _Block_object_dispose(&v9, 8);
 
-  return v6;
+  return result;
 }
 
-- (id)bagAccountPromiseForAccountMediaType:(id)a3
+- (id)bagAccountPromiseForAccountMediaType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSPromise *)v5 completionHandlerAdapter];
-  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:v4 mustContainStorefront:0 sync:0 completion:v6];
+  completionHandlerAdapter = [(AMSPromise *)v5 completionHandlerAdapter];
+  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:typeCopy mustContainStorefront:0 sync:0 completion:completionHandlerAdapter];
 
   return v5;
 }
 
-- (id)bagStorefrontPromiseForAccountMediaType:(id)a3
+- (id)bagStorefrontPromiseForAccountMediaType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSPromise *)v5 completionHandlerAdapter];
-  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:v4 mustContainStorefront:1 sync:0 completion:v6];
+  completionHandlerAdapter = [(AMSPromise *)v5 completionHandlerAdapter];
+  [(AMSBagActiveAccountProvider *)self _bagAccountForAccountMediaType:typeCopy mustContainStorefront:1 sync:0 completion:completionHandlerAdapter];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___block_invoke;
   v10[3] = &unk_1E73B4280;
-  v11 = v4;
-  v7 = v4;
+  v11 = typeCopy;
+  v7 = typeCopy;
   v8 = [(AMSMutablePromise *)v5 thenWithBlock:v10];
 
   return v8;
@@ -121,10 +121,10 @@ id __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___b
   return v3;
 }
 
-+ (id)_storefrontPromiseResultForAccountMediaType:(id)a3 account:(id)a4
++ (id)_storefrontPromiseResultForAccountMediaType:(id)type account:(id)account
 {
-  v5 = a3;
-  v6 = [a4 ams_storefrontForMediaType:v5];
+  typeCopy = type;
+  v6 = [account ams_storefrontForMediaType:typeCopy];
   if (v6)
   {
     v7 = [[AMSPromiseResult alloc] initWithResult:v6 error:0];
@@ -132,22 +132,22 @@ id __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___b
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Account has no storefront for mediatype %@", v5];
-    v9 = AMSError(7, @"No storefront found", v8, 0);
+    typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Account has no storefront for mediatype %@", typeCopy];
+    v9 = AMSError(7, @"No storefront found", typeCopy, 0);
     v7 = [[AMSPromiseResult alloc] initWithResult:0 error:v9];
   }
 
   return v7;
 }
 
-- (void)_bagAccountForAccountMediaType:(id)a3 mustContainStorefront:(BOOL)a4 sync:(BOOL)a5 completion:(id)a6
+- (void)_bagAccountForAccountMediaType:(id)type mustContainStorefront:(BOOL)storefront sync:(BOOL)sync completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  syncCopy = sync;
+  storefrontCopy = storefront;
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if (!v11)
+  typeCopy = type;
+  completionCopy = completion;
+  if (!typeCopy)
   {
     v13 = +[AMSLogConfig sharedBagConfig];
     if (!v13)
@@ -155,10 +155,10 @@ id __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___b
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = v8;
+      v39 = syncCopy;
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
       v17 = objc_opt_class();
@@ -176,8 +176,8 @@ id __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___b
       v19 = ;
       *buf = 138543362;
       v42 = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@No media type was provided. The default will be used instead.", buf, 0xCu);
-      v8 = v39;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@No media type was provided. The default will be used instead.", buf, 0xCu);
+      syncCopy = v39;
       if (v15)
       {
 
@@ -186,12 +186,12 @@ id __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___b
     }
   }
 
-  v20 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:v11];
-  v21 = [(AMSBagActiveAccountProvider *)self _activeAccountInStore:v20 forMediaType:v11];
+  v20 = [MEMORY[0x1E6959A48] ams_sharedAccountStoreForMediaType:typeCopy];
+  v21 = [(AMSBagActiveAccountProvider *)self _activeAccountInStore:v20 forMediaType:typeCopy];
   v22 = v21;
   if (v21)
   {
-    v23 = !v9;
+    v23 = !storefrontCopy;
   }
 
   else
@@ -201,7 +201,7 @@ id __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___b
 
   if (!v23)
   {
-    v30 = [v21 ams_storefrontForMediaType:v11];
+    v30 = [v21 ams_storefrontForMediaType:typeCopy];
 
     if (v30)
     {
@@ -214,16 +214,16 @@ id __71__AMSBagActiveAccountProvider_bagStorefrontPromiseForAccountMediaType___b
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v24 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
 LABEL_37:
 
-      [(AMSBagActiveAccountProvider *)self _localAccountInStore:v20 mediaType:v11 mustContainStorefront:v9 sync:v8 completion:v12];
+      [(AMSBagActiveAccountProvider *)self _localAccountInStore:v20 mediaType:typeCopy mustContainStorefront:storefrontCopy sync:syncCopy completion:completionCopy];
       goto LABEL_38;
     }
 
-    v40 = v8;
+    v40 = syncCopy;
     v31 = AMSLogKey();
     v37 = MEMORY[0x1E696AEC0];
     v32 = objc_opt_class();
@@ -243,11 +243,11 @@ LABEL_37:
     *buf = 138543618;
     v42 = v29;
     v43 = 2114;
-    v44 = v11;
+    v44 = typeCopy;
     v34 = "%{public}@There’s an active account, but a required storefront is missing. Falling back to the local account. mediaType = %{public}@";
 LABEL_34:
-    _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEBUG, v34, buf, 0x16u);
-    v8 = v40;
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEBUG, v34, buf, 0x16u);
+    syncCopy = v40;
     if (v38)
     {
 
@@ -265,13 +265,13 @@ LABEL_34:
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (!os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v24 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       goto LABEL_37;
     }
 
-    v40 = v8;
+    v40 = syncCopy;
     v26 = AMSLogKey();
     v36 = MEMORY[0x1E696AEC0];
     v27 = objc_opt_class();
@@ -291,28 +291,28 @@ LABEL_34:
     *buf = 138543618;
     v42 = v29;
     v43 = 2114;
-    v44 = v11;
+    v44 = typeCopy;
     v34 = "%{public}@There’s no active account. Falling back to the local account. mediaType = %{public}@";
     goto LABEL_34;
   }
 
 LABEL_24:
-  v12[2](v12, v22, 0);
+  completionCopy[2](completionCopy, v22, 0);
 LABEL_38:
 }
 
-- (id)_activeAccountInStore:(id)a3 forMediaType:(id)a4
+- (id)_activeAccountInStore:(id)store forMediaType:(id)type
 {
-  v5 = a4;
-  v6 = [a3 ams_iTunesAccounts];
-  if (v6)
+  typeCopy = type;
+  ams_iTunesAccounts = [store ams_iTunesAccounts];
+  if (ams_iTunesAccounts)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__AMSBagActiveAccountProvider__activeAccountInStore_forMediaType___block_invoke;
     v9[3] = &unk_1E73B42A8;
-    v10 = v5;
-    v7 = [v6 ams_firstObjectPassingTest:v9];
+    v10 = typeCopy;
+    v7 = [ams_iTunesAccounts ams_firstObjectPassingTest:v9];
   }
 
   else
@@ -323,37 +323,37 @@ LABEL_38:
   return v7;
 }
 
-- (void)_localAccountInStore:(id)a3 mediaType:(id)a4 mustContainStorefront:(BOOL)a5 sync:(BOOL)a6 completion:(id)a7
+- (void)_localAccountInStore:(id)store mediaType:(id)type mustContainStorefront:(BOOL)storefront sync:(BOOL)sync completion:(id)completion
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a7;
+  syncCopy = sync;
+  typeCopy = type;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __100__AMSBagActiveAccountProvider__localAccountInStore_mediaType_mustContainStorefront_sync_completion___block_invoke;
   aBlock[3] = &unk_1E73B42D0;
   aBlock[4] = self;
-  v25 = a5;
-  v14 = v12;
+  storefrontCopy = storefront;
+  v14 = typeCopy;
   v23 = v14;
-  v15 = v13;
+  v15 = completionCopy;
   v24 = v15;
-  v16 = a3;
+  storeCopy = store;
   v17 = _Block_copy(aBlock);
-  v18 = [v16 ams_mediaType];
-  if (v8)
+  ams_mediaType = [storeCopy ams_mediaType];
+  if (syncCopy)
   {
     v21 = 0;
-    v19 = [v16 ams_localiTunesAccountForAccountMediaType:v18 error:&v21];
+    v19 = [storeCopy ams_localiTunesAccountForAccountMediaType:ams_mediaType error:&v21];
 
     v20 = v21;
     v17[2](v17, v19, v20);
-    v18 = v19;
+    ams_mediaType = v19;
   }
 
   else
   {
-    v20 = [v16 _ams_localiTunesAccountForAccountMediaType:v18 updateStorefront:0];
+    v20 = [storeCopy _ams_localiTunesAccountForAccountMediaType:ams_mediaType updateStorefront:0];
 
     [v20 addFinishBlock:v17];
   }
@@ -370,18 +370,18 @@ void __100__AMSBagActiveAccountProvider__localAccountInStore_mediaType_mustConta
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_handleFetchedLocalAccount:(id)a3 fetchError:(id)a4 mustContainStorefront:(BOOL)a5 mediaType:(id)a6 error:(id *)a7
+- (id)_handleFetchedLocalAccount:(id)account fetchError:(id)error mustContainStorefront:(BOOL)storefront mediaType:(id)type error:(id *)a7
 {
-  v9 = a5;
+  storefrontCopy = storefront;
   v41 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (v12)
+  accountCopy = account;
+  errorCopy = error;
+  typeCopy = type;
+  if (accountCopy)
   {
-    if (!v9 || ([v12 ams_storefrontForMediaType:v14], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+    if (!storefrontCopy || ([accountCopy ams_storefrontForMediaType:typeCopy], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
     {
-      v16 = v12;
+      v16 = accountCopy;
       goto LABEL_29;
     }
 
@@ -391,8 +391,8 @@ void __100__AMSBagActiveAccountProvider__localAccountInStore_mediaType_mustConta
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v26 = AMSLogKey();
       v27 = MEMORY[0x1E696AEC0];
@@ -408,19 +408,19 @@ void __100__AMSBagActiveAccountProvider__localAccountInStore_mediaType_mustConta
       {
         [v27 stringWithFormat:@"%@: ", v28];
       }
-      v30 = ;
-      v33 = AMSHashIfNeeded(v12);
+      selfCopy = ;
+      v33 = AMSHashIfNeeded(accountCopy);
       *buf = 138543874;
-      v36 = v30;
+      v36 = selfCopy;
       v37 = 2114;
       v38 = v33;
       v39 = 2114;
-      v40 = v14;
-      _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@The local account doesn’t have a storefront. localAccount = %{public}@ | mediaType = %{public}@", buf, 0x20u);
+      v40 = typeCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@The local account doesn’t have a storefront. localAccount = %{public}@ | mediaType = %{public}@", buf, 0x20u);
       if (v26)
       {
 
-        v30 = self;
+        selfCopy = self;
       }
     }
 
@@ -440,8 +440,8 @@ void __100__AMSBagActiveAccountProvider__localAccountInStore_mediaType_mustConta
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v19 = AMSLogKey();
       v20 = MEMORY[0x1E696AEC0];
@@ -457,23 +457,23 @@ void __100__AMSBagActiveAccountProvider__localAccountInStore_mediaType_mustConta
       {
         [v20 stringWithFormat:@"%@: ", v21];
       }
-      v23 = ;
+      selfCopy2 = ;
       *buf = 138543618;
-      v36 = v23;
+      v36 = selfCopy2;
       v37 = 2114;
-      v38 = v14;
-      _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to fetch local account. This will prevent initial bag requests from specifying storefront / cookies. mediaType = %{public}@", buf, 0x16u);
+      v38 = typeCopy;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to fetch local account. This will prevent initial bag requests from specifying storefront / cookies. mediaType = %{public}@", buf, 0x16u);
       if (v19)
       {
 
-        v23 = self;
+        selfCopy2 = self;
       }
     }
 
     if (a7)
     {
       v31 = @"Local account not found";
-      v32 = v13;
+      v32 = errorCopy;
 LABEL_27:
       AMSError(7, v31, 0, v32);
       *a7 = v16 = 0;

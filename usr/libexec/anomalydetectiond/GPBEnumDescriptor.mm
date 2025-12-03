@@ -1,29 +1,29 @@
 @interface GPBEnumDescriptor
-- (BOOL)getValue:(int *)a3 forEnumName:(id)a4;
-- (BOOL)getValue:(int *)a3 forEnumTextFormatName:(id)a4;
-- (GPBEnumDescriptor)initWithName:(id)a3 valueNames:(const char *)a4 values:(const int *)a5 count:(unsigned int)a6 enumVerifier:(void *)a7;
-- (id)enumNameForValue:(int)a3;
-- (id)getEnumNameForIndex:(unsigned int)a3;
-- (id)getEnumTextFormatNameForIndex:(unsigned int)a3;
-- (id)textFormatNameForValue:(int)a3;
+- (BOOL)getValue:(int *)value forEnumName:(id)name;
+- (BOOL)getValue:(int *)value forEnumTextFormatName:(id)name;
+- (GPBEnumDescriptor)initWithName:(id)name valueNames:(const char *)names values:(const int *)values count:(unsigned int)count enumVerifier:(void *)verifier;
+- (id)enumNameForValue:(int)value;
+- (id)getEnumNameForIndex:(unsigned int)index;
+- (id)getEnumTextFormatNameForIndex:(unsigned int)index;
+- (id)textFormatNameForValue:(int)value;
 - (void)calcValueNameOffsets;
 - (void)dealloc;
 @end
 
 @implementation GPBEnumDescriptor
 
-- (GPBEnumDescriptor)initWithName:(id)a3 valueNames:(const char *)a4 values:(const int *)a5 count:(unsigned int)a6 enumVerifier:(void *)a7
+- (GPBEnumDescriptor)initWithName:(id)name valueNames:(const char *)names values:(const int *)values count:(unsigned int)count enumVerifier:(void *)verifier
 {
   v14.receiver = self;
   v14.super_class = GPBEnumDescriptor;
   v12 = [(GPBEnumDescriptor *)&v14 init];
   if (v12)
   {
-    v12->name_ = [a3 copy];
-    v12->valueNames_ = a4;
-    v12->valueCount_ = a6;
-    v12->values_ = a5;
-    v12->enumVerifier_ = a7;
+    v12->name_ = [name copy];
+    v12->valueNames_ = names;
+    v12->valueCount_ = count;
+    v12->values_ = values;
+    v12->enumVerifier_ = verifier;
   }
 
   return v12;
@@ -74,7 +74,7 @@
   objc_sync_exit(self);
 }
 
-- (id)enumNameForValue:(int)a3
+- (id)enumNameForValue:(int)value
 {
   valueCount = self->valueCount_;
   if (!valueCount)
@@ -83,7 +83,7 @@
   }
 
   v4 = 0;
-  while (self->values_[v4] != a3)
+  while (self->values_[v4] != value)
   {
     if (valueCount == ++v4)
     {
@@ -94,22 +94,22 @@
   return [(GPBEnumDescriptor *)self getEnumNameForIndex:v4];
 }
 
-- (BOOL)getValue:(int *)a3 forEnumName:(id)a4
+- (BOOL)getValue:(int *)value forEnumName:(id)name
 {
   v7 = [(NSString *)self->name_ length];
   v8 = v7 + 1;
-  if ([a4 length] <= v7 + 1)
+  if ([name length] <= v7 + 1)
   {
     goto LABEL_10;
   }
 
-  v9 = [a4 hasPrefix:self->name_];
+  v9 = [name hasPrefix:self->name_];
   if (!v9)
   {
     return v9;
   }
 
-  if ([a4 characterAtIndex:v7] != 95 || (v10 = objc_msgSend(a4, "UTF8String"), (nameOffsets = self->nameOffsets_) == 0) && (-[GPBEnumDescriptor calcValueNameOffsets](self, "calcValueNameOffsets"), (nameOffsets = self->nameOffsets_) == 0) || (valueCount = self->valueCount_, !valueCount))
+  if ([name characterAtIndex:v7] != 95 || (v10 = objc_msgSend(name, "UTF8String"), (nameOffsets = self->nameOffsets_) == 0) && (-[GPBEnumDescriptor calcValueNameOffsets](self, "calcValueNameOffsets"), (nameOffsets = self->nameOffsets_) == 0) || (valueCount = self->valueCount_, !valueCount))
   {
 LABEL_10:
     LOBYTE(v9) = 0;
@@ -128,16 +128,16 @@ LABEL_10:
     }
   }
 
-  if (a3)
+  if (value)
   {
-    *a3 = self->values_[v13 / 4];
+    *value = self->values_[v13 / 4];
   }
 
   LOBYTE(v9) = 1;
   return v9;
 }
 
-- (BOOL)getValue:(int *)a3 forEnumTextFormatName:(id)a4
+- (BOOL)getValue:(int *)value forEnumTextFormatName:(id)name
 {
   if (!self->nameOffsets_)
   {
@@ -154,7 +154,7 @@ LABEL_10:
   }
 
   v7 = 0;
-  while (![-[GPBEnumDescriptor getEnumTextFormatNameForIndex:](self getEnumTextFormatNameForIndex:{v7), "isEqual:", a4}])
+  while (![-[GPBEnumDescriptor getEnumTextFormatNameForIndex:](self getEnumTextFormatNameForIndex:{v7), "isEqual:", name}])
   {
     if (++v7 >= self->valueCount_)
     {
@@ -162,15 +162,15 @@ LABEL_10:
     }
   }
 
-  if (a3)
+  if (value)
   {
-    *a3 = self->values_[v7];
+    *value = self->values_[v7];
   }
 
   return 1;
 }
 
-- (id)textFormatNameForValue:(int)a3
+- (id)textFormatNameForValue:(int)value
 {
   valueCount = self->valueCount_;
   if (!valueCount)
@@ -179,7 +179,7 @@ LABEL_10:
   }
 
   v4 = 0;
-  while (self->values_[v4] != a3)
+  while (self->values_[v4] != value)
   {
     if (valueCount == ++v4)
     {
@@ -190,12 +190,12 @@ LABEL_10:
   return [(GPBEnumDescriptor *)self getEnumTextFormatNameForIndex:v4];
 }
 
-- (id)getEnumNameForIndex:(unsigned int)a3
+- (id)getEnumNameForIndex:(unsigned int)index
 {
   nameOffsets = self->nameOffsets_;
-  if ((nameOffsets || ([(GPBEnumDescriptor *)self calcValueNameOffsets], (nameOffsets = self->nameOffsets_) != 0)) && self->valueCount_ > a3)
+  if ((nameOffsets || ([(GPBEnumDescriptor *)self calcValueNameOffsets], (nameOffsets = self->nameOffsets_) != 0)) && self->valueCount_ > index)
   {
-    return [NSString stringWithFormat:@"%@_%s", self->name_, &self->valueNames_[nameOffsets[a3]]];
+    return [NSString stringWithFormat:@"%@_%s", self->name_, &self->valueNames_[nameOffsets[index]]];
   }
 
   else
@@ -204,7 +204,7 @@ LABEL_10:
   }
 }
 
-- (id)getEnumTextFormatNameForIndex:(unsigned int)a3
+- (id)getEnumTextFormatNameForIndex:(unsigned int)index
 {
   nameOffsets = self->nameOffsets_;
   if (!nameOffsets)
@@ -217,14 +217,14 @@ LABEL_10:
     }
   }
 
-  if (self->valueCount_ <= a3)
+  if (self->valueCount_ <= index)
   {
     return 0;
   }
 
-  v6 = [NSString stringWithUTF8String:&self->valueNames_[nameOffsets[a3]]];
+  v6 = [NSString stringWithUTF8String:&self->valueNames_[nameOffsets[index]]];
   extraTextFormatInfo = self->extraTextFormatInfo_;
-  if (!extraTextFormatInfo || (v8 = GPBDecodeTextFormatName(extraTextFormatInfo, a3, v6)) == 0)
+  if (!extraTextFormatInfo || (v8 = GPBDecodeTextFormatName(extraTextFormatInfo, index, v6)) == 0)
   {
     v9 = [(NSString *)v6 length];
     v8 = [NSMutableString stringWithCapacity:v9];

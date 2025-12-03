@@ -1,37 +1,37 @@
 @interface SFUpdateSportsFollowingStatusCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFUpdateSportsFollowingStatusCommand)initWithCoder:(id)a3;
-- (SFUpdateSportsFollowingStatusCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFUpdateSportsFollowingStatusCommand)initWithCoder:(id)coder;
+- (SFUpdateSportsFollowingStatusCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFUpdateSportsFollowingStatusCommand
 
-- (SFUpdateSportsFollowingStatusCommand)initWithProtobuf:(id)a3
+- (SFUpdateSportsFollowingStatusCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFUpdateSportsFollowingStatusCommand;
   v5 = [(SFUpdateSportsFollowingStatusCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 sportsItem];
+    sportsItem = [protobufCopy sportsItem];
 
-    if (v6)
+    if (sportsItem)
     {
       v7 = [SFSportsItem alloc];
-      v8 = [v4 sportsItem];
-      v9 = [(SFSportsItem *)v7 initWithProtobuf:v8];
+      sportsItem2 = [protobufCopy sportsItem];
+      v9 = [(SFSportsItem *)v7 initWithProtobuf:sportsItem2];
       [(SFUpdateSportsFollowingStatusCommand *)v5 setSportsItem:v9];
     }
 
-    if ([v4 follow])
+    if ([protobufCopy follow])
     {
-      -[SFUpdateSportsFollowingStatusCommand setFollow:](v5, "setFollow:", [v4 follow]);
+      -[SFUpdateSportsFollowingStatusCommand setFollow:](v5, "setFollow:", [protobufCopy follow]);
     }
 
     v10 = v5;
@@ -45,33 +45,33 @@
   v8.receiver = self;
   v8.super_class = SFUpdateSportsFollowingStatusCommand;
   v3 = [(SFCommand *)&v8 hash];
-  v4 = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
-  v5 = [v4 hash];
+  sportsItem = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
+  v5 = [sportsItem hash];
   v6 = v5 ^ [(SFUpdateSportsFollowingStatusCommand *)self follow];
 
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if ([(SFUpdateSportsFollowingStatusCommand *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFUpdateSportsFollowingStatusCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v14.receiver = self;
       v14.super_class = SFUpdateSportsFollowingStatusCommand;
-      if ([(SFCommand *)&v14 isEqual:v6])
+      if ([(SFCommand *)&v14 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
-        v9 = [(SFUpdateSportsFollowingStatusCommand *)v7 sportsItem];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        sportsItem = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
+        sportsItem2 = [(SFUpdateSportsFollowingStatusCommand *)v7 sportsItem];
+        if ((sportsItem != 0) == (sportsItem2 == 0))
         {
           LOBYTE(v11) = 0;
 LABEL_14:
@@ -79,12 +79,12 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v10 = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
-        if (!v10 || (-[SFUpdateSportsFollowingStatusCommand sportsItem](self, "sportsItem"), v3 = objc_claimAutoreleasedReturnValue(), -[SFUpdateSportsFollowingStatusCommand sportsItem](v7, "sportsItem"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        sportsItem3 = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
+        if (!sportsItem3 || (-[SFUpdateSportsFollowingStatusCommand sportsItem](self, "sportsItem"), v3 = objc_claimAutoreleasedReturnValue(), -[SFUpdateSportsFollowingStatusCommand sportsItem](v7, "sportsItem"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v12 = [(SFUpdateSportsFollowingStatusCommand *)self follow];
-          v11 = v12 ^ [(SFUpdateSportsFollowingStatusCommand *)v7 follow]^ 1;
-          if (!v10)
+          follow = [(SFUpdateSportsFollowingStatusCommand *)self follow];
+          v11 = follow ^ [(SFUpdateSportsFollowingStatusCommand *)v7 follow]^ 1;
+          if (!sportsItem3)
           {
 LABEL_13:
 
@@ -109,13 +109,13 @@ LABEL_15:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFUpdateSportsFollowingStatusCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  sportsItem = [(SFUpdateSportsFollowingStatusCommand *)self sportsItem];
+  v6 = [sportsItem copy];
   [v4 setSportsItem:v6];
 
   [v4 setFollow:{-[SFUpdateSportsFollowingStatusCommand follow](self, "follow")}];
@@ -125,52 +125,52 @@ LABEL_15:
 - (NSData)jsonData
 {
   v2 = [[_SFPBUpdateSportsFollowingStatusCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBUpdateSportsFollowingStatusCommand *)v2 jsonData];
+  jsonData = [(_SFPBUpdateSportsFollowingStatusCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBUpdateSportsFollowingStatusCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBUpdateSportsFollowingStatusCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBUpdateSportsFollowingStatusCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFUpdateSportsFollowingStatusCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFUpdateSportsFollowingStatusCommand)initWithCoder:(id)a3
+- (SFUpdateSportsFollowingStatusCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFUpdateSportsFollowingStatusCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 sportsItem];
-    [(SFUpdateSportsFollowingStatusCommand *)v5 setSportsItem:v9];
+    sportsItem = [(SFCommand *)v8 sportsItem];
+    [(SFUpdateSportsFollowingStatusCommand *)v5 setSportsItem:sportsItem];
 
     [(SFUpdateSportsFollowingStatusCommand *)v5 setFollow:[(SFCommand *)v8 follow]];
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

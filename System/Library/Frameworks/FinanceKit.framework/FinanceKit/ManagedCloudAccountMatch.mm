@@ -1,15 +1,15 @@
 @interface ManagedCloudAccountMatch
-- (_TtC10FinanceKit24ManagedCloudAccountMatch)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit24ManagedCloudAccountMatch)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void).cxx_construct;
 @end
 
 @implementation ManagedCloudAccountMatch
 
-- (_TtC10FinanceKit24ManagedCloudAccountMatch)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit24ManagedCloudAccountMatch)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedCloudAccountMatch *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedCloudAccountMatch *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void).cxx_construct

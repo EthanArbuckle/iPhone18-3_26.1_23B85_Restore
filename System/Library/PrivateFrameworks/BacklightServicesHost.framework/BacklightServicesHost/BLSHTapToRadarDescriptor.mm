@@ -1,34 +1,34 @@
 @interface BLSHTapToRadarDescriptor
-- (BLSHTapToRadarDescriptor)initWithDesignation:(unint64_t)a3 radarTitle:(id)a4 radarDescription:(id)a5;
-- (void)setTtrDisplayReason:(id)a3;
+- (BLSHTapToRadarDescriptor)initWithDesignation:(unint64_t)designation radarTitle:(id)title radarDescription:(id)description;
+- (void)setTtrDisplayReason:(id)reason;
 @end
 
 @implementation BLSHTapToRadarDescriptor
 
-- (BLSHTapToRadarDescriptor)initWithDesignation:(unint64_t)a3 radarTitle:(id)a4 radarDescription:(id)a5
+- (BLSHTapToRadarDescriptor)initWithDesignation:(unint64_t)designation radarTitle:(id)title radarDescription:(id)description
 {
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  descriptionCopy = description;
   v20.receiver = self;
   v20.super_class = BLSHTapToRadarDescriptor;
   v10 = [(BLSHTapToRadarDescriptor *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    v10->_designation = a3;
-    if ([v8 length] >= 0xF1)
+    v10->_designation = designation;
+    if ([titleCopy length] >= 0xF1)
     {
-      v12 = [v8 substringToIndex:239];
+      v12 = [titleCopy substringToIndex:239];
 
-      v8 = v12;
+      titleCopy = v12;
     }
 
-    objc_storeStrong(&v11->_radarTitle, v8);
-    objc_storeStrong(&v11->_radarDescription, a5);
-    v13 = [MEMORY[0x277CCA8D8] mainBundle];
-    v14 = [v13 bundleIdentifier];
+    objc_storeStrong(&v11->_radarTitle, titleCopy);
+    objc_storeStrong(&v11->_radarDescription, description);
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     bundleID = v11->_bundleID;
-    v11->_bundleID = v14;
+    v11->_bundleID = bundleIdentifier;
 
     componentName = v11->_componentName;
     v11->_componentName = @"BacklightServices";
@@ -44,22 +44,22 @@
   return v11;
 }
 
-- (void)setTtrDisplayReason:(id)a3
+- (void)setTtrDisplayReason:(id)reason
 {
-  v4 = a3;
-  if ([v4 length] >= 0x4B)
+  reasonCopy = reason;
+  if ([reasonCopy length] >= 0x4B)
   {
     v5 = bls_backlight_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(BLSHTapToRadarDescriptor *)v4 setTtrDisplayReason:v5];
+      [(BLSHTapToRadarDescriptor *)reasonCopy setTtrDisplayReason:v5];
     }
 
-    v4 = 0;
+    reasonCopy = 0;
   }
 
   ttrDisplayReason = self->_ttrDisplayReason;
-  self->_ttrDisplayReason = v4;
+  self->_ttrDisplayReason = reasonCopy;
 }
 
 - (void)setTtrDisplayReason:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

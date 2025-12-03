@@ -2,18 +2,18 @@
 - (void)_cleanupSharingFlags;
 - (void)_doOneIteration;
 - (void)launch;
-- (void)taskDidFinishWithError:(id)a3;
+- (void)taskDidFinishWithError:(id)error;
 @end
 
 @implementation CPLCleanupTask
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [CPLTransaction endTransactionWithIdentifier:@"cpl.cleanup"];
   v5.receiver = self;
   v5.super_class = CPLCleanupTask;
-  [(CPLEngineSyncTask *)&v5 taskDidFinishWithError:v4];
+  [(CPLEngineSyncTask *)&v5 taskDidFinishWithError:errorCopy];
 }
 
 - (void)launch
@@ -27,10 +27,10 @@
 
 - (void)_doOneIteration
 {
-  v3 = [(CPLEngineSyncTask *)self engineLibrary];
-  v4 = [v3 store];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  store = [engineLibrary store];
 
-  v5 = [v4 cleanupTasks];
+  cleanupTasks = [store cleanupTasks];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
@@ -44,10 +44,10 @@
   v10[2] = __33__CPLCleanupTask__doOneIteration__block_invoke;
   v10[3] = &unk_1E861C170;
   v10[4] = self;
-  v6 = v5;
+  v6 = cleanupTasks;
   v11 = v6;
   v13 = v17;
-  v7 = v4;
+  v7 = store;
   v12 = v7;
   v14 = v15;
   v9[0] = MEMORY[0x1E69E9820];
@@ -208,8 +208,8 @@ uint64_t __33__CPLCleanupTask__doOneIteration__block_invoke_2(uint64_t result, u
 
 - (void)_cleanupSharingFlags
 {
-  v3 = [(CPLEngineSyncTask *)self engineLibrary];
-  v4 = [v3 store];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  store = [engineLibrary store];
 
   v11[0] = 0;
   v11[1] = v11;
@@ -220,7 +220,7 @@ uint64_t __33__CPLCleanupTask__doOneIteration__block_invoke_2(uint64_t result, u
   v8[2] = __38__CPLCleanupTask__cleanupSharingFlags__block_invoke;
   v8[3] = &unk_1E86200A8;
   v8[4] = self;
-  v5 = v4;
+  v5 = store;
   v9 = v5;
   v10 = v11;
   v7[0] = MEMORY[0x1E69E9820];

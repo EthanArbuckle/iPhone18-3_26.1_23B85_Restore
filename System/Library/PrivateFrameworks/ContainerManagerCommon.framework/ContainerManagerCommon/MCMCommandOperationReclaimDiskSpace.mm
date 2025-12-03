@@ -1,16 +1,16 @@
 @interface MCMCommandOperationReclaimDiskSpace
 + (Class)incomingMessageClass;
 + (unint64_t)command;
-- (BOOL)_removeItemOrMoveToTempAtURL:(id)a3 error:(id *)a4;
+- (BOOL)_removeItemOrMoveToTempAtURL:(id)l error:(id *)error;
 - (BOOL)asynchronously;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandOperationReclaimDiskSpace)initWithAsynchronously:(BOOL)a3 context:(id)a4 resultPromise:(id)a5 handoffForReply:(id)a6;
-- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
-- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5 asyncResultPromise:(id)a6;
+- (MCMCommandOperationReclaimDiskSpace)initWithAsynchronously:(BOOL)asynchronously context:(id)context resultPromise:(id)promise handoffForReply:(id)reply;
+- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)message context:(id)context reply:(id)reply;
+- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)message context:(id)context reply:(id)reply asyncResultPromise:(id)promise;
 - (MCMReply)handoffReply;
 - (MCMXPCMessage)message;
-- (void)_deleteContainersAtDeathRowURL:(id)a3 error:(id *)a4;
-- (void)_deleteContainersOnDeathRowWithCompletion:(id)a3;
+- (void)_deleteContainersAtDeathRowURL:(id)l error:(id *)error;
+- (void)_deleteContainersOnDeathRowWithCompletion:(id)completion;
 - (void)execute;
 @end
 
@@ -40,10 +40,10 @@
   return result;
 }
 
-- (void)_deleteContainersOnDeathRowWithCompletion:(id)a3
+- (void)_deleteContainersOnDeathRowWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -61,8 +61,8 @@
 
   if (v6)
   {
-    v7 = [(MCMCommand *)self context];
-    v8 = [v7 userIdentityCache];
+    context = [(MCMCommand *)self context];
+    userIdentityCache = [context userIdentityCache];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __81__MCMCommandOperationReclaimDiskSpace__deleteContainersOnDeathRowWithCompletion___block_invoke;
@@ -70,7 +70,7 @@
     v17[4] = self;
     v17[5] = &v18;
     v17[6] = &v24;
-    [v8 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v17];
+    [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v17];
   }
 
   v9 = containermanager_copy_global_configuration();
@@ -89,9 +89,9 @@
     objc_storeStrong(v14 + 5, obj);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (v4)[2](v4, v25[5]);
+    (completionCopy)[2](completionCopy, v25[5]);
   }
 
   _Block_object_dispose(&v18, 8);
@@ -117,10 +117,10 @@ void __81__MCMCommandOperationReclaimDiskSpace__deleteContainersOnDeathRowWithCo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteContainersAtDeathRowURL:(id)a3 error:(id *)a4
+- (void)_deleteContainersAtDeathRowURL:(id)l error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -139,7 +139,7 @@ void __81__MCMCommandOperationReclaimDiskSpace__deleteContainersOnDeathRowWithCo
   block[2] = __76__MCMCommandOperationReclaimDiskSpace__deleteContainersAtDeathRowURL_error___block_invoke;
   block[3] = &unk_1E86B0730;
   v34 = &v42;
-  v29 = v5;
+  v29 = lCopy;
   v33 = v29;
   v35 = &v36;
   dispatch_sync(v6, block);
@@ -208,10 +208,10 @@ LABEL_5:
             v19 = container_log_handle_for_category();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              v20 = [v17 path];
+              path = [v17 path];
               v21 = v37[5];
               *buf = 138412546;
-              v54 = v20;
+              v54 = path;
               v55 = 2112;
               v56 = v21;
               _os_log_error_impl(&dword_1DF2C3000, v19, OS_LOG_TYPE_ERROR, "Failed to destroy item at %@: %@", buf, 0x16u);
@@ -232,8 +232,8 @@ LABEL_5:
 
   else
   {
-    v22 = [v37[5] domain];
-    if ([v22 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v37[5] domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
       v23 = [v37[5] code] == 2;
 
@@ -253,20 +253,20 @@ LABEL_5:
     v11 = container_log_handle_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v29 path];
+      path2 = [v29 path];
       v28 = v37[5];
       *buf = 138412546;
-      v54 = v27;
+      v54 = path2;
       v55 = 2112;
       v56 = v28;
       _os_log_error_impl(&dword_1DF2C3000, v11, OS_LOG_TYPE_ERROR, "Failed to get items for deletion at %@: %@", buf, 0x16u);
     }
   }
 
-  if (a4 && v12)
+  if (error && v12)
   {
     v25 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_27:
@@ -293,15 +293,15 @@ void __76__MCMCommandOperationReclaimDiskSpace__deleteContainersAtDeathRowURL_er
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_removeItemOrMoveToTempAtURL:(id)a3 error:(id *)a4
+- (BOOL)_removeItemOrMoveToTempAtURL:(id)l error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = 1;
   v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/tmp" isDirectory:1];
   v8 = +[MCMFileManager defaultManager];
   v28 = 0;
-  v9 = [v8 removeItemAtURL:v5 error:&v28];
+  v9 = [v8 removeItemAtURL:lCopy error:&v28];
   v10 = v28;
 
   if (v9)
@@ -309,12 +309,12 @@ void __76__MCMCommandOperationReclaimDiskSpace__deleteContainersAtDeathRowURL_er
     goto LABEL_2;
   }
 
-  v12 = [v10 domain];
-  if ([v12 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v10 domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v13 = [v10 code];
+    code = [v10 code];
 
-    if (v13 == 2)
+    if (code == 2)
     {
 LABEL_2:
       v11 = 0;
@@ -329,19 +329,19 @@ LABEL_2:
   v14 = container_log_handle_for_category();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v5 path];
+    path = [lCopy path];
     *buf = 138412546;
-    v30 = v24;
+    v30 = path;
     v31 = 2112;
     v32 = v10;
     _os_log_debug_impl(&dword_1DF2C3000, v14, OS_LOG_TYPE_DEBUG, "Couldn't remove, so moving item to /tmp: %@ : %@", buf, 0x16u);
   }
 
   v15 = +[MCMFileManager defaultManager];
-  v16 = [v5 lastPathComponent];
-  v17 = [v7 URLByAppendingPathComponent:v16];
+  lastPathComponent = [lCopy lastPathComponent];
+  v17 = [v7 URLByAppendingPathComponent:lastPathComponent];
   v27 = v10;
-  v18 = [v15 moveItemIfExistsAtURL:v5 toURL:v17 error:&v27];
+  v18 = [v15 moveItemIfExistsAtURL:lCopy toURL:v17 error:&v27];
   v19 = v27;
 
   if (v18)
@@ -352,27 +352,27 @@ LABEL_2:
 
   else
   {
-    v11 = [[MCMError alloc] initWithNSError:v19 url:v5 defaultErrorType:17];
+    v11 = [[MCMError alloc] initWithNSError:v19 url:lCopy defaultErrorType:17];
     v20 = container_log_handle_for_category();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v5 path];
-      v26 = [v7 path];
+      path2 = [lCopy path];
+      path3 = [v7 path];
       *buf = 138412802;
-      v30 = v25;
+      v30 = path2;
       v31 = 2112;
-      v32 = v26;
+      v32 = path3;
       v33 = 2112;
       v34 = v19;
       _os_log_error_impl(&dword_1DF2C3000, v20, OS_LOG_TYPE_ERROR, "Failed to move dir %@ to %@: %@", buf, 0x20u);
     }
 
     v6 = 0;
-    if (a4 && v11)
+    if (error && v11)
     {
       v21 = v11;
       v6 = 0;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -387,55 +387,55 @@ LABEL_17:
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(MCMCommand *)self resultPromise];
+  resultPromise = [(MCMCommand *)self resultPromise];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __46__MCMCommandOperationReclaimDiskSpace_execute__block_invoke;
   v20 = &unk_1E86B0CC8;
-  v21 = self;
-  v22 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v22 = resultPromise;
+  v5 = resultPromise;
   v6 = _Block_copy(&v17);
   if ([(MCMCommandOperationReclaimDiskSpace *)self asynchronously:v17])
   {
     v7 = MCMSharedSlowWorkloop();
     v8 = v6;
-    v9 = v7;
+    handoffReply2 = v7;
     MEMORY[0x1E12D4880]();
     *&block = MEMORY[0x1E69E9820];
     *(&block + 1) = 3221225472;
     v24 = __MCMRunTransactionalTask_block_invoke;
     v25 = &unk_1E86B0F40;
     v26 = v8;
-    v10 = v8;
-    dispatch_async(v9, &block);
+    context2 = v8;
+    dispatch_async(handoffReply2, &block);
   }
 
   else
   {
-    v11 = [(MCMCommandOperationReclaimDiskSpace *)self handoffReply];
+    handoffReply = [(MCMCommandOperationReclaimDiskSpace *)self handoffReply];
 
-    if (!v11)
+    if (!handoffReply)
     {
-      v9 = MCMSharedSlowWorkloop();
-      dispatch_async_and_wait(v9, v6);
+      handoffReply2 = MCMSharedSlowWorkloop();
+      dispatch_async_and_wait(handoffReply2, v6);
       goto LABEL_8;
     }
 
     v12 = container_log_handle_for_category();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(MCMCommand *)self context];
-      v16 = [v15 clientIdentity];
+      context = [(MCMCommand *)self context];
+      clientIdentity = [context clientIdentity];
       LODWORD(block) = 138412290;
-      *(&block + 4) = v16;
+      *(&block + 4) = clientIdentity;
       _os_log_debug_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_DEBUG, "Reply to reclaim handed off to the slow workloop for client [%@]", &block, 0xCu);
     }
 
-    v9 = [(MCMCommandOperationReclaimDiskSpace *)self handoffReply];
-    v10 = [(MCMCommand *)self context];
-    v13 = [v10 clientIdentity];
-    [v9 handoffToSlowWorkloopforClientIdentity:v13 withBlock:v6];
+    handoffReply2 = [(MCMCommandOperationReclaimDiskSpace *)self handoffReply];
+    context2 = [(MCMCommand *)self context];
+    clientIdentity2 = [context2 clientIdentity];
+    [handoffReply2 handoffToSlowWorkloopforClientIdentity:clientIdentity2 withBlock:v6];
   }
 
 LABEL_8:
@@ -517,69 +517,69 @@ LABEL_11:
 - (BOOL)preflightClientAllowed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
 
-  v4 = [v3 codeSignInfo];
-  v5 = [v4 entitlements];
+  codeSignInfo = [clientIdentity codeSignInfo];
+  entitlements = [codeSignInfo entitlements];
 
-  if ([v5 allowed] & 1) != 0 || (objc_msgSend(v5, "canDelete"))
+  if ([entitlements allowed] & 1) != 0 || (objc_msgSend(entitlements, "canDelete"))
   {
-    v6 = 1;
+    canManageUserManagedAssets = 1;
   }
 
   else
   {
-    v6 = [v5 canManageUserManagedAssets];
+    canManageUserManagedAssets = [entitlements canManageUserManagedAssets];
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6;
+  return canManageUserManagedAssets;
 }
 
-- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v7 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
 
-  return [(MCMCommandOperationReclaimDiskSpace *)self initWithMessage:a3 context:a4 reply:a5 asyncResultPromise:0];
+  return [(MCMCommandOperationReclaimDiskSpace *)self initWithMessage:message context:context reply:reply asyncResultPromise:0];
 }
 
-- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5 asyncResultPromise:(id)a6
+- (MCMCommandOperationReclaimDiskSpace)initWithMessage:(id)message context:(id)context reply:(id)reply asyncResultPromise:(id)promise
 {
   v17 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  messageCopy = message;
+  replyCopy = reply;
   v16.receiver = self;
   v16.super_class = MCMCommandOperationReclaimDiskSpace;
-  v12 = [(MCMCommand *)&v16 initWithMessage:v10 context:a4 reply:v11];
+  v12 = [(MCMCommand *)&v16 initWithMessage:messageCopy context:context reply:replyCopy];
   v13 = v12;
   if (v12)
   {
     v12->_asynchronously = 0;
-    objc_storeStrong(&v12->_handoffReply, a5);
-    objc_storeStrong(&v13->_message, a3);
+    objc_storeStrong(&v12->_handoffReply, reply);
+    objc_storeStrong(&v13->_message, message);
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (MCMCommandOperationReclaimDiskSpace)initWithAsynchronously:(BOOL)a3 context:(id)a4 resultPromise:(id)a5 handoffForReply:(id)a6
+- (MCMCommandOperationReclaimDiskSpace)initWithAsynchronously:(BOOL)asynchronously context:(id)context resultPromise:(id)promise handoffForReply:(id)reply
 {
   v18 = *MEMORY[0x1E69E9840];
-  v11 = a6;
+  replyCopy = reply;
   v17.receiver = self;
   v17.super_class = MCMCommandOperationReclaimDiskSpace;
-  v12 = [(MCMCommand *)&v17 initWithContext:a4 resultPromise:a5];
+  v12 = [(MCMCommand *)&v17 initWithContext:context resultPromise:promise];
   v13 = v12;
   if (v12)
   {
-    v12->_asynchronously = a3;
+    v12->_asynchronously = asynchronously;
     message = v12->_message;
     v12->_message = 0;
 
-    objc_storeStrong(&v13->_handoffReply, a6);
+    objc_storeStrong(&v13->_handoffReply, reply);
   }
 
   v15 = *MEMORY[0x1E69E9840];

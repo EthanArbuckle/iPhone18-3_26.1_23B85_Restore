@@ -1,12 +1,12 @@
 @interface SUUIURLConnectionRequest
-- (void)startWithConnectionResponseBlock:(id)a3;
+- (void)startWithConnectionResponseBlock:(id)block;
 @end
 
 @implementation SUUIURLConnectionRequest
 
-- (void)startWithConnectionResponseBlock:(id)a3
+- (void)startWithConnectionResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = dispatch_get_global_queue(0, 0);
   dispatch_async(v5, &__block_literal_global_47);
   v9[0] = MEMORY[0x277D85DD0];
@@ -14,10 +14,10 @@
   v9[2] = __61__SUUIURLConnectionRequest_startWithConnectionResponseBlock___block_invoke_2;
   v9[3] = &unk_2798FC2F0;
   v10 = v5;
-  v11 = v4;
+  v11 = blockCopy;
   v8.receiver = self;
   v8.super_class = SUUIURLConnectionRequest;
-  v6 = v4;
+  v6 = blockCopy;
   v7 = v5;
   [(SSURLConnectionRequest *)&v8 startWithConnectionResponseBlock:v9];
 }

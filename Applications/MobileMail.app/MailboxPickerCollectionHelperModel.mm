@@ -1,26 +1,26 @@
 @interface MailboxPickerCollectionHelperModel
 - (BOOL)hasMultipleAccounts;
-- (MailboxPickerCollectionHelperModel)initWithFavoritesManager:(id)a3;
+- (MailboxPickerCollectionHelperModel)initWithFavoritesManager:(id)manager;
 - (MailboxPickerCollectionHelperSection)favoritesSection;
 - (NSArray)sections;
-- (id)favoriteItemAtIndexPath:(id)a3;
-- (id)favoriteItemForItemID:(id)a3 inSection:(id)a4;
-- (id)indexPathForItem:(id)a3;
-- (id)sectionForIndexPath:(id)a3;
+- (id)favoriteItemAtIndexPath:(id)path;
+- (id)favoriteItemForItemID:(id)d inSection:(id)section;
+- (id)indexPathForItem:(id)item;
+- (id)sectionForIndexPath:(id)path;
 @end
 
 @implementation MailboxPickerCollectionHelperModel
 
-- (MailboxPickerCollectionHelperModel)initWithFavoritesManager:(id)a3
+- (MailboxPickerCollectionHelperModel)initWithFavoritesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MailboxPickerCollectionHelperModel;
   v6 = [(MailboxPickerCollectionHelperModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
   }
 
   return v7;
@@ -28,9 +28,9 @@
 
 - (BOOL)hasMultipleAccounts
 {
-  v2 = [(MailboxPickerCollectionHelperModel *)self manager];
-  v3 = [v2 accountsCollection];
-  v4 = [v3 visibleItemsOfType:1];
+  manager = [(MailboxPickerCollectionHelperModel *)self manager];
+  accountsCollection = [manager accountsCollection];
+  v4 = [accountsCollection visibleItemsOfType:1];
   v5 = [v4 count] > 1;
 
   return v5;
@@ -41,16 +41,16 @@
   sections = self->_sections;
   if (!sections)
   {
-    v30 = self;
-    v4 = [(MailboxPickerCollectionHelperModel *)self manager];
-    v5 = [v4 visibleMailboxCollections];
+    selfCopy = self;
+    manager = [(MailboxPickerCollectionHelperModel *)self manager];
+    visibleMailboxCollections = [manager visibleMailboxCollections];
 
-    v35 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    v35 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [visibleMailboxCollections count]);
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v5;
+    obj = visibleMailboxCollections;
     v33 = [obj countByEnumeratingWithState:&v40 objects:v54 count:16];
     if (v33)
     {
@@ -177,10 +177,10 @@
       _Block_object_dispose(v51, 8);
     }
 
-    v28 = v30->_sections;
-    v30->_sections = v18;
+    v28 = selfCopy->_sections;
+    selfCopy->_sections = v18;
 
-    sections = v30->_sections;
+    sections = selfCopy->_sections;
   }
 
   return sections;
@@ -188,36 +188,36 @@
 
 - (MailboxPickerCollectionHelperSection)favoritesSection
 {
-  v2 = [(MailboxPickerCollectionHelperModel *)self sections];
-  v3 = [v2 ef_firstObjectPassingTest:&stru_100650448];
+  sections = [(MailboxPickerCollectionHelperModel *)self sections];
+  v3 = [sections ef_firstObjectPassingTest:&stru_100650448];
 
   return v3;
 }
 
-- (id)sectionForIndexPath:(id)a3
+- (id)sectionForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MailboxPickerCollectionHelperModel *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  sections = [(MailboxPickerCollectionHelperModel *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   return v6;
 }
 
-- (id)favoriteItemAtIndexPath:(id)a3
+- (id)favoriteItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MailboxPickerCollectionHelperModel *)self sectionForIndexPath:v4];
+  pathCopy = path;
+  v5 = [(MailboxPickerCollectionHelperModel *)self sectionForIndexPath:pathCopy];
   if ([v5 isAccounts])
   {
-    v6 = [v5 items];
-    if ([v6 count])
+    items = [v5 items];
+    if ([items count])
     {
-      v7 = [v4 row];
+      v7 = [pathCopy row];
 
       if (!v7)
       {
-        v8 = [v5 items];
-        v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+        items2 = [v5 items];
+        v9 = [items2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 LABEL_13:
         v12 = v9;
         goto LABEL_17;
@@ -228,30 +228,30 @@ LABEL_13:
     {
     }
 
-    v8 = [v5 accountFavoriteItem];
-    if (v8 && [v4 row])
+    items2 = [v5 accountFavoriteItem];
+    if (items2 && [pathCopy row])
     {
-      v10 = [v8 subItems];
-      v11 = [v4 row];
-      if (v11 - 1 >= [v10 count])
+      subItems = [items2 subItems];
+      v11 = [pathCopy row];
+      if (v11 - 1 >= [subItems count])
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = [v10 objectAtIndexedSubscript:?];
+        v12 = [subItems objectAtIndexedSubscript:?];
       }
 
       goto LABEL_17;
     }
   }
 
-  v8 = [v5 items];
-  v13 = [v4 row];
-  if (v13 < [v8 count])
+  items2 = [v5 items];
+  v13 = [pathCopy row];
+  if (v13 < [items2 count])
   {
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v9 = [items2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     goto LABEL_13;
   }
 
@@ -261,41 +261,41 @@ LABEL_17:
   return v12;
 }
 
-- (id)favoriteItemForItemID:(id)a3 inSection:(id)a4
+- (id)favoriteItemForItemID:(id)d inSection:(id)section
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 itemsByItemID];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  dCopy = d;
+  sectionCopy = section;
+  itemsByItemID = [sectionCopy itemsByItemID];
+  v8 = [itemsByItemID objectForKeyedSubscript:dCopy];
 
   if (!v8)
   {
-    [v6 _reloadItemsByItemID];
-    v9 = [v6 itemsByItemID];
-    v8 = [v9 objectForKeyedSubscript:v5];
+    [sectionCopy _reloadItemsByItemID];
+    itemsByItemID2 = [sectionCopy itemsByItemID];
+    v8 = [itemsByItemID2 objectForKeyedSubscript:dCopy];
   }
 
   return v8;
 }
 
-- (id)indexPathForItem:(id)a3
+- (id)indexPathForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MailboxPickerCollectionHelperModel *)self sections];
+  itemCopy = item;
+  sections = [(MailboxPickerCollectionHelperModel *)self sections];
   for (i = 0; ; ++i)
   {
-    if (i >= [v5 count])
+    if (i >= [sections count])
     {
       v16 = 0;
       goto LABEL_15;
     }
 
-    v7 = [v5 objectAtIndexedSubscript:i];
-    v8 = [v7 items];
-    if ([v8 count])
+    v7 = [sections objectAtIndexedSubscript:i];
+    items = [v7 items];
+    if ([items count])
     {
-      v9 = [v7 items];
-      v10 = [v9 indexOfObject:v4];
+      items2 = [v7 items];
+      v10 = [items2 indexOfObject:itemCopy];
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -308,9 +308,9 @@ LABEL_17:
     {
     }
 
-    v11 = [v7 accountFavoriteItem];
-    v12 = v11;
-    if (v11)
+    accountFavoriteItem = [v7 accountFavoriteItem];
+    v12 = accountFavoriteItem;
+    if (accountFavoriteItem)
     {
       break;
     }
@@ -318,15 +318,15 @@ LABEL_17:
 LABEL_12:
   }
 
-  v13 = [v11 subItems];
-  if (![v13 count])
+  subItems = [accountFavoriteItem subItems];
+  if (![subItems count])
   {
 
     goto LABEL_12;
   }
 
-  v14 = [v12 subItems];
-  v15 = [v14 indexOfObject:v4];
+  subItems2 = [v12 subItems];
+  v15 = [subItems2 indexOfObject:itemCopy];
 
   if (v15 == 0x7FFFFFFFFFFFFFFFLL)
   {

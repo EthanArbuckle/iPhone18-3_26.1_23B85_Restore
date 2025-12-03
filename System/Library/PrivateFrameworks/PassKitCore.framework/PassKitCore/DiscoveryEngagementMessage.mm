@@ -1,40 +1,40 @@
 @interface DiscoveryEngagementMessage
-+ (DiscoveryEngagementMessage)engagementMessageWithIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)_engagementMessagesInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)_predicateForActiveEngagementMessagesWithPassQualifier:(int64_t)a3;
-+ (id)_predicateForCheckingRelevantDate:(id)a3;
-+ (id)_predicateForEngagementMessagesWithPassQualifier:(int64_t)a3;
++ (DiscoveryEngagementMessage)engagementMessageWithIdentifier:(id)identifier inDatabase:(id)database;
++ (id)_engagementMessagesInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)_predicateForActiveEngagementMessagesWithPassQualifier:(int64_t)qualifier;
++ (id)_predicateForCheckingRelevantDate:(id)date;
++ (id)_predicateForEngagementMessagesWithPassQualifier:(int64_t)qualifier;
 + (id)_propertySettersForEngagementMessage;
-+ (id)engagementMessagesForPassQualifier:(int64_t)a3 active:(unint64_t)a4 relevantDate:(id)a5 inDatabase:(id)a6;
-+ (id)insertOrUpdateEngagementMessage:(id)a3 messageOrder:(unint64_t)a4 inDatabase:(id)a5;
-+ (id)updateEngagementMessage:(id)a3 inDatabase:(id)a4;
-+ (void)deleteAllEngagementMessagesInDatabase:(id)a3;
-+ (void)deleteEngagementMessageWithIdentifier:(id)a3 inDatabase:(id)a4;
-+ (void)deleteEngagementMessagesNotIncludingIdentifiers:(id)a3 inDatabase:(id)a4;
++ (id)engagementMessagesForPassQualifier:(int64_t)qualifier active:(unint64_t)active relevantDate:(id)date inDatabase:(id)database;
++ (id)insertOrUpdateEngagementMessage:(id)message messageOrder:(unint64_t)order inDatabase:(id)database;
++ (id)updateEngagementMessage:(id)message inDatabase:(id)database;
++ (void)deleteAllEngagementMessagesInDatabase:(id)database;
++ (void)deleteEngagementMessageWithIdentifier:(id)identifier inDatabase:(id)database;
++ (void)deleteEngagementMessagesNotIncludingIdentifiers:(id)identifiers inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (DiscoveryEngagementMessage)initWithEngagementMessage:(id)a3 messageOrder:(unint64_t)a4 inDatabase:(id)a5;
-- (id)_dictWithPropertiesForEngagementMessage:(id)a3;
+- (DiscoveryEngagementMessage)initWithEngagementMessage:(id)message messageOrder:(unint64_t)order inDatabase:(id)database;
+- (id)_dictWithPropertiesForEngagementMessage:(id)message;
 - (id)engagementMessage;
 - (void)setMessageOrder;
-- (void)updateWithEngagementMessage:(id)a3;
+- (void)updateWithEngagementMessage:(id)message;
 @end
 
 @implementation DiscoveryEngagementMessage
 
-+ (id)engagementMessagesForPassQualifier:(int64_t)a3 active:(unint64_t)a4 relevantDate:(id)a5 inDatabase:(id)a6
++ (id)engagementMessagesForPassQualifier:(int64_t)qualifier active:(unint64_t)active relevantDate:(id)date inDatabase:(id)database
 {
-  v10 = a5;
-  v11 = a6;
-  switch(a4)
+  dateCopy = date;
+  databaseCopy = database;
+  switch(active)
   {
     case 2uLL:
       goto LABEL_4;
     case 1uLL:
-      v12 = [a1 _predicateForActiveEngagementMessagesWithPassQualifier:a3];
+      v12 = [self _predicateForActiveEngagementMessagesWithPassQualifier:qualifier];
       goto LABEL_6;
     case 0uLL:
 LABEL_4:
-      v12 = [a1 _predicateForEngagementMessagesWithPassQualifier:a3];
+      v12 = [self _predicateForEngagementMessagesWithPassQualifier:qualifier];
 LABEL_6:
       v13 = v12;
       goto LABEL_8;
@@ -43,34 +43,34 @@ LABEL_6:
   v13 = 0;
 LABEL_8:
   v19[0] = v13;
-  v14 = [a1 _predicateForCheckingRelevantDate:v10];
+  v14 = [self _predicateForCheckingRelevantDate:dateCopy];
   v19[1] = v14;
   v15 = [NSArray arrayWithObjects:v19 count:2];
   v16 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v15];
 
-  v17 = [a1 _engagementMessagesInDatabase:v11 matchingPredicate:v16];
+  v17 = [self _engagementMessagesInDatabase:databaseCopy matchingPredicate:v16];
 
   return v17;
 }
 
-+ (DiscoveryEngagementMessage)engagementMessageWithIdentifier:(id)a3 inDatabase:(id)a4
++ (DiscoveryEngagementMessage)engagementMessageWithIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForEngagementMessageIdentifier:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForEngagementMessageIdentifier:identifier];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   [v8 setMessageOrder];
 
   return v8;
 }
 
-+ (id)_engagementMessagesInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)_engagementMessagesInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v6 = a3;
+  databaseCopy = database;
   v20 = @"m";
-  v7 = a4;
+  predicateCopy = predicate;
   v8 = [NSArray arrayWithObjects:&v20 count:1];
-  v9 = [a1 queryWithDatabase:v6 predicate:v7 orderingProperties:v8];
+  v9 = [self queryWithDatabase:databaseCopy predicate:predicateCopy orderingProperties:v8];
 
   v10 = objc_alloc_init(NSMutableArray);
   v19 = @"pid";
@@ -79,10 +79,10 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_100026370;
   v16[3] = &unk_10083CBC0;
-  v17 = v6;
+  v17 = databaseCopy;
   v18 = v10;
   v12 = v10;
-  v13 = v6;
+  v13 = databaseCopy;
   [v9 enumeratePersistentIDsAndProperties:v11 usingBlock:v16];
 
   v14 = [v12 copy];
@@ -90,33 +90,33 @@ LABEL_8:
   return v14;
 }
 
-+ (id)insertOrUpdateEngagementMessage:(id)a3 messageOrder:(unint64_t)a4 inDatabase:(id)a5
++ (id)insertOrUpdateEngagementMessage:(id)message messageOrder:(unint64_t)order inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 identifier];
-  v11 = [a1 engagementMessageWithIdentifier:v10 inDatabase:v8];
+  databaseCopy = database;
+  messageCopy = message;
+  identifier = [messageCopy identifier];
+  v11 = [self engagementMessageWithIdentifier:identifier inDatabase:databaseCopy];
 
   if (v11)
   {
-    [v11 setMessageOrder:a4];
-    [v11 updateWithEngagementMessage:v9];
+    [v11 setMessageOrder:order];
+    [v11 updateWithEngagementMessage:messageCopy];
   }
 
   else
   {
-    v11 = [[a1 alloc] initWithEngagementMessage:v9 messageOrder:a4 inDatabase:v8];
+    v11 = [[self alloc] initWithEngagementMessage:messageCopy messageOrder:order inDatabase:databaseCopy];
   }
 
   return v11;
 }
 
-- (DiscoveryEngagementMessage)initWithEngagementMessage:(id)a3 messageOrder:(unint64_t)a4 inDatabase:(id)a5
+- (DiscoveryEngagementMessage)initWithEngagementMessage:(id)message messageOrder:(unint64_t)order inDatabase:(id)database
 {
-  self->_messageOrder = a4;
-  v7 = a5;
-  v8 = [(DiscoveryEngagementMessage *)self _dictWithPropertiesForEngagementMessage:a3];
-  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v7];
+  self->_messageOrder = order;
+  databaseCopy = database;
+  v8 = [(DiscoveryEngagementMessage *)self _dictWithPropertiesForEngagementMessage:message];
+  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
 
   return v9;
 }
@@ -128,8 +128,8 @@ LABEL_8:
   [v3 setAction:v4];
   v5 = +[DiscoveryEngagementMessage _propertySettersForEngagementMessage];
   v6 = [NSMutableArray alloc];
-  v7 = [v5 allKeys];
-  v8 = [v6 initWithArray:v7];
+  allKeys = [v5 allKeys];
+  v8 = [v6 initWithArray:allKeys];
 
   [v8 addObject:@"n"];
   [v8 addObject:@"o"];
@@ -150,50 +150,50 @@ LABEL_8:
   return v10;
 }
 
-+ (id)updateEngagementMessage:(id)a3 inDatabase:(id)a4
++ (id)updateEngagementMessage:(id)message inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [a1 engagementMessageWithIdentifier:v8 inDatabase:v7];
+  messageCopy = message;
+  databaseCopy = database;
+  identifier = [messageCopy identifier];
+  v9 = [self engagementMessageWithIdentifier:identifier inDatabase:databaseCopy];
 
   if (v9)
   {
-    [v9 updateWithEngagementMessage:v6];
+    [v9 updateWithEngagementMessage:messageCopy];
   }
 
   return v9;
 }
 
-- (void)updateWithEngagementMessage:(id)a3
+- (void)updateWithEngagementMessage:(id)message
 {
-  v4 = [(DiscoveryEngagementMessage *)self _dictWithPropertiesForEngagementMessage:a3];
+  v4 = [(DiscoveryEngagementMessage *)self _dictWithPropertiesForEngagementMessage:message];
   [(SQLiteEntity *)self setValuesWithDictionary:v4];
 }
 
-+ (void)deleteEngagementMessageWithIdentifier:(id)a3 inDatabase:(id)a4
++ (void)deleteEngagementMessageWithIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForEngagementMessageIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForEngagementMessageIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   [v8 deleteAllEntities];
 }
 
-+ (void)deleteEngagementMessagesNotIncludingIdentifiers:(id)a3 inDatabase:(id)a4
++ (void)deleteEngagementMessagesNotIncludingIdentifiers:(id)identifiers inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [SQLiteContainsPredicate doesNotContainPredicateWithProperty:@"a" values:a3];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [SQLiteContainsPredicate doesNotContainPredicateWithProperty:@"a" values:identifiers];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (void)deleteAllEngagementMessagesInDatabase:(id)a3
++ (void)deleteAllEngagementMessagesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = +[SQLiteBooleanPredicate truePredicate];
-  v6 = [a1 queryWithDatabase:v4 predicate:v5];
+  v6 = [self queryWithDatabase:databaseCopy predicate:v5];
 
   [v6 deleteAllEntities];
 }
@@ -205,11 +205,11 @@ LABEL_8:
   return [(SQLiteEntity *)&v3 deleteFromDatabase];
 }
 
-+ (id)_predicateForEngagementMessagesWithPassQualifier:(int64_t)a3
++ (id)_predicateForEngagementMessagesWithPassQualifier:(int64_t)qualifier
 {
-  if (a3 >= 3)
+  if (qualifier >= 3)
   {
-    if (a3 == 3)
+    if (qualifier == 3)
     {
       v4 = +[SQLiteBooleanPredicate truePredicate];
     }
@@ -229,9 +229,9 @@ LABEL_8:
   return v4;
 }
 
-+ (id)_predicateForActiveEngagementMessagesWithPassQualifier:(int64_t)a3
++ (id)_predicateForActiveEngagementMessagesWithPassQualifier:(int64_t)qualifier
 {
-  v3 = [a1 _predicateForEngagementMessagesWithPassQualifier:a3];
+  v3 = [self _predicateForEngagementMessagesWithPassQualifier:qualifier];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"c" equalToValue:&off_1008A27C8];
   v8[0] = v4;
   v8[1] = v3;
@@ -241,10 +241,10 @@ LABEL_8:
   return v6;
 }
 
-+ (id)_predicateForCheckingRelevantDate:(id)a3
++ (id)_predicateForCheckingRelevantDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
     v16 = [SQLiteNullPredicate isNullPredicateWithProperty:@"n"];
     v4 = _SQLValueForDate();
@@ -319,61 +319,61 @@ LABEL_8:
   return v2;
 }
 
-- (id)_dictWithPropertiesForEngagementMessage:(id)a3
+- (id)_dictWithPropertiesForEngagementMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 identifier];
-  [v5 setObjectOrNull:v6 forKey:@"a"];
+  identifier = [messageCopy identifier];
+  [v5 setObjectOrNull:identifier forKey:@"a"];
 
-  [v5 setInteger:objc_msgSend(v4 forKey:{"version"), @"b"}];
-  v7 = [v4 ruleIdentifier];
-  [v5 setObjectOrNull:v7 forKey:@"d"];
+  [v5 setInteger:objc_msgSend(messageCopy forKey:{"version"), @"b"}];
+  ruleIdentifier = [messageCopy ruleIdentifier];
+  [v5 setObjectOrNull:ruleIdentifier forKey:@"d"];
 
-  v8 = [v4 osVersionRange];
+  osVersionRange = [messageCopy osVersionRange];
   v9 = _SQLValueForOSVersionRequirementRange();
   [v5 setObjectOrNull:v9 forKey:@"e"];
 
-  [v5 setInteger:objc_msgSend(v4 forKey:{"passQualifier"), @"f"}];
-  v10 = [v4 titleKey];
-  [v5 setObjectOrNull:v10 forKey:@"g"];
+  [v5 setInteger:objc_msgSend(messageCopy forKey:{"passQualifier"), @"f"}];
+  titleKey = [messageCopy titleKey];
+  [v5 setObjectOrNull:titleKey forKey:@"g"];
 
-  v11 = [v4 messageKey];
-  [v5 setObjectOrNull:v11 forKey:@"h"];
+  messageKey = [messageCopy messageKey];
+  [v5 setObjectOrNull:messageKey forKey:@"h"];
 
-  v12 = [v4 action];
-  v13 = [v12 titleKey];
-  [v5 setObjectOrNull:v13 forKey:@"i"];
+  action = [messageCopy action];
+  titleKey2 = [action titleKey];
+  [v5 setObjectOrNull:titleKey2 forKey:@"i"];
 
-  v14 = [v4 action];
-  [v5 setInteger:objc_msgSend(v14 forKey:{"type"), @"j"}];
+  action2 = [messageCopy action];
+  [v5 setInteger:objc_msgSend(action2 forKey:{"type"), @"j"}];
 
-  v15 = [v4 iconURLs];
-  v16 = _SQLValueForActionIconURLs(v15);
+  iconURLs = [messageCopy iconURLs];
+  v16 = _SQLValueForActionIconURLs(iconURLs);
   [v5 setObjectOrNull:v16 forKey:@"k"];
 
-  v17 = [v4 action];
-  v18 = [v17 actionInfo];
-  v19 = _SQLValueForActionInfo(v18);
+  action3 = [messageCopy action];
+  actionInfo = [action3 actionInfo];
+  v19 = _SQLValueForActionInfo(actionInfo);
   [v5 setObjectOrNull:v19 forKey:@"l"];
 
-  [v5 setInteger:objc_msgSend(v4 forKey:{"status"), @"c"}];
+  [v5 setInteger:objc_msgSend(messageCopy forKey:{"status"), @"c"}];
   [v5 setInteger:self->_messageOrder forKey:@"m"];
-  v20 = [v4 relevantDateRange];
-  v21 = [v20 startDate];
+  relevantDateRange = [messageCopy relevantDateRange];
+  startDate = [relevantDateRange startDate];
   v22 = _SQLValueForDate();
   [v5 setObjectOrNull:v22 forKey:@"n"];
 
-  v23 = [v4 relevantDateRange];
-  v24 = [v23 endDate];
+  relevantDateRange2 = [messageCopy relevantDateRange];
+  endDate = [relevantDateRange2 endDate];
   v25 = _SQLValueForDate();
   [v5 setObjectOrNull:v25 forKey:@"o"];
 
-  [v5 setInteger:objc_msgSend(v4 forKey:{"viewCount"), @"p"}];
-  [v5 setBool:objc_msgSend(v4 forKey:{"canReportIdentifierToAggd"), @"q"}];
-  [v5 setInteger:objc_msgSend(v4 forKey:{"maxViewCount"), @"r"}];
-  [v5 setInteger:objc_msgSend(v4 forKey:{"type"), @"s"}];
-  v26 = [v4 hardwareVersionRange];
+  [v5 setInteger:objc_msgSend(messageCopy forKey:{"viewCount"), @"p"}];
+  [v5 setBool:objc_msgSend(messageCopy forKey:{"canReportIdentifierToAggd"), @"q"}];
+  [v5 setInteger:objc_msgSend(messageCopy forKey:{"maxViewCount"), @"r"}];
+  [v5 setInteger:objc_msgSend(messageCopy forKey:{"type"), @"s"}];
+  hardwareVersionRange = [messageCopy hardwareVersionRange];
 
   v27 = _SQLValueForHardwareVersionRange();
   [v5 setObjectOrNull:v27 forKey:@"t"];
@@ -386,15 +386,15 @@ LABEL_8:
   v9 = @"m";
   v10 = &stru_10083CEE8;
   v3 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100027B2C;
   v6[3] = &unk_10083C240;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
-  [(SQLiteEntity *)self getValuesForProperties:v4 withApplier:v6];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v6];
 }
 
 @end

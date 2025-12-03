@@ -1,16 +1,16 @@
 @interface APOdmlTrainingRowBiomeQuery
-+ (void)combineRecords:(id)a3 andSaveTo:(id)a4;
-+ (void)trainingRowsFromBiomeEvent:(id)a3 recordID:(id)a4 requiredFeatures:(id)a5 andSaveTo:(id)a6;
-+ (void)validateRows:(id)a3 recipe:(id)a4;
-- (APOdmlTrainingRowBiomeQuery)initWithRecipe:(id)a3;
++ (void)combineRecords:(id)records andSaveTo:(id)to;
++ (void)trainingRowsFromBiomeEvent:(id)event recordID:(id)d requiredFeatures:(id)features andSaveTo:(id)to;
++ (void)validateRows:(id)rows recipe:(id)recipe;
+- (APOdmlTrainingRowBiomeQuery)initWithRecipe:(id)recipe;
 - (id)makeQuery;
 @end
 
 @implementation APOdmlTrainingRowBiomeQuery
 
-- (APOdmlTrainingRowBiomeQuery)initWithRecipe:(id)a3
+- (APOdmlTrainingRowBiomeQuery)initWithRecipe:(id)recipe
 {
-  v4 = a3;
+  recipeCopy = recipe;
   v10.receiver = self;
   v10.super_class = APOdmlTrainingRowBiomeQuery;
   v5 = [(APOdmlTrainingRowBiomeQuery *)&v10 init];
@@ -19,7 +19,7 @@
     v6 = objc_alloc_init(APOdmlBiomeSQLQuery);
     objc_msgSend_setRawQuery_(v5, v7, v6);
 
-    objc_msgSend_setRecipe_(v5, v8, v4);
+    objc_msgSend_setRecipe_(v5, v8, recipeCopy);
   }
 
   return v5;
@@ -82,12 +82,12 @@
   return v44;
 }
 
-+ (void)combineRecords:(id)a3 andSaveTo:(id)a4
++ (void)combineRecords:(id)records andSaveTo:(id)to
 {
   v84 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_adamID(v5, v7, v8);
+  recordsCopy = records;
+  toCopy = to;
+  v9 = objc_msgSend_adamID(recordsCopy, v7, v8);
 
   if (!v9)
   {
@@ -106,72 +106,72 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v12 = objc_msgSend_allKeys(v6, v10, v11);
-  v15 = objc_msgSend_recordID(v5, v13, v14);
+  v12 = objc_msgSend_allKeys(toCopy, v10, v11);
+  v15 = objc_msgSend_recordID(recordsCopy, v13, v14);
   v17 = objc_msgSend_containsObject_(v12, v16, v15);
 
   if (!v17)
   {
-    v24 = objc_msgSend_dictionaryRepresentation(v5, v18, v19);
-    v67 = objc_msgSend_recordID(v5, v74, v75);
-    objc_msgSend_setObject_forKeyedSubscript_(v6, v76, v24, v67);
+    v24 = objc_msgSend_dictionaryRepresentation(recordsCopy, v18, v19);
+    v67 = objc_msgSend_recordID(recordsCopy, v74, v75);
+    objc_msgSend_setObject_forKeyedSubscript_(toCopy, v76, v24, v67);
     goto LABEL_20;
   }
 
-  v20 = objc_msgSend_recordID(v5, v18, v19);
-  v22 = objc_msgSend_objectForKeyedSubscript_(v6, v21, v20);
+  v20 = objc_msgSend_recordID(recordsCopy, v18, v19);
+  v22 = objc_msgSend_objectForKeyedSubscript_(toCopy, v21, v20);
   v24 = objc_msgSend_objectForKeyedSubscript_(v22, v23, @"AdRecords");
 
   v27 = objc_msgSend_allKeys(v24, v25, v26);
-  v30 = objc_msgSend_adamID(v5, v28, v29);
+  v30 = objc_msgSend_adamID(recordsCopy, v28, v29);
   v32 = objc_msgSend_containsObject_(v27, v31, v30);
 
   if (!v32)
   {
-    v67 = objc_msgSend_dictionaryRepresentation(v5, v33, v34);
+    v67 = objc_msgSend_dictionaryRepresentation(recordsCopy, v33, v34);
     v70 = objc_msgSend_objectForKeyedSubscript_(v67, v77, @"AdRecords");
-    v72 = objc_msgSend_adamID(v5, v78, v79);
+    v72 = objc_msgSend_adamID(recordsCopy, v78, v79);
     objc_msgSend_setObject_forKeyedSubscript_(v24, v80, v70, v72);
     goto LABEL_19;
   }
 
-  if (objc_msgSend_impressed(v5, v33, v34))
+  if (objc_msgSend_impressed(recordsCopy, v33, v34))
   {
-    v37 = objc_msgSend_adamID(v5, v35, v36);
+    v37 = objc_msgSend_adamID(recordsCopy, v35, v36);
     v39 = objc_msgSend_objectForKeyedSubscript_(v24, v38, v37);
     objc_msgSend_setObject_forKeyedSubscript_(v39, v40, MEMORY[0x277CBEC38], @"Impressed");
   }
 
-  if (objc_msgSend_tapped(v5, v35, v36))
+  if (objc_msgSend_tapped(recordsCopy, v35, v36))
   {
-    v43 = objc_msgSend_adamID(v5, v41, v42);
+    v43 = objc_msgSend_adamID(recordsCopy, v41, v42);
     v45 = objc_msgSend_objectForKeyedSubscript_(v24, v44, v43);
     objc_msgSend_setObject_forKeyedSubscript_(v45, v46, MEMORY[0x277CBEC38], @"Tapped");
   }
 
-  if (objc_msgSend_dupe(v5, v41, v42))
+  if (objc_msgSend_dupe(recordsCopy, v41, v42))
   {
-    v49 = objc_msgSend_adamID(v5, v47, v48);
+    v49 = objc_msgSend_adamID(recordsCopy, v47, v48);
     v51 = objc_msgSend_objectForKeyedSubscript_(v24, v50, v49);
     objc_msgSend_setObject_forKeyedSubscript_(v51, v52, MEMORY[0x277CBEC38], @"Dupe");
   }
 
-  if (objc_msgSend_installed(v5, v47, v48))
+  if (objc_msgSend_installed(recordsCopy, v47, v48))
   {
-    v55 = objc_msgSend_adamID(v5, v53, v54);
+    v55 = objc_msgSend_adamID(recordsCopy, v53, v54);
     v57 = objc_msgSend_objectForKeyedSubscript_(v24, v56, v55);
     objc_msgSend_setObject_forKeyedSubscript_(v57, v58, MEMORY[0x277CBEC38], @"AppInstalled");
   }
 
-  if (objc_msgSend_hasErrorCode(v5, v53, v54))
+  if (objc_msgSend_hasErrorCode(recordsCopy, v53, v54))
   {
-    objc_msgSend_errorCode(v5, v59, v60);
+    objc_msgSend_errorCode(recordsCopy, v59, v60);
     if (v63 != 0)
     {
       v64 = MEMORY[0x277CCABB0];
-      objc_msgSend_errorCode(v5, v61, v62);
+      objc_msgSend_errorCode(recordsCopy, v61, v62);
       v67 = objc_msgSend_numberWithDouble_(v64, v65, v66);
-      v70 = objc_msgSend_adamID(v5, v68, v69);
+      v70 = objc_msgSend_adamID(recordsCopy, v68, v69);
       v72 = objc_msgSend_objectForKeyedSubscript_(v24, v71, v70);
       objc_msgSend_setObject_forKeyedSubscript_(v72, v73, v67, @"rerankingErrorCode");
 LABEL_19:
@@ -185,40 +185,40 @@ LABEL_21:
   v81 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)trainingRowsFromBiomeEvent:(id)a3 recordID:(id)a4 requiredFeatures:(id)a5 andSaveTo:(id)a6
++ (void)trainingRowsFromBiomeEvent:(id)event recordID:(id)d requiredFeatures:(id)features andSaveTo:(id)to
 {
-  v9 = a4;
-  v10 = a6;
-  v12 = objc_msgSend_trainingRowsFromDESRecord_featuresRequired_(APOdmlTrainingSetBuilder, v11, a3, a5);
+  dCopy = d;
+  toCopy = to;
+  v12 = objc_msgSend_trainingRowsFromDESRecord_featuresRequired_(APOdmlTrainingSetBuilder, v11, event, features);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_260EF0830;
   v16[3] = &unk_279AC6948;
-  v13 = v9;
+  v13 = dCopy;
   v17 = v13;
   objc_msgSend_enumerateObjectsUsingBlock_(v12, v14, v16);
   if (v12)
   {
-    objc_msgSend_addObjectsFromArray_(v10, v15, v12);
+    objc_msgSend_addObjectsFromArray_(toCopy, v15, v12);
   }
 }
 
-+ (void)validateRows:(id)a3 recipe:(id)a4
++ (void)validateRows:(id)rows recipe:(id)recipe
 {
-  v5 = a4;
+  recipeCopy = recipe;
   v6 = MEMORY[0x277CCAB58];
-  v7 = a3;
+  rowsCopy = rows;
   v10 = objc_msgSend_indexSet(v6, v8, v9);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = sub_260EF09AC;
   v18 = &unk_279AC6970;
-  v19 = v5;
+  v19 = recipeCopy;
   v20 = v10;
   v11 = v10;
-  v12 = v5;
-  objc_msgSend_enumerateObjectsUsingBlock_(v7, v13, &v15);
-  objc_msgSend_removeObjectsAtIndexes_(v7, v14, v11, v15, v16, v17, v18);
+  v12 = recipeCopy;
+  objc_msgSend_enumerateObjectsUsingBlock_(rowsCopy, v13, &v15);
+  objc_msgSend_removeObjectsAtIndexes_(rowsCopy, v14, v11, v15, v16, v17, v18);
 }
 
 @end

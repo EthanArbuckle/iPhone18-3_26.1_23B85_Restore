@@ -1,10 +1,10 @@
 @interface HMDLogEventBulletinNotificationsAnalyzer
 + (id)managedEventCounterRequestGroups;
-- (HMDLogEventBulletinNotificationsAnalyzer)initWithDataSource:(id)a3 notificationSettingsProvider:(id)a4;
-- (int64_t)cameraReachabilityThresholdFromConfiguration:(id)a3;
-- (void)configurationChanged:(id)a3;
-- (void)observeEvent:(id)a3;
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4;
+- (HMDLogEventBulletinNotificationsAnalyzer)initWithDataSource:(id)source notificationSettingsProvider:(id)provider;
+- (int64_t)cameraReachabilityThresholdFromConfiguration:(id)configuration;
+- (void)configurationChanged:(id)changed;
+- (void)observeEvent:(id)event;
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date;
 - (void)resetAggregationAnalysisContext;
 - (void)runDailyTask;
 @end
@@ -13,13 +13,13 @@
 
 - (void)runDailyTask
 {
-  v3 = [(HMDLogEventBulletinNotificationsAnalyzer *)self notificationSettingsProvider];
+  notificationSettingsProvider = [(HMDLogEventBulletinNotificationsAnalyzer *)self notificationSettingsProvider];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__HMDLogEventBulletinNotificationsAnalyzer_runDailyTask__block_invoke;
   v4[3] = &unk_279724838;
   v4[4] = self;
-  [v3 notificationSettingsWithCompletionHandler:v4];
+  [notificationSettingsProvider notificationSettingsWithCompletionHandler:v4];
 }
 
 void __56__HMDLogEventBulletinNotificationsAnalyzer_runDailyTask__block_invoke(uint64_t a1, void *a2)
@@ -78,27 +78,27 @@ void __56__HMDLogEventBulletinNotificationsAnalyzer_runDailyTask__block_invoke(u
 
 - (void)resetAggregationAnalysisContext
 {
-  v2 = [(HMDLogEventBulletinNotificationsAnalyzer *)self aggregationEventGroup];
-  [v2 resetEventCounters];
+  aggregationEventGroup = [(HMDLogEventBulletinNotificationsAnalyzer *)self aggregationEventGroup];
+  [aggregationEventGroup resetEventCounters];
 }
 
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(HMDLogEventBulletinNotificationsAnalyzer *)self aggregationEventGroup];
-  v8 = [v9 fetchEventCounterForEventName:@"BulletinTotalCount" forDate:v6];
+  dateCopy = date;
+  eventCopy = event;
+  aggregationEventGroup = [(HMDLogEventBulletinNotificationsAnalyzer *)self aggregationEventGroup];
+  v8 = [aggregationEventGroup fetchEventCounterForEventName:@"BulletinTotalCount" forDate:dateCopy];
 
-  [v7 setBulletinNotificationsPostedCount:v8];
+  [eventCopy setBulletinNotificationsPostedCount:v8];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v9 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v9;
+    v4 = eventCopy;
   }
 
   else
@@ -109,18 +109,18 @@ void __56__HMDLogEventBulletinNotificationsAnalyzer_runDailyTask__block_invoke(u
   v5 = v4;
   if (v5)
   {
-    v6 = [(HMDLogEventBulletinNotificationsAnalyzer *)self aggregationEventGroup];
-    [v6 incrementEventCounterForEventName:@"BulletinTotalCount"];
+    aggregationEventGroup = [(HMDLogEventBulletinNotificationsAnalyzer *)self aggregationEventGroup];
+    [aggregationEventGroup incrementEventCounterForEventName:@"BulletinTotalCount"];
 
-    v7 = [(HMDLogEventBulletinNotificationsAnalyzer *)self topicEventGroup];
-    v8 = [v5 topic];
-    [v7 incrementEventCounterForEventName:v8];
+    topicEventGroup = [(HMDLogEventBulletinNotificationsAnalyzer *)self topicEventGroup];
+    topic = [v5 topic];
+    [topicEventGroup incrementEventCounterForEventName:topic];
   }
 }
 
-- (int64_t)cameraReachabilityThresholdFromConfiguration:(id)a3
+- (int64_t)cameraReachabilityThresholdFromConfiguration:(id)configuration
 {
-  v3 = 30 * [a3 totalCameraAccessoriesRecordingEnabled];
+  v3 = 30 * [configuration totalCameraAccessoriesRecordingEnabled];
   if (v3 <= 45)
   {
     v3 = 45;
@@ -137,67 +137,67 @@ void __56__HMDLogEventBulletinNotificationsAnalyzer_runDailyTask__block_invoke(u
   }
 }
 
-- (void)configurationChanged:(id)a3
+- (void)configurationChanged:(id)changed
 {
-  v4 = [(HMDLogEventBulletinNotificationsAnalyzer *)self cameraReachabilityThresholdFromConfiguration:a3];
-  v5 = [(HMDLogEventBulletinNotificationsAnalyzer *)self cameraReachabilityTTRTrigger];
-  [v5 setTargetThreshold:v4];
+  v4 = [(HMDLogEventBulletinNotificationsAnalyzer *)self cameraReachabilityThresholdFromConfiguration:changed];
+  cameraReachabilityTTRTrigger = [(HMDLogEventBulletinNotificationsAnalyzer *)self cameraReachabilityTTRTrigger];
+  [cameraReachabilityTTRTrigger setTargetThreshold:v4];
 }
 
-- (HMDLogEventBulletinNotificationsAnalyzer)initWithDataSource:(id)a3 notificationSettingsProvider:(id)a4
+- (HMDLogEventBulletinNotificationsAnalyzer)initWithDataSource:(id)source notificationSettingsProvider:(id)provider
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  providerCopy = provider;
   v46.receiver = self;
   v46.super_class = HMDLogEventBulletinNotificationsAnalyzer;
   v8 = [(HMDLogEventBulletinNotificationsAnalyzer *)&v46 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notificationSettingsProvider, a4);
-    v10 = [v6 legacyCountersManager];
-    v11 = [v10 counterGroupForName:@"BulletinAggregationEventGroup"];
+    objc_storeStrong(&v8->_notificationSettingsProvider, provider);
+    legacyCountersManager = [sourceCopy legacyCountersManager];
+    v11 = [legacyCountersManager counterGroupForName:@"BulletinAggregationEventGroup"];
     aggregationEventGroup = v9->_aggregationEventGroup;
     v9->_aggregationEventGroup = v11;
 
-    v13 = [v6 legacyCountersManager];
-    v14 = [v13 counterGroupForName:@"BulletinTopicEventGroup"];
+    legacyCountersManager2 = [sourceCopy legacyCountersManager];
+    v14 = [legacyCountersManager2 counterGroupForName:@"BulletinTopicEventGroup"];
     topicEventGroup = v9->_topicEventGroup;
     v9->_topicEventGroup = v14;
 
-    v16 = [v6 logEventSubmitter];
+    logEventSubmitter = [sourceCopy logEventSubmitter];
     logEventSubmitter = v9->_logEventSubmitter;
-    v9->_logEventSubmitter = v16;
+    v9->_logEventSubmitter = logEventSubmitter;
 
-    v18 = [v6 radarInitiator];
+    radarInitiator = [sourceCopy radarInitiator];
 
-    if (v18)
+    if (radarInitiator)
     {
       v19 = [HMDCounterThresholdTTRTrigger alloc];
-      v20 = [v6 radarInitiator];
-      v21 = [(HMDCounterThresholdTTRTrigger *)v19 initWithThreshold:20 displayReason:@"home hub couldn't be reached" radarInitiator:v20];
+      radarInitiator2 = [sourceCopy radarInitiator];
+      v21 = [(HMDCounterThresholdTTRTrigger *)v19 initWithThreshold:20 displayReason:@"home hub couldn't be reached" radarInitiator:radarInitiator2];
       homeHubReachabilityTTRTrigger = v9->_homeHubReachabilityTTRTrigger;
       v9->_homeHubReachabilityTTRTrigger = v21;
 
-      v23 = [v6 legacyCountersManager];
+      legacyCountersManager3 = [sourceCopy legacyCountersManager];
       v24 = v9->_homeHubReachabilityTTRTrigger;
       v25 = @"HomeHubReachability";
-      [v23 addObserver:v24 forEventName:@"HomeHubReachability" requestGroup:@"BulletinTopicEventGroup"];
+      [legacyCountersManager3 addObserver:v24 forEventName:@"HomeHubReachability" requestGroup:@"BulletinTopicEventGroup"];
 
-      v26 = [v6 cachedConfiguration];
-      v27 = [(HMDLogEventBulletinNotificationsAnalyzer *)v9 cameraReachabilityThresholdFromConfiguration:v26];
+      cachedConfiguration = [sourceCopy cachedConfiguration];
+      v27 = [(HMDLogEventBulletinNotificationsAnalyzer *)v9 cameraReachabilityThresholdFromConfiguration:cachedConfiguration];
 
       v28 = [HMDCounterThresholdTTRTrigger alloc];
-      v29 = [v6 radarInitiator];
-      v30 = [(HMDCounterThresholdTTRTrigger *)v28 initWithThreshold:v27 displayReason:@"camera was unreachable" radarInitiator:v29];
+      radarInitiator3 = [sourceCopy radarInitiator];
+      v30 = [(HMDCounterThresholdTTRTrigger *)v28 initWithThreshold:v27 displayReason:@"camera was unreachable" radarInitiator:radarInitiator3];
       cameraReachabilityTTRTrigger = v9->_cameraReachabilityTTRTrigger;
       v9->_cameraReachabilityTTRTrigger = v30;
 
-      v32 = [v6 legacyCountersManager];
+      legacyCountersManager4 = [sourceCopy legacyCountersManager];
       v33 = v9->_cameraReachabilityTTRTrigger;
       v34 = @"CameraReachability";
-      [v32 addObserver:v33 forEventName:@"CameraReachability" requestGroup:@"BulletinTopicEventGroup"];
+      [legacyCountersManager4 addObserver:v33 forEventName:@"CameraReachability" requestGroup:@"BulletinTopicEventGroup"];
 
       objc_initWeak(&location, v9);
       v40 = MEMORY[0x277D85DD0];
@@ -205,18 +205,18 @@ void __56__HMDLogEventBulletinNotificationsAnalyzer_runDailyTask__block_invoke(u
       v42 = __92__HMDLogEventBulletinNotificationsAnalyzer_initWithDataSource_notificationSettingsProvider___block_invoke;
       v43 = &unk_279724810;
       objc_copyWeak(&v44, &location);
-      [v6 addConfigurationChangedObserver:&v40];
+      [sourceCopy addConfigurationChangedObserver:&v40];
       objc_destroyWeak(&v44);
       objc_destroyWeak(&location);
     }
 
-    v35 = [v6 logEventDispatcher];
+    logEventDispatcher = [sourceCopy logEventDispatcher];
     v47[0] = objc_opt_class();
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:1];
-    [v35 addObserver:v9 forEventClasses:v36];
+    [logEventDispatcher addObserver:v9 forEventClasses:v36];
 
-    v37 = [v6 dailyScheduler];
-    [v37 registerDailyTaskRunner:v9];
+    dailyScheduler = [sourceCopy dailyScheduler];
+    [dailyScheduler registerDailyTaskRunner:v9];
   }
 
   v38 = *MEMORY[0x277D85DE8];

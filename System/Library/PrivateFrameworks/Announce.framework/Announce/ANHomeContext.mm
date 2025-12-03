@@ -1,9 +1,9 @@
 @interface ANHomeContext
 - (ANHomeContext)init;
-- (ANHomeContext)initWithCoder:(id)a3;
+- (ANHomeContext)initWithCoder:(id)coder;
 - (BOOL)isEmpty;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANHomeContext
@@ -27,24 +27,24 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(ANHomeContext *)self homeName];
-  if ([v3 length])
+  homeName = [(ANHomeContext *)self homeName];
+  if ([homeName length])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(ANHomeContext *)self zoneNames];
-    if ([v5 count])
+    zoneNames = [(ANHomeContext *)self zoneNames];
+    if ([zoneNames count])
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(ANHomeContext *)self roomNames];
-      v4 = [v6 count] == 0;
+      roomNames = [(ANHomeContext *)self roomNames];
+      v4 = [roomNames count] == 0;
     }
   }
 
@@ -54,47 +54,47 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ANHomeContext *)self homeName];
-  v5 = [(ANHomeContext *)self zoneNames];
-  v6 = [v5 description];
-  v7 = [(ANHomeContext *)self roomNames];
-  v8 = [v7 description];
-  v9 = [v3 stringWithFormat:@"Home Name: %@, Zone Names: %@, Room Names: %@", v4, v6, v8];
+  homeName = [(ANHomeContext *)self homeName];
+  zoneNames = [(ANHomeContext *)self zoneNames];
+  v6 = [zoneNames description];
+  roomNames = [(ANHomeContext *)self roomNames];
+  v8 = [roomNames description];
+  v9 = [v3 stringWithFormat:@"Home Name: %@, Zone Names: %@, Room Names: %@", homeName, v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ANHomeContext *)self homeName];
-  [v4 encodeObject:v5 forKey:@"home"];
+  coderCopy = coder;
+  homeName = [(ANHomeContext *)self homeName];
+  [coderCopy encodeObject:homeName forKey:@"home"];
 
-  v6 = [(ANHomeContext *)self zoneNames];
-  [v4 encodeObject:v6 forKey:@"zones"];
+  zoneNames = [(ANHomeContext *)self zoneNames];
+  [coderCopy encodeObject:zoneNames forKey:@"zones"];
 
-  v7 = [(ANHomeContext *)self roomNames];
-  [v4 encodeObject:v7 forKey:@"rooms"];
+  roomNames = [(ANHomeContext *)self roomNames];
+  [coderCopy encodeObject:roomNames forKey:@"rooms"];
 }
 
-- (ANHomeContext)initWithCoder:(id)a3
+- (ANHomeContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ANHomeContext;
   v5 = [(ANHomeContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
     [(ANHomeContext *)v5 setHomeName:v6];
 
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"zones"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"zones"];
     [(ANHomeContext *)v5 setZoneNames:v10];
 
-    v11 = [v4 decodeObjectOfClasses:v9 forKey:@"rooms"];
+    v11 = [coderCopy decodeObjectOfClasses:v9 forKey:@"rooms"];
     [(ANHomeContext *)v5 setRoomNames:v11];
   }
 

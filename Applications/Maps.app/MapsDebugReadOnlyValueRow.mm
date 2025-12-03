@@ -1,19 +1,19 @@
 @interface MapsDebugReadOnlyValueRow
-- (void)configureCell:(id)a3;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation MapsDebugReadOnlyValueRow
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v11.receiver = self;
   v11.super_class = MapsDebugReadOnlyValueRow;
-  [(MapsDebugTableRow *)&v11 configureCell:v4];
-  v5 = [v4 contentConfiguration];
-  v6 = [v4 detailTextLabel];
-  v7 = [v6 text];
-  v8 = [v7 length];
+  [(MapsDebugTableRow *)&v11 configureCell:cellCopy];
+  contentConfiguration = [cellCopy contentConfiguration];
+  detailTextLabel = [cellCopy detailTextLabel];
+  text = [detailTextLabel text];
+  v8 = [text length];
 
   if (v8)
   {
@@ -25,10 +25,10 @@
     +[UIColor secondaryLabelColor];
   }
   v9 = ;
-  v10 = [v5 textProperties];
-  [v10 setColor:v9];
+  textProperties = [contentConfiguration textProperties];
+  [textProperties setColor:v9];
 
-  [v4 setContentConfiguration:v5];
+  [cellCopy setContentConfiguration:contentConfiguration];
 }
 
 @end

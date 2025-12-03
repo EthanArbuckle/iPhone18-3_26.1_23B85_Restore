@@ -1,40 +1,40 @@
 @interface ARServerConnection
-- (ARServerConnection)initWithListenerEndpoint:(id)a3;
-- (ARServerConnection)initWithServiceName:(id)a3 options:(unint64_t)a4 queue:(id)a5;
+- (ARServerConnection)initWithListenerEndpoint:(id)endpoint;
+- (ARServerConnection)initWithServiceName:(id)name options:(unint64_t)options queue:(id)queue;
 - (ARServerConnectionDelegate)delegate;
 - (NSXPCConnection)connection;
 - (id)interruptionHandler;
 - (id)invalidationHandler;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)serverConnectionInterrupted;
 - (void)serverConnectionInvalidated;
-- (void)setExportedInterface:(id)a3;
-- (void)setExportedObject:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
-- (void)setRemoteObjectInterface:(id)a3;
+- (void)setExportedInterface:(id)interface;
+- (void)setExportedObject:(id)object;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
+- (void)setRemoteObjectInterface:(id)interface;
 @end
 
 @implementation ARServerConnection
 
-- (ARServerConnection)initWithListenerEndpoint:(id)a3
+- (ARServerConnection)initWithListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v13.receiver = self;
   v13.super_class = ARServerConnection;
   v6 = [(ARServerConnection *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listenerEndpoint, a3);
+    objc_storeStrong(&v6->_listenerEndpoint, endpoint);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __47__ARServerConnection_initWithListenerEndpoint___block_invoke;
     v11[3] = &unk_1E817EA58;
-    v12 = v5;
+    v12 = endpointCopy;
     v8 = [v11 copy];
     connectionCreationBlock = v7->_connectionCreationBlock;
     v7->_connectionCreationBlock = v8;
@@ -50,10 +50,10 @@ id __47__ARServerConnection_initWithListenerEndpoint___block_invoke(uint64_t a1)
   return v1;
 }
 
-- (ARServerConnection)initWithServiceName:(id)a3 options:(unint64_t)a4 queue:(id)a5
+- (ARServerConnection)initWithServiceName:(id)name options:(unint64_t)options queue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = ARServerConnection;
   v10 = [(ARServerConnection *)&v18 init];
@@ -63,9 +63,9 @@ id __47__ARServerConnection_initWithListenerEndpoint___block_invoke(uint64_t a1)
     v14[1] = 3221225472;
     v14[2] = __56__ARServerConnection_initWithServiceName_options_queue___block_invoke;
     v14[3] = &unk_1E817EA80;
-    v15 = v8;
-    v17 = a4;
-    v16 = v9;
+    v15 = nameCopy;
+    optionsCopy = options;
+    v16 = queueCopy;
     v11 = [v14 copy];
     connectionCreationBlock = v10->_connectionCreationBlock;
     v10->_connectionCreationBlock = v11;
@@ -103,7 +103,7 @@ id __56__ARServerConnection_initWithServiceName_options_queue___block_invoke(voi
     *buf = 138543618;
     v9 = v6;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
@@ -162,25 +162,25 @@ void __32__ARServerConnection_connection__block_invoke_2(uint64_t a1)
   [WeakRetained serverConnectionInvalidated];
 }
 
-- (void)setExportedInterface:(id)a3
+- (void)setExportedInterface:(id)interface
 {
-  objc_storeStrong(&self->_exportedInterface, a3);
+  objc_storeStrong(&self->_exportedInterface, interface);
 
   [(ARServerConnection *)self invalidate];
 }
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
+    v4 = objectCopy;
   }
 
   else
   {
-    v4 = [ARWeakReference weakReferenceWithObject:v6];
+    v4 = [ARWeakReference weakReferenceWithObject:objectCopy];
   }
 
   exportedObjectWeakReference = self->_exportedObjectWeakReference;
@@ -189,9 +189,9 @@ void __32__ARServerConnection_connection__block_invoke_2(uint64_t a1)
   [(ARServerConnection *)self invalidate];
 }
 
-- (void)setRemoteObjectInterface:(id)a3
+- (void)setRemoteObjectInterface:(id)interface
 {
-  objc_storeStrong(&self->_remoteObjectInterface, a3);
+  objc_storeStrong(&self->_remoteObjectInterface, interface);
 
   [(ARServerConnection *)self invalidate];
 }
@@ -225,58 +225,58 @@ void __32__ARServerConnection_connection__block_invoke_2(uint64_t a1)
 
 - (id)remoteObjectProxy
 {
-  v2 = [(ARServerConnection *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(ARServerConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ARServerConnection *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(ARServerConnection *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ARServerConnection *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(ARServerConnection *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)interruptionHandler
 {
-  v2 = [(ARServerConnection *)self connection];
-  v3 = [v2 interruptionHandler];
+  connection = [(ARServerConnection *)self connection];
+  interruptionHandler = [connection interruptionHandler];
 
-  return v3;
+  return interruptionHandler;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ARServerConnection *)self connection];
-  [v5 setInterruptionHandler:v4];
+  handlerCopy = handler;
+  connection = [(ARServerConnection *)self connection];
+  [connection setInterruptionHandler:handlerCopy];
 }
 
 - (id)invalidationHandler
 {
-  v2 = [(ARServerConnection *)self connection];
-  v3 = [v2 invalidationHandler];
+  connection = [(ARServerConnection *)self connection];
+  invalidationHandler = [connection invalidationHandler];
 
-  return v3;
+  return invalidationHandler;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ARServerConnection *)self connection];
-  [v5 setInvalidationHandler:v4];
+  handlerCopy = handler;
+  connection = [(ARServerConnection *)self connection];
+  [connection setInvalidationHandler:handlerCopy];
 }
 
 - (ARServerConnectionDelegate)delegate

@@ -1,19 +1,19 @@
 @interface _DABestMeContactABLegacyPicker
-- (BOOL)pickBestMeContactForGivenName:(id)a3 familyName:(id)a4 primaryEmail:(id)a5;
-- (_DABestMeContactABLegacyPicker)initWithAddressBook:(void *)a3;
+- (BOOL)pickBestMeContactForGivenName:(id)name familyName:(id)familyName primaryEmail:(id)email;
+- (_DABestMeContactABLegacyPicker)initWithAddressBook:(void *)book;
 - (void)dealloc;
 @end
 
 @implementation _DABestMeContactABLegacyPicker
 
-- (_DABestMeContactABLegacyPicker)initWithAddressBook:(void *)a3
+- (_DABestMeContactABLegacyPicker)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _DABestMeContactABLegacyPicker;
   v4 = [(_DABestMeContactABLegacyPicker *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -27,11 +27,11 @@
   [(_DABestMeContactABLegacyPicker *)&v3 dealloc];
 }
 
-- (BOOL)pickBestMeContactForGivenName:(id)a3 familyName:(id)a4 primaryEmail:(id)a5
+- (BOOL)pickBestMeContactForGivenName:(id)name familyName:(id)familyName primaryEmail:(id)email
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  emailCopy = email;
+  familyNameCopy = familyName;
+  nameCopy = name;
   [(_DABestMeContactABLegacyPicker *)self addressBook];
   LOBYTE(self) = ABAddressBookSetBestMeIfNeeded();
 

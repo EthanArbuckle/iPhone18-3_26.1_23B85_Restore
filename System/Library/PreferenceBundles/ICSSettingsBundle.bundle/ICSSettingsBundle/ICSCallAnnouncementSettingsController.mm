@@ -1,28 +1,28 @@
 @interface ICSCallAnnouncementSettingsController
-+ (id)localizedDescriptionForAnnounceCallsConfiguration:(unint64_t)a3;
-+ (id)localizedStringForKey:(id)a3;
-+ (id)localizedlabelTextForAnnounceCallsConfiguration:(unint64_t)a3;
++ (id)localizedDescriptionForAnnounceCallsConfiguration:(unint64_t)configuration;
++ (id)localizedStringForKey:(id)key;
++ (id)localizedlabelTextForAnnounceCallsConfiguration:(unint64_t)configuration;
 - (id)specifiers;
-- (void)donateAnnounceCallsEnabledSignalForState:(unint64_t)a3 previousState:(unint64_t)a4;
+- (void)donateAnnounceCallsEnabledSignalForState:(unint64_t)state previousState:(unint64_t)previousState;
 - (void)emitNavigationEvent;
 - (void)loadDataSource;
-- (void)refreshGroupForSpecifier:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)refreshGroupForSpecifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ICSCallAnnouncementSettingsController
 
-+ (id)localizedlabelTextForAnnounceCallsConfiguration:(unint64_t)a3
++ (id)localizedlabelTextForAnnounceCallsConfiguration:(unint64_t)configuration
 {
-  if (a3 > 3)
+  if (configuration > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [objc_opt_class() localizedStringForKey:*(&off_C4C0 + a3)];
+    v4 = [objc_opt_class() localizedStringForKey:*(&off_C4C0 + configuration)];
   }
 
   return v4;
@@ -30,27 +30,27 @@
 
 - (void)emitNavigationEvent
 {
-  v3 = [(ICSCallAnnouncementSettingsController *)self specifier];
-  v4 = [v3 target];
-  v5 = [v4 parentListController];
-  v26 = [v5 specifierID];
+  specifier = [(ICSCallAnnouncementSettingsController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
 
   v6 = &PHPreferencesGetValueInDomain_ptr;
   v7 = [_NSLocalizedStringResource alloc];
   v8 = +[NSLocale currentLocale];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
-  v10 = [v9 bundleURL];
-  v11 = [v7 initWithKey:@"Apps" table:0 locale:v8 bundleURL:v10];
+  bundleURL = [v9 bundleURL];
+  v11 = [v7 initWithKey:@"Apps" table:0 locale:v8 bundleURL:bundleURL];
 
   v12 = [[NSMutableArray alloc] initWithObjects:{v11, 0}];
-  if ([v26 isEqualToString:@"com.apple.preferences.facetime"])
+  if ([specifierID isEqualToString:@"com.apple.preferences.facetime"])
   {
     v13 = TUBundleIdentifierFaceTimeApplication;
     v14 = [_NSLocalizedStringResource alloc];
     v15 = +[NSLocale currentLocale];
     v16 = [NSBundle bundleForClass:objc_opt_class()];
-    v17 = [v16 bundleURL];
-    v18 = [v14 initWithKey:@"FaceTime" table:0 locale:v15 bundleURL:v17];
+    bundleURL2 = [v16 bundleURL];
+    v18 = [v14 initWithKey:@"FaceTime" table:0 locale:v15 bundleURL:bundleURL2];
     [v12 addObject:v18];
 
     v6 = &PHPreferencesGetValueInDomain_ptr;
@@ -58,7 +58,7 @@
 
   else
   {
-    if (![v26 isEqualToString:@"com.apple.preferences.phone"])
+    if (![specifierID isEqualToString:@"com.apple.preferences.phone"])
     {
       goto LABEL_6;
     }
@@ -73,29 +73,29 @@
   v21 = objc_alloc(v6[97]);
   v22 = +[NSLocale currentLocale];
   v23 = [NSBundle bundleForClass:objc_opt_class()];
-  v24 = [v23 bundleURL];
-  v25 = [v21 initWithKey:@"Announce Calls" table:0 locale:v22 bundleURL:v24];
+  bundleURL3 = [v23 bundleURL];
+  v25 = [v21 initWithKey:@"Announce Calls" table:0 locale:v22 bundleURL:bundleURL3];
 
   [(ICSCallAnnouncementSettingsController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:v13 title:v25 localizedNavigationComponents:v12 deepLink:v20];
 LABEL_6:
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = ICSCallAnnouncementSettingsController;
-  v5 = [(ICSCallAnnouncementSettingsController *)&v9 specifier];
+  specifier = [(ICSCallAnnouncementSettingsController *)&v9 specifier];
 
-  if (v5 != v4)
+  if (specifier != specifierCopy)
   {
     v8.receiver = self;
     v8.super_class = ICSCallAnnouncementSettingsController;
-    [(ICSCallAnnouncementSettingsController *)&v8 setSpecifier:v4];
-    v6 = [v4 tu_userConfiguration];
-    if (v6)
+    [(ICSCallAnnouncementSettingsController *)&v8 setSpecifier:specifierCopy];
+    tu_userConfiguration = [specifierCopy tu_userConfiguration];
+    if (tu_userConfiguration)
     {
-      [(ICSCallAnnouncementSettingsController *)self setUserConfiguration:v6];
+      [(ICSCallAnnouncementSettingsController *)self setUserConfiguration:tu_userConfiguration];
     }
 
     else
@@ -143,39 +143,39 @@ LABEL_6:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = ICSCallAnnouncementSettingsController;
-  v6 = a4;
-  [(ICSCallAnnouncementSettingsController *)&v9 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(ICSCallAnnouncementSettingsController *)self indexForIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  [(ICSCallAnnouncementSettingsController *)&v9 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(ICSCallAnnouncementSettingsController *)self indexForIndexPath:pathCopy, v9.receiver, v9.super_class];
 
   v8 = [(ICSCallAnnouncementSettingsController *)self specifierAtIndex:v7];
   [(ICSCallAnnouncementSettingsController *)self refreshGroupForSpecifier:v8];
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_C9F0 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_C9F0 table:localizationTableName];
 
   return v7;
 }
 
-+ (id)localizedDescriptionForAnnounceCallsConfiguration:(unint64_t)a3
++ (id)localizedDescriptionForAnnounceCallsConfiguration:(unint64_t)configuration
 {
-  if (a3 > 1)
+  if (configuration > 1)
   {
     v4 = @"ANNOUNCE_CALLS_LIST_ITEM_DESCRIPTION_HEADPHONES_ONLY";
-    if (a3 != 3)
+    if (configuration != 3)
     {
       v4 = 0;
     }
 
-    if (a3 == 2)
+    if (configuration == 2)
     {
       v3 = @"ANNOUNCE_CALLS_LIST_ITEM_DESCRIPTION_HANDSFREE";
     }
@@ -188,13 +188,13 @@ LABEL_6:
 
   else
   {
-    if (!a3)
+    if (!configuration)
     {
       v3 = @"ANNOUNCE_CALLS_LIST_ITEM_DESCRIPTION_NEVER";
       goto LABEL_14;
     }
 
-    if (a3 == 1)
+    if (configuration == 1)
     {
       v3 = @"ANNOUNCE_CALLS_LIST_ITEM_DESCRIPTION_ALWAYS";
     }
@@ -219,80 +219,80 @@ LABEL_14:
 
 - (void)loadDataSource
 {
-  v3 = [(ICSCallAnnouncementSettingsController *)self userConfiguration];
-  v4 = [v3 announceCalls];
+  userConfiguration = [(ICSCallAnnouncementSettingsController *)self userConfiguration];
+  announceCalls = [userConfiguration announceCalls];
 
-  v5 = 0;
-  if (v4 > 1)
+  handsFreeListItemSpecifier = 0;
+  if (announceCalls > 1)
   {
-    if (v4 == &dword_0 + 2)
+    if (announceCalls == &dword_0 + 2)
     {
-      v5 = [(ICSCallAnnouncementSettingsController *)self handsFreeListItemSpecifier];
+      handsFreeListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self handsFreeListItemSpecifier];
     }
 
-    else if (v4 == &dword_0 + 3)
+    else if (announceCalls == &dword_0 + 3)
     {
-      v5 = [(ICSCallAnnouncementSettingsController *)self headphonesOnlyListItemSpecifier];
+      handsFreeListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self headphonesOnlyListItemSpecifier];
     }
   }
 
-  else if (v4)
+  else if (announceCalls)
   {
-    if (v4 == &dword_0 + 1)
+    if (announceCalls == &dword_0 + 1)
     {
-      v5 = [(ICSCallAnnouncementSettingsController *)self alwaysListItemSpecifier];
+      handsFreeListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self alwaysListItemSpecifier];
     }
   }
 
   else
   {
-    v5 = [(ICSCallAnnouncementSettingsController *)self neverListItemSpecifier];
+    handsFreeListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self neverListItemSpecifier];
   }
 
-  v9 = v5;
-  v6 = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
-  [v6 setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
+  v9 = handsFreeListItemSpecifier;
+  groupSpecifier = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
+  [groupSpecifier setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
 
-  v7 = [objc_opt_class() localizedDescriptionForAnnounceCallsConfiguration:v4];
-  v8 = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
-  [v8 setProperty:v7 forKey:PSFooterTextGroupKey];
+  v7 = [objc_opt_class() localizedDescriptionForAnnounceCallsConfiguration:announceCalls];
+  groupSpecifier2 = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
+  [groupSpecifier2 setProperty:v7 forKey:PSFooterTextGroupKey];
 }
 
-- (void)refreshGroupForSpecifier:(id)a3
+- (void)refreshGroupForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICSCallAnnouncementSettingsController *)self userConfiguration];
-  v6 = [v5 announceCalls];
+  specifierCopy = specifier;
+  userConfiguration = [(ICSCallAnnouncementSettingsController *)self userConfiguration];
+  announceCalls = [userConfiguration announceCalls];
 
-  v7 = [(ICSCallAnnouncementSettingsController *)self alwaysListItemSpecifier];
+  alwaysListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self alwaysListItemSpecifier];
 
-  if (v7 == v4)
+  if (alwaysListItemSpecifier == specifierCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v6;
+    v8 = announceCalls;
   }
 
-  v9 = [(ICSCallAnnouncementSettingsController *)self handsFreeListItemSpecifier];
+  handsFreeListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self handsFreeListItemSpecifier];
 
-  if (v9 == v4)
+  if (handsFreeListItemSpecifier == specifierCopy)
   {
     v8 = 2;
   }
 
-  v10 = [(ICSCallAnnouncementSettingsController *)self headphonesOnlyListItemSpecifier];
+  headphonesOnlyListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self headphonesOnlyListItemSpecifier];
 
-  if (v10 == v4)
+  if (headphonesOnlyListItemSpecifier == specifierCopy)
   {
     v8 = 3;
   }
 
-  v11 = [(ICSCallAnnouncementSettingsController *)self neverListItemSpecifier];
+  neverListItemSpecifier = [(ICSCallAnnouncementSettingsController *)self neverListItemSpecifier];
 
-  if (v11 == v4)
+  if (neverListItemSpecifier == specifierCopy)
   {
     v12 = 0;
   }
@@ -303,22 +303,22 @@ LABEL_14:
   }
 
   v16 = [objc_opt_class() localizedDescriptionForAnnounceCallsConfiguration:v12];
-  v13 = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
-  [v13 setProperty:v16 forKey:PSFooterTextGroupKey];
+  groupSpecifier = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
+  [groupSpecifier setProperty:v16 forKey:PSFooterTextGroupKey];
 
-  v14 = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
-  [(ICSCallAnnouncementSettingsController *)self reloadSpecifier:v14];
+  groupSpecifier2 = [(ICSCallAnnouncementSettingsController *)self groupSpecifier];
+  [(ICSCallAnnouncementSettingsController *)self reloadSpecifier:groupSpecifier2];
 
-  [(ICSCallAnnouncementSettingsController *)self donateAnnounceCallsEnabledSignalForState:v12 previousState:v6];
-  v15 = [(ICSCallAnnouncementSettingsController *)self userConfiguration];
-  [v15 setAnnounceCalls:v12];
+  [(ICSCallAnnouncementSettingsController *)self donateAnnounceCallsEnabledSignalForState:v12 previousState:announceCalls];
+  userConfiguration2 = [(ICSCallAnnouncementSettingsController *)self userConfiguration];
+  [userConfiguration2 setAnnounceCalls:v12];
 }
 
-- (void)donateAnnounceCallsEnabledSignalForState:(unint64_t)a3 previousState:(unint64_t)a4
+- (void)donateAnnounceCallsEnabledSignalForState:(unint64_t)state previousState:(unint64_t)previousState
 {
-  if (a3)
+  if (state)
   {
-    if (!a4)
+    if (!previousState)
     {
       +[_TtC17ICSSettingsBundle13ICSTipsHelper donateEventAnnouceCallsEnabled];
     }

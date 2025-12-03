@@ -1,6 +1,6 @@
 @interface SiriContinuitySource
 - (SiriContinuitySource)init;
-- (void)activateWithContext:(id)a3;
+- (void)activateWithContext:(id)context;
 - (void)configureConnection;
 @end
 
@@ -24,10 +24,10 @@
 {
   v3 = MEMORY[0x1E698F498];
   v4 = +[SASBoardServicesConfiguration configuration];
-  v5 = [v4 machServiceIdentifier];
+  machServiceIdentifier = [v4 machServiceIdentifier];
   v6 = +[SASBoardServicesConfiguration configuration];
   v7 = [v6 identifierForService:1];
-  v8 = [v3 endpointForMachName:v5 service:v7 instance:0];
+  v8 = [v3 endpointForMachName:machServiceIdentifier service:v7 instance:0];
 
   v9 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
   connection = self->super._connection;
@@ -140,12 +140,12 @@ void __43__SiriContinuitySource_configureConnection__block_invoke_26(uint64_t a1
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activateWithContext:(id)a3
+- (void)activateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  [v5 activationRequestFromContinuityWithContext:v4];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  [remoteTarget activationRequestFromContinuityWithContext:contextCopy];
 
   os_unfair_lock_unlock(&self->super._lock);
 }

@@ -1,36 +1,36 @@
 @interface PKSubcredentialEncryptedContainer
-- (PKSubcredentialEncryptedContainer)initWithCoder:(id)a3;
-- (PKSubcredentialEncryptedContainer)initWithDictionary:(id)a3;
-- (PKSubcredentialEncryptedContainer)initWithEncryptionScheme:(id)a3 ephemeralPublicKey:(id)a4 publicKeyHash:(id)a5 data:(id)a6;
-- (PKSubcredentialEncryptedContainer)initWithRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKSubcredentialEncryptedContainer)initWithCoder:(id)coder;
+- (PKSubcredentialEncryptedContainer)initWithDictionary:(id)dictionary;
+- (PKSubcredentialEncryptedContainer)initWithEncryptionScheme:(id)scheme ephemeralPublicKey:(id)key publicKeyHash:(id)hash data:(id)data;
+- (PKSubcredentialEncryptedContainer)initWithRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSubcredentialEncryptedContainer
 
-- (PKSubcredentialEncryptedContainer)initWithRequest:(id)a3
+- (PKSubcredentialEncryptedContainer)initWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 version];
-  v6 = [v4 ephemeralPublicKey];
-  v7 = [v6 hexEncoding];
-  v8 = [v4 publicKeyHash];
-  v9 = [v8 hexEncoding];
-  v10 = [v4 encryptedRequest];
+  requestCopy = request;
+  version = [requestCopy version];
+  ephemeralPublicKey = [requestCopy ephemeralPublicKey];
+  hexEncoding = [ephemeralPublicKey hexEncoding];
+  publicKeyHash = [requestCopy publicKeyHash];
+  hexEncoding2 = [publicKeyHash hexEncoding];
+  encryptedRequest = [requestCopy encryptedRequest];
 
-  v11 = [(PKSubcredentialEncryptedContainer *)self initWithEncryptionScheme:v5 ephemeralPublicKey:v7 publicKeyHash:v9 data:v10];
+  v11 = [(PKSubcredentialEncryptedContainer *)self initWithEncryptionScheme:version ephemeralPublicKey:hexEncoding publicKeyHash:hexEncoding2 data:encryptedRequest];
   return v11;
 }
 
-- (PKSubcredentialEncryptedContainer)initWithDictionary:(id)a3
+- (PKSubcredentialEncryptedContainer)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"version"];
-  v6 = [v4 PKStringForKey:@"ephemeralPublicKey"];
-  v7 = [v4 PKStringForKey:@"publicKeyHash"];
-  v8 = [v4 PKStringForKey:@"data"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"version"];
+  v6 = [dictionaryCopy PKStringForKey:@"ephemeralPublicKey"];
+  v7 = [dictionaryCopy PKStringForKey:@"publicKeyHash"];
+  v8 = [dictionaryCopy PKStringForKey:@"data"];
 
   if (v8)
   {
@@ -47,16 +47,16 @@
   return v10;
 }
 
-- (PKSubcredentialEncryptedContainer)initWithEncryptionScheme:(id)a3 ephemeralPublicKey:(id)a4 publicKeyHash:(id)a5 data:(id)a6
+- (PKSubcredentialEncryptedContainer)initWithEncryptionScheme:(id)scheme ephemeralPublicKey:(id)key publicKeyHash:(id)hash data:(id)data
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  schemeCopy = scheme;
+  keyCopy = key;
+  hashCopy = hash;
+  dataCopy = data;
   v15 = [(PKSubcredentialEncryptedContainer *)self init];
   v16 = v15;
-  if (!v15 || (objc_storeStrong(&v15->_encryptionScheme, a3), objc_storeStrong(&v16->_ephemeralPublicKey, a4), objc_storeStrong(&v16->_publicKeyHash, a5), objc_storeStrong(&v16->_data, a6), (encryptionScheme = v16->_encryptionScheme) != 0) && v16->_ephemeralPublicKey && v16->_publicKeyHash && v16->_data)
+  if (!v15 || (objc_storeStrong(&v15->_encryptionScheme, scheme), objc_storeStrong(&v16->_ephemeralPublicKey, key), objc_storeStrong(&v16->_publicKeyHash, hash), objc_storeStrong(&v16->_data, data), (encryptionScheme = v16->_encryptionScheme) != 0) && v16->_ephemeralPublicKey && v16->_publicKeyHash && v16->_data)
   {
     v18 = v16;
   }
@@ -76,7 +76,7 @@
       v28 = 2112;
       v29 = publicKeyHash;
       v30 = 2112;
-      v31 = data;
+      dataCopy2 = data;
       _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Received invalid encrypted request: version %@, ephemeral public key: %@, public key hash: %@, data: %@", &v24, 0x2Au);
     }
 
@@ -86,22 +86,22 @@
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(PKSubcredentialEncryptedContainer);
-  v6 = [(NSString *)self->_encryptionScheme copyWithZone:a3];
+  v6 = [(NSString *)self->_encryptionScheme copyWithZone:zone];
   encryptionScheme = v5->_encryptionScheme;
   v5->_encryptionScheme = v6;
 
-  v8 = [(NSString *)self->_ephemeralPublicKey copyWithZone:a3];
+  v8 = [(NSString *)self->_ephemeralPublicKey copyWithZone:zone];
   ephemeralPublicKey = v5->_ephemeralPublicKey;
   v5->_ephemeralPublicKey = v8;
 
-  v10 = [(NSString *)self->_publicKeyHash copyWithZone:a3];
+  v10 = [(NSString *)self->_publicKeyHash copyWithZone:zone];
   publicKeyHash = v5->_publicKeyHash;
   v5->_publicKeyHash = v10;
 
-  v12 = [(NSData *)self->_data copyWithZone:a3];
+  v12 = [(NSData *)self->_data copyWithZone:zone];
   data = v5->_data;
   v5->_data = v12;
 
@@ -134,22 +134,22 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   encryptionScheme = self->_encryptionScheme;
-  v5 = a3;
-  [v5 encodeObject:encryptionScheme forKey:@"encryptionScheme"];
-  [v5 encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
-  [v5 encodeObject:self->_publicKeyHash forKey:@"publicKeyHash"];
-  [v5 encodeObject:self->_data forKey:@"data"];
+  coderCopy = coder;
+  [coderCopy encodeObject:encryptionScheme forKey:@"encryptionScheme"];
+  [coderCopy encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
+  [coderCopy encodeObject:self->_publicKeyHash forKey:@"publicKeyHash"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
 }
 
-- (PKSubcredentialEncryptedContainer)initWithCoder:(id)a3
+- (PKSubcredentialEncryptedContainer)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSubcredentialEncryptedContainer *)self init];
-  if (!v5 || ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptionScheme"], v6 = objc_claimAutoreleasedReturnValue(), encryptionScheme = v5->_encryptionScheme, v5->_encryptionScheme = v6, encryptionScheme, objc_msgSend(v4, "decodeObjectOfClass:forKey:", objc_opt_class(), @"ephemeralPublicKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = v5->_ephemeralPublicKey, v5->_ephemeralPublicKey = v8, v9, objc_msgSend(v4, "decodeObjectOfClass:forKey:", objc_opt_class(), @"publicKeyHash"), v10 = objc_claimAutoreleasedReturnValue(), v11 = v5->_publicKeyHash, v5->_publicKeyHash = v10, v11, objc_msgSend(v4, "decodeObjectOfClass:forKey:", objc_opt_class(), @"data"), v12 = objc_claimAutoreleasedReturnValue(), v13 = v5->_data, v5->_data = v12, v13, (v14 = v5->_encryptionScheme) != 0) && v5->_ephemeralPublicKey && v5->_publicKeyHash && v5->_data)
+  if (!v5 || ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptionScheme"], v6 = objc_claimAutoreleasedReturnValue(), encryptionScheme = v5->_encryptionScheme, v5->_encryptionScheme = v6, encryptionScheme, objc_msgSend(coderCopy, "decodeObjectOfClass:forKey:", objc_opt_class(), @"ephemeralPublicKey"), v8 = objc_claimAutoreleasedReturnValue(), v9 = v5->_ephemeralPublicKey, v5->_ephemeralPublicKey = v8, v9, objc_msgSend(coderCopy, "decodeObjectOfClass:forKey:", objc_opt_class(), @"publicKeyHash"), v10 = objc_claimAutoreleasedReturnValue(), v11 = v5->_publicKeyHash, v5->_publicKeyHash = v10, v11, objc_msgSend(coderCopy, "decodeObjectOfClass:forKey:", objc_opt_class(), @"data"), v12 = objc_claimAutoreleasedReturnValue(), v13 = v5->_data, v5->_data = v12, v13, (v14 = v5->_encryptionScheme) != 0) && v5->_ephemeralPublicKey && v5->_publicKeyHash && v5->_data)
   {
     v15 = v5;
   }

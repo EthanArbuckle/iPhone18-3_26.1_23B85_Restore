@@ -1,19 +1,19 @@
 @interface _NUStyleTransferThumbnailProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)generateThumbnailForImage:(id)a3 targetSize:(id)a4 colorSpace:(id)a5 configuration:(id)a6 tuningParameters:(id)a7 error:(id *)a8;
-+ (id)roiTileArrayForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)generateThumbnailForImage:(id)image targetSize:(id)size colorSpace:(id)space configuration:(id)configuration tuningParameters:(id)parameters error:(id *)error;
++ (id)roiTileArrayForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation _NUStyleTransferThumbnailProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] != 1)
+  inputsCopy = inputs;
+  argumentsCopy = arguments;
+  outputCopy = output;
+  if ([inputsCopy count] != 1)
   {
     v29 = NUAssertLogger_30110();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -34,8 +34,8 @@
         v43 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v46 = [v44 callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v44 callStackSymbols];
+        v47 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v43;
         v67 = 2114;
@@ -46,8 +46,8 @@
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -56,8 +56,8 @@
     _NUAssertFailHandler("+[_NUStyleTransferThumbnailProcessor processWithInputs:arguments:output:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2276, @"Invalid parameter not satisfying: %s", v48, v49, v50, v51, "inputs.count == 1");
   }
 
-  v11 = [v8 objectAtIndexedSubscript:0];
-  v12 = [v9 objectForKeyedSubscript:@"imageExtent"];
+  v11 = [inputsCopy objectAtIndexedSubscript:0];
+  v12 = [argumentsCopy objectForKeyedSubscript:@"imageExtent"];
   [v12 CGRectValue];
   v14 = v13;
   v16 = v15;
@@ -89,8 +89,8 @@
         v52 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v53 = MEMORY[0x1E696AF00];
         v54 = v52;
-        v55 = [v53 callStackSymbols];
-        v56 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v53 callStackSymbols];
+        v56 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v52;
         v67 = 2114;
@@ -101,8 +101,8 @@
 
     else if (v40)
     {
-      v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v42 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v42;
       _os_log_error_impl(&dword_1C0184000, v39, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -111,27 +111,27 @@
     _NUAssertFailHandler("+[_NUStyleTransferThumbnailProcessor processWithInputs:arguments:output:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2280, @"Missing image extent!", v57, v58, v59, v60, v61);
   }
 
-  v21 = [v9 objectForKeyedSubscript:@"config"];
-  v22 = [v9 objectForKeyedSubscript:@"tuning"];
-  v23 = [v10 metalCommandBuffer];
-  v24 = [v23 commandQueue];
+  v21 = [argumentsCopy objectForKeyedSubscript:@"config"];
+  v22 = [argumentsCopy objectForKeyedSubscript:@"tuning"];
+  metalCommandBuffer = [outputCopy metalCommandBuffer];
+  commandQueue = [metalCommandBuffer commandQueue];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __79___NUStyleTransferThumbnailProcessor_processWithInputs_arguments_output_error___block_invoke;
   v62[3] = &unk_1E810B878;
   v63 = v11;
-  v64 = v10;
-  v25 = v10;
+  v64 = outputCopy;
+  v25 = outputCopy;
   v26 = v11;
-  v27 = [_NUStyleEngine usingSharedStyleEngineForUsage:@"apply" withMetalCommandQueue:v24 configuration:v21 tuningParams:v22 perform:v62];
+  v27 = [_NUStyleEngine usingSharedStyleEngineForUsage:@"apply" withMetalCommandQueue:commandQueue configuration:v21 tuningParams:v22 perform:v62];
 
   return v27;
 }
 
-+ (id)roiTileArrayForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (id)roiTileArrayForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  [a1 roiForInput:*&a3 arguments:a4 outputRect:{a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  [self roiForInput:*&input arguments:arguments outputRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   v5 = [MEMORY[0x1E695F688] vectorWithCGRect:?];
   v8[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
@@ -139,15 +139,15 @@
   return v6;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v69 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = [v9 objectForKeyedSubscript:@"imageExtent"];
+  argumentsCopy = arguments;
+  v10 = [argumentsCopy objectForKeyedSubscript:@"imageExtent"];
   [v10 CGRectValue];
   v12 = v11;
   v14 = v13;
@@ -179,8 +179,8 @@
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v49 callStackSymbols];
+        v52 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(buf.origin.x) = 138543618;
         *(&buf.origin.x + 4) = v48;
         WORD2(buf.origin.y) = 2114;
@@ -191,8 +191,8 @@
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(buf.origin.x) = 138543362;
       *(&buf.origin.x + 4) = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -201,21 +201,21 @@
     _NUAssertFailHandler("+[_NUStyleTransferThumbnailProcessor roiForInput:arguments:outputRect:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2241, @"Missing image extent", v53, v54, v55, v56, v66);
   }
 
-  v19 = [v9 objectForKeyedSubscript:@"config"];
+  v19 = [argumentsCopy objectForKeyedSubscript:@"config"];
   v20 = [v19 objectForKeyedSubscript:@"thumbnailWidth"];
-  v21 = [v20 integerValue];
+  integerValue = [v20 integerValue];
 
   v22 = [v19 objectForKeyedSubscript:@"thumbnailHeight"];
-  v23 = [v22 integerValue];
+  integerValue2 = [v22 integerValue];
 
-  if ((v23 | v21) < 0)
+  if ((integerValue2 | integerValue) < 0)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
     v66 = @"(width >= 0) && (height >= 0)";
-    [v39 handleFailureInFunction:v40 file:@"NUGeometryPrimitives.h" lineNumber:38 description:@"Invalid parameter not satisfying: %@"];
+    [currentHandler handleFailureInFunction:v40 file:@"NUGeometryPrimitives.h" lineNumber:38 description:@"Invalid parameter not satisfying: %@"];
 
-    if (!v21)
+    if (!integerValue)
     {
 LABEL_12:
       v41 = NUAssertLogger_30110();
@@ -237,8 +237,8 @@ LABEL_12:
           v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v58 = MEMORY[0x1E696AF00];
           v59 = v57;
-          v60 = [v58 callStackSymbols];
-          v61 = [v60 componentsJoinedByString:@"\n"];
+          callStackSymbols3 = [v58 callStackSymbols];
+          v61 = [callStackSymbols3 componentsJoinedByString:@"\n"];
           LODWORD(buf.origin.x) = 138543618;
           *(&buf.origin.x + 4) = v57;
           WORD2(buf.origin.y) = 2114;
@@ -249,8 +249,8 @@ LABEL_12:
 
       else if (v45)
       {
-        v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v47 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         LODWORD(buf.origin.x) = 138543362;
         *(&buf.origin.x + 4) = v47;
         _os_log_error_impl(&dword_1C0184000, v44, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -260,12 +260,12 @@ LABEL_12:
     }
   }
 
-  else if (!v21)
+  else if (!integerValue)
   {
     goto LABEL_12;
   }
 
-  if (!v23)
+  if (!integerValue2)
   {
     goto LABEL_12;
   }
@@ -277,10 +277,10 @@ LABEL_12:
   NU::RectT<long>::RectT(&v67, &buf, 3);
   buf = v67;
   NU::RectT<long>::grow(&buf, 1, 1);
-  v71.origin.x = v12 + *&buf.origin.x / v21 * v16;
-  v71.origin.y = v14 + *&buf.origin.y / v23 * v18;
-  v71.size.width = *&buf.size.width / v21 * v16;
-  v71.size.height = *&buf.size.height / v23 * v18;
+  v71.origin.x = v12 + *&buf.origin.x / integerValue * v16;
+  v71.origin.y = v14 + *&buf.origin.y / integerValue2 * v18;
+  v71.size.width = *&buf.size.width / integerValue * v16;
+  v71.size.height = *&buf.size.height / integerValue2 * v18;
   v72 = CGRectIntegral(v71);
   v75.origin.x = v12;
   v75.origin.y = v14;
@@ -303,16 +303,16 @@ LABEL_12:
   return result;
 }
 
-+ (id)generateThumbnailForImage:(id)a3 targetSize:(id)a4 colorSpace:(id)a5 configuration:(id)a6 tuningParameters:(id)a7 error:(id *)a8
++ (id)generateThumbnailForImage:(id)image targetSize:(id)size colorSpace:(id)space configuration:(id)configuration tuningParameters:(id)parameters error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v102 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v14)
+  imageCopy = image;
+  spaceCopy = space;
+  configurationCopy = configuration;
+  parametersCopy = parameters;
+  if (!imageCopy)
   {
     v31 = NUAssertLogger_30110();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -333,8 +333,8 @@ LABEL_12:
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v60 callStackSymbols];
+        v63 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v59;
         v100 = 2114;
@@ -345,8 +345,8 @@ LABEL_12:
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -355,7 +355,7 @@ LABEL_12:
     _NUAssertFailHandler("+[_NUStyleTransferThumbnailProcessor generateThumbnailForImage:targetSize:colorSpace:configuration:tuningParameters:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2193, @"Invalid parameter not satisfying: %s", v64, v65, v66, v67, "inputImage != nil");
   }
 
-  if (!v15)
+  if (!spaceCopy)
   {
     v38 = NUAssertLogger_30110();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -376,8 +376,8 @@ LABEL_12:
         v68 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v69 = MEMORY[0x1E696AF00];
         v70 = v68;
-        v71 = [v69 callStackSymbols];
-        v72 = [v71 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v69 callStackSymbols];
+        v72 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v68;
         v100 = 2114;
@@ -388,8 +388,8 @@ LABEL_12:
 
     else if (v42)
     {
-      v43 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v44 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v44 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v44;
       _os_log_error_impl(&dword_1C0184000, v41, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -398,7 +398,7 @@ LABEL_12:
     _NUAssertFailHandler("+[_NUStyleTransferThumbnailProcessor generateThumbnailForImage:targetSize:colorSpace:configuration:tuningParameters:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2194, @"Invalid parameter not satisfying: %s", v73, v74, v75, v76, "colorSpace != nil");
   }
 
-  if (!v16)
+  if (!configurationCopy)
   {
     v45 = NUAssertLogger_30110();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -419,8 +419,8 @@ LABEL_12:
         v77 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v78 = MEMORY[0x1E696AF00];
         v79 = v77;
-        v80 = [v78 callStackSymbols];
-        v81 = [v80 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v78 callStackSymbols];
+        v81 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v77;
         v100 = 2114;
@@ -431,8 +431,8 @@ LABEL_12:
 
     else if (v49)
     {
-      v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v51 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v51;
       _os_log_error_impl(&dword_1C0184000, v48, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -441,8 +441,8 @@ LABEL_12:
     _NUAssertFailHandler("+[_NUStyleTransferThumbnailProcessor generateThumbnailForImage:targetSize:colorSpace:configuration:tuningParameters:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 2195, @"Invalid parameter not satisfying: %s", v82, v83, v84, v85, "config != nil");
   }
 
-  v18 = v17;
-  if (!v17)
+  v18 = parametersCopy;
+  if (!parametersCopy)
   {
     v52 = NUAssertLogger_30110();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -463,8 +463,8 @@ LABEL_12:
         v86 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v87 = MEMORY[0x1E696AF00];
         v88 = v86;
-        v89 = [v87 callStackSymbols];
-        v90 = [v89 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v87 callStackSymbols];
+        v90 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v99 = v86;
         v100 = 2114;
@@ -475,8 +475,8 @@ LABEL_12:
 
     else if (v56)
     {
-      v57 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v58 = [v57 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v58 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v99 = v58;
       _os_log_error_impl(&dword_1C0184000, v55, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -486,7 +486,7 @@ LABEL_12:
   }
 
   v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-  v20 = [v14 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v15, "CGColorSpace")}];
+  v20 = [imageCopy imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(spaceCopy, "CGColorSpace")}];
   [v19 addObject:v20];
 
   v21 = var0;
@@ -494,29 +494,29 @@ LABEL_12:
   v96[0] = @"tuning";
   v96[1] = @"config";
   v97[0] = v18;
-  v97[1] = v16;
+  v97[1] = configurationCopy;
   v96[2] = @"thumbExtent";
   v23 = [MEMORY[0x1E695F688] vectorWithCGRect:{0.0, 0.0, var0, var1}];
   v97[2] = v23;
   v96[3] = @"imageExtent";
   v24 = MEMORY[0x1E695F688];
-  [v14 extent];
+  [imageCopy extent];
   v25 = [v24 vectorWithCGRect:?];
   v97[3] = v25;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v97 forKeys:v96 count:4];
 
   v95 = 0;
-  v27 = [a1 applyWithExtent:v19 inputs:v26 arguments:&v95 error:{0.0, 0.0, v21, v22}];
+  v27 = [self applyWithExtent:v19 inputs:v26 arguments:&v95 error:{0.0, 0.0, v21, v22}];
   v28 = v95;
   if (v27)
   {
-    v29 = [v27 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(v15, "CGColorSpace")}];
+    v29 = [v27 imageByColorMatchingColorSpaceToWorkingSpace:{objc_msgSend(spaceCopy, "CGColorSpace")}];
   }
 
   else
   {
-    [NUError errorWithCode:1 reason:@"Failed to generate thumbnail" object:a1 underlyingError:v28];
-    *a8 = v29 = 0;
+    [NUError errorWithCode:1 reason:@"Failed to generate thumbnail" object:self underlyingError:v28];
+    *error = v29 = 0;
   }
 
   return v29;

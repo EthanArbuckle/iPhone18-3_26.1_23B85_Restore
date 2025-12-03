@@ -1,59 +1,59 @@
 @interface _HDKeyValueJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDKeyValueJournalEntry)initWithCoder:(id)a3;
-- (_HDKeyValueJournalEntry)initWithValue:(id)a3 key:(id)a4 domain:(id)a5 category:(int64_t)a6 provenance:(int64_t)a7 syncIdentity:(int64_t)a8 updatePolicy:(int64_t)a9 modificationDate:(id)a10;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDKeyValueJournalEntry)initWithCoder:(id)coder;
+- (_HDKeyValueJournalEntry)initWithValue:(id)value key:(id)key domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)policy modificationDate:(id)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDKeyValueJournalEntry
 
-- (_HDKeyValueJournalEntry)initWithValue:(id)a3 key:(id)a4 domain:(id)a5 category:(int64_t)a6 provenance:(int64_t)a7 syncIdentity:(int64_t)a8 updatePolicy:(int64_t)a9 modificationDate:(id)a10
+- (_HDKeyValueJournalEntry)initWithValue:(id)value key:(id)key domain:(id)domain category:(int64_t)category provenance:(int64_t)provenance syncIdentity:(int64_t)identity updatePolicy:(int64_t)policy modificationDate:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a10;
+  valueCopy = value;
+  keyCopy = key;
+  domainCopy = domain;
+  dateCopy = date;
   v28.receiver = self;
   v28.super_class = _HDKeyValueJournalEntry;
   v21 = [(_HDKeyValueJournalEntry *)&v28 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_value, a3);
-    v23 = [v18 copy];
+    objc_storeStrong(&v21->_value, value);
+    v23 = [keyCopy copy];
     key = v22->_key;
     v22->_key = v23;
 
-    v25 = [v19 copy];
+    v25 = [domainCopy copy];
     domain = v22->_domain;
     v22->_domain = v25;
 
-    v22->_category = a6;
-    v22->_provenance = a7;
-    v22->_syncIdentity = a8;
-    v22->_updatePolicy = a9;
-    objc_storeStrong(&v22->_modificationDate, a10);
+    v22->_category = category;
+    v22->_provenance = provenance;
+    v22->_syncIdentity = identity;
+    v22->_updatePolicy = policy;
+    objc_storeStrong(&v22->_modificationDate, date);
   }
 
   return v22;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v5;
+  obj = entriesCopy;
   v51 = [obj countByEnumeratingWithState:&v55 objects:v67 count:16];
   v7 = 0;
   if (v51)
   {
     v50 = *v56;
-    v48 = v6;
+    v48 = profileCopy;
     do
     {
       v8 = 0;
@@ -113,8 +113,8 @@
             v7 = [MEMORY[0x277CCA9B8] hk_error:3 description:v18];
           }
 
-          v19 = [v6 daemon];
-          v20 = [v19 autoBugCaptureReporter];
+          daemon = [profileCopy daemon];
+          autoBugCaptureReporter = [daemon autoBugCaptureReporter];
           if (v9)
           {
             v21 = *(v9 + 40);
@@ -125,8 +125,8 @@
             v21 = 0;
           }
 
-          v22 = [MEMORY[0x277CCABB0] numberWithLongLong:v21];
-          [v20 reportJournalFailureWithErrorDescription:v18 provenance:v22 error:v7];
+          v20AutoBugCaptureReporter = [MEMORY[0x277CCABB0] numberWithLongLong:v21];
+          [autoBugCaptureReporter reportJournalFailureWithErrorDescription:v18 provenance:v20AutoBugCaptureReporter error:v7];
           goto LABEL_41;
         }
 
@@ -135,7 +135,7 @@
         {
           v18 = &stru_283BF39C8;
           v45 = &stru_283BF39C8;
-          v25 = 0;
+          persistentID = 0;
           goto LABEL_31;
         }
 
@@ -146,22 +146,22 @@
         }
 
         v18 = v24;
-        v25 = *(v9 + 48);
-        if (v25 == -2)
+        persistentID = *(v9 + 48);
+        if (persistentID == -2)
         {
-          v26 = [v6 syncIdentityManager];
-          v27 = [v26 currentSyncIdentity];
+          syncIdentityManager = [profileCopy syncIdentityManager];
+          currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
           goto LABEL_30;
         }
 
-        if (v25 == -1)
+        if (persistentID == -1)
         {
-          v26 = [v6 syncIdentityManager];
-          v27 = [v26 legacySyncIdentity];
+          syncIdentityManager = [profileCopy syncIdentityManager];
+          currentSyncIdentity = [syncIdentityManager legacySyncIdentity];
 LABEL_30:
-          v28 = v27;
-          v29 = [v27 entity];
-          v25 = [v29 persistentID];
+          v28 = currentSyncIdentity;
+          entity = [currentSyncIdentity entity];
+          persistentID = [entity persistentID];
         }
 
 LABEL_31:
@@ -182,9 +182,9 @@ LABEL_31:
           v33 = 0;
         }
 
-        v6 = v48;
+        profileCopy = v48;
         v54 = v7;
-        v34 = [(objc_class *)v23 _insertKeysAndValues:v30 modificationDate:v31 domain:v18 category:v10 provenance:v32 syncIdentity:v25 updatePolicy:v33 profile:v48 error:&v54];
+        v34 = [(objc_class *)v23 _insertKeysAndValues:v30 modificationDate:v31 domain:v18 category:v10 provenance:v32 syncIdentity:persistentID updatePolicy:v33 profile:v48 error:&v54];
         v35 = v54;
 
         if (v34)
@@ -216,9 +216,9 @@ LABEL_31:
           goto LABEL_52;
         }
 
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld", objc_opt_class(), v10];
-        v20 = [v48 daemon];
-        v22 = [v20 autoBugCaptureReporter];
+        daemon = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%ld", objc_opt_class(), v10];
+        autoBugCaptureReporter = [v48 daemon];
+        v20AutoBugCaptureReporter = [autoBugCaptureReporter autoBugCaptureReporter];
         if (v9)
         {
           v37 = *(v9 + 40);
@@ -230,7 +230,7 @@ LABEL_31:
         }
 
         v38 = [MEMORY[0x277CCABB0] numberWithLongLong:v37];
-        [v22 reportJournalFailureWithErrorDescription:v19 provenance:v38 error:v35];
+        [v20AutoBugCaptureReporter reportJournalFailureWithErrorDescription:daemon provenance:v38 error:v35];
 
         v7 = v35;
 LABEL_41:
@@ -252,9 +252,9 @@ LABEL_52:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDKeyValueJournalEntry)initWithCoder:(id)a3
+- (_HDKeyValueJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _HDKeyValueJournalEntry;
   v5 = [(_HDKeyValueJournalEntry *)&v22 init];
@@ -266,33 +266,33 @@ LABEL_52:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"value"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"value"];
     value = v5->_value;
     v5->_value = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     key = v5->_key;
     v5->_key = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     domain = v5->_domain;
     v5->_domain = v16;
 
-    v5->_category = [v4 decodeIntegerForKey:@"category"];
-    v5->_provenance = [v4 decodeInt64ForKey:@"provenance"];
+    v5->_category = [coderCopy decodeIntegerForKey:@"category"];
+    v5->_provenance = [coderCopy decodeInt64ForKey:@"provenance"];
     v5->_syncIdentity = -1;
-    if ([v4 containsValueForKey:@"sync_identity"])
+    if ([coderCopy containsValueForKey:@"sync_identity"])
     {
-      v5->_syncIdentity = [v4 decodeInt64ForKey:@"sync_identity"];
+      v5->_syncIdentity = [coderCopy decodeInt64ForKey:@"sync_identity"];
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mod_date"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mod_date"];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v18;
 
-    if ([v4 containsValueForKey:@"updatePolicy"])
+    if ([coderCopy containsValueForKey:@"updatePolicy"])
     {
-      v20 = [v4 decodeIntegerForKey:@"updatePolicy"];
+      v20 = [coderCopy decodeIntegerForKey:@"updatePolicy"];
     }
 
     else
@@ -306,18 +306,18 @@ LABEL_52:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   value = self->_value;
-  v5 = a3;
-  [v5 encodeObject:value forKey:@"value"];
-  [v5 encodeObject:self->_key forKey:@"key"];
-  [v5 encodeObject:self->_domain forKey:@"domain"];
-  [v5 encodeInteger:self->_category forKey:@"category"];
-  [v5 encodeInt64:self->_provenance forKey:@"provenance"];
-  [v5 encodeInt64:self->_syncIdentity forKey:@"sync_identity"];
-  [v5 encodeObject:self->_modificationDate forKey:@"mod_date"];
-  [v5 encodeInteger:self->_updatePolicy forKey:@"updatePolicy"];
+  coderCopy = coder;
+  [coderCopy encodeObject:value forKey:@"value"];
+  [coderCopy encodeObject:self->_key forKey:@"key"];
+  [coderCopy encodeObject:self->_domain forKey:@"domain"];
+  [coderCopy encodeInteger:self->_category forKey:@"category"];
+  [coderCopy encodeInt64:self->_provenance forKey:@"provenance"];
+  [coderCopy encodeInt64:self->_syncIdentity forKey:@"sync_identity"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"mod_date"];
+  [coderCopy encodeInteger:self->_updatePolicy forKey:@"updatePolicy"];
 }
 
 @end

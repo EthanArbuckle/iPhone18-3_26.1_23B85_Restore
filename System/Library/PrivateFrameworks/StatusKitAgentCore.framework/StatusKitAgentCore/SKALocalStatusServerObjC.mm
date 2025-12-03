@@ -1,19 +1,19 @@
 @interface SKALocalStatusServerObjC
-- (SKALocalStatusServerObjC)initWithIDSDeviceProvider:(id)a3;
+- (SKALocalStatusServerObjC)initWithIDSDeviceProvider:(id)provider;
 - (void)shutdown;
 @end
 
 @implementation SKALocalStatusServerObjC
 
-- (SKALocalStatusServerObjC)initWithIDSDeviceProvider:(id)a3
+- (SKALocalStatusServerObjC)initWithIDSDeviceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SKALocalStatusServerObjC;
   v5 = [(SKALocalStatusServerObjC *)&v9 init];
   if (v5)
   {
-    v6 = [[SKALocalStatusServer alloc] initWithIdsDeviceProvider:v4];
+    v6 = [[SKALocalStatusServer alloc] initWithIdsDeviceProvider:providerCopy];
     server = v5->_server;
     v5->_server = v6;
   }

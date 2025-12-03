@@ -1,19 +1,19 @@
 @interface ICNoteIndicatorStatus
-- (ICNoteIndicatorStatus)initWithStatusType:(int64_t)a3 isDisplayedInFolder:(BOOL)a4;
+- (ICNoteIndicatorStatus)initWithStatusType:(int64_t)type isDisplayedInFolder:(BOOL)folder;
 - (NSString)imageName;
 @end
 
 @implementation ICNoteIndicatorStatus
 
-- (ICNoteIndicatorStatus)initWithStatusType:(int64_t)a3 isDisplayedInFolder:(BOOL)a4
+- (ICNoteIndicatorStatus)initWithStatusType:(int64_t)type isDisplayedInFolder:(BOOL)folder
 {
   v7.receiver = self;
   v7.super_class = ICNoteIndicatorStatus;
   result = [(ICNoteIndicatorStatus *)&v7 init];
   if (result)
   {
-    result->_statusType = a3;
-    result->_isDisplayedInFolder = a4;
+    result->_statusType = type;
+    result->_isDisplayedInFolder = folder;
   }
 
   return result;
@@ -21,19 +21,19 @@
 
 - (NSString)imageName
 {
-  v3 = [(ICNoteIndicatorStatus *)self statusType];
-  if (v3 > 2)
+  statusType = [(ICNoteIndicatorStatus *)self statusType];
+  if (statusType > 2)
   {
-    if (v3 == 3)
+    if (statusType == 3)
     {
       v5 = @"person.crop.circle";
     }
 
-    else if (v3 == 4)
+    else if (statusType == 4)
     {
-      v6 = [(ICNoteIndicatorStatus *)self isDisplayedInFolder];
+      isDisplayedInFolder = [(ICNoteIndicatorStatus *)self isDisplayedInFolder];
       v7 = @"person.crop.circle";
-      if (v6)
+      if (isDisplayedInFolder)
       {
         v7 = 0;
       }
@@ -50,12 +50,12 @@
   else
   {
     v4 = @"lock.open.fill";
-    if (v3 != 2)
+    if (statusType != 2)
     {
       v4 = 0;
     }
 
-    if (v3 == 1)
+    if (statusType == 1)
     {
       v5 = @"lock.fill";
     }

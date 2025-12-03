@@ -1,31 +1,31 @@
 @interface TKVibrationPickerTableViewCell
 - (BOOL)_isDisplayingRemovableTextField;
 - (NSString)labelText;
-- (TKVibrationPickerTableViewCell)initWithReuseIdentifier:(id)a3;
+- (TKVibrationPickerTableViewCell)initWithReuseIdentifier:(id)identifier;
 - (TKVibrationPickerTableViewCellDelegate)delegate;
 - (UIColor)highlightedTextColor;
 - (UIFont)regularTextFont;
 - (void)_layoutRemovableTextField;
-- (void)_makeRemovableTextFieldEditable:(BOOL)a3;
-- (void)didTransitionToState:(unint64_t)a3;
+- (void)_makeRemovableTextFieldEditable:(BOOL)editable;
+- (void)didTransitionToState:(unint64_t)state;
 - (void)layoutSubviews;
 - (void)makeTextFieldResignFirstResponderIfNeeded;
-- (void)setChecked:(BOOL)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setHighlightedTextColor:(id)a3;
-- (void)setLabelText:(id)a3;
-- (void)setRegularTextColor:(id)a3;
-- (void)setRegularTextFont:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setEditable:(BOOL)editable;
+- (void)setHighlightedTextColor:(id)color;
+- (void)setLabelText:(id)text;
+- (void)setRegularTextColor:(id)color;
+- (void)setRegularTextFont:(id)font;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation TKVibrationPickerTableViewCell
 
-- (TKVibrationPickerTableViewCell)initWithReuseIdentifier:(id)a3
+- (TKVibrationPickerTableViewCell)initWithReuseIdentifier:(id)identifier
 {
-  v3 = [(TKVibrationPickerTableViewCell *)self initWithStyle:1 reuseIdentifier:a3];
+  v3 = [(TKVibrationPickerTableViewCell *)self initWithStyle:1 reuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75BB8]);
@@ -33,14 +33,14 @@
     v3->_removableTextField = v4;
 
     [TKVibrationInterfaceUtilities configureVibrationNameTextField:v3->_removableTextField];
-    v6 = [(TKVibrationPickerTableViewCell *)v3 textLabel];
+    textLabel = [(TKVibrationPickerTableViewCell *)v3 textLabel];
     v7 = v3->_removableTextField;
-    v8 = [v6 textColor];
-    [(UITextField *)v7 setTextColor:v8];
+    textColor = [textLabel textColor];
+    [(UITextField *)v7 setTextColor:textColor];
 
     v9 = v3->_removableTextField;
-    v10 = [v6 backgroundColor];
-    [(UITextField *)v9 setBackgroundColor:v10];
+    backgroundColor = [textLabel backgroundColor];
+    [(UITextField *)v9 setBackgroundColor:backgroundColor];
 
     [(UITextField *)v3->_removableTextField setDelegate:v3];
     v11 = +[TKUIKitConstants defaultTableViewCellTextColor];
@@ -50,12 +50,12 @@
   return v3;
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  if (self->_editable != a3)
+  if (self->_editable != editable)
   {
-    self->_editable = a3;
-    if (!a3)
+    self->_editable = editable;
+    if (!editable)
     {
       [(TKVibrationPickerTableViewCell *)self _makeRemovableTextFieldEditable:0];
     }
@@ -66,94 +66,94 @@
 {
   if ([(TKVibrationPickerTableViewCell *)self _isDisplayingRemovableTextField])
   {
-    v3 = [(UITextField *)self->_removableTextField text];
+    text = [(UITextField *)self->_removableTextField text];
   }
 
   else
   {
-    v4 = [(TKVibrationPickerTableViewCell *)self textLabel];
-    v3 = [v4 text];
+    textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+    text = [textLabel text];
   }
 
-  return v3;
+  return text;
 }
 
-- (void)setLabelText:(id)a3
+- (void)setLabelText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if ([(TKVibrationPickerTableViewCell *)self _isDisplayingRemovableTextField])
   {
-    [(UITextField *)self->_removableTextField setText:v5];
+    [(UITextField *)self->_removableTextField setText:textCopy];
   }
 
   else
   {
-    v4 = [(TKVibrationPickerTableViewCell *)self textLabel];
-    [v4 setText:v5];
+    textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+    [textLabel setText:textCopy];
   }
 }
 
 - (UIFont)regularTextFont
 {
-  v2 = [(TKVibrationPickerTableViewCell *)self textLabel];
-  v3 = [v2 font];
+  textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+  font = [textLabel font];
 
-  return v3;
+  return font;
 }
 
-- (void)setRegularTextFont:(id)a3
+- (void)setRegularTextFont:(id)font
 {
-  v7 = a3;
-  v4 = [(TKVibrationPickerTableViewCell *)self textLabel];
-  v5 = [v4 font];
+  fontCopy = font;
+  textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+  font = [textLabel font];
 
-  if (v5 != v7)
+  if (font != fontCopy)
   {
-    v6 = [(TKVibrationPickerTableViewCell *)self textLabel];
-    [v6 setFont:v7];
+    textLabel2 = [(TKVibrationPickerTableViewCell *)self textLabel];
+    [textLabel2 setFont:fontCopy];
 
-    [(UITextField *)self->_removableTextField setFont:v7];
+    [(UITextField *)self->_removableTextField setFont:fontCopy];
   }
 }
 
-- (void)setRegularTextColor:(id)a3
+- (void)setRegularTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_regularTextColor != v5)
+  colorCopy = color;
+  if (self->_regularTextColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_regularTextColor, a3);
-    v6 = [(TKVibrationPickerTableViewCell *)self textLabel];
-    [v6 setTextColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_regularTextColor, color);
+    textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+    [textLabel setTextColor:v7];
 
-    v5 = [(UITextField *)self->_removableTextField setTextColor:v7];
+    colorCopy = [(UITextField *)self->_removableTextField setTextColor:v7];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](colorCopy);
 }
 
 - (UIColor)highlightedTextColor
 {
-  v2 = [(TKVibrationPickerTableViewCell *)self textLabel];
-  v3 = [v2 highlightedTextColor];
+  textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+  highlightedTextColor = [textLabel highlightedTextColor];
 
-  return v3;
+  return highlightedTextColor;
 }
 
-- (void)setHighlightedTextColor:(id)a3
+- (void)setHighlightedTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(TKVibrationPickerTableViewCell *)self textLabel];
-  [v5 setHighlightedTextColor:v4];
+  colorCopy = color;
+  textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+  [textLabel setHighlightedTextColor:colorCopy];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
-  v5 = [(TKVibrationPickerTableViewCell *)self accessoryType];
-  if (v3 || !v5)
+  checkedCopy = checked;
+  accessoryType = [(TKVibrationPickerTableViewCell *)self accessoryType];
+  if (checkedCopy || !accessoryType)
   {
-    if (!v3 || v5 == 3)
+    if (!checkedCopy || accessoryType == 3)
     {
       return;
     }
@@ -167,15 +167,15 @@
   }
 
   [(TKVibrationPickerTableViewCell *)self setAccessoryType:v6];
-  v8 = [(TKVibrationPickerTableViewCell *)self textLabel];
-  v7 = [(TKVibrationPickerTableViewCell *)self regularTextColor];
-  [v8 setTextColor:v7];
+  textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+  regularTextColor = [(TKVibrationPickerTableViewCell *)self regularTextColor];
+  [textLabel setTextColor:regularTextColor];
 }
 
 - (BOOL)_isDisplayingRemovableTextField
 {
-  v2 = [(UITextField *)self->_removableTextField superview];
-  v3 = v2 != 0;
+  superview = [(UITextField *)self->_removableTextField superview];
+  v3 = superview != 0;
 
   return v3;
 }
@@ -194,26 +194,26 @@
 {
   if (self->_removableTextField)
   {
-    v15 = [(TKVibrationPickerTableViewCell *)self textLabel];
-    v3 = [v15 font];
-    [(UITextField *)self->_removableTextField setFont:v3];
-    v4 = [(TKVibrationPickerTableViewCell *)self contentView];
-    [v4 bounds];
+    textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
+    font = [textLabel font];
+    [(UITextField *)self->_removableTextField setFont:font];
+    contentView = [(TKVibrationPickerTableViewCell *)self contentView];
+    [contentView bounds];
     v18 = CGRectInset(v17, 10.0, 0.0);
     x = v18.origin.x;
     y = v18.origin.y;
     width = v18.size.width;
     height = v18.size.height;
-    v9 = [(TKVibrationPickerTableViewCell *)self indentationLevel];
+    indentationLevel = [(TKVibrationPickerTableViewCell *)self indentationLevel];
     [(TKVibrationPickerTableViewCell *)self indentationWidth];
-    v11 = v10 * v9;
-    v19.origin.x = x + v10 * v9;
+    v11 = v10 * indentationLevel;
+    v19.origin.x = x + v10 * indentationLevel;
     v19.size.width = width - v11;
     v12 = v19.origin.x + 5.0;
     v19.origin.y = y;
     v19.size.height = height;
     v13 = CGRectGetMaxX(v19) + -10.0;
-    [v3 descender];
+    [font descender];
     [(UITextField *)self->_removableTextField setFrame:v12, 0.0, v13, height + fabs(ceil(v14))];
   }
 }
@@ -226,63 +226,63 @@
   [(TKVibrationPickerTableViewCell *)self _layoutRemovableTextField];
 }
 
-- (void)didTransitionToState:(unint64_t)a3
+- (void)didTransitionToState:(unint64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5.receiver = self;
   v5.super_class = TKVibrationPickerTableViewCell;
   [(TKVibrationPickerTableViewCell *)&v5 didTransitionToState:?];
-  if (v3)
+  if (stateCopy)
   {
     [(TKVibrationPickerTableViewCell *)self _makeRemovableTextFieldEditable:[(TKVibrationPickerTableViewCell *)self isEditable]];
   }
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5.receiver = self;
   v5.super_class = TKVibrationPickerTableViewCell;
   [(TKVibrationPickerTableViewCell *)&v5 willTransitionToState:?];
-  if ((v3 & 1) == 0)
+  if ((stateCopy & 1) == 0)
   {
     [(TKVibrationPickerTableViewCell *)self _makeRemovableTextFieldEditable:0];
   }
 }
 
-- (void)_makeRemovableTextFieldEditable:(BOOL)a3
+- (void)_makeRemovableTextFieldEditable:(BOOL)editable
 {
-  v3 = a3;
-  if ([(TKVibrationPickerTableViewCell *)self _isDisplayingRemovableTextField]!= a3)
+  editableCopy = editable;
+  if ([(TKVibrationPickerTableViewCell *)self _isDisplayingRemovableTextField]!= editable)
   {
-    v10 = [(TKVibrationPickerTableViewCell *)self textLabel];
+    textLabel = [(TKVibrationPickerTableViewCell *)self textLabel];
     removableTextField = self->_removableTextField;
-    if (v3)
+    if (editableCopy)
     {
-      v6 = [v10 text];
-      [(UITextField *)removableTextField setText:v6];
+      text = [textLabel text];
+      [(UITextField *)removableTextField setText:text];
 
-      [v10 setText:0];
-      v7 = [(TKVibrationPickerTableViewCell *)self contentView];
-      [v7 addSubview:self->_removableTextField];
+      [textLabel setText:0];
+      contentView = [(TKVibrationPickerTableViewCell *)self contentView];
+      [contentView addSubview:self->_removableTextField];
     }
 
     else
     {
-      v8 = [(UITextField *)self->_removableTextField text];
-      [v10 setText:v8];
+      text2 = [(UITextField *)self->_removableTextField text];
+      [textLabel setText:text2];
 
-      v9 = [MEMORY[0x277D75D18] areAnimationsEnabled];
+      areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
       [MEMORY[0x277D75D18] setAnimationsEnabled:1];
       [(UITextField *)self->_removableTextField resignFirstResponder];
-      [MEMORY[0x277D75D18] setAnimationsEnabled:v9];
+      [MEMORY[0x277D75D18] setAnimationsEnabled:areAnimationsEnabled];
       [(UITextField *)self->_removableTextField setText:0];
       [(UITextField *)self->_removableTextField removeFromSuperview];
     }
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   if ((UIKeyboardIsAutomaticAppearanceEnabled() & 1) == 0 && (UIKeyboardAutomaticIsOnScreen() & 1) == 0)
   {
@@ -291,14 +291,14 @@
   }
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v6 = a3;
-  v4 = [(TKVibrationPickerTableViewCell *)self delegate];
+  editingCopy = editing;
+  delegate = [(TKVibrationPickerTableViewCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 text];
-    [v4 vibrationPickerTableViewCell:self endedEditingWithText:v5];
+    text = [editingCopy text];
+    [delegate vibrationPickerTableViewCell:self endedEditingWithText:text];
   }
 
   if ((UIKeyboardIsAutomaticAppearanceEnabled() & 1) == 0)

@@ -1,18 +1,18 @@
 @interface CarAlertButtonViewController
 - (CGSize)preferredContentSize;
-- (CarAlertButtonViewController)initWithTitle:(id)a3 image:(id)a4;
+- (CarAlertButtonViewController)initWithTitle:(id)title image:(id)image;
 - (void)_dismissAlertController;
-- (void)_handleTouch:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)_handleTouch:(id)touch;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
 @end
 
 @implementation CarAlertButtonViewController
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  [(CarAlertButtonViewController *)self completionHandler:a3];
+  animatedCopy = animated;
+  [(CarAlertButtonViewController *)self completionHandler:animated];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100C73CC8;
@@ -20,7 +20,7 @@
   v7.receiver = self;
   v7.super_class = CarAlertButtonViewController;
   v6 = v9;
-  [(CarAlertButtonViewController *)&v7 dismissViewControllerAnimated:v4 completion:v8];
+  [(CarAlertButtonViewController *)&v7 dismissViewControllerAnimated:animatedCopy completion:v8];
 }
 
 - (void)_dismissAlertController
@@ -30,9 +30,9 @@
   [(CarAlertButtonViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_handleTouch:(id)a3
+- (void)_handleTouch:(id)touch
 {
-  if ([a3 state] == 3)
+  if ([touch state] == 3)
   {
 
     [(CarAlertButtonViewController *)self _dismissAlertController];
@@ -61,16 +61,16 @@
   return result;
 }
 
-- (CarAlertButtonViewController)initWithTitle:(id)a3 image:(id)a4
+- (CarAlertButtonViewController)initWithTitle:(id)title image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = CarAlertButtonViewController;
   v8 = [(CarAlertButtonViewController *)&v12 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [[CarAlertButtonView alloc] initWithTitle:v6 image:v7];
+    v9 = [[CarAlertButtonView alloc] initWithTitle:titleCopy image:imageCopy];
     contentView = v8->_contentView;
     v8->_contentView = v9;
   }

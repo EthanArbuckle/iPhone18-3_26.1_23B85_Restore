@@ -1,24 +1,24 @@
 @interface MFPushRegistrationService
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6;
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error;
 @end
 
 @implementation MFPushRegistrationService
 
-+ (BOOL)handleMessage:(id)a3 connectionState:(id)a4 replyObject:(id *)a5 error:(id *)a6
++ (BOOL)handleMessage:(id)message connectionState:(id)state replyObject:(id *)object error:(id *)error
 {
-  original = a3;
+  original = message;
   v10 = xpc_dictionary_get_value(original, [_MSMailServiceArguments UTF8String]);
   if (!v10)
   {
     v25 = +[NSAssertionHandler currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"MFPushRegistrationService.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"args"}];
+    [v25 handleFailureInMethod:a2 object:self file:@"MFPushRegistrationService.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"args"}];
   }
 
   v11 = _CFXPCCreateCFObjectFromXPCObject();
   v26 = [v11 objectForKey:MSPushRegistrationArgumentBundle];
   v12 = [v11 objectForKey:MSPushRegistrationArgumentAccount];
   v13 = [MailAccount accountWithUniqueId:v12];
-  v14 = a5;
+  objectCopy = object;
   v15 = [v11 objectForKey:MSPushRegistrationArgumentPrefix];
   v16 = [v11 objectForKey:MSPushRegistrationArgumentMailboxNames];
   v17 = [v13 _registerPushNotificationPrefix:v15 forMailboxNames:v16];
@@ -42,7 +42,7 @@
     reply = xpc_dictionary_create_reply(original);
     xpc_dictionary_set_BOOL(reply, [MSPushRegistrationResultSuccess UTF8String], 1);
     v21 = reply;
-    *v14 = reply;
+    *objectCopy = reply;
 
     v22 = 0;
   }
@@ -56,10 +56,10 @@
     }
 
     v22 = [NSError errorWithDomain:MSPushRegistrationErrorDomain code:1001 userInfo:0];
-    if (a6)
+    if (error)
     {
       v22 = v22;
-      *a6 = v22;
+      *error = v22;
     }
   }
 

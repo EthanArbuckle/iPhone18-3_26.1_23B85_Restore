@@ -1,20 +1,20 @@
 @interface PXCuratedLibraryToggleFilterActionPerformer
-- (BOOL)updateToContentFilterStateAndFinishTask:(id)a3;
-- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)a3;
+- (BOOL)updateToContentFilterStateAndFinishTask:(id)task;
+- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)task;
 - (PXContentFilterState)currentContentFilterState;
 - (id)menuElement;
 @end
 
 @implementation PXCuratedLibraryToggleFilterActionPerformer
 
-- (BOOL)updateToContentFilterStateAndFinishTask:(id)a3
+- (BOOL)updateToContentFilterStateAndFinishTask:(id)task
 {
-  v4 = a3;
-  v5 = [(PXActionPerformer *)self delegate];
+  taskCopy = task;
+  delegate = [(PXActionPerformer *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    [v5 curatedLibraryActionPerformer:self contentFilterStateChanged:v4];
+    [delegate curatedLibraryActionPerformer:self contentFilterStateChanged:taskCopy];
   }
 
   [(PXCuratedLibraryToggleFilterActionPerformer *)self finishedUserInteractionTask];
@@ -22,14 +22,14 @@
   return v6 & 1;
 }
 
-- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)a3
+- (BOOL)updateToLibraryFilterStateAndFinishTask:(id)task
 {
-  v4 = a3;
-  v5 = [(PXActionPerformer *)self delegate];
+  taskCopy = task;
+  delegate = [(PXActionPerformer *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    [v5 curatedLibraryActionPerformer:self libraryFilterStateChanged:v4];
+    [delegate curatedLibraryActionPerformer:self libraryFilterStateChanged:taskCopy];
   }
 
   [(PXCuratedLibraryToggleFilterActionPerformer *)self finishedUserInteractionTask];
@@ -41,45 +41,45 @@
 {
   v11.receiver = self;
   v11.super_class = PXCuratedLibraryToggleFilterActionPerformer;
-  v4 = [(PXActionPerformer *)&v11 menuElement];
-  if (v4)
+  menuElement = [(PXActionPerformer *)&v11 menuElement];
+  if (menuElement)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [v4 px_descriptionForAssertionMessage];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleFilterActionPerformer.m" lineNumber:37 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v9, v10}];
+      px_descriptionForAssertionMessage = [menuElement px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleFilterActionPerformer.m" lineNumber:37 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v9, px_descriptionForAssertionMessage}];
     }
   }
 
   v5 = [(PXCuratedLibraryActionPerformer *)self localizedTitleForUseCase:0];
-  [v4 setTitle:v5];
+  [menuElement setTitle:v5];
 
-  return v4;
+  return menuElement;
 }
 
 - (PXContentFilterState)currentContentFilterState
 {
-  v4 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v5 = [v4 allPhotosContentFilterState];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  allPhotosContentFilterState = [viewModel allPhotosContentFilterState];
 
-  if (v5)
+  if (allPhotosContentFilterState)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v5 px_descriptionForAssertionMessage];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleFilterActionPerformer.m" lineNumber:30 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.allPhotosContentFilterState", v14, v15}];
+      px_descriptionForAssertionMessage = [allPhotosContentFilterState px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryToggleFilterActionPerformer.m" lineNumber:30 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.allPhotosContentFilterState", v14, px_descriptionForAssertionMessage}];
     }
   }
 
-  v6 = [v5 copy];
+  v6 = [allPhotosContentFilterState copy];
   v7 = v6;
   if (v6)
   {
@@ -88,9 +88,9 @@
 
   else
   {
-    v9 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-    v10 = [v9 photoLibrary];
-    v8 = [PXContentFilterState defaultAllPhotosFilterStateForPhotoLibrary:v10];
+    viewModel2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
+    photoLibrary = [viewModel2 photoLibrary];
+    v8 = [PXContentFilterState defaultAllPhotosFilterStateForPhotoLibrary:photoLibrary];
   }
 
   return v8;

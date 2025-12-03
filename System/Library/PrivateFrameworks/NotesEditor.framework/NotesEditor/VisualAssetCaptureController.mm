@@ -1,26 +1,26 @@
 @interface VisualAssetCaptureController
 - (_TtC11NotesEditor28VisualAssetCaptureController)init;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
 @end
 
 @implementation VisualAssetCaptureController
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   type metadata accessor for InfoKey(0);
   sub_2153E1430();
   v6 = sub_2154A1C8C();
-  v7 = a3;
-  v8 = self;
-  sub_2153E0600(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2153E0600(controllerCopy, v6);
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_2153E122C(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_2153E122C(cancelCopy);
 }
 
 - (_TtC11NotesEditor28VisualAssetCaptureController)init

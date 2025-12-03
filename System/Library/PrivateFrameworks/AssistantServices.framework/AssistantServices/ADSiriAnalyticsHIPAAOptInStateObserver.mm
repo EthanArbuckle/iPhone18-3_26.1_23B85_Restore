@@ -1,43 +1,43 @@
 @interface ADSiriAnalyticsHIPAAOptInStateObserver
-- (ADSiriAnalyticsHIPAAOptInStateObserver)initWithDelegate:(id)a3 queue:(id)a4;
-- (void)pollConditionStateWithCompletion:(id)a3;
+- (ADSiriAnalyticsHIPAAOptInStateObserver)initWithDelegate:(id)delegate queue:(id)queue;
+- (void)pollConditionStateWithCompletion:(id)completion;
 @end
 
 @implementation ADSiriAnalyticsHIPAAOptInStateObserver
 
-- (void)pollConditionStateWithCompletion:(id)a3
+- (void)pollConditionStateWithCompletion:(id)completion
 {
-  v9 = a3;
+  completionCopy = completion;
   v4 = mach_absolute_time();
   v5 = +[AFPreferences sharedPreferences];
-  v6 = [v5 isDictationHIPAACompliant];
+  isDictationHIPAACompliant = [v5 isDictationHIPAACompliant];
 
-  if (v6)
+  if (isDictationHIPAACompliant)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained sensitiveCondition:1 startedAt:v4];
   }
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 
-- (ADSiriAnalyticsHIPAAOptInStateObserver)initWithDelegate:(id)a3 queue:(id)a4
+- (ADSiriAnalyticsHIPAAOptInStateObserver)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = ADSiriAnalyticsHIPAAOptInStateObserver;
   v8 = [(ADSiriAnalyticsHIPAAOptInStateObserver *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_queue, queue);
   }
 
   return v9;

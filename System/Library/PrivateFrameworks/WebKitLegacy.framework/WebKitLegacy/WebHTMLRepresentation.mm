@@ -7,23 +7,23 @@
 - (BOOL)_isDisplayingWebArchive;
 - (BOOL)canProvideDocumentSource;
 - (BOOL)canSaveAsWebArchive;
-- (BOOL)elementDoesAutoComplete:(id)a3;
-- (BOOL)elementIsPassword:(id)a3;
+- (BOOL)elementDoesAutoComplete:(id)complete;
+- (BOOL)elementIsPassword:(id)password;
 - (WebHTMLRepresentation)init;
 - (id)DOMDocument;
-- (id)controlsInForm:(id)a3;
+- (id)controlsInForm:(id)form;
 - (id)currentForm;
 - (id)documentSource;
-- (id)elementWithName:(id)a3 inForm:(id)a4;
-- (id)formForElement:(id)a3;
-- (id)matchLabels:(id)a3 againstElement:(id)a4;
-- (id)searchForLabels:(id)a3 beforeElement:(id)a4 resultDistance:(unint64_t *)a5 resultIsInCellAbove:(BOOL *)a6;
+- (id)elementWithName:(id)name inForm:(id)form;
+- (id)formForElement:(id)element;
+- (id)matchLabels:(id)labels againstElement:(id)element;
+- (id)searchForLabels:(id)labels beforeElement:(id)element resultDistance:(unint64_t *)distance resultIsInCellAbove:(BOOL *)above;
 - (id)title;
 - (void)dealloc;
-- (void)finishedLoadingWithDataSource:(id)a3;
-- (void)receivedData:(id)a3 withDataSource:(id)a4;
-- (void)receivedError:(id)a3 withDataSource:(id)a4;
-- (void)setDataSource:(id)a3;
+- (void)finishedLoadingWithDataSource:(id)source;
+- (void)receivedData:(id)data withDataSource:(id)source;
+- (void)receivedError:(id)error withDataSource:(id)source;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation WebHTMLRepresentation
@@ -35,7 +35,7 @@
     return qword_1ED6A6230;
   }
 
-  v3 = [objc_msgSend(objc_msgSend(a1 "supportedNonImageMIMETypes")];
+  v3 = [objc_msgSend(objc_msgSend(self "supportedNonImageMIMETypes")];
   qword_1ED6A6230 = v3;
   if (v3)
   {
@@ -55,7 +55,7 @@
 
   v6[1] = v2;
   v6[2] = v3;
-  v5 = WebCore::MIMETypeRegistry::supportedMediaMIMETypes(a1);
+  v5 = WebCore::MIMETypeRegistry::supportedMediaMIMETypes(self);
   WTF::createNSArray<WTF::HashSet<WTF::String,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1> const&>(v6, v5);
   result = v6[0];
   qword_1ED6A6238 = v6[0];
@@ -72,7 +72,7 @@
 
   v6[1] = v2;
   v6[2] = v3;
-  v5 = WebCore::MIMETypeRegistry::supportedNonImageMIMETypes(a1);
+  v5 = WebCore::MIMETypeRegistry::supportedNonImageMIMETypes(self);
   WTF::createNSArray<WTF::HashSet<WTF::String,WTF::ASCIICaseInsensitiveHash,WTF::HashTraits<WTF::String>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1> &>(v6, v5);
   result = v6[0];
   qword_1ED6A6240 = v6[0];
@@ -87,7 +87,7 @@
     return qword_1ED6A6248;
   }
 
-  WebCore::MIMETypeRegistry::supportedImageMIMETypes(&v5, a1);
+  WebCore::MIMETypeRegistry::supportedImageMIMETypes(&v5, self);
   WTF::createNSArray<WTF::FixedVector<WTF::ASCIILiteral,WTF::FastMalloc>>(&v6, &v5);
   v4 = v5;
   qword_1ED6A6248 = v6;
@@ -108,7 +108,7 @@
     return qword_1ED6A6250;
   }
 
-  WebCore::MIMETypeRegistry::unsupportedTextMIMETypes(&v5, a1);
+  WebCore::MIMETypeRegistry::unsupportedTextMIMETypes(&v5, self);
   WTF::createNSArray<WTF::FixedVector<WTF::ASCIILiteral,WTF::FastMalloc>>(&v6, &v5);
   v4 = v5;
   qword_1ED6A6250 = v6;
@@ -151,12 +151,12 @@
   [(WebHTMLRepresentation *)&v4 dealloc];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  self->_private->dataSource = a3;
+  self->_private->dataSource = source;
   if (!self->_private->includedInWebKitStatistics)
   {
-    if ([objc_msgSend(a3 "webFrame")])
+    if ([objc_msgSend(source "webFrame")])
     {
       self->_private->includedInWebKitStatistics = 1;
       ++WebHTMLRepresentationCount;
@@ -166,29 +166,29 @@
 
 - (BOOL)_isDisplayingWebArchive
 {
-  v2 = [(WebDataSource *)self->_private->dataSource _responseMIMEType];
+  _responseMIMEType = [(WebDataSource *)self->_private->dataSource _responseMIMEType];
 
-  return [v2 _webkit_isCaseInsensitiveEqualToString:@"application/x-webarchive"];
+  return [_responseMIMEType _webkit_isCaseInsensitiveEqualToString:@"application/x-webarchive"];
 }
 
-- (void)receivedData:(id)a3 withDataSource:(id)a4
+- (void)receivedData:(id)data withDataSource:(id)source
 {
   if (self)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v8 = [a4 webFrame];
-  if (v8)
+  webFrame = [source webFrame];
+  if (webFrame)
   {
     if (!self->_private->pluginView)
     {
-      v9 = v8;
-      [v8 _commitData:a3];
-      v8 = v9;
+      v9 = webFrame;
+      [webFrame _commitData:data];
+      webFrame = v9;
     }
 
-    v10 = *(v8[1] + 8);
+    v10 = *(webFrame[1] + 8);
     if ((*(*(v10 + 224) + 3518) & 0x10) != 0)
     {
       v11 = *(*(v10 + 208) + 96);
@@ -231,13 +231,13 @@
     {
       if (!v17->hasSentResponseToPlugin)
       {
-        -[WebPluginManualLoader pluginView:receivedResponse:](v17->manualLoader, "pluginView:receivedResponse:", v17->pluginView, [a4 response]);
+        -[WebPluginManualLoader pluginView:receivedResponse:](v17->manualLoader, "pluginView:receivedResponse:", v17->pluginView, [source response]);
         self->_private->hasSentResponseToPlugin = 1;
         v17 = self->_private;
         pluginView = v17->pluginView;
       }
 
-      [(WebPluginManualLoader *)v17->manualLoader pluginView:pluginView receivedData:a3, v19, v20];
+      [(WebPluginManualLoader *)v17->manualLoader pluginView:pluginView receivedData:data, v19, v20];
     }
   }
 
@@ -247,30 +247,30 @@
   }
 }
 
-- (void)receivedError:(id)a3 withDataSource:(id)a4
+- (void)receivedError:(id)error withDataSource:(id)source
 {
   v5 = self->_private;
   pluginView = v5->pluginView;
   if (pluginView)
   {
-    [(WebPluginManualLoader *)v5->manualLoader pluginView:pluginView receivedError:a3];
+    [(WebPluginManualLoader *)v5->manualLoader pluginView:pluginView receivedError:error];
   }
 }
 
-- (void)finishedLoadingWithDataSource:(id)a3
+- (void)finishedLoadingWithDataSource:(id)source
 {
-  v4 = [a3 webFrame];
+  webFrame = [source webFrame];
   v5 = self->_private;
   if (!v5->pluginView)
   {
-    if (!v4)
+    if (!webFrame)
     {
       return;
     }
 
-    v7 = v4;
-    v8 = [v4 webView];
-    if ([v8 mainFrame] != v7 || !objc_msgSend(v8, "isEditable"))
+    v7 = webFrame;
+    webView = [webFrame webView];
+    if ([webView mainFrame] != v7 || !objc_msgSend(webView, "isEditable"))
     {
       return;
     }
@@ -308,29 +308,29 @@ LABEL_15:
 
 - (BOOL)canProvideDocumentSource
 {
-  v2 = [(WebDataSource *)self->_private->dataSource webFrame];
+  webFrame = [(WebDataSource *)self->_private->dataSource webFrame];
 
-  return [(WebFrame *)v2 _canProvideDocumentSource];
+  return [(WebFrame *)webFrame _canProvideDocumentSource];
 }
 
 - (BOOL)canSaveAsWebArchive
 {
-  v2 = [(WebDataSource *)self->_private->dataSource webFrame];
+  webFrame = [(WebDataSource *)self->_private->dataSource webFrame];
 
-  return [(WebFrame *)v2 _canSaveAsWebArchive];
+  return [(WebFrame *)webFrame _canSaveAsWebArchive];
 }
 
 - (id)documentSource
 {
   if (![(WebHTMLRepresentation *)self _isDisplayingWebArchive])
   {
-    v8 = [(WebDataSource *)self->_private->dataSource webFrame];
-    if (!v8)
+    webFrame = [(WebDataSource *)self->_private->dataSource webFrame];
+    if (!webFrame)
     {
       return 0;
     }
 
-    m_ptr = v8->_private->coreFrame.m_ptr;
+    m_ptr = webFrame->_private->coreFrame.m_ptr;
     if (!m_ptr)
     {
       return 0;
@@ -347,14 +347,14 @@ LABEL_15:
       return 0;
     }
 
-    v11 = [(WebDataSource *)self->_private->dataSource data];
-    if (!v11)
+    data = [(WebDataSource *)self->_private->dataSource data];
+    if (!data)
     {
       return 0;
     }
 
-    v12 = v11;
-    [(NSData *)v11 bytes];
+    v12 = data;
+    [(NSData *)data bytes];
     [(NSData *)v12 length];
     v24 = 0;
     PAL::TextEncoding::decode();
@@ -468,14 +468,14 @@ LABEL_23:
 
 - (id)DOMDocument
 {
-  v2 = [(WebDataSource *)self->_private->dataSource webFrame];
+  webFrame = [(WebDataSource *)self->_private->dataSource webFrame];
 
-  return [(WebFrame *)v2 DOMDocument];
+  return [(WebFrame *)webFrame DOMDocument];
 }
 
-- (id)elementWithName:(id)a3 inForm:(id)a4
+- (id)elementWithName:(id)name inForm:(id)form
 {
-  result = core(a4);
+  result = core(form);
   if (!result)
   {
     return result;
@@ -494,7 +494,7 @@ LABEL_23:
   v7 = result;
   v8 = MEMORY[0x1E69E2668];
   ++*MEMORY[0x1E69E2668];
-  WTF::AtomStringImpl::add(&v19, a3, v6);
+  WTF::AtomStringImpl::add(&v19, name, v6);
   v9 = v19;
   v10 = WebCore::HTMLFormElement::unsafeListedElements(v7);
   v12 = *(v10 + 12);
@@ -574,9 +574,9 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)elementDoesAutoComplete:(id)a3
+- (BOOL)elementDoesAutoComplete:(id)complete
 {
-  v3 = core(a3);
+  v3 = core(complete);
   if (!v3)
   {
     return 0;
@@ -601,9 +601,9 @@ LABEL_20:
   return MEMORY[0x1EEE5CF20](v4);
 }
 
-- (BOOL)elementIsPassword:(id)a3
+- (BOOL)elementIsPassword:(id)password
 {
-  v3 = core(a3);
+  v3 = core(password);
   if (!v3 || (*(v3 + 32) & 0x10) == 0 || *(*(v3 + 104) + 24) != *(*MEMORY[0x1E69E2C70] + 24))
   {
     return 0;
@@ -612,9 +612,9 @@ LABEL_20:
   return WebCore::HTMLInputElement::isPasswordField(v3);
 }
 
-- (id)formForElement:(id)a3
+- (id)formForElement:(id)element
 {
-  v3 = core(a3);
+  v3 = core(element);
   if (!v3 || (*(v3 + 32) & 0x10) == 0 || *(*(v3 + 104) + 24) != *(*MEMORY[0x1E69E2C70] + 24))
   {
     return 0;
@@ -658,9 +658,9 @@ LABEL_20:
   return result;
 }
 
-- (id)controlsInForm:(id)a3
+- (id)controlsInForm:(id)form
 {
-  v3 = core(a3);
+  v3 = core(form);
   if (!v3 || (*(v3 + 32) & 0x10) == 0 || *(*(v3 + 104) + 24) != *(*MEMORY[0x1E69E2BC0] + 24))
   {
     return 0;
@@ -747,12 +747,12 @@ LABEL_8:
   return v6;
 }
 
-- (id)searchForLabels:(id)a3 beforeElement:(id)a4 resultDistance:(unint64_t *)a5 resultIsInCellAbove:(BOOL *)a6
+- (id)searchForLabels:(id)labels beforeElement:(id)element resultDistance:(unint64_t *)distance resultIsInCellAbove:(BOOL *)above
 {
-  v10 = [(WebDataSource *)self->_private->dataSource webFrame];
-  if (v10)
+  webFrame = [(WebDataSource *)self->_private->dataSource webFrame];
+  if (webFrame)
   {
-    m_ptr = v10->_private->coreFrame.m_ptr;
+    m_ptr = webFrame->_private->coreFrame.m_ptr;
   }
 
   else
@@ -760,8 +760,8 @@ LABEL_8:
     m_ptr = 0;
   }
 
-  v12 = core(a4);
-  v64 = regExpForLabels(a3);
+  v12 = core(element);
+  v64 = regExpForLabels(labels);
   v66 = -1;
   v14 = *(v12 + 56);
   if (v14)
@@ -779,7 +779,7 @@ LABEL_8:
   if (Child)
   {
 LABEL_8:
-    v60 = a5;
+    distanceCopy = distance;
     v16 = 0;
     v63 = 0;
     v17 = 0;
@@ -794,7 +794,7 @@ LABEL_8:
         if ((~v20 & 0x88) == 0 || v26 == *(*v18 + 24))
         {
 LABEL_79:
-          a5 = v60;
+          distance = distanceCopy;
           if (v16 && (v63 & 1) == 0)
           {
             WebCore::LocalFrame::searchForLabelsAboveCell();
@@ -846,7 +846,7 @@ LABEL_79:
 
         if (v26 == *(*MEMORY[0x1E69E2B20] + 24) && v16 != 0)
         {
-          v30 = a6;
+          aboveCopy = above;
           v31 = v18;
           v32 = Child;
           WebCore::LocalFrame::searchForLabelsAboveCell();
@@ -877,8 +877,8 @@ LABEL_79:
           if ([v65 length])
           {
             v52 = 1;
-            a5 = v60;
-            a6 = v30;
+            distance = distanceCopy;
+            above = aboveCopy;
             goto LABEL_92;
           }
 
@@ -891,7 +891,7 @@ LABEL_79:
           v63 = 1;
           Child = v32;
           v18 = v31;
-          a6 = v30;
+          above = aboveCopy;
           goto LABEL_74;
         }
       }
@@ -987,7 +987,7 @@ LABEL_56:
       else
       {
         v41 = m_ptr;
-        v42 = a6;
+        aboveCopy2 = above;
         v66 = v17;
         v43 = JSC::Yarr::RegularExpression::matchedLength(v64);
         v44 = v67;
@@ -1006,7 +1006,7 @@ LABEL_69:
             v65 = &stru_1F472E7E8;
             v46 = &stru_1F472E7E8;
             Child = v62;
-            a6 = v42;
+            above = aboveCopy2;
             m_ptr = v41;
             goto LABEL_70;
           }
@@ -1030,7 +1030,7 @@ LABEL_69:
         }
 
         Child = v62;
-        a6 = v42;
+        above = aboveCopy2;
         m_ptr = v41;
       }
 
@@ -1046,7 +1046,7 @@ LABEL_70:
       if ((v40 & 0x80000000) == 0)
       {
         v52 = 0;
-        a5 = v60;
+        distance = distanceCopy;
         goto LABEL_92;
       }
 
@@ -1086,7 +1086,7 @@ LABEL_91:
   v52 = 0;
   v65 = 0;
 LABEL_92:
-  if (a5)
+  if (distance)
   {
     v54 = v66;
     if (v66 == -1)
@@ -1094,12 +1094,12 @@ LABEL_92:
       v54 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    *a5 = v54;
+    *distance = v54;
   }
 
-  if (a6)
+  if (above)
   {
-    *a6 = v52;
+    *above = v52;
   }
 
   v55 = v65;
@@ -1117,9 +1117,9 @@ LABEL_92:
   return v55;
 }
 
-- (id)matchLabels:(id)a3 againstElement:(id)a4
+- (id)matchLabels:(id)labels againstElement:(id)element
 {
-  v5 = core(a4);
+  v5 = core(element);
   if (!v5)
   {
     return 0;
@@ -1177,7 +1177,7 @@ LABEL_5:
   }
 
 LABEL_15:
-  matchLabelsAgainstString(&v31, a3, *v11);
+  matchLabelsAgainstString(&v31, labels, *v11);
   if (![(objc_class *)v31.super.isa length])
   {
     v18 = *(v6 + 112);
@@ -1226,7 +1226,7 @@ LABEL_15:
       }
 
 LABEL_30:
-      matchLabelsAgainstString(&v30, a3, *v22);
+      matchLabelsAgainstString(&v30, labels, *v22);
       isa = v31.super.isa;
       v31.super.isa = 0;
       if (isa)

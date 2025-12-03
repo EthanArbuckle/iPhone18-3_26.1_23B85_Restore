@@ -1,14 +1,14 @@
 @interface PXGridTipsHelper_Swift
 + (PXGridTipsHelper_Swift)shared;
-+ (void)setTip:(id)a3 isPresentable:(BOOL)a4;
-+ (void)setTipActionPerformed:(id)a3;
-+ (void)setTipsPresentationDelegate:(id)a3;
++ (void)setTip:(id)tip isPresentable:(BOOL)presentable;
++ (void)setTipActionPerformed:(id)performed;
++ (void)setTipsPresentationDelegate:(id)delegate;
 - (PXGridTipsHelper_Swift)init;
 @end
 
 @implementation PXGridTipsHelper_Swift
 
-+ (void)setTipsPresentationDelegate:(id)a3
++ (void)setTipsPresentationDelegate:(id)delegate
 {
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
@@ -27,10 +27,10 @@
   return [(PXTipsHelper_Swift *)&v7 init];
 }
 
-+ (void)setTip:(id)a3 isPresentable:(BOOL)a4
++ (void)setTip:(id)tip isPresentable:(BOOL)presentable
 {
   v5 = sub_1A524C674();
-  _s12PhotosUICore16PXGridTipsHelperC6setTip_13isPresentableySS_SbtFZ_0(v5, v6, a4);
+  _s12PhotosUICore16PXGridTipsHelperC6setTip_13isPresentableySS_SbtFZ_0(v5, v6, presentable);
 }
 
 + (PXGridTipsHelper_Swift)shared
@@ -45,7 +45,7 @@
   return v3;
 }
 
-+ (void)setTipActionPerformed:(id)a3
++ (void)setTipActionPerformed:(id)performed
 {
   v3 = sub_1A524C674();
   _s12PhotosUICore16PXGridTipsHelperC21setTipActionPerformedyySSFZ_0(v3, v4);

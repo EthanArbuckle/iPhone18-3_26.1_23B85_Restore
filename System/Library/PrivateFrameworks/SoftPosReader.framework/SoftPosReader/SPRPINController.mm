@@ -1,19 +1,19 @@
 @interface SPRPINController
-- (BOOL)capturePINWithParameters:(id)a3 error:(id *)a4;
-- (BOOL)captureWithParameters:(id)a3 entropy:(id)a4 digitCodeMap:(char *)a5 error:(id *)a6;
-- (BOOL)copyDigitCodeMap:(char *)a3;
-- (BOOL)removeLastDigitAndReturnError:(id *)a3;
-- (BOOL)updateParameters:(id)a3 error:(id *)a4;
-- (BOOL)verifyWithPINToken:(id)a3 error:(id *)a4;
-- (id)generatePINBlockAndReturnError:(id *)a3;
+- (BOOL)capturePINWithParameters:(id)parameters error:(id *)error;
+- (BOOL)captureWithParameters:(id)parameters entropy:(id)entropy digitCodeMap:(char *)map error:(id *)error;
+- (BOOL)copyDigitCodeMap:(char *)map;
+- (BOOL)removeLastDigitAndReturnError:(id *)error;
+- (BOOL)updateParameters:(id)parameters error:(id *)error;
+- (BOOL)verifyWithPINToken:(id)token error:(id *)error;
+- (id)generatePINBlockAndReturnError:(id *)error;
 - (void)cancelPINCapture;
 @end
 
 @implementation SPRPINController
 
-- (BOOL)capturePINWithParameters:(id)a3 error:(id *)a4
+- (BOOL)capturePINWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -39,7 +39,7 @@
   v17[4] = self;
   v17[5] = &v19;
   v17[6] = &v25;
-  objc_msgSend_capturePINWithParameters_reply_(v10, v11, v6, v17, v12);
+  objc_msgSend_capturePINWithParameters_reply_(v10, v11, parametersCopy, v17, v12);
 
   v13 = v20[5];
   if (v13)
@@ -47,12 +47,12 @@
     objc_storeStrong(&self->_pinCrypto, v13);
   }
 
-  if (a4)
+  if (error)
   {
     v14 = v26[5];
     if (v14)
     {
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -63,10 +63,10 @@
   return v15;
 }
 
-- (BOOL)captureWithParameters:(id)a3 entropy:(id)a4 digitCodeMap:(char *)a5 error:(id *)a6
+- (BOOL)captureWithParameters:(id)parameters entropy:(id)entropy digitCodeMap:(char *)map error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  parametersCopy = parameters;
+  entropyCopy = entropy;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -89,12 +89,12 @@
   v23[1] = 3221225472;
   v23[2] = sub_26A942348;
   v23[3] = &unk_279CA5648;
-  v16 = v11;
+  v16 = entropyCopy;
   v24 = v16;
   v25 = &v29;
   v26 = &v35;
-  v27 = a5;
-  objc_msgSend_capturePINWithParameters_reply_(v15, v17, v10, v23, v18);
+  mapCopy = map;
+  objc_msgSend_capturePINWithParameters_reply_(v15, v17, parametersCopy, v23, v18);
 
   v19 = v30[5];
   if (v19)
@@ -102,12 +102,12 @@
     objc_storeStrong(&self->_pinCrypto, v19);
   }
 
-  if (a6)
+  if (error)
   {
     v20 = v36[5];
     if (v20)
     {
-      *a6 = v20;
+      *error = v20;
     }
   }
 
@@ -119,18 +119,18 @@
   return v21;
 }
 
-- (BOOL)copyDigitCodeMap:(char *)a3
+- (BOOL)copyDigitCodeMap:(char *)map
 {
   pinCrypto = self->_pinCrypto;
   if (pinCrypto)
   {
-    objc_msgSend_copyDigitCodeMap_(self->_pinCrypto, a2, a3, v3, v4);
+    objc_msgSend_copyDigitCodeMap_(self->_pinCrypto, a2, map, v3, v4);
   }
 
   return pinCrypto != 0;
 }
 
-- (BOOL)removeLastDigitAndReturnError:(id *)a3
+- (BOOL)removeLastDigitAndReturnError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -156,12 +156,12 @@
   v13[5] = &v19;
   objc_msgSend_removeLastDigitWithReply_(v6, v7, v13, v8, v9);
 
-  if (a3)
+  if (error)
   {
     v10 = v20[5];
     if (v10)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
@@ -172,7 +172,7 @@
   return v11;
 }
 
-- (id)generatePINBlockAndReturnError:(id *)a3
+- (id)generatePINBlockAndReturnError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -206,12 +206,12 @@
     self->_pinCrypto = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v12 = v24[5];
     if (v12)
     {
-      *a3 = v12;
+      *error = v12;
     }
   }
 
@@ -237,9 +237,9 @@
   objc_msgSend_cancelPINCaptureWithReply_(v7, v8, &unk_287B2DCA0, v9, v10);
 }
 
-- (BOOL)updateParameters:(id)a3 error:(id *)a4
+- (BOOL)updateParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -262,14 +262,14 @@
   v16[3] = &unk_279CA5670;
   v16[4] = &v18;
   v16[5] = &v22;
-  objc_msgSend_updateParameters_reply_(v10, v11, v6, v16, v12);
+  objc_msgSend_updateParameters_reply_(v10, v11, parametersCopy, v16, v12);
 
-  if (a4)
+  if (error)
   {
     v13 = v23[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -280,9 +280,9 @@
   return v14;
 }
 
-- (BOOL)verifyWithPINToken:(id)a3 error:(id *)a4
+- (BOOL)verifyWithPINToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -305,14 +305,14 @@
   v16[3] = &unk_279CA5670;
   v16[4] = &v18;
   v16[5] = &v22;
-  objc_msgSend_verifyWithPINToken_reply_(v10, v11, v6, v16, v12);
+  objc_msgSend_verifyWithPINToken_reply_(v10, v11, tokenCopy, v16, v12);
 
-  if (a4)
+  if (error)
   {
     v13 = v23[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 

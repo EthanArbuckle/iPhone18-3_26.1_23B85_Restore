@@ -1,40 +1,40 @@
 @interface CLSQuery
-+ (id)queryWithObjectType:(Class)a3 predicate:(id)a4;
-+ (id)queryWithObjectType:(Class)a3 predicate:(id)a4 error:(id *)a5;
-+ (id)queryWithQuerySpecification:(id)a3 completion:(id)a4 error:(id *)a5;
-+ (id)queryWithSearchSpecification:(id)a3;
-- (CLSQuery)initWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6;
-- (CLSQuery)initWithQuerySpecification:(id)a3 completion:(id)a4 error:(id *)a5;
-- (CLSQuery)initWithQuerySpecification:(id)a3 error:(id *)a4;
-- (CLSQuery)initWithSearchSpecification:(id)a3 error:(id *)a4;
++ (id)queryWithObjectType:(Class)type predicate:(id)predicate;
++ (id)queryWithObjectType:(Class)type predicate:(id)predicate error:(id *)error;
++ (id)queryWithQuerySpecification:(id)specification completion:(id)completion error:(id *)error;
++ (id)queryWithSearchSpecification:(id)specification;
+- (CLSQuery)initWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error;
+- (CLSQuery)initWithQuerySpecification:(id)specification completion:(id)completion error:(id *)error;
+- (CLSQuery)initWithQuerySpecification:(id)specification error:(id *)error;
+- (CLSQuery)initWithSearchSpecification:(id)specification error:(id *)error;
 - (NSString)description;
 - (void)_faultResultsAndComplete;
-- (void)_notifyOfCompletionWithError:(id)a3;
-- (void)_notifyOfCompletionWithResults:(id)a3 error:(id)a4;
-- (void)clientRemote_deliverObject:(id)a3;
-- (void)clientRemote_finishWithOffset:(unint64_t)a3 error:(id)a4;
+- (void)_notifyOfCompletionWithError:(id)error;
+- (void)_notifyOfCompletionWithResults:(id)results error:(id)error;
+- (void)clientRemote_deliverObject:(id)object;
+- (void)clientRemote_finishWithOffset:(unint64_t)offset error:(id)error;
 - (void)clientRemote_invalidate;
 - (void)reset;
-- (void)setFetchLimit:(int64_t)a3;
+- (void)setFetchLimit:(int64_t)limit;
 @end
 
 @implementation CLSQuery
 
-+ (id)queryWithQuerySpecification:(id)a3 completion:(id)a4 error:(id *)a5
++ (id)queryWithQuerySpecification:(id)specification completion:(id)completion error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 alloc];
-  Specification_completion_error = objc_msgSend_initWithQuerySpecification_completion_error_(v10, v11, v9, v8, a5);
+  completionCopy = completion;
+  specificationCopy = specification;
+  v10 = [self alloc];
+  Specification_completion_error = objc_msgSend_initWithQuerySpecification_completion_error_(v10, v11, specificationCopy, completionCopy, error);
 
   return Specification_completion_error;
 }
 
-+ (id)queryWithObjectType:(Class)a3 predicate:(id)a4
++ (id)queryWithObjectType:(Class)type predicate:(id)predicate
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = 0;
-  v4 = objc_msgSend_queryWithObjectType_predicate_error_(a1, a2, a3, a4, &v9);
+  v4 = objc_msgSend_queryWithObjectType_predicate_error_(self, a2, type, predicate, &v9);
   v5 = v9;
   if (v5)
   {
@@ -57,21 +57,21 @@
   return v4;
 }
 
-+ (id)queryWithObjectType:(Class)a3 predicate:(id)a4 error:(id *)a5
++ (id)queryWithObjectType:(Class)type predicate:(id)predicate error:(id *)error
 {
-  v7 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, a2, a3, a4);
-  v9 = objc_msgSend_queryWithQuerySpecification_completion_error_(a1, v8, v7, &unk_284A07848, a5);
+  v7 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, a2, type, predicate);
+  v9 = objc_msgSend_queryWithQuerySpecification_completion_error_(self, v8, v7, &unk_284A07848, error);
 
   return v9;
 }
 
-+ (id)queryWithSearchSpecification:(id)a3
++ (id)queryWithSearchSpecification:(id)specification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 alloc];
+  specificationCopy = specification;
+  v5 = [self alloc];
   v12 = 0;
-  v7 = objc_msgSend_initWithSearchSpecification_error_(v5, v6, v4, &v12);
+  v7 = objc_msgSend_initWithSearchSpecification_error_(v5, v6, specificationCopy, &v12);
 
   v8 = v12;
   if (v8)
@@ -95,12 +95,12 @@
   return v7;
 }
 
-- (CLSQuery)initWithQuerySpecification:(id)a3 error:(id *)a4
+- (CLSQuery)initWithQuerySpecification:(id)specification error:(id *)error
 {
-  v6 = a3;
+  specificationCopy = specification;
   v13.receiver = self;
   v13.super_class = CLSQuery;
-  v7 = [(CLSDataObserver *)&v13 initWithQuerySpecification:v6 error:a4];
+  v7 = [(CLSDataObserver *)&v13 initWithQuerySpecification:specificationCopy error:error];
   if (v7)
   {
     v8 = objc_opt_new();
@@ -109,19 +109,19 @@
     v7->_shouldAddResultsToDataStore = 1;
     v7->_shouldFaultResults = 1;
     v7->_lock._os_unfair_lock_opaque = 0;
-    v7->_fetchLimit = objc_msgSend_limit(v6, v10, v11);
+    v7->_fetchLimit = objc_msgSend_limit(specificationCopy, v10, v11);
   }
 
   return v7;
 }
 
-- (CLSQuery)initWithQuerySpecification:(id)a3 completion:(id)a4 error:(id *)a5
+- (CLSQuery)initWithQuerySpecification:(id)specification completion:(id)completion error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  specificationCopy = specification;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = CLSQuery;
-  v10 = [(CLSDataObserver *)&v17 initWithQuerySpecification:v8 error:a5];
+  v10 = [(CLSDataObserver *)&v17 initWithQuerySpecification:specificationCopy error:error];
   if (v10)
   {
     v11 = objc_opt_new();
@@ -130,35 +130,35 @@
     v10->_shouldAddResultsToDataStore = 1;
     v10->_shouldFaultResults = 1;
     v10->_lock._os_unfair_lock_opaque = 0;
-    v10->_fetchLimit = objc_msgSend_limit(v8, v13, v14);
-    objc_msgSend_setCompletion_(v10, v15, v9);
+    v10->_fetchLimit = objc_msgSend_limit(specificationCopy, v13, v14);
+    objc_msgSend_setCompletion_(v10, v15, completionCopy);
   }
 
   return v10;
 }
 
-- (CLSQuery)initWithSearchSpecification:(id)a3 error:(id *)a4
+- (CLSQuery)initWithSearchSpecification:(id)specification error:(id *)error
 {
-  v7 = a3;
+  specificationCopy = specification;
   v8 = objc_opt_class();
   v10 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, v9, v8, 0);
-  Specification_error = objc_msgSend_initWithQuerySpecification_error_(self, v11, v10, a4);
+  Specification_error = objc_msgSend_initWithQuerySpecification_error_(self, v11, v10, error);
   v13 = Specification_error;
   if (Specification_error)
   {
-    objc_storeStrong((Specification_error + 136), a3);
+    objc_storeStrong((Specification_error + 136), specification);
   }
 
   return v13;
 }
 
-- (CLSQuery)initWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6
+- (CLSQuery)initWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error
 {
-  v10 = a5;
-  v12 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, v11, a3, a4);
-  objc_msgSend_setSortDescriptors_(v12, v13, v10);
+  descriptorsCopy = descriptors;
+  v12 = objc_msgSend_querySpecificationWithObjectType_predicate_(CLSQuerySpecification, v11, type, predicate);
+  objc_msgSend_setSortDescriptors_(v12, v13, descriptorsCopy);
 
-  Specification_error = objc_msgSend_initWithQuerySpecification_error_(self, v14, v12, a6);
+  Specification_error = objc_msgSend_initWithQuerySpecification_error_(self, v14, v12, error);
   return Specification_error;
 }
 
@@ -192,12 +192,12 @@
   return v6;
 }
 
-- (void)setFetchLimit:(int64_t)a3
+- (void)setFetchLimit:(int64_t)limit
 {
-  v5 = objc_msgSend_querySpec(self, a2, a3);
-  objc_msgSend_setLimit_(v5, v6, a3);
+  v5 = objc_msgSend_querySpec(self, a2, limit);
+  objc_msgSend_setLimit_(v5, v6, limit);
 
-  self->_fetchLimit = a3;
+  self->_fetchLimit = limit;
 }
 
 - (void)reset
@@ -227,16 +227,16 @@
   }
 }
 
-- (void)clientRemote_deliverObject:(id)a3
+- (void)clientRemote_deliverObject:(id)object
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_msgSend_lock(self, v5, v6);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v4;
+  v7 = objectCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v24, v28, 16);
   if (v9)
   {
@@ -274,25 +274,25 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientRemote_finishWithOffset:(unint64_t)a3 error:(id)a4
+- (void)clientRemote_finishWithOffset:(unint64_t)offset error:(id)error
 {
-  v24 = a4;
+  errorCopy = error;
   objc_msgSend_lock(self, v6, v7);
   v10 = objc_msgSend_querySpec(self, v8, v9);
 
   if (v10)
   {
     v13 = objc_msgSend_querySpec(self, v11, v12);
-    objc_msgSend_setOffset_(v13, v14, a3);
+    objc_msgSend_setOffset_(v13, v14, offset);
   }
 
   objc_msgSend_unlock(self, v11, v12);
   v17 = objc_msgSend_objectType(self, v15, v16);
   v19 = objc_msgSend_conformsToProtocol_(v17, v18, &unk_284A1E680);
-  v21 = v24;
-  if (!v24 && v19 && (shouldFaultResults = objc_msgSend_shouldFaultResults(self, 0, v20), v21 = 0, (shouldFaultResults & 1) != 0))
+  v21 = errorCopy;
+  if (!errorCopy && v19 && (shouldFaultResults = objc_msgSend_shouldFaultResults(self, 0, v20), v21 = 0, (shouldFaultResults & 1) != 0))
   {
-    objc_msgSend__faultResultsAndComplete(self, v24, v23);
+    objc_msgSend__faultResultsAndComplete(self, errorCopy, v23);
   }
 
   else
@@ -327,10 +327,10 @@
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_notifyOfCompletionWithError:(id)a3
+- (void)_notifyOfCompletionWithError:(id)error
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_lock(self, v5, v6);
   v9 = objc_msgSend_results(self, v7, v8);
   v12 = objc_msgSend_copy(v9, v10, v11);
@@ -388,16 +388,16 @@
     v26 = v12;
   }
 
-  objc_msgSend__notifyOfCompletionWithResults_error_(self, v25, v26, v4, v43);
+  objc_msgSend__notifyOfCompletionWithResults_error_(self, v25, v26, errorCopy, v43);
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyOfCompletionWithResults:(id)a3 error:(id)a4
+- (void)_notifyOfCompletionWithResults:(id)results error:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   if (qword_280B2A720 != -1)
   {
     dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -410,9 +410,9 @@
     v22 = objc_msgSend_startDate(self, v20, v21);
     objc_msgSend_timeIntervalSinceDate_(v19, v23, v22);
     v27 = v26;
-    if (v6)
+    if (resultsCopy)
     {
-      v28 = objc_msgSend_count(v6, v24, v25);
+      v28 = objc_msgSend_count(resultsCopy, v24, v25);
     }
 
     else
@@ -421,7 +421,7 @@
     }
 
     *buf = 138412802;
-    v34 = self;
+    selfCopy = self;
     v35 = 2048;
     v36 = v27;
     v37 = 2048;
@@ -440,9 +440,9 @@
     v29[2] = sub_236F92D2C;
     v29[3] = &unk_278A18260;
     v29[4] = self;
-    v30 = v7;
+    v30 = errorCopy;
     v32 = v13;
-    v31 = v6;
+    v31 = resultsCopy;
     dispatch_async(v17, v29);
   }
 

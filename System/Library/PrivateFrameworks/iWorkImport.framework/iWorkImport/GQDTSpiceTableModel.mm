@@ -1,22 +1,22 @@
 @interface GQDTSpiceTableModel
-- (__CFArray)createSizeArrayFromPositionVector:(void *)a3;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
-- (int)setColumnWidthsFromState:(id)a3;
-- (int)setRowHeightsFromState:(id)a3;
+- (__CFArray)createSizeArrayFromPositionVector:(void *)vector;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
+- (int)setColumnWidthsFromState:(id)state;
+- (int)setRowHeightsFromState:(id)state;
 @end
 
 @implementation GQDTSpiceTableModel
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  self->super.mHeaderRowCount = sub_42340(a3, qword_A35E8, "tableModelIsHeaderRow", 0);
-  self->super.mHeaderColumnCount = sub_42340(a3, qword_A35E8, "tableModelIsHeaderColumn", 0);
+  self->super.mHeaderRowCount = sub_42340(reader, qword_A35E8, "tableModelIsHeaderRow", 0);
+  self->super.mHeaderColumnCount = sub_42340(reader, qword_A35E8, "tableModelIsHeaderColumn", 0);
   return 1;
 }
 
-- (int)setRowHeightsFromState:(id)a3
+- (int)setRowHeightsFromState:(id)state
 {
-  v4 = [(GQDTSpiceTableModel *)self createSizeArrayFromPositionVector:*(a3 + 9)];
+  v4 = [(GQDTSpiceTableModel *)self createSizeArrayFromPositionVector:*(state + 9)];
   self->super.mRowHeights = v4;
   if (!v4)
   {
@@ -27,9 +27,9 @@
   return 1;
 }
 
-- (int)setColumnWidthsFromState:(id)a3
+- (int)setColumnWidthsFromState:(id)state
 {
-  v4 = [(GQDTSpiceTableModel *)self createSizeArrayFromPositionVector:*(a3 + 10)];
+  v4 = [(GQDTSpiceTableModel *)self createSizeArrayFromPositionVector:*(state + 10)];
   self->super.mColumnWidths = v4;
   if (!v4)
   {
@@ -40,9 +40,9 @@
   return 1;
 }
 
-- (__CFArray)createSizeArrayFromPositionVector:(void *)a3
+- (__CFArray)createSizeArrayFromPositionVector:(void *)vector
 {
-  v3 = *(a3 + 1) - *a3;
+  v3 = *(vector + 1) - *vector;
   v4 = v3 >> 2;
   if ((v3 >> 2) < 1)
   {
@@ -50,7 +50,7 @@
   }
 
   Mutable = CFArrayCreateMutable(0, (v4 - 1), &kCFTypeArrayCallBacks);
-  if (*(a3 + 1) == *a3)
+  if (*(vector + 1) == *vector)
   {
     goto LABEL_10;
   }
@@ -58,12 +58,12 @@
   v7 = Mutable;
   if (v4 != 1)
   {
-    v8 = **a3;
+    v8 = **vector;
     v9 = (v3 >> 2) & 0x7FFFFFFF;
     v10 = 1;
-    while (v10 < (*(a3 + 1) - *a3) >> 2)
+    while (v10 < (*(vector + 1) - *vector) >> 2)
     {
-      v11 = *(*a3 + 4 * v10);
+      v11 = *(*vector + 4 * v10);
       valuePtr = v11 - v8;
       v12 = CFNumberCreate(0, kCFNumberFloatType, &valuePtr);
       CFArrayAppendValue(v7, v12);

@@ -1,27 +1,27 @@
 @interface CRLiOSSheetViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CRLiOSSheetViewController)initWithCoder:(id)a3;
-- (CRLiOSSheetViewController)initWithContentViewController:(id)a3;
-- (CRLiOSSheetViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)addCancelButtonWithTitle:(id)a3;
-- (void)animateTransition:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CRLiOSSheetViewController)initWithCoder:(id)coder;
+- (CRLiOSSheetViewController)initWithContentViewController:(id)controller;
+- (CRLiOSSheetViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)addCancelButtonWithTitle:(id)title;
+- (void)animateTransition:(id)transition;
 - (void)didCancel;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)setShouldStretchWidth:(BOOL)a3;
-- (void)setShouldTouchesOutsideCancel:(BOOL)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)setShouldStretchWidth:(BOOL)width;
+- (void)setShouldTouchesOutsideCancel:(BOOL)cancel;
 - (void)updateViewConstraints;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CRLiOSSheetViewController
 
-- (CRLiOSSheetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CRLiOSSheetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -70,9 +70,9 @@
   objc_exception_throw(v15);
 }
 
-- (CRLiOSSheetViewController)initWithCoder:(id)a3
+- (CRLiOSSheetViewController)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -121,9 +121,9 @@
   objc_exception_throw(v12);
 }
 
-- (CRLiOSSheetViewController)initWithContentViewController:(id)a3
+- (CRLiOSSheetViewController)initWithContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CRLiOSSheetViewController;
   v6 = [(CRLiOSSheetViewController *)&v9 initWithNibName:0 bundle:0];
@@ -133,8 +133,8 @@
     [(CRLiOSSheetViewController *)v6 setModalPresentationStyle:4];
     [(CRLiOSSheetViewController *)v7 setTransitioningDelegate:v7];
     v7->_shouldStretchWidth = 1;
-    [(CRLiOSSheetViewController *)v7 addChildViewController:v5];
-    objc_storeStrong(&v7->_contentViewController, a3);
+    [(CRLiOSSheetViewController *)v7 addChildViewController:controllerCopy];
+    objc_storeStrong(&v7->_contentViewController, controller);
   }
 
   return v7;
@@ -145,16 +145,16 @@
   v74.receiver = self;
   v74.super_class = CRLiOSSheetViewController;
   [(CRLiOSSheetViewController *)&v74 viewDidLoad];
-  v3 = [(CRLiOSSheetViewController *)self view];
+  view = [(CRLiOSSheetViewController *)self view];
   v4 = [UIColor colorWithWhite:0.0 alpha:0.400000006];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = objc_opt_new();
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v5];
-  v6 = [(UIViewController *)self->_contentViewController view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:v6];
+  [view addSubview:v5];
+  view2 = [(UIViewController *)self->_contentViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [v5 addSubview:view2];
   objc_storeStrong(&self->_containerView, v5);
   [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
   [(CRLiOSSheetViewController *)self inset];
@@ -162,61 +162,61 @@
   v9 = objc_opt_new();
   if (self->_shouldStretchWidth)
   {
-    v10 = [v5 leadingAnchor];
-    v11 = [v3 leadingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    leadingAnchor = [v5 leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v9 addObject:v12];
 
-    v13 = [v5 trailingAnchor];
-    [v3 trailingAnchor];
+    trailingAnchor = [v5 trailingAnchor];
+    [view trailingAnchor];
   }
 
   else
   {
-    v14 = [v5 widthAnchor];
-    v15 = [v14 constraintEqualToConstant:0.0];
+    widthAnchor = [v5 widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:0.0];
     maxWidthConstraint = self->_maxWidthConstraint;
     self->_maxWidthConstraint = v15;
 
     LODWORD(v17) = 1145569280;
     [(NSLayoutConstraint *)self->_maxWidthConstraint setPriority:v17];
-    v18 = [v5 leadingAnchor];
-    v19 = [v3 leadingAnchor];
-    v20 = [v18 constraintGreaterThanOrEqualToAnchor:v19 constant:v8];
+    leadingAnchor3 = [v5 leadingAnchor];
+    leadingAnchor4 = [view leadingAnchor];
+    v20 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:v8];
     [v9 addObject:v20];
 
-    v21 = [v3 trailingAnchor];
-    v22 = [v5 trailingAnchor];
-    v23 = [v21 constraintGreaterThanOrEqualToAnchor:v22 constant:v8];
+    trailingAnchor2 = [view trailingAnchor];
+    trailingAnchor3 = [v5 trailingAnchor];
+    v23 = [trailingAnchor2 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:v8];
     [v9 addObject:v23];
 
-    v13 = [v5 centerXAnchor];
-    [v3 centerXAnchor];
+    trailingAnchor = [v5 centerXAnchor];
+    [view centerXAnchor];
   }
   v24 = ;
-  v25 = [v13 constraintEqualToAnchor:{v24, 17}];
+  v25 = [trailingAnchor constraintEqualToAnchor:{v24, 17}];
   [v9 addObject:v25];
 
-  v26 = [v6 leadingAnchor];
-  v27 = [v5 leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  leadingAnchor5 = [view2 leadingAnchor];
+  leadingAnchor6 = [v5 leadingAnchor];
+  v28 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   [v9 addObject:v28];
 
-  v29 = [v6 trailingAnchor];
-  v30 = [v5 trailingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  trailingAnchor4 = [view2 trailingAnchor];
+  trailingAnchor5 = [v5 trailingAnchor];
+  v31 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   [v9 addObject:v31];
 
-  v32 = [v5 bottomAnchor];
-  v73 = v3;
-  v33 = [v3 bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  bottomAnchor = [v5 bottomAnchor];
+  v73 = view;
+  bottomAnchor2 = [view bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v9 addObject:v34];
 
   [(UIViewController *)self->_contentViewController preferredContentSize];
   v36 = v35;
-  v37 = [v6 heightAnchor];
-  v38 = [v37 constraintEqualToConstant:v36];
+  heightAnchor = [view2 heightAnchor];
+  v38 = [heightAnchor constraintEqualToConstant:v36];
   [v9 addObject:v38];
 
   v39 = objc_opt_new();
@@ -224,73 +224,73 @@
   [v5 addLayoutGuide:v39];
   if (self->_cancelButton)
   {
-    v40 = [v6 backgroundColor];
-    [(UIButton *)self->_cancelButton setBackgroundColor:v40];
+    backgroundColor = [view2 backgroundColor];
+    [(UIButton *)self->_cancelButton setBackgroundColor:backgroundColor];
 
     [(UIButton *)self->_cancelButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_containerView addSubview:self->_cancelButton];
-    v41 = [(UIButton *)self->_cancelButton topAnchor];
-    v42 = [v6 bottomAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:8.0];
+    topAnchor = [(UIButton *)self->_cancelButton topAnchor];
+    bottomAnchor3 = [view2 bottomAnchor];
+    v43 = [topAnchor constraintEqualToAnchor:bottomAnchor3 constant:8.0];
     [v9 addObject:v43];
 
-    v44 = [(UIButton *)self->_cancelButton heightAnchor];
-    v45 = [v44 constraintEqualToConstant:57.0];
+    heightAnchor2 = [(UIButton *)self->_cancelButton heightAnchor];
+    v45 = [heightAnchor2 constraintEqualToConstant:57.0];
     [v9 addObject:v45];
 
-    v46 = [(UIButton *)self->_cancelButton leadingAnchor];
-    v47 = [v5 leadingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    leadingAnchor7 = [(UIButton *)self->_cancelButton leadingAnchor];
+    leadingAnchor8 = [v5 leadingAnchor];
+    v48 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     [v9 addObject:v48];
 
-    v49 = [(UIButton *)self->_cancelButton trailingAnchor];
-    v50 = [v5 trailingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    trailingAnchor6 = [(UIButton *)self->_cancelButton trailingAnchor];
+    trailingAnchor7 = [v5 trailingAnchor];
+    v51 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     [v9 addObject:v51];
 
-    v52 = [v5 safeAreaLayoutGuide];
-    v53 = [v52 bottomAnchor];
-    v54 = [(UIButton *)self->_cancelButton bottomAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54 constant:v8];
+    safeAreaLayoutGuide = [v5 safeAreaLayoutGuide];
+    bottomAnchor4 = [safeAreaLayoutGuide bottomAnchor];
+    bottomAnchor5 = [(UIButton *)self->_cancelButton bottomAnchor];
+    v55 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:v8];
     [v9 addObject:v55];
   }
 
   else
   {
-    v56 = [v6 topAnchor];
-    v57 = [v5 topAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57];
+    topAnchor2 = [view2 topAnchor];
+    topAnchor3 = [v5 topAnchor];
+    v58 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     [v9 addObject:v58];
 
-    v52 = [v6 bottomAnchor];
-    v53 = [v5 bottomAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
-    [v9 addObject:v54];
+    safeAreaLayoutGuide = [view2 bottomAnchor];
+    bottomAnchor4 = [v5 bottomAnchor];
+    bottomAnchor5 = [safeAreaLayoutGuide constraintEqualToAnchor:bottomAnchor4];
+    [v9 addObject:bottomAnchor5];
   }
 
-  v59 = [v39 topAnchor];
-  v60 = [v6 topAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60];
+  topAnchor4 = [v39 topAnchor];
+  topAnchor5 = [view2 topAnchor];
+  v61 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   [v9 addObject:v61];
 
-  v62 = [v39 bottomAnchor];
-  v63 = [v5 bottomAnchor];
-  v64 = [v62 constraintEqualToAnchor:v63];
+  bottomAnchor6 = [v39 bottomAnchor];
+  bottomAnchor7 = [v5 bottomAnchor];
+  v64 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   [v9 addObject:v64];
 
-  v65 = [v5 heightAnchor];
-  v66 = [v39 heightAnchor];
-  v67 = [v65 constraintEqualToAnchor:v66];
+  heightAnchor3 = [v5 heightAnchor];
+  heightAnchor4 = [v39 heightAnchor];
+  v67 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   [v9 addObject:v67];
 
   if ((*(&self->super.super.super.isa + v72) & 1) == 0)
   {
-    v68 = [v6 layer];
-    [v68 setCornerRadius:14.0];
-    [v68 setMasksToBounds:1];
-    v69 = [(UIButton *)self->_cancelButton layer];
-    [v69 setCornerRadius:14.0];
-    [v69 setMasksToBounds:1];
+    layer = [view2 layer];
+    [layer setCornerRadius:14.0];
+    [layer setMasksToBounds:1];
+    layer2 = [(UIButton *)self->_cancelButton layer];
+    [layer2 setCornerRadius:14.0];
+    [layer2 setMasksToBounds:1];
   }
 
   if (self->_shouldTouchesOutsideCancel)
@@ -306,20 +306,20 @@
   [NSLayoutConstraint activateConstraints:v9];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CRLiOSSheetViewController;
-  [(CRLiOSSheetViewController *)&v5 viewWillAppear:a3];
-  v4 = [(CRLiOSSheetViewController *)self view];
-  [v4 setNeedsUpdateConstraints];
+  [(CRLiOSSheetViewController *)&v5 viewWillAppear:appear];
+  view = [(CRLiOSSheetViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CRLiOSSheetViewController;
-  [(CRLiOSSheetViewController *)&v5 viewDidDisappear:a3];
+  [(CRLiOSSheetViewController *)&v5 viewDidDisappear:disappear];
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = 0;
 }
@@ -328,12 +328,12 @@
 {
   if (self->_maxWidthConstraint)
   {
-    v3 = [(CRLiOSSheetViewController *)self view];
-    v4 = [v3 window];
+    view = [(CRLiOSSheetViewController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      [v4 bounds];
+      [window bounds];
       if (v5 >= v6)
       {
         v7 = v6;
@@ -348,7 +348,7 @@
       [(NSLayoutConstraint *)self->_maxWidthConstraint setConstant:v7 + v8 * -2.0];
     }
 
-    [(NSLayoutConstraint *)self->_maxWidthConstraint setActive:v4 != 0];
+    [(NSLayoutConstraint *)self->_maxWidthConstraint setActive:window != 0];
   }
 
   v9.receiver = self;
@@ -361,13 +361,13 @@
   v5.receiver = self;
   v5.super_class = CRLiOSSheetViewController;
   [(CRLiOSSheetViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(CRLiOSSheetViewController *)self view];
-  v4 = [v3 window];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(CRLiOSSheetViewController *)self view];
+  window = [view window];
+  [window bounds];
+  [view setFrame:?];
 }
 
-- (void)setShouldTouchesOutsideCancel:(BOOL)a3
+- (void)setShouldTouchesOutsideCancel:(BOOL)cancel
 {
   if ([(CRLiOSSheetViewController *)self isViewLoaded])
   {
@@ -398,22 +398,22 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:177 isFatal:0 description:"Can't set shouldTouchesOutsideCancel after loading the view"];
   }
 
-  self->_shouldTouchesOutsideCancel = a3;
+  self->_shouldTouchesOutsideCancel = cancel;
 }
 
-- (void)setShouldStretchWidth:(BOOL)a3
+- (void)setShouldStretchWidth:(BOOL)width
 {
-  self->_shouldStretchWidth = a3;
+  self->_shouldStretchWidth = width;
   if ([(CRLiOSSheetViewController *)self isViewLoaded])
   {
-    v4 = [(CRLiOSSheetViewController *)self view];
-    [v4 setNeedsUpdateConstraints];
+    view = [(CRLiOSSheetViewController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (void)addCancelButtonWithTitle:(id)a3
+- (void)addCancelButtonWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if ([(CRLiOSSheetViewController *)self isViewLoaded])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -476,11 +476,11 @@
   cancelButton = self->_cancelButton;
   self->_cancelButton = v11;
 
-  [(UIButton *)self->_cancelButton setTitle:v4 forState:0];
+  [(UIButton *)self->_cancelButton setTitle:titleCopy forState:0];
   [(UIButton *)self->_cancelButton addTarget:self action:"didCancel" forControlEvents:64];
   v13 = [UIFont boldSystemFontOfSize:21.0];
-  v14 = [(UIButton *)self->_cancelButton titleLabel];
-  [v14 setFont:v13];
+  titleLabel = [(UIButton *)self->_cancelButton titleLabel];
+  [titleLabel setFont:v13];
 }
 
 - (void)didCancel
@@ -497,10 +497,10 @@
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (qword_101AD5A50 != -1)
   {
     sub_1013223CC();
@@ -509,7 +509,7 @@
   v7 = off_1019EDAA8;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    sub_1013223E0(self, v4, v7);
+    sub_1013223E0(self, animatedCopy, v7);
   }
 
   if (qword_101AD5A50 != -1)
@@ -525,31 +525,31 @@
 
   v9.receiver = self;
   v9.super_class = CRLiOSSheetViewController;
-  [(CRLiOSSheetViewController *)&v9 dismissViewControllerAnimated:v4 completion:v6];
+  [(CRLiOSSheetViewController *)&v9 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_tapGestureRecognizer != a3)
+  if (self->_tapGestureRecognizer != recognizer)
   {
     return 1;
   }
 
-  v6 = [a4 view];
-  v7 = [(CRLiOSSheetViewController *)self view];
-  v4 = v6 == v7;
+  view = [touch view];
+  view2 = [(CRLiOSSheetViewController *)self view];
+  v4 = view == view2;
 
   return v4;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(CRLiOSSheetViewController *)self view];
-  v6 = [v4 containerView];
-  [v6 addSubview:v5];
+  transitionCopy = transition;
+  view = [(CRLiOSSheetViewController *)self view];
+  containerView = [transitionCopy containerView];
+  [containerView addSubview:view];
 
-  [v5 layoutIfNeeded];
+  [view layoutIfNeeded];
   [(UIView *)self->_containerView frame];
   x = v34.origin.x;
   y = v34.origin.y;
@@ -565,13 +565,13 @@
   v13 = v36.origin.y;
   v14 = v36.size.width;
   v15 = v36.size.height;
-  v16 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
+  v16 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
 
   if (v16 == self)
   {
-    v17 = [v5 backgroundColor];
+    backgroundColor = [view backgroundColor];
     v18 = +[UIColor clearColor];
-    [v5 setBackgroundColor:v18];
+    [view setBackgroundColor:v18];
 
     [(UIView *)self->_containerView setFrame:v12, v13, v14, v15];
     v15 = height;
@@ -582,18 +582,18 @@
 
   else
   {
-    v17 = +[UIColor clearColor];
+    backgroundColor = +[UIColor clearColor];
   }
 
-  [(CRLiOSSheetViewController *)self transitionDuration:v4];
+  [(CRLiOSSheetViewController *)self transitionDuration:transitionCopy];
   v20 = v19;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100173128;
   v26[3] = &unk_101841B70;
-  v27 = v5;
-  v28 = v17;
-  v29 = self;
+  v27 = view;
+  v28 = backgroundColor;
+  selfCopy = self;
   v30 = v12;
   v31 = v13;
   v32 = v14;
@@ -602,10 +602,10 @@
   v24[1] = 3221225472;
   v24[2] = sub_100173178;
   v24[3] = &unk_10183D270;
-  v25 = v4;
-  v21 = v4;
-  v22 = v17;
-  v23 = v5;
+  v25 = transitionCopy;
+  v21 = transitionCopy;
+  v22 = backgroundColor;
+  v23 = view;
   [UIView animateWithDuration:v26 animations:v24 completion:v20];
 }
 

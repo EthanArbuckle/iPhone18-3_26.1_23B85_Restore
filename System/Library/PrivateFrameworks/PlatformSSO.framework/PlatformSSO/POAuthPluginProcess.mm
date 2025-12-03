@@ -1,7 +1,7 @@
 @interface POAuthPluginProcess
-- (BOOL)saveCredentialForUserName:(id)a3 passwordContext:(id)a4;
-- (void)screenDidUnlockWithCredentialContext:(id)a3 smartCardContext:(id)a4 biometricContext:(id)a5 tokenId:(id)a6 atLogin:(BOOL)a7 tokenUnlock:(BOOL)a8;
-- (void)updateLocalAccountPassword:(id)a3 passwordContext:(id)a4 completion:(id)a5;
+- (BOOL)saveCredentialForUserName:(id)name passwordContext:(id)context;
+- (void)screenDidUnlockWithCredentialContext:(id)context smartCardContext:(id)cardContext biometricContext:(id)biometricContext tokenId:(id)id atLogin:(BOOL)login tokenUnlock:(BOOL)unlock;
+- (void)updateLocalAccountPassword:(id)password passwordContext:(id)context completion:(id)completion;
 @end
 
 @implementation POAuthPluginProcess
@@ -73,22 +73,22 @@ void __101__POAuthPluginProcess_performPasswordLogin_loginUserName_passwordConte
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)saveCredentialForUserName:(id)a3 passwordContext:(id)a4
+- (BOOL)saveCredentialForUserName:(id)name passwordContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v8 = PO_LOG_POAuthPluginProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     *&buf[4] = "[POAuthPluginProcess saveCredentialForUserName:passwordContext:]";
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = nameCopy;
     *&buf[22] = 2114;
-    v19 = v7;
+    v19 = contextCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@, passwordContext = %{public}@ on %@", buf, 0x2Au);
   }
 
@@ -101,11 +101,11 @@ void __101__POAuthPluginProcess_performPasswordLogin_loginUserName_passwordConte
   v14[2] = __65__POAuthPluginProcess_saveCredentialForUserName_passwordContext___block_invoke;
   v14[3] = &unk_279A3A368;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = nameCopy;
+  v16 = contextCopy;
   v17 = buf;
-  v9 = v7;
-  v10 = v6;
+  v9 = contextCopy;
+  v10 = nameCopy;
   _os_activity_initiate(&dword_25E831000, "PSSOSaveCredential", OS_ACTIVITY_FLAG_DEFAULT, v14);
 
   v11 = *(*&buf[8] + 24);
@@ -127,26 +127,26 @@ uint64_t __65__POAuthPluginProcess_saveCredentialForUserName_passwordContext___b
   return [v2 saveCredentialForUserName:v1 passwordContext:v3 completion:v5];
 }
 
-- (void)screenDidUnlockWithCredentialContext:(id)a3 smartCardContext:(id)a4 biometricContext:(id)a5 tokenId:(id)a6 atLogin:(BOOL)a7 tokenUnlock:(BOOL)a8
+- (void)screenDidUnlockWithCredentialContext:(id)context smartCardContext:(id)cardContext biometricContext:(id)biometricContext tokenId:(id)id atLogin:(BOOL)login tokenUnlock:(BOOL)unlock
 {
   v41 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  contextCopy = context;
+  cardContextCopy = cardContext;
+  biometricContextCopy = biometricContext;
+  idCopy = id;
   v18 = PO_LOG_POAuthPluginProcess();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316162;
     v32 = "[POAuthPluginProcess screenDidUnlockWithCredentialContext:smartCardContext:biometricContext:tokenId:atLogin:tokenUnlock:]";
     v33 = 2114;
-    v34 = v14;
+    v34 = contextCopy;
     v35 = 2114;
-    v36 = v15;
+    v36 = cardContextCopy;
     v37 = 2114;
-    v38 = v16;
+    v38 = biometricContextCopy;
     v39 = 2112;
-    v40 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v18, OS_LOG_TYPE_DEFAULT, "%s context = %{public}@, sccontext = %{public}@, bcontext = %{public}@ on %@", buf, 0x34u);
   }
 
@@ -155,16 +155,16 @@ uint64_t __65__POAuthPluginProcess_saveCredentialForUserName_passwordContext___b
   v24[2] = __122__POAuthPluginProcess_screenDidUnlockWithCredentialContext_smartCardContext_biometricContext_tokenId_atLogin_tokenUnlock___block_invoke;
   v24[3] = &unk_279A3A390;
   v24[4] = self;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v28 = v17;
-  v29 = a7;
-  v30 = a8;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v25 = contextCopy;
+  v26 = cardContextCopy;
+  v27 = biometricContextCopy;
+  v28 = idCopy;
+  loginCopy = login;
+  unlockCopy = unlock;
+  v19 = idCopy;
+  v20 = biometricContextCopy;
+  v21 = cardContextCopy;
+  v22 = contextCopy;
   _os_activity_initiate(&dword_25E831000, "PSSOScreenUnlock", OS_ACTIVITY_FLAG_DEFAULT, v24);
 
   v23 = *MEMORY[0x277D85DE8];
@@ -180,26 +180,26 @@ void __122__POAuthPluginProcess_screenDidUnlockWithCredentialContext_smartCardCo
   }
 }
 
-- (void)updateLocalAccountPassword:(id)a3 passwordContext:(id)a4 completion:(id)a5
+- (void)updateLocalAccountPassword:(id)password passwordContext:(id)context completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  contextCopy = context;
+  passwordCopy = password;
   v11 = PO_LOG_POAuthPluginProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315394;
     v16 = "[POAuthPluginProcess updateLocalAccountPassword:passwordContext:completion:]";
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v15, 0x16u);
   }
 
   serviceConnection = self->_serviceConnection;
-  v13 = [v9 externalizedContext];
+  externalizedContext = [contextCopy externalizedContext];
 
-  [(POServiceConnection *)serviceConnection updateLocalAccountPassword:v10 passwordContextData:v13 completion:v8];
+  [(POServiceConnection *)serviceConnection updateLocalAccountPassword:passwordCopy passwordContextData:externalizedContext completion:completionCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 

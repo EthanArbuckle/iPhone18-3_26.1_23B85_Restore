@@ -1,31 +1,31 @@
 @interface ANAnnounceServiceListener
 - (ANAnnounceServiceListener)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_handleError:(int64_t)a3 request:(id)a4 requestSentCompletionHandler:(id)a5;
-- (void)_handleError:(int64_t)a3 request:(id)a4 sentCompletionHandler:(id)a5;
-- (void)_sendReplyRequest:(id)a3 completion:(id)a4;
-- (void)_sendRequest:(id)a3 completion:(id)a4;
-- (void)_translateSentHandlerResponseAnnouncement:(id)a3 request:(id)a4 error:(id)a5 toRequestSentHandler:(id)a6;
-- (void)announcementForID:(id)a3 endpointID:(id)a4 reply:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_handleError:(int64_t)error request:(id)request requestSentCompletionHandler:(id)handler;
+- (void)_handleError:(int64_t)error request:(id)request sentCompletionHandler:(id)handler;
+- (void)_sendReplyRequest:(id)request completion:(id)completion;
+- (void)_sendRequest:(id)request completion:(id)completion;
+- (void)_translateSentHandlerResponseAnnouncement:(id)announcement request:(id)request error:(id)error toRequestSentHandler:(id)handler;
+- (void)announcementForID:(id)d endpointID:(id)iD reply:(id)reply;
 - (void)cleanForExit;
-- (void)contextFromAnnouncement:(id)a3 reply:(id)a4;
-- (void)getReceivedAnnouncementsForEndpointID:(id)a3 completionHandler:(id)a4;
-- (void)getScanningDeviceCandidates:(id)a3;
-- (void)getUnplayedAnnouncementsForEndpointID:(id)a3 completionHandler:(id)a4;
-- (void)homeNamesForContext:(id)a3 reply:(id)a4;
-- (void)isAnnounceEnabledForAnyAccessoryInHome:(id)a3 reply:(id)a4;
-- (void)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)a3 reply:(id)a4;
-- (void)isEndpointWithUUID:(id)a3 inRoomWithName:(id)a4 reply:(id)a5;
-- (void)isLocalDeviceInRoom:(id)a3 reply:(id)a4;
-- (void)localParticipant:(id)a3;
-- (void)mockAnnouncement:(id)a3 forHomeWithName:(id)a4 playbackDeadline:(id)a5 completion:(id)a6;
-- (void)prewarm:(id)a3;
-- (void)receivedAnnouncementIdentifiersForEndpointID:(id)a3 reply:(id)a4;
-- (void)send:(ANAnnouncementRequest *)a3 connection:(NSXPCConnection *)a4 completionHandler:(id)a5;
-- (void)sendReply:(ANAnnouncementRequest *)a3 connection:(NSXPCConnection *)a4 completionHandler:(id)a5;
-- (void)sendRequest:(id)a3 completion:(id)a4;
-- (void)sendRequestLegacy:(id)a3 completion:(id)a4;
-- (void)validateDestinationFromContext:(id)a3 reply:(id)a4;
+- (void)contextFromAnnouncement:(id)announcement reply:(id)reply;
+- (void)getReceivedAnnouncementsForEndpointID:(id)d completionHandler:(id)handler;
+- (void)getScanningDeviceCandidates:(id)candidates;
+- (void)getUnplayedAnnouncementsForEndpointID:(id)d completionHandler:(id)handler;
+- (void)homeNamesForContext:(id)context reply:(id)reply;
+- (void)isAnnounceEnabledForAnyAccessoryInHome:(id)home reply:(id)reply;
+- (void)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)home reply:(id)reply;
+- (void)isEndpointWithUUID:(id)d inRoomWithName:(id)name reply:(id)reply;
+- (void)isLocalDeviceInRoom:(id)room reply:(id)reply;
+- (void)localParticipant:(id)participant;
+- (void)mockAnnouncement:(id)announcement forHomeWithName:(id)name playbackDeadline:(id)deadline completion:(id)completion;
+- (void)prewarm:(id)prewarm;
+- (void)receivedAnnouncementIdentifiersForEndpointID:(id)d reply:(id)reply;
+- (void)send:(ANAnnouncementRequest *)send connection:(NSXPCConnection *)connection completionHandler:(id)handler;
+- (void)sendReply:(ANAnnouncementRequest *)reply connection:(NSXPCConnection *)connection completionHandler:(id)handler;
+- (void)sendRequest:(id)request completion:(id)completion;
+- (void)sendRequestLegacy:(id)legacy completion:(id)completion;
+- (void)validateDestinationFromContext:(id)context reply:(id)reply;
 @end
 
 @implementation ANAnnounceServiceListener
@@ -61,38 +61,38 @@
 
 - (void)cleanForExit
 {
-  v2 = [(ANAnnounceServiceListener *)self listener];
-  [v2 invalidate];
+  listener = [(ANAnnounceServiceListener *)self listener];
+  [listener invalidate];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = ANLogHandleAnnounceServiceListener();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "processIdentifier")}];
-    v10 = [v7 serviceName];
+    v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connectionCopy, "processIdentifier")}];
+    serviceName = [connectionCopy serviceName];
     *buf = 138412802;
     v33 = &stru_2851BDB18;
     v34 = 2112;
     v35 = v9;
     v36 = 2112;
-    v37 = v10;
+    v37 = serviceName;
     _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_DEFAULT, "%@New Connection Request From (PID = %@) For Service: (%@)", buf, 0x20u);
   }
 
   if (([MEMORY[0x277CEAB38] isAnnounceEnabled] & 1) == 0)
   {
-    v11 = ANLogHandleAnnounceServiceListener();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    an_announceServiceInterface = ANLogHandleAnnounceServiceListener();
+    if (os_log_type_enabled(an_announceServiceInterface, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v33 = &stru_2851BDB18;
       v21 = "%@Rejecting connection. Announce not enabled.";
-      v22 = v11;
+      v22 = an_announceServiceInterface;
       v23 = 12;
 LABEL_12:
       _os_log_impl(&dword_23F525000, v22, OS_LOG_TYPE_ERROR, v21, buf, v23);
@@ -103,10 +103,10 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (([v7 hasAnnounceEntitlement] & 1) == 0)
+  if (([connectionCopy hasAnnounceEntitlement] & 1) == 0)
   {
-    v11 = ANLogHandleAnnounceServiceListener();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    an_announceServiceInterface = ANLogHandleAnnounceServiceListener();
+    if (os_log_type_enabled(an_announceServiceInterface, OS_LOG_TYPE_ERROR))
     {
       v24 = *MEMORY[0x277CEAC10];
       *buf = 138412546;
@@ -114,7 +114,7 @@ LABEL_13:
       v34 = 2112;
       v35 = v24;
       v21 = "%@Missing Announce Entitlement: %@";
-      v22 = v11;
+      v22 = an_announceServiceInterface;
       v23 = 22;
       goto LABEL_12;
     }
@@ -122,50 +122,50 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v11 = [MEMORY[0x277CCAE90] an_announceServiceInterface];
-  [v11 setClass:objc_opt_class() forSelector:sel_localParticipant_ argumentIndex:0 ofReply:1];
-  [v11 setClass:objc_opt_class() forSelector:sel_homeNamesForContext_reply_ argumentIndex:0 ofReply:0];
+  an_announceServiceInterface = [MEMORY[0x277CCAE90] an_announceServiceInterface];
+  [an_announceServiceInterface setClass:objc_opt_class() forSelector:sel_localParticipant_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClass:objc_opt_class() forSelector:sel_homeNamesForContext_reply_ argumentIndex:0 ofReply:0];
   v12 = MEMORY[0x277CBEB98];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  [v11 setClasses:v14 forSelector:sel_homeNamesForContext_reply_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClasses:v14 forSelector:sel_homeNamesForContext_reply_ argumentIndex:0 ofReply:1];
   v15 = MEMORY[0x277CBEB98];
   v16 = objc_opt_class();
   v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-  [v11 setClasses:v17 forSelector:sel_getReceivedAnnouncementsForEndpointID_completionHandler_ argumentIndex:0 ofReply:1];
-  [v11 setClasses:v17 forSelector:sel_getUnplayedAnnouncementsForEndpointID_completionHandler_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClasses:v17 forSelector:sel_getReceivedAnnouncementsForEndpointID_completionHandler_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClasses:v17 forSelector:sel_getUnplayedAnnouncementsForEndpointID_completionHandler_ argumentIndex:0 ofReply:1];
   v18 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-  [v11 setClasses:v18 forSelector:sel_announcementForID_endpointID_reply_ argumentIndex:0 ofReply:1];
-  [v11 setClasses:v18 forSelector:sel_mockAnnouncement_forHomeWithName_playbackDeadline_completion_ argumentIndex:0 ofReply:1];
-  [v11 setClasses:v18 forSelector:sel_contextFromAnnouncement_reply_ argumentIndex:0 ofReply:0];
-  [v11 setClass:objc_opt_class() forSelector:sel_contextFromAnnouncement_reply_ argumentIndex:0 ofReply:1];
-  [v11 setClass:objc_opt_class() forSelector:sel_sendRequest_completion_ argumentIndex:0 ofReply:0];
-  [v11 setClass:objc_opt_class() forSelector:sel_sendRequest_completion_ argumentIndex:0 ofReply:1];
-  [v11 setClass:objc_opt_class() forSelector:sel_sendRequestLegacy_completion_ argumentIndex:0 ofReply:0];
-  [v11 setClass:objc_opt_class() forSelector:sel_sendRequestLegacy_completion_ argumentIndex:0 ofReply:1];
-  [v7 setExportedInterface:v11];
-  [v7 setExportedObject:self];
-  objc_initWeak(&location, v7);
+  [an_announceServiceInterface setClasses:v18 forSelector:sel_announcementForID_endpointID_reply_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClasses:v18 forSelector:sel_mockAnnouncement_forHomeWithName_playbackDeadline_completion_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClasses:v18 forSelector:sel_contextFromAnnouncement_reply_ argumentIndex:0 ofReply:0];
+  [an_announceServiceInterface setClass:objc_opt_class() forSelector:sel_contextFromAnnouncement_reply_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClass:objc_opt_class() forSelector:sel_sendRequest_completion_ argumentIndex:0 ofReply:0];
+  [an_announceServiceInterface setClass:objc_opt_class() forSelector:sel_sendRequest_completion_ argumentIndex:0 ofReply:1];
+  [an_announceServiceInterface setClass:objc_opt_class() forSelector:sel_sendRequestLegacy_completion_ argumentIndex:0 ofReply:0];
+  [an_announceServiceInterface setClass:objc_opt_class() forSelector:sel_sendRequestLegacy_completion_ argumentIndex:0 ofReply:1];
+  [connectionCopy setExportedInterface:an_announceServiceInterface];
+  [connectionCopy setExportedObject:self];
+  objc_initWeak(&location, connectionCopy);
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __64__ANAnnounceServiceListener_listener_shouldAcceptNewConnection___block_invoke;
   v29[3] = &unk_278C86580;
   objc_copyWeak(&v30, &location);
-  [v7 setInterruptionHandler:v29];
+  [connectionCopy setInterruptionHandler:v29];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __64__ANAnnounceServiceListener_listener_shouldAcceptNewConnection___block_invoke_35;
   v27[3] = &unk_278C86580;
   objc_copyWeak(&v28, &location);
-  [v7 setInvalidationHandler:v27];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:v27];
+  [connectionCopy resume];
   v19 = ANLogHandleAnnounceServiceListener();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v33 = &stru_2851BDB18;
     v34 = 2112;
-    v35 = v7;
+    v35 = connectionCopy;
     _os_log_impl(&dword_23F525000, v19, OS_LOG_TYPE_DEFAULT, "%@Connection Accepted: (%@)", buf, 0x16u);
   }
 
@@ -214,30 +214,30 @@ void __64__ANAnnounceServiceListener_listener_shouldAcceptNewConnection___block_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localParticipant:(id)a3
+- (void)localParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v6 = +[ANAnnouncementCoordinator sharedCoordinator];
-  v5 = [v6 localParticipant];
-  (*(a3 + 2))(v4, v5);
+  localParticipant = [v6 localParticipant];
+  (*(participant + 2))(participantCopy, localParticipant);
 }
 
-- (void)sendRequest:(id)a3 completion:(id)a4
+- (void)sendRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 destination];
-  v9 = [v8 type];
+  requestCopy = request;
+  completionCopy = completion;
+  destination = [requestCopy destination];
+  type = [destination type];
 
-  if (v9 < 2)
+  if (type < 2)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __52__ANAnnounceServiceListener_sendRequest_completion___block_invoke;
     v14[3] = &unk_278C865A8;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
+    v15 = requestCopy;
+    v16 = completionCopy;
     [(ANAnnounceServiceListener *)self _sendRequest:v15 completion:v14];
 
     v10 = v15;
@@ -246,136 +246,136 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v9 == 2)
+  if (type == 2)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__ANAnnounceServiceListener_sendRequest_completion___block_invoke_2;
     v11[3] = &unk_278C865A8;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = requestCopy;
+    v13 = completionCopy;
     [(ANAnnounceServiceListener *)self _sendReplyRequest:v12 completion:v11];
 
     v10 = v12;
     goto LABEL_6;
   }
 
-  [(ANAnnounceServiceListener *)self _handleError:1045 request:v6 requestSentCompletionHandler:v7];
+  [(ANAnnounceServiceListener *)self _handleError:1045 request:requestCopy requestSentCompletionHandler:completionCopy];
 LABEL_7:
 }
 
-- (void)sendRequestLegacy:(id)a3 completion:(id)a4
+- (void)sendRequestLegacy:(id)legacy completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 destination];
-  v8 = [v7 type];
+  legacyCopy = legacy;
+  completionCopy = completion;
+  destination = [legacyCopy destination];
+  type = [destination type];
 
-  if (v8 >= 2)
+  if (type >= 2)
   {
-    if (v8 == 2)
+    if (type == 2)
     {
-      [(ANAnnounceServiceListener *)self _sendReplyRequest:v9 completion:v6];
+      [(ANAnnounceServiceListener *)self _sendReplyRequest:legacyCopy completion:completionCopy];
     }
 
     else
     {
-      [(ANAnnounceServiceListener *)self _handleError:1045 request:v9 sentCompletionHandler:v6];
+      [(ANAnnounceServiceListener *)self _handleError:1045 request:legacyCopy sentCompletionHandler:completionCopy];
     }
   }
 
   else
   {
-    [(ANAnnounceServiceListener *)self _sendRequest:v9 completion:v6];
+    [(ANAnnounceServiceListener *)self _sendRequest:legacyCopy completion:completionCopy];
   }
 }
 
-- (void)mockAnnouncement:(id)a3 forHomeWithName:(id)a4 playbackDeadline:(id)a5 completion:(id)a6
+- (void)mockAnnouncement:(id)announcement forHomeWithName:(id)name playbackDeadline:(id)deadline completion:(id)completion
 {
-  v20 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
+  announcementCopy = announcement;
+  deadlineCopy = deadline;
+  completionCopy = completion;
+  nameCopy = name;
   v12 = +[ANHomeManager shared];
-  v13 = [v12 homeWithName:v11];
+  v13 = [v12 homeWithName:nameCopy];
 
   if (v13)
   {
-    v14 = [MEMORY[0x277CEAB50] contentWithAudioFileURL:v20];
+    v14 = [MEMORY[0x277CEAB50] contentWithAudioFileURL:announcementCopy];
     v15 = MEMORY[0x277CEAB68];
-    v16 = [v13 uniqueIdentifier];
-    v17 = [v15 destinationWithHomeIdentifier:v16];
+    uniqueIdentifier = [v13 uniqueIdentifier];
+    v17 = [v15 destinationWithHomeIdentifier:uniqueIdentifier];
 
     v18 = [MEMORY[0x277CEAB70] requestWithContent:v14 destination:v17];
     [v18 setClientID:@"Mock"];
     v19 = +[ANAnnouncementCoordinator sharedCoordinator];
-    [v19 mockAnnouncement:v18 playbackDeadline:v9 sentHandler:v10];
+    [v19 mockAnnouncement:v18 playbackDeadline:deadlineCopy sentHandler:completionCopy];
 
-    v10 = v17;
+    completionCopy = v17;
   }
 
   else
   {
     v14 = [MEMORY[0x277CCA9B8] an_errorWithCode:1002 component:*MEMORY[0x277CEA9D0]];
-    (*(v10 + 2))(v10, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
-- (void)receivedAnnouncementIdentifiersForEndpointID:(id)a3 reply:(id)a4
+- (void)receivedAnnouncementIdentifiersForEndpointID:(id)d reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v7 = +[ANAnnouncementCoordinator sharedCoordinator];
-  v9 = [v7 allAnnouncementsSortedByReceiptForEndpointID:v6];
+  v9 = [v7 allAnnouncementsSortedByReceiptForEndpointID:dCopy];
 
-  v8 = [v9 identifiers];
-  v5[2](v5, v8);
+  identifiers = [v9 identifiers];
+  replyCopy[2](replyCopy, identifiers);
 }
 
-- (void)announcementForID:(id)a3 endpointID:(id)a4 reply:(id)a5
+- (void)announcementForID:(id)d endpointID:(id)iD reply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  iDCopy = iD;
+  dCopy = d;
   v10 = +[ANAnnouncementCoordinator sharedCoordinator];
-  v11 = [v10 announcementForID:v9 endpointID:v8];
+  v11 = [v10 announcementForID:dCopy endpointID:iDCopy];
 
-  v7[2](v7, v11);
+  replyCopy[2](replyCopy, v11);
 }
 
-- (void)getReceivedAnnouncementsForEndpointID:(id)a3 completionHandler:(id)a4
+- (void)getReceivedAnnouncementsForEndpointID:(id)d completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v7 = +[ANAnnouncementCoordinator sharedCoordinator];
-  [v7 resetAllTimersForEndpointID:v6];
+  [v7 resetAllTimersForEndpointID:dCopy];
 
   v8 = +[ANAnnouncementCoordinator sharedCoordinator];
-  v10 = [v8 allAnnouncementsSortedByReceiptForEndpointID:v6];
+  v10 = [v8 allAnnouncementsSortedByReceiptForEndpointID:dCopy];
 
   v9 = [MEMORY[0x277CEAB48] contextsFrom:v10];
-  v5[2](v5, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
-- (void)getUnplayedAnnouncementsForEndpointID:(id)a3 completionHandler:(id)a4
+- (void)getUnplayedAnnouncementsForEndpointID:(id)d completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v7 = +[ANAnnouncementCoordinator sharedCoordinator];
-  [v7 resetAllTimersForEndpointID:v5];
+  [v7 resetAllTimersForEndpointID:dCopy];
 
   v8 = objc_opt_new();
   v9 = +[ANAnnouncementCoordinator sharedCoordinator];
-  v10 = [v9 allAnnouncementsSortedByReceiptForEndpointID:v5];
-  v11 = [v10 unplayedAnnouncements];
+  v10 = [v9 allAnnouncementsSortedByReceiptForEndpointID:dCopy];
+  unplayedAnnouncements = [v10 unplayedAnnouncements];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v11;
+  v12 = unplayedAnnouncements;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
@@ -392,8 +392,8 @@ LABEL_7:
         }
 
         v17 = MEMORY[0x277CEAB58];
-        v18 = [*(*(&v21 + 1) + 8 * v16) remoteSessionDictionary];
-        v19 = [v17 contextFromDictionary:v18];
+        remoteSessionDictionary = [*(*(&v21 + 1) + 8 * v16) remoteSessionDictionary];
+        v19 = [v17 contextFromDictionary:remoteSessionDictionary];
         [v8 addObject:v19];
 
         ++v16;
@@ -406,193 +406,193 @@ LABEL_7:
     while (v14);
   }
 
-  v6[2](v6, v8);
+  handlerCopy[2](handlerCopy, v8);
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getScanningDeviceCandidates:(id)a3
+- (void)getScanningDeviceCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   v6 = +[ANAnnouncementCoordinator sharedCoordinator];
-  v5 = [v6 scanningDeviceCandidates];
-  (*(a3 + 2))(v4, v5);
+  scanningDeviceCandidates = [v6 scanningDeviceCandidates];
+  (*(candidates + 2))(candidatesCopy, scanningDeviceCandidates);
 }
 
-- (void)contextFromAnnouncement:(id)a3 reply:(id)a4
+- (void)contextFromAnnouncement:(id)announcement reply:(id)reply
 {
   v6 = MEMORY[0x277CEAB58];
-  v7 = a4;
-  v9 = [a3 remoteSessionDictionary];
-  v8 = [v6 contextFromDictionary:v9];
-  (*(a4 + 2))(v7, v8);
+  replyCopy = reply;
+  remoteSessionDictionary = [announcement remoteSessionDictionary];
+  v8 = [v6 contextFromDictionary:remoteSessionDictionary];
+  (*(reply + 2))(replyCopy, v8);
 }
 
-- (void)homeNamesForContext:(id)a3 reply:(id)a4
+- (void)homeNamesForContext:(id)context reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  contextCopy = context;
   v9 = +[ANHomeManager shared];
-  v8 = [v9 homeNamesForContext:v7];
+  v8 = [v9 homeNamesForContext:contextCopy];
 
-  (*(a4 + 2))(v6, v8);
+  (*(reply + 2))(replyCopy, v8);
 }
 
-- (void)isLocalDeviceInRoom:(id)a3 reply:(id)a4
+- (void)isLocalDeviceInRoom:(id)room reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  roomCopy = room;
   v9 = +[ANHomeManager shared];
-  v8 = [v9 isLocalDeviceInRoom:v7];
+  v8 = [v9 isLocalDeviceInRoom:roomCopy];
 
-  (*(a4 + 2))(v6, v8);
+  (*(reply + 2))(replyCopy, v8);
 }
 
-- (void)isAnnounceEnabledForAnyAccessoryInHome:(id)a3 reply:(id)a4
+- (void)isAnnounceEnabledForAnyAccessoryInHome:(id)home reply:(id)reply
 {
-  v9 = a4;
-  v5 = a3;
+  replyCopy = reply;
+  homeCopy = home;
   v6 = +[ANHomeManager shared];
-  v7 = [v6 homeWithName:v5];
+  v7 = [v6 homeWithName:homeCopy];
 
   if (v7)
   {
-    v8 = [v7 isAnnounceEnabledForAnyAccessory];
+    isAnnounceEnabledForAnyAccessory = [v7 isAnnounceEnabledForAnyAccessory];
   }
 
   else
   {
-    v8 = 0;
+    isAnnounceEnabledForAnyAccessory = 0;
   }
 
-  v9[2](v9, v8);
+  replyCopy[2](replyCopy, isAnnounceEnabledForAnyAccessory);
 }
 
-- (void)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)a3 reply:(id)a4
+- (void)isAnnounceEnabledForAnyAccessoryOrUserInHome:(id)home reply:(id)reply
 {
-  v9 = a4;
-  v5 = a3;
+  replyCopy = reply;
+  homeCopy = home;
   v6 = +[ANHomeManager shared];
-  v7 = [v6 homeWithName:v5];
+  v7 = [v6 homeWithName:homeCopy];
 
   if (v7)
   {
-    v8 = [v7 isAnnounceEnabledForAnyAccessoryOrUser];
+    isAnnounceEnabledForAnyAccessoryOrUser = [v7 isAnnounceEnabledForAnyAccessoryOrUser];
   }
 
   else
   {
-    v8 = 0;
+    isAnnounceEnabledForAnyAccessoryOrUser = 0;
   }
 
-  v9[2](v9, v8);
+  replyCopy[2](replyCopy, isAnnounceEnabledForAnyAccessoryOrUser);
 }
 
-- (void)isEndpointWithUUID:(id)a3 inRoomWithName:(id)a4 reply:(id)a5
+- (void)isEndpointWithUUID:(id)d inRoomWithName:(id)name reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  nameCopy = name;
+  dCopy = d;
   v12 = +[ANHomeManager shared];
-  v11 = [v12 isEndpointWithUUID:v10 inRoomWithName:v9];
+  v11 = [v12 isEndpointWithUUID:dCopy inRoomWithName:nameCopy];
 
-  (*(a5 + 2))(v8, v11);
+  (*(reply + 2))(replyCopy, v11);
 }
 
-- (void)prewarm:(id)a3
+- (void)prewarm:(id)prewarm
 {
-  v3 = a3;
+  prewarmCopy = prewarm;
   v4 = +[ANRapportConnection sharedConnection];
-  [v4 activateLinkWithOptions:2 completion:v3];
+  [v4 activateLinkWithOptions:2 completion:prewarmCopy];
 }
 
-- (void)validateDestinationFromContext:(id)a3 reply:(id)a4
+- (void)validateDestinationFromContext:(id)context reply:(id)reply
 {
-  v5 = a4;
-  v6 = [ANValidationHelper performPreflightChecksForSendingAnnouncementToHomeContext:a3];
-  v5[2](v5, v6);
+  replyCopy = reply;
+  v6 = [ANValidationHelper performPreflightChecksForSendingAnnouncementToHomeContext:context];
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)_sendRequest:(id)a3 completion:(id)a4
-{
-  v6 = MEMORY[0x277CCAE80];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentConnection];
-  [(ANAnnounceServiceListener *)self send:v8 connection:v9 completionHandler:v7];
-}
-
-- (void)_sendReplyRequest:(id)a3 completion:(id)a4
+- (void)_sendRequest:(id)request completion:(id)completion
 {
   v6 = MEMORY[0x277CCAE80];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentConnection];
-  [(ANAnnounceServiceListener *)self sendReply:v8 connection:v9 completionHandler:v7];
+  completionCopy = completion;
+  requestCopy = request;
+  currentConnection = [v6 currentConnection];
+  [(ANAnnounceServiceListener *)self send:requestCopy connection:currentConnection completionHandler:completionCopy];
 }
 
-- (void)_handleError:(int64_t)a3 request:(id)a4 sentCompletionHandler:(id)a5
+- (void)_sendReplyRequest:(id)request completion:(id)completion
+{
+  v6 = MEMORY[0x277CCAE80];
+  completionCopy = completion;
+  requestCopy = request;
+  currentConnection = [v6 currentConnection];
+  [(ANAnnounceServiceListener *)self sendReply:requestCopy connection:currentConnection completionHandler:completionCopy];
+}
+
+- (void)_handleError:(int64_t)error request:(id)request sentCompletionHandler:(id)handler
 {
   v8 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CEA9D0];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v8 an_errorWithCode:a3 component:v9];
-  (*(a5 + 2))(v10, 0, v12);
+  handlerCopy = handler;
+  requestCopy = request;
+  v12 = [v8 an_errorWithCode:error component:v9];
+  (*(handler + 2))(handlerCopy, 0, v12);
 
   v16 = +[ANAnalytics shared];
-  v13 = [v11 content];
+  content = [requestCopy content];
 
-  v14 = [v13 endpointIdentifier];
-  v15 = [ANAnalyticsContext contextWithEndpointID:v14];
-  [v16 error:a3 context:v15];
+  endpointIdentifier = [content endpointIdentifier];
+  v15 = [ANAnalyticsContext contextWithEndpointID:endpointIdentifier];
+  [v16 error:error context:v15];
 }
 
-- (void)_handleError:(int64_t)a3 request:(id)a4 requestSentCompletionHandler:(id)a5
+- (void)_handleError:(int64_t)error request:(id)request requestSentCompletionHandler:(id)handler
 {
   v8 = MEMORY[0x277CCA9B8];
   v9 = *MEMORY[0x277CEA9D0];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v8 an_errorWithCode:a3 component:v9];
-  (*(a5 + 2))(v10, 0, v12);
+  handlerCopy = handler;
+  requestCopy = request;
+  v12 = [v8 an_errorWithCode:error component:v9];
+  (*(handler + 2))(handlerCopy, 0, v12);
 
   v16 = +[ANAnalytics shared];
-  v13 = [v11 content];
+  content = [requestCopy content];
 
-  v14 = [v13 endpointIdentifier];
-  v15 = [ANAnalyticsContext contextWithEndpointID:v14];
-  [v16 error:a3 context:v15];
+  endpointIdentifier = [content endpointIdentifier];
+  v15 = [ANAnalyticsContext contextWithEndpointID:endpointIdentifier];
+  [v16 error:error context:v15];
 }
 
-- (void)_translateSentHandlerResponseAnnouncement:(id)a3 request:(id)a4 error:(id)a5 toRequestSentHandler:(id)a6
+- (void)_translateSentHandlerResponseAnnouncement:(id)announcement request:(id)request error:(id)error toRequestSentHandler:(id)handler
 {
-  v27 = a5;
-  v9 = a6;
-  if (a3)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (announcement)
   {
     v10 = MEMORY[0x277CEAB58];
-    v11 = a4;
-    v12 = a3;
-    v13 = [v12 remoteSessionDictionary];
-    v14 = [v10 contextFromDictionary:v13];
+    requestCopy = request;
+    announcementCopy = announcement;
+    remoteSessionDictionary = [announcementCopy remoteSessionDictionary];
+    v14 = [v10 contextFromDictionary:remoteSessionDictionary];
 
     v15 = MEMORY[0x277CEAB68];
-    v16 = [v14 homeName];
-    v17 = [v14 zones];
-    v18 = [v17 allValues];
-    v19 = [v14 rooms];
-    v20 = [v19 allValues];
-    v21 = [v15 destinationWithHomeName:v16 zoneNames:v18 roomNames:v20];
+    homeName = [v14 homeName];
+    zones = [v14 zones];
+    allValues = [zones allValues];
+    rooms = [v14 rooms];
+    allValues2 = [rooms allValues];
+    v21 = [v15 destinationWithHomeName:homeName zoneNames:allValues roomNames:allValues2];
 
-    v22 = [v11 destination];
+    destination = [requestCopy destination];
 
-    v23 = [v22 announcementIdentifier];
-    [v21 setAnnouncementIdentifier:v23];
+    announcementIdentifier = [destination announcementIdentifier];
+    [v21 setAnnouncementIdentifier:announcementIdentifier];
 
     v24 = MEMORY[0x277CEAB78];
-    v25 = [v12 identifier];
+    identifier = [announcementCopy identifier];
 
-    v26 = [v24 resultWithAnnouncementID:v25 destination:v21];
+    v26 = [v24 resultWithAnnouncementID:identifier destination:v21];
   }
 
   else
@@ -600,19 +600,19 @@ LABEL_7:
     v26 = 0;
   }
 
-  v9[2](v9, v26, v27);
+  handlerCopy[2](handlerCopy, v26, errorCopy);
 }
 
-- (void)send:(ANAnnouncementRequest *)a3 connection:(NSXPCConnection *)a4 completionHandler:(id)a5
+- (void)send:(ANAnnouncementRequest *)send connection:(NSXPCConnection *)connection completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E39C9E8, &qword_23F58D708);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = send;
+  v14[3] = connection;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_23F5883B4();
@@ -627,22 +627,22 @@ LABEL_7:
   v17[3] = 0;
   v17[4] = &unk_23F58E108;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  sendCopy = send;
+  connectionCopy = connection;
+  selfCopy = self;
   sub_23F57A118(0, 0, v12, &unk_23F58E110, v17);
 }
 
-- (void)sendReply:(ANAnnouncementRequest *)a3 connection:(NSXPCConnection *)a4 completionHandler:(id)a5
+- (void)sendReply:(ANAnnouncementRequest *)reply connection:(NSXPCConnection *)connection completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E39C9E8, &qword_23F58D708);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = reply;
+  v14[3] = connection;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_23F5883B4();
@@ -657,9 +657,9 @@ LABEL_7:
   v17[3] = 0;
   v17[4] = &unk_23F58D720;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  replyCopy = reply;
+  connectionCopy = connection;
+  selfCopy = self;
   sub_23F57A118(0, 0, v12, &unk_23F58D728, v17);
 }
 

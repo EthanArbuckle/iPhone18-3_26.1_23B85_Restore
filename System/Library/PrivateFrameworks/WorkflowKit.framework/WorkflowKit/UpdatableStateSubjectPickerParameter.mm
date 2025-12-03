@@ -1,14 +1,14 @@
 @interface UpdatableStateSubjectPickerParameter
 - (BOOL)preferParameterValuePicker;
 - (NSArray)possibleStates;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation UpdatableStateSubjectPickerParameter
 
 - (NSArray)possibleStates
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA5CA4F4();
 
   if (v3)
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CA5CA898(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1CA5CA898(stateCopy);
   v7 = v6;
 
   if (v7)
@@ -47,7 +47,7 @@
 
 - (BOOL)preferParameterValuePicker
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA5CAB70();
 
   return v3 & 1;

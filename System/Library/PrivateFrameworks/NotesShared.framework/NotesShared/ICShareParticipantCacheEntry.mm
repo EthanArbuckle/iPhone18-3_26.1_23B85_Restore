@@ -7,20 +7,20 @@
 - (NSSet)names
 {
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:5];
-  v4 = [(ICShareParticipantCacheEntry *)self givenName];
-  [v3 ic_addNonNilObject:v4];
+  givenName = [(ICShareParticipantCacheEntry *)self givenName];
+  [v3 ic_addNonNilObject:givenName];
 
-  v5 = [(ICShareParticipantCacheEntry *)self familyName];
-  [v3 ic_addNonNilObject:v5];
+  familyName = [(ICShareParticipantCacheEntry *)self familyName];
+  [v3 ic_addNonNilObject:familyName];
 
-  v6 = [(ICShareParticipantCacheEntry *)self nickname];
-  [v3 ic_addNonNilObject:v6];
+  nickname = [(ICShareParticipantCacheEntry *)self nickname];
+  [v3 ic_addNonNilObject:nickname];
 
-  v7 = [(ICShareParticipantCacheEntry *)self initials];
-  [v3 ic_addNonNilObject:v7];
+  initials = [(ICShareParticipantCacheEntry *)self initials];
+  [v3 ic_addNonNilObject:initials];
 
-  v8 = [(ICShareParticipantCacheEntry *)self displayName];
-  [v3 ic_addNonNilObject:v8];
+  displayName = [(ICShareParticipantCacheEntry *)self displayName];
+  [v3 ic_addNonNilObject:displayName];
 
   v9 = [v3 copy];
 

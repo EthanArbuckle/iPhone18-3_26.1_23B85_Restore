@@ -9,7 +9,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   NSOperationQueue.DelayReadyOperation.main()();
 }
 
@@ -21,14 +21,14 @@
   v6 = *(&self->super._iop.__prevOp + OBJC_IVAR____TtCE10FoundationCSo16NSOperationQueueP33_0ECEE0A75E2DD5EDFED9A6FEB26D5D3219DelayReadyOperation_action);
   *v4 = 0;
   v4[1] = 0;
-  v7 = self;
+  selfCopy = self;
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v5, v6);
-  v8 = *(&v7->super.super.isa + OBJC_IVAR____TtCE10FoundationCSo16NSOperationQueueP33_0ECEE0A75E2DD5EDFED9A6FEB26D5D3219DelayReadyOperation_queue);
-  *(&v7->super.super.isa + OBJC_IVAR____TtCE10FoundationCSo16NSOperationQueueP33_0ECEE0A75E2DD5EDFED9A6FEB26D5D3219DelayReadyOperation_queue) = 0;
+  v8 = *(&selfCopy->super.super.isa + OBJC_IVAR____TtCE10FoundationCSo16NSOperationQueueP33_0ECEE0A75E2DD5EDFED9A6FEB26D5D3219DelayReadyOperation_queue);
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtCE10FoundationCSo16NSOperationQueueP33_0ECEE0A75E2DD5EDFED9A6FEB26D5D3219DelayReadyOperation_queue) = 0;
 
-  *(&v7->super.super.isa + OBJC_IVAR____TtCE10FoundationCSo16NSOperationQueueP33_0ECEE0A75E2DD5EDFED9A6FEB26D5D3219DelayReadyOperation_context) = 0;
+  *(&selfCopy->super.super.isa + OBJC_IVAR____TtCE10FoundationCSo16NSOperationQueueP33_0ECEE0A75E2DD5EDFED9A6FEB26D5D3219DelayReadyOperation_context) = 0;
 
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
   [(NSOperation *)&v9 cancel];
 }

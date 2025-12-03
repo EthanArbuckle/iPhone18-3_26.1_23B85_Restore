@@ -1,81 +1,81 @@
 @interface _SFPBProductInventory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBProductInventory)initWithDictionary:(id)a3;
-- (_SFPBProductInventory)initWithFacade:(id)a3;
-- (_SFPBProductInventory)initWithJSON:(id)a3;
+- (_SFPBProductInventory)initWithDictionary:(id)dictionary;
+- (_SFPBProductInventory)initWithFacade:(id)facade;
+- (_SFPBProductInventory)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setStoreAddress:(id)a3;
-- (void)setStoreId:(id)a3;
-- (void)setStoreName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setStoreAddress:(id)address;
+- (void)setStoreId:(id)id;
+- (void)setStoreName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBProductInventory
 
-- (_SFPBProductInventory)initWithFacade:(id)a3
+- (_SFPBProductInventory)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBProductInventory *)self init];
   if (v5)
   {
-    if ([v4 hasType])
+    if ([facadeCopy hasType])
     {
-      -[_SFPBProductInventory setType:](v5, "setType:", [v4 type]);
+      -[_SFPBProductInventory setType:](v5, "setType:", [facadeCopy type]);
     }
 
-    v6 = [v4 storeId];
+    storeId = [facadeCopy storeId];
 
-    if (v6)
+    if (storeId)
     {
-      v7 = [v4 storeId];
-      [(_SFPBProductInventory *)v5 setStoreId:v7];
+      storeId2 = [facadeCopy storeId];
+      [(_SFPBProductInventory *)v5 setStoreId:storeId2];
     }
 
-    if ([v4 hasAvailabilityStatus])
+    if ([facadeCopy hasAvailabilityStatus])
     {
-      -[_SFPBProductInventory setAvailabilityStatus:](v5, "setAvailabilityStatus:", [v4 availabilityStatus]);
+      -[_SFPBProductInventory setAvailabilityStatus:](v5, "setAvailabilityStatus:", [facadeCopy availabilityStatus]);
     }
 
-    v8 = [v4 distance];
+    distance = [facadeCopy distance];
 
-    if (v8)
+    if (distance)
     {
-      v9 = [v4 distance];
-      [v9 floatValue];
+      distance2 = [facadeCopy distance];
+      [distance2 floatValue];
       [(_SFPBProductInventory *)v5 setDistance:?];
     }
 
-    if ([v4 hasDistanceUnit])
+    if ([facadeCopy hasDistanceUnit])
     {
-      -[_SFPBProductInventory setDistanceUnit:](v5, "setDistanceUnit:", [v4 distanceUnit]);
+      -[_SFPBProductInventory setDistanceUnit:](v5, "setDistanceUnit:", [facadeCopy distanceUnit]);
     }
 
-    v10 = [v4 timestamp];
+    timestamp = [facadeCopy timestamp];
 
-    if (v10)
+    if (timestamp)
     {
       v11 = [_SFPBDate alloc];
-      v12 = [v4 timestamp];
-      v13 = [(_SFPBDate *)v11 initWithNSDate:v12];
+      timestamp2 = [facadeCopy timestamp];
+      v13 = [(_SFPBDate *)v11 initWithNSDate:timestamp2];
       [(_SFPBProductInventory *)v5 setTimestamp:v13];
     }
 
-    v14 = [v4 storeName];
+    storeName = [facadeCopy storeName];
 
-    if (v14)
+    if (storeName)
     {
-      v15 = [v4 storeName];
-      [(_SFPBProductInventory *)v5 setStoreName:v15];
+      storeName2 = [facadeCopy storeName];
+      [(_SFPBProductInventory *)v5 setStoreName:storeName2];
     }
 
-    v16 = [v4 storeAddress];
+    storeAddress = [facadeCopy storeAddress];
 
-    if (v16)
+    if (storeAddress)
     {
-      v17 = [v4 storeAddress];
-      [(_SFPBProductInventory *)v5 setStoreAddress:v17];
+      storeAddress2 = [facadeCopy storeAddress];
+      [(_SFPBProductInventory *)v5 setStoreAddress:storeAddress2];
     }
 
     v18 = v5;
@@ -84,15 +84,15 @@
   return v5;
 }
 
-- (_SFPBProductInventory)initWithDictionary:(id)a3
+- (_SFPBProductInventory)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = _SFPBProductInventory;
   v5 = [(_SFPBProductInventory *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
     }
 
     v20 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"storeId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"storeId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,14 +108,14 @@
       [(_SFPBProductInventory *)v5 setStoreId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"availabilityStatus"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"availabilityStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBProductInventory setAvailabilityStatus:](v5, "setAvailabilityStatus:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"distance"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"distance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,14 +123,14 @@
       [(_SFPBProductInventory *)v5 setDistance:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"distanceUnit"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"distanceUnit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBProductInventory setDistanceUnit:](v5, "setDistanceUnit:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"timestamp"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,7 +138,7 @@
       [(_SFPBProductInventory *)v5 setTimestamp:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"storeName"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"storeName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,7 +146,7 @@
       [(_SFPBProductInventory *)v5 setStoreName:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"storeAddress"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"storeAddress"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,30 +160,30 @@
   return v5;
 }
 
-- (_SFPBProductInventory)initWithJSON:(id)a3
+- (_SFPBProductInventory)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBProductInventory *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBProductInventory *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBProductInventory *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -196,21 +196,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_availabilityStatus)
   {
-    v4 = [(_SFPBProductInventory *)self availabilityStatus];
-    if (v4 >= 4)
+    availabilityStatus = [(_SFPBProductInventory *)self availabilityStatus];
+    if (availabilityStatus >= 4)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", availabilityStatus];
     }
 
     else
     {
-      v5 = off_1E7ACE560[v4];
+      v5 = off_1E7ACE560[availabilityStatus];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"availabilityStatus"];
+    [dictionary setObject:v5 forKeyedSubscript:@"availabilityStatus"];
   }
 
   if (self->_distance != 0.0)
@@ -218,22 +218,22 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBProductInventory *)self distance];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"distance"];
+    [dictionary setObject:v7 forKeyedSubscript:@"distance"];
   }
 
   if (self->_distanceUnit)
   {
-    v8 = [(_SFPBProductInventory *)self distanceUnit];
-    if (v8)
+    distanceUnit = [(_SFPBProductInventory *)self distanceUnit];
+    if (distanceUnit)
     {
-      if (v8 == 1)
+      if (distanceUnit == 1)
       {
         v9 = @"1";
       }
 
       else
       {
-        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+        v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", distanceUnit];
       }
     }
 
@@ -242,59 +242,59 @@
       v9 = @"0";
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"distanceUnit"];
+    [dictionary setObject:v9 forKeyedSubscript:@"distanceUnit"];
   }
 
   if (self->_storeAddress)
   {
-    v10 = [(_SFPBProductInventory *)self storeAddress];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"storeAddress"];
+    storeAddress = [(_SFPBProductInventory *)self storeAddress];
+    v11 = [storeAddress copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"storeAddress"];
   }
 
   if (self->_storeId)
   {
-    v12 = [(_SFPBProductInventory *)self storeId];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"storeId"];
+    storeId = [(_SFPBProductInventory *)self storeId];
+    v13 = [storeId copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"storeId"];
   }
 
   if (self->_storeName)
   {
-    v14 = [(_SFPBProductInventory *)self storeName];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"storeName"];
+    storeName = [(_SFPBProductInventory *)self storeName];
+    v15 = [storeName copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"storeName"];
   }
 
   if (self->_timestamp)
   {
-    v16 = [(_SFPBProductInventory *)self timestamp];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    timestamp = [(_SFPBProductInventory *)self timestamp];
+    dictionaryRepresentation = [timestamp dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"timestamp"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"timestamp"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"timestamp"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"timestamp"];
     }
   }
 
   if (self->_type)
   {
-    v19 = [(_SFPBProductInventory *)self type];
-    if (v19)
+    type = [(_SFPBProductInventory *)self type];
+    if (type)
     {
-      if (v19 == 1)
+      if (type == 1)
       {
         v20 = @"1";
       }
 
       else
       {
-        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v19];
+        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
       }
     }
 
@@ -303,10 +303,10 @@
       v20 = @"0";
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"type"];
+    [dictionary setObject:v20 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -355,34 +355,34 @@
   return v16 ^ [(NSString *)self->_storeAddress hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [equalCopy type])
   {
     goto LABEL_26;
   }
 
-  v6 = [(_SFPBProductInventory *)self storeId];
-  v7 = [v4 storeId];
-  if ((v6 != 0) == (v7 == 0))
+  storeId = [(_SFPBProductInventory *)self storeId];
+  storeId2 = [equalCopy storeId];
+  if ((storeId != 0) == (storeId2 == 0))
   {
     goto LABEL_25;
   }
 
-  v8 = [(_SFPBProductInventory *)self storeId];
-  if (v8)
+  storeId3 = [(_SFPBProductInventory *)self storeId];
+  if (storeId3)
   {
-    v9 = v8;
-    v10 = [(_SFPBProductInventory *)self storeId];
-    v11 = [v4 storeId];
-    v12 = [v10 isEqual:v11];
+    v9 = storeId3;
+    storeId4 = [(_SFPBProductInventory *)self storeId];
+    storeId5 = [equalCopy storeId];
+    v12 = [storeId4 isEqual:storeId5];
 
     if (!v12)
     {
@@ -395,38 +395,38 @@
   }
 
   availabilityStatus = self->_availabilityStatus;
-  if (availabilityStatus != [v4 availabilityStatus])
+  if (availabilityStatus != [equalCopy availabilityStatus])
   {
     goto LABEL_26;
   }
 
   distance = self->_distance;
-  [v4 distance];
+  [equalCopy distance];
   if (distance != v15)
   {
     goto LABEL_26;
   }
 
   distanceUnit = self->_distanceUnit;
-  if (distanceUnit != [v4 distanceUnit])
+  if (distanceUnit != [equalCopy distanceUnit])
   {
     goto LABEL_26;
   }
 
-  v6 = [(_SFPBProductInventory *)self timestamp];
-  v7 = [v4 timestamp];
-  if ((v6 != 0) == (v7 == 0))
+  storeId = [(_SFPBProductInventory *)self timestamp];
+  storeId2 = [equalCopy timestamp];
+  if ((storeId != 0) == (storeId2 == 0))
   {
     goto LABEL_25;
   }
 
-  v17 = [(_SFPBProductInventory *)self timestamp];
-  if (v17)
+  timestamp = [(_SFPBProductInventory *)self timestamp];
+  if (timestamp)
   {
-    v18 = v17;
-    v19 = [(_SFPBProductInventory *)self timestamp];
-    v20 = [v4 timestamp];
-    v21 = [v19 isEqual:v20];
+    v18 = timestamp;
+    timestamp2 = [(_SFPBProductInventory *)self timestamp];
+    timestamp3 = [equalCopy timestamp];
+    v21 = [timestamp2 isEqual:timestamp3];
 
     if (!v21)
     {
@@ -438,20 +438,20 @@
   {
   }
 
-  v6 = [(_SFPBProductInventory *)self storeName];
-  v7 = [v4 storeName];
-  if ((v6 != 0) == (v7 == 0))
+  storeId = [(_SFPBProductInventory *)self storeName];
+  storeId2 = [equalCopy storeName];
+  if ((storeId != 0) == (storeId2 == 0))
   {
     goto LABEL_25;
   }
 
-  v22 = [(_SFPBProductInventory *)self storeName];
-  if (v22)
+  storeName = [(_SFPBProductInventory *)self storeName];
+  if (storeName)
   {
-    v23 = v22;
-    v24 = [(_SFPBProductInventory *)self storeName];
-    v25 = [v4 storeName];
-    v26 = [v24 isEqual:v25];
+    v23 = storeName;
+    storeName2 = [(_SFPBProductInventory *)self storeName];
+    storeName3 = [equalCopy storeName];
+    v26 = [storeName2 isEqual:storeName3];
 
     if (!v26)
     {
@@ -463,12 +463,12 @@
   {
   }
 
-  v6 = [(_SFPBProductInventory *)self storeAddress];
-  v7 = [v4 storeAddress];
-  if ((v6 != 0) != (v7 == 0))
+  storeId = [(_SFPBProductInventory *)self storeAddress];
+  storeId2 = [equalCopy storeAddress];
+  if ((storeId != 0) != (storeId2 == 0))
   {
-    v27 = [(_SFPBProductInventory *)self storeAddress];
-    if (!v27)
+    storeAddress = [(_SFPBProductInventory *)self storeAddress];
+    if (!storeAddress)
     {
 
 LABEL_29:
@@ -476,10 +476,10 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    v28 = v27;
-    v29 = [(_SFPBProductInventory *)self storeAddress];
-    v30 = [v4 storeAddress];
-    v31 = [v29 isEqual:v30];
+    v28 = storeAddress;
+    storeAddress2 = [(_SFPBProductInventory *)self storeAddress];
+    storeAddress3 = [equalCopy storeAddress];
+    v31 = [storeAddress2 isEqual:storeAddress3];
 
     if (v31)
     {
@@ -499,16 +499,16 @@ LABEL_27:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_SFPBProductInventory *)self type])
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(_SFPBProductInventory *)self storeId];
-  if (v4)
+  storeId = [(_SFPBProductInventory *)self storeId];
+  if (storeId)
   {
     PBDataWriterWriteStringField();
   }
@@ -529,46 +529,46 @@ LABEL_27:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_SFPBProductInventory *)self timestamp];
-  if (v6)
+  timestamp = [(_SFPBProductInventory *)self timestamp];
+  if (timestamp)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBProductInventory *)self storeName];
-  if (v7)
+  storeName = [(_SFPBProductInventory *)self storeName];
+  if (storeName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBProductInventory *)self storeAddress];
-  if (v8)
+  storeAddress = [(_SFPBProductInventory *)self storeAddress];
+  if (storeAddress)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setStoreAddress:(id)a3
+- (void)setStoreAddress:(id)address
 {
-  v4 = [a3 copy];
+  v4 = [address copy];
   storeAddress = self->_storeAddress;
   self->_storeAddress = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setStoreName:(id)a3
+- (void)setStoreName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   storeName = self->_storeName;
   self->_storeName = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setStoreId:(id)a3
+- (void)setStoreId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   storeId = self->_storeId;
   self->_storeId = v4;
 

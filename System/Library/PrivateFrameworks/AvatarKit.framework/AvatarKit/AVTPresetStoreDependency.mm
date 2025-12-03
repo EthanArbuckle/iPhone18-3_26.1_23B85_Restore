@@ -1,24 +1,24 @@
 @interface AVTPresetStoreDependency
-- (AVTPresetStoreDependency)initWithOverridePreset:(id)a3 conditionedOnPreset:(id)a4;
-- (AVTPresetStoreDependency)initWithOverridePreset:(id)a3 conditionedOnPreset:(id)a4 forSpecificPresetIdentifier:(id)a5;
-- (void)addConditionOnPreset:(id)a3;
-- (void)addConditionOnPreset:(id)a3 forSpecificPresetIdentifier:(id)a4;
+- (AVTPresetStoreDependency)initWithOverridePreset:(id)preset conditionedOnPreset:(id)onPreset;
+- (AVTPresetStoreDependency)initWithOverridePreset:(id)preset conditionedOnPreset:(id)onPreset forSpecificPresetIdentifier:(id)identifier;
+- (void)addConditionOnPreset:(id)preset;
+- (void)addConditionOnPreset:(id)preset forSpecificPresetIdentifier:(id)identifier;
 @end
 
 @implementation AVTPresetStoreDependency
 
-- (AVTPresetStoreDependency)initWithOverridePreset:(id)a3 conditionedOnPreset:(id)a4
+- (AVTPresetStoreDependency)initWithOverridePreset:(id)preset conditionedOnPreset:(id)onPreset
 {
-  v7 = a3;
-  v8 = a4;
+  presetCopy = preset;
+  onPresetCopy = onPreset;
   v14.receiver = self;
   v14.super_class = AVTPresetStoreDependency;
   v9 = [(AVTPresetStoreDependency *)&v14 init];
   if (v9)
   {
     v13 = objc_alloc_init(AVTPresetStoreDependencyCondition);
-    [(AVTPresetStoreDependencyCondition *)v13 setPresetOfOtherCategory:v8];
-    objc_storeStrong(&v9->_overridePreset, a3);
+    [(AVTPresetStoreDependencyCondition *)v13 setPresetOfOtherCategory:onPresetCopy];
+    objc_storeStrong(&v9->_overridePreset, preset);
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:&v13 count:1];
     conditions = v9->_conditions;
     v9->_conditions = v10;
@@ -27,20 +27,20 @@
   return v9;
 }
 
-- (AVTPresetStoreDependency)initWithOverridePreset:(id)a3 conditionedOnPreset:(id)a4 forSpecificPresetIdentifier:(id)a5
+- (AVTPresetStoreDependency)initWithOverridePreset:(id)preset conditionedOnPreset:(id)onPreset forSpecificPresetIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  presetCopy = preset;
+  onPresetCopy = onPreset;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = AVTPresetStoreDependency;
   v12 = [(AVTPresetStoreDependency *)&v17 init];
   if (v12)
   {
     v16 = objc_alloc_init(AVTPresetStoreDependencyCondition);
-    [(AVTPresetStoreDependencyCondition *)v16 setPresetOfOtherCategory:v10];
-    [(AVTPresetStoreDependencyCondition *)v16 setSpecificPresetIdentifier:v11];
-    objc_storeStrong(&v12->_overridePreset, a3);
+    [(AVTPresetStoreDependencyCondition *)v16 setPresetOfOtherCategory:onPresetCopy];
+    [(AVTPresetStoreDependencyCondition *)v16 setSpecificPresetIdentifier:identifierCopy];
+    objc_storeStrong(&v12->_overridePreset, preset);
     v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:&v16 count:1];
     conditions = v12->_conditions;
     v12->_conditions = v13;
@@ -49,10 +49,10 @@
   return v12;
 }
 
-- (void)addConditionOnPreset:(id)a3
+- (void)addConditionOnPreset:(id)preset
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  presetCopy = preset;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -73,13 +73,13 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 presetOfOtherCategory];
-        v12 = v11;
-        if (v11 == v4)
+        presetOfOtherCategory = [v10 presetOfOtherCategory];
+        v12 = presetOfOtherCategory;
+        if (presetOfOtherCategory == presetCopy)
         {
-          v13 = [v10 specificPresetIdentifier];
+          specificPresetIdentifier = [v10 specificPresetIdentifier];
 
-          if (!v13)
+          if (!specificPresetIdentifier)
           {
             goto LABEL_12;
           }
@@ -97,18 +97,18 @@
   }
 
   v5 = objc_alloc_init(AVTPresetStoreDependencyCondition);
-  [(NSMutableArray *)v5 setPresetOfOtherCategory:v4];
+  [(NSMutableArray *)v5 setPresetOfOtherCategory:presetCopy];
   [(NSMutableArray *)self->_conditions addObject:v5];
 LABEL_12:
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addConditionOnPreset:(id)a3 forSpecificPresetIdentifier:(id)a4
+- (void)addConditionOnPreset:(id)preset forSpecificPresetIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  presetCopy = preset;
+  identifierCopy = identifier;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -129,12 +129,12 @@ LABEL_12:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 presetOfOtherCategory];
-        v15 = v14;
-        if (v14 == v6)
+        presetOfOtherCategory = [v13 presetOfOtherCategory];
+        v15 = presetOfOtherCategory;
+        if (presetOfOtherCategory == presetCopy)
         {
-          v16 = [v13 specificPresetIdentifier];
-          v17 = [v16 isEqualToString:v7];
+          specificPresetIdentifier = [v13 specificPresetIdentifier];
+          v17 = [specificPresetIdentifier isEqualToString:identifierCopy];
 
           if (v17)
           {
@@ -154,8 +154,8 @@ LABEL_12:
   }
 
   v8 = objc_alloc_init(AVTPresetStoreDependencyCondition);
-  [(NSMutableArray *)v8 setPresetOfOtherCategory:v6];
-  [(NSMutableArray *)v8 setSpecificPresetIdentifier:v7];
+  [(NSMutableArray *)v8 setPresetOfOtherCategory:presetCopy];
+  [(NSMutableArray *)v8 setSpecificPresetIdentifier:identifierCopy];
   [(NSMutableArray *)self->_conditions addObject:v8];
 LABEL_12:
 

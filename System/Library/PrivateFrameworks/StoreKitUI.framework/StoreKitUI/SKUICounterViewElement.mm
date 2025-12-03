@@ -1,16 +1,16 @@
 @interface SKUICounterViewElement
-- (SKUICounterViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUICounterViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)currentNumberValue;
 @end
 
 @implementation SKUICounterViewElement
 
-- (SKUICounterViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUICounterViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICounterViewElement initWithDOMElement:parent:elementFactory:];
@@ -18,12 +18,12 @@
 
   v28.receiver = self;
   v28.super_class = SKUICounterViewElement;
-  v11 = [(SKUIViewElement *)&v28 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v28 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"type"];
+    v12 = [elementCopy getAttribute:@"type"];
     v11->_counterType = [v12 isEqualToString:@"timer"] ^ 1;
-    v13 = [v8 getAttribute:@"dateFormat"];
+    v13 = [elementCopy getAttribute:@"dateFormat"];
 
     if ([v13 isEqualToString:@"hm"])
     {
@@ -41,7 +41,7 @@
       {
         v11->_dateFormatType = 0;
 LABEL_14:
-        v15 = [v8 getAttribute:@"endDate"];
+        v15 = [elementCopy getAttribute:@"endDate"];
 
         if ([v15 length])
         {
@@ -50,7 +50,7 @@ LABEL_14:
           v11->_endDate = v16;
         }
 
-        v18 = [v8 getAttribute:@"timestamp"];
+        v18 = [elementCopy getAttribute:@"timestamp"];
 
         if ([v18 length])
         {
@@ -59,18 +59,18 @@ LABEL_14:
           v11->_startValueDate = v19;
         }
 
-        v21 = [v8 getAttribute:@"rate"];
+        v21 = [elementCopy getAttribute:@"rate"];
         [v21 doubleValue];
         v11->_changeRatePerSecond = v22;
 
-        v23 = [v8 getAttribute:@"numberFormat"];
+        v23 = [elementCopy getAttribute:@"numberFormat"];
         numberFormat = v11->_numberFormat;
         v11->_numberFormat = v23;
 
-        v25 = [v8 getAttribute:@"value"];
+        v25 = [elementCopy getAttribute:@"value"];
         v11->_startValue = [v25 longLongValue];
 
-        v26 = [v8 getAttribute:@"endValue"];
+        v26 = [elementCopy getAttribute:@"endValue"];
         v11->_stopValue = [v26 longLongValue];
 
         goto LABEL_19;
@@ -90,79 +90,79 @@ LABEL_19:
 
 - (int64_t)currentNumberValue
 {
-  v3 = [(SKUICounterViewElement *)self stopValue];
-  v4 = [(SKUICounterViewElement *)self startValueDate];
-  if (v4)
+  stopValue = [(SKUICounterViewElement *)self stopValue];
+  startValueDate = [(SKUICounterViewElement *)self startValueDate];
+  if (startValueDate)
   {
     [(SKUICounterViewElement *)self changeRatePerSecond];
     v6 = v5;
-    v7 = [(SKUICounterViewElement *)self startValue];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [(SKUICounterViewElement *)self startValueDate];
-    [v8 timeIntervalSinceDate:v9];
-    v11 = (v7 + v10 * v6);
+    startValue = [(SKUICounterViewElement *)self startValue];
+    date = [MEMORY[0x277CBEAA8] date];
+    startValueDate2 = [(SKUICounterViewElement *)self startValueDate];
+    [date timeIntervalSinceDate:startValueDate2];
+    v11 = (startValue + v10 * v6);
 
-    if (v3 >= v11)
+    if (stopValue >= v11)
     {
       v12 = v11;
     }
 
     else
     {
-      v12 = v3;
+      v12 = stopValue;
     }
 
-    if (v3 <= v11)
+    if (stopValue <= v11)
     {
       v13 = v11;
     }
 
     else
     {
-      v13 = v3;
+      v13 = stopValue;
     }
 
     if (v6 >= 0.0)
     {
-      v3 = v12;
+      stopValue = v12;
     }
 
     else
     {
-      v3 = v13;
+      stopValue = v13;
     }
   }
 
-  return v3;
+  return stopValue;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SKUICounterViewElement;
-  v5 = [(SKUIViewElement *)&v15 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v15 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    [(SKUICounterViewElement *)v4 changeRatePerSecond];
+    [(SKUICounterViewElement *)elementCopy changeRatePerSecond];
     self->_changeRatePerSecond = v7;
-    self->_counterType = [(SKUICounterViewElement *)v4 counterType];
-    self->_dateFormatType = [(SKUICounterViewElement *)v4 dateFormatType];
-    v8 = [(SKUICounterViewElement *)v4 endDate];
+    self->_counterType = [(SKUICounterViewElement *)elementCopy counterType];
+    self->_dateFormatType = [(SKUICounterViewElement *)elementCopy dateFormatType];
+    endDate = [(SKUICounterViewElement *)elementCopy endDate];
     endDate = self->_endDate;
-    self->_endDate = v8;
+    self->_endDate = endDate;
 
-    v10 = [(SKUICounterViewElement *)v4 numberFormat];
+    numberFormat = [(SKUICounterViewElement *)elementCopy numberFormat];
     numberFormat = self->_numberFormat;
-    self->_numberFormat = v10;
+    self->_numberFormat = numberFormat;
 
-    self->_startValue = [(SKUICounterViewElement *)v4 startValue];
-    v12 = [(SKUICounterViewElement *)v4 startValueDate];
+    self->_startValue = [(SKUICounterViewElement *)elementCopy startValue];
+    startValueDate = [(SKUICounterViewElement *)elementCopy startValueDate];
     startValueDate = self->_startValueDate;
-    self->_startValueDate = v12;
+    self->_startValueDate = startValueDate;
 
-    self->_stopValue = [(SKUICounterViewElement *)v4 stopValue];
+    self->_stopValue = [(SKUICounterViewElement *)elementCopy stopValue];
   }
 
   return v6;

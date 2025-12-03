@@ -1,5 +1,5 @@
 @interface VNTargetedImageRequest
-- (VNTargetedImageRequest)initWithTargetedCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7;
+- (VNTargetedImageRequest)initWithTargetedCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler;
 - (VNTargetedImageRequest)initWithTargetedCGImage:(CGImageRef)cgImage options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedCGImage:(CGImageRef)cgImage options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNTargetedImageRequest)initWithTargetedCGImage:(CGImageRef)cgImage orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
@@ -8,30 +8,30 @@
 - (VNTargetedImageRequest)initWithTargetedCIImage:(CIImage *)ciImage options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNTargetedImageRequest)initWithTargetedCIImage:(CIImage *)ciImage orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedCIImage:(CIImage *)ciImage orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
-- (VNTargetedImageRequest)initWithTargetedCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7;
+- (VNTargetedImageRequest)initWithTargetedCIImage:(id)image orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler;
 - (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(CMSampleBufferRef)sampleBuffer options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(CMSampleBufferRef)sampleBuffer options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(CMSampleBufferRef)sampleBuffer orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(CMSampleBufferRef)sampleBuffer orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
-- (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7;
+- (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler;
 - (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(CVPixelBufferRef)pixelBuffer options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(CVPixelBufferRef)pixelBuffer options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(CVPixelBufferRef)pixelBuffer orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(CVPixelBufferRef)pixelBuffer orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
-- (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7;
-- (VNTargetedImageRequest)initWithTargetedImageBuffer:(id)a3 completionHandler:(id)a4;
+- (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler;
+- (VNTargetedImageRequest)initWithTargetedImageBuffer:(id)buffer completionHandler:(id)handler;
 - (VNTargetedImageRequest)initWithTargetedImageData:(NSData *)imageData options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedImageData:(NSData *)imageData options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNTargetedImageRequest)initWithTargetedImageData:(NSData *)imageData orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedImageData:(NSData *)imageData orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
-- (VNTargetedImageRequest)initWithTargetedImageData:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7;
+- (VNTargetedImageRequest)initWithTargetedImageData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler;
 - (VNTargetedImageRequest)initWithTargetedImageURL:(NSURL *)imageURL options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedImageURL:(NSURL *)imageURL options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
 - (VNTargetedImageRequest)initWithTargetedImageURL:(NSURL *)imageURL orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options;
 - (VNTargetedImageRequest)initWithTargetedImageURL:(NSURL *)imageURL orientation:(CGImagePropertyOrientation)orientation options:(NSDictionary *)options completionHandler:(VNRequestCompletionHandler)completionHandler;
-- (VNTargetedImageRequest)initWithTargetedImageURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7;
+- (VNTargetedImageRequest)initWithTargetedImageURL:(id)l orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler;
 - (id)newDuplicateInstance;
-- (id)requiredTargetedImageBufferReturningError:(id *)a3;
+- (id)requiredTargetedImageBufferReturningError:(id *)error;
 - (id)sequencedRequestPreviousObservationsKey;
 @end
 
@@ -41,8 +41,8 @@
 {
   v3 = objc_alloc(objc_opt_class());
   targetedImageBuffer = self->_targetedImageBuffer;
-  v5 = [(VNRequest *)self completionHandler];
-  v6 = [v3 initWithTargetedImageBuffer:targetedImageBuffer completionHandler:v5];
+  completionHandler = [(VNRequest *)self completionHandler];
+  v6 = [v3 initWithTargetedImageBuffer:targetedImageBuffer completionHandler:completionHandler];
 
   return v6;
 }
@@ -52,38 +52,38 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
   v8.super_class = VNTargetedImageRequest;
-  v4 = [(VNRequest *)&v8 sequencedRequestPreviousObservationsKey];
-  v5 = [(VNImageBuffer *)self->_targetedImageBuffer sequencedRequestPreviousObservationsKey];
-  v6 = [v3 initWithFormat:@"%@:Trk=%@", v4, v5];
+  sequencedRequestPreviousObservationsKey = [(VNRequest *)&v8 sequencedRequestPreviousObservationsKey];
+  sequencedRequestPreviousObservationsKey2 = [(VNImageBuffer *)self->_targetedImageBuffer sequencedRequestPreviousObservationsKey];
+  v6 = [v3 initWithFormat:@"%@:Trk=%@", sequencedRequestPreviousObservationsKey, sequencedRequestPreviousObservationsKey2];
 
   return v6;
 }
 
-- (id)requiredTargetedImageBufferReturningError:(id *)a3
+- (id)requiredTargetedImageBufferReturningError:(id *)error
 {
-  v4 = [(VNTargetedImageRequest *)self targetedImageBuffer];
-  v5 = v4;
-  if (v4)
+  targetedImageBuffer = [(VNTargetedImageRequest *)self targetedImageBuffer];
+  v5 = targetedImageBuffer;
+  if (targetedImageBuffer)
   {
-    v6 = v4;
+    v6 = targetedImageBuffer;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [VNError errorForInternalErrorWithLocalizedDescription:@"no valid initial image buffer was provided"];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"no valid initial image buffer was provided"];
   }
 
   return v5;
 }
 
-- (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(opaqueCMSampleBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7
+- (VNTargetedImageRequest)initWithTargetedCMSampleBuffer:(opaqueCMSampleBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler
 {
-  v9 = *&a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [[VNImageBuffer alloc] initWithCMSampleBuffer:a3 orientation:v9 options:v12 session:v13];
-  v16 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v15 completionHandler:v14];
+  v9 = *&orientation;
+  optionsCopy = options;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v15 = [[VNImageBuffer alloc] initWithCMSampleBuffer:buffer orientation:v9 options:optionsCopy session:sessionCopy];
+  v16 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v15 completionHandler:handlerCopy];
 
   return v16;
 }
@@ -128,15 +128,15 @@
   return v8;
 }
 
-- (VNTargetedImageRequest)initWithTargetedImageData:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7
+- (VNTargetedImageRequest)initWithTargetedImageData:(id)data orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[VNImageBuffer alloc] initWithData:v12 orientation:v10 options:v13 session:v14];
-  v17 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v16 completionHandler:v15];
+  v10 = *&orientation;
+  dataCopy = data;
+  optionsCopy = options;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v16 = [[VNImageBuffer alloc] initWithData:dataCopy orientation:v10 options:optionsCopy session:sessionCopy];
+  v17 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v16 completionHandler:handlerCopy];
 
   return v17;
 }
@@ -185,15 +185,15 @@
   return v9;
 }
 
-- (VNTargetedImageRequest)initWithTargetedImageURL:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7
+- (VNTargetedImageRequest)initWithTargetedImageURL:(id)l orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[VNImageBuffer alloc] initWithURL:v12 orientation:v10 options:v13 session:v14];
-  v17 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v16 completionHandler:v15];
+  v10 = *&orientation;
+  lCopy = l;
+  optionsCopy = options;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v16 = [[VNImageBuffer alloc] initWithURL:lCopy orientation:v10 options:optionsCopy session:sessionCopy];
+  v17 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v16 completionHandler:handlerCopy];
 
   return v17;
 }
@@ -242,15 +242,15 @@
   return v9;
 }
 
-- (VNTargetedImageRequest)initWithTargetedCIImage:(id)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7
+- (VNTargetedImageRequest)initWithTargetedCIImage:(id)image orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[VNImageBuffer alloc] initWithCIImage:v12 orientation:v10 options:v13 session:v14];
-  v17 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v16 completionHandler:v15];
+  v10 = *&orientation;
+  imageCopy = image;
+  optionsCopy = options;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v16 = [[VNImageBuffer alloc] initWithCIImage:imageCopy orientation:v10 options:optionsCopy session:sessionCopy];
+  v17 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v16 completionHandler:handlerCopy];
 
   return v17;
 }
@@ -299,14 +299,14 @@
   return v9;
 }
 
-- (VNTargetedImageRequest)initWithTargetedCGImage:(CGImage *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7
+- (VNTargetedImageRequest)initWithTargetedCGImage:(CGImage *)image orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler
 {
-  v9 = *&a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [[VNImageBuffer alloc] initWithCGImage:a3 orientation:v9 options:v12 session:v13];
-  v16 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v15 completionHandler:v14];
+  v9 = *&orientation;
+  optionsCopy = options;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v15 = [[VNImageBuffer alloc] initWithCGImage:image orientation:v9 options:optionsCopy session:sessionCopy];
+  v16 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v15 completionHandler:handlerCopy];
 
   return v16;
 }
@@ -351,14 +351,14 @@
   return v8;
 }
 
-- (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(__CVBuffer *)a3 orientation:(unsigned int)a4 options:(id)a5 session:(id)a6 completionHandler:(id)a7
+- (VNTargetedImageRequest)initWithTargetedCVPixelBuffer:(__CVBuffer *)buffer orientation:(unsigned int)orientation options:(id)options session:(id)session completionHandler:(id)handler
 {
-  v9 = *&a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [[VNImageBuffer alloc] initWithCVPixelBuffer:a3 orientation:v9 options:v12 session:v13];
-  v16 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v15 completionHandler:v14];
+  v9 = *&orientation;
+  optionsCopy = options;
+  sessionCopy = session;
+  handlerCopy = handler;
+  v15 = [[VNImageBuffer alloc] initWithCVPixelBuffer:buffer orientation:v9 options:optionsCopy session:sessionCopy];
+  v16 = [(VNTargetedImageRequest *)self initWithTargetedImageBuffer:v15 completionHandler:handlerCopy];
 
   return v16;
 }
@@ -403,23 +403,23 @@
   return v8;
 }
 
-- (VNTargetedImageRequest)initWithTargetedImageBuffer:(id)a3 completionHandler:(id)a4
+- (VNTargetedImageRequest)initWithTargetedImageBuffer:(id)buffer completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && (v12.receiver = self, v12.super_class = VNTargetedImageRequest, v9 = [(VNRequest *)&v12 initWithCompletionHandler:v8], (self = v9) != 0))
+  bufferCopy = buffer;
+  handlerCopy = handler;
+  if (bufferCopy && (v12.receiver = self, v12.super_class = VNTargetedImageRequest, v9 = [(VNRequest *)&v12 initWithCompletionHandler:handlerCopy], (self = v9) != 0))
   {
-    objc_storeStrong(&v9->_targetedImageBuffer, a3);
+    objc_storeStrong(&v9->_targetedImageBuffer, buffer);
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

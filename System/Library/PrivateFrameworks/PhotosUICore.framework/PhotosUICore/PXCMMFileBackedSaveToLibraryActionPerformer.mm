@@ -6,40 +6,40 @@
 
 - (void)performBackgroundTask
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PXCMMActionPerformer *)self session];
-  v5 = [v4 viewModel];
-  v6 = [v5 selectionManager];
-  v7 = [v6 selectionSnapshot];
+  array = [MEMORY[0x1E695DF70] array];
+  session = [(PXCMMActionPerformer *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  if (v7)
+  if (selectionSnapshot)
   {
-    v8 = [v7 dataSource];
-    v9 = [v7 selectedIndexPaths];
+    dataSource = [selectionSnapshot dataSource];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __68__PXCMMFileBackedSaveToLibraryActionPerformer_performBackgroundTask__block_invoke;
     v17[3] = &unk_1E7744508;
-    v18 = v3;
-    v19 = v8;
-    v10 = v8;
-    [v9 enumerateItemIndexPathsUsingBlock:v17];
+    v18 = array;
+    v19 = dataSource;
+    v10 = dataSource;
+    [selectedIndexPaths enumerateItemIndexPathsUsingBlock:v17];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v11 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __68__PXCMMFileBackedSaveToLibraryActionPerformer_performBackgroundTask__block_invoke_2;
     v15[3] = &unk_1E774C648;
-    v16 = v3;
+    v16 = array;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __68__PXCMMFileBackedSaveToLibraryActionPerformer_performBackgroundTask__block_invoke_193;
     v14[3] = &unk_1E774C5C0;
     v14[4] = self;
-    [v11 performChanges:v15 completionHandler:v14];
+    [px_deprecated_appPhotoLibrary performChanges:v15 completionHandler:v14];
   }
 
   else

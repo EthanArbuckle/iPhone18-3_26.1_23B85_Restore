@@ -1,21 +1,21 @@
 @interface SUUIRedeemResultLinksTableViewSection
-- (SUUIRedeemResultLinksTableViewSection)initWithLinks:(id)a3;
+- (SUUIRedeemResultLinksTableViewSection)initWithLinks:(id)links;
 - (UIEdgeInsets)contentInsets;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path;
 @end
 
 @implementation SUUIRedeemResultLinksTableViewSection
 
-- (SUUIRedeemResultLinksTableViewSection)initWithLinks:(id)a3
+- (SUUIRedeemResultLinksTableViewSection)initWithLinks:(id)links
 {
-  v4 = a3;
+  linksCopy = links;
   v9.receiver = self;
   v9.super_class = SUUIRedeemResultLinksTableViewSection;
   v5 = [(SUUIRedeemResultLinksTableViewSection *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [linksCopy copy];
     links = v5->_links;
     v5->_links = v6;
   }
@@ -23,49 +23,49 @@
   return v5;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SUUIRRLTVC"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SUUIRRLTVC"];
   if (!v7)
   {
     v7 = [[SUUITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"SUUIRRLTVC"];
     [(SUUITableViewCell *)v7 setAccessoryType:1];
-    v8 = [(SUUITableViewCell *)v7 textLabel];
+    textLabel = [(SUUITableViewCell *)v7 textLabel];
     v9 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v8 setFont:v9];
+    [textLabel setFont:v9];
   }
 
   v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
   [(SUUITableViewCell *)v7 setTopBorderColor:v10];
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(SUUITableViewCell *)v7 setBorderPaddingLeft:30.0];
     [(SUUITableViewCell *)v7 setTextLabelInsets:0.0, 15.0, 0.0, -15.0];
   }
 
   v13 = [(NSArray *)self->_links count];
-  if ([v6 row] == v13 - 1)
+  if ([pathCopy row] == v13 - 1)
   {
     [(SUUITableViewCell *)v7 setBottomBorderColor:v10];
   }
 
-  v14 = -[NSArray objectAtIndex:](self->_links, "objectAtIndex:", [v6 row]);
-  v15 = [(SUUITableViewCell *)v7 textLabel];
-  v16 = [v14 title];
-  [v15 setText:v16];
+  v14 = -[NSArray objectAtIndex:](self->_links, "objectAtIndex:", [pathCopy row]);
+  textLabel2 = [(SUUITableViewCell *)v7 textLabel];
+  title = [v14 title];
+  [textLabel2 setText:title];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 backgroundColor];
-  [v6 setBackgroundColor:v7];
+  cellCopy = cell;
+  backgroundColor = [view backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 }
 
 - (UIEdgeInsets)contentInsets

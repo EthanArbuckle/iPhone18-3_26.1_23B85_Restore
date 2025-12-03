@@ -1,20 +1,20 @@
 @interface ICRandomNumberGenerator
-- (ICRandomNumberGenerator)initWithSeed:(unsigned int)a3;
+- (ICRandomNumberGenerator)initWithSeed:(unsigned int)seed;
 - (double)randomFloat;
-- (id)randomObject:(id)a3;
-- (unint64_t)randomIndexMin:(unint64_t)a3 max:(unint64_t)a4;
+- (id)randomObject:(id)object;
+- (unint64_t)randomIndexMin:(unint64_t)min max:(unint64_t)max;
 @end
 
 @implementation ICRandomNumberGenerator
 
-- (ICRandomNumberGenerator)initWithSeed:(unsigned int)a3
+- (ICRandomNumberGenerator)initWithSeed:(unsigned int)seed
 {
   v5.receiver = self;
   v5.super_class = ICRandomNumberGenerator;
   result = [(ICRandomNumberGenerator *)&v5 init];
   if (result)
   {
-    result->_randomSeed = a3;
+    result->_randomSeed = seed;
   }
 
   return result;
@@ -27,19 +27,19 @@
   return vcvtd_n_f64_u32(HIWORD(v2), 0x10uLL);
 }
 
-- (unint64_t)randomIndexMin:(unint64_t)a3 max:(unint64_t)a4
+- (unint64_t)randomIndexMin:(unint64_t)min max:(unint64_t)max
 {
-  v6 = a3;
+  minCopy = min;
   [(ICRandomNumberGenerator *)self randomFloat];
-  return (v6 + v7 * (a4 - a3 + 1));
+  return (minCopy + v7 * (max - min + 1));
 }
 
-- (id)randomObject:(id)a3
+- (id)randomObject:(id)object
 {
-  v4 = a3;
-  if ([v4 count])
+  objectCopy = object;
+  if ([objectCopy count])
   {
-    v5 = [v4 objectAtIndexedSubscript:{-[ICRandomNumberGenerator randomIndexMin:max:](self, "randomIndexMin:max:", 0, objc_msgSend(v4, "count") - 1)}];
+    v5 = [objectCopy objectAtIndexedSubscript:{-[ICRandomNumberGenerator randomIndexMin:max:](self, "randomIndexMin:max:", 0, objc_msgSend(objectCopy, "count") - 1)}];
   }
 
   else

@@ -1,27 +1,27 @@
 @interface KmlDeviceConfigurationData
-- (KmlDeviceConfigurationData)initWithData:(id)a3 outerTag:(BOOL)a4;
+- (KmlDeviceConfigurationData)initWithData:(id)data outerTag:(BOOL)tag;
 - (id)asData;
-- (id)readerBleConfigWithTag:(void *)a3 target:;
+- (id)readerBleConfigWithTag:(void *)tag target:;
 - (id)readerSupportedTransports;
-- (uint64_t)parseDeviceConfigData:(int)a3 outerTag:;
-- (unsigned)sharingConfigToSend:(unsigned __int8 *)a1;
-- (void)parseKeySharingConfigData:(_BYTE *)a1;
-- (void)parseOemSpecificContent:(uint64_t)a1;
-- (void)parseReaderBleConfigData:(uint64_t)a1;
+- (uint64_t)parseDeviceConfigData:(int)data outerTag:;
+- (unsigned)sharingConfigToSend:(unsigned __int8 *)send;
+- (void)parseKeySharingConfigData:(_BYTE *)data;
+- (void)parseOemSpecificContent:(uint64_t)content;
+- (void)parseReaderBleConfigData:(uint64_t)data;
 - (void)parseSharingInAChainDeviceConfigMailboxSettingData;
-- (void)parseSupportedRadiosData:(uint64_t)a1;
+- (void)parseSupportedRadiosData:(uint64_t)data;
 - (void)removeUwbSupportLocally;
-- (void)updatePPIDWithServerProvidedData:(id)a3;
-- (void)updateSharingConfigWithData:(id)a3;
-- (void)updateSupportedRadiosWithData:(id)a3;
+- (void)updatePPIDWithServerProvidedData:(id)data;
+- (void)updateSharingConfigWithData:(id)data;
+- (void)updateSupportedRadiosWithData:(id)data;
 @end
 
 @implementation KmlDeviceConfigurationData
 
-- (KmlDeviceConfigurationData)initWithData:(id)a3 outerTag:(BOOL)a4
+- (KmlDeviceConfigurationData)initWithData:(id)data outerTag:(BOOL)tag
 {
-  v4 = a4;
-  v6 = a3;
+  tagCopy = tag;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = KmlDeviceConfigurationData;
   v7 = [(KmlDeviceConfigurationData *)&v25 init];
@@ -74,11 +74,11 @@
     *(v8 + 152) = 0;
 
     *(v8 + 27) = 0;
-    v23 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v24 = *(v8 + 8);
-    *(v8 + 8) = v23;
+    *(v8 + 8) = array;
 
-    *(v8 + 29) = [(KmlDeviceConfigurationData *)v8 parseDeviceConfigData:v6 outerTag:v4];
+    *(v8 + 29) = [(KmlDeviceConfigurationData *)v8 parseDeviceConfigData:dataCopy outerTag:tagCopy];
   }
 
   return v8;
@@ -87,17 +87,17 @@
 - (id)asData
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   if (self->_supportedRadioTagParsed)
   {
     v4 = [(KmlDeviceConfigurationData *)self supportedRadiosAsDataForTarget:1];
-    [v3 appendData:v4];
+    [data appendData:v4];
   }
 
   if (self->_sharingConfigTagParsed)
   {
     v17 = [(KmlDeviceConfigurationData *)self sharingConfigToSend:?];
-    [v3 appendData:v17];
+    [data appendData:v17];
   }
 
   v20 = 0u;
@@ -119,8 +119,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) asData];
-        [v3 appendData:v10];
+        asData = [*(*(&v18 + 1) + 8 * i) asData];
+        [data appendData:asData];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
@@ -129,13 +129,13 @@
     while (v7);
   }
 
-  v11 = [KmlTlv TLVWithTag:32590 value:v3];
-  v12 = [v11 value];
+  v11 = [KmlTlv TLVWithTag:32590 value:data];
+  value = [v11 value];
 
   v13 = KmlLogger();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = kmlUtilHexStringFromData(v12);
+    v14 = kmlUtilHexStringFromData(value);
     *buf = 136315650;
     v23 = "[KmlDeviceConfigurationData asData]";
     v24 = 1024;
@@ -147,16 +147,16 @@
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return value;
 }
 
 - (id)readerSupportedTransports
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   if (self->_readerSupportsUwb)
   {
-    [v3 addObject:&unk_285B9CD60];
+    [array addObject:&unk_285B9CD60];
   }
 
   if (self->_readerSupportsNfc)
@@ -172,13 +172,13 @@
   return v4;
 }
 
-- (void)updateSupportedRadiosWithData:(id)a3
+- (void)updateSupportedRadiosWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = v4;
-    if ([v4 length])
+    v5 = dataCopy;
+    if ([dataCopy length])
     {
       [(KmlDeviceConfigurationData *)self parseSupportedRadiosData:v5];
     }
@@ -187,13 +187,13 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)updateSharingConfigWithData:(id)a3
+- (void)updateSharingConfigWithData:(id)data
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    [KmlTlv TLVsWithData:v4];
+    [KmlTlv TLVsWithData:dataCopy];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -225,8 +225,8 @@
               _os_log_impl(&dword_248BF3000, v11, OS_LOG_TYPE_INFO, "%s : %i : Found sharing config data", buf, 0x12u);
             }
 
-            v12 = [v10 value];
-            [(KmlDeviceConfigurationData *)self parseKeySharingConfigData:v12];
+            value = [v10 value];
+            [(KmlDeviceConfigurationData *)self parseKeySharingConfigData:value];
 
             goto LABEL_14;
           }
@@ -248,11 +248,11 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePPIDWithServerProvidedData:(id)a3
+- (void)updatePPIDWithServerProvidedData:(id)data
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (self->_mfiPPID)
   {
     v6 = KmlLogger();
@@ -270,7 +270,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v4 && [v4 length])
+  if (dataCopy && [dataCopy length])
   {
     [KmlTlv TLVsWithData:v5];
     v18 = 0u;
@@ -294,12 +294,12 @@ LABEL_20:
           v12 = *(*(&v18 + 1) + 8 * i);
           if ([v12 tag] == 32554)
           {
-            v13 = [v12 value];
-            [(KmlDeviceConfigurationData *)self parseOemSpecificContent:v13];
+            value = [v12 value];
+            [(KmlDeviceConfigurationData *)self parseOemSpecificContent:value];
 
-            v14 = [v12 asData];
+            asData = [v12 asData];
             oemSpecificContentAsData = self->_oemSpecificContentAsData;
-            self->_oemSpecificContentAsData = v14;
+            self->_oemSpecificContentAsData = asData;
 
             [(NSMutableArray *)self->_remainingTlvs addObject:v12];
             goto LABEL_16;
@@ -382,24 +382,24 @@ LABEL_21:
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)parseDeviceConfigData:(int)a3 outerTag:
+- (uint64_t)parseDeviceConfigData:(int)data outerTag:
 {
   v62 = *MEMORY[0x277D85DE8];
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     v41 = 0;
     goto LABEL_56;
   }
 
-  v7 = v5;
+  value7 = v5;
   v8 = &off_248C29000;
-  if (!a3)
+  if (!data)
   {
 LABEL_17:
-    v20 = [KmlTlv TLVsWithData:v7];
-    [*(a1 + 8) removeAllObjects];
+    v20 = [KmlTlv TLVsWithData:value7];
+    [*(self + 8) removeAllObjects];
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
@@ -414,7 +414,7 @@ LABEL_17:
     }
 
     v22 = v21;
-    v44 = v7;
+    v44 = value7;
     v45 = v6;
     v23 = *v48;
     v46 = *(v8 + 415);
@@ -433,24 +433,24 @@ LABEL_19:
       switch(v26)
       {
         case 'J':
-          v28 = [v25 value];
-          v29 = *(a1 + 80);
-          *(a1 + 80) = v28;
+          value = [v25 value];
+          v29 = *(self + 80);
+          *(self + 80) = value;
           goto LABEL_42;
         case 'K':
-          v33 = [v25 value];
-          v29 = *(a1 + 88);
-          *(a1 + 88) = v33;
+          value2 = [v25 value];
+          v29 = *(self + 88);
+          *(self + 88) = value2;
           goto LABEL_42;
         case 'T':
-          v30 = [v25 asData];
-          v29 = *(a1 + 152);
-          *(a1 + 152) = v30;
+          asData = [v25 asData];
+          v29 = *(self + 152);
+          *(self + 152) = asData;
           goto LABEL_42;
         case '[':
-          v31 = [v25 asData];
-          v29 = *(a1 + 144);
-          *(a1 + 144) = v31;
+          asData2 = [v25 asData];
+          v29 = *(self + 144);
+          *(self + 144) = asData2;
           goto LABEL_42;
       }
 
@@ -462,59 +462,59 @@ LABEL_19:
       switch(v26)
       {
         case 216:
-          *(a1 + 22) = [v25 valueAsUnsignedShort];
-          v34 = [v25 asData];
-          v29 = *(a1 + 120);
-          *(a1 + 120) = v34;
+          *(self + 22) = [v25 valueAsUnsignedShort];
+          asData3 = [v25 asData];
+          v29 = *(self + 120);
+          *(self + 120) = asData3;
           goto LABEL_42;
         case 217:
-          v32 = [v25 value];
-          v29 = *(a1 + 72);
-          *(a1 + 72) = v32;
+          value3 = [v25 value];
+          v29 = *(self + 72);
+          *(self + 72) = value3;
           goto LABEL_42;
         case 96:
-          v38 = [v25 asData];
-          v39 = *(a1 + 112);
-          *(a1 + 112) = v38;
+          asData4 = [v25 asData];
+          v39 = *(self + 112);
+          *(self + 112) = asData4;
 
-          [(KmlDeviceConfigurationData *)a1 parseSharingInAChainDeviceConfigMailboxSettingData];
+          [(KmlDeviceConfigurationData *)self parseSharingInAChainDeviceConfigMailboxSettingData];
           goto LABEL_43;
         case 32554:
-          v36 = [v25 value];
-          [(KmlDeviceConfigurationData *)a1 parseOemSpecificContent:v36];
+          value4 = [v25 value];
+          [(KmlDeviceConfigurationData *)self parseOemSpecificContent:value4];
 
-          v37 = [v25 asData];
-          v29 = *(a1 + 128);
-          *(a1 + 128) = v37;
+          asData5 = [v25 asData];
+          v29 = *(self + 128);
+          *(self + 128) = asData5;
 LABEL_42:
 
 LABEL_43:
-          [*(a1 + 8) addObject:v25];
+          [*(self + 8) addObject:v25];
           break;
         case 32610:
-          v35 = [v25 value];
-          [(KmlDeviceConfigurationData *)a1 parseReaderBleConfigData:v35];
+          value5 = [v25 value];
+          [(KmlDeviceConfigurationData *)self parseReaderBleConfigData:value5];
 
-          *(a1 + 28) = 1;
-          [*(a1 + 8) addObject:v25];
-          v27 = KmlLogger();
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
+          *(self + 28) = 1;
+          [*(self + 8) addObject:v25];
+          value6 = KmlLogger();
+          if (os_log_type_enabled(value6, OS_LOG_TYPE_INFO))
           {
             *buf = v46;
             v58 = "[KmlDeviceConfigurationData parseDeviceConfigData:outerTag:]";
             v59 = 1024;
             v60 = 314;
-            _os_log_impl(&dword_248BF3000, v27, OS_LOG_TYPE_INFO, "%s : %i : UWB is disabled for local use, but available for sharing.", buf, 0x12u);
+            _os_log_impl(&dword_248BF3000, value6, OS_LOG_TYPE_INFO, "%s : %i : UWB is disabled for local use, but available for sharing.", buf, 0x12u);
           }
 
           goto LABEL_51;
         case 32608:
-          v27 = [v25 value];
-          [(KmlDeviceConfigurationData *)a1 parseKeySharingConfigData:v27];
+          value6 = [v25 value];
+          [(KmlDeviceConfigurationData *)self parseKeySharingConfigData:value6];
           goto LABEL_51;
         case 32585:
-          v27 = [v25 value];
-          [(KmlDeviceConfigurationData *)a1 parseSupportedRadiosData:v27];
+          value6 = [v25 value];
+          [(KmlDeviceConfigurationData *)self parseSupportedRadiosData:value6];
 LABEL_51:
 
           break;
@@ -528,7 +528,7 @@ LABEL_51:
         {
           v18 = 1;
           v10 = v17;
-          v7 = v44;
+          value7 = v44;
           v6 = v45;
           goto LABEL_55;
         }
@@ -537,12 +537,12 @@ LABEL_51:
       }
     }
 
-    *(a1 + 21) = [v25 valueAsUnsignedShort] == 1;
+    *(self + 21) = [v25 valueAsUnsignedShort] == 1;
     goto LABEL_43;
   }
 
-  v9 = v7;
-  [KmlTlv TLVsWithData:v7];
+  v9 = value7;
+  [KmlTlv TLVsWithData:value7];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -579,7 +579,7 @@ LABEL_51:
           _os_log_impl(&dword_248BF3000, v19, OS_LOG_TYPE_INFO, "%s : %i : Found device config data to parse in outer tag", buf, 0x12u);
         }
 
-        v7 = [v16 value];
+        value7 = [v16 value];
 
         goto LABEL_17;
       }
@@ -602,7 +602,7 @@ LABEL_11:
   }
 
   v18 = 0;
-  v7 = v9;
+  value7 = v9;
 LABEL_55:
 
   v55 = v18;
@@ -613,17 +613,17 @@ LABEL_56:
   return v41;
 }
 
-- (unsigned)sharingConfigToSend:(unsigned __int8 *)a1
+- (unsigned)sharingConfigToSend:(unsigned __int8 *)send
 {
-  v3 = a1;
-  if (!a1)
+  sendCopy = send;
+  if (!send)
   {
     goto LABEL_17;
   }
 
-  v5 = [MEMORY[0x277CBEB28] data];
-  v6 = v3[23];
-  v21 = v3[23];
+  data = [MEMORY[0x277CBEB28] data];
+  v6 = sendCopy[23];
+  v21 = sendCopy[23];
   if (a2)
   {
     if (v6 == 5)
@@ -642,68 +642,68 @@ LABEL_7:
 
   v8 = [MEMORY[0x277CBEA90] dataWithBytes:&v21 length:1];
   v9 = [KmlTlv TLVWithTag:218 value:v8];
-  v10 = [v9 asData];
-  OUTLINED_FUNCTION_5_0(v10);
+  asData = [v9 asData];
+  OUTLINED_FUNCTION_5_0(asData);
 
-  if (v3[24] == 1)
+  if (sendCopy[24] == 1)
   {
     v11 = [KmlTlv TLVWithJustTag:219];
-    v12 = [v11 asData];
-    OUTLINED_FUNCTION_1_0(v12);
+    asData2 = [v11 asData];
+    OUTLINED_FUNCTION_1_0(asData2);
   }
 
-  if (v3[25] == 1)
+  if (sendCopy[25] == 1)
   {
     v13 = [KmlTlv TLVWithJustTag:220];
-    v14 = [v13 asData];
-    OUTLINED_FUNCTION_1_0(v14);
+    asData3 = [v13 asData];
+    OUTLINED_FUNCTION_1_0(asData3);
   }
 
-  if (v3[26] >= 2u)
+  if (sendCopy[26] >= 2u)
   {
     v15 = [KmlTlv TLVWithTag:221 unsignedChar:?];
-    v16 = [v15 asData];
-    OUTLINED_FUNCTION_1_0(v16);
+    asData4 = [v15 asData];
+    OUTLINED_FUNCTION_1_0(asData4);
   }
 
-  if (v3[27] == 1)
+  if (sendCopy[27] == 1)
   {
     v17 = [KmlTlv TLVWithJustTag:222];
-    v18 = [v17 asData];
-    [v5 appendData:v18];
+    asData5 = [v17 asData];
+    [data appendData:asData5];
   }
 
-  v19 = [KmlTlv TLVWithTag:32608 value:v5];
-  v3 = [v19 asData];
+  v19 = [KmlTlv TLVWithTag:32608 value:data];
+  sendCopy = [v19 asData];
 
 LABEL_17:
 
-  return v3;
+  return sendCopy;
 }
 
-- (void)parseSupportedRadiosData:(uint64_t)a1
+- (void)parseSupportedRadiosData:(uint64_t)data
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (!a1)
+  if (!data)
   {
     goto LABEL_21;
   }
 
-  *(a1 + 18) = 0;
-  *(a1 + 28) = 0;
-  *(a1 + 20) = 0;
-  v4 = *(a1 + 32);
-  *(a1 + 32) = 0;
+  *(data + 18) = 0;
+  *(data + 28) = 0;
+  *(data + 20) = 0;
+  v4 = *(data + 32);
+  *(data + 32) = 0;
 
-  v5 = *(a1 + 40);
-  *(a1 + 40) = 0;
+  v5 = *(data + 40);
+  *(data + 40) = 0;
 
-  v6 = *(a1 + 48);
-  *(a1 + 48) = 0;
+  v6 = *(data + 48);
+  *(data + 48) = 0;
 
-  v7 = *(a1 + 56);
-  *(a1 + 56) = 0;
+  v7 = *(data + 56);
+  *(data + 56) = 0;
 
   v8 = [KmlTlv TLVsWithData:v3];
   v21 = 0u;
@@ -737,7 +737,7 @@ LABEL_17:
         case 24400:
 LABEL_13:
           v11 = 1;
-          *(a1 + 18) = 1;
+          *(data + 18) = 1;
           continue;
         case 24401:
           goto LABEL_14;
@@ -746,12 +746,12 @@ LABEL_13:
         case 32593:
 LABEL_14:
           v11 = 1;
-          *(a1 + 19) = 1;
-          *(a1 + 28) = 0;
+          *(data + 19) = 1;
+          *(data + 28) = 0;
           break;
         case 32594:
-          v17 = [v15 value];
-          [(KmlDeviceConfigurationData *)a1 parseReaderBleConfigData:v17];
+          value = [v15 value];
+          [(KmlDeviceConfigurationData *)data parseReaderBleConfigData:value];
 
           v11 = 1;
           break;
@@ -771,20 +771,20 @@ LABEL_14:
 
 LABEL_19:
   v18 = 0;
-  *(a1 + 18) = 1;
+  *(data + 18) = 1;
 LABEL_20:
-  *(a1 + 16) = v18;
+  *(data + 16) = v18;
 
 LABEL_21:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseKeySharingConfigData:(_BYTE *)a1
+- (void)parseKeySharingConfigData:(_BYTE *)data
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (data)
   {
-    a1[17] = 1;
+    data[17] = 1;
     v3 = [KmlTlv TLVsWithData:a2];
     OUTLINED_FUNCTION_2_0();
     OUTLINED_FUNCTION_0();
@@ -807,30 +807,30 @@ LABEL_21:
           switch([v10 tag])
           {
             case 0xDAu:
-              a1[23] = [v10 valueAsUnsignedShort];
+              data[23] = [v10 valueAsUnsignedShort];
               break;
             case 0xDBu:
-              a1[24] = 1;
+              data[24] = 1;
               break;
             case 0xDCu:
-              a1[25] = 1;
+              data[25] = 1;
               break;
             case 0xDDu:
-              v11 = [v10 valueAsUnsignedChar];
-              if (v11 >= 0x10)
+              valueAsUnsignedChar = [v10 valueAsUnsignedChar];
+              if (valueAsUnsignedChar >= 0x10)
               {
                 v12 = 16;
               }
 
               else
               {
-                v12 = v11;
+                v12 = valueAsUnsignedChar;
               }
 
-              a1[26] = v12;
+              data[26] = v12;
               break;
             case 0xDEu:
-              a1[27] = 1;
+              data[27] = 1;
               break;
             default:
               continue;
@@ -848,12 +848,12 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseOemSpecificContent:(uint64_t)a1
+- (void)parseOemSpecificContent:(uint64_t)content
 {
   v121 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v89 = a1;
-  if (!a1)
+  contentCopy = content;
+  if (!content)
   {
     goto LABEL_61;
   }
@@ -863,7 +863,7 @@ LABEL_21:
   v6 = [@"AAPL" dataUsingEncoding:4];
   v96 = [@"DFLT" dataUsingEncoding:4];
   v7 = KmlLogger();
-  v8 = &off_248C29000;
+  value4 = &off_248C29000;
   if (OUTLINED_FUNCTION_11(v7))
   {
     *buf = 136315906;
@@ -909,7 +909,7 @@ LABEL_21:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v18 = [v16 tag];
-        v19 = [v16 value];
+        value = [v16 value];
         *buf = 136315906;
         OUTLINED_FUNCTION_0_0("[KmlDeviceConfigurationData parseOemSpecificContent:]");
         v116 = 505;
@@ -925,8 +925,8 @@ LABEL_21:
         continue;
       }
 
-      v23 = [v16 value];
-      v24 = [KmlTlv TLVsWithData:v23];
+      value2 = [v16 value];
+      v24 = [KmlTlv TLVsWithData:value2];
 
       v106 = 0u;
       v107 = 0u;
@@ -953,8 +953,8 @@ LABEL_21:
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
               v31 = [v29 tag];
-              v32 = [v29 value];
-              OUTLINED_FUNCTION_3_0(v32, v33, v34, v35, v36, v37, v38, v39, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v40);
+              value3 = [v29 value];
+              OUTLINED_FUNCTION_3_0(value3, v33, v34, v35, v36, v37, v38, v39, contentCopy, v90, v91, v92, v93, v94, v95, v96, v97, v98, v40);
               OUTLINED_FUNCTION_0_0("[KmlDeviceConfigurationData parseOemSpecificContent:]");
               v116 = 510;
               v117 = v41;
@@ -965,8 +965,8 @@ LABEL_21:
 
             if ([v29 tag] == 64)
             {
-              v8 = [v29 value];
-              v44 = [(__CFString *)v6 isEqualToData:v8];
+              value4 = [v29 value];
+              v44 = [(__CFString *)v6 isEqualToData:value4];
 
               if (v44)
               {
@@ -975,8 +975,8 @@ LABEL_21:
 
               else
               {
-                v8 = [v29 value];
-                v52 = [v96 isEqualToData:v8];
+                value4 = [v29 value];
+                v52 = [v96 isEqualToData:value4];
 
                 v99 |= v52;
               }
@@ -984,25 +984,25 @@ LABEL_21:
 
             else if ([v29 tag] == 49)
             {
-              v45 = [v29 value];
-              v8 = [KmlTlv TLVsWithData:v45];
+              value5 = [v29 value];
+              value4 = [KmlTlv TLVsWithData:value5];
 
               v102 = 0u;
               v103 = 0u;
               v100 = 0u;
               v101 = 0u;
-              v46 = v8;
+              v46 = value4;
               v47 = [v46 countByEnumeratingWithState:&v100 objects:v112 count:16];
               if (v47)
               {
                 v48 = v47;
                 v49 = v6;
-                v8 = *v101;
+                value4 = *v101;
                 while (2)
                 {
                   for (k = 0; k != v48; ++k)
                   {
-                    if (*v101 != v8)
+                    if (*v101 != value4)
                     {
                       objc_enumerationMutation(v46);
                     }
@@ -1010,9 +1010,9 @@ LABEL_21:
                     v51 = *(*(&v100 + 1) + 8 * k);
                     if ([v51 tag] == 80)
                     {
-                      v8 = [v51 value];
+                      value4 = [v51 value];
 
-                      v98 = v8;
+                      v98 = value4;
                       goto LABEL_34;
                     }
                   }
@@ -1045,7 +1045,7 @@ LABEL_34:
           if (OUTLINED_FUNCTION_11(v69))
           {
             v71 = kmlUtilHexStringFromData(v98);
-            OUTLINED_FUNCTION_3_0(v71, v72, v73, v74, v75, v76, v77, v78, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v79);
+            OUTLINED_FUNCTION_3_0(v71, v72, v73, v74, v75, v76, v77, v78, contentCopy, v90, v91, v92, v93, v94, v95, v96, v97, v98, v79);
             OUTLINED_FUNCTION_0_0("[KmlDeviceConfigurationData parseOemSpecificContent:]");
             v116 = 529;
             v117 = 2112;
@@ -1056,8 +1056,8 @@ LABEL_34:
             _os_log_impl(v81, v82, v83, v84, v85, 0x26u);
           }
 
-          v86 = *(v89 + 136);
-          *(v89 + 136) = v70;
+          v86 = *(contentCopy + 136);
+          *(contentCopy + 136) = v70;
           v87 = v70;
 
           v14 = v91;
@@ -1077,7 +1077,7 @@ LABEL_43:
           if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
           {
             v55 = kmlUtilHexStringFromData(v26);
-            OUTLINED_FUNCTION_3_0(v55, v56, v57, v58, v59, v60, v61, v62, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v63);
+            OUTLINED_FUNCTION_3_0(v55, v56, v57, v58, v59, v60, v61, v62, contentCopy, v90, v91, v92, v93, v94, v95, v96, v97, v98, v63);
             OUTLINED_FUNCTION_0_0("[KmlDeviceConfigurationData parseOemSpecificContent:]");
             v116 = 533;
             v117 = 2112;
@@ -1138,8 +1138,8 @@ LABEL_48:
   }
 
   v66 = v92;
-  v67 = *(v89 + 136);
-  *(v89 + 136) = v66;
+  v67 = *(contentCopy + 136);
+  *(contentCopy + 136) = v66;
 LABEL_59:
 
 LABEL_60:
@@ -1149,55 +1149,55 @@ LABEL_61:
   v88 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readerBleConfigWithTag:(void *)a3 target:
+- (id)readerBleConfigWithTag:(void *)tag target:
 {
-  if (a1)
+  if (self)
   {
-    v8 = [MEMORY[0x277CBEB28] data];
-    if (a3 != 3)
+    data = [MEMORY[0x277CBEB28] data];
+    if (tag != 3)
     {
-      if (*(a1 + 32))
+      if (*(self + 32))
       {
         v3 = [KmlTlv TLVWithTag:208 value:?];
-        v9 = [v3 asData];
-        OUTLINED_FUNCTION_6_0(v9);
+        asData = [v3 asData];
+        OUTLINED_FUNCTION_6_0(asData);
       }
 
-      if (*(a1 + 40))
+      if (*(self + 40))
       {
         v3 = [KmlTlv TLVWithTag:209 value:?];
-        v10 = [v3 asData];
-        OUTLINED_FUNCTION_6_0(v10);
+        asData2 = [v3 asData];
+        OUTLINED_FUNCTION_6_0(asData2);
       }
     }
 
-    if (*(a1 + 20) == 1)
+    if (*(self + 20) == 1)
     {
       v3 = [KmlTlv TLVWithJustTag:210];
-      v11 = [v3 asData];
-      OUTLINED_FUNCTION_6_0(v11);
+      asData3 = [v3 asData];
+      OUTLINED_FUNCTION_6_0(asData3);
     }
 
-    if (a3 != 3)
+    if (tag != 3)
     {
-      if (*(a1 + 48))
+      if (*(self + 48))
       {
-        a3 = [KmlTlv TLVWithTag:211 value:?];
-        v12 = [a3 asData];
-        OUTLINED_FUNCTION_5_0(v12);
+        tag = [KmlTlv TLVWithTag:211 value:?];
+        asData4 = [tag asData];
+        OUTLINED_FUNCTION_5_0(asData4);
       }
 
-      if (*(a1 + 56))
+      if (*(self + 56))
       {
         v13 = [KmlTlv TLVWithTag:212 value:?];
-        v14 = [v13 asData];
-        OUTLINED_FUNCTION_1_0(v14);
+        asData5 = [v13 asData];
+        OUTLINED_FUNCTION_1_0(asData5);
       }
     }
 
-    if ([v8 length])
+    if ([data length])
     {
-      [KmlTlv TLVWithTag:a2 value:v8];
+      [KmlTlv TLVWithTag:a2 value:data];
     }
 
     else
@@ -1218,20 +1218,20 @@ LABEL_61:
 - (void)parseSharingInAChainDeviceConfigMailboxSettingData
 {
   v44 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    [KmlTlv TLVsWithData:a1[14]];
+    [KmlTlv TLVsWithData:self[14]];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v3 = v38 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v35 objects:v43 count:16];
-    if (v4)
+    value = [v3 countByEnumeratingWithState:&v35 objects:v43 count:16];
+    if (value)
     {
       v5 = *v36;
       while (2)
       {
-        for (i = 0; i != v4; i = i + 1)
+        for (i = 0; i != value; i = i + 1)
         {
           if (*v36 != v5)
           {
@@ -1241,13 +1241,13 @@ LABEL_61:
           v1 = *(*(&v35 + 1) + 8 * i);
           if ([v1 tag] == 96)
           {
-            v4 = [v1 value];
+            value = [v1 value];
             goto LABEL_12;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v35 objects:v43 count:16];
-        if (v4)
+        value = [v3 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        if (value)
         {
           continue;
         }
@@ -1258,7 +1258,7 @@ LABEL_61:
 
 LABEL_12:
 
-    if (![v4 length])
+    if (![value length])
     {
       v7 = KmlLogger();
       if (OUTLINED_FUNCTION_11(v7))
@@ -1276,12 +1276,12 @@ LABEL_12:
       OUTLINED_FUNCTION_8();
       v40 = 595;
       v41 = 2112;
-      v42 = v4;
+      v42 = value;
       OUTLINED_FUNCTION_9();
       _os_log_impl(v14, v15, v16, v17, v18, 0x1Cu);
     }
 
-    v19 = [KmlTlv TLVsWithData:v4];
+    v19 = [KmlTlv TLVsWithData:value];
     v20 = OUTLINED_FUNCTION_2_0();
     v22 = [v21 countByEnumeratingWithState:v33 objects:v39 count:{16, v20}];
     if (v22)
@@ -1301,16 +1301,16 @@ LABEL_12:
           v27 = *(v33[1] + 8 * j);
           if ([v27 tag] == 74)
           {
-            v28 = [v27 value];
-            v29 = a1[12];
-            a1[12] = v28;
+            value2 = [v27 value];
+            v29 = self[12];
+            self[12] = value2;
           }
 
           if ([v27 tag] == 75)
           {
-            v30 = [v27 value];
-            v31 = a1[13];
-            a1[13] = v30;
+            value3 = [v27 value];
+            v31 = self[13];
+            self[13] = value3;
           }
         }
 
@@ -1324,10 +1324,10 @@ LABEL_12:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseReaderBleConfigData:(uint64_t)a1
+- (void)parseReaderBleConfigData:(uint64_t)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (data)
   {
     v3 = [KmlTlv TLVsWithData:a2];
     OUTLINED_FUNCTION_2_0();
@@ -1350,32 +1350,32 @@ LABEL_12:
           switch([v9 tag])
           {
             case 0xD0u:
-              v10 = [v9 value];
-              v11 = *(a1 + 32);
-              *(a1 + 32) = v10;
+              value = [v9 value];
+              v11 = *(data + 32);
+              *(data + 32) = value;
               goto LABEL_14;
             case 0xD1u:
-              v14 = [v9 value];
-              v11 = *(a1 + 40);
-              *(a1 + 40) = v14;
+              value2 = [v9 value];
+              v11 = *(data + 40);
+              *(data + 40) = value2;
               goto LABEL_14;
             case 0xD2u:
-              *(a1 + 20) = 1;
+              *(data + 20) = 1;
               continue;
             case 0xD3u:
-              v13 = [v9 value];
-              v11 = *(a1 + 48);
-              *(a1 + 48) = v13;
+              value3 = [v9 value];
+              v11 = *(data + 48);
+              *(data + 48) = value3;
               goto LABEL_14;
             case 0xD4u:
-              v12 = [v9 value];
-              v11 = *(a1 + 56);
-              *(a1 + 56) = v12;
+              value4 = [v9 value];
+              v11 = *(data + 56);
+              *(data + 56) = value4;
               goto LABEL_14;
             case 0xD5u:
-              v15 = [v9 value];
-              v11 = *(a1 + 64);
-              *(a1 + 64) = v15;
+              value5 = [v9 value];
+              v11 = *(data + 64);
+              *(data + 64) = value5;
 LABEL_14:
 
               break;

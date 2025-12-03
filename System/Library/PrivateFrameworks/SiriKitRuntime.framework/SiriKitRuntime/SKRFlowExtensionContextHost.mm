@@ -1,7 +1,7 @@
 @interface SKRFlowExtensionContextHost
 - (SKRFlowExtensionContextHost)init;
-- (SKRFlowExtensionContextHost)initWithInputItems:(id)a3 contextUUID:(id)a4;
-- (SKRFlowExtensionContextHost)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (SKRFlowExtensionContextHost)initWithInputItems:(id)items contextUUID:(id)d;
+- (SKRFlowExtensionContextHost)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 @end
 
 @implementation SKRFlowExtensionContextHost
@@ -14,14 +14,14 @@
   return v4;
 }
 
-- (SKRFlowExtensionContextHost)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (SKRFlowExtensionContextHost)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
   v11 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for UUID();
@@ -34,20 +34,20 @@
     (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
   }
 
-  v14 = a4;
-  specialized FlowExtensionContextHost.init(inputItems:listenerEndpoint:contextUUID:)(v11, a4, v10);
+  endpointCopy = endpoint;
+  specialized FlowExtensionContextHost.init(inputItems:listenerEndpoint:contextUUID:)(v11, endpoint, v10);
   v16 = v15;
 
   return v16;
 }
 
-- (SKRFlowExtensionContextHost)initWithInputItems:(id)a3 contextUUID:(id)a4
+- (SKRFlowExtensionContextHost)initWithInputItems:(id)items contextUUID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for UUID();

@@ -1,14 +1,14 @@
 @interface AWDBarcodeSupportCodeDetectedEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAppLinkPreferredOpenStrategy:(id)a3;
-- (int)StringAsBarcodeDataType:(id)a3;
-- (int)StringAsBarcodeSourceType:(id)a3;
-- (int)StringAsBarcodeURLType:(id)a3;
-- (int)StringAsClientType:(id)a3;
-- (int)StringAsInvalidBarcodeDataType:(id)a3;
+- (int)StringAsAppLinkPreferredOpenStrategy:(id)strategy;
+- (int)StringAsBarcodeDataType:(id)type;
+- (int)StringAsBarcodeSourceType:(id)type;
+- (int)StringAsBarcodeURLType:(id)type;
+- (int)StringAsClientType:(id)type;
+- (int)StringAsInvalidBarcodeDataType:(id)type;
 - (int)appLinkPreferredOpenStrategy;
 - (int)barcodeDataType;
 - (int)barcodeSourceType;
@@ -16,23 +16,23 @@
 - (int)clientType;
 - (int)invalidBarcodeDataType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAppLinkPreferredOpenStrategy:(BOOL)a3;
-- (void)setHasBarcodeDataType:(BOOL)a3;
-- (void)setHasBarcodeSourceType:(BOOL)a3;
-- (void)setHasBarcodeURLType:(BOOL)a3;
-- (void)setHasClientType:(BOOL)a3;
-- (void)setHasInvalidBarcodeDataType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAppLinkPreferredOpenStrategy:(BOOL)strategy;
+- (void)setHasBarcodeDataType:(BOOL)type;
+- (void)setHasBarcodeSourceType:(BOOL)type;
+- (void)setHasBarcodeURLType:(BOOL)type;
+- (void)setHasClientType:(BOOL)type;
+- (void)setHasInvalidBarcodeDataType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBarcodeSupportCodeDetectedEvent
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -58,9 +58,9 @@
   }
 }
 
-- (void)setHasClientType:(BOOL)a3
+- (void)setHasClientType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -73,20 +73,20 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (int)StringAsClientType:(id)a3
+- (int)StringAsClientType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BARCODECLIENTTYPE_OTHER"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"BARCODECLIENTTYPE_OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BARCODECLIENTTYPE_NOTIFICATION_SERVICE"])
+  else if ([typeCopy isEqualToString:@"BARCODECLIENTTYPE_NOTIFICATION_SERVICE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BARCODECLIENTTYPE_SAFARI"])
+  else if ([typeCopy isEqualToString:@"BARCODECLIENTTYPE_SAFARI"])
   {
     v4 = 2;
   }
@@ -112,9 +112,9 @@
   }
 }
 
-- (void)setHasBarcodeDataType:(BOOL)a3
+- (void)setHasBarcodeDataType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -127,65 +127,65 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsBarcodeDataType:(id)a3
+- (int)StringAsBarcodeDataType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BARCODEDATATYPE_INVALID"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"BARCODEDATATYPE_INVALID"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_URL"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_URL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_CONTACT"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_CONTACT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_EMAIL"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_EMAIL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_TELEPHONE"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_TELEPHONE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_MESSAGE"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_MESSAGE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_LOCATION"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_LOCATION"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_EVENT"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_EVENT"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_WIFI"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_WIFI"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_HOMEKIT_URL"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_HOMEKIT_URL"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_STRING"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_STRING"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEDATATYPE_OTHER"])
+  else if ([typeCopy isEqualToString:@"BARCODEDATATYPE_OTHER"])
   {
     v4 = 11;
   }
@@ -211,9 +211,9 @@
   }
 }
 
-- (void)setHasInvalidBarcodeDataType:(BOOL)a3
+- (void)setHasInvalidBarcodeDataType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x80;
   }
@@ -226,55 +226,55 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (int)StringAsInvalidBarcodeDataType:(id)a3
+- (int)StringAsInvalidBarcodeDataType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_OTHER"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_URL"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_URL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_CONTACT"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_CONTACT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_EMAIL"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_EMAIL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_TELEPHONE"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_TELEPHONE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_MESSAGE"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_MESSAGE"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_LOCATION"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_LOCATION"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_EVENT"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_EVENT"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_WIFI"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_WIFI"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"INVALIDBARCODEDATATYPE_HOMEKIT_URL"])
+  else if ([typeCopy isEqualToString:@"INVALIDBARCODEDATATYPE_HOMEKIT_URL"])
   {
     v4 = 9;
   }
@@ -300,9 +300,9 @@
   }
 }
 
-- (void)setHasBarcodeURLType:(BOOL)a3
+- (void)setHasBarcodeURLType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -315,20 +315,20 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsBarcodeURLType:(id)a3
+- (int)StringAsBarcodeURLType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BARCODEURLTYPE_NON_APPLINK"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"BARCODEURLTYPE_NON_APPLINK"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEURLTYPE_SINGLE_APPLINK"])
+  else if ([typeCopy isEqualToString:@"BARCODEURLTYPE_SINGLE_APPLINK"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BARCODEURLTYPE_MULTIPLE_APPLINKS"])
+  else if ([typeCopy isEqualToString:@"BARCODEURLTYPE_MULTIPLE_APPLINKS"])
   {
     v4 = 2;
   }
@@ -354,9 +354,9 @@
   }
 }
 
-- (void)setHasAppLinkPreferredOpenStrategy:(BOOL)a3
+- (void)setHasAppLinkPreferredOpenStrategy:(BOOL)strategy
 {
-  if (a3)
+  if (strategy)
   {
     v3 = 4;
   }
@@ -369,17 +369,17 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsAppLinkPreferredOpenStrategy:(id)a3
+- (int)StringAsAppLinkPreferredOpenStrategy:(id)strategy
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BARCODEAPPLINKOPENSTRATEGY_OPEN_IN_SAFARI"])
+  strategyCopy = strategy;
+  if ([strategyCopy isEqualToString:@"BARCODEAPPLINKOPENSTRATEGY_OPEN_IN_SAFARI"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"BARCODEAPPLINKOPENSTRATEGY_OPEN_IN_APP"];
+    v4 = [strategyCopy isEqualToString:@"BARCODEAPPLINKOPENSTRATEGY_OPEN_IN_APP"];
   }
 
   return v4;
@@ -398,9 +398,9 @@
   }
 }
 
-- (void)setHasBarcodeSourceType:(BOOL)a3
+- (void)setHasBarcodeSourceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -413,13 +413,13 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsBarcodeSourceType:(id)a3
+- (int)StringAsBarcodeSourceType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = 1;
-  if (([v3 isEqualToString:@"BARCODESOURCETYPE_QR"] & 1) == 0)
+  if (([typeCopy isEqualToString:@"BARCODESOURCETYPE_QR"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"BARCODESOURCETYPE_OTHER"])
+    if ([typeCopy isEqualToString:@"BARCODESOURCETYPE_OTHER"])
     {
       v4 = 2;
     }
@@ -439,20 +439,20 @@
   v8.receiver = self;
   v8.super_class = AWDBarcodeSupportCodeDetectedEvent;
   v4 = [(AWDBarcodeSupportCodeDetectedEvent *)&v8 description];
-  v5 = [(AWDBarcodeSupportCodeDetectedEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDBarcodeSupportCodeDetectedEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -483,7 +483,7 @@ LABEL_3:
     v7 = off_278CFE678[clientType];
   }
 
-  [v3 setObject:v7 forKey:@"clientType"];
+  [dictionary setObject:v7 forKey:@"clientType"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -509,7 +509,7 @@ LABEL_15:
     v9 = off_278CFE690[barcodeDataType];
   }
 
-  [v3 setObject:v9 forKey:@"barcodeDataType"];
+  [dictionary setObject:v9 forKey:@"barcodeDataType"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -525,7 +525,7 @@ LABEL_5:
 
 LABEL_19:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_detectionTimeMs];
-  [v3 setObject:v10 forKey:@"detection_time_ms"];
+  [dictionary setObject:v10 forKey:@"detection_time_ms"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -551,7 +551,7 @@ LABEL_20:
     v12 = off_278CFE6F0[invalidBarcodeDataType];
   }
 
-  [v3 setObject:v12 forKey:@"invalidBarcodeDataType"];
+  [dictionary setObject:v12 forKey:@"invalidBarcodeDataType"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -582,7 +582,7 @@ LABEL_28:
       v16 = @"BARCODEAPPLINKOPENSTRATEGY_OPEN_IN_SAFARI";
     }
 
-    [v3 setObject:v16 forKey:@"appLinkPreferredOpenStrategy"];
+    [dictionary setObject:v16 forKey:@"appLinkPreferredOpenStrategy"];
 
     if ((*&self->_has & 0x10) == 0)
     {
@@ -604,7 +604,7 @@ LABEL_24:
     v14 = off_278CFE740[barcodeURLType];
   }
 
-  [v3 setObject:v14 forKey:@"barcodeURLType"];
+  [dictionary setObject:v14 forKey:@"barcodeURLType"];
 
   has = self->_has;
   if ((has & 4) != 0)
@@ -632,17 +632,17 @@ LABEL_34:
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_barcodeSourceType];
     }
 
-    [v3 setObject:v18 forKey:@"barcodeSourceType"];
+    [dictionary setObject:v18 forKey:@"barcodeSourceType"];
   }
 
 LABEL_40:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -753,14 +753,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 48) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -779,8 +779,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 10) = self->_clientType;
-  *(v4 + 48) |= 0x40u;
+  *(toCopy + 10) = self->_clientType;
+  *(toCopy + 48) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -794,8 +794,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  *(v4 + 7) = self->_barcodeDataType;
-  *(v4 + 48) |= 8u;
+  *(toCopy + 7) = self->_barcodeDataType;
+  *(toCopy + 48) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -809,8 +809,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  v4[1] = self->_detectionTimeMs;
-  *(v4 + 48) |= 1u;
+  toCopy[1] = self->_detectionTimeMs;
+  *(toCopy + 48) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -824,8 +824,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  *(v4 + 11) = self->_invalidBarcodeDataType;
-  *(v4 + 48) |= 0x80u;
+  *(toCopy + 11) = self->_invalidBarcodeDataType;
+  *(toCopy + 48) |= 0x80u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -839,8 +839,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(v4 + 9) = self->_barcodeURLType;
-  *(v4 + 48) |= 0x20u;
+  *(toCopy + 9) = self->_barcodeURLType;
+  *(toCopy + 48) |= 0x20u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -854,21 +854,21 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 6) = self->_appLinkPreferredOpenStrategy;
-  *(v4 + 48) |= 4u;
+  *(toCopy + 6) = self->_appLinkPreferredOpenStrategy;
+  *(toCopy + 48) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_9:
-    *(v4 + 8) = self->_barcodeSourceType;
-    *(v4 + 48) |= 0x10u;
+    *(toCopy + 8) = self->_barcodeSourceType;
+    *(toCopy + 48) |= 0x10u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -980,75 +980,75 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 48) & 0x40) == 0 || self->_clientType != *(v4 + 10))
+    if ((*(equalCopy + 48) & 0x40) == 0 || self->_clientType != *(equalCopy + 10))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 48) & 0x40) != 0)
+  else if ((*(equalCopy + 48) & 0x40) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_barcodeDataType != *(v4 + 7))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_barcodeDataType != *(equalCopy + 7))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_41;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_detectionTimeMs != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_detectionTimeMs != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(v4 + 48) & 0x80) == 0 || self->_invalidBarcodeDataType != *(v4 + 11))
+    if ((*(equalCopy + 48) & 0x80) == 0 || self->_invalidBarcodeDataType != *(equalCopy + 11))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 48) & 0x80) != 0)
+  else if ((*(equalCopy + 48) & 0x80) != 0)
   {
 LABEL_41:
     v5 = 0;
@@ -1057,34 +1057,34 @@ LABEL_41:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 48) & 0x20) == 0 || self->_barcodeURLType != *(v4 + 9))
+    if ((*(equalCopy + 48) & 0x20) == 0 || self->_barcodeURLType != *(equalCopy + 9))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 48) & 0x20) != 0)
+  else if ((*(equalCopy + 48) & 0x20) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_appLinkPreferredOpenStrategy != *(v4 + 6))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_appLinkPreferredOpenStrategy != *(equalCopy + 6))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_41;
   }
 
-  v5 = (*(v4 + 48) & 0x10) == 0;
+  v5 = (*(equalCopy + 48) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 48) & 0x10) == 0 || self->_barcodeSourceType != *(v4 + 8))
+    if ((*(equalCopy + 48) & 0x10) == 0 || self->_barcodeSourceType != *(equalCopy + 8))
     {
       goto LABEL_41;
     }
@@ -1207,15 +1207,15 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -1228,14 +1228,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 0x40) == 0)
+  else if ((*(fromCopy + 48) & 0x40) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_clientType = *(v4 + 10);
+  self->_clientType = *(fromCopy + 10);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -1248,9 +1248,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_barcodeDataType = *(v4 + 7);
+  self->_barcodeDataType = *(fromCopy + 7);
   *&self->_has |= 8u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1263,9 +1263,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_detectionTimeMs = *(v4 + 1);
+  self->_detectionTimeMs = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -1278,9 +1278,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_invalidBarcodeDataType = *(v4 + 11);
+  self->_invalidBarcodeDataType = *(fromCopy + 11);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x20) == 0)
   {
 LABEL_7:
@@ -1293,9 +1293,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_barcodeURLType = *(v4 + 9);
+  self->_barcodeURLType = *(fromCopy + 9);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -1308,12 +1308,12 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_appLinkPreferredOpenStrategy = *(v4 + 6);
+  self->_appLinkPreferredOpenStrategy = *(fromCopy + 6);
   *&self->_has |= 4u;
-  if ((*(v4 + 48) & 0x10) != 0)
+  if ((*(fromCopy + 48) & 0x10) != 0)
   {
 LABEL_9:
-    self->_barcodeSourceType = *(v4 + 8);
+    self->_barcodeSourceType = *(fromCopy + 8);
     *&self->_has |= 0x10u;
   }
 

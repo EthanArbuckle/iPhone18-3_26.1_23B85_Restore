@@ -1,7 +1,7 @@
 @interface LoadMicroPaymentQueuePaymentsOperation
-- (BOOL)_appendRangeRequestsToResponse:(id)a3 error:(id *)a4;
-- (BOOL)_loadResponseReturningError:(id *)a3;
-- (BOOL)_parsePropertyList:(id)a3 error:(id *)a4;
+- (BOOL)_appendRangeRequestsToResponse:(id)response error:(id *)error;
+- (BOOL)_loadResponseReturningError:(id *)error;
+- (BOOL)_parsePropertyList:(id)list error:(id *)error;
 - (void)dealloc;
 - (void)run;
 @end
@@ -23,18 +23,18 @@
   [(LoadMicroPaymentQueuePaymentsOperation *)self setSuccess:v3];
 }
 
-- (BOOL)_appendRangeRequestsToResponse:(id)a3 error:(id *)a4
+- (BOOL)_appendRangeRequestsToResponse:(id)response error:(id *)error
 {
   v22 = 0;
-  v7 = [(LoadMicroPaymentQueuePaymentsOperation *)self request];
-  v8 = [(LoadMicroPaymentQueuePaymentsOperation *)self URLBagKey];
-  v21 = a3;
-  v9 = [a3 rangesToLoad];
-  v10 = [v9 count];
+  request = [(LoadMicroPaymentQueuePaymentsOperation *)self request];
+  uRLBagKey = [(LoadMicroPaymentQueuePaymentsOperation *)self URLBagKey];
+  responseCopy = response;
+  rangesToLoad = [response rangesToLoad];
+  v10 = [rangesToLoad count];
   if (v10 < 1)
   {
     LOBYTE(v16) = 1;
-    if (!a4)
+    if (!error)
     {
       return v16;
     }
@@ -43,21 +43,21 @@
   }
 
   v11 = v10;
-  v20 = a4;
+  errorCopy = error;
   v12 = 2;
   do
   {
     v13 = objc_alloc_init(NSAutoreleasePool);
     v14 = objc_alloc_init(LoadMicroPaymentQueuePaymentsOperation);
-    [(LoadMicroPaymentQueuePaymentsOperation *)v14 setURLBagKey:v8];
-    v15 = [(MicroPaymentQueueRequest *)v7 copy];
-    [v15 setRangeEndIdentifier:{objc_msgSend(v9, "objectAtIndex:", v12 - 1)}];
-    [v15 setRangeStartIdentifier:{objc_msgSend(v9, "objectAtIndex:", v12 - 2)}];
+    [(LoadMicroPaymentQueuePaymentsOperation *)v14 setURLBagKey:uRLBagKey];
+    v15 = [(MicroPaymentQueueRequest *)request copy];
+    [v15 setRangeEndIdentifier:{objc_msgSend(rangesToLoad, "objectAtIndex:", v12 - 1)}];
+    [v15 setRangeStartIdentifier:{objc_msgSend(rangesToLoad, "objectAtIndex:", v12 - 2)}];
     [(LoadMicroPaymentQueuePaymentsOperation *)v14 setRequest:v15];
     v16 = [(LoadMicroPaymentQueuePaymentsOperation *)self runSubOperation:v14 returningError:&v22];
     if (v16)
     {
-      [v21 appendResponse:{-[LoadMicroPaymentQueuePaymentsOperation response](v14, "response")}];
+      [responseCopy appendResponse:{-[LoadMicroPaymentQueuePaymentsOperation response](v14, "response")}];
     }
 
     else
@@ -80,26 +80,26 @@
   }
 
   while ((v18 & 1) != 0);
-  a4 = v20;
-  if (v20)
+  error = errorCopy;
+  if (errorCopy)
   {
 LABEL_11:
-    *a4 = v22;
+    *error = v22;
   }
 
   return v16;
 }
 
-- (BOOL)_loadResponseReturningError:(id *)a3
+- (BOOL)_loadResponseReturningError:(id *)error
 {
   v21 = 0;
-  v5 = [(LoadMicroPaymentQueuePaymentsOperation *)self request];
-  v6 = [(MicroPaymentQueueRequest *)v5 newStoreURLOperation:&v21];
+  request = [(LoadMicroPaymentQueuePaymentsOperation *)self request];
+  v6 = [(MicroPaymentQueueRequest *)request newStoreURLOperation:&v21];
   [v6 setDelegate:self];
   if (!v6)
   {
     v17 = 0;
-    if (!a3)
+    if (!error)
     {
       return v17;
     }
@@ -119,15 +119,15 @@ LABEL_11:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
   if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
@@ -138,13 +138,13 @@ LABEL_11:
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = [(LoadMicroPaymentQueuePaymentsOperation *)self URLBagKey];
+    uRLBagKey = [(LoadMicroPaymentQueuePaymentsOperation *)self URLBagKey];
     v22 = 138412802;
     v23 = v12;
     v24 = 2112;
-    v25 = v13;
+    v25 = uRLBagKey;
     v26 = 2112;
-    v27 = v5;
+    v27 = request;
     LODWORD(v20) = 32;
     v19 = &v22;
     v14 = _os_log_send_and_compose_impl();
@@ -169,21 +169,21 @@ LABEL_11:
   }
 
   [v6 setDelegate:0];
-  if (a3)
+  if (error)
   {
 LABEL_18:
-    *a3 = v21;
+    *error = v21;
   }
 
   return v17;
 }
 
-- (BOOL)_parsePropertyList:(id)a3 error:(id *)a4
+- (BOOL)_parsePropertyList:(id)list error:(id *)error
 {
   v34 = 0;
   v7 = objc_alloc_init(MicroPaymentQueueResponse);
   [(MicroPaymentQueueResponse *)v7 setUserIdentifier:[(MicroPaymentQueueRequest *)[(LoadMicroPaymentQueuePaymentsOperation *)self request] userIdentifier]];
-  v8 = [(MicroPaymentQueueResponse *)v7 loadFromPropertyList:a3];
+  v8 = [(MicroPaymentQueueResponse *)v7 loadFromPropertyList:list];
   v9 = +[SSLogConfig sharedDaemonConfig];
   v10 = v9;
   if (v8)
@@ -193,15 +193,15 @@ LABEL_18:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
+    shouldLog = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog;
     }
 
     if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_INFO))
@@ -238,15 +238,15 @@ LABEL_18:
         v16 = +[SSLogConfig sharedConfig];
       }
 
-      v17 = [v16 shouldLog];
+      shouldLog2 = [v16 shouldLog];
       if ([v16 shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog2 | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -258,13 +258,13 @@ LABEL_18:
       {
         v19 = objc_opt_class();
         v20 = [(NSData *)[(MicroPaymentQueueResponse *)v7 appReceipt] length];
-        v21 = [(StoreKitClientIdentity *)[(MicroPaymentQueueRequest *)[(LoadMicroPaymentQueuePaymentsOperation *)self request] clientIdentity] bundleIdentifier];
+        bundleIdentifier = [(StoreKitClientIdentity *)[(MicroPaymentQueueRequest *)[(LoadMicroPaymentQueuePaymentsOperation *)self request] clientIdentity] bundleIdentifier];
         v35 = 138412802;
         v36 = v19;
         v37 = 1024;
         *v38 = v20;
         *&v38[4] = 2112;
-        *&v38[6] = v21;
+        *&v38[6] = bundleIdentifier;
         LODWORD(v33) = 28;
         v32 = &v35;
         v22 = _os_log_send_and_compose_impl();
@@ -300,15 +300,15 @@ LABEL_18:
       v10 = +[SSLogConfig sharedConfig];
     }
 
-    v26 = [v10 shouldLog];
+    shouldLog3 = [v10 shouldLog];
     if ([v10 shouldLogToDisk])
     {
-      v27 = v26 | 2;
+      v27 = shouldLog3 | 2;
     }
 
     else
     {
-      v27 = v26;
+      v27 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -335,9 +335,9 @@ LABEL_18:
     v34 = ISError();
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v34;
+    *error = v34;
   }
 
   return v25;

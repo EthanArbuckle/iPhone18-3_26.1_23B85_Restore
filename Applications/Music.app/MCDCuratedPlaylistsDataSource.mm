@@ -1,20 +1,20 @@
 @interface MCDCuratedPlaylistsDataSource
-- (MCDCuratedPlaylistsDataSource)initWithCurator:(id)a3;
+- (MCDCuratedPlaylistsDataSource)initWithCurator:(id)curator;
 - (int64_t)curatorID;
 @end
 
 @implementation MCDCuratedPlaylistsDataSource
 
-- (MCDCuratedPlaylistsDataSource)initWithCurator:(id)a3
+- (MCDCuratedPlaylistsDataSource)initWithCurator:(id)curator
 {
-  v5 = a3;
+  curatorCopy = curator;
   v9.receiver = self;
   v9.super_class = MCDCuratedPlaylistsDataSource;
   v6 = [(MCDCuratedPlaylistsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_curator, a3);
+    objc_storeStrong(&v6->_curator, curator);
   }
 
   return v7;
@@ -22,12 +22,12 @@
 
 - (int64_t)curatorID
 {
-  v2 = [(MCDCuratedPlaylistsDataSource *)self curator];
-  v3 = [v2 identifiers];
-  v4 = [v3 universalStore];
-  v5 = [v4 adamID];
+  curator = [(MCDCuratedPlaylistsDataSource *)self curator];
+  identifiers = [curator identifiers];
+  universalStore = [identifiers universalStore];
+  adamID = [universalStore adamID];
 
-  return v5;
+  return adamID;
 }
 
 @end

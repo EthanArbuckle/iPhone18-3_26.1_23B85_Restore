@@ -1,15 +1,15 @@
 @interface PXDeferrableDataSourceManager
 - (PXDeferrableDataSourceManager)init;
-- (PXDeferrableDataSourceManager)initWithDataSourceManager:(id)a3;
+- (PXDeferrableDataSourceManager)initWithDataSourceManager:(id)manager;
 - (PXDeferrableDataSourceManagerDelegate)delegate;
-- (void)_finishTransitionToDataSource:(id)a3 changeDetailsArray:(id)a4;
-- (void)_internal_setDataSource:(id)a3 changeDetailsArray:(id)a4;
-- (void)_setPendingDataSource:(id)a3 changeDetailsArray:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)_finishTransitionToDataSource:(id)source changeDetailsArray:(id)array;
+- (void)_internal_setDataSource:(id)source changeDetailsArray:(id)array;
+- (void)_setPendingDataSource:(id)source changeDetailsArray:(id)array;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)resumeDataSourceChanges;
-- (void)setDataSource:(id)a3 changeDetails:(id)a4;
-- (void)setDataSource:(id)a3 changeDetailsArray:(id)a4;
-- (void)setUnderlyingDataSourceManager:(id)a3;
+- (void)setDataSource:(id)source changeDetails:(id)details;
+- (void)setDataSource:(id)source changeDetailsArray:(id)array;
+- (void)setUnderlyingDataSourceManager:(id)manager;
 @end
 
 @implementation PXDeferrableDataSourceManager
@@ -21,28 +21,28 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (UnderlyingDataSourceManagerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (UnderlyingDataSourceManagerObservationContext != context)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:154 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:154 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((v6 & 1) != 0 && self->_hasInitialDataSource)
+  if ((changeCopy & 1) != 0 && self->_hasInitialDataSource)
   {
-    v15 = v9;
-    v10 = [(PXSectionedDataSourceManager *)self dataSource];
-    v11 = [(PXSectionedDataSourceManager *)self->_underlyingDataSourceManager dataSource];
-    v12 = [(PXSectionedDataSourceManager *)self->_underlyingDataSourceManager changeHistory];
-    v13 = [v12 changeDetailsFromDataSourceIdentifier:objc_msgSend(v10 toDataSourceIdentifier:{"identifier"), objc_msgSend(v11, "identifier")}];
+    v15 = observableCopy;
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+    dataSource2 = [(PXSectionedDataSourceManager *)self->_underlyingDataSourceManager dataSource];
+    changeHistory = [(PXSectionedDataSourceManager *)self->_underlyingDataSourceManager changeHistory];
+    v13 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(dataSource toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource2, "identifier")}];
 
-    [(PXDeferrableDataSourceManager *)self _internal_setDataSource:v11 changeDetailsArray:v13];
-    v9 = v15;
+    [(PXDeferrableDataSourceManager *)self _internal_setDataSource:dataSource2 changeDetailsArray:v13];
+    observableCopy = v15;
   }
 }
 
@@ -50,8 +50,8 @@
 {
   if (self->_clientIsHandlingDataSourceTransition)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:124 description:@"Cannot call -[PXDeferrableDataSourceManager resumeDataSourceChanges] while an outstanding change is being made. This means we're not calling the completion block for accepting a change."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:124 description:@"Cannot call -[PXDeferrableDataSourceManager resumeDataSourceChanges] while an outstanding change is being made. This means we're not calling the completion block for accepting a change."];
   }
 
   pendingDataSource = self->_pendingDataSource;
@@ -69,22 +69,22 @@
   }
 }
 
-- (void)_setPendingDataSource:(id)a3 changeDetailsArray:(id)a4
+- (void)_setPendingDataSource:(id)source changeDetailsArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  arrayCopy = array;
   pendingDataSource = self->_pendingDataSource;
-  self->_pendingDataSource = v6;
-  v10 = v6;
+  self->_pendingDataSource = sourceCopy;
+  v10 = sourceCopy;
 
   pendingDataSourceChangeDetails = self->_pendingDataSourceChangeDetails;
-  self->_pendingDataSourceChangeDetails = v7;
+  self->_pendingDataSourceChangeDetails = arrayCopy;
 }
 
-- (void)_internal_setDataSource:(id)a3 changeDetailsArray:(id)a4
+- (void)_internal_setDataSource:(id)source changeDetailsArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  arrayCopy = array;
   if (-[PXDeferrableDataSourceManager _canAttemptDataSourceChanges](self, "_canAttemptDataSourceChanges") && (-[PXDeferrableDataSourceManager delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 shouldSuspendDataSourceChangesForDataSourceManager:self], v8, !v9))
   {
     self->_clientIsHandlingDataSourceTransition = 1;
@@ -94,17 +94,17 @@
     v17 = __76__PXDeferrableDataSourceManager__internal_setDataSource_changeDetailsArray___block_invoke;
     v18 = &unk_1E7BB5808;
     objc_copyWeak(&v21, &location);
-    v10 = v6;
+    v10 = sourceCopy;
     v19 = v10;
-    v20 = v7;
+    v20 = arrayCopy;
     v11 = _Block_copy(&v15);
     v12 = [(PXDeferrableDataSourceManager *)self delegate:v15];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(PXDeferrableDataSourceManager *)self delegate];
-      [v14 dataSourceManager:self willSetDataSource:v10 completion:v11];
+      delegate = [(PXDeferrableDataSourceManager *)self delegate];
+      [delegate dataSourceManager:self willSetDataSource:v10 completion:v11];
     }
 
     else
@@ -118,7 +118,7 @@
 
   else
   {
-    [(PXDeferrableDataSourceManager *)self _setPendingDataSource:v6 changeDetailsArray:v7];
+    [(PXDeferrableDataSourceManager *)self _setPendingDataSource:sourceCopy changeDetailsArray:arrayCopy];
   }
 }
 
@@ -128,87 +128,87 @@ void __76__PXDeferrableDataSourceManager__internal_setDataSource_changeDetailsAr
   [WeakRetained _finishTransitionToDataSource:*(a1 + 32) changeDetailsArray:*(a1 + 40)];
 }
 
-- (void)_finishTransitionToDataSource:(id)a3 changeDetailsArray:(id)a4
+- (void)_finishTransitionToDataSource:(id)source changeDetailsArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  arrayCopy = array;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:70 description:{@"%s must be called on the main thread", "-[PXDeferrableDataSourceManager _finishTransitionToDataSource:changeDetailsArray:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:70 description:{@"%s must be called on the main thread", "-[PXDeferrableDataSourceManager _finishTransitionToDataSource:changeDetailsArray:]"}];
   }
 
   self->_clientIsHandlingDataSourceTransition = 0;
   v10.receiver = self;
   v10.super_class = PXDeferrableDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v10 setDataSource:v7 changeDetailsArray:v8];
+  [(PXSectionedDataSourceManager *)&v10 setDataSource:sourceCopy changeDetailsArray:arrayCopy];
   [(PXDeferrableDataSourceManager *)self resumeDataSourceChanges];
 }
 
-- (void)setUnderlyingDataSourceManager:(id)a3
+- (void)setUnderlyingDataSourceManager:(id)manager
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  managerCopy = manager;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:53 description:{@"%s must be called on the main thread", "-[PXDeferrableDataSourceManager setUnderlyingDataSourceManager:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:53 description:{@"%s must be called on the main thread", "-[PXDeferrableDataSourceManager setUnderlyingDataSourceManager:]"}];
   }
 
   underlyingDataSourceManager = self->_underlyingDataSourceManager;
-  if (underlyingDataSourceManager != v6)
+  if (underlyingDataSourceManager != managerCopy)
   {
     [(PXSectionedDataSourceManager *)underlyingDataSourceManager unregisterChangeObserver:self context:UnderlyingDataSourceManagerObservationContext];
-    objc_storeStrong(&self->_underlyingDataSourceManager, a3);
+    objc_storeStrong(&self->_underlyingDataSourceManager, manager);
     [(PXSectionedDataSourceManager *)self->_underlyingDataSourceManager registerChangeObserver:self context:UnderlyingDataSourceManagerObservationContext];
-    v8 = [(PXSectionedDataSourceManager *)self dataSource];
-    v9 = [(PXSectionedDataSourceManager *)self->_underlyingDataSourceManager dataSource];
-    v10 = +[PXSectionedDataSourceChangeDetails changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:toDataSourceIdentifier:](PXSectionedDataSourceChangeDetails, "changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:toDataSourceIdentifier:", [v8 identifier], objc_msgSend(v9, "identifier"));
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+    dataSource2 = [(PXSectionedDataSourceManager *)self->_underlyingDataSourceManager dataSource];
+    v10 = +[PXSectionedDataSourceChangeDetails changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:toDataSourceIdentifier:](PXSectionedDataSourceChangeDetails, "changeDetailsWithoutIncrementalChangesFromDataSourceIdentifier:toDataSourceIdentifier:", [dataSource identifier], objc_msgSend(dataSource2, "identifier"));
     v13[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-    [(PXDeferrableDataSourceManager *)self _internal_setDataSource:v9 changeDetailsArray:v11];
+    [(PXDeferrableDataSourceManager *)self _internal_setDataSource:dataSource2 changeDetailsArray:v11];
   }
 }
 
-- (void)setDataSource:(id)a3 changeDetailsArray:(id)a4
+- (void)setDataSource:(id)source changeDetailsArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:49 description:{@"%s should not be called directly", "-[PXDeferrableDataSourceManager setDataSource:changeDetailsArray:]"}];
+  sourceCopy = source;
+  arrayCopy = array;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:49 description:{@"%s should not be called directly", "-[PXDeferrableDataSourceManager setDataSource:changeDetailsArray:]"}];
 
   abort();
 }
 
-- (void)setDataSource:(id)a3 changeDetails:(id)a4
+- (void)setDataSource:(id)source changeDetails:(id)details
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:45 description:{@"%s should not be called directly", "-[PXDeferrableDataSourceManager setDataSource:changeDetails:]"}];
+  sourceCopy = source;
+  detailsCopy = details;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:45 description:{@"%s should not be called directly", "-[PXDeferrableDataSourceManager setDataSource:changeDetails:]"}];
 
   abort();
 }
 
 - (PXDeferrableDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXDeferrableDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDeferrableDataSourceManager.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXDeferrableDataSourceManager init]"}];
 
   abort();
 }
 
-- (PXDeferrableDataSourceManager)initWithDataSourceManager:(id)a3
+- (PXDeferrableDataSourceManager)initWithDataSourceManager:(id)manager
 {
-  v6 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = PXDeferrableDataSourceManager;
   v7 = [(PXSectionedDataSourceManager *)&v11 init];
   v8 = v7;
-  if (!v6)
+  if (!managerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:v8 file:@"PXDeferrableDataSourceManager.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"underlyingDataSourceManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v8 file:@"PXDeferrableDataSourceManager.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"underlyingDataSourceManager"}];
 
     if (!v8)
     {
@@ -221,7 +221,7 @@ void __76__PXDeferrableDataSourceManager__internal_setDataSource_changeDetailsAr
   if (v7)
   {
 LABEL_3:
-    objc_storeStrong(&v8->_underlyingDataSourceManager, a3);
+    objc_storeStrong(&v8->_underlyingDataSourceManager, manager);
     [(PXSectionedDataSourceManager *)v8->_underlyingDataSourceManager registerChangeObserver:v8 context:UnderlyingDataSourceManagerObservationContext];
   }
 

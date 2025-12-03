@@ -1,15 +1,15 @@
 @interface IMDSpotlightClientStateManager
 + (id)sharedManager;
 - (id)_timeoutError;
-- (id)currentClientStateWithError:(id *)a3;
+- (id)currentClientStateWithError:(id *)error;
 - (id)description;
-- (void)_currentClientStateWithCompletion:(id)a3;
-- (void)_migrateClientStateFromManager:(id)a3;
-- (void)_saveClientState:(id)a3 withCompletion:(id)a4;
-- (void)currentClientStateWithCompletion:(id)a3;
-- (void)saveClientState:(id)a3;
-- (void)saveClientState:(id)a3 withCompletion:(id)a4;
-- (void)saveClientState:(id)a3 withError:(id *)a4;
+- (void)_currentClientStateWithCompletion:(id)completion;
+- (void)_migrateClientStateFromManager:(id)manager;
+- (void)_saveClientState:(id)state withCompletion:(id)completion;
+- (void)currentClientStateWithCompletion:(id)completion;
+- (void)saveClientState:(id)state;
+- (void)saveClientState:(id)state withCompletion:(id)completion;
+- (void)saveClientState:(id)state withError:(id *)error;
 @end
 
 @implementation IMDSpotlightClientStateManager
@@ -26,20 +26,20 @@
   return v3;
 }
 
-- (void)_migrateClientStateFromManager:(id)a3
+- (void)_migrateClientStateFromManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1B7B8F54C;
   v6[3] = &unk_1E7CB6770;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = managerCopy;
+  selfCopy = self;
+  v5 = managerCopy;
   IMDIndexingClientRequest(v6);
 }
 
-- (id)currentClientStateWithError:(id *)a3
+- (id)currentClientStateWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   if (qword_1EBA53B98 != -1)
@@ -92,10 +92,10 @@
   v10 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v8, v10))
   {
-    if (a3)
+    if (error)
     {
       objc_msgSend__timeoutError(self, v11, v12);
-      *a3 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -106,9 +106,9 @@
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v21[5];
+      *error = v21[5];
     }
 
     v13 = *(*(&buf + 1) + 40);
@@ -122,31 +122,31 @@
   return v13;
 }
 
-- (void)currentClientStateWithCompletion:(id)a3
+- (void)currentClientStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1B7B8FBBC;
   v7[3] = &unk_1E7CBB5D8;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   objc_msgSend__currentClientStateWithCompletion_(self, v6, v7);
 }
 
-- (void)_currentClientStateWithCompletion:(id)a3
+- (void)_currentClientStateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v5);
 }
 
-- (void)saveClientState:(id)a3
+- (void)saveClientState:(id)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v9 = 0;
-  objc_msgSend_saveClientState_withError_(self, v5, v4, &v9);
+  objc_msgSend_saveClientState_withError_(self, v5, stateCopy, &v9);
   v6 = v9;
   if (v6 && IMOSLoggingEnabled())
   {
@@ -154,11 +154,11 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v6;
       v14 = 2112;
-      v15 = v4;
+      v15 = stateCopy;
       _os_log_impl(&dword_1B7AD5000, v7, OS_LOG_TYPE_INFO, "Failed to save client state to %@ with error: %@ client state: %@", buf, 0x20u);
     }
   }
@@ -181,10 +181,10 @@
   return v7;
 }
 
-- (void)saveClientState:(id)a3 withError:(id *)a4
+- (void)saveClientState:(id)state withError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stateCopy = state;
   if (qword_1EBA53B90 != -1)
   {
     sub_1B7CF8D68();
@@ -224,19 +224,19 @@
   p_buf = &buf;
   v10 = v9;
   v21 = v10;
-  objc_msgSend__saveClientState_withCompletion_(self, v11, v6, &v17);
+  objc_msgSend__saveClientState_withCompletion_(self, v11, stateCopy, &v17);
   v12 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v10, v12))
   {
-    if (a4)
+    if (error)
     {
       v15 = objc_msgSend__timeoutError(self, v13, v14, v17, v18, v19, v20);
 LABEL_14:
-      *a4 = v15;
+      *error = v15;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v15 = *(*(&buf + 1) + 40);
     goto LABEL_14;
@@ -246,22 +246,22 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)saveClientState:(id)a3 withCompletion:(id)a4
+- (void)saveClientState:(id)state withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1B7B90284;
   v9[3] = &unk_1E7CBB328;
-  v10 = v6;
-  v7 = v6;
-  objc_msgSend__saveClientState_withCompletion_(self, v8, a3, v9);
+  v10 = completionCopy;
+  v7 = completionCopy;
+  objc_msgSend__saveClientState_withCompletion_(self, v8, state, v9);
 }
 
-- (void)_saveClientState:(id)a3 withCompletion:(id)a4
+- (void)_saveClientState:(id)state withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = objc_msgSend_exceptionWithName_reason_userInfo_(MEMORY[0x1E695DF30], v7, *MEMORY[0x1E695D930], @"Not yet implemented", 0);
   objc_exception_throw(v8);
 }

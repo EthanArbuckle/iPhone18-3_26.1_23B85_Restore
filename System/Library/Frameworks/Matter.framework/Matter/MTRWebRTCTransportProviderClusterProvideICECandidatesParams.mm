@@ -1,8 +1,8 @@
 @interface MTRWebRTCTransportProviderClusterProvideICECandidatesParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRWebRTCTransportProviderClusterProvideICECandidatesParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,9 +19,9 @@
     webRTCSessionID = v2->_webRTCSessionID;
     v2->_webRTCSessionID = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     iceCandidates = v3->_iceCandidates;
-    v3->_iceCandidates = v5;
+    v3->_iceCandidates = array;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWebRTCTransportProviderClusterProvideICECandidatesParams);
-  v5 = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self webRTCSessionID];
-  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setWebRTCSessionID:v5];
+  webRTCSessionID = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self webRTCSessionID];
+  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setWebRTCSessionID:webRTCSessionID];
 
-  v6 = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self iceCandidates];
-  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setIceCandidates:v6];
+  iceCandidates = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self iceCandidates];
+  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setIceCandidates:iceCandidates];
 
-  v7 = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self timedInvokeTimeoutMs];
-  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self timedInvokeTimeoutMs];
+  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self serverSideProcessingTimeout];
-  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self serverSideProcessingTimeout];
+  [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,7 +61,7 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v28 = *MEMORY[0x277D85DE8];
   LOWORD(v20) = 0;
@@ -70,11 +70,11 @@
   v19[0] = 0;
   v19[1] = 0;
   v18 = v19;
-  v4 = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self webRTCSessionID];
-  LOWORD(v20) = [v4 unsignedShortValue];
+  webRTCSessionID = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self webRTCSessionID];
+  LOWORD(v20) = [webRTCSessionID unsignedShortValue];
 
-  v5 = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self iceCandidates];
-  v6 = [v5 count] == 0;
+  iceCandidates = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self iceCandidates];
+  v6 = [iceCandidates count] == 0;
 
   if (!v6)
   {
@@ -102,8 +102,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v17);
-      v7 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v17);
+      v7 = sub_2393C7114(reader, 21, 256);
       v10 = v15;
       v9 = v7;
     }
@@ -132,19 +132,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRWebRTCTransportProviderClusterProvideICECandidatesParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -155,7 +155,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x8F9400000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

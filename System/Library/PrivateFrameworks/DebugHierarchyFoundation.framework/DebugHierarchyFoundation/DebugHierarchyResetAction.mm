@@ -1,6 +1,6 @@
 @interface DebugHierarchyResetAction
 + (id)resetRequest;
-- (void)performInContext:(id)a3;
+- (void)performInContext:(id)context;
 @end
 
 @implementation DebugHierarchyResetAction
@@ -17,7 +17,7 @@
   return v4;
 }
 
-- (void)performInContext:(id)a3
+- (void)performInContext:(id)context
 {
   v3 = +[DebugHierarchyTargetHub sharedHub];
   [v3 clearAllRequestsAndData];

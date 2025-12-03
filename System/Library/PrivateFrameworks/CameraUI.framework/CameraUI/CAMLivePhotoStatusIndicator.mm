@@ -1,29 +1,29 @@
 @interface CAMLivePhotoStatusIndicator
-- (CAMLivePhotoStatusIndicator)initWithFrame:(CGRect)a3;
+- (CAMLivePhotoStatusIndicator)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (id)imageNameForAXHUD;
 - (void)_updateTintColor;
 - (void)layoutSubviews;
-- (void)setLivePhotoMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)setLivePhotoMode:(int64_t)mode animated:(BOOL)animated;
 - (void)startAnimating;
 - (void)stopAnimating;
 @end
 
 @implementation CAMLivePhotoStatusIndicator
 
-- (CAMLivePhotoStatusIndicator)initWithFrame:(CGRect)a3
+- (CAMLivePhotoStatusIndicator)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CAMLivePhotoStatusIndicator;
-  v3 = [(CAMControlStatusIndicator *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMControlStatusIndicator *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(CAMLivePhotoBloomView);
     bloomView = v3->__bloomView;
     v3->__bloomView = v4;
 
-    v6 = [(CAMControlStatusIndicator *)v3 slashContainerView];
-    [v6 addSubview:v3->__bloomView];
+    slashContainerView = [(CAMControlStatusIndicator *)v3 slashContainerView];
+    [slashContainerView addSubview:v3->__bloomView];
 
     [(CAMLivePhotoStatusIndicator *)v3 _updateTintColor];
     [(CAMLivePhotoStatusIndicator *)v3 setAccessibilityIdentifier:@"StatusBarLivePhotoButton"];
@@ -37,37 +37,37 @@
   v4.receiver = self;
   v4.super_class = CAMLivePhotoStatusIndicator;
   [(CAMControlStatusIndicator *)&v4 layoutSubviews];
-  v3 = [(CAMLivePhotoStatusIndicator *)self _bloomView];
-  [v3 intrinsicContentSize];
+  _bloomView = [(CAMLivePhotoStatusIndicator *)self _bloomView];
+  [_bloomView intrinsicContentSize];
   [(CAMLivePhotoStatusIndicator *)self bounds];
   UIRectGetCenter();
   UIRectCenteredAboutPointScale();
-  [v3 setFrame:?];
+  [_bloomView setFrame:?];
 }
 
-- (void)setLivePhotoMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setLivePhotoMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_livePhotoMode != a3)
+  if (self->_livePhotoMode != mode)
   {
-    v5 = a4;
-    self->_livePhotoMode = a3;
+    animatedCopy = animated;
+    self->_livePhotoMode = mode;
     [(CAMLivePhotoStatusIndicator *)self _updateTintColor];
     [(CAMLivePhotoStatusIndicator *)self stopAnimating];
 
-    [(CAMControlStatusIndicator *)self updateImageAnimated:v5];
+    [(CAMControlStatusIndicator *)self updateImageAnimated:animatedCopy];
   }
 }
 
 - (void)startAnimating
 {
-  v2 = [(CAMLivePhotoStatusIndicator *)self _bloomView];
-  [v2 animateBloom];
+  _bloomView = [(CAMLivePhotoStatusIndicator *)self _bloomView];
+  [_bloomView animateBloom];
 }
 
 - (void)stopAnimating
 {
-  v2 = [(CAMLivePhotoStatusIndicator *)self _bloomView];
-  [v2 stopAnimating];
+  _bloomView = [(CAMLivePhotoStatusIndicator *)self _bloomView];
+  [_bloomView stopAnimating];
 }
 
 - (CGSize)intrinsicContentSize

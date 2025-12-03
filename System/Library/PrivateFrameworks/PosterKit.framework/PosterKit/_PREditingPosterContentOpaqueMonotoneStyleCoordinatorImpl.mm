@@ -1,74 +1,74 @@
 @interface _PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl
 - (double)itemViewLuminance;
 - (id)effectiveColor;
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3;
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied;
 - (id)variationSliderThumbView;
 - (id)variationSliderTrackView;
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4;
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied;
 @end
 
 @implementation _PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl
 
 - (id)effectiveColor
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
-  v4 = [v3 variationAppliedColors];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  variationSupportingStyle = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
+  variationAppliedColors = [variationSupportingStyle variationAppliedColors];
+  firstObject = [variationAppliedColors firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v7 = v5;
+    firstObject2 = firstObject;
   }
 
   else
   {
-    v8 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v9 = [v8 colors];
-    v7 = [v9 firstObject];
+    style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    colors = [style colors];
+    firstObject2 = [colors firstObject];
   }
 
-  return v7;
+  return firstObject2;
 }
 
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied
 {
-  v4 = a4;
-  v7 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-  v8 = [v7 allowsVariation];
+  appliedCopy = applied;
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v8)
+  if (allowsVariation)
   {
     v12.receiver = self;
     v12.super_class = _PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl;
-    [(_PREditingPosterContentStyleCoordinatorImpl *)&v12 setVariation:v4 glassStyleApplied:a3];
-    v9 = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
-    v10 = [v9 variationAppliedColors];
-    v11 = [v10 firstObject];
+    [(_PREditingPosterContentStyleCoordinatorImpl *)&v12 setVariation:appliedCopy glassStyleApplied:variation];
+    variationSupportingStyle = [(_PREditingPosterContentStyleCoordinatorImpl *)self variationSupportingStyle];
+    variationAppliedColors = [variationSupportingStyle variationAppliedColors];
+    firstObject = [variationAppliedColors firstObject];
 
-    [(UIView *)self->_itemView setBackgroundColor:v11];
-    [(UIView *)self->_variationSliderThumbView setBackgroundColor:v11];
+    [(UIView *)self->_itemView setBackgroundColor:firstObject];
+    [(UIView *)self->_variationSliderThumbView setBackgroundColor:firstObject];
   }
 }
 
 - (double)itemViewLuminance
 {
-  v2 = [(_PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl *)self effectiveColor];
-  v3 = [[PRPosterColorValues alloc] initWithColor:v2];
-  v4 = [(PRPosterColorValues *)v3 hslValues];
-  [v4 luminance];
+  effectiveColor = [(_PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl *)self effectiveColor];
+  v3 = [[PRPosterColorValues alloc] initWithColor:effectiveColor];
+  hslValues = [(PRPosterColorValues *)v3 hslValues];
+  [hslValues luminance];
   v6 = v5;
 
   return v6;
 }
 
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied
 {
   itemView = self->_itemView;
   if (!itemView)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 50.0, 50.0}];
-    v6 = [(_PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl *)self effectiveColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    effectiveColor = [(_PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl *)self effectiveColor];
+    [(UIView *)v5 setBackgroundColor:effectiveColor];
     v7 = self->_itemView;
     self->_itemView = v5;
 
@@ -84,8 +84,8 @@
   if (!variationSliderThumbView)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 50.0, 50.0}];
-    v5 = [(_PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl *)self effectiveColor];
-    [(UIView *)v4 setBackgroundColor:v5];
+    effectiveColor = [(_PREditingPosterContentOpaqueMonotoneStyleCoordinatorImpl *)self effectiveColor];
+    [(UIView *)v4 setBackgroundColor:effectiveColor];
     v6 = self->_variationSliderThumbView;
     self->_variationSliderThumbView = v4;
 
@@ -102,17 +102,17 @@
   if (!variationSliderTrackView)
   {
     v4 = [objc_alloc(MEMORY[0x1E69C5560]) initWithFrame:0 usesBlur:{0.0, 0.0, 100.0, 50.0}];
-    v5 = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
-    v6 = [v5 copyWithVariation:-1.0];
-    v7 = [v5 copyWithVariation:1.0];
-    v8 = [v6 variationAppliedColors];
-    v9 = [v8 firstObject];
+    style = [(_PREditingPosterContentStyleCoordinatorImpl *)self style];
+    v6 = [style copyWithVariation:-1.0];
+    v7 = [style copyWithVariation:1.0];
+    variationAppliedColors = [v6 variationAppliedColors];
+    firstObject = [variationAppliedColors firstObject];
 
-    v10 = [v7 variationAppliedColors];
-    v11 = [v10 firstObject];
+    variationAppliedColors2 = [v7 variationAppliedColors];
+    firstObject2 = [variationAppliedColors2 firstObject];
 
-    v15[0] = [v9 CGColor];
-    v15[1] = [v11 CGColor];
+    v15[0] = [firstObject CGColor];
+    v15[1] = [firstObject2 CGColor];
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     [v4 setColors:v12 locations:0 type:0];
 

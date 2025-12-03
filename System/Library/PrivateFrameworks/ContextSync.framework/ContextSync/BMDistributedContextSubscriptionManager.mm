@@ -1,34 +1,34 @@
 @interface BMDistributedContextSubscriptionManager
-+ (id)loadAndMigrateStorageFromLegacyToV1:(id)a3 withLocalDeviceID:(id)a4;
-+ (id)loadFromStorage:(id)a3 withLocalDeviceID:(id)a4;
-+ (unint64_t)storageVersion:(id)a3;
-- (BMDistributedContextSubscriptionManager)initWithStorage:(id)a3;
-- (BOOL)addSubscriptions:(id)a3;
-- (BOOL)removeAllSubscriptionsMadeBySubscribingDevice:(id)a3;
-- (BOOL)removeSubscription:(id)a3;
-- (BOOL)removeSubscriptionWithIdentifier:(id)a3 fromSubscribingDevice:(id)a4 onSubscribedDevice:(id)a5;
++ (id)loadAndMigrateStorageFromLegacyToV1:(id)v1 withLocalDeviceID:(id)d;
++ (id)loadFromStorage:(id)storage withLocalDeviceID:(id)d;
++ (unint64_t)storageVersion:(id)version;
+- (BMDistributedContextSubscriptionManager)initWithStorage:(id)storage;
+- (BOOL)addSubscriptions:(id)subscriptions;
+- (BOOL)removeAllSubscriptionsMadeBySubscribingDevice:(id)device;
+- (BOOL)removeSubscription:(id)subscription;
+- (BOOL)removeSubscriptionWithIdentifier:(id)identifier fromSubscribingDevice:(id)device onSubscribedDevice:(id)subscribedDevice;
 - (id)allSubscriptionIdentifiers;
 - (id)deviceIdentifiersWithActiveSubscriptions;
-- (id)subscribingDevicesForIdentifier:(id)a3 subscribedToDevice:(id)a4;
-- (id)subscriptionForIdentifier:(id)a3 fromSubscribingDevice:(id)a4 onSubscribedDevice:(id)a5;
-- (id)subscriptionsWithIdentifier:(id)a3 subscribedToDevice:(id)a4;
-- (id)subscriptionsWithSubscribedDevice:(id)a3;
-- (id)subscriptionsWithSubscribingDevice:(id)a3;
+- (id)subscribingDevicesForIdentifier:(id)identifier subscribedToDevice:(id)device;
+- (id)subscriptionForIdentifier:(id)identifier fromSubscribingDevice:(id)device onSubscribedDevice:(id)subscribedDevice;
+- (id)subscriptionsWithIdentifier:(id)identifier subscribedToDevice:(id)device;
+- (id)subscriptionsWithSubscribedDevice:(id)device;
+- (id)subscriptionsWithSubscribingDevice:(id)device;
 - (void)saveToStorage;
 @end
 
 @implementation BMDistributedContextSubscriptionManager
 
-- (BMDistributedContextSubscriptionManager)initWithStorage:(id)a3
+- (BMDistributedContextSubscriptionManager)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v11.receiver = self;
   v11.super_class = BMDistributedContextSubscriptionManager;
   v6 = [(BMDistributedContextSubscriptionManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
     v8 = objc_opt_new();
     subscriptions = v7->_subscriptions;
     v7->_subscriptions = v8;
@@ -61,8 +61,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v13 + 1) + 8 * v8) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
 
         ++v8;
       }
@@ -91,14 +91,14 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)loadFromStorage:(id)a3 withLocalDeviceID:(id)a4
++ (id)loadFromStorage:(id)storage withLocalDeviceID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([objc_opt_class() storageVersion:v6])
+  storageCopy = storage;
+  dCopy = d;
+  if ([objc_opt_class() storageVersion:storageCopy])
   {
-    v8 = [v6 objectForKey:@"subscriptions"];
+    v8 = [storageCopy objectForKey:@"subscriptions"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v9 = __biome_log_for_category();
@@ -152,14 +152,14 @@
         _os_log_impl(&dword_244177000, v18, OS_LOG_TYPE_DEFAULT, "Loaded subscriptions from default %@", buf, 0xCu);
       }
 
-      v19 = [[BMDistributedContextSubscriptionManager alloc] initWithStorage:v6];
+      v19 = [[BMDistributedContextSubscriptionManager alloc] initWithStorage:storageCopy];
       [(BMDistributedContextSubscriptionManager *)v19 addSubscriptions:v9];
     }
   }
 
   else
   {
-    v19 = [a1 loadAndMigrateStorageFromLegacyToV1:v6 withLocalDeviceID:v7];
+    v19 = [self loadAndMigrateStorageFromLegacyToV1:storageCopy withLocalDeviceID:dCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -167,25 +167,25 @@
   return v19;
 }
 
-+ (unint64_t)storageVersion:(id)a3
++ (unint64_t)storageVersion:(id)version
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"storageVersion"];
+  versionCopy = version;
+  integerValue = [versionCopy objectForKey:@"storageVersion"];
 
-  if (v4)
+  if (integerValue)
   {
-    v5 = [v3 objectForKey:@"storageVersion"];
-    v4 = [v5 integerValue];
+    v5 = [versionCopy objectForKey:@"storageVersion"];
+    integerValue = [v5 integerValue];
   }
 
-  return v4;
+  return integerValue;
 }
 
-+ (id)loadAndMigrateStorageFromLegacyToV1:(id)a3 withLocalDeviceID:(id)a4
++ (id)loadAndMigrateStorageFromLegacyToV1:(id)v1 withLocalDeviceID:(id)d
 {
   v107 = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v5 = a4;
+  v1Copy = v1;
+  dCopy = d;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -194,7 +194,7 @@
   }
 
   v70 = objc_opt_new();
-  v7 = [v59 objectForKey:@"localDSLIdentifiers"];
+  v7 = [v1Copy objectForKey:@"localDSLIdentifiers"];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
@@ -215,8 +215,8 @@
 
         v12 = *(*(&v94 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:v12];
-        v14 = [(NSData *)v13 bmdsl_deserialize];
-        [v70 setObject:v14 forKeyedSubscript:v12];
+        bmdsl_deserialize = [(NSData *)v13 bmdsl_deserialize];
+        [v70 setObject:bmdsl_deserialize forKeyedSubscript:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v94 objects:v106 count:16];
@@ -226,7 +226,7 @@
   }
 
   v15 = objc_opt_new();
-  [v59 objectForKey:@"remoteDSLIdentifiers"];
+  [v1Copy objectForKey:@"remoteDSLIdentifiers"];
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
@@ -247,8 +247,8 @@
 
         v20 = *(*(&v90 + 1) + 8 * j);
         v21 = [obj objectForKeyedSubscript:v20];
-        v22 = [(NSData *)v21 bmdsl_deserialize];
-        [v15 setObject:v22 forKeyedSubscript:v20];
+        bmdsl_deserialize2 = [(NSData *)v21 bmdsl_deserialize];
+        [v15 setObject:bmdsl_deserialize2 forKeyedSubscript:v20];
       }
 
       v17 = [obj countByEnumeratingWithState:&v90 objects:v105 count:16];
@@ -258,7 +258,7 @@
   }
 
   v71 = objc_opt_new();
-  [v59 objectForKey:@"subscriptions"];
+  [v1Copy objectForKey:@"subscriptions"];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
@@ -381,25 +381,25 @@ LABEL_43:
                     goto LABEL_46;
                   }
 
-                  v41 = [v74 isEqual:v5];
+                  v41 = [v74 isEqual:dCopy];
                   v42 = v15;
-                  if ((v41 & 1) != 0 || (v43 = [v73 isEqual:v5], v42 = v70, v43))
+                  if ((v41 & 1) != 0 || (v43 = [v73 isEqual:dCopy], v42 = v70, v43))
                   {
                     v44 = [v42 objectForKeyedSubscript:v34];
                     if (v44)
                     {
                       v45 = v44;
-                      v72 = [v40 BOOLValue];
+                      bOOLValue = [v40 BOOLValue];
                       v46 = v15;
                       v47 = [BMDistributedContextSubscriptionConfiguration alloc];
                       [MEMORY[0x277CBEAA8] now];
                       v48 = v24;
-                      v50 = v49 = v5;
+                      v50 = v49 = dCopy;
                       v51 = v47;
                       v15 = v46;
-                      v52 = [(BMDistributedContextSubscriptionConfiguration *)v51 initWithOptions:v72 lastChangedDate:v50];
+                      v52 = [(BMDistributedContextSubscriptionConfiguration *)v51 initWithOptions:bOOLValue lastChangedDate:v50];
 
-                      v5 = v49;
+                      dCopy = v49;
                       v24 = v48;
                       v25 = 0x277CBE000;
                       v53 = [[BMDistributedContextSubscription alloc] initWithIdentifier:v34 dsl:v45 subscribingDevice:v73 subscribedDevice:v74 configuration:v52];
@@ -449,11 +449,11 @@ LABEL_57:
     _os_log_impl(&dword_244177000, v55, OS_LOG_TYPE_DEFAULT, "Migrated subscriptions from legacy storage, subscriptions are %@", buf, 0xCu);
   }
 
-  v56 = [[BMDistributedContextSubscriptionManager alloc] initWithStorage:v59];
+  v56 = [[BMDistributedContextSubscriptionManager alloc] initWithStorage:v1Copy];
   [(BMDistributedContextSubscriptionManager *)v56 addSubscriptions:v71];
   [(BMDistributedContextSubscriptionManager *)v56 saveToStorage];
-  [v59 removeObjectForKey:@"localDSLIdentifiers"];
-  [v59 removeObjectForKey:@"remoteDSLIdentifiers"];
+  [v1Copy removeObjectForKey:@"localDSLIdentifiers"];
+  [v1Copy removeObjectForKey:@"remoteDSLIdentifiers"];
 
   v57 = *MEMORY[0x277D85DE8];
 
@@ -483,8 +483,8 @@ LABEL_57:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) identifier];
-        [v3 addObject:v9];
+        identifier = [*(*(&v13 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -493,11 +493,11 @@ LABEL_57:
     while (v6);
   }
 
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return allObjects;
 }
 
 - (id)deviceIdentifiersWithActiveSubscriptions
@@ -524,11 +524,11 @@ LABEL_57:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 subscribedDevice];
-        [v3 addObject:v10];
+        subscribedDevice = [v9 subscribedDevice];
+        [v3 addObject:subscribedDevice];
 
-        v11 = [v9 subscribingDevice];
-        [v3 addObject:v11];
+        subscribingDevice = [v9 subscribingDevice];
+        [v3 addObject:subscribingDevice];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -537,26 +537,26 @@ LABEL_57:
     while (v6);
   }
 
-  v12 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return allObjects;
 }
 
-- (BOOL)addSubscriptions:(id)a3
+- (BOOL)addSubscriptions:(id)subscriptions
 {
-  [(NSMutableArray *)self->_subscriptions addObjectsFromArray:a3];
+  [(NSMutableArray *)self->_subscriptions addObjectsFromArray:subscriptions];
   [(BMDistributedContextSubscriptionManager *)self saveToStorage];
   return 1;
 }
 
-- (id)subscriptionForIdentifier:(id)a3 fromSubscribingDevice:(id)a4 onSubscribedDevice:(id)a5
+- (id)subscriptionForIdentifier:(id)identifier fromSubscribingDevice:(id)device onSubscribedDevice:(id)subscribedDevice
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v26 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  subscribedDeviceCopy = subscribedDevice;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -580,14 +580,14 @@ LABEL_57:
       }
 
       v15 = *(*(&v28 + 1) + 8 * i);
-      v16 = [v15 identifier];
-      if (![v16 isEqualToString:v8])
+      identifier = [v15 identifier];
+      if (![identifier isEqualToString:identifierCopy])
       {
         goto LABEL_11;
       }
 
-      v17 = [v15 subscribedDevice];
-      if (([v17 isEqualToString:v9] & 1) == 0)
+      subscribedDevice = [v15 subscribedDevice];
+      if (([subscribedDevice isEqualToString:subscribedDeviceCopy] & 1) == 0)
       {
 
 LABEL_11:
@@ -596,14 +596,14 @@ LABEL_11:
 
       [v15 subscribingDevice];
       v18 = v13;
-      v19 = v8;
+      v19 = identifierCopy;
       v20 = v10;
-      v22 = v21 = v9;
-      v27 = [v22 isEqualToString:v26];
+      v22 = v21 = subscribedDeviceCopy;
+      v27 = [v22 isEqualToString:deviceCopy];
 
-      v9 = v21;
+      subscribedDeviceCopy = v21;
       v10 = v20;
-      v8 = v19;
+      identifierCopy = v19;
       v13 = v18;
 
       if (v27)
@@ -626,24 +626,24 @@ LABEL_15:
   return v23;
 }
 
-- (BOOL)removeSubscription:(id)a3
+- (BOOL)removeSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 subscribingDevice];
-  v7 = [v4 subscribedDevice];
+  subscriptionCopy = subscription;
+  identifier = [subscriptionCopy identifier];
+  subscribingDevice = [subscriptionCopy subscribingDevice];
+  subscribedDevice = [subscriptionCopy subscribedDevice];
 
-  LOBYTE(self) = [(BMDistributedContextSubscriptionManager *)self removeSubscriptionWithIdentifier:v5 fromSubscribingDevice:v6 onSubscribedDevice:v7];
+  LOBYTE(self) = [(BMDistributedContextSubscriptionManager *)self removeSubscriptionWithIdentifier:identifier fromSubscribingDevice:subscribingDevice onSubscribedDevice:subscribedDevice];
   return self;
 }
 
-- (BOOL)removeSubscriptionWithIdentifier:(id)a3 fromSubscribingDevice:(id)a4 onSubscribedDevice:(id)a5
+- (BOOL)removeSubscriptionWithIdentifier:(id)identifier fromSubscribingDevice:(id)device onSubscribedDevice:(id)subscribedDevice
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v24 = a4;
-  v25 = a5;
-  v22 = self;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  subscribedDeviceCopy = subscribedDevice;
+  selfCopy = self;
   v23 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
@@ -666,22 +666,22 @@ LABEL_15:
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        if (([v16 isEqualToString:v8] & 1) == 0)
+        identifier = [v15 identifier];
+        if (([identifier isEqualToString:identifierCopy] & 1) == 0)
         {
           goto LABEL_11;
         }
 
-        v17 = [v15 subscribedDevice];
-        if (([v17 isEqualToString:v25] & 1) == 0)
+        subscribedDevice = [v15 subscribedDevice];
+        if (([subscribedDevice isEqualToString:subscribedDeviceCopy] & 1) == 0)
         {
 
 LABEL_11:
           goto LABEL_12;
         }
 
-        v18 = [v15 subscribingDevice];
-        v19 = [v18 isEqualToString:v24];
+        subscribingDevice = [v15 subscribingDevice];
+        v19 = [subscribingDevice isEqualToString:deviceCopy];
 
         if (v19)
         {
@@ -698,17 +698,17 @@ LABEL_12:
     while (v11);
   }
 
-  [(NSMutableArray *)v22->_subscriptions removeObjectsAtIndexes:v23];
-  [(BMDistributedContextSubscriptionManager *)v22 saveToStorage];
+  [(NSMutableArray *)selfCopy->_subscriptions removeObjectsAtIndexes:v23];
+  [(BMDistributedContextSubscriptionManager *)selfCopy saveToStorage];
 
   v20 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)removeAllSubscriptionsMadeBySubscribingDevice:(id)a3
+- (BOOL)removeAllSubscriptionsMadeBySubscribingDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
@@ -731,8 +731,8 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * v11) subscribingDevice];
-        v13 = [v12 isEqualToString:v4];
+        subscribingDevice = [*(*(&v16 + 1) + 8 * v11) subscribingDevice];
+        v13 = [subscribingDevice isEqualToString:deviceCopy];
 
         if (v13)
         {
@@ -757,11 +757,11 @@ LABEL_12:
   return 1;
 }
 
-- (id)subscribingDevicesForIdentifier:(id)a3 subscribedToDevice:(id)a4
+- (id)subscribingDevicesForIdentifier:(id)identifier subscribedToDevice:(id)device
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   v20 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
@@ -783,19 +783,19 @@ LABEL_12:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        if ([v14 isEqualToString:v6])
+        identifier = [v13 identifier];
+        if ([identifier isEqualToString:identifierCopy])
         {
-          v15 = [v13 subscribedDevice];
-          v16 = [v15 isEqual:v7];
+          subscribedDevice = [v13 subscribedDevice];
+          v16 = [subscribedDevice isEqual:deviceCopy];
 
           if (!v16)
           {
             continue;
           }
 
-          v14 = [v13 subscribedDevice];
-          [v20 addObject:v14];
+          identifier = [v13 subscribedDevice];
+          [v20 addObject:identifier];
         }
       }
 
@@ -805,18 +805,18 @@ LABEL_12:
     while (v10);
   }
 
-  v17 = [v20 allObjects];
+  allObjects = [v20 allObjects];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return allObjects;
 }
 
-- (id)subscriptionsWithIdentifier:(id)a3 subscribedToDevice:(id)a4
+- (id)subscriptionsWithIdentifier:(id)identifier subscribedToDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   v19 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
@@ -838,11 +838,11 @@ LABEL_12:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        if ([v14 isEqualToString:v6])
+        identifier = [v13 identifier];
+        if ([identifier isEqualToString:identifierCopy])
         {
-          v15 = [v13 subscribedDevice];
-          v16 = [v15 isEqual:v7];
+          subscribedDevice = [v13 subscribedDevice];
+          v16 = [subscribedDevice isEqual:deviceCopy];
 
           if (v16)
           {
@@ -866,10 +866,10 @@ LABEL_12:
   return v19;
 }
 
-- (id)subscriptionsWithSubscribingDevice:(id)a3
+- (id)subscriptionsWithSubscribingDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
@@ -891,8 +891,8 @@ LABEL_12:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 subscribingDevice];
-        v13 = [v12 isEqualToString:v4];
+        subscribingDevice = [v11 subscribingDevice];
+        v13 = [subscribingDevice isEqualToString:deviceCopy];
 
         if (v13)
         {
@@ -911,10 +911,10 @@ LABEL_12:
   return v5;
 }
 
-- (id)subscriptionsWithSubscribedDevice:(id)a3
+- (id)subscriptionsWithSubscribedDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
@@ -936,8 +936,8 @@ LABEL_12:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 subscribedDevice];
-        v13 = [v12 isEqualToString:v4];
+        subscribedDevice = [v11 subscribedDevice];
+        v13 = [subscribedDevice isEqualToString:deviceCopy];
 
         if (v13)
         {

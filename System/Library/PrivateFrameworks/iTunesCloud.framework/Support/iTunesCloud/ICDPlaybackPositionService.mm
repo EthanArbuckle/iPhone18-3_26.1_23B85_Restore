@@ -1,19 +1,19 @@
 @interface ICDPlaybackPositionService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ICDPlaybackPositionService)init;
 - (id)_connectionClientIdentity;
 - (id)_supportedInterfaceForXPCConnection;
-- (void)_handleImportNotification:(id)a3;
+- (void)_handleImportNotification:(id)notification;
 - (void)_handleUserIdentityStoreDidChangeNotification;
-- (void)_performNotificationSyncForLibraryWithUID:(id)a3;
+- (void)_performNotificationSyncForLibraryWithUID:(id)d;
 - (void)_setupNotificationHandlers;
 - (void)dealloc;
-- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)a3;
-- (void)deletePlaybackPositionEntity:(id)a3;
-- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)a3 forDomain:(id)a4 fromLibraryWithIdentifier:(id)a5 completionBlock:(id)a6;
-- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
-- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4;
-- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3;
+- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)identifier;
+- (void)deletePlaybackPositionEntity:(id)entity;
+- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)identifiers forDomain:(id)domain fromLibraryWithIdentifier:(id)identifier completionBlock:(id)block;
+- (void)pullPlaybackPositionEntity:(id)entity completionBlock:(id)block;
+- (void)pushPlaybackPositionEntity:(id)entity completionBlock:(id)block;
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)entity;
 @end
 
 @implementation ICDPlaybackPositionService
@@ -69,13 +69,13 @@ LABEL_8:
   return v3;
 }
 
-- (void)_performNotificationSyncForLibraryWithUID:(id)a3
+- (void)_performNotificationSyncForLibraryWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [ICDPlaybackPositionRequestContext alloc];
   v6 = ICPlaybackPositionServiceDomainDefault;
   v7 = MSVTCCIdentityForCurrentProcess();
-  v8 = [(ICDPlaybackPositionRequestContext *)v5 initWithLibraryIdentifier:v4 domain:v6 clientIdentity:v7];
+  v8 = [(ICDPlaybackPositionRequestContext *)v5 initWithLibraryIdentifier:dCopy domain:v6 clientIdentity:v7];
 
   [(ICDPlaybackPositionRequestController *)self->_requestController scheduleSyncWithContext:v8 isCheckpoint:0];
 }
@@ -91,40 +91,40 @@ LABEL_8:
   [v3 enumerateObjectsUsingBlock:v4];
 }
 
-- (void)_handleImportNotification:(id)a3
+- (void)_handleImportNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  if (v5 && (v6 = v5, [v4 object], v7 = objc_claimAutoreleasedReturnValue(), v8 = _NSIsNSString(), v7, v6, v8))
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  if (object && (v6 = object, [notificationCopy object], v7 = objc_claimAutoreleasedReturnValue(), v8 = _NSIsNSString(), v7, v6, v8))
   {
-    v9 = [v4 object];
+    object2 = [notificationCopy object];
     v10 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 name];
+      name = [notificationCopy name];
       v13 = 138543875;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
-      v16 = v11;
+      v16 = name;
       v17 = 2113;
-      v18 = v9;
+      v18 = object2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Received %{public}@ notification for library %{private}@. Performing sync.", &v13, 0x20u);
     }
 
-    [(ICDPlaybackPositionService *)self _performNotificationSyncForLibraryWithUID:v9];
+    [(ICDPlaybackPositionService *)self _performNotificationSyncForLibraryWithUID:object2];
   }
 
   else
   {
-    v9 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    object2 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
+    if (os_log_type_enabled(object2, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v4 name];
+      name2 = [notificationCopy name];
       v13 = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
-      v16 = v12;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@ Received %{public}@ notification without libraryUID", &v13, 0x16u);
+      v16 = name2;
+      _os_log_impl(&_mh_execute_header, object2, OS_LOG_TYPE_ERROR, "%{public}@ Received %{public}@ notification without libraryUID", &v13, 0x16u);
     }
   }
 }
@@ -135,7 +135,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting up notifications handlers.", &v6, 0xCu);
   }
 
@@ -146,17 +146,17 @@ LABEL_8:
   [v5 addObserver:self selector:"_handleImportNotification:" name:@"ICDPlaybackPositionImportRequiresSyncNotification" object:0];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = v5;
+  connectionCopy = connection;
+  v6 = connectionCopy;
   if (!self->_didStart)
   {
     v12 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2114;
       v22 = v6;
       v13 = "%{public}@ Service has not started. Rejecting connection %{public}@";
@@ -170,7 +170,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.itunescloudd.private"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.itunescloudd.private"];
 
   if (!v7)
   {
@@ -178,7 +178,7 @@ LABEL_11:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2114;
       v22 = v6;
       v13 = "%{public}@ Connection missing private entitlement %{public}@";
@@ -188,19 +188,19 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = [v6 processIdentifier];
+  processIdentifier = [v6 processIdentifier];
   v9 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy3 = self;
     v21 = 1024;
-    LODWORD(v22) = v8;
+    LODWORD(v22) = processIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Got connection from pid %i", buf, 0x12u);
   }
 
-  v10 = [(ICDPlaybackPositionService *)self _supportedInterfaceForXPCConnection];
-  [v6 setExportedInterface:v10];
+  _supportedInterfaceForXPCConnection = [(ICDPlaybackPositionService *)self _supportedInterfaceForXPCConnection];
+  [v6 setExportedInterface:_supportedInterfaceForXPCConnection];
 
   [v6 setExportedObject:self];
   v17[0] = _NSConcreteStackBlock;
@@ -208,14 +208,14 @@ LABEL_11:
   v17[2] = sub_10005860C;
   v17[3] = &unk_1001DF780;
   v17[4] = self;
-  v18 = v8;
+  v18 = processIdentifier;
   [v6 setInterruptionHandler:v17];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000586D0;
   v15[3] = &unk_1001DF780;
   v15[4] = self;
-  v16 = v8;
+  v16 = processIdentifier;
   [v6 setInvalidationHandler:v15];
   [v6 resume];
   v11 = 1;
@@ -224,62 +224,62 @@ LABEL_12:
   return v11;
 }
 
-- (void)pushPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+- (void)pushPlaybackPositionEntity:(id)entity completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  blockCopy = block;
   v8 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[NSXPCConnection currentConnection];
-    v10 = [v6 libraryIdentifier];
+    libraryIdentifier = [entityCopy libraryIdentifier];
     *buf = 138543874;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v9;
     v24 = 2114;
-    v25 = v10;
+    v25 = libraryIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@ pushPlaybackPositionEntity:completionBlock:] Received request from connection %{public}@. libraryUID=%{public}@", buf, 0x20u);
   }
 
   v11 = [ICDPlaybackPositionRequestContext alloc];
-  v12 = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
-  v13 = [(ICDPlaybackPositionRequestContext *)v11 initWithEntity:v6 clientIdentity:v12];
+  _connectionClientIdentity = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
+  v13 = [(ICDPlaybackPositionRequestContext *)v11 initWithEntity:entityCopy clientIdentity:_connectionClientIdentity];
 
   requestController = self->_requestController;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10005896C;
   v17[3] = &unk_1001DB4B8;
-  v18 = v6;
-  v19 = v7;
+  v18 = entityCopy;
+  v19 = blockCopy;
   v17[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = entityCopy;
+  v16 = blockCopy;
   [(ICDPlaybackPositionRequestController *)requestController pushPlaybackPositionWithContext:v13 completionHandler:v17];
 }
 
-- (void)pullPlaybackPositionEntity:(id)a3 completionBlock:(id)a4
+- (void)pullPlaybackPositionEntity:(id)entity completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  blockCopy = block;
   v8 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = +[NSXPCConnection currentConnection];
-    v10 = [v6 libraryIdentifier];
+    libraryIdentifier = [entityCopy libraryIdentifier];
     *buf = 138543874;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = v9;
     v22 = 2114;
-    v23 = v10;
+    v23 = libraryIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@ pullPlaybackPositionEntity:] Received request from connection %{public}@. libraryUID=%{public}@", buf, 0x20u);
   }
 
   v11 = [ICDPlaybackPositionRequestContext alloc];
-  v12 = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
-  v13 = [(ICDPlaybackPositionRequestContext *)v11 initWithEntity:v6 clientIdentity:v12];
+  _connectionClientIdentity = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
+  v13 = [(ICDPlaybackPositionRequestContext *)v11 initWithEntity:entityCopy clientIdentity:_connectionClientIdentity];
 
   requestController = self->_requestController;
   v16[0] = _NSConcreteStackBlock;
@@ -287,115 +287,115 @@ LABEL_12:
   v16[2] = sub_100058CB4;
   v16[3] = &unk_1001DB490;
   v16[4] = self;
-  v17 = v7;
-  v15 = v7;
+  v17 = blockCopy;
+  v15 = blockCopy;
   [(ICDPlaybackPositionRequestController *)requestController pullPlaybackPositionWithRequestContext:v13 completionBlock:v16];
 }
 
-- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)a3
+- (void)updateForeignDatabaseWithValuesFromPlaybackPositionEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v5 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[NSXPCConnection currentConnection];
-    v7 = [v4 libraryIdentifier];
+    libraryIdentifier = [entityCopy libraryIdentifier];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = v6;
     v15 = 2114;
-    v16 = v7;
+    v16 = libraryIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@ updateForeignDatabaseWithValuesFromPlaybackPositionEntity:] Received request from connection %{public}@. libraryUID=%{public}@", &v11, 0x20u);
   }
 
   v8 = [ICDPlaybackPositionRequestContext alloc];
-  v9 = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
-  v10 = [(ICDPlaybackPositionRequestContext *)v8 initWithEntity:v4 clientIdentity:v9];
+  _connectionClientIdentity = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
+  v10 = [(ICDPlaybackPositionRequestContext *)v8 initWithEntity:entityCopy clientIdentity:_connectionClientIdentity];
 
   [(ICDPlaybackPositionRequestController *)self->_requestController updateForeignDatabaseWithRequestContext:v10];
 }
 
-- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)a3 forDomain:(id)a4 fromLibraryWithIdentifier:(id)a5 completionBlock:(id)a6
+- (void)getLocalPlaybackPositionForEntityIdentifiers:(id)identifiers forDomain:(id)domain fromLibraryWithIdentifier:(id)identifier completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifiersCopy = identifiers;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  blockCopy = block;
   v14 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = +[NSXPCConnection currentConnection];
     *buf = 138544386;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
     v26 = v15;
     v27 = 2114;
-    v28 = v11;
+    v28 = domainCopy;
     v29 = 2114;
-    v30 = v12;
+    v30 = identifierCopy;
     v31 = 2114;
-    v32 = v10;
+    v32 = identifiersCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@ getLocalPlaybackPositionForEntityIdentifiers:] Received request from connection %{public}@ for domain %{public}@ with library (%{public}@). identifiers=%{public}@", buf, 0x34u);
   }
 
   requestController = self->_requestController;
-  v17 = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
+  _connectionClientIdentity = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100059198;
   v20[3] = &unk_1001DB468;
   v20[4] = self;
-  v21 = v12;
-  v22 = v13;
-  v18 = v13;
-  v19 = v12;
-  [(ICDPlaybackPositionRequestController *)requestController getLocalPlaybackPositionForEntityIdentifiers:v10 forDomain:v11 fromLibraryWithIdentifier:v19 clientIdentity:v17 completionBlock:v20];
+  v21 = identifierCopy;
+  v22 = blockCopy;
+  v18 = blockCopy;
+  v19 = identifierCopy;
+  [(ICDPlaybackPositionRequestController *)requestController getLocalPlaybackPositionForEntityIdentifiers:identifiersCopy forDomain:domainCopy fromLibraryWithIdentifier:v19 clientIdentity:_connectionClientIdentity completionBlock:v20];
 }
 
-- (void)deletePlaybackPositionEntity:(id)a3
+- (void)deletePlaybackPositionEntity:(id)entity
 {
-  v4 = a3;
+  entityCopy = entity;
   v5 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[NSXPCConnection currentConnection];
-    v7 = [v4 libraryIdentifier];
+    libraryIdentifier = [entityCopy libraryIdentifier];
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = v6;
     v15 = 2114;
-    v16 = v7;
+    v16 = libraryIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@ deletePlaybackPositionEntity:] Received request from connection %{public}@. libraryUID=%{public}@", &v11, 0x20u);
   }
 
   v8 = [ICDPlaybackPositionRequestContext alloc];
-  v9 = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
-  v10 = [(ICDPlaybackPositionRequestContext *)v8 initWithEntity:v4 clientIdentity:v9];
+  _connectionClientIdentity = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
+  v10 = [(ICDPlaybackPositionRequestContext *)v8 initWithEntity:entityCopy clientIdentity:_connectionClientIdentity];
 
   [(ICDPlaybackPositionRequestController *)self->_requestController deletePlaybackPositionWithRequestContext:v10];
 }
 
-- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)a3
+- (void)deletePlaybackPositionEntitiesFromLibraryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[NSXPCConnection currentConnection];
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v6;
     v13 = 2114;
-    v14 = v4;
+    v14 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@ deletePlaybackPositionEntitiesFromLibraryWithIdentifier:] Received request from connection %{public}@ for library with identifier %{public}@.", &v9, 0x20u);
   }
 
   requestController = self->_requestController;
-  v8 = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
-  [(ICDPlaybackPositionRequestController *)requestController deletePlaybackPositionEntitiesFromLibraryWithIdentifier:v4 clientIdentity:v8];
+  _connectionClientIdentity = [(ICDPlaybackPositionService *)self _connectionClientIdentity];
+  [(ICDPlaybackPositionRequestController *)requestController deletePlaybackPositionEntitiesFromLibraryWithIdentifier:identifierCopy clientIdentity:_connectionClientIdentity];
 }
 
 - (void)dealloc

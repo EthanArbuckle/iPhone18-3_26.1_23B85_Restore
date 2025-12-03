@@ -1,32 +1,32 @@
 @interface SKUIShareTemplateActivityViewController
-- (SKUIShareTemplateActivityViewController)initWithTemplateElement:(id)a3 clientContext:(id)a4;
-- (id)_activityItemsWithTemplateElement:(id)a3 clientContext:(id)a4;
-- (id)_applicationActivitiesWithTemplateElement:(id)a3 clientContext:(id)a4;
-- (id)_titleForActivity:(id)a3;
+- (SKUIShareTemplateActivityViewController)initWithTemplateElement:(id)element clientContext:(id)context;
+- (id)_activityItemsWithTemplateElement:(id)element clientContext:(id)context;
+- (id)_applicationActivitiesWithTemplateElement:(id)element clientContext:(id)context;
+- (id)_titleForActivity:(id)activity;
 @end
 
 @implementation SKUIShareTemplateActivityViewController
 
-- (SKUIShareTemplateActivityViewController)initWithTemplateElement:(id)a3 clientContext:(id)a4
+- (SKUIShareTemplateActivityViewController)initWithTemplateElement:(id)element clientContext:(id)context
 {
   v19[6] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIShareTemplateActivityViewController initWithTemplateElement:clientContext:];
   }
 
-  v9 = [(SKUIShareTemplateActivityViewController *)self _activityItemsWithTemplateElement:v7 clientContext:v8];
-  v10 = [(SKUIShareTemplateActivityViewController *)self _applicationActivitiesWithTemplateElement:v7 clientContext:v8];
+  v9 = [(SKUIShareTemplateActivityViewController *)self _activityItemsWithTemplateElement:elementCopy clientContext:contextCopy];
+  v10 = [(SKUIShareTemplateActivityViewController *)self _applicationActivitiesWithTemplateElement:elementCopy clientContext:contextCopy];
   v18.receiver = self;
   v18.super_class = SKUIShareTemplateActivityViewController;
   v11 = [(SKUIShareTemplateActivityViewController *)&v18 initWithActivityItems:v9 applicationActivities:v10];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_clientContext, a4);
-    objc_storeStrong(&v12->_templateElement, a3);
+    objc_storeStrong(&v11->_clientContext, context);
+    objc_storeStrong(&v12->_templateElement, element);
     v13 = *MEMORY[0x277D54718];
     v19[0] = *MEMORY[0x277D54708];
     v19[1] = v13;
@@ -43,10 +43,10 @@
   return v12;
 }
 
-- (id)_titleForActivity:(id)a3
+- (id)_titleForActivity:(id)activity
 {
-  v4 = a3;
-  if (*MEMORY[0x277D54720] == v4)
+  activityCopy = activity;
+  if (*MEMORY[0x277D54720] == activityCopy)
   {
     clientContext = self->_clientContext;
     if (clientContext)
@@ -69,15 +69,15 @@
   return v5;
 }
 
-- (id)_activityItemsWithTemplateElement:(id)a3 clientContext:(id)a4
+- (id)_activityItemsWithTemplateElement:(id)element clientContext:(id)context
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SKUIShareTemplateImageItemProvider alloc] initWithTemplateElement:v6];
-  v8 = [[SKUIShareTemplateTextItemProvider alloc] initWithTemplateElement:v6 clientContext:v5];
+  contextCopy = context;
+  elementCopy = element;
+  v7 = [[SKUIShareTemplateImageItemProvider alloc] initWithTemplateElement:elementCopy];
+  v8 = [[SKUIShareTemplateTextItemProvider alloc] initWithTemplateElement:elementCopy clientContext:contextCopy];
 
-  v9 = [[SKUIShareTemplateURLItemProvider alloc] initWithTemplateElement:v6];
+  v9 = [[SKUIShareTemplateURLItemProvider alloc] initWithTemplateElement:elementCopy];
   v12[0] = v8;
   v12[1] = v9;
   v12[2] = v7;
@@ -86,12 +86,12 @@
   return v10;
 }
 
-- (id)_applicationActivitiesWithTemplateElement:(id)a3 clientContext:(id)a4
+- (id)_applicationActivitiesWithTemplateElement:(id)element clientContext:(id)context
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  elementCopy = element;
+  contextCopy = context;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = @"wishlist";
   v8 = &v15;
   v16[0] = @"gift";
@@ -99,11 +99,11 @@
   do
   {
     v10 = v9;
-    v11 = [v5 activityForShareSheetActivityType:*v8];
+    v11 = [elementCopy activityForShareSheetActivityType:*v8];
     if (v11)
     {
-      v12 = [[SKUIShareTemplateActivity alloc] initWithActivityViewElement:v11 clientContext:v6];
-      [v7 addObject:v12];
+      v12 = [[SKUIShareTemplateActivity alloc] initWithActivityViewElement:v11 clientContext:contextCopy];
+      [array addObject:v12];
     }
 
     v9 = 0;
@@ -115,7 +115,7 @@
   {
   }
 
-  return v7;
+  return array;
 }
 
 - (void)initWithTemplateElement:clientContext:.cold.1()

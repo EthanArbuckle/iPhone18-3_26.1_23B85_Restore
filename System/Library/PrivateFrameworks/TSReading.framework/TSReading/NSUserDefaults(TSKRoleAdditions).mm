@@ -43,15 +43,15 @@
 
 - (uint64_t)objectForKey:()TSKRoleAdditions inRole:
 {
-  v5 = [a1 objectForKey:{objc_msgSend(a1, "keyForRole:", a4)}];
+  v5 = [self objectForKey:{objc_msgSend(self, "keyForRole:", a4)}];
 
   return [v5 objectForKey:a3];
 }
 
 - (uint64_t)setObject:()TSKRoleAdditions forKey:inRole:
 {
-  objc_sync_enter(a1);
-  v9 = [objc_msgSend(a1 objectForKey:{objc_msgSend(a1, "keyForRole:", a5)), "mutableCopy"}];
+  objc_sync_enter(self);
+  v9 = [objc_msgSend(self objectForKey:{objc_msgSend(self, "keyForRole:", a5)), "mutableCopy"}];
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -62,25 +62,25 @@
 
   [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
 
-  return objc_sync_exit(a1);
+  return objc_sync_exit(self);
 }
 
 - (uint64_t)removeObjectForKey:()TSKRoleAdditions inRole:
 {
-  objc_sync_enter(a1);
-  v7 = [objc_msgSend(a1 objectForKey:{objc_msgSend(a1, "keyForRole:", a4)), "mutableCopy"}];
+  objc_sync_enter(self);
+  v7 = [objc_msgSend(self objectForKey:{objc_msgSend(self, "keyForRole:", a4)), "mutableCopy"}];
   [v7 removeObjectForKey:a3];
   if (v7)
   {
     [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
   }
 
-  return objc_sync_exit(a1);
+  return objc_sync_exit(self);
 }
 
 - (uint64_t)stringForKey:()TSKRoleAdditions inRole:
 {
-  result = [a1 objectForKey:? inRole:?];
+  result = [self objectForKey:? inRole:?];
   if (result)
   {
     v2 = result;
@@ -101,7 +101,7 @@
 
 - (uint64_t)arrayForKey:()TSKRoleAdditions inRole:
 {
-  result = [a1 objectForKey:? inRole:?];
+  result = [self objectForKey:? inRole:?];
   if (result)
   {
     v2 = result;
@@ -122,7 +122,7 @@
 
 - (uint64_t)dictionaryForKey:()TSKRoleAdditions inRole:
 {
-  result = [a1 objectForKey:? inRole:?];
+  result = [self objectForKey:? inRole:?];
   if (result)
   {
     v2 = result;
@@ -143,7 +143,7 @@
 
 - (uint64_t)dataForKey:()TSKRoleAdditions inRole:
 {
-  result = [a1 objectForKey:? inRole:?];
+  result = [self objectForKey:? inRole:?];
   if (result)
   {
     v2 = result;
@@ -164,7 +164,7 @@
 
 - (uint64_t)integerForKey:()TSKRoleAdditions inRole:
 {
-  v1 = [a1 objectForKey:? inRole:?];
+  v1 = [self objectForKey:? inRole:?];
   if (!v1)
   {
     return 0;
@@ -186,7 +186,7 @@
 
 - (double)floatForKey:()TSKRoleAdditions inRole:
 {
-  v1 = [a1 objectForKey:? inRole:?];
+  v1 = [self objectForKey:? inRole:?];
   if (!v1)
   {
     return 0.0;
@@ -209,7 +209,7 @@
 
 - (double)doubleForKey:()TSKRoleAdditions inRole:
 {
-  v1 = [a1 objectForKey:? inRole:?];
+  v1 = [self objectForKey:? inRole:?];
   if (!v1)
   {
     return 0.0;
@@ -232,7 +232,7 @@
 
 - (uint64_t)BOOLForKey:()TSKRoleAdditions inRole:
 {
-  v1 = [a1 objectForKey:? inRole:?];
+  v1 = [self objectForKey:? inRole:?];
   if (!v1)
   {
     return 0;
@@ -274,14 +274,14 @@
 {
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:?];
 
-  return [a1 setObject:v8 forKey:a4 inRole:a5];
+  return [self setObject:v8 forKey:a4 inRole:a5];
 }
 
 - (uint64_t)setFloat:()TSKRoleAdditions forKey:inRole:
 {
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:?];
 
-  return [a1 setObject:v7 forKey:a3 inRole:a4];
+  return [self setObject:v7 forKey:a3 inRole:a4];
 }
 
 - (uint64_t)setDouble:()TSKRoleAdditions forKey:inRole:
@@ -289,120 +289,120 @@
   *&a2 = a2;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:a2];
 
-  return [a1 setObject:v8 forKey:a4 inRole:a5];
+  return [self setObject:v8 forKey:a4 inRole:a5];
 }
 
 - (uint64_t)setBool:()TSKRoleAdditions forKey:inRole:
 {
   v8 = [MEMORY[0x277CCABB0] numberWithBool:?];
 
-  return [a1 setObject:v8 forKey:a4 inRole:a5];
+  return [self setObject:v8 forKey:a4 inRole:a5];
 }
 
 - (uint64_t)objectForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 objectForKey:a3 inRole:v5];
+  return [self objectForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)setObject:()TSKRoleAdditions forKeyInCurrentRole:
 {
-  v7 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 setObject:a3 forKey:a4 inRole:v7];
+  return [self setObject:a3 forKey:a4 inRole:p_currentRole];
 }
 
 - (uint64_t)removeObjectForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 removeObjectForKey:a3 inRole:v5];
+  return [self removeObjectForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)stringForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 stringForKey:a3 inRole:v5];
+  return [self stringForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)arrayForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 arrayForKey:a3 inRole:v5];
+  return [self arrayForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)dictionaryForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 dictionaryForKey:a3 inRole:v5];
+  return [self dictionaryForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)dataForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 dataForKey:a3 inRole:v5];
+  return [self dataForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)integerForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 integerForKey:a3 inRole:v5];
+  return [self integerForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)floatForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 floatForKey:a3 inRole:v5];
+  return [self floatForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)doubleForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 doubleForKey:a3 inRole:v5];
+  return [self doubleForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)BOOLForKeyInCurrentRole:()TSKRoleAdditions
 {
-  v5 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 BOOLForKey:a3 inRole:v5];
+  return [self BOOLForKey:a3 inRole:p_currentRole];
 }
 
 - (uint64_t)setInteger:()TSKRoleAdditions forKeyInCurrentRole:
 {
-  v7 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 setInteger:a3 forKey:a4 inRole:v7];
+  return [self setInteger:a3 forKey:a4 inRole:p_currentRole];
 }
 
 - (uint64_t)setFloat:()TSKRoleAdditions forKeyInCurrentRole:
 {
-  v7 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
   *&v8 = a2;
 
-  return [a1 setFloat:a4 forKey:v7 inRole:v8];
+  return [self setFloat:a4 forKey:p_currentRole inRole:v8];
 }
 
 - (uint64_t)setDouble:()TSKRoleAdditions forKeyInCurrentRole:
 {
-  v7 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 setDouble:a4 forKey:v7 inRole:a2];
+  return [self setDouble:a4 forKey:p_currentRole inRole:a2];
 }
 
 - (uint64_t)setBool:()TSKRoleAdditions forKeyInCurrentRole:
 {
-  v7 = [a1 p_currentRole];
+  p_currentRole = [self p_currentRole];
 
-  return [a1 setBool:a3 forKey:a4 inRole:v7];
+  return [self setBool:a3 forKey:a4 inRole:p_currentRole];
 }
 
 @end

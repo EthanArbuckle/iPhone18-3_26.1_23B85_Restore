@@ -7,9 +7,9 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 username];
-  v4 = [a1 aa_altDSID];
-  v5 = [v2 stringWithFormat:@"[ACAccount: %@/%@]", v3, v4];
+  username = [self username];
+  aa_altDSID = [self aa_altDSID];
+  v5 = [v2 stringWithFormat:@"[ACAccount: %@/%@]", username, aa_altDSID];
 
   return v5;
 }

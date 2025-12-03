@@ -1,14 +1,14 @@
 @interface THWWidgetAdornmentInfo
-- (BOOL)panelContentProviderHasContentForPanel:(int)a3;
+- (BOOL)panelContentProviderHasContentForPanel:(int)panel;
 - (id)bottomPanelInfos;
 - (id)childEnumerator;
-- (id)interleavedInfosWithInfos:(id)a3;
-- (id)p_colorForStorage:(id)a3;
-- (id)panelContentProviderChildInfosForPanel:(int)a3;
+- (id)interleavedInfosWithInfos:(id)infos;
+- (id)p_colorForStorage:(id)storage;
+- (id)panelContentProviderChildInfosForPanel:(int)panel;
 - (id)titleColor;
 - (id)topPanelInfos;
 - (void)dealloc;
-- (void)updateParentInfo:(id)a3;
+- (void)updateParentInfo:(id)info;
 @end
 
 @implementation THWWidgetAdornmentInfo
@@ -25,7 +25,7 @@
   [(THWWidgetAdornmentInfo *)&v3 dealloc];
 }
 
-- (id)interleavedInfosWithInfos:(id)a3
+- (id)interleavedInfosWithInfos:(id)infos
 {
   if (![(THWWidgetAdornmentInfo *)self insertionOrder])
   {
@@ -55,9 +55,9 @@
   }
 
   v7 = [(NSArray *)[(NSDictionary *)[(THWWidgetAdornmentInfo *)self insertionOrder] allKeys] sortedArrayUsingComparator:&stru_45DED0];
-  if (a3)
+  if (infos)
   {
-    v8 = [a3 mutableCopy];
+    v8 = [infos mutableCopy];
   }
 
   else
@@ -85,8 +85,8 @@
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        v15 = [v14 integerValue];
-        if (v15 <= [v9 count])
+        integerValue = [v14 integerValue];
+        if (integerValue <= [v9 count])
         {
           [v9 insertObject:-[NSDictionary objectForKey:](-[THWWidgetAdornmentInfo insertionOrder](self atIndex:{"insertionOrder"), "objectForKey:", v14), objc_msgSend(v14, "integerValue")}];
         }
@@ -101,26 +101,26 @@
   return v9;
 }
 
-- (void)updateParentInfo:(id)a3
+- (void)updateParentInfo:(id)info
 {
   [(TSWPShapeInfo *)self->_title setParentInfo:?];
-  [(TSWPShapeInfo *)self->_caption setParentInfo:a3];
+  [(TSWPShapeInfo *)self->_caption setParentInfo:info];
   background = self->_background;
 
-  [(THWWidgetBackgroundInfo *)background setParentInfo:a3];
+  [(THWWidgetBackgroundInfo *)background setParentInfo:info];
 }
 
-- (id)p_colorForStorage:(id)a3
+- (id)p_colorForStorage:(id)storage
 {
-  if (!a3)
+  if (!storage)
   {
     return 0;
   }
 
-  v4 = [objc_msgSend(a3 characterStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
+  v4 = [objc_msgSend(storage characterStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
   if (!v4)
   {
-    v4 = [objc_msgSend(a3 paragraphStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
+    v4 = [objc_msgSend(storage paragraphStyleAtCharIndex:0 effectiveRange:{0), "valueForProperty:", 18}];
   }
 
   objc_opt_class();
@@ -134,23 +134,23 @@
 
 - (id)titleColor
 {
-  v3 = [(TSWPShapeInfo *)self->_title containedStorage];
+  containedStorage = [(TSWPShapeInfo *)self->_title containedStorage];
 
-  return [(THWWidgetAdornmentInfo *)self p_colorForStorage:v3];
+  return [(THWWidgetAdornmentInfo *)self p_colorForStorage:containedStorage];
 }
 
-- (BOOL)panelContentProviderHasContentForPanel:(int)a3
+- (BOOL)panelContentProviderHasContentForPanel:(int)panel
 {
-  if (a3 == 1)
+  if (panel == 1)
   {
-    v3 = [(THWWidgetAdornmentInfo *)self captionStorage];
-    return v3 != 0;
+    captionStorage = [(THWWidgetAdornmentInfo *)self captionStorage];
+    return captionStorage != 0;
   }
 
-  if (!a3)
+  if (!panel)
   {
-    v3 = [(THWWidgetAdornmentInfo *)self titleStorage];
-    return v3 != 0;
+    captionStorage = [(THWWidgetAdornmentInfo *)self titleStorage];
+    return captionStorage != 0;
   }
 
   return 0;
@@ -191,9 +191,9 @@
   return v3;
 }
 
-- (id)panelContentProviderChildInfosForPanel:(int)a3
+- (id)panelContentProviderChildInfosForPanel:(int)panel
 {
-  if (a3 == 1)
+  if (panel == 1)
   {
     result = [(THWWidgetAdornmentInfo *)self captionStorage];
     if (!result)
@@ -204,7 +204,7 @@
     goto LABEL_6;
   }
 
-  if (a3)
+  if (panel)
   {
     return 0;
   }

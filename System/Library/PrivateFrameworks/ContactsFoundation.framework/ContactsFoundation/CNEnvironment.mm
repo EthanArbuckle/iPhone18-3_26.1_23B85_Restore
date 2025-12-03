@@ -13,10 +13,10 @@
 - (NSString)getCurrentRegionCode;
 - (NSString)homeCountryCode;
 - (_TtP18ContactsFoundation24CNKeychainFacadeProtocol_)keychainFacade;
-- (id)valueForKey:(id)a3 onCacheMiss:(id)a4;
+- (id)valueForKey:(id)key onCacheMiss:(id)miss;
 - (void)isExtendedGreenTeaDevice;
 - (void)isGreenTeaDevice;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CNEnvironment
@@ -47,12 +47,12 @@ uint64_t __35__CNEnvironment_defaultEnvironment__block_invoke(uint64_t a1)
     featureFlags = v2->_featureFlags;
     v2->_featureFlags = v7;
 
-    v9 = [MEMORY[0x1E696AAE8] mainBundle];
-    v10 = [v9 bundleIdentifier];
-    v11 = v10;
-    if (v10)
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v11 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v12 = v10;
+      v12 = bundleIdentifier;
     }
 
     else
@@ -70,13 +70,13 @@ uint64_t __35__CNEnvironment_defaultEnvironment__block_invoke(uint64_t a1)
     timeProvider = v2->_timeProvider;
     v2->_timeProvider = v15;
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     notificationCenter = v2->_notificationCenter;
-    v2->_notificationCenter = v17;
+    v2->_notificationCenter = defaultCenter;
 
-    v19 = [MEMORY[0x1E696ABB0] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
     distributedNotificationCenter = v2->_distributedNotificationCenter;
-    v2->_distributedNotificationCenter = v19;
+    v2->_distributedNotificationCenter = defaultCenter2;
 
     v21 = objc_alloc_init(CNEntitlementVerifier);
     entitlementVerifier = v2->_entitlementVerifier;
@@ -114,7 +114,7 @@ uint64_t __35__CNEnvironment_defaultEnvironment__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__CNEnvironment_defaultEnvironment__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultEnvironment_cn_once_token_3 != -1)
   {
     dispatch_once(&defaultEnvironment_cn_once_token_3, block);
@@ -139,14 +139,14 @@ uint64_t __35__CNEnvironment_defaultEnvironment__block_invoke(uint64_t a1)
   v8[3] = &unk_1E6ED51B8;
   v8[4] = self;
   v4 = cn_objectResultWithObjectLock(self, v8);
-  v5 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [(CNEnvironment *)v4 isGreenTeaDevice];
   }
 
-  v6 = [v3 BOOLValue];
-  return v6;
+  bOOLValue = [v3 BOOLValue];
+  return bOOLValue;
 }
 
 id __33__CNEnvironment_isGreenTeaDevice__block_invoke(uint64_t a1)
@@ -268,9 +268,9 @@ id __35__CNEnvironment_defaultCountryCode__block_invoke(uint64_t a1)
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __32__CNEnvironment_isInternalBuild__block_invoke(uint64_t a1)
@@ -378,12 +378,12 @@ id __37__CNEnvironment_getCurrentRegionCode__block_invoke(uint64_t a1)
 
 - (BOOL)isExtendedGreenTeaDevice
 {
-  v3 = [(CNEnvironment *)self isGreenTeaDevice];
-  v4 = [(CNEnvironment *)self getCurrentRegionCode];
-  v5 = v4;
-  if (v4)
+  isGreenTeaDevice = [(CNEnvironment *)self isGreenTeaDevice];
+  getCurrentRegionCode = [(CNEnvironment *)self getCurrentRegionCode];
+  v5 = getCurrentRegionCode;
+  if (getCurrentRegionCode)
   {
-    v6 = [v4 caseInsensitiveCompare:@"CH"] == 0;
+    v6 = [getCurrentRegionCode caseInsensitiveCompare:@"CH"] == 0;
   }
 
   else
@@ -391,9 +391,9 @@ id __37__CNEnvironment_getCurrentRegionCode__block_invoke(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = v3 || v6;
-  v8 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  v7 = isGreenTeaDevice || v6;
+  os_log = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     [(CNEnvironment *)v7 isExtendedGreenTeaDevice];
   }
@@ -409,9 +409,9 @@ id __37__CNEnvironment_getCurrentRegionCode__block_invoke(uint64_t a1)
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __36__CNEnvironment_isCommLimitsEnabled__block_invoke(uint64_t a1)
@@ -439,9 +439,9 @@ id __36__CNEnvironment_isCommLimitsEnabled__block_invoke(uint64_t a1)
   v5[3] = &unk_1E6ED51B8;
   v5[4] = self;
   v2 = cn_objectResultWithObjectLock(self, v5);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __34__CNEnvironment_isKeychainEnabled__block_invoke(uint64_t a1)
@@ -461,19 +461,19 @@ id __34__CNEnvironment_isKeychainEnabled__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)valueForKey:(id)a3 onCacheMiss:(id)a4
+- (id)valueForKey:(id)key onCacheMiss:(id)miss
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  missCopy = miss;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __41__CNEnvironment_valueForKey_onCacheMiss___block_invoke;
   v12[3] = &unk_1E6ED57B8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = keyCopy;
+  v14 = missCopy;
+  v8 = missCopy;
+  v9 = keyCopy;
   v10 = cn_objectResultWithObjectLock(self, v12);
 
   return v10;
@@ -492,25 +492,25 @@ id __41__CNEnvironment_valueForKey_onCacheMiss___block_invoke(void *a1)
   return v3;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33__CNEnvironment_setValue_forKey___block_invoke;
   v10[3] = &unk_1E6ED57E0;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = keyCopy;
+  v12 = valueCopy;
+  v8 = valueCopy;
+  v9 = keyCopy;
   cn_runWithObjectLock(self, v10);
 }
 
 - (_TtP18ContactsFoundation24CNKeychainFacadeProtocol_)keychainFacade
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_185A745F8();
 
   return v3;
@@ -520,7 +520,7 @@ id __41__CNEnvironment_valueForKey_onCacheMiss___block_invoke(void *a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1859F0000, a2, OS_LOG_TYPE_DEBUG, "Is regulated SKU: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -529,7 +529,7 @@ id __41__CNEnvironment_valueForKey_onCacheMiss___block_invoke(void *a1)
 {
   v6 = *MEMORY[0x1E69E9840];
   v2 = @"NO";
-  if (a1)
+  if (self)
   {
     v2 = @"YES";
   }

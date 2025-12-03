@@ -4,7 +4,7 @@
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GCSystemButtonService
@@ -61,9 +61,9 @@ void __39__GCSystemButtonService_sharedInstance__block_invoke()
   if ([(GCSystemButtonService *)self isAvailable])
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(GCSystemButtonService *)self localizedName];
-    v5 = [(GCSystemButtonService *)self sfSymbolName];
-    v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+    localizedName = [(GCSystemButtonService *)self localizedName];
+    sfSymbolName = [(GCSystemButtonService *)self sfSymbolName];
+    v6 = [v3 stringWithFormat:@"%@ (%@)", localizedName, sfSymbolName];
   }
 
   else
@@ -85,22 +85,22 @@ void __39__GCSystemButtonService_sharedInstance__block_invoke()
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (self->_impl == a4)
+  pathCopy = path;
+  if (self->_impl == object)
   {
-    v11 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F8]];
-    v12 = [v11 BOOLValue];
+    v11 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F8]];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
-      [(GCSystemButtonService *)self willChangeValueForKey:v10];
+      [(GCSystemButtonService *)self willChangeValueForKey:pathCopy];
     }
 
     else
     {
-      [(GCSystemButtonService *)self didChangeValueForKey:v10];
+      [(GCSystemButtonService *)self didChangeValueForKey:pathCopy];
     }
   }
 
@@ -108,7 +108,7 @@ void __39__GCSystemButtonService_sharedInstance__block_invoke()
   {
     v13.receiver = self;
     v13.super_class = GCSystemButtonService;
-    [(GCSystemButtonService *)&v13 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(GCSystemButtonService *)&v13 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface MSTriageAction
-+ (id)_performAction:(id)a3 actionName:(id)a4;
++ (id)_performAction:(id)action actionName:(id)name;
 + (id)log;
-+ (void)_performAction:(id)a3 undoManager:(id)a4 actionName:(id)a5;
++ (void)_performAction:(id)action undoManager:(id)manager actionName:(id)name;
 - (EFFuture)changeActionFuture;
 - (EMMessageRepository)messageRepository;
-- (MSTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6;
-- (MSTriageAction)initWithOrigin:(int64_t)a3 actor:(int64_t)a4;
-- (MSTriageAction)initWithQuery:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6;
+- (MSTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate;
+- (MSTriageAction)initWithOrigin:(int64_t)origin actor:(int64_t)actor;
+- (MSTriageAction)initWithQuery:(id)query origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate;
 - (MSTriageActionDelegate)delegate;
-- (void)performWithUndoManager:(id)a3 actionName:(id)a4 completion:(id)a5;
+- (void)performWithUndoManager:(id)manager actionName:(id)name completion:(id)completion;
 @end
 
 @implementation MSTriageAction
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __21__MSTriageAction_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_3 != -1)
   {
     dispatch_once(&log_onceToken_3, block);
@@ -38,67 +38,67 @@ void __21__MSTriageAction_log__block_invoke(uint64_t a1)
   log_log_3 = v1;
 }
 
-- (MSTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6
+- (MSTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate
 {
-  v12 = a3;
-  v13 = a6;
+  selectionCopy = selection;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = MSTriageAction;
   v14 = [(MSTriageAction *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_messageListItemSelection, a3);
-    v15->_origin = a4;
-    v15->_actor = a5;
-    objc_storeWeak(&v15->_delegate, v13);
-    v16 = [(MSTriageAction *)v15 messageRepository];
+    objc_storeStrong(&v14->_messageListItemSelection, selection);
+    v15->_origin = origin;
+    v15->_actor = actor;
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    messageRepository = [(MSTriageAction *)v15 messageRepository];
 
-    if (!v16)
+    if (!messageRepository)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v15 file:@"MSTriageAction.m" lineNumber:32 description:@"messageRepository cannot be nil. Either pass non-nil delegate or have selection.messageListItems not be empty."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v15 file:@"MSTriageAction.m" lineNumber:32 description:@"messageRepository cannot be nil. Either pass non-nil delegate or have selection.messageListItems not be empty."];
     }
   }
 
   return v15;
 }
 
-- (MSTriageAction)initWithQuery:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6
+- (MSTriageAction)initWithQuery:(id)query origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a6;
+  queryCopy = query;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = MSTriageAction;
   v13 = [(MSTriageAction *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_actor = a5;
-    v13->_query = v11;
-    v13->_origin = a4;
-    objc_storeWeak(&v13->_delegate, v12);
-    v15 = [(MSTriageAction *)v14 messageRepository];
+    v13->_actor = actor;
+    v13->_query = queryCopy;
+    v13->_origin = origin;
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    messageRepository = [(MSTriageAction *)v14 messageRepository];
 
-    if (!v15)
+    if (!messageRepository)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:a2 object:v14 file:@"MSTriageAction.m" lineNumber:45 description:@"messageRepository cannot be nil. Either pass non-nil delegate or have selection.messageListItems not be empty."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v14 file:@"MSTriageAction.m" lineNumber:45 description:@"messageRepository cannot be nil. Either pass non-nil delegate or have selection.messageListItems not be empty."];
     }
   }
 
   return v14;
 }
 
-- (MSTriageAction)initWithOrigin:(int64_t)a3 actor:(int64_t)a4
+- (MSTriageAction)initWithOrigin:(int64_t)origin actor:(int64_t)actor
 {
   v7.receiver = self;
   v7.super_class = MSTriageAction;
   result = [(MSTriageAction *)&v7 init];
   if (result)
   {
-    result->_origin = a3;
-    result->_actor = a4;
+    result->_origin = origin;
+    result->_actor = actor;
   }
 
   return result;
@@ -106,77 +106,77 @@ void __21__MSTriageAction_log__block_invoke(uint64_t a1)
 
 - (EMMessageRepository)messageRepository
 {
-  v4 = [(MSTriageAction *)self messageListItemSelection];
-  v5 = [v4 messageListItems];
-  v6 = [v5 firstObject];
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  firstObject = [messageListItems firstObject];
 
-  v7 = [v6 repository];
-  v8 = [(MSTriageAction *)self delegate];
-  if (!v7)
+  repository = [firstObject repository];
+  delegate = [(MSTriageAction *)self delegate];
+  if (!repository)
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v8 messageRepositoryForTriageAction:self];
+      repository = [delegate messageRepositoryForTriageAction:self];
     }
 
     else
     {
-      v7 = 0;
+      repository = 0;
     }
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MSTriageAction.m" lineNumber:72 description:{@"Expected messageRepository to be an EMMessageRepository, but was %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSTriageAction.m" lineNumber:72 description:{@"Expected messageRepository to be an EMMessageRepository, but was %@", objc_opt_class()}];
   }
 
-  return v7;
+  return repository;
 }
 
 - (EFFuture)changeActionFuture
 {
   v2 = MEMORY[0x277D07150];
-  v3 = [(MSTriageAction *)self _changeAction];
-  v4 = [v2 futureWithResult:v3];
+  _changeAction = [(MSTriageAction *)self _changeAction];
+  v4 = [v2 futureWithResult:_changeAction];
 
   return v4;
 }
 
-- (void)performWithUndoManager:(id)a3 actionName:(id)a4 completion:(id)a5
+- (void)performWithUndoManager:(id)manager actionName:(id)name completion:(id)completion
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  [MSTriageAction _performAction:self undoManager:v10 actionName:v8];
-  if (v9)
+  managerCopy = manager;
+  nameCopy = name;
+  completionCopy = completion;
+  [MSTriageAction _performAction:self undoManager:managerCopy actionName:nameCopy];
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-+ (void)_performAction:(id)a3 undoManager:(id)a4 actionName:(id)a5
++ (void)_performAction:(id)action undoManager:(id)manager actionName:(id)name
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  managerCopy = manager;
+  nameCopy = name;
   v11 = +[MSTriageAction log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v8;
+    v24 = actionCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = nameCopy;
     _os_log_impl(&dword_257F8E000, v11, OS_LOG_TYPE_DEFAULT, "%@: Request to perform action: %{public}@", buf, 0x16u);
   }
 
-  v12 = [MSTriageAction _performAction:v8 actionName:v10];
+  v12 = [MSTriageAction _performAction:actionCopy actionName:nameCopy];
   v13 = v12;
   if (v12)
   {
-    if (v9)
+    if (managerCopy)
     {
       if ([v12 isValid])
       {
@@ -184,9 +184,9 @@ void __21__MSTriageAction_log__block_invoke(uint64_t a1)
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v24 = v8;
+          v24 = actionCopy;
           v25 = 2114;
-          v26 = v10;
+          v26 = nameCopy;
           _os_log_impl(&dword_257F8E000, v14, OS_LOG_TYPE_DEFAULT, "%@: Register undo change action: %{public}@", buf, 0x16u);
         }
 
@@ -195,11 +195,11 @@ void __21__MSTriageAction_log__block_invoke(uint64_t a1)
         v19[2] = __56__MSTriageAction__performAction_undoManager_actionName___block_invoke;
         v19[3] = &unk_27985BB58;
         v20 = v13;
-        v15 = v9;
+        v15 = managerCopy;
         v21 = v15;
-        v16 = v10;
+        v16 = nameCopy;
         v22 = v16;
-        [v15 registerUndoWithTarget:a1 handler:v19];
+        [v15 registerUndoWithTarget:self handler:v19];
         if (v16 && ([v15 isUndoing] & 1) == 0)
         {
           [v15 setActionName:v16];
@@ -231,36 +231,36 @@ void __21__MSTriageAction_log__block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_performAction:(id)a3 actionName:(id)a4
++ (id)_performAction:(id)action actionName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D071A8] promise];
-  v8 = [v5 messageRepository];
-  v9 = [v5 changeActionFuture];
+  actionCopy = action;
+  nameCopy = name;
+  promise = [MEMORY[0x277D071A8] promise];
+  messageRepository = [actionCopy messageRepository];
+  changeActionFuture = [actionCopy changeActionFuture];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __44__MSTriageAction__performAction_actionName___block_invoke;
   v21[3] = &unk_27985BB80;
-  v10 = v5;
+  v10 = actionCopy;
   v22 = v10;
-  v11 = v6;
+  v11 = nameCopy;
   v23 = v11;
-  v12 = v8;
+  v12 = messageRepository;
   v24 = v12;
-  v13 = v7;
+  v13 = promise;
   v25 = v13;
-  [v9 addSuccessBlock:v21];
+  [changeActionFuture addSuccessBlock:v21];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __44__MSTriageAction__performAction_actionName___block_invoke_19;
   v19[3] = &unk_27985BBA8;
   v14 = v10;
   v20 = v14;
-  [v9 addFailureBlock:v19];
+  [changeActionFuture addFailureBlock:v19];
   v15 = [MSTriageUndoAction alloc];
-  v16 = [v13 future];
-  v17 = [(MSTriageUndoAction *)v15 initWithChangeActionFuture:v16 messageRepository:v12];
+  future = [v13 future];
+  v17 = [(MSTriageUndoAction *)v15 initWithChangeActionFuture:future messageRepository:v12];
 
   return v17;
 }

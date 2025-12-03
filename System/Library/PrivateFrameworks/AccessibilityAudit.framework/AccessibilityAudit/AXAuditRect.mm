@@ -1,23 +1,23 @@
 @interface AXAuditRect
-+ (id)createWithRect:(CGRect)a3;
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)createWithRect:(CGRect)rect;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)rect;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AXAuditRect
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v5 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditRect_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportPropertyEntry *)v4 setTransportKey:@"RectValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v4 setLocalValueToTransportValue:&__block_literal_global_4];
   [(AXAuditObjectTransportPropertyEntry *)v4 setPopulateLocalObjectWithTransportValue:&__block_literal_global_10_0];
   [(AXAuditObjectTransportInfoPropertyBased *)v5 addPropertyEntry:v4];
-  [v3 registerTransportInfoPropertyBased:v5];
+  [managerCopy registerTransportInfoPropertyBased:v5];
 }
 
 uint64_t __54__AXAuditRect_registerTransportableObjectWithManager___block_invoke(uint64_t a1, void *a2)
@@ -40,22 +40,22 @@ void __54__AXAuditRect_registerTransportableObjectWithManager___block_invoke_2(u
   }
 }
 
-+ (id)createWithRect:(CGRect)a3
++ (id)createWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = objc_alloc_init(AXAuditRect);
   [(AXAuditRect *)v7 setRect:x, y, width, height];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -70,7 +70,7 @@ void __54__AXAuditRect_registerTransportableObjectWithManager___block_invoke_2(u
       v8 = v7;
       v10 = v9;
       v12 = v11;
-      [(AXAuditRect *)v4 rect];
+      [(AXAuditRect *)equalCopy rect];
       v20.origin.x = v13;
       v20.origin.y = v14;
       v20.size.width = v15;
@@ -91,9 +91,9 @@ void __54__AXAuditRect_registerTransportableObjectWithManager___block_invoke_2(u
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(AXAuditRect *)self rect];
   [v4 setRect:?];
   return v4;

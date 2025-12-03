@@ -1,7 +1,7 @@
 @interface OPTTSTTSNormalizedText
 - (NSString)text;
-- (OPTTSTTSNormalizedText)initWithFlatbuffData:(id)a3 root:(const TTSNormalizedText *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TTSNormalizedText>)addObjectToBuffer:(void *)a3;
+- (OPTTSTTSNormalizedText)initWithFlatbuffData:(id)data root:(const TTSNormalizedText *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TTSNormalizedText>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 @end
 
@@ -36,26 +36,26 @@ apple::aiml::flatbuffers2::DetachedBuffer *__38__OPTTSTTSNormalizedText_flatbuff
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TTSNormalizedText>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TTSNormalizedText>)addObjectToBuffer:(void *)buffer
 {
-  v4 = [(OPTTSTTSNormalizedText *)self text];
-  v5 = v4;
-  if (!v4)
+  text = [(OPTTSTTSNormalizedText *)self text];
+  v5 = text;
+  if (!text)
   {
-    v4 = &stru_1F28C4E90;
+    text = &stru_1F28C4E90;
   }
 
-  v6 = [(__CFString *)v4 UTF8String];
-  v7 = strlen(v6);
-  LODWORD(v6) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v6, v7);
+  uTF8String = [(__CFString *)text UTF8String];
+  v7 = strlen(uTF8String);
+  LODWORD(uTF8String) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v7);
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 10);
-  v9 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(a3, 4, v6);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 10);
+  v9 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::Vector<unsigned char>>(buffer, 4, uTF8String);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v9 + v8);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v9 + v8);
 }
 
 - (NSString)text
@@ -81,10 +81,10 @@ apple::aiml::flatbuffers2::DetachedBuffer *__38__OPTTSTTSNormalizedText_flatbuff
   return v6;
 }
 
-- (OPTTSTTSNormalizedText)initWithFlatbuffData:(id)a3 root:(const TTSNormalizedText *)a4 verify:(BOOL)a5
+- (OPTTSTTSNormalizedText)initWithFlatbuffData:(id)data root:(const TTSNormalizedText *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTTSNormalizedText;
   v10 = [(OPTTSTTSNormalizedText *)&v25 init];
@@ -93,35 +93,35 @@ apple::aiml::flatbuffers2::DetachedBuffer *__38__OPTTSTTSNormalizedText_flatbuff
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

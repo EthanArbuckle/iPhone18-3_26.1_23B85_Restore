@@ -1,15 +1,15 @@
 @interface AVFigSampleBufferAudioRendererFactory
-- (OpaqueFigSampleBufferAudioRenderer)createAudioRendererWithAllocator:(__CFAllocator *)a3 options:(__CFDictionary *)a4 error:(id *)a5;
+- (OpaqueFigSampleBufferAudioRenderer)createAudioRendererWithAllocator:(__CFAllocator *)allocator options:(__CFDictionary *)options error:(id *)error;
 @end
 
 @implementation AVFigSampleBufferAudioRendererFactory
 
-- (OpaqueFigSampleBufferAudioRenderer)createAudioRendererWithAllocator:(__CFAllocator *)a3 options:(__CFDictionary *)a4 error:(id *)a5
+- (OpaqueFigSampleBufferAudioRenderer)createAudioRendererWithAllocator:(__CFAllocator *)allocator options:(__CFDictionary *)options error:(id *)error
 {
   RemoteWithOptionsAndRetry = FigSampleBufferAudioRendererCreateRemoteWithOptionsAndRetry();
-  if (a5 && RemoteWithOptionsAndRetry)
+  if (error && RemoteWithOptionsAndRetry)
   {
-    *a5 = AVLocalizedErrorWithUnderlyingOSStatus(RemoteWithOptionsAndRetry, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(RemoteWithOptionsAndRetry, 0);
   }
 
   return 0;

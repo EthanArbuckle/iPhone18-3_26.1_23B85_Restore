@@ -6,7 +6,7 @@
 
 - (id)removingNonSecureCodingValues
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100063A88();
 
   return v3;

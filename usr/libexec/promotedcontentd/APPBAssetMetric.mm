@@ -1,13 +1,13 @@
 @interface APPBAssetMetric
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAssetMetric
@@ -29,8 +29,8 @@
   v7.receiver = self;
   v7.super_class = APPBAssetMetric;
   v3 = [(APPBAssetMetric *)&v7 description];
-  v4 = [(APPBAssetMetric *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAssetMetric *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -60,60 +60,60 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_uRL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueIdentifier)
   {
-    [v4 setUniqueIdentifier:?];
-    v4 = v5;
+    [toCopy setUniqueIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_uRL)
   {
     [v5 setURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_time;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_time;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_uRL copyWithZone:a3];
+  v8 = [(NSString *)self->_uRL copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -126,16 +126,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 3))
+  if (uniqueIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -144,7 +144,7 @@
   }
 
   uRL = self->_uRL;
-  if (uRL | *(v4 + 2))
+  if (uRL | *(equalCopy + 2))
   {
     if (![(NSString *)uRL isEqual:?])
     {
@@ -152,10 +152,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_time == *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_time == *(equalCopy + 1))
     {
       v7 = 1;
       goto LABEL_11;
@@ -210,25 +210,25 @@ LABEL_11:
   return v4 ^ v3 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(APPBAssetMetric *)self setUniqueIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBAssetMetric *)self setURL:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_time = v4[1];
+    self->_time = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

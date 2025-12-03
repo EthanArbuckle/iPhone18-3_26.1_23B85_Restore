@@ -1,15 +1,15 @@
 @interface VKCCornerLookupButton
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (VKCCornerLookupButton)initWithFrame:(CGRect)a3 resultItem:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (VKCCornerLookupButton)initWithFrame:(CGRect)frame resultItem:(id)item;
 - (VKCCornerLookupButtonDelegate)delegate;
 - (double)contentSizeScaleFactor;
 - (double)cornerButtonSize;
 - (id)_queryString;
 - (id)_symbolNameForItem;
 - (id)imageForButton;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)queryForProcessingResult;
-- (void)_didDismissVisualResultsPane:(id)a3;
+- (void)_didDismissVisualResultsPane:(id)pane;
 - (void)_setupButton;
 - (void)_setupGestures;
 - (void)_updateImage;
@@ -17,7 +17,7 @@
 - (void)didDismissVisualResultsPane;
 - (void)didMoveToWindow;
 - (void)didTap;
-- (void)setShouldShowResultWhenVisible:(BOOL)a3;
+- (void)setShouldShowResultWhenVisible:(BOOL)visible;
 - (void)showLookupUIPaneForResultItem;
 - (void)showVisualSearchResultView;
 - (void)updateIndicatorDotForState;
@@ -29,9 +29,9 @@
 {
   if (!self->_observingInteractionDidFinish)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = getkDDRVInteractionDidFinishNotification();
-    [v3 removeObserver:self name:v4 object:0];
+    [defaultCenter removeObserver:self name:v4 object:0];
   }
 
   v5.receiver = self;
@@ -39,26 +39,26 @@
   [(VKCCornerLookupButton *)&v5 dealloc];
 }
 
-- (VKCCornerLookupButton)initWithFrame:(CGRect)a3 resultItem:(id)a4
+- (VKCCornerLookupButton)initWithFrame:(CGRect)frame resultItem:(id)item
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = VKCCornerLookupButton;
-  v10 = [(VKCCornerLookupButton *)&v16 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(VKCCornerLookupButton *)&v16 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(VKCCornerLookupButton *)v10 setResultItem:v9];
+    [(VKCCornerLookupButton *)height setResultItem:itemCopy];
     [(VKCCornerLookupButton *)v11 _setupGestures];
     [(VKCCornerLookupButton *)v11 setAccessibilityIdentifier:@"com.apple.visionkit.visualSearchCornerIndicator"];
     if ([MEMORY[0x1E69DC938] vk_isiPad])
     {
-      v12 = [(VKCCornerLookupButton *)v11 traitCollection];
-      if ([v12 vk_hasCompactWidth])
+      traitCollection = [(VKCCornerLookupButton *)v11 traitCollection];
+      if ([traitCollection vk_hasCompactWidth])
       {
         v13 = 32.0;
       }
@@ -86,8 +86,8 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(VKCCornerLookupButton *)self window];
-  if (v3 && (v12 = v3, v4 = [(VKCCornerLookupButton *)self shouldShowResultWhenVisible], v3 = v12, v4))
+  window = [(VKCCornerLookupButton *)self window];
+  if (window && (v12 = window, v4 = [(VKCCornerLookupButton *)self shouldShowResultWhenVisible], window = v12, v4))
   {
     isShowingVisualResultsPane = self->_isShowingVisualResultsPane;
 
@@ -97,8 +97,8 @@
       [(VKCCornerLookupButton *)self convertPoint:0 toView:?];
       v7 = v6;
       v9 = v8;
-      v10 = [(VKCCornerLookupButton *)self window];
-      [v10 bounds];
+      window2 = [(VKCCornerLookupButton *)self window];
+      [window2 bounds];
       v14.x = v7;
       v14.y = v9;
       v11 = CGRectContainsPoint(v15, v14);
@@ -116,12 +116,12 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(VKCCornerLookupButton *)self tapGestureRecognizer];
+  recognizerCopy = recognizer;
+  tapGestureRecognizer = [(VKCCornerLookupButton *)self tapGestureRecognizer];
 
-  return v6 == v5;
+  return tapGestureRecognizer == recognizerCopy;
 }
 
 - (void)_setupGestures
@@ -133,14 +133,14 @@
 - (id)imageForButton
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [(VKCCornerLookupButton *)self _symbolNameForItem];
-  v5 = [v3 vk_symbolImageWithName:v4];
+  _symbolNameForItem = [(VKCCornerLookupButton *)self _symbolNameForItem];
+  v5 = [v3 vk_symbolImageWithName:_symbolNameForItem];
 
   if (!v5)
   {
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [(VKCCornerLookupButton *)self _defaultSymbolName];
-    v5 = [v6 vk_symbolImageWithName:v7];
+    _defaultSymbolName = [(VKCCornerLookupButton *)self _defaultSymbolName];
+    v5 = [v6 vk_symbolImageWithName:_defaultSymbolName];
   }
 
   v8 = [v5 imageWithRenderingMode:2];
@@ -150,22 +150,22 @@
 
 - (id)_symbolNameForItem
 {
-  v2 = [(VKCCornerLookupButton *)self resultItem];
-  v3 = [v2 glyphName];
+  resultItem = [(VKCCornerLookupButton *)self resultItem];
+  glyphName = [resultItem glyphName];
 
-  return v3;
+  return glyphName;
 }
 
 - (void)_setupButton
 {
-  v12 = [(VKCCornerLookupButton *)self imageForButton];
+  imageForButton = [(VKCCornerLookupButton *)self imageForButton];
   v3 = [MEMORY[0x1E69DC738] buttonWithType:0];
   button = self->_button;
   self->_button = v3;
 
   [(UIButton *)self->_button addTarget:self action:sel_didTap forControlEvents:64];
-  v5 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [(UIButton *)self->_button setConfiguration:v5];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [(UIButton *)self->_button setConfiguration:plainButtonConfiguration];
   if ([MEMORY[0x1E69DC938] vk_isiPhone])
   {
     v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
@@ -173,17 +173,17 @@
     [(UIButton *)self->_button setPreferredSymbolConfiguration:v7 forImageInState:0];
   }
 
-  [(UIButton *)self->_button setImage:v12 forState:0];
+  [(UIButton *)self->_button setImage:imageForButton forState:0];
   [(VKCCornerLookupButton *)self cornerButtonSize];
   v9 = v8;
   [(UIButton *)self->_button setFrame:0.0, 0.0, v9, v9];
   [(VKCCornerLookupButton *)self addSubview:self->_button];
   [(VKCCornerLookupButton *)self updateIndicatorDotForState];
-  v10 = [(VKCCornerLookupButton *)self layer];
-  [v10 setMasksToBounds:1];
+  layer = [(VKCCornerLookupButton *)self layer];
+  [layer setMasksToBounds:1];
 
-  v11 = [(VKCCornerLookupButton *)self layer];
-  [v11 setCornerRadius:v9 * 0.5];
+  layer2 = [(VKCCornerLookupButton *)self layer];
+  [layer2 setCornerRadius:v9 * 0.5];
 }
 
 - (double)cornerButtonSize
@@ -196,8 +196,8 @@
 
 - (double)contentSizeScaleFactor
 {
-  v2 = [(VKCCornerLookupButton *)self traitCollection];
-  [v2 vk_contentSizeScaleFactor];
+  traitCollection = [(VKCCornerLookupButton *)self traitCollection];
+  [traitCollection vk_contentSizeScaleFactor];
   v4 = v3;
 
   return fmax(v4, 1.0);
@@ -238,14 +238,14 @@
 {
   if (!self->_isShowingVisualResultsPane)
   {
-    v4 = [(VKCCornerLookupButton *)self resultItem];
-    [v4 setCurrentInvocationType:1];
+    resultItem = [(VKCCornerLookupButton *)self resultItem];
+    [resultItem setCurrentInvocationType:1];
 
     [(VKCCornerLookupButton *)self showVisualSearchResultView];
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v5 = [MEMORY[0x1E69DCDB8] effectWithPreview:v4];
@@ -254,12 +254,12 @@
   return v6;
 }
 
-- (void)setShouldShowResultWhenVisible:(BOOL)a3
+- (void)setShouldShowResultWhenVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_shouldShowResultWhenVisible = a3;
-  v5 = [(VKCCornerLookupButton *)self window];
-  if (v5 && v3)
+  visibleCopy = visible;
+  self->_shouldShowResultWhenVisible = visible;
+  window = [(VKCCornerLookupButton *)self window];
+  if (window && visibleCopy)
   {
     isShowingVisualResultsPane = self->_isShowingVisualResultsPane;
 
@@ -279,8 +279,8 @@
 {
   self->_isShowingVisualResultsPane = 1;
   [(VKCCornerLookupButton *)self showLookupUIPaneForResultItem];
-  v3 = [(VKCCornerLookupButton *)self delegate];
-  [v3 lookupButton:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{0.0, 0.0, 1.0, 1.0}];
+  delegate = [(VKCCornerLookupButton *)self delegate];
+  [delegate lookupButton:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:{0.0, 0.0, 1.0, 1.0}];
 
   [(VKCCornerLookupButton *)self updateIndicatorDotForState];
 }
@@ -288,8 +288,8 @@
 - (void)didDismissVisualResultsPane
 {
   self->_isShowingVisualResultsPane = 0;
-  v3 = [(VKCCornerLookupButton *)self delegate];
-  [v3 lookupButtonDidDismissController:self];
+  delegate = [(VKCCornerLookupButton *)self delegate];
+  [delegate lookupButtonDidDismissController:self];
 
   [(VKCCornerLookupButton *)self updateIndicatorDotForState];
 }
@@ -307,7 +307,7 @@
   objc_initWeak(&location, self);
   v3 = +[VKCImageAnalyzerRequest newQueryIDForParsec];
   v4 = objc_alloc(MEMORY[0x1E69C7520]);
-  v5 = [(VKCCornerLookupButton *)self _queryString];
+  _queryString = [(VKCCornerLookupButton *)self _queryString];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__VKCCornerLookupButton_queryForProcessingResult__block_invoke;
@@ -315,7 +315,7 @@
   objc_copyWeak(v9, &location);
   v8[4] = self;
   v9[1] = v3;
-  v6 = [v4 initWithTitle:v5 clientIdentifier:@"com.apple.mediaanalysisd" userAgent:@"VisualIntelligence/1" queryID:v3 queryProvider:v8];
+  v6 = [v4 initWithTitle:_queryString clientIdentifier:@"com.apple.mediaanalysisd" userAgent:@"VisualIntelligence/1" queryID:v3 queryProvider:v8];
 
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -451,10 +451,10 @@ void __49__VKCCornerLookupButton_queryForProcessingResult__block_invoke_3(uint64
 
 - (void)showLookupUIPaneForResultItem
 {
-  v3 = [(VKCCornerLookupButton *)self queryForProcessingResult];
+  queryForProcessingResult = [(VKCCornerLookupButton *)self queryForProcessingResult];
   v4 = objc_alloc(MEMORY[0x1E69C7518]);
-  v5 = [(VKCCornerLookupButton *)self _queryString];
-  v6 = [v4 initWithSearchQuery:v3 rangeInContext:{0x7FFFFFFFFFFFFFFFLL, objc_msgSend(v5, "length")}];
+  _queryString = [(VKCCornerLookupButton *)self _queryString];
+  v6 = [v4 initWithSearchQuery:queryForProcessingResult rangeInContext:{0x7FFFFFFFFFFFFFFFLL, objc_msgSend(_queryString, "length")}];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -462,19 +462,19 @@ void __49__VKCCornerLookupButton_queryForProcessingResult__block_invoke_3(uint64
   v14[3] = &unk_1E7BE3EF8;
   v14[4] = self;
   [v6 setReportAnIssueExtendedBlock:v14];
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(VKCCornerLookupButton *)self setCurrentRVItemID:v8];
-  [v6 setClientHints:v8];
-  v9 = [(VKCCornerLookupButton *)self delegate];
-  [v9 addMetadataToVSFeedbackItem:v6];
+  [(VKCCornerLookupButton *)self setCurrentRVItemID:uUIDString];
+  [v6 setClientHints:uUIDString];
+  delegate = [(VKCCornerLookupButton *)self delegate];
+  [delegate addMetadataToVSFeedbackItem:v6];
 
   if (![(VKCCornerLookupButton *)self observingInteractionDidFinish])
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v11 = getkDDRVInteractionDidFinishNotification();
-    [v10 addObserver:self selector:sel__didDismissVisualResultsPane_ name:v11 object:0];
+    [defaultCenter addObserver:self selector:sel__didDismissVisualResultsPane_ name:v11 object:0];
 
     [(VKCCornerLookupButton *)self setObservingInteractionDidFinish:1];
   }
@@ -511,34 +511,34 @@ void __54__VKCCornerLookupButton_showLookupUIPaneForResultItem__block_invoke(uin
   [v10 submitVisualSearchUserFeedbackForReportIdentifier:v7 userFeedbackPayload:v9 sfReportData:v6];
 }
 
-- (void)_didDismissVisualResultsPane:(id)a3
+- (void)_didDismissVisualResultsPane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   v5 = objc_opt_class();
-  v6 = [v4 object];
+  object = [paneCopy object];
 
-  v15 = VKDynamicCast(v5, v6);
+  v15 = VKDynamicCast(v5, object);
 
   v7 = objc_opt_class();
-  v8 = [v15 clientHints];
-  v9 = VKDynamicCast(v7, v8);
+  clientHints = [v15 clientHints];
+  v9 = VKDynamicCast(v7, clientHints);
 
   if (v9)
   {
-    v10 = [(VKCCornerLookupButton *)self currentRVItemID];
-    v11 = [v9 isEqualToString:v10];
+    currentRVItemID = [(VKCCornerLookupButton *)self currentRVItemID];
+    v11 = [v9 isEqualToString:currentRVItemID];
 
     if (v11)
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v13 = getkDDRVInteractionDidFinishNotification();
-      [v12 removeObserver:self name:v13 object:0];
+      [defaultCenter removeObserver:self name:v13 object:0];
 
       [(VKCCornerLookupButton *)self setObservingInteractionDidFinish:0];
       [(VKCCornerLookupButton *)self setCurrentRVItemID:0];
       self->_isShowingVisualResultsPane = 0;
-      v14 = [(VKCCornerLookupButton *)self delegate];
-      [v14 lookupButtonDidDismissController:self];
+      delegate = [(VKCCornerLookupButton *)self delegate];
+      [delegate lookupButtonDidDismissController:self];
 
       [(VKCCornerLookupButton *)self updateIndicatorDotForState];
     }

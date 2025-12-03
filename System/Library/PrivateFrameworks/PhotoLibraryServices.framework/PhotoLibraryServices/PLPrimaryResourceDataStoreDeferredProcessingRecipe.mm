@@ -1,17 +1,17 @@
 @interface PLPrimaryResourceDataStoreDeferredProcessingRecipe
-- (PLPrimaryResourceDataStoreDeferredProcessingRecipe)initWithRecipeID:(unsigned int)a3;
+- (PLPrimaryResourceDataStoreDeferredProcessingRecipe)initWithRecipeID:(unsigned int)d;
 - (id)supportedVersionsForLocalResourceGeneration;
-- (void)_generateAndStoreOutsideOfTaskManagementForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6;
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6;
+- (void)_generateAndStoreOutsideOfTaskManagementForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion;
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion;
 @end
 
 @implementation PLPrimaryResourceDataStoreDeferredProcessingRecipe
 
-- (void)generateAndStoreForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6
+- (void)generateAndStoreForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -37,25 +37,25 @@
   v25[4] = v30;
   v25[5] = v28;
   v25[6] = v26;
-  v13 = [PLIntensiveResourceTask taskForDeferredFinalizationForAsset:v10 resourceRecipe:self options:v11 preCompletionBlock:v25];
-  v14 = [v10 photoLibrary];
-  v15 = [v14 libraryServicesManager];
-  v16 = [v15 intensiveResourceTaskManager];
+  v13 = [PLIntensiveResourceTask taskForDeferredFinalizationForAsset:assetCopy resourceRecipe:self options:optionsCopy preCompletionBlock:v25];
+  photoLibrary = [assetCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  intensiveResourceTaskManager = [libraryServicesManager intensiveResourceTaskManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __107__PLPrimaryResourceDataStoreDeferredProcessingRecipe_generateAndStoreForAsset_options_progress_completion___block_invoke_2;
   v20[3] = &unk_1E75674E0;
-  v17 = v12;
+  v17 = completionCopy;
   v21 = v17;
   v22 = v30;
   v23 = v28;
   v24 = v26;
-  v18 = [v16 submitTask:v13 completionHandler:v20];
+  v18 = [intensiveResourceTaskManager submitTask:v13 completionHandler:v20];
 
-  if (a5)
+  if (progress)
   {
     v19 = v18;
-    *a5 = v18;
+    *progress = v18;
   }
 
   _Block_object_dispose(v26, 8);
@@ -92,20 +92,20 @@ void __107__PLPrimaryResourceDataStoreDeferredProcessingRecipe_generateAndStoreF
   (*(v3 + 16))(v3, v4, v5, *(*(a1[6] + 8) + 40), *(*(a1[7] + 8) + 40), 0);
 }
 
-- (void)_generateAndStoreOutsideOfTaskManagementForAsset:(id)a3 options:(id)a4 progress:(id *)a5 completion:(id)a6
+- (void)_generateAndStoreOutsideOfTaskManagementForAsset:(id)asset options:(id)options progress:(id *)progress completion:(id)completion
 {
   v66[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(PLPrimaryResourceDataStoreDeferredProcessingRecipe *)self supportedVersionsForLocalResourceGeneration];
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v11, "version")}];
-  v15 = [v13 containsObject:v14];
+  assetCopy = asset;
+  optionsCopy = options;
+  completionCopy = completion;
+  supportedVersionsForLocalResourceGeneration = [(PLPrimaryResourceDataStoreDeferredProcessingRecipe *)self supportedVersionsForLocalResourceGeneration];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(optionsCopy, "version")}];
+  v15 = [supportedVersionsForLocalResourceGeneration containsObject:v14];
 
-  v51 = v12;
-  v52 = v10;
-  v47 = a5;
-  v50 = v11;
+  v51 = completionCopy;
+  v52 = assetCopy;
+  progressCopy = progress;
+  v50 = optionsCopy;
   if (v15)
   {
     v16 = MEMORY[0x1E69BFF48];
@@ -124,38 +124,38 @@ void __107__PLPrimaryResourceDataStoreDeferredProcessingRecipe_generateAndStoreF
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLPrimaryResourceDataStoreDeferredProcessingRecipe recipeID](self, "recipeID")}];
     v66[1] = v19;
     v65[2] = @"version";
-    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v11, "version")}];
+    v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(optionsCopy, "version")}];
     v66[2] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:3];
     v48 = [v49 errorWithDomain:v17 code:47004 userInfo:v21];
 
-    v10 = v52;
+    assetCopy = v52;
   }
 
   recipeID = self->_recipeID;
-  v23 = self;
+  selfCopy = self;
   if (recipeID == 65944)
   {
-    v24 = [v10 requiresImageDeferredFinalization];
-    recipeID = v23->_recipeID;
+    requiresImageDeferredFinalization = [assetCopy requiresImageDeferredFinalization];
+    recipeID = selfCopy->_recipeID;
   }
 
   else
   {
-    v24 = 0;
+    requiresImageDeferredFinalization = 0;
   }
 
   if (recipeID == 131280)
   {
-    v25 = [v10 requiresVideoComplementDeferredFinalization];
+    requiresVideoComplementDeferredFinalization = [assetCopy requiresVideoComplementDeferredFinalization];
   }
 
   else
   {
-    v25 = 0;
+    requiresVideoComplementDeferredFinalization = 0;
   }
 
-  if (((v24 | v25) & 1) == 0)
+  if (((requiresImageDeferredFinalization | requiresVideoComplementDeferredFinalization) & 1) == 0)
   {
     v38 = MEMORY[0x1E696ABC0];
     v39 = *v16;
@@ -163,7 +163,7 @@ void __107__PLPrimaryResourceDataStoreDeferredProcessingRecipe_generateAndStoreF
     v40 = NSStringFromPLErrorCode();
     v64[0] = v40;
     v63[1] = @"recipe";
-    v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLPrimaryResourceDataStoreDeferredProcessingRecipe recipeID](v23, "recipeID")}];
+    v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PLPrimaryResourceDataStoreDeferredProcessingRecipe recipeID](selfCopy, "recipeID")}];
     v64[1] = v41;
     v63[2] = @"version";
     v29 = v50;
@@ -173,11 +173,11 @@ void __107__PLPrimaryResourceDataStoreDeferredProcessingRecipe_generateAndStoreF
     v37 = [v38 errorWithDomain:v39 code:47006 userInfo:v43];
 
     v44 = v51;
-    v10 = v52;
+    assetCopy = v52;
 LABEL_16:
-    v26 = [MEMORY[0x1E695DFD8] set];
-    v28 = [MEMORY[0x1E695DFB8] orderedSet];
-    (v44)[2](v44, 0, v37, v26, v28, 0);
+    objectID = [MEMORY[0x1E695DFD8] set];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+    (v44)[2](v44, 0, v37, objectID, orderedSet, 0);
     goto LABEL_17;
   }
 
@@ -189,63 +189,63 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v26 = [v10 objectID];
-  v27 = [v10 photoLibrary];
-  v28 = [v27 libraryServicesManager];
+  objectID = [assetCopy objectID];
+  photoLibrary = [assetCopy photoLibrary];
+  orderedSet = [photoLibrary libraryServicesManager];
 
   v29 = v50;
-  if (v24)
+  if (requiresImageDeferredFinalization)
   {
-    v30 = [v50 deferredPhotoFinalizer];
-    v31 = [v50 reason];
-    v32 = [v50 clientBundleID];
+    deferredPhotoFinalizer = [v50 deferredPhotoFinalizer];
+    reason = [v50 reason];
+    clientBundleID = [v50 clientBundleID];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __131__PLPrimaryResourceDataStoreDeferredProcessingRecipe__generateAndStoreOutsideOfTaskManagementForAsset_options_progress_completion___block_invoke;
     v58[3] = &unk_1E7567468;
-    v59 = v28;
+    v59 = orderedSet;
     v33 = v60;
-    v60[0] = v26;
-    v60[1] = v23;
+    v60[0] = objectID;
+    v60[1] = selfCopy;
     v34 = &v61;
     v35 = &v59;
     v61 = v50;
     v36 = &v62;
     v62 = v51;
-    [v30 requestFinalizationOfAsset:v52 isBackgroundPriority:0 reason:v31 clientBundleIdentifier:v32 completionHandler:v58];
+    [deferredPhotoFinalizer requestFinalizationOfAsset:v52 isBackgroundPriority:0 reason:reason clientBundleIdentifier:clientBundleID completionHandler:v58];
 
-    v10 = v52;
+    assetCopy = v52;
     v37 = v48;
   }
 
   else
   {
     v37 = v48;
-    if (!v25)
+    if (!requiresVideoComplementDeferredFinalization)
     {
       v44 = v51;
       goto LABEL_17;
     }
 
-    v45 = [v50 deferredPhotoFinalizer];
+    deferredPhotoFinalizer2 = [v50 deferredPhotoFinalizer];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __131__PLPrimaryResourceDataStoreDeferredProcessingRecipe__generateAndStoreOutsideOfTaskManagementForAsset_options_progress_completion___block_invoke_51;
     v53[3] = &unk_1E7567468;
-    v54 = v28;
+    v54 = orderedSet;
     v33 = v55;
-    v55[0] = v26;
-    v55[1] = v23;
+    v55[0] = objectID;
+    v55[1] = selfCopy;
     v34 = &v56;
     v56 = v50;
     v36 = &v57;
     v57 = v51;
-    v30 = [v45 requestFrameDropRecoveryForAsset:v10 completionHandler:v53];
+    deferredPhotoFinalizer = [deferredPhotoFinalizer2 requestFrameDropRecoveryForAsset:assetCopy completionHandler:v53];
 
-    if (v47)
+    if (progressCopy)
     {
-      v46 = v30;
-      *v47 = v30;
+      v46 = deferredPhotoFinalizer;
+      *progressCopy = deferredPhotoFinalizer;
     }
 
     v35 = &v54;
@@ -487,9 +487,9 @@ LABEL_13:
   }
 }
 
-- (PLPrimaryResourceDataStoreDeferredProcessingRecipe)initWithRecipeID:(unsigned int)a3
+- (PLPrimaryResourceDataStoreDeferredProcessingRecipe)initWithRecipeID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v9.receiver = self;
   v9.super_class = PLPrimaryResourceDataStoreDeferredProcessingRecipe;
   v5 = [(PLPrimaryResourceDataStoreDeferredProcessingRecipe *)&v9 init];
@@ -498,8 +498,8 @@ LABEL_13:
     v6 = [objc_opt_class() classFromRecipeID:v3];
     if (v6 != objc_opt_class())
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:v5 file:@"PLPrimaryResourceDataStoreDeferredProcessingRecipe.m" lineNumber:44 description:@"Wrong recipe class passed to recipe initializer"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"PLPrimaryResourceDataStoreDeferredProcessingRecipe.m" lineNumber:44 description:@"Wrong recipe class passed to recipe initializer"];
     }
 
     v5->_recipeID = v3;

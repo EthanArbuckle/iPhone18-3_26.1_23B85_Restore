@@ -1,23 +1,23 @@
 @interface VUIPlaybackReporterUTS
-+ (BOOL)_shouldCacheResumeTimeForMediaType:(id)a3;
++ (BOOL)_shouldCacheResumeTimeForMediaType:(id)type;
 + (id)sharedInstance;
-+ (void)_cachePlaybackResumeTimeForReferenceID:(id)a3 canonicalID:(id)a4 absoluteResumeTime:(id)a5 featureRelativeResumeTime:(id)a6;
-- (BOOL)_isTransitionValidForPlayer:(id)a3 fromState:(id)a4 toState:(id)a5;
++ (void)_cachePlaybackResumeTimeForReferenceID:(id)d canonicalID:(id)iD absoluteResumeTime:(id)time featureRelativeResumeTime:(id)resumeTime;
+- (BOOL)_isTransitionValidForPlayer:(id)player fromState:(id)state toState:(id)toState;
 - (VUIPlaybackReporterUTS)init;
 - (VUIPlaybackUpNextConfig)playbackUpNextConfig;
 - (WLKPlaybackReporter)reporter;
-- (id)_createSessionForPlayer:(id)a3;
-- (id)_wlkPlaybackRateForState:(id)a3 player:(id)a4;
-- (int64_t)_wlkPlaybackStateForState:(id)a3;
-- (void)_endSession:(id)a3;
-- (void)_handleBgMCEmbeddedPlayerVCTransferredToFullScreenControllerNotification:(id)a3;
-- (void)_handleBgMCWillStartPlaybackNotification:(id)a3;
-- (void)_reportForPlayer:(id)a3 playerState:(id)a4 completionState:(unint64_t)a5 completionBlock:(id)a6;
-- (void)_reportForSession:(id)a3 state:(id)a4 reason:(id)a5;
-- (void)_reportLinearOrEBSForPlayer:(id)a3 isLinear:(BOOL)a4 playerState:(id)a5 completionState:(unint64_t)a6 completionBlock:(id)a7;
-- (void)_reportSummary:(id)a3 sessionID:(id)a4 completion:(id)a5;
-- (void)_reportVODForPlayer:(id)a3 playerState:(id)a4 completionState:(unint64_t)a5 completionBlock:(id)a6;
-- (void)_setSessionMetadataValue:(id)a3 forKey:(id)a4 player:(id)a5;
+- (id)_createSessionForPlayer:(id)player;
+- (id)_wlkPlaybackRateForState:(id)state player:(id)player;
+- (int64_t)_wlkPlaybackStateForState:(id)state;
+- (void)_endSession:(id)session;
+- (void)_handleBgMCEmbeddedPlayerVCTransferredToFullScreenControllerNotification:(id)notification;
+- (void)_handleBgMCWillStartPlaybackNotification:(id)notification;
+- (void)_reportForPlayer:(id)player playerState:(id)state completionState:(unint64_t)completionState completionBlock:(id)block;
+- (void)_reportForSession:(id)session state:(id)state reason:(id)reason;
+- (void)_reportLinearOrEBSForPlayer:(id)player isLinear:(BOOL)linear playerState:(id)state completionState:(unint64_t)completionState completionBlock:(id)block;
+- (void)_reportSummary:(id)summary sessionID:(id)d completion:(id)completion;
+- (void)_reportVODForPlayer:(id)player playerState:(id)state completionState:(unint64_t)completionState completionBlock:(id)block;
+- (void)_setSessionMetadataValue:(id)value forKey:(id)key player:(id)player;
 - (void)dealloc;
 @end
 
@@ -53,11 +53,11 @@ void __40__VUIPlaybackReporterUTS_sharedInstance__block_invoke()
     pendingPlayerProperties = v2->_pendingPlayerProperties;
     v2->_pendingPlayerProperties = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleBgMCWillStartPlaybackNotification_ name:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleBgMCWillStartPlaybackNotification_ name:@"VUIBackgroundMediaControllerWillStartPlaybackNotification" object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleBgMCEmbeddedPlayerVCTransferredToFullScreenControllerNotification_ name:@"VUIBackgroundMediaControllerEmbeddedPlayerViewControllerTransferredToFullScreenControllerNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleBgMCEmbeddedPlayerVCTransferredToFullScreenControllerNotification_ name:@"VUIBackgroundMediaControllerEmbeddedPlayerViewControllerTransferredToFullScreenControllerNotification" object:0];
   }
 
   return v2;
@@ -65,19 +65,19 @@ void __40__VUIPlaybackReporterUTS_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIPlaybackReporterUTS;
   [(VUIPlaybackReporter *)&v4 dealloc];
 }
 
-- (id)_createSessionForPlayer:(id)a3
+- (id)_createSessionForPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [[VUIPlaybackReporterSession alloc] initWithPlayer:v4 context:0];
-  v6 = [(NSMapTable *)self->_pendingPlayerProperties objectForKey:v4];
+  playerCopy = player;
+  v5 = [[VUIPlaybackReporterSession alloc] initWithPlayer:playerCopy context:0];
+  v6 = [(NSMapTable *)self->_pendingPlayerProperties objectForKey:playerCopy];
   if (v6)
   {
     v20 = MEMORY[0x1E69E9820];
@@ -86,15 +86,15 @@ void __40__VUIPlaybackReporterUTS_sharedInstance__block_invoke()
     v23 = &unk_1E8732C58;
     v24 = v5;
     [v6 enumerateKeysAndObjectsUsingBlock:&v20];
-    [(NSMapTable *)self->_pendingPlayerProperties removeObjectForKey:v4];
+    [(NSMapTable *)self->_pendingPlayerProperties removeObjectForKey:playerCopy];
   }
 
-  v7 = [v4 currentMediaItem];
-  v8 = [v7 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
-  v9 = [v7 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C38]];
-  v10 = [v9 BOOLValue];
+  currentMediaItem = [playerCopy currentMediaItem];
+  v8 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v9 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C38]];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = VUIDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -132,9 +132,9 @@ LABEL_11:
     {
       v16 = v15;
       v17 = [(VUIPlaybackReporterSession *)v5 metadataForKey:@"VUIPlaybackReporterSessionMetadataKeyForegroundPlayback"];
-      v18 = [v17 BOOLValue];
+      bOOLValue2 = [v17 BOOLValue];
 
-      if ((v18 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
         v11 = VUIDefaultLogObject();
         if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -156,27 +156,27 @@ LABEL_12:
   return v5;
 }
 
-- (void)_reportForSession:(id)a3 state:(id)a4 reason:(id)a5
+- (void)_reportForSession:(id)session state:(id)state reason:(id)reason
 {
-  v7 = a4;
-  v8 = [a3 player];
-  [(VUIPlaybackReporterUTS *)self _reportForPlayer:v8 playerState:v7 completionState:0 completionBlock:0];
+  stateCopy = state;
+  player = [session player];
+  [(VUIPlaybackReporterUTS *)self _reportForPlayer:player playerState:stateCopy completionState:0 completionBlock:0];
 }
 
-- (BOOL)_isTransitionValidForPlayer:(id)a3 fromState:(id)a4 toState:(id)a5
+- (BOOL)_isTransitionValidForPlayer:(id)player fromState:(id)state toState:(id)toState
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([VUIPlaybackUtilities playerIsLive:v8])
+  playerCopy = player;
+  stateCopy = state;
+  toStateCopy = toState;
+  if ([VUIPlaybackUtilities playerIsLive:playerCopy])
   {
-    v11 = [MEMORY[0x1E69D5A40] playing];
-    v12 = v11;
-    if (v11 == v10)
+    playing = [MEMORY[0x1E69D5A40] playing];
+    v12 = playing;
+    if (playing == toStateCopy)
     {
-      v16 = [MEMORY[0x1E69D5A40] paused];
+      paused = [MEMORY[0x1E69D5A40] paused];
 
-      if (v16 != v9)
+      if (paused != stateCopy)
       {
         v14 = 1;
         goto LABEL_6;
@@ -187,15 +187,15 @@ LABEL_12:
     {
     }
 
-    v13 = [MEMORY[0x1E69D5A40] stopped];
-    v14 = v13 == v10;
+    stopped = [MEMORY[0x1E69D5A40] stopped];
+    v14 = stopped == toStateCopy;
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = VUIPlaybackReporterUTS;
-    v14 = [(VUIPlaybackReporter *)&v17 _isTransitionValidForPlayer:v8 fromState:v9 toState:v10];
+    v14 = [(VUIPlaybackReporter *)&v17 _isTransitionValidForPlayer:playerCopy fromState:stateCopy toState:toStateCopy];
   }
 
 LABEL_6:
@@ -203,16 +203,16 @@ LABEL_6:
   return v14;
 }
 
-- (void)_endSession:(id)a3
+- (void)_endSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = VUIPlaybackReporterUTS;
-  v4 = a3;
-  [(VUIPlaybackReporter *)&v7 _endSession:v4];
+  sessionCopy = session;
+  [(VUIPlaybackReporter *)&v7 _endSession:sessionCopy];
   v5 = [(VUIPlaybackReporterUTS *)self reporter:v7.receiver];
-  v6 = [v4 UUID];
+  uUID = [sessionCopy UUID];
 
-  [v5 endPlaybackSession:v6];
+  [v5 endPlaybackSession:uUID];
 }
 
 - (WLKPlaybackReporter)reporter
@@ -236,10 +236,10 @@ LABEL_6:
   if (!playbackUpNextConfig)
   {
     v4 = +[VUIFeaturesConfiguration sharedInstance];
-    v5 = [v4 playbackUpNextConfig];
+    playbackUpNextConfig = [v4 playbackUpNextConfig];
 
     v6 = self->_playbackUpNextConfig;
-    self->_playbackUpNextConfig = v5;
+    self->_playbackUpNextConfig = playbackUpNextConfig;
 
     playbackUpNextConfig = self->_playbackUpNextConfig;
   }
@@ -247,29 +247,29 @@ LABEL_6:
   return playbackUpNextConfig;
 }
 
-- (void)_reportForPlayer:(id)a3 playerState:(id)a4 completionState:(unint64_t)a5 completionBlock:(id)a6
+- (void)_reportForPlayer:(id)player playerState:(id)state completionState:(unint64_t)completionState completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 currentMediaItem];
-  if ([VUIPlaybackUtilities playerIsLive:v10])
+  playerCopy = player;
+  stateCopy = state;
+  blockCopy = block;
+  currentMediaItem = [playerCopy currentMediaItem];
+  if ([VUIPlaybackUtilities playerIsLive:playerCopy])
   {
-    v14 = [v13 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlayableType"];
-    v15 = [v14 unsignedIntValue];
+    v14 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlayableType"];
+    unsignedIntValue = [v14 unsignedIntValue];
 
-    if (v15 != 1)
+    if (unsignedIntValue != 1)
     {
-      v16 = [v13 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlayableType"];
-      v17 = [v16 unsignedIntValue];
+      v16 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlayableType"];
+      unsignedIntValue2 = [v16 unsignedIntValue];
 
-      if (v17 == 2)
+      if (unsignedIntValue2 == 2)
       {
-        v18 = self;
-        v19 = v10;
+        selfCopy2 = self;
+        v19 = playerCopy;
         v20 = 0;
 LABEL_10:
-        [(VUIPlaybackReporterUTS *)v18 _reportLinearOrEBSForPlayer:v19 isLinear:v20 playerState:v11 completionState:a5 completionBlock:v12];
+        [(VUIPlaybackReporterUTS *)selfCopy2 _reportLinearOrEBSForPlayer:v19 isLinear:v20 playerState:stateCopy completionState:completionState completionBlock:blockCopy];
         goto LABEL_11;
       }
 
@@ -280,22 +280,22 @@ LABEL_10:
       }
     }
 
-    v18 = self;
-    v19 = v10;
+    selfCopy2 = self;
+    v19 = playerCopy;
     v20 = 1;
     goto LABEL_10;
   }
 
-  [(VUIPlaybackReporterUTS *)self _reportVODForPlayer:v10 playerState:v11 completionState:a5 completionBlock:v12];
+  [(VUIPlaybackReporterUTS *)self _reportVODForPlayer:playerCopy playerState:stateCopy completionState:completionState completionBlock:blockCopy];
 LABEL_11:
 }
 
-- (void)_reportVODForPlayer:(id)a3 playerState:(id)a4 completionState:(unint64_t)a5 completionBlock:(id)a6
+- (void)_reportVODForPlayer:(id)player playerState:(id)state completionState:(unint64_t)completionState completionBlock:(id)block
 {
   v110[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  playerCopy = player;
+  stateCopy = state;
+  blockCopy = block;
   v13 = VUIDefaultLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -303,11 +303,11 @@ LABEL_11:
     _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - VOD report", buf, 2u);
   }
 
-  v14 = [v10 currentMediaItem];
-  v15 = [v14 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B30]];
+  currentMediaItem = [playerCopy currentMediaItem];
+  v15 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5B30]];
   if (v15)
   {
-    v16 = v15;
+    ams_DSID = v15;
     goto LABEL_8;
   }
 
@@ -318,23 +318,23 @@ LABEL_11:
     _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - No DSID specified in mediaItem. Falling back to active account", buf, 2u);
   }
 
-  v18 = [MEMORY[0x1E69D5920] activeAccount];
-  v16 = [v18 ams_DSID];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
 
-  if (v16)
+  if (ams_DSID)
   {
 LABEL_8:
-    if (!v11)
+    if (!stateCopy)
     {
-      v11 = [v10 state];
+      stateCopy = [playerCopy state];
     }
 
-    v90 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackStateForState:v11];
-    v99 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackRateForState:v11 player:v10];
-    v96 = v16;
-    if (a5)
+    v90 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackStateForState:stateCopy];
+    v99 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackRateForState:stateCopy player:playerCopy];
+    v96 = ams_DSID;
+    if (completionState)
     {
-      if (a5 == 1)
+      if (completionState == 1)
       {
         v19 = VUIDefaultLogObject();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -348,14 +348,14 @@ LABEL_8:
 
       else
       {
-        if (a5 != 2)
+        if (completionState != 2)
         {
           v20 = 0;
 LABEL_51:
-          [v10 elapsedTime];
+          [playerCopy elapsedTime];
           v45 = v44;
-          v46 = [v14 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BC0]];
-          v47 = [v14 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BB8]];
+          v46 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5BC0]];
+          v47 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5BB8]];
           v48 = v47;
           v100 = 0;
           if (v46 && v47)
@@ -383,9 +383,9 @@ LABEL_51:
 
           v98 = v48;
           v89 = v46;
-          v92 = self;
-          v93 = v12;
-          v94 = v11;
+          selfCopy = self;
+          v93 = blockCopy;
+          v94 = stateCopy;
           v53 = +[VUIAppReviewManager sharedInstance];
           v102[0] = MEMORY[0x1E69E9820];
           v102[1] = 3221225472;
@@ -393,8 +393,8 @@ LABEL_51:
           v102[3] = &unk_1E8733238;
           v97 = v20;
           v104 = v20;
-          v95 = v10;
-          v54 = v10;
+          v95 = playerCopy;
+          v54 = playerCopy;
           v103 = v54;
           [v53 isFeatureEnabled:v102];
 
@@ -407,7 +407,7 @@ LABEL_51:
             [_TtC8VideosUI8VideosUI markPlaybackElapsedTime:?];
           }
 
-          v58 = [v14 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+          v58 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
           v59 = [v58 isEqualToString:*MEMORY[0x1E69D5ED0]];
 
           v60 = MEMORY[0x1E69D5D38];
@@ -416,16 +416,16 @@ LABEL_51:
             v60 = MEMORY[0x1E69D5DC0];
           }
 
-          v61 = [v14 mediaItemMetadataForProperty:*v60];
+          v61 = [currentMediaItem mediaItemMetadataForProperty:*v60];
           v62 = MEMORY[0x1E69E1590];
-          v87 = [MEMORY[0x1E696AAE8] mainBundle];
-          v63 = [v87 bundleIdentifier];
-          v64 = [v14 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
-          [v14 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
-          v65 = v101 = v14;
-          v86 = [v16 stringValue];
+          mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
+          v64 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
+          [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
+          v65 = v101 = currentMediaItem;
+          stringValue = [ams_DSID stringValue];
           v85 = [v101 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA0]];
-          v66 = [MEMORY[0x1E695DF00] date];
+          date = [MEMORY[0x1E695DF00] date];
           v67 = MEMORY[0x1E696AD98];
           [v54 duration];
           v68 = [v67 numberWithDouble:?];
@@ -434,10 +434,10 @@ LABEL_51:
           v70 = [v69 numberWithDouble:?];
           v71 = [v101 mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
           v88 = v61;
-          v91 = [v62 VODSummaryWithBundleID:v63 channelID:v64 contentID:v65 accountID:v86 externalProfileID:v85 timestamp:v66 duration:v68 elapsedTime:v70 featureDuration:v98 featureElapsedTime:v100 playbackState:v90 playbackRate:v99 playablePassthrough:v71 contentTitle:v61 completionState:v97];
+          v91 = [v62 VODSummaryWithBundleID:bundleIdentifier channelID:v64 contentID:v65 accountID:stringValue externalProfileID:v85 timestamp:date duration:v68 elapsedTime:v70 featureDuration:v98 featureElapsedTime:v100 playbackState:v90 playbackRate:v99 playablePassthrough:v71 contentTitle:v61 completionState:v97];
 
           v72 = v54;
-          v14 = v101;
+          currentMediaItem = v101;
 
           if (![objc_opt_class() _shouldCacheResumeTimeForMediaType:v101])
           {
@@ -471,14 +471,14 @@ LABEL_51:
 LABEL_71:
 
 LABEL_72:
-                v83 = [(VUIPlaybackReporter *)v92 _sessionForPlayer:v72];
-                v84 = [v83 UUID];
+                v83 = [(VUIPlaybackReporter *)selfCopy _sessionForPlayer:v72];
+                uUID = [v83 UUID];
 
-                v12 = v93;
-                [(VUIPlaybackReporterUTS *)v92 _reportSummary:v91 sessionID:v84 completion:v93];
+                blockCopy = v93;
+                [(VUIPlaybackReporterUTS *)selfCopy _reportSummary:v91 sessionID:uUID completion:v93];
 
-                v11 = v94;
-                v10 = v95;
+                stateCopy = v94;
+                playerCopy = v95;
                 v28 = v96;
                 goto LABEL_73;
               }
@@ -512,11 +512,11 @@ LABEL_69:
 
     else
     {
-      v21 = [v10 currentMediaItem];
-      v19 = [v21 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB0]];
+      currentMediaItem2 = [playerCopy currentMediaItem];
+      v19 = [currentMediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5CB0]];
 
-      v22 = [v10 currentMediaItem];
-      v23 = [v22 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DF8]];
+      currentMediaItem3 = [playerCopy currentMediaItem];
+      v23 = [currentMediaItem3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DF8]];
 
       if (v19 | v23)
       {
@@ -551,7 +551,7 @@ LABEL_69:
           }
         }
 
-        [v10 duration];
+        [playerCopy duration];
         v38 = fmin(v37, v24);
         if (v38 == 0.0)
         {
@@ -571,7 +571,7 @@ LABEL_69:
         else
         {
           v39 = v37;
-          [v10 elapsedTime];
+          [playerCopy elapsedTime];
           if (v40 >= v38)
           {
             v41 = @" [Elapsed:%.3f] [Duration:%.3f] [Done]";
@@ -619,7 +619,7 @@ LABEL_69:
         v25 = &stru_1F5DB25C0;
       }
 
-      v16 = v96;
+      ams_DSID = v96;
     }
 
     goto LABEL_51;
@@ -632,14 +632,14 @@ LABEL_69:
     _os_log_impl(&dword_1E323F000, v26, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - No DSID found. Will not report", buf, 2u);
   }
 
-  if (v12)
+  if (blockCopy)
   {
     v27 = MEMORY[0x1E696ABC0];
     v109 = *MEMORY[0x1E696A578];
     v110[0] = @"DSID is missing";
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v110 forKeys:&v109 count:1];
     v99 = [v27 errorWithDomain:@"VUIPlaybackReporterUTS" code:101 userInfo:v28];
-    v12[2](v12, 0);
+    blockCopy[2](blockCopy, 0);
 LABEL_73:
   }
 }
@@ -667,30 +667,30 @@ void __90__VUIPlaybackReporterUTS__reportVODForPlayer_playerState_completionStat
   }
 }
 
-- (void)_reportLinearOrEBSForPlayer:(id)a3 isLinear:(BOOL)a4 playerState:(id)a5 completionState:(unint64_t)a6 completionBlock:(id)a7
+- (void)_reportLinearOrEBSForPlayer:(id)player isLinear:(BOOL)linear playerState:(id)state completionState:(unint64_t)completionState completionBlock:(id)block
 {
-  v9 = a4;
+  linearCopy = linear;
   v51[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a7;
-  v13 = a5;
-  v14 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackStateForState:v13];
-  v48 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackRateForState:v13 player:v11];
+  playerCopy = player;
+  blockCopy = block;
+  stateCopy = state;
+  v14 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackStateForState:stateCopy];
+  v48 = [(VUIPlaybackReporterUTS *)self _wlkPlaybackRateForState:stateCopy player:playerCopy];
 
-  v15 = [v11 currentMediaItem];
-  v16 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B30]];
+  currentMediaItem = [playerCopy currentMediaItem];
+  v16 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5B30]];
   if (v16)
   {
-    v17 = v16;
+    ams_DSID = v16;
 LABEL_6:
     v20 = VUIDefaultLogObject();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-    v46 = self;
-    v47 = v12;
+    selfCopy = self;
+    v47 = blockCopy;
     v44 = v14;
-    v45 = v17;
-    v42 = v15;
-    if (v9)
+    v45 = ams_DSID;
+    v42 = currentMediaItem;
+    if (linearCopy)
     {
       if (v21)
       {
@@ -699,18 +699,18 @@ LABEL_6:
       }
 
       v40 = MEMORY[0x1E69E1590];
-      v43 = [MEMORY[0x1E696AAE8] mainBundle];
-      v22 = [v43 bundleIdentifier];
-      v23 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
-      v24 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA8]];
-      v25 = [v17 stringValue];
-      v26 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA0]];
-      v27 = [MEMORY[0x1E695DF00] date];
-      [v11 playbackDate];
-      v29 = v28 = v11;
-      v30 = [v15 mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
-      v31 = v22;
-      v32 = [v40 liveSummaryWithBundleID:v22 channelID:v23 serviceID:v24 accountID:v25 externalProfileID:v26 timestamp:v27 playbackState:v44 playbackRate:v48 currentPlaybackDate:v29 playablePassthrough:v30];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v23 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
+      v24 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA8]];
+      stringValue = [ams_DSID stringValue];
+      v26 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA0]];
+      date = [MEMORY[0x1E695DF00] date];
+      [playerCopy playbackDate];
+      v29 = v28 = playerCopy;
+      v30 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
+      v31 = bundleIdentifier;
+      v32 = [v40 liveSummaryWithBundleID:bundleIdentifier channelID:v23 serviceID:v24 accountID:stringValue externalProfileID:v26 timestamp:date playbackState:v44 playbackRate:v48 currentPlaybackDate:v29 playablePassthrough:v30];
     }
 
     else
@@ -722,31 +722,31 @@ LABEL_6:
       }
 
       v41 = MEMORY[0x1E69E1590];
-      v43 = [MEMORY[0x1E696AAE8] mainBundle];
-      v33 = [v43 bundleIdentifier];
-      v23 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
-      v24 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
-      v25 = [v17 stringValue];
-      v26 = [v15 mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA0]];
-      v27 = [MEMORY[0x1E695DF00] date];
-      [v11 playbackDate];
-      v29 = v28 = v11;
-      v30 = [v15 mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
-      v31 = v33;
-      v32 = [v41 EBSSummaryWithBundleID:v33 channelID:v23 externalId:v24 accountID:v25 externalProfileID:v26 timestamp:v27 playbackState:v44 playbackRate:v48 currentPlaybackDate:v29 playablePassthrough:v30];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier2 = [mainBundle bundleIdentifier];
+      v23 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5AD0]];
+      v24 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5B98]];
+      stringValue = [ams_DSID stringValue];
+      v26 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5BA0]];
+      date = [MEMORY[0x1E695DF00] date];
+      [playerCopy playbackDate];
+      v29 = v28 = playerCopy;
+      v30 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataPlayablePassThrough"];
+      v31 = bundleIdentifier2;
+      v32 = [v41 EBSSummaryWithBundleID:bundleIdentifier2 channelID:v23 externalId:v24 accountID:stringValue externalProfileID:v26 timestamp:date playbackState:v44 playbackRate:v48 currentPlaybackDate:v29 playablePassthrough:v30];
     }
 
     v34 = v32;
 
-    v35 = [(VUIPlaybackReporter *)v46 _sessionForPlayer:v28];
-    v36 = [v35 UUID];
+    v35 = [(VUIPlaybackReporter *)selfCopy _sessionForPlayer:v28];
+    uUID = [v35 UUID];
 
-    v12 = v47;
-    [(VUIPlaybackReporterUTS *)v46 _reportSummary:v34 sessionID:v36 completion:v47];
+    blockCopy = v47;
+    [(VUIPlaybackReporterUTS *)selfCopy _reportSummary:v34 sessionID:uUID completion:v47];
 
-    v11 = v28;
+    playerCopy = v28;
     v37 = v45;
-    v15 = v42;
+    currentMediaItem = v42;
     goto LABEL_14;
   }
 
@@ -757,10 +757,10 @@ LABEL_6:
     _os_log_impl(&dword_1E323F000, v18, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - No DSID specified in mediaItem. Falling back to active account", buf, 2u);
   }
 
-  v19 = [MEMORY[0x1E69D5920] activeAccount];
-  v17 = [v19 ams_DSID];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
 
-  if (v17)
+  if (ams_DSID)
   {
     goto LABEL_6;
   }
@@ -772,45 +772,45 @@ LABEL_6:
     _os_log_impl(&dword_1E323F000, v38, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - No DSID found. Will not report", buf, 2u);
   }
 
-  if (v12)
+  if (blockCopy)
   {
     v39 = MEMORY[0x1E696ABC0];
     v50 = *MEMORY[0x1E696A578];
     v51[0] = @"DSID is missing";
     v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
     v34 = [v39 errorWithDomain:@"VUIPlaybackReporterUTS" code:101 userInfo:v37];
-    v12[2](v12, 0, v34);
+    blockCopy[2](blockCopy, 0, v34);
 LABEL_14:
   }
 }
 
-- (void)_reportSummary:(id)a3 sessionID:(id)a4 completion:(id)a5
+- (void)_reportSummary:(id)summary sessionID:(id)d completion:(id)completion
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  summaryCopy = summary;
+  dCopy = d;
+  completionCopy = completion;
+  if (summaryCopy)
   {
-    v11 = [v8 contentID];
-    if (v11)
+    contentID = [summaryCopy contentID];
+    if (contentID)
     {
-      [v8 contentID];
+      [summaryCopy contentID];
     }
 
     else
     {
-      [v8 serviceID];
+      [summaryCopy serviceID];
     }
     v14 = ;
 
-    v16 = [(VUIPlaybackReporterUTS *)self reporter];
+    reporter = [(VUIPlaybackReporterUTS *)self reporter];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __62__VUIPlaybackReporterUTS__reportSummary_sessionID_completion___block_invoke;
     v18[3] = &unk_1E872E470;
-    v19 = v10;
-    [v16 reportPlayback:v8 sessionID:v9 completion:v18];
+    v19 = completionCopy;
+    [reporter reportPlayback:summaryCopy sessionID:dCopy completion:v18];
 
     v17 = VUIDefaultLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -818,9 +818,9 @@ LABEL_14:
       *buf = 138412802;
       v21 = v14;
       v22 = 2112;
-      v23 = v9;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v8;
+      v25 = summaryCopy;
       _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - Report sent for [%@] [%@] %@", buf, 0x20u);
     }
 
@@ -835,14 +835,14 @@ LABEL_14:
     _os_log_impl(&dword_1E323F000, v12, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - Playback summary is nil", buf, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v13 = MEMORY[0x1E696ABC0];
     v26 = *MEMORY[0x1E696A578];
     v27[0] = @"Playback summary is nil";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v15 = [v13 errorWithDomain:@"VUIPlaybackReporterUTS" code:100 userInfo:v14];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
 LABEL_12:
   }
 }
@@ -884,35 +884,35 @@ uint64_t __62__VUIPlaybackReporterUTS__reportSummary_sessionID_completion___bloc
   return result;
 }
 
-- (int64_t)_wlkPlaybackStateForState:(id)a3
+- (int64_t)_wlkPlaybackStateForState:(id)state
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69D5A40] playing];
+  stateCopy = state;
+  playing = [MEMORY[0x1E69D5A40] playing];
 
-  if (v4 == v3)
+  if (playing == stateCopy)
   {
     v9 = 1;
     goto LABEL_10;
   }
 
-  v5 = [MEMORY[0x1E69D5A40] paused];
-  if (v5 == v3)
+  paused = [MEMORY[0x1E69D5A40] paused];
+  if (paused == stateCopy)
   {
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x1E69D5A40] loading];
-  v7 = v6;
-  if (v6 == v3)
+  loading = [MEMORY[0x1E69D5A40] loading];
+  v7 = loading;
+  if (loading == stateCopy)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [MEMORY[0x1E69D5A40] scanning];
+  scanning = [MEMORY[0x1E69D5A40] scanning];
 
-  if (v8 == v3)
+  if (scanning == stateCopy)
   {
 LABEL_9:
     v9 = 2;
@@ -925,17 +925,17 @@ LABEL_10:
   return v9;
 }
 
-- (id)_wlkPlaybackRateForState:(id)a3 player:(id)a4
+- (id)_wlkPlaybackRateForState:(id)state player:(id)player
 {
-  v5 = a4;
+  playerCopy = player;
   v6 = MEMORY[0x1E69D5A40];
-  v7 = a3;
-  v8 = [v6 playing];
+  stateCopy = state;
+  playing = [v6 playing];
 
-  if (v8 == v7)
+  if (playing == stateCopy)
   {
     v10 = MEMORY[0x1E696AD98];
-    [v5 rateUsedForPlayback];
+    [playerCopy rateUsedForPlayback];
     v9 = [v10 numberWithDouble:?];
   }
 
@@ -947,41 +947,41 @@ LABEL_10:
   return v9;
 }
 
-- (void)_handleBgMCWillStartPlaybackNotification:(id)a3
+- (void)_handleBgMCWillStartPlaybackNotification:(id)notification
 {
-  v11 = a3;
-  v4 = [v11 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v11;
+  v6 = notificationCopy;
   if (isKindOfClass)
   {
-    v7 = [v11 object];
-    v8 = [v7 player];
-    v9 = [v11 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"VUIBackgroundMediaControllerIsForegroundedKey"];
+    object2 = [notificationCopy object];
+    player = [object2 player];
+    userInfo = [notificationCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"VUIBackgroundMediaControllerIsForegroundedKey"];
     if (v10)
     {
-      [(VUIPlaybackReporterUTS *)self _setSessionMetadataValue:v10 forKey:@"VUIPlaybackReporterSessionMetadataKeyForegroundPlayback" player:v8];
+      [(VUIPlaybackReporterUTS *)self _setSessionMetadataValue:v10 forKey:@"VUIPlaybackReporterSessionMetadataKeyForegroundPlayback" player:player];
     }
 
-    v6 = v11;
+    v6 = notificationCopy;
   }
 }
 
-- (void)_handleBgMCEmbeddedPlayerVCTransferredToFullScreenControllerNotification:(id)a3
+- (void)_handleBgMCEmbeddedPlayerVCTransferredToFullScreenControllerNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [(VUIPlaybackReporter *)self _sessionForPlayer:v7];
+    object2 = [notificationCopy object];
+    v8 = [(VUIPlaybackReporter *)self _sessionForPlayer:object2];
     v9 = v8;
     if (v8)
     {
@@ -991,53 +991,53 @@ LABEL_10:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v7;
+        v13 = object2;
         _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_DEFAULT, "VUIPlaybackReporterUTS - Initiating report for player - %@ after being transferred to full screen controller", &v12, 0xCu);
       }
 
-      v11 = [v7 state];
-      [(VUIPlaybackReporterUTS *)self _reportForPlayer:v7 playerState:v11 completionState:0 completionBlock:0];
+      state = [object2 state];
+      [(VUIPlaybackReporterUTS *)self _reportForPlayer:object2 playerState:state completionState:0 completionBlock:0];
     }
   }
 }
 
-- (void)_setSessionMetadataValue:(id)a3 forKey:(id)a4 player:(id)a5
+- (void)_setSessionMetadataValue:(id)value forKey:(id)key player:(id)player
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(VUIPlaybackReporter *)self _sessionForPlayer:v9];
+  valueCopy = value;
+  keyCopy = key;
+  playerCopy = player;
+  v10 = [(VUIPlaybackReporter *)self _sessionForPlayer:playerCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 setMetadata:v13 forKey:v8];
+    [v10 setMetadata:valueCopy forKey:keyCopy];
   }
 
-  else if (v8)
+  else if (keyCopy)
   {
-    v12 = [(NSMapTable *)self->_pendingPlayerProperties objectForKey:v9];
+    v12 = [(NSMapTable *)self->_pendingPlayerProperties objectForKey:playerCopy];
     if (!v12)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
-    if (v13)
+    if (valueCopy)
     {
-      [v12 setObject:v13 forKey:v8];
+      [v12 setObject:valueCopy forKey:keyCopy];
     }
 
     else
     {
-      [v12 removeObjectForKey:v8];
+      [v12 removeObjectForKey:keyCopy];
     }
 
-    [(NSMapTable *)self->_pendingPlayerProperties setObject:v12 forKey:v9];
+    [(NSMapTable *)self->_pendingPlayerProperties setObject:v12 forKey:playerCopy];
   }
 }
 
-+ (BOOL)_shouldCacheResumeTimeForMediaType:(id)a3
++ (BOOL)_shouldCacheResumeTimeForMediaType:(id)type
 {
-  v3 = [a3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+  v3 = [type mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
   if ([v3 isEqualToString:*MEMORY[0x1E69D5ED0]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69D5EB8]))
   {
     v4 = 1;
@@ -1051,18 +1051,18 @@ LABEL_10:
   return v4;
 }
 
-+ (void)_cachePlaybackResumeTimeForReferenceID:(id)a3 canonicalID:(id)a4 absoluteResumeTime:(id)a5 featureRelativeResumeTime:(id)a6
++ (void)_cachePlaybackResumeTimeForReferenceID:(id)d canonicalID:(id)iD absoluteResumeTime:(id)time featureRelativeResumeTime:(id)resumeTime
 {
-  if (a3 && a4 && a5)
+  if (d && iD && time)
   {
     v9 = MEMORY[0x1E695DF00];
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v15 = [v9 date];
+    resumeTimeCopy = resumeTime;
+    timeCopy = time;
+    iDCopy = iD;
+    dCopy = d;
+    date = [v9 date];
     v14 = +[VUIStreamingBookmarkCache sharedInstance];
-    [v14 addBookmarkForReferenceID:v13 canonicalID:v12 absoluteResumeTime:v11 absoluteBookmarkTimestamp:v15 relativeResumeTime:v10 relativeBookmarkTimestamp:v15];
+    [v14 addBookmarkForReferenceID:dCopy canonicalID:iDCopy absoluteResumeTime:timeCopy absoluteBookmarkTimestamp:date relativeResumeTime:resumeTimeCopy relativeBookmarkTimestamp:date];
   }
 }
 

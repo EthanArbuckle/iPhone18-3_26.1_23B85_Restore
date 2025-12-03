@@ -1,15 +1,15 @@
 @interface PUIJSONSerialization
-+ (id)dataWithJSONObject:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (id)dateToString:(id)a3;
-+ (id)recursivelyReplaceNSDateWithNSString:(id)a3;
++ (id)dataWithJSONObject:(id)object options:(unint64_t)options error:(id *)error;
++ (id)dateToString:(id)string;
++ (id)recursivelyReplaceNSDateWithNSString:(id)string;
 @end
 
 @implementation PUIJSONSerialization
 
-+ (id)recursivelyReplaceNSDateWithNSString:(id)a3
++ (id)recursivelyReplaceNSDateWithNSString:(id)string
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -18,7 +18,7 @@
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v6 = v4;
+    v6 = stringCopy;
     v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v7)
     {
@@ -35,7 +35,7 @@
 
           v11 = *(*(&v27 + 1) + 8 * i);
           v12 = [v6 objectForKeyedSubscript:v11];
-          v13 = [a1 recursivelyReplaceNSDateWithNSString:v12];
+          v13 = [self recursivelyReplaceNSDateWithNSString:v12];
           [v5 setObject:v13 forKeyedSubscript:v11];
         }
 
@@ -54,12 +54,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [a1 dateToString:v4];
+        v20 = [self dateToString:stringCopy];
       }
 
       else
       {
-        v20 = v4;
+        v20 = stringCopy;
       }
 
       v19 = v20;
@@ -71,7 +71,7 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = v4;
+    v6 = stringCopy;
     v14 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v14)
     {
@@ -86,7 +86,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v18 = [a1 recursivelyReplaceNSDateWithNSString:{*(*(&v23 + 1) + 8 * j), v23}];
+          v18 = [self recursivelyReplaceNSDateWithNSString:{*(*(&v23 + 1) + 8 * j), v23}];
           [v5 addObject:v18];
         }
 
@@ -105,16 +105,16 @@ LABEL_23:
   return v19;
 }
 
-+ (id)dateToString:(id)a3
++ (id)dateToString:(id)string
 {
   v3 = dateToString__onceToken;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     +[PUIJSONSerialization dateToString:];
   }
 
-  v5 = [dateToString__formatter stringFromDate:v4];
+  v5 = [dateToString__formatter stringFromDate:stringCopy];
 
   return v5;
 }
@@ -130,12 +130,12 @@ void __37__PUIJSONSerialization_dateToString___block_invoke()
   [dateToString__formatter setTimeZone:v2];
 }
 
-+ (id)dataWithJSONObject:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)dataWithJSONObject:(id)object options:(unint64_t)options error:(id *)error
 {
-  v8 = [a1 recursivelyReplaceNSDateWithNSString:a3];
-  v11.receiver = a1;
+  v8 = [self recursivelyReplaceNSDateWithNSString:object];
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___PUIJSONSerialization;
-  v9 = objc_msgSendSuper2(&v11, sel_dataWithJSONObject_options_error_, v8, a4, a5);
+  v9 = objc_msgSendSuper2(&v11, sel_dataWithJSONObject_options_error_, v8, options, error);
 
   return v9;
 }

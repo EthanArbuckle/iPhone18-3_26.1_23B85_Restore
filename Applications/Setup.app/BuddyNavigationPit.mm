@@ -1,22 +1,22 @@
 @interface BuddyNavigationPit
 + (id)shared;
-- (BOOL)controllerNeedsToRunForClass:(Class)a3;
-- (BOOL)isFlowItemOnTop:(id)a3;
-- (id)popToBuddyControllerWithClass:(Class)a3 animated:(BOOL)a4;
-- (id)popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5;
-- (void)_pitLog:(id)a3 withObject:(id)a4;
-- (void)flow:(id)a3 finishedWithLastItem:(id)a4 nextItem:(id)a5;
-- (void)flowItemCancelled:(id)a3;
-- (void)flowItemDone:(id)a3;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4;
-- (void)markFlowItemDone:(id)a3;
-- (void)presentWiFiPaneForFlow:(id)a3;
-- (void)pushFlowItem:(id)a3 animated:(BOOL)a4;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 animated:(BOOL)a5;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6;
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7;
-- (void)removeViewControllersOnNextPush:(id)a3;
+- (BOOL)controllerNeedsToRunForClass:(Class)class;
+- (BOOL)isFlowItemOnTop:(id)top;
+- (id)popToBuddyControllerWithClass:(Class)class animated:(BOOL)animated;
+- (id)popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated;
+- (void)_pitLog:(id)log withObject:(id)object;
+- (void)flow:(id)flow finishedWithLastItem:(id)item nextItem:(id)nextItem;
+- (void)flowItemCancelled:(id)cancelled;
+- (void)flowItemDone:(id)done;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)flowItemDone:(id)done nextItemClass:(Class)class;
+- (void)markFlowItemDone:(id)done;
+- (void)presentWiFiPaneForFlow:(id)flow;
+- (void)pushFlowItem:(id)item animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated;
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem;
+- (void)removeViewControllersOnNextPush:(id)push;
 @end
 
 @implementation BuddyNavigationPit
@@ -37,21 +37,21 @@
   return v2;
 }
 
-- (BOOL)controllerNeedsToRunForClass:(Class)a3
+- (BOOL)controllerNeedsToRunForClass:(Class)class
 {
   v4 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit controllerNeedsToRunForClass:]"];
-  [(BuddyNavigationPit *)self _pitLog:v4 withObject:a3];
+  [(BuddyNavigationPit *)self _pitLog:v4 withObject:class];
 
   return 0;
 }
 
-- (BOOL)isFlowItemOnTop:(id)a3
+- (BOOL)isFlowItemOnTop:(id)top
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
+  objc_storeStrong(location, top);
+  v3 = selfCopy;
   v4 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit isFlowItemOnTop:]"];
   [(BuddyNavigationPit *)v3 _pitLog:v4 withObject:location[0]];
 
@@ -59,57 +59,57 @@
   return 0;
 }
 
-- (void)markFlowItemDone:(id)a3
+- (void)markFlowItemDone:(id)done
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, done);
+  v3 = selfCopy;
   v4 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit markFlowItemDone:]"];
   [(BuddyNavigationPit *)v3 _pitLog:v4 withObject:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (id)popToBuddyControllerWithClass:(Class)a3 animated:(BOOL)a4
+- (id)popToBuddyControllerWithClass:(Class)class animated:(BOOL)animated
 {
   v5 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit popToBuddyControllerWithClass:animated:]"];
-  [(BuddyNavigationPit *)self _pitLog:v5 withObject:a3];
+  [(BuddyNavigationPit *)self _pitLog:v5 withObject:class];
 
   return 0;
 }
 
-- (id)popToBuddyControllerWithClass:(Class)a3 withOffset:(unint64_t)a4 animated:(BOOL)a5
+- (id)popToBuddyControllerWithClass:(Class)class withOffset:(unint64_t)offset animated:(BOOL)animated
 {
   v6 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit popToBuddyControllerWithClass:withOffset:animated:]"];
-  [(BuddyNavigationPit *)self _pitLog:v6 withObject:a3];
+  [(BuddyNavigationPit *)self _pitLog:v6 withObject:class];
 
   return 0;
 }
 
-- (void)pushFlowItem:(id)a3 animated:(BOOL)a4
+- (void)pushFlowItem:(id)item animated:(BOOL)animated
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v7;
+  objc_storeStrong(location, item);
+  v4 = selfCopy;
   v5 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit pushFlowItem:animated:]"];
   [(BuddyNavigationPit *)v4 _pitLog:v5 withObject:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 animated:(BOOL)a5
+- (void)pushFlowItem:(id)item inFlow:(id)flow animated:(BOOL)animated
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v6 = v10;
+  objc_storeStrong(&v8, flow);
+  v6 = selfCopy;
   v7 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit pushFlowItem:inFlow:animated:]"];
   [(BuddyNavigationPit *)v6 _pitLog:v7 withObject:location[0]];
 
@@ -117,15 +117,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v7 = v11;
+  objc_storeStrong(&v9, flow);
+  v7 = selfCopy;
   v8 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit pushFlowItem:inFlow:withExtendedInitialization:animated:]"];
   [(BuddyNavigationPit *)v7 _pitLog:v8 withObject:location[0]];
 
@@ -133,19 +133,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)pushFlowItem:(id)a3 inFlow:(id)a4 withExtendedInitialization:(BOOL)a5 animated:(BOOL)a6 willPushFlowItem:(id)a7
+- (void)pushFlowItem:(id)item inFlow:(id)flow withExtendedInitialization:(BOOL)initialization animated:(BOOL)animated willPushFlowItem:(id)flowItem
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = a5;
-  v14 = a6;
+  objc_storeStrong(&v16, flow);
+  initializationCopy = initialization;
+  animatedCopy = animated;
   v13 = 0;
-  objc_storeStrong(&v13, a7);
-  v11 = v18;
+  objc_storeStrong(&v13, flowItem);
+  v11 = selfCopy;
   v12 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit pushFlowItem:inFlow:withExtendedInitialization:animated:willPushFlowItem:]"];
   [(BuddyNavigationPit *)v11 _pitLog:v12 withObject:location[0]];
 
@@ -154,54 +154,54 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)removeViewControllersOnNextPush:(id)a3
+- (void)removeViewControllersOnNextPush:(id)push
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, push);
+  v3 = selfCopy;
   v4 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit removeViewControllersOnNextPush:]"];
   [(BuddyNavigationPit *)v3 _pitLog:v4 withObject:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemCancelled:(id)a3
+- (void)flowItemCancelled:(id)cancelled
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, cancelled);
+  v3 = selfCopy;
   v4 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit flowItemCancelled:]"];
   [(BuddyNavigationPit *)v3 _pitLog:v4 withObject:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3
+- (void)flowItemDone:(id)done
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, done);
+  v3 = selfCopy;
   v4 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit flowItemDone:]"];
   [(BuddyNavigationPit *)v3 _pitLog:v4 withObject:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, done);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v5 = v9;
+  objc_storeStrong(&v7, item);
+  v5 = selfCopy;
   v6 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit flowItemDone:nextItem:]"];
   [(BuddyNavigationPit *)v5 _pitLog:v6 withObject:location[0]];
 
@@ -209,30 +209,30 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)flowItemDone:(id)a3 nextItemClass:(Class)a4
+- (void)flowItemDone:(id)done nextItemClass:(Class)class
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v7;
+  objc_storeStrong(location, done);
+  v4 = selfCopy;
   v5 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit flowItemDone:nextItemClass:]"];
   [(BuddyNavigationPit *)v4 _pitLog:v5 withObject:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)flow:(id)a3 finishedWithLastItem:(id)a4 nextItem:(id)a5
+- (void)flow:(id)flow finishedWithLastItem:(id)item nextItem:(id)nextItem
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, flow);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, item);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v7 = v12;
+  objc_storeStrong(&v9, nextItem);
+  v7 = selfCopy;
   v8 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit flow:finishedWithLastItem:nextItem:]"];
   [(BuddyNavigationPit *)v7 _pitLog:v8 withObject:v10];
 
@@ -241,27 +241,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentWiFiPaneForFlow:(id)a3
+- (void)presentWiFiPaneForFlow:(id)flow
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, flow);
+  v3 = selfCopy;
   v4 = [NSString stringWithFormat:@"%s", "[BuddyNavigationPit presentWiFiPaneForFlow:]"];
   [(BuddyNavigationPit *)v3 _pitLog:v4 withObject:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_pitLog:(id)a3 withObject:(id)a4
+- (void)_pitLog:(id)log withObject:(id)object
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, log);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, object);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
   {

@@ -1,6 +1,6 @@
 @interface PopTransitionAnimator
 - (_TtC9SeymourUI21PopTransitionAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PopTransitionAnimator
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_20BFBFFD4(a3);
+  selfCopy = self;
+  sub_20BFBFFD4(transition);
   swift_unknownObjectRelease();
 }
 

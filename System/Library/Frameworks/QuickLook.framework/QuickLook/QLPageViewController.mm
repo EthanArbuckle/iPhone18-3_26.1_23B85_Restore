@@ -1,33 +1,33 @@
 @interface QLPageViewController
 - (QLPageViewController)init;
-- (QLPageViewController)initWithCoder:(id)a3;
-- (QLPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5;
+- (QLPageViewController)initWithCoder:(id)coder;
+- (QLPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options;
 - (QLPageViewControllerDataSource)indexedDataSource;
 - (UIScrollView)scrollView;
 - (UIScrollViewDelegate)scrollViewDelegate;
 - (UIViewController)currentPage;
-- (id)_cachedViewControllerAtIndex:(unint64_t)a3 offset:(int64_t)a4;
-- (id)_retrieveAndStoreViewControllerAtIndex:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)_viewControllerAtIndex:(unint64_t)a3 offset:(int64_t)a4;
+- (id)_cachedViewControllerAtIndex:(unint64_t)index offset:(int64_t)offset;
+- (id)_retrieveAndStoreViewControllerAtIndex:(unint64_t)index offset:(unint64_t)offset;
+- (id)_viewControllerAtIndex:(unint64_t)index offset:(int64_t)offset;
 - (id)delegate;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (unint64_t)_indexOfViewController:(id)a3;
-- (void)_applyParallaxEffectWithTransitionProgress:(double)a3;
-- (void)_loadAndCacheViewControllersBeforeAndAfterIndex:(int64_t)a3;
-- (void)_rearrangeCachedViewControllersWithNewCurrentPageIndex:(int64_t)a3;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (unint64_t)_indexOfViewController:(id)controller;
+- (void)_applyParallaxEffectWithTransitionProgress:(double)progress;
+- (void)_loadAndCacheViewControllersBeforeAndAfterIndex:(int64_t)index;
+- (void)_rearrangeCachedViewControllersWithNewCurrentPageIndex:(int64_t)index;
 - (void)_setUp;
 - (void)_unsetParallaxEffect;
 - (void)clearInternalCache;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setViewControllers:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
+- (void)setViewControllers:(id)controllers direction:(int64_t)direction animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation QLPageViewController
@@ -46,17 +46,17 @@
   return v3;
 }
 
-- (QLPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5
+- (QLPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options
 {
   v8 = *MEMORY[0x277D76DB0];
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:v8];
+  optionsCopy = options;
+  v10 = [optionsCopy objectForKeyedSubscript:v8];
   [v10 floatValue];
   self->_interPageSpacing = v11;
 
   v14.receiver = self;
   v14.super_class = QLPageViewController;
-  v12 = [(QLPageViewController *)&v14 initWithTransitionStyle:a3 navigationOrientation:a4 options:v9];
+  v12 = [(QLPageViewController *)&v14 initWithTransitionStyle:style navigationOrientation:orientation options:optionsCopy];
 
   [(QLPageViewController *)v12 _setUp];
   return v12;
@@ -91,10 +91,10 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
 
 - (UIViewController)currentPage
 {
-  v2 = [(QLPageViewController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(QLPageViewController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)clearInternalCache
@@ -106,18 +106,18 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
 
 - (UIScrollView)scrollView
 {
-  v2 = [(QLPageViewController *)self view];
-  v3 = [v2 subviews];
-  v4 = [v3 firstObject];
+  view = [(QLPageViewController *)self view];
+  subviews = [view subviews];
+  firstObject = [subviews firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_definedDelegate, v4);
-  [(QLDelegateProxy *)self->_pageViewControllerDelegateProxy setSecondDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_definedDelegate, delegateCopy);
+  [(QLDelegateProxy *)self->_pageViewControllerDelegateProxy setSecondDelegate:delegateCopy];
 }
 
 - (id)delegate
@@ -131,20 +131,20 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
 {
   self->_currentPageIndex = 0x7FFFFFFFFFFFFFFFLL;
   self->_currentPageIndexForAppliedParallaxEffect = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   pages = self->_pages;
-  self->_pages = v3;
+  self->_pages = strongToStrongObjectsMapTable;
 
   v5 = [QLDelegateProxy alloc];
   scrollViewDelegateProxy = self->_scrollViewDelegateProxy;
   self->_scrollViewDelegateProxy = v5;
 
   [(QLDelegateProxy *)self->_scrollViewDelegateProxy setFirstDelegate:self];
-  v7 = [(QLPageViewController *)self view];
-  v8 = [v7 subviews];
-  v9 = [v8 firstObject];
+  view = [(QLPageViewController *)self view];
+  subviews = [view subviews];
+  firstObject = [subviews firstObject];
   scrollView = self->_scrollView;
-  self->_scrollView = v9;
+  self->_scrollView = firstObject;
 
   [(UIScrollView *)self->_scrollView setDelegate:self->_scrollViewDelegateProxy];
   [(UIScrollView *)self->_scrollView _setAutoScrollEnabled:0];
@@ -160,14 +160,14 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
   [(QLPageViewController *)self setDataSource:self];
 }
 
-- (void)_loadAndCacheViewControllersBeforeAndAfterIndex:(int64_t)a3
+- (void)_loadAndCacheViewControllersBeforeAndAfterIndex:(int64_t)index
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(QLPageViewController *)self _viewControllerAtIndex:a3 offset:-1];
-  v6 = [(QLPageViewController *)self _viewControllerAtIndex:a3 offset:1];
+  v5 = [(QLPageViewController *)self _viewControllerAtIndex:index offset:-1];
+  v6 = [(QLPageViewController *)self _viewControllerAtIndex:index offset:1];
 }
 
-- (void)_rearrangeCachedViewControllersWithNewCurrentPageIndex:(int64_t)a3
+- (void)_rearrangeCachedViewControllersWithNewCurrentPageIndex:(int64_t)index
 {
   v30 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
@@ -176,8 +176,8 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(NSMapTable *)self->_pages keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  keyEnumerator = [(NSMapTable *)self->_pages keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -188,15 +188,15 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 longValue];
-        v13 = v12 - a3;
-        if (v12 - a3 < 0)
+        longValue = [v11 longValue];
+        v13 = longValue - index;
+        if (longValue - index < 0)
         {
-          v13 = a3 - v12;
+          v13 = index - longValue;
         }
 
         if (v13 >= 2)
@@ -205,7 +205,7 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v8);
@@ -242,10 +242,10 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_indexOfViewController:(id)a3
+- (unint64_t)_indexOfViewController:(id)controller
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -268,9 +268,9 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_pages objectForKey:v10, v15];
 
-        if (v11 == v4)
+        if (v11 == controllerCopy)
         {
-          v12 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
           goto LABEL_11;
         }
       }
@@ -285,60 +285,60 @@ void __53__QLPageViewController_setCurrentPageIndex_animated___block_invoke(uint
     }
   }
 
-  v12 = 0x7FFFFFFFFFFFFFFFLL;
+  unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_11:
 
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return unsignedIntegerValue;
 }
 
-- (id)_cachedViewControllerAtIndex:(unint64_t)a3 offset:(int64_t)a4
+- (id)_cachedViewControllerAtIndex:(unint64_t)index offset:(int64_t)offset
 {
-  if ((a4 & 0x8000000000000000) == 0 || (v4 = 0, -a4 <= a3))
+  if ((offset & 0x8000000000000000) == 0 || (v4 = 0, -offset <= index))
   {
     pages = self->_pages;
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4 + a3];
-    v4 = [(NSMapTable *)pages objectForKey:v6];
+    index = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:offset + index];
+    v4 = [(NSMapTable *)pages objectForKey:index];
   }
 
   return v4;
 }
 
-- (id)_viewControllerAtIndex:(unint64_t)a3 offset:(int64_t)a4
+- (id)_viewControllerAtIndex:(unint64_t)index offset:(int64_t)offset
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ((a4 & 0x8000000000000000) == 0 || (v7 = 0, -a4 <= a3))
+  if ((offset & 0x8000000000000000) == 0 || (v7 = 0, -offset <= index))
   {
     pages = self->_pages;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4 + a3];
-    v10 = [(NSMapTable *)pages objectForKey:v9];
+    index = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:offset + index];
+    v10 = [(NSMapTable *)pages objectForKey:index];
 
     if (!v10)
     {
-      v11 = [(QLPageViewController *)self _retrieveAndStoreViewControllerAtIndex:a3 offset:a4];
+      v11 = [(QLPageViewController *)self _retrieveAndStoreViewControllerAtIndex:index offset:offset];
     }
 
     v12 = self->_pages;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4 + a3];
-    v7 = [(NSMapTable *)v12 objectForKey:v13];
+    index2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:offset + index];
+    v7 = [(NSMapTable *)v12 objectForKey:index2];
   }
 
   return v7;
 }
 
-- (id)_retrieveAndStoreViewControllerAtIndex:(unint64_t)a3 offset:(unint64_t)a4
+- (id)_retrieveAndStoreViewControllerAtIndex:(unint64_t)index offset:(unint64_t)offset
 {
-  v7 = [(QLPageViewController *)self indexedDataSource];
-  v8 = [v7 pageViewController:self viewControllerAtIndex:a4 + a3];
+  indexedDataSource = [(QLPageViewController *)self indexedDataSource];
+  index = [indexedDataSource pageViewController:self viewControllerAtIndex:offset + index];
 
-  if (v8)
+  if (index)
   {
     pages = self->_pages;
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4 + a3];
-    [(NSMapTable *)pages setObject:v8 forKey:v10];
+    index2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:offset + index];
+    [(NSMapTable *)pages setObject:index forKey:index2];
   }
 
-  return v8;
+  return index;
 }
 
 uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_completion___block_invoke(uint64_t a1)
@@ -374,47 +374,47 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
   return result;
 }
 
-- (void)_applyParallaxEffectWithTransitionProgress:(double)a3
+- (void)_applyParallaxEffectWithTransitionProgress:(double)progress
 {
   if (self->_parallaxIntensity != 0.0)
   {
-    v5 = [(QLPageViewController *)self view];
-    [v5 frame];
+    view = [(QLPageViewController *)self view];
+    [view frame];
     v6 = CGRectGetWidth(v26) * self->_parallaxIntensity;
 
     v7 = fmin(v6, 100.0);
     [(QLPageViewController *)self _unsetParallaxEffect];
     currentPageIndex = self->_currentPageIndex;
     self->_currentPageIndexForAppliedParallaxEffect = currentPageIndex;
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
     v11 = 0;
-    v12 = v7 - v7 * a3;
-    v13 = -(a3 * v7);
-    v14 = -(v7 * (a3 + 1.0));
+    v12 = v7 - v7 * progress;
+    v13 = -(progress * v7);
+    v14 = -(v7 * (progress + 1.0));
     v15 = 2;
     do
     {
       v16 = [(QLPageViewController *)self _cachedViewControllerAtIndex:currentPageIndex offset:v11 - 1];
       if (v16)
       {
-        v17 = [(QLPageViewController *)self delegate];
+        delegate = [(QLPageViewController *)self delegate];
         v18 = objc_opt_respondsToSelector();
 
         if (v18)
         {
-          v19 = [(QLPageViewController *)self delegate];
-          v20 = [v19 pageViewController:self parallaxViewInPage:v16 withIndex:currentPageIndex + v11 - 1];
+          delegate2 = [(QLPageViewController *)self delegate];
+          v20 = [delegate2 pageViewController:self parallaxViewInPage:v16 withIndex:currentPageIndex + v11 - 1];
 
-          v21 = [v16 view];
-          self->_pageClipsToBounds[v11] = [v21 clipsToBounds];
+          view2 = [v16 view];
+          self->_pageClipsToBounds[v11] = [view2 clipsToBounds];
 
-          v22 = [v16 view];
-          [v22 setClipsToBounds:1];
+          view3 = [v16 view];
+          [view3 setClipsToBounds:1];
 
           [v20 bounds];
-          if (v10 == 1)
+          if (userInterfaceLayoutDirection == 1)
           {
             v24 = v15;
           }
@@ -461,22 +461,22 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
     v4 = [(QLPageViewController *)self _cachedViewControllerAtIndex:self->_currentPageIndexForAppliedParallaxEffect offset:i - 1];
     if (v4)
     {
-      v5 = [(QLPageViewController *)self delegate];
-      v6 = [v5 pageViewController:self parallaxViewInPage:v4 withIndex:i + self->_currentPageIndexForAppliedParallaxEffect - 1];
+      delegate = [(QLPageViewController *)self delegate];
+      v6 = [delegate pageViewController:self parallaxViewInPage:v4 withIndex:i + self->_currentPageIndexForAppliedParallaxEffect - 1];
 
       [v6 bounds];
       [v6 setBounds:{0.0, 0.0}];
       v7 = self->_pageClipsToBounds[i];
-      v8 = [v4 view];
-      [v8 setClipsToBounds:v7];
+      view = [v4 view];
+      [view setClipsToBounds:v7];
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   p_scrollingStartOffset = &self->_scrollingStartOffset;
-  [a3 contentOffset];
+  [dragging contentOffset];
   p_scrollingStartOffset->x = v5;
   p_scrollingStartOffset->y = v6;
   [(QLPageViewController *)self _loadAndCacheViewControllersBeforeAndAfterIndex:self->_currentPageIndex];
@@ -487,14 +487,14 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(QLPageViewController *)self view];
-  [v4 frame];
+  view = [(QLPageViewController *)self view];
+  [view frame];
   v5 = CGRectGetWidth(v22) + self->_interPageSpacing;
 
-  v6 = [(QLPageViewController *)self scrollView];
-  [v6 contentOffset];
+  scrollView = [(QLPageViewController *)self scrollView];
+  [scrollView contentOffset];
   v8 = v7 - v5;
 
   v9 = v8 / v5;
@@ -526,13 +526,13 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
     v14 = [(QLPageViewController *)self _cachedViewControllerAtIndex:[(QLPageViewController *)self currentPageIndex] offset:0];
     if (v20 != v14)
     {
-      v15 = [(QLPageViewController *)self delegate];
+      delegate = [(QLPageViewController *)self delegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [(QLPageViewController *)self delegate];
-        v18 = [(QLPageViewController *)self currentPageIndex];
+        delegate2 = [(QLPageViewController *)self delegate];
+        currentPageIndex = [(QLPageViewController *)self currentPageIndex];
         v19 = fabs(v9);
         if (v9 > 1.0)
         {
@@ -544,7 +544,7 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
           v19 = 1.0;
         }
 
-        [v17 pageViewController:self isTransitioningFromPage:v14 withIndex:v18 toPage:v20 withIndex:v13 withProgress:v19];
+        [delegate2 pageViewController:self isTransitioningFromPage:v14 withIndex:currentPageIndex toPage:v20 withIndex:v13 withProgress:v19];
       }
     }
 
@@ -552,7 +552,7 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   self->_isTransitioning = 0;
   if (self->_didTryScrollingBeforeFirstPage)
@@ -564,12 +564,12 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
   [(QLPageViewController *)self _unsetParallaxEffect];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  v25 = a3;
-  x = a5->x;
+  draggingCopy = dragging;
+  x = offset->x;
   v8 = &OBJC_IVAR___QLPageViewController__nextPageIndex;
-  if (a5->x == self->_scrollingStartOffset.x)
+  if (offset->x == self->_scrollingStartOffset.x)
   {
     v8 = &OBJC_IVAR___QLPageViewController__currentPageIndex;
   }
@@ -581,7 +581,7 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
     self->_didTryScrollingBeforeFirstPage = 1;
   }
 
-  v11 = [(QLPageViewController *)self delegate];
+  delegate = [(QLPageViewController *)self delegate];
   if (v9 == currentPageIndex)
   {
     v12 = objc_opt_respondsToSelector();
@@ -591,7 +591,7 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
       goto LABEL_12;
     }
 
-    v13 = [(QLPageViewController *)self delegate];
+    delegate2 = [(QLPageViewController *)self delegate];
     pages = self->_pages;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPageIndex];
     v16 = [(NSMapTable *)pages objectForKey:v15];
@@ -599,7 +599,7 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
     v18 = self->_pages;
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_nextPageIndex];
     v20 = [(NSMapTable *)v18 objectForKey:v19];
-    [v13 pageViewController:self willCancelTransitionFromPage:v16 withIndex:v17 toPage:v20 withIndex:self->_nextPageIndex animated:1];
+    [delegate2 pageViewController:self willCancelTransitionFromPage:v16 withIndex:v17 toPage:v20 withIndex:self->_nextPageIndex animated:1];
   }
 
   else
@@ -611,7 +611,7 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
       goto LABEL_12;
     }
 
-    v13 = [(QLPageViewController *)self delegate];
+    delegate2 = [(QLPageViewController *)self delegate];
     v22 = self->_pages;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPageIndex];
     v16 = [(NSMapTable *)v22 objectForKey:v15];
@@ -619,15 +619,15 @@ uint64_t __75__QLPageViewController__setCurrentPageIndex_direction_animated_comp
     v24 = self->_pages;
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
     v20 = [(NSMapTable *)v24 objectForKey:v19];
-    [v13 pageViewController:self willTransitionFromPage:v16 withIndex:v23 toPage:v20 withIndex:v9 animated:1];
+    [delegate2 pageViewController:self willTransitionFromPage:v16 withIndex:v23 toPage:v20 withIndex:v9 animated:1];
   }
 
 LABEL_12:
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = [(QLPageViewController *)self _indexOfViewController:a4];
+  v5 = [(QLPageViewController *)self _indexOfViewController:viewController];
   v6 = v5;
   v7 = 0;
   if (v5 && v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -643,9 +643,9 @@ LABEL_12:
   return v7;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [(QLPageViewController *)self _indexOfViewController:a4];
+  v5 = [(QLPageViewController *)self _indexOfViewController:viewController];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -659,36 +659,36 @@ LABEL_12:
   return v6;
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v6 = a6;
-  v27 = a3;
-  v10 = a5;
+  completedCopy = completed;
+  controllerCopy = controller;
+  controllersCopy = controllers;
   currentPageIndex = self->_currentPageIndex;
-  if (v6)
+  if (completedCopy)
   {
     [(QLPageViewController *)self willChangeValueForKey:@"currentPageIndex"];
-    v12 = [(QLPageViewController *)self viewControllers];
-    v13 = [v12 firstObject];
-    self->_currentPageIndex = [(QLPageViewController *)self _indexOfViewController:v13];
+    viewControllers = [(QLPageViewController *)self viewControllers];
+    firstObject = [viewControllers firstObject];
+    self->_currentPageIndex = [(QLPageViewController *)self _indexOfViewController:firstObject];
 
     [(QLPageViewController *)self didChangeValueForKey:@"currentPageIndex"];
     [(QLPageViewController *)self _rearrangeCachedViewControllersWithNewCurrentPageIndex:self->_currentPageIndex];
-    if (a4)
+    if (animating)
     {
-      v14 = [(QLPageViewController *)self delegate];
+      delegate = [(QLPageViewController *)self delegate];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v16 = [(QLPageViewController *)self delegate];
+        delegate2 = [(QLPageViewController *)self delegate];
         pages = self->_pages;
         v18 = [MEMORY[0x277CCABB0] numberWithInteger:currentPageIndex];
         v19 = [(NSMapTable *)pages objectForKey:v18];
         v20 = self->_pages;
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPageIndex];
         v22 = [(NSMapTable *)v20 objectForKey:v21];
-        [v16 pageViewController:self didTransitionFromPage:v19 withIndex:currentPageIndex toPage:v22 withIndex:self->_currentPageIndex animated:1];
+        [delegate2 pageViewController:self didTransitionFromPage:v19 withIndex:currentPageIndex toPage:v22 withIndex:self->_currentPageIndex animated:1];
 LABEL_8:
       }
     }
@@ -697,21 +697,21 @@ LABEL_8:
   else
   {
     [(QLPageViewController *)self _rearrangeCachedViewControllersWithNewCurrentPageIndex:self->_currentPageIndex];
-    if (a4)
+    if (animating)
     {
-      v23 = [(QLPageViewController *)self delegate];
+      delegate3 = [(QLPageViewController *)self delegate];
       v24 = objc_opt_respondsToSelector();
 
       if (v24)
       {
-        v16 = [(QLPageViewController *)self delegate];
+        delegate2 = [(QLPageViewController *)self delegate];
         v25 = self->_pages;
         v18 = [MEMORY[0x277CCABB0] numberWithInteger:currentPageIndex];
         v19 = [(NSMapTable *)v25 objectForKey:v18];
         v26 = self->_pages;
         v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_nextPageIndex];
         v22 = [(NSMapTable *)v26 objectForKey:v21];
-        [v16 pageViewController:self didCancelTransitionFromPage:v19 withIndex:currentPageIndex toPage:v22 withIndex:self->_nextPageIndex animated:1];
+        [delegate2 pageViewController:self didCancelTransitionFromPage:v19 withIndex:currentPageIndex toPage:v22 withIndex:self->_nextPageIndex animated:1];
         goto LABEL_8;
       }
     }
@@ -720,40 +720,40 @@ LABEL_8:
   self->_nextPageIndex = self->_currentPageIndex;
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
-  v11 = [a4 firstObject];
+  firstObject = [controllers firstObject];
   self->_nextPageIndex = [(QLPageViewController *)self _indexOfViewController:?];
-  v5 = [(QLPageViewController *)self delegate];
+  delegate = [(QLPageViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(QLPageViewController *)self delegate];
+    delegate2 = [(QLPageViewController *)self delegate];
     pages = self->_pages;
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_currentPageIndex];
     v10 = [(NSMapTable *)pages objectForKey:v9];
-    [v7 pageViewController:self willBeginInteractiveTransitionFromPage:v10 withIndex:self->_currentPageIndex toPage:v11 withIndex:self->_nextPageIndex];
+    [delegate2 pageViewController:self willBeginInteractiveTransitionFromPage:v10 withIndex:self->_currentPageIndex toPage:firstObject withIndex:self->_nextPageIndex];
   }
 }
 
-- (QLPageViewController)initWithCoder:(id)a3
+- (QLPageViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = QLPageViewController;
-  return [(QLPageViewController *)&v4 initWithCoder:a3];
+  return [(QLPageViewController *)&v4 initWithCoder:coder];
 }
 
-- (void)setViewControllers:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setViewControllers:(id)controllers direction:(int64_t)direction animated:(BOOL)animated completion:(id)completion
 {
   v6 = MEMORY[0x277CCACA8];
   v7 = NSStringFromSelector(a2);
   v8 = [v6 stringWithFormat:@"%@ not supported on QLPageViewController. Use setCurrentPageIndex: and provide a data source instead.", v7];;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  if (a3 == self)
+  if (source == self)
   {
     v6 = v3;
     v7 = v4;

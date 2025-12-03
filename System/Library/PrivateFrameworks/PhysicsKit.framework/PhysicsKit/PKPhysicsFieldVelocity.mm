@@ -1,14 +1,14 @@
 @interface PKPhysicsFieldVelocity
-+ (id)fieldWithGrid:(id)a3;
-- (PKPhysicsFieldVelocity)initWithGrid:(id)a3;
-- (void)setGrid:(id)a3;
++ (id)fieldWithGrid:(id)grid;
+- (PKPhysicsFieldVelocity)initWithGrid:(id)grid;
+- (void)setGrid:(id)grid;
 @end
 
 @implementation PKPhysicsFieldVelocity
 
-- (PKPhysicsFieldVelocity)initWithGrid:(id)a3
+- (PKPhysicsFieldVelocity)initWithGrid:(id)grid
 {
-  v4 = a3;
+  gridCopy = grid;
   v6.receiver = self;
   v6.super_class = PKPhysicsFieldVelocity;
   if ([(PKPhysicsField *)&v6 init])
@@ -19,16 +19,16 @@
   return 0;
 }
 
-- (void)setGrid:(id)a3
+- (void)setGrid:(id)grid
 {
-  v4 = a3;
-  v5 = v4;
+  gridCopy = grid;
+  v5 = gridCopy;
   ptr = self->super._field.__ptr_;
   if (ptr)
   {
-    if (v4)
+    if (gridCopy)
     {
-      [v4 gridPtr];
+      [gridCopy gridPtr];
     }
 
     else
@@ -45,10 +45,10 @@
   }
 }
 
-+ (id)fieldWithGrid:(id)a3
++ (id)fieldWithGrid:(id)grid
 {
-  v3 = a3;
-  v4 = [[PKPhysicsFieldVelocity alloc] initWithGrid:v3];
+  gridCopy = grid;
+  v4 = [[PKPhysicsFieldVelocity alloc] initWithGrid:gridCopy];
 
   return v4;
 }

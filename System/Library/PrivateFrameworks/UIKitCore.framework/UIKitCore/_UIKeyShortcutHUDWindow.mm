@@ -1,18 +1,18 @@
 @interface _UIKeyShortcutHUDWindow
-- (_UIKeyShortcutHUDWindow)initWithWindowScene:(id)a3;
+- (_UIKeyShortcutHUDWindow)initWithWindowScene:(id)scene;
 - (_UIKeyShortcutHUDWindowDelegate)delegate;
-- (void)_hudWindowSceneDidResignTargetOfKeyboardEventDeferringEnvironment:(id)a3;
+- (void)_hudWindowSceneDidResignTargetOfKeyboardEventDeferringEnvironment:(id)environment;
 - (void)resignKeyWindow;
 @end
 
 @implementation _UIKeyShortcutHUDWindow
 
-- (_UIKeyShortcutHUDWindow)initWithWindowScene:(id)a3
+- (_UIKeyShortcutHUDWindow)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v11.receiver = self;
   v11.super_class = _UIKeyShortcutHUDWindow;
-  v5 = [(UIWindow *)&v11 initWithWindowScene:v4];
+  v5 = [(UIWindow *)&v11 initWithWindowScene:sceneCopy];
   v6 = v5;
   if (v5)
   {
@@ -21,11 +21,11 @@
     [(UIView *)v6 setBackgroundColor:v7];
 
     [(UIWindow *)v6 setWindowLevel:2200.0];
-    v8 = [(UIView *)v6 layer];
-    [v8 setHitTestsAsOpaque:1];
+    layer = [(UIView *)v6 layer];
+    [layer setHitTestsAsOpaque:1];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v6 selector:sel__hudWindowSceneDidResignTargetOfKeyboardEventDeferringEnvironment_ name:@"_UISceneDidResignTargetOfKeyboardEventDeferringEnvironmentNotification" object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__hudWindowSceneDidResignTargetOfKeyboardEventDeferringEnvironment_ name:@"_UISceneDidResignTargetOfKeyboardEventDeferringEnvironmentNotification" object:sceneCopy];
   }
 
   return v6;
@@ -36,14 +36,14 @@
   v4.receiver = self;
   v4.super_class = _UIKeyShortcutHUDWindow;
   [(UIWindow *)&v4 resignKeyWindow];
-  v3 = [(_UIKeyShortcutHUDWindow *)self delegate];
-  [v3 keyShortcutHUDWindowDidResignKey:self];
+  delegate = [(_UIKeyShortcutHUDWindow *)self delegate];
+  [delegate keyShortcutHUDWindowDidResignKey:self];
 }
 
-- (void)_hudWindowSceneDidResignTargetOfKeyboardEventDeferringEnvironment:(id)a3
+- (void)_hudWindowSceneDidResignTargetOfKeyboardEventDeferringEnvironment:(id)environment
 {
-  v4 = [(_UIKeyShortcutHUDWindow *)self delegate];
-  [v4 keyShortcutHUDWindowSceneDidResignKeyboardFocus:self];
+  delegate = [(_UIKeyShortcutHUDWindow *)self delegate];
+  [delegate keyShortcutHUDWindowSceneDidResignKeyboardFocus:self];
 }
 
 - (_UIKeyShortcutHUDWindowDelegate)delegate

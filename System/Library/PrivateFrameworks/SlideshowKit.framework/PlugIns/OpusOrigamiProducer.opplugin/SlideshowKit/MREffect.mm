@@ -1,52 +1,52 @@
 @interface MREffect
-+ (id)retainedEffectWithEffectID:(id)a3 forEffectLayer:(id)a4;
-- (BOOL)hasMoreSlidesFromTime:(double)a3 backwards:(BOOL)a4 startTime:(double *)a5 duration:(double *)a6;
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (BOOL)startPanoramaPanningForElementID:(id)a3 isLandscape:(BOOL *)a4;
-- (CGSize)_maxSizeForTextElement:(id)a3;
++ (id)retainedEffectWithEffectID:(id)d forEffectLayer:(id)layer;
+- (BOOL)hasMoreSlidesFromTime:(double)time backwards:(BOOL)backwards startTime:(double *)startTime duration:(double *)duration;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (BOOL)startPanoramaPanningForElementID:(id)d isLandscape:(BOOL *)landscape;
+- (CGSize)_maxSizeForTextElement:(id)element;
 - (CGSize)pixelSize;
-- (MREffect)initWithEffectID:(id)a3;
+- (MREffect)initWithEffectID:(id)d;
 - (_NSRange)multiImageSlideRange;
-- (double)_computePhaseTimeForTime:(double)a3;
-- (double)_computeTimeForPhaseTime:(double)a3;
-- (double)valueForPanoramaPanningForElementID:(id)a3 value:(double)a4 minValue:(double)a5 maxValue:(double)a6;
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
+- (double)_computePhaseTimeForTime:(double)time;
+- (double)_computeTimeForPhaseTime:(double)time;
+- (double)valueForPanoramaPanningForElementID:(id)d value:(double)value minValue:(double)minValue maxValue:(double)maxValue;
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
 - (void)cancelLoading;
 - (void)cleanup;
 - (void)dealloc;
-- (void)getLazyDuration:(double *)a3 lazyFactor:(double *)a4 animationDuration:(double *)a5 fromInterestingTime:(double)a6;
-- (void)loadForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5 now:(BOOL)a6;
-- (void)loadWithArguments:(id)a3;
-- (void)releaseByEffectLayer:(id)a3;
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)setAttributes:(id)a3;
-- (void)setPhaseInDuration:(double)a3 mainDuration:(double)a4 phaseOutDuration:(double)a5;
-- (void)setPixelSize:(CGSize)a3;
+- (void)getLazyDuration:(double *)duration lazyFactor:(double *)factor animationDuration:(double *)animationDuration fromInterestingTime:(double)time;
+- (void)loadForTime:(double)time inContext:(id)context withArguments:(id)arguments now:(BOOL)now;
+- (void)loadWithArguments:(id)arguments;
+- (void)releaseByEffectLayer:(id)layer;
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)setAttributes:(id)attributes;
+- (void)setPhaseInDuration:(double)duration mainDuration:(double)mainDuration phaseOutDuration:(double)outDuration;
+- (void)setPixelSize:(CGSize)size;
 - (void)unload;
-- (void)updatePanoramaPanningForElementID:(id)a3 withDelta:(double)a4;
+- (void)updatePanoramaPanningForElementID:(id)d withDelta:(double)delta;
 @end
 
 @implementation MREffect
 
-+ (id)retainedEffectWithEffectID:(id)a3 forEffectLayer:(id)a4
++ (id)retainedEffectWithEffectID:(id)d forEffectLayer:(id)layer
 {
   v5 = [+[MREffectManager sharedManager](MREffectManager "sharedManager")];
   v6 = v5;
   if (v5)
   {
-    [v5 retainByEffectLayer:a4];
+    [v5 retainByEffectLayer:layer];
   }
 
   return v6;
 }
 
-- (MREffect)initWithEffectID:(id)a3
+- (MREffect)initWithEffectID:(id)d
 {
   v4 = [(MREffect *)self init];
   if (v4)
   {
-    v4->mEffectID = [a3 copy];
+    v4->mEffectID = [d copy];
     v4->mDescription = [+[MREffectManager sharedManager](MREffectManager "sharedManager")];
     [+[MREffectManager sharedManager](MREffectManager "sharedManager")];
     v4->mDefaultPhaseInDuration = v5;
@@ -120,7 +120,7 @@
   }
 }
 
-- (void)releaseByEffectLayer:(id)a3
+- (void)releaseByEffectLayer:(id)layer
 {
   [(MREffect *)self unload];
   self->mPixelSize = CGSizeZero;
@@ -135,22 +135,22 @@
   [v4 recycleEffect:self];
 }
 
-- (void)setPhaseInDuration:(double)a3 mainDuration:(double)a4 phaseOutDuration:(double)a5
+- (void)setPhaseInDuration:(double)duration mainDuration:(double)mainDuration phaseOutDuration:(double)outDuration
 {
-  self->mPhaseInDuration = a3;
-  self->mMainDuration = a4;
-  self->mPhaseOutDuration = a5;
+  self->mPhaseInDuration = duration;
+  self->mMainDuration = mainDuration;
+  self->mPhaseOutDuration = outDuration;
 }
 
-- (double)_computePhaseTimeForTime:(double)a3
+- (double)_computePhaseTimeForTime:(double)time
 {
   mPhaseInDuration = self->mPhaseInDuration;
-  if (mPhaseInDuration >= a3)
+  if (mPhaseInDuration >= time)
   {
     v7 = 0.0;
     if (mPhaseInDuration > 0.0)
     {
-      return self->mDefaultPhaseInDuration * a3 / mPhaseInDuration;
+      return self->mDefaultPhaseInDuration * time / mPhaseInDuration;
     }
   }
 
@@ -158,14 +158,14 @@
   {
     mMainDuration = self->mMainDuration;
     mDefaultPhaseInDuration = self->mDefaultPhaseInDuration;
-    if (mPhaseInDuration + mMainDuration <= a3)
+    if (mPhaseInDuration + mMainDuration <= time)
     {
       v8 = mDefaultPhaseInDuration + self->mDefaultMainDuration;
       mPhaseOutDuration = self->mPhaseOutDuration;
       v10 = 0.0;
       if (mPhaseOutDuration > 0.0)
       {
-        v10 = (a3 - mPhaseInDuration - mMainDuration) * self->mDefaultPhaseOutDuration / mPhaseOutDuration;
+        v10 = (time - mPhaseInDuration - mMainDuration) * self->mDefaultPhaseOutDuration / mPhaseOutDuration;
       }
 
       return v8 + v10;
@@ -176,7 +176,7 @@
       v6 = 0.0;
       if (mMainDuration > 0.0)
       {
-        v6 = (a3 - mPhaseInDuration) * self->mDefaultMainDuration / mMainDuration;
+        v6 = (time - mPhaseInDuration) * self->mDefaultMainDuration / mMainDuration;
       }
 
       return mDefaultPhaseInDuration + v6;
@@ -186,15 +186,15 @@
   return v7;
 }
 
-- (double)_computeTimeForPhaseTime:(double)a3
+- (double)_computeTimeForPhaseTime:(double)time
 {
   mDefaultPhaseInDuration = self->mDefaultPhaseInDuration;
-  if (mDefaultPhaseInDuration >= a3)
+  if (mDefaultPhaseInDuration >= time)
   {
     v7 = 0.0;
     if (mDefaultPhaseInDuration > 0.0)
     {
-      return self->mPhaseInDuration * a3 / mDefaultPhaseInDuration;
+      return self->mPhaseInDuration * time / mDefaultPhaseInDuration;
     }
   }
 
@@ -202,14 +202,14 @@
   {
     mDefaultMainDuration = self->mDefaultMainDuration;
     mPhaseInDuration = self->mPhaseInDuration;
-    if (mDefaultPhaseInDuration + mDefaultMainDuration <= a3)
+    if (mDefaultPhaseInDuration + mDefaultMainDuration <= time)
     {
       v8 = mPhaseInDuration + self->mMainDuration;
       mDefaultPhaseOutDuration = self->mDefaultPhaseOutDuration;
       v10 = 0.0;
       if (mDefaultPhaseOutDuration > 0.0)
       {
-        v10 = (a3 - mDefaultPhaseInDuration - mDefaultMainDuration) * self->mPhaseOutDuration / mDefaultPhaseOutDuration;
+        v10 = (time - mDefaultPhaseInDuration - mDefaultMainDuration) * self->mPhaseOutDuration / mDefaultPhaseOutDuration;
       }
 
       return v8 + v10;
@@ -220,7 +220,7 @@
       v6 = 0.0;
       if (mDefaultMainDuration > 0.0)
       {
-        v6 = (a3 - mDefaultPhaseInDuration) * self->mMainDuration / mDefaultMainDuration;
+        v6 = (time - mDefaultPhaseInDuration) * self->mMainDuration / mDefaultMainDuration;
       }
 
       return mPhaseInDuration + v6;
@@ -230,19 +230,19 @@
   return v7;
 }
 
-- (void)setPixelSize:(CGSize)a3
+- (void)setPixelSize:(CGSize)size
 {
-  if (a3.width != self->mPixelSize.width || a3.height != self->mPixelSize.height)
+  if (size.width != self->mPixelSize.width || size.height != self->mPixelSize.height)
   {
-    self->mPixelSize = a3;
+    self->mPixelSize = size;
     *&self->mNeedsToUpdateSlides = 257;
   }
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   mAttributes = self->mAttributes;
-  if (mAttributes != a3)
+  if (mAttributes != attributes)
   {
     v16 = v5;
     v17 = v4;
@@ -253,7 +253,7 @@
       self->mAttributes = 0;
     }
 
-    self->mAttributes = a3;
+    self->mAttributes = attributes;
 
     v14 = objc_alloc_init(NSMutableDictionary);
     v15 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
@@ -262,32 +262,32 @@
       [(NSDictionary *)v14 addEntriesFromDictionary:v15];
     }
 
-    [(NSDictionary *)v14 addEntriesFromDictionary:a3, v8, v7, v6, v16, v17, v18, v9, v10];
+    [(NSDictionary *)v14 addEntriesFromDictionary:attributes, v8, v7, v6, v16, v17, v18, v9, v10];
     self->mFlattenedAttributes = v14;
-    self->mSeed = [objc_msgSend(a3 objectForKey:{@"RandomSeed", "unsignedIntegerValue"}];
+    self->mSeed = [objc_msgSend(attributes objectForKey:{@"RandomSeed", "unsignedIntegerValue"}];
     self->mNeedsToUpdateAttributes = 1;
   }
 }
 
-- (BOOL)hasMoreSlidesFromTime:(double)a3 backwards:(BOOL)a4 startTime:(double *)a5 duration:(double *)a6
+- (BOOL)hasMoreSlidesFromTime:(double)time backwards:(BOOL)backwards startTime:(double *)startTime duration:(double *)duration
 {
-  v8 = [(MRLayerEffect *)self->mEffectLayer hasSlides:a4];
+  v8 = [(MRLayerEffect *)self->mEffectLayer hasSlides:backwards];
   if (v8)
   {
-    LOBYTE(v8) = a3 < 0.0 || self->mPhaseInDuration + self->mMainDuration + self->mPhaseOutDuration <= a3;
+    LOBYTE(v8) = time < 0.0 || self->mPhaseInDuration + self->mMainDuration + self->mPhaseOutDuration <= time;
   }
 
   return v8;
 }
 
-- (void)getLazyDuration:(double *)a3 lazyFactor:(double *)a4 animationDuration:(double *)a5 fromInterestingTime:(double)a6
+- (void)getLazyDuration:(double *)duration lazyFactor:(double *)factor animationDuration:(double *)animationDuration fromInterestingTime:(double)time
 {
-  *a3 = self->mMainDuration;
-  *a4 = 0.0;
-  *a5 = self->mPhaseOutDuration;
+  *duration = self->mMainDuration;
+  *factor = 0.0;
+  *animationDuration = self->mPhaseOutDuration;
 }
 
-- (BOOL)startPanoramaPanningForElementID:(id)a3 isLandscape:(BOOL *)a4
+- (BOOL)startPanoramaPanningForElementID:(id)d isLandscape:(BOOL *)landscape
 {
   if (!self->_panoramaPanningOffsets)
   {
@@ -298,46 +298,46 @@
   return 1;
 }
 
-- (void)updatePanoramaPanningForElementID:(id)a3 withDelta:(double)a4
+- (void)updatePanoramaPanningForElementID:(id)d withDelta:(double)delta
 {
   [-[NSMutableDictionary objectForKey:](self->_panoramaPanningOffsets "objectForKey:"floatValue"")];
-  v8 = v7 + a4;
+  v8 = v7 + delta;
   panoramaPanningOffsets = self->_panoramaPanningOffsets;
   *&v8 = v8;
   v10 = [NSNumber numberWithFloat:v8];
 
-  [(NSMutableDictionary *)panoramaPanningOffsets setObject:v10 forKey:a3];
+  [(NSMutableDictionary *)panoramaPanningOffsets setObject:v10 forKey:d];
 }
 
-- (double)valueForPanoramaPanningForElementID:(id)a3 value:(double)a4 minValue:(double)a5 maxValue:(double)a6
+- (double)valueForPanoramaPanningForElementID:(id)d value:(double)value minValue:(double)minValue maxValue:(double)maxValue
 {
   [-[NSMutableDictionary objectForKey:](self->_panoramaPanningOffsets "objectForKey:"floatValue"")];
-  v12 = a4 - v11;
-  if (v12 >= a5)
+  v12 = value - v11;
+  if (v12 >= minValue)
   {
-    a5 = v12;
-    if (v12 > a6)
+    minValue = v12;
+    if (v12 > maxValue)
     {
-      a5 = a6;
+      minValue = maxValue;
     }
   }
 
-  v13 = a4 - a5;
-  *&v13 = a4 - a5;
-  [(NSMutableDictionary *)self->_panoramaPanningOffsets setObject:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v13], a3];
-  return a4 + (a5 - a4) * self->_panoramaPanningAmount;
+  v13 = value - minValue;
+  *&v13 = value - minValue;
+  [(NSMutableDictionary *)self->_panoramaPanningOffsets setObject:[NSNumber forKey:"numberWithFloat:" numberWithFloat:v13], d];
+  return value + (minValue - value) * self->_panoramaPanningAmount;
 }
 
-- (void)loadForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5 now:(BOOL)a6
+- (void)loadForTime:(double)time inContext:(id)context withArguments:(id)arguments now:(BOOL)now
 {
-  if (![(MREffect *)self isLoadedForTime:?]&& (a6 || !self->mPreloadOperation))
+  if (![(MREffect *)self isLoadedForTime:?]&& (now || !self->mPreloadOperation))
   {
     objc_sync_enter(self);
     if (self->mEffectID)
     {
-      v11 = [a5 preloadQueue];
+      preloadQueue = [arguments preloadQueue];
       mPreloadOperation = self->mPreloadOperation;
-      if (a6 || !v11)
+      if (now || !preloadQueue)
       {
         if (mPreloadOperation)
         {
@@ -346,16 +346,16 @@
           self->mPreloadOperation = 0;
         }
 
-        [(MREffect *)self _loadForTime:a4 inContext:a5 withArguments:a3];
+        [(MREffect *)self _loadForTime:context inContext:arguments withArguments:time];
       }
 
       else if (!mPreloadOperation)
       {
-        v13 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a3), @"time", a4, @"context", a5, @"arguments", 0}];
+        v13 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", time), @"time", context, @"context", arguments, @"arguments", 0}];
         v14 = [[NSInvocationOperation alloc] initWithTarget:self selector:"loadWithArguments:" object:v13];
         self->mPreloadOperation = v14;
         [(NSOperation *)v14 setQualityOfService:9];
-        [v11 addOperation:self->mPreloadOperation];
+        [preloadQueue addOperation:self->mPreloadOperation];
       }
     }
 
@@ -363,7 +363,7 @@
   }
 }
 
-- (void)loadWithArguments:(id)a3
+- (void)loadWithArguments:(id)arguments
 {
   pthread_setname_np([[NSString stringWithFormat:?];
   objc_sync_enter(self);
@@ -374,8 +374,8 @@
     {
 
       self->mPreloadOperation = 0;
-      [objc_msgSend(a3 objectForKey:{@"time", "doubleValue"}];
-      -[MREffect _loadForTime:inContext:withArguments:](self, "_loadForTime:inContext:withArguments:", [a3 objectForKey:@"context"], objc_msgSend(a3, "objectForKey:", @"arguments"), v6);
+      [objc_msgSend(arguments objectForKey:{@"time", "doubleValue"}];
+      -[MREffect _loadForTime:inContext:withArguments:](self, "_loadForTime:inContext:withArguments:", [arguments objectForKey:@"context"], objc_msgSend(arguments, "objectForKey:", @"arguments"), v6);
     }
   }
 
@@ -426,7 +426,7 @@
   objc_sync_exit(self);
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->_panoramaPanningOffsets)
   {
@@ -435,19 +435,19 @@
       panoramaPanningEndTime = self->_panoramaPanningEndTime;
       if (panoramaPanningEndTime < 0.0)
       {
-        self->_panoramaPanningEndTime = a3;
+        self->_panoramaPanningEndTime = time;
         goto LABEL_9;
       }
 
-      if (panoramaPanningEndTime >= a3)
+      if (panoramaPanningEndTime >= time)
       {
         self->_panoramaPanningAmount = 1.0;
         goto LABEL_9;
       }
 
-      if (panoramaPanningEndTime + 0.4 > a3)
+      if (panoramaPanningEndTime + 0.4 > time)
       {
-        self->_panoramaPanningAmount = (cos((a3 - panoramaPanningEndTime) / 0.4 * 3.14159265) + 1.0) * 0.5;
+        self->_panoramaPanningAmount = (cos((time - panoramaPanningEndTime) / 0.4 * 3.14159265) + 1.0) * 0.5;
         goto LABEL_9;
       }
     }
@@ -456,15 +456,15 @@
   }
 
 LABEL_9:
-  if (![(MREffect *)self isLoadedForTime:a3]&& self->mPhaseInDuration + self->mMainDuration + self->mPhaseOutDuration > a3)
+  if (![(MREffect *)self isLoadedForTime:time]&& self->mPhaseInDuration + self->mMainDuration + self->mPhaseOutDuration > time)
   {
-    [(MREffect *)self loadForTime:a4 inContext:a5 withArguments:a3 >= 0.0 now:a3];
+    [(MREffect *)self loadForTime:context inContext:arguments withArguments:time >= 0.0 now:time];
   }
 
   return 1;
 }
 
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v7 = objc_opt_class();
   NSLog(@"Method renderAtTime must be implemented in class %@!\n", v7);
@@ -472,9 +472,9 @@ LABEL_9:
   [(MREffect *)self doesNotRecognizeSelector:a2];
 }
 
-- (id)retainedByUserRenderedImageAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)retainedByUserRenderedImageAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  v9 = [a4 beginLocalContextWithSize:objc_msgSend(a4 backgroundColor:"backColor" state:{0, 0), &v14, self->mPixelSize.width, self->mPixelSize.height}];
+  v9 = [context beginLocalContextWithSize:objc_msgSend(context backgroundColor:"backColor" state:{0, 0), &v14, self->mPixelSize.width, self->mPixelSize.height}];
   v10 = self->mPixelSize.width / self->mPixelSize.height;
   *&v10 = v10;
   [v9 setLocalAspectRatio:v10];
@@ -485,24 +485,24 @@ LABEL_9:
     +[EAGLContext setCurrentContext:](EAGLContext, "setCurrentContext:", [v9 glContext]);
   }
 
-  [(MREffect *)self renderAtTime:v9 inContext:a5 withArguments:a3];
+  [(MREffect *)self renderAtTime:v9 inContext:arguments withArguments:time];
   if (+[EAGLContext currentContext]!= v11)
   {
     [EAGLContext setCurrentContext:v11];
   }
 
-  return [a4 retainedByUserImageByEndingLocalContext:v9 andRestoreState:&v14];
+  return [context retainedByUserImageByEndingLocalContext:v9 andRestoreState:&v14];
 }
 
-- (id)patchworkAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (id)patchworkAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   if (self->mPixelSize.width <= 0.0 || self->mPixelSize.height <= 0.0)
   {
     return 0;
   }
 
-  v6 = [(MREffect *)self retainedByUserRenderedImageAtTime:a4 inContext:a5 withArguments:a3];
-  [a4 localAspectRatio];
+  v6 = [(MREffect *)self retainedByUserRenderedImageAtTime:context inContext:arguments withArguments:time];
+  [context localAspectRatio];
   v8 = [[NSDictionary alloc] initWithObjectsAndKeys:{objc_msgSend(v6, "insertingInCollection"), @"image", +[NSValue valueWithCGRect:](NSValue, "valueWithCGRect:", -1.0, 2.0 / v7 * -0.5, 2.0, 2.0 / v7), @"rectangle", 0}];
   v9 = [NSArray arrayWithObject:v8];
 
@@ -510,7 +510,7 @@ LABEL_9:
   return v9;
 }
 
-- (CGSize)_maxSizeForTextElement:(id)a3
+- (CGSize)_maxSizeForTextElement:(id)element
 {
   width = CGSizeZero.width;
   height = CGSizeZero.height;

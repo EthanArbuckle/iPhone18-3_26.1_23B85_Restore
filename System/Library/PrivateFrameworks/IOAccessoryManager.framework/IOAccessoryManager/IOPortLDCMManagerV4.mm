@@ -1,30 +1,30 @@
 @interface IOPortLDCMManagerV4
 - (BOOL)checkIsReceptacleEmpty;
-- (IOPortLDCMManagerV4)initWithParams:(unint64_t)a3 withDryPollingInterval:(unint64_t)a4 withService:(unsigned int)a5 withNotificationPort:(IONotificationPort *)a6 withServerRunloop:(__CFRunLoop *)a7;
-- (id)buildMeasurementOutputString:(id)a3 withMeasurementReason:(int)a4 withMeasurementEvent:(id)a5;
-- (id)extractData:(unsigned int *)a3 :(unint64_t)a4;
-- (id)publishAnalytics:(id)a3 withMeasurementReason:(int)a4 withWaveformRawData:(char *)a5 withWaveformDataLen:(unint64_t)a6;
+- (IOPortLDCMManagerV4)initWithParams:(unint64_t)params withDryPollingInterval:(unint64_t)interval withService:(unsigned int)service withNotificationPort:(IONotificationPort *)port withServerRunloop:(__CFRunLoop *)runloop;
+- (id)buildMeasurementOutputString:(id)string withMeasurementReason:(int)reason withMeasurementEvent:(id)event;
+- (id)extractData:(unsigned int *)data :(unint64_t)a4;
+- (id)publishAnalytics:(id)analytics withMeasurementReason:(int)reason withWaveformRawData:(char *)data withWaveformDataLen:(unint64_t)len;
 - (int)disableOVPInterrupts;
 - (int)getData:(char *)outputStruct :(unint64_t *)outputStructCnt;
-- (int)setLDCMMeasurementStatus:(int)a3;
-- (int)setLDCMState:(int)a3;
-- (int)setLiquidDetected:(unsigned __int8)a3;
-- (int)setMitigations:(unsigned __int8)a3;
-- (int)setUserOverride:(unsigned __int8)a3;
-- (int)setWaveformExtractionEnabled:(unsigned __int8)a3;
+- (int)setLDCMMeasurementStatus:(int)status;
+- (int)setLDCMState:(int)state;
+- (int)setLiquidDetected:(unsigned __int8)detected;
+- (int)setMitigations:(unsigned __int8)mitigations;
+- (int)setUserOverride:(unsigned __int8)override;
+- (int)setWaveformExtractionEnabled:(unsigned __int8)enabled;
 - (void)dealloc;
 - (void)generateLDCMCSVData;
 - (void)handleAttachEvent;
 - (void)handleDetachEvent;
 - (void)handleLDCMInterrupt;
-- (void)handleLDCMMitigationsStatusChange:(int)a3;
-- (void)handleMeasurementResults:(int)a3;
+- (void)handleLDCMMitigationsStatusChange:(int)change;
+- (void)handleMeasurementResults:(int)results;
 - (void)hideUI;
-- (void)logInfo:(id)a3;
+- (void)logInfo:(id)info;
 - (void)measureOccupiedWetPortDuration;
-- (void)processBehaviorDictionary:(id)a3;
+- (void)processBehaviorDictionary:(id)dictionary;
 - (void)showUI;
-- (void)storeWaveform:(char *)a3 withWaveformDataLen:(unint64_t)a4;
+- (void)storeWaveform:(char *)waveform withWaveformDataLen:(unint64_t)len;
 @end
 
 @implementation IOPortLDCMManagerV4
@@ -161,7 +161,7 @@ uint64_t __42__IOPortLDCMManagerV4_generateLDCMCSVData__block_invoke(uint64_t a1
   return v20;
 }
 
-- (IOPortLDCMManagerV4)initWithParams:(unint64_t)a3 withDryPollingInterval:(unint64_t)a4 withService:(unsigned int)a5 withNotificationPort:(IONotificationPort *)a6 withServerRunloop:(__CFRunLoop *)a7
+- (IOPortLDCMManagerV4)initWithParams:(unint64_t)params withDryPollingInterval:(unint64_t)interval withService:(unsigned int)service withNotificationPort:(IONotificationPort *)port withServerRunloop:(__CFRunLoop *)runloop
 {
   v45 = *MEMORY[0x277D85DE8];
   parent = 0;
@@ -169,11 +169,11 @@ uint64_t __42__IOPortLDCMManagerV4_generateLDCMCSVData__block_invoke(uint64_t a1
   v40[1] = 3221225472;
   v40[2] = __112__IOPortLDCMManagerV4_initWithParams_withDryPollingInterval_withService_withNotificationPort_withServerRunloop___block_invoke;
   v40[3] = &unk_279793120;
-  v12 = self;
-  v41 = v12;
+  selfCopy = self;
+  v41 = selfCopy;
   v13 = MEMORY[0x259C1ED40](v40);
-  v14 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v39.receiver = v12;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v39.receiver = selfCopy;
   v39.super_class = IOPortLDCMManagerV4;
   v15 = [(IOPortLDCMManagerV4 *)&v39 init];
   v16 = v15;
@@ -185,40 +185,40 @@ uint64_t __42__IOPortLDCMManagerV4_generateLDCMCSVData__block_invoke(uint64_t a1
 
   *(v15 + 6) = 0;
   *(v15 + 4) = 0;
-  *(v15 + 9) = a3;
-  *(v15 + 10) = a4;
+  *(v15 + 9) = params;
+  *(v15 + 10) = interval;
   *(v15 + 11) = 0;
-  v15[15] = [v14 BOOLForKey:@"LDCMV4DisableMitigations"];
-  v16[16] = [v14 BOOLForKey:@"LDCMV4DisableUI"];
-  v16[14] = [v14 BOOLForKey:@"LDCMWaveformExtractionDisabled"];
-  v16[17] = [v14 BOOLForKey:@"LDCMDisableIntrusiveUI"];
-  v16[18] = [v14 BOOLForKey:@"LDCMForcePortWet"];
+  v15[15] = [standardUserDefaults BOOLForKey:@"LDCMV4DisableMitigations"];
+  v16[16] = [standardUserDefaults BOOLForKey:@"LDCMV4DisableUI"];
+  v16[14] = [standardUserDefaults BOOLForKey:@"LDCMWaveformExtractionDisabled"];
+  v16[17] = [standardUserDefaults BOOLForKey:@"LDCMDisableIntrusiveUI"];
+  v16[18] = [standardUserDefaults BOOLForKey:@"LDCMForcePortWet"];
   *(v16 + 10) = 0;
   v16[10] = [v16 checkIsReceptacleEmpty];
   *(v16 + 19) = 0;
-  v17 = [[LDCMNotificationUIManagerV4 alloc] initWithParams:a7];
+  v17 = [[LDCMNotificationUIManagerV4 alloc] initWithParams:runloop];
   v18 = *(v16 + 8);
   *(v16 + 8) = v17;
 
-  if (IOServiceOpen(a5, *MEMORY[0x277D85F48], 0, v16 + 7))
+  if (IOServiceOpen(service, *MEMORY[0x277D85F48], 0, v16 + 7))
   {
     [IOPortLDCMManagerV4 initWithParams:withDryPollingInterval:withService:withNotificationPort:withServerRunloop:];
     goto LABEL_45;
   }
 
-  if (IOServiceAddInterestNotification(a6, a5, "IOGeneralInterest", IOPortLDCMFeatureInterestCallback, v16, v16 + 6))
+  if (IOServiceAddInterestNotification(port, service, "IOGeneralInterest", IOPortLDCMFeatureInterestCallback, v16, v16 + 6))
   {
     [IOPortLDCMManagerV4 initWithParams:withDryPollingInterval:withService:withNotificationPort:withServerRunloop:];
     goto LABEL_45;
   }
 
-  if (IORegistryEntryGetParentEntry(a5, "IOService", &parent) || !parent || !IOObjectConformsTo(parent, "IOPort"))
+  if (IORegistryEntryGetParentEntry(service, "IOService", &parent) || !parent || !IOObjectConformsTo(parent, "IOPort"))
   {
     [IOPortLDCMManagerV4 initWithParams:withDryPollingInterval:withService:withNotificationPort:withServerRunloop:];
     goto LABEL_45;
   }
 
-  if (IOServiceAddInterestNotification(a6, parent, "IOGeneralInterest", IOPortLDCMPortInterestCallback, v16, v16 + 6))
+  if (IOServiceAddInterestNotification(port, parent, "IOGeneralInterest", IOPortLDCMPortInterestCallback, v16, v16 + 6))
   {
     [IOPortLDCMManagerV4 initWithParams:withDryPollingInterval:withService:withNotificationPort:withServerRunloop:];
     goto LABEL_45;
@@ -459,7 +459,7 @@ uint64_t __40__IOPortLDCMManagerV4_handleDetachEvent__block_invoke(uint64_t a1)
   dispatch_async(ldcmV4DispatchQueue, block);
 }
 
-- (void)handleLDCMMitigationsStatusChange:(int)a3
+- (void)handleLDCMMitigationsStatusChange:(int)change
 {
   ldcmV4DispatchQueue = self->_ldcmV4DispatchQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -467,7 +467,7 @@ uint64_t __40__IOPortLDCMManagerV4_handleDetachEvent__block_invoke(uint64_t a1)
   v4[2] = __57__IOPortLDCMManagerV4_handleLDCMMitigationsStatusChange___block_invoke;
   v4[3] = &unk_279793148;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(ldcmV4DispatchQueue, v4);
 }
 
@@ -547,10 +547,10 @@ LABEL_13:
   return AnalyticsSendEvent();
 }
 
-- (void)handleMeasurementResults:(int)a3
+- (void)handleMeasurementResults:(int)results
 {
-  v3 = self;
-  if (a3 == 1)
+  selfCopy = self;
+  if (results == 1)
   {
     self->_isWet = 1;
 LABEL_3:
@@ -562,79 +562,79 @@ LABEL_3:
   self->_isWet = 0;
   if ([(IOPortLDCMManagerV4 *)self checkIsReceptacleEmpty])
   {
-    if (v3->_overrideEnabled)
+    if (selfCopy->_overrideEnabled)
     {
-      [(IOPortLDCMManagerV4 *)v3 setUserOverride:0];
+      [(IOPortLDCMManagerV4 *)selfCopy setUserOverride:0];
     }
 
-    if (v3->_mitigationsEnabled)
+    if (selfCopy->_mitigationsEnabled)
     {
-      self = v3;
+      self = selfCopy;
       goto LABEL_3;
     }
   }
 }
 
-- (void)logInfo:(id)a3
+- (void)logInfo:(id)info
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v4 ldcmFeatureStatus];
-    v6 = [v4 ldcmMitigationsStatus];
+    ldcmFeatureStatus = [infoCopy ldcmFeatureStatus];
+    ldcmMitigationsStatus = [infoCopy ldcmMitigationsStatus];
     mitigationsEnabled = self->_mitigationsEnabled;
     overrideEnabled = self->_overrideEnabled;
     v37 = 67111168;
-    *v38 = v5;
+    *v38 = ldcmFeatureStatus;
     *&v38[4] = 1024;
-    *&v38[6] = v6;
+    *&v38[6] = ldcmMitigationsStatus;
     LOWORD(v39) = 1024;
     *(&v39 + 2) = mitigationsEnabled;
     HIWORD(v39) = 1024;
     *v40 = overrideEnabled;
     *&v40[4] = 1024;
-    *&v40[6] = [v4 ldcmPortStatus];
+    *&v40[6] = [infoCopy ldcmPortStatus];
     v41 = 1024;
-    *v42 = [v4 ldcmWet];
+    *v42 = [infoCopy ldcmWet];
     *&v42[4] = 1024;
-    *&v42[6] = [v4 ldcmWetStateDuration];
+    *&v42[6] = [infoCopy ldcmWetStateDuration];
     v43 = 1024;
-    v44 = [(IOPortLDCMManagerV4 *)self checkIsReceptacleEmpty];
+    checkIsReceptacleEmpty = [(IOPortLDCMManagerV4 *)self checkIsReceptacleEmpty];
     v45 = 1024;
-    v46 = [v4 ldcmRREFGated];
+    ldcmRREFGated = [infoCopy ldcmRREFGated];
     _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - Feature Status: %x, Mitigations Status: %d, Mitigations Framework State: %d, Override Framework State: %d, Wet Declared %d, Wet Measured: %d, Wet State Duration: %d, Receptacle Empty: %d, RREF Gated: %d", &v37, 0x38u);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     previousLDCMPortStatus = self->_previousLDCMPortStatus;
-    v10 = [v4 ldcmPortStatus];
-    v11 = [v4 ldcmMeasurePin];
-    v12 = [v4 ldcmCompletion];
-    v13 = [v4 ldcmLowImp];
+    ldcmPortStatus = [infoCopy ldcmPortStatus];
+    ldcmMeasurePin = [infoCopy ldcmMeasurePin];
+    ldcmCompletion = [infoCopy ldcmCompletion];
+    ldcmLowImp = [infoCopy ldcmLowImp];
     v37 = 67110144;
     *v38 = previousLDCMPortStatus;
     *&v38[4] = 1024;
-    *&v38[6] = v10;
+    *&v38[6] = ldcmPortStatus;
     LOWORD(v39) = 1024;
-    *(&v39 + 2) = v11;
+    *(&v39 + 2) = ldcmMeasurePin;
     HIWORD(v39) = 1024;
-    *v40 = v12;
+    *v40 = ldcmCompletion;
     *&v40[4] = 1024;
-    *&v40[6] = v13;
+    *&v40[6] = ldcmLowImp;
     _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - Analytics bitfields - _previousLDCMPortStatus %d, ldcmPortStatus %d, ldcmMeasurePin %d, ldcmCompletion %d, ldcmLowImp %d", &v37, 0x20u);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    [v4 ldcmLoadImpMag];
+    [infoCopy ldcmLoadImpMag];
     v15 = v14;
-    [v4 ldcmLoadImpPhase];
+    [infoCopy ldcmLoadImpPhase];
     v17 = v16;
-    [v4 ldcmCalculatedRes];
+    [infoCopy ldcmCalculatedRes];
     v19 = v18;
-    [v4 ldcmCalculatedCap];
+    [infoCopy ldcmCalculatedCap];
     v37 = 134218752;
     *v38 = v15;
     *&v38[8] = 2048;
@@ -648,27 +648,27 @@ LABEL_3:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v4 ldcmWetStateDuration];
-    v22 = [v4 ldcmWetStateTooLong];
-    v23 = [v4 ldcmWetTooLongLDCMDisabled];
+    ldcmWetStateDuration = [infoCopy ldcmWetStateDuration];
+    ldcmWetStateTooLong = [infoCopy ldcmWetStateTooLong];
+    ldcmWetTooLongLDCMDisabled = [infoCopy ldcmWetTooLongLDCMDisabled];
     v37 = 67109632;
-    *v38 = v21;
+    *v38 = ldcmWetStateDuration;
     *&v38[4] = 1024;
-    *&v38[6] = v22;
+    *&v38[6] = ldcmWetStateTooLong;
     LOWORD(v39) = 1024;
-    *(&v39 + 2) = v23;
+    *(&v39 + 2) = ldcmWetTooLongLDCMDisabled;
     _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - Measurement Data - wetStateDuration: %d, wetStateTooLong: %d, wetTooLongLDCMDisabled: %d", &v37, 0x14u);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    [v4 ldcmMeasureTIASNR];
+    [infoCopy ldcmMeasureTIASNR];
     v25 = v24;
-    [v4 ldcmMeasureVoltageSNR];
+    [infoCopy ldcmMeasureVoltageSNR];
     v27 = v26;
-    [v4 ldcmCalTIASNR];
+    [infoCopy ldcmCalTIASNR];
     v29 = v28;
-    [v4 ldcmCalVoltageSNR];
+    [infoCopy ldcmCalVoltageSNR];
     v37 = 134218752;
     *v38 = v25;
     *&v38[8] = 2048;
@@ -682,11 +682,11 @@ LABEL_3:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    [v4 ldcmTIAGainCorrection];
+    [infoCopy ldcmTIAGainCorrection];
     v32 = v31;
-    [v4 ldcmVoltageGainCorrection];
+    [infoCopy ldcmVoltageGainCorrection];
     v34 = v33;
-    [v4 ldcmPhaseComp];
+    [infoCopy ldcmPhaseComp];
     v37 = 134218496;
     *v38 = v32;
     *&v38[8] = 2048;
@@ -699,14 +699,14 @@ LABEL_3:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (id)publishAnalytics:(id)a3 withMeasurementReason:(int)a4 withWaveformRawData:(char *)a5 withWaveformDataLen:(unint64_t)a6
+- (id)publishAnalytics:(id)analytics withMeasurementReason:(int)reason withWaveformRawData:(char *)data withWaveformDataLen:(unint64_t)len
 {
   v225 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = v10;
-  if (!self->_previousLDCMPortStatus && [v10 ldcmPortStatus] == 1 && (!objc_msgSend(v11, "ldcmMeasurePin") || objc_msgSend(v11, "ldcmMeasurePin") == 1) && !objc_msgSend(v11, "ldcmCompletion") && !objc_msgSend(v11, "ldcmLowImp"))
+  analyticsCopy = analytics;
+  v11 = analyticsCopy;
+  if (!self->_previousLDCMPortStatus && [analyticsCopy ldcmPortStatus] == 1 && (!objc_msgSend(v11, "ldcmMeasurePin") || objc_msgSend(v11, "ldcmMeasurePin") == 1) && !objc_msgSend(v11, "ldcmCompletion") && !objc_msgSend(v11, "ldcmLowImp"))
   {
-    [(IOPortLDCMManagerV4 *)self storeWaveform:a5 withWaveformDataLen:a6];
+    [(IOPortLDCMManagerV4 *)self storeWaveform:data withWaveformDataLen:len];
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v137 = MEMORY[0x277CCABB0];
     [v11 ldcmCalculatedCap];
@@ -738,8 +738,8 @@ LABEL_3:
     v148 = [v147 numberWithDouble:?];
     [v12 setObject:v148 forKey:@"measurementVoltageSNR"];
 
-    v149 = [v11 ldcmWet];
-    if (!a4 || v149 == 1)
+    ldcmWet = [v11 ldcmWet];
+    if (!reason || ldcmWet == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -752,8 +752,8 @@ LABEL_3:
 
     else
     {
-      v150 = [v11 ldcmWet];
-      if (a4 == 1 || v150 == 2)
+      ldcmWet2 = [v11 ldcmWet];
+      if (reason == 1 || ldcmWet2 == 2)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
@@ -766,9 +766,9 @@ LABEL_3:
 
       else
       {
-        v151 = [(IOPortLDCMManagerV4 *)self checkIsReceptacleEmpty];
+        checkIsReceptacleEmpty = [(IOPortLDCMManagerV4 *)self checkIsReceptacleEmpty];
         v152 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-        if (v151)
+        if (checkIsReceptacleEmpty)
         {
           if (v152)
           {
@@ -1032,12 +1032,12 @@ LABEL_3:
       goto LABEL_127;
     }
 
-    v190 = [v11 ldcmWetStateDuration];
-    v191 = [v11 ldcmWetStateTooLong];
+    ldcmWetStateDuration = [v11 ldcmWetStateDuration];
+    ldcmWetStateTooLong = [v11 ldcmWetStateTooLong];
     *v224 = 67109376;
-    *&v224[4] = v190;
+    *&v224[4] = ldcmWetStateDuration;
     *&v224[8] = 1024;
-    *&v224[10] = v191;
+    *&v224[10] = ldcmWetStateTooLong;
     v48 = MEMORY[0x277D86220];
     v49 = "LDCM - wetToDryTransition - WetStateDuration: %d, WetStateTooLong: %d";
     v52 = 14;
@@ -1099,7 +1099,7 @@ LABEL_3:
     AnalyticsSendEvent();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v11 ldcmIncompSNRAmpCnt];
+      ldcmIncompSNRAmpCnt = [v11 ldcmIncompSNRAmpCnt];
       [v11 ldcmTIACurrentAmp];
       v32 = v31;
       [v11 ldcmVoltageAmp];
@@ -1108,7 +1108,7 @@ LABEL_3:
       v36 = v35;
       [v11 ldcmCalVoltageAmp];
       *v224 = 67110144;
-      *&v224[4] = v30;
+      *&v224[4] = ldcmIncompSNRAmpCnt;
       *&v224[8] = 2048;
       *&v224[10] = v32;
       *&v224[18] = 2048;
@@ -1163,9 +1163,9 @@ LABEL_3:
       goto LABEL_127;
     }
 
-    v47 = [v11 ldcmIncompOVPCnt];
+    ldcmIncompOVPCnt = [v11 ldcmIncompOVPCnt];
     *v224 = 67109120;
-    *&v224[4] = v47;
+    *&v224[4] = ldcmIncompOVPCnt;
     v48 = MEMORY[0x277D86220];
     v49 = "LDCM - IncompOVPCnt: %d";
     goto LABEL_31;
@@ -1190,9 +1190,9 @@ LABEL_3:
       goto LABEL_127;
     }
 
-    v51 = [v11 ldcmIncompTimeoutCnt];
+    ldcmIncompTimeoutCnt = [v11 ldcmIncompTimeoutCnt];
     *v224 = 67109120;
-    *&v224[4] = v51;
+    *&v224[4] = ldcmIncompTimeoutCnt;
     v48 = MEMORY[0x277D86220];
     v49 = "LDCM - IncompTimeoutCnt: %d";
 LABEL_31:
@@ -1219,9 +1219,9 @@ LABEL_127:
     AnalyticsSendEvent();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v55 = [v11 ldcmFeatureStatus];
+      ldcmFeatureStatus = [v11 ldcmFeatureStatus];
       *v224 = 67109120;
-      *&v224[4] = v55;
+      *&v224[4] = ldcmFeatureStatus;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - ldcmDisabled - FeatureStatus: %d", v224, 8u);
     }
 
@@ -1334,12 +1334,12 @@ LABEL_127:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v89 = [v11 ldcmWetStateDuration];
-      v90 = [v11 ldcmWetStateTooLong];
+      ldcmWetStateDuration2 = [v11 ldcmWetStateDuration];
+      ldcmWetStateTooLong2 = [v11 ldcmWetStateTooLong];
       *v224 = 67109376;
-      *&v224[4] = v89;
+      *&v224[4] = ldcmWetStateDuration2;
       *&v224[8] = 1024;
-      *&v224[10] = v90;
+      *&v224[10] = ldcmWetStateTooLong2;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - selfTestFailure - WetStateDuration: %d, WetStateTooLong: %d", v224, 0xEu);
     }
 
@@ -1362,9 +1362,9 @@ LABEL_127:
     AnalyticsSendEvent();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v93 = [v11 ldcmFeatureStatus];
+      ldcmFeatureStatus2 = [v11 ldcmFeatureStatus];
       *v224 = 67109120;
-      *&v224[4] = v93;
+      *&v224[4] = ldcmFeatureStatus2;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - ldcmDisabled - FeatureStatus: %d", v224, 8u);
     }
 
@@ -1477,12 +1477,12 @@ LABEL_127:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v127 = [v11 ldcmWetStateDuration];
-      v128 = [v11 ldcmWetStateTooLong];
+      ldcmWetStateDuration3 = [v11 ldcmWetStateDuration];
+      ldcmWetStateTooLong3 = [v11 ldcmWetStateTooLong];
       *v224 = 67109376;
-      *&v224[4] = v127;
+      *&v224[4] = ldcmWetStateDuration3;
       *&v224[8] = 1024;
-      *&v224[10] = v128;
+      *&v224[10] = ldcmWetStateTooLong3;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - referenceMeasurementFailure - WetStateDuration: %d, WetStateTooLong: %d", v224, 0xEu);
     }
 
@@ -1534,8 +1534,8 @@ LABEL_127:
 LABEL_128:
   if (self->_previousLDCMPortStatus == 1)
   {
-    v221 = [v11 ldcmPortStatus];
-    if (!a4 && v221 == 1)
+    ldcmPortStatus = [v11 ldcmPortStatus];
+    if (!reason && ldcmPortStatus == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -1553,10 +1553,10 @@ LABEL_128:
   return v45;
 }
 
-- (void)storeWaveform:(char *)a3 withWaveformDataLen:(unint64_t)a4
+- (void)storeWaveform:(char *)waveform withWaveformDataLen:(unint64_t)len
 {
   v42 = *MEMORY[0x277D85DE8];
-  if (a4 == 1152)
+  if (len == 1152)
   {
     if (self->_waveformExtractionDisabled)
     {
@@ -1565,9 +1565,9 @@ LABEL_128:
 
     else
     {
-      v28 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:1152];
-      v4 = [MEMORY[0x277CCAA00] defaultManager];
-      v5 = [v4 contentsOfDirectoryAtPath:@"/var/logs/ldcm/" error:0];
+      v28 = [MEMORY[0x277CBEA90] dataWithBytes:waveform length:1152];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v5 = [defaultManager contentsOfDirectoryAtPath:@"/var/logs/ldcm/" error:0];
 
       v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self BEGINSWITH[cd] 'internalWaveformData'"];
       v27 = v5;
@@ -1593,9 +1593,9 @@ LABEL_128:
             }
 
             v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"/var/logs/ldcm/", *(*(&v33 + 1) + 8 * i)];
-            v14 = [MEMORY[0x277CCAA00] defaultManager];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
             v32 = 0;
-            [v14 removeItemAtPath:v13 error:&v32];
+            [defaultManager2 removeItemAtPath:v13 error:&v32];
           }
 
           v10 = [v8 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -1604,12 +1604,12 @@ LABEL_128:
         while (v10);
       }
 
-      v15 = [MEMORY[0x277CCAD78] UUID];
-      v16 = [v15 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v17 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@%@%@.bin", @"/var/logs/ldcm/", @"internalWaveformData", v16];
-      v18 = [MEMORY[0x277CCAA00] defaultManager];
-      [v18 createFileAtPath:v17 contents:0 attributes:0];
+      v17 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@%@%@.bin", @"/var/logs/ldcm/", @"internalWaveformData", uUIDString];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager3 createFileAtPath:v17 contents:0 attributes:0];
 
       v19 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v17];
       v31 = 0;
@@ -1707,28 +1707,28 @@ LABEL_128:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)extractData:(unsigned int *)a3 :(unint64_t)a4
+- (id)extractData:(unsigned int *)data :(unint64_t)a4
 {
-  v4 = [[LDCMMeasurementV4 alloc] initWithParams:a3];
+  v4 = [[LDCMMeasurementV4 alloc] initWithParams:data];
 
   return v4;
 }
 
-- (int)setLiquidDetected:(unsigned __int8)a3
+- (int)setLiquidDetected:(unsigned __int8)detected
 {
   input[1] = *MEMORY[0x277D85DE8];
   ldcmFeatureConnect = self->_ldcmFeatureConnect;
-  input[0] = a3;
+  input[0] = detected;
   result = IOConnectCallMethod(ldcmFeatureConnect, 0x3E8u, input, 1u, 0, 0, 0, 0, 0, 0);
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)setMitigations:(unsigned __int8)a3
+- (int)setMitigations:(unsigned __int8)mitigations
 {
-  v3 = a3;
+  mitigationsCopy = mitigations;
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 && self->_behaviorOverrideDisableMitigations)
+  if (mitigations && self->_behaviorOverrideDisableMitigations)
   {
     v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
     result = 0;
@@ -1742,12 +1742,12 @@ LABEL_128:
 
   else
   {
-    *buf = a3;
-    self->_mitigationsEnabled = a3 != 0;
+    *buf = mitigations;
+    self->_mitigationsEnabled = mitigations != 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 67109120;
-      v9 = v3;
+      v9 = mitigationsCopy;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - Setting Mitigations in Port Manager: %d!!!", v8, 8u);
     }
 
@@ -1758,12 +1758,12 @@ LABEL_128:
   return result;
 }
 
-- (int)setUserOverride:(unsigned __int8)a3
+- (int)setUserOverride:(unsigned __int8)override
 {
-  v3 = a3;
+  overrideCopy = override;
   input[1] = *MEMORY[0x277D85DE8];
-  input[0] = a3;
-  if (a3 && self->_overrideEnabled == a3)
+  input[0] = override;
+  if (override && self->_overrideEnabled == override)
   {
     v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
     result = 0;
@@ -1777,16 +1777,16 @@ LABEL_128:
 
   else
   {
-    if (a3)
+    if (override)
     {
       AnalyticsSendEvent();
     }
 
-    self->_overrideEnabled = v3 != 0;
+    self->_overrideEnabled = overrideCopy != 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v9 = v3;
+      v9 = overrideCopy;
       _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "LDCM - Setting Override in Port Manager: %d!!!", buf, 8u);
     }
 
@@ -1797,21 +1797,21 @@ LABEL_128:
   return result;
 }
 
-- (int)setLDCMState:(int)a3
+- (int)setLDCMState:(int)state
 {
   input[1] = *MEMORY[0x277D85DE8];
   ldcmFeatureConnect = self->_ldcmFeatureConnect;
-  input[0] = a3;
+  input[0] = state;
   result = IOConnectCallMethod(ldcmFeatureConnect, 0x3EBu, input, 1u, 0, 0, 0, 0, 0, 0);
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (int)setLDCMMeasurementStatus:(int)a3
+- (int)setLDCMMeasurementStatus:(int)status
 {
   input[1] = *MEMORY[0x277D85DE8];
   ldcmFeatureConnect = self->_ldcmFeatureConnect;
-  input[0] = a3;
+  input[0] = status;
   result = IOConnectCallMethod(ldcmFeatureConnect, 0x3ECu, input, 1u, 0, 0, 0, 0, 0, 0);
   v5 = *MEMORY[0x277D85DE8];
   return result;
@@ -1827,15 +1827,15 @@ LABEL_128:
   return result;
 }
 
-- (int)setWaveformExtractionEnabled:(unsigned __int8)a3
+- (int)setWaveformExtractionEnabled:(unsigned __int8)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   input[1] = *MEMORY[0x277D85DE8];
-  input[0] = a3;
+  input[0] = enabled;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v8 = v3;
+    v8 = enabledCopy;
     _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "LDCM - Setting waveform extraction: %d...", buf, 8u);
   }
 
@@ -1920,115 +1920,115 @@ LABEL_128:
   self->_uiActive = 0;
 }
 
-- (id)buildMeasurementOutputString:(id)a3 withMeasurementReason:(int)a4 withMeasurementEvent:(id)a5
+- (id)buildMeasurementOutputString:(id)string withMeasurementReason:(int)reason withMeasurementEvent:(id)event
 {
   v7 = MEMORY[0x277CCA968];
-  v61 = a5;
-  v8 = a3;
+  eventCopy = event;
+  stringCopy = string;
   v9 = objc_alloc_init(v7);
   [v9 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  if (a4 > 3)
+  if (reason > 3)
   {
     v10 = @"None";
   }
 
   else
   {
-    v10 = off_279793190[a4];
+    v10 = off_279793190[reason];
   }
 
   v60 = v10;
   v59 = MEMORY[0x277CCAB68];
-  v11 = [MEMORY[0x277CBEAA8] date];
-  v12 = [v9 stringFromDate:v11];
-  v58 = [v8 ldcmPortStatus];
-  v57 = [v8 ldcmMitigationsStatus];
-  v56 = [v8 ldcmFeatureStatus];
-  v55 = [v8 ldcmMeasurePin];
-  v54 = [v8 ldcmCompletion];
-  v53 = [v8 ldcmWet];
-  v13 = [v8 ldcmLowImp];
-  [v8 ldcmLoadImpMag];
+  date = [MEMORY[0x277CBEAA8] date];
+  v12 = [v9 stringFromDate:date];
+  ldcmPortStatus = [stringCopy ldcmPortStatus];
+  ldcmMitigationsStatus = [stringCopy ldcmMitigationsStatus];
+  ldcmFeatureStatus = [stringCopy ldcmFeatureStatus];
+  ldcmMeasurePin = [stringCopy ldcmMeasurePin];
+  ldcmCompletion = [stringCopy ldcmCompletion];
+  ldcmWet = [stringCopy ldcmWet];
+  ldcmLowImp = [stringCopy ldcmLowImp];
+  [stringCopy ldcmLoadImpMag];
   v52 = v14;
-  [v8 ldcmLoadImpPhase];
+  [stringCopy ldcmLoadImpPhase];
   v51 = v15;
-  [v8 ldcmCalculatedRes];
+  [stringCopy ldcmCalculatedRes];
   v50 = v16;
-  [v8 ldcmCalculatedCap];
+  [stringCopy ldcmCalculatedCap];
   v49 = v17;
-  [v8 ldcmTIACurrentAmp];
+  [stringCopy ldcmTIACurrentAmp];
   v48 = v18;
-  [v8 ldcmVoltageAmp];
+  [stringCopy ldcmVoltageAmp];
   v47 = v19;
-  [v8 ldcmLeakageCurrentAmp];
+  [stringCopy ldcmLeakageCurrentAmp];
   v46 = v20;
-  [v8 ldcmMeasureTIASNR];
+  [stringCopy ldcmMeasureTIASNR];
   v45 = v21;
-  [v8 ldcmMeasureVoltageSNR];
+  [stringCopy ldcmMeasureVoltageSNR];
   v23 = v22;
-  [v8 ldcmCalTIAAmp];
+  [stringCopy ldcmCalTIAAmp];
   v25 = v24;
-  [v8 ldcmCalVoltageAmp];
+  [stringCopy ldcmCalVoltageAmp];
   v27 = v26;
-  [v8 ldcmCalTIASNR];
+  [stringCopy ldcmCalTIASNR];
   v29 = v28;
-  [v8 ldcmCalVoltageSNR];
+  [stringCopy ldcmCalVoltageSNR];
   v31 = v30;
-  [v8 ldcmTIAGainCorrection];
+  [stringCopy ldcmTIAGainCorrection];
   v33 = v32;
-  [v8 ldcmVoltageGainCorrection];
+  [stringCopy ldcmVoltageGainCorrection];
   v35 = v34;
-  [v8 ldcmPhaseComp];
+  [stringCopy ldcmPhaseComp];
   v37 = v36;
-  v38 = [v8 ldcmWetStateDuration];
-  v39 = [v8 ldcmWetStateTooLong];
-  v40 = [v8 ldcmIncompSNRAmpCnt];
-  v41 = [v8 ldcmIncompOVPCnt];
-  v42 = [v8 ldcmIncompTimeoutCnt];
+  ldcmWetStateDuration = [stringCopy ldcmWetStateDuration];
+  ldcmWetStateTooLong = [stringCopy ldcmWetStateTooLong];
+  ldcmIncompSNRAmpCnt = [stringCopy ldcmIncompSNRAmpCnt];
+  ldcmIncompOVPCnt = [stringCopy ldcmIncompOVPCnt];
+  ldcmIncompTimeoutCnt = [stringCopy ldcmIncompTimeoutCnt];
 
-  v43 = [v59 stringWithFormat:@"%@, %@, %@, %.12d, %.12d, %.12d, %.12d, %.12d, %.12d, %.12d, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12d, %.12d, %.12d, %.12d, %.12d\n", v12, v60, v61, v58, v57, v56, v55, v54, v53, v13, v52, v51, v50, v49, v48, v47, v46, v45, v23, v25, v27, v29, v31, v33, v35, v37, v38, v39, v40, v41, v42];
+  v43 = [v59 stringWithFormat:@"%@, %@, %@, %.12d, %.12d, %.12d, %.12d, %.12d, %.12d, %.12d, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12f, %.12d, %.12d, %.12d, %.12d, %.12d\n", v12, v60, eventCopy, ldcmPortStatus, ldcmMitigationsStatus, ldcmFeatureStatus, ldcmMeasurePin, ldcmCompletion, ldcmWet, ldcmLowImp, v52, v51, v50, v49, v48, v47, v46, v45, v23, v25, v27, v29, v31, v33, v35, v37, ldcmWetStateDuration, ldcmWetStateTooLong, ldcmIncompSNRAmpCnt, ldcmIncompOVPCnt, ldcmIncompTimeoutCnt];
 
   return v43;
 }
 
-- (void)processBehaviorDictionary:(id)a3
+- (void)processBehaviorDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v4 objectForKeyedSubscript:@"DisableMitigations"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"DisableMitigations"];
     if (v6)
     {
       v7 = v6;
-      v8 = [v4 objectForKeyedSubscript:@"DisableMitigations"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"DisableMitigations"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v10 = [v4 objectForKeyedSubscript:@"DisableMitigations"];
+        v10 = [dictionaryCopy objectForKeyedSubscript:@"DisableMitigations"];
         self->_behaviorOverrideDisableMitigations = [v10 BOOLValue];
 
-        [v5 setBool:self->_behaviorOverrideDisableMitigations forKey:@"LDCMV4DisableMitigations"];
+        [standardUserDefaults setBool:self->_behaviorOverrideDisableMitigations forKey:@"LDCMV4DisableMitigations"];
       }
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"DisableUI"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"DisableUI"];
     if (v11)
     {
       v12 = v11;
-      v13 = [v4 objectForKeyedSubscript:@"DisableUI"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"DisableUI"];
       objc_opt_class();
       v14 = objc_opt_isKindOfClass();
 
       if (v14)
       {
-        v15 = [v4 objectForKeyedSubscript:@"DisableUI"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"DisableUI"];
         self->_behaviorOverrideDisableUI = [v15 BOOLValue];
 
-        [v5 setBool:self->_behaviorOverrideDisableUI forKey:@"LDCMV4DisableUI"];
+        [standardUserDefaults setBool:self->_behaviorOverrideDisableUI forKey:@"LDCMV4DisableUI"];
       }
     }
 

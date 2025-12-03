@@ -1,18 +1,18 @@
 @interface UIPrinterInfoRequest
-+ (id)requestInfoForPrinter:(id)a3;
++ (id)requestInfoForPrinter:(id)printer;
 - (void)requestPrinterInfo;
 @end
 
 @implementation UIPrinterInfoRequest
 
-+ (id)requestInfoForPrinter:(id)a3
++ (id)requestInfoForPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   v5 = objc_alloc_init(UIPrinterInfoRequest);
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_printer, a3);
+    objc_storeStrong(&v5->_printer, printer);
     v6->_requestState = 0;
     [(UIPrinterInfoRequest *)v6 requestPrinterInfo];
   }

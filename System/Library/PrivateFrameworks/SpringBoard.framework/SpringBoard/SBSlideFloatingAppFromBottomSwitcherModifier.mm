@@ -1,26 +1,26 @@
 @interface SBSlideFloatingAppFromBottomSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBSlideFloatingAppFromBottomSwitcherModifier)initWithTransitionID:(id)a3 fromFloatingAppLayout:(id)a4 toFloatingAppLayout:(id)a5;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBSlideFloatingAppFromBottomSwitcherModifier)initWithTransitionID:(id)d fromFloatingAppLayout:(id)layout toFloatingAppLayout:(id)appLayout;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBSlideFloatingAppFromBottomSwitcherModifier
 
-- (SBSlideFloatingAppFromBottomSwitcherModifier)initWithTransitionID:(id)a3 fromFloatingAppLayout:(id)a4 toFloatingAppLayout:(id)a5
+- (SBSlideFloatingAppFromBottomSwitcherModifier)initWithTransitionID:(id)d fromFloatingAppLayout:(id)layout toFloatingAppLayout:(id)appLayout
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  v12 = appLayoutCopy;
+  if (layoutCopy)
   {
-    if (v11)
+    if (appLayoutCopy)
     {
       goto LABEL_3;
     }
@@ -39,18 +39,18 @@
 LABEL_3:
   v16.receiver = self;
   v16.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
-  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:v9];
+  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:dCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_fromFloatingAppLayout, a4);
-    objc_storeStrong(&v14->_toFloatingAppLayout, a5);
+    objc_storeStrong(&v13->_fromFloatingAppLayout, layout);
+    objc_storeStrong(&v14->_toFloatingAppLayout, appLayout);
   }
 
   return v14;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = [v4 appendObject:self->_fromFloatingAppLayout withName:@"fromFloatingAppLayout"];
@@ -63,9 +63,9 @@ LABEL_3:
 {
   v6.receiver = self;
   v6.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
-  v2 = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v6 transitionWillBegin];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
-  v4 = SBAppendSwitcherModifierResponse(v3, v2);
+  v4 = SBAppendSwitcherModifierResponse(v3, transitionWillBegin);
 
   return v4;
 }
@@ -74,13 +74,13 @@ LABEL_3:
 {
   v6.receiver = self;
   v6.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
-  v3 = [(SBSlideFloatingAppFromBottomSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_toFloatingAppLayout];
+  visibleAppLayouts = [(SBSlideFloatingAppFromBottomSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_toFloatingAppLayout];
 
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v23.receiver = self;
   v23.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
@@ -89,14 +89,14 @@ LABEL_3:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
   if (v14 == self->_toFloatingAppLayout && [(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
   {
-    v15 = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self entityRemovalSettings];
-    v16 = [v15 floatingDeclineIntentAnimationSettings];
-    [v16 toBeRemovedSlideOutHeightOffsetMultiplier];
+    entityRemovalSettings = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self entityRemovalSettings];
+    floatingDeclineIntentAnimationSettings = [entityRemovalSettings floatingDeclineIntentAnimationSettings];
+    [floatingDeclineIntentAnimationSettings toBeRemovedSlideOutHeightOffsetMultiplier];
     v18 = v12 * v17;
 
     v8 = v8 + v18;
@@ -113,13 +113,13 @@ LABEL_3:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
-  [(SBSlideFloatingAppFromBottomSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
-  if (self->_fromFloatingAppLayout == v8 || (v10 = v9, self->_toFloatingAppLayout == v8))
+  [(SBSlideFloatingAppFromBottomSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
+  if (self->_fromFloatingAppLayout == layoutCopy || (v10 = v9, self->_toFloatingAppLayout == layoutCopy))
   {
     v10 = 1.0;
   }
@@ -127,34 +127,34 @@ LABEL_3:
   return v10;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v14.receiver = self;
   v14.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
-  v6 = a4;
-  [(SBSlideFloatingAppFromBottomSwitcherModifier *)&v14 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBSlideFloatingAppFromBottomSwitcherModifier *)&v14 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
   fromFloatingAppLayout = self->_fromFloatingAppLayout;
 
-  if (fromFloatingAppLayout == v6)
+  if (fromFloatingAppLayout == layoutCopy)
   {
     v10 = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self switcherSettings:v14.receiver];
-    v11 = [v10 floatingSwitcherSettings];
-    [v11 dimmingAlpha];
+    floatingSwitcherSettings = [v10 floatingSwitcherSettings];
+    [floatingSwitcherSettings dimmingAlpha];
     v8 = v12;
   }
 
   return v8;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v10.receiver = self;
   v10.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
   [(SBSlideFloatingAppFromBottomSwitcherModifier *)&v10 scaleForIndex:?];
   v6 = v5;
-  v7 = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a3];
+  appLayouts = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   if (v8 == self->_fromFloatingAppLayout)
   {
@@ -164,21 +164,21 @@ LABEL_3:
   return v6;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v12.receiver = self;
   v12.super_class = SBSlideFloatingAppFromBottomSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:v4];
+  elementCopy = element;
+  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:elementCopy];
   toFloatingAppLayout = self->_toFloatingAppLayout;
 
-  if (toFloatingAppLayout == v4)
+  if (toFloatingAppLayout == elementCopy)
   {
     v7 = [v5 mutableCopy];
-    v8 = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self switcherSettings];
-    v9 = [v8 animationSettings];
-    v10 = [v9 slideUpSettings];
-    [v7 setLayoutSettings:v10];
+    switcherSettings = [(SBSlideFloatingAppFromBottomSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    slideUpSettings = [animationSettings slideUpSettings];
+    [v7 setLayoutSettings:slideUpSettings];
 
     v5 = v7;
   }

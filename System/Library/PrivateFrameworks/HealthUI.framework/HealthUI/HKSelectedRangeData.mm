@@ -1,14 +1,14 @@
 @interface HKSelectedRangeData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSelectedRangeData:(id)a3;
-- (HKSelectedRangeData)initWithStatisticsType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSelectedRangeData:(id)data;
+- (HKSelectedRangeData)initWithStatisticsType:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HKSelectedRangeData
 
-- (HKSelectedRangeData)initWithStatisticsType:(int64_t)a3
+- (HKSelectedRangeData)initWithStatisticsType:(int64_t)type
 {
   v14.receiver = self;
   v14.super_class = HKSelectedRangeData;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_statisticsType = a3;
+    v4->_statisticsType = type;
     v4->_dataType = 0;
     attributedString = v4->_attributedString;
     v4->_attributedString = 0;
@@ -44,35 +44,35 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKSelectedRangeData *)self statisticsType];
-  v4 = [(HKSelectedRangeData *)self dataType]^ v3;
-  v5 = [(HKSelectedRangeData *)self attributedString];
-  v6 = v4 ^ [v5 hash];
-  v7 = [(HKSelectedRangeData *)self valueAsNumber];
-  v8 = [v7 hash];
-  v9 = [(HKSelectedRangeData *)self prefixColor];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HKSelectedRangeData *)self prefersImageAffixes];
-  v12 = [(HKSelectedRangeData *)self titleOverride];
-  v13 = v10 ^ v11 ^ [v12 hash];
-  v14 = [(HKSelectedRangeData *)self titleColorOverride];
-  v15 = [v14 hash];
-  v16 = [(HKSelectedRangeData *)self metadata];
-  v17 = v15 ^ [v16 hash];
+  statisticsType = [(HKSelectedRangeData *)self statisticsType];
+  v4 = [(HKSelectedRangeData *)self dataType]^ statisticsType;
+  attributedString = [(HKSelectedRangeData *)self attributedString];
+  v6 = v4 ^ [attributedString hash];
+  valueAsNumber = [(HKSelectedRangeData *)self valueAsNumber];
+  v8 = [valueAsNumber hash];
+  prefixColor = [(HKSelectedRangeData *)self prefixColor];
+  v10 = v6 ^ v8 ^ [prefixColor hash];
+  prefersImageAffixes = [(HKSelectedRangeData *)self prefersImageAffixes];
+  titleOverride = [(HKSelectedRangeData *)self titleOverride];
+  v13 = v10 ^ prefersImageAffixes ^ [titleOverride hash];
+  titleColorOverride = [(HKSelectedRangeData *)self titleColorOverride];
+  v15 = [titleColorOverride hash];
+  metadata = [(HKSelectedRangeData *)self metadata];
+  v17 = v15 ^ [metadata hash];
 
   return v13 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -95,122 +95,122 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToSelectedRangeData:(id)a3
+- (BOOL)isEqualToSelectedRangeData:(id)data
 {
-  v4 = a3;
-  v5 = [(HKSelectedRangeData *)self attributedString];
-  if (v5)
+  dataCopy = data;
+  attributedString = [(HKSelectedRangeData *)self attributedString];
+  if (attributedString)
   {
 
 LABEL_4:
-    v7 = [(HKSelectedRangeData *)self attributedString];
-    v8 = [v4 attributedString];
-    v9 = [v7 isEqualToAttributedString:v8];
+    attributedString2 = [(HKSelectedRangeData *)self attributedString];
+    attributedString3 = [dataCopy attributedString];
+    v9 = [attributedString2 isEqualToAttributedString:attributedString3];
 
     v10 = v9 ^ 1;
     goto LABEL_5;
   }
 
-  v6 = [v4 attributedString];
+  attributedString4 = [dataCopy attributedString];
 
-  if (v6)
+  if (attributedString4)
   {
     goto LABEL_4;
   }
 
   v10 = 0;
 LABEL_5:
-  v11 = [(HKSelectedRangeData *)self valueAsNumber];
-  if (v11)
+  valueAsNumber = [(HKSelectedRangeData *)self valueAsNumber];
+  if (valueAsNumber)
   {
 
 LABEL_8:
-    v13 = [(HKSelectedRangeData *)self valueAsNumber];
-    v14 = [v4 valueAsNumber];
-    v15 = [v13 isEqualToNumber:v14];
+    valueAsNumber2 = [(HKSelectedRangeData *)self valueAsNumber];
+    valueAsNumber3 = [dataCopy valueAsNumber];
+    v15 = [valueAsNumber2 isEqualToNumber:valueAsNumber3];
 
     v16 = v15 ^ 1;
     goto LABEL_9;
   }
 
-  v12 = [v4 valueAsNumber];
+  valueAsNumber4 = [dataCopy valueAsNumber];
 
-  if (v12)
+  if (valueAsNumber4)
   {
     goto LABEL_8;
   }
 
   v16 = 0;
 LABEL_9:
-  v17 = [(HKSelectedRangeData *)self titleOverride];
-  if (v17)
+  titleOverride = [(HKSelectedRangeData *)self titleOverride];
+  if (titleOverride)
   {
 
 LABEL_12:
-    v19 = [(HKSelectedRangeData *)self titleOverride];
-    v20 = [v4 titleOverride];
-    v21 = [v19 isEqualToString:v20];
+    titleOverride2 = [(HKSelectedRangeData *)self titleOverride];
+    titleOverride3 = [dataCopy titleOverride];
+    v21 = [titleOverride2 isEqualToString:titleOverride3];
 
     goto LABEL_13;
   }
 
-  v18 = [v4 titleOverride];
+  titleOverride4 = [dataCopy titleOverride];
 
-  if (v18)
+  if (titleOverride4)
   {
     goto LABEL_12;
   }
 
   v21 = 1;
 LABEL_13:
-  v22 = [(HKSelectedRangeData *)self titleColorOverride];
-  if (v22)
+  titleColorOverride = [(HKSelectedRangeData *)self titleColorOverride];
+  if (titleColorOverride)
   {
 
 LABEL_16:
-    v24 = [(HKSelectedRangeData *)self titleColorOverride];
-    v25 = [v4 titleColorOverride];
-    v26 = [v24 isEqual:v25];
+    titleColorOverride2 = [(HKSelectedRangeData *)self titleColorOverride];
+    titleColorOverride3 = [dataCopy titleColorOverride];
+    v26 = [titleColorOverride2 isEqual:titleColorOverride3];
 
     v27 = v26 ^ 1;
     goto LABEL_17;
   }
 
-  v23 = [v4 titleColorOverride];
+  titleColorOverride4 = [dataCopy titleColorOverride];
 
-  if (v23)
+  if (titleColorOverride4)
   {
     goto LABEL_16;
   }
 
   v27 = 0;
 LABEL_17:
-  v28 = [(HKSelectedRangeData *)self prefixColor];
-  if (v28)
+  prefixColor = [(HKSelectedRangeData *)self prefixColor];
+  if (prefixColor)
   {
 
 LABEL_20:
-    v30 = [(HKSelectedRangeData *)self prefixColor];
-    v31 = [v4 prefixColor];
-    v21 = [v30 isEqual:v31];
+    prefixColor2 = [(HKSelectedRangeData *)self prefixColor];
+    prefixColor3 = [dataCopy prefixColor];
+    v21 = [prefixColor2 isEqual:prefixColor3];
 
     goto LABEL_21;
   }
 
-  v29 = [v4 prefixColor];
+  prefixColor4 = [dataCopy prefixColor];
 
-  if (v29)
+  if (prefixColor4)
   {
     goto LABEL_20;
   }
 
 LABEL_21:
-  v32 = [(HKSelectedRangeData *)self statisticsType];
-  if (v32 == [v4 statisticsType] && (v33 = -[HKSelectedRangeData dataType](self, "dataType"), v33 == objc_msgSend(v4, "dataType")) && (v34 = -[HKSelectedRangeData prefersImageAffixes](self, "prefersImageAffixes"), !((v34 ^ objc_msgSend(v4, "prefersImageAffixes") | v10) & 1 | ((v21 & 1) == 0) | (v27 | v16) & 1)))
+  statisticsType = [(HKSelectedRangeData *)self statisticsType];
+  if (statisticsType == [dataCopy statisticsType] && (v33 = -[HKSelectedRangeData dataType](self, "dataType"), v33 == objc_msgSend(dataCopy, "dataType")) && (v34 = -[HKSelectedRangeData prefersImageAffixes](self, "prefersImageAffixes"), !((v34 ^ objc_msgSend(dataCopy, "prefersImageAffixes") | v10) & 1 | ((v21 & 1) == 0) | (v27 | v16) & 1)))
   {
-    v37 = [(HKSelectedRangeData *)self metadata];
-    v38 = [v4 metadata];
-    v35 = [v37 isEqualToDictionary:v38];
+    metadata = [(HKSelectedRangeData *)self metadata];
+    metadata2 = [dataCopy metadata];
+    v35 = [metadata isEqualToDictionary:metadata2];
   }
 
   else
@@ -227,16 +227,16 @@ LABEL_21:
   v15.receiver = self;
   v15.super_class = HKSelectedRangeData;
   v4 = [(HKSelectedRangeData *)&v15 description];
-  v5 = [(HKSelectedRangeData *)self attributedString];
-  v6 = [(HKSelectedRangeData *)self titleOverride];
-  v7 = [(HKSelectedRangeData *)self titleColorOverride];
-  v8 = [(HKSelectedRangeData *)self valueAsNumber];
+  attributedString = [(HKSelectedRangeData *)self attributedString];
+  titleOverride = [(HKSelectedRangeData *)self titleOverride];
+  titleColorOverride = [(HKSelectedRangeData *)self titleColorOverride];
+  valueAsNumber = [(HKSelectedRangeData *)self valueAsNumber];
   v9 = _NSStringFromSelectedRangeStatisticsType([(HKSelectedRangeData *)self statisticsType]);
   v10 = _NSStringFromSelectedRangeDataType([(HKSelectedRangeData *)self dataType]);
-  v11 = [(HKSelectedRangeData *)self prefixColor];
+  prefixColor = [(HKSelectedRangeData *)self prefixColor];
   [(HKSelectedRangeData *)self prefersImageAffixes];
   v12 = HKStringFromBool();
-  v13 = [v3 stringWithFormat:@"%@, attributed: %@, titleOverride: %@, titleColorOverride: %@, valueAsNumber: %@, statisticsType: %@, dataType: %@, prefixColor: %@, prefersImageAffixes: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  v13 = [v3 stringWithFormat:@"%@, attributed: %@, titleOverride: %@, titleColorOverride: %@, valueAsNumber: %@, statisticsType: %@, dataType: %@, prefixColor: %@, prefersImageAffixes: %@", v4, attributedString, titleOverride, titleColorOverride, valueAsNumber, v9, v10, prefixColor, v12];
 
   return v13;
 }

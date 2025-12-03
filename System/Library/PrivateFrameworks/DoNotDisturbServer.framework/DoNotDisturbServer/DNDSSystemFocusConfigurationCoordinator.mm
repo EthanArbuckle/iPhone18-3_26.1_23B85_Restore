@@ -1,20 +1,20 @@
 @interface DNDSSystemFocusConfigurationCoordinator
-- (DNDSSystemFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)a3;
+- (DNDSSystemFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)manager;
 - (DNDSSystemFocusConfigurationCoordinatorDelegate)delegate;
 - (id)_currentModeIdentifier;
-- (void)_executeAction:(id)a3;
-- (void)appConfigurationManager:(id)a3 didClearSystemAction:(id)a4 modeIdentifier:(id)a5;
-- (void)appConfigurationManager:(id)a3 didClearSystemActionsInModeIdentifiers:(id)a4;
-- (void)appConfigurationManager:(id)a3 didSetSystemAction:(id)a4 modeIdentifier:(id)a5;
-- (void)handleStateUpdate:(id)a3;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningAction:(id)a4 withReverseAction:(id)a5;
+- (void)_executeAction:(id)action;
+- (void)appConfigurationManager:(id)manager didClearSystemAction:(id)action modeIdentifier:(id)identifier;
+- (void)appConfigurationManager:(id)manager didClearSystemActionsInModeIdentifiers:(id)identifiers;
+- (void)appConfigurationManager:(id)manager didSetSystemAction:(id)action modeIdentifier:(id)identifier;
+- (void)handleStateUpdate:(id)update;
+- (void)workflowRunnerClient:(id)client didFinishRunningAction:(id)action withReverseAction:(id)reverseAction;
 @end
 
 @implementation DNDSSystemFocusConfigurationCoordinator
 
-- (DNDSSystemFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)a3
+- (DNDSSystemFocusConfigurationCoordinator)initWithAppConfigurationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = DNDSSystemFocusConfigurationCoordinator;
   v6 = [(DNDSSystemFocusConfigurationCoordinator *)&v13 init];
@@ -25,39 +25,39 @@
     workQueue = v6->_workQueue;
     v6->_workQueue = v8;
 
-    v10 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     clientToModeIdentifier = v6->_clientToModeIdentifier;
-    v6->_clientToModeIdentifier = v10;
+    v6->_clientToModeIdentifier = weakToStrongObjectsMapTable;
 
-    objc_storeStrong(&v6->_appConfigurationManager, a3);
-    [v5 addDelegate:v6];
+    objc_storeStrong(&v6->_appConfigurationManager, manager);
+    [managerCopy addDelegate:v6];
   }
 
   return v6;
 }
 
-- (void)handleStateUpdate:(id)a3
+- (void)handleStateUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 previousState];
-  v6 = [v5 activeModeConfiguration];
-  v7 = [v6 mode];
+  updateCopy = update;
+  previousState = [updateCopy previousState];
+  activeModeConfiguration = [previousState activeModeConfiguration];
+  mode = [activeModeConfiguration mode];
 
-  v8 = [v4 state];
-  v9 = [v8 activeModeConfiguration];
-  v10 = [v9 mode];
+  state = [updateCopy state];
+  activeModeConfiguration2 = [state activeModeConfiguration];
+  mode2 = [activeModeConfiguration2 mode];
 
-  v11 = [v7 modeIdentifier];
-  v12 = [v10 modeIdentifier];
-  v13 = v12;
-  if (v11 == v12)
+  modeIdentifier = [mode modeIdentifier];
+  modeIdentifier2 = [mode2 modeIdentifier];
+  v13 = modeIdentifier2;
+  if (modeIdentifier == modeIdentifier2)
   {
 
     goto LABEL_7;
   }
 
-  v14 = [v7 modeIdentifier];
-  if (!v14)
+  modeIdentifier3 = [mode modeIdentifier];
+  if (!modeIdentifier3)
   {
 LABEL_10:
 
@@ -67,25 +67,25 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = __61__DNDSSystemFocusConfigurationCoordinator_handleStateUpdate___block_invoke;
     block[3] = &unk_278F89F48;
-    v24 = v4;
-    v25 = self;
+    v24 = updateCopy;
+    selfCopy = self;
     dispatch_async(workQueue, block);
 
     goto LABEL_12;
   }
 
-  v15 = v14;
-  v16 = [v10 modeIdentifier];
-  if (!v16)
+  v15 = modeIdentifier3;
+  modeIdentifier4 = [mode2 modeIdentifier];
+  if (!modeIdentifier4)
   {
 
     goto LABEL_10;
   }
 
-  v17 = v16;
-  v18 = [v7 modeIdentifier];
-  v19 = [v10 modeIdentifier];
-  v22 = [v18 isEqual:v19];
+  v17 = modeIdentifier4;
+  modeIdentifier5 = [mode modeIdentifier];
+  modeIdentifier6 = [mode2 modeIdentifier];
+  v22 = [modeIdentifier5 isEqual:modeIdentifier6];
 
   if (!v22)
   {
@@ -212,17 +212,17 @@ void __61__DNDSSystemFocusConfigurationCoordinator_handleStateUpdate___block_inv
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_executeAction:(id)a3
+- (void)_executeAction:(id)action
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   dispatch_assert_queue_V2(self->_workQueue);
-  if (v4)
+  if (actionCopy)
   {
-    v5 = [objc_alloc(MEMORY[0x277D7A0D8]) initWithContextualAction:v4];
+    v5 = [objc_alloc(MEMORY[0x277D7A0D8]) initWithContextualAction:actionCopy];
     clientToModeIdentifier = self->_clientToModeIdentifier;
-    v7 = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
-    [(NSMapTable *)clientToModeIdentifier setObject:v7 forKey:v5];
+    _currentModeIdentifier = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
+    [(NSMapTable *)clientToModeIdentifier setObject:_currentModeIdentifier forKey:v5];
 
     [v5 setDelegate:self];
     v8 = DNDSLogSystemFocusConfiguration;
@@ -231,7 +231,7 @@ void __61__DNDSSystemFocusConfigurationCoordinator_handleStateUpdate___block_inv
       v10 = 134218242;
       v11 = v5;
       v12 = 2114;
-      v13 = v4;
+      v13 = actionCopy;
       _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Running system action: runner=%p; action=%{public}@", &v10, 0x16u);
     }
 
@@ -241,25 +241,25 @@ void __61__DNDSSystemFocusConfigurationCoordinator_handleStateUpdate___block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appConfigurationManager:(id)a3 didClearSystemAction:(id)a4 modeIdentifier:(id)a5
+- (void)appConfigurationManager:(id)manager didClearSystemAction:(id)action modeIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
-  if ([v9 isEqualToString:v8])
+  actionCopy = action;
+  identifierCopy = identifier;
+  _currentModeIdentifier = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
+  if ([_currentModeIdentifier isEqualToString:identifierCopy])
   {
-    v10 = [v7 reverseAction];
+    reverseAction = [actionCopy reverseAction];
 
-    if (v10)
+    if (reverseAction)
     {
       workQueue = self->_workQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __103__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didClearSystemAction_modeIdentifier___block_invoke;
       block[3] = &unk_278F89E30;
-      v13 = v7;
-      v14 = v8;
-      v15 = self;
+      v13 = actionCopy;
+      v14 = identifierCopy;
+      selfCopy = self;
       dispatch_async(workQueue, block);
     }
   }
@@ -293,12 +293,12 @@ void __103__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didC
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appConfigurationManager:(id)a3 didSetSystemAction:(id)a4 modeIdentifier:(id)a5
+- (void)appConfigurationManager:(id)manager didSetSystemAction:(id)action modeIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
-  v10 = [v9 isEqualToString:v8];
+  actionCopy = action;
+  identifierCopy = identifier;
+  _currentModeIdentifier = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
+  v10 = [_currentModeIdentifier isEqualToString:identifierCopy];
 
   if (v10)
   {
@@ -307,9 +307,9 @@ void __103__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didC
     block[1] = 3221225472;
     block[2] = __101__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didSetSystemAction_modeIdentifier___block_invoke;
     block[3] = &unk_278F89E30;
-    v13 = v7;
-    v14 = v8;
-    v15 = self;
+    v13 = actionCopy;
+    v14 = identifierCopy;
+    selfCopy = self;
     dispatch_async(workQueue, block);
   }
 }
@@ -361,11 +361,11 @@ void __101__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didS
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appConfigurationManager:(id)a3 didClearSystemActionsInModeIdentifiers:(id)a4
+- (void)appConfigurationManager:(id)manager didClearSystemActionsInModeIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  identifiersCopy = identifiers;
+  _currentModeIdentifier = [(DNDSSystemFocusConfigurationCoordinator *)self _currentModeIdentifier];
+  v7 = [identifiersCopy objectForKeyedSubscript:_currentModeIdentifier];
 
   if (v7)
   {
@@ -374,9 +374,9 @@ void __101__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didS
     block[1] = 3221225472;
     block[2] = __106__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didClearSystemActionsInModeIdentifiers___block_invoke;
     block[3] = &unk_278F89E30;
-    v10 = v5;
-    v11 = v6;
-    v12 = self;
+    v10 = identifiersCopy;
+    v11 = _currentModeIdentifier;
+    selfCopy = self;
     dispatch_async(workQueue, block);
   }
 }
@@ -437,21 +437,21 @@ void __106__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didC
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningAction:(id)a4 withReverseAction:(id)a5
+- (void)workflowRunnerClient:(id)client didFinishRunningAction:(id)action withReverseAction:(id)reverseAction
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  actionCopy = action;
+  reverseActionCopy = reverseAction;
   v11 = DNDSLogSystemFocusConfiguration;
   if (os_log_type_enabled(DNDSLogSystemFocusConfiguration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v22 = v8;
+    v22 = clientCopy;
     v23 = 2114;
-    v24 = v9;
+    v24 = actionCopy;
     v25 = 2114;
-    v26 = v10;
+    v26 = reverseActionCopy;
     _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Finished running system action: runner=%p; action=%{public}@; reverse=%{public}@", buf, 0x20u);
   }
 
@@ -461,12 +461,12 @@ void __106__DNDSSystemFocusConfigurationCoordinator_appConfigurationManager_didC
   v17[2] = __105__DNDSSystemFocusConfigurationCoordinator_workflowRunnerClient_didFinishRunningAction_withReverseAction___block_invoke;
   v17[3] = &unk_278F8AB30;
   v17[4] = self;
-  v18 = v8;
-  v19 = v10;
-  v20 = v9;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
+  v18 = clientCopy;
+  v19 = reverseActionCopy;
+  v20 = actionCopy;
+  v13 = actionCopy;
+  v14 = reverseActionCopy;
+  v15 = clientCopy;
   dispatch_sync(workQueue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -505,11 +505,11 @@ void __105__DNDSSystemFocusConfigurationCoordinator_workflowRunnerClient_didFini
 
 - (id)_currentModeIdentifier
 {
-  v3 = [(DNDSSystemFocusConfigurationCoordinator *)self delegate];
-  v4 = [v3 currentStateForSystemFocusConfigurationCoordinator:self];
-  v5 = [v4 activeModeIdentifier];
+  delegate = [(DNDSSystemFocusConfigurationCoordinator *)self delegate];
+  v4 = [delegate currentStateForSystemFocusConfigurationCoordinator:self];
+  activeModeIdentifier = [v4 activeModeIdentifier];
 
-  return v5;
+  return activeModeIdentifier;
 }
 
 - (DNDSSystemFocusConfigurationCoordinatorDelegate)delegate

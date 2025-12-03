@@ -1,6 +1,6 @@
 @interface HPConnectionInfoDelegate
-+ (id)_populateAllFields:(id)a3 accessoryInfo:(id)a4;
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5;
++ (id)_populateAllFields:(id)fields accessoryInfo:(id)info;
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection;
 - (void)start;
 - (void)stop;
 @end
@@ -24,13 +24,13 @@
   [(HPConnectionInfoDelegate *)self setAllowedEndpointUUIDs:0];
 }
 
-- (void)accessoryEndpointInfoPropertyChanged:(id)a3 properties:(id)a4 forConnection:(id)a5
+- (void)accessoryEndpointInfoPropertyChanged:(id)changed properties:(id)properties forConnection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(HPConnectionInfoDelegate *)self allowedEndpointUUIDs];
-  v12 = [v11 containsObject:v10];
+  propertiesCopy = properties;
+  connectionCopy = connection;
+  changedCopy = changed;
+  allowedEndpointUUIDs = [(HPConnectionInfoDelegate *)self allowedEndpointUUIDs];
+  v12 = [allowedEndpointUUIDs containsObject:changedCopy];
 
   if (v12)
   {
@@ -45,19 +45,19 @@
     v14[2] = sub_100003230;
     v14[3] = &unk_1001026C8;
     v14[4] = self;
-    v15 = v8;
-    [v13 accessoryInfoForConnection:v9 withReply:v14];
+    v15 = propertiesCopy;
+    [v13 accessoryInfoForConnection:connectionCopy withReply:v14];
   }
 }
 
-+ (id)_populateAllFields:(id)a3 accessoryInfo:(id)a4
++ (id)_populateAllFields:(id)fields accessoryInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  fieldsCopy = fields;
+  infoCopy = info;
+  v7 = infoCopy;
+  if (fieldsCopy)
   {
-    v8 = v5;
+    v8 = fieldsCopy;
     v9 = v8;
     if (v7)
     {
@@ -67,9 +67,9 @@
     }
   }
 
-  else if (v6)
+  else if (infoCopy)
   {
-    v9 = v6;
+    v9 = infoCopy;
   }
 
   else

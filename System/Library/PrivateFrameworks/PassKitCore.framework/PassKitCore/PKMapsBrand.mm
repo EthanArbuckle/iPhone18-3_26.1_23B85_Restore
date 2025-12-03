@@ -1,73 +1,73 @@
 @interface PKMapsBrand
-+ (void)_deleteDeviceDataFromCloudStoreRecord:(id)a3;
-+ (void)deleteFromCloudStoreRecord:(id)a3 codingType:(unint64_t)a4;
++ (void)_deleteDeviceDataFromCloudStoreRecord:(id)record;
++ (void)deleteFromCloudStoreRecord:(id)record codingType:(unint64_t)type;
 - (BOOL)hasCloudArchivableDeviceData;
-- (BOOL)isCloudArchivableDeviceDataEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMapsBrand:(id)a3;
-- (PKMapsBrand)initWithCloudStoreCoder:(id)a3;
-- (PKMapsBrand)initWithCoder:(id)a3;
+- (BOOL)isCloudArchivableDeviceDataEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMapsBrand:(id)brand;
+- (PKMapsBrand)initWithCloudStoreCoder:(id)coder;
+- (PKMapsBrand)initWithCoder:(id)coder;
 - (id)description;
 - (id)jsonRepresentation;
 - (id)stylingInfo;
 - (unint64_t)hash;
-- (void)_encodeDeviceDataForCloudStoreCoder:(id)a3;
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setStylingInfoData:(id)a3;
+- (void)_encodeDeviceDataForCloudStoreCoder:(id)coder;
+- (void)applyPropertiesFromCloudStoreRecord:(id)record;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)setStylingInfoData:(id)data;
 @end
 
 @implementation PKMapsBrand
 
-- (PKMapsBrand)initWithCoder:(id)a3
+- (PKMapsBrand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = PKMapsBrand;
   v5 = [(PKMapsBrand *)&v27 init];
   if (v5)
   {
-    v5->_identifier = [v4 decodeInt64ForKey:@"identifier"];
-    v5->_resultProviderIdentifier = [v4 decodeInt32ForKey:@"resultProviderIdentifier"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_identifier = [coderCopy decodeInt64ForKey:@"identifier"];
+    v5->_resultProviderIdentifier = [coderCopy decodeInt32ForKey:@"resultProviderIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v10;
 
-    v5->_category = [v4 decodeIntegerForKey:@"brandCategory"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandMapsCategory"];
+    v5->_category = [coderCopy decodeIntegerForKey:@"brandCategory"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandMapsCategory"];
     detailedCategory = v5->_detailedCategory;
     v5->_detailedCategory = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandStylingInfo"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandStylingInfo"];
     stylingInfoData = v5->_stylingInfoData;
     v5->_stylingInfoData = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandLogoURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandLogoURL"];
     logoURL = v5->_logoURL;
     v5->_logoURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandHeroImageURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandHeroImageURL"];
     heroImageURL = v5->_heroImageURL;
     v5->_heroImageURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandHeroImageAttributionName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandHeroImageAttributionName"];
     heroImageAttributionName = v5->_heroImageAttributionName;
     v5->_heroImageAttributionName = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandBusinessChatURL"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandBusinessChatURL"];
     businessChatURL = v5->_businessChatURL;
     v5->_businessChatURL = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastProcessedDate"];
     lastProcessedDate = v5->_lastProcessedDate;
     v5->_lastProcessedDate = v24;
   }
@@ -75,35 +75,35 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeInt64:identifier forKey:@"identifier"];
-  [v5 encodeInt32:self->_resultProviderIdentifier forKey:@"resultProviderIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_url forKey:@"url"];
-  [v5 encodeInteger:self->_category forKey:@"brandCategory"];
-  [v5 encodeObject:self->_detailedCategory forKey:@"brandMapsCategory"];
-  [v5 encodeObject:self->_stylingInfoData forKey:@"brandStylingInfo"];
-  [v5 encodeObject:self->_logoURL forKey:@"brandLogoURL"];
-  [v5 encodeObject:self->_heroImageURL forKey:@"brandHeroImageURL"];
-  [v5 encodeObject:self->_heroImageAttributionName forKey:@"brandHeroImageAttributionName"];
-  [v5 encodeObject:self->_businessChatURL forKey:@"brandBusinessChatURL"];
-  [v5 encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:identifier forKey:@"identifier"];
+  [coderCopy encodeInt32:self->_resultProviderIdentifier forKey:@"resultProviderIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_url forKey:@"url"];
+  [coderCopy encodeInteger:self->_category forKey:@"brandCategory"];
+  [coderCopy encodeObject:self->_detailedCategory forKey:@"brandMapsCategory"];
+  [coderCopy encodeObject:self->_stylingInfoData forKey:@"brandStylingInfo"];
+  [coderCopy encodeObject:self->_logoURL forKey:@"brandLogoURL"];
+  [coderCopy encodeObject:self->_heroImageURL forKey:@"brandHeroImageURL"];
+  [coderCopy encodeObject:self->_heroImageAttributionName forKey:@"brandHeroImageAttributionName"];
+  [coderCopy encodeObject:self->_businessChatURL forKey:@"brandBusinessChatURL"];
+  [coderCopy encodeObject:self->_lastProcessedDate forKey:@"lastProcessedDate"];
 }
 
-- (PKMapsBrand)initWithCloudStoreCoder:(id)a3
+- (PKMapsBrand)initWithCloudStoreCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKMapsBrand;
   v5 = [(PKMapsBrand *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(PKMapsBrand *)v5 applyPropertiesFromCloudStoreRecord:v4];
+    [(PKMapsBrand *)v5 applyPropertiesFromCloudStoreRecord:coderCopy];
   }
 
   if ([(PKMapsBrand *)v6 isValid])
@@ -119,185 +119,185 @@
   return v7;
 }
 
-- (void)applyPropertiesFromCloudStoreRecord:(id)a3
+- (void)applyPropertiesFromCloudStoreRecord:(id)record
 {
-  v4 = [a3 recordsWithRecordType:@"TransactionDeviceData"];
-  v25 = [v4 firstObject];
+  v4 = [record recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject = [v4 firstObject];
 
-  v5 = v25;
-  if (v25)
+  v5 = firstObject;
+  if (firstObject)
   {
-    self->_identifier = [v25 pk_encryptedUint64ForKey:@"brandIdentifier"];
-    self->_resultProviderIdentifier = [v25 pk_encryptedIntForKey:@"brandResultProviderIdentifier"];
-    v6 = [v25 pk_encryptedStringForKey:@"brandName"];
+    self->_identifier = [firstObject pk_encryptedUint64ForKey:@"brandIdentifier"];
+    self->_resultProviderIdentifier = [firstObject pk_encryptedIntForKey:@"brandResultProviderIdentifier"];
+    v6 = [firstObject pk_encryptedStringForKey:@"brandName"];
     name = self->_name;
     self->_name = v6;
 
-    v8 = [v25 pk_encryptedUrlForKey:@"brandBusinessChatURL"];
+    v8 = [firstObject pk_encryptedUrlForKey:@"brandBusinessChatURL"];
     businessChatURL = self->_businessChatURL;
     self->_businessChatURL = v8;
 
     if (!self->_category)
     {
-      v10 = [v25 pk_encryptedStringForKey:@"brandCategory"];
+      v10 = [firstObject pk_encryptedStringForKey:@"brandCategory"];
       self->_category = PKMerchantCategoryFromString(v10);
     }
 
     if (!self->_url)
     {
-      v11 = [v25 pk_encryptedUrlForKey:@"brandURL"];
+      v11 = [firstObject pk_encryptedUrlForKey:@"brandURL"];
       url = self->_url;
       self->_url = v11;
     }
 
-    v5 = v25;
+    v5 = firstObject;
     if (!self->_phoneNumber)
     {
-      v13 = [v25 pk_encryptedStringForKey:@"brandPhoneNumber"];
+      v13 = [firstObject pk_encryptedStringForKey:@"brandPhoneNumber"];
       phoneNumber = self->_phoneNumber;
       self->_phoneNumber = v13;
 
-      v5 = v25;
+      v5 = firstObject;
     }
 
     if (!self->_logoURL)
     {
-      v15 = [v25 pk_encryptedUrlForKey:@"brandLogoURL"];
+      v15 = [firstObject pk_encryptedUrlForKey:@"brandLogoURL"];
       logoURL = self->_logoURL;
       self->_logoURL = v15;
 
-      v5 = v25;
+      v5 = firstObject;
     }
 
     if (!self->_heroImageURL)
     {
-      v17 = [v25 pk_encryptedUrlForKey:@"brandHeroImageURL"];
+      v17 = [firstObject pk_encryptedUrlForKey:@"brandHeroImageURL"];
       heroImageURL = self->_heroImageURL;
       self->_heroImageURL = v17;
 
-      v5 = v25;
+      v5 = firstObject;
     }
 
     if (!self->_heroImageAttributionName)
     {
-      v19 = [v25 pk_encryptedStringForKey:@"brandHeroImageAttributionName"];
+      v19 = [firstObject pk_encryptedStringForKey:@"brandHeroImageAttributionName"];
       heroImageAttributionName = self->_heroImageAttributionName;
       self->_heroImageAttributionName = v19;
 
-      v5 = v25;
+      v5 = firstObject;
     }
 
     if (!self->_detailedCategory)
     {
-      v21 = [v25 pk_encryptedStringForKey:@"brandMapsCategory"];
+      v21 = [firstObject pk_encryptedStringForKey:@"brandMapsCategory"];
       detailedCategory = self->_detailedCategory;
       self->_detailedCategory = v21;
 
-      v5 = v25;
+      v5 = firstObject;
     }
 
     if (!self->_stylingInfoData)
     {
-      v23 = [v25 pk_encryptedDataForKey:@"brandStylingInfo"];
+      v23 = [firstObject pk_encryptedDataForKey:@"brandStylingInfo"];
       stylingInfoData = self->_stylingInfoData;
       self->_stylingInfoData = v23;
 
-      v5 = v25;
+      v5 = firstObject;
     }
   }
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    [(PKMapsBrand *)self _encodeDeviceDataForCloudStoreCoder:a3];
+    [(PKMapsBrand *)self _encodeDeviceDataForCloudStoreCoder:coder];
   }
 }
 
-- (void)_encodeDeviceDataForCloudStoreCoder:(id)a3
+- (void)_encodeDeviceDataForCloudStoreCoder:(id)coder
 {
-  v4 = [a3 recordsWithRecordType:@"TransactionDeviceData"];
-  v13 = [v4 firstObject];
+  v4 = [coder recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject = [v4 firstObject];
 
-  v5 = [v13 encryptedValues];
+  encryptedValues = [firstObject encryptedValues];
   v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_identifier];
-  [v5 setObject:v6 forKey:@"brandIdentifier"];
+  [encryptedValues setObject:v6 forKey:@"brandIdentifier"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_resultProviderIdentifier];
-  [v5 setObject:v7 forKey:@"brandResultProviderIdentifier"];
+  [encryptedValues setObject:v7 forKey:@"brandResultProviderIdentifier"];
 
-  [v5 setObject:self->_name forKey:@"brandName"];
-  [v5 setObject:self->_phoneNumber forKey:@"brandPhoneNumber"];
-  v8 = [(NSURL *)self->_url absoluteString];
-  [v5 setObject:v8 forKey:@"brandURL"];
+  [encryptedValues setObject:self->_name forKey:@"brandName"];
+  [encryptedValues setObject:self->_phoneNumber forKey:@"brandPhoneNumber"];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  [encryptedValues setObject:absoluteString forKey:@"brandURL"];
 
   v9 = PKMerchantCategoryToString(self->_category);
-  [v5 setObject:v9 forKey:@"brandCategory"];
+  [encryptedValues setObject:v9 forKey:@"brandCategory"];
 
-  [v5 setObject:self->_detailedCategory forKey:@"brandMapsCategory"];
-  v10 = [(NSURL *)self->_logoURL absoluteString];
-  [v5 setObject:v10 forKey:@"brandLogoURL"];
+  [encryptedValues setObject:self->_detailedCategory forKey:@"brandMapsCategory"];
+  absoluteString2 = [(NSURL *)self->_logoURL absoluteString];
+  [encryptedValues setObject:absoluteString2 forKey:@"brandLogoURL"];
 
-  [v5 setObject:self->_stylingInfoData forKey:@"brandStylingInfo"];
+  [encryptedValues setObject:self->_stylingInfoData forKey:@"brandStylingInfo"];
   if (PKApplePayContainerEnvironment() == 2)
   {
-    v11 = [(NSURL *)self->_businessChatURL absoluteString];
-    [v5 setObject:v11 forKey:@"brandBusinessChatURL"];
+    absoluteString3 = [(NSURL *)self->_businessChatURL absoluteString];
+    [encryptedValues setObject:absoluteString3 forKey:@"brandBusinessChatURL"];
 
-    v12 = [(NSURL *)self->_heroImageURL absoluteString];
-    [v5 setObject:v12 forKey:@"brandHeroImageURL"];
+    absoluteString4 = [(NSURL *)self->_heroImageURL absoluteString];
+    [encryptedValues setObject:absoluteString4 forKey:@"brandHeroImageURL"];
 
-    [v5 setObject:self->_heroImageAttributionName forKey:@"brandHeroImageAttributionName"];
+    [encryptedValues setObject:self->_heroImageAttributionName forKey:@"brandHeroImageAttributionName"];
   }
 }
 
-+ (void)deleteFromCloudStoreRecord:(id)a3 codingType:(unint64_t)a4
++ (void)deleteFromCloudStoreRecord:(id)record codingType:(unint64_t)type
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    [a1 _deleteDeviceDataFromCloudStoreRecord:a3];
+    [self _deleteDeviceDataFromCloudStoreRecord:record];
   }
 }
 
-+ (void)_deleteDeviceDataFromCloudStoreRecord:(id)a3
++ (void)_deleteDeviceDataFromCloudStoreRecord:(id)record
 {
-  v3 = [a3 recordsWithRecordType:@"TransactionDeviceData"];
-  v5 = [v3 firstObject];
+  v3 = [record recordsWithRecordType:@"TransactionDeviceData"];
+  firstObject = [v3 firstObject];
 
-  v4 = [v5 encryptedValues];
-  [v4 setObject:0 forKey:@"brandIdentifier"];
-  [v4 setObject:0 forKey:@"brandResultProviderIdentifier"];
-  [v4 setObject:0 forKey:@"brandName"];
-  [v4 setObject:0 forKey:@"brandPhoneNumber"];
-  [v4 setObject:0 forKey:@"brandURL"];
-  [v4 setObject:0 forKey:@"brandCategory"];
-  [v4 setObject:0 forKey:@"brandMapsCategory"];
-  [v4 setObject:0 forKey:@"brandLogoURL"];
-  [v4 setObject:0 forKey:@"brandStylingInfo"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:0 forKey:@"brandIdentifier"];
+  [encryptedValues setObject:0 forKey:@"brandResultProviderIdentifier"];
+  [encryptedValues setObject:0 forKey:@"brandName"];
+  [encryptedValues setObject:0 forKey:@"brandPhoneNumber"];
+  [encryptedValues setObject:0 forKey:@"brandURL"];
+  [encryptedValues setObject:0 forKey:@"brandCategory"];
+  [encryptedValues setObject:0 forKey:@"brandMapsCategory"];
+  [encryptedValues setObject:0 forKey:@"brandLogoURL"];
+  [encryptedValues setObject:0 forKey:@"brandStylingInfo"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKMapsBrand *)self isEqualToMapsBrand:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKMapsBrand *)self isEqualToMapsBrand:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToMapsBrand:(id)a3
+- (BOOL)isEqualToMapsBrand:(id)brand
 {
-  v4 = a3;
-  v5 = v4[4];
+  brandCopy = brand;
+  v5 = brandCopy[4];
   v6 = self->_name;
   v7 = v5;
   v8 = v7;
@@ -330,7 +330,7 @@
     }
   }
 
-  v11 = v4[5];
+  v11 = brandCopy[5];
   v6 = self->_phoneNumber;
   v12 = v11;
   v8 = v12;
@@ -354,7 +354,7 @@
   }
 
   url = self->_url;
-  v15 = v4[6];
+  v15 = brandCopy[6];
   if (url && v15)
   {
     if (([(NSURL *)url isEqual:?]& 1) == 0)
@@ -368,7 +368,7 @@
     goto LABEL_26;
   }
 
-  v16 = v4[8];
+  v16 = brandCopy[8];
   v6 = self->_detailedCategory;
   v17 = v16;
   v8 = v17;
@@ -393,7 +393,7 @@ LABEL_25:
 
 LABEL_29:
   logoURL = self->_logoURL;
-  v22 = v4[10];
+  v22 = brandCopy[10];
   if (logoURL && v22)
   {
     if (([(NSURL *)logoURL isEqual:?]& 1) == 0)
@@ -408,7 +408,7 @@ LABEL_29:
   }
 
   heroImageURL = self->_heroImageURL;
-  v24 = v4[11];
+  v24 = brandCopy[11];
   if (heroImageURL && v24)
   {
     if (([(NSURL *)heroImageURL isEqual:?]& 1) == 0)
@@ -423,7 +423,7 @@ LABEL_29:
   }
 
   heroImageAttributionName = self->_heroImageAttributionName;
-  v26 = v4[12];
+  v26 = brandCopy[12];
   if (heroImageAttributionName && v26)
   {
     if (([(NSString *)heroImageAttributionName isEqual:?]& 1) == 0)
@@ -438,7 +438,7 @@ LABEL_29:
   }
 
   businessChatURL = self->_businessChatURL;
-  v28 = v4[13];
+  v28 = brandCopy[13];
   if (businessChatURL && v28)
   {
     if (([(NSURL *)businessChatURL isEqual:?]& 1) == 0)
@@ -452,9 +452,9 @@ LABEL_29:
     goto LABEL_26;
   }
 
-  if (self->_category == v4[7] && self->_identifier == v4[3] && self->_resultProviderIdentifier == *(v4 + 4))
+  if (self->_category == brandCopy[7] && self->_identifier == brandCopy[3] && self->_resultProviderIdentifier == *(brandCopy + 4))
   {
-    v19 = (self->_stylingInfoData == 0) ^ (v4[9] != 0);
+    v19 = (self->_stylingInfoData == 0) ^ (brandCopy[9] != 0);
     goto LABEL_27;
   }
 
@@ -486,8 +486,8 @@ LABEL_27:
 
 - (id)description
 {
-  v3 = [(PKMapsBrand *)self jsonRepresentation];
-  v4 = [v3 mutableCopy];
+  jsonRepresentation = [(PKMapsBrand *)self jsonRepresentation];
+  v4 = [jsonRepresentation mutableCopy];
 
   v5 = [(NSDate *)self->_lastProcessedDate description];
   [v4 setObject:v5 forKeyedSubscript:@"lastProcessedDate"];
@@ -522,22 +522,22 @@ LABEL_27:
 
   [v3 setObject:self->_name forKeyedSubscript:@"name"];
   [v3 setObject:self->_phoneNumber forKeyedSubscript:@"phoneNumber"];
-  v6 = [(NSURL *)self->_url absoluteString];
-  [v3 setObject:v6 forKeyedSubscript:@"url"];
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"url"];
 
   v7 = PKMerchantCategoryToString(self->_category);
   [v3 setObject:v7 forKeyedSubscript:@"category"];
 
   [v3 setObject:self->_detailedCategory forKeyedSubscript:@"detailedCategory"];
-  v8 = [(NSURL *)self->_logoURL absoluteString];
-  [v3 setObject:v8 forKeyedSubscript:@"logoURL"];
+  absoluteString2 = [(NSURL *)self->_logoURL absoluteString];
+  [v3 setObject:absoluteString2 forKeyedSubscript:@"logoURL"];
 
-  v9 = [(NSURL *)self->_heroImageURL absoluteString];
-  [v3 setObject:v9 forKeyedSubscript:@"heroImageURL"];
+  absoluteString3 = [(NSURL *)self->_heroImageURL absoluteString];
+  [v3 setObject:absoluteString3 forKeyedSubscript:@"heroImageURL"];
 
   [v3 setObject:self->_heroImageAttributionName forKeyedSubscript:@"heroImageAttributionName"];
-  v10 = [(NSURL *)self->_businessChatURL absoluteString];
-  [v3 setObject:v10 forKeyedSubscript:@"businessChatURL"];
+  absoluteString4 = [(NSURL *)self->_businessChatURL absoluteString];
+  [v3 setObject:absoluteString4 forKeyedSubscript:@"businessChatURL"];
 
   v11 = [(NSData *)self->_stylingInfoData description];
   [v3 setObject:v11 forKeyedSubscript:@"stylingInfoData"];
@@ -547,16 +547,16 @@ LABEL_27:
   return v12;
 }
 
-- (BOOL)isCloudArchivableDeviceDataEqual:(id)a3
+- (BOOL)isCloudArchivableDeviceDataEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_33;
   }
 
-  v6 = v4[4];
+  v6 = equalCopy[4];
   v7 = self->_name;
   v8 = v6;
   v9 = v8;
@@ -748,10 +748,10 @@ LABEL_49:
   return v5;
 }
 
-- (void)setStylingInfoData:(id)a3
+- (void)setStylingInfoData:(id)data
 {
-  objc_storeStrong(&self->_stylingInfoData, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_stylingInfoData, data);
+  dataCopy = data;
   lazyStylingInfo = self->_lazyStylingInfo;
   self->_lazyStylingInfo = 0;
 }

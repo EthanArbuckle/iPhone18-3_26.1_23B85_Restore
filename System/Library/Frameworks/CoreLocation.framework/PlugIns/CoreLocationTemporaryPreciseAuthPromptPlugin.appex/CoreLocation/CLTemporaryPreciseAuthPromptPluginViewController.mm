@@ -15,8 +15,8 @@
   v6.receiver = self;
   v6.super_class = CLTemporaryPreciseAuthPromptPluginViewController;
   [(CLAuthWithPreciseSettingBaseViewController *)&v6 loadView];
-  v3 = [(CLAuthBaseViewController *)self locationDictionary];
-  v4 = [v3 objectForKey:@"UserLocationIsPrecise"];
+  locationDictionary = [(CLAuthBaseViewController *)self locationDictionary];
+  v4 = [locationDictionary objectForKey:@"UserLocationIsPrecise"];
 
   if (v4)
   {

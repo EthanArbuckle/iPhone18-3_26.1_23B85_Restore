@@ -1,28 +1,28 @@
 @interface HUSymbolIconColorProvider
-+ (id)primaryColorForSymbolIconAccessoryType:(id)a3;
-+ (id)primaryColorForSymbolIconIdentifier:(id)a3;
++ (id)primaryColorForSymbolIconAccessoryType:(id)type;
++ (id)primaryColorForSymbolIconIdentifier:(id)identifier;
 @end
 
 @implementation HUSymbolIconColorProvider
 
-+ (id)primaryColorForSymbolIconIdentifier:(id)a3
++ (id)primaryColorForSymbolIconIdentifier:(id)identifier
 {
   v4 = HFSymbolIconAccessoryTypeForSymbol();
-  v5 = [a1 primaryColorForSymbolIconAccessoryType:v4];
+  v5 = [self primaryColorForSymbolIconAccessoryType:v4];
 
   return v5;
 }
 
-+ (id)primaryColorForSymbolIconAccessoryType:(id)a3
++ (id)primaryColorForSymbolIconAccessoryType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (_MergedGlobals_632 != -1)
   {
     dispatch_once(&_MergedGlobals_632, &__block_literal_global_3_5);
   }
 
   v4 = qword_281122008;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:typeCopy];
 
   return v5;
 }

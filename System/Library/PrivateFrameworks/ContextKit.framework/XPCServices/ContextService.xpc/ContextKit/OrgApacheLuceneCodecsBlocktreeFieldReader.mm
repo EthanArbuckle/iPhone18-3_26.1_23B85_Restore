@@ -9,7 +9,7 @@
 - (id)getMax;
 - (id)getMin;
 - (id)getStats;
-- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)automaton withOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)iterator;
 - (int64_t)ramBytesUsed;
 - (void)__javaClone;
@@ -120,14 +120,14 @@
   return v2;
 }
 
-- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)automaton withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!automaton)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = new_OrgApacheLuceneCodecsBlocktreeIntersectTermsEnum_initWithOrgApacheLuceneCodecsBlocktreeFieldReader_withOrgApacheLuceneUtilAutomatonAutomaton_withOrgApacheLuceneUtilAutomatonRunAutomaton_withOrgApacheLuceneUtilBytesRef_withOrgApacheLuceneUtilBytesRef_withInt_(self, *(a3 + 4), *(a3 + 3), *(a3 + 5), a4, *(a3 + 14));
+  v4 = new_OrgApacheLuceneCodecsBlocktreeIntersectTermsEnum_initWithOrgApacheLuceneCodecsBlocktreeFieldReader_withOrgApacheLuceneUtilAutomatonAutomaton_withOrgApacheLuceneUtilAutomatonRunAutomaton_withOrgApacheLuceneUtilBytesRef_withOrgApacheLuceneUtilBytesRef_withInt_(self, *(automaton + 4), *(automaton + 3), *(automaton + 5), ref, *(automaton + 14));
 
   return v4;
 }
@@ -186,7 +186,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneCodecsBlocktreeFieldReader_class_();
     v3 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

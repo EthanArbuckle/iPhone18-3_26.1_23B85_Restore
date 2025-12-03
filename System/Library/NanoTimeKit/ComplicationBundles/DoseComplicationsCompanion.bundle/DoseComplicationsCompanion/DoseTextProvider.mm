@@ -1,14 +1,14 @@
 @interface DoseTextProvider
-- (id)attributedTextAndSize:(CGSize *)a3 forMaxWidth:(double)a4 withStyle:(id)a5 now:(id)a6;
+- (id)attributedTextAndSize:(CGSize *)size forMaxWidth:(double)width withStyle:(id)style now:(id)now;
 @end
 
 @implementation DoseTextProvider
 
-- (id)attributedTextAndSize:(CGSize *)a3 forMaxWidth:(double)a4 withStyle:(id)a5 now:(id)a6
+- (id)attributedTextAndSize:(CGSize *)size forMaxWidth:(double)width withStyle:(id)style now:(id)now
 {
   v10.receiver = self;
   v10.super_class = DoseTextProvider;
-  v6 = [(DoseTextProvider *)&v10 attributedTextAndSize:a3 forMaxWidth:a5 withStyle:a6 now:a4];
+  v6 = [(DoseTextProvider *)&v10 attributedTextAndSize:size forMaxWidth:style withStyle:now now:width];
   if (v6)
   {
     dword_10B18 = (dword_10B18 + 1) % 100;

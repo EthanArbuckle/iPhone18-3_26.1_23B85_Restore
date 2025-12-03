@@ -1,16 +1,16 @@
 @interface VCTailspinUtil
-+ (BOOL)tailspinDumpOutput:(int)a3 reason:(id)a4;
++ (BOOL)tailspinDumpOutput:(int)output reason:(id)reason;
 @end
 
 @implementation VCTailspinUtil
 
-+ (BOOL)tailspinDumpOutput:(int)a3 reason:(id)a4
++ (BOOL)tailspinDumpOutput:(int)output reason:(id)reason
 {
   v7[3] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E59C0];
   v6[0] = *MEMORY[0x1E69E59C8];
   v6[1] = v4;
-  v7[0] = a4;
+  v7[0] = reason;
   v7[1] = &unk_1F5799CD8;
   v6[2] = *MEMORY[0x1E69E59D0];
   v7[2] = [MEMORY[0x1E696AD98] numberWithInt:getpid()];

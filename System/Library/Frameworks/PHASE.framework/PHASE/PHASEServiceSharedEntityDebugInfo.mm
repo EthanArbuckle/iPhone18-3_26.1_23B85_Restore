@@ -1,23 +1,23 @@
 @interface PHASEServiceSharedEntityDebugInfo
-- (BOOL)isEqual:(id)a3;
-- (PHASEServiceSharedEntityDebugInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PHASEServiceSharedEntityDebugInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSessionSharedRoots:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSessionSharedRoots:(id)roots;
 @end
 
 @implementation PHASEServiceSharedEntityDebugInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PHASEServiceSharedEntityDebugInfo *)self sharedListener];
-  v6 = [v4 sharedListener];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  sharedListener = [(PHASEServiceSharedEntityDebugInfo *)self sharedListener];
+  sharedListener2 = [equalCopy sharedListener];
+  if ([sharedListener isEqual:sharedListener2])
   {
-    v7 = [(PHASEServiceSharedEntityDebugInfo *)self sessionSharedRoots];
-    v8 = [v4 sessionSharedRoots];
-    v9 = [v7 isEqual:v8];
+    sessionSharedRoots = [(PHASEServiceSharedEntityDebugInfo *)self sessionSharedRoots];
+    sessionSharedRoots2 = [equalCopy sessionSharedRoots];
+    v9 = [sessionSharedRoots isEqual:sessionSharedRoots2];
   }
 
   else
@@ -28,22 +28,22 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_sharedListener forKey:@"sharedListener"];
-  [v4 encodeObject:self->_sessionSharedRoots forKey:@"sessionSharedRoots"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_sharedListener forKey:@"sharedListener"];
+  [coderCopy encodeObject:self->_sessionSharedRoots forKey:@"sessionSharedRoots"];
 }
 
-- (PHASEServiceSharedEntityDebugInfo)initWithCoder:(id)a3
+- (PHASEServiceSharedEntityDebugInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PHASEServiceSharedEntityDebugInfo;
   v5 = [(PHASEServiceSharedEntityDebugInfo *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedListener"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedListener"];
     sharedListener = v5->_sharedListener;
     v5->_sharedListener = v6;
 
@@ -52,7 +52,7 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"sessionSharedRoots"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"sessionSharedRoots"];
     sessionSharedRoots = v5->_sessionSharedRoots;
     v5->_sessionSharedRoots = v13;
   }
@@ -98,10 +98,10 @@
   return v10;
 }
 
-- (void)setSessionSharedRoots:(id)a3
+- (void)setSessionSharedRoots:(id)roots
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  rootsCopy = roots;
+  v4 = [rootsCopy copy];
   sessionSharedRoots = self->_sessionSharedRoots;
   self->_sessionSharedRoots = v4;
 }

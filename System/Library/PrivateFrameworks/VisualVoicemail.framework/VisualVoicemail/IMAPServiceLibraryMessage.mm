@@ -1,7 +1,7 @@
 @interface IMAPServiceLibraryMessage
 - (id)messageIDHeader;
 - (void)dealloc;
-- (void)setMessageIDHeader:(id)a3;
+- (void)setMessageIDHeader:(id)header;
 @end
 
 @implementation IMAPServiceLibraryMessage
@@ -13,13 +13,13 @@
   [(IMAPServiceLibraryMessage *)&v2 dealloc];
 }
 
-- (void)setMessageIDHeader:(id)a3
+- (void)setMessageIDHeader:(id)header
 {
-  v5 = a3;
+  headerCopy = header;
   [(IMAPServiceLibraryMessage *)self mf_lock];
-  if (self->_messageIDHeader != v5)
+  if (self->_messageIDHeader != headerCopy)
   {
-    objc_storeStrong(&self->_messageIDHeader, a3);
+    objc_storeStrong(&self->_messageIDHeader, header);
   }
 
   [(IMAPServiceLibraryMessage *)self mf_unlock];
@@ -31,7 +31,7 @@
   messageIDHeader = self->_messageIDHeader;
   if (messageIDHeader)
   {
-    v4 = messageIDHeader;
+    messageIDHeader = messageIDHeader;
     [(IMAPServiceLibraryMessage *)self mf_unlock];
   }
 
@@ -40,10 +40,10 @@
     [(IMAPServiceLibraryMessage *)self mf_unlock];
     v6.receiver = self;
     v6.super_class = IMAPServiceLibraryMessage;
-    v4 = [(IMAPServiceLibraryMessage *)&v6 messageIDHeader];
+    messageIDHeader = [(IMAPServiceLibraryMessage *)&v6 messageIDHeader];
   }
 
-  return v4;
+  return messageIDHeader;
 }
 
 @end

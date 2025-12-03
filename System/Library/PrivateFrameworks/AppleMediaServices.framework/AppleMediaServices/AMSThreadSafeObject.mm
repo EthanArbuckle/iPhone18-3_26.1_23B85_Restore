@@ -1,12 +1,12 @@
 @interface AMSThreadSafeObject
-- (AMSThreadSafeObject)initWithObject:(id)a3;
-- (id)accessAndSetObjectWithBlock:(id)a3;
+- (AMSThreadSafeObject)initWithObject:(id)object;
+- (id)accessAndSetObjectWithBlock:(id)block;
 - (id)object;
 - (id)underlyingObject;
-- (void)read:(id)a3;
-- (void)readWrite:(id)a3;
-- (void)setObject:(id)a3;
-- (void)setUnderlyingObject:(id)a3;
+- (void)read:(id)read;
+- (void)readWrite:(id)write;
+- (void)setObject:(id)object;
+- (void)setUnderlyingObject:(id)object;
 @end
 
 @implementation AMSThreadSafeObject
@@ -19,9 +19,9 @@
   return underlyingObject;
 }
 
-- (AMSThreadSafeObject)initWithObject:(id)a3
+- (AMSThreadSafeObject)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = AMSThreadSafeObject;
   v6 = [(AMSThreadSafeObject *)&v9 init];
@@ -29,51 +29,51 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_underlyingObject, a3);
+    objc_storeStrong(&v6->_underlyingObject, object);
   }
 
   return v7;
 }
 
-- (void)setUnderlyingObject:(id)a3
+- (void)setUnderlyingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_assert_owner(&self->_lock);
   underlyingObject = self->_underlyingObject;
-  self->_underlyingObject = v4;
+  self->_underlyingObject = objectCopy;
 }
 
-- (void)read:(id)a3
+- (void)read:(id)read
 {
-  v4 = a3;
+  readCopy = read;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(AMSThreadSafeObject *)self underlyingObject];
-  v4[2](v4, v5);
+  underlyingObject = [(AMSThreadSafeObject *)self underlyingObject];
+  readCopy[2](readCopy, underlyingObject);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)readWrite:(id)a3
+- (void)readWrite:(id)write
 {
-  v4 = a3;
+  writeCopy = write;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(AMSThreadSafeObject *)self underlyingObject];
-  v6 = v4[2](v4, v5);
+  underlyingObject = [(AMSThreadSafeObject *)self underlyingObject];
+  v6 = writeCopy[2](writeCopy, underlyingObject);
 
   [(AMSThreadSafeObject *)self setUnderlyingObject:v6];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)accessAndSetObjectWithBlock:(id)a3
+- (id)accessAndSetObjectWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(AMSThreadSafeObject *)self underlyingObject];
-  v6 = v4[2](v4, v5);
+  underlyingObject = [(AMSThreadSafeObject *)self underlyingObject];
+  v6 = blockCopy[2](blockCopy, underlyingObject);
 
   [(AMSThreadSafeObject *)self setUnderlyingObject:v6];
   os_unfair_lock_lock(&self->_lock);
@@ -85,18 +85,18 @@
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock_with_options();
-  v3 = [(AMSThreadSafeObject *)self underlyingObject];
+  underlyingObject = [(AMSThreadSafeObject *)self underlyingObject];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return underlyingObject;
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock_with_options();
-  [(AMSThreadSafeObject *)self setUnderlyingObject:v4];
+  [(AMSThreadSafeObject *)self setUnderlyingObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

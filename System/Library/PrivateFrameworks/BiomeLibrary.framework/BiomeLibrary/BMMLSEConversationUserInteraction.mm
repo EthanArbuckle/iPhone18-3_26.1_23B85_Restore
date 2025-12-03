@@ -1,39 +1,39 @@
 @interface BMMLSEConversationUserInteraction
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMLSEConversationUserInteraction)initWithBundleID:(id)a3 conversationId:(id)a4 eventType:(int)a5 timestamp:(id)a6;
-- (BMMLSEConversationUserInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMLSEConversationUserInteraction)initWithBundleID:(id)d conversationId:(id)id eventType:(int)type timestamp:(id)timestamp;
+- (BMMLSEConversationUserInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)timestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMLSEConversationUserInteraction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMLSEConversationUserInteraction *)self bundleID];
-    v7 = [v5 bundleID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    bundleID = [(BMMLSEConversationUserInteraction *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v8 = bundleID2;
+    if (bundleID == bundleID2)
     {
     }
 
     else
     {
-      v9 = [(BMMLSEConversationUserInteraction *)self bundleID];
-      v10 = [v5 bundleID];
-      v11 = [v9 isEqual:v10];
+      bundleID3 = [(BMMLSEConversationUserInteraction *)self bundleID];
+      bundleID4 = [v5 bundleID];
+      v11 = [bundleID3 isEqual:bundleID4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMMLSEConversationUserInteraction *)self conversationId];
-    v14 = [v5 conversationId];
-    v15 = v14;
-    if (v13 == v14)
+    conversationId = [(BMMLSEConversationUserInteraction *)self conversationId];
+    conversationId2 = [v5 conversationId];
+    v15 = conversationId2;
+    if (conversationId == conversationId2)
     {
     }
 
     else
     {
-      v16 = [(BMMLSEConversationUserInteraction *)self conversationId];
-      v17 = [v5 conversationId];
-      v18 = [v16 isEqual:v17];
+      conversationId3 = [(BMMLSEConversationUserInteraction *)self conversationId];
+      conversationId4 = [v5 conversationId];
+      v18 = [conversationId3 isEqual:conversationId4];
 
       if (!v18)
       {
@@ -60,21 +60,21 @@
       }
     }
 
-    v19 = [(BMMLSEConversationUserInteraction *)self eventType];
-    if (v19 == [v5 eventType])
+    eventType = [(BMMLSEConversationUserInteraction *)self eventType];
+    if (eventType == [v5 eventType])
     {
-      v20 = [(BMMLSEConversationUserInteraction *)self timestamp];
-      v21 = [v5 timestamp];
-      if (v20 == v21)
+      timestamp = [(BMMLSEConversationUserInteraction *)self timestamp];
+      timestamp2 = [v5 timestamp];
+      if (timestamp == timestamp2)
       {
         v12 = 1;
       }
 
       else
       {
-        v22 = [(BMMLSEConversationUserInteraction *)self timestamp];
-        v23 = [v5 timestamp];
-        v12 = [v22 isEqual:v23];
+        timestamp3 = [(BMMLSEConversationUserInteraction *)self timestamp];
+        timestamp4 = [v5 timestamp];
+        v12 = [timestamp3 isEqual:timestamp4];
       }
 
       goto LABEL_17;
@@ -113,15 +113,15 @@ LABEL_18:
 - (id)jsonDictionary
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMLSEConversationUserInteraction *)self bundleID];
-  v4 = [(BMMLSEConversationUserInteraction *)self conversationId];
+  bundleID = [(BMMLSEConversationUserInteraction *)self bundleID];
+  conversationId = [(BMMLSEConversationUserInteraction *)self conversationId];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMLSEConversationUserInteraction eventType](self, "eventType")}];
-  v6 = [(BMMLSEConversationUserInteraction *)self timestamp];
-  if (v6)
+  timestamp = [(BMMLSEConversationUserInteraction *)self timestamp];
+  if (timestamp)
   {
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(BMMLSEConversationUserInteraction *)self timestamp];
-    [v8 timeIntervalSince1970];
+    timestamp2 = [(BMMLSEConversationUserInteraction *)self timestamp];
+    [timestamp2 timeIntervalSince1970];
     v9 = [v7 numberWithDouble:?];
   }
 
@@ -131,37 +131,37 @@ LABEL_18:
   }
 
   v17[0] = @"bundleID";
-  v10 = v3;
-  if (!v3)
+  null = bundleID;
+  if (!bundleID)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v10;
+  v18[0] = null;
   v17[1] = @"conversationId";
-  v11 = v4;
-  if (!v4)
+  null2 = conversationId;
+  if (!conversationId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v11;
+  v18[1] = null2;
   v17[2] = @"eventType";
-  v12 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v12;
+  v18[2] = null3;
   v17[3] = @"timestamp";
-  v13 = v9;
+  null4 = v9;
   if (!v9)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v13;
+  v18[3] = null4;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
   if (v9)
   {
@@ -177,14 +177,14 @@ LABEL_18:
     if (v5)
     {
 LABEL_14:
-      if (v4)
+      if (conversationId)
       {
         goto LABEL_15;
       }
 
 LABEL_21:
 
-      if (v3)
+      if (bundleID)
       {
         goto LABEL_16;
       }
@@ -193,13 +193,13 @@ LABEL_21:
     }
   }
 
-  if (!v4)
+  if (!conversationId)
   {
     goto LABEL_21;
   }
 
 LABEL_15:
-  if (v3)
+  if (bundleID)
   {
     goto LABEL_16;
   }
@@ -212,25 +212,25 @@ LABEL_16:
   return v14;
 }
 
-- (BMMLSEConversationUserInteraction)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMLSEConversationUserInteraction)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"bundleID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v40 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"conversationId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"conversationId"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v16 = 0;
-          v17 = 0;
+          selfCopy = 0;
           goto LABEL_34;
         }
 
@@ -242,8 +242,8 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
         v20 = [v18 initWithDomain:v19 code:2 userInfo:v10];
         v16 = 0;
-        v17 = 0;
-        *a4 = v20;
+        selfCopy = 0;
+        *error = v20;
         goto LABEL_33;
       }
 
@@ -255,11 +255,11 @@ LABEL_4:
       v9 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"eventType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"eventType"];
     v39 = v9;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v11 = a4;
+      errorCopy2 = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -271,10 +271,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v12 = 0;
-            v17 = 0;
+            selfCopy = 0;
             v16 = v39;
             goto LABEL_33;
           }
@@ -287,8 +287,8 @@ LABEL_4:
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
           v33 = [v37 initWithDomain:v32 code:2 userInfo:v21];
           v12 = 0;
-          v17 = 0;
-          *v11 = v33;
+          selfCopy = 0;
+          *errorCopy2 = v33;
           goto LABEL_45;
         }
 
@@ -300,18 +300,18 @@ LABEL_4:
 
     else
     {
-      v11 = a4;
+      errorCopy2 = error;
       v12 = 0;
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"timestamp"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
     if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v22 = 0;
 LABEL_31:
       v16 = v39;
       self = -[BMMLSEConversationUserInteraction initWithBundleID:conversationId:eventType:timestamp:](self, "initWithBundleID:conversationId:eventType:timestamp:", v40, v39, [v12 intValue], v22);
-      v17 = self;
+      selfCopy = self;
 LABEL_32:
 
 LABEL_33:
@@ -349,7 +349,7 @@ LABEL_28:
       goto LABEL_28;
     }
 
-    if (v11)
+    if (errorCopy2)
     {
       v38 = objc_alloc(MEMORY[0x1E696ABC0]);
       v36 = *MEMORY[0x1E698F240];
@@ -357,11 +357,11 @@ LABEL_28:
       v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"timestamp"];
       v42 = v34;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-      *v11 = [v38 initWithDomain:v36 code:2 userInfo:v35];
+      *errorCopy2 = [v38 initWithDomain:v36 code:2 userInfo:v35];
     }
 
     v22 = 0;
-    v17 = 0;
+    selfCopy = 0;
 LABEL_45:
     v16 = v39;
     goto LABEL_32;
@@ -374,10 +374,10 @@ LABEL_45:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v40 = 0;
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_35;
   }
 
@@ -388,27 +388,27 @@ LABEL_45:
   v48[0] = v16;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
   v40 = 0;
-  v17 = 0;
-  *a4 = [v14 initWithDomain:v15 code:2 userInfo:v8];
+  selfCopy = 0;
+  *error = [v14 initWithDomain:v15 code:2 userInfo:v8];
 LABEL_34:
 
 LABEL_35:
   v30 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMLSEConversationUserInteraction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
@@ -428,9 +428,9 @@ LABEL_35:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v32.receiver = self;
   v32.super_class = BMMLSEConversationUserInteraction;
   v5 = [(BMEventBase *)&v32 init];
@@ -439,12 +439,12 @@ LABEL_35:
     goto LABEL_49;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -455,18 +455,18 @@ LABEL_35:
       while (1)
       {
         LOBYTE(v33) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v33) & 0x7F) << v7;
@@ -483,9 +483,9 @@ LABEL_35:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -497,18 +497,18 @@ LABEL_16:
         {
           v5->_hasRaw_timestamp = 1;
           v33 = 0.0;
-          v26 = [v4 position] + 8;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 8, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 8;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 8, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v33 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_raw_timestamp = v33;
@@ -533,18 +533,18 @@ LABEL_33:
           while (1)
           {
             LOBYTE(v33) = 0;
-            v21 = [v4 position] + 1;
-            if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+            v21 = [fromCopy position] + 1;
+            if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
             {
-              v23 = [v4 data];
-              [v23 getBytes:&v33 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v33 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v20 |= (LOBYTE(v33) & 0x7F) << v18;
@@ -560,7 +560,7 @@ LABEL_33:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v20 > 2)
+          if (([fromCopy hasError] & 1) != 0 || v20 > 2)
           {
 LABEL_42:
             LODWORD(v20) = 0;
@@ -594,13 +594,13 @@ LABEL_42:
       }
 
 LABEL_46:
-      v29 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v29 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_48:
     v30 = 0;
@@ -618,33 +618,33 @@ LABEL_49:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMLSEConversationUserInteraction *)self bundleID];
-  v5 = [(BMMLSEConversationUserInteraction *)self conversationId];
+  bundleID = [(BMMLSEConversationUserInteraction *)self bundleID];
+  conversationId = [(BMMLSEConversationUserInteraction *)self conversationId];
   v6 = BMConversationUserInteractionEventTypeAsString([(BMMLSEConversationUserInteraction *)self eventType]);
-  v7 = [(BMMLSEConversationUserInteraction *)self timestamp];
-  v8 = [v3 initWithFormat:@"BMMLSEConversationUserInteraction with bundleID: %@, conversationId: %@, eventType: %@, timestamp: %@", v4, v5, v6, v7];
+  timestamp = [(BMMLSEConversationUserInteraction *)self timestamp];
+  v8 = [v3 initWithFormat:@"BMMLSEConversationUserInteraction with bundleID: %@, conversationId: %@, eventType: %@, timestamp: %@", bundleID, conversationId, v6, timestamp];
 
   return v8;
 }
 
-- (BMMLSEConversationUserInteraction)initWithBundleID:(id)a3 conversationId:(id)a4 eventType:(int)a5 timestamp:(id)a6
+- (BMMLSEConversationUserInteraction)initWithBundleID:(id)d conversationId:(id)id eventType:(int)type timestamp:(id)timestamp
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  idCopy = id;
+  timestampCopy = timestamp;
   v17.receiver = self;
   v17.super_class = BMMLSEConversationUserInteraction;
   v14 = [(BMEventBase *)&v17 init];
   if (v14)
   {
     v14->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v14->_bundleID, a3);
-    objc_storeStrong(&v14->_conversationId, a4);
-    v14->_eventType = a5;
-    if (v13)
+    objc_storeStrong(&v14->_bundleID, d);
+    objc_storeStrong(&v14->_conversationId, id);
+    v14->_eventType = type;
+    if (timestampCopy)
     {
       v14->_hasRaw_timestamp = 1;
-      [v13 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -695,9 +695,9 @@ LABEL_49:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -705,8 +705,8 @@ LABEL_49:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMLSEConversationUserInteraction alloc] initByReadFrom:v7];
     v4 = v8;

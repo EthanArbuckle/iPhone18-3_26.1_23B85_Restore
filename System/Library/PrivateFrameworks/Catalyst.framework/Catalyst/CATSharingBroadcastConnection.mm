@@ -1,36 +1,36 @@
 @interface CATSharingBroadcastConnection
-- (CATSharingBroadcastConnection)initWithBroadcastPrimitives:(id)a3 timerSource:(id)a4;
+- (CATSharingBroadcastConnection)initWithBroadcastPrimitives:(id)primitives timerSource:(id)source;
 - (CATSharingConnectionDelegate)delegate;
 - (void)_close;
-- (void)_sendData:(id)a3 completion:(id)a4;
+- (void)_sendData:(id)data completion:(id)completion;
 - (void)addBroadcastPrimitiveHandlers;
 - (void)close;
-- (void)closeWithError:(id)a3 reportToRemote:(BOOL)a4;
-- (void)handleCloseMessage:(id)a3;
-- (void)handleSentMessage:(id)a3;
-- (void)handleUnparsableMessageDictionary:(id)a3;
-- (void)messageReceived:(id)a3;
+- (void)closeWithError:(id)error reportToRemote:(BOOL)remote;
+- (void)handleCloseMessage:(id)message;
+- (void)handleSentMessage:(id)message;
+- (void)handleUnparsableMessageDictionary:(id)dictionary;
+- (void)messageReceived:(id)received;
 - (void)removeBroadcastPrimitiveHandlers;
-- (void)sendData:(id)a3 completion:(id)a4;
-- (void)sendMessage:(id)a3 completion:(id)a4;
-- (void)sendTearDownMessageWithError:(id)a3;
-- (void)tombstoneWithError:(id)a3;
+- (void)sendData:(id)data completion:(id)completion;
+- (void)sendMessage:(id)message completion:(id)completion;
+- (void)sendTearDownMessageWithError:(id)error;
+- (void)tombstoneWithError:(id)error;
 @end
 
 @implementation CATSharingBroadcastConnection
 
-- (CATSharingBroadcastConnection)initWithBroadcastPrimitives:(id)a3 timerSource:(id)a4
+- (CATSharingBroadcastConnection)initWithBroadcastPrimitives:(id)primitives timerSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  primitivesCopy = primitives;
+  sourceCopy = source;
   v17.receiver = self;
   v17.super_class = CATSharingBroadcastConnection;
   v9 = [(CATSharingBroadcastConnection *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mBroadcastPrimitives, a3);
-    objc_storeStrong(&v10->mTimerSource, a4);
+    objc_storeStrong(&v9->mBroadcastPrimitives, primitives);
+    objc_storeStrong(&v10->mTimerSource, source);
     [(CATSharingBroadcastConnection *)v10 addBroadcastPrimitiveHandlers];
     v11 = objc_opt_new();
     mOutgoingQueue = v10->mOutgoingQueue;
@@ -47,19 +47,19 @@
   return v10;
 }
 
-- (void)sendData:(id)a3 completion:(id)a4
+- (void)sendData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__CATSharingBroadcastConnection_sendData_completion___block_invoke;
   v12[3] = &unk_278DA7420;
   objc_copyWeak(&v15, &location);
-  v8 = v6;
+  v8 = dataCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v14 = v9;
   v10 = v12;
   v11 = CATGetCatalystQueue();
@@ -107,24 +107,24 @@ void __38__CATSharingBroadcastConnection_close__block_invoke(uint64_t a1)
   [WeakRetained _close];
 }
 
-- (void)_sendData:(id)a3 completion:(id)a4
+- (void)_sendData:(id)data completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v7 = CATGetCatalystQueue();
   CATAssertIsQueue(v7);
 
   if (self->mIsClosing || [(CATSharingBroadcastConnection *)self isClosed])
   {
     v8 = CATErrorWithCodeAndUserInfo(100, 0);
-    v6[2](v6, v8);
+    completionCopy[2](completionCopy, v8);
   }
 
   else
   {
-    v8 = [[CATSharingSentMessage alloc] initWithContent:v10];
+    v8 = [[CATSharingSentMessage alloc] initWithContent:dataCopy];
     v9 = [[CATSharingMessage alloc] initWithContentMessage:v8];
-    [(CATSharingBroadcastConnection *)self sendMessage:v9 completion:v6];
+    [(CATSharingBroadcastConnection *)self sendMessage:v9 completion:completionCopy];
   }
 }
 
@@ -140,22 +140,22 @@ void __38__CATSharingBroadcastConnection_close__block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = CATGetCatalystQueue();
   CATAssertIsQueue(v8);
 
   if ([(CATSharingBroadcastConnection *)self isClosed])
   {
     v9 = CATErrorWithCodeAndUserInfo(100, 0);
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   else
   {
-    v10 = [[CATSendBroadcastMessageOperation alloc] initWithBroadcastPrimitive:self->mBroadcastPrimitives message:v6];
+    v10 = [[CATSendBroadcastMessageOperation alloc] initWithBroadcastPrimitive:self->mBroadcastPrimitives message:messageCopy];
     objc_initWeak(&location, self);
     v11 = MEMORY[0x277CCA8C8];
     v14 = MEMORY[0x277D85DD0];
@@ -164,7 +164,7 @@ void __38__CATSharingBroadcastConnection_close__block_invoke(uint64_t a1)
     v17 = &unk_278DA7448;
     v12 = v10;
     v18 = v12;
-    v19 = v7;
+    v19 = completionCopy;
     objc_copyWeak(&v20, &location);
     v13 = [v11 blockOperationWithBlock:&v14];
     [v13 addDependency:{v12, v14, v15, v16, v17}];
@@ -190,30 +190,30 @@ void __56__CATSharingBroadcastConnection_sendMessage_completion___block_invoke(u
   }
 }
 
-- (void)closeWithError:(id)a3 reportToRemote:(BOOL)a4
+- (void)closeWithError:(id)error reportToRemote:(BOOL)remote
 {
-  v7 = a3;
+  errorCopy = error;
   v6 = CATGetCatalystQueue();
   CATAssertIsQueue(v6);
 
   if (![(CATSharingBroadcastConnection *)self isClosed]&& !self->mIsClosing)
   {
     self->mIsClosing = 1;
-    if (a4)
+    if (remote)
     {
-      [(CATSharingBroadcastConnection *)self sendTearDownMessageWithError:v7];
+      [(CATSharingBroadcastConnection *)self sendTearDownMessageWithError:errorCopy];
     }
 
     else
     {
-      [(CATSharingBroadcastConnection *)self tombstoneWithError:v7];
+      [(CATSharingBroadcastConnection *)self tombstoneWithError:errorCopy];
     }
   }
 }
 
-- (void)tombstoneWithError:(id)a3
+- (void)tombstoneWithError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
@@ -224,9 +224,9 @@ void __56__CATSharingBroadcastConnection_sendMessage_completion___block_invoke(u
     [(CATOperationQueue *)self->mOutgoingQueue cancelAllOperations];
     [(CATSharingBroadcastConnection *)self removeBroadcastPrimitiveHandlers];
     [(CATSharingBroadcastPrimitives *)self->mBroadcastPrimitives deactivate];
-    [(CATSharingBroadcastConnection *)self setClosedError:v6];
-    v5 = [(CATSharingBroadcastConnection *)self delegate];
-    [v5 connectionClosed:self];
+    [(CATSharingBroadcastConnection *)self setClosedError:errorCopy];
+    delegate = [(CATSharingBroadcastConnection *)self delegate];
+    [delegate connectionClosed:self];
   }
 }
 
@@ -297,26 +297,26 @@ void __62__CATSharingBroadcastConnection_addBroadcastPrimitiveHandlers__block_in
   [(CATSharingBroadcastPrimitives *)mBroadcastPrimitives setMessageReceivedHandler:0];
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
-  v6 = [CATSharingMessage instanceWithDictionary:v4];
+  v6 = [CATSharingMessage instanceWithDictionary:receivedCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 messageType];
-    v9 = [v7 contentDictionaryValue];
-    if (v8 == 1)
+    messageType = [v6 messageType];
+    contentDictionaryValue = [v7 contentDictionaryValue];
+    if (messageType == 1)
     {
-      [(CATSharingBroadcastConnection *)self handleSentMessage:v9];
+      [(CATSharingBroadcastConnection *)self handleSentMessage:contentDictionaryValue];
     }
 
-    else if (v8 == 2)
+    else if (messageType == 2)
     {
-      [(CATSharingBroadcastConnection *)self handleCloseMessage:v9];
+      [(CATSharingBroadcastConnection *)self handleCloseMessage:contentDictionaryValue];
     }
 
     else
@@ -324,22 +324,22 @@ void __62__CATSharingBroadcastConnection_addBroadcastPrimitiveHandlers__block_in
       v10 = _CATLogGeneral_0();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(CATSharingBroadcastConnection *)v8 messageReceived:v10];
+        [(CATSharingBroadcastConnection *)messageType messageReceived:v10];
       }
 
-      [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:v9];
+      [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:contentDictionaryValue];
     }
   }
 
   else
   {
-    [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:v4];
+    [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:receivedCopy];
   }
 }
 
-- (void)handleUnparsableMessageDictionary:(id)a3
+- (void)handleUnparsableMessageDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
@@ -348,7 +348,7 @@ void __62__CATSharingBroadcastConnection_addBroadcastPrimitiveHandlers__block_in
     v6 = _CATLogGeneral_0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CATSharingBroadcastConnection *)v4 handleUnparsableMessageDictionary:v6];
+      [(CATSharingBroadcastConnection *)dictionaryCopy handleUnparsableMessageDictionary:v6];
     }
 
     v7 = CATErrorWithCodeAndUserInfo(300, 0);
@@ -356,56 +356,56 @@ void __62__CATSharingBroadcastConnection_addBroadcastPrimitiveHandlers__block_in
   }
 }
 
-- (void)handleCloseMessage:(id)a3
+- (void)handleCloseMessage:(id)message
 {
-  v8 = a3;
+  messageCopy = message;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
-  v5 = [CATSharingCloseMessage instanceWithDictionary:v8];
+  v5 = [CATSharingCloseMessage instanceWithDictionary:messageCopy];
   v6 = v5;
   if (v5)
   {
     if (!self->mIsClosing)
     {
-      v7 = [v5 closeError];
-      [(CATSharingBroadcastConnection *)self closeWithError:v7 reportToRemote:0];
+      closeError = [v5 closeError];
+      [(CATSharingBroadcastConnection *)self closeWithError:closeError reportToRemote:0];
     }
   }
 
   else
   {
-    [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:v8];
+    [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:messageCopy];
   }
 }
 
-- (void)handleSentMessage:(id)a3
+- (void)handleSentMessage:(id)message
 {
-  v8 = a3;
+  messageCopy = message;
   v4 = CATGetCatalystQueue();
   CATAssertIsQueue(v4);
 
-  v5 = [CATSharingSentMessage instanceWithDictionary:v8];
+  v5 = [CATSharingSentMessage instanceWithDictionary:messageCopy];
   if (v5)
   {
-    v6 = [(CATSharingBroadcastConnection *)self delegate];
-    v7 = [v5 content];
-    [v6 connection:self receivedData:v7];
+    delegate = [(CATSharingBroadcastConnection *)self delegate];
+    content = [v5 content];
+    [delegate connection:self receivedData:content];
   }
 
   else
   {
-    [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:v8];
+    [(CATSharingBroadcastConnection *)self handleUnparsableMessageDictionary:messageCopy];
   }
 }
 
-- (void)sendTearDownMessageWithError:(id)a3
+- (void)sendTearDownMessageWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = v4;
+    v6 = errorCopy;
   }
 
   else

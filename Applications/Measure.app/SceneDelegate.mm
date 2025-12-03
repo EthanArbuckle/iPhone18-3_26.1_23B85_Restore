@@ -1,54 +1,54 @@
 @interface SceneDelegate
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)setWindow:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)setWindow:(id)window;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC7Measure13SceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR____TtC7Measure13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC7Measure13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100032D68(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100032D68(sceneCopy, optionsCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_100033144();
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
+  activeCopy = active;
+  selfCopy = self;
   sub_1000332F4();
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_100033464();
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   if (qword_1004A0280 != -1)
   {
@@ -61,24 +61,24 @@
   Log.default(_:isPrivate:)(*&v5, 0);
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
-  v8 = a4;
-  v9 = self;
-  sub_100032298(v8);
+  v7 = _Block_copy(handler);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100032298(itemCopy);
   v7[2](v7, 1);
 
   _Block_release(v7);
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  if (a4)
+  if (test)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_15;
     }
@@ -88,7 +88,7 @@
 
   else
   {
-    if (!a5)
+    if (!options)
     {
 LABEL_17:
       result = sub_1000321B4();
@@ -113,10 +113,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3)
+  if (application)
   {
-    v14 = a3;
-    v15 = self;
+    applicationCopy = application;
+    selfCopy = self;
 
     v16._countAndFlagsBits = v11;
     v16._object = v10;
@@ -135,7 +135,7 @@ LABEL_13:
       v18 = 1;
     }
 
-    sub_100133550(v18, v14);
+    sub_100133550(v18, applicationCopy);
     v18 = 1;
     goto LABEL_13;
   }

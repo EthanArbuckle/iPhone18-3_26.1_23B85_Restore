@@ -1,36 +1,36 @@
 @interface ATXSpotlightSuggestionCollection
-- (ATXSpotlightSuggestionCollection)initWithCoder:(id)a3;
-- (ATXSpotlightSuggestionCollection)initWithProto:(id)a3;
-- (ATXSpotlightSuggestionCollection)initWithProtoData:(id)a3;
-- (ATXSpotlightSuggestionCollection)initWithSuggestions:(id)a3 contextTitle:(id)a4 sectionIdentifier:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXSpotlightSuggestionCollection:(id)a3;
+- (ATXSpotlightSuggestionCollection)initWithCoder:(id)coder;
+- (ATXSpotlightSuggestionCollection)initWithProto:(id)proto;
+- (ATXSpotlightSuggestionCollection)initWithProtoData:(id)data;
+- (ATXSpotlightSuggestionCollection)initWithSuggestions:(id)suggestions contextTitle:(id)title sectionIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXSpotlightSuggestionCollection:(id)collection;
 - (id)encodeAsProto;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXSpotlightSuggestionCollection
 
-- (ATXSpotlightSuggestionCollection)initWithSuggestions:(id)a3 contextTitle:(id)a4 sectionIdentifier:(id)a5
+- (ATXSpotlightSuggestionCollection)initWithSuggestions:(id)suggestions contextTitle:(id)title sectionIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionsCopy = suggestions;
+  titleCopy = title;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = ATXSpotlightSuggestionCollection;
   v11 = [(ATXSpotlightSuggestionCollection *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [suggestionsCopy copy];
     suggestions = v11->_suggestions;
     v11->_suggestions = v12;
 
-    v14 = [v9 copy];
+    v14 = [titleCopy copy];
     contextTitle = v11->_contextTitle;
     v11->_contextTitle = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     sectionIdentifier = v11->_sectionIdentifier;
     v11->_sectionIdentifier = v16;
   }
@@ -38,29 +38,29 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSpotlightSuggestionCollection *)self isEqualToATXSpotlightSuggestionCollection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSpotlightSuggestionCollection *)self isEqualToATXSpotlightSuggestionCollection:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXSpotlightSuggestionCollection:(id)a3
+- (BOOL)isEqualToATXSpotlightSuggestionCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = self->_contextTitle;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == collectionCopy[1])
   {
   }
 
@@ -76,7 +76,7 @@
 
   v8 = self->_suggestions;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == collectionCopy[3])
   {
   }
 
@@ -94,7 +94,7 @@ LABEL_7:
 
   v12 = self->_sectionIdentifier;
   v13 = v12;
-  if (v12 == v4[2])
+  if (v12 == collectionCopy[2])
   {
     v11 = 1;
   }
@@ -108,17 +108,17 @@ LABEL_13:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXSpotlightSuggestionCollection *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXSpotlightSuggestionCollection *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXSpotlightSuggestionCollection)initWithCoder:(id)a3
+- (ATXSpotlightSuggestionCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXSpotlightSuggestionCollection *)self initWithProtoData:v5];
   return v6;
@@ -126,19 +126,19 @@ LABEL_13:
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXSpotlightSuggestionCollection *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXSpotlightSuggestionCollection *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXSpotlightSuggestionCollection)initWithProto:(id)a3
+- (ATXSpotlightSuggestionCollection)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -154,18 +154,18 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 contextTitle];
-  v7 = [v5 suggestions];
-  v8 = [v7 _pas_mappedArrayWithTransform:&__block_literal_global_16];
+  v5 = protoCopy;
+  contextTitle = [v5 contextTitle];
+  suggestions = [v5 suggestions];
+  v8 = [suggestions _pas_mappedArrayWithTransform:&__block_literal_global_16];
 
-  v9 = [v5 sectionIdentifier];
+  sectionIdentifier = [v5 sectionIdentifier];
 
-  self = [(ATXSpotlightSuggestionCollection *)self initWithSuggestions:v8 contextTitle:v6 sectionIdentifier:v9];
-  v10 = self;
+  self = [(ATXSpotlightSuggestionCollection *)self initWithSuggestions:v8 contextTitle:contextTitle sectionIdentifier:sectionIdentifier];
+  selfCopy = self;
 LABEL_8:
 
-  return v10;
+  return selfCopy;
 }
 
 ATXProactiveSuggestion *__50__ATXSpotlightSuggestionCollection_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -190,23 +190,23 @@ ATXProactiveSuggestion *__50__ATXSpotlightSuggestionCollection_initWithProto___b
   return v3;
 }
 
-- (ATXSpotlightSuggestionCollection)initWithProtoData:(id)a3
+- (ATXSpotlightSuggestionCollection)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBSuggestionCollection alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBSuggestionCollection alloc] initWithData:dataCopy];
 
     self = [(ATXSpotlightSuggestionCollection *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto

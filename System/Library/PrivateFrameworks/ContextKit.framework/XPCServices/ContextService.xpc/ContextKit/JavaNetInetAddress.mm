@@ -1,10 +1,10 @@
 @interface JavaNetInetAddress
 + (IOSObjectArray)loopbackAddresses;
-+ (id)bytesToInetAddressesWithByteArray2:(id)a3 withNSString:(id)a4;
++ (id)bytesToInetAddressesWithByteArray2:(id)array2 withNSString:(id)string;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isReachableWithJavaNetNetworkInterface:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (JavaNetInetAddress)initWithInt:(int)a3 withByteArray:(id)a4 withNSString:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isReachableWithJavaNetNetworkInterface:(id)interface withInt:(int)int withInt:(int)withInt;
+- (JavaNetInetAddress)initWithInt:(int)int withByteArray:(id)array withNSString:(id)string;
 - (NSString)description;
 - (id)getAddress;
 - (id)getCanonicalHostName;
@@ -12,21 +12,21 @@
 - (id)getHostName;
 - (id)readResolve;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaNetInetAddress
 
-- (JavaNetInetAddress)initWithInt:(int)a3 withByteArray:(id)a4 withNSString:(id)a5
+- (JavaNetInetAddress)initWithInt:(int)int withByteArray:(id)array withNSString:(id)string
 {
-  self->family_ = a3;
-  JreStrongAssign(&self->ipaddress_, a4);
-  JreStrongAssign(&self->hostName_, a5);
+  self->family_ = int;
+  JreStrongAssign(&self->ipaddress_, array);
+  JreStrongAssign(&self->hostName_, string);
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -36,7 +36,7 @@
 
   ipaddress = self->ipaddress_;
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -46,7 +46,7 @@
     JreThrowClassCastException();
   }
 
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return JavaUtilArrays_equalsWithByteArray_withByteArray_(ipaddress, v6);
 }
@@ -62,11 +62,11 @@
   return [(IOSArray *)ipaddress clone];
 }
 
-+ (id)bytesToInetAddressesWithByteArray2:(id)a3 withNSString:(id)a4
++ (id)bytesToInetAddressesWithByteArray2:(id)array2 withNSString:(id)string
 {
   if (atomic_load_explicit(JavaNetInetAddress__initialized, memory_order_acquire))
   {
-    if (a3)
+    if (array2)
     {
       goto LABEL_3;
     }
@@ -76,23 +76,23 @@ LABEL_8:
   }
 
   sub_1001CC9CC();
-  if (!a3)
+  if (!array2)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v6 = [IOSObjectArray arrayWithLength:*(a3 + 2) type:JavaNetInetAddress_class_()];
-  if (*(a3 + 2) >= 1)
+  v6 = [IOSObjectArray arrayWithLength:*(array2 + 2) type:JavaNetInetAddress_class_()];
+  if (*(array2 + 2) >= 1)
   {
     v7 = 0;
     do
     {
-      v8 = sub_1001CAD4C(*(a3 + v7 + 3), a4);
+      v8 = sub_1001CAD4C(*(array2 + v7 + 3), string);
       IOSObjectArray_Set(v6, v7++, v8);
     }
 
-    while (v7 < *(a3 + 2));
+    while (v7 < *(array2 + 2));
   }
 
   return v6;
@@ -158,17 +158,17 @@ LABEL_3:
   return JreStrcat("$C$", v3, v4, v5, v6, v7, v8, v9, hostName);
 }
 
-- (BOOL)isReachableWithJavaNetNetworkInterface:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (BOOL)isReachableWithJavaNetNetworkInterface:(id)interface withInt:(int)int withInt:(int)withInt
 {
-  if ((a5 | a4) < 0)
+  if ((withInt | int) < 0)
   {
     v17 = new_JavaLangIllegalArgumentException_initWithNSString_(@"ttl < 0 || timeout < 0");
     objc_exception_throw(v17);
   }
 
-  if (a3)
+  if (interface)
   {
-    v7 = JavaUtilCollections_listWithJavaUtilEnumeration_([a3 getInetAddresses]);
+    v7 = JavaUtilCollections_listWithJavaUtilEnumeration_([interface getInetAddresses]);
     if (!v7)
     {
       JreThrowNullPointerException();
@@ -204,7 +204,7 @@ LABEL_3:
 
             v15 = *(*(&v19 + 1) + 8 * i);
             v16 = [JavaNetInetAddress__1 alloc];
-            sub_1001CC790(v16, self, self, v15, a5, v11, v10);
+            sub_1001CC790(v16, self, self, v15, withInt, v11, v10);
             [(JavaLangThread *)v16 start];
           }
 
@@ -222,23 +222,23 @@ LABEL_3:
   else
   {
 
-    return sub_1001CBA70(self, 0, a5);
+    return sub_1001CBA70(self, 0, withInt);
   }
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_12;
   }
 
-  v5 = [a3 putFields];
-  v6 = v5;
+  putFields = [stream putFields];
+  v6 = putFields;
   ipaddress = self->ipaddress_;
   if (!ipaddress)
   {
-    if (v5)
+    if (putFields)
     {
       v8 = 0;
       goto LABEL_9;
@@ -248,7 +248,7 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  if (!v5)
+  if (!putFields)
   {
     goto LABEL_12;
   }
@@ -264,12 +264,12 @@ LABEL_9:
   [v6 putWithNSString:@"family" withInt:self->family_];
   [v6 putWithNSString:@"hostName" withId:self->hostName_];
 
-  [a3 writeFields];
+  [stream writeFields];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || (v4 = [a3 readFields]) == 0)
+  if (!stream || (v4 = [stream readFields]) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -311,7 +311,7 @@ LABEL_9:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaNetAddressCache_init();
     JreStrongAssignAndConsume(&qword_100554DE0, v2);

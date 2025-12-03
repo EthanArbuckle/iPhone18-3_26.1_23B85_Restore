@@ -1,14 +1,14 @@
 @interface NPKProtoStandaloneInitializationResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)supportedServerVersionsAtIndex:(unint64_t)a3;
+- (int)supportedServerVersionsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandaloneInitializationResponse
@@ -21,20 +21,20 @@
   [(NPKProtoStandaloneInitializationResponse *)&v3 dealloc];
 }
 
-- (int)supportedServerVersionsAtIndex:(unint64_t)a3
+- (int)supportedServerVersionsAtIndex:(unint64_t)index
 {
   p_supportedServerVersions = &self->_supportedServerVersions;
   count = self->_supportedServerVersions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_supportedServerVersions->list[a3];
+  return p_supportedServerVersions->list[index];
 }
 
 - (id)description
@@ -43,20 +43,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandaloneInitializationResponse;
   v4 = [(NPKProtoStandaloneInitializationResponse *)&v8 description];
-  v5 = [(NPKProtoStandaloneInitializationResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandaloneInitializationResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   responseHeader = self->_responseHeader;
   if (responseHeader)
   {
-    v5 = [(NPKProtoStandaloneResponseHeader *)responseHeader dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"responseHeader"];
+    dictionaryRepresentation = [(NPKProtoStandaloneResponseHeader *)responseHeader dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"responseHeader"];
   }
 
   p_supportedServerVersions = &self->_supportedServerVersions;
@@ -82,34 +82,34 @@
       while (v8 < self->_supportedServerVersions.count);
     }
 
-    [v3 setObject:v7 forKey:@"supportedServerVersions"];
+    [dictionary setObject:v7 forKey:@"supportedServerVersions"];
   }
 
   clientInfoHTTPHeader = self->_clientInfoHTTPHeader;
   if (clientInfoHTTPHeader)
   {
-    [v3 setObject:clientInfoHTTPHeader forKey:@"clientInfoHTTPHeader"];
+    [dictionary setObject:clientInfoHTTPHeader forKey:@"clientInfoHTTPHeader"];
   }
 
   error = self->_error;
   if (error)
   {
-    v12 = [(NPKProtoStandaloneError *)error dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"error"];
+    dictionaryRepresentation2 = [(NPKProtoStandaloneError *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_responseHeader)
   {
     [NPKProtoStandaloneInitializationResponse writeTo:];
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteSubmessage();
   if (self->_supportedServerVersions.count)
   {
@@ -137,63 +137,63 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setResponseHeader:self->_responseHeader];
+  toCopy = to;
+  [toCopy setResponseHeader:self->_responseHeader];
   if ([(NPKProtoStandaloneInitializationResponse *)self supportedServerVersionsCount])
   {
-    [v8 clearSupportedServerVersions];
-    v4 = [(NPKProtoStandaloneInitializationResponse *)self supportedServerVersionsCount];
-    if (v4)
+    [toCopy clearSupportedServerVersions];
+    supportedServerVersionsCount = [(NPKProtoStandaloneInitializationResponse *)self supportedServerVersionsCount];
+    if (supportedServerVersionsCount)
     {
-      v5 = v4;
+      v5 = supportedServerVersionsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v8 addSupportedServerVersions:{-[NPKProtoStandaloneInitializationResponse supportedServerVersionsAtIndex:](self, "supportedServerVersionsAtIndex:", i)}];
+        [toCopy addSupportedServerVersions:{-[NPKProtoStandaloneInitializationResponse supportedServerVersionsAtIndex:](self, "supportedServerVersionsAtIndex:", i)}];
       }
     }
   }
 
   if (self->_clientInfoHTTPHeader)
   {
-    [v8 setClientInfoHTTPHeader:?];
+    [toCopy setClientInfoHTTPHeader:?];
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (self->_error)
   {
-    [v8 setError:?];
-    v7 = v8;
+    [toCopy setError:?];
+    v7 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandaloneResponseHeader *)self->_responseHeader copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandaloneResponseHeader *)self->_responseHeader copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
   PBRepeatedInt32Copy();
-  v8 = [(NSString *)self->_clientInfoHTTPHeader copyWithZone:a3];
+  v8 = [(NSString *)self->_clientInfoHTTPHeader copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NPKProtoStandaloneError *)self->_error copyWithZone:a3];
+  v10 = [(NPKProtoStandaloneError *)self->_error copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((responseHeader = self->_responseHeader, !(responseHeader | v4[6])) || -[NPKProtoStandaloneResponseHeader isEqual:](responseHeader, "isEqual:")) && PBRepeatedInt32IsEqual() && ((clientInfoHTTPHeader = self->_clientInfoHTTPHeader, !(clientInfoHTTPHeader | v4[4])) || -[NSString isEqual:](clientInfoHTTPHeader, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((responseHeader = self->_responseHeader, !(responseHeader | equalCopy[6])) || -[NPKProtoStandaloneResponseHeader isEqual:](responseHeader, "isEqual:")) && PBRepeatedInt32IsEqual() && ((clientInfoHTTPHeader = self->_clientInfoHTTPHeader, !(clientInfoHTTPHeader | equalCopy[4])) || -[NSString isEqual:](clientInfoHTTPHeader, "isEqual:")))
   {
     error = self->_error;
-    if (error | v4[5])
+    if (error | equalCopy[5])
     {
       v8 = [(NPKProtoStandaloneError *)error isEqual:?];
     }
@@ -220,12 +220,12 @@
   return v4 ^ v5 ^ [(NPKProtoStandaloneError *)self->_error hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   responseHeader = self->_responseHeader;
-  v6 = v4[6];
-  v13 = v4;
+  v6 = fromCopy[6];
+  v13 = fromCopy;
   if (responseHeader)
   {
     if (!v6)
@@ -246,12 +246,12 @@
     [(NPKProtoStandaloneInitializationResponse *)self setResponseHeader:?];
   }
 
-  v4 = v13;
+  fromCopy = v13;
 LABEL_7:
-  v7 = [v4 supportedServerVersionsCount];
-  if (v7)
+  supportedServerVersionsCount = [fromCopy supportedServerVersionsCount];
+  if (supportedServerVersionsCount)
   {
-    v8 = v7;
+    v8 = supportedServerVersionsCount;
     for (i = 0; i != v8; ++i)
     {
       -[NPKProtoStandaloneInitializationResponse addSupportedServerVersions:](self, "addSupportedServerVersions:", [v13 supportedServerVersionsAtIndex:i]);

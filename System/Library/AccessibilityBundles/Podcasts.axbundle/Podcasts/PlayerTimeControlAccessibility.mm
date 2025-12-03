@@ -1,8 +1,8 @@
 @interface PlayerTimeControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
-- (double)_accessibilityIncreaseAmount:(BOOL)a3;
+- (double)_accessibilityIncreaseAmount:(BOOL)amount;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -12,15 +12,15 @@
 
 @implementation PlayerTimeControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityTotalDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityElapsedDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityUpdateWithElapsedDuration:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityKnobView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityIsLiveContent" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityLiveLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityTotalDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityElapsedDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityUpdateWithElapsedDuration:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityKnobView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityIsLiveContent" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NowPlayingUI.PlayerTimeControl" hasInstanceMethod:@"accessibilityLiveLabel" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -29,9 +29,9 @@
   if ([(PlayerTimeControlAccessibility *)self _axIsLiveContent])
   {
     v3 = [(PlayerTimeControlAccessibility *)self safeValueForKey:@"accessibilityLiveLabel"];
-    v4 = [v3 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-    if (!v4)
+    if (!_accessibilityViewIsVisible)
     {
       return 0;
     }
@@ -46,7 +46,7 @@
   {
     v3 = *MEMORY[0x29EDC7378];
     v4 = [(PlayerTimeControlAccessibility *)self safeValueForKey:@"accessibilityLiveLabel"];
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
     v6 = AXAttributedStringForBetterPronuciation();
   }
 
@@ -93,7 +93,7 @@ LABEL_6:
 {
   v5.receiver = self;
   v5.super_class = PlayerTimeControlAccessibility;
-  v3 = [(PlayerTimeControlAccessibility *)&v5 accessibilityTraits];
+  accessibilityTraits = [(PlayerTimeControlAccessibility *)&v5 accessibilityTraits];
   if ([(PlayerTimeControlAccessibility *)self _axIsLiveContent])
   {
     return *MEMORY[0x29EDC7FA0] | _AXTraitsRemoveTrait();
@@ -101,20 +101,20 @@ LABEL_6:
 
   else
   {
-    return *MEMORY[0x29EDC7F60] | v3;
+    return *MEMORY[0x29EDC7F60] | accessibilityTraits;
   }
 }
 
-- (double)_accessibilityIncreaseAmount:(BOOL)a3
+- (double)_accessibilityIncreaseAmount:(BOOL)amount
 {
-  v3 = a3;
+  amountCopy = amount;
   [(PlayerTimeControlAccessibility *)self safeDoubleForKey:@"accessibilityTotalDuration"];
   v6 = v5;
   v7 = v5 > 1800.0;
   [(PlayerTimeControlAccessibility *)self safeDoubleForKey:@"accessibilityElapsedDuration"];
   v8 = dbl_29C17C0B0[v7];
   v10 = v9 / v6;
-  if (!v3)
+  if (!amountCopy)
   {
     v8 = -v8;
   }

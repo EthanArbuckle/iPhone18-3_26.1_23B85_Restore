@@ -1,29 +1,29 @@
 @interface AspectFitScalingImageView
-- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AspectFitScalingImageView
 
-- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI25AspectFitScalingImageView_image) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI25AspectFitScalingImageView____lazy_storage___contentView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for AspectFitScalingImageView();
-  v7 = [(AspectFitScalingImageView *)&v10 initWithFrame:x, y, width, height];
+  height = [(AspectFitScalingImageView *)&v10 initWithFrame:x, y, width, height];
   v8 = sub_1BA3B4DA4();
-  [(AspectFitScalingImageView *)v7 addSubview:v8];
+  [(AspectFitScalingImageView *)height addSubview:v8];
 
-  return v7;
+  return height;
 }
 
-- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI25AspectFitScalingImageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI25AspectFitScalingImageView_image) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI25AspectFitScalingImageView____lazy_storage___contentView) = 0;

@@ -1,13 +1,13 @@
 @interface HMDHomeKitVersionStringTransformer
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4;
++ (id)reverseTransformedValue:(id)value error:(id *)error;
 @end
 
 @implementation HMDHomeKitVersionStringTransformer
 
-+ (id)reverseTransformedValue:(id)a3 error:(id *)a4
++ (id)reverseTransformedValue:(id)value error:(id *)error
 {
-  v4 = a3;
-  v5 = [[HMDHomeKitVersion alloc] initWithString:v4];
+  valueCopy = value;
+  v5 = [[HMDHomeKitVersion alloc] initWithString:valueCopy];
 
   return v5;
 }

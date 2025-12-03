@@ -1,12 +1,12 @@
 @interface NSManagedObjectModelBundle
-- (NSManagedObjectModelBundle)initWithPath:(id)a3;
-- (id)_modelForVersionHashes:(id)a3;
-- (id)_modelForVersionHashes:(id)a3 inStyle:(unint64_t)a4;
+- (NSManagedObjectModelBundle)initWithPath:(id)path;
+- (id)_modelForVersionHashes:(id)hashes;
+- (id)_modelForVersionHashes:(id)hashes inStyle:(unint64_t)style;
 - (id)currentVersion;
 - (id)currentVersionURL;
 - (id)modelVersions;
 - (id)optimizedVersionURL;
-- (id)urlForModelVersionWithName:(id)a3;
+- (id)urlForModelVersionWithName:(id)name;
 - (id)versionChecksums;
 - (void)dealloc;
 @end
@@ -49,9 +49,9 @@
 
 - (id)currentVersionURL
 {
-  v3 = [(NSManagedObjectModelBundle *)self currentVersion];
+  currentVersion = [(NSManagedObjectModelBundle *)self currentVersion];
 
-  return [(NSManagedObjectModelBundle *)self urlForModelVersionWithName:v3];
+  return [(NSManagedObjectModelBundle *)self urlForModelVersionWithName:currentVersion];
 }
 
 - (void)dealloc
@@ -64,7 +64,7 @@
   [(NSManagedObjectModelBundle *)&v3 dealloc];
 }
 
-- (NSManagedObjectModelBundle)initWithPath:(id)a3
+- (NSManagedObjectModelBundle)initWithPath:(id)path
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -72,7 +72,7 @@
   v4 = [(NSManagedObjectModelBundle *)&v9 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithPath:a3];
+    v5 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithPath:path];
     v4->_bundle = v5;
     if (v5)
     {
@@ -109,14 +109,14 @@
   return [(NSManagedObjectModelBundle *)self objectForKey:@"NSManagedObjectModel_VersionChecksums"];
 }
 
-- (id)urlForModelVersionWithName:(id)a3
+- (id)urlForModelVersionWithName:(id)name
 {
   if (self)
   {
     self = self->_bundle;
   }
 
-  result = [(NSManagedObjectModelBundle *)self pathForResource:a3 ofType:@"mom"];
+  result = [(NSManagedObjectModelBundle *)self pathForResource:name ofType:@"mom"];
   if (result)
   {
     v4 = result;
@@ -128,13 +128,13 @@
   return result;
 }
 
-- (id)_modelForVersionHashes:(id)a3 inStyle:(unint64_t)a4
+- (id)_modelForVersionHashes:(id)hashes inStyle:(unint64_t)style
 {
   v99 = *MEMORY[0x1E69E9840];
-  if (a4 == 1)
+  if (style == 1)
   {
     v6 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-    v57 = [a3 allKeys];
+    allKeys = [hashes allKeys];
     v7 = [(NSBundle *)self->_bundle URLsForResourcesWithExtension:@"mom" subdirectory:0];
     v89 = 0u;
     v90 = 0u;
@@ -169,7 +169,7 @@
           if (v11)
           {
             v12 = v11;
-            v13 = 0;
+            array = 0;
             v14 = *v86;
             do
             {
@@ -181,14 +181,14 @@
                 }
 
                 v16 = *(*(&v85 + 1) + 8 * j);
-                if ([objc_msgSend(v10 objectForKey:{v16), "isEqual:", objc_msgSend(a3, "objectForKey:", v16)}])
+                if ([objc_msgSend(v10 objectForKey:{v16), "isEqual:", objc_msgSend(hashes, "objectForKey:", v16)}])
                 {
-                  if (!v13)
+                  if (!array)
                   {
-                    v13 = [MEMORY[0x1E695DF70] array];
+                    array = [MEMORY[0x1E695DF70] array];
                   }
 
-                  [v13 addObject:v16];
+                  [array addObject:v16];
                 }
               }
 
@@ -200,20 +200,20 @@
 
           else
           {
-            v13 = 0;
+            array = 0;
           }
 
-          if ([v13 count])
+          if ([array count])
           {
-            v17 = [v13 count];
+            v17 = [array count];
             v18 = v64;
             if (v17 > [v66 count])
             {
 
               v59 = v64;
-              v66 = v13;
-              v19 = [v57 count];
-              if (v19 == [v13 count])
+              v66 = array;
+              v19 = [allKeys count];
+              if (v19 == [array count])
               {
 
                 objc_autoreleasePoolPop(context);
@@ -248,7 +248,7 @@ LABEL_74:
       v24 = v66;
       if (v66)
       {
-        v25 = [(NSManagedObjectModel *)v59 entitiesByName];
+        entitiesByName = [(NSManagedObjectModel *)v59 entitiesByName];
         v26 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v66, "count")}];
         v27 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v66, "count")}];
         v81 = 0u;
@@ -261,7 +261,7 @@ LABEL_74:
           v29 = v28;
           v30 = *v82;
           v61 = *v82;
-          v63 = v25;
+          v63 = entitiesByName;
           do
           {
             v31 = 0;
@@ -275,7 +275,7 @@ LABEL_74:
 
               v32 = *(*(&v81 + 1) + 8 * v31);
               v33 = objc_autoreleasePoolPush();
-              for (k = -[NSDictionary objectForKey:](v25, "objectForKey:", v32); ; k = [v35 superentity])
+              for (k = -[NSDictionary objectForKey:](entitiesByName, "objectForKey:", v32); ; k = [v35 superentity])
               {
                 v35 = k;
                 [v27 addObject:{objc_msgSend(k, "name")}];
@@ -321,7 +321,7 @@ LABEL_74:
                 v29 = v65;
                 v24 = v66;
                 v30 = v61;
-                v25 = v63;
+                entitiesByName = v63;
               }
 
               objc_autoreleasePoolPop(v33);
@@ -339,8 +339,8 @@ LABEL_74:
         v76 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v42 = [v26 allValues];
-        v43 = [v42 countByEnumeratingWithState:&v73 objects:v94 count:16];
+        allValues = [v26 allValues];
+        v43 = [allValues countByEnumeratingWithState:&v73 objects:v94 count:16];
         if (v43)
         {
           v44 = v43;
@@ -351,7 +351,7 @@ LABEL_74:
             {
               if (*v74 != v45)
               {
-                objc_enumerationMutation(v42);
+                objc_enumerationMutation(allValues);
               }
 
               v47 = *(*(&v73 + 1) + 8 * n);
@@ -362,7 +362,7 @@ LABEL_74:
               }
             }
 
-            v44 = [v42 countByEnumeratingWithState:&v73 objects:v94 count:16];
+            v44 = [allValues countByEnumeratingWithState:&v73 objects:v94 count:16];
           }
 
           while (v44);
@@ -370,12 +370,12 @@ LABEL_74:
 
         v22 = -[NSManagedObjectModel _initWithEntities:]([NSManagedObjectModel alloc], "_initWithEntities:", [v26 allValues]);
         [v22 setVersionIdentifiers:{-[NSManagedObjectModel versionIdentifiers](v59, "versionIdentifiers")}];
-        v48 = [(NSManagedObjectModel *)v59 fetchRequestTemplatesByName];
+        fetchRequestTemplatesByName = [(NSManagedObjectModel *)v59 fetchRequestTemplatesByName];
         v69 = 0u;
         v70 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v49 = [(NSDictionary *)v48 countByEnumeratingWithState:&v69 objects:v93 count:16];
+        v49 = [(NSDictionary *)fetchRequestTemplatesByName countByEnumeratingWithState:&v69 objects:v93 count:16];
         if (v49)
         {
           v50 = v49;
@@ -386,18 +386,18 @@ LABEL_74:
             {
               if (*v70 != v51)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(fetchRequestTemplatesByName);
               }
 
               v53 = *(*(&v69 + 1) + 8 * ii);
-              v54 = [(NSDictionary *)v48 objectForKey:v53];
+              v54 = [(NSDictionary *)fetchRequestTemplatesByName objectForKey:v53];
               if ([v26 objectForKey:{objc_msgSend(objc_msgSend(v54, "entity"), "name")}])
               {
                 [v22 setFetchRequestTemplate:v54 forName:v53];
               }
             }
 
-            v50 = [(NSDictionary *)v48 countByEnumeratingWithState:&v69 objects:v93 count:16];
+            v50 = [(NSDictionary *)fetchRequestTemplatesByName countByEnumeratingWithState:&v69 objects:v93 count:16];
           }
 
           while (v50);
@@ -431,11 +431,11 @@ LABEL_75:
   return [(NSManagedObjectModelBundle *)self _modelForVersionHashes:?];
 }
 
-- (id)_modelForVersionHashes:(id)a3
+- (id)_modelForVersionHashes:(id)hashes
 {
   v93 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v60 = [a3 allKeys];
+  allKeys = [hashes allKeys];
   if (self)
   {
     v6 = [(NSDictionary *)self->_versionInfoDictionary objectForKey:@"NSManagedObjectModel_VersionHashes"];
@@ -453,7 +453,7 @@ LABEL_75:
   v56 = [v6 countByEnumeratingWithState:&v83 objects:v92 count:16];
   if (v56)
   {
-    v50 = self;
+    selfCopy = self;
     v51 = v5;
     v62 = 0;
     v52 = 0;
@@ -469,7 +469,7 @@ LABEL_75:
         }
 
         v58 = *(*(&v83 + 1) + 8 * i);
-        v8 = [objc_msgSend(v6 "objectForKey:{"dictionaryWithValuesForKeys:", v60}")];
+        v8 = [objc_msgSend(v6 "objectForKey:{"dictionaryWithValuesForKeys:", allKeys}")];
         v79 = 0u;
         v80 = 0u;
         v81 = 0u;
@@ -478,7 +478,7 @@ LABEL_75:
         if (v9)
         {
           v10 = v9;
-          v11 = 0;
+          array = 0;
           v12 = *v80;
           do
           {
@@ -490,14 +490,14 @@ LABEL_75:
               }
 
               v14 = *(*(&v79 + 1) + 8 * j);
-              if ([objc_msgSend(v8 objectForKey:{v14), "isEqual:", objc_msgSend(a3, "objectForKey:", v14)}])
+              if ([objc_msgSend(v8 objectForKey:{v14), "isEqual:", objc_msgSend(hashes, "objectForKey:", v14)}])
               {
-                if (!v11)
+                if (!array)
                 {
-                  v11 = [MEMORY[0x1E695DF70] array];
+                  array = [MEMORY[0x1E695DF70] array];
                 }
 
-                [v11 addObject:v14];
+                [array addObject:v14];
               }
             }
 
@@ -509,20 +509,20 @@ LABEL_75:
 
         else
         {
-          v11 = 0;
+          array = 0;
         }
 
-        if ([v11 count])
+        if ([array count])
         {
-          v15 = [v11 count];
+          v15 = [array count];
           v6 = v53;
           if (v15 > [v62 count])
           {
 
             v52 = v58;
-            v62 = v11;
-            v16 = [v60 count];
-            if (v16 == [v11 count])
+            v62 = array;
+            v16 = [allKeys count];
+            if (v16 == [array count])
             {
               goto LABEL_28;
             }
@@ -547,8 +547,8 @@ LABEL_28:
       v19 = v62;
       if (v62)
       {
-        v55 = [[NSManagedObjectModel alloc] initWithContentsOfURL:[(NSManagedObjectModelBundle *)v50 urlForModelVersionWithName:v52]];
-        v20 = [(NSManagedObjectModel *)v55 entitiesByName];
+        v55 = [[NSManagedObjectModel alloc] initWithContentsOfURL:[(NSManagedObjectModelBundle *)selfCopy urlForModelVersionWithName:v52]];
+        entitiesByName = [(NSManagedObjectModel *)v55 entitiesByName];
         v21 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v62, "count")}];
         v22 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v62, "count")}];
         v75 = 0u;
@@ -561,7 +561,7 @@ LABEL_28:
           v24 = v23;
           v25 = *v76;
           v57 = *v76;
-          v59 = v20;
+          v59 = entitiesByName;
           do
           {
             v26 = 0;
@@ -573,7 +573,7 @@ LABEL_28:
                 objc_enumerationMutation(v19);
               }
 
-              for (k = -[NSDictionary objectForKey:](v20, "objectForKey:", *(*(&v75 + 1) + 8 * v26)); ; k = [v28 superentity])
+              for (k = -[NSDictionary objectForKey:](entitiesByName, "objectForKey:", *(*(&v75 + 1) + 8 * v26)); ; k = [v28 superentity])
               {
                 v28 = k;
                 [v22 addObject:{objc_msgSend(k, "name")}];
@@ -618,7 +618,7 @@ LABEL_28:
                 v24 = v61;
                 v19 = v62;
                 v25 = v57;
-                v20 = v59;
+                entitiesByName = v59;
               }
 
               ++v26;
@@ -635,8 +635,8 @@ LABEL_28:
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v35 = [v21 allValues];
-        v36 = [v35 countByEnumeratingWithState:&v67 objects:v88 count:16];
+        allValues = [v21 allValues];
+        v36 = [allValues countByEnumeratingWithState:&v67 objects:v88 count:16];
         if (v36)
         {
           v37 = v36;
@@ -647,7 +647,7 @@ LABEL_28:
             {
               if (*v68 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(allValues);
               }
 
               v40 = *(*(&v67 + 1) + 8 * n);
@@ -658,7 +658,7 @@ LABEL_28:
               }
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v67 objects:v88 count:16];
+            v37 = [allValues countByEnumeratingWithState:&v67 objects:v88 count:16];
           }
 
           while (v37);
@@ -666,12 +666,12 @@ LABEL_28:
 
         v17 = -[NSManagedObjectModel _initWithEntities:]([NSManagedObjectModel alloc], "_initWithEntities:", [v21 allValues]);
         [v17 setVersionIdentifiers:{-[NSManagedObjectModel versionIdentifiers](v55, "versionIdentifiers")}];
-        v41 = [(NSManagedObjectModel *)v55 fetchRequestTemplatesByName];
+        fetchRequestTemplatesByName = [(NSManagedObjectModel *)v55 fetchRequestTemplatesByName];
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
         v66 = 0u;
-        v42 = [(NSDictionary *)v41 countByEnumeratingWithState:&v63 objects:v87 count:16];
+        v42 = [(NSDictionary *)fetchRequestTemplatesByName countByEnumeratingWithState:&v63 objects:v87 count:16];
         if (v42)
         {
           v43 = v42;
@@ -682,18 +682,18 @@ LABEL_28:
             {
               if (*v64 != v44)
               {
-                objc_enumerationMutation(v41);
+                objc_enumerationMutation(fetchRequestTemplatesByName);
               }
 
               v46 = *(*(&v63 + 1) + 8 * ii);
-              v47 = [(NSDictionary *)v41 objectForKey:v46];
+              v47 = [(NSDictionary *)fetchRequestTemplatesByName objectForKey:v46];
               if ([v21 objectForKey:{objc_msgSend(objc_msgSend(v47, "entity"), "name")}])
               {
                 [v17 setFetchRequestTemplate:v47 forName:v46];
               }
             }
 
-            v43 = [(NSDictionary *)v41 countByEnumeratingWithState:&v63 objects:v87 count:16];
+            v43 = [(NSDictionary *)fetchRequestTemplatesByName countByEnumeratingWithState:&v63 objects:v87 count:16];
           }
 
           while (v43);

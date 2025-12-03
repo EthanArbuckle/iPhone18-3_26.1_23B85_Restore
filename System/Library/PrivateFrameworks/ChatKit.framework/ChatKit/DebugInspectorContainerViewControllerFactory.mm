@@ -1,14 +1,14 @@
 @interface DebugInspectorContainerViewControllerFactory
 + (id)debugMenuViewController;
-+ (id)inspectorViewControllerForChatItems:(id)a3 parallelIndexes:(id)a4;
-+ (id)inspectorViewControllerForConversations:(id)a3;
-+ (id)inspectorViewControllerForMessage:(id)a3;
++ (id)inspectorViewControllerForChatItems:(id)items parallelIndexes:(id)indexes;
++ (id)inspectorViewControllerForConversations:(id)conversations;
++ (id)inspectorViewControllerForMessage:(id)message;
 - (_TtC7ChatKit44DebugInspectorContainerViewControllerFactory)init;
 @end
 
 @implementation DebugInspectorContainerViewControllerFactory
 
-+ (id)inspectorViewControllerForConversations:(id)a3
++ (id)inspectorViewControllerForConversations:(id)conversations
 {
   sub_1902188FC(0, &qword_1EAD466B0);
   sub_190D57180();
@@ -18,15 +18,15 @@
   return v4;
 }
 
-+ (id)inspectorViewControllerForMessage:(id)a3
++ (id)inspectorViewControllerForMessage:(id)message
 {
-  v3 = a3;
-  v4 = sub_190A8644C(v3);
+  messageCopy = message;
+  v4 = sub_190A8644C(messageCopy);
 
   return v4;
 }
 
-+ (id)inspectorViewControllerForChatItems:(id)a3 parallelIndexes:(id)a4
++ (id)inspectorViewControllerForChatItems:(id)items parallelIndexes:(id)indexes
 {
   sub_1902188FC(0, &qword_1EAD450F0);
   v4 = sub_190D57180();

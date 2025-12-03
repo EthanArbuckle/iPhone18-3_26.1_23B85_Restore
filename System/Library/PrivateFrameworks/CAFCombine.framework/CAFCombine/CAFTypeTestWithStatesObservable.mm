@@ -1,32 +1,32 @@
 @interface CAFTypeTestWithStatesObservable
 - (NSString)description;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestBool:(BOOL)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItem:(id)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItemList:(id)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItemValue:(id)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItems:(id)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestDimensionUnitRawValue:(unsigned __int16)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestEnum:(unsigned __int8)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestFloat:(float)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt16:(signed __int16)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt32:(int)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt64:(int64_t)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt8:(char)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestString:(id)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt16:(unsigned __int16)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt32:(unsigned int)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt64:(unint64_t)a4;
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt8:(unsigned __int8)a4;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)typeTestWithStatesService:(id)service didUpdateTestBool:(BOOL)bool;
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItem:(id)item;
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItemList:(id)list;
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItemValue:(id)value;
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItems:(id)items;
+- (void)typeTestWithStatesService:(id)service didUpdateTestDimensionUnitRawValue:(unsigned __int16)value;
+- (void)typeTestWithStatesService:(id)service didUpdateTestEnum:(unsigned __int8)enum;
+- (void)typeTestWithStatesService:(id)service didUpdateTestFloat:(float)float;
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt16:(signed __int16)int16;
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt32:(int)int32;
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt64:(int64_t)int64;
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt8:(char)int8;
+- (void)typeTestWithStatesService:(id)service didUpdateTestString:(id)string;
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt16:(unsigned __int16)int16;
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt32:(unsigned int)int32;
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt64:(unint64_t)int64;
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt8:(unsigned __int8)int8;
 @end
 
 @implementation CAFTypeTestWithStatesObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFTypeTestWithStatesObservable.description.getter();
   v5 = v4;
 
@@ -35,153 +35,153 @@
   return v6;
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestBool:(BOOL)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestBool:(BOOL)bool
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestBool:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt8:(unsigned __int8)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt8:(unsigned __int8)int8
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestUInt8:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt16:(unsigned __int16)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt16:(unsigned __int16)int16
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestUInt16:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt32:(unsigned int)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt32:(unsigned int)int32
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestUInt32:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestUInt64:(unint64_t)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestUInt64:(unint64_t)int64
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestUInt64:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt8:(char)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt8:(char)int8
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestInt8:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt16:(signed __int16)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt16:(signed __int16)int16
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestInt16:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt32:(int)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt32:(int)int32
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestInt32:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestInt64:(int64_t)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestInt64:(int64_t)int64
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestInt64:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestFloat:(float)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestFloat:(float)float
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestFloat:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestString:(id)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestString:(id)string
 {
-  if (a4)
+  if (string)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestString:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestEnum:(unsigned __int8)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestEnum:(unsigned __int8)enum
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestEnum:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestDimensionUnitRawValue:(unsigned __int16)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestDimensionUnitRawValue:(unsigned __int16)value
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestDimensionUnitRawValue:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItem:(id)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  serviceCopy = service;
+  itemCopy = item;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestComplexItem:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItems:(id)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  serviceCopy = service;
+  itemsCopy = items;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestComplexItems:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItemValue:(id)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItemValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  serviceCopy = service;
+  valueCopy = value;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestComplexItemValue:)();
 }
 
-- (void)typeTestWithStatesService:(id)a3 didUpdateTestComplexItemList:(id)a4
+- (void)typeTestWithStatesService:(id)service didUpdateTestComplexItemList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  serviceCopy = service;
+  listCopy = list;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.typeTestWithStatesService(_:didUpdateTestComplexItemList:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFTypeTestWithStatesObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFTypeTestWithStatesObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFTypeTestWithStatesObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFTypeTestWithStatesObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFTypeTestWithStatesObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

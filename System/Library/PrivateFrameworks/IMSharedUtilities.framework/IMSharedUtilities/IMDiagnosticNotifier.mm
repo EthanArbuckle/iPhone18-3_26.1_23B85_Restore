@@ -1,17 +1,17 @@
 @interface IMDiagnosticNotifier
 - (IMDiagnosticNotifier)init;
-- (void)postNotification:(id)a3;
-- (void)postNotificationWithTitle:(id)a3 body:(id)a4;
+- (void)postNotification:(id)notification;
+- (void)postNotificationWithTitle:(id)title body:(id)body;
 @end
 
 @implementation IMDiagnosticNotifier
 
 - (IMDiagnosticNotifier)init
 {
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v4 = [v3 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     v12.receiver = self;
     v12.super_class = IMDiagnosticNotifier;
@@ -42,31 +42,31 @@
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 _createRequest];
-  if (v5)
+  notificationCopy = notification;
+  _createRequest = [notificationCopy _createRequest];
+  if (_createRequest)
   {
-    v6 = [(IMDiagnosticNotifier *)self notificationCenter];
+    notificationCenter = [(IMDiagnosticNotifier *)self notificationCenter];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1A86D2230;
     v9[3] = &unk_1E7829D00;
-    v10 = v4;
-    [v6 addNotificationRequest:v5 withCompletionHandler:v9];
+    v10 = notificationCopy;
+    [notificationCenter addNotificationRequest:_createRequest withCompletionHandler:v9];
   }
 
   else if (IMOSLoggingEnabled())
@@ -74,19 +74,19 @@
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 identifier];
+      identifier = [notificationCopy identifier];
       *buf = 138412290;
-      v12 = v8;
+      v12 = identifier;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_INFO, "Not posting diagnostic notification %@ due to invalid request", buf, 0xCu);
     }
   }
 }
 
-- (void)postNotificationWithTitle:(id)a3 body:(id)a4
+- (void)postNotificationWithTitle:(id)title body:(id)body
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[IMDiagnosticNotification alloc] initWithTitle:v7 body:v6];
+  bodyCopy = body;
+  titleCopy = title;
+  v8 = [[IMDiagnosticNotification alloc] initWithTitle:titleCopy body:bodyCopy];
 
   [(IMDiagnosticNotifier *)self postNotification:v8];
 }

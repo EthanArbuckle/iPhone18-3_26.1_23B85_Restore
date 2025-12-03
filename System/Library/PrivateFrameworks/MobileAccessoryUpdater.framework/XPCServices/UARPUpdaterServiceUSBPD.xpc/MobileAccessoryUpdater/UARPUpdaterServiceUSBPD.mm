@@ -2,13 +2,13 @@
 - (UARPUpdaterServiceUSBPD)init;
 - (id)getBSDNotificationsList;
 - (id)getMatchingServicesList;
-- (void)bsdNotificationReceived:(id)a3;
-- (void)dasActivityReceived:(id)a3;
-- (void)disabledProductIdentifiers:(id)a3;
-- (void)getBSDNotificationsListWithReply:(id)a3;
-- (void)getDASActivityListWithReply:(id)a3;
-- (void)getMatchingServicesListWithReply:(id)a3;
-- (void)ioKitRuleMatched:(id)a3;
+- (void)bsdNotificationReceived:(id)received;
+- (void)dasActivityReceived:(id)received;
+- (void)disabledProductIdentifiers:(id)identifiers;
+- (void)getBSDNotificationsListWithReply:(id)reply;
+- (void)getDASActivityListWithReply:(id)reply;
+- (void)getMatchingServicesListWithReply:(id)reply;
+- (void)ioKitRuleMatched:(id)matched;
 @end
 
 @implementation UARPUpdaterServiceUSBPD
@@ -49,7 +49,7 @@
     sub_100025CA4();
   }
 
-  v46 = self;
+  selfCopy = self;
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
@@ -73,21 +73,21 @@
         }
 
         v11 = *(*(&v52 + 1) + 8 * i);
-        v12 = [v11 hardwareID];
+        hardwareID = [v11 hardwareID];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v14 = [v11 hardwareID];
-          if ([v14 isMagSafeCable])
+          hardwareID2 = [v11 hardwareID];
+          if ([hardwareID2 isMagSafeCable])
           {
             v15 = [UARPMagSafeCable matchingDictionary:1];
             v16 = [UARPServiceUpdaterAccessoryMatchingRule alloc];
-            v17 = [v11 identifier];
-            v18 = [v16 initWithIdentifier:v17 xpcEventStream:@"com.apple.iokit.matching" matchingDictionary:v15];
+            identifier = [v11 identifier];
+            v18 = [v16 initWithIdentifier:identifier xpcEventStream:@"com.apple.iokit.matching" matchingDictionary:v15];
 
-            v19 = v46->_log;
+            v19 = selfCopy->_log;
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
               *buf = v42;
@@ -133,21 +133,21 @@
         }
 
         v26 = *(*(&v48 + 1) + 8 * j);
-        v27 = [v26 hardwareID];
+        hardwareID3 = [v26 hardwareID];
         objc_opt_class();
         v28 = objc_opt_isKindOfClass();
 
         if (v28)
         {
-          v29 = [v26 hardwareID];
-          if ([v29 isUSBCLightning])
+          hardwareID4 = [v26 hardwareID];
+          if ([hardwareID4 isUSBCLightning])
           {
-            v30 = [UARPMagSafeCable matchingDictionaryUSBCLightning:v29 launchStream:1];
+            v30 = [UARPMagSafeCable matchingDictionaryUSBCLightning:hardwareID4 launchStream:1];
             v31 = [UARPServiceUpdaterAccessoryMatchingRule alloc];
-            v32 = [v26 identifier];
-            v33 = [v31 initWithIdentifier:v32 xpcEventStream:@"com.apple.iokit.matching" matchingDictionary:v30];
+            identifier2 = [v26 identifier];
+            v33 = [v31 initWithIdentifier:identifier2 xpcEventStream:@"com.apple.iokit.matching" matchingDictionary:v30];
 
-            v34 = v46->_log;
+            v34 = selfCopy->_log;
             if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
             {
               *buf = v43;
@@ -173,7 +173,7 @@
   v35 = [UARPMagSafeCable matchingDictionaryUSBCLightningDisconnectLaunchStream:1];
   v36 = [UARPServiceUpdaterAccessoryMatchingRule alloc];
   v37 = [v36 initWithIdentifier:kUARPStringUSBCLightningDisconnectNotification xpcEventStream:@"com.apple.iokit.matching" matchingDictionary:v35];
-  v38 = v46->_log;
+  v38 = selfCopy->_log;
   if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
@@ -186,7 +186,7 @@
   }
 
   [v47 addObject:v37];
-  v39 = v46->_log;
+  v39 = selfCopy->_log;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
@@ -201,9 +201,9 @@
   return v40;
 }
 
-- (void)getMatchingServicesListWithReply:(id)a3
+- (void)getMatchingServicesListWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -212,37 +212,37 @@
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s:", &v7, 0xCu);
   }
 
-  v6 = [(UARPUpdaterServiceUSBPD *)self getMatchingServicesList];
-  v4[2](v4, v6);
+  getMatchingServicesList = [(UARPUpdaterServiceUSBPD *)self getMatchingServicesList];
+  replyCopy[2](replyCopy, getMatchingServicesList);
 }
 
-- (void)ioKitRuleMatched:(id)a3
+- (void)ioKitRuleMatched:(id)matched
 {
-  v4 = a3;
+  matchedCopy = matched;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "[UARPUpdaterServiceUSBPD ioKitRuleMatched:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = matchedCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: %@", &v11, 0x16u);
   }
 
-  v6 = [v4 identifier];
-  if (v6)
+  identifier = [matchedCopy identifier];
+  if (identifier)
   {
-    v7 = [v4 registryEntryID];
-    if (v7)
+    registryEntryID = [matchedCopy registryEntryID];
+    if (registryEntryID)
     {
-      v8 = IORegistryEntryIDMatching(v7);
+      v8 = IORegistryEntryIDMatching(registryEntryID);
       if (v8)
       {
         MatchingService = IOServiceGetMatchingService(kIOMasterPortDefault, v8);
         if (MatchingService)
         {
           v10 = MatchingService;
-          [(UARPUpdaterServiceUSBPD *)self matchingService:MatchingService identifier:v6];
+          [(UARPUpdaterServiceUSBPD *)self matchingService:MatchingService identifier:identifier];
           IOObjectRelease(v10);
         }
 
@@ -309,8 +309,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) serviceBsdNotifications];
-        [v4 unionSet:v12];
+        serviceBsdNotifications = [*(*(&v15 + 1) + 8 * i) serviceBsdNotifications];
+        [v4 unionSet:serviceBsdNotifications];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -324,14 +324,14 @@
     sub_100026028();
   }
 
-  v13 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v13;
+  return allObjects;
 }
 
-- (void)getBSDNotificationsListWithReply:(id)a3
+- (void)getBSDNotificationsListWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -340,40 +340,40 @@
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s:", &v7, 0xCu);
   }
 
-  v6 = [(UARPUpdaterServiceUSBPD *)self getBSDNotificationsList];
-  v4[2](v4, v6);
+  getBSDNotificationsList = [(UARPUpdaterServiceUSBPD *)self getBSDNotificationsList];
+  replyCopy[2](replyCopy, getBSDNotificationsList);
 }
 
-- (void)bsdNotificationReceived:(id)a3
+- (void)bsdNotificationReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v6 = 136315394;
     v7 = "[UARPUpdaterServiceUSBPD bsdNotificationReceived:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = receivedCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: %@", &v6, 0x16u);
   }
 
-  [(UARPUSBPDUpdater *)self->_usbpdUpdater bsdNotificationReceived:v4];
+  [(UARPUSBPDUpdater *)self->_usbpdUpdater bsdNotificationReceived:receivedCopy];
 }
 
-- (void)disabledProductIdentifiers:(id)a3
+- (void)disabledProductIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_1000260A4();
   }
 
-  [(UARPUSBPDUpdater *)self->_usbpdUpdater disabledProductIdentifiers:v4];
+  [(UARPUSBPDUpdater *)self->_usbpdUpdater disabledProductIdentifiers:identifiersCopy];
 }
 
-- (void)getDASActivityListWithReply:(id)a3
+- (void)getDASActivityListWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v5, XPC_ACTIVITY_REPEATING, 1);
   xpc_dictionary_set_int64(v5, XPC_ACTIVITY_DELAY, XPC_ACTIVITY_INTERVAL_1_DAY);
@@ -393,10 +393,10 @@
   v8 = [[UARPServiceUpdaterDASMatchingRule alloc] initWithIdentifier:@"USBPDPeriodicLaunchActivity" matchingDictionary:v6];
   v10 = v8;
   v9 = [NSArray arrayWithObjects:&v10 count:1];
-  v4[2](v4, v9);
+  replyCopy[2](replyCopy, v9);
 }
 
-- (void)dasActivityReceived:(id)a3
+- (void)dasActivityReceived:(id)received
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))

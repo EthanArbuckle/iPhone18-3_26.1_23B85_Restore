@@ -1,7 +1,7 @@
 @interface ALSCGreenClient
 - (ALSCGreenClient)init;
 - (BOOL)_attemptReadingValuesFromDiskAndUpdateFileState;
-- (BOOL)_readGreenKeysFromDictionary:(id)a3;
+- (BOOL)_readGreenKeysFromDictionary:(id)dictionary;
 @end
 
 @implementation ALSCGreenClient
@@ -20,9 +20,9 @@
   return v3;
 }
 
-- (BOOL)_readGreenKeysFromDictionary:(id)a3
+- (BOOL)_readGreenKeysFromDictionary:(id)dictionary
 {
-  v5 = [a3 objectForKey:@"key1"];
+  v5 = [dictionary objectForKey:@"key1"];
   if (v5)
   {
     v6 = v5;
@@ -32,7 +32,7 @@
     }
   }
 
-  v7 = [a3 objectForKey:@"key2"];
+  v7 = [dictionary objectForKey:@"key2"];
   if (v7)
   {
     v8 = v7;
@@ -42,7 +42,7 @@
     }
   }
 
-  v9 = [a3 objectForKey:@"key3"];
+  v9 = [dictionary objectForKey:@"key3"];
   if (v9)
   {
     v10 = v9;
@@ -52,7 +52,7 @@
     }
   }
 
-  v11 = [a3 objectForKey:@"state"];
+  v11 = [dictionary objectForKey:@"state"];
   if (v11)
   {
     v12 = v11;

@@ -1,5 +1,5 @@
 @interface _UICollectionViewListCellReorderControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (id)accessibilityPath;
@@ -7,14 +7,14 @@
 
 @implementation _UICollectionViewListCellReorderControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UICollectionViewListCellReorderControl" isKindOfClass:@"UIView"];
   [location[0] validateClass:@"UICollectionViewLayout" hasInstanceVariable:@"_swipeActionsModule" withType:"_UICollectionViewLayoutSwipeActionsModule"];
   [location[0] validateClass:@"_UICollectionViewLayoutSwipeActionsModule" hasInstanceMethod:@"indexPathsWithActiveSwipes" withFullSignature:{"@", 0}];
@@ -23,11 +23,11 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v20 = 0;
   objc_opt_class();
-  v6 = [(_UICollectionViewListCellReorderControlAccessibility *)v22 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+  v6 = [(_UICollectionViewListCellReorderControlAccessibility *)selfCopy _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   v19 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v6);
   v18 = MEMORY[0x29EDC9748](v19);
@@ -35,7 +35,7 @@
   v21[0] = v18;
   v16 = 0;
   objc_opt_class();
-  v5 = [(_UICollectionViewListCellReorderControlAccessibility *)v22 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+  v5 = [(_UICollectionViewListCellReorderControlAccessibility *)selfCopy _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   v15 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v14 = MEMORY[0x29EDC9748](v15);
@@ -60,15 +60,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = [v34[0] _accessibilityBriefLabel];
-    if ([v32 length])
+    _accessibilityBriefLabel = [v34[0] _accessibilityBriefLabel];
+    if ([_accessibilityBriefLabel length])
     {
-      v31 = MEMORY[0x29EDC9748](v32);
-      if ([v32 isAXAttributedString])
+      v31 = MEMORY[0x29EDC9748](_accessibilityBriefLabel);
+      if ([_accessibilityBriefLabel isAXAttributedString])
       {
-        v2 = [v32 string];
+        string = [_accessibilityBriefLabel string];
         v3 = v31;
-        v31 = v2;
+        v31 = string;
         MEMORY[0x29EDC9740](v3);
       }
 
@@ -78,11 +78,11 @@
       v28 = [v30 rangeOfString:{v31, MEMORY[0x29EDC9740](v22).n128_f64[0]}];
       v29 = v4;
       v27 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v30];
-      if ([v32 isAXAttributedString])
+      if ([_accessibilityBriefLabel isAXAttributedString])
       {
         v26[0] = 0;
         v26[1] = 0;
-        location = [v32 attributesAtIndex:0 effectiveRange:v26];
+        location = [_accessibilityBriefLabel attributesAtIndex:0 effectiveRange:v26];
         memset(__b, 0, sizeof(__b));
         obj = MEMORY[0x29EDC9748](location);
         v20 = [obj countByEnumeratingWithState:__b objects:v36 count:16];
@@ -121,20 +121,20 @@
         objc_storeStrong(&location, 0);
       }
 
-      v11 = [v34[0] accessibilityLanguage];
+      accessibilityLanguage = [v34[0] accessibilityLanguage];
       v12 = 0;
-      if (v11)
+      if (accessibilityLanguage)
       {
         v12 = v28 != 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      *&v6 = MEMORY[0x29EDC9740](v11).n128_u64[0];
+      *&v6 = MEMORY[0x29EDC9740](accessibilityLanguage).n128_u64[0];
       if (v12)
       {
         v9 = v27;
-        v10 = [v34[0] accessibilityLanguage];
+        accessibilityLanguage2 = [v34[0] accessibilityLanguage];
         [v9 setAttribute:? forKey:? withRange:?];
-        MEMORY[0x29EDC9740](v10);
+        MEMORY[0x29EDC9740](accessibilityLanguage2);
       }
 
       v35 = MEMORY[0x29EDC9748](v27);
@@ -150,7 +150,7 @@
       v33 = 1;
     }
 
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&_accessibilityBriefLabel, 0);
   }
 
   else

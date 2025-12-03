@@ -1,23 +1,23 @@
 @interface MAPushNotificationClient
-- (MAPushNotificationClient)initWithConnection:(id)a3;
+- (MAPushNotificationClient)initWithConnection:(id)connection;
 - (id)description;
-- (void)didReceivePushNotificationWithInfo:(id)a3;
+- (void)didReceivePushNotificationWithInfo:(id)info;
 @end
 
 @implementation MAPushNotificationClient
 
-- (MAPushNotificationClient)initWithConnection:(id)a3
+- (MAPushNotificationClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = MAPushNotificationClient;
   v6 = [(MAPushNotificationClient *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
-    v7->_pid = [v5 processIdentifier];
-    v7->_uid = [v5 effectiveUserIdentifier];
+    objc_storeStrong(&v6->_connection, connection);
+    v7->_pid = [connectionCopy processIdentifier];
+    v7->_uid = [connectionCopy effectiveUserIdentifier];
     if (proc_name(v7->_pid, v15, 0xFFu) >= 1)
     {
       v8 = [NSString stringWithUTF8String:v15];
@@ -38,27 +38,27 @@
 
 - (id)description
 {
-  v3 = [(MAPushNotificationClient *)self name];
+  name = [(MAPushNotificationClient *)self name];
   v4 = [(MAPushNotificationClient *)self pid];
   v5 = [(MAPushNotificationClient *)self uid];
-  v6 = [(MAPushNotificationClient *)self path];
-  v7 = [(MAPushNotificationClient *)self connection];
-  v8 = [v7 remoteObjectInterface];
-  v9 = [(MAPushNotificationClient *)self connection];
-  v10 = [v9 exportedInterface];
-  v11 = [(MAPushNotificationClient *)self connection];
-  v12 = [v11 remoteObjectProxy];
-  v13 = [NSString stringWithFormat:@"%@ (pid = %d, uid = %d, path = %@, connection remote object interface = %@, exported interface = %@, remote object proxy = %@)", v3, v4, v5, v6, v8, v10, v12];
+  path = [(MAPushNotificationClient *)self path];
+  connection = [(MAPushNotificationClient *)self connection];
+  remoteObjectInterface = [connection remoteObjectInterface];
+  connection2 = [(MAPushNotificationClient *)self connection];
+  exportedInterface = [connection2 exportedInterface];
+  connection3 = [(MAPushNotificationClient *)self connection];
+  remoteObjectProxy = [connection3 remoteObjectProxy];
+  v13 = [NSString stringWithFormat:@"%@ (pid = %d, uid = %d, path = %@, connection remote object interface = %@, exported interface = %@, remote object proxy = %@)", name, v4, v5, path, remoteObjectInterface, exportedInterface, remoteObjectProxy];
 
   return v13;
 }
 
-- (void)didReceivePushNotificationWithInfo:(id)a3
+- (void)didReceivePushNotificationWithInfo:(id)info
 {
-  v4 = a3;
-  v6 = [(MAPushNotificationClient *)self connection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_29];
-  [v5 didReceivePushNotificationWithInfo:v4];
+  infoCopy = info;
+  connection = [(MAPushNotificationClient *)self connection];
+  v5 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_29];
+  [v5 didReceivePushNotificationWithInfo:infoCopy];
 }
 
 void __63__MAPushNotificationClient_didReceivePushNotificationWithInfo___block_invoke(id a1, NSError *a2)

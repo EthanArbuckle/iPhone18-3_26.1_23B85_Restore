@@ -1,17 +1,17 @@
 @interface BKLibraryBookshelfCellMetrics
-+ (id)cellMetricsForSectionName:(id)a3;
-+ (id)sectionNameForCollectionType:(unint64_t)a3 layoutMode:(unint64_t)a4;
++ (id)cellMetricsForSectionName:(id)name;
++ (id)sectionNameForCollectionType:(unint64_t)type layoutMode:(unint64_t)mode;
 + (id)sectionNames;
-- (id)backgroundConfigurationForState:(id)a3 isInEditMode:(BOOL)a4;
-- (void)configureWithSection:(id)a3;
+- (id)backgroundConfigurationForState:(id)state isInEditMode:(BOOL)mode;
+- (void)configureWithSection:(id)section;
 @end
 
 @implementation BKLibraryBookshelfCellMetrics
 
-+ (id)cellMetricsForSectionName:(id)a3
++ (id)cellMetricsForSectionName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"bookCellGrid"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"bookCellGrid"])
   {
     v4 = off_1009F8568;
 LABEL_9:
@@ -19,19 +19,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v3 isEqualToString:@"bookCellListUser"])
+  if ([nameCopy isEqualToString:@"bookCellListUser"])
   {
     v4 = off_1009F8570;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"bookCellListFinished"])
+  if ([nameCopy isEqualToString:@"bookCellListFinished"])
   {
     v4 = off_1009F8560;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"bookCellListWantToRead"])
+  if ([nameCopy isEqualToString:@"bookCellListWantToRead"])
   {
     v4 = off_1009F8578;
     goto LABEL_9;
@@ -43,12 +43,12 @@ LABEL_10:
   return v5;
 }
 
-+ (id)sectionNameForCollectionType:(unint64_t)a3 layoutMode:(unint64_t)a4
++ (id)sectionNameForCollectionType:(unint64_t)type layoutMode:(unint64_t)mode
 {
   result = @"bookCellGrid";
-  if (a4 == 2 && a3 <= 3)
+  if (mode == 2 && type <= 3)
   {
-    return off_100A04530[a3];
+    return off_100A04530[type];
   }
 
   return result;
@@ -65,13 +65,13 @@ LABEL_10:
   return v2;
 }
 
-- (void)configureWithSection:(id)a3
+- (void)configureWithSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v13 = +[UIBackgroundConfiguration listPlainCellConfiguration];
-  [v4 floatForKey:@"background-corner-radius"];
+  [sectionCopy floatForKey:@"background-corner-radius"];
   [v13 setCornerRadius:?];
-  [v4 insetsForKey:@"background-insets"];
+  [sectionCopy insetsForKey:@"background-insets"];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -82,14 +82,14 @@ LABEL_10:
   [(BKLibraryBookshelfCellMetrics *)self setBackgroundConfiguration:v13];
 }
 
-- (id)backgroundConfigurationForState:(id)a3 isInEditMode:(BOOL)a4
+- (id)backgroundConfigurationForState:(id)state isInEditMode:(BOOL)mode
 {
-  v6 = a3;
-  v7 = [(BKLibraryBookshelfCellMetrics *)self backgroundConfiguration];
-  v8 = [v7 updatedConfigurationForState:v6];
+  stateCopy = state;
+  backgroundConfiguration = [(BKLibraryBookshelfCellMetrics *)self backgroundConfiguration];
+  v8 = [backgroundConfiguration updatedConfigurationForState:stateCopy];
 
-  LODWORD(v7) = [v6 isSelected];
-  if (!v7 || a4)
+  LODWORD(backgroundConfiguration) = [stateCopy isSelected];
+  if (!backgroundConfiguration || mode)
   {
     v9 = v8;
     v8 = 0;

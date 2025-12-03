@@ -1,16 +1,16 @@
 @interface MapsScrollableStackView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (MapsScrollableStackView)initWithArrangedSubviews:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (MapsScrollableStackView)initWithArrangedSubviews:(id)subviews;
 - (id)_constraints;
-- (void)_setupViewsWithSubviews:(id)a3;
+- (void)_setupViewsWithSubviews:(id)subviews;
 - (void)_updateConstraintConstants;
-- (void)_updateOrientationWithNewAxis:(int64_t)a3;
+- (void)_updateOrientationWithNewAxis:(int64_t)axis;
 - (void)adjustedContentInsetDidChange;
-- (void)setAlignment:(int64_t)a3;
-- (void)setAxis:(int64_t)a3;
-- (void)setDistribution:(int64_t)a3;
-- (void)setFittingSizePriority:(float)a3;
-- (void)setSpacing:(double)a3;
+- (void)setAlignment:(int64_t)alignment;
+- (void)setAxis:(int64_t)axis;
+- (void)setDistribution:(int64_t)distribution;
+- (void)setFittingSizePriority:(float)priority;
+- (void)setSpacing:(double)spacing;
 @end
 
 @implementation MapsScrollableStackView
@@ -22,10 +22,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MapsScrollableStackView *)self axis];
+  axis = [(MapsScrollableStackView *)self axis];
   v12 = 0.0;
   v13 = v4 + v8;
-  if (v11)
+  if (axis)
   {
     v14 = 0.0;
   }
@@ -35,12 +35,12 @@
     v14 = v6 + v10;
   }
 
-  if (!v11)
+  if (!axis)
   {
     v12 = v4 + v8;
   }
 
-  if (v11 == 1)
+  if (axis == 1)
   {
     v15 = v6 + v10;
   }
@@ -76,10 +76,10 @@
   return v5;
 }
 
-- (void)_updateOrientationWithNewAxis:(int64_t)a3
+- (void)_updateOrientationWithNewAxis:(int64_t)axis
 {
-  v5 = [(MapsScrollableStackView *)self _constraints];
-  [NSLayoutConstraint deactivateConstraints:v5];
+  _constraints = [(MapsScrollableStackView *)self _constraints];
+  [NSLayoutConstraint deactivateConstraints:_constraints];
 
   distributionConstraint = self->_distributionConstraint;
   self->_distributionConstraint = 0;
@@ -87,15 +87,15 @@
   alignmentConstraint = self->_alignmentConstraint;
   self->_alignmentConstraint = 0;
 
-  [(UIStackView *)self->_stackView setAxis:a3];
-  v8 = [(MapsScrollableStackView *)self axis];
-  if (v8 == 1)
+  [(UIStackView *)self->_stackView setAxis:axis];
+  axis = [(MapsScrollableStackView *)self axis];
+  if (axis == 1)
   {
     if (self->_fittingSizePriority > 0.0)
     {
-      v16 = [(UIStackView *)self->_stackView heightAnchor];
-      v17 = [(MapsScrollableStackView *)self heightAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      heightAnchor = [(UIStackView *)self->_stackView heightAnchor];
+      heightAnchor2 = [(MapsScrollableStackView *)self heightAnchor];
+      v18 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       v19 = self->_distributionConstraint;
       self->_distributionConstraint = v18;
 
@@ -103,22 +103,22 @@
       [(NSLayoutConstraint *)self->_distributionConstraint setPriority:v20];
     }
 
-    v14 = [(UIStackView *)self->_stackView widthAnchor];
-    v15 = [(MapsScrollableStackView *)self widthAnchor];
+    widthAnchor = [(UIStackView *)self->_stackView widthAnchor];
+    widthAnchor2 = [(MapsScrollableStackView *)self widthAnchor];
   }
 
   else
   {
-    if (v8)
+    if (axis)
     {
       goto LABEL_10;
     }
 
     if (self->_fittingSizePriority > 0.0)
     {
-      v9 = [(UIStackView *)self->_stackView widthAnchor];
-      v10 = [(MapsScrollableStackView *)self widthAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      widthAnchor3 = [(UIStackView *)self->_stackView widthAnchor];
+      widthAnchor4 = [(MapsScrollableStackView *)self widthAnchor];
+      v11 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
       v12 = self->_distributionConstraint;
       self->_distributionConstraint = v11;
 
@@ -126,24 +126,24 @@
       [(NSLayoutConstraint *)self->_distributionConstraint setPriority:v13];
     }
 
-    v14 = [(UIStackView *)self->_stackView heightAnchor];
-    v15 = [(MapsScrollableStackView *)self heightAnchor];
+    widthAnchor = [(UIStackView *)self->_stackView heightAnchor];
+    widthAnchor2 = [(MapsScrollableStackView *)self heightAnchor];
   }
 
-  v21 = v15;
-  v22 = [v14 constraintEqualToAnchor:v15];
+  v21 = widthAnchor2;
+  v22 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v23 = self->_alignmentConstraint;
   self->_alignmentConstraint = v22;
 
 LABEL_10:
   [(MapsScrollableStackView *)self _updateConstraintConstants];
-  v24 = [(MapsScrollableStackView *)self _constraints];
-  [NSLayoutConstraint activateConstraints:v24];
+  _constraints2 = [(MapsScrollableStackView *)self _constraints];
+  [NSLayoutConstraint activateConstraints:_constraints2];
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(UIStackView *)self->_stackView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(UIStackView *)self->_stackView systemLayoutSizeFittingSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -157,67 +157,67 @@ LABEL_10:
   [(MapsScrollableStackView *)self _updateConstraintConstants];
 }
 
-- (void)setFittingSizePriority:(float)a3
+- (void)setFittingSizePriority:(float)priority
 {
-  if (self->_fittingSizePriority != a3)
+  if (self->_fittingSizePriority != priority)
   {
-    self->_fittingSizePriority = a3;
-    v5 = [(MapsScrollableStackView *)self axis];
+    self->_fittingSizePriority = priority;
+    axis = [(MapsScrollableStackView *)self axis];
 
-    [(MapsScrollableStackView *)self _updateOrientationWithNewAxis:v5];
+    [(MapsScrollableStackView *)self _updateOrientationWithNewAxis:axis];
   }
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
   [(MapsScrollableStackView *)self spacing];
-  if (v5 != a3)
+  if (v5 != spacing)
   {
     stackView = self->_stackView;
 
-    [(UIStackView *)stackView setSpacing:a3];
+    [(UIStackView *)stackView setSpacing:spacing];
   }
 }
 
-- (void)setAxis:(int64_t)a3
+- (void)setAxis:(int64_t)axis
 {
-  if ([(MapsScrollableStackView *)self axis]!= a3)
+  if ([(MapsScrollableStackView *)self axis]!= axis)
   {
 
-    [(MapsScrollableStackView *)self _updateOrientationWithNewAxis:a3];
+    [(MapsScrollableStackView *)self _updateOrientationWithNewAxis:axis];
   }
 }
 
-- (void)setDistribution:(int64_t)a3
+- (void)setDistribution:(int64_t)distribution
 {
-  if ([(UIStackView *)self->_stackView distribution]!= a3)
-  {
-    stackView = self->_stackView;
-
-    [(UIStackView *)stackView setDistribution:a3];
-  }
-}
-
-- (void)setAlignment:(int64_t)a3
-{
-  if ([(UIStackView *)self->_stackView alignment]!= a3)
+  if ([(UIStackView *)self->_stackView distribution]!= distribution)
   {
     stackView = self->_stackView;
 
-    [(UIStackView *)stackView setAlignment:a3];
+    [(UIStackView *)stackView setDistribution:distribution];
   }
 }
 
-- (void)_setupViewsWithSubviews:(id)a3
+- (void)setAlignment:(int64_t)alignment
 {
-  v4 = a3;
+  if ([(UIStackView *)self->_stackView alignment]!= alignment)
+  {
+    stackView = self->_stackView;
+
+    [(UIStackView *)stackView setAlignment:alignment];
+  }
+}
+
+- (void)_setupViewsWithSubviews:(id)subviews
+{
+  subviewsCopy = subviews;
   [(MapsScrollableStackView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
   leading = NSDirectionalEdgeInsetsZero.leading;
   bottom = NSDirectionalEdgeInsetsZero.bottom;
   trailing = NSDirectionalEdgeInsetsZero.trailing;
   [(MapsScrollableStackView *)self setDirectionalLayoutMargins:NSDirectionalEdgeInsetsZero.top, leading, bottom, trailing];
   [(MapsScrollableStackView *)self setScrollEnabled:1];
-  v8 = [[UIStackView alloc] initWithArrangedSubviews:v4];
+  v8 = [[UIStackView alloc] initWithArrangedSubviews:subviewsCopy];
 
   stackView = self->_stackView;
   self->_stackView = v8;
@@ -232,16 +232,16 @@ LABEL_10:
   [(MapsScrollableStackView *)self _updateOrientationWithNewAxis:1];
 }
 
-- (MapsScrollableStackView)initWithArrangedSubviews:(id)a3
+- (MapsScrollableStackView)initWithArrangedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v8.receiver = self;
   v8.super_class = MapsScrollableStackView;
   v5 = [(MapsScrollableStackView *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    [(MapsScrollableStackView *)v5 _setupViewsWithSubviews:v4];
+    [(MapsScrollableStackView *)v5 _setupViewsWithSubviews:subviewsCopy];
   }
 
   return v6;

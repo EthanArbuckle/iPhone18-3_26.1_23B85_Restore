@@ -1,30 +1,30 @@
 @interface OnenessService
-- (OnenessService)initWithEnvironmentProvider:(id)a3 sessionMonitor:(id)a4 uiController:(id)a5 workQueue:(id)a6;
+- (OnenessService)initWithEnvironmentProvider:(id)provider sessionMonitor:(id)monitor uiController:(id)controller workQueue:(id)queue;
 - (void)startServices;
 @end
 
 @implementation OnenessService
 
-- (OnenessService)initWithEnvironmentProvider:(id)a3 sessionMonitor:(id)a4 uiController:(id)a5 workQueue:(id)a6
+- (OnenessService)initWithEnvironmentProvider:(id)provider sessionMonitor:(id)monitor uiController:(id)controller workQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  monitorCopy = monitor;
+  controllerCopy = controller;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = OnenessService;
   v14 = [(OnenessService *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_workQueue, a6);
-    objc_storeStrong(&v15->_sessionMonitor, a4);
+    objc_storeStrong(&v14->_workQueue, queue);
+    objc_storeStrong(&v15->_sessionMonitor, monitor);
     v16 = [LACCompanionAuthenticationCoordinator alloc];
     v17 = [v16 initWithCompanion:LACCompanionTypeMac replyQueue:v15->_workQueue];
-    v18 = [[LACUserInterfacePresenter alloc] initWithReplyQueue:v15->_workQueue uiController:v12];
+    v18 = [[LACUserInterfacePresenter alloc] initWithReplyQueue:v15->_workQueue uiController:controllerCopy];
     v19 = [LACOnenessController alloc];
     v20 = +[LACClientInfoProvider sharedInstance];
-    v21 = [v19 initWithAuthenticator:v17 clientInfoProvider:v20 environmentProvider:v10 sessionMonitor:v11 uiPresenter:v18 replyQueue:v15->_workQueue];
+    v21 = [v19 initWithAuthenticator:v17 clientInfoProvider:v20 environmentProvider:providerCopy sessionMonitor:monitorCopy uiPresenter:v18 replyQueue:v15->_workQueue];
     controller = v15->_controller;
     v15->_controller = v21;
   }

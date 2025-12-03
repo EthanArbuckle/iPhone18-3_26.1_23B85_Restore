@@ -1,23 +1,23 @@
 @interface MPArtworkResizeUtility
-- (MPArtworkResizeUtility)initWithQualityOfService:(int64_t)a3;
-- (id)resizeImage:(id)a3 scaledFittingSize:(CGSize)a4 useExactFittingSizeAsDestinationSize:(BOOL)a5 saveToDestinationURL:(id)a6 completionHandler:(id)a7;
-- (void)cancelResizeImage:(id)a3;
+- (MPArtworkResizeUtility)initWithQualityOfService:(int64_t)service;
+- (id)resizeImage:(id)image scaledFittingSize:(CGSize)size useExactFittingSizeAsDestinationSize:(BOOL)destinationSize saveToDestinationURL:(id)l completionHandler:(id)handler;
+- (void)cancelResizeImage:(id)image;
 @end
 
 @implementation MPArtworkResizeUtility
 
-- (void)cancelResizeImage:(id)a3
+- (void)cancelResizeImage:(id)image
 {
-  v4 = a3;
-  v5 = [(MPArtworkResizeUtility *)self artworkResizingAccessQueue];
+  imageCopy = image;
+  artworkResizingAccessQueue = [(MPArtworkResizeUtility *)self artworkResizingAccessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__MPArtworkResizeUtility_cancelResizeImage___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = imageCopy;
+  v6 = imageCopy;
+  dispatch_async(artworkResizingAccessQueue, v7);
 }
 
 void __44__MPArtworkResizeUtility_cancelResizeImage___block_invoke(uint64_t a1)
@@ -28,39 +28,39 @@ void __44__MPArtworkResizeUtility_cancelResizeImage___block_invoke(uint64_t a1)
   [v3 cancel];
 }
 
-- (id)resizeImage:(id)a3 scaledFittingSize:(CGSize)a4 useExactFittingSizeAsDestinationSize:(BOOL)a5 saveToDestinationURL:(id)a6 completionHandler:(id)a7
+- (id)resizeImage:(id)image scaledFittingSize:(CGSize)size useExactFittingSizeAsDestinationSize:(BOOL)destinationSize saveToDestinationURL:(id)l completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = v14;
-  v17 = v16;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  lCopy = l;
+  handlerCopy = handler;
+  v16 = lCopy;
+  uUIDString = v16;
   if (!v16)
   {
-    v18 = [MEMORY[0x1E696AFB0] UUID];
-    v17 = [v18 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v19 = [(MPArtworkResizeUtility *)self artworkResizingAccessQueue];
+  artworkResizingAccessQueue = [(MPArtworkResizeUtility *)self artworkResizingAccessQueue];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __132__MPArtworkResizeUtility_resizeImage_scaledFittingSize_useExactFittingSizeAsDestinationSize_saveToDestinationURL_completionHandler___block_invoke;
   v27[3] = &unk_1E7675DC8;
   v27[4] = self;
-  v20 = v17;
+  v20 = uUIDString;
   v28 = v20;
-  v29 = v13;
+  v29 = imageCopy;
   v32 = width;
   v33 = height;
-  v34 = a5;
+  destinationSizeCopy = destinationSize;
   v30 = v16;
-  v31 = v15;
-  v21 = v15;
+  v31 = handlerCopy;
+  v21 = handlerCopy;
   v22 = v16;
-  v23 = v13;
-  dispatch_async(v19, v27);
+  v23 = imageCopy;
+  dispatch_async(artworkResizingAccessQueue, v27);
 
   v24 = v31;
   v25 = v20;
@@ -144,7 +144,7 @@ void __132__MPArtworkResizeUtility_resizeImage_scaledFittingSize_useExactFitting
   dispatch_group_leave(v3);
 }
 
-- (MPArtworkResizeUtility)initWithQualityOfService:(int64_t)a3
+- (MPArtworkResizeUtility)initWithQualityOfService:(int64_t)service
 {
   v15.receiver = self;
   v15.super_class = MPArtworkResizeUtility;
@@ -152,16 +152,16 @@ void __132__MPArtworkResizeUtility_resizeImage_scaledFittingSize_useExactFitting
   v5 = v4;
   if (v4)
   {
-    [(MPArtworkResizeUtility *)v4 setQualityOfService:a3];
-    if (a3 <= 16)
+    [(MPArtworkResizeUtility *)v4 setQualityOfService:service];
+    if (service <= 16)
     {
-      if (a3 == -1)
+      if (service == -1)
       {
         v6 = QOS_CLASS_DEFAULT;
         goto LABEL_14;
       }
 
-      if (a3 == 9)
+      if (service == 9)
       {
         v6 = QOS_CLASS_BACKGROUND;
         goto LABEL_14;
@@ -170,7 +170,7 @@ void __132__MPArtworkResizeUtility_resizeImage_scaledFittingSize_useExactFitting
 
     else
     {
-      switch(a3)
+      switch(service)
       {
         case 17:
           v6 = QOS_CLASS_UTILITY;
@@ -188,17 +188,17 @@ LABEL_14:
           v9 = objc_alloc_init(MEMORY[0x1E696ADC8]);
           [(MPArtworkResizeUtility *)v5 setArtworkResizingOperationQueue:v9];
 
-          v10 = [(MPArtworkResizeUtility *)v5 artworkResizingOperationQueue];
-          [v10 setQualityOfService:a3];
+          artworkResizingOperationQueue = [(MPArtworkResizeUtility *)v5 artworkResizingOperationQueue];
+          [artworkResizingOperationQueue setQualityOfService:service];
 
-          v11 = [(MPArtworkResizeUtility *)v5 artworkResizingOperationQueue];
-          [v11 setName:@"com.apple.mediaplayer.artworkservice.resizing.OperationQueue"];
+          artworkResizingOperationQueue2 = [(MPArtworkResizeUtility *)v5 artworkResizingOperationQueue];
+          [artworkResizingOperationQueue2 setName:@"com.apple.mediaplayer.artworkservice.resizing.OperationQueue"];
 
-          v12 = [(MPArtworkResizeUtility *)v5 artworkResizingOperationQueue];
-          [v12 setMaxConcurrentOperationCount:15];
+          artworkResizingOperationQueue3 = [(MPArtworkResizeUtility *)v5 artworkResizingOperationQueue];
+          [artworkResizingOperationQueue3 setMaxConcurrentOperationCount:15];
 
-          v13 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-          [(MPArtworkResizeUtility *)v5 setArtworkResizingOperations:v13];
+          strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+          [(MPArtworkResizeUtility *)v5 setArtworkResizingOperations:strongToStrongObjectsMapTable];
 
           return v5;
       }

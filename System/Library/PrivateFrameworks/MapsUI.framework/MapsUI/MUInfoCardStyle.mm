@@ -4,19 +4,19 @@
 + (id)attributionTintColor;
 + (id)cardBackgroundColor;
 + (id)directionsButtonTintColor;
-+ (id)labelForProminence:(int64_t)a3;
-+ (id)resolvedPrimaryColorForProposedColor:(id)a3;
++ (id)labelForProminence:(int64_t)prominence;
++ (id)resolvedPrimaryColorForProposedColor:(id)color;
 + (id)sectionHeaderTextColor;
 + (id)tintColor;
-+ (id)vibrantLabelForProminence:(int64_t)a3;
-+ (void)setTintColorProvider:(id)a3;
++ (id)vibrantLabelForProminence:(int64_t)prominence;
++ (void)setTintColorProvider:(id)provider;
 @end
 
 @implementation MUInfoCardStyle
 
-+ (id)resolvedPrimaryColorForProposedColor:(id)a3
++ (id)resolvedPrimaryColorForProposedColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   if (+[MUInfoCardStyle hasExternallyProvidedTintColor])
   {
     v4 = +[MUInfoCardStyle tintColor];
@@ -24,7 +24,7 @@
 
   else
   {
-    v4 = v3;
+    v4 = colorCopy;
   }
 
   v5 = v4;
@@ -48,40 +48,40 @@
   return result;
 }
 
-+ (id)vibrantLabelForProminence:(int64_t)a3
++ (id)vibrantLabelForProminence:(int64_t)prominence
 {
-  v3 = [MUInfoCardStyle labelForProminence:a3];
+  v3 = [MUInfoCardStyle labelForProminence:prominence];
   [v3 setPreferredVibrancy:1];
 
   return v3;
 }
 
-+ (id)labelForProminence:(int64_t)a3
++ (id)labelForProminence:(int64_t)prominence
 {
   v4 = objc_alloc(MEMORY[0x1E69DCC10]);
   v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  if (a3 == 2)
+  if (prominence == 2)
   {
-    v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
   }
 
-  else if (a3 == 1)
+  else if (prominence == 1)
   {
-    v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
   else
   {
-    if (a3)
+    if (prominence)
     {
       goto LABEL_8;
     }
 
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v7 = v6;
-  [v5 setTextColor:v6];
+  v7 = tertiaryLabelColor;
+  [v5 setTextColor:tertiaryLabelColor];
 
 LABEL_8:
 
@@ -90,38 +90,38 @@ LABEL_8:
 
 + (id)directionsButtonTintColor
 {
-  if (!tintColorBlock || ((*(tintColorBlock + 16))(), (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!tintColorBlock || ((*(tintColorBlock + 16))(), (systemWhiteColor = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v2 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
   }
 
-  return v2;
+  return systemWhiteColor;
 }
 
 + (id)actionRowTintColor
 {
-  if (!tintColorBlock || ((*(tintColorBlock + 16))(), (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!tintColorBlock || ((*(tintColorBlock + 16))(), (systemBlueColor = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v2 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  return v2;
+  return systemBlueColor;
 }
 
 + (id)attributionTintColor
 {
-  v2 = [MEMORY[0x1E696F240] currentTheme];
-  if ([v2 isDarkTheme])
+  currentTheme = [MEMORY[0x1E696F240] currentTheme];
+  if ([currentTheme isDarkTheme])
   {
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v3 = 0;
+    whiteColor = 0;
   }
 
-  return v3;
+  return whiteColor;
 }
 
 + (id)tintColor
@@ -152,15 +152,15 @@ LABEL_8:
 {
   if (_sectionHeaderStyle == 1)
   {
-    a1 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    self = [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
 
   else if (!_sectionHeaderStyle)
   {
-    a1 = [MEMORY[0x1E69DC888] labelColor];
+    self = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return a1;
+  return self;
 }
 
 + (id)cardBackgroundColor
@@ -179,11 +179,11 @@ LABEL_8:
   return v2;
 }
 
-+ (void)setTintColorProvider:(id)a3
++ (void)setTintColorProvider:(id)provider
 {
-  if (tintColorBlock != a3)
+  if (tintColorBlock != provider)
   {
-    v3 = [a3 copy];
+    v3 = [provider copy];
     v4 = tintColorBlock;
     tintColorBlock = v3;
 

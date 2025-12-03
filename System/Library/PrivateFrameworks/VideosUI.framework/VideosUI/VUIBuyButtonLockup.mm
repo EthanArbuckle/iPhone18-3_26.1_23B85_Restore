@@ -1,18 +1,18 @@
 @interface VUIBuyButtonLockup
 - (BOOL)_isLargeContentSize;
-- (VUIBuyButtonLockup)initWithFrame:(CGRect)a3;
+- (VUIBuyButtonLockup)initWithFrame:(CGRect)frame;
 - (void)_updateForPreferredContentSize;
 - (void)dealloc;
-- (void)setHasIAP:(BOOL)a3;
+- (void)setHasIAP:(BOOL)p;
 @end
 
 @implementation VUIBuyButtonLockup
 
-- (VUIBuyButtonLockup)initWithFrame:(CGRect)a3
+- (VUIBuyButtonLockup)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = VUIBuyButtonLockup;
-  v3 = [(VUIUIStackView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIUIStackView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
@@ -20,24 +20,24 @@
     v3->_button = v4;
 
     v6 = v3->_button;
-    v7 = [MEMORY[0x1E69DC888] vui_keyColor];
-    [(UIButton *)v6 setBackgroundColor:v7];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+    [(UIButton *)v6 setBackgroundColor:vui_keyColor];
 
     v8 = v3->_button;
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIButton *)v8 setTitleColor:v9 forState:0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIButton *)v8 setTitleColor:whiteColor forState:0];
 
     [(VUIBuyButtonLockup *)v3 addArrangedSubview:v3->_button];
     [(UIButton *)v3->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v3->_button setContentEdgeInsets:0.0, 16.0, 0.0, 16.0];
-    v10 = [(UIButton *)v3->_button heightAnchor];
-    v11 = [v10 constraintEqualToConstant:28.0];
+    heightAnchor = [(UIButton *)v3->_button heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:28.0];
     buttonHeightConstraint = v3->_buttonHeightConstraint;
     v3->_buttonHeightConstraint = v11;
 
     [(NSLayoutConstraint *)v3->_buttonHeightConstraint setActive:1];
-    v13 = [(UIButton *)v3->_button widthAnchor];
-    v14 = [v13 constraintGreaterThanOrEqualToConstant:68.0];
+    widthAnchor = [(UIButton *)v3->_button widthAnchor];
+    v14 = [widthAnchor constraintGreaterThanOrEqualToConstant:68.0];
     [v14 setActive:1];
 
     v15 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -53,8 +53,8 @@
     [(UILabel *)v18 setFont:v19];
 
     v20 = v3->_iAPLabel;
-    v21 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UILabel *)v20 setTextColor:v21];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UILabel *)v20 setTextColor:systemGrayColor];
 
     v22 = v3->_iAPLabel;
     v23 = +[VUILocalizationManager sharedInstance];
@@ -63,8 +63,8 @@
 
     [(UILabel *)v3->_iAPLabel setHidden:1];
     [(VUIBuyButtonLockup *)v3 _updateForPreferredContentSize];
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v3 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -72,19 +72,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIBuyButtonLockup;
   [(VUIBuyButtonLockup *)&v4 dealloc];
 }
 
-- (void)setHasIAP:(BOOL)a3
+- (void)setHasIAP:(BOOL)p
 {
-  if (self->_hasIAP != a3)
+  if (self->_hasIAP != p)
   {
-    [(UILabel *)self->_iAPLabel setHidden:!a3];
+    [(UILabel *)self->_iAPLabel setHidden:!p];
 
     [(VUIBuyButtonLockup *)self invalidateIntrinsicContentSize];
   }
@@ -92,18 +92,18 @@
 
 - (BOOL)_isLargeContentSize
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  v4 = ([v3 isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC40]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC38]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC28]) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC20]);
+  v4 = ([preferredContentSizeCategory isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC40]) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC38]) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC28]) & 1) != 0 || objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x1E69DDC20]);
   return v4;
 }
 
 - (void)_updateForPreferredContentSize
 {
-  v3 = [(VUIBuyButtonLockup *)self _isLargeContentSize];
+  _isLargeContentSize = [(VUIBuyButtonLockup *)self _isLargeContentSize];
   v4 = 34.0;
-  if (v3)
+  if (_isLargeContentSize)
   {
     v5 = 21.0;
   }
@@ -114,7 +114,7 @@
     v5 = 16.0;
   }
 
-  if (v3)
+  if (_isLargeContentSize)
   {
     v6 = 17.0;
   }

@@ -1,52 +1,52 @@
 @interface CKKSRateLimiter
-- (BOOL)isEqual:(id)a3;
-- (CKKSRateLimiter)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKKSRateLimiter)initWithCoder:(id)coder;
 - (id)diagnostics;
-- (id)topOffendingAccessGroups:(unint64_t)a3;
-- (int)capacity:(int)a3;
-- (int)judge:(id)a3 at:(id)a4 limitTime:(id *)a5;
-- (int)rate:(int)a3;
+- (id)topOffendingAccessGroups:(unint64_t)groups;
+- (int)capacity:(int)capacity;
+- (int)judge:(id)judge at:(id)at limitTime:(id *)time;
+- (int)rate:(int)rate;
 - (unint64_t)stateSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
-- (void)trim:(id)a3;
+- (void)trim:(id)trim;
 @end
 
 @implementation CKKSRateLimiter
 
-- (id)topOffendingAccessGroups:(unint64_t)a3
+- (id)topOffendingAccessGroups:(unint64_t)groups
 {
   v5 = +[NSDate date];
-  v6 = [(CKKSRateLimiter *)self buckets];
+  buckets = [(CKKSRateLimiter *)self buckets];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000A2B90;
   v21[3] = &unk_1003363F8;
   v7 = v5;
   v22 = v7;
-  v8 = [v6 keysOfEntriesPassingTest:v21];
+  v8 = [buckets keysOfEntriesPassingTest:v21];
 
   if ([v8 count])
   {
-    v9 = [(CKKSRateLimiter *)self buckets];
-    v10 = [v8 allObjects];
+    buckets2 = [(CKKSRateLimiter *)self buckets];
+    allObjects = [v8 allObjects];
     v11 = +[NSDate date];
-    v12 = [v9 objectsForKeys:v10 notFoundMarker:v11];
-    v13 = [v8 allObjects];
-    v14 = [NSDictionary dictionaryWithObjects:v12 forKeys:v13];
+    v12 = [buckets2 objectsForKeys:allObjects notFoundMarker:v11];
+    allObjects2 = [v8 allObjects];
+    v14 = [NSDictionary dictionaryWithObjects:v12 forKeys:allObjects2];
 
     v15 = [v14 keysSortedByValueUsingSelector:"compare:"];
-    v16 = [v15 reverseObjectEnumerator];
-    v17 = [v16 allObjects];
+    reverseObjectEnumerator = [v15 reverseObjectEnumerator];
+    allObjects3 = [reverseObjectEnumerator allObjects];
 
-    if ([v17 count] <= a3)
+    if ([allObjects3 count] <= groups)
     {
-      v18 = v17;
+      v18 = allObjects3;
     }
 
     else
     {
-      v18 = [v17 subarrayWithRange:{0, a3}];
+      v18 = [allObjects3 subarrayWithRange:{0, groups}];
     }
 
     v19 = v18;
@@ -62,23 +62,23 @@
 
 - (id)diagnostics
 {
-  v3 = [(CKKSRateLimiter *)self config];
-  v4 = [v3 description];
+  config = [(CKKSRateLimiter *)self config];
+  v4 = [config description];
   v5 = [NSMutableString stringWithFormat:@"RateLimiter config: %@\n", v4];
 
-  v6 = [(CKKSRateLimiter *)self overloadUntil];
+  overloadUntil = [(CKKSRateLimiter *)self overloadUntil];
 
-  if (v6)
+  if (overloadUntil)
   {
-    v7 = [(CKKSRateLimiter *)self overloadUntil];
-    v8 = [(CKKSRateLimiter *)self buckets];
-    [v5 appendFormat:@"Overloaded until %@, %lu total buckets\n", v7, objc_msgSend(v8, "count")];
+    overloadUntil2 = [(CKKSRateLimiter *)self overloadUntil];
+    buckets = [(CKKSRateLimiter *)self buckets];
+    [v5 appendFormat:@"Overloaded until %@, %lu total buckets\n", overloadUntil2, objc_msgSend(buckets, "count")];
   }
 
   else
   {
-    v7 = [(CKKSRateLimiter *)self buckets];
-    [v5 appendFormat:@"Not overloaded, %lu total buckets\n", objc_msgSend(v7, "count")];
+    overloadUntil2 = [(CKKSRateLimiter *)self buckets];
+    [v5 appendFormat:@"Not overloaded, %lu total buckets\n", objc_msgSend(overloadUntil2, "count")];
   }
 
   v9 = [(CKKSRateLimiter *)self topOffendingAccessGroups:10];
@@ -86,12 +86,12 @@
   if (v9)
   {
     v11 = [v9 count];
-    v12 = [(CKKSRateLimiter *)self buckets];
+    buckets2 = [(CKKSRateLimiter *)self buckets];
     v13 = [v10 objectAtIndexedSubscript:0];
-    v14 = [v12 objectForKeyedSubscript:v13];
-    v15 = [(CKKSRateLimiter *)self buckets];
+    v14 = [buckets2 objectForKeyedSubscript:v13];
+    buckets3 = [(CKKSRateLimiter *)self buckets];
     v16 = [v10 objectAtIndexedSubscript:{objc_msgSend(v10, "count") - 1}];
-    v17 = [v15 objectForKeyedSubscript:v16];
+    v17 = [buckets3 objectForKeyedSubscript:v16];
     [v5 appendFormat:@"%lu congested buckets. Top offenders: \n%@ range %@ to %@\n", v11, v10, v14, v17];
   }
 
@@ -103,55 +103,55 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CKKSRateLimiter *)self buckets];
-  [v4 encodeObject:v5 forKey:@"buckets"];
+  coderCopy = coder;
+  buckets = [(CKKSRateLimiter *)self buckets];
+  [coderCopy encodeObject:buckets forKey:@"buckets"];
 }
 
-- (void)trim:(id)a3
+- (void)trim:(id)trim
 {
-  v4 = a3;
-  v5 = [(CKKSRateLimiter *)self config];
-  v6 = [v5 objectForKeyedSubscript:@"trimTime"];
-  v7 = [v6 intValue];
+  trimCopy = trim;
+  config = [(CKKSRateLimiter *)self config];
+  v6 = [config objectForKeyedSubscript:@"trimTime"];
+  intValue = [v6 intValue];
 
-  v8 = [(CKKSRateLimiter *)self buckets];
+  buckets = [(CKKSRateLimiter *)self buckets];
   v18 = _NSConcreteStackBlock;
   v19 = 3221225472;
   v20 = sub_1000A30D4;
   v21 = &unk_100336D00;
-  v22 = v4;
-  v23 = v7;
-  v9 = v4;
-  v10 = [v8 keysOfEntriesPassingTest:&v18];
+  v22 = trimCopy;
+  v23 = intValue;
+  v9 = trimCopy;
+  v10 = [buckets keysOfEntriesPassingTest:&v18];
 
   if ([v10 count])
   {
     [(CKKSRateLimiter *)self setOverloadUntil:0];
-    v11 = [(CKKSRateLimiter *)self buckets];
-    v12 = [v10 allObjects];
-    [v11 removeObjectsForKeys:v12];
+    buckets2 = [(CKKSRateLimiter *)self buckets];
+    allObjects = [v10 allObjects];
+    [buckets2 removeObjectsForKeys:allObjects];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v13 = [(CKKSRateLimiter *)self buckets];
-  v14 = [v13 objectForKeyedSubscript:@"All"];
-  v15 = [(CKKSRateLimiter *)self config];
-  v16 = [v15 objectForKeyedSubscript:@"overloadDuration"];
+  buckets3 = [(CKKSRateLimiter *)self buckets];
+  v14 = [buckets3 objectForKeyedSubscript:@"All"];
+  config2 = [(CKKSRateLimiter *)self config];
+  v16 = [config2 objectForKeyedSubscript:@"overloadDuration"];
   v17 = [v14 dateByAddingTimeInterval:{objc_msgSend(v16, "unsignedIntValue")}];
   [(CKKSRateLimiter *)self setOverloadUntil:v17];
 
-  v11 = sub_100006274("SecCritical");
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  buckets2 = sub_100006274("SecCritical");
+  if (os_log_type_enabled(buckets2, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(CKKSRateLimiter *)self overloadUntil];
+    allObjects = [(CKKSRateLimiter *)self overloadUntil];
     *buf = 138412290;
-    v25 = v12;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "RateLimiter overloaded until %@", buf, 0xCu);
+    v25 = allObjects;
+    _os_log_impl(&_mh_execute_header, buckets2, OS_LOG_TYPE_DEFAULT, "RateLimiter overloaded until %@", buf, 0xCu);
     goto LABEL_5;
   }
 
@@ -168,71 +168,71 @@ LABEL_6:
 
 - (unint64_t)stateSize
 {
-  v2 = [(CKKSRateLimiter *)self buckets];
-  v3 = [v2 count];
+  buckets = [(CKKSRateLimiter *)self buckets];
+  v3 = [buckets count];
 
   return v3;
 }
 
-- (int)judge:(id)a3 at:(id)a4 limitTime:(id *)a5
+- (int)judge:(id)judge at:(id)at limitTime:(id *)time
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(CKKSRateLimiter *)self overloadUntil];
+  judgeCopy = judge;
+  atCopy = at;
+  overloadUntil = [(CKKSRateLimiter *)self overloadUntil];
 
-  if (v11)
+  if (overloadUntil)
   {
-    v12 = [(CKKSRateLimiter *)self overloadUntil];
-    [v10 timeIntervalSinceDate:v12];
+    overloadUntil2 = [(CKKSRateLimiter *)self overloadUntil];
+    [atCopy timeIntervalSinceDate:overloadUntil2];
     v14 = v13;
 
     if (v14 >= 0.0)
     {
-      [(CKKSRateLimiter *)self trim:v10];
+      [(CKKSRateLimiter *)self trim:atCopy];
     }
 
-    v15 = [(CKKSRateLimiter *)self overloadUntil];
+    overloadUntil3 = [(CKKSRateLimiter *)self overloadUntil];
 
-    if (v15)
+    if (overloadUntil3)
     {
-      v16 = [(CKKSRateLimiter *)self overloadUntil];
-      *a5 = [v16 copy];
+      overloadUntil4 = [(CKKSRateLimiter *)self overloadUntil];
+      *time = [overloadUntil4 copy];
 LABEL_17:
       v27 = 5;
       goto LABEL_31;
     }
   }
 
-  v17 = [(CKKSRateLimiter *)self buckets];
-  v16 = [v17 objectForKeyedSubscript:@"All"];
+  buckets = [(CKKSRateLimiter *)self buckets];
+  overloadUntil4 = [buckets objectForKeyedSubscript:@"All"];
 
-  v42 = a5;
-  if (!v16)
+  timeCopy = time;
+  if (!overloadUntil4)
   {
-    v41 = v9;
+    v41 = judgeCopy;
     goto LABEL_11;
   }
 
-  [v10 timeIntervalSinceDate:v16];
+  [atCopy timeIntervalSinceDate:overloadUntil4];
   v19 = v18;
-  v17 = [(CKKSRateLimiter *)self config];
-  v5 = [v17 objectForKeyedSubscript:@"trimTime"];
+  buckets = [(CKKSRateLimiter *)self config];
+  v5 = [buckets objectForKeyedSubscript:@"trimTime"];
   if (v19 <= [v5 intValue])
   {
-    v41 = v9;
+    v41 = judgeCopy;
 LABEL_11:
-    v20 = [(CKKSRateLimiter *)self buckets];
-    v21 = [v20 count];
-    v22 = [(CKKSRateLimiter *)self config];
-    v23 = [v22 objectForKeyedSubscript:@"trimSize"];
-    v24 = [v23 unsignedIntValue];
+    buckets2 = [(CKKSRateLimiter *)self buckets];
+    v21 = [buckets2 count];
+    config = [(CKKSRateLimiter *)self config];
+    v23 = [config objectForKeyedSubscript:@"trimSize"];
+    unsignedIntValue = [v23 unsignedIntValue];
 
-    if (v16)
+    if (overloadUntil4)
     {
     }
 
-    v25 = v21 >= v24;
-    v9 = v41;
+    v25 = v21 >= unsignedIntValue;
+    judgeCopy = v41;
     if (!v25)
     {
       goto LABEL_18;
@@ -242,21 +242,21 @@ LABEL_11:
   }
 
 LABEL_15:
-  [(CKKSRateLimiter *)self trim:v10];
-  v26 = [(CKKSRateLimiter *)self overloadUntil];
+  [(CKKSRateLimiter *)self trim:atCopy];
+  overloadUntil5 = [(CKKSRateLimiter *)self overloadUntil];
 
-  if (v26)
+  if (overloadUntil5)
   {
-    *v42 = [(CKKSRateLimiter *)self overloadUntil];
+    *timeCopy = [(CKKSRateLimiter *)self overloadUntil];
     goto LABEL_17;
   }
 
 LABEL_18:
-  v28 = [(CKKSRateLimiter *)self consumeTokenFromBucket:@"All" type:0 at:v10];
+  v28 = [(CKKSRateLimiter *)self consumeTokenFromBucket:@"All" type:0 at:atCopy];
   v27 = v28 != 0;
-  v29 = [v9 accessgroup];
-  v30 = [NSString stringWithFormat:@"G:%@", v29];
-  v31 = [(CKKSRateLimiter *)self consumeTokenFromBucket:v30 type:1 at:v10];
+  accessgroup = [judgeCopy accessgroup];
+  v30 = [NSString stringWithFormat:@"G:%@", accessgroup];
+  v31 = [(CKKSRateLimiter *)self consumeTokenFromBucket:v30 type:1 at:atCopy];
 
   if (v31)
   {
@@ -272,7 +272,7 @@ LABEL_18:
       v28 = v31;
     }
 
-    v33 = [v10 dateByAddingTimeInterval:{(2 * -[CKKSRateLimiter rate:](self, "rate:", 1))}];
+    v33 = [atCopy dateByAddingTimeInterval:{(2 * -[CKKSRateLimiter rate:](self, "rate:", 1))}];
     [v31 timeIntervalSinceDate:v33];
     if (v34 >= 0.0)
     {
@@ -285,9 +285,9 @@ LABEL_18:
     }
   }
 
-  v35 = [v9 uuid];
-  v36 = [NSString stringWithFormat:@"U:%@", v35];
-  v37 = [(CKKSRateLimiter *)self consumeTokenFromBucket:v36 type:2 at:v10];
+  uuid = [judgeCopy uuid];
+  v36 = [NSString stringWithFormat:@"U:%@", uuid];
+  v37 = [(CKKSRateLimiter *)self consumeTokenFromBucket:v36 type:2 at:atCopy];
 
   if (v37)
   {
@@ -307,52 +307,52 @@ LABEL_18:
   }
 
   v39 = v28;
-  *v42 = v28;
+  *timeCopy = v28;
 
 LABEL_31:
   return v27;
 }
 
-- (int)capacity:(int)a3
+- (int)capacity:(int)capacity
 {
-  if (a3 <= 2)
+  if (capacity <= 2)
   {
-    v3 = *(&off_100336430 + a3);
-    v4 = [(CKKSRateLimiter *)self config];
-    v5 = [v4 objectForKeyedSubscript:v3];
-    v6 = [v5 intValue];
+    v3 = *(&off_100336430 + capacity);
+    config = [(CKKSRateLimiter *)self config];
+    v5 = [config objectForKeyedSubscript:v3];
+    intValue = [v5 intValue];
 
-    LODWORD(self) = v6;
+    LODWORD(self) = intValue;
   }
 
   return self;
 }
 
-- (int)rate:(int)a3
+- (int)rate:(int)rate
 {
-  if (a3 <= 2)
+  if (rate <= 2)
   {
-    v3 = *(&off_100336418 + a3);
-    v4 = [(CKKSRateLimiter *)self config];
-    v5 = [v4 objectForKeyedSubscript:v3];
-    v6 = [v5 intValue];
+    v3 = *(&off_100336418 + rate);
+    config = [(CKKSRateLimiter *)self config];
+    v5 = [config objectForKeyedSubscript:v3];
+    intValue = [v5 intValue];
 
-    LODWORD(self) = v6;
+    LODWORD(self) = intValue;
   }
 
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKKSRateLimiter *)self config];
-    v7 = [v5 config];
-    if (![v6 isEqual:v7])
+    v5 = equalCopy;
+    config = [(CKKSRateLimiter *)self config];
+    config2 = [v5 config];
+    if (![config isEqual:config2])
     {
       v13 = 0;
 LABEL_15:
@@ -360,9 +360,9 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v8 = [(CKKSRateLimiter *)self buckets];
-    v9 = [v5 buckets];
-    if (![v8 isEqual:v9])
+    buckets = [(CKKSRateLimiter *)self buckets];
+    buckets2 = [v5 buckets];
+    if (![buckets isEqual:buckets2])
     {
       v13 = 0;
 LABEL_14:
@@ -370,14 +370,14 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v10 = [(CKKSRateLimiter *)self overloadUntil];
-    if (v10 || ([v5 overloadUntil], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+    overloadUntil = [(CKKSRateLimiter *)self overloadUntil];
+    if (overloadUntil || ([v5 overloadUntil], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v11 = [(CKKSRateLimiter *)self overloadUntil];
-      v12 = [v5 overloadUntil];
-      v13 = [v11 isEqual:v12];
+      overloadUntil2 = [(CKKSRateLimiter *)self overloadUntil];
+      overloadUntil3 = [v5 overloadUntil];
+      v13 = [overloadUntil2 isEqual:overloadUntil3];
 
-      if (v10)
+      if (overloadUntil)
       {
 LABEL_13:
 
@@ -400,21 +400,21 @@ LABEL_16:
   return v13;
 }
 
-- (CKKSRateLimiter)initWithCoder:(id)a3
+- (CKKSRateLimiter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = CKKSRateLimiter;
   v5 = [(CKKSRateLimiter *)&v31 init];
   if (v5)
   {
     v6 = &swift_errorRelease_ptr;
-    if (v4)
+    if (coderCopy)
     {
       v7 = objc_opt_class();
       v8 = objc_opt_class();
       v9 = [NSSet setWithObjects:v7, v8, objc_opt_class(), 0];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"buckets"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"buckets"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)

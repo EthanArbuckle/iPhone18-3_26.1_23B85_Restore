@@ -1,40 +1,40 @@
 @interface SASTestingInput
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SASTestingInput)initWithBuilder:(id)a3;
-- (SASTestingInput)initWithCoder:(id)a3;
-- (SASTestingInput)initWithType:(int64_t)a3 text:(id)a4 recordedSpeechURL:(id)a5;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SASTestingInput)initWithBuilder:(id)builder;
+- (SASTestingInput)initWithCoder:(id)coder;
+- (SASTestingInput)initWithType:(int64_t)type text:(id)text recordedSpeechURL:(id)l;
 - (id)description;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SASTestingInput
 
-- (SASTestingInput)initWithBuilder:(id)a3
+- (SASTestingInput)initWithBuilder:(id)builder
 {
-  v4 = [SASTestingInput newWithBuilder:a3];
+  v4 = [SASTestingInput newWithBuilder:builder];
 
   return v4;
 }
 
-- (SASTestingInput)initWithType:(int64_t)a3 text:(id)a4 recordedSpeechURL:(id)a5
+- (SASTestingInput)initWithType:(int64_t)type text:(id)text recordedSpeechURL:(id)l
 {
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = SASTestingInput;
   v10 = [(SASTestingInput *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [textCopy copy];
     text = v11->_text;
     v11->_text = v12;
 
-    v14 = [v9 copy];
+    v14 = [lCopy copy];
     recordedSpeechURL = v11->_recordedSpeechURL;
     v11->_recordedSpeechURL = v14;
   }
@@ -81,10 +81,10 @@
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -94,17 +94,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       type = self->_type;
       if (type == [(SASTestingInput *)v5 type])
       {
-        v7 = [(SASTestingInput *)v5 text];
+        text = [(SASTestingInput *)v5 text];
         text = self->_text;
-        if (text == v7 || [(NSString *)text isEqual:v7])
+        if (text == text || [(NSString *)text isEqual:text])
         {
-          v9 = [(SASTestingInput *)v5 recordedSpeechURL];
+          recordedSpeechURL = [(SASTestingInput *)v5 recordedSpeechURL];
           recordedSpeechURL = self->_recordedSpeechURL;
-          v11 = recordedSpeechURL == v9 || [(NSURL *)recordedSpeechURL isEqual:v9];
+          v11 = recordedSpeechURL == recordedSpeechURL || [(NSURL *)recordedSpeechURL isEqual:recordedSpeechURL];
         }
 
         else
@@ -128,61 +128,61 @@
   return v11;
 }
 
-- (SASTestingInput)initWithCoder:(id)a3
+- (SASTestingInput)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASTestingInput::type"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASTestingInput::type"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASTestingInput::text"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SASTestingInput::recordedSpeechURL"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASTestingInput::text"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SASTestingInput::recordedSpeechURL"];
 
-  v9 = [(SASTestingInput *)self initWithType:v6 text:v7 recordedSpeechURL:v8];
+  v9 = [(SASTestingInput *)self initWithType:integerValue text:v7 recordedSpeechURL:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:type];
-  [v7 encodeObject:v6 forKey:@"SASTestingInput::type"];
+  [coderCopy encodeObject:v6 forKey:@"SASTestingInput::type"];
 
-  [v7 encodeObject:self->_text forKey:@"SASTestingInput::text"];
-  [v7 encodeObject:self->_recordedSpeechURL forKey:@"SASTestingInput::recordedSpeechURL"];
+  [coderCopy encodeObject:self->_text forKey:@"SASTestingInput::text"];
+  [coderCopy encodeObject:self->_recordedSpeechURL forKey:@"SASTestingInput::recordedSpeechURL"];
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SASTestingInputMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SASTestingInputMutation *)v4 generate];
+  generate = [(_SASTestingInputMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SASTestingInputMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SASTestingInputMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SASTestingInputMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SASTestingInput *)self copy];
+    generate = [(SASTestingInput *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
 @end

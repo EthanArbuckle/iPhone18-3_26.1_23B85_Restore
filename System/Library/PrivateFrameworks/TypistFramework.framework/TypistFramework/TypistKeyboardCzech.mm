@@ -1,44 +1,44 @@
 @interface TypistKeyboardCzech
-- (TypistKeyboardCzech)initWithCoder:(id)a3;
-- (id)addAccentKeyAction:(id)a3;
-- (id)convertRepresentedStringsIfNecessary:(id)a3;
-- (id)getPostfixKey:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (TypistKeyboardCzech)initWithCoder:(id)coder;
+- (id)addAccentKeyAction:(id)action;
+- (id)convertRepresentedStringsIfNecessary:(id)necessary;
+- (id)getPostfixKey:(id)key;
+- (id)init:(id)init options:(id)options;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
+- (void)encodeWithCoder:(id)coder;
 - (void)preprocessing;
 @end
 
 @implementation TypistKeyboardCzech
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardCzech;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"cs_CZ"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"cs_CZ"];
 }
 
-- (id)convertRepresentedStringsIfNecessary:(id)a3
+- (id)convertRepresentedStringsIfNecessary:(id)necessary
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"̌"])
+  necessaryCopy = necessary;
+  if ([necessaryCopy isEqualToString:@"̌"])
   {
     v4 = @"ˇ";
   }
 
   else
   {
-    v4 = v3;
+    v4 = necessaryCopy;
   }
 
   return v4;
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
   v7.receiver = self;
   v7.super_class = TypistKeyboardCzech;
-  v5 = [(TypistKeyboard *)&v7 setupKeyboardInfo:a3 options:a4];
+  v5 = [(TypistKeyboard *)&v7 setupKeyboardInfo:info options:options];
   if (!v5)
   {
     [(TypistKeyboardCzech *)self setAcuteKeys:&unk_28802A5A0];
@@ -48,57 +48,57 @@
   return v5;
 }
 
-- (id)getPostfixKey:(id)a3
+- (id)getPostfixKey:(id)key
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 _referenceBounds];
+  keyCopy = key;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v17) <= 1194.0)
   {
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
     if (CGRectGetHeight(v18) <= 1194.0)
     {
 
       goto LABEL_12;
     }
 
-    v7 = [(TypistKeyboard *)self isFloating];
+    isFloating = [(TypistKeyboard *)self isFloating];
 
-    if (!v7)
+    if (!isFloating)
     {
       goto LABEL_12;
     }
   }
 
-  v8 = [(TypistKeyboardCzech *)self acuteKeys];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  acuteKeys = [(TypistKeyboardCzech *)self acuteKeys];
+  v9 = [acuteKeys objectForKeyedSubscript:keyCopy];
 
   if (v9)
   {
-    v10 = [(TypistKeyboardCzech *)self acuteKeys];
+    acuteKeys2 = [(TypistKeyboardCzech *)self acuteKeys];
 LABEL_11:
-    v13 = v10;
-    v14 = [v10 objectForKeyedSubscript:v4];
+    v13 = acuteKeys2;
+    v14 = [acuteKeys2 objectForKeyedSubscript:keyCopy];
 
     goto LABEL_13;
   }
 
-  v11 = [(TypistKeyboardCzech *)self caronKeys];
-  v12 = [v11 objectForKeyedSubscript:v4];
+  caronKeys = [(TypistKeyboardCzech *)self caronKeys];
+  v12 = [caronKeys objectForKeyedSubscript:keyCopy];
 
   if (v12)
   {
-    v10 = [(TypistKeyboardCzech *)self caronKeys];
+    acuteKeys2 = [(TypistKeyboardCzech *)self caronKeys];
     goto LABEL_11;
   }
 
 LABEL_12:
-  v14 = v4;
+  v14 = keyCopy;
 LABEL_13:
 
   return v14;
@@ -109,50 +109,50 @@ LABEL_13:
   v7.receiver = self;
   v7.super_class = TypistKeyboardCzech;
   [(TypistKeyboard *)&v7 preprocessing];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v8) <= 1194.0)
   {
 
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 _referenceBounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 _referenceBounds];
   if (CGRectGetHeight(v9) <= 1194.0)
   {
 
     goto LABEL_8;
   }
 
-  v5 = [(TypistKeyboard *)self isFloating];
+  isFloating = [(TypistKeyboard *)self isFloating];
 
-  if (v5)
+  if (isFloating)
   {
 LABEL_6:
     v6 = [(TypistKeyboard *)self findKeyOnAnyPlane:@"´"];
     [(TypistKeyboardCzech *)self setAcuteDiacriticKey:v6];
 
-    v3 = [(TypistKeyboard *)self findKeyOnAnyPlane:@"ˇ"];
-    [(TypistKeyboardCzech *)self setCaronDiacriticKey:v3];
+    mainScreen = [(TypistKeyboard *)self findKeyOnAnyPlane:@"ˇ"];
+    [(TypistKeyboardCzech *)self setCaronDiacriticKey:mainScreen];
 LABEL_8:
   }
 }
 
-- (id)addAccentKeyAction:(id)a3
+- (id)addAccentKeyAction:(id)action
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 _referenceBounds];
+  actionCopy = action;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (CGRectGetHeight(v24) <= 1194.0)
   {
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
     if (CGRectGetHeight(v25) <= 1194.0)
     {
 
@@ -160,25 +160,25 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v7 = [(TypistKeyboard *)self isFloating];
+    isFloating = [(TypistKeyboard *)self isFloating];
 
-    if (!v7)
+    if (!isFloating)
     {
       goto LABEL_16;
     }
   }
 
-  v8 = [(TypistKeyboardCzech *)self acuteKeys];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  acuteKeys = [(TypistKeyboardCzech *)self acuteKeys];
+  v9 = [acuteKeys objectForKeyedSubscript:actionCopy];
   if (v9)
   {
     v10 = v9;
-    v11 = [(TypistKeyboardCzech *)self acuteDiacriticKey];
+    acuteDiacriticKey = [(TypistKeyboardCzech *)self acuteDiacriticKey];
 
-    if (v11)
+    if (acuteDiacriticKey)
     {
-      v12 = [(TypistKeyboardCzech *)self acuteDiacriticKey];
-      v22[0] = v12;
+      acuteDiacriticKey2 = [(TypistKeyboardCzech *)self acuteDiacriticKey];
+      v22[0] = acuteDiacriticKey2;
       v13 = MEMORY[0x277CBEA60];
       v14 = v22;
 LABEL_14:
@@ -192,20 +192,20 @@ LABEL_14:
   {
   }
 
-  v5 = [(TypistKeyboardCzech *)self caronKeys];
-  v15 = [v5 objectForKeyedSubscript:v4];
+  mainScreen = [(TypistKeyboardCzech *)self caronKeys];
+  v15 = [mainScreen objectForKeyedSubscript:actionCopy];
   if (!v15)
   {
     goto LABEL_15;
   }
 
   v16 = v15;
-  v17 = [(TypistKeyboardCzech *)self caronDiacriticKey];
+  caronDiacriticKey = [(TypistKeyboardCzech *)self caronDiacriticKey];
 
-  if (v17)
+  if (caronDiacriticKey)
   {
-    v12 = [(TypistKeyboardCzech *)self caronDiacriticKey];
-    v21 = v12;
+    acuteDiacriticKey2 = [(TypistKeyboardCzech *)self caronDiacriticKey];
+    v21 = acuteDiacriticKey2;
     v13 = MEMORY[0x277CBEA60];
     v14 = &v21;
     goto LABEL_14;
@@ -220,27 +220,27 @@ LABEL_17:
   return v18;
 }
 
-- (TypistKeyboardCzech)initWithCoder:(id)a3
+- (TypistKeyboardCzech)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = TypistKeyboardCzech;
-  v5 = [(TypistKeyboard *)&v15 initWithCoder:v4];
+  v5 = [(TypistKeyboard *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acuteKeys"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acuteKeys"];
     acuteKeys = v5->_acuteKeys;
     v5->_acuteKeys = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"caronKeys"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"caronKeys"];
     caronKeys = v5->_caronKeys;
     v5->_caronKeys = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acuteDiacriticKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acuteDiacriticKey"];
     acuteDiacriticKey = v5->_acuteDiacriticKey;
     v5->_acuteDiacriticKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"caronDiacriticKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"caronDiacriticKey"];
     caronDiacriticKey = v5->_caronDiacriticKey;
     v5->_caronDiacriticKey = v12;
   }
@@ -248,34 +248,34 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TypistKeyboardCzech;
-  [(TypistKeyboard *)&v9 encodeWithCoder:v4];
+  [(TypistKeyboard *)&v9 encodeWithCoder:coderCopy];
   acuteKeys = self->_acuteKeys;
   if (acuteKeys)
   {
-    [v4 encodeObject:acuteKeys forKey:@"acuteKeys"];
+    [coderCopy encodeObject:acuteKeys forKey:@"acuteKeys"];
   }
 
   caronKeys = self->_caronKeys;
   if (caronKeys)
   {
-    [v4 encodeObject:caronKeys forKey:@"caronKeys"];
+    [coderCopy encodeObject:caronKeys forKey:@"caronKeys"];
   }
 
   acuteDiacriticKey = self->_acuteDiacriticKey;
   if (acuteDiacriticKey)
   {
-    [v4 encodeObject:acuteDiacriticKey forKey:@"acuteDiacriticKey"];
+    [coderCopy encodeObject:acuteDiacriticKey forKey:@"acuteDiacriticKey"];
   }
 
   caronDiacriticKey = self->_caronDiacriticKey;
   if (caronDiacriticKey)
   {
-    [v4 encodeObject:caronDiacriticKey forKey:@"caronDiacriticKey"];
+    [coderCopy encodeObject:caronDiacriticKey forKey:@"caronDiacriticKey"];
   }
 }
 

@@ -1,32 +1,32 @@
 @interface RTSourceMapsSupportHistoryEntryRoute
-- (BOOL)isEqual:(id)a3;
-- (RTSourceMapsSupportHistoryEntryRoute)initWithCoder:(id)a3;
-- (RTSourceMapsSupportHistoryEntryRoute)initWithUsageDate:(id)a3 navigationWasInterrupted:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (RTSourceMapsSupportHistoryEntryRoute)initWithCoder:(id)coder;
+- (RTSourceMapsSupportHistoryEntryRoute)initWithUsageDate:(id)date navigationWasInterrupted:(BOOL)interrupted;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTSourceMapsSupportHistoryEntryRoute
 
-- (RTSourceMapsSupportHistoryEntryRoute)initWithUsageDate:(id)a3 navigationWasInterrupted:(BOOL)a4
+- (RTSourceMapsSupportHistoryEntryRoute)initWithUsageDate:(id)date navigationWasInterrupted:(BOOL)interrupted
 {
   v6.receiver = self;
   v6.super_class = RTSourceMapsSupportHistoryEntryRoute;
-  result = [(RTSourceMapsSupportHistoryEntry *)&v6 initWithUsageDate:a3];
+  result = [(RTSourceMapsSupportHistoryEntry *)&v6 initWithUsageDate:date];
   if (result)
   {
-    result->_navigationWasInterrupted = a4;
+    result->_navigationWasInterrupted = interrupted;
   }
 
   return result;
 }
 
-- (RTSourceMapsSupportHistoryEntryRoute)initWithCoder:(id)a3
+- (RTSourceMapsSupportHistoryEntryRoute)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -41,10 +41,10 @@
 
   v10.receiver = self;
   v10.super_class = RTSourceMapsSupportHistoryEntryRoute;
-  v6 = [(RTSourceMapsSupportHistoryEntry *)&v10 initWithCoder:v4];
+  v6 = [(RTSourceMapsSupportHistoryEntry *)&v10 initWithCoder:coderCopy];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"navigationWasInterrupted"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"navigationWasInterrupted"];
     v6->_navigationWasInterrupted = [v7 BOOLValue];
   }
 
@@ -52,11 +52,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -71,25 +71,25 @@
 
   v8.receiver = self;
   v8.super_class = RTSourceMapsSupportHistoryEntryRoute;
-  [(RTSourceMapsSupportHistoryEntry *)&v8 encodeWithCoder:v4];
+  [(RTSourceMapsSupportHistoryEntry *)&v8 encodeWithCoder:coderCopy];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_navigationWasInterrupted];
-  [v4 encodeObject:v6 forKey:@"navigationWasInterrupted"];
+  [coderCopy encodeObject:v6 forKey:@"navigationWasInterrupted"];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = RTSourceMapsSupportHistoryEntryRoute;
-  if ([(RTSourceMapsSupportHistoryEntry *)&v10 isEqual:v4])
+  if ([(RTSourceMapsSupportHistoryEntry *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(RTSourceMapsSupportHistoryEntryRoute *)self navigationWasInterrupted];
-    v7 = [v5 navigationWasInterrupted];
+    v5 = equalCopy;
+    navigationWasInterrupted = [(RTSourceMapsSupportHistoryEntryRoute *)self navigationWasInterrupted];
+    navigationWasInterrupted2 = [v5 navigationWasInterrupted];
 
-    v8 = v6 ^ v7 ^ 1;
+    v8 = navigationWasInterrupted ^ navigationWasInterrupted2 ^ 1;
   }
 
   else
@@ -117,9 +117,9 @@
   v9.receiver = self;
   v9.super_class = RTSourceMapsSupportHistoryEntryRoute;
   v4 = [(RTSourceMapsSupportHistoryEntry *)&v9 description];
-  v5 = [(RTSourceMapsSupportHistoryEntryRoute *)self navigationWasInterrupted];
+  navigationWasInterrupted = [(RTSourceMapsSupportHistoryEntryRoute *)self navigationWasInterrupted];
   v6 = @"NO";
-  if (v5)
+  if (navigationWasInterrupted)
   {
     v6 = @"YES";
   }

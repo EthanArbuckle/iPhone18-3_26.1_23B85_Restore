@@ -2,54 +2,54 @@
 - (BOOL)start;
 - (BOOL)stop;
 - (BOOL)waitUntilDone;
-- (BOOL)wasAllRecursionPreviouslyPrinted:(id)a3;
-- (VMUSampler)initWithPID:(int)a3 task:(unsigned int)a4 processName:(id)a5 is64Bit:(BOOL)a6 options:(unint64_t)a7;
+- (BOOL)wasAllRecursionPreviouslyPrinted:(id)printed;
+- (VMUSampler)initWithPID:(int)d task:(unsigned int)task processName:(id)name is64Bit:(BOOL)bit options:(unint64_t)options;
 - (_CSTypeRef)symbolicator;
-- (id)dispatchQueueNameForSerialNumber:(unint64_t)a3 returnedConcurrentFlag:(BOOL *)a4 returnedThreadId:(unint64_t *)a5;
-- (id)formatFrame:(unint64_t)a3 showBinaryImage:(BOOL)a4;
+- (id)dispatchQueueNameForSerialNumber:(unint64_t)number returnedConcurrentFlag:(BOOL *)flag returnedThreadId:(unint64_t *)id;
+- (id)formatFrame:(unint64_t)frame showBinaryImage:(BOOL)image;
 - (id)outputString;
 - (id)sampleAllThreadsOnce;
 - (id)samples;
-- (id)setUpForFormatFrame:(unint64_t)a3;
+- (id)setUpForFormatFrame:(unint64_t)frame;
 - (id)stopSamplingAndReturnCallNode;
-- (id)threadDescriptionStringForBacktrace:(id)a3 returnedAddress:(unint64_t *)a4;
-- (id)threadNameForThread:(unsigned int)a3 returnedThreadId:(unint64_t *)a4 returnedDispatchQueueSerialNum:(unint64_t *)a5;
-- (unint64_t)recordSampleTo:(id)a3 timestamp:(unint64_t)a4 thread:(unsigned int)a5 clearMemoryCache:(BOOL)a6;
+- (id)threadDescriptionStringForBacktrace:(id)backtrace returnedAddress:(unint64_t *)address;
+- (id)threadNameForThread:(unsigned int)thread returnedThreadId:(unint64_t *)id returnedDispatchQueueSerialNum:(unint64_t *)num;
+- (unint64_t)recordSampleTo:(id)to timestamp:(unint64_t)timestamp thread:(unsigned int)thread clearMemoryCache:(BOOL)cache;
 - (void)_checkDispatchThreadLimits;
-- (void)_fixupStacks:(id)a3;
+- (void)_fixupStacks:(id)stacks;
 - (void)_runSamplingThread;
 - (void)dealloc;
 - (void)flushData;
-- (void)initializeSamplingContextWithOptions:(int)a3;
-- (void)printRecursiveBacktrace:(id)a3 threadIndex:(unsigned int)a4;
-- (void)sampleForDuration:(unsigned int)a3 interval:(unsigned int)a4;
-- (void)setSamplingInterval:(double)a3;
-- (void)setSymbolicator:(_CSTypeRef)a3;
-- (void)setTimeLimit:(double)a3;
-- (void)writeOutput:(id)a3 append:(BOOL)a4;
+- (void)initializeSamplingContextWithOptions:(int)options;
+- (void)printRecursiveBacktrace:(id)backtrace threadIndex:(unsigned int)index;
+- (void)sampleForDuration:(unsigned int)duration interval:(unsigned int)interval;
+- (void)setSamplingInterval:(double)interval;
+- (void)setSymbolicator:(_CSTypeRef)symbolicator;
+- (void)setTimeLimit:(double)limit;
+- (void)writeOutput:(id)output append:(BOOL)append;
 @end
 
 @implementation VMUSampler
 
 - (id)sampleAllThreadsOnce
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(VMUSampler *)self initializeSamplingContextWithOptions:0];
   if (self->_samplingContext)
   {
-    if ([(VMUSampler *)self recordSampleTo:v3 timestamp:mach_absolute_time() thread:0 clearMemoryCache:0])
+    if ([(VMUSampler *)self recordSampleTo:array timestamp:mach_absolute_time() thread:0 clearMemoryCache:0])
     {
-      [(VMUSampler *)self _fixupStacks:v3];
+      [(VMUSampler *)self _fixupStacks:array];
     }
 
     else
     {
 
-      v3 = 0;
+      array = 0;
     }
 
-    v3 = v3;
-    v4 = v3;
+    array = array;
+    v4 = array;
   }
 
   else
@@ -123,9 +123,9 @@
   return 1;
 }
 
-- (VMUSampler)initWithPID:(int)a3 task:(unsigned int)a4 processName:(id)a5 is64Bit:(BOOL)a6 options:(unint64_t)a7
+- (VMUSampler)initWithPID:(int)d task:(unsigned int)task processName:(id)name is64Bit:(BOOL)bit options:(unint64_t)options
 {
-  v11 = a5;
+  nameCopy = name;
   v42.receiver = self;
   v42.super_class = VMUSampler;
   v12 = [(VMUSampler *)&v42 init];
@@ -138,19 +138,19 @@ LABEL_27:
   }
 
   v14 = 0;
-  if (a3 && a4)
+  if (d && task)
   {
-    v12->_pid = a3;
-    v12->_task = a4;
-    v12->_options = a7 | ((a7 & 0x40) >> 1);
+    v12->_pid = d;
+    v12->_task = task;
+    v12->_options = options | ((options & 0x40) >> 1);
     v15 = [[VMUProcInfo alloc] initWithPid:v12->_pid];
     if ([(VMUProcInfo *)v15 shouldAnalyzeWithCorpse])
     {
       v13->_options |= 0x200uLL;
-      if ((a7 & 0x20) != 0)
+      if ((options & 0x20) != 0)
       {
 LABEL_6:
-        if ((a7 & 0x10) == 0)
+        if ((options & 0x10) == 0)
         {
 LABEL_16:
           v25 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:1282 valueOptions:259];
@@ -158,13 +158,13 @@ LABEL_16:
           v13->_lastThreadBacktraceMap = v25;
 
           v13->_numberOfCopiedBacktraces = 0;
-          if ((a7 & 0x40) != 0)
+          if ((options & 0x40) != 0)
           {
             v13->_symbolicator._opaque_1 = 0;
             v13->_symbolicator._opaque_2 = 0;
           }
 
-          else if ((a7 & 0x20) != 0)
+          else if ((options & 0x20) != 0)
           {
             if (initWithPID_task_processName_is64Bit_options__once_token != -1)
             {
@@ -183,7 +183,7 @@ LABEL_16:
           else
           {
             task = v13->_task;
-            if (a7)
+            if (options)
             {
               CSSymbolicatorGetFlagsForNListOnlyData();
             }
@@ -231,14 +231,14 @@ LABEL_13:
       }
     }
 
-    else if ((a7 & 0x20) != 0)
+    else if ((options & 0x20) != 0)
     {
       goto LABEL_6;
     }
 
-    if (v11)
+    if (nameCopy)
     {
-      v16 = [v11 copy];
+      v16 = [nameCopy copy];
       processName = v13->_processName;
       v13->_processName = v16;
     }
@@ -246,13 +246,13 @@ LABEL_13:
     else
     {
       processName = [(VMUProcInfo *)v15 userAppName];
-      v18 = [processName lastPathComponent];
-      v19 = [v18 copy];
+      lastPathComponent = [processName lastPathComponent];
+      v19 = [lastPathComponent copy];
       v20 = v13->_processName;
       v13->_processName = v19;
     }
 
-    if ((a7 & 0x10) == 0)
+    if ((options & 0x10) == 0)
     {
       goto LABEL_16;
     }
@@ -275,11 +275,11 @@ uint64_t __59__VMUSampler_initWithPID_task_processName_is64Bit_options___block_i
   return result;
 }
 
-- (void)initializeSamplingContextWithOptions:(int)a3
+- (void)initializeSamplingContextWithOptions:(int)options
 {
   if (self->_samplingContext)
   {
-    if (self->_samplingContextOptions == a3)
+    if (self->_samplingContextOptions == options)
     {
       return;
     }
@@ -289,19 +289,19 @@ uint64_t __59__VMUSampler_initWithPID_task_processName_is64Bit_options___block_i
     self->_samplingContextOptions = 0;
   }
 
-  v5 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   opaque_1 = self->_symbolicator._opaque_1;
   options = self->_options;
   if ((options & 0x200) != 0)
   {
-    v10 = (options >> 3) & 0x20 | (options >> 2) & 0x10 | (options >> 4) & 0x1C0 | a3 | 0x10;
+    v10 = (options >> 3) & 0x20 | (options >> 2) & 0x10 | (options >> 4) & 0x1C0 | options | 0x10;
   }
 
   else
   {
     opaque_2 = self->_symbolicator._opaque_2;
     v9 = self->_symbolicator._opaque_1;
-    v10 = (options >> 3) & 0x20 | (options >> 2) & 0x10 | (options >> 4) & 0x1C0 | a3;
+    v10 = (options >> 3) & 0x20 | (options >> 2) & 0x10 | (options >> 4) & 0x1C0 | options;
   }
 
   pid = self->_pid;
@@ -316,7 +316,7 @@ uint64_t __59__VMUSampler_initWithPID_task_processName_is64Bit_options___block_i
 
   if (g_environment_flags == 1)
   {
-    [v5 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     NSLog(&cfstr_TimeToInitiali.isa, -v14);
   }
 }
@@ -340,12 +340,12 @@ uint64_t __59__VMUSampler_initWithPID_task_processName_is64Bit_options___block_i
   }
 }
 
-- (unint64_t)recordSampleTo:(id)a3 timestamp:(unint64_t)a4 thread:(unsigned int)a5 clearMemoryCache:(BOOL)a6
+- (unint64_t)recordSampleTo:(id)to timestamp:(unint64_t)timestamp thread:(unsigned int)thread clearMemoryCache:(BOOL)cache
 {
-  v6 = a6;
+  cacheCopy = cache;
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v56 = a5;
+  toCopy = to;
+  threadCopy = thread;
   act_list = 0;
   act_listCnt = 0;
   v53 = 0;
@@ -361,9 +361,9 @@ uint64_t __59__VMUSampler_initWithPID_task_processName_is64Bit_options___block_i
     goto LABEL_26;
   }
 
-  if (a5)
+  if (thread)
   {
-    act_list = &v56;
+    act_list = &threadCopy;
     v10 = 1;
     act_listCnt = 1;
   }
@@ -442,8 +442,8 @@ LABEL_26:
 
   if (act_list && v19)
   {
-    v45 = __PAIR64__(v12, v6);
-    v46 = v9;
+    v45 = __PAIR64__(v12, cacheCopy);
+    v46 = toCopy;
     self->_mainThread = *act_list;
     v47 = (BYTE1(self->_options) >> 5) & 1;
 LABEL_36:
@@ -514,8 +514,8 @@ LABEL_67:
 LABEL_68:
       if (++v20 >= v19)
       {
-        v9 = v46;
-        v6 = v45;
+        toCopy = v46;
+        cacheCopy = v45;
         if ((v45 & 0x100000000) != 0)
         {
           goto LABEL_70;
@@ -527,9 +527,9 @@ LABEL_68:
 
     if (v21)
     {
-      v32 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
 
-      v48 = v32;
+      v48 = date;
     }
 
     v33 = [[VMUBacktrace alloc] initWithSamplingContext:self->_samplingContext thread:v23];
@@ -545,7 +545,7 @@ LABEL_68:
     }
 
 LABEL_56:
-    [(VMUBacktrace *)v33 setTimestamp:a4, v45];
+    [(VMUBacktrace *)v33 setTimestamp:timestamp, v45];
     v33->_callstack.context.pid = self->_pid;
     if (v13)
     {
@@ -587,8 +587,8 @@ LABEL_63:
   v47 = (BYTE1(self->_options) >> 5) & 1;
   if (v19)
   {
-    v45 = __PAIR64__(v12, v6);
-    v46 = v9;
+    v45 = __PAIR64__(v12, cacheCopy);
+    v46 = toCopy;
     goto LABEL_36;
   }
 
@@ -627,7 +627,7 @@ LABEL_76:
             ++v38;
           }
 
-          if (!a5)
+          if (!thread)
           {
             mach_port_deallocate(*v39, self->_previousThreadList[v37]);
           }
@@ -677,37 +677,37 @@ LABEL_89:
     free(v13);
   }
 
-  if (v6 && self->_samplingContext)
+  if (cacheCopy && self->_samplingContext)
   {
     sampling_context_clear_cache();
   }
 
   task_resume2(self->_suspensionToken);
   self->_stacksFixed = 0;
-  if (!(([v9 count] != 0) | v47 & 1) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!(([toCopy count] != 0) | v47 & 1) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     [VMUSampler recordSampleTo:timestamp:thread:clearMemoryCache:];
   }
 
-  v16 = [v9 count];
+  v16 = [toCopy count];
 
 LABEL_27:
   v17 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (void)_fixupStacks:(id)a3
+- (void)_fixupStacks:(id)stacks
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  stacksCopy = stacks;
+  v5 = stacksCopy;
   if (!self->_stacksFixed && self->_samplingContext)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [stacksCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -797,23 +797,23 @@ LABEL_27:
   return 1;
 }
 
-- (void)setSamplingInterval:(double)a3
+- (void)setSamplingInterval:(double)interval
 {
-  if (a3 > 0.0)
+  if (interval > 0.0)
   {
-    self->_interval = a3;
+    self->_interval = interval;
   }
 }
 
-- (void)setTimeLimit:(double)a3
+- (void)setTimeLimit:(double)limit
 {
-  if (a3 >= 0.0)
+  if (limit >= 0.0)
   {
-    self->_timeLimit = a3;
+    self->_timeLimit = limit;
   }
 }
 
-- (void)setSymbolicator:(_CSTypeRef)a3
+- (void)setSymbolicator:(_CSTypeRef)symbolicator
 {
   opaque_1 = self->_symbolicator._opaque_1;
   opaque_2 = self->_symbolicator._opaque_2;
@@ -856,7 +856,7 @@ LABEL_27:
   }
 }
 
-- (id)threadNameForThread:(unsigned int)a3 returnedThreadId:(unint64_t *)a4 returnedDispatchQueueSerialNum:(unint64_t *)a5
+- (id)threadNameForThread:(unsigned int)thread returnedThreadId:(unint64_t *)id returnedDispatchQueueSerialNum:(unint64_t *)num
 {
   samplingContext = self->_samplingContext;
   if (samplingContext)
@@ -873,14 +873,14 @@ LABEL_27:
   return samplingContext;
 }
 
-- (id)dispatchQueueNameForSerialNumber:(unint64_t)a3 returnedConcurrentFlag:(BOOL *)a4 returnedThreadId:(unint64_t *)a5
+- (id)dispatchQueueNameForSerialNumber:(unint64_t)number returnedConcurrentFlag:(BOOL *)flag returnedThreadId:(unint64_t *)id
 {
   if (self->_samplingContext)
   {
-    if (a3)
+    if (number)
     {
       v6 = dispatch_queue_name_for_serial_number();
-      if (!a4)
+      if (!flag)
       {
         goto LABEL_5;
       }
@@ -889,7 +889,7 @@ LABEL_27:
     else
     {
       v6 = 0;
-      if (!a4)
+      if (!flag)
       {
 LABEL_5:
         if (v6)
@@ -906,19 +906,19 @@ LABEL_5:
       }
     }
 
-    *a4 = 0;
+    *flag = 0;
     goto LABEL_5;
   }
 
-  if (a4)
+  if (flag)
   {
-    *a4 = 0;
+    *flag = 0;
   }
 
   v7 = 0;
-  if (a5)
+  if (id)
   {
-    *a5 = 0;
+    *id = 0;
   }
 
 LABEL_14:
@@ -926,9 +926,9 @@ LABEL_14:
   return v7;
 }
 
-- (id)threadDescriptionStringForBacktrace:(id)a3 returnedAddress:(unint64_t *)a4
+- (id)threadDescriptionStringForBacktrace:(id)backtrace returnedAddress:(unint64_t *)address
 {
-  v6 = a3;
+  backtraceCopy = backtrace;
   if (!self->_threadPortToNameMap)
   {
     v7 = objc_opt_new();
@@ -940,31 +940,31 @@ LABEL_14:
     self->_dispatchQueueSerialNumToNameMap = v9;
   }
 
-  v11 = [v6 thread];
-  v12 = [(VMUSampler *)self mainThread];
+  thread = [backtraceCopy thread];
+  mainThread = [(VMUSampler *)self mainThread];
   v38 = 0;
   v39 = 0;
-  v13 = [(VMUSampler *)self threadNameForThread:v11 returnedThreadId:&v39 returnedDispatchQueueSerialNum:&v38];
+  v13 = [(VMUSampler *)self threadNameForThread:thread returnedThreadId:&v39 returnedDispatchQueueSerialNum:&v38];
   v14 = [v13 length];
-  v15 = [v6 dispatchQueueSerialNumber];
-  v16 = v15;
-  if (v11 == v12)
+  dispatchQueueSerialNumber = [backtraceCopy dispatchQueueSerialNumber];
+  v16 = dispatchQueueSerialNumber;
+  if (thread == mainThread)
   {
-    if (!v15 || v38 != v15)
+    if (!dispatchQueueSerialNumber || v38 != dispatchQueueSerialNumber)
     {
       goto LABEL_13;
     }
   }
 
-  else if (!v15)
+  else if (!dispatchQueueSerialNumber)
   {
 LABEL_13:
     v22 = self->_threadPortToNameMap;
-    [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11];
-    v24 = v23 = a4;
+    [MEMORY[0x1E696AD98] numberWithUnsignedInt:thread];
+    v24 = v23 = address;
     v19 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:v24];
 
-    a4 = v23;
+    address = v23;
     if (!v19)
     {
       if (v39)
@@ -974,7 +974,7 @@ LABEL_13:
 
       else
       {
-        [MEMORY[0x1E696AD60] stringWithFormat:@"Thread_%x", v11];
+        [MEMORY[0x1E696AD60] stringWithFormat:@"Thread_%x", thread];
       }
       v25 = ;
       v26 = v25;
@@ -983,7 +983,7 @@ LABEL_13:
         [v25 appendFormat:@": %@", v13];
       }
 
-      else if (v11 == v12)
+      else if (thread == mainThread)
       {
         [v25 appendFormat:@": %@", kVMUMainThreadName[0]];
         if (!v38 && (self->_options & 4) == 0)
@@ -995,13 +995,13 @@ LABEL_13:
       v27 = self->_threadPortToNameMap;
       v28 = MEMORY[0x1E696AD98];
       v19 = v26;
-      v29 = [v28 numberWithUnsignedInt:v11];
+      v29 = [v28 numberWithUnsignedInt:thread];
       [(NSMutableDictionary *)v27 setObject:v19 forKeyedSubscript:v29];
     }
 
-    v16 = v11;
+    v16 = thread;
 LABEL_25:
-    if (!a4)
+    if (!address)
     {
       goto LABEL_27;
     }
@@ -1015,7 +1015,7 @@ LABEL_25:
   }
 
   v17 = self->_dispatchQueueSerialNumToNameMap;
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v15];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:dispatchQueueSerialNumber];
   v19 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:v18];
 
   if (v19)
@@ -1057,10 +1057,10 @@ LABEL_25:
     [(NSMutableDictionary *)v32 setObject:v34 forKeyedSubscript:v35];
   }
 
-  if (a4)
+  if (address)
   {
 LABEL_26:
-    *a4 = v16;
+    *address = v16;
   }
 
 LABEL_27:
@@ -1068,10 +1068,10 @@ LABEL_27:
   return v19;
 }
 
-- (void)sampleForDuration:(unsigned int)a3 interval:(unsigned int)a4
+- (void)sampleForDuration:(unsigned int)duration interval:(unsigned int)interval
 {
-  [(VMUSampler *)self setSamplingInterval:a4 / 1000000.0];
-  [(VMUSampler *)self setTimeLimit:a3];
+  [(VMUSampler *)self setSamplingInterval:interval / 1000000.0];
+  [(VMUSampler *)self setTimeLimit:duration];
   [(VMUSampler *)self start];
 
   [(VMUSampler *)self waitUntilDone];
@@ -1110,11 +1110,11 @@ LABEL_27:
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, self->_processName, self->_pid, v4];
   if (self->_dispatchThreadSoftLimitCount || self->_dispatchThreadHardLimitCount)
   {
-    v7 = [MEMORY[0x1E696AD60] string];
-    v8 = v7;
+    string = [MEMORY[0x1E696AD60] string];
+    v8 = string;
     if (self->_dispatchThreadSoftLimitCount)
     {
-      [v7 appendFormat:@"Dispatch Thread %@ Limit: %u reached in %u of %u samples -- too many dispatch threads blocked in synchronous operations\n", @"Soft", self->_dispatchThreadSoftLimit, self->_dispatchThreadSoftLimitCount, self->_numberOfSamples];
+      [string appendFormat:@"Dispatch Thread %@ Limit: %u reached in %u of %u samples -- too many dispatch threads blocked in synchronous operations\n", @"Soft", self->_dispatchThreadSoftLimit, self->_dispatchThreadSoftLimitCount, self->_numberOfSamples];
     }
 
     if (self->_dispatchThreadHardLimitCount)
@@ -1131,9 +1131,9 @@ LABEL_27:
   }
 
   v9 = [(VMUProcessDescription *)self->_processDescription description];
-  v10 = [(VMUProcessDescription *)self->_processDescription binaryImagesDescription];
-  v11 = [(VMUSampler *)self stopSamplingAndReturnCallNode];
-  v12 = [v11 fullOutputWithThreshold:5];
+  binaryImagesDescription = [(VMUProcessDescription *)self->_processDescription binaryImagesDescription];
+  stopSamplingAndReturnCallNode = [(VMUSampler *)self stopSamplingAndReturnCallNode];
+  v12 = [stopSamplingAndReturnCallNode fullOutputWithThreshold:5];
   v13 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:v6];
   if ([v9 length])
   {
@@ -1146,9 +1146,9 @@ LABEL_27:
   }
 
   [v13 appendString:v12];
-  if ([v10 length])
+  if ([binaryImagesDescription length])
   {
-    [v13 appendFormat:@"\n%@", v10];
+    [v13 appendFormat:@"\n%@", binaryImagesDescription];
   }
 
   objc_autoreleasePoolPop(v3);
@@ -1156,21 +1156,21 @@ LABEL_27:
   return v13;
 }
 
-- (void)writeOutput:(id)a3 append:(BOOL)a4
+- (void)writeOutput:(id)output append:(BOOL)append
 {
-  v4 = a4;
+  appendCopy = append;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  outputCopy = output;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(VMUSampler *)self outputString];
-  v9 = [v8 UTF8String];
+  outputString = [(VMUSampler *)self outputString];
+  uTF8String = [outputString UTF8String];
 
   options = self->_options;
-  if (v6)
+  if (outputCopy)
   {
-    v11 = [v6 UTF8String];
-    v12 = v11;
-    if (v4)
+    uTF8String2 = [outputCopy UTF8String];
+    v12 = uTF8String2;
+    if (appendCopy)
     {
       v13 = "ae";
     }
@@ -1180,7 +1180,7 @@ LABEL_27:
       v13 = "we";
     }
 
-    v14 = fopen(v11, v13);
+    v14 = fopen(uTF8String2, v13);
     v15 = 1;
     if (v14)
     {
@@ -1203,13 +1203,13 @@ LABEL_27:
     v19 = [(NSString *)processName stringByReplacingOccurrencesOfString:@" " withString:@"_"];
     v20 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v20 setDateFormat:@"yyyy-MM-dd_HHmmss"];
-    v21 = [(VMUProcessDescription *)self->_processDescription date];
-    if (!v21)
+    date = [(VMUProcessDescription *)self->_processDescription date];
+    if (!date)
     {
-      v21 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
-    v22 = [v20 stringFromDate:v21];
+    v22 = [v20 stringFromDate:date];
     v26 = v19;
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/tmp/%@_%@_XXXX.sample.txt", v19, v22];
     snprintf(__str, 0x400uLL, "%s", [v23 UTF8String]);
@@ -1233,8 +1233,8 @@ LABEL_27:
     if (v14)
     {
 LABEL_6:
-      v16 = strlen(v9);
-      if (!fwrite(v9, v16, 1uLL, v14))
+      v16 = strlen(uTF8String);
+      if (!fwrite(uTF8String, v16, 1uLL, v14))
       {
         [VMUSampler writeOutput:v12 append:?];
         v15 = 0;
@@ -1257,7 +1257,7 @@ LABEL_6:
 LABEL_10:
           fprintf(*MEMORY[0x1E69E9848], "Sample analysis of process %d written to file %s\n", self->_pid, v12);
           LOBYTE(v17) = 0;
-          if (v6)
+          if (outputCopy)
           {
             goto LABEL_22;
           }
@@ -1267,7 +1267,7 @@ LABEL_10:
       }
 
       v17 = (options >> 3) & 1;
-      if (v6)
+      if (outputCopy)
       {
         goto LABEL_22;
       }
@@ -1279,7 +1279,7 @@ LABEL_10:
   perror("fopen");
   fprintf(*MEMORY[0x1E69E9848], "Unable to open/create sample file %s\n", v12);
   v17 = (options >> 3) & 1;
-  if (v6)
+  if (outputCopy)
   {
     goto LABEL_22;
   }
@@ -1288,7 +1288,7 @@ LABEL_20:
   if ((v17 & 1) == 0)
   {
     putchar(10);
-    printf("%s", v9);
+    printf("%s", uTF8String);
     putchar(10);
   }
 
@@ -1298,7 +1298,7 @@ LABEL_22:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (id)setUpForFormatFrame:(unint64_t)a3
+- (id)setUpForFormatFrame:(unint64_t)frame
 {
   v5 = objc_opt_new();
   opaque_1 = self->_symbolicator._opaque_1;
@@ -1318,7 +1318,7 @@ LABEL_22:
   [v5 setObject:v9 forKeyedSubscript:@"region"];
   if (CSIsNull())
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:frame];
     v11 = @"imageOffset";
   }
 
@@ -1328,9 +1328,9 @@ LABEL_22:
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:BaseAddress];
     [v5 setObject:v13 forKeyedSubscript:@"base"];
 
-    if (a3 >= BaseAddress)
+    if (frame >= BaseAddress)
     {
-      v14 = a3 - BaseAddress;
+      v14 = frame - BaseAddress;
     }
 
     else
@@ -1359,7 +1359,7 @@ LABEL_22:
       [v5 setObject:@"???" forKeyedSubscript:@"symbol"];
     }
 
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3 - CSSymbolGetRange()];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:frame - CSSymbolGetRange()];
     [v5 setObject:v18 forKeyedSubscript:@"symbolLocation"];
 
     CSSymbolOwnerGetSourceInfoWithAddress();
@@ -1388,11 +1388,11 @@ LABEL_17:
   return v5;
 }
 
-- (id)formatFrame:(unint64_t)a3 showBinaryImage:(BOOL)a4
+- (id)formatFrame:(unint64_t)frame showBinaryImage:(BOOL)image
 {
-  v4 = a4;
+  imageCopy = image;
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [(VMUSampler *)self setUpForFormatFrame:a3];
+  v5 = [(VMUSampler *)self setUpForFormatFrame:frame];
   v6 = v5;
   if (v5)
   {
@@ -1405,24 +1405,24 @@ LABEL_17:
     }
 
     v9 = [v6 objectForKeyedSubscript:@"base"];
-    v10 = [v9 unsignedLongLongValue];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
 
     v11 = [v6 objectForKeyedSubscript:@"imageOffset"];
-    v12 = [v11 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v11 unsignedLongLongValue];
 
-    v13 = v12 + v10;
+    v13 = unsignedLongLongValue2 + unsignedLongLongValue;
     if ([v6 count] < 3)
     {
-      if (v10 && v12)
+      if (unsignedLongLongValue && unsignedLongLongValue2)
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p + %llu", v10, v12];
+        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p + %llu", unsignedLongLongValue, unsignedLongLongValue2];
       }
 
       else
       {
         if (!v13)
         {
-          v13 = v12;
+          v13 = unsignedLongLongValue2;
         }
 
         v17 = @"???";
@@ -1431,7 +1431,7 @@ LABEL_17:
 
     else
     {
-      v34 = v12 + v10;
+      v34 = unsignedLongLongValue2 + unsignedLongLongValue;
       v14 = [v6 objectForKeyedSubscript:@"symbol"];
       v15 = [v6 objectForKeyedSubscript:@"symbolLocation"];
       if (v15)
@@ -1439,7 +1439,7 @@ LABEL_17:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v15 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v15 unsignedLongLongValue];
         }
 
         else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -1465,20 +1465,20 @@ LABEL_17:
       {
         v33 = v7;
         v24 = v15;
-        v25 = v4;
+        v25 = imageCopy;
         v26 = MEMORY[0x1E696AEC0];
-        v27 = [v22 BOOLValue];
+        bOOLValue = [v22 BOOLValue];
         v28 = @" [inlined]";
-        if (!v27)
+        if (!bOOLValue)
         {
           v28 = &stru_1F461F9C8;
         }
 
         v29 = v26;
-        v4 = v25;
+        imageCopy = v25;
         v15 = v24;
         v7 = v33;
-        v17 = [v29 stringWithFormat:@"%@ + %llu%@%@", v14, v12, v21, v28];
+        v17 = [v29 stringWithFormat:@"%@ + %llu%@%@", v14, unsignedLongLongValue2, v21, v28];
       }
 
       else
@@ -1489,7 +1489,7 @@ LABEL_17:
       v13 = v34;
     }
 
-    if (v4)
+    if (imageCopy)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\t%#18llx %@", v7, v13, v17];
     }
@@ -1511,14 +1511,14 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)wasAllRecursionPreviouslyPrinted:(id)a3
+- (BOOL)wasAllRecursionPreviouslyPrinted:(id)printed
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = printed;
   v4 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
@@ -1535,7 +1535,7 @@ LABEL_17:
         }
 
         v9 = [*(*(&v22 + 1) + 8 * i) objectForKeyedSubscript:@"keyPC"];
-        v10 = [v9 unsignedLongLongValue];
+        unsignedLongLongValue = [v9 unsignedLongLongValue];
 
         previousRecursionKeyPCs = self->_previousRecursionKeyPCs;
         if (!previousRecursionKeyPCs)
@@ -1547,14 +1547,14 @@ LABEL_17:
           previousRecursionKeyPCs = self->_previousRecursionKeyPCs;
         }
 
-        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
+        v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue];
         v15 = [(NSMutableSet *)previousRecursionKeyPCs containsObject:v14];
 
         if ((v15 & 1) == 0)
         {
           ++v6;
           v16 = self->_previousRecursionKeyPCs;
-          v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
+          v17 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedLongLongValue];
           [(NSMutableSet *)v16 addObject:v17];
         }
       }
@@ -1575,21 +1575,21 @@ LABEL_17:
   return v18;
 }
 
-- (void)printRecursiveBacktrace:(id)a3 threadIndex:(unsigned int)a4
+- (void)printRecursiveBacktrace:(id)backtrace threadIndex:(unsigned int)index
 {
-  v42 = a3;
-  v6 = [v42 recursionInfoArray];
-  v7 = v6;
-  if ((self->_options & 0x2000) == 0 || v6 && ![(VMUSampler *)self wasAllRecursionPreviouslyPrinted:v6])
+  backtraceCopy = backtrace;
+  recursionInfoArray = [backtraceCopy recursionInfoArray];
+  v7 = recursionInfoArray;
+  if ((self->_options & 0x2000) == 0 || recursionInfoArray && ![(VMUSampler *)self wasAllRecursionPreviouslyPrinted:recursionInfoArray])
   {
     if ([v7 count] >= 2)
     {
       printf("MULTIPLE RANGES OF RECURSION: %zu\n", [v7 count]);
     }
 
-    v33 = a4;
-    v8 = [v42 originalLength];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", v8];
+    indexCopy = index;
+    originalLength = [backtraceCopy originalLength];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", originalLength];
     v10 = [v9 length];
 
     if (v10 <= 3)
@@ -1604,22 +1604,22 @@ LABEL_17:
 
     v40 = v11;
     v12 = objc_opt_new();
-    v13 = [v42 backtrace];
+    backtrace = [backtraceCopy backtrace];
     v36 = [v7 count];
-    if ([v42 backtraceLength])
+    if ([backtraceCopy backtraceLength])
     {
-      v38 = v13;
+      v38 = backtrace;
       v14 = 0;
       v15 = 0;
       v16 = 0;
-      v41 = 0;
+      keyPC = 0;
       v37 = 0;
       v34 = 0;
       v45 = 0;
       v35 = 0;
       v17 = 1;
       v39 = v7;
-      v43 = self;
+      selfCopy = self;
       while (1)
       {
         if (v7 && !v16)
@@ -1635,13 +1635,13 @@ LABEL_19:
 
           v18 = [v7 objectAtIndexedSubscript:v37];
           v16 = [[VMUBacktraceRecursionInfo alloc] initWithDictionary:v18];
-          v41 = [(VMUBacktraceRecursionInfo *)v16 keyPC];
+          keyPC = [(VMUBacktraceRecursionInfo *)v16 keyPC];
           HIDWORD(v35) = [(VMUBacktraceRecursionInfo *)v16 hottestElided];
           LODWORD(v35) = [(VMUBacktraceRecursionInfo *)v16 coldestElided];
-          v19 = [(VMUBacktraceRecursionInfo *)v16 depth];
+          depth = [(VMUBacktraceRecursionInfo *)v16 depth];
 
-          v45 = v19;
-          v34 = v19;
+          v45 = depth;
+          v34 = depth;
         }
 
         v44 = v16;
@@ -1654,14 +1654,14 @@ LABEL_19:
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"--------"];
         [v12 addObject:v21];
 
-        v22 = [(VMUSampler *)self formatFrame:v41 showBinaryImage:0];
+        v22 = [(VMUSampler *)self formatFrame:keyPC showBinaryImage:0];
         v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s ELIDED %u LEVELS OF RECURSION THROUGH %s", "--------", (v34 - 6), objc_msgSend(v22, "UTF8String")];
         [v12 addObject:v23];
 
         v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"--------"];
         [v12 addObject:v24];
 
-        self = v43;
+        self = selfCopy;
         v25 = 3;
 LABEL_20:
         v26 = [(VMUSampler *)self formatFrame:*(v38 + 8 * v14) showBinaryImage:1];
@@ -1672,7 +1672,7 @@ LABEL_20:
         if (v25)
         {
           v16 = v44;
-          if (*(v38 + 8 * v14) == v41)
+          if (*(v38 + 8 * v14) == keyPC)
           {
             if (v36 == 1)
             {
@@ -1714,8 +1714,8 @@ LABEL_20:
 
         ++v14;
         --v17;
-        self = v43;
-        if (v14 >= [v42 backtraceLength])
+        self = selfCopy;
+        if (v14 >= [backtraceCopy backtraceLength])
         {
           goto LABEL_35;
         }
@@ -1725,9 +1725,9 @@ LABEL_20:
     v16 = 0;
 LABEL_35:
     v29 = [v12 componentsJoinedByString:@"\n"];
-    [(VMUSampler *)self threadDescriptionStringForBacktrace:v42 returnedAddress:0];
+    [(VMUSampler *)self threadDescriptionStringForBacktrace:backtraceCopy returnedAddress:0];
     v31 = v30 = v12;
-    printf("Thread %u::  %s\n", v33, [v31 UTF8String]);
+    printf("Thread %u::  %s\n", indexCopy, [v31 UTF8String]);
     puts([v29 UTF8String]);
     puts("\n");
   }

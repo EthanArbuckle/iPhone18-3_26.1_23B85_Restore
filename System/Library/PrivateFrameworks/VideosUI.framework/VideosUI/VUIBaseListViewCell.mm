@@ -1,41 +1,41 @@
 @interface VUIBaseListViewCell
-- (VUIBaseListViewCell)initWithFrame:(CGRect)a3;
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
+- (VUIBaseListViewCell)initWithFrame:(CGRect)frame;
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
 - (id)contentView;
 - (unint64_t)_floatingViewControlState;
 - (void)_updateSelectedBackgroundColor;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldAppearSelected:(BOOL)a3 withAnimationCoordinator:(id)a4;
-- (void)setVisualEffectViewBackgroundEnabled:(BOOL)a3;
-- (void)updateFloatingViewControlStateForPreviouslyFocusedView:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setShouldAppearSelected:(BOOL)selected withAnimationCoordinator:(id)coordinator;
+- (void)setVisualEffectViewBackgroundEnabled:(BOOL)enabled;
+- (void)updateFloatingViewControlStateForPreviouslyFocusedView:(id)view withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation VUIBaseListViewCell
 
-- (VUIBaseListViewCell)initWithFrame:(CGRect)a3
+- (VUIBaseListViewCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = VUIBaseListViewCell;
-  return [(VUIBaseListViewCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(VUIBaseListViewCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setVisualEffectViewBackgroundEnabled:(BOOL)a3
+- (void)setVisualEffectViewBackgroundEnabled:(BOOL)enabled
 {
-  if (self->_visualEffectViewBackgroundEnabled != a3)
+  if (self->_visualEffectViewBackgroundEnabled != enabled)
   {
-    self->_visualEffectViewBackgroundEnabled = a3;
-    if (a3)
+    self->_visualEffectViewBackgroundEnabled = enabled;
+    if (enabled)
     {
-      v4 = [(VUIBaseListViewCell *)self traitCollection];
-      if ([v4 userInterfaceStyle] == 2)
+      traitCollection = [(VUIBaseListViewCell *)self traitCollection];
+      if ([traitCollection userInterfaceStyle] == 2)
       {
         v5 = 4015;
       }
@@ -54,8 +54,8 @@
       v10 = self->_backgroundVisualEffectView;
       [(_UIFloatingContentView *)self->_floatingView cornerRadius];
       [(UIVisualEffectView *)v10 _setCornerRadius:?];
-      v11 = [(_UIFloatingContentView *)self->_floatingView visualEffectContainerView];
-      [v11 addSubview:self->_backgroundVisualEffectView];
+      visualEffectContainerView = [(_UIFloatingContentView *)self->_floatingView visualEffectContainerView];
+      [visualEffectContainerView addSubview:self->_backgroundVisualEffectView];
 
       [(VUIBaseListViewCell *)self setNeedsLayout];
     }
@@ -69,97 +69,97 @@
   }
 }
 
-- (void)setShouldAppearSelected:(BOOL)a3 withAnimationCoordinator:(id)a4
+- (void)setShouldAppearSelected:(BOOL)selected withAnimationCoordinator:(id)coordinator
 {
-  if (self->_shouldAppearSelected != a3)
+  if (self->_shouldAppearSelected != selected)
   {
-    self->_shouldAppearSelected = a3;
+    self->_shouldAppearSelected = selected;
     floatingView = self->_floatingView;
-    v7 = a4;
-    [(_UIFloatingContentView *)floatingView setControlState:[(VUIBaseListViewCell *)self _floatingViewControlState] withAnimationCoordinator:v7];
+    coordinatorCopy = coordinator;
+    [(_UIFloatingContentView *)floatingView setControlState:[(VUIBaseListViewCell *)self _floatingViewControlState] withAnimationCoordinator:coordinatorCopy];
   }
 }
 
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state
 {
-  v13 = a3;
-  if (a4 == 1)
+  colorCopy = color;
+  if (state == 1)
   {
-    objc_storeStrong(&self->_highlightedBackgroundColor, a3);
-    v10 = [(VUIBaseListViewCell *)self selectedBackgroundView];
+    objc_storeStrong(&self->_highlightedBackgroundColor, color);
+    selectedBackgroundView = [(VUIBaseListViewCell *)self selectedBackgroundView];
 
-    if (!v10)
+    if (!selectedBackgroundView)
     {
       v11 = objc_opt_new();
       [(VUIBaseListViewCell *)self setSelectedBackgroundView:v11];
     }
 
-    v9 = [(VUIBaseListViewCell *)self selectedBackgroundView];
+    selectedBackgroundView2 = [(VUIBaseListViewCell *)self selectedBackgroundView];
   }
 
   else
   {
-    if (a4)
+    if (state)
     {
       goto LABEL_10;
     }
 
-    objc_storeStrong(&self->_backgroundColor, a3);
-    v7 = [(VUIBaseListViewCell *)self backgroundView];
+    objc_storeStrong(&self->_backgroundColor, color);
+    backgroundView = [(VUIBaseListViewCell *)self backgroundView];
 
-    if (!v7)
+    if (!backgroundView)
     {
       v8 = objc_opt_new();
       [(VUIBaseListViewCell *)self setBackgroundView:v8];
     }
 
-    v9 = [(VUIBaseListViewCell *)self backgroundView];
+    selectedBackgroundView2 = [(VUIBaseListViewCell *)self backgroundView];
   }
 
-  v12 = v9;
-  [v9 setBackgroundColor:v13];
+  v12 = selectedBackgroundView2;
+  [selectedBackgroundView2 setBackgroundColor:colorCopy];
 
 LABEL_10:
 }
 
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
   if (self->_floatingView)
   {
-    v4 = [(_UIFloatingContentView *)self->_floatingView _preferredConfigurationForFocusAnimation:a3 inContext:a4];
+    v4 = [(_UIFloatingContentView *)self->_floatingView _preferredConfigurationForFocusAnimation:animation inContext:context];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = VUIBaseListViewCell;
-    v4 = [(VUIBaseListViewCell *)&v6 _preferredConfigurationForFocusAnimation:a3 inContext:a4];
+    v4 = [(VUIBaseListViewCell *)&v6 _preferredConfigurationForFocusAnimation:animation inContext:context];
   }
 
   return v4;
 }
 
-- (void)updateFloatingViewControlStateForPreviouslyFocusedView:(id)a3 withAnimationCoordinator:(id)a4
+- (void)updateFloatingViewControlStateForPreviouslyFocusedView:(id)view withAnimationCoordinator:(id)coordinator
 {
   floatingView = self->_floatingView;
-  v6 = a4;
-  [(_UIFloatingContentView *)floatingView setControlState:[(VUIBaseListViewCell *)self _floatingViewControlState] withAnimationCoordinator:v6];
+  coordinatorCopy = coordinator;
+  [(_UIFloatingContentView *)floatingView setControlState:[(VUIBaseListViewCell *)self _floatingViewControlState] withAnimationCoordinator:coordinatorCopy];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VUIBaseListViewCell *)self isFocused];
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  isFocused = [(VUIBaseListViewCell *)self isFocused];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(VUIBaseListViewCell *)self contentView];
-  v10 = [v9 subviews];
+  contentView = [(VUIBaseListViewCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v11 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -171,26 +171,26 @@ LABEL_10:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) setSelected:v8 animated:1 withAnimationCoordinator:v7];
+        [*(*(&v16 + 1) + 8 * v14++) setSelected:isFocused animated:1 withAnimationCoordinator:coordinatorCopy];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
   }
 
-  v15 = [v6 previouslyFocusedView];
-  [(VUIBaseListViewCell *)self updateFloatingViewControlStateForPreviouslyFocusedView:v15 withAnimationCoordinator:v7];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  [(VUIBaseListViewCell *)self updateFloatingViewControlStateForPreviouslyFocusedView:previouslyFocusedView withAnimationCoordinator:coordinatorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VUIBaseListViewCell;
@@ -199,10 +199,10 @@ LABEL_10:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(VUIBaseListViewCell *)self contentView];
-  v6 = [v5 subviews];
+  contentView = [(VUIBaseListViewCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v7 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -214,30 +214,30 @@ LABEL_10:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 setHighlighted:v3];
+          [v11 setHighlighted:highlightedCopy];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v8 = [subviews countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = VUIBaseListViewCell;
@@ -246,10 +246,10 @@ LABEL_10:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(VUIBaseListViewCell *)self contentView];
-  v8 = [v7 subviews];
+  contentView = [(VUIBaseListViewCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  v9 = [subviews countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -261,67 +261,67 @@ LABEL_10:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) setSelected:v5 animated:v4];
+        [*(*(&v13 + 1) + 8 * v12++) setSelected:selectedCopy animated:animatedCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 allObjects];
-  v9 = [v8 firstObject];
-  v10 = [v9 type];
+  beganCopy = began;
+  eventCopy = event;
+  allObjects = [beganCopy allObjects];
+  firstObject = [allObjects firstObject];
+  type = [firstObject type];
 
-  if ([v6 count] == 1 && (v10 & 0xFFFFFFFFFFFFFFFDLL) == 4 && -[VUIBaseListViewCell isFocused](self, "isFocused"))
+  if ([beganCopy count] == 1 && (type & 0xFFFFFFFFFFFFFFFDLL) == 4 && -[VUIBaseListViewCell isFocused](self, "isFocused"))
   {
     [(_UIFloatingContentView *)self->_floatingView setControlState:[(VUIBaseListViewCell *)self _floatingViewControlState]| 1 animated:1];
   }
 
   v11.receiver = self;
   v11.super_class = VUIBaseListViewCell;
-  [(VUIBaseListViewCell *)&v11 pressesBegan:v6 withEvent:v7];
+  [(VUIBaseListViewCell *)&v11 pressesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = VUIBaseListViewCell;
-  v6 = a3;
-  [(VUIBaseListViewCell *)&v11 pressesCancelled:v6 withEvent:a4];
-  v7 = [v6 allObjects];
-  v8 = [v7 firstObject];
-  v9 = [v8 type];
+  cancelledCopy = cancelled;
+  [(VUIBaseListViewCell *)&v11 pressesCancelled:cancelledCopy withEvent:event];
+  allObjects = [cancelledCopy allObjects];
+  firstObject = [allObjects firstObject];
+  type = [firstObject type];
 
-  v10 = [v6 count];
-  if (v10 == 1 && (v9 & 0xFFFFFFFFFFFFFFFDLL) == 4)
+  v10 = [cancelledCopy count];
+  if (v10 == 1 && (type & 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
     [(_UIFloatingContentView *)self->_floatingView setControlState:[(VUIBaseListViewCell *)self _floatingViewControlState] animated:1];
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = VUIBaseListViewCell;
-  v6 = a3;
-  [(VUIBaseListViewCell *)&v11 pressesEnded:v6 withEvent:a4];
-  v7 = [v6 allObjects];
-  v8 = [v7 firstObject];
-  v9 = [v8 type];
+  endedCopy = ended;
+  [(VUIBaseListViewCell *)&v11 pressesEnded:endedCopy withEvent:event];
+  allObjects = [endedCopy allObjects];
+  firstObject = [allObjects firstObject];
+  type = [firstObject type];
 
-  v10 = [v6 count];
-  if (v10 == 1 && (v9 & 0xFFFFFFFFFFFFFFFDLL) == 4)
+  v10 = [endedCopy count];
+  if (v10 == 1 && (type & 0xFFFFFFFFFFFFFFFDLL) == 4)
   {
     [(_UIFloatingContentView *)self->_floatingView setControlState:[(VUIBaseListViewCell *)self _floatingViewControlState] animated:1];
   }
@@ -331,15 +331,15 @@ LABEL_10:
 {
   if (self->_floatingView)
   {
-    v2 = [(_UIFloatingContentView *)self->_floatingView contentView];
+    selfCopy = [(_UIFloatingContentView *)self->_floatingView contentView];
   }
 
   else
   {
-    v2 = self;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)layoutSubviews
@@ -373,9 +373,9 @@ LABEL_10:
 
 - (unint64_t)_floatingViewControlState
 {
-  v3 = [(VUIBaseListViewCell *)self isFocused];
+  isFocused = [(VUIBaseListViewCell *)self isFocused];
   v4 = 8;
-  if (!v3)
+  if (!isFocused)
   {
     v4 = 0;
   }
@@ -394,12 +394,12 @@ LABEL_10:
 - (void)_updateSelectedBackgroundColor
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = [(VUIBaseListViewCell *)self traitCollection];
-  v9 = [v3 colorWithWhite:0.0 alpha:{dbl_1E42973E0[objc_msgSend(v4, "userInterfaceStyle") == 2]}];
+  traitCollection = [(VUIBaseListViewCell *)self traitCollection];
+  v9 = [v3 colorWithWhite:0.0 alpha:{dbl_1E42973E0[objc_msgSend(traitCollection, "userInterfaceStyle") == 2]}];
 
   [(_UIFloatingContentView *)self->_floatingView setBackgroundColor:v9 forState:4];
-  v5 = [(VUIBaseListViewCell *)self traitCollection];
-  if ([v5 userInterfaceStyle] == 2)
+  traitCollection2 = [(VUIBaseListViewCell *)self traitCollection];
+  if ([traitCollection2 userInterfaceStyle] == 2)
   {
     v6 = 4015;
   }

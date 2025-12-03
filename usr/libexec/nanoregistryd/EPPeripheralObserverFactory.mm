@@ -1,18 +1,18 @@
 @interface EPPeripheralObserverFactory
 - (EPPeripheralConnectorManager)connectorManager;
-- (EPPeripheralObserverFactory)initWithPeripheral:(id)a3;
-- (id)newConnectorWithDelegate:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (EPPeripheralObserverFactory)initWithPeripheral:(id)peripheral;
+- (id)newConnectorWithDelegate:(id)delegate;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 @end
 
 @implementation EPPeripheralObserverFactory
 
-- (EPPeripheralObserverFactory)initWithPeripheral:(id)a3
+- (EPPeripheralObserverFactory)initWithPeripheral:(id)peripheral
 {
-  v5 = a3;
+  peripheralCopy = peripheral;
   v6 = +[EPFactory queue];
   v9.receiver = self;
   v9.super_class = EPPeripheralObserverFactory;
@@ -20,8 +20,8 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_peripheral, a3);
-    [v5 setDelegate:v7];
+    objc_storeStrong(&v7->_peripheral, peripheral);
+    [peripheralCopy setDelegate:v7];
   }
 
   return v7;
@@ -33,8 +33,8 @@
   if (!connectorManager)
   {
     v4 = +[EPPeripheralConnectorManagerFactory sharedConnectorManagerFactory];
-    v5 = [(CBPeripheral *)self->_peripheral identifier];
-    v6 = [v4 connectorManagerWithUuid:v5];
+    identifier = [(CBPeripheral *)self->_peripheral identifier];
+    v6 = [v4 connectorManagerWithUuid:identifier];
     v7 = self->_connectorManager;
     self->_connectorManager = v6;
 
@@ -44,63 +44,63 @@
   return connectorManager;
 }
 
-- (id)newConnectorWithDelegate:(id)a3
+- (id)newConnectorWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(EPPeripheralObserverFactory *)self connectorManager];
-  v6 = [v5 newResourceWithDelegate:v4];
+  delegateCopy = delegate;
+  connectorManager = [(EPPeripheralObserverFactory *)self connectorManager];
+  v6 = [connectorManager newResourceWithDelegate:delegateCopy];
 
   return v6;
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000DBFC;
   v8[3] = &unk_100175998;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  peripheralCopy = peripheral;
+  servicesCopy = services;
+  v6 = servicesCopy;
+  v7 = peripheralCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v8];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000DCE8;
   v11[3] = &unk_1001759C0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = serviceCopy;
+  v10 = peripheralCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v11];
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000DDD8;
   v11[3] = &unk_1001759C0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = characteristicCopy;
+  v10 = peripheralCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v11];
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = sub_1000034AC();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -118,12 +118,12 @@
   v17[1] = 3221225472;
   v17[2] = sub_10000DF38;
   v17[3] = &unk_1001759C0;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  v18 = peripheralCopy;
+  v19 = characteristicCopy;
+  v20 = errorCopy;
+  v14 = errorCopy;
+  v15 = characteristicCopy;
+  v16 = peripheralCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v17];
 }
 

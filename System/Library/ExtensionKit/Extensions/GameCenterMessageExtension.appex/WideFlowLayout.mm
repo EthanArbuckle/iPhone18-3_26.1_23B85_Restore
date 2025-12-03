@@ -1,7 +1,7 @@
 @interface WideFlowLayout
 - (CGSize)collectionViewContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -18,17 +18,17 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_100022690();
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_100022EB4(x, y, width, height);
   v9 = v8;
 
@@ -46,7 +46,7 @@
   return v10.super.isa;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v5 = sub_1000412F0();
   v6 = *(v5 - 8);
@@ -56,7 +56,7 @@
   v10 = sub_100041B20();
   v12 = v11;
   sub_1000412D0();
-  v13 = self;
+  selfCopy = self;
   v14 = sub_1000232C8(v10, v12, v9);
 
   (*(v6 + 8))(v9, v5);

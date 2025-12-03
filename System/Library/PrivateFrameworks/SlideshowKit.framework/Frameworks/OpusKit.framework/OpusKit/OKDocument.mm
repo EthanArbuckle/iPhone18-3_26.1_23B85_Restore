@@ -1,72 +1,72 @@
 @interface OKDocument
-+ (CGImage)retainedPosterImageForFileURL:(id)a3 withResolution:(unint64_t)a4 coordinateReading:(BOOL)a5;
-+ (id)_fileWrapperPosterImageFilenameKeyWithResolution:(unint64_t)a3;
-+ (id)_hashForImportedResourceURL:(id)a3;
-+ (id)_importedMediaURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4 extension:(id)a5;
-+ (id)_importedMetadataURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4;
-+ (id)_importedResourceDirectoryURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4;
-+ (id)_importedResourceURLWithHash:(id)a3;
-+ (id)_importedThumbnailURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4 withExtension:(id)a5;
-+ (id)_posterImageURLForFileURL:(id)a3 withResolution:(unint64_t)a4;
-+ (id)infoForFileURL:(id)a3 coordinateReading:(BOOL)a4;
-- (BOOL)_hasThumbnailForImportedResourceURL:(id)a3;
-- (BOOL)_hasThumbnailForImportedResourceURL:(id)a3 size:(CGSize)a4;
-- (BOOL)_hasThumbnailFromMediaForImportedResourceURL:(id)a3;
-- (BOOL)_readImportedResourceURL:(id)a3 error:(id *)a4 byMediaAccessor:(id)a5;
-- (BOOL)_readImportedResourceURL:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5;
-- (BOOL)_readImportedResourceURL:(id)a3 error:(id *)a4 byThumbnailAccessor:(id)a5;
-- (BOOL)_readImportedResourceURL:(id)a3 size:(CGSize)a4 error:(id *)a5 byThumbnailAccessor:(id)a6;
-- (BOOL)_updateImportedResourceURL:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5;
-- (BOOL)_updateImportedResourceURL:(id)a3 size:(CGSize)a4 error:(id *)a5 byThumbnailAccessor:(id)a6;
-- (BOOL)deleteImportedResourceURLs:(id)a3 progressBlock:(id)a4 error:(id *)a5;
-- (BOOL)isImportedResourceURLEmbedded:(id)a3;
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (BOOL)readFromURL:(id)a3 error:(id *)a4;
-- (BOOL)writeContents:(id)a3 andAttributes:(id)a4 safelyToURL:(id)a5 forSaveOperation:(int64_t)a6 error:(id *)a7;
-- (CGImage)_thumbnailForImportedResourceURL:(id)a3;
-- (CGImage)_thumbnailForImportedResourceURL:(id)a3 size:(CGSize)a4;
-- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)a3;
-- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)a3 size:(CGSize)a4;
++ (CGImage)retainedPosterImageForFileURL:(id)l withResolution:(unint64_t)resolution coordinateReading:(BOOL)reading;
++ (id)_fileWrapperPosterImageFilenameKeyWithResolution:(unint64_t)resolution;
++ (id)_hashForImportedResourceURL:(id)l;
++ (id)_importedMediaURLForImportedResourceURL:(id)l withDocumentURL:(id)rL extension:(id)extension;
++ (id)_importedMetadataURLForImportedResourceURL:(id)l withDocumentURL:(id)rL;
++ (id)_importedResourceDirectoryURLForImportedResourceURL:(id)l withDocumentURL:(id)rL;
++ (id)_importedResourceURLWithHash:(id)hash;
++ (id)_importedThumbnailURLForImportedResourceURL:(id)l withDocumentURL:(id)rL withExtension:(id)extension;
++ (id)_posterImageURLForFileURL:(id)l withResolution:(unint64_t)resolution;
++ (id)infoForFileURL:(id)l coordinateReading:(BOOL)reading;
+- (BOOL)_hasThumbnailForImportedResourceURL:(id)l;
+- (BOOL)_hasThumbnailForImportedResourceURL:(id)l size:(CGSize)size;
+- (BOOL)_hasThumbnailFromMediaForImportedResourceURL:(id)l;
+- (BOOL)_readImportedResourceURL:(id)l error:(id *)error byMediaAccessor:(id)accessor;
+- (BOOL)_readImportedResourceURL:(id)l error:(id *)error byMetadataAccessor:(id)accessor;
+- (BOOL)_readImportedResourceURL:(id)l error:(id *)error byThumbnailAccessor:(id)accessor;
+- (BOOL)_readImportedResourceURL:(id)l size:(CGSize)size error:(id *)error byThumbnailAccessor:(id)accessor;
+- (BOOL)_updateImportedResourceURL:(id)l error:(id *)error byMetadataAccessor:(id)accessor;
+- (BOOL)_updateImportedResourceURL:(id)l size:(CGSize)size error:(id *)error byThumbnailAccessor:(id)accessor;
+- (BOOL)deleteImportedResourceURLs:(id)ls progressBlock:(id)block error:(id *)error;
+- (BOOL)isImportedResourceURLEmbedded:(id)embedded;
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error;
+- (BOOL)readFromURL:(id)l error:(id *)error;
+- (BOOL)writeContents:(id)contents andAttributes:(id)attributes safelyToURL:(id)l forSaveOperation:(int64_t)operation error:(id *)error;
+- (CGImage)_thumbnailForImportedResourceURL:(id)l;
+- (CGImage)_thumbnailForImportedResourceURL:(id)l size:(CGSize)size;
+- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)l;
+- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)l size:(CGSize)size;
 - (CGImage)posterImage;
-- (OKDocument)initWithFileURL:(id)a3;
-- (id)URLForResource:(id)a3 withExtension:(id)a4;
-- (id)_extensionForImportedResourceURL:(id)a3;
-- (id)_extensionForThumbnailImportedResourceURL:(id)a3;
-- (id)_importedMediaURLForImportedResourceURL:(id)a3;
-- (id)_importedMediaURLForImportedResourceURL:(id)a3 withImportedResourceDirectoryURL:(id)a4 withExtension:(id)a5;
-- (id)_importedMetadataURLForImportedResourceURL:(id)a3;
-- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)a3;
-- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)a3 withImportedResourcesDirectoryURL:(id)a4;
-- (id)_importedResourceURLForRessourceURL:(id)a3;
+- (OKDocument)initWithFileURL:(id)l;
+- (id)URLForResource:(id)resource withExtension:(id)extension;
+- (id)_extensionForImportedResourceURL:(id)l;
+- (id)_extensionForThumbnailImportedResourceURL:(id)l;
+- (id)_importedMediaURLForImportedResourceURL:(id)l;
+- (id)_importedMediaURLForImportedResourceURL:(id)l withImportedResourceDirectoryURL:(id)rL withExtension:(id)extension;
+- (id)_importedMetadataURLForImportedResourceURL:(id)l;
+- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)l;
+- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)l withImportedResourcesDirectoryURL:(id)rL;
+- (id)_importedResourceURLForRessourceURL:(id)l;
 - (id)_importedResourcesDirectoryURL;
-- (id)_importedThumbnailURLForImportedResourceURL:(id)a3;
-- (id)_importedThumbnailURLForImportedResourceURL:(id)a3 resolution:(unint64_t)a4;
-- (id)_importedThumbnailURLForImportedResourceURL:(id)a3 withImportedResourceDirectoryURL:(id)a4 withExtension:(id)a5;
-- (id)_importedThumbnailsDirectoryURLForImportedResourceURL:(id)a3;
-- (id)_metadataForImportedResourceURL:(id)a3;
-- (id)_metadataObjectForKey:(id)a3 forImportedResourceURL:(id)a4;
+- (id)_importedThumbnailURLForImportedResourceURL:(id)l;
+- (id)_importedThumbnailURLForImportedResourceURL:(id)l resolution:(unint64_t)resolution;
+- (id)_importedThumbnailURLForImportedResourceURL:(id)l withImportedResourceDirectoryURL:(id)rL withExtension:(id)extension;
+- (id)_importedThumbnailsDirectoryURLForImportedResourceURL:(id)l;
+- (id)_metadataForImportedResourceURL:(id)l;
+- (id)_metadataObjectForKey:(id)key forImportedResourceURL:(id)l;
 - (id)_scriptURL;
-- (id)contentsForType:(id)a3 error:(id *)a4;
+- (id)contentsForType:(id)type error:(id *)error;
 - (id)documentURL;
-- (id)importResourceURL:(id)a3 opaque:(BOOL)a4 force:(BOOL)a5 progressBlock:(id)a6 error:(id *)a7;
-- (id)importResourceURLs:(id)a3 opaque:(BOOL)a4 force:(BOOL)a5 progressBlock:(id)a6 error:(id *)a7;
+- (id)importResourceURL:(id)l opaque:(BOOL)opaque force:(BOOL)force progressBlock:(id)block error:(id *)error;
+- (id)importResourceURLs:(id)ls opaque:(BOOL)opaque force:(BOOL)force progressBlock:(id)block error:(id *)error;
 - (id)importedResourceURLs;
 - (id)localizedName;
-- (id)prepareMediaURL:(id)a3 force:(BOOL)a4 colorSpace:(id)a5 progressBlock:(id)a6 error:(id *)a7;
-- (id)prepareMediaURLs:(id)a3 force:(BOOL)a4 colorSpace:(id)a5 progressBlock:(id)a6 error:(id *)a7;
+- (id)prepareMediaURL:(id)l force:(BOOL)force colorSpace:(id)space progressBlock:(id)block error:(id *)error;
+- (id)prepareMediaURLs:(id)ls force:(BOOL)force colorSpace:(id)space progressBlock:(id)block error:(id *)error;
 - (void)_commonInit;
-- (void)_didEnterBackgroundNotification:(id)a3;
-- (void)_saveThumbnailToDisk:(CGImage *)a3 forImportedResourceURL:(id)a4 size:(CGSize)a5;
-- (void)_updateChangeCount:(unint64_t)a3;
-- (void)_willTerminateNotification:(id)a3;
-- (void)closeWithCompletionHandler:(id)a3;
+- (void)_didEnterBackgroundNotification:(id)notification;
+- (void)_saveThumbnailToDisk:(CGImage *)disk forImportedResourceURL:(id)l size:(CGSize)size;
+- (void)_updateChangeCount:(unint64_t)count;
+- (void)_willTerminateNotification:(id)notification;
+- (void)closeWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)disableEditing;
 - (void)enableEditing;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)revertToContentsOfURL:(id)a3 completionHandler:(id)a4;
-- (void)saveToURL:(id)a3 forSaveOperation:(int64_t)a4 completionHandler:(id)a5;
-- (void)setPosterImage:(CGImage *)a3;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)revertToContentsOfURL:(id)l completionHandler:(id)handler;
+- (void)saveToURL:(id)l forSaveOperation:(int64_t)operation completionHandler:(id)handler;
+- (void)setPosterImage:(CGImage *)image;
 @end
 
 @implementation OKDocument
@@ -81,21 +81,21 @@
   self->_hasPosterImageChanged = 0;
   self->_isClosing = 0;
   objc_storeWeak(&self->_delegate, 0);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__didReceiveMemoryWarningNotification_ name:*MEMORY[0x277D76670] object:0];
-  [v4 addObserver:self selector:sel__didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
-  [v4 addObserver:self selector:sel__willEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
-  [v4 addObserver:self selector:sel__willTerminateNotification_ name:*MEMORY[0x277D76770] object:0];
-  v5 = [(UIDocument *)self undoManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didReceiveMemoryWarningNotification_ name:*MEMORY[0x277D76670] object:0];
+  [defaultCenter addObserver:self selector:sel__didEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter addObserver:self selector:sel__willEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter addObserver:self selector:sel__willTerminateNotification_ name:*MEMORY[0x277D76770] object:0];
+  undoManager = [(UIDocument *)self undoManager];
 
-  [(NSUndoManager *)v5 setLevelsOfUndo:20];
+  [(NSUndoManager *)undoManager setLevelsOfUndo:20];
 }
 
-- (OKDocument)initWithFileURL:(id)a3
+- (OKDocument)initWithFileURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = OKDocument;
-  v3 = [(UIDocument *)&v6 initWithFileURL:a3];
+  v3 = [(UIDocument *)&v6 initWithFileURL:l];
   v4 = v3;
   if (v3)
   {
@@ -114,11 +114,11 @@
     [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:174 andFormat:@"Deallocing %@", self];
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76770] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76770] object:0];
   presentation = self->_presentation;
   if (presentation)
   {
@@ -168,15 +168,15 @@
   return [(UIDocument *)&v3 localizedName];
 }
 
-- (void)_updateChangeCount:(unint64_t)a3
+- (void)_updateChangeCount:(unint64_t)count
 {
-  if (a3 <= 3)
+  if (count <= 3)
   {
     [(UIDocument *)self updateChangeCount:?];
   }
 }
 
-- (void)setPosterImage:(CGImage *)a3
+- (void)setPosterImage:(CGImage *)image
 {
   [(NSRecursiveLock *)self->_posterImageLock lock];
   posterImage = self->_posterImage;
@@ -186,7 +186,7 @@
     self->_posterImage = 0;
   }
 
-  self->_posterImage = CGImageRetain(a3);
+  self->_posterImage = CGImageRetain(image);
   [(OKDocument *)self setHasPosterImageChanged:1];
   posterImageLock = self->_posterImageLock;
 
@@ -202,41 +202,41 @@
   return v3;
 }
 
-+ (id)_fileWrapperPosterImageFilenameKeyWithResolution:(unint64_t)a3
++ (id)_fileWrapperPosterImageFilenameKeyWithResolution:(unint64_t)resolution
 {
-  if (a3 == 1024)
+  if (resolution == 1024)
   {
     return @"Thumbnail.jpeg";
   }
 
   else
   {
-    return [MEMORY[0x277CCACA8] stringWithFormat:@"Thumbnail-%d.jpeg", a3];
+    return [MEMORY[0x277CCACA8] stringWithFormat:@"Thumbnail-%d.jpeg", resolution];
   }
 }
 
-+ (id)_posterImageURLForFileURL:(id)a3 withResolution:(unint64_t)a4
++ (id)_posterImageURLForFileURL:(id)l withResolution:(unint64_t)resolution
 {
-  v5 = [a3 URLByAppendingPathComponent:@"QuickLook" isDirectory:1];
-  v6 = [objc_opt_class() _fileWrapperPosterImageFilenameKeyWithResolution:a4];
+  v5 = [l URLByAppendingPathComponent:@"QuickLook" isDirectory:1];
+  v6 = [objc_opt_class() _fileWrapperPosterImageFilenameKeyWithResolution:resolution];
 
   return [v5 URLByAppendingPathComponent:v6 isDirectory:0];
 }
 
-- (BOOL)loadFromContents:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)loadFromContents:(id)contents ofType:(id)type error:(id *)error
 {
   v8 = MEMORY[0x277D62808];
   if (*MEMORY[0x277D62808] >= 5)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:356 andFormat:@"Document %@ is about to be read...", -[OKDocument documentURL](self, "documentURL", a3, a4)];
+    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:356 andFormat:@"Document %@ is about to be read...", -[OKDocument documentURL](self, "documentURL", contents, type)];
   }
 
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![a3 isDirectory])
+  if (!contents || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![contents isDirectory])
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDescription:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"Unsupported file format", @"Unsupported file format", @"Localizable"}];
 LABEL_15:
     [(OKPresentation *)self->_presentation setCanBeEdited:1];
-    if (a5)
+    if (error)
     {
       if (v14)
       {
@@ -248,7 +248,7 @@ LABEL_15:
         v15 = [OKError errorForCode:-1];
       }
 
-      *a5 = v15;
+      *error = v15;
     }
 
     else if (v14)
@@ -280,7 +280,7 @@ LABEL_15:
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = [objc_msgSend(a3 "fileWrappers")];
+  v12 = [objc_msgSend(contents "fileWrappers")];
   if (v12)
   {
     v50 = 0;
@@ -349,7 +349,7 @@ LABEL_42:
 
   objc_autoreleasePoolPop(v11);
   v21 = objc_autoreleasePoolPush();
-  v22 = [objc_msgSend(a3 "fileWrappers")];
+  v22 = [objc_msgSend(contents "fileWrappers")];
   v50 = 0;
   if (v22 && (v23 = [MEMORY[0x277CCAC58] propertyListWithData:objc_msgSend(v22 options:"regularFileContents") format:1 error:{0, &v50}], v22 = v50, v23) && !v50)
   {
@@ -363,7 +363,7 @@ LABEL_42:
 
   objc_autoreleasePoolPop(v21);
   v25 = objc_autoreleasePoolPush();
-  v26 = [objc_msgSend(a3 "fileWrappers")];
+  v26 = [objc_msgSend(contents "fileWrappers")];
   v50 = 0;
   if (v26 && (v27 = [MEMORY[0x277CCAC58] propertyListWithData:objc_msgSend(v26 options:"regularFileContents") format:1 error:{0, &v50}], v26 = v50, v27) && !v50)
   {
@@ -377,7 +377,7 @@ LABEL_42:
 
   objc_autoreleasePoolPop(v25);
   v28 = objc_autoreleasePoolPush();
-  v29 = [objc_msgSend(a3 "fileWrappers")];
+  v29 = [objc_msgSend(contents "fileWrappers")];
   v50 = 0;
   if (v29 && (v30 = [MEMORY[0x277CCAC58] propertyListWithData:objc_msgSend(v29 options:"regularFileContents") format:1 error:{0, &v50}], v29 = v50, v30) && !v50)
   {
@@ -391,7 +391,7 @@ LABEL_42:
 
   objc_autoreleasePoolPop(v28);
   v31 = objc_autoreleasePoolPush();
-  v32 = [objc_msgSend(a3 "fileWrappers")];
+  v32 = [objc_msgSend(contents "fileWrappers")];
   v50 = 0;
   if (v32 && (v33 = [MEMORY[0x277CCAC58] propertyListWithData:objc_msgSend(v32 options:"regularFileContents") format:1 error:{0, &v50}], v32 = v50, v33) && !v50)
   {
@@ -405,7 +405,7 @@ LABEL_42:
 
   objc_autoreleasePoolPop(v31);
   v34 = objc_autoreleasePoolPush();
-  v35 = [objc_msgSend(a3 "fileWrappers")];
+  v35 = [objc_msgSend(contents "fileWrappers")];
   v50 = 0;
   if (v35 && (v36 = [MEMORY[0x277CCAC58] propertyListWithData:objc_msgSend(v35 options:"regularFileContents") format:1 error:{0, &v50}], v35 = v50, v36) && !v50)
   {
@@ -419,7 +419,7 @@ LABEL_42:
 
   objc_autoreleasePoolPop(v34);
   v37 = objc_autoreleasePoolPush();
-  v38 = [objc_msgSend(a3 "fileWrappers")];
+  v38 = [objc_msgSend(contents "fileWrappers")];
   v50 = 0;
   if (v38 && (v39 = [MEMORY[0x277CCAC58] propertyListWithData:objc_msgSend(v38 options:"regularFileContents") format:1 error:{0, &v50}], v38 = v50, v39) && !v50)
   {
@@ -433,7 +433,7 @@ LABEL_42:
 
   objc_autoreleasePoolPop(v37);
   v40 = objc_autoreleasePoolPush();
-  v41 = [objc_msgSend(a3 "fileWrappers")];
+  v41 = [objc_msgSend(contents "fileWrappers")];
   if (v41)
   {
     v42 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:objc_msgSend(v41 encoding:{"regularFileContents"), 4}];
@@ -443,7 +443,7 @@ LABEL_42:
   objc_autoreleasePoolPop(v40);
   [(OKPresentation *)self->_presentation resolveIfNeeded];
   v43 = objc_autoreleasePoolPush();
-  v44 = [objc_msgSend(a3 "fileWrappers")];
+  v44 = [objc_msgSend(contents "fileWrappers")];
   [(NSRecursiveLock *)self->_posterImageLock lock];
   posterImage = self->_posterImage;
   if (posterImage)
@@ -492,12 +492,12 @@ LABEL_42:
   return 1;
 }
 
-- (id)contentsForType:(id)a3 error:(id *)a4
+- (id)contentsForType:(id)type error:(id *)error
 {
   v6 = MEMORY[0x277D62808];
   if (*MEMORY[0x277D62808] >= 5)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:697 andFormat:@"Document %@ is about to be written...", -[OKDocument documentURL](self, "documentURL", a3)];
+    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:697 andFormat:@"Document %@ is about to be written...", -[OKDocument documentURL](self, "documentURL", type)];
   }
 
   v7 = objc_alloc(MEMORY[0x277CCAA20]);
@@ -526,7 +526,7 @@ LABEL_7:
   {
     v78 = 0;
     v13 = MEMORY[0x277CCAC58];
-    v14 = [(OKPresentation *)self->_presentation templatesDictionary];
+    templatesDictionary = [(OKPresentation *)self->_presentation templatesDictionary];
     if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] format])
     {
       v15 = 200;
@@ -537,7 +537,7 @@ LABEL_7:
       v15 = 100;
     }
 
-    v16 = [v13 dataWithPropertyList:v14 format:v15 options:0 error:&v78];
+    v16 = [v13 dataWithPropertyList:templatesDictionary format:v15 options:0 error:&v78];
     if (!v16)
     {
       goto LABEL_66;
@@ -561,7 +561,7 @@ LABEL_7:
   {
     v78 = 0;
     v19 = MEMORY[0x277CCAC58];
-    v20 = [(OKPresentation *)self->_presentation pagesDictionary];
+    pagesDictionary = [(OKPresentation *)self->_presentation pagesDictionary];
     if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] format])
     {
       v21 = 200;
@@ -572,7 +572,7 @@ LABEL_7:
       v21 = 100;
     }
 
-    v22 = [v19 dataWithPropertyList:v20 format:v21 options:0 error:&v78];
+    v22 = [v19 dataWithPropertyList:pagesDictionary format:v21 options:0 error:&v78];
     if (!v22)
     {
       goto LABEL_66;
@@ -596,7 +596,7 @@ LABEL_7:
   {
     v78 = 0;
     v25 = MEMORY[0x277CCAC58];
-    v26 = [(OKPresentation *)self->_presentation navigatorsDictionary];
+    navigatorsDictionary = [(OKPresentation *)self->_presentation navigatorsDictionary];
     if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] format])
     {
       v27 = 200;
@@ -607,7 +607,7 @@ LABEL_7:
       v27 = 100;
     }
 
-    v28 = [v25 dataWithPropertyList:v26 format:v27 options:0 error:&v78];
+    v28 = [v25 dataWithPropertyList:navigatorsDictionary format:v27 options:0 error:&v78];
     if (!v28)
     {
       goto LABEL_66;
@@ -631,7 +631,7 @@ LABEL_7:
   {
     v78 = 0;
     v31 = MEMORY[0x277CCAC58];
-    v32 = [(OKPresentation *)self->_presentation couchesDictionary];
+    couchesDictionary = [(OKPresentation *)self->_presentation couchesDictionary];
     if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] format])
     {
       v33 = 200;
@@ -642,7 +642,7 @@ LABEL_7:
       v33 = 100;
     }
 
-    v34 = [v31 dataWithPropertyList:v32 format:v33 options:0 error:&v78];
+    v34 = [v31 dataWithPropertyList:couchesDictionary format:v33 options:0 error:&v78];
     if (!v34)
     {
       goto LABEL_66;
@@ -666,7 +666,7 @@ LABEL_7:
   {
     v78 = 0;
     v37 = MEMORY[0x277CCAC58];
-    v38 = [(OKPresentation *)self->_presentation guidelinesDictionary];
+    guidelinesDictionary = [(OKPresentation *)self->_presentation guidelinesDictionary];
     if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] format])
     {
       v39 = 200;
@@ -677,7 +677,7 @@ LABEL_7:
       v39 = 100;
     }
 
-    v40 = [v37 dataWithPropertyList:v38 format:v39 options:0 error:&v78];
+    v40 = [v37 dataWithPropertyList:guidelinesDictionary format:v39 options:0 error:&v78];
     if (!v40)
     {
       goto LABEL_66;
@@ -720,7 +720,7 @@ LABEL_62:
         }
 
         objc_autoreleasePoolPop(v9);
-        if (a4)
+        if (error)
         {
           goto LABEL_125;
         }
@@ -804,22 +804,22 @@ LABEL_118:
     }
 
     [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] lock];
-    v62 = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] lastModifiedDate];
-    v63 = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] versionID];
+    lastModifiedDate = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] lastModifiedDate];
+    versionID = [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] versionID];
     -[OKPresentationInfo setLastModifiedDate:](-[OKPresentation info](self->_presentation, "info"), "setLastModifiedDate:", [MEMORY[0x277CBEAA8] date]);
     -[OKPresentationInfo setVersionID:](-[OKPresentation info](self->_presentation, "info"), "setVersionID:", [MEMORY[0x277CCACA8] generateUUID]);
     v77 = 0;
     v64 = [MEMORY[0x277CCAC58] dataWithPropertyList:-[OKPresentationInfo dictionary](-[OKPresentation info](self->_presentation format:"info") options:"dictionary") error:{100, 0, &v77}];
     v65 = v77;
-    v66 = [(OKPresentation *)self->_presentation info];
+    info = [(OKPresentation *)self->_presentation info];
     if (v64 && !v65)
     {
-      [(OKPresentationInfo *)v66 unlock];
-      if (v62)
+      [(OKPresentationInfo *)info unlock];
+      if (lastModifiedDate)
       {
       }
 
-      if (v63)
+      if (versionID)
       {
       }
 
@@ -856,15 +856,15 @@ LABEL_118:
       return v8;
     }
 
-    [(OKPresentationInfo *)v66 setLastModifiedDate:v62];
-    [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] setVersionID:v63];
+    [(OKPresentationInfo *)info setLastModifiedDate:lastModifiedDate];
+    [(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] setVersionID:versionID];
     v6 = MEMORY[0x277D62808];
-    if (v62)
+    if (lastModifiedDate)
     {
     }
 
     v9 = context;
-    if (v63)
+    if (versionID)
     {
     }
 
@@ -883,7 +883,7 @@ LABEL_118:
 
   v78 = 0;
   v43 = MEMORY[0x277CCAC58];
-  v44 = [(OKPresentation *)self->_presentation feedersDictionary];
+  feedersDictionary = [(OKPresentation *)self->_presentation feedersDictionary];
   if ([(OKPresentationInfo *)[(OKPresentation *)self->_presentation info] format])
   {
     v45 = 200;
@@ -894,7 +894,7 @@ LABEL_118:
     v45 = 100;
   }
 
-  v46 = [v43 dataWithPropertyList:v44 format:v45 options:0 error:&v78];
+  v46 = [v43 dataWithPropertyList:feedersDictionary format:v45 options:0 error:&v78];
   if (v46)
   {
     v47 = [objc_alloc(MEMORY[0x277CCAA20]) initRegularFileWithContents:v46];
@@ -916,13 +916,13 @@ LABEL_66:
 
 LABEL_119:
   objc_autoreleasePoolPop(v9);
-  if (a4)
+  if (error)
   {
     if (v49)
     {
       v74 = v49;
 LABEL_126:
-      *a4 = v74;
+      *error = v74;
       goto LABEL_127;
     }
 
@@ -948,30 +948,30 @@ LABEL_127:
   return 0;
 }
 
-- (void)saveToURL:(id)a3 forSaveOperation:(int64_t)a4 completionHandler:(id)a5
+- (void)saveToURL:(id)l forSaveOperation:(int64_t)operation completionHandler:(id)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__OKDocument_saveToURL_forSaveOperation_completionHandler___block_invoke;
   v6[3] = &unk_279C8E770;
-  v6[4] = a5;
+  v6[4] = handler;
   v5.receiver = self;
   v5.super_class = OKDocument;
-  [(UIDocument *)&v5 saveToURL:a3 forSaveOperation:a4 completionHandler:v6];
+  [(UIDocument *)&v5 saveToURL:l forSaveOperation:operation completionHandler:v6];
 }
 
-- (void)revertToContentsOfURL:(id)a3 completionHandler:(id)a4
+- (void)revertToContentsOfURL:(id)l completionHandler:(id)handler
 {
   v4.receiver = self;
   v4.super_class = OKDocument;
-  [(UIDocument *)&v4 revertToContentsOfURL:a3 completionHandler:a4];
+  [(UIDocument *)&v4 revertToContentsOfURL:l completionHandler:handler];
 }
 
-- (BOOL)writeContents:(id)a3 andAttributes:(id)a4 safelyToURL:(id)a5 forSaveOperation:(int64_t)a6 error:(id *)a7
+- (BOOL)writeContents:(id)contents andAttributes:(id)attributes safelyToURL:(id)l forSaveOperation:(int64_t)operation error:(id *)error
 {
   v10.receiver = self;
   v10.super_class = OKDocument;
-  v8 = [(UIDocument *)&v10 writeContents:a3 andAttributes:a4 safelyToURL:a5 forSaveOperation:a6 error:a7];
+  v8 = [(UIDocument *)&v10 writeContents:contents andAttributes:attributes safelyToURL:l forSaveOperation:operation error:error];
   if (v8)
   {
     [(OKDocument *)self setHasPosterImageChanged:0];
@@ -981,7 +981,7 @@ LABEL_127:
   return v8;
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
   [(OKDocument *)self setIsClosing:0];
   [(OKPresentation *)self->_presentation setCanBeEdited:0];
@@ -990,7 +990,7 @@ LABEL_127:
   v6[2] = __40__OKDocument_openWithCompletionHandler___block_invoke;
   v6[3] = &unk_279C8E798;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = handler;
   v5.receiver = self;
   v5.super_class = OKDocument;
   [(UIDocument *)&v5 openWithCompletionHandler:v6];
@@ -1008,23 +1008,23 @@ uint64_t __40__OKDocument_openWithCompletionHandler___block_invoke(uint64_t a1, 
   return v3();
 }
 
-- (BOOL)readFromURL:(id)a3 error:(id *)a4
+- (BOOL)readFromURL:(id)l error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
-    v7 = [objc_alloc(MEMORY[0x277CCAA20]) initWithURL:a3 options:0 error:a4];
+    v7 = [objc_alloc(MEMORY[0x277CCAA20]) initWithURL:l options:0 error:error];
     if (v7)
     {
-      v8 = [objc_msgSend(a3 "absoluteString")];
+      v8 = [objc_msgSend(l "absoluteString")];
       v9 = UTTypeCreatePreferredIdentifierForTag(*MEMORY[0x277CC1F58], v8, 0);
       if ([(__CFString *)v9 length]&& v9)
       {
@@ -1045,9 +1045,9 @@ uint64_t __40__OKDocument_openWithCompletionHandler___block_invoke(uint64_t a1, 
         v14[8] = &v15;
         [(OKDocument *)self performBlockAndWait:v14 usingQueue:dispatch_get_global_queue(0, 0)];
         v10 = v16[5];
-        if (a4)
+        if (error)
         {
-          *a4 = v10;
+          *error = v10;
         }
 
         v11 = v10;
@@ -1077,7 +1077,7 @@ id __32__OKDocument_readFromURL_error___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)closeWithCompletionHandler:(id)a3
+- (void)closeWithCompletionHandler:(id)handler
 {
   [(OKPresentation *)[(OKDocument *)self presentation] setCanBeEdited:0];
   [(OKDocument *)self setIsClosing:1];
@@ -1090,7 +1090,7 @@ id __32__OKDocument_readFromURL_error___block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v6[2] = __41__OKDocument_closeWithCompletionHandler___block_invoke;
   v6[3] = &unk_279C8E770;
-  v6[4] = a3;
+  v6[4] = handler;
   v5.receiver = self;
   v5.super_class = OKDocument;
   [(UIDocument *)&v5 closeWithCompletionHandler:v6];
@@ -1112,9 +1112,9 @@ id __32__OKDocument_readFromURL_error___block_invoke(uint64_t a1)
   [(OKPresentation *)[(OKDocument *)self presentation] setCanBeEdited:1];
 }
 
-+ (CGImage)retainedPosterImageForFileURL:(id)a3 withResolution:(unint64_t)a4 coordinateReading:(BOOL)a5
++ (CGImage)retainedPosterImageForFileURL:(id)l withResolution:(unint64_t)resolution coordinateReading:(BOOL)reading
 {
-  v5 = a5;
+  readingCopy = reading;
   v9 = pthread_main_np();
   v10 = MEMORY[0x277D62808];
   if (v9 && *MEMORY[0x277D62808] >= 5)
@@ -1122,12 +1122,12 @@ id __32__OKDocument_readFromURL_error___block_invoke(uint64_t a1)
     [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1389 andFormat:@"%@ MUST not be called from the main thread", NSStringFromSelector(a2)];
   }
 
-  v11 = [objc_opt_class() _posterImageURLForFileURL:a3 withResolution:a4];
+  v11 = [objc_opt_class() _posterImageURLForFileURL:l withResolution:resolution];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (v5)
+  if (readingCopy)
   {
     v12 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
     v15[0] = MEMORY[0x277D85DD0];
@@ -1140,7 +1140,7 @@ id __32__OKDocument_readFromURL_error___block_invoke(uint64_t a1)
 
     if (v16 && *v10 >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1408 andFormat:@"En error occured retrieving poster image for document %@: %@", a3, objc_msgSend(v16, "localizedDescription")];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1408 andFormat:@"En error occured retrieving poster image for document %@: %@", l, objc_msgSend(v16, "localizedDescription")];
     }
 
     v13 = v18[3];
@@ -1163,9 +1163,9 @@ uint64_t __77__OKDocument_retainedPosterImageForFileURL_withResolution_coordinat
   return result;
 }
 
-+ (id)infoForFileURL:(id)a3 coordinateReading:(BOOL)a4
++ (id)infoForFileURL:(id)l coordinateReading:(BOOL)reading
 {
-  v4 = a4;
+  readingCopy = reading;
   v7 = pthread_main_np();
   v8 = MEMORY[0x277D62808];
   if (v7 && *MEMORY[0x277D62808] >= 5)
@@ -1173,9 +1173,9 @@ uint64_t __77__OKDocument_retainedPosterImageForFileURL_withResolution_coordinat
     [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1423 andFormat:@"%@ MUST not be called from the main thread", NSStringFromSelector(a2)];
   }
 
-  v9 = [a3 URLByAppendingPathComponent:@"Info.plist" isDirectory:0];
+  v9 = [l URLByAppendingPathComponent:@"Info.plist" isDirectory:0];
   v10 = objc_alloc_init(OKPresentationInfo);
-  if (v4)
+  if (readingCopy)
   {
     v11 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
     v13[4] = v10;
@@ -1190,7 +1190,7 @@ uint64_t __77__OKDocument_retainedPosterImageForFileURL_withResolution_coordinat
     {
       if (*v8 >= 4)
       {
-        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1442 andFormat:@"En error occured retrieving info metadata for document %@: %@", a3, objc_msgSend(v14, "localizedDescription")];
+        [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1442 andFormat:@"En error occured retrieving info metadata for document %@: %@", l, objc_msgSend(v14, "localizedDescription")];
       }
 
       if (v10)
@@ -1217,37 +1217,37 @@ uint64_t __47__OKDocument_infoForFileURL_coordinateReading___block_invoke(uint64
   return [v2 importFromDictionary:v3];
 }
 
-+ (id)_importedResourceURLWithHash:(id)a3
++ (id)_importedResourceURLWithHash:(id)hash
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@", @"imported", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@", @"imported", hash];
 
   return [v3 URLWithString:v4];
 }
 
-- (id)_importedResourceURLForRessourceURL:(id)a3
+- (id)_importedResourceURLForRessourceURL:(id)l
 {
-  if ([objc_msgSend(a3 "scheme")])
+  if ([objc_msgSend(l "scheme")])
   {
-    return a3;
+    return l;
   }
 
   v5 = objc_opt_class();
-  v6 = [objc_msgSend(a3 "absoluteString")];
+  v6 = [objc_msgSend(l "absoluteString")];
 
   return [v5 _importedResourceURLWithHash:v6];
 }
 
-+ (id)_hashForImportedResourceURL:(id)a3
++ (id)_hashForImportedResourceURL:(id)l
 {
-  v3 = [a3 host];
+  host = [l host];
 
-  return [v3 stringByDeletingPathExtension];
+  return [host stringByDeletingPathExtension];
 }
 
-- (id)_extensionForImportedResourceURL:(id)a3
+- (id)_extensionForImportedResourceURL:(id)l
 {
-  if ([(OKDocument *)self _metadataObjectForKey:@"UTI" forImportedResourceURL:a3])
+  if ([(OKDocument *)self _metadataObjectForKey:@"UTI" forImportedResourceURL:l])
   {
 
     return OFUTTypeExtensionForUTI();
@@ -1257,16 +1257,16 @@ uint64_t __47__OKDocument_infoForFileURL_coordinateReading___block_invoke(uint64
   {
     if (*MEMORY[0x277D62808] >= 4)
     {
-      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1503 andFormat:@"Media UTI for imported resource %@ is unknown", a3];
+      [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1503 andFormat:@"Media UTI for imported resource %@ is unknown", l];
     }
 
     return 0;
   }
 }
 
-- (id)_extensionForThumbnailImportedResourceURL:(id)a3
+- (id)_extensionForThumbnailImportedResourceURL:(id)l
 {
-  v3 = [(OKDocument *)self _metadataObjectForKey:@"Opaque" forImportedResourceURL:a3];
+  v3 = [(OKDocument *)self _metadataObjectForKey:@"Opaque" forImportedResourceURL:l];
   if (v3)
   {
     [v3 BOOLValue];
@@ -1277,125 +1277,125 @@ uint64_t __47__OKDocument_infoForFileURL_coordinateReading___block_invoke(uint64
 
 - (id)_scriptURL
 {
-  v2 = [(OKDocument *)self documentURL];
+  documentURL = [(OKDocument *)self documentURL];
 
-  return [v2 URLByAppendingPathComponent:@"Script.js" isDirectory:1];
+  return [documentURL URLByAppendingPathComponent:@"Script.js" isDirectory:1];
 }
 
 - (id)_importedResourcesDirectoryURL
 {
-  v2 = [(OKDocument *)self documentURL];
+  documentURL = [(OKDocument *)self documentURL];
 
-  return [v2 URLByAppendingPathComponent:@"Resources" isDirectory:1];
+  return [documentURL URLByAppendingPathComponent:@"Resources" isDirectory:1];
 }
 
-+ (id)_importedResourceDirectoryURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4
++ (id)_importedResourceDirectoryURLForImportedResourceURL:(id)l withDocumentURL:(id)rL
 {
-  v5 = [objc_opt_class() _importedResourcesDirectoryURLForDocumentURL:a4];
-  v6 = [objc_opt_class() _hashForImportedResourceURL:a3];
+  v5 = [objc_opt_class() _importedResourcesDirectoryURLForDocumentURL:rL];
+  v6 = [objc_opt_class() _hashForImportedResourceURL:l];
 
   return [v5 URLByAppendingPathComponent:v6 isDirectory:1];
 }
 
-- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)a3
+- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)l
 {
-  v4 = [(OKDocument *)self _importedResourcesDirectoryURL];
-  v5 = [objc_opt_class() _hashForImportedResourceURL:a3];
+  _importedResourcesDirectoryURL = [(OKDocument *)self _importedResourcesDirectoryURL];
+  v5 = [objc_opt_class() _hashForImportedResourceURL:l];
 
-  return [v4 URLByAppendingPathComponent:v5 isDirectory:1];
+  return [_importedResourcesDirectoryURL URLByAppendingPathComponent:v5 isDirectory:1];
 }
 
-- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)a3 withImportedResourcesDirectoryURL:(id)a4
+- (id)_importedResourceDirectoryURLForImportedResourceURL:(id)l withImportedResourcesDirectoryURL:(id)rL
 {
-  v5 = [objc_opt_class() _hashForImportedResourceURL:a3];
+  v5 = [objc_opt_class() _hashForImportedResourceURL:l];
 
-  return [a4 URLByAppendingPathComponent:v5 isDirectory:1];
+  return [rL URLByAppendingPathComponent:v5 isDirectory:1];
 }
 
-+ (id)_importedMediaURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4 extension:(id)a5
++ (id)_importedMediaURLForImportedResourceURL:(id)l withDocumentURL:(id)rL extension:(id)extension
 {
-  v6 = [objc_msgSend(a1 _importedResourceDirectoryURLForImportedResourceURL:a3 withDocumentURL:{a4), "URLByAppendingPathComponent:isDirectory:", @"media", 0}];
+  v6 = [objc_msgSend(self _importedResourceDirectoryURLForImportedResourceURL:l withDocumentURL:{rL), "URLByAppendingPathComponent:isDirectory:", @"media", 0}];
 
-  return [v6 URLByAppendingPathExtension:a5];
+  return [v6 URLByAppendingPathExtension:extension];
 }
 
-- (id)_importedMediaURLForImportedResourceURL:(id)a3
+- (id)_importedMediaURLForImportedResourceURL:(id)l
 {
   v5 = [-[OKDocument _importedResourceDirectoryURLForImportedResourceURL:](self "_importedResourceDirectoryURLForImportedResourceURL:{"URLByAppendingPathComponent:isDirectory:", @"media", 0}")];
-  v6 = [(OKDocument *)self _extensionForImportedResourceURL:a3];
+  v6 = [(OKDocument *)self _extensionForImportedResourceURL:l];
 
   return [v5 URLByAppendingPathExtension:v6];
 }
 
-- (id)_importedMediaURLForImportedResourceURL:(id)a3 withImportedResourceDirectoryURL:(id)a4 withExtension:(id)a5
+- (id)_importedMediaURLForImportedResourceURL:(id)l withImportedResourceDirectoryURL:(id)rL withExtension:(id)extension
 {
-  v6 = [a4 URLByAppendingPathComponent:@"media" isDirectory:0];
+  v6 = [rL URLByAppendingPathComponent:@"media" isDirectory:0];
 
-  return [v6 URLByAppendingPathExtension:a5];
+  return [v6 URLByAppendingPathExtension:extension];
 }
 
-+ (id)_importedThumbnailURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4 withExtension:(id)a5
++ (id)_importedThumbnailURLForImportedResourceURL:(id)l withDocumentURL:(id)rL withExtension:(id)extension
 {
-  v6 = [objc_msgSend(objc_opt_class() _importedResourceDirectoryURLForImportedResourceURL:a3 withDocumentURL:{a4), "URLByAppendingPathComponent:isDirectory:", @"thumbnail", 0}];
+  v6 = [objc_msgSend(objc_opt_class() _importedResourceDirectoryURLForImportedResourceURL:l withDocumentURL:{rL), "URLByAppendingPathComponent:isDirectory:", @"thumbnail", 0}];
 
-  return [v6 URLByAppendingPathExtension:a5];
+  return [v6 URLByAppendingPathExtension:extension];
 }
 
-- (id)_importedThumbnailURLForImportedResourceURL:(id)a3
+- (id)_importedThumbnailURLForImportedResourceURL:(id)l
 {
   v5 = [-[OKDocument _importedResourceDirectoryURLForImportedResourceURL:](self "_importedResourceDirectoryURLForImportedResourceURL:{"URLByAppendingPathComponent:isDirectory:", @"thumbnail", 0}")];
-  v6 = [(OKDocument *)self _extensionForThumbnailImportedResourceURL:a3];
+  v6 = [(OKDocument *)self _extensionForThumbnailImportedResourceURL:l];
 
   return [v5 URLByAppendingPathExtension:v6];
 }
 
-- (id)_importedThumbnailURLForImportedResourceURL:(id)a3 withImportedResourceDirectoryURL:(id)a4 withExtension:(id)a5
+- (id)_importedThumbnailURLForImportedResourceURL:(id)l withImportedResourceDirectoryURL:(id)rL withExtension:(id)extension
 {
-  v6 = [a4 URLByAppendingPathComponent:@"thumbnail" isDirectory:0];
+  v6 = [rL URLByAppendingPathComponent:@"thumbnail" isDirectory:0];
 
-  return [v6 URLByAppendingPathExtension:a5];
+  return [v6 URLByAppendingPathExtension:extension];
 }
 
-+ (id)_importedMetadataURLForImportedResourceURL:(id)a3 withDocumentURL:(id)a4
++ (id)_importedMetadataURLForImportedResourceURL:(id)l withDocumentURL:(id)rL
 {
-  v4 = [objc_opt_class() _importedResourceDirectoryURLForImportedResourceURL:a3 withDocumentURL:a4];
+  v4 = [objc_opt_class() _importedResourceDirectoryURLForImportedResourceURL:l withDocumentURL:rL];
 
   return [v4 URLByAppendingPathComponent:@"metadata.plist" isDirectory:0];
 }
 
-- (id)_importedMetadataURLForImportedResourceURL:(id)a3
+- (id)_importedMetadataURLForImportedResourceURL:(id)l
 {
-  v3 = [(OKDocument *)self _importedResourceDirectoryURLForImportedResourceURL:a3];
+  v3 = [(OKDocument *)self _importedResourceDirectoryURLForImportedResourceURL:l];
 
   return [v3 URLByAppendingPathComponent:@"metadata.plist" isDirectory:0];
 }
 
-- (id)_importedThumbnailsDirectoryURLForImportedResourceURL:(id)a3
+- (id)_importedThumbnailsDirectoryURLForImportedResourceURL:(id)l
 {
-  v3 = [(OKDocument *)self _importedResourceDirectoryURLForImportedResourceURL:a3];
+  v3 = [(OKDocument *)self _importedResourceDirectoryURLForImportedResourceURL:l];
 
   return [v3 URLByAppendingPathComponent:@"Thumbnails.nosync" isDirectory:1];
 }
 
-- (id)_importedThumbnailURLForImportedResourceURL:(id)a3 resolution:(unint64_t)a4
+- (id)_importedThumbnailURLForImportedResourceURL:(id)l resolution:(unint64_t)resolution
 {
   v7 = [(OKDocument *)self _importedThumbnailsDirectoryURLForImportedResourceURL:?];
-  v8 = [v7 URLByAppendingPathComponent:objc_msgSend(MEMORY[0x277CCACA8] isDirectory:{"stringWithFormat:", @"%lu", a4), 0}];
-  v9 = [(OKDocument *)self _extensionForThumbnailImportedResourceURL:a3];
+  v8 = [v7 URLByAppendingPathComponent:objc_msgSend(MEMORY[0x277CCACA8] isDirectory:{"stringWithFormat:", @"%lu", resolution), 0}];
+  v9 = [(OKDocument *)self _extensionForThumbnailImportedResourceURL:l];
 
   return [v8 URLByAppendingPathExtension:v9];
 }
 
-- (id)URLForResource:(id)a3 withExtension:(id)a4
+- (id)URLForResource:(id)resource withExtension:(id)extension
 {
   v5 = [-[OKDocument _importedResourcesDirectoryURL](self "_importedResourcesDirectoryURL")];
 
-  return [v5 URLByAppendingPathExtension:a4];
+  return [v5 URLByAppendingPathExtension:extension];
 }
 
-- (BOOL)isImportedResourceURLEmbedded:(id)a3
+- (BOOL)isImportedResourceURLEmbedded:(id)embedded
 {
-  v3 = [(OKDocument *)self _importedResourceDirectoryURLForImportedResourceURL:a3];
+  v3 = [(OKDocument *)self _importedResourceDirectoryURLForImportedResourceURL:embedded];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
@@ -1407,9 +1407,9 @@ uint64_t __47__OKDocument_infoForFileURL_coordinateReading___block_invoke(uint64
   return v3;
 }
 
-- (id)importResourceURL:(id)a3 opaque:(BOOL)a4 force:(BOOL)a5 progressBlock:(id)a6 error:(id *)a7
+- (id)importResourceURL:(id)l opaque:(BOOL)opaque force:(BOOL)force progressBlock:(id)block error:(id *)error
 {
-  v10 = a4;
+  opaqueCopy = opaque;
   v14 = pthread_main_np();
   v15 = MEMORY[0x277D62808];
   if (v14 && *MEMORY[0x277D62808] >= 5)
@@ -1418,7 +1418,7 @@ uint64_t __47__OKDocument_infoForFileURL_coordinateReading___block_invoke(uint64
   }
 
   v30 = 0;
-  v16 = [(OKDocument *)self _importedResourceURLForRessourceURL:a3];
+  v16 = [(OKDocument *)self _importedResourceURLForRessourceURL:l];
   if (![(OKDocument *)self isImportedResourceURLEmbedded:v16])
   {
 LABEL_7:
@@ -1428,12 +1428,12 @@ LABEL_7:
     v27 = __Block_byref_object_copy__0;
     v28 = __Block_byref_object_dispose__0;
     v29 = 0;
-    v19 = [[OKDocumentImportOperation alloc] initWithDocument:self resourceURL:a3 importedResourceURL:v16 opaque:v10];
+    v19 = [[OKDocumentImportOperation alloc] initWithDocument:self resourceURL:l importedResourceURL:v16 opaque:opaqueCopy];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___block_invoke;
     v23[3] = &unk_279C8E840;
-    v23[7] = a3;
+    v23[7] = l;
     v23[8] = &v24;
     v23[4] = self;
     v23[5] = v16;
@@ -1443,11 +1443,11 @@ LABEL_7:
     v22[1] = 3221225472;
     v22[2] = __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___block_invoke_3;
     v22[3] = &unk_279C8E868;
-    v22[4] = a6;
+    v22[4] = block;
     [(OFNSOperation *)v19 performSynchronously:v22];
-    if (a7)
+    if (error)
     {
-      *a7 = [(OFNSOperation *)v19 error];
+      *error = [(OFNSOperation *)v19 error];
     }
 
     v20 = v25[5];
@@ -1455,11 +1455,11 @@ LABEL_7:
     return v20;
   }
 
-  if (a5)
+  if (force)
   {
     v17 = [(OKDocument *)self _importedResourceDirectoryURLForImportedResourceURL:v16];
     v18 = objc_alloc_init(MEMORY[0x277CCAA00]);
-    LODWORD(v17) = [v18 removeItemAtURL:v17 error:a7];
+    LODWORD(v17) = [v18 removeItemAtURL:v17 error:error];
 
     if (!v17)
     {
@@ -1471,10 +1471,10 @@ LABEL_7:
 
   if (*v15 >= 5)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1685 andFormat:@"Resource is already imported: %@ <=> %@", v16, a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1685 andFormat:@"Resource is already imported: %@ <=> %@", v16, l];
   }
 
-  (*(a6 + 2))(a6, &v30, 1.0);
+  (*(block + 2))(block, &v30, 1.0);
   return [(OKPresentation *)self->_presentation mediaItemForURL:v16];
 }
 
@@ -1528,7 +1528,7 @@ uint64_t __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___b
   return result;
 }
 
-- (id)importResourceURLs:(id)a3 opaque:(BOOL)a4 force:(BOOL)a5 progressBlock:(id)a6 error:(id *)a7
+- (id)importResourceURLs:(id)ls opaque:(BOOL)opaque force:(BOOL)force progressBlock:(id)block error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
   if (pthread_main_np() && *MEMORY[0x277D62808] >= 5)
@@ -1550,7 +1550,7 @@ uint64_t __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___b
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
-  v44 = [a3 count];
+  v44 = [ls count];
   v28 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [v28 setMaxConcurrentOperationCount:{objc_msgSend(objc_msgSend(MEMORY[0x277CCAC38], "processInfo"), "processorCount")}];
   [v10 lock];
@@ -1560,7 +1560,7 @@ uint64_t __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___b
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v37 objects:v51 count:16];
+  v11 = [ls countByEnumeratingWithState:&v37 objects:v51 count:16];
   if (v11)
   {
     v12 = 0;
@@ -1571,7 +1571,7 @@ uint64_t __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___b
       {
         if (*v38 != v13)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ls);
         }
 
         if (*(v47 + 24) == 1)
@@ -1583,9 +1583,9 @@ uint64_t __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___b
           v34[3] = &unk_279C8E8B8;
           v34[4] = self;
           v34[5] = v15;
-          v35 = a4;
-          v36 = a5;
-          v34[8] = a6;
+          opaqueCopy = opaque;
+          forceCopy = force;
+          v34[8] = block;
           v34[9] = &v46;
           v34[10] = v45;
           v34[11] = &v41;
@@ -1604,7 +1604,7 @@ uint64_t __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___b
         ++v12;
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v37 objects:v51 count:16];
+      v11 = [ls countByEnumeratingWithState:&v37 objects:v51 count:16];
     }
 
     while (v11);
@@ -1643,9 +1643,9 @@ uint64_t __65__OKDocument_importResourceURL_opaque_force_progressBlock_error___b
     }
   }
 
-  else if (a7)
+  else if (error)
   {
-    *a7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OKErrorDomain" code:-1 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"OKErrorDomain" code:-1 userInfo:0];
   }
 
   v20 = v23;
@@ -1716,7 +1716,7 @@ uint64_t __66__OKDocument_importResourceURLs_opaque_force_progressBlock_error___
   return result;
 }
 
-- (BOOL)deleteImportedResourceURLs:(id)a3 progressBlock:(id)a4 error:(id *)a5
+- (BOOL)deleteImportedResourceURLs:(id)ls progressBlock:(id)block error:(id *)error
 {
   if (pthread_main_np() && *MEMORY[0x277D62808] >= 5)
   {
@@ -1733,10 +1733,10 @@ uint64_t __66__OKDocument_importResourceURLs_opaque_force_progressBlock_error___
   v14[2] = __61__OKDocument_deleteImportedResourceURLs_progressBlock_error___block_invoke;
   v14[3] = &unk_279C8E908;
   v14[4] = self;
-  v14[5] = a3;
+  v14[5] = ls;
   v14[7] = &v15;
-  v14[8] = a5;
-  v14[6] = a4;
+  v14[8] = error;
+  v14[6] = block;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__OKDocument_deleteImportedResourceURLs_progressBlock_error___block_invoke_4;
@@ -1882,31 +1882,31 @@ intptr_t __61__OKDocument_deleteImportedResourceURLs_progressBlock_error___block
   return dispatch_semaphore_signal(v2);
 }
 
-- (id)prepareMediaURL:(id)a3 force:(BOOL)a4 colorSpace:(id)a5 progressBlock:(id)a6 error:(id *)a7
+- (id)prepareMediaURL:(id)l force:(BOOL)force colorSpace:(id)space progressBlock:(id)block error:(id *)error
 {
-  v10 = a4;
+  forceCopy = force;
   if (pthread_main_np() && *MEMORY[0x277D62808] >= 5)
   {
     [MEMORY[0x277D627B8] logMessageWithLevel:5 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:1959 andFormat:@"%@ MUST not be called from the main thread", NSStringFromSelector(a2)];
   }
 
-  v14 = [(OKPresentation *)self->_presentation mediaItemForURL:a3];
+  v14 = [(OKPresentation *)self->_presentation mediaItemForURL:l];
   v15 = v14;
   if (v14)
   {
     [v14 invalidate];
-    v16 = [v15 prepareCaches:v10 colorSpace:a5 withCompletionHandler:&__block_literal_global_3];
+    v16 = [v15 prepareCaches:forceCopy colorSpace:space withCompletionHandler:&__block_literal_global_3];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __67__OKDocument_prepareMediaURL_force_colorSpace_progressBlock_error___block_invoke_2;
     v21[3] = &unk_279C8E868;
-    v21[4] = a6;
+    v21[4] = block;
     [v16 performSynchronously:v21];
-    if (a7)
+    if (error)
     {
-      v17 = [v16 error];
+      error = [v16 error];
 LABEL_9:
-      *a7 = v17;
+      *error = error;
       return v15;
     }
 
@@ -1924,18 +1924,18 @@ LABEL_9:
     }
   }
 
-  else if (a7)
+  else if (error)
   {
-    v17 = [OKError errorForCode:-3];
+    error = [OKError errorForCode:-3];
     goto LABEL_9;
   }
 
   return v15;
 }
 
-- (id)prepareMediaURLs:(id)a3 force:(BOOL)a4 colorSpace:(id)a5 progressBlock:(id)a6 error:(id *)a7
+- (id)prepareMediaURLs:(id)ls force:(BOOL)force colorSpace:(id)space progressBlock:(id)block error:(id *)error
 {
-  v22 = a4;
+  forceCopy = force;
   v43 = *MEMORY[0x277D85DE8];
   if (pthread_main_np() && *MEMORY[0x277D62808] >= 5)
   {
@@ -1955,7 +1955,7 @@ LABEL_9:
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
-  v36 = [a3 count];
+  v36 = [ls count];
   v10 = objc_alloc_init(MEMORY[0x277CCABD8]);
   [v10 setMaxConcurrentOperationCount:{objc_msgSend(objc_msgSend(MEMORY[0x277CCAC38], "processInfo"), "processorCount")}];
   [v9 lock];
@@ -1964,7 +1964,7 @@ LABEL_9:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v29 objects:v42 count:16];
+  v11 = [ls countByEnumeratingWithState:&v29 objects:v42 count:16];
   if (v11)
   {
     v12 = *v30;
@@ -1974,7 +1974,7 @@ LABEL_9:
       {
         if (*v30 != v12)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ls);
         }
 
         if (*(v39 + 24) == 1)
@@ -1994,13 +1994,13 @@ LABEL_9:
             v28[9] = v37;
             v28[6] = v15;
             v28[7] = v9;
-            v16 = [v15 prepareCaches:v22 colorSpace:a5 withCompletionHandler:v28];
+            v16 = [v15 prepareCaches:forceCopy colorSpace:space withCompletionHandler:v28];
             v27[0] = MEMORY[0x277D85DD0];
             v27[1] = 3221225472;
             v27[2] = __68__OKDocument_prepareMediaURLs_force_colorSpace_progressBlock_error___block_invoke_2;
             v27[3] = &unk_279C8E978;
             v27[4] = v8;
-            v27[5] = a6;
+            v27[5] = block;
             v27[6] = v37;
             v27[7] = &v33;
             v27[8] = &v38;
@@ -2024,7 +2024,7 @@ LABEL_9:
         }
       }
 
-      v11 = [a3 countByEnumeratingWithState:&v29 objects:v42 count:16];
+      v11 = [ls countByEnumeratingWithState:&v29 objects:v42 count:16];
     }
 
     while (v11);
@@ -2054,9 +2054,9 @@ LABEL_9:
     [v8 removeAllObjects];
 
     v8 = 0;
-    if (a7)
+    if (error)
     {
-      *a7 = [OKError errorForCode:-1];
+      *error = [OKError errorForCode:-1];
     }
   }
 
@@ -2112,90 +2112,90 @@ uint64_t __68__OKDocument_prepareMediaURLs_force_colorSpace_progressBlock_error_
   return result;
 }
 
-- (BOOL)_readImportedResourceURL:(id)a3 error:(id *)a4 byMediaAccessor:(id)a5
+- (BOOL)_readImportedResourceURL:(id)l error:(id *)error byMediaAccessor:(id)accessor
 {
-  v8 = [(OKDocument *)self _importedMediaURLForImportedResourceURL:a3];
+  v8 = [(OKDocument *)self _importedMediaURLForImportedResourceURL:l];
   v9 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-  [v9 coordinateReadingItemAtURL:v8 options:1 error:a4 byAccessor:a5];
+  [v9 coordinateReadingItemAtURL:v8 options:1 error:error byAccessor:accessor];
 
-  return *a4 == 0;
+  return *error == 0;
 }
 
-- (BOOL)_readImportedResourceURL:(id)a3 error:(id *)a4 byThumbnailAccessor:(id)a5
+- (BOOL)_readImportedResourceURL:(id)l error:(id *)error byThumbnailAccessor:(id)accessor
 {
-  v8 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:a3];
+  v8 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:l];
   v9 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-  [v9 coordinateReadingItemAtURL:v8 options:1 error:a4 byAccessor:a5];
+  [v9 coordinateReadingItemAtURL:v8 options:1 error:error byAccessor:accessor];
 
-  return *a4 == 0;
+  return *error == 0;
 }
 
-- (BOOL)_readImportedResourceURL:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5
+- (BOOL)_readImportedResourceURL:(id)l error:(id *)error byMetadataAccessor:(id)accessor
 {
-  v8 = [(OKDocument *)self _importedMetadataURLForImportedResourceURL:a3];
+  v8 = [(OKDocument *)self _importedMetadataURLForImportedResourceURL:l];
   v9 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-  [v9 coordinateReadingItemAtURL:v8 options:1 error:a4 byAccessor:a5];
+  [v9 coordinateReadingItemAtURL:v8 options:1 error:error byAccessor:accessor];
 
-  return *a4 == 0;
+  return *error == 0;
 }
 
-- (BOOL)_updateImportedResourceURL:(id)a3 error:(id *)a4 byMetadataAccessor:(id)a5
+- (BOOL)_updateImportedResourceURL:(id)l error:(id *)error byMetadataAccessor:(id)accessor
 {
-  v8 = [(OKDocument *)self _importedMetadataURLForImportedResourceURL:a3];
+  v8 = [(OKDocument *)self _importedMetadataURLForImportedResourceURL:l];
   v9 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-  [v9 coordinateWritingItemAtURL:v8 options:8 error:a4 byAccessor:a5];
+  [v9 coordinateWritingItemAtURL:v8 options:8 error:error byAccessor:accessor];
 
-  return *a4 == 0;
+  return *error == 0;
 }
 
-- (BOOL)_readImportedResourceURL:(id)a3 size:(CGSize)a4 error:(id *)a5 byThumbnailAccessor:(id)a6
+- (BOOL)_readImportedResourceURL:(id)l size:(CGSize)size error:(id *)error byThumbnailAccessor:(id)accessor
 {
-  if (a4.width <= a4.height)
+  if (size.width <= size.height)
   {
-    a4.width = a4.height;
+    size.width = size.height;
   }
 
-  v9 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:a3 resolution:a4.width];
+  v9 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:l resolution:size.width];
   v10 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-  [v10 coordinateReadingItemAtURL:v9 options:1 error:a5 byAccessor:a6];
+  [v10 coordinateReadingItemAtURL:v9 options:1 error:error byAccessor:accessor];
 
-  return *a5 == 0;
+  return *error == 0;
 }
 
-- (BOOL)_updateImportedResourceURL:(id)a3 size:(CGSize)a4 error:(id *)a5 byThumbnailAccessor:(id)a6
+- (BOOL)_updateImportedResourceURL:(id)l size:(CGSize)size error:(id *)error byThumbnailAccessor:(id)accessor
 {
-  if (a4.width <= a4.height)
+  if (size.width <= size.height)
   {
-    a4.width = a4.height;
+    size.width = size.height;
   }
 
-  v9 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:a3 resolution:a4.width];
+  v9 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:l resolution:size.width];
   v10 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-  [v10 coordinateWritingItemAtURL:v9 options:8 error:a5 byAccessor:a6];
+  [v10 coordinateWritingItemAtURL:v9 options:8 error:error byAccessor:accessor];
 
-  return *a5 == 0;
+  return *error == 0;
 }
 
 - (id)importedResourceURLs
 {
   v8 = 0;
-  v3 = [(OKDocument *)self _importedResourcesDirectoryURL];
+  _importedResourcesDirectoryURL = [(OKDocument *)self _importedResourcesDirectoryURL];
   v4 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:self];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__OKDocument_importedResourceURLs__block_invoke;
   v7[3] = &unk_279C8E9A0;
-  v7[4] = v3;
-  v7[5] = v5;
+  v7[4] = _importedResourcesDirectoryURL;
+  v7[5] = array;
   v7[6] = self;
-  [v4 coordinateReadingItemAtURL:v3 options:1 error:&v8 byAccessor:v7];
+  [v4 coordinateReadingItemAtURL:_importedResourcesDirectoryURL options:1 error:&v8 byAccessor:v7];
   if (v8 && *MEMORY[0x277D62808] >= 4)
   {
     [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2372 andFormat:@"An error occured listing imported resources: %@", objc_msgSend(v8, "localizedDescription")];
   }
 
-  return v5;
+  return array;
 }
 
 void __34__OKDocument_importedResourceURLs__block_invoke(uint64_t a1)
@@ -2245,14 +2245,14 @@ void __34__OKDocument_importedResourceURLs__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_hasThumbnailForImportedResourceURL:(id)a3 size:(CGSize)a4
+- (BOOL)_hasThumbnailForImportedResourceURL:(id)l size:(CGSize)size
 {
-  if (a4.width <= a4.height)
+  if (size.width <= size.height)
   {
-    a4.width = a4.height;
+    size.width = size.height;
   }
 
-  v4 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:a3 resolution:a4.width];
+  v4 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:l resolution:size.width];
   v5 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v7 = 0;
   LOBYTE(v4) = [v5 fileExistsAtPath:objc_msgSend(v4 isDirectory:{"relativePath"), &v7}];
@@ -2260,7 +2260,7 @@ void __34__OKDocument_importedResourceURLs__block_invoke(uint64_t a1)
   return (v7 == 0) & v4;
 }
 
-- (CGImage)_thumbnailForImportedResourceURL:(id)a3 size:(CGSize)a4
+- (CGImage)_thumbnailForImportedResourceURL:(id)l size:(CGSize)size
 {
   v12 = 0;
   v8 = 0;
@@ -2272,10 +2272,10 @@ void __34__OKDocument_importedResourceURLs__block_invoke(uint64_t a1)
   v7[2] = __52__OKDocument__thumbnailForImportedResourceURL_size___block_invoke;
   v7[3] = &unk_279C8E7E8;
   v7[4] = &v8;
-  [(OKDocument *)self _readImportedResourceURL:a3 size:&v12 error:v7 byThumbnailAccessor:a4.width, a4.height];
+  [(OKDocument *)self _readImportedResourceURL:l size:&v12 error:v7 byThumbnailAccessor:size.width, size.height];
   if (v12 && *MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2511 andFormat:@"An error occured reading thumbnail for %@: %@", a3, objc_msgSend(v12, "localizedDescription")];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2511 andFormat:@"An error occured reading thumbnail for %@: %@", l, objc_msgSend(v12, "localizedDescription")];
   }
 
   v5 = v9[3];
@@ -2290,9 +2290,9 @@ uint64_t __52__OKDocument__thumbnailForImportedResourceURL_size___block_invoke(u
   return result;
 }
 
-- (BOOL)_hasThumbnailFromMediaForImportedResourceURL:(id)a3
+- (BOOL)_hasThumbnailFromMediaForImportedResourceURL:(id)l
 {
-  v3 = [(OKDocument *)self _importedMediaURLForImportedResourceURL:a3];
+  v3 = [(OKDocument *)self _importedMediaURLForImportedResourceURL:l];
   v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v6 = 0;
   LOBYTE(v3) = [v4 fileExistsAtPath:objc_msgSend(v3 isDirectory:{"relativePath"), &v6}];
@@ -2300,29 +2300,29 @@ uint64_t __52__OKDocument__thumbnailForImportedResourceURL_size___block_invoke(u
   return (v6 == 0) & v3;
 }
 
-- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)a3
+- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)l
 {
   v12 = 0;
   v13 = 0;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
-  v5 = [(OKDocument *)self _metadataObjectForKey:@"Media Type" forImportedResourceURL:a3];
+  v5 = [(OKDocument *)self _metadataObjectForKey:@"Media Type" forImportedResourceURL:l];
   if (v5)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__OKDocument__thumbnailFromMediaForImportedResourceURL___block_invoke;
     v8[3] = &unk_279C8E9C8;
-    v8[5] = a3;
+    v8[5] = l;
     v8[6] = &v9;
     v8[4] = v5;
-    [(OKDocument *)self _readImportedResourceURL:a3 error:&v13 byMediaAccessor:v8];
+    [(OKDocument *)self _readImportedResourceURL:l error:&v13 byMediaAccessor:v8];
   }
 
   else if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2555 andFormat:@"Media type for imported resource %@ is unknown", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2555 andFormat:@"Media type for imported resource %@ is unknown", l];
   }
 
   v6 = v10[3];
@@ -2355,24 +2355,24 @@ LABEL_5:
   return result;
 }
 
-- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)a3 size:(CGSize)a4
+- (CGImage)_thumbnailFromMediaForImportedResourceURL:(id)l size:(CGSize)size
 {
   v15 = 0;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (a4.width <= a4.height)
+  if (size.width <= size.height)
   {
-    height = a4.height;
+    height = size.height;
   }
 
   else
   {
-    height = a4.width;
+    height = size.width;
   }
 
-  v7 = [(OKDocument *)self _metadataObjectForKey:@"Media Type" forImportedResourceURL:a3];
+  v7 = [(OKDocument *)self _metadataObjectForKey:@"Media Type" forImportedResourceURL:l];
   if (v7)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -2382,13 +2382,13 @@ LABEL_5:
     v10[6] = &v11;
     v10[7] = height;
     v10[4] = v7;
-    v10[5] = a3;
-    [(OKDocument *)self _readImportedResourceURL:a3 error:&v15 byMediaAccessor:v10];
+    v10[5] = l;
+    [(OKDocument *)self _readImportedResourceURL:l error:&v15 byMediaAccessor:v10];
   }
 
   else if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2587 andFormat:@"Media type for imported resource %@ is unknown", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2587 andFormat:@"Media type for imported resource %@ is unknown", l];
   }
 
   v8 = v12[3];
@@ -2421,13 +2421,13 @@ LABEL_5:
   return result;
 }
 
-- (void)_saveThumbnailToDisk:(CGImage *)a3 forImportedResourceURL:(id)a4 size:(CGSize)a5
+- (void)_saveThumbnailToDisk:(CGImage *)disk forImportedResourceURL:(id)l size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  CGImageRetain(a3);
+  height = size.height;
+  width = size.width;
+  CGImageRetain(disk);
   v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:{-[NSString stringByAppendingPathComponent:](NSTemporaryDirectory(), "stringByAppendingPathComponent:", objc_msgSend(objc_msgSend(MEMORY[0x277CCACA8], "generateUUID"), "stringByAppendingPathExtension:", @"tmp"}];
-  v11 = [(OKDocument *)self _metadataObjectForKey:@"Opaque" forImportedResourceURL:a4];
+  v11 = [(OKDocument *)self _metadataObjectForKey:@"Opaque" forImportedResourceURL:l];
   if (v11 && ([v11 BOOLValue] & 1) == 0)
   {
     OFCGImageSavePNGToURL();
@@ -2443,11 +2443,11 @@ LABEL_5:
   v12[2] = __63__OKDocument__saveThumbnailToDisk_forImportedResourceURL_size___block_invoke;
   v12[3] = &unk_279C8EA40;
   v12[4] = self;
-  v12[5] = a4;
+  v12[5] = l;
   *&v12[7] = width;
   *&v12[8] = height;
   v12[6] = v10;
-  v12[9] = a3;
+  v12[9] = disk;
   [(UIDocument *)self performAsynchronousFileAccessUsingBlock:v12];
 }
 
@@ -2527,9 +2527,9 @@ void __63__OKDocument__saveThumbnailToDisk_forImportedResourceURL_size___block_i
   CGImageRelease(*(a1 + 48));
 }
 
-- (BOOL)_hasThumbnailForImportedResourceURL:(id)a3
+- (BOOL)_hasThumbnailForImportedResourceURL:(id)l
 {
-  v3 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:a3];
+  v3 = [(OKDocument *)self _importedThumbnailURLForImportedResourceURL:l];
   v4 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v6 = 0;
   LOBYTE(v3) = [v4 fileExistsAtPath:objc_msgSend(v3 isDirectory:{"relativePath"), &v6}];
@@ -2537,7 +2537,7 @@ void __63__OKDocument__saveThumbnailToDisk_forImportedResourceURL_size___block_i
   return (v6 == 0) & v3;
 }
 
-- (CGImage)_thumbnailForImportedResourceURL:(id)a3
+- (CGImage)_thumbnailForImportedResourceURL:(id)l
 {
   v11 = 0;
   v7 = 0;
@@ -2549,10 +2549,10 @@ void __63__OKDocument__saveThumbnailToDisk_forImportedResourceURL_size___block_i
   v6[2] = __47__OKDocument__thumbnailForImportedResourceURL___block_invoke;
   v6[3] = &unk_279C8E7E8;
   v6[4] = &v7;
-  [(OKDocument *)self _readImportedResourceURL:a3 error:&v11 byThumbnailAccessor:v6];
+  [(OKDocument *)self _readImportedResourceURL:l error:&v11 byThumbnailAccessor:v6];
   if (v11 && *MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2688 andFormat:@"An error occured reading thumbnail for %@: %@", a3, objc_msgSend(v11, "localizedDescription")];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2688 andFormat:@"An error occured reading thumbnail for %@: %@", l, objc_msgSend(v11, "localizedDescription")];
   }
 
   v4 = v8[3];
@@ -2567,7 +2567,7 @@ uint64_t __47__OKDocument__thumbnailForImportedResourceURL___block_invoke(uint64
   return result;
 }
 
-- (id)_metadataForImportedResourceURL:(id)a3
+- (id)_metadataForImportedResourceURL:(id)l
 {
   v8 = 0;
   v9 = &v8;
@@ -2581,10 +2581,10 @@ uint64_t __47__OKDocument__thumbnailForImportedResourceURL___block_invoke(uint64
   v6[1] = 3221225472;
   v6[2] = __46__OKDocument__metadataForImportedResourceURL___block_invoke;
   v6[3] = &unk_279C8E7E8;
-  [(OKDocument *)self _readImportedResourceURL:a3 error:&v7 byMetadataAccessor:v6];
+  [(OKDocument *)self _readImportedResourceURL:l error:&v7 byMetadataAccessor:v6];
   if (v7 && *MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2710 andFormat:@"An error occured importing metadata for %@: %@", a3, objc_msgSend(v7, "localizedDescription")];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Document/OKDocument.m" line:2710 andFormat:@"An error occured importing metadata for %@: %@", l, objc_msgSend(v7, "localizedDescription")];
   }
 
   v4 = v9[5];
@@ -2599,26 +2599,26 @@ id __46__OKDocument__metadataForImportedResourceURL___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (id)_metadataObjectForKey:(id)a3 forImportedResourceURL:(id)a4
+- (id)_metadataObjectForKey:(id)key forImportedResourceURL:(id)l
 {
-  v4 = [-[OKDocument _metadataForImportedResourceURL:](self _metadataForImportedResourceURL:{a4), "objectForKey:", a3}];
+  v4 = [-[OKDocument _metadataForImportedResourceURL:](self _metadataForImportedResourceURL:{l), "objectForKey:", key}];
 
   return v4;
 }
 
-- (void)_didEnterBackgroundNotification:(id)a3
+- (void)_didEnterBackgroundNotification:(id)notification
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__OKDocument__didEnterBackgroundNotification___block_invoke;
   v8[3] = &unk_279C8EA68;
   v8[4] = &v9;
-  v5 = [v4 beginBackgroundTaskWithExpirationHandler:v8];
+  v5 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v8];
   v10[3] = v5;
   if (v5 != *MEMORY[0x277D767B0])
   {
@@ -2668,19 +2668,19 @@ uint64_t __46__OKDocument__didEnterBackgroundNotification___block_invoke_3(uint6
   return [v2 endBackgroundTask:v3];
 }
 
-- (void)_willTerminateNotification:(id)a3
+- (void)_willTerminateNotification:(id)notification
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__OKDocument__willTerminateNotification___block_invoke;
   v8[3] = &unk_279C8EA68;
   v8[4] = &v9;
-  v5 = [v4 beginBackgroundTaskWithExpirationHandler:v8];
+  v5 = [mEMORY[0x277D75128] beginBackgroundTaskWithExpirationHandler:v8];
   v10[3] = v5;
   if (v5 != *MEMORY[0x277D767B0])
   {

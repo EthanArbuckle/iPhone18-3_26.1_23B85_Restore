@@ -1,17 +1,17 @@
 @interface MFAccountStore
 + (BOOL)_shouldUpdateAccountsInPlace;
-+ (id)_accountWithAccountClass:(Class)a3 persistentAccount:(id)a4 useExisting:(BOOL)a5;
++ (id)_accountWithAccountClass:(Class)class persistentAccount:(id)account useExisting:(BOOL)existing;
 + (id)sharedAccountStore;
 - (ACAccountStore)persistentStore;
 - (MFAccountStore)init;
-- (id)accountsWithTypeIdentifiers:(id)a3 error:(id *)a4;
-- (id)newPersistentAccountWithAccountTypeIdentifier:(id)a3;
-- (id)supportedDataclassesWithAccountTypeIdentifier:(id)a3;
-- (void)_accountsStoreChanged:(id)a3;
+- (id)accountsWithTypeIdentifiers:(id)identifiers error:(id *)error;
+- (id)newPersistentAccountWithAccountTypeIdentifier:(id)identifier;
+- (id)supportedDataclassesWithAccountTypeIdentifier:(id)identifier;
+- (void)_accountsStoreChanged:(id)changed;
 - (void)dealloc;
-- (void)removePersistentAccountWithAccount:(id)a3;
-- (void)savePersistentAccountWithAccount:(id)a3;
-- (void)setPersistentStore:(id)a3;
+- (void)removePersistentAccountWithAccount:(id)account;
+- (void)savePersistentAccountWithAccount:(id)account;
+- (void)setPersistentStore:(id)store;
 @end
 
 @implementation MFAccountStore
@@ -65,11 +65,11 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
   return v3;
 }
 
-- (void)setPersistentStore:(id)a3
+- (void)setPersistentStore:(id)store
 {
   os_unfair_lock_lock(&self->_accountStoreLock);
   accountStore = self->_accountStore;
-  if (accountStore != a3)
+  if (accountStore != store)
   {
     v6 = MEMORY[0x277CB8B78];
     if (accountStore)
@@ -78,8 +78,8 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
       accountStore = self->_accountStore;
     }
 
-    self->_accountStore = a3;
-    if (a3)
+    self->_accountStore = store;
+    if (store)
     {
       [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
     }
@@ -88,9 +88,9 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
   os_unfair_lock_unlock(&self->_accountStoreLock);
 }
 
-- (id)newPersistentAccountWithAccountTypeIdentifier:(id)a3
+- (id)newPersistentAccountWithAccountTypeIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
@@ -101,7 +101,7 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
     v8 = MFLogGeneral();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(MFAccountStore *)a3 newPersistentAccountWithAccountTypeIdentifier:v8];
+      [(MFAccountStore *)identifier newPersistentAccountWithAccountTypeIdentifier:v8];
     }
 
     return 0;
@@ -113,29 +113,29 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
   return [v6 initWithAccountType:v5];
 }
 
-- (id)supportedDataclassesWithAccountTypeIdentifier:(id)a3
+- (id)supportedDataclassesWithAccountTypeIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v3 = [(ACAccountType *)[(ACAccountStore *)self->_accountStore accountTypeWithAccountTypeIdentifier:?] supportedDataclasses];
+  supportedDataclasses = [(ACAccountType *)[(ACAccountStore *)self->_accountStore accountTypeWithAccountTypeIdentifier:?] supportedDataclasses];
 
-  return [v3 allObjects];
+  return [supportedDataclasses allObjects];
 }
 
-- (id)accountsWithTypeIdentifiers:(id)a3 error:(id *)a4
+- (id)accountsWithTypeIdentifiers:(id)identifiers error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v22 = 0;
-  v7 = [(ACAccountStore *)self->_accountStore accountsWithAccountTypeIdentifiers:a3 error:&v22];
+  v7 = [(ACAccountStore *)self->_accountStore accountsWithAccountTypeIdentifiers:identifiers error:&v22];
   if (v22)
   {
     v8 = MFLogGeneral();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [MFAccountStore accountsWithTypeIdentifiers:a3 error:&v22];
+      [MFAccountStore accountsWithTypeIdentifiers:identifiers error:&v22];
     }
   }
 
@@ -146,8 +146,8 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
   v9 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (!v9)
   {
-    v11 = 0;
-    if (!a4)
+    array = 0;
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -156,7 +156,7 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
   }
 
   v10 = v9;
-  v11 = 0;
+  array = 0;
   v12 = *v19;
   do
   {
@@ -171,12 +171,12 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
       if (v14)
       {
         v15 = v14;
-        if (!v11)
+        if (!array)
         {
-          v11 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
         }
 
-        [v11 addObject:v15];
+        [array addObject:v15];
       }
     }
 
@@ -184,25 +184,25 @@ MFAccountStore *__36__MFAccountStore_sharedAccountStore__block_invoke()
   }
 
   while (v10);
-  if (a4)
+  if (error)
   {
 LABEL_16:
-    *a4 = v22;
+    *error = v22;
   }
 
 LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
-  return v11;
+  return array;
 }
 
-+ (id)_accountWithAccountClass:(Class)a3 persistentAccount:(id)a4 useExisting:(BOOL)a5
++ (id)_accountWithAccountClass:(Class)class persistentAccount:(id)account useExisting:(BOOL)existing
 {
-  if (a5 && (v7 = -[objc_class existingAccountForUniqueID:](a3, "existingAccountForUniqueID:", [a4 identifier])) != 0)
+  if (existing && (v7 = -[objc_class existingAccountForUniqueID:](class, "existingAccountForUniqueID:", [account identifier])) != 0)
   {
     v8 = v7;
-    if (objc_opt_class() == a3)
+    if (objc_opt_class() == class)
     {
-      [v8 setPersistentAccount:a4];
+      [v8 setPersistentAccount:account];
     }
 
     return v8;
@@ -210,7 +210,7 @@ LABEL_17:
 
   else
   {
-    v10 = [[a3 alloc] initWithPersistentAccount:a4];
+    v10 = [[class alloc] initWithPersistentAccount:account];
 
     return v10;
   }
@@ -242,15 +242,15 @@ LABEL_17:
   }
 }
 
-- (void)savePersistentAccountWithAccount:(id)a3
+- (void)savePersistentAccountWithAccount:(id)account
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 persistentAccount];
-  if (v4)
+  persistentAccount = [account persistentAccount];
+  if (persistentAccount)
   {
-    v5 = v4;
-    v6 = [v4 accountDescription];
-    v7 = [v5 identifier];
+    v5 = persistentAccount;
+    accountDescription = [persistentAccount accountDescription];
+    identifier = [v5 identifier];
     if ([v5 isDirty])
     {
       v8 = dispatch_semaphore_create(0);
@@ -259,8 +259,8 @@ LABEL_17:
       v12[1] = 3221225472;
       v12[2] = __51__MFAccountStore_savePersistentAccountWithAccount___block_invoke;
       v12[3] = &unk_2798B6D68;
-      v12[4] = v6;
-      v12[5] = v7;
+      v12[4] = accountDescription;
+      v12[5] = identifier;
       v12[6] = v8;
       [(ACAccountStore *)accountStore saveVerifiedAccount:v5 withCompletionHandler:v12];
       dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
@@ -273,9 +273,9 @@ LABEL_17:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v14 = v6;
+        v14 = accountDescription;
         v15 = 2112;
-        v16 = v7;
+        v16 = identifier;
         _os_log_impl(&dword_258BDA000, v10, OS_LOG_TYPE_INFO, "Nothing to save for account %@ (%@)", buf, 0x16u);
       }
     }
@@ -313,22 +313,22 @@ intptr_t __51__MFAccountStore_savePersistentAccountWithAccount___block_invoke(ui
   return result;
 }
 
-- (void)removePersistentAccountWithAccount:(id)a3
+- (void)removePersistentAccountWithAccount:(id)account
 {
-  v4 = [a3 persistentAccount];
-  if (v4)
+  persistentAccount = [account persistentAccount];
+  if (persistentAccount)
   {
-    v5 = v4;
-    v6 = [v4 accountDescription];
-    v7 = [v5 identifier];
+    v5 = persistentAccount;
+    accountDescription = [persistentAccount accountDescription];
+    identifier = [v5 identifier];
     v8 = dispatch_semaphore_create(0);
     accountStore = self->_accountStore;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__MFAccountStore_removePersistentAccountWithAccount___block_invoke;
     v10[3] = &unk_2798B6D68;
-    v10[4] = v6;
-    v10[5] = v7;
+    v10[4] = accountDescription;
+    v10[5] = identifier;
     v10[6] = v8;
     [(ACAccountStore *)accountStore removeAccount:v5 withCompletionHandler:v10];
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
@@ -365,12 +365,12 @@ intptr_t __53__MFAccountStore_removePersistentAccountWithAccount___block_invoke(
   return result;
 }
 
-- (void)_accountsStoreChanged:(id)a3
+- (void)_accountsStoreChanged:(id)changed
 {
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(MFAccountStore *)a3 _accountsStoreChanged:v4];
+    [(MFAccountStore *)changed _accountsStoreChanged:v4];
   }
 }
 

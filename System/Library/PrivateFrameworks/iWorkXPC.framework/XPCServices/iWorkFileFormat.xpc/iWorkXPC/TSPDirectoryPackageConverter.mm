@@ -1,17 +1,17 @@
 @interface TSPDirectoryPackageConverter
-- (BOOL)enumeratePackageEntriesWithZipArchive:(id)a3 needsReadChannel:(BOOL)a4 accessor:(id)a5;
+- (BOOL)enumeratePackageEntriesWithZipArchive:(id)archive needsReadChannel:(BOOL)channel accessor:(id)accessor;
 - (BOOL)isValid;
-- (BOOL)performAccessor:(id)a3 filePathCharacterIndex:(unint64_t)a4 fileURL:(id)a5 needsReadChannel:(BOOL)a6 zipArchive:(id)a7 error:(id *)a8;
-- (unint64_t)progressTotalUnitCountWithZipArchive:(id)a3;
+- (BOOL)performAccessor:(id)accessor filePathCharacterIndex:(unint64_t)index fileURL:(id)l needsReadChannel:(BOOL)channel zipArchive:(id)archive error:(id *)error;
+- (unint64_t)progressTotalUnitCountWithZipArchive:(id)archive;
 @end
 
 @implementation TSPDirectoryPackageConverter
 
-- (unint64_t)progressTotalUnitCountWithZipArchive:(id)a3
+- (unint64_t)progressTotalUnitCountWithZipArchive:(id)archive
 {
   v26.receiver = self;
   v26.super_class = TSPDirectoryPackageConverter;
-  v4 = [(TSPPackageConverter *)&v26 progressTotalUnitCountWithZipArchive:a3];
+  v4 = [(TSPPackageConverter *)&v26 progressTotalUnitCountWithZipArchive:archive];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -67,24 +67,24 @@
   return v4;
 }
 
-- (BOOL)performAccessor:(id)a3 filePathCharacterIndex:(unint64_t)a4 fileURL:(id)a5 needsReadChannel:(BOOL)a6 zipArchive:(id)a7 error:(id *)a8
+- (BOOL)performAccessor:(id)accessor filePathCharacterIndex:(unint64_t)index fileURL:(id)l needsReadChannel:(BOOL)channel zipArchive:(id)archive error:(id *)error
 {
-  v10 = a6;
-  v14 = a3;
-  v15 = a5;
-  v16 = [v15 path];
-  v17 = [v16 stringByStandardizingPath];
-  v18 = [v17 precomposedStringWithCanonicalMapping];
+  channelCopy = channel;
+  accessorCopy = accessor;
+  lCopy = l;
+  path = [lCopy path];
+  stringByStandardizingPath = [path stringByStandardizingPath];
+  precomposedStringWithCanonicalMapping = [stringByStandardizingPath precomposedStringWithCanonicalMapping];
 
-  v19 = [v18 substringFromIndex:a4];
-  if (([v19 isEqualToString:@"Index.zip"] & 1) != 0 || -[TSPPackageConverter isDocumentPropertiesPath:](self, "isDocumentPropertiesPath:", v19) || a7 && -[TSPPackageConverter isObjectArchivePath:](self, "isObjectArchivePath:", v19))
+  v19 = [precomposedStringWithCanonicalMapping substringFromIndex:index];
+  if (([v19 isEqualToString:@"Index.zip"] & 1) != 0 || -[TSPPackageConverter isDocumentPropertiesPath:](self, "isDocumentPropertiesPath:", v19) || archive && -[TSPPackageConverter isObjectArchivePath:](self, "isObjectArchivePath:", v19))
   {
     v20 = 0;
     v21 = 1;
     goto LABEL_6;
   }
 
-  if (!v10)
+  if (!channelCopy)
   {
     v20 = 0;
     v24 = 0;
@@ -92,7 +92,7 @@
   }
 
   v54 = 0;
-  v24 = [[TSUFileIOChannel alloc] initForReadingURL:v15 error:&v54];
+  v24 = [[TSUFileIOChannel alloc] initForReadingURL:lCopy error:&v54];
   v20 = v54;
   if (v24)
   {
@@ -100,7 +100,7 @@ LABEL_16:
     log = v24;
     v53 = 0;
     v52 = 0;
-    v26 = [v15 getResourceValue:&v53 forKey:NSURLFileSizeKey error:&v52];
+    v26 = [lCopy getResourceValue:&v53 forKey:NSURLFileSizeKey error:&v52];
     v27 = v53;
     v28 = v52;
     if ((v26 & 1) == 0)
@@ -114,19 +114,19 @@ LABEL_16:
       v29 = TSUDefaultCat_log_t;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        v43 = [v15 path];
+        path2 = [lCopy path];
         v34 = objc_opt_class();
         v47 = NSStringFromClass(v34);
-        v45 = [v28 domain];
-        v35 = [v28 code];
+        domain = [v28 domain];
+        code = [v28 code];
         *buf = 138413314;
-        v56 = v43;
+        v56 = path2;
         v57 = 2114;
         v58 = v47;
         v59 = 2114;
-        v60 = v45;
+        v60 = domain;
         v61 = 2048;
-        v62 = v35;
+        v62 = code;
         v63 = 2112;
         v64 = v28;
         _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to retrieve file size for path: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -137,7 +137,7 @@ LABEL_16:
 
     v51 = 0;
     v50 = 0;
-    v30 = [v15 getResourceValue:&v51 forKey:NSURLContentModificationDateKey error:&v50];
+    v30 = [lCopy getResourceValue:&v51 forKey:NSURLContentModificationDateKey error:&v50];
     v31 = v51;
     v32 = v50;
     if ((v30 & 1) == 0)
@@ -151,19 +151,19 @@ LABEL_16:
       v33 = TSUDefaultCat_log_t;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v48 = [v15 path];
+        path3 = [lCopy path];
         v36 = objc_opt_class();
         v46 = NSStringFromClass(v36);
-        v44 = [v32 domain];
-        v37 = [v32 code];
+        domain2 = [v32 domain];
+        code2 = [v32 code];
         *buf = 138413314;
-        v56 = v48;
+        v56 = path3;
         v57 = 2114;
         v58 = v46;
         v59 = 2114;
-        v60 = v44;
+        v60 = domain2;
         v61 = 2048;
-        v62 = v37;
+        v62 = code2;
         v63 = 2112;
         v64 = v32;
         _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Failed to retrieve content modification date for path: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -172,7 +172,7 @@ LABEL_16:
       v31 = 0;
     }
 
-    v21 = v14[2](v14, v19, v31, [v27 unsignedLongLongValue], 0, log);
+    v21 = accessorCopy[2](accessorCopy, v19, v31, [v27 unsignedLongLongValue], 0, log);
     [log close];
 
     goto LABEL_29;
@@ -187,19 +187,19 @@ LABEL_16:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     log = v25;
-    v38 = [v15 path];
+    path4 = [lCopy path];
     v39 = objc_opt_class();
     v40 = NSStringFromClass(v39);
-    v41 = [v20 domain];
-    v42 = [v20 code];
+    domain3 = [v20 domain];
+    code3 = [v20 code];
     *buf = 138413314;
-    v56 = v38;
+    v56 = path4;
     v57 = 2114;
     v58 = v40;
     v59 = 2114;
-    v60 = v41;
+    v60 = domain3;
     v61 = 2048;
-    v62 = v42;
+    v62 = code3;
     v63 = 2112;
     v64 = v20;
     _os_log_error_impl(&_mh_execute_header, log, OS_LOG_TYPE_ERROR, "Failed to read file from document directory: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -214,21 +214,21 @@ LABEL_29:
 LABEL_30:
 
 LABEL_6:
-  if (a8)
+  if (error)
   {
     v22 = v20;
-    *a8 = v20;
+    *error = v20;
   }
 
   return v21;
 }
 
-- (BOOL)enumeratePackageEntriesWithZipArchive:(id)a3 needsReadChannel:(BOOL)a4 accessor:(id)a5
+- (BOOL)enumeratePackageEntriesWithZipArchive:(id)archive needsReadChannel:(BOOL)channel accessor:(id)accessor
 {
-  v62 = a4;
-  v63 = a3;
-  v64 = a5;
-  v66 = self;
+  channelCopy = channel;
+  archiveCopy = archive;
+  accessorCopy = accessor;
+  selfCopy = self;
   v55 = [(TSPPackageConverter *)self URL];
   v7 = +[NSFileManager defaultManager];
   v93[0] = NSURLIsDirectoryKey;
@@ -237,11 +237,11 @@ LABEL_6:
   v8 = [NSArray arrayWithObjects:v93 count:3];
   v51 = [v7 enumeratorAtURL:v55 includingPropertiesForKeys:v8 options:0 errorHandler:0];
 
-  v9 = [v55 path];
-  v10 = [v9 stringByStandardizingPath];
-  v52 = [v10 precomposedStringWithCanonicalMapping];
+  path = [v55 path];
+  stringByStandardizingPath = [path stringByStandardizingPath];
+  precomposedStringWithCanonicalMapping = [stringByStandardizingPath precomposedStringWithCanonicalMapping];
 
-  v65 = [v52 length];
+  v65 = [precomposedStringWithCanonicalMapping length];
   v56 = objc_alloc_init(NSMutableArray);
   v54 = objc_alloc_init(NSMutableArray);
   v53 = objc_alloc_init(NSMutableArray);
@@ -268,7 +268,7 @@ LABEL_3:
 
       v15 = *(*(&v85 + 1) + 8 * v14);
       v16 = objc_autoreleasePoolPush();
-      v17 = [(TSPPackageConverter *)v66 isCancelled]| v13 ^ 1;
+      v17 = [(TSPPackageConverter *)selfCopy isCancelled]| v13 ^ 1;
       if (v17)
       {
         v13 = 0;
@@ -284,16 +284,16 @@ LABEL_3:
 
         if (v18 && ([v19 BOOLValue] & 1) == 0)
         {
-          v21 = [v15 path];
-          v22 = [v21 stringByStandardizingPath];
-          v23 = [v22 precomposedStringWithCanonicalMapping];
+          path2 = [v15 path];
+          stringByStandardizingPath2 = [path2 stringByStandardizingPath];
+          precomposedStringWithCanonicalMapping2 = [stringByStandardizingPath2 precomposedStringWithCanonicalMapping];
 
-          v24 = [v23 substringFromIndex:v65 + 1];
-          v25 = [(TSPPackageConverter *)v66 isDataPath:v24];
+          v24 = [precomposedStringWithCanonicalMapping2 substringFromIndex:v65 + 1];
+          v25 = [(TSPPackageConverter *)selfCopy isDataPath:v24];
           v26 = v56;
           if ((v25 & 1) == 0)
           {
-            if ([(TSPPackageConverter *)v66 isObjectArchivePath:v24])
+            if ([(TSPPackageConverter *)selfCopy isObjectArchivePath:v24])
             {
               v26 = v54;
             }
@@ -355,7 +355,7 @@ LABEL_23:
 
       v30 = *(*(&v79 + 1) + 8 * v29);
       v31 = objc_autoreleasePoolPush();
-      v32 = [(TSPPackageConverter *)v66 isCancelled]| v13 ^ 1;
+      v32 = [(TSPPackageConverter *)selfCopy isCancelled]| v13 ^ 1;
       if (v32)
       {
         v13 = 0;
@@ -364,7 +364,7 @@ LABEL_23:
       else
       {
         v78 = v12;
-        v13 = [(TSPDirectoryPackageConverter *)v66 performAccessor:v64 filePathCharacterIndex:v65 + 1 fileURL:v30 needsReadChannel:v62 zipArchive:v63 error:&v78];
+        v13 = [(TSPDirectoryPackageConverter *)selfCopy performAccessor:accessorCopy filePathCharacterIndex:v65 + 1 fileURL:v30 needsReadChannel:channelCopy zipArchive:archiveCopy error:&v78];
         v33 = v78;
 
         v12 = v33;
@@ -391,9 +391,9 @@ LABEL_23:
 
   if (v13)
   {
-    v77.receiver = v66;
+    v77.receiver = selfCopy;
     v77.super_class = TSPDirectoryPackageConverter;
-    v34 = [(TSPPackageConverter *)&v77 enumeratePackageEntriesWithZipArchive:v63 needsReadChannel:v62 accessor:v64];
+    v34 = [(TSPPackageConverter *)&v77 enumeratePackageEntriesWithZipArchive:archiveCopy needsReadChannel:channelCopy accessor:accessorCopy];
   }
 
   else
@@ -421,7 +421,7 @@ LABEL_37:
 
       v38 = *(*(&v73 + 1) + 8 * v37);
       v39 = objc_autoreleasePoolPush();
-      v40 = [(TSPPackageConverter *)v66 isCancelled]| v34 ^ 1;
+      v40 = [(TSPPackageConverter *)selfCopy isCancelled]| v34 ^ 1;
       if (v40)
       {
         v34 = 0;
@@ -430,7 +430,7 @@ LABEL_37:
       else
       {
         v72 = v12;
-        v34 = [(TSPDirectoryPackageConverter *)v66 performAccessor:v64 filePathCharacterIndex:v65 + 1 fileURL:v38 needsReadChannel:v62 zipArchive:v63 error:&v72];
+        v34 = [(TSPDirectoryPackageConverter *)selfCopy performAccessor:accessorCopy filePathCharacterIndex:v65 + 1 fileURL:v38 needsReadChannel:channelCopy zipArchive:archiveCopy error:&v72];
         v41 = v72;
 
         v12 = v41;
@@ -475,7 +475,7 @@ LABEL_48:
 
       v46 = *(*(&v68 + 1) + 8 * v45);
       v47 = objc_autoreleasePoolPush();
-      v48 = [(TSPPackageConverter *)v66 isCancelled]| v34 ^ 1;
+      v48 = [(TSPPackageConverter *)selfCopy isCancelled]| v34 ^ 1;
       if (v48)
       {
         v34 = 0;
@@ -484,7 +484,7 @@ LABEL_48:
       else
       {
         v67 = v12;
-        v34 = [(TSPDirectoryPackageConverter *)v66 performAccessor:v64 filePathCharacterIndex:v65 + 1 fileURL:v46 needsReadChannel:v62 zipArchive:v63 error:&v67];
+        v34 = [(TSPDirectoryPackageConverter *)selfCopy performAccessor:accessorCopy filePathCharacterIndex:v65 + 1 fileURL:v46 needsReadChannel:channelCopy zipArchive:archiveCopy error:&v67];
         v49 = v67;
 
         v12 = v49;

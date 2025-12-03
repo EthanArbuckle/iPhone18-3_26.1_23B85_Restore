@@ -1,7 +1,7 @@
 @interface PPSCollectionOperator
 - (PPSCollectionOperator)init;
 - (void)initOperatorDependancies;
-- (void)monitorMetricsForSubsystem:(id)a3 category:(id)a4 payload:(id)a5;
+- (void)monitorMetricsForSubsystem:(id)subsystem category:(id)category payload:(id)payload;
 @end
 
 @implementation PPSCollectionOperator
@@ -44,7 +44,7 @@ void __49__PPSCollectionOperator_initOperatorDependancies__block_invoke(uint64_t
 {
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -52,10 +52,10 @@ void __49__PPSCollectionOperator_initOperatorDependancies__block_invoke(uint64_t
     v5.receiver = self;
     v5.super_class = PPSCollectionOperator;
     self = [(PLOperator *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -77,24 +77,24 @@ void __49__PPSCollectionOperator_initOperatorDependancies__block_invoke(uint64_t
     self->_allowlistResponder = v6;
 
     v8 = [PLCFNotificationOperatorComposition alloc];
-    v9 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __49__PPSCollectionOperator_initOperatorDependancies__block_invoke_38;
     v17[3] = &unk_1E8519090;
     v17[4] = self;
-    v10 = [(PLCFNotificationOperatorComposition *)v8 initWithWorkQueue:v9 forNotification:@"com.apple.powerlog.dataStreamStartMonitor" requireState:0 withBlock:v17];
+    v10 = [(PLCFNotificationOperatorComposition *)v8 initWithWorkQueue:workQueue forNotification:@"com.apple.powerlog.dataStreamStartMonitor" requireState:0 withBlock:v17];
     startMonitor = self->_startMonitor;
     self->_startMonitor = v10;
 
     v12 = [PLCFNotificationOperatorComposition alloc];
-    v13 = [(PLOperator *)self workQueue];
+    workQueue2 = [(PLOperator *)self workQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __49__PPSCollectionOperator_initOperatorDependancies__block_invoke_53;
     v16[3] = &unk_1E8519090;
     v16[4] = self;
-    v14 = [(PLCFNotificationOperatorComposition *)v12 initWithWorkQueue:v13 forNotification:@"com.apple.powerlog.dataStreamStopMonitor" requireState:0 withBlock:v16];
+    v14 = [(PLCFNotificationOperatorComposition *)v12 initWithWorkQueue:workQueue2 forNotification:@"com.apple.powerlog.dataStreamStopMonitor" requireState:0 withBlock:v16];
     stopMonitor = self->_stopMonitor;
     self->_stopMonitor = v14;
   }
@@ -154,19 +154,19 @@ uint64_t __49__PPSCollectionOperator_initOperatorDependancies__block_invoke_53(u
   return [*(a1 + 32) setMonitoredCategory:0];
 }
 
-- (void)monitorMetricsForSubsystem:(id)a3 category:(id)a4 payload:(id)a5
+- (void)monitorMetricsForSubsystem:(id)subsystem category:(id)category payload:(id)payload
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  payloadCopy = payload;
   if ([(PPSCollectionOperator *)self monitor])
   {
-    v11 = [(PPSCollectionOperator *)self monitoredSubsystem];
-    if ([v11 isEqualToString:v8])
+    monitoredSubsystem = [(PPSCollectionOperator *)self monitoredSubsystem];
+    if ([monitoredSubsystem isEqualToString:subsystemCopy])
     {
-      v12 = [(PPSCollectionOperator *)self monitoredCategory];
-      v13 = [v12 isEqualToString:v9];
+      monitoredCategory = [(PPSCollectionOperator *)self monitoredCategory];
+      v13 = [monitoredCategory isEqualToString:categoryCopy];
 
       if (v13)
       {
@@ -174,7 +174,7 @@ uint64_t __49__PPSCollectionOperator_initOperatorDependancies__block_invoke_53(u
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 138412290;
-          v17 = v10;
+          v17 = payloadCopy;
           _os_log_impl(&dword_1D8611000, v14, OS_LOG_TYPE_DEFAULT, "%@", &v16, 0xCu);
         }
       }

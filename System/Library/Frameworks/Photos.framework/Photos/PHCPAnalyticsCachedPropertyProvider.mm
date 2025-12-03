@@ -1,10 +1,10 @@
 @interface PHCPAnalyticsCachedPropertyProvider
-+ (id)librarySizeRange:(int64_t)a3;
++ (id)librarySizeRange:(int64_t)range;
 - (PHCPAnalyticsCachedPropertyProvider)init;
-- (PHCPAnalyticsCachedPropertyProvider)initWithPhotoLibrary:(id)a3;
+- (PHCPAnalyticsCachedPropertyProvider)initWithPhotoLibrary:(id)library;
 - (PHPhotoLibrary)photoLibrary;
 - (id)_cachedProperties;
-- (void)registerSystemProperties:(id)a3;
+- (void)registerSystemProperties:(id)properties;
 @end
 
 @implementation PHCPAnalyticsCachedPropertyProvider
@@ -26,18 +26,18 @@
   v5 = v4;
   if (v3 == MEMORY[0x1E69E9E10] || v4 == MEMORY[0x1E69E9E10])
   {
-    v7 = [(PHCPAnalyticsCachedPropertyProvider *)self photoLibrary];
+    photoLibrary = [(PHCPAnalyticsCachedPropertyProvider *)self photoLibrary];
     v22 = 0;
-    v8 = [v7 urlForApplicationDataFolderIdentifier:9 error:&v22];
+    v8 = [photoLibrary urlForApplicationDataFolderIdentifier:9 error:&v22];
     v18 = v22;
 
     v9 = *MEMORY[0x1E6991E88];
     v10 = [v8 URLByAppendingPathComponent:*MEMORY[0x1E6991E88]];
     if (v10)
     {
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [v10 path];
-      v13 = [v11 fileExistsAtPath:v12];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v10 path];
+      v13 = [defaultManager fileExistsAtPath:path];
 
       if (v13)
       {
@@ -107,11 +107,11 @@ LABEL_23:
   return v17;
 }
 
-- (void)registerSystemProperties:(id)a3
+- (void)registerSystemProperties:(id)properties
 {
-  v56 = a3;
-  v49 = [(PHCPAnalyticsCachedPropertyProvider *)self _cachedProperties];
-  v4 = [v49 objectForKeyedSubscript:*MEMORY[0x1E6991C28]];
+  propertiesCopy = properties;
+  _cachedProperties = [(PHCPAnalyticsCachedPropertyProvider *)self _cachedProperties];
+  v4 = [_cachedProperties objectForKeyedSubscript:*MEMORY[0x1E6991C28]];
   v5 = *MEMORY[0x1E6991EE0];
   v53 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6991EE0]];
   v6 = *MEMORY[0x1E6991EF0];
@@ -131,34 +131,34 @@ LABEL_23:
   v13 = *MEMORY[0x1E6991EB0];
   v51 = v4;
   v14 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6991EB0]];
-  [v56 addProperty:v5 withValue:v53];
-  [v56 addProperty:v6 withValue:v52];
-  [v56 addProperty:v47 withValue:v50];
-  [v56 addProperty:v7 withValue:v54];
-  [v56 addProperty:v45 withValue:v55];
+  [propertiesCopy addProperty:v5 withValue:v53];
+  [propertiesCopy addProperty:v6 withValue:v52];
+  [propertiesCopy addProperty:v47 withValue:v50];
+  [propertiesCopy addProperty:v7 withValue:v54];
+  [propertiesCopy addProperty:v45 withValue:v55];
   v48 = v8;
-  [v56 addProperty:v43 withValue:v8];
+  [propertiesCopy addProperty:v43 withValue:v8];
   v46 = v10;
-  [v56 addProperty:v9 withValue:v10];
+  [propertiesCopy addProperty:v9 withValue:v10];
   v44 = v12;
-  [v56 addProperty:v11 withValue:v12];
-  [v56 addProperty:v13 withValue:v14];
+  [propertiesCopy addProperty:v11 withValue:v12];
+  [propertiesCopy addProperty:v13 withValue:v14];
   if (v50)
   {
     v15 = [objc_opt_class() librarySizeRange:{objc_msgSend(v50, "integerValue")}];
-    [v56 addProperty:*MEMORY[0x1E6991EA8] withValue:v15];
+    [propertiesCopy addProperty:*MEMORY[0x1E6991EA8] withValue:v15];
   }
 
   if (v54)
   {
     v16 = [MEMORY[0x1E6991F28] bucketNameForInteger:objc_msgSend(v54 bucketLimits:{"integerValue"), 0, 100, 250, 500, 1000, 2000, 4000, 0}];
-    [v56 addProperty:*MEMORY[0x1E6991EC8] withValue:v16];
+    [propertiesCopy addProperty:*MEMORY[0x1E6991EC8] withValue:v16];
   }
 
   if (v55)
   {
     v17 = [MEMORY[0x1E6991F28] bucketNameForInteger:objc_msgSend(v55 bucketLimits:{"integerValue"), 0, 2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 0}];
-    [v56 addProperty:*MEMORY[0x1E6991ED8] withValue:v17];
+    [propertiesCopy addProperty:*MEMORY[0x1E6991ED8] withValue:v17];
   }
 
   v18 = *MEMORY[0x1E6991F00];
@@ -171,15 +171,15 @@ LABEL_23:
   v39 = [v51 objectForKeyedSubscript:*MEMORY[0x1E6991F20]];
   v22 = *MEMORY[0x1E6991F10];
   v23 = [v51 objectForKeyedSubscript:*MEMORY[0x1E6991F10]];
-  [v56 addProperty:v18 withValue:v42];
-  [v56 addProperty:v19 withValue:v41];
-  [v56 addProperty:v20 withValue:v40];
-  [v56 addProperty:v21 withValue:v39];
-  [v56 addProperty:v22 withValue:v23];
+  [propertiesCopy addProperty:v18 withValue:v42];
+  [propertiesCopy addProperty:v19 withValue:v41];
+  [propertiesCopy addProperty:v20 withValue:v40];
+  [propertiesCopy addProperty:v21 withValue:v39];
+  [propertiesCopy addProperty:v22 withValue:v23];
   v24 = *MEMORY[0x1E6991EF8];
   v25 = [v51 objectForKeyedSubscript:*MEMORY[0x1E6991EF8]];
-  [v56 addProperty:v24 withValue:v25];
-  v26 = [v49 objectForKeyedSubscript:*MEMORY[0x1E6991C20]];
+  [propertiesCopy addProperty:v24 withValue:v25];
+  v26 = [_cachedProperties objectForKeyedSubscript:*MEMORY[0x1E6991C20]];
   v27 = *MEMORY[0x1E6991C38];
   v28 = [v26 objectForKeyedSubscript:*MEMORY[0x1E6991C38]];
   v29 = v28;
@@ -210,24 +210,24 @@ LABEL_23:
 
   v36 = v35;
 
-  [v56 addProperty:v27 withValue:v31];
-  [v56 addProperty:v32 withValue:v36];
+  [propertiesCopy addProperty:v27 withValue:v31];
+  [propertiesCopy addProperty:v32 withValue:v36];
 
   v37 = *MEMORY[0x1E6991E00];
-  v38 = [v49 objectForKeyedSubscript:*MEMORY[0x1E6991E00]];
-  [v56 addProperty:v37 withValue:v38];
+  v38 = [_cachedProperties objectForKeyedSubscript:*MEMORY[0x1E6991E00]];
+  [propertiesCopy addProperty:v37 withValue:v38];
 }
 
-- (PHCPAnalyticsCachedPropertyProvider)initWithPhotoLibrary:(id)a3
+- (PHCPAnalyticsCachedPropertyProvider)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v8.receiver = self;
   v8.super_class = PHCPAnalyticsCachedPropertyProvider;
   v5 = [(PHCPAnalyticsCachedPropertyProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_photoLibrary, v4);
+    objc_storeWeak(&v5->_photoLibrary, libraryCopy);
   }
 
   return v6;
@@ -235,60 +235,60 @@ LABEL_23:
 
 - (PHCPAnalyticsCachedPropertyProvider)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PHCPAnalyticsCachedPropertyProvider.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PHCPAnalyticsCachedPropertyProvider init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PHCPAnalyticsCachedPropertyProvider.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PHCPAnalyticsCachedPropertyProvider init]"}];
 
   abort();
 }
 
-+ (id)librarySizeRange:(int64_t)a3
++ (id)librarySizeRange:(int64_t)range
 {
-  if (!a3)
+  if (!range)
   {
     return @"LibrarySizeRangeEmpty";
   }
 
-  if (a3 < 501)
+  if (range < 501)
   {
     return @"LibrarySizeRangeVerySmall";
   }
 
-  if (a3 < 0x7D1)
+  if (range < 0x7D1)
   {
     return @"LibrarySizeRangeSmall";
   }
 
-  if (a3 < 0x1389)
+  if (range < 0x1389)
   {
     return @"LibrarySizeRangeMedium5K";
   }
 
-  if (a3 < 0x2711)
+  if (range < 0x2711)
   {
     return @"LibrarySizeRangeMedium10K";
   }
 
-  if (a3 < 0x7531)
+  if (range < 0x7531)
   {
     return @"LibrarySizeRangeLarge20K";
   }
 
-  if (a3 < 0x9C41)
+  if (range < 0x9C41)
   {
     return @"LibrarySizeRangeLarge30K";
   }
 
-  if (a3 < 0xC351)
+  if (range < 0xC351)
   {
     return @"LibrarySizeRangeLarge40K";
   }
 
-  if (a3 < 0x124F9)
+  if (range < 0x124F9)
   {
     return @"LibrarySizeRangeLarge50K";
   }
 
-  if (a3 >= 0x186A1)
+  if (range >= 0x186A1)
   {
     return @"LibrarySizeRangeHuge";
   }

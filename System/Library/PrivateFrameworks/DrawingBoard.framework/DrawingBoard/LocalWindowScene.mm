@@ -1,5 +1,5 @@
 @interface LocalWindowScene
-- (_TtC12DrawingBoard16LocalWindowScene)initWithSession:(id)a3 connectionOptions:(id)a4;
+- (_TtC12DrawingBoard16LocalWindowScene)initWithSession:(id)session connectionOptions:(id)options;
 - (void)_invalidate;
 - (void)_readySceneForConnection;
 @end
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   LocalWindowScene._readySceneForConnection()();
 }
 
@@ -36,7 +36,7 @@
   [(LocalWindowScene *)&v4 _invalidate];
 }
 
-- (_TtC12DrawingBoard16LocalWindowScene)initWithSession:(id)a3 connectionOptions:(id)a4
+- (_TtC12DrawingBoard16LocalWindowScene)initWithSession:(id)session connectionOptions:(id)options
 {
   ObjectType = swift_getObjectType();
   sub_249D73274();
@@ -50,7 +50,7 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12DrawingBoard16LocalWindowScene_myWindow) = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(LocalWindowScene *)&v10 initWithSession:a3 connectionOptions:a4];
+  v8 = [(LocalWindowScene *)&v10 initWithSession:session connectionOptions:options];
 
   return v8;
 }

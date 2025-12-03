@@ -49,31 +49,31 @@
 
 - (BOOL)startTranscribing
 {
-  v2 = self;
-  v3 = [(Transcriber *)self transcriber];
+  selfCopy = self;
+  transcriber = [(Transcriber *)self transcriber];
   v6 = 0;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000012A0;
   v7[3] = &unk_1000041A0;
-  v7[4] = v2;
-  LOBYTE(v2) = [v3 startTranscribing:-[Transcriber requestType](v2 targetPID:"requestType") callbackBlock:-[Transcriber tapType](v2 error:{"tapType"), v7, &v6}];
+  v7[4] = selfCopy;
+  LOBYTE(selfCopy) = [transcriber startTranscribing:-[Transcriber requestType](selfCopy targetPID:"requestType") callbackBlock:-[Transcriber tapType](selfCopy error:{"tapType"), v7, &v6}];
   v4 = v6;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)stopTranscribing
 {
-  v3 = [(Transcriber *)self transcriber];
+  transcriber = [(Transcriber *)self transcriber];
 
-  if (!v3)
+  if (!transcriber)
   {
     return 1;
   }
 
-  v4 = [(Transcriber *)self transcriber];
-  v5 = [v4 stopTranscribing:-[Transcriber requestType](self error:{"requestType"), 0}];
+  transcriber2 = [(Transcriber *)self transcriber];
+  v5 = [transcriber2 stopTranscribing:-[Transcriber requestType](self error:{"requestType"), 0}];
 
   return v5;
 }

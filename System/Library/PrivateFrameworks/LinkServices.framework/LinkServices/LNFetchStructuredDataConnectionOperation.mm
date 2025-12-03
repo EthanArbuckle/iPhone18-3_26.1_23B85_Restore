@@ -1,32 +1,32 @@
 @interface LNFetchStructuredDataConnectionOperation
-- (LNFetchStructuredDataConnectionOperation)initWithConnectionInterface:(id)a3 typeIdentifier:(int64_t)a4 entityIdentifiers:(id)a5 queue:(id)a6 completionHandler:(id)a7;
-- (void)finishWithError:(id)a3;
+- (LNFetchStructuredDataConnectionOperation)initWithConnectionInterface:(id)interface typeIdentifier:(int64_t)identifier entityIdentifiers:(id)identifiers queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchStructuredDataConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchStructuredDataConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchStructuredDataConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchStructuredDataConnectionOperation *)self entityIdentifiersToStructuredData];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    entityIdentifiersToStructuredData = [(LNFetchStructuredDataConnectionOperation *)self entityIdentifiersToStructuredData];
+    v7 = [(LNConnectionOperation *)self validatingResult:entityIdentifiersToStructuredData error:errorCopy];
 
-    v8 = [(LNFetchStructuredDataConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchStructuredDataConnectionOperation *)self entityIdentifiersToStructuredData];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchStructuredDataConnectionOperation *)self completionHandler];
+    entityIdentifiersToStructuredData2 = [(LNFetchStructuredDataConnectionOperation *)self entityIdentifiersToStructuredData];
+    (completionHandler2)[2](completionHandler2, entityIdentifiersToStructuredData2, v7);
 
     [(LNFetchStructuredDataConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchStructuredDataConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -41,15 +41,15 @@
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching structured data from entities", buf, 2u);
   }
 
-  v4 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v5 = [(LNFetchStructuredDataConnectionOperation *)self typeIdentifier];
-  v6 = [(LNFetchStructuredDataConnectionOperation *)self entityIdentifiers];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  typeIdentifier = [(LNFetchStructuredDataConnectionOperation *)self typeIdentifier];
+  entityIdentifiers = [(LNFetchStructuredDataConnectionOperation *)self entityIdentifiers];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__LNFetchStructuredDataConnectionOperation_start__block_invoke;
   v7[3] = &unk_1E74B16F8;
   v7[4] = self;
-  [v4 fetchStructuredDataWithTypeIdentifier:v5 forEntityIdentifiers:v6 completionHandler:v7];
+  [connectionInterface fetchStructuredDataWithTypeIdentifier:typeIdentifier forEntityIdentifiers:entityIdentifiers completionHandler:v7];
 }
 
 void __49__LNFetchStructuredDataConnectionOperation_start__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -64,24 +64,24 @@ void __49__LNFetchStructuredDataConnectionOperation_start__block_invoke(uint64_t
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchStructuredDataConnectionOperation)initWithConnectionInterface:(id)a3 typeIdentifier:(int64_t)a4 entityIdentifiers:(id)a5 queue:(id)a6 completionHandler:(id)a7
+- (LNFetchStructuredDataConnectionOperation)initWithConnectionInterface:(id)interface typeIdentifier:(int64_t)identifier entityIdentifiers:(id)identifiers queue:(id)queue completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v13)
+  interfaceCopy = interface;
+  identifiersCopy = identifiers;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v14)
+    if (identifiersCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LNFetchStructuredDataConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"entityIdentifiers"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchStructuredDataConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"entityIdentifiers"}];
 
-    if (v16)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -89,35 +89,35 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNFetchStructuredDataConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchStructuredDataConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
-  if (!v14)
+  if (!identifiersCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNFetchStructuredDataConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNFetchStructuredDataConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v17 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v26.receiver = self;
   v26.super_class = LNFetchStructuredDataConnectionOperation;
-  v18 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:v17 connectionInterface:v13 priority:2 queue:v15 activity:&__block_literal_global_5165];
+  v18 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:2 queue:queueCopy activity:&__block_literal_global_5165];
 
   if (v18)
   {
-    v18->_typeIdentifier = a4;
-    objc_storeStrong(&v18->_entityIdentifiers, a5);
-    v19 = [v16 copy];
+    v18->_typeIdentifier = identifier;
+    objc_storeStrong(&v18->_entityIdentifiers, identifiers);
+    v19 = [handlerCopy copy];
     completionHandler = v18->_completionHandler;
     v18->_completionHandler = v19;
 

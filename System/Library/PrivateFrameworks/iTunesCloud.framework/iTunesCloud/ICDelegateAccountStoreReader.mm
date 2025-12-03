@@ -1,23 +1,23 @@
 @interface ICDelegateAccountStoreReader
-- (ICDelegateAccountStoreReader)initWithConnection:(id)a3;
+- (ICDelegateAccountStoreReader)initWithConnection:(id)connection;
 - (NSDate)lastExpirationPruningDate;
-- (id)_tokenWithSQLiteRow:(id)a3;
-- (id)_userIdentityWithSQLiteRow:(id)a3;
-- (id)identityPropertiesForUserIdentity:(id)a3;
-- (id)tokenForUserIdentity:(id)a3;
+- (id)_tokenWithSQLiteRow:(id)row;
+- (id)_userIdentityWithSQLiteRow:(id)row;
+- (id)identityPropertiesForUserIdentity:(id)identity;
+- (id)tokenForUserIdentity:(id)identity;
 - (int64_t)overestimatedNumberOfTokens;
-- (void)_enumerateQueryResults:(id)a3 usingBlock:(id)a4;
-- (void)enumerateDelegationUUIDsForUserIdentity:(id)a3 usingBlock:(id)a4;
-- (void)enumerateTokensUsingBlock:(id)a3;
-- (void)enumerateTokensWithType:(int64_t)a3 usingBlock:(id)a4;
+- (void)_enumerateQueryResults:(id)results usingBlock:(id)block;
+- (void)enumerateDelegationUUIDsForUserIdentity:(id)identity usingBlock:(id)block;
+- (void)enumerateTokensUsingBlock:(id)block;
+- (void)enumerateTokensWithType:(int64_t)type usingBlock:(id)block;
 - (void)invalidate;
 @end
 
 @implementation ICDelegateAccountStoreReader
 
-- (id)_userIdentityWithSQLiteRow:(id)a3
+- (id)_userIdentityWithSQLiteRow:(id)row
 {
-  v3 = [a3 stringForColumnName:@"account_identity"];
+  v3 = [row stringForColumnName:@"account_identity"];
   v4 = [v3 length];
   if (v4)
   {
@@ -45,10 +45,10 @@
   return v5;
 }
 
-- (id)_tokenWithSQLiteRow:(id)a3
+- (id)_tokenWithSQLiteRow:(id)row
 {
-  v3 = a3;
-  v4 = [v3 int64ForColumnName:@"type"];
+  rowCopy = row;
+  v4 = [rowCopy int64ForColumnName:@"type"];
   if (v4 == 1)
   {
     v6 = 0;
@@ -65,10 +65,10 @@
     v6 = 1;
   }
 
-  v7 = [v3 dataForColumnName:@"data"];
+  v7 = [rowCopy dataForColumnName:@"data"];
   if ([v7 length])
   {
-    v8 = [v3 numberForColumnName:@"expiration_date"];
+    v8 = [rowCopy numberForColumnName:@"expiration_date"];
     v9 = v8;
     if (v8)
     {
@@ -94,17 +94,17 @@ LABEL_12:
   return v5;
 }
 
-- (void)_enumerateQueryResults:(id)a3 usingBlock:(id)a4
+- (void)_enumerateQueryResults:(id)results usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __66__ICDelegateAccountStoreReader__enumerateQueryResults_usingBlock___block_invoke;
   v8[3] = &unk_1E7BF9530;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 enumerateRowsUsingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [results enumerateRowsUsingBlock:v8];
 }
 
 void __66__ICDelegateAccountStoreReader__enumerateQueryResults_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -133,18 +133,18 @@ void __66__ICDelegateAccountStoreReader__enumerateQueryResults_usingBlock___bloc
   }
 }
 
-- (id)tokenForUserIdentity:(id)a3
+- (id)tokenForUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v5 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v4);
+  v5 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v5)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   v10 = 0;
@@ -270,9 +270,9 @@ void __57__ICDelegateAccountStoreReader_lastExpirationPruningDate__block_invoke(
   }
 }
 
-- (id)identityPropertiesForUserIdentity:(id)a3
+- (id)identityPropertiesForUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -284,10 +284,10 @@ void __57__ICDelegateAccountStoreReader_lastExpirationPruningDate__block_invoke(
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v5 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v4);
+  v5 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v5)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   connection = self->_connection;
@@ -297,9 +297,9 @@ void __57__ICDelegateAccountStoreReader_lastExpirationPruningDate__block_invoke(
   v10[3] = &unk_1E7BF94B0;
   v10[4] = v5;
   v13 = &v14;
-  v7 = v4;
+  v7 = identityCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   [(ICSQLiteConnection *)connection executeQuery:@"SELECT account.storefront AS storefront withResults:token.data AS data, token.expiration_date AS expiration_date, token.type AS type FROM account LEFT OUTER JOIN token ON account.identity==token.account_identity WHERE account.identity==?", v10];
   v8 = v15[5];
 
@@ -359,9 +359,9 @@ void __66__ICDelegateAccountStoreReader_identityPropertiesForUserIdentity___bloc
   *a4 = 1;
 }
 
-- (void)enumerateTokensWithType:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateTokensWithType:(int64_t)type usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
@@ -372,10 +372,10 @@ void __66__ICDelegateAccountStoreReader_identityPropertiesForUserIdentity___bloc
   v9[1] = 3221225472;
   v9[2] = __67__ICDelegateAccountStoreReader_enumerateTokensWithType_usingBlock___block_invoke;
   v9[3] = &unk_1E7BF9460;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  typeCopy = type;
   v9[4] = self;
-  v8 = v6;
+  v8 = blockCopy;
   [(ICSQLiteConnection *)connection executeQuery:@"SELECT data withResults:expiration_date, type, account_identity FROM token WHERE (type == ?) AND ((expiration_date IS NULL) OR (expiration_date >= ?))", v9];
 }
 
@@ -402,9 +402,9 @@ void __67__ICDelegateAccountStoreReader_enumerateTokensWithType_usingBlock___blo
   [*(a1 + 32) _enumerateQueryResults:v8 usingBlock:*(a1 + 40)];
 }
 
-- (void)enumerateTokensUsingBlock:(id)a3
+- (void)enumerateTokensUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
@@ -416,8 +416,8 @@ void __67__ICDelegateAccountStoreReader_enumerateTokensWithType_usingBlock___blo
   v7[2] = __58__ICDelegateAccountStoreReader_enumerateTokensUsingBlock___block_invoke;
   v7[3] = &unk_1E7BF9438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(ICSQLiteConnection *)connection executeQuery:@"SELECT data withResults:expiration_date, type, account_identity FROM token WHERE (expiration_date IS NULL) OR (expiration_date >= ?)", v7];
 }
 
@@ -433,19 +433,19 @@ void __58__ICDelegateAccountStoreReader_enumerateTokensUsingBlock___block_invoke
   [*(a1 + 32) _enumerateQueryResults:v7 usingBlock:*(a1 + 40)];
 }
 
-- (void)enumerateDelegationUUIDsForUserIdentity:(id)a3 usingBlock:(id)a4
+- (void)enumerateDelegationUUIDsForUserIdentity:(id)identity usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  blockCopy = block;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v8 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v6);
+  v8 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v8)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   connection = self->_connection;
@@ -454,8 +454,8 @@ void __58__ICDelegateAccountStoreReader_enumerateTokensUsingBlock___block_invoke
   v11[2] = __83__ICDelegateAccountStoreReader_enumerateDelegationUUIDsForUserIdentity_usingBlock___block_invoke;
   v11[3] = &unk_1E7BF9438;
   v11[4] = v8;
-  v12 = v7;
-  v10 = v7;
+  v12 = blockCopy;
+  v10 = blockCopy;
   [(ICSQLiteConnection *)connection executeQuery:@"SELECT uuid FROM delegation_uuid WHERE user_identity==?" withResults:v11];
 }
 
@@ -489,16 +489,16 @@ void __83__ICDelegateAccountStoreReader_enumerateDelegationUUIDsForUserIdentity_
   self->_isValid = 0;
 }
 
-- (ICDelegateAccountStoreReader)initWithConnection:(id)a3
+- (ICDelegateAccountStoreReader)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ICDelegateAccountStoreReader;
   v6 = [(ICDelegateAccountStoreReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v7->_isValid = 1;
   }
 

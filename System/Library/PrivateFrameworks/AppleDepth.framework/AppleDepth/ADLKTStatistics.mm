@@ -1,23 +1,23 @@
 @interface ADLKTStatistics
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4;
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation ADLKTStatistics
 
-- (BOOL)writeToFile:(id)a3 atomically:(BOOL)a4
+- (BOOL)writeToFile:(id)file atomically:(BOOL)atomically
 {
-  v4 = a4;
+  atomicallyCopy = atomically;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ADLKTStatistics *)self dictionaryRepresentation];
-  v8 = [v6 lowercaseString];
-  v9 = [v8 hasSuffix:@".json"];
+  fileCopy = file;
+  dictionaryRepresentation = [(ADLKTStatistics *)self dictionaryRepresentation];
+  lowercaseString = [fileCopy lowercaseString];
+  v9 = [lowercaseString hasSuffix:@".json"];
 
   if (v9)
   {
     v15 = 0;
-    v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v7 options:1 error:&v15];
+    v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:1 error:&v15];
     v11 = v15;
     if (v11)
     {
@@ -34,13 +34,13 @@
 
     else
     {
-      v12 = [v10 writeToFile:v6 atomically:v4];
+      v12 = [v10 writeToFile:fileCopy atomically:atomicallyCopy];
     }
   }
 
   else
   {
-    v12 = [v7 writeToFile:v6 atomically:v4];
+    v12 = [dictionaryRepresentation writeToFile:fileCopy atomically:atomicallyCopy];
   }
 
   return v12;
@@ -48,11 +48,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_meanIntensityDiffAtCoarsestScale];
-  [v3 setValue:v4 forKey:@"meanIntensityDiffAtCoarsestScale"];
+  [dictionary setValue:v4 forKey:@"meanIntensityDiffAtCoarsestScale"];
 
-  return v3;
+  return dictionary;
 }
 
 @end

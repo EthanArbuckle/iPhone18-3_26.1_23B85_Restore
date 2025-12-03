@@ -1,17 +1,17 @@
 @interface FCStreamingResults
 - (BOOL)isFinished;
 - (FCStreamingResults)init;
-- (FCStreamingResults)initWithResults:(id)a3 followedByStream:(id)a4;
-- (FCStreamingResults)initWithStream:(id)a3;
+- (FCStreamingResults)initWithResults:(id)results followedByStream:(id)stream;
+- (FCStreamingResults)initWithStream:(id)stream;
 - (_NSRange)range;
 - (id)array;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectAtIndexedSubscript:(unint64_t)a3;
-- (id)objectsInRange:(_NSRange)a3;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectAtIndexedSubscript:(unint64_t)subscript;
+- (id)objectsInRange:(_NSRange)range;
 - (unint64_t)count;
-- (void)addObserver:(id)a3;
-- (void)fetchObjectsUpToCount:(unint64_t)a3 qualityOfService:(int64_t)a4 batchSize:(unint64_t)a5 completion:(id)a6;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)fetchObjectsUpToCount:(unint64_t)count qualityOfService:(int64_t)service batchSize:(unint64_t)size completion:(id)completion;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation FCStreamingResults
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (FCStreamingResults)initWithStream:(id)a3
+- (FCStreamingResults)initWithStream:(id)stream
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  streamCopy = stream;
+  if (!streamCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stream != nil"];
     *buf = 136315906;
@@ -48,7 +48,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingStream, a3);
+    objc_storeStrong(&v6->_underlyingStream, stream);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     results = v7->_results;
     v7->_results = v8;
@@ -66,12 +66,12 @@
   return v7;
 }
 
-- (FCStreamingResults)initWithResults:(id)a3 followedByStream:(id)a4
+- (FCStreamingResults)initWithResults:(id)results followedByStream:(id)stream
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  resultsCopy = results;
+  streamCopy = stream;
+  if (!streamCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "stream != nil"];
     *buf = 136315906;
@@ -85,11 +85,11 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v8 = [(FCStreamingResults *)self initWithStream:v7];
+  v8 = [(FCStreamingResults *)self initWithStream:streamCopy];
   v9 = v8;
-  if (v6 && v8)
+  if (resultsCopy && v8)
   {
-    [(NSMutableArray *)v8->_results addObjectsFromArray:v6];
+    [(NSMutableArray *)v8->_results addObjectsFromArray:resultsCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -98,17 +98,17 @@
 
 - (BOOL)isFinished
 {
-  v2 = [(FCStreamingResults *)self underlyingStream];
-  v3 = [v2 isFinished];
+  underlyingStream = [(FCStreamingResults *)self underlyingStream];
+  isFinished = [underlyingStream isFinished];
 
-  return v3;
+  return isFinished;
 }
 
 - (unint64_t)count
 {
   [MEMORY[0x1E696AF00] isMainThread];
-  v3 = [(FCStreamingResults *)self results];
-  v4 = [v3 count];
+  results = [(FCStreamingResults *)self results];
+  v4 = [results count];
 
   return v4;
 }
@@ -123,40 +123,40 @@
   return result;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [(FCStreamingResults *)self results];
-  v6 = [v5 count];
+  results = [(FCStreamingResults *)self results];
+  v6 = [results count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(FCStreamingResults *)self results];
-    v8 = [v7 objectAtIndex:a3];
+    results2 = [(FCStreamingResults *)self results];
+    v8 = [results2 objectAtIndex:index];
   }
 
   return v8;
 }
 
-- (id)objectAtIndexedSubscript:(unint64_t)a3
+- (id)objectAtIndexedSubscript:(unint64_t)subscript
 {
   [MEMORY[0x1E696AF00] isMainThread];
 
-  return [(FCStreamingResults *)self objectAtIndex:a3];
+  return [(FCStreamingResults *)self objectAtIndex:subscript];
 }
 
-- (id)objectsInRange:(_NSRange)a3
+- (id)objectsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [MEMORY[0x1E696AF00] isMainThread];
-  v6 = [(FCStreamingResults *)self results];
-  v7 = [v6 subarrayWithRange:{location, length}];
+  results = [(FCStreamingResults *)self results];
+  v7 = [results subarrayWithRange:{location, length}];
 
   return v7;
 }
@@ -168,21 +168,21 @@
   return [(FCStreamingResults *)self results];
 }
 
-- (void)fetchObjectsUpToCount:(unint64_t)a3 qualityOfService:(int64_t)a4 batchSize:(unint64_t)a5 completion:(id)a6
+- (void)fetchObjectsUpToCount:(unint64_t)count qualityOfService:(int64_t)service batchSize:(unint64_t)size completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(FCStreamingResults *)self serialQueue];
+  completionCopy = completion;
+  serialQueue = [(FCStreamingResults *)self serialQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__FCStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_completion___block_invoke;
   v13[3] = &unk_1E7C41758;
-  v15 = a3;
-  v16 = a5;
-  v17 = a4;
+  countCopy = count;
+  sizeCopy = size;
+  serviceCopy = service;
   v13[4] = self;
-  v14 = v10;
-  v12 = v10;
-  [v11 enqueueBlockForMainThread:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [serialQueue enqueueBlockForMainThread:v13];
 }
 
 void __82__FCStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_completion___block_invoke(uint64_t a1, void *a2)
@@ -355,19 +355,19 @@ void __82__FCStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_c
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCStreamingResults *)self observers];
-    v6 = [v5 containsObject:v4];
+    observers = [(FCStreamingResults *)self observers];
+    v6 = [observers containsObject:observerCopy];
 
     if (v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", v4];
+      observerCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p is already an observer", observerCopy];
       *buf = 136315906;
       v11 = "[FCStreamingResults addObserver:]";
       v12 = 2080;
@@ -375,12 +375,12 @@ void __82__FCStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_c
       v14 = 1024;
       v15 = 208;
       v16 = 2114;
-      v17 = v9;
+      v17 = observerCopy;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v7 = [(FCStreamingResults *)self observers];
-    [v7 addObject:v4];
+    observers2 = [(FCStreamingResults *)self observers];
+    [observers2 addObject:observerCopy];
   }
 
   else
@@ -390,7 +390,7 @@ void __82__FCStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_c
       goto LABEL_8;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
+    observers2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
     *buf = 136315906;
     v11 = "[FCStreamingResults addObserver:]";
     v12 = 2080;
@@ -398,7 +398,7 @@ void __82__FCStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_c
     v14 = 1024;
     v15 = 204;
     v16 = 2114;
-    v17 = v7;
+    v17 = observers2;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -406,15 +406,15 @@ LABEL_8:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCStreamingResults *)self observers];
-    [v5 removeObject:v4];
+    observers = [(FCStreamingResults *)self observers];
+    [observers removeObject:observerCopy];
   }
 
   else
@@ -424,7 +424,7 @@ LABEL_8:
       goto LABEL_5;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
+    observers = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
     *buf = 136315906;
     v8 = "[FCStreamingResults removeObserver:]";
     v9 = 2080;
@@ -432,7 +432,7 @@ LABEL_8:
     v11 = 1024;
     v12 = 217;
     v13 = 2114;
-    v14 = v5;
+    v14 = observers;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 

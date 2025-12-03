@@ -1,29 +1,29 @@
 @interface AAPSyncAnchor
-+ (BOOL)isValidStringRepresentation:(id)a3 withMainIndex:(unint64_t *)a4 subIndex:(unint64_t *)a5;
-+ (id)anchorFromStringRepresentation:(id)a3;
-+ (id)anchorFromStringRepresentation:(id)a3 error:(id *)a4;
-- (AAPSyncAnchor)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isValidStringRepresentation:(id)representation withMainIndex:(unint64_t *)index subIndex:(unint64_t *)subIndex;
++ (id)anchorFromStringRepresentation:(id)representation;
++ (id)anchorFromStringRepresentation:(id)representation error:(id *)error;
+- (AAPSyncAnchor)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)stringRepresentation;
-- (id)_initWithMainIndex:(unint64_t)a3 subIndex:(unint64_t)a4;
+- (id)_initWithMainIndex:(unint64_t)index subIndex:(unint64_t)subIndex;
 - (id)anchorByIncrementingSubIndex;
 - (id)primitiveAnchor;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAPSyncAnchor
 
-- (id)_initWithMainIndex:(unint64_t)a3 subIndex:(unint64_t)a4
+- (id)_initWithMainIndex:(unint64_t)index subIndex:(unint64_t)subIndex
 {
   v7.receiver = self;
   v7.super_class = AAPSyncAnchor;
   result = [(AAPSyncAnchor *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
+    *(result + 1) = index;
+    *(result + 2) = subIndex;
     *(result + 6) = 0;
   }
 
@@ -37,10 +37,10 @@
   [(AAPSyncAnchor *)&v3 dealloc];
 }
 
-+ (id)anchorFromStringRepresentation:(id)a3
++ (id)anchorFromStringRepresentation:(id)representation
 {
   v5 = 0;
-  v3 = [a1 anchorFromStringRepresentation:a3 error:&v5];
+  v3 = [self anchorFromStringRepresentation:representation error:&v5];
   if (v5)
   {
     +[NSException raise:format:](NSException, "raise:format:", NSParseErrorException, @"%@", [v5 localizedDescription]);
@@ -49,11 +49,11 @@
   return v3;
 }
 
-+ (id)anchorFromStringRepresentation:(id)a3 error:(id *)a4
++ (id)anchorFromStringRepresentation:(id)representation error:(id *)error
 {
   v11 = 0;
   v12 = 0;
-  if ([a1 isValidStringRepresentation:a3 withMainIndex:&v12 subIndex:&v11])
+  if ([self isValidStringRepresentation:representation withMainIndex:&v12 subIndex:&v11])
   {
     if (v11)
     {
@@ -70,14 +70,14 @@
   else
   {
     result = 0;
-    if (a3 && a4)
+    if (representation && error)
     {
-      v9 = [NSString stringWithFormat:@"cannot parse %@ from string representation: '%@'", a1, a3];
+      representation = [NSString stringWithFormat:@"cannot parse %@ from string representation: '%@'", self, representation];
       v13 = NSLocalizedDescriptionKey;
-      v14 = v9;
+      v14 = representation;
       v10 = [NSError errorWithDomain:@"AAPAppDomain" code:1 userInfo:[NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1]];
       result = 0;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -112,15 +112,15 @@
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  if (!a3)
+  if (!compare)
   {
     return 1;
   }
 
   mainIndex = self->_mainIndex;
-  v4 = *(a3 + 1);
+  v4 = *(compare + 1);
   if (mainIndex < v4)
   {
     return -1;
@@ -132,7 +132,7 @@
   }
 
   subIndex = self->_subIndex;
-  v7 = *(a3 + 2);
+  v7 = *(compare + 2);
   v8 = subIndex >= v7;
   v9 = subIndex > v7;
   if (v8)
@@ -165,9 +165,9 @@
   return v2;
 }
 
-+ (BOOL)isValidStringRepresentation:(id)a3 withMainIndex:(unint64_t *)a4 subIndex:(unint64_t *)a5
++ (BOOL)isValidStringRepresentation:(id)representation withMainIndex:(unint64_t *)index subIndex:(unint64_t *)subIndex
 {
-  if (!a3 || (v7 = [a3 componentsSeparatedByString:@"."], v8 = objc_msgSend(v7, "count"), v9 = +[NSCharacterSet decimalDigitCharacterSet](NSCharacterSet, "decimalDigitCharacterSet"), v8 > 2))
+  if (!representation || (v7 = [representation componentsSeparatedByString:@"."], v8 = objc_msgSend(v7, "count"), v9 = +[NSCharacterSet decimalDigitCharacterSet](NSCharacterSet, "decimalDigitCharacterSet"), v8 > 2))
   {
 LABEL_3:
     LOBYTE(v10) = 0;
@@ -184,7 +184,7 @@ LABEL_3:
   {
     v13 = v12;
     v14 = *v26;
-    v24 = a5;
+    subIndexCopy = subIndex;
 LABEL_7:
     v15 = 0;
 LABEL_8:
@@ -212,7 +212,7 @@ LABEL_8:
           }
 
           v13 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
-          a5 = v24;
+          subIndex = subIndexCopy;
           if (v13)
           {
             goto LABEL_7;
@@ -229,13 +229,13 @@ LABEL_8:
   else
   {
 LABEL_16:
-    if (a4)
+    if (index)
     {
       v20 = [objc_msgSend(v7 objectAtIndex:{0), "integerValue"}];
-      *a4 = v20 & ~(v20 >> 63);
+      *index = v20 & ~(v20 >> 63);
     }
 
-    if (a5)
+    if (subIndex)
     {
       if (v8 == &dword_0 + 2)
       {
@@ -248,7 +248,7 @@ LABEL_16:
         v22 = 0;
       }
 
-      *a5 = v22;
+      *subIndex = v22;
     }
 
     LOBYTE(v10) = 1;
@@ -257,14 +257,14 @@ LABEL_16:
   return v10;
 }
 
-- (AAPSyncAnchor)initWithCoder:(id)a3
+- (AAPSyncAnchor)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = AAPSyncAnchor;
   v4 = [(AAPSyncAnchor *)&v7 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"str"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"str"];
     if (![objc_opt_class() isValidStringRepresentation:v5 withMainIndex:&v4->_mainIndex subIndex:&v4->_subIndex] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && v4->_subIndex)
     {
       [NSException raise:NSParseErrorException format:@"cannot parse %@ from string representation: '%@'", objc_opt_class(), v5];
@@ -274,14 +274,14 @@ LABEL_16:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(AAPSyncAnchor *)self stringRepresentation];
+  stringRepresentation = [(AAPSyncAnchor *)self stringRepresentation];
 
-  [a3 encodeObject:v4 forKey:@"str"];
+  [coder encodeObject:stringRepresentation forKey:@"str"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -289,7 +289,7 @@ LABEL_16:
     return 0;
   }
 
-  return [(AAPSyncAnchor *)self isEqualToAnchor:a3];
+  return [(AAPSyncAnchor *)self isEqualToAnchor:equal];
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface FPDisconnectDomainOperation
-- (FPDisconnectDomainOperation)initWithDomain:(id)a3;
-- (void)_tryDisconnectingSafely:(BOOL)a3;
+- (FPDisconnectDomainOperation)initWithDomain:(id)domain;
+- (void)_tryDisconnectingSafely:(BOOL)safely;
 - (void)cancel;
 @end
 
 @implementation FPDisconnectDomainOperation
 
-- (FPDisconnectDomainOperation)initWithDomain:(id)a3
+- (FPDisconnectDomainOperation)initWithDomain:(id)domain
 {
-  v5 = a3;
-  v6 = [v5 identifier];
+  domainCopy = domain;
+  identifier = [domainCopy identifier];
   v9.receiver = self;
   v9.super_class = FPDisconnectDomainOperation;
-  v7 = [(FPActionOperation *)&v9 initWithProvider:v6 action:0];
+  v7 = [(FPActionOperation *)&v9 initWithProvider:identifier action:0];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_domain, a3);
+    objc_storeStrong(&v7->_domain, domain);
     [(FPActionOperation *)v7 setSetupRemoteOperationService:1];
   }
 
   return v7;
 }
 
-- (void)_tryDisconnectingSafely:(BOOL)a3
+- (void)_tryDisconnectingSafely:(BOOL)safely
 {
-  v5 = !a3;
-  v6 = [(FPActionOperation *)self remoteServiceProxy];
-  v7 = [(FPProviderDomain *)self->_domain identifier];
-  v8 = [v7 fp_toDomainIdentifier];
+  v5 = !safely;
+  remoteServiceProxy = [(FPActionOperation *)self remoteServiceProxy];
+  identifier = [(FPProviderDomain *)self->_domain identifier];
+  fp_toDomainIdentifier = [identifier fp_toDomainIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__FPDisconnectDomainOperation__tryDisconnectingSafely___block_invoke;
   v11[3] = &unk_1E793E1C0;
   v11[4] = self;
-  v12 = a3;
-  v9 = [v6 disconnectDomainID:v8 options:v5 completionHandler:v11];
+  safelyCopy = safely;
+  v9 = [remoteServiceProxy disconnectDomainID:fp_toDomainIdentifier options:v5 completionHandler:v11];
   remoteProgress = self->_remoteProgress;
   self->_remoteProgress = v9;
 }

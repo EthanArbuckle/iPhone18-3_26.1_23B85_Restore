@@ -1,26 +1,26 @@
 @interface CAMPreferencesUtilities
-+ (BOOL)BOOLInCameraDomainForKey:(id)a3 defaultValue:(BOOL)a4;
-+ (double)doubleForKey:(id)a3 applicationID:(id)a4 defaultValue:(double)a5;
-+ (double)doubleForKey:(id)a3 applicationID:(id)a4 keyIsValidAndExists:(BOOL *)a5;
-+ (id)colorForKey:(id)a3 applicationID:(id)a4;
-+ (id)doubleArrayForKey:(id)a3 applicationID:(id)a4;
-+ (id)numericDictionaryForKey:(id)a3 defaults:(id)a4;
-+ (void)setBool:(BOOL)a3 inCameraDomainForKey:(id)a4;
-+ (void)setDictionary:(id)a3 forKey:(id)a4 defaults:(id)a5;
++ (BOOL)BOOLInCameraDomainForKey:(id)key defaultValue:(BOOL)value;
++ (double)doubleForKey:(id)key applicationID:(id)d defaultValue:(double)value;
++ (double)doubleForKey:(id)key applicationID:(id)d keyIsValidAndExists:(BOOL *)exists;
++ (id)colorForKey:(id)key applicationID:(id)d;
++ (id)doubleArrayForKey:(id)key applicationID:(id)d;
++ (id)numericDictionaryForKey:(id)key defaults:(id)defaults;
++ (void)setBool:(BOOL)bool inCameraDomainForKey:(id)key;
++ (void)setDictionary:(id)dictionary forKey:(id)key defaults:(id)defaults;
 @end
 
 @implementation CAMPreferencesUtilities
 
-+ (double)doubleForKey:(id)a3 applicationID:(id)a4 keyIsValidAndExists:(BOOL *)a5
++ (double)doubleForKey:(id)key applicationID:(id)d keyIsValidAndExists:(BOOL *)exists
 {
-  v6 = CFPreferencesCopyAppValue(a3, a4);
+  v6 = CFPreferencesCopyAppValue(key, d);
   v7 = 0.0;
   if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v6 doubleValue];
     v7 = v8;
     v9 = 1;
-    if (!a5)
+    if (!exists)
     {
       goto LABEL_7;
     }
@@ -29,10 +29,10 @@
   }
 
   v9 = 0;
-  if (a5)
+  if (exists)
   {
 LABEL_6:
-    *a5 = v9;
+    *exists = v9;
   }
 
 LABEL_7:
@@ -40,21 +40,21 @@ LABEL_7:
   return v7;
 }
 
-+ (double)doubleForKey:(id)a3 applicationID:(id)a4 defaultValue:(double)a5
++ (double)doubleForKey:(id)key applicationID:(id)d defaultValue:(double)value
 {
   v7 = 0;
-  [a1 doubleForKey:a3 applicationID:a4 keyIsValidAndExists:&v7];
+  [self doubleForKey:key applicationID:d keyIsValidAndExists:&v7];
   if (!v7)
   {
-    return a5;
+    return value;
   }
 
   return result;
 }
 
-+ (id)doubleArrayForKey:(id)a3 applicationID:(id)a4
++ (id)doubleArrayForKey:(id)key applicationID:(id)d
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, d);
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -96,10 +96,10 @@ LABEL_10:
   return v7;
 }
 
-+ (id)colorForKey:(id)a3 applicationID:(id)a4
++ (id)colorForKey:(id)key applicationID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, d);
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
@@ -159,32 +159,32 @@ LABEL_13:
   return v13;
 }
 
-+ (BOOL)BOOLInCameraDomainForKey:(id)a3 defaultValue:(BOOL)a4
++ (BOOL)BOOLInCameraDomainForKey:(id)key defaultValue:(BOOL)value
 {
   v6 = 0;
-  result = [a1 BOOLInCameraDomainForKey:a3 keyIsValidAndExists:&v6];
+  result = [self BOOLInCameraDomainForKey:key keyIsValidAndExists:&v6];
   if (!v6)
   {
-    return a4;
+    return value;
   }
 
   return result;
 }
 
-+ (void)setBool:(BOOL)a3 inCameraDomainForKey:(id)a4
++ (void)setBool:(BOOL)bool inCameraDomainForKey:(id)key
 {
-  v4 = a3;
+  boolCopy = bool;
   v5 = MEMORY[0x1E696AD98];
-  v6 = a4;
-  CFPreferencesSetAppValue(v6, [v5 numberWithBool:v4], @"com.apple.camera");
+  keyCopy = key;
+  CFPreferencesSetAppValue(keyCopy, [v5 numberWithBool:boolCopy], @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
 }
 
-+ (id)numericDictionaryForKey:(id)a3 defaults:(id)a4
++ (id)numericDictionaryForKey:(id)key defaults:(id)defaults
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:v5];
+  keyCopy = key;
+  v6 = [defaults objectForKey:keyCopy];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = MEMORY[0x1E695DFD8];
@@ -211,12 +211,12 @@ LABEL_13:
   return v10;
 }
 
-+ (void)setDictionary:(id)a3 forKey:(id)a4 defaults:(id)a5
++ (void)setDictionary:(id)dictionary forKey:(id)key defaults:(id)defaults
 {
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  defaultsCopy = defaults;
   v12 = 0;
-  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v12];
+  v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:&v12];
   v10 = v12;
   if (v10)
   {
@@ -229,7 +229,7 @@ LABEL_13:
 
   else if (v9)
   {
-    [v8 setObject:v9 forKey:v7];
+    [defaultsCopy setObject:v9 forKey:keyCopy];
   }
 }
 

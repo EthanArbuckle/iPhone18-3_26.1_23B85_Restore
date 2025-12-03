@@ -1,13 +1,13 @@
 @interface NEAgent
-- (NEAgent)initWithPluginType:(id)a3 pluginVersion:(int64_t)a4 pluginClass:(int64_t)a5 pluginInfo:(id)a6 userID:(id)a7;
-- (void)startWithCompletionHandler:(id)a3;
+- (NEAgent)initWithPluginType:(id)type pluginVersion:(int64_t)version pluginClass:(int64_t)class pluginInfo:(id)info userID:(id)d;
+- (void)startWithCompletionHandler:(id)handler;
 @end
 
 @implementation NEAgent
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v4, 24, 1);
@@ -23,16 +23,16 @@
   v8[2] = sub_1000930E4;
   v8[3] = &unk_1000EB310;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_sync(Property, v8);
 }
 
-- (NEAgent)initWithPluginType:(id)a3 pluginVersion:(int64_t)a4 pluginClass:(int64_t)a5 pluginInfo:(id)a6 userID:(id)a7
+- (NEAgent)initWithPluginType:(id)type pluginVersion:(int64_t)version pluginClass:(int64_t)class pluginInfo:(id)info userID:(id)d
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  typeCopy = type;
+  infoCopy = info;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = NEAgent;
   v16 = [(NEAgent *)&v28 init];
@@ -43,31 +43,31 @@
     queue = v16->_queue;
     v16->_queue = v18;
 
-    objc_storeStrong(&v16->_uid, a7);
-    objc_storeStrong(&v16->_pluginType, a3);
-    v16->_pluginClass = a5;
-    v20 = [v14 copy];
+    objc_storeStrong(&v16->_uid, d);
+    objc_storeStrong(&v16->_pluginType, type);
+    v16->_pluginClass = class;
+    v20 = [infoCopy copy];
     pluginInfo = v16->_pluginInfo;
     v16->_pluginInfo = v20;
 
     objc_opt_self();
-    if ((a5 - 2) > 8)
+    if ((class - 2) > 8)
     {
       v22 = @"legacy";
     }
 
     else
     {
-      v22 = *(&off_1000EAB08 + a5 - 2);
+      v22 = *(&off_1000EAB08 + class - 2);
     }
 
     v23 = v22;
-    v24 = [NSString stringWithFormat:@"%@[%@][inactive]", v13, v23];
+    v24 = [NSString stringWithFormat:@"%@[%@][inactive]", typeCopy, v23];
     description = v16->_description;
     v16->_description = v24;
 
     v16->_pid = 0;
-    v16->_pluginVersion = a4;
+    v16->_pluginVersion = version;
     v26 = v16;
   }
 

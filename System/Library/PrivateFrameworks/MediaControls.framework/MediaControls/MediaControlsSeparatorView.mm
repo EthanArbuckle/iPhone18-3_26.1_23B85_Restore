@@ -1,17 +1,17 @@
 @interface MediaControlsSeparatorView
-- (MediaControlsSeparatorView)initWithFrame:(CGRect)a3;
+- (MediaControlsSeparatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setVisualStylingProvider:(id)a3;
+- (void)setVisualStylingProvider:(id)provider;
 @end
 
 @implementation MediaControlsSeparatorView
 
-- (MediaControlsSeparatorView)initWithFrame:(CGRect)a3
+- (MediaControlsSeparatorView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = MediaControlsSeparatorView;
   v7 = [(MediaControlsSeparatorView *)&v12 initWithFrame:?];
@@ -21,8 +21,8 @@
     separatorView = v7->_separatorView;
     v7->_separatorView = v8;
 
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIView *)v7->_separatorView setBackgroundColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIView *)v7->_separatorView setBackgroundColor:labelColor];
 
     [(MediaControlsSeparatorView *)v7 addSubview:v7->_separatorView];
   }
@@ -39,20 +39,20 @@
   [(UIView *)self->_separatorView setFrame:?];
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   visualStylingProvider = self->_visualStylingProvider;
-  if (visualStylingProvider != v5)
+  if (visualStylingProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(MTVisualStylingProvider *)visualStylingProvider stopAutomaticallyUpdatingView:self->_separatorView];
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     visualStylingProvider = [(MTVisualStylingProvider *)self->_visualStylingProvider automaticallyUpdateView:self->_separatorView withStyle:5];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](visualStylingProvider, v5);
+  MEMORY[0x1EEE66BB8](visualStylingProvider, providerCopy);
 }
 
 @end

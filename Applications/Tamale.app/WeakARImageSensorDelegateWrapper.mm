@@ -1,7 +1,7 @@
 @interface WeakARImageSensorDelegateWrapper
 - (ARImageSensorDelegate)delegate;
 - (_TtC6Tamale32WeakARImageSensorDelegateWrapper)init;
-- (_TtC6Tamale32WeakARImageSensorDelegateWrapper)initWithDelegate:(id)a3;
+- (_TtC6Tamale32WeakARImageSensorDelegateWrapper)initWithDelegate:(id)delegate;
 @end
 
 @implementation WeakARImageSensorDelegateWrapper
@@ -13,7 +13,7 @@
   return Strong;
 }
 
-- (_TtC6Tamale32WeakARImageSensorDelegateWrapper)initWithDelegate:(id)a3
+- (_TtC6Tamale32WeakARImageSensorDelegateWrapper)initWithDelegate:(id)delegate
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();

@@ -1,11 +1,11 @@
 @interface LACUIFaceIDSpinnerView
-- (LACUIFaceIDSpinnerView)initWithInitialState:(int64_t)a3;
+- (LACUIFaceIDSpinnerView)initWithInitialState:(int64_t)state;
 - (void)_setup;
 @end
 
 @implementation LACUIFaceIDSpinnerView
 
-- (LACUIFaceIDSpinnerView)initWithInitialState:(int64_t)a3
+- (LACUIFaceIDSpinnerView)initWithInitialState:(int64_t)state
 {
   v14.receiver = self;
   v14.super_class = LACUIFaceIDSpinnerView;
@@ -19,19 +19,19 @@
     packagedView = v4->_packagedView;
     v4->_packagedView = v7;
 
-    if (a3 > 3)
+    if (state > 3)
     {
       v9 = @"Invalid";
     }
 
     else
     {
-      v9 = off_27981EAB8[a3];
+      v9 = off_27981EAB8[state];
     }
 
     [(LACUIPackagedView *)v4->_packagedView setStateNamed:v9 animated:0];
-    v10 = [(LACUIPackagedView *)v4->_packagedView rootLayer];
-    v11 = LACUILayerFindSublayerWithName(v10, @"face-rounder");
+    rootLayer = [(LACUIPackagedView *)v4->_packagedView rootLayer];
+    v11 = LACUILayerFindSublayerWithName(rootLayer, @"face-rounder");
     faceLayer = v4->_faceLayer;
     v4->_faceLayer = v11;
 
@@ -47,21 +47,21 @@
   [(LACUIFaceIDSpinnerView *)self addSubview:self->_packagedView];
   [(LACUIPackagedView *)self->_packagedView setTranslatesAutoresizingMaskIntoConstraints:0];
   v14 = MEMORY[0x277CCAAD0];
-  v17 = [(LACUIPackagedView *)self->_packagedView leadingAnchor];
-  v16 = [(LACUIFaceIDSpinnerView *)self leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  leadingAnchor = [(LACUIPackagedView *)self->_packagedView leadingAnchor];
+  leadingAnchor2 = [(LACUIFaceIDSpinnerView *)self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[0] = v15;
-  v3 = [(LACUIPackagedView *)self->_packagedView trailingAnchor];
-  v4 = [(LACUIFaceIDSpinnerView *)self trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  trailingAnchor = [(LACUIPackagedView *)self->_packagedView trailingAnchor];
+  trailingAnchor2 = [(LACUIFaceIDSpinnerView *)self trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[1] = v5;
-  v6 = [(LACUIPackagedView *)self->_packagedView topAnchor];
-  v7 = [(LACUIFaceIDSpinnerView *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor = [(LACUIPackagedView *)self->_packagedView topAnchor];
+  topAnchor2 = [(LACUIFaceIDSpinnerView *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[2] = v8;
-  v9 = [(LACUIPackagedView *)self->_packagedView bottomAnchor];
-  v10 = [(LACUIFaceIDSpinnerView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(LACUIPackagedView *)self->_packagedView bottomAnchor];
+  bottomAnchor2 = [(LACUIFaceIDSpinnerView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:4];
   [v14 activateConstraints:v12];

@@ -1,32 +1,32 @@
 @interface SCROBrailleUIDynamicBrailleView
-- (SCROBrailleUIDynamicBrailleView)initWithIdentifier:(id)a3 initialText:(id)a4;
-- (id)_backButtonHandleEvent:(id)a3;
-- (id)_brailleForText:(id)a3;
-- (id)_contentHandleEvent:(id)a3;
-- (id)handleEvent:(id)a3;
+- (SCROBrailleUIDynamicBrailleView)initWithIdentifier:(id)identifier initialText:(id)text;
+- (id)_backButtonHandleEvent:(id)event;
+- (id)_brailleForText:(id)text;
+- (id)_contentHandleEvent:(id)event;
+- (id)handleEvent:(id)event;
 - (id)textValue;
 - (id)unreadTextValue;
 - (id)value;
 - (id)visualRepresentation;
 - (void)display;
 - (void)finalizeTranscription;
-- (void)handleTranscribedText:(id)a3 isFinal:(BOOL)a4;
+- (void)handleTranscribedText:(id)text isFinal:(BOOL)final;
 - (void)resetUnreadText;
-- (void)setShowingBackButton:(BOOL)a3;
+- (void)setShowingBackButton:(BOOL)button;
 @end
 
 @implementation SCROBrailleUIDynamicBrailleView
 
-- (SCROBrailleUIDynamicBrailleView)initWithIdentifier:(id)a3 initialText:(id)a4
+- (SCROBrailleUIDynamicBrailleView)initWithIdentifier:(id)identifier initialText:(id)text
 {
-  v7 = a4;
+  textCopy = text;
   v23.receiver = self;
   v23.super_class = SCROBrailleUIDynamicBrailleView;
-  v8 = [(SCROBrailleUIView *)&v23 initWithIdentifier:a3];
+  v8 = [(SCROBrailleUIView *)&v23 initWithIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_initialText, a4);
+    objc_storeStrong(&v8->_initialText, text);
     v10 = objc_opt_new();
     finalizedText = v9->_finalizedText;
     v9->_finalizedText = v10;
@@ -61,59 +61,59 @@
 {
   if ([(SCROBrailleUIDynamicBrailleView *)self showsBackButton]&& [(SCROBrailleUIDynamicBrailleView *)self showingBackButton])
   {
-    v3 = [(SCROBrailleUIDynamicBrailleView *)self valueCache];
+    valueCache = [(SCROBrailleUIDynamicBrailleView *)self valueCache];
   }
 
   else
   {
     v4 = +[SCROBrailleUIDisplayManager sharedManager];
     v5 = [v4 lineForView:self];
-    v6 = [v5 braille];
-    v7 = v6;
+    braille = [v5 braille];
+    v7 = braille;
     v8 = &stru_28763D5C8;
-    if (v6)
+    if (braille)
     {
-      v8 = v6;
+      v8 = braille;
     }
 
-    v3 = v8;
+    valueCache = v8;
   }
 
-  return v3;
+  return valueCache;
 }
 
 - (id)textValue
 {
-  v3 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-  v4 = [v3 length];
+  updatingText = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+  v4 = [updatingText length];
 
-  v5 = [(SCROBrailleUIDynamicBrailleView *)self finalizedText];
+  finalizedText = [(SCROBrailleUIDynamicBrailleView *)self finalizedText];
   if (v4)
   {
-    v6 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-    v7 = [v5 stringByAppendingString:v6];
+    updatingText2 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    v7 = [finalizedText stringByAppendingString:updatingText2];
 
-    v5 = v7;
+    finalizedText = v7;
   }
 
-  return v5;
+  return finalizedText;
 }
 
 - (id)unreadTextValue
 {
-  v3 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-  v4 = [v3 length];
+  updatingText = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+  v4 = [updatingText length];
 
-  v5 = [(SCROBrailleUIDynamicBrailleView *)self finalizedUnreadText];
+  finalizedUnreadText = [(SCROBrailleUIDynamicBrailleView *)self finalizedUnreadText];
   if (v4)
   {
-    v6 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-    v7 = [v5 stringByAppendingString:v6];
+    updatingText2 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    v7 = [finalizedUnreadText stringByAppendingString:updatingText2];
 
-    v5 = v7;
+    finalizedUnreadText = v7;
   }
 
-  return v5;
+  return finalizedUnreadText;
 }
 
 - (void)display
@@ -121,8 +121,8 @@
   v44 = *MEMORY[0x277D85DE8];
   if (![(SCROBrailleUIDynamicBrailleView *)self showsBackButton])
   {
-    v5 = [(SCROBrailleUIDynamicBrailleView *)self initialText];
-    v3 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:v5];
+    initialText = [(SCROBrailleUIDynamicBrailleView *)self initialText];
+    v3 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:initialText];
 
     v4 = [SCROBrailleUIBraille multiLineBraille:v3];
     goto LABEL_5;
@@ -139,10 +139,10 @@ LABEL_5:
   }
 
   v7 = objc_opt_new();
-  v8 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
-  v9 = [v8 count];
-  v10 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
-  v11 = [v10 count];
+  finalizedTextLines = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
+  v9 = [finalizedTextLines count];
+  finalizedBrailleLines = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
+  v11 = [finalizedBrailleLines count];
 
   if (v9 != v11)
   {
@@ -150,11 +150,11 @@ LABEL_5:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = MEMORY[0x277CCABB0];
-      v14 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
-      v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
+      finalizedTextLines2 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
+      v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(finalizedTextLines2, "count")}];
       v16 = MEMORY[0x277CCABB0];
-      v17 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
-      v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
+      finalizedBrailleLines2 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
+      v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(finalizedBrailleLines2, "count")}];
       *buf = 138412546;
       v41 = v15;
       v42 = 2112;
@@ -163,12 +163,12 @@ LABEL_5:
     }
   }
 
-  v19 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+  updatingText = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
 
-  if (!v19)
+  if (!updatingText)
   {
-    v20 = [(SCROBrailleUIDynamicBrailleView *)self initialText];
-    v21 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:v20];
+    initialText2 = [(SCROBrailleUIDynamicBrailleView *)self initialText];
+    v21 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:initialText2];
     [v7 addObject:v21];
   }
 
@@ -176,8 +176,8 @@ LABEL_5:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v22 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
-  v23 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  finalizedBrailleLines3 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
+  v23 = [finalizedBrailleLines3 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v23)
   {
     v24 = v23;
@@ -189,34 +189,34 @@ LABEL_5:
       {
         if (*v36 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(finalizedBrailleLines3);
         }
 
         [v7 addObject:*(*(&v35 + 1) + 8 * v26++)];
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v24 = [finalizedBrailleLines3 countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v24);
   }
 
-  v27 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-  if (v27)
+  updatingText2 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+  if (updatingText2)
   {
-    v28 = v27;
-    v29 = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
+    v28 = updatingText2;
+    updatingBraille = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
 
-    if (v29)
+    if (updatingBraille)
     {
-      v30 = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
-      [v7 addObject:v30];
+      updatingBraille2 = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
+      [v7 addObject:updatingBraille2];
     }
   }
 
-  v31 = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
-  [v31 unlock];
+  finalizedLinesLock = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
+  [finalizedLinesLock unlock];
 
   v32 = [v7 componentsJoinedByString:@"\n"];
   v6 = [SCROBrailleUIBraille multiLineBraille:v32];
@@ -228,17 +228,17 @@ LABEL_23:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SCROBrailleUIDynamicBrailleView *)self showsBackButton]&& [(SCROBrailleUIDynamicBrailleView *)self showingBackButton])
   {
-    v5 = [(SCROBrailleUIDynamicBrailleView *)self _backButtonHandleEvent:v4];
+    v5 = [(SCROBrailleUIDynamicBrailleView *)self _backButtonHandleEvent:eventCopy];
   }
 
   else
   {
-    v5 = [(SCROBrailleUIDynamicBrailleView *)self _contentHandleEvent:v4];
+    v5 = [(SCROBrailleUIDynamicBrailleView *)self _contentHandleEvent:eventCopy];
   }
 
   v6 = v5;
@@ -246,12 +246,12 @@ LABEL_23:
   return v6;
 }
 
-- (id)_backButtonHandleEvent:(id)a3
+- (id)_backButtonHandleEvent:(id)event
 {
-  v4 = [a3 type];
-  if (v4 <= 0x1A)
+  type = [event type];
+  if (type <= 0x1A)
   {
-    if (((1 << v4) & 0x40002A0) != 0)
+    if (((1 << type) & 0x40002A0) != 0)
     {
       v5 = [SCROBrailleUIAction alloc];
       v6 = 2;
@@ -260,12 +260,12 @@ LABEL_4:
       goto LABEL_14;
     }
 
-    if (v4 == 4)
+    if (type == 4)
     {
       goto LABEL_10;
     }
 
-    if (v4 == 8)
+    if (type == 8)
     {
       v5 = [SCROBrailleUIAction alloc];
       v6 = 3;
@@ -273,7 +273,7 @@ LABEL_4:
     }
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     [(SCROBrailleUIDynamicBrailleView *)self setShowingBackButton:0];
     v8 = +[SCROBrailleUIDisplayManager sharedManager];
@@ -281,7 +281,7 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
 LABEL_10:
     [(SCROBrailleUIDynamicBrailleView *)self setShowingBackButton:0];
@@ -296,15 +296,15 @@ LABEL_14:
   return v7;
 }
 
-- (id)_contentHandleEvent:(id)a3
+- (id)_contentHandleEvent:(id)event
 {
-  v4 = [a3 type];
+  type = [event type];
   v5 = 0;
-  if (v4 <= 4)
+  if (type <= 4)
   {
-    if (v4 > 2)
+    if (type > 2)
     {
-      if (v4 != 3)
+      if (type != 3)
       {
         goto LABEL_14;
       }
@@ -317,7 +317,7 @@ LABEL_14:
       }
     }
 
-    else if (v4 == 1)
+    else if (type == 1)
     {
       if (!-[SCROBrailleUIDynamicBrailleView showsBackButton](self, "showsBackButton") || ([MEMORY[0x277CF3318] sharedModel], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "uiDisplayRange"), v16, v17))
       {
@@ -329,7 +329,7 @@ LABEL_14:
 
     else
     {
-      if (v4 != 2)
+      if (type != 2)
       {
         goto LABEL_29;
       }
@@ -339,12 +339,12 @@ LABEL_14:
         goto LABEL_12;
       }
 
-      v6 = [MEMORY[0x277CF3318] sharedModel];
-      v7 = [v6 uiDisplayRange];
-      v9 = v7 + v8;
-      v10 = [MEMORY[0x277CF3318] sharedModel];
-      v11 = [v10 uiBraille];
-      v12 = [v11 length];
+      mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+      uiDisplayRange = [mEMORY[0x277CF3318] uiDisplayRange];
+      v9 = uiDisplayRange + v8;
+      mEMORY[0x277CF3318]2 = [MEMORY[0x277CF3318] sharedModel];
+      uiBraille = [mEMORY[0x277CF3318]2 uiBraille];
+      v12 = [uiBraille length];
 
       if (v9 < v12)
       {
@@ -363,9 +363,9 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v4 <= 6)
+  if (type <= 6)
   {
-    if (v4 == 5)
+    if (type == 5)
     {
       v14 = [SCROBrailleUIAction alloc];
       v15 = 1;
@@ -380,7 +380,7 @@ LABEL_28:
     goto LABEL_25;
   }
 
-  switch(v4)
+  switch(type)
   {
     case 7:
       v14 = [SCROBrailleUIAction alloc];
@@ -404,19 +404,19 @@ LABEL_29:
   return v5;
 }
 
-- (id)_brailleForText:(id)a3
+- (id)_brailleForText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v4 = +[SCROBrailleTranslationManager sharedManager];
-  v5 = [v4 printBrailleForText:v3 language:0 mode:1 textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
+  v5 = [v4 printBrailleForText:textCopy language:0 mode:1 textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
 
   return v5;
 }
 
-- (void)handleTranscribedText:(id)a3 isFinal:(BOOL)a4
+- (void)handleTranscribedText:(id)text isFinal:(BOOL)final
 {
-  v4 = a4;
-  v11 = a3;
+  finalCopy = final;
+  textCopy = text;
   v6 = +[SCROBrailleUIView visibleView];
   if (v6 != self)
   {
@@ -431,27 +431,27 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v7 = [(SCROBrailleUIDynamicBrailleView *)self showingBackButton];
+  showingBackButton = [(SCROBrailleUIDynamicBrailleView *)self showingBackButton];
 
-  if (!v7)
+  if (!showingBackButton)
   {
 LABEL_6:
-    v8 = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
-    [v8 lock];
+    finalizedLinesLock = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
+    [finalizedLinesLock lock];
 
-    v6 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:v11];
-    v9 = [MEMORY[0x277CF3318] sharedModel];
-    [v9 uiReplaceLastLineWith:v6];
+    v6 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:textCopy];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    [mEMORY[0x277CF3318] uiReplaceLastLineWith:v6];
 
-    [(SCROBrailleUIDynamicBrailleView *)self setUpdatingText:v11];
+    [(SCROBrailleUIDynamicBrailleView *)self setUpdatingText:textCopy];
     [(SCROBrailleUIDynamicBrailleView *)self setUpdatingBraille:v6];
-    if (v4)
+    if (finalCopy)
     {
       [(SCROBrailleUIDynamicBrailleView *)self finalizeTranscription];
     }
 
-    v10 = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
-    [v10 unlock];
+    finalizedLinesLock2 = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
+    [finalizedLinesLock2 unlock];
 
     goto LABEL_9;
   }
@@ -467,9 +467,9 @@ LABEL_10:
     v16 = v3;
     if ([(SCROBrailleUIDynamicBrailleView *)self showsBackButton])
     {
-      v4 = [(SCROBrailleUIDynamicBrailleView *)self showingBackButton];
+      showingBackButton = [(SCROBrailleUIDynamicBrailleView *)self showingBackButton];
 
-      if (v4)
+      if (showingBackButton)
       {
         return;
       }
@@ -479,31 +479,31 @@ LABEL_10:
     {
     }
 
-    v5 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    updatingText = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
 
-    if (!v5)
+    if (!updatingText)
     {
       return;
     }
 
-    v6 = [MEMORY[0x277CF3318] sharedModel];
-    [v6 uiAppendNewLine];
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    [mEMORY[0x277CF3318] uiAppendNewLine];
 
-    v7 = [(SCROBrailleUIDynamicBrailleView *)self finalizedText];
-    v8 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-    [v7 appendFormat:@"\n%@", v8];
+    finalizedText = [(SCROBrailleUIDynamicBrailleView *)self finalizedText];
+    updatingText2 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    [finalizedText appendFormat:@"\n%@", updatingText2];
 
-    v9 = [(SCROBrailleUIDynamicBrailleView *)self finalizedUnreadText];
-    v10 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-    [v9 appendFormat:@"\n%@", v10];
+    finalizedUnreadText = [(SCROBrailleUIDynamicBrailleView *)self finalizedUnreadText];
+    updatingText3 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    [finalizedUnreadText appendFormat:@"\n%@", updatingText3];
 
-    v11 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
-    v12 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-    [v11 addObject:v12];
+    finalizedTextLines = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
+    updatingText4 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    [finalizedTextLines addObject:updatingText4];
 
-    v13 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
-    v14 = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
-    [v13 addObject:v14];
+    finalizedBrailleLines = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
+    updatingBraille = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
+    [finalizedBrailleLines addObject:updatingBraille];
 
     v15 = objc_opt_new();
     [(SCROBrailleUIDynamicBrailleView *)self setUpdatingText:v15];
@@ -520,8 +520,8 @@ LABEL_10:
   if ([(SCROBrailleUIDynamicBrailleView *)self showsBackButton]&& [(SCROBrailleUIDynamicBrailleView *)self showingBackButton])
   {
     v3 = SCROBrailleUILocString(@"back.btn.label");
-    v4 = +[SCROBrailleUIUtilities brailleForBackButton];
-    v5 = [[SCROBrailleUICaptionableBrailleLine alloc] initWithBraille:v4 selection:0x7FFFFFFFFFFFFFFFLL, 0];
+    mEMORY[0x277CF3318] = +[SCROBrailleUIUtilities brailleForBackButton];
+    v5 = [[SCROBrailleUICaptionableBrailleLine alloc] initWithBraille:mEMORY[0x277CF3318] selection:0x7FFFFFFFFFFFFFFFLL, 0];
     [(SCROBrailleUICaptionableBrailleLine *)v5 setManualCaption:v3];
     v6 = [SCROBrailleUIVisualRepresentation alloc];
     v58[0] = v5;
@@ -531,14 +531,14 @@ LABEL_10:
 
   else
   {
-    v9 = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
-    [v9 lock];
+    finalizedLinesLock = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
+    [finalizedLinesLock lock];
 
     v3 = objc_opt_new();
-    v10 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
-    v11 = [v10 count];
-    v12 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
-    v13 = [v12 count];
+    finalizedTextLines = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
+    v11 = [finalizedTextLines count];
+    finalizedBrailleLines = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
+    v13 = [finalizedBrailleLines count];
 
     if (v11 != v13)
     {
@@ -546,11 +546,11 @@ LABEL_10:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = MEMORY[0x277CCABB0];
-        v16 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
-        v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
+        finalizedTextLines2 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
+        v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(finalizedTextLines2, "count")}];
         v18 = MEMORY[0x277CCABB0];
-        v19 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
-        v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(v19, "count")}];
+        finalizedBrailleLines2 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
+        v20 = [v18 numberWithUnsignedInteger:{objc_msgSend(finalizedBrailleLines2, "count")}];
         *buf = 138412546;
         v55 = v17;
         v56 = 2112;
@@ -559,17 +559,17 @@ LABEL_10:
       }
     }
 
-    v21 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    updatingText = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
 
-    if (!v21)
+    if (!updatingText)
     {
       v22 = [SCROBrailleUICaptionableBrailleLine alloc];
-      v23 = [(SCROBrailleUIDynamicBrailleView *)self initialText];
-      v24 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:v23];
+      initialText = [(SCROBrailleUIDynamicBrailleView *)self initialText];
+      v24 = [(SCROBrailleUIDynamicBrailleView *)self _brailleForText:initialText];
       v25 = [(SCROBrailleUICaptionableBrailleLine *)v22 initWithBraille:v24 selection:0x7FFFFFFFFFFFFFFFLL, 0];
 
-      v26 = [(SCROBrailleUIDynamicBrailleView *)self initialText];
-      [(SCROBrailleUICaptionableBrailleLine *)v25 setManualCaption:v26];
+      initialText2 = [(SCROBrailleUIDynamicBrailleView *)self initialText];
+      [(SCROBrailleUICaptionableBrailleLine *)v25 setManualCaption:initialText2];
 
       [v3 addObject:v25];
     }
@@ -578,8 +578,8 @@ LABEL_10:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v27 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
-    v28 = [v27 countByEnumeratingWithState:&v49 objects:v53 count:16];
+    finalizedBrailleLines3 = [(SCROBrailleUIDynamicBrailleView *)self finalizedBrailleLines];
+    v28 = [finalizedBrailleLines3 countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v28)
     {
       v29 = v28;
@@ -591,17 +591,17 @@ LABEL_10:
         {
           if (*v50 != v31)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(finalizedBrailleLines3);
           }
 
           v33 = [[SCROBrailleUICaptionableBrailleLine alloc] initWithBraille:*(*(&v49 + 1) + 8 * i) selection:0x7FFFFFFFFFFFFFFFLL, 0];
-          v34 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
-          v35 = [v34 count];
+          finalizedTextLines3 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
+          v35 = [finalizedTextLines3 count];
 
           if (v30 < v35)
           {
-            v36 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
-            v37 = [v36 objectAtIndexedSubscript:v30];
+            finalizedTextLines4 = [(SCROBrailleUIDynamicBrailleView *)self finalizedTextLines];
+            v37 = [finalizedTextLines4 objectAtIndexedSubscript:v30];
             [(SCROBrailleUICaptionableBrailleLine *)v33 setManualCaption:v37];
           }
 
@@ -609,37 +609,37 @@ LABEL_10:
           ++v30;
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v49 objects:v53 count:16];
+        v29 = [finalizedBrailleLines3 countByEnumeratingWithState:&v49 objects:v53 count:16];
       }
 
       while (v29);
     }
 
-    v38 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-    if (v38)
+    updatingText2 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+    if (updatingText2)
     {
-      v39 = v38;
-      v40 = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
+      v39 = updatingText2;
+      updatingBraille = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
 
-      if (v40)
+      if (updatingBraille)
       {
         v41 = [SCROBrailleUICaptionableBrailleLine alloc];
-        v42 = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
-        v43 = [(SCROBrailleUICaptionableBrailleLine *)v41 initWithBraille:v42 selection:0x7FFFFFFFFFFFFFFFLL, 0];
+        updatingBraille2 = [(SCROBrailleUIDynamicBrailleView *)self updatingBraille];
+        v43 = [(SCROBrailleUICaptionableBrailleLine *)v41 initWithBraille:updatingBraille2 selection:0x7FFFFFFFFFFFFFFFLL, 0];
 
-        v44 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
-        [(SCROBrailleUICaptionableBrailleLine *)v43 setManualCaption:v44];
+        updatingText3 = [(SCROBrailleUIDynamicBrailleView *)self updatingText];
+        [(SCROBrailleUICaptionableBrailleLine *)v43 setManualCaption:updatingText3];
 
         [v3 addObject:v43];
       }
     }
 
-    v45 = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
-    [v45 unlock];
+    finalizedLinesLock2 = [(SCROBrailleUIDynamicBrailleView *)self finalizedLinesLock];
+    [finalizedLinesLock2 unlock];
 
     v46 = [SCROBrailleUIVisualRepresentation alloc];
-    v4 = [MEMORY[0x277CF3318] sharedModel];
-    v8 = -[SCROBrailleUIVisualRepresentation initWithLines:focusedIndex:isList:](v46, "initWithLines:focusedIndex:isList:", v3, [v4 uiFocusedLineIndex], 0);
+    mEMORY[0x277CF3318] = [MEMORY[0x277CF3318] sharedModel];
+    v8 = -[SCROBrailleUIVisualRepresentation initWithLines:focusedIndex:isList:](v46, "initWithLines:focusedIndex:isList:", v3, [mEMORY[0x277CF3318] uiFocusedLineIndex], 0);
   }
 
   v47 = *MEMORY[0x277D85DE8];
@@ -653,15 +653,15 @@ LABEL_10:
   [(SCROBrailleUIDynamicBrailleView *)self setFinalizedUnreadText:v3];
 }
 
-- (void)setShowingBackButton:(BOOL)a3
+- (void)setShowingBackButton:(BOOL)button
 {
-  v3 = a3;
-  if ([(SCROBrailleUIDynamicBrailleView *)self showsBackButton]&& self->_showingBackButton != v3)
+  buttonCopy = button;
+  if ([(SCROBrailleUIDynamicBrailleView *)self showsBackButton]&& self->_showingBackButton != buttonCopy)
   {
-    if (v3)
+    if (buttonCopy)
     {
-      v5 = [(SCROBrailleUIDynamicBrailleView *)self value];
-      [(SCROBrailleUIDynamicBrailleView *)self setValueCache:v5];
+      value = [(SCROBrailleUIDynamicBrailleView *)self value];
+      [(SCROBrailleUIDynamicBrailleView *)self setValueCache:value];
     }
 
     else
@@ -669,7 +669,7 @@ LABEL_10:
       [(SCROBrailleUIDynamicBrailleView *)self setValueCache:0];
     }
 
-    self->_showingBackButton = v3;
+    self->_showingBackButton = buttonCopy;
 
     [(SCROBrailleUIDynamicBrailleView *)self display];
   }

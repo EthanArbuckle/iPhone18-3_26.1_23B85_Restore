@@ -8,15 +8,15 @@
 {
   v6.receiver = self;
   v6.super_class = REObservableSingleton;
-  v2 = [(RESingleton *)&v6 _init];
-  if (v2)
+  _init = [(RESingleton *)&v6 _init];
+  if (_init)
   {
     v3 = objc_opt_new();
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = _init[1];
+    _init[1] = v3;
   }
 
-  return v2;
+  return _init;
 }
 
 @end

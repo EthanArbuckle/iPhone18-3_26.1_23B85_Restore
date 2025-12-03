@@ -1,12 +1,12 @@
 @interface SettingsCellularUtils
-+ (BOOL)isCaseInsensitiveEqual:(id)a3 withString:(id)a4;
++ (BOOL)isCaseInsensitiveEqual:(id)equal withString:(id)string;
 + (BOOL)isUIDualSIM;
-+ (BOOL)noDataConnectivityAvailableWithBSRecommendationCheck:(BOOL)a3;
++ (BOOL)noDataConnectivityAvailableWithBSRecommendationCheck:(BOOL)check;
 + (BOOL)shouldShowPendingTransferPlanOnPad;
-+ (BOOL)supportsWiFiCalling:(id)a3;
-+ (id)formattedPhoneNumber:(id)a3;
-+ (id)removePlanConfirmationMessage:(id)a3;
-+ (id)removePlanConfirmationTitle:(id)a3;
++ (BOOL)supportsWiFiCalling:(id)calling;
++ (id)formattedPhoneNumber:(id)number;
++ (id)removePlanConfirmationMessage:(id)message;
++ (id)removePlanConfirmationTitle:(id)title;
 + (id)singleSIMUIServiceDescriptor;
 + (id)singleSIMUISubscriptionContext;
 + (int)satelliteDataPlanTier;
@@ -14,10 +14,10 @@
 
 @implementation SettingsCellularUtils
 
-+ (id)formattedPhoneNumber:(id)a3
++ (id)formattedPhoneNumber:(id)number
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  numberCopy = number;
   v4 = *MEMORY[0x277CBECE8];
   v5 = CFPhoneNumberCreate();
   if (v5)
@@ -34,7 +34,7 @@
         v13 = 136315650;
         v14 = "+[SettingsCellularUtils formattedPhoneNumber:]";
         v15 = 2112;
-        v16 = v3;
+        v16 = numberCopy;
         v17 = 2112;
         v18 = v8;
         _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "%s localized %@ as %@", &v13, 0x20u);
@@ -49,11 +49,11 @@
         v13 = 136315394;
         v14 = "+[SettingsCellularUtils formattedPhoneNumber:]";
         v15 = 2112;
-        v16 = v3;
+        v16 = numberCopy;
         _os_log_error_impl(&dword_2658DE000, v9, OS_LOG_TYPE_ERROR, "%s Could not localize %@", &v13, 0x16u);
       }
 
-      v8 = v3;
+      v8 = numberCopy;
     }
 
     CFRelease(v6);
@@ -67,11 +67,11 @@
       v13 = 136315394;
       v14 = "+[SettingsCellularUtils formattedPhoneNumber:]";
       v15 = 2112;
-      v16 = v3;
+      v16 = numberCopy;
       _os_log_error_impl(&dword_2658DE000, v10, OS_LOG_TYPE_ERROR, "%s Could not create CFPhoneNumber for %@", &v13, 0x16u);
     }
 
-    v8 = v3;
+    v8 = numberCopy;
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -79,10 +79,10 @@
   return v8;
 }
 
-+ (BOOL)supportsWiFiCalling:(id)a3
++ (BOOL)supportsWiFiCalling:(id)calling
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  callingCopy = calling;
   [MEMORY[0x277D6EDE8] senderIdentityCapabilities];
   v19 = 0u;
   v20 = 0u;
@@ -103,13 +103,13 @@
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
-        v10 = [v9 senderIdentityUUID];
-        v11 = [v3 uuid];
-        if ([v10 isEqual:v11])
+        senderIdentityUUID = [v9 senderIdentityUUID];
+        uuid = [callingCopy uuid];
+        if ([senderIdentityUUID isEqual:uuid])
         {
-          v12 = [v9 supportsWiFiCalling];
+          supportsWiFiCalling = [v9 supportsWiFiCalling];
 
-          if (v12)
+          if (supportsWiFiCalling)
           {
             v15 = [MEMORY[0x277D4D830] loggerWithCategory:@"SettingsCellularUtils"];
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -117,7 +117,7 @@
               *buf = 136315394;
               v24 = "+[SettingsCellularUtils supportsWiFiCalling:]";
               v25 = 2112;
-              v26 = v3;
+              v26 = callingCopy;
               _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "%s Subscription Context: %@ supports WiFi Calling", buf, 0x16u);
             }
 
@@ -148,7 +148,7 @@
     *buf = 136315394;
     v24 = "+[SettingsCellularUtils supportsWiFiCalling:]";
     v25 = 2112;
-    v26 = v3;
+    v26 = callingCopy;
     _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "%s Subscription Context: %@ doesn't support WiFi Calling", buf, 0x16u);
   }
 
@@ -161,23 +161,23 @@ LABEL_18:
 
 + (BOOL)isUIDualSIM
 {
-  v2 = [MEMORY[0x277D4D868] sharedInstance];
-  v3 = [v2 isDualSimCapable];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  isDualSimCapable = [mEMORY[0x277D4D868] isDualSimCapable];
 
-  if (!v3)
+  if (!isDualSimCapable)
   {
     return 0;
   }
 
   v4 = +[PSUICellularPlanManagerCache sharedInstance];
-  v5 = [v4 planItems];
-  v6 = [v5 count];
+  planItems = [v4 planItems];
+  v6 = [planItems count];
   v7 = +[PSUICellularPlanManagerCache sharedInstance];
-  v8 = [v7 danglingPlanItems];
-  v9 = [v8 count] + v6;
+  danglingPlanItems = [v7 danglingPlanItems];
+  v9 = [danglingPlanItems count] + v6;
   v10 = +[PSUICellularPlanManagerCache sharedInstance];
-  v11 = [v10 plansPendingTransfer];
-  v12 = (v9 + [v11 count]) > 1;
+  plansPendingTransfer = [v10 plansPendingTransfer];
+  v12 = (v9 + [plansPendingTransfer count]) > 1;
 
   return v12;
 }
@@ -185,18 +185,18 @@ LABEL_18:
 + (BOOL)shouldShowPendingTransferPlanOnPad
 {
   v2 = _os_feature_enabled_impl();
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v2 & 1) == 0)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && (v2 & 1) == 0)
   {
     v6 = +[PSUICellularPlanManagerCache sharedInstance];
     if ([v6 isCarrierItemFlowSupported])
     {
       v7 = +[PSUICellularPlanManagerCache sharedInstance];
-      v8 = [v7 plansPendingTransfer];
-      v5 = [v8 count] != 0;
+      plansPendingTransfer = [v7 plansPendingTransfer];
+      v5 = [plansPendingTransfer count] != 0;
     }
 
     else
@@ -208,7 +208,7 @@ LABEL_18:
   return v5;
 }
 
-+ (BOOL)noDataConnectivityAvailableWithBSRecommendationCheck:(BOOL)a3
++ (BOOL)noDataConnectivityAvailableWithBSRecommendationCheck:(BOOL)check
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = +[PSUIDeviceWiFiState sharedInstance];
@@ -221,38 +221,38 @@ LABEL_18:
   if (![v5 isConnectedOverCellular])
   {
     v9 = +[PSUIDeviceEthernetState sharedInstance];
-    v10 = [v9 isConnectedOverEthernet];
+    isConnectedOverEthernet = [v9 isConnectedOverEthernet];
 
-    if (v10)
+    if (isConnectedOverEthernet)
     {
       goto LABEL_5;
     }
 
     v11 = +[PSUICellularPlanManagerCache sharedInstance];
-    v12 = [v11 getBootstrapState];
+    getBootstrapState = [v11 getBootstrapState];
 
     v13 = [MEMORY[0x277D4D830] loggerWithCategory:@"SettingsCellularUtils"];
     v14 = v13;
-    if (v12)
+    if (getBootstrapState)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412290;
-        v19 = v12;
+        v19 = getBootstrapState;
         _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "Bootstrap state: %@", &v18, 0xCu);
       }
 
-      v15 = [v12 bootstrapStatus];
-      if (v15 == 2)
+      bootstrapStatus = [getBootstrapState bootstrapStatus];
+      if (bootstrapStatus == 2)
       {
-        v16 = [MEMORY[0x277D75418] currentDevice];
-        v17 = [v16 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        v6 = (v17 & 0xFFFFFFFFFFFFFFFBLL) != 1 && !a3;
+        v6 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && !check;
         goto LABEL_21;
       }
 
-      if (v15 == 1)
+      if (bootstrapStatus == 1)
       {
         v6 = 0;
 LABEL_21:
@@ -285,7 +285,7 @@ LABEL_6:
 + (id)singleSIMUISubscriptionContext
 {
   v12 = *MEMORY[0x277D85DE8];
-  if ([a1 isUIDualSIM])
+  if ([self isUIDualSIM])
   {
     v2 = [MEMORY[0x277D4D830] loggerWithCategory:@"SettingsCellularUtils"];
     if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
@@ -296,19 +296,19 @@ LABEL_6:
     }
   }
 
-  v3 = [MEMORY[0x277D4D868] sharedInstance];
-  v4 = [v3 subscriptionsInUse];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionsInUse = [mEMORY[0x277D4D868] subscriptionsInUse];
 
-  if ([v4 count])
+  if ([subscriptionsInUse count])
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [subscriptionsInUse objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D4D868] sharedInstance];
-    v7 = [v6 subscriptionContexts];
-    v5 = [v7 objectAtIndexedSubscript:0];
+    mEMORY[0x277D4D868]2 = [MEMORY[0x277D4D868] sharedInstance];
+    subscriptionContexts = [mEMORY[0x277D4D868]2 subscriptionContexts];
+    v5 = [subscriptionContexts objectAtIndexedSubscript:0];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -319,18 +319,18 @@ LABEL_6:
 + (id)singleSIMUIServiceDescriptor
 {
   v2 = MEMORY[0x277CC3718];
-  v3 = [a1 singleSIMUISubscriptionContext];
-  v4 = [v2 descriptorWithSubscriptionContext:v3];
+  singleSIMUISubscriptionContext = [self singleSIMUISubscriptionContext];
+  v4 = [v2 descriptorWithSubscriptionContext:singleSIMUISubscriptionContext];
 
   return v4;
 }
 
-+ (BOOL)isCaseInsensitiveEqual:(id)a3 withString:(id)a4
++ (BOOL)isCaseInsensitiveEqual:(id)equal withString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 == v6)
+  equalCopy = equal;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (equalCopy == stringCopy)
   {
     v8 = 1;
   }
@@ -338,26 +338,26 @@ LABEL_6:
   else
   {
     v8 = 0;
-    if (v5 && v6)
+    if (equalCopy && stringCopy)
     {
-      v8 = [v5 caseInsensitiveCompare:v6] == 0;
+      v8 = [equalCopy caseInsensitiveCompare:stringCopy] == 0;
     }
   }
 
   return v8;
 }
 
-+ (id)removePlanConfirmationTitle:(id)a3
++ (id)removePlanConfirmationTitle:(id)title
 {
-  v3 = [a3 plan];
-  v4 = [v3 carrierName];
+  plan = [title plan];
+  carrierName = [plan carrierName];
 
-  if ([v4 length])
+  if ([carrierName length])
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"REMOVE_CARRIER_%@_PLAN" value:&stru_287733598 table:@"Cellular"];
-    v8 = [v5 stringWithFormat:v7, v4];
+    v8 = [v5 stringWithFormat:v7, carrierName];
   }
 
   else
@@ -369,17 +369,17 @@ LABEL_6:
   return v8;
 }
 
-+ (id)removePlanConfirmationMessage:(id)a3
++ (id)removePlanConfirmationMessage:(id)message
 {
-  v3 = [a3 plan];
-  v4 = [v3 carrierName];
+  plan = [message plan];
+  carrierName = [plan carrierName];
 
-  if ([v4 length])
+  if ([carrierName length])
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"REMOVE_CARRIER_%@_PLAN_CONFIRMATION" value:&stru_287733598 table:@"Cellular"];
-    v8 = [v5 stringWithFormat:v7, v4];
+    v8 = [v5 stringWithFormat:v7, carrierName];
   }
 
   else
@@ -393,10 +393,10 @@ LABEL_6:
 
 + (int)satelliteDataPlanTier
 {
-  v2 = [objc_alloc(MEMORY[0x277CC3650]) initAgentDataFromCellularInternetPath];
-  v3 = [v2 dataPlanTier];
+  initAgentDataFromCellularInternetPath = [objc_alloc(MEMORY[0x277CC3650]) initAgentDataFromCellularInternetPath];
+  dataPlanTier = [initAgentDataFromCellularInternetPath dataPlanTier];
 
-  return v3;
+  return dataPlanTier;
 }
 
 @end

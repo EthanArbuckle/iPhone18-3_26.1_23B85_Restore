@@ -1,35 +1,35 @@
 @interface _PSCNAutocompleteFeedbackErasedHandle
-- (_PSCNAutocompleteFeedbackErasedHandle)initWithCoder:(id)a3;
-- (_PSCNAutocompleteFeedbackErasedHandle)initWithContact:(id)a3;
+- (_PSCNAutocompleteFeedbackErasedHandle)initWithCoder:(id)coder;
+- (_PSCNAutocompleteFeedbackErasedHandle)initWithContact:(id)contact;
 @end
 
 @implementation _PSCNAutocompleteFeedbackErasedHandle
 
-- (_PSCNAutocompleteFeedbackErasedHandle)initWithContact:(id)a3
+- (_PSCNAutocompleteFeedbackErasedHandle)initWithContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = _PSCNAutocompleteFeedbackErasedHandle;
   v6 = [(_PSCNAutocompleteFeedbackErasedHandle *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
+    objc_storeStrong(&v6->_contact, contact);
   }
 
   return v7;
 }
 
-- (_PSCNAutocompleteFeedbackErasedHandle)initWithCoder:(id)a3
+- (_PSCNAutocompleteFeedbackErasedHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _PSCNAutocompleteFeedbackErasedHandle;
   v5 = [(_PSCNAutocompleteFeedbackErasedHandle *)&v10 init];
   if (v5)
   {
     getCNContactClass_0();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
     contact = v5->_contact;
     v5->_contact = v6;
 

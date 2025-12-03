@@ -1,13 +1,13 @@
 @interface FindDeviceAndPlaySoundIntent
-- (FindDeviceAndPlaySoundIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (FindDeviceAndPlaySoundIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (FindDeviceAndPlaySoundIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (FindDeviceAndPlaySoundIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation FindDeviceAndPlaySoundIntent
 
-- (FindDeviceAndPlaySoundIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (FindDeviceAndPlaySoundIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_266DAA70C();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return FindDeviceAndPlaySoundIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return FindDeviceAndPlaySoundIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (FindDeviceAndPlaySoundIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (FindDeviceAndPlaySoundIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_266DAA70C();
   sub_266DAA70C();
-  if (a5)
+  if (name)
   {
     sub_266DAA6AC();
   }

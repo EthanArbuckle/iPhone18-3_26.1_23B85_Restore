@@ -1,10 +1,10 @@
 @interface BKMLAudiobookChapter
-+ (id)customChapterTitleForMediaItem:(id)a3 mediaChapter:(id)a4 chapterIndex:(unint64_t)a5;
++ (id)customChapterTitleForMediaItem:(id)item mediaChapter:(id)chapter chapterIndex:(unint64_t)index;
 - ($8BD1E3C934A4AE6C9488C351520253D1)timeRangeInAudiobook;
 - ($8BD1E3C934A4AE6C9488C351520253D1)timeRangeInTrack;
 - (BKAudiobook)audiobook;
 - (BKAudiobookTrack)track;
-- (BKMLAudiobookChapter)initWithMediaChapter:(id)a3 track:(id)a4 number:(unint64_t)a5 trackNumber:(unint64_t)a6 trackCount:(unint64_t)a7;
+- (BKMLAudiobookChapter)initWithMediaChapter:(id)chapter track:(id)track number:(unint64_t)number trackNumber:(unint64_t)trackNumber trackCount:(unint64_t)count;
 - (BKMLAudiobookTrack)containingTrack;
 - (CGImage)artwork;
 - (MPNowPlayingContentItem)contentItem;
@@ -17,35 +17,35 @@
 
 @implementation BKMLAudiobookChapter
 
-+ (id)customChapterTitleForMediaItem:(id)a3 mediaChapter:(id)a4 chapterIndex:(unint64_t)a5
++ (id)customChapterTitleForMediaItem:(id)item mediaChapter:(id)chapter chapterIndex:(unint64_t)index
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  chapterCopy = chapter;
   if (qword_47A10 != -1)
   {
     sub_2166C();
   }
 
-  v9 = [v7 bk_effectiveTitle];
-  if (!v9)
+  bk_effectiveTitle = [itemCopy bk_effectiveTitle];
+  if (!bk_effectiveTitle)
   {
     goto LABEL_23;
   }
 
-  v10 = [v7 title];
-  v11 = [v10 hasPrefix:v9];
+  title = [itemCopy title];
+  v11 = [title hasPrefix:bk_effectiveTitle];
 
   if (!v11)
   {
     goto LABEL_23;
   }
 
-  v12 = [v7 title];
-  v13 = [v12 substringFromIndex:{objc_msgSend(v9, "length")}];
+  title2 = [itemCopy title];
+  v13 = [title2 substringFromIndex:{objc_msgSend(bk_effectiveTitle, "length")}];
 
   v14 = [v13 stringByTrimmingCharactersInSet:qword_47A08];
 
-  if (!v8)
+  if (!chapterCopy)
   {
     if (![v14 length])
     {
@@ -57,10 +57,10 @@
     goto LABEL_22;
   }
 
-  v15 = [v8 bk_UTF8Title];
-  if ([v15 hasPrefix:v9])
+  bk_UTF8Title = [chapterCopy bk_UTF8Title];
+  if ([bk_UTF8Title hasPrefix:bk_effectiveTitle])
   {
-    v16 = [v15 substringFromIndex:{objc_msgSend(v9, "length")}];
+    v16 = [bk_UTF8Title substringFromIndex:{objc_msgSend(bk_effectiveTitle, "length")}];
     v17 = [v16 stringByTrimmingCharactersInSet:qword_47A08];
 
     if ([v14 length] && objc_msgSend(v17, "length") && objc_msgSend(v14, "caseInsensitiveCompare:", v17))
@@ -106,31 +106,31 @@ LABEL_22:
   }
 
 LABEL_23:
-  v22 = [v8 bk_UTF8Title];
-  if ([v22 length])
+  bk_UTF8Title2 = [chapterCopy bk_UTF8Title];
+  if ([bk_UTF8Title2 length])
   {
-    v23 = v22;
+    title4 = bk_UTF8Title2;
   }
 
   else
   {
-    v24 = [v7 title];
-    v25 = [v24 length];
+    title3 = [itemCopy title];
+    v25 = [title3 length];
 
     if (!v25)
     {
       v27 = BKAudiobooksBundle();
       v28 = [v27 localizedStringForKey:@"%@ - Chapter %@" value:&stru_3D458 table:&stru_3D458];
-      v29 = [NSNumber numberWithUnsignedInteger:a5 + 1];
-      v20 = [NSString stringWithFormat:v28, v9, v29];
+      v29 = [NSNumber numberWithUnsignedInteger:index + 1];
+      v20 = [NSString stringWithFormat:v28, bk_effectiveTitle, v29];
 
       goto LABEL_28;
     }
 
-    v23 = [v7 title];
+    title4 = [itemCopy title];
   }
 
-  v20 = v23;
+  v20 = title4;
 LABEL_28:
 
 LABEL_29:
@@ -138,37 +138,37 @@ LABEL_29:
   return v20;
 }
 
-- (BKMLAudiobookChapter)initWithMediaChapter:(id)a3 track:(id)a4 number:(unint64_t)a5 trackNumber:(unint64_t)a6 trackCount:(unint64_t)a7
+- (BKMLAudiobookChapter)initWithMediaChapter:(id)chapter track:(id)track number:(unint64_t)number trackNumber:(unint64_t)trackNumber trackCount:(unint64_t)count
 {
-  v13 = a3;
-  v14 = a4;
+  chapterCopy = chapter;
+  trackCopy = track;
   v37.receiver = self;
   v37.super_class = BKMLAudiobookChapter;
   v15 = [(BKMLAudiobookChapter *)&v37 init];
   v16 = v15;
   if (v15)
   {
-    v17 = objc_storeWeak(&v15->_containingTrack, v14);
-    v16->_chapterIndexInAudiobook = a5;
-    v16->_albumTrackNumber = a6;
-    v16->_albumTrackCount = a7;
+    v17 = objc_storeWeak(&v15->_containingTrack, trackCopy);
+    v16->_chapterIndexInAudiobook = number;
+    v16->_albumTrackNumber = trackNumber;
+    v16->_albumTrackCount = count;
     v18 = v17;
-    v19 = [v14 author];
+    author = [trackCopy author];
     author = v16->_author;
-    v16->_author = v19;
+    v16->_author = author;
 
     WeakRetained = objc_loadWeakRetained(&v16->_containingTrack);
-    v22 = [WeakRetained mediaItem];
-    v23 = [BKMLAudiobookChapter customChapterTitleForMediaItem:v22 mediaChapter:v13 chapterIndex:v16->_chapterIndexInAudiobook];
+    mediaItem = [WeakRetained mediaItem];
+    v23 = [BKMLAudiobookChapter customChapterTitleForMediaItem:mediaItem mediaChapter:chapterCopy chapterIndex:v16->_chapterIndexInAudiobook];
     title = v16->_title;
     v16->_title = v23;
 
-    if (v13)
+    if (chapterCopy)
     {
-      objc_storeStrong(&v16->_mediaChapter, a3);
-      [v13 playbackTime];
+      objc_storeStrong(&v16->_mediaChapter, chapter);
+      [chapterCopy playbackTime];
       v16->_startTimeInTrack = v25;
-      [v13 playbackDuration];
+      [chapterCopy playbackDuration];
       v16->_duration = v26;
     }
 
@@ -211,24 +211,24 @@ LABEL_29:
 - (BKAudiobook)audiobook
 {
   WeakRetained = objc_loadWeakRetained(&self->_containingTrack);
-  v3 = [WeakRetained audiobook];
+  audiobook = [WeakRetained audiobook];
 
-  return v3;
+  return audiobook;
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKMLAudiobookChapter *)self albumTrackNumber];
-  v6 = [(BKMLAudiobookChapter *)self title];
-  v7 = [(BKMLAudiobookChapter *)self author];
-  v8 = [(BKMLAudiobookChapter *)self customTitle];
+  albumTrackNumber = [(BKMLAudiobookChapter *)self albumTrackNumber];
+  title = [(BKMLAudiobookChapter *)self title];
+  author = [(BKMLAudiobookChapter *)self author];
+  customTitle = [(BKMLAudiobookChapter *)self customTitle];
   [(BKMLAudiobookChapter *)self timeRangeInAudiobook];
   time = v13;
   Seconds = CMTimeGetSeconds(&time);
   [(BKMLAudiobookChapter *)self duration];
-  v11 = [NSString stringWithFormat:@"<%@:%p trackNumber=%lu title=%@ author=%@ customTitle=%@ range=(%.1lf, %.1lf)>", v4, self, v5, v6, v7, v8, *&Seconds, v10];
+  v11 = [NSString stringWithFormat:@"<%@:%p trackNumber=%lu title=%@ author=%@ customTitle=%@ range=(%.1lf, %.1lf)>", v4, self, albumTrackNumber, title, author, customTitle, *&Seconds, v10];
 
   return v11;
 }
@@ -247,56 +247,56 @@ LABEL_29:
 - (CGImage)artwork
 {
   WeakRetained = objc_loadWeakRetained(&self->_containingTrack);
-  v3 = [WeakRetained artwork];
+  artwork = [WeakRetained artwork];
 
-  return v3;
+  return artwork;
 }
 
 - (NSURL)assetURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_containingTrack);
-  v3 = [WeakRetained assetURL];
+  assetURL = [WeakRetained assetURL];
 
-  return v3;
+  return assetURL;
 }
 
 - (NSDate)dateLastOpened
 {
   WeakRetained = objc_loadWeakRetained(&self->_containingTrack);
-  v3 = [WeakRetained dateLastOpened];
+  dateLastOpened = [WeakRetained dateLastOpened];
 
-  return v3;
+  return dateLastOpened;
 }
 
 - (NSString)identifier
 {
-  v3 = [(BKMLAudiobookChapter *)self containingTrack];
-  v4 = [v3 mediaItem];
-  v5 = [v4 bk_assetID];
-  v6 = v5;
-  if (v5)
+  containingTrack = [(BKMLAudiobookChapter *)self containingTrack];
+  mediaItem = [containingTrack mediaItem];
+  bk_assetID = [mediaItem bk_assetID];
+  v6 = bk_assetID;
+  if (bk_assetID)
   {
-    v7 = v5;
+    absoluteString = bk_assetID;
   }
 
   else
   {
-    v8 = [(BKMLAudiobookChapter *)self assetURL];
-    v7 = [v8 absoluteString];
+    assetURL = [(BKMLAudiobookChapter *)self assetURL];
+    absoluteString = [assetURL absoluteString];
   }
 
-  if ([v7 length])
+  if ([absoluteString length])
   {
-    v9 = [NSString stringWithFormat:@"%@.%lu", v7, self->_chapterIndexInAudiobook];
+    uUIDString = [NSString stringWithFormat:@"%@.%lu", absoluteString, self->_chapterIndexInAudiobook];
   }
 
   else
   {
     v10 = +[NSUUID UUID];
-    v9 = [v10 UUIDString];
+    uUIDString = [v10 UUIDString];
   }
 
-  return v9;
+  return uUIDString;
 }
 
 - (MPNowPlayingContentItem)contentItem
@@ -305,34 +305,34 @@ LABEL_29:
   if (!contentItem)
   {
     v4 = [MPNowPlayingContentItem alloc];
-    v5 = [(BKMLAudiobookChapter *)self identifier];
-    v6 = [v4 initWithIdentifier:v5];
+    identifier = [(BKMLAudiobookChapter *)self identifier];
+    v6 = [v4 initWithIdentifier:identifier];
     v7 = self->_contentItem;
     self->_contentItem = v6;
 
     [(MPNowPlayingContentItem *)self->_contentItem setMediaType:4];
     WeakRetained = objc_loadWeakRetained(&self->_containingTrack);
-    v9 = [WeakRetained mediaItem];
-    v10 = [v9 artist];
-    [(MPNowPlayingContentItem *)self->_contentItem setTrackArtistName:v10];
+    mediaItem = [WeakRetained mediaItem];
+    artist = [mediaItem artist];
+    [(MPNowPlayingContentItem *)self->_contentItem setTrackArtistName:artist];
 
     v11 = objc_loadWeakRetained(&self->_containingTrack);
-    v12 = [v11 mediaItem];
-    v13 = [v12 albumArtist];
-    [(MPNowPlayingContentItem *)self->_contentItem setAlbumArtistName:v13];
+    mediaItem2 = [v11 mediaItem];
+    albumArtist = [mediaItem2 albumArtist];
+    [(MPNowPlayingContentItem *)self->_contentItem setAlbumArtistName:albumArtist];
 
     v14 = objc_loadWeakRetained(&self->_containingTrack);
-    v15 = [v14 mediaItem];
-    v16 = [v15 genre];
-    [(MPNowPlayingContentItem *)self->_contentItem setGenreName:v16];
+    mediaItem3 = [v14 mediaItem];
+    genre = [mediaItem3 genre];
+    [(MPNowPlayingContentItem *)self->_contentItem setGenreName:genre];
 
-    v17 = [(BKMLAudiobookChapter *)self title];
-    [(MPNowPlayingContentItem *)self->_contentItem setTitle:v17];
+    title = [(BKMLAudiobookChapter *)self title];
+    [(MPNowPlayingContentItem *)self->_contentItem setTitle:title];
 
     v18 = objc_loadWeakRetained(&self->_containingTrack);
-    v19 = [v18 mediaItem];
-    v20 = [v19 albumTitle];
-    [(MPNowPlayingContentItem *)self->_contentItem setAlbumName:v20];
+    mediaItem4 = [v18 mediaItem];
+    albumTitle = [mediaItem4 albumTitle];
+    [(MPNowPlayingContentItem *)self->_contentItem setAlbumName:albumTitle];
 
     [(BKMLAudiobookChapter *)self duration];
     [(MPNowPlayingContentItem *)self->_contentItem setDuration:?];
@@ -343,26 +343,26 @@ LABEL_29:
     [(MPNowPlayingContentItem *)self->_contentItem setNumberOfChildren:0];
     [(MPNowPlayingContentItem *)self->_contentItem setContainer:0];
     [(MPNowPlayingContentItem *)self->_contentItem setHasArtwork:1];
-    v22 = [(MPNowPlayingContentItem *)self->_contentItem identifier];
-    [(MPNowPlayingContentItem *)self->_contentItem setArtworkIdentifier:v22];
+    identifier2 = [(MPNowPlayingContentItem *)self->_contentItem identifier];
+    [(MPNowPlayingContentItem *)self->_contentItem setArtworkIdentifier:identifier2];
 
     [(MPNowPlayingContentItem *)self->_contentItem setPlayable:1];
     v23 = objc_loadWeakRetained(&self->_containingTrack);
-    v24 = [v23 mediaItem];
-    -[MPNowPlayingContentItem setExplicitContent:](self->_contentItem, "setExplicitContent:", [v24 isExplicitItem]);
+    mediaItem5 = [v23 mediaItem];
+    -[MPNowPlayingContentItem setExplicitContent:](self->_contentItem, "setExplicitContent:", [mediaItem5 isExplicitItem]);
 
     v34[0] = kMRMediaRemoteNowPlayingInfoChapterNumber;
     v25 = [NSNumber numberWithUnsignedInteger:[(BKMLAudiobookChapter *)self chapterIndexInAudiobook]];
     v35[0] = v25;
     v34[1] = kMRMediaRemoteNowPlayingInfoTotalChapterCount;
-    v26 = [(BKMLAudiobookChapter *)self audiobook];
-    v27 = [v26 chapters];
-    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v27 count]);
+    audiobook = [(BKMLAudiobookChapter *)self audiobook];
+    chapters = [audiobook chapters];
+    v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [chapters count]);
     v35[1] = v28;
     v34[2] = kMRMediaRemoteNowPlayingInfoUniqueIdentifier;
     v29 = objc_loadWeakRetained(&self->_containingTrack);
-    v30 = [v29 mediaItem];
-    v31 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v30 persistentID]);
+    mediaItem6 = [v29 mediaItem];
+    v31 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [mediaItem6 persistentID]);
     v35[2] = v31;
     v32 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
 

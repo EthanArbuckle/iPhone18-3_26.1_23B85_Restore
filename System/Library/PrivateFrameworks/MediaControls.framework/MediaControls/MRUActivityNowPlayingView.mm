@@ -1,25 +1,25 @@
 @interface MRUActivityNowPlayingView
-- (MRUActivityNowPlayingView)initWithFrame:(CGRect)a3;
+- (MRUActivityNowPlayingView)initWithFrame:(CGRect)frame;
 - (double)preferredHeightForBottomSafeArea;
 - (void)layoutSubviews;
-- (void)setShowTrailingAccessoryWhenExpanded:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setShowTrailingAccessoryWhenExpanded:(BOOL)expanded;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisibilty;
 @end
 
 @implementation MRUActivityNowPlayingView
 
-- (MRUActivityNowPlayingView)initWithFrame:(CGRect)a3
+- (MRUActivityNowPlayingView)initWithFrame:(CGRect)frame
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = MRUActivityNowPlayingView;
-  v3 = [(MRUActivityNowPlayingView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUActivityNowPlayingView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MRUActivityNowPlayingView *)v3 layer];
-    [v5 setHitTestsAsOpaque:1];
+    layer = [(MRUActivityNowPlayingView *)v3 layer];
+    [layer setHitTestsAsOpaque:1];
 
     v6 = objc_alloc_init(MRUFlippingArtworkView);
     [(MRUFlippingArtworkView *)v6 setStyle:7];
@@ -77,16 +77,16 @@
   v115.super_class = MRUActivityNowPlayingView;
   [(MRUActivityNowPlayingView *)&v115 layoutSubviews];
   [(MRUActivityNowPlayingView *)self updateVisibilty];
-  v3 = [(MRUActivityNowPlayingView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(MRUActivityNowPlayingView *)self traitCollection];
+  [traitCollection displayScale];
 
-  v4 = [(MRUActivityNowPlayingView *)self SBUISA_layoutMode];
+  sBUISA_layoutMode = [(MRUActivityNowPlayingView *)self SBUISA_layoutMode];
   [(MRUActivityNowPlayingView *)self bounds];
   v9 = v5;
   v10 = v6;
   v11 = v7;
   v12 = v8;
-  if (v4 == 4)
+  if (sBUISA_layoutMode == 4)
   {
     UIRectInset();
     x = v116.origin.x;
@@ -144,8 +144,8 @@
     v132.size.width = v22;
     CGRectGetWidth(v132);
     UIRectInset();
-    v74 = [(MRUActivityNowPlayingView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
-    [v74 layoutFrame];
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [(MRUActivityNowPlayingView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     CGRectGetHeight(v133);
     [(MRUActivityNowPlayingHeaderView *)self->_headerView labelInset];
 
@@ -329,8 +329,8 @@
 {
   [(MRUActivityNowPlayingHeaderView *)self->_headerView labelInset];
   v4 = v3;
-  v5 = [(MRUActivityNowPlayingView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
-  [v5 layoutFrame];
+  sBUISA_systemApertureObstructedAreaLayoutGuide = [(MRUActivityNowPlayingView *)self SBUISA_systemApertureObstructedAreaLayoutGuide];
+  [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
   v6 = CGRectGetHeight(v13) - v4;
 
   [(MRUActivityNowPlayingHeaderView *)self->_headerView sizeThatFits:1.79769313e308, 1.79769313e308];
@@ -341,17 +341,17 @@
   return v10 + v11;
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    objc_storeStrong(&self->_stylingProvider, a3);
-    [(MRUActivityNowPlayingHeaderView *)self->_headerView setStylingProvider:v5];
-    [(MRUNowPlayingTimeControlsView *)self->_timeControlsView setStylingProvider:v5];
-    [(MRUNowPlayingTransportControlsView *)self->_transportControlsView setStylingProvider:v5];
-    [(MRUActivityTrailingAccessoryView *)self->_trailingView setStylingProvider:v5];
+    objc_storeStrong(&self->_stylingProvider, provider);
+    [(MRUActivityNowPlayingHeaderView *)self->_headerView setStylingProvider:providerCopy];
+    [(MRUNowPlayingTimeControlsView *)self->_timeControlsView setStylingProvider:providerCopy];
+    [(MRUNowPlayingTransportControlsView *)self->_transportControlsView setStylingProvider:providerCopy];
+    [(MRUActivityTrailingAccessoryView *)self->_trailingView setStylingProvider:providerCopy];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -372,7 +372,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setStylingProvider:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * v10++) setStylingProvider:{providerCopy, v11}];
         }
 
         while (v8 != v10);
@@ -384,11 +384,11 @@
   }
 }
 
-- (void)setShowTrailingAccessoryWhenExpanded:(BOOL)a3
+- (void)setShowTrailingAccessoryWhenExpanded:(BOOL)expanded
 {
-  if (self->_showTrailingAccessoryWhenExpanded != a3)
+  if (self->_showTrailingAccessoryWhenExpanded != expanded)
   {
-    self->_showTrailingAccessoryWhenExpanded = a3;
+    self->_showTrailingAccessoryWhenExpanded = expanded;
     [(MRUActivityNowPlayingView *)self setNeedsLayout];
 
     [(MRUActivityNowPlayingView *)self updateVisibilty];
@@ -398,7 +398,7 @@
 - (void)updateVisibilty
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUActivityNowPlayingView *)self SBUISA_layoutMode];
+  sBUISA_layoutMode = [(MRUActivityNowPlayingView *)self SBUISA_layoutMode];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -418,7 +418,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v21 + 1) + 8 * i) setOnScreen:v3 > 1];
+        [*(*(&v21 + 1) + 8 * i) setOnScreen:sBUISA_layoutMode > 1];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -427,7 +427,7 @@
     while (v6);
   }
 
-  if (v3 == 4)
+  if (sBUISA_layoutMode == 4)
   {
     timeControlsView = self->_timeControlsView;
     v16 = *(MEMORY[0x1E695EFD0] + 16);
@@ -466,8 +466,8 @@
     v11 = 1.0;
   }
 
-  v14 = [(MRUActivityAccessoryView *)self->_trailingView contentView];
-  [v14 setAlpha:v11];
+  contentView = [(MRUActivityAccessoryView *)self->_trailingView contentView];
+  [contentView setAlpha:v11];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface RPHomeKitManager
-- (BOOL)personalRequestsStateForAccessory:(id)a3;
-- (RPHomeKitManager)initWithQueue:(id)a3;
-- (id)filterHomeKitUserIdentifiers:(id)a3;
-- (id)homeHubDeviceWithIdentifier:(id)a3;
+- (BOOL)personalRequestsStateForAccessory:(id)accessory;
+- (RPHomeKitManager)initWithQueue:(id)queue;
+- (id)filterHomeKitUserIdentifiers:(id)identifiers;
+- (id)homeHubDeviceWithIdentifier:(id)identifier;
 - (id)homeKitUserIdentifiers;
 - (void)_setupHome;
-- (void)getPairingIdentityFromHomeWithAccessory:(id)a3 completionHandler:(id)a4;
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5;
+- (void)getPairingIdentityFromHomeWithAccessory:(id)accessory completionHandler:(id)handler;
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory;
 - (void)invalidate;
 - (void)resetHomeKitUserIdentifiers;
-- (void)setCurrentHome:(id)a3;
-- (void)setCurrentUser:(id)a3;
-- (void)user:(id)a3 didUpdateAssistantAccessControl:(id)a4 forHome:(id)a5;
+- (void)setCurrentHome:(id)home;
+- (void)setCurrentUser:(id)user;
+- (void)user:(id)user didUpdateAssistantAccessControl:(id)control forHome:(id)home;
 @end
 
 @implementation RPHomeKitManager
@@ -31,9 +31,9 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v21 = self;
-    v5 = [(HMHomeManager *)self->_homeManager homes];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    selfCopy = self;
+    homes = [(HMHomeManager *)self->_homeManager homes];
+    v6 = [homes countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
@@ -45,32 +45,32 @@
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(homes);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
-          v12 = [v11 currentUser];
-          if (v12)
+          currentUser = [v11 currentUser];
+          if (currentUser)
           {
-            v13 = v12;
-            v14 = [v11 currentUser];
-            v15 = [v14 uniqueIdentifier];
+            v13 = currentUser;
+            currentUser2 = [v11 currentUser];
+            uniqueIdentifier = [currentUser2 uniqueIdentifier];
 
-            if (v15)
+            if (uniqueIdentifier)
             {
               if (!v8)
               {
                 v8 = +[NSMutableArray array];
               }
 
-              v16 = [v11 currentUser];
-              v17 = [v16 uniqueIdentifier];
-              [(NSArray *)v8 addObject:v17];
+              currentUser3 = [v11 currentUser];
+              uniqueIdentifier2 = [currentUser3 uniqueIdentifier];
+              [(NSArray *)v8 addObject:uniqueIdentifier2];
             }
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v7 = [homes countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v7);
@@ -81,11 +81,11 @@
       v8 = 0;
     }
 
-    v18 = v21->_homeKitCurrentUserIDs;
-    v21->_homeKitCurrentUserIDs = v8;
+    v18 = selfCopy->_homeKitCurrentUserIDs;
+    selfCopy->_homeKitCurrentUserIDs = v8;
     v19 = v8;
 
-    v4 = v21->_homeKitCurrentUserIDs;
+    v4 = selfCopy->_homeKitCurrentUserIDs;
   }
 
   return v4;
@@ -98,16 +98,16 @@
   self->_homeKitCurrentUserIDs = 0;
 }
 
-- (RPHomeKitManager)initWithQueue:(id)a3
+- (RPHomeKitManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = RPHomeKitManager;
   v6 = [(RPHomeKitManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
     v8 = [objc_alloc(off_1001D3CC0()) initWithOptions:32780 cachePolicy:2];
     v9 = [objc_alloc(off_1001D3CC8()) initWithHomeMangerConfiguration:v8];
     homeManager = v7->_homeManager;
@@ -151,17 +151,17 @@
   }
 }
 
-- (id)filterHomeKitUserIdentifiers:(id)a3
+- (id)filterHomeKitUserIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v29 = self;
+  identifiersCopy = identifiers;
+  selfCopy = self;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = +[NSMutableArray array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v30 = [v6 countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v30)
   {
@@ -184,7 +184,7 @@
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        obj = [(HMHomeManager *)v29->_homeManager homes];
+        obj = [(HMHomeManager *)selfCopy->_homeManager homes];
         v8 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
         if (v8)
         {
@@ -205,8 +205,8 @@
               v35 = 0u;
               v36 = 0u;
               v37 = 0u;
-              v14 = [v12 users];
-              v15 = [v14 countByEnumeratingWithState:&v34 objects:v46 count:16];
+              users = [v12 users];
+              v15 = [users countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v15)
               {
                 v16 = v15;
@@ -217,26 +217,26 @@
                   {
                     if (*v35 != v17)
                     {
-                      objc_enumerationMutation(v14);
+                      objc_enumerationMutation(users);
                     }
 
-                    v19 = [*(*(&v34 + 1) + 8 * j) uniqueIdentifier];
-                    [v13 addObject:v19];
+                    uniqueIdentifier = [*(*(&v34 + 1) + 8 * j) uniqueIdentifier];
+                    [v13 addObject:uniqueIdentifier];
                   }
 
-                  v16 = [v14 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                  v16 = [users countByEnumeratingWithState:&v34 objects:v46 count:16];
                 }
 
                 while (v16);
               }
 
-              v20 = [v12 currentUser];
+              currentUser = [v12 currentUser];
 
-              if (v20)
+              if (currentUser)
               {
-                v21 = [v12 currentUser];
-                v22 = [v21 uniqueIdentifier];
-                [v13 addObject:v22];
+                currentUser2 = [v12 currentUser];
+                uniqueIdentifier2 = [currentUser2 uniqueIdentifier];
+                [v13 addObject:uniqueIdentifier2];
               }
 
               v23 = [v13 containsObject:v33];
@@ -287,19 +287,19 @@ LABEL_25:
   return v24;
 }
 
-- (id)homeHubDeviceWithIdentifier:(id)a3
+- (id)homeHubDeviceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(RPHomeKitManager *)self _setupHome];
-  v5 = [(RPHomeKitManager *)self currentHome];
-  v6 = [v5 accessoryWithSiriEndpointIdentifier:v4];
+  currentHome = [(RPHomeKitManager *)self currentHome];
+  v6 = [currentHome accessoryWithSiriEndpointIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)personalRequestsStateForAccessory:(id)a3
+- (BOOL)personalRequestsStateForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   [(RPHomeKitManager *)self _setupHome];
   currentUser = self->_currentUser;
   if (currentUser)
@@ -311,8 +311,8 @@ LABEL_25:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = [v6 accessories];
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      accessories = [v6 accessories];
+      v8 = [accessories countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         v9 = *v15;
@@ -322,11 +322,11 @@ LABEL_25:
           {
             if (*v15 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(accessories);
             }
 
-            v11 = [*(*(&v14 + 1) + 8 * i) siriEndpointIdentifier];
-            v12 = [v11 isEqual:v4];
+            siriEndpointIdentifier = [*(*(&v14 + 1) + 8 * i) siriEndpointIdentifier];
+            v12 = [siriEndpointIdentifier isEqual:accessoryCopy];
 
             if (v12)
             {
@@ -335,7 +335,7 @@ LABEL_25:
             }
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+          v8 = [accessories countByEnumeratingWithState:&v14 objects:v18 count:16];
           if (v8)
           {
             continue;
@@ -362,9 +362,9 @@ LABEL_15:
   return v8;
 }
 
-- (void)setCurrentUser:(id)a3
+- (void)setCurrentUser:(id)user
 {
-  v10 = a3;
+  userCopy = user;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   p_currentUser = &self->_currentUser;
   if (!self->_currentUser)
@@ -372,17 +372,17 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v6 = [v10 uniqueIdentifier];
-  v7 = [(HMUser *)*p_currentUser uniqueIdentifier];
-  v8 = [v6 isEqual:v7];
+  uniqueIdentifier = [userCopy uniqueIdentifier];
+  uniqueIdentifier2 = [(HMUser *)*p_currentUser uniqueIdentifier];
+  v8 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
-  v9 = v10;
+  v9 = userCopy;
   if ((v8 & 1) == 0)
   {
 LABEL_15:
     if (dword_1001D3C50 <= 30 && (dword_1001D3C50 != -1 || _LogCategory_Initialize()))
     {
-      sub_100118F3C(v10);
+      sub_100118F3C(userCopy);
     }
 
     if (*p_currentUser)
@@ -390,27 +390,27 @@ LABEL_15:
       [(HMUser *)*p_currentUser setDelegate:0];
     }
 
-    objc_storeStrong(&self->_currentUser, a3);
+    objc_storeStrong(&self->_currentUser, user);
     [(HMUser *)self->_currentUser setDelegate:self];
-    v9 = v10;
+    v9 = userCopy;
   }
 }
 
-- (void)setCurrentHome:(id)a3
+- (void)setCurrentHome:(id)home
 {
-  v6 = a3;
+  homeCopy = home;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = v6;
+  v5 = homeCopy;
   if (!self->_currentHome)
   {
     if (dword_1001D3C50 <= 30 && (dword_1001D3C50 != -1 || _LogCategory_Initialize()))
     {
-      sub_100118F98(v6);
+      sub_100118F98(homeCopy);
     }
 
-    objc_storeStrong(&self->_currentHome, a3);
+    objc_storeStrong(&self->_currentHome, home);
     [(HMHome *)self->_currentHome setDelegate:self];
-    v5 = v6;
+    v5 = homeCopy;
   }
 }
 
@@ -422,8 +422,8 @@ LABEL_15:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(HMHomeManager *)self->_homeManager homes];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    homes = [(HMHomeManager *)self->_homeManager homes];
+    v4 = [homes countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -434,23 +434,23 @@ LABEL_15:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(homes);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
-          v9 = [v8 currentUser];
+          currentUser = [v8 currentUser];
 
-          if (v9)
+          if (currentUser)
           {
             [(RPHomeKitManager *)self setCurrentHome:v8];
-            v10 = [v8 currentUser];
-            [(RPHomeKitManager *)self setCurrentUser:v10];
+            currentUser2 = [v8 currentUser];
+            [(RPHomeKitManager *)self setCurrentUser:currentUser2];
 
             goto LABEL_13;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [homes countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -464,43 +464,43 @@ LABEL_13:
   }
 }
 
-- (void)getPairingIdentityFromHomeWithAccessory:(id)a3 completionHandler:(id)a4
+- (void)getPairingIdentityFromHomeWithAccessory:(id)accessory completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   homeManager = self->_homeManager;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005CE64;
   v9[3] = &unk_1001ACA28;
-  v10 = v6;
-  v8 = v6;
-  [(HMHomeManager *)homeManager currentUserPairingIdentityForHomeContainingAccessoryWithUniqueIdentifier:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(HMHomeManager *)homeManager currentUserPairingIdentityForHomeContainingAccessoryWithUniqueIdentifier:accessory completionHandler:v9];
 }
 
-- (void)user:(id)a3 didUpdateAssistantAccessControl:(id)a4 forHome:(id)a5
+- (void)user:(id)user didUpdateAssistantAccessControl:(id)control forHome:(id)home
 {
-  v7 = a3;
-  v8 = a5;
+  userCopy = user;
+  homeCopy = home;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005D090;
   block[3] = &unk_1001AB130;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = userCopy;
+  v14 = homeCopy;
+  v10 = homeCopy;
+  v11 = userCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)home:(id)a3 didUpdateRoom:(id)a4 forAccessory:(id)a5
+- (void)home:(id)home didUpdateRoom:(id)room forAccessory:(id)accessory
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 siriEndpointProfile];
+  roomCopy = room;
+  accessoryCopy = accessory;
+  siriEndpointProfile = [accessoryCopy siriEndpointProfile];
 
-  if (v9)
+  if (siriEndpointProfile)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -508,8 +508,8 @@ LABEL_13:
     block[2] = sub_10005D20C;
     block[3] = &unk_1001AB130;
     block[4] = self;
-    v12 = v7;
-    v13 = v8;
+    v12 = roomCopy;
+    v13 = accessoryCopy;
     dispatch_async(dispatchQueue, block);
   }
 }

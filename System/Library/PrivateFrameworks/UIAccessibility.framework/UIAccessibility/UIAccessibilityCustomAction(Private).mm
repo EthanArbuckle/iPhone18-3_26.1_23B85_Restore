@@ -8,30 +8,30 @@
 
 - (id)_accessibilityCustomActionIdentifier
 {
-  v2 = [a1 _accessibilityInternalCustomActionIdentifier];
+  _accessibilityInternalCustomActionIdentifier = [self _accessibilityInternalCustomActionIdentifier];
 
-  if (v2)
+  if (_accessibilityInternalCustomActionIdentifier)
   {
-    v3 = [a1 _accessibilityInternalCustomActionIdentifier];
+    _accessibilityInternalCustomActionIdentifier2 = [self _accessibilityInternalCustomActionIdentifier];
   }
 
   else
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = [a1 _accessibilityAXAttributedName];
-    v6 = [a1 target];
-    v7 = NSStringFromSelector([a1 selector]);
-    v3 = [v4 stringWithFormat:@"Name:%@\nTarget:%p\nSelector:%@", v5, v6, v7];
+    _accessibilityAXAttributedName = [self _accessibilityAXAttributedName];
+    target = [self target];
+    v7 = NSStringFromSelector([self selector]);
+    _accessibilityInternalCustomActionIdentifier2 = [v4 stringWithFormat:@"Name:%@\nTarget:%p\nSelector:%@", _accessibilityAXAttributedName, target, v7];
   }
 
-  return v3;
+  return _accessibilityInternalCustomActionIdentifier2;
 }
 
 - (uint64_t)_accessibilityMatchesCustomActionIdentifier:()Private
 {
   v4 = a3;
-  v5 = [a1 _accessibilityCustomActionIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  _accessibilityCustomActionIdentifier = [self _accessibilityCustomActionIdentifier];
+  v6 = [_accessibilityCustomActionIdentifier isEqualToString:v4];
 
   return v6;
 }
@@ -64,13 +64,13 @@
     v3 = sel_attributedName;
   }
 
-  v9 = [a1 impOrNullForSelector:v3];
-  if (!v9 || (v9(a1, v3), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  v9 = [self impOrNullForSelector:v3];
+  if (!v9 || (v9(self, v3), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v11 = [a1 impOrNullForSelector:v8];
+    v11 = [self impOrNullForSelector:v8];
     if (v11)
     {
-      v10 = v11(a1, v8);
+      v10 = v11(self, v8);
     }
 
     else

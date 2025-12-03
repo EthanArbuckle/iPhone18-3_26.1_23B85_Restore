@@ -1,40 +1,40 @@
 @interface _MLCGPUNeuron
-+ (id)createMPSNeuronDescriptorWith:(id)a3;
-+ (id)layerWithDevice:(id)a3 descriptor:(id)a4;
-+ (int)mpsNeurontypeFrom:(int)a3;
-- (_MLCGPUNeuron)initWithDevice:(id)a3 descriptor:(id)a4;
++ (id)createMPSNeuronDescriptorWith:(id)with;
++ (id)layerWithDevice:(id)device descriptor:(id)descriptor;
++ (int)mpsNeurontypeFrom:(int)from;
+- (_MLCGPUNeuron)initWithDevice:(id)device descriptor:(id)descriptor;
 @end
 
 @implementation _MLCGPUNeuron
 
-+ (int)mpsNeurontypeFrom:(int)a3
++ (int)mpsNeurontypeFrom:(int)from
 {
-  if (a3 < 0x13 && ((0x407FFu >> a3) & 1) != 0)
+  if (from < 0x13 && ((0x407FFu >> from) & 1) != 0)
   {
-    return dword_238D45C30[a3];
+    return dword_238D45C30[from];
   }
 
   v5 = +[MLCLog framework];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(_MLCGPUNeuron *)a3 mpsNeurontypeFrom:v5];
+    [(_MLCGPUNeuron *)from mpsNeurontypeFrom:v5];
   }
 
   return 16;
 }
 
-+ (id)createMPSNeuronDescriptorWith:(id)a3
++ (id)createMPSNeuronDescriptorWith:(id)with
 {
-  v4 = a3;
-  [v4 a];
+  withCopy = with;
+  [withCopy a];
   v6 = v5;
-  [v4 b];
+  [withCopy b];
   v8 = v7;
-  [v4 c];
+  [withCopy c];
   v10 = v9;
-  v11 = [v4 activationType];
+  activationType = [withCopy activationType];
 
-  v12 = [a1 mpsNeurontypeFrom:v11];
+  v12 = [self mpsNeurontypeFrom:activationType];
   if (v12 == 16)
   {
     v16 = +[MLCLog framework];
@@ -57,10 +57,10 @@
   return v17;
 }
 
-- (_MLCGPUNeuron)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MLCGPUNeuron)initWithDevice:(id)device descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
   v30.receiver = self;
   v30.super_class = _MLCGPUNeuron;
   v8 = [(_MLCGPUNeuron *)&v30 init];
@@ -68,25 +68,25 @@
   if (v8)
   {
     v27 = v8;
-    v10 = [v6 deviceList];
-    v11 = [v10 count];
+    deviceList = [deviceCopy deviceList];
+    v11 = [deviceList count];
 
     v12 = [MEMORY[0x277CBEBF8] mutableCopy];
-    v28 = v7;
+    v28 = descriptorCopy;
     if (v11)
     {
       for (i = 0; i != v11; ++i)
       {
-        v14 = [v6 deviceList];
-        v15 = [v14 objectAtIndexedSubscript:i];
+        deviceList2 = [deviceCopy deviceList];
+        v15 = [deviceList2 objectAtIndexedSubscript:i];
 
-        v16 = [v6 gpuLibrary];
-        v17 = [v16 objectAtIndexedSubscript:i];
+        gpuLibrary = [deviceCopy gpuLibrary];
+        v17 = [gpuLibrary objectAtIndexedSubscript:i];
         v18 = [v17 newFunctionWithName:@"activation_forward"];
 
         v19 = [v15 newComputePipelineStateWithFunction:v18 error:0];
-        v20 = [v6 gpuLibrary];
-        v21 = [v20 objectAtIndexedSubscript:i];
+        gpuLibrary2 = [deviceCopy gpuLibrary];
+        v21 = [gpuLibrary2 objectAtIndexedSubscript:i];
         v22 = [v21 newFunctionWithName:@"activation_gradient"];
 
         v23 = [v15 newComputePipelineStateWithFunction:v22 error:0];
@@ -106,17 +106,17 @@
     v29.super_class = _MLCGPUNeuron;
     [(_MLCGPULayer *)&v29 setDeviceOps:v25];
 
-    v7 = v28;
+    descriptorCopy = v28;
   }
 
   return v9;
 }
 
-+ (id)layerWithDevice:(id)a3 descriptor:(id)a4
++ (id)layerWithDevice:(id)device descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDevice:v7 descriptor:v6];
+  descriptorCopy = descriptor;
+  deviceCopy = device;
+  v8 = [[self alloc] initWithDevice:deviceCopy descriptor:descriptorCopy];
 
   return v8;
 }

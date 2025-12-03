@@ -26,25 +26,25 @@
 - (CAFBoolCharacteristic)hvacOnCharacteristic;
 - (CAFBoolCharacteristic)maxACOnCharacteristic;
 - (CAFBoolCharacteristic)maxDefrostOnCharacteristic;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFCabin
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFCabin;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -57,12 +57,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -78,13 +78,13 @@
 - (CAFBoolCharacteristic)maxACOnCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000031000022"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000022"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000031000022"];
@@ -103,54 +103,54 @@
 
 - (BOOL)maxACOn
 {
-  v2 = [(CAFCabin *)self maxACOnCharacteristic];
-  v3 = [v2 BOOLValue];
+  maxACOnCharacteristic = [(CAFCabin *)self maxACOnCharacteristic];
+  bOOLValue = [maxACOnCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasMaxACOn
 {
-  v2 = [(CAFCabin *)self maxACOnCharacteristic];
-  v3 = v2 != 0;
+  maxACOnCharacteristic = [(CAFCabin *)self maxACOnCharacteristic];
+  v3 = maxACOnCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)maxACOnDisabled
 {
-  v2 = [(CAFCabin *)self maxACOnCharacteristic];
-  v3 = [v2 isDisabled];
+  maxACOnCharacteristic = [(CAFCabin *)self maxACOnCharacteristic];
+  isDisabled = [maxACOnCharacteristic isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (BOOL)maxACOnInvalid
 {
-  v2 = [(CAFCabin *)self maxACOnCharacteristic];
-  v3 = [v2 isInvalid];
+  maxACOnCharacteristic = [(CAFCabin *)self maxACOnCharacteristic];
+  isInvalid = [maxACOnCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)maxACOnRestricted
 {
-  v2 = [(CAFCabin *)self maxACOnCharacteristic];
-  v3 = [v2 isRestricted];
+  maxACOnCharacteristic = [(CAFCabin *)self maxACOnCharacteristic];
+  isRestricted = [maxACOnCharacteristic isRestricted];
 
-  return v3;
+  return isRestricted;
 }
 
 - (CAFBoolCharacteristic)maxDefrostOnCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000031000029"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000029"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000031000029"];
@@ -169,54 +169,54 @@
 
 - (BOOL)maxDefrostOn
 {
-  v2 = [(CAFCabin *)self maxDefrostOnCharacteristic];
-  v3 = [v2 BOOLValue];
+  maxDefrostOnCharacteristic = [(CAFCabin *)self maxDefrostOnCharacteristic];
+  bOOLValue = [maxDefrostOnCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasMaxDefrostOn
 {
-  v2 = [(CAFCabin *)self maxDefrostOnCharacteristic];
-  v3 = v2 != 0;
+  maxDefrostOnCharacteristic = [(CAFCabin *)self maxDefrostOnCharacteristic];
+  v3 = maxDefrostOnCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)maxDefrostOnDisabled
 {
-  v2 = [(CAFCabin *)self maxDefrostOnCharacteristic];
-  v3 = [v2 isDisabled];
+  maxDefrostOnCharacteristic = [(CAFCabin *)self maxDefrostOnCharacteristic];
+  isDisabled = [maxDefrostOnCharacteristic isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (BOOL)maxDefrostOnInvalid
 {
-  v2 = [(CAFCabin *)self maxDefrostOnCharacteristic];
-  v3 = [v2 isInvalid];
+  maxDefrostOnCharacteristic = [(CAFCabin *)self maxDefrostOnCharacteristic];
+  isInvalid = [maxDefrostOnCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)maxDefrostOnRestricted
 {
-  v2 = [(CAFCabin *)self maxDefrostOnCharacteristic];
-  v3 = [v2 isRestricted];
+  maxDefrostOnCharacteristic = [(CAFCabin *)self maxDefrostOnCharacteristic];
+  isRestricted = [maxDefrostOnCharacteristic isRestricted];
 
-  return v3;
+  return isRestricted;
 }
 
 - (CAFBoolCharacteristic)hvacOnCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000031000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000002"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000031000002"];
@@ -235,38 +235,38 @@
 
 - (BOOL)hvacOn
 {
-  v2 = [(CAFCabin *)self hvacOnCharacteristic];
-  v3 = [v2 BOOLValue];
+  hvacOnCharacteristic = [(CAFCabin *)self hvacOnCharacteristic];
+  bOOLValue = [hvacOnCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasHvacOn
 {
-  v2 = [(CAFCabin *)self hvacOnCharacteristic];
-  v3 = v2 != 0;
+  hvacOnCharacteristic = [(CAFCabin *)self hvacOnCharacteristic];
+  v3 = hvacOnCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)hvacOnInvalid
 {
-  v2 = [(CAFCabin *)self hvacOnCharacteristic];
-  v3 = [v2 isInvalid];
+  hvacOnCharacteristic = [(CAFCabin *)self hvacOnCharacteristic];
+  isInvalid = [hvacOnCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFBoolCharacteristic)compressorOnCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000031000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000003"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000031000003"];
@@ -285,54 +285,54 @@
 
 - (BOOL)compressorOn
 {
-  v2 = [(CAFCabin *)self compressorOnCharacteristic];
-  v3 = [v2 BOOLValue];
+  compressorOnCharacteristic = [(CAFCabin *)self compressorOnCharacteristic];
+  bOOLValue = [compressorOnCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasCompressorOn
 {
-  v2 = [(CAFCabin *)self compressorOnCharacteristic];
-  v3 = v2 != 0;
+  compressorOnCharacteristic = [(CAFCabin *)self compressorOnCharacteristic];
+  v3 = compressorOnCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)compressorOnDisabled
 {
-  v2 = [(CAFCabin *)self compressorOnCharacteristic];
-  v3 = [v2 isDisabled];
+  compressorOnCharacteristic = [(CAFCabin *)self compressorOnCharacteristic];
+  isDisabled = [compressorOnCharacteristic isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (BOOL)compressorOnInvalid
 {
-  v2 = [(CAFCabin *)self compressorOnCharacteristic];
-  v3 = [v2 isInvalid];
+  compressorOnCharacteristic = [(CAFCabin *)self compressorOnCharacteristic];
+  isInvalid = [compressorOnCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)compressorOnRestricted
 {
-  v2 = [(CAFCabin *)self compressorOnCharacteristic];
-  v3 = [v2 isRestricted];
+  compressorOnCharacteristic = [(CAFCabin *)self compressorOnCharacteristic];
+  isRestricted = [compressorOnCharacteristic isRestricted];
 
-  return v3;
+  return isRestricted;
 }
 
 - (BOOL)registeredForMaxACOn
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000031000022"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000022"];
 
   return v10;
 }
@@ -340,13 +340,13 @@
 - (BOOL)registeredForMaxDefrostOn
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000031000029"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000029"];
 
   return v10;
 }
@@ -354,13 +354,13 @@
 - (BOOL)registeredForHVACOn
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000031000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000002"];
 
   return v10;
 }
@@ -368,13 +368,13 @@
 - (BOOL)registeredForACCompressorOn
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000031000003"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000003"];
 
   return v10;
 }

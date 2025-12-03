@@ -1,7 +1,7 @@
 @interface VSTintedBackgroundButton
 - (void)_updateBackgroundImages;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)_updateBackgroundImages
 {
-  v3 = [(VSTintedBackgroundButton *)self tintColor];
+  tintColor = [(VSTintedBackgroundButton *)self tintColor];
   [(VSTintedBackgroundButton *)self bounds];
   [(VSTintedBackgroundButton *)self backgroundRectForBounds:?];
   v5 = v4;
@@ -20,7 +20,7 @@
   v22[1] = 3221225472;
   v22[2] = __51__VSTintedBackgroundButton__updateBackgroundImages__block_invoke;
   v22[3] = &unk_279E1AA68;
-  v10 = v3;
+  v10 = tintColor;
   v23 = v10;
   v11 = v8;
   v24 = v11;
@@ -56,19 +56,19 @@ uint64_t __51__VSTintedBackgroundButton__updateBackgroundImages__block_invoke_2(
   return [v3 fill];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = VSTintedBackgroundButton;
-  [(VSTintedBackgroundButton *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VSTintedBackgroundButton *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(VSTintedBackgroundButton *)self _updateBackgroundImages];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = VSTintedBackgroundButton;
-  [(VSTintedBackgroundButton *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(VSTintedBackgroundButton *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(VSTintedBackgroundButton *)self _updateBackgroundImages];
 }
 

@@ -1,6 +1,6 @@
 @interface MOSuggestionInterstitialAlertContentViewController
-- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleTraitChange;
 @end
 
@@ -9,15 +9,15 @@
 - (void)handleTraitChange
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController_textView);
-  v6 = self;
-  v3 = [v2 layer];
-  v4 = [objc_opt_self() separatorColor];
-  v5 = [v4 CGColor];
+  selfCopy = self;
+  layer = [v2 layer];
+  separatorColor = [objc_opt_self() separatorColor];
+  cGColor = [separatorColor CGColor];
 
-  [v3 setBorderColor:v5];
+  [layer setBorderColor:cGColor];
 }
 
-- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithCoder:(id)a3
+- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController_textView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UITextView) init];
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MomentsUIService50MOSuggestionInterstitialAlertContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

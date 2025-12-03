@@ -1,16 +1,16 @@
 @interface NowPlayingRouteSharePlayTogetherControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation NowPlayingRouteSharePlayTogetherControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Music.NowPlayingRouteSharePlayTogetherControl" hasSwiftField:@"sharePlayTogetherButton" withSwiftType:"UIButton"];
-  [v3 validateClass:@"Music.NowPlayingRouteSharePlayTogetherControl" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Music.NowPlayingRouteSharePlayTogetherControl" hasSwiftField:@"sharePlayTogetherButton" withSwiftType:"UIButton"];
+  [validationsCopy validateClass:@"Music.NowPlayingRouteSharePlayTogetherControl" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,8 +23,8 @@
   v3 = [(NowPlayingRouteSharePlayTogetherControlAccessibility *)self safeSwiftValueForKey:@"sharePlayTogetherButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 configuration];
-  v6 = [v5 title];
+  configuration = [v4 configuration];
+  title = [configuration title];
 
   v7 = accessibilityMusicLocalizedString(@"shareplay");
   [v4 setAccessibilityLabel:v7];
@@ -33,8 +33,8 @@
   v9[1] = 3221225472;
   v9[2] = __98__NowPlayingRouteSharePlayTogetherControlAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v9[3] = &unk_29F2DC728;
-  v10 = v6;
-  v8 = v6;
+  v10 = title;
+  v8 = title;
   [v4 setAccessibilityValueBlock:v9];
 }
 

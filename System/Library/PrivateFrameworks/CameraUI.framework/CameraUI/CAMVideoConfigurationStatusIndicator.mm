@@ -1,15 +1,15 @@
 @interface CAMVideoConfigurationStatusIndicator
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_labelGeometryForSize:(SEL)a3 originX:(CGSize)a4 originY:(double)a5;
-- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)a3;
-- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)a3;
-- (BOOL)_togglesResolutionOrFramerateForTouchAtLocation:(CGPoint)a3;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_labelGeometryForSize:(SEL)size originX:(CGSize)x originY:(double)y;
+- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)location;
+- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)location;
+- (BOOL)_togglesResolutionOrFramerateForTouchAtLocation:(CGPoint)location;
 - (CAMVideoConfigurationStatusIndicator)init;
-- (CAMVideoConfigurationStatusIndicator)initWithLayoutStyle:(int64_t)a3;
+- (CAMVideoConfigurationStatusIndicator)initWithLayoutStyle:(int64_t)style;
 - (CAMVideoConfigurationStatusIndicatorDelegate)touchDelegate;
 - (CGSize)_framerateSize;
 - (CGSize)_resolutionSize;
 - (CGSize)_separatorSize;
-- (CGSize)_sizingForLabel:(id)a3 minWidth:(double)a4 spacing:(double)a5;
+- (CGSize)_sizingForLabel:(id)label minWidth:(double)width spacing:(double)spacing;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIView)_framerateLabelSnapshot;
@@ -17,28 +17,28 @@
 - (double)_minTextWidth;
 - (id)_framerateString;
 - (id)_resolutionString;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
-- (void)_handleTouchAtLocation:(CGPoint)a3;
-- (void)_updateAppearanceAnimated:(BOOL)a3;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
+- (void)_handleTouchAtLocation:(CGPoint)location;
+- (void)_updateAppearanceAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setResolution:(int64_t)a3 framerate:(int64_t)a4 animated:(BOOL)a5;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setResolution:(int64_t)resolution framerate:(int64_t)framerate animated:(BOOL)animated;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation CAMVideoConfigurationStatusIndicator
 
 - (CAMVideoConfigurationStatusIndicator)init
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMVideoConfigurationStatusIndicator *)self initWithLayoutStyle:v4];
+  return [(CAMVideoConfigurationStatusIndicator *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CAMVideoConfigurationStatusIndicator)initWithLayoutStyle:(int64_t)a3
+- (CAMVideoConfigurationStatusIndicator)initWithLayoutStyle:(int64_t)style
 {
   v20.receiver = self;
   v20.super_class = CAMVideoConfigurationStatusIndicator;
@@ -50,14 +50,14 @@
   v9 = v8;
   if (v8)
   {
-    v8->_layoutStyle = a3;
+    v8->_layoutStyle = style;
     v10 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v4, v5, v6, v7}];
     resolutionLabel = v9->__resolutionLabel;
     v9->__resolutionLabel = v10;
 
     [(UILabel *)v9->__resolutionLabel setNumberOfLines:1];
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v9->__resolutionLabel setTextColor:v12];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v9->__resolutionLabel setTextColor:whiteColor];
 
     [(UILabel *)v9->__resolutionLabel setTextAlignment:1];
     [(CAMVideoConfigurationStatusIndicator *)v9 addSubview:v9->__resolutionLabel];
@@ -66,8 +66,8 @@
     v9->__separatorLabel = v13;
 
     [(UILabel *)v9->__separatorLabel setNumberOfLines:1];
-    v15 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v9->__separatorLabel setTextColor:v15];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v9->__separatorLabel setTextColor:whiteColor2];
 
     [(UILabel *)v9->__separatorLabel setTextAlignment:1];
     [(CAMVideoConfigurationStatusIndicator *)v9 addSubview:v9->__separatorLabel];
@@ -76,8 +76,8 @@
     v9->__framerateLabel = v16;
 
     [(UILabel *)v9->__framerateLabel setNumberOfLines:1];
-    v18 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v9->__framerateLabel setTextColor:v18];
+    whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v9->__framerateLabel setTextColor:whiteColor3];
 
     [(UILabel *)v9->__framerateLabel setTextAlignment:1];
     [(CAMVideoConfigurationStatusIndicator *)v9 addSubview:v9->__framerateLabel];
@@ -87,21 +87,21 @@
   return v9;
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMVideoConfigurationStatusIndicator *)self _updateAppearanceAnimated:0];
   }
 }
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(CAMVideoConfigurationStatusIndicator *)self layoutStyle];
-  if ((v3 - 2) >= 2)
+  layoutStyle = [(CAMVideoConfigurationStatusIndicator *)self layoutStyle];
+  if ((layoutStyle - 2) >= 2)
   {
-    if (v3 == 1)
+    if (layoutStyle == 1)
     {
       v8 = 2.0;
       v5 = 4.0;
@@ -110,7 +110,7 @@
       goto LABEL_7;
     }
 
-    if (v3)
+    if (layoutStyle)
     {
       v8 = *MEMORY[0x1E69DDCE0];
       v7 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -217,23 +217,23 @@ LABEL_7:
   v47 = 0u;
   [(CAMVideoConfigurationStatusIndicator *)self _resolutionSize];
   [CAMVideoConfigurationStatusIndicator _labelGeometryForSize:"_labelGeometryForSize:originX:originY:" originX:? originY:?];
-  v21 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
+  _resolutionLabel = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
   v42 = v48;
   v43 = v49;
   v44 = v50;
   v45 = v51;
   v40 = v46;
   v41 = v47;
-  CAMViewSetGeometry(v21, &v40);
+  CAMViewSetGeometry(_resolutionLabel, &v40);
 
-  v22 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabelSnapshot];
+  _resolutionLabelSnapshot = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabelSnapshot];
   v42 = v48;
   v43 = v49;
   v44 = v50;
   v45 = v51;
   v40 = v46;
   v41 = v47;
-  CAMViewSetGeometry(v22, &v40);
+  CAMViewSetGeometry(_resolutionLabelSnapshot, &v40);
 
   v44 = 0u;
   v45 = 0u;
@@ -243,14 +243,14 @@ LABEL_7:
   v41 = 0u;
   [(CAMVideoConfigurationStatusIndicator *)self _separatorSize];
   [CAMVideoConfigurationStatusIndicator _labelGeometryForSize:"_labelGeometryForSize:originX:originY:" originX:? originY:?];
-  v23 = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
+  _separatorLabel = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
   v36 = v42;
   v37 = v43;
   v38 = v44;
   v39 = v45;
   v34 = v40;
   v35 = v41;
-  CAMViewSetGeometry(v23, &v34);
+  CAMViewSetGeometry(_separatorLabel, &v34);
 
   v38 = 0u;
   v39 = 0u;
@@ -260,93 +260,93 @@ LABEL_7:
   v35 = 0u;
   [(CAMVideoConfigurationStatusIndicator *)self _framerateSize];
   [CAMVideoConfigurationStatusIndicator _labelGeometryForSize:"_labelGeometryForSize:originX:originY:" originX:? originY:?];
-  v24 = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
+  _framerateLabel = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
   v30 = v36;
   v31 = v37;
   v32 = v38;
   v33 = v39;
   v28 = v34;
   v29 = v35;
-  CAMViewSetGeometry(v24, &v28);
+  CAMViewSetGeometry(_framerateLabel, &v28);
 
-  v25 = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabelSnapshot];
+  _framerateLabelSnapshot = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabelSnapshot];
   v30 = v36;
   v31 = v37;
   v32 = v38;
   v33 = v39;
   v28 = v34;
   v29 = v35;
-  CAMViewSetGeometry(v25, &v28);
+  CAMViewSetGeometry(_framerateLabelSnapshot, &v28);
 
-  v26 = [(CAMVideoConfigurationStatusIndicator *)self _borderImageView];
+  _borderImageView = [(CAMVideoConfigurationStatusIndicator *)self _borderImageView];
 
-  if (v26)
+  if (_borderImageView)
   {
-    v27 = [(CAMVideoConfigurationStatusIndicator *)self _borderImageView];
-    [v27 setFrame:{v4, v6, v8, v10}];
+    _borderImageView2 = [(CAMVideoConfigurationStatusIndicator *)self _borderImageView];
+    [_borderImageView2 setFrame:{v4, v6, v8, v10}];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [ended anyObject];
+  [anyObject locationInView:self];
   [(CAMVideoConfigurationStatusIndicator *)self _handleTouchAtLocation:?];
 }
 
-- (void)setResolution:(int64_t)a3 framerate:(int64_t)a4 animated:(BOOL)a5
+- (void)setResolution:(int64_t)resolution framerate:(int64_t)framerate animated:(BOOL)animated
 {
-  v5 = a5;
-  if (self->_framerate == a4)
+  animatedCopy = animated;
+  if (self->_framerate == framerate)
   {
     resolution = self->_resolution;
-    if (resolution == a3)
+    if (resolution == resolution)
     {
       return;
     }
 
-    if (a5)
+    if (animated)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a5)
+  else if (animated)
   {
-    v10 = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabelSnapshot];
-    [v10 removeFromSuperview];
+    _framerateLabelSnapshot = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabelSnapshot];
+    [_framerateLabelSnapshot removeFromSuperview];
 
-    v11 = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
-    v12 = [CAMFrameworkUtilities snapshotForCrossFadingView:v11 fadeOutDuration:1 fadeOutDelay:0.15 fadeInDuration:0.0 fadeInDelay:0.125 embedSnapshot:0.1];
+    _framerateLabel = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
+    v12 = [CAMFrameworkUtilities snapshotForCrossFadingView:_framerateLabel fadeOutDuration:1 fadeOutDelay:0.15 fadeInDuration:0.0 fadeInDelay:0.125 embedSnapshot:0.1];
     [(CAMVideoConfigurationStatusIndicator *)self set_framerateLabelSnapshot:v12];
 
     resolution = self->_resolution;
 LABEL_7:
-    if (resolution != a3)
+    if (resolution != resolution)
     {
-      v13 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabelSnapshot];
-      [v13 removeFromSuperview];
+      _resolutionLabelSnapshot = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabelSnapshot];
+      [_resolutionLabelSnapshot removeFromSuperview];
 
-      v14 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
-      v15 = [CAMFrameworkUtilities snapshotForCrossFadingView:v14 fadeOutDuration:1 fadeOutDelay:0.15 fadeInDuration:0.0 fadeInDelay:0.125 embedSnapshot:0.1];
+      _resolutionLabel = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
+      v15 = [CAMFrameworkUtilities snapshotForCrossFadingView:_resolutionLabel fadeOutDuration:1 fadeOutDelay:0.15 fadeInDuration:0.0 fadeInDelay:0.125 embedSnapshot:0.1];
       [(CAMVideoConfigurationStatusIndicator *)self set_resolutionLabelSnapshot:v15];
     }
   }
 
-  [(CAMVideoConfigurationStatusIndicator *)self setResolution:a3];
-  [(CAMVideoConfigurationStatusIndicator *)self setFramerate:a4];
+  [(CAMVideoConfigurationStatusIndicator *)self setResolution:resolution];
+  [(CAMVideoConfigurationStatusIndicator *)self setFramerate:framerate];
 
-  [(CAMVideoConfigurationStatusIndicator *)self _updateAppearanceAnimated:v5];
+  [(CAMVideoConfigurationStatusIndicator *)self _updateAppearanceAnimated:animatedCopy];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     [(CAMVideoConfigurationStatusIndicator *)self layoutIfNeeded];
     v7.receiver = self;
     v7.super_class = CAMVideoConfigurationStatusIndicator;
-    [(CAMControlStatusIndicator *)&v7 setOrientation:a3 animated:0];
+    [(CAMControlStatusIndicator *)&v7 setOrientation:orientation animated:0];
     [(CAMVideoConfigurationStatusIndicator *)self setNeedsLayout];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -360,7 +360,7 @@ LABEL_7:
   {
     v7.receiver = self;
     v7.super_class = CAMVideoConfigurationStatusIndicator;
-    [(CAMControlStatusIndicator *)&v7 setOrientation:a3 animated:?];
+    [(CAMControlStatusIndicator *)&v7 setOrientation:orientation animated:?];
     [(CAMVideoConfigurationStatusIndicator *)self setNeedsLayout];
   }
 }
@@ -394,17 +394,17 @@ LABEL_7:
     v3 = qword_1A3A67FA8[v2];
   }
 
-  v4 = [objc_opt_class() integerFormatter];
+  integerFormatter = [objc_opt_class() integerFormatter];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:v3];
-  v6 = [v4 stringFromNumber:v5];
+  v6 = [integerFormatter stringFromNumber:v5];
 
   return v6;
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)_labelGeometryForSize:(SEL)a3 originX:(CGSize)a4 originY:(double)a5
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)_labelGeometryForSize:(SEL)size originX:(CGSize)x originY:(double)y
 {
-  height = a4.height;
-  width = a4.width;
+  height = x.height;
+  width = x.width;
   v10 = *MEMORY[0x1E695F058];
   v11 = *(MEMORY[0x1E695F058] + 8);
   UIRectGetCenter();
@@ -421,9 +421,9 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)_sizingForLabel:(id)a3 minWidth:(double)a4 spacing:(double)a5
+- (CGSize)_sizingForLabel:(id)label minWidth:(double)width spacing:(double)spacing
 {
-  [a3 intrinsicContentSize];
+  [label intrinsicContentSize];
   UICeilToViewScale();
   v6 = v5;
   UICeilToViewScale();
@@ -436,9 +436,9 @@ LABEL_7:
 
 - (double)_minTextWidth
 {
-  v2 = [(CAMVideoConfigurationStatusIndicator *)self layoutStyle];
+  layoutStyle = [(CAMVideoConfigurationStatusIndicator *)self layoutStyle];
   result = 30.0;
-  if (v2 == 1)
+  if (layoutStyle == 1)
   {
     return 0.0;
   }
@@ -446,9 +446,9 @@ LABEL_7:
   return result;
 }
 
-- (void)_updateAppearanceAnimated:(BOOL)a3
+- (void)_updateAppearanceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v38[2] = *MEMORY[0x1E69E9840];
   v5 = [CAMFont cameraMonospacedFontOfSize:14.0];
   v6 = [CAMFont cameraKerningForFont:v5];
@@ -461,47 +461,47 @@ LABEL_7:
   if ([(CAMVideoConfigurationStatusIndicator *)self resolution])
   {
     v9 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v10 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionString];
-    v11 = [v9 initWithString:v10 attributes:v8];
-    v12 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
-    [v12 setAttributedText:v11];
+    _resolutionString = [(CAMVideoConfigurationStatusIndicator *)self _resolutionString];
+    v11 = [v9 initWithString:_resolutionString attributes:v8];
+    _resolutionLabel = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
+    [_resolutionLabel setAttributedText:v11];
   }
 
   v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v14 = [(CAMVideoConfigurationStatusIndicator *)self _separatorString];
-  v15 = [v13 initWithString:v14 attributes:v8];
-  v16 = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
-  [v16 setAttributedText:v15];
+  _separatorString = [(CAMVideoConfigurationStatusIndicator *)self _separatorString];
+  v15 = [v13 initWithString:_separatorString attributes:v8];
+  _separatorLabel = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
+  [_separatorLabel setAttributedText:v15];
 
   if ([(CAMVideoConfigurationStatusIndicator *)self framerate])
   {
     v17 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v18 = [(CAMVideoConfigurationStatusIndicator *)self _framerateString];
-    v19 = [v17 initWithString:v18 attributes:v8];
-    v20 = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
-    [v20 setAttributedText:v19];
+    _framerateString = [(CAMVideoConfigurationStatusIndicator *)self _framerateString];
+    v19 = [v17 initWithString:_framerateString attributes:v8];
+    _framerateLabel = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
+    [_framerateLabel setAttributedText:v19];
   }
 
-  v21 = [(CAMVideoConfigurationStatusIndicator *)self layoutStyle];
+  layoutStyle = [(CAMVideoConfigurationStatusIndicator *)self layoutStyle];
   [(CAMVideoConfigurationStatusIndicator *)self _minTextWidth];
   v23 = v22;
-  v24 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
-  [(CAMVideoConfigurationStatusIndicator *)self _sizingForLabel:v24 minWidth:v23 spacing:13.0 - CAMPixelWidthForView(self)];
+  _resolutionLabel2 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionLabel];
+  [(CAMVideoConfigurationStatusIndicator *)self _sizingForLabel:_resolutionLabel2 minWidth:v23 spacing:13.0 - CAMPixelWidthForView(self)];
   [(CAMVideoConfigurationStatusIndicator *)self set_resolutionSize:?];
 
-  v25 = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
-  [(CAMVideoConfigurationStatusIndicator *)self _sizingForLabel:v25 minWidth:16.0 spacing:0.0];
+  _separatorLabel2 = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
+  [(CAMVideoConfigurationStatusIndicator *)self _sizingForLabel:_separatorLabel2 minWidth:16.0 spacing:0.0];
   [(CAMVideoConfigurationStatusIndicator *)self set_separatorSize:?];
 
-  v26 = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
-  [(CAMVideoConfigurationStatusIndicator *)self _sizingForLabel:v26 minWidth:v23 spacing:13.0 - CAMPixelWidthForView(self)];
+  _framerateLabel2 = [(CAMVideoConfigurationStatusIndicator *)self _framerateLabel];
+  [(CAMVideoConfigurationStatusIndicator *)self _sizingForLabel:_framerateLabel2 minWidth:v23 spacing:13.0 - CAMPixelWidthForView(self)];
   [(CAMVideoConfigurationStatusIndicator *)self set_framerateSize:?];
 
-  v27 = [(CAMVideoConfigurationStatusIndicator *)self _borderImageView];
+  _borderImageView = [(CAMVideoConfigurationStatusIndicator *)self _borderImageView];
 
-  if (v21 == 1)
+  if (layoutStyle == 1)
   {
-    if (!v27)
+    if (!_borderImageView)
     {
       v28 = MEMORY[0x1E69DCAB8];
       v29 = CAMCameraUIFrameworkBundle();
@@ -518,7 +518,7 @@ LABEL_10:
     }
   }
 
-  else if (v27)
+  else if (_borderImageView)
   {
     [(UIImageView *)self->__borderImageView removeFromSuperview];
     v30 = self->__borderImageView;
@@ -527,14 +527,14 @@ LABEL_10:
   }
 
   [(CAMVideoConfigurationStatusIndicator *)self setNeedsLayout];
-  v36 = [(CAMControlStatusIndicator *)self delegate];
-  [v36 controlStatusIndicatorDidChangeIntrinsicContentSize:self animated:v3];
+  delegate = [(CAMControlStatusIndicator *)self delegate];
+  [delegate controlStatusIndicatorDidChangeIntrinsicContentSize:self animated:animatedCopy];
 }
 
-- (BOOL)_togglesResolutionOrFramerateForTouchAtLocation:(CGPoint)a3
+- (BOOL)_togglesResolutionOrFramerateForTouchAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(CAMVideoConfigurationStatusIndicator *)self bounds];
   v10 = CGRectInset(v9, -15.0, -15.0);
   v5 = x;
@@ -543,41 +543,41 @@ LABEL_10:
   return CGRectContainsPoint(v10, *&v5);
 }
 
-- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)a3
+- (BOOL)_togglesResolutionForTouchAtLocation:(CGPoint)location
 {
-  x = a3.x;
-  v5 = [(CAMVideoConfigurationStatusIndicator *)self _togglesResolutionOrFramerateForTouchAtLocation:a3.x, a3.y];
-  v6 = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
-  [v6 center];
+  x = location.x;
+  v5 = [(CAMVideoConfigurationStatusIndicator *)self _togglesResolutionOrFramerateForTouchAtLocation:location.x, location.y];
+  _separatorLabel = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
+  [_separatorLabel center];
   v8 = v7;
 
   return x < v8 && v5;
 }
 
-- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)a3
+- (BOOL)_togglesFramerateForTouchAtLocation:(CGPoint)location
 {
-  x = a3.x;
-  v5 = [(CAMVideoConfigurationStatusIndicator *)self _togglesResolutionOrFramerateForTouchAtLocation:a3.x, a3.y];
-  v6 = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
-  [v6 center];
+  x = location.x;
+  v5 = [(CAMVideoConfigurationStatusIndicator *)self _togglesResolutionOrFramerateForTouchAtLocation:location.x, location.y];
+  _separatorLabel = [(CAMVideoConfigurationStatusIndicator *)self _separatorLabel];
+  [_separatorLabel center];
   v8 = v7;
 
   return x > v8 && v5;
 }
 
-- (void)_handleTouchAtLocation:(CGPoint)a3
+- (void)_handleTouchAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CAMVideoConfigurationStatusIndicator *)self touchDelegate];
-  v7 = [v6 videoConfigurationStatusIndicatorShouldRespondToTap:self];
+  y = location.y;
+  x = location.x;
+  touchDelegate = [(CAMVideoConfigurationStatusIndicator *)self touchDelegate];
+  v7 = [touchDelegate videoConfigurationStatusIndicatorShouldRespondToTap:self];
 
   if (v7)
   {
     if ([(CAMVideoConfigurationStatusIndicator *)self _togglesResolutionForTouchAtLocation:x, y])
     {
-      v8 = [(CAMVideoConfigurationStatusIndicator *)self touchDelegate];
-      [v8 videoConfigurationStatusIndicatorDidTapResolution:self];
+      touchDelegate2 = [(CAMVideoConfigurationStatusIndicator *)self touchDelegate];
+      [touchDelegate2 videoConfigurationStatusIndicatorDidTapResolution:self];
     }
 
     else
@@ -587,20 +587,20 @@ LABEL_10:
         return;
       }
 
-      v8 = [(CAMVideoConfigurationStatusIndicator *)self touchDelegate];
-      [v8 videoConfigurationStatusIndicatorDidTapFramerate:self];
+      touchDelegate2 = [(CAMVideoConfigurationStatusIndicator *)self touchDelegate];
+      [touchDelegate2 videoConfigurationStatusIndicatorDidTapFramerate:self];
     }
   }
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  [a3 locationOfAccessibilityGestureInView:self];
+  [manager locationOfAccessibilityGestureInView:self];
   v5 = v4;
   v7 = v6;
   if ([(CAMVideoConfigurationStatusIndicator *)self _togglesResolutionForTouchAtLocation:?])
   {
-    v8 = [(CAMVideoConfigurationStatusIndicator *)self _resolutionString];
+    _resolutionString = [(CAMVideoConfigurationStatusIndicator *)self _resolutionString];
   }
 
   else
@@ -611,11 +611,11 @@ LABEL_10:
       goto LABEL_8;
     }
 
-    v8 = [(CAMVideoConfigurationStatusIndicator *)self _framerateString];
+    _resolutionString = [(CAMVideoConfigurationStatusIndicator *)self _framerateString];
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = _resolutionString;
+  if (_resolutionString)
   {
     v10 = objc_alloc(MEMORY[0x1E69DC618]);
     v11 = [v10 initWithTitle:v9 image:0 imageInsets:0 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
@@ -629,9 +629,9 @@ LABEL_9:
   return v11;
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  [a3 locationOfAccessibilityGestureInView:self];
+  [manager locationOfAccessibilityGestureInView:self];
 
   [(CAMVideoConfigurationStatusIndicator *)self _handleTouchAtLocation:?];
 }

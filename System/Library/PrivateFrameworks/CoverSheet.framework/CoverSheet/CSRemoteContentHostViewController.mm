@@ -5,97 +5,97 @@
 - (CSRemoteContentHostDelegate)delegate;
 - (void)_fetchContentPreferences;
 - (void)_fetchInlinePresentationContentFrame;
-- (void)_updateContentFrame:(CGRect)a3;
-- (void)_updateContentPreferences:(id)a3;
-- (void)configureWithDefinition:(id)a3;
-- (void)didDismissForDismissType:(int64_t)a3;
-- (void)getContentBoundsWithReplyBlock:(id)a3;
+- (void)_updateContentFrame:(CGRect)frame;
+- (void)_updateContentPreferences:(id)preferences;
+- (void)configureWithDefinition:(id)definition;
+- (void)didDismissForDismissType:(int64_t)type;
+- (void)getContentBoundsWithReplyBlock:(id)block;
 - (void)hostDidChangeContentBounds;
-- (void)presentAlert:(id)a3 replyBlock:(id)a4;
-- (void)setHidden:(BOOL)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)presentAlert:(id)alert replyBlock:(id)block;
+- (void)setHidden:(BOOL)hidden;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation CSRemoteContentHostViewController
 
-- (void)configureWithDefinition:(id)a3
+- (void)configureWithDefinition:(id)definition
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_definition, a3);
+  definitionCopy = definition;
+  objc_storeStrong(&self->_definition, definition);
   v6 = *(MEMORY[0x277CBF398] + 16);
   self->_contentFrame.origin = *MEMORY[0x277CBF398];
   self->_contentFrame.size = v6;
   v7 = xpc_dictionary_create(0, 0, 0);
   [(CSRemoteContentHostViewController *)self _customContentBounds];
   BSSerializeCGRectToXPCDictionaryWithKey();
-  v8 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  v9 = [(SBSRemoteContentDefinition *)self->_definition userInfo];
-  v10 = [(SBSRemoteContentDefinition *)self->_definition xpcEndpoint];
-  [v8 configureWithUserInfo:v9 contentBounds:v7 endpoint:v10];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  userInfo = [(SBSRemoteContentDefinition *)self->_definition userInfo];
+  xpcEndpoint = [(SBSRemoteContentDefinition *)self->_definition xpcEndpoint];
+  [serviceViewControllerProxy configureWithUserInfo:userInfo contentBounds:v7 endpoint:xpcEndpoint];
 
   v11 = SBLogDashBoard();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SBSRemoteContentDefinition *)self->_definition userInfo];
-    v13 = [(SBSRemoteContentDefinition *)self->_definition xpcEndpoint];
+    userInfo2 = [(SBSRemoteContentDefinition *)self->_definition userInfo];
+    xpcEndpoint2 = [(SBSRemoteContentDefinition *)self->_definition xpcEndpoint];
     v14 = 138412546;
-    v15 = v12;
+    v15 = userInfo2;
     v16 = 2112;
-    v17 = v13;
+    v17 = xpcEndpoint2;
     _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[RemoteContent] CSRemoteContentHostViewController configuring with user info: %@, endpoint: %@", &v14, 0x16u);
   }
 
   [(CSRemoteContentHostViewController *)self _fetchContentPreferences];
 }
 
-- (void)didDismissForDismissType:(int64_t)a3
+- (void)didDismissForDismissType:(int64_t)type
 {
-  v4 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v4 didDismissForDismissType:a3];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy didDismissForDismissType:type];
 }
 
 - (void)hostDidChangeContentBounds
 {
-  v2 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v2 didChangeContentBounds];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy didChangeContentBounds];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(CSRemoteContentHostViewController *)self view];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  view = [(CSRemoteContentHostViewController *)self view];
+  [view setHidden:hiddenCopy];
 }
 
-- (void)getContentBoundsWithReplyBlock:(id)a3
+- (void)getContentBoundsWithReplyBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
+    blockCopy = block;
     v5 = xpc_dictionary_create(0, 0, 0);
     [(CSRemoteContentHostViewController *)self _customContentBounds];
     BSSerializeCGRectToXPCDictionaryWithKey();
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
   }
 }
 
-- (void)presentAlert:(id)a3 replyBlock:(id)a4
+- (void)presentAlert:(id)alert replyBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  alertCopy = alert;
+  blockCopy = block;
   v7 = MEMORY[0x277D75110];
-  v8 = [v5 title];
-  v9 = [v5 message];
-  v10 = [v7 alertControllerWithTitle:v8 message:v9 preferredStyle:{objc_msgSend(v5, "preferredStyle")}];
+  title = [alertCopy title];
+  message = [alertCopy message];
+  v10 = [v7 alertControllerWithTitle:title message:message preferredStyle:{objc_msgSend(alertCopy, "preferredStyle")}];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v22 = v5;
-  obj = [v5 actions];
+  v22 = alertCopy;
+  obj = [alertCopy actions];
   v11 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -112,16 +112,16 @@
 
         v15 = *(*(&v26 + 1) + 8 * i);
         v16 = MEMORY[0x277D750F8];
-        v17 = [v15 title];
-        v18 = [v15 style];
+        title2 = [v15 title];
+        style = [v15 style];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __61__CSRemoteContentHostViewController_presentAlert_replyBlock___block_invoke;
         v24[3] = &unk_27838DFD8;
-        v19 = v6;
+        v19 = blockCopy;
         v24[4] = v15;
         v25 = v19;
-        v20 = [v16 actionWithTitle:v17 style:v18 handler:v24];
+        v20 = [v16 actionWithTitle:title2 style:style handler:v24];
         [v10 addAction:v20];
       }
 
@@ -134,15 +134,15 @@
   [(CSRemoteContentHostViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = SBLogDashBoard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "[RemoteContent] CSRemoteContentHostViewController client process terminated: %@", &v9, 0xCu);
   }
 
@@ -150,7 +150,7 @@
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained remoteContentHostViewController:self didTerminateWithError:v4];
+    [WeakRetained remoteContentHostViewController:self didTerminateWithError:errorCopy];
   }
 
   else
@@ -182,8 +182,8 @@
   objc_copyWeak(&v6, &location);
   v5[4] = self;
   v3 = MEMORY[0x223D698D0](v5);
-  v4 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v4 getContentPreferencesWithReplyBlock:v3];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy getContentPreferencesWithReplyBlock:v3];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -213,13 +213,13 @@ void __61__CSRemoteContentHostViewController__fetchContentPreferences__block_inv
   }
 }
 
-- (void)_updateContentPreferences:(id)a3
+- (void)_updateContentPreferences:(id)preferences
 {
-  v6 = a3;
-  objc_storeStrong(&self->_contentPreferences, a3);
+  preferencesCopy = preferences;
+  objc_storeStrong(&self->_contentPreferences, preferences);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didChangeRemotePreferences:v6];
-  if ([WeakRetained prefersInlineForPreferences:v6])
+  [WeakRetained didChangeRemotePreferences:preferencesCopy];
+  if ([WeakRetained prefersInlineForPreferences:preferencesCopy])
   {
     [(CSRemoteContentHostViewController *)self _fetchInlinePresentationContentFrame];
   }
@@ -227,13 +227,13 @@ void __61__CSRemoteContentHostViewController__fetchContentPreferences__block_inv
 
 - (CGRect)_customContentBounds
 {
-  v3 = [(CSRemoteContentHostViewController *)self interfaceOrientation];
-  [CSContentCutoutBoundsCalculator modalContentCutoutBoundsForInterfaceOrientation:v3];
+  interfaceOrientation = [(CSRemoteContentHostViewController *)self interfaceOrientation];
+  [CSContentCutoutBoundsCalculator modalContentCutoutBoundsForInterfaceOrientation:interfaceOrientation];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if ((v3 - 1) <= 1)
+  if ((interfaceOrientation - 1) <= 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained remoteContentComplicationTopYInset];
@@ -256,13 +256,13 @@ void __61__CSRemoteContentHostViewController__fetchContentPreferences__block_inv
 - (void)_fetchInlinePresentationContentFrame
 {
   objc_initWeak(&location, self);
-  v3 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __73__CSRemoteContentHostViewController__fetchInlinePresentationContentFrame__block_invoke;
   v4[3] = &unk_27838E028;
   objc_copyWeak(&v5, &location);
-  [v3 getInlinePresentationContentFrameWithReplyBlock:v4];
+  [serviceViewControllerProxy getInlinePresentationContentFrameWithReplyBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -279,14 +279,14 @@ void __73__CSRemoteContentHostViewController__fetchInlinePresentationContentFram
   }
 }
 
-- (void)_updateContentFrame:(CGRect)a3
+- (void)_updateContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_contentFrame = &self->_contentFrame;
-  if (!CGRectEqualToRect(self->_contentFrame, a3))
+  if (!CGRectEqualToRect(self->_contentFrame, frame))
   {
     p_contentFrame->origin.x = x;
     p_contentFrame->origin.y = y;

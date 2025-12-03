@@ -1,8 +1,8 @@
 @interface _CNTimeProfilingTask
 - (_CNTimeProfilingTask)init;
-- (_CNTimeProfilingTask)initWithName:(id)a3;
-- (_CNTimeProfilingTask)initWithTask:(id)a3 timeProvider:(id)a4 logger:(id)a5;
-- (_CNTimeProfilingTask)initWithTask:(id)a3 timeProvider:(id)a4 os_log:(id)a5;
+- (_CNTimeProfilingTask)initWithName:(id)name;
+- (_CNTimeProfilingTask)initWithTask:(id)task timeProvider:(id)provider logger:(id)logger;
+- (_CNTimeProfilingTask)initWithTask:(id)task timeProvider:(id)provider os_log:(id)os_log;
 - (id)run;
 @end
 
@@ -14,30 +14,30 @@
   objc_exception_throw(v2);
 }
 
-- (_CNTimeProfilingTask)initWithName:(id)a3
+- (_CNTimeProfilingTask)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = CNInitializerUnavailableException(self, a2, sel_initWithTask_timeProvider_logger_);
   objc_exception_throw(v6);
 }
 
-- (_CNTimeProfilingTask)initWithTask:(id)a3 timeProvider:(id)a4 os_log:(id)a5
+- (_CNTimeProfilingTask)initWithTask:(id)task timeProvider:(id)provider os_log:(id)os_log
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_CNTimeProfilingTaskOSLogger alloc] initWithOSLog:v8];
+  os_logCopy = os_log;
+  providerCopy = provider;
+  taskCopy = task;
+  v11 = [[_CNTimeProfilingTaskOSLogger alloc] initWithOSLog:os_logCopy];
 
-  v12 = [(_CNTimeProfilingTask *)self initWithTask:v10 timeProvider:v9 logger:v11];
+  v12 = [(_CNTimeProfilingTask *)self initWithTask:taskCopy timeProvider:providerCopy logger:v11];
   return v12;
 }
 
-- (_CNTimeProfilingTask)initWithTask:(id)a3 timeProvider:(id)a4 logger:(id)a5
+- (_CNTimeProfilingTask)initWithTask:(id)task timeProvider:(id)provider logger:(id)logger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  taskCopy = task;
+  providerCopy = provider;
+  loggerCopy = logger;
+  if (taskCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -55,7 +55,7 @@
   if (!os_log_type_enabled(CNGuardOSLog_cn_once_object_0_3, OS_LOG_TYPE_FAULT))
   {
 LABEL_6:
-    if (v10)
+    if (providerCopy)
     {
       goto LABEL_11;
     }
@@ -64,7 +64,7 @@ LABEL_6:
   else
   {
     [_CNTimeProfilingTask initWithTask:v12 timeProvider:? logger:?];
-    if (v10)
+    if (providerCopy)
     {
       goto LABEL_11;
     }
@@ -82,7 +82,7 @@ LABEL_6:
   }
 
 LABEL_11:
-  if (!v11)
+  if (!loggerCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_3 != -1)
     {
@@ -97,8 +97,8 @@ LABEL_11:
   }
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [v9 name];
-  v17 = [v15 stringWithFormat:@"%@.time-profile", v16];
+  name = [taskCopy name];
+  v17 = [v15 stringWithFormat:@"%@.time-profile", name];
 
   v22.receiver = self;
   v22.super_class = _CNTimeProfilingTask;
@@ -106,9 +106,9 @@ LABEL_11:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_task, a3);
-    objc_storeStrong(&v19->_timeProvider, a4);
-    objc_storeStrong(&v19->_logger, a5);
+    objc_storeStrong(&v18->_task, task);
+    objc_storeStrong(&v19->_timeProvider, provider);
+    objc_storeStrong(&v19->_logger, logger);
     v20 = v19;
   }
 
@@ -132,8 +132,8 @@ LABEL_11:
   {
     logger = self->_logger;
     task = self->_task;
-    v10 = [v5 error];
-    [(CNTaskTimeProfileLogging *)logger task:task didFailWithError:v10 after:v7];
+    error = [v5 error];
+    [(CNTaskTimeProfileLogging *)logger task:task didFailWithError:error after:v7];
   }
 
   return v5;

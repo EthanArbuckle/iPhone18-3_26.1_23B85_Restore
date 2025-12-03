@@ -2,29 +2,29 @@
 - (BOOL)getEarlyDataAccepted;
 - (BOOL)hasSessionState;
 - (_TtC10nwswifttls20STLSClientHandshaker)init;
-- (id)continueHandshake:(id)a3;
+- (id)continueHandshake:(id)handshake;
 - (id)getClientRandom;
-- (id)getEncryptionSecretWithWrite:(BOOL)a3;
+- (id)getEncryptionSecretWithWrite:(BOOL)write;
 - (id)getNegotiatedGroup;
 - (id)getPeerQUICTransportParameters;
 - (id)getSessionState;
-- (id)init:(id)a3 quicTransportParameters:(id)a4 alpn:(id)a5 sessionState:(id)a6 ticketRequest:(id)a7 pakeContext:(id)a8 pakeClientIdentity:(id)a9 pakeServerIdentity:(id)a10 pakeClientPasswordVerifier:(id)a11;
-- (id)init:(id)a3 serverName:(id)a4 quicTransportParameters:(id)a5 alpn:(id)a6 sessionState:(id)a7 ticketRequest:(id)a8 keyExchangeGroup:(unsigned __int16)a9 enableEarlyData:(BOOL)a10;
-- (id)init:(id)a3 serverName:(id)a4 quicTransportParameters:(id)a5 alpn:(id)a6 sessionState:(id)a7 ticketRequest:(id)a8 keyExchangeGroup:(unsigned __int16)a9 externalPreSharedKey:(id)a10 rawEPSKsEnabled:(BOOL)a11 enableEarlyData:(BOOL)a12;
+- (id)init:(id)init quicTransportParameters:(id)parameters alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)self0 pakeClientPasswordVerifier:(id)self1;
+- (id)init:(id)init serverName:(id)name quicTransportParameters:(id)parameters alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group enableEarlyData:(BOOL)self0;
+- (id)init:(id)init serverName:(id)name quicTransportParameters:(id)parameters alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group externalPreSharedKey:(id)self0 rawEPSKsEnabled:(BOOL)self1 enableEarlyData:(BOOL)self2;
 - (id)startHandshake;
-- (id)validateAuthenticatorWithAuthenticator:(id)a3 context:(id)a4 keyParser:(id)a5;
+- (id)validateAuthenticatorWithAuthenticator:(id)authenticator context:(id)context keyParser:(id)parser;
 - (int)getErrorCode;
-- (int64_t)getEncryptionLevelWithWrite:(BOOL)a3;
+- (int64_t)getEncryptionLevelWithWrite:(BOOL)write;
 @end
 
 @implementation STLSClientHandshaker
 
-- (id)init:(id)a3 serverName:(id)a4 quicTransportParameters:(id)a5 alpn:(id)a6 sessionState:(id)a7 ticketRequest:(id)a8 keyExchangeGroup:(unsigned __int16)a9 externalPreSharedKey:(id)a10 rawEPSKsEnabled:(BOOL)a11 enableEarlyData:(BOOL)a12
+- (id)init:(id)init serverName:(id)name quicTransportParameters:(id)parameters alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group externalPreSharedKey:(id)self0 rawEPSKsEnabled:(BOOL)self1 enableEarlyData:(BOOL)self2
 {
   ObjectType = swift_getObjectType();
-  if (a8)
+  if (request)
   {
-    a8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    request = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   _s15SwiftTLSLibrary23PAKEClientConfigurationVSgWOi0_(v30);
@@ -37,13 +37,13 @@
   v32[2] = v30[2];
   v32[3] = v30[3];
   objc_allocWithZone(ObjectType);
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a10;
-  v26 = STLSClientHandshaker.init(_:serverName:quicTransportParameters:alpn:sessionState:ticketRequest:keyExchangeGroup:externalPreSharedKey:rawEPSKsEnabled:enableEarlyData:pakeClientConfiguration:)(a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, v32);
+  initCopy = init;
+  nameCopy = name;
+  parametersCopy = parameters;
+  alpnCopy = alpn;
+  stateCopy = state;
+  keyCopy = key;
+  v26 = STLSClientHandshaker.init(_:serverName:quicTransportParameters:alpn:sessionState:ticketRequest:keyExchangeGroup:externalPreSharedKey:rawEPSKsEnabled:enableEarlyData:pakeClientConfiguration:)(init, name, parameters, alpn, state, request, group, key, enabled, data, v32);
   swift_getObjectType();
   v27 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);
   v28 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x34);
@@ -51,19 +51,19 @@
   return v26;
 }
 
-- (int64_t)getEncryptionLevelWithWrite:(BOOL)a3
+- (int64_t)getEncryptionLevelWithWrite:(BOOL)write
 {
-  v4 = self;
-  v5 = STLSClientHandshaker.getEncryptionLevel(write:)(a3);
+  selfCopy = self;
+  v5 = STLSClientHandshaker.getEncryptionLevel(write:)(write);
 
   return v5;
 }
 
-- (id)continueHandshake:(id)a3
+- (id)continueHandshake:(id)handshake
 {
-  v5 = a3;
-  v6 = self;
-  v10.value.super.isa = a3;
+  handshakeCopy = handshake;
+  selfCopy = self;
+  v10.value.super.isa = handshake;
   v7 = STLSClientHandshaker.continueHandshake(_:)(v10);
 
   return v7;
@@ -71,7 +71,7 @@
 
 - (id)startHandshake
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSClientHandshaker.startHandshake()();
 
   return v3;
@@ -79,7 +79,7 @@
 
 - (id)getPeerQUICTransportParameters
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSClientHandshaker.getPeerQUICTransportParameters()();
 
   return v3;
@@ -118,31 +118,31 @@
 
 - (int)getErrorCode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSClientHandshaker.getErrorCode()();
 
   return v3;
 }
 
-- (id)getEncryptionSecretWithWrite:(BOOL)a3
+- (id)getEncryptionSecretWithWrite:(BOOL)write
 {
-  v4 = self;
-  v5 = STLSClientHandshaker.getEncryptionSecret(write:)(a3);
+  selfCopy = self;
+  v5 = STLSClientHandshaker.getEncryptionSecret(write:)(write);
 
   return v5;
 }
 
 - (id)getSessionState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSClientHandshaker.getSessionState()();
 
   return v3;
 }
 
-- (id)init:(id)a3 serverName:(id)a4 quicTransportParameters:(id)a5 alpn:(id)a6 sessionState:(id)a7 ticketRequest:(id)a8 keyExchangeGroup:(unsigned __int16)a9 enableEarlyData:(BOOL)a10
+- (id)init:(id)init serverName:(id)name quicTransportParameters:(id)parameters alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group enableEarlyData:(BOOL)self0
 {
-  if (a8)
+  if (request)
   {
     v15 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -152,17 +152,17 @@
     v15 = 0;
   }
 
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  return STLSClientHandshaker.init(_:serverName:quicTransportParameters:alpn:sessionState:ticketRequest:keyExchangeGroup:enableEarlyData:)(a3, a4, a5, a6, a7, v15, a9, a10);
+  initCopy = init;
+  nameCopy = name;
+  parametersCopy = parameters;
+  alpnCopy = alpn;
+  stateCopy = state;
+  return STLSClientHandshaker.init(_:serverName:quicTransportParameters:alpn:sessionState:ticketRequest:keyExchangeGroup:enableEarlyData:)(init, name, parameters, alpn, state, v15, group, data);
 }
 
-- (id)init:(id)a3 quicTransportParameters:(id)a4 alpn:(id)a5 sessionState:(id)a6 ticketRequest:(id)a7 pakeContext:(id)a8 pakeClientIdentity:(id)a9 pakeServerIdentity:(id)a10 pakeClientPasswordVerifier:(id)a11
+- (id)init:(id)init quicTransportParameters:(id)parameters alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)self0 pakeClientPasswordVerifier:(id)self1
 {
-  if (a7)
+  if (request)
   {
     v16 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -172,16 +172,16 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  return STLSClientHandshaker.init(_:quicTransportParameters:alpn:sessionState:ticketRequest:pakeContext:pakeClientIdentity:pakeServerIdentity:pakeClientPasswordVerifier:)(a3, a4, a5, a6, v16, a8, a9, a10, a11);
+  initCopy = init;
+  parametersCopy = parameters;
+  alpnCopy = alpn;
+  stateCopy = state;
+  return STLSClientHandshaker.init(_:quicTransportParameters:alpn:sessionState:ticketRequest:pakeContext:pakeClientIdentity:pakeServerIdentity:pakeClientPasswordVerifier:)(init, parameters, alpn, state, v16, context, identity, serverIdentity, verifier);
 }
 
 - (id)getClientRandom
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSClientHandshaker.getClientRandom()();
 
   return v3;
@@ -205,7 +205,7 @@
 
   else
   {
-    v10 = self;
+    selfCopy = self;
     v11 = HandshakeStateMachine.negotiatedGroup.getter();
     v13 = v12;
     outlined destroy of ExportedAuthenticator(v6, type metadata accessor for HandshakeStateMachine);
@@ -238,16 +238,16 @@
   return result;
 }
 
-- (id)validateAuthenticatorWithAuthenticator:(id)a3 context:(id)a4 keyParser:(id)a5
+- (id)validateAuthenticatorWithAuthenticator:(id)authenticator context:(id)context keyParser:(id)parser
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
+  v8 = _Block_copy(parser);
+  authenticatorCopy = authenticator;
+  selfCopy = self;
+  contextCopy = context;
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
-  if (v11)
+  if (contextCopy)
   {
     v16 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v18 = v17;

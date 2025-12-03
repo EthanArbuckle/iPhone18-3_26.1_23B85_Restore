@@ -1,13 +1,13 @@
 @interface BKSHIDEventKeyCommandDispatchingRoot
-- (id)decodePayload:(id)a3;
+- (id)decodePayload:(id)payload;
 @end
 
 @implementation BKSHIDEventKeyCommandDispatchingRoot
 
-- (id)decodePayload:(id)a3
+- (id)decodePayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+  payloadCopy = payload;
+  v4 = [payloadCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
 
   return v4;
 }

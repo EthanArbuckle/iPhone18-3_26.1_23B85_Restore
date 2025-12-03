@@ -1,34 +1,34 @@
 @interface AXMTaskDispatcher
-- (AXMTaskDispatcher)initWithIdentifier:(id)a3 delegate:(id)a4;
+- (AXMTaskDispatcher)initWithIdentifier:(id)identifier delegate:(id)delegate;
 - (AXMTaskDispatcherDelegate)delegate;
 - (id)_queue_dequeueTask;
 - (id)_queue_unscheduleAllTasks;
 - (id)unscheduleAllTasks;
 - (int64_t)count;
 - (void)_queue_processNextTask;
-- (void)_queue_scheduleTask:(id)a3;
-- (void)scheduleTask:(id)a3;
+- (void)_queue_scheduleTask:(id)task;
+- (void)scheduleTask:(id)task;
 @end
 
 @implementation AXMTaskDispatcher
 
-- (AXMTaskDispatcher)initWithIdentifier:(id)a3 delegate:(id)a4
+- (AXMTaskDispatcher)initWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = AXMTaskDispatcher;
   v8 = [(AXMTaskDispatcher *)&v22 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = *(v8 + 3);
-    *(v8 + 3) = v9;
+    *(v8 + 3) = array;
 
-    objc_storeWeak(v8 + 5, v7);
-    v11 = [v6 UTF8String];
+    objc_storeWeak(v8 + 5, delegateCopy);
+    uTF8String = [identifierCopy UTF8String];
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     v14 = *(v8 + 2);
     *(v8 + 2) = v13;
 
@@ -86,11 +86,11 @@ uint64_t __26__AXMTaskDispatcher_count__block_invoke(uint64_t a1)
 
 - (void)_queue_processNextTask
 {
-  v3 = [(AXMTaskDispatcher *)self _queue_dequeueTask];
-  v4 = v3;
-  if (v3)
+  _queue_dequeueTask = [(AXMTaskDispatcher *)self _queue_dequeueTask];
+  v4 = _queue_dequeueTask;
+  if (_queue_dequeueTask)
   {
-    if ([v3 isComplete])
+    if ([_queue_dequeueTask isComplete])
     {
       v5 = AXMediaLogCommon();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -161,11 +161,11 @@ void __43__AXMTaskDispatcher__queue_processNextTask__block_invoke_26(uint64_t a1
   dispatch_source_merge_data(*(*(a1 + 32) + 8), 1uLL);
 }
 
-- (void)scheduleTask:(id)a3
+- (void)scheduleTask:(id)task
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  taskCopy = task;
+  v5 = taskCopy;
+  if (taskCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -173,14 +173,14 @@ void __43__AXMTaskDispatcher__queue_processNextTask__block_invoke_26(uint64_t a1
     v7[2] = __34__AXMTaskDispatcher_scheduleTask___block_invoke;
     v7[3] = &unk_1E7A1CB30;
     v7[4] = self;
-    v8 = v4;
+    v8 = taskCopy;
     dispatch_sync(queue, v7);
   }
 }
 
-- (void)_queue_scheduleTask:(id)a3
+- (void)_queue_scheduleTask:(id)task
 {
-  [(NSMutableArray *)self->_queue_taskList addObject:a3];
+  [(NSMutableArray *)self->_queue_taskList addObject:task];
   if (!self->_queue_taskIsBeingProcessed)
   {
     processQueueSource = self->_processQueueSource;

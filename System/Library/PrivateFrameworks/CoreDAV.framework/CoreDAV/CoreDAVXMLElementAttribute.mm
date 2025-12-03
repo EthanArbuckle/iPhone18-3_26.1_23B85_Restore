@@ -1,16 +1,16 @@
 @interface CoreDAVXMLElementAttribute
-- (CoreDAVXMLElementAttribute)initWithNameSpace:(id)a3 name:(id)a4 value:(id)a5;
+- (CoreDAVXMLElementAttribute)initWithNameSpace:(id)space name:(id)name value:(id)value;
 - (id)description;
 @end
 
 @implementation CoreDAVXMLElementAttribute
 
-- (CoreDAVXMLElementAttribute)initWithNameSpace:(id)a3 name:(id)a4 value:(id)a5
+- (CoreDAVXMLElementAttribute)initWithNameSpace:(id)space name:(id)name value:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9 || (v11 = v10, ![v9 length]))
+  spaceCopy = space;
+  nameCopy = name;
+  valueCopy = value;
+  if (!nameCopy || (v11 = valueCopy, ![nameCopy length]))
   {
     v15 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Non-nil and non-empty 'name' required." userInfo:0];
     objc_exception_throw(v15);
@@ -22,8 +22,8 @@
   v13 = v12;
   if (v12)
   {
-    [(CoreDAVXMLElementAttribute *)v12 setNameSpace:v8];
-    [(CoreDAVXMLElementAttribute *)v13 setName:v9];
+    [(CoreDAVXMLElementAttribute *)v12 setNameSpace:spaceCopy];
+    [(CoreDAVXMLElementAttribute *)v13 setName:nameCopy];
     [(CoreDAVXMLElementAttribute *)v13 setValue:v11];
   }
 
@@ -36,10 +36,10 @@
   v10.receiver = self;
   v10.super_class = CoreDAVXMLElementAttribute;
   v4 = [(CoreDAVXMLElementAttribute *)&v10 description];
-  v5 = [(CoreDAVXMLElementAttribute *)self nameSpace];
-  v6 = [(CoreDAVXMLElementAttribute *)self name];
-  v7 = [(CoreDAVXMLElementAttribute *)self value];
-  v8 = [v3 stringWithFormat:@"[%@], namespace: [%@], name: [%@], value: [%@]", v4, v5, v6, v7];
+  nameSpace = [(CoreDAVXMLElementAttribute *)self nameSpace];
+  name = [(CoreDAVXMLElementAttribute *)self name];
+  value = [(CoreDAVXMLElementAttribute *)self value];
+  v8 = [v3 stringWithFormat:@"[%@], namespace: [%@], name: [%@], value: [%@]", v4, nameSpace, name, value];
 
   return v8;
 }

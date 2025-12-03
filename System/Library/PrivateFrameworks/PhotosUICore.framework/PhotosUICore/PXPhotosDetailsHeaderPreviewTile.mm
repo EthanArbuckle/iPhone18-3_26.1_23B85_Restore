@@ -7,14 +7,14 @@
 
 - (void)prepareForReuse
 {
-  v2 = [(PXUIImageTile *)self view];
-  [v2 setHidden:0];
+  view = [(PXUIImageTile *)self view];
+  [view setHidden:0];
 }
 
 - (void)becomeReusable
 {
-  v2 = [(PXUIImageTile *)self view];
-  [v2 setHidden:1];
+  view = [(PXUIImageTile *)self view];
+  [view setHidden:1];
 }
 
 @end

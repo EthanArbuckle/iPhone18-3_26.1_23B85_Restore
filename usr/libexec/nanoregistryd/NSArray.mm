@@ -11,8 +11,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = self;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v5 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -23,7 +23,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = [*(*(&v13 + 1) + 8 * i) description];
@@ -31,7 +31,7 @@
         [v3 addObject:v10];
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [(NSArray *)selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

@@ -1,35 +1,35 @@
 @interface CRLFindReplaceControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (CGPoint)crlaxActiveTextFindResultPoint;
 - (CRLWPSelectionAccessibility)crlaxActiveTextFindResultSelection;
-- (id)crlaxDecoratedStringForAnnouncement:(id)a3 selectionRange:(_NSRange)a4 excerptRange:(_NSRange)a5;
+- (id)crlaxDecoratedStringForAnnouncement:(id)announcement selectionRange:(_NSRange)range excerptRange:(_NSRange)excerptRange;
 - (id)crlaxPrimaryFindResultSearchReference;
-- (void)crlaxDidChangePrimaryFindResultInInteractiveCanvasController:(id)a3 window:(id)a4;
+- (void)crlaxDidChangePrimaryFindResultInInteractiveCanvasController:(id)controller window:(id)window;
 @end
 
 @implementation CRLFindReplaceControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (id)crlaxPrimaryFindResultSearchReference
 {
-  v2 = [(CRLFindReplaceControllerAccessibility *)self crlaxTarget];
-  v3 = [v2 primaryFindResultSearchReference];
+  crlaxTarget = [(CRLFindReplaceControllerAccessibility *)self crlaxTarget];
+  primaryFindResultSearchReference = [crlaxTarget primaryFindResultSearchReference];
 
-  return v3;
+  return primaryFindResultSearchReference;
 }
 
 - (CGPoint)crlaxActiveTextFindResultPoint
 {
-  v2 = [(CRLFindReplaceControllerAccessibility *)self crlaxPrimaryFindResultSearchReference];
-  [v2 searchReferencePoint];
+  crlaxPrimaryFindResultSearchReference = [(CRLFindReplaceControllerAccessibility *)self crlaxPrimaryFindResultSearchReference];
+  [crlaxPrimaryFindResultSearchReference searchReferencePoint];
   v4 = v3;
   v6 = v5;
 
@@ -43,29 +43,29 @@
 - (CRLWPSelectionAccessibility)crlaxActiveTextFindResultSelection
 {
   v3 = objc_opt_class();
-  v4 = [(CRLFindReplaceControllerAccessibility *)self crlaxPrimaryFindResultSearchReference];
-  v5 = __CRLAccessibilityCastAsSafeCategory(v3, v4, 0, 0);
+  crlaxPrimaryFindResultSearchReference = [(CRLFindReplaceControllerAccessibility *)self crlaxPrimaryFindResultSearchReference];
+  v5 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxPrimaryFindResultSearchReference, 0, 0);
 
-  v6 = [v5 crlaxSelection];
+  crlaxSelection = [v5 crlaxSelection];
 
-  return v6;
+  return crlaxSelection;
 }
 
-- (void)crlaxDidChangePrimaryFindResultInInteractiveCanvasController:(id)a3 window:(id)a4
+- (void)crlaxDidChangePrimaryFindResultInInteractiveCanvasController:(id)controller window:(id)window
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  windowCopy = window;
   v8 = +[CRLAccessibility sharedInstance];
-  v9 = [v8 needsAccessibilityAnnouncements];
+  needsAccessibilityAnnouncements = [v8 needsAccessibilityAnnouncements];
 
-  if (v9)
+  if (needsAccessibilityAnnouncements)
   {
-    v10 = [(CRLFindReplaceControllerAccessibility *)self crlaxPrimaryFindResultSearchReference];
+    crlaxPrimaryFindResultSearchReference = [(CRLFindReplaceControllerAccessibility *)self crlaxPrimaryFindResultSearchReference];
     NSClassFromString(@"CRLWPSearchReference");
     if (objc_opt_isKindOfClass())
     {
       v41 = 0;
-      v11 = [v10 crlaxValueForKey:@"selection"];
+      v11 = [crlaxPrimaryFindResultSearchReference crlaxValueForKey:@"selection"];
       v12 = objc_opt_class();
       v13 = __CRLAccessibilityCastAsSafeCategory(v12, v11, 1, &v41);
       if (v41 == 1)
@@ -76,7 +76,7 @@
       v14 = v13;
 
       v41 = 0;
-      v15 = [v10 crlaxValueForKey:@"storage"];
+      v15 = [crlaxPrimaryFindResultSearchReference crlaxValueForKey:@"storage"];
       v16 = objc_opt_class();
       v17 = __CRLAccessibilityCastAsSafeCategory(v16, v15, 1, &v41);
       if (v41 == 1)
@@ -115,7 +115,7 @@ LABEL_19:
           v38[1] = 3221225472;
           v38[2] = sub_10030BAAC;
           v38[3] = &unk_10183AE28;
-          v39 = v7;
+          v39 = windowCopy;
           v40 = v28;
           v18 = v28;
           CRLAccessibilityPerformBlockOnMainThreadAfterDelay(v38, 0.5);
@@ -133,13 +133,13 @@ LABEL_20:
   }
 }
 
-- (id)crlaxDecoratedStringForAnnouncement:(id)a3 selectionRange:(_NSRange)a4 excerptRange:(_NSRange)a5
+- (id)crlaxDecoratedStringForAnnouncement:(id)announcement selectionRange:(_NSRange)range excerptRange:(_NSRange)excerptRange
 {
-  location = a5.location;
-  length = a4.length;
-  v7 = a4.location;
-  v8 = a3;
-  v9 = [[NSMutableAttributedString alloc] initWithString:v8];
+  location = excerptRange.location;
+  length = range.length;
+  v7 = range.location;
+  announcementCopy = announcement;
+  v9 = [[NSMutableAttributedString alloc] initWithString:announcementCopy];
 
   v10 = [NSNumber numberWithBool:1];
   [v9 addAttribute:@"UIAccessibilityTokenLowPitch" value:v10 range:{v7 - location, length}];

@@ -1,25 +1,25 @@
 @interface NSObject
-- (BOOL)baxBoolValueForKey:(id)a3;
-- (CGPoint)baxCGPointValueForKey:(id)a3;
-- (CGRect)baxCGRectValueForKey:(id)a3;
-- (CGSize)baxCGSizeValueForKey:(id)a3;
-- (_NSRange)baxRangeValueForKey:(id)a3;
-- (double)baxDoubleValueForKey:(id)a3;
-- (float)baxFloatValueForKey:(id)a3;
-- (id)_baxValidatedValueForKey:(id)a3 expectedClass:(Class)a4 possibleExpectedTypeEncodings:(const char *)a5;
-- (id)baxValueForKey:(id)a3;
-- (int)baxIntValueForKey:(id)a3;
-- (int64_t)baxIntegerValueForKey:(id)a3;
-- (unint64_t)baxUnsignedIntegerValueForKey:(id)a3;
-- (unsigned)baxUnsignedIntValueForKey:(id)a3;
+- (BOOL)baxBoolValueForKey:(id)key;
+- (CGPoint)baxCGPointValueForKey:(id)key;
+- (CGRect)baxCGRectValueForKey:(id)key;
+- (CGSize)baxCGSizeValueForKey:(id)key;
+- (_NSRange)baxRangeValueForKey:(id)key;
+- (double)baxDoubleValueForKey:(id)key;
+- (float)baxFloatValueForKey:(id)key;
+- (id)_baxValidatedValueForKey:(id)key expectedClass:(Class)class possibleExpectedTypeEncodings:(const char *)encodings;
+- (id)baxValueForKey:(id)key;
+- (int)baxIntValueForKey:(id)key;
+- (int64_t)baxIntegerValueForKey:(id)key;
+- (unint64_t)baxUnsignedIntegerValueForKey:(id)key;
+- (unsigned)baxUnsignedIntValueForKey:(id)key;
 @end
 
 @implementation NSObject
 
-- (id)_baxValidatedValueForKey:(id)a3 expectedClass:(Class)a4 possibleExpectedTypeEncodings:(const char *)a5
+- (id)_baxValidatedValueForKey:(id)key expectedClass:(Class)class possibleExpectedTypeEncodings:(const char *)encodings
 {
-  v7 = a3;
-  v8 = [self baxValueForKey:v7];
+  keyCopy = key;
+  v8 = [self baxValueForKey:keyCopy];
   if (v8)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -35,10 +35,10 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (a5)
+    if (encodings)
     {
-      v9 = [v8 objCType];
-      if (strcmp(v9, a5))
+      objCType = [v8 objCType];
+      if (strcmp(objCType, encodings))
       {
         v12 = &v14;
         while (1)
@@ -49,7 +49,7 @@ LABEL_11:
             break;
           }
 
-          if (!strcmp(v9, *v10))
+          if (!strcmp(objCType, *v10))
           {
             goto LABEL_12;
           }
@@ -70,63 +70,63 @@ LABEL_12:
   return v8;
 }
 
-- (id)baxValueForKey:(id)a3
+- (id)baxValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self valueForKey:v4];
+  keyCopy = key;
+  v5 = [self valueForKey:keyCopy];
 
   return v5;
 }
 
-- (BOOL)baxBoolValueForKey:(id)a3
+- (BOOL)baxBoolValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "c", "B", 0];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "c", "B", 0];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
-- (int)baxIntValueForKey:(id)a3
+- (int)baxIntValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"i"];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"i"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (unsigned)baxUnsignedIntValueForKey:(id)a3
+- (unsigned)baxUnsignedIntValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "I", 0];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"i", "I", 0];
 
-  v6 = [v5 unsignedIntValue];
-  return v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  return unsignedIntValue;
 }
 
-- (int64_t)baxIntegerValueForKey:(id)a3
+- (int64_t)baxIntegerValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"q", 0];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"q", 0];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
-- (unint64_t)baxUnsignedIntegerValueForKey:(id)a3
+- (unint64_t)baxUnsignedIntegerValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"Q", "q", "Q", 0];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() possibleExpectedTypeEncodings:"Q", "q", "Q", 0];
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (float)baxFloatValueForKey:(id)a3
+- (float)baxFloatValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"f"];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"f"];
 
   [v5 floatValue];
   v7 = v6;
@@ -134,10 +134,10 @@ LABEL_12:
   return v7;
 }
 
-- (double)baxDoubleValueForKey:(id)a3
+- (double)baxDoubleValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"d"];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"d"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -145,25 +145,25 @@ LABEL_12:
   return v7;
 }
 
-- (_NSRange)baxRangeValueForKey:(id)a3
+- (_NSRange)baxRangeValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{_NSRange=QQ}"];
 
-  v6 = [v5 rangeValue];
+  rangeValue = [v5 rangeValue];
   v8 = v7;
 
-  v9 = v6;
+  v9 = rangeValue;
   v10 = v8;
   result.length = v10;
   result.location = v9;
   return result;
 }
 
-- (CGPoint)baxCGPointValueForKey:(id)a3
+- (CGPoint)baxCGPointValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{CGPoint=dd}"];
 
   [v5 CGPointValue];
   v7 = v6;
@@ -176,10 +176,10 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)baxCGSizeValueForKey:(id)a3
+- (CGSize)baxCGSizeValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{CGSize=dd}"];
 
   [v5 CGSizeValue];
   v7 = v6;
@@ -192,10 +192,10 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)baxCGRectValueForKey:(id)a3
+- (CGRect)baxCGRectValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [self _baxValidatedValueForKey:v4 expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  keyCopy = key;
+  v5 = [self _baxValidatedValueForKey:keyCopy expectedClass:objc_opt_class() expectedTypeEncoding:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
 
   [v5 CGRectValue];
   v7 = v6;

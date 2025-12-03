@@ -1,11 +1,11 @@
 @interface TVCatalogWorkoutDetailViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI36TVCatalogWorkoutDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI36TVCatalogWorkoutDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TVCatalogWorkoutDetailViewController
@@ -26,41 +26,41 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B594C08();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B594E24();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20B594FD8(a3);
+  selfCopy = self;
+  sub_20B594FD8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20B595304(a3);
+  selfCopy = self;
+  sub_20B595304(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TVCatalogWorkoutDetailViewController();
   v4 = v5.receiver;
-  [(TVCatalogWorkoutDetailViewController *)&v5 viewDidDisappear:v3];
+  [(TVCatalogWorkoutDetailViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_20B5978DC(&qword_27C7620A8, type metadata accessor for TVCatalogWorkoutDetailViewController);
   sub_20B5978DC(&unk_27C7620B0, type metadata accessor for TVCatalogWorkoutDetailViewController);
   sub_20C139374();
 }
 
-- (_TtC9SeymourUI36TVCatalogWorkoutDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI36TVCatalogWorkoutDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,13 +1,13 @@
 @interface AWDSpringBoardSystemGesture
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSpringBoardSystemGesture
@@ -30,28 +30,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   type = self->_type;
   if (type)
   {
-    [v3 setObject:type forKey:@"type"];
+    [dictionary setObject:type forKey:@"type"];
   }
 
   userInfo = self->_userInfo;
   if (userInfo)
   {
-    [v3 setObject:userInfo forKey:@"userInfo"];
+    [dictionary setObject:userInfo forKey:@"userInfo"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -71,29 +71,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
   }
 
   if (self->_type)
   {
-    [a3 setType:?];
+    [to setType:?];
   }
 
   if (self->_userInfo)
   {
 
-    [a3 setUserInfo:?];
+    [to setUserInfo:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -101,26 +101,26 @@
     *(v5 + 32) |= 1u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_type copyWithZone:a3];
-  *(v6 + 24) = [(NSString *)self->_userInfo copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_type copyWithZone:zone];
+  *(v6 + 24) = [(NSString *)self->_userInfo copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 32);
+    v6 = *(equal + 32);
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
 LABEL_11:
       LOBYTE(v5) = 0;
@@ -128,10 +128,10 @@ LABEL_11:
     }
 
     type = self->_type;
-    if (!(type | *(a3 + 2)) || (v5 = [(NSString *)type isEqual:?]) != 0)
+    if (!(type | *(equal + 2)) || (v5 = [(NSString *)type isEqual:?]) != 0)
     {
       userInfo = self->_userInfo;
-      if (userInfo | *(a3 + 3))
+      if (userInfo | *(equal + 3))
       {
 
         LOBYTE(v5) = [(NSString *)userInfo isEqual:?];
@@ -163,20 +163,20 @@ LABEL_11:
   return v4 ^ [(NSString *)self->_userInfo hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 32))
+  if (*(from + 32))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDSpringBoardSystemGesture *)self setType:?];
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
 
     [(AWDSpringBoardSystemGesture *)self setUserInfo:?];

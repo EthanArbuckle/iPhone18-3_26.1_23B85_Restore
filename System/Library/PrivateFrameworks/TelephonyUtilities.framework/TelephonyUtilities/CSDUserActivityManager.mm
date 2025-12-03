@@ -1,39 +1,39 @@
 @interface CSDUserActivityManager
-+ (id)allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:(id)a3 participantIdentifier:(unint64_t)a4;
-+ (id)sharedInstanceWithQueue:(id)a3;
-- (CSDUserActivityManager)initWithQueue:(id)a3 activityCommunicator:(id)a4 callCenter:(id)a5 featureFlags:(id)a6;
++ (id)allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:(id)d participantIdentifier:(unint64_t)identifier;
++ (id)sharedInstanceWithQueue:(id)queue;
+- (CSDUserActivityManager)initWithQueue:(id)queue activityCommunicator:(id)communicator callCenter:(id)center featureFlags:(id)flags;
 - (TUCallCenter)callCenter;
-- (void)callConnected:(id)a3;
-- (void)callContinuityChanged:(id)a3;
-- (void)callIsSendingVideoChanged:(id)a3;
-- (void)callIsUplinkMutedChanged:(id)a3;
-- (void)callStartedConnecting:(id)a3;
-- (void)callStatusChanged:(id)a3;
-- (void)checkForSmartHoldingCallForSuppressRingtone:(id)a3;
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4 fromOldConversation:(id)a5;
-- (void)conversationManager:(id)a3 addedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4 fromOldConversation:(id)a5;
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4;
-- (void)conversationManager:(id)a3 screeningChangedForConversation:(id)a4;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5;
+- (void)callConnected:(id)connected;
+- (void)callContinuityChanged:(id)changed;
+- (void)callIsSendingVideoChanged:(id)changed;
+- (void)callIsUplinkMutedChanged:(id)changed;
+- (void)callStartedConnecting:(id)connecting;
+- (void)callStatusChanged:(id)changed;
+- (void)checkForSmartHoldingCallForSuppressRingtone:(id)ringtone;
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
+- (void)conversationManager:(id)manager addedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation;
+- (void)conversationManager:(id)manager screeningChangedForConversation:(id)conversation;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation;
 - (void)dealloc;
-- (void)deregisterHandoffIdentifiersForConversation:(id)a3;
+- (void)deregisterHandoffIdentifiersForConversation:(id)conversation;
 - (void)endHandoffActivity;
-- (void)processStatusChangeAsHandedOffIfNecessaryForCall:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)receivedBroadcastedActivityType:(unsigned int)a3 dynamicIdentifier:(id)a4 originatingDeviceType:(id)a5;
-- (void)shouldSuppressRingtoneChanged:(id)a3;
-- (void)smartHoldingSessionChanged:(id)a3;
-- (void)startSuppressRingtoneActivityBroadcastingForCall:(id)a3;
-- (void)startSuppressRingtoneActivityBroadcastingIfNecessaryForCallWithStatusChange:(id)a3;
-- (void)stopAdvertisingForRemovedConversationIfNecessary:(id)a3;
+- (void)processStatusChangeAsHandedOffIfNecessaryForCall:(id)call;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)receivedBroadcastedActivityType:(unsigned int)type dynamicIdentifier:(id)identifier originatingDeviceType:(id)deviceType;
+- (void)shouldSuppressRingtoneChanged:(id)changed;
+- (void)smartHoldingSessionChanged:(id)changed;
+- (void)startSuppressRingtoneActivityBroadcastingForCall:(id)call;
+- (void)startSuppressRingtoneActivityBroadcastingIfNecessaryForCallWithStatusChange:(id)change;
+- (void)stopAdvertisingForRemovedConversationIfNecessary:(id)necessary;
 - (void)updateAppHistoryActivityForCall;
-- (void)updateAudioVideoHandoffPreferencesForCall:(id)a3;
+- (void)updateAudioVideoHandoffPreferencesForCall:(id)call;
 - (void)updateCallHandoffRegistration;
-- (void)updateHandoffActivityStateForCall:(id)a3;
-- (void)updateHandoffAdvertisementForCall:(id)a3;
-- (void)updateHandoffAdvertisementForConversation:(id)a3 fromOldConversation:(id)a4;
-- (void)updateHandoffRegistrationForConversation:(id)a3 fromOldConversation:(id)a4;
+- (void)updateHandoffActivityStateForCall:(id)call;
+- (void)updateHandoffAdvertisementForCall:(id)call;
+- (void)updateHandoffAdvertisementForConversation:(id)conversation fromOldConversation:(id)oldConversation;
+- (void)updateHandoffRegistrationForConversation:(id)conversation fromOldConversation:(id)oldConversation;
 - (void)updateSuppressRingtoneActivityListeningState;
 @end
 
@@ -41,86 +41,86 @@
 
 - (void)updateAppHistoryActivityForCall
 {
-  v3 = [(CSDUserActivityManager *)self callCenter];
-  v4 = [v3 currentAudioAndVideoCalls];
-  v5 = [v4 firstObject];
+  callCenter = [(CSDUserActivityManager *)self callCenter];
+  currentAudioAndVideoCalls = [callCenter currentAudioAndVideoCalls];
+  firstObject = [currentAudioAndVideoCalls firstObject];
 
-  if ([v5 isHostedOnCurrentDevice] && (objc_msgSend(v5, "status") == 3 || objc_msgSend(v5, "status") == 4))
+  if ([firstObject isHostedOnCurrentDevice] && (objc_msgSend(firstObject, "status") == 3 || objc_msgSend(firstObject, "status") == 4))
   {
-    v6 = [v5 localizedLabel];
-    v7 = [v5 handle];
-    v8 = [v7 value];
-    v9 = [v5 isoCountryCode];
+    localizedLabel = [firstObject localizedLabel];
+    handle = [firstObject handle];
+    value = [handle value];
+    isoCountryCode = [firstObject isoCountryCode];
     v10 = TUFormattedPhoneNumber();
-    v11 = [NSString stringWithFormat:@"%@ – %@", v6, v10];
+    v11 = [NSString stringWithFormat:@"%@ – %@", localizedLabel, v10];
 
     v12 = [NSMutableArray arrayWithCapacity:2];
-    v13 = [v5 handle];
-    v14 = [v13 value];
+    handle2 = [firstObject handle];
+    value2 = [handle2 value];
 
-    if (v14)
+    if (value2)
     {
-      v15 = [v5 handle];
-      v16 = [v15 value];
-      [v12 addObject:v16];
+      handle3 = [firstObject handle];
+      value3 = [handle3 value];
+      [v12 addObject:value3];
     }
 
-    v17 = [v5 displayName];
+    displayName = [firstObject displayName];
 
-    if (v17)
+    if (displayName)
     {
-      v18 = [v5 displayName];
-      [v12 addObject:v18];
+      displayName2 = [firstObject displayName];
+      [v12 addObject:displayName2];
     }
 
     v19 = [NSMutableDictionary dictionaryWithCapacity:4];
     v20 = TUCallUserActivityDestinationIDKey;
     if (TUCallUserActivityDestinationIDKey)
     {
-      v21 = [v5 handle];
-      v22 = [v21 value];
+      handle4 = [firstObject handle];
+      value4 = [handle4 value];
 
-      if (v22)
+      if (value4)
       {
-        v23 = [v5 handle];
-        v24 = [v23 value];
-        [v19 setObject:v24 forKeyedSubscript:v20];
+        handle5 = [firstObject handle];
+        value5 = [handle5 value];
+        [v19 setObject:value5 forKeyedSubscript:v20];
       }
     }
 
     v25 = TUCallUserActivityHandleKey;
     if (TUCallUserActivityHandleKey)
     {
-      v26 = [v5 handle];
-      v27 = [v26 dictionaryRepresentation];
+      handle6 = [firstObject handle];
+      dictionaryRepresentation = [handle6 dictionaryRepresentation];
 
-      if (v27)
+      if (dictionaryRepresentation)
       {
-        v28 = [v5 handle];
-        v29 = [v28 dictionaryRepresentation];
-        [v19 setObject:v29 forKeyedSubscript:v25];
+        handle7 = [firstObject handle];
+        dictionaryRepresentation2 = [handle7 dictionaryRepresentation];
+        [v19 setObject:dictionaryRepresentation2 forKeyedSubscript:v25];
       }
     }
 
     v30 = TUCallUserActivityProviderIdentifierKey;
     if (TUCallUserActivityProviderIdentifierKey)
     {
-      v31 = [v5 provider];
-      v32 = [v31 identifier];
+      provider = [firstObject provider];
+      identifier = [provider identifier];
 
-      if (v32)
+      if (identifier)
       {
-        v33 = [v5 provider];
-        v34 = [v33 identifier];
-        [v19 setObject:v34 forKeyedSubscript:v30];
+        provider2 = [firstObject provider];
+        identifier2 = [provider2 identifier];
+        [v19 setObject:identifier2 forKeyedSubscript:v30];
       }
     }
 
-    v35 = [v5 displayName];
-    v36 = [CSDUserActivity appHistoryActivityWithTitle:v35 subtitle:v11 keywords:v12 userInfo:v19];
+    displayName3 = [firstObject displayName];
+    v36 = [CSDUserActivity appHistoryActivityWithTitle:displayName3 subtitle:v11 keywords:v12 userInfo:v19];
 
-    v37 = [(CSDUserActivityManager *)self activityCommunicator];
-    [v37 broadcastActivity:v36 withTimeout:1 shouldPrioritize:0.0];
+    activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+    [activityCommunicator broadcastActivity:v36 withTimeout:1 shouldPrioritize:0.0];
 
     v38 = sub_100004778();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -128,7 +128,7 @@
       *buf = 138412546;
       v40 = v36;
       v41 = 2112;
-      v42 = v5;
+      v42 = firstObject;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Began app history activity %@ for call %@", buf, 0x16u);
     }
   }
@@ -143,35 +143,35 @@
 
 - (void)updateSuppressRingtoneActivityListeningState
 {
-  v3 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDUserActivityManager *)self callCenter];
-  v8 = [v4 callPassingTest:&stru_10061A018];
+  callCenter = [(CSDUserActivityManager *)self callCenter];
+  v8 = [callCenter callPassingTest:&stru_10061A018];
 
-  v5 = [(CSDUserActivityManager *)self activityCommunicator];
+  activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
   if (v8)
   {
-    v6 = [v8 handle];
-    v7 = [v6 value];
-    [v5 listenForActivityType:3 dynamicIdentifier:v7];
+    handle = [v8 handle];
+    value = [handle value];
+    [activityCommunicator listenForActivityType:3 dynamicIdentifier:value];
   }
 
   else
   {
-    [v5 stopListeningForActivityType:3 dynamicIdentifier:0];
+    [activityCommunicator stopListeningForActivityType:3 dynamicIdentifier:0];
   }
 }
 
-+ (id)sharedInstanceWithQueue:(id)a3
++ (id)sharedInstanceWithQueue:(id)queue
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100076A40;
   block[3] = &unk_100619D38;
-  v9 = a3;
+  queueCopy = queue;
   v3 = qword_1006ACAE8;
-  v4 = v9;
+  v4 = queueCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_1006ACAE8, block);
@@ -183,23 +183,23 @@
   return v5;
 }
 
-- (CSDUserActivityManager)initWithQueue:(id)a3 activityCommunicator:(id)a4 callCenter:(id)a5 featureFlags:(id)a6
+- (CSDUserActivityManager)initWithQueue:(id)queue activityCommunicator:(id)communicator callCenter:(id)center featureFlags:(id)flags
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  communicatorCopy = communicator;
+  centerCopy = center;
+  flagsCopy = flags;
   v26.receiver = self;
   v26.super_class = CSDUserActivityManager;
   v15 = [(CSDUserActivityManager *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_queue, a3);
-    objc_storeStrong(&v16->_featureFlags, a6);
-    objc_storeStrong(&v16->_activityCommunicator, a4);
+    objc_storeStrong(&v15->_queue, queue);
+    objc_storeStrong(&v16->_featureFlags, flags);
+    objc_storeStrong(&v16->_activityCommunicator, communicator);
     [(CSDUserActivityCommunicatorProtocol *)v16->_activityCommunicator setDelegate:v16];
-    objc_storeWeak(&v16->_callCenter, v13);
+    objc_storeWeak(&v16->_callCenter, centerCopy);
     lockdownModeEnabled = v16->_lockdownModeEnabled;
     v16->_lockdownModeEnabled = &stru_100619FD8;
 
@@ -213,30 +213,30 @@
     [v18 addObserver:v16 selector:"callIsUplinkMutedChanged:" name:TUCallIsUplinkMutedChangedNotification object:0];
     [v18 addObserver:v16 selector:"callIsSendingVideoChanged:" name:TUCallIsSendingVideoChangedNotification object:0];
     [v18 addObserver:v16 selector:"smartHoldingSessionChanged:" name:TUCallSmartHoldingSessionChangedNotification object:0];
-    v19 = [(CSDUserActivityManager *)v16 callCenter];
-    v20 = [v19 providerManager];
-    [v20 addDelegate:v16 queue:v16->_queue];
+    callCenter = [(CSDUserActivityManager *)v16 callCenter];
+    providerManager = [callCenter providerManager];
+    [providerManager addDelegate:v16 queue:v16->_queue];
 
-    v21 = [v19 conversationManager];
-    [v21 addDelegate:v16 queue:v16->_queue];
+    conversationManager = [callCenter conversationManager];
+    [conversationManager addDelegate:v16 queue:v16->_queue];
 
     [(CSDUserActivityManager *)v16 updateCallHandoffRegistration];
     [(CSDUserActivityManager *)v16 updateAppHistoryActivityForCall];
     [(CSDUserActivityManager *)v16 updateSuppressRingtoneActivityListeningState];
-    v22 = [v19 currentCalls];
-    v23 = [v22 firstObject];
+    currentCalls = [callCenter currentCalls];
+    firstObject = [currentCalls firstObject];
 
-    if (v23)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(CSDUserActivityManager *)v16 updateHandoffActivityStateForCall:v23];
+        [(CSDUserActivityManager *)v16 updateHandoffActivityStateForCall:firstObject];
         v24 = sub_100004778();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v28 = v23;
+          v28 = firstObject;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "It's interesting that we have a call here when we don't really expect one %@", buf, 0xCu);
         }
       }
@@ -251,9 +251,9 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(CSDUserActivityManager *)self callCenter];
-  v5 = [v4 conversationManager];
-  [v5 removeDelegate:self];
+  callCenter = [(CSDUserActivityManager *)self callCenter];
+  conversationManager = [callCenter conversationManager];
+  [conversationManager removeDelegate:self];
 
   TURemoveEveryTelephonyCenterObserver();
   v6.receiver = self;
@@ -265,17 +265,17 @@
 {
   if (+[TUCallCapabilities supportsPrimaryCalling])
   {
-    v3 = [(CSDUserActivityManager *)self activityCommunicator];
-    [v3 stopListeningForActivityType:2 dynamicIdentifier:0];
+    activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+    [activityCommunicator stopListeningForActivityType:2 dynamicIdentifier:0];
 
-    v4 = [(CSDUserActivityManager *)self callCenter];
-    v5 = [v4 providerManager];
+    callCenter = [(CSDUserActivityManager *)self callCenter];
+    providerManager = [callCenter providerManager];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = [v5 providers];
+    obj = [providerManager providers];
     v18 = [obj countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v18)
     {
@@ -296,8 +296,8 @@
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v8 = [v7 handoffIdentifiers];
-          v9 = [v8 countByEnumeratingWithState:&v20 objects:v32 count:16];
+          handoffIdentifiers = [v7 handoffIdentifiers];
+          v9 = [handoffIdentifiers countByEnumeratingWithState:&v20 objects:v32 count:16];
           if (v9)
           {
             v10 = v9;
@@ -308,7 +308,7 @@
               {
                 if (*v21 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(handoffIdentifiers);
                 }
 
                 v13 = *(*(&v20 + 1) + 8 * i);
@@ -322,11 +322,11 @@
                   _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Registering to handle call handoff activity type with dynamic identifier %@ for provider %@", buf, 0x16u);
                 }
 
-                v15 = [(CSDUserActivityManager *)self activityCommunicator];
-                [v15 listenForActivityType:2 dynamicIdentifier:v13];
+                activityCommunicator2 = [(CSDUserActivityManager *)self activityCommunicator];
+                [activityCommunicator2 listenForActivityType:2 dynamicIdentifier:v13];
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v20 objects:v32 count:16];
+              v10 = [handoffIdentifiers countByEnumeratingWithState:&v20 objects:v32 count:16];
             }
 
             while (v10);
@@ -344,18 +344,18 @@
   }
 }
 
-- (void)updateHandoffActivityStateForCall:(id)a3
+- (void)updateHandoffActivityStateForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  callCopy = call;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (![v4 isHostedOnCurrentDevice])
+  if (![callCopy isHostedOnCurrentDevice])
   {
 LABEL_28:
-    v20 = [(CSDUserActivityManager *)self handoffActivity];
+    handoffActivity = [(CSDUserActivityManager *)self handoffActivity];
 
-    if (v20)
+    if (handoffActivity)
     {
       [(CSDUserActivityManager *)self endHandoffActivity];
     }
@@ -370,10 +370,10 @@ LABEL_28:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Frontmost call is hosted here ...", &v21, 2u);
   }
 
-  v7 = [v4 isEndpointOnCurrentDevice];
+  isEndpointOnCurrentDevice = [callCopy isEndpointOnCurrentDevice];
   v8 = sub_100004778();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (isEndpointOnCurrentDevice)
   {
     if (v9)
     {
@@ -401,20 +401,20 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "... and we are a secondary device ...", &v21, 2u);
     }
 
-    v16 = [v4 handoffDynamicIdentifier];
-    v17 = [v4 handoffActivityUserInfo];
+    handoffDynamicIdentifier = [callCopy handoffDynamicIdentifier];
+    handoffActivityUserInfo = [callCopy handoffActivityUserInfo];
     v18 = sub_100004778();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-    if (v16 && v17)
+    if (handoffDynamicIdentifier && handoffActivityUserInfo)
     {
       if (v19)
       {
         v21 = 138412290;
-        *v22 = v16;
+        *v22 = handoffDynamicIdentifier;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "... using a broadcast activity with dynamic identifier: %@.", &v21, 0xCu);
       }
 
-      v13 = [CSDUserActivity activityWithType:2 dynamicIdentifier:v16 userInfo:v17 originatingDeviceType:0];
+      v13 = [CSDUserActivity activityWithType:2 dynamicIdentifier:handoffDynamicIdentifier userInfo:handoffActivityUserInfo originatingDeviceType:0];
     }
 
     else
@@ -422,9 +422,9 @@ LABEL_28:
       if (v19)
       {
         v21 = 67109376;
-        *v22 = v16 == 0;
+        *v22 = handoffDynamicIdentifier == 0;
         *&v22[4] = 1024;
-        *&v22[6] = v17 == 0;
+        *&v22[6] = handoffActivityUserInfo == 0;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] ... but no dynamic identifier could be found (%d) or no handoff user info exists (%d). Not broadcasting frontmost call", &v21, 0xEu);
       }
 
@@ -459,12 +459,12 @@ LABEL_28:
     v21 = 138412546;
     *v22 = v13;
     *&v22[8] = 2112;
-    v23 = v4;
+    v23 = callCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Beginning handoff activity %@ for call %@", &v21, 0x16u);
   }
 
-  v15 = [(CSDUserActivityManager *)self activityCommunicator];
-  [v15 broadcastActivity:v13];
+  activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+  [activityCommunicator broadcastActivity:v13];
 
   [(CSDUserActivityManager *)self setHandoffActivity:v13];
 LABEL_30:
@@ -472,97 +472,97 @@ LABEL_30:
 
 - (void)endHandoffActivity
 {
-  v3 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDUserActivityManager *)self handoffActivity];
+  handoffActivity = [(CSDUserActivityManager *)self handoffActivity];
 
-  if (v4)
+  if (handoffActivity)
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CSDUserActivityManager *)self handoffActivity];
+      handoffActivity2 = [(CSDUserActivityManager *)self handoffActivity];
       v9 = 138412290;
-      v10 = v6;
+      v10 = handoffActivity2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Ending handoff activity: %@", &v9, 0xCu);
     }
 
-    v7 = [(CSDUserActivityManager *)self activityCommunicator];
-    v8 = [(CSDUserActivityManager *)self handoffActivity];
-    [v7 stopBroadcastingActivity:v8];
+    activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+    handoffActivity3 = [(CSDUserActivityManager *)self handoffActivity];
+    [activityCommunicator stopBroadcastingActivity:handoffActivity3];
 
     [(CSDUserActivityManager *)self setHandoffActivity:0];
   }
 }
 
-- (void)startSuppressRingtoneActivityBroadcastingIfNecessaryForCallWithStatusChange:(id)a3
+- (void)startSuppressRingtoneActivityBroadcastingIfNecessaryForCallWithStatusChange:(id)change
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changeCopy = change;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v4 && [v4 status] == 6 && objc_msgSend(v4, "wasDeclined"))
+  if (changeCopy && [changeCopy status] == 6 && objc_msgSend(changeCopy, "wasDeclined"))
   {
     v6 = sub_100004778();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = changeCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Broadcasting suppress ringtone activity for declined call: %@", &v7, 0xCu);
     }
 
-    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingForCall:v4];
+    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingForCall:changeCopy];
   }
 }
 
-- (void)startSuppressRingtoneActivityBroadcastingForCall:(id)a3
+- (void)startSuppressRingtoneActivityBroadcastingForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  callCopy = call;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDUserActivityManager *)self activityCommunicator];
-  v6 = [v4 handle];
+  activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+  handle = [callCopy handle];
 
-  v7 = [v6 value];
-  v8 = [CSDUserActivity activityWithType:3 dynamicIdentifier:v7 userInfo:0 originatingDeviceType:0];
-  [v9 broadcastActivity:v8 withTimeout:1 shouldPrioritize:2.0];
+  value = [handle value];
+  v8 = [CSDUserActivity activityWithType:3 dynamicIdentifier:value userInfo:0 originatingDeviceType:0];
+  [activityCommunicator broadcastActivity:v8 withTimeout:1 shouldPrioritize:2.0];
 }
 
-- (void)updateHandoffAdvertisementForConversation:(id)a3 fromOldConversation:(id)a4
+- (void)updateHandoffAdvertisementForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDUserActivityManager *)self callCenter];
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  callCenter = [(CSDUserActivityManager *)self callCenter];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007799C;
   v13[3] = &unk_10061A040;
-  v14 = v6;
-  v9 = v6;
-  v10 = [v8 callPassingTest:v13];
+  v14 = conversationCopy;
+  v9 = conversationCopy;
+  v10 = [callCenter callPassingTest:v13];
 
   if (v10)
   {
-    v11 = [v10 isUplinkMuted];
-    v12 = [v10 isSendingVideo];
+    isUplinkMuted = [v10 isUplinkMuted];
+    isSendingVideo = [v10 isSendingVideo];
   }
 
   else
   {
-    v11 = 0;
-    v12 = 1;
+    isUplinkMuted = 0;
+    isSendingVideo = 1;
   }
 
-  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:v9 fromOldConversation:v7 uplinkMuted:v11 sendingVideo:v12];
+  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:v9 fromOldConversation:oldConversationCopy uplinkMuted:isUplinkMuted sendingVideo:isSendingVideo];
 }
 
-- (void)updateHandoffAdvertisementForCall:(id)a3
+- (void)updateHandoffAdvertisementForCall:(id)call
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 isConversation] || (objc_msgSend(v5, "callGroupUUID"), (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, v8 = objc_msgSend(v5, "status"), v7, v8 != 1))
+  callCopy = call;
+  v5 = callCopy;
+  if (!callCopy || ![callCopy isConversation] || (objc_msgSend(v5, "callGroupUUID"), (v6 = objc_claimAutoreleasedReturnValue()) == 0) || (v7 = v6, v8 = objc_msgSend(v5, "status"), v7, v8 != 1))
   {
     v14 = sub_100004778();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -629,8 +629,8 @@ LABEL_30:
     }
 
     v35 = v25;
-    v26 = [v5 callGroupUUID];
-    if (v26)
+    callGroupUUID = [v5 callGroupUUID];
+    if (callGroupUUID)
     {
       v27 = @"YES";
     }
@@ -675,11 +675,11 @@ LABEL_37:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = [(CSDUserActivityManager *)self callCenter];
-  v10 = [v9 conversationManager];
-  v11 = [v10 activeConversations];
+  callCenter = [(CSDUserActivityManager *)self callCenter];
+  conversationManager = [callCenter conversationManager];
+  activeConversations = [conversationManager activeConversations];
 
-  v12 = [v11 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  v12 = [activeConversations countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v12)
   {
 
@@ -706,13 +706,13 @@ LABEL_41:
       v32 = @"NO";
     }
 
-    v26 = [v5 callGroupUUID];
+    callGroupUUID = [v5 callGroupUUID];
     *buf = 138412802;
     v42 = v33;
     v43 = 2112;
     v44 = v32;
     v45 = 2112;
-    v46 = v26;
+    v46 = callGroupUUID;
     v29 = "[WARN] User activity manager aware of change to audio-video state (mic muted: %@, camera enabled: %@), but could not find conversation for call with groupUUID: %@";
     v30 = v14;
     v31 = 32;
@@ -720,7 +720,7 @@ LABEL_41:
   }
 
   v13 = v12;
-  v34 = self;
+  selfCopy = self;
   v14 = 0;
   v15 = *v37;
   do
@@ -729,13 +729,13 @@ LABEL_41:
     {
       if (*v37 != v15)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(activeConversations);
       }
 
       v17 = *(*(&v36 + 1) + 8 * i);
-      v18 = [v5 callGroupUUID];
-      v19 = [v17 groupUUID];
-      v20 = [v18 isEqual:v19];
+      callGroupUUID2 = [v5 callGroupUUID];
+      groupUUID = [v17 groupUUID];
+      v20 = [callGroupUUID2 isEqual:groupUUID];
 
       if (v20)
       {
@@ -745,7 +745,7 @@ LABEL_41:
       }
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    v13 = [activeConversations countByEnumeratingWithState:&v36 objects:v40 count:16];
   }
 
   while (v13);
@@ -755,37 +755,37 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  -[CSDUserActivityManager updateHandoffAdvertisementForConversation:fromOldConversation:uplinkMuted:sendingVideo:](v34, "updateHandoffAdvertisementForConversation:fromOldConversation:uplinkMuted:sendingVideo:", v14, 0, [v5 isUplinkMuted], objc_msgSend(v5, "isSendingVideo"));
+  -[CSDUserActivityManager updateHandoffAdvertisementForConversation:fromOldConversation:uplinkMuted:sendingVideo:](selfCopy, "updateHandoffAdvertisementForConversation:fromOldConversation:uplinkMuted:sendingVideo:", v14, 0, [v5 isUplinkMuted], objc_msgSend(v5, "isSendingVideo"));
 LABEL_39:
 }
 
-- (void)processStatusChangeAsHandedOffIfNecessaryForCall:(id)a3
+- (void)processStatusChangeAsHandedOffIfNecessaryForCall:(id)call
 {
-  v4 = a3;
-  v34 = self;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  callCopy = call;
+  selfCopy = self;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 provider];
-  if (![v6 isFaceTimeProvider] || objc_msgSend(v4, "status") != 6 || objc_msgSend(v4, "disconnectedReason") != 7)
+  provider = [callCopy provider];
+  if (![provider isFaceTimeProvider] || objc_msgSend(callCopy, "status") != 6 || objc_msgSend(callCopy, "disconnectedReason") != 7)
   {
 
     goto LABEL_29;
   }
 
-  v7 = [v4 handoffRecipientParticipant];
+  handoffRecipientParticipant = [callCopy handoffRecipientParticipant];
 
-  if (v7)
+  if (handoffRecipientParticipant)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [(CSDUserActivityManager *)self callCenter];
-    v9 = [v8 conversationManager];
-    v10 = [v9 activeConversations];
+    callCenter = [(CSDUserActivityManager *)self callCenter];
+    conversationManager = [callCenter conversationManager];
+    activeConversations = [conversationManager activeConversations];
 
-    v11 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+    v11 = [activeConversations countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (!v11)
     {
 
@@ -801,23 +801,23 @@ LABEL_39:
       {
         if (*v41 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(activeConversations);
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
-        v16 = [v4 callGroupUUID];
-        v17 = [v15 groupUUID];
-        if ([v16 isEqual:v17])
+        callGroupUUID = [callCopy callGroupUUID];
+        groupUUID = [v15 groupUUID];
+        if ([callGroupUUID isEqual:groupUUID])
         {
-          v18 = [v15 provider];
-          v19 = [v18 isDefaultProvider];
+          provider2 = [v15 provider];
+          isDefaultProvider = [provider2 isDefaultProvider];
 
-          if (!v19)
+          if (!isDefaultProvider)
           {
             continue;
           }
 
-          v16 = v35;
+          callGroupUUID = v35;
           v35 = v15;
         }
 
@@ -826,26 +826,26 @@ LABEL_39:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v12 = [activeConversations countByEnumeratingWithState:&v40 objects:v49 count:16];
       if (!v12)
       {
 
         if (v35)
         {
-          v20 = [v4 handoffRecipientParticipant];
-          v21 = [v20 unsignedLongLongValue];
+          handoffRecipientParticipant2 = [callCopy handoffRecipientParticipant];
+          unsignedLongLongValue = [handoffRecipientParticipant2 unsignedLongLongValue];
 
-          v22 = [v35 groupUUID];
-          v23 = [CSDUserActivityManager allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:v22 participantIdentifier:v21];
+          groupUUID2 = [v35 groupUUID];
+          v23 = [CSDUserActivityManager allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:groupUUID2 participantIdentifier:unsignedLongLongValue];
 
           v24 = sub_100004778();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v35 UUID];
+            uUID = [v35 UUID];
             *buf = 138412546;
-            v46 = v25;
+            v46 = uUID;
             v47 = 2048;
-            v48 = v21;
+            v48 = unsignedLongLongValue;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "After conversation %@ was handed off elsewhere, re-registering for handoff advertisement for participant %llu so that it can be handed off back", buf, 0x16u);
           }
 
@@ -869,8 +869,8 @@ LABEL_39:
                 }
 
                 v31 = *(*(&v36 + 1) + 8 * j);
-                v32 = [(CSDUserActivityManager *)v34 activityCommunicator];
-                [v32 listenForActivityType:5 dynamicIdentifier:v31];
+                activityCommunicator = [(CSDUserActivityManager *)selfCopy activityCommunicator];
+                [activityCommunicator listenForActivityType:5 dynamicIdentifier:v31];
               }
 
               v28 = [v26 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -887,7 +887,7 @@ LABEL_31:
         v33 = sub_100004778();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          sub_100471690(v4, v33);
+          sub_100471690(callCopy, v33);
         }
 
 LABEL_33:
@@ -900,20 +900,20 @@ LABEL_33:
 LABEL_29:
 }
 
-- (void)updateHandoffRegistrationForConversation:(id)a3 fromOldConversation:(id)a4
+- (void)updateHandoffRegistrationForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v46 = a3;
-  v47 = a4;
-  v6 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  conversationCopy = conversation;
+  oldConversationCopy = oldConversation;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDUserActivityManager *)self featureFlags];
-  v8 = [v7 conversationHandoffEnabled];
+  featureFlags = [(CSDUserActivityManager *)self featureFlags];
+  conversationHandoffEnabled = [featureFlags conversationHandoffEnabled];
 
-  if (v8)
+  if (conversationHandoffEnabled)
   {
-    v9 = [(CSDUserActivityManager *)self lockdownModeEnabled];
-    v10 = v9[2]();
+    lockdownModeEnabled = [(CSDUserActivityManager *)self lockdownModeEnabled];
+    v10 = lockdownModeEnabled[2]();
 
     if (v10)
     {
@@ -929,19 +929,19 @@ LABEL_29:
     {
       v12 = +[NSMutableSet set];
       v45 = +[NSMutableSet set];
-      if ([v46 isAnyOtherAccountDeviceActive])
+      if ([conversationCopy isAnyOtherAccountDeviceActive])
       {
-        v13 = [v46 provider];
-        v14 = [v13 isDefaultProvider];
+        provider = [conversationCopy provider];
+        isDefaultProvider = [provider isDefaultProvider];
 
-        if (v14)
+        if (isDefaultProvider)
         {
           v62 = 0u;
           v63 = 0u;
           v60 = 0u;
           v61 = 0u;
-          v15 = [v46 activeRemoteParticipants];
-          v16 = [v15 countByEnumeratingWithState:&v60 objects:v68 count:16];
+          activeRemoteParticipants = [conversationCopy activeRemoteParticipants];
+          v16 = [activeRemoteParticipants countByEnumeratingWithState:&v60 objects:v68 count:16];
           if (v16)
           {
             v17 = v16;
@@ -952,19 +952,19 @@ LABEL_29:
               {
                 if (*v61 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(activeRemoteParticipants);
                 }
 
                 v20 = *(*(&v60 + 1) + 8 * i);
                 if ([v20 isLocalAccountHandle])
                 {
-                  v21 = [v46 groupUUID];
-                  v22 = +[CSDUserActivityManager allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:](CSDUserActivityManager, "allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:", v21, [v20 identifier]);
+                  groupUUID = [conversationCopy groupUUID];
+                  v22 = +[CSDUserActivityManager allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:](CSDUserActivityManager, "allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:", groupUUID, [v20 identifier]);
                   [v12 unionSet:v22];
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v60 objects:v68 count:16];
+              v17 = [activeRemoteParticipants countByEnumeratingWithState:&v60 objects:v68 count:16];
             }
 
             while (v17);
@@ -972,14 +972,14 @@ LABEL_29:
         }
       }
 
-      if (v47 && [v47 isAnyOtherAccountDeviceActive])
+      if (oldConversationCopy && [oldConversationCopy isAnyOtherAccountDeviceActive])
       {
         v58 = 0u;
         v59 = 0u;
         v56 = 0u;
         v57 = 0u;
-        v23 = [v47 activeRemoteParticipants];
-        v24 = [v23 countByEnumeratingWithState:&v56 objects:v67 count:16];
+        activeRemoteParticipants2 = [oldConversationCopy activeRemoteParticipants];
+        v24 = [activeRemoteParticipants2 countByEnumeratingWithState:&v56 objects:v67 count:16];
         if (v24)
         {
           v25 = v24;
@@ -990,26 +990,26 @@ LABEL_29:
             {
               if (*v57 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(activeRemoteParticipants2);
               }
 
               v28 = *(*(&v56 + 1) + 8 * j);
               if ([v28 isLocalAccountHandle])
               {
-                v29 = [v47 groupUUID];
-                v30 = +[CSDUserActivityManager allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:](CSDUserActivityManager, "allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:", v29, [v28 identifier]);
+                groupUUID2 = [oldConversationCopy groupUUID];
+                v30 = +[CSDUserActivityManager allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:](CSDUserActivityManager, "allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:participantIdentifier:", groupUUID2, [v28 identifier]);
 
-                v31 = [v30 anyObject];
-                LOBYTE(v29) = [v12 containsObject:v31];
+                anyObject = [v30 anyObject];
+                LOBYTE(groupUUID2) = [v12 containsObject:anyObject];
 
-                if ((v29 & 1) == 0)
+                if ((groupUUID2 & 1) == 0)
                 {
                   [v45 unionSet:v30];
                 }
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v56 objects:v67 count:16];
+            v25 = [activeRemoteParticipants2 countByEnumeratingWithState:&v56 objects:v67 count:16];
           }
 
           while (v25);
@@ -1036,8 +1036,8 @@ LABEL_29:
             }
 
             v36 = *(*(&v52 + 1) + 8 * k);
-            v37 = [(CSDUserActivityManager *)self activityCommunicator];
-            [v37 listenForActivityType:5 dynamicIdentifier:v36];
+            activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+            [activityCommunicator listenForActivityType:5 dynamicIdentifier:v36];
           }
 
           v33 = [v11 countByEnumeratingWithState:&v52 objects:v66 count:16];
@@ -1066,8 +1066,8 @@ LABEL_29:
             }
 
             v43 = *(*(&v48 + 1) + 8 * m);
-            v44 = [(CSDUserActivityManager *)self activityCommunicator];
-            [v44 stopListeningForActivityType:5 dynamicIdentifier:v43];
+            activityCommunicator2 = [(CSDUserActivityManager *)self activityCommunicator];
+            [activityCommunicator2 stopListeningForActivityType:5 dynamicIdentifier:v43];
           }
 
           v40 = [v38 countByEnumeratingWithState:&v48 objects:v65 count:16];
@@ -1079,34 +1079,34 @@ LABEL_29:
   }
 }
 
-- (void)deregisterHandoffIdentifiersForConversation:(id)a3
+- (void)deregisterHandoffIdentifiersForConversation:(id)conversation
 {
-  v10 = a3;
-  v4 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  conversationCopy = conversation;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDUserActivityManager *)self featureFlags];
-  v6 = [v5 conversationHandoffEnabled];
+  featureFlags = [(CSDUserActivityManager *)self featureFlags];
+  conversationHandoffEnabled = [featureFlags conversationHandoffEnabled];
 
-  if (v6)
+  if (conversationHandoffEnabled)
   {
-    v7 = [(CSDUserActivityManager *)self activityCommunicator];
-    v8 = [v10 groupUUID];
-    v9 = [v8 UUIDString];
-    [v7 stopListeningForActivityType:5 matchingDynamicIdentifierSubstring:v9];
+    activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+    groupUUID = [conversationCopy groupUUID];
+    uUIDString = [groupUUID UUIDString];
+    [activityCommunicator stopListeningForActivityType:5 matchingDynamicIdentifierSubstring:uUIDString];
   }
 }
 
-+ (id)allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:(id)a3 participantIdentifier:(unint64_t)a4
++ (id)allConversationHandoffDynamicIdentifierPossibilitiesForGroupUUID:(id)d participantIdentifier:(unint64_t)identifier
 {
-  v5 = a3;
-  v6 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:v5 participantIdentifier:a4 uplinkMuted:0 sendingVideo:0];
+  dCopy = d;
+  v6 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:dCopy participantIdentifier:identifier uplinkMuted:0 sendingVideo:0];
   v13[0] = v6;
-  v7 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:v5 participantIdentifier:a4 uplinkMuted:0 sendingVideo:1];
+  v7 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:dCopy participantIdentifier:identifier uplinkMuted:0 sendingVideo:1];
   v13[1] = v7;
-  v8 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:v5 participantIdentifier:a4 uplinkMuted:1 sendingVideo:0];
+  v8 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:dCopy participantIdentifier:identifier uplinkMuted:1 sendingVideo:0];
   v13[2] = v8;
-  v9 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:v5 participantIdentifier:a4 uplinkMuted:1 sendingVideo:1];
+  v9 = [NSString tu_conversationHandoffDynamicIdentifierWithGroupUUID:dCopy participantIdentifier:identifier uplinkMuted:1 sendingVideo:1];
 
   v13[3] = v9;
   v10 = [NSArray arrayWithObjects:v13 count:4];
@@ -1115,28 +1115,28 @@ LABEL_29:
   return v11;
 }
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 object];
+  object = [changedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 object];
-    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingIfNecessaryForCallWithStatusChange:v8];
+    object2 = [changedCopy object];
+    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingIfNecessaryForCallWithStatusChange:object2];
 
     [(CSDUserActivityManager *)self updateAppHistoryActivityForCall];
-    v9 = [v4 object];
-    [(CSDUserActivityManager *)self updateHandoffActivityStateForCall:v9];
+    object3 = [changedCopy object];
+    [(CSDUserActivityManager *)self updateHandoffActivityStateForCall:object3];
 
     [(CSDUserActivityManager *)self updateSuppressRingtoneActivityListeningState];
-    v10 = [v4 object];
-    [(CSDUserActivityManager *)self processStatusChangeAsHandedOffIfNecessaryForCall:v10];
+    object4 = [changedCopy object];
+    [(CSDUserActivityManager *)self processStatusChangeAsHandedOffIfNecessaryForCall:object4];
   }
 
   else
@@ -1144,9 +1144,9 @@ LABEL_29:
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 object];
+      object5 = [changedCopy object];
       v14 = 138412546;
-      v15 = v12;
+      v15 = object5;
       v16 = 2112;
       v17 = objc_opt_class();
       v13 = v17;
@@ -1155,20 +1155,20 @@ LABEL_29:
   }
 }
 
-- (void)callContinuityChanged:(id)a3
+- (void)callContinuityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 object];
+  object = [changedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 object];
-    [(CSDUserActivityManager *)self updateHandoffActivityStateForCall:v8];
+    object2 = [changedCopy object];
+    [(CSDUserActivityManager *)self updateHandoffActivityStateForCall:object2];
   }
 
   else
@@ -1176,9 +1176,9 @@ LABEL_29:
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 object];
+      object3 = [changedCopy object];
       v12 = 138412546;
-      v13 = v10;
+      v13 = object3;
       v14 = 2112;
       v15 = objc_opt_class();
       v11 = v15;
@@ -1187,65 +1187,65 @@ LABEL_29:
   }
 }
 
-- (void)shouldSuppressRingtoneChanged:(id)a3
+- (void)shouldSuppressRingtoneChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDUserActivityManager *)self updateSuppressRingtoneActivityListeningState];
-  v6 = [v4 object];
+  object = [changedCopy object];
 
-  if ([v6 shouldSuppressRingtone] && (objc_msgSend(v6, "ringtoneSuppressedRemotely") & 1) == 0)
+  if ([object shouldSuppressRingtone] && (objc_msgSend(object, "ringtoneSuppressedRemotely") & 1) == 0)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = object;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Broadcasting suppress ringtone activity for call that suppressed its ringtone: %@", &v8, 0xCu);
     }
 
-    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingForCall:v6];
+    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingForCall:object];
   }
 }
 
-- (void)callStartedConnecting:(id)a3
+- (void)callStartedConnecting:(id)connecting
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  connectingCopy = connecting;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 object];
+  object = [connectingCopy object];
 
-  if (([v6 isOutgoing] & 1) == 0)
+  if (([object isOutgoing] & 1) == 0)
   {
     v7 = sub_100004778();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v6;
+      v9 = object;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Broadcasting suppress ringtone activity for incoming call that started connecting: %@", &v8, 0xCu);
     }
 
-    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingForCall:v6];
+    [(CSDUserActivityManager *)self startSuppressRingtoneActivityBroadcastingForCall:object];
   }
 }
 
-- (void)callConnected:(id)a3
+- (void)callConnected:(id)connected
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  connectedCopy = connected;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 object];
+  object = [connectedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 object];
-    [(CSDUserActivityManager *)self updateHandoffActivityStateForCall:v8];
+    object2 = [connectedCopy object];
+    [(CSDUserActivityManager *)self updateHandoffActivityStateForCall:object2];
   }
 
   else
@@ -1253,9 +1253,9 @@ LABEL_29:
     v9 = sub_100004778();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 object];
+      object3 = [connectedCopy object];
       v12 = 138412546;
-      v13 = v10;
+      v13 = object3;
       v14 = 2112;
       v15 = objc_opt_class();
       v11 = v15;
@@ -1264,64 +1264,64 @@ LABEL_29:
   }
 }
 
-- (void)callIsUplinkMutedChanged:(id)a3
+- (void)callIsUplinkMutedChanged:(id)changed
 {
-  v8 = a3;
-  v4 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  changedCopy = changed;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDUserActivityManager *)self featureFlags];
-  v6 = [v5 conversationHandoffEnabled];
+  featureFlags = [(CSDUserActivityManager *)self featureFlags];
+  conversationHandoffEnabled = [featureFlags conversationHandoffEnabled];
 
-  if (v6)
+  if (conversationHandoffEnabled)
   {
-    v7 = [v8 object];
-    [(CSDUserActivityManager *)self updateAudioVideoHandoffPreferencesForCall:v7];
+    object = [changedCopy object];
+    [(CSDUserActivityManager *)self updateAudioVideoHandoffPreferencesForCall:object];
   }
 }
 
-- (void)callIsSendingVideoChanged:(id)a3
+- (void)callIsSendingVideoChanged:(id)changed
 {
-  v8 = a3;
-  v4 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  changedCopy = changed;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDUserActivityManager *)self featureFlags];
-  v6 = [v5 conversationHandoffEnabled];
+  featureFlags = [(CSDUserActivityManager *)self featureFlags];
+  conversationHandoffEnabled = [featureFlags conversationHandoffEnabled];
 
-  if (v6)
+  if (conversationHandoffEnabled)
   {
-    v7 = [v8 object];
-    [(CSDUserActivityManager *)self updateAudioVideoHandoffPreferencesForCall:v7];
+    object = [changedCopy object];
+    [(CSDUserActivityManager *)self updateAudioVideoHandoffPreferencesForCall:object];
   }
 }
 
-- (void)smartHoldingSessionChanged:(id)a3
+- (void)smartHoldingSessionChanged:(id)changed
 {
-  v4 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDUserActivityManager *)self featureFlags];
-  v6 = [v5 smartHoldingRelayEnabled];
+  featureFlags = [(CSDUserActivityManager *)self featureFlags];
+  smartHoldingRelayEnabled = [featureFlags smartHoldingRelayEnabled];
 
-  if (v6)
+  if (smartHoldingRelayEnabled)
   {
 
     [(CSDUserActivityManager *)self updateSuppressRingtoneActivityListeningState];
   }
 }
 
-- (void)updateAudioVideoHandoffPreferencesForCall:(id)a3
+- (void)updateAudioVideoHandoffPreferencesForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self featureFlags];
-  v6 = [v5 conversationHandoffEnabled];
+  callCopy = call;
+  featureFlags = [(CSDUserActivityManager *)self featureFlags];
+  conversationHandoffEnabled = [featureFlags conversationHandoffEnabled];
 
-  if (v6)
+  if (conversationHandoffEnabled)
   {
-    if (v4 && [v4 isConversation] && (objc_msgSend(v4, "callGroupUUID"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, v9 = objc_msgSend(v4, "status"), v8, v9 == 1))
+    if (callCopy && [callCopy isConversation] && (objc_msgSend(callCopy, "callGroupUUID"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, v9 = objc_msgSend(callCopy, "status"), v8, v9 == 1))
     {
-      [(CSDUserActivityManager *)self updateHandoffAdvertisementForCall:v4];
+      [(CSDUserActivityManager *)self updateHandoffAdvertisementForCall:callCopy];
     }
 
     else
@@ -1329,7 +1329,7 @@ LABEL_29:
       v10 = sub_100004778();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        if ([v4 isUplinkMuted])
+        if ([callCopy isUplinkMuted])
         {
           v11 = @"YES";
         }
@@ -1339,7 +1339,7 @@ LABEL_29:
           v11 = @"NO";
         }
 
-        if ([v4 isSendingVideo])
+        if ([callCopy isSendingVideo])
         {
           v12 = @"YES";
         }
@@ -1349,7 +1349,7 @@ LABEL_29:
           v12 = @"NO";
         }
 
-        if (v4)
+        if (callCopy)
         {
           v13 = @"YES";
         }
@@ -1359,9 +1359,9 @@ LABEL_29:
           v13 = @"NO";
         }
 
-        if (v4)
+        if (callCopy)
         {
-          if ([v4 isConversation])
+          if ([callCopy isConversation])
           {
             v14 = @"YES";
           }
@@ -1371,8 +1371,8 @@ LABEL_29:
             v14 = @"NO";
           }
 
-          v15 = [v4 callGroupUUID];
-          if (v15)
+          callGroupUUID = [callCopy callGroupUUID];
+          if (callGroupUUID)
           {
             v16 = @"YES";
           }
@@ -1383,7 +1383,7 @@ LABEL_29:
           }
 
           v18 = 138413570;
-          if ([v4 status] == 1)
+          if ([callCopy status] == 1)
           {
             v17 = @"YES";
           }
@@ -1428,59 +1428,59 @@ LABEL_29:
   }
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDUserActivityManager *)self updateCallHandoffRegistration];
 }
 
-- (void)receivedBroadcastedActivityType:(unsigned int)a3 dynamicIdentifier:(id)a4 originatingDeviceType:(id)a5
+- (void)receivedBroadcastedActivityType:(unsigned int)type dynamicIdentifier:(id)identifier originatingDeviceType:(id)deviceType
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CSDUserActivityManager *)self queue];
+  identifierCopy = identifier;
+  deviceTypeCopy = deviceType;
+  queue = [(CSDUserActivityManager *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000797B8;
   v13[3] = &unk_10061A068;
-  v17 = a3;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  typeCopy = type;
+  v14 = identifierCopy;
+  selfCopy = self;
+  v16 = deviceTypeCopy;
+  v11 = deviceTypeCopy;
+  v12 = identifierCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)checkForSmartHoldingCallForSuppressRingtone:(id)a3
+- (void)checkForSmartHoldingCallForSuppressRingtone:(id)ringtone
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self callCenter];
-  v6 = [v5 frontmostCall];
+  ringtoneCopy = ringtone;
+  callCenter = [(CSDUserActivityManager *)self callCenter];
+  frontmostCall = [callCenter frontmostCall];
 
-  if (v6)
+  if (frontmostCall)
   {
-    v7 = [v6 handle];
-    v8 = [v7 value];
-    if (([v8 isEqualToString:v4] & 1) != 0 && (objc_msgSend(v6, "smartHoldingSession"), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+    handle = [frontmostCall handle];
+    value = [handle value];
+    if (([value isEqualToString:ringtoneCopy] & 1) != 0 && (objc_msgSend(frontmostCall, "smartHoldingSession"), (v9 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v10 = v9;
-      v11 = [v6 smartHoldingSession];
-      v12 = [v11 state];
+      smartHoldingSession = [frontmostCall smartHoldingSession];
+      state = [smartHoldingSession state];
 
-      if (v12 == 3)
+      if (state == 3)
       {
         v13 = sub_100004778();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v6;
+          v15 = frontmostCall;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received suppress ringtone activity broadcast. Suppressing ringtone due to smart holding requires user attention state for call %@", &v14, 0xCu);
         }
 
-        [v6 suppressRingtoneDueToRemoteSuppression];
+        [frontmostCall suppressRingtoneDueToRemoteSuppression];
       }
     }
 
@@ -1490,88 +1490,88 @@ LABEL_29:
   }
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v7 = a5;
-  v9 = a4;
-  v8 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  oldConversationCopy = oldConversation;
+  conversationCopy = conversation;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:v9 fromOldConversation:v7];
+  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:conversationCopy fromOldConversation:oldConversationCopy];
 }
 
-- (void)conversationManager:(id)a3 avModeChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager avModeChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v7 = a5;
-  v9 = a4;
-  v8 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  oldConversationCopy = oldConversation;
+  conversationCopy = conversation;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:v9 fromOldConversation:v7];
+  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:conversationCopy fromOldConversation:oldConversationCopy];
 }
 
-- (void)conversationManager:(id)a3 screeningChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager screeningChangedForConversation:(id)conversation
 {
-  v6 = a4;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  conversationCopy = conversation;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:v6 fromOldConversation:0];
+  [(CSDUserActivityManager *)self updateHandoffAdvertisementForConversation:conversationCopy fromOldConversation:0];
 }
 
-- (void)conversationManager:(id)a3 activeRemoteParticipantsChangedForConversation:(id)a4 fromOldConversation:(id)a5
+- (void)conversationManager:(id)manager activeRemoteParticipantsChangedForConversation:(id)conversation fromOldConversation:(id)oldConversation
 {
-  v6 = a4;
-  v7 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  conversationCopy = conversation;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 UUID];
+    uUID = [conversationCopy UUID];
     v10 = 136315394;
     v11 = "[CSDUserActivityManager conversationManager:activeRemoteParticipantsChangedForConversation:fromOldConversation:]";
     v12 = 2112;
-    v13 = v9;
+    v13 = uUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Updating handoff registration for conversation UUID %@", &v10, 0x16u);
   }
 
-  [(CSDUserActivityManager *)self updateHandoffRegistrationForConversation:v6 fromOldConversation:v6];
+  [(CSDUserActivityManager *)self updateHandoffRegistrationForConversation:conversationCopy fromOldConversation:conversationCopy];
 }
 
-- (void)conversationManager:(id)a3 addedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager addedActiveConversation:(id)conversation
 {
-  v5 = a4;
-  v6 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v6);
+  conversationCopy = conversation;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 UUID];
+    uUID = [conversationCopy UUID];
     v9 = 136315394;
     v10 = "[CSDUserActivityManager conversationManager:addedActiveConversation:]";
     v11 = 2112;
-    v12 = v8;
+    v12 = uUID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: Updating handoff registration for conversation UUID %@", &v9, 0x16u);
   }
 
-  [(CSDUserActivityManager *)self updateHandoffRegistrationForConversation:v5 fromOldConversation:0];
+  [(CSDUserActivityManager *)self updateHandoffRegistrationForConversation:conversationCopy fromOldConversation:0];
 }
 
-- (void)conversationManager:(id)a3 removedActiveConversation:(id)a4
+- (void)conversationManager:(id)manager removedActiveConversation:(id)conversation
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  conversationCopy = conversation;
+  managerCopy = manager;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [v7 activeConversations];
+  activeConversations = [managerCopy activeConversations];
 
-  v10 = [v9 count];
+  v10 = [activeConversations count];
   if (v10)
   {
-    [(CSDUserActivityManager *)self deregisterHandoffIdentifiersForConversation:v6];
+    [(CSDUserActivityManager *)self deregisterHandoffIdentifiersForConversation:conversationCopy];
   }
 
   else
@@ -1583,22 +1583,22 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No more conversations, unregistering all conversation handoff dynamic identifiers", v13, 2u);
     }
 
-    v12 = [(CSDUserActivityManager *)self activityCommunicator];
-    [v12 stopListeningForActivityType:5 dynamicIdentifier:0];
+    activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+    [activityCommunicator stopListeningForActivityType:5 dynamicIdentifier:0];
   }
 
-  [(CSDUserActivityManager *)self stopAdvertisingForRemovedConversationIfNecessary:v6];
+  [(CSDUserActivityManager *)self stopAdvertisingForRemovedConversationIfNecessary:conversationCopy];
 }
 
-- (void)stopAdvertisingForRemovedConversationIfNecessary:(id)a3
+- (void)stopAdvertisingForRemovedConversationIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(CSDUserActivityManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  necessaryCopy = necessary;
+  queue = [(CSDUserActivityManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v19 = self;
-  v6 = [(CSDUserActivityManager *)self activityCommunicator];
-  v7 = [v6 queuedActivitiesOfType:5];
+  selfCopy = self;
+  activityCommunicator = [(CSDUserActivityManager *)self activityCommunicator];
+  v7 = [activityCommunicator queuedActivitiesOfType:5];
 
   v22 = 0u;
   v23 = 0u;
@@ -1620,15 +1620,15 @@ LABEL_29:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 dynamicIdentifier];
-        v15 = [v4 groupUUID];
-        v16 = [v15 UUIDString];
-        v17 = [v14 containsString:v16];
+        dynamicIdentifier = [v13 dynamicIdentifier];
+        groupUUID = [necessaryCopy groupUUID];
+        uUIDString = [groupUUID UUIDString];
+        v17 = [dynamicIdentifier containsString:uUIDString];
 
         if (v17)
         {
-          v18 = [(CSDUserActivityManager *)v19 activityCommunicator];
-          [v18 stopBroadcastingActivity:v13];
+          activityCommunicator2 = [(CSDUserActivityManager *)selfCopy activityCommunicator];
+          [activityCommunicator2 stopBroadcastingActivity:v13];
         }
       }
 

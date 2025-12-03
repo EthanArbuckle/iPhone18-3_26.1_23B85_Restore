@@ -1,18 +1,18 @@
 @interface CKAssistantSyncHandler
-- (id)identifierForChatIdentifier:(id)a3;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (id)identifierForChatIdentifier:(id)identifier;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 - (void)syncDidEnd;
 @end
 
 @implementation CKAssistantSyncHandler
 
-- (id)identifierForChatIdentifier:(id)a3
+- (id)identifierForChatIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [@"x-apple-sms-group://" stringByAppendingString:v3];
+    v4 = [@"x-apple-sms-group://" stringByAppendingString:identifierCopy];
     v5 = [NSURL URLWithString:v4];
   }
 
@@ -24,28 +24,28 @@
   return v5;
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 forKey:(id)a5 beginInfo:(id)a6
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity forKey:(id)key beginInfo:(id)info
 {
-  v24 = a3;
-  v25 = a4;
-  v10 = a5;
-  v23 = a6;
+  anchorCopy = anchor;
+  validityCopy = validity;
+  keyCopy = key;
+  infoCopy = info;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      *&buf[4] = v24;
+      *&buf[4] = anchorCopy;
       v28 = 2112;
-      v29 = v25;
+      v29 = validityCopy;
       v30 = 2112;
-      v31 = v10;
+      v31 = keyCopy;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_INFO, "beginSyncWithAnchor: %@ validity: %@ forKey: %@", buf, 0x20u);
     }
   }
 
-  if ([v10 isEqualToString:@"com.apple.chatkit.groups"])
+  if ([keyCopy isEqualToString:@"com.apple.chatkit.groups"])
   {
     [(CKAssistantSyncHandler *)self syncDidEnd];
     v12 = IMDChatRecordCopyAllNamedChats();
@@ -106,9 +106,9 @@
 
         v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lu", [v16 hash]);
         [v14 addObject:v22];
-        if (([v22 isEqualToString:v25] & 1) == 0)
+        if (([v22 isEqualToString:validityCopy] & 1) == 0)
         {
-          [v23 resetWithValidity:v22];
+          [infoCopy resetWithValidity:v22];
           [(CKAssistantSyncHandler *)self setPostAnchors:v14];
           [(CKAssistantSyncHandler *)self setDomainObjects:v15];
         }
@@ -124,30 +124,30 @@
   }
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  infoCopy = info;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v24 = 138412290;
-      v25 = v6;
+      v25 = anchorCopy;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "getChangeAfterAnchor: %@", &v24, 0xCu);
     }
   }
 
-  v9 = [(CKAssistantSyncHandler *)self domainObjects];
-  if (![v9 count])
+  domainObjects = [(CKAssistantSyncHandler *)self domainObjects];
+  if (![domainObjects count])
   {
 
     goto LABEL_12;
   }
 
-  v10 = [(CKAssistantSyncHandler *)self finalAnchor];
-  v11 = [v10 isEqualToString:v6];
+  finalAnchor = [(CKAssistantSyncHandler *)self finalAnchor];
+  v11 = [finalAnchor isEqualToString:anchorCopy];
 
   if (v11)
   {
@@ -156,10 +156,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v6)
+  if (anchorCopy)
   {
-    v12 = [(CKAssistantSyncHandler *)self postAnchors];
-    v13 = [v12 indexOfObject:v6];
+    postAnchors = [(CKAssistantSyncHandler *)self postAnchors];
+    v13 = [postAnchors indexOfObject:anchorCopy];
 
     if (v13 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -183,8 +183,8 @@ LABEL_13:
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [(CKAssistantSyncHandler *)self domainObjects];
-      v17 = [v16 count];
+      domainObjects2 = [(CKAssistantSyncHandler *)self domainObjects];
+      v17 = [domainObjects2 count];
       v24 = 134218240;
       v25 = v14;
       v26 = 2048;
@@ -195,19 +195,19 @@ LABEL_13:
 
   if (v14 == 0x7FFFFFFFFFFFFFFFLL || (-[CKAssistantSyncHandler domainObjects](self, "domainObjects"), v18 = objc_claimAutoreleasedReturnValue(), v19 = v14 < [v18 count], v18, !v19))
   {
-    [v7 setObject:0];
-    [v7 setPostAnchor:v6];
+    [infoCopy setObject:0];
+    [infoCopy setPostAnchor:anchorCopy];
   }
 
   else
   {
-    v20 = [(CKAssistantSyncHandler *)self domainObjects];
-    v21 = [v20 objectAtIndex:v14];
-    [v7 setObject:v21];
+    domainObjects3 = [(CKAssistantSyncHandler *)self domainObjects];
+    v21 = [domainObjects3 objectAtIndex:v14];
+    [infoCopy setObject:v21];
 
-    v22 = [(CKAssistantSyncHandler *)self postAnchors];
-    v23 = [v22 objectAtIndex:v14];
-    [v7 setPostAnchor:v23];
+    postAnchors2 = [(CKAssistantSyncHandler *)self postAnchors];
+    v23 = [postAnchors2 objectAtIndex:v14];
+    [infoCopy setPostAnchor:v23];
   }
 }
 

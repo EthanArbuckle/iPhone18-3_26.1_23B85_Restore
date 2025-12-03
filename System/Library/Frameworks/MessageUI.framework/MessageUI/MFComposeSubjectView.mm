@@ -1,43 +1,43 @@
 @interface MFComposeSubjectView
 - (BOOL)becomeFirstResponder;
-- (BOOL)isEndEditingText:(id)a3;
+- (BOOL)isEndEditingText:(id)text;
 - (BOOL)isNotifyOptionSelected;
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5;
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText;
 - (BOOL)separatorHidden;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (MFComposeSubjectView)initWithFrame:(CGRect)a3;
-- (id)_textContainerExclusionPathsWithNotifyButton:(BOOL)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (MFComposeSubjectView)initWithFrame:(CGRect)frame;
+- (id)_textContainerExclusionPathsWithNotifyButton:(BOOL)button;
 - (void)_configureNotifyGlyphs;
 - (void)_showNotifyButtonIfNeeded;
-- (void)_textInputDidChange:(id)a3;
+- (void)_textInputDidChange:(id)change;
 - (void)_updateExclusionPathsIfNeeded;
 - (void)_updateTextContainerInsets;
 - (void)dealloc;
 - (void)displayMetricsDidChange;
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5;
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end;
 - (void)layoutSubviews;
 - (void)refreshPreferredContentSize;
-- (void)setAllowsNotifyOption:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setNotifyOptionSelected:(BOOL)a3;
-- (void)setSeparatorHidden:(BOOL)a3;
-- (void)setTrailingButtonMidlineInsetFromLayoutMargin:(double)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAllowsNotifyOption:(BOOL)option;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setNotifyOptionSelected:(BOOL)selected;
+- (void)setSeparatorHidden:(BOOL)hidden;
+- (void)setTrailingButtonMidlineInsetFromLayoutMargin:(double)margin;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MFComposeSubjectView
 
-- (MFComposeSubjectView)initWithFrame:(CGRect)a3
+- (MFComposeSubjectView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v19.receiver = self;
   v19.super_class = MFComposeSubjectView;
-  v5 = [(MFComposeSubjectView *)&v19 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(MFComposeSubjectView *)&v19 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
@@ -46,31 +46,31 @@
     v8 = [v7 localizedStringForKey:@"SUBJECT" value:&stru_1F3CF3758 table:@"Main"];
     [(MFComposeSubjectView *)v6 setLabel:v8];
 
-    v9 = [objc_opt_class() defaultFont];
+    defaultFont = [objc_opt_class() defaultFont];
     v10 = [MFComposeSubjectTextView alloc];
     v11 = [(MFComposeSubjectTextView *)v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), width - *MEMORY[0x1E695F058], floor(height)];
     textView = v6->_textView;
     v6->_textView = v11;
 
-    v13 = [(UITextView *)v6->_textView textContainer];
-    [v13 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v6->_textView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    [(UITextView *)v6->_textView setFont:v9];
+    [(UITextView *)v6->_textView setFont:defaultFont];
     [(UITextView *)v6->_textView setDelegate:v6];
-    v14 = [(UITextView *)v6->_textView layoutManager];
-    [v14 setDelegate:v6];
+    layoutManager = [(UITextView *)v6->_textView layoutManager];
+    [layoutManager setDelegate:v6];
 
     v15 = v6->_textView;
-    v16 = [MEMORY[0x1E69DC888] mailComposeTextViewBackgroundColor];
-    [(UITextView *)v15 setBackgroundColor:v16];
+    mailComposeTextViewBackgroundColor = [MEMORY[0x1E69DC888] mailComposeTextViewBackgroundColor];
+    [(UITextView *)v15 setBackgroundColor:mailComposeTextViewBackgroundColor];
 
     [(UITextView *)v6->_textView setAccessibilityIdentifier:@"subjectField"];
     [(UITextView *)v6->_textView setScrollsToTop:0];
     [(MFComposeSubjectView *)v6 addSubview:v6->_textView];
     v6->_needsExclusionPathUpdate = 1;
     [(MFComposeSubjectView *)v6 _updateTextContainerInsets];
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v6 selector:sel__textInputDidChange_ name:*MEMORY[0x1E69DE6B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__textInputDidChange_ name:*MEMORY[0x1E69DE6B8] object:0];
   }
 
   return v6;
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MFComposeSubjectView;
@@ -109,28 +109,28 @@
     [(MFConfirmationButton *)self->_notifyButton setContentMode:4];
     [(MFComposeSubjectView *)self _configureNotifyGlyphs];
     [(MFComposeSubjectView *)self addSubview:self->_notifyButton];
-    v10 = [(MFComposeSubjectView *)self allowsNotifyOption];
+    allowsNotifyOption = [(MFComposeSubjectView *)self allowsNotifyOption];
     v11 = self->_notifyButton;
 
-    [(MFDimmableButton *)v11 setHidden:v10];
+    [(MFDimmableButton *)v11 setHidden:allowsNotifyOption];
   }
 }
 
 - (void)_configureNotifyGlyphs
 {
-  v8 = [(MFComposeSubjectView *)self notifyButton];
-  v2 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-  v3 = __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(v2, @"bell.fill", v2);
+  notifyButton = [(MFComposeSubjectView *)self notifyButton];
+  quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+  v3 = __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(quaternaryLabelColor, @"bell.fill", quaternaryLabelColor);
 
-  [v8 setImage:v3 forState:65540];
-  v4 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v5 = __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(v4, @"bell.fill", v4);
+  [notifyButton setImage:v3 forState:65540];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v5 = __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(systemBlueColor, @"bell.fill", systemBlueColor);
 
-  [v8 setImage:v5 forState:4];
-  v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v7 = __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(v6, @"bell", v6);
+  [notifyButton setImage:v5 forState:4];
+  systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+  v7 = __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(systemBlueColor2, @"bell", systemBlueColor2);
 
-  [v8 setImage:v7 forState:0];
+  [notifyButton setImage:v7 forState:0];
 }
 
 id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -143,55 +143,55 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (void)setAllowsNotifyOption:(BOOL)a3
+- (void)setAllowsNotifyOption:(BOOL)option
 {
-  v3 = a3;
-  self->_allowsNotifyOption = a3;
-  v4 = [(MFComposeSubjectView *)self notifyButton];
-  [v4 setHidden:!v3];
+  optionCopy = option;
+  self->_allowsNotifyOption = option;
+  notifyButton = [(MFComposeSubjectView *)self notifyButton];
+  [notifyButton setHidden:!optionCopy];
 }
 
 - (BOOL)isNotifyOptionSelected
 {
-  v2 = [(MFComposeSubjectView *)self notifyButton];
-  v3 = [v2 isSelected];
+  notifyButton = [(MFComposeSubjectView *)self notifyButton];
+  isSelected = [notifyButton isSelected];
 
-  return v3;
+  return isSelected;
 }
 
-- (void)setNotifyOptionSelected:(BOOL)a3
+- (void)setNotifyOptionSelected:(BOOL)selected
 {
-  v3 = a3;
-  v4 = [(MFComposeSubjectView *)self notifyButton];
-  [v4 setSelected:v3];
+  selectedCopy = selected;
+  notifyButton = [(MFComposeSubjectView *)self notifyButton];
+  [notifyButton setSelected:selectedCopy];
 }
 
-- (void)setTrailingButtonMidlineInsetFromLayoutMargin:(double)a3
+- (void)setTrailingButtonMidlineInsetFromLayoutMargin:(double)margin
 {
-  if (self->_trailingButtonMidlineInsetFromLayoutMargin != a3)
+  if (self->_trailingButtonMidlineInsetFromLayoutMargin != margin)
   {
-    self->_trailingButtonMidlineInsetFromLayoutMargin = a3;
+    self->_trailingButtonMidlineInsetFromLayoutMargin = margin;
     [(MFComposeSubjectView *)self setNeedsLayout];
   }
 }
 
-- (void)setSeparatorHidden:(BOOL)a3
+- (void)setSeparatorHidden:(BOOL)hidden
 {
-  if (self->_separatorHidden != a3)
+  if (self->_separatorHidden != hidden)
   {
-    v3 = a3;
-    self->_separatorHidden = a3;
-    v4 = [(MFComposeSubjectView *)self separator];
-    [v4 setHidden:v3];
+    hiddenCopy = hidden;
+    self->_separatorHidden = hidden;
+    separator = [(MFComposeSubjectView *)self separator];
+    [separator setHidden:hiddenCopy];
   }
 }
 
 - (BOOL)separatorHidden
 {
-  v2 = [(MFComposeSubjectView *)self separator];
-  v3 = [v2 isHidden];
+  separator = [(MFComposeSubjectView *)self separator];
+  isHidden = [separator isHidden];
 
-  return v3;
+  return isHidden;
 }
 
 - (void)_updateExclusionPathsIfNeeded
@@ -199,13 +199,13 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   if (self->_needsExclusionPathUpdate)
   {
     self->_needsExclusionPathUpdate = 0;
-    v6 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+    preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
-      v7 = [(MFComposeSubjectView *)self notifyButton];
-      v4 = -[MFComposeSubjectView _textContainerExclusionPathsWithNotifyButton:](self, "_textContainerExclusionPathsWithNotifyButton:", [v7 isHidden] ^ 1);
+      notifyButton = [(MFComposeSubjectView *)self notifyButton];
+      v4 = -[MFComposeSubjectView _textContainerExclusionPathsWithNotifyButton:](self, "_textContainerExclusionPathsWithNotifyButton:", [notifyButton isHidden] ^ 1);
 
       v8 = v4;
     }
@@ -215,8 +215,8 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
       v8 = MEMORY[0x1E695E0F0];
     }
 
-    v5 = [(UITextView *)self->_textView textContainer];
-    [v5 setExclusionPaths:v8];
+    textContainer = [(UITextView *)self->_textView textContainer];
+    [textContainer setExclusionPaths:v8];
   }
 }
 
@@ -224,8 +224,8 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
 {
   if ([(MFComposeSubjectView *)self needsInputAssistantItemUpdate])
   {
-    v3 = [(MFComposeSubjectView *)self inputAssistantItem];
-    [v3 _setShowsBarButtonItemsInline:0];
+    inputAssistantItem = [(MFComposeSubjectView *)self inputAssistantItem];
+    [inputAssistantItem _setShowsBarButtonItemsInline:0];
 
     [(MFComposeSubjectView *)self setNeedsInputAssistantItemUpdate:0];
   }
@@ -235,24 +235,24 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   return [(UITextView *)textView becomeFirstResponder];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = [(MFComposeSubjectView *)self notifyButton];
-  [v4 setDimmed:1];
+  notifyButton = [(MFComposeSubjectView *)self notifyButton];
+  [notifyButton setDimmed:1];
 
-  v5 = [(MFComposeSubjectView *)self delegate];
-  [v5 composeSubjectViewTextFieldDidResignFirstResponder:self];
+  delegate = [(MFComposeSubjectView *)self delegate];
+  [delegate composeSubjectViewTextFieldDidResignFirstResponder:self];
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
   [(MFComposeSubjectView *)self _showNotifyButtonIfNeeded];
-  v4 = [(MFComposeSubjectView *)self notifyButton];
-  [v4 setDimmed:0];
+  notifyButton = [(MFComposeSubjectView *)self notifyButton];
+  [notifyButton setDimmed:0];
 
   [(MFComposeSubjectView *)self setNeedsExclusionPathUpdate];
-  v5 = [(MFComposeSubjectView *)self delegate];
-  [v5 composeSubjectViewTextFieldDidBecomeFirstResponder:self];
+  delegate = [(MFComposeSubjectView *)self delegate];
+  [delegate composeSubjectViewTextFieldDidBecomeFirstResponder:self];
 }
 
 - (void)refreshPreferredContentSize
@@ -261,8 +261,8 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   v5.super_class = MFComposeSubjectView;
   [(MFComposeSubjectView *)&v5 refreshPreferredContentSize];
   textView = self->_textView;
-  v4 = [objc_opt_class() defaultFont];
-  [(UITextView *)textView setFont:v4];
+  defaultFont = [objc_opt_class() defaultFont];
+  [(UITextView *)textView setFont:defaultFont];
 
   [(MFComposeSubjectView *)self setNeedsExclusionPathUpdate];
 }
@@ -283,16 +283,16 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   }
 }
 
-- (id)_textContainerExclusionPathsWithNotifyButton:(BOOL)a3
+- (id)_textContainerExclusionPathsWithNotifyButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  buttonCopy = button;
+  array = [MEMORY[0x1E695DF70] array];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v30.receiver = self;
   v30.super_class = MFComposeSubjectView;
   [(MFComposeSubjectView *)&v30 layoutIfNeeded];
-  v7 = [(MFComposeSubjectView *)self labelView];
-  if (v6 == 1)
+  labelView = [(MFComposeSubjectView *)self labelView];
+  if (userInterfaceLayoutDirection == 1)
   {
     v8 = 8;
   }
@@ -302,7 +302,7 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
     v8 = 2;
   }
 
-  [(MFComposeSubjectView *)self _exclusionRectForView:v7 alongEdge:v8];
+  [(MFComposeSubjectView *)self _exclusionRectForView:labelView alongEdge:v8];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -310,11 +310,11 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
 
   [(MFComposeSubjectView *)self convertRect:self->_textView toView:v10, v12, v14, v16];
   v17 = [MEMORY[0x1E69DC728] bezierPathWithRect:?];
-  [v5 addObject:v17];
-  if (v3)
+  [array addObject:v17];
+  if (buttonCopy)
   {
-    v18 = [(MFComposeSubjectView *)self notifyButton];
-    if (v6 == 1)
+    notifyButton = [(MFComposeSubjectView *)self notifyButton];
+    if (userInterfaceLayoutDirection == 1)
     {
       v19 = 2;
     }
@@ -324,7 +324,7 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
       v19 = 8;
     }
 
-    [(MFComposeSubjectView *)self _exclusionRectForView:v18 alongEdge:v19];
+    [(MFComposeSubjectView *)self _exclusionRectForView:notifyButton alongEdge:v19];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -332,19 +332,19 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
 
     [(MFComposeSubjectView *)self convertRect:self->_textView toView:v21, v23, v25, v27];
     v28 = [MEMORY[0x1E69DC728] bezierPathWithRect:?];
-    [v5 addObject:v28];
+    [array addObject:v28];
   }
 
-  return v5;
+  return array;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = CGRectGetWidth(frame);
   [(MFComposeSubjectView *)self frame];
   v9 = v8 - CGRectGetWidth(v11);
   if (v9 < 0.0)
@@ -362,17 +362,17 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   [(MFComposeSubjectView *)&v10 setFrame:x, y, width, height];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = MFComposeSubjectView;
-  [(MFMailComposeHeaderView *)&v8 traitCollectionDidChange:v4];
-  v5 = [(MFComposeSubjectView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  [(MFMailComposeHeaderView *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MFComposeSubjectView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(MFComposeSubjectView *)self _configureNotifyGlyphs];
     self->_needsExclusionPathUpdate = 1;
@@ -384,10 +384,10 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   v70.receiver = self;
   v70.super_class = MFComposeSubjectView;
   [(MFComposeSubjectView *)&v70 layoutSubviews];
-  v3 = [(UITextView *)self->_textView layoutManager];
+  layoutManager = [(UITextView *)self->_textView layoutManager];
   v4 = MEMORY[0x1E69DDA98];
-  v5 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v7 = 0.0;
   v8 = 1.0;
@@ -396,19 +396,19 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
     v8 = 0.0;
   }
 
-  [v3 setHyphenationFactor:v8];
+  [layoutManager setHyphenationFactor:v8];
 
-  v9 = [(MFComposeSubjectView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(MFComposeSubjectView *)self effectiveUserInterfaceLayoutDirection];
   if ([(MFComposeSubjectView *)self allowsNotifyOption])
   {
-    v10 = [(MFComposeSubjectView *)self notifyButton];
+    notifyButton = [(MFComposeSubjectView *)self notifyButton];
     v7 = 2.0;
-    [v10 sizeToFit];
+    [notifyButton sizeToFit];
   }
 
   else
   {
-    v10 = 0;
+    notifyButton = 0;
   }
 
   [(MFComposeSubjectView *)self _contentRect];
@@ -420,14 +420,14 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   v68 = v13;
   v66 = v15;
   v69 = v17;
-  if (v10)
+  if (notifyButton)
   {
-    [v10 frame];
+    [notifyButton frame];
     v19 = v12;
     v20 = v14;
     v21 = v16;
     v22 = v18;
-    if (v9 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       CGRectGetMinX(*&v19);
     }
@@ -438,13 +438,13 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
     }
 
     [(MFComposeSubjectView *)self bounds];
-    v28 = [*v4 preferredContentSizeCategory];
-    v29 = UIContentSizeCategoryIsAccessibilityCategory(v28);
+    preferredContentSizeCategory2 = [*v4 preferredContentSizeCategory];
+    v29 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
     if (v29)
     {
-      v30 = [(MFComposeSubjectView *)self labelView];
-      [v30 frame];
+      labelView = [(MFComposeSubjectView *)self labelView];
+      [labelView frame];
       v32 = v31;
       v34 = v33;
       v36 = v35;
@@ -462,8 +462,8 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
       CGRectGetHeight(v72);
     }
 
-    v39 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v39 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v65 = v40;
     UIRectCenteredYInRectScale();
     v42 = v41;
@@ -496,7 +496,7 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
       v75.size.height = height;
       v27 = v51 + CGRectGetWidth(v75) * -0.5;
       v52 = -1.0;
-      if (v9 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v52 = 1.0;
       }
@@ -504,7 +504,7 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
       x = x + v27 * v52;
     }
 
-    [v10 setFrame:{x, y, width, height}];
+    [notifyButton setFrame:{x, y, width, height}];
   }
 
   else
@@ -527,8 +527,8 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
     v54 = v69;
   }
 
-  v55 = [(MFComposeSubjectView *)self labelView];
-  [v55 frame];
+  labelView2 = [(MFComposeSubjectView *)self labelView];
+  [labelView2 frame];
   v56 = CGRectGetWidth(v76);
 
   v77.origin.x = x;
@@ -536,12 +536,12 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   v77.size.width = width;
   v77.size.height = height;
   v57 = CGRectGetWidth(v77);
-  v58 = [*v4 preferredContentSizeCategory];
-  v59 = UIContentSizeCategoryIsAccessibilityCategory(v58);
+  preferredContentSizeCategory3 = [*v4 preferredContentSizeCategory];
+  v59 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
   v60 = v56 + 5.0;
   v61 = v27 + v57 + 5.0;
 
-  if (v9 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v62 = v61;
   }
@@ -551,7 +551,7 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
     v62 = v60;
   }
 
-  if (v9 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v63 = v60;
   }
@@ -586,17 +586,17 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
   v4.receiver = self;
   v4.super_class = MFComposeSubjectView;
   [(MFMailComposeHeaderView *)&v4 displayMetricsDidChange];
-  v3 = [(MFMailComposeHeaderView *)self displayMetrics];
-  [v3 trailingButtonMidlineOffset];
+  displayMetrics = [(MFMailComposeHeaderView *)self displayMetrics];
+  [displayMetrics trailingButtonMidlineOffset];
   [(MFComposeSubjectView *)self setTrailingButtonMidlineInsetFromLayoutMargin:?];
 }
 
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  endCopy = end;
+  managerCopy = manager;
+  containerCopy = container;
+  if (endCopy)
   {
     [(UITextView *)self->_textView textContainerInset];
     v11 = v10;
@@ -609,7 +609,7 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
     *(&v14 + 1) = -1;
     v43 = v14;
     v44 = v14;
-    [v8 usedRectForTextContainer:v9];
+    [managerCopy usedRectForTextContainer:containerCopy];
     *&v43 = v15;
     *(&v43 + 1) = v16;
     *&v44 = v17;
@@ -623,14 +623,14 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
     v36 = &v35;
     v37 = 0x2020000000;
     v38 = 0;
-    v21 = [v8 numberOfGlyphs];
+    numberOfGlyphs = [managerCopy numberOfGlyphs];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __78__MFComposeSubjectView_layoutManager_didCompleteLayoutForTextContainer_atEnd___block_invoke;
     v34[3] = &unk_1E806C7E8;
     v34[4] = &v35;
     v34[5] = &v39;
-    [v8 enumerateLineFragmentsForGlyphRange:0 usingBlock:{v21, v34}];
+    [managerCopy enumerateLineFragmentsForGlyphRange:0 usingBlock:{numberOfGlyphs, v34}];
     if (v36[3])
     {
       v22 = v40;
@@ -639,7 +639,7 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
 
     else
     {
-      [v8 usedRectForTextContainer:v9];
+      [managerCopy usedRectForTextContainer:containerCopy];
       v22 = v40;
       v23 = v24 + *(v40 + 7);
       *(v40 + 7) = v23;
@@ -657,8 +657,8 @@ id __46__MFComposeSubjectView__configureNotifyGlyphs__block_invoke(uint64_t a1, 
       [(MFComposeSubjectView *)self bounds];
       v31 = v30;
       v32 = *(v40 + 7);
-      v33 = [(MFComposeSubjectView *)self delegate];
-      [v33 composeHeaderView:self didChangeSize:{v31, v32}];
+      delegate = [(MFComposeSubjectView *)self delegate];
+      [delegate composeHeaderView:self didChangeSize:{v31, v32}];
     }
 
     _Block_object_dispose(&v35, 8);
@@ -675,12 +675,12 @@ double __78__MFComposeSubjectView_layoutManager_didCompleteLayoutForTextContaine
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = MFComposeSubjectView;
-  [(MFComposeSubjectView *)&v6 setDelegate:a3];
-  v4 = [(MFComposeSubjectView *)self delegate];
+  [(MFComposeSubjectView *)&v6 setDelegate:delegate];
+  delegate = [(MFComposeSubjectView *)self delegate];
   *(self + 552) = *(self + 552) & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -695,91 +695,91 @@ double __78__MFComposeSubjectView_layoutManager_didCompleteLayoutForTextContaine
   *(self + 552) = *(self + 552) & 0xFD | v5;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8 = 0;
-  v5 = [(UITextView *)self->_textView text];
-  v6 = cleanupSubjectString(v5, &v8);
+  text = [(UITextView *)self->_textView text];
+  v6 = cleanupSubjectString(text, &v8);
 
   if (v8)
   {
-    [v4 setText:v6];
+    [changeCopy setText:v6];
   }
 
   if (*(self + 552))
   {
-    v7 = [(MFComposeSubjectView *)self delegate];
-    [v7 composeHeaderViewDidChangeValue:self];
+    delegate = [(MFComposeSubjectView *)self delegate];
+    [delegate composeHeaderViewDidChangeValue:self];
   }
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MFComposeSubjectView *)self delegate];
-  v11 = [(MFComposeSubjectView *)self isEndEditingText:v9];
+  length = range.length;
+  viewCopy = view;
+  textCopy = text;
+  delegate = [(MFComposeSubjectView *)self delegate];
+  v11 = [(MFComposeSubjectView *)self isEndEditingText:textCopy];
   if (v11)
   {
-    [v10 composeHeaderViewDidConfirmValue:self];
+    [delegate composeHeaderViewDidConfirmValue:self];
   }
 
   else if ((*(self + 552) & 2) != 0)
   {
-    v12 = [v8 text];
-    v13 = [v12 length];
+    text = [viewCopy text];
+    v13 = [text length];
 
     if (length == v13)
     {
-      [v10 composeSubjectViewWillRemoveContent:self];
+      [delegate composeSubjectViewWillRemoveContent:self];
     }
   }
 
   return !v11;
 }
 
-- (BOOL)keyboardInput:(id)a3 shouldInsertText:(id)a4 isMarkedText:(BOOL)a5
+- (BOOL)keyboardInput:(id)input shouldInsertText:(id)text isMarkedText:(BOOL)markedText
 {
-  v6 = a4;
-  v7 = [(MFComposeSubjectView *)self isEndEditingText:v6];
+  textCopy = text;
+  v7 = [(MFComposeSubjectView *)self isEndEditingText:textCopy];
   if (v7)
   {
-    v8 = [(MFComposeSubjectView *)self delegate];
-    [v8 composeHeaderViewDidConfirmValue:self];
+    delegate = [(MFComposeSubjectView *)self delegate];
+    [delegate composeHeaderViewDidConfirmValue:self];
   }
 
   return !v7;
 }
 
-- (BOOL)isEndEditingText:(id)a3
+- (BOOL)isEndEditingText:(id)text
 {
-  v3 = a3;
-  if ([v3 isEqual:@"\n"])
+  textCopy = text;
+  if ([textCopy isEqual:@"\n"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqual:@"\t"];
+    v4 = [textCopy isEqual:@"\t"];
   }
 
   return v4;
 }
 
-- (void)_textInputDidChange:(id)a3
+- (void)_textInputDidChange:(id)change
 {
-  v4 = [(UITextView *)self->_textView text];
-  v5 = [v4 length];
+  text = [(UITextView *)self->_textView text];
+  v5 = [text length];
 
   if (!v5)
   {
-    v6 = [(UIResponder *)self mf_textAlignmentForActiveInputLanguage];
+    mf_textAlignmentForActiveInputLanguage = [(UIResponder *)self mf_textAlignmentForActiveInputLanguage];
     textView = self->_textView;
 
-    [(UITextView *)textView setTextAlignment:v6];
+    [(UITextView *)textView setTextAlignment:mf_textAlignmentForActiveInputLanguage];
   }
 }
 

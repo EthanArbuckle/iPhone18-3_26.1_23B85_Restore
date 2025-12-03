@@ -1,7 +1,7 @@
 @interface CIPDF417BarcodeGenerator
 + (id)customAttributes;
 - (CGImage)outputCGImage;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CIPDF417BarcodeGenerator
@@ -167,16 +167,16 @@
   return v5;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"inputOptions"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"inputOptions"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = valueCopy;
       v9 = [v8 objectForKey:@"PDF417OptionMinWidth"];
 
       if (v9)
@@ -271,7 +271,7 @@
   {
     v31.receiver = self;
     v31.super_class = CIPDF417BarcodeGenerator;
-    [(CIPDF417BarcodeGenerator *)&v31 setValue:v6 forUndefinedKey:v7];
+    [(CIPDF417BarcodeGenerator *)&v31 setValue:valueCopy forUndefinedKey:keyCopy];
   }
 }
 
@@ -297,84 +297,84 @@
     [v3 setObject:inputMinWidth forKey:@"PDF417OptionMinWidth"];
   }
 
-  v6 = [(CIPDF417BarcodeGenerator *)self inputMaxWidth];
+  inputMaxWidth = [(CIPDF417BarcodeGenerator *)self inputMaxWidth];
 
-  if (v6)
+  if (inputMaxWidth)
   {
-    v7 = [(CIPDF417BarcodeGenerator *)self inputMaxWidth];
-    [v4 setObject:v7 forKey:@"PDF417OptionMaxWidth"];
+    inputMaxWidth2 = [(CIPDF417BarcodeGenerator *)self inputMaxWidth];
+    [v4 setObject:inputMaxWidth2 forKey:@"PDF417OptionMaxWidth"];
   }
 
-  v8 = [(CIPDF417BarcodeGenerator *)self inputMinHeight];
+  inputMinHeight = [(CIPDF417BarcodeGenerator *)self inputMinHeight];
 
-  if (v8)
+  if (inputMinHeight)
   {
-    v9 = [(CIPDF417BarcodeGenerator *)self inputMinHeight];
-    [v4 setObject:v9 forKey:@"PDF417OptionMinHeight"];
+    inputMinHeight2 = [(CIPDF417BarcodeGenerator *)self inputMinHeight];
+    [v4 setObject:inputMinHeight2 forKey:@"PDF417OptionMinHeight"];
   }
 
-  v10 = [(CIPDF417BarcodeGenerator *)self inputMaxHeight];
+  inputMaxHeight = [(CIPDF417BarcodeGenerator *)self inputMaxHeight];
 
-  if (v10)
+  if (inputMaxHeight)
   {
-    v11 = [(CIPDF417BarcodeGenerator *)self inputMaxHeight];
-    [v4 setObject:v11 forKey:@"PDF417OptionMaxHeight"];
+    inputMaxHeight2 = [(CIPDF417BarcodeGenerator *)self inputMaxHeight];
+    [v4 setObject:inputMaxHeight2 forKey:@"PDF417OptionMaxHeight"];
   }
 
-  v12 = [(CIPDF417BarcodeGenerator *)self inputDataColumns];
+  inputDataColumns = [(CIPDF417BarcodeGenerator *)self inputDataColumns];
 
-  if (v12)
+  if (inputDataColumns)
   {
-    v13 = [(CIPDF417BarcodeGenerator *)self inputDataColumns];
-    [v4 setObject:v13 forKey:@"PDF417OptionDataColumns"];
+    inputDataColumns2 = [(CIPDF417BarcodeGenerator *)self inputDataColumns];
+    [v4 setObject:inputDataColumns2 forKey:@"PDF417OptionDataColumns"];
   }
 
-  v14 = [(CIPDF417BarcodeGenerator *)self inputRows];
+  inputRows = [(CIPDF417BarcodeGenerator *)self inputRows];
 
-  if (v14)
+  if (inputRows)
   {
-    v15 = [(CIPDF417BarcodeGenerator *)self inputRows];
-    [v4 setObject:v15 forKey:@"PDF417OptionRows"];
+    inputRows2 = [(CIPDF417BarcodeGenerator *)self inputRows];
+    [v4 setObject:inputRows2 forKey:@"PDF417OptionRows"];
   }
 
-  v16 = [(CIPDF417BarcodeGenerator *)self inputPreferredAspectRatio];
+  inputPreferredAspectRatio = [(CIPDF417BarcodeGenerator *)self inputPreferredAspectRatio];
 
-  if (v16)
+  if (inputPreferredAspectRatio)
   {
-    v17 = [(CIPDF417BarcodeGenerator *)self inputPreferredAspectRatio];
-    [v4 setObject:v17 forKey:@"PDF417OptionPreferredAspectRatio"];
+    inputPreferredAspectRatio2 = [(CIPDF417BarcodeGenerator *)self inputPreferredAspectRatio];
+    [v4 setObject:inputPreferredAspectRatio2 forKey:@"PDF417OptionPreferredAspectRatio"];
   }
 
-  v18 = [(CIPDF417BarcodeGenerator *)self inputCompactionMode];
+  inputCompactionMode = [(CIPDF417BarcodeGenerator *)self inputCompactionMode];
 
-  if (v18)
+  if (inputCompactionMode)
   {
-    v19 = [(CIPDF417BarcodeGenerator *)self inputCompactionMode];
-    [v4 setObject:v19 forKey:@"PDF417OptionCompactionMode"];
+    inputCompactionMode2 = [(CIPDF417BarcodeGenerator *)self inputCompactionMode];
+    [v4 setObject:inputCompactionMode2 forKey:@"PDF417OptionCompactionMode"];
   }
 
-  v20 = [(CIPDF417BarcodeGenerator *)self inputCompactStyle];
+  inputCompactStyle = [(CIPDF417BarcodeGenerator *)self inputCompactStyle];
 
-  if (v20)
+  if (inputCompactStyle)
   {
-    v21 = [(CIPDF417BarcodeGenerator *)self inputCompactStyle];
-    [v4 setObject:v21 forKey:@"PDF417OptionUseCompactStyle"];
+    inputCompactStyle2 = [(CIPDF417BarcodeGenerator *)self inputCompactStyle];
+    [v4 setObject:inputCompactStyle2 forKey:@"PDF417OptionUseCompactStyle"];
   }
 
-  v22 = [(CIPDF417BarcodeGenerator *)self inputCorrectionLevel];
+  inputCorrectionLevel = [(CIPDF417BarcodeGenerator *)self inputCorrectionLevel];
 
-  if (v22)
+  if (inputCorrectionLevel)
   {
-    v23 = [(CIPDF417BarcodeGenerator *)self inputCorrectionLevel];
-    [v4 setObject:v23 forKey:@"PDF417OptionErrorCorrectionLevel"];
+    inputCorrectionLevel2 = [(CIPDF417BarcodeGenerator *)self inputCorrectionLevel];
+    [v4 setObject:inputCorrectionLevel2 forKey:@"PDF417OptionErrorCorrectionLevel"];
   }
 
-  v24 = [(CIPDF417BarcodeGenerator *)self inputAlwaysSpecifyCompaction];
+  inputAlwaysSpecifyCompaction = [(CIPDF417BarcodeGenerator *)self inputAlwaysSpecifyCompaction];
 
-  if (v24)
+  if (inputAlwaysSpecifyCompaction)
   {
-    v25 = [(CIPDF417BarcodeGenerator *)self inputAlwaysSpecifyCompaction];
-    [v4 setObject:v25 forKey:@"PDF417OptionAlwaysSpecifyCompaction"];
+    inputAlwaysSpecifyCompaction2 = [(CIPDF417BarcodeGenerator *)self inputAlwaysSpecifyCompaction];
+    [v4 setObject:inputAlwaysSpecifyCompaction2 forKey:@"PDF417OptionAlwaysSpecifyCompaction"];
   }
 
   v26 = sub_C45C(self->super.inputMessage, v4);
@@ -387,8 +387,8 @@
 
   else if (v27)
   {
-    v29 = [v27 localizedDescription];
-    NSLog(@"%@", v29);
+    localizedDescription = [v27 localizedDescription];
+    NSLog(@"%@", localizedDescription);
   }
 
   else

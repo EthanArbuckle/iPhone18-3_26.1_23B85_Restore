@@ -7,7 +7,7 @@
 - (id)_safeValidatedValueForKey:()UIAccessibilitySafeCategory_Private expectedClass:possibleExpectedTypeEncodings:
 {
   v13 = a3;
-  v14 = [a1 safeValueForKey:v13];
+  v14 = [self safeValueForKey:v13];
   if (v14)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -57,8 +57,8 @@ LABEL_18:
 
     if (a5)
     {
-      v15 = [v14 objCType];
-      if (strcmp(v15, a5))
+      objCType = [v14 objCType];
+      if (strcmp(objCType, a5))
       {
         v16 = 0;
         v57 = &a9;
@@ -75,7 +75,7 @@ LABEL_18:
             v16 = 1;
           }
 
-          if (!strcmp(v15, *v17))
+          if (!strcmp(objCType, *v17))
           {
             goto LABEL_19;
           }

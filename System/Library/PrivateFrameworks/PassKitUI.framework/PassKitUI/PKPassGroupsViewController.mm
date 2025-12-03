@@ -7,226 +7,226 @@
 - (BOOL)_canPerformExternalModalPresentation;
 - (BOOL)_showNavigationBar;
 - (BOOL)doesContainActivatedPaymentPasses;
-- (BOOL)groupStackView:(id)a3 requiresSectionForPassType:(unint64_t)a4 withState:(id *)a5;
-- (BOOL)groupStackView:(id)a3 willHaveHeaderViewForPassType:(unint64_t)a4 withState:(id *)a5;
-- (BOOL)groupStackView:(id)a3 willHaveSubheaderViewsWithState:(id *)a4;
-- (BOOL)hasDiscoveryCardWithItemIdentifier:(id)a3;
+- (BOOL)groupStackView:(id)view requiresSectionForPassType:(unint64_t)type withState:(id *)state;
+- (BOOL)groupStackView:(id)view willHaveHeaderViewForPassType:(unint64_t)type withState:(id *)state;
+- (BOOL)groupStackView:(id)view willHaveSubheaderViewsWithState:(id *)state;
+- (BOOL)hasDiscoveryCardWithItemIdentifier:(id)identifier;
 - (BOOL)hasDiscoveryContent;
 - (BOOL)prefersExternalPresentation;
-- (BOOL)presentSubcredentialPairingFlowIfPossibleWithConfig:(id)a3 animated:(BOOL)a4;
+- (BOOL)presentSubcredentialPairingFlowIfPossibleWithConfig:(id)config animated:(BOOL)animated;
 - (BOOL)supportsExternalPresentation;
-- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)a3;
+- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)voucher;
 - (PKDashboardPassGroupViewController)dashboardPassGroupViewController;
 - (PKDashboardPassGroupViewController)visibleDashboardPassGroupViewController;
 - (PKNavigationItemConfiguration)_navigationItemConfiguration;
 - (PKPassGroupStackView)groupStackView;
-- (PKPassGroupsViewController)initWithCoder:(id)a3;
-- (PKPassGroupsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_appleCardUpsellAlertWithAccount:(id)a3;
+- (PKPassGroupsViewController)initWithCoder:(id)coder;
+- (PKPassGroupsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_appleCardUpsellAlertWithAccount:(id)account;
 - (id)_application_createTrailingItemGroups;
-- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3;
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)pass;
 - (id)_createLeadingItemGroups;
 - (id)_createTrailingItemGroups;
-- (id)_dashboardPassGroupViewControllerWithRequirements:(unsigned __int8)a3;
-- (id)_initWithGroupsController:(char)a3 kind:(void *)a4 style:;
+- (id)_dashboardPassGroupViewControllerWithRequirements:(unsigned __int8)requirements;
+- (id)_initWithGroupsController:(char)controller kind:(void *)kind style:;
 - (id)_init_application;
 - (id)_leadingItemGroups;
-- (id)_makeDiscoveryGalleryViewWithState:(id *)a3;
-- (id)_passFromGroupsControllerWithUniqueIdentifier:(id)a3;
+- (id)_makeDiscoveryGalleryViewWithState:(id *)state;
+- (id)_passFromGroupsControllerWithUniqueIdentifier:(id)identifier;
 - (id)_passGroupsViewNavigationController;
 - (id)_passPendingActivationToPresent;
 - (id)_passToPresent;
 - (id)_passWithDeviceAssessmentEducationToPresent;
-- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3;
-- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3;
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)pass;
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)controller;
 - (id)_peerPaymentAccountResolutionController;
 - (id)_trailingItemGroups;
-- (id)acquireNavigationItemVoucherForGroupStackView:(id)a3;
-- (id)configurationForNavigationItemHandle:(id)a3;
+- (id)acquireNavigationItemVoucherForGroupStackView:(id)view;
+- (id)configurationForNavigationItemHandle:(id)handle;
 - (id)featuredGroup;
-- (id)footerForGroupStackView:(id)a3;
-- (id)groupAtIndex:(unint64_t)a3;
-- (id)groupStackView:(id)a3 headerForPassType:(unint64_t)a4 withState:(id *)a5;
-- (id)groupStackView:(id)a3 subheadersWithState:(id *)a4;
-- (id)groupStackView:(id)a3 touchesShouldCancelInContentView:(id)a4;
+- (id)footerForGroupStackView:(id)view;
+- (id)groupAtIndex:(unint64_t)index;
+- (id)groupStackView:(id)view headerForPassType:(unint64_t)type withState:(id *)state;
+- (id)groupStackView:(id)view subheadersWithState:(id *)state;
+- (id)groupStackView:(id)view touchesShouldCancelInContentView:(id)contentView;
 - (id)itemIdentifierForFrontmostDiscoveryCard;
-- (id)passForSectionHeaderView:(id)a3;
-- (id)presentationContextForFieldProperties:(id)a3 fieldPassUniqueIdentifiers:(id)a4 passUniqueIdentifierToPresent:(id *)a5;
+- (id)passForSectionHeaderView:(id)view;
+- (id)presentationContextForFieldProperties:(id)properties fieldPassUniqueIdentifiers:(id)identifiers passUniqueIdentifierToPresent:(id *)present;
 - (id)presentedPass;
-- (id)providerForNavigationItemController:(id)a3;
-- (int64_t)_cardSizeTypeForArticleLayouts:(id)a3;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
-- (void)_applyNavigationItemConfiguration:(id)a3;
+- (id)providerForNavigationItemController:(id)controller;
+- (int64_t)_cardSizeTypeForArticleLayouts:(id)layouts;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
+- (void)_applyNavigationItemConfiguration:(id)configuration;
 - (void)_applyPresentationState;
 - (void)_beginSuppressingInstanceFooter;
 - (void)_clearPassViewedNotificationTimer;
 - (void)_createNavigationGroups;
-- (void)_endSuppressingInstanceFooterWithContext:(id)a3;
-- (void)_fetchAutoFillCards:(id)a3;
-- (void)_handleChildViewControllerRequestingServiceMode:(id)a3;
+- (void)_endSuppressingInstanceFooterWithContext:(id)context;
+- (void)_fetchAutoFillCards:(id)cards;
+- (void)_handleChildViewControllerRequestingServiceMode:(id)mode;
 - (void)_handleExpressNotification;
-- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3;
-- (void)_handleProvisioningError:(id)a3;
-- (void)_handleStatusBarChange:(id)a3;
-- (void)_invalidateForType:(int64_t)a3;
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)notification;
+- (void)_handleProvisioningError:(id)error;
+- (void)_handleStatusBarChange:(id)change;
+- (void)_invalidateForType:(int64_t)type;
 - (void)_passViewedNotificationTimerFired;
-- (void)_presentAccountTransactionDetailsForTransaction:(id)a3;
-- (void)_presentAddPassesControllerWithPasses:(id)a3;
+- (void)_presentAccountTransactionDetailsForTransaction:(id)transaction;
+- (void)_presentAddPassesControllerWithPasses:(id)passes;
 - (void)_presentExpiredPasses;
-- (void)_presentFPANConsentFlowWithEligibleCredentials:(id)a3 ineligibleCredentials:(id)a4 selectedCredentials:(id)a5 referralSource:(unint64_t)a6 showProvisioningSection:(BOOL)a7 animated:(BOOL)a8 completion:(id)a9;
-- (void)_presentGroupWithIndex:(unint64_t)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)_presentHowToUseWalletWithModel:(id)a3 destinationCard:(id)a4;
-- (void)_presentShareRedemptionFlowWithInvitation:(id)a3 handle:(id)a4 referralSource:(id)a5 originalShareURL:(id)a6;
-- (void)_presentSubcredentialPairingFlowWithConfig:(id)a3 animated:(BOOL)a4;
-- (void)_presentTransactionDetailsForTransaction:(id)a3 forPaymentPass:(id)a4 confirmPaymentOfferPlan:(BOOL)a5;
-- (void)_presentTransactionDetailsForTransaction:(id)a3 transactionSourceType:(unint64_t)a4 confirmPaymentOfferPlan:(BOOL)a5;
+- (void)_presentFPANConsentFlowWithEligibleCredentials:(id)credentials ineligibleCredentials:(id)ineligibleCredentials selectedCredentials:(id)selectedCredentials referralSource:(unint64_t)source showProvisioningSection:(BOOL)section animated:(BOOL)animated completion:(id)completion;
+- (void)_presentGroupWithIndex:(unint64_t)index context:(id)context animated:(BOOL)animated completionHandler:(id)handler;
+- (void)_presentHowToUseWalletWithModel:(id)model destinationCard:(id)card;
+- (void)_presentShareRedemptionFlowWithInvitation:(id)invitation handle:(id)handle referralSource:(id)source originalShareURL:(id)l;
+- (void)_presentSubcredentialPairingFlowWithConfig:(id)config animated:(BOOL)animated;
+- (void)_presentTransactionDetailsForTransaction:(id)transaction forPaymentPass:(id)pass confirmPaymentOfferPlan:(BOOL)plan;
+- (void)_presentTransactionDetailsForTransaction:(id)transaction transactionSourceType:(unint64_t)type confirmPaymentOfferPlan:(BOOL)plan;
 - (void)_regionConfigurationDidChangeNotification;
-- (void)_registerForExpressTransactionNotifications:(BOOL)a3;
-- (void)_setExternalNavigationController:(void *)a1;
-- (void)_setupItemForExpressUpgradeWithAsset:(id)a3 hideDisableAction:(unint64_t)a4 pass:(id)a5 reportingMetadata:(id)a6 completionHandler:(id)a7;
+- (void)_registerForExpressTransactionNotifications:(BOOL)notifications;
+- (void)_setExternalNavigationController:(void *)controller;
+- (void)_setupItemForExpressUpgradeWithAsset:(id)asset hideDisableAction:(unint64_t)action pass:(id)pass reportingMetadata:(id)metadata completionHandler:(id)handler;
 - (void)_startPassViewedNotificationTimer;
-- (void)_updateFooterSuppressionAnimated:(BOOL)a3;
-- (void)_updateFooterSuppressionWithContext:(id)a3;
-- (void)_updateNavigationItemAnimated:(BOOL)a3;
+- (void)_updateFooterSuppressionAnimated:(BOOL)animated;
+- (void)_updateFooterSuppressionWithContext:(id)context;
+- (void)_updateNavigationItemAnimated:(BOOL)animated;
 - (void)_warnFailForward;
-- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
-- (void)addVASPassWithIdentifier:(id)a3;
+- (void)accountServiceAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
+- (void)addVASPassWithIdentifier:(id)identifier;
 - (void)allowIdleTimer;
-- (void)applicationMessageView:(id)a3 requestsContentDismissal:(id)a4;
-- (void)applicationMessageView:(id)a3 tappedApplicationMessageWithKey:(id)a4;
-- (void)applicationMessageViewNeedsRemoval:(id)a3;
-- (void)applicationMessageViewNeedsSizeUpdate:(id)a3;
-- (void)beginProvidingForNavigationItemHandle:(id)a3 withConsumedVoucher:(id)a4;
+- (void)applicationMessageView:(id)view requestsContentDismissal:(id)dismissal;
+- (void)applicationMessageView:(id)view tappedApplicationMessageWithKey:(id)key;
+- (void)applicationMessageViewNeedsRemoval:(id)removal;
+- (void)applicationMessageViewNeedsSizeUpdate:(id)update;
+- (void)beginProvidingForNavigationItemHandle:(id)handle withConsumedVoucher:(id)voucher;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)didDeactivateNavigationItemController:(id)a3 dirty:(BOOL)a4;
-- (void)didReceivePendingProvisioningUpdate:(id)a3;
-- (void)didUpdateApplicationMessages:(id)a3;
-- (void)discoveryDataSource:(id)a3 didUpdateArticleLayouts:(id)a4;
-- (void)dismissDiscoveryArticleViewController:(id)a3 afterActionCompleted:(BOOL)a4 withRelevantPassUniqueIdenitifer:(id)a5;
-- (void)dismissPresentedVCsWithRequirements:(unint64_t)a3 animated:(BOOL)a4 performAction:(id)a5;
-- (void)dismissVerificationPageForPassWithDeviceAccountID:(id)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)endProvidingForNavigationItemHandle:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)didDeactivateNavigationItemController:(id)controller dirty:(BOOL)dirty;
+- (void)didReceivePendingProvisioningUpdate:(id)update;
+- (void)didUpdateApplicationMessages:(id)messages;
+- (void)discoveryDataSource:(id)source didUpdateArticleLayouts:(id)layouts;
+- (void)dismissDiscoveryArticleViewController:(id)controller afterActionCompleted:(BOOL)completed withRelevantPassUniqueIdenitifer:(id)idenitifer;
+- (void)dismissPresentedVCsWithRequirements:(unint64_t)requirements animated:(BOOL)animated performAction:(id)action;
+- (void)dismissVerificationPageForPassWithDeviceAccountID:(id)d;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)endProvidingForNavigationItemHandle:(id)handle;
 - (void)finishedEditingExpiredPass;
-- (void)forceModalPresentationFromButton:(BOOL)a3;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
-- (void)groupStackView:(id)a3 deleteConfirmedForPass:(id)a4;
-- (void)groupStackView:(id)a3 didTransitionToState:(int64_t)a4 animated:(BOOL)a5;
-- (void)groupStackView:(id)a3 wantsBottomContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5;
-- (void)groupStackView:(id)a3 wantsTopContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5;
-- (void)groupStackViewDidChangeCoachingState:(id)a3;
-- (void)groupStackViewDidChangeContentScrollView:(id)a3;
-- (void)groupsController:(id)a3 didInsertGroup:(id)a4 atIndex:(unint64_t)a5;
-- (void)groupsController:(id)a3 didMoveGroup:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6;
-- (void)groupsController:(id)a3 didRemoveGroup:(id)a4 atIndex:(unint64_t)a5;
-- (void)inboxDataSourceDidUpdateInboxMessages:(id)a3;
+- (void)forceModalPresentationFromButton:(BOOL)button;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
+- (void)groupStackView:(id)view deleteConfirmedForPass:(id)pass;
+- (void)groupStackView:(id)view didTransitionToState:(int64_t)state animated:(BOOL)animated;
+- (void)groupStackView:(id)view wantsBottomContentSeparatorWithVisibility:(double)visibility animated:(BOOL)animated;
+- (void)groupStackView:(id)view wantsTopContentSeparatorWithVisibility:(double)visibility animated:(BOOL)animated;
+- (void)groupStackViewDidChangeCoachingState:(id)state;
+- (void)groupStackViewDidChangeContentScrollView:(id)view;
+- (void)groupsController:(id)controller didInsertGroup:(id)group atIndex:(unint64_t)index;
+- (void)groupsController:(id)controller didMoveGroup:(id)group fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)groupsController:(id)controller didRemoveGroup:(id)group atIndex:(unint64_t)index;
+- (void)inboxDataSourceDidUpdateInboxMessages:(id)messages;
 - (void)loadView;
-- (void)navigationItemController:(id)a3 updateItemWithConfiguration:(id)a4;
-- (void)passPersonalizationViewController:(id)a3 didFinishPersonalizingPass:(id)a4 success:(BOOL)a5;
-- (void)paymentDeviceDidEnterFieldWithProperties:(id)a3;
+- (void)navigationItemController:(id)controller updateItemWithConfiguration:(id)configuration;
+- (void)passPersonalizationViewController:(id)controller didFinishPersonalizingPass:(id)pass success:(BOOL)success;
+- (void)paymentDeviceDidEnterFieldWithProperties:(id)properties;
 - (void)paymentDeviceDidExitField;
 - (void)paymentServiceReceivedInterruption;
-- (void)paymentSetupDidFinish:(id)a3;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4;
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5;
-- (void)performActionViewControllerDidCancel:(id)a3;
-- (void)performActionViewControllerDidPerformAction:(id)a3;
-- (void)presentAccountFeature:(unint64_t)a3 animated:(BOOL)a4 destination:(unint64_t)a5 fundingSourceIdentifier:(id)a6 completion:(id)a7;
-- (void)presentAccountPromotionForPassUniqueIdentifier:(id)a3 programIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)presentAccountServiceSchedulePayment:(id)a3 billPayAmountType:(int64_t)a4 billPayAmount:(id)a5 completion:(id)a6;
-- (void)presentActionViewControllerWithUniqueID:(id)a3 actionType:(unint64_t)a4;
-- (void)presentAddShareablePassConfiguration:(id)a3 animated:(BOOL)a4;
-- (void)presentAppStorePageForItemWithIdentifier:(id)a3;
-- (void)presentAppleBalanceAddMoneyAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentAppleBalanceAddMoneyDirectTopUpAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentAppleBalanceAddMoneyInStoreTopUpAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentApplePayUserEducationDemoFromSource:(unint64_t)a3;
-- (void)presentApplicationWithIdentifier:(id)a3;
-- (void)presentAuthorizationFlowAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentAuthorizationViewControllerWithSession:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)paymentSetupDidFinish:(id)finish;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated;
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated;
+- (void)performActionViewControllerDidCancel:(id)cancel;
+- (void)performActionViewControllerDidPerformAction:(id)action;
+- (void)presentAccountFeature:(unint64_t)feature animated:(BOOL)animated destination:(unint64_t)destination fundingSourceIdentifier:(id)identifier completion:(id)completion;
+- (void)presentAccountPromotionForPassUniqueIdentifier:(id)identifier programIdentifier:(id)programIdentifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentAccountServiceSchedulePayment:(id)payment billPayAmountType:(int64_t)type billPayAmount:(id)amount completion:(id)completion;
+- (void)presentActionViewControllerWithUniqueID:(id)d actionType:(unint64_t)type;
+- (void)presentAddShareablePassConfiguration:(id)configuration animated:(BOOL)animated;
+- (void)presentAppStorePageForItemWithIdentifier:(id)identifier;
+- (void)presentAppleBalanceAddMoneyAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentAppleBalanceAddMoneyDirectTopUpAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentAppleBalanceAddMoneyInStoreTopUpAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentApplePayUserEducationDemoFromSource:(unint64_t)source;
+- (void)presentApplicationWithIdentifier:(id)identifier;
+- (void)presentAuthorizationFlowAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentAuthorizationViewControllerWithSession:(id)session animated:(BOOL)animated completion:(id)completion;
 - (void)presentAutoFillCards;
-- (void)presentAuxiliaryPassInformationItemDetailForItemIdentifier:(id)a3 informationIdentifier:(id)a4 forPassUniqueID:(id)a5 completion:(id)a6;
-- (void)presentBackgroundRefreshConfirmationAnimated:(BOOL)a3;
-- (void)presentBalanceDetailsForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentCreateAccountUserInvitationWithCompletion:(id)a3;
-- (void)presentDailyCashForPassUniqueIdentifier:(id)a3 dateComponents:(id)a4 redemptionType:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)presentDefaultPaymentPassInPaymentPresentationFromButton:(BOOL)a3 withAnimated:(BOOL)a4 completionHandler:(id)a5;
-- (void)presentDiscoveryArticleForItemWithIdentifier:(id)a3 referrerIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)presentEntitlementDetailsForPassUniqueIdentifier:(id)a3;
-- (void)presentExpiredPassWithUniqueID:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)presentExpiredPassesAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (void)presentExpressUpgradeDetailForPassUniqueID:(id)a3 assetIdentifier:(id)a4 hideDisableAction:(unint64_t)a5 reportingMetadata:(id)a6 animated:(BOOL)a7 completionHandler:(id)a8;
-- (void)presentFeatureSetupOrFeaturePass:(unint64_t)a3 referrerIdentifier:(id)a4 presentationContext:(id)a5 completion:(id)a6;
-- (void)presentGroupTableAnimated:(BOOL)a3;
+- (void)presentAuxiliaryPassInformationItemDetailForItemIdentifier:(id)identifier informationIdentifier:(id)informationIdentifier forPassUniqueID:(id)d completion:(id)completion;
+- (void)presentBackgroundRefreshConfirmationAnimated:(BOOL)animated;
+- (void)presentBalanceDetailsForPassUniqueIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentCreateAccountUserInvitationWithCompletion:(id)completion;
+- (void)presentDailyCashForPassUniqueIdentifier:(id)identifier dateComponents:(id)components redemptionType:(unint64_t)type animated:(BOOL)animated completion:(id)completion;
+- (void)presentDefaultPaymentPassInPaymentPresentationFromButton:(BOOL)button withAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentDiscoveryArticleForItemWithIdentifier:(id)identifier referrerIdentifier:(id)referrerIdentifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentEntitlementDetailsForPassUniqueIdentifier:(id)identifier;
+- (void)presentExpiredPassWithUniqueID:(id)d animated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentExpiredPassesAnimated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentExpressUpgradeDetailForPassUniqueID:(id)d assetIdentifier:(id)identifier hideDisableAction:(unint64_t)action reportingMetadata:(id)metadata animated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentFeatureSetupOrFeaturePass:(unint64_t)pass referrerIdentifier:(id)identifier presentationContext:(id)context completion:(id)completion;
+- (void)presentGroupTableAnimated:(BOOL)animated;
 - (void)presentHowToUseWallet;
-- (void)presentHowToUseWalletWithCardLotIdentifier:(id)a3;
-- (void)presentInitialState:(BOOL *)a3;
-- (void)presentInstallmentPlanWithIdentifier:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5;
-- (void)presentInstallmentPlansForFeature:(unint64_t)a3 completion:(id)a4;
-- (void)presentInvitationWithIdentifier:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)presentInvitationsForHeaderView:(id)a3;
-- (void)presentInvitationsInboxAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentMerchantTokenWithIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentHowToUseWalletWithCardLotIdentifier:(id)identifier;
+- (void)presentInitialState:(BOOL *)state;
+- (void)presentInstallmentPlanWithIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion;
+- (void)presentInstallmentPlansForFeature:(unint64_t)feature completion:(id)completion;
+- (void)presentInvitationWithIdentifier:(id)identifier forAccountWithIdentifier:(id)withIdentifier completion:(id)completion;
+- (void)presentInvitationsForHeaderView:(id)view;
+- (void)presentInvitationsInboxAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentMerchantTokenWithIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
 - (void)presentNotificationSettings;
-- (void)presentOffscreenAnimated:(BOOL)a3 split:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)presentOnscreen:(BOOL)a3 context:(id)a4 withCompletionHandler:(id)a5;
-- (void)presentOrderManagementAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentPassDetailsAssociatedWithVirtualCardID:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentPassDetailsForHeaderView:(id)a3;
-- (void)presentPassDetailsWithUniqueID:(id)a3 animated:(BOOL)a4 action:(unint64_t)a5 completionHandler:(id)a6;
-- (void)presentPassForFeatureIdentifier:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentPassWithAssociatedAccountIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentPassWithFieldProperties:(id)a3 fieldMetadata:(id)a4 animated:(BOOL)a5;
-- (void)presentPassWithUniqueID:(id)a3 animated:(BOOL)a4 campaignAttributionReferrerIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)presentPassWithUniqueID:(id)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)presentPassWithUpdateUserNotificationIdentifier:(id)a3;
-- (void)presentPaymentOfferCriteriaIdentifier:(id)a3 productIdentifier:(id)a4;
+- (void)presentOffscreenAnimated:(BOOL)animated split:(BOOL)split withCompletionHandler:(id)handler;
+- (void)presentOnscreen:(BOOL)onscreen context:(id)context withCompletionHandler:(id)handler;
+- (void)presentOrderManagementAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentPassDetailsAssociatedWithVirtualCardID:(id)d animated:(BOOL)animated completion:(id)completion;
+- (void)presentPassDetailsForHeaderView:(id)view;
+- (void)presentPassDetailsWithUniqueID:(id)d animated:(BOOL)animated action:(unint64_t)action completionHandler:(id)handler;
+- (void)presentPassForFeatureIdentifier:(unint64_t)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentPassWithAssociatedAccountIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentPassWithFieldProperties:(id)properties fieldMetadata:(id)metadata animated:(BOOL)animated;
+- (void)presentPassWithUniqueID:(id)d animated:(BOOL)animated campaignAttributionReferrerIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)presentPassWithUniqueID:(id)d context:(id)context animated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentPassWithUpdateUserNotificationIdentifier:(id)identifier;
+- (void)presentPaymentOfferCriteriaIdentifier:(id)identifier productIdentifier:(id)productIdentifier;
 - (void)presentPaymentSetupController;
-- (void)presentPaymentSetupForHeaderView:(id)a3;
-- (void)presentPaymentSetupInMode:(int64_t)a3 referrerIdentifier:(id)a4 referralSource:(id)a5 campaignIdentifier:(id)a6 paymentNetwork:(id)a7 transitNetworkIdentifier:(id)a8 allowedFeatureIdentifiers:(id)a9 productIdentifiers:(id)a10 sectionIdentifier:(id)a11;
-- (void)presentPeerPaymentDeviceTapWithInitialAmount:(id)a3 initialMemo:(id)a4;
-- (void)presentPeerPaymentPassAnimated:(BOOL)a3 campaignAttributionReferrerIdentifier:(id)a4 completion:(id)a5;
-- (void)presentPeerPaymentRecurringPaymentWithIdentifier:(id)a3;
+- (void)presentPaymentSetupForHeaderView:(id)view;
+- (void)presentPaymentSetupInMode:(int64_t)mode referrerIdentifier:(id)identifier referralSource:(id)source campaignIdentifier:(id)campaignIdentifier paymentNetwork:(id)network transitNetworkIdentifier:(id)networkIdentifier allowedFeatureIdentifiers:(id)identifiers productIdentifiers:(id)self0 sectionIdentifier:(id)self1;
+- (void)presentPeerPaymentDeviceTapWithInitialAmount:(id)amount initialMemo:(id)memo;
+- (void)presentPeerPaymentPassAnimated:(BOOL)animated campaignAttributionReferrerIdentifier:(id)identifier completion:(id)completion;
+- (void)presentPeerPaymentRecurringPaymentWithIdentifier:(id)identifier;
 - (void)presentPeerPaymentSendOrRequest;
-- (void)presentPeerPaymentSetupWithConfiguration:(id)a3;
+- (void)presentPeerPaymentSetupWithConfiguration:(id)configuration;
 - (void)presentPeerPaymentTermsAcceptance;
 - (void)presentPeerPaymentTopUp;
 - (void)presentPeerPaymentTransferToBank;
 - (void)presentPeerPaymentVerifyIdentity;
 - (void)presentPileOffscreen;
-- (void)presentPrecursorPassUpdateForPassUniqueIdentifier:(id)a3;
-- (void)presentProvisioningForPendingProvisioningOfType:(id)a3 identifier:(id)a4;
-- (void)presentRewardsHubForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentRewardsHubMerchantsForPassUniqueIdentifier:(id)a3 privateIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)presentSearchWithCompletion:(id)a3;
-- (void)presentSearchWithQuery:(id)a3 completion:(id)a4;
-- (void)presentSecurePassSessionWithIssuerData:(id)a3 withSignature:(id)a4 animated:(BOOL)a5;
-- (void)presentSetupVirtualCardNumberForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentShareActivationWithShareIdentifier:(id)a3;
-- (void)presentShareDetailsForPassUniqueIdentifier:(id)a3 shareIdentifier:(id)a4;
-- (void)presentShareInvitationWithMailboxAddress:(id)a3 referralSource:(id)a4 animated:(BOOL)a5;
-- (void)presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString:(id)a3 passThumbnailImageData:(id)a4 animated:(BOOL)a5;
-- (void)presentSpendingSummaryForPassUniqueIdentifier:(id)a3 type:(unint64_t)a4 categorization:(unint64_t)a5 unit:(unint64_t)a6 animated:(BOOL)a7 completion:(id)a8;
-- (void)presentTransactionDetailsForBankConnectTransaction:(id)a3 applePayPrimaryAccountIdentifier:(id)a4;
-- (void)presentTransactionDetailsForTransactionWithIdentifier:(id)a3 confirmPaymentOfferPlan:(BOOL)a4;
-- (void)presentTransactionDetailsForTransactionWithServiceIdentifier:(id)a3 transactionSourceIdentifier:(id)a4 confirmPaymentOfferPlan:(BOOL)a5;
+- (void)presentPrecursorPassUpdateForPassUniqueIdentifier:(id)identifier;
+- (void)presentProvisioningForPendingProvisioningOfType:(id)type identifier:(id)identifier;
+- (void)presentRewardsHubForPassUniqueIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentRewardsHubMerchantsForPassUniqueIdentifier:(id)identifier privateIdentifier:(id)privateIdentifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentSearchWithCompletion:(id)completion;
+- (void)presentSearchWithQuery:(id)query completion:(id)completion;
+- (void)presentSecurePassSessionWithIssuerData:(id)data withSignature:(id)signature animated:(BOOL)animated;
+- (void)presentSetupVirtualCardNumberForPassUniqueIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)presentShareActivationWithShareIdentifier:(id)identifier;
+- (void)presentShareDetailsForPassUniqueIdentifier:(id)identifier shareIdentifier:(id)shareIdentifier;
+- (void)presentShareInvitationWithMailboxAddress:(id)address referralSource:(id)source animated:(BOOL)animated;
+- (void)presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString:(id)string passThumbnailImageData:(id)data animated:(BOOL)animated;
+- (void)presentSpendingSummaryForPassUniqueIdentifier:(id)identifier type:(unint64_t)type categorization:(unint64_t)categorization unit:(unint64_t)unit animated:(BOOL)animated completion:(id)completion;
+- (void)presentTransactionDetailsForBankConnectTransaction:(id)transaction applePayPrimaryAccountIdentifier:(id)identifier;
+- (void)presentTransactionDetailsForTransactionWithIdentifier:(id)identifier confirmPaymentOfferPlan:(BOOL)plan;
+- (void)presentTransactionDetailsForTransactionWithServiceIdentifier:(id)identifier transactionSourceIdentifier:(id)sourceIdentifier confirmPaymentOfferPlan:(BOOL)plan;
 - (void)reloadPasses;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)showStatementForIdentifier:(id)a3 passUniqueIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)startPaymentPreflight:(id)a3 withPaymentSetupMode:(int64_t)a4 referrerIdentifier:(id)a5 referralSource:(id)a6 campaignIdentifier:(id)a7 paymentNetworks:(id)a8 transitNetworkIdentifiers:(id)a9 allowedFeatureIdentifiers:(id)a10 productIdentifiers:(id)a11 sectionIdentifier:(id)a12;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)showStatementForIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier animated:(BOOL)animated completion:(id)completion;
+- (void)startPaymentPreflight:(id)preflight withPaymentSetupMode:(int64_t)mode referrerIdentifier:(id)identifier referralSource:(id)source campaignIdentifier:(id)campaignIdentifier paymentNetworks:(id)networks transitNetworkIdentifiers:(id)identifiers allowedFeatureIdentifiers:(id)self0 productIdentifiers:(id)self1 sectionIdentifier:(id)self2;
 - (void)updateLockscreenIdleTimer;
-- (void)updatePassesIfNecessaryWithCompletion:(id)a3;
+- (void)updatePassesIfNecessaryWithCompletion:(id)completion;
 - (void)updateRegionSupportIfNecessary;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4;
-- (void)willActivateNavigationItemController:(id)a3;
+- (void)virtualCardEnrollmentViewController:(id)controller didCompleteWithSuccess:(BOOL)success;
+- (void)willActivateNavigationItemController:(id)controller;
 @end
 
 @implementation PKPassGroupsViewController
@@ -236,21 +236,21 @@
   if ([(PKPassGroupsViewController *)self hasDiscoveryContent]&& (v3 = objc_loadWeakRetained(&self->_discoveryGalleryView), v3, v3))
   {
     WeakRetained = objc_loadWeakRetained(&self->_discoveryGalleryView);
-    v5 = [WeakRetained frontmostItemIdentifier];
+    frontmostItemIdentifier = [WeakRetained frontmostItemIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    frontmostItemIdentifier = 0;
   }
 
-  return v5;
+  return frontmostItemIdentifier;
 }
 
 - (BOOL)hasDiscoveryContent
 {
-  v2 = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
-  v3 = [v2 count] != 0;
+  articleLayouts = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
+  v3 = [articleLayouts count] != 0;
 
   return v3;
 }
@@ -266,8 +266,8 @@
     return;
   }
 
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -299,9 +299,9 @@
     p_kind = &self->_kind;
   }
 
-  v18 = [(PKPassGroupStackView *)v15 contentScrollView];
+  contentScrollView = [(PKPassGroupStackView *)v15 contentScrollView];
   contentScrollView = self->_contentScrollView;
-  self->_contentScrollView = v18;
+  self->_contentScrollView = contentScrollView;
 
   [(PKPassGroupsViewController *)self setContentScrollView:self->_contentScrollView forEdge:15];
   [(PKPassGroupStackView *)self->_groupStackView setDiscoveryDatasource:self->_discoveryDataSource];
@@ -313,45 +313,45 @@
   {
     v21 = self->_groupStackView;
     *buf = 134349312;
-    v34 = self;
+    selfCopy = self;
     v35 = 2050;
     v36 = v21;
     _os_log_impl(&dword_1BD026000, v20, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): created PKPassGroupStackView %{public}p.", buf, 0x16u);
   }
 
   [(PKPassGroupsViewController *)self _updatePeerPaymentAccount];
-  v22 = [(PKPassGroupsViewController *)self view];
-  [v22 setAutoresizingMask:0];
-  [v22 addSubview:self->_groupStackView];
-  [v22 addSubview:self->_headerBackground];
+  view = [(PKPassGroupsViewController *)self view];
+  [view setAutoresizingMask:0];
+  [view addSubview:self->_groupStackView];
+  [view addSubview:self->_headerBackground];
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    [v22 addSubview:self->_footerBackground];
+    [view addSubview:self->_footerBackground];
   }
 
   style = self->_style;
   if (style == 1)
   {
-    [v22 setOpaque:0];
-    [v22 setClipsToBounds:1];
-    v24 = [MEMORY[0x1E69DC888] clearColor];
+    [view setOpaque:0];
+    [view setClipsToBounds:1];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     goto LABEL_14;
   }
 
   if (!style)
   {
-    [v22 setOpaque:1];
-    v24 = +[PKPassGroupStackView backgroundColor];
+    [view setOpaque:1];
+    clearColor = +[PKPassGroupStackView backgroundColor];
 LABEL_14:
-    v25 = v24;
-    [v22 setBackgroundColor:v24];
+    v25 = clearColor;
+    [view setBackgroundColor:clearColor];
   }
 
   if (!self->_invalidationStatus)
   {
-    v26 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = self->_paymentService;
-    self->_paymentService = v26;
+    self->_paymentService = paymentService;
 
     [(PKPaymentService *)self->_paymentService registerObserver:self];
     objc_initWeak(buf, self);
@@ -368,9 +368,9 @@ LABEL_14:
 
   if (*p_kind == 1)
   {
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:self selector:sel__localeDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
-    [v29 addObserver:self selector:sel__regionConfigurationDidChangeNotification name:*MEMORY[0x1E69BC4F8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__localeDidChangeNotification_ name:*MEMORY[0x1E695D8F0] object:0];
+    [defaultCenter addObserver:self selector:sel__regionConfigurationDidChangeNotification name:*MEMORY[0x1E69BC4F8] object:0];
   }
 
   [(PKPassGroupsViewController *)self _updateNavigationItemAnimated:0];
@@ -440,11 +440,11 @@ void __38__PKPassGroupsViewController_loadView__block_invoke(uint64_t a1, void *
   v5.receiver = self;
   v5.super_class = PKPassGroupsViewController;
   [(PKPassGroupsViewController *)&v5 viewSafeAreaInsetsDidChange];
-  v3 = [(PKPassGroupsViewController *)self viewIfLoaded];
-  v4 = v3;
-  if (v3)
+  viewIfLoaded = [(PKPassGroupsViewController *)self viewIfLoaded];
+  v4 = viewIfLoaded;
+  if (viewIfLoaded)
   {
-    [v3 setNeedsLayout];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
@@ -453,13 +453,13 @@ void __38__PKPassGroupsViewController_loadView__block_invoke(uint64_t a1, void *
   v21.receiver = self;
   v21.super_class = PKPassGroupsViewController;
   [(PKPassGroupsViewController *)&v21 viewWillLayoutSubviews];
-  v3 = [(PKPassGroupsViewController *)self view];
-  [v3 bounds];
+  view = [(PKPassGroupsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v15 = v14;
   memset(&slice, 0, sizeof(slice));
@@ -551,20 +551,20 @@ void __38__PKPassGroupsViewController_loadView__block_invoke_2(uint64_t a1)
 
 - (id)_passToPresent
 {
-  v3 = [(PKPassGroupsViewController *)self _passPendingActivationToPresent];
-  v4 = v3;
-  if (v3)
+  _passPendingActivationToPresent = [(PKPassGroupsViewController *)self _passPendingActivationToPresent];
+  v4 = _passPendingActivationToPresent;
+  if (_passPendingActivationToPresent)
   {
-    v5 = v3;
+    v5 = _passPendingActivationToPresent;
   }
 
   else
   {
-    v6 = [(PKPassGroupsViewController *)self _passWithDeviceAssessmentEducationToPresent];
-    v5 = v6;
-    if (v6)
+    _passWithDeviceAssessmentEducationToPresent = [(PKPassGroupsViewController *)self _passWithDeviceAssessmentEducationToPresent];
+    v5 = _passWithDeviceAssessmentEducationToPresent;
+    if (_passWithDeviceAssessmentEducationToPresent)
     {
-      v7 = v6;
+      v7 = _passWithDeviceAssessmentEducationToPresent;
     }
   }
 
@@ -575,26 +575,26 @@ void __38__PKPassGroupsViewController_loadView__block_invoke_2(uint64_t a1)
 {
   if (PKSharedCacheGetBoolForKey())
   {
-    v2 = 0;
+    firstObject = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v4 = [v3 passesPendingActivation];
-    if ([v4 count])
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    passesPendingActivation = [mEMORY[0x1E69B8A58] passesPendingActivation];
+    if ([passesPendingActivation count])
     {
-      v2 = [v4 firstObject];
+      firstObject = [passesPendingActivation firstObject];
       PKSharedCacheSetBoolForKey();
     }
 
     else
     {
-      v2 = 0;
+      firstObject = 0;
     }
   }
 
-  return v2;
+  return firstObject;
 }
 
 - (id)_passWithDeviceAssessmentEducationToPresent
@@ -606,8 +606,8 @@ void __38__PKPassGroupsViewController_loadView__block_invoke_2(uint64_t a1)
 
   else
   {
-    v3 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v4 = [v3 passesOfType:1];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v4 = [mEMORY[0x1E69B8A58] passesOfType:1];
 
     v2 = [v4 pk_firstObjectPassingTest:&__block_literal_global_388];
   }
@@ -634,14 +634,14 @@ uint64_t __73__PKPassGroupsViewController__passWithDeviceAssessmentEducationToPr
     _os_log_impl(&dword_1BD026000, v2, OS_LOG_TYPE_DEFAULT, "Updating region support", buf, 2u);
   }
 
-  v3 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v4 = MEMORY[0x1E69B8D58];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__PKPassGroupsViewController_updateRegionSupportIfNecessary__block_invoke;
   v6[3] = &unk_1E8013908;
-  v7 = v3;
-  v5 = v3;
+  v7 = mEMORY[0x1E69B8EF8];
+  v5 = mEMORY[0x1E69B8EF8];
   [v4 configureWebServiceIfNecessary:v5 completion:v6];
 }
 
@@ -678,8 +678,8 @@ void __52__PKPassGroupsViewController_beginSuppressingFooter__block_invoke()
 {
   if (!atomic_fetch_add(&FooterSuppressionCounter, 1uLL))
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
   }
 }
 
@@ -712,17 +712,17 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   [v0 postNotificationName:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
 }
 
-- (PKPassGroupsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKPassGroupsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  result = a4;
+  nameCopy = name;
+  result = bundle;
   __break(1u);
   return result;
 }
 
-- (PKPassGroupsViewController)initWithCoder:(id)a3
+- (PKPassGroupsViewController)initWithCoder:(id)coder
 {
-  result = a3;
+  result = coder;
   __break(1u);
   return result;
 }
@@ -735,23 +735,23 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   return v4;
 }
 
-- (id)_initWithGroupsController:(char)a3 kind:(void *)a4 style:
+- (id)_initWithGroupsController:(char)controller kind:(void *)kind style:
 {
   v8 = a2;
-  if (a1)
+  if (self)
   {
-    v38.receiver = a1;
+    v38.receiver = self;
     v38.super_class = PKPassGroupsViewController;
     v9 = objc_msgSendSuper2(&v38, sel_initWithNibName_bundle_, 0, 0);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
-      *(v9 + 992) = a3;
-      v9[125] = a4;
+      *(v9 + 992) = controller;
+      v9[125] = kind;
       *(v9 + 1293) = [MEMORY[0x1E69B91E0] isInFailForward];
       if (PKSecureElementIsAvailable())
       {
-        v10 = *(a1 + 1293) ^ 1;
+        v10 = *(self + 1293) ^ 1;
       }
 
       else
@@ -759,30 +759,30 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
         v10 = 0;
       }
 
-      *(a1 + 1294) = v10 & 1;
-      if (*(a1 + 1294))
+      *(self + 1294) = v10 & 1;
+      if (*(self + 1294))
       {
         v11 = MEMORY[0x1E69B8D58];
-        v12 = [MEMORY[0x1E69B8EF8] sharedService];
-        *(a1 + 1295) = [v11 _isPaymentSetupSupportedForWebService:v12];
+        mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+        *(self + 1295) = [v11 _isPaymentSetupSupportedForWebService:mEMORY[0x1E69B8EF8]];
       }
 
       else
       {
-        *(a1 + 1295) = 0;
+        *(self + 1295) = 0;
       }
 
-      objc_storeStrong(a1 + 178, a2);
-      [v8 setShouldSeparatePaymentPasses:*(a1 + 992) == 1];
-      [a1[178] setDelegate:a1];
-      [a1[178] loadGroupsSynchronously];
-      a1[156] = 1;
+      objc_storeStrong(self + 178, a2);
+      [v8 setShouldSeparatePaymentPasses:*(self + 992) == 1];
+      [self[178] setDelegate:self];
+      [self[178] loadGroupsSynchronously];
+      self[156] = 1;
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v14 = a1[159];
-      a1[159] = v13;
+      v14 = self[159];
+      self[159] = v13;
 
-      *(a1 + 1416) = 0;
-      *(a1 + 1417) = 1;
+      *(self + 1416) = 0;
+      *(self + 1417) = 1;
       v15 = PKIsLowEndDevice();
       v16 = 512;
       if (!v15)
@@ -790,80 +790,80 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
         v16 = 0;
       }
 
-      a1[179] = v16;
+      self[179] = v16;
       v17 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-      v18 = a1[164];
-      a1[164] = v17;
+      v18 = self[164];
+      self[164] = v17;
 
-      v19 = [MEMORY[0x1E69B9000] sharedInstance];
-      v20 = a1[165];
-      a1[165] = v19;
+      mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+      v20 = self[165];
+      self[165] = mEMORY[0x1E69B9000];
 
       v21 = objc_alloc_init(MEMORY[0x1E69B8680]);
-      v22 = a1[170];
-      a1[170] = v21;
+      v22 = self[170];
+      self[170] = v21;
 
-      v23 = [objc_alloc(MEMORY[0x1E69B87E0]) initWithDelegate:a1];
-      v24 = a1[172];
-      a1[172] = v23;
+      v23 = [objc_alloc(MEMORY[0x1E69B87E0]) initWithDelegate:self];
+      v24 = self[172];
+      self[172] = v23;
 
       v25 = [PKContactAvatarManager alloc];
-      v26 = [MEMORY[0x1E69B8740] defaultContactResolver];
-      v27 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-      v28 = [(PKContactAvatarManager *)v25 initWithContactResolver:v26 paymentDataProvider:v27];
-      v29 = a1[173];
-      a1[173] = v28;
+      defaultContactResolver = [MEMORY[0x1E69B8740] defaultContactResolver];
+      defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+      v28 = [(PKContactAvatarManager *)v25 initWithContactResolver:defaultContactResolver paymentDataProvider:defaultDataProvider];
+      v29 = self[173];
+      self[173] = v28;
 
       v30 = [PKInboxDataSource alloc];
-      if (*(a1 + 992) == 1)
+      if (*(self + 992) == 1)
       {
-        v31 = a1;
+        selfCopy = self;
       }
 
       else
       {
-        v31 = 0;
+        selfCopy = 0;
       }
 
-      v32 = [(PKInboxDataSource *)v30 initWithDelegate:v31];
-      v33 = a1[168];
-      a1[168] = v32;
+      v32 = [(PKInboxDataSource *)v30 initWithDelegate:selfCopy];
+      v33 = self[168];
+      self[168] = v32;
 
-      [a1 setRestorationIdentifier:@"PKPassGroupsViewController"];
-      v34 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v34 addObserver:a1 selector:sel__handleStatusBarChange_ name:*MEMORY[0x1E69DDAB8] object:0];
-      [v34 addObserver:a1 selector:sel__handleFooterSupressionChange_ name:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
-      [v34 addObserver:a1 selector:sel__handlePeerPaymentAccountDidChangeNotification_ name:*MEMORY[0x1E69BC360] object:a1[165]];
+      [self setRestorationIdentifier:@"PKPassGroupsViewController"];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__handleStatusBarChange_ name:*MEMORY[0x1E69DDAB8] object:0];
+      [defaultCenter addObserver:self selector:sel__handleFooterSupressionChange_ name:@"PKPassGroupsViewControllerFooterSupressionDidChange" object:0];
+      [defaultCenter addObserver:self selector:sel__handlePeerPaymentAccountDidChangeNotification_ name:*MEMORY[0x1E69BC360] object:self[165]];
       if ((PKRunningInRemoteContext() & 1) == 0)
       {
-        [v34 addObserver:a1 selector:sel__handleChildViewControllerRequestingServiceMode_ name:@"PKPDVCRequestedServiceMode" object:0];
+        [defaultCenter addObserver:self selector:sel__handleChildViewControllerRequestingServiceMode_ name:@"PKPDVCRequestedServiceMode" object:0];
       }
 
       v35 = +[PKUIForegroundActiveArbiter sharedInstance];
       v36 = v35;
       if (v35)
       {
-        *(a1 + 508) = [v35 registerObserver:a1];
+        *(self + 508) = [v35 registerObserver:self];
       }
 
       else
       {
-        *(a1 + 508) = 257;
+        *(self + 508) = 257;
       }
 
-      *(a1 + 326) = -1;
-      [a1 _registerForExpressTransactionNotifications:*(a1 + 1017)];
-      [a1 _createNavigationGroups];
+      *(self + 326) = -1;
+      [self _registerForExpressTransactionNotifications:*(self + 1017)];
+      [self _createNavigationGroups];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = +[PKUIForegroundActiveArbiter sharedInstance];
   [v4 unregisterObserver:self];
@@ -894,21 +894,21 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = PKPassGroupsViewController;
   [(PKPassGroupsViewController *)&v6 viewWillAppear:?];
   self->_viewAppeared = 1;
-  [(PKPassGroupsViewController *)self _updateFooterSuppressionAnimated:v3];
+  [(PKPassGroupsViewController *)self _updateFooterSuppressionAnimated:appearCopy];
   [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
   if (!self->_viewWillAppearedBefore)
   {
     self->_viewWillAppearedBefore = 1;
-    v5 = [(PKGroupsController *)self->_groupsController groupCount];
+    groupCount = [(PKGroupsController *)self->_groupsController groupCount];
     [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
-    if (!v5)
+    if (!groupCount)
     {
       [(PKPassGroupStackView *)self->_groupStackView setModalGroupIndex:0x7FFFFFFFFFFFFFFFLL];
       self->_presentationState = 4;
@@ -920,12 +920,12 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   [(PKPassGroupStackView *)self->_groupStackView setPaused:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PKPassGroupsViewController;
-  [(PKPassGroupsViewController *)&v9 viewDidAppear:a3];
+  [(PKPassGroupsViewController *)&v9 viewDidAppear:appear];
   v4 = MEMORY[0x1E69B8540];
   v12[0] = *MEMORY[0x1E69BB718];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
@@ -946,9 +946,9 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69B8540];
   v13[0] = *MEMORY[0x1E69BB718];
@@ -963,20 +963,20 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   [v5 subjects:v6 sendEvent:v9];
 
   self->_viewAppeared = 0;
-  [(PKPassGroupsViewController *)self _updateFooterSuppressionAnimated:v3];
+  [(PKPassGroupsViewController *)self _updateFooterSuppressionAnimated:disappearCopy];
   [(PKPassGroupStackView *)self->_groupStackView setPaused:1];
   v10.receiver = self;
   v10.super_class = PKPassGroupsViewController;
-  [(PKPassGroupsViewController *)&v10 viewDidDisappear:v3];
+  [(PKPassGroupsViewController *)&v10 viewDidDisappear:disappearCopy];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKPassGroupsViewController;
-  v4 = a3;
-  [(PKPassGroupsViewController *)&v6 decodeRestorableStateWithCoder:v4];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:{@"modalUniqueID", v6.receiver, v6.super_class}];
+  coderCopy = coder;
+  [(PKPassGroupsViewController *)&v6 decodeRestorableStateWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"modalUniqueID", v6.receiver, v6.super_class}];
 
   if (v5)
   {
@@ -984,20 +984,20 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   }
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKPassGroupsViewController;
-  [(PKPassGroupsViewController *)&v8 encodeRestorableStateWithCoder:v4];
-  v5 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-  v6 = v5;
-  if (v5)
+  [(PKPassGroupsViewController *)&v8 encodeRestorableStateWithCoder:coderCopy];
+  modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  v6 = modalGroupFrontmostPass;
+  if (modalGroupFrontmostPass)
   {
-    v7 = [v5 uniqueID];
-    if (v7)
+    uniqueID = [modalGroupFrontmostPass uniqueID];
+    if (uniqueID)
     {
-      [v4 encodeObject:v7 forKey:@"modalUniqueID"];
+      [coderCopy encodeObject:uniqueID forKey:@"modalUniqueID"];
     }
   }
 }
@@ -1011,32 +1011,32 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
     more = self->_navigationItem.trailing.more.items.more;
     if (more)
     {
-      v5 = [(PKPassGroupsMoreMenuFactory *)self->_moreMenuFactory moreMenu];
-      [(UIBarButtonItem *)more setMenu:v5];
+      moreMenu = [(PKPassGroupsMoreMenuFactory *)self->_moreMenuFactory moreMenu];
+      [(UIBarButtonItem *)more setMenu:moreMenu];
     }
   }
 }
 
-- (id)groupAtIndex:(unint64_t)a3
+- (id)groupAtIndex:(unint64_t)index
 {
-  if ([(PKPassGroupsViewController *)self numberOfGroups]<= a3)
+  if ([(PKPassGroupsViewController *)self numberOfGroups]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(PKGroupsController *)self->_groupsController groupAtIndex:a3];
+    v5 = [(PKGroupsController *)self->_groupsController groupAtIndex:index];
   }
 
   return v5;
 }
 
-- (BOOL)hasDiscoveryCardWithItemIdentifier:(id)a3
+- (BOOL)hasDiscoveryCardWithItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_discoveryGalleryView);
-  v6 = [WeakRetained cardViewForCardWithItemIdentifier:v4];
+  v6 = [WeakRetained cardViewForCardWithItemIdentifier:identifierCopy];
 
   return v6 != 0;
 }
@@ -1045,12 +1045,12 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
 {
   if (PKRunningInViewService())
   {
-    v3 = [(PKPeerPaymentService *)self->_peerPaymentService account];
-    if ([v3 supportsCardBalancePromotion] && (objc_msgSend(v3, "cardBalancePromotionFeatureDescriptor"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "minimumAmount"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "currentBalance"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "amount"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "compare:", v7), v7, v6, v5, v4, v8 != 1))
+    account = [(PKPeerPaymentService *)self->_peerPaymentService account];
+    if ([account supportsCardBalancePromotion] && (objc_msgSend(account, "cardBalancePromotionFeatureDescriptor"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "minimumAmount"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(account, "currentBalance"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "amount"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "compare:", v7), v7, v6, v5, v4, v8 != 1))
     {
       groupsController = self->_groupsController;
-      v11 = [v3 associatedPassUniqueID];
-      v12 = [(PKGroupsController *)groupsController groupIndexForPassUniqueID:v11];
+      associatedPassUniqueID = [account associatedPassUniqueID];
+      v12 = [(PKGroupsController *)groupsController groupIndexForPassUniqueID:associatedPassUniqueID];
 
       v9 = [(PKGroupsController *)self->_groupsController groupAtIndex:v12];
     }
@@ -1069,16 +1069,16 @@ void __50__PKPassGroupsViewController_endSuppressingFooter__block_invoke()
   return v9;
 }
 
-- (BOOL)groupStackView:(id)a3 requiresSectionForPassType:(unint64_t)a4 withState:(id *)a5
+- (BOOL)groupStackView:(id)view requiresSectionForPassType:(unint64_t)type withState:(id *)state
 {
-  v8 = a3;
-  if (!a4)
+  viewCopy = view;
+  if (!type)
   {
-    if ((*(a5 + 16) & 2) == 0)
+    if ((*(state + 16) & 2) == 0)
     {
-      v11 = *&a5->var0;
-      v12 = *(a5 + 2);
-      canAddSecureElementCards = ![(PKPassGroupsViewController *)self groupStackView:v8 requiresSectionForPassType:1 withState:&v11];
+      v11 = *&state->var0;
+      v12 = *(state + 2);
+      canAddSecureElementCards = ![(PKPassGroupsViewController *)self groupStackView:viewCopy requiresSectionForPassType:1 withState:&v11];
       goto LABEL_7;
     }
 
@@ -1087,7 +1087,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     goto LABEL_6;
   }
@@ -1098,17 +1098,17 @@ LABEL_7:
   return canAddSecureElementCards & 1;
 }
 
-- (BOOL)groupStackView:(id)a3 willHaveHeaderViewForPassType:(unint64_t)a4 withState:(id *)a5
+- (BOOL)groupStackView:(id)view willHaveHeaderViewForPassType:(unint64_t)type withState:(id *)state
 {
-  v8 = a3;
-  if (!a4)
+  viewCopy = view;
+  if (!type)
   {
-    if ((*(a5 + 24) & 2) == 0)
+    if ((*(state + 24) & 2) == 0)
     {
-      v12 = *(&a5->var0 + 1);
-      v14[0] = *&a5->var0.var0;
+      v12 = *(&state->var0 + 1);
+      v14[0] = *&state->var0.var0;
       v14[1] = v12;
-      v11 = [(PKPassGroupsViewController *)self groupStackView:v8 willHaveHeaderViewForPassType:1 withState:v14];
+      v11 = [(PKPassGroupsViewController *)self groupStackView:viewCopy willHaveHeaderViewForPassType:1 withState:v14];
       goto LABEL_7;
     }
 
@@ -1117,7 +1117,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
     goto LABEL_6;
   }
@@ -1130,7 +1130,7 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)groupStackView:(id)a3 willHaveSubheaderViewsWithState:(id *)a4
+- (BOOL)groupStackView:(id)view willHaveSubheaderViewsWithState:(id *)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
   v7 = WeakRetained;
@@ -1144,8 +1144,8 @@ LABEL_7:
 
     objc_storeWeak(&self->_applicationMessageView, 0);
     discoveryDataSource = self->_discoveryDataSource;
-    v10 = *(&a4->var0 + 1);
-    v12[0] = *&a4->var0.var0;
+    v10 = *(&state->var0 + 1);
+    v12[0] = *&state->var0.var0;
     v12[1] = v10;
     v8 = [PKDiscoveryGalleryView isVisibleForSectionsState:v12 dataSource:discoveryDataSource];
     v7 = 0;
@@ -1154,15 +1154,15 @@ LABEL_7:
   return v8;
 }
 
-- (id)groupStackView:(id)a3 headerForPassType:(unint64_t)a4 withState:(id *)a5
+- (id)groupStackView:(id)view headerForPassType:(unint64_t)type withState:(id *)state
 {
-  if (a4 == 1)
+  if (type == 1)
   {
     v8 = &OBJC_IVAR___PKPassGroupsViewController__paymentHeaderView;
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!type)
   {
     v8 = &OBJC_IVAR___PKPassGroupsViewController__barcodeHeaderView;
 LABEL_5:
@@ -1192,10 +1192,10 @@ LABEL_12:
     }
 
     v15 = [PKGSVWalletHeaderView alloc];
-    v16 = *(&a5->var0 + 1);
-    v19[0] = *&a5->var0.var0;
+    v16 = *(&state->var0 + 1);
+    v19[0] = *&state->var0.var0;
     v19[1] = v16;
-    v14 = [(PKGSVWalletHeaderView *)v15 initWithPassType:a4 state:v19 delegate:self];
+    v14 = [(PKGSVWalletHeaderView *)v15 initWithPassType:type state:v19 delegate:self];
     objc_storeWeak(v9, v14);
     [(PKGSVWalletHeaderView *)v14 setHeaderDelegate:self];
     [(PKGSVWalletHeaderView *)v14 setShowBackgroundProvisioningHint:v12 animated:0];
@@ -1208,7 +1208,7 @@ LABEL_14:
   return v17;
 }
 
-- (id)groupStackView:(id)a3 subheadersWithState:(id *)a4
+- (id)groupStackView:(id)view subheadersWithState:(id *)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
   messages = self->_messages;
@@ -1238,8 +1238,8 @@ LABEL_5:
       v8 = [[PKApplicationMessageView alloc] initWithConfiguration:v11];
       objc_storeWeak(&self->_applicationMessageView, v8);
 
-      v12 = *(&a4->var0 + 1);
-      v36 = *&a4->var0.var0;
+      v12 = *(&state->var0 + 1);
+      v36 = *&state->var0.var0;
       v37 = v12;
       [(PKApplicationMessageView *)v8 setSectionsState:&v36];
       v13 = [MEMORY[0x1E69B85C0] createForMessages:self->_messages];
@@ -1247,8 +1247,8 @@ LABEL_5:
       [(PKApplicationMessageView *)v8 bounds];
       v15 = v14;
       v17 = v16;
-      v18 = [(PKApplicationMessageView *)v8 configuration];
-      [v18 width];
+      configuration = [(PKApplicationMessageView *)v8 configuration];
+      [configuration width];
       v20 = v19;
 
       [(PKApplicationMessageView *)v8 sizeThatFits:v20, 1.79769313e308];
@@ -1263,14 +1263,14 @@ LABEL_5:
     v8 = 0;
   }
 
-  v23 = *(&a4->var0 + 1);
-  v36 = *&a4->var0.var0;
+  v23 = *(&state->var0 + 1);
+  v36 = *&state->var0.var0;
   v37 = v23;
   [(PKApplicationMessageView *)v8 setSectionsState:&v36];
 LABEL_10:
   discoveryDataSource = self->_discoveryDataSource;
-  v25 = *(&a4->var0 + 1);
-  v36 = *&a4->var0.var0;
+  v25 = *(&state->var0 + 1);
+  v36 = *&state->var0.var0;
   v37 = v25;
   if ([PKDiscoveryGalleryView isVisibleForSectionsState:&v36 dataSource:discoveryDataSource])
   {
@@ -1280,8 +1280,8 @@ LABEL_10:
       v27 = v26;
       if (![v26 needsRemoval])
       {
-        v33 = *(&a4->var0 + 1);
-        v36 = *&a4->var0.var0;
+        v33 = *(&state->var0 + 1);
+        v36 = *&state->var0.var0;
         v37 = v33;
         [v27 setSectionsState:&v36];
         v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1300,13 +1300,13 @@ LABEL_24:
       objc_storeWeak(&self->_discoveryGalleryView, 0);
     }
 
-    v28 = *(&a4->var0 + 1);
-    v36 = *&a4->var0.var0;
+    v28 = *(&state->var0 + 1);
+    v36 = *&state->var0.var0;
     v37 = v28;
     v27 = [(PKPassGroupsViewController *)self _makeDiscoveryGalleryViewWithState:&v36];
     objc_storeWeak(&self->_discoveryGalleryView, v27);
-    v29 = [v27 layer];
-    [v29 setAnchorPoint:{0.5, 0.0}];
+    layer = [v27 layer];
+    [layer setAnchorPoint:{0.5, 0.0}];
 
     [v27 setSubheaderDelegate:self];
   }
@@ -1342,14 +1342,14 @@ LABEL_26:
   return v32;
 }
 
-- (id)_makeDiscoveryGalleryViewWithState:(id *)a3
+- (id)_makeDiscoveryGalleryViewWithState:(id *)state
 {
-  v5 = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
-  v6 = [[PKDiscoveryGalleryView alloc] initWithCardSizeType:[(PKPassGroupsViewController *)self _cardSizeTypeForArticleLayouts:v5]];
+  articleLayouts = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
+  v6 = [[PKDiscoveryGalleryView alloc] initWithCardSizeType:[(PKPassGroupsViewController *)self _cardSizeTypeForArticleLayouts:articleLayouts]];
   [(PKDiscoveryGalleryView *)v6 setDataSource:self->_discoveryDataSource];
-  [(PKDiscoveryGalleryView *)v6 updateArticleLayouts:v5];
-  v7 = *(&a3->var0 + 1);
-  v9[0] = *&a3->var0.var0;
+  [(PKDiscoveryGalleryView *)v6 updateArticleLayouts:articleLayouts];
+  v7 = *(&state->var0 + 1);
+  v9[0] = *&state->var0.var0;
   v9[1] = v7;
   [(PKDiscoveryGalleryView *)v6 setSectionsState:v9];
   [(PKDiscoveryGalleryView *)v6 sizeToFit];
@@ -1357,7 +1357,7 @@ LABEL_26:
   return v6;
 }
 
-- (id)footerForGroupStackView:(id)a3
+- (id)footerForGroupStackView:(id)view
 {
   if (_UISolariumFeatureFlagEnabled())
   {
@@ -1376,38 +1376,38 @@ LABEL_26:
 
     [(PKPGSVFooterView *)v4 setDelegate:self];
     [(PKPGSVFooterView *)v4 sizeToFit];
-    v7 = [(PKPassGroupsViewController *)self view];
-    -[PKPGSVFooterView setOpaque:](v4, "setOpaque:", [v7 isOpaque]);
-    v8 = [v7 backgroundColor];
-    [(PKPGSVFooterView *)v4 setBackgroundColor:v8];
+    view = [(PKPassGroupsViewController *)self view];
+    -[PKPGSVFooterView setOpaque:](v4, "setOpaque:", [view isOpaque]);
+    backgroundColor = [view backgroundColor];
+    [(PKPGSVFooterView *)v4 setBackgroundColor:backgroundColor];
   }
 
   return v4;
 }
 
-- (void)groupStackViewDidChangeContentScrollView:(id)a3
+- (void)groupStackViewDidChangeContentScrollView:(id)view
 {
-  v4 = [(PKPassGroupStackView *)self->_groupStackView contentScrollView];
-  if (self->_contentScrollView != v4)
+  contentScrollView = [(PKPassGroupStackView *)self->_groupStackView contentScrollView];
+  if (self->_contentScrollView != contentScrollView)
   {
-    v5 = v4;
-    objc_storeStrong(&self->_contentScrollView, v4);
+    v5 = contentScrollView;
+    objc_storeStrong(&self->_contentScrollView, contentScrollView);
     [(PKPassGroupsViewController *)self setContentScrollView:self->_contentScrollView forEdge:15];
-    v4 = v5;
+    contentScrollView = v5;
   }
 }
 
-- (id)acquireNavigationItemVoucherForGroupStackView:(id)a3
+- (id)acquireNavigationItemVoucherForGroupStackView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   p_navigationItem = &self->_navigationItem;
   v6 = self->_navigationItem.active.handle;
   v7 = v6;
   if (v6)
   {
-    v8 = [(PKNavigationItemHandle *)v6 consume];
+    consume = [(PKNavigationItemHandle *)v6 consume];
 LABEL_5:
-    v10 = v8;
+    v10 = consume;
 
     return v10;
   }
@@ -1423,21 +1423,21 @@ LABEL_5:
   return result;
 }
 
-- (void)groupStackView:(id)a3 deleteConfirmedForPass:(id)a4
+- (void)groupStackView:(id)view deleteConfirmedForPass:(id)pass
 {
   groupsController = self->_groupsController;
-  v5 = [a4 uniqueID];
-  [(PKGroupsController *)groupsController handleUserPassDelete:v5];
+  uniqueID = [pass uniqueID];
+  [(PKGroupsController *)groupsController handleUserPassDelete:uniqueID];
 }
 
-- (id)groupStackView:(id)a3 touchesShouldCancelInContentView:(id)a4
+- (id)groupStackView:(id)view touchesShouldCancelInContentView:(id)contentView
 {
-  v5 = a4;
+  contentViewCopy = contentView;
   WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
   if (WeakRetained)
   {
     v7 = objc_loadWeakRetained(&self->_applicationMessageView);
-    v8 = [v5 isDescendantOfView:v7];
+    v8 = [contentViewCopy isDescendantOfView:v7];
 
     if (v8)
     {
@@ -1455,8 +1455,8 @@ LABEL_5:
 
 - (void)allowIdleTimer
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v3 setIdleTimerDisabled:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
 
   [(NSTimer *)self->_allowDimmingTimer invalidate];
   allowDimmingTimer = self->_allowDimmingTimer;
@@ -1478,8 +1478,8 @@ LABEL_5:
       v5 = 0;
     }
 
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v6 setIdleTimerDisabled:v5];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setIdleTimerDisabled:v5];
 
     [(NSTimer *)self->_allowDimmingTimer invalidate];
     allowDimmingTimer = self->_allowDimmingTimer;
@@ -1494,12 +1494,12 @@ LABEL_5:
   }
 }
 
-- (void)_handleStatusBarChange:(id)a3
+- (void)_handleStatusBarChange:(id)change
 {
   if (self->_viewAppeared)
   {
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
-    v5 = [v4 applicationState] == 0;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v5 = [mEMORY[0x1E69DC668] applicationState] == 0;
   }
 
   else
@@ -1507,22 +1507,22 @@ LABEL_5:
     v5 = 0;
   }
 
-  v6 = [(PKPassGroupsViewController *)self view];
-  [v6 layoutIfNeeded];
+  view = [(PKPassGroupsViewController *)self view];
+  [view layoutIfNeeded];
   [(PKPassGroupStackView *)self->_groupStackView layoutContentForCurrentPresentationState:v5];
 }
 
 - (void)_startPassViewedNotificationTimer
 {
-  v3 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-  if (v3)
+  modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  if (modalGroupFrontmostPass)
   {
-    v6 = v3;
+    v6 = modalGroupFrontmostPass;
     v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__passViewedNotificationTimerFired selector:0 userInfo:0 repeats:5.0];
     passViewedNotificationTimer = self->_passViewedNotificationTimer;
     self->_passViewedNotificationTimer = v4;
 
-    v3 = v6;
+    modalGroupFrontmostPass = v6;
   }
 }
 
@@ -1535,22 +1535,22 @@ LABEL_5:
 
 - (void)_passViewedNotificationTimerFired
 {
-  v6 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-  if (v6)
+  modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  if (modalGroupFrontmostPass)
   {
-    v3 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v4 = [v6 uniqueID];
-    [v3 notifyPassUsedWithIdentifier:v4 fromSource:1];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    uniqueID = [modalGroupFrontmostPass uniqueID];
+    [mEMORY[0x1E69B8A58] notifyPassUsedWithIdentifier:uniqueID fromSource:1];
   }
 
   passViewedNotificationTimer = self->_passViewedNotificationTimer;
   self->_passViewedNotificationTimer = 0;
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v4 = *&a4.var0;
-  v6 = a3;
+  v4 = *&state.var0;
+  arbiterCopy = arbiter;
   foregroundActive = self->_foregroundActiveState.foregroundActive;
   self->_foregroundActiveState = v4;
   if (foregroundActive != BYTE1(v4))
@@ -1559,12 +1559,12 @@ LABEL_5:
     if (self->_foregroundActiveState.foregroundActive)
     {
       self->_inField = 0;
-      v8 = [(PKPassGroupsViewController *)self _passToPresent];
-      v9 = v8;
-      if (v8)
+      _passToPresent = [(PKPassGroupsViewController *)self _passToPresent];
+      v9 = _passToPresent;
+      if (_passToPresent)
       {
-        v10 = [v8 uniqueID];
-        [(PKPassGroupsViewController *)self presentPassWithUniqueID:v10 animated:1 completionHandler:0];
+        uniqueID = [_passToPresent uniqueID];
+        [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID animated:1 completionHandler:0];
       }
 
       if (([(PKPassGroupStackView *)self->_groupStackView presentationState]& 0xFFFFFFFFFFFFFFFDLL) == 5)
@@ -1650,36 +1650,36 @@ void __85__PKPassGroupsViewController_foregroundActiveArbiter_didUpdateForegroun
   }
 }
 
-- (void)groupStackView:(id)a3 wantsTopContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5
+- (void)groupStackView:(id)view wantsTopContentSeparatorWithVisibility:(double)visibility animated:(BOOL)animated
 {
-  self->_headerBackgroundVisibility = a4;
+  self->_headerBackgroundVisibility = visibility;
   if (self->_viewDidAppearedBefore)
   {
-    [(_PKVisibilityBackdropView *)self->_headerBackground pkui_setVisibility:a5 animated:?];
+    [(_PKVisibilityBackdropView *)self->_headerBackground pkui_setVisibility:animated animated:?];
   }
 }
 
-- (void)groupStackView:(id)a3 wantsBottomContentSeparatorWithVisibility:(double)a4 animated:(BOOL)a5
+- (void)groupStackView:(id)view wantsBottomContentSeparatorWithVisibility:(double)visibility animated:(BOOL)animated
 {
-  self->_footerBackgroundVisibility = a4;
+  self->_footerBackgroundVisibility = visibility;
   if (self->_viewDidAppearedBefore)
   {
-    [(_PKVisibilityBackdropView *)self->_footerBackground pkui_setVisibility:a5 animated:?];
+    [(_PKVisibilityBackdropView *)self->_footerBackground pkui_setVisibility:animated animated:?];
   }
 }
 
-- (void)groupStackView:(id)a3 didTransitionToState:(int64_t)a4 animated:(BOOL)a5
+- (void)groupStackView:(id)view didTransitionToState:(int64_t)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v14 = a3;
-  if (v5)
+  animatedCopy = animated;
+  viewCopy = view;
+  if (animatedCopy)
   {
     [(PKPassGroupsViewController *)self _clearPassViewedNotificationTimer];
-    if (a4 != 7)
+    if (state != 7)
     {
-      if (a4 != 5)
+      if (state != 5)
       {
-        if (a4 == 4 && ![(PKPassGroupStackView *)self->_groupStackView isReordering]&& ([(PKPassGroupStackView *)self->_groupStackView isDragging]& 1) == 0 && ([(PKPassGroupStackView *)self->_groupStackView isDecelerating]& 1) == 0)
+        if (state == 4 && ![(PKPassGroupStackView *)self->_groupStackView isReordering]&& ([(PKPassGroupStackView *)self->_groupStackView isDragging]& 1) == 0 && ([(PKPassGroupStackView *)self->_groupStackView isDecelerating]& 1) == 0)
         {
           [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
         }
@@ -1687,14 +1687,14 @@ void __85__PKPassGroupsViewController_foregroundActiveArbiter_didUpdateForegroun
         goto LABEL_12;
       }
 
-      v8 = [v14 modalGroupFrontmostPass];
-      v9 = [v8 paymentPass];
-      v10 = [v9 isIdentityPass];
+      modalGroupFrontmostPass = [viewCopy modalGroupFrontmostPass];
+      paymentPass = [modalGroupFrontmostPass paymentPass];
+      isIdentityPass = [paymentPass isIdentityPass];
 
-      if (v10)
+      if (isIdentityPass)
       {
-        v11 = [MEMORY[0x1E69B89C0] sharedInstance];
-        [v11 fetchRPIdentifierMappingDiscretionary:0 localOnly:0 completionHandler:0];
+        mEMORY[0x1E69B89C0] = [MEMORY[0x1E69B89C0] sharedInstance];
+        [mEMORY[0x1E69B89C0] fetchRPIdentifierMappingDiscretionary:0 localOnly:0 completionHandler:0];
       }
     }
 
@@ -1707,7 +1707,7 @@ LABEL_12:
   if (WeakRetained)
   {
 
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 5)
+    if ((state & 0xFFFFFFFFFFFFFFFDLL) == 5)
     {
       v13 = objc_loadWeakRetained(&self->_applicationMessageView);
       [v13 collapse];
@@ -1715,22 +1715,22 @@ LABEL_12:
   }
 }
 
-- (void)groupStackViewDidChangeCoachingState:(id)a3
+- (void)groupStackViewDidChangeCoachingState:(id)state
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134349056;
-    v6 = [a3 coachingState];
+    coachingState = [state coachingState];
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Ignoring coaching feedback: %{public}ld", &v5, 0xCu);
   }
 }
 
-- (void)willActivateNavigationItemController:(id)a3
+- (void)willActivateNavigationItemController:(id)controller
 {
-  v3 = a3;
-  if (v3)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
   }
 
@@ -1740,13 +1740,13 @@ LABEL_12:
   }
 }
 
-- (void)navigationItemController:(id)a3 updateItemWithConfiguration:(id)a4
+- (void)navigationItemController:(id)controller updateItemWithConfiguration:(id)configuration
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && v6)
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  if (controllerCopy && configurationCopy)
   {
-    [(PKPassGroupsViewController *)self _applyNavigationItemConfiguration:v6];
+    [(PKPassGroupsViewController *)self _applyNavigationItemConfiguration:configurationCopy];
   }
 
   else
@@ -1755,11 +1755,11 @@ LABEL_12:
   }
 }
 
-- (void)didDeactivateNavigationItemController:(id)a3 dirty:(BOOL)a4
+- (void)didDeactivateNavigationItemController:(id)controller dirty:(BOOL)dirty
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  dirtyCopy = dirty;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     __break(1u);
     return;
@@ -1767,7 +1767,7 @@ LABEL_12:
 
   if (!self->_navigationItem.connecting.pendingVoucher)
   {
-    if (!v4)
+    if (!dirtyCopy)
     {
       goto LABEL_6;
     }
@@ -1775,26 +1775,26 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  if (v4 && !self->_navigationItem.connecting.external)
+  if (dirtyCopy && !self->_navigationItem.connecting.external)
   {
 LABEL_5:
-    v7 = v6;
+    v7 = controllerCopy;
     [(PKPassGroupsViewController *)self _updateNavigationItemAnimated:1];
-    v6 = v7;
+    controllerCopy = v7;
   }
 
 LABEL_6:
 }
 
-- (id)providerForNavigationItemController:(id)a3
+- (id)providerForNavigationItemController:(id)controller
 {
-  result = a3;
+  result = controller;
   if (result)
   {
     v5 = result;
-    v6 = self;
+    selfCopy = self;
 
-    return v6;
+    return selfCopy;
   }
 
   else
@@ -1805,10 +1805,10 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)a3
+- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)voucher
 {
-  v6 = a3;
-  if (!v6 || (p_navigationItem = &self->_navigationItem, p_navigationItem->active.handle) || (v3 = v6, p_navigationItem->connecting.pendingVoucher))
+  voucherCopy = voucher;
+  if (!voucherCopy || (p_navigationItem = &self->_navigationItem, p_navigationItem->active.handle) || (v3 = voucherCopy, p_navigationItem->connecting.pendingVoucher))
   {
     __break(1u);
 LABEL_13:
@@ -1816,7 +1816,7 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  objc_storeStrong(&p_navigationItem->connecting.pendingVoucher, a3);
+  objc_storeStrong(&p_navigationItem->connecting.pendingVoucher, voucher);
   if (!p_navigationItem->controller)
   {
     v10 = 0;
@@ -1850,11 +1850,11 @@ LABEL_11:
   return 1;
 }
 
-- (void)beginProvidingForNavigationItemHandle:(id)a3 withConsumedVoucher:(id)a4
+- (void)beginProvidingForNavigationItemHandle:(id)handle withConsumedVoucher:(id)voucher
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || !v7 || (pendingVoucher = self->_navigationItem.connecting.pendingVoucher, pendingVoucher != v7) || self->_navigationItem.active.handle || (v14 = v7, !self->_navigationItem.active.external) && !self->_navigationItem.controller)
+  handleCopy = handle;
+  voucherCopy = voucher;
+  if (!handleCopy || !voucherCopy || (pendingVoucher = self->_navigationItem.connecting.pendingVoucher, pendingVoucher != voucherCopy) || self->_navigationItem.active.handle || (v14 = voucherCopy, !self->_navigationItem.active.external) && !self->_navigationItem.controller)
   {
     __break(1u);
 LABEL_15:
@@ -1865,7 +1865,7 @@ LABEL_15:
   self->_navigationItem.connecting.pendingVoucher = 0;
 
   handle = self->_navigationItem.active.handle;
-  self->_navigationItem.active.handle = v6;
+  self->_navigationItem.active.handle = handleCopy;
 
   external = self->_navigationItem.connecting.external;
   self->_navigationItem.active.external = external;
@@ -1874,14 +1874,14 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  v11 = [(PKPassGroupsViewController *)self _navigationItemConfiguration];
-  v6 = v11;
-  if (!v11)
+  _navigationItemConfiguration = [(PKPassGroupsViewController *)self _navigationItemConfiguration];
+  handleCopy = _navigationItemConfiguration;
+  if (!_navigationItemConfiguration)
   {
     goto LABEL_15;
   }
 
-  v12 = [(PKNavigationItemConfiguration *)v11 copy];
+  v12 = [(PKNavigationItemConfiguration *)_navigationItemConfiguration copy];
   *(v12 + 8) = 1;
   v13 = *(v12 + 40);
   *(v12 + 40) = 0;
@@ -1894,27 +1894,27 @@ LABEL_11:
 
 - (PKNavigationItemConfiguration)_navigationItemConfiguration
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_alloc_init(PKNavigationItemConfiguration);
-  v3 = [v1 _showNavigationBar];
+  _showNavigationBar = [selfCopy _showNavigationBar];
   if (v2)
   {
-    v2->_visible = v3;
+    v2->_visible = _showNavigationBar;
     v2->_backButtonDisplayMode = 2;
   }
 
-  v4 = [v1 _leadingItemGroups];
-  [(PKNavigationItemConfiguration *)v2 setLeadingItemGroups:v4];
+  _leadingItemGroups = [selfCopy _leadingItemGroups];
+  [(PKNavigationItemConfiguration *)v2 setLeadingItemGroups:_leadingItemGroups];
 
-  v5 = [v1 _trailingItemGroups];
-  [(PKNavigationItemConfiguration *)v2 setTrailingItemGroups:v5];
+  _trailingItemGroups = [selfCopy _trailingItemGroups];
+  [(PKNavigationItemConfiguration *)v2 setTrailingItemGroups:_trailingItemGroups];
 
-  v6 = v1[992];
+  v6 = selfCopy[992];
   if (v6 == 2)
   {
     goto LABEL_7;
@@ -1922,10 +1922,10 @@ LABEL_11:
 
   if (v6 == 1)
   {
-    v1 = PKLocalizedString(&cfstr_Wallet_1.isa);
+    selfCopy = PKLocalizedString(&cfstr_Wallet_1.isa);
     if (v2)
     {
-      objc_setProperty_nonatomic_copy(v2, v7, v1, 32);
+      objc_setProperty_nonatomic_copy(v2, v7, selfCopy, 32);
 
       v2->_largeTitleDisplayMode = 3;
       v2->_automaticallyHideTitle = 1;
@@ -1937,7 +1937,7 @@ LABEL_14:
     return v2;
   }
 
-  if (v1[992])
+  if (selfCopy[992])
   {
     __break(1u);
     goto LABEL_14;
@@ -1952,15 +1952,15 @@ LABEL_7:
   return v2;
 }
 
-- (id)configurationForNavigationItemHandle:(id)a3
+- (id)configurationForNavigationItemHandle:(id)handle
 {
-  result = a3;
+  result = handle;
   if (result)
   {
     v5 = result;
-    v6 = [(PKPassGroupsViewController *)self _navigationItemConfiguration];
+    _navigationItemConfiguration = [(PKPassGroupsViewController *)self _navigationItemConfiguration];
 
-    return v6;
+    return _navigationItemConfiguration;
   }
 
   else
@@ -1971,12 +1971,12 @@ LABEL_7:
   return result;
 }
 
-- (void)endProvidingForNavigationItemHandle:(id)a3
+- (void)endProvidingForNavigationItemHandle:(id)handle
 {
-  v4 = a3;
-  if (v4 && (handle = self->_navigationItem.active.handle, handle == v4))
+  handleCopy = handle;
+  if (handleCopy && (handle = self->_navigationItem.active.handle, handle == handleCopy))
   {
-    v6 = v4;
+    v6 = handleCopy;
     self->_navigationItem.active.handle = 0;
 
     if (self->_navigationItem.active.external)
@@ -1991,35 +1991,35 @@ LABEL_7:
   }
 }
 
-- (void)passPersonalizationViewController:(id)a3 didFinishPersonalizingPass:(id)a4 success:(BOOL)a5
+- (void)passPersonalizationViewController:(id)controller didFinishPersonalizingPass:(id)pass success:(BOOL)success
 {
-  v6 = [a4 uniqueID];
+  uniqueID = [pass uniqueID];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __99__PKPassGroupsViewController_passPersonalizationViewController_didFinishPersonalizingPass_success___block_invoke;
   v7[3] = &unk_1E8011D28;
   v7[4] = self;
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v6 animated:1 completionHandler:v7];
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID animated:1 completionHandler:v7];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:0];
   WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
   [WeakRetained dropSwipe];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v11 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
     [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
   }
 
-  [v11 contentOffset];
+  [draggingCopy contentOffset];
   v7 = v6;
-  [v11 adjustedContentInset];
+  [draggingCopy adjustedContentInset];
   v9 = -v8;
   if (v7 < v9 && v9 - v7 >= 66.0)
   {
@@ -2028,7 +2028,7 @@ LABEL_7:
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   [(PKPassGroupStackView *)self->_groupStackView tilePassesEagerly:1];
   groupStackView = self->_groupStackView;
@@ -2036,67 +2036,67 @@ LABEL_7:
   [(PKPassGroupStackView *)groupStackView noteDidEndScrollingForTesting];
 }
 
-- (void)groupsController:(id)a3 didInsertGroup:(id)a4 atIndex:(unint64_t)a5
+- (void)groupsController:(id)controller didInsertGroup:(id)group atIndex:(unint64_t)index
 {
-  if (-[PKPassGroupStackView presentationState](self->_groupStackView, "presentationState", a3, a4) != 6 && ([objc_opt_class() isPerformingAction] & 1) == 0)
+  if (-[PKPassGroupStackView presentationState](self->_groupStackView, "presentationState", controller, group) != 6 && ([objc_opt_class() isPerformingAction] & 1) == 0)
   {
     [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
-    [(PKPassGroupStackView *)self->_groupStackView stageGroupInPresentationState:2 atIndex:a5];
+    [(PKPassGroupStackView *)self->_groupStackView stageGroupInPresentationState:2 atIndex:index];
     groupStackView = self->_groupStackView;
-    v8 = [(PKPassGroupStackView *)groupStackView presentationState];
+    presentationState = [(PKPassGroupStackView *)groupStackView presentationState];
     foregroundActive = self->_foregroundActiveState.foregroundActive;
 
-    [(PKPassGroupStackView *)groupStackView setPresentationState:v8 animated:foregroundActive];
+    [(PKPassGroupStackView *)groupStackView setPresentationState:presentationState animated:foregroundActive];
   }
 }
 
-- (void)groupsController:(id)a3 didRemoveGroup:(id)a4 atIndex:(unint64_t)a5
+- (void)groupsController:(id)controller didRemoveGroup:(id)group atIndex:(unint64_t)index
 {
-  v7 = a4;
+  groupCopy = group;
   if ([(PKPassGroupStackView *)self->_groupStackView presentationState]!= 6)
   {
-    if ([(PKPassGroupStackView *)self->_groupStackView presentationState]== 7 && [(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== a5)
+    if ([(PKPassGroupStackView *)self->_groupStackView presentationState]== 7 && [(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== index)
     {
       [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:0];
     }
 
-    [(PKPassGroupStackView *)self->_groupStackView deleteGroup:v7 atIndex:a5];
+    [(PKPassGroupStackView *)self->_groupStackView deleteGroup:groupCopy atIndex:index];
   }
 }
 
-- (void)groupsController:(id)a3 didMoveGroup:(id)a4 fromIndex:(unint64_t)a5 toIndex:(unint64_t)a6
+- (void)groupsController:(id)controller didMoveGroup:(id)group fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v9 = a4;
+  groupCopy = group;
   if ([(PKPassGroupStackView *)self->_groupStackView presentationState]== 4 && self->_foregroundActiveState.foregroundActive)
   {
-    if (a5 != a6)
+    if (index != toIndex)
     {
-      [(PKPassGroupStackView *)self->_groupStackView moveGroup:v9 fromIndex:a5 toIndex:a6];
+      [(PKPassGroupStackView *)self->_groupStackView moveGroup:groupCopy fromIndex:index toIndex:toIndex];
     }
   }
 
   else if ([(PKPassGroupStackView *)self->_groupStackView presentationState]== 5 || [(PKPassGroupStackView *)self->_groupStackView presentationState]== 7)
   {
     [(PKPassGroupStackView *)self->_groupStackView reloadData];
-    if ([(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== a5)
+    if ([(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== index)
     {
-      [(PKPassGroupStackView *)self->_groupStackView setModalGroupIndex:a6];
+      [(PKPassGroupStackView *)self->_groupStackView setModalGroupIndex:toIndex];
     }
 
     [(PKPassGroupStackView *)self->_groupStackView setPresentationState:[(PKPassGroupStackView *)self->_groupStackView presentationState] animated:self->_foregroundActiveState.foregroundActive];
   }
 }
 
-- (void)didUpdateApplicationMessages:(id)a3
+- (void)didUpdateApplicationMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PKPassGroupsViewController_didUpdateApplicationMessages___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = messagesCopy;
+  v5 = messagesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2120,16 +2120,16 @@ void __59__PKPassGroupsViewController_didUpdateApplicationMessages___block_invok
   [*(*(a1 + 32) + 1152) updateHeaderAndSubheaderViewsIfNecessary];
 }
 
-- (void)paymentDeviceDidEnterFieldWithProperties:(id)a3
+- (void)paymentDeviceDidEnterFieldWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__PKPassGroupsViewController_paymentDeviceDidEnterFieldWithProperties___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = propertiesCopy;
+  v5 = propertiesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2345,7 +2345,7 @@ void __55__PKPassGroupsViewController_paymentDeviceDidExitField__block_invoke(ui
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)didReceivePendingProvisioningUpdate:(id)a3
+- (void)didReceivePendingProvisioningUpdate:(id)update
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2414,22 +2414,22 @@ LABEL_9:
 {
   if ([(PKPassGroupsViewController *)self presentingPass])
   {
-    v3 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+    modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
   }
 
   else
   {
-    v3 = 0;
+    modalGroupFrontmostPass = 0;
   }
 
-  return v3;
+  return modalGroupFrontmostPass;
 }
 
 - (PKDashboardPassGroupViewController)dashboardPassGroupViewController
 {
-  v2 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
 
-  return v2;
+  return _dashboardPassGroupViewController;
 }
 
 - (PKDashboardPassGroupViewController)visibleDashboardPassGroupViewController
@@ -2439,17 +2439,17 @@ LABEL_9:
   return v2;
 }
 
-- (void)_presentGroupWithIndex:(unint64_t)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)_presentGroupWithIndex:(unint64_t)index context:(id)context animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  animatedCopy = animated;
+  contextCopy = context;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v11)
+    if (handlerCopy)
     {
-      v13 = *(v11 + 2);
+      v13 = *(handlerCopy + 2);
 LABEL_4:
       v13();
     }
@@ -2459,8 +2459,8 @@ LABEL_4:
   {
     [(PKPassGroupsViewController *)self loadViewIfNeeded];
     v28 = 0;
-    v14 = [(PKPassGroupStackView *)self->_groupStackView stageForModalPresentationOfGroupAtIndex:a3 withPassPresentationContext:v10 requireUpdate:&v28];
-    if ([(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== a3 && [(PKPassGroupStackView *)self->_groupStackView presentationState]== v14 && (v28 & 1) == 0)
+    v14 = [(PKPassGroupStackView *)self->_groupStackView stageForModalPresentationOfGroupAtIndex:index withPassPresentationContext:contextCopy requireUpdate:&v28];
+    if ([(PKPassGroupStackView *)self->_groupStackView modalGroupIndex]== index && [(PKPassGroupStackView *)self->_groupStackView presentationState]== v14 && (v28 & 1) == 0)
     {
       if (!v12)
       {
@@ -2478,13 +2478,13 @@ LABEL_4:
     aBlock[2] = __88__PKPassGroupsViewController__presentGroupWithIndex_context_animated_completionHandler___block_invoke;
     aBlock[3] = &unk_1E8024390;
     objc_copyWeak(v25, &location);
-    v25[1] = a3;
+    v25[1] = index;
     v25[2] = v14;
-    v24 = v10;
-    v26 = v7;
+    v24 = contextCopy;
+    v26 = animatedCopy;
     v15 = _Block_copy(aBlock);
-    v16 = [(PKPassGroupsViewController *)self _passGroupsViewNavigationController];
-    if (([v16 VCsState] | 2) == 3 && (-[PKPassGroupsViewController presentGroupTableAnimated:](self, "presentGroupTableAnimated:", 0), objc_msgSend(v16, "popToPassGroupsVCAnimated:", v7), v7) && (objc_msgSend(v16, "transitionCoordinator"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+    _passGroupsViewNavigationController = [(PKPassGroupsViewController *)self _passGroupsViewNavigationController];
+    if (([_passGroupsViewNavigationController VCsState] | 2) == 3 && (-[PKPassGroupsViewController presentGroupTableAnimated:](self, "presentGroupTableAnimated:", 0), objc_msgSend(_passGroupsViewNavigationController, "popToPassGroupsVCAnimated:", animatedCopy), animatedCopy) && (objc_msgSend(_passGroupsViewNavigationController, "transitionCoordinator"), (v17 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
@@ -2623,31 +2623,31 @@ uint64_t __88__PKPassGroupsViewController__presentGroupWithIndex_context_animate
   return result;
 }
 
-- (void)forceModalPresentationFromButton:(BOOL)a3
+- (void)forceModalPresentationFromButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(PKPassGroupsViewController *)self presentingPass])
   {
-    v5 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
-    v6 = v5;
-    if (v5)
+    _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+    v6 = _dashboardPassGroupViewController;
+    if (_dashboardPassGroupViewController)
     {
-      v7 = [(PKDashboardPassGroupViewController *)v5 _passGroupsViewNavigationController];
-      if (v7)
+      _passGroupsViewNavigationController = [(PKDashboardPassGroupViewController *)_dashboardPassGroupViewController _passGroupsViewNavigationController];
+      if (_passGroupsViewNavigationController)
       {
-        v8 = v7;
-        v9 = [v7 VCsState] & 0xFFFFFFFFFFFFFFFDLL;
-        v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-        v11 = [v10 uniqueID];
+        v8 = _passGroupsViewNavigationController;
+        v9 = [_passGroupsViewNavigationController VCsState] & 0xFFFFFFFFFFFFFFFDLL;
+        modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+        uniqueID = [modalGroupFrontmostPass uniqueID];
 
         v12 = objc_alloc_init(PKPassPresentationContext);
         [(PKPassPresentationContext *)v12 setForceModalPresentation:1];
-        [(PKPassPresentationContext *)v12 setForcedFromButton:v3];
-        v13 = [v6 frontmostPassPaymentOffersController];
-        v14 = [v13 selectedOfferDetails];
-        v15 = [v14 selectedPaymentOffer];
+        [(PKPassPresentationContext *)v12 setForcedFromButton:buttonCopy];
+        frontmostPassPaymentOffersController = [v6 frontmostPassPaymentOffersController];
+        selectedOfferDetails = [frontmostPassPaymentOffersController selectedOfferDetails];
+        selectedPaymentOffer = [selectedOfferDetails selectedPaymentOffer];
 
-        [(PKPassPresentationContext *)v12 setSelectedPaymentOffer:v15];
+        [(PKPassPresentationContext *)v12 setSelectedPaymentOffer:selectedPaymentOffer];
         if (v9)
         {
           [(PKPassGroupsViewController *)self _beginSuppressingInstanceFooter];
@@ -2660,7 +2660,7 @@ uint64_t __88__PKPassGroupsViewController__presentGroupWithIndex_context_animate
           v18[3] = &unk_1E80113B0;
           objc_copyWeak(&v20, &location);
           v19 = v12;
-          [(PKPassGroupsViewController *)self presentPassWithUniqueID:v11 context:v16 animated:1 completionHandler:v18];
+          [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID context:v16 animated:1 completionHandler:v18];
 
           objc_destroyWeak(&v20);
           objc_destroyWeak(&location);
@@ -2668,7 +2668,7 @@ uint64_t __88__PKPassGroupsViewController__presentGroupWithIndex_context_animate
 
         else
         {
-          [(PKPassGroupsViewController *)self presentPassWithUniqueID:v11 context:v12 animated:1 completionHandler:0];
+          [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID context:v12 animated:1 completionHandler:0];
         }
       }
     }
@@ -2676,14 +2676,14 @@ uint64_t __88__PKPassGroupsViewController__presentGroupWithIndex_context_animate
 
   else
   {
-    v17 = [(PKPassGroupsViewController *)self presentedViewController];
-    if (v17)
+    presentedViewController = [(PKPassGroupsViewController *)self presentedViewController];
+    if (presentedViewController)
     {
     }
 
     else
     {
-      [(PKPassGroupsViewController *)self presentDefaultPaymentPassInPaymentPresentationFromButton:v3 withAnimated:1 completionHandler:0];
+      [(PKPassGroupsViewController *)self presentDefaultPaymentPassInPaymentPresentationFromButton:buttonCopy withAnimated:1 completionHandler:0];
     }
 
     v6 = 0;
@@ -2711,33 +2711,33 @@ void __63__PKPassGroupsViewController_forceModalPresentationFromButton___block_i
   }
 }
 
-- (void)presentDefaultPaymentPassInPaymentPresentationFromButton:(BOOL)a3 withAnimated:(BOOL)a4 completionHandler:(id)a5
+- (void)presentDefaultPaymentPassInPaymentPresentationFromButton:(BOOL)button withAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  v8 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
-  v9 = [v8 frontmostPassPaymentOffersController];
-  v10 = [v9 selectedOfferDetails];
-  v13 = [v10 selectedPaymentOffer];
+  buttonCopy = button;
+  handlerCopy = handler;
+  _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  frontmostPassPaymentOffersController = [_dashboardPassGroupViewController frontmostPassPaymentOffersController];
+  selectedOfferDetails = [frontmostPassPaymentOffersController selectedOfferDetails];
+  selectedPaymentOffer = [selectedOfferDetails selectedPaymentOffer];
 
   v11 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v11 setForceModalPresentation:1];
-  [(PKPassPresentationContext *)v11 setForcedFromButton:v5];
-  [(PKPassPresentationContext *)v11 setSelectedPaymentOffer:v13];
-  v12 = [(PKPaymentService *)self->_paymentService defaultPaymentPassUniqueIdentifier];
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v11 animated:1 completionHandler:v7];
+  [(PKPassPresentationContext *)v11 setForcedFromButton:buttonCopy];
+  [(PKPassPresentationContext *)v11 setSelectedPaymentOffer:selectedPaymentOffer];
+  defaultPaymentPassUniqueIdentifier = [(PKPaymentService *)self->_paymentService defaultPaymentPassUniqueIdentifier];
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:defaultPaymentPassUniqueIdentifier context:v11 animated:1 completionHandler:handlerCopy];
 }
 
-- (void)presentPassWithUpdateUserNotificationIdentifier:(id)a3
+- (void)presentPassWithUpdateUserNotificationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __78__PKPassGroupsViewController_presentPassWithUpdateUserNotificationIdentifier___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = identifierCopy;
+  selfCopy = self;
+  v5 = identifierCopy;
   [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v6];
 }
 
@@ -2779,29 +2779,29 @@ uint64_t __78__PKPassGroupsViewController_presentPassWithUpdateUserNotificationI
   return result;
 }
 
-- (void)presentPassWithFieldProperties:(id)a3 fieldMetadata:(id)a4 animated:(BOOL)a5
+- (void)presentPassWithFieldProperties:(id)properties fieldMetadata:(id)metadata animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  propertiesCopy = properties;
+  metadataCopy = metadata;
   if (!self->_invalidationStatus && self->_foregroundActiveState.foregroundActive)
   {
-    v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-    v11 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
-    v12 = v10 && [v10 passType] != 1 && PKValueAddedServicesEnabledForPass() == 0;
-    if (-[PKPassGroupStackView isModallyPresentedPassAuthorized](self->_groupStackView, "isModallyPresentedPassAuthorized") || (([v11 isFrontmostPassAuthorized] | v12) & 1) != 0)
+    modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+    _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+    v12 = modalGroupFrontmostPass && [modalGroupFrontmostPass passType] != 1 && PKValueAddedServicesEnabledForPass() == 0;
+    if (-[PKPassGroupStackView isModallyPresentedPassAuthorized](self->_groupStackView, "isModallyPresentedPassAuthorized") || (([_dashboardPassGroupViewController isFrontmostPassAuthorized] | v12) & 1) != 0)
     {
       [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:6 animated:1 performAction:0];
     }
 
     else
     {
-      v13 = [v9 associatedPassIdentifiers];
+      associatedPassIdentifiers = [metadataCopy associatedPassIdentifiers];
       v19 = 0;
-      v14 = [(PKPassGroupsViewController *)self presentationContextForFieldProperties:v8 fieldPassUniqueIdentifiers:v13 passUniqueIdentifierToPresent:&v19];
+      v14 = [(PKPassGroupsViewController *)self presentationContextForFieldProperties:propertiesCopy fieldPassUniqueIdentifiers:associatedPassIdentifiers passUniqueIdentifierToPresent:&v19];
       if (v14)
       {
-        [(PKPassGroupsViewController *)self presentPassWithUniqueID:v19 context:v14 animated:v5 completionHandler:0];
+        [(PKPassGroupsViewController *)self presentPassWithUniqueID:v19 context:v14 animated:animatedCopy completionHandler:0];
       }
 
       else
@@ -2812,8 +2812,8 @@ uint64_t __78__PKPassGroupsViewController_presentPassWithUpdateUserNotificationI
         v15[2] = __84__PKPassGroupsViewController_presentPassWithFieldProperties_fieldMetadata_animated___block_invoke;
         v15[3] = &unk_1E80111A8;
         objc_copyWeak(&v16, &location);
-        v17 = v5;
-        [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:v5 performAction:v15];
+        v17 = animatedCopy;
+        [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:animatedCopy performAction:v15];
         objc_destroyWeak(&v16);
         objc_destroyWeak(&location);
       }
@@ -2827,19 +2827,19 @@ void __84__PKPassGroupsViewController_presentPassWithFieldProperties_fieldMetada
   [WeakRetained presentOnscreen:*(a1 + 40) context:0 withCompletionHandler:0];
 }
 
-- (id)presentationContextForFieldProperties:(id)a3 fieldPassUniqueIdentifiers:(id)a4 passUniqueIdentifierToPresent:(id *)a5
+- (id)presentationContextForFieldProperties:(id)properties fieldPassUniqueIdentifiers:(id)identifiers passUniqueIdentifierToPresent:(id *)present
 {
   v79 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-  v11 = [v10 uniqueID];
-  v12 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
-  v13 = [v12 frontmostPassPaymentOffersController];
-  v14 = [v13 selectedOfferDetails];
-  v15 = [v14 selectedPaymentOffer];
+  propertiesCopy = properties;
+  identifiersCopy = identifiers;
+  modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  uniqueID = [modalGroupFrontmostPass uniqueID];
+  _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  frontmostPassPaymentOffersController = [_dashboardPassGroupViewController frontmostPassPaymentOffersController];
+  selectedOfferDetails = [frontmostPassPaymentOffersController selectedOfferDetails];
+  selectedPaymentOffer = [selectedOfferDetails selectedPaymentOffer];
 
-  if (!v10 || [v10 style] == 8)
+  if (!modalGroupFrontmostPass || [modalGroupFrontmostPass style] == 8)
   {
     goto LABEL_78;
   }
@@ -2848,37 +2848,37 @@ void __84__PKPassGroupsViewController_presentPassWithFieldProperties_fieldMetada
   [v16 setObject:*MEMORY[0x1E69BA740] forKeyedSubscript:*MEMORY[0x1E69BA680]];
   [v16 setObject:*MEMORY[0x1E69BAC60] forKeyedSubscript:*MEMORY[0x1E69BABE8]];
   v17 = v16;
-  v18 = v10;
+  v18 = modalGroupFrontmostPass;
   v19 = v18;
   if (v17)
   {
-    v20 = [v18 passType];
-    v72 = v8;
-    if ((v20 + 1) >= 3)
+    passType = [v18 passType];
+    v72 = propertiesCopy;
+    if ((passType + 1) >= 3)
     {
       v21 = *MEMORY[0x1E69BB3A8];
     }
 
     else
     {
-      v21 = off_1E8025210[v20 + 1];
+      v21 = off_1E8025210[passType + 1];
     }
 
     [v17 setObject:v21 forKeyedSubscript:*MEMORY[0x1E69BACA8]];
 
-    v22 = [v19 style];
-    v23 = [v19 secureElementPass];
-    v24 = [v23 isIdentityPass];
+    style = [v19 style];
+    secureElementPass = [v19 secureElementPass];
+    isIdentityPass = [secureElementPass isIdentityPass];
 
-    v71 = a5;
-    if (v24)
+    presentCopy = present;
+    if (isIdentityPass)
     {
       v25 = @"identity";
     }
 
-    else if (v22 < 0xE && ((0x27FFu >> v22) & 1) != 0)
+    else if (style < 0xE && ((0x27FFu >> style) & 1) != 0)
     {
-      v25 = off_1E8025228[v22];
+      v25 = off_1E8025228[style];
     }
 
     else
@@ -2888,41 +2888,41 @@ void __84__PKPassGroupsViewController_presentPassWithFieldProperties_fieldMetada
 
     [v17 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69BACA0]];
 
-    v26 = [v19 nfcPayload];
+    nfcPayload = [v19 nfcPayload];
     v27 = PKAnalyticsReportSwitchToggleResultValue();
     [v17 setObject:v27 forKeyedSubscript:*MEMORY[0x1E69BAC68]];
 
     v28 = v19;
-    v70 = v15;
+    v70 = selectedPaymentOffer;
     if ([v28 passType] == 1)
     {
-      v29 = [v28 secureElementPass];
-      v30 = [v29 cardType];
-      if (v30 <= 4)
+      secureElementPass2 = [v28 secureElementPass];
+      cardType = [secureElementPass2 cardType];
+      if (cardType <= 4)
       {
-        v26 = **(&unk_1E8025298 + v30);
+        nfcPayload = **(&unk_1E8025298 + cardType);
       }
     }
 
     else
     {
-      v26 = @"other";
+      nfcPayload = @"other";
     }
 
-    [v17 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
-    v31 = [v28 secureElementPass];
-    if ([v31 isIdentityPass])
+    [v17 setObject:nfcPayload forKeyedSubscript:*MEMORY[0x1E69BAC90]];
+    secureElementPass3 = [v28 secureElementPass];
+    if ([secureElementPass3 isIdentityPass])
     {
-      v32 = [v31 identityType];
-      if (v32 <= 2)
+      identityType = [secureElementPass3 identityType];
+      if (identityType <= 2)
       {
-        if (v32 == 1)
+        if (identityType == 1)
         {
           v33 = MEMORY[0x1E69BA648];
           goto LABEL_39;
         }
 
-        if (v32 == 2)
+        if (identityType == 2)
         {
           v33 = MEMORY[0x1E69BB2C8];
           goto LABEL_39;
@@ -2931,7 +2931,7 @@ void __84__PKPassGroupsViewController_presentPassWithFieldProperties_fieldMetada
 
       else
       {
-        switch(v32)
+        switch(identityType)
         {
           case 3:
             goto LABEL_23;
@@ -2952,23 +2952,23 @@ LABEL_32:
       goto LABEL_39;
     }
 
-    if (![v31 isAccessPass])
+    if (![secureElementPass3 isAccessPass])
     {
       goto LABEL_32;
     }
 
-    v34 = [v31 accessType];
-    v35 = [v31 accessReportingType];
-    v36 = v35;
-    if (v34 <= 2)
+    accessType = [secureElementPass3 accessType];
+    accessReportingType = [secureElementPass3 accessReportingType];
+    v36 = accessReportingType;
+    if (accessType <= 2)
     {
-      switch(v34)
+      switch(accessType)
       {
         case 0:
           v38 = @"general";
-          if (v35)
+          if (accessReportingType)
           {
-            v38 = v35;
+            v38 = accessReportingType;
           }
 
           goto LABEL_47;
@@ -2982,35 +2982,35 @@ LABEL_51:
 LABEL_52:
           [v17 setObject:v37 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
 
-          v39 = [v28 secureElementPass];
-          v40 = [v39 devicePaymentApplications];
-          [v40 count];
+          secureElementPass4 = [v28 secureElementPass];
+          devicePaymentApplications = [secureElementPass4 devicePaymentApplications];
+          [devicePaymentApplications count];
 
           v41 = PKAnalyticsReportSwitchToggleResultValue();
 
           [v17 setObject:v41 forKeyedSubscript:*MEMORY[0x1E69BA4E0]];
-          v42 = [v28 secureElementPass];
+          secureElementPass5 = [v28 secureElementPass];
           v43 = *MEMORY[0x1E69BB3A8];
-          v44 = [v42 organizationName];
-          if ([v44 length])
+          organizationName = [secureElementPass5 organizationName];
+          if ([organizationName length])
           {
-            v45 = [v42 cardType];
-            if (v45 <= 4 && ((1 << v45) & 0x16) != 0)
+            cardType2 = [secureElementPass5 cardType];
+            if (cardType2 <= 4 && ((1 << cardType2) & 0x16) != 0)
             {
-              v46 = v44;
+              v46 = organizationName;
 
               v43 = v46;
             }
           }
 
           [v17 setObject:v43 forKeyedSubscript:*MEMORY[0x1E69BAA28]];
-          v47 = [v28 secureElementPass];
-          v48 = v47;
-          if (v47)
+          secureElementPass6 = [v28 secureElementPass];
+          v48 = secureElementPass6;
+          if (secureElementPass6)
           {
             v68 = v19;
             v69 = v17;
-            [v47 devicePaymentApplications];
+            [secureElementPass6 devicePaymentApplications];
             v73 = 0u;
             v74 = 0u;
             v75 = 0u;
@@ -3019,7 +3019,7 @@ LABEL_52:
             if (v50)
             {
               v51 = v50;
-              v52 = 0;
+              paymentType = 0;
               v53 = *v74;
               while (2)
               {
@@ -3031,14 +3031,14 @@ LABEL_52:
                   }
 
                   v55 = *(*(&v73 + 1) + 8 * i);
-                  if (v52 && v52 != [*(*(&v73 + 1) + 8 * i) paymentType])
+                  if (paymentType && paymentType != [*(*(&v73 + 1) + 8 * i) paymentType])
                   {
 
                     v56 = @"multiple";
                     goto LABEL_69;
                   }
 
-                  v52 = [v55 paymentType];
+                  paymentType = [v55 paymentType];
                 }
 
                 v51 = [v49 countByEnumeratingWithState:&v73 objects:v78 count:16];
@@ -3057,24 +3057,24 @@ LABEL_69:
             v17 = v69;
             [v69 setObject:v56 forKeyedSubscript:*MEMORY[0x1E69BAD40]];
 
-            v57 = [v48 issuerCountryCode];
-            [v69 setObject:v57 forKeyedSubscript:*MEMORY[0x1E69BAC78]];
+            issuerCountryCode = [v48 issuerCountryCode];
+            [v69 setObject:issuerCountryCode forKeyedSubscript:*MEMORY[0x1E69BAC78]];
 
             v19 = v68;
           }
 
-          a5 = v71;
-          v8 = v72;
-          v15 = v70;
+          present = presentCopy;
+          propertiesCopy = v72;
+          selectedPaymentOffer = v70;
           goto LABEL_71;
       }
     }
 
     else
     {
-      if (v34 <= 4)
+      if (accessType <= 4)
       {
-        if (v34 == 3)
+        if (accessType == 3)
         {
           v37 = @"singlefamily";
         }
@@ -3087,13 +3087,13 @@ LABEL_69:
         goto LABEL_51;
       }
 
-      if (v34 == 5)
+      if (accessType == 5)
       {
         v37 = @"multifamily";
         goto LABEL_51;
       }
 
-      if (v34 == 6)
+      if (accessType == 6)
       {
         v37 = @"urbanmobility";
         goto LABEL_51;
@@ -3109,14 +3109,14 @@ LABEL_47:
 LABEL_71:
 
   v58 = v17;
-  v59 = [v8 terminalType];
-  if (v59 <= 5)
+  terminalType = [propertiesCopy terminalType];
+  if (terminalType <= 5)
   {
     v60 = MEMORY[0x1E69BB0C0];
-    if (((1 << v59) & 0x2D) == 0)
+    if (((1 << terminalType) & 0x2D) == 0)
     {
       v61 = *MEMORY[0x1E69BB0C0];
-      if (v59 != 1)
+      if (terminalType != 1)
       {
         [v58 setObject:@"identity" forKeyedSubscript:*MEMORY[0x1E69BB0C0]];
       }
@@ -3133,16 +3133,16 @@ LABEL_71:
   [v62 subjects:v63 sendEvent:v58];
 
 LABEL_78:
-  if (v11 && ([v9 containsObject:v11] & 1) != 0 || (objc_msgSend(v9, "firstObject"), v64 = objc_claimAutoreleasedReturnValue(), v11, (v11 = v64) != 0))
+  if (uniqueID && ([identifiersCopy containsObject:uniqueID] & 1) != 0 || (objc_msgSend(identifiersCopy, "firstObject"), v64 = objc_claimAutoreleasedReturnValue(), uniqueID, (uniqueID = v64) != 0))
   {
-    v65 = [v8 valueAddedServiceMode];
-    v66 = [v9 pk_arrayByRemovingObject:v11];
-    v64 = +[PKPassPresentationContext contextWithWasAutomaticallySelected:additionalPassUniqueIdentifiers:userInfo:terminalType:](PKPassPresentationContext, "contextWithWasAutomaticallySelected:additionalPassUniqueIdentifiers:userInfo:terminalType:", (v65 - 2) < 3, v66, 0, [v8 terminalType]);
+    valueAddedServiceMode = [propertiesCopy valueAddedServiceMode];
+    v66 = [identifiersCopy pk_arrayByRemovingObject:uniqueID];
+    v64 = +[PKPassPresentationContext contextWithWasAutomaticallySelected:additionalPassUniqueIdentifiers:userInfo:terminalType:](PKPassPresentationContext, "contextWithWasAutomaticallySelected:additionalPassUniqueIdentifiers:userInfo:terminalType:", (valueAddedServiceMode - 2) < 3, v66, 0, [propertiesCopy terminalType]);
     [v64 setFieldDetect:1];
-    [v64 setSelectedPaymentOffer:v15];
-    if (a5)
+    [v64 setSelectedPaymentOffer:selectedPaymentOffer];
+    if (present)
     {
-      objc_storeStrong(a5, v11);
+      objc_storeStrong(present, uniqueID);
     }
   }
 
@@ -3244,16 +3244,16 @@ void __42__PKPassGroupsViewController_reloadPasses__block_invoke(uint64_t a1)
   }
 }
 
-- (void)updatePassesIfNecessaryWithCompletion:(id)a3
+- (void)updatePassesIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v7 = v4;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_passesAreOutdated || self->_reloadingPasses)
   {
-    if (v4)
+    if (completionCopy)
     {
       blocksQueuedForUpdateCompletion = self->_blocksQueuedForUpdateCompletion;
-      v6 = [v4 copy];
+      v6 = [completionCopy copy];
       [(NSMutableArray *)blocksQueuedForUpdateCompletion addObject:v6];
     }
 
@@ -3261,15 +3261,15 @@ void __42__PKPassGroupsViewController_reloadPasses__block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
 LABEL_6:
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (void)presentInitialState:(BOOL *)a3
+- (void)presentInitialState:(BOOL *)state
 {
   if (self->_inFailForward)
   {
@@ -3279,22 +3279,22 @@ LABEL_6:
   if (([(PKPassGroupStackView *)self->_groupStackView presentationState]- 1) > 2)
   {
     v6 = 0;
-    if (a3)
+    if (state)
     {
 LABEL_10:
-      *a3 = v6;
+      *state = v6;
     }
   }
 
   else
   {
-    v5 = [(PKPassGroupsViewController *)self _passToPresent];
-    v6 = v5 != 0;
-    if (v5)
+    _passToPresent = [(PKPassGroupsViewController *)self _passToPresent];
+    v6 = _passToPresent != 0;
+    if (_passToPresent)
     {
       [(PKPassGroupsViewController *)self presentOffscreenAnimated:0 split:1 withCompletionHandler:0];
-      v7 = [v5 uniqueID];
-      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v7 animated:1 completionHandler:0];
+      uniqueID = [_passToPresent uniqueID];
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID animated:1 completionHandler:0];
     }
 
     else
@@ -3302,78 +3302,78 @@ LABEL_10:
       [(PKPassGroupsViewController *)self presentOnscreen:1 context:0 withCompletionHandler:0];
     }
 
-    if (a3)
+    if (state)
     {
       goto LABEL_10;
     }
   }
 }
 
-- (void)presentPaymentOfferCriteriaIdentifier:(id)a3 productIdentifier:(id)a4
+- (void)presentPaymentOfferCriteriaIdentifier:(id)identifier productIdentifier:(id)productIdentifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentService *)self->_paymentService paymentOffersCatalog];
-  v9 = [v8 criteriaWithIdentifier:v6];
+  identifierCopy = identifier;
+  productIdentifierCopy = productIdentifier;
+  paymentOffersCatalog = [(PKPaymentService *)self->_paymentService paymentOffersCatalog];
+  v9 = [paymentOffersCatalog criteriaWithIdentifier:identifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 associatedPassUniqueID];
-    v12 = [MEMORY[0x1E69B8A58] sharedInstance];
-    if ([v12 hasPassWithUniqueID:v11])
+    associatedPassUniqueID = [v9 associatedPassUniqueID];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    if ([mEMORY[0x1E69B8A58] hasPassWithUniqueID:associatedPassUniqueID])
     {
       v13 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v18 = v6;
+        v18 = identifierCopy;
         v19 = 2112;
-        v20 = v11;
+        v20 = associatedPassUniqueID;
         _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Opening payment offer pass with criteriaIdentifier %@ and passUniqueID %@", buf, 0x16u);
       }
 
-      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v11 animated:1 completionHandler:0];
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:associatedPassUniqueID animated:1 completionHandler:0];
     }
 
-    else if (v7 && !v11 && [v10 type] == 1)
+    else if (productIdentifierCopy && !associatedPassUniqueID && [v10 type] == 1)
     {
       v14 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v7;
+        v18 = productIdentifierCopy;
         _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Opening payment offer installment setup with productIdentifier %@", buf, 0xCu);
       }
 
       v15 = [MEMORY[0x1E695DFD8] set];
-      v16 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+      v16 = [MEMORY[0x1E695DFD8] setWithObject:productIdentifierCopy];
       [(PKPassGroupsViewController *)self presentPaymentSetupInMode:3 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:v15 productIdentifiers:v16 sectionIdentifier:0];
     }
   }
 
   else
   {
-    v11 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    associatedPassUniqueID = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(associatedPassUniqueID, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
-      _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "Cannot open payment offer pass with criteriaIdentifier %@ since no criteria exists in the catalog", buf, 0xCu);
+      v18 = identifierCopy;
+      _os_log_impl(&dword_1BD026000, associatedPassUniqueID, OS_LOG_TYPE_DEFAULT, "Cannot open payment offer pass with criteriaIdentifier %@ since no criteria exists in the catalog", buf, 0xCu);
     }
   }
 }
 
-- (void)presentPaymentSetupInMode:(int64_t)a3 referrerIdentifier:(id)a4 referralSource:(id)a5 campaignIdentifier:(id)a6 paymentNetwork:(id)a7 transitNetworkIdentifier:(id)a8 allowedFeatureIdentifiers:(id)a9 productIdentifiers:(id)a10 sectionIdentifier:(id)a11
+- (void)presentPaymentSetupInMode:(int64_t)mode referrerIdentifier:(id)identifier referralSource:(id)source campaignIdentifier:(id)campaignIdentifier paymentNetwork:(id)network transitNetworkIdentifier:(id)networkIdentifier allowedFeatureIdentifiers:(id)identifiers productIdentifiers:(id)self0 sectionIdentifier:(id)self1
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  campaignIdentifierCopy = campaignIdentifier;
+  networkCopy = network;
+  networkIdentifierCopy = networkIdentifier;
+  identifiersCopy = identifiers;
+  productIdentifiersCopy = productIdentifiers;
+  sectionIdentifierCopy = sectionIdentifier;
   if (self->_kind == 1 && !self->_inFailForward)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -3381,38 +3381,38 @@ LABEL_10:
     aBlock[2] = __212__PKPassGroupsViewController_presentPaymentSetupInMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetwork_transitNetworkIdentifier_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke;
     aBlock[3] = &unk_1E8024408;
     aBlock[4] = self;
-    v34 = v21;
-    v35 = v20;
-    v42 = a3;
-    v28 = v17;
-    v36 = v17;
-    v37 = v18;
-    v38 = v19;
-    v39 = v22;
-    v40 = v23;
-    v41 = v24;
+    v34 = networkIdentifierCopy;
+    v35 = networkCopy;
+    modeCopy = mode;
+    v28 = identifierCopy;
+    v36 = identifierCopy;
+    v37 = sourceCopy;
+    v38 = campaignIdentifierCopy;
+    v39 = identifiersCopy;
+    v40 = productIdentifiersCopy;
+    v41 = sectionIdentifierCopy;
     v25 = _Block_copy(aBlock);
-    v26 = [(PKPassGroupsViewController *)self presentedViewController];
+    presentedViewController = [(PKPassGroupsViewController *)self presentedViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (![v26 isBeingDismissed])
+      if (![presentedViewController isBeingDismissed])
       {
 LABEL_9:
 
-        v17 = v28;
+        identifierCopy = v28;
         goto LABEL_10;
       }
 
-      v27 = [(PKPassGroupsViewController *)self transitionCoordinator];
-      if (v27)
+      transitionCoordinator = [(PKPassGroupsViewController *)self transitionCoordinator];
+      if (transitionCoordinator)
       {
         v29[0] = MEMORY[0x1E69E9820];
         v29[1] = 3221225472;
         v29[2] = __212__PKPassGroupsViewController_presentPaymentSetupInMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetwork_transitNetworkIdentifier_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_3;
         v29[3] = &unk_1E8015D28;
         v30 = v25;
-        [v27 animateAlongsideTransition:0 completion:v29];
+        [transitionCoordinator animateAlongsideTransition:0 completion:v29];
       }
 
       else
@@ -3429,7 +3429,7 @@ LABEL_9:
       v31[3] = &unk_1E8010B50;
       v32 = v25;
       [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v31];
-      v27 = v32;
+      transitionCoordinator = v32;
     }
 
     goto LABEL_9;
@@ -3464,43 +3464,43 @@ void __212__PKPassGroupsViewController_presentPaymentSetupInMode_referrerIdentif
   [*(a1 + 32) startPaymentPreflight:v4 withPaymentSetupMode:*(a1 + 104) referrerIdentifier:*(a1 + 56) referralSource:*(a1 + 64) campaignIdentifier:*(a1 + 72) paymentNetworks:v3 transitNetworkIdentifiers:v2 allowedFeatureIdentifiers:*(a1 + 80) productIdentifiers:*(a1 + 88) sectionIdentifier:*(a1 + 96)];
 }
 
-- (void)presentOnscreen:(BOOL)a3 context:(id)a4 withCompletionHandler:(id)a5
+- (void)presentOnscreen:(BOOL)onscreen context:(id)context withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PKPassGroupStackView *)self->_groupStackView modalGroupIndex];
+  contextCopy = context;
+  handlerCopy = handler;
+  modalGroupIndex = [(PKPassGroupStackView *)self->_groupStackView modalGroupIndex];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__PKPassGroupsViewController_presentOnscreen_context_withCompletionHandler___block_invoke;
   v14[3] = &unk_1E801FA78;
   v11 = 4;
   v14[4] = self;
-  v15 = v8;
-  if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+  v15 = contextCopy;
+  if (modalGroupIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = 5;
   }
 
-  v18 = a3;
-  v16 = v9;
+  onscreenCopy = onscreen;
+  v16 = handlerCopy;
   v17 = v11;
-  v12 = v9;
-  v13 = v8;
+  v12 = handlerCopy;
+  v13 = contextCopy;
   [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v14];
 }
 
-- (void)presentOffscreenAnimated:(BOOL)a3 split:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)presentOffscreenAnimated:(BOOL)animated split:(BOOL)split withCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __83__PKPassGroupsViewController_presentOffscreenAnimated_split_withCompletionHandler___block_invoke;
   v10[3] = &unk_1E8013FA8;
-  v12 = a4;
-  v13 = a3;
+  splitCopy = split;
+  animatedCopy = animated;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v10];
 }
 
@@ -3526,7 +3526,7 @@ uint64_t __83__PKPassGroupsViewController_presentOffscreenAnimated_split_withCom
   }
 }
 
-- (void)presentGroupTableAnimated:(BOOL)a3
+- (void)presentGroupTableAnimated:(BOOL)animated
 {
   [(PKPassGroupStackView *)self->_groupStackView setModalGroupIndex:0x7FFFFFFFFFFFFFFFLL];
   v5[0] = MEMORY[0x1E69E9820];
@@ -3534,7 +3534,7 @@ uint64_t __83__PKPassGroupsViewController_presentOffscreenAnimated_split_withCom
   v5[2] = __56__PKPassGroupsViewController_presentGroupTableAnimated___block_invoke;
   v5[3] = &unk_1E8013F80;
   v5[4] = self;
-  v6 = a3;
+  animatedCopy = animated;
   [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v5];
 }
 
@@ -3550,61 +3550,61 @@ uint64_t __56__PKPassGroupsViewController_presentGroupTableAnimated___block_invo
   return result;
 }
 
-- (void)presentPassWithUniqueID:(id)a3 animated:(BOOL)a4 campaignAttributionReferrerIdentifier:(id)a5 completionHandler:(id)a6
+- (void)presentPassWithUniqueID:(id)d animated:(BOOL)animated campaignAttributionReferrerIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  dCopy = d;
   v13 = objc_alloc_init(PKPassPresentationContext);
-  [(PKPassPresentationContext *)v13 setCampaignAttributionReferrerIdentifier:v11];
+  [(PKPassPresentationContext *)v13 setCampaignAttributionReferrerIdentifier:identifierCopy];
 
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v13 animated:v7 completionHandler:v10];
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:dCopy context:v13 animated:animatedCopy completionHandler:handlerCopy];
 }
 
-- (void)presentPassDetailsWithUniqueID:(id)a3 animated:(BOOL)a4 action:(unint64_t)a5 completionHandler:(id)a6
+- (void)presentPassDetailsWithUniqueID:(id)d animated:(BOOL)animated action:(unint64_t)action completionHandler:(id)handler
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:v10];
-  v13 = [v12 passType];
-  v14 = v13 == 1;
-  if (v12 && (v13 != 1 || !self->_inFailForward))
+  animatedCopy = animated;
+  dCopy = d;
+  handlerCopy = handler;
+  v12 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:dCopy];
+  passType = [v12 passType];
+  v14 = passType == 1;
+  if (v12 && (passType != 1 || !self->_inFailForward))
   {
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke_2;
     v16[3] = &unk_1E8024430;
-    v20 = v8;
+    v20 = animatedCopy;
     v16[4] = self;
-    v19 = a5;
-    v18 = v11;
+    actionCopy = action;
+    v18 = handlerCopy;
     v21 = v14;
     v17 = v12;
-    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v10 animated:v8 completionHandler:v16];
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:dCopy animated:animatedCopy completionHandler:v16];
 
     v15 = v18;
     goto LABEL_7;
   }
 
-  if ([(PKGroupsController *)self->_groupsController containsExpiredPassWithUniqueID:v10])
+  if ([(PKGroupsController *)self->_groupsController containsExpiredPassWithUniqueID:dCopy])
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animated_action_completionHandler___block_invoke;
     v22[3] = &unk_1E8010AD8;
-    v23 = v11;
-    [(PKPassGroupsViewController *)self presentExpiredPassWithUniqueID:v10 animated:v8 completionHandler:v22];
+    v23 = handlerCopy;
+    [(PKPassGroupsViewController *)self presentExpiredPassWithUniqueID:dCopy animated:animatedCopy completionHandler:v22];
     v15 = v23;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    (*(v11 + 2))(v11, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
 LABEL_8:
@@ -3704,29 +3704,29 @@ uint64_t __95__PKPassGroupsViewController_presentPassDetailsWithUniqueID_animate
   return result;
 }
 
-- (void)_presentFPANConsentFlowWithEligibleCredentials:(id)a3 ineligibleCredentials:(id)a4 selectedCredentials:(id)a5 referralSource:(unint64_t)a6 showProvisioningSection:(BOOL)a7 animated:(BOOL)a8 completion:(id)a9
+- (void)_presentFPANConsentFlowWithEligibleCredentials:(id)credentials ineligibleCredentials:(id)ineligibleCredentials selectedCredentials:(id)selectedCredentials referralSource:(unint64_t)source showProvisioningSection:(BOOL)section animated:(BOOL)animated completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a9;
+  credentialsCopy = credentials;
+  ineligibleCredentialsCopy = ineligibleCredentials;
+  selectedCredentialsCopy = selectedCredentials;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCredentials_ineligibleCredentials_selectedCredentials_referralSource_showProvisioningSection_animated_completion___block_invoke;
   block[3] = &unk_1E8024458;
   objc_copyWeak(v28, &location);
-  v23 = v14;
-  v24 = v15;
-  v29 = a7;
-  v25 = v16;
-  v26 = self;
-  v28[1] = a6;
-  v27 = v17;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
+  v23 = credentialsCopy;
+  v24 = ineligibleCredentialsCopy;
+  sectionCopy = section;
+  v25 = selectedCredentialsCopy;
+  selfCopy = self;
+  v28[1] = source;
+  v27 = completionCopy;
+  v18 = completionCopy;
+  v19 = selectedCredentialsCopy;
+  v20 = ineligibleCredentialsCopy;
+  v21 = credentialsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(v28);
@@ -3784,30 +3784,30 @@ uint64_t __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCr
   return result;
 }
 
-- (void)presentSetupVirtualCardNumberForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentSetupVirtualCardNumberForPassUniqueIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v10 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:v8];
-  v11 = [v10 paymentPass];
+  v10 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:identifierCopy];
+  paymentPass = [v10 paymentPass];
 
-  if (v11)
+  if (paymentPass)
   {
     if (self->_inFailForward)
     {
-      if (v9)
+      if (completionCopy)
       {
-        v9[2](v9, 1);
+        completionCopy[2](completionCopy, 1);
       }
     }
 
     else
     {
-      if ([v11 supportsVirtualCardNumber])
+      if ([paymentPass supportsVirtualCardNumber])
       {
-        v12 = [v11 hasActiveVirtualCard] ^ 1;
+        v12 = [paymentPass hasActiveVirtualCard] ^ 1;
       }
 
       else
@@ -3821,10 +3821,10 @@ uint64_t __178__PKPassGroupsViewController__presentFPANConsentFlowWithEligibleCr
       v13[3] = &unk_1E8024480;
       objc_copyWeak(&v17, &location);
       v18 = v12;
-      v14 = v11;
-      v15 = self;
-      v16 = v9;
-      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v8 animated:v6 completionHandler:v13];
+      v14 = paymentPass;
+      selfCopy = self;
+      v16 = completionCopy;
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifierCopy animated:animatedCopy completionHandler:v13];
 
       objc_destroyWeak(&v17);
     }
@@ -3907,27 +3907,27 @@ uint64_t __103__PKPassGroupsViewController_presentSetupVirtualCardNumberForPassU
   return result;
 }
 
-- (void)presentExpressUpgradeDetailForPassUniqueID:(id)a3 assetIdentifier:(id)a4 hideDisableAction:(unint64_t)a5 reportingMetadata:(id)a6 animated:(BOOL)a7 completionHandler:(id)a8
+- (void)presentExpressUpgradeDetailForPassUniqueID:(id)d assetIdentifier:(id)identifier hideDisableAction:(unint64_t)action reportingMetadata:(id)metadata animated:(BOOL)animated completionHandler:(id)handler
 {
-  v9 = a7;
+  animatedCopy = animated;
   v48 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:v14];
-  v19 = [v18 paymentPass];
+  dCopy = d;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  v18 = [(PKPassGroupsViewController *)self _passFromGroupsControllerWithUniqueIdentifier:dCopy];
+  paymentPass = [v18 paymentPass];
 
-  if (v19)
+  if (paymentPass)
   {
-    v29 = a5;
-    v30 = v9;
+    actionCopy = action;
+    v30 = animatedCopy;
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v20 = [v19 devicePaymentApplications];
-    v21 = [v20 countByEnumeratingWithState:&v43 objects:v47 count:16];
+    devicePaymentApplications = [paymentPass devicePaymentApplications];
+    v21 = [devicePaymentApplications countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v21)
     {
       v22 = v21;
@@ -3938,7 +3938,7 @@ LABEL_4:
       {
         if (*v44 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         if ([*(*(&v43 + 1) + 8 * v24) supportsExpress])
@@ -3948,7 +3948,7 @@ LABEL_4:
 
         if (v22 == ++v24)
         {
-          v22 = [v20 countByEnumeratingWithState:&v43 objects:v47 count:16];
+          v22 = [devicePaymentApplications countByEnumeratingWithState:&v43 objects:v47 count:16];
           if (v22)
           {
             goto LABEL_4;
@@ -3967,11 +3967,11 @@ LABEL_4:
       aBlock[1] = 3221225472;
       aBlock[2] = __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke;
       aBlock[3] = &unk_1E80244A8;
-      v25 = v19;
+      v25 = paymentPass;
       v39 = v25;
-      v40 = self;
+      selfCopy = self;
       v42 = v30;
-      v26 = v17;
+      v26 = handlerCopy;
       v41 = v26;
       v27 = _Block_copy(aBlock);
       v31[0] = MEMORY[0x1E69E9820];
@@ -3979,14 +3979,14 @@ LABEL_4:
       v31[2] = __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueID_assetIdentifier_hideDisableAction_reportingMetadata_animated_completionHandler___block_invoke_3;
       v31[3] = &unk_1E80244F8;
       v31[4] = self;
-      v32 = v15;
-      v37 = v29;
+      v32 = identifierCopy;
+      v37 = actionCopy;
       v33 = v25;
-      v34 = v16;
+      v34 = metadataCopy;
       v35 = v27;
       v36 = v26;
       v28 = v27;
-      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v14 animated:v30 completionHandler:v31];
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:dCopy animated:v30 completionHandler:v31];
     }
 
     else
@@ -3994,9 +3994,9 @@ LABEL_4:
 LABEL_10:
 
 LABEL_12:
-      if (v17)
+      if (handlerCopy)
       {
-        (*(v17 + 2))(v17, 1);
+        (*(handlerCopy + 2))(handlerCopy, 1);
       }
     }
   }
@@ -4082,18 +4082,18 @@ void __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueI
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)_setupItemForExpressUpgradeWithAsset:(id)a3 hideDisableAction:(unint64_t)a4 pass:(id)a5 reportingMetadata:(id)a6 completionHandler:(id)a7
+- (void)_setupItemForExpressUpgradeWithAsset:(id)asset hideDisableAction:(unint64_t)action pass:(id)pass reportingMetadata:(id)metadata completionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  assetCopy = asset;
+  passCopy = pass;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v15 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v11;
+    v29 = assetCopy;
     _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController: _setupItemForExpressUpgradeMarket: %@", buf, 0xCu);
   }
 
@@ -4101,22 +4101,22 @@ void __152__PKPassGroupsViewController_presentExpressUpgradeDetailForPassUniqueI
   aBlock[1] = 3221225472;
   aBlock[2] = __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hideDisableAction_pass_reportingMetadata_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8012A48;
-  v16 = v14;
+  v16 = handlerCopy;
   v27 = v16;
   v17 = _Block_copy(aBlock);
-  if (v11)
+  if (assetCopy)
   {
-    v18 = a4 == 1;
-    v19 = [MEMORY[0x1E69B89C0] sharedInstance];
+    v18 = action == 1;
+    mEMORY[0x1E69B89C0] = [MEMORY[0x1E69B89C0] sharedInstance];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hideDisableAction_pass_reportingMetadata_completionHandler___block_invoke_2;
     v21[3] = &unk_1E8024520;
     v24 = v17;
     v25 = v18;
-    v22 = v12;
-    v23 = v13;
-    [v19 fetchMarketNotificationAssetsForIdentifier:v11 isDiscretionary:0 completionHandler:v21];
+    v22 = passCopy;
+    v23 = metadataCopy;
+    [mEMORY[0x1E69B89C0] fetchMarketNotificationAssetsForIdentifier:assetCopy isDiscretionary:0 completionHandler:v21];
 
     v20 = v24;
   }
@@ -4148,13 +4148,13 @@ void __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hide
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)presentExpiredPassWithUniqueID:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)presentExpiredPassWithUniqueID:(id)d animated:(BOOL)animated completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v10 = [[PKExpiredPassesNavigationController alloc] initWithExistingGroupsController:self->_groupsController];
   v11 = v10;
-  if (v8 && v10)
+  if (dCopy && v10)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -4162,15 +4162,15 @@ void __126__PKPassGroupsViewController__setupItemForExpressUpgradeWithAsset_hide
     v12[3] = &unk_1E8021110;
     v12[4] = self;
     v13 = v10;
-    v16 = a4;
-    v14 = v8;
-    v15 = v9;
+    animatedCopy = animated;
+    v14 = dCopy;
+    v15 = handlerCopy;
     [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v12];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -4234,9 +4234,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)presentExpiredPassesAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)presentExpiredPassesAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [[PKExpiredPassesNavigationController alloc] initWithExistingGroupsController:self->_groupsController];
   v8 = v7;
   if (v7)
@@ -4247,14 +4247,14 @@ LABEL_8:
     v9[3] = &unk_1E8024548;
     v9[4] = self;
     v10 = v7;
-    v12 = a3;
-    v11 = v6;
+    animatedCopy = animated;
+    v11 = handlerCopy;
     [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v9];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
@@ -4289,16 +4289,16 @@ uint64_t __77__PKPassGroupsViewController_presentExpiredPassesAnimated_completio
   return result;
 }
 
-- (void)presentPassWithUniqueID:(id)a3 context:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)presentPassWithUniqueID:(id)d context:(id)context animated:(BOOL)animated completionHandler:(id)handler
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
+  dCopy = d;
+  contextCopy = context;
+  handlerCopy = handler;
+  v13 = handlerCopy;
   if (!self->_invalidationStatus)
   {
-    if (v12)
+    if (handlerCopy)
     {
       v14 = objc_alloc(MEMORY[0x1E69B8798]);
       v33[0] = MEMORY[0x1E69E9820];
@@ -4317,7 +4317,7 @@ uint64_t __77__PKPassGroupsViewController_presentExpiredPassesAnimated_completio
       v17 = v16;
       v18 = _Block_copy(aBlock);
 
-      if (!v10)
+      if (!dCopy)
       {
         if (!v18)
         {
@@ -4333,7 +4333,7 @@ LABEL_14:
 
     else
     {
-      if (!v10)
+      if (!dCopy)
       {
         goto LABEL_15;
       }
@@ -4343,12 +4343,12 @@ LABEL_14:
 
     if ([(PKGroupsController *)self->_groupsController filteringEnabled])
     {
-      v19 = [(PKGroupsController *)self->_groupsController filteredPassUniqueIDs];
-      v20 = [v19 containsObject:v10];
+      filteredPassUniqueIDs = [(PKGroupsController *)self->_groupsController filteredPassUniqueIDs];
+      v20 = [filteredPassUniqueIDs containsObject:dCopy];
 
       if (v20)
       {
-        v35[0] = v10;
+        v35[0] = dCopy;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
         passUniqueIDsToExcludeFromFiltering = self->_passUniqueIDsToExcludeFromFiltering;
         self->_passUniqueIDsToExcludeFromFiltering = v21;
@@ -4365,9 +4365,9 @@ LABEL_14:
     objc_copyWeak(&v27, &location);
     v18 = v18;
     v26 = v18;
-    v24 = v10;
-    v28 = a5;
-    v25 = v11;
+    v24 = dCopy;
+    animatedCopy = animated;
+    v25 = contextCopy;
     [(PKPassGroupsViewController *)self _presentWithUpdatedPasses:v23];
 
     objc_destroyWeak(&v27);
@@ -4375,9 +4375,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v12)
+  if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
 LABEL_15:
@@ -4604,56 +4604,56 @@ void __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_c
   }
 }
 
-- (void)presentSearchWithCompletion:(id)a3
+- (void)presentSearchWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v5 = _dashboardPassGroupViewController;
+  if (_dashboardPassGroupViewController)
   {
-    [(PKDashboardPassGroupViewController *)v4 presentSearchWithCompletion:v6];
+    [(PKDashboardPassGroupViewController *)_dashboardPassGroupViewController presentSearchWithCompletion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)presentSearchWithQuery:(id)a3 completion:(id)a4
+- (void)presentSearchWithQuery:(id)query completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
-  v8 = v7;
-  if (v7)
+  queryCopy = query;
+  completionCopy = completion;
+  _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v8 = _dashboardPassGroupViewController;
+  if (_dashboardPassGroupViewController)
   {
-    [(PKDashboardPassGroupViewController *)v7 presentSearchWithQuery:v9 completion:v6];
+    [(PKDashboardPassGroupViewController *)_dashboardPassGroupViewController presentSearchWithQuery:queryCopy completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)presentFeatureSetupOrFeaturePass:(unint64_t)a3 referrerIdentifier:(id)a4 presentationContext:(id)a5 completion:(id)a6
+- (void)presentFeatureSetupOrFeaturePass:(unint64_t)pass referrerIdentifier:(id)identifier presentationContext:(id)context completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  contextCopy = context;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13 = MEMORY[0x1E695DFD8];
   v14 = PKFeatureIdentifierToString();
   v15 = [v13 setWithObject:v14];
 
-  if (a3 <= 3)
+  if (pass <= 3)
   {
-    if (a3 >= 2)
+    if (pass >= 2)
     {
-      if (a3 == 2)
+      if (pass == 2)
       {
-        v16 = [MEMORY[0x1E69B8400] sharedInstance];
+        mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
         v17 = v21;
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
@@ -4661,10 +4661,10 @@ void __89__PKPassGroupsViewController_presentPassWithUniqueID_context_animated_c
         v21[3] = &unk_1E80245E8;
         v18 = &v22;
         objc_copyWeak(&v22, &location);
-        v21[6] = v12;
-        v21[4] = v10;
+        v21[6] = completionCopy;
+        v21[4] = identifierCopy;
         v21[5] = v15;
-        [v16 defaultAccountForFeature:2 completion:v21];
+        [mEMORY[0x1E69B8400] defaultAccountForFeature:2 completion:v21];
 LABEL_8:
 
         objc_destroyWeak(v18);
@@ -4675,22 +4675,22 @@ LABEL_8:
     }
 
 LABEL_9:
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_11;
   }
 
-  if (a3 == 4)
+  if (pass == 4)
   {
     goto LABEL_9;
   }
 
-  if (a3 == 5)
+  if (pass == 5)
   {
-    v16 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v17 = v19;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -4698,11 +4698,11 @@ LABEL_9:
     v19[3] = &unk_1E8024660;
     v18 = v20;
     objc_copyWeak(v20, &location);
-    v19[6] = v12;
-    v19[4] = v11;
+    v19[6] = completionCopy;
+    v19[4] = contextCopy;
     v20[1] = 5;
-    v19[5] = v10;
-    [v16 defaultAccountForFeature:5 completion:v19];
+    v19[5] = identifierCopy;
+    [mEMORY[0x1E69B8400] defaultAccountForFeature:5 completion:v19];
     goto LABEL_8;
   }
 
@@ -5016,11 +5016,11 @@ void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrer
   [v2 presentViewController:v3 animated:1 completion:*(a1 + 48)];
 }
 
-- (void)presentInstallmentPlansForFeature:(unint64_t)a3 completion:(id)a4
+- (void)presentInstallmentPlansForFeature:(unint64_t)feature completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (feature)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69B8658]);
     v30[0] = 0;
@@ -5053,7 +5053,7 @@ void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrer
     v22[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke;
     v22[3] = &unk_1E8024688;
     v22[4] = v30;
-    v22[5] = a3;
+    v22[5] = feature;
     [v8 addOperation:v22];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -5076,7 +5076,7 @@ void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrer
     objc_copyWeak(&v19, &location);
     v18[4] = v24;
     [v8 addOperation:v18];
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_completion___block_invoke_13;
@@ -5087,7 +5087,7 @@ void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrer
     v14 = v28;
     v15 = v26;
     v16 = v24;
-    v10 = [v8 evaluateWithInput:v9 completion:v11];
+    v10 = [v8 evaluateWithInput:null completion:v11];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v19);
@@ -5100,9 +5100,9 @@ void __113__PKPassGroupsViewController_presentFeatureSetupOrFeaturePass_referrer
     _Block_object_dispose(v30, 8);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -5426,32 +5426,32 @@ uint64_t __75__PKPassGroupsViewController_presentInstallmentPlansForFeature_comp
   return result;
 }
 
-- (void)presentInstallmentPlanWithIdentifier:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5
+- (void)presentInstallmentPlanWithIdentifier:(id)identifier forAccountIdentifier:(id)accountIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9)
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (identifierCopy && accountIdentifierCopy)
   {
     objc_initWeak(&location, self);
-    v12 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_forAccountIdentifier_completion___block_invoke;
     v13[3] = &unk_1E8024728;
     objc_copyWeak(&v16, &location);
-    v14 = v8;
+    v14 = identifierCopy;
     v15 = v11;
-    [v12 accountWithIdentifier:v9 completion:v13];
+    [mEMORY[0x1E69B8400] accountWithIdentifier:accountIdentifierCopy completion:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -5527,11 +5527,11 @@ uint64_t __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_f
   return result;
 }
 
-- (void)presentInvitationsInboxAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentInvitationsInboxAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
+  animatedCopy = animated;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_inboxDataSource)
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -5539,14 +5539,14 @@ uint64_t __99__PKPassGroupsViewController_presentInstallmentPlanWithIdentifier_f
     v8[2] = __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_completion___block_invoke;
     v8[3] = &unk_1E80150A8;
     v8[4] = self;
-    v10 = v4;
-    v9 = v6;
-    [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:v4 performAction:v8];
+    v10 = animatedCopy;
+    v9 = completionCopy;
+    [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:animatedCopy performAction:v8];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -5619,20 +5619,20 @@ uint64_t __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_comple
   return result;
 }
 
-- (void)presentCreateAccountUserInvitationWithCompletion:(id)a3
+- (void)presentCreateAccountUserInvitationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self pkui_frontMostViewController];
-  [PKAccountInvitationController presentCreateAccountUserInvitationWithViewController:v5 account:0 accountUserCollection:0 familyMemberCollection:0 context:0 completion:v4];
+  completionCopy = completion;
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+  [PKAccountInvitationController presentCreateAccountUserInvitationWithViewController:pkui_frontMostViewController account:0 accountUserCollection:0 familyMemberCollection:0 context:0 completion:completionCopy];
 }
 
-- (void)presentInvitationWithIdentifier:(id)a3 forAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)presentInvitationWithIdentifier:(id)identifier forAccountWithIdentifier:(id)withIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9)
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (identifierCopy && withIdentifierCopy)
   {
     objc_initWeak(&location, self);
     v12[0] = MEMORY[0x1E69E9820];
@@ -5640,17 +5640,17 @@ uint64_t __73__PKPassGroupsViewController_presentInvitationsInboxAnimated_comple
     v12[2] = __98__PKPassGroupsViewController_presentInvitationWithIdentifier_forAccountWithIdentifier_completion___block_invoke;
     v12[3] = &unk_1E8024750;
     objc_copyWeak(&v15, &location);
-    v13 = v8;
+    v13 = identifierCopy;
     v14 = v11;
-    [(PKPassGroupsViewController *)self presentPassWithAssociatedAccountIdentifier:v9 animated:1 completion:v12];
+    [(PKPassGroupsViewController *)self presentPassWithAssociatedAccountIdentifier:withIdentifierCopy animated:1 completion:v12];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -5698,11 +5698,11 @@ uint64_t __98__PKPassGroupsViewController_presentInvitationWithIdentifier_forAcc
   return result;
 }
 
-- (void)presentAppStorePageForItemWithIdentifier:(id)a3
+- (void)presentAppStorePageForItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [[PKStoreProductViewPresenter alloc] initWithProductDelegate:0];
-  [(PKStoreProductViewPresenter *)v5 loadProductForItemIdentifier:v4 customProductPageIdentifier:0];
+  [(PKStoreProductViewPresenter *)v5 loadProductForItemIdentifier:identifierCopy customProductPageIdentifier:0];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -5721,24 +5721,24 @@ void __71__PKPassGroupsViewController_presentAppStorePageForItemWithIdentifier__
   [v7 presentViewController:v6 animated:1 completion:v5];
 }
 
-- (void)presentTransactionDetailsForTransactionWithIdentifier:(id)a3 confirmPaymentOfferPlan:(BOOL)a4
+- (void)presentTransactionDetailsForTransactionWithIdentifier:(id)identifier confirmPaymentOfferPlan:(BOOL)plan
 {
-  v4 = a4;
+  planCopy = plan;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6 && !self->_inFailForward)
+  identifierCopy = identifier;
+  if (identifierCopy && !self->_inFailForward)
   {
     v7 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v4)
+      if (planCopy)
       {
         v8 = @"YES";
       }
 
       *buf = 138412546;
-      v14 = v6;
+      v14 = identifierCopy;
       v15 = 2112;
       v16 = v8;
       _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Presenting transaction details for transactionID %@, confirmPaymentOfferPlan %@", buf, 0x16u);
@@ -5752,8 +5752,8 @@ void __71__PKPassGroupsViewController_presentAppStorePageForItemWithIdentifier__
     v10[3] = &unk_1E80247F0;
     objc_copyWeak(&v11, buf);
     v10[4] = self;
-    v12 = v4;
-    [(PKPaymentService *)paymentService transactionWithTransactionIdentifier:v6 completion:v10];
+    v12 = planCopy;
+    [(PKPaymentService *)paymentService transactionWithTransactionIdentifier:identifierCopy completion:v10];
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
@@ -5793,27 +5793,27 @@ void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWi
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)presentTransactionDetailsForTransactionWithServiceIdentifier:(id)a3 transactionSourceIdentifier:(id)a4 confirmPaymentOfferPlan:(BOOL)a5
+- (void)presentTransactionDetailsForTransactionWithServiceIdentifier:(id)identifier transactionSourceIdentifier:(id)sourceIdentifier confirmPaymentOfferPlan:(BOOL)plan
 {
-  v5 = a5;
+  planCopy = plan;
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8 && !self->_inFailForward)
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  if (identifierCopy && !self->_inFailForward)
   {
     v10 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"NO";
       *buf = 138412802;
-      *&buf[4] = v8;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
-      if (v5)
+      if (planCopy)
       {
         v11 = @"YES";
       }
 
-      *&buf[14] = v9;
+      *&buf[14] = sourceIdentifierCopy;
       *&buf[22] = 2112;
       v37 = v11;
       _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Presenting transaction details for serviceIdentifier %@, transactionSourceIdentifier %@, confirmPaymentOfferPlan %@", buf, 0x20u);
@@ -5833,7 +5833,7 @@ void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWi
     v12 = dispatch_group_create();
     dispatch_group_enter(v12);
     paymentService = self->_paymentService;
-    if (v9)
+    if (sourceIdentifierCopy)
     {
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
@@ -5844,7 +5844,7 @@ void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWi
       v32 = v34;
       v15 = v12;
       v31 = v15;
-      [(PKPaymentService *)paymentService transactionSourceTypeForTransactionSourceIdentifier:v9 completion:v30];
+      [(PKPaymentService *)paymentService transactionSourceTypeForTransactionSourceIdentifier:sourceIdentifierCopy completion:v30];
       dispatch_group_enter(v15);
       v16 = self->_paymentService;
       v26[0] = MEMORY[0x1E69E9820];
@@ -5854,7 +5854,7 @@ void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWi
       objc_copyWeak(&v29, &location);
       v28 = buf;
       v27 = v15;
-      [(PKPaymentService *)v16 transactionWithServiceIdentifier:v8 transactionSourceIdentifier:v9 completion:v26];
+      [(PKPaymentService *)v16 transactionWithServiceIdentifier:identifierCopy transactionSourceIdentifier:sourceIdentifierCopy completion:v26];
 
       objc_destroyWeak(&v29);
     }
@@ -5872,7 +5872,7 @@ void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWi
       v23 = buf;
       v24 = v34;
       v22 = v12;
-      [(PKPaymentService *)paymentService ambiguousTransactionWithServiceIdentifier:v8 completion:v20];
+      [(PKPaymentService *)paymentService ambiguousTransactionWithServiceIdentifier:identifierCopy completion:v20];
     }
 
     objc_destroyWeak(v14);
@@ -5883,7 +5883,7 @@ void __108__PKPassGroupsViewController_presentTransactionDetailsForTransactionWi
     objc_copyWeak(&v18, &location);
     block[4] = buf;
     block[5] = v34;
-    v19 = v5;
+    v19 = planCopy;
     dispatch_group_notify(v12, MEMORY[0x1E69E96A0], block);
     objc_destroyWeak(&v18);
 
@@ -5956,29 +5956,29 @@ void __143__PKPassGroupsViewController_presentTransactionDetailsForTransactionWi
   [WeakRetained _presentTransactionDetailsForTransaction:*(*(*(a1 + 32) + 8) + 40) transactionSourceType:*(*(*(a1 + 40) + 8) + 24) confirmPaymentOfferPlan:*(a1 + 56)];
 }
 
-- (void)presentTransactionDetailsForBankConnectTransaction:(id)a3 applePayPrimaryAccountIdentifier:(id)a4
+- (void)presentTransactionDetailsForBankConnectTransaction:(id)transaction applePayPrimaryAccountIdentifier:(id)identifier
 {
-  if (a3 && a4)
+  if (transaction && identifier)
   {
     v6 = MEMORY[0x1E69B8EA8];
-    v7 = a4;
-    v8 = [v6 transactionFromFKPaymentTransaction:a3];
-    v9 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v10 = [v9 passWithFPANIdentifier:v7];
+    identifierCopy = identifier;
+    v8 = [v6 transactionFromFKPaymentTransaction:transaction];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v10 = [mEMORY[0x1E69B8A58] passWithFPANIdentifier:identifierCopy];
 
     if (v10)
     {
-      v11 = [v10 paymentPass];
-      v12 = [v11 uniqueID];
+      paymentPass = [v10 paymentPass];
+      uniqueID = [paymentPass uniqueID];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __114__PKPassGroupsViewController_presentTransactionDetailsForBankConnectTransaction_applePayPrimaryAccountIdentifier___block_invoke;
       v14[3] = &unk_1E8012798;
       v14[4] = self;
       v15 = v8;
-      v16 = v11;
-      v13 = v11;
-      [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:0 animated:1 completionHandler:v14];
+      v16 = paymentPass;
+      v13 = paymentPass;
+      [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID context:0 animated:1 completionHandler:v14];
     }
   }
 }
@@ -5997,35 +5997,35 @@ void __114__PKPassGroupsViewController_presentTransactionDetailsForBankConnectTr
   }
 }
 
-- (void)_presentTransactionDetailsForTransaction:(id)a3 transactionSourceType:(unint64_t)a4 confirmPaymentOfferPlan:(BOOL)a5
+- (void)_presentTransactionDetailsForTransaction:(id)transaction transactionSourceType:(unint64_t)type confirmPaymentOfferPlan:(BOOL)plan
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  transactionCopy = transaction;
+  v9 = transactionCopy;
+  if (transactionCopy)
   {
-    if (a4 > 1)
+    if (type > 1)
     {
-      if (a4 == 2)
+      if (type == 2)
       {
         goto LABEL_10;
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
-        [(PKPassGroupsViewController *)self _presentAccountTransactionDetailsForTransaction:v8];
+        [(PKPassGroupsViewController *)self _presentAccountTransactionDetailsForTransaction:transactionCopy];
       }
     }
 
-    else if (a4)
+    else if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
-        v10 = [v8 accountIdentifier];
-        v11 = [MEMORY[0x1E69B9000] sharedInstance];
-        v12 = [v11 account];
+        accountIdentifier = [transactionCopy accountIdentifier];
+        mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+        account = [mEMORY[0x1E69B9000] account];
 
-        v13 = [v12 peerPaymentAccountWithIdentifier:v10];
+        v13 = [account peerPaymentAccountWithIdentifier:accountIdentifier];
         if (!v13)
         {
           v21 = PKLogFacilityTypeGetObject();
@@ -6049,27 +6049,27 @@ LABEL_18:
         v26[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_246;
         v26[3] = &unk_1E8022F00;
         v27 = v13;
-        v28 = self;
-        v29 = v12;
+        selfCopy = self;
+        v29 = account;
         v30 = v9;
-        v16 = v12;
+        v16 = account;
         v17 = v14;
         [(PKPaymentService *)paymentService familyMembersWithCompletion:v26];
 
 LABEL_10:
-        v10 = [v9 accountIdentifier];
-        v12 = [v9 altDSID];
-        if (v12)
+        accountIdentifier = [v9 accountIdentifier];
+        account = [v9 altDSID];
+        if (account)
         {
-          v18 = [MEMORY[0x1E69B8400] sharedInstance];
+          mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
           v23[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke_251;
           v23[3] = &unk_1E8024908;
           v23[4] = self;
           v24 = v9;
-          v25 = a5;
-          [v18 accountWithIdentifier:v10 completion:v23];
+          planCopy = plan;
+          [mEMORY[0x1E69B8400] accountWithIdentifier:accountIdentifier completion:v23];
 
 LABEL_19:
           goto LABEL_20;
@@ -6093,15 +6093,15 @@ LABEL_17:
     else
     {
       v19 = self->_paymentService;
-      v20 = [v8 identifier];
+      identifier = [transactionCopy identifier];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_transactionSourceType_confirmPaymentOfferPlan___block_invoke;
       v31[3] = &unk_1E80248B8;
       v31[4] = self;
       v32 = v9;
-      v33 = a5;
-      [(PKPaymentService *)v19 passUniqueIdentifierForTransactionWithIdentifier:v20 completion:v31];
+      planCopy2 = plan;
+      [(PKPaymentService *)v19 passUniqueIdentifierForTransactionWithIdentifier:identifier completion:v31];
     }
   }
 
@@ -6324,21 +6324,21 @@ void __117__PKPassGroupsViewController__presentTransactionDetailsForTransaction_
   }
 }
 
-- (void)_presentAccountTransactionDetailsForTransaction:(id)a3
+- (void)_presentAccountTransactionDetailsForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 accountIdentifier];
+  transactionCopy = transaction;
+  accountIdentifier = [transactionCopy accountIdentifier];
   objc_initWeak(&location, self);
-  v6 = [MEMORY[0x1E69B8400] sharedInstance];
+  mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransaction___block_invoke;
   v8[3] = &unk_1E8024958;
   v8[4] = self;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = transactionCopy;
   v9 = v7;
-  [v6 accountWithIdentifier:v5 completion:v8];
+  [mEMORY[0x1E69B8400] accountWithIdentifier:accountIdentifier completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -6398,26 +6398,26 @@ void __78__PKPassGroupsViewController__presentAccountTransactionDetailsForTransa
   }
 }
 
-- (void)_presentTransactionDetailsForTransaction:(id)a3 forPaymentPass:(id)a4 confirmPaymentOfferPlan:(BOOL)a5
+- (void)_presentTransactionDetailsForTransaction:(id)transaction forPaymentPass:(id)pass confirmPaymentOfferPlan:(BOOL)plan
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  transactionCopy = transaction;
+  passCopy = pass;
+  v10 = passCopy;
+  if (transactionCopy && passCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v9];
-    v12 = [v10 uniqueID];
+    v11 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:passCopy];
+    uniqueID = [v10 uniqueID];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_forPaymentPass_confirmPaymentOfferPlan___block_invoke;
     v14[3] = &unk_1E8024980;
     v15 = v10;
-    v16 = v8;
-    v17 = self;
-    v19 = a5;
+    v16 = transactionCopy;
+    selfCopy = self;
+    planCopy = plan;
     v18 = v11;
     v13 = v11;
-    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:0 animated:1 completionHandler:v14];
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID context:0 animated:1 completionHandler:v14];
   }
 }
 
@@ -6503,8 +6503,8 @@ void __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_
 
 - (void)presentPeerPaymentTermsAcceptance
 {
-  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
-  if (v3 && !self->_inFailForward)
+  peerPaymentPassUniqueID = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (peerPaymentPassUniqueID && !self->_inFailForward)
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x1E69E9820];
@@ -6512,7 +6512,7 @@ void __110__PKPassGroupsViewController__presentTransactionDetailsForTransaction_
     v4[2] = __63__PKPassGroupsViewController_presentPeerPaymentTermsAcceptance__block_invoke;
     v4[3] = &unk_1E80113B0;
     objc_copyWeak(&v6, &location);
-    v5 = v3;
+    v5 = peerPaymentPassUniqueID;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
 
     objc_destroyWeak(&v6);
@@ -6617,8 +6617,8 @@ void __62__PKPassGroupsViewController_presentPeerPaymentVerifyIdentity__block_in
 
 - (void)presentPeerPaymentTopUp
 {
-  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
-  if (v3 && !self->_inFailForward)
+  peerPaymentPassUniqueID = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (peerPaymentPassUniqueID && !self->_inFailForward)
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x1E69E9820];
@@ -6626,8 +6626,8 @@ void __62__PKPassGroupsViewController_presentPeerPaymentVerifyIdentity__block_in
     v4[2] = __53__PKPassGroupsViewController_presentPeerPaymentTopUp__block_invoke;
     v4[3] = &unk_1E8013220;
     objc_copyWeak(&v7, &location);
-    v5 = v3;
-    v6 = self;
+    v5 = peerPaymentPassUniqueID;
+    selfCopy = self;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
 
     objc_destroyWeak(&v7);
@@ -6651,11 +6651,11 @@ void __53__PKPassGroupsViewController_presentPeerPaymentTopUp__block_invoke(uint
   }
 }
 
-- (void)presentPeerPaymentSetupWithConfiguration:(id)a3
+- (void)presentPeerPaymentSetupWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
-  if (v5)
+  configurationCopy = configuration;
+  peerPaymentPassUniqueID = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (peerPaymentPassUniqueID)
   {
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
@@ -6663,8 +6663,8 @@ void __53__PKPassGroupsViewController_presentPeerPaymentTopUp__block_invoke(uint
     v6[2] = __71__PKPassGroupsViewController_presentPeerPaymentSetupWithConfiguration___block_invoke;
     v6[3] = &unk_1E8013220;
     objc_copyWeak(&v9, &location);
-    v7 = v5;
-    v8 = v4;
+    v7 = peerPaymentPassUniqueID;
+    v8 = configurationCopy;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v7 animated:1 completionHandler:v6];
 
     objc_destroyWeak(&v9);
@@ -6694,11 +6694,11 @@ void __71__PKPassGroupsViewController_presentPeerPaymentSetupWithConfiguration__
   }
 }
 
-- (void)presentPeerPaymentRecurringPaymentWithIdentifier:(id)a3
+- (void)presentPeerPaymentRecurringPaymentWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
-  if (v5 && !self->_inFailForward)
+  identifierCopy = identifier;
+  peerPaymentPassUniqueID = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (peerPaymentPassUniqueID && !self->_inFailForward)
   {
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
@@ -6706,8 +6706,8 @@ void __71__PKPassGroupsViewController_presentPeerPaymentSetupWithConfiguration__
     v6[2] = __79__PKPassGroupsViewController_presentPeerPaymentRecurringPaymentWithIdentifier___block_invoke;
     v6[3] = &unk_1E8013220;
     objc_copyWeak(&v9, &location);
-    v7 = v5;
-    v8 = v4;
+    v7 = peerPaymentPassUniqueID;
+    v8 = identifierCopy;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v7 animated:1 completionHandler:v6];
 
     objc_destroyWeak(&v9);
@@ -6737,8 +6737,8 @@ void __79__PKPassGroupsViewController_presentPeerPaymentRecurringPaymentWithIden
 
 - (void)presentPeerPaymentTransferToBank
 {
-  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
-  if (v3 && !self->_inFailForward)
+  peerPaymentPassUniqueID = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (peerPaymentPassUniqueID && !self->_inFailForward)
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x1E69E9820];
@@ -6746,7 +6746,7 @@ void __79__PKPassGroupsViewController_presentPeerPaymentRecurringPaymentWithIden
     v4[2] = __62__PKPassGroupsViewController_presentPeerPaymentTransferToBank__block_invoke;
     v4[3] = &unk_1E80113B0;
     objc_copyWeak(&v6, &location);
-    v5 = v3;
+    v5 = peerPaymentPassUniqueID;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
 
     objc_destroyWeak(&v6);
@@ -6776,8 +6776,8 @@ void __62__PKPassGroupsViewController_presentPeerPaymentTransferToBank__block_in
 
 - (void)presentPeerPaymentSendOrRequest
 {
-  v3 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
-  if (v3 && !self->_inFailForward)
+  peerPaymentPassUniqueID = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (peerPaymentPassUniqueID && !self->_inFailForward)
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x1E69E9820];
@@ -6785,7 +6785,7 @@ void __62__PKPassGroupsViewController_presentPeerPaymentTransferToBank__block_in
     v4[2] = __61__PKPassGroupsViewController_presentPeerPaymentSendOrRequest__block_invoke;
     v4[3] = &unk_1E80113B0;
     objc_copyWeak(&v6, &location);
-    v5 = v3;
+    v5 = peerPaymentPassUniqueID;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v4];
 
     objc_destroyWeak(&v6);
@@ -6824,12 +6824,12 @@ void __61__PKPassGroupsViewController_presentPeerPaymentSendOrRequest__block_inv
   }
 }
 
-- (void)presentPeerPaymentDeviceTapWithInitialAmount:(id)a3 initialMemo:(id)a4
+- (void)presentPeerPaymentDeviceTapWithInitialAmount:(id)amount initialMemo:(id)memo
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
-  if (v8 && !self->_inFailForward)
+  amountCopy = amount;
+  memoCopy = memo;
+  peerPaymentPassUniqueID = [(PKPassLibraryDataProvider *)self->_passLibraryDataProvider peerPaymentPassUniqueID];
+  if (peerPaymentPassUniqueID && !self->_inFailForward)
   {
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -6837,9 +6837,9 @@ void __61__PKPassGroupsViewController_presentPeerPaymentSendOrRequest__block_inv
     v9[2] = __87__PKPassGroupsViewController_presentPeerPaymentDeviceTapWithInitialAmount_initialMemo___block_invoke;
     v9[3] = &unk_1E8020030;
     objc_copyWeak(&v13, &location);
-    v10 = v8;
-    v11 = v6;
-    v12 = v7;
+    v10 = peerPaymentPassUniqueID;
+    v11 = amountCopy;
+    v12 = memoCopy;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v10 animated:1 completionHandler:v9];
 
     objc_destroyWeak(&v13);
@@ -6884,12 +6884,12 @@ void __87__PKPassGroupsViewController_presentPeerPaymentDeviceTapWithInitialAmou
   }
 }
 
-- (void)presentAccountServiceSchedulePayment:(id)a3 billPayAmountType:(int64_t)a4 billPayAmount:(id)a5 completion:(id)a6
+- (void)presentAccountServiceSchedulePayment:(id)payment billPayAmountType:(int64_t)type billPayAmount:(id)amount completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  paymentCopy = payment;
+  amountCopy = amount;
+  completionCopy = completion;
+  if (paymentCopy)
   {
     objc_initWeak(&location, self);
     v13 = objc_alloc_init(PKPassPresentationContext);
@@ -6899,11 +6899,11 @@ void __87__PKPassGroupsViewController_presentPeerPaymentDeviceTapWithInitialAmou
     v14[2] = __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_billPayAmountType_billPayAmount_completion___block_invoke;
     v14[3] = &unk_1E8024A20;
     objc_copyWeak(v19, &location);
-    v15 = v10;
-    v16 = self;
-    v19[1] = a4;
-    v17 = v11;
-    v18 = v12;
+    v15 = paymentCopy;
+    selfCopy = self;
+    v19[1] = type;
+    v17 = amountCopy;
+    v18 = completionCopy;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v15 context:v13 animated:1 completionHandler:v14];
 
     objc_destroyWeak(v19);
@@ -7089,19 +7089,19 @@ void __110__PKPassGroupsViewController_presentAccountServiceSchedulePayment_bill
   [*(a1[4] + 1368) presentFlowForAccountResolution:1 configuration:v5 completion:a1[7]];
 }
 
-- (void)presentActionViewControllerWithUniqueID:(id)a3 actionType:(unint64_t)a4
+- (void)presentActionViewControllerWithUniqueID:(id)d actionType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_actionType___block_invoke;
     v8[3] = &unk_1E8024A48;
-    v10 = self;
-    v11 = a4;
-    v9 = v6;
+    selfCopy = self;
+    typeCopy = type;
+    v9 = dCopy;
     [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 animated:1 completionHandler:v8];
   }
 }
@@ -7250,24 +7250,24 @@ void __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_ac
   }
 }
 
-- (void)presentAuxiliaryPassInformationItemDetailForItemIdentifier:(id)a3 informationIdentifier:(id)a4 forPassUniqueID:(id)a5 completion:(id)a6
+- (void)presentAuxiliaryPassInformationItemDetailForItemIdentifier:(id)identifier informationIdentifier:(id)informationIdentifier forPassUniqueID:(id)d completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && v12)
+  identifierCopy = identifier;
+  informationIdentifierCopy = informationIdentifier;
+  dCopy = d;
+  completionCopy = completion;
+  if (identifierCopy && dCopy)
   {
     v14 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138478339;
-      v20 = v10;
+      v20 = identifierCopy;
       v21 = 2113;
-      v22 = v11;
+      v22 = informationIdentifierCopy;
       v23 = 2114;
-      v24 = v12;
+      v24 = dCopy;
       _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController: Presenting auxiliaryPassInformationItem with identifier %{private}@ in info %{private}@ for pass %{public}@", buf, 0x20u);
     }
 
@@ -7275,11 +7275,11 @@ void __81__PKPassGroupsViewController_presentActionViewControllerWithUniqueID_ac
     v15[1] = 3221225472;
     v15[2] = __138__PKPassGroupsViewController_presentAuxiliaryPassInformationItemDetailForItemIdentifier_informationIdentifier_forPassUniqueID_completion___block_invoke;
     v15[3] = &unk_1E801D980;
-    v18 = v13;
+    v18 = completionCopy;
     v15[4] = self;
-    v16 = v10;
-    v17 = v11;
-    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 animated:1 completionHandler:v15];
+    v16 = identifierCopy;
+    v17 = informationIdentifierCopy;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:dCopy animated:1 completionHandler:v15];
   }
 }
 
@@ -7340,19 +7340,19 @@ uint64_t __138__PKPassGroupsViewController_presentAuxiliaryPassInformationItemDe
   return result;
 }
 
-- (void)presentPassForFeatureIdentifier:(unint64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentPassForFeatureIdentifier:(unint64_t)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a5;
-  v9 = [MEMORY[0x1E69B8400] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke;
   v11[3] = &unk_1E8024A70;
-  v13 = a4;
+  animatedCopy = animated;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v9 defaultAccountForFeature:a3 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [mEMORY[0x1E69B8400] defaultAccountForFeature:identifier completion:v11];
 }
 
 void __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animated_completion___block_invoke(uint64_t a1, void *a2)
@@ -7424,14 +7424,14 @@ uint64_t __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animat
   return result;
 }
 
-- (void)presentAccountFeature:(unint64_t)a3 animated:(BOOL)a4 destination:(unint64_t)a5 fundingSourceIdentifier:(id)a6 completion:(id)a7
+- (void)presentAccountFeature:(unint64_t)feature animated:(BOOL)animated destination:(unint64_t)destination fundingSourceIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a6;
-  v13 = a7;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v14 setPresentationSource:5];
   v15 = objc_alloc_init(PKAccountViewInterfaceConfiguration);
-  [(PKAccountViewInterfaceConfiguration *)v15 setDestination:a5];
+  [(PKAccountViewInterfaceConfiguration *)v15 setDestination:destination];
   [(PKAccountViewInterfaceConfiguration *)v15 setViewStyle:0];
   objc_initWeak(location, self);
   v16 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -7440,31 +7440,31 @@ uint64_t __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animat
   v35[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke;
   v35[3] = &unk_1E8024AE8;
   v35[4] = self;
-  v38 = a4;
+  animatedCopy = animated;
   objc_copyWeak(&v37, location);
-  v17 = v13;
+  v17 = completionCopy;
   v36 = v17;
   [v16 addOperation:v35];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_4;
   v32[3] = &unk_1E8024B10;
-  v34 = a3;
+  featureCopy = feature;
   v18 = v15;
   v33 = v18;
   [v16 addOperation:v32];
-  if (a5 == 12)
+  if (destination == 12)
   {
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_6;
     v29[3] = &unk_1E80145B0;
-    v30 = v12;
+    v30 = identifierCopy;
     v31 = v18;
     [v16 addOperation:v29];
   }
 
-  v19 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __108__PKPassGroupsViewController_presentAccountFeature_animated_destination_fundingSourceIdentifier_completion___block_invoke_8;
@@ -7476,7 +7476,7 @@ uint64_t __82__PKPassGroupsViewController_presentPassForFeatureIdentifier_animat
   v25 = v21;
   v22 = v14;
   v26 = v22;
-  v23 = [v16 evaluateWithInput:v19 completion:v24];
+  v23 = [v16 evaluateWithInput:null completion:v24];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&v37);
@@ -7678,19 +7678,19 @@ uint64_t __108__PKPassGroupsViewController_presentAccountFeature_animated_destin
   return result;
 }
 
-- (void)presentAppleBalanceAddMoneyAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAppleBalanceAddMoneyAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__PKPassGroupsViewController_presentAppleBalanceAddMoneyAnimated_completion___block_invoke;
   v8[3] = &unk_1E8024B88;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = completionCopy;
   v9 = v7;
-  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:v4 completion:v8];
+  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:animatedCopy completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -7744,19 +7744,19 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)presentAppleBalanceAddMoneyInStoreTopUpAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAppleBalanceAddMoneyInStoreTopUpAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__PKPassGroupsViewController_presentAppleBalanceAddMoneyInStoreTopUpAnimated_completion___block_invoke;
   v8[3] = &unk_1E8024B88;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = completionCopy;
   v9 = v7;
-  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:v4 completion:v8];
+  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:animatedCopy completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -7810,19 +7810,19 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)presentAppleBalanceAddMoneyDirectTopUpAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAppleBalanceAddMoneyDirectTopUpAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__PKPassGroupsViewController_presentAppleBalanceAddMoneyDirectTopUpAnimated_completion___block_invoke;
   v8[3] = &unk_1E8024B88;
   objc_copyWeak(&v10, &location);
-  v7 = v6;
+  v7 = completionCopy;
   v9 = v7;
-  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:v4 completion:v8];
+  [(PKPassGroupsViewController *)self presentPassForFeatureIdentifier:4 animated:animatedCopy completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -7876,27 +7876,27 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)presentPassWithAssociatedAccountIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentPassWithAssociatedAccountIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (identifierCopy)
   {
-    v11 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdentifier_animated_completion___block_invoke;
     v12[3] = &unk_1E8024A70;
     v12[4] = self;
-    v14 = a4;
+    animatedCopy = animated;
     v13 = v10;
-    [v11 accountWithIdentifier:v8 completion:v12];
+    [mEMORY[0x1E69B8400] accountWithIdentifier:identifierCopy completion:v12];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -7969,21 +7969,21 @@ uint64_t __93__PKPassGroupsViewController_presentPassWithAssociatedAccountIdenti
   return result;
 }
 
-- (void)presentPassDetailsAssociatedWithVirtualCardID:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentPassDetailsAssociatedWithVirtualCardID:(id)d animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x1E69B8400];
-  v10 = a3;
-  v11 = [v9 sharedInstance];
+  dCopy = d;
+  sharedInstance = [v9 sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke;
   v13[3] = &unk_1E8024A70;
-  v15 = a4;
+  animatedCopy = animated;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [v11 accountWithVirtualCardIdentifier:v10 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [sharedInstance accountWithVirtualCardIdentifier:dCopy completion:v13];
 }
 
 void __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtualCardID_animated_completion___block_invoke(uint64_t a1, void *a2)
@@ -8066,24 +8066,24 @@ uint64_t __96__PKPassGroupsViewController_presentPassDetailsAssociatedWithVirtua
   return result;
 }
 
-- (void)presentSpendingSummaryForPassUniqueIdentifier:(id)a3 type:(unint64_t)a4 categorization:(unint64_t)a5 unit:(unint64_t)a6 animated:(BOOL)a7 completion:(id)a8
+- (void)presentSpendingSummaryForPassUniqueIdentifier:(id)identifier type:(unint64_t)type categorization:(unint64_t)categorization unit:(unint64_t)unit animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a7;
-  v14 = a8;
-  v15 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v16 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v16 setLimitServerLoad:1];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueIdentifier_type_categorization_unit_animated_completion___block_invoke;
   v18[3] = &unk_1E8024BB0;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
+  typeCopy = type;
+  categorizationCopy = categorization;
+  unitCopy = unit;
   v18[4] = self;
-  v19 = v14;
-  v17 = v14;
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v15 context:v16 animated:v8 completionHandler:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifierCopy context:v16 animated:animatedCopy completionHandler:v18];
 }
 
 void __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueIdentifier_type_categorization_unit_animated_completion___block_invoke(uint64_t a1, char a2)
@@ -8138,11 +8138,11 @@ uint64_t __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueId
   return result;
 }
 
-- (void)presentBalanceDetailsForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentBalanceDetailsForPassUniqueIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v10 setLimitServerLoad:1];
   v12[0] = MEMORY[0x1E69E9820];
@@ -8150,9 +8150,9 @@ uint64_t __121__PKPassGroupsViewController_presentSpendingSummaryForPassUniqueId
   v12[2] = __95__PKPassGroupsViewController_presentBalanceDetailsForPassUniqueIdentifier_animated_completion___block_invoke;
   v12[3] = &unk_1E80158C0;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 context:v10 animated:v5 completionHandler:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifierCopy context:v10 animated:animatedCopy completionHandler:v12];
 }
 
 void __95__PKPassGroupsViewController_presentBalanceDetailsForPassUniqueIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
@@ -8204,30 +8204,30 @@ uint64_t __95__PKPassGroupsViewController_presentBalanceDetailsForPassUniqueIden
   return result;
 }
 
-- (void)showStatementForIdentifier:(id)a3 passUniqueIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)showStatementForIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier animated:(BOOL)animated completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  completionCopy = completion;
   v13 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v13 setLimitServerLoad:1];
   objc_initWeak(&location, self);
-  v14 = [MEMORY[0x1E69B8400] sharedInstance];
+  mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueIdentifier_animated_completion___block_invoke;
   v19[3] = &unk_1E8024C78;
-  v15 = v12;
+  v15 = completionCopy;
   v23 = v15;
-  v16 = v10;
+  v16 = identifierCopy;
   v20 = v16;
   objc_copyWeak(&v24, &location);
-  v17 = v11;
+  v17 = uniqueIdentifierCopy;
   v21 = v17;
   v18 = v13;
   v22 = v18;
-  v25 = a5;
-  [v14 accountForPassWithUniqueID:v17 completion:v19];
+  animatedCopy = animated;
+  [mEMORY[0x1E69B8400] accountForPassWithUniqueID:v17 completion:v19];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -8441,15 +8441,15 @@ uint64_t __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueI
   return result;
 }
 
-- (void)presentDailyCashForPassUniqueIdentifier:(id)a3 dateComponents:(id)a4 redemptionType:(unint64_t)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)presentDailyCashForPassUniqueIdentifier:(id)identifier dateComponents:(id)components redemptionType:(unint64_t)type animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (a5 >= 3)
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  componentsCopy = components;
+  completionCopy = completion;
+  if (type >= 3)
   {
-    if (a5 == 3)
+    if (type == 3)
     {
       objc_initWeak(&location, self);
       v16[0] = MEMORY[0x1E69E9820];
@@ -8458,8 +8458,8 @@ uint64_t __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueI
       v16[3] = &unk_1E8024CF0;
       v16[4] = self;
       objc_copyWeak(v19, &location);
-      v18 = v14;
-      v17 = v13;
+      v18 = completionCopy;
+      v17 = componentsCopy;
       v19[1] = 3;
       dispatch_async(MEMORY[0x1E69E96A0], v16);
 
@@ -8477,10 +8477,10 @@ uint64_t __98__PKPassGroupsViewController_showStatementForIdentifier_passUniqueI
     v21[2] = __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifier_dateComponents_redemptionType_animated_completion___block_invoke;
     v21[3] = &unk_1E8024CA0;
     v21[4] = self;
-    v22 = v13;
-    v24 = a5;
-    v23 = v14;
-    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v15 animated:v8 completionHandler:v21];
+    v22 = componentsCopy;
+    typeCopy = type;
+    v23 = completionCopy;
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifierCopy context:v15 animated:animatedCopy completionHandler:v21];
   }
 }
 
@@ -8603,11 +8603,11 @@ uint64_t __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifi
   return result;
 }
 
-- (void)presentRewardsHubForPassUniqueIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentRewardsHubForPassUniqueIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v10 setLimitServerLoad:1];
   v12[0] = MEMORY[0x1E69E9820];
@@ -8615,9 +8615,9 @@ uint64_t __120__PKPassGroupsViewController_presentDailyCashForPassUniqueIdentifi
   v12[2] = __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifier_animated_completion___block_invoke;
   v12[3] = &unk_1E80158C0;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 context:v10 animated:v5 completionHandler:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifierCopy context:v10 animated:animatedCopy completionHandler:v12];
 }
 
 void __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
@@ -8669,12 +8669,12 @@ uint64_t __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifi
   return result;
 }
 
-- (void)presentAccountPromotionForPassUniqueIdentifier:(id)a3 programIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentAccountPromotionForPassUniqueIdentifier:(id)identifier programIdentifier:(id)programIdentifier animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  animatedCopy = animated;
+  programIdentifierCopy = programIdentifier;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v13 setLimitServerLoad:1];
   v16[0] = MEMORY[0x1E69E9820];
@@ -8682,11 +8682,11 @@ uint64_t __91__PKPassGroupsViewController_presentRewardsHubForPassUniqueIdentifi
   v16[2] = __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueIdentifier_programIdentifier_animated_completion___block_invoke;
   v16[3] = &unk_1E8019A98;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v14 = v11;
-  v15 = v10;
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v13 animated:v7 completionHandler:v16];
+  v17 = programIdentifierCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = programIdentifierCopy;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifierCopy context:v13 animated:animatedCopy completionHandler:v16];
 }
 
 void __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueIdentifier_programIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
@@ -8739,12 +8739,12 @@ uint64_t __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueI
   return result;
 }
 
-- (void)presentRewardsHubMerchantsForPassUniqueIdentifier:(id)a3 privateIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentRewardsHubMerchantsForPassUniqueIdentifier:(id)identifier privateIdentifier:(id)privateIdentifier animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  animatedCopy = animated;
+  privateIdentifierCopy = privateIdentifier;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v13 setLimitServerLoad:1];
   v16[0] = MEMORY[0x1E69E9820];
@@ -8752,11 +8752,11 @@ uint64_t __115__PKPassGroupsViewController_presentAccountPromotionForPassUniqueI
   v16[2] = __118__PKPassGroupsViewController_presentRewardsHubMerchantsForPassUniqueIdentifier_privateIdentifier_animated_completion___block_invoke;
   v16[3] = &unk_1E8019A98;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v14 = v11;
-  v15 = v10;
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v12 context:v13 animated:v7 completionHandler:v16];
+  v17 = privateIdentifierCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = privateIdentifierCopy;
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifierCopy context:v13 animated:animatedCopy completionHandler:v16];
 }
 
 void __118__PKPassGroupsViewController_presentRewardsHubMerchantsForPassUniqueIdentifier_privateIdentifier_animated_completion___block_invoke(uint64_t a1, char a2)
@@ -8809,23 +8809,23 @@ uint64_t __118__PKPassGroupsViewController_presentRewardsHubMerchantsForPassUniq
   return result;
 }
 
-- (int64_t)_cardSizeTypeForArticleLayouts:(id)a3
+- (int64_t)_cardSizeTypeForArticleLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   if ([(PKDiscoveryDataSource *)self->_discoveryDataSource isMiniCardsAllowed])
   {
-    if (v4)
+    if (layoutsCopy)
     {
-      v5 = v4;
+      articleLayouts = layoutsCopy;
     }
 
     else
     {
-      v5 = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
+      articleLayouts = [(PKDiscoveryDataSource *)self->_discoveryDataSource articleLayouts];
     }
 
-    v7 = v5;
-    v8 = [v5 pk_containsObjectPassingTest:&__block_literal_global_271_0];
+    v7 = articleLayouts;
+    v8 = [articleLayouts pk_containsObjectPassingTest:&__block_literal_global_271_0];
     v6 = (PKDiscoveryForceIgnoreCEOCards() & 1) != 0 || (v8 & 1) == 0 && ![(PKPassGroupStackView *)self->_groupStackView discoveryGalleryHasWelcomeCards];
   }
 
@@ -8853,15 +8853,15 @@ uint64_t __61__PKPassGroupsViewController__cardSizeTypeForArticleLayouts___block
   return v3;
 }
 
-- (void)presentDiscoveryArticleForItemWithIdentifier:(id)a3 referrerIdentifier:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)presentDiscoveryArticleForItemWithIdentifier:(id)identifier referrerIdentifier:(id)referrerIdentifier animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
+  animatedCopy = animated;
   v36[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  completionCopy = completion;
   discoveryDataSource = self->_discoveryDataSource;
-  v13 = a4;
-  v14 = [(PKDiscoveryDataSource *)discoveryDataSource cachedDiscoveryArticleLayoutForItemWithIdentifier:v10];
+  referrerIdentifierCopy = referrerIdentifier;
+  v14 = [(PKDiscoveryDataSource *)discoveryDataSource cachedDiscoveryArticleLayoutForItemWithIdentifier:identifierCopy];
   v15 = v14;
   v16 = v14 == 0;
   if (v14)
@@ -8876,7 +8876,7 @@ uint64_t __61__PKPassGroupsViewController__cardSizeTypeForArticleLayouts___block
     v18 = 2;
   }
 
-  v19 = [[PKDiscoveryArticleViewController alloc] initWithArticleLayout:v15 referrerIdentifier:v13 cardSize:v18];
+  v19 = [[PKDiscoveryArticleViewController alloc] initWithArticleLayout:v15 referrerIdentifier:referrerIdentifierCopy cardSize:v18];
 
   v20 = [(PKDiscoveryArticleViewController *)v19 defaultZoomTransitionForDiscoveryCardView:0];
   v21 = [[PKNavigationController alloc] initWithRootViewController:v19];
@@ -8889,11 +8889,11 @@ uint64_t __61__PKPassGroupsViewController__cardSizeTypeForArticleLayouts___block
   v31[4] = self;
   v22 = v21;
   v32 = v22;
-  v34 = v7;
+  v34 = animatedCopy;
   v35 = v16;
-  v23 = v11;
+  v23 = completionCopy;
   v33 = v23;
-  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:4 animated:v7 performAction:v31];
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:4 animated:animatedCopy performAction:v31];
   if (!v15)
   {
     v24 = self->_discoveryDataSource;
@@ -8903,8 +8903,8 @@ uint64_t __61__PKPassGroupsViewController__cardSizeTypeForArticleLayouts___block
     v25[3] = &unk_1E8024D88;
     v25[4] = self;
     v26 = v19;
-    v30 = v7;
-    v27 = v10;
+    v30 = animatedCopy;
+    v27 = identifierCopy;
     v28 = v22;
     v29 = v23;
     [(PKDiscoveryDataSource *)v24 discoveryArticleLayoutForItemWithIdentifier:v27 completion:v25];
@@ -9034,27 +9034,27 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)presentSubcredentialPairingFlowIfPossibleWithConfig:(id)a3 animated:(BOOL)a4
+- (BOOL)presentSubcredentialPairingFlowIfPossibleWithConfig:(id)config animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E69B8EF8] sharedService];
-  v8 = [v7 targetDevice];
-  v9 = [v8 paymentWebService:v7 supportedRegionFeatureOfType:2];
+  configCopy = config;
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  targetDevice = [mEMORY[0x1E69B8EF8] targetDevice];
+  v9 = [targetDevice paymentWebService:mEMORY[0x1E69B8EF8] supportedRegionFeatureOfType:2];
 
   if (v9)
   {
-    v24 = self;
-    v25 = v6;
-    v23 = v4;
-    v10 = [v6 issuerIdentifier];
+    selfCopy = self;
+    v25 = configCopy;
+    v23 = animatedCopy;
+    issuerIdentifier = [configCopy issuerIdentifier];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [v9 supportedTerminals];
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    supportedTerminals = [v9 supportedTerminals];
+    v12 = [supportedTerminals countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v12)
     {
       v13 = v12;
@@ -9065,12 +9065,12 @@ LABEL_4:
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(supportedTerminals);
         }
 
         v16 = *(*(&v26 + 1) + 8 * v15);
-        v17 = [v16 partnerIdentifier];
-        v18 = [v17 isEqualToString:v10];
+        partnerIdentifier = [v16 partnerIdentifier];
+        v18 = [partnerIdentifier isEqualToString:issuerIdentifier];
 
         if (v18)
         {
@@ -9079,7 +9079,7 @@ LABEL_4:
 
         if (v13 == ++v15)
         {
-          v13 = [v11 countByEnumeratingWithState:&v26 objects:v32 count:16];
+          v13 = [supportedTerminals countByEnumeratingWithState:&v26 objects:v32 count:16];
           if (v13)
           {
             goto LABEL_4;
@@ -9096,10 +9096,10 @@ LABEL_4:
         goto LABEL_14;
       }
 
-      v6 = v25;
-      if ([(PKPassLibraryDataProvider *)v24->_passLibraryDataProvider canAddSecureElementPassWithConfiguration:v25])
+      configCopy = v25;
+      if ([(PKPassLibraryDataProvider *)selfCopy->_passLibraryDataProvider canAddSecureElementPassWithConfiguration:v25])
       {
-        [(PKPassGroupsViewController *)v24 _presentSubcredentialPairingFlowWithConfig:v25 animated:v23];
+        [(PKPassGroupsViewController *)selfCopy _presentSubcredentialPairingFlowWithConfig:v25 animated:v23];
         v20 = 1;
         goto LABEL_23;
       }
@@ -9119,11 +9119,11 @@ LABEL_10:
 
 LABEL_14:
       v19 = PKLogFacilityTypeGetObject();
-      v6 = v25;
+      configCopy = v25;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v31 = v10;
+        v31 = issuerIdentifier;
         _os_log_impl(&dword_1BD026000, v19, OS_LOG_TYPE_DEFAULT, "Subcredential pairing flow not supported with issuer: %@", buf, 0xCu);
       }
     }
@@ -9134,11 +9134,11 @@ LABEL_23:
 
   else
   {
-    v10 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    issuerIdentifier = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(issuerIdentifier, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "Subcredential pairing flow not supported in region!", buf, 2u);
+      _os_log_impl(&dword_1BD026000, issuerIdentifier, OS_LOG_TYPE_DEFAULT, "Subcredential pairing flow not supported in region!", buf, 2u);
     }
 
     v20 = 0;
@@ -9147,17 +9147,17 @@ LABEL_23:
   return v20;
 }
 
-- (void)_presentSubcredentialPairingFlowWithConfig:(id)a3 animated:(BOOL)a4
+- (void)_presentSubcredentialPairingFlowWithConfig:(id)config animated:(BOOL)animated
 {
-  v6 = a3;
+  configCopy = config;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig_animated___block_invoke;
   v8[3] = &unk_1E8013D60;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = configCopy;
+  animatedCopy = animated;
+  v7 = configCopy;
   [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v8];
 }
 
@@ -9212,18 +9212,18 @@ void __82__PKPassGroupsViewController__presentSubcredentialPairingFlowWithConfig
   }
 }
 
-- (void)presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString:(id)a3 passThumbnailImageData:(id)a4 animated:(BOOL)a5
+- (void)presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString:(id)string passThumbnailImageData:(id)data animated:(BOOL)animated
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  dataCopy = data;
   v9 = MEMORY[0x1E69B8EF8];
-  v10 = a3;
-  v11 = [v9 sharedService];
-  v12 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v11];
-  v13 = [v10 pk_decodeHexadecimal];
+  stringCopy = string;
+  sharedService = [v9 sharedService];
+  v12 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:sharedService];
+  pk_decodeHexadecimal = [stringCopy pk_decodeHexadecimal];
 
   v39 = 0;
-  v14 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v13 error:&v39];
+  v14 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:pk_decodeHexadecimal error:&v39];
   v15 = v39;
   if (v14)
   {
@@ -9260,7 +9260,7 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v30 = a5;
+  animatedCopy = animated;
   v19 = MEMORY[0x1E695DFD8];
   v20 = objc_opt_class();
   v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
@@ -9298,16 +9298,16 @@ LABEL_12:
   v36[1] = 3221225472;
   v36[2] = __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString_passThumbnailImageData_animated___block_invoke;
   v36[3] = &unk_1E8024DB0;
-  v37 = v8;
+  v37 = dataCopy;
   v24 = [v18 pk_arrayByApplyingBlock:v36];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedProvisioningTargetsHexEncodedString_passThumbnailImageData_animated___block_invoke_2;
   v31[3] = &unk_1E8024DD8;
   v32 = v12;
-  v33 = self;
+  selfCopy = self;
   v34 = v24;
-  v35 = v30;
+  v35 = animatedCopy;
   v25 = v24;
   [v32 validatePreconditions:v31];
 
@@ -9395,11 +9395,11 @@ void __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedPr
   }
 }
 
-- (void)presentAddShareablePassConfiguration:(id)a3 animated:(BOOL)a4
+- (void)presentAddShareablePassConfiguration:(id)configuration animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E69B8EF8] sharedService];
-  v8 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v7];
+  configurationCopy = configuration;
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v8 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:mEMORY[0x1E69B8EF8]];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -9408,10 +9408,10 @@ void __137__PKPassGroupsViewController_presentShareableCredentialWithEncryptedPr
   objc_copyWeak(&v15, &location);
   v9 = v8;
   v12 = v9;
-  v13 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = configurationCopy;
   v14 = v10;
-  v16 = a4;
+  animatedCopy = animated;
   [v9 validatePreconditionsAndRegister:v11];
 
   objc_destroyWeak(&v15);
@@ -9461,12 +9461,12 @@ void __76__PKPassGroupsViewController_presentAddShareablePassConfiguration_anima
   }
 }
 
-- (void)presentShareInvitationWithMailboxAddress:(id)a3 referralSource:(id)a4 animated:(BOOL)a5
+- (void)presentShareInvitationWithMailboxAddress:(id)address referralSource:(id)source animated:(BOOL)animated
 {
-  v6 = a3;
-  v9 = a4;
-  v7 = v6;
-  v8 = v9;
+  addressCopy = address;
+  sourceCopy = source;
+  v7 = addressCopy;
+  v8 = sourceCopy;
   PKSharingFetchInvitationFromMailboxAddress();
 }
 
@@ -9489,25 +9489,25 @@ void __95__PKPassGroupsViewController_presentShareInvitationWithMailboxAddress_r
   }
 }
 
-- (void)_presentShareRedemptionFlowWithInvitation:(id)a3 handle:(id)a4 referralSource:(id)a5 originalShareURL:(id)a6
+- (void)_presentShareRedemptionFlowWithInvitation:(id)invitation handle:(id)handle referralSource:(id)source originalShareURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitationCopy = invitation;
+  handleCopy = handle;
+  sourceCopy = source;
+  lCopy = l;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation_handle_referralSource_originalShareURL___block_invoke;
   v18[3] = &unk_1E8011E38;
   v18[4] = self;
-  v19 = v11;
-  v20 = v10;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v10;
-  v17 = v11;
+  v19 = handleCopy;
+  v20 = invitationCopy;
+  v21 = sourceCopy;
+  v22 = lCopy;
+  v14 = lCopy;
+  v15 = sourceCopy;
+  v16 = invitationCopy;
+  v17 = handleCopy;
   [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v18];
 }
 
@@ -9574,19 +9574,19 @@ void __111__PKPassGroupsViewController__presentShareRedemptionFlowWithInvitation
   }
 }
 
-- (void)presentShareDetailsForPassUniqueIdentifier:(id)a3 shareIdentifier:(id)a4
+- (void)presentShareDetailsForPassUniqueIdentifier:(id)identifier shareIdentifier:(id)shareIdentifier
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  shareIdentifierCopy = shareIdentifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier_shareIdentifier___block_invoke;
   v10[3] = &unk_1E8012798;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = shareIdentifierCopy;
+  v8 = shareIdentifierCopy;
+  v9 = identifierCopy;
   [(PKPassGroupsViewController *)self presentPassWithUniqueID:v9 animated:1 completionHandler:v10];
 }
 
@@ -9654,16 +9654,16 @@ void __89__PKPassGroupsViewController_presentShareDetailsForPassUniqueIdentifier
   }
 }
 
-- (void)presentEntitlementDetailsForPassUniqueIdentifier:(id)a3
+- (void)presentEntitlementDetailsForPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __79__PKPassGroupsViewController_presentEntitlementDetailsForPassUniqueIdentifier___block_invoke;
   v6[3] = &unk_1E8012FD0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 animated:1 completionHandler:v6];
 }
 
@@ -9706,16 +9706,16 @@ void __79__PKPassGroupsViewController_presentEntitlementDetailsForPassUniqueIden
   [v7 presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)presentShareActivationWithShareIdentifier:(id)a3
+- (void)presentShareActivationWithShareIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v6];
 }
 
@@ -9766,19 +9766,19 @@ void __72__PKPassGroupsViewController_presentShareActivationWithShareIdentifier_
   }
 }
 
-- (void)presentProvisioningForPendingProvisioningOfType:(id)a3 identifier:(id)a4
+- (void)presentProvisioningForPendingProvisioningOfType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningOfType_identifier___block_invoke;
   v10[3] = &unk_1E8010A88;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = typeCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = typeCopy;
   [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v10];
 }
 
@@ -9890,22 +9890,22 @@ void __89__PKPassGroupsViewController_presentProvisioningForPendingProvisioningO
   }
 }
 
-- (void)presentPeerPaymentPassAnimated:(BOOL)a3 campaignAttributionReferrerIdentifier:(id)a4 completion:(id)a5
+- (void)presentPeerPaymentPassAnimated:(BOOL)animated campaignAttributionReferrerIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69B9000] sharedInstance];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke;
   v13[3] = &unk_1E8024EF0;
-  v14 = v8;
-  v15 = self;
-  v17 = a3;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
-  [v10 accountWithCompletion:v13];
+  v14 = identifierCopy;
+  selfCopy = self;
+  animatedCopy = animated;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  [mEMORY[0x1E69B9000] accountWithCompletion:v13];
 }
 
 void __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campaignAttributionReferrerIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -9966,20 +9966,20 @@ uint64_t __110__PKPassGroupsViewController_presentPeerPaymentPassAnimated_campai
   return result;
 }
 
-- (void)presentSecurePassSessionWithIssuerData:(id)a3 withSignature:(id)a4 animated:(BOOL)a5
+- (void)presentSecurePassSessionWithIssuerData:(id)data withSignature:(id)signature animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  signatureCopy = signature;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__PKPassGroupsViewController_presentSecurePassSessionWithIssuerData_withSignature_animated___block_invoke;
   v12[3] = &unk_1E80170D8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a5;
-  v10 = v9;
-  v11 = v8;
+  v13 = dataCopy;
+  v14 = signatureCopy;
+  animatedCopy = animated;
+  v10 = signatureCopy;
+  v11 = dataCopy;
   [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v12];
 }
 
@@ -10014,17 +10014,17 @@ void __92__PKPassGroupsViewController_presentSecurePassSessionWithIssuerData_wit
   }
 }
 
-- (void)presentApplicationWithIdentifier:(id)a3
+- (void)presentApplicationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   paymentService = self->_paymentService;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_invoke;
   v7[3] = &unk_1E801ABD0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   [(PKPaymentService *)paymentService featureApplicationsForProvisioningWithCompletion:v7];
 }
 
@@ -10148,14 +10148,14 @@ void __63__PKPassGroupsViewController_presentApplicationWithIdentifier___block_i
   }
 }
 
-- (void)presentPrecursorPassUpdateForPassUniqueIdentifier:(id)a3
+- (void)presentPrecursorPassUpdateForPassUniqueIdentifier:(id)identifier
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __80__PKPassGroupsViewController_presentPrecursorPassUpdateForPassUniqueIdentifier___block_invoke;
   v3[3] = &unk_1E8011D28;
   v3[4] = self;
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:a3 animated:1 completionHandler:v3];
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:identifier animated:1 completionHandler:v3];
 }
 
 void __80__PKPassGroupsViewController_presentPrecursorPassUpdateForPassUniqueIdentifier___block_invoke(uint64_t a1, char a2)
@@ -10179,16 +10179,16 @@ void __80__PKPassGroupsViewController_presentPrecursorPassUpdateForPassUniqueIde
   }
 }
 
-- (void)presentApplePayUserEducationDemoFromSource:(unint64_t)a3
+- (void)presentApplePayUserEducationDemoFromSource:(unint64_t)source
 {
-  v5 = 4 * (a3 == 4);
+  v5 = 4 * (source == 4);
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource___block_invoke;
   v6[3] = &unk_1E801E5C8;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = source;
   [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:v5 animated:1 performAction:v6];
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -10228,17 +10228,17 @@ void __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource
   }
 }
 
-- (void)presentHowToUseWalletWithCardLotIdentifier:(id)a3
+- (void)presentHowToUseWalletWithCardLotIdentifier:(id)identifier
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (PKEvergreenEducationEnabled())
   {
-    v5 = [MEMORY[0x1E69B8908] sharedInstance];
-    v6 = [v5 latestHowToUseWalletModel];
-    if ([v4 length])
+    mEMORY[0x1E69B8908] = [MEMORY[0x1E69B8908] sharedInstance];
+    latestHowToUseWalletModel = [mEMORY[0x1E69B8908] latestHowToUseWalletModel];
+    if ([identifierCopy length])
     {
-      v7 = [v5 latestCardForLotIdentifier:v4];
+      v7 = [mEMORY[0x1E69B8908] latestCardForLotIdentifier:identifierCopy];
       v8 = v7;
       if (v7)
       {
@@ -10248,7 +10248,7 @@ void __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource
         v27[3] = &unk_1E8024F18;
         v9 = v7;
         v28 = v9;
-        if ([v6 containsCardPassingTest:v27])
+        if ([latestHowToUseWalletModel containsCardPassingTest:v27])
         {
           objc_initWeak(location, self);
           v23[0] = MEMORY[0x1E69E9820];
@@ -10256,7 +10256,7 @@ void __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource
           v23[2] = __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_2;
           v23[3] = &unk_1E8011828;
           objc_copyWeak(&v26, location);
-          v24 = v6;
+          v24 = latestHowToUseWalletModel;
           v25 = v9;
           [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v23];
 
@@ -10267,8 +10267,8 @@ void __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource
         else
         {
           v11 = [PKDiscoveryArticleViewController alloc];
-          v12 = [v9 article];
-          v13 = [(PKDiscoveryArticleViewController *)v11 initWithArticleLayout:v12 referrerIdentifier:0 cardSize:[v9 cardSizeType]];
+          article = [v9 article];
+          v13 = [(PKDiscoveryArticleViewController *)v11 initWithArticleLayout:article referrerIdentifier:0 cardSize:[v9 cardSizeType]];
 
           v14 = [(PKDiscoveryArticleViewController *)v13 defaultZoomTransitionForDiscoveryCardView:0];
           v15 = [[PKNavigationController alloc] initWithRootViewController:v13];
@@ -10297,7 +10297,7 @@ void __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(location[0]) = 138412290;
-          *(location + 4) = v4;
+          *(location + 4) = identifierCopy;
           _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "No card found for lot identifier '%@'", location, 0xCu);
         }
       }
@@ -10311,7 +10311,7 @@ void __73__PKPassGroupsViewController_presentApplePayUserEducationDemoFromSource
       v17[2] = __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier___block_invoke_338;
       v17[3] = &unk_1E80110E0;
       objc_copyWeak(&v19, location);
-      v18 = v6;
+      v18 = latestHowToUseWalletModel;
       [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v17];
 
       objc_destroyWeak(&v19);
@@ -10363,61 +10363,61 @@ void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier
   [WeakRetained _presentHowToUseWalletWithModel:*(a1 + 32) destinationCard:0];
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)peerPaymentAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(UIViewController *)self pkui_frontMostViewController];
-  [v8 presentViewController:v7 animated:v5 completion:0];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+  [pkui_frontMostViewController presentViewController:viewControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)peerPaymentAccountResolutionController:(id)a3 requestsDismissCurrentViewControllerAnimated:(BOOL)a4
+- (void)peerPaymentAccountResolutionController:(id)controller requestsDismissCurrentViewControllerAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(UIViewController *)self pkui_frontMostViewController];
-  [v6 dismissViewControllerAnimated:v4 completion:0];
+  animatedCopy = animated;
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+  [pkui_frontMostViewController dismissViewControllerAnimated:animatedCopy completion:0];
 
   peerPaymentAccountResolutionController = self->_peerPaymentAccountResolutionController;
   self->_peerPaymentAccountResolutionController = 0;
 }
 
-- (void)accountServiceAccountResolutionController:(id)a3 requestsPresentViewController:(id)a4 animated:(BOOL)a5
+- (void)accountServiceAccountResolutionController:(id)controller requestsPresentViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(UIViewController *)self pkui_frontMostViewController];
-  [v8 presentViewController:v7 animated:v5 completion:0];
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
+  [pkui_frontMostViewController presentViewController:viewControllerCopy animated:animatedCopy completion:0];
 }
 
-- (void)performActionViewControllerDidCancel:(id)a3
+- (void)performActionViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v4 = [v3 presentingViewController];
+  cancelCopy = cancel;
+  [cancelCopy setDelegate:0];
+  presentingViewController = [cancelCopy presentingViewController];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)performActionViewControllerDidPerformAction:(id)a3
+- (void)performActionViewControllerDidPerformAction:(id)action
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v4 = [v3 presentingViewController];
+  actionCopy = action;
+  [actionCopy setDelegate:0];
+  presentingViewController = [actionCopy presentingViewController];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)startPaymentPreflight:(id)a3 withPaymentSetupMode:(int64_t)a4 referrerIdentifier:(id)a5 referralSource:(id)a6 campaignIdentifier:(id)a7 paymentNetworks:(id)a8 transitNetworkIdentifiers:(id)a9 allowedFeatureIdentifiers:(id)a10 productIdentifiers:(id)a11 sectionIdentifier:(id)a12
+- (void)startPaymentPreflight:(id)preflight withPaymentSetupMode:(int64_t)mode referrerIdentifier:(id)identifier referralSource:(id)source campaignIdentifier:(id)campaignIdentifier paymentNetworks:(id)networks transitNetworkIdentifiers:(id)identifiers allowedFeatureIdentifiers:(id)self0 productIdentifiers:(id)self1 sectionIdentifier:(id)self2
 {
-  v17 = a3;
-  v47 = a5;
-  v18 = a6;
-  v45 = a7;
-  v19 = a8;
-  v20 = a9;
-  v50 = a10;
-  v51 = a11;
-  v49 = a12;
+  preflightCopy = preflight;
+  identifierCopy = identifier;
+  sourceCopy = source;
+  campaignIdentifierCopy = campaignIdentifier;
+  networksCopy = networks;
+  identifiersCopy = identifiers;
+  featureIdentifiersCopy = featureIdentifiers;
+  productIdentifiersCopy = productIdentifiers;
+  sectionIdentifierCopy = sectionIdentifier;
   PKTimeProfileBegin();
   v21 = PKLogFacilityTypeGetObject();
   v22 = os_signpost_id_make_with_pointer(v21, self);
@@ -10432,14 +10432,14 @@ void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier
   }
 
   objc_opt_class();
-  v24 = v17;
+  v24 = preflightCopy;
   if (objc_opt_isKindOfClass())
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke;
     aBlock[3] = &unk_1E8011D28;
-    v67 = v17;
+    v67 = preflightCopy;
     v25 = _Block_copy(aBlock);
     v26 = [v25 copy];
 
@@ -10451,56 +10451,56 @@ void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier
     v27 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [v27 startAnimating];
     v28 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v27];
-    v29 = [(UIBarButtonItemGroup *)self->_navigationItem.trailing.add.group barButtonItems];
+    barButtonItems = [(UIBarButtonItemGroup *)self->_navigationItem.trailing.add.group barButtonItems];
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = __231__PKPassGroupsViewController_startPaymentPreflight_withPaymentSetupMode_referrerIdentifier_referralSource_campaignIdentifier_paymentNetworks_transitNetworkIdentifiers_allowedFeatureIdentifiers_productIdentifiers_sectionIdentifier___block_invoke_2;
     v63[3] = &unk_1E8012798;
     v63[4] = self;
     v64 = v28;
-    v65 = v29;
-    v30 = v18;
-    v31 = v29;
+    v65 = barButtonItems;
+    v30 = sourceCopy;
+    v31 = barButtonItems;
     v32 = v28;
     v33 = _Block_copy(v63);
     v26 = [v33 copy];
 
-    v24 = v17;
-    v18 = v30;
+    v24 = preflightCopy;
+    sourceCopy = v30;
   }
 
-  v35 = v45;
-  v34 = v47;
+  v35 = campaignIdentifierCopy;
+  v34 = identifierCopy;
 
   if (([objc_opt_class() isPerformingAction] & 1) == 0)
   {
-    v36 = [(PKPassGroupsViewController *)self presentedViewController];
+    presentedViewController = [(PKPassGroupsViewController *)self presentedViewController];
 
-    if (!v36)
+    if (!presentedViewController)
     {
       v26[2](v26, 1);
       [objc_opt_class() beginTrackingAction];
-      v37 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v37 _setIdleTimerDisabled:1 forReason:@"SetupPayments"];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] _setIdleTimerDisabled:1 forReason:@"SetupPayments"];
 
-      v46 = [MEMORY[0x1E69B8EF8] sharedService];
-      v38 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v46];
-      [v38 setReferrerIdentifier:v47];
-      [v38 setAllowedFeatureIdentifiers:v50];
-      [v38 setAllowedProductIdentifiers:v51];
-      [v38 setSelectedSectionIdentifier:v49];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      v38 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:mEMORY[0x1E69B8EF8]];
+      [v38 setReferrerIdentifier:identifierCopy];
+      [v38 setAllowedFeatureIdentifiers:featureIdentifiersCopy];
+      [v38 setAllowedProductIdentifiers:productIdentifiersCopy];
+      [v38 setSelectedSectionIdentifier:sectionIdentifierCopy];
       [v38 setAllowProductsInUnsupportedRegion:1];
-      [v38 setReferralSource:v18];
+      [v38 setReferralSource:sourceCopy];
       [v38 setCampaignAttributionReferrerIdentifier:v35];
-      if (v19)
+      if (networksCopy)
       {
-        [v38 setAllowedPaymentNetworks:v19];
+        [v38 setAllowedPaymentNetworks:networksCopy];
       }
 
-      v48 = v18;
-      if (v20)
+      v48 = sourceCopy;
+      if (identifiersCopy)
       {
-        [v38 setRequiredTransitNetworkIdentifiers:v20];
+        [v38 setRequiredTransitNetworkIdentifiers:identifiersCopy];
       }
 
       v59[0] = MEMORY[0x1E69E9820];
@@ -10511,7 +10511,7 @@ void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier
       v61 = v26;
       v39 = v38;
       v60 = v39;
-      v62 = a4;
+      modeCopy = mode;
       v40 = _Block_copy(v59);
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
@@ -10519,14 +10519,14 @@ void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier
       v52[3] = &unk_1E8024F68;
       v41 = v39;
       v53 = v41;
-      v58 = a4;
-      v54 = v19;
-      v55 = v20;
-      v56 = v51;
+      modeCopy2 = mode;
+      v54 = networksCopy;
+      v55 = identifiersCopy;
+      v56 = productIdentifiersCopy;
       v57 = v40;
       v42 = v40;
       v43 = _Block_copy(v52);
-      if (a4 == 2)
+      if (mode == 2)
       {
         [v41 preflightWithRequirements:1007 completionRequirements:1007 completion:v43];
       }
@@ -10536,7 +10536,7 @@ void __73__PKPassGroupsViewController_presentHowToUseWalletWithCardLotIdentifier
         [v41 preflightWithCompletion:v43];
       }
 
-      v18 = v48;
+      sourceCopy = v48;
     }
   }
 }
@@ -10806,15 +10806,15 @@ LABEL_20:
 LABEL_17:
 }
 
-- (void)addVASPassWithIdentifier:(id)a3
+- (void)addVASPassWithIdentifier:(id)identifier
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E695DFF8];
   v6 = PKVASPassCacheDirectoryPath();
   v7 = [v5 fileURLWithPath:v6];
 
-  v8 = [v7 URLByAppendingPathComponent:v4 isDirectory:0];
+  v8 = [v7 URLByAppendingPathComponent:identifierCopy isDirectory:0];
 
   v9 = [v8 URLByAppendingPathExtension:*MEMORY[0x1E69BC390]];
 
@@ -10827,9 +10827,9 @@ LABEL_17:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 uniqueID];
+      uniqueID = [v10 uniqueID];
       *buf = 138412290;
-      v18 = v14;
+      v18 = uniqueID;
       _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "Add VAS pass with identifier: %@", buf, 0xCu);
     }
 
@@ -10841,32 +10841,32 @@ LABEL_17:
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v18 = v4;
+    v18 = identifierCopy;
     v19 = 2114;
     v20 = v11;
     _os_log_error_impl(&dword_1BD026000, v13, OS_LOG_TYPE_ERROR, "Failed to add VAS pass with identifier: %{public}@ %{public}@.", buf, 0x16u);
   }
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  [v15 removeItemAtURL:v9 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtURL:v9 error:0];
 }
 
-- (void)presentOrderManagementAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentOrderManagementAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__PKPassGroupsViewController_presentOrderManagementAnimated_completion___block_invoke;
   aBlock[3] = &unk_1E80150A8;
   aBlock[4] = self;
-  v13 = v4;
-  v7 = v6;
+  v13 = animatedCopy;
+  v7 = completionCopy;
   v12 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(PKPassGroupsViewController *)self presentedViewController];
-  v10 = v9;
-  if (v9 && ([v9 isBeingDismissed] & 1) == 0)
+  presentedViewController = [(PKPassGroupsViewController *)self presentedViewController];
+  v10 = presentedViewController;
+  if (presentedViewController && ([presentedViewController isBeingDismissed] & 1) == 0)
   {
     if ([v10 conformsToProtocol:&unk_1F3E3D608])
     {
@@ -10875,7 +10875,7 @@ LABEL_17:
 
     else
     {
-      [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v4 completion:v8];
+      [(PKPassGroupsViewController *)self dismissViewControllerAnimated:animatedCopy completion:v8];
     }
   }
 
@@ -10912,20 +10912,20 @@ uint64_t __72__PKPassGroupsViewController_presentOrderManagementAnimated_complet
   return result;
 }
 
-- (void)presentMerchantTokenWithIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentMerchantTokenWithIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __85__PKPassGroupsViewController_presentMerchantTokenWithIdentifier_animated_completion___block_invoke;
   v18 = &unk_1E8024548;
-  v10 = v8;
+  v10 = identifierCopy;
   v19 = v10;
-  v20 = self;
-  v22 = v6;
-  v11 = v9;
+  selfCopy = self;
+  v22 = animatedCopy;
+  v11 = completionCopy;
   v21 = v11;
   v12 = _Block_copy(&v15);
   v13 = [(PKPassGroupsViewController *)self presentedViewController:v15];
@@ -10939,7 +10939,7 @@ uint64_t __72__PKPassGroupsViewController_presentOrderManagementAnimated_complet
 
     else
     {
-      [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v6 completion:v12];
+      [(PKPassGroupsViewController *)self dismissViewControllerAnimated:animatedCopy completion:v12];
     }
   }
 
@@ -10982,19 +10982,19 @@ uint64_t __85__PKPassGroupsViewController_presentMerchantTokenWithIdentifier_ani
   return result;
 }
 
-- (void)presentAuthorizationFlowAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAuthorizationFlowAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_completion___block_invoke;
   v18 = &unk_1E8021ED8;
-  v7 = v6;
+  v7 = completionCopy;
   v19 = v7;
   objc_copyWeak(&v20, &location);
-  v21 = v4;
+  v21 = animatedCopy;
   v8 = _Block_copy(&v15);
   v9 = [(UIViewController *)self pkui_frontMostViewController:v15];
   v10 = v9;
@@ -11007,29 +11007,29 @@ uint64_t __85__PKPassGroupsViewController_presentMerchantTokenWithIdentifier_ani
 
     else
     {
-      v11 = [v10 presentingViewController];
-      v12 = [v11 conformsToProtocol:&unk_1F3E3D668];
+      presentingViewController = [v10 presentingViewController];
+      v12 = [presentingViewController conformsToProtocol:&unk_1F3E3D668];
 
       if (v12)
       {
-        v13 = [v10 presentingViewController];
-        (*(v7 + 2))(v7, v13);
+        presentingViewController2 = [v10 presentingViewController];
+        (*(v7 + 2))(v7, presentingViewController2);
       }
 
       else
       {
-        v14 = [v10 childViewControllers];
-        v13 = [v14 pk_firstObjectPassingTest:&__block_literal_global_383];
+        childViewControllers = [v10 childViewControllers];
+        presentingViewController2 = [childViewControllers pk_firstObjectPassingTest:&__block_literal_global_383];
 
-        if (v13)
+        if (presentingViewController2)
         {
-          (*(v7 + 2))(v7, v13);
+          (*(v7 + 2))(v7, presentingViewController2);
         }
 
         else
         {
-          [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v4 completion:v8];
-          v13 = 0;
+          [(PKPassGroupsViewController *)self dismissViewControllerAnimated:animatedCopy completion:v8];
+          presentingViewController2 = 0;
         }
       }
     }
@@ -11142,14 +11142,14 @@ uint64_t __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_compl
   }
 }
 
-- (void)presentAuthorizationViewControllerWithSession:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentAuthorizationViewControllerWithSession:(id)session animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  sessionCopy = session;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10 = +[PKDismissalPreventionAssertionManager sharedInstance];
-  v11 = [v10 acquireAssertion];
+  acquireAssertion = [v10 acquireAssertion];
 
   v28 = 0;
   v29 = &v28;
@@ -11162,17 +11162,17 @@ uint64_t __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_compl
   aBlock[2] = __96__PKPassGroupsViewController_presentAuthorizationViewControllerWithSession_animated_completion___block_invoke;
   aBlock[3] = &unk_1E8025000;
   objc_copyWeak(&v26, &location);
-  v12 = v9;
+  v12 = completionCopy;
   v25 = v12;
-  v27 = v6;
-  v13 = v11;
+  v27 = animatedCopy;
+  v13 = acquireAssertion;
   v24 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = [(objc_class *)getFKBankConnectAuthorizationViewControllerProviderClass_0() makeAuthorizationViewControllerForAuthorizationSession:v8 completion:v14];
+  v15 = [(objc_class *)getFKBankConnectAuthorizationViewControllerProviderClass_0() makeAuthorizationViewControllerForAuthorizationSession:sessionCopy completion:v14];
   v16 = v29[5];
   v29[5] = v15;
 
-  v17 = [(UIViewController *)self pkui_frontMostViewController];
+  pkui_frontMostViewController = [(UIViewController *)self pkui_frontMostViewController];
   v18 = v29[5];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -11181,7 +11181,7 @@ uint64_t __74__PKPassGroupsViewController_presentAuthorizationFlowAnimated_compl
   v19 = v12;
   v21 = v19;
   v22 = &v28;
-  [v17 presentViewController:v18 animated:v6 completion:v20];
+  [pkui_frontMostViewController presentViewController:v18 animated:animatedCopy completion:v20];
 
   objc_destroyWeak(&v26);
   _Block_object_dispose(&v28, 8);
@@ -11205,21 +11205,21 @@ void __96__PKPassGroupsViewController_presentAuthorizationViewControllerWithSess
   }
 }
 
-- (void)presentBackgroundRefreshConfirmationAnimated:(BOOL)a3
+- (void)presentBackgroundRefreshConfirmationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimated___block_invoke;
   v8[3] = &unk_1E8013F80;
   v8[4] = self;
-  v9 = a3;
+  animatedCopy2 = animated;
   v5 = _Block_copy(v8);
-  v6 = [(PKPassGroupsViewController *)self presentedViewController];
-  v7 = v6;
-  if (v6 && ([v6 isBeingDismissed] & 1) == 0)
+  presentedViewController = [(PKPassGroupsViewController *)self presentedViewController];
+  v7 = presentedViewController;
+  if (presentedViewController && ([presentedViewController isBeingDismissed] & 1) == 0)
   {
-    [(PKPassGroupsViewController *)self dismissViewControllerAnimated:v3 completion:v5];
+    [(PKPassGroupsViewController *)self dismissViewControllerAnimated:animatedCopy completion:v5];
   }
 
   else
@@ -11239,41 +11239,41 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
   }
 }
 
-- (void)dismissDiscoveryArticleViewController:(id)a3 afterActionCompleted:(BOOL)a4 withRelevantPassUniqueIdenitifer:(id)a5
+- (void)dismissDiscoveryArticleViewController:(id)controller afterActionCompleted:(BOOL)completed withRelevantPassUniqueIdenitifer:(id)idenitifer
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = v7;
+  completedCopy = completed;
+  idenitiferCopy = idenitifer;
+  v8 = idenitiferCopy;
   v9 = 0;
-  if (v7 && v5)
+  if (idenitiferCopy && completedCopy)
   {
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __122__PKPassGroupsViewController_dismissDiscoveryArticleViewController_afterActionCompleted_withRelevantPassUniqueIdenitifer___block_invoke;
     v13 = &unk_1E8010A10;
-    v14 = self;
-    v15 = v7;
+    selfCopy = self;
+    v15 = idenitiferCopy;
     v9 = _Block_copy(&v10);
   }
 
-  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v9, v10, v11, v12, v13, v14];
+  [(PKPassGroupsViewController *)self dismissPresentedVCsWithRequirements:0 animated:1 performAction:v9, v10, v11, v12, v13, selfCopy];
 }
 
-- (void)_invalidateForType:(int64_t)a3
+- (void)_invalidateForType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   invalidationStatus = self->_invalidationStatus;
-  if (invalidationStatus != a3)
+  if (invalidationStatus != type)
   {
-    self->_invalidationStatus = a3;
-    if (a3 >= 1 && invalidationStatus <= 0)
+    self->_invalidationStatus = type;
+    if (type >= 1 && invalidationStatus <= 0)
     {
       v6 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         groupStackView = self->_groupStackView;
         v13 = 134349312;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2050;
         v16 = groupStackView;
         _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p:%{public}p): partially invalidated.", &v13, 0x16u);
@@ -11287,14 +11287,14 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
       [(PKPassGroupsViewController *)self _registerForExpressTransactionNotifications:0];
     }
 
-    if (a3 > 1 && invalidationStatus <= 1)
+    if (type > 1 && invalidationStatus <= 1)
     {
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = self->_groupStackView;
         v13 = 134349312;
-        v14 = self;
+        selfCopy2 = self;
         v15 = 2050;
         v16 = v10;
         _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p:%{public}p): invalidated.", &v13, 0x16u);
@@ -11338,15 +11338,15 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
   return result;
 }
 
-- (id)_dashboardPassGroupViewControllerWithRequirements:(unsigned __int8)a3
+- (id)_dashboardPassGroupViewControllerWithRequirements:(unsigned __int8)requirements
 {
-  v5 = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
-  v6 = v5;
-  if (v5)
+  _dashboardPassGroupViewController = [(PKPassGroupsViewController *)self _dashboardPassGroupViewController];
+  v6 = _dashboardPassGroupViewController;
+  if (_dashboardPassGroupViewController)
   {
-    v7 = [v5 navigationController];
-    v8 = v7;
-    if ((a3 & 1) != 0 && ([v7 presentedViewController], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) || (a3 & 2) != 0 && (objc_msgSend(v8, "topViewController"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != self))
+    navigationController = [_dashboardPassGroupViewController navigationController];
+    v8 = navigationController;
+    if ((requirements & 1) != 0 && ([navigationController presentedViewController], v9 = objc_claimAutoreleasedReturnValue(), v9, v9) || (requirements & 2) != 0 && (objc_msgSend(v8, "topViewController"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != self))
     {
       v11 = 0;
     }
@@ -11365,21 +11365,21 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
   return v11;
 }
 
-- (void)_setExternalNavigationController:(void *)a1
+- (void)_setExternalNavigationController:(void *)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
-    if (a1[126] == 2)
+    if (controller[126] == 2)
     {
 
       v3 = 0;
     }
 
-    if (a1[180] != v3)
+    if (controller[180] != v3)
     {
-      a1[180] = v3;
-      v4 = a1[144];
+      controller[180] = v3;
+      v4 = controller[144];
       if (v4)
       {
         *(v4 + 3056) = v3;
@@ -11388,16 +11388,16 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
   }
 }
 
-- (void)_updateFooterSuppressionAnimated:(BOOL)a3
+- (void)_updateFooterSuppressionAnimated:(BOOL)animated
 {
   if (self->_persistentCardEmulationQueued)
   {
-    v4 = a3;
+    animatedCopy = animated;
     v7 = objc_alloc_init(PKPassPresentationContext);
     [(PKPassPresentationContext *)v7 setPersistentCardEmulation:1];
-    v5 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-    v6 = [v5 uniqueID];
-    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v6 context:v7 animated:v4 completionHandler:0];
+    modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+    uniqueID = [modalGroupFrontmostPass uniqueID];
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID context:v7 animated:animatedCopy completionHandler:0];
   }
 
   else
@@ -11408,19 +11408,19 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
   [(PKPassGroupsViewController *)self _updateFooterSuppressionWithContext:v7];
 }
 
-- (void)_updateFooterSuppressionWithContext:(id)a3
+- (void)_updateFooterSuppressionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = atomic_load(&FooterSuppressionCounter);
-  v8 = v4;
+  v8 = contextCopy;
   if (v5 || self->_instanceFooterSuppressionCounter)
   {
-    [(PKPassGroupStackView *)self->_groupStackView setFooterSuppressed:1 withContext:v4];
+    [(PKPassGroupStackView *)self->_groupStackView setFooterSuppressed:1 withContext:contextCopy];
     [(PKPassGroupStackView *)self->_groupStackView setExternalFooterSuppressed:1];
     if (!self->_invalidationStatus)
     {
-      v6 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v6 pkui_consumeSharedRootAuthenticationContext];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] pkui_consumeSharedRootAuthenticationContext];
     }
   }
 
@@ -11432,18 +11432,18 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
       self->_persistentCardEmulationQueued = 0;
     }
 
-    [(PKPassGroupStackView *)self->_groupStackView setFooterSuppressed:!viewAppeared withContext:v4];
+    [(PKPassGroupStackView *)self->_groupStackView setFooterSuppressed:!viewAppeared withContext:contextCopy];
     [(PKPassGroupStackView *)self->_groupStackView setExternalFooterSuppressed:0];
   }
 }
 
-- (id)_passFromGroupsControllerWithUniqueIdentifier:(id)a3
+- (id)_passFromGroupsControllerWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && (v5 = [(PKGroupsController *)self->_groupsController groupIndexForPassUniqueID:v4], v5 != 0x7FFFFFFFFFFFFFFFLL))
+  identifierCopy = identifier;
+  if (identifierCopy && (v5 = [(PKGroupsController *)self->_groupsController groupIndexForPassUniqueID:identifierCopy], v5 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = [(PKGroupsController *)self->_groupsController groupAtIndex:v5];
-    v8 = [v7 indexForPassUniqueID:v4];
+    v8 = [v7 indexForPassUniqueID:identifierCopy];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = 0;
@@ -11469,14 +11469,14 @@ void __75__PKPassGroupsViewController_presentBackgroundRefreshConfirmationAnimat
   if (kind == 2)
   {
 
-    v5 = [(PKPassGroupsViewController *)self _createTrailingItemGroups];
+    _createTrailingItemGroups = [(PKPassGroupsViewController *)self _createTrailingItemGroups];
     goto LABEL_7;
   }
 
   if (kind == 1)
   {
 
-    v5 = [(PKPassGroupsViewController *)self _application_createTrailingItemGroups];
+    _createTrailingItemGroups = [(PKPassGroupsViewController *)self _application_createTrailingItemGroups];
 LABEL_7:
 
     v6 = [[PKNavigationItemController alloc] initWithDelegate:?];
@@ -11576,8 +11576,8 @@ LABEL_9:
     v9 = PKLocalizedString(&cfstr_More.isa);
     v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 image:v8 target:0 action:0 menu:0];
     v11 = objc_alloc(MEMORY[0x1E69DC708]);
-    v12 = [*(v2 + 143) moreMenu];
-    v13 = [v11 initWithTitle:v9 image:v8 target:0 action:0 menu:v12];
+    moreMenu = [*(v2 + 143) moreMenu];
+    v13 = [v11 initWithTitle:v9 image:v8 target:0 action:0 menu:moreMenu];
 
     objc_storeStrong(v3 + 10, v10);
     objc_storeStrong(v3 + 11, v13);
@@ -11631,10 +11631,10 @@ LABEL_9:
     objc_storeStrong(v3 + 13, v36);
     [v36 setAccessibilityIdentifier:*MEMORY[0x1E69B9A90]];
 
-    v37 = [v2 _trailingItemGroups];
+    _trailingItemGroups = [v2 _trailingItemGroups];
     objc_destroyWeak(&v44);
     objc_destroyWeak(location);
-    return v37;
+    return _trailingItemGroups;
   }
 
   return self;
@@ -11814,10 +11814,10 @@ void __67__PKPassGroupsViewController__application_createTrailingItemGroups__blo
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(PKInboxDataSource *)self->_inboxDataSource inboxVisible])
   {
-    v5 = [(PKInboxDataSource *)self->_inboxDataSource badgeCount];
-    if (v5)
+    badgeCount = [(PKInboxDataSource *)self->_inboxDataSource badgeCount];
+    if (badgeCount)
     {
-      v6 = [MEMORY[0x1E69DC718] badgeWithCount:v5];
+      v6 = [MEMORY[0x1E69DC718] badgeWithCount:badgeCount];
       [(UIBarButtonItem *)p_navigationItem->trailing.more.items.inbox setBadge:v6];
     }
 
@@ -11887,13 +11887,13 @@ void __67__PKPassGroupsViewController__application_createTrailingItemGroups__blo
   return [(PKPassGroupStackView *)groupStackView needsNavigationBar];
 }
 
-- (void)_applyNavigationItemConfiguration:(id)a3
+- (void)_applyNavigationItemConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (v4)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    v7 = v4;
-    [(PKNavigationItemConfiguration *)v4 applyToViewController:?];
+    v7 = configurationCopy;
+    [(PKNavigationItemConfiguration *)configurationCopy applyToViewController:?];
     v5 = v7;
     v6 = (*(v7 + 9) & 1) == 0;
     if (self->_needsDefaultStatusBar != v6)
@@ -11910,9 +11910,9 @@ void __67__PKPassGroupsViewController__application_createTrailingItemGroups__blo
   }
 }
 
-- (void)_updateNavigationItemAnimated:(BOOL)a3
+- (void)_updateNavigationItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   controller = self->_navigationItem.controller;
   if (!controller || !controller->_activated || self->_navigationItem.active.handle)
   {
@@ -11921,11 +11921,11 @@ void __67__PKPassGroupsViewController__application_createTrailingItemGroups__blo
     aBlock[2] = __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invoke;
     aBlock[3] = &unk_1E8013F80;
     aBlock[4] = self;
-    v11 = a3;
+    animatedCopy2 = animated;
     v5 = _Block_copy(aBlock);
     v6 = v5;
     v7 = MEMORY[0x1E69DD250];
-    if (v3)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:6 animations:v5 completion:0];
     }
@@ -12003,9 +12003,9 @@ void __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invo
   if (!peerPaymentAccountResolutionController)
   {
     v4 = [PKPeerPaymentAccountResolutionController alloc];
-    v5 = [(PKPeerPaymentService *)self->_peerPaymentService account];
-    v6 = [MEMORY[0x1E69B9020] sharedService];
-    v7 = [(PKPeerPaymentAccountResolutionController *)v4 initWithAccount:v5 webService:v6 context:0 delegate:self passLibraryDataProvider:self->_passLibraryDataProvider];
+    account = [(PKPeerPaymentService *)self->_peerPaymentService account];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    v7 = [(PKPeerPaymentAccountResolutionController *)v4 initWithAccount:account webService:mEMORY[0x1E69B9020] context:0 delegate:self passLibraryDataProvider:self->_passLibraryDataProvider];
     v8 = self->_peerPaymentAccountResolutionController;
     self->_peerPaymentAccountResolutionController = v7;
 
@@ -12015,34 +12015,34 @@ void __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invo
   return peerPaymentAccountResolutionController;
 }
 
-- (void)dismissVerificationPageForPassWithDeviceAccountID:(id)a3
+- (void)dismissVerificationPageForPassWithDeviceAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKPassGroupsViewController *)self presentedPass];
-  v12 = [v5 paymentPass];
+  dCopy = d;
+  presentedPass = [(PKPassGroupsViewController *)self presentedPass];
+  paymentPass = [presentedPass paymentPass];
 
-  v6 = [v12 deviceAccountIdentifier];
-  v7 = [v6 isEqualToString:v4];
+  deviceAccountIdentifier = [paymentPass deviceAccountIdentifier];
+  v7 = [deviceAccountIdentifier isEqualToString:dCopy];
 
   if (v7)
   {
     objc_opt_class();
-    v8 = [(PKPassGroupsViewController *)self presentedViewController];
-    v9 = [v8 presentedViewController];
+    presentedViewController = [(PKPassGroupsViewController *)self presentedViewController];
+    v8PresentedViewController = [presentedViewController presentedViewController];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v11 = [(PKPassGroupsViewController *)self presentedViewController];
-      [v11 dismissViewControllerAnimated:1 completion:0];
+      presentedViewController2 = [(PKPassGroupsViewController *)self presentedViewController];
+      [presentedViewController2 dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
-- (void)_presentAddPassesControllerWithPasses:(id)a3
+- (void)_presentAddPassesControllerWithPasses:(id)passes
 {
-  v4 = a3;
-  v5 = [[PKAddPassesViewController alloc] initWithPasses:v4 fromPresentationSource:1];
+  passesCopy = passes;
+  v5 = [[PKAddPassesViewController alloc] initWithPasses:passesCopy fromPresentationSource:1];
 
   if (v5)
   {
@@ -12070,8 +12070,8 @@ void __60__PKPassGroupsViewController__updateNavigationItemAnimated___block_invo
 {
   objc_initWeak(&location, self);
   v2 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v3 = [MEMORY[0x1E69B8EF8] sharedService];
-  v4 = [v2 initWithWebService:v3];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v4 = [v2 initWithWebService:mEMORY[0x1E69B8EF8]];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -12129,10 +12129,10 @@ void __59__PKPassGroupsViewController_presentPaymentSetupController__block_invok
   }
 }
 
-- (id)_paymentSetupNavigationControllerForProvisioningController:(id)a3
+- (id)_paymentSetupNavigationControllerForProvisioningController:(id)controller
 {
-  v4 = a3;
-  v5 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:v4 context:0];
+  controllerCopy = controller;
+  v5 = [[PKPaymentSetupNavigationController alloc] initWithProvisioningController:controllerCopy context:0];
 
   [(PKNavigationController *)v5 setCustomFormSheetPresentationStyleForiPad];
   [(PKPaymentSetupNavigationController *)v5 setSetupDelegate:self];
@@ -12141,48 +12141,48 @@ void __59__PKPassGroupsViewController_presentPaymentSetupController__block_invok
   return v5;
 }
 
-- (void)_handleProvisioningError:(id)a3
+- (void)_handleProvisioningError:(id)error
 {
-  v4 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:a3];
+  v4 = [PKPaymentSetupNavigationController viewControllerForPresentingPaymentError:error];
   [(PKPassGroupsViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)dismissPresentedVCsWithRequirements:(unint64_t)a3 animated:(BOOL)a4 performAction:(id)a5
+- (void)dismissPresentedVCsWithRequirements:(unint64_t)requirements animated:(BOOL)animated performAction:(id)action
 {
-  v5 = a4;
-  v8 = a5;
-  if (a3)
+  animatedCopy = animated;
+  actionCopy = action;
+  if (requirements)
   {
     if (self->_invalidationStatus || !self->_foregroundActiveState.foregroundActive)
     {
       goto LABEL_29;
     }
 
-    v16 = self;
-    v17 = v8;
+    selfCopy = self;
+    v17 = actionCopy;
   }
 
   else
   {
-    v9 = self;
-    v10 = v8;
-    if (!v9)
+    selfCopy2 = self;
+    v10 = actionCopy;
+    if (!selfCopy2)
     {
       goto LABEL_30;
     }
   }
 
-  v11 = [(PKPassGroupsViewController *)self navigationController];
-  v12 = [v11 presentedViewController];
-  if (v12)
+  navigationController = [(PKPassGroupsViewController *)self navigationController];
+  presentedViewController = [navigationController presentedViewController];
+  if (presentedViewController)
   {
-    if ((a3 & 2) != 0)
+    if ((requirements & 2) != 0)
     {
-      v13 = [MEMORY[0x1E69BC740] viewServiceBundleID];
-      if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      viewServiceBundleID = [MEMORY[0x1E69BC740] viewServiceBundleID];
+      if (viewServiceBundleID && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v14 = [v12 serviceBundleIdentifier];
-        v15 = [v14 isEqualToString:v13];
+        serviceBundleIdentifier = [presentedViewController serviceBundleIdentifier];
+        v15 = [serviceBundleIdentifier isEqualToString:viewServiceBundleID];
 
         if (v15)
         {
@@ -12197,25 +12197,25 @@ void __59__PKPassGroupsViewController_presentPaymentSetupController__block_invok
 
     if (!PresentationTrackingCounter)
     {
-      v18 = [v12 isBeingPresented];
-      v19 = [v12 isBeingDismissed];
-      v20 = [v12 transitionCoordinator];
-      v21 = v20;
-      if (v20)
+      isBeingPresented = [presentedViewController isBeingPresented];
+      isBeingDismissed = [presentedViewController isBeingDismissed];
+      transitionCoordinator = [presentedViewController transitionCoordinator];
+      v21 = transitionCoordinator;
+      if (transitionCoordinator)
       {
-        LODWORD(v20) = [v20 isCancelled];
+        LODWORD(transitionCoordinator) = [transitionCoordinator isCancelled];
       }
 
-      if ((v18 | v19))
+      if ((isBeingPresented | isBeingDismissed))
       {
-        if (v19)
+        if (isBeingDismissed)
         {
-          v22 = v20 ^ 1;
+          v22 = transitionCoordinator ^ 1;
         }
 
         else
         {
-          v22 = v18 & v20;
+          v22 = isBeingPresented & transitionCoordinator;
         }
 
         if (!v21 || !v22)
@@ -12230,9 +12230,9 @@ void __59__PKPassGroupsViewController_presentPaymentSetupController__block_invok
         v29[2] = __SanitizePresentedVC_block_invoke;
         v29[3] = &unk_1E80251A0;
         objc_copyWeak(v31, &location);
-        v31[1] = a3;
-        v32 = v5;
-        v30 = v8;
+        v31[1] = requirements;
+        v32 = animatedCopy;
+        v30 = actionCopy;
         [v21 animateAlongsideTransition:0 completion:v29];
         v24 = v30;
       }
@@ -12246,10 +12246,10 @@ void __59__PKPassGroupsViewController_presentPaymentSetupController__block_invok
         v25[2] = __SanitizePresentedVC_block_invoke_3;
         v25[3] = &unk_1E80231E0;
         objc_copyWeak(v27, &location);
-        v27[1] = a3;
-        v28 = v5;
-        v26 = v8;
-        [v11 dismissViewControllerAnimated:v5 completion:v25];
+        v27[1] = requirements;
+        v28 = animatedCopy;
+        v26 = actionCopy;
+        [navigationController dismissViewControllerAnimated:animatedCopy completion:v25];
         v24 = v26;
       }
 
@@ -12264,9 +12264,9 @@ LABEL_29:
     return;
   }
 
-  if (v11)
+  if (navigationController)
   {
-    SanitizeNavigationController(a3, v5, self, v11, v8);
+    SanitizeNavigationController(requirements, animatedCopy, self, navigationController, actionCopy);
     goto LABEL_28;
   }
 
@@ -12274,9 +12274,9 @@ LABEL_30:
   __break(1u);
 }
 
-- (id)_appleCardUpsellAlertWithAccount:(id)a3
+- (id)_appleCardUpsellAlertWithAccount:(id)account
 {
-  v4 = [a3 feature];
+  feature = [account feature];
   v5 = MEMORY[0x1E69DC650];
   v6 = PKLocalizedFeatureString();
   v7 = PKLocalizedFeatureString();
@@ -12289,7 +12289,7 @@ LABEL_30:
   v16[2] = __63__PKPassGroupsViewController__appleCardUpsellAlertWithAccount___block_invoke;
   v16[3] = &unk_1E8025108;
   v16[4] = self;
-  v16[5] = v4;
+  v16[5] = feature;
   v11 = [v9 actionWithTitle:v10 style:0 handler:v16];
 
   v12 = MEMORY[0x1E69DC648];
@@ -12319,9 +12319,9 @@ void __63__PKPassGroupsViewController__appleCardUpsellAlertWithAccount___block_i
   }
 }
 
-- (void)_endSuppressingInstanceFooterWithContext:(id)a3
+- (void)_endSuppressingInstanceFooterWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   instanceFooterSuppressionCounter = self->_instanceFooterSuppressionCounter;
   if (instanceFooterSuppressionCounter)
   {
@@ -12329,7 +12329,7 @@ void __63__PKPassGroupsViewController__appleCardUpsellAlertWithAccount___block_i
     self->_instanceFooterSuppressionCounter = v6;
     if (!v6)
     {
-      [(PKPassGroupsViewController *)self _updateFooterSuppressionWithContext:v4];
+      [(PKPassGroupsViewController *)self _updateFooterSuppressionWithContext:contextCopy];
     }
   }
 
@@ -12344,25 +12344,25 @@ void __63__PKPassGroupsViewController__appleCardUpsellAlertWithAccount___block_i
   }
 }
 
-- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
     groupsController = self->_groupsController;
-    v5 = a3;
-    v6 = [v5 uniqueID];
-    v7 = [(PKGroupsController *)groupsController groupAtIndex:[(PKGroupsController *)groupsController groupIndexForPassUniqueID:v6]];
+    passCopy = pass;
+    uniqueID = [passCopy uniqueID];
+    v7 = [(PKGroupsController *)groupsController groupAtIndex:[(PKGroupsController *)groupsController groupIndexForPassUniqueID:uniqueID]];
 
-    v8 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     v9 = [PKPaymentPassDetailViewController alloc];
     v10 = self->_groupsController;
-    v11 = [MEMORY[0x1E69B8EF8] sharedService];
-    v12 = [MEMORY[0x1E69B9020] sharedService];
-    v13 = [(PKPaymentPassDetailViewController *)v9 initWithPass:v5 group:v7 groupsController:v10 webService:v11 peerPaymentWebService:v12 style:0 passLibraryDataProvider:self->_passLibraryDataProvider paymentServiceDataProvider:v8];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+    v13 = [(PKPaymentPassDetailViewController *)v9 initWithPass:passCopy group:v7 groupsController:v10 webService:mEMORY[0x1E69B8EF8] peerPaymentWebService:mEMORY[0x1E69B9020] style:0 passLibraryDataProvider:self->_passLibraryDataProvider paymentServiceDataProvider:defaultDataProvider];
 
     [(PKPaymentPassDetailViewController *)v13 setShowDoneButton:1];
-    v14 = [(PKPassGroupsViewController *)self groupStackView];
-    [(PKPaymentPassDetailViewController *)v13 setDeleteOverrider:v14];
+    groupStackView = [(PKPassGroupsViewController *)self groupStackView];
+    [(PKPaymentPassDetailViewController *)v13 setDeleteOverrider:groupStackView];
   }
 
   else
@@ -12373,17 +12373,17 @@ void __63__PKPassGroupsViewController__appleCardUpsellAlertWithAccount___block_i
   return v13;
 }
 
-- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
-    v4 = a3;
-    v5 = [[PKBarcodePassDetailViewController alloc] initWithPass:v4];
+    passCopy = pass;
+    v5 = [[PKBarcodePassDetailViewController alloc] initWithPass:passCopy];
 
     v6 = (PKRunningInRemoteContext() & 1) != 0 || [(PKPassGroupStackView *)self->_groupStackView isTableModalPresentation];
     [(PKBarcodePassDetailViewController *)v5 setShowCloseButton:v6];
-    v7 = [(PKPassGroupsViewController *)self groupStackView];
-    [(PKBarcodePassDetailViewController *)v5 setDeleteOverrider:v7];
+    groupStackView = [(PKPassGroupsViewController *)self groupStackView];
+    [(PKBarcodePassDetailViewController *)v5 setDeleteOverrider:groupStackView];
   }
 
   else
@@ -12429,7 +12429,7 @@ void __46__PKPassGroupsViewController__warnFailForward__block_invoke()
   [(PKPassGroupsViewController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -12439,10 +12439,10 @@ void __46__PKPassGroupsViewController__warnFailForward__block_invoke()
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_registerForExpressTransactionNotifications:(BOOL)a3
+- (void)_registerForExpressTransactionNotifications:(BOOL)notifications
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 && !self->_invalidationStatus)
+  if (notifications && !self->_invalidationStatus)
   {
     if (self->_expressTransactionNotificationObserver == -1)
     {
@@ -12453,10 +12453,10 @@ void __46__PKPassGroupsViewController__warnFailForward__block_invoke()
       v14 = &unk_1E8012010;
       objc_copyWeak(&v15, &location);
       v5 = _Block_copy(&v11);
-      v6 = [*MEMORY[0x1E69BBB40] UTF8String];
+      uTF8String = [*MEMORY[0x1E69BBB40] UTF8String];
       v7 = MEMORY[0x1E69E96A0];
       v8 = MEMORY[0x1E69E96A0];
-      LODWORD(v7) = notify_register_dispatch(v6, &self->_expressTransactionNotificationObserver, v7, v5) == 0;
+      LODWORD(v7) = notify_register_dispatch(uTF8String, &self->_expressTransactionNotificationObserver, v7, v5) == 0;
 
       v9 = PKLogFacilityTypeGetObject();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -12465,7 +12465,7 @@ void __46__PKPassGroupsViewController__warnFailForward__block_invoke()
         if (v10)
         {
           *buf = 134349056;
-          v18 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): registered for express transaction handling.", buf, 0xCu);
         }
       }
@@ -12475,7 +12475,7 @@ void __46__PKPassGroupsViewController__warnFailForward__block_invoke()
         if (v10)
         {
           *buf = 134349056;
-          v18 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): ERROR - failed to register for express transaction notifications!", buf, 0xCu);
         }
 
@@ -12493,7 +12493,7 @@ void __46__PKPassGroupsViewController__warnFailForward__block_invoke()
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v18 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController (%{public}p): unregistered for express transaction handling.", buf, 0xCu);
     }
 
@@ -12512,22 +12512,22 @@ void __74__PKPassGroupsViewController__registerForExpressTransactionNotification
 {
   if (!self->_invalidationStatus && self->_foregroundActiveState.foregroundActive)
   {
-    v3 = PKLogFacilityTypeGetObject();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    presentedViewController = PKLogFacilityTypeGetObject();
+    if (os_log_type_enabled(presentedViewController, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController: handling outstanding express transaction...", buf, 2u);
+      _os_log_impl(&dword_1BD026000, presentedViewController, OS_LOG_TYPE_DEFAULT, "PKPassGroupsViewController: handling outstanding express transaction...", buf, 2u);
     }
 
-    v4 = [(PKPaymentService *)self->_paymentService outstandingExpressTransactionState];
-    v5 = v4;
-    if (!v4)
+    outstandingExpressTransactionState = [(PKPaymentService *)self->_paymentService outstandingExpressTransactionState];
+    v5 = outstandingExpressTransactionState;
+    if (!outstandingExpressTransactionState)
     {
       goto LABEL_30;
     }
 
-    v6 = [v4 passUniqueIdentifier];
-    if (!v6)
+    passUniqueIdentifier = [outstandingExpressTransactionState passUniqueIdentifier];
+    if (!passUniqueIdentifier)
     {
 LABEL_29:
 
@@ -12537,14 +12537,14 @@ LABEL_30:
 
     if (![(PKPassGroupStackView *)self->_groupStackView presentedPassIsPerformingPayment])
     {
-      v13 = [v5 isIgnorable];
+      isIgnorable = [v5 isIgnorable];
       goto LABEL_13;
     }
 
-    v7 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-    v8 = [v7 uniqueID];
-    v9 = v6;
-    v10 = v8;
+    modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+    uniqueID = [modalGroupFrontmostPass uniqueID];
+    v9 = passUniqueIdentifier;
+    v10 = uniqueID;
     v11 = v10;
     if (v9 == v10)
     {
@@ -12558,7 +12558,7 @@ LABEL_30:
 LABEL_24:
         if ([v5 isIgnorable])
         {
-          if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(presentedViewController, OS_LOG_TYPE_DEFAULT))
           {
             LOWORD(buf[0]) = 0;
             v19 = "PKPassGroupsViewController: skipping express notification because a transaction is already underway and the event is for a failure transaction";
@@ -12568,10 +12568,10 @@ LABEL_24:
           goto LABEL_28;
         }
 
-        v13 = 0;
+        isIgnorable = 0;
 LABEL_13:
-        v3 = [(PKPassGroupsViewController *)self presentedViewController];
-        if (v3 || (v14 = -[PKPassGroupsViewController _passGroupsViewNavigationController](self, "_passGroupsViewNavigationController"), v15 = [v14 VCsState], v14, v15))
+        presentedViewController = [(PKPassGroupsViewController *)self presentedViewController];
+        if (presentedViewController || (v14 = -[PKPassGroupsViewController _passGroupsViewNavigationController](self, "_passGroupsViewNavigationController"), v15 = [v14 VCsState], v14, v15))
         {
           [(PKPassGroupsViewController *)self _beginSuppressingInstanceFooter];
           LOBYTE(v15) = 1;
@@ -12579,8 +12579,8 @@ LABEL_13:
 
         v16 = objc_alloc_init(PKPassPresentationContext);
         -[PKPassPresentationContext setStandaloneTransactionType:](v16, "setStandaloneTransactionType:", [v5 standaloneTransactionType]);
-        [(PKPassPresentationContext *)v16 setPostPayment:v13 ^ 1];
-        [(PKPassPresentationContext *)v16 setFieldDetect:v13];
+        [(PKPassPresentationContext *)v16 setPostPayment:isIgnorable ^ 1];
+        [(PKPassPresentationContext *)v16 setFieldDetect:isIgnorable];
         if (v15)
         {
           v17 = objc_alloc_init(PKPassPresentationContext);
@@ -12601,7 +12601,7 @@ LABEL_13:
         objc_copyWeak(&v22, buf);
         v18 = v16;
         v21 = v18;
-        [(PKPassGroupsViewController *)self presentPassWithUniqueID:v6 context:v17 animated:1 completionHandler:v20];
+        [(PKPassGroupsViewController *)self presentPassWithUniqueID:passUniqueIdentifier context:v17 animated:1 completionHandler:v20];
 
         objc_destroyWeak(&v22);
         objc_destroyWeak(buf);
@@ -12617,12 +12617,12 @@ LABEL_13:
       }
     }
 
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(presentedViewController, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf[0]) = 0;
       v19 = "PKPassGroupsViewController: skipping express notification because a transaction for same pass already underway";
 LABEL_27:
-      _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, v19, buf, 2u);
+      _os_log_impl(&dword_1BD026000, presentedViewController, OS_LOG_TYPE_DEFAULT, v19, buf, 2u);
     }
 
 LABEL_28:
@@ -12651,13 +12651,13 @@ void __56__PKPassGroupsViewController__handleExpressNotification__block_invoke(u
   }
 }
 
-- (void)_handleChildViewControllerRequestingServiceMode:(id)a3
+- (void)_handleChildViewControllerRequestingServiceMode:(id)mode
 {
   v6 = objc_alloc_init(PKPassPresentationContext);
   [(PKPassPresentationContext *)v6 setPersistentCardEmulation:1];
-  v4 = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
-  v5 = [v4 uniqueID];
-  [(PKPassGroupsViewController *)self presentPassWithUniqueID:v5 context:v6 animated:1 completionHandler:0];
+  modalGroupFrontmostPass = [(PKPassGroupStackView *)self->_groupStackView modalGroupFrontmostPass];
+  uniqueID = [modalGroupFrontmostPass uniqueID];
+  [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID context:v6 animated:1 completionHandler:0];
 }
 
 - (void)_regionConfigurationDidChangeNotification
@@ -12703,36 +12703,36 @@ uint64_t __71__PKPassGroupsViewController__regionConfigurationDidChangeNotificat
   return self;
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
   groupsController = self->_groupsController;
-  v5 = a3;
-  v6 = [(PKGroupsController *)groupsController passes];
-  v7 = [v5 provisioningController];
+  finishCopy = finish;
+  passes = [(PKGroupsController *)groupsController passes];
+  provisioningController = [finishCopy provisioningController];
 
-  v8 = [v7 provisionedPasses];
+  provisionedPasses = [provisioningController provisionedPasses];
 
-  v9 = [v8 reverseObjectEnumerator];
-  v10 = [v9 allObjects];
+  reverseObjectEnumerator = [provisionedPasses reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke;
   v16[3] = &unk_1E8025158;
-  v11 = v6;
+  v11 = passes;
   v17 = v11;
-  v12 = [v10 pk_firstObjectPassingTest:v16];
+  v12 = [allObjects pk_firstObjectPassingTest:v16];
 
-  v13 = [v12 secureElementPass];
-  v14 = [v13 uniqueID];
+  secureElementPass = [v12 secureElementPass];
+  uniqueID = [secureElementPass uniqueID];
 
-  if (v14)
+  if (uniqueID)
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3;
     v15[3] = &unk_1E8011D28;
     v15[4] = self;
-    [(PKPassGroupsViewController *)self presentPassWithUniqueID:v14 animated:1 completionHandler:v15];
+    [(PKPassGroupsViewController *)self presentPassWithUniqueID:uniqueID animated:1 completionHandler:v15];
   }
 
   else
@@ -12798,19 +12798,19 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
   }
 }
 
-- (void)discoveryDataSource:(id)a3 didUpdateArticleLayouts:(id)a4
+- (void)discoveryDataSource:(id)source didUpdateArticleLayouts:(id)layouts
 {
-  v5 = a4;
+  layoutsCopy = layouts;
   WeakRetained = objc_loadWeakRetained(&self->_discoveryGalleryView);
   v8 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained updateArticleLayouts:v5];
+    [WeakRetained updateArticleLayouts:layoutsCopy];
   }
 
   else
   {
-    v7 = [v5 count];
+    v7 = [layoutsCopy count];
 
     if (v7)
     {
@@ -12819,7 +12819,7 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
   }
 }
 
-- (void)inboxDataSourceDidUpdateInboxMessages:(id)a3
+- (void)inboxDataSourceDidUpdateInboxMessages:(id)messages
 {
   if (self->_kind == 1)
   {
@@ -12834,42 +12834,42 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
   }
 }
 
-- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4
+- (void)virtualCardEnrollmentViewController:(id)controller didCompleteWithSuccess:(BOOL)success
 {
-  v4 = [a3 presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [controller presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)applicationMessageViewNeedsSizeUpdate:(id)a3
+- (void)applicationMessageViewNeedsSizeUpdate:(id)update
 {
-  v15 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
 
-  if (WeakRetained == v15)
+  if (WeakRetained == updateCopy)
   {
-    v5 = [v15 configuration];
-    [v5 width];
+    configuration = [updateCopy configuration];
+    [configuration width];
     v7 = v6;
 
-    [v15 sizeThatFits:{v7, 1.79769313e308}];
+    [updateCopy sizeThatFits:{v7, 1.79769313e308}];
     v9 = v8;
     v11 = v10;
-    [v15 bounds];
+    [updateCopy bounds];
     if (v9 != v13 || v11 != v12)
     {
-      [v15 setBounds:?];
-      [v15 layoutIfNeededAnimated:1];
+      [updateCopy setBounds:?];
+      [updateCopy layoutIfNeededAnimated:1];
       [(PKPassGroupStackView *)self->_groupStackView updateHeaderAndSubheaderViewsIfNecessary];
     }
   }
 }
 
-- (void)applicationMessageViewNeedsRemoval:(id)a3
+- (void)applicationMessageViewNeedsRemoval:(id)removal
 {
-  v4 = a3;
+  removalCopy = removal;
   WeakRetained = objc_loadWeakRetained(&self->_applicationMessageView);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == removalCopy)
   {
     groupStackView = self->_groupStackView;
 
@@ -12877,10 +12877,10 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
   }
 }
 
-- (void)applicationMessageView:(id)a3 requestsContentDismissal:(id)a4
+- (void)applicationMessageView:(id)view requestsContentDismissal:(id)dismissal
 {
   v10 = 0;
-  v5 = [MEMORY[0x1E69B85B8] messageKeysForNode:a4 localKeys:&v10];
+  v5 = [MEMORY[0x1E69B85B8] messageKeysForNode:dismissal localKeys:&v10];
   v6 = v5;
   if (v5)
   {
@@ -12890,8 +12890,8 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
       if (v7 == 1)
       {
         paymentService = self->_paymentService;
-        v9 = [v6 firstObject];
-        [(PKPaymentService *)paymentService removeApplicationMessageWithKey:v9];
+        firstObject = [v6 firstObject];
+        [(PKPaymentService *)paymentService removeApplicationMessageWithKey:firstObject];
       }
 
       else
@@ -12902,16 +12902,16 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
   }
 }
 
-- (void)applicationMessageView:(id)a3 tappedApplicationMessageWithKey:(id)a4
+- (void)applicationMessageView:(id)view tappedApplicationMessageWithKey:(id)key
 {
-  v5 = a4;
-  if ([v5 source])
+  keyCopy = key;
+  if ([keyCopy source])
   {
-    [(PKPaymentService *)self->_paymentService tappedApplicationMessageWithKey:v5];
+    [(PKPaymentService *)self->_paymentService tappedApplicationMessageWithKey:keyCopy];
   }
 }
 
-- (void)presentPaymentSetupForHeaderView:(id)a3
+- (void)presentPaymentSetupForHeaderView:(id)view
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69B8540];
@@ -12923,14 +12923,14 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
   v12[0] = *MEMORY[0x1E69BA6F0];
   v12[1] = v7;
   v8 = MEMORY[0x1E695DF20];
-  v9 = a3;
+  viewCopy = view;
   v10 = [v8 dictionaryWithObjects:v12 forKeys:v11 count:2];
   [v4 subject:v5 sendEvent:v10];
 
-  [(PKPassGroupsViewController *)self startPaymentPreflight:v9 withPaymentSetupMode:0 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetworks:0 transitNetworkIdentifiers:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
+  [(PKPassGroupsViewController *)self startPaymentPreflight:viewCopy withPaymentSetupMode:0 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetworks:0 transitNetworkIdentifiers:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
 }
 
-- (id)passForSectionHeaderView:(id)a3
+- (id)passForSectionHeaderView:(id)view
 {
   if ([(PKGroupsController *)self->_groupsController groupCount]== 1 && [(PKGroupsController *)self->_groupsController indexOfSeparationGroup]== 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -12946,19 +12946,19 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
   return v5;
 }
 
-- (void)presentPassDetailsForHeaderView:(id)a3
+- (void)presentPassDetailsForHeaderView:(id)view
 {
   v7 = [(PKGroupsController *)self->_groupsController groupAtIndex:0];
   v4 = [v7 passAtIndex:{objc_msgSend(v7, "frontmostPassIndex")}];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 uniqueID];
-    [(PKPassGroupsViewController *)self presentPassDetailsWithUniqueID:v6 animated:1 completionHandler:0];
+    uniqueID = [v4 uniqueID];
+    [(PKPassGroupsViewController *)self presentPassDetailsWithUniqueID:uniqueID animated:1 completionHandler:0];
   }
 }
 
-- (void)presentInvitationsForHeaderView:(id)a3
+- (void)presentInvitationsForHeaderView:(id)view
 {
   v5 = [[PKInboxViewController alloc] initWithInboxDataSource:self->_inboxDataSource contactAvatarManager:self->_avatarManager context:0];
   v4 = [[PKNavigationController alloc] initWithRootViewController:v5];
@@ -12967,8 +12967,8 @@ void __52__PKPassGroupsViewController_paymentSetupDidFinish___block_invoke_3(uin
 
 - (BOOL)doesContainActivatedPaymentPasses
 {
-  v2 = [(PKGroupsController *)self->_groupsController passes];
-  v3 = [v2 pk_containsObjectPassingTest:&__block_literal_global_473];
+  passes = [(PKGroupsController *)self->_groupsController passes];
+  v3 = [passes pk_containsObjectPassingTest:&__block_literal_global_473];
 
   return v3;
 }
@@ -13017,20 +13017,20 @@ void __52__PKPassGroupsViewController_presentOrderManagement__block_invoke()
 
 - (void)presentHowToUseWallet
 {
-  v4 = [MEMORY[0x1E69B8908] sharedInstance];
-  v3 = [v4 latestHowToUseWalletModel];
-  [(PKPassGroupsViewController *)self _presentHowToUseWalletWithModel:v3 destinationCard:0];
+  mEMORY[0x1E69B8908] = [MEMORY[0x1E69B8908] sharedInstance];
+  latestHowToUseWalletModel = [mEMORY[0x1E69B8908] latestHowToUseWalletModel];
+  [(PKPassGroupsViewController *)self _presentHowToUseWalletWithModel:latestHowToUseWalletModel destinationCard:0];
 }
 
-- (void)_presentHowToUseWalletWithModel:(id)a3 destinationCard:(id)a4
+- (void)_presentHowToUseWalletWithModel:(id)model destinationCard:(id)card
 {
-  v5 = [PKHowToUseWalletViewProvider makeViewControllerWithModel:a3 destinationCard:a4];
+  v5 = [PKHowToUseWalletViewProvider makeViewControllerWithModel:model destinationCard:card];
   if (v5)
   {
     v8 = v5;
     v6 = [[PKNavigationController alloc] initWithRootViewController:v5];
-    v7 = [(PKNavigationController *)v6 navigationBar];
-    [v7 setPrefersLargeTitles:1];
+    navigationBar = [(PKNavigationController *)v6 navigationBar];
+    [navigationBar setPrefersLargeTitles:1];
 
     [(PKPassGroupsViewController *)self presentViewController:v6 animated:1 completion:0];
     v5 = v8;
@@ -13040,8 +13040,8 @@ void __52__PKPassGroupsViewController_presentOrderManagement__block_invoke()
 - (void)presentAutoFillCards
 {
   v3 = [[PKPaymentSetupDismissibleNavigationController alloc] initWithContext:0];
-  v4 = [MEMORY[0x1E69B8EF8] sharedService];
-  v5 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:v4];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v5 = [objc_alloc(MEMORY[0x1E69B8D48]) initWithWebService:mEMORY[0x1E69B8EF8]];
   v6 = [objc_alloc(MEMORY[0x1E69B90E0]) initWithEnvironment:0 provisioningController:v5 groupsController:0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -13075,23 +13075,23 @@ uint64_t __50__PKPassGroupsViewController_presentAutoFillCards__block_invoke_2(u
   return [v3 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_fetchAutoFillCards:(id)a3
+- (void)_fetchAutoFillCards:(id)cards
 {
-  v4 = a3;
+  cardsCopy = cards;
   v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:&unk_1F3CC8738];
   autoFillCardManager = self->_autoFillCardManager;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__PKPassGroupsViewController__fetchAutoFillCards___block_invoke;
   v8[3] = &unk_1E8010DA8;
-  v9 = v4;
-  v7 = v4;
+  v9 = cardsCopy;
+  v7 = cardsCopy;
   [(PKAutoFillCardManager *)autoFillCardManager activeFPANCardsWithOptions:7 allowedCardTypes:v5 sortType:1 completion:v8];
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  if ([a4 userInterfaceStyle] == 2)
+  if ([collection userInterfaceStyle] == 2)
   {
     return 2030;
   }

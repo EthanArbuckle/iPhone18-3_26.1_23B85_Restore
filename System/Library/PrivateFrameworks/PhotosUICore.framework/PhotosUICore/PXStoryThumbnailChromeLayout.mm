@@ -1,15 +1,15 @@
 @interface PXStoryThumbnailChromeLayout
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (NSIndexSet)axSpriteIndexes;
 - (PXStoryLayoutSpec)spec;
 - (PXStoryThumbnailChromeLayout)init;
-- (PXStoryThumbnailChromeLayout)initWithModel:(id)a3;
-- (id)_baseConfigurationForButtonWithSystemImageName:(id)a3;
-- (id)_buttonConfigurationForSpriteIndex:(unsigned int)a3;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (void)_handleDetailsViewButton:(id)a3;
-- (void)_handleFavoriteButton:(id)a3;
-- (void)_handlePlayButton:(id)a3;
+- (PXStoryThumbnailChromeLayout)initWithModel:(id)model;
+- (id)_baseConfigurationForButtonWithSystemImageName:(id)name;
+- (id)_buttonConfigurationForSpriteIndex:(unsigned int)index;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
+- (void)_handleDetailsViewButton:(id)button;
+- (void)_handleFavoriteButton:(id)button;
+- (void)_handlePlayButton:(id)button;
 - (void)_invalidateContent;
 - (void)_invalidateContentAlpha;
 - (void)_invalidateIsFavorite;
@@ -19,13 +19,13 @@
 - (void)_updateIsFavorite;
 - (void)_updateTransform;
 - (void)alphaDidChange;
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
-- (void)setAlphaOverride:(id)a3;
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4;
-- (void)setIsFavorite:(BOOL)a3;
-- (void)setScaleFromTopRightCorner:(double)a3;
+- (void)setAlphaOverride:(id)override;
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference;
+- (void)setIsFavorite:(BOOL)favorite;
+- (void)setScaleFromTopRightCorner:(double)corner;
 - (void)update;
 @end
 
@@ -36,8 +36,8 @@
   axSpriteIndexes = self->_axSpriteIndexes;
   if (!axSpriteIndexes)
   {
-    v4 = [(PXStoryThumbnailChromeLayout *)self localNumberOfSprites];
-    v5 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, v4}];
+    localNumberOfSprites = [(PXStoryThumbnailChromeLayout *)self localNumberOfSprites];
+    v5 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, localNumberOfSprites}];
     v6 = self->_axSpriteIndexes;
     self->_axSpriteIndexes = v5;
 
@@ -47,31 +47,31 @@
   return axSpriteIndexes;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v11 = a3;
-  if (ModelObservationContext_130060 != a5)
+  observableCopy = observable;
+  if (ModelObservationContext_130060 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:410 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:410 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if ((a4 & 0x200000000000) != 0)
+  if ((change & 0x200000000000) != 0)
   {
     [(PXStoryThumbnailChromeLayout *)self _invalidateIsFavorite];
-    if ((a4 & 0x2000) == 0)
+    if ((change & 0x2000) == 0)
     {
 LABEL_4:
-      if ((a4 & 0x4000000000000000) == 0)
+      if ((change & 0x4000000000000000) == 0)
       {
         goto LABEL_5;
       }
 
 LABEL_11:
       [(PXStoryThumbnailChromeLayout *)self _invalidateContentAlpha];
-      if ((a4 & 0x8000000000000000) == 0)
+      if ((change & 0x8000000000000000) == 0)
       {
         goto LABEL_6;
       }
@@ -80,19 +80,19 @@ LABEL_11:
     }
   }
 
-  else if ((a4 & 0x2000) == 0)
+  else if ((change & 0x2000) == 0)
   {
     goto LABEL_4;
   }
 
   [(PXStoryThumbnailChromeLayout *)self _invalidateContentVersion];
-  if ((a4 & 0x4000000000000000) != 0)
+  if ((change & 0x4000000000000000) != 0)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if ((a4 & 0x8000000000000000) == 0)
+  if ((change & 0x8000000000000000) == 0)
   {
     goto LABEL_6;
   }
@@ -100,11 +100,11 @@ LABEL_5:
 LABEL_12:
   [(PXStoryThumbnailChromeLayout *)self _invalidateTransform];
 LABEL_6:
-  v9 = [(PXStoryThumbnailChromeLayout *)self spec];
-  if ([v9 thumbnailChromeShowsPlayButton])
+  spec = [(PXStoryThumbnailChromeLayout *)self spec];
+  if ([spec thumbnailChromeShowsPlayButton])
   {
 
-    if ((a4 & 0x2000000000000000) != 0)
+    if ((change & 0x2000000000000000) != 0)
     {
       [(PXStoryThumbnailChromeLayout *)self _invalidateContentVersion];
     }
@@ -115,12 +115,12 @@ LABEL_6:
   }
 }
 
-- (void)setDetailedPlacementOverride:(id)a3 forItemReference:(id)a4
+- (void)setDetailedPlacementOverride:(id)override forItemReference:(id)reference
 {
-  if (a3)
+  if (override)
   {
     v5 = MEMORY[0x1E696AD98];
-    [a3 chromeAlpha];
+    [override chromeAlpha];
     v6 = [v5 numberWithDouble:?];
     [(PXStoryThumbnailChromeLayout *)self setAlphaOverride:v6];
   }
@@ -132,56 +132,56 @@ LABEL_6:
   }
 }
 
-- (void)getDetailedPresentedPlacement:(id)a3 forItemReference:(id)a4
+- (void)getDetailedPresentedPlacement:(id)placement forItemReference:(id)reference
 {
-  v5 = a3;
+  placementCopy = placement;
   [(PXStoryThumbnailChromeLayout *)self alpha];
-  [v5 setChromeAlpha:?];
+  [placementCopy setChromeAlpha:?];
 }
 
-- (void)_handleDetailsViewButton:(id)a3
+- (void)_handleDetailsViewButton:(id)button
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryThumbnailChromeLayout *)self actionPerformer];
-  v4 = [v3 presentDetailsViewAction];
+  actionPerformer = [(PXStoryThumbnailChromeLayout *)self actionPerformer];
+  presentDetailsViewAction = [actionPerformer presentDetailsViewAction];
 
-  if (!v4)
+  if (!presentDetailsViewAction)
   {
     PXAssertGetLog();
   }
 
-  v5 = [v3 presentDetailsViewAction];
-  v5[2]();
+  presentDetailsViewAction2 = [actionPerformer presentDetailsViewAction];
+  presentDetailsViewAction2[2]();
 }
 
-- (void)_handlePlayButton:(id)a3
+- (void)_handlePlayButton:(id)button
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryThumbnailChromeLayout *)self actionPerformer];
-  v4 = [v3 presentPlayerAction];
+  actionPerformer = [(PXStoryThumbnailChromeLayout *)self actionPerformer];
+  presentPlayerAction = [actionPerformer presentPlayerAction];
 
-  if (!v4)
+  if (!presentPlayerAction)
   {
     PXAssertGetLog();
   }
 
-  v5 = [v3 presentPlayerAction];
-  v5[2]();
+  presentPlayerAction2 = [actionPerformer presentPlayerAction];
+  presentPlayerAction2[2]();
 }
 
-- (void)_handleFavoriteButton:(id)a3
+- (void)_handleFavoriteButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(PXStoryThumbnailChromeLayout *)self setIsFavorite:[(PXStoryThumbnailChromeLayout *)self isFavorite]^ 1];
   objc_initWeak(&location, self);
-  v5 = [(PXStoryThumbnailChromeLayout *)self actionPerformer];
-  v6 = [(PXStoryThumbnailChromeLayout *)self isFavorite];
+  actionPerformer = [(PXStoryThumbnailChromeLayout *)self actionPerformer];
+  isFavorite = [(PXStoryThumbnailChromeLayout *)self isFavorite];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__PXStoryThumbnailChromeLayout__handleFavoriteButton___block_invoke;
   v7[3] = &unk_1E7747EB0;
   objc_copyWeak(&v8, &location);
-  [v5 setFavorite:v6 completionHandler:v7];
+  [actionPerformer setFavorite:isFavorite completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -196,24 +196,24 @@ void __54__PXStoryThumbnailChromeLayout__handleFavoriteButton___block_invoke(uin
   }
 }
 
-- (id)_baseConfigurationForButtonWithSystemImageName:(id)a3
+- (id)_baseConfigurationForButtonWithSystemImageName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(PXStoryChromeButtonConfiguration);
-  [(PXStoryChromeButtonConfiguration *)v5 setSystemImageName:v4];
+  [(PXStoryChromeButtonConfiguration *)v5 setSystemImageName:nameCopy];
 
   [(PXStoryChromeButtonConfiguration *)v5 setTarget:self];
-  v6 = [(PXStoryThumbnailChromeLayout *)self spec];
-  v7 = [v6 thumbnailChromeButtonSpec];
-  [(PXStoryChromeButtonConfiguration *)v5 setSpec:v7];
+  spec = [(PXStoryThumbnailChromeLayout *)self spec];
+  thumbnailChromeButtonSpec = [spec thumbnailChromeButtonSpec];
+  [(PXStoryChromeButtonConfiguration *)v5 setSpec:thumbnailChromeButtonSpec];
 
   [(PXStoryChromeButtonConfiguration *)v5 setPointerShape:1];
   PXEdgeInsetsMake();
 }
 
-- (id)_buttonConfigurationForSpriteIndex:(unsigned int)a3
+- (id)_buttonConfigurationForSpriteIndex:(unsigned int)index
 {
-  if (self->_actionMenuButtonSpriteIndex == a3)
+  if (self->_actionMenuButtonSpriteIndex == index)
   {
     v4 = [(PXStoryThumbnailChromeLayout *)self _baseConfigurationForButtonWithSystemImageName:@"ellipsis.circle"];
     v5 = [PXMenuBuilder defaultStoryThumbnailActionsMenuWithModel:self->_model isFavorite:[(PXStoryThumbnailChromeLayout *)self isFavorite]];
@@ -222,7 +222,7 @@ void __54__PXStoryThumbnailChromeLayout__handleFavoriteButton___block_invoke(uin
     goto LABEL_13;
   }
 
-  if (self->_favoriteButtonSpriteIndex == a3)
+  if (self->_favoriteButtonSpriteIndex == index)
   {
     if ([(PXStoryThumbnailChromeLayout *)self isFavorite])
     {
@@ -241,17 +241,17 @@ void __54__PXStoryThumbnailChromeLayout__handleFavoriteButton___block_invoke(uin
 
   else
   {
-    if (self->_playButtonSpriteIndex == a3)
+    if (self->_playButtonSpriteIndex == index)
     {
       v4 = [(PXStoryThumbnailChromeLayout *)self _baseConfigurationForButtonWithSystemImageName:@"play.fill"];
       [v4 setAction:sel__handlePlayButton_];
-      v9 = [(PXStoryThumbnailChromeLayout *)self spec];
-      v10 = [v9 thumbnailChromePlayButtonSpec];
-      [v4 setSpec:v10];
+      spec = [(PXStoryThumbnailChromeLayout *)self spec];
+      thumbnailChromePlayButtonSpec = [spec thumbnailChromePlayButtonSpec];
+      [v4 setSpec:thumbnailChromePlayButtonSpec];
 
-      v11 = [(PXStoryThumbnailChromeLayout *)self spec];
-      v12 = [v11 thumbnailChromePlayButtonSpec];
-      [v4 setBackgroundStyle:{objc_msgSend(v12, "backgroundStyle")}];
+      spec2 = [(PXStoryThumbnailChromeLayout *)self spec];
+      thumbnailChromePlayButtonSpec2 = [spec2 thumbnailChromePlayButtonSpec];
+      [v4 setBackgroundStyle:{objc_msgSend(thumbnailChromePlayButtonSpec2, "backgroundStyle")}];
 
       [v4 setBackgroundExtendsUnderLabel:1];
       v13 = PXLocalizedStringFromTable(@"InteractiveMemoryCardActionPlay", @"PhotosUICore");
@@ -261,22 +261,22 @@ void __54__PXStoryThumbnailChromeLayout__handleFavoriteButton___block_invoke(uin
       goto LABEL_13;
     }
 
-    if (self->_detailsViewButtonSpriteIndex != a3)
+    if (self->_detailsViewButtonSpriteIndex != index)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:332 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:332 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
     v4 = [(PXStoryThumbnailChromeLayout *)self _baseConfigurationForButtonWithSystemImageName:@"square.grid.3x3.fill"];
-    v14 = [(PXStoryThumbnailChromeLayout *)self spec];
-    v15 = [v14 thumbnailChromeDetailsViewButtonSpec];
-    [v4 setSpec:v15];
+    spec3 = [(PXStoryThumbnailChromeLayout *)self spec];
+    thumbnailChromeDetailsViewButtonSpec = [spec3 thumbnailChromeDetailsViewButtonSpec];
+    [v4 setSpec:thumbnailChromeDetailsViewButtonSpec];
 
-    v16 = [(PXStoryThumbnailChromeLayout *)self spec];
-    v17 = [v16 thumbnailChromeDetailsViewButtonSpec];
-    [v4 setSystemImageStyle:{objc_msgSend(v17, "systemImageStyle")}];
+    spec4 = [(PXStoryThumbnailChromeLayout *)self spec];
+    thumbnailChromeDetailsViewButtonSpec2 = [spec4 thumbnailChromeDetailsViewButtonSpec];
+    [v4 setSystemImageStyle:{objc_msgSend(thumbnailChromeDetailsViewButtonSpec2, "systemImageStyle")}];
 
     v8 = sel__handleDetailsViewButton_;
     v7 = v4;
@@ -288,10 +288,10 @@ LABEL_13:
   return v4;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&index;
+  layoutCopy = layout;
   [(PXStoryThumbnailChromeLayout *)self referenceSize];
   [(PXStoryThumbnailChromeLayout *)self geometryForSpriteAtIndex:v4];
   v9 = 0u;
@@ -301,13 +301,13 @@ LABEL_13:
   PXPointSubtract();
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_actionMenuButtonSpriteIndex != a3 && self->_favoriteButtonSpriteIndex != a3 && self->_playButtonSpriteIndex != a3 && self->_detailsViewButtonSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_actionMenuButtonSpriteIndex != index && self->_favoriteButtonSpriteIndex != index && self->_playButtonSpriteIndex != index && self->_detailsViewButtonSpriteIndex != index)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:293 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:293 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -321,31 +321,31 @@ LABEL_13:
 {
   [(PXStoryThumbnailChromeLayout *)self alpha];
   v4 = v3;
-  v5 = [(PXStoryThumbnailChromeLayout *)self alphaOverride];
-  v6 = v5;
-  if (v5)
+  alphaOverride = [(PXStoryThumbnailChromeLayout *)self alphaOverride];
+  v6 = alphaOverride;
+  if (alphaOverride)
   {
-    [v5 floatValue];
+    [alphaOverride floatValue];
     v4 = v7;
   }
 
   v8 = +[PXStorySettings sharedInstance];
-  v9 = 1.0;
+  isHovering = 1.0;
   if ([v8 showFeedChromeOnHover])
   {
-    v10 = [(PXStoryThumbnailChromeLayout *)self model];
-    v9 = [v10 isHovering];
+    model = [(PXStoryThumbnailChromeLayout *)self model];
+    isHovering = [model isHovering];
   }
 
-  v11 = [(PXStoryThumbnailChromeLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXStoryThumbnailChromeLayout *)self localNumberOfSprites];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__PXStoryThumbnailChromeLayout__updateContentAlpha__block_invoke;
   v12[3] = &unk_1E774B270;
   v12[4] = self;
   *&v12[5] = v4;
-  *&v12[6] = v9;
-  [(PXStoryThumbnailChromeLayout *)self modifySpritesInRange:v11 << 32 state:v12];
+  *&v12[6] = isHovering;
+  [(PXStoryThumbnailChromeLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v12];
 }
 
 void __51__PXStoryThumbnailChromeLayout__updateContentAlpha__block_invoke(uint64_t a1, unint64_t a2, uint64_t a3, float *a4)
@@ -415,9 +415,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout _invalidateContentAlpha]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:258 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:258 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -669,9 +669,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:180 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:180 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -697,8 +697,8 @@ LABEL_5:
 {
   [(PXStoryThumbnailChromeLayout *)self referenceSize];
   v4 = v3;
-  v5 = [(PXStoryThumbnailChromeLayout *)self model];
-  [v5 pressAnimationInfo];
+  model = [(PXStoryThumbnailChromeLayout *)self model];
+  [model pressAnimationInfo];
   v7 = v6;
 
   v8 = v4 >= v7 || v7 <= 0.0;
@@ -727,9 +727,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout _invalidateTransform]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:165 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:165 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -753,8 +753,8 @@ LABEL_5:
 
 - (void)_updateIsFavorite
 {
-  v3 = [(PXStoryThumbnailChromeLayout *)self model];
-  -[PXStoryThumbnailChromeLayout setIsFavorite:](self, "setIsFavorite:", [v3 currentAssetCollectionIsFavorite]);
+  model = [(PXStoryThumbnailChromeLayout *)self model];
+  -[PXStoryThumbnailChromeLayout setIsFavorite:](self, "setIsFavorite:", [model currentAssetCollectionIsFavorite]);
 }
 
 - (void)_invalidateIsFavorite
@@ -773,9 +773,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout _invalidateIsFavorite]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:157 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:157 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -806,9 +806,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout update]"];
-      [v8 handleFailureInFunction:v9 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -821,9 +821,9 @@ LABEL_5:
       [(PXStoryThumbnailChromeLayout *)self _updateIsFavorite];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout update]"];
-        [v10 handleFailureInFunction:v11 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v11 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -837,9 +837,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -852,9 +852,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v15 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -869,9 +869,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v7)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryThumbnailChromeLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:152 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v17 file:@"PXStoryThumbnailChromeLayout.m" lineNumber:152 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -880,48 +880,48 @@ LABEL_5:
   [(PXGCompositeLayout *)&v18 update];
 }
 
-- (void)setAlphaOverride:(id)a3
+- (void)setAlphaOverride:(id)override
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_alphaOverride != v5)
+  overrideCopy = override;
+  v6 = overrideCopy;
+  if (self->_alphaOverride != overrideCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = overrideCopy;
+    v7 = [(NSNumber *)overrideCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_alphaOverride, a3);
+      objc_storeStrong(&self->_alphaOverride, override);
       [(PXStoryThumbnailChromeLayout *)self _invalidateContentAlpha];
       v6 = v8;
     }
   }
 }
 
-- (void)setIsFavorite:(BOOL)a3
+- (void)setIsFavorite:(BOOL)favorite
 {
-  if (self->_isFavorite != a3)
+  if (self->_isFavorite != favorite)
   {
-    self->_isFavorite = a3;
+    self->_isFavorite = favorite;
     [(PXStoryThumbnailChromeLayout *)self _invalidateContentVersion];
   }
 }
 
-- (void)setScaleFromTopRightCorner:(double)a3
+- (void)setScaleFromTopRightCorner:(double)corner
 {
-  if (self->_scaleFromTopRightCorner != a3)
+  if (self->_scaleFromTopRightCorner != corner)
   {
-    self->_scaleFromTopRightCorner = a3;
+    self->_scaleFromTopRightCorner = corner;
     [(PXStoryThumbnailChromeLayout *)self _invalidateContentVersion];
   }
 }
 
 - (PXStoryLayoutSpec)spec
 {
-  v2 = [(PXStoryThumbnailChromeLayout *)self model];
-  v3 = [v2 layoutSpec];
+  model = [(PXStoryThumbnailChromeLayout *)self model];
+  layoutSpec = [model layoutSpec];
 
-  return v3;
+  return layoutSpec;
 }
 
 - (void)alphaDidChange
@@ -941,22 +941,22 @@ LABEL_5:
   [(PXStoryThumbnailChromeLayout *)self _invalidateContent];
 }
 
-- (PXStoryThumbnailChromeLayout)initWithModel:(id)a3
+- (PXStoryThumbnailChromeLayout)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = PXStoryThumbnailChromeLayout;
   v6 = [(PXGAbsoluteCompositeLayout *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
     [(PXStoryModel *)v7->_model registerChangeObserver:v7 context:ModelObservationContext_130060];
-    v8 = [v5 thumbnailActionPerformer];
+    thumbnailActionPerformer = [modelCopy thumbnailActionPerformer];
     actionPerformer = v7->_actionPerformer;
-    v7->_actionPerformer = v8;
+    v7->_actionPerformer = thumbnailActionPerformer;
 
-    v10 = [v5 layoutSpec];
+    layoutSpec = [modelCopy layoutSpec];
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
@@ -967,10 +967,10 @@ LABEL_5:
     aBlock[3] = &unk_1E773BA78;
     aBlock[4] = &v14;
     v11 = _Block_copy(aBlock);
-    v7->_favoriteButtonSpriteIndex = v11[2](v11, [v10 thumbnailChromeShowsFavoriteButton]);
-    v7->_actionMenuButtonSpriteIndex = v11[2](v11, [v10 thumbnailChromeShowsActionMenuButton]);
-    v7->_playButtonSpriteIndex = v11[2](v11, [v10 thumbnailChromeShowsPlayButton]);
-    v7->_detailsViewButtonSpriteIndex = v11[2](v11, [v5 detailsViewButtonDisplayStyle] == 2);
+    v7->_favoriteButtonSpriteIndex = v11[2](v11, [layoutSpec thumbnailChromeShowsFavoriteButton]);
+    v7->_actionMenuButtonSpriteIndex = v11[2](v11, [layoutSpec thumbnailChromeShowsActionMenuButton]);
+    v7->_playButtonSpriteIndex = v11[2](v11, [layoutSpec thumbnailChromeShowsPlayButton]);
+    v7->_detailsViewButtonSpriteIndex = v11[2](v11, [modelCopy detailsViewButtonDisplayStyle] == 2);
     [(PXStoryThumbnailChromeLayout *)v7 addSpriteCount:*(v15 + 6) withInitialState:&__block_literal_global_130120];
     [(PXStoryThumbnailChromeLayout *)v7 setContentSource:v7];
     [(PXStoryThumbnailChromeLayout *)v7 _invalidateIsFavorite];
@@ -1037,8 +1037,8 @@ void __46__PXStoryThumbnailChromeLayout_initWithModel___block_invoke_2(uint64_t 
 
 - (PXStoryThumbnailChromeLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:60 description:{@"%s is not available as initializer", "-[PXStoryThumbnailChromeLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryThumbnailChromeLayout.m" lineNumber:60 description:{@"%s is not available as initializer", "-[PXStoryThumbnailChromeLayout init]"}];
 
   abort();
 }

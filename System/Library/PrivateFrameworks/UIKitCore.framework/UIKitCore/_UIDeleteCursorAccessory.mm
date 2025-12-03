@@ -1,18 +1,18 @@
 @interface _UIDeleteCursorAccessory
-- (_UIDeleteCursorAccessory)initWithCoder:(id)a3;
+- (_UIDeleteCursorAccessory)initWithCoder:(id)coder;
 - (id)descriptionBuilder;
 - (id)identifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIDeleteCursorAccessory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = _UIDeleteCursorAccessory;
-  [(_UICursorAccessory *)&v3 encodeWithCoder:a3];
+  [(_UICursorAccessory *)&v3 encodeWithCoder:coder];
 }
 
 - (unint64_t)hash
@@ -22,34 +22,34 @@
   return [(_UICursorAccessory *)&v3 hash];
 }
 
-- (_UIDeleteCursorAccessory)initWithCoder:(id)a3
+- (_UIDeleteCursorAccessory)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIDeleteCursorAccessory;
-  return [(_UICursorAccessory *)&v4 initWithCoder:a3];
+  return [(_UICursorAccessory *)&v4 initWithCoder:coder];
 }
 
 - (id)descriptionBuilder
 {
   v4.receiver = self;
   v4.super_class = _UIDeleteCursorAccessory;
-  v2 = [(_UICursorAccessory *)&v4 descriptionBuilder];
+  descriptionBuilder = [(_UICursorAccessory *)&v4 descriptionBuilder];
 
-  return v2;
+  return descriptionBuilder;
 }
 
 - (id)identifier
 {
   v5.receiver = self;
   v5.super_class = _UIDeleteCursorAccessory;
-  v3 = [(_UICursorAccessory *)&v5 identifier];
-  if (!v3)
+  identifier = [(_UICursorAccessory *)&v5 identifier];
+  if (!identifier)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"del"];
-    [(_UICursorAccessory *)self setIdentifier:v3];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"del"];
+    [(_UICursorAccessory *)self setIdentifier:identifier];
   }
 
-  return v3;
+  return identifier;
 }
 
 @end

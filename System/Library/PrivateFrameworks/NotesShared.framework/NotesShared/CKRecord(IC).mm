@@ -38,21 +38,21 @@
 - (id)ic_loggingDescription
 {
   v2 = MEMORY[0x277CCAB68];
-  v3 = [a1 recordType];
-  v4 = [a1 recordID];
-  v5 = [v4 ic_loggingDescriptionIncludingBrackets:0];
-  v6 = [v2 stringWithFormat:@"<%@ %@", v3, v5];
+  recordType = [self recordType];
+  recordID = [self recordID];
+  v5 = [recordID ic_loggingDescriptionIncludingBrackets:0];
+  v6 = [v2 stringWithFormat:@"<%@ %@", recordType, v5];
 
-  v7 = [a1 recordChangeTag];
-  [v6 appendFormat:@" changeTag=%@", v7];
+  recordChangeTag = [self recordChangeTag];
+  [v6 appendFormat:@" changeTag=%@", recordChangeTag];
 
-  v8 = [a1 parent];
-  v9 = [v8 recordID];
-  v10 = [v9 recordName];
-  v11 = v10;
-  if (v10)
+  parent = [self parent];
+  recordID2 = [parent recordID];
+  recordName = [recordID2 recordName];
+  v11 = recordName;
+  if (recordName)
   {
-    v12 = v10;
+    v12 = recordName;
   }
 
   else
@@ -62,12 +62,12 @@
 
   [v6 appendFormat:@" parent=%@", v12];
 
-  v13 = [a1 creationDate];
-  v14 = [v13 ic_iso8601Date];
-  v15 = v14;
-  if (v14)
+  creationDate = [self creationDate];
+  ic_iso8601Date = [creationDate ic_iso8601Date];
+  v15 = ic_iso8601Date;
+  if (ic_iso8601Date)
   {
-    v16 = v14;
+    v16 = ic_iso8601Date;
   }
 
   else
@@ -77,12 +77,12 @@
 
   [v6 appendFormat:@" created=%@", v16];
 
-  v17 = [a1 creatorUserRecordID];
-  v18 = [v17 recordName];
-  v19 = v18;
-  if (v18)
+  creatorUserRecordID = [self creatorUserRecordID];
+  recordName2 = [creatorUserRecordID recordName];
+  v19 = recordName2;
+  if (recordName2)
   {
-    v20 = v18;
+    v20 = recordName2;
   }
 
   else
@@ -92,12 +92,12 @@
 
   [v6 appendFormat:@" creator=%@", v20];
 
-  v21 = [a1 modificationDate];
-  v22 = [v21 ic_iso8601Date];
-  v23 = v22;
-  if (v22)
+  modificationDate = [self modificationDate];
+  ic_iso8601Date2 = [modificationDate ic_iso8601Date];
+  v23 = ic_iso8601Date2;
+  if (ic_iso8601Date2)
   {
-    v24 = v22;
+    v24 = ic_iso8601Date2;
   }
 
   else
@@ -107,11 +107,11 @@
 
   [v6 appendFormat:@" modified=%@", v24];
 
-  v25 = [a1 modifiedByDevice];
-  v26 = v25;
-  if (v25)
+  modifiedByDevice = [self modifiedByDevice];
+  v26 = modifiedByDevice;
+  if (modifiedByDevice)
   {
-    v27 = v25;
+    v27 = modifiedByDevice;
   }
 
   else
@@ -121,14 +121,14 @@
 
   [v6 appendFormat:@" modifiedByDevice=%@", v27];
 
-  v28 = [a1 share];
+  share = [self share];
 
-  if (v28)
+  if (share)
   {
-    v29 = [a1 share];
-    v30 = [v29 recordID];
-    v31 = [v30 recordName];
-    [v6 appendFormat:@" share=%@", v31];
+    share2 = [self share];
+    recordID3 = [share2 recordID];
+    recordName3 = [recordID3 recordName];
+    [v6 appendFormat:@" share=%@", recordName3];
   }
 
   [v6 appendString:@">"];
@@ -138,25 +138,25 @@
 
 - (uint64_t)databaseScope
 {
-  v1 = [a1 recordID];
-  v2 = [v1 databaseScope];
+  recordID = [self recordID];
+  databaseScope = [recordID databaseScope];
 
-  return v2;
+  return databaseScope;
 }
 
 - (BOOL)ic_hasMetadata
 {
-  v2 = [a1 creationDate];
-  if (v2)
+  creationDate = [self creationDate];
+  if (creationDate)
   {
-    v3 = [a1 creatorUserRecordID];
-    if (v3)
+    creatorUserRecordID = [self creatorUserRecordID];
+    if (creatorUserRecordID)
     {
-      v4 = [a1 modificationDate];
-      if (v4)
+      modificationDate = [self modificationDate];
+      if (modificationDate)
       {
-        v5 = [a1 lastModifiedUserRecordID];
-        v6 = v5 != 0;
+        lastModifiedUserRecordID = [self lastModifiedUserRecordID];
+        v6 = lastModifiedUserRecordID != 0;
       }
 
       else
@@ -181,17 +181,17 @@
 
 - (uint64_t)ic_isOwnedByCurrentUser
 {
-  v1 = [a1 recordID];
-  v2 = [v1 ic_isOwnedByCurrentUser];
+  recordID = [self recordID];
+  ic_isOwnedByCurrentUser = [recordID ic_isOwnedByCurrentUser];
 
-  return v2;
+  return ic_isOwnedByCurrentUser;
 }
 
 + (id)ic_assetKeyForKeyPrefix:()IC
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [a3 ic_trimmedString];
-  v5 = [v3 stringWithFormat:@"%@Asset", v4];
+  ic_trimmedString = [a3 ic_trimmedString];
+  v5 = [v3 stringWithFormat:@"%@Asset", ic_trimmedString];
 
   return v5;
 }
@@ -199,8 +199,8 @@
 + (id)ic_encryptedKeyForKeyPrefix:()IC
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [a3 ic_trimmedString];
-  v5 = [v3 stringWithFormat:@"%@Encrypted", v4];
+  ic_trimmedString = [a3 ic_trimmedString];
+  v5 = [v3 stringWithFormat:@"%@Encrypted", ic_trimmedString];
 
   return v5;
 }
@@ -208,7 +208,7 @@
 + (id)ic_encryptedDataKeyForAssetKey:()IC
 {
   v4 = [a3 ic_stringWithoutSuffix:@"Asset"];
-  v5 = [a1 ic_encryptedKeyForKeyPrefix:v4];
+  v5 = [self ic_encryptedKeyForKeyPrefix:v4];
 
   return v5;
 }
@@ -231,9 +231,9 @@
 {
   v4 = a3;
   objc_opt_class();
-  v5 = [a1 valuesByKey];
+  valuesByKey = [self valuesByKey];
   v6 = [objc_opt_class() ic_valueKeyForKeyPrefix:v4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [valuesByKey objectForKeyedSubscript:v6];
   v8 = ICCheckedDynamicCast();
 
   if (v8)
@@ -244,9 +244,9 @@
   else
   {
     objc_opt_class();
-    v10 = [a1 valuesByKey];
+    valuesByKey2 = [self valuesByKey];
     v11 = [objc_opt_class() ic_assetKeyForKeyPrefix:v4];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    v12 = [valuesByKey2 objectForKeyedSubscript:v11];
     v13 = ICCheckedDynamicCast();
 
     if (v13)
@@ -272,37 +272,37 @@
   v13 = [objc_opt_class() ic_assetKeyForKeyPrefix:v11];
   v14 = [objc_opt_class() ic_encryptedKeyForKeyPrefix:v11];
 
-  v15 = [v10 managedObjectContext];
-  v16 = [ICAssetSignature shouldWriteAssetIfNeededToKey:v13 inRecord:a1 forObject:v10 context:v15];
+  managedObjectContext = [v10 managedObjectContext];
+  v16 = [ICAssetSignature shouldWriteAssetIfNeededToKey:v13 inRecord:self forObject:v10 context:managedObjectContext];
 
-  if ([a1 ic_shouldUseAssetForInlineableDataAsset:v23 approach:a5])
+  if ([self ic_shouldUseAssetForInlineableDataAsset:v23 approach:a5])
   {
     if (!v16)
     {
       goto LABEL_6;
     }
 
-    v17 = [ICCloudSyncingObject assetForData:v23];
-    v18 = [a1 valuesByKey];
-    [v18 setObject:0 forKeyedSubscript:v12];
+    encryptedValues2 = [ICCloudSyncingObject assetForData:v23];
+    valuesByKey = [self valuesByKey];
+    [valuesByKey setObject:0 forKeyedSubscript:v12];
 
-    v19 = [a1 valuesByKey];
-    [v19 setObject:v17 forKeyedSubscript:v13];
+    valuesByKey2 = [self valuesByKey];
+    [valuesByKey2 setObject:encryptedValues2 forKeyedSubscript:v13];
 
-    v20 = [a1 encryptedValues];
-    [v20 setObject:0 forKeyedSubscript:v14];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:0 forKeyedSubscript:v14];
   }
 
   else
   {
-    v21 = [a1 valuesByKey];
-    [v21 setObject:v23 forKeyedSubscript:v12];
+    valuesByKey3 = [self valuesByKey];
+    [valuesByKey3 setObject:v23 forKeyedSubscript:v12];
 
-    v22 = [a1 valuesByKey];
-    [v22 setObject:0 forKeyedSubscript:v13];
+    valuesByKey4 = [self valuesByKey];
+    [valuesByKey4 setObject:0 forKeyedSubscript:v13];
 
-    v17 = [a1 encryptedValues];
-    [v17 setObject:0 forKeyedSubscript:v14];
+    encryptedValues2 = [self encryptedValues];
+    [encryptedValues2 setObject:0 forKeyedSubscript:v14];
   }
 
 LABEL_6:
@@ -312,9 +312,9 @@ LABEL_6:
 {
   v4 = a3;
   objc_opt_class();
-  v5 = [a1 encryptedValues];
+  encryptedValues = [self encryptedValues];
   v6 = [objc_opt_class() ic_encryptedKeyForKeyPrefix:v4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [encryptedValues objectForKeyedSubscript:v6];
   v8 = ICCheckedDynamicCast();
 
   if (v8)
@@ -325,9 +325,9 @@ LABEL_6:
   else
   {
     objc_opt_class();
-    v10 = [a1 valuesByKey];
+    valuesByKey = [self valuesByKey];
     v11 = [objc_opt_class() ic_assetKeyForKeyPrefix:v4];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    v12 = [valuesByKey objectForKeyedSubscript:v11];
     v13 = ICCheckedDynamicCast();
 
     if (v13)
@@ -353,37 +353,37 @@ LABEL_6:
   v13 = [objc_opt_class() ic_assetKeyForKeyPrefix:v11];
   v14 = [objc_opt_class() ic_encryptedKeyForKeyPrefix:v11];
 
-  v15 = [v10 managedObjectContext];
-  v16 = [ICAssetSignature shouldWriteAssetIfNeededToKey:v13 inRecord:a1 forObject:v10 context:v15];
+  managedObjectContext = [v10 managedObjectContext];
+  v16 = [ICAssetSignature shouldWriteAssetIfNeededToKey:v13 inRecord:self forObject:v10 context:managedObjectContext];
 
-  if ([a1 ic_shouldUseAssetForInlineableDataAsset:v23 approach:a5])
+  if ([self ic_shouldUseAssetForInlineableDataAsset:v23 approach:a5])
   {
     if (!v16)
     {
       goto LABEL_6;
     }
 
-    v17 = [ICCloudSyncingObject assetForData:v23];
-    v18 = [a1 valuesByKey];
-    [v18 setObject:0 forKeyedSubscript:v12];
+    encryptedValues2 = [ICCloudSyncingObject assetForData:v23];
+    valuesByKey = [self valuesByKey];
+    [valuesByKey setObject:0 forKeyedSubscript:v12];
 
-    v19 = [a1 valuesByKey];
-    [v19 setObject:v17 forKeyedSubscript:v13];
+    valuesByKey2 = [self valuesByKey];
+    [valuesByKey2 setObject:encryptedValues2 forKeyedSubscript:v13];
 
-    v20 = [a1 encryptedValues];
-    [v20 setObject:0 forKeyedSubscript:v14];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:0 forKeyedSubscript:v14];
   }
 
   else
   {
-    v21 = [a1 valuesByKey];
-    [v21 setObject:0 forKeyedSubscript:v12];
+    valuesByKey3 = [self valuesByKey];
+    [valuesByKey3 setObject:0 forKeyedSubscript:v12];
 
-    v22 = [a1 valuesByKey];
-    [v22 setObject:0 forKeyedSubscript:v13];
+    valuesByKey4 = [self valuesByKey];
+    [valuesByKey4 setObject:0 forKeyedSubscript:v13];
 
-    v17 = [a1 encryptedValues];
-    [v17 setObject:v23 forKeyedSubscript:v14];
+    encryptedValues2 = [self encryptedValues];
+    [encryptedValues2 setObject:v23 forKeyedSubscript:v14];
   }
 
 LABEL_6:
@@ -397,21 +397,21 @@ LABEL_6:
   v6 = [objc_opt_class() ic_encryptedKeyForKeyPrefix:v4];
 
   objc_opt_class();
-  v7 = [a1 valuesByKey];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  valuesByKey = [self valuesByKey];
+  v8 = [valuesByKey objectForKeyedSubscript:v5];
   v9 = ICCheckedDynamicCast();
 
   if (v9)
   {
     v10 = [ICCloudSyncingObject dataForAsset:v9];
-    v11 = [a1 valuesByKey];
-    [v11 setObject:v10 forKeyedSubscript:v14];
+    valuesByKey2 = [self valuesByKey];
+    [valuesByKey2 setObject:v10 forKeyedSubscript:v14];
 
-    v12 = [a1 valuesByKey];
-    [v12 setObject:0 forKeyedSubscript:v5];
+    valuesByKey3 = [self valuesByKey];
+    [valuesByKey3 setObject:0 forKeyedSubscript:v5];
 
-    v13 = [a1 encryptedValues];
-    [v13 setObject:0 forKeyedSubscript:v6];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:0 forKeyedSubscript:v6];
   }
 }
 
@@ -423,52 +423,52 @@ LABEL_6:
   v6 = [objc_opt_class() ic_encryptedKeyForKeyPrefix:v4];
 
   objc_opt_class();
-  v7 = [a1 valuesByKey];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  valuesByKey = [self valuesByKey];
+  v8 = [valuesByKey objectForKeyedSubscript:v5];
   v9 = ICCheckedDynamicCast();
 
   if (v9)
   {
-    v10 = [a1 valuesByKey];
-    [v10 setObject:0 forKeyedSubscript:v14];
+    valuesByKey2 = [self valuesByKey];
+    [valuesByKey2 setObject:0 forKeyedSubscript:v14];
 
-    v11 = [a1 valuesByKey];
-    [v11 setObject:0 forKeyedSubscript:v5];
+    valuesByKey3 = [self valuesByKey];
+    [valuesByKey3 setObject:0 forKeyedSubscript:v5];
 
     v12 = [ICCloudSyncingObject dataForAsset:v9];
-    v13 = [a1 encryptedValues];
-    [v13 setObject:v12 forKeyedSubscript:v6];
+    encryptedValues = [self encryptedValues];
+    [encryptedValues setObject:v12 forKeyedSubscript:v6];
   }
 }
 
 - (id)ic_copyWithUserFields:()IC
 {
-  v3 = [a1 copyWithZone:0 userFields:a3];
+  v3 = [self copyWithZone:0 userFields:a3];
 
   return v3;
 }
 
 - (uint64_t)hasFetchedAssets
 {
-  v1 = a1;
+  selfCopy = self;
   v37 = *MEMORY[0x277D85DE8];
-  v2 = [a1 assetsByKey];
-  v3 = [v2 allKeys];
+  assetsByKey = [self assetsByKey];
+  allKeys = [assetsByKey allKeys];
 
-  if ([v3 count])
+  if ([allKeys count])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v4 = v3;
+    v4 = allKeys;
     v24 = [v4 countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v24)
     {
       v5 = *v31;
       v6 = 0x277CBE000uLL;
       v22 = *v31;
-      v23 = v1;
+      v23 = selfCopy;
       v25 = v4;
       do
       {
@@ -482,7 +482,7 @@ LABEL_6:
 
           v8 = *(*(&v30 + 1) + 8 * v7);
           objc_opt_class();
-          v9 = [v1 objectForKeyedSubscript:v8];
+          v9 = [selfCopy objectForKeyedSubscript:v8];
           v10 = ICDynamicCast();
 
           if (v10)
@@ -494,7 +494,7 @@ LABEL_6:
           else
           {
             objc_opt_class();
-            v12 = [v1 objectForKeyedSubscript:v8];
+            v12 = [selfCopy objectForKeyedSubscript:v8];
             v11 = ICDynamicCast();
           }
 
@@ -519,9 +519,9 @@ LABEL_6:
 
                 objc_opt_class();
                 v18 = ICDynamicCast();
-                v19 = [v18 isFetched];
+                isFetched = [v18 isFetched];
 
-                if (v19)
+                if (isFetched)
                 {
 
                   v20 = 1;
@@ -541,7 +541,7 @@ LABEL_6:
           }
 
           ++v7;
-          v1 = v23;
+          selfCopy = v23;
           v4 = v25;
           v5 = v22;
           v6 = 0x277CBE000;
@@ -573,25 +573,25 @@ LABEL_24:
 
 - (uint64_t)hasUnfetchedAssets
 {
-  v1 = a1;
+  selfCopy = self;
   v37 = *MEMORY[0x277D85DE8];
-  v2 = [a1 assetsByKey];
-  v3 = [v2 allKeys];
+  assetsByKey = [self assetsByKey];
+  allKeys = [assetsByKey allKeys];
 
-  if ([v3 count])
+  if ([allKeys count])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v4 = v3;
+    v4 = allKeys;
     v24 = [v4 countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v24)
     {
       v5 = *v31;
       v6 = 0x277CBE000uLL;
       v22 = *v31;
-      v23 = v1;
+      v23 = selfCopy;
       v25 = v4;
       do
       {
@@ -605,7 +605,7 @@ LABEL_24:
 
           v8 = *(*(&v30 + 1) + 8 * v7);
           objc_opt_class();
-          v9 = [v1 objectForKeyedSubscript:v8];
+          v9 = [selfCopy objectForKeyedSubscript:v8];
           v10 = ICDynamicCast();
 
           if (v10)
@@ -617,7 +617,7 @@ LABEL_24:
           else
           {
             objc_opt_class();
-            v12 = [v1 objectForKeyedSubscript:v8];
+            v12 = [selfCopy objectForKeyedSubscript:v8];
             v11 = ICDynamicCast();
           }
 
@@ -642,9 +642,9 @@ LABEL_24:
 
                 objc_opt_class();
                 v18 = ICDynamicCast();
-                v19 = [v18 isUnfetched];
+                isUnfetched = [v18 isUnfetched];
 
-                if (v19)
+                if (isUnfetched)
                 {
 
                   v20 = 1;
@@ -664,7 +664,7 @@ LABEL_24:
           }
 
           ++v7;
-          v1 = v23;
+          selfCopy = v23;
           v4 = v25;
           v5 = v22;
           v6 = 0x277CBE000;
@@ -697,13 +697,13 @@ LABEL_24:
 - (id)assetsByKey
 {
   v27 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [a1 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allKeys = [self allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -716,42 +716,42 @@ LABEL_24:
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v22 + 1) + 8 * v7);
         objc_opt_class();
-        v9 = [a1 objectForKeyedSubscript:v8];
+        v9 = [self objectForKeyedSubscript:v8];
         v10 = ICDynamicCast();
 
         if (v10)
         {
-          [v2 setObject:v10 forKeyedSubscript:v8];
+          [dictionary setObject:v10 forKeyedSubscript:v8];
         }
 
         else
         {
           objc_opt_class();
-          v11 = [a1 objectForKeyedSubscript:v8];
+          v11 = [self objectForKeyedSubscript:v8];
           v12 = ICDynamicCast();
 
           if ([v12 count])
           {
             objc_opt_class();
             [v12 objectAtIndexedSubscript:0];
-            v13 = a1;
+            selfCopy = self;
             v14 = v6;
-            v15 = v2;
-            v17 = v16 = v3;
+            v15 = dictionary;
+            v17 = v16 = allKeys;
             v18 = ICDynamicCast();
 
-            v3 = v16;
-            v2 = v15;
+            allKeys = v16;
+            dictionary = v15;
             v6 = v14;
-            a1 = v13;
+            self = selfCopy;
             if (v18)
             {
-              [v2 setObject:v12 forKeyedSubscript:v8];
+              [dictionary setObject:v12 forKeyedSubscript:v8];
             }
           }
 
@@ -762,13 +762,13 @@ LABEL_24:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v5);
   }
 
-  v19 = [v2 copy];
+  v19 = [dictionary copy];
 
   return v19;
 }

@@ -1,5 +1,5 @@
 @interface CKSQLiteDatabaseActivityEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)targetDescription;
 - (unint64_t)hash;
 @end
@@ -16,11 +16,11 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = objc_msgSend_databaseID(self, v5, v6);
-  v10 = objc_msgSend_databaseID(v4, v8, v9);
+  v10 = objc_msgSend_databaseID(equalCopy, v8, v9);
   v12 = v10;
   isEqualToString = 0;
   if (v7 && v10)
@@ -28,7 +28,7 @@
     if (objc_msgSend_isEqualToNumber_(v7, v11, v10))
     {
       v16 = objc_msgSend_groupID(self, v14, v15);
-      v19 = objc_msgSend_groupID(v4, v17, v18);
+      v19 = objc_msgSend_groupID(equalCopy, v17, v18);
       v21 = v19;
       isEqualToString = 0;
       if (v16 && v19)
@@ -36,7 +36,7 @@
         if (objc_msgSend_isEqualToNumber_(v16, v20, v19))
         {
           v24 = objc_msgSend_tableName(self, v22, v23);
-          v27 = objc_msgSend_tableName(v4, v25, v26);
+          v27 = objc_msgSend_tableName(equalCopy, v25, v26);
           v29 = v27;
           if (v24 == v27)
           {

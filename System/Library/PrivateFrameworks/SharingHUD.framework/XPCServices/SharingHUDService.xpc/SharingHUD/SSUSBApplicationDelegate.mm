@@ -1,17 +1,17 @@
 @interface SSUSBApplicationDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (id)setupWindowWithNewRoot;
-- (int64_t)pnpDeviceTypeForType:(unint64_t)a3;
+- (int64_t)pnpDeviceTypeForType:(unint64_t)type;
 - (void)acquireHUDTransaction;
 - (void)activate;
 - (void)didRequestEnablingBluetooth;
 - (void)didTapToPairPencil;
 - (void)dismissBTPrompt;
 - (void)dismissChargingStatus;
-- (void)dismissUIAnimated:(BOOL)a3;
+- (void)dismissUIAnimated:(BOOL)animated;
 - (void)dismissUnlockPrompt;
 - (void)releaseHUDTransaction;
-- (void)setPendingOperation:(unint64_t)a3;
+- (void)setPendingOperation:(unint64_t)operation;
 - (void)showChargingStatus;
 - (void)showEnableBluetoothPill;
 - (void)showPairConsentPrompt;
@@ -20,7 +20,7 @@
 - (void)showSubsequentPairSuccess;
 - (void)showUnlockPrompt;
 - (void)updatePairedUnlockBannerToUnlocked;
-- (void)viewControllerDidDismiss:(id)a3;
+- (void)viewControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation SSUSBApplicationDelegate
@@ -105,9 +105,9 @@
   objc_copyWeak(&v27, &from);
   [(CUSystemMonitor *)self->_systemMonitor setScreenOnChangedHandler:v26];
   [(CUSystemMonitor *)self->_systemMonitor activateWithCompletion:0];
-  v14 = [(SHUDManager *)self->_hudManager currentBannerRequest];
-  v15 = v14;
-  if (v14 && [v14 type] != 2)
+  currentBannerRequest = [(SHUDManager *)self->_hudManager currentBannerRequest];
+  v15 = currentBannerRequest;
+  if (currentBannerRequest && [currentBannerRequest type] != 2)
   {
     [(SSUSBApplicationDelegate *)self displayBannerWithModel:v15];
   }
@@ -115,9 +115,9 @@
   else
   {
     v16 = +[UIDevice currentDevice];
-    v17 = [v16 _supportsPencil];
+    _supportsPencil = [v16 _supportsPencil];
 
-    if (v17)
+    if (_supportsPencil)
     {
       v18 = objc_opt_new();
       orientationObserver = self->_orientationObserver;
@@ -162,7 +162,7 @@
   objc_destroyWeak(buf);
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = b332_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -194,18 +194,18 @@
   return 1;
 }
 
-- (void)dismissUIAnimated:(BOOL)a3
+- (void)dismissUIAnimated:(BOOL)animated
 {
   v4 = b332_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = [(SSUSBApplicationDelegate *)self pendingOperation];
+    pendingOperation = [(SSUSBApplicationDelegate *)self pendingOperation];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "dismissUI. pendingOperation: (%lu)", &v9, 0xCu);
   }
 
-  v5 = [(B332PillWindow *)self->_b332ChargingWindow rootViewController];
-  [v5 dismissViewControllerAnimated:1 completion:&stru_100014580];
+  rootViewController = [(B332PillWindow *)self->_b332ChargingWindow rootViewController];
+  [rootViewController dismissViewControllerAnimated:1 completion:&stru_100014580];
 
   objc_storeWeak(&self->_enableBluetoothVC, 0);
   objc_storeWeak(&self->_lockVC, 0);
@@ -215,26 +215,26 @@
   self->_b332ChargingWindow = 0;
 
   self->_currentOperation = [(SSUSBApplicationDelegate *)self pendingOperation];
-  v7 = [(SSUSBApplicationDelegate *)self pendingOperation];
-  if (v7 > 2)
+  pendingOperation2 = [(SSUSBApplicationDelegate *)self pendingOperation];
+  if (pendingOperation2 > 2)
   {
-    if (v7 == 3)
+    if (pendingOperation2 == 3)
     {
       [(SSUSBApplicationDelegate *)self showPairingStarted];
     }
 
-    else if (v7 == 4)
+    else if (pendingOperation2 == 4)
     {
       [(SSUSBApplicationDelegate *)self showPairConsentPrompt];
     }
   }
 
-  else if (v7 == 1)
+  else if (pendingOperation2 == 1)
   {
     [(SSUSBApplicationDelegate *)self showUnlockPrompt];
   }
 
-  else if (v7 == 2)
+  else if (pendingOperation2 == 2)
   {
     [(SSUSBApplicationDelegate *)self showChargingStatus];
   }
@@ -249,22 +249,22 @@
   self->_pendingOperation = 0;
 }
 
-- (void)setPendingOperation:(unint64_t)a3
+- (void)setPendingOperation:(unint64_t)operation
 {
   v5 = b332_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     currentOperation = self->_currentOperation;
     v7 = 134218240;
-    v8 = a3;
+    operationCopy = operation;
     v9 = 2048;
     v10 = currentOperation;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setPendingOperation: (%lu), currentOperation: (%lu)", &v7, 0x16u);
   }
 
-  if (self->_currentOperation != a3)
+  if (self->_currentOperation != operation)
   {
-    self->_pendingOperation = a3;
+    self->_pendingOperation = operation;
   }
 }
 
@@ -292,8 +292,8 @@
   v9 = objc_loadWeakRetained(&self->_displayViewController);
   if (!v9)
   {
-    v10 = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
-    if (v10)
+    setupWindowWithNewRoot = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
+    if (setupWindowWithNewRoot)
     {
       self->_currentOperation = 2;
       sub_100004608();
@@ -302,7 +302,7 @@
       [v11 setAppearanceDelegate:self];
       [v11 setDeviceState:self->_deviceState];
       objc_storeWeak(&self->_displayViewController, v11);
-      [v10 presentViewController:v11 animated:1 completion:&stru_1000145A0];
+      [setupWindowWithNewRoot presentViewController:v11 animated:1 completion:&stru_1000145A0];
       v12 = self->_deviceState;
       v13 = v12;
       if (v12)
@@ -350,16 +350,16 @@
   }
 }
 
-- (int64_t)pnpDeviceTypeForType:(unint64_t)a3
+- (int64_t)pnpDeviceTypeForType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_10000CC90[a3 - 1];
+    return qword_10000CC90[type - 1];
   }
 }
 
@@ -376,8 +376,8 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "showUnlockPrompt. Pending type? %lu", &buf, 0xCu);
   }
 
-  v5 = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
-  if (v5)
+  setupWindowWithNewRoot = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
+  if (setupWindowWithNewRoot)
   {
     self->_currentOperation = 1;
     v9 = 0;
@@ -402,7 +402,7 @@
     objc_storeWeak(&self->_lockVC, v8);
     [v8 setAppearanceDelegate:self, v9];
     [v8 setDeviceState:self->_deviceState];
-    [v5 presentViewController:v8 animated:0 completion:0];
+    [setupWindowWithNewRoot presentViewController:v8 animated:0 completion:0];
   }
 
   else
@@ -423,7 +423,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 134217984;
-    v18 = [(SSUSBApplicationDelegate *)self pendingOperation];
+    pendingOperation = [(SSUSBApplicationDelegate *)self pendingOperation];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "showPairConsentPrompt. Pending type? %lu", &v17, 0xCu);
   }
 
@@ -467,8 +467,8 @@ LABEL_6:
   }
 
   self->_currentOperation = 4;
-  v12 = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
-  if (v12)
+  setupWindowWithNewRoot = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
+  if (setupWindowWithNewRoot)
   {
     sub_100004608();
     v13 = objc_opt_new();
@@ -476,7 +476,7 @@ LABEL_6:
     [v13 setAppearanceDelegate:self];
     [v13 setDelegate:self];
     [v13 setDeviceState:self->_deviceState];
-    [v12 presentViewController:v13 animated:0 completion:0];
+    [setupWindowWithNewRoot presentViewController:v13 animated:0 completion:0];
   }
 
   v14 = objc_loadWeakRetained(&self->_displayViewController);
@@ -522,8 +522,8 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "showEnableBluetoothPill.", v8, 2u);
   }
 
-  v4 = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
-  if (v4)
+  setupWindowWithNewRoot = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
+  if (setupWindowWithNewRoot)
   {
     [(B332PillWindow *)self->_b332ChargingWindow makeKeyAndVisible];
     v9 = 0;
@@ -549,7 +549,7 @@ LABEL_6:
     [v7 setAppearanceDelegate:self];
     [v7 setDeviceState:self->_deviceState];
     [v7 setDelegate:self];
-    [v4 presentViewController:v7 animated:0 completion:0];
+    [setupWindowWithNewRoot presentViewController:v7 animated:0 completion:0];
   }
 
   else
@@ -680,18 +680,18 @@ LABEL_6:
     v8 = b332_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(B332PillWindow *)self->_b332ChargingWindow interfaceOrientation];
+      interfaceOrientation = [(B332PillWindow *)self->_b332ChargingWindow interfaceOrientation];
       v18 = 134217984;
-      v19 = v9;
+      v19 = interfaceOrientation;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "--new orientation (%li)...", &v18, 0xCu);
     }
 
     v10 = b332_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(B332PillWindow *)self->_b332ChargingWindow _windowInterfaceOrientation];
+      _windowInterfaceOrientation = [(B332PillWindow *)self->_b332ChargingWindow _windowInterfaceOrientation];
       v18 = 134217984;
-      v19 = v11;
+      v19 = _windowInterfaceOrientation;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "--new window orientation (%li)...", &v18, 0xCu);
     }
 
@@ -706,12 +706,12 @@ LABEL_6:
     [(B332PillWindow *)self->_b332ChargingWindow setWindowLevel:UIScreenshotServicesWindowLevel + -1.0];
     [(B332PillWindow *)self->_b332ChargingWindow _setWindowControlsStatusBarOrientation:0];
     v3 = objc_opt_new();
-    v14 = [v3 view];
-    [v14 setUserInteractionEnabled:0];
+    view = [v3 view];
+    [view setUserInteractionEnabled:0];
 
     v15 = +[UIColor clearColor];
-    v16 = [v3 view];
-    [v16 setBackgroundColor:v15];
+    view2 = [v3 view];
+    [view2 setBackgroundColor:v15];
 
     [(B332PillWindow *)self->_b332ChargingWindow setRootViewController:v3];
     [(B332PillWindow *)self->_b332ChargingWindow _setRotatableViewOrientation:self->_orientation duration:1 force:self->_duration];
@@ -754,8 +754,8 @@ LABEL_6:
   }
 
   self->_currentOperation = 3;
-  v8 = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
-  if (v8)
+  setupWindowWithNewRoot = [(SSUSBApplicationDelegate *)self setupWindowWithNewRoot];
+  if (setupWindowWithNewRoot)
   {
     sub_100004608();
     v9 = objc_opt_new();
@@ -764,7 +764,7 @@ LABEL_6:
     [v9 setDelegate:self];
     [v9 setDeviceState:self->_deviceState];
     [v9 setModalPresentationStyle:0];
-    [v8 presentViewController:v9 animated:0 completion:0];
+    [setupWindowWithNewRoot presentViewController:v9 animated:0 completion:0];
   }
 
   v10 = objc_loadWeakRetained(&self->_displayViewController);
@@ -807,7 +807,7 @@ LABEL_6:
   [WeakRetained pairingSucceededSubsequently];
 }
 
-- (void)viewControllerDidDismiss:(id)a3
+- (void)viewControllerDidDismiss:(id)dismiss
 {
   v4 = b332_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -821,10 +821,10 @@ LABEL_6:
 
 - (void)updatePairedUnlockBannerToUnlocked
 {
-  v6 = [(SHUDManager *)self->_hudManager currentBannerRequest];
+  currentBannerRequest = [(SHUDManager *)self->_hudManager currentBannerRequest];
   bannerManager = self->_bannerManager;
-  v4 = [v6 watchName];
-  v5 = +[SFHUDBannerModel pairedUnlockModelWithWatchName:needsLockButton:needsUpdate:](SFHUDBannerModel, "pairedUnlockModelWithWatchName:needsLockButton:needsUpdate:", v4, [v6 needsLockButton], 0);
+  watchName = [currentBannerRequest watchName];
+  v5 = +[SFHUDBannerModel pairedUnlockModelWithWatchName:needsLockButton:needsUpdate:](SFHUDBannerModel, "pairedUnlockModelWithWatchName:needsLockButton:needsUpdate:", watchName, [currentBannerRequest needsLockButton], 0);
   [(SHUDBannerManager *)bannerManager postBannerWithModel:v5];
 }
 

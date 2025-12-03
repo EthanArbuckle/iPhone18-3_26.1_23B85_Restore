@@ -1,15 +1,15 @@
 @interface MTWelcomeViewController
 - (MTWelcomeViewController)init;
-- (MTWelcomeViewController)initWithMetricsSender:(id)a3;
-- (void)addAcknowledgementCompletionBlock:(id)a3;
+- (MTWelcomeViewController)initWithMetricsSender:(id)sender;
+- (void)addAcknowledgementCompletionBlock:(id)block;
 - (void)didTapStartButton;
 - (void)loadView;
 - (void)performAcknowledgementCompletionBlocks;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MTWelcomeViewController
@@ -28,7 +28,7 @@
   if (v7)
   {
     v51 = v4;
-    v52 = self;
+    selfCopy = self;
     v50 = v5;
     v54 = objc_alloc_init(NSMutableArray);
     if (+[PFClientUtil supportsEnhanceDialogue])
@@ -64,7 +64,7 @@
     v31 = [v24 initWithImage:v26 titleText:v28 descriptionText:v30];
     [v54 addObject:v31];
 
-    v61.receiver = v52;
+    v61.receiver = selfCopy;
     v61.super_class = MTWelcomeViewController;
     LODWORD(v31) = [(MTWelcomeViewController *)&v61 respondsToSelector:"initWithTitleText:appName:features:primaryButtonText:privacyLinkController:"];
     v32 = +[NSBundle mainBundle];
@@ -84,7 +84,7 @@
       }
 
       v37 = v54;
-      v60.receiver = v52;
+      v60.receiver = selfCopy;
       v60.super_class = MTWelcomeViewController;
       v38 = v50;
       v39 = [(MTWelcomeViewController *)&v60 initWithTitleText:v34 appName:v36 features:v54 primaryButtonText:v51 privacyLinkController:v50, v50];
@@ -93,7 +93,7 @@
     else
     {
       v36 = [(__CFString *)v32 localizedStringForKey:@"WELCOME_HEADER_TITLE" value:&stru_1004F3018 table:0];
-      v59.receiver = v52;
+      v59.receiver = selfCopy;
       v59.super_class = MTWelcomeViewController;
       v37 = v54;
       v38 = v50;
@@ -151,9 +151,9 @@
 
   v58.receiver = v39;
   v58.super_class = MTWelcomeViewController;
-  v47 = [(MTWelcomeViewController *)&v58 welcomeController];
-  v48 = [v47 headerView];
-  [v48 setTitleHyphenationFactor:0.0];
+  welcomeController = [(MTWelcomeViewController *)&v58 welcomeController];
+  headerView = [welcomeController headerView];
+  [headerView setTitleHyphenationFactor:0.0];
 
   if (v39)
   {
@@ -171,14 +171,14 @@
   return v39;
 }
 
-- (MTWelcomeViewController)initWithMetricsSender:(id)a3
+- (MTWelcomeViewController)initWithMetricsSender:(id)sender
 {
-  v5 = a3;
+  senderCopy = sender;
   v6 = [(MTWelcomeViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metricsSender, a3);
+    objc_storeStrong(&v6->_metricsSender, sender);
   }
 
   return v7;
@@ -210,11 +210,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MTWelcomeViewController;
-  [(MTWelcomeViewController *)&v5 viewWillAppear:a3];
+  [(MTWelcomeViewController *)&v5 viewWillAppear:appear];
   v3 = _MTLogCategoryPrivacy();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,11 +223,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MTWelcomeViewController;
-  [(MTWelcomeViewController *)&v7 viewDidAppear:a3];
+  [(MTWelcomeViewController *)&v7 viewDidAppear:appear];
   v4 = _MTLogCategoryPrivacy();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -235,15 +235,15 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Welcome VC did appear", v6, 2u);
   }
 
-  v5 = [(MTWelcomeViewController *)self metricsSender];
-  [v5 welcomeControllerDidAppear];
+  metricsSender = [(MTWelcomeViewController *)self metricsSender];
+  [metricsSender welcomeControllerDidAppear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v13.receiver = self;
   v13.super_class = MTWelcomeViewController;
-  [(MTWelcomeViewController *)&v13 viewWillDisappear:a3];
+  [(MTWelcomeViewController *)&v13 viewWillDisappear:disappear];
   v4 = _MTLogCategoryPrivacy();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -251,10 +251,10 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Welcome VC will disappear", v12, 2u);
   }
 
-  v5 = [(MTWelcomeViewController *)self acknowledged];
+  acknowledged = [(MTWelcomeViewController *)self acknowledged];
   v6 = _MTLogCategoryPrivacy();
   v7 = v6;
-  if (v5)
+  if (acknowledged)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -276,15 +276,15 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [(MTWelcomeViewController *)self metricsSender];
-  [v11 welcomeControllerWillDisappear];
+  metricsSender = [(MTWelcomeViewController *)self metricsSender];
+  [metricsSender welcomeControllerWillDisappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = MTWelcomeViewController;
-  [(MTWelcomeViewController *)&v7 viewDidDisappear:a3];
+  [(MTWelcomeViewController *)&v7 viewDidDisappear:disappear];
   v4 = _MTLogCategoryPrivacy();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -292,8 +292,8 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Welcome VC did disappear", v6, 2u);
   }
 
-  v5 = [(MTWelcomeViewController *)self metricsSender];
-  [v5 welcomeControllerDidDisappear];
+  metricsSender = [(MTWelcomeViewController *)self metricsSender];
+  [metricsSender welcomeControllerDidDisappear];
 }
 
 - (void)didTapStartButton
@@ -307,13 +307,13 @@ LABEL_8:
   [(MTWelcomeViewController *)self dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)addAcknowledgementCompletionBlock:(id)a3
+- (void)addAcknowledgementCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     acknowledgementCompletionBlocks = self->_acknowledgementCompletionBlocks;
-    v10 = v4;
+    v10 = blockCopy;
     if (!acknowledgementCompletionBlocks)
     {
       v6 = +[NSMutableArray array];
@@ -327,7 +327,7 @@ LABEL_8:
     v9 = objc_retainBlock(v8);
     [(NSMutableArray *)acknowledgementCompletionBlocks addObject:v9];
 
-    v4 = v10;
+    blockCopy = v10;
   }
 }
 

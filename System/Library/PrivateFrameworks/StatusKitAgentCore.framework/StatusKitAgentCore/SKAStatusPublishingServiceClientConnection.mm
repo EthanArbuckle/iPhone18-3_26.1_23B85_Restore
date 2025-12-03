@@ -1,43 +1,43 @@
 @interface SKAStatusPublishingServiceClientConnection
-+ (BOOL)_connection:(id)a3 isEntitledForPublishingWithStatusTypeIdentifier:(id)a4;
-+ (BOOL)clientIsEntitledForAtLeastOnePublishingServiceType:(id)a3;
++ (BOOL)_connection:(id)_connection isEntitledForPublishingWithStatusTypeIdentifier:(id)identifier;
++ (BOOL)clientIsEntitledForAtLeastOnePublishingServiceType:(id)type;
 + (id)logger;
-- (SKAStatusPublishingServiceClientConnection)initWithXPCConnection:(id)a3 queue:(id)a4 daemonProtocolDelegate:(id)a5 connectionLifecycleDelegate:(id)a6;
+- (SKAStatusPublishingServiceClientConnection)initWithXPCConnection:(id)connection queue:(id)queue daemonProtocolDelegate:(id)delegate connectionLifecycleDelegate:(id)lifecycleDelegate;
 - (SKAStatusPublishingServiceClientConnectionLifecycleDelegate)connectionLifecycleDelegate;
-- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)a3;
+- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)handler;
 - (id)description;
-- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)a3;
+- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation SKAStatusPublishingServiceClientConnection
 
-- (SKAStatusPublishingServiceClientConnection)initWithXPCConnection:(id)a3 queue:(id)a4 daemonProtocolDelegate:(id)a5 connectionLifecycleDelegate:(id)a6
+- (SKAStatusPublishingServiceClientConnection)initWithXPCConnection:(id)connection queue:(id)queue daemonProtocolDelegate:(id)delegate connectionLifecycleDelegate:(id)lifecycleDelegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  dispatch_assert_queue_V2(v12);
+  connectionCopy = connection;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  lifecycleDelegateCopy = lifecycleDelegate;
+  dispatch_assert_queue_V2(queueCopy);
   v32.receiver = self;
   v32.super_class = SKAStatusPublishingServiceClientConnection;
   v15 = [(SKAStatusPublishingServiceClientConnection *)&v32 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_connectionLifecycleDelegate, v14);
-    objc_storeStrong(&v16->_xpcConnection, a3);
-    v17 = [MEMORY[0x277D68140] daemonXPCInterface];
-    [v11 setExportedInterface:v17];
+    objc_storeWeak(&v15->_connectionLifecycleDelegate, lifecycleDelegateCopy);
+    objc_storeStrong(&v16->_xpcConnection, connection);
+    daemonXPCInterface = [MEMORY[0x277D68140] daemonXPCInterface];
+    [connectionCopy setExportedInterface:daemonXPCInterface];
 
-    v18 = [objc_alloc(MEMORY[0x277D68168]) initWithForwardingTarget:v13];
-    [v11 setExportedObject:v18];
+    v18 = [objc_alloc(MEMORY[0x277D68168]) initWithForwardingTarget:delegateCopy];
+    [connectionCopy setExportedObject:v18];
 
-    v19 = [MEMORY[0x277D68140] daemonDelegateXPCInterface];
-    [v11 setRemoteObjectInterface:v19];
+    daemonDelegateXPCInterface = [MEMORY[0x277D68140] daemonDelegateXPCInterface];
+    [connectionCopy setRemoteObjectInterface:daemonDelegateXPCInterface];
 
-    [v11 _setQueue:v12];
-    objc_initWeak(&location, v11);
+    [connectionCopy _setQueue:queueCopy];
+    objc_initWeak(&location, connectionCopy);
     objc_initWeak(&from, v16);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -45,15 +45,15 @@
     v27[3] = &unk_27843F068;
     objc_copyWeak(&v28, &from);
     objc_copyWeak(&v29, &location);
-    [v11 setInterruptionHandler:v27];
+    [connectionCopy setInterruptionHandler:v27];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __125__SKAStatusPublishingServiceClientConnection_initWithXPCConnection_queue_daemonProtocolDelegate_connectionLifecycleDelegate___block_invoke_4;
     v24 = &unk_27843F068;
     objc_copyWeak(&v25, &from);
     objc_copyWeak(&v26, &location);
-    [v11 setInvalidationHandler:&v21];
-    [v11 resume];
+    [connectionCopy setInvalidationHandler:&v21];
+    [connectionCopy resume];
     objc_destroyWeak(&v26);
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v29);
@@ -103,17 +103,17 @@ void __125__SKAStatusPublishingServiceClientConnection_initWithXPCConnection_que
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)a3
+- (id)asynchronousRemoteDaemonDelegateWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKAStatusPublishingServiceClientConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKAStatusPublishingServiceClientConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __95__SKAStatusPublishingServiceClientConnection_asynchronousRemoteDaemonDelegateWithErrorHandler___block_invoke;
   v9[3] = &unk_27843F090;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -130,17 +130,17 @@ void __95__SKAStatusPublishingServiceClientConnection_asynchronousRemoteDaemonDe
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)a3
+- (id)synchronousRemoteDaemonDelegateWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKAStatusPublishingServiceClientConnection *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(SKAStatusPublishingServiceClientConnection *)self xpcConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __94__SKAStatusPublishingServiceClientConnection_synchronousRemoteDaemonDelegateWithErrorHandler___block_invoke;
   v9[3] = &unk_27843F090;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -164,7 +164,7 @@ void __94__SKAStatusPublishingServiceClientConnection_synchronousRemoteDaemonDel
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_220099000, v3, OS_LOG_TYPE_DEFAULT, "Deallocing {pointer: %p}", buf, 0xCu);
   }
 
@@ -175,11 +175,11 @@ void __94__SKAStatusPublishingServiceClientConnection_synchronousRemoteDaemonDel
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)clientIsEntitledForAtLeastOnePublishingServiceType:(id)a3
++ (BOOL)clientIsEntitledForAtLeastOnePublishingServiceType:(id)type
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 sk_stringArrayValueForEntitlement:@"com.apple.StatusKit.publish.types"];
+  typeCopy = type;
+  v4 = [typeCopy sk_stringArrayValueForEntitlement:@"com.apple.StatusKit.publish.types"];
   v17 = [v4 count];
   v18 = 0u;
   v19 = 0u;
@@ -207,9 +207,9 @@ void __94__SKAStatusPublishingServiceClientConnection_synchronousRemoteDaemonDel
           v11 = +[SKAStatusPublishingServiceClientConnection logger];
           if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
           {
-            v12 = [v3 processIdentifier];
+            processIdentifier = [typeCopy processIdentifier];
             *buf = 134218242;
-            v23 = v12;
+            v23 = processIdentifier;
             v24 = 2112;
             v25 = v10;
             _os_log_fault_impl(&dword_220099000, v11, OS_LOG_TYPE_FAULT, "XPC connection from PID %ld is attempting to use StatusKit for an unknown status type identifier: %@. This will result in a connection rejection in the future.", buf, 0x16u);
@@ -226,7 +226,7 @@ void __94__SKAStatusPublishingServiceClientConnection_synchronousRemoteDaemonDel
     while (v7);
   }
 
-  if (v17 || ([v3 sk_BOOLeanValueForEntitlement:@"com.apple.StatusKit.publish.allTypes"] & 1) != 0)
+  if (v17 || ([typeCopy sk_BOOLeanValueForEntitlement:@"com.apple.StatusKit.publish.allTypes"] & 1) != 0)
   {
     v13 = 1;
   }
@@ -246,11 +246,11 @@ void __94__SKAStatusPublishingServiceClientConnection_synchronousRemoteDaemonDel
   return v13;
 }
 
-+ (BOOL)_connection:(id)a3 isEntitledForPublishingWithStatusTypeIdentifier:(id)a4
++ (BOOL)_connection:(id)_connection isEntitledForPublishingWithStatusTypeIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length] && (objc_msgSend(v5, "sk_stringArrayValueForEntitlement:", @"com.apple.StatusKit.publish.types"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", v6), v7, (v8 & 1) != 0) || objc_msgSend(v6, "length") && (objc_msgSend(v5, "sk_BOOLeanValueForEntitlement:", @"com.apple.StatusKit.publish.allTypes") & 1) != 0)
+  _connectionCopy = _connection;
+  identifierCopy = identifier;
+  if ([identifierCopy length] && (objc_msgSend(_connectionCopy, "sk_stringArrayValueForEntitlement:", @"com.apple.StatusKit.publish.types"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", identifierCopy), v7, (v8 & 1) != 0) || objc_msgSend(identifierCopy, "length") && (objc_msgSend(_connectionCopy, "sk_BOOLeanValueForEntitlement:", @"com.apple.StatusKit.publish.allTypes") & 1) != 0)
   {
     v9 = 1;
   }
@@ -260,7 +260,7 @@ void __94__SKAStatusPublishingServiceClientConnection_synchronousRemoteDaemonDel
     v10 = +[SKAStatusPublishingServiceClientConnection logger];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(SKAStatusPublishingServiceClientConnection *)v6 _connection:v10 isEntitledForPublishingWithStatusTypeIdentifier:v11, v12, v13, v14, v15, v16];
+      [(SKAStatusPublishingServiceClientConnection *)identifierCopy _connection:v10 isEntitledForPublishingWithStatusTypeIdentifier:v11, v12, v13, v14, v15, v16];
     }
 
     v9 = 0;

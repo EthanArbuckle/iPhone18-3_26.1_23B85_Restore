@@ -1,10 +1,10 @@
 @interface FxShape
 + (id)infiniteShape;
-+ (id)shapeWithRect:(CGRect)a3;
++ (id)shapeWithRect:(CGRect)rect;
 - (CGRect)extent;
 - (FxShape)initWithInfiniteBounds;
-- (FxShape)initWithRect:(CGRect)a3;
-- (id)intersectWithShape:(id)a3;
+- (FxShape)initWithRect:(CGRect)rect;
+- (id)intersectWithShape:(id)shape;
 - (void)dealloc;
 @end
 
@@ -12,24 +12,24 @@
 
 + (id)infiniteShape
 {
-  v2 = [objc_alloc(objc_opt_class()) initWithInfiniteBounds];
+  initWithInfiniteBounds = [objc_alloc(objc_opt_class()) initWithInfiniteBounds];
 
-  return v2;
+  return initWithInfiniteBounds;
 }
 
-+ (id)shapeWithRect:(CGRect)a3
++ (id)shapeWithRect:(CGRect)rect
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithRect:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [objc_alloc(objc_opt_class()) initWithRect:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   return v3;
 }
 
-- (FxShape)initWithRect:(CGRect)a3
+- (FxShape)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10.receiver = self;
   v10.super_class = FxShape;
   v7 = [(FxShape *)&v10 init];
@@ -106,12 +106,12 @@
   return result;
 }
 
-- (id)intersectWithShape:(id)a3
+- (id)intersectWithShape:(id)shape
 {
-  if (a3)
+  if (shape)
   {
     v3 = *(self + 1);
-    [a3 extent];
+    [shape extent];
     v10.origin.x = v4;
     v10.origin.y = v5;
     v10.size.width = v6;

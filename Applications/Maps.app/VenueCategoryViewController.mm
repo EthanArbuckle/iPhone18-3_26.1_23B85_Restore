@@ -2,50 +2,50 @@
 - (NSDictionary)searchResultCountInVenue;
 - (NSString)refineSearchText;
 - (VKVenueFeatureMarker)venueWithFocus;
-- (VenueCategoryViewController)initWithAutoCompleteCategoryCardItem:(id)a3;
-- (VenueCategoryViewController)initWithCategoryCardItem:(id)a3;
-- (VenueCategoryViewController)initWithSearchCategory:(id)a3;
-- (id)_buildingAtIndex:(unint64_t)a3;
-- (id)_headerLabelTextFromMapItem:(id)a3 searchCategory:(id)a4;
-- (id)_venueShortNameForMapItem:(id)a3;
-- (void)applyAlphaToContent:(double)a3;
+- (VenueCategoryViewController)initWithAutoCompleteCategoryCardItem:(id)item;
+- (VenueCategoryViewController)initWithCategoryCardItem:(id)item;
+- (VenueCategoryViewController)initWithSearchCategory:(id)category;
+- (id)_buildingAtIndex:(unint64_t)index;
+- (id)_headerLabelTextFromMapItem:(id)item searchCategory:(id)category;
+- (id)_venueShortNameForMapItem:(id)item;
+- (void)applyAlphaToContent:(double)content;
 - (void)configureHeader;
 - (void)configureTableView;
-- (void)contentSizeCategoryDidChange:(id)a3;
-- (void)dataSource:(id)a3 itemFocused:(id)a4;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
+- (void)contentSizeCategoryDidChange:(id)change;
+- (void)dataSource:(id)source itemFocused:(id)focused;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
 - (void)didUpdateResults;
 - (void)displayIndexListIfNecessary;
-- (void)filterView:(id)a3 didSelectBuildingWithIndex:(unint64_t)a4;
-- (void)filterView:(id)a3 didSelectSubcategoryWithIndex:(unint64_t)a4;
-- (void)filterView:(id)a3 indexSelected:(unint64_t)a4;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)headerViewTapped:(id)a3;
-- (void)notifyVenuesManagerAndSwitchToBestFloor:(BOOL)a3;
+- (void)filterView:(id)view didSelectBuildingWithIndex:(unint64_t)index;
+- (void)filterView:(id)view didSelectSubcategoryWithIndex:(unint64_t)index;
+- (void)filterView:(id)view indexSelected:(unint64_t)selected;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)headerViewTapped:(id)tapped;
+- (void)notifyVenuesManagerAndSwitchToBestFloor:(BOOL)floor;
 - (void)performInitialSearchIfNecessary;
-- (void)selectSubcategory:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFilterViewHidden:(BOOL)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setShowsLoading:(BOOL)a3;
+- (void)selectSubcategory:(id)subcategory;
+- (void)setDelegate:(id)delegate;
+- (void)setFilterViewHidden:(BOOL)hidden;
+- (void)setHeaderTitle:(id)title;
+- (void)setShowsLoading:(BOOL)loading;
 - (void)updateFilterBar;
 - (void)updateFooterVisibility;
 - (void)updateHeaderImageView;
-- (void)venueCategoryContentDownloader:(id)a3 didChangeMapItem:(id)a4;
-- (void)venueCategoryContentDownloader:(id)a3 didFailToFetchMapItemWithError:(id)a4;
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveAutoCompleteSubcategories:(id)a4 subcategoriesType:(int)a5;
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveEVChargerUpdates:(id)a4;
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveSearchResults:(id)a4 shouldSwitchToBestFloor:(BOOL)a5;
-- (void)venueCategoryContentDownloaderDidCancel:(id)a3;
-- (void)venueCategoryContentDownloaderDidFail:(id)a3;
-- (void)venueCategoryContentDownloaderDidStart:(id)a3;
+- (void)venueCategoryContentDownloader:(id)downloader didChangeMapItem:(id)item;
+- (void)venueCategoryContentDownloader:(id)downloader didFailToFetchMapItemWithError:(id)error;
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveAutoCompleteSubcategories:(id)subcategories subcategoriesType:(int)type;
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveEVChargerUpdates:(id)updates;
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveSearchResults:(id)results shouldSwitchToBestFloor:(BOOL)floor;
+- (void)venueCategoryContentDownloaderDidCancel:(id)cancel;
+- (void)venueCategoryContentDownloaderDidFail:(id)fail;
+- (void)venueCategoryContentDownloaderDidStart:(id)start;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willChangeContainerStyle:(unint64_t)a3;
+- (void)willChangeContainerStyle:(unint64_t)style;
 @end
 
 @implementation VenueCategoryViewController
@@ -57,34 +57,34 @@
   return WeakRetained;
 }
 
-- (void)selectSubcategory:(id)a3
+- (void)selectSubcategory:(id)subcategory
 {
-  v4 = a3;
-  v5 = [(VenueCategoryViewController *)self dataSource];
-  v6 = [v5 subcategories];
-  v7 = [v6 indexOfObject:v4];
+  subcategoryCopy = subcategory;
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  subcategories = [dataSource subcategories];
+  v7 = [subcategories indexOfObject:subcategoryCopy];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = +[NSNotificationCenter defaultCenter];
-    [v8 postNotificationName:@"VenueBrowseDidFailToSelectSubcategory" object:0];
+    filterView = +[NSNotificationCenter defaultCenter];
+    [filterView postNotificationName:@"VenueBrowseDidFailToSelectSubcategory" object:0];
   }
 
   else
   {
-    v8 = [(VenueCategoryViewController *)self filterView];
+    filterView = [(VenueCategoryViewController *)self filterView];
     [VenueCategoryViewController filterView:"filterView:indexSelected:" indexSelected:?];
   }
 }
 
-- (id)_buildingAtIndex:(unint64_t)a3
+- (id)_buildingAtIndex:(unint64_t)index
 {
-  v4 = [(VenueCategoryViewController *)self dataSource];
-  v5 = [v4 buildings];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  buildings = [dataSource buildings];
 
-  if (v5 && [v5 count] > a3)
+  if (buildings && [buildings count] > index)
   {
-    v6 = [v5 objectAtIndexedSubscript:a3];
+    v6 = [buildings objectAtIndexedSubscript:index];
   }
 
   else
@@ -95,40 +95,40 @@
   return v6;
 }
 
-- (id)_venueShortNameForMapItem:(id)a3
+- (id)_venueShortNameForMapItem:(id)item
 {
-  v3 = a3;
-  if ([v3 _venueFeatureType] == 1)
+  itemCopy = item;
+  if ([itemCopy _venueFeatureType] == 1)
   {
-    [v3 venueLabelWithContext:0];
+    [itemCopy venueLabelWithContext:0];
   }
 
   else
   {
-    [v3 name];
+    [itemCopy name];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 wantsExpandLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsExpandLayout];
 }
 
-- (id)_headerLabelTextFromMapItem:(id)a3 searchCategory:(id)a4
+- (id)_headerLabelTextFromMapItem:(id)item searchCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = &stru_1016631F0;
-  if (v6 && v7)
+  itemCopy = item;
+  categoryCopy = category;
+  v8 = categoryCopy;
+  shortDisplayString = &stru_1016631F0;
+  if (itemCopy && categoryCopy)
   {
     if (self->_isAutoComplete)
     {
-      v9 = [v7 shortDisplayString];
+      shortDisplayString = [categoryCopy shortDisplayString];
     }
 
     else
@@ -136,39 +136,39 @@
       v10 = +[NSBundle mainBundle];
       v11 = [v10 localizedStringForKey:@"category_at_venue_format_key" value:@"localized string not found" table:0];
 
-      v12 = [(VenueCategoryViewController *)self _venueShortNameForMapItem:v6];
-      v13 = [v8 shortDisplayString];
-      v9 = [NSString stringWithFormat:v11, v13, v12];
+      v12 = [(VenueCategoryViewController *)self _venueShortNameForMapItem:itemCopy];
+      shortDisplayString2 = [v8 shortDisplayString];
+      shortDisplayString = [NSString stringWithFormat:v11, shortDisplayString2, v12];
     }
   }
 
-  return v9;
+  return shortDisplayString;
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v8 = a4;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v8;
-    v6 = [(ControlContaineeViewController *)self delegate];
-    [v6 viewController:self selectVenueSearchResult:v5 source:2];
+    v5 = tappedCopy;
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:self selectVenueSearchResult:v5 source:2];
 
     lastItemTapped = self->_lastItemTapped;
     self->_lastItemTapped = v5;
   }
 }
 
-- (void)dataSource:(id)a3 itemFocused:(id)a4
+- (void)dataSource:(id)source itemFocused:(id)focused
 {
-  v8 = a4;
+  focusedCopy = focused;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v8;
-    v6 = [(ControlContaineeViewController *)self delegate];
-    [v6 viewController:self focusSearchResult:v5];
+    v5 = focusedCopy;
+    delegate = [(ControlContaineeViewController *)self delegate];
+    [delegate viewController:self focusSearchResult:v5];
 
     lastItemTapped = self->_lastItemTapped;
     self->_lastItemTapped = 0;
@@ -190,28 +190,28 @@ LABEL_6:
 
 - (NSString)refineSearchText
 {
-  v3 = [(VenueCategoryViewController *)self filterView];
-  v4 = [v3 subCategories];
-  v5 = [(VenueCategoryViewController *)self filterView];
-  v6 = [v4 objectAtIndexedSubscript:{objc_msgSend(v5, "selectedIndex")}];
+  filterView = [(VenueCategoryViewController *)self filterView];
+  subCategories = [filterView subCategories];
+  filterView2 = [(VenueCategoryViewController *)self filterView];
+  v6 = [subCategories objectAtIndexedSubscript:{objc_msgSend(filterView2, "selectedIndex")}];
 
   return v6;
 }
 
 - (void)updateFooterVisibility
 {
-  v3 = [(VenueCategoryViewController *)self filterView];
-  v4 = [v3 subCategories];
-  if ([v4 count])
+  filterView = [(VenueCategoryViewController *)self filterView];
+  subCategories = [filterView subCategories];
+  if ([subCategories count])
   {
-    v5 = [(VenueCategoryViewController *)self shouldDisplayFilterView];
+    shouldDisplayFilterView = [(VenueCategoryViewController *)self shouldDisplayFilterView];
 
-    [(VenueCategoryViewController *)self setFilterViewHidden:v5 ^ 1];
+    [(VenueCategoryViewController *)self setFilterViewHidden:shouldDisplayFilterView ^ 1];
     Height = 0.0;
-    if (((v5 ^ 1) & 1) == 0)
+    if (((shouldDisplayFilterView ^ 1) & 1) == 0)
     {
-      v7 = [(VenueCategoryViewController *)self filterView];
-      [v7 frame];
+      filterView2 = [(VenueCategoryViewController *)self filterView];
+      [filterView2 frame];
       Height = CGRectGetHeight(v18);
     }
   }
@@ -223,38 +223,38 @@ LABEL_6:
     Height = 0.0;
   }
 
-  v8 = [(VenueCategoryViewController *)self tableView];
-  [v8 contentInset];
+  tableView = [(VenueCategoryViewController *)self tableView];
+  [tableView contentInset];
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(VenueCategoryViewController *)self tableView];
-  [v15 setContentInset:{v10, v12, Height, v14}];
+  tableView2 = [(VenueCategoryViewController *)self tableView];
+  [tableView2 setContentInset:{v10, v12, Height, v14}];
 
-  v16 = [(VenueCategoryViewController *)self loadingModeView];
-  [v16 setBottomInset:Height];
+  loadingModeView = [(VenueCategoryViewController *)self loadingModeView];
+  [loadingModeView setBottomInset:Height];
 }
 
-- (void)filterView:(id)a3 didSelectBuildingWithIndex:(unint64_t)a4
+- (void)filterView:(id)view didSelectBuildingWithIndex:(unint64_t)index
 {
-  v10 = [(VenueCategoryViewController *)self _buildingAtIndex:a4];
-  v5 = [(VenueCategoryViewController *)self contentDownloader];
-  v6 = [(VenueCategoryViewController *)self dataSource];
-  v7 = [v6 searchCategory];
-  v8 = [v10 describesParentVenue];
-  v9 = [(ControlContaineeViewController *)self delegate];
-  [v5 performSearchWithSearchCategory:v7 subcategoriesType:2 filter:v10 shouldFrameMapViewport:v8 ^ 1 actionCoordination:v9];
+  v10 = [(VenueCategoryViewController *)self _buildingAtIndex:index];
+  contentDownloader = [(VenueCategoryViewController *)self contentDownloader];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  searchCategory = [dataSource searchCategory];
+  describesParentVenue = [v10 describesParentVenue];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [contentDownloader performSearchWithSearchCategory:searchCategory subcategoriesType:2 filter:v10 shouldFrameMapViewport:describesParentVenue ^ 1 actionCoordination:delegate];
 }
 
-- (void)filterView:(id)a3 didSelectSubcategoryWithIndex:(unint64_t)a4
+- (void)filterView:(id)view didSelectSubcategoryWithIndex:(unint64_t)index
 {
-  v6 = [(VenueCategoryViewController *)self dataSource];
-  v7 = [v6 subcategories];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  subcategories = [dataSource subcategories];
 
-  if (v7 && [v7 count] > a4)
+  if (subcategories && [subcategories count] > index)
   {
-    v11 = [v7 objectAtIndexedSubscript:a4];
+    v11 = [subcategories objectAtIndexedSubscript:index];
   }
 
   else
@@ -262,74 +262,74 @@ LABEL_6:
     v11 = 0;
   }
 
-  v8 = [(VenueCategoryViewController *)self contentDownloader];
-  v9 = [v11 isSubCategorySameAsTopLevel];
-  v10 = [(ControlContaineeViewController *)self delegate];
-  [v8 performSearchWithSearchCategory:v11 subcategoriesType:1 filter:0 shouldFrameMapViewport:v9 ^ 1 actionCoordination:v10];
+  contentDownloader = [(VenueCategoryViewController *)self contentDownloader];
+  isSubCategorySameAsTopLevel = [v11 isSubCategorySameAsTopLevel];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  [contentDownloader performSearchWithSearchCategory:v11 subcategoriesType:1 filter:0 shouldFrameMapViewport:isSubCategorySameAsTopLevel ^ 1 actionCoordination:delegate];
 }
 
-- (void)filterView:(id)a3 indexSelected:(unint64_t)a4
+- (void)filterView:(id)view indexSelected:(unint64_t)selected
 {
-  v9 = a3;
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 wantsLayout:2];
+  viewCopy = view;
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsLayout:2];
 
-  v7 = [(VenueCategoryViewController *)self dataSource];
-  v8 = [v7 subcategoriesType];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  subcategoriesType = [dataSource subcategoriesType];
 
-  if (v8 >= 2)
+  if (subcategoriesType >= 2)
   {
-    if (v8 == 2)
+    if (subcategoriesType == 2)
     {
-      [(VenueCategoryViewController *)self filterView:v9 didSelectBuildingWithIndex:a4];
+      [(VenueCategoryViewController *)self filterView:viewCopy didSelectBuildingWithIndex:selected];
     }
   }
 
   else
   {
-    [(VenueCategoryViewController *)self filterView:v9 didSelectSubcategoryWithIndex:a4];
+    [(VenueCategoryViewController *)self filterView:viewCopy didSelectSubcategoryWithIndex:selected];
   }
 }
 
-- (void)setFilterViewHidden:(BOOL)a3
+- (void)setFilterViewHidden:(BOOL)hidden
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100FD0188;
   v3[3] = &unk_101661AE0;
   v3[4] = self;
-  v4 = a3;
+  hiddenCopy = hidden;
   [UIView animateWithDuration:v3 animations:0.25];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v6 = a3;
+  tappedCopy = tapped;
   dataSource = self->_dataSource;
   if (dataSource)
   {
     [(VenueCategoryDataSource *)dataSource resetCache];
   }
 
-  [(VenueCategoryViewController *)self handleDismissAction:v6];
+  [(VenueCategoryViewController *)self handleDismissAction:tappedCopy];
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v9.receiver = self;
   v9.super_class = VenueCategoryViewController;
   [(ContaineeViewController *)&v9 willChangeContainerStyle:?];
-  if (a3 == 6)
+  if (style == 6)
   {
-    v5 = [(ContaineeViewController *)self cardPresentationController];
-    [v5 setDefaultContaineeLayout:4];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController setDefaultContaineeLayout:4];
   }
 
   else
   {
-    v5 = [(VenueCategoryViewController *)self dataSource];
-    v6 = [v5 searchCategory];
-    if ([v6 displayMode] == 2)
+    cardPresentationController = [(VenueCategoryViewController *)self dataSource];
+    searchCategory = [cardPresentationController searchCategory];
+    if ([searchCategory displayMode] == 2)
     {
       v7 = 3;
     }
@@ -339,60 +339,60 @@ LABEL_6:
       v7 = 2;
     }
 
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    [v8 setDefaultContaineeLayout:v7];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 setDefaultContaineeLayout:v7];
   }
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:4 onTarget:-[VenueCategoryViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
   v6.receiver = self;
   v6.super_class = VenueCategoryViewController;
-  [(ContaineeViewController *)&v6 handleDismissAction:v4];
+  [(ContaineeViewController *)&v6 handleDismissAction:actionCopy];
 }
 
 - (void)configureTableView
 {
   v3 = +[UIColor clearColor];
-  v4 = [(VenueCategoryViewController *)self tableView];
-  [v4 setBackgroundColor:v3];
+  tableView = [(VenueCategoryViewController *)self tableView];
+  [tableView setBackgroundColor:v3];
 
   v5 = +[UIColor clearColor];
-  v6 = [(VenueCategoryViewController *)self tableView];
-  [v6 setSectionIndexBackgroundColor:v5];
+  tableView2 = [(VenueCategoryViewController *)self tableView];
+  [tableView2 setSectionIndexBackgroundColor:v5];
 
-  v7 = [(ContaineeViewController *)self contentView];
-  v8 = [(VenueCategoryViewController *)self tableView];
-  [v7 addSubview:v8];
+  contentView = [(ContaineeViewController *)self contentView];
+  tableView3 = [(VenueCategoryViewController *)self tableView];
+  [contentView addSubview:tableView3];
 
-  v9 = [(VenueCategoryViewController *)self tableView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView4 = [(VenueCategoryViewController *)self tableView];
+  [tableView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(VenueCategoryViewController *)self tableView];
-  [v10 setPreservesSuperviewLayoutMargins:1];
+  tableView5 = [(VenueCategoryViewController *)self tableView];
+  [tableView5 setPreservesSuperviewLayoutMargins:1];
 
-  v11 = [(VenueCategoryViewController *)self dataSource];
-  [v11 setDelegate:self];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  [dataSource setDelegate:self];
 
   v12 = [[FilterCategoriesView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(VenueCategoryViewController *)self setFilterView:v12];
 
-  v13 = [(VenueCategoryViewController *)self filterView];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  filterView = [(VenueCategoryViewController *)self filterView];
+  [filterView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(VenueCategoryViewController *)self filterView];
-  [v14 setDelegate:self];
+  filterView2 = [(VenueCategoryViewController *)self filterView];
+  [filterView2 setDelegate:self];
 
-  v15 = [(VenueCategoryViewController *)self filterView];
-  [v15 setLastButtonTrailingPadding:20.0];
+  filterView3 = [(VenueCategoryViewController *)self filterView];
+  [filterView3 setLastButtonTrailingPadding:20.0];
 
-  v16 = [(ContaineeViewController *)self contentView];
-  v17 = [(VenueCategoryViewController *)self filterView];
-  [v16 addSubview:v17];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  filterView4 = [(VenueCategoryViewController *)self filterView];
+  [contentView2 addSubview:filterView4];
 
   v18 = [LoadingModeView alloc];
   v19 = +[NSBundle mainBundle];
@@ -400,133 +400,133 @@ LABEL_6:
   v21 = [(LoadingModeView *)v18 initWithTitle:v20];
   [(VenueCategoryViewController *)self setLoadingModeView:v21];
 
-  v22 = [(VenueCategoryViewController *)self loadingModeView];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  loadingModeView = [(VenueCategoryViewController *)self loadingModeView];
+  [loadingModeView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(VenueCategoryViewController *)self loadingModeView];
-  [v23 setContentHuggingPriority:1 forAxis:0.0];
+  loadingModeView2 = [(VenueCategoryViewController *)self loadingModeView];
+  [loadingModeView2 setContentHuggingPriority:1 forAxis:0.0];
 
-  v24 = [(VenueCategoryViewController *)self loadingModeView];
-  [v24 setHidden:1];
+  loadingModeView3 = [(VenueCategoryViewController *)self loadingModeView];
+  [loadingModeView3 setHidden:1];
 
-  v25 = [(ContaineeViewController *)self contentView];
-  v26 = [(VenueCategoryViewController *)self loadingModeView];
-  [v25 addSubview:v26];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  loadingModeView4 = [(VenueCategoryViewController *)self loadingModeView];
+  [contentView3 addSubview:loadingModeView4];
 
   if (_UISolariumEnabled())
   {
-    v27 = [(VenueCategoryViewController *)self tableView];
-    [(ContaineeViewController *)self setContentScrollView:v27 forEdge:1];
+    tableView6 = [(VenueCategoryViewController *)self tableView];
+    [(ContaineeViewController *)self setContentScrollView:tableView6 forEdge:1];
   }
 
-  v28 = [(VenueCategoryViewController *)self filterView];
-  v29 = [v28 bottomAnchor];
-  v30 = [(ContaineeViewController *)self contentView];
-  v31 = [v30 bottomAnchor];
-  v32 = [v29 constraintEqualToAnchor:v31];
+  filterView5 = [(VenueCategoryViewController *)self filterView];
+  bottomAnchor = [filterView5 bottomAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   LODWORD(v33) = 1140457472;
   v76 = v32;
   [v32 setPriority:v33];
-  v90 = [(VenueCategoryViewController *)self tableView];
-  v88 = [v90 topAnchor];
-  v89 = [(ContaineeViewController *)self contentView];
-  v87 = [v89 topAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  tableView7 = [(VenueCategoryViewController *)self tableView];
+  topAnchor = [tableView7 topAnchor];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  topAnchor2 = [contentView5 topAnchor];
+  v86 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v91[0] = v86;
-  v85 = [(VenueCategoryViewController *)self tableView];
-  v83 = [v85 leadingAnchor];
-  v84 = [(ContaineeViewController *)self contentView];
-  v82 = [v84 leadingAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82];
+  tableView8 = [(VenueCategoryViewController *)self tableView];
+  leadingAnchor = [tableView8 leadingAnchor];
+  contentView6 = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView6 leadingAnchor];
+  v81 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v91[1] = v81;
-  v80 = [(VenueCategoryViewController *)self tableView];
-  v78 = [v80 trailingAnchor];
-  v79 = [(ContaineeViewController *)self contentView];
-  v77 = [v79 trailingAnchor];
-  v75 = [v78 constraintEqualToAnchor:v77];
+  tableView9 = [(VenueCategoryViewController *)self tableView];
+  trailingAnchor = [tableView9 trailingAnchor];
+  contentView7 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView7 trailingAnchor];
+  v75 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v91[2] = v75;
-  v74 = [(VenueCategoryViewController *)self tableView];
-  v72 = [v74 bottomAnchor];
-  v73 = [(ContaineeViewController *)self contentView];
-  v71 = [v73 bottomAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  tableView10 = [(VenueCategoryViewController *)self tableView];
+  bottomAnchor3 = [tableView10 bottomAnchor];
+  contentView8 = [(ContaineeViewController *)self contentView];
+  bottomAnchor4 = [contentView8 bottomAnchor];
+  v70 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v91[3] = v70;
-  v69 = [(VenueCategoryViewController *)self filterView];
-  v67 = [v69 topAnchor];
-  v68 = [(ContaineeViewController *)self contentView];
-  v66 = [v68 topAnchor];
-  v65 = [v67 constraintGreaterThanOrEqualToAnchor:v66];
+  filterView6 = [(VenueCategoryViewController *)self filterView];
+  topAnchor3 = [filterView6 topAnchor];
+  contentView9 = [(ContaineeViewController *)self contentView];
+  topAnchor4 = [contentView9 topAnchor];
+  v65 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v91[4] = v65;
   v91[5] = v32;
-  v64 = [(VenueCategoryViewController *)self filterView];
-  v62 = [v64 leadingAnchor];
-  v63 = [(ContaineeViewController *)self contentView];
-  v61 = [v63 leadingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  filterView7 = [(VenueCategoryViewController *)self filterView];
+  leadingAnchor3 = [filterView7 leadingAnchor];
+  contentView10 = [(ContaineeViewController *)self contentView];
+  leadingAnchor4 = [contentView10 leadingAnchor];
+  v60 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v91[6] = v60;
-  v59 = [(VenueCategoryViewController *)self filterView];
-  v57 = [v59 trailingAnchor];
-  v58 = [(ContaineeViewController *)self contentView];
-  v56 = [v58 trailingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  filterView8 = [(VenueCategoryViewController *)self filterView];
+  trailingAnchor3 = [filterView8 trailingAnchor];
+  contentView11 = [(ContaineeViewController *)self contentView];
+  trailingAnchor4 = [contentView11 trailingAnchor];
+  v55 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v91[7] = v55;
-  v54 = [(VenueCategoryViewController *)self loadingModeView];
-  v52 = [v54 topAnchor];
-  v53 = [(VenueCategoryViewController *)self tableView];
-  v51 = [v53 topAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  loadingModeView5 = [(VenueCategoryViewController *)self loadingModeView];
+  topAnchor5 = [loadingModeView5 topAnchor];
+  tableView11 = [(VenueCategoryViewController *)self tableView];
+  topAnchor6 = [tableView11 topAnchor];
+  v50 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v91[8] = v50;
-  v49 = [(VenueCategoryViewController *)self loadingModeView];
-  v47 = [v49 bottomAnchor];
-  v48 = [(VenueCategoryViewController *)self tableView];
-  v46 = [v48 bottomAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  loadingModeView6 = [(VenueCategoryViewController *)self loadingModeView];
+  bottomAnchor5 = [loadingModeView6 bottomAnchor];
+  tableView12 = [(VenueCategoryViewController *)self tableView];
+  bottomAnchor6 = [tableView12 bottomAnchor];
+  v45 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v91[9] = v45;
-  v44 = [(VenueCategoryViewController *)self loadingModeView];
-  v34 = [v44 leadingAnchor];
-  v35 = [(VenueCategoryViewController *)self tableView];
-  v36 = [v35 leadingAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36];
+  loadingModeView7 = [(VenueCategoryViewController *)self loadingModeView];
+  leadingAnchor5 = [loadingModeView7 leadingAnchor];
+  tableView13 = [(VenueCategoryViewController *)self tableView];
+  leadingAnchor6 = [tableView13 leadingAnchor];
+  v37 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v91[10] = v37;
-  v38 = [(VenueCategoryViewController *)self loadingModeView];
-  v39 = [v38 trailingAnchor];
-  v40 = [(VenueCategoryViewController *)self tableView];
-  v41 = [v40 trailingAnchor];
-  v42 = [v39 constraintEqualToAnchor:v41];
+  loadingModeView8 = [(VenueCategoryViewController *)self loadingModeView];
+  trailingAnchor5 = [loadingModeView8 trailingAnchor];
+  tableView14 = [(VenueCategoryViewController *)self tableView];
+  trailingAnchor6 = [tableView14 trailingAnchor];
+  v42 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v91[11] = v42;
   v43 = [NSArray arrayWithObjects:v91 count:12];
   [NSLayoutConstraint activateConstraints:v43];
 }
 
-- (void)notifyVenuesManagerAndSwitchToBestFloor:(BOOL)a3
+- (void)notifyVenuesManagerAndSwitchToBestFloor:(BOOL)floor
 {
-  v3 = a3;
-  v5 = [(ControlContaineeViewController *)self delegate];
-  v6 = [v5 venuesManager];
-  [v6 venuesControlCoordinatingDidChangeSearchResultCount:self];
+  floorCopy = floor;
+  delegate = [(ControlContaineeViewController *)self delegate];
+  venuesManager = [delegate venuesManager];
+  [venuesManager venuesControlCoordinatingDidChangeSearchResultCount:self];
 
-  if (v3)
+  if (floorCopy)
   {
-    v8 = [(ControlContaineeViewController *)self delegate];
-    v7 = [v8 venuesManager];
-    [v7 updateFocusedVenueFloor];
+    delegate2 = [(ControlContaineeViewController *)self delegate];
+    venuesManager2 = [delegate2 venuesManager];
+    [venuesManager2 updateFocusedVenueFloor];
   }
 }
 
 - (void)didUpdateResults
 {
-  v3 = [(VenueCategoryViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(VenueCategoryViewController *)self tableView];
+  [tableView reloadData];
 
-  v4 = [(VenueCategoryViewController *)self tableView];
-  v5 = [v4 numberOfSections];
+  tableView2 = [(VenueCategoryViewController *)self tableView];
+  numberOfSections = [tableView2 numberOfSections];
 
-  if (v5 >= 1)
+  if (numberOfSections >= 1)
   {
-    v6 = [(VenueCategoryViewController *)self tableView];
+    tableView3 = [(VenueCategoryViewController *)self tableView];
     v7 = [NSIndexPath indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0];
-    [v6 scrollToRowAtIndexPath:v7 atScrollPosition:1 animated:0];
+    [tableView3 scrollToRowAtIndexPath:v7 atScrollPosition:1 animated:0];
   }
 
   [(VenueCategoryViewController *)self displayIndexListIfNecessary];
@@ -539,11 +539,11 @@ LABEL_6:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(VenueCategoryViewController *)self dataSource];
-  v5 = [v4 content];
-  v6 = [v5 objects];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  content = [dataSource content];
+  objects = [content objects];
 
-  v23 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v23 = [objects countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v23)
   {
     v22 = *v29;
@@ -553,7 +553,7 @@ LABEL_6:
       {
         if (*v29 != v22)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objects);
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
@@ -561,13 +561,13 @@ LABEL_6:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v9 = [v8 mapItem];
-        v10 = [v9 venueAreaIdentifiers];
-        v11 = v10;
+        mapItem = [v8 mapItem];
+        venueAreaIdentifiers = [mapItem venueAreaIdentifiers];
+        v11 = venueAreaIdentifiers;
         v12 = &__NSArray0__struct;
-        if (v10)
+        if (venueAreaIdentifiers)
         {
-          v12 = v10;
+          v12 = venueAreaIdentifiers;
         }
 
         v13 = v12;
@@ -599,7 +599,7 @@ LABEL_6:
         }
       }
 
-      v23 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v23 = [objects countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v23);
@@ -610,30 +610,30 @@ LABEL_6:
 
 - (void)updateHeaderImageView
 {
-  v3 = [(VenueCategoryViewController *)self dataSource];
-  v4 = [v3 searchCategory];
-  v5 = v4;
-  if (v4)
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  searchCategory = [dataSource searchCategory];
+  v5 = searchCategory;
+  if (searchCategory)
   {
-    v16 = v4;
+    firstObject = searchCategory;
   }
 
   else
   {
-    v6 = [(VenueCategoryViewController *)self dataSource];
-    v7 = [v6 subcategories];
-    v16 = [v7 firstObject];
+    dataSource2 = [(VenueCategoryViewController *)self dataSource];
+    subcategories = [dataSource2 subcategories];
+    firstObject = [subcategories firstObject];
   }
 
-  v8 = [v16 styleAttributes];
+  styleAttributes = [firstObject styleAttributes];
   v9 = +[UIScreen mainScreen];
   [v9 nativeScale];
   v11 = v10;
-  v12 = [(VenueCategoryViewController *)self traitCollection];
-  LOBYTE(v15) = [v12 userInterfaceStyle] == 2;
-  v13 = [MKIconManager imageForStyle:v8 size:4 forScale:1 format:0 transparent:0 transitMode:0 isCarplay:v11 nightMode:v15];
-  v14 = [(VenueCategoryViewController *)self headerImageView];
-  [v14 setImage:v13];
+  traitCollection = [(VenueCategoryViewController *)self traitCollection];
+  LOBYTE(v15) = [traitCollection userInterfaceStyle] == 2;
+  v13 = [MKIconManager imageForStyle:styleAttributes size:4 forScale:1 format:0 transparent:0 transitMode:0 isCarplay:v11 nightMode:v15];
+  headerImageView = [(VenueCategoryViewController *)self headerImageView];
+  [headerImageView setImage:v13];
 }
 
 - (void)configureHeader
@@ -644,39 +644,39 @@ LABEL_6:
   [(VenueCategoryViewController *)self setHeaderImageView:v4];
 
   [(VenueCategoryViewController *)self updateHeaderImageView];
-  v5 = [(VenueCategoryViewController *)self headerImageView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerImageView = [(VenueCategoryViewController *)self headerImageView];
+  [headerImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(VenueCategoryViewController *)self headerImageView];
-  [v3 addSubview:v6];
+  headerImageView2 = [(VenueCategoryViewController *)self headerImageView];
+  [v3 addSubview:headerImageView2];
 
   v7 = objc_alloc_init(UILabel);
   [(VenueCategoryViewController *)self setHeaderLabel:v7];
 
-  v8 = [(VenueCategoryViewController *)self headerLabel];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerLabel = [(VenueCategoryViewController *)self headerLabel];
+  [headerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v9 = +[UIColor clearColor];
-  v10 = [(VenueCategoryViewController *)self headerLabel];
-  [v10 setBackgroundColor:v9];
+  headerLabel2 = [(VenueCategoryViewController *)self headerLabel];
+  [headerLabel2 setBackgroundColor:v9];
 
-  v11 = [(VenueCategoryViewController *)self headerLabel];
-  [v11 setNumberOfLines:0];
+  headerLabel3 = [(VenueCategoryViewController *)self headerLabel];
+  [headerLabel3 setNumberOfLines:0];
 
-  v12 = [(VenueCategoryViewController *)self headerLabelFont];
-  v13 = [(VenueCategoryViewController *)self headerLabel];
-  [v13 setFont:v12];
+  headerLabelFont = [(VenueCategoryViewController *)self headerLabelFont];
+  headerLabel4 = [(VenueCategoryViewController *)self headerLabel];
+  [headerLabel4 setFont:headerLabelFont];
 
   headerTitle = self->_headerTitle;
-  v15 = [(VenueCategoryViewController *)self headerLabel];
-  [v15 setText:headerTitle];
+  headerLabel5 = [(VenueCategoryViewController *)self headerLabel];
+  [headerLabel5 setText:headerTitle];
 
   v16 = +[UIColor labelColor];
-  v17 = [(VenueCategoryViewController *)self headerLabel];
-  [v17 setTextColor:v16];
+  headerLabel6 = [(VenueCategoryViewController *)self headerLabel];
+  [headerLabel6 setTextColor:v16];
 
-  v18 = [(VenueCategoryViewController *)self headerLabel];
-  [v3 addSubview:v18];
+  headerLabel7 = [(VenueCategoryViewController *)self headerLabel];
+  [v3 addSubview:headerLabel7];
 
   v19 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(ContainerHeaderView *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -687,117 +687,117 @@ LABEL_6:
   self->_containerHeaderView = v19;
   v21 = v19;
 
-  v22 = [(ContaineeViewController *)self headerView];
-  [v22 addSubview:v21];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView addSubview:v21];
 
-  v76 = [(ContainerHeaderView *)v21 heightAnchor];
-  v75 = [v76 constraintGreaterThanOrEqualToConstant:80.0];
+  heightAnchor = [(ContainerHeaderView *)v21 heightAnchor];
+  v75 = [heightAnchor constraintGreaterThanOrEqualToConstant:80.0];
   v77[0] = v75;
-  v74 = [(VenueCategoryViewController *)self headerImageView];
-  v73 = [v74 leadingAnchor];
-  v72 = [v3 leadingAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72 constant:16.0];
+  headerImageView3 = [(VenueCategoryViewController *)self headerImageView];
+  leadingAnchor = [headerImageView3 leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v71 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v77[1] = v71;
-  v70 = [(VenueCategoryViewController *)self headerImageView];
-  v69 = [v70 widthAnchor];
-  v68 = [v69 constraintEqualToConstant:40.0];
+  headerImageView4 = [(VenueCategoryViewController *)self headerImageView];
+  widthAnchor = [headerImageView4 widthAnchor];
+  v68 = [widthAnchor constraintEqualToConstant:40.0];
   v77[2] = v68;
-  v67 = [(VenueCategoryViewController *)self headerImageView];
-  v66 = [v67 heightAnchor];
-  v65 = [v66 constraintEqualToConstant:40.0];
+  headerImageView5 = [(VenueCategoryViewController *)self headerImageView];
+  heightAnchor2 = [headerImageView5 heightAnchor];
+  v65 = [heightAnchor2 constraintEqualToConstant:40.0];
   v77[3] = v65;
-  v64 = [(VenueCategoryViewController *)self headerImageView];
-  v62 = [v64 topAnchor];
+  headerImageView6 = [(VenueCategoryViewController *)self headerImageView];
+  topAnchor = [headerImageView6 topAnchor];
   v63 = v3;
-  v61 = [v3 topAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:20.0];
+  topAnchor2 = [v3 topAnchor];
+  v60 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v77[4] = v60;
-  v59 = [(VenueCategoryViewController *)self headerLabel];
-  v57 = [v59 leadingAnchor];
-  v58 = [(VenueCategoryViewController *)self headerImageView];
-  v56 = [v58 trailingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56 constant:10.0];
+  headerLabel8 = [(VenueCategoryViewController *)self headerLabel];
+  leadingAnchor3 = [headerLabel8 leadingAnchor];
+  headerImageView7 = [(VenueCategoryViewController *)self headerImageView];
+  trailingAnchor = [headerImageView7 trailingAnchor];
+  v55 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
   v77[5] = v55;
-  v54 = [(VenueCategoryViewController *)self headerLabel];
-  v53 = [v54 trailingAnchor];
-  v52 = [v3 trailingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  headerLabel9 = [(VenueCategoryViewController *)self headerLabel];
+  trailingAnchor2 = [headerLabel9 trailingAnchor];
+  trailingAnchor3 = [v3 trailingAnchor];
+  v51 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v77[6] = v51;
-  v50 = [(VenueCategoryViewController *)self headerLabel];
-  v48 = [v50 centerYAnchor];
-  v49 = [(ContaineeViewController *)self headerView];
-  v47 = [v49 centerYAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  headerLabel10 = [(VenueCategoryViewController *)self headerLabel];
+  centerYAnchor = [headerLabel10 centerYAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  centerYAnchor2 = [headerView2 centerYAnchor];
+  v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v77[7] = v46;
-  v45 = [(VenueCategoryViewController *)self headerLabel];
-  v43 = [v45 topAnchor];
-  v44 = [(ContaineeViewController *)self headerView];
-  v42 = [v44 topAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:13.0];
+  headerLabel11 = [(VenueCategoryViewController *)self headerLabel];
+  topAnchor3 = [headerLabel11 topAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  topAnchor4 = [headerView3 topAnchor];
+  v41 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:13.0];
   v77[8] = v41;
-  v40 = [(ContaineeViewController *)self headerView];
-  v39 = [v40 leadingAnchor];
-  v38 = [(ContainerHeaderView *)v21 leadingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  leadingAnchor4 = [headerView4 leadingAnchor];
+  leadingAnchor5 = [(ContainerHeaderView *)v21 leadingAnchor];
+  v37 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v77[9] = v37;
-  v36 = [(ContaineeViewController *)self headerView];
-  v35 = [v36 trailingAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  trailingAnchor4 = [headerView5 trailingAnchor];
   v23 = v21;
-  v34 = [(ContainerHeaderView *)v21 trailingAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  trailingAnchor5 = [(ContainerHeaderView *)v21 trailingAnchor];
+  v33 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v77[10] = v33;
-  v24 = [(ContaineeViewController *)self headerView];
-  v25 = [v24 topAnchor];
-  v26 = [(ContainerHeaderView *)v21 topAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  headerView6 = [(ContaineeViewController *)self headerView];
+  topAnchor5 = [headerView6 topAnchor];
+  topAnchor6 = [(ContainerHeaderView *)v21 topAnchor];
+  v27 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v77[11] = v27;
-  v28 = [(ContaineeViewController *)self headerView];
-  v29 = [v28 bottomAnchor];
-  v30 = [(ContainerHeaderView *)v23 bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  headerView7 = [(ContaineeViewController *)self headerView];
+  bottomAnchor = [headerView7 bottomAnchor];
+  bottomAnchor2 = [(ContainerHeaderView *)v23 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v77[12] = v31;
   v32 = [NSArray arrayWithObjects:v77 count:13];
   [NSLayoutConstraint activateConstraints:v32];
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v5.receiver = self;
   v5.super_class = VenueCategoryViewController;
   [(ContaineeViewController *)&v5 applyAlphaToContent:?];
-  [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:a3];
+  [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:content];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v5 = [(VenueCategoryViewController *)self headerLabelFont];
-  v4 = [(VenueCategoryViewController *)self headerLabel];
-  [v4 setFont:v5];
+  headerLabelFont = [(VenueCategoryViewController *)self headerLabelFont];
+  headerLabel = [(VenueCategoryViewController *)self headerLabel];
+  [headerLabel setFont:headerLabelFont];
 }
 
 - (void)displayIndexListIfNecessary
 {
-  v3 = [(VenueCategoryViewController *)self tableView];
-  v4 = [v3 isIndexHidden];
+  tableView = [(VenueCategoryViewController *)self tableView];
+  isIndexHidden = [tableView isIndexHidden];
 
-  v5 = [(VenueCategoryViewController *)self view];
-  [v5 frame];
+  view = [(VenueCategoryViewController *)self view];
+  [view frame];
   Height = CGRectGetHeight(v17);
   [(ContaineeViewController *)self heightForLayout:3];
   v8 = v7;
 
-  v9 = [(VenueCategoryViewController *)self dataSource];
-  v10 = [v9 numberOfSectionsNotEmpty];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  numberOfSectionsNotEmpty = [dataSource numberOfSectionsNotEmpty];
   UInteger = GEOConfigGetUInteger();
 
-  v13 = Height >= v8 && v10 >= UInteger;
-  v14 = [(VenueCategoryViewController *)self tableView];
-  [v14 setIndexHidden:v13 ^ 1u animated:1];
+  v13 = Height >= v8 && numberOfSectionsNotEmpty >= UInteger;
+  tableView2 = [(VenueCategoryViewController *)self tableView];
+  [tableView2 setIndexHidden:v13 ^ 1u animated:1];
 
-  if (v4 == v13)
+  if (isIndexHidden == v13)
   {
-    v15 = [(VenueCategoryViewController *)self tableView];
-    [v15 reloadData];
+    tableView3 = [(VenueCategoryViewController *)self tableView];
+    [tableView3 reloadData];
   }
 }
 
@@ -806,8 +806,8 @@ LABEL_6:
   v4.receiver = self;
   v4.super_class = VenueCategoryViewController;
   [(ContaineeViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  -[VenueCategoryViewController setShouldDisplayFilterView:](self, "setShouldDisplayFilterView:", [v3 containeeLayout] > 1);
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  -[VenueCategoryViewController setShouldDisplayFilterView:](self, "setShouldDisplayFilterView:", [cardPresentationController containeeLayout] > 1);
 }
 
 - (void)viewWillLayoutSubviews
@@ -818,17 +818,17 @@ LABEL_6:
   [(VenueCategoryViewController *)self displayIndexListIfNecessary];
 }
 
-- (void)setShowsLoading:(BOOL)a3
+- (void)setShowsLoading:(BOOL)loading
 {
-  if (self->_showsLoading != a3)
+  if (self->_showsLoading != loading)
   {
-    v4 = a3;
-    self->_showsLoading = a3;
-    v6 = [(VenueCategoryViewController *)self tableView];
-    [v6 setHidden:v4];
+    loadingCopy = loading;
+    self->_showsLoading = loading;
+    tableView = [(VenueCategoryViewController *)self tableView];
+    [tableView setHidden:loadingCopy];
 
-    v7 = [(VenueCategoryViewController *)self loadingModeView];
-    [v7 setHidden:v4 ^ 1];
+    loadingModeView = [(VenueCategoryViewController *)self loadingModeView];
+    [loadingModeView setHidden:loadingCopy ^ 1];
   }
 }
 
@@ -847,15 +847,15 @@ LABEL_6:
 
 - (void)updateFilterBar
 {
-  v3 = [(VenueCategoryViewController *)self dataSource];
-  v8 = [v3 filterBarTitles];
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  filterBarTitles = [dataSource filterBarTitles];
 
-  v4 = [v8 count];
-  v5 = [(VenueCategoryViewController *)self filterView];
-  v6 = v5;
+  v4 = [filterBarTitles count];
+  filterView = [(VenueCategoryViewController *)self filterView];
+  v6 = filterView;
   if (v4 > 1)
   {
-    v7 = [v8 copy];
+    v7 = [filterBarTitles copy];
     [v6 setSubCategories:v7 selectedIndex:0];
 
     [(VenueCategoryViewController *)self updateFooterVisibility];
@@ -863,7 +863,7 @@ LABEL_6:
 
   else
   {
-    [v5 resetData];
+    [filterView resetData];
   }
 }
 
@@ -871,35 +871,35 @@ LABEL_6:
 {
   if (![(VenueCategoryViewController *)self isAutoComplete])
   {
-    v3 = [(ControlContaineeViewController *)self delegate];
-    if (v3)
+    delegate = [(ControlContaineeViewController *)self delegate];
+    if (delegate)
     {
-      v4 = v3;
-      v5 = [(VenueCategoryViewController *)self dataSource];
-      v6 = [v5 mapItem];
+      v4 = delegate;
+      dataSource = [(VenueCategoryViewController *)self dataSource];
+      mapItem = [dataSource mapItem];
 
-      if (v6)
+      if (mapItem)
       {
-        v15 = [(VenueCategoryViewController *)self contentDownloader];
-        v7 = [(VenueCategoryViewController *)self dataSource];
-        v8 = [v7 searchCategory];
-        v9 = [(VenueCategoryViewController *)self dataSource];
-        v10 = [v9 subcategoriesType];
-        v11 = [(VenueCategoryViewController *)self dataSource];
-        v12 = [v11 buildings];
-        v13 = [v12 firstObject];
-        v14 = [(ControlContaineeViewController *)self delegate];
-        [v15 performSearchWithSearchCategory:v8 subcategoriesType:v10 filter:v13 shouldFrameMapViewport:0 actionCoordination:v14];
+        contentDownloader = [(VenueCategoryViewController *)self contentDownloader];
+        dataSource2 = [(VenueCategoryViewController *)self dataSource];
+        searchCategory = [dataSource2 searchCategory];
+        dataSource3 = [(VenueCategoryViewController *)self dataSource];
+        subcategoriesType = [dataSource3 subcategoriesType];
+        dataSource4 = [(VenueCategoryViewController *)self dataSource];
+        buildings = [dataSource4 buildings];
+        firstObject = [buildings firstObject];
+        delegate2 = [(ControlContaineeViewController *)self delegate];
+        [contentDownloader performSearchWithSearchCategory:searchCategory subcategoriesType:subcategoriesType filter:firstObject shouldFrameMapViewport:0 actionCoordination:delegate2];
       }
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4.receiver = self;
   v4.super_class = VenueCategoryViewController;
-  [(ControlContaineeViewController *)&v4 setDelegate:a3];
+  [(ControlContaineeViewController *)&v4 setDelegate:delegate];
   [(VenueCategoryViewController *)self performInitialSearchIfNecessary];
 }
 
@@ -915,52 +915,52 @@ LABEL_6:
   [v3 addObserver:self selector:"contentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveAutoCompleteSubcategories:(id)a4 subcategoriesType:(int)a5
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveAutoCompleteSubcategories:(id)subcategories subcategoriesType:(int)type
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100FD21E8;
   block[3] = &unk_101660590;
-  v8 = a5;
+  typeCopy = type;
   block[4] = self;
-  v7 = a4;
-  v5 = v7;
+  subcategoriesCopy = subcategories;
+  v5 = subcategoriesCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveSearchResults:(id)a4 shouldSwitchToBestFloor:(BOOL)a5
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveSearchResults:(id)results shouldSwitchToBestFloor:(BOOL)floor
 {
-  v7 = a4;
-  v8 = [(VenueCategoryViewController *)self filterView];
-  v9 = -[VenueCategoryViewController _buildingAtIndex:](self, "_buildingAtIndex:", [v8 selectedIndex]);
+  resultsCopy = results;
+  filterView = [(VenueCategoryViewController *)self filterView];
+  v9 = -[VenueCategoryViewController _buildingAtIndex:](self, "_buildingAtIndex:", [filterView selectedIndex]);
 
-  v10 = [v9 describesParentVenue];
+  describesParentVenue = [v9 describesParentVenue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100FD2364;
   v13[3] = &unk_101660568;
   v11 = 1;
-  if (v10)
+  if (describesParentVenue)
   {
     v11 = 2;
   }
 
   v13[4] = self;
-  v14 = v7;
+  v14 = resultsCopy;
   v15 = v11;
-  v16 = a5;
-  v12 = v7;
+  floorCopy = floor;
+  v12 = resultsCopy;
   dispatch_async(&_dispatch_main_q, v13);
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveEVChargerUpdates:(id)a4
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveEVChargerUpdates:(id)updates
 {
-  v5 = a4;
-  v6 = [(VenueCategoryViewController *)self dataSource];
-  [v6 refreshEVChargers:v5];
+  updatesCopy = updates;
+  dataSource = [(VenueCategoryViewController *)self dataSource];
+  [dataSource refreshEVChargers:updatesCopy];
 }
 
-- (void)venueCategoryContentDownloaderDidCancel:(id)a3
+- (void)venueCategoryContentDownloaderDidCancel:(id)cancel
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -970,7 +970,7 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)venueCategoryContentDownloaderDidFail:(id)a3
+- (void)venueCategoryContentDownloaderDidFail:(id)fail
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -980,31 +980,31 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didFailToFetchMapItemWithError:(id)a4
+- (void)venueCategoryContentDownloader:(id)downloader didFailToFetchMapItemWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "VenueCategoryContentDownloader failed to download MKMapItem with error: %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didChangeMapItem:(id)a4
+- (void)venueCategoryContentDownloader:(id)downloader didChangeMapItem:(id)item
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100FD2734;
   v5[3] = &unk_101661A90;
   v5[4] = self;
-  v6 = a4;
-  v4 = v6;
+  itemCopy = item;
+  v4 = itemCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)venueCategoryContentDownloaderDidStart:(id)a3
+- (void)venueCategoryContentDownloaderDidStart:(id)start
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1014,11 +1014,11 @@ LABEL_6:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = VenueCategoryViewController;
-  [(ContaineeViewController *)&v5 viewWillAppear:a3];
+  [(ContaineeViewController *)&v5 viewWillAppear:appear];
   if ([(VenueCategoryViewController *)self isAutoComplete])
   {
     v4 = [(VenueCategoryViewController *)self didFinishAutoCompleteSearchRequest]^ 1;
@@ -1032,14 +1032,14 @@ LABEL_6:
   [(VenueCategoryViewController *)self setShowsLoading:v4];
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_headerTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_headerTitle != titleCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v10 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v10;
     if ((v6 & 1) == 0)
     {
@@ -1058,42 +1058,42 @@ LABEL_6:
   }
 }
 
-- (VenueCategoryViewController)initWithAutoCompleteCategoryCardItem:(id)a3
+- (VenueCategoryViewController)initWithAutoCompleteCategoryCardItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 venueSearchCategory];
-  v6 = [(VenueCategoryViewController *)self initWithSearchCategory:v5];
+  itemCopy = item;
+  venueSearchCategory = [itemCopy venueSearchCategory];
+  v6 = [(VenueCategoryViewController *)self initWithSearchCategory:venueSearchCategory];
 
   if (v6)
   {
     v6->_isAutoComplete = 1;
-    v7 = [[VenueCategoryContentDownloader alloc] initWithDelegate:v6 venueAutoCompleteCategoryCardItem:v4];
+    v7 = [[VenueCategoryContentDownloader alloc] initWithDelegate:v6 venueAutoCompleteCategoryCardItem:itemCopy];
     contentDownloader = v6->_contentDownloader;
     v6->_contentDownloader = v7;
 
-    v9 = [(VenueCategoryViewController *)v6 dataSource];
-    v10 = [v9 searchCategory];
-    v11 = [v10 shortDisplayString];
-    [(VenueCategoryViewController *)v6 setHeaderTitle:v11];
+    dataSource = [(VenueCategoryViewController *)v6 dataSource];
+    searchCategory = [dataSource searchCategory];
+    shortDisplayString = [searchCategory shortDisplayString];
+    [(VenueCategoryViewController *)v6 setHeaderTitle:shortDisplayString];
   }
 
   return v6;
 }
 
-- (VenueCategoryViewController)initWithCategoryCardItem:(id)a3
+- (VenueCategoryViewController)initWithCategoryCardItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 venueSearchCategory];
-  v6 = [(VenueCategoryViewController *)self initWithSearchCategory:v5];
+  itemCopy = item;
+  venueSearchCategory = [itemCopy venueSearchCategory];
+  v6 = [(VenueCategoryViewController *)self initWithSearchCategory:venueSearchCategory];
   v7 = v6;
   if (v6)
   {
     v6->_isAutoComplete = 0;
-    v8 = [v5 subcategories];
-    [(VenueCategoryDataSource *)v7->_dataSource setSubcategories:v8];
+    subcategories = [venueSearchCategory subcategories];
+    [(VenueCategoryDataSource *)v7->_dataSource setSubcategories:subcategories];
 
-    -[VenueCategoryDataSource setSubcategoriesType:](v7->_dataSource, "setSubcategoriesType:", [v5 subCategoryType]);
-    v9 = [[VenueCategoryContentDownloader alloc] initWithDelegate:v7 venueCategoryCardItem:v4];
+    -[VenueCategoryDataSource setSubcategoriesType:](v7->_dataSource, "setSubcategoriesType:", [venueSearchCategory subCategoryType]);
+    v9 = [[VenueCategoryContentDownloader alloc] initWithDelegate:v7 venueCategoryCardItem:itemCopy];
     contentDownloader = v7->_contentDownloader;
     v7->_contentDownloader = v9;
   }
@@ -1101,9 +1101,9 @@ LABEL_6:
   return v7;
 }
 
-- (VenueCategoryViewController)initWithSearchCategory:(id)a3
+- (VenueCategoryViewController)initWithSearchCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v15.receiver = self;
   v15.super_class = VenueCategoryViewController;
   v5 = [(VenueCategoryViewController *)&v15 initWithNibName:0 bundle:0];
@@ -1113,13 +1113,13 @@ LABEL_6:
     tableView = v5->_tableView;
     v5->_tableView = v6;
 
-    v8 = [[VenueCategoryDataSource alloc] initWithTableView:v5->_tableView searchCategory:v4];
+    v8 = [[VenueCategoryDataSource alloc] initWithTableView:v5->_tableView searchCategory:categoryCopy];
     dataSource = v5->_dataSource;
     v5->_dataSource = v8;
 
-    v10 = [(VenueCategoryViewController *)v5 dataSource];
-    v11 = [v10 searchCategory];
-    if ([v11 displayMode] == 2)
+    dataSource = [(VenueCategoryViewController *)v5 dataSource];
+    searchCategory = [dataSource searchCategory];
+    if ([searchCategory displayMode] == 2)
     {
       v12 = 3;
     }
@@ -1129,8 +1129,8 @@ LABEL_6:
       v12 = 2;
     }
 
-    v13 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v13 setDefaultContaineeLayout:v12];
+    cardPresentationController = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController setDefaultContaineeLayout:v12];
   }
 
   return v5;

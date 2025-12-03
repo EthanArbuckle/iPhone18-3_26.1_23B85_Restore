@@ -1,37 +1,37 @@
 @interface _NanoRoutePlanningSingleRequester
-- (void)processRequest:(id)a3 withCompletion:(id)a4;
-- (void)routePlanningSession:(id)a3 didUpdateWithResponse:(id)a4;
-- (void)routePlanningSessionDidInvalidate:(id)a3;
+- (void)processRequest:(id)request withCompletion:(id)completion;
+- (void)routePlanningSession:(id)session didUpdateWithResponse:(id)response;
+- (void)routePlanningSessionDidInvalidate:(id)invalidate;
 @end
 
 @implementation _NanoRoutePlanningSingleRequester
 
-- (void)routePlanningSessionDidInvalidate:(id)a3
+- (void)routePlanningSessionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v8 = [v4 request];
-  v5 = [v4 response];
+  invalidateCopy = invalidate;
+  request = [invalidateCopy request];
+  response = [invalidateCopy response];
 
   v6 = objc_retainBlock(self->_completionHandler);
   completionHandler = self->_completionHandler;
   self->_completionHandler = 0;
 
-  v6[2](v6, v8, v5);
+  v6[2](v6, request, response);
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateWithResponse:(id)a4
+- (void)routePlanningSession:(id)session didUpdateWithResponse:(id)response
 {
-  v5 = a3;
-  if ([a4 hasReceivedAllExpectedRoutes])
+  sessionCopy = session;
+  if ([response hasReceivedAllExpectedRoutes])
   {
-    [v5 invalidate];
+    [sessionCopy invalidate];
   }
 }
 
-- (void)processRequest:(id)a3 withCompletion:(id)a4
+- (void)processRequest:(id)request withCompletion:(id)completion
 {
-  v11 = a3;
-  v6 = [a4 copy];
+  requestCopy = request;
+  v6 = [completion copy];
   completionHandler = self->_completionHandler;
   self->_completionHandler = v6;
 
@@ -42,7 +42,7 @@
 
   [(NanoRoutePlanningSession *)v10 setShouldBroadcast:0];
   [(NanoRoutePlanningSession *)v10 registerObserver:self];
-  [(NanoRoutePlanningSession *)v10 processRequest:v11];
+  [(NanoRoutePlanningSession *)v10 processRequest:requestCopy];
 }
 
 @end

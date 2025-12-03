@@ -1,7 +1,7 @@
 @interface STConcreteCommunicationService
 - (STCommunicationServiceDelegate)delegate;
-- (void)authenticatePasscodeForUserWithEndpoint:(id)a3 completionHandler:(id)a4;
-- (void)currentCommunicationConfigurationWithCompletionHandler:(id)a3;
+- (void)authenticatePasscodeForUserWithEndpoint:(id)endpoint completionHandler:(id)handler;
+- (void)currentCommunicationConfigurationWithCompletionHandler:(id)handler;
 @end
 
 @implementation STConcreteCommunicationService
@@ -13,19 +13,19 @@
   return WeakRetained;
 }
 
-- (void)currentCommunicationConfigurationWithCompletionHandler:(id)a3
+- (void)currentCommunicationConfigurationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcreteCommunicationService *)self delegate];
-  [v5 currentCommunicationConfigurationWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcreteCommunicationService *)self delegate];
+  [delegate currentCommunicationConfigurationWithCompletionHandler:handlerCopy];
 }
 
-- (void)authenticatePasscodeForUserWithEndpoint:(id)a3 completionHandler:(id)a4
+- (void)authenticatePasscodeForUserWithEndpoint:(id)endpoint completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteCommunicationService *)self delegate];
-  [v8 authenticatePasscodeForUserWithEndpoint:v7 completionHandler:v6];
+  handlerCopy = handler;
+  endpointCopy = endpoint;
+  delegate = [(STConcreteCommunicationService *)self delegate];
+  [delegate authenticatePasscodeForUserWithEndpoint:endpointCopy completionHandler:handlerCopy];
 }
 
 @end

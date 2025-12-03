@@ -1,14 +1,14 @@
 @interface _TUIRenderIdentifierQuery
-- (BOOL)matchesUUID:(id)a3 uid:(id)a4;
-- (id)queryMatchedWithUUID:(id)a3 uid:(id)a4;
+- (BOOL)matchesUUID:(id)d uid:(id)uid;
+- (id)queryMatchedWithUUID:(id)d uid:(id)uid;
 @end
 
 @implementation _TUIRenderIdentifierQuery
 
-- (BOOL)matchesUUID:(id)a3 uid:(id)a4
+- (BOOL)matchesUUID:(id)d uid:(id)uid
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  uidCopy = uid;
   if (self->_matchedUUID)
   {
     v8 = 1;
@@ -19,7 +19,7 @@
     UUID = self->_UUID;
     if (UUID)
     {
-      v10 = UUID == v6;
+      v10 = UUID == dCopy;
     }
 
     else
@@ -27,13 +27,13 @@
       v10 = 1;
     }
 
-    if (v10 || [(NSUUID *)UUID isEqual:v6])
+    if (v10 || [(NSUUID *)UUID isEqual:dCopy])
     {
       uid = self->_uid;
       v8 = 1;
-      if (uid && uid != v7)
+      if (uid && uid != uidCopy)
       {
-        v8 = [(NSString *)uid isEqualToString:v7];
+        v8 = [(NSString *)uid isEqualToString:uidCopy];
       }
     }
 
@@ -46,15 +46,15 @@
   return v8;
 }
 
-- (id)queryMatchedWithUUID:(id)a3 uid:(id)a4
+- (id)queryMatchedWithUUID:(id)d uid:(id)uid
 {
-  v6 = a4;
-  v7 = a3;
+  uidCopy = uid;
+  dCopy = d;
   v8 = objc_alloc_init(_TUIRenderIdentifierQuery);
   [(_TUIRenderIdentifierQuery *)v8 setIdentifier:self->_identifier];
-  [(_TUIRenderIdentifierQuery *)v8 setUUID:v7];
+  [(_TUIRenderIdentifierQuery *)v8 setUUID:dCopy];
 
-  [(_TUIRenderIdentifierQuery *)v8 setUid:v6];
+  [(_TUIRenderIdentifierQuery *)v8 setUid:uidCopy];
   [(_TUIRenderIdentifierQuery *)v8 setMatchedUUID:1];
 
   return v8;

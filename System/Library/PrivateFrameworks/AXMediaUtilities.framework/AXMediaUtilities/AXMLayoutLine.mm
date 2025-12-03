@@ -1,5 +1,5 @@
 @interface AXMLayoutLine
-+ (id)line:(id)a3;
++ (id)line:(id)line;
 - (CGRect)frame;
 - (CGRect)normalizedFrame;
 - (id)recognizedTextFeatures;
@@ -7,11 +7,11 @@
 
 @implementation AXMLayoutLine
 
-+ (id)line:(id)a3
++ (id)line:(id)line
 {
-  v3 = a3;
+  lineCopy = line;
   v4 = objc_alloc_init(AXMLayoutLine);
-  v5 = [MEMORY[0x1E695DF70] arrayWithObject:v3];
+  v5 = [MEMORY[0x1E695DF70] arrayWithObject:lineCopy];
 
   sequences = v4->_sequences;
   v4->_sequences = v5;
@@ -48,7 +48,7 @@
 - (id)recognizedTextFeatures
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -68,9 +68,9 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) feature];
-        v10 = [v9 recognizedTextFeatures];
-        [v3 addObjectsFromArray:v10];
+        feature = [*(*(&v12 + 1) + 8 * i) feature];
+        recognizedTextFeatures = [feature recognizedTextFeatures];
+        [array addObjectsFromArray:recognizedTextFeatures];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -79,7 +79,7 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 @end

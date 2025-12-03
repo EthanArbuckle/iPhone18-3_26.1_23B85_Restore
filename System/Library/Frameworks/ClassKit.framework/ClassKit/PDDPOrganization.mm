@@ -1,16 +1,16 @@
 @interface PDDPOrganization
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOrganizationType:(id)a3;
+- (int)StringAsOrganizationType:(id)type;
 - (int)organizationType;
 - (unint64_t)hash;
-- (void)addEmailDomains:(id)a3;
-- (void)addLocations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEmailDomains:(id)domains;
+- (void)addLocations:(id)locations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPOrganization
@@ -28,20 +28,20 @@
   }
 }
 
-- (int)StringAsOrganizationType:(id)a3
+- (int)StringAsOrganizationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ORGANIZATION_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_ORGANIZATION_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EDUCATION"])
+  else if ([typeCopy isEqualToString:@"EDUCATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"BUSINESS"])
+  else if ([typeCopy isEqualToString:@"BUSINESS"])
   {
     v4 = 2;
   }
@@ -54,40 +54,40 @@
   return v4;
 }
 
-- (void)addLocations:(id)a3
+- (void)addLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   locations = self->_locations;
-  v8 = v4;
+  v8 = locationsCopy;
   if (!locations)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_locations;
     self->_locations = v6;
 
-    v4 = v8;
+    locationsCopy = v8;
     locations = self->_locations;
   }
 
-  [(NSMutableArray *)locations addObject:v4];
+  [(NSMutableArray *)locations addObject:locationsCopy];
 }
 
-- (void)addEmailDomains:(id)a3
+- (void)addEmailDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   emailDomains = self->_emailDomains;
-  v8 = v4;
+  v8 = domainsCopy;
   if (!emailDomains)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_emailDomains;
     self->_emailDomains = v6;
 
-    v4 = v8;
+    domainsCopy = v8;
     emailDomains = self->_emailDomains;
   }
 
-  [(NSMutableArray *)emailDomains addObject:v4];
+  [(NSMutableArray *)emailDomains addObject:domainsCopy];
 }
 
 - (id)description
@@ -95,8 +95,8 @@
   v7.receiver = self;
   v7.super_class = PDDPOrganization;
   v3 = [(PDDPOrganization *)&v7 description];
-  v4 = [(PDDPOrganization *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPOrganization *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -120,15 +120,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v8 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v10 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   if (*&self->_has)
@@ -169,8 +169,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v22 + 1) + 8 * i) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -191,9 +191,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_organizationId)
   {
     PBDataWriterWriteStringField();
@@ -285,47 +285,47 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (self->_organizationId)
   {
-    [v4 setOrganizationId:?];
-    v4 = v13;
+    [toCopy setOrganizationId:?];
+    toCopy = v13;
   }
 
   if (self->_organizationName)
   {
     [v13 setOrganizationName:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_dateCreated)
   {
     [v13 setDateCreated:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_dateLastModified)
   {
     [v13 setDateLastModified:?];
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 14) = self->_organizationType;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 14) = self->_organizationType;
+    *(toCopy + 60) |= 1u;
   }
 
   if ([(PDDPOrganization *)self locationsCount])
   {
     [v13 clearLocations];
-    v5 = [(PDDPOrganization *)self locationsCount];
-    if (v5)
+    locationsCount = [(PDDPOrganization *)self locationsCount];
+    if (locationsCount)
     {
-      v6 = v5;
+      v6 = locationsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPOrganization *)self locationsAtIndex:i];
@@ -337,10 +337,10 @@
   if ([(PDDPOrganization *)self emailDomainsCount])
   {
     [v13 clearEmailDomains];
-    v9 = [(PDDPOrganization *)self emailDomainsCount];
-    if (v9)
+    emailDomainsCount = [(PDDPOrganization *)self emailDomainsCount];
+    if (emailDomainsCount)
     {
-      v10 = v9;
+      v10 = emailDomainsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(PDDPOrganization *)self emailDomainsAtIndex:j];
@@ -350,22 +350,22 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_organizationId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_organizationId copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v8 = [(NSString *)self->_organizationName copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
-  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -394,7 +394,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v31 + 1) + 8 * i) copyWithZone:a3];
+        v19 = [*(*(&v31 + 1) + 8 * i) copyWithZone:zone];
         [v5 addLocations:v19];
       }
 
@@ -423,7 +423,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{a3, v27}];
+        v25 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{zone, v27}];
         [v5 addEmailDomains:v25];
       }
 
@@ -436,16 +436,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   organizationId = self->_organizationId;
-  if (organizationId | *(v4 + 5))
+  if (organizationId | *(equalCopy + 5))
   {
     if (![(NSString *)organizationId isEqual:?])
     {
@@ -454,7 +454,7 @@
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | *(v4 + 6))
+  if (organizationName | *(equalCopy + 6))
   {
     if (![(NSString *)organizationName isEqual:?])
     {
@@ -463,7 +463,7 @@
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 1))
+  if (dateCreated | *(equalCopy + 1))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -472,7 +472,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 2))
+  if (dateLastModified | *(equalCopy + 2))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -480,16 +480,16 @@
     }
   }
 
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_organizationType != *(v4 + 14))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_organizationType != *(equalCopy + 14))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
 LABEL_19:
     v12 = 0;
@@ -497,13 +497,13 @@ LABEL_19:
   }
 
   locations = self->_locations;
-  if (locations | *(v4 + 4) && ![(NSMutableArray *)locations isEqual:?])
+  if (locations | *(equalCopy + 4) && ![(NSMutableArray *)locations isEqual:?])
   {
     goto LABEL_19;
   }
 
   emailDomains = self->_emailDomains;
-  if (emailDomains | *(v4 + 3))
+  if (emailDomains | *(equalCopy + 3))
   {
     v12 = [(NSMutableArray *)emailDomains isEqual:?];
   }
@@ -539,21 +539,21 @@ LABEL_20:
   return v8 ^ v9 ^ [(NSMutableArray *)self->_emailDomains hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(PDDPOrganization *)self setOrganizationId:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PDDPOrganization *)self setOrganizationName:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (dateCreated)
   {
     if (v6)
@@ -568,7 +568,7 @@ LABEL_20:
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (dateLastModified)
   {
     if (v8)
@@ -582,9 +582,9 @@ LABEL_20:
     [(PDDPOrganization *)self setDateLastModified:?];
   }
 
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
-    self->_organizationType = *(v4 + 14);
+    self->_organizationType = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
@@ -592,7 +592,7 @@ LABEL_20:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v10)
   {
@@ -620,7 +620,7 @@ LABEL_20:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = *(v4 + 3);
+  v14 = *(fromCopy + 3);
   v15 = [v14 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v15)
   {

@@ -1,32 +1,32 @@
 @interface ICCameraFolder
-- (ICCameraFolder)initWithName:(id)a3 parentFolder:(id)a4 device:(id)a5;
-- (ICCameraFolder)initWithProxy:(id)a3 parentFolder:(id)a4 device:(id)a5;
+- (ICCameraFolder)initWithName:(id)name parentFolder:(id)folder device:(id)device;
+- (ICCameraFolder)initWithProxy:(id)proxy parentFolder:(id)folder device:(id)device;
 - (NSArray)contents;
 - (NSMutableArray)files;
 - (NSMutableArray)folders;
 - (id)description;
-- (id)getFileWithID:(unint64_t)a3;
-- (id)getFolderWithID:(unint64_t)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)addFile:(id)a3;
-- (void)addFolder:(id)a3;
+- (id)getFileWithID:(unint64_t)d;
+- (id)getFolderWithID:(unint64_t)d;
+- (id)valueForUndefinedKey:(id)key;
+- (void)addFile:(id)file;
+- (void)addFolder:(id)folder;
 - (void)dealloc;
-- (void)deleteFile:(id)a3;
-- (void)deleteFileWithID:(unint64_t)a3;
-- (void)deleteFolder:(id)a3;
-- (void)deleteFolderWithID:(unint64_t)a3;
-- (void)deleteItem:(id)a3;
-- (void)setFiles:(id)a3;
-- (void)setFolders:(id)a3;
+- (void)deleteFile:(id)file;
+- (void)deleteFileWithID:(unint64_t)d;
+- (void)deleteFolder:(id)folder;
+- (void)deleteFolderWithID:(unint64_t)d;
+- (void)deleteItem:(id)item;
+- (void)setFiles:(id)files;
+- (void)setFolders:(id)folders;
 @end
 
 @implementation ICCameraFolder
 
-- (ICCameraFolder)initWithName:(id)a3 parentFolder:(id)a4 device:(id)a5
+- (ICCameraFolder)initWithName:(id)name parentFolder:(id)folder device:(id)device
 {
   v11.receiver = self;
   v11.super_class = ICCameraFolder;
-  v5 = [(ICCameraItem *)&v11 initWithName:a3 parentFolder:a4 device:a5];
+  v5 = [(ICCameraItem *)&v11 initWithName:name parentFolder:folder device:device];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
@@ -35,8 +35,8 @@
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
     [(ICCameraFolder *)v5 setFolders:v7];
 
-    v8 = [*MEMORY[0x1E6982DC8] identifier];
-    [(ICCameraItem *)v5 setUTI:v8];
+    identifier = [*MEMORY[0x1E6982DC8] identifier];
+    [(ICCameraItem *)v5 setUTI:identifier];
 
     [(ICCameraItem *)v5 setThumbnailState:8];
     [(ICCameraItem *)v5 setMetadataState:8];
@@ -47,15 +47,15 @@
   return v5;
 }
 
-- (ICCameraFolder)initWithProxy:(id)a3 parentFolder:(id)a4 device:(id)a5
+- (ICCameraFolder)initWithProxy:(id)proxy parentFolder:(id)folder device:(id)device
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 name];
+  proxyCopy = proxy;
+  deviceCopy = device;
+  folderCopy = folder;
+  name = [proxyCopy name];
   v20.receiver = self;
   v20.super_class = ICCameraFolder;
-  v12 = [(ICCameraItem *)&v20 initWithName:v11 parentFolder:v10 device:v9];
+  v12 = [(ICCameraItem *)&v20 initWithName:name parentFolder:folderCopy device:deviceCopy];
 
   if (v12)
   {
@@ -65,17 +65,17 @@
     v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
     [(ICCameraFolder *)v12 setFolders:v14];
 
-    v15 = [*MEMORY[0x1E6982DC8] identifier];
-    [(ICCameraItem *)v12 setUTI:v15];
+    identifier = [*MEMORY[0x1E6982DC8] identifier];
+    [(ICCameraItem *)v12 setUTI:identifier];
 
     [(ICCameraItem *)v12 setThumbnailState:8];
     [(ICCameraItem *)v12 setMetadataState:8];
     [(ICCameraFolder *)v12 setFolderMediaLock:0];
-    -[ICCameraItem setObjectHandle:](v12, "setObjectHandle:", [v8 objectHandle]);
-    -[ICCameraItem setObjectID:](v12, "setObjectID:", [v8 objectHandle]);
-    v16 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v8, "captureDate")}];
+    -[ICCameraItem setObjectHandle:](v12, "setObjectHandle:", [proxyCopy objectHandle]);
+    -[ICCameraItem setObjectID:](v12, "setObjectID:", [proxyCopy objectHandle]);
+    v16 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(proxyCopy, "captureDate")}];
     [(ICCameraItem *)v12 setCreationDate:v16];
-    v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v8, "modificationDate")}];
+    v17 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(proxyCopy, "modificationDate")}];
     [(ICCameraItem *)v12 setModificationDate:v17];
     v18 = v12;
   }
@@ -105,8 +105,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(ICCameraFolder *)self files];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  files = [(ICCameraFolder *)self files];
+  v4 = [files countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -118,14 +118,14 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(files);
         }
 
-        v9 = [*(*(&v19 + 1) + 8 * i) sidecarFiles];
-        v6 += [v9 count] + 1;
+        sidecarFiles = [*(*(&v19 + 1) + 8 * i) sidecarFiles];
+        v6 += [sidecarFiles count] + 1;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [files countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -138,42 +138,42 @@
   }
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(ICCameraItem *)self name];
-  v13 = [v12 UTF8String];
-  v14 = [(ICCameraItem *)self objectID];
-  v15 = [(ICCameraFolder *)self folders];
-  v16 = [v11 stringWithFormat:@"🔶 [%10s ID:%6lu]➡[%8s:%6u][%8s:%6lu]", v13, v14, "Files", v10, "Folders", objc_msgSend(v15, "count")];
+  name = [(ICCameraItem *)self name];
+  uTF8String = [name UTF8String];
+  objectID = [(ICCameraItem *)self objectID];
+  folders = [(ICCameraFolder *)self folders];
+  v16 = [v11 stringWithFormat:@"🔶 [%10s ID:%6lu]➡[%8s:%6u][%8s:%6lu]", uTF8String, objectID, "Files", v10, "Folders", objc_msgSend(folders, "count")];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v16;
 }
 
-- (void)addFile:(id)a3
+- (void)addFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   os_unfair_lock_lock(&self->_folderMediaLock);
-  [(NSMutableArray *)self->_files addObject:v4];
+  [(NSMutableArray *)self->_files addObject:fileCopy];
 
   os_unfair_lock_unlock(&self->_folderMediaLock);
 }
 
-- (void)addFolder:(id)a3
+- (void)addFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   os_unfair_lock_lock(&self->_folderMediaLock);
-  [(NSMutableArray *)self->_folders addObject:v4];
+  [(NSMutableArray *)self->_folders addObject:folderCopy];
 
   os_unfair_lock_unlock(&self->_folderMediaLock);
 }
 
-- (void)deleteItem:(id)a3
+- (void)deleteItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   os_unfair_lock_lock(&self->_folderMediaLock);
-  v5 = [v4 UTI];
-  v6 = [*MEMORY[0x1E6982DC8] identifier];
-  v7 = [v5 isEqualToString:v6];
+  v5 = [itemCopy UTI];
+  identifier = [*MEMORY[0x1E6982DC8] identifier];
+  v7 = [v5 isEqualToString:identifier];
 
   v8 = &OBJC_IVAR___ICCameraFolder__files;
   if (v7)
@@ -181,25 +181,25 @@
     v8 = &OBJC_IVAR___ICCameraFolder__folders;
   }
 
-  [*(&self->super.super.isa + *v8) removeObject:v4];
+  [*(&self->super.super.isa + *v8) removeObject:itemCopy];
 
   os_unfair_lock_unlock(&self->_folderMediaLock);
 }
 
-- (void)deleteFile:(id)a3
+- (void)deleteFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   os_unfair_lock_lock(&self->_folderMediaLock);
-  [(NSMutableArray *)self->_files removeObject:v4];
+  [(NSMutableArray *)self->_files removeObject:fileCopy];
 
   os_unfair_lock_unlock(&self->_folderMediaLock);
 }
 
-- (void)deleteFolder:(id)a3
+- (void)deleteFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   os_unfair_lock_lock(&self->_folderMediaLock);
-  [(NSMutableArray *)self->_folders removeObject:v4];
+  [(NSMutableArray *)self->_folders removeObject:folderCopy];
 
   os_unfair_lock_unlock(&self->_folderMediaLock);
 }
@@ -214,22 +214,22 @@
   return v3;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqual:@"children"])
+  keyCopy = key;
+  if ([keyCopy isEqual:@"children"])
   {
-    v5 = [(ICCameraFolder *)self contents];
+    contents = [(ICCameraFolder *)self contents];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ICCameraFolder;
-    v5 = [(ICCameraItem *)&v8 valueForUndefinedKey:v4];
+    contents = [(ICCameraItem *)&v8 valueForUndefinedKey:keyCopy];
   }
 
-  v6 = v5;
+  v6 = contents;
 
   return v6;
 }
@@ -243,12 +243,12 @@
   return v3;
 }
 
-- (void)setFiles:(id)a3
+- (void)setFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   os_unfair_lock_lock(&self->_folderMediaLock);
   files = self->_files;
-  self->_files = v4;
+  self->_files = filesCopy;
 
   os_unfair_lock_unlock(&self->_folderMediaLock);
 }
@@ -262,17 +262,17 @@
   return v3;
 }
 
-- (void)setFolders:(id)a3
+- (void)setFolders:(id)folders
 {
-  v4 = a3;
+  foldersCopy = folders;
   os_unfair_lock_lock(&self->_folderMediaLock);
   folders = self->_folders;
-  self->_folders = v4;
+  self->_folders = foldersCopy;
 
   os_unfair_lock_unlock(&self->_folderMediaLock);
 }
 
-- (void)deleteFolderWithID:(unint64_t)a3
+- (void)deleteFolderWithID:(unint64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_folderMediaLock);
@@ -299,7 +299,7 @@ LABEL_3:
 
       v8 = *(*(&v13 + 1) + 8 * v10);
 
-      if ([(NSMutableArray *)v8 objectID]== a3)
+      if ([(NSMutableArray *)v8 objectID]== d)
       {
         break;
       }
@@ -334,7 +334,7 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteFileWithID:(unint64_t)a3
+- (void)deleteFileWithID:(unint64_t)d
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_folderMediaLock);
@@ -361,7 +361,7 @@ LABEL_3:
 
       v8 = *(*(&v13 + 1) + 8 * v10);
 
-      if ([(NSMutableArray *)v8 objectID]== a3)
+      if ([(NSMutableArray *)v8 objectID]== d)
       {
         break;
       }
@@ -396,10 +396,10 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getFolderWithID:(unint64_t)a3
+- (id)getFolderWithID:(unint64_t)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ([(ICCameraItem *)self objectID]!= a3 || (v5 = self) == 0)
+  if ([(ICCameraItem *)self objectID]!= d || (v5 = self) == 0)
   {
     [(ICCameraFolder *)self folders];
     v14 = 0u;
@@ -420,7 +420,7 @@ LABEL_13:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) getFolderWithID:{a3, v14}];
+          v11 = [*(*(&v14 + 1) + 8 * i) getFolderWithID:{d, v14}];
           if (v11)
           {
             v5 = v11;
@@ -447,7 +447,7 @@ LABEL_13:
   return v5;
 }
 
-- (id)getFileWithID:(unint64_t)a3
+- (id)getFileWithID:(unint64_t)d
 {
   v30 = *MEMORY[0x1E69E9840];
   [(ICCameraFolder *)self files];
@@ -470,7 +470,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v24 + 1) + 8 * v9);
-      if ([v10 objectID] == a3)
+      if ([v10 objectID] == d)
       {
         break;
       }
@@ -519,7 +519,7 @@ LABEL_9:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * i) getFileWithID:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * i) getFileWithID:{d, v20}];
         if (v17)
         {
           v11 = v17;

@@ -1,16 +1,16 @@
 @interface NSLineFragmentRenderingContext
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (void)initialize;
 - (CGRect)imageBounds;
-- (CGSize)sizeWithBehavior:(int64_t)a3 usesFontLeading:(BOOL)a4 baselineDelta:(double *)a5;
-- (NSLineFragmentRenderingContext)initWithTextStorage:(id)a3 runs:(__CFArray *)a4 glyphOrigin:(double)a5 lineFragmentWidth:(double)a6 elasticWidth:(double)a7 usesScreenFonts:(BOOL)a8 isRTL:(BOOL)a9 applicationFrameworkContext:(int64_t)a10;
-- (void)_setUsesSimpleTextEffects:(BOOL)a3;
+- (CGSize)sizeWithBehavior:(int64_t)behavior usesFontLeading:(BOOL)leading baselineDelta:(double *)delta;
+- (NSLineFragmentRenderingContext)initWithTextStorage:(id)storage runs:(__CFArray *)runs glyphOrigin:(double)origin lineFragmentWidth:(double)width elasticWidth:(double)elasticWidth usesScreenFonts:(BOOL)fonts isRTL:(BOOL)l applicationFrameworkContext:(int64_t)self0;
+- (void)_setUsesSimpleTextEffects:(BOOL)effects;
 - (void)dealloc;
-- (void)drawAtPoint:(CGPoint)a3 inContext:(CGContext *)a4;
+- (void)drawAtPoint:(CGPoint)point inContext:(CGContext *)context;
 - (void)finalize;
-- (void)getMaximumAscender:(double *)a3 minimumDescender:(double *)a4;
+- (void)getMaximumAscender:(double *)ascender minimumDescender:(double *)descender;
 - (void)release;
-- (void)setApplicationFrameworkContext:(int64_t)a3;
+- (void)setApplicationFrameworkContext:(int64_t)context;
 @end
 
 @implementation NSLineFragmentRenderingContext
@@ -42,7 +42,7 @@
     }
 
     v54 = v4;
-    v45 = self;
+    selfCopy = self;
     if (numRuns >= 1)
     {
       runs = self->_runs;
@@ -250,14 +250,14 @@ LABEL_27:
     v57 = width;
     v58 = y;
 LABEL_48:
-    leftControlWidth = v45->_leftControlWidth;
-    rightControlWidth = v45->_rightControlWidth;
-    x = v10 + v45->_leftSideDelta - leftControlWidth;
-    v45->_imageBounds.origin.x = x;
-    v45->_imageBounds.origin.y = v58;
+    leftControlWidth = selfCopy->_leftControlWidth;
+    rightControlWidth = selfCopy->_rightControlWidth;
+    x = v10 + selfCopy->_leftSideDelta - leftControlWidth;
+    selfCopy->_imageBounds.origin.x = x;
+    selfCopy->_imageBounds.origin.y = v58;
     v40 = v57 + leftControlWidth + rightControlWidth;
-    v45->_imageBounds.size.width = v40;
-    v45->_imageBounds.size.height = v11;
+    selfCopy->_imageBounds.size.width = v40;
+    selfCopy->_imageBounds.size.height = v11;
   }
 
   else
@@ -322,7 +322,7 @@ LABEL_48:
   }
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v5 = __NSRenderingContextCacheNextIndex;
@@ -330,9 +330,9 @@ LABEL_48:
   {
     os_unfair_lock_unlock(&__NSRenderingContextLock);
 LABEL_5:
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___NSLineFragmentRenderingContext;
-    return objc_msgSendSuper2(&v8, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v8, sel_allocWithZone_, zone);
   }
 
   --__NSRenderingContextCacheNextIndex;
@@ -346,11 +346,11 @@ LABEL_5:
   return v6;
 }
 
-- (NSLineFragmentRenderingContext)initWithTextStorage:(id)a3 runs:(__CFArray *)a4 glyphOrigin:(double)a5 lineFragmentWidth:(double)a6 elasticWidth:(double)a7 usesScreenFonts:(BOOL)a8 isRTL:(BOOL)a9 applicationFrameworkContext:(int64_t)a10
+- (NSLineFragmentRenderingContext)initWithTextStorage:(id)storage runs:(__CFArray *)runs glyphOrigin:(double)origin lineFragmentWidth:(double)width elasticWidth:(double)elasticWidth usesScreenFonts:(BOOL)fonts isRTL:(BOOL)l applicationFrameworkContext:(int64_t)self0
 {
-  v11 = a9;
-  v15 = a4;
-  Count = CFArrayGetCount(a4);
+  lCopy = l;
+  runsCopy = runs;
+  Count = CFArrayGetCount(runs);
   if (!Count)
   {
 
@@ -359,17 +359,17 @@ LABEL_5:
 
   v19 = Count;
   self->_rightControlWidth = 0.0;
-  self->_appContext = a10;
+  self->_appContext = context;
   self->_leftControlWidth = 0.0;
   v20 = MEMORY[0x1E696AA80];
-  self->_leftSideDelta = a5;
-  self->_lineWidth = a6;
+  self->_leftSideDelta = origin;
+  self->_lineWidth = width;
   v21 = *(v20 + 16);
   self->_imageBounds.origin = *v20;
   self->_imageBounds.size = v21;
-  self->_elasticWidth = a7;
-  self->_textStorage = a3;
-  self->_flags = (*&self->_flags & 0xFFFFFFFE | v11);
+  self->_elasticWidth = elasticWidth;
+  self->_textStorage = storage;
+  self->_flags = (*&self->_flags & 0xFFFFFFFE | lCopy);
   p_rightControlWidth = &self->_rightControlWidth;
   self->_flags = (*&self->_flags & 0xFFFFFF8F | (16 * (_NSTextScalingTypeForCurrentEnvironment() & 7)));
   if (v19 < 1)
@@ -383,7 +383,7 @@ LABEL_5:
     v23 = 0;
     do
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(v15, v22);
+      ValueAtIndex = CFArrayGetValueAtIndex(runsCopy, v22);
       v23 += CTRunGetGlyphCount(ValueAtIndex);
       ++v22;
     }
@@ -423,10 +423,10 @@ LABEL_5:
   v33 = *(v20 + 16);
   v34 = *(v20 + 24);
   v117 = v19;
-  v118 = v15;
+  v118 = runsCopy;
   do
   {
-    v35 = CFArrayGetValueAtIndex(v15, v29);
+    v35 = CFArrayGetValueAtIndex(runsCopy, v29);
     StringRange = CTRunGetStringRange(v35);
     GlyphStorage = CTRunGetGlyphStorage();
     v38 = MEMORY[0x193AD3A70](GlyphStorage);
@@ -507,7 +507,7 @@ LABEL_29:
       }
 
       v46 = v117;
-      v15 = v118;
+      runsCopy = v118;
       *(v116 + 11) = v56;
       v121 = 0;
       v63 = v115;
@@ -576,7 +576,7 @@ LABEL_29:
         v79 = (*(v39 + *MEMORY[0x1E6965618]) + 4 * v120);
         v80 = (*(v39 + *MEMORY[0x1E6965600]) + 16 * v120 + 8);
         v46 = v117;
-        v15 = v118;
+        runsCopy = v118;
         do
         {
           v81 = (*v79 >> 5) & 1;
@@ -631,7 +631,7 @@ LABEL_29:
           CTFontGetGlyphsForCharacters(*(v116 + 6), &characters, v115, 1);
           [*(v116 + 6) advancementForGlyph:*v115];
           v46 = v117;
-          v15 = v118;
+          runsCopy = v118;
           if (v85 != 0.0)
           {
             *&self->_flags |= 2u;
@@ -649,7 +649,7 @@ LABEL_29:
       {
         v88 = v115;
         v46 = v117;
-        v15 = v118;
+        runsCopy = v118;
 LABEL_85:
         v121 = v88 - v115;
         v63 = v88;
@@ -660,7 +660,7 @@ LABEL_85:
       v87 = (*(v39 + *MEMORY[0x1E6965600]) + 16 * v66 + 8);
       v88 = v115;
       v46 = v117;
-      v15 = v118;
+      runsCopy = v118;
       do
       {
         if (*v67)
@@ -740,7 +740,7 @@ LABEL_115:
 
 LABEL_30:
       v46 = v117;
-      v15 = v118;
+      runsCopy = v118;
       goto LABEL_69;
     }
 
@@ -751,7 +751,7 @@ LABEL_30:
       v92 = v73;
       v93 = v67;
       v94 = p_rightControlWidth;
-      v112 = self;
+      selfCopy = self;
       v113 = v70;
       do
       {
@@ -786,7 +786,7 @@ LABEL_30:
             v100 = v93;
             memcpy(v95, v93, v96 >> 1);
             v93 = v100;
-            self = v112;
+            self = selfCopy;
             v70 = v113;
             v95 += v97;
             v94 = p_rightControlWidth;
@@ -842,12 +842,12 @@ LABEL_30:
 
 LABEL_114:
       v46 = v117;
-      v15 = v118;
+      runsCopy = v118;
       goto LABEL_68;
     }
 
     v46 = v117;
-    v15 = v118;
+    runsCopy = v118;
 LABEL_86:
     v48 = v116;
 LABEL_68:
@@ -939,9 +939,9 @@ LABEL_119:
   [(NSLineFragmentRenderingContext *)&v8 finalize];
 }
 
-- (void)_setUsesSimpleTextEffects:(BOOL)a3
+- (void)_setUsesSimpleTextEffects:(BOOL)effects
 {
-  if (a3)
+  if (effects)
   {
     v3 = 8;
   }
@@ -954,9 +954,9 @@ LABEL_119:
   self->_flags = (*&self->_flags & 0xFFFFFFF7 | v3);
 }
 
-- (void)drawAtPoint:(CGPoint)a3 inContext:(CGContext *)a4
+- (void)drawAtPoint:(CGPoint)point inContext:(CGContext *)context
 {
-  v4 = (MEMORY[0x1EEE9AC00])(self, a2, a4);
+  v4 = (MEMORY[0x1EEE9AC00])(self, a2, context);
   v6 = v5;
   v8 = v7;
   v9 = v4;
@@ -967,10 +967,10 @@ LABEL_119:
   v14 = v11[2];
   CGContextGetFontRenderingStyle();
   v108 = v11;
-  v15 = [v11 applicationFrameworkContext];
+  applicationFrameworkContext = [v11 applicationFrameworkContext];
   if (+[NSTextGraphicsContextProvider textGraphicsContextProviderClassRespondsToColorQuery])
   {
-    v16 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", v15];
+    v16 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider colorClassForApplicationFrameworkContext:"colorClassForApplicationFrameworkContext:", applicationFrameworkContext];
   }
 
   else
@@ -978,22 +978,22 @@ LABEL_119:
     v16 = +[NSTextGraphicsContextProvider __defaultColorClass];
   }
 
-  v104 = [(objc_class *)v16 blackColor];
+  blackColor = [(objc_class *)v16 blackColor];
   v17 = v11[3];
   v111 = v108[4];
   v101 = v108[20];
   if (v12)
   {
-    v18 = [v12 isFlipped];
+    isFlipped = [v12 isFlipped];
   }
 
   else
   {
-    v18 = 1;
+    isFlipped = 1;
   }
 
   v19 = *(v108 + 28);
-  if ((v19 & 2) == 0 || v18 == (v108[14] & 4u) >> 2)
+  if ((v19 & 2) == 0 || isFlipped == (v108[14] & 4u) >> 2)
   {
     v102 = 0;
   }
@@ -1019,7 +1019,7 @@ LABEL_119:
     v25 = v23 + v22;
   }
 
-  [v104 set];
+  [blackColor set];
   v109 = 0;
   v105 = 0;
   v26 = 0;
@@ -1035,8 +1035,8 @@ LABEL_119:
       v38 = *(v13 + 64);
       width = *(v13 + 72);
       height = *(v13 + 80);
-      v41 = [*(v13 + 48) attachmentCell];
-      if (v18)
+      attachmentCell = [*(v13 + 48) attachmentCell];
+      if (isFlipped)
       {
         v42 = -(v38 + height) - *(v13 + 32);
       }
@@ -1063,16 +1063,16 @@ LABEL_119:
         height = v119.size.height;
       }
 
-      if (v41)
+      if (attachmentCell)
       {
         if (*(v13 + 88) == -1)
         {
-          [v41 drawWithFrame:0 inView:{x, y, width, height}];
+          [attachmentCell drawWithFrame:0 inView:{x, y, width, height}];
         }
 
         else
         {
-          [v41 drawWithFrame:0 inView:x characterIndex:{y, width, height}];
+          [attachmentCell drawWithFrame:0 inView:x characterIndex:{y, width, height}];
         }
 
         v26 = 0;
@@ -1083,36 +1083,36 @@ LABEL_119:
       else
       {
         v47 = v26;
-        v48 = v105;
+        textContainer = v105;
         if (!v105)
         {
           v49 = v108[19];
           if (v49)
           {
-            v48 = [v49 textContainer];
+            textContainer = [v49 textContainer];
           }
 
           else
           {
-            v48 = 0;
+            textContainer = 0;
           }
         }
 
         v93 = *(v28 + 48);
-        v94 = [v93 imageForBounds:v48 textContainer:*(v28 + 88) characterIndex:{x, y, width, height}];
-        v95 = [v93 image];
-        v105 = v48;
+        v94 = [v93 imageForBounds:textContainer textContainer:*(v28 + 88) characterIndex:{x, y, width, height}];
+        image = [v93 image];
+        v105 = textContainer;
         if (v101 == 2)
         {
-          v96 = v95;
-          if (v94 == v95)
+          v96 = image;
+          if (v94 == image)
           {
-            if ([v95 conformsToProtocol:&unk_1F01F0D38])
+            if ([image conformsToProtocol:&unk_1F01F0D38])
             {
               v97 = *v28;
               if ([v96 willProvideAdaptedImageForPresentation])
               {
-                v94 = [v96 imageForBounds:v97 attributes:0 location:v48 textContainer:{x, y, width, height}];
+                v94 = [v96 imageForBounds:v97 attributes:0 location:textContainer textContainer:{x, y, width, height}];
               }
             }
           }
@@ -1128,7 +1128,7 @@ LABEL_119:
 
           else
           {
-            v99 = v104;
+            v99 = blackColor;
           }
 
           [v99 set];
@@ -1165,7 +1165,7 @@ LABEL_119:
 
         else
         {
-          v32 = v104;
+          v32 = blackColor;
         }
 
         [v32 set];
@@ -1217,7 +1217,7 @@ LABEL_119:
 
       else
       {
-        if (v18)
+        if (isFlipped)
         {
           v51 = *(v28 + 96);
         }
@@ -1268,9 +1268,9 @@ LABEL_53:
       v57 = [*v28 objectForKey:@"NSTextEffect"];
       v59 = v108[17];
       v58 = v108[18];
-      v60 = [v108 applicationFrameworkContext];
+      applicationFrameworkContext2 = [v108 applicationFrameworkContext];
       LOBYTE(v100) = (v108[14] & 8) != 0;
-      v61 = [(__NSTextAppearanceEffectContext *)v56 initWithTextEffectName:v57 catalog:v59 styleEffectConfiguration:v58 font:v27 color:v26 applicationFrameworkContext:v60 useSimplifiedEffect:v100];
+      v61 = [(__NSTextAppearanceEffectContext *)v56 initWithTextEffectName:v57 catalog:v59 styleEffectConfiguration:v58 font:v27 color:v26 applicationFrameworkContext:applicationFrameworkContext2 useSimplifiedEffect:v100];
       if ([v27 isVertical])
       {
         v62 = *(v28 + 8);
@@ -1282,7 +1282,7 @@ LABEL_53:
         {
           v64 = 0;
           v65 = -v55;
-          if (!v18)
+          if (!isFlipped)
           {
             v65 = v55;
           }
@@ -1313,7 +1313,7 @@ LABEL_53:
               do
               {
                 v75 = v72->f64[1];
-                if (v18)
+                if (isFlipped)
                 {
                   v75 = -v75;
                 }
@@ -1371,7 +1371,7 @@ LABEL_53:
         {
           v81 = 0;
           v82 = -v55;
-          if (!v18)
+          if (!isFlipped)
           {
             v82 = v55;
           }
@@ -1439,7 +1439,7 @@ LABEL_92:
       else
       {
         v92 = -v55;
-        if (!v18)
+        if (!isFlipped)
         {
           v92 = v55;
         }
@@ -1479,20 +1479,20 @@ LABEL_114:
   }
 }
 
-- (CGSize)sizeWithBehavior:(int64_t)a3 usesFontLeading:(BOOL)a4 baselineDelta:(double *)a5
+- (CGSize)sizeWithBehavior:(int64_t)behavior usesFontLeading:(BOOL)leading baselineDelta:(double *)delta
 {
-  v56 = a5;
-  v5 = a4;
-  v6 = a3;
+  deltaCopy = delta;
+  leadingCopy = leading;
+  behaviorCopy = behavior;
   runs = self->_runs;
   numRuns = self->_numRuns;
-  if (a3 < 0)
+  if (behavior < 0)
   {
-    v6 = sizeWithBehavior_usesFontLeading_baselineDelta__defaultBehavior;
+    behaviorCopy = sizeWithBehavior_usesFontLeading_baselineDelta__defaultBehavior;
     if (sizeWithBehavior_usesFontLeading_baselineDelta__defaultBehavior == -1)
     {
-      v6 = +[NSTypesetter defaultTypesetterBehavior];
-      sizeWithBehavior_usesFontLeading_baselineDelta__defaultBehavior = v6;
+      behaviorCopy = +[NSTypesetter defaultTypesetterBehavior];
+      sizeWithBehavior_usesFontLeading_baselineDelta__defaultBehavior = behaviorCopy;
     }
   }
 
@@ -1506,7 +1506,7 @@ LABEL_114:
   else
   {
     v9 = &runs[16 * numRuns];
-    v10 = (v6 < NSTypesetterBehavior_10_2) & ~v5;
+    v10 = (behaviorCopy < NSTypesetterBehavior_10_2) & ~leadingCopy;
     v11 = 0.0;
     v12 = 0.0;
     v13 = 0.0;
@@ -1525,7 +1525,7 @@ LABEL_114:
       }
 
       v16 = 0.0;
-      if (v5)
+      if (leadingCopy)
       {
         v17 = *runs;
         if (!*runs)
@@ -1533,24 +1533,24 @@ LABEL_114:
           goto LABEL_16;
         }
 
-        v18 = [*runs objectForKey:{_NSOriginalFontAttributeName, 0.0}];
-        if (!v18)
+        verticalFont = [*runs objectForKey:{_NSOriginalFontAttributeName, 0.0}];
+        if (!verticalFont)
         {
-          v18 = [v17 objectForKey:@"NSFont"];
+          verticalFont = [v17 objectForKey:@"NSFont"];
         }
 
-        if ([objc_msgSend(v17 objectForKey:{@"CTVerticalForms", v56), "BOOLValue"}])
+        if ([objc_msgSend(v17 objectForKey:{@"CTVerticalForms", deltaCopy), "BOOLValue"}])
         {
-          v18 = [v18 verticalFont];
+          verticalFont = [verticalFont verticalFont];
         }
 
-        if (!v18)
+        if (!verticalFont)
         {
 LABEL_16:
-          v18 = NSDefaultFont();
+          verticalFont = NSDefaultFont();
         }
 
-        [v18 _leading];
+        [verticalFont _leading];
       }
 
       v19 = runs[4];
@@ -1612,7 +1612,7 @@ LABEL_16:
     while (runs < v9);
   }
 
-  v28 = [*self->_runs objectForKey:{@"NSParagraphStyle", v56}];
+  v28 = [*self->_runs objectForKey:{@"NSParagraphStyle", deltaCopy}];
   v29 = sizeWithBehavior_usesFontLeading_baselineDelta__defaultParagraphStyle;
   if (!sizeWithBehavior_usesFontLeading_baselineDelta__defaultParagraphStyle)
   {
@@ -1649,7 +1649,7 @@ LABEL_16:
 
   v40 = v30 * v31;
   v41 = v11 + v30 * v31 - v30;
-  if (v6 <= NSTypesetterBehavior_10_2 || v31 <= 0.0)
+  if (behaviorCopy <= NSTypesetterBehavior_10_2 || v31 <= 0.0)
   {
     v40 = v11 - v13;
     v41 = v11;
@@ -1688,7 +1688,7 @@ LABEL_16:
     v47 = v43;
   }
 
-  if (v5 && v6 <= NSTypesetterBehavior_10_2)
+  if (leadingCopy && behaviorCopy <= NSTypesetterBehavior_10_2)
   {
     v48 = *self->_runs;
     if (!v48)
@@ -1696,24 +1696,24 @@ LABEL_16:
       goto LABEL_63;
     }
 
-    v49 = [v48 objectForKey:_NSOriginalFontAttributeName];
-    if (!v49)
+    verticalFont2 = [v48 objectForKey:_NSOriginalFontAttributeName];
+    if (!verticalFont2)
     {
-      v49 = [v48 objectForKey:@"NSFont"];
+      verticalFont2 = [v48 objectForKey:@"NSFont"];
     }
 
     if ([objc_msgSend(v48 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
     {
-      v49 = [v49 verticalFont];
+      verticalFont2 = [verticalFont2 verticalFont];
     }
 
-    if (!v49)
+    if (!verticalFont2)
     {
 LABEL_63:
-      v49 = NSDefaultFont();
+      verticalFont2 = NSDefaultFont();
     }
 
-    [v49 _leading];
+    [verticalFont2 _leading];
   }
 
   else
@@ -1721,7 +1721,7 @@ LABEL_63:
     v50 = v13 + v12;
   }
 
-  if (v6 < NSTypesetterBehavior_10_2)
+  if (behaviorCopy < NSTypesetterBehavior_10_2)
   {
     v51 = v57;
     if (v57)
@@ -1776,7 +1776,7 @@ LABEL_71:
   return result;
 }
 
-- (void)getMaximumAscender:(double *)a3 minimumDescender:(double *)a4
+- (void)getMaximumAscender:(double *)ascender minimumDescender:(double *)descender
 {
   numRuns = self->_numRuns;
   if (numRuns < 1)
@@ -1801,24 +1801,24 @@ LABEL_71:
         goto LABEL_9;
       }
 
-      v14 = [*(v9 - 10) objectForKey:_NSOriginalFontAttributeName];
-      if (!v14)
+      verticalFont = [*(v9 - 10) objectForKey:_NSOriginalFontAttributeName];
+      if (!verticalFont)
       {
-        v14 = [v12 objectForKey:@"NSFont"];
+        verticalFont = [v12 objectForKey:@"NSFont"];
       }
 
       if ([objc_msgSend(v12 objectForKey:{@"CTVerticalForms", "BOOLValue"}])
       {
-        v14 = [v14 verticalFont];
+        verticalFont = [verticalFont verticalFont];
       }
 
-      if (!v14)
+      if (!verticalFont)
       {
 LABEL_9:
-        v14 = NSDefaultFont();
+        verticalFont = NSDefaultFont();
       }
 
-      [v14 boundingRectForFont];
+      [verticalFont boundingRectForFont];
       if (v9[40])
       {
         v17 = *(v9 - 2);
@@ -1853,18 +1853,18 @@ LABEL_9:
     while ((v13 + 128) < v8);
   }
 
-  *a3 = ceil(v11);
-  *a4 = floor(v10);
+  *ascender = ceil(v11);
+  *descender = floor(v10);
 }
 
-- (void)setApplicationFrameworkContext:(int64_t)a3
+- (void)setApplicationFrameworkContext:(int64_t)context
 {
-  if (!a3)
+  if (!context)
   {
-    LOBYTE(a3) = _NSTextScalingTypeForCurrentEnvironment();
+    LOBYTE(context) = _NSTextScalingTypeForCurrentEnvironment();
   }
 
-  self->_flags = (*&self->_flags & 0xFFFFFF8F | (16 * (a3 & 7)));
+  self->_flags = (*&self->_flags & 0xFFFFFF8F | (16 * (context & 7)));
 }
 
 @end

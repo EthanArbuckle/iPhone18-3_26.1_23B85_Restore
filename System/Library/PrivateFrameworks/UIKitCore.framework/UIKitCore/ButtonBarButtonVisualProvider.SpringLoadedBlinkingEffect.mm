@@ -1,15 +1,15 @@
 @interface ButtonBarButtonVisualProvider.SpringLoadedBlinkingEffect
-- (void)_prepareLayer:(id)a3 forView:(id)a4;
+- (void)_prepareLayer:(id)layer forView:(id)view;
 @end
 
 @implementation ButtonBarButtonVisualProvider.SpringLoadedBlinkingEffect
 
-- (void)_prepareLayer:(id)a3 forView:(id)a4
+- (void)_prepareLayer:(id)layer forView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1890A08A4(v6, v7);
+  layerCopy = layer;
+  viewCopy = view;
+  selfCopy = self;
+  sub_1890A08A4(layerCopy, viewCopy);
 }
 
 @end

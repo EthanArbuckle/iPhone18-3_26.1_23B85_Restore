@@ -1,27 +1,27 @@
 @interface HKOrganDonationConfirmUpdateViewController
-- (HKOrganDonationConfirmUpdateViewController)initWithRegistrant:(id)a3 medicalIDData:(id)a4 connectionManager:(id)a5;
+- (HKOrganDonationConfirmUpdateViewController)initWithRegistrant:(id)registrant medicalIDData:(id)data connectionManager:(id)manager;
 - (id)bodyString;
 - (id)bottomAnchoredButtons;
 - (id)titleImage;
 - (id)titleString;
-- (void)buttonAtIndexTapped:(int64_t)a3;
-- (void)updateButtonTapped:(id)a3;
+- (void)buttonAtIndexTapped:(int64_t)tapped;
+- (void)updateButtonTapped:(id)tapped;
 @end
 
 @implementation HKOrganDonationConfirmUpdateViewController
 
-- (HKOrganDonationConfirmUpdateViewController)initWithRegistrant:(id)a3 medicalIDData:(id)a4 connectionManager:(id)a5
+- (HKOrganDonationConfirmUpdateViewController)initWithRegistrant:(id)registrant medicalIDData:(id)data connectionManager:(id)manager
 {
-  v9 = a3;
-  v10 = a5;
+  registrantCopy = registrant;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = HKOrganDonationConfirmUpdateViewController;
-  v11 = [(HKOrganDonationBaseViewController *)&v14 initWithMedicalIDData:a4];
+  v11 = [(HKOrganDonationBaseViewController *)&v14 initWithMedicalIDData:data];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_connectionManager, a5);
-    objc_storeStrong(&v12->_registrant, a3);
+    objc_storeStrong(&v11->_connectionManager, manager);
+    objc_storeStrong(&v12->_registrant, registrant);
   }
 
   return v12;
@@ -63,26 +63,26 @@
   return v4;
 }
 
-- (void)buttonAtIndexTapped:(int64_t)a3
+- (void)buttonAtIndexTapped:(int64_t)tapped
 {
-  if (!a3)
+  if (!tapped)
   {
     [(HKOrganDonationConfirmUpdateViewController *)self updateButtonTapped:?];
   }
 }
 
-- (void)updateButtonTapped:(id)a3
+- (void)updateButtonTapped:(id)tapped
 {
-  v4 = a3;
-  [v4 setEnabled:0];
-  v5 = [(HKOrganDonationConfirmUpdateViewController *)self navigationItem];
-  [v5 setHidesBackButton:1 animated:1];
+  tappedCopy = tapped;
+  [tappedCopy setEnabled:0];
+  navigationItem = [(HKOrganDonationConfirmUpdateViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:1];
 
-  v6 = [(HKTitledBuddyViewController *)self loadingIndicator];
-  [v6 startAnimating];
+  loadingIndicator = [(HKTitledBuddyViewController *)self loadingIndicator];
+  [loadingIndicator startAnimating];
 
-  v7 = [(HKTitledBuddyViewController *)self loadingIndicatorBarButtonItem];
-  [v7 setHidden:0];
+  loadingIndicatorBarButtonItem = [(HKTitledBuddyViewController *)self loadingIndicatorBarButtonItem];
+  [loadingIndicatorBarButtonItem setHidden:0];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -90,12 +90,12 @@
   aBlock[2] = __65__HKOrganDonationConfirmUpdateViewController_updateButtonTapped___block_invoke;
   aBlock[3] = &unk_1E81B6070;
   objc_copyWeak(&v14, &location);
-  v8 = v4;
+  v8 = tappedCopy;
   v13 = v8;
   v9 = _Block_copy(aBlock);
   connectionManager = self->_connectionManager;
-  v11 = [(HKOrganDonationRegistrant *)self->_registrant jsonDictionaryRepresentation];
-  [(HKOrganDonationConnectionManager *)connectionManager updateRegistrantWithParams:v11 completion:v9];
+  jsonDictionaryRepresentation = [(HKOrganDonationRegistrant *)self->_registrant jsonDictionaryRepresentation];
+  [(HKOrganDonationConnectionManager *)connectionManager updateRegistrantWithParams:jsonDictionaryRepresentation completion:v9];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

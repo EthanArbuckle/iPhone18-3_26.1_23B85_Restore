@@ -6,60 +6,60 @@
 
 - (void)main
 {
-  v3 = [(UpdateArtistStoreIDsByLibraryMatchLookupOperation *)self artistNameLibraryMatchURL];
+  artistNameLibraryMatchURL = [(UpdateArtistStoreIDsByLibraryMatchLookupOperation *)self artistNameLibraryMatchURL];
 
-  if (v3)
+  if (artistNameLibraryMatchURL)
   {
-    v4 = [(QueueAwareOperation *)self shouldProcessSpecificArtists];
-    v5 = [(QueueAwareOperation *)self musicLibrary];
-    v6 = v5;
-    if (v4)
+    shouldProcessSpecificArtists = [(QueueAwareOperation *)self shouldProcessSpecificArtists];
+    musicLibrary = [(QueueAwareOperation *)self musicLibrary];
+    v6 = musicLibrary;
+    if (shouldProcessSpecificArtists)
     {
-      v7 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-      v8 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
-      v9 = sub_100071E04(v6, v7, v8);
+      artistPersistentIDsToUpdate = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+      albumArtistPersistentIDsToUpdate = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
+      v9 = sub_100071E04(v6, artistPersistentIDsToUpdate, albumArtistPersistentIDsToUpdate);
     }
 
     else
     {
-      v9 = sub_100072108(v5);
+      v9 = sub_100072108(musicLibrary);
     }
 
     v10 = [ICStoreRequestContext alloc];
-    v11 = [(QueueAwareOperation *)self userIdentity];
-    v12 = [v10 initWithIdentity:v11];
+    userIdentity = [(QueueAwareOperation *)self userIdentity];
+    v12 = [v10 initWithIdentity:userIdentity];
 
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_1000722F0;
     v24 = &unk_1001DBF50;
-    v25 = self;
+    selfCopy = self;
     v13 = v12;
     v26 = v13;
     [v9 enumerateObjectsUsingBlock:&v21];
     if ([(UpdateArtistStoreIDsByLibraryMatchLookupOperation *)self isCancelled:v21])
     {
-      v14 = os_log_create("com.apple.amp.itunescloudd", "Artwork");
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      operationQueue = os_log_create("com.apple.amp.itunescloudd", "Artwork");
+      if (os_log_type_enabled(operationQueue, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Cancelled after looking up artist store ids by name.", buf, 2u);
+        _os_log_impl(&_mh_execute_header, operationQueue, OS_LOG_TYPE_DEFAULT, "Cancelled after looking up artist store ids by name.", buf, 2u);
       }
     }
 
     else
     {
-      v14 = [(QueueAwareOperation *)self operationQueue];
-      if (v14)
+      operationQueue = [(QueueAwareOperation *)self operationQueue];
+      if (operationQueue)
       {
         v15 = [UpdateArtistArtworkTokensOperation alloc];
-        v16 = [(QueueAwareOperation *)self artworkImporter];
-        v17 = [(QueueAwareOperation *)self clientIdentity];
-        v18 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
-        v19 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
-        v20 = [(QueueAwareOperation *)v15 initWithArtworkImporter:v16 clientIdentity:v17 operationQueue:v14 artistPersistentIDsToUpdate:v18 albumArtistPersistentIDsToUpdate:v19];
+        artworkImporter = [(QueueAwareOperation *)self artworkImporter];
+        clientIdentity = [(QueueAwareOperation *)self clientIdentity];
+        artistPersistentIDsToUpdate2 = [(QueueAwareOperation *)self artistPersistentIDsToUpdate];
+        albumArtistPersistentIDsToUpdate2 = [(QueueAwareOperation *)self albumArtistPersistentIDsToUpdate];
+        v20 = [(QueueAwareOperation *)v15 initWithArtworkImporter:artworkImporter clientIdentity:clientIdentity operationQueue:operationQueue artistPersistentIDsToUpdate:artistPersistentIDsToUpdate2 albumArtistPersistentIDsToUpdate:albumArtistPersistentIDsToUpdate2];
 
-        [v14 addOperation:v20];
+        [operationQueue addOperation:v20];
       }
     }
   }

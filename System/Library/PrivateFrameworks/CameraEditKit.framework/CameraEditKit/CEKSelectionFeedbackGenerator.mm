@@ -8,7 +8,7 @@
 - (void)playMinorTickSound;
 - (void)playOverscrollTickSound;
 - (void)prepareFeedback;
-- (void)setProfile:(int64_t)a3;
+- (void)setProfile:(int64_t)profile;
 @end
 
 @implementation CEKSelectionFeedbackGenerator
@@ -59,15 +59,15 @@
     }
 
     self = v4;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -88,22 +88,22 @@
 - (void)prepareFeedback
 {
   [(CEKSelectionFeedbackGenerator *)self _updateFeedbackGeneratorIfNeeded];
-  v3 = [(CEKSelectionFeedbackGenerator *)self _feedbackGenerator];
-  [v3 prepare];
+  _feedbackGenerator = [(CEKSelectionFeedbackGenerator *)self _feedbackGenerator];
+  [_feedbackGenerator prepare];
 }
 
 - (void)performFeedback
 {
   [(CEKSelectionFeedbackGenerator *)self _updateFeedbackGeneratorIfNeeded];
-  v3 = [(CEKSelectionFeedbackGenerator *)self _feedbackGenerator];
-  [v3 selectionChanged];
+  _feedbackGenerator = [(CEKSelectionFeedbackGenerator *)self _feedbackGenerator];
+  [_feedbackGenerator selectionChanged];
 }
 
-- (void)setProfile:(int64_t)a3
+- (void)setProfile:(int64_t)profile
 {
-  if (self->_profile != a3)
+  if (self->_profile != profile)
   {
-    self->_profile = a3;
+    self->_profile = profile;
     self->__feedbackGenerator = 0;
     MEMORY[0x1EEE66BB8]();
   }
@@ -111,30 +111,30 @@
 
 - (void)playMinorTickSound
 {
-  v2 = [(CEKSelectionFeedbackGenerator *)self _minorTickSoundID];
+  _minorTickSoundID = [(CEKSelectionFeedbackGenerator *)self _minorTickSoundID];
 
-  AudioServicesPlaySystemSoundWithCompletion(v2, 0);
+  AudioServicesPlaySystemSoundWithCompletion(_minorTickSoundID, 0);
 }
 
 - (void)playMajorTickSound
 {
-  v2 = [(CEKSelectionFeedbackGenerator *)self _majorTickSoundID];
+  _majorTickSoundID = [(CEKSelectionFeedbackGenerator *)self _majorTickSoundID];
 
-  AudioServicesPlaySystemSoundWithCompletion(v2, 0);
+  AudioServicesPlaySystemSoundWithCompletion(_majorTickSoundID, 0);
 }
 
 - (void)playEndTickSound
 {
-  v2 = [(CEKSelectionFeedbackGenerator *)self _endStopSoundID];
+  _endStopSoundID = [(CEKSelectionFeedbackGenerator *)self _endStopSoundID];
 
-  AudioServicesPlaySystemSoundWithCompletion(v2, 0);
+  AudioServicesPlaySystemSoundWithCompletion(_endStopSoundID, 0);
 }
 
 - (void)playOverscrollTickSound
 {
-  v2 = [(CEKSelectionFeedbackGenerator *)self _overscrollTickSoundID];
+  _overscrollTickSoundID = [(CEKSelectionFeedbackGenerator *)self _overscrollTickSoundID];
 
-  AudioServicesPlaySystemSoundWithCompletion(v2, 0);
+  AudioServicesPlaySystemSoundWithCompletion(_overscrollTickSoundID, 0);
 }
 
 - (void)_updateFeedbackGeneratorIfNeeded
@@ -142,10 +142,10 @@
   v18[3] = *MEMORY[0x1E69E9840];
   if (!self->__feedbackGenerator)
   {
-    v3 = [(CEKSelectionFeedbackGenerator *)self profile];
-    if (v3 >= 2)
+    profile = [(CEKSelectionFeedbackGenerator *)self profile];
+    if (profile >= 2)
     {
-      if (v3 == 2)
+      if (profile == 2)
       {
         v17[0] = @"type";
         v17[1] = @"eventType";
@@ -187,8 +187,8 @@
       v5 = @"cameraEffectSelection";
     }
 
-    v10 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-    v11 = [v10 tweakedConfigurationForCaller:self usage:v5];
+    defaultConfiguration = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+    v11 = [defaultConfiguration tweakedConfigurationForCaller:self usage:v5];
 
     v12 = [MEMORY[0x1E69DD470] feedbackWithDictionaryRepresentation:v4];
     [v11 setFeedback:v12];

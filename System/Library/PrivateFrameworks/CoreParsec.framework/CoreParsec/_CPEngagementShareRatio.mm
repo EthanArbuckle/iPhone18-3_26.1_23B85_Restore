@@ -1,7 +1,7 @@
 @interface _CPEngagementShareRatio
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPEngagementShareRatio
@@ -22,13 +22,13 @@
   return veorq_s8(v8, vdupq_laneq_s64(v8, 1)).u64[0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (shareOfEngagements = self->_shareOfEngagements, objc_msgSend(v4, "shareOfEngagements"), shareOfEngagements == v6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (shareOfEngagements = self->_shareOfEngagements, objc_msgSend(equalCopy, "shareOfEngagements"), shareOfEngagements == v6))
   {
     shareOfInternetEngagements = self->_shareOfInternetEngagements;
-    [v4 shareOfInternetEngagements];
+    [equalCopy shareOfInternetEngagements];
     v7 = shareOfInternetEngagements == v10;
   }
 
@@ -40,9 +40,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   [(_CPEngagementShareRatio *)self shareOfEngagements];
   if (v4 != 0.0)
   {

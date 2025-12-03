@@ -1,18 +1,18 @@
 @interface OKAutoLayout
-+ (BOOL)needsPanoramaEffectForRectASP:(float)a3 mediaASP:(float)a4;
-+ (float)croppedPercentageforRectASP:(float)a3 photoASP:(float)a4;
-+ (float)scaleFactorForMediaItem:(id)a3 toFitInRect:(CGRect)a4;
-- (BOOL)startFeedWith:(id)a3 primaryResolutionKey:(id)a4;
-- (OKAutoLayout)initWithPresentation:(id)a3;
-- (double)_croppingScoreForMediaItems:(id)a3 layoutInfo:(id)a4;
-- (double)_maxDurationOfMediaItems:(id)a3;
-- (id)_findBestMatchingLayoutFromLayouts:(id)a3 forMediaItems:(id)a4 currentIndx:(unint64_t)a5 checkFollowingMediaItems:(int64_t)a6 remainingItems:(unint64_t)a7 subtitleAttributesForMediaItems:(id)a8 isFirstPage:(BOOL)a9;
-- (id)_matchMediaItems:(id)a3 toLayoutInfo:(id)a4 orderedKeys:(id)a5;
-- (id)_metadataForMediaItem:(id)a3;
-- (id)_parseLayouts:(id)a3;
-- (id)_titleTextForPresentation:(id)a3;
-- (id)generateNextPagesByMediaItems:(id)a3 maxPages:(int64_t)a4 isFirstPage:(BOOL)a5;
-- (id)generatePagesByMediaItems:(id)a3 layoutsByResolution:(id)a4 primaryResolutionKey:(id)a5;
++ (BOOL)needsPanoramaEffectForRectASP:(float)p mediaASP:(float)sP;
++ (float)croppedPercentageforRectASP:(float)p photoASP:(float)sP;
++ (float)scaleFactorForMediaItem:(id)item toFitInRect:(CGRect)rect;
+- (BOOL)startFeedWith:(id)with primaryResolutionKey:(id)key;
+- (OKAutoLayout)initWithPresentation:(id)presentation;
+- (double)_croppingScoreForMediaItems:(id)items layoutInfo:(id)info;
+- (double)_maxDurationOfMediaItems:(id)items;
+- (id)_findBestMatchingLayoutFromLayouts:(id)layouts forMediaItems:(id)items currentIndx:(unint64_t)indx checkFollowingMediaItems:(int64_t)mediaItems remainingItems:(unint64_t)remainingItems subtitleAttributesForMediaItems:(id)forMediaItems isFirstPage:(BOOL)page;
+- (id)_matchMediaItems:(id)items toLayoutInfo:(id)info orderedKeys:(id)keys;
+- (id)_metadataForMediaItem:(id)item;
+- (id)_parseLayouts:(id)layouts;
+- (id)_titleTextForPresentation:(id)presentation;
+- (id)generateNextPagesByMediaItems:(id)items maxPages:(int64_t)pages isFirstPage:(BOOL)page;
+- (id)generatePagesByMediaItems:(id)items layoutsByResolution:(id)resolution primaryResolutionKey:(id)key;
 - (id)liveFeedPrimaryResolutionKey;
 - (int64_t)liveFeedNumOfMediasUsed;
 - (int64_t)liveFeedNumOfPagesGenerated;
@@ -22,14 +22,14 @@
 
 @implementation OKAutoLayout
 
-- (OKAutoLayout)initWithPresentation:(id)a3
+- (OKAutoLayout)initWithPresentation:(id)presentation
 {
   v6.receiver = self;
   v6.super_class = OKAutoLayout;
   v4 = [(OKAutoLayout *)&v6 init];
   if (v4)
   {
-    v4->_presentation = a3;
+    v4->_presentation = presentation;
     [(OKAutoLayout *)v4 setAllowMovieWithPhotos:0];
     [(OKAutoLayout *)v4 setForceToIterateAllLayouts:0];
     v4->_metadataCacheDict = objc_opt_new();
@@ -75,36 +75,36 @@
   [(OKAutoLayout *)&v7 dealloc];
 }
 
-+ (float)croppedPercentageforRectASP:(float)a3 photoASP:(float)a4
++ (float)croppedPercentageforRectASP:(float)p photoASP:(float)sP
 {
-  if (a4 < a3)
+  if (sP < p)
   {
-    a4 = 1.0 / a4;
-    a3 = 1.0 / a3;
+    sP = 1.0 / sP;
+    p = 1.0 / p;
   }
 
-  return (a4 - a3) / a4;
+  return (sP - p) / sP;
 }
 
-+ (BOOL)needsPanoramaEffectForRectASP:(float)a3 mediaASP:(float)a4
++ (BOOL)needsPanoramaEffectForRectASP:(float)p mediaASP:(float)sP
 {
   +[OKAutoLayout panningCropThreshold];
   v7 = v6;
-  *&v8 = a3;
-  *&v9 = a4;
+  *&v8 = p;
+  *&v9 = sP;
   [OKAutoLayout croppedPercentageforRectASP:v8 photoASP:v9];
   return v10 > v7;
 }
 
-+ (float)scaleFactorForMediaItem:(id)a3 toFitInRect:(CGRect)a4
++ (float)scaleFactorForMediaItem:(id)item toFitInRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  [a3 resolution];
+  height = rect.size.height;
+  width = rect.size.width;
+  [item resolution];
   v8 = v7;
   v10 = v9;
   v11 = width / height;
-  [a3 aspectRatio];
+  [item aspectRatio];
   *&v12 = v12;
   if (*&v12 >= v11)
   {
@@ -117,33 +117,33 @@
   }
 }
 
-- (double)_croppingScoreForMediaItems:(id)a3 layoutInfo:(id)a4
+- (double)_croppingScoreForMediaItems:(id)items layoutInfo:(id)info
 {
-  v7 = [a4 aspectRatiosInAppearOrder];
-  v8 = [a4 areaPercentInAppearOrder];
-  v9 = [a4 rectNamesInAppearOrder];
-  if ([v7 count])
+  aspectRatiosInAppearOrder = [info aspectRatiosInAppearOrder];
+  areaPercentInAppearOrder = [info areaPercentInAppearOrder];
+  rectNamesInAppearOrder = [info rectNamesInAppearOrder];
+  if ([aspectRatiosInAppearOrder count])
   {
     v10 = 0;
     v11 = 0.0;
     v31 = 0.6;
     while (1)
     {
-      [objc_msgSend(v7 objectAtIndexedSubscript:{v10, *&v31), "floatValue"}];
+      [objc_msgSend(aspectRatiosInAppearOrder objectAtIndexedSubscript:{v10, *&v31), "floatValue"}];
       v13 = v12;
-      [-[OKAutoLayout _metadataForMediaItem:](self _metadataForMediaItem:{objc_msgSend(a3, "objectAtIndexedSubscript:", v10)), "aspectRatio"}];
+      [-[OKAutoLayout _metadataForMediaItem:](self _metadataForMediaItem:{objc_msgSend(items, "objectAtIndexedSubscript:", v10)), "aspectRatio"}];
       v15 = v14;
       *&v14 = v13;
       *&v16 = v15;
       [OKAutoLayout croppedPercentageforRectASP:v14 photoASP:v16];
       v18 = v17;
-      [objc_msgSend(v8 objectAtIndexedSubscript:{v10), "floatValue"}];
+      [objc_msgSend(areaPercentInAppearOrder objectAtIndexedSubscript:{v10), "floatValue"}];
       v20 = v19;
-      v21 = -[OKAutoLayout _metadataForMediaItem:](self, "_metadataForMediaItem:", [a3 objectAtIndexedSubscript:v10]);
-      [a4 rectForRectName:{objc_msgSend(v9, "objectAtIndexedSubscript:", v10)}];
+      v21 = -[OKAutoLayout _metadataForMediaItem:](self, "_metadataForMediaItem:", [items objectAtIndexedSubscript:v10]);
+      [info rectForRectName:{objc_msgSend(rectNamesInAppearOrder, "objectAtIndexedSubscript:", v10)}];
       [OKAutoLayout scaleFactorForMediaItem:v21 toFitInRect:?];
       v23 = v22;
-      +[OKAutoLayout photoScoreForMediaItem:](OKAutoLayout, "photoScoreForMediaItem:", -[OKAutoLayout _metadataForMediaItem:](self, "_metadataForMediaItem:", [a3 objectAtIndexedSubscript:v10]));
+      +[OKAutoLayout photoScoreForMediaItem:](OKAutoLayout, "photoScoreForMediaItem:", -[OKAutoLayout _metadataForMediaItem:](self, "_metadataForMediaItem:", [items objectAtIndexedSubscript:v10]));
       v25 = v20;
       v26 = (v24 + 0.5) * v20;
       if (v23 <= 1.0)
@@ -234,7 +234,7 @@ LABEL_5:
 LABEL_37:
       v11 = v11 + (v18 * v26);
 LABEL_38:
-      if (++v10 >= [v7 count])
+      if (++v10 >= [aspectRatiosInAppearOrder count])
       {
         return v11;
       }
@@ -244,29 +244,29 @@ LABEL_38:
   return 0.0;
 }
 
-- (id)_matchMediaItems:(id)a3 toLayoutInfo:(id)a4 orderedKeys:(id)a5
+- (id)_matchMediaItems:(id)items toLayoutInfo:(id)info orderedKeys:(id)keys
 {
-  v7 = [a4 rectNamesInAppearOrder];
+  rectNamesInAppearOrder = [info rectNamesInAppearOrder];
   v8 = +[NSMutableDictionary dictionary];
-  if ([a3 count])
+  if ([items count])
   {
     v9 = 0;
     do
     {
-      [v8 setObject:objc_msgSend(a3 forKey:{"objectAtIndexedSubscript:", v9), objc_msgSend(v7, "objectAtIndexedSubscript:", v9)}];
+      [v8 setObject:objc_msgSend(items forKey:{"objectAtIndexedSubscript:", v9), objc_msgSend(rectNamesInAppearOrder, "objectAtIndexedSubscript:", v9)}];
       ++v9;
     }
 
-    while (v9 < [a3 count]);
+    while (v9 < [items count]);
   }
 
-  if (a5)
+  if (keys)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v10 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -278,15 +278,15 @@ LABEL_38:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(items);
           }
 
-          [a5 addObject:{objc_msgSend(v7, "objectAtIndexedSubscript:", objc_msgSend(a3, "indexOfObject:", *(*(&v15 + 1) + 8 * v13)))}];
+          [keys addObject:{objc_msgSend(rectNamesInAppearOrder, "objectAtIndexedSubscript:", objc_msgSend(items, "indexOfObject:", *(*(&v15 + 1) + 8 * v13)))}];
           v13 = v13 + 1;
         }
 
         while (v11 != v13);
-        v11 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v11);
@@ -296,44 +296,44 @@ LABEL_38:
   return v8;
 }
 
-- (id)_findBestMatchingLayoutFromLayouts:(id)a3 forMediaItems:(id)a4 currentIndx:(unint64_t)a5 checkFollowingMediaItems:(int64_t)a6 remainingItems:(unint64_t)a7 subtitleAttributesForMediaItems:(id)a8 isFirstPage:(BOOL)a9
+- (id)_findBestMatchingLayoutFromLayouts:(id)layouts forMediaItems:(id)items currentIndx:(unint64_t)indx checkFollowingMediaItems:(int64_t)mediaItems remainingItems:(unint64_t)remainingItems subtitleAttributesForMediaItems:(id)forMediaItems isFirstPage:(BOOL)page
 {
-  v11 = a6;
-  v47 = [NSString stringWithFormat:@"%ldUp", a6];
+  mediaItemsCopy = mediaItems;
+  mediaItems = [NSString stringWithFormat:@"%ldUp", mediaItems];
   if ([(OKAutoLayout *)self _titleTextForPresentation:self->_presentation])
   {
-    v16 = a9;
+    pageCopy = page;
   }
 
   else
   {
-    v16 = 0;
+    pageCopy = 0;
   }
 
-  v48 = v16;
-  v17 = v16 || [a8 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(a4, "objectAtIndexedSubscript:", a5), "uniqueURL")}] == 0;
-  v51 = [a4 subarrayWithRange:{a5, objc_msgSend(a4, "count") - a5}];
+  v48 = pageCopy;
+  v17 = pageCopy || [forMediaItems objectForKeyedSubscript:{objc_msgSend(objc_msgSend(items, "objectAtIndexedSubscript:", indx), "uniqueURL")}] == 0;
+  v51 = [items subarrayWithRange:{indx, objc_msgSend(items, "count") - indx}];
   v46 = +[NSMutableArray array];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v40 = a3;
-  obj = [a3 allValues];
+  layoutsCopy = layouts;
+  obj = [layouts allValues];
   v57 = [obj countByEnumeratingWithState:&v62 objects:v68 count:16];
   if (v57)
   {
     v50 = v17;
-    v45 = a4;
+    itemsCopy = items;
     v41 = 0;
     v56 = *v63;
     v18 = -10000.0;
-    v19 = a9;
-    v20 = v47;
-    v54 = self;
-    v43 = v11;
-    v44 = a7;
-    v42 = a5;
+    pageCopy3 = page;
+    v20 = mediaItems;
+    selfCopy = self;
+    v43 = mediaItemsCopy;
+    remainingItemsCopy = remainingItems;
+    indxCopy = indx;
     do
     {
       v21 = 0;
@@ -345,7 +345,7 @@ LABEL_38:
         }
 
         v22 = *(*(&v62 + 1) + 8 * v21);
-        if ((v11 == -1 || [objc_msgSend(*(*(&v62 + 1) + 8 * v21) "name")]) && objc_msgSend(v22, "numOfMedia") <= a7 && (objc_msgSend(v22, "isSubtitle") & v50 & 1) == 0 && (v50 || objc_msgSend(v22, "isSubtitle") && objc_msgSend(v22, "numOfMedia") == &dword_0 + 1) && (!v48 || objc_msgSend(v22, "isTitle")) && (!objc_msgSend(v22, "isTitle") || v19))
+        if ((mediaItemsCopy == -1 || [objc_msgSend(*(*(&v62 + 1) + 8 * v21) "name")]) && objc_msgSend(v22, "numOfMedia") <= remainingItems && (objc_msgSend(v22, "isSubtitle") & v50 & 1) == 0 && (v50 || objc_msgSend(v22, "isSubtitle") && objc_msgSend(v22, "numOfMedia") == &dword_0 + 1) && (!v48 || objc_msgSend(v22, "isTitle")) && (!objc_msgSend(v22, "isTitle") || pageCopy3))
         {
           v60 = 0u;
           v61 = 0u;
@@ -374,17 +374,17 @@ LABEL_25:
             }
 
             v28 = *(*(&v58 + 1) + 8 * v26);
-            if ([-[OKAutoLayout _metadataForMediaItem:](v54 _metadataForMediaItem:{v28), "type"}] == &dword_0 + 3)
+            if ([-[OKAutoLayout _metadataForMediaItem:](selfCopy _metadataForMediaItem:{v28), "type"}] == &dword_0 + 3)
             {
               v23 = v24++ > 2;
             }
 
             else
             {
-              v23 |= (v24 > 0) & ~[(OKAutoLayout *)v54 allowMovieWithPhotos];
+              v23 |= (v24 > 0) & ~[(OKAutoLayout *)selfCopy allowMovieWithPhotos];
             }
 
-            v30 = [a8 objectForKeyedSubscript:{objc_msgSend(v28, "uniqueURL")}];
+            v30 = [forMediaItems objectForKeyedSubscript:{objc_msgSend(v28, "uniqueURL")}];
             if (v30)
             {
               v23 = v25 > 0;
@@ -414,27 +414,27 @@ LABEL_25:
             }
           }
 
-          self = v54;
-          v11 = v43;
-          a7 = v44;
-          a5 = v42;
-          v19 = a9;
+          self = selfCopy;
+          mediaItemsCopy = v43;
+          remainingItems = remainingItemsCopy;
+          indx = indxCopy;
+          pageCopy3 = page;
           if (v23)
           {
-            v20 = v47;
+            v20 = mediaItems;
           }
 
           else
           {
 LABEL_45:
-            -[OKAutoLayout _croppingScoreForMediaItems:layoutInfo:](self, "_croppingScoreForMediaItems:layoutInfo:", [v45 subarrayWithRange:{a5, objc_msgSend(v22, "numOfMedia")}], v22);
+            -[OKAutoLayout _croppingScoreForMediaItems:layoutInfo:](self, "_croppingScoreForMediaItems:layoutInfo:", [itemsCopy subarrayWithRange:{indx, objc_msgSend(v22, "numOfMedia")}], v22);
             v32 = v31;
             v66[0] = [v22 name];
             [v22 currentScore];
             v66[1] = [NSNumber numberWithDouble:v33 - v32];
             [v46 addObject:{+[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", v66, 2)}];
             [v22 currentScore];
-            v20 = v47;
+            v20 = mediaItems;
             if (v34 - v32 > v18)
             {
               [v22 currentScore];
@@ -464,19 +464,19 @@ LABEL_45:
   v38 = v41;
   if (v37)
   {
-    return [v40 objectForKeyedSubscript:{objc_msgSend(v37, "objectAtIndexedSubscript:", 0)}];
+    return [layoutsCopy objectForKeyedSubscript:{objc_msgSend(v37, "objectAtIndexedSubscript:", 0)}];
   }
 
   return v38;
 }
 
-- (double)_maxDurationOfMediaItems:(id)a3
+- (double)_maxDurationOfMediaItems:(id)items
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v5)
   {
     return 0.0;
@@ -491,7 +491,7 @@ LABEL_45:
     {
       if (*v15 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(items);
       }
 
       v10 = *(*(&v14 + 1) + 8 * i);
@@ -506,38 +506,38 @@ LABEL_45:
       }
     }
 
-    v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v6);
   return v8;
 }
 
-- (id)_titleTextForPresentation:(id)a3
+- (id)_titleTextForPresentation:(id)presentation
 {
-  v4 = [a3 guidelineAuthoringAttributedTitle];
-  result = [a3 guidelineAuthoringTitle];
-  if (v4)
+  guidelineAuthoringAttributedTitle = [presentation guidelineAuthoringAttributedTitle];
+  result = [presentation guidelineAuthoringTitle];
+  if (guidelineAuthoringAttributedTitle)
   {
-    return v4;
+    return guidelineAuthoringAttributedTitle;
   }
 
   return result;
 }
 
-- (id)generatePagesByMediaItems:(id)a3 layoutsByResolution:(id)a4 primaryResolutionKey:(id)a5
+- (id)generatePagesByMediaItems:(id)items layoutsByResolution:(id)resolution primaryResolutionKey:(id)key
 {
-  v7 = self;
-  v59 = [(OKAutoLayout *)self _parseLayouts:a4];
+  selfCopy = self;
+  v59 = [(OKAutoLayout *)self _parseLayouts:resolution];
   v58 = +[NSMutableDictionary dictionary];
   v8 = +[NSMutableIndexSet indexSet];
-  if ([a3 count])
+  if ([items count])
   {
     v9 = 0;
     do
     {
-      v10 = [a3 objectAtIndexedSubscript:v9];
-      v11 = -[OKPresentation guidelineAuthoringMediaAttributesForKey:](v7->_presentation, "guidelineAuthoringMediaAttributesForKey:", [objc_msgSend(v10 "uniqueURL")]);
+      v10 = [items objectAtIndexedSubscript:v9];
+      v11 = -[OKPresentation guidelineAuthoringMediaAttributesForKey:](selfCopy->_presentation, "guidelineAuthoringMediaAttributesForKey:", [objc_msgSend(v10 "uniqueURL")]);
       if (v11)
       {
         v12 = v11;
@@ -551,18 +551,18 @@ LABEL_45:
       ++v9;
     }
 
-    while (v9 < [a3 count]);
+    while (v9 < [items count]);
   }
 
   v60 = +[NSMutableArray array];
-  if ([a3 count])
+  if ([items count])
   {
     v13 = 0;
-    v55 = a3;
+    itemsCopy = items;
     v50 = v8;
     while (1)
     {
-      v14 = [a3 count] - v13;
+      v14 = [items count] - v13;
       v15 = [v8 indexGreaterThanOrEqualToIndex:v13];
       if (v15 == v13)
       {
@@ -587,12 +587,12 @@ LABEL_45:
       v19 = [v60 count];
       LOBYTE(v49) = v19 == 0;
       v56 = v18;
-      v20 = -[OKAutoLayout _findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:](v7, "_findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:", [v59 objectForKey:a5], a3, v13, -1, v18, v58, v49);
+      v20 = -[OKAutoLayout _findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:](selfCopy, "_findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:", [v59 objectForKey:key], items, v13, -1, v18, v58, v49);
       v21 = objc_alloc_init(NSMutableArray);
-      v22 = [v58 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", v13), "uniqueURL")}];
+      v22 = [v58 objectForKeyedSubscript:{objc_msgSend(objc_msgSend(items, "objectAtIndexedSubscript:", v13), "uniqueURL")}];
       if (!v19)
       {
-        v26 = [(OKAutoLayout *)v7 _titleTextForPresentation:v7->_presentation];
+        v26 = [(OKAutoLayout *)selfCopy _titleTextForPresentation:selfCopy->_presentation];
         if (v26)
         {
           v24 = v26;
@@ -607,14 +607,14 @@ LABEL_45:
       {
         if ([v20 isSubtitle])
         {
-          v23 = [v22 attributedText];
-          if (v23)
+          attributedText = [v22 attributedText];
+          if (attributedText)
           {
             break;
           }
 
-          v23 = [v22 text];
-          if (v23)
+          attributedText = [v22 text];
+          if (attributedText)
           {
             break;
           }
@@ -628,18 +628,18 @@ LABEL_29:
       {
         v51 = v25;
         v52 = v21;
-        v28 = v7;
+        v28 = selfCopy;
         v54 = v27;
-        [v27 setObject:objc_msgSend(v20 forKey:{"origLayout"), a5}];
+        [v27 setObject:objc_msgSend(v20 forKey:{"origLayout"), key}];
         v53 = v20;
         v57 = v13;
-        v29 = [a3 subarrayWithRange:{v13, objc_msgSend(v20, "numOfMedia")}];
+        v29 = [items subarrayWithRange:{v13, objc_msgSend(v20, "numOfMedia")}];
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v30 = [v59 allKeys];
-        v31 = [v30 countByEnumeratingWithState:&v61 objects:v67 count:16];
+        allKeys = [v59 allKeys];
+        v31 = [allKeys countByEnumeratingWithState:&v61 objects:v67 count:16];
         if (v31)
         {
           v32 = v31;
@@ -650,17 +650,17 @@ LABEL_29:
             {
               if (*v62 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(allKeys);
               }
 
               v35 = *(*(&v61 + 1) + 8 * i);
-              if (([v35 isEqualToString:a5] & 1) == 0)
+              if (([v35 isEqualToString:key] & 1) == 0)
               {
-                v36 = a5;
+                keyCopy = key;
                 v37 = [v59 objectForKey:v35];
                 v38 = [v29 count];
                 LOBYTE(v49) = [v60 count] == 0;
-                v39 = [(OKAutoLayout *)v28 _findBestMatchingLayoutFromLayouts:v37 forMediaItems:v55 currentIndx:v57 checkFollowingMediaItems:v38 remainingItems:v56 subtitleAttributesForMediaItems:v58 isFirstPage:v49];
+                v39 = [(OKAutoLayout *)v28 _findBestMatchingLayoutFromLayouts:v37 forMediaItems:itemsCopy currentIndx:v57 checkFollowingMediaItems:v38 remainingItems:v56 subtitleAttributesForMediaItems:v58 isFirstPage:v49];
                 if (v39)
                 {
                   [v54 setObject:objc_msgSend(v39 forKey:{"origLayout"), v35}];
@@ -671,17 +671,17 @@ LABEL_29:
                   NSLog(@"can NOT find matched layout for resolution: %@", v35);
                 }
 
-                a5 = v36;
+                key = keyCopy;
               }
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v61 objects:v67 count:16];
+            v32 = [allKeys countByEnumeratingWithState:&v61 objects:v67 count:16];
           }
 
           while (v32);
         }
 
-        v7 = v28;
+        selfCopy = v28;
         [(OKAutoLayout *)v28 _maxDurationOfMediaItems:v29];
         v41 = v40;
         v42 = v28;
@@ -691,7 +691,7 @@ LABEL_29:
         v44 = [(OKAutoLayout *)v42 _matchMediaItems:v43 toLayoutInfo:v53 orderedKeys:v52];
         v65[0] = @"primary resolution";
         v65[1] = @"all layouts";
-        v66[0] = a5;
+        v66[0] = key;
         v66[1] = v54;
         v65[2] = @"mediaItemsDict";
         v65[3] = @"textItemsDict";
@@ -712,7 +712,7 @@ LABEL_29:
 
         v66[5] = [NSNumber numberWithDouble:v45];
         [v60 addObject:{-[NSDictionary mutableCopy](+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v66, v65, 6), "mutableCopy")}];
-        a3 = v55;
+        items = itemsCopy;
         v8 = v50;
         v13 = v57;
       }
@@ -721,49 +721,49 @@ LABEL_29:
       *&v47 = v46 + -5.0;
       [v20 setCurrentScore:v47];
       v13 += [v20 numOfMedia];
-      if (v13 >= [a3 count])
+      if (v13 >= [items count])
       {
         goto LABEL_47;
       }
     }
 
-    v24 = v23;
+    v24 = attributedText;
 LABEL_28:
-    v68 = [v20 textWidgetName];
+    textWidgetName = [v20 textWidgetName];
     v69 = v24;
-    v25 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
+    v25 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&textWidgetName count:1];
     [v21 addObject:{objc_msgSend(v20, "textWidgetName")}];
     goto LABEL_29;
   }
 
 LABEL_47:
-  [(NSMutableDictionary *)v7->_metadataCacheDict removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_metadataCacheDict removeAllObjects];
   return v60;
 }
 
-- (id)_metadataForMediaItem:(id)a3
+- (id)_metadataForMediaItem:(id)item
 {
-  v5 = -[NSMutableDictionary objectForKey:](self->_metadataCacheDict, "objectForKey:", [a3 uniqueURL]);
-  if (!v5)
+  metadata = -[NSMutableDictionary objectForKey:](self->_metadataCacheDict, "objectForKey:", [item uniqueURL]);
+  if (!metadata)
   {
-    v5 = [a3 metadata];
-    if (v5)
+    metadata = [item metadata];
+    if (metadata)
     {
-      -[NSMutableDictionary setObject:forKey:](self->_metadataCacheDict, "setObject:forKey:", v5, [a3 uniqueURL]);
+      -[NSMutableDictionary setObject:forKey:](self->_metadataCacheDict, "setObject:forKey:", metadata, [item uniqueURL]);
     }
   }
 
-  return v5;
+  return metadata;
 }
 
-- (id)_parseLayouts:(id)a3
+- (id)_parseLayouts:(id)layouts
 {
   v19 = +[NSMutableDictionary dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [a3 allKeys];
+  obj = [layouts allKeys];
   v20 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v20)
   {
@@ -780,13 +780,13 @@ LABEL_47:
         v4 = *(*(&v26 + 1) + 8 * i);
         v5 = +[NSMutableDictionary dictionary];
         v21 = v4;
-        v6 = [a3 objectForKey:v4];
+        v6 = [layouts objectForKey:v4];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v7 = [v6 allKeys];
-        v8 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        allKeys = [v6 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v8)
         {
           v9 = v8;
@@ -797,7 +797,7 @@ LABEL_47:
             {
               if (*v23 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v12 = *(*(&v22 + 1) + 8 * j);
@@ -809,7 +809,7 @@ LABEL_47:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v9);
@@ -827,40 +827,40 @@ LABEL_47:
   return v19;
 }
 
-- (BOOL)startFeedWith:(id)a3 primaryResolutionKey:(id)a4
+- (BOOL)startFeedWith:(id)with primaryResolutionKey:(id)key
 {
   self->_liveFeedContext = objc_opt_new();
-  [(OKAutoLayoutLiveFeedContext *)self->_liveFeedContext setLayoutInfos:[(OKAutoLayout *)self _parseLayouts:a3]];
-  [(OKAutoLayoutLiveFeedContext *)self->_liveFeedContext setPrimaryResolutionKey:a4];
+  [(OKAutoLayoutLiveFeedContext *)self->_liveFeedContext setLayoutInfos:[(OKAutoLayout *)self _parseLayouts:with]];
+  [(OKAutoLayoutLiveFeedContext *)self->_liveFeedContext setPrimaryResolutionKey:key];
   [(OKAutoLayoutLiveFeedContext *)self->_liveFeedContext setPagesGenerated:0];
   return 1;
 }
 
-- (id)generateNextPagesByMediaItems:(id)a3 maxPages:(int64_t)a4 isFirstPage:(BOOL)a5
+- (id)generateNextPagesByMediaItems:(id)items maxPages:(int64_t)pages isFirstPage:(BOOL)page
 {
-  v6 = self;
-  v47 = [(OKAutoLayoutLiveFeedContext *)self->_liveFeedContext layoutInfos];
-  v7 = [(OKAutoLayoutLiveFeedContext *)v6->_liveFeedContext primaryResolutionKey];
-  v39 = [(OKAutoLayoutLiveFeedContext *)v6->_liveFeedContext pagesGenerated];
+  selfCopy = self;
+  layoutInfos = [(OKAutoLayoutLiveFeedContext *)self->_liveFeedContext layoutInfos];
+  primaryResolutionKey = [(OKAutoLayoutLiveFeedContext *)selfCopy->_liveFeedContext primaryResolutionKey];
+  pagesGenerated = [(OKAutoLayoutLiveFeedContext *)selfCopy->_liveFeedContext pagesGenerated];
   v8 = +[NSMutableArray array];
-  v49 = a3;
-  if ([a3 count])
+  itemsCopy = items;
+  if ([items count])
   {
     v9 = 0;
     v38 = v8;
     do
     {
-      if ([v8 count] >= a4)
+      if ([v8 count] >= pages)
       {
         break;
       }
 
-      LOBYTE(v37) = a5;
-      v10 = [v49 count] - v9;
-      v11 = [(OKAutoLayout *)v6 _findBestMatchingLayoutFromLayouts:[(NSMutableDictionary *)v47 objectForKey:v7] forMediaItems:v49 currentIndx:v9 checkFollowingMediaItems:-1 remainingItems:v10 subtitleAttributesForMediaItems:&__NSDictionary0__struct isFirstPage:v37];
-      v12 = [v49 subarrayWithRange:{v9, objc_msgSend(v11, "numOfMedia")}];
+      LOBYTE(v37) = page;
+      v10 = [itemsCopy count] - v9;
+      v11 = [(OKAutoLayout *)selfCopy _findBestMatchingLayoutFromLayouts:[(NSMutableDictionary *)layoutInfos objectForKey:primaryResolutionKey] forMediaItems:itemsCopy currentIndx:v9 checkFollowingMediaItems:-1 remainingItems:v10 subtitleAttributesForMediaItems:&__NSDictionary0__struct isFirstPage:v37];
+      v12 = [itemsCopy subarrayWithRange:{v9, objc_msgSend(v11, "numOfMedia")}];
       v13 = objc_alloc_init(NSMutableArray);
-      if (v39 | v9 || (v14 = [(OKAutoLayout *)v6 _titleTextForPresentation:v6->_presentation]) == 0)
+      if (pagesGenerated | v9 || (v14 = [(OKAutoLayout *)selfCopy _titleTextForPresentation:selfCopy->_presentation]) == 0)
       {
         v16 = &__NSDictionary0__struct;
         if (v11)
@@ -869,18 +869,18 @@ LABEL_9:
           v41 = v16;
           v42 = v13;
           v46 = v9;
-          v17 = v6;
+          v17 = selfCopy;
           v18 = +[NSMutableDictionary dictionary];
           v45 = +[NSMutableDictionary dictionary];
           v43 = v11;
           v44 = v18;
-          [v18 setObject:objc_msgSend(v11 forKey:{"origLayout"), v7}];
+          [v18 setObject:objc_msgSend(v11 forKey:{"origLayout"), primaryResolutionKey}];
           v52 = 0u;
           v53 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v19 = [(NSMutableDictionary *)v47 allKeys];
-          v20 = [v19 countByEnumeratingWithState:&v50 objects:v56 count:16];
+          allKeys = [(NSMutableDictionary *)layoutInfos allKeys];
+          v20 = [allKeys countByEnumeratingWithState:&v50 objects:v56 count:16];
           if (v20)
           {
             v21 = v20;
@@ -891,14 +891,14 @@ LABEL_9:
               {
                 if (*v51 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v24 = *(*(&v50 + 1) + 8 * i);
-                if (([v24 isEqualToString:v7] & 1) == 0)
+                if (([v24 isEqualToString:primaryResolutionKey] & 1) == 0)
                 {
-                  LOBYTE(v37) = a5;
-                  v25 = -[OKAutoLayout _findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:](v17, "_findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:", -[NSMutableDictionary objectForKey:](v47, "objectForKey:", v24), v49, v46, [v12 count], v10, &__NSDictionary0__struct, v37);
+                  LOBYTE(v37) = page;
+                  v25 = -[OKAutoLayout _findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:](v17, "_findBestMatchingLayoutFromLayouts:forMediaItems:currentIndx:checkFollowingMediaItems:remainingItems:subtitleAttributesForMediaItems:isFirstPage:", -[NSMutableDictionary objectForKey:](layoutInfos, "objectForKey:", v24), itemsCopy, v46, [v12 count], v10, &__NSDictionary0__struct, v37);
                   if (v25)
                   {
                     v26 = v25;
@@ -916,13 +916,13 @@ LABEL_9:
                 }
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v50 objects:v56 count:16];
+              v21 = [allKeys countByEnumeratingWithState:&v50 objects:v56 count:16];
             }
 
             while (v21);
           }
 
-          v6 = v17;
+          selfCopy = v17;
           [(OKAutoLayout *)v17 _maxDurationOfMediaItems:v12];
           v30 = v29;
           v31 = v17;
@@ -930,7 +930,7 @@ LABEL_9:
           v32 = [(OKAutoLayout *)v31 _matchMediaItems:v12 toLayoutInfo:v43 orderedKeys:v42];
           v54[0] = @"primary resolution";
           v54[1] = @"all layouts";
-          v55[0] = v7;
+          v55[0] = primaryResolutionKey;
           v55[1] = v44;
           v54[2] = @"mediaItemsDict";
           v54[3] = @"textItemsDict";
@@ -952,12 +952,12 @@ LABEL_9:
           v55[5] = [NSNumber numberWithDouble:v33];
           v8 = v38;
           [v38 addObject:{-[NSDictionary mutableCopy](+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v55, v54, 6), "mutableCopy")}];
-          -[OKAutoLayoutLiveFeedContext setMediasUsed:](v6->_liveFeedContext, "setMediasUsed:", [v43 numOfMedia] + -[OKAutoLayoutLiveFeedContext mediasUsed](v6->_liveFeedContext, "mediasUsed"));
+          -[OKAutoLayoutLiveFeedContext setMediasUsed:](selfCopy->_liveFeedContext, "setMediasUsed:", [v43 numOfMedia] + -[OKAutoLayoutLiveFeedContext mediasUsed](selfCopy->_liveFeedContext, "mediasUsed"));
           v9 = [v43 numOfMedia] + v46;
           [v43 currentScore];
           *&v35 = v34 + -5.0;
           [v43 setCurrentScore:v35];
-          [(OKAutoLayoutFreqController *)v6->_freqController addOnePageLayout:v45];
+          [(OKAutoLayoutFreqController *)selfCopy->_freqController addOnePageLayout:v45];
           goto LABEL_24;
         }
       }
@@ -965,9 +965,9 @@ LABEL_9:
       else
       {
         v15 = v14;
-        v57 = [v11 textWidgetName];
+        textWidgetName = [v11 textWidgetName];
         v58 = v15;
-        v16 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
+        v16 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&textWidgetName count:1];
         [v13 addObject:{objc_msgSend(v11, "textWidgetName")}];
         if (v11)
         {
@@ -978,14 +978,14 @@ LABEL_9:
       v8 = v38;
 LABEL_24:
 
-      a5 = 0;
+      page = 0;
     }
 
-    while (v9 < [v49 count]);
+    while (v9 < [itemsCopy count]);
   }
 
-  [(NSMutableDictionary *)v6->_metadataCacheDict removeAllObjects];
-  -[OKAutoLayoutLiveFeedContext setPagesGenerated:](v6->_liveFeedContext, "setPagesGenerated:", [v8 count] + -[OKAutoLayoutLiveFeedContext pagesGenerated](v6->_liveFeedContext, "pagesGenerated"));
+  [(NSMutableDictionary *)selfCopy->_metadataCacheDict removeAllObjects];
+  -[OKAutoLayoutLiveFeedContext setPagesGenerated:](selfCopy->_liveFeedContext, "setPagesGenerated:", [v8 count] + -[OKAutoLayoutLiveFeedContext pagesGenerated](selfCopy->_liveFeedContext, "pagesGenerated"));
   return v8;
 }
 

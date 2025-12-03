@@ -1,48 +1,48 @@
 @interface _HKExpiringCompletionTimer
 - (BOOL)isExpired;
-- (_HKExpiringCompletionTimer)initWithCompletion:(id)a3;
-- (_HKExpiringCompletionTimer)initWithName:(id)a3 queue:(id)a4 completion:(id)a5;
-- (_HKExpiringCompletionTimer)initWithQueue:(id)a3 completion:(id)a4;
+- (_HKExpiringCompletionTimer)initWithCompletion:(id)completion;
+- (_HKExpiringCompletionTimer)initWithName:(id)name queue:(id)queue completion:(id)completion;
+- (_HKExpiringCompletionTimer)initWithQueue:(id)queue completion:(id)completion;
 - (void)_cancelTimer;
-- (void)_invalidateAndInvokeCompletion:(BOOL)a3 error:(id)a4;
+- (void)_invalidateAndInvokeCompletion:(BOOL)completion error:(id)error;
 - (void)_start;
 - (void)dealloc;
 - (void)restart;
-- (void)startWithTimeoutInterval:(double)a3 handler:(id)a4;
+- (void)startWithTimeoutInterval:(double)interval handler:(id)handler;
 @end
 
 @implementation _HKExpiringCompletionTimer
 
-- (_HKExpiringCompletionTimer)initWithCompletion:(id)a3
+- (_HKExpiringCompletionTimer)initWithCompletion:(id)completion
 {
   v5 = dispatch_get_global_queue(0, 0);
-  v6 = [(_HKExpiringCompletionTimer *)self initWithQueue:v5 completion:a3];
+  v6 = [(_HKExpiringCompletionTimer *)self initWithQueue:v5 completion:completion];
 
   return v6;
 }
 
-- (_HKExpiringCompletionTimer)initWithName:(id)a3 queue:(id)a4 completion:(id)a5
+- (_HKExpiringCompletionTimer)initWithName:(id)name queue:(id)queue completion:(id)completion
 {
-  objc_storeStrong(&self->_name, a3);
-  v8 = a5;
-  v9 = a4;
-  v10 = [(_HKExpiringCompletionTimer *)self initWithQueue:v9 completion:v8];
+  objc_storeStrong(&self->_name, name);
+  completionCopy = completion;
+  queueCopy = queue;
+  v10 = [(_HKExpiringCompletionTimer *)self initWithQueue:queueCopy completion:completionCopy];
 
   return v10;
 }
 
-- (_HKExpiringCompletionTimer)initWithQueue:(id)a3 completion:(id)a4
+- (_HKExpiringCompletionTimer)initWithQueue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _HKExpiringCompletionTimer;
   v9 = [(_HKExpiringCompletionTimer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [completionCopy copy];
     completion = v10->_completion;
     v10->_completion = v11;
   }
@@ -53,8 +53,8 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_0_0();
-  v2 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v2 handleFailureInMethod:v0 object:v1 file:@"_HKExpiringCompletionTimer.m" lineNumber:49 description:{@"%@ must be invalidated before deallocation", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:v0 object:v1 file:@"_HKExpiringCompletionTimer.m" lineNumber:49 description:{@"%@ must be invalidated before deallocation", objc_opt_class()}];
 }
 
 - (void)_cancelTimer
@@ -79,49 +79,49 @@
   return v3 > self->_expirationTime;
 }
 
-- (void)startWithTimeoutInterval:(double)a3 handler:(id)a4
+- (void)startWithTimeoutInterval:(double)interval handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (self->_invalidated)
   {
-    v10 = v6;
+    v10 = handlerCopy;
     [_HKExpiringCompletionTimer startWithTimeoutInterval:handler:];
-    v6 = v10;
+    handlerCopy = v10;
   }
 
   if (self->_startDate)
   {
-    v11 = v6;
+    v11 = handlerCopy;
     [_HKExpiringCompletionTimer startWithTimeoutInterval:handler:];
-    v6 = v11;
+    handlerCopy = v11;
   }
 
   if (!self->_invalidated && !self->_startDate)
   {
-    self->_timeout = a3;
-    v9 = v6;
-    v7 = [v6 copy];
+    self->_timeout = interval;
+    v9 = handlerCopy;
+    v7 = [handlerCopy copy];
     timeoutHandler = self->_timeoutHandler;
     self->_timeoutHandler = v7;
 
     [(_HKExpiringCompletionTimer *)self _start];
-    v6 = v9;
+    handlerCopy = v9;
   }
 }
 
 - (void)restart
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
 - (void)_start
 {
-  v4 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   startDate = self->_startDate;
-  self->_startDate = v4;
+  self->_startDate = date;
 
   [(NSDate *)self->_startDate timeIntervalSinceReferenceDate];
   self->_expirationTime = v6 + self->_timeout;
@@ -143,25 +143,25 @@
   dispatch_resume(self->_timerSource);
 }
 
-- (void)_invalidateAndInvokeCompletion:(BOOL)a3 error:(id)a4
+- (void)_invalidateAndInvokeCompletion:(BOOL)completion error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  errorCopy = error;
   if (!self->_invalidated)
   {
-    v9 = v6;
+    v9 = errorCopy;
     self->_invalidated = 1;
     [(_HKExpiringCompletionTimer *)self _cancelTimer];
     v7 = _Block_copy(self->_completion);
     completion = self->_completion;
     self->_completion = 0;
 
-    if (v4)
+    if (completionCopy)
     {
       v7[2](v7, v9 == 0);
     }
 
-    v6 = v9;
+    errorCopy = v9;
   }
 }
 

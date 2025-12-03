@@ -1,14 +1,14 @@
 @interface MBDToSuperParserContext
-+ (id)fileTransferInfoWithName:(id)a3 partNumber:(unint64_t)a4 attachments:(id)a5 imageInfo:(id)a6;
++ (id)fileTransferInfoWithName:(id)name partNumber:(unint64_t)number attachments:(id)attachments imageInfo:(id)info;
 - (NSAttributedString)body;
 - (void)_clearIvars;
 - (void)_incrementMessagePartNumber;
 - (void)_initIvars;
-- (void)_popValueFromStack:(id)a3 attributeName:(id)a4;
-- (void)_pushValue:(id)a3 ontoStack:(id)a4 attributeName:(id)a5;
+- (void)_popValueFromStack:(id)stack attributeName:(id)name;
+- (void)_pushValue:(id)value ontoStack:(id)stack attributeName:(id)name;
 - (void)appendFailedGenmojiAttributes;
-- (void)appendFileTransferAttribute:(id)a3 attachments:(id)a4 imageInfo:(id)a5;
-- (void)appendString:(id)a3;
+- (void)appendFileTransferAttribute:(id)attribute attachments:(id)attachments imageInfo:(id)info;
+- (void)appendString:(id)string;
 - (void)dealloc;
 - (void)reset;
 @end
@@ -72,22 +72,22 @@
   self->_body = 0;
 }
 
-- (void)_pushValue:(id)a3 ontoStack:(id)a4 attributeName:(id)a5
+- (void)_pushValue:(id)value ontoStack:(id)stack attributeName:(id)name
 {
-  if (a3)
+  if (value)
   {
-    v8 = a5;
-    v9 = a3;
-    [a4 addObject:v9];
-    [(NSMutableDictionary *)self->_currentAttributes setObject:v9 forKey:v8];
+    nameCopy = name;
+    valueCopy = value;
+    [stack addObject:valueCopy];
+    [(NSMutableDictionary *)self->_currentAttributes setObject:valueCopy forKey:nameCopy];
   }
 }
 
-- (void)_popValueFromStack:(id)a3 attributeName:(id)a4
+- (void)_popValueFromStack:(id)stack attributeName:(id)name
 {
-  v6 = a4;
-  [a3 removeLastObject];
-  [(NSMutableDictionary *)self->_currentAttributes removeObjectForKey:v6];
+  nameCopy = name;
+  [stack removeLastObject];
+  [(NSMutableDictionary *)self->_currentAttributes removeObjectForKey:nameCopy];
 }
 
 - (void)_incrementMessagePartNumber
@@ -98,27 +98,27 @@
   [(NSMutableDictionary *)currentAttributes setObject:v3 forKey:MBDIMMessagePartAttributeName];
 }
 
-- (void)appendString:(id)a3
+- (void)appendString:(id)string
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [[NSAttributedString alloc] initWithString:v5 attributes:self->_currentAttributes];
+    v4 = [[NSAttributedString alloc] initWithString:stringCopy attributes:self->_currentAttributes];
     [(NSMutableAttributedString *)self->_body appendAttributedString:v4];
     self->_lastPartInsertedWasImage = 0;
   }
 }
 
-+ (id)fileTransferInfoWithName:(id)a3 partNumber:(unint64_t)a4 attachments:(id)a5 imageInfo:(id)a6
++ (id)fileTransferInfoWithName:(id)name partNumber:(unint64_t)number attachments:(id)attachments imageInfo:(id)info
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = a3;
+  attachmentsCopy = attachments;
+  infoCopy = info;
+  nameCopy = name;
   v11 = [[NSMutableDictionary alloc] initWithCapacity:5];
   v12 = v11;
-  if (v10)
+  if (nameCopy)
   {
-    v13 = v10;
+    v13 = nameCopy;
   }
 
   else
@@ -128,15 +128,15 @@
 
   [v11 setObject:v13 forKey:MBDIMFileTransferNameKey];
 
-  if ([v8 count])
+  if ([attachmentsCopy count])
   {
-    v14 = [v8 copy];
+    v14 = [attachmentsCopy copy];
     [v12 setObject:v14 forKey:MBDIMFileTransferAttachmentsKey];
   }
 
-  if ([v9 count])
+  if ([infoCopy count])
   {
-    v15 = [v9 copy];
+    v15 = [infoCopy copy];
     [v12 setObject:v15 forKey:MBDIMFileTransferImageInfoKey];
   }
 
@@ -153,11 +153,11 @@
   return v16;
 }
 
-- (void)appendFileTransferAttribute:(id)a3 attachments:(id)a4 imageInfo:(id)a5
+- (void)appendFileTransferAttribute:(id)attribute attachments:(id)attachments imageInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attributeCopy = attribute;
+  attachmentsCopy = attachments;
+  infoCopy = info;
   if (!self->_lastPartInsertedWasImage)
   {
     if ([(NSMutableAttributedString *)self->_body length])
@@ -169,7 +169,7 @@
     }
   }
 
-  v13 = [objc_opt_class() fileTransferInfoWithName:v8 partNumber:self->_messagePartNumber attachments:v9 imageInfo:v10];
+  v13 = [objc_opt_class() fileTransferInfoWithName:attributeCopy partNumber:self->_messagePartNumber attachments:attachmentsCopy imageInfo:infoCopy];
   v19 = -4;
   v14 = [[NSString alloc] initWithCharacters:&v19 length:1];
   v20[0] = MBDIMFileTransferAttributeName;

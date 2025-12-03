@@ -1,18 +1,18 @@
 @interface VNTrackTranslationalImageRegistrationRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 - (VNTrackTranslationalImageRegistrationRequest)initWithCompletionHandler:(VNRequestCompletionHandler)completionHandler;
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3;
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error;
 @end
 
 @implementation VNTrackTranslationalImageRegistrationRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 1)
+  contextCopy = context;
+  v9 = contextCopy;
+  if (revision == 1)
   {
-    v10 = [v8 imageBufferAndReturnError:a5];
+    v10 = [contextCopy imageBufferAndReturnError:error];
     if (!v10)
     {
       v18 = 0;
@@ -23,7 +23,7 @@ LABEL_17:
 
     v11 = [VNImageRegistrationSignature alloc];
     [(VNImageBasedRequest *)self regionOfInterest];
-    v12 = [(VNImageSignature *)v11 initWithImageBuffer:v10 regionOfInterest:a5 error:?];
+    v12 = [(VNImageSignature *)v11 initWithImageBuffer:v10 regionOfInterest:error error:?];
     if (v12)
     {
       if (self->_previousRequestRevision != 1)
@@ -43,11 +43,11 @@ LABEL_17:
       v23 = 0u;
       v24 = 0u;
       v22 = 0u;
-      if ([VNImageRegistration computeTransform:&v22 forRegisteringImageSignature:v14 withSignature:v12 minimumOverlap:a5 error:COERCE_DOUBLE(COERCE_UNSIGNED_INT(0.25))])
+      if ([VNImageRegistration computeTransform:&v22 forRegisteringImageSignature:v14 withSignature:v12 minimumOverlap:error error:COERCE_DOUBLE(COERCE_UNSIGNED_INT(0.25))])
       {
         v15 = [VNImageTranslationAlignmentObservation alloc];
-        v16 = [(VNRequest *)self specifier];
-        v17 = [(VNObservation *)v15 initWithOriginatingRequestSpecifier:v16];
+        specifier = [(VNRequest *)self specifier];
+        v17 = [(VNObservation *)v15 initWithOriginatingRequestSpecifier:specifier];
 
         v21[0] = v22;
         v21[1] = v23;
@@ -70,10 +70,10 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a5)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a5 = v18 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v18 = 0;
   }
 
   else
@@ -86,7 +86,7 @@ LABEL_18:
   return v18;
 }
 
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"VNComputeStageMain";

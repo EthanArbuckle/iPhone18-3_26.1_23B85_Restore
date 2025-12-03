@@ -1,12 +1,12 @@
 @interface UIDatePicker
-- (void)setGaxDatePickerEnabled:(BOOL)a3;
+- (void)setGaxDatePickerEnabled:(BOOL)enabled;
 @end
 
 @implementation UIDatePicker
 
-- (void)setGaxDatePickerEnabled:(BOOL)a3
+- (void)setGaxDatePickerEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2C3DC;
@@ -17,8 +17,8 @@
     dispatch_once(&qword_6D9C8, block);
   }
 
-  [(UIDatePicker *)self setEnabled:v3];
-  [(UIDatePicker *)self setUserInteractionEnabled:v3];
+  [(UIDatePicker *)self setEnabled:enabledCopy];
+  [(UIDatePicker *)self setUserInteractionEnabled:enabledCopy];
   objc_opt_class();
   v5 = [(UIDatePicker *)self safeValueForKey:@"_pickerView"];
   v6 = __UIAccessibilityCastAsClass();
@@ -31,7 +31,7 @@
   v9 = [v6 safeValueForKey:@"_minuteLabel"];
   v10 = __UIAccessibilityCastAsClass();
 
-  if (v3)
+  if (enabledCopy)
   {
     [(UIDatePicker *)self _setTextColor:qword_6D9C0];
     [v8 setTextColor:qword_6D9C0];

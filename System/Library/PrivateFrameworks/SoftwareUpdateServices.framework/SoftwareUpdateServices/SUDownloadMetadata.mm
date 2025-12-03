@@ -1,18 +1,18 @@
 @interface SUDownloadMetadata
-- (BOOL)isEnabledForNetworkType:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDownloadPolicy:(id)a3;
+- (BOOL)isEnabledForNetworkType:(int)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDownloadPolicy:(id)policy;
 - (SUDownloadMetadata)init;
-- (SUDownloadMetadata)initWithCoder:(id)a3;
-- (id)_stringForBool:(BOOL)a3;
-- (id)activeDownloadPolicy:(id)a3;
-- (id)availableDownloadPolicyIfDifferentFromActive:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUDownloadMetadata)initWithCoder:(id)coder;
+- (id)_stringForBool:(BOOL)bool;
+- (id)activeDownloadPolicy:(id)policy;
+- (id)availableDownloadPolicyIfDifferentFromActive:(id)active;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)applyDownloadPolicy:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyDownloadPolicy:(id)policy;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUDownloadMetadata
@@ -33,48 +33,48 @@
   return v3;
 }
 
-- (SUDownloadMetadata)initWithCoder:(id)a3
+- (SUDownloadMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SUDownloadMetadata *)self init];
   if (v5)
   {
-    -[SUDownloadMetadata setAutoDownload:](v5, "setAutoDownload:", [v4 decodeBoolForKey:@"isAutoDownload"]);
-    -[SUDownloadMetadata setDownloadOnly:](v5, "setDownloadOnly:", [v4 decodeBoolForKey:@"isDownloadOnly"]);
-    -[SUDownloadMetadata setActiveDownloadPolicyType:](v5, "setActiveDownloadPolicyType:", [v4 decodeIntForKey:@"activeDownloadPolicy"]);
-    -[SUDownloadMetadata setEnabledFor2G:](v5, "setEnabledFor2G:", [v4 decodeBoolForKey:@"enabledFor2G"]);
-    -[SUDownloadMetadata setEnabledFor3G:](v5, "setEnabledFor3G:", [v4 decodeBoolForKey:@"enabledFor3G"]);
-    -[SUDownloadMetadata setEnabledFor4G:](v5, "setEnabledFor4G:", [v4 decodeBoolForKey:@"enabledFor4G"]);
-    -[SUDownloadMetadata setEnabledForWifi:](v5, "setEnabledForWifi:", [v4 decodeBoolForKey:@"enabledForWifi"]);
-    -[SUDownloadMetadata setEnabledOnBatteryPower:](v5, "setEnabledOnBatteryPower:", [v4 decodeBoolForKey:@"enabledOnBatteryPower"]);
-    -[SUDownloadMetadata setEnforceWifiOnlyOverride:](v5, "setEnforceWifiOnlyOverride:", [v4 decodeBoolForKey:@"enforceWifiOnlyOverride"]);
-    -[SUDownloadMetadata setDownloadFeeAgreementStatus:](v5, "setDownloadFeeAgreementStatus:", [v4 decodeIntForKey:@"downloadFeeAgreementStatus"]);
-    -[SUDownloadMetadata setTermsAndConditionsAgreementStatus:](v5, "setTermsAndConditionsAgreementStatus:", [v4 decodeIntForKey:@"termsAndConditionsAgreementStatus"]);
-    -[SUDownloadMetadata setEnabledForCellularRoaming:](v5, "setEnabledForCellularRoaming:", [v4 decodeBoolForKey:@"enabledForCellularRoaming"]);
+    -[SUDownloadMetadata setAutoDownload:](v5, "setAutoDownload:", [coderCopy decodeBoolForKey:@"isAutoDownload"]);
+    -[SUDownloadMetadata setDownloadOnly:](v5, "setDownloadOnly:", [coderCopy decodeBoolForKey:@"isDownloadOnly"]);
+    -[SUDownloadMetadata setActiveDownloadPolicyType:](v5, "setActiveDownloadPolicyType:", [coderCopy decodeIntForKey:@"activeDownloadPolicy"]);
+    -[SUDownloadMetadata setEnabledFor2G:](v5, "setEnabledFor2G:", [coderCopy decodeBoolForKey:@"enabledFor2G"]);
+    -[SUDownloadMetadata setEnabledFor3G:](v5, "setEnabledFor3G:", [coderCopy decodeBoolForKey:@"enabledFor3G"]);
+    -[SUDownloadMetadata setEnabledFor4G:](v5, "setEnabledFor4G:", [coderCopy decodeBoolForKey:@"enabledFor4G"]);
+    -[SUDownloadMetadata setEnabledForWifi:](v5, "setEnabledForWifi:", [coderCopy decodeBoolForKey:@"enabledForWifi"]);
+    -[SUDownloadMetadata setEnabledOnBatteryPower:](v5, "setEnabledOnBatteryPower:", [coderCopy decodeBoolForKey:@"enabledOnBatteryPower"]);
+    -[SUDownloadMetadata setEnforceWifiOnlyOverride:](v5, "setEnforceWifiOnlyOverride:", [coderCopy decodeBoolForKey:@"enforceWifiOnlyOverride"]);
+    -[SUDownloadMetadata setDownloadFeeAgreementStatus:](v5, "setDownloadFeeAgreementStatus:", [coderCopy decodeIntForKey:@"downloadFeeAgreementStatus"]);
+    -[SUDownloadMetadata setTermsAndConditionsAgreementStatus:](v5, "setTermsAndConditionsAgreementStatus:", [coderCopy decodeIntForKey:@"termsAndConditionsAgreementStatus"]);
+    -[SUDownloadMetadata setEnabledForCellularRoaming:](v5, "setEnabledForCellularRoaming:", [coderCopy decodeBoolForKey:@"enabledForCellularRoaming"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   autoDownload = self->_autoDownload;
-  v5 = a3;
-  [v5 encodeBool:autoDownload forKey:@"isAutoDownload"];
-  [v5 encodeBool:self->_downloadOnly forKey:@"isDownloadOnly"];
-  [v5 encodeInt:self->_activeDownloadPolicyType forKey:@"activeDownloadPolicy"];
-  [v5 encodeBool:self->_enabledFor2G forKey:@"enabledFor2G"];
-  [v5 encodeBool:self->_enabledFor3G forKey:@"enabledFor3G"];
-  [v5 encodeBool:self->_enabledFor4G forKey:@"enabledFor4G"];
-  [v5 encodeBool:self->_enabledForWifi forKey:@"enabledForWifi"];
-  [v5 encodeBool:self->_enabledOnBatteryPower forKey:@"enabledOnBatteryPower"];
-  [v5 encodeBool:self->_enforceWifiOnlyOverride forKey:@"enforceWifiOnlyOverride"];
-  [v5 encodeInt:self->_downloadFeeAgreementStatus forKey:@"downloadFeeAgreementStatus"];
-  [v5 encodeInt:self->_termsAndConditionsAgreementStatus forKey:@"termsAndConditionsAgreementStatus"];
-  [v5 encodeBool:self->_enabledForCellularRoaming forKey:@"enabledForCellularRoaming"];
+  coderCopy = coder;
+  [coderCopy encodeBool:autoDownload forKey:@"isAutoDownload"];
+  [coderCopy encodeBool:self->_downloadOnly forKey:@"isDownloadOnly"];
+  [coderCopy encodeInt:self->_activeDownloadPolicyType forKey:@"activeDownloadPolicy"];
+  [coderCopy encodeBool:self->_enabledFor2G forKey:@"enabledFor2G"];
+  [coderCopy encodeBool:self->_enabledFor3G forKey:@"enabledFor3G"];
+  [coderCopy encodeBool:self->_enabledFor4G forKey:@"enabledFor4G"];
+  [coderCopy encodeBool:self->_enabledForWifi forKey:@"enabledForWifi"];
+  [coderCopy encodeBool:self->_enabledOnBatteryPower forKey:@"enabledOnBatteryPower"];
+  [coderCopy encodeBool:self->_enforceWifiOnlyOverride forKey:@"enforceWifiOnlyOverride"];
+  [coderCopy encodeInt:self->_downloadFeeAgreementStatus forKey:@"downloadFeeAgreementStatus"];
+  [coderCopy encodeInt:self->_termsAndConditionsAgreementStatus forKey:@"termsAndConditionsAgreementStatus"];
+  [coderCopy encodeBool:self->_enabledForCellularRoaming forKey:@"enabledForCellularRoaming"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setAutoDownload:self->_autoDownload];
@@ -92,7 +92,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setAutoDownload:self->_autoDownload];
@@ -110,52 +110,52 @@
   return v4;
 }
 
-- (void)applyDownloadPolicy:(id)a3
+- (void)applyDownloadPolicy:(id)policy
 {
-  v4 = a3;
-  if (v4)
+  policyCopy = policy;
+  if (policyCopy)
   {
-    v9 = v4;
-    v5 = ([v4 isDownloadFreeForCellular] & 1) != 0 || -[SUDownloadMetadata downloadFeeAgreementStatus](self, "downloadFeeAgreementStatus") == 1;
-    v6 = [(SUDownloadMetadata *)self enforceWifiOnlyOverride];
+    v9 = policyCopy;
+    v5 = ([policyCopy isDownloadFreeForCellular] & 1) != 0 || -[SUDownloadMetadata downloadFeeAgreementStatus](self, "downloadFeeAgreementStatus") == 1;
+    enforceWifiOnlyOverride = [(SUDownloadMetadata *)self enforceWifiOnlyOverride];
     [(SUDownloadMetadata *)self setActiveDownloadPolicyType:[SUDownloadPolicyFactory downloadPolicyTypeForClass:v9]];
     -[SUDownloadMetadata setEnabledOnBatteryPower:](self, "setEnabledOnBatteryPower:", [v9 isPowerRequired] ^ 1);
-    if (v6 || !v5)
+    if (enforceWifiOnlyOverride || !v5)
     {
       [(SUDownloadMetadata *)self setEnabledFor2G:0];
       [(SUDownloadMetadata *)self setEnabledFor3G:0];
-      v7 = 0;
+      isDownloadAllowableForCellular = 0;
     }
 
     else
     {
       -[SUDownloadMetadata setEnabledFor2G:](self, "setEnabledFor2G:", [v9 isDownloadAllowableForCellular2G]);
       -[SUDownloadMetadata setEnabledFor3G:](self, "setEnabledFor3G:", [v9 isDownloadAllowableForCellular]);
-      v7 = [v9 isDownloadAllowableForCellular];
+      isDownloadAllowableForCellular = [v9 isDownloadAllowableForCellular];
     }
 
-    [(SUDownloadMetadata *)self setEnabledFor4G:v7];
+    [(SUDownloadMetadata *)self setEnabledFor4G:isDownloadAllowableForCellular];
     if ([(SUDownloadMetadata *)self isEnabledFor2G]|| [(SUDownloadMetadata *)self isEnabledFor3G]|| [(SUDownloadMetadata *)self isEnabledFor4G])
     {
-      v8 = [v9 isDownloadAllowableForCellularRoaming];
+      isDownloadAllowableForCellularRoaming = [v9 isDownloadAllowableForCellularRoaming];
     }
 
     else
     {
-      v8 = 0;
+      isDownloadAllowableForCellularRoaming = 0;
     }
 
-    [(SUDownloadMetadata *)self setEnabledForCellularRoaming:v8];
+    [(SUDownloadMetadata *)self setEnabledForCellularRoaming:isDownloadAllowableForCellularRoaming];
     -[SUDownloadMetadata setEnabledForWifi:](self, "setEnabledForWifi:", [v9 isDownloadAllowableForWiFi]);
-    v4 = v9;
+    policyCopy = v9;
   }
 }
 
-- (id)activeDownloadPolicy:(id)a3
+- (id)activeDownloadPolicy:(id)policy
 {
-  if (a3)
+  if (policy)
   {
-    v4 = [SUDownloadPolicyFactory downloadPolicyForType:self->_activeDownloadPolicyType forDescriptor:a3];
+    v4 = [SUDownloadPolicyFactory downloadPolicyForType:self->_activeDownloadPolicyType forDescriptor:policy];
   }
 
   else
@@ -166,11 +166,11 @@
   return v4;
 }
 
-- (id)availableDownloadPolicyIfDifferentFromActive:(id)a3
+- (id)availableDownloadPolicyIfDifferentFromActive:(id)active
 {
-  v4 = a3;
-  v5 = [(SUDownloadMetadata *)self activeDownloadPolicy:v4];
-  v6 = [SUDownloadPolicyFactory userDownloadPolicyForDescriptor:v4 existingPolicy:v5];
+  activeCopy = active;
+  v5 = [(SUDownloadMetadata *)self activeDownloadPolicy:activeCopy];
+  v6 = [SUDownloadPolicyFactory userDownloadPolicyForDescriptor:activeCopy existingPolicy:v5];
 
   if (v6 && ([v5 isSamePolicy:v6] & 1) == 0)
   {
@@ -185,13 +185,13 @@
   return v7;
 }
 
-- (BOOL)matchesDownloadPolicy:(id)a3
+- (BOOL)matchesDownloadPolicy:(id)policy
 {
-  v4 = a3;
-  if (self->_activeDownloadPolicyType == +[SUDownloadPolicyFactory downloadPolicyTypeForClass:](SUDownloadPolicyFactory, "downloadPolicyTypeForClass:", v4) && (v5 = [v4 isPowerRequired], v5 != -[SUDownloadMetadata isEnabledOnBatteryPower](self, "isEnabledOnBatteryPower")) && (v6 = objc_msgSend(v4, "isDownloadAllowableForWiFi"), v6 == -[SUDownloadMetadata isEnabledForWifi](self, "isEnabledForWifi")) && (v7 = objc_msgSend(v4, "isDownloadAllowableForCellular2G"), v7 == -[SUDownloadMetadata isEnabledFor2G](self, "isEnabledFor2G")) && (v8 = objc_msgSend(v4, "isDownloadAllowableForCellular"), v8 == -[SUDownloadMetadata isEnabledFor3G](self, "isEnabledFor3G")) && (v9 = objc_msgSend(v4, "isDownloadAllowableForCellular"), v9 == -[SUDownloadMetadata isEnabledFor4G](self, "isEnabledFor4G")))
+  policyCopy = policy;
+  if (self->_activeDownloadPolicyType == +[SUDownloadPolicyFactory downloadPolicyTypeForClass:](SUDownloadPolicyFactory, "downloadPolicyTypeForClass:", policyCopy) && (v5 = [policyCopy isPowerRequired], v5 != -[SUDownloadMetadata isEnabledOnBatteryPower](self, "isEnabledOnBatteryPower")) && (v6 = objc_msgSend(policyCopy, "isDownloadAllowableForWiFi"), v6 == -[SUDownloadMetadata isEnabledForWifi](self, "isEnabledForWifi")) && (v7 = objc_msgSend(policyCopy, "isDownloadAllowableForCellular2G"), v7 == -[SUDownloadMetadata isEnabledFor2G](self, "isEnabledFor2G")) && (v8 = objc_msgSend(policyCopy, "isDownloadAllowableForCellular"), v8 == -[SUDownloadMetadata isEnabledFor3G](self, "isEnabledFor3G")) && (v9 = objc_msgSend(policyCopy, "isDownloadAllowableForCellular"), v9 == -[SUDownloadMetadata isEnabledFor4G](self, "isEnabledFor4G")))
   {
-    v12 = [v4 isDownloadAllowableForCellularRoaming];
-    v10 = v12 ^ [(SUDownloadMetadata *)self isEnabledForCellularRoaming]^ 1;
+    isDownloadAllowableForCellularRoaming = [policyCopy isDownloadAllowableForCellularRoaming];
+    v10 = isDownloadAllowableForCellularRoaming ^ [(SUDownloadMetadata *)self isEnabledForCellularRoaming]^ 1;
   }
 
   else
@@ -202,13 +202,13 @@
   return v10;
 }
 
-- (BOOL)isEnabledForNetworkType:(int)a3
+- (BOOL)isEnabledForNetworkType:(int)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         return [(SUDownloadMetadata *)self isEnabledFor3G];
       }
@@ -221,9 +221,9 @@
 
   else
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         return [(SUDownloadMetadata *)self isEnabledForWifi];
       }
@@ -235,9 +235,9 @@
   }
 }
 
-- (id)_stringForBool:(BOOL)a3
+- (id)_stringForBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     return @"Yes";
   }
@@ -266,16 +266,16 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_16;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_20;

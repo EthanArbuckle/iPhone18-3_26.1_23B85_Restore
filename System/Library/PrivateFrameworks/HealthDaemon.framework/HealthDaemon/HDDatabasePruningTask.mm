@@ -1,53 +1,53 @@
 @interface HDDatabasePruningTask
-+ (id)_maximumPruningAnchorWithRestrictionPredicates:(id)a3;
-- (HDDatabasePruningTask)initWithProfile:(id)a3;
++ (id)_maximumPruningAnchorWithRestrictionPredicates:(id)predicates;
+- (HDDatabasePruningTask)initWithProfile:(id)profile;
 - (id)_allEntityClasses;
-- (id)_minimumFrozenAnchorMapForPruningDate:(id)a3 error:(id *)a4;
-- (id)_pruneObjectsForEntityClass:(void *)a3 frozenAnchor:(void *)a4 nowDate:(uint64_t)a5 limit:(uint64_t)a6 error:;
-- (int64_t)pruneDatabaseWithAccessibilityAssertion:(id)a3 nowDate:(id)a4 prunedObjectLimit:(unint64_t)a5 prunedObjectTransactionLimit:(unint64_t)a6 shouldDefer:(id)a7 error:(id *)a8;
+- (id)_minimumFrozenAnchorMapForPruningDate:(id)date error:(id *)error;
+- (id)_pruneObjectsForEntityClass:(void *)class frozenAnchor:(void *)anchor nowDate:(uint64_t)date limit:(uint64_t)limit error:;
+- (int64_t)pruneDatabaseWithAccessibilityAssertion:(id)assertion nowDate:(id)date prunedObjectLimit:(unint64_t)limit prunedObjectTransactionLimit:(unint64_t)transactionLimit shouldDefer:(id)defer error:(id *)error;
 - (uint64_t)_entityClassSupportsPruning:;
-- (void)enqueueMaintenanceOperationOnCoordinator:(id)a3 takeAccessibilityAssertion:(BOOL)a4 nowDate:(id)a5 shouldDefer:(id)a6 completion:(id)a7;
+- (void)enqueueMaintenanceOperationOnCoordinator:(id)coordinator takeAccessibilityAssertion:(BOOL)assertion nowDate:(id)date shouldDefer:(id)defer completion:(id)completion;
 @end
 
 @implementation HDDatabasePruningTask
 
-- (HDDatabasePruningTask)initWithProfile:(id)a3
+- (HDDatabasePruningTask)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDDatabasePruningTask;
   v5 = [(HDDatabasePruningTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (void)enqueueMaintenanceOperationOnCoordinator:(id)a3 takeAccessibilityAssertion:(BOOL)a4 nowDate:(id)a5 shouldDefer:(id)a6 completion:(id)a7
+- (void)enqueueMaintenanceOperationOnCoordinator:(id)coordinator takeAccessibilityAssertion:(BOOL)assertion nowDate:(id)date shouldDefer:(id)defer completion:(id)completion
 {
-  v10 = a4;
+  assertionCopy = assertion;
   v52 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  coordinatorCopy = coordinator;
+  dateCopy = date;
+  deferCopy = defer;
+  completionCopy = completion;
   v16 = 0x277CCA000uLL;
-  if (v10)
+  if (assertionCopy)
   {
     v17 = MEMORY[0x277CCACA8];
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    v22 = [v17 stringWithFormat:@"%@-%@", v19, v21];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v22 = [v17 stringWithFormat:@"%@-%@", v19, uUIDString];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v24 = [WeakRetained database];
+    database = [WeakRetained database];
     v47 = 0;
-    v25 = [v24 takeAccessibilityAssertionWithOwnerIdentifier:v22 timeout:&v47 error:600.0];
+    v25 = [database takeAccessibilityAssertionWithOwnerIdentifier:v22 timeout:&v47 error:600.0];
     v26 = v47;
 
     if (!v25)
@@ -57,7 +57,7 @@
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v49 = self;
+        selfCopy = self;
         v50 = 2114;
         v51 = v26;
         _os_log_error_impl(&dword_228986000, v27, OS_LOG_TYPE_ERROR, "%{public}@: unable to take accessibility assertion: %{public}@", buf, 0x16u);
@@ -74,9 +74,9 @@
 
   v28 = *(v16 + 3240);
   v29 = objc_loadWeakRetained(&self->_profile);
-  v30 = [v29 profileIdentifier];
-  v31 = [v30 identifier];
-  v32 = [v28 stringWithFormat:@"Database Pruning (%@)", v31];
+  profileIdentifier = [v29 profileIdentifier];
+  identifier = [profileIdentifier identifier];
+  v32 = [v28 stringWithFormat:@"Database Pruning (%@)", identifier];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -84,9 +84,9 @@
   v42[3] = &unk_27862E520;
   v42[4] = self;
   v43 = v25;
-  v44 = v13;
-  v45 = v14;
-  v46 = v15;
+  v44 = dateCopy;
+  v45 = deferCopy;
+  v46 = completionCopy;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __124__HDDatabasePruningTask_enqueueMaintenanceOperationOnCoordinator_takeAccessibilityAssertion_nowDate_shouldDefer_completion___block_invoke_2;
@@ -95,10 +95,10 @@
   v41 = v46;
   v33 = v46;
   v34 = v43;
-  v35 = v14;
-  v36 = v13;
+  v35 = deferCopy;
+  v36 = dateCopy;
   v37 = [HDMaintenanceOperation maintenanceOperationWithName:v32 asynchronousBlock:v42 canceledBlock:v39];
-  [v12 enqueueMaintenanceOperation:v37];
+  [coordinatorCopy enqueueMaintenanceOperation:v37];
 
   v38 = *MEMORY[0x277D85DE8];
 }
@@ -138,31 +138,31 @@ void __124__HDDatabasePruningTask_enqueueMaintenanceOperationOnCoordinator_takeA
   v4[2]();
 }
 
-- (int64_t)pruneDatabaseWithAccessibilityAssertion:(id)a3 nowDate:(id)a4 prunedObjectLimit:(unint64_t)a5 prunedObjectTransactionLimit:(unint64_t)a6 shouldDefer:(id)a7 error:(id *)a8
+- (int64_t)pruneDatabaseWithAccessibilityAssertion:(id)assertion nowDate:(id)date prunedObjectLimit:(unint64_t)limit prunedObjectTransactionLimit:(unint64_t)transactionLimit shouldDefer:(id)defer error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v18 = [v17 features];
-  v19 = [v18 databasePruningTaskShouldUseRestrictionPredicates];
-  if (!v16 || !v19)
+  assertionCopy = assertion;
+  dateCopy = date;
+  deferCopy = defer;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  databasePruningTaskShouldUseRestrictionPredicates = [features databasePruningTaskShouldUseRestrictionPredicates];
+  if (!deferCopy || !databasePruningTaskShouldUseRestrictionPredicates)
   {
 
     goto LABEL_9;
   }
 
-  v20 = v16[2](v16);
+  v20 = deferCopy[2](deferCopy);
 
   if (!v20)
   {
 LABEL_9:
     v23 = objc_alloc_init(HDMutableDatabaseTransactionContext);
     [(HDMutableDatabaseTransactionContext *)v23 setCacheScope:1];
-    if (v14)
+    if (assertionCopy)
     {
-      [(HDMutableDatabaseTransactionContext *)v23 addAccessibilityAssertion:v14];
+      [(HDMutableDatabaseTransactionContext *)v23 addAccessibilityAssertion:assertionCopy];
     }
 
     *&buf = 0;
@@ -170,18 +170,18 @@ LABEL_9:
     v36 = 0x2020000000;
     v37 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v26 = [WeakRetained database];
+    database = [WeakRetained database];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __138__HDDatabasePruningTask_pruneDatabaseWithAccessibilityAssertion_nowDate_prunedObjectLimit_prunedObjectTransactionLimit_shouldDefer_error___block_invoke;
     v29[3] = &unk_27862E548;
     p_buf = &buf;
     v29[4] = self;
-    v30 = v15;
-    v33 = a6;
-    v31 = v16;
-    v34 = a5;
-    [v26 performWithTransactionContext:v23 error:a8 block:v29];
+    v30 = dateCopy;
+    transactionLimitCopy = transactionLimit;
+    v31 = deferCopy;
+    limitCopy = limit;
+    [database performWithTransactionContext:v23 error:error block:v29];
 
     v24 = *(*(&buf + 1) + 24);
     _Block_object_dispose(&buf, 8);
@@ -669,30 +669,30 @@ LABEL_80:
 - (id)_allEntityClasses
 {
   v32 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v3 = [WeakRetained daemon];
-    v4 = [v3 behavior];
-    v5 = [HDDatabase allEntityClassesWithBehavior:v4];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    v5 = [HDDatabase allEntityClassesWithBehavior:behavior];
 
-    v6 = objc_loadWeakRetained((a1 + 8));
-    v7 = [v6 syncEngine];
-    v8 = [v7 allOrderedSyncEntities];
-    v9 = [v5 arrayByAddingObjectsFromArray:v8];
+    v6 = objc_loadWeakRetained((self + 8));
+    syncEngine = [v6 syncEngine];
+    allOrderedSyncEntities = [syncEngine allOrderedSyncEntities];
+    v9 = [v5 arrayByAddingObjectsFromArray:allOrderedSyncEntities];
 
-    v10 = objc_loadWeakRetained((a1 + 8));
-    v11 = [v10 daemon];
-    v12 = [v11 pluginManager];
-    v13 = [v12 pluginsConformingToProtocol:&unk_283CCAD48];
-    v14 = [v13 allValues];
+    v10 = objc_loadWeakRetained((self + 8));
+    daemon2 = [v10 daemon];
+    pluginManager = [daemon2 pluginManager];
+    v13 = [pluginManager pluginsConformingToProtocol:&unk_283CCAD48];
+    allValues = [v13 allValues];
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = v14;
+    v16 = allValues;
     v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v17)
     {
@@ -845,16 +845,16 @@ BOOL __118__HDDatabasePruningTask__pruneDatabaseUsingMinAnchorWithNowDate_pruned
   return v11 != 0;
 }
 
-- (id)_pruneObjectsForEntityClass:(void *)a3 frozenAnchor:(void *)a4 nowDate:(uint64_t)a5 limit:(uint64_t)a6 error:
+- (id)_pruneObjectsForEntityClass:(void *)class frozenAnchor:(void *)anchor nowDate:(uint64_t)date limit:(uint64_t)limit error:
 {
-  v11 = a3;
-  v12 = a4;
-  if (a1)
+  classCopy = class;
+  anchorCopy = anchor;
+  if (self)
   {
     if (objc_opt_respondsToSelector())
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v14 = [a2 pruneSyncedObjectsThroughAnchor:v11 limit:a5 nowDate:v12 profile:WeakRetained error:a6];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      v14 = [a2 pruneSyncedObjectsThroughAnchor:classCopy limit:date nowDate:anchorCopy profile:WeakRetained error:limit];
 LABEL_6:
       v15 = v14;
 
@@ -863,8 +863,8 @@ LABEL_6:
 
     if (objc_opt_respondsToSelector())
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v14 = [a2 pruneWithProfile:WeakRetained nowDate:v12 limit:a5 error:a6];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      v14 = [a2 pruneWithProfile:WeakRetained nowDate:anchorCopy limit:date error:limit];
       goto LABEL_6;
     }
   }
@@ -1037,14 +1037,14 @@ BOOL __124__HDDatabasePruningTask__pruneDatabaseUsingRestrictionPredicatesWithNo
   return v13 != 0;
 }
 
-- (id)_minimumFrozenAnchorMapForPruningDate:(id)a3 error:(id *)a4
+- (id)_minimumFrozenAnchorMapForPruningDate:(id)date error:(id *)error
 {
-  v6 = [a3 dateByAddingTimeInterval:-2419200.0];
+  v6 = [date dateByAddingTimeInterval:-2419200.0];
   v7 = objc_alloc_init(HDSyncAnchorMap);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  LODWORD(a4) = [HDSyncAnchorEntity getMinimumSyncAnchorsOfType:2 anchorMap:v7 updatedSince:v6 profile:WeakRetained error:a4];
+  LODWORD(error) = [HDSyncAnchorEntity getMinimumSyncAnchorsOfType:2 anchorMap:v7 updatedSince:v6 profile:WeakRetained error:error];
 
-  if (a4)
+  if (error)
   {
     v9 = v7;
   }
@@ -1059,12 +1059,12 @@ BOOL __124__HDDatabasePruningTask__pruneDatabaseUsingRestrictionPredicatesWithNo
   return v9;
 }
 
-+ (id)_maximumPruningAnchorWithRestrictionPredicates:(id)a3
++ (id)_maximumPruningAnchorWithRestrictionPredicates:(id)predicates
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  predicatesCopy = predicates;
+  v4 = predicatesCopy;
+  if (predicatesCopy && [predicatesCopy count])
   {
     v20 = 0u;
     v21 = 0u;
@@ -1087,15 +1087,15 @@ BOOL __124__HDDatabasePruningTask__pruneDatabaseUsingRestrictionPredicatesWithNo
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 maximumAnchor];
-          v13 = [v12 longLongValue];
-          v14 = [v9 longLongValue];
+          maximumAnchor = [v11 maximumAnchor];
+          longLongValue = [maximumAnchor longLongValue];
+          longLongValue2 = [v9 longLongValue];
 
-          if (v13 < v14)
+          if (longLongValue < longLongValue2)
           {
-            v15 = [v11 maximumAnchor];
+            maximumAnchor2 = [v11 maximumAnchor];
 
-            v9 = v15;
+            v9 = maximumAnchor2;
           }
         }
 

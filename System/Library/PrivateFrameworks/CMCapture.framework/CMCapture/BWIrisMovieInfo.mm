@@ -1,6 +1,6 @@
 @interface BWIrisMovieInfo
-+ (BWIrisMovieInfo)irisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)a3 stillImageCaptureTime:(id *)a4 stillImageCaptureHostTime:(id *)a5 stillImageCaptureAbsoluteStartTime:(double)a6 stillImageRequestSettings:(id)a7 stillImageCaptureSettings:(id)a8 originalPhotoRecording:(BOOL)a9 semanticStyle:(id)a10;
-+ (id)emptyIrisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)a3;
++ (BWIrisMovieInfo)irisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)settings stillImageCaptureTime:(id *)time stillImageCaptureHostTime:(id *)hostTime stillImageCaptureAbsoluteStartTime:(double)startTime stillImageRequestSettings:(id)requestSettings stillImageCaptureSettings:(id)captureSettings originalPhotoRecording:(BOOL)recording semanticStyle:(id)self0;
++ (id)emptyIrisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)settings;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)audioOffset;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)beginTrimMasterPTS;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)masterMovieStartTime;
@@ -16,47 +16,47 @@
 - (BOOL)requiresGlobalSubjectRelightingCalculation;
 - (CGSize)nonDestructiveCropSize;
 - (NSString)livePhotoMetadataStillImageKeyFrameSettingsID;
-- (char)_initWithFigCaptureMovieFileRecordingSettings:(uint64_t)a3 stillImageCaptureTime:(__int128 *)a4 stillImageCaptureHostTime:(void *)a5 stillImageCaptureAbsoluteStartTime:(void *)a6 stillImageRequestSettings:(char)a7 stillImageCaptureSettings:(void *)a8 originalPhotoRecording:(double)a9 semanticStyle:;
+- (char)_initWithFigCaptureMovieFileRecordingSettings:(uint64_t)settings stillImageCaptureTime:(__int128 *)time stillImageCaptureHostTime:(void *)hostTime stillImageCaptureAbsoluteStartTime:(void *)startTime stillImageRequestSettings:(char)requestSettings stillImageCaptureSettings:(void *)captureSettings originalPhotoRecording:(double)recording semanticStyle:;
 - (id)copyMovieInfosForRequestedSDOFVariants;
 - (id)copySpatialOverCaptureVariant;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int)numberOfRequestedVariants;
 - (int)stillImageCaptureType;
-- (void)_initWithFigCaptureMovieFileRecordingSettings:(void *)a1;
+- (void)_initWithFigCaptureMovieFileRecordingSettings:(void *)settings;
 - (void)dealloc;
-- (void)setAudioOffset:(id *)a3;
-- (void)setBeginTrimMasterPTS:(id *)a3;
-- (void)setMasterMovieStartTime:(id *)a3;
-- (void)setMomentCaptureMovieRecordingMasterEndTime:(id *)a3;
-- (void)setMomentCaptureRecordingStillImageCaptureHostTimeOverride:(id *)a3 stillImageCaptureTimeOverride:(id *)a4;
-- (void)setMovieEndTime:(id *)a3;
-- (void)setMovieEndingVideoPTS:(id *)a3;
-- (void)setMovieStartTime:(id *)a3;
-- (void)setMovieTrimEndTime:(id *)a3;
-- (void)setMovieTrimStartTime:(id *)a3;
-- (void)setStillImageCaptureTime:(id *)a3;
-- (void)setStillTimeOffsetToAudioPrerollStartTime:(id *)a3;
-- (void)setStillTimeOffsetToAudioPrerollStopTime:(id *)a3;
-- (void)setStillTimeOffsetToVideoPrerollStartTime:(id *)a3;
-- (void)setStillTimeOffsetToVideoPrerollStopTime:(id *)a3;
+- (void)setAudioOffset:(id *)offset;
+- (void)setBeginTrimMasterPTS:(id *)s;
+- (void)setMasterMovieStartTime:(id *)time;
+- (void)setMomentCaptureMovieRecordingMasterEndTime:(id *)time;
+- (void)setMomentCaptureRecordingStillImageCaptureHostTimeOverride:(id *)override stillImageCaptureTimeOverride:(id *)timeOverride;
+- (void)setMovieEndTime:(id *)time;
+- (void)setMovieEndingVideoPTS:(id *)s;
+- (void)setMovieStartTime:(id *)time;
+- (void)setMovieTrimEndTime:(id *)time;
+- (void)setMovieTrimStartTime:(id *)time;
+- (void)setStillImageCaptureTime:(id *)time;
+- (void)setStillTimeOffsetToAudioPrerollStartTime:(id *)time;
+- (void)setStillTimeOffsetToAudioPrerollStopTime:(id *)time;
+- (void)setStillTimeOffsetToVideoPrerollStartTime:(id *)time;
+- (void)setStillTimeOffsetToVideoPrerollStopTime:(id *)time;
 @end
 
 @implementation BWIrisMovieInfo
 
-+ (id)emptyIrisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)a3
++ (id)emptyIrisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)settings
 {
-  v3 = [[BWIrisMovieInfo alloc] _initWithFigCaptureMovieFileRecordingSettings:a3];
+  v3 = [[BWIrisMovieInfo alloc] _initWithFigCaptureMovieFileRecordingSettings:settings];
 
   return v3;
 }
 
-+ (BWIrisMovieInfo)irisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)a3 stillImageCaptureTime:(id *)a4 stillImageCaptureHostTime:(id *)a5 stillImageCaptureAbsoluteStartTime:(double)a6 stillImageRequestSettings:(id)a7 stillImageCaptureSettings:(id)a8 originalPhotoRecording:(BOOL)a9 semanticStyle:(id)a10
++ (BWIrisMovieInfo)irisMovieInfoWithFigCaptureMovieFileRecordingSettings:(id)settings stillImageCaptureTime:(id *)time stillImageCaptureHostTime:(id *)hostTime stillImageCaptureAbsoluteStartTime:(double)startTime stillImageRequestSettings:(id)requestSettings stillImageCaptureSettings:(id)captureSettings originalPhotoRecording:(BOOL)recording semanticStyle:(id)self0
 {
   v17 = [BWIrisMovieInfo alloc];
-  v21 = *a4;
-  v20 = *a5;
-  v18 = [(BWIrisMovieInfo *)v17 _initWithFigCaptureMovieFileRecordingSettings:a3 stillImageCaptureTime:&v21 stillImageCaptureHostTime:&v20.var0 stillImageCaptureAbsoluteStartTime:a7 stillImageRequestSettings:a8 stillImageCaptureSettings:a9 originalPhotoRecording:a10 semanticStyle:a6];
+  v21 = *time;
+  v20 = *hostTime;
+  v18 = [(BWIrisMovieInfo *)v17 _initWithFigCaptureMovieFileRecordingSettings:settings stillImageCaptureTime:&v21 stillImageCaptureHostTime:&v20.var0 stillImageCaptureAbsoluteStartTime:requestSettings stillImageRequestSettings:captureSettings stillImageCaptureSettings:recording originalPhotoRecording:style semanticStyle:startTime];
 
   return v18;
 }
@@ -70,18 +70,18 @@
 
 - (int)stillImageCaptureType
 {
-  v2 = [(BWIrisMovieInfo *)self stillImageCaptureSettings];
+  stillImageCaptureSettings = [(BWIrisMovieInfo *)self stillImageCaptureSettings];
 
-  return [(BWStillImageCaptureSettings *)v2 captureType];
+  return [(BWStillImageCaptureSettings *)stillImageCaptureSettings captureType];
 }
 
-- (void)setMomentCaptureRecordingStillImageCaptureHostTimeOverride:(id *)a3 stillImageCaptureTimeOverride:(id *)a4
+- (void)setMomentCaptureRecordingStillImageCaptureHostTimeOverride:(id *)override stillImageCaptureTimeOverride:(id *)timeOverride
 {
-  v4 = *&a3->var0;
-  *&self->_stillImageCaptureHostTime.flags = a3->var3;
+  v4 = *&override->var0;
+  *&self->_stillImageCaptureHostTime.flags = override->var3;
   *(&self->_stillImageCaptureTime.epoch + 4) = v4;
-  v5 = *&a4->var0;
-  *&self->_stillImageCaptureTime.flags = a4->var3;
+  v5 = *&timeOverride->var0;
+  *&self->_stillImageCaptureTime.flags = timeOverride->var3;
   *(&self->_spatialOverCaptureExpected + 4) = v5;
   self->_stillImageCaptureAbsoluteStartTime = CFAbsoluteTimeGetCurrent();
 }
@@ -177,17 +177,17 @@ LABEL_8:
 {
   if (FigIsItOKToLogURLs())
   {
-    v27 = [(NSURL *)self->_outputMovieURL lastPathComponent];
+    lastPathComponent = [(NSURL *)self->_outputMovieURL lastPathComponent];
   }
 
   else
   {
-    v27 = @"<redacted>";
+    lastPathComponent = @"<redacted>";
   }
 
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
-  v5 = [(FigCaptureRecordingSettings *)self->_settings settingsID];
+  settingsID = [(FigCaptureRecordingSettings *)self->_settings settingsID];
   time = *(&self->_stillTimeOffsetToAudioPrerollStopInMilliseconds.epoch + 4);
   Seconds = CMTimeGetSeconds(&time);
   time = *(&self->_movieStartTimeRequiresCutting + 4);
@@ -226,41 +226,41 @@ LABEL_8:
   rhs = *(&self->_movieEndingVideoPTS.epoch + 4);
   CMTimeSubtract(&time, &lhs, &rhs);
   v13 = CMTimeGetSeconds(&time);
-  v14 = [(NSURL *)self->_masterMovieURL lastPathComponent];
-  v15 = [(NSURL *)self->_temporaryMovieURL lastPathComponent];
+  lastPathComponent2 = [(NSURL *)self->_masterMovieURL lastPathComponent];
+  lastPathComponent3 = [(NSURL *)self->_temporaryMovieURL lastPathComponent];
   finalReferenceMovie = self->_finalReferenceMovie;
   finalEnqueuedIrisRequest = self->_finalEnqueuedIrisRequest;
   stillImageEncoderKeyFrameEmitted = self->_stillImageEncoderKeyFrameEmitted;
   stillImageVISKeyFrameTagged = self->_stillImageVISKeyFrameTagged;
   time = *(&self->_beginTrimMasterPTS.epoch + 4);
-  [v3 appendFormat:@"%@ %p: captureID:%lld, [Capture - master:%.4f movie:%.4f-%.4f trim:%.4f-%.4f still:%.4f endingVideoPTS:%.4f] [Movie - master:%.4f movie:0.-%.4f trim:%.4f-%.4f still:%.4f/%.4f] url:%@, master:%@, temporary:%@, isFinalReference:%d isFinalInSequence:%d keyFrameEmitted:%d stillImageVISKeyFrameTagged:%d audio offset: %.4f originalPhotoRecording:%d", v4, self, v5, *&Seconds, *&v25, *&v24, *&v23, *&v22, *&v6, *&v7, *&v8, *&v9, *&v10, *&v11, *&v12, *&v13, v27, v14, v15, finalReferenceMovie, finalEnqueuedIrisRequest, stillImageEncoderKeyFrameEmitted, stillImageVISKeyFrameTagged, CMTimeGetSeconds(&time), self->_originalPhotoRecording];
-  [v3 appendFormat:@" isMomentCaptureMovieRecording:%d", self->_isMomentCaptureMovieRecording];
+  [string appendFormat:@"%@ %p: captureID:%lld, [Capture - master:%.4f movie:%.4f-%.4f trim:%.4f-%.4f still:%.4f endingVideoPTS:%.4f] [Movie - master:%.4f movie:0.-%.4f trim:%.4f-%.4f still:%.4f/%.4f] url:%@, master:%@, temporary:%@, isFinalReference:%d isFinalInSequence:%d keyFrameEmitted:%d stillImageVISKeyFrameTagged:%d audio offset: %.4f originalPhotoRecording:%d", v4, self, settingsID, *&Seconds, *&v25, *&v24, *&v23, *&v22, *&v6, *&v7, *&v8, *&v9, *&v10, *&v11, *&v12, *&v13, lastPathComponent, lastPathComponent2, lastPathComponent3, finalReferenceMovie, finalEnqueuedIrisRequest, stillImageEncoderKeyFrameEmitted, stillImageVISKeyFrameTagged, CMTimeGetSeconds(&time), self->_originalPhotoRecording];
+  [string appendFormat:@" isMomentCaptureMovieRecording:%d", self->_isMomentCaptureMovieRecording];
   if (self->_requestedSDOFVariants)
   {
     if (FigIsItOKToLogURLs())
     {
-      v20 = [(NSURL *)self->_outputURLForSDOFOriginalMovie lastPathComponent];
+      lastPathComponent4 = [(NSURL *)self->_outputURLForSDOFOriginalMovie lastPathComponent];
     }
 
     else
     {
-      v20 = @"<redacted>";
+      lastPathComponent4 = @"<redacted>";
     }
 
-    [v3 appendFormat:@" requestedSDOFVariants:0x%x originalSDOFURL:%@", self->_requestedSDOFVariants, v20];
+    [string appendFormat:@" requestedSDOFVariants:0x%x originalSDOFURL:%@", self->_requestedSDOFVariants, lastPathComponent4];
   }
 
-  return v3;
+  return string;
 }
 
 - (BOOL)requiresGlobalSubjectRelightingCalculation
 {
-  v3 = [(BWIrisMovieInfo *)self isMomentCaptureMovieRecording];
-  v4 = (v3 | [(BWIrisMovieInfo *)self stillImageRequiresSmartStyleRenderingForSRL]) ^ 1;
-  v5 = [(FigCaptureStillImageSettings *)[(BWIrisMovieInfo *)self stillImageRequestSettings] smartStyle];
-  if (v5)
+  isMomentCaptureMovieRecording = [(BWIrisMovieInfo *)self isMomentCaptureMovieRecording];
+  v4 = (isMomentCaptureMovieRecording | [(BWIrisMovieInfo *)self stillImageRequiresSmartStyleRenderingForSRL]) ^ 1;
+  smartStyle = [(FigCaptureStillImageSettings *)[(BWIrisMovieInfo *)self stillImageRequestSettings] smartStyle];
+  if (smartStyle)
   {
-    return [(FigCaptureSmartStyle *)v5 isIdentity]& v4;
+    return [(FigCaptureSmartStyle *)smartStyle isIdentity]& v4;
   }
 
   return v4;
@@ -269,10 +269,10 @@ LABEL_8:
 - (NSString)livePhotoMetadataStillImageKeyFrameSettingsID
 {
   v3 = objc_opt_class();
-  v4 = [(FigCaptureRecordingSettings *)self->_settings settingsID];
+  settingsID = [(FigCaptureRecordingSettings *)self->_settings settingsID];
   originalPhotoRecording = self->_originalPhotoRecording;
 
-  return [v3 livePhotoMetadataStillImageKeyFrameSettingsIDForSettingsID:v4 isOriginalPhotoRecording:originalPhotoRecording];
+  return [v3 livePhotoMetadataStillImageKeyFrameSettingsIDForSettingsID:settingsID isOriginalPhotoRecording:originalPhotoRecording];
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)stillImageCaptureTime
@@ -282,10 +282,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setStillImageCaptureTime:(id *)a3
+- (void)setStillImageCaptureTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_stillImageCaptureTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_stillImageCaptureTime.flags = time->var3;
   *(&self->_spatialOverCaptureExpected + 4) = v3;
 }
 
@@ -303,10 +303,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setMomentCaptureMovieRecordingMasterEndTime:(id *)a3
+- (void)setMomentCaptureMovieRecordingMasterEndTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_momentCaptureMovieRecordingMasterEndTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_momentCaptureMovieRecordingMasterEndTime.flags = time->var3;
   *(&self->_isMomentCaptureMovieRecording + 4) = v3;
 }
 
@@ -326,10 +326,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setMovieStartTime:(id *)a3
+- (void)setMovieStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_movieStartTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_movieStartTime.flags = time->var3;
   *(&self->_movieStartTimeRequiresCutting + 4) = v3;
 }
 
@@ -340,10 +340,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setMovieEndTime:(id *)a3
+- (void)setMovieEndTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_movieEndTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_movieEndTime.flags = time->var3;
   *(&self->_movieStartTime.epoch + 4) = v3;
 }
 
@@ -354,10 +354,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setMovieEndingVideoPTS:(id *)a3
+- (void)setMovieEndingVideoPTS:(id *)s
 {
-  v3 = *&a3->var0;
-  *&self->_movieEndingVideoPTS.flags = a3->var3;
+  v3 = *&s->var0;
+  *&self->_movieEndingVideoPTS.flags = s->var3;
   *(&self->_movieEndTime.epoch + 4) = v3;
 }
 
@@ -368,10 +368,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setMovieTrimStartTime:(id *)a3
+- (void)setMovieTrimStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_movieTrimStartTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_movieTrimStartTime.flags = time->var3;
   *(&self->_movieEndingVideoPTS.epoch + 4) = v3;
 }
 
@@ -382,10 +382,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setMovieTrimEndTime:(id *)a3
+- (void)setMovieTrimEndTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_movieTrimEndTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_movieTrimEndTime.flags = time->var3;
   *(&self->_movieTrimStartTime.epoch + 4) = v3;
 }
 
@@ -396,10 +396,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setBeginTrimMasterPTS:(id *)a3
+- (void)setBeginTrimMasterPTS:(id *)s
 {
-  v3 = *&a3->var0;
-  *&self->_beginTrimMasterPTS.flags = a3->var3;
+  v3 = *&s->var0;
+  *&self->_beginTrimMasterPTS.flags = s->var3;
   *(&self->_movieTrimEndTime.epoch + 4) = v3;
 }
 
@@ -410,10 +410,10 @@ LABEL_8:
   return self;
 }
 
-- (void)setMasterMovieStartTime:(id *)a3
+- (void)setMasterMovieStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->_masterMovieStartTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->_masterMovieStartTime.flags = time->var3;
   *(&self->_stillTimeOffsetToAudioPrerollStopInMilliseconds.epoch + 4) = v3;
 }
 
@@ -424,49 +424,49 @@ LABEL_8:
   return self;
 }
 
-- (void)setAudioOffset:(id *)a3
+- (void)setAudioOffset:(id *)offset
 {
-  v3 = *&a3->var0;
-  *&self->_audioOffset.flags = a3->var3;
+  v3 = *&offset->var0;
+  *&self->_audioOffset.flags = offset->var3;
   *(&self->_beginTrimMasterPTS.epoch + 4) = v3;
 }
 
-- (void)setStillTimeOffsetToVideoPrerollStartTime:(id *)a3
+- (void)setStillTimeOffsetToVideoPrerollStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_stillTimeOffsetToVideoPrerollStartTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_stillTimeOffsetToVideoPrerollStartTime.epoch = time->var3;
   *&self->_stillTimeOffsetToVideoPrerollStartTime.value = v3;
 }
 
-- (void)setStillTimeOffsetToVideoPrerollStopTime:(id *)a3
+- (void)setStillTimeOffsetToVideoPrerollStopTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_stillTimeOffsetToVideoPrerollStopTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_stillTimeOffsetToVideoPrerollStopTime.epoch = time->var3;
   *&self->_stillTimeOffsetToVideoPrerollStopTime.value = v3;
 }
 
-- (void)setStillTimeOffsetToAudioPrerollStartTime:(id *)a3
+- (void)setStillTimeOffsetToAudioPrerollStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_stillTimeOffsetToAudioPrerollStartTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_stillTimeOffsetToAudioPrerollStartTime.epoch = time->var3;
   *&self->_stillTimeOffsetToAudioPrerollStartTime.value = v3;
 }
 
-- (void)setStillTimeOffsetToAudioPrerollStopTime:(id *)a3
+- (void)setStillTimeOffsetToAudioPrerollStopTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_stillTimeOffsetToAudioPrerollStopTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_stillTimeOffsetToAudioPrerollStopTime.epoch = time->var3;
   *&self->_stillTimeOffsetToAudioPrerollStopTime.value = v3;
 }
 
-- (void)_initWithFigCaptureMovieFileRecordingSettings:(void *)a1
+- (void)_initWithFigCaptureMovieFileRecordingSettings:(void *)settings
 {
-  if (!a1)
+  if (!settings)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = settings;
   v5.super_class = BWIrisMovieInfo;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)
@@ -477,36 +477,36 @@ LABEL_8:
   return v3;
 }
 
-- (char)_initWithFigCaptureMovieFileRecordingSettings:(uint64_t)a3 stillImageCaptureTime:(__int128 *)a4 stillImageCaptureHostTime:(void *)a5 stillImageCaptureAbsoluteStartTime:(void *)a6 stillImageRequestSettings:(char)a7 stillImageCaptureSettings:(void *)a8 originalPhotoRecording:(double)a9 semanticStyle:
+- (char)_initWithFigCaptureMovieFileRecordingSettings:(uint64_t)settings stillImageCaptureTime:(__int128 *)time stillImageCaptureHostTime:(void *)hostTime stillImageCaptureAbsoluteStartTime:(void *)startTime stillImageRequestSettings:(char)requestSettings stillImageCaptureSettings:(void *)captureSettings originalPhotoRecording:(double)recording semanticStyle:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = BWIrisMovieInfo;
   v17 = objc_msgSendSuper2(&v26, sel_init);
   if (v17)
   {
     *(v17 + 1) = a2;
-    v18 = *(a3 + 16);
-    *(v17 + 60) = *a3;
+    v18 = *(settings + 16);
+    *(v17 + 60) = *settings;
     *(v17 + 76) = v18;
-    v19 = *a4;
-    *(v17 + 100) = *(a4 + 2);
+    v19 = *time;
+    *(v17 + 100) = *(time + 2);
     *(v17 + 84) = v19;
-    *(v17 + 14) = a9;
-    *(v17 + 15) = a5;
-    *(v17 + 16) = a6;
+    *(v17 + 14) = recording;
+    *(v17 + 15) = hostTime;
+    *(v17 + 16) = startTime;
     *(v17 + 2) = [*(v17 + 1) outputURL];
-    v20 = [*(v17 + 1) spatialOverCaptureMovieURL];
-    *(v17 + 6) = v20;
-    v17[56] = v20 != 0;
+    spatialOverCaptureMovieURL = [*(v17 + 1) spatialOverCaptureMovieURL];
+    *(v17 + 6) = spatialOverCaptureMovieURL;
+    v17[56] = spatialOverCaptureMovieURL != 0;
     v21 = MEMORY[0x1E6960C88];
     *(v17 + 140) = *MEMORY[0x1E6960C88];
     *(v17 + 156) = *(v21 + 16);
-    v17[493] = a7;
+    v17[493] = requestSettings;
     v22 = MEMORY[0x1E6960C70];
     v23 = *MEMORY[0x1E6960C70];
     *(v17 + 308) = *MEMORY[0x1E6960C70];
@@ -520,17 +520,17 @@ LABEL_8:
     *(v17 + 420) = v24;
     *(v17 + 444) = v24;
     *(v17 + 428) = v23;
-    *(v17 + 73) = a8;
+    *(v17 + 73) = captureSettings;
     *(v17 + 79) = 0;
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(FigCaptureMovieFileRecordingSettings *)self->_settings copy];
-  v6 = [BWIrisMovieInfo allocWithZone:a3];
+  v6 = [BWIrisMovieInfo allocWithZone:zone];
   stillImageCaptureAbsoluteStartTime = self->_stillImageCaptureAbsoluteStartTime;
   stillImageRequestSettings = self->_stillImageRequestSettings;
   stillImageCaptureSettings = self->_stillImageCaptureSettings;

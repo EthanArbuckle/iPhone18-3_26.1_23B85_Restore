@@ -1,45 +1,45 @@
 @interface PHCloudIdentifier
 + (id)_notFoundIdentifier;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)archivalStringValue;
-- (PHCloudIdentifier)initWithArchivalStringValue:(id)a3;
-- (PHCloudIdentifier)initWithCoder:(id)a3;
-- (PHCloudIdentifier)initWithLocalCloudIdentifier:(id)a3 identifierCode:(id)a4 stableHash:(id)a5;
+- (PHCloudIdentifier)initWithArchivalStringValue:(id)value;
+- (PHCloudIdentifier)initWithCoder:(id)coder;
+- (PHCloudIdentifier)initWithLocalCloudIdentifier:(id)identifier identifierCode:(id)code stableHash:(id)hash;
 - (id)initAsNotFoundIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHCloudIdentifier
 
-- (PHCloudIdentifier)initWithCoder:(id)a3
+- (PHCloudIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
 
   v6 = [(PHCloudIdentifier *)self initWithStringValue:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PHCloudIdentifier *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"stringValue"];
+  coderCopy = coder;
+  stringValue = [(PHCloudIdentifier *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"stringValue"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PHCloudIdentifier *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(PHCloudIdentifier *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -49,14 +49,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHCloudIdentifier *)self identifierCode];
-      v7 = [(PHCloudIdentifier *)v5 identifierCode];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      identifierCode = [(PHCloudIdentifier *)self identifierCode];
+      identifierCode2 = [(PHCloudIdentifier *)v5 identifierCode];
+      if ([identifierCode isEqualToString:identifierCode2])
       {
-        v8 = [(PHCloudIdentifier *)self localCloudIdentifier];
-        v9 = [(PHCloudIdentifier *)v5 localCloudIdentifier];
-        v10 = [v8 isEqualToString:v9];
+        localCloudIdentifier = [(PHCloudIdentifier *)self localCloudIdentifier];
+        localCloudIdentifier2 = [(PHCloudIdentifier *)v5 localCloudIdentifier];
+        v10 = [localCloudIdentifier isEqualToString:localCloudIdentifier2];
       }
 
       else
@@ -106,20 +106,20 @@
   return v3;
 }
 
-- (PHCloudIdentifier)initWithLocalCloudIdentifier:(id)a3 identifierCode:(id)a4 stableHash:(id)a5
+- (PHCloudIdentifier)initWithLocalCloudIdentifier:(id)identifier identifierCode:(id)code stableHash:(id)hash
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  codeCopy = code;
+  hashCopy = hash;
   v15.receiver = self;
   v15.super_class = PHCloudIdentifier;
   v12 = [(PHCloudIdentifier *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_localCloudIdentifier, a3);
-    objc_storeStrong(&v13->_identifierCode, a4);
-    objc_storeStrong(&v13->_stableHash, a5);
+    objc_storeStrong(&v12->_localCloudIdentifier, identifier);
+    objc_storeStrong(&v13->_identifierCode, code);
+    objc_storeStrong(&v13->_stableHash, hash);
     if (![(NSString *)v13->_identifierCode length]|| ![(NSString *)v13->_localCloudIdentifier length])
     {
 
@@ -130,13 +130,13 @@
   return v13;
 }
 
-- (PHCloudIdentifier)initWithArchivalStringValue:(id)a3
+- (PHCloudIdentifier)initWithArchivalStringValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 componentsSeparatedByString:@":"];
+  valueCopy = value;
+  v5 = [valueCopy componentsSeparatedByString:@":"];
   if ([v5 count] > 1)
   {
-    v7 = [v5 objectAtIndexedSubscript:0];
+    selfCopy = [v5 objectAtIndexedSubscript:0];
     v8 = [v5 objectAtIndexedSubscript:1];
     if ([v5 count] < 3)
     {
@@ -148,7 +148,7 @@
       v9 = [v5 objectAtIndexedSubscript:2];
     }
 
-    v6 = [(PHCloudIdentifier *)self initWithLocalCloudIdentifier:v7 identifierCode:v8 stableHash:v9];
+    v6 = [(PHCloudIdentifier *)self initWithLocalCloudIdentifier:selfCopy identifierCode:v8 stableHash:v9];
   }
 
   else
@@ -160,7 +160,7 @@
     }
 
     v6 = 0;
-    v7 = self;
+    selfCopy = self;
   }
 
   return v6;
@@ -172,7 +172,7 @@
   block[1] = 3221225472;
   block[2] = __40__PHCloudIdentifier__notFoundIdentifier__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_notFoundIdentifier_onceToken != -1)
   {
     dispatch_once(&_notFoundIdentifier_onceToken, block);

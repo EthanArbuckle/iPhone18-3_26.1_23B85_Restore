@@ -11,22 +11,22 @@
   v3 = [(UIDocumentBrowserActionBarButtonAccessibility *)self safeValueForKey:@"docAction"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 localizedTitle];
-  v6 = [v5 length];
+  localizedTitle = [v4 localizedTitle];
+  v6 = [localizedTitle length];
 
   if (v6)
   {
-    v7 = [v4 localizedTitle];
+    localizedTitle2 = [v4 localizedTitle];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = UIDocumentBrowserActionBarButtonAccessibility;
-    v7 = [(UIDocumentBrowserActionBarButtonAccessibility *)&v10 accessibilityLabel];
+    localizedTitle2 = [(UIDocumentBrowserActionBarButtonAccessibility *)&v10 accessibilityLabel];
   }
 
-  v8 = v7;
+  v8 = localizedTitle2;
 
   return v8;
 }

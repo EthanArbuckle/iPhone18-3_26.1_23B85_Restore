@@ -1,6 +1,6 @@
 @interface LocalPreferences.UserDefaultsObserver
 - (_TtCC9JetEngine16LocalPreferences20UserDefaultsObserver)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation LocalPreferences.UserDefaultsObserver
@@ -14,22 +14,22 @@
   return [(LocalPreferences.UserDefaultsObserver *)&v5 init];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a3)
+  if (path)
   {
     v9 = sub_1AB460544();
     v11 = v10;
-    if (a4)
+    if (object)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     memset(v17, 0, sizeof(v17));
-    v15 = a5;
-    v16 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_4;
     }
@@ -41,18 +41,18 @@ LABEL_7:
 
   v9 = 0;
   v11 = 0;
-  if (!a4)
+  if (!object)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   swift_unknownObjectRetain();
-  v12 = a5;
-  v13 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   sub_1AB461494();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_7;
   }

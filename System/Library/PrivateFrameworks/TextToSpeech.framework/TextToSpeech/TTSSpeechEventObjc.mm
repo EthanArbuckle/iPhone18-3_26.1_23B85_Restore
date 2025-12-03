@@ -1,12 +1,12 @@
 @interface TTSSpeechEventObjc
-+ (id)makeWithOtherRewrite:(id)a3 from:(id)a4 to:(id)a5;
-+ (id)makeWithStart:(id)a3;
++ (id)makeWithOtherRewrite:(id)rewrite from:(id)from to:(id)to;
++ (id)makeWithStart:(id)start;
 - (_TtC12TextToSpeech18TTSSpeechEventObjc)init;
 @end
 
 @implementation TTSSpeechEventObjc
 
-+ (id)makeWithOtherRewrite:(id)a3 from:(id)a4 to:(id)a5
++ (id)makeWithOtherRewrite:(id)rewrite from:(id)from to:(id)to
 {
   v5 = sub_1A957C0F8();
   v7 = v6;
@@ -31,7 +31,7 @@
   return v17;
 }
 
-+ (id)makeWithStart:(id)a3
++ (id)makeWithStart:(id)start
 {
   v3 = sub_1A957C0F8();
   v5 = v4;

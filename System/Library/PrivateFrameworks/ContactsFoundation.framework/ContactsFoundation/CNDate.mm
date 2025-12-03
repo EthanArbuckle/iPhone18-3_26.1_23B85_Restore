@@ -4,8 +4,8 @@
 + (NSCalendar)gmtGregorianCalendar;
 + (NSCalendar)gmtIslamicCalendar;
 + (NSCalendar)gmtJapaneseCalendar;
-+ (id)dateFromDayComponents:(id)a3;
-+ (id)dayComponentsFromDate:(id)a3;
++ (id)dateFromDayComponents:(id)components;
++ (id)dayComponentsFromDate:(id)date;
 @end
 
 @implementation CNDate
@@ -130,26 +130,26 @@ void __28__CNDate_gmtChineseCalendar__block_invoke()
   [v3 setTimeZone:v4];
 }
 
-+ (id)dateFromDayComponents:(id)a3
++ (id)dateFromDayComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
-    v4 = a3;
-    v5 = [a1 gmtGregorianCalendar];
-    v6 = [v4 copy];
+    componentsCopy = components;
+    gmtGregorianCalendar = [self gmtGregorianCalendar];
+    v6 = [componentsCopy copy];
 
     [v6 setHour:12];
     [v6 setMinute:0];
     [v6 setSecond:0];
-    v7 = [v5 timeZone];
-    [v6 setTimeZone:v7];
+    timeZone = [gmtGregorianCalendar timeZone];
+    [v6 setTimeZone:timeZone];
 
     if ([v6 year] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [getIntlUtilityClass_0[0]() setYearlessYear:v6 forCalendar:v5];
+      [getIntlUtilityClass_0[0]() setYearlessYear:v6 forCalendar:gmtGregorianCalendar];
     }
 
-    v8 = [v5 dateFromComponents:v6];
+    v8 = [gmtGregorianCalendar dateFromComponents:v6];
   }
 
   else
@@ -160,15 +160,15 @@ void __28__CNDate_gmtChineseCalendar__block_invoke()
   return v8;
 }
 
-+ (id)dayComponentsFromDate:(id)a3
++ (id)dayComponentsFromDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = a3;
-    v5 = [a1 gmtGregorianCalendar];
-    v6 = [v5 components:30 fromDate:v4];
+    dateCopy = date;
+    gmtGregorianCalendar = [self gmtGregorianCalendar];
+    v6 = [gmtGregorianCalendar components:30 fromDate:dateCopy];
 
-    if ([getIntlUtilityClass_0[0]() isYearlessDate:v6 forCalendar:v5])
+    if ([getIntlUtilityClass_0[0]() isYearlessDate:v6 forCalendar:gmtGregorianCalendar])
     {
       [v6 setYear:0x7FFFFFFFFFFFFFFFLL];
     }
@@ -178,7 +178,7 @@ void __28__CNDate_gmtChineseCalendar__block_invoke()
       [v6 setEra:0x7FFFFFFFFFFFFFFFLL];
     }
 
-    [v6 setCalendar:v5];
+    [v6 setCalendar:gmtGregorianCalendar];
   }
 
   else

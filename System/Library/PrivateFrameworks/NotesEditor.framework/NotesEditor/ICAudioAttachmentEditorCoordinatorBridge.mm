@@ -1,25 +1,25 @@
 @interface ICAudioAttachmentEditorCoordinatorBridge
-+ (void)renameAttachment:(id)a3 presentingViewController:(id)a4;
++ (void)renameAttachment:(id)attachment presentingViewController:(id)controller;
 @end
 
 @implementation ICAudioAttachmentEditorCoordinatorBridge
 
-+ (void)renameAttachment:(id)a3 presentingViewController:(id)a4
++ (void)renameAttachment:(id)attachment presentingViewController:(id)controller
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   v6 = MEMORY[0x277D05D48];
-  v7 = a4;
+  controllerCopy = controller;
   v8 = [v6 alloc];
-  v9 = [v5 title];
-  v10 = [v8 initWithExistingTitle:v9];
+  title = [attachmentCopy title];
+  v10 = [v8 initWithExistingTitle:title];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __86__ICAudioAttachmentEditorCoordinatorBridge_renameAttachment_presentingViewController___block_invoke;
   v12[3] = &unk_2781ACF08;
-  v13 = v5;
-  v11 = v5;
-  [v10 showFromViewController:v7 completion:v12];
+  v13 = attachmentCopy;
+  v11 = attachmentCopy;
+  [v10 showFromViewController:controllerCopy completion:v12];
 }
 
 void __86__ICAudioAttachmentEditorCoordinatorBridge_renameAttachment_presentingViewController___block_invoke(uint64_t a1, void *a2)

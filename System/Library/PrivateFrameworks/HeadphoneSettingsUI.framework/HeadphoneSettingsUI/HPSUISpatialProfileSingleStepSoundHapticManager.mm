@@ -1,22 +1,22 @@
 @interface HPSUISpatialProfileSingleStepSoundHapticManager
 - (BOOL)isEnrollGuidancePlaying;
 - (HPSUISpatialProfileSingleStepSoundHapticManager)init;
-- (id)createPlayerWithFileName:(id)a3;
+- (id)createPlayerWithFileName:(id)name;
 - (void)pauseEnrollGuidancePlayer;
 - (void)pauseProgressPlayer;
-- (void)playEnrollGuidance:(int)a3;
-- (void)playProgressPlayer:(int)a3;
+- (void)playEnrollGuidance:(int)guidance;
+- (void)playProgressPlayer:(int)player;
 - (void)readDynamicEnrollmentFeedback;
-- (void)setEnrollGuidancePitch:(float)a3;
-- (void)setProgressPlayerPitch:(float)a3;
+- (void)setEnrollGuidancePitch:(float)pitch;
+- (void)setProgressPlayerPitch:(float)pitch;
 - (void)setupPlayers;
 - (void)start;
 - (void)startEnrollLoop;
 - (void)stop;
 - (void)stopEnrollLoop;
-- (void)triggerSoundHapticForEarCaptureState:(int)a3 completion:(id)a4;
-- (void)triggerSoundHapticForEnrollmentState:(int)a3 completion:(id)a4;
-- (void)updateEnrollLoopVolume:(double)a3;
+- (void)triggerSoundHapticForEarCaptureState:(int)state completion:(id)completion;
+- (void)triggerSoundHapticForEnrollmentState:(int)state completion:(id)completion;
+- (void)updateEnrollLoopVolume:(double)volume;
 @end
 
 @implementation HPSUISpatialProfileSingleStepSoundHapticManager
@@ -29,8 +29,8 @@
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x1E695F570]);
-    v4 = [MEMORY[0x1E6958460] sharedInstance];
-    v5 = [v3 initWithAudioSession:v4 error:0];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    v5 = [v3 initWithAudioSession:mEMORY[0x1E6958460] error:0];
     engine = v2->_engine;
     v2->_engine = v5;
 
@@ -122,8 +122,8 @@
 
   if (v20)
   {
-    v22 = [v20 localizedDescription];
-    NSLog(&cfstr_FailedWithReas.isa, v22);
+    localizedDescription = [v20 localizedDescription];
+    NSLog(&cfstr_FailedWithReas.isa, localizedDescription);
   }
 
   else
@@ -136,7 +136,7 @@
   }
 }
 
-- (void)setEnrollGuidancePitch:(float)a3
+- (void)setEnrollGuidancePitch:(float)pitch
 {
   enrollGuidancePlayer = self->_enrollGuidancePlayer;
   if (enrollGuidancePlayer)
@@ -184,13 +184,13 @@
   }
 }
 
-- (void)playEnrollGuidance:(int)a3
+- (void)playEnrollGuidance:(int)guidance
 {
   if (self->_dynamicEnrollmentFeedback)
   {
     v12[3] = v3;
     v12[4] = v4;
-    if (a3 == 11 || a3 == 7)
+    if (guidance == 11 || guidance == 7)
     {
       enrollGuidancePlayer = self->_enrollGuidancePlayer;
       if (enrollGuidancePlayer)
@@ -219,7 +219,7 @@
   }
 }
 
-- (void)setProgressPlayerPitch:(float)a3
+- (void)setProgressPlayerPitch:(float)pitch
 {
   scanInProgressPlayer = self->_scanInProgressPlayer;
   if (scanInProgressPlayer)
@@ -248,9 +248,9 @@
   }
 }
 
-- (void)playProgressPlayer:(int)a3
+- (void)playProgressPlayer:(int)player
 {
-  if (a3 == 11 || a3 == 7)
+  if (player == 11 || player == 7)
   {
     scanInProgressPlayer = self->_scanInProgressPlayer;
     if (scanInProgressPlayer)
@@ -275,12 +275,12 @@
   }
 }
 
-- (id)createPlayerWithFileName:(id)a3
+- (id)createPlayerWithFileName:(id)name
 {
   v4 = MEMORY[0x1E696AAE8];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 bundleForClass:objc_opt_class()];
-  v7 = [v6 URLForResource:v5 withExtension:@"ahap"];
+  v7 = [v6 URLForResource:nameCopy withExtension:@"ahap"];
 
   v17 = 0;
   v8 = [objc_alloc(MEMORY[0x1E695F5A0]) initWithContentsOfURL:v7 error:&v17];
@@ -310,14 +310,14 @@
   return v12;
 }
 
-- (void)triggerSoundHapticForEnrollmentState:(int)a3 completion:(id)a4
+- (void)triggerSoundHapticForEnrollmentState:(int)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_group_create();
-  v8 = [MEMORY[0x1E6958460] sharedInstance];
+  mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
   v9 = *MEMORY[0x1E6958068];
   v41 = 0;
-  [v8 setCategory:v9 error:&v41];
+  [mEMORY[0x1E6958460] setCategory:v9 error:&v41];
   v10 = v41;
 
   if (v10)
@@ -329,9 +329,9 @@
     }
   }
 
-  if (a3 > 6)
+  if (state > 6)
   {
-    switch(a3)
+    switch(state)
     {
       case 7:
         v18 = sharedBluetoothSettingsLogComponent();
@@ -347,9 +347,9 @@
         v34[2] = __99__HPSUISpatialProfileSingleStepSoundHapticManager_triggerSoundHapticForEnrollmentState_completion___block_invoke;
         v34[3] = &unk_1E7970A90;
         v35 = v7;
-        v36 = self;
+        selfCopy = self;
         v38 = 7;
-        v37 = v6;
+        v37 = completionCopy;
         dispatch_async(soundHapticSerialQueue, v34);
 
         v14 = v35;
@@ -369,7 +369,7 @@
         v31[3] = &unk_1E79707B8;
         v31[4] = self;
         v32 = v7;
-        v33 = v6;
+        v33 = completionCopy;
         dispatch_async(v21, v31);
 
         v14 = v32;
@@ -388,8 +388,8 @@
         block[2] = __99__HPSUISpatialProfileSingleStepSoundHapticManager_triggerSoundHapticForEnrollmentState_completion___block_invoke_57;
         block[3] = &unk_1E79707B8;
         v28 = v7;
-        v29 = self;
-        v30 = v6;
+        selfCopy2 = self;
+        v30 = completionCopy;
         dispatch_async(v13, block);
 
         v14 = v28;
@@ -401,7 +401,7 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     v22 = sharedBluetoothSettingsLogComponent();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -416,19 +416,19 @@ LABEL_30:
     v24[3] = &unk_1E79707B8;
     v24[4] = self;
     v25 = v7;
-    v26 = v6;
+    v26 = completionCopy;
     dispatch_async(v23, v24);
 
     v14 = v25;
     goto LABEL_30;
   }
 
-  if (a3 != 6)
+  if (state != 6)
   {
 LABEL_32:
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     goto LABEL_31;
@@ -448,9 +448,9 @@ LABEL_32:
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
   v10 = v16;
@@ -731,13 +731,13 @@ uint64_t __99__HPSUISpatialProfileSingleStepSoundHapticManager_triggerSoundHapti
   return result;
 }
 
-- (void)triggerSoundHapticForEarCaptureState:(int)a3 completion:(id)a4
+- (void)triggerSoundHapticForEarCaptureState:(int)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v8 = sharedBluetoothSettingsLogComponent();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (a3)
+  if (state)
   {
     if (v9)
     {
@@ -752,8 +752,8 @@ uint64_t __99__HPSUISpatialProfileSingleStepSoundHapticManager_triggerSoundHapti
     v17[3] = &unk_1E79707B8;
     v17[4] = self;
     v18 = v7;
-    v19 = v6;
-    v11 = v6;
+    v19 = completionCopy;
+    v11 = completionCopy;
     v12 = v7;
     dispatch_async(soundHapticSerialQueue, v17);
 
@@ -774,9 +774,9 @@ uint64_t __99__HPSUISpatialProfileSingleStepSoundHapticManager_triggerSoundHapti
     block[2] = __99__HPSUISpatialProfileSingleStepSoundHapticManager_triggerSoundHapticForEarCaptureState_completion___block_invoke;
     block[3] = &unk_1E79707B8;
     v21 = v7;
-    v22 = self;
-    v23 = v6;
-    v15 = v6;
+    selfCopy = self;
+    v23 = completionCopy;
+    v15 = completionCopy;
     v16 = v7;
     dispatch_async(v14, block);
 
@@ -964,7 +964,7 @@ uint64_t __65__HPSUISpatialProfileSingleStepSoundHapticManager_stopEnrollLoop__b
   return [v2 setVolume:0.0];
 }
 
-- (void)updateEnrollLoopVolume:(double)a3
+- (void)updateEnrollLoopVolume:(double)volume
 {
   soundHapticSerialQueue = self->_soundHapticSerialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -972,7 +972,7 @@ uint64_t __65__HPSUISpatialProfileSingleStepSoundHapticManager_stopEnrollLoop__b
   v4[2] = __74__HPSUISpatialProfileSingleStepSoundHapticManager_updateEnrollLoopVolume___block_invoke;
   v4[3] = &unk_1E7970508;
   v4[4] = self;
-  *&v4[5] = a3 * 0.7 + 0.05;
+  *&v4[5] = volume * 0.7 + 0.05;
   dispatch_async(soundHapticSerialQueue, v4);
 }
 

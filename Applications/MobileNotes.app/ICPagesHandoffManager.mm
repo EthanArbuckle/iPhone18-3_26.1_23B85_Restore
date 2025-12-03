@@ -1,8 +1,8 @@
 @interface ICPagesHandoffManager
 + (BOOL)canLaunchPages;
-+ (BOOL)canLaunchPagesForNote:(id)a3;
++ (BOOL)canLaunchPagesForNote:(id)note;
 + (void)updatePagesInstallationStatus;
-- (void)launchPagesWithArchiveFromNote:(id)a3 viewController:(id)a4;
+- (void)launchPagesWithArchiveFromNote:(id)note viewController:(id)controller;
 @end
 
 @implementation ICPagesHandoffManager
@@ -15,18 +15,18 @@
   }
 
   v3 = [LSApplicationRecord alloc];
-  v4 = [a1 bundleIdentifierForPages];
-  v10 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  bundleIdentifierForPages = [self bundleIdentifierForPages];
+  v10 = [v3 initWithBundleIdentifier:bundleIdentifierForPages allowPlaceholder:1 error:0];
 
   if (!v10)
   {
     v5 = [LSApplicationRecord alloc];
-    v6 = [a1 deprecatedBundleIdentifierForPages];
-    v10 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
+    deprecatedBundleIdentifierForPages = [self deprecatedBundleIdentifierForPages];
+    v10 = [v5 initWithBundleIdentifier:deprecatedBundleIdentifierForPages allowPlaceholder:1 error:0];
   }
 
-  v7 = [v10 userActivityTypes];
-  v8 = [v7 containsObject:@"appleiwork:com.apple.Pages.NoteImport"];
+  userActivityTypes = [v10 userActivityTypes];
+  v8 = [userActivityTypes containsObject:@"appleiwork:com.apple.Pages.NoteImport"];
   v9 = +[NSUserDefaults standardUserDefaults];
   [v9 setBool:v8 forKey:@"canLaunchPages"];
 }
@@ -39,39 +39,39 @@
   return v3;
 }
 
-+ (BOOL)canLaunchPagesForNote:(id)a3
++ (BOOL)canLaunchPagesForNote:(id)note
 {
-  v4 = a3;
-  if (!v4)
+  noteCopy = note;
+  if (!noteCopy)
   {
     +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "((note) != nil)", "+[ICPagesHandoffManager canLaunchPagesForNote:]", 1, 0, @"Expected non-nil value for '%s'", "note");
   }
 
-  if ([a1 canLaunchPages])
+  if ([self canLaunchPages])
   {
-    if ([v4 isPasswordProtected])
+    if ([noteCopy isPasswordProtected])
     {
-      v5 = [v4 isAuthenticated];
+      isAuthenticated = [noteCopy isAuthenticated];
     }
 
     else
     {
-      v5 = 1;
+      isAuthenticated = 1;
     }
   }
 
   else
   {
-    v5 = 0;
+    isAuthenticated = 0;
   }
 
-  return v5;
+  return isAuthenticated;
 }
 
-- (void)launchPagesWithArchiveFromNote:(id)a3 viewController:(id)a4
+- (void)launchPagesWithArchiveFromNote:(id)note viewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  noteCopy = note;
+  controllerCopy = controller;
   v8 = objc_alloc_init(ICLongRunningTaskController);
   taskController = self->_taskController;
   self->_taskController = v8;
@@ -84,7 +84,7 @@
   [(ICLongRunningTaskController *)self->_taskController setProgressString:v11];
 
   [(ICLongRunningTaskController *)self->_taskController setShouldShowCircularProgress:1];
-  [(ICLongRunningTaskController *)self->_taskController setViewControllerToPresentFrom:v7];
+  [(ICLongRunningTaskController *)self->_taskController setViewControllerToPresentFrom:controllerCopy];
   v12 = +[ICArchiveExporter exporterForHandoffToPages];
   v24[0] = 0;
   v24[1] = v24;
@@ -98,7 +98,7 @@
   v22[3] = sub_100106AC4;
   v22[4] = sub_100106AD4;
   v23 = 0;
-  v13 = [(ICPagesHandoffManager *)self taskController];
+  taskController = [(ICPagesHandoffManager *)self taskController];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100106ADC;
@@ -106,7 +106,7 @@
   v20 = v24;
   v14 = v12;
   v18 = v14;
-  v15 = v6;
+  v15 = noteCopy;
   v19 = v15;
   v21 = v22;
   v16[0] = _NSConcreteStackBlock;
@@ -115,7 +115,7 @@
   v16[3] = &unk_10064A0E0;
   v16[4] = v24;
   v16[5] = v22;
-  [v13 startTask:v17 completionBlock:v16];
+  [taskController startTask:v17 completionBlock:v16];
 
   _Block_object_dispose(v22, 8);
   _Block_object_dispose(v24, 8);

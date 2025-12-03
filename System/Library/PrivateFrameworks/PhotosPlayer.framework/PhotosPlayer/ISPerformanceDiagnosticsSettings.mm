@@ -45,9 +45,9 @@
 + (id)sharedInstance
 {
   v2 = +[ISRootSettings sharedInstance];
-  v3 = [v2 performanceDiagnosticsSettings];
+  performanceDiagnosticsSettings = [v2 performanceDiagnosticsSettings];
 
-  return v3;
+  return performanceDiagnosticsSettings;
 }
 
 @end

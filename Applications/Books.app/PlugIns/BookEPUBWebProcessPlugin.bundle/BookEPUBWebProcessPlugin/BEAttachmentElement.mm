@@ -1,6 +1,6 @@
 @interface BEAttachmentElement
 - (BAXObjectWrapper)objectWrapper;
-- (BEAttachmentElement)initWithObjectWrapperElement:(id)a3;
+- (BEAttachmentElement)initWithObjectWrapperElement:(id)element;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityAttributedLabel;
 - (id)accessibilityAttributedValue;
@@ -11,17 +11,17 @@
 
 @implementation BEAttachmentElement
 
-- (BEAttachmentElement)initWithObjectWrapperElement:(id)a3
+- (BEAttachmentElement)initWithObjectWrapperElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 baxBookContentElement];
+  elementCopy = element;
+  baxBookContentElement = [elementCopy baxBookContentElement];
   v8.receiver = self;
   v8.super_class = BEAttachmentElement;
-  v6 = [(BEAttachmentElement *)&v8 initWithAccessibilityContainer:v5];
+  v6 = [(BEAttachmentElement *)&v8 initWithAccessibilityContainer:baxBookContentElement];
 
   if (v6)
   {
-    [(BEAttachmentElement *)v6 setObjectWrapper:v4];
+    [(BEAttachmentElement *)v6 setObjectWrapper:elementCopy];
   }
 
   return v6;
@@ -29,48 +29,48 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(BEAttachmentElement *)self objectWrapper];
-  v3 = [v2 accessibilityLabel];
+  objectWrapper = [(BEAttachmentElement *)self objectWrapper];
+  accessibilityLabel = [objectWrapper accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityAttributedLabel
 {
-  v2 = [(BEAttachmentElement *)self objectWrapper];
-  v3 = [v2 accessibilityAttributedValue];
+  objectWrapper = [(BEAttachmentElement *)self objectWrapper];
+  accessibilityAttributedValue = [objectWrapper accessibilityAttributedValue];
 
-  return v3;
+  return accessibilityAttributedValue;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(BEAttachmentElement *)self objectWrapper];
-  v3 = [v2 accessibilityValue];
+  objectWrapper = [(BEAttachmentElement *)self objectWrapper];
+  accessibilityValue = [objectWrapper accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityAttributedValue
 {
-  v2 = [(BEAttachmentElement *)self objectWrapper];
-  v3 = [v2 accessibilityAttributedValue];
+  objectWrapper = [(BEAttachmentElement *)self objectWrapper];
+  accessibilityAttributedValue = [objectWrapper accessibilityAttributedValue];
 
-  return v3;
+  return accessibilityAttributedValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(BEAttachmentElement *)self objectWrapper];
-  v3 = [v2 accessibilityTraits];
+  objectWrapper = [(BEAttachmentElement *)self objectWrapper];
+  accessibilityTraits = [objectWrapper accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(BEAttachmentElement *)self objectWrapper];
-  [v2 accessibilityFrame];
+  objectWrapper = [(BEAttachmentElement *)self objectWrapper];
+  [objectWrapper accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

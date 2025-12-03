@@ -1,20 +1,20 @@
 @interface FHBankConnectDescriptionCleaner
 - (FHBankConnectDescriptionCleaner)init;
-- (id)_aspspDescriptionCleaning:(id)a3;
-- (id)_cleanDescriptionForTransaction:(id)a3;
-- (id)_furtherRbsCleaning:(id)a3;
-- (id)_genericDescriptionCleaning:(id)a3;
-- (id)_homogenizeMerchantPattern:(id)a3;
+- (id)_aspspDescriptionCleaning:(id)cleaning;
+- (id)_cleanDescriptionForTransaction:(id)transaction;
+- (id)_furtherRbsCleaning:(id)cleaning;
+- (id)_genericDescriptionCleaning:(id)cleaning;
+- (id)_homogenizeMerchantPattern:(id)pattern;
 - (id)_initializeRegexPatterns;
-- (id)_paymentDescriptionCleaning:(id)a3;
-- (id)_paypalDescriptionCleaning:(id)a3;
-- (id)_rbsCleaning:(id)a3;
-- (id)_serviceRemovePatternsFromDescription:(id)a3;
-- (id)_topMerchantPatternsFromDescription:(id)a3;
-- (id)cleanDescriptionForTransaction:(id)a3;
-- (id)cleanTransactionDescription:(id)a3;
-- (id)fpDescriptionCleaning:(id)a3;
-- (id)getTransactionGroupingProperty:(id)a3;
+- (id)_paymentDescriptionCleaning:(id)cleaning;
+- (id)_paypalDescriptionCleaning:(id)cleaning;
+- (id)_rbsCleaning:(id)cleaning;
+- (id)_serviceRemovePatternsFromDescription:(id)description;
+- (id)_topMerchantPatternsFromDescription:(id)description;
+- (id)cleanDescriptionForTransaction:(id)transaction;
+- (id)cleanTransactionDescription:(id)description;
+- (id)fpDescriptionCleaning:(id)cleaning;
+- (id)getTransactionGroupingProperty:(id)property;
 @end
 
 @implementation FHBankConnectDescriptionCleaner
@@ -66,26 +66,26 @@
     grouperKey = v3->_grouperKey;
     v3->_grouperKey = @"GROUPER";
 
-    v17 = [(FHBankConnectDescriptionCleaner *)v3 _createRegexMappingDict];
-    v18 = [v17 objectForKey:@"GENERAL_DESCRIPTION_CLEANING_REGEX_PATTERNS"];
+    _createRegexMappingDict = [(FHBankConnectDescriptionCleaner *)v3 _createRegexMappingDict];
+    v18 = [_createRegexMappingDict objectForKey:@"GENERAL_DESCRIPTION_CLEANING_REGEX_PATTERNS"];
     generalRegexPatterns = v3->_generalRegexPatterns;
     v3->_generalRegexPatterns = v18;
 
-    v20 = [v17 objectForKey:@"SERVICE_PAYMENT_MATCH_PATTERNS"];
+    v20 = [_createRegexMappingDict objectForKey:@"SERVICE_PAYMENT_MATCH_PATTERNS"];
     serviceMatchPatterns = v3->_serviceMatchPatterns;
     v3->_serviceMatchPatterns = v20;
 
-    v22 = [v17 objectForKey:@"SERVICE_REMOVE_PATTERNS"];
+    v22 = [_createRegexMappingDict objectForKey:@"SERVICE_REMOVE_PATTERNS"];
     serviceRemovePatterns = v3->_serviceRemovePatterns;
     v3->_serviceRemovePatterns = v22;
 
-    v24 = [v17 objectForKey:@"TOP_MERCHANT_PATTERNS"];
+    v24 = [_createRegexMappingDict objectForKey:@"TOP_MERCHANT_PATTERNS"];
     topMerchantPatterns = v3->_topMerchantPatterns;
     v3->_topMerchantPatterns = v24;
 
-    v26 = [(FHBankConnectDescriptionCleaner *)v3 _initializeRegexPatterns];
+    _initializeRegexPatterns = [(FHBankConnectDescriptionCleaner *)v3 _initializeRegexPatterns];
     descriptionCleaningPatterns = v3->_descriptionCleaningPatterns;
-    v3->_descriptionCleaningPatterns = v26;
+    v3->_descriptionCleaningPatterns = _initializeRegexPatterns;
   }
 
   return v3;
@@ -113,9 +113,9 @@
       v8 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         *buf = 138412290;
-        v87 = v9;
+        v87 = localizedDescription;
         _os_log_impl(&dword_226DD4000, v8, OS_LOG_TYPE_ERROR, "Error initializing INTL regex pattern: %@", buf, 0xCu);
       }
 
@@ -146,9 +146,9 @@
       v13 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v12 localizedDescription];
+        localizedDescription2 = [v12 localizedDescription];
         *buf = 138412290;
-        v87 = v14;
+        v87 = localizedDescription2;
         _os_log_impl(&dword_226DD4000, v13, OS_LOG_TYPE_ERROR, "Error initializing RBS Header regex pattern: %@", buf, 0xCu);
       }
 
@@ -176,9 +176,9 @@
       v18 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v17 localizedDescription];
+        localizedDescription3 = [v17 localizedDescription];
         *buf = 138412290;
-        v87 = v19;
+        v87 = localizedDescription3;
         _os_log_impl(&dword_226DD4000, v18, OS_LOG_TYPE_ERROR, "Error initializing Two Comma regex pattern: %@", buf, 0xCu);
       }
 
@@ -206,9 +206,9 @@
       v23 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v22 localizedDescription];
+        localizedDescription4 = [v22 localizedDescription];
         *buf = 138412290;
-        v87 = v24;
+        v87 = localizedDescription4;
         _os_log_impl(&dword_226DD4000, v23, OS_LOG_TYPE_ERROR, "Error initializing Three Comma regex pattern: %@", buf, 0xCu);
       }
 
@@ -236,9 +236,9 @@
       v28 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v27 localizedDescription];
+        localizedDescription5 = [v27 localizedDescription];
         *buf = 138412290;
-        v87 = v29;
+        v87 = localizedDescription5;
         _os_log_impl(&dword_226DD4000, v28, OS_LOG_TYPE_ERROR, "Error initializing RBS Date regex pattern: %@", buf, 0xCu);
       }
 
@@ -266,9 +266,9 @@
       v33 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
-        v34 = [v32 localizedDescription];
+        localizedDescription6 = [v32 localizedDescription];
         *buf = 138412290;
-        v87 = v34;
+        v87 = localizedDescription6;
         _os_log_impl(&dword_226DD4000, v33, OS_LOG_TYPE_ERROR, "Error initializing FP regex pattern: %@", buf, 0xCu);
       }
 
@@ -296,9 +296,9 @@
       v38 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
-        v39 = [v37 localizedDescription];
+        localizedDescription7 = [v37 localizedDescription];
         *buf = 138412290;
-        v87 = v39;
+        v87 = localizedDescription7;
         _os_log_impl(&dword_226DD4000, v38, OS_LOG_TYPE_ERROR, "Error initializing PayPal regex pattern: %@", buf, 0xCu);
       }
 
@@ -325,9 +325,9 @@
       v43 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
-        v44 = [v42 localizedDescription];
+        localizedDescription8 = [v42 localizedDescription];
         *buf = 138412290;
-        v87 = v44;
+        v87 = localizedDescription8;
         _os_log_impl(&dword_226DD4000, v43, OS_LOG_TYPE_ERROR, "Error initializing ASPSP regex pattern: %@", buf, 0xCu);
       }
 
@@ -354,9 +354,9 @@
       v48 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v47 localizedDescription];
+        localizedDescription9 = [v47 localizedDescription];
         *buf = 138412290;
-        v87 = v49;
+        v87 = localizedDescription9;
         _os_log_impl(&dword_226DD4000, v48, OS_LOG_TYPE_ERROR, "Error initializing Service Match regex pattern: %@", buf, 0xCu);
       }
 
@@ -383,9 +383,9 @@
       v53 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
-        v54 = [v52 localizedDescription];
+        localizedDescription10 = [v52 localizedDescription];
         *buf = 138412290;
-        v87 = v54;
+        v87 = localizedDescription10;
         _os_log_impl(&dword_226DD4000, v53, OS_LOG_TYPE_ERROR, "Error initializing Service Remove regex pattern: %@", buf, 0xCu);
       }
 
@@ -414,9 +414,9 @@ LABEL_88:
     v58 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
     {
-      v59 = [v7 localizedDescription];
+      localizedDescription11 = [v7 localizedDescription];
       *buf = 138412290;
-      v87 = v59;
+      v87 = localizedDescription11;
       _os_log_impl(&dword_226DD4000, v58, OS_LOG_TYPE_ERROR, "Error creating top merchant match regex: %@", buf, 0xCu);
     }
 
@@ -449,9 +449,9 @@ LABEL_89:
     v61 = FinHealthLogObject(@"FinHealthCore");
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
     {
-      v63 = [v57 localizedDescription];
+      localizedDescription12 = [v57 localizedDescription];
       *buf = 138412290;
-      v87 = v63;
+      v87 = localizedDescription12;
       _os_log_impl(&dword_226DD4000, v61, OS_LOG_TYPE_ERROR, "Error creating homogenize regex: %@", buf, 0xCu);
     }
 
@@ -466,11 +466,11 @@ LABEL_97:
   return v64;
 }
 
-- (id)cleanDescriptionForTransaction:(id)a3
+- (id)cleanDescriptionForTransaction:(id)transaction
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 accountType] == 4)
+  transactionCopy = transaction;
+  if ([transactionCopy accountType] == 4)
   {
     v5 = dispatch_get_global_queue(0, 0);
     v6 = dispatch_group_create();
@@ -491,7 +491,7 @@ LABEL_97:
     block[3] = &unk_2785CC6D0;
     v19 = &v21;
     block[4] = self;
-    v7 = v4;
+    v7 = transactionCopy;
     v17 = v7;
     v20 = &v27;
     v8 = v6;
@@ -503,9 +503,9 @@ LABEL_97:
       v12 = FinHealthLogObject(@"FinHealthCore");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v7 identifier];
+        identifier = [v7 identifier];
         *buf = 138412290;
-        v32 = v13;
+        v32 = identifier;
         _os_log_impl(&dword_226DD4000, v12, OS_LOG_TYPE_ERROR, "Error - Timed out cleaning transaction description with ID: %@", buf, 0xCu);
       }
 
@@ -517,7 +517,7 @@ LABEL_97:
       v10 = v22[5];
     }
 
-    v11 = v10;
+    transactionDescription = v10;
 
     _Block_object_dispose(&v21, 8);
     _Block_object_dispose(&v27, 8);
@@ -525,12 +525,12 @@ LABEL_97:
 
   else
   {
-    v11 = [v4 transactionDescription];
+    transactionDescription = [transactionCopy transactionDescription];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return transactionDescription;
 }
 
 void __66__FHBankConnectDescriptionCleaner_cleanDescriptionForTransaction___block_invoke(uint64_t a1)
@@ -546,64 +546,64 @@ void __66__FHBankConnectDescriptionCleaner_cleanDescriptionForTransaction___bloc
   dispatch_group_leave(v5);
 }
 
-- (id)_cleanDescriptionForTransaction:(id)a3
+- (id)_cleanDescriptionForTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 processedDescription];
-  v6 = v5;
-  if (v5 && [v5 length])
+  transactionCopy = transaction;
+  processedDescription = [transactionCopy processedDescription];
+  v6 = processedDescription;
+  if (processedDescription && [processedDescription length])
   {
     v7 = v6;
   }
 
   else
   {
-    v8 = [(FHBankConnectDescriptionCleaner *)self getTransactionGroupingProperty:v4];
+    v8 = [(FHBankConnectDescriptionCleaner *)self getTransactionGroupingProperty:transactionCopy];
     v7 = [(FHBankConnectDescriptionCleaner *)self cleanTransactionDescription:v8];
   }
 
   return v7;
 }
 
-- (id)getTransactionGroupingProperty:(id)a3
+- (id)getTransactionGroupingProperty:(id)property
 {
-  v3 = a3;
-  v4 = [v3 displayName];
+  propertyCopy = property;
+  displayName = [propertyCopy displayName];
 
-  if (v4)
+  if (displayName)
   {
-    v5 = [v3 displayName];
+    displayName2 = [propertyCopy displayName];
   }
 
   else
   {
-    v6 = [v3 name];
+    name = [propertyCopy name];
 
-    if (v6)
+    if (name)
     {
-      [v3 name];
+      [propertyCopy name];
     }
 
     else
     {
-      [v3 transactionDescription];
+      [propertyCopy transactionDescription];
     }
-    v5 = ;
+    displayName2 = ;
   }
 
-  v7 = v5;
+  v7 = displayName2;
 
   return v7;
 }
 
-- (id)cleanTransactionDescription:(id)a3
+- (id)cleanTransactionDescription:(id)description
 {
-  v4 = a3;
-  if (v4)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
-    v5 = v4;
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v7 = [v5 stringByTrimmingCharactersInSet:v6];
+    v5 = descriptionCopy;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v7 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v8 = [(FHBankConnectDescriptionCleaner *)self _genericDescriptionCleaning:v7];
     v9 = [(FHBankConnectDescriptionCleaner *)self _rbsCleaning:v8];
@@ -634,8 +634,8 @@ void __66__FHBankConnectDescriptionCleaner_cleanDescriptionForTransaction___bloc
     while (![v16 isEqualToString:v17]);
     v19 = [(FHBankConnectDescriptionCleaner *)self _topMerchantPatternsFromDescription:v16];
 
-    v20 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v21 = [v19 stringByTrimmingCharactersInSet:v20];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v21 = [v19 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
     if (!v21 || (v22 = [v21 length], v23 = v21, !v22))
     {
@@ -653,50 +653,50 @@ void __66__FHBankConnectDescriptionCleaner_cleanDescriptionForTransaction___bloc
   return v24;
 }
 
-- (id)_genericDescriptionCleaning:(id)a3
+- (id)_genericDescriptionCleaning:(id)cleaning
 {
-  v4 = a3;
+  cleaningCopy = cleaning;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_intlPatternKey];
-  v6 = v4;
+  v6 = cleaningCopy;
   if (v5)
   {
-    v7 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
-    v6 = v4;
+    v7 = [v5 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
+    v6 = cleaningCopy;
     if (v7)
     {
-      v8 = v4;
-      if ([v4 length] >= 0x24)
+      v8 = cleaningCopy;
+      if ([cleaningCopy length] >= 0x24)
       {
-        v8 = [v4 substringWithRange:{18, 18}];
+        v8 = [cleaningCopy substringWithRange:{18, 18}];
       }
 
-      v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v6 = [v8 stringByTrimmingCharactersInSet:v9];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v6 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     }
   }
 
   return v6;
 }
 
-- (id)_rbsCleaning:(id)a3
+- (id)_rbsCleaning:(id)cleaning
 {
-  v4 = a3;
+  cleaningCopy = cleaning;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_rbsHeaderPatternKey];
-  v6 = v4;
+  v6 = cleaningCopy;
   if (v5)
   {
-    v7 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
-    v6 = v4;
+    v7 = [v5 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
+    v6 = cleaningCopy;
     if (v7)
     {
-      v6 = v4;
-      if ([v4 length])
+      v6 = cleaningCopy;
+      if ([cleaningCopy length])
       {
         v8 = 0;
         v9 = 0;
         do
         {
-          if ([v4 characterAtIndex:v9] == 44)
+          if ([cleaningCopy characterAtIndex:v9] == 44)
           {
             ++v8;
           }
@@ -704,7 +704,7 @@ void __66__FHBankConnectDescriptionCleaner_cleanDescriptionForTransaction___bloc
           ++v9;
         }
 
-        while (v9 < [v4 length]);
+        while (v9 < [cleaningCopy length]);
         if (v8 == 2)
         {
           descriptionCleaningPatterns = self->_descriptionCleaningPatterns;
@@ -712,7 +712,7 @@ void __66__FHBankConnectDescriptionCleaner_cleanDescriptionForTransaction___bloc
           goto LABEL_12;
         }
 
-        v6 = v4;
+        v6 = cleaningCopy;
         if (v8 == 3)
         {
           descriptionCleaningPatterns = self->_descriptionCleaningPatterns;
@@ -721,24 +721,24 @@ LABEL_12:
           v12 = [(NSDictionary *)descriptionCleaningPatterns objectForKey:twoCommaPatternKey];
           if (v12)
           {
-            v13 = [v12 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+            v13 = [v12 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
             v14 = v13;
-            if (v13 && [v13 numberOfRanges] >= 2 && (v15 = objc_msgSend(v14, "rangeAtIndex:", 1), v15 != 0x7FFFFFFFFFFFFFFFLL) && (v17 = v15, v18 = v16, v15 + v16 <= objc_msgSend(v4, "length")))
+            if (v13 && [v13 numberOfRanges] >= 2 && (v15 = objc_msgSend(v14, "rangeAtIndex:", 1), v15 != 0x7FFFFFFFFFFFFFFFLL) && (v17 = v15, v18 = v16, v15 + v16 <= objc_msgSend(cleaningCopy, "length")))
             {
-              v20 = [v4 substringWithRange:{v17, v18}];
-              v21 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-              v6 = [v20 stringByTrimmingCharactersInSet:v21];
+              v20 = [cleaningCopy substringWithRange:{v17, v18}];
+              whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+              v6 = [v20 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
             }
 
             else
             {
-              v6 = v4;
+              v6 = cleaningCopy;
             }
           }
 
           else
           {
-            v6 = v4;
+            v6 = cleaningCopy;
           }
         }
       }
@@ -748,30 +748,30 @@ LABEL_12:
   return v6;
 }
 
-- (id)_furtherRbsCleaning:(id)a3
+- (id)_furtherRbsCleaning:(id)cleaning
 {
-  v4 = a3;
+  cleaningCopy = cleaning;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_rbsDatePatternKey];
-  v6 = v4;
+  v6 = cleaningCopy;
   if (v5)
   {
-    v7 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
-    v6 = v4;
+    v7 = [v5 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
+    v6 = cleaningCopy;
     if (v7)
     {
-      v8 = [v4 length];
-      v9 = [v4 length];
+      v8 = [cleaningCopy length];
+      v9 = [cleaningCopy length];
       if (v8 < 0x36)
       {
-        v6 = v4;
+        v6 = cleaningCopy;
         if (v9 < 0x24)
         {
           goto LABEL_10;
         }
 
-        v11 = [v4 length];
+        v11 = [cleaningCopy length];
         v10 = 18;
-        v6 = v4;
+        v6 = cleaningCopy;
         if (v11 < 0x24)
         {
           goto LABEL_10;
@@ -780,14 +780,14 @@ LABEL_12:
 
       else
       {
-        v6 = v4;
+        v6 = cleaningCopy;
         if (v9 < 0x36)
         {
           goto LABEL_10;
         }
 
-        v6 = v4;
-        if ([v4 length] < 0x36)
+        v6 = cleaningCopy;
+        if ([cleaningCopy length] < 0x36)
         {
           goto LABEL_10;
         }
@@ -795,9 +795,9 @@ LABEL_12:
         v10 = 36;
       }
 
-      v12 = [v4 substringWithRange:{18, v10}];
-      v13 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v6 = [v12 stringByTrimmingCharactersInSet:v13];
+      v12 = [cleaningCopy substringWithRange:{18, v10}];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v6 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     }
 
 LABEL_10:
@@ -806,50 +806,50 @@ LABEL_10:
   return v6;
 }
 
-- (id)fpDescriptionCleaning:(id)a3
+- (id)fpDescriptionCleaning:(id)cleaning
 {
-  v4 = a3;
+  cleaningCopy = cleaning;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_fpPatternKey];
-  v6 = v4;
+  v6 = cleaningCopy;
   if (v5)
   {
-    v7 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
-    v6 = v4;
+    v7 = [v5 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
+    v6 = cleaningCopy;
     if (v7)
     {
-      v8 = v4;
-      if ([v4 length] >= 0x12)
+      v8 = cleaningCopy;
+      if ([cleaningCopy length] >= 0x12)
       {
-        v8 = [v4 substringWithRange:{0, 18}];
+        v8 = [cleaningCopy substringWithRange:{0, 18}];
       }
 
-      v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v6 = [v8 stringByTrimmingCharactersInSet:v9];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v6 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     }
   }
 
   return v6;
 }
 
-- (id)_paypalDescriptionCleaning:(id)a3
+- (id)_paypalDescriptionCleaning:(id)cleaning
 {
-  v4 = a3;
+  cleaningCopy = cleaning;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_paypalPatternKey];
-  v6 = v4;
+  v6 = cleaningCopy;
   if (v5)
   {
-    v7 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v7 = [v5 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
     v8 = v7;
-    v6 = v4;
+    v6 = cleaningCopy;
     if (v7)
     {
-      v6 = v4;
+      v6 = cleaningCopy;
       if ([v7 numberOfRanges] >= 2)
       {
         v9 = [v8 rangeAtIndex:1];
-        v11 = [v4 substringWithRange:{v9, v10}];
-        v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        v6 = [v11 stringByTrimmingCharactersInSet:v12];
+        v11 = [cleaningCopy substringWithRange:{v9, v10}];
+        whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        v6 = [v11 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       }
     }
   }
@@ -857,23 +857,23 @@ LABEL_10:
   return v6;
 }
 
-- (id)_paymentDescriptionCleaning:(id)a3
+- (id)_paymentDescriptionCleaning:(id)cleaning
 {
-  v4 = a3;
+  cleaningCopy = cleaning;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_serviceMatchKey];
-  v6 = v4;
+  v6 = cleaningCopy;
   if (v5)
   {
-    v7 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v7 = [v5 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
     v8 = v7;
-    v6 = v4;
+    v6 = cleaningCopy;
     if (v7)
     {
-      v6 = v4;
+      v6 = cleaningCopy;
       if ([v7 numberOfRanges] >= 2)
       {
         v9 = 1;
-        v6 = v4;
+        v6 = cleaningCopy;
         do
         {
           v10 = [v8 rangeAtIndex:v9];
@@ -903,21 +903,21 @@ LABEL_10:
   return v6;
 }
 
-- (id)_aspspDescriptionCleaning:(id)a3
+- (id)_aspspDescriptionCleaning:(id)cleaning
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 length] == 40)
+  cleaningCopy = cleaning;
+  v5 = cleaningCopy;
+  if ([cleaningCopy length] == 40)
   {
     v6 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_aspspPatternKey];
-    v5 = v4;
+    v5 = cleaningCopy;
     if (v6)
     {
-      v7 = [v6 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
-      v5 = v4;
+      v7 = [v6 firstMatchInString:cleaningCopy options:0 range:{0, objc_msgSend(cleaningCopy, "length")}];
+      v5 = cleaningCopy;
       if (v7)
       {
-        v5 = [v4 substringToIndex:23];
+        v5 = [cleaningCopy substringToIndex:23];
       }
     }
   }
@@ -925,41 +925,41 @@ LABEL_10:
   return v5;
 }
 
-- (id)_serviceRemovePatternsFromDescription:(id)a3
+- (id)_serviceRemovePatternsFromDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_serviceRemoveKey];
-  v6 = v4;
+  v6 = descriptionCopy;
   if (v5)
   {
-    v6 = [v5 stringByReplacingMatchesInString:v4 options:0 range:0 withTemplate:{objc_msgSend(v4, "length"), &stru_283A7B918}];
+    v6 = [v5 stringByReplacingMatchesInString:descriptionCopy options:0 range:0 withTemplate:{objc_msgSend(descriptionCopy, "length"), &stru_283A7B918}];
   }
 
   return v6;
 }
 
-- (id)_topMerchantPatternsFromDescription:(id)a3
+- (id)_topMerchantPatternsFromDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_topMerchantMatchPatternsKey];
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v6 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v6 = [v5 firstMatchInString:descriptionCopy options:0 range:{0, objc_msgSend(descriptionCopy, "length")}];
   v7 = v6;
-  if (!v6 || [v6 numberOfRanges] < 2 || (v8 = objc_msgSend(v7, "rangeAtIndex:", 1), v8 == 0x7FFFFFFFFFFFFFFFLL) || (v10 = v9) == 0 || (v11 = v8, v8 + v9 > objc_msgSend(v4, "length")))
+  if (!v6 || [v6 numberOfRanges] < 2 || (v8 = objc_msgSend(v7, "rangeAtIndex:", 1), v8 == 0x7FFFFFFFFFFFFFFFLL) || (v10 = v9) == 0 || (v11 = v8, v8 + v9 > objc_msgSend(descriptionCopy, "length")))
   {
 
 LABEL_8:
-    v12 = v4;
+    v12 = descriptionCopy;
     goto LABEL_9;
   }
 
-  v14 = [v4 substringWithRange:{v11, v10}];
-  v15 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v16 = [v14 stringByTrimmingCharactersInSet:v15];
+  v14 = [descriptionCopy substringWithRange:{v11, v10}];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v16 = [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v12 = [(FHBankConnectDescriptionCleaner *)self _homogenizeMerchantPattern:v16];
 
@@ -968,13 +968,13 @@ LABEL_9:
   return v12;
 }
 
-- (id)_homogenizeMerchantPattern:(id)a3
+- (id)_homogenizeMerchantPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   v5 = [(NSDictionary *)self->_descriptionCleaningPatterns objectForKey:self->_topMerchantHomogenizeKey];
   if (v5)
   {
-    v6 = [v5 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v6 = [v5 firstMatchInString:patternCopy options:0 range:{0, objc_msgSend(patternCopy, "length")}];
     if (v6)
     {
       v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -990,9 +990,9 @@ LABEL_9:
             if (v10)
             {
               v12 = v9;
-              if (v9 + v10 <= [v4 length])
+              if (v9 + v10 <= [patternCopy length])
               {
-                v13 = [v4 substringWithRange:{v12, v11}];
+                v13 = [patternCopy substringWithRange:{v12, v11}];
                 [v7 appendString:v13];
               }
             }
@@ -1013,7 +1013,7 @@ LABEL_9:
     }
   }
 
-  v14 = v4;
+  v14 = patternCopy;
 LABEL_15:
 
   return v14;

@@ -1,28 +1,28 @@
 @interface SUUILocalizedStringTable
-- (SUUILocalizedStringTable)initWithBundle:(id)a3 localeName:(id)a4 tableName:(id)a5;
-- (id)_legacyLanguageNameForLanguageCode:(id)a3;
+- (SUUILocalizedStringTable)initWithBundle:(id)bundle localeName:(id)name tableName:(id)tableName;
+- (id)_legacyLanguageNameForLanguageCode:(id)code;
 @end
 
 @implementation SUUILocalizedStringTable
 
-- (SUUILocalizedStringTable)initWithBundle:(id)a3 localeName:(id)a4 tableName:(id)a5
+- (SUUILocalizedStringTable)initWithBundle:(id)bundle localeName:(id)name tableName:(id)tableName
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  bundleCopy = bundle;
+  nameCopy = name;
+  tableNameCopy = tableName;
   v39.receiver = self;
   v39.super_class = SUUILocalizedStringTable;
   v12 = [(SUUILocalizedStringTable *)&v39 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundle, a3);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_bundle, bundle);
+    v14 = [tableNameCopy copy];
     tableName = v13->_tableName;
     v13->_tableName = v14;
 
-    v16 = [v10 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+    v16 = [nameCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
     if ([v16 isEqualToString:@"zh_Hans"])
     {
@@ -34,11 +34,11 @@
       if (![v16 isEqualToString:@"zh_Hant"])
       {
 LABEL_7:
-        v18 = [v9 pathForResource:v11 ofType:@"strings" inDirectory:0 forLocalization:v16];
+        v18 = [bundleCopy pathForResource:tableNameCopy ofType:@"strings" inDirectory:0 forLocalization:v16];
         v19 = v18;
         if (!v16 || v18)
         {
-          v10 = v16;
+          nameCopy = v16;
           if (!v18)
           {
 LABEL_33:
@@ -50,9 +50,9 @@ LABEL_33:
         else
         {
           v20 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:v16];
-          v10 = [v20 objectForKey:*MEMORY[0x277CBE6C8]];
+          nameCopy = [v20 objectForKey:*MEMORY[0x277CBE6C8]];
 
-          v21 = [v9 pathForResource:v11 ofType:@"strings" inDirectory:0 forLocalization:v10];
+          v21 = [bundleCopy pathForResource:tableNameCopy ofType:@"strings" inDirectory:0 forLocalization:nameCopy];
           if (v21)
           {
             v19 = v21;
@@ -60,10 +60,10 @@ LABEL_33:
 
           else
           {
-            v22 = [(SUUILocalizedStringTable *)v13 _legacyLanguageNameForLanguageCode:v10];
-            if (!v22 || (v23 = v22, [v9 pathForResource:v11 ofType:@"strings" inDirectory:0 forLocalization:v22], v19 = objc_claimAutoreleasedReturnValue(), v23, !v19))
+            v22 = [(SUUILocalizedStringTable *)v13 _legacyLanguageNameForLanguageCode:nameCopy];
+            if (!v22 || (v23 = v22, [bundleCopy pathForResource:tableNameCopy ofType:@"strings" inDirectory:0 forLocalization:v22], v19 = objc_claimAutoreleasedReturnValue(), v23, !v19))
             {
-              [v9 preferredLocalizations];
+              [bundleCopy preferredLocalizations];
               v35 = 0u;
               v36 = 0u;
               v37 = 0u;
@@ -84,9 +84,9 @@ LABEL_33:
                     }
 
                     v29 = *(*(&v35 + 1) + 8 * i);
-                    if ([v29 hasPrefix:v10])
+                    if ([v29 hasPrefix:nameCopy])
                     {
-                      v30 = [v9 pathForResource:v11 ofType:@"strings" inDirectory:0 forLocalization:v29];
+                      v30 = [bundleCopy pathForResource:tableNameCopy ofType:@"strings" inDirectory:0 forLocalization:v29];
                       if (v30)
                       {
                         v19 = v30;
@@ -145,35 +145,35 @@ LABEL_34:
   return v13;
 }
 
-- (id)_legacyLanguageNameForLanguageCode:(id)a3
+- (id)_legacyLanguageNameForLanguageCode:(id)code
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"de"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"de"])
   {
     v4 = @"German";
   }
 
-  else if ([v3 isEqualToString:@"en"])
+  else if ([codeCopy isEqualToString:@"en"])
   {
     v4 = @"English";
   }
 
-  else if ([v3 isEqualToString:@"es"])
+  else if ([codeCopy isEqualToString:@"es"])
   {
     v4 = @"Spanish";
   }
 
-  else if ([v3 isEqualToString:@"fr"])
+  else if ([codeCopy isEqualToString:@"fr"])
   {
     v4 = @"French";
   }
 
-  else if ([v3 isEqualToString:@"it"])
+  else if ([codeCopy isEqualToString:@"it"])
   {
     v4 = @"Italian";
   }
 
-  else if ([v3 isEqualToString:@"jp"])
+  else if ([codeCopy isEqualToString:@"jp"])
   {
     v4 = @"Japanese";
   }

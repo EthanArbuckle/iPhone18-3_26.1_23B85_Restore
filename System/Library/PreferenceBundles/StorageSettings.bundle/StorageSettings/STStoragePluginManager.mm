@@ -1,21 +1,21 @@
 @interface STStoragePluginManager
 + (id)sharedManager;
-- (BOOL)applicationHasTips:(id)a3;
+- (BOOL)applicationHasTips:(id)tips;
 - (NSArray)topTips;
 - (STStoragePluginManager)init;
-- (id)docPluginsForApp:(id)a3;
-- (id)docPluginsForAppIdentifier:(id)a3;
-- (id)externalDataPluginsForApp:(id)a3;
-- (id)externalDataPluginsForAppIdentifier:(id)a3;
-- (id)loadTipsOperation:(id)a3;
-- (id)tipsForApp:(id)a3;
-- (id)tipsWithIdentifier:(id)a3;
+- (id)docPluginsForApp:(id)app;
+- (id)docPluginsForAppIdentifier:(id)identifier;
+- (id)externalDataPluginsForApp:(id)app;
+- (id)externalDataPluginsForAppIdentifier:(id)identifier;
+- (id)loadTipsOperation:(id)operation;
+- (id)tipsForApp:(id)app;
+- (id)tipsWithIdentifier:(id)identifier;
 - (void)loadDefaults;
 - (void)loadPlugins;
 - (void)notifyTipsChanged;
 - (void)reloadAllTips;
-- (void)reloadTip:(id)a3;
-- (void)reloadTipsForPlugin:(id)a3;
+- (void)reloadTip:(id)tip;
+- (void)reloadTipsForPlugin:(id)plugin;
 - (void)updateTipIndexes;
 @end
 
@@ -90,15 +90,15 @@
   [(NSOperationQueue *)self->_serialQueue addOperation:v3];
 }
 
-- (id)loadTipsOperation:(id)a3
+- (id)loadTipsOperation:(id)operation
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1A6C0;
   v7[3] = &unk_2CA38;
-  v8 = a3;
-  v9 = self;
-  v4 = v8;
+  operationCopy = operation;
+  selfCopy = self;
+  v4 = operationCopy;
   v5 = [NSBlockOperation blockOperationWithBlock:v7];
 
   return v5;
@@ -107,15 +107,15 @@
 - (void)updateTipIndexes
 {
   v3 = [NSMutableArray arrayWithCapacity:20];
-  v23 = self;
-  v4 = [(STStoragePluginManager *)self tipsByPluginID];
-  v5 = [v4 allValues];
+  selfCopy = self;
+  tipsByPluginID = [(STStoragePluginManager *)self tipsByPluginID];
+  allValues = [tipsByPluginID allValues];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v5;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v7)
   {
@@ -160,10 +160,10 @@
         }
 
         v17 = *(*(&v24 + 1) + 8 * j);
-        v18 = [v17 representedApp];
-        if ([v18 length])
+        representedApp = [v17 representedApp];
+        if ([representedApp length])
         {
-          v19 = [v11 objectForKey:v18];
+          v19 = [v11 objectForKey:representedApp];
           v20 = v19;
           if (v19)
           {
@@ -173,7 +173,7 @@
           else
           {
             v21 = [NSMutableArray arrayWithObject:v17];
-            [v11 setObject:v21 forKey:v18];
+            [v11 setObject:v21 forKey:representedApp];
           }
         }
       }
@@ -184,10 +184,10 @@
     while (v14);
   }
 
-  [(STStoragePluginManager *)v23 setAllTips:v12];
-  [(STStoragePluginManager *)v23 setTipsByAppID:v11];
-  v22 = [v11 allKeys];
-  [(STStoragePluginManager *)v23 setAllRepresentedApps:v22];
+  [(STStoragePluginManager *)selfCopy setAllTips:v12];
+  [(STStoragePluginManager *)selfCopy setTipsByAppID:v11];
+  allKeys = [v11 allKeys];
+  [(STStoragePluginManager *)selfCopy setAllRepresentedApps:allKeys];
 }
 
 - (void)reloadAllTips
@@ -207,9 +207,9 @@
   [(NSOperationQueue *)self->_serialQueue addOperation:v3];
 }
 
-- (void)reloadTipsForPlugin:(id)a3
+- (void)reloadTipsForPlugin:(id)plugin
 {
-  if (a3)
+  if (plugin)
   {
     v4 = [(STStoragePluginManager *)self loadTipsOperation:?];
     v5[0] = _NSConcreteStackBlock;
@@ -228,11 +228,11 @@
   }
 }
 
-- (id)docPluginsForAppIdentifier:(id)a3
+- (id)docPluginsForAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STStoragePluginManager *)self docPluginsByID];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  docPluginsByID = [(STStoragePluginManager *)self docPluginsByID];
+  v6 = [docPluginsByID objectForKey:identifierCopy];
 
   if (v6)
   {
@@ -249,19 +249,19 @@
   return v7;
 }
 
-- (id)docPluginsForApp:(id)a3
+- (id)docPluginsForApp:(id)app
 {
-  v4 = [a3 appIdentifier];
-  v5 = [(STStoragePluginManager *)self docPluginsForAppIdentifier:v4];
+  appIdentifier = [app appIdentifier];
+  v5 = [(STStoragePluginManager *)self docPluginsForAppIdentifier:appIdentifier];
 
   return v5;
 }
 
-- (id)externalDataPluginsForAppIdentifier:(id)a3
+- (id)externalDataPluginsForAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STStoragePluginManager *)self externDataPluginsByID];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  externDataPluginsByID = [(STStoragePluginManager *)self externDataPluginsByID];
+  v6 = [externDataPluginsByID objectForKey:identifierCopy];
 
   if (v6)
   {
@@ -278,21 +278,21 @@
   return v7;
 }
 
-- (id)externalDataPluginsForApp:(id)a3
+- (id)externalDataPluginsForApp:(id)app
 {
-  v4 = [a3 appIdentifier];
-  v5 = [(STStoragePluginManager *)self externalDataPluginsForAppIdentifier:v4];
+  appIdentifier = [app appIdentifier];
+  v5 = [(STStoragePluginManager *)self externalDataPluginsForAppIdentifier:appIdentifier];
 
   return v5;
 }
 
-- (void)reloadTip:(id)a3
+- (void)reloadTip:(id)tip
 {
-  v4 = [a3 propertyForKey:@"_stPluginID"];
+  v4 = [tip propertyForKey:@"_stPluginID"];
   if ([v4 length])
   {
-    v5 = [(STStoragePluginManager *)self pluginsByID];
-    v6 = [v5 objectForKey:v4];
+    pluginsByID = [(STStoragePluginManager *)self pluginsByID];
+    v6 = [pluginsByID objectForKey:v4];
   }
 
   else
@@ -303,11 +303,11 @@
   [(STStoragePluginManager *)self reloadTipsForPlugin:v6];
 }
 
-- (id)tipsWithIdentifier:(id)a3
+- (id)tipsWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STStoragePluginManager *)self tipsByAppID];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  tipsByAppID = [(STStoragePluginManager *)self tipsByAppID];
+  v6 = [tipsByAppID objectForKey:identifierCopy];
 
   v7 = [v6 sortedArrayUsingComparator:&stru_2D1E0];
   v8 = v7;
@@ -326,24 +326,24 @@
   return v9;
 }
 
-- (id)tipsForApp:(id)a3
+- (id)tipsForApp:(id)app
 {
-  v4 = [a3 appIdentifier];
-  v5 = [(STStoragePluginManager *)self tipsWithIdentifier:v4];
+  appIdentifier = [app appIdentifier];
+  v5 = [(STStoragePluginManager *)self tipsWithIdentifier:appIdentifier];
 
   return v5;
 }
 
 - (NSArray)topTips
 {
-  v2 = [(STStoragePluginManager *)self allTips];
-  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v2 count]);
+  allTips = [(STStoragePluginManager *)self allTips];
+  v3 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [allTips count]);
   v37 = [NSMutableArray arrayWithCapacity:4];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v4 = v2;
+  v4 = allTips;
   v5 = [v4 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (!v5)
   {
@@ -385,8 +385,8 @@
 
         if (!v11)
         {
-          v23 = [v13 immediateGain];
-          v11 = v23 + [v13 eventualGain];
+          immediateGain = [v13 immediateGain];
+          v11 = immediateGain + [v13 eventualGain];
         }
       }
 
@@ -406,12 +406,12 @@
         if (!v11)
         {
           v17 = v3;
-          v18 = [v16 significantItems];
+          significantItems = [v16 significantItems];
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v19 = [v18 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          v19 = [significantItems countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v19)
           {
             v20 = v19;
@@ -423,13 +423,13 @@
               {
                 if (*v39 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(significantItems);
                 }
 
                 v11 += [*(*(&v38 + 1) + 8 * j) size];
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v38 objects:v46 count:16];
+              v20 = [significantItems countByEnumeratingWithState:&v38 objects:v46 count:16];
             }
 
             while (v20);
@@ -470,9 +470,9 @@
 LABEL_32:
 
   v27 = +[STStorageDiskMonitor sharedMonitor];
-  v28 = [v27 storageSpace];
+  storageSpace = [v27 storageSpace];
 
-  if ([v28 availableBytes] >= 1000000000)
+  if ([storageSpace availableBytes] >= 1000000000)
   {
     v29 = &stru_2D1E0;
   }
@@ -500,13 +500,13 @@ LABEL_32:
   return v33;
 }
 
-- (BOOL)applicationHasTips:(id)a3
+- (BOOL)applicationHasTips:(id)tips
 {
-  v4 = a3;
-  v5 = [(STStoragePluginManager *)self tipsByPluginID];
-  v6 = [v4 appIdentifier];
+  tipsCopy = tips;
+  tipsByPluginID = [(STStoragePluginManager *)self tipsByPluginID];
+  appIdentifier = [tipsCopy appIdentifier];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [tipsByPluginID objectForKey:appIdentifier];
   v8 = [v7 count] != 0;
 
   return v8;
@@ -516,9 +516,9 @@ LABEL_32:
 {
   self->_showAllTips = 0;
   v5 = +[UIDevice currentDevice];
-  v3 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
   v4 = 2;
-  if (v3 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v4 = 3;
   }

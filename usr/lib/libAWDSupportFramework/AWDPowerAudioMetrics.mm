@@ -1,19 +1,19 @@
 @interface AWDPowerAudioMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)audioVolumeLevelDurationAtIndex:(unint64_t)a3;
-- (unsigned)audioVolumeLevelDurationSpeakerAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)audioVolumeLevelDurationAtIndex:(unint64_t)index;
+- (unsigned)audioVolumeLevelDurationSpeakerAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAudioHeadsetDuration:(BOOL)a3;
-- (void)setHasAudioHeadsetPowerMicroWatt:(BOOL)a3;
-- (void)setHasAudioSpeakerDuration:(BOOL)a3;
-- (void)setHasAudioSpeakerPowerMicroWatt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAudioHeadsetDuration:(BOOL)duration;
+- (void)setHasAudioHeadsetPowerMicroWatt:(BOOL)watt;
+- (void)setHasAudioSpeakerDuration:(BOOL)duration;
+- (void)setHasAudioSpeakerPowerMicroWatt:(BOOL)watt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerAudioMetrics
@@ -27,9 +27,9 @@
   [(AWDPowerAudioMetrics *)&v3 dealloc];
 }
 
-- (void)setHasAudioSpeakerPowerMicroWatt:(BOOL)a3
+- (void)setHasAudioSpeakerPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 16;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAudioHeadsetPowerMicroWatt:(BOOL)a3
+- (void)setHasAudioHeadsetPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 4;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAudioSpeakerDuration:(BOOL)a3
+- (void)setHasAudioSpeakerDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -72,9 +72,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAudioHeadsetDuration:(BOOL)a3
+- (void)setHasAudioHeadsetDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -87,28 +87,28 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)audioVolumeLevelDurationAtIndex:(unint64_t)a3
+- (unsigned)audioVolumeLevelDurationAtIndex:(unint64_t)index
 {
   p_audioVolumeLevelDurations = &self->_audioVolumeLevelDurations;
   count = self->_audioVolumeLevelDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_audioVolumeLevelDurations->list[a3];
+  return p_audioVolumeLevelDurations->list[index];
 }
 
-- (unsigned)audioVolumeLevelDurationSpeakerAtIndex:(unint64_t)a3
+- (unsigned)audioVolumeLevelDurationSpeakerAtIndex:(unint64_t)index
 {
   p_audioVolumeLevelDurationSpeakers = &self->_audioVolumeLevelDurationSpeakers;
   count = self->_audioVolumeLevelDurationSpeakers.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_audioVolumeLevelDurationSpeakers->list[a3];
+  return p_audioVolumeLevelDurationSpeakers->list[index];
 }
 
 - (id)description
@@ -120,11 +120,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -143,7 +143,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioSpeakerPowerMicroWatt), @"audioSpeakerPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioSpeakerPowerMicroWatt), @"audioSpeakerPowerMicroWatt"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -154,7 +154,7 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioSpeakerDuration), @"audioSpeakerDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioSpeakerDuration), @"audioSpeakerDuration"}];
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_7;
@@ -164,7 +164,7 @@ LABEL_11:
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioHeadsetPowerMicroWatt), @"audioHeadsetPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioHeadsetPowerMicroWatt), @"audioHeadsetPowerMicroWatt"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -175,16 +175,16 @@ LABEL_5:
   if ((has & 2) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioHeadsetDuration), @"audioHeadsetDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_audioHeadsetDuration), @"audioHeadsetDuration"}];
   }
 
 LABEL_7:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"audioVolumeLevelDuration"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"audioVolumeLevelDurationSpeaker"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"audioVolumeLevelDuration"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"audioVolumeLevelDurationSpeaker"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -277,13 +277,13 @@ LABEL_7:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 7) = self->_timestamp;
-    *(a3 + 80) |= 1u;
+    *(to + 7) = self->_timestamp;
+    *(to + 80) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -302,8 +302,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 19) = self->_audioSpeakerPowerMicroWatt;
-  *(a3 + 80) |= 0x10u;
+  *(to + 19) = self->_audioSpeakerPowerMicroWatt;
+  *(to + 80) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -314,8 +314,8 @@ LABEL_4:
     }
 
 LABEL_19:
-    *(a3 + 18) = self->_audioSpeakerDuration;
-    *(a3 + 80) |= 8u;
+    *(to + 18) = self->_audioSpeakerDuration;
+    *(to + 80) |= 8u;
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_7;
@@ -325,8 +325,8 @@ LABEL_19:
   }
 
 LABEL_18:
-  *(a3 + 17) = self->_audioHeadsetPowerMicroWatt;
-  *(a3 + 80) |= 4u;
+  *(to + 17) = self->_audioHeadsetPowerMicroWatt;
+  *(to + 80) |= 4u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -337,43 +337,43 @@ LABEL_5:
   if ((has & 2) != 0)
   {
 LABEL_6:
-    *(a3 + 16) = self->_audioHeadsetDuration;
-    *(a3 + 80) |= 2u;
+    *(to + 16) = self->_audioHeadsetDuration;
+    *(to + 80) |= 2u;
   }
 
 LABEL_7:
   if ([(AWDPowerAudioMetrics *)self audioVolumeLevelDurationsCount])
   {
-    [a3 clearAudioVolumeLevelDurations];
-    v6 = [(AWDPowerAudioMetrics *)self audioVolumeLevelDurationsCount];
-    if (v6)
+    [to clearAudioVolumeLevelDurations];
+    audioVolumeLevelDurationsCount = [(AWDPowerAudioMetrics *)self audioVolumeLevelDurationsCount];
+    if (audioVolumeLevelDurationsCount)
     {
-      v7 = v6;
+      v7 = audioVolumeLevelDurationsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addAudioVolumeLevelDuration:{-[AWDPowerAudioMetrics audioVolumeLevelDurationAtIndex:](self, "audioVolumeLevelDurationAtIndex:", i)}];
+        [to addAudioVolumeLevelDuration:{-[AWDPowerAudioMetrics audioVolumeLevelDurationAtIndex:](self, "audioVolumeLevelDurationAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDPowerAudioMetrics *)self audioVolumeLevelDurationSpeakersCount])
   {
-    [a3 clearAudioVolumeLevelDurationSpeakers];
-    v9 = [(AWDPowerAudioMetrics *)self audioVolumeLevelDurationSpeakersCount];
-    if (v9)
+    [to clearAudioVolumeLevelDurationSpeakers];
+    audioVolumeLevelDurationSpeakersCount = [(AWDPowerAudioMetrics *)self audioVolumeLevelDurationSpeakersCount];
+    if (audioVolumeLevelDurationSpeakersCount)
     {
-      v10 = v9;
+      v10 = audioVolumeLevelDurationSpeakersCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addAudioVolumeLevelDurationSpeaker:{-[AWDPowerAudioMetrics audioVolumeLevelDurationSpeakerAtIndex:](self, "audioVolumeLevelDurationSpeakerAtIndex:", j)}];
+        [to addAudioVolumeLevelDurationSpeaker:{-[AWDPowerAudioMetrics audioVolumeLevelDurationSpeakerAtIndex:](self, "audioVolumeLevelDurationSpeakerAtIndex:", j)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -443,75 +443,75 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 80);
+  v5 = *(equal + 80);
   if (*&self->_has)
   {
-    if ((*(a3 + 80) & 1) == 0 || self->_timestamp != *(a3 + 7))
+    if ((*(equal + 80) & 1) == 0 || self->_timestamp != *(equal + 7))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 80))
+  else if (*(equal + 80))
   {
     return 0;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 80) & 0x10) == 0 || self->_audioSpeakerPowerMicroWatt != *(a3 + 19))
+    if ((*(equal + 80) & 0x10) == 0 || self->_audioSpeakerPowerMicroWatt != *(equal + 19))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 80) & 0x10) != 0)
+  else if ((*(equal + 80) & 0x10) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 80) & 4) == 0 || self->_audioHeadsetPowerMicroWatt != *(a3 + 17))
+    if ((*(equal + 80) & 4) == 0 || self->_audioHeadsetPowerMicroWatt != *(equal + 17))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 80) & 4) != 0)
+  else if ((*(equal + 80) & 4) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 80) & 8) == 0 || self->_audioSpeakerDuration != *(a3 + 18))
+    if ((*(equal + 80) & 8) == 0 || self->_audioSpeakerDuration != *(equal + 18))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 80) & 8) != 0)
+  else if ((*(equal + 80) & 8) != 0)
   {
     return 0;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 80) & 2) == 0 || self->_audioHeadsetDuration != *(a3 + 16))
+    if ((*(equal + 80) & 2) == 0 || self->_audioHeadsetDuration != *(equal + 16))
     {
       return 0;
     }
   }
 
-  else if ((*(a3 + 80) & 2) != 0)
+  else if ((*(equal + 80) & 2) != 0)
   {
     return 0;
   }
@@ -594,14 +594,14 @@ LABEL_12:
   return v7 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 80);
+  v5 = *(from + 80);
   if (v5)
   {
-    self->_timestamp = *(a3 + 7);
+    self->_timestamp = *(from + 7);
     *&self->_has |= 1u;
-    v5 = *(a3 + 80);
+    v5 = *(from + 80);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -614,14 +614,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 80) & 0x10) == 0)
+  else if ((*(from + 80) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_audioSpeakerPowerMicroWatt = *(a3 + 19);
+  self->_audioSpeakerPowerMicroWatt = *(from + 19);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 80);
+  v5 = *(from + 80);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -634,9 +634,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_audioHeadsetPowerMicroWatt = *(a3 + 17);
+  self->_audioHeadsetPowerMicroWatt = *(from + 17);
   *&self->_has |= 4u;
-  v5 = *(a3 + 80);
+  v5 = *(from + 80);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -649,33 +649,33 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_audioSpeakerDuration = *(a3 + 18);
+  self->_audioSpeakerDuration = *(from + 18);
   *&self->_has |= 8u;
-  if ((*(a3 + 80) & 2) != 0)
+  if ((*(from + 80) & 2) != 0)
   {
 LABEL_6:
-    self->_audioHeadsetDuration = *(a3 + 16);
+    self->_audioHeadsetDuration = *(from + 16);
     *&self->_has |= 2u;
   }
 
 LABEL_7:
-  v6 = [a3 audioVolumeLevelDurationsCount];
-  if (v6)
+  audioVolumeLevelDurationsCount = [from audioVolumeLevelDurationsCount];
+  if (audioVolumeLevelDurationsCount)
   {
-    v7 = v6;
+    v7 = audioVolumeLevelDurationsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDPowerAudioMetrics addAudioVolumeLevelDuration:](self, "addAudioVolumeLevelDuration:", [a3 audioVolumeLevelDurationAtIndex:i]);
+      -[AWDPowerAudioMetrics addAudioVolumeLevelDuration:](self, "addAudioVolumeLevelDuration:", [from audioVolumeLevelDurationAtIndex:i]);
     }
   }
 
-  v9 = [a3 audioVolumeLevelDurationSpeakersCount];
-  if (v9)
+  audioVolumeLevelDurationSpeakersCount = [from audioVolumeLevelDurationSpeakersCount];
+  if (audioVolumeLevelDurationSpeakersCount)
   {
-    v10 = v9;
+    v10 = audioVolumeLevelDurationSpeakersCount;
     for (j = 0; j != v10; ++j)
     {
-      -[AWDPowerAudioMetrics addAudioVolumeLevelDurationSpeaker:](self, "addAudioVolumeLevelDurationSpeaker:", [a3 audioVolumeLevelDurationSpeakerAtIndex:j]);
+      -[AWDPowerAudioMetrics addAudioVolumeLevelDurationSpeaker:](self, "addAudioVolumeLevelDurationSpeaker:", [from audioVolumeLevelDurationSpeakerAtIndex:j]);
     }
   }
 }

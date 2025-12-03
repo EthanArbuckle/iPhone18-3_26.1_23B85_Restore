@@ -6,8 +6,8 @@
 
 - (double)_accessibilityVisibleItemDenominator
 {
-  v3 = [(AppStore_UICollectionViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXArticlePageViewCollectionView"];
+  accessibilityIdentifier = [(AppStore_UICollectionViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXArticlePageViewCollectionView"];
 
   result = 6.0;
   if ((v4 & 1) == 0)

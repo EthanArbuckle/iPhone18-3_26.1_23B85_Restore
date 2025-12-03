@@ -1,5 +1,5 @@
 @interface SUScriptNativeUIBarButtonItem
-+ (id)objectWithDefaultButtonForScriptButton:(id)a3;
++ (id)objectWithDefaultButtonForScriptButton:(id)button;
 - (BOOL)isLoading;
 - (BOOL)isShowingConfirmation;
 - (UIEdgeInsets)imageInsets;
@@ -11,31 +11,31 @@
 - (void)connectButtonAction;
 - (void)destroyNativeObject;
 - (void)disconnectButtonAction;
-- (void)hideConfirmationAnimated:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageInsets:(UIEdgeInsets)a3;
-- (void)setLoading:(BOOL)a3;
-- (void)setStyleFromString:(id)a3;
-- (void)setTag:(int64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)hideConfirmationAnimated:(BOOL)animated;
+- (void)setImage:(id)image;
+- (void)setImageInsets:(UIEdgeInsets)insets;
+- (void)setLoading:(BOOL)loading;
+- (void)setStyleFromString:(id)string;
+- (void)setTag:(int64_t)tag;
+- (void)setTitle:(id)title;
 - (void)setupNativeObject;
-- (void)showConfirmationWithTitle:(id)a3 animated:(BOOL)a4;
+- (void)showConfirmationWithTitle:(id)title animated:(BOOL)animated;
 @end
 
 @implementation SUScriptNativeUIBarButtonItem
 
 - (id)image
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 image];
+  return [object image];
 }
 
 - (UIEdgeInsets)imageInsets
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v2 imageInsets];
+  [object imageInsets];
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -43,58 +43,58 @@
   return result;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v4 setImage:a3];
+  [object setImage:image];
 }
 
-- (void)setImageInsets:(UIEdgeInsets)a3
+- (void)setImageInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(SUScriptNativeObject *)self object];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  object = [(SUScriptNativeObject *)self object];
 
-  [v7 setImageInsets:{top, left, bottom, right}];
+  [object setImageInsets:{top, left, bottom, right}];
 }
 
-- (void)setTag:(int64_t)a3
+- (void)setTag:(int64_t)tag
 {
-  v4 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v4 setTag:a3];
+  [object setTag:tag];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  [v4 setTitle:a3];
+  [object setTitle:title];
 }
 
 - (int64_t)tag
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 tag];
+  return [object tag];
 }
 
 - (id)title
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 title];
+  return [object title];
 }
 
-+ (id)objectWithDefaultButtonForScriptButton:(id)a3
++ (id)objectWithDefaultButtonForScriptButton:(id)button
 {
-  v5 = [a3 _systemItemString];
-  if (v5)
+  _systemItemString = [button _systemItemString];
+  if (_systemItemString)
   {
-    v6 = v5;
+    v6 = _systemItemString;
     v7 = &off_1E81655A0;
     v8 = 24;
     while (![*v7 isEqualToString:v6])
@@ -118,8 +118,8 @@ LABEL_8:
   }
 
   v11 = v10;
-  v12 = objc_alloc_init(a1);
-  [v12 setScriptObject:a3];
+  v12 = objc_alloc_init(self);
+  [v12 setScriptObject:button];
   [v12 setObject:v11];
 
   return v12;
@@ -129,14 +129,14 @@ LABEL_8:
 {
   if ([(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] _action])
   {
-    v3 = [(SUScriptNativeObject *)self object];
-    v4 = SUButtonActionPopFromBarButtonItem(v3);
-    [v3 setAction:sel_buttonAction_];
-    [v3 setTarget:self];
+    object = [(SUScriptNativeObject *)self object];
+    v4 = SUButtonActionPopFromBarButtonItem(object);
+    [object setAction:sel_buttonAction_];
+    [object setTarget:self];
     if ([v4 isActivated])
     {
 
-      [(SUScriptButtonNativeObject *)self buttonAction:v3];
+      [(SUScriptButtonNativeObject *)self buttonAction:object];
     }
   }
 }
@@ -151,51 +151,51 @@ LABEL_8:
 
 - (void)disconnectButtonAction
 {
-  v3 = [(SUScriptNativeObject *)self object];
-  if ([v3 target] == self)
+  object = [(SUScriptNativeObject *)self object];
+  if ([object target] == self)
   {
 
-    [v3 setTarget:0];
+    [object setTarget:0];
   }
 }
 
-- (void)hideConfirmationAnimated:(BOOL)a3
+- (void)hideConfirmationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SUScriptNativeObject *)self object];
-  v6 = [(SUClientInterface *)[(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] clientInterface] appearance];
+  animatedCopy = animated;
+  object = [(SUScriptNativeObject *)self object];
+  appearance = [(SUClientInterface *)[(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] clientInterface] appearance];
 
-  [v5 hideConfirmationWithAppearance:v6 animated:v3];
+  [object hideConfirmationWithAppearance:appearance animated:animatedCopy];
 }
 
 - (BOOL)isLoading
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 isLoading];
+  return [object isLoading];
 }
 
 - (BOOL)isShowingConfirmation
 {
-  v2 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
 
-  return [v2 isShowingConfirmation];
+  return [object isShowingConfirmation];
 }
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
-  v3 = a3;
-  v4 = [(SUScriptNativeObject *)self object];
+  loadingCopy = loading;
+  object = [(SUScriptNativeObject *)self object];
 
-  [v4 setLoading:v3];
+  [object setLoading:loadingCopy];
 }
 
-- (void)setStyleFromString:(id)a3
+- (void)setStyleFromString:(id)string
 {
-  v5 = [(SUScriptNativeObject *)self object];
+  object = [(SUScriptNativeObject *)self object];
   v6 = &off_1E8165720;
   v7 = 4;
-  while (![*v6 isEqualToString:a3])
+  while (![*v6 isEqualToString:string])
   {
     v6 += 2;
     if (!--v7)
@@ -207,8 +207,8 @@ LABEL_8:
 
   v8 = *(v6 - 1);
 LABEL_6:
-  [v5 setStyle:v8];
-  self->_isBackButton = [a3 isEqualToString:@"back"];
+  [object setStyle:v8];
+  self->_isBackButton = [string isEqualToString:@"back"];
 }
 
 - (void)setupNativeObject
@@ -219,13 +219,13 @@ LABEL_6:
   [(SUScriptNativeObject *)&v3 setupNativeObject];
 }
 
-- (void)showConfirmationWithTitle:(id)a3 animated:(BOOL)a4
+- (void)showConfirmationWithTitle:(id)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(SUScriptNativeObject *)self object];
-  v8 = [(SUClientInterface *)[(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] clientInterface] appearance];
+  animatedCopy = animated;
+  object = [(SUScriptNativeObject *)self object];
+  appearance = [(SUClientInterface *)[(SUScriptObject *)[(SUScriptNativeObject *)self scriptObject] clientInterface] appearance];
 
-  [v7 showConfirmationWithTitle:a3 appearance:v8 animated:v4];
+  [object showConfirmationWithTitle:title appearance:appearance animated:animatedCopy];
 }
 
 - (id)styleString
@@ -235,10 +235,10 @@ LABEL_6:
     return @"back";
   }
 
-  v5 = [-[SUScriptNativeObject object](self object];
+  object = [-[SUScriptNativeObject object](self object];
   v6 = &off_1E8165720;
   v7 = 4;
-  while (*(v6 - 1) != v5)
+  while (*(v6 - 1) != object)
   {
     v6 += 2;
     if (!--v7)

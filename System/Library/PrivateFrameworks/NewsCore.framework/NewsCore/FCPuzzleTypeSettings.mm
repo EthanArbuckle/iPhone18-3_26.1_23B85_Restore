@@ -1,17 +1,17 @@
 @interface FCPuzzleTypeSettings
-+ (id)commandsToMergeLocalDataToCloud:(id)a3;
-- (FCPuzzleTypeSettings)initWithStore:(id)a3 delegate:(id)a4;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud;
+- (FCPuzzleTypeSettings)initWithStore:(id)store delegate:(id)delegate;
 - (id)_allEntriesInPuzzleTypeSettings;
-- (id)_puzzleTypeSettingsEntryForPuzzleTypeID:(id *)a1;
+- (id)_puzzleTypeSettingsEntryForPuzzleTypeID:(id *)d;
 - (id)allPuzzleTypeSettingsRecordNames;
 - (id)allPuzzleTypeSettingsRecords;
-- (id)lastSeenPuzzleIDsForPuzzleTypeID:(id)a3;
-- (id)settingsDataForPuzzleTypeID:(id)a3;
-- (void)handleSyncWithDeletedPuzzleTypeSettingsRecordName:(id)a3;
-- (void)handleSyncWithPuzzleTypeSettingsRecord:(id)a3;
+- (id)lastSeenPuzzleIDsForPuzzleTypeID:(id)d;
+- (id)settingsDataForPuzzleTypeID:(id)d;
+- (void)handleSyncWithDeletedPuzzleTypeSettingsRecordName:(id)name;
+- (void)handleSyncWithPuzzleTypeSettingsRecord:(id)record;
 - (void)loadLocalCachesFromStore;
-- (void)setSettingsData:(void *)a3 lastSeenPuzzleIDs:(void *)a4 puzzleTypeID:;
-- (void)syncForPuzzleTypeID:(id)a3;
+- (void)setSettingsData:(void *)data lastSeenPuzzleIDs:(void *)ds puzzleTypeID:;
+- (void)syncForPuzzleTypeID:(id)d;
 @end
 
 @implementation FCPuzzleTypeSettings
@@ -146,17 +146,17 @@ LABEL_21:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (FCPuzzleTypeSettings)initWithStore:(id)a3 delegate:(id)a4
+- (FCPuzzleTypeSettings)initWithStore:(id)store delegate:(id)delegate
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = FCPuzzleTypeSettings;
   v9 = [(FCPuzzleTypeSettings *)&v17 init];
   if (v9)
   {
-    if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!storeCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "store"];
       *buf = 136315906;
@@ -170,32 +170,32 @@ LABEL_21:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    objc_storeStrong(&v9->_localStore, a3);
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeStrong(&v9->_localStore, store);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10 = objc_alloc_init(FCMTWriterLock);
     entriesLock = v9->_entriesLock;
     v9->_entriesLock = v10;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     entriesByPuzzleTypeID = v9->_entriesByPuzzleTypeID;
-    v9->_entriesByPuzzleTypeID = v12;
+    v9->_entriesByPuzzleTypeID = dictionary;
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3
++ (id)commandsToMergeLocalDataToCloud:(id)cloud
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v22 = [MEMORY[0x1E695DF70] array];
+  cloudCopy = cloud;
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [v3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  allKeys = [cloudCopy allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -206,14 +206,14 @@ LABEL_21:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
         if (([objc_opt_class() isLocalStoreKeyInternal:v9] & 1) == 0)
         {
           objc_opt_class();
-          v10 = [v3 objectForKey:v9];
+          v10 = [cloudCopy objectForKey:v9];
           if (v10)
           {
             if (objc_opt_isKindOfClass())
@@ -253,7 +253,7 @@ LABEL_21:
               {
 LABEL_17:
                 v17 = [[FCPuzzleTypeSettingsEntry alloc] initWithEntryID:v9 dictionaryRepresentation:v12];
-                [v22 addObject:v17];
+                [array addObject:v17];
               }
             }
           }
@@ -262,13 +262,13 @@ LABEL_17:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v6);
   }
 
-  v18 = [[FCModifyPuzzleTypeSettingsCommand alloc] initWithPuzzleTypeSettingsEntries:v22 merge:1];
+  v18 = [[FCModifyPuzzleTypeSettingsCommand alloc] initWithPuzzleTypeSettingsEntries:array merge:1];
   v27 = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
 
@@ -277,13 +277,13 @@ LABEL_17:
   return v19;
 }
 
-- (void)syncForPuzzleTypeID:(id)a3
+- (void)syncForPuzzleTypeID:(id)d
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
     p_isa = &self->super.isa;
-    v4 = [(FCPuzzleTypeSettings *)&self->super.isa _puzzleTypeSettingsEntryForPuzzleTypeID:a3];
+    v4 = [(FCPuzzleTypeSettings *)&self->super.isa _puzzleTypeSettingsEntryForPuzzleTypeID:d];
     if (v4)
     {
       v5 = [FCModifyPuzzleTypeSettingsCommand alloc];
@@ -303,11 +303,11 @@ LABEL_17:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_puzzleTypeSettingsEntryForPuzzleTypeID:(id *)a1
+- (id)_puzzleTypeSettingsEntryForPuzzleTypeID:(id *)d
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (d)
   {
     v11 = 0;
     v12 = &v11;
@@ -317,13 +317,13 @@ LABEL_17:
     v16 = 0;
     if (v3)
     {
-      v5 = a1[1];
+      v5 = d[1];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __64__FCPuzzleTypeSettings__puzzleTypeSettingsEntryForPuzzleTypeID___block_invoke;
       v8[3] = &unk_1E7C37138;
       v10 = &v11;
-      v8[4] = a1;
+      v8[4] = d;
       v9 = v4;
       [v5 performReadSync:v8];
 
@@ -335,26 +335,26 @@ LABEL_17:
       v6 = 0;
     }
 
-    a1 = v6;
+    d = v6;
     _Block_object_dispose(&v11, 8);
   }
 
-  return a1;
+  return d;
 }
 
-- (void)setSettingsData:(void *)a3 lastSeenPuzzleIDs:(void *)a4 puzzleTypeID:
+- (void)setSettingsData:(void *)data lastSeenPuzzleIDs:(void *)ds puzzleTypeID:
 {
   v45 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  dataCopy = data;
+  dsCopy = ds;
+  if (self)
   {
     [MEMORY[0x1E696AF00] isMainThread];
-    if (v9)
+    if (dsCopy)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ps-%@", v9];
-      v11 = [*(a1 + 24) objectForKey:v10];
+      dsCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ps-%@", dsCopy];
+      v11 = [*(self + 24) objectForKey:dsCopy];
       v12 = v11;
       if (v11)
       {
@@ -365,12 +365,12 @@ LABEL_17:
           [v13 setObject:v7 forKeyedSubscript:@"settingsData"];
         }
 
-        if (v8)
+        if (dataCopy)
         {
-          [v14 setObject:v8 forKeyedSubscript:@"lastSeenPuzzleIDs"];
+          [v14 setObject:dataCopy forKeyedSubscript:@"lastSeenPuzzleIDs"];
         }
 
-        v15 = [[FCPuzzleTypeSettingsEntry alloc] initWithEntryID:v10 dictionaryRepresentation:v14];
+        v15 = [[FCPuzzleTypeSettingsEntry alloc] initWithEntryID:dsCopy dictionaryRepresentation:v14];
 
         if (v15)
         {
@@ -380,13 +380,13 @@ LABEL_17:
 
       else
       {
-        v15 = [[FCPuzzleTypeSettingsEntry alloc] initWithEntryID:v10 puzzleTypeID:v9 settingsData:v7 lastSeenPuzzleIDs:v8];
+        v15 = [[FCPuzzleTypeSettingsEntry alloc] initWithEntryID:dsCopy puzzleTypeID:dsCopy settingsData:v7 lastSeenPuzzleIDs:dataCopy];
         if (v15)
         {
 LABEL_9:
-          v16 = [(FCPuzzleTypeSettingsEntry *)v15 puzzleTypeID];
+          puzzleTypeID = [(FCPuzzleTypeSettingsEntry *)v15 puzzleTypeID];
 
-          if (!v16 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+          if (!puzzleTypeID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"puzzleTypeSettingsEntry must have a puzzleTypeID"];
             *buf = 136315906;
@@ -400,48 +400,48 @@ LABEL_9:
             _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
           }
 
-          v17 = [MEMORY[0x1E695DF90] dictionary];
-          v18 = [(FCPuzzleTypeSettingsEntry *)v15 puzzleTypeID];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          puzzleTypeID2 = [(FCPuzzleTypeSettingsEntry *)v15 puzzleTypeID];
 
-          if (v18)
+          if (puzzleTypeID2)
           {
-            v19 = [(FCPuzzleTypeSettingsEntry *)v15 puzzleTypeID];
-            [v17 setObject:v19 forKey:@"puzzleTypeID"];
+            puzzleTypeID3 = [(FCPuzzleTypeSettingsEntry *)v15 puzzleTypeID];
+            [dictionary setObject:puzzleTypeID3 forKey:@"puzzleTypeID"];
           }
 
-          v20 = [(FCPuzzleTypeSettingsEntry *)v15 settingsData];
+          settingsData = [(FCPuzzleTypeSettingsEntry *)v15 settingsData];
 
-          if (v20)
+          if (settingsData)
           {
-            v21 = [(FCPuzzleTypeSettingsEntry *)v15 settingsData];
-            [v17 setObject:v21 forKey:@"settingsData"];
+            settingsData2 = [(FCPuzzleTypeSettingsEntry *)v15 settingsData];
+            [dictionary setObject:settingsData2 forKey:@"settingsData"];
           }
 
-          v22 = [(FCPuzzleTypeSettingsEntry *)v15 lastSeenPuzzleIDs];
+          lastSeenPuzzleIDs = [(FCPuzzleTypeSettingsEntry *)v15 lastSeenPuzzleIDs];
 
-          if (v22)
+          if (lastSeenPuzzleIDs)
           {
-            v23 = [(FCPuzzleTypeSettingsEntry *)v15 lastSeenPuzzleIDs];
-            [v17 setObject:v23 forKey:@"lastSeenPuzzleIDs"];
+            lastSeenPuzzleIDs2 = [(FCPuzzleTypeSettingsEntry *)v15 lastSeenPuzzleIDs];
+            [dictionary setObject:lastSeenPuzzleIDs2 forKey:@"lastSeenPuzzleIDs"];
           }
 
-          [*(a1 + 24) setObject:v17 forKey:v10];
-          v24 = *(a1 + 8);
+          [*(self + 24) setObject:dictionary forKey:dsCopy];
+          v24 = *(self + 8);
           v33[0] = MEMORY[0x1E69E9820];
           v33[1] = 3221225472;
           v33[2] = __71__FCPuzzleTypeSettings_setSettingsData_lastSeenPuzzleIDs_puzzleTypeID___block_invoke;
           v33[3] = &unk_1E7C376A0;
-          v33[4] = a1;
+          v33[4] = self;
           v25 = v15;
           v34 = v25;
-          v35 = v9;
+          v35 = dsCopy;
           [v24 performWriteSync:v33];
           v26 = [FCModifyPuzzleTypeSettingsCommand alloc];
           v36 = v25;
           v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
           v28 = [(FCModifyPuzzleTypeSettingsCommand *)v26 initWithPuzzleTypeSettingsEntries:v27 merge:1];
 
-          WeakRetained = objc_loadWeakRetained((a1 + 32));
+          WeakRetained = objc_loadWeakRetained((self + 32));
           [WeakRetained addModifyPuzzleTypeSettingsCommandToCommandQueue:v28];
 
 LABEL_24:
@@ -468,7 +468,7 @@ LABEL_24:
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "puzzleTypeID != nil"];
+      dsCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "puzzleTypeID != nil"];
       *buf = 136315906;
       v38 = "[FCPuzzleTypeSettings setSettingsData:lastSeenPuzzleIDs:puzzleTypeID:]";
       v39 = 2080;
@@ -476,7 +476,7 @@ LABEL_24:
       v41 = 1024;
       v42 = 138;
       v43 = 2114;
-      v44 = v10;
+      v44 = dsCopy;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 LABEL_25:
     }
@@ -496,29 +496,29 @@ uint64_t __71__FCPuzzleTypeSettings_setSettingsData_lastSeenPuzzleIDs_puzzleType
   return [v1 setObject:a1[5] forKey:a1[6]];
 }
 
-- (id)settingsDataForPuzzleTypeID:(id)a3
+- (id)settingsDataForPuzzleTypeID:(id)d
 {
-  v3 = [(FCPuzzleTypeSettings *)&self->super.isa _puzzleTypeSettingsEntryForPuzzleTypeID:a3];
-  v4 = [v3 settingsData];
+  v3 = [(FCPuzzleTypeSettings *)&self->super.isa _puzzleTypeSettingsEntryForPuzzleTypeID:d];
+  settingsData = [v3 settingsData];
 
-  return v4;
+  return settingsData;
 }
 
-- (id)lastSeenPuzzleIDsForPuzzleTypeID:(id)a3
+- (id)lastSeenPuzzleIDsForPuzzleTypeID:(id)d
 {
-  v3 = [(FCPuzzleTypeSettings *)&self->super.isa _puzzleTypeSettingsEntryForPuzzleTypeID:a3];
-  v4 = [v3 lastSeenPuzzleIDs];
+  v3 = [(FCPuzzleTypeSettings *)&self->super.isa _puzzleTypeSettingsEntryForPuzzleTypeID:d];
+  lastSeenPuzzleIDs = [v3 lastSeenPuzzleIDs];
 
-  return v4;
+  return lastSeenPuzzleIDs;
 }
 
-- (void)handleSyncWithPuzzleTypeSettingsRecord:(id)a3
+- (void)handleSyncWithPuzzleTypeSettingsRecord:(id)record
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"puzzleTypeID"];
-  v27 = [v4 objectForKeyedSubscript:@"settingsData"];
-  v6 = [v4 objectForKeyedSubscript:@"lastSeenPuzzleIDs"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"puzzleTypeID"];
+  v27 = [recordCopy objectForKeyedSubscript:@"settingsData"];
+  v6 = [recordCopy objectForKeyedSubscript:@"lastSeenPuzzleIDs"];
   if (self)
   {
     localStore = self->_localStore;
@@ -530,16 +530,16 @@ uint64_t __71__FCPuzzleTypeSettings_setSettingsData_lastSeenPuzzleIDs_puzzleType
   }
 
   v8 = localStore;
-  v9 = [v4 recordID];
+  recordID = [recordCopy recordID];
 
-  v10 = [v9 recordName];
+  recordName = [recordID recordName];
 
-  v11 = [(FCKeyValueStore *)v8 objectForKey:v10];
+  v11 = [(FCKeyValueStore *)v8 objectForKey:recordName];
   v12 = v11;
   if (v11)
   {
     v13 = [v11 mutableCopy];
-    v14 = v13;
+    dictionary = v13;
     if (v27)
     {
       [v13 setObject:v27 forKeyedSubscript:@"settingsData"];
@@ -547,13 +547,13 @@ uint64_t __71__FCPuzzleTypeSettings_setSettingsData_lastSeenPuzzleIDs_puzzleType
 
     if (v6)
     {
-      [v14 setObject:v6 forKeyedSubscript:@"lastSeenPuzzleIDs"];
+      [dictionary setObject:v6 forKeyedSubscript:@"lastSeenPuzzleIDs"];
     }
 
-    [(FCKeyValueStore *)v8 setObject:v14 forKey:v10];
+    [(FCKeyValueStore *)v8 setObject:dictionary forKey:recordName];
     if (v5)
     {
-      v15 = [[FCPuzzleTypeSettingsEntry alloc] initWithEntryID:v10 dictionaryRepresentation:v14];
+      v15 = [[FCPuzzleTypeSettingsEntry alloc] initWithEntryID:recordName dictionaryRepresentation:dictionary];
       v16 = v15;
       if (self)
       {
@@ -594,21 +594,21 @@ LABEL_25:
 
   if (v5)
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
-    [v14 setObject:v5 forKey:@"puzzleTypeID"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:v5 forKey:@"puzzleTypeID"];
     if (v27)
     {
-      [v14 setObject:v27 forKey:@"settingsData"];
+      [dictionary setObject:v27 forKey:@"settingsData"];
     }
 
     if (v6)
     {
-      [v14 setObject:v6 forKey:@"lastSeenPuzzleIDs"];
+      [dictionary setObject:v6 forKey:@"lastSeenPuzzleIDs"];
     }
 
     v20 = [FCPuzzleTypeSettingsEntry alloc];
-    v21 = [v14 copy];
-    v22 = [(FCPuzzleTypeSettingsEntry *)v20 initWithEntryID:v10 dictionaryRepresentation:v21];
+    v21 = [dictionary copy];
+    v22 = [(FCPuzzleTypeSettingsEntry *)v20 initWithEntryID:recordName dictionaryRepresentation:v21];
 
     if (self)
     {
@@ -637,7 +637,7 @@ LABEL_25:
 
     [(FCPuzzleTypeSettings *)self settingsDataDidChangeForPuzzleTypeID:v24];
 
-    [(FCKeyValueStore *)v8 setObject:v14 forKey:v10];
+    [(FCKeyValueStore *)v8 setObject:dictionary forKey:recordName];
     goto LABEL_25;
   }
 
@@ -682,9 +682,9 @@ uint64_t __63__FCPuzzleTypeSettings_handleSyncWithPuzzleTypeSettingsRecord___blo
   return [v1 setObject:a1[5] forKey:a1[6]];
 }
 
-- (void)handleSyncWithDeletedPuzzleTypeSettingsRecordName:(id)a3
+- (void)handleSyncWithDeletedPuzzleTypeSettingsRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (self)
   {
     localStore = self->_localStore;
@@ -695,7 +695,7 @@ uint64_t __63__FCPuzzleTypeSettings_handleSyncWithPuzzleTypeSettingsRecord___blo
     localStore = 0;
   }
 
-  v6 = [(FCKeyValueStore *)localStore objectForKey:v4];
+  v6 = [(FCKeyValueStore *)localStore objectForKey:nameCopy];
   if (v6)
   {
     if (self)
@@ -708,7 +708,7 @@ uint64_t __63__FCPuzzleTypeSettings_handleSyncWithPuzzleTypeSettingsRecord___blo
       v7 = 0;
     }
 
-    [(FCKeyValueStore *)v7 removeObjectForKey:v4];
+    [(FCKeyValueStore *)v7 removeObjectForKey:nameCopy];
     v8 = [v6 objectForKeyedSubscript:@"puzzleTypeID"];
     v9 = v8;
     if (v8)
@@ -727,7 +727,7 @@ uint64_t __63__FCPuzzleTypeSettings_handleSyncWithPuzzleTypeSettingsRecord___blo
       v13 = 3221225472;
       v14 = __74__FCPuzzleTypeSettings_handleSyncWithDeletedPuzzleTypeSettingsRecordName___block_invoke;
       v15 = &unk_1E7C36C58;
-      v16 = self;
+      selfCopy = self;
       v11 = v8;
       v17 = v11;
       [(FCMTWriterLock *)entriesLock performWriteSync:&v12];
@@ -736,7 +736,7 @@ uint64_t __63__FCPuzzleTypeSettings_handleSyncWithPuzzleTypeSettingsRecord___blo
         self = objc_loadWeakRetained(&self->_delegate);
       }
 
-      [(FCPuzzleTypeSettings *)self settingsDataDidChangeForPuzzleTypeID:v11, v12, v13, v14, v15, v16];
+      [(FCPuzzleTypeSettings *)self settingsDataDidChangeForPuzzleTypeID:v11, v12, v13, v14, v15, selfCopy];
     }
   }
 }
@@ -754,16 +754,16 @@ uint64_t __74__FCPuzzleTypeSettings_handleSyncWithDeletedPuzzleTypeSettingsRecor
 
 - (id)allPuzzleTypeSettingsRecordNames
 {
-  v2 = [(FCPuzzleTypeSettings *)&self->super.isa _allEntriesInPuzzleTypeSettings];
-  v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_161];
+  _allEntriesInPuzzleTypeSettings = [(FCPuzzleTypeSettings *)&self->super.isa _allEntriesInPuzzleTypeSettings];
+  v3 = [_allEntriesInPuzzleTypeSettings fc_arrayByTransformingWithBlock:&__block_literal_global_161];
 
   return v3;
 }
 
 - (id)_allEntriesInPuzzleTypeSettings
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -771,26 +771,26 @@ uint64_t __74__FCPuzzleTypeSettings_handleSyncWithDeletedPuzzleTypeSettingsRecor
     v8 = __Block_byref_object_copy__78;
     v9 = __Block_byref_object_dispose__78;
     v10 = 0;
-    v2 = a1[1];
+    v2 = self[1];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __55__FCPuzzleTypeSettings__allEntriesInPuzzleTypeSettings__block_invoke;
     v4[3] = &unk_1E7C37160;
-    v4[4] = v1;
+    v4[4] = selfCopy;
     v4[5] = &v5;
     [v2 performReadSync:v4];
 
-    v1 = v6[5];
+    selfCopy = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)allPuzzleTypeSettingsRecords
 {
-  v2 = [(FCPuzzleTypeSettings *)&self->super.isa _allEntriesInPuzzleTypeSettings];
-  v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_24];
+  _allEntriesInPuzzleTypeSettings = [(FCPuzzleTypeSettings *)&self->super.isa _allEntriesInPuzzleTypeSettings];
+  v3 = [_allEntriesInPuzzleTypeSettings fc_arrayByTransformingWithBlock:&__block_literal_global_24];
 
   return v3;
 }

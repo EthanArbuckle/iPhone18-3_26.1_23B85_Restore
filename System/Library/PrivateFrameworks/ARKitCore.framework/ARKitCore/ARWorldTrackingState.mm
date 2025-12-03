@@ -1,14 +1,14 @@
 @interface ARWorldTrackingState
-- (ARWorldTrackingState)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (__n128)setMajorRelocalizationCameraTransform:(__n128)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ARWorldTrackingState)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (__n128)setMajorRelocalizationCameraTransform:(__n128)transform;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARWorldTrackingState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ARWorldTrackingState allocWithZone:](ARWorldTrackingState init];
   v5->_state = self->_state;
@@ -27,7 +27,7 @@
   v5->_lastMajorRelocalizationTimestamp = self->_lastMajorRelocalizationTimestamp;
   v5->_originTimestamp = self->_originTimestamp;
   v5->_poseTimestamp = self->_poseTimestamp;
-  v9 = [(NSArray *)self->_mergedSessionIdentifiers copyWithZone:a3];
+  v9 = [(NSArray *)self->_mergedSessionIdentifiers copyWithZone:zone];
   mergedSessionIdentifiers = v5->_mergedSessionIdentifiers;
   v5->_mergedSessionIdentifiers = v9;
 
@@ -39,38 +39,38 @@
   return v5;
 }
 
-- (ARWorldTrackingState)initWithCoder:(id)a3
+- (ARWorldTrackingState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ARWorldTrackingState;
   v5 = [(ARWorldTrackingState *)&v19 init];
   if (v5)
   {
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v5->_reason = [v4 decodeIntegerForKey:@"reason"];
-    v5->_majorRelocalization = [v4 decodeBoolForKey:@"majorRelocalization"];
-    v5->_minorRelocalization = [v4 decodeBoolForKey:@"minorRelocalization"];
-    v5->_poseGraphUpdated = [v4 decodeBoolForKey:@"poseGraphUpdated"];
-    [v4 ar_decodeMatrix4x4ForKey:@"majorRelocalizationCameraTransform"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v5->_reason = [coderCopy decodeIntegerForKey:@"reason"];
+    v5->_majorRelocalization = [coderCopy decodeBoolForKey:@"majorRelocalization"];
+    v5->_minorRelocalization = [coderCopy decodeBoolForKey:@"minorRelocalization"];
+    v5->_poseGraphUpdated = [coderCopy decodeBoolForKey:@"poseGraphUpdated"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"majorRelocalizationCameraTransform"];
     *&v5[1].super.isa = v6;
     *&v5[1]._state = v7;
     *&v5[1]._vioTrackingState = v8;
     *&v5[1]._originTimestamp = v9;
-    v5->_vioTrackingState = [v4 decodeIntegerForKey:@"vioTrackingState"];
-    [v4 decodeDoubleForKey:@"lastMajorRelocalizationTimestamp"];
+    v5->_vioTrackingState = [coderCopy decodeIntegerForKey:@"vioTrackingState"];
+    [coderCopy decodeDoubleForKey:@"lastMajorRelocalizationTimestamp"];
     v5->_lastMajorRelocalizationTimestamp = v10;
-    [v4 decodeDoubleForKey:@"originTimestamp"];
+    [coderCopy decodeDoubleForKey:@"originTimestamp"];
     v5->_originTimestamp = v11;
-    [v4 decodeDoubleForKey:@"poseTimestamp"];
+    [coderCopy decodeDoubleForKey:@"poseTimestamp"];
     v5->_poseTimestamp = v12;
-    [v4 decodeDoubleForKey:@"numberOfCameraSwitches"];
+    [coderCopy decodeDoubleForKey:@"numberOfCameraSwitches"];
     v5->_numberOfCameraSwitches = v13;
-    [v4 decodeDoubleForKey:@"currentVIOMapSize"];
+    [coderCopy decodeDoubleForKey:@"currentVIOMapSize"];
     v5->_currentVIOMapSize = v14;
-    [v4 decodeDoubleForKey:@"reinitializationAttempts"];
+    [coderCopy decodeDoubleForKey:@"reinitializationAttempts"];
     v5->_reinitializationAttempts = v15;
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inertialState"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inertialState"];
     inertialState = v5->_inertialState;
     v5->_inertialState = v16;
   }
@@ -78,33 +78,33 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"state"];
-  [v5 encodeInteger:self->_reason forKey:@"reason"];
-  [v5 encodeBool:self->_majorRelocalization forKey:@"majorRelocalization"];
-  [v5 encodeBool:self->_minorRelocalization forKey:@"minorRelocalization"];
-  [v5 encodeBool:self->_poseGraphUpdated forKey:@"poseGraphUpdated"];
-  [v5 ar_encodeMatrix4x4:@"majorRelocalizationCameraTransform" forKey:{*&self[1].super.isa, *&self[1]._state, *&self[1]._vioTrackingState, self[1]._originTimestamp}];
-  [v5 encodeInteger:self->_vioTrackingState forKey:@"vioTrackingState"];
-  [v5 encodeDouble:@"lastMajorRelocalizationTimestamp" forKey:self->_lastMajorRelocalizationTimestamp];
-  [v5 encodeDouble:@"originTimestamp" forKey:self->_originTimestamp];
-  [v5 encodeDouble:@"poseTimestamp" forKey:self->_poseTimestamp];
-  [v5 encodeDouble:@"numberOfCameraSwitches" forKey:self->_numberOfCameraSwitches];
-  [v5 encodeDouble:@"currentVIOMapSize" forKey:self->_currentVIOMapSize];
-  [v5 encodeDouble:@"reinitializationAttempts" forKey:self->_reinitializationAttempts];
-  [v5 encodeObject:self->_inertialState forKey:@"inertialState"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"state"];
+  [coderCopy encodeInteger:self->_reason forKey:@"reason"];
+  [coderCopy encodeBool:self->_majorRelocalization forKey:@"majorRelocalization"];
+  [coderCopy encodeBool:self->_minorRelocalization forKey:@"minorRelocalization"];
+  [coderCopy encodeBool:self->_poseGraphUpdated forKey:@"poseGraphUpdated"];
+  [coderCopy ar_encodeMatrix4x4:@"majorRelocalizationCameraTransform" forKey:{*&self[1].super.isa, *&self[1]._state, *&self[1]._vioTrackingState, self[1]._originTimestamp}];
+  [coderCopy encodeInteger:self->_vioTrackingState forKey:@"vioTrackingState"];
+  [coderCopy encodeDouble:@"lastMajorRelocalizationTimestamp" forKey:self->_lastMajorRelocalizationTimestamp];
+  [coderCopy encodeDouble:@"originTimestamp" forKey:self->_originTimestamp];
+  [coderCopy encodeDouble:@"poseTimestamp" forKey:self->_poseTimestamp];
+  [coderCopy encodeDouble:@"numberOfCameraSwitches" forKey:self->_numberOfCameraSwitches];
+  [coderCopy encodeDouble:@"currentVIOMapSize" forKey:self->_currentVIOMapSize];
+  [coderCopy encodeDouble:@"reinitializationAttempts" forKey:self->_reinitializationAttempts];
+  [coderCopy encodeObject:self->_inertialState forKey:@"inertialState"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v8 = self->_state == v5[1].i64[0] && self->_reason == v5[1].i64[1] && self->_majorRelocalization == v5->u8[8] && self->_minorRelocalization == v5->u8[9] && self->_poseGraphUpdated == v5->u8[10] && AREqualTransforms(*&self[1].super.isa, *&self[1]._state, *&self[1]._vioTrackingState, *&self[1]._originTimestamp, v5[7], v5[8], v5[9], v5[10]) && self->_vioTrackingState == v6[2].i64[0] && self->_numberOfCameraSwitches == v6[4].i64[1] && self->_currentVIOMapSize == v6[4].i64[0] && self->_reinitializationAttempts == v6[5].i64[0] && ((inertialState = self->_inertialState, inertialState == v6[6].i64[1]) || [(ARInertialState *)inertialState isEqual:?]) && vabdd_f64(self->_lastMajorRelocalizationTimestamp, *&v6[2].i64[1]) < 2.22044605e-16 && vabdd_f64(self->_originTimestamp, *v6[3].i64) < 2.22044605e-16 && vabdd_f64(self->_poseTimestamp, *&v6[3].i64[1]) < 2.22044605e-16;
   }
@@ -117,10 +117,10 @@
   return v8;
 }
 
-- (__n128)setMajorRelocalizationCameraTransform:(__n128)a3
+- (__n128)setMajorRelocalizationCameraTransform:(__n128)transform
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = transform;
   result[9] = a4;
   result[10] = a5;
   return result;

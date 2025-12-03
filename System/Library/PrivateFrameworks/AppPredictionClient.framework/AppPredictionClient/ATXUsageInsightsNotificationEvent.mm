@@ -1,71 +1,71 @@
 @interface ATXUsageInsightsNotificationEvent
-- (ATXUsageInsightsNotificationEvent)initWithBundleID:(id)a3 category:(unint64_t)a4 eventTime:(id)a5 contactIDs:(id)a6 isGroupMessage:(BOOL)a7 deliveryType:(int)a8;
-- (ATXUsageInsightsNotificationEvent)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXUsageInsightsNotificationEvent)initWithBundleID:(id)d category:(unint64_t)category eventTime:(id)time contactIDs:(id)ds isGroupMessage:(BOOL)message deliveryType:(int)type;
+- (ATXUsageInsightsNotificationEvent)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUsageInsightsNotificationEvent
 
-- (ATXUsageInsightsNotificationEvent)initWithBundleID:(id)a3 category:(unint64_t)a4 eventTime:(id)a5 contactIDs:(id)a6 isGroupMessage:(BOOL)a7 deliveryType:(int)a8
+- (ATXUsageInsightsNotificationEvent)initWithBundleID:(id)d category:(unint64_t)category eventTime:(id)time contactIDs:(id)ds isGroupMessage:(BOOL)message deliveryType:(int)type
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
+  dCopy = d;
+  timeCopy = time;
+  dsCopy = ds;
   v23.receiver = self;
   v23.super_class = ATXUsageInsightsNotificationEvent;
   v17 = [(ATXUsageInsightsNotificationEvent *)&v23 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [dCopy copy];
     bundleID = v17->_bundleID;
     v17->_bundleID = v18;
 
-    v17->_category = a4;
-    objc_storeStrong(&v17->_eventTime, a5);
-    v20 = [v16 copy];
+    v17->_category = category;
+    objc_storeStrong(&v17->_eventTime, time);
+    v20 = [dsCopy copy];
     contactIDs = v17->_contactIDs;
     v17->_contactIDs = v20;
 
-    v17->_isGroupMessage = a7;
-    v17->_deliveryType = a8;
+    v17->_isGroupMessage = message;
+    v17->_deliveryType = type;
   }
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(ATXUsageInsightsNotificationEvent *)self bundleID];
-  [v7 encodeObject:v4 forKey:@"bundleID"];
+  coderCopy = coder;
+  bundleID = [(ATXUsageInsightsNotificationEvent *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  [v7 encodeInteger:-[ATXUsageInsightsNotificationEvent category](self forKey:{"category"), @"category"}];
-  v5 = [(ATXUsageInsightsNotificationEvent *)self eventTime];
-  [v7 encodeObject:v5 forKey:@"eventTime"];
+  [coderCopy encodeInteger:-[ATXUsageInsightsNotificationEvent category](self forKey:{"category"), @"category"}];
+  eventTime = [(ATXUsageInsightsNotificationEvent *)self eventTime];
+  [coderCopy encodeObject:eventTime forKey:@"eventTime"];
 
-  v6 = [(ATXUsageInsightsNotificationEvent *)self contactIDs];
-  [v7 encodeObject:v6 forKey:@"contactIDs"];
+  contactIDs = [(ATXUsageInsightsNotificationEvent *)self contactIDs];
+  [coderCopy encodeObject:contactIDs forKey:@"contactIDs"];
 
-  [v7 encodeBool:-[ATXUsageInsightsNotificationEvent isGroupMessage](self forKey:{"isGroupMessage"), @"isGroupMessage"}];
-  [v7 encodeInt32:-[ATXUsageInsightsNotificationEvent deliveryType](self forKey:{"deliveryType"), @"deliveryType"}];
+  [coderCopy encodeBool:-[ATXUsageInsightsNotificationEvent isGroupMessage](self forKey:{"isGroupMessage"), @"isGroupMessage"}];
+  [coderCopy encodeInt32:-[ATXUsageInsightsNotificationEvent deliveryType](self forKey:{"deliveryType"), @"deliveryType"}];
 }
 
-- (ATXUsageInsightsNotificationEvent)initWithCoder:(id)a3
+- (ATXUsageInsightsNotificationEvent)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
-  v6 = [v4 decodeIntegerForKey:@"category"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v6 = [coderCopy decodeIntegerForKey:@"category"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventTime"];
   v8 = MEMORY[0x1E695DFD8];
   v16[0] = objc_opt_class();
   v16[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v10 = [v8 setWithArray:v9];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"contactIDs"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"contactIDs"];
 
-  v12 = [v4 decodeBoolForKey:@"isGroupMessage"];
-  v13 = [v4 decodeInt32ForKey:@"deliveryType"];
+  v12 = [coderCopy decodeBoolForKey:@"isGroupMessage"];
+  v13 = [coderCopy decodeInt32ForKey:@"deliveryType"];
 
   v14 = [(ATXUsageInsightsNotificationEvent *)self initWithBundleID:v5 category:v6 eventTime:v7 contactIDs:v11 isGroupMessage:v12 deliveryType:v13];
   return v14;

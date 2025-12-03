@@ -1,28 +1,28 @@
 @interface CNVCardDateComponentsFormatter
-+ (id)dateComponentsFromALTBDAYString:(id)a3;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (id)altBDAYStringFromDateComponents:(id)a3;
++ (id)dateComponentsFromALTBDAYString:(id)string;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (id)altBDAYStringFromDateComponents:(id)components;
 - (id)compactYearMonthDayDateFormatter;
 - (id)compactYearMonthDayDateHourMinuteSecondZFormatter;
-- (id)dateComponentsFromALTBDAYString:(id)a3;
-- (id)dateComponentsFromString:(id)a3;
+- (id)dateComponentsFromALTBDAYString:(id)string;
+- (id)dateComponentsFromString:(id)string;
 - (id)gregorianCalendar;
 - (id)hyphenatedMonthDayDateFormatter;
 - (id)monthDayDateFormatter;
-- (id)monthDayStringFromDateComponents:(id)a3;
-- (id)stringForComponentValue:(int64_t)a3 format:(id)a4;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromDateComponents:(id)a3;
+- (id)monthDayStringFromDateComponents:(id)components;
+- (id)stringForComponentValue:(int64_t)value format:(id)format;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromDateComponents:(id)components;
 - (id)yearMonthDayDateFormatter;
 - (id)yearMonthDayDateHourMinuteSecondZFormatter;
-- (id)yearMonthDayStringFromDateComponents:(id)a3;
+- (id)yearMonthDayStringFromDateComponents:(id)components;
 @end
 
 @implementation CNVCardDateComponentsFormatter
 
-- (id)stringFromDateComponents:(id)a3
+- (id)stringFromDateComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
     v4 = [(CNVCardDateComponentsFormatter *)self stringForObjectValue:?];
   }
@@ -60,8 +60,8 @@
     v5 = self->_hyphenatedMonthDayDateFormatter;
     self->_hyphenatedMonthDayDateFormatter = v4;
 
-    v6 = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
-    [(NSDateFormatter *)self->_hyphenatedMonthDayDateFormatter setCalendar:v6];
+    gregorianCalendar = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
+    [(NSDateFormatter *)self->_hyphenatedMonthDayDateFormatter setCalendar:gregorianCalendar];
 
     [(NSDateFormatter *)self->_hyphenatedMonthDayDateFormatter setDateFormat:@"--MM-dd"];
     v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:-1.25138736e10];
@@ -85,8 +85,8 @@
     v5 = self->_monthDayDateFormatter;
     self->_monthDayDateFormatter = v4;
 
-    v6 = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
-    [(NSDateFormatter *)self->_monthDayDateFormatter setCalendar:v6];
+    gregorianCalendar = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
+    [(NSDateFormatter *)self->_monthDayDateFormatter setCalendar:gregorianCalendar];
 
     [(NSDateFormatter *)self->_monthDayDateFormatter setDateFormat:@"--MMdd"];
     v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:-1.25138736e10];
@@ -110,8 +110,8 @@
     v5 = self->_yearMonthDayDateHourMinuteSecondZFormatter;
     self->_yearMonthDayDateHourMinuteSecondZFormatter = v4;
 
-    v6 = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
-    [(NSDateFormatter *)self->_yearMonthDayDateHourMinuteSecondZFormatter setCalendar:v6];
+    gregorianCalendar = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
+    [(NSDateFormatter *)self->_yearMonthDayDateHourMinuteSecondZFormatter setCalendar:gregorianCalendar];
 
     [(NSDateFormatter *)self->_yearMonthDayDateHourMinuteSecondZFormatter setDateFormat:@"y-MM-dd'T'HH:mm:ss'Z'"];
     v7 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
@@ -132,8 +132,8 @@
     v5 = self->_yearMonthDayDateFormatter;
     self->_yearMonthDayDateFormatter = v4;
 
-    v6 = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
-    [(NSDateFormatter *)self->_yearMonthDayDateFormatter setCalendar:v6];
+    gregorianCalendar = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
+    [(NSDateFormatter *)self->_yearMonthDayDateFormatter setCalendar:gregorianCalendar];
 
     [(NSDateFormatter *)self->_yearMonthDayDateFormatter setDateFormat:@"y-MM-dd"];
     v7 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
@@ -154,8 +154,8 @@
     v5 = self->_compactYearMonthDayDateFormatter;
     self->_compactYearMonthDayDateFormatter = v4;
 
-    v6 = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
-    [(NSDateFormatter *)self->_compactYearMonthDayDateFormatter setCalendar:v6];
+    gregorianCalendar = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
+    [(NSDateFormatter *)self->_compactYearMonthDayDateFormatter setCalendar:gregorianCalendar];
 
     [(NSDateFormatter *)self->_compactYearMonthDayDateFormatter setDateFormat:@"yyyyMMdd"];
     v7 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
@@ -176,8 +176,8 @@
     v5 = self->_compactYearMonthDayDateHourMinuteSecondZFormatter;
     self->_compactYearMonthDayDateHourMinuteSecondZFormatter = v4;
 
-    v6 = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
-    [(NSDateFormatter *)self->_compactYearMonthDayDateHourMinuteSecondZFormatter setCalendar:v6];
+    gregorianCalendar = [(CNVCardDateComponentsFormatter *)self gregorianCalendar];
+    [(NSDateFormatter *)self->_compactYearMonthDayDateHourMinuteSecondZFormatter setCalendar:gregorianCalendar];
 
     [(NSDateFormatter *)self->_compactYearMonthDayDateHourMinuteSecondZFormatter setDateFormat:@"yyyyMMdd'T'HHmmss'Z'"];
     v7 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
@@ -189,12 +189,12 @@
   return compactYearMonthDayDateHourMinuteSecondZFormatter;
 }
 
-- (id)dateComponentsFromString:(id)a3
+- (id)dateComponentsFromString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v8 = 0;
-    v4 = [(CNVCardDateComponentsFormatter *)self getObjectValue:&v8 forString:a3 errorDescription:0];
+    v4 = [(CNVCardDateComponentsFormatter *)self getObjectValue:&v8 forString:string errorDescription:0];
     v5 = v8;
     if (!v4)
     {
@@ -212,44 +212,44 @@
   return v6;
 }
 
-- (id)monthDayStringFromDateComponents:(id)a3
+- (id)monthDayStringFromDateComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 month] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v3, "day") == 0x7FFFFFFFFFFFFFFFLL)
+  componentsCopy = components;
+  if ([componentsCopy month] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(componentsCopy, "day") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld-%02ld-%02ld", 1604, objc_msgSend(v3, "month"), objc_msgSend(v3, "day")];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld-%02ld-%02ld", 1604, objc_msgSend(componentsCopy, "month"), objc_msgSend(componentsCopy, "day")];
   }
 
   return v4;
 }
 
-- (id)yearMonthDayStringFromDateComponents:(id)a3
+- (id)yearMonthDayStringFromDateComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 year] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v3, "month") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v3, "day") == 0x7FFFFFFFFFFFFFFFLL)
+  componentsCopy = components;
+  if ([componentsCopy year] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(componentsCopy, "month") == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(componentsCopy, "day") == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld-%02ld-%02ld", objc_msgSend(v3, "year"), objc_msgSend(v3, "month"), objc_msgSend(v3, "day")];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%04ld-%02ld-%02ld", objc_msgSend(componentsCopy, "year"), objc_msgSend(componentsCopy, "month"), objc_msgSend(componentsCopy, "day")];
   }
 
   return v4;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(CNVCardDateComponentsFormatter *)self yearMonthDayStringFromDateComponents:v4];
+    v5 = [(CNVCardDateComponentsFormatter *)self yearMonthDayStringFromDateComponents:valueCopy];
     v6 = v5;
     if (v5)
     {
@@ -258,7 +258,7 @@
 
     else
     {
-      v8 = [(CNVCardDateComponentsFormatter *)self monthDayStringFromDateComponents:v4];
+      v8 = [(CNVCardDateComponentsFormatter *)self monthDayStringFromDateComponents:valueCopy];
       v7 = v8;
       if (v8)
       {
@@ -275,18 +275,18 @@
   return v7;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  v8 = a4;
-  if (![v8 length])
+  stringCopy = string;
+  if (![stringCopy length])
   {
     LOBYTE(v16) = 0;
     goto LABEL_17;
   }
 
-  v9 = [(CNVCardDateComponentsFormatter *)self yearMonthDayDateFormatter];
+  yearMonthDayDateFormatter = [(CNVCardDateComponentsFormatter *)self yearMonthDayDateFormatter];
   v54 = 0;
-  v10 = [v9 getObjectValue:&v54 forString:v8 errorDescription:a5];
+  v10 = [yearMonthDayDateFormatter getObjectValue:&v54 forString:stringCopy errorDescription:description];
   v11 = 0;
   if (v10)
   {
@@ -296,22 +296,22 @@
     [v11 setCalendar:self->_gregorianCalendar];
   }
 
-  v14 = [(CNVCardDateComponentsFormatter *)self yearMonthDayDateHourMinuteSecondZFormatter];
-  v48 = v14;
+  yearMonthDayDateHourMinuteSecondZFormatter = [(CNVCardDateComponentsFormatter *)self yearMonthDayDateHourMinuteSecondZFormatter];
+  v48 = yearMonthDayDateHourMinuteSecondZFormatter;
   if (v10)
   {
-    v15 = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateFormatter];
+    compactYearMonthDayDateFormatter = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateFormatter];
 LABEL_10:
-    v23 = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateHourMinuteSecondZFormatter];
+    compactYearMonthDayDateHourMinuteSecondZFormatter = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateHourMinuteSecondZFormatter];
 LABEL_11:
-    v24 = [(CNVCardDateComponentsFormatter *)self hyphenatedMonthDayDateFormatter];
+    hyphenatedMonthDayDateFormatter = [(CNVCardDateComponentsFormatter *)self hyphenatedMonthDayDateFormatter];
 LABEL_12:
-    v25 = [(CNVCardDateComponentsFormatter *)self monthDayDateFormatter];
+    monthDayDateFormatter = [(CNVCardDateComponentsFormatter *)self monthDayDateFormatter];
     goto LABEL_13;
   }
 
   v53 = 0;
-  v17 = [v14 getObjectValue:&v53 forString:v8 errorDescription:a5];
+  v17 = [yearMonthDayDateHourMinuteSecondZFormatter getObjectValue:&v53 forString:stringCopy errorDescription:description];
   v18 = v17;
   if (v17)
   {
@@ -323,15 +323,15 @@ LABEL_12:
     v11 = v21;
   }
 
-  v22 = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateFormatter];
-  v15 = v22;
+  compactYearMonthDayDateFormatter2 = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateFormatter];
+  compactYearMonthDayDateFormatter = compactYearMonthDayDateFormatter2;
   if (v18)
   {
     goto LABEL_10;
   }
 
   v52 = 0;
-  v28 = [v22 getObjectValue:&v52 forString:v8 errorDescription:a5];
+  v28 = [compactYearMonthDayDateFormatter2 getObjectValue:&v52 forString:stringCopy errorDescription:description];
   v29 = v28;
   if (v28)
   {
@@ -343,15 +343,15 @@ LABEL_12:
     v11 = v32;
   }
 
-  v33 = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateHourMinuteSecondZFormatter];
-  v23 = v33;
+  compactYearMonthDayDateHourMinuteSecondZFormatter2 = [(CNVCardDateComponentsFormatter *)self compactYearMonthDayDateHourMinuteSecondZFormatter];
+  compactYearMonthDayDateHourMinuteSecondZFormatter = compactYearMonthDayDateHourMinuteSecondZFormatter2;
   if (v29)
   {
     goto LABEL_11;
   }
 
   v51 = 0;
-  v34 = [v33 getObjectValue:&v51 forString:v8 errorDescription:a5];
+  v34 = [compactYearMonthDayDateHourMinuteSecondZFormatter2 getObjectValue:&v51 forString:stringCopy errorDescription:description];
   v35 = v34;
   if (v34)
   {
@@ -363,15 +363,15 @@ LABEL_12:
     v11 = v37;
   }
 
-  v38 = [(CNVCardDateComponentsFormatter *)self hyphenatedMonthDayDateFormatter];
-  v24 = v38;
+  hyphenatedMonthDayDateFormatter2 = [(CNVCardDateComponentsFormatter *)self hyphenatedMonthDayDateFormatter];
+  hyphenatedMonthDayDateFormatter = hyphenatedMonthDayDateFormatter2;
   if (v35)
   {
     goto LABEL_12;
   }
 
   v50 = 0;
-  v46 = [v38 getObjectValue:&v50 forString:v8 errorDescription:a5];
+  v46 = [hyphenatedMonthDayDateFormatter2 getObjectValue:&v50 forString:stringCopy errorDescription:description];
   if (v46)
   {
     v39 = self->_gregorianCalendar;
@@ -382,12 +382,12 @@ LABEL_12:
     v11 = v40;
   }
 
-  v41 = [(CNVCardDateComponentsFormatter *)self monthDayDateFormatter];
-  v25 = v41;
+  monthDayDateFormatter2 = [(CNVCardDateComponentsFormatter *)self monthDayDateFormatter];
+  monthDayDateFormatter = monthDayDateFormatter2;
   if ((v46 & 1) == 0)
   {
     v49 = 0;
-    v16 = [v41 getObjectValue:&v49 forString:v8 errorDescription:a5];
+    v16 = [monthDayDateFormatter2 getObjectValue:&v49 forString:stringCopy errorDescription:description];
     if (v16)
     {
       v43 = self->_gregorianCalendar;
@@ -404,31 +404,31 @@ LABEL_12:
 LABEL_13:
   LOBYTE(v16) = 1;
 LABEL_14:
-  if (a3)
+  if (value)
   {
     v26 = v11;
-    *a3 = v11;
+    *value = v11;
   }
 
 LABEL_17:
   return v16;
 }
 
-+ (id)dateComponentsFromALTBDAYString:(id)a3
++ (id)dateComponentsFromALTBDAYString:(id)string
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v5 dateComponentsFromALTBDAYString:v4];
+  stringCopy = string;
+  v5 = objc_alloc_init(self);
+  v6 = [v5 dateComponentsFromALTBDAYString:stringCopy];
 
   return v6;
 }
 
-- (id)dateComponentsFromALTBDAYString:(id)a3
+- (id)dateComponentsFromALTBDAYString:(id)string
 {
   v3 = MEMORY[0x277CBEAB8];
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_alloc_init(v3);
-  v6 = [CNVCardDateScanner scannerWithString:v4];
+  v6 = [CNVCardDateScanner scannerWithString:stringCopy];
 
   [v5 setEra:{objc_msgSend(v6, "scanCalendarUnit:", 2)}];
   [v5 setYear:{objc_msgSend(v6, "scanCalendarUnit:", 4)}];
@@ -448,43 +448,43 @@ LABEL_17:
   return v7;
 }
 
-- (id)altBDAYStringFromDateComponents:(id)a3
+- (id)altBDAYStringFromDateComponents:(id)components
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [v4 era], @"%04li");
-  [v5 appendString:v6];
+  componentsCopy = components;
+  string = [MEMORY[0x277CCAB68] string];
+  v6 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [componentsCopy era], @"%04li");
+  [string appendString:v6];
 
-  v7 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [v4 year], @"%04li");
-  [v5 appendString:v7];
+  v7 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [componentsCopy year], @"%04li");
+  [string appendString:v7];
 
-  v8 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [v4 month], @"%02li");
-  [v5 appendString:v8];
+  v8 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [componentsCopy month], @"%02li");
+  [string appendString:v8];
 
-  if ([v4 isLeapMonth])
+  if ([componentsCopy isLeapMonth])
   {
-    [v5 appendString:@"L"];
+    [string appendString:@"L"];
   }
 
-  v9 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [v4 day], @"%02li");
-  [v5 appendString:v9];
+  v9 = -[CNVCardDateComponentsFormatter stringForComponentValue:format:](self, "stringForComponentValue:format:", [componentsCopy day], @"%02li");
+  [string appendString:v9];
 
-  return v5;
+  return string;
 }
 
-- (id)stringForComponentValue:(int64_t)a3 format:(id)a4
+- (id)stringForComponentValue:(int64_t)value format:(id)format
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (value == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = @"-";
+    value = @"-";
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:a4, a3];
+    value = [MEMORY[0x277CCACA8] stringWithFormat:format, value];
   }
 
-  return v5;
+  return value;
 }
 
 @end

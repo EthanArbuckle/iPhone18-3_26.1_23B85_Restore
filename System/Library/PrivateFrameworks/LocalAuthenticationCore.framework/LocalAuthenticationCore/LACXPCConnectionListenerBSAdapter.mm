@@ -1,15 +1,15 @@
 @interface LACXPCConnectionListenerBSAdapter
-- (LACXPCConnectionListenerBSAdapter)initWithDomainName:(id)a3 protocolServiceName:(id)a4;
+- (LACXPCConnectionListenerBSAdapter)initWithDomainName:(id)name protocolServiceName:(id)serviceName;
 - (LACXPCConnectionListenerDelegate)delegate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation LACXPCConnectionListenerBSAdapter
 
-- (LACXPCConnectionListenerBSAdapter)initWithDomainName:(id)a3 protocolServiceName:(id)a4
+- (LACXPCConnectionListenerBSAdapter)initWithDomainName:(id)name protocolServiceName:(id)serviceName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
   v18.receiver = self;
   v18.super_class = LACXPCConnectionListenerBSAdapter;
   v8 = [(LACXPCConnectionListenerBSAdapter *)&v18 init];
@@ -20,8 +20,8 @@
     v14[1] = 3221225472;
     v14[2] = __76__LACXPCConnectionListenerBSAdapter_initWithDomainName_protocolServiceName___block_invoke;
     v14[3] = &unk_1E7A95860;
-    v15 = v6;
-    v16 = v7;
+    v15 = nameCopy;
+    v16 = serviceNameCopy;
     v10 = v8;
     v17 = v10;
     v11 = [v9 listenerWithConfigurator:v14];
@@ -41,15 +41,15 @@ void __76__LACXPCConnectionListenerBSAdapter_initWithDomainName_protocolServiceN
   [v4 setDelegate:a1[6]];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v11 = a4;
+  connectionCopy = connection;
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [v11 extractNSXPCConnectionWithConfigurator:&__block_literal_global_1];
+    v8 = [connectionCopy extractNSXPCConnectionWithConfigurator:&__block_literal_global_1];
     v9 = [[LACXPCConnectionDefaultAdapter alloc] initWithConnection:v8];
     v10 = objc_loadWeakRetained(&self->delegate);
     [v10 listener:self didReceiveConnection:v9];

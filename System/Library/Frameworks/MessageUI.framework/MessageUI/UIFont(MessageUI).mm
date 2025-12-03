@@ -15,13 +15,13 @@
 
 + (id)mf_messageHeaderSenderLabelFontForMailActionHeader
 {
-  v0 = [MEMORY[0x1E69DC668] sharedApplication];
-  v1 = [v0 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
   v2 = *MEMORY[0x1E69DDC38];
-  if (UIContentSizeCategoryCompareToCategory(v1, v2) == NSOrderedAscending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, v2) == NSOrderedAscending)
   {
-    v3 = v1;
+    v3 = preferredContentSizeCategory;
   }
 
   else

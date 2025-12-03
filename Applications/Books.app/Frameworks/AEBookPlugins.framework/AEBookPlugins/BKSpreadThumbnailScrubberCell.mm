@@ -1,17 +1,17 @@
 @interface BKSpreadThumbnailScrubberCell
-- (BKSpreadThumbnailScrubberCell)initWithFrame:(CGRect)a3;
+- (BKSpreadThumbnailScrubberCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setShouldHaveLeftImage:(BOOL)a3;
-- (void)setShouldHaveRightImage:(BOOL)a3;
+- (void)setShouldHaveLeftImage:(BOOL)image;
+- (void)setShouldHaveRightImage:(BOOL)image;
 @end
 
 @implementation BKSpreadThumbnailScrubberCell
 
-- (BKSpreadThumbnailScrubberCell)initWithFrame:(CGRect)a3
+- (BKSpreadThumbnailScrubberCell)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = BKSpreadThumbnailScrubberCell;
-  v3 = [(BKThumbnailScrubberCell *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKThumbnailScrubberCell *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImageView alloc];
@@ -23,8 +23,8 @@
     v3->_rightImageView = v8;
 
     v10 = v3->_rightImageView;
-    v11 = [objc_opt_class() emptyBackgroundColor];
-    [(UIImageView *)v10 setBackgroundColor:v11];
+    emptyBackgroundColor = [objc_opt_class() emptyBackgroundColor];
+    [(UIImageView *)v10 setBackgroundColor:emptyBackgroundColor];
 
     [(BKSpreadThumbnailScrubberCell *)v3 addSubview:v3->_rightImageView];
     v12 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -32,8 +32,8 @@
     v3->_leftImageView = v12;
 
     v14 = v3->_leftImageView;
-    v15 = [objc_opt_class() emptyBackgroundColor];
-    [(UIImageView *)v14 setBackgroundColor:v15];
+    emptyBackgroundColor2 = [objc_opt_class() emptyBackgroundColor];
+    [(UIImageView *)v14 setBackgroundColor:emptyBackgroundColor2];
 
     [(BKSpreadThumbnailScrubberCell *)v3 addSubview:v3->_leftImageView];
     [(UIImageView *)v3->super._imageView removeFromSuperview];
@@ -82,31 +82,31 @@
   [(UIImageView *)self->_leftImageView setFrame:v4, v6, v11, v10];
   [(UIImageView *)self->_rightImageView setFrame:v11, v6, v11, v10];
   leftImageView = self->_leftImageView;
-  v13 = [objc_opt_class() emptyBackgroundColor];
-  [(UIImageView *)leftImageView setBackgroundColor:v13];
+  emptyBackgroundColor = [objc_opt_class() emptyBackgroundColor];
+  [(UIImageView *)leftImageView setBackgroundColor:emptyBackgroundColor];
 
   rightImageView = self->_rightImageView;
-  v15 = [objc_opt_class() emptyBackgroundColor];
-  [(UIImageView *)rightImageView setBackgroundColor:v15];
+  emptyBackgroundColor2 = [objc_opt_class() emptyBackgroundColor];
+  [(UIImageView *)rightImageView setBackgroundColor:emptyBackgroundColor2];
 
 LABEL_9:
   [(CALayer *)self->super._borderLayer setFrame:v4, v6, v8, v10];
 }
 
-- (void)setShouldHaveLeftImage:(BOOL)a3
+- (void)setShouldHaveLeftImage:(BOOL)image
 {
-  if (self->_shouldHaveLeftImage != a3)
+  if (self->_shouldHaveLeftImage != image)
   {
-    self->_shouldHaveLeftImage = a3;
+    self->_shouldHaveLeftImage = image;
     [(BKSpreadThumbnailScrubberCell *)self setNeedsLayout];
   }
 }
 
-- (void)setShouldHaveRightImage:(BOOL)a3
+- (void)setShouldHaveRightImage:(BOOL)image
 {
-  if (self->_shouldHaveRightImage != a3)
+  if (self->_shouldHaveRightImage != image)
   {
-    self->_shouldHaveRightImage = a3;
+    self->_shouldHaveRightImage = image;
     [(BKSpreadThumbnailScrubberCell *)self setNeedsLayout];
   }
 }

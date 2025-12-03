@@ -1,11 +1,11 @@
 @interface MFRequestQueue
 - (MFRequestQueue)init;
 - (uint64_t)dealloc;
-- (void)_processRequests:(id)a3 consumers:(id)a4;
-- (void)addRequest:(id)a3 consumer:(id)a4;
-- (void)addRequests:(id)a3 consumers:(id)a4;
+- (void)_processRequests:(id)requests consumers:(id)consumers;
+- (void)addRequest:(id)request consumer:(id)consumer;
+- (void)addRequests:(id)requests consumers:(id)consumers;
 - (void)dealloc;
-- (void)processRequests:(id)a3 consumers:(id)a4;
+- (void)processRequests:(id)requests consumers:(id)consumers;
 @end
 
 @implementation MFRequestQueue
@@ -25,23 +25,23 @@
   return v2;
 }
 
-- (void)addRequest:(id)a3 consumer:(id)a4
+- (void)addRequest:(id)request consumer:(id)consumer
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v9[0] = a3;
+  v9[0] = request;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v8 = a4;
-  -[MFRequestQueue addRequests:consumers:](self, "addRequests:consumers:", v6, [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1]);
+  consumerCopy = consumer;
+  -[MFRequestQueue addRequests:consumers:](self, "addRequests:consumers:", v6, [MEMORY[0x277CBEA60] arrayWithObjects:&consumerCopy count:1]);
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRequests:(id)a3 consumers:(id)a4
+- (void)addRequests:(id)requests consumers:(id)consumers
 {
   _MFLockGlobalLock();
   ++self->_waitingOutside;
-  [(MFRequestQueue *)self willAddRequests:a3 consumers:a4];
-  [(NSMutableArray *)self->_requests addObjectsFromArray:a3];
-  [(NSMutableArray *)self->_consumers addObjectsFromArray:a4];
+  [(MFRequestQueue *)self willAddRequests:requests consumers:consumers];
+  [(NSMutableArray *)self->_requests addObjectsFromArray:requests];
+  [(NSMutableArray *)self->_consumers addObjectsFromArray:consumers];
   _MFUnlockGlobalLock();
   [(NSConditionLock *)self->_condition lockWhenCondition:0];
   _MFLockGlobalLock();
@@ -83,23 +83,23 @@ LABEL_6:
   [(NSConditionLock *)condition unlockWithCondition:v12];
 }
 
-- (void)_processRequests:(id)a3 consumers:(id)a4
+- (void)_processRequests:(id)requests consumers:(id)consumers
 {
   v5 = *MEMORY[0x277D85DE8];
-  [(MFRequestQueue *)self processRequests:a3 consumers:a4];
+  [(MFRequestQueue *)self processRequests:requests consumers:consumers];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processRequests:(id)a3 consumers:(id)a4
+- (void)processRequests:(id)requests consumers:(id)consumers
 {
-  [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
-  v7 = [a3 count];
+  [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(requests, "count")}];
+  v7 = [requests count];
   if (v7)
   {
     v8 = v7;
     for (i = 0; i != v8; ++i)
     {
-      -[MFRequestQueue processRequest:consumer:](self, "processRequest:consumer:", [a3 objectAtIndex:i], objc_msgSend(a4, "objectAtIndex:", i));
+      -[MFRequestQueue processRequest:consumer:](self, "processRequest:consumer:", [requests objectAtIndex:i], objc_msgSend(consumers, "objectAtIndex:", i));
     }
   }
 }
@@ -123,9 +123,9 @@ LABEL_6:
 
 - (uint64_t)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
-  return [v4 handleFailureInMethod:a1 object:a2 file:@"RequestQueue.m" lineNumber:121 description:@"nobody should be waiting at -dealloc time"];
+  return [currentHandler handleFailureInMethod:self object:a2 file:@"RequestQueue.m" lineNumber:121 description:@"nobody should be waiting at -dealloc time"];
 }
 
 @end

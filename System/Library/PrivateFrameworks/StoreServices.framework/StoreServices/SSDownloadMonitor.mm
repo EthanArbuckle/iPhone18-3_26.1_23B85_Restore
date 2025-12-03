@@ -2,11 +2,11 @@
 - (SSDownloadMonitor)init;
 - (SSDownloadMonitorDelegate)delegate;
 - (id)_connection;
-- (id)_copyItemsWithReply:(id)a3 error:(id *)a4;
+- (id)_copyItemsWithReply:(id)reply error:(id *)error;
 - (void)_reloadForChangeNotification;
 - (void)dealloc;
-- (void)getMonitorItemsWithCompletionBlock:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)getMonitorItemsWithCompletionBlock:(id)block;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SSDownloadMonitor
@@ -83,7 +83,7 @@ id __29__SSDownloadMonitor_delegate__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)getMonitorItemsWithCompletionBlock:(id)a3
+- (void)getMonitorItemsWithCompletionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -91,7 +91,7 @@ id __29__SSDownloadMonitor_delegate__block_invoke(uint64_t a1)
   v4[2] = __56__SSDownloadMonitor_getMonitorItemsWithCompletionBlock___block_invoke;
   v4[3] = &unk_1E84AF318;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -127,7 +127,7 @@ void __56__SSDownloadMonitor_getMonitorItemsWithCompletionBlock___block_invoke_2
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -135,7 +135,7 @@ void __56__SSDownloadMonitor_getMonitorItemsWithCompletionBlock___block_invoke_2
   v4[2] = __33__SSDownloadMonitor_setDelegate___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = delegate;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -153,16 +153,16 @@ void __56__SSDownloadMonitor_getMonitorItemsWithCompletionBlock___block_invoke_2
   return result;
 }
 
-- (id)_copyItemsWithReply:(id)a3 error:(id *)a4
+- (id)_copyItemsWithReply:(id)reply error:(id *)error
 {
-  if (a3 == MEMORY[0x1E69E9E18])
+  if (reply == MEMORY[0x1E69E9E18])
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = 121;
 LABEL_6:
     v8 = [v6 errorWithDomain:@"SSErrorDomain" code:v7 userInfo:0];
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       return v9;
     }
@@ -170,14 +170,14 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a3 || MEMORY[0x1DA6E0380](a3, a2) != MEMORY[0x1E69E9E80])
+  if (!reply || MEMORY[0x1DA6E0380](reply, a2) != MEMORY[0x1E69E9E80])
   {
     v6 = MEMORY[0x1E696ABC0];
     v7 = 111;
     goto LABEL_6;
   }
 
-  value = xpc_dictionary_get_value(a3, "0");
+  value = xpc_dictionary_get_value(reply, "0");
   v9 = value;
   if (value)
   {
@@ -194,14 +194,14 @@ LABEL_6:
   }
 
   objc_opt_class();
-  v8 = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
+  v8 = SSXPCDictionaryCopyCFObjectWithClass(reply, "1");
   v13 = v8;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     if (!v9)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -213,13 +213,13 @@ LABEL_7:
   if (objc_opt_respondsToSelector())
   {
     v3 = SSXPCCreateMessageDictionary(109);
-    v4 = [(SSDownloadMonitor *)self _connection];
+    _connection = [(SSDownloadMonitor *)self _connection];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __49__SSDownloadMonitor__reloadForChangeNotification__block_invoke;
     v5[3] = &unk_1E84AF2C8;
     v5[4] = self;
-    [v4 sendMessage:v3 withReply:v5];
+    [_connection sendMessage:v3 withReply:v5];
     xpc_release(v3);
   }
 }

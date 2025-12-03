@@ -1,21 +1,21 @@
 @interface SXDataRecordStore
-- (SXDataRecordStore)initWithJSONObject:(id)a3 andVersion:(id)a4;
-- (SXDataRecordStore)initWithRecords:(id)a3 andDescriptors:(id)a4;
-- (id)recordsUsingSortDescriptors:(id)a3;
+- (SXDataRecordStore)initWithJSONObject:(id)object andVersion:(id)version;
+- (SXDataRecordStore)initWithRecords:(id)records andDescriptors:(id)descriptors;
+- (id)recordsUsingSortDescriptors:(id)descriptors;
 - (unint64_t)numberOfRecords;
 @end
 
 @implementation SXDataRecordStore
 
-- (SXDataRecordStore)initWithJSONObject:(id)a3 andVersion:(id)a4
+- (SXDataRecordStore)initWithJSONObject:(id)object andVersion:(id)version
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"descriptors"];
-  v26 = v5;
-  v8 = [v5 objectForKey:@"records"];
-  v9 = [MEMORY[0x1E695DF70] array];
+  objectCopy = object;
+  versionCopy = version;
+  v7 = [objectCopy objectForKey:@"descriptors"];
+  v26 = objectCopy;
+  v8 = [objectCopy objectForKey:@"records"];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -36,10 +36,10 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [(SXJSONObject *)[SXDataDescriptor alloc] initWithJSONObject:*(*(&v31 + 1) + 8 * v14) andVersion:v6];
+        v15 = [(SXJSONObject *)[SXDataDescriptor alloc] initWithJSONObject:*(*(&v31 + 1) + 8 * v14) andVersion:versionCopy];
         if ([(SXDataDescriptor *)v15 dataType])
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
 
         ++v14;
@@ -52,7 +52,7 @@
     while (v12);
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -73,8 +73,8 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [(SXJSONObject *)[SXDataRecord alloc] initWithJSONObject:*(*(&v27 + 1) + 8 * v21) andVersion:v6];
-        [v16 addObject:v22];
+        v22 = [(SXJSONObject *)[SXDataRecord alloc] initWithJSONObject:*(*(&v27 + 1) + 8 * v21) andVersion:versionCopy];
+        [array2 addObject:v22];
 
         ++v21;
       }
@@ -86,22 +86,22 @@
     while (v19);
   }
 
-  v23 = [(SXDataRecordStore *)self initWithRecords:v16 andDescriptors:v9];
+  v23 = [(SXDataRecordStore *)self initWithRecords:array2 andDescriptors:array];
   return v23;
 }
 
-- (SXDataRecordStore)initWithRecords:(id)a3 andDescriptors:(id)a4
+- (SXDataRecordStore)initWithRecords:(id)records andDescriptors:(id)descriptors
 {
-  v7 = a3;
-  v8 = a4;
+  recordsCopy = records;
+  descriptorsCopy = descriptors;
   v12.receiver = self;
   v12.super_class = SXDataRecordStore;
   v9 = [(SXDataRecordStore *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_records, a3);
-    objc_storeStrong(&v10->_descriptors, a4);
+    objc_storeStrong(&v9->_records, records);
+    objc_storeStrong(&v10->_descriptors, descriptors);
   }
 
   return v10;
@@ -109,21 +109,21 @@
 
 - (unint64_t)numberOfRecords
 {
-  v2 = [(SXDataRecordStore *)self records];
-  v3 = [v2 count];
+  records = [(SXDataRecordStore *)self records];
+  v3 = [records count];
 
   return v3;
 }
 
-- (id)recordsUsingSortDescriptors:(id)a3
+- (id)recordsUsingSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(SXDataRecordStore *)self records];
-  v6 = [v5 copy];
+  descriptorsCopy = descriptors;
+  records = [(SXDataRecordStore *)self records];
+  v6 = [records copy];
 
-  if ([v4 count])
+  if ([descriptorsCopy count])
   {
-    v7 = [v6 sortedArrayUsingDescriptors:v4];
+    v7 = [v6 sortedArrayUsingDescriptors:descriptorsCopy];
 
     v6 = v7;
   }

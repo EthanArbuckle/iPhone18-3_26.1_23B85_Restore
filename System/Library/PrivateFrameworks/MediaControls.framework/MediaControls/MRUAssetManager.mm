@@ -1,13 +1,13 @@
 @interface MRUAssetManager
 + (MRUAssetManager)sharedManager;
-- (BOOL)shouldLoadPhotorealisticAssetForRoute:(id)a3;
+- (BOOL)shouldLoadPhotorealisticAssetForRoute:(id)route;
 - (MRUAssetManager)init;
-- (id)symbolImageForEndpointRoute:(id)a3;
-- (void)imageForEndpointRoute:(id)a3 completion:(id)a4;
-- (void)imageForModelIdentifier:(id)a3 color:(id)a4 allowFallback:(BOOL)a5 timeout:(double)a6 completion:(id)a7;
-- (void)imageForModelIdentifier:(id)a3 color:(id)a4 name:(id)a5 allowFallback:(BOOL)a6 timeout:(double)a7 completion:(id)a8;
-- (void)imageForOutputDevice:(id)a3 completion:(id)a4;
-- (void)productKitImageForModelIdentifier:(id)a3 color:(id)a4 allowFallback:(BOOL)a5 timeout:(double)a6 completion:(id)a7;
+- (id)symbolImageForEndpointRoute:(id)route;
+- (void)imageForEndpointRoute:(id)route completion:(id)completion;
+- (void)imageForModelIdentifier:(id)identifier color:(id)color allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion;
+- (void)imageForModelIdentifier:(id)identifier color:(id)color name:(id)name allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion;
+- (void)imageForOutputDevice:(id)device completion:(id)completion;
+- (void)productKitImageForModelIdentifier:(id)identifier color:(id)color allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion;
 @end
 
 @implementation MRUAssetManager
@@ -50,31 +50,31 @@ uint64_t __32__MRUAssetManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)imageForEndpointRoute:(id)a3 completion:(id)a4
+- (void)imageForEndpointRoute:(id)route completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MRUAssetManager *)self symbolImageForEndpointRoute:v6];
-  if ([(MRUAssetManager *)self shouldLoadPhotorealisticAssetForRoute:v6])
+  routeCopy = route;
+  completionCopy = completion;
+  v8 = [(MRUAssetManager *)self symbolImageForEndpointRoute:routeCopy];
+  if ([(MRUAssetManager *)self shouldLoadPhotorealisticAssetForRoute:routeCopy])
   {
-    v9 = [v6 endpointObject];
-    v10 = [v9 outputDevices];
-    v11 = [v10 firstObject];
+    endpointObject = [routeCopy endpointObject];
+    outputDevices = [endpointObject outputDevices];
+    firstObject = [outputDevices firstObject];
 
-    v12 = [v11 modelID];
-    v13 = [v11 deviceEnclosureColor];
+    modelID = [firstObject modelID];
+    deviceEnclosureColor = [firstObject deviceEnclosureColor];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __52__MRUAssetManager_imageForEndpointRoute_completion___block_invoke;
     v14[3] = &unk_1E7664978;
-    v16 = v7;
+    v16 = completionCopy;
     v15 = v8;
-    [(MRUAssetManager *)self imageForModelIdentifier:v12 color:v13 allowFallback:0 completion:v14];
+    [(MRUAssetManager *)self imageForModelIdentifier:modelID color:deviceEnclosureColor allowFallback:0 completion:v14];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
@@ -89,24 +89,24 @@ uint64_t __52__MRUAssetManager_imageForEndpointRoute_completion___block_invoke(u
   return (*(v3 + 16))(v3, a2);
 }
 
-- (void)imageForOutputDevice:(id)a3 completion:(id)a4
+- (void)imageForOutputDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 modelID];
-  v8 = [v7 deviceEnclosureColor];
+  completionCopy = completion;
+  deviceCopy = device;
+  modelID = [deviceCopy modelID];
+  deviceEnclosureColor = [deviceCopy deviceEnclosureColor];
 
-  [(MRUAssetManager *)self imageForModelIdentifier:v9 color:v8 completion:v6];
+  [(MRUAssetManager *)self imageForModelIdentifier:modelID color:deviceEnclosureColor completion:completionCopy];
 }
 
-- (void)imageForModelIdentifier:(id)a3 color:(id)a4 allowFallback:(BOOL)a5 timeout:(double)a6 completion:(id)a7
+- (void)imageForModelIdentifier:(id)identifier color:(id)color allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion
 {
-  v9 = a5;
+  fallbackCopy = fallback;
   v21 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
-  v14 = a4;
-  v15 = [(MRUAssetManager *)self shouldUseProductKitFor:v12];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  colorCopy = color;
+  v15 = [(MRUAssetManager *)self shouldUseProductKitFor:identifierCopy];
   v16 = MCLogCategoryDefault();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG);
   if (v15)
@@ -114,17 +114,17 @@ uint64_t __52__MRUAssetManager_imageForEndpointRoute_completion___block_invoke(u
     if (v17)
     {
       v19 = 138412290;
-      v20 = v12;
+      v20 = identifierCopy;
       _os_log_impl(&dword_1A20FC000, v16, OS_LOG_TYPE_DEBUG, "[AssetManager] Request for %@ - PK", &v19, 0xCu);
     }
 
-    v18 = 3.0;
-    if (a6 >= 3.0)
+    timeoutCopy = 3.0;
+    if (timeout >= 3.0)
     {
-      v18 = a6;
+      timeoutCopy = timeout;
     }
 
-    [(MRUAssetManager *)self productKitImageForModelIdentifier:v12 color:v14 allowFallback:v9 timeout:v13 completion:v18];
+    [(MRUAssetManager *)self productKitImageForModelIdentifier:identifierCopy color:colorCopy allowFallback:fallbackCopy timeout:completionCopy completion:timeoutCopy];
   }
 
   else
@@ -132,37 +132,37 @@ uint64_t __52__MRUAssetManager_imageForEndpointRoute_completion___block_invoke(u
     if (v17)
     {
       v19 = 138412290;
-      v20 = v12;
+      v20 = identifierCopy;
       _os_log_impl(&dword_1A20FC000, v16, OS_LOG_TYPE_DEBUG, "[AssetManager] Request for %@ - SF", &v19, 0xCu);
     }
 
-    [(MRUAssetManager *)self imageForModelIdentifier:v12 color:v14 name:@"ProxCard_Setup" allowFallback:v9 timeout:v13 completion:a6];
+    [(MRUAssetManager *)self imageForModelIdentifier:identifierCopy color:colorCopy name:@"ProxCard_Setup" allowFallback:fallbackCopy timeout:completionCopy completion:timeout];
   }
 }
 
-- (void)productKitImageForModelIdentifier:(id)a3 color:(id)a4 allowFallback:(BOOL)a5 timeout:(double)a6 completion:(id)a7
+- (void)productKitImageForModelIdentifier:(id)identifier color:(id)color allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion
 {
-  v9 = a5;
+  fallbackCopy = fallback;
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [MEMORY[0x1E696AFB0] UUID];
-  v15 = [v14 UUIDString];
+  identifierCopy = identifier;
+  colorCopy = color;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v16 = MCLogCategoryDefault();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v23 = v15;
+    v23 = uUIDString;
     v24 = 2112;
-    v25 = v11;
+    v25 = identifierCopy;
     v26 = 2112;
-    v27 = v12;
+    v27 = colorCopy;
     v28 = 1024;
-    v29 = v9;
+    v29 = fallbackCopy;
     v30 = 2048;
-    v31 = a6;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_1A20FC000, v16, OS_LOG_TYPE_DEBUG, "[AssetManager] PK request<%@> for model: %@, color: %@, allow fallback? %{BOOL}u, timeout: %f", buf, 0x30u);
   }
 
@@ -170,11 +170,11 @@ uint64_t __52__MRUAssetManager_imageForEndpointRoute_completion___block_invoke(u
   v19[1] = 3221225472;
   v19[2] = __92__MRUAssetManager_productKitImageForModelIdentifier_color_allowFallback_timeout_completion___block_invoke;
   v19[3] = &unk_1E76649A0;
-  v20 = v15;
-  v21 = v13;
-  v17 = v13;
-  v18 = v15;
-  [MRUProductKit assetHardwareModel:v11 color:v12 allowFallback:v9 timeout:v19 completion:a6];
+  v20 = uUIDString;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = uUIDString;
+  [MRUProductKit assetHardwareModel:identifierCopy color:colorCopy allowFallback:fallbackCopy timeout:v19 completion:timeout];
 }
 
 void __92__MRUAssetManager_productKitImageForModelIdentifier_color_allowFallback_timeout_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -213,51 +213,51 @@ LABEL_6:
   (*(*(a1 + 40) + 16))(*(a1 + 40), v5, v6, v12);
 }
 
-- (void)imageForModelIdentifier:(id)a3 color:(id)a4 name:(id)a5 allowFallback:(BOOL)a6 timeout:(double)a7 completion:(id)a8
+- (void)imageForModelIdentifier:(id)identifier color:(id)color name:(id)name allowFallback:(BOOL)fallback timeout:(double)timeout completion:(id)completion
 {
-  v10 = a6;
+  fallbackCopy = fallback;
   v48 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = [MEMORY[0x1E696AFB0] UUID];
-  v19 = [v18 UUIDString];
+  identifierCopy = identifier;
+  colorCopy = color;
+  nameCopy = name;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v20 = MCLogCategoryDefault();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413314;
-    v39 = v19;
+    v39 = uUIDString;
     v40 = 2112;
-    v41 = v14;
+    v41 = identifierCopy;
     v42 = 2112;
-    v43 = v15;
+    v43 = colorCopy;
     v44 = 1024;
-    v45 = v10;
+    v45 = fallbackCopy;
     v46 = 2048;
-    v47 = a7;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_1A20FC000, v20, OS_LOG_TYPE_DEBUG, "[AssetManager] Request<%@> Bundle for model: %@, color: %@, allow fallback? %{BOOL}u, timeout: %f", buf, 0x30u);
   }
 
-  if (v15)
+  if (colorCopy)
   {
     v21 = objc_alloc(MEMORY[0x1E69CDE98]);
     v28 = MEMORY[0x1E69E9820];
     v29 = 3221225472;
     v30 = __87__MRUAssetManager_imageForModelIdentifier_color_name_allowFallback_timeout_completion___block_invoke;
     v31 = &unk_1E76649C8;
-    v32 = v19;
-    v34 = v17;
-    v35 = v10;
-    v33 = v16;
+    v32 = uUIDString;
+    v34 = completionCopy;
+    v35 = fallbackCopy;
+    v33 = nameCopy;
     v22 = [v21 initWithQueryResultHandler:&v28];
-    [v22 setTimeout:{a7, v28, v29, v30, v31}];
+    [v22 setTimeout:{timeout, v28, v29, v30, v31}];
     v23 = objc_alloc(MEMORY[0x1E69CDE90]);
     v36 = *MEMORY[0x1E69CDEF0];
-    v37 = v15;
+    v37 = colorCopy;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    v25 = [v23 initWithProductType:v14 additionalQueryParameters:v24];
+    v25 = [v23 initWithProductType:identifierCopy additionalQueryParameters:v24];
 
     [(SFDeviceAssetManager *)self->_assetManager getAssetBundleForDeviceQuery:v25 withRequestConfiguration:v22];
     v26 = v32;
@@ -269,12 +269,12 @@ LABEL_6:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v39 = v19;
+      v39 = uUIDString;
       _os_log_impl(&dword_1A20FC000, v27, OS_LOG_TYPE_DEBUG, "[AssetManager] Response<%@> No color provided, not requesting bundle", buf, 0xCu);
     }
 
     v26 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MRUAssetManagerErrorDomain" code:0 userInfo:0];
-    (*(v17 + 2))(v17, 0, v26);
+    (*(completionCopy + 2))(completionCopy, 0, v26);
   }
 }
 
@@ -351,29 +351,29 @@ LABEL_16:
   v17();
 }
 
-- (id)symbolImageForEndpointRoute:(id)a3
+- (id)symbolImageForEndpointRoute:(id)route
 {
   v3 = MEMORY[0x1E69B09B8];
-  v4 = [a3 endpointObject];
-  v5 = [v4 outputDevices];
-  v6 = [v3 symbolNameForOutputDevices:v5];
+  endpointObject = [route endpointObject];
+  outputDevices = [endpointObject outputDevices];
+  v6 = [v3 symbolNameForOutputDevices:outputDevices];
 
   v7 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v6];
 
   return v7;
 }
 
-- (BOOL)shouldLoadPhotorealisticAssetForRoute:(id)a3
+- (BOOL)shouldLoadPhotorealisticAssetForRoute:(id)route
 {
-  v3 = [a3 endpointObject];
-  v4 = [v3 outputDevices];
+  endpointObject = [route endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
-  v5 = [v4 firstObject];
-  v6 = [v4 count];
-  v7 = [v5 deviceSubtype];
-  v8 = [v5 deviceEnclosureColor];
+  firstObject = [outputDevices firstObject];
+  v6 = [outputDevices count];
+  deviceSubtype = [firstObject deviceSubtype];
+  deviceEnclosureColor = [firstObject deviceEnclosureColor];
 
-  v11 = v6 == 1 && v7 == 12 && v8 != 0;
+  v11 = v6 == 1 && deviceSubtype == 12 && deviceEnclosureColor != 0;
   return v11;
 }
 

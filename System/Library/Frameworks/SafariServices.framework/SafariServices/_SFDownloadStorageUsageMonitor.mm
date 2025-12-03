@@ -2,8 +2,8 @@
 - (_SFDownloadStorageUsageMonitor)init;
 - (int64_t)usage;
 - (void)_reloadDownloadHistory;
-- (void)downloadFileContentsDidChange:(id)a3;
-- (void)entryDidChangeUsage:(id)a3;
+- (void)downloadFileContentsDidChange:(id)change;
+- (void)entryDidChangeUsage:(id)usage;
 @end
 
 @implementation _SFDownloadStorageUsageMonitor
@@ -72,8 +72,8 @@
     v4 = [_SFDownloadManager downloadRepresentationsAtURL:v3];
 
     v5 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v6 = [(NSMutableDictionary *)self->_entries allKeys];
-    v7 = [v5 initWithArray:v6];
+    allKeys = [(NSMutableDictionary *)self->_entries allKeys];
+    v7 = [v5 initWithArray:allKeys];
 
     v35 = 0u;
     v36 = 0u;
@@ -170,7 +170,7 @@
   }
 }
 
-- (void)entryDidChangeUsage:(id)a3
+- (void)entryDidChangeUsage:(id)usage
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -180,7 +180,7 @@
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)downloadFileContentsDidChange:(id)a3
+- (void)downloadFileContentsDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];

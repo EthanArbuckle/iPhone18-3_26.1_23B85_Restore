@@ -1,44 +1,44 @@
 @interface NESportsEventLinkPresentationSource
-+ (id)iconItemProviderForSportsEvent:(id)a3 tagImageProvider:(id)a4;
-+ (id)imageItemProviderForSportsEvent:(id)a3 tagImageProvider:(id)a4;
-+ (id)urlFromSportsEvent:(id)a3;
++ (id)iconItemProviderForSportsEvent:(id)event tagImageProvider:(id)provider;
++ (id)imageItemProviderForSportsEvent:(id)event tagImageProvider:(id)provider;
++ (id)urlFromSportsEvent:(id)event;
 - (LPLinkMetadata)linkMetadata;
-- (NESportsEventLinkPresentationSource)initWithSportsEvent:(id)a3 tagImageProvider:(id)a4;
-- (NESportsEventLinkPresentationSource)initWithTitle:(id)a3 url:(id)a4 sportsEvent:(id)a5 tagImageProvider:(id)a6;
+- (NESportsEventLinkPresentationSource)initWithSportsEvent:(id)event tagImageProvider:(id)provider;
+- (NESportsEventLinkPresentationSource)initWithTitle:(id)title url:(id)url sportsEvent:(id)event tagImageProvider:(id)provider;
 @end
 
 @implementation NESportsEventLinkPresentationSource
 
-- (NESportsEventLinkPresentationSource)initWithSportsEvent:(id)a3 tagImageProvider:(id)a4
+- (NESportsEventLinkPresentationSource)initWithSportsEvent:(id)event tagImageProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [NESportsEventLinkPresentationSource titleFromSportsEvent:v7];
-  v9 = [NESportsEventLinkPresentationSource urlFromSportsEvent:v7];
-  v10 = [(NESportsEventLinkPresentationSource *)self initWithTitle:v8 url:v9 sportsEvent:v7 tagImageProvider:v6];
+  providerCopy = provider;
+  eventCopy = event;
+  v8 = [NESportsEventLinkPresentationSource titleFromSportsEvent:eventCopy];
+  v9 = [NESportsEventLinkPresentationSource urlFromSportsEvent:eventCopy];
+  v10 = [(NESportsEventLinkPresentationSource *)self initWithTitle:v8 url:v9 sportsEvent:eventCopy tagImageProvider:providerCopy];
 
   return v10;
 }
 
-- (NESportsEventLinkPresentationSource)initWithTitle:(id)a3 url:(id)a4 sportsEvent:(id)a5 tagImageProvider:(id)a6
+- (NESportsEventLinkPresentationSource)initWithTitle:(id)title url:(id)url sportsEvent:(id)event tagImageProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  urlCopy = url;
+  eventCopy = event;
+  providerCopy = provider;
   v22.receiver = self;
   v22.super_class = NESportsEventLinkPresentationSource;
   v15 = [(NESportsEventLinkPresentationSource *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    objc_storeStrong(&v16->_url, a4);
-    v17 = [NESportsEventLinkPresentationSource imageItemProviderForSportsEvent:v13 tagImageProvider:v14];
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v16->_url, url);
+    v17 = [NESportsEventLinkPresentationSource imageItemProviderForSportsEvent:eventCopy tagImageProvider:providerCopy];
     linkPresentationImageProvider = v16->_linkPresentationImageProvider;
     v16->_linkPresentationImageProvider = v17;
 
-    v19 = [NESportsEventLinkPresentationSource iconItemProviderForSportsEvent:v13 tagImageProvider:v14];
+    v19 = [NESportsEventLinkPresentationSource iconItemProviderForSportsEvent:eventCopy tagImageProvider:providerCopy];
     linkPresentationIconProvider = v16->_linkPresentationIconProvider;
     v16->_linkPresentationIconProvider = v19;
   }
@@ -49,41 +49,41 @@
 - (LPLinkMetadata)linkMetadata
 {
   v3 = [NELinkMetadataSource alloc];
-  v4 = [(NESportsEventLinkPresentationSource *)self title];
+  title = [(NESportsEventLinkPresentationSource *)self title];
   v5 = [(NESportsEventLinkPresentationSource *)self url];
-  v6 = [(NESportsEventLinkPresentationSource *)self linkPresentationImageProvider];
-  v7 = [(NESportsEventLinkPresentationSource *)self linkPresentationIconProvider];
-  v8 = [(NELinkMetadataSource *)v3 initWithTitle:v4 url:v5 imageProvider:v6 iconProvider:v7];
+  linkPresentationImageProvider = [(NESportsEventLinkPresentationSource *)self linkPresentationImageProvider];
+  linkPresentationIconProvider = [(NESportsEventLinkPresentationSource *)self linkPresentationIconProvider];
+  v8 = [(NELinkMetadataSource *)v3 initWithTitle:title url:v5 imageProvider:linkPresentationImageProvider iconProvider:linkPresentationIconProvider];
 
-  v9 = [(NELinkMetadataSource *)v8 linkMetadata];
+  linkMetadata = [(NELinkMetadataSource *)v8 linkMetadata];
 
-  return v9;
+  return linkMetadata;
 }
 
-+ (id)urlFromSportsEvent:(id)a3
++ (id)urlFromSportsEvent:(id)event
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [a3 identifier];
-  v5 = [v3 nss_NewsURLForTagID:v4];
+  identifier = [event identifier];
+  v5 = [v3 nss_NewsURLForTagID:identifier];
 
   return v5;
 }
 
-+ (id)imageItemProviderForSportsEvent:(id)a3 tagImageProvider:(id)a4
++ (id)imageItemProviderForSportsEvent:(id)event tagImageProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  providerCopy = provider;
   v7 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v8 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__NESportsEventLinkPresentationSource_imageItemProviderForSportsEvent_tagImageProvider___block_invoke;
   v12[3] = &unk_1E84CD128;
-  v13 = v6;
-  v14 = v5;
-  v9 = v5;
-  v10 = v6;
-  [v7 registerItemForTypeIdentifier:v8 loadHandler:v12];
+  v13 = providerCopy;
+  v14 = eventCopy;
+  v9 = eventCopy;
+  v10 = providerCopy;
+  [v7 registerItemForTypeIdentifier:identifier loadHandler:v12];
 
   return v7;
 }
@@ -108,21 +108,21 @@ void __88__NESportsEventLinkPresentationSource_imageItemProviderForSportsEvent_t
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)iconItemProviderForSportsEvent:(id)a3 tagImageProvider:(id)a4
++ (id)iconItemProviderForSportsEvent:(id)event tagImageProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  providerCopy = provider;
   v7 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v8 = [*MEMORY[0x1E6982F28] identifier];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __87__NESportsEventLinkPresentationSource_iconItemProviderForSportsEvent_tagImageProvider___block_invoke;
   v12[3] = &unk_1E84CD128;
-  v13 = v6;
-  v14 = v5;
-  v9 = v5;
-  v10 = v6;
-  [v7 registerItemForTypeIdentifier:v8 loadHandler:v12];
+  v13 = providerCopy;
+  v14 = eventCopy;
+  v9 = eventCopy;
+  v10 = providerCopy;
+  [v7 registerItemForTypeIdentifier:identifier loadHandler:v12];
 
   return v7;
 }

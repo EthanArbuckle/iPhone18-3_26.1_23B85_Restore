@@ -1,5 +1,5 @@
 @interface MUAmenitiesSectionController
-- (MUAmenitiesSectionController)initWithMapItem:(id)a3 moduleConiguration:(id)a4;
+- (MUAmenitiesSectionController)initWithMapItem:(id)item moduleConiguration:(id)coniguration;
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
 - (id)infoCardChildUnactionableUIElements;
 - (void)_setupAmenitiyRows;
@@ -9,17 +9,17 @@
 
 - (id)infoCardChildUnactionableUIElements
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 addObject:&unk_1F450DC28];
-  v4 = [(MUPlaceSectionController *)self mapItem];
-  if ([v4 hasAmenityType:21])
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:&unk_1F450DC28];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  if ([mapItem hasAmenityType:21])
   {
-    v5 = [(MUPlaceSectionController *)self mapItem];
-    v6 = [v5 valueForAmenityType:21];
+    mapItem2 = [(MUPlaceSectionController *)self mapItem];
+    v6 = [mapItem2 valueForAmenityType:21];
 
     if (v6)
     {
-      [v3 addObject:&unk_1F450DC40];
+      [array addObject:&unk_1F450DC40];
     }
   }
 
@@ -27,7 +27,7 @@
   {
   }
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
@@ -41,8 +41,8 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = [(GEOBusinessInfoModuleConfiguration *)self->_moduleConfig factoidItemIndexes];
-  v6 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  factoidItemIndexes = [(GEOBusinessInfoModuleConfiguration *)self->_moduleConfig factoidItemIndexes];
+  v6 = [factoidItemIndexes countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v6)
   {
     v7 = v6;
@@ -53,13 +53,13 @@
       {
         if (*v35 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(factoidItemIndexes);
         }
 
         v10 = *(*(&v34 + 1) + 8 * i);
-        v11 = [(MUPlaceSectionController *)self mapItem];
-        v12 = [v11 _encyclopedicInfo];
-        v13 = [v12 factoidAtIndex:{objc_msgSend(v10, "intValue")}];
+        mapItem = [(MUPlaceSectionController *)self mapItem];
+        _encyclopedicInfo = [mapItem _encyclopedicInfo];
+        v13 = [_encyclopedicInfo factoidAtIndex:{objc_msgSend(v10, "intValue")}];
 
         if (v13)
         {
@@ -67,7 +67,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v7 = [factoidItemIndexes countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v7);
@@ -77,10 +77,10 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v14 = [(MUPlaceSectionController *)self mapItem];
-  v15 = [v14 _amenities];
+  mapItem2 = [(MUPlaceSectionController *)self mapItem];
+  _amenities = [mapItem2 _amenities];
 
-  v16 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  v16 = [_amenities countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v16)
   {
     v17 = v16;
@@ -92,7 +92,7 @@
       {
         if (*v31 != v19)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(_amenities);
         }
 
         v21 = *(*(&v30 + 1) + 8 * j);
@@ -109,7 +109,7 @@
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v17 = [_amenities countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v17);
@@ -133,8 +133,8 @@
   v25 = [[MUAmenityListSectionView alloc] initWithAmenityListConfiguration:v3];
   [(MUStackView *)v25 setSpacing:8.0];
   [(MUStackView *)v25 setContentEdgeInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-  v26 = [(MUAmenitiesSectionController *)self sectionHeaderViewModel];
-  v27 = [MUPlaceSectionView insetTextSectionViewForContentView:v25 sectionHeaderViewModel:v26 sectionFooterViewModel:0];
+  sectionHeaderViewModel = [(MUAmenitiesSectionController *)self sectionHeaderViewModel];
+  v27 = [MUPlaceSectionView insetTextSectionViewForContentView:v25 sectionHeaderViewModel:sectionHeaderViewModel sectionFooterViewModel:0];
   sectionView = self->_sectionView;
   self->_sectionView = v27;
 
@@ -142,12 +142,12 @@
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (MUAmenitiesSectionController)initWithMapItem:(id)a3 moduleConiguration:(id)a4
+- (MUAmenitiesSectionController)initWithMapItem:(id)item moduleConiguration:(id)coniguration
 {
-  v7 = a4;
+  conigurationCopy = coniguration;
   v13.receiver = self;
   v13.super_class = MUAmenitiesSectionController;
-  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:a3];
+  v8 = [(MUPlaceSectionController *)&v13 initWithMapItem:item];
   if (v8)
   {
     v9 = MUGetPlaceCardLog();
@@ -157,7 +157,7 @@
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUAmenitiesSectionControllerInit", "", v12, 2u);
     }
 
-    objc_storeStrong(&v8->_moduleConfig, a4);
+    objc_storeStrong(&v8->_moduleConfig, coniguration);
     [(MUAmenitiesSectionController *)v8 _setupAmenitiyRows];
     v10 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v10))

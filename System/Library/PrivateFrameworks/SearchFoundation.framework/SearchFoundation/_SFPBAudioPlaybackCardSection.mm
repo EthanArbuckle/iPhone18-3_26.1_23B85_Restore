@@ -1,34 +1,34 @@
 @interface _SFPBAudioPlaybackCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBAudioPlaybackCardSection)initWithDictionary:(id)a3;
-- (_SFPBAudioPlaybackCardSection)initWithFacade:(id)a3;
-- (_SFPBAudioPlaybackCardSection)initWithJSON:(id)a3;
+- (_SFPBAudioPlaybackCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBAudioPlaybackCardSection)initWithFacade:(id)facade;
+- (_SFPBAudioPlaybackCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPlayCommands:(id)a3;
-- (void)addPunchoutOptions:(id)a3;
-- (void)addStopCommands:(id)a3;
-- (void)setPlayCommands:(id)a3;
-- (void)setPunchoutOptions:(id)a3;
-- (void)setPunchoutPickerDismissText:(id)a3;
-- (void)setPunchoutPickerTitle:(id)a3;
-- (void)setStopCommands:(id)a3;
-- (void)setType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPlayCommands:(id)commands;
+- (void)addPunchoutOptions:(id)options;
+- (void)addStopCommands:(id)commands;
+- (void)setPlayCommands:(id)commands;
+- (void)setPunchoutOptions:(id)options;
+- (void)setPunchoutPickerDismissText:(id)text;
+- (void)setPunchoutPickerTitle:(id)title;
+- (void)setStopCommands:(id)commands;
+- (void)setType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBAudioPlaybackCardSection
 
-- (_SFPBAudioPlaybackCardSection)initWithFacade:(id)a3
+- (_SFPBAudioPlaybackCardSection)initWithFacade:(id)facade
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBAudioPlaybackCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 punchoutOptions];
-    if (v6)
+    punchoutOptions = [facadeCopy punchoutOptions];
+    if (punchoutOptions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -42,8 +42,8 @@
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v8 = [v4 punchoutOptions];
-    v9 = [v8 countByEnumeratingWithState:&v68 objects:v74 count:16];
+    punchoutOptions2 = [facadeCopy punchoutOptions];
+    v9 = [punchoutOptions2 countByEnumeratingWithState:&v68 objects:v74 count:16];
     if (v9)
     {
       v10 = v9;
@@ -54,7 +54,7 @@
         {
           if (*v69 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(punchoutOptions2);
           }
 
           v13 = [[_SFPBPunchout alloc] initWithFacade:*(*(&v68 + 1) + 8 * i)];
@@ -64,74 +64,74 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v68 objects:v74 count:16];
+        v10 = [punchoutOptions2 countByEnumeratingWithState:&v68 objects:v74 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBAudioPlaybackCardSection *)v5 setPunchoutOptions:v7];
-    v14 = [v4 punchoutPickerTitle];
+    punchoutPickerTitle = [facadeCopy punchoutPickerTitle];
 
-    if (v14)
+    if (punchoutPickerTitle)
     {
-      v15 = [v4 punchoutPickerTitle];
-      [(_SFPBAudioPlaybackCardSection *)v5 setPunchoutPickerTitle:v15];
+      punchoutPickerTitle2 = [facadeCopy punchoutPickerTitle];
+      [(_SFPBAudioPlaybackCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle2];
     }
 
-    v16 = [v4 punchoutPickerDismissText];
+    punchoutPickerDismissText = [facadeCopy punchoutPickerDismissText];
 
-    if (v16)
+    if (punchoutPickerDismissText)
     {
-      v17 = [v4 punchoutPickerDismissText];
-      [(_SFPBAudioPlaybackCardSection *)v5 setPunchoutPickerDismissText:v17];
+      punchoutPickerDismissText2 = [facadeCopy punchoutPickerDismissText];
+      [(_SFPBAudioPlaybackCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText2];
     }
 
-    if ([v4 hasCanBeHidden])
+    if ([facadeCopy hasCanBeHidden])
     {
-      -[_SFPBAudioPlaybackCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v4 canBeHidden]);
+      -[_SFPBAudioPlaybackCardSection setCanBeHidden:](v5, "setCanBeHidden:", [facadeCopy canBeHidden]);
     }
 
-    if ([v4 hasHasTopPadding])
+    if ([facadeCopy hasHasTopPadding])
     {
-      -[_SFPBAudioPlaybackCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v4 hasTopPadding]);
+      -[_SFPBAudioPlaybackCardSection setHasTopPadding:](v5, "setHasTopPadding:", [facadeCopy hasTopPadding]);
     }
 
-    if ([v4 hasHasBottomPadding])
+    if ([facadeCopy hasHasBottomPadding])
     {
-      -[_SFPBAudioPlaybackCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v4 hasBottomPadding]);
+      -[_SFPBAudioPlaybackCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [facadeCopy hasBottomPadding]);
     }
 
-    v18 = [v4 type];
+    type = [facadeCopy type];
 
-    if (v18)
+    if (type)
     {
-      v19 = [v4 type];
-      [(_SFPBAudioPlaybackCardSection *)v5 setType:v19];
+      type2 = [facadeCopy type];
+      [(_SFPBAudioPlaybackCardSection *)v5 setType:type2];
     }
 
-    if ([v4 hasSeparatorStyle])
+    if ([facadeCopy hasSeparatorStyle])
     {
-      -[_SFPBAudioPlaybackCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v4 separatorStyle]);
+      -[_SFPBAudioPlaybackCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [facadeCopy separatorStyle]);
     }
 
-    v20 = [v4 backgroundColor];
+    backgroundColor = [facadeCopy backgroundColor];
 
-    if (v20)
+    if (backgroundColor)
     {
       v21 = [_SFPBColor alloc];
-      v22 = [v4 backgroundColor];
-      v23 = [(_SFPBColor *)v21 initWithFacade:v22];
+      backgroundColor2 = [facadeCopy backgroundColor];
+      v23 = [(_SFPBColor *)v21 initWithFacade:backgroundColor2];
       [(_SFPBAudioPlaybackCardSection *)v5 setBackgroundColor:v23];
     }
 
-    if ([v4 hasState])
+    if ([facadeCopy hasState])
     {
-      -[_SFPBAudioPlaybackCardSection setState:](v5, "setState:", [v4 state]);
+      -[_SFPBAudioPlaybackCardSection setState:](v5, "setState:", [facadeCopy state]);
     }
 
-    v24 = [v4 playCommands];
-    if (v24)
+    playCommands = [facadeCopy playCommands];
+    if (playCommands)
     {
       v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -145,8 +145,8 @@
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v26 = [v4 playCommands];
-    v27 = [v26 countByEnumeratingWithState:&v64 objects:v73 count:16];
+    playCommands2 = [facadeCopy playCommands];
+    v27 = [playCommands2 countByEnumeratingWithState:&v64 objects:v73 count:16];
     if (v27)
     {
       v28 = v27;
@@ -157,7 +157,7 @@
         {
           if (*v65 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(playCommands2);
           }
 
           v31 = [[_SFPBAbstractCommand alloc] initWithFacade:*(*(&v64 + 1) + 8 * j)];
@@ -167,16 +167,16 @@
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v64 objects:v73 count:16];
+        v28 = [playCommands2 countByEnumeratingWithState:&v64 objects:v73 count:16];
       }
 
       while (v28);
     }
 
     [(_SFPBAudioPlaybackCardSection *)v5 setPlayCommands:v25];
-    v32 = [v4 stopCommands];
+    stopCommands = [facadeCopy stopCommands];
     v59 = v5;
-    if (v32)
+    if (stopCommands)
     {
       v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -190,8 +190,8 @@
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v34 = [v4 stopCommands];
-    v35 = [v34 countByEnumeratingWithState:&v60 objects:v72 count:16];
+    stopCommands2 = [facadeCopy stopCommands];
+    v35 = [stopCommands2 countByEnumeratingWithState:&v60 objects:v72 count:16];
     if (v35)
     {
       v36 = v35;
@@ -202,7 +202,7 @@
         {
           if (*v61 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(stopCommands2);
           }
 
           v39 = [[_SFPBAbstractCommand alloc] initWithFacade:*(*(&v60 + 1) + 8 * k)];
@@ -212,7 +212,7 @@
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v60 objects:v72 count:16];
+        v36 = [stopCommands2 countByEnumeratingWithState:&v60 objects:v72 count:16];
       }
 
       while (v36);
@@ -220,43 +220,43 @@
 
     v5 = v59;
     [(_SFPBAudioPlaybackCardSection *)v59 setStopCommands:v33];
-    v40 = [v4 detailText];
+    detailText = [facadeCopy detailText];
 
-    if (v40)
+    if (detailText)
     {
       v41 = [_SFPBRichText alloc];
-      v42 = [v4 detailText];
-      v43 = [(_SFPBRichText *)v41 initWithFacade:v42];
+      detailText2 = [facadeCopy detailText];
+      v43 = [(_SFPBRichText *)v41 initWithFacade:detailText2];
       [(_SFPBAudioPlaybackCardSection *)v59 setDetailText:v43];
     }
 
-    v44 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v44)
+    if (title)
     {
       v45 = [_SFPBRichText alloc];
-      v46 = [v4 title];
-      v47 = [(_SFPBRichText *)v45 initWithFacade:v46];
+      title2 = [facadeCopy title];
+      v47 = [(_SFPBRichText *)v45 initWithFacade:title2];
       [(_SFPBAudioPlaybackCardSection *)v59 setTitle:v47];
     }
 
-    v48 = [v4 subtitle];
+    subtitle = [facadeCopy subtitle];
 
-    if (v48)
+    if (subtitle)
     {
       v49 = [_SFPBRichText alloc];
-      v50 = [v4 subtitle];
-      v51 = [(_SFPBRichText *)v49 initWithFacade:v50];
+      subtitle2 = [facadeCopy subtitle];
+      v51 = [(_SFPBRichText *)v49 initWithFacade:subtitle2];
       [(_SFPBAudioPlaybackCardSection *)v59 setSubtitle:v51];
     }
 
-    v52 = [v4 thumbnail];
+    thumbnail = [facadeCopy thumbnail];
 
-    if (v52)
+    if (thumbnail)
     {
       v53 = [_SFPBImage alloc];
-      v54 = [v4 thumbnail];
-      v55 = [(_SFPBImage *)v53 initWithFacade:v54];
+      thumbnail2 = [facadeCopy thumbnail];
+      v55 = [(_SFPBImage *)v53 initWithFacade:thumbnail2];
       [(_SFPBAudioPlaybackCardSection *)v59 setThumbnail:v55];
     }
 
@@ -267,16 +267,16 @@
   return v5;
 }
 
-- (_SFPBAudioPlaybackCardSection)initWithDictionary:(id)a3
+- (_SFPBAudioPlaybackCardSection)initWithDictionary:(id)dictionary
 {
   v84 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v80.receiver = self;
   v80.super_class = _SFPBAudioPlaybackCardSection;
   v5 = [(_SFPBAudioPlaybackCardSection *)&v80 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"punchoutOptions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"punchoutOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -315,7 +315,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchoutPickerTitle"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -324,7 +324,7 @@
     }
 
     v62 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"punchoutPickerDismissText"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"punchoutPickerDismissText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -333,28 +333,28 @@
     }
 
     v61 = v16;
-    v18 = [v4 objectForKeyedSubscript:@"canBeHidden"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"canBeHidden"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBAudioPlaybackCardSection setCanBeHidden:](v5, "setCanBeHidden:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasTopPadding"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasTopPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBAudioPlaybackCardSection setHasTopPadding:](v5, "setHasTopPadding:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasBottomPadding"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasBottomPadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBAudioPlaybackCardSection setHasBottomPadding:](v5, "setHasBottomPadding:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"type"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     v66 = v21;
     if (objc_opt_isKindOfClass())
@@ -363,7 +363,7 @@
       [(_SFPBAudioPlaybackCardSection *)v5 setType:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"separatorStyle"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"separatorStyle"];
     objc_opt_class();
     v65 = v23;
     v24 = 0x1E695D000;
@@ -372,7 +372,7 @@
       -[_SFPBAudioPlaybackCardSection setSeparatorStyle:](v5, "setSeparatorStyle:", [v23 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     v64 = v25;
     if (objc_opt_isKindOfClass())
@@ -386,7 +386,7 @@
     v58 = v20;
     v59 = v19;
     v60 = v18;
-    v27 = [v4 objectForKeyedSubscript:@"state"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -395,10 +395,10 @@
 
     v57 = v27;
     v63 = v6;
-    v28 = [v4 objectForKeyedSubscript:@"playCommands"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"playCommands"];
     v29 = *(v24 + 3784);
     objc_opt_class();
-    v67 = v4;
+    v67 = dictionaryCopy;
     if (objc_opt_isKindOfClass())
     {
       v74 = 0u;
@@ -436,7 +436,7 @@
       }
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"stopCommands"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"stopCommands"];
     v38 = *(v24 + 3784);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -476,7 +476,7 @@
       }
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"detailText"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"detailText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -484,7 +484,7 @@
       [(_SFPBAudioPlaybackCardSection *)v5 setDetailText:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"title"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -492,17 +492,17 @@
       [(_SFPBAudioPlaybackCardSection *)v5 setTitle:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"subtitle"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v51 = [[_SFPBRichText alloc] initWithDictionary:v50];
       [(_SFPBAudioPlaybackCardSection *)v5 setSubtitle:v51];
 
-      v4 = v67;
+      dictionaryCopy = v67;
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"thumbnail"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"thumbnail"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -512,37 +512,37 @@
 
     v54 = v5;
 
-    v4 = v67;
+    dictionaryCopy = v67;
   }
 
   v55 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (_SFPBAudioPlaybackCardSection)initWithJSON:(id)a3
+- (_SFPBAudioPlaybackCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBAudioPlaybackCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBAudioPlaybackCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBAudioPlaybackCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -556,60 +556,60 @@
 - (id)dictionaryRepresentation
 {
   v73 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundColor)
   {
-    v4 = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundColor = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
+    dictionaryRepresentation = [backgroundColor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundColor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_canBeHidden)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBAudioPlaybackCardSection canBeHidden](self, "canBeHidden")}];
-    [v3 setObject:v7 forKeyedSubscript:@"canBeHidden"];
+    [dictionary setObject:v7 forKeyedSubscript:@"canBeHidden"];
   }
 
   if (self->_detailText)
   {
-    v8 = [(_SFPBAudioPlaybackCardSection *)self detailText];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    detailText = [(_SFPBAudioPlaybackCardSection *)self detailText];
+    dictionaryRepresentation2 = [detailText dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"detailText"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"detailText"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"detailText"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"detailText"];
     }
   }
 
   if (self->_hasBottomPadding)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBAudioPlaybackCardSection hasBottomPadding](self, "hasBottomPadding")}];
-    [v3 setObject:v11 forKeyedSubscript:@"hasBottomPadding"];
+    [dictionary setObject:v11 forKeyedSubscript:@"hasBottomPadding"];
   }
 
   if (self->_hasTopPadding)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBAudioPlaybackCardSection hasTopPadding](self, "hasTopPadding")}];
-    [v3 setObject:v12 forKeyedSubscript:@"hasTopPadding"];
+    [dictionary setObject:v12 forKeyedSubscript:@"hasTopPadding"];
   }
 
   if ([(NSArray *)self->_playCommands count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
@@ -629,16 +629,16 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v66 + 1) + 8 * i) dictionaryRepresentation];
-          if (v19)
+          dictionaryRepresentation3 = [*(*(&v66 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v13 addObject:v19];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v20 = [MEMORY[0x1E695DFB0] null];
-            [v13 addObject:v20];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -648,12 +648,12 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"playCommands"];
+    [dictionary setObject:array forKeyedSubscript:@"playCommands"];
   }
 
   if ([(NSArray *)self->_punchoutOptions count])
   {
-    v21 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
@@ -673,16 +673,16 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v62 + 1) + 8 * j) dictionaryRepresentation];
-          if (v27)
+          dictionaryRepresentation4 = [*(*(&v62 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v21 addObject:v27];
+            [array2 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v28 = [MEMORY[0x1E695DFB0] null];
-            [v21 addObject:v28];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null4];
           }
         }
 
@@ -692,58 +692,58 @@
       while (v24);
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"punchoutOptions"];
+    [dictionary setObject:array2 forKeyedSubscript:@"punchoutOptions"];
   }
 
   if (self->_punchoutPickerDismissText)
   {
-    v29 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
-    v30 = [v29 copy];
-    [v3 setObject:v30 forKeyedSubscript:@"punchoutPickerDismissText"];
+    punchoutPickerDismissText = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
+    v30 = [punchoutPickerDismissText copy];
+    [dictionary setObject:v30 forKeyedSubscript:@"punchoutPickerDismissText"];
   }
 
   if (self->_punchoutPickerTitle)
   {
-    v31 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
-    v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"punchoutPickerTitle"];
+    punchoutPickerTitle = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
+    v32 = [punchoutPickerTitle copy];
+    [dictionary setObject:v32 forKeyedSubscript:@"punchoutPickerTitle"];
   }
 
   if (self->_separatorStyle)
   {
-    v33 = [(_SFPBAudioPlaybackCardSection *)self separatorStyle];
-    if (v33 >= 6)
+    separatorStyle = [(_SFPBAudioPlaybackCardSection *)self separatorStyle];
+    if (separatorStyle >= 6)
     {
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v33];
+      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", separatorStyle];
     }
 
     else
     {
-      v34 = off_1E7ACE580[v33];
+      v34 = off_1E7ACE580[separatorStyle];
     }
 
-    [v3 setObject:v34 forKeyedSubscript:@"separatorStyle"];
+    [dictionary setObject:v34 forKeyedSubscript:@"separatorStyle"];
   }
 
   if (self->_state)
   {
-    v35 = [(_SFPBAudioPlaybackCardSection *)self state];
-    if (v35 >= 6)
+    state = [(_SFPBAudioPlaybackCardSection *)self state];
+    if (state >= 6)
     {
-      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v35];
+      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", state];
     }
 
     else
     {
-      v36 = off_1E7ACE580[v35];
+      v36 = off_1E7ACE580[state];
     }
 
-    [v3 setObject:v36 forKeyedSubscript:@"state"];
+    [dictionary setObject:v36 forKeyedSubscript:@"state"];
   }
 
   if ([(NSArray *)self->_stopCommands count])
   {
-    v37 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
@@ -763,16 +763,16 @@
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v58 + 1) + 8 * k) dictionaryRepresentation];
-          if (v43)
+          dictionaryRepresentation5 = [*(*(&v58 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v37 addObject:v43];
+            [array3 addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v44 = [MEMORY[0x1E695DFB0] null];
-            [v37 addObject:v44];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null5];
           }
         }
 
@@ -782,67 +782,67 @@
       while (v40);
     }
 
-    [v3 setObject:v37 forKeyedSubscript:@"stopCommands"];
+    [dictionary setObject:array3 forKeyedSubscript:@"stopCommands"];
   }
 
   if (self->_subtitle)
   {
-    v45 = [(_SFPBAudioPlaybackCardSection *)self subtitle];
-    v46 = [v45 dictionaryRepresentation];
-    if (v46)
+    subtitle = [(_SFPBAudioPlaybackCardSection *)self subtitle];
+    dictionaryRepresentation6 = [subtitle dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v46 forKeyedSubscript:@"subtitle"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"subtitle"];
     }
 
     else
     {
-      v47 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v47 forKeyedSubscript:@"subtitle"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"subtitle"];
     }
   }
 
   if (self->_thumbnail)
   {
-    v48 = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
-    v49 = [v48 dictionaryRepresentation];
-    if (v49)
+    thumbnail = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
+    dictionaryRepresentation7 = [thumbnail dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v49 forKeyedSubscript:@"thumbnail"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"thumbnail"];
     }
 
     else
     {
-      v50 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v50 forKeyedSubscript:@"thumbnail"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"thumbnail"];
     }
   }
 
   if (self->_title)
   {
-    v51 = [(_SFPBAudioPlaybackCardSection *)self title];
-    v52 = [v51 dictionaryRepresentation];
-    if (v52)
+    title = [(_SFPBAudioPlaybackCardSection *)self title];
+    dictionaryRepresentation8 = [title dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v52 forKeyedSubscript:@"title"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"title"];
     }
 
     else
     {
-      v53 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v53 forKeyedSubscript:@"title"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"title"];
     }
   }
 
   if (self->_type)
   {
-    v54 = [(_SFPBAudioPlaybackCardSection *)self type];
-    v55 = [v54 copy];
-    [v3 setObject:v55 forKeyedSubscript:@"type"];
+    type = [(_SFPBAudioPlaybackCardSection *)self type];
+    v55 = [type copy];
+    [dictionary setObject:v55 forKeyedSubscript:@"type"];
   }
 
   v56 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -891,28 +891,28 @@
   return v11 ^ v16 ^ [(_SFPBImage *)self->_thumbnail hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_62;
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
-  v6 = [v4 punchoutOptions];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
+  punchoutOptions2 = [equalCopy punchoutOptions];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v7 = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
-  if (v7)
+  punchoutOptions3 = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
+  if (punchoutOptions3)
   {
-    v8 = v7;
-    v9 = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
-    v10 = [v4 punchoutOptions];
-    v11 = [v9 isEqual:v10];
+    v8 = punchoutOptions3;
+    punchoutOptions4 = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
+    punchoutOptions5 = [equalCopy punchoutOptions];
+    v11 = [punchoutOptions4 isEqual:punchoutOptions5];
 
     if (!v11)
     {
@@ -924,20 +924,20 @@
   {
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
-  v6 = [v4 punchoutPickerTitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
+  punchoutOptions2 = [equalCopy punchoutPickerTitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v12 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
-  if (v12)
+  punchoutPickerTitle = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
-    v13 = v12;
-    v14 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
-    v15 = [v4 punchoutPickerTitle];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutPickerTitle;
+    punchoutPickerTitle2 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
+    punchoutPickerTitle3 = [equalCopy punchoutPickerTitle];
+    v16 = [punchoutPickerTitle2 isEqual:punchoutPickerTitle3];
 
     if (!v16)
     {
@@ -949,20 +949,20 @@
   {
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
-  v6 = [v4 punchoutPickerDismissText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
+  punchoutOptions2 = [equalCopy punchoutPickerDismissText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v17 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
-  if (v17)
+  punchoutPickerDismissText = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
-    v18 = v17;
-    v19 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
-    v20 = [v4 punchoutPickerDismissText];
-    v21 = [v19 isEqual:v20];
+    v18 = punchoutPickerDismissText;
+    punchoutPickerDismissText2 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
+    punchoutPickerDismissText3 = [equalCopy punchoutPickerDismissText];
+    v21 = [punchoutPickerDismissText2 isEqual:punchoutPickerDismissText3];
 
     if (!v21)
     {
@@ -975,37 +975,37 @@
   }
 
   canBeHidden = self->_canBeHidden;
-  if (canBeHidden != [v4 canBeHidden])
+  if (canBeHidden != [equalCopy canBeHidden])
   {
     goto LABEL_62;
   }
 
   hasTopPadding = self->_hasTopPadding;
-  if (hasTopPadding != [v4 hasTopPadding])
+  if (hasTopPadding != [equalCopy hasTopPadding])
   {
     goto LABEL_62;
   }
 
   hasBottomPadding = self->_hasBottomPadding;
-  if (hasBottomPadding != [v4 hasBottomPadding])
+  if (hasBottomPadding != [equalCopy hasBottomPadding])
   {
     goto LABEL_62;
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self type];
-  v6 = [v4 type];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self type];
+  punchoutOptions2 = [equalCopy type];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v25 = [(_SFPBAudioPlaybackCardSection *)self type];
-  if (v25)
+  type = [(_SFPBAudioPlaybackCardSection *)self type];
+  if (type)
   {
-    v26 = v25;
-    v27 = [(_SFPBAudioPlaybackCardSection *)self type];
-    v28 = [v4 type];
-    v29 = [v27 isEqual:v28];
+    v26 = type;
+    type2 = [(_SFPBAudioPlaybackCardSection *)self type];
+    type3 = [equalCopy type];
+    v29 = [type2 isEqual:type3];
 
     if (!v29)
     {
@@ -1018,25 +1018,25 @@
   }
 
   separatorStyle = self->_separatorStyle;
-  if (separatorStyle != [v4 separatorStyle])
+  if (separatorStyle != [equalCopy separatorStyle])
   {
     goto LABEL_62;
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
-  v6 = [v4 backgroundColor];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
+  punchoutOptions2 = [equalCopy backgroundColor];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v31 = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
-  if (v31)
+  backgroundColor = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
-    v32 = v31;
-    v33 = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
-    v34 = [v4 backgroundColor];
-    v35 = [v33 isEqual:v34];
+    v32 = backgroundColor;
+    backgroundColor2 = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
+    backgroundColor3 = [equalCopy backgroundColor];
+    v35 = [backgroundColor2 isEqual:backgroundColor3];
 
     if (!v35)
     {
@@ -1049,25 +1049,25 @@
   }
 
   state = self->_state;
-  if (state != [v4 state])
+  if (state != [equalCopy state])
   {
     goto LABEL_62;
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self playCommands];
-  v6 = [v4 playCommands];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self playCommands];
+  punchoutOptions2 = [equalCopy playCommands];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v37 = [(_SFPBAudioPlaybackCardSection *)self playCommands];
-  if (v37)
+  playCommands = [(_SFPBAudioPlaybackCardSection *)self playCommands];
+  if (playCommands)
   {
-    v38 = v37;
-    v39 = [(_SFPBAudioPlaybackCardSection *)self playCommands];
-    v40 = [v4 playCommands];
-    v41 = [v39 isEqual:v40];
+    v38 = playCommands;
+    playCommands2 = [(_SFPBAudioPlaybackCardSection *)self playCommands];
+    playCommands3 = [equalCopy playCommands];
+    v41 = [playCommands2 isEqual:playCommands3];
 
     if (!v41)
     {
@@ -1079,20 +1079,20 @@
   {
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
-  v6 = [v4 stopCommands];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
+  punchoutOptions2 = [equalCopy stopCommands];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v42 = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
-  if (v42)
+  stopCommands = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
+  if (stopCommands)
   {
-    v43 = v42;
-    v44 = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
-    v45 = [v4 stopCommands];
-    v46 = [v44 isEqual:v45];
+    v43 = stopCommands;
+    stopCommands2 = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
+    stopCommands3 = [equalCopy stopCommands];
+    v46 = [stopCommands2 isEqual:stopCommands3];
 
     if (!v46)
     {
@@ -1104,20 +1104,20 @@
   {
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self detailText];
-  v6 = [v4 detailText];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self detailText];
+  punchoutOptions2 = [equalCopy detailText];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v47 = [(_SFPBAudioPlaybackCardSection *)self detailText];
-  if (v47)
+  detailText = [(_SFPBAudioPlaybackCardSection *)self detailText];
+  if (detailText)
   {
-    v48 = v47;
-    v49 = [(_SFPBAudioPlaybackCardSection *)self detailText];
-    v50 = [v4 detailText];
-    v51 = [v49 isEqual:v50];
+    v48 = detailText;
+    detailText2 = [(_SFPBAudioPlaybackCardSection *)self detailText];
+    detailText3 = [equalCopy detailText];
+    v51 = [detailText2 isEqual:detailText3];
 
     if (!v51)
     {
@@ -1129,20 +1129,20 @@
   {
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self title];
+  punchoutOptions2 = [equalCopy title];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v52 = [(_SFPBAudioPlaybackCardSection *)self title];
-  if (v52)
+  title = [(_SFPBAudioPlaybackCardSection *)self title];
+  if (title)
   {
-    v53 = v52;
-    v54 = [(_SFPBAudioPlaybackCardSection *)self title];
-    v55 = [v4 title];
-    v56 = [v54 isEqual:v55];
+    v53 = title;
+    title2 = [(_SFPBAudioPlaybackCardSection *)self title];
+    title3 = [equalCopy title];
+    v56 = [title2 isEqual:title3];
 
     if (!v56)
     {
@@ -1154,20 +1154,20 @@
   {
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self subtitle];
-  v6 = [v4 subtitle];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self subtitle];
+  punchoutOptions2 = [equalCopy subtitle];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
     goto LABEL_61;
   }
 
-  v57 = [(_SFPBAudioPlaybackCardSection *)self subtitle];
-  if (v57)
+  subtitle = [(_SFPBAudioPlaybackCardSection *)self subtitle];
+  if (subtitle)
   {
-    v58 = v57;
-    v59 = [(_SFPBAudioPlaybackCardSection *)self subtitle];
-    v60 = [v4 subtitle];
-    v61 = [v59 isEqual:v60];
+    v58 = subtitle;
+    subtitle2 = [(_SFPBAudioPlaybackCardSection *)self subtitle];
+    subtitle3 = [equalCopy subtitle];
+    v61 = [subtitle2 isEqual:subtitle3];
 
     if (!v61)
     {
@@ -1179,17 +1179,17 @@
   {
   }
 
-  v5 = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
-  v6 = [v4 thumbnail];
-  if ((v5 != 0) == (v6 == 0))
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
+  punchoutOptions2 = [equalCopy thumbnail];
+  if ((punchoutOptions != 0) == (punchoutOptions2 == 0))
   {
 LABEL_61:
 
     goto LABEL_62;
   }
 
-  v62 = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
-  if (!v62)
+  thumbnail = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
+  if (!thumbnail)
   {
 
 LABEL_65:
@@ -1197,10 +1197,10 @@ LABEL_65:
     goto LABEL_63;
   }
 
-  v63 = v62;
-  v64 = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
-  v65 = [v4 thumbnail];
-  v66 = [v64 isEqual:v65];
+  v63 = thumbnail;
+  thumbnail2 = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
+  thumbnail3 = [equalCopy thumbnail];
+  v66 = [thumbnail2 isEqual:thumbnail3];
 
   if (v66)
   {
@@ -1214,16 +1214,16 @@ LABEL_63:
   return v67;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
+  toCopy = to;
+  punchoutOptions = [(_SFPBAudioPlaybackCardSection *)self punchoutOptions];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v40 objects:v46 count:16];
+  v6 = [punchoutOptions countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1235,7 +1235,7 @@ LABEL_63:
       {
         if (*v41 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(punchoutOptions);
         }
 
         v10 = *(*(&v40 + 1) + 8 * v9);
@@ -1244,20 +1244,20 @@ LABEL_63:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      v7 = [punchoutOptions countByEnumeratingWithState:&v40 objects:v46 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
-  if (v11)
+  punchoutPickerTitle = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerTitle];
+  if (punchoutPickerTitle)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
-  if (v12)
+  punchoutPickerDismissText = [(_SFPBAudioPlaybackCardSection *)self punchoutPickerDismissText];
+  if (punchoutPickerDismissText)
   {
     PBDataWriterWriteStringField();
   }
@@ -1277,8 +1277,8 @@ LABEL_63:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(_SFPBAudioPlaybackCardSection *)self type];
-  if (v13)
+  type = [(_SFPBAudioPlaybackCardSection *)self type];
+  if (type)
   {
     PBDataWriterWriteStringField();
   }
@@ -1288,8 +1288,8 @@ LABEL_63:
     PBDataWriterWriteInt32Field();
   }
 
-  v14 = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
-  if (v14)
+  backgroundColor = [(_SFPBAudioPlaybackCardSection *)self backgroundColor];
+  if (backgroundColor)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1299,12 +1299,12 @@ LABEL_63:
     PBDataWriterWriteInt32Field();
   }
 
-  v15 = [(_SFPBAudioPlaybackCardSection *)self playCommands];
+  playCommands = [(_SFPBAudioPlaybackCardSection *)self playCommands];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v16 = [v15 countByEnumeratingWithState:&v36 objects:v45 count:16];
+  v16 = [playCommands countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1316,7 +1316,7 @@ LABEL_63:
       {
         if (*v37 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(playCommands);
         }
 
         v20 = *(*(&v36 + 1) + 8 * v19);
@@ -1325,18 +1325,18 @@ LABEL_63:
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      v17 = [playCommands countByEnumeratingWithState:&v36 objects:v45 count:16];
     }
 
     while (v17);
   }
 
-  v21 = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
+  stopCommands = [(_SFPBAudioPlaybackCardSection *)self stopCommands];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v22 = [v21 countByEnumeratingWithState:&v32 objects:v44 count:16];
+  v22 = [stopCommands countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1348,7 +1348,7 @@ LABEL_63:
       {
         if (*v33 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(stopCommands);
         }
 
         v26 = *(*(&v32 + 1) + 8 * v25);
@@ -1357,32 +1357,32 @@ LABEL_63:
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v32 objects:v44 count:16];
+      v23 = [stopCommands countByEnumeratingWithState:&v32 objects:v44 count:16];
     }
 
     while (v23);
   }
 
-  v27 = [(_SFPBAudioPlaybackCardSection *)self detailText];
-  if (v27)
+  detailText = [(_SFPBAudioPlaybackCardSection *)self detailText];
+  if (detailText)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(_SFPBAudioPlaybackCardSection *)self title];
-  if (v28)
+  title = [(_SFPBAudioPlaybackCardSection *)self title];
+  if (title)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v29 = [(_SFPBAudioPlaybackCardSection *)self subtitle];
-  if (v29)
+  subtitle = [(_SFPBAudioPlaybackCardSection *)self subtitle];
+  if (subtitle)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
-  if (v30)
+  thumbnail = [(_SFPBAudioPlaybackCardSection *)self thumbnail];
+  if (thumbnail)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1390,108 +1390,108 @@ LABEL_63:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addStopCommands:(id)a3
+- (void)addStopCommands:(id)commands
 {
-  v4 = a3;
+  commandsCopy = commands;
   stopCommands = self->_stopCommands;
-  v8 = v4;
+  v8 = commandsCopy;
   if (!stopCommands)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_stopCommands;
-    self->_stopCommands = v6;
+    self->_stopCommands = array;
 
-    v4 = v8;
+    commandsCopy = v8;
     stopCommands = self->_stopCommands;
   }
 
-  [(NSArray *)stopCommands addObject:v4];
+  [(NSArray *)stopCommands addObject:commandsCopy];
 }
 
-- (void)setStopCommands:(id)a3
+- (void)setStopCommands:(id)commands
 {
-  v4 = [a3 copy];
+  v4 = [commands copy];
   stopCommands = self->_stopCommands;
   self->_stopCommands = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPlayCommands:(id)a3
+- (void)addPlayCommands:(id)commands
 {
-  v4 = a3;
+  commandsCopy = commands;
   playCommands = self->_playCommands;
-  v8 = v4;
+  v8 = commandsCopy;
   if (!playCommands)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_playCommands;
-    self->_playCommands = v6;
+    self->_playCommands = array;
 
-    v4 = v8;
+    commandsCopy = v8;
     playCommands = self->_playCommands;
   }
 
-  [(NSArray *)playCommands addObject:v4];
+  [(NSArray *)playCommands addObject:commandsCopy];
 }
 
-- (void)setPlayCommands:(id)a3
+- (void)setPlayCommands:(id)commands
 {
-  v4 = [a3 copy];
+  v4 = [commands copy];
   playCommands = self->_playCommands;
   self->_playCommands = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   type = self->_type;
   self->_type = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerDismissText:(id)a3
+- (void)setPunchoutPickerDismissText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   punchoutPickerDismissText = self->_punchoutPickerDismissText;
   self->_punchoutPickerDismissText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPunchoutPickerTitle:(id)a3
+- (void)setPunchoutPickerTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   punchoutPickerTitle = self->_punchoutPickerTitle;
   self->_punchoutPickerTitle = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPunchoutOptions:(id)a3
+- (void)addPunchoutOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   punchoutOptions = self->_punchoutOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!punchoutOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_punchoutOptions;
-    self->_punchoutOptions = v6;
+    self->_punchoutOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     punchoutOptions = self->_punchoutOptions;
   }
 
-  [(NSArray *)punchoutOptions addObject:v4];
+  [(NSArray *)punchoutOptions addObject:optionsCopy];
 }
 
-- (void)setPunchoutOptions:(id)a3
+- (void)setPunchoutOptions:(id)options
 {
-  v4 = [a3 copy];
+  v4 = [options copy];
   punchoutOptions = self->_punchoutOptions;
   self->_punchoutOptions = v4;
 

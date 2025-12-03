@@ -1,43 +1,43 @@
 @interface PXPeopleBootstrap
-+ (BOOL)_namePerson:(id)a3 toContact:(id)a4 changeRequest:(id)a5 context:(id)a6;
++ (BOOL)_namePerson:(id)person toContact:(id)contact changeRequest:(id)request context:(id)context;
 + (CGSize)preferredBootstrapSize;
-+ (void)_favoritePersonWithChangeRequest:(id)a3 photoLibrary:(id)a4;
-+ (void)_mergePerson:(id)a3 context:(id)a4 toPerson:(id)a5;
-+ (void)_namePerson:(id)a3 context:(id)a4 withChangeRequest:(id)a5;
-+ (void)_namePerson:(id)a3 toContact:(id)a4 withChangeRequest:(id)a5;
-+ (void)_namePerson:(id)a3 toString:(id)a4 withChangeRequest:(id)a5;
-+ (void)_unfavoritePersonWithChangeRequest:(id)a3 photoLibrary:(id)a4;
-+ (void)nameAndVerifyPerson:(id)a3 toContact:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-+ (void)nameAndVerifyPerson:(id)a3 toName:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-+ (void)performBootstrapWithSourcePerson:(id)a3 context:(id)a4 synchronous:(BOOL)a5 completion:(id)a6;
++ (void)_favoritePersonWithChangeRequest:(id)request photoLibrary:(id)library;
++ (void)_mergePerson:(id)person context:(id)context toPerson:(id)toPerson;
++ (void)_namePerson:(id)person context:(id)context withChangeRequest:(id)request;
++ (void)_namePerson:(id)person toContact:(id)contact withChangeRequest:(id)request;
++ (void)_namePerson:(id)person toString:(id)string withChangeRequest:(id)request;
++ (void)_unfavoritePersonWithChangeRequest:(id)request photoLibrary:(id)library;
++ (void)nameAndVerifyPerson:(id)person toContact:(id)contact photoLibrary:(id)library completionHandler:(id)handler;
++ (void)nameAndVerifyPerson:(id)person toName:(id)name photoLibrary:(id)library completionHandler:(id)handler;
++ (void)performBootstrapWithSourcePerson:(id)person context:(id)context synchronous:(BOOL)synchronous completion:(id)completion;
 @end
 
 @implementation PXPeopleBootstrap
 
-+ (void)_mergePerson:(id)a3 context:(id)a4 toPerson:(id)a5
++ (void)_mergePerson:(id)person context:(id)context toPerson:(id)toPerson
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7 && v9 && ([v7 isEqual:v9] & 1) == 0 && objc_msgSend(v7, "px_isSameDetectionTypeAsPerson:", v10))
+  personCopy = person;
+  contextCopy = context;
+  toPersonCopy = toPerson;
+  v10 = toPersonCopy;
+  if (personCopy && toPersonCopy && ([personCopy isEqual:toPersonCopy] & 1) == 0 && objc_msgSend(personCopy, "px_isSameDetectionTypeAsPerson:", v10))
   {
-    v11 = [v10 type];
-    v12 = [v7 type];
-    if (v11 >= v12)
+    type = [v10 type];
+    type2 = [personCopy type];
+    if (type >= type2)
     {
       v13 = v10;
     }
 
     else
     {
-      v13 = v7;
+      v13 = personCopy;
     }
 
-    if (v11 >= v12)
+    if (type >= type2)
     {
-      v14 = v7;
+      v14 = personCopy;
     }
 
     else
@@ -51,94 +51,94 @@
     v22[0] = v16;
     v22[1] = v15;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-    v19 = [v15 localIdentifier];
-    v20 = [v17 changeRequestForMergingPersons:v18 nominalTargetIdentifier:v19];
+    localIdentifier = [v15 localIdentifier];
+    v20 = [v17 changeRequestForMergingPersons:v18 nominalTargetIdentifier:localIdentifier];
 
-    v21 = [v20 targetPerson];
-    [v8 setTargetPerson:v21];
+    targetPerson = [v20 targetPerson];
+    [contextCopy setTargetPerson:targetPerson];
   }
 }
 
-+ (void)_namePerson:(id)a3 toContact:(id)a4 withChangeRequest:(id)a5
++ (void)_namePerson:(id)person toContact:(id)contact withChangeRequest:(id)request
 {
-  v12 = a4;
-  v6 = a5;
-  v7 = [v12 identifier];
-  if (v7)
+  contactCopy = contact;
+  requestCopy = request;
+  identifier = [contactCopy identifier];
+  if (identifier)
   {
-    v8 = [MEMORY[0x1E6978980] fullNameFromContact:v12];
-    v9 = [MEMORY[0x1E6978980] displayNameFromContact:v12];
+    v8 = [MEMORY[0x1E6978980] fullNameFromContact:contactCopy];
+    v9 = [MEMORY[0x1E6978980] displayNameFromContact:contactCopy];
     v10 = +[PXPeopleUtilities sharedContactStore];
-    v11 = [MEMORY[0x1E69BE380] matchingDictionaryForContact:v12 contactStore:v10];
-    [v6 setContactMatchingDictionary:v11];
-    [v6 setPersonUri:v7];
-    [v6 setName:v8];
-    [v6 setDisplayName:v9];
+    v11 = [MEMORY[0x1E69BE380] matchingDictionaryForContact:contactCopy contactStore:v10];
+    [requestCopy setContactMatchingDictionary:v11];
+    [requestCopy setPersonUri:identifier];
+    [requestCopy setName:v8];
+    [requestCopy setDisplayName:v9];
   }
 }
 
-+ (void)_namePerson:(id)a3 toString:(id)a4 withChangeRequest:(id)a5
++ (void)_namePerson:(id)person toString:(id)string withChangeRequest:(id)request
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v12 displayName];
-  if (([v9 isEqualToString:v7] & 1) == 0)
+  personCopy = person;
+  stringCopy = string;
+  requestCopy = request;
+  displayName = [personCopy displayName];
+  if (([displayName isEqualToString:stringCopy] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v10 = [v12 personUri];
-  v11 = [v10 length];
+  personUri = [personCopy personUri];
+  v11 = [personUri length];
 
   if (v11)
   {
 LABEL_5:
-    [v8 setName:v7];
-    [v8 setDisplayName:v7];
-    [v8 setPersonUri:&stru_1F1741150];
-    [v8 setContactMatchingDictionary:MEMORY[0x1E695E0F8]];
+    [requestCopy setName:stringCopy];
+    [requestCopy setDisplayName:stringCopy];
+    [requestCopy setPersonUri:&stru_1F1741150];
+    [requestCopy setContactMatchingDictionary:MEMORY[0x1E695E0F8]];
   }
 }
 
-+ (void)_namePerson:(id)a3 context:(id)a4 withChangeRequest:(id)a5
++ (void)_namePerson:(id)person context:(id)context withChangeRequest:(id)request
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 nameSelection];
-  v11 = v10;
-  if (v10)
+  personCopy = person;
+  contextCopy = context;
+  requestCopy = request;
+  nameSelection = [contextCopy nameSelection];
+  v11 = nameSelection;
+  if (nameSelection)
   {
-    v12 = [v10 selectionType];
-    switch(v12)
+    selectionType = [nameSelection selectionType];
+    switch(selectionType)
     {
       case 1:
-        v17 = [v11 person];
-        [a1 _mergePerson:v19 context:v8 toPerson:v17];
+        person = [v11 person];
+        [self _mergePerson:personCopy context:contextCopy toPerson:person];
 
         [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.naming.personChosen" withPayload:MEMORY[0x1E695E0F8]];
-        [v19 verifiedType];
+        [personCopy verifiedType];
         goto LABEL_16;
       case 2:
-        v16 = [v11 contact];
-        v15 = [PXPeopleBootstrap _namePerson:v19 toContact:v16 changeRequest:v9 context:v8];
+        contact = [v11 contact];
+        v15 = [PXPeopleBootstrap _namePerson:personCopy toContact:contact changeRequest:requestCopy context:contextCopy];
         [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.naming.contactChosen" withPayload:MEMORY[0x1E695E0F8]];
 
         break;
       case 3:
-        v13 = [v11 name];
-        [a1 _namePerson:v19 toString:v13 withChangeRequest:v9];
+        name = [v11 name];
+        [self _namePerson:personCopy toString:name withChangeRequest:requestCopy];
 
         [MEMORY[0x1E6991F28] sendEvent:@"com.apple.photos.CPAnalytics.people.naming.stringChosen" withPayload:MEMORY[0x1E695E0F8]];
-        v14 = v19;
+        v14 = personCopy;
         v15 = 0;
 LABEL_12:
-        if (![v14 verifiedType] && !v15 && objc_msgSend(v8, "bootstrapType") == 1)
+        if (![v14 verifiedType] && !v15 && objc_msgSend(contextCopy, "bootstrapType") == 1)
         {
-          v18 = [v19 photoLibrary];
-          [v9 setManualOrder:{+[PXPeopleUtilities manualOrderForInsertingAtEndOfSectionWithType:photoLibrary:](PXPeopleUtilities, "manualOrderForInsertingAtEndOfSectionWithType:photoLibrary:", 0, v18)}];
+          photoLibrary = [personCopy photoLibrary];
+          [requestCopy setManualOrder:{+[PXPeopleUtilities manualOrderForInsertingAtEndOfSectionWithType:photoLibrary:](PXPeopleUtilities, "manualOrderForInsertingAtEndOfSectionWithType:photoLibrary:", 0, photoLibrary)}];
         }
 
         goto LABEL_16;
@@ -147,56 +147,56 @@ LABEL_12:
         break;
     }
 
-    v14 = v19;
+    v14 = personCopy;
     goto LABEL_12;
   }
 
-  if ([v8 wantsContactUnlinkage])
+  if ([contextCopy wantsContactUnlinkage])
   {
-    [v9 setName:&stru_1F1741150];
-    [v9 setDisplayName:&stru_1F1741150];
-    [v9 setPersonUri:&stru_1F1741150];
-    [v9 setContactMatchingDictionary:MEMORY[0x1E695E0F8]];
+    [requestCopy setName:&stru_1F1741150];
+    [requestCopy setDisplayName:&stru_1F1741150];
+    [requestCopy setPersonUri:&stru_1F1741150];
+    [requestCopy setContactMatchingDictionary:MEMORY[0x1E695E0F8]];
   }
 
 LABEL_16:
 }
 
-+ (BOOL)_namePerson:(id)a3 toContact:(id)a4 changeRequest:(id)a5 context:(id)a6
++ (BOOL)_namePerson:(id)person toContact:(id)contact changeRequest:(id)request context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 identifier];
-  v15 = [v10 photoLibrary];
-  v16 = [PXPeopleUtilities personWithPersonUri:v14 photoLibrary:v15];
+  personCopy = person;
+  contactCopy = contact;
+  requestCopy = request;
+  contextCopy = context;
+  identifier = [contactCopy identifier];
+  photoLibrary = [personCopy photoLibrary];
+  v16 = [PXPeopleUtilities personWithPersonUri:identifier photoLibrary:photoLibrary];
 
   if (v16)
   {
-    v26 = v13;
+    v26 = contextCopy;
     v17 = [MEMORY[0x1E6978990] changeRequestForPerson:v16];
-    [a1 _namePerson:v16 toContact:v11 withChangeRequest:v17];
-    v18 = [v16 isEqual:v10];
+    [self _namePerson:v16 toContact:contactCopy withChangeRequest:v17];
+    v18 = [v16 isEqual:personCopy];
     if (v18)
     {
-      [a1 _namePerson:v10 toContact:v11 withChangeRequest:v12];
+      [self _namePerson:personCopy toContact:contactCopy withChangeRequest:requestCopy];
     }
 
     else
     {
       v24 = [MEMORY[0x1E6978990] changeRequestForPerson:v16];
-      [a1 _namePerson:v16 toContact:v11 withChangeRequest:v24];
-      v25 = v12;
-      v20 = [v16 localIdentifier];
-      v21 = [v10 photoLibrary];
-      v22 = [PXPeopleUtilities personWithLocalIdentifier:v20 photoLibrary:v21];
+      [self _namePerson:v16 toContact:contactCopy withChangeRequest:v24];
+      v25 = requestCopy;
+      localIdentifier = [v16 localIdentifier];
+      photoLibrary2 = [personCopy photoLibrary];
+      v22 = [PXPeopleUtilities personWithLocalIdentifier:localIdentifier photoLibrary:photoLibrary2];
 
-      v13 = v26;
-      [a1 _mergePerson:v10 context:v26 toPerson:v22];
+      contextCopy = v26;
+      [self _mergePerson:personCopy context:v26 toPerson:v22];
 
       v16 = v22;
-      v12 = v25;
+      requestCopy = v25;
     }
 
     v19 = v18 ^ 1;
@@ -204,46 +204,46 @@ LABEL_16:
 
   else
   {
-    [a1 _namePerson:v10 toContact:v11 withChangeRequest:v12];
+    [self _namePerson:personCopy toContact:contactCopy withChangeRequest:requestCopy];
     v19 = 0;
   }
 
   return v19;
 }
 
-+ (void)_unfavoritePersonWithChangeRequest:(id)a3 photoLibrary:(id)a4
++ (void)_unfavoritePersonWithChangeRequest:(id)request photoLibrary:(id)library
 {
-  v5 = a4;
-  v7 = a3;
-  [v7 setType:0];
-  v6 = [PXPeopleUtilities manualOrderForInsertingAtEndOfSectionWithType:0 photoLibrary:v5];
+  libraryCopy = library;
+  requestCopy = request;
+  [requestCopy setType:0];
+  v6 = [PXPeopleUtilities manualOrderForInsertingAtEndOfSectionWithType:0 photoLibrary:libraryCopy];
 
-  [v7 setManualOrder:v6];
+  [requestCopy setManualOrder:v6];
 }
 
-+ (void)_favoritePersonWithChangeRequest:(id)a3 photoLibrary:(id)a4
++ (void)_favoritePersonWithChangeRequest:(id)request photoLibrary:(id)library
 {
-  v5 = a4;
-  v7 = a3;
-  [v7 setType:1];
-  v6 = [PXPeopleUtilities manualOrderForInsertingAtEndOfSectionWithType:1 photoLibrary:v5];
+  libraryCopy = library;
+  requestCopy = request;
+  [requestCopy setType:1];
+  v6 = [PXPeopleUtilities manualOrderForInsertingAtEndOfSectionWithType:1 photoLibrary:libraryCopy];
 
-  [v7 setManualOrder:v6];
+  [requestCopy setManualOrder:v6];
 }
 
-+ (void)nameAndVerifyPerson:(id)a3 toName:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (void)nameAndVerifyPerson:(id)person toName:(id)name photoLibrary:(id)library completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
+  personCopy = person;
+  nameCopy = name;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__PXPeopleBootstrap_nameAndVerifyPerson_toName_photoLibrary_completionHandler___block_invoke;
   v13[3] = &unk_1E774C620;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [a5 performChanges:v13 completionHandler:a6];
+  v14 = personCopy;
+  v15 = nameCopy;
+  v11 = nameCopy;
+  v12 = personCopy;
+  [library performChanges:v13 completionHandler:handler];
 }
 
 void __79__PXPeopleBootstrap_nameAndVerifyPerson_toName_photoLibrary_completionHandler___block_invoke(uint64_t a1)
@@ -258,19 +258,19 @@ void __79__PXPeopleBootstrap_nameAndVerifyPerson_toName_photoLibrary_completionH
   [v2 setDisplayName:*(a1 + 40)];
 }
 
-+ (void)nameAndVerifyPerson:(id)a3 toContact:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (void)nameAndVerifyPerson:(id)person toContact:(id)contact photoLibrary:(id)library completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
+  personCopy = person;
+  contactCopy = contact;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__PXPeopleBootstrap_nameAndVerifyPerson_toContact_photoLibrary_completionHandler___block_invoke;
   v13[3] = &unk_1E774C620;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [a5 performChanges:v13 completionHandler:a6];
+  v14 = personCopy;
+  v15 = contactCopy;
+  v11 = contactCopy;
+  v12 = personCopy;
+  [library performChanges:v13 completionHandler:handler];
 }
 
 void __82__PXPeopleBootstrap_nameAndVerifyPerson_toContact_photoLibrary_completionHandler___block_invoke(uint64_t a1)
@@ -284,60 +284,60 @@ void __82__PXPeopleBootstrap_nameAndVerifyPerson_toContact_photoLibrary_completi
   [PXPeopleBootstrap _namePerson:*(a1 + 32) toContact:*(a1 + 40) changeRequest:v2 context:0];
 }
 
-+ (void)performBootstrapWithSourcePerson:(id)a3 context:(id)a4 synchronous:(BOOL)a5 completion:(id)a6
++ (void)performBootstrapWithSourcePerson:(id)person context:(id)context synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v7 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = v11;
-  [v12 setTargetPerson:v14];
+  synchronousCopy = synchronous;
+  personCopy = person;
+  contextCopy = context;
+  completionCopy = completion;
+  v14 = personCopy;
+  [contextCopy setTargetPerson:v14];
   v15 = +[PXPeopleUISettings sharedInstance];
   if (([v15 enableBootstrapDemoMode] & 1) != 0 || objc_msgSend(v15, "useBootstrapMockDataSource"))
   {
 LABEL_3:
     v16 = v14;
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
       v16 = v14;
     }
 
     goto LABEL_12;
   }
 
-  v17 = [v12 delayedPersonBlock];
+  delayedPersonBlock = [contextCopy delayedPersonBlock];
 
   v18 = v14;
-  if (v17)
+  if (delayedPersonBlock)
   {
-    v19 = [v12 delayedPersonBlock];
-    v18 = v19[2]();
+    delayedPersonBlock2 = [contextCopy delayedPersonBlock];
+    v18 = delayedPersonBlock2[2]();
 
     if (!v18)
     {
       goto LABEL_3;
     }
 
-    [v12 setTargetPerson:v18];
+    [contextCopy setTargetPerson:v18];
   }
 
-  v20 = [v12 bootstrapType];
-  v21 = [v18 photoLibrary];
+  bootstrapType = [contextCopy bootstrapType];
+  photoLibrary = [v18 photoLibrary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __85__PXPeopleBootstrap_performBootstrapWithSourcePerson_context_synchronous_completion___block_invoke;
   aBlock[3] = &unk_1E7746980;
   v22 = v18;
   v43 = v22;
-  v31 = v7;
-  v23 = v12;
+  v31 = synchronousCopy;
+  v23 = contextCopy;
   v44 = v23;
-  v46 = v20;
-  v24 = v21;
+  v46 = bootstrapType;
+  v24 = photoLibrary;
   v45 = v24;
   v47 = a2;
-  v48 = a1;
+  selfCopy = self;
   v25 = _Block_copy(aBlock);
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -349,8 +349,8 @@ LABEL_3:
   v26 = v24;
   v38 = v26;
   v40 = a2;
-  v41 = a1;
-  v39 = v13;
+  selfCopy2 = self;
+  v39 = completionCopy;
   v27 = _Block_copy(v35);
   v28 = v27;
   if (v31)

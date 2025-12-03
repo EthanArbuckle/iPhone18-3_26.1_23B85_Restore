@@ -1,5 +1,5 @@
 @interface SKUIAddToWishlistActivity
-- (SKUIAddToWishlistActivity)initWithItem:(id)a3 clientContext:(id)a4;
+- (SKUIAddToWishlistActivity)initWithItem:(id)item clientContext:(id)context;
 - (id)activityImage;
 - (id)activityTitle;
 - (void)performActivity;
@@ -7,10 +7,10 @@
 
 @implementation SKUIAddToWishlistActivity
 
-- (SKUIAddToWishlistActivity)initWithItem:(id)a3 clientContext:(id)a4
+- (SKUIAddToWishlistActivity)initWithItem:(id)item clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIAddToWishlistActivity initWithItem:clientContext:];
@@ -22,8 +22,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_item, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_item, item);
   }
 
   return v10;

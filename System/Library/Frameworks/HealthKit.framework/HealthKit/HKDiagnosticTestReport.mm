@@ -1,36 +1,36 @@
 @interface HKDiagnosticTestReport
-+ (id)_newDiagnosticTestReportWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 diagnosticTestCodingCollection:(id)a15 results:(id)a16 effectiveStartDate:(id)a17 statusCoding:(id)a18 effectiveEndDate:(id)a19 issueDate:(id)a20 config:(id)a21;
++ (id)_newDiagnosticTestReportWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 diagnosticTestCodingCollection:(id)self5 results:(id)self6 effectiveStartDate:(id)self7 statusCoding:(id)self8 effectiveEndDate:(id)self9 issueDate:(id)issueDate config:(id)config;
 + (id)cachedConceptRelationshipKeyPaths;
 + (id)defaultDisplayString;
-+ (id)diagnosticTestReportWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 diagnosticTestCodingCollection:(id)a14 results:(id)a15 effectiveStartDate:(id)a16 statusCoding:(id)a17 effectiveEndDate:(id)a18 issueDate:(id)a19;
++ (id)diagnosticTestReportWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 diagnosticTestCodingCollection:(id)self4 results:(id)self5 effectiveStartDate:(id)self6 statusCoding:(id)self7 effectiveEndDate:(id)self8 issueDate:(id)self9;
 + (id)indexableConceptKeyPaths;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEquivalent:(id)a3;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKConcept)diagnosticTest;
 - (HKConcept)status;
 - (HKDiagnosticTestReport)init;
-- (HKDiagnosticTestReport)initWithCoder:(id)a3;
+- (HKDiagnosticTestReport)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (id)medicalRecordCodings;
 - (id)statusCodingCollection;
-- (void)_setDiagnosticTest:(id)a3;
-- (void)_setDiagnosticTestCodingCollection:(id)a3;
-- (void)_setEffectiveEndDate:(id)a3;
-- (void)_setEffectiveStartDate:(id)a3;
-- (void)_setIssueDate:(id)a3;
-- (void)_setResults:(id)a3;
-- (void)_setStatus:(id)a3;
-- (void)_setStatusCoding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setDiagnosticTest:(id)test;
+- (void)_setDiagnosticTestCodingCollection:(id)collection;
+- (void)_setEffectiveEndDate:(id)date;
+- (void)_setEffectiveStartDate:(id)date;
+- (void)_setIssueDate:(id)date;
+- (void)_setResults:(id)results;
+- (void)_setStatus:(id)status;
+- (void)_setStatusCoding:(id)coding;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDiagnosticTestReport
 
 + (id)indexableConceptKeyPaths
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HKDiagnosticTestReport;
   v2 = objc_msgSendSuper2(&v5, sel_indexableConceptKeyPaths);
   v3 = [v2 mutableCopy];
@@ -43,18 +43,18 @@
 
 + (id)cachedConceptRelationshipKeyPaths
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___HKDiagnosticTestReport;
   v2 = objc_msgSendSuper2(&v4, sel_cachedConceptRelationshipKeyPaths);
 
   return v2;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (!v7)
   {
@@ -64,8 +64,8 @@
 
   if ([v7 isEqualToString:@"diagnosticTest"])
   {
-    v9 = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
-    v10 = [HKIndexableObject indexableObjectWithObject:v9];
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
+    v10 = [HKIndexableObject indexableObjectWithObject:diagnosticTestCodingCollection];
     v17[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
 LABEL_7:
@@ -75,8 +75,8 @@ LABEL_7:
 
   if ([v8 isEqualToString:@"status"])
   {
-    v9 = [(HKDiagnosticTestReport *)self statusCoding];
-    v10 = [HKMedicalCodingCollection collectionWithCoding:v9];
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self statusCoding];
+    v10 = [HKMedicalCodingCollection collectionWithCoding:diagnosticTestCodingCollection];
     v12 = [HKIndexableObject indexableObjectWithObject:v10];
     v16 = v12;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
@@ -86,7 +86,7 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = HKDiagnosticTestReport;
-  v11 = [(HKMedicalRecord *)&v15 codingsForKeyPath:v6 error:a4];
+  v11 = [(HKMedicalRecord *)&v15 codingsForKeyPath:pathCopy error:error];
 LABEL_9:
 
   v13 = *MEMORY[0x1E69E9840];
@@ -94,11 +94,11 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -111,15 +111,15 @@ LABEL_9:
     {
       v16.receiver = self;
       v16.super_class = HKDiagnosticTestReport;
-      v14 = [(HKMedicalRecord *)&v16 applyConcepts:v8 forKeyPath:v9 error:a5];
+      v14 = [(HKMedicalRecord *)&v16 applyConcepts:conceptsCopy forKeyPath:pathCopy error:error];
       goto LABEL_11;
     }
 
-    if (HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+    if (HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
     {
-      v12 = [v8 firstObject];
-      v13 = [v12 object];
-      [(HKDiagnosticTestReport *)self _setStatus:v13];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      [(HKDiagnosticTestReport *)self _setStatus:object];
       goto LABEL_8;
     }
 
@@ -128,14 +128,14 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+  if (!HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
   {
     goto LABEL_9;
   }
 
-  v12 = [v8 firstObject];
-  v13 = [v12 object];
-  [(HKDiagnosticTestReport *)self _setDiagnosticTest:v13];
+  firstObject = [conceptsCopy firstObject];
+  object = [firstObject object];
+  [(HKDiagnosticTestReport *)self _setDiagnosticTest:object];
 LABEL_8:
 
   v14 = 1;
@@ -144,59 +144,59 @@ LABEL_11:
   return v14;
 }
 
-+ (id)diagnosticTestReportWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 diagnosticTestCodingCollection:(id)a14 results:(id)a15 effectiveStartDate:(id)a16 statusCoding:(id)a17 effectiveEndDate:(id)a18 issueDate:(id)a19
++ (id)diagnosticTestReportWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 diagnosticTestCodingCollection:(id)self4 results:(id)self5 effectiveStartDate:(id)self6 statusCoding:(id)self7 effectiveEndDate:(id)self8 issueDate:(id)self9
 {
-  v46 = a5;
-  v49 = a16;
-  v20 = a18;
+  errorCopy = error;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
   v21 = @"issueDate";
-  v22 = a19;
-  v45 = a17;
-  v44 = a15;
-  v43 = a14;
-  v23 = v20;
-  v35 = a12;
-  v42 = a11;
-  v41 = a10;
-  v40 = a8;
-  v48 = a7;
-  v24 = a6;
-  v39 = a4;
-  v37 = a3;
-  v25 = [v22 dateForUTC];
+  issueDateCopy = issueDate;
+  codingCopy = coding;
+  resultsCopy = results;
+  collectionCopy = collection;
+  v23 = endDateCopy;
+  countryCopy = country;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
+  dateForUTC = [issueDateCopy dateForUTC];
   if (v23)
   {
     v26 = @"effectiveEndDate";
 
-    v27 = [v23 dateForUTC];
+    dateForUTC2 = [v23 dateForUTC];
 
-    v25 = v27;
+    dateForUTC = dateForUTC2;
     v21 = v26;
   }
 
-  if (v49)
+  if (startDateCopy)
   {
     v28 = @"effectiveStartDate";
 
-    v29 = [v49 dateForUTC];
+    dateForUTC3 = [startDateCopy dateForUTC];
 
-    v25 = v29;
+    dateForUTC = dateForUTC3;
     v21 = v28;
   }
 
   v34 = v21;
-  v32 = [HKSemanticDate semanticDateWithKeyPath:v21 date:v25];
-  v30 = [HKDiagnosticTestReport diagnosticTestReportWithType:v37 note:v39 enteredInError:v46 modifiedDate:v24 originIdentifier:v48 locale:v40 extractionVersion:a9 device:v41 metadata:v42 sortDate:v32 country:v35 state:a13 diagnosticTestCodingCollection:v43 results:v44 effectiveStartDate:v49 statusCoding:v45 effectiveEndDate:v23 issueDate:v22];
+  v32 = [HKSemanticDate semanticDateWithKeyPath:v21 date:dateForUTC];
+  v30 = [HKDiagnosticTestReport diagnosticTestReportWithType:typeCopy note:noteCopy enteredInError:errorCopy modifiedDate:dateCopy originIdentifier:identifierCopy locale:localeCopy extractionVersion:version device:deviceCopy metadata:metadataCopy sortDate:v32 country:countryCopy state:state diagnosticTestCodingCollection:collectionCopy results:resultsCopy effectiveStartDate:startDateCopy statusCoding:codingCopy effectiveEndDate:v23 issueDate:issueDateCopy];
 
   return v30;
 }
 
 - (id)medicalRecordCodings
 {
-  v2 = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
-  v3 = [v2 codings];
+  diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
+  codings = [diagnosticTestCodingCollection codings];
 
-  return v3;
+  return codings;
 }
 
 + (id)defaultDisplayString
@@ -207,47 +207,47 @@ LABEL_11:
   return v3;
 }
 
-+ (id)_newDiagnosticTestReportWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 diagnosticTestCodingCollection:(id)a15 results:(id)a16 effectiveStartDate:(id)a17 statusCoding:(id)a18 effectiveEndDate:(id)a19 issueDate:(id)a20 config:(id)a21
++ (id)_newDiagnosticTestReportWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 diagnosticTestCodingCollection:(id)self5 results:(id)self6 effectiveStartDate:(id)self7 statusCoding:(id)self8 effectiveEndDate:(id)self9 issueDate:(id)issueDate config:(id)config
 {
-  v49 = a5;
-  v21 = a15;
-  v22 = a16;
-  v23 = a17;
-  v24 = a18;
-  v25 = a19;
-  v26 = a20;
-  v27 = a21;
+  errorCopy = error;
+  collectionCopy = collection;
+  resultsCopy = results;
+  startDateCopy = startDate;
+  codingCopy = coding;
+  endDateCopy = endDate;
+  issueDateCopy = issueDate;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_diagnosticTestCodingCollection_results_effectiveStartDate_statusCoding_effectiveEndDate_issueDate_config___block_invoke;
   aBlock[3] = &unk_1E7380EA8;
-  v56 = v21;
-  v57 = v22;
-  v58 = v23;
-  v59 = v24;
-  v60 = v25;
-  v61 = v26;
-  v62 = v27;
-  v53 = v27;
-  v52 = v26;
-  v51 = v25;
-  v48 = v24;
-  v47 = v23;
-  v46 = v22;
-  v45 = v21;
-  v28 = a13;
-  v29 = a12;
-  v30 = a11;
-  v31 = a10;
-  v32 = a8;
-  v33 = a7;
-  v34 = a6;
-  v35 = a4;
-  v36 = a3;
+  v56 = collectionCopy;
+  v57 = resultsCopy;
+  v58 = startDateCopy;
+  v59 = codingCopy;
+  v60 = endDateCopy;
+  v61 = issueDateCopy;
+  v62 = configCopy;
+  v53 = configCopy;
+  v52 = issueDateCopy;
+  v51 = endDateCopy;
+  v48 = codingCopy;
+  v47 = startDateCopy;
+  v46 = resultsCopy;
+  v45 = collectionCopy;
+  countryCopy = country;
+  sortDateCopy = sortDate;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
   v37 = _Block_copy(aBlock);
-  v54.receiver = a1;
+  v54.receiver = self;
   v54.super_class = &OBJC_METACLASS___HKDiagnosticTestReport;
-  v50 = objc_msgSendSuper2(&v54, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, v36, v35, v49, v34, v33, v32, a9, v31, v30, v29, v28, a14, v37);
+  v50 = objc_msgSendSuper2(&v54, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, typeCopy, noteCopy, errorCopy, dateCopy, identifierCopy, localeCopy, version, deviceCopy, metadataCopy, sortDateCopy, countryCopy, state, v37);
 
   return v50;
 }
@@ -311,60 +311,60 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKDiagnosticTestReport;
-  v4 = a3;
-  [(HKMedicalRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_diagnosticTestCodingCollection forKey:{@"DiagnosticTestCodingCollection", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_results forKey:@"Results"];
-  [v4 encodeObject:self->_effectiveStartDate forKey:@"EffectiveStartDate"];
-  [v4 encodeObject:self->_statusCoding forKey:@"StatusCoding"];
-  [v4 encodeObject:self->_effectiveEndDate forKey:@"EffectiveEndDate"];
-  [v4 encodeObject:self->_issueDate forKey:@"IssueDate"];
-  [v4 encodeObject:self->_diagnosticTest forKey:@"DiagnosticTest"];
-  [v4 encodeObject:self->_status forKey:@"Status"];
+  coderCopy = coder;
+  [(HKMedicalRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_diagnosticTestCodingCollection forKey:{@"DiagnosticTestCodingCollection", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_results forKey:@"Results"];
+  [coderCopy encodeObject:self->_effectiveStartDate forKey:@"EffectiveStartDate"];
+  [coderCopy encodeObject:self->_statusCoding forKey:@"StatusCoding"];
+  [coderCopy encodeObject:self->_effectiveEndDate forKey:@"EffectiveEndDate"];
+  [coderCopy encodeObject:self->_issueDate forKey:@"IssueDate"];
+  [coderCopy encodeObject:self->_diagnosticTest forKey:@"DiagnosticTest"];
+  [coderCopy encodeObject:self->_status forKey:@"Status"];
 }
 
-- (HKDiagnosticTestReport)initWithCoder:(id)a3
+- (HKDiagnosticTestReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = HKDiagnosticTestReport;
-  v5 = [(HKMedicalRecord *)&v24 initWithCoder:v4];
+  v5 = [(HKMedicalRecord *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DiagnosticTestCodingCollection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DiagnosticTestCodingCollection"];
     diagnosticTestCodingCollection = v5->_diagnosticTestCodingCollection;
     v5->_diagnosticTestCodingCollection = v6;
 
     v8 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Results"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Results"];
     results = v5->_results;
     v5->_results = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EffectiveStartDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EffectiveStartDate"];
     effectiveStartDate = v5->_effectiveStartDate;
     v5->_effectiveStartDate = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StatusCoding"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StatusCoding"];
     statusCoding = v5->_statusCoding;
     v5->_statusCoding = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EffectiveEndDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EffectiveEndDate"];
     effectiveEndDate = v5->_effectiveEndDate;
     v5->_effectiveEndDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IssueDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IssueDate"];
     issueDate = v5->_issueDate;
     v5->_issueDate = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DiagnosticTest"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DiagnosticTest"];
     diagnosticTest = v5->_diagnosticTest;
     v5->_diagnosticTest = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Status"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Status"];
     status = v5->_status;
     v5->_status = v21;
   }
@@ -372,13 +372,13 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v58.receiver = self;
     v58.super_class = HKDiagnosticTestReport;
     if (![(HKMedicalRecord *)&v58 isEquivalent:v5])
@@ -386,25 +386,25 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       goto LABEL_44;
     }
 
-    v6 = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
-    v7 = [v5 diagnosticTestCodingCollection];
-    v8 = v7;
-    if (v6 == v7)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
+    diagnosticTestCodingCollection2 = [v5 diagnosticTestCodingCollection];
+    v8 = diagnosticTestCodingCollection2;
+    if (diagnosticTestCodingCollection == diagnosticTestCodingCollection2)
     {
     }
 
     else
     {
-      v9 = [v5 diagnosticTestCodingCollection];
-      if (!v9)
+      diagnosticTestCodingCollection3 = [v5 diagnosticTestCodingCollection];
+      if (!diagnosticTestCodingCollection3)
       {
         goto LABEL_43;
       }
 
-      v10 = v9;
-      v11 = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
-      v12 = [v5 diagnosticTestCodingCollection];
-      v13 = [v11 isEqual:v12];
+      v10 = diagnosticTestCodingCollection3;
+      diagnosticTestCodingCollection4 = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
+      diagnosticTestCodingCollection5 = [v5 diagnosticTestCodingCollection];
+      v13 = [diagnosticTestCodingCollection4 isEqual:diagnosticTestCodingCollection5];
 
       if (!v13)
       {
@@ -412,25 +412,25 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       }
     }
 
-    v6 = [(HKDiagnosticTestReport *)self results];
-    v15 = [v5 results];
-    v8 = v15;
-    if (v6 == v15)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self results];
+    results = [v5 results];
+    v8 = results;
+    if (diagnosticTestCodingCollection == results)
     {
     }
 
     else
     {
-      v16 = [v5 results];
-      if (!v16)
+      results2 = [v5 results];
+      if (!results2)
       {
         goto LABEL_43;
       }
 
-      v17 = v16;
-      v18 = [(HKDiagnosticTestReport *)self results];
-      v19 = [v5 results];
-      v20 = [v18 isEqualToArray:v19];
+      v17 = results2;
+      results3 = [(HKDiagnosticTestReport *)self results];
+      results4 = [v5 results];
+      v20 = [results3 isEqualToArray:results4];
 
       if (!v20)
       {
@@ -438,25 +438,25 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       }
     }
 
-    v6 = [(HKDiagnosticTestReport *)self effectiveStartDate];
-    v21 = [v5 effectiveStartDate];
-    v8 = v21;
-    if (v6 == v21)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self effectiveStartDate];
+    effectiveStartDate = [v5 effectiveStartDate];
+    v8 = effectiveStartDate;
+    if (diagnosticTestCodingCollection == effectiveStartDate)
     {
     }
 
     else
     {
-      v22 = [v5 effectiveStartDate];
-      if (!v22)
+      effectiveStartDate2 = [v5 effectiveStartDate];
+      if (!effectiveStartDate2)
       {
         goto LABEL_43;
       }
 
-      v23 = v22;
-      v24 = [(HKDiagnosticTestReport *)self effectiveStartDate];
-      v25 = [v5 effectiveStartDate];
-      v26 = [v24 isEqual:v25];
+      v23 = effectiveStartDate2;
+      effectiveStartDate3 = [(HKDiagnosticTestReport *)self effectiveStartDate];
+      effectiveStartDate4 = [v5 effectiveStartDate];
+      v26 = [effectiveStartDate3 isEqual:effectiveStartDate4];
 
       if (!v26)
       {
@@ -464,25 +464,25 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       }
     }
 
-    v6 = [(HKDiagnosticTestReport *)self statusCoding];
-    v27 = [v5 statusCoding];
-    v8 = v27;
-    if (v6 == v27)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self statusCoding];
+    statusCoding = [v5 statusCoding];
+    v8 = statusCoding;
+    if (diagnosticTestCodingCollection == statusCoding)
     {
     }
 
     else
     {
-      v28 = [v5 statusCoding];
-      if (!v28)
+      statusCoding2 = [v5 statusCoding];
+      if (!statusCoding2)
       {
         goto LABEL_43;
       }
 
-      v29 = v28;
-      v30 = [(HKDiagnosticTestReport *)self statusCoding];
-      v31 = [v5 statusCoding];
-      v32 = [v30 isEqual:v31];
+      v29 = statusCoding2;
+      statusCoding3 = [(HKDiagnosticTestReport *)self statusCoding];
+      statusCoding4 = [v5 statusCoding];
+      v32 = [statusCoding3 isEqual:statusCoding4];
 
       if (!v32)
       {
@@ -490,25 +490,25 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       }
     }
 
-    v6 = [(HKDiagnosticTestReport *)self effectiveEndDate];
-    v33 = [v5 effectiveEndDate];
-    v8 = v33;
-    if (v6 == v33)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self effectiveEndDate];
+    effectiveEndDate = [v5 effectiveEndDate];
+    v8 = effectiveEndDate;
+    if (diagnosticTestCodingCollection == effectiveEndDate)
     {
     }
 
     else
     {
-      v34 = [v5 effectiveEndDate];
-      if (!v34)
+      effectiveEndDate2 = [v5 effectiveEndDate];
+      if (!effectiveEndDate2)
       {
         goto LABEL_43;
       }
 
-      v35 = v34;
-      v36 = [(HKDiagnosticTestReport *)self effectiveEndDate];
-      v37 = [v5 effectiveEndDate];
-      v38 = [v36 isEqual:v37];
+      v35 = effectiveEndDate2;
+      effectiveEndDate3 = [(HKDiagnosticTestReport *)self effectiveEndDate];
+      effectiveEndDate4 = [v5 effectiveEndDate];
+      v38 = [effectiveEndDate3 isEqual:effectiveEndDate4];
 
       if (!v38)
       {
@@ -516,25 +516,25 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       }
     }
 
-    v6 = [(HKDiagnosticTestReport *)self issueDate];
-    v39 = [v5 issueDate];
-    v8 = v39;
-    if (v6 == v39)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self issueDate];
+    issueDate = [v5 issueDate];
+    v8 = issueDate;
+    if (diagnosticTestCodingCollection == issueDate)
     {
     }
 
     else
     {
-      v40 = [v5 issueDate];
-      if (!v40)
+      issueDate2 = [v5 issueDate];
+      if (!issueDate2)
       {
         goto LABEL_43;
       }
 
-      v41 = v40;
-      v42 = [(HKDiagnosticTestReport *)self issueDate];
-      v43 = [v5 issueDate];
-      v44 = [v42 isEqual:v43];
+      v41 = issueDate2;
+      issueDate3 = [(HKDiagnosticTestReport *)self issueDate];
+      issueDate4 = [v5 issueDate];
+      v44 = [issueDate3 isEqual:issueDate4];
 
       if (!v44)
       {
@@ -542,25 +542,25 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       }
     }
 
-    v6 = [(HKDiagnosticTestReport *)self diagnosticTest];
-    v45 = [v5 diagnosticTest];
-    v8 = v45;
-    if (v6 == v45)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self diagnosticTest];
+    diagnosticTest = [v5 diagnosticTest];
+    v8 = diagnosticTest;
+    if (diagnosticTestCodingCollection == diagnosticTest)
     {
     }
 
     else
     {
-      v46 = [v5 diagnosticTest];
-      if (!v46)
+      diagnosticTest2 = [v5 diagnosticTest];
+      if (!diagnosticTest2)
       {
         goto LABEL_43;
       }
 
-      v47 = v46;
-      v48 = [(HKDiagnosticTestReport *)self diagnosticTest];
-      v49 = [v5 diagnosticTest];
-      v50 = [v48 isEqual:v49];
+      v47 = diagnosticTest2;
+      diagnosticTest3 = [(HKDiagnosticTestReport *)self diagnosticTest];
+      diagnosticTest4 = [v5 diagnosticTest];
+      v50 = [diagnosticTest3 isEqual:diagnosticTest4];
 
       if (!v50)
       {
@@ -568,10 +568,10 @@ void __278__HKDiagnosticTestReport__newDiagnosticTestReportWithType_note_entered
       }
     }
 
-    v6 = [(HKDiagnosticTestReport *)self status];
-    v51 = [v5 status];
-    v8 = v51;
-    if (v6 == v51)
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self status];
+    status = [v5 status];
+    v8 = status;
+    if (diagnosticTestCodingCollection == status)
     {
 
 LABEL_48:
@@ -579,13 +579,13 @@ LABEL_48:
       goto LABEL_45;
     }
 
-    v52 = [v5 status];
-    if (v52)
+    status2 = [v5 status];
+    if (status2)
     {
-      v53 = v52;
-      v54 = [(HKDiagnosticTestReport *)self status];
-      v55 = [v5 status];
-      v56 = [v54 isEqual:v55];
+      v53 = status2;
+      status3 = [(HKDiagnosticTestReport *)self status];
+      status4 = [v5 status];
+      v56 = [status3 isEqual:status4];
 
       if (v56)
       {
@@ -612,66 +612,66 @@ LABEL_46:
 
 - (id)statusCodingCollection
 {
-  v2 = [(HKDiagnosticTestReport *)self statusCoding];
-  v3 = [HKMedicalCodingCollection collectionWithCoding:v2];
+  statusCoding = [(HKDiagnosticTestReport *)self statusCoding];
+  v3 = [HKMedicalCodingCollection collectionWithCoding:statusCoding];
 
   return v3;
 }
 
-- (void)_setDiagnosticTestCodingCollection:(id)a3
+- (void)_setDiagnosticTestCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   diagnosticTestCodingCollection = self->_diagnosticTestCodingCollection;
   self->_diagnosticTestCodingCollection = v4;
 
-  v8 = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:diagnosticTestCodingCollection];
   diagnosticTest = self->_diagnosticTest;
   self->_diagnosticTest = v6;
 }
 
-- (void)_setResults:(id)a3
+- (void)_setResults:(id)results
 {
-  v4 = [a3 copy];
+  v4 = [results copy];
   results = self->_results;
   self->_results = v4;
 
   MEMORY[0x1EEE66BB8](v4, results);
 }
 
-- (void)_setEffectiveStartDate:(id)a3
+- (void)_setEffectiveStartDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   effectiveStartDate = self->_effectiveStartDate;
   self->_effectiveStartDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, effectiveStartDate);
 }
 
-- (void)_setStatusCoding:(id)a3
+- (void)_setStatusCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   statusCoding = self->_statusCoding;
   self->_statusCoding = v4;
 
-  v8 = [(HKDiagnosticTestReport *)self statusCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  statusCodingCollection = [(HKDiagnosticTestReport *)self statusCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusCodingCollection];
   status = self->_status;
   self->_status = v6;
 }
 
-- (void)_setEffectiveEndDate:(id)a3
+- (void)_setEffectiveEndDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   effectiveEndDate = self->_effectiveEndDate;
   self->_effectiveEndDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, effectiveEndDate);
 }
 
-- (void)_setIssueDate:(id)a3
+- (void)_setIssueDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   issueDate = self->_issueDate;
   self->_issueDate = v4;
 
@@ -688,17 +688,17 @@ LABEL_46:
 
   else
   {
-    v4 = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    diagnosticTestCodingCollection = [(HKDiagnosticTestReport *)self diagnosticTestCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:diagnosticTestCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setDiagnosticTest:(id)a3
+- (void)_setDiagnosticTest:(id)test
 {
-  v4 = a3;
-  if (!v4)
+  testCopy = test;
+  if (!testCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -708,7 +708,7 @@ LABEL_46:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [testCopy copy];
   diagnosticTest = self->_diagnosticTest;
   self->_diagnosticTest = v6;
 }
@@ -723,17 +723,17 @@ LABEL_46:
 
   else
   {
-    v4 = [(HKDiagnosticTestReport *)self statusCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    statusCodingCollection = [(HKDiagnosticTestReport *)self statusCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setStatus:(id)a3
+- (void)_setStatus:(id)status
 {
-  v4 = a3;
-  if (!v4)
+  statusCopy = status;
+  if (!statusCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -743,16 +743,16 @@ LABEL_46:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [statusCopy copy];
   status = self->_status;
   self->_status = v6;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v13.receiver = self;
   v13.super_class = HKDiagnosticTestReport;
-  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {

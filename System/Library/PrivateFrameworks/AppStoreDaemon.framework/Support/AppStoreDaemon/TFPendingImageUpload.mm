@@ -1,16 +1,16 @@
 @interface TFPendingImageUpload
-- (BOOL)isEqual:(id)a3;
-- (TFPendingImageUpload)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TFPendingImageUpload)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TFPendingImageUpload
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -18,11 +18,11 @@
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (!v4 ? (data = 0) : (data = v4->_data), [(NSData *)self->_data isEqual:data]&& (!v4 ? (logKey = 0) : (logKey = v4->_logKey), [(LogKey *)self->_logKey isEqual:logKey])))
+    if (v5 == objc_opt_class() && (!equalCopy ? (data = 0) : (data = equalCopy->_data), [(NSData *)self->_data isEqual:data]&& (!equalCopy ? (logKey = 0) : (logKey = equalCopy->_logKey), [(LogKey *)self->_logKey isEqual:logKey])))
     {
-      if (v4)
+      if (equalCopy)
       {
-        URL = v4->_URL;
+        URL = equalCopy->_URL;
       }
 
       else
@@ -42,7 +42,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TFPendingImageUpload allocWithZone:?]];
   objc_storeStrong(&v4->_data, self->_data);
@@ -51,32 +51,32 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"A"];
-  [v5 encodeObject:self->_logKey forKey:@"B"];
-  [v5 encodeObject:self->_URL forKey:@"C"];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"A"];
+  [coderCopy encodeObject:self->_logKey forKey:@"B"];
+  [coderCopy encodeObject:self->_URL forKey:@"C"];
 }
 
-- (TFPendingImageUpload)initWithCoder:(id)a3
+- (TFPendingImageUpload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TFPendingImageUpload;
   v5 = [(TFPendingImageUpload *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"A"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"A"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"B"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"B"];
     logKey = v5->_logKey;
     v5->_logKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"C"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"C"];
     URL = v5->_URL;
     v5->_URL = v10;
   }

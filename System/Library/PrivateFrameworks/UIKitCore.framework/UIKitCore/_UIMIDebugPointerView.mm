@@ -1,16 +1,16 @@
 @interface _UIMIDebugPointerView
-- (_UIMIDebugPointerView)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
+- (_UIMIDebugPointerView)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation _UIMIDebugPointerView
 
-- (_UIMIDebugPointerView)initWithFrame:(CGRect)a3
+- (_UIMIDebugPointerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v22.receiver = self;
   v22.super_class = _UIMIDebugPointerView;
   v7 = [(UIView *)&v22 initWithFrame:?];
@@ -21,16 +21,16 @@
     v23.size.width = width;
     v23.size.height = height;
     [(UIView *)v7 _setCornerRadius:CGRectGetHeight(v23) * 0.5];
-    v8 = [(UIView *)v7 layer];
-    [v8 setAllowsEdgeAntialiasing:1];
+    layer = [(UIView *)v7 layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
-    v9 = [(UIView *)v7 layer];
-    [v9 setBorderWidth:1.0];
+    layer2 = [(UIView *)v7 layer];
+    [layer2 setBorderWidth:1.0];
 
     v10 = +[UIColor redColor];
-    v11 = [v10 CGColor];
-    v12 = [(UIView *)v7 layer];
-    [v12 setBorderColor:v11];
+    cGColor = [v10 CGColor];
+    layer3 = [(UIView *)v7 layer];
+    [layer3 setBorderColor:cGColor];
 
     [(UIView *)v7 setClipsToBounds:0];
     v13 = [UIView alloc];
@@ -44,16 +44,16 @@
     v24.size.width = width;
     v24.size.height = height;
     [(UIView *)v7->_actualPointer _setCornerRadius:CGRectGetHeight(v24) * 0.5];
-    v16 = [(UIView *)v7->_actualPointer layer];
-    [v16 setAllowsEdgeAntialiasing:1];
+    layer4 = [(UIView *)v7->_actualPointer layer];
+    [layer4 setAllowsEdgeAntialiasing:1];
 
     v17 = +[UIColor systemBlueColor];
-    v18 = [v17 CGColor];
-    v19 = [(UIView *)v7->_actualPointer layer];
-    [v19 setBorderColor:v18];
+    cGColor2 = [v17 CGColor];
+    layer5 = [(UIView *)v7->_actualPointer layer];
+    [layer5 setBorderColor:cGColor2];
 
-    v20 = [(UIView *)v7->_actualPointer layer];
-    [v20 setBorderWidth:1.0];
+    layer6 = [(UIView *)v7->_actualPointer layer];
+    [layer6 setBorderWidth:1.0];
 
     [(UIView *)v7 addSubview:v7->_actualPointer];
   }
@@ -61,11 +61,11 @@
   return v7;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(UIView *)self->_actualPointer setFrame:a3.origin.x, a3.origin.y];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(UIView *)self->_actualPointer setFrame:bounds.origin.x, bounds.origin.y];
   [(UIView *)self bounds];
   v8 = height == v7 && width == v6;
   actualPointer = self->_actualPointer;
@@ -76,8 +76,8 @@
   }
 
   v11 = *v10;
-  v12 = [(UIView *)actualPointer layer];
-  [v12 setCornerCurve:v11];
+  layer = [(UIView *)actualPointer layer];
+  [layer setCornerCurve:v11];
 }
 
 @end

@@ -1,39 +1,39 @@
 @interface FMDXPCJanitor
-- (FMDXPCJanitor)initWithName:(id)a3 gracePeriod:(double)a4 cleanupTask:(id)a5;
+- (FMDXPCJanitor)initWithName:(id)name gracePeriod:(double)period cleanupTask:(id)task;
 - (id)activityHandler;
 - (void)deactivate;
 - (void)handleActivity;
 - (void)performWork;
-- (void)schedule:(id)a3 requireClass:(unint64_t)a4;
+- (void)schedule:(id)schedule requireClass:(unint64_t)class;
 @end
 
 @implementation FMDXPCJanitor
 
-- (FMDXPCJanitor)initWithName:(id)a3 gracePeriod:(double)a4 cleanupTask:(id)a5
+- (FMDXPCJanitor)initWithName:(id)name gracePeriod:(double)period cleanupTask:(id)task
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  taskCopy = task;
   v13.receiver = self;
   v13.super_class = FMDXPCJanitor;
   v10 = [(FMDXPCJanitor *)&v13 init];
   if (v10)
   {
-    v11 = [@"com.apple.icloud.findmydeviced.fmdxpcjanitor." stringByAppendingString:v8];
+    v11 = [@"com.apple.icloud.findmydeviced.fmdxpcjanitor." stringByAppendingString:nameCopy];
     [(FMDXPCJanitor *)v10 setName:v11];
 
-    [(FMDXPCJanitor *)v10 setGracePeriod:a4];
-    [(FMDXPCJanitor *)v10 setCleanupTask:v9];
+    [(FMDXPCJanitor *)v10 setGracePeriod:period];
+    [(FMDXPCJanitor *)v10 setCleanupTask:taskCopy];
     [(FMDXPCJanitor *)v10 handleActivity];
   }
 
   return v10;
 }
 
-- (void)schedule:(id)a3 requireClass:(unint64_t)a4
+- (void)schedule:(id)schedule requireClass:(unint64_t)class
 {
-  v6 = a3;
+  scheduleCopy = schedule;
   [(FMDXPCJanitor *)self gracePeriod];
-  v7 = [v6 dateByAddingTimeInterval:?];
+  v7 = [scheduleCopy dateByAddingTimeInterval:?];
 
   [v7 timeIntervalSinceNow];
   v9 = v8;
@@ -55,13 +55,13 @@
   xpc_dictionary_set_BOOL(v13, XPC_ACTIVITY_POWER_NAP, 1);
   xpc_dictionary_set_int64(v13, XPC_ACTIVITY_DELAY, v9);
   xpc_dictionary_set_int64(v13, XPC_ACTIVITY_GRACE_PERIOD, v11);
-  v14 = [(FMDXPCJanitor *)self name];
-  v15 = [v14 cStringUsingEncoding:4];
+  name = [(FMDXPCJanitor *)self name];
+  v15 = [name cStringUsingEncoding:4];
 
-  if (a4)
+  if (class)
   {
     v16 = &XPC_ACTIVITY_REQUIRES_CLASS_A;
-    if (a4 != 1)
+    if (class != 1)
     {
       v16 = &XPC_ACTIVITY_REQUIRES_CLASS_C;
     }
@@ -69,28 +69,28 @@
     xpc_dictionary_set_BOOL(v13, *v16, 1);
   }
 
-  v17 = [(FMDXPCJanitor *)self activityHandler];
-  xpc_activity_register(v15, v13, v17);
+  activityHandler = [(FMDXPCJanitor *)self activityHandler];
+  xpc_activity_register(v15, v13, activityHandler);
 }
 
 - (void)deactivate
 {
-  v3 = [(FMDXPCJanitor *)self name];
+  name = [(FMDXPCJanitor *)self name];
 
   v4 = sub_100002880();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (name)
   {
     if (v5)
     {
-      v6 = [(FMDXPCJanitor *)self name];
+      name2 = [(FMDXPCJanitor *)self name];
       v9 = 138412290;
-      v10 = v6;
+      v10 = name2;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "FMDXPCJanitor Unregistering XPC activity %@", &v9, 0xCu);
     }
 
-    v7 = [(FMDXPCJanitor *)self name];
-    v8 = [v7 cStringUsingEncoding:4];
+    name3 = [(FMDXPCJanitor *)self name];
+    v8 = [name3 cStringUsingEncoding:4];
 
     xpc_activity_unregister(v8);
   }
@@ -119,21 +119,21 @@
 
 - (void)handleActivity
 {
-  v3 = [(FMDXPCJanitor *)self name];
-  v4 = [v3 cStringUsingEncoding:4];
+  name = [(FMDXPCJanitor *)self name];
+  v4 = [name cStringUsingEncoding:4];
 
-  v5 = [(FMDXPCJanitor *)self activityHandler];
-  xpc_activity_register(v4, XPC_ACTIVITY_CHECK_IN, v5);
+  activityHandler = [(FMDXPCJanitor *)self activityHandler];
+  xpc_activity_register(v4, XPC_ACTIVITY_CHECK_IN, activityHandler);
 }
 
 - (void)performWork
 {
-  v3 = [(FMDXPCJanitor *)self cleanupTask];
+  cleanupTask = [(FMDXPCJanitor *)self cleanupTask];
 
-  if (v3)
+  if (cleanupTask)
   {
-    v5 = [(FMDXPCJanitor *)self cleanupTask];
-    v5[2]();
+    cleanupTask2 = [(FMDXPCJanitor *)self cleanupTask];
+    cleanupTask2[2]();
   }
 
   else

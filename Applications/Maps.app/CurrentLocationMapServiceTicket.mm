@@ -1,65 +1,65 @@
 @interface CurrentLocationMapServiceTicket
 - (CLLocation)currentLocation;
-- (CurrentLocationMapServiceTicket)initWithLocationManager:(id)a3;
-- (id)_revGeoTicketForCurrentLocation:(id)a3 traits:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (void)applyToCorrectedSearch:(id)a3;
+- (CurrentLocationMapServiceTicket)initWithLocationManager:(id)manager;
+- (id)_revGeoTicketForCurrentLocation:(id)location traits:(id)traits completionHandler:(id)handler networkActivityHandler:(id)activityHandler;
+- (void)applyToCorrectedSearch:(id)search;
 - (void)cancel;
 - (void)dealloc;
-- (void)setLocationFixOperation:(id)a3;
-- (void)setRevGeoTicket:(id)a3;
-- (void)submitWithTraits:(id)a3 completionHandler:(id)a4 networkActivityHandler:(id)a5;
+- (void)setLocationFixOperation:(id)operation;
+- (void)setRevGeoTicket:(id)ticket;
+- (void)submitWithTraits:(id)traits completionHandler:(id)handler networkActivityHandler:(id)activityHandler;
 @end
 
 @implementation CurrentLocationMapServiceTicket
 
-- (void)setRevGeoTicket:(id)a3
+- (void)setRevGeoTicket:(id)ticket
 {
-  v5 = a3;
+  ticketCopy = ticket;
   revGeoTicket = self->_revGeoTicket;
   p_revGeoTicket = &self->_revGeoTicket;
   v6 = revGeoTicket;
-  if (revGeoTicket != v5)
+  if (revGeoTicket != ticketCopy)
   {
-    v9 = v5;
+    v9 = ticketCopy;
     [(GEOMapServiceCorrectableTicket *)v6 cancel];
-    objc_storeStrong(p_revGeoTicket, a3);
-    v5 = v9;
+    objc_storeStrong(p_revGeoTicket, ticket);
+    ticketCopy = v9;
   }
 }
 
-- (void)setLocationFixOperation:(id)a3
+- (void)setLocationFixOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   locationFixOperation = self->_locationFixOperation;
   p_locationFixOperation = &self->_locationFixOperation;
   v6 = locationFixOperation;
-  if (locationFixOperation != v5)
+  if (locationFixOperation != operationCopy)
   {
-    v9 = v5;
+    v9 = operationCopy;
     [(MKLocationManagerOperation *)v6 cancel];
-    objc_storeStrong(p_locationFixOperation, a3);
-    v5 = v9;
+    objc_storeStrong(p_locationFixOperation, operation);
+    operationCopy = v9;
   }
 }
 
 - (CLLocation)currentLocation
 {
-  v3 = [(MKLocationManager *)self->_locationManager lastGoodLocation];
+  lastGoodLocation = [(MKLocationManager *)self->_locationManager lastGoodLocation];
   v4 = sub_100B63D48();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v17 = 134349315;
-    v18 = self;
+    selfCopy4 = self;
     v19 = 2113;
-    v20 = v3;
+    v20 = lastGoodLocation;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Attempting to use last 'good' location: %{private}@", &v17, 0x16u);
   }
 
-  if (v3)
+  if (lastGoodLocation)
   {
     v5 = +[NSDate date];
-    v6 = [v3 timestamp];
-    [v5 timeIntervalSinceDate:v6];
+    timestamp = [lastGoodLocation timestamp];
+    [v5 timeIntervalSinceDate:timestamp];
     v8 = v7;
     +[CLLocation _mapkit_timeToExpire];
     v10 = v9;
@@ -71,15 +71,15 @@
       {
         +[CLLocation _mapkit_timeToExpire];
         v17 = 134349312;
-        v18 = self;
+        selfCopy4 = self;
         v19 = 2048;
         v20 = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "[%{public}p] Last 'good' location is too old (> %f seconds); using last known location", &v17, 0x16u);
       }
 
-      v13 = [(MKLocationManager *)self->_locationManager lastLocation];
+      lastLocation = [(MKLocationManager *)self->_locationManager lastLocation];
 
-      v3 = v13;
+      lastGoodLocation = lastLocation;
     }
   }
 
@@ -89,31 +89,31 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v17 = 134349056;
-      v18 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[%{public}p] We don't have a last 'good' location; using last known location", &v17, 0xCu);
     }
 
-    v3 = [(MKLocationManager *)self->_locationManager lastLocation];
+    lastGoodLocation = [(MKLocationManager *)self->_locationManager lastLocation];
   }
 
   v15 = sub_100B63D48();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     v17 = 134349315;
-    v18 = self;
+    selfCopy4 = self;
     v19 = 2113;
-    v20 = v3;
+    v20 = lastGoodLocation;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "[%{public}p] Returning current location: %{private}@", &v17, 0x16u);
   }
 
-  return v3;
+  return lastGoodLocation;
 }
 
-- (void)applyToCorrectedSearch:(id)a3
+- (void)applyToCorrectedSearch:(id)search
 {
-  v4 = a3;
-  v5 = [(CurrentLocationMapServiceTicket *)self revGeoTicket];
-  [v5 applyToCorrectedSearch:v4];
+  searchCopy = search;
+  revGeoTicket = [(CurrentLocationMapServiceTicket *)self revGeoTicket];
+  [revGeoTicket applyToCorrectedSearch:searchCopy];
 }
 
 - (void)cancel
@@ -122,52 +122,52 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Cancelling", &v5, 0xCu);
   }
 
   self->_cancelled = 1;
   [(CurrentLocationMapServiceTicket *)self setLocationFixOperation:0];
-  v4 = [(CurrentLocationMapServiceTicket *)self revGeoTicket];
-  [v4 cancel];
+  revGeoTicket = [(CurrentLocationMapServiceTicket *)self revGeoTicket];
+  [revGeoTicket cancel];
 }
 
-- (id)_revGeoTicketForCurrentLocation:(id)a3 traits:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)_revGeoTicketForCurrentLocation:(id)location traits:(id)traits completionHandler:(id)handler networkActivityHandler:(id)activityHandler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[GEOLocation alloc] initWithCLLocation:v12];
+  activityHandlerCopy = activityHandler;
+  handlerCopy = handler;
+  traitsCopy = traits;
+  locationCopy = location;
+  v13 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
 
-  v14 = sub_100C2093C(v10);
+  v14 = sub_100C2093C(handlerCopy);
 
-  v15 = [GEOComposedWaypoint composedWaypointForCurrentLocation:v13 traits:v11 completionHandler:v14 networkActivityHandler:v9];
+  v15 = [GEOComposedWaypoint composedWaypointForCurrentLocation:v13 traits:traitsCopy completionHandler:v14 networkActivityHandler:activityHandlerCopy];
 
   return v15;
 }
 
-- (void)submitWithTraits:(id)a3 completionHandler:(id)a4 networkActivityHandler:(id)a5
+- (void)submitWithTraits:(id)traits completionHandler:(id)handler networkActivityHandler:(id)activityHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  traitsCopy = traits;
+  handlerCopy = handler;
+  activityHandlerCopy = activityHandler;
   self->_cancelled = 0;
-  v11 = [(CurrentLocationMapServiceTicket *)self currentLocation];
+  currentLocation = [(CurrentLocationMapServiceTicket *)self currentLocation];
   v12 = sub_100B63D48();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (currentLocation)
   {
     if (v13)
     {
       *buf = 134349315;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2113;
-      v29 = v11;
+      v29 = currentLocation;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Submitting rev geo for location: %{private}@", buf, 0x16u);
     }
 
-    v14 = [(CurrentLocationMapServiceTicket *)self _revGeoTicketForCurrentLocation:v11 traits:v8 completionHandler:v9 networkActivityHandler:v10];
+    v14 = [(CurrentLocationMapServiceTicket *)self _revGeoTicketForCurrentLocation:currentLocation traits:traitsCopy completionHandler:handlerCopy networkActivityHandler:activityHandlerCopy];
     [(CurrentLocationMapServiceTicket *)self setRevGeoTicket:v14];
   }
 
@@ -176,25 +176,25 @@
     if (v13)
     {
       *buf = 134349056;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Submitting single location update", buf, 0xCu);
     }
 
     objc_initWeak(buf, self);
-    v15 = [(CurrentLocationMapServiceTicket *)self locationManager];
+    locationManager = [(CurrentLocationMapServiceTicket *)self locationManager];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
     v20 = sub_100B64298;
     v21 = &unk_10163AE68;
     objc_copyWeak(&v25, buf);
-    v23 = v9;
-    v22 = v8;
-    v24 = v10;
-    v16 = [v15 singleLocationUpdateWithHandler:&v18];
+    v23 = handlerCopy;
+    v22 = traitsCopy;
+    v24 = activityHandlerCopy;
+    v16 = [locationManager singleLocationUpdateWithHandler:&v18];
     [(CurrentLocationMapServiceTicket *)self setLocationFixOperation:v16, v18, v19, v20, v21];
 
-    v17 = [(CurrentLocationMapServiceTicket *)self locationFixOperation];
-    [v17 start];
+    locationFixOperation = [(CurrentLocationMapServiceTicket *)self locationFixOperation];
+    [locationFixOperation start];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
@@ -207,7 +207,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -216,9 +216,9 @@
   [(CurrentLocationMapServiceTicket *)&v4 dealloc];
 }
 
-- (CurrentLocationMapServiceTicket)initWithLocationManager:(id)a3
+- (CurrentLocationMapServiceTicket)initWithLocationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = CurrentLocationMapServiceTicket;
   v6 = [(CurrentLocationMapServiceTicket *)&v9 init];
@@ -230,11 +230,11 @@
       *buf = 134349314;
       v11 = v6;
       v12 = 2112;
-      v13 = v5;
+      v13 = managerCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Initializing with location manager: %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_locationManager, a3);
+    objc_storeStrong(&v6->_locationManager, manager);
   }
 
   return v6;

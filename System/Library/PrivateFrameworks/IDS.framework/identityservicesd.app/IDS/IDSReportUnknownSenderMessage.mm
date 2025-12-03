@@ -1,9 +1,9 @@
 @interface IDSReportUnknownSenderMessage
 - (IDSReportUnknownSenderMessage)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)handleResponseDictionary:(id)a3;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSReportUnknownSenderMessage
@@ -22,22 +22,22 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = IDSReportUnknownSenderMessage;
-  v4 = [(IDSReportUnknownSenderMessage *)&v9 copyWithZone:a3];
-  v5 = [(IDSReportUnknownSenderMessage *)self unknownSenderURI];
-  [v4 setUnknownSenderURI:v5];
+  v4 = [(IDSReportUnknownSenderMessage *)&v9 copyWithZone:zone];
+  unknownSenderURI = [(IDSReportUnknownSenderMessage *)self unknownSenderURI];
+  [v4 setUnknownSenderURI:unknownSenderURI];
 
-  v6 = [(IDSReportUnknownSenderMessage *)self messageID];
-  [v4 setMessageID:v6];
+  messageID = [(IDSReportUnknownSenderMessage *)self messageID];
+  [v4 setMessageID:messageID];
 
   [v4 setIsBlackholed:{-[IDSReportUnknownSenderMessage isBlackholed](self, "isBlackholed")}];
   [v4 setIsJunked:{-[IDSReportUnknownSenderMessage isJunked](self, "isJunked")}];
   [v4 setMessageServerTimestamp:{-[IDSReportUnknownSenderMessage messageServerTimestamp](self, "messageServerTimestamp")}];
-  v7 = [(IDSReportUnknownSenderMessage *)self responseMessage];
-  [v4 setResponseMessage:v7];
+  responseMessage = [(IDSReportUnknownSenderMessage *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
   return v4;
 }
@@ -55,10 +55,10 @@
 - (id)messageBody
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(IDSReportUnknownSenderMessage *)self messageID];
-  if (v4)
+  messageID = [(IDSReportUnknownSenderMessage *)self messageID];
+  if (messageID)
   {
-    CFDictionarySetValue(v3, @"message-id", v4);
+    CFDictionarySetValue(v3, @"message-id", messageID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -78,10 +78,10 @@
     CFDictionarySetValue(v3, @"message-is-junked", v6);
   }
 
-  v7 = [(IDSReportUnknownSenderMessage *)self unknownSenderURI];
-  if (v7)
+  unknownSenderURI = [(IDSReportUnknownSenderMessage *)self unknownSenderURI];
+  if (unknownSenderURI)
   {
-    CFDictionarySetValue(v3, @"sender-uri", v7);
+    CFDictionarySetValue(v3, @"sender-uri", unknownSenderURI);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -103,27 +103,27 @@
   return v3;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Report Unknown Sender response: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v7 = v4;
+    v7 = dictionaryCopy;
     _IDSLogV();
   }
 
   v8.receiver = self;
   v8.super_class = IDSReportUnknownSenderMessage;
-  [(IDSReportUnknownSenderMessage *)&v8 handleResponseDictionary:v4, v7];
-  v6 = [v4 objectForKey:@"message"];
+  [(IDSReportUnknownSenderMessage *)&v8 handleResponseDictionary:dictionaryCopy, v7];
+  v6 = [dictionaryCopy objectForKey:@"message"];
   [(IDSReportUnknownSenderMessage *)self setResponseMessage:v6];
 }
 

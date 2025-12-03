@@ -1,21 +1,21 @@
 @interface ErrorView
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityElements:(id)a3;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityElements:(id)elements;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation ErrorView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ErrorView.layoutSubviews()();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   ErrorView.accessibilityLabel.getter();
   v4 = v3;
 
@@ -32,20 +32,20 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_1D8190F14();
   }
 
-  v4 = self;
+  selfCopy = self;
   ErrorView.accessibilityLabel.setter();
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     v4 = sub_1D8191314();
   }
@@ -55,7 +55,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   ErrorView.accessibilityElements.setter(v4);
 }
 

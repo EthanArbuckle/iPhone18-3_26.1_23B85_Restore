@@ -1,21 +1,21 @@
 @interface PKTextInputStrokeProvider
-- (BOOL)containsStrokeWithUUID:(id)a3;
-- (BOOL)slicesWithIdentifiers:(id)a3 significantlyOverlapRect:(CGRect)a4;
-- (CGPoint)centroidForSlicesWithIdentifiers:(id)a3;
-- (CGPoint)startingPointForSlicesWithIdentifiers:(id)a3;
-- (CGRect)boundsForSliceIdentifiers:(id)a3;
-- (PKTextInputStrokeProvider)initWithDrawing:(id)a3;
-- (id)strokesForSliceIdentifiers:(id)a3;
+- (BOOL)containsStrokeWithUUID:(id)d;
+- (BOOL)slicesWithIdentifiers:(id)identifiers significantlyOverlapRect:(CGRect)rect;
+- (CGPoint)centroidForSlicesWithIdentifiers:(id)identifiers;
+- (CGPoint)startingPointForSlicesWithIdentifiers:(id)identifiers;
+- (CGRect)boundsForSliceIdentifiers:(id)identifiers;
+- (PKTextInputStrokeProvider)initWithDrawing:(id)drawing;
+- (id)strokesForSliceIdentifiers:(id)identifiers;
 @end
 
 @implementation PKTextInputStrokeProvider
 
-- (PKTextInputStrokeProvider)initWithDrawing:(id)a3
+- (PKTextInputStrokeProvider)initWithDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   v9.receiver = self;
   v9.super_class = PKTextInputStrokeProvider;
-  v5 = [(PKStrokeProvider *)&v9 initWithDrawing:v4];
+  v5 = [(PKStrokeProvider *)&v9 initWithDrawing:drawingCopy];
   if (v5)
   {
     ++strokeProviderVersionCounter;
@@ -27,10 +27,10 @@
   return v5;
 }
 
-- (CGRect)boundsForSliceIdentifiers:(id)a3
+- (CGRect)boundsForSliceIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   x = *MEMORY[0x1E695F050];
   y = *(MEMORY[0x1E695F050] + 8);
   width = *(MEMORY[0x1E695F050] + 16);
@@ -39,7 +39,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v4;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -95,16 +95,16 @@
   return result;
 }
 
-- (CGPoint)centroidForSlicesWithIdentifiers:(id)a3
+- (CGPoint)centroidForSlicesWithIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  identifiersCopy = identifiers;
+  v5 = [identifiersCopy count];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -175,10 +175,10 @@
   return result;
 }
 
-- (CGPoint)startingPointForSlicesWithIdentifiers:(id)a3
+- (CGPoint)startingPointForSlicesWithIdentifiers:(id)identifiers
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v22 = 0;
   v23 = &v22;
   v24 = 0x4012000000;
@@ -190,7 +190,7 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v4;
+  v5 = identifiersCopy;
   v6 = 0;
   v7 = [v5 countByEnumeratingWithState:&v18 objects:v29 count:16];
   if (!v7)
@@ -263,14 +263,14 @@ uint64_t __67__PKTextInputStrokeProvider_startingPointForSlicesWithIdentifiers__
   return result;
 }
 
-- (BOOL)slicesWithIdentifiers:(id)a3 significantlyOverlapRect:(CGRect)a4
+- (BOOL)slicesWithIdentifiers:(id)identifiers significantlyOverlapRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v36 = *MEMORY[0x1E69E9840];
-  v30 = a3;
+  identifiersCopy = identifiers;
   [(PKTextInputStrokeProvider *)self boundsForSliceIdentifiers:?];
   *r2 = x;
   v44.origin.x = x;
@@ -282,11 +282,11 @@ uint64_t __67__PKTextInputStrokeProvider_startingPointForSlicesWithIdentifiers__
   v44.size.height = height;
   if (CGRectIntersectsRect(v37, v44))
   {
-    v12 = [v30 count];
+    v12 = [identifiersCopy count];
     v33 = 0u;
     v34 = 0u;
     memset(&r2[1], 0, 32);
-    v13 = v30;
+    v13 = identifiersCopy;
     v14 = [v13 countByEnumeratingWithState:&r2[1] objects:v35 count:16];
     if (v14)
     {
@@ -381,25 +381,25 @@ LABEL_19:
   return v28;
 }
 
-- (BOOL)containsStrokeWithUUID:(id)a3
+- (BOOL)containsStrokeWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKStrokeProvider *)self drawing];
-  v6 = [v5 _visibleStrokeForIdentifier:v4];
+  dCopy = d;
+  drawing = [(PKStrokeProvider *)self drawing];
+  v6 = [drawing _visibleStrokeForIdentifier:dCopy];
 
   return v6 != 0;
 }
 
-- (id)strokesForSliceIdentifiers:(id)a3
+- (id)strokesForSliceIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x1E695DFA8] set];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -414,10 +414,10 @@ LABEL_19:
         }
 
         v10 = [(PKStrokeProvider *)self sliceForIdentifier:*(*(&v13 + 1) + 8 * i), v13];
-        v11 = [v10 stroke];
-        if (v11)
+        stroke = [v10 stroke];
+        if (stroke)
         {
-          [v5 addObject:v11];
+          [v5 addObject:stroke];
         }
       }
 

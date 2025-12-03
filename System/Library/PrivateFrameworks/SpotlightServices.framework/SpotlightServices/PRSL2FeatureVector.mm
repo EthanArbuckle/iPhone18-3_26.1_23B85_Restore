@@ -1,36 +1,36 @@
 @interface PRSL2FeatureVector
-+ (FeatureInfo)featureForName:(id)a3;
++ (FeatureInfo)featureForName:(id)name;
 + (__CFSet)getL2FeatureSet;
 + (id)allowedAttributeSetForAnonPipeline;
-+ (id)contextWithFeatureOrder:(id)a3 withInflation:(unint64_t)a4 withInflatedIndexToSize:(id)a5;
++ (id)contextWithFeatureOrder:(id)order withInflation:(unint64_t)inflation withInflatedIndexToSize:(id)size;
 + (void)initialize;
 - (BOOL)displayNameFuzzySpecialInsertion;
 - (BOOL)isAppInDock;
 - (BOOL)isSiriAction;
-- (BOOL)serializeToJSON:(void *)a3 options:(int64_t)a4;
+- (BOOL)serializeToJSON:(void *)n options:(int64_t)options;
 - (PRSL2FeatureVector)init;
-- (PRSL2FeatureVector)initWithCache:(PRSL2FeatureScoreSmallCache *)a3 featureData:(void *)a4 featureDataSize:(unsigned __int16)a5 flags:(unsigned __int8)a6 values:(unsigned __int8)a7;
+- (PRSL2FeatureVector)initWithCache:(PRSL2FeatureScoreSmallCache *)cache featureData:(void *)data featureDataSize:(unsigned __int16)size flags:(unsigned __int8)flags values:(unsigned __int8)values;
 - (PRSRankingItem)rankingItem;
-- (float)getAllScores:(float)a3[3235];
-- (float)scoreForFeature:(unsigned __int16)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (float)getAllScores:(float)scores[3235];
+- (float)scoreForFeature:(unsigned __int16)feature;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)restoreFromJazzkonPlusHacks:(float *)a3;
-- (void)setDisplayNameFuzzySpecialInsertion:(BOOL)a3;
-- (void)setIsAppInDock:(BOOL)a3;
-- (void)setIsSiriAction:(BOOL)a3;
-- (void)setScores:(float *)a3 forFeatures:(unsigned __int16 *)a4 count:(unint64_t)a5;
-- (void)swapAllContentCreationDateFeatures:(float *)a3;
-- (void)swapAllLastUsedDateFeatures:(float *)a3;
-- (void)swapAllRecenyFeatures:(float *)a3;
-- (void)swapFeature:(unsigned __int16)a3 withSubstitute:(unsigned __int16)a4 scores:(float *)a5;
+- (void)restoreFromJazzkonPlusHacks:(float *)hacks;
+- (void)setDisplayNameFuzzySpecialInsertion:(BOOL)insertion;
+- (void)setIsAppInDock:(BOOL)dock;
+- (void)setIsSiriAction:(BOOL)action;
+- (void)setScores:(float *)scores forFeatures:(unsigned __int16 *)features count:(unint64_t)count;
+- (void)swapAllContentCreationDateFeatures:(float *)features;
+- (void)swapAllLastUsedDateFeatures:(float *)features;
+- (void)swapAllRecenyFeatures:(float *)features;
+- (void)swapFeature:(unsigned __int16)feature withSubstitute:(unsigned __int16)substitute scores:(float *)scores;
 @end
 
 @implementation PRSL2FeatureVector
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = &byte_1E8596CA2;
     v3 = 3235;
@@ -103,20 +103,20 @@ CFSetRef __37__PRSL2FeatureVector_getL2FeatureSet__block_invoke()
   return result;
 }
 
-+ (id)contextWithFeatureOrder:(id)a3 withInflation:(unint64_t)a4 withInflatedIndexToSize:(id)a5
++ (id)contextWithFeatureOrder:(id)order withInflation:(unint64_t)inflation withInflatedIndexToSize:(id)size
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[PRSL2FeatureVectorProcessingContext alloc] initWithFeatureOrder:v8 withInflation:a4 withInflatedIndexToSize:v7];
+  sizeCopy = size;
+  orderCopy = order;
+  v9 = [[PRSL2FeatureVectorProcessingContext alloc] initWithFeatureOrder:orderCopy withInflation:inflation withInflatedIndexToSize:sizeCopy];
 
   return v9;
 }
 
-+ (FeatureInfo)featureForName:(id)a3
++ (FeatureInfo)featureForName:(id)name
 {
   v6[1] = 0;
-  v3 = a3;
-  v6[0] = v3;
+  nameCopy = name;
+  v6[0] = nameCopy;
   Value = CFSetGetValue(+[PRSL2FeatureVector getL2FeatureSet], v6);
 
   return Value;
@@ -150,9 +150,9 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
   if (v2)
   {
     v2->_cache.count = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     topicalityAnonFeatDict = v3->_topicalityAnonFeatDict;
-    v3->_topicalityAnonFeatDict = v4;
+    v3->_topicalityAnonFeatDict = dictionary;
 
     v3->_featureDataLock._os_unfair_lock_opaque = 0;
   }
@@ -160,14 +160,14 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
   return v3;
 }
 
-- (PRSL2FeatureVector)initWithCache:(PRSL2FeatureScoreSmallCache *)a3 featureData:(void *)a4 featureDataSize:(unsigned __int16)a5 flags:(unsigned __int8)a6 values:(unsigned __int8)a7
+- (PRSL2FeatureVector)initWithCache:(PRSL2FeatureScoreSmallCache *)cache featureData:(void *)data featureDataSize:(unsigned __int16)size flags:(unsigned __int8)flags values:(unsigned __int8)values
 {
-  v9 = a5;
+  sizeCopy = size;
   v12 = [(PRSL2FeatureVector *)self init];
   v13 = v12;
   if (v12)
   {
-    count = a3->count;
+    count = cache->count;
     v12->_cache.count = count;
     if (count)
     {
@@ -175,26 +175,26 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
       scores = v12->_cache.scores;
       do
       {
-        *(scores + v15 - 32) = a3->features[v15];
-        scores[v15] = a3->scores[v15];
+        *(scores + v15 - 32) = cache->features[v15];
+        scores[v15] = cache->scores[v15];
         ++v15;
       }
 
-      while (v15 < a3->count);
+      while (v15 < cache->count);
     }
 
-    v17 = malloc_type_malloc(v9, 0x98C0A12DuLL);
+    v17 = malloc_type_malloc(sizeCopy, 0x98C0A12DuLL);
     v13->_featureData = v17;
-    memcpy(v17, a4, v9);
-    v13->_featureDataSize = v9;
-    v13->_flags = a6;
-    v13->_values = a7;
+    memcpy(v17, data, sizeCopy);
+    v13->_featureDataSize = sizeCopy;
+    v13->_flags = flags;
+    v13->_values = values;
   }
 
   return v13;
 }
 
-- (void)setDisplayNameFuzzySpecialInsertion:(BOOL)a3
+- (void)setDisplayNameFuzzySpecialInsertion:(BOOL)insertion
 {
   os_unfair_lock_lock(&self->_featureDataLock);
   self->_flags |= 1u;
@@ -209,11 +209,11 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
   return 0;
 }
 
-- (void)setIsSiriAction:(BOOL)a3
+- (void)setIsSiriAction:(BOOL)action
 {
   os_unfair_lock_lock(&self->_featureDataLock);
   self->_flags |= 2u;
-  self->_values = self->_values & 0xFE | a3;
+  self->_values = self->_values & 0xFE | action;
 
   os_unfair_lock_unlock(&self->_featureDataLock);
 }
@@ -226,12 +226,12 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
   return v3;
 }
 
-- (void)setIsAppInDock:(BOOL)a3
+- (void)setIsAppInDock:(BOOL)dock
 {
-  v3 = a3;
+  dockCopy = dock;
   os_unfair_lock_lock(&self->_featureDataLock);
   self->_flags |= 4u;
-  if (v3)
+  if (dockCopy)
   {
     v5 = 2;
   }
@@ -254,9 +254,9 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
   return v3;
 }
 
-- (float)scoreForFeature:(unsigned __int16)a3
+- (float)scoreForFeature:(unsigned __int16)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   os_unfair_lock_lock(&self->_featureDataLock);
   count = self->_cache.count;
   if (self->_cache.count)
@@ -267,7 +267,7 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
     {
       v8 = p_cache->features[0];
       p_cache = (p_cache + 2);
-      if (v8 == v3)
+      if (v8 == featureCopy)
       {
         v16 = *scores;
         goto LABEL_28;
@@ -280,9 +280,9 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
     while (count);
   }
 
-  if ((sFeatureFlags[v3] & 0x20) != 0)
+  if ((sFeatureFlags[featureCopy] & 0x20) != 0)
   {
-    BoolFromFlaggedFeature = getBoolFromFlaggedFeature(v3, self->_flags, self->_values);
+    BoolFromFlaggedFeature = getBoolFromFlaggedFeature(featureCopy, self->_flags, self->_values);
     os_unfair_lock_unlock(&self->_featureDataLock);
     return BoolFromFlaggedFeature;
   }
@@ -290,7 +290,7 @@ uint64_t __56__PRSL2FeatureVector_allowedAttributeSetForAnonPipeline__block_invo
   if (!self->_featureDataSize)
   {
 LABEL_25:
-    v16 = sDefaultScores[v3];
+    v16 = sDefaultScores[featureCopy];
     goto LABEL_28;
   }
 
@@ -317,13 +317,13 @@ LABEL_25:
 LABEL_15:
           if ((v12 & 0xC0) == 0x80)
           {
-            if (v9 + v14 >= v3)
+            if (v9 + v14 >= featureCopy)
             {
               goto LABEL_25;
             }
           }
 
-          else if (v12 >= 0xC0 && v9 + v14 >= v3)
+          else if (v12 >= 0xC0 && v9 + v14 >= featureCopy)
           {
             v16 = 0.0;
             goto LABEL_28;
@@ -342,9 +342,9 @@ LABEL_15:
         }
       }
 
-      if (v9 + v14 >= v3)
+      if (v9 + v14 >= featureCopy)
       {
-        v16 = *&v13[4 * (v3 - v9)];
+        v16 = *&v13[4 * (featureCopy - v9)];
         goto LABEL_28;
       }
 
@@ -354,7 +354,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    if (v3 == v10)
+    if (featureCopy == v10)
     {
       break;
     }
@@ -385,10 +385,10 @@ LABEL_28:
   return v16;
 }
 
-- (float)getAllScores:(float)a3[3235]
+- (float)getAllScores:(float)scores[3235]
 {
   os_unfair_lock_lock(&self->_featureDataLock);
-  decodeRankingScores(self->_featureData, self->_featureDataSize, a3);
+  decodeRankingScores(self->_featureData, self->_featureDataSize, scores);
   count = self->_cache.count;
   if (self->_cache.count)
   {
@@ -400,7 +400,7 @@ LABEL_28:
       v9 = v8;
       v10 = p_cache->features[0];
       p_cache = (p_cache + 2);
-      a3[v10] = v9;
+      scores[v10] = v9;
       --count;
     }
 
@@ -463,17 +463,17 @@ LABEL_28:
         v14 = 0.0;
       }
 
-      a3[v12] = v14;
+      scores[v12] = v14;
     }
   }
 
   os_unfair_lock_unlock(&self->_featureDataLock);
-  return a3;
+  return scores;
 }
 
-- (void)setScores:(float *)a3 forFeatures:(unsigned __int16 *)a4 count:(unint64_t)a5
+- (void)setScores:(float *)scores forFeatures:(unsigned __int16 *)features count:(unint64_t)count
 {
-  v5 = (MEMORY[0x1EEE9AC00])(self, a2, a3, a4, a5);
+  v5 = (MEMORY[0x1EEE9AC00])(self, a2, scores, features, count);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -799,123 +799,123 @@ LABEL_98:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)restoreFromJazzkonPlusHacks:(float *)a3
+- (void)restoreFromJazzkonPlusHacks:(float *)hacks
 {
-  v5 = a3[372];
+  v5 = hacks[372];
   if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.Preferences"])
   {
-    [(PRSL2FeatureVector *)self swapAllLastUsedDateFeatures:a3];
-    [(PRSL2FeatureVector *)self swapAllRecenyFeatures:a3];
+    [(PRSL2FeatureVector *)self swapAllLastUsedDateFeatures:hacks];
+    [(PRSL2FeatureVector *)self swapAllRecenyFeatures:hacks];
   }
 
   else if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.MobileAddressBook"])
   {
-    [(PRSL2FeatureVector *)self swapAllLastUsedDateFeatures:a3];
+    [(PRSL2FeatureVector *)self swapAllLastUsedDateFeatures:hacks];
   }
 
   if (v5 == 0.0 && (![(NSString *)self->_bundleID hasPrefix:@"com.apple."]|| [(NSString *)self->_bundleID isEqualToString:@"com.apple.Preferences"]|| [(NSString *)self->_bundleID isEqualToString:@"com.apple.CoreSuggestions"]))
   {
-    [(PRSL2FeatureVector *)self swapFeature:1911 withSubstitute:2355 scores:a3];
+    [(PRSL2FeatureVector *)self swapFeature:1911 withSubstitute:2355 scores:hacks];
   }
 
-  if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.mobilecal"]&& a3[2354] != -1.0)
+  if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.mobilecal"]&& hacks[2354] != -1.0)
   {
-    [(PRSL2FeatureVector *)self swapFeature:42 withSubstitute:2354 scores:a3];
+    [(PRSL2FeatureVector *)self swapFeature:42 withSubstitute:2354 scores:hacks];
   }
 
   if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.mobilenotes"]|| [(NSString *)self->_bundleID isEqualToString:@"com.apple.MobileAddressBook"])
   {
-    [(PRSL2FeatureVector *)self swapFeature:42 withSubstitute:2354 scores:a3];
+    [(PRSL2FeatureVector *)self swapFeature:42 withSubstitute:2354 scores:hacks];
   }
 
   if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.mobilenotes"])
   {
-    if (a3[2338] != -1.0)
+    if (hacks[2338] != -1.0)
     {
-      [(PRSL2FeatureVector *)self swapFeature:10 withSubstitute:2338 scores:a3];
+      [(PRSL2FeatureVector *)self swapFeature:10 withSubstitute:2338 scores:hacks];
     }
 
-    if (a3[2339] != -1.0)
+    if (hacks[2339] != -1.0)
     {
-      [(PRSL2FeatureVector *)self swapFeature:8 withSubstitute:2339 scores:a3];
+      [(PRSL2FeatureVector *)self swapFeature:8 withSubstitute:2339 scores:hacks];
     }
 
-    if (a3[2340] != -1.0)
+    if (hacks[2340] != -1.0)
     {
-      [(PRSL2FeatureVector *)self swapFeature:6 withSubstitute:2340 scores:a3];
+      [(PRSL2FeatureVector *)self swapFeature:6 withSubstitute:2340 scores:hacks];
     }
   }
 
   if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.application"]|| [(NSString *)self->_bundleID isEqualToString:@"com.apple.Preferences"]|| [(NSString *)self->_bundleID isEqualToString:@"com.apple.DocumentsApp"]|| [(NSString *)self->_bundleID isEqualToString:@"com.apple.FileProvider.LocalStorage"]|| [(NSString *)self->_bundleID isEqualToString:@"com.apple.CloudDocs.MobileDocumentsFileProvider"])
   {
-    if (a3[2354] == 1.0)
+    if (hacks[2354] == 1.0)
     {
-      [(PRSL2FeatureVector *)self swapFeature:42 withSubstitute:2354 scores:a3];
+      [(PRSL2FeatureVector *)self swapFeature:42 withSubstitute:2354 scores:hacks];
     }
   }
 
   else if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.Passbook"])
   {
-    [(PRSL2FeatureVector *)self swapAllContentCreationDateFeatures:a3];
+    [(PRSL2FeatureVector *)self swapAllContentCreationDateFeatures:hacks];
   }
 
-  if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.photos"]&& a3[3085] != -1.0)
+  if ([(NSString *)self->_bundleID isEqualToString:@"com.apple.photos"]&& hacks[3085] != -1.0)
   {
-    [(PRSL2FeatureVector *)self swapFeature:204 withSubstitute:3085 scores:a3];
+    [(PRSL2FeatureVector *)self swapFeature:204 withSubstitute:3085 scores:hacks];
   }
 
   if (v5 != 0.0)
   {
 
-    [(PRSL2FeatureVector *)self swapFeature:377 withSubstitute:378 scores:a3];
+    [(PRSL2FeatureVector *)self swapFeature:377 withSubstitute:378 scores:hacks];
   }
 }
 
-- (void)swapAllContentCreationDateFeatures:(float *)a3
+- (void)swapAllContentCreationDateFeatures:(float *)features
 {
-  [(PRSL2FeatureVector *)self swapFeature:1874 withSubstitute:2341 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:9 withSubstitute:2342 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:3 withSubstitute:2343 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:7 withSubstitute:2344 scores:a3];
+  [(PRSL2FeatureVector *)self swapFeature:1874 withSubstitute:2341 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:9 withSubstitute:2342 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:3 withSubstitute:2343 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:7 withSubstitute:2344 scores:features];
 
-  [(PRSL2FeatureVector *)self swapFeature:5 withSubstitute:2345 scores:a3];
+  [(PRSL2FeatureVector *)self swapFeature:5 withSubstitute:2345 scores:features];
 }
 
-- (void)swapAllLastUsedDateFeatures:(float *)a3
+- (void)swapAllLastUsedDateFeatures:(float *)features
 {
-  [(PRSL2FeatureVector *)self swapFeature:10 withSubstitute:2338 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:8 withSubstitute:2339 scores:a3];
+  [(PRSL2FeatureVector *)self swapFeature:10 withSubstitute:2338 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:8 withSubstitute:2339 scores:features];
 
-  [(PRSL2FeatureVector *)self swapFeature:6 withSubstitute:2340 scores:a3];
+  [(PRSL2FeatureVector *)self swapFeature:6 withSubstitute:2340 scores:features];
 }
 
-- (void)swapAllRecenyFeatures:(float *)a3
+- (void)swapAllRecenyFeatures:(float *)features
 {
-  [(PRSL2FeatureVector *)self swapFeature:1972 withSubstitute:2346 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:1973 withSubstitute:2347 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:1974 withSubstitute:2348 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:1975 withSubstitute:2349 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:1976 withSubstitute:2350 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:1977 withSubstitute:2351 scores:a3];
-  [(PRSL2FeatureVector *)self swapFeature:1978 withSubstitute:2352 scores:a3];
+  [(PRSL2FeatureVector *)self swapFeature:1972 withSubstitute:2346 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:1973 withSubstitute:2347 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:1974 withSubstitute:2348 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:1975 withSubstitute:2349 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:1976 withSubstitute:2350 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:1977 withSubstitute:2351 scores:features];
+  [(PRSL2FeatureVector *)self swapFeature:1978 withSubstitute:2352 scores:features];
 
-  [(PRSL2FeatureVector *)self swapFeature:1979 withSubstitute:2353 scores:a3];
+  [(PRSL2FeatureVector *)self swapFeature:1979 withSubstitute:2353 scores:features];
 }
 
-- (void)swapFeature:(unsigned __int16)a3 withSubstitute:(unsigned __int16)a4 scores:(float *)a5
+- (void)swapFeature:(unsigned __int16)feature withSubstitute:(unsigned __int16)substitute scores:(float *)scores
 {
-  v5 = a5[a4];
+  v5 = scores[substitute];
   if (v5 != -1.0)
   {
-    v6 = a5[a3];
-    a5[a3] = v5;
-    a5[a4] = v6;
+    v6 = scores[feature];
+    scores[feature] = v5;
+    scores[substitute] = v6;
   }
 }
 
-- (BOOL)serializeToJSON:(void *)a3 options:(int64_t)a4
+- (BOOL)serializeToJSON:(void *)n options:(int64_t)options
 {
-  v4 = (MEMORY[0x1EEE9AC00])(self, a2, a3, a4);
+  v4 = (MEMORY[0x1EEE9AC00])(self, a2, n, options);
   v6 = v5;
   v8 = v7;
   v9 = v4;
@@ -1077,17 +1077,17 @@ LABEL_26:
   json_writer_add_key(v8, "bundleID", 8uLL, 1);
   v41 = *(v9 + 248);
   v42 = objc_loadWeakRetained((v9 + 280));
-  v43 = [v42 bundleIDType];
+  bundleIDType = [v42 bundleIDType];
 
-  if ((v43 & 0x2000000) == 0)
+  if ((bundleIDType & 0x2000000) == 0)
   {
     goto LABEL_47;
   }
 
   v44 = objc_loadWeakRetained((v9 + 280));
-  v45 = [v44 bundleIDType];
+  bundleIDType2 = [v44 bundleIDType];
 
-  if ((v45 & 0x4000000) != 0)
+  if ((bundleIDType2 & 0x4000000) != 0)
   {
     v52 = SSSectionIdentifierSyndicatedPhotosMessages;
 LABEL_46:
@@ -1098,27 +1098,27 @@ LABEL_46:
   }
 
   v46 = objc_loadWeakRetained((v9 + 280));
-  v47 = [v46 bundleIDType];
+  bundleIDType3 = [v46 bundleIDType];
 
-  if ((v47 & 0x8000000) != 0)
+  if ((bundleIDType3 & 0x8000000) != 0)
   {
     v52 = SSSectionIdentifierSyndicatedPhotosNotes;
     goto LABEL_46;
   }
 
   v48 = objc_loadWeakRetained((v9 + 280));
-  v49 = [v48 bundleIDType];
+  bundleIDType4 = [v48 bundleIDType];
 
-  if ((v49 & 0x10000000) != 0)
+  if ((bundleIDType4 & 0x10000000) != 0)
   {
     v52 = SSSectionIdentifierSyndicatedPhotosFiles;
     goto LABEL_46;
   }
 
   v50 = objc_loadWeakRetained((v9 + 280));
-  v51 = [v50 bundleIDType];
+  bundleIDType5 = [v50 bundleIDType];
 
-  if ((v51 & 0x20000000) != 0)
+  if ((bundleIDType5 & 0x20000000) != 0)
   {
     v52 = SSSectionIdentifierSyndicatedPhotosFromPhotos;
     goto LABEL_46;
@@ -1146,8 +1146,8 @@ LABEL_48:
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v54 = [*(v9 + 272) allKeys];
-    v55 = [v54 countByEnumeratingWithState:&v65 objects:v69 count:16];
+    allKeys = [*(v9 + 272) allKeys];
+    v55 = [allKeys countByEnumeratingWithState:&v65 objects:v69 count:16];
     if (v55)
     {
       v56 = v55;
@@ -1158,7 +1158,7 @@ LABEL_48:
         {
           if (*v66 != v57)
           {
-            objc_enumerationMutation(v54);
+            objc_enumerationMutation(allKeys);
           }
 
           v59 = *(*(&v65 + 1) + 8 * j);
@@ -1169,7 +1169,7 @@ LABEL_48:
           json_writer_add_double(v8, v62);
         }
 
-        v56 = [v54 countByEnumeratingWithState:&v65 objects:v69 count:16];
+        v56 = [allKeys countByEnumeratingWithState:&v65 objects:v69 count:16];
       }
 
       while (v56);
@@ -1188,7 +1188,7 @@ LABEL_48:
   [(PRSL2FeatureVector *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_featureDataLock);
   v4 = objc_alloc(objc_opt_class());
@@ -1222,27 +1222,27 @@ LABEL_48:
   [v15 setExperimentalScore:?];
   [(PRSL2FeatureVector *)self withinBundleScore];
   [v15 setWithinBundleScore:?];
-  v16 = [(PRSL2FeatureVector *)self bundleID];
-  [v15 setBundleID:v16];
+  bundleID = [(PRSL2FeatureVector *)self bundleID];
+  [v15 setBundleID:bundleID];
 
-  v17 = [(PRSL2FeatureVector *)self device_type];
-  [v15 setDevice_type:v17];
+  device_type = [(PRSL2FeatureVector *)self device_type];
+  [v15 setDevice_type:device_type];
 
-  v18 = [(PRSL2FeatureVector *)self searchThroughCEPData];
-  v19 = [v18 copy];
+  searchThroughCEPData = [(PRSL2FeatureVector *)self searchThroughCEPData];
+  v19 = [searchThroughCEPData copy];
   [v15 setSearchThroughCEPData:v19];
 
-  v20 = [(PRSL2FeatureVector *)self indexScore];
-  [v15 setIndexScore:{v20, v21}];
+  indexScore = [(PRSL2FeatureVector *)self indexScore];
+  [v15 setIndexScore:{indexScore, v21}];
   [v15 setDisplayNameFuzzySpecialInsertion:{-[PRSL2FeatureVector displayNameFuzzySpecialInsertion](self, "displayNameFuzzySpecialInsertion")}];
   [v15 setIsSiriAction:{-[PRSL2FeatureVector isSiriAction](self, "isSiriAction")}];
   [v15 setIsAppInDock:{-[PRSL2FeatureVector isAppInDock](self, "isAppInDock")}];
-  v22 = [(PRSL2FeatureVector *)self roundTripFeatures];
-  if (v22)
+  roundTripFeatures = [(PRSL2FeatureVector *)self roundTripFeatures];
+  if (roundTripFeatures)
   {
     v23 = objc_alloc(MEMORY[0x1E695DF20]);
-    v24 = [(PRSL2FeatureVector *)self roundTripFeatures];
-    v25 = [v23 initWithDictionary:v24 copyItems:1];
+    roundTripFeatures2 = [(PRSL2FeatureVector *)self roundTripFeatures];
+    v25 = [v23 initWithDictionary:roundTripFeatures2 copyItems:1];
     [v15 setRoundTripFeatures:v25];
   }
 

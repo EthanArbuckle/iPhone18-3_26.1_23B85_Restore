@@ -1,31 +1,31 @@
 @interface LACSharingManager
-+ (BOOL)isSharingError:(id)a3;
-- (LACSharingManager)initWithReplyQueue:(id)a3;
++ (BOOL)isSharingError:(id)error;
+- (LACSharingManager)initWithReplyQueue:(id)queue;
 - (LACSharingManagerDelegate)delegate;
-- (id)_authenticationBackgroundTaskForRequest:(id)a3;
-- (id)_canAuthenticateBackgroundTaskWithCompanion:(int64_t)a3;
-- (id)authenticateWithRequest:(id)a3;
-- (id)getPairedDevicesBackgroundTaskForCompanion:(int64_t)a3;
-- (unint64_t)_authenticationTypeForCompanion:(int64_t)a3;
-- (unint64_t)_pairedDeviceTypeForCompanion:(int64_t)a3;
-- (void)_authenticateWithRequest:(id)a3 completion:(id)a4;
-- (void)_canAuthenticateWithCompanion:(int64_t)a3 completion:(id)a4;
-- (void)_failSessionWithID:(id)a3 error:(id)a4;
-- (void)_pairedDevicesForCompanion:(int64_t)a3 completion:(id)a4;
-- (void)_runPairedDevicesBackgroundTaskForCompanion:(int64_t)a3 completion:(id)a4;
-- (void)canAuthenticateWithCompanion:(int64_t)a3 completion:(id)a4;
-- (void)cancelSessionWithID:(id)a3;
-- (void)manager:(id)a3 didCompleteAuthenticationForSessionWithID:(id)a4;
-- (void)manager:(id)a3 didFailAuthenticationForSessionWithID:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didStartAuthenticationForSessionWithID:(id)a4;
-- (void)pairedDevicesForCompanion:(int64_t)a3 completion:(id)a4;
+- (id)_authenticationBackgroundTaskForRequest:(id)request;
+- (id)_canAuthenticateBackgroundTaskWithCompanion:(int64_t)companion;
+- (id)authenticateWithRequest:(id)request;
+- (id)getPairedDevicesBackgroundTaskForCompanion:(int64_t)companion;
+- (unint64_t)_authenticationTypeForCompanion:(int64_t)companion;
+- (unint64_t)_pairedDeviceTypeForCompanion:(int64_t)companion;
+- (void)_authenticateWithRequest:(id)request completion:(id)completion;
+- (void)_canAuthenticateWithCompanion:(int64_t)companion completion:(id)completion;
+- (void)_failSessionWithID:(id)d error:(id)error;
+- (void)_pairedDevicesForCompanion:(int64_t)companion completion:(id)completion;
+- (void)_runPairedDevicesBackgroundTaskForCompanion:(int64_t)companion completion:(id)completion;
+- (void)canAuthenticateWithCompanion:(int64_t)companion completion:(id)completion;
+- (void)cancelSessionWithID:(id)d;
+- (void)manager:(id)manager didCompleteAuthenticationForSessionWithID:(id)d;
+- (void)manager:(id)manager didFailAuthenticationForSessionWithID:(id)d error:(id)error;
+- (void)manager:(id)manager didStartAuthenticationForSessionWithID:(id)d;
+- (void)pairedDevicesForCompanion:(int64_t)companion completion:(id)completion;
 @end
 
 @implementation LACSharingManager
 
-- (LACSharingManager)initWithReplyQueue:(id)a3
+- (LACSharingManager)initWithReplyQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = LACSharingManager;
   v6 = [(LACSharingManager *)&v17 init];
@@ -33,7 +33,7 @@
   {
     if (getSFAuthenticationManagerClass())
     {
-      v7 = [objc_alloc(getSFAuthenticationManagerClass()) initWithQueue:v5];
+      v7 = [objc_alloc(getSFAuthenticationManagerClass()) initWithQueue:queueCopy];
       sharingManager = v6->_sharingManager;
       v6->_sharingManager = v7;
 
@@ -46,9 +46,9 @@
       v6->_sharingManager = 0;
     }
 
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     canAuthenticateSessions = v6->_canAuthenticateSessions;
-    v6->_canAuthenticateSessions = v10;
+    v6->_canAuthenticateSessions = strongToStrongObjectsMapTable;
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -56,47 +56,47 @@
     workQueue = v6->_workQueue;
     v6->_workQueue = v14;
 
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
   }
 
   return v6;
 }
 
-- (id)authenticateWithRequest:(id)a3
+- (id)authenticateWithRequest:(id)request
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = LACLogABM();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 clientInfo];
-    v7 = [v6 bundleId];
-    v8 = [v4 clientInfo];
-    v9 = [v8 displayName];
-    v10 = NSStringFromLACCompanionType([v4 companionType]);
+    clientInfo = [requestCopy clientInfo];
+    bundleId = [clientInfo bundleId];
+    clientInfo2 = [requestCopy clientInfo];
+    displayName = [clientInfo2 displayName];
+    v10 = NSStringFromLACCompanionType([requestCopy companionType]);
     v26 = 138543874;
-    v27 = v7;
+    v27 = bundleId;
     v28 = 2114;
-    v29 = v9;
+    v29 = displayName;
     v30 = 2114;
     v31 = v10;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "Initiating companion authentication for bundleID: %{public}@ app name: %{public}@ companion:%{public}@", &v26, 0x20u);
   }
 
-  v11 = [(LACSharingManager *)self _authenticationBackgroundTaskForRequest:v4];
+  v11 = [(LACSharingManager *)self _authenticationBackgroundTaskForRequest:requestCopy];
   v12 = [v11 runSynchronouslyWithTimeout:1.0];
   v13 = LACLogABM();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v4 clientInfo];
-    v15 = [v14 bundleId];
-    v16 = [v4 clientInfo];
-    v17 = [v16 displayName];
-    v18 = NSStringFromLACCompanionType([v4 companionType]);
+    clientInfo3 = [requestCopy clientInfo];
+    bundleId2 = [clientInfo3 bundleId];
+    clientInfo4 = [requestCopy clientInfo];
+    displayName2 = [clientInfo4 displayName];
+    v18 = NSStringFromLACCompanionType([requestCopy companionType]);
     v26 = 138544130;
-    v27 = v15;
+    v27 = bundleId2;
     v28 = 2114;
-    v29 = v17;
+    v29 = displayName2;
     v30 = 2114;
     v31 = v18;
     v32 = 2114;
@@ -104,21 +104,21 @@
     _os_log_impl(&dword_1B0233000, v13, OS_LOG_TYPE_DEFAULT, "Authentication for bundleID: %{public}@ app name: %{public}@ companion:%{public}@ returned: %{public}@", &v26, 0x2Au);
   }
 
-  v19 = [v12 value];
-  v20 = [v12 error];
+  value = [v12 value];
+  error = [v12 error];
 
-  if (v20 || !v19)
+  if (error || !value)
   {
     v21 = objc_opt_new();
-    v22 = [v12 error];
-    v23 = [LACError errorWithCode:-1 underlyingError:v22];
+    error2 = [v12 error];
+    v23 = [LACError errorWithCode:-1 underlyingError:error2];
 
     [(LACSharingManager *)self _failSessionWithID:v21 error:v23];
   }
 
   else
   {
-    v21 = v19;
+    v21 = value;
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -126,29 +126,29 @@
   return v21;
 }
 
-- (void)canAuthenticateWithCompanion:(int64_t)a3 completion:(id)a4
+- (void)canAuthenticateWithCompanion:(int64_t)companion completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = LACLogABM();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromLACCompanionType(a3);
+    v8 = NSStringFromLACCompanionType(companion);
     *buf = 138543362;
     v19 = v8;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "Initiating canAuthenticate call for companion:%{public}@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(LACSharingManager *)self _canAuthenticateBackgroundTaskWithCompanion:a3];
+  v9 = [(LACSharingManager *)self _canAuthenticateBackgroundTaskWithCompanion:companion];
   replyQueue = self->_replyQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__LACSharingManager_canAuthenticateWithCompanion_completion___block_invoke;
   v14[3] = &unk_1E7A960D0;
   objc_copyWeak(v17, buf);
-  v17[1] = a3;
-  v11 = v6;
+  v17[1] = companion;
+  v11 = completionCopy;
   v16 = v11;
   v12 = v9;
   v15 = v12;
@@ -186,15 +186,15 @@ void __61__LACSharingManager_canAuthenticateWithCompanion_completion___block_inv
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelSessionWithID:(id)a3
+- (void)cancelSessionWithID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = LACLogABM();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "Canceling authentication for sessionID: %{public}@", buf, 0xCu);
   }
 
@@ -207,7 +207,7 @@ void __61__LACSharingManager_canAuthenticateWithCompanion_completion___block_inv
     v9[2] = __41__LACSharingManager_cancelSessionWithID___block_invoke;
     v9[3] = &unk_1E7A95F68;
     objc_copyWeak(&v11, buf);
-    v10 = v4;
+    v10 = dCopy;
     dispatch_async(workQueue, v9);
 
     objc_destroyWeak(&v11);
@@ -217,7 +217,7 @@ void __61__LACSharingManager_canAuthenticateWithCompanion_completion___block_inv
   else
   {
     v7 = [LACError errorWithCode:-4];
-    [(LACSharingManager *)self _failSessionWithID:v4 error:v7];
+    [(LACSharingManager *)self _failSessionWithID:dCopy error:v7];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -234,14 +234,14 @@ void __41__LACSharingManager_cancelSessionWithID___block_invoke(uint64_t a1)
   }
 }
 
-- (void)pairedDevicesForCompanion:(int64_t)a3 completion:(id)a4
+- (void)pairedDevicesForCompanion:(int64_t)companion completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = LACLogABM();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromLACCompanionType(a3);
+    v8 = NSStringFromLACCompanionType(companion);
     *buf = 138543362;
     v15 = v8;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "Fetching paired devices for companion:%{public}@", buf, 0xCu);
@@ -251,10 +251,10 @@ void __41__LACSharingManager_cancelSessionWithID___block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __58__LACSharingManager_pairedDevicesForCompanion_completion___block_invoke;
   v11[3] = &unk_1E7A960F8;
-  v12 = v6;
-  v13 = a3;
-  v9 = v6;
-  [(LACSharingManager *)self _runPairedDevicesBackgroundTaskForCompanion:a3 completion:v11];
+  v12 = completionCopy;
+  companionCopy = companion;
+  v9 = completionCopy;
+  [(LACSharingManager *)self _runPairedDevicesBackgroundTaskForCompanion:companion completion:v11];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -290,10 +290,10 @@ void __58__LACSharingManager_pairedDevicesForCompanion_completion___block_invoke
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isSharingError:(id)a3
++ (BOOL)isSharingError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -318,36 +318,36 @@ void __58__LACSharingManager_pairedDevicesForCompanion_completion___block_invoke
     _Unwind_Resume(v8);
   }
 
-  v6 = [v4 isEqualToString:*v5];
+  v6 = [domain isEqualToString:*v5];
 
   return v6;
 }
 
-- (void)manager:(id)a3 didStartAuthenticationForSessionWithID:(id)a4
+- (void)manager:(id)manager didStartAuthenticationForSessionWithID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v5 = [(NSMapTable *)self->_canAuthenticateSessions objectForKey:?];
 
   if (!v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->delegate);
-    [WeakRetained manager:self didStartSessionWithID:v7];
+    [WeakRetained manager:self didStartSessionWithID:dCopy];
   }
 }
 
-- (void)manager:(id)a3 didCompleteAuthenticationForSessionWithID:(id)a4
+- (void)manager:(id)manager didCompleteAuthenticationForSessionWithID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(NSMapTable *)self->_canAuthenticateSessions objectForKey:v5];
+  dCopy = d;
+  v6 = [(NSMapTable *)self->_canAuthenticateSessions objectForKey:dCopy];
   if (v6)
   {
-    [(NSMapTable *)self->_canAuthenticateSessions removeObjectForKey:v5];
+    [(NSMapTable *)self->_canAuthenticateSessions removeObjectForKey:dCopy];
     v7 = LACLogABM();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v12 = 138543362;
-      v13 = v5;
+      v13 = dCopy;
       _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_INFO, "Can authenticate success for sessionID:%{public}@", &v12, 0xCu);
     }
 
@@ -359,49 +359,49 @@ void __58__LACSharingManager_pairedDevicesForCompanion_completion___block_invoke
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->delegate);
-    [WeakRetained manager:self didCompleteSessionWithID:v5];
+    [WeakRetained manager:self didCompleteSessionWithID:dCopy];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)manager:(id)a3 didFailAuthenticationForSessionWithID:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailAuthenticationForSessionWithID:(id)d error:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NSMapTable *)self->_canAuthenticateSessions objectForKey:v7];
+  dCopy = d;
+  errorCopy = error;
+  v9 = [(NSMapTable *)self->_canAuthenticateSessions objectForKey:dCopy];
   if (v9)
   {
-    [(NSMapTable *)self->_canAuthenticateSessions removeObjectForKey:v7];
+    [(NSMapTable *)self->_canAuthenticateSessions removeObjectForKey:dCopy];
     v10 = LACLogABM();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v14 = 138543618;
-      v15 = v7;
+      v15 = dCopy;
       v16 = 2114;
-      v17 = v8;
+      v17 = errorCopy;
       _os_log_impl(&dword_1B0233000, v10, OS_LOG_TYPE_INFO, "Can authenticate failure for sessionID:%{public}@ error:%{public}@", &v14, 0x16u);
     }
 
-    v11 = [[LACBackgroundTaskResult alloc] initWithError:v8];
+    v11 = [[LACBackgroundTaskResult alloc] initWithError:errorCopy];
     (v9)[2](v9, v11);
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->delegate);
-    [WeakRetained manager:self didFailSessionWithID:v7 error:v8];
+    [WeakRetained manager:self didFailSessionWithID:dCopy error:errorCopy];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getPairedDevicesBackgroundTaskForCompanion:(int64_t)a3
+- (id)getPairedDevicesBackgroundTaskForCompanion:(int64_t)companion
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = NSStringFromLACCompanionType(a3);
+  v5 = NSStringFromLACCompanionType(companion);
   v6 = [v4 stringWithFormat:@"PairedDeviceStateQuery-%@", v5];
 
   v7 = [LACBackgroundTask alloc];
@@ -410,7 +410,7 @@ void __58__LACSharingManager_pairedDevicesForCompanion_completion___block_invoke
   v10[2] = __64__LACSharingManager_getPairedDevicesBackgroundTaskForCompanion___block_invoke;
   v10[3] = &unk_1E7A96148;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
+  v11[1] = companion;
   v8 = [(LACBackgroundTask *)v7 initWithIdentifier:v6 worker:v10];
   objc_destroyWeak(v11);
 
@@ -455,29 +455,29 @@ void __64__LACSharingManager_getPairedDevicesBackgroundTaskForCompanion___block_
   (*(v6 + 16))(v6, v8);
 }
 
-- (void)_runPairedDevicesBackgroundTaskForCompanion:(int64_t)a3 completion:(id)a4
+- (void)_runPairedDevicesBackgroundTaskForCompanion:(int64_t)companion completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7 = LACLogABM();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2048;
     v21 = 0x3FD3333333333333;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ will perform query with %.2f sec timeout", buf, 0x16u);
   }
 
-  v8 = [(LACSharingManager *)self getPairedDevicesBackgroundTaskForCompanion:a3];
+  v8 = [(LACSharingManager *)self getPairedDevicesBackgroundTaskForCompanion:companion];
   replyQueue = self->_replyQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__LACSharingManager__runPairedDevicesBackgroundTaskForCompanion_completion___block_invoke;
   v13[3] = &unk_1E7A958F8;
   objc_copyWeak(&v16, &location);
-  v10 = v6;
+  v10 = completionCopy;
   v15 = v10;
   v11 = v8;
   v14 = v11;
@@ -502,9 +502,9 @@ void __76__LACSharingManager__runPairedDevicesBackgroundTaskForCompanion_complet
   }
 }
 
-- (void)_pairedDevicesForCompanion:(int64_t)a3 completion:(id)a4
+- (void)_pairedDevicesForCompanion:(int64_t)companion completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (!self->_sharingManager)
   {
     goto LABEL_6;
@@ -532,13 +532,13 @@ void __76__LACSharingManager__runPairedDevicesBackgroundTaskForCompanion_complet
   _Block_object_dispose(&v19, 8);
   if (v7)
   {
-    v9 = [(LACSharingManager *)self _pairedDeviceTypeForCompanion:a3];
+    v9 = [(LACSharingManager *)self _pairedDeviceTypeForCompanion:companion];
     sharingManager = self->_sharingManager;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __59__LACSharingManager__pairedDevicesForCompanion_completion___block_invoke;
     v12[3] = &unk_1E7A96170;
-    v13 = v6;
+    v13 = completionCopy;
     [(SFAuthenticationManager *)sharingManager listCandidateDevicesForType:v9 completionHandler:v12];
     v11 = v13;
   }
@@ -547,7 +547,7 @@ void __76__LACSharingManager__runPairedDevicesBackgroundTaskForCompanion_complet
   {
 LABEL_6:
     v11 = [LACError errorWithCode:-1 debugDescription:@"Authenticator not available"];
-    (*(v6 + 2))(v6, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 }
 
@@ -612,14 +612,14 @@ void __59__LACSharingManager__pairedDevicesForCompanion_completion___block_invok
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_authenticationBackgroundTaskForRequest:(id)a3
+- (id)_authenticationBackgroundTaskForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E696AEC0];
-  v6 = NSStringFromLACCompanionType([v4 companionType]);
-  v7 = [v4 clientInfo];
-  v8 = [v5 stringWithFormat:@"CompanionAuthentication-%@-%@", v6, v7];
+  v6 = NSStringFromLACCompanionType([requestCopy companionType]);
+  clientInfo = [requestCopy clientInfo];
+  v8 = [v5 stringWithFormat:@"CompanionAuthentication-%@-%@", v6, clientInfo];
 
   v9 = [LACBackgroundTask alloc];
   v13[0] = MEMORY[0x1E69E9820];
@@ -627,7 +627,7 @@ void __59__LACSharingManager__pairedDevicesForCompanion_completion___block_invok
   v13[2] = __61__LACSharingManager__authenticationBackgroundTaskForRequest___block_invoke;
   v13[3] = &unk_1E7A95948;
   objc_copyWeak(&v15, &location);
-  v10 = v4;
+  v10 = requestCopy;
   v14 = v10;
   v11 = [(LACBackgroundTask *)v9 initWithIdentifier:v8 worker:v13];
 
@@ -673,22 +673,22 @@ void __61__LACSharingManager__authenticationBackgroundTaskForRequest___block_inv
   (*(v6 + 16))(v6, v8);
 }
 
-- (void)_authenticateWithRequest:(id)a3 completion:(id)a4
+- (void)_authenticateWithRequest:(id)request completion:(id)completion
 {
-  v17 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (self->_sharingManager && getSFAuthenticationOptionsClass())
   {
     v7 = objc_alloc_init(getSFAuthenticationOptionsClass());
-    v8 = [v17 acmContextData];
-    [v7 setAcmContext:v8];
+    acmContextData = [requestCopy acmContextData];
+    [v7 setAcmContext:acmContextData];
 
-    v9 = [v17 clientInfo];
-    v10 = [v9 bundleId];
-    v11 = v10;
-    if (v10)
+    clientInfo = [requestCopy clientInfo];
+    bundleId = [clientInfo bundleId];
+    v11 = bundleId;
+    if (bundleId)
     {
-      v12 = v10;
+      v12 = bundleId;
     }
 
     else
@@ -698,11 +698,11 @@ void __61__LACSharingManager__authenticationBackgroundTaskForRequest___block_inv
 
     [v7 setBundleID:v12];
 
-    v13 = [v17 clientInfo];
-    v14 = [v13 displayName];
-    if (v14)
+    clientInfo2 = [requestCopy clientInfo];
+    displayName = [clientInfo2 displayName];
+    if (displayName)
     {
-      [v7 setAppName:v14];
+      [v7 setAppName:displayName];
     }
 
     else
@@ -711,23 +711,23 @@ void __61__LACSharingManager__authenticationBackgroundTaskForRequest___block_inv
       [v7 setAppName:v15];
     }
 
-    [v7 setBiometricOnly:{objc_msgSend(v17, "isFallbackAvailable") ^ 1}];
-    v16 = -[SFAuthenticationManager authenticateForType:withOptions:](self->_sharingManager, "authenticateForType:withOptions:", -[LACSharingManager _authenticationTypeForCompanion:](self, "_authenticationTypeForCompanion:", [v17 companionType]), v7);
-    v6[2](v6, v16, 0);
+    [v7 setBiometricOnly:{objc_msgSend(requestCopy, "isFallbackAvailable") ^ 1}];
+    v16 = -[SFAuthenticationManager authenticateForType:withOptions:](self->_sharingManager, "authenticateForType:withOptions:", -[LACSharingManager _authenticationTypeForCompanion:](self, "_authenticationTypeForCompanion:", [requestCopy companionType]), v7);
+    completionCopy[2](completionCopy, v16, 0);
   }
 
   else
   {
     v7 = [LACError errorWithCode:-1020 debugDescription:@"Authenticator not available"];
-    (v6)[2](v6, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 }
 
-- (id)_canAuthenticateBackgroundTaskWithCompanion:(int64_t)a3
+- (id)_canAuthenticateBackgroundTaskWithCompanion:(int64_t)companion
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = NSStringFromLACCompanionType(a3);
+  v5 = NSStringFromLACCompanionType(companion);
   v6 = [v4 stringWithFormat:@"CanAuthenticateFor-%@", v5];
 
   v7 = [LACBackgroundTask alloc];
@@ -736,7 +736,7 @@ void __61__LACSharingManager__authenticationBackgroundTaskForRequest___block_inv
   v10[2] = __65__LACSharingManager__canAuthenticateBackgroundTaskWithCompanion___block_invoke;
   v10[3] = &unk_1E7A96148;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
+  v11[1] = companion;
   v8 = [(LACBackgroundTask *)v7 initWithIdentifier:v6 worker:v10];
   objc_destroyWeak(v11);
 
@@ -793,29 +793,29 @@ void __65__LACSharingManager__canAuthenticateBackgroundTaskWithCompanion___block
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_canAuthenticateWithCompanion:(int64_t)a3 completion:(id)a4
+- (void)_canAuthenticateWithCompanion:(int64_t)companion completion:(id)completion
 {
-  v8 = a4;
+  completionCopy = completion;
   if (self->_sharingManager && getSFAuthenticationOptionsClass())
   {
     v6 = objc_alloc_init(getSFAuthenticationOptionsClass());
     [v6 setCheckLocally:1];
     [v6 setScanTimeout:1];
-    v7 = [(SFAuthenticationManager *)self->_sharingManager canAuthenticateForType:[(LACSharingManager *)self _authenticationTypeForCompanion:a3] withOptions:v6];
-    v8[2](v8, v7, 0);
+    v7 = [(SFAuthenticationManager *)self->_sharingManager canAuthenticateForType:[(LACSharingManager *)self _authenticationTypeForCompanion:companion] withOptions:v6];
+    completionCopy[2](completionCopy, v7, 0);
   }
 
   else
   {
     v6 = [LACError errorWithCode:-1020 debugDescription:@"Authenticator not available"];
-    (v8)[2](v8, 0, v6);
+    (completionCopy)[2](completionCopy, 0, v6);
   }
 }
 
-- (void)_failSessionWithID:(id)a3 error:(id)a4
+- (void)_failSessionWithID:(id)d error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  errorCopy = error;
   objc_initWeak(&location, self);
   replyQueue = self->_replyQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -824,10 +824,10 @@ void __65__LACSharingManager__canAuthenticateBackgroundTaskWithCompanion___block
   block[3] = &unk_1E7A961E8;
   objc_copyWeak(&v14, &location);
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = dCopy;
   dispatch_async(replyQueue, block);
 
   objc_destroyWeak(&v14);
@@ -847,15 +847,15 @@ void __46__LACSharingManager__failSessionWithID_error___block_invoke(uint64_t a1
   }
 }
 
-- (unint64_t)_authenticationTypeForCompanion:(int64_t)a3
+- (unint64_t)_authenticationTypeForCompanion:(int64_t)companion
 {
   v3 = 14;
-  if (a3 != 4)
+  if (companion != 4)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (companion == 2)
   {
     return 7;
   }
@@ -866,15 +866,15 @@ void __46__LACSharingManager__failSessionWithID_error___block_invoke(uint64_t a1
   }
 }
 
-- (unint64_t)_pairedDeviceTypeForCompanion:(int64_t)a3
+- (unint64_t)_pairedDeviceTypeForCompanion:(int64_t)companion
 {
   v3 = 12;
-  if (a3 != 4)
+  if (companion != 4)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (companion == 2)
   {
     return 7;
   }

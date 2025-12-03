@@ -1,19 +1,19 @@
 @interface SUIARadialGradientView
 + (Class)layerClass;
-+ (void)calculateDescriptionForGradientMajorDiameter:(double)a3 ringWidth:(double)a4 blurRadius:(double)a5 numberOfSamples:(int64_t)a6 completion:(id)a7;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
++ (void)calculateDescriptionForGradientMajorDiameter:(double)diameter ringWidth:(double)width blurRadius:(double)radius numberOfSamples:(int64_t)samples completion:(id)completion;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (NSArray)colors;
 - (NSArray)locations;
-- (SUIARadialGradientView)initWithCoder:(id)a3;
-- (void)setColors:(id)a3;
-- (void)setLocations:(id)a3;
+- (SUIARadialGradientView)initWithCoder:(id)coder;
+- (void)setColors:(id)colors;
+- (void)setLocations:(id)locations;
 @end
 
 @implementation SUIARadialGradientView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_26C614E48();
     v6 = v5;
@@ -25,7 +25,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   v9 = SUIARadialGradientView._shouldAnimateProperty(withKey:)(v8);
@@ -40,7 +40,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (SUIARadialGradientView)initWithCoder:(id)a3
+- (SUIARadialGradientView)initWithCoder:(id)coder
 {
   result = sub_26C6150B8();
   __break(1u);
@@ -49,7 +49,7 @@
 
 - (NSArray)colors
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SUIARadialGradientView.colors.getter();
 
   if (v3)
@@ -66,27 +66,27 @@
   return v4;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v3 = a3;
-  if (a3)
+  colorsCopy = colors;
+  if (colors)
   {
     sub_26C5CC548(0, &qword_28125E430);
-    v3 = sub_26C614EC8();
+    colorsCopy = sub_26C614EC8();
   }
 
-  v5 = self;
-  SUIARadialGradientView.colors.setter(v3);
+  selfCopy = self;
+  SUIARadialGradientView.colors.setter(colorsCopy);
 }
 
 - (NSArray)locations
 {
-  v2 = self;
-  v3 = [(SUIARadialGradientView *)v2 layer];
+  selfCopy = self;
+  layer = [(SUIARadialGradientView *)selfCopy layer];
   objc_opt_self();
-  v4 = [swift_dynamicCastObjCClassUnconditional() locations];
+  locations = [swift_dynamicCastObjCClassUnconditional() locations];
 
-  if (v4)
+  if (locations)
   {
     sub_26C5CC548(0, &unk_28125E420);
     sub_26C614EC8();
@@ -103,20 +103,20 @@
   return v5;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v3 = a3;
-  if (a3)
+  locationsCopy = locations;
+  if (locations)
   {
     sub_26C5CC548(0, &unk_28125E420);
-    v3 = sub_26C614EC8();
+    locationsCopy = sub_26C614EC8();
   }
 
-  v9 = self;
-  v5 = [(SUIARadialGradientView *)v9 layer];
+  selfCopy = self;
+  layer = [(SUIARadialGradientView *)selfCopy layer];
   objc_opt_self();
   v6 = swift_dynamicCastObjCClassUnconditional();
-  if (v3)
+  if (locationsCopy)
   {
     v7 = v6;
     sub_26C5CC548(0, &unk_28125E420);
@@ -133,10 +133,10 @@
   [v6 setLocations_];
 }
 
-+ (void)calculateDescriptionForGradientMajorDiameter:(double)a3 ringWidth:(double)a4 blurRadius:(double)a5 numberOfSamples:(int64_t)a6 completion:(id)a7
++ (void)calculateDescriptionForGradientMajorDiameter:(double)diameter ringWidth:(double)width blurRadius:(double)radius numberOfSamples:(int64_t)samples completion:(id)completion
 {
-  v11 = _Block_copy(a7);
-  sub_26C613EA0(a6, v11, a3, a4, a5);
+  v11 = _Block_copy(completion);
+  sub_26C613EA0(samples, v11, diameter, width, radius);
 
   _Block_release(v11);
 }

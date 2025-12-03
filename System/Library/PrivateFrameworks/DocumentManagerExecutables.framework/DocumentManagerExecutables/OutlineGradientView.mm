@@ -1,9 +1,9 @@
 @interface OutlineGradientView
 + (Class)layerClass;
 - (CGRect)frame;
-- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation OutlineGradientView
@@ -15,12 +15,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for OutlineGradientView();
   return [(OutlineGradientView *)&v8 initWithFrame:x, y, width, height];
@@ -38,12 +38,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for OutlineGradientView();
   v7 = v8.receiver;
@@ -51,7 +51,7 @@
   OutlineGradientView.frame.didset();
 }
 
-- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables19OutlineGradientView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

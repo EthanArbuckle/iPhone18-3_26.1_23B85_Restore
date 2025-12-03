@@ -1,23 +1,23 @@
 @interface PKPeerPaymentIdentityVerificationRequiredResponse
-- (PKPeerPaymentIdentityVerificationRequiredResponse)initWithData:(id)a3;
+- (PKPeerPaymentIdentityVerificationRequiredResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentIdentityVerificationRequiredResponse
 
-- (PKPeerPaymentIdentityVerificationRequiredResponse)initWithData:(id)a3
+- (PKPeerPaymentIdentityVerificationRequiredResponse)initWithData:(id)data
 {
   v18 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = PKPeerPaymentIdentityVerificationRequiredResponse;
-  v3 = [(PKWebServiceResponse *)&v13 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v13 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"prerequisiteIdentifier"];
+      v6 = [jSONObject PKStringForKey:@"prerequisiteIdentifier"];
       prerequisiteIdentifier = v4->_prerequisiteIdentifier;
       v4->_prerequisiteIdentifier = v6;
     }

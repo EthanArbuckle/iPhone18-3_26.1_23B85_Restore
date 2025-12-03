@@ -1,29 +1,29 @@
 @interface NSXPCStoreServerConnectionContext
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (NSXPCStoreServerConnectionContext)initWithConnectionInfo:(id)a3;
+- (NSXPCStoreServerConnectionContext)initWithConnectionInfo:(id)info;
 - (id)cache;
 - (id)description;
 - (id)entitlements;
-- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4;
+- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity;
 - (id)managedObjectContext;
-- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)a3 onEntity:(id)a4;
-- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4;
+- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)named onEntity:(id)entity;
+- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity;
 - (id)notificationManager;
 - (id)persistentStoreCoordinator;
 - (void)dealloc;
-- (void)setActiveStore:(uint64_t)a1;
-- (void)setManagedObjectContext:(id)a3;
-- (void)setNotificationManager:(id)a3;
-- (void)setUserInfo:(id)a3;
+- (void)setActiveStore:(uint64_t)store;
+- (void)setManagedObjectContext:(id)context;
+- (void)setNotificationManager:(id)manager;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation NSXPCStoreServerConnectionContext
 
 - (id)persistentStoreCoordinator
 {
-  v2 = [(NSXPCStoreConnectionInfo *)self->_info persistentStoreCoordinator];
+  persistentStoreCoordinator = [(NSXPCStoreConnectionInfo *)self->_info persistentStoreCoordinator];
 
-  return v2;
+  return persistentStoreCoordinator;
 }
 
 - (id)managedObjectContext
@@ -46,32 +46,32 @@
 
 - (id)entitlements
 {
-  v2 = [(NSXPCStoreConnectionInfo *)self->_info entitlements];
+  entitlements = [(NSXPCStoreConnectionInfo *)self->_info entitlements];
 
-  return v2;
+  return entitlements;
 }
 
-- (void)setActiveStore:(uint64_t)a1
+- (void)setActiveStore:(uint64_t)store
 {
-  if (a1)
+  if (store)
   {
-    if (*(a1 + 32) != a2)
+    if (*(store + 32) != a2)
     {
       v4 = a2;
 
-      *(a1 + 32) = a2;
+      *(store + 32) = a2;
     }
   }
 }
 
-- (NSXPCStoreServerConnectionContext)initWithConnectionInfo:(id)a3
+- (NSXPCStoreServerConnectionContext)initWithConnectionInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = NSXPCStoreServerConnectionContext;
   v4 = [(NSXPCStoreServerConnectionContext *)&v6 init];
   if (v4)
   {
-    v4->_info = a3;
+    v4->_info = info;
   }
 
   return v4;
@@ -99,25 +99,25 @@
   return result;
 }
 
-- (void)setManagedObjectContext:(id)a3
+- (void)setManagedObjectContext:(id)context
 {
-  if (self->_context != a3)
+  if (self->_context != context)
   {
-    v5 = a3;
+    contextCopy = context;
 
-    self->_context = a3;
+    self->_context = context;
   }
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   info = self->_info;
   if (info)
   {
-    v5 = a3;
+    infoCopy = info;
     os_unfair_lock_lock_with_options();
     userInfo = info->_userInfo;
-    info->_userInfo = a3;
+    info->_userInfo = info;
     os_unfair_lock_unlock(&info->_lock);
   }
 }
@@ -129,13 +129,13 @@
   return v2;
 }
 
-- (void)setNotificationManager:(id)a3
+- (void)setNotificationManager:(id)manager
 {
-  if (self->_manager != a3)
+  if (self->_manager != manager)
   {
-    v5 = a3;
+    managerCopy = manager;
 
-    self->_manager = a3;
+    self->_manager = manager;
   }
 }
 
@@ -153,25 +153,25 @@
   }
 }
 
-- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity
 {
-  v6 = [(NSXPCStoreServerConnectionContext *)self cache];
+  cache = [(NSXPCStoreServerConnectionContext *)self cache];
 
-  return [v6 inverseIsToOnePrefetchRequestForRelationshipNamed:a3 onEntity:a4];
+  return [cache inverseIsToOnePrefetchRequestForRelationshipNamed:named onEntity:entity];
 }
 
-- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity
 {
-  v6 = [(NSXPCStoreServerConnectionContext *)self cache];
+  cache = [(NSXPCStoreServerConnectionContext *)self cache];
 
-  return [v6 manyToOnePrefetchRequestForRelationshipNamed:a3 onEntity:a4];
+  return [cache manyToOnePrefetchRequestForRelationshipNamed:named onEntity:entity];
 }
 
-- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)named onEntity:(id)entity
 {
-  v6 = [(NSXPCStoreServerConnectionContext *)self cache];
+  cache = [(NSXPCStoreServerConnectionContext *)self cache];
 
-  return [v6 manyToManyPrefetchRequestsForRelationshipNamed:a3 onEntity:a4];
+  return [cache manyToManyPrefetchRequestsForRelationshipNamed:named onEntity:entity];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface HMDIDSActivityMonitorObserver
 + (id)logCategory;
-- (HMDIDSActivityMonitorObserver)initWithActivityMonitor:(id)a3;
+- (HMDIDSActivityMonitorObserver)initWithActivityMonitor:(id)monitor;
 - (id)logIdentifier;
-- (void)activityMonitor:(id)a3 didReceiveActivityUpdate:(id)a4;
-- (void)addObserver:(id)a3 forSubActivity:(id)a4;
-- (void)configureWithDataSource:(id)a3;
-- (void)removeObserver:(id)a3 forSubActivity:(id)a4;
-- (void)startObservingPresenceForDevice:(id)a3;
-- (void)stopObservingPresenceForDevice:(id)a3;
+- (void)activityMonitor:(id)monitor didReceiveActivityUpdate:(id)update;
+- (void)addObserver:(id)observer forSubActivity:(id)activity;
+- (void)configureWithDataSource:(id)source;
+- (void)removeObserver:(id)observer forSubActivity:(id)activity;
+- (void)startObservingPresenceForDevice:(id)device;
+- (void)stopObservingPresenceForDevice:(id)device;
 @end
 
 @implementation HMDIDSActivityMonitorObserver
 
 - (id)logIdentifier
 {
-  v2 = [(HMDIDSActivityMonitorObserver *)self activityMonitor];
-  v3 = [v2 logIdentifier];
+  activityMonitor = [(HMDIDSActivityMonitorObserver *)self activityMonitor];
+  logIdentifier = [activityMonitor logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)activityMonitor:(id)a3 didReceiveActivityUpdate:(id)a4
+- (void)activityMonitor:(id)monitor didReceiveActivityUpdate:(id)update
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  monitorCopy = monitor;
+  updateCopy = update;
   v8 = +[HMDAccountRegistry sharedRegistry];
-  v9 = [v7 pushToken];
-  v10 = [v8 deviceForPushToken:v9];
+  pushToken = [updateCopy pushToken];
+  v10 = [v8 deviceForPushToken:pushToken];
 
   if (v10)
   {
     os_unfair_lock_lock_with_options();
     subactivityToDelegatesMap = self->_subactivityToDelegatesMap;
-    v12 = [v7 subActivity];
-    v13 = [(NSMutableDictionary *)subactivityToDelegatesMap objectForKeyedSubscript:v12];
+    subActivity = [updateCopy subActivity];
+    v13 = [(NSMutableDictionary *)subactivityToDelegatesMap objectForKeyedSubscript:subActivity];
 
-    v14 = [v13 allObjects];
+    allObjects = [v13 allObjects];
 
     os_unfair_lock_unlock(&self->_lock);
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -48,7 +48,7 @@
       *buf = 138543618;
       v34 = v18;
       v35 = 2112;
-      v36 = v7;
+      v36 = updateCopy;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@Notifying delegates of IDS Activity update: %@", buf, 0x16u);
     }
 
@@ -57,7 +57,7 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v19 = v14;
+    v19 = allObjects;
     v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v20)
     {
@@ -72,7 +72,7 @@
             objc_enumerationMutation(v19);
           }
 
-          [*(*(&v28 + 1) + 8 * v22++) observer:v16 didUpdateDevice:v10 isOnline:{objc_msgSend(v7, "isDeviceOnline", v28)}];
+          [*(*(&v28 + 1) + 8 * v22++) observer:selfCopy didUpdateDevice:v10 isOnline:{objc_msgSend(updateCopy, "isDeviceOnline", v28)}];
         }
 
         while (v20 != v22);
@@ -86,7 +86,7 @@
   else
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -94,7 +94,7 @@
       *buf = 138543618;
       v34 = v26;
       v35 = 2112;
-      v36 = v7;
+      v36 = updateCopy;
       _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@Received IDS Activity update for unkonwn device: %@", buf, 0x16u);
     }
 
@@ -104,23 +104,23 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopObservingPresenceForDevice:(id)a3
+- (void)stopObservingPresenceForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(HMDIDSActivityMonitorObserver *)self dataSource];
-  [v5 stopObservingDevice:v4 subActivity:*MEMORY[0x277D18518]];
+  deviceCopy = device;
+  dataSource = [(HMDIDSActivityMonitorObserver *)self dataSource];
+  [dataSource stopObservingDevice:deviceCopy subActivity:*MEMORY[0x277D18518]];
 }
 
-- (void)startObservingPresenceForDevice:(id)a3
+- (void)startObservingPresenceForDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSActivityMonitorObserver *)self dataSource];
+  deviceCopy = device;
+  dataSource = [(HMDIDSActivityMonitorObserver *)self dataSource];
 
-  if (!v5)
+  if (!dataSource)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -133,67 +133,67 @@
     objc_autoreleasePoolPop(v6);
   }
 
-  v10 = [(HMDIDSActivityMonitorObserver *)self dataSource];
-  [v10 startObservingDevice:v4 subActivity:*MEMORY[0x277D18518]];
+  dataSource2 = [(HMDIDSActivityMonitorObserver *)self dataSource];
+  [dataSource2 startObservingDevice:deviceCopy subActivity:*MEMORY[0x277D18518]];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3 forSubActivity:(id)a4
+- (void)removeObserver:(id)observer forSubActivity:(id)activity
 {
-  v9 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  activityCopy = activity;
   os_unfair_lock_lock_with_options();
-  v7 = [(NSMutableDictionary *)self->_subactivityToDelegatesMap objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_subactivityToDelegatesMap objectForKeyedSubscript:activityCopy];
   v8 = v7;
   if (v7)
   {
-    [v7 removeObject:v9];
+    [v7 removeObject:observerCopy];
     if (![v8 count])
     {
-      [(NSMutableDictionary *)self->_subactivityToDelegatesMap setObject:0 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_subactivityToDelegatesMap setObject:0 forKeyedSubscript:activityCopy];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3 forSubActivity:(id)a4
+- (void)addObserver:(id)observer forSubActivity:(id)activity
 {
-  v10 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  activityCopy = activity;
   os_unfair_lock_lock_with_options();
   v7 = [(NSMutableDictionary *)self->_subactivityToDelegatesMap count];
-  v8 = [(NSMutableDictionary *)self->_subactivityToDelegatesMap objectForKeyedSubscript:v6];
-  if (!v8)
+  weakObjectsHashTable = [(NSMutableDictionary *)self->_subactivityToDelegatesMap objectForKeyedSubscript:activityCopy];
+  if (!weakObjectsHashTable)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(NSMutableDictionary *)self->_subactivityToDelegatesMap setObject:v8 forKeyedSubscript:v6];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(NSMutableDictionary *)self->_subactivityToDelegatesMap setObject:weakObjectsHashTable forKeyedSubscript:activityCopy];
   }
 
-  [v8 addObject:v10];
+  [weakObjectsHashTable addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!v7)
   {
-    v9 = [(HMDIDSActivityMonitorObserver *)self activityMonitor];
-    [v9 listenWithDelegate:self];
+    activityMonitor = [(HMDIDSActivityMonitorObserver *)self activityMonitor];
+    [activityMonitor listenWithDelegate:self];
   }
 }
 
-- (void)configureWithDataSource:(id)a3
+- (void)configureWithDataSource:(id)source
 {
-  v4 = a3;
-  if (!v4)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v4;
-  v5 = [(HMDIDSActivityMonitorObserver *)self dataSource];
+  v9 = sourceCopy;
+  dataSource = [(HMDIDSActivityMonitorObserver *)self dataSource];
 
-  if (v5)
+  if (dataSource)
   {
 LABEL_7:
     v6 = _HMFPreconditionFailure();
@@ -204,19 +204,19 @@ LABEL_7:
   [(HMDIDSActivityMonitorObserver *)self setDataSource:v9];
 }
 
-- (HMDIDSActivityMonitorObserver)initWithActivityMonitor:(id)a3
+- (HMDIDSActivityMonitorObserver)initWithActivityMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v11.receiver = self;
   v11.super_class = HMDIDSActivityMonitorObserver;
   v6 = [(HMDIDSActivityMonitorObserver *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activityMonitor, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_activityMonitor, monitor);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     subactivityToDelegatesMap = v7->_subactivityToDelegatesMap;
-    v7->_subactivityToDelegatesMap = v8;
+    v7->_subactivityToDelegatesMap = dictionary;
   }
 
   return v7;

@@ -1,22 +1,22 @@
 @interface TRIActiveFactorProvidersParser
-- (TRIActiveFactorProvidersParser)initWithPaths:(id)a3;
-- (char)_realpathWithFileSystemRepresentation:(const char *)a3 buffer:(char *)a4;
-- (id)_deploymentIdForExperiment:(id)a3 fromResolverList:(id)a4;
-- (id)_experimentIdForNamespace:(id)a3 fromResolverList:(id)a4;
-- (id)_getFactorPackPathForNamespaceName:(id)a3 withCandidatePath:(id)a4 parentId:(id)a5 deploymentId:(int)a6 promotable:(BOOL *)a7;
+- (TRIActiveFactorProvidersParser)initWithPaths:(id)paths;
+- (char)_realpathWithFileSystemRepresentation:(const char *)representation buffer:(char *)buffer;
+- (id)_deploymentIdForExperiment:(id)experiment fromResolverList:(id)list;
+- (id)_experimentIdForNamespace:(id)namespace fromResolverList:(id)list;
+- (id)_getFactorPackPathForNamespaceName:(id)name withCandidatePath:(id)path parentId:(id)id deploymentId:(int)deploymentId promotable:(BOOL *)promotable;
 - (id)_resolveCounterfactualTreatmentsMap;
 - (id)_resolveTreatmentFactorPackSetIdMap;
-- (id)_resolverPropertyListWithGlobalRolloutsResolvedPath:(id *)a3;
-- (id)_resolverPropertyListWithResolvedPath:(id *)a3;
-- (id)_treatmentIdForExperiment:(id)a3 fromResolverList:(id)a4;
-- (id)counterfactualFactorsStatesForNamespace:(id)a3;
-- (id)experimentIdentifiersForNamespace:(id)a3;
-- (id)resolvePropertyListFactorProviderChainForNamespaceName:(id)a3;
-- (id)resolvePropertyListGlobalFactorProviderChainForNamespaceName:(id)a3;
-- (id)resolveTargetedFactorPackSetForExperimentDeployment:(id)a3;
-- (id)resolveTargetedFactorPackSetForExperimentFactorsState:(id)a3;
-- (id)resolveTargetedFactorPackSetForRolloutDeployment:(id)a3;
-- (void)_faultOnceWithMessage:(id)a3;
+- (id)_resolverPropertyListWithGlobalRolloutsResolvedPath:(id *)path;
+- (id)_resolverPropertyListWithResolvedPath:(id *)path;
+- (id)_treatmentIdForExperiment:(id)experiment fromResolverList:(id)list;
+- (id)counterfactualFactorsStatesForNamespace:(id)namespace;
+- (id)experimentIdentifiersForNamespace:(id)namespace;
+- (id)resolvePropertyListFactorProviderChainForNamespaceName:(id)name;
+- (id)resolvePropertyListGlobalFactorProviderChainForNamespaceName:(id)name;
+- (id)resolveTargetedFactorPackSetForExperimentDeployment:(id)deployment;
+- (id)resolveTargetedFactorPackSetForExperimentFactorsState:(id)state;
+- (id)resolveTargetedFactorPackSetForRolloutDeployment:(id)deployment;
+- (void)_faultOnceWithMessage:(id)message;
 - (void)dealloc;
 @end
 
@@ -47,16 +47,16 @@ void __41__TRIActiveFactorProvidersParser_dispose__block_invoke_2(uint64_t a1, u
   [v3 unlock];
 }
 
-- (TRIActiveFactorProvidersParser)initWithPaths:(id)a3
+- (TRIActiveFactorProvidersParser)initWithPaths:(id)paths
 {
-  v5 = a3;
+  pathsCopy = paths;
   v20.receiver = self;
   v20.super_class = TRIActiveFactorProvidersParser;
   v6 = [(TRIActiveFactorProvidersParser *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paths, a3);
+    objc_storeStrong(&v6->_paths, paths);
     v8 = objc_opt_new();
     v9 = *(v8 + 8);
     *(v8 + 8) = 0;
@@ -97,10 +97,10 @@ void __41__TRIActiveFactorProvidersParser_dispose__block_invoke_4(uint64_t a1, u
   [v3 unlock];
 }
 
-- (id)resolvePropertyListFactorProviderChainForNamespaceName:(id)a3
+- (id)resolvePropertyListFactorProviderChainForNamespaceName:(id)name
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v81 = 0;
   v5 = [(TRIActiveFactorProvidersParser *)self _resolverPropertyListWithResolvedPath:&v81];
   v6 = v5;
@@ -148,7 +148,7 @@ void __41__TRIActiveFactorProvidersParser_dispose__block_invoke_4(uint64_t a1, u
     goto LABEL_53;
   }
 
-  v18 = [v7 objectForKeyedSubscript:v4];
+  v18 = [v7 objectForKeyedSubscript:nameCopy];
   if (!v18)
   {
 LABEL_53:
@@ -235,12 +235,12 @@ LABEL_63:
             v61 = v25;
             v76 = 0;
             v28 = v27;
-            v59 = [(TRIRolloutDeployment *)v26 rolloutId];
+            rolloutId = [(TRIRolloutDeployment *)v26 rolloutId];
             v69 = v26;
-            v56 = [(TRIRolloutDeployment *)v26 deploymentId];
+            deploymentId = [(TRIRolloutDeployment *)v26 deploymentId];
             v63 = v28;
-            v29 = [v28 path];
-            v57 = [(TRIActiveFactorProvidersParser *)self factorProviderForNamespaceName:v4 parentId:v59 deploymentId:v56 treatmentId:0 fromFactorPackSetWithDir:v29 resolvedPath:&v76];
+            path = [v28 path];
+            v57 = [(TRIActiveFactorProvidersParser *)self factorProviderForNamespaceName:nameCopy parentId:rolloutId deploymentId:deploymentId treatmentId:0 fromFactorPackSetWithDir:path resolvedPath:&v76];
 
             if (v57)
             {
@@ -312,12 +312,12 @@ LABEL_48:
         v37 = v36;
         [(TRIExperimentDeployment *)v35 experimentId];
         v64 = v62 = v35;
-        v38 = [(TRIExperimentDeployment *)v35 deploymentId];
+        deploymentId2 = [(TRIExperimentDeployment *)v35 deploymentId];
         v60 = v37;
         v39 = v37;
         v34 = v58;
-        v55 = [v39 path];
-        v40 = [(TRIActiveFactorProvidersParser *)self factorProviderForNamespaceName:v4 parentId:v64 deploymentId:v38 treatmentId:v58 fromFactorPackSetWithDir:v55 resolvedPath:&v76];
+        path2 = [v39 path];
+        v40 = [(TRIActiveFactorProvidersParser *)self factorProviderForNamespaceName:nameCopy parentId:v64 deploymentId:deploymentId2 treatmentId:v58 fromFactorPackSetWithDir:path2 resolvedPath:&v76];
 
         if (v40)
         {
@@ -364,10 +364,10 @@ LABEL_55:
   return v12;
 }
 
-- (id)resolvePropertyListGlobalFactorProviderChainForNamespaceName:(id)a3
+- (id)resolvePropertyListGlobalFactorProviderChainForNamespaceName:(id)name
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v78 = 0;
   v5 = [(TRIActiveFactorProvidersParser *)self _resolverPropertyListWithGlobalRolloutsResolvedPath:&v78];
   v6 = v5;
@@ -416,7 +416,7 @@ LABEL_55:
     goto LABEL_54;
   }
 
-  v19 = [v7 objectForKeyedSubscript:v4];
+  v19 = [v7 objectForKeyedSubscript:nameCopy];
   if (!v19)
   {
 LABEL_54:
@@ -435,7 +435,7 @@ LABEL_54:
   }
 
   v20 = objc_opt_new();
-  v56 = [v8 objectForKeyedSubscript:v4];
+  v56 = [v8 objectForKeyedSubscript:nameCopy];
   if (!v56)
   {
     goto LABEL_52;
@@ -508,9 +508,9 @@ LABEL_64:
 
           v26 = -[TRIRolloutDeployment initWithRolloutId:deploymentId:]([TRIRolloutDeployment alloc], "initWithRolloutId:deploymentId:", v70, [v25 intValue]);
           v73 = 0;
-          v65 = [(TRIRolloutDeployment *)v26 rolloutId];
+          rolloutId = [(TRIRolloutDeployment *)v26 rolloutId];
           v52 = v26;
-          v27 = [(TRIActiveFactorProvidersParser *)self globalFactorProviderForNamespaceName:v4 parentId:v65 deploymentId:[(TRIRolloutDeployment *)v26 deploymentId] treatmentId:0 fromFactorPackId:v56 resolvedPath:&v73];
+          v27 = [(TRIActiveFactorProvidersParser *)self globalFactorProviderForNamespaceName:nameCopy parentId:rolloutId deploymentId:[(TRIRolloutDeployment *)v26 deploymentId] treatmentId:0 fromFactorPackId:v56 resolvedPath:&v73];
 
           if (v27)
           {
@@ -571,7 +571,7 @@ LABEL_46:
           v73 = 0;
           [(TRIExperimentDeployment *)v33 experimentId];
           v53 = v51 = v33;
-          v34 = [(TRIActiveFactorProvidersParser *)self globalFactorProviderForNamespaceName:v4 parentId:v53 deploymentId:[(TRIExperimentDeployment *)v33 deploymentId] treatmentId:v60 fromFactorPackId:v56 resolvedPath:&v73];
+          v34 = [(TRIActiveFactorProvidersParser *)self globalFactorProviderForNamespaceName:nameCopy parentId:v53 deploymentId:[(TRIExperimentDeployment *)v33 deploymentId] treatmentId:v60 fromFactorPackId:v56 resolvedPath:&v73];
 
           if (v34)
           {
@@ -626,9 +626,9 @@ LABEL_56:
   return v13;
 }
 
-- (id)resolveTargetedFactorPackSetForRolloutDeployment:(id)a3
+- (id)resolveTargetedFactorPackSetForRolloutDeployment:(id)deployment
 {
-  v5 = a3;
+  deploymentCopy = deployment;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -641,9 +641,9 @@ LABEL_56:
   v10[2] = __83__TRIActiveFactorProvidersParser_resolveTargetedFactorPackSetForRolloutDeployment___block_invoke;
   v10[3] = &unk_27885E028;
   v13 = &v15;
-  v7 = v5;
+  v7 = deploymentCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v14 = a2;
   [(_PASLock *)lock runWithLockAcquired:v10];
   v8 = v16[5];
@@ -733,17 +733,17 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resolveTargetedFactorPackSetForExperimentDeployment:(id)a3
+- (id)resolveTargetedFactorPackSetForExperimentDeployment:(id)deployment
 {
-  v5 = a3;
-  v6 = v5;
+  deploymentCopy = deployment;
+  v6 = deploymentCopy;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  if (v5)
+  if (deploymentCopy)
   {
     lock = self->_lock;
     v10[0] = MEMORY[0x277D85DD0];
@@ -751,8 +751,8 @@ LABEL_14:
     v10[2] = __86__TRIActiveFactorProvidersParser_resolveTargetedFactorPackSetForExperimentDeployment___block_invoke;
     v10[3] = &unk_27885E028;
     v13 = &v15;
-    v11 = v5;
-    v12 = self;
+    v11 = deploymentCopy;
+    selfCopy = self;
     v14 = a2;
     [(_PASLock *)lock runWithLockAcquired:v10];
     v8 = v16[5];
@@ -847,17 +847,17 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resolveTargetedFactorPackSetForExperimentFactorsState:(id)a3
+- (id)resolveTargetedFactorPackSetForExperimentFactorsState:(id)state
 {
-  v5 = a3;
-  v6 = v5;
+  stateCopy = state;
+  v6 = stateCopy;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  if (v5 && ([v5 treatmentId], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (stateCopy && ([stateCopy treatmentId], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     lock = self->_lock;
     v11[0] = MEMORY[0x277D85DD0];
@@ -866,7 +866,7 @@ LABEL_14:
     v11[3] = &unk_27885E028;
     v14 = &v16;
     v12 = v6;
-    v13 = self;
+    selfCopy = self;
     v15 = a2;
     [(_PASLock *)lock runWithLockAcquired:v11];
     v9 = v17[5];
@@ -970,16 +970,16 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)counterfactualFactorsStatesForNamespace:(id)a3
+- (id)counterfactualFactorsStatesForNamespace:(id)namespace
 {
-  v5 = a3;
+  namespaceCopy = namespace;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy_;
   v27 = __Block_byref_object_dispose_;
   v28 = 0;
-  v6 = [(TRIActiveFactorProvidersParser *)self resolvePropertyListFactorProviderChainForNamespaceName:v5];
+  v6 = [(TRIActiveFactorProvidersParser *)self resolvePropertyListFactorProviderChainForNamespaceName:namespaceCopy];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __74__TRIActiveFactorProvidersParser_counterfactualFactorsStatesForNamespace___block_invoke;
@@ -1091,9 +1091,9 @@ void __74__TRIActiveFactorProvidersParser_counterfactualFactorsStatesForNamespac
   [v3 addObject:v5];
 }
 
-- (id)experimentIdentifiersForNamespace:(id)a3
+- (id)experimentIdentifiersForNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   v12 = 0;
   v5 = [(TRIActiveFactorProvidersParser *)self _resolverPropertyListWithResolvedPath:&v12];
   if (!v5)
@@ -1108,7 +1108,7 @@ void __74__TRIActiveFactorProvidersParser_counterfactualFactorsStatesForNamespac
     goto LABEL_8;
   }
 
-  v6 = [(TRIActiveFactorProvidersParser *)self _experimentIdForNamespace:v4 fromResolverList:v5];
+  v6 = [(TRIActiveFactorProvidersParser *)self _experimentIdForNamespace:namespaceCopy fromResolverList:v5];
   if (!v6)
   {
 LABEL_8:
@@ -1141,11 +1141,11 @@ LABEL_13:
   return v9;
 }
 
-- (id)_experimentIdForNamespace:(id)a3 fromResolverList:(id)a4
+- (id)_experimentIdForNamespace:(id)namespace fromResolverList:(id)list
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"namespaceMap"];
+  namespaceCopy = namespace;
+  v7 = [list objectForKeyedSubscript:@"namespaceMap"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [(TRIActiveFactorProvidersParser *)self _faultOnceWithMessage:@"plplist contains unexpected toplevel content."];
@@ -1153,7 +1153,7 @@ LABEL_13:
     goto LABEL_25;
   }
 
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:namespaceCopy];
   if (!v8)
   {
     goto LABEL_23;
@@ -1180,7 +1180,7 @@ LABEL_13:
 
   v11 = v10;
   v12 = *v29;
-  v25 = v6;
+  v25 = namespaceCopy;
   v26 = v8;
   while (2)
   {
@@ -1218,7 +1218,7 @@ LABEL_13:
           v24 = [v14 objectAtIndexedSubscript:1];
 LABEL_29:
 
-          v6 = v25;
+          namespaceCopy = v25;
           v8 = v26;
           goto LABEL_24;
         }
@@ -1230,7 +1230,7 @@ LABEL_29:
     }
 
     v11 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
-    v6 = v25;
+    namespaceCopy = v25;
     v8 = v26;
     if (v11)
     {
@@ -1246,7 +1246,7 @@ LABEL_18:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v33 = v6;
+    v33 = namespaceCopy;
     _os_log_impl(&dword_22EA6B000, v21, OS_LOG_TYPE_INFO, "Active factor provider does not contain experiment for %@:", buf, 0xCu);
   }
 
@@ -1260,13 +1260,13 @@ LABEL_25:
   return v24;
 }
 
-- (id)_deploymentIdForExperiment:(id)a3 fromResolverList:(id)a4
+- (id)_deploymentIdForExperiment:(id)experiment fromResolverList:(id)list
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"experimentDeployments"];
+  experimentCopy = experiment;
+  v7 = [list objectForKeyedSubscript:@"experimentDeployments"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 objectForKeyedSubscript:v6];
+    v8 = [v7 objectForKeyedSubscript:experimentCopy];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = v8;
@@ -1288,13 +1288,13 @@ LABEL_25:
   return v9;
 }
 
-- (id)_treatmentIdForExperiment:(id)a3 fromResolverList:(id)a4
+- (id)_treatmentIdForExperiment:(id)experiment fromResolverList:(id)list
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"experimentTreatments"];
+  experimentCopy = experiment;
+  v7 = [list objectForKeyedSubscript:@"experimentTreatments"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 objectForKeyedSubscript:v6];
+    v8 = [v7 objectForKeyedSubscript:experimentCopy];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v9 = v8;
@@ -1456,10 +1456,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)_resolverPropertyListWithResolvedPath:(id *)a3
+- (id)_resolverPropertyListWithResolvedPath:(id *)path
 {
-  v5 = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
-  v6 = [v5 stringByAppendingPathComponent:@"v2/activeFactorProviders.plplist"];
+  namespaceDescriptorsDir = [(TRIPaths *)self->_paths namespaceDescriptorsDir];
+  v6 = [namespaceDescriptorsDir stringByAppendingPathComponent:@"v2/activeFactorProviders.plplist"];
 
   v17 = 0;
   v18 = &v17;
@@ -1474,11 +1474,11 @@ LABEL_12:
   v13[3] = &unk_27885E0C8;
   v8 = v6;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [(_PASLock *)lock runWithLockAcquired:v13];
-  v9 = *a3;
-  *a3 = v8;
+  v9 = *path;
+  *path = v8;
   v10 = v8;
 
   v11 = v18[5];
@@ -1564,7 +1564,7 @@ LABEL_3:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_resolverPropertyListWithGlobalRolloutsResolvedPath:(id *)a3
+- (id)_resolverPropertyListWithGlobalRolloutsResolvedPath:(id *)path
 {
   v5 = [(TRIPaths *)self->_paths namespaceDescriptorsDirUsingGlobal:1];
   v6 = [v5 stringByAppendingPathComponent:@"v2/globalActiveFactorProviders.plplist"];
@@ -1582,11 +1582,11 @@ LABEL_3:
   v13[3] = &unk_27885E0C8;
   v8 = v6;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [(_PASLock *)lock runWithLockAcquired:v13];
-  v9 = *a3;
-  *a3 = v8;
+  v9 = *path;
+  *path = v8;
   v10 = v8;
 
   v11 = v18[5];
@@ -1672,19 +1672,19 @@ LABEL_3:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getFactorPackPathForNamespaceName:(id)a3 withCandidatePath:(id)a4 parentId:(id)a5 deploymentId:(int)a6 promotable:(BOOL *)a7
+- (id)_getFactorPackPathForNamespaceName:(id)name withCandidatePath:(id)path parentId:(id)id deploymentId:(int)deploymentId promotable:(BOOL *)promotable
 {
   v83 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  *a7 = 1;
-  v16 = [v14 triStringByResolvingSymlinksInPath];
-  v17 = v16;
-  if (v16)
+  nameCopy = name;
+  pathCopy = path;
+  idCopy = id;
+  *promotable = 1;
+  triStringByResolvingSymlinksInPath = [pathCopy triStringByResolvingSymlinksInPath];
+  v17 = triStringByResolvingSymlinksInPath;
+  if (triStringByResolvingSymlinksInPath)
   {
-    v18 = [v16 lastPathComponent];
-    v19 = TRIValidateFactorPackId(v18);
+    lastPathComponent = [triStringByResolvingSymlinksInPath lastPathComponent];
+    v19 = TRIValidateFactorPackId(lastPathComponent);
 
     if (!v19)
     {
@@ -1694,17 +1694,17 @@ LABEL_3:
         *buf = 138412546;
         v78 = v17;
         v79 = 2112;
-        v80 = v13;
+        v80 = nameCopy;
         _os_log_error_impl(&dword_22EA6B000, v41, OS_LOG_TYPE_ERROR, "Could not validate factor pack id from %@ for namespace %@", buf, 0x16u);
       }
 
-      v40 = v14;
+      v40 = pathCopy;
       goto LABEL_49;
     }
 
-    v65 = a6;
-    v69 = v13;
-    v20 = [TRINamespaceResolver promotionDirForNamespaceName:v13 withPaths:self->_paths];
+    deploymentIdCopy = deploymentId;
+    v69 = nameCopy;
+    v20 = [TRINamespaceResolver promotionDirForNamespaceName:nameCopy withPaths:self->_paths];
     v21 = [v20 stringByAppendingPathComponent:@"provisional.pb"];
 
     v75 = 0;
@@ -1735,15 +1735,15 @@ LABEL_3:
           _os_log_error_impl(&dword_22EA6B000, v46, OS_LOG_TYPE_ERROR, "Error parsing provisional file %@ for namespace %@: %@", buf, 0x20u);
         }
 
-        v40 = v14;
+        v40 = pathCopy;
         goto LABEL_47;
       }
 
-      v64 = v15;
+      v64 = idCopy;
       if (![v25 hasFactorPackId] || (objc_msgSend(v25, "factorPackId"), v63 = v25, v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", v19), v26, v25 = v63, (v27 & 1) == 0))
       {
-        v40 = v14;
-        v15 = v64;
+        v40 = pathCopy;
+        idCopy = v64;
         v42 = v68;
         v45 = v66;
 LABEL_47:
@@ -1761,27 +1761,27 @@ LABEL_47:
       v71[3] = &unk_27885E0F0;
       v62 = v69;
       v72 = v62;
-      v73 = self;
+      selfCopy = self;
       v29 = [v28 _pas_mappedArrayWithTransform:v71];
 
       v30 = [TRINamespaceResolver preferredPathForFactorDataWithCandidatePaths:v29];
 
-      v31 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v32 = v30;
       if (!v32)
       {
-        v59 = [MEMORY[0x277CCA890] currentHandler];
-        [v59 handleFailureInMethod:a2 object:self file:@"TRIActiveFactorProvidersParser.m" lineNumber:968 description:{@"Expression was unexpectedly nil/false: %@", @"promotedPath"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActiveFactorProvidersParser.m" lineNumber:968 description:{@"Expression was unexpectedly nil/false: %@", @"promotedPath"}];
       }
 
-      v33 = [v31 fileExistsAtPath:v32];
+      v33 = [defaultManager fileExistsAtPath:v32];
 
       v34 = v32;
       if ((v33 & 1) == 0)
       {
-        v40 = v14;
+        v40 = pathCopy;
         v25 = v63;
-        v15 = v64;
+        idCopy = v64;
         v42 = v68;
         v45 = v66;
 LABEL_46:
@@ -1789,10 +1789,10 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      v35 = [v32 triStringByResolvingSymlinksInPath];
-      v36 = v35;
+      triStringByResolvingSymlinksInPath2 = [v32 triStringByResolvingSymlinksInPath];
+      v36 = triStringByResolvingSymlinksInPath2;
       v25 = v63;
-      if (!v35)
+      if (!triStringByResolvingSymlinksInPath2)
       {
         v48 = TRILogCategory_ClientFramework();
         v45 = v66;
@@ -1807,20 +1807,20 @@ LABEL_46:
           _os_log_error_impl(&dword_22EA6B000, v48, OS_LOG_TYPE_ERROR, "Could not resolve symlink at %@ for namespace %@: %@", buf, 0x20u);
         }
 
-        v40 = v14;
-        v15 = v64;
+        v40 = pathCopy;
+        idCopy = v64;
         v42 = v68;
         goto LABEL_45;
       }
 
-      v37 = [v35 lastPathComponent];
-      v38 = TRIValidateFactorPackId(v37);
+      lastPathComponent2 = [triStringByResolvingSymlinksInPath2 lastPathComponent];
+      v38 = TRIValidateFactorPackId(lastPathComponent2);
 
       v61 = v38;
       if (!v38)
       {
         v49 = TRILogCategory_ClientFramework();
-        v15 = v64;
+        idCopy = v64;
         v42 = v68;
         v45 = v66;
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -1832,35 +1832,35 @@ LABEL_46:
           _os_log_error_impl(&dword_22EA6B000, v49, OS_LOG_TYPE_ERROR, "Could not validate factor pack id from %@ for namespace %@", buf, 0x16u);
         }
 
-        v50 = v14;
+        v50 = pathCopy;
         goto LABEL_44;
       }
 
-      v15 = v64;
+      idCopy = v64;
       if ([v38 isEqualToString:v19])
       {
-        *a7 = 0;
+        *promotable = 0;
       }
 
       else if ([v63 hasAttempts] && objc_msgSend(v63, "attempts") >= 5)
       {
-        *a7 = 0;
+        *promotable = 0;
         if (!+[TRIProcessInfo hostingProcessIsTriald])
         {
           v45 = v66;
           if (+[TRIProcessInfo hostingProcessIsTrialdSystem])
           {
             v50 = v34;
-            v15 = v64;
+            idCopy = v64;
           }
 
           else
           {
-            v15 = v64;
+            idCopy = v64;
             if (![v63 hasRejected] || (objc_msgSend(v63, "rejected") & 1) == 0)
             {
               v60 = v34;
-              v53 = [TRIRolloutDeployment deploymentWithRolloutId:v64 deploymentId:v65];
+              v53 = [TRIRolloutDeployment deploymentWithRolloutId:v64 deploymentId:deploymentIdCopy];
               v54 = TRILogCategory_ClientFramework();
               if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
               {
@@ -1896,7 +1896,7 @@ LABEL_46:
               v45 = v57;
               v34 = v60;
               v25 = v63;
-              v15 = v64;
+              idCopy = v64;
               goto LABEL_44;
             }
 
@@ -1912,32 +1912,32 @@ LABEL_45:
         }
 
         v50 = v34;
-        v15 = v64;
+        idCopy = v64;
 LABEL_43:
         v42 = v68;
         v45 = v66;
         goto LABEL_44;
       }
 
-      v50 = v14;
+      v50 = pathCopy;
       goto LABEL_43;
     }
 
     v42 = v68;
     if (v23)
     {
-      v43 = [v23 domain];
-      if ([v43 isEqualToString:*MEMORY[0x277CCA050]])
+      domain = [v23 domain];
+      if ([domain isEqualToString:*MEMORY[0x277CCA050]])
       {
-        v44 = [v24 code];
+        code = [v24 code];
 
-        if (v44 == 260)
+        if (code == 260)
         {
 LABEL_32:
-          v40 = v14;
+          v40 = pathCopy;
 LABEL_48:
 
-          v13 = v69;
+          nameCopy = v69;
 LABEL_49:
 
           goto LABEL_50;
@@ -1968,13 +1968,13 @@ LABEL_49:
   if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v78 = v14;
+    v78 = pathCopy;
     v79 = 2112;
-    v80 = v13;
+    v80 = nameCopy;
     _os_log_error_impl(&dword_22EA6B000, v39, OS_LOG_TYPE_ERROR, "Could not resolved symlink at %@ for namespace %@", buf, 0x16u);
   }
 
-  v40 = v14;
+  v40 = pathCopy;
 LABEL_50:
 
   v51 = *MEMORY[0x277D85DE8];
@@ -1993,16 +1993,16 @@ id __120__TRIActiveFactorProvidersParser__getFactorPackPathForNamespaceName_with
   return v6;
 }
 
-- (void)_faultOnceWithMessage:(id)a3
+- (void)_faultOnceWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__TRIActiveFactorProvidersParser__faultOnceWithMessage___block_invoke;
   v7[3] = &unk_27885E118;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -2027,11 +2027,11 @@ void __56__TRIActiveFactorProvidersParser__faultOnceWithMessage___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (char)_realpathWithFileSystemRepresentation:(const char *)a3 buffer:(char *)a4
+- (char)_realpathWithFileSystemRepresentation:(const char *)representation buffer:(char *)buffer
 {
   *__error() = 0;
 
-  return realpath_DARWIN_EXTSN(a3, a4);
+  return realpath_DARWIN_EXTSN(representation, buffer);
 }
 
 @end

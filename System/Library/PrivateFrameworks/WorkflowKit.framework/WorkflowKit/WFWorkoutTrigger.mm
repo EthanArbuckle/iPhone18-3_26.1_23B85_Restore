@@ -1,17 +1,17 @@
 @interface WFWorkoutTrigger
 + (BOOL)isSupportedOnThisDevice;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 + (id)offIcon;
 + (id)onIcon;
 + (id)workoutColors;
 - (BOOL)hasValidConfiguration;
 - (WFWorkoutTrigger)init;
-- (WFWorkoutTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFWorkoutTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
 - (id)suggestedActions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWorkoutTrigger
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = WFWorkoutTrigger;
-  v4 = [(WFTrigger *)&v8 copyWithZone:a3];
+  v4 = [(WFTrigger *)&v8 copyWithZone:zone];
   [v4 setSelection:{-[WFWorkoutTrigger selection](self, "selection")}];
-  v5 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-  v6 = [v5 copy];
+  selectedWorkoutTypes = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+  v6 = [selectedWorkoutTypes copy];
   [v4 setSelectedWorkoutTypes:v6];
 
   [v4 setOnStart:{-[WFWorkoutTrigger onStart](self, "onStart")}];
@@ -39,34 +39,34 @@
   return v4;
 }
 
-- (WFWorkoutTrigger)initWithCoder:(id)a3
+- (WFWorkoutTrigger)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = WFWorkoutTrigger;
-  v5 = [(WFTrigger *)&v20 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v20 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selection"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v8 = 1;
+      unsignedIntegerValue = 1;
     }
 
-    v5->_selection = v8;
+    v5->_selection = unsignedIntegerValue;
     v9 = MEMORY[0x1E695DFD8];
     v21[0] = objc_opt_class();
     v21[1] = objc_opt_class();
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v11 = [v9 setWithArray:v10];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"selectedWorkouts"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"selectedWorkouts"];
     v13 = v12;
     if (v12)
     {
@@ -80,10 +80,10 @@
 
     objc_storeStrong(&v5->_selectedWorkoutTypes, v14);
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onStart"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onStart"];
     v5->_onStart = [v15 BOOLValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onEnd"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onEnd"];
     v5->_onEnd = [v16 BOOLValue];
 
     v17 = v5;
@@ -93,23 +93,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = WFWorkoutTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v9 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFWorkoutTrigger selection](self, "selection", v9.receiver, v9.super_class)}];
-  [v4 encodeObject:v5 forKey:@"selection"];
+  [coderCopy encodeObject:v5 forKey:@"selection"];
 
-  v6 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-  [v4 encodeObject:v6 forKey:@"selectedWorkouts"];
+  selectedWorkoutTypes = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+  [coderCopy encodeObject:selectedWorkoutTypes forKey:@"selectedWorkouts"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFWorkoutTrigger onStart](self, "onStart")}];
-  [v4 encodeObject:v7 forKey:@"onStart"];
+  [coderCopy encodeObject:v7 forKey:@"onStart"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFWorkoutTrigger onEnd](self, "onEnd")}];
-  [v4 encodeObject:v8 forKey:@"onEnd"];
+  [coderCopy encodeObject:v8 forKey:@"onEnd"];
 }
 
 - (id)localizedPastTenseDescription
@@ -117,16 +117,16 @@
   v27 = *MEMORY[0x1E69E9840];
   if ([(WFWorkoutTrigger *)self selection])
   {
-    v3 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-    v4 = [v3 count];
+    selectedWorkoutTypes = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+    v4 = [selectedWorkoutTypes count];
 
     if (v4 == 1)
     {
       v5 = [WFWorkoutType alloc];
-      v6 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-      v7 = [v6 firstObject];
-      v8 = -[WFWorkoutType initWithActivityType:](v5, "initWithActivityType:", [v7 unsignedIntegerValue]);
-      v9 = [(WFWorkoutType *)v8 name];
+      selectedWorkoutTypes2 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+      firstObject = [selectedWorkoutTypes2 firstObject];
+      v8 = -[WFWorkoutType initWithActivityType:](v5, "initWithActivityType:", [firstObject unsignedIntegerValue]);
+      name = [(WFWorkoutType *)v8 name];
 
       if ([(WFWorkoutTrigger *)self onStart]&& [(WFWorkoutTrigger *)self onEnd])
       {
@@ -150,7 +150,7 @@
             *buf = 136315394;
             v24 = "[WFWorkoutTrigger localizedPastTenseDescription]";
             v25 = 2114;
-            v26 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_1CA256000, v20, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", buf, 0x16u);
           }
 
@@ -163,7 +163,7 @@
       }
 
       v16 = WFLocalizedString(v11);
-      v15 = [v10 localizedStringWithFormat:v16, v9];
+      v15 = [v10 localizedStringWithFormat:v16, name];
 
 LABEL_24:
       goto LABEL_36;
@@ -175,8 +175,8 @@ LABEL_24:
       v14 = @"Any of %lu workouts started or ended";
 LABEL_27:
       v17 = WFLocalizedPluralString(v14);
-      v18 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-      v15 = [v13 localizedStringWithFormat:v17, objc_msgSend(v18, "count")];
+      selectedWorkoutTypes3 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+      v15 = [v13 localizedStringWithFormat:v17, objc_msgSend(selectedWorkoutTypes3, "count")];
 
       goto LABEL_36;
     }
@@ -231,7 +231,7 @@ LABEL_34:
     *buf = 136315394;
     v24 = "[WFWorkoutTrigger localizedPastTenseDescription]";
     v25 = 2114;
-    v26 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1CA256000, v19, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", buf, 0x16u);
   }
 
@@ -249,16 +249,16 @@ LABEL_36:
   v27 = *MEMORY[0x1E69E9840];
   if ([(WFWorkoutTrigger *)self selection])
   {
-    v3 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-    v4 = [v3 count];
+    selectedWorkoutTypes = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+    v4 = [selectedWorkoutTypes count];
 
     if (v4 == 1)
     {
       v5 = [WFWorkoutType alloc];
-      v6 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-      v7 = [v6 firstObject];
-      v8 = -[WFWorkoutType initWithActivityType:](v5, "initWithActivityType:", [v7 unsignedIntegerValue]);
-      v9 = [(WFWorkoutType *)v8 name];
+      selectedWorkoutTypes2 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+      firstObject = [selectedWorkoutTypes2 firstObject];
+      v8 = -[WFWorkoutType initWithActivityType:](v5, "initWithActivityType:", [firstObject unsignedIntegerValue]);
+      name = [(WFWorkoutType *)v8 name];
 
       if ([(WFWorkoutTrigger *)self onStart]&& [(WFWorkoutTrigger *)self onEnd])
       {
@@ -282,7 +282,7 @@ LABEL_36:
             *buf = 136315394;
             v24 = "[WFWorkoutTrigger localizedDescriptionWithConfigurationSummary]";
             v25 = 2114;
-            v26 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_1CA256000, v20, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", buf, 0x16u);
           }
 
@@ -295,7 +295,7 @@ LABEL_36:
       }
 
       v16 = WFLocalizedString(v11);
-      v15 = [v10 localizedStringWithFormat:v16, v9];
+      v15 = [v10 localizedStringWithFormat:v16, name];
 
 LABEL_24:
       goto LABEL_36;
@@ -307,8 +307,8 @@ LABEL_24:
       v14 = @"When I start or end any of %lu workouts";
 LABEL_27:
       v17 = WFLocalizedPluralString(v14);
-      v18 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-      v15 = [v13 localizedStringWithFormat:v17, objc_msgSend(v18, "count")];
+      selectedWorkoutTypes3 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+      v15 = [v13 localizedStringWithFormat:v17, objc_msgSend(selectedWorkoutTypes3, "count")];
 
       goto LABEL_36;
     }
@@ -363,7 +363,7 @@ LABEL_34:
     *buf = 136315394;
     v24 = "[WFWorkoutTrigger localizedDescriptionWithConfigurationSummary]";
     v25 = 2114;
-    v26 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1CA256000, v19, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", buf, 0x16u);
   }
 
@@ -378,16 +378,16 @@ LABEL_36:
 
 - (BOOL)hasValidConfiguration
 {
-  v3 = [(WFWorkoutTrigger *)self onStart]|| [(WFWorkoutTrigger *)self onEnd];
+  onEnd = [(WFWorkoutTrigger *)self onStart]|| [(WFWorkoutTrigger *)self onEnd];
   if ([(WFWorkoutTrigger *)self selection])
   {
-    v4 = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
-    v5 = [v4 count] != 0;
+    selectedWorkoutTypes = [(WFWorkoutTrigger *)self selectedWorkoutTypes];
+    v5 = [selectedWorkoutTypes count] != 0;
 
-    return v5 && v3;
+    return v5 && onEnd;
   }
 
-  return v3;
+  return onEnd;
 }
 
 - (WFWorkoutTrigger)init
@@ -429,11 +429,11 @@ LABEL_36:
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69E0B58];
-  v4 = [a1 stopColor];
-  v5 = [MEMORY[0x1E69E09E0] colorWithWhite:1.0 alpha:{1.0, v4}];
+  stopColor = [self stopColor];
+  v5 = [MEMORY[0x1E69E09E0] colorWithWhite:1.0 alpha:{1.0, stopColor}];
   v12[1] = v5;
-  v6 = [a1 stopColor];
-  v7 = [v6 colorWithAlphaComponent:0.140000001];
+  stopColor2 = [self stopColor];
+  v7 = [stopColor2 colorWithAlphaComponent:0.140000001];
   v12[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
   v9 = [v3 triggerConfigurationSymbolNamed:@"xmark.circle.fill" hierarchicalColors:v8];
@@ -446,17 +446,17 @@ LABEL_36:
 + (id)onIcon
 {
   v2 = MEMORY[0x1E69E0B58];
-  v3 = [a1 workoutColors];
-  v4 = [v2 triggerConfigurationSymbolNamed:@"figure.run.circle.fill" hierarchicalColors:v3];
+  workoutColors = [self workoutColors];
+  v4 = [v2 triggerConfigurationSymbolNamed:@"figure.run.circle.fill" hierarchicalColors:workoutColors];
 
   return v4;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Apple Watch Workout", @"Apple Watch Workout");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -468,10 +468,10 @@ LABEL_36:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(objc_class *)getNRPairedDeviceRegistryClass() sharedInstance];
-  v3 = [v2 getPairedDevices];
+  sharedInstance = [(objc_class *)getNRPairedDeviceRegistryClass() sharedInstance];
+  getPairedDevices = [sharedInstance getPairedDevices];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [getPairedDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -481,7 +481,7 @@ LABEL_36:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getPairedDevices);
         }
 
         v7 = (softLinkNRWatchOSVersionForRemoteDevice)(*(*(&v10 + 1) + 8 * i));
@@ -492,7 +492,7 @@ LABEL_36:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [getPairedDevices countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;

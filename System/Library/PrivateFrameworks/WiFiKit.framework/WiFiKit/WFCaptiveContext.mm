@@ -1,11 +1,11 @@
 @interface WFCaptiveContext
 - (WFCaptiveContext)init;
-- (void)_presentationTimerFired:(id)a3;
-- (void)_readyForPresentation:(id)a3;
+- (void)_presentationTimerFired:(id)fired;
+- (void)_readyForPresentation:(id)presentation;
 - (void)cancel;
 - (void)init;
-- (void)webSheetViewController:(id)a3 didTerminateWithError:(id)a4;
-- (void)webSheetViewControllerContentReadyForPresentation:(id)a3;
+- (void)webSheetViewController:(id)controller didTerminateWithError:(id)error;
+- (void)webSheetViewControllerContentReadyForPresentation:(id)presentation;
 @end
 
 @implementation WFCaptiveContext
@@ -47,13 +47,13 @@
     _os_log_impl(&dword_273ECD000, v3, v4, "%s", &v7, 0xCu);
   }
 
-  v5 = [(WFCaptiveContext *)self completionHandler];
-  v5[2]();
+  completionHandler = [(WFCaptiveContext *)self completionHandler];
+  completionHandler[2]();
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentationTimerFired:(id)a3
+- (void)_presentationTimerFired:(id)fired
 {
   v14 = *MEMORY[0x277D85DE8];
   if ([(WFCaptiveContext *)self readyForPresentation])
@@ -65,38 +65,38 @@
       v6 = v4;
       if (os_log_type_enabled(v6, v5))
       {
-        v7 = [(WFCaptiveContext *)self webSheetViewController];
+        webSheetViewController = [(WFCaptiveContext *)self webSheetViewController];
         v10 = 136315394;
         v11 = "[WFCaptiveContext _presentationTimerFired:]";
         v12 = 2112;
-        v13 = v7;
+        v13 = webSheetViewController;
         _os_log_impl(&dword_273ECD000, v6, v5, "%s: presenting view controller %@", &v10, 0x16u);
       }
     }
 
-    v8 = [(WFCaptiveContext *)self webSheetViewController];
-    [(WFCaptiveContext *)self _readyForPresentation:v8];
+    webSheetViewController2 = [(WFCaptiveContext *)self webSheetViewController];
+    [(WFCaptiveContext *)self _readyForPresentation:webSheetViewController2];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_readyForPresentation:(id)a3
+- (void)_readyForPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(WFCaptiveContext *)self readyForPresentationHandler];
-  (v5)[2](v5, v4);
+  presentationCopy = presentation;
+  readyForPresentationHandler = [(WFCaptiveContext *)self readyForPresentationHandler];
+  (readyForPresentationHandler)[2](readyForPresentationHandler, presentationCopy);
 
-  v6 = [(WFCaptiveContext *)self timer];
-  [v6 invalidate];
+  timer = [(WFCaptiveContext *)self timer];
+  [timer invalidate];
 
   [(WFCaptiveContext *)self setTimer:0];
 }
 
-- (void)webSheetViewControllerContentReadyForPresentation:(id)a3
+- (void)webSheetViewControllerContentReadyForPresentation:(id)presentation
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = WFLogForCategory(2uLL);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v5 && os_log_type_enabled(v5, v6))
@@ -104,18 +104,18 @@
     v8 = 136315394;
     v9 = "[WFCaptiveContext webSheetViewControllerContentReadyForPresentation:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = presentationCopy;
     _os_log_impl(&dword_273ECD000, v5, v6, "%s: viewController %@", &v8, 0x16u);
   }
 
-  [(WFCaptiveContext *)self _readyForPresentation:v4];
+  [(WFCaptiveContext *)self _readyForPresentation:presentationCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)webSheetViewController:(id)a3 didTerminateWithError:(id)a4
+- (void)webSheetViewController:(id)controller didTerminateWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = WFLogForCategory(2uLL);
   v7 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v6 && os_log_type_enabled(v6, v7))
@@ -123,7 +123,7 @@
     v9 = 136315394;
     v10 = "[WFCaptiveContext webSheetViewController:didTerminateWithError:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = errorCopy;
     _os_log_impl(&dword_273ECD000, v6, v7, "%s: error %@", &v9, 0x16u);
   }
 

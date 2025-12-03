@@ -1,46 +1,46 @@
 @interface NPKTargetDeviceAssertionManager
-- (NPKTargetDeviceAssertionManager)initWithTransportationService:(id)a3;
+- (NPKTargetDeviceAssertionManager)initWithTransportationService:(id)service;
 - (id)_IDSSendOptions;
-- (id)_outstandingAssertionStatusUpdaterWithRequest:(id)a3 assertionType:(unint64_t)a4 assertionUUID:(id)a5;
-- (id)_removeOutstandingAssertionStatusUpdaterWithUUID:(id)a3;
-- (id)_sendAssertionRequest:(id)a3;
-- (id)acquireAssertionOfType:(unint64_t)a3;
-- (id)assertionsUUIDsOfType:(unint64_t)a3;
-- (void)invalidateAssertionWithUUID:(id)a3;
+- (id)_outstandingAssertionStatusUpdaterWithRequest:(id)request assertionType:(unint64_t)type assertionUUID:(id)d;
+- (id)_removeOutstandingAssertionStatusUpdaterWithUUID:(id)d;
+- (id)_sendAssertionRequest:(id)request;
+- (id)acquireAssertionOfType:(unint64_t)type;
+- (id)assertionsUUIDsOfType:(unint64_t)type;
+- (void)invalidateAssertionWithUUID:(id)d;
 @end
 
 @implementation NPKTargetDeviceAssertionManager
 
-- (NPKTargetDeviceAssertionManager)initWithTransportationService:(id)a3
+- (NPKTargetDeviceAssertionManager)initWithTransportationService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = NPKTargetDeviceAssertionManager;
   v6 = [(NPKTargetDeviceAssertionManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transportationService, a3);
+    objc_storeStrong(&v6->_transportationService, service);
     v8 = dispatch_queue_create("com.apple.NanoPassKit.TargetDevice.AssertionManager", 0);
     internalQueue = v7->_internalQueue;
     v7->_internalQueue = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     outstandingAssertionStatusUpdaters = v7->_outstandingAssertionStatusUpdaters;
-    v7->_outstandingAssertionStatusUpdaters = v10;
+    v7->_outstandingAssertionStatusUpdaters = dictionary;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     assertTypesUUIDsMap = v7->_assertTypesUUIDsMap;
-    v7->_assertTypesUUIDsMap = v12;
+    v7->_assertTypesUUIDsMap = dictionary2;
   }
 
   return v7;
 }
 
-- (id)acquireAssertionOfType:(unint64_t)a3
+- (id)acquireAssertionOfType:(unint64_t)type
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -50,9 +50,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v19 = a3;
+      typeCopy = type;
       v20 = 2112;
-      v21 = v5;
+      v21 = uUID;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Remote Assertion - Request acquire assertion of type:%lu with UUID:%@", buf, 0x16u);
     }
   }
@@ -62,10 +62,10 @@
   block[1] = 3221225472;
   block[2] = __58__NPKTargetDeviceAssertionManager_acquireAssertionOfType___block_invoke;
   block[3] = &unk_279945F18;
-  v17 = a3;
-  v10 = v5;
+  typeCopy2 = type;
+  v10 = uUID;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   dispatch_async(internalQueue, block);
   v11 = v10;
 
@@ -149,10 +149,10 @@ LABEL_18:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateAssertionWithUUID:(id)a3
+- (void)invalidateAssertionWithUUID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -162,7 +162,7 @@ LABEL_18:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = dCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Remote Assertion - Request to invalidate assertion with UUID:%@", buf, 0xCu);
     }
   }
@@ -173,8 +173,8 @@ LABEL_18:
   v11[2] = __63__NPKTargetDeviceAssertionManager_invalidateAssertionWithUUID___block_invoke;
   v11[3] = &unk_2799454E0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = dCopy;
+  v9 = dCopy;
   dispatch_async(internalQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -199,9 +199,9 @@ void __63__NPKTargetDeviceAssertionManager_invalidateAssertionWithUUID___block_i
   }
 }
 
-- (id)assertionsUUIDsOfType:(unint64_t)a3
+- (id)assertionsUUIDsOfType:(unint64_t)type
 {
-  v4 = protobufAssertionTypeWithPKAssertionType(a3);
+  v4 = protobufAssertionTypeWithPKAssertionType(type);
   if (v4 >= 3)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v4];
@@ -212,28 +212,28 @@ void __63__NPKTargetDeviceAssertionManager_invalidateAssertionWithUUID___block_i
     v5 = off_279947430[v4];
   }
 
-  v6 = [(NPKTargetDeviceAssertionManager *)self assertTypesUUIDsMap];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  assertTypesUUIDsMap = [(NPKTargetDeviceAssertionManager *)self assertTypesUUIDsMap];
+  v7 = [assertTypesUUIDsMap objectForKeyedSubscript:v5];
 
   if (v7)
   {
-    v8 = [v7 copy];
+    array = [v7 copy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
   return v9;
 }
 
-- (id)_sendAssertionRequest:(id)a3
+- (id)_sendAssertionRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -242,39 +242,39 @@ void __63__NPKTargetDeviceAssertionManager_invalidateAssertionWithUUID___block_i
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 assertionType];
-      if (v8 >= 3)
+      assertionType = [requestCopy assertionType];
+      if (assertionType >= 3)
       {
-        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v8];
+        v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", assertionType];
       }
 
       else
       {
-        v9 = off_279947430[v8];
+        v9 = off_279947430[assertionType];
       }
 
-      v10 = [v4 requestUUIDString];
+      requestUUIDString = [requestCopy requestUUIDString];
       *buf = 138412546;
       v23 = v9;
       v24 = 2112;
-      v25 = v10;
+      v25 = requestUUIDString;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Remote Assertion - Sending assertion request of type:%@ UUID:%@", buf, 0x16u);
     }
   }
 
   v11 = objc_alloc(MEMORY[0x277D189F0]);
-  v12 = [v4 data];
-  v13 = [v11 initWithProtobufData:v12 type:59 isResponse:0];
+  data = [requestCopy data];
+  v13 = [v11 initWithProtobufData:data type:59 isResponse:0];
 
-  v14 = [(NPKTargetDeviceAssertionManager *)self transportationService];
+  transportationService = [(NPKTargetDeviceAssertionManager *)self transportationService];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __57__NPKTargetDeviceAssertionManager__sendAssertionRequest___block_invoke;
   v20[3] = &unk_279945058;
-  v21 = v4;
-  v15 = v4;
-  v16 = [(NPKTargetDeviceAssertionManager *)self _IDSSendOptions];
-  v17 = NPKProtoSendWithOptions(v14, v13, 200, 0, 0, v20, v16);
+  v21 = requestCopy;
+  v15 = requestCopy;
+  _IDSSendOptions = [(NPKTargetDeviceAssertionManager *)self _IDSSendOptions];
+  v17 = NPKProtoSendWithOptions(transportationService, v13, 200, 0, 0, v20, _IDSSendOptions);
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -334,17 +334,17 @@ void __57__NPKTargetDeviceAssertionManager__sendAssertionRequest___block_invoke(
   return v4;
 }
 
-- (id)_outstandingAssertionStatusUpdaterWithRequest:(id)a3 assertionType:(unint64_t)a4 assertionUUID:(id)a5
+- (id)_outstandingAssertionStatusUpdaterWithRequest:(id)request assertionType:(unint64_t)type assertionUUID:(id)d
 {
   v8 = MEMORY[0x277D189F0];
-  v9 = a5;
-  v10 = a3;
+  dCopy = d;
+  requestCopy = request;
   v11 = [v8 alloc];
-  v12 = [v10 data];
+  data = [requestCopy data];
 
-  v13 = [v11 initWithProtobufData:v12 type:59 isResponse:0];
-  v14 = [(NPKTargetDeviceAssertionManager *)self _IDSSendOptions];
-  if (a4 == 6)
+  v13 = [v11 initWithProtobufData:data type:59 isResponse:0];
+  _IDSSendOptions = [(NPKTargetDeviceAssertionManager *)self _IDSSendOptions];
+  if (type == 6)
   {
     v15 = -1;
   }
@@ -355,42 +355,42 @@ void __57__NPKTargetDeviceAssertionManager__sendAssertionRequest___block_invoke(
   }
 
   v16 = [NPKOutstandingAssertionStatusUpdater alloc];
-  v17 = [(NPKTargetDeviceAssertionManager *)self transportationService];
-  v18 = [(NPKIDSHeartbeat *)v16 initWithPendingStatusProtobuf:v13 service:v17 priority:200 maxUpdates:v15 responseIdentifier:0 sendOptions:v14 queue:30.0 updateInterval:self->_internalQueue];
+  transportationService = [(NPKTargetDeviceAssertionManager *)self transportationService];
+  v18 = [(NPKIDSHeartbeat *)v16 initWithPendingStatusProtobuf:v13 service:transportationService priority:200 maxUpdates:v15 responseIdentifier:0 sendOptions:_IDSSendOptions queue:30.0 updateInterval:self->_internalQueue];
 
-  [(NPKOutstandingAssertionStatusUpdater *)v18 setAssertType:protobufAssertionTypeWithPKAssertionType(a4)];
-  [(NPKOutstandingAssertionStatusUpdater *)v18 setAssertionUUID:v9];
+  [(NPKOutstandingAssertionStatusUpdater *)v18 setAssertType:protobufAssertionTypeWithPKAssertionType(type)];
+  [(NPKOutstandingAssertionStatusUpdater *)v18 setAssertionUUID:dCopy];
 
   return v18;
 }
 
-- (id)_removeOutstandingAssertionStatusUpdaterWithUUID:(id)a3
+- (id)_removeOutstandingAssertionStatusUpdaterWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v5 = [(NPKTargetDeviceAssertionManager *)self outstandingAssertionStatusUpdaters];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  outstandingAssertionStatusUpdaters = [(NPKTargetDeviceAssertionManager *)self outstandingAssertionStatusUpdaters];
+  v6 = [outstandingAssertionStatusUpdaters objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
     [v6 invalidate];
-    v7 = [(NPKTargetDeviceAssertionManager *)self outstandingAssertionStatusUpdaters];
-    [v7 removeObjectForKey:v4];
+    outstandingAssertionStatusUpdaters2 = [(NPKTargetDeviceAssertionManager *)self outstandingAssertionStatusUpdaters];
+    [outstandingAssertionStatusUpdaters2 removeObjectForKey:dCopy];
 
-    v8 = [v6 assertType];
-    if (v8 >= 3)
+    assertType = [v6 assertType];
+    if (assertType >= 3)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", assertType];
     }
 
     else
     {
-      v9 = off_279947430[v8];
+      v9 = off_279947430[assertType];
     }
 
-    v10 = [(NPKTargetDeviceAssertionManager *)self assertTypesUUIDsMap];
-    v11 = [v10 objectForKeyedSubscript:v9];
-    [v11 removeObject:v4];
+    assertTypesUUIDsMap = [(NPKTargetDeviceAssertionManager *)self assertTypesUUIDsMap];
+    v11 = [assertTypesUUIDsMap objectForKeyedSubscript:v9];
+    [v11 removeObject:dCopy];
   }
 
   return v6;

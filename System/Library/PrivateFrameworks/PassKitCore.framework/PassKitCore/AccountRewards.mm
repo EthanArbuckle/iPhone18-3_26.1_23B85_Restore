@@ -1,9 +1,9 @@
 @interface AccountRewards
-+ (id)_predicateForEventPID:(int64_t)a3;
++ (id)_predicateForEventPID:(int64_t)d;
 + (id)_propertySettersForAccountRewards;
-+ (id)insertRewards:(id)a3 forEventPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)rewardsWithEventPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deleteRewardsWithEventPID:(int64_t)a3 inDatabase:(id)a4;
++ (id)insertRewards:(id)rewards forEventPID:(int64_t)d inDatabase:(id)database;
++ (id)rewardsWithEventPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteRewardsWithEventPID:(int64_t)d inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
 - (id)currencyAmount;
 - (id)rewards;
@@ -11,11 +11,11 @@
 
 @implementation AccountRewards
 
-+ (id)rewardsWithEventPID:(int64_t)a3 inDatabase:(id)a4
++ (id)rewardsWithEventPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForEventPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForEventPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   v9 = +[NSMutableSet set];
   v21 = @"pid";
@@ -24,10 +24,10 @@
   v16 = 3221225472;
   v17 = sub_10007B710;
   v18 = &unk_10083CBC0;
-  v19 = v6;
+  v19 = databaseCopy;
   v20 = v9;
   v11 = v9;
-  v12 = v6;
+  v12 = databaseCopy;
   [v8 enumeratePersistentIDsAndProperties:v10 usingBlock:&v15];
 
   v13 = [v11 copy];
@@ -35,42 +35,42 @@
   return v13;
 }
 
-+ (id)insertRewards:(id)a3 forEventPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertRewards:(id)rewards forEventPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
+  databaseCopy = database;
+  rewardsCopy = rewards;
   v10 = +[NSMutableDictionary dictionary];
-  v11 = [v9 currencyAmount];
-  v12 = [v11 amount];
+  currencyAmount = [rewardsCopy currencyAmount];
+  amount = [currencyAmount amount];
   v13 = PKCurrencyDecimalToStorageNumber();
 
-  v14 = [v9 identifier];
-  [v10 setObjectOrNull:v14 forKey:@"b"];
+  identifier = [rewardsCopy identifier];
+  [v10 setObjectOrNull:identifier forKey:@"b"];
 
   [v10 setObjectOrNull:v13 forKey:@"c"];
-  v15 = [v9 currencyAmount];
-  v16 = [v15 currency];
-  [v10 setObjectOrNull:v16 forKey:@"d"];
+  currencyAmount2 = [rewardsCopy currencyAmount];
+  currency = [currencyAmount2 currency];
+  [v10 setObjectOrNull:currency forKey:@"d"];
 
-  v17 = [v9 status];
-  [v10 setObjectOrNull:v17 forKey:@"f"];
+  status = [rewardsCopy status];
+  [v10 setObjectOrNull:status forKey:@"f"];
 
-  [v10 setInteger:objc_msgSend(v9 forKey:{"type"), @"e"}];
-  [v10 setInteger:objc_msgSend(v9 forKey:{"statusCode"), @"g"}];
-  v18 = [NSNumber numberWithLongLong:a4];
+  [v10 setInteger:objc_msgSend(rewardsCopy forKey:{"type"), @"e"}];
+  [v10 setInteger:objc_msgSend(rewardsCopy forKey:{"statusCode"), @"g"}];
+  v18 = [NSNumber numberWithLongLong:d];
   [v10 setObject:v18 forKey:@"a"];
 
-  v19 = [[a1 alloc] initWithPropertyValues:v10 inDatabase:v8];
-  v20 = [v19 persistentID];
-  v21 = [v9 transactionIdentifiers];
-  [(AccountRewardsIdentifier *)AccountRewardsTransactionIdentifier insertIdentifiers:v21 forAccountRewardsPID:v20 inDatabase:v8];
+  v19 = [[self alloc] initWithPropertyValues:v10 inDatabase:databaseCopy];
+  persistentID = [v19 persistentID];
+  transactionIdentifiers = [rewardsCopy transactionIdentifiers];
+  [(AccountRewardsIdentifier *)AccountRewardsTransactionIdentifier insertIdentifiers:transactionIdentifiers forAccountRewardsPID:persistentID inDatabase:databaseCopy];
 
-  v22 = [v9 rewardsAddedIdentifiers];
-  [(AccountRewardsIdentifier *)AccountRewardsRewardsAddedIdentifier insertIdentifiers:v22 forAccountRewardsPID:v20 inDatabase:v8];
+  rewardsAddedIdentifiers = [rewardsCopy rewardsAddedIdentifiers];
+  [(AccountRewardsIdentifier *)AccountRewardsRewardsAddedIdentifier insertIdentifiers:rewardsAddedIdentifiers forAccountRewardsPID:persistentID inDatabase:databaseCopy];
 
-  v23 = [v9 rewards];
+  rewards = [rewardsCopy rewards];
 
-  [PaymentTransactionReward updatePaymentTransactionRewards:v23 forAccountRewardsPID:v20 inDatabase:v8];
+  [PaymentTransactionReward updatePaymentTransactionRewards:rewards forAccountRewardsPID:persistentID inDatabase:databaseCopy];
 
   return v19;
 }
@@ -79,7 +79,7 @@
 {
   v3 = objc_alloc_init(PKAccountRewards);
   v4 = +[AccountRewards _propertySettersForAccountRewards];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007BBB8;
@@ -87,9 +87,9 @@
   v14 = v4;
   v6 = v3;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v13];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v13];
 
   v8 = [(AccountRewardsIdentifier *)AccountRewardsTransactionIdentifier identifiersWithAccountRewardsPID:self->super._persistentID inDatabase:self->super._database];
   [v6 setTransactionIdentifiers:v8];
@@ -130,11 +130,11 @@
   return v8;
 }
 
-+ (void)deleteRewardsWithEventPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteRewardsWithEventPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForEventPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForEventPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   [v8 deleteAllEntities];
 }
@@ -153,14 +153,14 @@
 
   v8.receiver = self;
   v8.super_class = AccountRewards;
-  v6 = [(SQLiteEntity *)&v8 deleteFromDatabase];
+  deleteFromDatabase = [(SQLiteEntity *)&v8 deleteFromDatabase];
 
-  return v6;
+  return deleteFromDatabase;
 }
 
-+ (id)_predicateForEventPID:(int64_t)a3
++ (id)_predicateForEventPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;

@@ -1,11 +1,11 @@
 @interface PRDevicePoseValidator
-- (BOOL)validatePose:(id)a3;
-- (PRDevicePoseValidator)initWithMaximumSpeed:(double)a3;
+- (BOOL)validatePose:(id)pose;
+- (PRDevicePoseValidator)initWithMaximumSpeed:(double)speed;
 @end
 
 @implementation PRDevicePoseValidator
 
-- (PRDevicePoseValidator)initWithMaximumSpeed:(double)a3
+- (PRDevicePoseValidator)initWithMaximumSpeed:(double)speed
 {
   v9.receiver = self;
   v9.super_class = PRDevicePoseValidator;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    [(PRDevicePoseValidator *)v4 setMaximumSpeed:a3];
+    [(PRDevicePoseValidator *)v4 setMaximumSpeed:speed];
     v6 = os_log_create("com.apple.proximity", "posevalidator");
     logger = v5->_logger;
     v5->_logger = v6;
@@ -22,38 +22,38 @@
   return v5;
 }
 
-- (BOOL)validatePose:(id)a3
+- (BOOL)validatePose:(id)pose
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PRDevicePoseValidator *)self previousPose];
+  poseCopy = pose;
+  previousPose = [(PRDevicePoseValidator *)self previousPose];
 
-  if (!v5)
+  if (!previousPose)
   {
-    [(PRDevicePoseValidator *)self setPreviousPose:v4];
+    [(PRDevicePoseValidator *)self setPreviousPose:poseCopy];
     goto LABEL_9;
   }
 
-  [v4 timestamp];
+  [poseCopy timestamp];
   v7 = v6;
-  v8 = [(PRDevicePoseValidator *)self previousPose];
-  [v8 timestamp];
+  previousPose2 = [(PRDevicePoseValidator *)self previousPose];
+  [previousPose2 timestamp];
   v10 = v7 - v9;
 
   if (v10 > 0.0)
   {
     if (v10 >= 1.0)
     {
-      [v4 pose];
+      [poseCopy pose];
       v25 = v11;
-      v12 = [(PRDevicePoseValidator *)self previousPose];
-      [v12 pose];
+      previousPose3 = [(PRDevicePoseValidator *)self previousPose];
+      [previousPose3 pose];
       v24 = v13;
 
       v14 = vsubq_f32(v25, v24);
       v15 = vmulq_f32(v14, v14);
       v16 = sqrtf(v15.f32[2] + vaddv_f32(*v15.f32)) / v10;
-      [(PRDevicePoseValidator *)self setPreviousPose:v4];
+      [(PRDevicePoseValidator *)self setPreviousPose:poseCopy];
       [(PRDevicePoseValidator *)self maximumSpeed];
       if (v16 > v17)
       {

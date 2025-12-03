@@ -7,7 +7,7 @@
 
 - (id)userFacingCommandName
 {
-  v2 = self;
+  selfCopy = self;
   sub_100FABE24();
 
   v3 = String._bridgeToObjectiveC()();

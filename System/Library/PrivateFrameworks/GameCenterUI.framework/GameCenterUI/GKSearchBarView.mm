@@ -1,12 +1,12 @@
 @interface GKSearchBarView
 + (void)initialize;
-- (GKSearchBarView)initWithFrame:(CGRect)a3;
+- (GKSearchBarView)initWithFrame:(CGRect)frame;
 - (UISearchBarDelegate)delegate;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)establishSearchBarConstraints;
 - (void)prepareForReuse;
-- (void)setDelegate:(id)a3;
-- (void)setUsePadConstraints:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setUsePadConstraints:(id)constraints;
 - (void)updateConstraints;
 @end
 
@@ -49,11 +49,11 @@
   [v17 setUsePadConstraints:v10];
 }
 
-- (GKSearchBarView)initWithFrame:(CGRect)a3
+- (GKSearchBarView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = GKSearchBarView;
-  v3 = [(GKSearchBarView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKSearchBarView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(GKSearchBar);
@@ -73,11 +73,11 @@
     [(GKSearchBarView *)v3 addConstraint:v8];
 
     v9 = MEMORY[0x277CCABB0];
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v12 = 0;
-    if (v11 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v12 = *MEMORY[0x277D0C258] ^ 1 | *MEMORY[0x277D0C8F0];
     }
@@ -108,27 +108,27 @@
     [(GKSearchBarView *)self removeConstraints:?];
   }
 
-  v14 = [MEMORY[0x277CBEB18] array];
-  v3 = [(NSNumber *)self->_usePadConstraints BOOLValue];
+  array = [MEMORY[0x277CBEB18] array];
+  bOOLValue = [(NSNumber *)self->_usePadConstraints BOOLValue];
   v4 = MEMORY[0x277CCAAD0];
-  if (v3)
+  if (bOOLValue)
   {
     v5 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_searchBar attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:540.0];
-    [v14 addObject:v5];
+    [array addObject:v5];
 
     v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_searchBar attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
-    [v14 addObject:v6];
+    [array addObject:v6];
   }
 
   else
   {
     v7 = _NSDictionaryOfVariableBindings(&cfstr_Searchbar_1.isa, self->_searchBar, 0);
     v8 = [v4 constraintsWithVisualFormat:@"|[_searchBar]|" options:0 metrics:0 views:v7];
-    [v14 addObjectsFromArray:v8];
+    [array addObjectsFromArray:v8];
 
-    v9 = [v14 firstObject];
-    v10 = [v14 lastObject];
-    [(UICollectionReusableView *)self _gkSetLeadingGuideConstraint:v9 trailingGuideConstraint:v10];
+    firstObject = [array firstObject];
+    lastObject = [array lastObject];
+    [(UICollectionReusableView *)self _gkSetLeadingGuideConstraint:firstObject trailingGuideConstraint:lastObject];
 
     [(GKSearchBarView *)self leadingMargin];
     v12 = v11;
@@ -138,20 +138,20 @@
       v13 = v12;
     }
 
-    [MEMORY[0x277D75298] _gkAdjustConstraintMargins:v14 leading:v13 trailing:v13];
+    [MEMORY[0x277D75298] _gkAdjustConstraintMargins:array leading:v13 trailing:v13];
   }
 
-  [(GKSearchBarView *)self setSearchBarConstraints:v14];
+  [(GKSearchBarView *)self setSearchBarConstraints:array];
   [(GKSearchBarView *)self addConstraints:self->_searchBarConstraints];
 }
 
-- (void)setUsePadConstraints:(id)a3
+- (void)setUsePadConstraints:(id)constraints
 {
-  v5 = a3;
-  if (self->_usePadConstraints != v5)
+  constraintsCopy = constraints;
+  if (self->_usePadConstraints != constraintsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_usePadConstraints, a3);
+    v6 = constraintsCopy;
+    objc_storeStrong(&self->_usePadConstraints, constraints);
     if (self->_searchBarConstraints)
     {
       [(GKSearchBarView *)self removeConstraints:?];
@@ -159,32 +159,32 @@
     }
 
     [(GKSearchBarView *)self setNeedsUpdateConstraints];
-    v5 = v6;
+    constraintsCopy = v6;
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v26.receiver = self;
   v26.super_class = GKSearchBarView;
-  [(GKSearchBarView *)&v26 applyLayoutAttributes:v4];
+  [(GKSearchBarView *)&v26 applyLayoutAttributes:attributesCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 dataSource];
-    v7 = [(GKSearchBarView *)self searchBar];
-    [v7 setDataSource:v6];
+    v5 = attributesCopy;
+    dataSource = [v5 dataSource];
+    searchBar = [(GKSearchBarView *)self searchBar];
+    [searchBar setDataSource:dataSource];
 
     [v5 leadingMargin];
     v9 = v8;
     [v5 trailingMargin];
     v11 = v10;
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v13)
+    if (!userInterfaceIdiom)
     {
       if (([MEMORY[0x277D759A0] mainScreen], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "bounds"), v16 = v15, v18 = v17, v14, v16 >= 414.0) && v18 >= 736.0 || (v18 >= 414.0 ? (v19 = v16 < 736.0) : (v19 = 1), !v19))
       {
@@ -195,8 +195,8 @@
 
     [(GKSearchBarView *)self setLeadingMargin:v9];
     [(GKSearchBarView *)self setTrailingMargin:v11];
-    v20 = [(GKSearchBarView *)self searchBarConstraints];
-    if (v20)
+    searchBarConstraints = [(GKSearchBarView *)self searchBarConstraints];
+    if (searchBarConstraints)
     {
       if (v9 < v11)
       {
@@ -204,15 +204,15 @@
       }
 
       v21 = MEMORY[0x277D75298];
-      v22 = [(GKSearchBarView *)self searchBarConstraints];
-      [v21 _gkAdjustConstraintMargins:v22 leading:v9 trailing:v9];
+      searchBarConstraints2 = [(GKSearchBarView *)self searchBarConstraints];
+      [v21 _gkAdjustConstraintMargins:searchBarConstraints2 leading:v9 trailing:v9];
     }
   }
 
-  v23 = [v4 indexPath];
-  v24 = [v23 section];
-  v25 = [(GKSearchBarView *)self searchBar];
-  [v25 setSectionIndex:v24];
+  indexPath = [attributesCopy indexPath];
+  section = [indexPath section];
+  searchBar2 = [(GKSearchBarView *)self searchBar];
+  [searchBar2 setSectionIndex:section];
 }
 
 - (void)prepareForReuse
@@ -223,9 +223,9 @@
   [(GKSearchBarView *)self setDelegate:0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

@@ -1,21 +1,21 @@
 @interface ResizableTextAttachmentViewProvider
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (_TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D35ResizableTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (_TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D35ResizableTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location;
 - (void)loadView;
 @end
 
 @implementation ResizableTextAttachmentViewProvider
 
-- (_TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D35ResizableTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6
+- (_TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D35ResizableTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  attachmentCopy = attachment;
+  viewCopy = view;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  return sub_1007C9B5C(v9, a4, a5, a6);
+  return sub_1007C9B5C(attachmentCopy, view, manager, location);
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   v7 = *(&self->super.super.isa + OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D35ResizableTextAttachmentViewProvider_bounds);
   v8 = *&self->resizeDelegate[OBJC_IVAR____TtC7JournalP33_1C06B2E6919F8D96964EAFC32087680D35ResizableTextAttachmentViewProvider_bounds];
@@ -30,7 +30,7 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007C9CD4();
 }
 

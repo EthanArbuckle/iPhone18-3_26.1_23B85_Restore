@@ -1,14 +1,14 @@
 @interface RTVisitManagerVisitIncidentNotification
-- (RTVisitManagerVisitIncidentNotification)initWithVisitIncident:(id)a3;
+- (RTVisitManagerVisitIncidentNotification)initWithVisitIncident:(id)incident;
 @end
 
 @implementation RTVisitManagerVisitIncidentNotification
 
-- (RTVisitManagerVisitIncidentNotification)initWithVisitIncident:(id)a3
+- (RTVisitManagerVisitIncidentNotification)initWithVisitIncident:(id)incident
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  incidentCopy = incident;
+  if (!incidentCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@
   v6 = [(RTNotification *)&v10 init];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [incidentCopy copy];
     visitIncident = v6->_visitIncident;
     v6->_visitIncident = v7;
   }

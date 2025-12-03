@@ -7,13 +7,13 @@
 
 - (uint64_t)Data
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDySS10Foundation4DataVGMd, &_sSDySS10Foundation4DataVGMR);
     a2();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;
@@ -21,7 +21,7 @@
 
 - (unint64_t)String
 {
-  result = OUTLINED_FUNCTION_59(a1);
+  result = OUTLINED_FUNCTION_59(self);
   if (!result)
   {
     __swift_instantiateConcreteTypeFromMangledNameAbstractV2(&_sSDyS2SGMd, &_sSDyS2SGMR);

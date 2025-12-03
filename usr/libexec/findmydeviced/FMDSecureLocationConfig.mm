@@ -1,10 +1,10 @@
 @interface FMDSecureLocationConfig
 - (FMDSecureLocationConfig)init;
-- (FMDSecureLocationConfig)initWithName:(id)a3 values:(id)a4;
-- (id)_readInternalPreference:(id)a3;
+- (FMDSecureLocationConfig)initWithName:(id)name values:(id)values;
+- (id)_readInternalPreference:(id)preference;
 - (id)description;
 - (void)_initWithDefaults;
-- (void)_readValuesFromDictionary:(id)a3;
+- (void)_readValuesFromDictionary:(id)dictionary;
 @end
 
 @implementation FMDSecureLocationConfig
@@ -35,10 +35,10 @@
   self->_shouldWakeDevice = 1;
 }
 
-- (FMDSecureLocationConfig)initWithName:(id)a3 values:(id)a4
+- (FMDSecureLocationConfig)initWithName:(id)name values:(id)values
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  valuesCopy = values;
   v12.receiver = self;
   v12.super_class = FMDSecureLocationConfig;
   v9 = [(FMDSecureLocationConfig *)&v12 init];
@@ -46,17 +46,17 @@
   if (v9)
   {
     [(FMDSecureLocationConfig *)v9 _initWithDefaults];
-    objc_storeStrong(&v10->_policyName, a3);
-    [(FMDSecureLocationConfig *)v10 _readValuesFromDictionary:v8];
+    objc_storeStrong(&v10->_policyName, name);
+    [(FMDSecureLocationConfig *)v10 _readValuesFromDictionary:valuesCopy];
   }
 
   return v10;
 }
 
-- (void)_readValuesFromDictionary:(id)a3
+- (void)_readValuesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"desiredAccuracy"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"desiredAccuracy"];
   v6 = v5;
   if (v5)
   {
@@ -70,7 +70,7 @@
 
   objc_storeStrong(&self->_desiredAccuracy, v7);
 
-  v8 = [v4 objectForKeyedSubscript:@"minTimeBetweenPublish"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"minTimeBetweenPublish"];
   if (v8)
   {
     v9 = [NSString stringWithFormat:@"%@.%@", self->_policyName, @"minTimeBetweenPublish"];
@@ -106,7 +106,7 @@
   }
 
   v60 = v8;
-  v15 = [v4 objectForKeyedSubscript:@"minTimeBetweenVisitPublish"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"minTimeBetweenVisitPublish"];
   v16 = v15;
   if (v15)
   {
@@ -114,7 +114,7 @@
     self->_minTimeBetweenVisitPublish = v17;
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"heartbeatPublish"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"heartbeatPublish"];
   if (v18)
   {
     v19 = [NSString stringWithFormat:@"%@.%@", self->_policyName, @"heartbeatInterval"];
@@ -143,7 +143,7 @@
     }
   }
 
-  v26 = [v4 objectForKeyedSubscript:@"minDistanceBetweenPublish"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"minDistanceBetweenPublish"];
   if (v26)
   {
     v27 = [NSString stringWithFormat:@"%@.%@", self->_policyName, @"minDistanceBetweenPublish"];
@@ -172,7 +172,7 @@
     }
   }
 
-  v34 = [v4 objectForKeyedSubscript:@"accuracyThreshold"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"accuracyThreshold"];
   v35 = v34;
   if (v34)
   {
@@ -181,7 +181,7 @@
   }
 
   v59 = v18;
-  v37 = [v4 objectForKeyedSubscript:@"onDemandThreshold"];
+  v37 = [dictionaryCopy objectForKeyedSubscript:@"onDemandThreshold"];
   v38 = v37;
   if (v37)
   {
@@ -189,7 +189,7 @@
     self->_onDemandPublishThreshold = v39;
   }
 
-  v40 = [v4 objectForKeyedSubscript:@"expirationInterval"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"expirationInterval"];
   if (v40)
   {
     v41 = [NSString stringWithFormat:@"%@.%@", self->_policyName, @"expirationInterval"];
@@ -225,13 +225,13 @@
     }
   }
 
-  v48 = [v4 objectForKeyedSubscript:@"priority"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"priority"];
   v49 = v48;
   if (v48)
   {
-    v50 = [v48 integerValue];
-    self->_priority = v50;
-    if (v50 <= 0)
+    integerValue = [v48 integerValue];
+    self->_priority = integerValue;
+    if (integerValue <= 0)
     {
       if ([(NSString *)self->_policyName caseInsensitiveCompare:kFMDSecureLocationModeProactive])
       {
@@ -260,7 +260,7 @@
     }
   }
 
-  v53 = [v4 objectForKeyedSubscript:@"stalenessThreshold"];
+  v53 = [dictionaryCopy objectForKeyedSubscript:@"stalenessThreshold"];
   v54 = v53;
   if (v53)
   {
@@ -268,19 +268,19 @@
     self->_stalenessThreshold = v55;
   }
 
-  v56 = [v4 objectForKeyedSubscript:@"shouldWakeDevice"];
+  v56 = [dictionaryCopy objectForKeyedSubscript:@"shouldWakeDevice"];
   v57 = v56;
   if (v56)
   {
-    v58 = [v56 BOOLValue];
+    bOOLValue = [v56 BOOLValue];
   }
 
   else
   {
-    v58 = 1;
+    bOOLValue = 1;
   }
 
-  self->_shouldWakeDevice = v58;
+  self->_shouldWakeDevice = bOOLValue;
 }
 
 - (id)description
@@ -291,13 +291,13 @@
   return [NSString stringWithFormat:@"<SecureLocationConfig name %@, desiredAccuracy %@, minTimeBetweenPublish %f, minTimeBetweenVisitPublish %f, heartbeatPublish %f, minDistanceBetweenPublish %f, accuracyThreshold %f, expirationInterval %f, priority %ld, stalenessThreshold %f>", self->_policyName, self->_desiredAccuracy, *&minTimeBetweenPublish, *&self->_minTimeBetweenVisitPublish, *&heartbeatPublish, *&self->_minDistanceBetweenPublish, *&accuracyThreshold, *&self->_expirationInterval, self->_priority, *&self->_stalenessThreshold];
 }
 
-- (id)_readInternalPreference:(id)a3
+- (id)_readInternalPreference:(id)preference
 {
-  v3 = [FMPreferencesUtil objectForKey:a3 inDomain:kFMDNotBackedUpPrefDomain];
+  v3 = [FMPreferencesUtil objectForKey:preference inDomain:kFMDNotBackedUpPrefDomain];
   v4 = +[FMSystemInfo sharedInstance];
-  v5 = [v4 isInternalBuild];
+  isInternalBuild = [v4 isInternalBuild];
 
-  if (v5)
+  if (isInternalBuild)
   {
     v6 = v3 == 0;
   }

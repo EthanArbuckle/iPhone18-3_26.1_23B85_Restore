@@ -1,19 +1,19 @@
 @interface PKTableViewDiffableDataSource
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation PKTableViewDiffableDataSource
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (self->_sectionHeaderProvider)
   {
-    v6 = a3;
-    v7 = [(UITableViewDiffableDataSource *)self snapshot];
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v8 objectAtIndex:a4];
+    viewCopy = view;
+    snapshot = [(UITableViewDiffableDataSource *)self snapshot];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    v9 = [sectionIdentifiers objectAtIndex:section];
 
     v10 = (*(self->_sectionHeaderProvider + 2))();
   }
@@ -26,14 +26,14 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   if (self->_sectionFooterProvider)
   {
-    v6 = a3;
-    v7 = [(UITableViewDiffableDataSource *)self snapshot];
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v8 objectAtIndex:a4];
+    viewCopy = view;
+    snapshot = [(UITableViewDiffableDataSource *)self snapshot];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    v9 = [sectionIdentifiers objectAtIndex:section];
 
     v10 = (*(self->_sectionFooterProvider + 2))();
   }
@@ -46,12 +46,12 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   commitEditingHandler = self->_commitEditingHandler;
   if (commitEditingHandler)
   {
-    commitEditingHandler[2](commitEditingHandler, a3, a4, a5);
+    commitEditingHandler[2](commitEditingHandler, view, style, path);
   }
 }
 

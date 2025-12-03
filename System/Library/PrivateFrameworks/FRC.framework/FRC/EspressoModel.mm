@@ -1,38 +1,38 @@
 @interface EspressoModel
-- (BOOL)buildModelWithConfiguration:(const char *)a3;
-- (BOOL)initContextWithFile:(id)a3 engine:(int)a4 configuration:(const char *)a5 usePreCompiled:(BOOL)a6;
-- (BOOL)switchUsage:(int64_t)a3;
-- (EspressoModel)initWithModelName:(id)a3 configuration:(const char *)a4;
-- (EspressoModel)initWithModelName:(id)a3 usage:(int64_t)a4;
-- (id)initMPSWithModelName:(id)a3 usage:(int64_t)a4;
-- (int)loadModel:(id)a3 from:(id)a4;
+- (BOOL)buildModelWithConfiguration:(const char *)configuration;
+- (BOOL)initContextWithFile:(id)file engine:(int)engine configuration:(const char *)configuration usePreCompiled:(BOOL)compiled;
+- (BOOL)switchUsage:(int64_t)usage;
+- (EspressoModel)initWithModelName:(id)name configuration:(const char *)configuration;
+- (EspressoModel)initWithModelName:(id)name usage:(int64_t)usage;
+- (id)initMPSWithModelName:(id)name usage:(int64_t)usage;
+- (int)loadModel:(id)model from:(id)from;
 - (void)dealloc;
 - (void)freeContext;
 @end
 
 @implementation EspressoModel
 
-- (EspressoModel)initWithModelName:(id)a3 usage:(int64_t)a4
+- (EspressoModel)initWithModelName:(id)name usage:(int64_t)usage
 {
-  v4 = self;
-  if (a4 == -1)
+  selfCopy = self;
+  if (usage == -1)
   {
     v5 = 0;
   }
 
   else
   {
-    self->_usage = a4;
-    v4 = [(EspressoModel *)self initWithModelName:a3 configuration:getConfigurationName(a4)];
-    v5 = v4;
+    self->_usage = usage;
+    selfCopy = [(EspressoModel *)self initWithModelName:name configuration:getConfigurationName(usage)];
+    v5 = selfCopy;
   }
 
   return v5;
 }
 
-- (EspressoModel)initWithModelName:(id)a3 configuration:(const char *)a4
+- (EspressoModel)initWithModelName:(id)name configuration:(const char *)configuration
 {
-  v6 = [a3 stringByAppendingFormat:@".espresso.net"];
+  v6 = [name stringByAppendingFormat:@".espresso.net"];
   v11.receiver = self;
   v11.super_class = EspressoModel;
   v7 = [(EspressoModel *)&v11 init];
@@ -42,13 +42,13 @@
     goto LABEL_6;
   }
 
-  if (![(EspressoModel *)v7 initContextWithFile:v6 engine:10007 configuration:a4 usePreCompiled:1])
+  if (![(EspressoModel *)v7 initContextWithFile:v6 engine:10007 configuration:configuration usePreCompiled:1])
   {
     [(EspressoModel *)v8 freeContext];
     NSLog(&cfstr_UsingAneRuntim.isa);
-    if (![(EspressoModel *)v8 initContextWithFile:v6 engine:10007 configuration:a4 usePreCompiled:0])
+    if (![(EspressoModel *)v8 initContextWithFile:v6 engine:10007 configuration:configuration usePreCompiled:0])
     {
-      NSLog(&cfstr_EpsressomodelC.isa, v6, a4);
+      NSLog(&cfstr_EpsressomodelC.isa, v6, configuration);
 LABEL_6:
       v9 = 0;
       goto LABEL_7;
@@ -61,14 +61,14 @@ LABEL_7:
   return v9;
 }
 
-- (id)initMPSWithModelName:(id)a3 usage:(int64_t)a4
+- (id)initMPSWithModelName:(id)name usage:(int64_t)usage
 {
-  self->_usage = a4;
-  v6 = [a3 stringByAppendingFormat:@".espresso.net"];
+  self->_usage = usage;
+  v6 = [name stringByAppendingFormat:@".espresso.net"];
   v10.receiver = self;
   v10.super_class = EspressoModel;
   v7 = [(EspressoModel *)&v10 init];
-  if (v7 && [(EspressoModel *)v7 initContextWithFile:v6 engine:5 configuration:getConfigurationName(a4) usePreCompiled:0])
+  if (v7 && [(EspressoModel *)v7 initContextWithFile:v6 engine:5 configuration:getConfigurationName(usage) usePreCompiled:0])
   {
     v8 = v7;
   }
@@ -81,10 +81,10 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)initContextWithFile:(id)a3 engine:(int)a4 configuration:(const char *)a5 usePreCompiled:(BOOL)a6
+- (BOOL)initContextWithFile:(id)file engine:(int)engine configuration:(const char *)configuration usePreCompiled:(BOOL)compiled
 {
-  v6 = a6;
-  v10 = a3;
+  compiledCopy = compiled;
+  fileCopy = file;
   v11 = dispatch_queue_create("callback queue", 0);
   callbackQueue = self->_callbackQueue;
   self->_callbackQueue = v11;
@@ -107,7 +107,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v6)
+  if (compiledCopy)
   {
     v15 = @"Networks";
   }
@@ -117,18 +117,18 @@ LABEL_12:
     v15 = @"NetworksOrig";
   }
 
-  if ([(EspressoModel *)self loadModel:v10 from:v15])
+  if ([(EspressoModel *)self loadModel:fileCopy from:v15])
   {
     goto LABEL_12;
   }
 
-  if (![(EspressoModel *)self buildModelWithConfiguration:a5])
+  if (![(EspressoModel *)self buildModelWithConfiguration:configuration])
   {
-    NSLog(&cfstr_EspressomodelB.isa, v10, a5);
+    NSLog(&cfstr_EspressomodelB.isa, fileCopy, configuration);
     goto LABEL_12;
   }
 
-  self->_engine = a4;
+  self->_engine = engine;
   v16 = 1;
 LABEL_13:
 
@@ -153,9 +153,9 @@ LABEL_13:
   self->_callbackQueue = 0;
 }
 
-- (BOOL)buildModelWithConfiguration:(const char *)a3
+- (BOOL)buildModelWithConfiguration:(const char *)configuration
 {
-  if (a3)
+  if (configuration)
   {
     plan = self->_net.plan;
     v5 = *&self->_net.network_index;
@@ -176,12 +176,12 @@ LABEL_13:
   return 1;
 }
 
-- (int)loadModel:(id)a3 from:(id)a4
+- (int)loadModel:(id)model from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  fromCopy = from;
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v9 = [v8 pathForResource:v6 ofType:0 inDirectory:v7];
+  v9 = [v8 pathForResource:modelCopy ofType:0 inDirectory:fromCopy];
   if (v9)
   {
     v10 = v9;
@@ -192,7 +192,7 @@ LABEL_13:
   {
     v11 = getInternalBundle(v8);
 
-    v12 = [v11 pathForResource:v6 ofType:0 inDirectory:v7];
+    v12 = [v11 pathForResource:modelCopy ofType:0 inDirectory:fromCopy];
     if (!v12)
     {
       v15 = -1;
@@ -230,14 +230,14 @@ LABEL_6:
   [(EspressoModel *)&v3 dealloc];
 }
 
-- (BOOL)switchUsage:(int64_t)a3
+- (BOOL)switchUsage:(int64_t)usage
 {
-  if (a3 == -1)
+  if (usage == -1)
   {
     return 0;
   }
 
-  if (self->_usage == a3)
+  if (self->_usage == usage)
   {
     return 1;
   }
@@ -249,8 +249,8 @@ LABEL_6:
     return 0;
   }
 
-  self->_usage = a3;
-  ConfigurationName = getConfigurationName(a3);
+  self->_usage = usage;
+  ConfigurationName = getConfigurationName(usage);
 
   return [(EspressoModel *)self buildModelWithConfiguration:ConfigurationName];
 }

@@ -1,25 +1,25 @@
 @interface HMDMTSPairingServer
 + (id)logCategory;
-- (HMDMTSPairingServer)initWithAccessoryBrowser:(id)a3;
-- (HMDMTSPairingServer)initWithSystemCommissionerPairingManager:(id)a3;
-- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)a3;
-- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)a3 duration:(double)a4 completionHandler:(id)a5;
-- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4;
-- (void)removeDevicePairingWithUUID:(id)a3 forSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5;
-- (void)removeSystemCommissionerPairingWithUUID:(id)a3 completionHandler:(id)a4;
+- (HMDMTSPairingServer)initWithAccessoryBrowser:(id)browser;
+- (HMDMTSPairingServer)initWithSystemCommissionerPairingManager:(id)manager;
+- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler;
+- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler;
+- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler;
+- (void)removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation HMDMTSPairingServer
 
-- (void)removeSystemCommissionerPairingWithUUID:(id)a3 completionHandler:(id)a4
+- (void)removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -27,23 +27,23 @@
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Removing system commissioner device pairing with UUID: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDMTSPairingServer *)v9 systemCommissionerPairingManager];
-  [v12 removeSystemCommissionerPairingWithUUID:v6 completionHandler:v7];
+  systemCommissionerPairingManager = [(HMDMTSPairingServer *)selfCopy systemCommissionerPairingManager];
+  [systemCommissionerPairingManager removeSystemCommissionerPairingWithUUID:dCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)a3
+- (void)fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -54,19 +54,19 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDMTSPairingServer *)v6 systemCommissionerPairingManager];
-  [v9 fetchSystemCommissionerPairingsWithCompletionHandler:v4];
+  systemCommissionerPairingManager = [(HMDMTSPairingServer *)selfCopy systemCommissionerPairingManager];
+  [systemCommissionerPairingManager fetchSystemCommissionerPairingsWithCompletionHandler:handlerCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -74,24 +74,24 @@
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Reading commissioning window status for system commissioner pairing UUID: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDMTSPairingServer *)v9 systemCommissionerPairingManager];
-  [v12 readCommissioningWindowStatusForSystemCommissionerPairingUUID:v6 completionHandler:v7];
+  systemCommissionerPairingManager = [(HMDMTSPairingServer *)selfCopy systemCommissionerPairingManager];
+  [systemCommissionerPairingManager readCommissioningWindowStatusForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)a3 duration:(double)a4 completionHandler:(id)a5
+- (void)openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -99,24 +99,24 @@
     v16 = 138543618;
     v17 = v13;
     v18 = 2112;
-    v19 = v8;
+    v19 = dCopy;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Opening commissioning window for system commissioner pairing UUID: %@", &v16, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [(HMDMTSPairingServer *)v11 systemCommissionerPairingManager];
-  [v14 openCommissioningWindowForSystemCommissionerPairingUUID:v8 duration:v9 completionHandler:a4];
+  systemCommissionerPairingManager = [(HMDMTSPairingServer *)selfCopy systemCommissionerPairingManager];
+  [systemCommissionerPairingManager openCommissioningWindowForSystemCommissionerPairingUUID:dCopy duration:handlerCopy completionHandler:duration];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -124,25 +124,25 @@
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Removing all device pairings for system commissioner pairing UUID: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDMTSPairingServer *)v9 systemCommissionerPairingManager];
-  [v12 removeAllDevicePairingsForSystemCommissionerPairingUUID:v6 completionHandler:v7];
+  systemCommissionerPairingManager = [(HMDMTSPairingServer *)selfCopy systemCommissionerPairingManager];
+  [systemCommissionerPairingManager removeAllDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDevicePairingWithUUID:(id)a3 forSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5
+- (void)removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -150,24 +150,24 @@
     v17 = 138543618;
     v18 = v14;
     v19 = 2112;
-    v20 = v8;
+    v20 = dCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Removing device pairing with UUID: %@", &v17, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDMTSPairingServer *)v12 systemCommissionerPairingManager];
-  [v15 removeDevicePairingWithUUID:v8 forSystemCommissionerPairingUUID:v9 completionHandler:v10];
+  systemCommissionerPairingManager = [(HMDMTSPairingServer *)selfCopy systemCommissionerPairingManager];
+  [systemCommissionerPairingManager removeDevicePairingWithUUID:dCopy forSystemCommissionerPairingUUID:iDCopy completionHandler:handlerCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a3 completionHandler:(id)a4
+- (void)fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -175,30 +175,30 @@
     v14 = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Fetching all device pairings for system commissioner device pairing with UUID: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDMTSPairingServer *)v9 systemCommissionerPairingManager];
-  [v12 fetchDevicePairingsForSystemCommissionerPairingUUID:v6 completionHandler:v7];
+  systemCommissionerPairingManager = [(HMDMTSPairingServer *)selfCopy systemCommissionerPairingManager];
+  [systemCommissionerPairingManager fetchDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMTSPairingServer)initWithSystemCommissionerPairingManager:(id)a3
+- (HMDMTSPairingServer)initWithSystemCommissionerPairingManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v6 = v5;
+    v6 = managerCopy;
     v13.receiver = self;
     v13.super_class = HMDMTSPairingServer;
     v7 = [(HMDMTSPairingServer *)&v13 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_systemCommissionerPairingManager, a3);
+      objc_storeStrong(&v7->_systemCommissionerPairingManager, manager);
     }
 
     return v8;
@@ -211,11 +211,11 @@
   }
 }
 
-- (HMDMTSPairingServer)initWithAccessoryBrowser:(id)a3
+- (HMDMTSPairingServer)initWithAccessoryBrowser:(id)browser
 {
-  v4 = [a3 chipAccessoryServerBrowser];
-  v5 = [v4 systemCommissionerPairingManager];
-  v6 = [(HMDMTSPairingServer *)self initWithSystemCommissionerPairingManager:v5];
+  chipAccessoryServerBrowser = [browser chipAccessoryServerBrowser];
+  systemCommissionerPairingManager = [chipAccessoryServerBrowser systemCommissionerPairingManager];
+  v6 = [(HMDMTSPairingServer *)self initWithSystemCommissionerPairingManager:systemCommissionerPairingManager];
 
   return v6;
 }

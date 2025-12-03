@@ -1,60 +1,60 @@
 @interface CNPropertyGroupPhoneItem
 - (CNPhoneNumber)phoneNumber;
-- (id)bestLabel:(id)a3;
+- (id)bestLabel:(id)label;
 - (id)defaultActionURL;
-- (id)displayStringForValue:(id)a3;
+- (id)displayStringForValue:(id)value;
 - (id)normalizedValue;
 @end
 
 @implementation CNPropertyGroupPhoneItem
 
-- (id)displayStringForValue:(id)a3
+- (id)displayStringForValue:(id)value
 {
-  v3 = [(CNPropertyGroupItem *)self labeledValue];
-  v4 = [v3 value];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
 
-  v5 = [v4 formattedStringValue];
+  formattedStringValue = [value formattedStringValue];
 
-  return v5;
+  return formattedStringValue;
 }
 
-- (id)bestLabel:(id)a3
+- (id)bestLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v17.receiver = self;
   v17.super_class = CNPropertyGroupPhoneItem;
-  v5 = [(CNPropertyGroupItem *)&v17 bestLabel:v4];
+  v5 = [(CNPropertyGroupItem *)&v17 bestLabel:labelCopy];
   v6 = *MEMORY[0x1E695CBC0];
-  v7 = [(CNPropertyGroupItem *)v4 labeledValue];
-  v8 = [v7 label];
-  v9 = [v6 compare:v8 options:1];
+  labeledValue = [(CNPropertyGroupItem *)labelCopy labeledValue];
+  label = [labeledValue label];
+  v9 = [v6 compare:label options:1];
 
   if (v9)
   {
-    v10 = [(CNPropertyGroupItem *)self labeledValue];
-    v11 = [v10 label];
-    v12 = [v6 compare:v11 options:1];
+    labeledValue2 = [(CNPropertyGroupItem *)self labeledValue];
+    label2 = [labeledValue2 label];
+    v12 = [v6 compare:label2 options:1];
 
     if (v12)
     {
-      v13 = v5;
+      label3 = v5;
       goto LABEL_7;
     }
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = v4;
+    selfCopy = labelCopy;
   }
 
-  v15 = [(CNPropertyGroupItem *)v14 labeledValue];
-  v13 = [v15 label];
+  labeledValue3 = [(CNPropertyGroupItem *)selfCopy labeledValue];
+  label3 = [labeledValue3 label];
 
 LABEL_7:
 
-  return v13;
+  return label3;
 }
 
 - (id)defaultActionURL
@@ -66,38 +66,38 @@ LABEL_7:
   }
 
   v3 = objc_alloc(MEMORY[0x1E6996A90]);
-  v4 = [(CNPropertyGroupPhoneItem *)self phoneNumber];
-  v5 = [v4 stringValue];
-  v6 = [v3 initWithStringValue:v5 type:2];
+  phoneNumber = [(CNPropertyGroupPhoneItem *)self phoneNumber];
+  stringValue = [phoneNumber stringValue];
+  v6 = [v3 initWithStringValue:stringValue type:2];
 
-  v7 = [(CNPropertyGroupItem *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(CNPropertyGroupItem *)self delegate];
+  LOBYTE(stringValue) = objc_opt_respondsToSelector();
 
-  if ((v5 & 1) == 0)
+  if ((stringValue & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v8 = [(CNPropertyGroupItem *)self delegate];
-  v9 = [v8 geminiDataSource];
-  v10 = [v9 channelIdentifier];
+  delegate2 = [(CNPropertyGroupItem *)self delegate];
+  geminiDataSource = [delegate2 geminiDataSource];
+  channelIdentifier = [geminiDataSource channelIdentifier];
 
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
 
 LABEL_7:
     v15 = MEMORY[0x1E695DFF8];
-    v16 = [(CNPropertyGroupItem *)self contactProperty];
-    v17 = [v16 sourceContact];
-    v11 = [v15 _cnui_telephonyURLWithHandle:v6 contact:v17 preferDefaultApp:1];
+    contactProperty = [(CNPropertyGroupItem *)self contactProperty];
+    sourceContact = [contactProperty sourceContact];
+    v11 = [v15 _cnui_telephonyURLWithHandle:v6 contact:sourceContact preferDefaultApp:1];
 
     goto LABEL_8;
   }
 
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [(CNPropertyGroupItem *)self contactProperty];
-  v14 = [v13 sourceContact];
-  v11 = [v12 _cnui_telephonyURLWithHandle:v6 contact:v14 channelIdentifier:v10 preferDefaultApp:1];
+  contactProperty2 = [(CNPropertyGroupItem *)self contactProperty];
+  sourceContact2 = [contactProperty2 sourceContact];
+  v11 = [v12 _cnui_telephonyURLWithHandle:v6 contact:sourceContact2 channelIdentifier:channelIdentifier preferDefaultApp:1];
 
   if (!v11)
   {
@@ -113,18 +113,18 @@ LABEL_9:
 
 - (id)normalizedValue
 {
-  v2 = [(CNPropertyGroupPhoneItem *)self phoneNumber];
-  v3 = [v2 stringValue];
+  phoneNumber = [(CNPropertyGroupPhoneItem *)self phoneNumber];
+  stringValue = [phoneNumber stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CNPhoneNumber)phoneNumber
 {
-  v2 = [(CNPropertyGroupItem *)self labeledValue];
-  v3 = [v2 value];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
 
-  return v3;
+  return value;
 }
 
 @end

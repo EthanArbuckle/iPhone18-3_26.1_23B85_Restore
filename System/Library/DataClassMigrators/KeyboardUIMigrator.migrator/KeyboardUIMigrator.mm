@@ -40,13 +40,13 @@
 
 - (float)estimatedDuration
 {
-  v3 = [(CPBitmapStore *)[(KeyboardUIMigrator *)self store] version];
+  version = [(CPBitmapStore *)[(KeyboardUIMigrator *)self store] version];
   if (qword_8188 != -1)
   {
     sub_E90();
   }
 
-  if (v3 == dword_8190)
+  if (version == dword_8190)
   {
     return 0.012;
   }
@@ -57,13 +57,13 @@
 
 - (BOOL)performMigration
 {
-  v3 = [(CPBitmapStore *)[(KeyboardUIMigrator *)self store] version];
+  version = [(CPBitmapStore *)[(KeyboardUIMigrator *)self store] version];
   if (qword_8188 != -1)
   {
     sub_E90();
   }
 
-  if (v3 != dword_8190)
+  if (version != dword_8190)
   {
     [(CPBitmapStore *)[(KeyboardUIMigrator *)self store] purge];
   }

@@ -1,6 +1,6 @@
 @interface MXMTargetQueue
-- (BOOL)add:(double)a3;
-- (BOOL)checkQuiesced:(double)a3;
+- (BOOL)add:(double)add;
+- (BOOL)checkQuiesced:(double)quiesced;
 - (BOOL)full;
 - (MXMTargetQueue)init;
 - (double)average;
@@ -29,15 +29,15 @@
   return v3;
 }
 
-- (BOOL)add:(double)a3
+- (BOOL)add:(double)add
 {
-  v5 = [(MXMTargetQueue *)self queue];
-  v6 = [v5 count];
+  queue = [(MXMTargetQueue *)self queue];
+  v6 = [queue count];
 
   if (vcvtd_n_f64_s64([(MXMTargetQueue *)self size], 1uLL) <= v6)
   {
-    v7 = [(MXMTargetQueue *)self queue];
-    v8 = [v7 objectAtIndex:(v6 * 0.5)];
+    queue2 = [(MXMTargetQueue *)self queue];
+    v8 = [queue2 objectAtIndex:(v6 * 0.5)];
     [v8 doubleValue];
     v10 = v9;
 
@@ -50,13 +50,13 @@
 
   if ([(MXMTargetQueue *)self full])
   {
-    v12 = [(MXMTargetQueue *)self queue];
-    v13 = [v12 objectAtIndex:0];
+    queue3 = [(MXMTargetQueue *)self queue];
+    v13 = [queue3 objectAtIndex:0];
     [v13 doubleValue];
     v15 = v14;
 
-    v16 = [(MXMTargetQueue *)self queue];
-    [v16 removeObjectAtIndex:0];
+    queue4 = [(MXMTargetQueue *)self queue];
+    [queue4 removeObjectAtIndex:0];
 
     [(MXMTargetQueue *)self setTotal:([(MXMTargetQueue *)self total]- v15)];
     [(MXMTargetQueue *)self target];
@@ -66,42 +66,42 @@
     }
   }
 
-  v18 = [(MXMTargetQueue *)self queue];
-  v19 = [NSNumber numberWithDouble:a3];
-  [v18 addObject:v19];
+  queue5 = [(MXMTargetQueue *)self queue];
+  v19 = [NSNumber numberWithDouble:add];
+  [queue5 addObject:v19];
 
-  [(MXMTargetQueue *)self setTotal:([(MXMTargetQueue *)self total]+ a3)];
+  [(MXMTargetQueue *)self setTotal:([(MXMTargetQueue *)self total]+ add)];
   [(MXMTargetQueue *)self target];
   v21 = v20;
-  if (v20 <= a3)
+  if (v20 <= add)
   {
     [(MXMTargetQueue *)self setTargetHits:[(MXMTargetQueue *)self targetHits]+ 1];
     [(MXMTargetQueue *)self setHalfTargetHits:[(MXMTargetQueue *)self halfTargetHits]+ 1];
   }
 
-  return v21 <= a3;
+  return v21 <= add;
 }
 
 - (BOOL)full
 {
-  v2 = self;
-  v3 = [(MXMTargetQueue *)self queue];
-  v4 = [v3 count];
-  LOBYTE(v2) = v4 == [(MXMTargetQueue *)v2 size];
+  selfCopy = self;
+  queue = [(MXMTargetQueue *)self queue];
+  v4 = [queue count];
+  LOBYTE(selfCopy) = v4 == [(MXMTargetQueue *)selfCopy size];
 
-  return v2;
+  return selfCopy;
 }
 
 - (double)average
 {
-  v3 = [(MXMTargetQueue *)self total];
-  v4 = [(MXMTargetQueue *)self queue];
-  v5 = v3 / [v4 count];
+  total = [(MXMTargetQueue *)self total];
+  queue = [(MXMTargetQueue *)self queue];
+  v5 = total / [queue count];
 
   return v5;
 }
 
-- (BOOL)checkQuiesced:(double)a3
+- (BOOL)checkQuiesced:(double)quiesced
 {
   if ([(MXMTargetQueue *)self majorityHalfTargetsHit])
   {
@@ -126,7 +126,7 @@
 
   v9 = [(MXMTargetQueue *)self size];
   v10 = [(MXMTargetQueue *)self full]&& v5;
-  if (v9 <= a3)
+  if (v9 <= quiesced)
   {
     return v10;
   }

@@ -41,9 +41,9 @@
 + (id)appleHealthDataTypeSystem;
 + (id)appleOntologySystem;
 + (id)argonautHL7System;
-+ (id)codeSystemWithIdentifier:(id)a3;
++ (id)codeSystemWithIdentifier:(id)identifier;
 + (id)externalCodeSystems;
-+ (id)systemWithSystemDefinition:(id *)a3;
++ (id)systemWithSystemDefinition:(id *)definition;
 + (id)textSystem;
 + (id)unknownSystem;
 + (void)FHIRAllergyIntoleranceCategory;
@@ -62,42 +62,42 @@
 + (void)FHIRMedicationDispenseStatusR4;
 + (void)FHIRProcedureStatus;
 + (void)FHIRQuantityComparatorSystem;
-- (BOOL)isEqual:(id)a3;
-- (HKMedicalCodingSystem)initWithCoder:(id)a3;
-- (HKMedicalCodingSystem)initWithIdentifier:(id)a3 name:(id)a4 OID:(id)a5 type:(unint64_t)a6 synonyms:(id)a7 hasDisplayStrings:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (HKMedicalCodingSystem)initWithCoder:(id)coder;
+- (HKMedicalCodingSystem)initWithIdentifier:(id)identifier name:(id)name OID:(id)d type:(unint64_t)type synonyms:(id)synonyms hasDisplayStrings:(BOOL)strings;
 - (id)description;
 - (id)ontology_hasCodingSystemAttributeIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicalCodingSystem
 
-- (HKMedicalCodingSystem)initWithIdentifier:(id)a3 name:(id)a4 OID:(id)a5 type:(unint64_t)a6 synonyms:(id)a7 hasDisplayStrings:(BOOL)a8
+- (HKMedicalCodingSystem)initWithIdentifier:(id)identifier name:(id)name OID:(id)d type:(unint64_t)type synonyms:(id)synonyms hasDisplayStrings:(BOOL)strings
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
+  synonymsCopy = synonyms;
   v30.receiver = self;
   v30.super_class = HKMedicalCodingSystem;
   v18 = [(HKMedicalCodingSystem *)&v30 init];
   if (v18)
   {
-    v19 = standardizeIdentifier(v14);
+    v19 = standardizeIdentifier(identifierCopy);
     v20 = [v19 copy];
     identifier = v18->_identifier;
     v18->_identifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [nameCopy copy];
     name = v18->_name;
     v18->_name = v22;
 
-    v24 = [v16 copy];
+    v24 = [dCopy copy];
     OID = v18->_OID;
     v18->_OID = v24;
 
-    v18->_type = a6;
-    v26 = [v17 copy];
+    v18->_type = type;
+    v26 = [synonymsCopy copy];
     v27 = v26;
     if (v26)
     {
@@ -111,31 +111,31 @@
 
     objc_storeStrong(&v18->_synonyms, v28);
 
-    v18->_hasDisplayStrings = a8;
+    v18->_hasDisplayStrings = strings;
   }
 
   return v18;
 }
 
-+ (id)codeSystemWithIdentifier:(id)a3
++ (id)codeSystemWithIdentifier:(id)identifier
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = [a3 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F05FF230];
-  v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v4 = [identifier stringByReplacingOccurrencesOfString:@" " withString:&stru_1F05FF230];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v7 = standardizeIdentifier(v6);
 
   if ([v7 isEqualToString:@"urn:apple:medicalrecords:text"])
   {
-    v8 = [a1 textSystem];
+    textSystem = [self textSystem];
 LABEL_5:
-    v9 = v8;
+    v9 = textSystem;
     goto LABEL_30;
   }
 
   if ([v7 isEqualToString:@"urn:apple:medicalrecords:unknown"])
   {
-    v8 = [a1 unknownSystem];
+    textSystem = [self unknownSystem];
     goto LABEL_5;
   }
 
@@ -167,8 +167,8 @@ LABEL_5:
         v9 = *(*(&v46 + 1) + 8 * v16);
         v17 = objc_autoreleasePoolPush();
         v18 = objc_alloc(*(v10 + 4088));
-        v19 = [(HKMedicalCodingSystem *)v9 identifier];
-        v20 = [v18 initWithString:v19];
+        identifier = [(HKMedicalCodingSystem *)v9 identifier];
+        v20 = [v18 initWithString:identifier];
 
         if ([v20 isEqual:v11] || (-[HKMedicalCodingSystem OID](v9, "OID"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v12, "caseInsensitiveCompare:", v21), v21, !v22))
         {
@@ -184,8 +184,8 @@ LABEL_28:
         v45 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v23 = [(HKMedicalCodingSystem *)v9 synonyms];
-        v24 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        synonyms = [(HKMedicalCodingSystem *)v9 synonyms];
+        v24 = [synonyms countByEnumeratingWithState:&v42 objects:v50 count:16];
         if (v24)
         {
           v25 = v24;
@@ -198,7 +198,7 @@ LABEL_28:
             {
               if (*v43 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(synonyms);
               }
 
               v29 = *(*(&v42 + 1) + 8 * i);
@@ -212,7 +212,7 @@ LABEL_28:
               }
             }
 
-            v25 = [v23 countByEnumeratingWithState:&v42 objects:v50 count:16];
+            v25 = [synonyms countByEnumeratingWithState:&v42 objects:v50 count:16];
             v11 = v27;
             v13 = v40;
             if (v25)
@@ -224,8 +224,8 @@ LABEL_28:
           }
         }
 
-        v30 = [(HKMedicalCodingSystem *)v9 name];
-        v31 = [v7 caseInsensitiveCompare:v30];
+        name = [(HKMedicalCodingSystem *)v9 name];
+        v31 = [v7 caseInsensitiveCompare:name];
 
         if (!v31)
         {
@@ -261,36 +261,36 @@ LABEL_30:
   return v9;
 }
 
-+ (id)systemWithSystemDefinition:(id *)a3
++ (id)systemWithSystemDefinition:(id *)definition
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a3->var0 length:strnlen(a3->var0 encoding:0x200uLL) freeWhenDone:{4, 0}];
+  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:definition->var0 length:strnlen(definition->var0 encoding:0x200uLL) freeWhenDone:{4, 0}];
   v5 = standardizeIdentifier(v4);
 
   v6 = HKHealthKitFrameworkBundle();
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a3->var1 length:strlen(a3->var1) encoding:4 freeWhenDone:0];
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:definition->var1 length:strlen(definition->var1) encoding:4 freeWhenDone:0];
   v8 = &stru_1F05FF230;
   v9 = [v6 localizedStringForKey:v7 value:&stru_1F05FF230 table:@"Localizable-Clinical-Health-Records"];
 
-  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a3->var2 length:strlen(a3->var2) encoding:4 freeWhenDone:0];
-  if (a3->var3)
+  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:definition->var2 length:strlen(definition->var2) encoding:4 freeWhenDone:0];
+  if (definition->var3)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:a3->var3 length:strlen(a3->var3) encoding:4 freeWhenDone:0];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:definition->var3 length:strlen(definition->var3) encoding:4 freeWhenDone:0];
   }
 
   v11 = [(__CFString *)v8 componentsSeparatedByString:@", "];
-  v12 = [[HKMedicalCodingSystem alloc] initWithIdentifier:v5 name:v9 OID:v10 type:a3->var4 synonyms:v11 hasDisplayStrings:a3->var5];
+  v12 = [[HKMedicalCodingSystem alloc] initWithIdentifier:v5 name:v9 OID:v10 type:definition->var4 synonyms:v11 hasDisplayStrings:definition->var5];
 
   return v12;
 }
 
 + (id)LOINCCodeSystem
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://loinc.org"];
+  v4 = [self codeSystemWithIdentifier:@"http://loinc.org"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://loinc.org"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:154 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:154 description:v5];
   }
 
   return v4;
@@ -298,12 +298,12 @@ LABEL_30:
 
 + (id)SNOMEDCodeSystem
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://snomed.info/sct"];
+  v4 = [self codeSystemWithIdentifier:@"http://snomed.info/sct"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://snomed.info/sct"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:158 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:158 description:v5];
   }
 
   return v4;
@@ -311,12 +311,12 @@ LABEL_30:
 
 + (id)RxNormCodeSystem
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://www.nlm.nih.gov/research/umls/rxnorm"];
+  v4 = [self codeSystemWithIdentifier:@"http://www.nlm.nih.gov/research/umls/rxnorm"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://www.nlm.nih.gov/research/umls/rxnorm"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:162 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:162 description:v5];
   }
 
   return v4;
@@ -324,12 +324,12 @@ LABEL_30:
 
 + (id)UCUMSystem
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://unitsofmeasure.org"];
+  v4 = [self codeSystemWithIdentifier:@"http://unitsofmeasure.org"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://unitsofmeasure.org"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:166 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:166 description:v5];
   }
 
   return v4;
@@ -337,12 +337,12 @@ LABEL_30:
 
 + (id)CVXSystem
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/cvx"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/cvx"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/sid/cvx"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:170 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:170 description:v5];
   }
 
   return v4;
@@ -350,12 +350,12 @@ LABEL_30:
 
 + (id)NDCSystem
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/ndc"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/ndc"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/sid/ndc"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:174 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:174 description:v5];
   }
 
   return v4;
@@ -363,12 +363,12 @@ LABEL_30:
 
 + (id)ICD10System
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/icd-10"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/icd-10"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/sid/icd-10"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:178 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:178 description:v5];
   }
 
   return v4;
@@ -376,12 +376,12 @@ LABEL_30:
 
 + (id)ICD9System
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/icd-9"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/sid/icd-9"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/sid/icd-9"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:182 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:182 description:v5];
   }
 
   return v4;
@@ -389,12 +389,12 @@ LABEL_30:
 
 + (id)argonautHL7System
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://argonaut.hl7.org"];
+  v4 = [self codeSystemWithIdentifier:@"http://argonaut.hl7.org"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://argonaut.hl7.org"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:186 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:186 description:v5];
   }
 
   return v4;
@@ -402,12 +402,12 @@ LABEL_30:
 
 + (id)FHIRDeviceStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/devicestatus"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/devicestatus"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/devicestatus"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:190 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:190 description:v5];
   }
 
   return v4;
@@ -415,12 +415,12 @@ LABEL_30:
 
 + (id)FHIRDiagnosticReportStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/diagnostic-report-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/diagnostic-report-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/diagnostic-report-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:194 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:194 description:v5];
   }
 
   return v4;
@@ -428,12 +428,12 @@ LABEL_30:
 
 + (id)FHIREventStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/event-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/event-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/event-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:198 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:198 description:v5];
   }
 
   return v4;
@@ -441,12 +441,12 @@ LABEL_30:
 
 + (id)FHIRImmunizationStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/event-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/event-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/event-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:202 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:202 description:v5];
   }
 
   return v4;
@@ -454,12 +454,12 @@ LABEL_30:
 
 + (id)FHIRObservationStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/observation-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/observation-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/observation-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:206 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:206 description:v5];
   }
 
   return v4;
@@ -467,12 +467,12 @@ LABEL_30:
 
 + (id)FHIRMedicationAdminStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-admin-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-admin-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/medication-admin-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:210 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:210 description:v5];
   }
 
   return v4;
@@ -480,12 +480,12 @@ LABEL_30:
 
 + (id)FHIRMedicationOrderStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-order-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-order-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/medication-order-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:214 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:214 description:v5];
   }
 
   return v4;
@@ -493,12 +493,12 @@ LABEL_30:
 
 + (id)FHIRMedicationRequestStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medicationrequest-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medicationrequest-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/medicationrequest-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:218 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:218 description:v5];
   }
 
   return v4;
@@ -506,12 +506,12 @@ LABEL_30:
 
 + (id)FHIRMedicationStatementStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-statement-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-statement-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/medication-statement-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:222 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:222 description:v5];
   }
 
   return v4;
@@ -519,12 +519,12 @@ LABEL_30:
 
 + (id)FHIRCarePlanStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/care-plan-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/care-plan-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/care-plan-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:226 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:226 description:v5];
   }
 
   return v4;
@@ -532,12 +532,12 @@ LABEL_30:
 
 + (id)FHIRGoalStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/goal-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/goal-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/ValueSet/goal-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:230 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:230 description:v5];
   }
 
   return v4;
@@ -545,12 +545,12 @@ LABEL_30:
 
 + (id)FHIRCoverageStatus
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/fm-status"];
+  v4 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/fm-status"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://hl7.org/fhir/fm-status"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:234 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:234 description:v5];
   }
 
   return v4;
@@ -558,12 +558,12 @@ LABEL_30:
 
 + (id)FHIRCoverageClassification
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/coverage-class"];
+  v4 = [self codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/coverage-class"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://terminology.hl7.org/CodeSystem/coverage-class"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:238 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:238 description:v5];
   }
 
   return v4;
@@ -571,12 +571,12 @@ LABEL_30:
 
 + (id)FHIRCoverageType
 {
-  v4 = [a1 codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/v3-ActCode"];
+  v4 = [self codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/v3-ActCode"];
   if (!v4)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ code system should never be nil", @"http://terminology.hl7.org/CodeSystem/v3-ActCode"];
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HKMedicalCodingSystem.m" lineNumber:242 description:v5];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKMedicalCodingSystem.m" lineNumber:242 description:v5];
   }
 
   return v4;
@@ -584,7 +584,7 @@ LABEL_30:
 
 + (id)FHIRMedicationDispenseStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-dispense-status"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medication-dispense-status"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRMedicationDispenseStatus];
@@ -595,7 +595,7 @@ LABEL_30:
 
 + (id)FHIRMedicationDispenseStatusR4
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medicationdispense-status"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/medicationdispense-status"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRMedicationDispenseStatusR4];
@@ -606,7 +606,7 @@ LABEL_30:
 
 + (id)FHIRProcedureStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/procedure-status"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/procedure-status"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRProcedureStatus];
@@ -617,7 +617,7 @@ LABEL_30:
 
 + (id)FHIRAllergyIntoleranceStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/allergy-intolerance-status"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/allergy-intolerance-status"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRAllergyIntoleranceStatus];
@@ -628,7 +628,7 @@ LABEL_30:
 
 + (id)FHIRAllergyIntoleranceCategory
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/allergy-intolerance-category"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/allergy-intolerance-category"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRAllergyIntoleranceCategory];
@@ -639,7 +639,7 @@ LABEL_30:
 
 + (id)FHIRAllergyIntoleranceCriticality
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/allergy-intolerance-criticality"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/allergy-intolerance-criticality"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRAllergyIntoleranceCriticality];
@@ -650,7 +650,7 @@ LABEL_30:
 
 + (id)FHIRAllergyIntoleranceSeverity
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/reaction-event-severity"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/reaction-event-severity"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRAllergyIntoleranceSeverity];
@@ -661,7 +661,7 @@ LABEL_30:
 
 + (id)FHIRAllergyIntoleranceType
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/allergy-intolerance-type"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/allergy-intolerance-type"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRAllergyIntoleranceType];
@@ -672,7 +672,7 @@ LABEL_30:
 
 + (id)FHIRAllergyIntoleranceClinicalStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical"];
+  v2 = [self codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRAllergyIntoleranceClinicalStatus];
@@ -683,7 +683,7 @@ LABEL_30:
 
 + (id)FHIRAllergyIntoleranceVerificationStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/allergyintolerance-verification"];
+  v2 = [self codeSystemWithIdentifier:@"http://terminology.hl7.org/CodeSystem/allergyintolerance-verification"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRAllergyIntoleranceVerificationStatus];
@@ -694,7 +694,7 @@ LABEL_30:
 
 + (id)FHIRConditionClinicalStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/condition-clinical"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/condition-clinical"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRConditionClinicalStatus];
@@ -705,7 +705,7 @@ LABEL_30:
 
 + (id)FHIRConditionVerificationStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/condition-ver-status"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/condition-ver-status"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRConditionVerificationStatus];
@@ -716,7 +716,7 @@ LABEL_30:
 
 + (id)FHIRQuantityComparatorSystem
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/quantity-comparator"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/ValueSet/quantity-comparator"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRQuantityComparatorSystem];
@@ -727,7 +727,7 @@ LABEL_30:
 
 + (id)FHIRDocumentReferenceClinicalNoteStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/document-reference-status"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/document-reference-status"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRDocumentReferenceClinicalNoteStatus];
@@ -738,7 +738,7 @@ LABEL_30:
 
 + (id)FHIRDocumentReferenceClinicalNoteDocStatus
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/composition-status"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/composition-status"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRDocumentReferenceClinicalNoteDocStatus];
@@ -749,7 +749,7 @@ LABEL_30:
 
 + (id)FHIRDocumentReferenceClinicalNoteCategorySystem
 {
-  v2 = [a1 codeSystemWithIdentifier:@"http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category"];
+  v2 = [self codeSystemWithIdentifier:@"http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category"];
   if (!v2)
   {
     +[HKMedicalCodingSystem FHIRDocumentReferenceClinicalNoteCategorySystem];
@@ -765,7 +765,7 @@ LABEL_30:
   v4[2] = __35__HKMedicalCodingSystem_textSystem__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (textSystem_onceToken != -1)
   {
     dispatch_once(&textSystem_onceToken, v4);
@@ -798,7 +798,7 @@ void __35__HKMedicalCodingSystem_textSystem__block_invoke(uint64_t a1)
   v4[2] = __38__HKMedicalCodingSystem_unknownSystem__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (unknownSystem_onceToken != -1)
   {
     dispatch_once(&unknownSystem_onceToken, v4);
@@ -830,7 +830,7 @@ void __38__HKMedicalCodingSystem_unknownSystem__block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v4[2] = __44__HKMedicalCodingSystem_appleOntologySystem__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (appleOntologySystem_onceToken != -1)
   {
@@ -860,7 +860,7 @@ void __44__HKMedicalCodingSystem_appleOntologySystem__block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v4[2] = __43__HKMedicalCodingSystem_adHocConceptSystem__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (adHocConceptSystem_onceToken != -1)
   {
@@ -890,7 +890,7 @@ void __43__HKMedicalCodingSystem_adHocConceptSystem__block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v4[2] = __50__HKMedicalCodingSystem_appleHealthDataTypeSystem__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a2;
   if (appleHealthDataTypeSystem_onceToken != -1)
   {
@@ -914,10 +914,10 @@ void __50__HKMedicalCodingSystem_appleHealthDataTypeSystem__block_invoke(uint64_
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -927,9 +927,9 @@ void __50__HKMedicalCodingSystem_appleHealthDataTypeSystem__block_invoke(uint64_
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = [(HKMedicalCodingSystem *)v4 identifier];
-      v8 = [(HKMedicalCodingSystem *)self identifier];
-      v6 = [v7 isEqualToString:v8];
+      identifier = [(HKMedicalCodingSystem *)equalCopy identifier];
+      identifier2 = [(HKMedicalCodingSystem *)self identifier];
+      v6 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -944,29 +944,29 @@ void __50__HKMedicalCodingSystem_appleHealthDataTypeSystem__block_invoke(uint64_
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HKMedicalCodingSystem *)self identifier];
-  v5 = [(HKMedicalCodingSystem *)self name];
+  identifier = [(HKMedicalCodingSystem *)self identifier];
+  name = [(HKMedicalCodingSystem *)self name];
   v6 = [(HKMedicalCodingSystem *)self OID];
-  v7 = [v3 stringWithFormat:@"Code System (Identifier: %@, Name: %@, OID: %@)", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"Code System (Identifier: %@, Name: %@, OID: %@)", identifier, name, v6];
 
   return v7;
 }
 
-- (HKMedicalCodingSystem)initWithCoder:(id)a3
+- (HKMedicalCodingSystem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
 
   v6 = [HKMedicalCodingSystem codeSystemWithIdentifier:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKMedicalCodingSystem *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(HKMedicalCodingSystem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 }
 
 + (id)externalCodeSystems
@@ -975,7 +975,7 @@ void __50__HKMedicalCodingSystem_appleHealthDataTypeSystem__block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (externalCodeSystems_onceToken != -1)
   {
     dispatch_once(&externalCodeSystems_onceToken, block);
@@ -1009,8 +1009,8 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 
 - (id)ontology_hasCodingSystemAttributeIdentifier
 {
-  v2 = [(HKMedicalCodingSystem *)self identifier];
-  v3 = [&unk_1F0686330 objectForKeyedSubscript:v2];
+  identifier = [(HKMedicalCodingSystem *)self identifier];
+  v3 = [&unk_1F0686330 objectForKeyedSubscript:identifier];
 
   return v3;
 }
@@ -1018,7 +1018,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRMedicationDispenseStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1026,7 +1026,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRMedicationDispenseStatusR4
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1034,7 +1034,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRProcedureStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1042,7 +1042,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRAllergyIntoleranceStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1050,7 +1050,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRAllergyIntoleranceCategory
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1058,7 +1058,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRAllergyIntoleranceCriticality
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1066,7 +1066,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRAllergyIntoleranceSeverity
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1074,7 +1074,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRAllergyIntoleranceType
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1082,7 +1082,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRAllergyIntoleranceClinicalStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1090,7 +1090,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRAllergyIntoleranceVerificationStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1098,7 +1098,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRConditionClinicalStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1106,7 +1106,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRConditionVerificationStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1114,7 +1114,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRQuantityComparatorSystem
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1122,7 +1122,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRDocumentReferenceClinicalNoteStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1130,7 +1130,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRDocumentReferenceClinicalNoteDocStatus
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -1138,7 +1138,7 @@ void __44__HKMedicalCodingSystem_externalCodeSystems__block_invoke(uint64_t a1)
 + (void)FHIRDocumentReferenceClinicalNoteCategorySystem
 {
   OUTLINED_FUNCTION_0_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_0();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

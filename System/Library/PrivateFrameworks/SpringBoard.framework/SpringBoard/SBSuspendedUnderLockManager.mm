@@ -1,53 +1,53 @@
 @interface SBSuspendedUnderLockManager
-- (BOOL)_shouldBeBackgroundUnderLockForScene:(id)a3 withSettings:(id)a4;
-- (BOOL)_shouldPutSceneUnderLock:(id)a3;
-- (SBSuspendedUnderLockManager)initWithDelegate:(id)a3 eventQueue:(id)a4;
+- (BOOL)_shouldBeBackgroundUnderLockForScene:(id)scene withSettings:(id)settings;
+- (BOOL)_shouldPutSceneUnderLock:(id)lock;
+- (SBSuspendedUnderLockManager)initWithDelegate:(id)delegate eventQueue:(id)queue;
 - (SBSuspendedUnderLockManagerDelegate)delegate;
-- (void)interceptUpdateForScene:(id)a3 withNewSettings:(id)a4;
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5;
+- (void)interceptUpdateForScene:(id)scene withNewSettings:(id)settings;
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock;
 @end
 
 @implementation SBSuspendedUnderLockManager
 
-- (SBSuspendedUnderLockManager)initWithDelegate:(id)a3 eventQueue:(id)a4
+- (SBSuspendedUnderLockManager)initWithDelegate:(id)delegate eventQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = SBSuspendedUnderLockManager;
   v8 = [(SBSuspendedUnderLockManager *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_eventQueue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_eventQueue, queue);
   }
 
   return v9;
 }
 
-- (void)setSuspendedUnderLock:(BOOL)a3 alongsideWillChangeBlock:(id)a4 alongsideDidChangeBlock:(id)a5
+- (void)setSuspendedUnderLock:(BOOL)lock alongsideWillChangeBlock:(id)block alongsideDidChangeBlock:(id)changeBlock
 {
-  v6 = a3;
+  lockCopy = lock;
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (self->_suspendedUnderLock == v6)
+  blockCopy = block;
+  changeBlockCopy = changeBlock;
+  if (self->_suspendedUnderLock == lockCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
-      v8[2](v8);
+      blockCopy[2](blockCopy);
     }
 
-    if (v9)
+    if (changeBlockCopy)
     {
-      v9[2](v9);
+      changeBlockCopy[2](changeBlockCopy);
     }
   }
 
   else
   {
-    self->_suspendedUnderLock = v6;
+    self->_suspendedUnderLock = lockCopy;
     v10 = SBLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -65,9 +65,9 @@
     v16[2] = __102__SBSuspendedUnderLockManager_setSuspendedUnderLock_alongsideWillChangeBlock_alongsideDidChangeBlock___block_invoke;
     v16[3] = &unk_2783C0980;
     v16[4] = self;
-    v17 = v8;
-    v19 = v6;
-    v18 = v9;
+    v17 = blockCopy;
+    v19 = lockCopy;
+    v18 = changeBlockCopy;
     v15 = [v14 eventWithName:v13 handler:v16];
     [(FBWorkspaceEventQueue *)self->_eventQueue executeOrAppendEvent:v15];
   }
@@ -248,29 +248,29 @@ void __102__SBSuspendedUnderLockManager_setSuspendedUnderLock_alongsideWillChang
   [v4 setUnderLock:0];
 }
 
-- (void)interceptUpdateForScene:(id)a3 withNewSettings:(id)a4
+- (void)interceptUpdateForScene:(id)scene withNewSettings:(id)settings
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  settingsCopy = settings;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = objc_opt_class();
-  v11 = SBSafeCast(v10, v8);
+  v11 = SBSafeCast(v10, settingsCopy);
   if ([v11 isUISubclass])
   {
-    v12 = [WeakRetained suspendedUnderLockManager:self sceneHandleForScene:v7];
+    v12 = [WeakRetained suspendedUnderLockManager:self sceneHandleForScene:sceneCopy];
     if (v12)
     {
-      if (self->_eventQueue_suspendedUnderLock && [(SBSuspendedUnderLockManager *)self _shouldPutSceneUnderLock:v7])
+      if (self->_eventQueue_suspendedUnderLock && [(SBSuspendedUnderLockManager *)self _shouldPutSceneUnderLock:sceneCopy])
       {
-        if ([v8 isForeground] && -[SBSuspendedUnderLockManager _shouldBeBackgroundUnderLockForScene:withSettings:](self, "_shouldBeBackgroundUnderLockForScene:withSettings:", v7, v8))
+        if ([settingsCopy isForeground] && -[SBSuspendedUnderLockManager _shouldBeBackgroundUnderLockForScene:withSettings:](self, "_shouldBeBackgroundUnderLockForScene:withSettings:", sceneCopy, settingsCopy))
         {
           v13 = SBLogCommon();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v7 identifier];
+            identifier = [sceneCopy identifier];
             v15 = 138412290;
-            v16 = v14;
+            v16 = identifier;
             _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "Intercepted scene (%@) attempting to foreground, but it should be background - forcing to background.", &v15, 0xCu);
           }
 
@@ -291,21 +291,21 @@ void __102__SBSuspendedUnderLockManager_setSuspendedUnderLock_alongsideWillChang
   }
 }
 
-- (BOOL)_shouldPutSceneUnderLock:(id)a3
+- (BOOL)_shouldPutSceneUnderLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained suspendedUnderLockManager:self shouldPreventUnderLockForScene:v4];
+  v6 = [WeakRetained suspendedUnderLockManager:self shouldPreventUnderLockForScene:lockCopy];
 
   return (v6 & 1) == 0 && self->_eventQueue_suspendedUnderLock;
 }
 
-- (BOOL)_shouldBeBackgroundUnderLockForScene:(id)a3 withSettings:(id)a4
+- (BOOL)_shouldBeBackgroundUnderLockForScene:(id)scene withSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
+  settingsCopy = settings;
+  sceneCopy = scene;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained suspendedUnderLockManager:self shouldPreventSuspendUnderLockForScene:v7 settings:v6];
+  v9 = [WeakRetained suspendedUnderLockManager:self shouldPreventSuspendUnderLockForScene:sceneCopy settings:settingsCopy];
 
   if ((v9 & 1) != 0 || !self->_eventQueue_suspendedUnderLock)
   {
@@ -314,7 +314,7 @@ void __102__SBSuspendedUnderLockManager_setSuspendedUnderLock_alongsideWillChang
 
   else
   {
-    v10 = [v6 isIgnoringOcclusions] ^ 1;
+    v10 = [settingsCopy isIgnoringOcclusions] ^ 1;
   }
 
   return v10;

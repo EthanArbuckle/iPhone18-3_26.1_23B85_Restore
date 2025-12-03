@@ -1,24 +1,24 @@
 @interface SLLegacyGooglePlusUserInfoResponse
-- (void)_populateDataFromResponseDictionary:(id)a3;
+- (void)_populateDataFromResponseDictionary:(id)dictionary;
 @end
 
 @implementation SLLegacyGooglePlusUserInfoResponse
 
-- (void)_populateDataFromResponseDictionary:(id)a3
+- (void)_populateDataFromResponseDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  [(SLWebUserInfoResponse *)self setUserInfo:v5];
+  dictionaryCopy = dictionary;
+  [(SLWebUserInfoResponse *)self setUserInfo:dictionaryCopy];
   _SLLog(v3, 7, @"SLLegacyGooglePlusUserInfoResponse got _userInfo: %@");
-  v6 = [v5 objectForKeyedSubscript:{@"displayName", v5}];
+  v6 = [dictionaryCopy objectForKeyedSubscript:{@"displayName", dictionaryCopy}];
   [(SLWebUserInfoResponse *)self setDisplayName:v6];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v25 = v5;
-  v7 = [v5 objectForKeyedSubscript:@"emails"];
+  v25 = dictionaryCopy;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"emails"];
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
@@ -41,9 +41,9 @@
 
         else
         {
-          v14 = [(SLWebUserInfoResponse *)self emailAddresses];
+          emailAddresses = [(SLWebUserInfoResponse *)self emailAddresses];
 
-          if (v14)
+          if (emailAddresses)
           {
             continue;
           }
@@ -61,9 +61,9 @@
     while (v9);
   }
 
-  v17 = [(SLWebUserInfoResponse *)self emailAddresses];
+  emailAddresses2 = [(SLWebUserInfoResponse *)self emailAddresses];
 
-  if (!v17)
+  if (!emailAddresses2)
   {
     v24 = v25;
     _SLLog(v3, 3, @"Couldn't get an email address. userInfo was: %@");

@@ -1,7 +1,7 @@
 @interface VMABCReporter
 + (id)sharedInstance;
 - (VMABCReporter)init;
-- (void)reportIssueType:(id)a3 description:(id)a4;
+- (void)reportIssueType:(id)type description:(id)description;
 @end
 
 @implementation VMABCReporter
@@ -37,21 +37,21 @@
   return v2;
 }
 
-- (void)reportIssueType:(id)a3 description:(id)a4
+- (void)reportIssueType:(id)type description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VMABCReporter *)self queue];
+  typeCopy = type;
+  descriptionCopy = description;
+  queue = [(VMABCReporter *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008224;
   block[3] = &unk_1000ED478;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = typeCopy;
+  v13 = descriptionCopy;
+  v9 = descriptionCopy;
+  v10 = typeCopy;
+  dispatch_async(queue, block);
 }
 
 @end

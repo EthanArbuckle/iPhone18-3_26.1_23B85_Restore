@@ -1,69 +1,69 @@
 @interface _INPBSticker
-- (BOOL)isEqual:(id)a3;
-- (_INPBSticker)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSticker)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppBundleID:(id)a3;
-- (void)setAvatarDescriptor:(id)a3;
-- (void)setEmoji:(id)a3;
-- (void)setStickerDescription:(id)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppBundleID:(id)d;
+- (void)setAvatarDescriptor:(id)descriptor;
+- (void)setEmoji:(id)emoji;
+- (void)setStickerDescription:(id)description;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSticker
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appBundleID)
   {
-    v4 = [(_INPBSticker *)self appBundleID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appBundleID"];
+    appBundleID = [(_INPBSticker *)self appBundleID];
+    v5 = [appBundleID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appBundleID"];
   }
 
   if (self->_avatarDescriptor)
   {
-    v6 = [(_INPBSticker *)self avatarDescriptor];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"avatarDescriptor"];
+    avatarDescriptor = [(_INPBSticker *)self avatarDescriptor];
+    v7 = [avatarDescriptor copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"avatarDescriptor"];
   }
 
   if (self->_emoji)
   {
-    v8 = [(_INPBSticker *)self emoji];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"emoji"];
+    emoji = [(_INPBSticker *)self emoji];
+    v9 = [emoji copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"emoji"];
   }
 
   if (self->_stickerDescription)
   {
-    v10 = [(_INPBSticker *)self stickerDescription];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"stickerDescription"];
+    stickerDescription = [(_INPBSticker *)self stickerDescription];
+    v11 = [stickerDescription copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"stickerDescription"];
   }
 
   if ([(_INPBSticker *)self hasType])
   {
-    v12 = [(_INPBSticker *)self type];
-    if (v12 >= 7)
+    type = [(_INPBSticker *)self type];
+    if (type >= 7)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v13 = off_1E72889E0[v12];
+      v13 = off_1E72889E0[type];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"type"];
+    [dictionary setObject:v13 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -85,28 +85,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBSticker *)self appBundleID];
-  v6 = [v4 appBundleID];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleID = [(_INPBSticker *)self appBundleID];
+  appBundleID2 = [equalCopy appBundleID];
+  if ((appBundleID != 0) == (appBundleID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBSticker *)self appBundleID];
-  if (v7)
+  appBundleID3 = [(_INPBSticker *)self appBundleID];
+  if (appBundleID3)
   {
-    v8 = v7;
-    v9 = [(_INPBSticker *)self appBundleID];
-    v10 = [v4 appBundleID];
-    v11 = [v9 isEqual:v10];
+    v8 = appBundleID3;
+    appBundleID4 = [(_INPBSticker *)self appBundleID];
+    appBundleID5 = [equalCopy appBundleID];
+    v11 = [appBundleID4 isEqual:appBundleID5];
 
     if (!v11)
     {
@@ -118,20 +118,20 @@
   {
   }
 
-  v5 = [(_INPBSticker *)self avatarDescriptor];
-  v6 = [v4 avatarDescriptor];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleID = [(_INPBSticker *)self avatarDescriptor];
+  appBundleID2 = [equalCopy avatarDescriptor];
+  if ((appBundleID != 0) == (appBundleID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBSticker *)self avatarDescriptor];
-  if (v12)
+  avatarDescriptor = [(_INPBSticker *)self avatarDescriptor];
+  if (avatarDescriptor)
   {
-    v13 = v12;
-    v14 = [(_INPBSticker *)self avatarDescriptor];
-    v15 = [v4 avatarDescriptor];
-    v16 = [v14 isEqual:v15];
+    v13 = avatarDescriptor;
+    avatarDescriptor2 = [(_INPBSticker *)self avatarDescriptor];
+    avatarDescriptor3 = [equalCopy avatarDescriptor];
+    v16 = [avatarDescriptor2 isEqual:avatarDescriptor3];
 
     if (!v16)
     {
@@ -143,20 +143,20 @@
   {
   }
 
-  v5 = [(_INPBSticker *)self emoji];
-  v6 = [v4 emoji];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleID = [(_INPBSticker *)self emoji];
+  appBundleID2 = [equalCopy emoji];
+  if ((appBundleID != 0) == (appBundleID2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBSticker *)self emoji];
-  if (v17)
+  emoji = [(_INPBSticker *)self emoji];
+  if (emoji)
   {
-    v18 = v17;
-    v19 = [(_INPBSticker *)self emoji];
-    v20 = [v4 emoji];
-    v21 = [v19 isEqual:v20];
+    v18 = emoji;
+    emoji2 = [(_INPBSticker *)self emoji];
+    emoji3 = [equalCopy emoji];
+    v21 = [emoji2 isEqual:emoji3];
 
     if (!v21)
     {
@@ -168,22 +168,22 @@
   {
   }
 
-  v5 = [(_INPBSticker *)self stickerDescription];
-  v6 = [v4 stickerDescription];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleID = [(_INPBSticker *)self stickerDescription];
+  appBundleID2 = [equalCopy stickerDescription];
+  if ((appBundleID != 0) == (appBundleID2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(_INPBSticker *)self stickerDescription];
-  if (v22)
+  stickerDescription = [(_INPBSticker *)self stickerDescription];
+  if (stickerDescription)
   {
-    v23 = v22;
-    v24 = [(_INPBSticker *)self stickerDescription];
-    v25 = [v4 stickerDescription];
-    v26 = [v24 isEqual:v25];
+    v23 = stickerDescription;
+    stickerDescription2 = [(_INPBSticker *)self stickerDescription];
+    stickerDescription3 = [equalCopy stickerDescription];
+    v26 = [stickerDescription2 isEqual:stickerDescription3];
 
     if (!v26)
     {
@@ -195,10 +195,10 @@ LABEL_21:
   {
   }
 
-  v29 = [(_INPBSticker *)self hasType];
-  if (v29 == [v4 hasType])
+  hasType = [(_INPBSticker *)self hasType];
+  if (hasType == [equalCopy hasType])
   {
-    if (!-[_INPBSticker hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+    if (!-[_INPBSticker hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
     {
       v27 = 1;
       goto LABEL_23;
@@ -212,19 +212,19 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSticker allocWithZone:](_INPBSticker init];
-  v6 = [(NSString *)self->_appBundleID copyWithZone:a3];
+  v6 = [(NSString *)self->_appBundleID copyWithZone:zone];
   [(_INPBSticker *)v5 setAppBundleID:v6];
 
-  v7 = [(NSString *)self->_avatarDescriptor copyWithZone:a3];
+  v7 = [(NSString *)self->_avatarDescriptor copyWithZone:zone];
   [(_INPBSticker *)v5 setAvatarDescriptor:v7];
 
-  v8 = [(NSString *)self->_emoji copyWithZone:a3];
+  v8 = [(NSString *)self->_emoji copyWithZone:zone];
   [(_INPBSticker *)v5 setEmoji:v8];
 
-  v9 = [(NSString *)self->_stickerDescription copyWithZone:a3];
+  v9 = [(NSString *)self->_stickerDescription copyWithZone:zone];
   [(_INPBSticker *)v5 setStickerDescription:v9];
 
   if ([(_INPBSticker *)self hasType])
@@ -235,60 +235,60 @@ LABEL_23:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSticker *)self data];
+  coderCopy = coder;
+  data = [(_INPBSticker *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSticker)initWithCoder:(id)a3
+- (_INPBSticker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSticker *)self initWithData:v6];
+    self = [(_INPBSticker *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBSticker *)self appBundleID];
+  toCopy = to;
+  appBundleID = [(_INPBSticker *)self appBundleID];
 
-  if (v4)
+  if (appBundleID)
   {
     appBundleID = self->_appBundleID;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBSticker *)self avatarDescriptor];
+  avatarDescriptor = [(_INPBSticker *)self avatarDescriptor];
 
-  if (v6)
+  if (avatarDescriptor)
   {
     avatarDescriptor = self->_avatarDescriptor;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBSticker *)self emoji];
+  emoji = [(_INPBSticker *)self emoji];
 
-  if (v8)
+  if (emoji)
   {
     emoji = self->_emoji;
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_INPBSticker *)self stickerDescription];
+  stickerDescription = [(_INPBSticker *)self stickerDescription];
 
-  if (v10)
+  if (stickerDescription)
   {
     stickerDescription = self->_stickerDescription;
     PBDataWriterWriteStringField();
@@ -301,40 +301,40 @@ LABEL_23:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"EMOJI"])
+  else if ([typeCopy isEqualToString:@"EMOJI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MEMOJI"])
+  else if ([typeCopy isEqualToString:@"MEMOJI"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"APP_BASED"])
+  else if ([typeCopy isEqualToString:@"APP_BASED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"GENERATED"])
+  else if ([typeCopy isEqualToString:@"GENERATED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"GENERIC"])
+  else if ([typeCopy isEqualToString:@"GENERIC"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CUSTOM"])
+  else if ([typeCopy isEqualToString:@"CUSTOM"])
   {
     v4 = 6;
   }
@@ -347,10 +347,10 @@ LABEL_23:
   return v4;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -358,40 +358,40 @@ LABEL_23:
   else
   {
     *&self->_has = has | 1;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (void)setStickerDescription:(id)a3
+- (void)setStickerDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   stickerDescription = self->_stickerDescription;
   self->_stickerDescription = v4;
 
   MEMORY[0x1EEE66BB8](v4, stickerDescription);
 }
 
-- (void)setEmoji:(id)a3
+- (void)setEmoji:(id)emoji
 {
-  v4 = [a3 copy];
+  v4 = [emoji copy];
   emoji = self->_emoji;
   self->_emoji = v4;
 
   MEMORY[0x1EEE66BB8](v4, emoji);
 }
 
-- (void)setAvatarDescriptor:(id)a3
+- (void)setAvatarDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
+  v4 = [descriptor copy];
   avatarDescriptor = self->_avatarDescriptor;
   self->_avatarDescriptor = v4;
 
   MEMORY[0x1EEE66BB8](v4, avatarDescriptor);
 }
 
-- (void)setAppBundleID:(id)a3
+- (void)setAppBundleID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   appBundleID = self->_appBundleID;
   self->_appBundleID = v4;
 

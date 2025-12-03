@@ -1,7 +1,7 @@
 @interface HAENSystemSoundPlayer
 + (id)sharedInstance;
 - (HAENSystemSoundPlayer)init;
-- (id)playSystemSoundWithEvent:(id)a3 completion:(id)a4;
+- (id)playSystemSoundWithEvent:(id)event completion:(id)completion;
 - (void)dealloc;
 @end
 
@@ -75,20 +75,20 @@ uint64_t __39__HAENSystemSoundPlayer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)playSystemSoundWithEvent:(id)a3 completion:(id)a4
+- (id)playSystemSoundWithEvent:(id)event completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = HAENotificationsLog();
-  v9 = [v6 uuid];
-  v10 = [v9 hash];
+  uuid = [eventCopy uuid];
+  v10 = [uuid hash];
 
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
-    v11 = [v6 uuid];
+    uuid2 = [eventCopy uuid];
     v15 = 138412290;
-    v16 = v11;
+    v16 = uuid2;
     _os_signpost_emit_with_name_impl(&dword_25081E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v10, "HAENSSPlayed", "%@", &v15, 0xCu);
   }
 

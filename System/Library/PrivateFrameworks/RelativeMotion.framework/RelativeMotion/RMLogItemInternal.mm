@@ -1,17 +1,17 @@
 @interface RMLogItemInternal
-- (RMLogItemInternal)initWithTimestamp:(double)a3;
+- (RMLogItemInternal)initWithTimestamp:(double)timestamp;
 @end
 
 @implementation RMLogItemInternal
 
-- (RMLogItemInternal)initWithTimestamp:(double)a3
+- (RMLogItemInternal)initWithTimestamp:(double)timestamp
 {
   v5.receiver = self;
   v5.super_class = RMLogItemInternal;
   result = [(RMLogItemInternal *)&v5 init];
   if (result)
   {
-    result->fTimestamp = a3;
+    result->fTimestamp = timestamp;
   }
 
   return result;

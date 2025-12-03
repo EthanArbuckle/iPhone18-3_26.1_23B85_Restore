@@ -1,91 +1,91 @@
 @interface ATXMediaActionPrediction
-+ (BOOL)upcomingMediaPreferenceForINPlayMediaIntent:(id)a3 withINUpcomingMediaManagerReturnValueForTests:(id)a4;
-+ (id)findTopRankedINPlayMediaIntentFromArray:(id)a3;
-+ (id)resolveBucketLevelPrediction:(id)a3 withUpcomingMedia:(id)a4;
-+ (id)resolveContainerLevelPrediction:(id)a3 withUpcomingMedia:(id)a4;
-+ (id)resolveItemLevelPrediction:(id)a3 withUpcomingMedia:(id)a4;
-+ (id)resolvePlayMediaIntent:(id)a3 withUpcomingMedia:(id)a4;
-+ (id)updatePlayMediaActionPredictions:(id)a3 withUpcomingMedia:(id)a4 forActionKey:(id)a5 appActionPredictionItem:(const ATXPredictionItem *)a6 appActionLogProbability:(double)a7 statistics:(id)a8;
-+ (id)updatedPlayMediaAction:(id)a3;
-+ (id)updatedPlayMediaAction:(id)a3 withUpcomingMedia:(id)a4;
++ (BOOL)upcomingMediaPreferenceForINPlayMediaIntent:(id)intent withINUpcomingMediaManagerReturnValueForTests:(id)tests;
++ (id)findTopRankedINPlayMediaIntentFromArray:(id)array;
++ (id)resolveBucketLevelPrediction:(id)prediction withUpcomingMedia:(id)media;
++ (id)resolveContainerLevelPrediction:(id)prediction withUpcomingMedia:(id)media;
++ (id)resolveItemLevelPrediction:(id)prediction withUpcomingMedia:(id)media;
++ (id)resolvePlayMediaIntent:(id)intent withUpcomingMedia:(id)media;
++ (id)updatePlayMediaActionPredictions:(id)predictions withUpcomingMedia:(id)media forActionKey:(id)key appActionPredictionItem:(const ATXPredictionItem *)item appActionLogProbability:(double)probability statistics:(id)statistics;
++ (id)updatedPlayMediaAction:(id)action;
++ (id)updatedPlayMediaAction:(id)action withUpcomingMedia:(id)media;
 @end
 
 @implementation ATXMediaActionPrediction
 
-+ (id)updatedPlayMediaAction:(id)a3
++ (id)updatedPlayMediaAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = MEMORY[0x277CEB3B8];
-  v5 = [v3 bundleId];
-  v6 = [v4 isSystemAppForBundleId:v5];
+  bundleId = [actionCopy bundleId];
+  v6 = [v4 isSystemAppForBundleId:bundleId];
 
   v7 = MEMORY[0x277CEB8F0];
-  v8 = [v3 bundleId];
-  v9 = [v7 getUpcomingMediaForBundle:v8 isInternalApplication:v6];
+  bundleId2 = [actionCopy bundleId];
+  v9 = [v7 getUpcomingMediaForBundle:bundleId2 isInternalApplication:v6];
 
-  v10 = [objc_opt_class() updatedPlayMediaAction:v3 withUpcomingMedia:v9];
+  v10 = [objc_opt_class() updatedPlayMediaAction:actionCopy withUpcomingMedia:v9];
 
   return v10;
 }
 
-+ (id)updatedPlayMediaAction:(id)a3 withUpcomingMedia:(id)a4
++ (id)updatedPlayMediaAction:(id)action withUpcomingMedia:(id)media
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  actionCopy = action;
+  mediaCopy = media;
+  if (actionCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277CEB7F0]) initWithPredictedItem:v5 score:0.0];
+    v7 = [objc_alloc(MEMORY[0x277CEB7F0]) initWithPredictedItem:actionCopy score:0.0];
     v8 = [ATXActionPredictionContainer alloc];
-    v9 = [v5 slotSet];
-    v10 = [v5 actionKey];
-    v11 = [(ATXActionPredictionContainer *)v8 initWithScoredAction:v7 slotSet:v9 actionKey:v10];
+    slotSet = [actionCopy slotSet];
+    actionKey = [actionCopy actionKey];
+    v11 = [(ATXActionPredictionContainer *)v8 initWithScoredAction:v7 slotSet:slotSet actionKey:actionKey];
 
     v20[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-    v13 = [v5 actionKey];
-    v14 = [ATXMediaActionPrediction updatePlayMediaActionPredictions:v12 withUpcomingMedia:v6 forActionKey:v13 appActionPredictionItem:0 appActionLogProbability:0 statistics:0.0];
+    actionKey2 = [actionCopy actionKey];
+    v14 = [ATXMediaActionPrediction updatePlayMediaActionPredictions:v12 withUpcomingMedia:mediaCopy forActionKey:actionKey2 appActionPredictionItem:0 appActionLogProbability:0 statistics:0.0];
 
     if ([v14 count])
     {
       v15 = [v14 objectAtIndexedSubscript:0];
-      v16 = [v15 scoredAction];
-      v17 = [v16 predictedItem];
+      scoredAction = [v15 scoredAction];
+      predictedItem = [scoredAction predictedItem];
     }
 
     else
     {
-      v17 = 0;
+      predictedItem = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    predictedItem = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return predictedItem;
 }
 
-+ (id)updatePlayMediaActionPredictions:(id)a3 withUpcomingMedia:(id)a4 forActionKey:(id)a5 appActionPredictionItem:(const ATXPredictionItem *)a6 appActionLogProbability:(double)a7 statistics:(id)a8
++ (id)updatePlayMediaActionPredictions:(id)predictions withUpcomingMedia:(id)media forActionKey:(id)key appActionPredictionItem:(const ATXPredictionItem *)item appActionLogProbability:(double)probability statistics:(id)statistics
 {
   v95 = *MEMORY[0x277D85DE8];
-  v73 = a3;
-  v78 = a4;
-  v13 = a5;
-  v76 = a8;
-  v74 = v13;
+  predictionsCopy = predictions;
+  mediaCopy = media;
+  keyCopy = key;
+  statisticsCopy = statistics;
+  v74 = keyCopy;
   v75 = objc_opt_new();
-  v82 = [_ATXActionUtils getBundleIdFromActionKey:v13];
-  if ([v73 count])
+  v82 = [_ATXActionUtils getBundleIdFromActionKey:keyCopy];
+  if ([predictionsCopy count])
   {
     v86 = 0u;
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    obj = v73;
+    obj = predictionsCopy;
     v14 = [obj countByEnumeratingWithState:&v84 objects:v94 count:16];
     if (!v14)
     {
@@ -104,30 +104,30 @@
         }
 
         v16 = *(*(&v84 + 1) + 8 * i);
-        v17 = [v16 scoredAction];
-        v18 = [v17 predictedItem];
-        v19 = [v18 bundleId];
-        v20 = [v82 isEqualToString:v19];
+        scoredAction = [v16 scoredAction];
+        predictedItem = [scoredAction predictedItem];
+        bundleId = [predictedItem bundleId];
+        v20 = [v82 isEqualToString:bundleId];
 
         if (v20)
         {
-          v21 = [v16 scoredAction];
-          v22 = [v21 predictedItem];
-          v23 = [v22 intent];
-          v24 = [a1 resolvePlayMediaIntent:v23 withUpcomingMedia:v78];
+          scoredAction2 = [v16 scoredAction];
+          predictedItem2 = [scoredAction2 predictedItem];
+          intent = [predictedItem2 intent];
+          v24 = [self resolvePlayMediaIntent:intent withUpcomingMedia:mediaCopy];
 
           if (!v24)
           {
             goto LABEL_30;
           }
 
-          v25 = [v24 first];
-          v26 = [v24 second];
-          v27 = [v26 BOOLValue];
+          first = [v24 first];
+          second = [v24 second];
+          bOOLValue = [second BOOLValue];
 
-          if (v25)
+          if (first)
           {
-            if (v27)
+            if (bOOLValue)
             {
               v28 = __atxlog_handle_default();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -137,24 +137,24 @@
                 _os_log_impl(&dword_2263AA000, v28, OS_LOG_TYPE_INFO, "Media prediction for bundle %@ did use upcoming media. Creating new prediction, and setting isFutureMedia flag.", buf, 0xCu);
               }
 
-              [v25 _setLaunchId:v82];
+              [first _setLaunchId:v82];
               v29 = objc_alloc(MEMORY[0x277CEB2C8]);
-              v30 = [MEMORY[0x277CCAD78] UUID];
+              uUID = [MEMORY[0x277CCAD78] UUID];
               LOBYTE(v72) = 1;
-              v31 = [v29 initWithIntent:v25 actionUUID:v30 bundleId:v82 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v72 title:0 subtitle:0];
+              v31 = [v29 initWithIntent:first actionUUID:uUID bundleId:v82 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v72 title:0 subtitle:0];
 
               v32 = [ATXMinimalSlotResolutionParameters alloc];
-              v33 = [v16 scoredAction];
-              v34 = [v33 predictedItem];
-              v35 = [v16 slotSet];
-              v36 = [(ATXMinimalSlotResolutionParameters *)v32 initWithAction:v34 slots:v35];
+              scoredAction3 = [v16 scoredAction];
+              predictedItem3 = [scoredAction3 predictedItem];
+              slotSet = [v16 slotSet];
+              v36 = [(ATXMinimalSlotResolutionParameters *)v32 initWithAction:predictedItem3 slots:slotSet];
 
               v37 = [ATXMinimalSlotResolutionParameters alloc];
-              v38 = [v16 slotSet];
-              v39 = [(ATXMinimalSlotResolutionParameters *)v37 initWithAction:v31 slots:v38];
+              slotSet2 = [v16 slotSet];
+              v39 = [(ATXMinimalSlotResolutionParameters *)v37 initWithAction:v31 slots:slotSet2];
 
               v40 = [(ATXMinimalSlotResolutionParameters *)v36 isEqual:v39];
-              if (v76)
+              if (statisticsCopy)
               {
                 v41 = v40;
               }
@@ -166,18 +166,18 @@
 
               if ((v41 & 1) == 0)
               {
-                v42 = [v76[2] objectForKeyedSubscript:v36];
-                [v76[2] setObject:v42 forKeyedSubscript:v39];
+                v42 = [statisticsCopy[2] objectForKeyedSubscript:v36];
+                [statisticsCopy[2] setObject:v42 forKeyedSubscript:v39];
 
-                [v76[2] removeObjectForKey:v36];
+                [statisticsCopy[2] removeObjectForKey:v36];
               }
 
               v43 = objc_alloc(MEMORY[0x277CEB7F0]);
               [v16 score];
               v44 = [v43 initWithPredictedItem:v31 score:?];
               v45 = [ATXActionPredictionContainer alloc];
-              v46 = [v16 slotSet];
-              v47 = [(ATXActionPredictionContainer *)v45 initWithScoredAction:v44 slotSet:v46 actionKey:v74];
+              slotSet3 = [v16 slotSet];
+              v47 = [(ATXActionPredictionContainer *)v45 initWithScoredAction:v44 slotSet:slotSet3 actionKey:v74];
 
               if (v16)
               {
@@ -225,15 +225,15 @@ LABEL_20:
         v24 = __atxlog_handle_default();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
-          v48 = [v16 scoredAction];
-          v49 = [v48 predictedItem];
-          v50 = [v49 bundleId];
+          scoredAction4 = [v16 scoredAction];
+          predictedItem4 = [scoredAction4 predictedItem];
+          bundleId2 = [predictedItem4 bundleId];
           *buf = 138412802;
           v89 = v82;
           v90 = 2112;
           v91 = v74;
           v92 = 2112;
-          v93 = v50;
+          v93 = bundleId2;
           _os_log_fault_impl(&dword_2263AA000, v24, OS_LOG_TYPE_FAULT, "ERROR: bundleId extracted from actionKey (bundleId: %@, actionKey: %@) does not equal to bundleId in ATXActionPredictionContainer (bundleId in prediction: %@).", buf, 0x20u);
         }
 
@@ -248,7 +248,7 @@ LABEL_30:
     }
   }
 
-  v52 = [a1 resolvePlayMediaIntent:0 withUpcomingMedia:v78];
+  v52 = [self resolvePlayMediaIntent:0 withUpcomingMedia:mediaCopy];
   v53 = v52;
   if (!v52)
   {
@@ -256,11 +256,11 @@ LABEL_30:
   }
 
   obj = v52;
-  v54 = [v52 first];
-  v55 = [v53 second];
-  v56 = [v55 BOOLValue];
+  first2 = [v52 first];
+  second2 = [v53 second];
+  bOOLValue2 = [second2 BOOLValue];
 
-  if (v54)
+  if (first2)
   {
     v57 = __atxlog_handle_default();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
@@ -270,20 +270,20 @@ LABEL_30:
       _os_log_impl(&dword_2263AA000, v57, OS_LOG_TYPE_INFO, "There were originally no media predictions returned for bundle %@. Used upcoming media to generate a prediction.", buf, 0xCu);
     }
 
-    [v54 _setLaunchId:v82];
+    [first2 _setLaunchId:v82];
     v58 = objc_alloc(MEMORY[0x277CEB2C8]);
-    v59 = [MEMORY[0x277CCAD78] UUID];
-    LOBYTE(v72) = v56;
-    v60 = [v58 initWithIntent:v54 actionUUID:v59 bundleId:v82 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v72 title:0 subtitle:0];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    LOBYTE(v72) = bOOLValue2;
+    v60 = [v58 initWithIntent:first2 actionUUID:uUID2 bundleId:v82 heuristic:0 heuristicMetadata:0 criteria:0 isFutureMedia:v72 title:0 subtitle:0];
 
     v61 = objc_alloc(MEMORY[0x277CEB7F0]);
     LODWORD(v62) = 1.0;
     v63 = [v61 initWithPredictedItem:v60 score:v62];
     v64 = [ATXActionPredictionContainer alloc];
-    v65 = [v60 slotSet];
-    v66 = [(ATXActionPredictionContainer *)v64 initWithScoredAction:v63 slotSet:v65 actionKey:v74];
+    slotSet4 = [v60 slotSet];
+    v66 = [(ATXActionPredictionContainer *)v64 initWithScoredAction:v63 slotSet:slotSet4 actionKey:v74];
 
-    [ATXSlotResolution setSlotResolutionPredictionItemForTopUpcomingMediaActionContainer:v66 appActionPredictionItem:a6 appActionLogProbability:a7];
+    [ATXSlotResolution setSlotResolutionPredictionItemForTopUpcomingMediaActionContainer:v66 appActionPredictionItem:item appActionLogProbability:probability];
     [v75 addObject:v66];
   }
 
@@ -291,8 +291,8 @@ LABEL_39:
   if ([v75 count])
   {
     v67 = +[_ATXAppIconState sharedInstance];
-    v68 = [v67 allInstalledAppsKnownToSpringBoard];
-    v69 = [v75 atx_filterPlayMediaIntentsWithUnavailableAppDestinationGivenSBAppList:v68];
+    allInstalledAppsKnownToSpringBoard = [v67 allInstalledAppsKnownToSpringBoard];
+    v69 = [v75 atx_filterPlayMediaIntentsWithUnavailableAppDestinationGivenSBAppList:allInstalledAppsKnownToSpringBoard];
   }
 
   else
@@ -306,39 +306,39 @@ LABEL_41:
   return v69;
 }
 
-+ (BOOL)upcomingMediaPreferenceForINPlayMediaIntent:(id)a3 withINUpcomingMediaManagerReturnValueForTests:(id)a4
++ (BOOL)upcomingMediaPreferenceForINPlayMediaIntent:(id)intent withINUpcomingMediaManagerReturnValueForTests:(id)tests
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  intentCopy = intent;
+  testsCopy = tests;
+  if (intentCopy)
   {
-    v7 = [v5 launchId];
+    launchId = [intentCopy launchId];
 
-    if (v7)
+    if (launchId)
     {
-      v8 = [v5 mediaItems];
-      if (v8 && ([v5 mediaItems], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v10))
+      mediaItems = [intentCopy mediaItems];
+      if (mediaItems && ([intentCopy mediaItems], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, mediaItems, v10))
       {
-        v11 = [v5 mediaItems];
-        v12 = [v11 firstObject];
-        v13 = [v12 type];
+        mediaItems2 = [intentCopy mediaItems];
+        firstObject = [mediaItems2 firstObject];
+        type = [firstObject type];
       }
 
       else
       {
-        v15 = [v5 mediaContainer];
+        mediaContainer = [intentCopy mediaContainer];
 
-        if (!v15)
+        if (!mediaContainer)
         {
           v23 = __atxlog_handle_default();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            [ATXMediaActionPrediction upcomingMediaPreferenceForINPlayMediaIntent:v5 withINUpcomingMediaManagerReturnValueForTests:v23];
+            [ATXMediaActionPrediction upcomingMediaPreferenceForINPlayMediaIntent:intentCopy withINUpcomingMediaManagerReturnValueForTests:v23];
           }
 
-          v24 = [v5 launchId];
-          v25 = [&unk_283A58970 containsObject:v24];
+          launchId2 = [intentCopy launchId];
+          v25 = [&unk_283A58970 containsObject:launchId2];
 
           if (v25)
           {
@@ -346,9 +346,9 @@ LABEL_41:
             LOBYTE(v14) = 1;
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
-              v26 = [v5 launchId];
+              launchId3 = [intentCopy launchId];
               *buf = 138412290;
-              v31 = v26;
+              v31 = launchId3;
               _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_INFO, "Logged error when getting upcomingMediaPreference, but since app is %@, we will prefer upcoming media for predictions.", buf, 0xCu);
             }
           }
@@ -358,9 +358,9 @@ LABEL_41:
             v20 = __atxlog_handle_default();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
-              v27 = [v5 launchId];
+              launchId4 = [intentCopy launchId];
               *buf = 138412290;
-              v31 = v27;
+              v31 = launchId4;
               _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_INFO, "Logged error when getting upcomingMediaPreference, and since app is %@ (not Podcasts or TV), we will not prefer upcoming media for predictions.", buf, 0xCu);
             }
 
@@ -370,21 +370,21 @@ LABEL_41:
           goto LABEL_14;
         }
 
-        v11 = [v5 mediaContainer];
-        v13 = [v11 type];
+        mediaItems2 = [intentCopy mediaContainer];
+        type = [mediaItems2 type];
       }
 
-      if (v6)
+      if (testsCopy)
       {
-        v14 = [v6 isEqualToNumber:&unk_283A57008];
+        v14 = [testsCopy isEqualToNumber:&unk_283A57008];
       }
 
       else
       {
-        v16 = [MEMORY[0x277CD42A0] sharedManager];
-        v17 = [v5 launchId];
+        mEMORY[0x277CD42A0] = [MEMORY[0x277CD42A0] sharedManager];
+        launchId5 = [intentCopy launchId];
         v29 = 0;
-        v18 = [v16 _predictionModeForBundleId:v17 type:v13 error:&v29];
+        v18 = [mEMORY[0x277CD42A0] _predictionModeForBundleId:launchId5 type:type error:&v29];
         v19 = v29;
 
         v14 = v18 == 1;
@@ -393,11 +393,11 @@ LABEL_41:
       v20 = __atxlog_handle_default();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [v5 launchId];
+        launchId6 = [intentCopy launchId];
         *buf = 138412802;
-        v31 = v28;
+        v31 = launchId6;
         v32 = 2048;
-        v33 = v13;
+        v33 = type;
         v34 = 1024;
         v35 = v14;
         _os_log_debug_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEBUG, "Checked upcoming media preference for %@ for media type %ld. Should prefer upcoming media for predictions? %d", buf, 0x1Cu);
@@ -416,23 +416,23 @@ LABEL_15:
   return v14;
 }
 
-+ (id)resolvePlayMediaIntent:(id)a3 withUpcomingMedia:(id)a4
++ (id)resolvePlayMediaIntent:(id)intent withUpcomingMedia:(id)media
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 preferenceForUpcomingMediaIsSet] & 1) == 0)
+  intentCopy = intent;
+  mediaCopy = media;
+  if (([mediaCopy preferenceForUpcomingMediaIsSet] & 1) == 0)
   {
-    [v7 setPreferUpcomingMediaForPredictions:{+[ATXMediaActionPrediction upcomingMediaPreferenceForINPlayMediaIntent:](ATXMediaActionPrediction, "upcomingMediaPreferenceForINPlayMediaIntent:", v6)}];
+    [mediaCopy setPreferUpcomingMediaForPredictions:{+[ATXMediaActionPrediction upcomingMediaPreferenceForINPlayMediaIntent:](ATXMediaActionPrediction, "upcomingMediaPreferenceForINPlayMediaIntent:", intentCopy)}];
   }
 
-  v8 = [v7 sortedUpcomingMedia];
-  v9 = [v8 count];
+  sortedUpcomingMedia = [mediaCopy sortedUpcomingMedia];
+  v9 = [sortedUpcomingMedia count];
 
   if (!v9)
   {
-    if (([v7 preferUpcomingMediaForPredictions] & 1) == 0)
+    if (([mediaCopy preferUpcomingMediaForPredictions] & 1) == 0)
     {
-      v12 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:v6 second:&unk_283A57020];
+      v12 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:intentCopy second:&unk_283A57020];
 LABEL_27:
       v18 = v12;
       goto LABEL_28;
@@ -443,21 +443,21 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  if (v6)
+  if (intentCopy)
   {
-    v10 = [v6 buckets];
-    if (v10)
+    buckets = [intentCopy buckets];
+    if (buckets)
     {
-      v11 = [v6 mediaContainer];
-      if (v11)
+      mediaContainer = [intentCopy mediaContainer];
+      if (mediaContainer)
       {
       }
 
       else
       {
-        v19 = [v6 mediaItems];
+        mediaItems = [intentCopy mediaItems];
 
-        if (!v19)
+        if (!mediaItems)
         {
           v25 = __atxlog_handle_default();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -465,18 +465,18 @@ LABEL_20:
             +[ATXMediaActionPrediction resolvePlayMediaIntent:withUpcomingMedia:];
           }
 
-          v12 = [a1 resolveBucketLevelPrediction:v6 withUpcomingMedia:v7];
+          v12 = [self resolveBucketLevelPrediction:intentCopy withUpcomingMedia:mediaCopy];
           goto LABEL_27;
         }
       }
     }
 
-    v20 = [v6 mediaContainer];
-    if (v20)
+    mediaContainer2 = [intentCopy mediaContainer];
+    if (mediaContainer2)
     {
-      v21 = [v6 mediaItems];
+      mediaItems2 = [intentCopy mediaItems];
 
-      if (!v21)
+      if (!mediaItems2)
       {
         v24 = __atxlog_handle_default();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -484,14 +484,14 @@ LABEL_20:
           +[ATXMediaActionPrediction resolvePlayMediaIntent:withUpcomingMedia:];
         }
 
-        v12 = [a1 resolveContainerLevelPrediction:v6 withUpcomingMedia:v7];
+        v12 = [self resolveContainerLevelPrediction:intentCopy withUpcomingMedia:mediaCopy];
         goto LABEL_27;
       }
     }
 
-    v22 = [v6 mediaItems];
+    mediaItems3 = [intentCopy mediaItems];
 
-    if (v22)
+    if (mediaItems3)
     {
       v23 = __atxlog_handle_default();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -499,7 +499,7 @@ LABEL_20:
         +[ATXMediaActionPrediction resolvePlayMediaIntent:withUpcomingMedia:];
       }
 
-      v12 = [a1 resolveItemLevelPrediction:v6 withUpcomingMedia:v7];
+      v12 = [self resolveItemLevelPrediction:intentCopy withUpcomingMedia:mediaCopy];
       goto LABEL_27;
     }
 
@@ -513,28 +513,28 @@ LABEL_20:
   }
 
   v14 = objc_alloc(MEMORY[0x277D42648]);
-  v15 = [v7 sortedUpcomingMedia];
-  v16 = [v15 firstObject];
-  v17 = [v16 first];
-  v18 = [v14 initWithFirst:v17 second:&unk_283A57008];
+  sortedUpcomingMedia2 = [mediaCopy sortedUpcomingMedia];
+  firstObject = [sortedUpcomingMedia2 firstObject];
+  first = [firstObject first];
+  v18 = [v14 initWithFirst:first second:&unk_283A57008];
 
 LABEL_28:
 
   return v18;
 }
 
-+ (id)resolveBucketLevelPrediction:(id)a3 withUpcomingMedia:(id)a4
++ (id)resolveBucketLevelPrediction:(id)prediction withUpcomingMedia:(id)media
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buckets];
-  v9 = [v8 firstObject];
-  v10 = [v9 vocabularyIdentifier];
+  predictionCopy = prediction;
+  mediaCopy = media;
+  buckets = [predictionCopy buckets];
+  firstObject = [buckets firstObject];
+  vocabularyIdentifier = [firstObject vocabularyIdentifier];
 
-  if (v10)
+  if (vocabularyIdentifier)
   {
-    v11 = [v7 bucketValidUpcomingMedia];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    bucketValidUpcomingMedia = [mediaCopy bucketValidUpcomingMedia];
+    v12 = [bucketValidUpcomingMedia objectForKeyedSubscript:vocabularyIdentifier];
   }
 
   else
@@ -545,44 +545,44 @@ LABEL_28:
   if ([v12 count])
   {
     v13 = objc_alloc(MEMORY[0x277D42648]);
-    v14 = [a1 findTopRankedINPlayMediaIntentFromArray:v12];
-    v15 = [v13 initWithFirst:v14 second:&unk_283A57008];
+    sortedUpcomingMedia = [self findTopRankedINPlayMediaIntentFromArray:v12];
+    v15 = [v13 initWithFirst:sortedUpcomingMedia second:&unk_283A57008];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if ([v7 preferUpcomingMediaForPredictions])
+  if ([mediaCopy preferUpcomingMediaForPredictions])
   {
     v16 = objc_alloc(MEMORY[0x277D42648]);
-    v14 = [v7 sortedUpcomingMedia];
-    v17 = [v14 firstObject];
-    v18 = [v17 first];
-    v15 = [v16 initWithFirst:v18 second:&unk_283A57008];
+    sortedUpcomingMedia = [mediaCopy sortedUpcomingMedia];
+    firstObject2 = [sortedUpcomingMedia firstObject];
+    first = [firstObject2 first];
+    v15 = [v16 initWithFirst:first second:&unk_283A57008];
 
     goto LABEL_8;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:v6 second:&unk_283A57020];
+  v15 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:predictionCopy second:&unk_283A57020];
 LABEL_9:
 
   return v15;
 }
 
-+ (id)resolveContainerLevelPrediction:(id)a3 withUpcomingMedia:(id)a4
++ (id)resolveContainerLevelPrediction:(id)prediction withUpcomingMedia:(id)media
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaContainer];
-  v9 = [v8 identifier];
+  predictionCopy = prediction;
+  mediaCopy = media;
+  mediaContainer = [predictionCopy mediaContainer];
+  identifier = [mediaContainer identifier];
 
-  if (v9)
+  if (identifier)
   {
-    v10 = [v7 containerValidUpcomingMedia];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    containerValidUpcomingMedia = [mediaCopy containerValidUpcomingMedia];
+    v11 = [containerValidUpcomingMedia objectForKeyedSubscript:identifier];
 
-    v12 = [v7 containerExpiredUpcomingMedia];
-    v13 = [v12 objectForKeyedSubscript:v9];
+    containerExpiredUpcomingMedia = [mediaCopy containerExpiredUpcomingMedia];
+    v13 = [containerExpiredUpcomingMedia objectForKeyedSubscript:identifier];
   }
 
   else
@@ -594,22 +594,22 @@ LABEL_9:
   if ([v11 count])
   {
     v14 = objc_alloc(MEMORY[0x277D42648]);
-    v15 = [a1 findTopRankedINPlayMediaIntentFromArray:v11];
-    v16 = [v14 initWithFirst:v15 second:&unk_283A57008];
+    sortedUpcomingMedia = [self findTopRankedINPlayMediaIntentFromArray:v11];
+    v16 = [v14 initWithFirst:sortedUpcomingMedia second:&unk_283A57008];
 LABEL_6:
 
     goto LABEL_13;
   }
 
-  if ([v7 preferUpcomingMediaForPredictions])
+  if ([mediaCopy preferUpcomingMediaForPredictions])
   {
-    if (![v7 isInternalApplication])
+    if (![mediaCopy isInternalApplication])
     {
       v19 = objc_alloc(MEMORY[0x277D42648]);
-      v15 = [v7 sortedUpcomingMedia];
-      v20 = [v15 firstObject];
-      v21 = [v20 first];
-      v16 = [v19 initWithFirst:v21 second:&unk_283A57008];
+      sortedUpcomingMedia = [mediaCopy sortedUpcomingMedia];
+      firstObject = [sortedUpcomingMedia firstObject];
+      first = [firstObject first];
+      v16 = [v19 initWithFirst:first second:&unk_283A57008];
 
       goto LABEL_6;
     }
@@ -620,12 +620,12 @@ LABEL_6:
       goto LABEL_13;
     }
 
-    v17 = [a1 resolveBucketLevelPrediction:v6 withUpcomingMedia:v7];
+    v17 = [self resolveBucketLevelPrediction:predictionCopy withUpcomingMedia:mediaCopy];
   }
 
   else
   {
-    v17 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:v6 second:&unk_283A57020];
+    v17 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:predictionCopy second:&unk_283A57020];
   }
 
   v16 = v17;
@@ -634,26 +634,26 @@ LABEL_13:
   return v16;
 }
 
-+ (id)resolveItemLevelPrediction:(id)a3 withUpcomingMedia:(id)a4
++ (id)resolveItemLevelPrediction:(id)prediction withUpcomingMedia:(id)media
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaContainer];
+  predictionCopy = prediction;
+  mediaCopy = media;
+  mediaContainer = [predictionCopy mediaContainer];
 
-  if (v8)
+  if (mediaContainer)
   {
-    v9 = [a1 resolveContainerLevelPrediction:v6 withUpcomingMedia:v7];
+    v9 = [self resolveContainerLevelPrediction:predictionCopy withUpcomingMedia:mediaCopy];
     goto LABEL_15;
   }
 
-  v10 = [v6 mediaItems];
-  v11 = [v10 firstObject];
-  v12 = [v11 identifier];
+  mediaItems = [predictionCopy mediaItems];
+  firstObject = [mediaItems firstObject];
+  identifier = [firstObject identifier];
 
-  if (v12)
+  if (identifier)
   {
-    v13 = [v7 itemValidUpcomingMedia];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    itemValidUpcomingMedia = [mediaCopy itemValidUpcomingMedia];
+    v14 = [itemValidUpcomingMedia objectForKeyedSubscript:identifier];
   }
 
   else
@@ -663,25 +663,25 @@ LABEL_13:
 
   if (![v14 count])
   {
-    if ([v7 preferUpcomingMediaForPredictions])
+    if ([mediaCopy preferUpcomingMediaForPredictions])
     {
-      if (![v7 isInternalApplication])
+      if (![mediaCopy isInternalApplication])
       {
         v19 = objc_alloc(MEMORY[0x277D42648]);
-        v16 = [v7 sortedUpcomingMedia];
-        v20 = [v16 firstObject];
-        v21 = [v20 first];
-        v9 = [v19 initWithFirst:v21 second:&unk_283A57008];
+        sortedUpcomingMedia = [mediaCopy sortedUpcomingMedia];
+        firstObject2 = [sortedUpcomingMedia firstObject];
+        first = [firstObject2 first];
+        v9 = [v19 initWithFirst:first second:&unk_283A57008];
 
         goto LABEL_8;
       }
 
-      v17 = [a1 resolveBucketLevelPrediction:v6 withUpcomingMedia:v7];
+      v17 = [self resolveBucketLevelPrediction:predictionCopy withUpcomingMedia:mediaCopy];
     }
 
     else
     {
-      v17 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:v6 second:&unk_283A57020];
+      v17 = [objc_alloc(MEMORY[0x277D42648]) initWithFirst:predictionCopy second:&unk_283A57020];
     }
 
     v9 = v17;
@@ -689,8 +689,8 @@ LABEL_13:
   }
 
   v15 = objc_alloc(MEMORY[0x277D42648]);
-  v16 = [a1 findTopRankedINPlayMediaIntentFromArray:v14];
-  v9 = [v15 initWithFirst:v16 second:&unk_283A57008];
+  sortedUpcomingMedia = [self findTopRankedINPlayMediaIntentFromArray:v14];
+  v9 = [v15 initWithFirst:sortedUpcomingMedia second:&unk_283A57008];
 LABEL_8:
 
 LABEL_14:
@@ -699,45 +699,45 @@ LABEL_15:
   return v9;
 }
 
-+ (id)findTopRankedINPlayMediaIntentFromArray:(id)a3
++ (id)findTopRankedINPlayMediaIntentFromArray:(id)array
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
+  arrayCopy = array;
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = *v17;
-    v7 = 0x8000000000000000;
+    longValue = 0x8000000000000000;
     do
     {
       for (i = 0; i != v5; ++i)
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 second];
-        v11 = [v10 longValue] < v7;
+        second = [v9 second];
+        v11 = [second longValue] < longValue;
 
         if (!v11)
         {
-          v12 = [v9 second];
-          v7 = [v12 longValue];
+          second2 = [v9 second];
+          longValue = [second2 longValue];
 
-          v13 = [v9 first];
+          first = [v9 first];
 
-          v4 = v13;
+          v4 = first;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);

@@ -1,20 +1,20 @@
 @interface TLPreferencesUtilities
-+ (BOOL)_valueForEntitlement:(id)a3 task:(__SecTask *)a4;
++ (BOOL)_valueForEntitlement:(id)entitlement task:(__SecTask *)task;
 + (BOOL)canAccessNanoRegistry;
-+ (__CFDictionary)_copyAllKeysAndValuesFromDomain:(__CFString *)a3 usingPreferencesScope:(int)a4;
++ (__CFDictionary)_copyAllKeysAndValuesFromDomain:(__CFString *)domain usingPreferencesScope:(int)scope;
 + (__CFString)copySharedResourcesPreferencesDomain;
-+ (id)_existingPerTopicPreferenceKeyPrefixesWithRegularPreferenceKeys:(const void *)a3 regularPreferenceKeysCount:(unint64_t)a4;
-+ (void)_setValue:(void *)a3 forKey:(__CFString *)a4 inDomain:(__CFString *)a5 usingPreferencesScope:(int)a6;
-+ (void)_synchronizeDomain:(__CFString *)a3 usingPreferencesScope:(int)a4;
++ (id)_existingPerTopicPreferenceKeyPrefixesWithRegularPreferenceKeys:(const void *)keys regularPreferenceKeysCount:(unint64_t)count;
++ (void)_setValue:(void *)value forKey:(__CFString *)key inDomain:(__CFString *)domain usingPreferencesScope:(int)scope;
++ (void)_synchronizeDomain:(__CFString *)domain usingPreferencesScope:(int)scope;
 @end
 
 @implementation TLPreferencesUtilities
 
 + (__CFString)copySharedResourcesPreferencesDomain
 {
-  v3 = [a1 preferencesDomain];
+  preferencesDomain = [self preferencesDomain];
 
-  return [a1 copySharedResourcesPreferencesDomainForDomain:v3];
+  return [self copySharedResourcesPreferencesDomainForDomain:preferencesDomain];
 }
 
 void __175__TLPreferencesUtilities_migratePerTopicPreferencesInDomain_withRegularPreferenceKeys_regularPreferenceKeysCount_intoSinglePerTopicPreferenceWithSuffix_usingPreferencesScope___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -53,7 +53,7 @@ void __175__TLPreferencesUtilities_migratePerTopicPreferencesInDomain_withRegula
   block[1] = 3221225472;
   block[2] = __47__TLPreferencesUtilities_canAccessNanoRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (canAccessNanoRegistry__TLPreferenceUtilitiesCanAccessNanoRegistryOnceToken != -1)
   {
     dispatch_once(&canAccessNanoRegistry__TLPreferenceUtilitiesCanAccessNanoRegistryOnceToken, block);
@@ -85,17 +85,17 @@ void __47__TLPreferencesUtilities_canAccessNanoRegistry__block_invoke(uint64_t a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_valueForEntitlement:(id)a3 task:(__SecTask *)a4
++ (BOOL)_valueForEntitlement:(id)entitlement task:(__SecTask *)task
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  entitlementCopy = entitlement;
   error = 0;
-  v6 = SecTaskCopyValueForEntitlement(a4, v5, &error);
+  v6 = SecTaskCopyValueForEntitlement(task, entitlementCopy, &error);
   v7 = TLLogGeneral();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v14 = v5;
+    v14 = entitlementCopy;
     v15 = 2114;
     v16 = v6;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "Value of %{public}@ entitlement for current process: %{public}@.", buf, 0x16u);
@@ -106,12 +106,12 @@ void __47__TLPreferencesUtilities_canAccessNanoRegistry__block_invoke(uint64_t a
     v8 = CFGetTypeID(v6);
     if (v8 == CFBooleanGetTypeID())
     {
-      v9 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
 
     CFRelease(v6);
@@ -119,7 +119,7 @@ void __47__TLPreferencesUtilities_canAccessNanoRegistry__block_invoke(uint64_t a
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
   if (error)
@@ -128,20 +128,20 @@ void __47__TLPreferencesUtilities_canAccessNanoRegistry__block_invoke(uint64_t a
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v9;
+  return bOOLValue;
 }
 
-+ (id)_existingPerTopicPreferenceKeyPrefixesWithRegularPreferenceKeys:(const void *)a3 regularPreferenceKeysCount:(unint64_t)a4
++ (id)_existingPerTopicPreferenceKeyPrefixesWithRegularPreferenceKeys:(const void *)keys regularPreferenceKeysCount:(unint64_t)count
 {
-  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); a4; --a4)
+  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); count; --count)
   {
-    if (*a3)
+    if (*keys)
     {
-      v7 = [*a3 stringByAppendingString:@"-"];
+      v7 = [*keys stringByAppendingString:@"-"];
       [i addObject:v7];
     }
 
-    ++a3;
+    ++keys;
   }
 
   return i;
@@ -203,41 +203,41 @@ LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (__CFDictionary)_copyAllKeysAndValuesFromDomain:(__CFString *)a3 usingPreferencesScope:(int)a4
++ (__CFDictionary)_copyAllKeysAndValuesFromDomain:(__CFString *)domain usingPreferencesScope:(int)scope
 {
-  if (!a4)
+  if (!scope)
   {
     v4 = MEMORY[0x1E695E898];
-    return CFPreferencesCopyMultiple(0, a3, *MEMORY[0x1E695E8B8], *v4);
+    return CFPreferencesCopyMultiple(0, domain, *MEMORY[0x1E695E8B8], *v4);
   }
 
-  if (a4 == 1)
+  if (scope == 1)
   {
     v4 = MEMORY[0x1E695E8B0];
-    return CFPreferencesCopyMultiple(0, a3, *MEMORY[0x1E695E8B8], *v4);
+    return CFPreferencesCopyMultiple(0, domain, *MEMORY[0x1E695E8B8], *v4);
   }
 
   return 0;
 }
 
-+ (void)_setValue:(void *)a3 forKey:(__CFString *)a4 inDomain:(__CFString *)a5 usingPreferencesScope:(int)a6
++ (void)_setValue:(void *)value forKey:(__CFString *)key inDomain:(__CFString *)domain usingPreferencesScope:(int)scope
 {
-  if (a6 == 1)
+  if (scope == 1)
   {
-    CFPreferencesSetValue(a4, a3, a5, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
+    CFPreferencesSetValue(key, value, domain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
   }
 
-  else if (!a6)
+  else if (!scope)
   {
-    CFPreferencesSetAppValue(a4, a3, a5);
+    CFPreferencesSetAppValue(key, value, domain);
   }
 }
 
-+ (void)_synchronizeDomain:(__CFString *)a3 usingPreferencesScope:(int)a4
++ (void)_synchronizeDomain:(__CFString *)domain usingPreferencesScope:(int)scope
 {
-  if (a4)
+  if (scope)
   {
-    if (a4 != 1)
+    if (scope != 1)
     {
       return;
     }
@@ -250,7 +250,7 @@ LABEL_13:
     v4 = MEMORY[0x1E695E898];
   }
 
-  CFPreferencesSynchronize(a3, *MEMORY[0x1E695E8B8], *v4);
+  CFPreferencesSynchronize(domain, *MEMORY[0x1E695E8B8], *v4);
 }
 
 @end

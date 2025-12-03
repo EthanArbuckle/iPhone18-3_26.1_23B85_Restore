@@ -1,58 +1,58 @@
 @interface PXStoryDerivedTimeline
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)a3;
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)identifier;
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier;
 - (CGSize)originalSize;
 - (CGSize)size;
 - (PXStoryDerivedTimeline)init;
-- (PXStoryDerivedTimeline)initWithOriginalTimeline:(id)a3;
-- (id)clipWithIdentifier:(int64_t)a3;
-- (id)indexesOfResourcesWithKind:(int64_t)a3 inResourcesDataSource:(id)a4 forClipsInSegmentWithIdentifier:(int64_t)a5;
-- (int64_t)identifierOfFirstClipContainingResourceAtIndex:(int64_t)a3 inResourcesDataSource:(id)a4 resourceKind:(int64_t)a5;
-- (int64_t)indexOfResourceForClipWithIdentifier:(int64_t)a3 inResourcesDataSource:(id)a4 resourceKind:(int64_t)a5;
-- (int64_t)indexOfSegmentWithIdentifier:(int64_t)a3;
+- (PXStoryDerivedTimeline)initWithOriginalTimeline:(id)timeline;
+- (id)clipWithIdentifier:(int64_t)identifier;
+- (id)indexesOfResourcesWithKind:(int64_t)kind inResourcesDataSource:(id)source forClipsInSegmentWithIdentifier:(int64_t)identifier;
+- (int64_t)identifierOfFirstClipContainingResourceAtIndex:(int64_t)index inResourcesDataSource:(id)source resourceKind:(int64_t)kind;
+- (int64_t)indexOfResourceForClipWithIdentifier:(int64_t)identifier inResourcesDataSource:(id)source resourceKind:(int64_t)kind;
+- (int64_t)indexOfSegmentWithIdentifier:(int64_t)identifier;
 - (int64_t)numberOfSegments;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block;
 @end
 
 @implementation PXStoryDerivedTimeline
 
-- (int64_t)identifierOfFirstClipContainingResourceAtIndex:(int64_t)a3 inResourcesDataSource:(id)a4 resourceKind:(int64_t)a5
+- (int64_t)identifierOfFirstClipContainingResourceAtIndex:(int64_t)index inResourcesDataSource:(id)source resourceKind:(int64_t)kind
 {
-  v8 = a4;
-  v9 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v10 = [v9 identifierOfFirstClipContainingResourceAtIndex:a3 inResourcesDataSource:v8 resourceKind:a5];
+  sourceCopy = source;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v10 = [originalTimeline identifierOfFirstClipContainingResourceAtIndex:index inResourcesDataSource:sourceCopy resourceKind:kind];
 
   return v10;
 }
 
-- (int64_t)indexOfResourceForClipWithIdentifier:(int64_t)a3 inResourcesDataSource:(id)a4 resourceKind:(int64_t)a5
+- (int64_t)indexOfResourceForClipWithIdentifier:(int64_t)identifier inResourcesDataSource:(id)source resourceKind:(int64_t)kind
 {
-  v8 = a4;
-  v9 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v10 = [v9 indexOfResourceForClipWithIdentifier:a3 inResourcesDataSource:v8 resourceKind:a5];
+  sourceCopy = source;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v10 = [originalTimeline indexOfResourceForClipWithIdentifier:identifier inResourcesDataSource:sourceCopy resourceKind:kind];
 
   return v10;
 }
 
-- (id)indexesOfResourcesWithKind:(int64_t)a3 inResourcesDataSource:(id)a4 forClipsInSegmentWithIdentifier:(int64_t)a5
+- (id)indexesOfResourcesWithKind:(int64_t)kind inResourcesDataSource:(id)source forClipsInSegmentWithIdentifier:(int64_t)identifier
 {
-  v8 = a4;
-  v9 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v10 = [v9 indexesOfResourcesWithKind:a3 inResourcesDataSource:v8 forClipsInSegmentWithIdentifier:a5];
+  sourceCopy = source;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v10 = [originalTimeline indexesOfResourcesWithKind:kind inResourcesDataSource:sourceCopy forClipsInSegmentWithIdentifier:identifier];
 
   return v10;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)identifier
 {
-  v6 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  if (v6)
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  if (originalTimeline)
   {
-    v8 = v6;
-    [v6 timeRangeForSegmentWithIdentifier:a4];
-    v6 = v8;
+    v8 = originalTimeline;
+    [originalTimeline timeRangeForSegmentWithIdentifier:a4];
+    originalTimeline = v8;
   }
 
   else
@@ -65,18 +65,18 @@
   return result;
 }
 
-- (int64_t)indexOfSegmentWithIdentifier:(int64_t)a3
+- (int64_t)indexOfSegmentWithIdentifier:(int64_t)identifier
 {
-  v4 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v5 = [v4 indexOfSegmentWithIdentifier:a3];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v5 = [originalTimeline indexOfSegmentWithIdentifier:identifier];
 
   return v5;
 }
 
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier
 {
-  v4 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v4 frameForSegmentWithIdentifier:a3];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline frameForSegmentWithIdentifier:identifier];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -93,52 +93,52 @@
   return result;
 }
 
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v8 = *&a3->var0.var3;
-  v9[0] = *&a3->var0.var0;
+  blockCopy = block;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v8 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v8;
-  v9[2] = *&a3->var1.var1;
-  [v7 enumerateSegmentsInTimeRange:v9 usingBlock:v6];
+  v9[2] = *&range->var1.var1;
+  [originalTimeline enumerateSegmentsInTimeRange:v9 usingBlock:blockCopy];
 }
 
 - (int64_t)numberOfSegments
 {
-  v2 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v3 = [v2 numberOfSegments];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  numberOfSegments = [originalTimeline numberOfSegments];
 
-  return v3;
+  return numberOfSegments;
 }
 
-- (id)clipWithIdentifier:(int64_t)a3
+- (id)clipWithIdentifier:(int64_t)identifier
 {
-  v4 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v5 = [v4 clipWithIdentifier:a3];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v5 = [originalTimeline clipWithIdentifier:identifier];
 
   return v5;
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  v13 = *&a3->var0.var3;
-  v14[0] = *&a3->var0.var0;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  v13 = *&range->var0.var3;
+  v14[0] = *&range->var0.var0;
   v14[1] = v13;
-  v14[2] = *&a3->var1.var1;
-  [v12 enumerateClipsInTimeRange:v14 rect:v11 usingBlock:{x, y, width, height}];
+  v14[2] = *&range->var1.var1;
+  [originalTimeline enumerateClipsInTimeRange:v14 rect:blockCopy usingBlock:{x, y, width, height}];
 }
 
 - (CGSize)originalSize
 {
-  v2 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v2 originalSize];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline originalSize];
   v4 = v3;
   v6 = v5;
 
@@ -151,8 +151,8 @@
 
 - (CGSize)size
 {
-  v2 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  [v2 size];
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  [originalTimeline size];
   v4 = v3;
   v6 = v5;
 
@@ -165,12 +165,12 @@
 
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange
 {
-  v4 = [(PXStoryDerivedTimeline *)self originalTimeline];
-  if (v4)
+  originalTimeline = [(PXStoryDerivedTimeline *)self originalTimeline];
+  if (originalTimeline)
   {
-    v6 = v4;
-    [v4 timeRange];
-    v4 = v6;
+    v6 = originalTimeline;
+    [originalTimeline timeRange];
+    originalTimeline = v6;
   }
 
   else
@@ -183,16 +183,16 @@
   return result;
 }
 
-- (PXStoryDerivedTimeline)initWithOriginalTimeline:(id)a3
+- (PXStoryDerivedTimeline)initWithOriginalTimeline:(id)timeline
 {
-  v5 = a3;
+  timelineCopy = timeline;
   v9.receiver = self;
   v9.super_class = PXStoryDerivedTimeline;
   v6 = [(PXStoryDerivedTimeline *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalTimeline, a3);
+    objc_storeStrong(&v6->_originalTimeline, timeline);
   }
 
   return v7;
@@ -200,8 +200,8 @@
 
 - (PXStoryDerivedTimeline)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryDerivedTimeline.m" lineNumber:14 description:{@"%s is not available as initializer", "-[PXStoryDerivedTimeline init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDerivedTimeline.m" lineNumber:14 description:{@"%s is not available as initializer", "-[PXStoryDerivedTimeline init]"}];
 
   abort();
 }

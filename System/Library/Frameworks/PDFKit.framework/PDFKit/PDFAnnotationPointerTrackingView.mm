@@ -1,26 +1,26 @@
 @interface PDFAnnotationPointerTrackingView
-- (PDFAnnotationPointerTrackingView)initWithFrame:(CGRect)a3 annotation:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (PDFAnnotationPointerTrackingView)initWithFrame:(CGRect)frame annotation:(id)annotation;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 @end
 
 @implementation PDFAnnotationPointerTrackingView
 
-- (PDFAnnotationPointerTrackingView)initWithFrame:(CGRect)a3 annotation:(id)a4
+- (PDFAnnotationPointerTrackingView)initWithFrame:(CGRect)frame annotation:(id)annotation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  annotationCopy = annotation;
   v15.receiver = self;
   v15.super_class = PDFAnnotationPointerTrackingView;
-  v11 = [(PDFAnnotationPointerTrackingView *)&v15 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(PDFAnnotationPointerTrackingView *)&v15 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_annotation, a4);
+    objc_storeStrong(&height->_annotation, annotation);
     v13 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v12];
     [(PDFAnnotationPointerTrackingView *)v12 addInteraction:v13];
   }
@@ -28,19 +28,19 @@
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(PDFAnnotationPointerTrackingView *)self annotation:a3];
-  v6 = [v5 isTextWidget];
+  v5 = [(PDFAnnotationPointerTrackingView *)self annotation:interaction];
+  isTextWidget = [v5 isTextWidget];
 
-  if (v6)
+  if (isTextWidget)
   {
-    v7 = [(PDFAnnotationPointerTrackingView *)self annotation];
-    v8 = [v7 font];
+    annotation = [(PDFAnnotationPointerTrackingView *)self annotation];
+    font = [annotation font];
 
-    if (v8)
+    if (font)
     {
-      [v8 pointSize];
+      [font pointSize];
     }
 
     else
@@ -49,26 +49,26 @@
     }
 
     v10 = [MEMORY[0x1E69DCDC8] beamWithPreferredLength:0 axis:?];
-    v9 = [MEMORY[0x1E69DCDD0] styleWithShape:v10 constrainedAxes:0];
+    systemPointerStyle = [MEMORY[0x1E69DCDD0] styleWithShape:v10 constrainedAxes:0];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DCDD0] systemPointerStyle];
+    systemPointerStyle = [MEMORY[0x1E69DCDD0] systemPointerStyle];
   }
 
-  return v9;
+  return systemPointerStyle;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v5 = [(PDFAnnotationPointerTrackingView *)self annotation:a3];
+  v5 = [(PDFAnnotationPointerTrackingView *)self annotation:interaction];
   [v5 setPointerIsOverAnnotation:1];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v5 = [(PDFAnnotationPointerTrackingView *)self annotation:a3];
+  v5 = [(PDFAnnotationPointerTrackingView *)self annotation:interaction];
   [v5 setPointerIsOverAnnotation:0];
 }
 

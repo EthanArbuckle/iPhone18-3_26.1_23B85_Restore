@@ -1,52 +1,52 @@
 @interface AVSpeechSynthesisVoice
 + (void)initialize;
-- (AVSpeechSynthesisVoice)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVSpeechSynthesisVoice)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVSpeechSynthesisVoice
 
-- (AVSpeechSynthesisVoice)initWithCoder:(id)a3
+- (AVSpeechSynthesisVoice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AVSpeechSynthesisVoice;
   v5 = [(AVSpeechSynthesisVoice *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"language"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"language"];
     [(AVSpeechSynthesisVoice *)v5 setLanguage:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(AVSpeechSynthesisVoice *)v5 setIdentifier:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(AVSpeechSynthesisVoice *)v5 setName:v8];
 
-    -[AVSpeechSynthesisVoice setQuality:](v5, "setQuality:", [v4 decodeIntegerForKey:@"quality"]);
-    -[AVSpeechSynthesisVoice setGender:](v5, "setGender:", [v4 decodeIntegerForKey:@"gender"]);
-    -[AVSpeechSynthesisVoice setVoiceTraits:](v5, "setVoiceTraits:", [v4 decodeIntegerForKey:@"voiceTraits"]);
+    -[AVSpeechSynthesisVoice setQuality:](v5, "setQuality:", [coderCopy decodeIntegerForKey:@"quality"]);
+    -[AVSpeechSynthesisVoice setGender:](v5, "setGender:", [coderCopy decodeIntegerForKey:@"gender"]);
+    -[AVSpeechSynthesisVoice setVoiceTraits:](v5, "setVoiceTraits:", [coderCopy decodeIntegerForKey:@"voiceTraits"]);
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(AVSpeechSynthesisVoice *)self language];
-  [v7 encodeObject:v4 forKey:@"language"];
+  coderCopy = coder;
+  language = [(AVSpeechSynthesisVoice *)self language];
+  [coderCopy encodeObject:language forKey:@"language"];
 
-  v5 = [(AVSpeechSynthesisVoice *)self identifier];
-  [v7 encodeObject:v5 forKey:@"identifier"];
+  identifier = [(AVSpeechSynthesisVoice *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(AVSpeechSynthesisVoice *)self name];
-  [v7 encodeObject:v6 forKey:@"name"];
+  name = [(AVSpeechSynthesisVoice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v7 encodeInteger:-[AVSpeechSynthesisVoice quality](self forKey:{"quality"), @"quality"}];
-  [v7 encodeInteger:-[AVSpeechSynthesisVoice gender](self forKey:{"gender"), @"gender"}];
-  [v7 encodeInteger:-[AVSpeechSynthesisVoice voiceTraits](self forKey:{"voiceTraits"), @"voiceTraits"}];
+  [coderCopy encodeInteger:-[AVSpeechSynthesisVoice quality](self forKey:{"quality"), @"quality"}];
+  [coderCopy encodeInteger:-[AVSpeechSynthesisVoice gender](self forKey:{"gender"), @"gender"}];
+  [coderCopy encodeInteger:-[AVSpeechSynthesisVoice voiceTraits](self forKey:{"voiceTraits"), @"voiceTraits"}];
 }
 
 + (void)initialize

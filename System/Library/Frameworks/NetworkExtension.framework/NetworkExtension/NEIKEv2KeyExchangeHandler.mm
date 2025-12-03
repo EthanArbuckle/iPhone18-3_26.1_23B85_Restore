@@ -1,28 +1,28 @@
 @interface NEIKEv2KeyExchangeHandler
-+ (void)handlerForMethod:(uint64_t)a1;
-+ (void)handlerForMethod:(void *)a3 peerPayload:;
-- (BOOL)processPeerPayload:(id)a3;
-- (void)initWithMethod:(void *)a3 keyExchangeData:;
-- (void)setSharedSecret:(uint64_t)a1;
++ (void)handlerForMethod:(uint64_t)method;
++ (void)handlerForMethod:(void *)method peerPayload:;
+- (BOOL)processPeerPayload:(id)payload;
+- (void)initWithMethod:(void *)method keyExchangeData:;
+- (void)setSharedSecret:(uint64_t)secret;
 @end
 
 @implementation NEIKEv2KeyExchangeHandler
 
-- (void)setSharedSecret:(uint64_t)a1
+- (void)setSharedSecret:(uint64_t)secret
 {
-  if (a1)
+  if (secret)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((secret + 24), a2);
   }
 }
 
-- (BOOL)processPeerPayload:(id)a3
+- (BOOL)processPeerPayload:(id)payload
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = ne_log_obj();
   v6 = v5;
-  if (v4)
+  if (payloadCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -42,7 +42,7 @@
     }
 
     v15 = 0;
-    v7 = [(NEIKEv2KeyExchangeHandler *)self processPeerPayload:v4 error:&v15];
+    v7 = [(NEIKEv2KeyExchangeHandler *)self processPeerPayload:payloadCopy error:&v15];
     v6 = v15;
     v8 = ne_log_obj();
     v9 = v8;
@@ -102,7 +102,7 @@
   return v7;
 }
 
-+ (void)handlerForMethod:(uint64_t)a1
++ (void)handlerForMethod:(uint64_t)method
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -176,21 +176,21 @@ LABEL_15:
   return [(NEIKEv2KeyExchangeHandlerMODP *)v3 initWithMODPMethod:a2];
 }
 
-- (void)initWithMethod:(void *)a3 keyExchangeData:
+- (void)initWithMethod:(void *)method keyExchangeData:
 {
-  v5 = a3;
-  if (a1)
+  methodCopy = method;
+  if (self)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = NEIKEv2KeyExchangeHandler;
     v6 = objc_msgSendSuper2(&v11, sel_init);
     if (v6)
     {
-      a1 = v6;
+      self = v6;
       v6[1] = a2;
-      v7 = v5;
-      v8 = a1[2];
-      a1[2] = v7;
+      v7 = methodCopy;
+      v8 = self[2];
+      self[2] = v7;
     }
 
     else
@@ -202,17 +202,17 @@ LABEL_15:
         _os_log_fault_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_FAULT, "[super init] failed", v10, 2u);
       }
 
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (void)handlerForMethod:(void *)a3 peerPayload:
++ (void)handlerForMethod:(void *)method peerPayload:
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  methodCopy = method;
   objc_opt_self();
   if (a2 > 0x25)
   {
@@ -222,7 +222,7 @@ LABEL_15:
   if (((1 << a2) & 0x7C026) != 0)
   {
     v5 = [[NEIKEv2KeyExchangeHandlerMODP alloc] initWithMODPMethod:a2];
-    if ([v5 processPeerPayload:v4])
+    if ([v5 processPeerPayload:methodCopy])
     {
       v6 = v5;
     }
@@ -246,7 +246,7 @@ LABEL_15:
     }
 
     v15 = 0;
-    v6 = [NEIKEv2KeyExchangeHandlerCryptoKit handlerForMethod:a2 peerPayload:v4 error:&v15];
+    v6 = [NEIKEv2KeyExchangeHandlerCryptoKit handlerForMethod:a2 peerPayload:methodCopy error:&v15];
     v8 = v15;
     v9 = ne_log_obj();
     v10 = v9;

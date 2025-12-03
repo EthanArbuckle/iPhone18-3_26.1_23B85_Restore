@@ -1,22 +1,22 @@
 @interface SALLMList
-+ (BOOL)isLLM:(id)a3;
-+ (void)billLLMsToSystemOn:(id)a3 andTelemetry:(id)a4;
++ (BOOL)isLLM:(id)m;
++ (void)billLLMsToSystemOn:(id)on andTelemetry:(id)telemetry;
 @end
 
 @implementation SALLMList
 
-+ (BOOL)isLLM:(id)a3
++ (BOOL)isLLM:(id)m
 {
-  v3 = a3;
+  mCopy = m;
   if (qword_100073798 != -1)
   {
     sub_10004114C();
   }
 
-  v4 = [qword_100073790 objectForKeyedSubscript:v3];
+  v4 = [qword_100073790 objectForKeyedSubscript:mCopy];
   if (v4)
   {
-    v5 = [qword_100073790 objectForKeyedSubscript:v3];
+    v5 = [qword_100073790 objectForKeyedSubscript:mCopy];
     v6 = [v5 isEqual:&__kCFBooleanTrue];
   }
 
@@ -28,10 +28,10 @@
   return v6;
 }
 
-+ (void)billLLMsToSystemOn:(id)a3 andTelemetry:(id)a4
++ (void)billLLMsToSystemOn:(id)on andTelemetry:(id)telemetry
 {
-  v5 = a3;
-  v6 = a4;
+  onCopy = on;
+  telemetryCopy = telemetry;
   v7 = SALog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -40,17 +40,17 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s start", buf, 0xCu);
   }
 
-  v8 = [v5 appsDataInternal];
-  v9 = [v8 mutableCopy];
+  appsDataInternal = [onCopy appsDataInternal];
+  v9 = [appsDataInternal mutableCopy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002F334;
   v13[3] = &unk_1000659B8;
-  v14 = v5;
-  v15 = v6;
-  v10 = v6;
-  v11 = v5;
+  v14 = onCopy;
+  v15 = telemetryCopy;
+  v10 = telemetryCopy;
+  v11 = onCopy;
   [v9 enumerateKeysAndObjectsUsingBlock:v13];
   v12 = SALog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))

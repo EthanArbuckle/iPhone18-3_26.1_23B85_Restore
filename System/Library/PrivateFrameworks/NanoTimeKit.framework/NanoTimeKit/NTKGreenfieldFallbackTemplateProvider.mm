@@ -1,26 +1,26 @@
 @interface NTKGreenfieldFallbackTemplateProvider
-+ (id)_tombstoneImageForFamily:(int64_t)a3;
-+ (id)templateForClientIdentifier:(id)a3 displayName:(id)a4 family:(int64_t)a5 device:(id)a6 sdkVersion:(id)a7;
++ (id)_tombstoneImageForFamily:(int64_t)family;
++ (id)templateForClientIdentifier:(id)identifier displayName:(id)name family:(int64_t)family device:(id)device sdkVersion:(id)version;
 @end
 
 @implementation NTKGreenfieldFallbackTemplateProvider
 
-+ (id)templateForClientIdentifier:(id)a3 displayName:(id)a4 family:(int64_t)a5 device:(id)a6 sdkVersion:(id)a7
++ (id)templateForClientIdentifier:(id)identifier displayName:(id)name family:(int64_t)family device:(id)device sdkVersion:(id)version
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = [a1 _tombstoneImageForFamily:a5];
-  v15 = [NTKNoContentTemplateProvider templateForDisplayName:v13 image:v14 family:a5 device:v12 sdkVersion:v11];
+  versionCopy = version;
+  deviceCopy = device;
+  nameCopy = name;
+  v14 = [self _tombstoneImageForFamily:family];
+  v15 = [NTKNoContentTemplateProvider templateForDisplayName:nameCopy image:v14 family:family device:deviceCopy sdkVersion:versionCopy];
 
   return v15;
 }
 
-+ (id)_tombstoneImageForFamily:(int64_t)a3
++ (id)_tombstoneImageForFamily:(int64_t)family
 {
-  if (a3 <= 0xC && ((0x1595u >> a3) & 1) != 0)
+  if (family <= 0xC && ((0x1595u >> family) & 1) != 0)
   {
-    NTKImageNamed(off_27877EE38[a3]);
+    NTKImageNamed(off_27877EE38[family]);
   }
 
   return 0;

@@ -1,22 +1,22 @@
 @interface CHSIntentRecommendation
-- (BOOL)isEqual:(id)a3;
-- (CHSIntentRecommendation)initWithBSXPCCoder:(id)a3;
-- (CHSIntentRecommendation)initWithCoder:(id)a3;
-- (CHSIntentRecommendation)initWithIntentReference:(id)a3 localizedDescription:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CHSIntentRecommendation)initWithBSXPCCoder:(id)coder;
+- (CHSIntentRecommendation)initWithCoder:(id)coder;
+- (CHSIntentRecommendation)initWithIntentReference:(id)reference localizedDescription:(id)description;
 - (NSString)description;
-- (id)_copyFillingInSchema:(id)a3;
+- (id)_copyFillingInSchema:(id)schema;
 - (id)_copyWithoutSchemaDataIfNecessary;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSIntentRecommendation
 
-- (CHSIntentRecommendation)initWithIntentReference:(id)a3 localizedDescription:(id)a4
+- (CHSIntentRecommendation)initWithIntentReference:(id)reference localizedDescription:(id)description
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  referenceCopy = reference;
+  descriptionCopy = description;
+  if (referenceCopy)
   {
     v15.receiver = self;
     v15.super_class = CHSIntentRecommendation;
@@ -24,56 +24,56 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_intentReference, a3);
-      v11 = [v8 copy];
+      objc_storeStrong(&v9->_intentReference, reference);
+      v11 = [descriptionCopy copy];
       localizedDescription = v10->_localizedDescription;
       v10->_localizedDescription = v11;
     }
 
     self = v10;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)_copyFillingInSchema:(id)a3
+- (id)_copyFillingInSchema:(id)schema
 {
-  v4 = [(CHSIntentReference *)self->_intentReference _copyFillingInSchema:a3];
+  v4 = [(CHSIntentReference *)self->_intentReference _copyFillingInSchema:schema];
   if (v4 == self->_intentReference)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [[CHSIntentRecommendation alloc] initWithIntentReference:v4 localizedDescription:self->_localizedDescription];
+    selfCopy = [[CHSIntentRecommendation alloc] initWithIntentReference:v4 localizedDescription:self->_localizedDescription];
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
 - (id)_copyWithoutSchemaDataIfNecessary
 {
-  v3 = [(CHSIntentReference *)self->_intentReference _copyWithoutSchemaDataIfNecessary];
-  if (v3 == self->_intentReference)
+  _copyWithoutSchemaDataIfNecessary = [(CHSIntentReference *)self->_intentReference _copyWithoutSchemaDataIfNecessary];
+  if (_copyWithoutSchemaDataIfNecessary == self->_intentReference)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [[CHSIntentRecommendation alloc] initWithIntentReference:v3 localizedDescription:self->_localizedDescription];
+    selfCopy = [[CHSIntentRecommendation alloc] initWithIntentReference:_copyWithoutSchemaDataIfNecessary localizedDescription:self->_localizedDescription];
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
@@ -87,11 +87,11 @@
   v11 = &unk_1E7453000;
   v4 = v3;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:&v8];
-  v6 = [v4 build];
+  build = [v4 build];
 
-  return v6;
+  return build;
 }
 
 uint64_t __38__CHSIntentRecommendation_description__block_invoke(uint64_t a1)
@@ -103,10 +103,10 @@ uint64_t __38__CHSIntentRecommendation_description__block_invoke(uint64_t a1)
   return [v3 appendString:v4 withName:@"description" skipIfEmpty:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -116,7 +116,7 @@ uint64_t __38__CHSIntentRecommendation_description__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       localizedDescription = self->_localizedDescription;
       v7 = v5->_localizedDescription;
       if (BSEqualObjects())
@@ -139,23 +139,23 @@ uint64_t __38__CHSIntentRecommendation_description__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_intentReference forKey:@"intent2"];
-  [v4 encodeObject:self->_localizedDescription forKey:@"desc"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_intentReference forKey:@"intent2"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"desc"];
 }
 
-- (CHSIntentRecommendation)initWithCoder:(id)a3
+- (CHSIntentRecommendation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
-  if (![v4 containsValueForKey:@"intent2"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
+  if (![coderCopy containsValueForKey:@"intent2"])
   {
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"intent"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"intent"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -182,30 +182,30 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
 LABEL_10:
-  v13 = 0;
+  selfCopy = 0;
   if (v6 && v5)
   {
     self = [(CHSIntentRecommendation *)self initWithIntentReference:v6 localizedDescription:v5];
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_intentReference forKey:@"intent2"];
-  [v4 encodeObject:self->_localizedDescription forKey:@"desc"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_intentReference forKey:@"intent2"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"desc"];
 }
 
-- (CHSIntentRecommendation)initWithBSXPCCoder:(id)a3
+- (CHSIntentRecommendation)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
-  v6 = [v4 decodeStringForKey:@"desc"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"intent2"];
+  v6 = [coderCopy decodeStringForKey:@"desc"];
   v7 = v6;
   if (v5)
   {
@@ -219,16 +219,16 @@ LABEL_10:
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CHSIntentRecommendation *)self initWithIntentReference:v5 localizedDescription:v6];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

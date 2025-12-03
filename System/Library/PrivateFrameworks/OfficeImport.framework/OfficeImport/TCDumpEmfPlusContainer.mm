@@ -1,10 +1,10 @@
 @interface TCDumpEmfPlusContainer
-- (void)fromBinary:(__sFILE *)a3 toXml:(_xmlNode *)a4 state:(id)a5;
+- (void)fromBinary:(__sFILE *)binary toXml:(_xmlNode *)xml state:(id)state;
 @end
 
 @implementation TCDumpEmfPlusContainer
 
-- (void)fromBinary:(__sFILE *)a3 toXml:(_xmlNode *)a4 state:(id)a5
+- (void)fromBinary:(__sFILE *)binary toXml:(_xmlNode *)xml state:(id)state
 {
   v145 = *MEMORY[0x277D85DE8];
   v6 = [[TCDumpNumeric alloc] initWithType:5];
@@ -129,11 +129,11 @@
   v144 = 0;
   v24 = [[TCDumpEnum alloc] initWithTypeName:@"EmfPlusRecordType" pairs:v27];
   v7 = [[TCDumpNumeric alloc] initWithType:3 enumType:v24];
-  fseek(a3, -8, 1);
-  LEUI32 = TCDumpReadLEUI32(a3);
-  fseek(a3, 4, 1);
-  v9 = LEUI32 + ftello(a3) - 4;
-  v10 = ftello(a3);
+  fseek(binary, -8, 1);
+  LEUI32 = TCDumpReadLEUI32(binary);
+  fseek(binary, 4, 1);
+  v9 = LEUI32 + ftello(binary) - 4;
+  v10 = ftello(binary);
   if (v9 > v10)
   {
     v11 = v10;
@@ -141,25 +141,25 @@
     do
     {
       v13 = xmlNewNode(0, "EmfPlusRecord");
-      xmlAddChild(a4, v13);
+      xmlAddChild(xml, v13);
       sfaxmlSetLongNoNsProp(v13, "index", v12);
       v14 = xmlNewNode(0, "type");
       xmlAddChild(v13, v14);
-      [(TCDumpNumeric *)v7 fromBinary:a3 toXml:v14 state:0];
+      [(TCDumpNumeric *)v7 fromBinary:binary toXml:v14 state:0];
       v15 = xmlNewNode(0, "flags");
       xmlAddChild(v13, v15);
-      [(TCDumpNumeric *)v26 fromBinary:a3 toXml:v15 state:0];
+      [(TCDumpNumeric *)v26 fromBinary:binary toXml:v15 state:0];
       v16 = xmlNewNode(0, "record-size");
       xmlAddChild(v13, v16);
-      [(TCDumpNumeric *)v6 fromBinary:a3 toXml:v16 state:0];
-      fseek(a3, -4, 1);
-      if (TCDumpReadLEUI32(a3) != 8)
+      [(TCDumpNumeric *)v6 fromBinary:binary toXml:v16 state:0];
+      fseek(binary, -4, 1);
+      if (TCDumpReadLEUI32(binary) != 8)
       {
         v17 = xmlNewNode(0, "data-size");
         xmlAddChild(v13, v17);
-        [(TCDumpNumeric *)v6 fromBinary:a3 toXml:v17 state:0];
-        fseek(a3, -4, 1);
-        v18 = TCDumpReadLEUI32(a3);
+        [(TCDumpNumeric *)v6 fromBinary:binary toXml:v17 state:0];
+        fseek(binary, -4, 1);
+        v18 = TCDumpReadLEUI32(binary);
         v19 = v11 + 12;
         if (v18 + v11 + 12 > v9)
         {
@@ -174,12 +174,12 @@
           v21 = xmlNewNode(0, "data");
           xmlAddChild(v13, v21);
           v22 = [[TCDumpBlob alloc] initWithSize_:v18];
-          [(TCDumpBlob *)v22 fromBinary:a3 toXml:v21 state:0];
+          [(TCDumpBlob *)v22 fromBinary:binary toXml:v21 state:0];
         }
       }
 
       ++v12;
-      v11 = ftello(a3);
+      v11 = ftello(binary);
     }
 
     while (v9 > v11);

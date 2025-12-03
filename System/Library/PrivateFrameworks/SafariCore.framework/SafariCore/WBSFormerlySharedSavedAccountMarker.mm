@@ -1,19 +1,19 @@
 @interface WBSFormerlySharedSavedAccountMarker
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSFormerlySharedSavedAccountMarker)initWithDictionaryRepresentation:(id)a3;
-- (WBSFormerlySharedSavedAccountMarker)initWithPasswordManagerCredentialIdentifier:(id)a3 nameOfGroupCredentialWasLastSharedIn:(id)a4;
+- (WBSFormerlySharedSavedAccountMarker)initWithDictionaryRepresentation:(id)representation;
+- (WBSFormerlySharedSavedAccountMarker)initWithPasswordManagerCredentialIdentifier:(id)identifier nameOfGroupCredentialWasLastSharedIn:(id)in;
 @end
 
 @implementation WBSFormerlySharedSavedAccountMarker
 
-- (WBSFormerlySharedSavedAccountMarker)initWithDictionaryRepresentation:(id)a3
+- (WBSFormerlySharedSavedAccountMarker)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"passwordManagerCredentialIdentifier"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"passwordManagerCredentialIdentifier"];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"groupName"];
+    v6 = [representationCopy objectForKeyedSubscript:@"groupName"];
     v7 = [[WBSFormerlySharedSavedAccountMarker alloc] initWithPasswordManagerCredentialIdentifier:v5 nameOfGroupCredentialWasLastSharedIn:v6];
   }
 
@@ -31,20 +31,20 @@
   return v7;
 }
 
-- (WBSFormerlySharedSavedAccountMarker)initWithPasswordManagerCredentialIdentifier:(id)a3 nameOfGroupCredentialWasLastSharedIn:(id)a4
+- (WBSFormerlySharedSavedAccountMarker)initWithPasswordManagerCredentialIdentifier:(id)identifier nameOfGroupCredentialWasLastSharedIn:(id)in
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  inCopy = in;
   v15.receiver = self;
   v15.super_class = WBSFormerlySharedSavedAccountMarker;
   v8 = [(WBSFormerlySharedSavedAccountMarker *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     passwordManagerCredentialIdentifier = v8->_passwordManagerCredentialIdentifier;
     v8->_passwordManagerCredentialIdentifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [inCopy copy];
     nameOfGroupCredentialWasLastSharedIn = v8->_nameOfGroupCredentialWasLastSharedIn;
     v8->_nameOfGroupCredentialWasLastSharedIn = v11;
 
@@ -75,10 +75,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -88,14 +88,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       nameOfGroupCredentialWasLastSharedIn = self->_nameOfGroupCredentialWasLastSharedIn;
-      v7 = [(WBSFormerlySharedSavedAccountMarker *)v5 nameOfGroupCredentialWasLastSharedIn];
-      if (WBSIsEqual(nameOfGroupCredentialWasLastSharedIn, v7))
+      nameOfGroupCredentialWasLastSharedIn = [(WBSFormerlySharedSavedAccountMarker *)v5 nameOfGroupCredentialWasLastSharedIn];
+      if (WBSIsEqual(nameOfGroupCredentialWasLastSharedIn, nameOfGroupCredentialWasLastSharedIn))
       {
         passwordManagerCredentialIdentifier = self->_passwordManagerCredentialIdentifier;
-        v9 = [(WBSFormerlySharedSavedAccountMarker *)v5 passwordManagerCredentialIdentifier];
-        v10 = [(NSString *)passwordManagerCredentialIdentifier isEqualToString:v9];
+        passwordManagerCredentialIdentifier = [(WBSFormerlySharedSavedAccountMarker *)v5 passwordManagerCredentialIdentifier];
+        v10 = [(NSString *)passwordManagerCredentialIdentifier isEqualToString:passwordManagerCredentialIdentifier];
       }
 
       else

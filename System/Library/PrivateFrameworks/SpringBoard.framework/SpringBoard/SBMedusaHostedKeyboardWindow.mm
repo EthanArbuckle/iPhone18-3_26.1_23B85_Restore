@@ -1,65 +1,65 @@
 @interface SBMedusaHostedKeyboardWindow
-- (SBMedusaHostedKeyboardWindow)initWithWindowScene:(id)a3 keyboardScene:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)newWindowLevelAssertionWithPriority:(unint64_t)a3 windowLevel:(double)a4;
+- (SBMedusaHostedKeyboardWindow)initWithWindowScene:(id)scene keyboardScene:(id)keyboardScene;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)newWindowLevelAssertionWithPriority:(unint64_t)priority windowLevel:(double)level;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)_updateWindowLevel;
-- (void)addWindowLevelAssertion:(id)a3;
+- (void)addWindowLevelAssertion:(id)assertion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)medusaHostedKeyboardWindowWillHide:(id)a3;
-- (void)medusaHostedKeyboardWindowWillShow:(id)a3;
-- (void)removeWindowLevelAssertion:(id)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)medusaHostedKeyboardWindowWillHide:(id)hide;
+- (void)medusaHostedKeyboardWindowWillShow:(id)show;
+- (void)removeWindowLevelAssertion:(id)assertion;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SBMedusaHostedKeyboardWindow
 
-- (SBMedusaHostedKeyboardWindow)initWithWindowScene:(id)a3 keyboardScene:(id)a4
+- (SBMedusaHostedKeyboardWindow)initWithWindowScene:(id)scene keyboardScene:(id)keyboardScene
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 settings];
-  v10 = [v9 sb_displayIdentityForSceneManagers];
-  v11 = [v10 UIScreen];
+  sceneCopy = scene;
+  keyboardSceneCopy = keyboardScene;
+  settings = [keyboardSceneCopy settings];
+  sb_displayIdentityForSceneManagers = [settings sb_displayIdentityForSceneManagers];
+  uIScreen = [sb_displayIdentityForSceneManagers UIScreen];
 
-  if (!v11)
+  if (!uIScreen)
   {
-    [(SBMedusaHostedKeyboardWindow *)v8 initWithWindowScene:a2 keyboardScene:self];
+    [(SBMedusaHostedKeyboardWindow *)keyboardSceneCopy initWithWindowScene:a2 keyboardScene:self];
   }
 
   v33.receiver = self;
   v33.super_class = SBMedusaHostedKeyboardWindow;
-  v12 = [(SBWindow *)&v33 initWithWindowScene:v7 rootViewController:0 layoutStrategy:0 role:@"SBTraitsParticipantRoleFloatingKeyboard" debugName:@"HostedKeyboardWindow"];
+  v12 = [(SBWindow *)&v33 initWithWindowScene:sceneCopy rootViewController:0 layoutStrategy:0 role:@"SBTraitsParticipantRoleFloatingKeyboard" debugName:@"HostedKeyboardWindow"];
   if (v12)
   {
-    v13 = [v8 uiPresentationManager];
+    uiPresentationManager = [keyboardSceneCopy uiPresentationManager];
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v7 _FBSScene];
-    v16 = [v15 identifier];
-    v17 = v16;
+    _FBSScene = [sceneCopy _FBSScene];
+    identifier = [_FBSScene identifier];
+    v17 = identifier;
     v18 = &stru_283094718;
-    if (v16)
+    if (identifier)
     {
-      v18 = v16;
+      v18 = identifier;
     }
 
     v19 = [v14 stringWithFormat:@"%@-%@", @"SBMedusaHostedKeyboardWindow", v18];
 
-    v20 = [v13 createPresenterWithIdentifier:v19 priority:1];
+    v20 = [uiPresentationManager createPresenterWithIdentifier:v19 priority:1];
     remoteHostedKeyboardScenePresenter = v12->_remoteHostedKeyboardScenePresenter;
     v12->_remoteHostedKeyboardScenePresenter = v20;
 
     v22 = objc_alloc_init(_SBHostedKeyboardViewController);
-    v23 = [(_SBHostedKeyboardViewController *)v22 view];
-    [v23 setAutoresizingMask:18];
+    view = [(_SBHostedKeyboardViewController *)v22 view];
+    [view setAutoresizingMask:18];
 
-    v24 = [(_SBHostedKeyboardViewController *)v22 view];
-    v25 = [(UIScenePresenter *)v12->_remoteHostedKeyboardScenePresenter presentationView];
-    [v24 addSubview:v25];
+    view2 = [(_SBHostedKeyboardViewController *)v22 view];
+    presentationView = [(UIScenePresenter *)v12->_remoteHostedKeyboardScenePresenter presentationView];
+    [view2 addSubview:presentationView];
 
     [(SBMedusaHostedKeyboardWindow *)v12 setRootViewController:v22];
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -70,11 +70,11 @@
     defaultWindowLevelAssertion = v12->_defaultWindowLevelAssertion;
     v12->_defaultWindowLevelAssertion = v28;
 
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v30 addObserver:v12 selector:sel_medusaHostedKeyboardWindowWillShow_ name:@"SBMedusaHostedKeyboardWindowWillShowNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_medusaHostedKeyboardWindowWillShow_ name:@"SBMedusaHostedKeyboardWindowWillShowNotification" object:0];
 
-    v31 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v31 addObserver:v12 selector:sel_medusaHostedKeyboardWindowWillHide_ name:@"SBMedusaHostedKeyboardWindowWillHideNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v12 selector:sel_medusaHostedKeyboardWindowWillHide_ name:@"SBMedusaHostedKeyboardWindowWillHideNotification" object:0];
   }
 
   return v12;
@@ -96,16 +96,16 @@
   [(SBMedusaHostedKeyboardWindowLevelAssertion *)defaultWindowLevelAssertion invalidate];
 }
 
-- (id)newWindowLevelAssertionWithPriority:(unint64_t)a3 windowLevel:(double)a4
+- (id)newWindowLevelAssertionWithPriority:(unint64_t)priority windowLevel:(double)level
 {
   v7 = [SBMedusaHostedKeyboardWindowLevelAssertion alloc];
 
-  return [(SBMedusaHostedKeyboardWindowLevelAssertion *)v7 initWithMedusaHostedKeyboardWindow:self priority:a3 windowLevel:a4];
+  return [(SBMedusaHostedKeyboardWindowLevelAssertion *)v7 initWithMedusaHostedKeyboardWindow:self priority:priority windowLevel:level];
 }
 
-- (void)addWindowLevelAssertion:(id)a3
+- (void)addWindowLevelAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -115,7 +115,7 @@
   v8 = 3221225472;
   v9 = __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke;
   v10 = &unk_2783B45C0;
-  v6 = v4;
+  v6 = assertionCopy;
   v11 = v6;
   v12 = &v13;
   [(NSMutableArray *)windowLevelAssertions enumerateObjectsUsingBlock:&v7];
@@ -138,9 +138,9 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
   }
 }
 
-- (void)removeWindowLevelAssertion:(id)a3
+- (void)removeWindowLevelAssertion:(id)assertion
 {
-  [(NSMutableArray *)self->_windowLevelAssertions removeObject:a3];
+  [(NSMutableArray *)self->_windowLevelAssertions removeObject:assertion];
 
   [(SBMedusaHostedKeyboardWindow *)self _updateWindowLevel];
 }
@@ -148,11 +148,11 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
 - (void)_updateWindowLevel
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableArray *)self->_windowLevelAssertions firstObject];
-  v4 = v3;
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_windowLevelAssertions firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    [v3 windowLevel];
+    [firstObject windowLevel];
     [(SBMedusaHostedKeyboardWindow *)self setWindowLevel:?];
     v5 = SBLogMedusaKeyboard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -161,14 +161,14 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
       v7 = NSStringFromClass(v6);
       [v4 windowLevel];
       v9 = v8;
-      v10 = [v4 priority];
+      priority = [v4 priority];
       v11 = @"Medusa";
-      if (v10 == 1)
+      if (priority == 1)
       {
         v11 = @"Library";
       }
 
-      if (v10 == 2)
+      if (priority == 2)
       {
         v11 = @"Spotlight";
       }
@@ -185,9 +185,9 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v22 = *MEMORY[0x277D85DE8];
   v5 = SBLogMedusaKeyboard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -196,7 +196,7 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
     v7 = v6;
     v8 = "SHOWING";
     remoteHostedKeyboardScenePresenter = self->_remoteHostedKeyboardScenePresenter;
-    if (v3)
+    if (hiddenCopy)
     {
       v8 = "HIDING";
     }
@@ -206,7 +206,7 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
     v16 = 2082;
     v17 = v8;
     v10 = "deactivating";
-    if (!v3)
+    if (!hiddenCopy)
     {
       v10 = "activating";
     }
@@ -220,37 +220,37 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
 
   v13.receiver = self;
   v13.super_class = SBMedusaHostedKeyboardWindow;
-  [(SBWindow *)&v13 setHidden:v3];
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  v12 = v11;
-  if (v3)
+  [(SBWindow *)&v13 setHidden:hiddenCopy];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v12 = defaultCenter;
+  if (hiddenCopy)
   {
-    [v11 postNotificationName:@"SBMedusaHostedKeyboardWindowWillHideNotification" object:self];
+    [defaultCenter postNotificationName:@"SBMedusaHostedKeyboardWindowWillHideNotification" object:self];
 
     [(UIScenePresenter *)self->_remoteHostedKeyboardScenePresenter deactivate];
   }
 
   else
   {
-    [v11 postNotificationName:@"SBMedusaHostedKeyboardWindowWillShowNotification" object:self];
+    [defaultCenter postNotificationName:@"SBMedusaHostedKeyboardWindowWillShowNotification" object:self];
 
     [(UIScenePresenter *)self->_remoteHostedKeyboardScenePresenter activate];
   }
 }
 
-- (void)medusaHostedKeyboardWindowWillShow:(id)a3
+- (void)medusaHostedKeyboardWindowWillShow:(id)show
 {
-  v4 = [a3 object];
-  if (v4 == self)
+  object = [show object];
+  if (object == self)
   {
   }
 
   else
   {
-    v7 = v4;
-    v5 = [(UIScenePresenter *)self->_remoteHostedKeyboardScenePresenter isActive];
+    v7 = object;
+    isActive = [(UIScenePresenter *)self->_remoteHostedKeyboardScenePresenter isActive];
 
-    if (v5)
+    if (isActive)
     {
       remoteHostedKeyboardScenePresenter = self->_remoteHostedKeyboardScenePresenter;
 
@@ -259,19 +259,19 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
   }
 }
 
-- (void)medusaHostedKeyboardWindowWillHide:(id)a3
+- (void)medusaHostedKeyboardWindowWillHide:(id)hide
 {
-  v4 = [a3 object];
-  if (v4 == self)
+  object = [hide object];
+  if (object == self)
   {
   }
 
   else
   {
-    v7 = v4;
-    v5 = [(UIScenePresenter *)self->_remoteHostedKeyboardScenePresenter isActive];
+    v7 = object;
+    isActive = [(UIScenePresenter *)self->_remoteHostedKeyboardScenePresenter isActive];
 
-    if (v5)
+    if (isActive)
     {
       remoteHostedKeyboardScenePresenter = self->_remoteHostedKeyboardScenePresenter;
 
@@ -280,11 +280,11 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBMedusaHostedKeyboardWindow;
-  v5 = [(SBMedusaHostedKeyboardWindow *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBMedusaHostedKeyboardWindow *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -301,49 +301,49 @@ void __56__SBMedusaHostedKeyboardWindow_addWindowLevelAssertion___block_invoke(u
 
 - (id)succinctDescription
 {
-  v2 = [(SBMedusaHostedKeyboardWindow *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBMedusaHostedKeyboardWindow *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBMedusaHostedKeyboardWindow *)self _debugName];
-  v5 = [v3 appendObject:v4 withName:0 skipIfNil:1];
+  _debugName = [(SBMedusaHostedKeyboardWindow *)self _debugName];
+  v5 = [v3 appendObject:_debugName withName:0 skipIfNil:1];
 
   [(SBMedusaHostedKeyboardWindow *)self frame];
   v10 = _SBWindowFrameDescription(v6, v7, v8, v9);
   v11 = [v3 appendObject:v10 withName:@"frame"];
 
   v12 = [v3 appendBool:-[SBMedusaHostedKeyboardWindow isHidden](self withName:"isHidden") ifEqualTo:{@"hidden", 1}];
-  v13 = [(SBMedusaHostedKeyboardWindow *)self layer];
-  v14 = [v3 appendObject:v13 withName:@"layer"];
+  layer = [(SBMedusaHostedKeyboardWindow *)self layer];
+  v14 = [v3 appendObject:layer withName:@"layer"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBMedusaHostedKeyboardWindow *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBMedusaHostedKeyboardWindow *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBMedusaHostedKeyboardWindow *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBMedusaHostedKeyboardWindow *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__SBMedusaHostedKeyboardWindow_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

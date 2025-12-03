@@ -1,38 +1,38 @@
 @interface TSTTableGroupSortRuleUID
-+ (id)ruleWithGroupingColumnUID:(TSKUIDStruct)a3 columnUID:(TSKUIDStruct)a4 direction:(int)a5;
++ (id)ruleWithGroupingColumnUID:(TSKUIDStruct)d columnUID:(TSKUIDStruct)iD direction:(int)direction;
 - (TSKUIDStruct)columnUID;
 - (TSKUIDStruct)groupingColumnUID;
-- (TSTTableGroupSortRuleUID)initWithGroupingColumnUID:(TSKUIDStruct)a3 columnUID:(TSKUIDStruct)a4 direction:(int)a5;
+- (TSTTableGroupSortRuleUID)initWithGroupingColumnUID:(TSKUIDStruct)d columnUID:(TSKUIDStruct)iD direction:(int)direction;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromArchive:(const void *)a3;
-- (id)ruleByChangingDirectionTo:(int)a3;
-- (id)ruleByChangingSummaryColumnTo:(TSKUIDStruct)a3;
-- (unsigned)groupLevelInTable:(id)a3;
-- (void)encodeToArchive:(void *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromArchive:(const void *)archive;
+- (id)ruleByChangingDirectionTo:(int)to;
+- (id)ruleByChangingSummaryColumnTo:(TSKUIDStruct)to;
+- (unsigned)groupLevelInTable:(id)table;
+- (void)encodeToArchive:(void *)archive;
 @end
 
 @implementation TSTTableGroupSortRuleUID
 
-+ (id)ruleWithGroupingColumnUID:(TSKUIDStruct)a3 columnUID:(TSKUIDStruct)a4 direction:(int)a5
++ (id)ruleWithGroupingColumnUID:(TSKUIDStruct)d columnUID:(TSKUIDStruct)iD direction:(int)direction
 {
-  v5 = *&a5;
-  upper = a4._upper;
-  lower = a4._lower;
-  v8 = a3._upper;
-  v9 = a3._lower;
+  v5 = *&direction;
+  upper = iD._upper;
+  lower = iD._lower;
+  v8 = d._upper;
+  v9 = d._lower;
   v10 = objc_alloc(objc_opt_class());
   v12 = objc_msgSend_initWithGroupingColumnUID_columnUID_direction_(v10, v11, v9, v8, lower, upper, v5);
 
   return v12;
 }
 
-- (TSTTableGroupSortRuleUID)initWithGroupingColumnUID:(TSKUIDStruct)a3 columnUID:(TSKUIDStruct)a4 direction:(int)a5
+- (TSTTableGroupSortRuleUID)initWithGroupingColumnUID:(TSKUIDStruct)d columnUID:(TSKUIDStruct)iD direction:(int)direction
 {
-  upper = a4._upper;
-  lower = a4._lower;
-  v8 = a3._upper;
-  v9 = a3._lower;
+  upper = iD._upper;
+  lower = iD._lower;
+  v8 = d._upper;
+  v9 = d._lower;
   v11.receiver = self;
   v11.super_class = TSTTableGroupSortRuleUID;
   result = [(TSTTableGroupSortRuleUID *)&v11 init];
@@ -42,7 +42,7 @@
     result->_groupingColumnUID.var0.var0._upper = v8;
     result->_columnUID.var0.var0._lower = lower;
     result->_columnUID.var0.var0._upper = upper;
-    result->_direction = a5;
+    result->_direction = direction;
     result->_definedGroupingColumnUID = 1;
     result->_definedColumnUID = 1;
     result->_definedDirection = 1;
@@ -71,7 +71,7 @@
   return result;
 }
 
-- (id)ruleByChangingDirectionTo:(int)a3
+- (id)ruleByChangingDirectionTo:(int)to
 {
   v4 = objc_opt_class();
   v9 = objc_msgSend_groupingColumnUID(self, v5, v6, v7, v8);
@@ -81,9 +81,9 @@
   return MEMORY[0x2821F9670](v4, sel_ruleWithGroupingColumnUID_columnUID_direction_, v9, v11, v15);
 }
 
-- (id)ruleByChangingSummaryColumnTo:(TSKUIDStruct)a3
+- (id)ruleByChangingSummaryColumnTo:(TSKUIDStruct)to
 {
-  lower = a3._lower;
+  lower = to._lower;
   v5 = objc_opt_class();
   v10 = objc_msgSend_groupingColumnUID(self, v6, v7, v8, v9);
   v12 = v11;
@@ -92,7 +92,7 @@
   return MEMORY[0x2821F9670](v5, sel_ruleWithGroupingColumnUID_columnUID_direction_, v10, v12, lower);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSTTableGroupSortRuleUID alloc];
   v9 = objc_msgSend_groupingColumnUID(self, v5, v6, v7, v8);
@@ -103,58 +103,58 @@
   return objc_msgSend_initWithGroupingColumnUID_columnUID_direction_(v4, v15, v9, v11, v16, v15, direction);
 }
 
-- (unsigned)groupLevelInTable:(id)a3
+- (unsigned)groupLevelInTable:(id)table
 {
-  v6 = objc_msgSend_groupByForRows(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_groupByForRows(table, a2, table, v3, v4);
   v11 = objc_msgSend_groupingColumnUID(self, v7, v8, v9, v10);
   LOBYTE(self) = objc_msgSend_groupLevelForGroupingColumnUid_(v6, v12, v11, v12, v13);
 
   return self;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
-  v5 = *(a3 + 4);
-  *(a3 + 10) = self->_direction != 0;
-  *(a3 + 4) = v5 | 5;
-  v6 = *(a3 + 3);
+  v5 = *(archive + 4);
+  *(archive + 10) = self->_direction != 0;
+  *(archive + 4) = v5 | 5;
+  v6 = *(archive + 3);
   if (!v6)
   {
-    v7 = *(a3 + 1);
+    v7 = *(archive + 1);
     if (v7)
     {
       v7 = *(v7 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v6 = MEMORY[0x223DA0360](v7);
-    *(a3 + 3) = v6;
+    *(archive + 3) = v6;
   }
 
   TSP::UUIDData::saveToMessage(&self->_groupingColumnUID, v6);
-  *(a3 + 4) |= 2u;
-  v8 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v8 = *(archive + 4);
   if (!v8)
   {
-    v9 = *(a3 + 1);
+    v9 = *(archive + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v8 = MEMORY[0x223DA0360](v9);
-    *(a3 + 4) = v8;
+    *(archive + 4) = v8;
   }
 
   TSP::UUIDData::saveToMessage(&self->_columnUID, v8);
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v5 = *(a3 + 10) != 0;
+  v5 = *(archive + 10) != 0;
   v6 = MEMORY[0x277D809E0];
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -164,9 +164,9 @@
 
   v9 = TSKUIDStruct::loadFromMessage(v7, a2);
   v10 = v8;
-  if (*(a3 + 4))
+  if (*(archive + 4))
   {
-    v11 = *(a3 + 4);
+    v11 = *(archive + 4);
   }
 
   else

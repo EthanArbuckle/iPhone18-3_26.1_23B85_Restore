@@ -7,27 +7,27 @@
 - (double)maxActiveTimeAfterGlobalResetSync;
 - (double)maxActiveTimeAfterLossOfForeground;
 - (double)maxActiveTimeAfterPush;
-- (void)_globalResetSyncTimerDidExpire:(id)a3;
-- (void)_postForegroundTimerDidExpire:(id)a3;
+- (void)_globalResetSyncTimerDidExpire:(id)expire;
+- (void)_postForegroundTimerDidExpire:(id)expire;
 - (void)didBeginExternalPower;
 - (void)didBeginForegroundFocus;
 - (void)didEndExternalPower;
 - (void)didEndForegroundFocus;
 - (void)didReceiveGlobalResetSync;
 - (void)didReceivePushNotification;
-- (void)setDelegate:(id)a3;
-- (void)setFocusAlbumGUID:(id)a3;
-- (void)setFocusAssetCollectionGUID:(id)a3;
-- (void)setIsFileTransferAllowed:(BOOL)a3;
-- (void)setMaxActiveTimeAfterGlobalResetSync:(double)a3;
-- (void)setMaxActiveTimeAfterLossOfForeground:(double)a3;
-- (void)setMaxActiveTimeAfterPush:(double)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setFocusAlbumGUID:(id)d;
+- (void)setFocusAssetCollectionGUID:(id)d;
+- (void)setIsFileTransferAllowed:(BOOL)allowed;
+- (void)setMaxActiveTimeAfterGlobalResetSync:(double)sync;
+- (void)setMaxActiveTimeAfterLossOfForeground:(double)foreground;
+- (void)setMaxActiveTimeAfterPush:(double)push;
 - (void)shutDown;
 - (void)workQueueCommitPersistedValues;
 - (void)workQueueRecomputeFileTransferAllowed;
-- (void)workQueueSetGlobalResetSyncTimerDate:(id)a3;
-- (void)workQueueSetPostForegroundTimerDate:(id)a3;
-- (void)workQueueSetPushTimerDate:(id)a3;
+- (void)workQueueSetGlobalResetSyncTimerDate:(id)date;
+- (void)workQueueSetPostForegroundTimerDate:(id)date;
+- (void)workQueueSetPushTimerDate:(id)date;
 @end
 
 @implementation MSPowerBudget
@@ -39,15 +39,15 @@
   return WeakRetained;
 }
 
-- (void)_globalResetSyncTimerDidExpire:(id)a3
+- (void)_globalResetSyncTimerDidExpire:(id)expire
 {
-  v4 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__MSPowerBudget__globalResetSyncTimerDidExpire___block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __48__MSPowerBudget__globalResetSyncTimerDidExpire___block_invoke(uint64_t a1)
@@ -67,15 +67,15 @@ uint64_t __48__MSPowerBudget__globalResetSyncTimerDidExpire___block_invoke(uint6
   return result;
 }
 
-- (void)_postForegroundTimerDidExpire:(id)a3
+- (void)_postForegroundTimerDidExpire:(id)expire
 {
-  v4 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__MSPowerBudget__postForegroundTimerDidExpire___block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __47__MSPowerBudget__postForegroundTimerDidExpire___block_invoke(uint64_t a1)
@@ -95,18 +95,18 @@ uint64_t __47__MSPowerBudget__postForegroundTimerDidExpire___block_invoke(uint64
   return result;
 }
 
-- (void)setFocusAssetCollectionGUID:(id)a3
+- (void)setFocusAssetCollectionGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSPowerBudget *)self workQueue];
+  dCopy = d;
+  workQueue = [(MSPowerBudget *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__MSPowerBudget_setFocusAssetCollectionGUID___block_invoke;
   v7[3] = &unk_2798A5260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __45__MSPowerBudget_setFocusAssetCollectionGUID___block_invoke(uint64_t a1)
@@ -135,18 +135,18 @@ void __45__MSPowerBudget_setFocusAssetCollectionGUID___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFocusAlbumGUID:(id)a3
+- (void)setFocusAlbumGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSPowerBudget *)self workQueue];
+  dCopy = d;
+  workQueue = [(MSPowerBudget *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__MSPowerBudget_setFocusAlbumGUID___block_invoke;
   v7[3] = &unk_2798A5260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __35__MSPowerBudget_setFocusAlbumGUID___block_invoke(uint64_t a1)
@@ -177,13 +177,13 @@ void __35__MSPowerBudget_setFocusAlbumGUID___block_invoke(uint64_t a1)
 
 - (void)didEndExternalPower
 {
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__MSPowerBudget_didEndExternalPower__block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __36__MSPowerBudget_didEndExternalPower__block_invoke(uint64_t a1)
@@ -205,13 +205,13 @@ uint64_t __36__MSPowerBudget_didEndExternalPower__block_invoke(uint64_t a1)
 
 - (void)didBeginExternalPower
 {
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__MSPowerBudget_didBeginExternalPower__block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __38__MSPowerBudget_didBeginExternalPower__block_invoke(uint64_t a1)
@@ -233,13 +233,13 @@ uint64_t __38__MSPowerBudget_didBeginExternalPower__block_invoke(uint64_t a1)
 
 - (void)didReceiveGlobalResetSync
 {
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__MSPowerBudget_didReceiveGlobalResetSync__block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __42__MSPowerBudget_didReceiveGlobalResetSync__block_invoke(uint64_t a1)
@@ -267,13 +267,13 @@ void __42__MSPowerBudget_didReceiveGlobalResetSync__block_invoke(uint64_t a1)
 
 - (void)didEndForegroundFocus
 {
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__MSPowerBudget_didEndForegroundFocus__block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __38__MSPowerBudget_didEndForegroundFocus__block_invoke(uint64_t a1)
@@ -304,13 +304,13 @@ uint64_t __38__MSPowerBudget_didEndForegroundFocus__block_invoke(uint64_t a1)
 
 - (void)didBeginForegroundFocus
 {
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__MSPowerBudget_didBeginForegroundFocus__block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __40__MSPowerBudget_didBeginForegroundFocus__block_invoke(uint64_t a1)
@@ -351,13 +351,13 @@ void __40__MSPowerBudget_didBeginForegroundFocus__block_invoke(uint64_t a1)
 
 - (void)didReceivePushNotification
 {
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__MSPowerBudget_didReceivePushNotification__block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __43__MSPowerBudget_didReceivePushNotification__block_invoke(uint64_t a1)
@@ -387,48 +387,48 @@ uint64_t __43__MSPowerBudget_didReceivePushNotification__block_invoke(uint64_t a
 
 - (void)workQueueCommitPersistedValues
 {
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [(MSPowerBudget *)self workQueuePushTimerContext];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  workQueuePushTimerContext = [(MSPowerBudget *)self workQueuePushTimerContext];
 
-  if (v3)
+  if (workQueuePushTimerContext)
   {
-    v4 = [(MSPowerBudget *)self workQueuePushTimerContext];
-    v5 = [v4 date];
-    [v13 setObject:v5 forKey:@"pushTimerDate"];
+    workQueuePushTimerContext2 = [(MSPowerBudget *)self workQueuePushTimerContext];
+    date = [workQueuePushTimerContext2 date];
+    [dictionary setObject:date forKey:@"pushTimerDate"];
   }
 
-  v6 = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
+  workQueuePostForegroundTimerContext = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
 
-  if (v6)
+  if (workQueuePostForegroundTimerContext)
   {
-    v7 = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
-    v8 = [v7 date];
-    [v13 setObject:v8 forKey:@"postForegroundTimerDate"];
+    workQueuePostForegroundTimerContext2 = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
+    date2 = [workQueuePostForegroundTimerContext2 date];
+    [dictionary setObject:date2 forKey:@"postForegroundTimerDate"];
   }
 
-  v9 = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
+  workQueueGlobalResetSyncTimerContext = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
 
-  if (v9)
+  if (workQueueGlobalResetSyncTimerContext)
   {
-    v10 = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
-    v11 = [v10 date];
-    [v13 setObject:v11 forKey:@"globalResetSyncTimerDate"];
+    workQueueGlobalResetSyncTimerContext2 = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
+    date3 = [workQueueGlobalResetSyncTimerContext2 date];
+    [dictionary setObject:date3 forKey:@"globalResetSyncTimerDate"];
   }
 
-  v12 = [(MSPowerBudget *)self delegate];
-  [v12 MSPowerBudget:self didRequestStorageOfPersistedValues:v13];
+  delegate = [(MSPowerBudget *)self delegate];
+  [delegate MSPowerBudget:self didRequestStorageOfPersistedValues:dictionary];
 }
 
-- (void)setIsFileTransferAllowed:(BOOL)a3
+- (void)setIsFileTransferAllowed:(BOOL)allowed
 {
-  v5 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__MSPowerBudget_setIsFileTransferAllowed___block_invoke;
   v6[3] = &unk_2798A5088;
   v6[4] = self;
-  v7 = a3;
-  dispatch_async(v5, v6);
+  allowedCopy = allowed;
+  dispatch_async(workQueue, v6);
 }
 
 void __42__MSPowerBudget_setIsFileTransferAllowed___block_invoke(uint64_t a1)
@@ -510,23 +510,23 @@ void __42__MSPowerBudget_setIsFileTransferAllowed___block_invoke_2(uint64_t a1)
 
 - (BOOL)hasActiveTimers
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __32__MSPowerBudget_hasActiveTimers__block_invoke;
   v5[3] = &unk_2798A5038;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(workQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __32__MSPowerBudget_hasActiveTimers__block_invoke(uint64_t a1)
@@ -557,23 +557,23 @@ void __32__MSPowerBudget_hasActiveTimers__block_invoke(uint64_t a1)
 
 - (BOOL)hasForegroundFocus
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__MSPowerBudget_hasForegroundFocus__block_invoke;
   v5[3] = &unk_2798A5038;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(workQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __35__MSPowerBudget_hasForegroundFocus__block_invoke(uint64_t a1)
@@ -585,23 +585,23 @@ uint64_t __35__MSPowerBudget_hasForegroundFocus__block_invoke(uint64_t a1)
 
 - (BOOL)isFileTransferAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __38__MSPowerBudget_isFileTransferAllowed__block_invoke;
   v5[3] = &unk_2798A5038;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(workQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)workQueueRecomputeFileTransferAllowed
@@ -613,24 +613,24 @@ uint64_t __35__MSPowerBudget_hasForegroundFocus__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = [(MSPowerBudget *)self workQueuePushTimerContext];
-    if (v4)
+    workQueuePushTimerContext = [(MSPowerBudget *)self workQueuePushTimerContext];
+    if (workQueuePushTimerContext)
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
-      if (v5)
+      workQueuePostForegroundTimerContext = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
+      if (workQueuePostForegroundTimerContext)
       {
         v3 = 1;
       }
 
       else
       {
-        v6 = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
-        v3 = v6 != 0;
+        workQueueGlobalResetSyncTimerContext = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
+        v3 = workQueueGlobalResetSyncTimerContext != 0;
       }
     }
   }
@@ -638,26 +638,26 @@ uint64_t __35__MSPowerBudget_hasForegroundFocus__block_invoke(uint64_t a1)
   [(MSPowerBudget *)self setIsFileTransferAllowed:v3];
 }
 
-- (void)setMaxActiveTimeAfterLossOfForeground:(double)a3
+- (void)setMaxActiveTimeAfterLossOfForeground:(double)foreground
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    foregroundCopy = foreground;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting max active time after loss of foreground to %0.2f seconds.", buf, 0x16u);
   }
 
-  v5 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__MSPowerBudget_setMaxActiveTimeAfterLossOfForeground___block_invoke;
   v7[3] = &unk_2798A5060;
   v7[4] = self;
-  *&v7[5] = a3;
-  dispatch_async(v5, v7);
+  *&v7[5] = foreground;
+  dispatch_async(workQueue, v7);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -675,14 +675,14 @@ double __55__MSPowerBudget_setMaxActiveTimeAfterLossOfForeground___block_invoke(
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__MSPowerBudget_maxActiveTimeAfterLossOfForeground__block_invoke;
   v6[3] = &unk_2798A5038;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -696,26 +696,26 @@ double __51__MSPowerBudget_maxActiveTimeAfterLossOfForeground__block_invoke(uint
   return result;
 }
 
-- (void)setMaxActiveTimeAfterGlobalResetSync:(double)a3
+- (void)setMaxActiveTimeAfterGlobalResetSync:(double)sync
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    syncCopy = sync;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting max active time after global reset sync to %0.2f seconds.", buf, 0x16u);
   }
 
-  v5 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__MSPowerBudget_setMaxActiveTimeAfterGlobalResetSync___block_invoke;
   v7[3] = &unk_2798A5060;
   v7[4] = self;
-  *&v7[5] = a3;
-  dispatch_async(v5, v7);
+  *&v7[5] = sync;
+  dispatch_async(workQueue, v7);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -733,14 +733,14 @@ double __54__MSPowerBudget_setMaxActiveTimeAfterGlobalResetSync___block_invoke(u
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__MSPowerBudget_maxActiveTimeAfterGlobalResetSync__block_invoke;
   v6[3] = &unk_2798A5038;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -754,26 +754,26 @@ double __50__MSPowerBudget_maxActiveTimeAfterGlobalResetSync__block_invoke(uint6
   return result;
 }
 
-- (void)setMaxActiveTimeAfterPush:(double)a3
+- (void)setMaxActiveTimeAfterPush:(double)push
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    pushCopy = push;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting max active time after push to %0.2f seconds.", buf, 0x16u);
   }
 
-  v5 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__MSPowerBudget_setMaxActiveTimeAfterPush___block_invoke;
   v7[3] = &unk_2798A5060;
   v7[4] = self;
-  *&v7[5] = a3;
-  dispatch_async(v5, v7);
+  *&v7[5] = push;
+  dispatch_async(workQueue, v7);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -791,14 +791,14 @@ double __43__MSPowerBudget_setMaxActiveTimeAfterPush___block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__MSPowerBudget_maxActiveTimeAfterPush__block_invoke;
   v6[3] = &unk_2798A5038;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -814,13 +814,13 @@ double __39__MSPowerBudget_maxActiveTimeAfterPush__block_invoke(uint64_t a1)
 
 - (void)shutDown
 {
-  v3 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__MSPowerBudget_shutDown__block_invoke;
   block[3] = &unk_2798A5010;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __25__MSPowerBudget_shutDown__block_invoke(uint64_t a1)
@@ -832,24 +832,24 @@ uint64_t __25__MSPowerBudget_shutDown__block_invoke(uint64_t a1)
   return [v2 workQueueSetGlobalResetSyncTimerDate:0];
 }
 
-- (void)workQueueSetGlobalResetSyncTimerDate:(id)a3
+- (void)workQueueSetGlobalResetSyncTimerDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
+  dateCopy = date;
+  workQueueGlobalResetSyncTimerContext = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
 
-  if (v5)
+  if (workQueueGlobalResetSyncTimerContext)
   {
-    v6 = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
-    [v6 setIsValid:0];
+    workQueueGlobalResetSyncTimerContext2 = [(MSPowerBudget *)self workQueueGlobalResetSyncTimerContext];
+    [workQueueGlobalResetSyncTimerContext2 setIsValid:0];
 
     [(MSPowerBudget *)self setWorkQueueGlobalResetSyncTimerContext:0];
-    if (!v4)
+    if (!dateCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Stopping global reset sync timer.", buf, 0xCu);
       }
 
@@ -859,34 +859,34 @@ uint64_t __25__MSPowerBudget_shutDown__block_invoke(uint64_t a1)
     }
   }
 
-  else if (!v4)
+  else if (!dateCopy)
   {
     goto LABEL_10;
   }
 
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v8 = v7;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2048;
     v20 = v8;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting global reset sync timer to fire in %0.2f seconds.", buf, 0x16u);
   }
 
-  v9 = [MSPBTimerContext contextWithDate:v4];
+  v9 = [MSPBTimerContext contextWithDate:dateCopy];
   [(MSPowerBudget *)self setWorkQueueGlobalResetSyncTimerContext:v9];
   v10 = dispatch_time(0, (v8 * 1000000000.0));
-  v11 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__MSPowerBudget_workQueueSetGlobalResetSyncTimerDate___block_invoke;
   v14[3] = &unk_2798A5260;
   v15 = v9;
-  v16 = self;
+  selfCopy3 = self;
   v12 = v9;
-  dispatch_after(v10, v11, v14);
+  dispatch_after(v10, workQueue, v14);
 
 LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
@@ -915,24 +915,24 @@ uint64_t __54__MSPowerBudget_workQueueSetGlobalResetSyncTimerDate___block_invoke
   return result;
 }
 
-- (void)workQueueSetPostForegroundTimerDate:(id)a3
+- (void)workQueueSetPostForegroundTimerDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
+  dateCopy = date;
+  workQueuePostForegroundTimerContext = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
 
-  if (v5)
+  if (workQueuePostForegroundTimerContext)
   {
-    v6 = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
-    [v6 setIsValid:0];
+    workQueuePostForegroundTimerContext2 = [(MSPowerBudget *)self workQueuePostForegroundTimerContext];
+    [workQueuePostForegroundTimerContext2 setIsValid:0];
 
     [(MSPowerBudget *)self setWorkQueuePostForegroundTimerContext:0];
-    if (!v4)
+    if (!dateCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Stopping post-foreground timer.", buf, 0xCu);
       }
 
@@ -942,34 +942,34 @@ uint64_t __54__MSPowerBudget_workQueueSetGlobalResetSyncTimerDate___block_invoke
     }
   }
 
-  else if (!v4)
+  else if (!dateCopy)
   {
     goto LABEL_10;
   }
 
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v8 = v7;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2048;
     v20 = v8;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting post-foreground timer to fire in %0.2f seconds.", buf, 0x16u);
   }
 
-  v9 = [MSPBTimerContext contextWithDate:v4];
+  v9 = [MSPBTimerContext contextWithDate:dateCopy];
   [(MSPowerBudget *)self setWorkQueuePostForegroundTimerContext:v9];
   v10 = dispatch_time(0, (v8 * 1000000000.0));
-  v11 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __53__MSPowerBudget_workQueueSetPostForegroundTimerDate___block_invoke;
   v14[3] = &unk_2798A5260;
   v15 = v9;
-  v16 = self;
+  selfCopy3 = self;
   v12 = v9;
-  dispatch_after(v10, v11, v14);
+  dispatch_after(v10, workQueue, v14);
 
 LABEL_10:
   v13 = *MEMORY[0x277D85DE8];
@@ -998,24 +998,24 @@ uint64_t __53__MSPowerBudget_workQueueSetPostForegroundTimerDate___block_invoke(
   return result;
 }
 
-- (void)workQueueSetPushTimerDate:(id)a3
+- (void)workQueueSetPushTimerDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSPowerBudget *)self workQueuePushTimerContext];
+  dateCopy = date;
+  workQueuePushTimerContext = [(MSPowerBudget *)self workQueuePushTimerContext];
 
-  if (v5)
+  if (workQueuePushTimerContext)
   {
-    v6 = [(MSPowerBudget *)self workQueuePushTimerContext];
-    [v6 setIsValid:0];
+    workQueuePushTimerContext2 = [(MSPowerBudget *)self workQueuePushTimerContext];
+    [workQueuePushTimerContext2 setIsValid:0];
 
     [(MSPowerBudget *)self setWorkQueuePushTimerContext:0];
-    if (!v4)
+    if (!dateCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Stopping push timer.", buf, 0xCu);
       }
 
@@ -1026,39 +1026,39 @@ uint64_t __53__MSPowerBudget_workQueueSetPostForegroundTimerDate___block_invoke(
     }
   }
 
-  else if (!v4)
+  else if (!dateCopy)
   {
     goto LABEL_12;
   }
 
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v8 = v7;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2048;
     v20 = v8;
     _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting push timer to fire in %0.2f seconds.", buf, 0x16u);
   }
 
-  if (!v5)
+  if (!workQueuePushTimerContext)
   {
     notify_post(*MEMORY[0x277D00090]);
   }
 
-  v9 = [MSPBTimerContext contextWithDate:v4];
+  v9 = [MSPBTimerContext contextWithDate:dateCopy];
   [(MSPowerBudget *)self setWorkQueuePushTimerContext:v9];
   v10 = dispatch_time(0, (v8 * 1000000000.0));
-  v11 = [(MSPowerBudget *)self workQueue];
+  workQueue = [(MSPowerBudget *)self workQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __43__MSPowerBudget_workQueueSetPushTimerDate___block_invoke;
   v14[3] = &unk_2798A5260;
   v15 = v9;
-  v16 = self;
+  selfCopy3 = self;
   v12 = v9;
-  dispatch_after(v10, v11, v14);
+  dispatch_after(v10, workQueue, v14);
 
 LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
@@ -1088,18 +1088,18 @@ uint64_t __43__MSPowerBudget_workQueueSetPushTimerDate___block_invoke(uint64_t a
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(MSPowerBudget *)self workQueue];
+  delegateCopy = delegate;
+  workQueue = [(MSPowerBudget *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__MSPowerBudget_setDelegate___block_invoke;
   v7[3] = &unk_2798A5260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __29__MSPowerBudget_setDelegate___block_invoke(uint64_t a1)

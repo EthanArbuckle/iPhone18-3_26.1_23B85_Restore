@@ -1,21 +1,21 @@
 @interface PhotosDynamicHeaderContentView.Proxy
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (_TtCC12PhotosUICoreP33_1B50DC52D4D0467ED56FE78BF1017C3930PhotosDynamicHeaderContentView5Proxy)init;
-- (id)makeInternalMenuWithPresentationEnvironment:(id)a3;
+- (id)makeInternalMenuWithPresentationEnvironment:(id)environment;
 @end
 
 @implementation PhotosDynamicHeaderContentView.Proxy
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v8 = Strong;
-    v9 = a3;
-    v10 = a4;
-    v11 = self;
-    v12 = sub_1A41AAB20(v9);
+    recognizerCopy = recognizer;
+    touchCopy = touch;
+    selfCopy = self;
+    v12 = sub_1A41AAB20(recognizerCopy);
   }
 
   else
@@ -26,11 +26,11 @@
   return v12;
 }
 
-- (id)makeInternalMenuWithPresentationEnvironment:(id)a3
+- (id)makeInternalMenuWithPresentationEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1A41A4D40(a3);
+  selfCopy = self;
+  v6 = sub_1A41A4D40(environment);
   swift_unknownObjectRelease();
 
   return v6;

@@ -1,10 +1,10 @@
 @interface SPCachedResult
-- (SPCachedResult)initWithContactName:(id)a3 contactIdentifier:(id)a4 score:(id)a5 searchString:(id)a6;
-- (SPCachedResult)initWithEngagedResult:(id)a3;
-- (SPCachedResult)initWithPersonName:(id)a3 personQueryIdentifier:(id)a4 score:(id)a5 searchString:(id)a6;
-- (SPCachedResult)initWithResult:(id)a3 identifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6 searchString:(id)a7;
-- (SPCachedResult)initWithResult:(id)a3 topic:(id)a4 title:(id)a5 searchString:(id)a6;
-- (SPCachedResult)initWithTitle:(id)a3 type:(int)a4 score:(id)a5 searchString:(id)a6;
+- (SPCachedResult)initWithContactName:(id)name contactIdentifier:(id)identifier score:(id)score searchString:(id)string;
+- (SPCachedResult)initWithEngagedResult:(id)result;
+- (SPCachedResult)initWithPersonName:(id)name personQueryIdentifier:(id)identifier score:(id)score searchString:(id)string;
+- (SPCachedResult)initWithResult:(id)result identifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class searchString:(id)string;
+- (SPCachedResult)initWithResult:(id)result topic:(id)topic title:(id)title searchString:(id)string;
+- (SPCachedResult)initWithTitle:(id)title type:(int)type score:(id)score searchString:(id)string;
 - (id)recentTopic;
 - (id)searchResult;
 - (void)recentTopic;
@@ -12,33 +12,33 @@
 
 @implementation SPCachedResult
 
-- (SPCachedResult)initWithResult:(id)a3 topic:(id)a4 title:(id)a5 searchString:(id)a6
+- (SPCachedResult)initWithResult:(id)result topic:(id)topic title:(id)title searchString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultCopy = result;
+  topicCopy = topic;
+  titleCopy = title;
+  stringCopy = string;
   v31.receiver = self;
   v31.super_class = SPCachedResult;
   v14 = [(SPCachedResult *)&v31 init];
   if (v14)
   {
-    v15 = truncatedTitle(v12);
+    v15 = truncatedTitle(titleCopy);
     title = v14->_title;
     v14->_title = v15;
 
-    v17 = truncatedSearchString(v13);
+    v17 = truncatedSearchString(stringCopy);
     searchString = v14->_searchString;
     v14->_searchString = v17;
 
-    v14->_type = [v10 type];
-    [v10 rankingScore];
+    v14->_type = [resultCopy type];
+    [resultCopy rankingScore];
     v14->_score = v19;
     v20 = [MEMORY[0x277CBEAA8] now];
     engagementTime = v14->_engagementTime;
     v14->_engagementTime = v20;
 
-    v22 = v11;
+    v22 = topicCopy;
     if (v22)
     {
 LABEL_8:
@@ -58,7 +58,7 @@ LABEL_13:
       p_super = logForSPLogCategoryCaching();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
       {
-        [SPCachedResult initWithResult:v10 topic:? title:? searchString:?];
+        [SPCachedResult initWithResult:resultCopy topic:? title:? searchString:?];
       }
 
 LABEL_12:
@@ -66,15 +66,15 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v23 = [v10 type];
-    if ((v23 - 28) >= 2)
+    type = [resultCopy type];
+    if ((type - 28) >= 2)
     {
-      if (v23 != 8)
+      if (type != 8)
       {
         goto LABEL_11;
       }
 
-      v24 = [SPLocalTopic localTopicWithDictionaryResult:v10];
+      v24 = [SPLocalTopic localTopicWithDictionaryResult:resultCopy];
     }
 
     else
@@ -101,35 +101,35 @@ LABEL_14:
   return v14;
 }
 
-- (SPCachedResult)initWithResult:(id)a3 identifier:(id)a4 bundleIdentifier:(id)a5 protectionClass:(id)a6 searchString:(id)a7
+- (SPCachedResult)initWithResult:(id)result identifier:(id)identifier bundleIdentifier:(id)bundleIdentifier protectionClass:(id)class searchString:(id)string
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  resultCopy = result;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  classCopy = class;
+  stringCopy = string;
   v35.receiver = self;
   v35.super_class = SPCachedResult;
   v17 = [(SPCachedResult *)&v35 init];
   if (v17)
   {
-    v18 = truncatedTitle(v14);
+    v18 = truncatedTitle(bundleIdentifierCopy);
     title = v17->_title;
     v17->_title = v18;
 
-    v20 = truncatedSearchString(v16);
+    v20 = truncatedSearchString(stringCopy);
     searchString = v17->_searchString;
     v17->_searchString = v20;
 
-    v17->_type = [v12 type];
-    [v12 rankingScore];
+    v17->_type = [resultCopy type];
+    [resultCopy rankingScore];
     v17->_score = v22;
     v23 = [MEMORY[0x277CBEAA8] now];
     engagementTime = v17->_engagementTime;
     v17->_engagementTime = v23;
 
-    v33 = v13;
-    v25 = topicIdentifierWithIdentifierAndDetail(v13, v14, v15, 0, v17->_type, 1);
+    v33 = identifierCopy;
+    v25 = topicIdentifierWithIdentifierAndDetail(identifierCopy, bundleIdentifierCopy, classCopy, 0, v17->_type, 1);
     v26 = searchResultWithTopicIdentifier(v25, v17->_score);
     v27 = [objc_alloc(MEMORY[0x277D4C428]) initWithResult:v26 identifier:v25];
     v34 = 0;
@@ -143,43 +143,43 @@ LABEL_14:
       v31 = logForSPLogCategoryCaching();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        [SPCachedResult initWithResult:v12 identifier:? bundleIdentifier:? protectionClass:? searchString:?];
+        [SPCachedResult initWithResult:resultCopy identifier:? bundleIdentifier:? protectionClass:? searchString:?];
       }
     }
 
-    v13 = v33;
+    identifierCopy = v33;
   }
 
   return v17;
 }
 
-- (SPCachedResult)initWithPersonName:(id)a3 personQueryIdentifier:(id)a4 score:(id)a5 searchString:(id)a6
+- (SPCachedResult)initWithPersonName:(id)name personQueryIdentifier:(id)identifier score:(id)score searchString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  stringCopy = string;
   v37.receiver = self;
   v37.super_class = SPCachedResult;
   v14 = [(SPCachedResult *)&v37 init];
   if (v14)
   {
-    v15 = truncatedTitle(v10);
+    v15 = truncatedTitle(nameCopy);
     title = v14->_title;
     v14->_title = v15;
 
-    v17 = truncatedSearchString(v13);
+    v17 = truncatedSearchString(stringCopy);
     searchString = v14->_searchString;
     v14->_searchString = v17;
 
     v14->_type = 38;
-    [v12 doubleValue];
+    [scoreCopy doubleValue];
     v14->_score = v19;
     v20 = [MEMORY[0x277CBEAA8] now];
     engagementTime = v14->_engagementTime;
     v14->_engagementTime = v20;
 
-    v22 = topicIdentifierWithPersonQueryIdentifierAndDetail(v11, 0, v14->_type, 1);
+    v22 = topicIdentifierWithPersonQueryIdentifierAndDetail(identifierCopy, 0, v14->_type, 1);
     v23 = [SPLocalTopic localTopicWithTopicIdentifier:v22];
     v36 = 0;
     v24 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v23 requiringSecureCoding:1 error:&v36];
@@ -200,41 +200,41 @@ LABEL_14:
   return v14;
 }
 
-- (SPCachedResult)initWithContactName:(id)a3 contactIdentifier:(id)a4 score:(id)a5 searchString:(id)a6
+- (SPCachedResult)initWithContactName:(id)name contactIdentifier:(id)identifier score:(id)score searchString:(id)string
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  stringCopy = string;
   v38.receiver = self;
   v38.super_class = SPCachedResult;
   v14 = [(SPCachedResult *)&v38 init];
   if (v14)
   {
-    v15 = truncatedTitle(v10);
+    v15 = truncatedTitle(nameCopy);
     title = v14->_title;
     v14->_title = v15;
 
-    v17 = truncatedSearchString(v13);
+    v17 = truncatedSearchString(stringCopy);
     searchString = v14->_searchString;
     v14->_searchString = v17;
 
     v14->_type = 32;
-    [v12 doubleValue];
+    [scoreCopy doubleValue];
     v14->_score = v19;
     v20 = [MEMORY[0x277CBEAA8] now];
     engagementTime = v14->_engagementTime;
     v14->_engagementTime = v20;
 
-    if (![v11 length] || v10 && (objc_msgSend(v11, "isEqualToString:", v10) & 1) != 0)
+    if (![identifierCopy length] || nameCopy && (objc_msgSend(identifierCopy, "isEqualToString:", nameCopy) & 1) != 0)
     {
       v14->_type = 38;
-      v22 = topicIdentifierWithContactInfoAndDetail(v10, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8], 0, 0x26u, 1u);
+      v22 = topicIdentifierWithContactInfoAndDetail(nameCopy, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8], 0, 0x26u, 1u);
     }
 
     else
     {
-      v22 = topicIdentifierWithContactIdentifierAndDetail(v10, v11, 0, v14->_type, 1);
+      v22 = topicIdentifierWithContactIdentifierAndDetail(nameCopy, identifierCopy, 0, v14->_type, 1);
     }
 
     v23 = v22;
@@ -258,36 +258,36 @@ LABEL_14:
   return v14;
 }
 
-- (SPCachedResult)initWithTitle:(id)a3 type:(int)a4 score:(id)a5 searchString:(id)a6
+- (SPCachedResult)initWithTitle:(id)title type:(int)type score:(id)score searchString:(id)string
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  scoreCopy = score;
+  stringCopy = string;
   v37.receiver = self;
   v37.super_class = SPCachedResult;
   v13 = [(SPCachedResult *)&v37 init];
   if (v13)
   {
-    v14 = truncatedTitle(v10);
+    v14 = truncatedTitle(titleCopy);
     title = v13->_title;
     v13->_title = v14;
 
-    v16 = truncatedSearchString(v12);
+    v16 = truncatedSearchString(stringCopy);
     searchString = v13->_searchString;
     v13->_searchString = v16;
 
-    v13->_type = a4;
-    [v11 doubleValue];
+    v13->_type = type;
+    [scoreCopy doubleValue];
     v13->_score = v18;
     v19 = [MEMORY[0x277CBEAA8] now];
     engagementTime = v13->_engagementTime;
     v13->_engagementTime = v19;
 
-    if (a4 <= 0x1F && ((1 << a4) & 0xF0018000) != 0)
+    if (type <= 0x1F && ((1 << type) & 0xF0018000) != 0)
     {
       type = v13->_type;
       v22 = [MEMORY[0x277CCABB0] numberWithDouble:v13->_score];
-      v23 = [SPLocalTopic localTopicWithTitle:v10 type:type score:v22 isCached:1];
+      v23 = [SPLocalTopic localTopicWithTitle:titleCopy type:type score:v22 isCached:1];
     }
 
     else
@@ -314,30 +314,30 @@ LABEL_14:
   return v13;
 }
 
-- (SPCachedResult)initWithEngagedResult:(id)a3
+- (SPCachedResult)initWithEngagedResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = SPCachedResult;
   v5 = [(SPCachedResult *)&v15 init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [resultCopy title];
     title = v5->_title;
-    v5->_title = v6;
+    v5->_title = title;
 
-    v5->_type = [v4 type];
-    [v4 score];
+    v5->_type = [resultCopy type];
+    [resultCopy score];
     v5->_score = v8;
-    [v4 freshnessScore];
+    [resultCopy freshnessScore];
     v5->_freshnessScore = v9;
-    v10 = [v4 engagementTime];
+    engagementTime = [resultCopy engagementTime];
     engagementTime = v5->_engagementTime;
-    v5->_engagementTime = v10;
+    v5->_engagementTime = engagementTime;
 
-    v12 = [v4 encodedNormalizedTopic];
+    encodedNormalizedTopic = [resultCopy encodedNormalizedTopic];
     encodedNormalizedTopic = v5->_encodedNormalizedTopic;
-    v5->_encodedNormalizedTopic = v12;
+    v5->_encodedNormalizedTopic = encodedNormalizedTopic;
   }
 
   return v5;
@@ -397,8 +397,8 @@ LABEL_13:
   v14 = MEMORY[0x277CCABB0];
   [(SPCachedResult *)self freshnessScore];
   v15 = [v14 numberWithDouble:?];
-  v16 = [(SPCachedResult *)self engagementTime];
-  v12 = [(SPRecentTopic *)v13 initWithTopic:v6 score:v15 engagementDate:v16];
+  engagementTime = [(SPCachedResult *)self engagementTime];
+  v12 = [(SPRecentTopic *)v13 initWithTopic:v6 score:v15 engagementDate:engagementTime];
 
 LABEL_14:
 
@@ -407,19 +407,19 @@ LABEL_14:
 
 - (id)searchResult
 {
-  v2 = [(SPCachedResult *)self recentTopic];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  recentTopic = [(SPCachedResult *)self recentTopic];
+  if (recentTopic && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 topic];
-    v4 = [v3 result];
+    topic = [recentTopic topic];
+    result = [topic result];
   }
 
   else
   {
-    v4 = 0;
+    result = 0;
   }
 
-  return v4;
+  return result;
 }
 
 - (void)initWithResult:(void *)a1 topic:title:searchString:.cold.1(void *a1)
@@ -442,7 +442,7 @@ LABEL_14:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26B79D000, a2, OS_LOG_TYPE_ERROR, "spotlight cache: could not encode generic topic. error: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

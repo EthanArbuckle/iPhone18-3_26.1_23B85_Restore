@@ -3,11 +3,11 @@
 - (DNDSLifetimeMonitorDataSource)dataSource;
 - (DNDSLifetimeMonitorDelegate)delegate;
 - (NSString)sysdiagnoseDataIdentifier;
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4;
-- (id)updateForModeAssertions:(id)a3 date:(id)a4;
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted;
+- (id)updateForModeAssertions:(id)assertions date:(id)date;
 - (void)dealloc;
-- (void)refreshMonitorForDate:(id)a3;
-- (void)refreshMonitorFromQueueForDate:(id)a3;
+- (void)refreshMonitorForDate:(id)date;
+- (void)refreshMonitorFromQueueForDate:(id)date;
 @end
 
 @implementation DNDSBaseLifetimeMonitor
@@ -47,7 +47,7 @@
   [(DNDSBaseLifetimeMonitor *)&v3 dealloc];
 }
 
-- (id)updateForModeAssertions:(id)a3 date:(id)a4
+- (id)updateForModeAssertions:(id)assertions date:(id)date
 {
   v4 = [DNDSLifetimeMonitorResult alloc];
   v5 = [(DNDSLifetimeMonitorResult *)v4 initWithActiveUUIDs:MEMORY[0x277CBEBF8] expiredUUIDs:MEMORY[0x277CBEBF8]];
@@ -55,9 +55,9 @@
   return v5;
 }
 
-- (void)refreshMonitorForDate:(id)a3
+- (void)refreshMonitorForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -65,37 +65,37 @@
   v7[2] = __49__DNDSBaseLifetimeMonitor_refreshMonitorForDate___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)refreshMonitorFromQueueForDate:(id)a3
+- (void)refreshMonitorFromQueueForDate:(id)date
 {
-  v15 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(DNDSBaseLifetimeMonitor *)self dataSource];
-  v5 = [v4 lifetimeMonitor:self modeAssertionsWithLifetimeClass:{objc_msgSend(objc_opt_class(), "lifetimeClass")}];
+  dataSource = [(DNDSBaseLifetimeMonitor *)self dataSource];
+  v5 = [dataSource lifetimeMonitor:self modeAssertionsWithLifetimeClass:{objc_msgSend(objc_opt_class(), "lifetimeClass")}];
   v6 = [(NSArray *)self->_activeLifetimeAssertionUUIDs copy];
-  v7 = [(DNDSBaseLifetimeMonitor *)self updateForModeAssertions:v5 date:v15];
-  v8 = [v7 activeUUIDs];
-  v9 = [v8 copy];
+  v7 = [(DNDSBaseLifetimeMonitor *)self updateForModeAssertions:v5 date:dateCopy];
+  activeUUIDs = [v7 activeUUIDs];
+  v9 = [activeUUIDs copy];
   activeLifetimeAssertionUUIDs = self->_activeLifetimeAssertionUUIDs;
   self->_activeLifetimeAssertionUUIDs = v9;
 
-  v11 = [(DNDSBaseLifetimeMonitor *)self delegate];
-  v12 = [v7 expiredUUIDs];
-  v13 = [v12 count];
+  delegate = [(DNDSBaseLifetimeMonitor *)self delegate];
+  expiredUUIDs = [v7 expiredUUIDs];
+  v13 = [expiredUUIDs count];
 
   if (v13)
   {
-    v14 = [v7 expiredUUIDs];
-    [v11 lifetimeMonitor:self lifetimeDidExpireForAssertionUUIDs:v14 expirationDate:v15];
+    expiredUUIDs2 = [v7 expiredUUIDs];
+    [delegate lifetimeMonitor:self lifetimeDidExpireForAssertionUUIDs:expiredUUIDs2 expirationDate:dateCopy];
   }
 
   if (([v6 isEqual:self->_activeLifetimeAssertionUUIDs] & 1) == 0)
   {
-    [v11 activeAssertionsDidChangeForLifetimeMonitor:self];
+    [delegate activeAssertionsDidChangeForLifetimeMonitor:self];
   }
 }
 
@@ -109,10 +109,10 @@
   return v5;
 }
 
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dateCopy = date;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;

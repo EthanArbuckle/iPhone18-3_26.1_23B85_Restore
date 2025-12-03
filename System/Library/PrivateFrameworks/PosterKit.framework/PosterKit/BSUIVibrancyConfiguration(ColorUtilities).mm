@@ -27,8 +27,8 @@
 
   else
   {
-    v5 = [v3 color];
-    v4 = v5 != 0;
+    color = [v3 color];
+    v4 = color != 0;
   }
 
   return v4;
@@ -41,8 +41,8 @@
   if ([v5 isLUTBackedColor])
   {
     v7 = objc_alloc(MEMORY[0x1E698E820]);
-    v8 = [v5 lutIdentifier];
-    v9 = [v7 initWithIdentifier:v8 bundleURL:v6];
+    lutIdentifier = [v5 lutIdentifier];
+    v9 = [v7 initWithIdentifier:lutIdentifier bundleURL:v6];
   }
 
   else
@@ -57,13 +57,13 @@
 {
   v7 = a3;
   v8 = a4;
-  v9 = [v7 isLUTBackedColor];
+  isLUTBackedColor = [v7 isLUTBackedColor];
   v10 = 0;
-  if (v8 && v9)
+  if (v8 && isLUTBackedColor)
   {
     v11 = objc_alloc(MEMORY[0x1E698E820]);
-    v12 = [v7 lutIdentifier];
-    v13 = [v11 initWithIdentifier:v12 bundleURL:v8];
+    lutIdentifier = [v7 lutIdentifier];
+    v13 = [v11 initWithIdentifier:lutIdentifier bundleURL:v8];
 
     v10 = [v13 copyWithLuminanceReduced:a5];
   }
@@ -75,14 +75,14 @@
 {
   v7 = a3;
   v8 = a4;
-  v9 = [v7 lutIdentifier];
+  lutIdentifier = [v7 lutIdentifier];
 
   v10 = 0;
-  if (v8 && v9)
+  if (v8 && lutIdentifier)
   {
     v11 = objc_alloc(MEMORY[0x1E698E820]);
-    v12 = [v7 lutIdentifier];
-    v13 = [v11 initWithIdentifier:v12 bundleURL:v8];
+    lutIdentifier2 = [v7 lutIdentifier];
+    v13 = [v11 initWithIdentifier:lutIdentifier2 bundleURL:v8];
 
     v10 = [v13 copyWithLuminanceReduced:a5];
   }

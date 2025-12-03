@@ -1,31 +1,31 @@
 @interface _UINavigationBarTitleRenameRemoteView
 - (CGSize)intrinsicContentSize;
-- (_UINavigationBarTitleRenameRemoteView)initWithSession:(id)a3;
+- (_UINavigationBarTitleRenameRemoteView)initWithSession:(id)session;
 - (void)_connect;
 - (void)_disconnect;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHorizontalTextInset:(double)a3;
-- (void)setIntrinsicContentSize:(CGSize)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setHorizontalTextInset:(double)inset;
+- (void)setIntrinsicContentSize:(CGSize)size;
 - (void)setNeedsMetricsUpdate;
-- (void)setPortalView:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setPortalView:(id)view;
+- (void)setTextAlignment:(int64_t)alignment;
 - (void)updateMetrics;
 - (void)updateMetricsIfNeeded;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UINavigationBarTitleRenameRemoteView
 
-- (_UINavigationBarTitleRenameRemoteView)initWithSession:(id)a3
+- (_UINavigationBarTitleRenameRemoteView)initWithSession:(id)session
 {
-  v6 = a3;
+  sessionCopy = session;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenameRemoteView.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[_UINavigationBarTitleRenamerRemoteSession class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenameRemoteView.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"[session isKindOfClass:[_UINavigationBarTitleRenamerRemoteSession class]]"}];
   }
 
   v11.receiver = self;
@@ -34,22 +34,22 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_session, a3);
+    objc_storeStrong(&v7->_session, session);
     v8->_textAlignment = 4;
   }
 
   return v8;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v6 = a3;
-  v4 = [(UIView *)self window];
+  windowCopy = window;
+  window = [(UIView *)self window];
 
-  v5 = v6;
-  if (v6)
+  v5 = windowCopy;
+  if (windowCopy)
   {
-    if (v4)
+    if (window)
     {
       goto LABEL_7;
     }
@@ -59,7 +59,7 @@
 
   else
   {
-    if (!v4)
+    if (!window)
     {
       goto LABEL_7;
     }
@@ -67,32 +67,32 @@
     [(_UINavigationBarTitleRenameRemoteView *)self _disconnect];
   }
 
-  v5 = v6;
+  v5 = windowCopy;
 LABEL_7:
 }
 
-- (void)setPortalView:(id)a3
+- (void)setPortalView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   portalView = self->_portalView;
-  if (portalView != v5)
+  if (portalView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)portalView removeFromSuperview];
     [(UIView *)self bounds];
     [(_UIPortalView *)v7 setFrame:?];
     [(UIView *)v7 setAutoresizingMask:18];
     [(UIView *)self addSubview:v7];
-    objc_storeStrong(&self->_portalView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_portalView, view);
+    viewCopy = v7;
   }
 }
 
-- (void)setIntrinsicContentSize:(CGSize)a3
+- (void)setIntrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_intrinsicContentSize.width || a3.height != self->_intrinsicContentSize.height)
+  if (size.width != self->_intrinsicContentSize.width || size.height != self->_intrinsicContentSize.height)
   {
-    self->_intrinsicContentSize = a3;
+    self->_intrinsicContentSize = size;
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 }
@@ -110,9 +110,9 @@ LABEL_7:
 {
   if ((*&self->_flags & 1) == 0)
   {
-    v3 = [(_UINavigationBarTitleRenameRemoteView *)self portalView];
+    portalView = [(_UINavigationBarTitleRenameRemoteView *)self portalView];
 
-    if (v3)
+    if (portalView)
     {
       *&self->_flags |= 1u;
 
@@ -140,55 +140,55 @@ LABEL_7:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(_UINavigationBarTitleRenameRemoteView *)self textAlignment];
-  v13 = [(_UINavigationBarTitleRenameRemoteView *)self session];
+  textAlignment = [(_UINavigationBarTitleRenameRemoteView *)self textAlignment];
+  session = [(_UINavigationBarTitleRenameRemoteView *)self session];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __54___UINavigationBarTitleRenameRemoteView_updateMetrics__block_invoke;
   v20 = &unk_1E7103698;
   objc_copyWeak(&v21, &location);
-  v14 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateAction *)v3 initWithFrame:v12 textAlignment:v13 session:&v17 responseHandler:v5, v7, v9, v11];
+  v14 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateAction *)v3 initWithFrame:textAlignment textAlignment:session session:&v17 responseHandler:v5, v7, v9, v11];
 
   v15 = [(_UINavigationBarTitleRenameRemoteView *)self session:v17];
-  v16 = [v15 overlayService];
-  [v16 sendOverlayAction:v14];
+  overlayService = [v15 overlayService];
+  [overlayService sendOverlayAction:v14];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarTitleRenameRemoteView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UINavigationBarTitleRenameRemoteView *)self setNeedsMetricsUpdate];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarTitleRenameRemoteView;
-  [(UIView *)&v4 setCenter:a3.x, a3.y];
+  [(UIView *)&v4 setCenter:center.x, center.y];
   [(_UINavigationBarTitleRenameRemoteView *)self setNeedsMetricsUpdate];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UINavigationBarTitleRenameRemoteView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UINavigationBarTitleRenameRemoteView *)self setNeedsMetricsUpdate];
 }
 
 - (void)_connect
 {
-  v4 = [(_UINavigationBarTitleRenameRemoteView *)self portalView];
+  portalView = [(_UINavigationBarTitleRenameRemoteView *)self portalView];
 
-  if (v4)
+  if (portalView)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenameRemoteView.m" lineNumber:165 description:@"Remote view is already connected."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UINavigationBarTitleRenameRemoteView.m" lineNumber:165 description:@"Remote view is already connected."];
   }
 
   v5 = [_UIPortalView alloc];
@@ -205,20 +205,20 @@ LABEL_7:
 
 - (void)_disconnect
 {
-  v3 = [(_UINavigationBarTitleRenameRemoteView *)self session];
-  [v3 cancelSession];
+  session = [(_UINavigationBarTitleRenameRemoteView *)self session];
+  [session cancelSession];
 
-  v4 = [(_UINavigationBarTitleRenameRemoteView *)self portalView];
-  [v4 removeFromSuperview];
+  portalView = [(_UINavigationBarTitleRenameRemoteView *)self portalView];
+  [portalView removeFromSuperview];
 
   [(_UINavigationBarTitleRenameRemoteView *)self setPortalView:0];
 }
 
-- (void)setHorizontalTextInset:(double)a3
+- (void)setHorizontalTextInset:(double)inset
 {
-  if (self->_horizontalTextInset != a3)
+  if (self->_horizontalTextInset != inset)
   {
-    self->_horizontalTextInset = a3;
+    self->_horizontalTextInset = inset;
     horizontalTextInsetDidChangeCallback = self->_horizontalTextInsetDidChangeCallback;
     if (horizontalTextInsetDidChangeCallback)
     {
@@ -227,11 +227,11 @@ LABEL_7:
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(_UINavigationBarTitleRenameRemoteView *)self setNeedsMetricsUpdate];
   }
 }

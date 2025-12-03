@@ -1,70 +1,70 @@
 @interface CRLiOSRectangularMarqueeGestureRecognizer
-- (BOOL)canPreventGestureRecognizer:(id)a3;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
 - (BOOL)p_isCanvasCurrentlyInQuickSelectMode;
 - (CRLInteractiveCanvasController)icc;
-- (CRLiOSRectangularMarqueeGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
+- (CRLiOSRectangularMarqueeGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
 - (void)operationDidEnd;
 - (void)p_setModifierFlags;
-- (void)p_updateTrackerWithUnscaledPoint:(CGPoint)a3;
+- (void)p_updateTrackerWithUnscaledPoint:(CGPoint)point;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateAfterAutoscroll:(id)a3;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateAfterAutoscroll:(id)autoscroll;
 @end
 
 @implementation CRLiOSRectangularMarqueeGestureRecognizer
 
-- (CRLiOSRectangularMarqueeGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSRectangularMarqueeGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 dynamicOperationController];
+  controllerCopy = controller;
+  dynamicOperationController = [controllerCopy dynamicOperationController];
   v9.receiver = self;
   v9.super_class = CRLiOSRectangularMarqueeGestureRecognizer;
-  v6 = [(CRLiOSRectangularMarqueeGestureRecognizer *)&v9 initWithTarget:v5 action:"handleTrackerManipulator:"];
+  v6 = [(CRLiOSRectangularMarqueeGestureRecognizer *)&v9 initWithTarget:dynamicOperationController action:"handleTrackerManipulator:"];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_interactiveCanvasController, v4);
+    objc_storeWeak(&v6->_interactiveCanvasController, controllerCopy);
   }
 
   return v7;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self state];
-  if (a3 == 1 && v5 != 1)
+  state = [(CRLiOSRectangularMarqueeGestureRecognizer *)self state];
+  if (state == 1 && state != 1)
   {
     v6 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self icc];
-    v7 = [v6 dynamicOperationController];
+    dynamicOperationController = [v6 dynamicOperationController];
 
     v8 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self icc];
-    v9 = [v8 tmCoordinator];
+    tmCoordinator = [v8 tmCoordinator];
 
-    [v9 registerTrackerManipulator:self];
-    [v9 takeControlWithTrackerManipulator:self];
-    [v7 beginOperation];
+    [tmCoordinator registerTrackerManipulator:self];
+    [tmCoordinator takeControlWithTrackerManipulator:self];
+    [dynamicOperationController beginOperation];
   }
 
   v10.receiver = self;
   v10.super_class = CRLiOSRectangularMarqueeGestureRecognizer;
-  [(CRLiOSRectangularMarqueeGestureRecognizer *)&v10 setState:a3];
+  [(CRLiOSRectangularMarqueeGestureRecognizer *)&v10 setState:state];
 }
 
 - (void)reset
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v4 = [WeakRetained tmCoordinator];
+  tmCoordinator = [WeakRetained tmCoordinator];
 
-  v5 = [v4 controllingTM];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (v5 == self)
+  if (controllingTM == self)
   {
-    [v4 relinquishTrackerManipulatorControl:self];
+    [tmCoordinator relinquishTrackerManipulatorControl:self];
   }
 
-  [v4 unregisterTrackerManipulator:self];
+  [tmCoordinator unregisterTrackerManipulator:self];
   trackingTouch = self->_trackingTouch;
   self->_trackingTouch = 0;
 
@@ -81,13 +81,13 @@
   [(CRLiOSRectangularMarqueeGestureRecognizer *)&v9 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v9 = [WeakRetained layerHost];
-  v10 = [v9 asUIKitHost];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
   if (!self->_trackingTouch)
   {
@@ -99,10 +99,10 @@
       [(CRLiOSRectangularMarqueeGestureRecognizer *)self setAllowableMovement:1.79769313e308];
     }
 
-    if ([v6 count] == 1)
+    if ([beganCopy count] == 1)
     {
-      v11 = [v6 anyObject];
-      if ([v11 type] == 3)
+      anyObject = [beganCopy anyObject];
+      if ([anyObject type] == 3)
       {
         [(CRLiOSRectangularMarqueeGestureRecognizer *)self setMinimumPressDuration:0.0];
         if (([(CRLiOSRectangularMarqueeGestureRecognizer *)self buttonMask]& 2) != 0 || ([(CRLiOSRectangularMarqueeGestureRecognizer *)self modifierFlags]& 0x40000) != 0)
@@ -115,9 +115,9 @@
 
   if (![(CRLiOSRectangularMarqueeGestureRecognizer *)self state])
   {
-    v12 = [v6 anyObject];
-    v13 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self view];
-    [v12 locationInView:v13];
+    anyObject2 = [beganCopy anyObject];
+    view = [(CRLiOSRectangularMarqueeGestureRecognizer *)self view];
+    [anyObject2 locationInView:view];
     v15 = v14;
     v17 = v16;
 
@@ -126,14 +126,14 @@
     v20 = v19;
     v22 = v21;
 
-    if ([v6 count] > 1 || objc_msgSend(v12, "tapCount") > 1 || self->_trackingTouch || objc_msgSend(v10, "disallowRectangularMarqueeOperationAtUnscaledPoint:", v20, v22))
+    if ([beganCopy count] > 1 || objc_msgSend(anyObject2, "tapCount") > 1 || self->_trackingTouch || objc_msgSend(asUIKitHost, "disallowRectangularMarqueeOperationAtUnscaledPoint:", v20, v22))
     {
       [(CRLiOSRectangularMarqueeGestureRecognizer *)self setState:5];
     }
 
     else
     {
-      objc_storeStrong(&self->_trackingTouch, v12);
+      objc_storeStrong(&self->_trackingTouch, anyObject2);
       v23 = sub_10042B6C0([(UITouch *)self->_trackingTouch type]);
       v24 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self icc];
       v25 = [v24 hitKnobAtPoint:v23 inputType:0 returningRep:{v20, v22}];
@@ -161,8 +161,8 @@
           marqueeTracker = self->_marqueeTracker;
           self->_marqueeTracker = v32;
 
-          v34 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
-          [v34 setStartingUnscaledPoint:{v20, v22}];
+          marqueeTracker = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
+          [marqueeTracker setStartingUnscaledPoint:{v20, v22}];
 
           self->_initialScaledTouchLocation.x = v15;
           self->_initialScaledTouchLocation.y = v17;
@@ -170,16 +170,16 @@
           [(CRLRectangularMarqueeTracker *)self->_marqueeTracker setShouldSuppressAnimationWhenMarqueeBegins:v35 < 0.1];
           if ([(UITouch *)self->_trackingTouch type]== 3)
           {
-            v36 = 1;
+            isCurrentlyInQuickSelectMode = 1;
           }
 
           else
           {
-            v36 = [v10 isCurrentlyInQuickSelectMode];
+            isCurrentlyInQuickSelectMode = [asUIKitHost isCurrentlyInQuickSelectMode];
           }
 
-          [(CRLRectangularMarqueeTracker *)self->_marqueeTracker setShouldSuppressContextMenu:v36];
-          [(CRLRectangularMarqueeTracker *)self->_marqueeTracker setShouldSuppressRestoringOriginalSelectionIfNothingSelected:v36];
+          [(CRLRectangularMarqueeTracker *)self->_marqueeTracker setShouldSuppressContextMenu:isCurrentlyInQuickSelectMode];
+          [(CRLRectangularMarqueeTracker *)self->_marqueeTracker setShouldSuppressRestoringOriginalSelectionIfNothingSelected:isCurrentlyInQuickSelectMode];
           [(CRLiOSRectangularMarqueeGestureRecognizer *)self p_setModifierFlags];
         }
       }
@@ -188,22 +188,22 @@
 
   v37.receiver = self;
   v37.super_class = CRLiOSRectangularMarqueeGestureRecognizer;
-  [(CRLiOSRectangularMarqueeGestureRecognizer *)&v37 touchesBegan:v6 withEvent:v7];
+  [(CRLiOSRectangularMarqueeGestureRecognizer *)&v37 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v18.receiver = self;
   v18.super_class = CRLiOSRectangularMarqueeGestureRecognizer;
-  v6 = a3;
-  [(CRLiOSRectangularMarqueeGestureRecognizer *)&v18 touchesMoved:v6 withEvent:a4];
-  LODWORD(a4) = [v6 containsObject:{self->_trackingTouch, v18.receiver, v18.super_class}];
+  movedCopy = moved;
+  [(CRLiOSRectangularMarqueeGestureRecognizer *)&v18 touchesMoved:movedCopy withEvent:event];
+  LODWORD(event) = [movedCopy containsObject:{self->_trackingTouch, v18.receiver, v18.super_class}];
 
-  if (a4)
+  if (event)
   {
     trackingTouch = self->_trackingTouch;
-    v8 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self view];
-    [(UITouch *)trackingTouch locationInView:v8];
+    view = [(CRLiOSRectangularMarqueeGestureRecognizer *)self view];
+    [(UITouch *)trackingTouch locationInView:view];
     v10 = v9;
     v12 = v11;
 
@@ -222,22 +222,22 @@
   }
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v6 = [WeakRetained layerHost];
-  v7 = [v6 asUIKitHost];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
   v12.receiver = self;
   v12.super_class = CRLiOSRectangularMarqueeGestureRecognizer;
-  if ([(CRLiOSRectangularMarqueeGestureRecognizer *)&v12 canPreventGestureRecognizer:v4])
+  if ([(CRLiOSRectangularMarqueeGestureRecognizer *)&v12 canPreventGestureRecognizer:recognizerCopy])
   {
     [(CRLiOSRectangularMarqueeGestureRecognizer *)self minimumPressDuration];
     if (v8 <= 0.02)
     {
-      v10 = [v7 doubleTapGestureRecognizer];
-      v9 = v10 != v4;
+      doubleTapGestureRecognizer = [asUIKitHost doubleTapGestureRecognizer];
+      v9 = doubleTapGestureRecognizer != recognizerCopy;
     }
 
     else
@@ -261,11 +261,11 @@
   self->_trackingTouch = 0;
 }
 
-- (void)updateAfterAutoscroll:(id)a3
+- (void)updateAfterAutoscroll:(id)autoscroll
 {
   trackingTouch = self->_trackingTouch;
-  v5 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self view];
-  [(UITouch *)trackingTouch locationInView:v5];
+  view = [(CRLiOSRectangularMarqueeGestureRecognizer *)self view];
+  [(UITouch *)trackingTouch locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -282,31 +282,31 @@
 - (void)p_setModifierFlags
 {
   v3 = ([(CRLiOSRectangularMarqueeGestureRecognizer *)self modifierFlags]>> 19) & 1;
-  v4 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
-  [v4 setShouldCenterResizeMarqueeRect:v3];
+  marqueeTracker = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
+  [marqueeTracker setShouldCenterResizeMarqueeRect:v3];
 
   v5 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self p_shouldInvertOriginalSelectionForModifierFlags:[(CRLiOSRectangularMarqueeGestureRecognizer *)self modifierFlags]];
-  v6 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
-  [v6 setShouldInvertOriginalSelection:v5];
+  marqueeTracker2 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
+  [marqueeTracker2 setShouldInvertOriginalSelection:v5];
 }
 
-- (void)p_updateTrackerWithUnscaledPoint:(CGPoint)a3
+- (void)p_updateTrackerWithUnscaledPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLiOSRectangularMarqueeGestureRecognizer *)self p_setModifierFlags];
-  v6 = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
-  [v6 setCurrentUnscaledDragPoint:{x, y}];
+  marqueeTracker = [(CRLiOSRectangularMarqueeGestureRecognizer *)self marqueeTracker];
+  [marqueeTracker setCurrentUnscaledDragPoint:{x, y}];
 }
 
 - (BOOL)p_isCanvasCurrentlyInQuickSelectMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_interactiveCanvasController);
-  v3 = [WeakRetained layerHost];
-  v4 = [v3 asUIKitHost];
-  v5 = [v4 isCurrentlyInQuickSelectMode];
+  layerHost = [WeakRetained layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
+  isCurrentlyInQuickSelectMode = [asUIKitHost isCurrentlyInQuickSelectMode];
 
-  return v5;
+  return isCurrentlyInQuickSelectMode;
 }
 
 - (CRLInteractiveCanvasController)icc

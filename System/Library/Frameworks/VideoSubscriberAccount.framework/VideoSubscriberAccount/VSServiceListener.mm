@@ -1,8 +1,8 @@
 @interface VSServiceListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (VSServiceListener)init;
-- (void)_addConnectionHandler:(id)a3;
-- (void)_removeConnectionHandler:(id)a3;
+- (void)_addConnectionHandler:(id)handler;
+- (void)_removeConnectionHandler:(id)handler;
 @end
 
 @implementation VSServiceListener
@@ -22,37 +22,37 @@
   return v2;
 }
 
-- (void)_addConnectionHandler:(id)a3
+- (void)_addConnectionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(VSServiceListener *)v4 connectionHandlers];
-  [v5 addObject:v6];
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectionHandlers = [(VSServiceListener *)selfCopy connectionHandlers];
+  [connectionHandlers addObject:handlerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_removeConnectionHandler:(id)a3
+- (void)_removeConnectionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(VSServiceListener *)v4 connectionHandlers];
-  [v5 removeObject:v6];
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connectionHandlers = [(VSServiceListener *)selfCopy connectionHandlers];
+  [connectionHandlers removeObject:handlerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v5;
+    v29 = connectionCopy;
     _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, "Received request to open connection %@", buf, 0xCu);
   }
 
@@ -60,9 +60,9 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v23 = self;
-  v7 = [(VSServiceListener *)self entitlementNames];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  selfCopy = self;
+  entitlementNames = [(VSServiceListener *)self entitlementNames];
+  v8 = [entitlementNames countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -73,11 +73,11 @@
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(entitlementNames);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v5 valueForEntitlement:v12];
+        v13 = [connectionCopy valueForEntitlement:v12];
         if ((objc_opt_respondsToSelector() & 1) != 0 && [v13 BOOLValue])
         {
           v17 = VSDefaultLogObject();
@@ -88,26 +88,26 @@
             _os_log_impl(&dword_23AB8E000, v17, OS_LOG_TYPE_DEFAULT, "Will accept connection due to %@ entitlement.", buf, 0xCu);
           }
 
-          v18 = [(VSServiceListener *)v23 exportedInterface];
-          [v5 setExportedInterface:v18];
+          exportedInterface = [(VSServiceListener *)selfCopy exportedInterface];
+          [connectionCopy setExportedInterface:exportedInterface];
 
-          v19 = [(VSServiceListener *)v23 exportedObject];
-          [v5 setExportedObject:v19];
+          exportedObject = [(VSServiceListener *)selfCopy exportedObject];
+          [connectionCopy setExportedObject:exportedObject];
 
           v20 = objc_alloc_init(VSServiceConnectionHandler);
-          [(VSServiceConnectionHandler *)v20 setDelegate:v23];
-          [(VSServiceConnectionHandler *)v20 setConnection:v5];
-          [(VSServiceListener *)v23 _addConnectionHandler:v20];
+          [(VSServiceConnectionHandler *)v20 setDelegate:selfCopy];
+          [(VSServiceConnectionHandler *)v20 setConnection:connectionCopy];
+          [(VSServiceListener *)selfCopy _addConnectionHandler:v20];
 
           v21 = VSDefaultLogObject();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v29 = v5;
+            v29 = connectionCopy;
             _os_log_impl(&dword_23AB8E000, v21, OS_LOG_TYPE_DEFAULT, "Will accept connection %@", buf, 0xCu);
           }
 
-          [v5 resume];
+          [connectionCopy resume];
           v16 = 1;
           goto LABEL_22;
         }
@@ -123,7 +123,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v9 = [entitlementNames countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v9)
       {
         continue;
@@ -136,7 +136,7 @@
   v15 = VSErrorLogObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [VSServiceListener listener:v5 shouldAcceptNewConnection:v15];
+    [VSServiceListener listener:connectionCopy shouldAcceptNewConnection:v15];
   }
 
   v16 = 0;

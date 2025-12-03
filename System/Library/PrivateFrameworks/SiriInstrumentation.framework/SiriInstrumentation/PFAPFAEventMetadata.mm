@@ -1,33 +1,33 @@
 @interface PFAPFAEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PFAPFAEventMetadata)initWithDictionary:(id)a3;
-- (PFAPFAEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PFAPFAEventMetadata)initWithDictionary:(id)dictionary;
+- (PFAPFAEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFAPFAEventMetadata
 
-- (PFAPFAEventMetadata)initWithDictionary:(id)a3
+- (PFAPFAEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PFAPFAEventMetadata;
   v5 = [(PFAPFAEventMetadata *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampInMsSince1970"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PFAPFAEventMetadata setEventTimestampInMsSince1970:](v5, "setEventTimestampInMsSince1970:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"deviceDimensions"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"deviceDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (PFAPFAEventMetadata)initWithJSON:(id)a3
+- (PFAPFAEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFAPFAEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFAPFAEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFAPFAEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deviceDimensions)
   {
-    v4 = [(PFAPFAEventMetadata *)self deviceDimensions];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    deviceDimensions = [(PFAPFAEventMetadata *)self deviceDimensions];
+    dictionaryRepresentation = [deviceDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"deviceDimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"deviceDimensions"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"deviceDimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"deviceDimensions"];
     }
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PFAPFAEventMetadata eventTimestampInMsSince1970](self, "eventTimestampInMsSince1970")}];
-    [v3 setObject:v7 forKeyedSubscript:@"eventTimestampInMsSince1970"];
+    [dictionary setObject:v7 forKeyedSubscript:@"eventTimestampInMsSince1970"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(PFAPFADeviceDimensions *)self->_deviceDimensions hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (eventTimestampInMsSince1970 = self->_eventTimestampInMsSince1970, eventTimestampInMsSince1970 == [v4 eventTimestampInMsSince1970]))
+      if ((*&self->_has & 1) == 0 || (eventTimestampInMsSince1970 = self->_eventTimestampInMsSince1970, eventTimestampInMsSince1970 == [equalCopy eventTimestampInMsSince1970]))
       {
-        v6 = [(PFAPFAEventMetadata *)self deviceDimensions];
-        v7 = [v4 deviceDimensions];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        deviceDimensions = [(PFAPFAEventMetadata *)self deviceDimensions];
+        deviceDimensions2 = [equalCopy deviceDimensions];
+        v8 = deviceDimensions2;
+        if ((deviceDimensions != 0) != (deviceDimensions2 == 0))
         {
-          v9 = [(PFAPFAEventMetadata *)self deviceDimensions];
-          if (!v9)
+          deviceDimensions3 = [(PFAPFAEventMetadata *)self deviceDimensions];
+          if (!deviceDimensions3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(PFAPFAEventMetadata *)self deviceDimensions];
-          v12 = [v4 deviceDimensions];
-          v13 = [v11 isEqual:v12];
+          v10 = deviceDimensions3;
+          deviceDimensions4 = [(PFAPFAEventMetadata *)self deviceDimensions];
+          deviceDimensions5 = [equalCopy deviceDimensions];
+          v13 = [deviceDimensions4 isEqual:deviceDimensions5];
 
           if (v13)
           {
@@ -167,37 +167,37 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
   }
 
-  v4 = [(PFAPFAEventMetadata *)self deviceDimensions];
+  deviceDimensions = [(PFAPFAEventMetadata *)self deviceDimensions];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (deviceDimensions)
   {
-    v6 = [(PFAPFAEventMetadata *)self deviceDimensions];
+    deviceDimensions2 = [(PFAPFAEventMetadata *)self deviceDimensions];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PFAPFAEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PFAPFAEventMetadata *)self deviceDimensions:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PFAPFAEventMetadata *)self deleteDeviceDimensions];
   }

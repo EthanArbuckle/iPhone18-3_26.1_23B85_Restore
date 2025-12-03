@@ -1,97 +1,97 @@
 @interface TransitSchedulesViewController
-+ (BOOL)shouldShowScheduleForTransitMapItem:(id)a3 sequence:(id)a4;
-+ (id)validDeparturesInDepartureSequence:(id)a3 withReferenceDate:(id)a4;
++ (BOOL)shouldShowScheduleForTransitMapItem:(id)item sequence:(id)sequence;
++ (id)validDeparturesInDepartureSequence:(id)sequence withReferenceDate:(id)date;
 - (ActionCoordination)actionCoordinator;
 - (BOOL)_shouldShowDepartureInfoSection;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)hasIncidents;
-- (BOOL)isNetworkError:(id)a3;
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3;
+- (BOOL)isNetworkError:(id)error;
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration;
 - (TransitSchedulesDepartureViewProviding)departureCellProvider;
 - (TransitSchedulesHeadsignViewProviding)headsignCellProvider;
-- (TransitSchedulesViewController)initWithDepartureSequence:(id)a3 timeZone:(id)a4 scheduleWindowStartDate:(id)a5 includeAllDirections:(BOOL)a6;
-- (TransitSchedulesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (TransitSchedulesViewController)initWithTransitMapItem:(id)a3 departureSequence:(id)a4;
-- (TransitSchedulesViewController)initWithTransitRouteStep:(id)a3;
+- (TransitSchedulesViewController)initWithDepartureSequence:(id)sequence timeZone:(id)zone scheduleWindowStartDate:(id)date includeAllDirections:(BOOL)directions;
+- (TransitSchedulesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (TransitSchedulesViewController)initWithTransitMapItem:(id)item departureSequence:(id)sequence;
+- (TransitSchedulesViewController)initWithTransitRouteStep:(id)step;
 - (TransitSchedulesViewControllerDelegate)transitSchedulesDelegate;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)_collectionViewLayout;
-- (id)_dedupeDepartureSequences:(id)a3;
-- (id)_dedupeDepartures:(id)a3;
+- (id)_dedupeDepartureSequences:(id)sequences;
+- (id)_dedupeDepartures:(id)departures;
 - (id)_firstVisibleDeparture;
-- (id)_headerViewForSectionType:(unint64_t)a3;
-- (id)_identifierForDeparture:(id)a3;
-- (id)_startEndDatesForOperatingHoursTimeRanges:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)_headerViewForSectionType:(unint64_t)type;
+- (id)_identifierForDeparture:(id)departure;
+- (id)_startEndDatesForOperatingHoursTimeRanges:(id)ranges;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)fetchSelectedTransitLineItem;
-- (id)ticketForTransitMapItemUpdater:(id)a3;
+- (id)ticketForTransitMapItemUpdater:(id)updater;
 - (id)titleForStopsHeader;
 - (id)traits;
 - (int64_t)_numberOfDeparturesInSnapshot;
-- (int64_t)_sectionIndexForSectionType:(unint64_t)a3;
+- (int64_t)_sectionIndexForSectionType:(unint64_t)type;
 - (unint64_t)_departuresHeaderStyle;
-- (unint64_t)_sectionTypeForSectionIndex:(unint64_t)a3;
-- (void)_addSection:(unint64_t)a3 toSnapshot:(id)a4;
+- (unint64_t)_sectionTypeForSectionIndex:(unint64_t)index;
+- (void)_addSection:(unint64_t)section toSnapshot:(id)snapshot;
 - (void)_checkIfPinnedLine;
-- (void)_clearSection:(unint64_t)a3 inSnapshot:(id)a4;
+- (void)_clearSection:(unint64_t)section inSnapshot:(id)snapshot;
 - (void)_clearVehicles;
-- (void)_expandStopsSection:(id)a3;
-- (void)_fetchMapsSyncTransitLineItemWithCallback:(id)a3;
+- (void)_expandStopsSection:(id)section;
+- (void)_fetchMapsSyncTransitLineItemWithCallback:(id)callback;
 - (void)_rebuildStopsSection;
-- (void)_removeSection:(unint64_t)a3 toSnapshot:(id)a4;
+- (void)_removeSection:(unint64_t)section toSnapshot:(id)snapshot;
 - (void)_startObservingDepartureProvider;
 - (void)_stopObservingDepartureProvider;
 - (void)_updateDeparturesHeaderTitles;
-- (void)_updateDeparturesHeaderTitlesForHeaderView:(id)a3;
+- (void)_updateDeparturesHeaderTitlesForHeaderView:(id)view;
 - (void)_updateStopsSectionHeader;
-- (void)_updateStopsSectionHeader:(id)a3;
+- (void)_updateStopsSectionHeader:(id)header;
 - (void)_updateVehicleUpdater;
 - (void)changeDate;
-- (void)changedDate:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)departureCellProvider:(id)a3 selectDeparture:(id)a4 withIndex:(unint64_t)a5;
-- (void)departureDataProvider:(id)a3 selectedDeparture:(id)a4 withIndex:(unint64_t)a5;
-- (void)departureDataProvider:(id)a3 selectedDepartureSequence:(id)a4 withIndex:(unint64_t)a5;
-- (void)departureDataProvider:(id)a3 updatedDepartureSequences:(id)a4;
-- (void)departureDataProvider:(id)a3 updatedDepartures:(id)a4;
+- (void)changedDate:(id)date;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)departureCellProvider:(id)provider selectDeparture:(id)departure withIndex:(unint64_t)index;
+- (void)departureDataProvider:(id)provider selectedDeparture:(id)departure withIndex:(unint64_t)index;
+- (void)departureDataProvider:(id)provider selectedDepartureSequence:(id)sequence withIndex:(unint64_t)index;
+- (void)departureDataProvider:(id)provider updatedDepartureSequences:(id)sequences;
+- (void)departureDataProvider:(id)provider updatedDepartures:(id)departures;
 - (void)fetchNewScheduleData;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewTapped:(id)a3;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewTapped:(id)tapped;
 - (void)loadSelectedTripDetails;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pinSelectedTransitLine;
-- (void)processUpdatedDepartureSequencesFromMapItem:(id)a3;
+- (void)processUpdatedDepartureSequencesFromMapItem:(id)item;
 - (void)restoreInitialMapState;
 - (void)selectDeparture;
-- (void)selectDeparture:(id)a3;
-- (void)selectDepartureSequence:(id)a3;
-- (void)setBoardingStationMapItem:(id)a3;
-- (void)setDepartureDataProvider:(id)a3;
-- (void)setIncidents:(id)a3;
-- (void)setPinnedTransitLine:(BOOL)a3;
-- (void)setScheduleWindowStartDate:(id)a3;
-- (void)setSelectedDeparture:(id)a3;
-- (void)setSelectedTransitLine:(id)a3;
-- (void)setSelectedTripRoute:(id)a3;
-- (void)setSelectedTripVehicleNumber:(id)a3;
+- (void)selectDeparture:(id)departure;
+- (void)selectDepartureSequence:(id)sequence;
+- (void)setBoardingStationMapItem:(id)item;
+- (void)setDepartureDataProvider:(id)provider;
+- (void)setIncidents:(id)incidents;
+- (void)setPinnedTransitLine:(BOOL)line;
+- (void)setScheduleWindowStartDate:(id)date;
+- (void)setSelectedDeparture:(id)departure;
+- (void)setSelectedTransitLine:(id)line;
+- (void)setSelectedTripRoute:(id)route;
+- (void)setSelectedTripVehicleNumber:(id)number;
 - (void)showDirectionsToSelectedTransitStop;
 - (void)showLineInfo;
 - (void)showRouteOnMap;
-- (void)timingViewController:(id)a3 didPickTiming:(id)a4;
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4;
-- (void)transitMapItemUpdater:(id)a3 updatedMapItem:(id)a4 error:(id)a5;
-- (void)transitVehicleUpdater:(id)a3 didFailUpdateForTripIDs:(id)a4 withError:(id)a5;
-- (void)transitVehicleUpdater:(id)a3 didTimeoutUpdateForTripIDs:(id)a4;
-- (void)transitVehicleUpdater:(id)a3 didUpdateVehiclePositions:(id)a4 forTripIDs:(id)a5;
+- (void)timingViewController:(id)controller didPickTiming:(id)timing;
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date;
+- (void)transitMapItemUpdater:(id)updater updatedMapItem:(id)item error:(id)error;
+- (void)transitVehicleUpdater:(id)updater didFailUpdateForTripIDs:(id)ds withError:(id)error;
+- (void)transitVehicleUpdater:(id)updater didTimeoutUpdateForTripIDs:(id)ds;
+- (void)transitVehicleUpdater:(id)updater didUpdateVehiclePositions:(id)positions forTripIDs:(id)ds;
 - (void)unpinSelectedTransitLine;
-- (void)updateDeparturesSectionForNetworkState:(unint64_t)a3;
-- (void)updateStopsSectionForNetworkState:(unint64_t)a3;
-- (void)updatedDepartureInfoProvider:(id)a3;
+- (void)updateDeparturesSectionForNetworkState:(unint64_t)state;
+- (void)updateStopsSectionForNetworkState:(unint64_t)state;
+- (void)updatedDepartureInfoProvider:(id)provider;
 - (void)viewDidLoad;
 - (void)viewLineOnMap;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TransitSchedulesViewController
@@ -110,17 +110,17 @@
   return WeakRetained;
 }
 
-- (id)_identifierForDeparture:(id)a3
+- (id)_identifierForDeparture:(id)departure
 {
-  v3 = a3;
-  if ([v3 liveStatus] - 1 > 1)
+  departureCopy = departure;
+  if ([departureCopy liveStatus] - 1 > 1)
   {
-    [v3 scheduledDepartureDate];
+    [departureCopy scheduledDepartureDate];
   }
 
   else
   {
-    [v3 liveDepartureDate];
+    [departureCopy liveDepartureDate];
   }
   v4 = ;
   v5 = v4;
@@ -130,28 +130,28 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v10 = [v3 tripIdentifier];
+      tripIdentifier = [departureCopy tripIdentifier];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Departure did not have a departure date: tripId %llu", buf, 0xCu);
     }
 
     v5 = @"NA";
   }
 
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu_%@", [v3 tripIdentifier], v5);
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu_%@", [departureCopy tripIdentifier], v5);
 
   return v7;
 }
 
-- (id)_dedupeDepartures:(id)a3
+- (id)_dedupeDepartures:(id)departures
 {
-  v4 = a3;
+  departuresCopy = departures;
   v5 = objc_alloc_init(NSMutableSet);
   v6 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = v4;
+  v7 = departuresCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v8)
   {
@@ -197,16 +197,16 @@
   return v6;
 }
 
-- (id)_dedupeDepartureSequences:(id)a3
+- (id)_dedupeDepartureSequences:(id)sequences
 {
-  v3 = a3;
+  sequencesCopy = sequences;
   v4 = objc_alloc_init(NSMutableSet);
   v5 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = sequencesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
@@ -224,14 +224,14 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 uniqueId];
-        if ([v4 containsObject:v13])
+        uniqueId = [v12 uniqueId];
+        if ([v4 containsObject:uniqueId])
         {
           v14 = sub_100798DBC();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *buf = v16;
-            v22 = v13;
+            v22 = uniqueId;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Duplicate departure sequence identifier found: %{public}@", buf, 0xCu);
           }
         }
@@ -239,7 +239,7 @@
         else
         {
           [v5 addObject:v12];
-          [v4 addObject:v13];
+          [v4 addObject:uniqueId];
         }
       }
 
@@ -252,24 +252,24 @@
   return v5;
 }
 
-- (void)updatedDepartureInfoProvider:(id)a3
+- (void)updatedDepartureInfoProvider:(id)provider
 {
   if (![(TransitSchedulesViewController *)self _shouldShowDepartureInfoSection])
   {
     return;
   }
 
-  v7 = [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider identifiers];
-  if ([v7 count])
+  identifiers = [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider identifiers];
+  if ([identifiers count])
   {
     p_dataSource = &self->_dataSource;
-    v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    [(TransitSchedulesViewController *)self _clearSection:1 inSnapshot:v5];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    [(TransitSchedulesViewController *)self _clearSection:1 inSnapshot:snapshot];
     v6 = [NSNumber numberWithUnsignedInteger:1];
-    [v5 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:v6];
+    [snapshot appendItemsWithIdentifiers:identifiers intoSectionWithIdentifier:v6];
 
 LABEL_7:
-    [(UICollectionViewDiffableDataSource *)*p_dataSource applySnapshot:v5 animatingDifferences:1];
+    [(UICollectionViewDiffableDataSource *)*p_dataSource applySnapshot:snapshot animatingDifferences:1];
 
     goto LABEL_8;
   }
@@ -277,18 +277,18 @@ LABEL_7:
   if ([(TransitSchedulesViewController *)self _sectionIndexForSectionType:1]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     p_dataSource = &self->_dataSource;
-    v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    [(TransitSchedulesViewController *)self _removeSection:1 toSnapshot:v5];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    [(TransitSchedulesViewController *)self _removeSection:1 toSnapshot:snapshot];
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_fetchMapsSyncTransitLineItemWithCallback:(id)a3
+- (void)_fetchMapsSyncTransitLineItemWithCallback:(id)callback
 {
-  v4 = a3;
-  if (v4)
+  callbackCopy = callback;
+  if (callbackCopy)
   {
     objc_initWeak(&location, self);
     v5 = objc_alloc_init(MSCollectionTransitItemRequest);
@@ -297,7 +297,7 @@ LABEL_8:
     v6[2] = sub_1006B7C48;
     v6[3] = &unk_10165E308;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = callbackCopy;
     [v5 fetchWithCompletionHandler:v6];
 
     objc_destroyWeak(&v8);
@@ -308,17 +308,17 @@ LABEL_8:
 - (void)unpinSelectedTransitLine
 {
   [(TransitSchedulesViewController *)self _fetchMapsSyncTransitLineItemWithCallback:&stru_1016264B8];
-  v3 = [(TransitSchedulesViewController *)self currentUITargetForAnalytics];
+  currentUITargetForAnalytics = [(TransitSchedulesViewController *)self currentUITargetForAnalytics];
 
-  [GEOAPPortal captureUserAction:252 target:v3 value:0];
+  [GEOAPPortal captureUserAction:252 target:currentUITargetForAnalytics value:0];
 }
 
 - (void)pinSelectedTransitLine
 {
   v3 = objc_alloc_init(MSCollectionTransitItem);
   v4 = [[MSPTransitStorageLine alloc] initWithLine:self->_selectedTransitLine];
-  v5 = [v4 data];
-  [v3 setTransitLineStorage:v5];
+  data = [v4 data];
+  [v3 setTransitLineStorage:data];
 
   [v3 setMuid:{-[GEOTransitLine muid](self->_selectedTransitLine, "muid")}];
   v6 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
@@ -345,17 +345,17 @@ LABEL_8:
   }
 }
 
-- (void)setPinnedTransitLine:(BOOL)a3
+- (void)setPinnedTransitLine:(BOOL)line
 {
-  if (self->_pinnedTransitLine != a3)
+  if (self->_pinnedTransitLine != line)
   {
-    self->_pinnedTransitLine = a3;
+    self->_pinnedTransitLine = line;
     if ([(TransitSchedulesViewController *)self _sectionIndexForSectionType:7]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-      v4 = [(TransitSchedulesLineOptionsProvider *)self->_lineOptionsProvider identifiers];
-      [v5 reloadItemsWithIdentifiers:v4];
-      [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v5 animatingDifferences:1];
+      snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+      identifiers = [(TransitSchedulesLineOptionsProvider *)self->_lineOptionsProvider identifiers];
+      [snapshot reloadItemsWithIdentifiers:identifiers];
+      [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:1];
     }
   }
 }
@@ -364,12 +364,12 @@ LABEL_8:
 {
   if (self->_selectedTransitLineItem)
   {
-    v3 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
+    transitSchedulesDelegate = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
 
-    if (v3)
+    if (transitSchedulesDelegate)
     {
-      v4 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
-      [v4 transitSchedulesViewController:self wantsToShowInfoForLine:self->_selectedTransitLineItem];
+      transitSchedulesDelegate2 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
+      [transitSchedulesDelegate2 transitSchedulesViewController:self wantsToShowInfoForLine:self->_selectedTransitLineItem];
     }
   }
 }
@@ -402,58 +402,58 @@ LABEL_8:
   v14 = @"DirectionsSessionInitiatorKey";
   v15 = &off_1016E67A0;
   v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  v13 = [(TransitSchedulesViewController *)self actionCoordinator];
-  [v13 viewController:self doDirectionItem:v11 withUserInfo:v12];
+  actionCoordinator = [(TransitSchedulesViewController *)self actionCoordinator];
+  [actionCoordinator viewController:self doDirectionItem:v11 withUserInfo:v12];
 
   [GEOAPPortal captureUserAction:6003 target:[(TransitSchedulesViewController *)self currentUITargetForAnalytics] value:0];
 }
 
 - (void)viewLineOnMap
 {
-  v3 = [(TransitSchedulesViewController *)self selectedTripRoute];
+  selectedTripRoute = [(TransitSchedulesViewController *)self selectedTripRoute];
 
-  if (v3)
+  if (selectedTripRoute)
   {
-    v4 = [(TransitSchedulesViewController *)self selectedTripRoute];
+    selectedTripRoute2 = [(TransitSchedulesViewController *)self selectedTripRoute];
     [(GEOLocation *)self->_boardingStopLocation coordinate];
-    v5 = [v4 closestPointOnRoute:?];
+    v5 = [selectedTripRoute2 closestPointOnRoute:?];
 
-    v6 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
-    v9 = [v6 mapCameraControllerForTransitSchedulesViewController:self];
+    transitSchedulesDelegate = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
+    v9 = [transitSchedulesDelegate mapCameraControllerForTransitSchedulesViewController:self];
 
-    v7 = [(TransitSchedulesViewController *)self selectedTripRoute];
-    [v9 displayTransitRoute:v7 boardingStopCoord:v5 boardingStopIndex:self->_boardingStopIndex animated:1 completion:0];
+    selectedTripRoute3 = [(TransitSchedulesViewController *)self selectedTripRoute];
+    [v9 displayTransitRoute:selectedTripRoute3 boardingStopCoord:v5 boardingStopIndex:self->_boardingStopIndex animated:1 completion:0];
 
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    [v8 wantsLayout:1];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController wantsLayout:1];
 
     [GEOAPPortal captureUserAction:7018 target:[(TransitSchedulesViewController *)self currentUITargetForAnalytics] value:0];
   }
 }
 
-- (void)selectDeparture:(id)a3
+- (void)selectDeparture:(id)departure
 {
   departureDataProvider = self->_departureDataProvider;
-  v4 = [a3 tripIdentifier];
+  tripIdentifier = [departure tripIdentifier];
 
-  [(TransitSchedulesDepartureDataProvider *)departureDataProvider selectDepartureWithTripIdentifier:v4];
+  [(TransitSchedulesDepartureDataProvider *)departureDataProvider selectDepartureWithTripIdentifier:tripIdentifier];
 }
 
-- (void)selectDepartureSequence:(id)a3
+- (void)selectDepartureSequence:(id)sequence
 {
   departureDataProvider = self->_departureDataProvider;
-  v5 = a3;
-  [(TransitSchedulesDepartureDataProvider *)departureDataProvider selectDepartureSequence:v5];
-  [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:v5];
+  sequenceCopy = sequence;
+  [(TransitSchedulesDepartureDataProvider *)departureDataProvider selectDepartureSequence:sequenceCopy];
+  [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:sequenceCopy];
 }
 
-- (void)timingViewController:(id)a3 didPickTiming:(id)a4
+- (void)timingViewController:(id)controller didPickTiming:(id)timing
 {
-  v5 = [a4 departureDate];
-  v7 = v5;
-  if (v5)
+  departureDate = [timing departureDate];
+  v7 = departureDate;
+  if (departureDate)
   {
-    [(TransitSchedulesViewController *)self setScheduleWindowStartDate:v5];
+    [(TransitSchedulesViewController *)self setScheduleWindowStartDate:departureDate];
   }
 
   else
@@ -463,18 +463,18 @@ LABEL_8:
   }
 }
 
-- (void)_updateDeparturesHeaderTitlesForHeaderView:(id)a3
+- (void)_updateDeparturesHeaderTitlesForHeaderView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[NSBundle mainBundle];
   v22 = [v5 localizedStringForKey:@"[Transit Schedules] Departures" value:@"localized string not found" table:0];
 
-  v6 = [(TransitSchedulesViewController *)self _firstVisibleDeparture];
+  _firstVisibleDeparture = [(TransitSchedulesViewController *)self _firstVisibleDeparture];
   if (sub_10000FA08(self) != 5)
   {
-    if (v6)
+    if (_firstVisibleDeparture)
     {
-      [v6 departureDate];
+      [_firstVisibleDeparture departureDate];
     }
 
     else
@@ -482,8 +482,8 @@ LABEL_8:
       [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider scheduleWindowStartDate];
     }
     v7 = ;
-    v8 = [(TransitSchedulesViewController *)self referenceDate];
-    [v7 timeIntervalSinceDate:v8];
+    referenceDate = [(TransitSchedulesViewController *)self referenceDate];
+    [v7 timeIntervalSinceDate:referenceDate];
     v10 = v9;
 
     GEOTransitDepartureNearFuturePeriod();
@@ -496,12 +496,12 @@ LABEL_8:
     }
   }
 
-  v14 = [(TransitSchedulesViewController *)self _departuresHeaderStyle];
-  if (v14 != 2)
+  _departuresHeaderStyle = [(TransitSchedulesViewController *)self _departuresHeaderStyle];
+  if (_departuresHeaderStyle != 2)
   {
-    if (v14 == 1)
+    if (_departuresHeaderStyle == 1)
     {
-      v15 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider frequencyStringForDeparture:v6];
+      v15 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider frequencyStringForDeparture:_firstVisibleDeparture];
       goto LABEL_13;
     }
 
@@ -516,8 +516,8 @@ LABEL_12:
   }
 
   v16 = +[NSDate date];
-  v17 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider scheduleWindowStartDate];
-  [v16 timeIntervalSinceDate:v17];
+  scheduleWindowStartDate = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider scheduleWindowStartDate];
+  [v16 timeIntervalSinceDate:scheduleWindowStartDate];
 
   if (GEOTransitDepartureIsNearFutureDepartureTimeInterval())
   {
@@ -527,21 +527,21 @@ LABEL_12:
 
   else
   {
-    v19 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider scheduleWindowStartDate];
+    scheduleWindowStartDate2 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider scheduleWindowStartDate];
 
-    if (!v19)
+    if (!scheduleWindowStartDate2)
     {
       goto LABEL_12;
     }
 
-    v20 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider timeZone];
-    v21 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider scheduleWindowStartDate];
-    v15 = [NSDate _maps_dateDescriptionShort:0 timeZone:v20 bookingDate:v21];
+    timeZone = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider timeZone];
+    scheduleWindowStartDate3 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider scheduleWindowStartDate];
+    v15 = [NSDate _maps_dateDescriptionShort:0 timeZone:timeZone bookingDate:scheduleWindowStartDate3];
   }
 
 LABEL_13:
-  [v4 setTitle:v22];
-  [v4 setSecondaryText:v15];
+  [viewCopy setTitle:v22];
+  [viewCopy setSecondaryText:v15];
 }
 
 - (void)_updateDeparturesHeaderTitles
@@ -554,21 +554,21 @@ LABEL_13:
 {
   if (sub_10000FA08(self) != 5)
   {
-    v3 = [(TransitSchedulesViewController *)self collectionView];
-    v4 = [v3 window];
+    collectionView = [(TransitSchedulesViewController *)self collectionView];
+    window = [collectionView window];
 
-    if (v4)
+    if (window)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v5 = [(UICollectionView *)self->_collectionView visibleCells];
-      v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+      v6 = [visibleCells countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v6)
       {
         v7 = v6;
-        v8 = 0;
+        departureDataProvider = 0;
         v9 = *v20;
         do
         {
@@ -576,41 +576,41 @@ LABEL_13:
           {
             if (*v20 != v9)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(visibleCells);
             }
 
             v11 = *(*(&v19 + 1) + 8 * i);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              if (v8)
+              if (departureDataProvider)
               {
                 [v11 frame];
                 v13 = v12;
-                [v8 frame];
+                [departureDataProvider frame];
                 if (v13 < v14)
                 {
                   v15 = v11;
 
-                  v8 = v15;
+                  departureDataProvider = v15;
                 }
               }
 
               else
               {
-                v8 = v11;
+                departureDataProvider = v11;
               }
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v7 = [visibleCells countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v7);
 
-        if (v8)
+        if (departureDataProvider)
         {
-          v16 = [v8 departure];
+          departure = [departureDataProvider departure];
           goto LABEL_19;
         }
       }
@@ -621,41 +621,41 @@ LABEL_13:
     }
   }
 
-  v8 = [(TransitSchedulesViewController *)self departureDataProvider];
-  v16 = [v8 selectedDeparture];
+  departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+  departure = [departureDataProvider selectedDeparture];
 LABEL_19:
-  v17 = v16;
+  v17 = departure;
 
   return v17;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   v9 = sub_10000FA08(self);
-  v10 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [v8 section]);
+  v10 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [pathCopy section]);
   v11 = v10;
   if (v9 == 5 && v10 == 3 && [(TransitSchedulesViewController *)self _departuresHeaderStyle]== 2)
   {
     v12 = +[(TransitStationLineScheduleSectionHeaderView *)TransitStationDatePickerHeaderView];
-    v13 = [v7 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v12 forIndexPath:v8];
+    v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v12 forIndexPath:pathCopy];
 
-    v14 = [v13 datePicker];
-    v15 = [(TransitSchedulesViewController *)self departureDataProvider];
-    v16 = [v15 timeZone];
-    [v14 setTimeZone:v16];
+    datePicker = [v13 datePicker];
+    departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+    timeZone = [departureDataProvider timeZone];
+    [datePicker setTimeZone:timeZone];
 
-    v17 = [(TransitSchedulesViewController *)self departureDataProvider];
-    v18 = [v17 scheduleWindowStartDate];
-    [v14 setMinimumDate:v18];
+    departureDataProvider2 = [(TransitSchedulesViewController *)self departureDataProvider];
+    scheduleWindowStartDate = [departureDataProvider2 scheduleWindowStartDate];
+    [datePicker setMinimumDate:scheduleWindowStartDate];
 
-    v19 = [(TransitSchedulesViewController *)self departureDataProvider];
-    v20 = [v19 scheduleWindowStartDate];
-    [v14 setDate:v20];
+    departureDataProvider3 = [(TransitSchedulesViewController *)self departureDataProvider];
+    scheduleWindowStartDate2 = [departureDataProvider3 scheduleWindowStartDate];
+    [datePicker setDate:scheduleWindowStartDate2];
 
-    [v14 setDatePickerMode:2];
-    [v14 addTarget:self action:"changedDate:" forControlEvents:4096];
+    [datePicker setDatePickerMode:2];
+    [datePicker addTarget:self action:"changedDate:" forControlEvents:4096];
     v21 = +[NSBundle mainBundle];
     v22 = [v21 localizedStringForKey:@"[Transit Schedules] macOS Departures Title" value:@"localized string not found" table:0];
     [v13 setTitle:v22];
@@ -664,17 +664,17 @@ LABEL_19:
   }
 
   v23 = +[TransitStationLineScheduleSectionHeaderView identifier];
-  v14 = [v7 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v23 forIndexPath:v8];
+  datePicker = [viewCopy dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v23 forIndexPath:pathCopy];
 
   v13 = 0;
   if (v11 > 4)
   {
     if ((v11 - 5) < 2)
     {
-      v24 = [(TransitSchedulesViewController *)self titleForStopsHeader];
-      [v14 setBottomHairlineHidden:1];
-      [v14 setTitle:v24];
-      [(TransitSchedulesViewController *)self _updateStopsSectionHeader:v14];
+      titleForStopsHeader = [(TransitSchedulesViewController *)self titleForStopsHeader];
+      [datePicker setBottomHairlineHidden:1];
+      [datePicker setTitle:titleForStopsHeader];
+      [(TransitSchedulesViewController *)self _updateStopsSectionHeader:datePicker];
     }
 
     else
@@ -686,15 +686,15 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        [v14 setBottomHairlineHidden:v9 != 5];
+        [datePicker setBottomHairlineHidden:v9 != 5];
         goto LABEL_14;
       }
 
       v26 = +[NSBundle mainBundle];
-      v24 = [v26 localizedStringForKey:@"[Transit Schedules] Line Options" value:@"localized string not found" table:0];
+      titleForStopsHeader = [v26 localizedStringForKey:@"[Transit Schedules] Line Options" value:@"localized string not found" table:0];
 
-      [v14 setTitle:v24];
-      [v14 setBottomHairlineHidden:1];
+      [datePicker setTitle:titleForStopsHeader];
+      [datePicker setBottomHairlineHidden:1];
     }
 
     goto LABEL_19;
@@ -704,26 +704,26 @@ LABEL_19:
   {
     if ([(TransitSchedulesViewController *)self _departuresHeaderStyle]== 2)
     {
-      [v14 addButtonWithTarget:self action:"changeDate"];
+      [datePicker addButtonWithTarget:self action:"changeDate"];
     }
 
-    [(TransitSchedulesViewController *)self _updateDeparturesHeaderTitlesForHeaderView:v14];
+    [(TransitSchedulesViewController *)self _updateDeparturesHeaderTitlesForHeaderView:datePicker];
 LABEL_14:
-    v14 = v14;
-    v13 = v14;
+    datePicker = datePicker;
+    v13 = datePicker;
     goto LABEL_20;
   }
 
   if (v11 == 1)
   {
     v25 = +[NSBundle mainBundle];
-    v24 = [v25 localizedStringForKey:@"[Transit Schedules] Departure Info" value:@"localized string not found" table:0];
+    titleForStopsHeader = [v25 localizedStringForKey:@"[Transit Schedules] Departure Info" value:@"localized string not found" table:0];
 
-    [v14 setTitle:v24];
+    [datePicker setTitle:titleForStopsHeader];
 LABEL_19:
-    v14 = v14;
+    datePicker = datePicker;
 
-    v13 = v14;
+    v13 = datePicker;
   }
 
 LABEL_20:
@@ -731,12 +731,12 @@ LABEL_20:
   return v13;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [v9 section]);
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  v11 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [pathCopy section]);
   v12 = 0;
   if (v11 <= 3)
   {
@@ -744,7 +744,7 @@ LABEL_20:
     {
       if (v11 == 2)
       {
-        v12 = [v8 dequeueReusableCellWithReuseIdentifier:@"TransitScheduleNetworkActivityTableViewCellIdentifier" forIndexPath:v9];
+        v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TransitScheduleNetworkActivityTableViewCellIdentifier" forIndexPath:pathCopy];
         departureDataProvider = self->_departureDataProvider;
         if (departureDataProvider)
         {
@@ -769,10 +769,10 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v14 = [(TransitSchedulesViewController *)self departureCellProvider];
+      departureCellProvider = [(TransitSchedulesViewController *)self departureCellProvider];
       collectionView = self->_collectionView;
-      v16 = [(TransitSchedulesViewController *)self referenceDate];
-      v12 = [v14 collectionView:collectionView departureCellWithIdentifier:v10 indexPath:v9 referenceDate:v16 dataProvider:self->_departureDataProvider];
+      referenceDate = [(TransitSchedulesViewController *)self referenceDate];
+      v12 = [departureCellProvider collectionView:collectionView departureCellWithIdentifier:identifierCopy indexPath:pathCopy referenceDate:referenceDate dataProvider:self->_departureDataProvider];
 
 LABEL_22:
       goto LABEL_31;
@@ -785,13 +785,13 @@ LABEL_22:
         goto LABEL_31;
       }
 
-      v12 = [v8 dequeueReusableCellWithReuseIdentifier:@"TransitLineDepartureInfoCellIdentifier" forIndexPath:v9];
+      v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TransitLineDepartureInfoCellIdentifier" forIndexPath:pathCopy];
       v13 = 296;
       goto LABEL_24;
     }
 
-    v14 = [(TransitSchedulesViewController *)self headsignCellProvider];
-    v20 = [v14 collectionView:self->_collectionView headsignCellWithIdentifier:v10 indexPath:v9 dataProvider:self->_departureDataProvider];
+    departureCellProvider = [(TransitSchedulesViewController *)self headsignCellProvider];
+    v20 = [departureCellProvider collectionView:self->_collectionView headsignCellWithIdentifier:identifierCopy indexPath:pathCopy dataProvider:self->_departureDataProvider];
 LABEL_21:
     v12 = v20;
     goto LABEL_22;
@@ -801,7 +801,7 @@ LABEL_21:
   {
     if (v11 != 4)
     {
-      v12 = [v8 dequeueReusableCellWithReuseIdentifier:@"TransitScheduleNetworkActivityTableViewCellIdentifier" forIndexPath:v9];
+      v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TransitScheduleNetworkActivityTableViewCellIdentifier" forIndexPath:pathCopy];
       if ([(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource remoteNetworkState]== 3)
       {
         v17 = +[NSBundle mainBundle];
@@ -818,13 +818,13 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v23 = [v8 dequeueReusableCellWithReuseIdentifier:@"IncidentsCellIdentifier" forIndexPath:v9];
+    v23 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"IncidentsCellIdentifier" forIndexPath:pathCopy];
     objc_storeWeak(&self->_transitIncidentCell, v23);
 
-    v14 = [(TransitSchedulesViewController *)self referenceDate];
+    departureCellProvider = [(TransitSchedulesViewController *)self referenceDate];
     WeakRetained = objc_loadWeakRetained(&self->_transitIncidentCell);
-    v25 = [(TransitSchedulesViewController *)self incidents];
-    [WeakRetained configureWithIncidents:v25 referenceDate:v14];
+    incidents = [(TransitSchedulesViewController *)self incidents];
+    [WeakRetained configureWithIncidents:incidents referenceDate:departureCellProvider];
 
     v20 = objc_loadWeakRetained(&self->_transitIncidentCell);
     goto LABEL_21;
@@ -833,16 +833,16 @@ LABEL_29:
   switch(v11)
   {
     case 6:
-      v12 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource collectionView:v8 cellForItemAtIndexPath:v9 itemIdentifier:v10];
+      v12 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource collectionView:viewCopy cellForItemAtIndexPath:pathCopy itemIdentifier:identifierCopy];
       break;
     case 7:
-      v12 = [v8 dequeueReusableCellWithReuseIdentifier:@"TransitLineOptionsCellIdentifier" forIndexPath:v9];
+      v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TransitLineOptionsCellIdentifier" forIndexPath:pathCopy];
       v13 = 312;
 LABEL_24:
-      [*(&self->super.super.super.super.super.super.isa + v13) configureCell:v12 forIndexPath:v9 withIdentifier:v10];
+      [*(&self->super.super.super.super.super.super.isa + v13) configureCell:v12 forIndexPath:pathCopy withIdentifier:identifierCopy];
       break;
     case 8:
-      v12 = [v8 dequeueReusableCellWithReuseIdentifier:@"TransitAttributionCellIdentifier" forIndexPath:v9];
+      v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"TransitAttributionCellIdentifier" forIndexPath:pathCopy];
       [v12 setAttribution:self->_attribution];
       break;
   }
@@ -852,7 +852,7 @@ LABEL_31:
   return v12;
 }
 
-- (int64_t)_sectionIndexForSectionType:(unint64_t)a3
+- (int64_t)_sectionIndexForSectionType:(unint64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -864,35 +864,35 @@ LABEL_31:
   v6[2] = sub_1006B9680;
   v6[3] = &unk_101626430;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = type;
   [(NSArray *)sectionIdentifiers enumerateObjectsUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (unint64_t)_sectionTypeForSectionIndex:(unint64_t)a3
+- (unint64_t)_sectionTypeForSectionIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_sectionIdentifiers count]< a3)
+  if ([(NSArray *)self->_sectionIdentifiers count]< index)
   {
     return 9;
   }
 
-  v6 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:a3];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [(NSArray *)self->_sectionIdentifiers objectAtIndexedSubscript:index];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (void)_clearVehicles
 {
   v3 = +[NSSet set];
-  v4 = [(TransitSchedulesViewController *)self vehicleUpdater];
-  [v4 setTripIDs:v3];
+  vehicleUpdater = [(TransitSchedulesViewController *)self vehicleUpdater];
+  [vehicleUpdater setTripIDs:v3];
 
   [(TransitSchedulesViewController *)self setLastReceivedVehiclePositions:0];
-  v5 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
-  [v5 transitSchedulesViewControllerWantsToUpdateRouteAnnotations:self];
+  transitSchedulesDelegate = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
+  [transitSchedulesDelegate transitSchedulesViewControllerWantsToUpdateRouteAnnotations:self];
 }
 
 - (void)_updateVehicleUpdater
@@ -907,89 +907,89 @@ LABEL_31:
     +[NSSet set];
   }
   v4 = ;
-  v3 = [(TransitSchedulesViewController *)self vehicleUpdater];
-  [v3 setTripIDs:v4];
+  vehicleUpdater = [(TransitSchedulesViewController *)self vehicleUpdater];
+  [vehicleUpdater setTripIDs:v4];
 }
 
-- (void)transitVehicleUpdater:(id)a3 didFailUpdateForTripIDs:(id)a4 withError:(id)a5
+- (void)transitVehicleUpdater:(id)updater didFailUpdateForTripIDs:(id)ds withError:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  dsCopy = ds;
+  errorCopy = error;
   v8 = sub_100798DBC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = dsCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Vehicle position update error for trip ids %@. Error: %@", &v9, 0x16u);
   }
 }
 
-- (void)transitVehicleUpdater:(id)a3 didTimeoutUpdateForTripIDs:(id)a4
+- (void)transitVehicleUpdater:(id)updater didTimeoutUpdateForTripIDs:(id)ds
 {
-  v4 = a4;
+  dsCopy = ds;
   v5 = sub_100798DBC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Vehicle position update timeout for trip ids %@", &v6, 0xCu);
   }
 }
 
-- (void)transitVehicleUpdater:(id)a3 didUpdateVehiclePositions:(id)a4 forTripIDs:(id)a5
+- (void)transitVehicleUpdater:(id)updater didUpdateVehiclePositions:(id)positions forTripIDs:(id)ds
 {
-  v6 = a4;
-  if ([v6 count] == 1)
+  positionsCopy = positions;
+  if ([positionsCopy count] == 1)
   {
-    v7 = [v6 anyObject];
+    anyObject = [positionsCopy anyObject];
     v8 = sub_100798DBC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
-      v10 = [v7 timestamp];
+      selectedTripIdentifier = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+      timestamp = [anyObject timestamp];
       v13 = 134218242;
-      v14 = v9;
+      v14 = selectedTripIdentifier;
       v15 = 2112;
-      v16 = v10;
+      v16 = timestamp;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received vehicle position update for trip %llu with timestamp %@", &v13, 0x16u);
     }
   }
 
-  v11 = [v6 allObjects];
-  [(TransitSchedulesViewController *)self setLastReceivedVehiclePositions:v11];
+  allObjects = [positionsCopy allObjects];
+  [(TransitSchedulesViewController *)self setLastReceivedVehiclePositions:allObjects];
 
-  v12 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
-  [v12 transitSchedulesViewControllerWantsToUpdateRouteAnnotations:self];
+  transitSchedulesDelegate = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
+  [transitSchedulesDelegate transitSchedulesViewControllerWantsToUpdateRouteAnnotations:self];
 }
 
-- (void)transitMapItemUpdater:(id)a3 updatedMapItem:(id)a4 error:(id)a5
+- (void)transitMapItemUpdater:(id)updater updatedMapItem:(id)item error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  itemCopy = item;
+  errorCopy = error;
+  if (errorCopy)
   {
     v9 = sub_100798DBC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v27 = 134218242;
-      v28 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+      selectedTripIdentifier = [(TransitSchedulesViewController *)self selectedTripIdentifier];
       v29 = 2112;
-      v30 = v8;
+      v30 = errorCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "The service encountered an error while updating trip id %llu. Error %@", &v27, 0x16u);
     }
   }
 
   else
   {
-    v10 = [v7 _transitInfo];
-    v11 = [v10 departureSequences];
-    v12 = [v11 count];
+    _transitInfo = [itemCopy _transitInfo];
+    departureSequences = [_transitInfo departureSequences];
+    v12 = [departureSequences count];
 
     if (v12)
     {
-      [(TransitSchedulesViewController *)self processUpdatedDepartureSequencesFromMapItem:v7];
+      [(TransitSchedulesViewController *)self processUpdatedDepartureSequencesFromMapItem:itemCopy];
     }
 
     else
@@ -998,40 +998,40 @@ LABEL_31:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v27 = 134217984;
-        v28 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+        selectedTripIdentifier = [(TransitSchedulesViewController *)self selectedTripIdentifier];
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "The service failed to return any departures for the requested trip id %llu while updating", &v27, 0xCu);
       }
     }
 
-    v14 = [v7 _transitInfo];
-    v15 = [v14 transitTripStops];
-    v9 = [v15 copy];
+    _transitInfo2 = [itemCopy _transitInfo];
+    transitTripStops = [_transitInfo2 transitTripStops];
+    v9 = [transitTripStops copy];
 
     if ([v9 count])
     {
       [(TransitSchedulesViewController *)self updateStopsSectionForNetworkState:1];
-      v16 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
-      v17 = [v16 count];
+      stopIdentifiers = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
+      v17 = [stopIdentifiers count];
 
       [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource buildTransitTripStopItemsWithTransitStops:v9 boardingStopDepartureDate:self->_selectedTripDepartureDate maintainingCollapsedState:1];
-      v18 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
-      v19 = [v18 count];
+      stopIdentifiers2 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
+      v19 = [stopIdentifiers2 count];
 
       if (v17 == v19)
       {
         v20 = sub_100798DBC();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v21 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
-          v22 = [v21 count];
+          stopIdentifiers3 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
+          v22 = [stopIdentifiers3 count];
           v23 = [v9 count];
-          v24 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+          selectedTripIdentifier2 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
           v27 = 134218496;
-          v28 = v22;
+          selectedTripIdentifier = v22;
           v29 = 2048;
           v30 = v23;
           v31 = 2048;
-          v32 = v24;
+          v32 = selectedTripIdentifier2;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "The number of transit stops changed (from %lu to %lu) during the network refresh for trip id %llu", &v27, 0x20u);
         }
       }
@@ -1044,29 +1044,29 @@ LABEL_31:
       v25 = sub_100798DBC();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v26 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+        selectedTripIdentifier3 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
         v27 = 134217984;
-        v28 = v26;
+        selectedTripIdentifier = selectedTripIdentifier3;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "The service failed to return any transit stops when updating for the requested trip id %llu", &v27, 0xCu);
       }
     }
   }
 }
 
-- (id)ticketForTransitMapItemUpdater:(id)a3
+- (id)ticketForTransitMapItemUpdater:(id)updater
 {
   if ([(TransitSchedulesViewController *)self hasSelectedTrip])
   {
-    v4 = [(TransitSchedulesViewController *)self selectedTransitLine];
-    v5 = [v4 muid];
+    selectedTransitLine = [(TransitSchedulesViewController *)self selectedTransitLine];
+    muid = [selectedTransitLine muid];
 
     v6 = +[MKMapService sharedService];
     boardingStopMuid = self->_boardingStopMuid;
-    v8 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+    selectedTripIdentifier = [(TransitSchedulesViewController *)self selectedTripIdentifier];
     requestAllDirections = self->_requestAllDirections;
     routingParameters = self->_routingParameters;
-    v11 = [(TransitSchedulesViewController *)self traits];
-    v12 = [v6 ticketForUpdatedTransitScheduleDetailsAtStation:boardingStopMuid line:v5 referenceTripID:v8 includeAllDirectionNames:requestAllDirections routingParameters:routingParameters traits:v11];
+    traits = [(TransitSchedulesViewController *)self traits];
+    v12 = [v6 ticketForUpdatedTransitScheduleDetailsAtStation:boardingStopMuid line:muid referenceTripID:selectedTripIdentifier includeAllDirectionNames:requestAllDirections routingParameters:routingParameters traits:traits];
   }
 
   else
@@ -1084,31 +1084,31 @@ LABEL_31:
   return v12;
 }
 
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date
 {
-  v5 = a4;
-  [(TransitSchedulesViewController *)self setReferenceDate:v5];
-  [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource setReferenceDate:v5 dataSource:self->_dataSource];
+  dateCopy = date;
+  [(TransitSchedulesViewController *)self setReferenceDate:dateCopy];
+  [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource setReferenceDate:dateCopy dataSource:self->_dataSource];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 - 3 < 3)
+  if (layout - 3 < 3)
   {
-    v4 = [(ContaineeViewController *)self cardPresentationController];
-    [v4 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v6 = v5;
 
     return v6;
   }
 
-  if (a3 != 2)
+  if (layout != 2)
   {
     v6 = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
-      v7 = [(ContaineeViewController *)self cardPresentationController];
-      [v7 bottomSafeOffset];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 bottomSafeOffset];
       v9 = v8;
       [(ContaineeViewController *)self headerHeight];
       v6 = v10 + v9;
@@ -1121,18 +1121,18 @@ LABEL_31:
   return result;
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [GEOAPPortal captureUserAction:34 target:[(TransitSchedulesViewController *)self currentUITargetForAnalytics] value:0];
   v5.receiver = self;
   v5.super_class = TransitSchedulesViewController;
-  [(ContaineeViewController *)&v5 handleDismissAction:v4];
+  [(ContaineeViewController *)&v5 handleDismissAction:actionCopy];
 }
 
-- (void)departureCellProvider:(id)a3 selectDeparture:(id)a4 withIndex:(unint64_t)a5
+- (void)departureCellProvider:(id)provider selectDeparture:(id)departure withIndex:(unint64_t)index
 {
-  v7 = a4;
+  departureCopy = departure;
   v8 = [(TransitSchedulesViewController *)self _sectionIndexForSectionType:3];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1141,10 +1141,10 @@ LABEL_31:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(TransitSchedulesViewController *)self collectionView];
-    v11 = [v10 indexPathsForSelectedItems];
+    collectionView = [(TransitSchedulesViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v12 = [indexPathsForSelectedItems countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1155,39 +1155,39 @@ LABEL_31:
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(indexPathsForSelectedItems);
           }
 
           v16 = *(*(&v20 + 1) + 8 * i);
           if ([v16 section] == v9)
           {
-            v17 = [(TransitSchedulesViewController *)self collectionView];
-            [v17 deselectItemAtIndexPath:v16 animated:0];
+            collectionView2 = [(TransitSchedulesViewController *)self collectionView];
+            [collectionView2 deselectItemAtIndexPath:v16 animated:0];
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v13 = [indexPathsForSelectedItems countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v13);
     }
 
-    v18 = [NSIndexPath indexPathForRow:a5 inSection:v9];
-    v19 = [(TransitSchedulesViewController *)self collectionView];
-    [v19 selectItemAtIndexPath:v18 animated:0 scrollPosition:0];
+    v18 = [NSIndexPath indexPathForRow:index inSection:v9];
+    collectionView3 = [(TransitSchedulesViewController *)self collectionView];
+    [collectionView3 selectItemAtIndexPath:v18 animated:0 scrollPosition:0];
 
-    [(TransitSchedulesViewController *)self setSelectedDeparture:v7];
+    [(TransitSchedulesViewController *)self setSelectedDeparture:departureCopy];
   }
 }
 
-- (void)setSelectedDeparture:(id)a3
+- (void)setSelectedDeparture:(id)departure
 {
-  v15 = a3;
-  v4 = [v15 tripIdentifier];
-  if (v4 == [(TransitSchedulesViewController *)self selectedTripIdentifier])
+  departureCopy = departure;
+  tripIdentifier = [departureCopy tripIdentifier];
+  if (tripIdentifier == [(TransitSchedulesViewController *)self selectedTripIdentifier])
   {
-    v5 = [v15 scheduledDepartureDate];
-    v6 = v5 != self->_selectedTripDepartureDate;
+    scheduledDepartureDate = [departureCopy scheduledDepartureDate];
+    v6 = scheduledDepartureDate != self->_selectedTripDepartureDate;
   }
 
   else
@@ -1196,23 +1196,23 @@ LABEL_31:
   }
 
   v7 = ![(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource hasStops]&& [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource remoteNetworkState]!= 2;
-  v8 = v15;
+  v8 = departureCopy;
   if (v6 || v7)
   {
-    v9 = [(TransitSchedulesViewController *)self hasSelectedTrip];
-    v10 = [v15 vehicleIdentifier];
-    [(TransitSchedulesViewController *)self setSelectedTripVehicleNumber:v10];
+    hasSelectedTrip = [(TransitSchedulesViewController *)self hasSelectedTrip];
+    vehicleIdentifier = [departureCopy vehicleIdentifier];
+    [(TransitSchedulesViewController *)self setSelectedTripVehicleNumber:vehicleIdentifier];
 
-    v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v15 tripIdentifier]);
+    v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [departureCopy tripIdentifier]);
     selectedTripIdentifier = self->_selectedTripIdentifier;
     self->_selectedTripIdentifier = v11;
 
-    v13 = [v15 scheduledDepartureDate];
+    scheduledDepartureDate2 = [departureCopy scheduledDepartureDate];
     selectedTripDepartureDate = self->_selectedTripDepartureDate;
-    self->_selectedTripDepartureDate = v13;
+    self->_selectedTripDepartureDate = scheduledDepartureDate2;
 
     [(TransitSchedulesViewController *)self _clearVehicles];
-    if (v9)
+    if (hasSelectedTrip)
     {
       [(TransitSchedulesViewController *)self loadSelectedTripDetails];
     }
@@ -1223,106 +1223,106 @@ LABEL_31:
     }
 
     [GEOAPPortal captureUserAction:3074 target:[(TransitSchedulesViewController *)self currentUITargetForAnalytics] value:0];
-    v8 = v15;
+    v8 = departureCopy;
   }
 }
 
-- (void)departureDataProvider:(id)a3 selectedDeparture:(id)a4 withIndex:(unint64_t)a5
+- (void)departureDataProvider:(id)provider selectedDeparture:(id)departure withIndex:(unint64_t)index
 {
-  v7 = a4;
-  v9 = [NSIndexPath indexPathForRow:a5 inSection:[(TransitSchedulesViewController *)self _sectionIndexForSectionType:3]];
-  v8 = [(TransitSchedulesViewController *)self departureCellProvider];
-  [v8 collectionView:self->_collectionView selectedDeparture:v7 atIndexPath:v9];
+  departureCopy = departure;
+  v9 = [NSIndexPath indexPathForRow:index inSection:[(TransitSchedulesViewController *)self _sectionIndexForSectionType:3]];
+  departureCellProvider = [(TransitSchedulesViewController *)self departureCellProvider];
+  [departureCellProvider collectionView:self->_collectionView selectedDeparture:departureCopy atIndexPath:v9];
 
-  [(TransitSchedulesViewController *)self setSelectedDeparture:v7];
+  [(TransitSchedulesViewController *)self setSelectedDeparture:departureCopy];
 }
 
-- (void)departureDataProvider:(id)a3 updatedDepartureSequences:(id)a4
+- (void)departureDataProvider:(id)provider updatedDepartureSequences:(id)sequences
 {
-  v5 = a4;
-  v6 = [(TransitSchedulesViewController *)self headsignCellProvider];
-  v7 = [v6 identifiersForDepartureSequences:v5];
+  sequencesCopy = sequences;
+  headsignCellProvider = [(TransitSchedulesViewController *)self headsignCellProvider];
+  v7 = [headsignCellProvider identifiersForDepartureSequences:sequencesCopy];
 
-  v8 = [(TransitSchedulesViewController *)self _hasHeadsignSection];
-  v9 = [v5 count];
+  _hasHeadsignSection = [(TransitSchedulesViewController *)self _hasHeadsignSection];
+  v9 = [sequencesCopy count];
 
   if (v9 >= 2 && [v7 count])
   {
-    if ((v8 & 1) == 0)
+    if ((_hasHeadsignSection & 1) == 0)
     {
-      v10 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-      [(TransitSchedulesViewController *)self _clearSection:0 inSnapshot:v10];
-      [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshotUsingReloadData:v10];
+      snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+      [(TransitSchedulesViewController *)self _clearSection:0 inSnapshot:snapshot];
+      [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshotUsingReloadData:snapshot];
     }
 
-    v11 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    [(TransitSchedulesViewController *)self _clearSection:0 inSnapshot:v11];
-    [v11 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&off_1016E6848];
-    v12 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider indexForSelectedDepartureSequence];
+    snapshot2 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    [(TransitSchedulesViewController *)self _clearSection:0 inSnapshot:snapshot2];
+    [snapshot2 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&off_1016E6848];
+    indexForSelectedDepartureSequence = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider indexForSelectedDepartureSequence];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1006BA720;
     v14[3] = &unk_101661650;
     v14[4] = self;
-    v14[5] = v12;
+    v14[5] = indexForSelectedDepartureSequence;
     dispatch_async(&_dispatch_main_q, v14);
     goto LABEL_8;
   }
 
-  if (v8)
+  if (_hasHeadsignSection)
   {
-    v11 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    [(TransitSchedulesViewController *)self _removeSection:0 toSnapshot:v11];
+    snapshot2 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    [(TransitSchedulesViewController *)self _removeSection:0 toSnapshot:snapshot2];
 LABEL_8:
-    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v11 animatingDifferences:1];
+    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot2 animatingDifferences:1];
   }
 
-  v13 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider selectedDepartureSequence];
-  [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:v13];
+  selectedDepartureSequence = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider selectedDepartureSequence];
+  [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:selectedDepartureSequence];
 }
 
 - (BOOL)_shouldShowDepartureInfoSection
 {
-  v3 = [(TransitSchedulesViewController *)self selectedTransitLine];
-  if ([v3 departureTimeDisplayStyle] == 3)
+  selectedTransitLine = [(TransitSchedulesViewController *)self selectedTransitLine];
+  if ([selectedTransitLine departureTimeDisplayStyle] == 3)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider departures];
-    v4 = [v5 count] == 0;
+    departures = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider departures];
+    v4 = [departures count] == 0;
   }
 
   return v4;
 }
 
-- (void)departureDataProvider:(id)a3 selectedDepartureSequence:(id)a4 withIndex:(unint64_t)a5
+- (void)departureDataProvider:(id)provider selectedDepartureSequence:(id)sequence withIndex:(unint64_t)index
 {
-  v13 = a4;
-  v7 = [NSIndexPath indexPathForRow:a5 inSection:[(TransitSchedulesViewController *)self _sectionIndexForSectionType:0]];
-  v8 = [(TransitSchedulesViewController *)self headsignCellProvider];
-  [v8 collectionView:self->_collectionView selectedHeadsignForDepartureSequence:v13 atIndexPath:v7];
+  sequenceCopy = sequence;
+  v7 = [NSIndexPath indexPathForRow:index inSection:[(TransitSchedulesViewController *)self _sectionIndexForSectionType:0]];
+  headsignCellProvider = [(TransitSchedulesViewController *)self headsignCellProvider];
+  [headsignCellProvider collectionView:self->_collectionView selectedHeadsignForDepartureSequence:sequenceCopy atIndexPath:v7];
 
-  v9 = [v13 displayName];
-  v10 = [v9 length];
+  displayName = [sequenceCopy displayName];
+  v10 = [displayName length];
 
   if (v10)
   {
-    v11 = [v13 displayName];
-    v12 = [(TransitSchedulesViewController *)self headerTitleView];
-    [v12 setSubtitle:v11];
+    displayName2 = [sequenceCopy displayName];
+    headerTitleView = [(TransitSchedulesViewController *)self headerTitleView];
+    [headerTitleView setSubtitle:displayName2];
   }
 }
 
-- (void)departureDataProvider:(id)a3 updatedDepartures:(id)a4
+- (void)departureDataProvider:(id)provider updatedDepartures:(id)departures
 {
-  v4 = self;
-  v5 = [(TransitSchedulesViewController *)self _dedupeDepartures:a4];
-  v6 = [(UICollectionViewDiffableDataSource *)v4->_dataSource snapshot];
-  v7 = [(TransitSchedulesViewController *)v4 departureCellProvider];
-  v8 = [v7 identifiersForDepartures:v5];
+  selfCopy = self;
+  v5 = [(TransitSchedulesViewController *)self _dedupeDepartures:departures];
+  snapshot = [(UICollectionViewDiffableDataSource *)selfCopy->_dataSource snapshot];
+  departureCellProvider = [(TransitSchedulesViewController *)selfCopy departureCellProvider];
+  v8 = [departureCellProvider identifiersForDepartures:v5];
 
   if ([v8 count])
   {
@@ -1336,8 +1336,8 @@ LABEL_8:
         if ([v10 count])
         {
           v28 = v9;
-          v29 = v6;
-          v30 = v4;
+          v29 = snapshot;
+          v30 = selfCopy;
           v31 = v5;
           v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
           v33 = 0u;
@@ -1408,9 +1408,9 @@ LABEL_22:
               v25 = [v13 componentsJoinedByString:{@", "}];
               v26 = [NSString stringWithFormat:@"<%p> [%@]", v13, v25];
 
-              v4 = v30;
+              selfCopy = v30;
               v5 = v31;
-              v6 = v29;
+              snapshot = v29;
               v9 = v28;
               v11 = v27;
               goto LABEL_26;
@@ -1433,56 +1433,56 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Updating departures section with identifiers: %{public}@", buf, 0xCu);
     }
 
-    [(TransitSchedulesViewController *)v4 _clearSection:3 inSnapshot:v6];
-    [v6 appendItemsWithIdentifiers:v8 intoSectionWithIdentifier:&off_1016E67E8];
-    [v6 reloadItemsWithIdentifiers:v8];
+    [(TransitSchedulesViewController *)selfCopy _clearSection:3 inSnapshot:snapshot];
+    [snapshot appendItemsWithIdentifiers:v8 intoSectionWithIdentifier:&off_1016E67E8];
+    [snapshot reloadItemsWithIdentifiers:v8];
   }
 
   else
   {
-    [(TransitSchedulesViewController *)v4 _removeSection:3 toSnapshot:v6];
+    [(TransitSchedulesViewController *)selfCopy _removeSection:3 toSnapshot:snapshot];
   }
 
-  [(UICollectionViewDiffableDataSource *)v4->_dataSource applySnapshot:v6 animatingDifferences:1];
+  [(UICollectionViewDiffableDataSource *)selfCopy->_dataSource applySnapshot:snapshot animatingDifferences:1];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006BAD3C;
   block[3] = &unk_101661B18;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_removeSection:(unint64_t)a3 toSnapshot:(id)a4
+- (void)_removeSection:(unint64_t)section toSnapshot:(id)snapshot
 {
-  v6 = a4;
-  if ([(TransitSchedulesViewController *)self _sectionIndexForSectionType:a3]!= 0x7FFFFFFFFFFFFFFFLL)
+  snapshotCopy = snapshot;
+  if ([(TransitSchedulesViewController *)self _sectionIndexForSectionType:section]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [NSNumber numberWithUnsignedInteger:a3];
+    v7 = [NSNumber numberWithUnsignedInteger:section];
     v11 = v7;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
-    [v6 deleteSectionsWithIdentifiers:v8];
+    [snapshotCopy deleteSectionsWithIdentifiers:v8];
 
-    v9 = [v6 sectionIdentifiers];
+    sectionIdentifiers = [snapshotCopy sectionIdentifiers];
     sectionIdentifiers = self->_sectionIdentifiers;
-    self->_sectionIdentifiers = v9;
+    self->_sectionIdentifiers = sectionIdentifiers;
   }
 }
 
-- (void)_clearSection:(unint64_t)a3 inSnapshot:(id)a4
+- (void)_clearSection:(unint64_t)section inSnapshot:(id)snapshot
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  snapshotCopy = snapshot;
+  v7 = [NSNumber numberWithUnsignedInteger:section];
   v9 = v7;
   v8 = [NSArray arrayWithObjects:&v9 count:1];
-  [v6 deleteSectionsWithIdentifiers:v8];
+  [snapshotCopy deleteSectionsWithIdentifiers:v8];
 
-  [(TransitSchedulesViewController *)self _addSection:a3 toSnapshot:v6];
+  [(TransitSchedulesViewController *)self _addSection:section toSnapshot:snapshotCopy];
 }
 
-- (void)_addSection:(unint64_t)a3 toSnapshot:(id)a4
+- (void)_addSection:(unint64_t)section toSnapshot:(id)snapshot
 {
-  v6 = a4;
-  v7 = [v6 sectionIdentifiers];
+  snapshotCopy = snapshot;
+  sectionIdentifiers = [snapshotCopy sectionIdentifiers];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1492,49 +1492,49 @@ LABEL_26:
   v13[2] = sub_1006BB0E4;
   v13[3] = &unk_101626408;
   v15 = &v17;
-  v16 = a3;
-  v8 = v6;
+  sectionCopy = section;
+  v8 = snapshotCopy;
   v14 = v8;
-  [v7 enumerateObjectsUsingBlock:v13];
+  [sectionIdentifiers enumerateObjectsUsingBlock:v13];
   if ((v18[3] & 1) == 0)
   {
-    v9 = [NSNumber numberWithUnsignedInteger:a3];
+    v9 = [NSNumber numberWithUnsignedInteger:section];
     v21 = v9;
     v10 = [NSArray arrayWithObjects:&v21 count:1];
     [v8 appendSectionsWithIdentifiers:v10];
   }
 
-  v11 = [v8 sectionIdentifiers];
+  sectionIdentifiers2 = [v8 sectionIdentifiers];
   sectionIdentifiers = self->_sectionIdentifiers;
-  self->_sectionIdentifiers = v11;
+  self->_sectionIdentifiers = sectionIdentifiers2;
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)_expandStopsSection:(id)a3
+- (void)_expandStopsSection:(id)section
 {
   [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource expandTransitTripStops];
   [(TransitSchedulesViewController *)self _rebuildStopsSection];
   [(TransitSchedulesViewController *)self _updateStopsSectionHeader];
-  v4 = [(TransitSchedulesViewController *)self currentUITargetForAnalytics];
+  currentUITargetForAnalytics = [(TransitSchedulesViewController *)self currentUITargetForAnalytics];
 
-  [GEOAPPortal captureUserAction:9040 target:v4 value:0];
+  [GEOAPPortal captureUserAction:9040 target:currentUITargetForAnalytics value:0];
 }
 
-- (void)_updateStopsSectionHeader:(id)a3
+- (void)_updateStopsSectionHeader:(id)header
 {
-  v6 = a3;
+  headerCopy = header;
   if ([(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource canShowMoreStops])
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"[Transit Schedules] More" value:@"localized string not found" table:0];
 
-    [v6 addButtonWithText:v5 buttonTarget:self buttonAction:"_expandStopsSection:"];
+    [headerCopy addButtonWithText:v5 buttonTarget:self buttonAction:"_expandStopsSection:"];
   }
 
   else
   {
-    [v6 removeSecondaryText];
+    [headerCopy removeSecondaryText];
   }
 }
 
@@ -1544,9 +1544,9 @@ LABEL_26:
   [(TransitSchedulesViewController *)self _updateStopsSectionHeader:v3];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [a4 section]);
+  v5 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [path section]);
   result = 1;
   if (v5 <= 9)
   {
@@ -1578,11 +1578,11 @@ LABEL_26:
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v30 = a3;
-  v6 = a4;
-  v7 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[TransitSchedulesViewController _sectionTypeForSectionIndex:](self, "_sectionTypeForSectionIndex:", [pathCopy section]);
   if (v7 > 3)
   {
     switch(v7)
@@ -1597,50 +1597,50 @@ LABEL_26:
 
         else
         {
-          v27 = [(TransitSchedulesViewController *)self collectionView:v30 cellForItemAtIndexPath:v6 itemIdentifier:@"IncidentsCellIdentifier"];
+          v27 = [(TransitSchedulesViewController *)self collectionView:viewCopy cellForItemAtIndexPath:pathCopy itemIdentifier:@"IncidentsCellIdentifier"];
         }
 
-        v14 = v27;
+        firstObject = v27;
 
-        v15 = [(TransitSchedulesViewController *)self actionCoordinator];
-        v16 = [(TransitSchedulesViewController *)self incidents];
-        [v15 viewController:self openTransitIncidents:v16 fromView:v14 withUserInfo:0];
+        actionCoordinator = [(TransitSchedulesViewController *)self actionCoordinator];
+        incidents = [(TransitSchedulesViewController *)self incidents];
+        [actionCoordinator viewController:self openTransitIncidents:incidents fromView:firstObject withUserInfo:0];
         v18 = 7008;
         break;
       case 7:
         v28 = &OBJC_IVAR___TransitSchedulesViewController__lineOptionsProvider;
 LABEL_16:
-        v29 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v6];
-        [*(&self->super.super.super.super.super.super.isa + *v28) selectedCellAtIndexPath:v6 withIdentifier:v29];
+        v29 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
+        [*(&self->super.super.super.super.super.super.isa + *v28) selectedCellAtIndexPath:pathCopy withIdentifier:v29];
 
         goto LABEL_17;
       case 8:
         v11 = +[GEOResourceManifestManager modernManager];
-        v12 = [v11 activeTileGroup];
-        v13 = [v12 attributions];
-        v14 = [v13 firstObject];
+        activeTileGroup = [v11 activeTileGroup];
+        attributions = [activeTileGroup attributions];
+        firstObject = [attributions firstObject];
 
-        v15 = [v14 url];
-        if (!v15)
+        actionCoordinator = [firstObject url];
+        if (!actionCoordinator)
         {
           v18 = 7021;
           goto LABEL_21;
         }
 
-        v16 = [NSURL URLWithString:v15];
-        v17 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
-        [v17 transitSchedulesViewController:self wantsToOpenURL:v16];
+        incidents = [NSURL URLWithString:actionCoordinator];
+        transitSchedulesDelegate = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
+        [transitSchedulesDelegate transitSchedulesViewController:self wantsToOpenURL:incidents];
 
         v18 = 7021;
         break;
       default:
 LABEL_17:
-        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:v6 animated:1];
+        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:pathCopy animated:1];
         goto LABEL_23;
     }
 
 LABEL_21:
-    [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:v6 animated:1];
+    [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:pathCopy animated:1];
     v24 = 0;
     goto LABEL_22;
   }
@@ -1651,9 +1651,9 @@ LABEL_21:
     {
       if (v7 == 3)
       {
-        v8 = [v6 row];
-        v9 = [(TransitSchedulesViewController *)self departureDataProvider];
-        v10 = [v9 selectDepartureAtIndex:v8];
+        v8 = [pathCopy row];
+        departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+        v10 = [departureDataProvider selectDepartureAtIndex:v8];
 
         goto LABEL_23;
       }
@@ -1665,15 +1665,15 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  v19 = [v6 row];
-  v20 = [(TransitSchedulesViewController *)self departureDataProvider];
-  [v20 selectDepartureSequenceAtIndex:v19];
+  v19 = [pathCopy row];
+  departureDataProvider2 = [(TransitSchedulesViewController *)self departureDataProvider];
+  [departureDataProvider2 selectDepartureSequenceAtIndex:v19];
 
-  v21 = [(TransitSchedulesViewController *)self departureDataProvider];
-  v22 = [v21 selectedDepartureSequence];
-  v23 = [v22 displayName];
+  departureDataProvider3 = [(TransitSchedulesViewController *)self departureDataProvider];
+  selectedDepartureSequence = [departureDataProvider3 selectedDepartureSequence];
+  displayName = [selectedDepartureSequence displayName];
 
-  v24 = [NSString stringWithFormat:@"%lu, %@", v19, v23];
+  v24 = [NSString stringWithFormat:@"%lu, %@", v19, displayName];
 
   v18 = 49;
 LABEL_22:
@@ -1682,45 +1682,45 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)headerViewTapped:(id)a3
+- (void)headerViewTapped:(id)tapped
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 wantsExpandLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsExpandLayout];
 }
 
 - (void)restoreInitialMapState
 {
-  v12 = [(ControlContaineeViewController *)self delegate];
-  if ([v12 displayedViewMode] != 3)
+  delegate = [(ControlContaineeViewController *)self delegate];
+  if ([delegate displayedViewMode] != 3)
   {
 LABEL_8:
 
     return;
   }
 
-  v3 = [(ControlContaineeViewController *)self delegate];
-  v4 = [v3 mapApplicationState];
+  delegate2 = [(ControlContaineeViewController *)self delegate];
+  mapApplicationState = [delegate2 mapApplicationState];
 
-  if (v4 == 7)
+  if (mapApplicationState == 7)
   {
     initialViewMode = self->_initialViewMode;
-    v6 = [(ControlContaineeViewController *)self delegate];
-    v7 = [v6 displayedViewMode];
+    delegate3 = [(ControlContaineeViewController *)self delegate];
+    displayedViewMode = [delegate3 displayedViewMode];
 
-    if (initialViewMode != v7)
+    if (initialViewMode != displayedViewMode)
     {
-      v8 = [(ControlContaineeViewController *)self delegate];
-      [v8 updateViewMode:self->_initialViewMode animated:1];
+      delegate4 = [(ControlContaineeViewController *)self delegate];
+      [delegate4 updateViewMode:self->_initialViewMode animated:1];
     }
 
     initialMapApplicationState = self->_initialMapApplicationState;
-    v10 = [(ControlContaineeViewController *)self delegate];
-    v11 = [v10 mapApplicationState];
+    delegate5 = [(ControlContaineeViewController *)self delegate];
+    mapApplicationState2 = [delegate5 mapApplicationState];
 
-    if (initialMapApplicationState != v11)
+    if (initialMapApplicationState != mapApplicationState2)
     {
-      v12 = [(ControlContaineeViewController *)self delegate];
-      [v12 updateMapApplicationState:self->_initialMapApplicationState];
+      delegate = [(ControlContaineeViewController *)self delegate];
+      [delegate updateMapApplicationState:self->_initialMapApplicationState];
       goto LABEL_8;
     }
   }
@@ -1728,120 +1728,120 @@ LABEL_8:
 
 - (int64_t)_numberOfDeparturesInSnapshot
 {
-  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v4 = [v3 indexOfSectionIdentifier:&off_1016E67E8];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  v4 = [snapshot indexOfSectionIdentifier:&off_1016E67E8];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v7 = [v6 numberOfItemsInSection:&off_1016E67E8];
+  snapshot2 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  v7 = [snapshot2 numberOfItemsInSection:&off_1016E67E8];
 
   return v7;
 }
 
-- (BOOL)updateRouteAnnotationsConfiguration:(id)a3
+- (BOOL)updateRouteAnnotationsConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(TransitSchedulesViewController *)self selectedTripRoute];
-  if (v5)
+  configurationCopy = configuration;
+  selectedTripRoute = [(TransitSchedulesViewController *)self selectedTripRoute];
+  if (selectedTripRoute)
   {
-    v6 = [(TransitSchedulesViewController *)self selectedTripRoute];
-    v10 = v6;
+    selectedTripRoute2 = [(TransitSchedulesViewController *)self selectedTripRoute];
+    v10 = selectedTripRoute2;
     v7 = [NSArray arrayWithObjects:&v10 count:1];
-    [v4 setRoutes:v7];
+    [configurationCopy setRoutes:v7];
   }
 
   else
   {
-    [v4 setRoutes:0];
+    [configurationCopy setRoutes:0];
   }
 
-  v8 = [(TransitSchedulesViewController *)self lastReceivedVehiclePositions];
-  [v4 setTransitVehiclePositions:v8];
+  lastReceivedVehiclePositions = [(TransitSchedulesViewController *)self lastReceivedVehiclePositions];
+  [configurationCopy setTransitVehiclePositions:lastReceivedVehiclePositions];
 
   return 1;
 }
 
 - (void)showRouteOnMap
 {
-  v3 = [(TransitSchedulesViewController *)self selectedTripRoute];
+  selectedTripRoute = [(TransitSchedulesViewController *)self selectedTripRoute];
 
-  if (v3)
+  if (selectedTripRoute)
   {
-    v4 = [(ControlContaineeViewController *)self delegate];
-    v5 = [v4 displayedViewMode];
+    delegate = [(ControlContaineeViewController *)self delegate];
+    displayedViewMode = [delegate displayedViewMode];
 
-    if (v5 != 3)
+    if (displayedViewMode != 3)
     {
-      v6 = [(ControlContaineeViewController *)self delegate];
-      [v6 updateViewMode:3 animated:1];
+      delegate2 = [(ControlContaineeViewController *)self delegate];
+      [delegate2 updateViewMode:3 animated:1];
     }
 
-    v7 = [(ControlContaineeViewController *)self delegate];
-    v8 = [v7 mapApplicationState];
+    delegate3 = [(ControlContaineeViewController *)self delegate];
+    mapApplicationState = [delegate3 mapApplicationState];
 
-    if (v8 != 7)
+    if (mapApplicationState != 7)
     {
-      v9 = [(ControlContaineeViewController *)self delegate];
-      [v9 updateMapApplicationState:7];
+      delegate4 = [(ControlContaineeViewController *)self delegate];
+      [delegate4 updateMapApplicationState:7];
     }
   }
 
-  v10 = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
-  [v10 transitSchedulesViewControllerWantsToUpdateRouteAnnotations:self];
+  transitSchedulesDelegate = [(TransitSchedulesViewController *)self transitSchedulesDelegate];
+  [transitSchedulesDelegate transitSchedulesViewControllerWantsToUpdateRouteAnnotations:self];
 }
 
 - (void)changeDate
 {
-  v3 = [(TransitSchedulesViewController *)self departureDataProvider];
-  v10 = [v3 timeZone];
+  departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+  timeZone = [departureDataProvider timeZone];
 
-  v4 = [(TransitSchedulesViewController *)self departureDataProvider];
-  v5 = [v4 scheduleWindowStartDate];
+  departureDataProvider2 = [(TransitSchedulesViewController *)self departureDataProvider];
+  scheduleWindowStartDate = [departureDataProvider2 scheduleWindowStartDate];
 
   v6 = [RoutePlanningTimingViewController alloc];
-  v7 = [RoutePlanningTiming timingWithDepartureDate:v5 departureTimeZone:v10 arrivalTimeZone:0];
+  v7 = [RoutePlanningTiming timingWithDepartureDate:scheduleWindowStartDate departureTimeZone:timeZone arrivalTimeZone:0];
   v8 = [(RoutePlanningTimingViewController *)v6 initWithCurrentTiming:v7 shouldShowArriveBy:0 pickerDelegate:self];
 
-  v9 = [(ContaineeViewController *)self cardPresentationController];
-  [v9 presentViewController:v8 animated:1 completion:0];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController presentViewController:v8 animated:1 completion:0];
 
   [GEOAPPortal captureUserAction:7015 target:[(TransitSchedulesViewController *)self currentUITargetForAnalytics] value:0];
 }
 
-- (void)changedDate:(id)a3
+- (void)changedDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 date];
-    [(TransitSchedulesViewController *)self setScheduleWindowStartDate:v4];
+    date = [dateCopy date];
+    [(TransitSchedulesViewController *)self setScheduleWindowStartDate:date];
 
     [GEOAPPortal captureUserAction:7015 target:[(TransitSchedulesViewController *)self currentUITargetForAnalytics] value:0];
   }
 }
 
-- (void)setScheduleWindowStartDate:(id)a3
+- (void)setScheduleWindowStartDate:(id)date
 {
-  v4 = a3;
-  v5 = [(TransitSchedulesViewController *)self departureDataProvider];
-  [v5 setScheduleWindowStartDate:v4];
+  dateCopy = date;
+  departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+  [departureDataProvider setScheduleWindowStartDate:dateCopy];
 
-  [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDate:v4];
+  [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDate:dateCopy];
   scheduleWindowStartDate = self->_scheduleWindowStartDate;
-  self->_scheduleWindowStartDate = v4;
+  self->_scheduleWindowStartDate = dateCopy;
 }
 
-- (void)setSelectedTripRoute:(id)a3
+- (void)setSelectedTripRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   if (([(GEOComposedRoute *)self->_selectedTripRoute isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_selectedTripRoute, a3);
+    objc_storeStrong(&self->_selectedTripRoute, route);
     [(TransitSchedulesViewController *)self showRouteOnMap];
   }
 }
@@ -1855,10 +1855,10 @@ LABEL_8:
   [(TransitSchedulesViewController *)self _updateVehicleUpdater];
   boardingStopMuid = self->_boardingStopMuid;
   transitLineIdentifier = self->_transitLineIdentifier;
-  v5 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
-  v6 = [(TransitSchedulesViewController *)self traits];
+  selectedTripIdentifier = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+  traits = [(TransitSchedulesViewController *)self traits];
   v7 = +[MKMapService sharedService];
-  v8 = [v7 ticketForTransitTripDetailsAtStation:boardingStopMuid line:transitLineIdentifier referenceTripID:v5 includeAllDirectionNames:self->_requestAllDirections routingParameters:self->_routingParameters traits:v6];
+  v8 = [v7 ticketForTransitTripDetailsAtStation:boardingStopMuid line:transitLineIdentifier referenceTripID:selectedTripIdentifier includeAllDirectionNames:self->_requestAllDirections routingParameters:self->_routingParameters traits:traits];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -1867,7 +1867,7 @@ LABEL_8:
   objc_copyWeak(v10, &location);
   v10[1] = boardingStopMuid;
   v10[2] = transitLineIdentifier;
-  v10[3] = v5;
+  v10[3] = selectedTripIdentifier;
   [v8 submitWithHandler:v9 networkActivity:0];
   objc_destroyWeak(v10);
 
@@ -1880,26 +1880,26 @@ LABEL_8:
   {
     if (!-[TransitSchedulesViewController hasSelectedTrip](self, "hasSelectedTrip") || (-[TransitSchedulesViewController departureDataProvider](self, "departureDataProvider"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 selectDepartureWithTripIdentifier:{-[TransitSchedulesViewController selectedTripIdentifier](self, "selectedTripIdentifier")}], v3, (v4 & 1) == 0))
     {
-      v5 = [(TransitSchedulesViewController *)self departureDataProvider];
-      [v5 selectNextIncomingDeparture];
+      departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+      [departureDataProvider selectNextIncomingDeparture];
     }
   }
 }
 
-- (void)processUpdatedDepartureSequencesFromMapItem:(id)a3
+- (void)processUpdatedDepartureSequencesFromMapItem:(id)item
 {
-  v17 = a3;
-  v4 = [v17 _transitInfo];
-  v5 = [v4 departureSequences];
-  v6 = [v5 copy];
+  itemCopy = item;
+  _transitInfo = [itemCopy _transitInfo];
+  departureSequences = [_transitInfo departureSequences];
+  v6 = [departureSequences copy];
 
   v7 = [(TransitSchedulesViewController *)self _dedupeDepartureSequences:v6];
 
-  v8 = [(TransitSchedulesViewController *)self departureDataProvider];
-  if (v8)
+  departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+  if (departureDataProvider)
   {
-    v9 = v8;
-    [v8 processDeparturesFromDepartureSequences:v7 animatingDifferences:0];
+    v9 = departureDataProvider;
+    [departureDataProvider processDeparturesFromDepartureSequences:v7 animatingDifferences:0];
 
     goto LABEL_17;
   }
@@ -1915,29 +1915,29 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [TransitSchedulesDepartureDataProvider departureSequenceContainingTripIdentifier:[(TransitSchedulesViewController *)self selectedTripIdentifier] departureSequences:v7];
-  if (!v10)
+  firstObject = [TransitSchedulesDepartureDataProvider departureSequenceContainingTripIdentifier:[(TransitSchedulesViewController *)self selectedTripIdentifier] departureSequences:v7];
+  if (!firstObject)
   {
     if ([v7 count] == 1)
     {
-      v10 = [v7 firstObject];
+      firstObject = [v7 firstObject];
       goto LABEL_10;
     }
 
 LABEL_9:
-    v10 = 0;
+    firstObject = 0;
   }
 
 LABEL_10:
-  v11 = [v10 departures];
-  v12 = [v11 firstObject];
-  v13 = [v12 departureDate];
+  departures = [firstObject departures];
+  firstObject2 = [departures firstObject];
+  departureDate = [firstObject2 departureDate];
 
   departureInfoProvider = self->_departureInfoProvider;
-  if (v13)
+  if (departureDate)
   {
-    [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:v10];
-    v15 = [[TransitSchedulesDepartureDataProvider alloc] initWithTransitMapItem:v17 selectedDepartureSequence:v10 departureSequences:v7 timeZone:self->_boardingStopTimeZone initialScheduleDate:self->_scheduleWindowStartDate];
+    [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:firstObject];
+    v15 = [[TransitSchedulesDepartureDataProvider alloc] initWithTransitMapItem:itemCopy selectedDepartureSequence:firstObject departureSequences:v7 timeZone:self->_boardingStopTimeZone initialScheduleDate:self->_scheduleWindowStartDate];
     [(TransitSchedulesViewController *)self setDepartureDataProvider:v15];
     [(TransitSchedulesDepartureDataProvider *)v15 setRequestAllDirections:self->_requestAllDirections];
     [(TransitSchedulesDepartureDataProvider *)v15 setDelegate:self];
@@ -1946,15 +1946,15 @@ LABEL_10:
 
   else
   {
-    if (v10)
+    if (firstObject)
     {
-      [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:v10];
+      [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:firstObject];
     }
 
     else
     {
-      v16 = [v7 firstObject];
-      [(TransitSchedulesDepartureInfoProvider *)departureInfoProvider setDepartureSequence:v16];
+      firstObject3 = [v7 firstObject];
+      [(TransitSchedulesDepartureInfoProvider *)departureInfoProvider setDepartureSequence:firstObject3];
     }
 
     v15 = 0;
@@ -1969,11 +1969,11 @@ LABEL_17:
 {
   boardingStopMuid = self->_boardingStopMuid;
   transitLineIdentifier = self->_transitLineIdentifier;
-  v5 = [(TransitSchedulesViewController *)self selectedTripIdentifier];
-  v6 = [(TransitSchedulesViewController *)self traits];
+  selectedTripIdentifier = [(TransitSchedulesViewController *)self selectedTripIdentifier];
+  traits = [(TransitSchedulesViewController *)self traits];
   objc_initWeak(&location, self);
   v7 = +[MKMapService sharedService];
-  v8 = [v7 ticketForTransitScheduleAtStation:boardingStopMuid line:transitLineIdentifier referenceTripID:v5 includeAllDirectionNames:self->_requestAllDirections routingParameters:self->_routingParameters traits:v6];
+  v8 = [v7 ticketForTransitScheduleAtStation:boardingStopMuid line:transitLineIdentifier referenceTripID:selectedTripIdentifier includeAllDirectionNames:self->_requestAllDirections routingParameters:self->_routingParameters traits:traits];
 
   if (!self->_departureDataProvider)
   {
@@ -1987,26 +1987,26 @@ LABEL_17:
   objc_copyWeak(v10, &location);
   v10[1] = boardingStopMuid;
   v10[2] = transitLineIdentifier;
-  v10[3] = v5;
+  v10[3] = selectedTripIdentifier;
   [v8 submitWithHandler:v9 networkActivity:0];
   objc_destroyWeak(v10);
 
   objc_destroyWeak(&location);
 }
 
-- (BOOL)isNetworkError:(id)a3
+- (BOOL)isNetworkError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqual:kCFErrorDomainCFNetwork])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqual:kCFErrorDomainCFNetwork])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 domain];
-    v5 = [v6 isEqual:NSURLErrorDomain];
+    domain2 = [errorCopy domain];
+    v5 = [domain2 isEqual:NSURLErrorDomain];
   }
 
   return v5;
@@ -2014,10 +2014,10 @@ LABEL_17:
 
 - (id)traits
 {
-  v3 = [(TransitSchedulesViewController *)self departureDataProvider];
-  v4 = [v3 scheduleWindowStartDate];
-  scheduleWindowStartDate = v4;
-  if (!v4)
+  departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+  scheduleWindowStartDate = [departureDataProvider scheduleWindowStartDate];
+  scheduleWindowStartDate = scheduleWindowStartDate;
+  if (!scheduleWindowStartDate)
   {
     scheduleWindowStartDate = self->_scheduleWindowStartDate;
   }
@@ -2033,11 +2033,11 @@ LABEL_17:
 
     [(NSDate *)self->_scheduleWindowStartDate timeIntervalSinceReferenceDate];
     v11 = v10 + -1.0;
-    v12 = [v8 timeRange];
-    [v12 setStartTime:v11];
+    timeRange = [v8 timeRange];
+    [timeRange setStartTime:v11];
 
-    v13 = [v8 timeRange];
-    [v13 setDuration:2.0];
+    timeRange2 = [v8 timeRange];
+    [timeRange2 setDuration:2.0];
 
     v14 = objc_alloc_init(GEOTraitsTransitScheduleFilter);
     [v14 setHighFrequencyFilter:v8];
@@ -2050,10 +2050,10 @@ LABEL_17:
 
 - (unint64_t)_departuresHeaderStyle
 {
-  v3 = [(TransitSchedulesViewController *)self selectedTransitLine];
-  v4 = [v3 departureTimeDisplayStyle];
+  selectedTransitLine = [(TransitSchedulesViewController *)self selectedTransitLine];
+  departureTimeDisplayStyle = [selectedTransitLine departureTimeDisplayStyle];
 
-  if (v4 != 4 && v4 != 2)
+  if (departureTimeDisplayStyle != 4 && departureTimeDisplayStyle != 2)
   {
     return 1;
   }
@@ -2066,27 +2066,27 @@ LABEL_17:
   return 2;
 }
 
-- (void)setSelectedTransitLine:(id)a3
+- (void)setSelectedTransitLine:(id)line
 {
-  v5 = a3;
+  lineCopy = line;
   if (([(GEOTransitLine *)self->_selectedTransitLine isEqual:?]& 1) == 0)
   {
     [(TransitSchedulesViewController *)self _checkIfPinnedLine];
-    objc_storeStrong(&self->_selectedTransitLine, a3);
+    objc_storeStrong(&self->_selectedTransitLine, line);
     [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setTransitLine:self->_selectedTransitLine];
     [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource setTransitLine:self->_selectedTransitLine];
   }
 }
 
-- (id)_startEndDatesForOperatingHoursTimeRanges:(id)a3
+- (id)_startEndDatesForOperatingHoursTimeRanges:(id)ranges
 {
-  v3 = a3;
+  rangesCopy = ranges;
   v4 = objc_alloc_init(NSMutableArray);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = rangesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -2102,11 +2102,11 @@ LABEL_17:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 startDate];
-        [v4 addObject:v11];
+        startDate = [v10 startDate];
+        [v4 addObject:startDate];
 
-        v12 = [v10 endDate];
-        [v4 addObject:v12];
+        endDate = [v10 endDate];
+        [v4 addObject:endDate];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -2123,12 +2123,12 @@ LABEL_17:
 - (id)titleForStopsHeader
 {
   v3 = [(NSString *)self->_selectedTripVehicleNumber length];
-  v4 = [(GEOTransitLine *)self->_selectedTransitLine isBus];
+  isBus = [(GEOTransitLine *)self->_selectedTransitLine isBus];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
   if (v3)
   {
-    if (v4)
+    if (isBus)
     {
       v7 = @"[Transit Schedules] (Bus) Stops for <vehicle number>";
     }
@@ -2146,7 +2146,7 @@ LABEL_17:
 
   else
   {
-    if (v4)
+    if (isBus)
     {
       v10 = @"[Transit Schedules] (Bus) Stops";
     }
@@ -2162,9 +2162,9 @@ LABEL_17:
   return v9;
 }
 
-- (id)_headerViewForSectionType:(unint64_t)a3
+- (id)_headerViewForSectionType:(unint64_t)type
 {
-  v4 = [(TransitSchedulesViewController *)self _sectionIndexForSectionType:a3];
+  v4 = [(TransitSchedulesViewController *)self _sectionIndexForSectionType:type];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -2185,29 +2185,29 @@ LABEL_17:
   return v5;
 }
 
-- (void)setSelectedTripVehicleNumber:(id)a3
+- (void)setSelectedTripVehicleNumber:(id)number
 {
-  v8 = a3;
+  numberCopy = number;
   if (([(NSString *)self->_selectedTripVehicleNumber isEqual:?]& 1) == 0)
   {
-    v4 = [v8 copy];
+    v4 = [numberCopy copy];
     selectedTripVehicleNumber = self->_selectedTripVehicleNumber;
     self->_selectedTripVehicleNumber = v4;
 
     v6 = [(TransitSchedulesViewController *)self _headerViewForSectionType:6];
-    v7 = [(TransitSchedulesViewController *)self titleForStopsHeader];
-    [v6 setTitle:v7];
+    titleForStopsHeader = [(TransitSchedulesViewController *)self titleForStopsHeader];
+    [v6 setTitle:titleForStopsHeader];
   }
 }
 
-- (void)setBoardingStationMapItem:(id)a3
+- (void)setBoardingStationMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if (!self->_mapItemUpdater)
   {
     v6 = [MKMapItem alloc];
-    v7 = [v5 _geoMapItem];
-    v8 = [v6 initWithGeoMapItem:v7 isPlaceHolderPlace:0];
+    _geoMapItem = [itemCopy _geoMapItem];
+    v8 = [v6 initWithGeoMapItem:_geoMapItem isPlaceHolderPlace:0];
 
     v9 = [[MKTransitMapItemUpdater alloc] initWithMapItem:v8 delegate:self];
     mapItemUpdater = self->_mapItemUpdater;
@@ -2221,77 +2221,77 @@ LABEL_17:
 
   if (!self->_attribution)
   {
-    v26 = [v5 _transitAttribution];
+    _transitAttribution = [itemCopy _transitAttribution];
 
-    if (v26)
+    if (_transitAttribution)
     {
-      v27 = [v5 _transitAttribution];
+      _transitAttribution2 = [itemCopy _transitAttribution];
       attribution = self->_attribution;
-      self->_attribution = v27;
+      self->_attribution = _transitAttribution2;
 
       if ([(TransitSchedulesViewController *)self isViewLoaded])
       {
-        v29 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-        [(TransitSchedulesViewController *)self _addSection:8 toSnapshot:v29];
+        snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+        [(TransitSchedulesViewController *)self _addSection:8 toSnapshot:snapshot];
         v33 = @"AttributionCellIdentifier";
         v30 = [NSArray arrayWithObjects:&v33 count:1];
-        [v29 appendItemsWithIdentifiers:v30 intoSectionWithIdentifier:&off_1016E67D0];
+        [snapshot appendItemsWithIdentifiers:v30 intoSectionWithIdentifier:&off_1016E67D0];
 
-        [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v29 animatingDifferences:0];
+        [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:0];
       }
     }
   }
 
-  objc_storeStrong(&self->_boardingStopMapItem, a3);
-  v11 = [v5 _transitInfo];
-  v12 = [v11 title];
-  v13 = [v12 length];
+  objc_storeStrong(&self->_boardingStopMapItem, item);
+  _transitInfo = [itemCopy _transitInfo];
+  title = [_transitInfo title];
+  v13 = [title length];
 
   if (v13)
   {
-    v14 = [v11 title];
-    v15 = [(TransitSchedulesViewController *)self headerTitleView];
-    [v15 setTitle:v14];
+    title2 = [_transitInfo title];
+    headerTitleView = [(TransitSchedulesViewController *)self headerTitleView];
+    [headerTitleView setTitle:title2];
   }
 
-  v16 = [v11 subtitle];
-  v17 = [v16 length];
+  subtitle = [_transitInfo subtitle];
+  v17 = [subtitle length];
 
   if (v17)
   {
-    v18 = [v11 subtitle];
-    v19 = [(TransitSchedulesViewController *)self headerTitleView];
-    [v19 setSubtitle:v18];
+    subtitle2 = [_transitInfo subtitle];
+    headerTitleView2 = [(TransitSchedulesViewController *)self headerTitleView];
+    [headerTitleView2 setSubtitle:subtitle2];
   }
 
-  v20 = [v11 lines];
+  lines = [_transitInfo lines];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1006BD7DC;
   v32[3] = &unk_101626368;
   v32[4] = self;
-  [v20 enumerateObjectsUsingBlock:v32];
+  [lines enumerateObjectsUsingBlock:v32];
 
-  v21 = [v11 transitTripStops];
-  v22 = [v21 firstObject];
-  if (v22)
+  transitTripStops = [_transitInfo transitTripStops];
+  firstObject = [transitTripStops firstObject];
+  if (firstObject)
   {
-    v23 = [v11 composedRoute];
-    [(TransitSchedulesViewController *)self setSelectedTripRoute:v23];
-    v24 = [v5 _transitInfo];
-    v25 = [v24 incidents];
-    [(TransitSchedulesViewController *)self setIncidents:v25];
+    composedRoute = [_transitInfo composedRoute];
+    [(TransitSchedulesViewController *)self setSelectedTripRoute:composedRoute];
+    _transitInfo2 = [itemCopy _transitInfo];
+    incidents = [_transitInfo2 incidents];
+    [(TransitSchedulesViewController *)self setIncidents:incidents];
 
     [(TransitSchedulesViewController *)self _updateVehicleUpdater];
-    if ([v21 count])
+    if ([transitTripStops count])
     {
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
       v31[2] = sub_1006BD8AC;
       v31[3] = &unk_101626390;
       v31[4] = self;
-      [v21 enumerateObjectsUsingBlock:v31];
-      [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource buildTransitTripStopItemsWithTransitStops:v21 boardingStopDepartureDate:self->_selectedTripDepartureDate maintainingCollapsedState:0];
+      [transitTripStops enumerateObjectsUsingBlock:v31];
+      [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource buildTransitTripStopItemsWithTransitStops:transitTripStops boardingStopDepartureDate:self->_selectedTripDepartureDate maintainingCollapsedState:0];
       if ([(TransitSchedulesViewController *)self isViewLoaded])
       {
         [(TransitSchedulesViewController *)self _rebuildStopsSection];
@@ -2303,11 +2303,11 @@ LABEL_17:
 
 - (void)_rebuildStopsSection
 {
-  v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  [(TransitSchedulesViewController *)self _clearSection:6 inSnapshot:v4];
-  v3 = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
-  [v4 appendItemsWithIdentifiers:v3 intoSectionWithIdentifier:&off_1016E6830];
-  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v4 animatingDifferences:1];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  [(TransitSchedulesViewController *)self _clearSection:6 inSnapshot:snapshot];
+  stopIdentifiers = [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource stopIdentifiers];
+  [snapshot appendItemsWithIdentifiers:stopIdentifiers intoSectionWithIdentifier:&off_1016E6830];
+  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:1];
   [(TransitSchedulesViewController *)self _updateStopsSectionHeader];
 }
 
@@ -2361,9 +2361,9 @@ LABEL_17:
   return departureCellProvider;
 }
 
-- (void)setDepartureDataProvider:(id)a3
+- (void)setDepartureDataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   departureDataProvider = self->_departureDataProvider;
   if (departureDataProvider)
   {
@@ -2371,96 +2371,96 @@ LABEL_17:
     departureDataProvider = self->_departureDataProvider;
   }
 
-  self->_departureDataProvider = v4;
+  self->_departureDataProvider = providerCopy;
 
-  if (v4)
+  if (providerCopy)
   {
 
     [(TransitSchedulesViewController *)self _startObservingDepartureProvider];
   }
 }
 
-- (void)setIncidents:(id)a3
+- (void)setIncidents:(id)incidents
 {
-  v4 = a3;
+  incidentsCopy = incidents;
   incidents = self->_incidents;
-  if (incidents != v4 && ([(NSArray *)incidents isEqual:v4]& 1) == 0)
+  if (incidents != incidentsCopy && ([(NSArray *)incidents isEqual:incidentsCopy]& 1) == 0)
   {
-    v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    [(TransitSchedulesViewController *)self _removeSection:4 toSnapshot:v6];
-    if ([(NSArray *)v4 count])
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    [(TransitSchedulesViewController *)self _removeSection:4 toSnapshot:snapshot];
+    if ([(NSArray *)incidentsCopy count])
     {
-      [(TransitSchedulesViewController *)self _addSection:4 toSnapshot:v6];
+      [(TransitSchedulesViewController *)self _addSection:4 toSnapshot:snapshot];
       v12 = @"IncidentsCellIdentifier";
       v7 = [NSArray arrayWithObjects:&v12 count:1];
-      [v6 appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&off_1016E6788];
+      [snapshot appendItemsWithIdentifiers:v7 intoSectionWithIdentifier:&off_1016E6788];
     }
 
-    v8 = [(NSArray *)v4 copy];
+    v8 = [(NSArray *)incidentsCopy copy];
     v9 = self->_incidents;
     self->_incidents = v8;
 
-    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v6 animatingDifferences:1];
+    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:1];
     v10 = [(NSArray *)self->_incidents count]!= 0;
     v11 = +[GEOAPSharedStateData sharedData];
     [v11 setPlaceCardTransitAdvisoryBanner:v10];
   }
 }
 
-- (void)updateStopsSectionForNetworkState:(unint64_t)a3
+- (void)updateStopsSectionForNetworkState:(unint64_t)state
 {
-  if ([(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource remoteNetworkState]!= a3)
+  if ([(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource remoteNetworkState]!= state)
   {
-    v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource setRemoteNetworkState:a3];
-    if (a3 - 2 >= 3)
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    [(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource setRemoteNetworkState:state];
+    if (state - 2 >= 3)
     {
-      if (a3 == 1 && [v5 indexOfSectionIdentifier:&off_1016E6830] == 0x7FFFFFFFFFFFFFFFLL)
+      if (state == 1 && [snapshot indexOfSectionIdentifier:&off_1016E6830] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v5 deleteSectionsWithIdentifiers:&off_1016EC8D8];
-        [(TransitSchedulesViewController *)self _addSection:6 toSnapshot:v5];
+        [snapshot deleteSectionsWithIdentifiers:&off_1016EC8D8];
+        [(TransitSchedulesViewController *)self _addSection:6 toSnapshot:snapshot];
       }
     }
 
     else
     {
-      if ([v5 indexOfSectionIdentifier:&off_1016E6818] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([snapshot indexOfSectionIdentifier:&off_1016E6818] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v5 deleteSectionsWithIdentifiers:&off_1016EC8F0];
-        [(TransitSchedulesViewController *)self _addSection:5 toSnapshot:v5];
+        [snapshot deleteSectionsWithIdentifiers:&off_1016EC8F0];
+        [(TransitSchedulesViewController *)self _addSection:5 toSnapshot:snapshot];
         v8 = @"StopsNetworkStateViewCellIdentifier";
         v6 = [NSArray arrayWithObjects:&v8 count:1];
-        [v5 appendItemsWithIdentifiers:v6 intoSectionWithIdentifier:&off_1016E6818];
+        [snapshot appendItemsWithIdentifiers:v6 intoSectionWithIdentifier:&off_1016E6818];
       }
 
       else
       {
         v7 = @"StopsNetworkStateViewCellIdentifier";
         v6 = [NSArray arrayWithObjects:&v7 count:1];
-        [v5 reloadItemsWithIdentifiers:v6];
+        [snapshot reloadItemsWithIdentifiers:v6];
       }
     }
 
-    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v5 animatingDifferences:1];
+    [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:1];
   }
 }
 
-- (void)updateDeparturesSectionForNetworkState:(unint64_t)a3
+- (void)updateDeparturesSectionForNetworkState:(unint64_t)state
 {
   if (!self->_departureDataProvider)
   {
-    self->_initialRoutingSchedulesNetworkRequestState = a3;
+    self->_initialRoutingSchedulesNetworkRequestState = state;
   }
 
-  v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v6 = v5;
-  if (a3 - 2 >= 3)
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  v6 = snapshot;
+  if (state - 2 >= 3)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
-        [(TransitSchedulesViewController *)self _removeSection:1 toSnapshot:v5];
+        [(TransitSchedulesViewController *)self _removeSection:1 toSnapshot:snapshot];
         if ([v6 indexOfSectionIdentifier:&off_1016E67E8] == 0x7FFFFFFFFFFFFFFFLL)
         {
           [(TransitSchedulesViewController *)self _clearSection:3 inSnapshot:v6];
@@ -2472,14 +2472,14 @@ LABEL_17:
 
     else
     {
-      [(TransitSchedulesViewController *)self _removeSection:3 toSnapshot:v5];
+      [(TransitSchedulesViewController *)self _removeSection:3 toSnapshot:snapshot];
       [(TransitSchedulesViewController *)self _removeSection:2 toSnapshot:v6];
     }
   }
 
   else
   {
-    if ([v5 indexOfSectionIdentifier:&off_1016E6800] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([snapshot indexOfSectionIdentifier:&off_1016E6800] == 0x7FFFFFFFFFFFFFFFLL)
     {
       [v6 deleteSectionsWithIdentifiers:&off_1016EC8C0];
       [(TransitSchedulesViewController *)self _addSection:2 toSnapshot:v6];
@@ -2509,12 +2509,12 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v4 = [(TransitSchedulesViewController *)self selectedTransitLine];
+  selectedTransitLine = [(TransitSchedulesViewController *)self selectedTransitLine];
 
-  if (v4)
+  if (selectedTransitLine)
   {
-    v5 = [(TransitSchedulesViewController *)self selectedTransitLine];
-    v6 = [[IncompleteTransitLineItem alloc] initWithTransitLine:v5];
+    selectedTransitLine2 = [(TransitSchedulesViewController *)self selectedTransitLine];
+    v6 = [[IncompleteTransitLineItem alloc] initWithTransitLine:selectedTransitLine2];
     v7 = self->_selectedTransitLineItem;
     self->_selectedTransitLineItem = v6;
 
@@ -2531,7 +2531,7 @@ LABEL_7:
       v14[1] = 3221225472;
       v14[2] = sub_1006BE33C;
       v14[3] = &unk_10165DCC8;
-      v15 = v5;
+      v15 = selectedTransitLine2;
       objc_copyWeak(&v16, &location);
       [v11 submitWithHandler:v14 networkActivity:0];
       objc_destroyWeak(&v16);
@@ -2550,37 +2550,37 @@ LABEL_9:
 
 - (BOOL)hasIncidents
 {
-  v2 = [(TransitSchedulesViewController *)self incidents];
-  v3 = [v2 count] != 0;
+  incidents = [(TransitSchedulesViewController *)self incidents];
+  v3 = [incidents count] != 0;
 
   return v3;
 }
 
 - (void)_stopObservingDepartureProvider
 {
-  v4 = [(TransitSchedulesViewController *)self departureDataProvider];
+  departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
   v3 = NSStringFromSelector("remoteNetworkState");
-  [v4 removeObserver:self forKeyPath:v3];
+  [departureDataProvider removeObserver:self forKeyPath:v3];
 }
 
 - (void)_startObservingDepartureProvider
 {
-  v4 = [(TransitSchedulesViewController *)self departureDataProvider];
+  departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
   v3 = NSStringFromSelector("remoteNetworkState");
-  [v4 addObserver:self forKeyPath:v3 options:4 context:off_101929D58];
+  [departureDataProvider addObserver:self forKeyPath:v3 options:4 context:off_101929D58];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_101929D58 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_101929D58 == context)
   {
-    if (self->_departureDataProvider == v11)
+    if (self->_departureDataProvider == objectCopy)
     {
       v13 = NSStringFromSelector("remoteNetworkState");
-      v14 = [v10 isEqualToString:v13];
+      v14 = [pathCopy isEqualToString:v13];
 
       if (v14)
       {
@@ -2593,52 +2593,52 @@ LABEL_9:
   {
     v15.receiver = self;
     v15.super_class = TransitSchedulesViewController;
-    [(TransitSchedulesViewController *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(TransitSchedulesViewController *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(TransitSchedulesViewController *)self vehicleUpdater];
-  [v5 setActive:0];
+  disappearCopy = disappear;
+  vehicleUpdater = [(TransitSchedulesViewController *)self vehicleUpdater];
+  [vehicleUpdater setActive:0];
 
-  v6 = [(TransitSchedulesViewController *)self mapItemUpdater];
-  [v6 setActive:0];
+  mapItemUpdater = [(TransitSchedulesViewController *)self mapItemUpdater];
+  [mapItemUpdater setActive:0];
 
   [(TransitSchedulesViewController *)self _stopObservingDepartureProvider];
   [(TransitSchedulesViewController *)self restoreInitialMapState];
   v7.receiver = self;
   v7.super_class = TransitSchedulesViewController;
-  [(ContaineeViewController *)&v7 viewWillDisappear:v3];
+  [(ContaineeViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(TransitSchedulesViewController *)self mapItemUpdater];
-  [v5 setActive:1];
+  appearCopy = appear;
+  mapItemUpdater = [(TransitSchedulesViewController *)self mapItemUpdater];
+  [mapItemUpdater setActive:1];
 
-  v6 = [(TransitSchedulesViewController *)self vehicleUpdater];
-  [v6 setActive:1];
+  vehicleUpdater = [(TransitSchedulesViewController *)self vehicleUpdater];
+  [vehicleUpdater setActive:1];
 
   [(TransitSchedulesViewController *)self _startObservingDepartureProvider];
   if (![(TransitSchedulesViewController *)self hasSelectedTrip]&& [(TransitSchedulesViewController *)self _numberOfDeparturesInSnapshot]>= 1)
   {
-    v7 = [(TransitSchedulesViewController *)self departureDataProvider];
-    [v7 selectNextIncomingDeparture];
+    departureDataProvider = [(TransitSchedulesViewController *)self departureDataProvider];
+    [departureDataProvider selectNextIncomingDeparture];
   }
 
-  v8 = [(TransitSchedulesViewController *)self selectedTripRoute];
+  selectedTripRoute = [(TransitSchedulesViewController *)self selectedTripRoute];
 
-  if (v8)
+  if (selectedTripRoute)
   {
     [(TransitSchedulesViewController *)self showRouteOnMap];
   }
 
   v9.receiver = self;
   v9.super_class = TransitSchedulesViewController;
-  [(ContaineeViewController *)&v9 viewWillAppear:v3];
+  [(ContaineeViewController *)&v9 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -2646,8 +2646,8 @@ LABEL_9:
   v83.receiver = self;
   v83.super_class = TransitSchedulesViewController;
   [(ContaineeViewController *)&v83 viewDidLoad];
-  v3 = [(TransitSchedulesViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"TransitSchedulesDepartureView"];
+  view = [(TransitSchedulesViewController *)self view];
+  [view setAccessibilityIdentifier:@"TransitSchedulesDepartureView"];
 
   v4 = [[ContainerHeaderView alloc] initWithCardButtonType:1];
   containerHeaderView = self->_containerHeaderView;
@@ -2658,12 +2658,12 @@ LABEL_9:
   [(ContainerHeaderView *)self->_containerHeaderView setContentCompressionResistancePriority:1 forAxis:v6];
   [(ContainerHeaderView *)self->_containerHeaderView setDelegate:self];
   [(ContainerHeaderView *)self->_containerHeaderView setHairLineAlpha:0.0];
-  v7 = [(ContaineeViewController *)self headerView];
-  [v7 addSubview:self->_containerHeaderView];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView addSubview:self->_containerHeaderView];
 
   v8 = [TransitSchedulesHeaderView alloc];
-  v9 = [(TransitSchedulesViewController *)self selectedTransitLine];
-  v10 = [(TransitSchedulesHeaderView *)v8 initWithTransitLine:v9];
+  selectedTransitLine = [(TransitSchedulesViewController *)self selectedTransitLine];
+  v10 = [(TransitSchedulesHeaderView *)v8 initWithTransitLine:selectedTransitLine];
   headerTitleView = self->_headerTitleView;
   self->_headerTitleView = v10;
 
@@ -2671,31 +2671,31 @@ LABEL_9:
   [(ContainerHeaderView *)self->_containerHeaderView setTitleView:self->_headerTitleView];
   LODWORD(v12) = 1148846080;
   [(TransitSchedulesHeaderView *)self->_headerTitleView setContentCompressionResistancePriority:1 forAxis:v12];
-  v79 = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
-  v80 = [(ContaineeViewController *)self headerView];
-  v77 = [v80 leadingAnchor];
-  v75 = [v79 constraintEqualToAnchor:v77];
+  leadingAnchor = [(ContainerHeaderView *)self->_containerHeaderView leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v75 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v87[0] = v75;
-  v71 = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
-  v73 = [(ContaineeViewController *)self headerView];
-  v69 = [v73 trailingAnchor];
-  v66 = [v71 constraintEqualToAnchor:v69];
+  trailingAnchor = [(ContainerHeaderView *)self->_containerHeaderView trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v66 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v87[1] = v66;
-  v13 = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
-  v14 = [(ContaineeViewController *)self headerView];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  topAnchor = [(ContainerHeaderView *)self->_containerHeaderView topAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView4 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v87[2] = v16;
-  v17 = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
-  v18 = [(ContaineeViewController *)self headerView];
-  v19 = [v18 bottomAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  bottomAnchor = [(ContainerHeaderView *)self->_containerHeaderView bottomAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView5 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v87[3] = v20;
   v21 = [NSArray arrayWithObjects:v87 count:4];
   [NSLayoutConstraint activateConstraints:v21];
 
-  v81 = [(TransitSchedulesViewController *)self _collectionViewLayout];
-  v22 = [[UICollectionView alloc] initWithFrame:v81 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  _collectionViewLayout = [(TransitSchedulesViewController *)self _collectionViewLayout];
+  v22 = [[UICollectionView alloc] initWithFrame:_collectionViewLayout collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v22 setAccessibilityIdentifier:@"TransitSchedulesDepartureCollectionView"];
   [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v22 setDelegate:self];
@@ -2717,8 +2717,8 @@ LABEL_9:
   v28 = sub_1007CE178(self);
   [(UICollectionViewDiffableDataSource *)self->_dataSource setSupplementaryViewProvider:v28];
 
-  v29 = [(ContaineeViewController *)self contentView];
-  [v29 addSubview:v22];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView addSubview:v22];
 
   [(TransitSchedulesViewController *)self setCollectionView:v22];
   [TransitScheduleStopsTableViewDataSource registerCellsForCollectionView:v22];
@@ -2734,46 +2734,46 @@ LABEL_9:
   [v22 registerClass:+[TransitSchedulesDepartureInfoProvider cellClass](TransitSchedulesDepartureInfoProvider forCellWithReuseIdentifier:{"cellClass"), @"TransitLineDepartureInfoCellIdentifier"}];
   [v22 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"TransitAttributionCellIdentifier"];
   [v22 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"IncidentsCellIdentifier"];
-  v34 = [(TransitSchedulesViewController *)self departureCellProvider];
-  v35 = [(TransitSchedulesViewController *)self collectionView];
-  [v34 registerCellsForCollectionView:v35];
+  departureCellProvider = [(TransitSchedulesViewController *)self departureCellProvider];
+  collectionView = [(TransitSchedulesViewController *)self collectionView];
+  [departureCellProvider registerCellsForCollectionView:collectionView];
 
-  v36 = [(TransitSchedulesViewController *)self headsignCellProvider];
-  v37 = [(TransitSchedulesViewController *)self collectionView];
-  [v36 registerCellsForCollectionView:v37];
+  headsignCellProvider = [(TransitSchedulesViewController *)self headsignCellProvider];
+  collectionView2 = [(TransitSchedulesViewController *)self collectionView];
+  [headsignCellProvider registerCellsForCollectionView:collectionView2];
 
-  v76 = [v22 topAnchor];
-  v78 = [(ContaineeViewController *)self contentView];
-  v74 = [v78 safeAreaLayoutGuide];
-  v72 = [v74 topAnchor];
-  v70 = [v76 constraintEqualToAnchor:v72];
+  topAnchor3 = [v22 topAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  safeAreaLayoutGuide = [contentView2 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v70 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v86[0] = v70;
-  v68 = [(ContaineeViewController *)self contentView];
-  v67 = [v68 bottomAnchor];
-  v65 = [v22 bottomAnchor];
-  v64 = [v67 constraintEqualToAnchor:v65];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  bottomAnchor4 = [v22 bottomAnchor];
+  v64 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v86[1] = v64;
-  v62 = [v22 leadingAnchor];
-  v63 = [(ContaineeViewController *)self contentView];
-  v61 = [v63 safeAreaLayoutGuide];
-  v38 = [v61 leadingAnchor];
-  v39 = [v62 constraintEqualToAnchor:v38];
+  leadingAnchor3 = [v22 leadingAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  safeAreaLayoutGuide2 = [contentView4 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
+  v39 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v86[2] = v39;
-  v40 = [v22 trailingAnchor];
-  v41 = [(ContaineeViewController *)self contentView];
-  v42 = [v41 safeAreaLayoutGuide];
-  v43 = [v42 trailingAnchor];
-  v44 = [v40 constraintEqualToAnchor:v43];
+  trailingAnchor3 = [v22 trailingAnchor];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  safeAreaLayoutGuide3 = [contentView5 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide3 trailingAnchor];
+  v44 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v86[3] = v44;
   v45 = [NSArray arrayWithObjects:v86 count:4];
   [NSLayoutConstraint activateConstraints:v45];
 
-  v46 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
   if (self->_departureDataProvider)
   {
-    [(TransitSchedulesViewController *)self _addSection:3 toSnapshot:v46];
-    v47 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider departures];
-    v48 = [v47 count];
+    [(TransitSchedulesViewController *)self _addSection:3 toSnapshot:snapshot];
+    departures = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider departures];
+    v48 = [departures count];
 
     if (v48)
     {
@@ -2788,10 +2788,10 @@ LABEL_9:
 
   if ([(TransitSchedulesViewController *)self hasIncidents])
   {
-    [(TransitSchedulesViewController *)self _addSection:4 toSnapshot:v46];
+    [(TransitSchedulesViewController *)self _addSection:4 toSnapshot:snapshot];
     v85 = @"IncidentsCellIdentifier";
     v49 = [NSArray arrayWithObjects:&v85 count:1];
-    [v46 appendItemsWithIdentifiers:v49 intoSectionWithIdentifier:&off_1016E6788];
+    [snapshot appendItemsWithIdentifiers:v49 intoSectionWithIdentifier:&off_1016E6788];
   }
 
   if ([(TransitSchedulesViewController *)self _shouldShowDepartureInfoSection])
@@ -2800,49 +2800,49 @@ LABEL_9:
     departureInfoProvider = self->_departureInfoProvider;
     self->_departureInfoProvider = v50;
 
-    v52 = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider selectedDepartureSequence];
-    [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:v52];
+    selectedDepartureSequence = [(TransitSchedulesDepartureDataProvider *)self->_departureDataProvider selectedDepartureSequence];
+    [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDepartureSequence:selectedDepartureSequence];
 
     [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider setDelegate:self];
-    v53 = [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider identifiers];
-    if ([v53 count])
+    identifiers = [(TransitSchedulesDepartureInfoProvider *)self->_departureInfoProvider identifiers];
+    if ([identifiers count])
     {
-      [(TransitSchedulesViewController *)self _addSection:1 toSnapshot:v46];
-      [v46 appendItemsWithIdentifiers:v53 intoSectionWithIdentifier:&off_1016E67A0];
+      [(TransitSchedulesViewController *)self _addSection:1 toSnapshot:snapshot];
+      [snapshot appendItemsWithIdentifiers:identifiers intoSectionWithIdentifier:&off_1016E67A0];
     }
   }
 
   if (!self->_isRoutingScheduleCard)
   {
-    [(TransitSchedulesViewController *)self _addSection:7 toSnapshot:v46];
-    v54 = [(TransitSchedulesLineOptionsProvider *)self->_lineOptionsProvider identifiers];
-    [v46 appendItemsWithIdentifiers:v54 intoSectionWithIdentifier:&off_1016E67B8];
+    [(TransitSchedulesViewController *)self _addSection:7 toSnapshot:snapshot];
+    identifiers2 = [(TransitSchedulesLineOptionsProvider *)self->_lineOptionsProvider identifiers];
+    [snapshot appendItemsWithIdentifiers:identifiers2 intoSectionWithIdentifier:&off_1016E67B8];
 
-    v55 = [(TransitSchedulesViewController *)self fetchSelectedTransitLineItem];
+    fetchSelectedTransitLineItem = [(TransitSchedulesViewController *)self fetchSelectedTransitLineItem];
   }
 
-  v56 = [(GEOTransitAttribution *)self->_attribution _providerNames];
-  v57 = [v56 count];
+  _providerNames = [(GEOTransitAttribution *)self->_attribution _providerNames];
+  v57 = [_providerNames count];
 
   if (v57)
   {
-    [(TransitSchedulesViewController *)self _addSection:8 toSnapshot:v46];
+    [(TransitSchedulesViewController *)self _addSection:8 toSnapshot:snapshot];
     v84 = @"AttributionCellIdentifier";
     v58 = [NSArray arrayWithObjects:&v84 count:1];
-    [v46 appendItemsWithIdentifiers:v58 intoSectionWithIdentifier:&off_1016E67D0];
+    [snapshot appendItemsWithIdentifiers:v58 intoSectionWithIdentifier:&off_1016E67D0];
   }
 
-  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v46 animatingDifferences:0];
+  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:0];
   if ([(TransitSchedulesViewController *)self hasSelectedTrip]&& ![(TransitScheduleStopsTableViewDataSource *)self->_stopsDataSource hasStops])
   {
     [(TransitSchedulesViewController *)self fetchNewScheduleData];
   }
 
-  v59 = [(ControlContaineeViewController *)self delegate];
-  self->_initialViewMode = [v59 displayedViewMode];
+  delegate = [(ControlContaineeViewController *)self delegate];
+  self->_initialViewMode = [delegate displayedViewMode];
 
-  v60 = [(ControlContaineeViewController *)self delegate];
-  self->_initialMapApplicationState = [v60 mapApplicationState];
+  delegate2 = [(ControlContaineeViewController *)self delegate];
+  self->_initialMapApplicationState = [delegate2 mapApplicationState];
 
   [(ContaineeViewController *)self setContentScrollView:self->_collectionView forEdge:1];
 }
@@ -2866,27 +2866,27 @@ LABEL_9:
   return v4;
 }
 
-- (TransitSchedulesViewController)initWithTransitRouteStep:(id)a3
+- (TransitSchedulesViewController)initWithTransitRouteStep:(id)step
 {
-  v5 = a3;
+  stepCopy = step;
   v6 = [(TransitSchedulesViewController *)self initWithNibName:0 bundle:0];
   if (v6)
   {
-    v7 = [v5 nextBoardingStep];
-    v8 = [v5 transitStep];
-    v9 = [v8 scheduleInfo];
+    nextBoardingStep = [stepCopy nextBoardingStep];
+    transitStep = [stepCopy transitStep];
+    scheduleInfo = [transitStep scheduleInfo];
 
-    if (v9 && [v9 tripID] != 0x7FFFFFFFFFFFFFFFLL)
+    if (scheduleInfo && [scheduleInfo tripID] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 tripID]);
+      v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [scheduleInfo tripID]);
       v12 = 0;
       v11 = 1;
     }
 
     else
     {
-      v3 = [v7 transitVehicle];
-      v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 tripMuid]);
+      transitVehicle = [nextBoardingStep transitVehicle];
+      v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [transitVehicle tripMuid]);
       v11 = 0;
       v12 = 1;
     }
@@ -2900,102 +2900,102 @@ LABEL_9:
     {
     }
 
-    v13 = [v9 staticDepartureDate];
-    v14 = v13;
-    if (!v13)
+    staticDepartureDate = [scheduleInfo staticDepartureDate];
+    arrivalTime = staticDepartureDate;
+    if (!staticDepartureDate)
     {
-      v14 = [v7 arrivalTime];
+      arrivalTime = [nextBoardingStep arrivalTime];
     }
 
-    objc_storeStrong(&v6->_selectedTripDepartureDate, v14);
-    if (!v13)
+    objc_storeStrong(&v6->_selectedTripDepartureDate, arrivalTime);
+    if (!staticDepartureDate)
     {
     }
 
-    v15 = [v9 windowStartDate];
-    selectedTripDepartureDate = v15;
-    if (!v15)
+    windowStartDate = [scheduleInfo windowStartDate];
+    selectedTripDepartureDate = windowStartDate;
+    if (!windowStartDate)
     {
       selectedTripDepartureDate = v6->_selectedTripDepartureDate;
     }
 
     objc_storeStrong(&v6->_scheduleWindowStartDate, selectedTripDepartureDate);
 
-    if (v9 && [v9 lineID] != 0x7FFFFFFFFFFFFFFFLL)
+    if (scheduleInfo && [scheduleInfo lineID] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6->_transitLineIdentifier = [v9 lineID];
-      v54 = [v7 transitLine];
-      v55 = [v54 muid];
+      v6->_transitLineIdentifier = [scheduleInfo lineID];
+      transitLine = [nextBoardingStep transitLine];
+      muid = [transitLine muid];
       transitLineIdentifier = v6->_transitLineIdentifier;
 
-      if (v55 == transitLineIdentifier)
+      if (muid == transitLineIdentifier)
       {
-        v57 = [v7 transitLine];
+        transitLine2 = [nextBoardingStep transitLine];
         selectedTransitLine = v6->_selectedTransitLine;
-        v6->_selectedTransitLine = v57;
+        v6->_selectedTransitLine = transitLine2;
       }
     }
 
     else
     {
-      v17 = [v7 transitLine];
+      transitLine3 = [nextBoardingStep transitLine];
       v18 = v6->_selectedTransitLine;
-      v6->_selectedTransitLine = v17;
+      v6->_selectedTransitLine = transitLine3;
 
       v6->_transitLineIdentifier = [(GEOTransitLine *)v6->_selectedTransitLine muid];
     }
 
-    v19 = [v9 routingParameters];
+    routingParameters = [scheduleInfo routingParameters];
     routingParameters = v6->_routingParameters;
-    v6->_routingParameters = v19;
+    v6->_routingParameters = routingParameters;
 
-    v21 = [v7 transitVehicle];
-    v22 = [v21 vehicleNumber];
+    transitVehicle2 = [nextBoardingStep transitVehicle];
+    vehicleNumber = [transitVehicle2 vehicleNumber];
     selectedTripVehicleNumber = v6->_selectedTripVehicleNumber;
-    v6->_selectedTripVehicleNumber = v22;
+    v6->_selectedTripVehicleNumber = vehicleNumber;
 
-    v24 = [v7 transitIncidents];
-    v25 = [v24 copy];
+    transitIncidents = [nextBoardingStep transitIncidents];
+    v25 = [transitIncidents copy];
     incidents = v6->_incidents;
     v6->_incidents = v25;
 
     v6->_isRoutingScheduleCard = 1;
-    v27 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v27 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v28 = [v7 originStop];
-    v6->_boardingStopMuid = [v28 muid];
-    v29 = [v7 originStop];
-    v30 = [v29 nameDisplayString];
-    v31 = [v30 copy];
+    originStop = [nextBoardingStep originStop];
+    v6->_boardingStopMuid = [originStop muid];
+    originStop2 = [nextBoardingStep originStop];
+    nameDisplayString = [originStop2 nameDisplayString];
+    v31 = [nameDisplayString copy];
     boardingStopName = v6->_boardingStopName;
     v6->_boardingStopName = v31;
 
-    v33 = [v7 departureTimeZone];
+    departureTimeZone = [nextBoardingStep departureTimeZone];
     boardingStopTimeZone = v6->_boardingStopTimeZone;
-    v6->_boardingStopTimeZone = v33;
+    v6->_boardingStopTimeZone = departureTimeZone;
 
     v35 = [GEOLocation alloc];
-    v36 = [v28 latLng];
-    [v36 lat];
+    latLng = [originStop latLng];
+    [latLng lat];
     v38 = v37;
-    v39 = [v28 latLng];
-    [v39 lng];
+    latLng2 = [originStop latLng];
+    [latLng2 lng];
     v41 = [v35 initWithLatitude:v38 longitude:v40];
     boardingStopLocation = v6->_boardingStopLocation;
     v6->_boardingStopLocation = v41;
 
-    v43 = [v5 nextAlightingStep];
-    v44 = [v43 destinationStop];
+    nextAlightingStep = [stepCopy nextAlightingStep];
+    destinationStop = [nextAlightingStep destinationStop];
 
-    v45 = [v5 nextAlightingStep];
-    v46 = [v45 destinationHall];
+    nextAlightingStep2 = [stepCopy nextAlightingStep];
+    destinationHall = [nextAlightingStep2 destinationHall];
 
     v47 = +[MKTransitItemReferenceDateUpdater referenceDate];
     referenceDate = v6->_referenceDate;
     v6->_referenceDate = v47;
 
-    if (!(v44 | v46))
+    if (!(destinationStop | destinationHall))
     {
       v53 = [[TransitScheduleStopsTableViewDataSource alloc] initWithBoardingStopMuid:v6->_boardingStopMuid transitLine:v6->_selectedTransitLine referenceDate:v6->_referenceDate];
       stopsDataSource = v6->_stopsDataSource;
@@ -3005,38 +3005,38 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v63 = v5;
-    v49 = [v5 composedRoute];
-    stopsDataSource = [v49 getStationForHall:v46];
+    v63 = stepCopy;
+    composedRoute = [stepCopy composedRoute];
+    stopsDataSource = [composedRoute getStationForHall:destinationHall];
 
-    v62 = [v44 muid];
-    if (v46)
+    muid2 = [destinationStop muid];
+    if (destinationHall)
     {
-      v51 = [v46 muid];
+      muid3 = [destinationHall muid];
       if (stopsDataSource)
       {
 LABEL_22:
-        v52 = [stopsDataSource muid];
+        muid4 = [stopsDataSource muid];
 LABEL_28:
-        v59 = [[TransitScheduleStopsTableViewDataSource alloc] initWithBoardingStopMuid:v6->_boardingStopMuid alightStopMuid:v62 alightHallMuid:v51 alightStationMuid:v52 transitLine:v6->_selectedTransitLine referenceDate:v6->_referenceDate];
+        v59 = [[TransitScheduleStopsTableViewDataSource alloc] initWithBoardingStopMuid:v6->_boardingStopMuid alightStopMuid:muid2 alightHallMuid:muid3 alightStationMuid:muid4 transitLine:v6->_selectedTransitLine referenceDate:v6->_referenceDate];
         v60 = v6->_stopsDataSource;
         v6->_stopsDataSource = v59;
 
-        v5 = v63;
+        stepCopy = v63;
         goto LABEL_29;
       }
     }
 
     else
     {
-      v51 = 0x7FFFFFFFFFFFFFFFLL;
+      muid3 = 0x7FFFFFFFFFFFFFFFLL;
       if (stopsDataSource)
       {
         goto LABEL_22;
       }
     }
 
-    v52 = 0x7FFFFFFFFFFFFFFFLL;
+    muid4 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_28;
   }
 
@@ -3045,45 +3045,45 @@ LABEL_30:
   return v6;
 }
 
-- (TransitSchedulesViewController)initWithTransitMapItem:(id)a3 departureSequence:(id)a4
+- (TransitSchedulesViewController)initWithTransitMapItem:(id)item departureSequence:(id)sequence
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  sequenceCopy = sequence;
   v9 = [(TransitSchedulesViewController *)self initWithNibName:0 bundle:0];
   if (v9)
   {
-    v10 = [v8 line];
+    line = [sequenceCopy line];
     selectedTransitLine = v9->_selectedTransitLine;
-    v9->_selectedTransitLine = v10;
+    v9->_selectedTransitLine = line;
 
     v9->_transitLineIdentifier = [(GEOTransitLine *)v9->_selectedTransitLine muid];
-    v12 = [v7 _geoMapItem];
-    v13 = [v12 transitStationIdentifier];
-    v9->_boardingStopMuid = [v13 muid];
+    _geoMapItem = [itemCopy _geoMapItem];
+    transitStationIdentifier = [_geoMapItem transitStationIdentifier];
+    v9->_boardingStopMuid = [transitStationIdentifier muid];
 
-    v14 = [v7 _transitInfo];
-    v15 = [v14 displayName];
-    v16 = [v15 copy];
+    _transitInfo = [itemCopy _transitInfo];
+    displayName = [_transitInfo displayName];
+    v16 = [displayName copy];
     boardingStopName = v9->_boardingStopName;
     v9->_boardingStopName = v16;
 
-    v18 = [v7 timeZone];
+    timeZone = [itemCopy timeZone];
     boardingStopTimeZone = v9->_boardingStopTimeZone;
-    v9->_boardingStopTimeZone = v18;
+    v9->_boardingStopTimeZone = timeZone;
 
     v9->_isRoutingScheduleCard = 0;
-    objc_storeStrong(&v9->_boardingStopMapItem, a3);
+    objc_storeStrong(&v9->_boardingStopMapItem, item);
     v20 = +[MKTransitItemReferenceDateUpdater referenceDate];
     referenceDate = v9->_referenceDate;
     v9->_referenceDate = v20;
 
     objc_storeStrong(&v9->_scheduleWindowStartDate, v9->_referenceDate);
-    v22 = [v8 departures];
-    v23 = [v22 firstObject];
+    departures = [sequenceCopy departures];
+    firstObject = [departures firstObject];
 
-    if (v23 && ([v23 departureDate], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
+    if (firstObject && ([firstObject departureDate], v24 = objc_claimAutoreleasedReturnValue(), v24, !v24))
     {
-      v28 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 tripIdentifier]);
+      v28 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [firstObject tripIdentifier]);
       selectedTripIdentifier = v9->_selectedTripIdentifier;
       v9->_selectedTripIdentifier = v28;
     }
@@ -3091,18 +3091,18 @@ LABEL_30:
     else
     {
       v25 = [TransitSchedulesDepartureDataProvider alloc];
-      v35 = v8;
+      v35 = sequenceCopy;
       v26 = [NSArray arrayWithObjects:&v35 count:1];
-      v27 = [(TransitSchedulesDepartureDataProvider *)v25 initWithTransitMapItem:v7 selectedDepartureSequence:v8 departureSequences:v26 timeZone:v9->_boardingStopTimeZone initialScheduleDate:v9->_scheduleWindowStartDate];
+      v27 = [(TransitSchedulesDepartureDataProvider *)v25 initWithTransitMapItem:itemCopy selectedDepartureSequence:sequenceCopy departureSequences:v26 timeZone:v9->_boardingStopTimeZone initialScheduleDate:v9->_scheduleWindowStartDate];
       [(TransitSchedulesViewController *)v9 setDepartureDataProvider:v27];
 
       [(TransitSchedulesDepartureDataProvider *)v9->_departureDataProvider setRequestAllDirections:v9->_requestAllDirections];
       [(TransitSchedulesDepartureDataProvider *)v9->_departureDataProvider setDelegate:v9];
     }
 
-    v30 = [v7 _transitAttribution];
+    _transitAttribution = [itemCopy _transitAttribution];
     attribution = v9->_attribution;
-    v9->_attribution = v30;
+    v9->_attribution = _transitAttribution;
 
     v32 = [[TransitScheduleStopsTableViewDataSource alloc] initWithBoardingStopMuid:v9->_boardingStopMuid transitLine:v9->_selectedTransitLine referenceDate:v9->_referenceDate];
     stopsDataSource = v9->_stopsDataSource;
@@ -3112,43 +3112,43 @@ LABEL_30:
   return v9;
 }
 
-- (TransitSchedulesViewController)initWithDepartureSequence:(id)a3 timeZone:(id)a4 scheduleWindowStartDate:(id)a5 includeAllDirections:(BOOL)a6
+- (TransitSchedulesViewController)initWithDepartureSequence:(id)sequence timeZone:(id)zone scheduleWindowStartDate:(id)date includeAllDirections:(BOOL)directions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sequenceCopy = sequence;
+  zoneCopy = zone;
+  dateCopy = date;
   v13 = [(TransitSchedulesViewController *)self initWithNibName:0 bundle:0];
   if (v13)
   {
-    v14 = [v10 line];
+    line = [sequenceCopy line];
     selectedTransitLine = v13->_selectedTransitLine;
-    v13->_selectedTransitLine = v14;
+    v13->_selectedTransitLine = line;
 
     v13->_transitLineIdentifier = [(GEOTransitLine *)v13->_selectedTransitLine muid];
-    v13->_boardingStopMuid = [v10 transitId];
+    v13->_boardingStopMuid = [sequenceCopy transitId];
     boardingStopName = v13->_boardingStopName;
     v13->_boardingStopName = 0;
 
-    objc_storeStrong(&v13->_boardingStopTimeZone, a4);
+    objc_storeStrong(&v13->_boardingStopTimeZone, zone);
     v13->_isRoutingScheduleCard = 0;
-    v13->_requestAllDirections = a6;
+    v13->_requestAllDirections = directions;
     v17 = +[MKTransitItemReferenceDateUpdater referenceDate];
     referenceDate = v13->_referenceDate;
     v13->_referenceDate = v17;
 
-    v19 = v12;
-    if (!v12)
+    v19 = dateCopy;
+    if (!dateCopy)
     {
       v19 = v13->_referenceDate;
     }
 
     objc_storeStrong(&v13->_scheduleWindowStartDate, v19);
-    v20 = [v10 departures];
-    v21 = [v20 firstObject];
+    departures = [sequenceCopy departures];
+    firstObject = [departures firstObject];
 
-    if (v21)
+    if (firstObject)
     {
-      v22 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v21 tripIdentifier]);
+      v22 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [firstObject tripIdentifier]);
       selectedTripIdentifier = v13->_selectedTripIdentifier;
       v13->_selectedTripIdentifier = v22;
     }
@@ -3161,11 +3161,11 @@ LABEL_30:
   return v13;
 }
 
-- (TransitSchedulesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TransitSchedulesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v13.receiver = self;
   v13.super_class = TransitSchedulesViewController;
-  v4 = [(TransitSchedulesViewController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(TransitSchedulesViewController *)&v13 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[GEOTransitVehicleUpdater alloc] initWithDelegate:v4];
@@ -3191,30 +3191,30 @@ LABEL_30:
   return v4;
 }
 
-+ (id)validDeparturesInDepartureSequence:(id)a3 withReferenceDate:(id)a4
++ (id)validDeparturesInDepartureSequence:(id)sequence withReferenceDate:(id)date
 {
-  v5 = a4;
-  v6 = [a3 departures];
+  dateCopy = date;
+  departures = [sequence departures];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1006C0950;
   v11[3] = &unk_101626318;
-  v12 = v5;
-  v7 = v5;
+  v12 = dateCopy;
+  v7 = dateCopy;
   v8 = [NSPredicate predicateWithBlock:v11];
-  v9 = [v6 filteredArrayUsingPredicate:v8];
+  v9 = [departures filteredArrayUsingPredicate:v8];
 
   return v9;
 }
 
-+ (BOOL)shouldShowScheduleForTransitMapItem:(id)a3 sequence:(id)a4
++ (BOOL)shouldShowScheduleForTransitMapItem:(id)item sequence:(id)sequence
 {
-  v5 = a4;
+  sequenceCopy = sequence;
   v6 = +[MKTransitItemReferenceDateUpdater referenceDate];
-  v7 = [a1 validDeparturesInDepartureSequence:v5 withReferenceDate:v6];
+  v7 = [self validDeparturesInDepartureSequence:sequenceCopy withReferenceDate:v6];
 
-  LOBYTE(v5) = [v7 count] != 0;
-  return v5;
+  LOBYTE(sequenceCopy) = [v7 count] != 0;
+  return sequenceCopy;
 }
 
 @end

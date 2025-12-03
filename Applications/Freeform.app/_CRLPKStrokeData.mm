@@ -1,6 +1,6 @@
 @interface _CRLPKStrokeData
 - (_CRLPKStrokeData)init;
-- (_CRLPKStrokeData)initWithPoints:(CRLPKCompressedStrokePoint *)a3 count:(unint64_t)a4 copy:(BOOL)a5;
+- (_CRLPKStrokeData)initWithPoints:(CRLPKCompressedStrokePoint *)points count:(unint64_t)count copy:(BOOL)copy;
 - (void)dealloc;
 @end
 
@@ -17,28 +17,28 @@
   return v2;
 }
 
-- (_CRLPKStrokeData)initWithPoints:(CRLPKCompressedStrokePoint *)a3 count:(unint64_t)a4 copy:(BOOL)a5
+- (_CRLPKStrokeData)initWithPoints:(CRLPKCompressedStrokePoint *)points count:(unint64_t)count copy:(BOOL)copy
 {
-  v5 = a5;
+  copyCopy = copy;
   v13.receiver = self;
   v13.super_class = _CRLPKStrokeData;
   v8 = [(_CRLPKStrokeData *)&v13 init];
   v9 = v8;
-  v8->_pointsCount = a4;
-  v8->_pointsMaxCount = a4;
-  if (v5)
+  v8->_pointsCount = count;
+  v8->_pointsMaxCount = count;
+  if (copyCopy)
   {
     v8->_pointsOwned = 1;
-    v10 = 24 * a4;
+    v10 = 24 * count;
     v11 = malloc_type_malloc(v10, 0x100004077774924uLL);
     v9->_points = v11;
-    memcpy(v11, a3, v10);
+    memcpy(v11, points, v10);
   }
 
   else
   {
     v8->_pointsOwned = 0;
-    v8->_points = a3;
+    v8->_points = points;
   }
 
   return v9;

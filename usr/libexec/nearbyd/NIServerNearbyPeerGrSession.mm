@@ -1,44 +1,44 @@
 @interface NIServerNearbyPeerGrSession
-- (NIServerNearbyPeerGrSession)initWithDataSource:(id)a3 delegate:(id)a4 clientQueue:(id)a5;
+- (NIServerNearbyPeerGrSession)initWithDataSource:(id)source delegate:(id)delegate clientQueue:(id)queue;
 - (id).cxx_construct;
 - (id)configure;
 - (id)printableState;
 - (id)run;
 - (optional<rose::RoseServiceRequest>)_prepareServiceRequest;
-- (shared_ptr<rose::objects::GRSession>)_buildRoseSession:(const void *)a3;
-- (unint64_t)sipHashForIRK:(id)a3;
-- (void)_grSessionInvalidatedWithReason:(int)a3;
-- (void)_triggerRanging:(id)a3;
-- (void)device:(id)a3 rediscovered:(id)a4;
-- (void)deviceDiscovered:(id)a3;
-- (void)didReceiveNewSolution:(const void *)a3;
-- (void)didReceiveRemoteData:(const void *)a3;
+- (shared_ptr<rose::objects::GRSession>)_buildRoseSession:(const void *)session;
+- (unint64_t)sipHashForIRK:(id)k;
+- (void)_grSessionInvalidatedWithReason:(int)reason;
+- (void)_triggerRanging:(id)ranging;
+- (void)device:(id)device rediscovered:(id)rediscovered;
+- (void)deviceDiscovered:(id)discovered;
+- (void)didReceiveNewSolution:(const void *)solution;
+- (void)didReceiveRemoteData:(const void *)data;
 - (void)invalidate;
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3;
-- (void)updatePeerData:(const void *)a3;
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status;
+- (void)updatePeerData:(const void *)data;
 @end
 
 @implementation NIServerNearbyPeerGrSession
 
-- (NIServerNearbyPeerGrSession)initWithDataSource:(id)a3 delegate:(id)a4 clientQueue:(id)a5
+- (NIServerNearbyPeerGrSession)initWithDataSource:(id)source delegate:(id)delegate clientQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = NIServerNearbyPeerGrSession;
   v11 = [(NIServerNearbyPeerGrSession *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_dataSource, v8);
-    objc_storeWeak(&v12->_delegate, v9);
-    objc_storeStrong(&v12->_clientQueue, a5);
-    v13 = [v8 getResourcesManager];
-    v14 = v13;
-    if (v13)
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_clientQueue, queue);
+    getResourcesManager = [sourceCopy getResourcesManager];
+    v14 = getResourcesManager;
+    if (getResourcesManager)
     {
-      [v13 protobufLogger];
+      [getResourcesManager protobufLogger];
       v15 = v19;
     }
 
@@ -64,10 +64,10 @@
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [WeakRetained getResourcesManager];
-  v5 = [v4 lifecycleSupervisor];
+  getResourcesManager = [WeakRetained getResourcesManager];
+  lifecycleSupervisor = [getResourcesManager lifecycleSupervisor];
 
-  [v5 setTimeoutOnPeerInactivity:1];
+  [lifecycleSupervisor setTimeoutOnPeerInactivity:1];
   v6 = +[NSUserDefaults standardUserDefaults];
   [v6 doubleForKey:@"NIPeerGR_MaxInactivityBeforeTrackingBeganSeconds"];
   v8 = v7;
@@ -88,7 +88,7 @@
     }
   }
 
-  [v5 setMaxInactivityBeforeTrackingBeganSeconds:v8];
+  [lifecycleSupervisor setMaxInactivityBeforeTrackingBeganSeconds:v8];
   v10 = +[NSUserDefaults standardUserDefaults];
   [v10 doubleForKey:@"NIPeerGR_MaxInactivityAfterTrackingBeganSeconds"];
   v12 = v11;
@@ -109,7 +109,7 @@
     }
   }
 
-  [v5 setMaxInactivityAfterTrackingBeganSeconds:v12];
+  [lifecycleSupervisor setMaxInactivityAfterTrackingBeganSeconds:v12];
 
   return 0;
 }
@@ -118,7 +118,7 @@
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   dispatch_assert_queue_V2(self->_clientQueue);
-  v4 = [WeakRetained getResourcesManager];
+  getResourcesManager = [WeakRetained getResourcesManager];
   v5 = +[NSUserDefaults standardUserDefaults];
   [v5 doubleForKey:@"PeerInitialScanBurstDurationSecondsOverride"];
   v7 = v6;
@@ -137,26 +137,26 @@
     v8 = v7;
   }
 
-  v10 = [v4 btResource];
-  [v10 startAdvertising];
+  btResource = [getResourcesManager btResource];
+  [btResource startAdvertising];
 
-  v11 = [v4 btResource];
-  [v11 allowScreenOffOperation:1];
+  btResource2 = [getResourcesManager btResource];
+  [btResource2 allowScreenOffOperation:1];
 
-  v12 = [v4 btResource];
-  [v12 startScanningWithBurstPeriod:v8];
+  btResource3 = [getResourcesManager btResource];
+  [btResource3 startScanningWithBurstPeriod:v8];
 
   return 0;
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
-  v4 = a3;
+  discoveredCopy = discovered;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(__p[0]) = 138412290;
-    *(__p + 4) = v4;
+    *(__p + 4) = discoveredCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#peer-gr,Device discovered for the first time (ranging will be triggered). Device: %@", __p, 0xCu);
   }
 
@@ -165,17 +165,17 @@
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    v8 = [WeakRetained getResourcesManager];
-    v9 = [v8 lifecycleSupervisor];
-    v10 = [v9 doesClientWantSessionToRun];
+    getResourcesManager = [WeakRetained getResourcesManager];
+    lifecycleSupervisor = [getResourcesManager lifecycleSupervisor];
+    doesClientWantSessionToRun = [lifecycleSupervisor doesClientWantSessionToRun];
 
-    if (v10)
+    if (doesClientWantSessionToRun)
     {
-      v11 = [v7 getResourcesManager];
-      v12 = [v11 lifecycleSupervisor];
-      v13 = [v12 isSessionInvalidated];
+      getResourcesManager2 = [v7 getResourcesManager];
+      lifecycleSupervisor2 = [getResourcesManager2 lifecycleSupervisor];
+      isSessionInvalidated = [lifecycleSupervisor2 isSessionInvalidated];
 
-      if (v13)
+      if (isSessionInvalidated)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
@@ -188,13 +188,13 @@
         if (self->_pbLogger.__ptr_)
         {
           v14 = sub_100005288();
-          v15 = [NINearbyObject objectFromBluetoothDevice:v4];
+          v15 = [NINearbyObject objectFromBluetoothDevice:discoveredCopy];
           if (v15)
           {
             ptr = self->_pbLogger.__ptr_;
-            v17 = [v4 u64Identifier];
+            u64Identifier = [discoveredCopy u64Identifier];
             sub_1002D63A8(v15, __p);
-            sub_1002E1DCC(ptr, v17, __p, v14);
+            sub_1002E1DCC(ptr, u64Identifier, __p, v14);
             if (*&__p[0])
             {
               *(&__p[0] + 1) = *&__p[0];
@@ -203,7 +203,7 @@
           }
         }
 
-        [(NIServerNearbyPeerGrSession *)self _triggerRanging:v4];
+        [(NIServerNearbyPeerGrSession *)self _triggerRanging:discoveredCopy];
       }
     }
 
@@ -219,17 +219,17 @@
   }
 }
 
-- (void)device:(id)a3 rediscovered:(id)a4
+- (void)device:(id)device rediscovered:(id)rediscovered
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  rediscoveredCopy = rediscovered;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138412546;
-    v24 = v7;
+    v24 = rediscoveredCopy;
     v25 = 2112;
-    v26 = v6;
+    v26 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#peer-gr,Device re-discovered, ranging (re)trigger decision pending. New device: %@. Old device: %@", &v23, 0x16u);
   }
 
@@ -238,17 +238,17 @@
   v10 = WeakRetained;
   if (WeakRetained)
   {
-    v11 = [WeakRetained getResourcesManager];
-    v12 = [v11 lifecycleSupervisor];
-    v13 = [v12 doesClientWantSessionToRun];
+    getResourcesManager = [WeakRetained getResourcesManager];
+    lifecycleSupervisor = [getResourcesManager lifecycleSupervisor];
+    doesClientWantSessionToRun = [lifecycleSupervisor doesClientWantSessionToRun];
 
-    if (v13)
+    if (doesClientWantSessionToRun)
     {
-      v14 = [v10 getResourcesManager];
-      v15 = [v14 lifecycleSupervisor];
-      v16 = [v15 isSessionInvalidated];
+      getResourcesManager2 = [v10 getResourcesManager];
+      lifecycleSupervisor2 = [getResourcesManager2 lifecycleSupervisor];
+      isSessionInvalidated = [lifecycleSupervisor2 isSessionInvalidated];
 
-      if (v16)
+      if (isSessionInvalidated)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
@@ -270,11 +270,11 @@
         goto LABEL_24;
       }
 
-      v17 = [v10 isLongRangeEnabled];
-      if (v17)
+      isLongRangeEnabled = [v10 isLongRangeEnabled];
+      if (isLongRangeEnabled)
       {
-        v18 = [v7 u64Identifier];
-        if (v18 != [v6 u64Identifier])
+        u64Identifier = [rediscoveredCopy u64Identifier];
+        if (u64Identifier != [deviceCopy u64Identifier])
         {
           v19 = qword_1009F9820;
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -284,7 +284,7 @@
           }
 
 LABEL_24:
-          [(NIServerNearbyPeerGrSession *)self _triggerRanging:v7];
+          [(NIServerNearbyPeerGrSession *)self _triggerRanging:rediscoveredCopy];
           goto LABEL_27;
         }
       }
@@ -305,7 +305,7 @@ LABEL_24:
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 67109120;
-        LODWORD(v24) = v17 ^ 1;
+        LODWORD(v24) = isLongRangeEnabled ^ 1;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "#peer-gr,#retrigger ranging decision: NO. UAPs available: %d", &v23, 8u);
       }
     }
@@ -324,7 +324,7 @@ LABEL_24:
 LABEL_27:
 }
 
-- (void)updatePeerData:(const void *)a3
+- (void)updatePeerData:(const void *)data
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
@@ -334,11 +334,11 @@ LABEL_27:
   if (self->_grSession.__ptr_)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v6 = [WeakRetained isLongRangeEnabled];
+    isLongRangeEnabled = [WeakRetained isLongRangeEnabled];
 
-    if ((v6 & 1) == 0)
+    if ((isLongRangeEnabled & 1) == 0)
     {
-      sub_100340788(self->_grSession.__ptr_, a3);
+      sub_100340788(self->_grSession.__ptr_, data);
     }
   }
 }
@@ -351,10 +351,10 @@ LABEL_27:
   return v2;
 }
 
-- (void)didReceiveNewSolution:(const void *)a3
+- (void)didReceiveNewSolution:(const void *)solution
 {
-  v3 = (a3 + 32);
-  if ((*(a3 + 8) - 1) >= 3)
+  v3 = (solution + 32);
+  if ((*(solution + 8) - 1) >= 3)
   {
     v6 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
@@ -367,21 +367,21 @@ LABEL_27:
   {
     dispatch_assert_queue_V2(self->_clientQueue);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained didReceiveNewSolution:a3];
+    [WeakRetained didReceiveNewSolution:solution];
   }
 }
 
-- (void)didReceiveRemoteData:(const void *)a3
+- (void)didReceiveRemoteData:(const void *)data
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didReceiveRemoteData:a3];
+  [WeakRetained didReceiveRemoteData:data];
 }
 
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status
 {
-  var2 = a3.var2;
-  v4 = *&a3.var0;
+  var2 = status.var2;
+  v4 = *&status.var0;
   dispatch_assert_queue_V2(self->_clientQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didServiceRequestUpdateStatus:{v4, var2}];
@@ -405,12 +405,12 @@ LABEL_27:
   }
 }
 
-- (void)_grSessionInvalidatedWithReason:(int)a3
+- (void)_grSessionInvalidatedWithReason:(int)reason
 {
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100342FC8(a3, v7);
+    sub_100342FC8(reason, v7);
     sub_1004ABFC4(v7);
   }
 
@@ -419,27 +419,27 @@ LABEL_27:
   [WeakRetained didInvalidateUWBSession];
 }
 
-- (shared_ptr<rose::objects::GRSession>)_buildRoseSession:(const void *)a3
+- (shared_ptr<rose::objects::GRSession>)_buildRoseSession:(const void *)session
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   dispatch_assert_queue_V2(self->_clientQueue);
-  v5 = self;
-  v6 = [WeakRetained getContainerUniqueIdentifier];
-  sub_100004A08(&__p, [v6 UTF8String]);
+  selfCopy = self;
+  getContainerUniqueIdentifier = [WeakRetained getContainerUniqueIdentifier];
+  sub_100004A08(&__p, [getContainerUniqueIdentifier UTF8String]);
 
-  v7 = [WeakRetained getResourcesManager];
-  if (v7)
+  getResourcesManager = [WeakRetained getResourcesManager];
+  if (getResourcesManager)
   {
-    [v7 protobufLogger];
+    [getResourcesManager protobufLogger];
   }
 
   operator new();
 }
 
-- (unint64_t)sipHashForIRK:(id)a3
+- (unint64_t)sipHashForIRK:(id)k
 {
-  v3 = a3;
-  [v3 bytes];
+  kCopy = k;
+  [kCopy bytes];
   v4 = SipHash();
 
   return v4;
@@ -449,14 +449,14 @@ LABEL_27:
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   dispatch_assert_queue_V2(self->_clientQueue);
-  v6 = [WeakRetained getNIConfiguration];
-  v7 = [v6 copy];
+  getNIConfiguration = [WeakRetained getNIConfiguration];
+  v7 = [getNIConfiguration copy];
 
-  v8 = [v7 debugParameters];
-  if (v8 && ([v7 debugParameters], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKey:", @"enableAdditionalUWBSignalFeatures"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v10))
+  debugParameters = [v7 debugParameters];
+  if (debugParameters && ([v7 debugParameters], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKey:", @"enableAdditionalUWBSignalFeatures"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, debugParameters, v10))
   {
-    v11 = [v7 debugParameters];
-    v12 = [v11 objectForKey:@"enableAdditionalUWBSignalFeatures"];
+    debugParameters2 = [v7 debugParameters];
+    v12 = [debugParameters2 objectForKey:@"enableAdditionalUWBSignalFeatures"];
 
     if (v12)
     {
@@ -485,11 +485,11 @@ LABEL_27:
   v14 = qword_1009F9820;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [WeakRetained getContainerUniqueIdentifier];
+    getContainerUniqueIdentifier = [WeakRetained getContainerUniqueIdentifier];
     buf[0] = 138412546;
     *&buf[1] = @"no";
     LOWORD(buf[3]) = 2112;
-    *(&buf[3] + 2) = v15;
+    *(&buf[3] + 2) = getContainerUniqueIdentifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#peer-gr,Prepare service request. avoidDedicatedAntennas = [%@], Container ID: %@. ", buf, 0x16u);
   }
 
@@ -542,27 +542,27 @@ LABEL_36:
     goto LABEL_48;
   }
 
-  v19 = [v7 debugParameters];
-  if (v19)
+  debugParameters3 = [v7 debugParameters];
+  if (debugParameters3)
   {
-    v20 = [v7 debugParameters];
-    v21 = [v20 objectForKey:@"forceAntennaDiversity"];
+    debugParameters4 = [v7 debugParameters];
+    v21 = [debugParameters4 objectForKey:@"forceAntennaDiversity"];
     v22 = v21 == 0;
 
     if (!v22)
     {
-      v23 = [v7 debugParameters];
-      v24 = [v23 objectForKey:@"forceAntennaDiversity"];
+      debugParameters5 = [v7 debugParameters];
+      v24 = [debugParameters5 objectForKey:@"forceAntennaDiversity"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v26 = [v7 debugParameters];
-        v27 = [v26 objectForKey:@"forceAntennaDiversity"];
-        v28 = [v27 BOOLValue];
+        debugParameters6 = [v7 debugParameters];
+        v27 = [debugParameters6 objectForKey:@"forceAntennaDiversity"];
+        bOOLValue = [v27 BOOLValue];
 
-        if (v28)
+        if (bOOLValue)
         {
           v29 = qword_1009F9820;
           if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -592,14 +592,14 @@ LABEL_36:
     v58 = 1;
   }
 
-  v31 = [WeakRetained getResourcesManager];
-  v32 = [v31 discoveryToken];
+  getResourcesManager = [WeakRetained getResourcesManager];
+  discoveryToken = [getResourcesManager discoveryToken];
 
-  if (v32)
+  if (discoveryToken)
   {
-    v33 = [v7 peerDiscoveryToken];
+    peerDiscoveryToken = [v7 peerDiscoveryToken];
     v43 = 0;
-    v34 = [WeakRetained shouldInitiate:v32 peerDiscoveryToken:v33 error:&v43];
+    v34 = [WeakRetained shouldInitiate:discoveryToken peerDiscoveryToken:peerDiscoveryToken error:&v43];
     v35 = v43;
 
     v36 = qword_1009F9820;
@@ -633,9 +633,9 @@ LABEL_36:
     {
       v40 = [v35 description];
       v41 = v40;
-      v42 = [v40 UTF8String];
+      uTF8String = [v40 UTF8String];
       buf[0] = 136315138;
-      *&buf[1] = v42;
+      *&buf[1] = uTF8String;
       _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "#peer-gr,unable to determine initiator: %s", buf, 0xCu);
     }
   }
@@ -662,15 +662,15 @@ LABEL_48:
   return result;
 }
 
-- (void)_triggerRanging:(id)a3
+- (void)_triggerRanging:(id)ranging
 {
-  v4 = a3;
+  rangingCopy = ranging;
   dispatch_assert_queue_V2(self->_clientQueue);
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained getResourcesManager];
+    getResourcesManager = [WeakRetained getResourcesManager];
     if (self->_grSession.__ptr_)
     {
 LABEL_11:
@@ -694,17 +694,17 @@ LABEL_11:
         }
       }
 
-      v15 = [v7 btResource];
-      [v15 startScanningWithBurstPeriod:v13];
+      btResource = [getResourcesManager btResource];
+      [btResource startScanningWithBurstPeriod:v13];
 
       if (sub_10033BEE8(self->_grSession.__ptr_))
       {
         dispatch_assert_queue_V2(self->_clientQueue);
         if ([v6 isLongRangeEnabled])
         {
-          v16 = [v4 btAdvertisingAddress];
-          v25 = v16;
-          v26 = WORD2(v16);
+          btAdvertisingAddress = [rangingCopy btAdvertisingAddress];
+          v25 = btAdvertisingAddress;
+          v26 = WORD2(btAdvertisingAddress);
           *buf = 2;
           buf[4] = 0;
           v23 = 0;
@@ -730,9 +730,9 @@ LABEL_11:
 
       else
       {
-        v18 = [v4 btAdvertisingAddress];
-        v25 = v18;
-        v26 = WORD2(v18);
+        btAdvertisingAddress2 = [rangingCopy btAdvertisingAddress];
+        v25 = btAdvertisingAddress2;
+        v26 = WORD2(btAdvertisingAddress2);
         *buf = 2;
         buf[4] = 0;
         v23 = 0;

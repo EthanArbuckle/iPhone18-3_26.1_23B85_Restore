@@ -1,5 +1,5 @@
 @interface PUInternalGIFExportActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)_asset;
 - (void)performActivity;
 @end
@@ -8,15 +8,15 @@
 
 - (void)performActivity
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 activityViewController];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  activityViewController = [itemSourceController activityViewController];
 
-  v5 = [(PXActivity *)self itemSourceController];
-  v6 = [v5 assetItemSources];
-  v7 = [v6 firstObject];
+  itemSourceController2 = [(PXActivity *)self itemSourceController];
+  assetItemSources = [itemSourceController2 assetItemSources];
+  firstObject = [assetItemSources firstObject];
 
-  v8 = [(PUInternalGIFExportActivity *)self activityType];
-  v9 = [v7 activityViewController:v4 itemForActivityType:v8];
+  activityType = [(PUInternalGIFExportActivity *)self activityType];
+  v9 = [firstObject activityViewController:activityViewController itemForActivityType:activityType];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -39,7 +39,7 @@
     v29[3] = __Block_byref_object_copy__36055;
     v29[4] = __Block_byref_object_dispose__36056;
     v30 = 0;
-    v17 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __46__PUInternalGIFExportActivity_performActivity__block_invoke;
@@ -52,8 +52,8 @@
     v23[3] = &unk_1E7B781C8;
     v25 = v29;
     v23[4] = self;
-    v24 = v4;
-    [v17 performChanges:v26 completionHandler:v23];
+    v24 = activityViewController;
+    [px_deprecated_appPhotoLibrary performChanges:v26 completionHandler:v23];
 
     _Block_object_dispose(v29, 8);
   }
@@ -71,7 +71,7 @@
     v21 = [v19 actionWithTitle:v20 style:0 handler:v22];
     [v18 addAction:v21];
 
-    [v4 presentViewController:v18 animated:1 completion:0];
+    [activityViewController presentViewController:v18 animated:1 completion:0];
   }
 }
 
@@ -143,53 +143,53 @@ void __46__PUInternalGIFExportActivity_performActivity__block_invoke_4(uint64_t 
   [v2 px_navigateToOneUpShowingAsset:*(a1 + 32) completionHandler:0];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   if (!PFOSVariantHasInternalUI())
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E69C3A18] sharedInstance];
-  if ([v4 showInternalGIFExport])
+  mEMORY[0x1E69C3A18] = [MEMORY[0x1E69C3A18] sharedInstance];
+  if ([mEMORY[0x1E69C3A18] showInternalGIFExport])
   {
-    v5 = [(PXActivity *)self itemSourceController];
-    if ([v5 isPreparingIndividualItems])
+    itemSourceController = [(PXActivity *)self itemSourceController];
+    if ([itemSourceController isPreparingIndividualItems])
     {
-      v6 = [(PUInternalGIFExportActivity *)self _asset];
-      v7 = [v6 canPlayLoopingVideo];
+      _asset = [(PUInternalGIFExportActivity *)self _asset];
+      canPlayLoopingVideo = [_asset canPlayLoopingVideo];
     }
 
     else
     {
-      v7 = 0;
+      canPlayLoopingVideo = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    canPlayLoopingVideo = 0;
   }
 
-  return v7;
+  return canPlayLoopingVideo;
 }
 
 - (id)_asset
 {
-  v2 = [(PXActivity *)self itemSourceController];
-  v3 = [v2 assets];
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  assets = [itemSourceController assets];
 
-  if ([v3 count] == 1)
+  if ([assets count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [assets firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 @end

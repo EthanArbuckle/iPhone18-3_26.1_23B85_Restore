@@ -9,14 +9,14 @@
 
 - (unint64_t)mt_verifyEventData
 {
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
     for (i = 0; i < result; ++i)
     {
-      v4 = [a1 objectAtIndexedSubscript:i];
-      v5 = [MEMORY[0x277CBEB68] null];
-      if (v4 == v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      v4 = [self objectAtIndexedSubscript:i];
+      null = [MEMORY[0x277CBEB68] null];
+      if (v4 == null || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
       }
 
@@ -32,7 +32,7 @@
         }
       }
 
-      result = [a1 count];
+      result = [self count];
     }
   }
 
@@ -43,13 +43,13 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -60,7 +60,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
@@ -71,12 +71,12 @@
 
         else
         {
-          v12 = [MEMORY[0x277CBEB68] null];
-          [v5 addObject:v12];
+          null = [MEMORY[0x277CBEB68] null];
+          [v5 addObject:null];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -90,7 +90,7 @@
 - (id)mt_deepCopy
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 count];
+  v2 = [self count];
   v3 = 8 * v2;
   v4 = v12 - ((8 * v2 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v4, 8 * v2);
@@ -98,12 +98,12 @@
   {
     for (i = 0; i != v2; ++i)
     {
-      v6 = [a1 objectAtIndexedSubscript:i];
+      v6 = [self objectAtIndexedSubscript:i];
       if (objc_opt_respondsToSelector())
       {
-        v7 = [v6 mt_deepCopy];
+        mt_deepCopy = [v6 mt_deepCopy];
 
-        v6 = v7;
+        v6 = mt_deepCopy;
       }
 
       v8 = *&v4[8 * i];
@@ -131,13 +131,13 @@
 - (id)mt_condensedArray
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -150,7 +150,7 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -194,7 +194,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);

@@ -1,14 +1,14 @@
 @interface _PBFSQLiteDeferredPreparedSimpleStatement
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5;
-- (id)initWithDatabaseConnection:(void *)a3 deferredSql:;
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
+- (id)initWithDatabaseConnection:(void *)connection deferredSql:;
 @end
 
 @implementation _PBFSQLiteDeferredPreparedSimpleStatement
 
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  bindingsCopy = bindings;
+  handlerCopy = handler;
   if (self->_deferredSql)
   {
     v17 = 0;
@@ -21,7 +21,7 @@
     {
       v12 = 21;
       *(v18 + 6) = 21;
-      if (!a5)
+      if (!error)
       {
 LABEL_8:
 
@@ -32,7 +32,7 @@ LABEL_12:
       }
 
 LABEL_7:
-      *a5 = [(_PBFSQLitePreparedSimpleStatement *)self _sqliteError:v12 SQLQuery:self->_deferredSql];
+      *error = [(_PBFSQLitePreparedSimpleStatement *)self _sqliteError:v12 SQLQuery:self->_deferredSql];
       goto LABEL_8;
     }
 
@@ -46,7 +46,7 @@ LABEL_7:
     v12 = *(v18 + 6);
     if (v12)
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -64,21 +64,21 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = _PBFSQLiteDeferredPreparedSimpleStatement;
-  v13 = [(_PBFSQLitePreparedSimpleStatement *)&v15 executeWithBindings:v8 resultRowHandler:v9 error:a5];
+  v13 = [(_PBFSQLitePreparedSimpleStatement *)&v15 executeWithBindings:bindingsCopy resultRowHandler:handlerCopy error:error];
 LABEL_13:
 
   return v13;
 }
 
-- (id)initWithDatabaseConnection:(void *)a3 deferredSql:
+- (id)initWithDatabaseConnection:(void *)connection deferredSql:
 {
-  v5 = a3;
-  if (a1)
+  connectionCopy = connection;
+  if (self)
   {
-    v6 = [(_PBFSQLitePreparedSimpleStatement *)a1 _initWithDatabaseConnection:a2 statement:0];
+    v6 = [(_PBFSQLitePreparedSimpleStatement *)self _initWithDatabaseConnection:a2 statement:0];
     if (v6)
     {
-      v7 = [v5 copy];
+      v7 = [connectionCopy copy];
       v8 = v6[4];
       v6[4] = v7;
     }

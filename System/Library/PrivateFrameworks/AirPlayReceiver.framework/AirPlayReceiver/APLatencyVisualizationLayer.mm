@@ -1,11 +1,11 @@
 @interface APLatencyVisualizationLayer
-- (id)init:(void *)a3 timeContext:(void *)a4 zPosition:(int)a5;
-- (void)drawInContext:(CGContext *)a3;
+- (id)init:(void *)init timeContext:(void *)context zPosition:(int)position;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation APLatencyVisualizationLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v5 = (self->_getAbsoluteTime)(self->_timeContext, a2);
   dotOffset = self->_dotOffset;
@@ -48,30 +48,30 @@
   }
 
   v27 = v8 + v26;
-  CGContextSetLineWidth(a3, 2.0);
-  CGContextSetRGBStrokeColor(a3, 1.0, 0.0, 0.0, 1.0);
-  CGContextSetRGBFillColor(a3, 1.0, 0.0, 0.0, 1.0);
+  CGContextSetLineWidth(context, 2.0);
+  CGContextSetRGBStrokeColor(context, 1.0, 0.0, 0.0, 1.0);
+  CGContextSetRGBFillColor(context, 1.0, 0.0, 0.0, 1.0);
   v33.origin.x = v19;
   v33.origin.y = v27;
   v33.size.width = v11;
   v33.size.height = v11;
-  CGContextStrokeEllipseInRect(a3, v33);
+  CGContextStrokeEllipseInRect(context, v33);
   v28 = v19;
   v29 = v27;
   v30 = v11;
   v31 = v11;
 
-  CGContextFillEllipseInRect(a3, *&v28);
+  CGContextFillEllipseInRect(context, *&v28);
 }
 
-- (id)init:(void *)a3 timeContext:(void *)a4 zPosition:(int)a5
+- (id)init:(void *)init timeContext:(void *)context zPosition:(int)position
 {
   if ([(APLatencyVisualizationLayer *)self init])
   {
-    [(APLatencyVisualizationLayer *)self setZPosition:a5];
+    [(APLatencyVisualizationLayer *)self setZPosition:position];
     [(APLatencyVisualizationLayer *)self setName:@"Latency Tracking Layer"];
-    self->_getAbsoluteTime = a3;
-    self->_timeContext = a4;
+    self->_getAbsoluteTime = init;
+    self->_timeContext = context;
     self->_dotOffset = 32.0;
     self->_dotDiameter = 10.0;
     self->_dotSpeed = 500.0;

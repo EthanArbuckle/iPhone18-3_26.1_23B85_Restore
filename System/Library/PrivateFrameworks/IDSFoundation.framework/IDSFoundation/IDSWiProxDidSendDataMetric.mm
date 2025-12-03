@@ -1,5 +1,5 @@
 @interface IDSWiProxDidSendDataMetric
-- (IDSWiProxDidSendDataMetric)initWithResultCode:(unint64_t)a3;
+- (IDSWiProxDidSendDataMetric)initWithResultCode:(unint64_t)code;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (IDSWiProxDidSendDataMetric)initWithResultCode:(unint64_t)a3
+- (IDSWiProxDidSendDataMetric)initWithResultCode:(unint64_t)code
 {
   v5.receiver = self;
   v5.super_class = IDSWiProxDidSendDataMetric;
   result = [(IDSWiProxDidSendDataMetric *)&v5 init];
   if (result)
   {
-    result->_resultCode = a3;
+    result->_resultCode = code;
   }
 
   return result;

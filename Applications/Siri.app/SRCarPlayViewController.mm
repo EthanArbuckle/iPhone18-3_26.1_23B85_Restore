@@ -1,21 +1,21 @@
 @interface SRCarPlayViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC4Siri23SRCarPlayViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Siri23SRCarPlayViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)clearSnippet;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SRCarPlayViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SRCarPlayViewController();
   v4 = v8.receiver;
-  [(SRCarPlayViewController *)&v8 viewDidAppear:v3];
+  [(SRCarPlayViewController *)&v8 viewDidAppear:appearCopy];
   v5 = &v4[OBJC_IVAR____TtC4Siri23SRCarPlayViewController_delegate];
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -29,7 +29,7 @@
 - (void)loadView
 {
   v2 = qword_10018D798;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
@@ -40,7 +40,7 @@
   v5 = static os_log_type_t.info.getter();
   sub_10000AABC(v5, 0x10uLL, 0x7765695664616F6CLL, 0xEA00000000002928, 0, 0);
   v6 = objc_allocWithZone(type metadata accessor for SRCarPlayView());
-  v8 = v3;
+  v8 = selfCopy;
   v7 = sub_10000AC9C(v8, v6);
   [(SRCarPlayViewController *)v8 setView:v7];
 }
@@ -53,16 +53,16 @@
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC4Siri23SRCarPlayViewController_currentSnippetViewController);
   if (v4)
   {
-    v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC4Siri23SRCarPlayViewController_currentSnippetViewController);
+    selfCopy = *(&self->super.super.super.isa + OBJC_IVAR____TtC4Siri23SRCarPlayViewController_currentSnippetViewController);
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     v4 = 0;
   }
 
-  *(v3 + 32) = v5;
+  *(v3 + 32) = selfCopy;
   v6 = v4;
   sub_100093B6C(&qword_10018E9A0);
   v7.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -70,14 +70,14 @@
   return v7.super.isa;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v12.receiver = self;
   v12.super_class = type metadata accessor for SRCarPlayViewController();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v12.receiver;
-  [(SRCarPlayViewController *)&v12 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  [(SRCarPlayViewController *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   v9 = &v8[OBJC_IVAR____TtC4Siri23SRCarPlayViewController_delegate];
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -88,7 +88,7 @@
   }
 }
 
-- (_TtC4Siri23SRCarPlayViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Siri23SRCarPlayViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -98,7 +98,7 @@
 - (void)clearSnippet
 {
   v2 = qword_10018D798;
-  v5 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();

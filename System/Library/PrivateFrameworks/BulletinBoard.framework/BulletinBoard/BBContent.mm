@@ -1,77 +1,77 @@
 @interface BBContent
-+ (BBContent)contentWithTitle:(id)a3 subtitle:(id)a4 message:(id)a5;
-+ (BBContent)contentWithTitle:(id)a3 subtitle:(id)a4 message:(id)a5 attributedMessage:(id)a6 summary:(id)a7;
-+ (BBContent)contentWithTitle:(id)a3 subtitle:(id)a4 message:(id)a5 summary:(id)a6;
-- (BBContent)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContent:(id)a3;
++ (BBContent)contentWithTitle:(id)title subtitle:(id)subtitle message:(id)message;
++ (BBContent)contentWithTitle:(id)title subtitle:(id)subtitle message:(id)message attributedMessage:(id)attributedMessage summary:(id)summary;
++ (BBContent)contentWithTitle:(id)title subtitle:(id)subtitle message:(id)message summary:(id)summary;
+- (BBContent)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContent:(id)content;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBContent
 
-+ (BBContent)contentWithTitle:(id)a3 subtitle:(id)a4 message:(id)a5 attributedMessage:(id)a6 summary:(id)a7
++ (BBContent)contentWithTitle:(id)title subtitle:(id)subtitle message:(id)message attributedMessage:(id)attributedMessage summary:(id)summary
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  summaryCopy = summary;
+  attributedMessageCopy = attributedMessage;
+  messageCopy = message;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v16 = objc_alloc_init(BBContent);
-  [(BBContent *)v16 setTitle:v15];
+  [(BBContent *)v16 setTitle:titleCopy];
 
-  [(BBContent *)v16 setSubtitle:v14];
-  [(BBContent *)v16 setMessage:v13];
+  [(BBContent *)v16 setSubtitle:subtitleCopy];
+  [(BBContent *)v16 setMessage:messageCopy];
 
-  [(BBContent *)v16 setAttributedMessage:v12];
-  [(BBContent *)v16 setSummary:v11];
+  [(BBContent *)v16 setAttributedMessage:attributedMessageCopy];
+  [(BBContent *)v16 setSummary:summaryCopy];
 
   return v16;
 }
 
-+ (BBContent)contentWithTitle:(id)a3 subtitle:(id)a4 message:(id)a5 summary:(id)a6
++ (BBContent)contentWithTitle:(id)title subtitle:(id)subtitle message:(id)message summary:(id)summary
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_opt_class() contentWithTitle:v12 subtitle:v11 message:v10 attributedMessage:0 summary:v9];
+  summaryCopy = summary;
+  messageCopy = message;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v13 = [objc_opt_class() contentWithTitle:titleCopy subtitle:subtitleCopy message:messageCopy attributedMessage:0 summary:summaryCopy];
 
   return v13;
 }
 
-+ (BBContent)contentWithTitle:(id)a3 subtitle:(id)a4 message:(id)a5
++ (BBContent)contentWithTitle:(id)title subtitle:(id)subtitle message:(id)message
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() contentWithTitle:v9 subtitle:v8 message:v7 attributedMessage:0 summary:0];
+  messageCopy = message;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v10 = [objc_opt_class() contentWithTitle:titleCopy subtitle:subtitleCopy message:messageCopy attributedMessage:0 summary:0];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(BBContent *)self title];
-  v4 = [v3 hash];
-  v5 = [(BBContent *)self subtitle];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(BBContent *)self message];
-  v8 = [v7 hash];
-  v9 = [(BBContent *)self attributedMessage];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(BBContent *)self summary];
-  v12 = [v11 hash];
+  title = [(BBContent *)self title];
+  v4 = [title hash];
+  subtitle = [(BBContent *)self subtitle];
+  v6 = [subtitle hash] ^ v4;
+  message = [(BBContent *)self message];
+  v8 = [message hash];
+  attributedMessage = [(BBContent *)self attributedMessage];
+  v10 = v6 ^ v8 ^ [attributedMessage hash];
+  summary = [(BBContent *)self summary];
+  v12 = [summary hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -79,43 +79,43 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(BBContent *)self isEqualToContent:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(BBContent *)self isEqualToContent:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToContent:(id)a3
+- (BOOL)isEqualToContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = BBLogBulletinLife;
   if (os_log_type_enabled(BBLogBulletinLife, OS_LOG_TYPE_DEBUG))
   {
-    [(BBContent *)v5 isEqualToContent:v4];
+    [(BBContent *)v5 isEqualToContent:contentCopy];
   }
 
-  v6 = [(BBContent *)self title];
-  v7 = [v4 title];
+  title = [(BBContent *)self title];
+  title2 = [contentCopy title];
   if (BSEqualObjects())
   {
-    v8 = [(BBContent *)self subtitle];
-    v9 = [v4 subtitle];
+    subtitle = [(BBContent *)self subtitle];
+    subtitle2 = [contentCopy subtitle];
     if (BSEqualObjects())
     {
-      v10 = [(BBContent *)self message];
-      v11 = [v4 message];
+      message = [(BBContent *)self message];
+      message2 = [contentCopy message];
       if (BSEqualObjects())
       {
-        v12 = [(BBContent *)self attributedMessage];
-        v13 = [v4 attributedMessage];
+        attributedMessage = [(BBContent *)self attributedMessage];
+        attributedMessage2 = [contentCopy attributedMessage];
         if (BSEqualObjects())
         {
-          v17 = [(BBContent *)self summary];
-          [v4 summary];
-          v14 = v18 = v12;
+          summary = [(BBContent *)self summary];
+          [contentCopy summary];
+          v14 = v18 = attributedMessage;
           v15 = BSEqualObjects();
 
-          v12 = v18;
+          attributedMessage = v18;
         }
 
         else
@@ -144,64 +144,64 @@
   return v15;
 }
 
-- (BBContent)initWithCoder:(id)a3
+- (BBContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = BBContent;
   v5 = [(BBContent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     [(BBContent *)v5 setTitle:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     [(BBContent *)v5 setSubtitle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     [(BBContent *)v5 setMessage:v8];
 
     v9 = MEMORY[0x277CCA898];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributedMessage"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributedMessage"];
     v11 = [v9 _bb_attributedStringWithRTFDData:v10];
     [(BBContent *)v5 setAttributedMessage:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summary"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summary"];
     [(BBContent *)v5 setSummary:v12];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BBContent *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(BBContent *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(BBContent *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(BBContent *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v7 = [(BBContent *)self message];
-  [v4 encodeObject:v7 forKey:@"message"];
+  message = [(BBContent *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 
-  v8 = [(BBContent *)self attributedMessage];
-  v9 = [v8 _bb_RTFDData];
-  [v4 encodeObject:v9 forKey:@"attributedMessage"];
+  attributedMessage = [(BBContent *)self attributedMessage];
+  _bb_RTFDData = [attributedMessage _bb_RTFDData];
+  [coderCopy encodeObject:_bb_RTFDData forKey:@"attributedMessage"];
 
-  v10 = [(BBContent *)self summary];
-  [v4 encodeObject:v10 forKey:@"summary"];
+  summary = [(BBContent *)self summary];
+  [coderCopy encodeObject:summary forKey:@"summary"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BBContent *)self title];
-  v5 = [(BBContent *)self subtitle];
-  v6 = [(BBContent *)self message];
-  v7 = [(BBContent *)self attributedMessage];
-  v8 = [(BBContent *)self summary];
-  v9 = [v3 stringWithFormat:@"{ title = '%@' : subtitle = '%@' : message = '%@' : attributedMessage = '%@', summary = '%@' }", v4, v5, v6, v7, v8];
+  title = [(BBContent *)self title];
+  subtitle = [(BBContent *)self subtitle];
+  message = [(BBContent *)self message];
+  attributedMessage = [(BBContent *)self attributedMessage];
+  summary = [(BBContent *)self summary];
+  v9 = [v3 stringWithFormat:@"{ title = '%@' : subtitle = '%@' : message = '%@' : attributedMessage = '%@', summary = '%@' }", title, subtitle, message, attributedMessage, summary];
 
   return v9;
 }

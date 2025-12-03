@@ -9,7 +9,7 @@
 
 - (void)connected
 {
-  v3 = [(RSDRemoteDevice *)self connection];
+  connection = [(RSDRemoteDevice *)self connection];
   v4 = xpc_remote_connection_copy_remote_endpoint();
   endpoint = self->_endpoint;
   self->_endpoint = v4;
@@ -22,23 +22,23 @@
       sub_1000437E8();
     }
 
-    v7 = [(RSDRemoteDevice *)self connection];
+    connection2 = [(RSDRemoteDevice *)self connection];
     xpc_remote_connection_cancel();
   }
 }
 
 - (unsigned)interface_index
 {
-  v2 = [(RSDRemoteNCMDevice *)self interface];
-  v3 = [v2 index];
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  index = [interface index];
 
-  return v3;
+  return index;
 }
 
 - (const)local_address
 {
-  v3 = [(RSDRemoteNCMDevice *)self interface];
-  if ([v3 is_private])
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  if ([interface is_private])
   {
     if ([(RSDRemoteDevice *)self type]== 9)
     {
@@ -46,17 +46,17 @@
 LABEL_10:
       if (!self->local_address_storage.__u6_addr32[0] && !self->local_address_storage.__u6_addr32[1] && !self->local_address_storage.__u6_addr32[2] && !self->local_address_storage.__u6_addr32[3])
       {
-        v8 = [(RSDRemoteNCMDevice *)self interface];
-        *self->local_address_storage.__u6_addr8 = sub_100031EDC([v8 mac_addr], 1);
+        interface2 = [(RSDRemoteNCMDevice *)self interface];
+        *self->local_address_storage.__u6_addr8 = sub_100031EDC([interface2 mac_addr], 1);
         *&self->local_address_storage.__u6_addr32[2] = v9;
       }
 
       return &self->local_address_storage;
     }
 
-    v7 = [(RSDRemoteDevice *)self type];
+    type = [(RSDRemoteDevice *)self type];
 
-    if (v7 == 12)
+    if (type == 12)
     {
       goto LABEL_10;
     }
@@ -66,8 +66,8 @@ LABEL_10:
   {
   }
 
-  v4 = [(RSDRemoteNCMDevice *)self interface];
-  v5 = sub_1000244F8([v4 name], self->local_address_storage.__u6_addr8, 1);
+  interface3 = [(RSDRemoteNCMDevice *)self interface];
+  v5 = sub_1000244F8([interface3 name], self->local_address_storage.__u6_addr8, 1);
 
   if (v5)
   {
@@ -85,8 +85,8 @@ LABEL_10:
 {
   if ([(RSDRemoteDevice *)self state]== 3)
   {
-    v3 = [(RSDRemoteNCMDevice *)self endpoint];
-    address = nw_endpoint_get_address(v3);
+    endpoint = [(RSDRemoteNCMDevice *)self endpoint];
+    address = nw_endpoint_get_address(endpoint);
 
     if (address)
     {
@@ -94,8 +94,8 @@ LABEL_10:
       return &self->remote_address_storage;
     }
 
-    v7 = sub_1000012E4();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    interface2 = sub_1000012E4();
+    if (os_log_type_enabled(interface2, OS_LOG_TYPE_ERROR))
     {
       sub_100043924();
     }
@@ -105,13 +105,13 @@ LABEL_14:
     return &self->remote_address_storage;
   }
 
-  v5 = [(RSDRemoteNCMDevice *)self interface];
-  v6 = [v5 is_private];
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  is_private = [interface is_private];
 
-  if (!v6)
+  if (!is_private)
   {
-    v7 = sub_1000012E4();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    interface2 = sub_1000012E4();
+    if (os_log_type_enabled(interface2, OS_LOG_TYPE_ERROR))
     {
       sub_1000438BC();
     }
@@ -121,8 +121,8 @@ LABEL_14:
 
   if (!self->remote_address_storage.__u6_addr32[0] && !self->remote_address_storage.__u6_addr32[1] && !self->remote_address_storage.__u6_addr32[2] && !self->remote_address_storage.__u6_addr32[3])
   {
-    v7 = [(RSDRemoteNCMDevice *)self interface];
-    *self->remote_address_storage.__u6_addr8 = sub_100031EDC([v7 mac_addr], 0);
+    interface2 = [(RSDRemoteNCMDevice *)self interface];
+    *self->remote_address_storage.__u6_addr8 = sub_100031EDC([interface2 mac_addr], 0);
     *&self->remote_address_storage.__u6_addr32[2] = v8;
     goto LABEL_14;
   }

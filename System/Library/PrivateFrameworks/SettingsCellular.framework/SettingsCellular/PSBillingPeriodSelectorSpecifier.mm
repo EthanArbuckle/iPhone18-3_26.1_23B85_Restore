@@ -1,43 +1,43 @@
 @interface PSBillingPeriodSelectorSpecifier
-- (PSBillingPeriodSelectorSpecifier)initWithStatisticsCache:(id)a3;
+- (PSBillingPeriodSelectorSpecifier)initWithStatisticsCache:(id)cache;
 - (PSBillingPeriodSelectorSpecifierDelegate)delegate;
-- (id)getBillingPeriod:(id)a3;
-- (void)refreshSelectorWithStatisticsCache:(id)a3;
-- (void)setBillingPeriod:(id)a3 specifier:(id)a4;
+- (id)getBillingPeriod:(id)period;
+- (void)refreshSelectorWithStatisticsCache:(id)cache;
+- (void)setBillingPeriod:(id)period specifier:(id)specifier;
 @end
 
 @implementation PSBillingPeriodSelectorSpecifier
 
-- (PSBillingPeriodSelectorSpecifier)initWithStatisticsCache:(id)a3
+- (PSBillingPeriodSelectorSpecifier)initWithStatisticsCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v8.receiver = self;
   v8.super_class = PSBillingPeriodSelectorSpecifier;
   v5 = [(PSBillingPeriodSelectorSpecifier *)&v8 initWithName:&stru_287730CE8 target:self set:sel_setBillingPeriod_specifier_ get:sel_getBillingPeriod_ detail:0 cell:9 edit:0];
   v6 = v5;
   if (v5)
   {
-    [(PSBillingPeriodSelectorSpecifier *)v5 refreshSelectorWithStatisticsCache:v4];
+    [(PSBillingPeriodSelectorSpecifier *)v5 refreshSelectorWithStatisticsCache:cacheCopy];
     [(PSBillingPeriodSelectorSpecifier *)v6 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40130]];
   }
 
   return v6;
 }
 
-- (void)refreshSelectorWithStatisticsCache:(id)a3
+- (void)refreshSelectorWithStatisticsCache:(id)cache
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 useCalendarMonthBillingCycle];
-  v6 = [(PSBillingPeriodSelectorSpecifier *)self getLogger];
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  cacheCopy = cache;
+  useCalendarMonthBillingCycle = [cacheCopy useCalendarMonthBillingCycle];
+  getLogger = [(PSBillingPeriodSelectorSpecifier *)self getLogger];
+  v7 = os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT);
+  if (useCalendarMonthBillingCycle)
   {
     if (v7)
     {
       *buf = 136315138;
       v27 = "[PSBillingPeriodSelectorSpecifier refreshSelectorWithStatisticsCache:]";
-      _os_log_impl(&dword_2658CA000, v6, OS_LOG_TYPE_DEFAULT, "%s using calendar month billing cycle", buf, 0xCu);
+      _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "%s using calendar month billing cycle", buf, 0xCu);
     }
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -53,7 +53,7 @@
     {
       *buf = 136315138;
       v27 = "[PSBillingPeriodSelectorSpecifier refreshSelectorWithStatisticsCache:]";
-      _os_log_impl(&dword_2658CA000, v6, OS_LOG_TYPE_DEFAULT, "%s using carrier-provided billing cycle", buf, 0xCu);
+      _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "%s using carrier-provided billing cycle", buf, 0xCu);
     }
 
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -68,21 +68,21 @@
   v11[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
 
-  v15 = [v4 previousBillingCycleEndDate];
+  previousBillingCycleEndDate = [cacheCopy previousBillingCycleEndDate];
 
-  if (v15)
+  if (previousBillingCycleEndDate)
   {
     v16 = &unk_2877326A8;
   }
 
   else
   {
-    v17 = [(PSBillingPeriodSelectorSpecifier *)self getLogger];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSBillingPeriodSelectorSpecifier *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v27 = "[PSBillingPeriodSelectorSpecifier refreshSelectorWithStatisticsCache:]";
-      _os_log_impl(&dword_2658CA000, v17, OS_LOG_TYPE_DEFAULT, "%s hiding previous period", buf, 0xCu);
+      _os_log_impl(&dword_2658CA000, getLogger2, OS_LOG_TYPE_DEFAULT, "%s hiding previous period", buf, 0xCu);
     }
 
     v18 = [v14 objectAtIndexedSubscript:0];
@@ -101,12 +101,12 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBillingPeriod:(id)a3 specifier:(id)a4
+- (void)setBillingPeriod:(id)period specifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(PSBillingPeriodSelectorSpecifier *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  periodCopy = period;
+  getLogger = [(PSBillingPeriodSelectorSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PSBillingPeriodSelectorSpecifier selectedPeriod](self, "selectedPeriod")}];
     v10 = 136315650;
@@ -114,23 +114,23 @@
     v12 = 2112;
     v13 = v7;
     v14 = 2112;
-    v15 = v5;
-    _os_log_impl(&dword_2658CA000, v6, OS_LOG_TYPE_DEFAULT, "%s setting from %@ to %@", &v10, 0x20u);
+    v15 = periodCopy;
+    _os_log_impl(&dword_2658CA000, getLogger, OS_LOG_TYPE_DEFAULT, "%s setting from %@ to %@", &v10, 0x20u);
   }
 
-  -[PSBillingPeriodSelectorSpecifier setSelectedPeriod:](self, "setSelectedPeriod:", [v5 unsignedIntegerValue]);
-  v8 = [(PSBillingPeriodSelectorSpecifier *)self delegate];
-  [v8 selectedBillingPeriodChanged:{-[PSBillingPeriodSelectorSpecifier selectedPeriod](self, "selectedPeriod")}];
+  -[PSBillingPeriodSelectorSpecifier setSelectedPeriod:](self, "setSelectedPeriod:", [periodCopy unsignedIntegerValue]);
+  delegate = [(PSBillingPeriodSelectorSpecifier *)self delegate];
+  [delegate selectedBillingPeriodChanged:{-[PSBillingPeriodSelectorSpecifier selectedPeriod](self, "selectedPeriod")}];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getBillingPeriod:(id)a3
+- (id)getBillingPeriod:(id)period
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PSBillingPeriodSelectorSpecifier *)self selectedPeriod];
+  selectedPeriod = [(PSBillingPeriodSelectorSpecifier *)self selectedPeriod];
 
-  return [v3 numberWithUnsignedInteger:v4];
+  return [v3 numberWithUnsignedInteger:selectedPeriod];
 }
 
 - (PSBillingPeriodSelectorSpecifierDelegate)delegate

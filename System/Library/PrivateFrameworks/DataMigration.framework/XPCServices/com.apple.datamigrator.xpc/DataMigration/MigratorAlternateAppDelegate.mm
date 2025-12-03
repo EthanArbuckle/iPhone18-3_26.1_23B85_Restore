@@ -1,6 +1,6 @@
 @interface MigratorAlternateAppDelegate
 - (MigratorAlternateAppDelegate)init;
-- (void)alternateSystemAppDidLaunch:(id)a3;
+- (void)alternateSystemAppDidLaunch:(id)launch;
 - (void)waitUntilPreboardDidFinishUnlock;
 @end
 
@@ -23,11 +23,11 @@
 
 - (void)waitUntilPreboardDidFinishUnlock
 {
-  v2 = [(MigratorAlternateAppDelegate *)self sema];
-  dispatch_semaphore_wait(v2, 0xFFFFFFFFFFFFFFFFLL);
+  sema = [(MigratorAlternateAppDelegate *)self sema];
+  dispatch_semaphore_wait(sema, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)alternateSystemAppDidLaunch:(id)a3
+- (void)alternateSystemAppDidLaunch:(id)launch
 {
   _DMLogFunc();
 

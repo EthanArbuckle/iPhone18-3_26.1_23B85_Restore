@@ -1,60 +1,60 @@
 @interface SIRINLUAsrHypothesis
-- (SIRINLUAsrHypothesis)initWithCoder:(id)a3;
-- (SIRINLUAsrHypothesis)initWithUtterance:(id)a3 probability:(double)a4 asrTokens:(id)a5 uuid:(id)a6;
-- (SIRINLUAsrHypothesis)initWithUtterance:(id)a3 probability:(double)a4 uuid:(id)a5;
+- (SIRINLUAsrHypothesis)initWithCoder:(id)coder;
+- (SIRINLUAsrHypothesis)initWithUtterance:(id)utterance probability:(double)probability asrTokens:(id)tokens uuid:(id)uuid;
+- (SIRINLUAsrHypothesis)initWithUtterance:(id)utterance probability:(double)probability uuid:(id)uuid;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SIRINLUAsrHypothesis
 
 - (id)description
 {
-  v3 = [(SIRINLUAsrHypothesis *)self asrTokens];
-  v4 = [SIRINLUPrintUtils indentArray:v3 numSpaces:4];
+  asrTokens = [(SIRINLUAsrHypothesis *)self asrTokens];
+  v4 = [SIRINLUPrintUtils indentArray:asrTokens numSpaces:4];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(SIRINLUAsrHypothesis *)self utterance];
+  utterance = [(SIRINLUAsrHypothesis *)self utterance];
   [(SIRINLUAsrHypothesis *)self probability];
   v8 = v7;
-  v9 = [(SIRINLUAsrHypothesis *)self uuid];
-  v10 = [v9 UUIDString];
-  v11 = [v5 stringWithFormat:@"{AsrHypothesis:\n  utterance: %@\n  probability: %f\n  asrTokens: %@\n  uuid: %@\n}", v6, v8, v4, v10];
+  uuid = [(SIRINLUAsrHypothesis *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v11 = [v5 stringWithFormat:@"{AsrHypothesis:\n  utterance: %@\n  probability: %f\n  asrTokens: %@\n  uuid: %@\n}", utterance, v8, v4, uUIDString];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   probability = self->_probability;
-  v6 = a3;
+  coderCopy = coder;
   v10 = [v4 numberWithDouble:probability];
-  v7 = [(SIRINLUAsrHypothesis *)self utterance];
-  [v6 encodeObject:v7 forKey:@"utterance"];
+  utterance = [(SIRINLUAsrHypothesis *)self utterance];
+  [coderCopy encodeObject:utterance forKey:@"utterance"];
 
-  [v6 encodeObject:v10 forKey:@"probability"];
-  v8 = [(SIRINLUAsrHypothesis *)self uuid];
-  [v6 encodeObject:v8 forKey:@"uuid"];
+  [coderCopy encodeObject:v10 forKey:@"probability"];
+  uuid = [(SIRINLUAsrHypothesis *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v9 = [(SIRINLUAsrHypothesis *)self asrTokens];
-  [v6 encodeObject:v9 forKey:@"asrTokens"];
+  asrTokens = [(SIRINLUAsrHypothesis *)self asrTokens];
+  [coderCopy encodeObject:asrTokens forKey:@"asrTokens"];
 }
 
-- (SIRINLUAsrHypothesis)initWithCoder:(id)a3
+- (SIRINLUAsrHypothesis)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = SIRINLUAsrHypothesis;
   v5 = [(SIRINLUAsrHypothesis *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"utterance"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"utterance"];
     utterance = v5->_utterance;
     v5->_utterance = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"probability"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"probability"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v9;
 
@@ -63,7 +63,7 @@
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"asrTokens"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"asrTokens"];
     asrTokens = v5->_asrTokens;
     v5->_asrTokens = v15;
   }
@@ -71,39 +71,39 @@
   return v5;
 }
 
-- (SIRINLUAsrHypothesis)initWithUtterance:(id)a3 probability:(double)a4 asrTokens:(id)a5 uuid:(id)a6
+- (SIRINLUAsrHypothesis)initWithUtterance:(id)utterance probability:(double)probability asrTokens:(id)tokens uuid:(id)uuid
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  utteranceCopy = utterance;
+  tokensCopy = tokens;
+  uuidCopy = uuid;
   v17.receiver = self;
   v17.super_class = SIRINLUAsrHypothesis;
   v14 = [(SIRINLUAsrHypothesis *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_utterance, a3);
-    v15->_probability = a4;
-    objc_storeStrong(&v15->_uuid, a6);
-    objc_storeStrong(&v15->_asrTokens, a5);
+    objc_storeStrong(&v14->_utterance, utterance);
+    v15->_probability = probability;
+    objc_storeStrong(&v15->_uuid, uuid);
+    objc_storeStrong(&v15->_asrTokens, tokens);
   }
 
   return v15;
 }
 
-- (SIRINLUAsrHypothesis)initWithUtterance:(id)a3 probability:(double)a4 uuid:(id)a5
+- (SIRINLUAsrHypothesis)initWithUtterance:(id)utterance probability:(double)probability uuid:(id)uuid
 {
-  v9 = a3;
-  v10 = a5;
+  utteranceCopy = utterance;
+  uuidCopy = uuid;
   v15.receiver = self;
   v15.super_class = SIRINLUAsrHypothesis;
   v11 = [(SIRINLUAsrHypothesis *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_utterance, a3);
-    v12->_probability = a4;
-    objc_storeStrong(&v12->_uuid, a5);
+    objc_storeStrong(&v11->_utterance, utterance);
+    v12->_probability = probability;
+    objc_storeStrong(&v12->_uuid, uuid);
     asrTokens = v12->_asrTokens;
     v12->_asrTokens = MEMORY[0x1E695E0F0];
   }

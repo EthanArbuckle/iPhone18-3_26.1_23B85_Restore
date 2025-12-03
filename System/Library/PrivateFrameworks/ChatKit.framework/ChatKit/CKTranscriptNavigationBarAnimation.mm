@@ -1,9 +1,9 @@
 @interface CKTranscriptNavigationBarAnimation
 + (_TtC7ChatKit34CKTranscriptNavigationBarAnimation)unanimated;
-+ (id)linearAnimationWithDuration:(double)a3;
++ (id)linearAnimationWithDuration:(double)duration;
 - (_TtC7ChatKit34CKTranscriptNavigationBarAnimation)init;
 - (double)duration;
-- (void)perform:(id)a3;
+- (void)perform:(id)perform;
 @end
 
 @implementation CKTranscriptNavigationBarAnimation
@@ -31,12 +31,12 @@
   return v3;
 }
 
-+ (id)linearAnimationWithDuration:(double)a3
++ (id)linearAnimationWithDuration:(double)duration
 {
   v4 = type metadata accessor for CKTranscriptNavigationBarAnimation();
   v5 = objc_allocWithZone(v4);
   v6 = &v5[OBJC_IVAR____TtC7ChatKit34CKTranscriptNavigationBarAnimation_animation];
-  *v6 = a3;
+  *v6 = duration;
   *(v6 + 8) = 0;
   v9.receiver = v5;
   v9.super_class = v4;
@@ -45,9 +45,9 @@
   return v7;
 }
 
-- (void)perform:(id)a3
+- (void)perform:(id)perform
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(perform);
   *(swift_allocObject() + 16) = v4;
   if (self->animation[OBJC_IVAR____TtC7ChatKit34CKTranscriptNavigationBarAnimation_animation])
   {
@@ -59,7 +59,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     v6 = sub_190D56570();
     MEMORY[0x1EEE9AC00](v6);
     sub_190D53E40();

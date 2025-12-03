@@ -1,19 +1,19 @@
 @interface FIUIChartBackgroundView
-- (FIUIChartBackgroundView)initWithFrame:(CGRect)a3;
+- (FIUIChartBackgroundView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)lineInsets;
 @end
 
 @implementation FIUIChartBackgroundView
 
-- (FIUIChartBackgroundView)initWithFrame:(CGRect)a3
+- (FIUIChartBackgroundView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = FIUIChartBackgroundView;
-  v3 = [(FIUIChartBackgroundView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FIUIChartBackgroundView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(FIUIChartBackgroundView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(FIUIChartBackgroundView *)v3 setBackgroundColor:clearColor];
 
     [(FIUIChartBackgroundView *)v3 setOpaque:0];
   }

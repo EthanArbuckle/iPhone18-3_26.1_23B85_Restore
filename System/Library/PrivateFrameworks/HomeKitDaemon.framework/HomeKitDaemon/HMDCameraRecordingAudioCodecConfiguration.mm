@@ -1,37 +1,37 @@
 @interface HMDCameraRecordingAudioCodecConfiguration
 - (BOOL)_parseFromTLVData;
-- (HMDCameraRecordingAudioCodecConfiguration)initWithAudioCodec:(id)a3 codecParameters:(id)a4;
-- (HMDCameraRecordingAudioCodecConfiguration)initWithCoder:(id)a3;
+- (HMDCameraRecordingAudioCodecConfiguration)initWithAudioCodec:(id)codec codecParameters:(id)parameters;
+- (HMDCameraRecordingAudioCodecConfiguration)initWithCoder:(id)coder;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraRecordingAudioCodecConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingAudioCodecConfiguration *)self codec];
-  [v4 encodeObject:v5 forKey:@"kAudioCodecConfigurationCodec"];
+  coderCopy = coder;
+  codec = [(HMDCameraRecordingAudioCodecConfiguration *)self codec];
+  [coderCopy encodeObject:codec forKey:@"kAudioCodecConfigurationCodec"];
 
-  v6 = [(HMDCameraRecordingAudioCodecConfiguration *)self parameters];
-  [v4 encodeObject:v6 forKey:@"kAudioCodecConfigurationCodecParameters"];
+  parameters = [(HMDCameraRecordingAudioCodecConfiguration *)self parameters];
+  [coderCopy encodeObject:parameters forKey:@"kAudioCodecConfigurationCodecParameters"];
 }
 
-- (HMDCameraRecordingAudioCodecConfiguration)initWithCoder:(id)a3
+- (HMDCameraRecordingAudioCodecConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HMDCameraRecordingAudioCodecConfiguration;
   v5 = [(HMDCameraRecordingAudioCodecConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecConfigurationCodec"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecConfigurationCodec"];
     codec = v5->_codec;
     v5->_codec = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecConfigurationCodecParameters"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecConfigurationCodecParameters"];
     parameters = v5->_parameters;
     v5->_parameters = v8;
   }
@@ -39,37 +39,37 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n%@tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n%@tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDCameraRecordingAudioCodecConfiguration *)self codec];
-  v10 = [v9 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n%@codec = %@ ", v6, v10];
+  codec = [(HMDCameraRecordingAudioCodecConfiguration *)self codec];
+  v10 = [codec descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n%@codec = %@ ", indentCopy, v10];
 
-  v12 = [(HMDCameraRecordingAudioCodecConfiguration *)self parameters];
-  v11 = [v12 descriptionWithIndent:v6];
-  [v7 appendFormat:@"\n%@parameters = %@", v6, v11];
+  parameters = [(HMDCameraRecordingAudioCodecConfiguration *)self parameters];
+  v11 = [parameters descriptionWithIndent:indentCopy];
+  [descriptionCopy appendFormat:@"\n%@parameters = %@", indentCopy, v11];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
+  creator = [MEMORY[0x277CFEC80] creator];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(HMDCameraRecordingAudioCodecConfiguration *)self codec];
-  v6 = [v4 numberWithInteger:{objc_msgSend(v5, "type")}];
-  [v3 addTLV:1 length:1 number:v6];
+  codec = [(HMDCameraRecordingAudioCodecConfiguration *)self codec];
+  v6 = [v4 numberWithInteger:{objc_msgSend(codec, "type")}];
+  [creator addTLV:1 length:1 number:v6];
 
-  v7 = [(HMDCameraRecordingAudioCodecConfiguration *)self parameters];
-  v8 = [v7 tlvData];
+  parameters = [(HMDCameraRecordingAudioCodecConfiguration *)self parameters];
+  tlvData = [parameters tlvData];
 
-  [v3 addTLV:2 data:v8];
-  v9 = [v3 serialize];
+  [creator addTLV:2 data:tlvData];
+  serialize = [creator serialize];
 
-  return v9;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -84,14 +84,14 @@
   if (v6)
   {
     v7 = [HMDCameraRecordingAudioCodec alloc];
-    v8 = [v3 field];
-    v9 = -[HMDCameraRecordingAudioCodec initWithCodec:](v7, "initWithCodec:", [v8 integerValue]);
+    field = [v3 field];
+    v9 = -[HMDCameraRecordingAudioCodec initWithCodec:](v7, "initWithCodec:", [field integerValue]);
     codec = self->_codec;
     self->_codec = v9;
 
     v11 = [HMDCameraRecordingAudioCodecParameters alloc];
-    v12 = [v4 field];
-    v13 = [(HAPTLVBase *)v11 initWithTLVData:v12];
+    field2 = [v4 field];
+    v13 = [(HAPTLVBase *)v11 initWithTLVData:field2];
     parameters = self->_parameters;
     self->_parameters = v13;
   }
@@ -100,18 +100,18 @@
   return v6;
 }
 
-- (HMDCameraRecordingAudioCodecConfiguration)initWithAudioCodec:(id)a3 codecParameters:(id)a4
+- (HMDCameraRecordingAudioCodecConfiguration)initWithAudioCodec:(id)codec codecParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  codecCopy = codec;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = HMDCameraRecordingAudioCodecConfiguration;
   v9 = [(HMDCameraRecordingAudioCodecConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_codec, a3);
-    objc_storeStrong(&v10->_parameters, a4);
+    objc_storeStrong(&v9->_codec, codec);
+    objc_storeStrong(&v10->_parameters, parameters);
   }
 
   return v10;

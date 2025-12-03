@@ -1,23 +1,23 @@
 @interface JavaTextNumberFormat
 + (id)getCurrencyInstance;
 + (id)getInstance;
-+ (id)getInstanceWithNSString:(id)a3 withJavaUtilLocale:(id)a4;
++ (id)getInstanceWithNSString:(id)string withJavaUtilLocale:(id)locale;
 + (id)getIntegerInstance;
 + (id)getNumberInstance;
 + (id)getPercentInstance;
-- (BOOL)isEqual:(id)a3;
-- (JavaTextNumberFormat)formatWithDouble:(double)a3;
-- (JavaTextNumberFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5;
-- (JavaTextNumberFormat)formatWithLong:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (JavaTextNumberFormat)formatWithDouble:(double)double;
+- (JavaTextNumberFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position;
+- (JavaTextNumberFormat)formatWithLong:(int64_t)long;
 - (JavaTextNumberFormat)init;
 - (id)clone;
-- (id)parseObjectWithNSString:(id)a3 withJavaTextParsePosition:(id)a4;
-- (id)parseWithNSString:(id)a3;
+- (id)parseObjectWithNSString:(id)string withJavaTextParsePosition:(id)position;
+- (id)parseWithNSString:(id)string;
 - (unint64_t)hash;
-- (void)setMaximumFractionDigitsWithInt:(int)a3;
-- (void)setMaximumIntegerDigitsWithInt:(int)a3;
-- (void)setMinimumFractionDigitsWithInt:(int)a3;
-- (void)setMinimumIntegerDigitsWithInt:(int)a3;
+- (void)setMaximumFractionDigitsWithInt:(int)int;
+- (void)setMaximumIntegerDigitsWithInt:(int)int;
+- (void)setMinimumFractionDigitsWithInt:(int)int;
+- (void)setMinimumIntegerDigitsWithInt:(int)int;
 @end
 
 @implementation JavaTextNumberFormat
@@ -41,9 +41,9 @@
   return [(JavaTextFormat *)&v3 clone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -55,7 +55,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     JreThrowNullPointerException();
   }
@@ -65,13 +65,13 @@
     JreThrowClassCastException();
   }
 
-  return self->groupingUsed_ == *(a3 + 8) && self->parseIntegerOnly_ == *(a3 + 9) && self->maximumFractionDigits_ == *(a3 + 5) && self->maximumIntegerDigits_ == *(a3 + 3) && self->minimumFractionDigits_ == *(a3 + 6) && self->minimumIntegerDigits_ == *(a3 + 4);
+  return self->groupingUsed_ == *(equal + 8) && self->parseIntegerOnly_ == *(equal + 9) && self->maximumFractionDigits_ == *(equal + 5) && self->maximumIntegerDigits_ == *(equal + 3) && self->minimumFractionDigits_ == *(equal + 6) && self->minimumIntegerDigits_ == *(equal + 4);
 }
 
-- (JavaTextNumberFormat)formatWithDouble:(double)a3
+- (JavaTextNumberFormat)formatWithDouble:(double)double
 {
   v5 = new_JavaLangStringBuffer_init();
-  v6 = [(JavaTextNumberFormat *)self formatWithDouble:v5 withJavaLangStringBuffer:new_JavaTextFieldPosition_initWithInt_(0) withJavaTextFieldPosition:a3];
+  v6 = [(JavaTextNumberFormat *)self formatWithDouble:v5 withJavaLangStringBuffer:new_JavaTextFieldPosition_initWithInt_(0) withJavaTextFieldPosition:double];
   if (!v6)
   {
     JreThrowNullPointerException();
@@ -80,10 +80,10 @@
   return [(JavaTextNumberFormat *)v6 description];
 }
 
-- (JavaTextNumberFormat)formatWithLong:(int64_t)a3
+- (JavaTextNumberFormat)formatWithLong:(int64_t)long
 {
   v5 = new_JavaLangStringBuffer_init();
-  v6 = [(JavaTextNumberFormat *)self formatWithLong:a3 withJavaLangStringBuffer:v5 withJavaTextFieldPosition:new_JavaTextFieldPosition_initWithInt_(0)];
+  v6 = [(JavaTextNumberFormat *)self formatWithLong:long withJavaLangStringBuffer:v5 withJavaTextFieldPosition:new_JavaTextFieldPosition_initWithInt_(0)];
   if (!v6)
   {
     JreThrowNullPointerException();
@@ -92,13 +92,13 @@
   return [(JavaTextNumberFormat *)v6 description];
 }
 
-- (JavaTextNumberFormat)formatWithId:(id)a3 withJavaLangStringBuffer:(id)a4 withJavaTextFieldPosition:(id)a5
+- (JavaTextNumberFormat)formatWithId:(id)id withJavaLangStringBuffer:(id)buffer withJavaTextFieldPosition:(id)position
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     objc_opt_class();
-    if (a3)
+    if (id)
     {
       goto LABEL_6;
     }
@@ -111,7 +111,7 @@ LABEL_24:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if (!a3)
+    if (!id)
     {
       goto LABEL_24;
     }
@@ -121,15 +121,15 @@ LABEL_24:
       goto LABEL_21;
     }
 
-    if ([a3 bitLength] <= 63)
+    if ([id bitLength] <= 63)
     {
       objc_opt_class();
 LABEL_6:
       if (objc_opt_isKindOfClass())
       {
-        v9 = [a3 longLongValue];
+        longLongValue = [id longLongValue];
 
-        return [(JavaTextNumberFormat *)self formatWithLong:v9 withJavaLangStringBuffer:a4 withJavaTextFieldPosition:a5];
+        return [(JavaTextNumberFormat *)self formatWithLong:longLongValue withJavaLangStringBuffer:buffer withJavaTextFieldPosition:position];
       }
 
 LABEL_21:
@@ -140,9 +140,9 @@ LABEL_21:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a3)
+    if (id)
     {
-      [a3 getClass];
+      [id getClass];
       v18 = JreStrcat("$@", v11, v12, v13, v14, v15, v16, v17, @"Bad class: ");
       v19 = new_JavaLangIllegalArgumentException_initWithNSString_(v18);
       objc_exception_throw(v19);
@@ -152,7 +152,7 @@ LABEL_21:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     goto LABEL_24;
   }
@@ -162,9 +162,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  [a3 doubleValue];
+  [id doubleValue];
 
-  return [(JavaTextNumberFormat *)self formatWithDouble:a4 withJavaLangStringBuffer:a5 withJavaTextFieldPosition:?];
+  return [(JavaTextNumberFormat *)self formatWithDouble:buffer withJavaLangStringBuffer:position withJavaTextFieldPosition:?];
 }
 
 + (id)getCurrencyInstance
@@ -188,9 +188,9 @@ LABEL_21:
   return JavaTextNumberFormat_getNumberInstanceWithJavaUtilLocale_(Default);
 }
 
-+ (id)getInstanceWithNSString:(id)a3 withJavaUtilLocale:(id)a4
++ (id)getInstanceWithNSString:(id)string withJavaUtilLocale:(id)locale
 {
-  v4 = new_JavaTextDecimalFormat_initWithNSString_withJavaUtilLocale_(a3, a4);
+  v4 = new_JavaTextDecimalFormat_initWithNSString_withJavaUtilLocale_(string, locale);
 
   return v4;
 }
@@ -234,10 +234,10 @@ LABEL_21:
   return v3 + v2 + self->maximumFractionDigits_ + self->maximumIntegerDigits_ + self->minimumFractionDigits_ + self->minimumIntegerDigits_;
 }
 
-- (id)parseWithNSString:(id)a3
+- (id)parseWithNSString:(id)string
 {
   v5 = new_JavaTextParsePosition_initWithInt_(0);
-  v6 = [(JavaTextNumberFormat *)self parseWithNSString:a3 withJavaTextParsePosition:v5];
+  v6 = [(JavaTextNumberFormat *)self parseWithNSString:string withJavaTextParsePosition:v5];
   if (![(JavaTextParsePosition *)v5 getIndex])
   {
     v15 = JreStrcat("$$C", v7, v8, v9, v10, v11, v12, v13, @"Unparseable number: ");
@@ -248,20 +248,20 @@ LABEL_21:
   return v6;
 }
 
-- (id)parseObjectWithNSString:(id)a3 withJavaTextParsePosition:(id)a4
+- (id)parseObjectWithNSString:(id)string withJavaTextParsePosition:(id)position
 {
-  if (!a4)
+  if (!position)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"position == null");
     objc_exception_throw(v5);
   }
 
-  return [(JavaTextNumberFormat *)self parseWithNSString:a3 withJavaTextParsePosition:?];
+  return [(JavaTextNumberFormat *)self parseWithNSString:string withJavaTextParsePosition:?];
 }
 
-- (void)setMaximumFractionDigitsWithInt:(int)a3
+- (void)setMaximumFractionDigitsWithInt:(int)int
 {
-  v3 = a3 & ~(a3 >> 31);
+  v3 = int & ~(int >> 31);
   self->maximumFractionDigits_ = v3;
   if (v3 < self->minimumFractionDigits_)
   {
@@ -269,9 +269,9 @@ LABEL_21:
   }
 }
 
-- (void)setMaximumIntegerDigitsWithInt:(int)a3
+- (void)setMaximumIntegerDigitsWithInt:(int)int
 {
-  v3 = a3 & ~(a3 >> 31);
+  v3 = int & ~(int >> 31);
   self->maximumIntegerDigits_ = v3;
   if (v3 < self->minimumIntegerDigits_)
   {
@@ -279,9 +279,9 @@ LABEL_21:
   }
 }
 
-- (void)setMinimumFractionDigitsWithInt:(int)a3
+- (void)setMinimumFractionDigitsWithInt:(int)int
 {
-  v3 = a3 & ~(a3 >> 31);
+  v3 = int & ~(int >> 31);
   self->minimumFractionDigits_ = v3;
   if (self->maximumFractionDigits_ < v3)
   {
@@ -289,9 +289,9 @@ LABEL_21:
   }
 }
 
-- (void)setMinimumIntegerDigitsWithInt:(int)a3
+- (void)setMinimumIntegerDigitsWithInt:(int)int
 {
-  v3 = a3 & ~(a3 >> 31);
+  v3 = int & ~(int >> 31);
   self->minimumIntegerDigits_ = v3;
   if (self->maximumIntegerDigits_ < v3)
   {

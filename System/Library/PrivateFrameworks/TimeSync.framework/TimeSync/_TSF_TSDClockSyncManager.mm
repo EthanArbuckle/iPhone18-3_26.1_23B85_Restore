@@ -1,7 +1,7 @@
 @interface _TSF_TSDClockSyncManager
 + (id)sharedClockSyncManager;
 - (_TSF_TSDClockSyncManager)init;
-- (void)releaseClockSyncForClockIdentifier:(unint64_t)a3;
+- (void)releaseClockSyncForClockIdentifier:(unint64_t)identifier;
 @end
 
 @implementation _TSF_TSDClockSyncManager
@@ -25,9 +25,9 @@
   v2 = [(_TSF_TSDClockSyncManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     clockSyncs = v2->_clockSyncs;
-    v2->_clockSyncs = v3;
+    v2->_clockSyncs = dictionary;
 
     v2->_clockSyncsLock._os_unfair_lock_opaque = 0;
   }
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)releaseClockSyncForClockIdentifier:(unint64_t)a3
+- (void)releaseClockSyncForClockIdentifier:(unint64_t)identifier
 {
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   os_unfair_lock_lock(&self->_clockSyncsLock);
   v4 = [(NSMutableDictionary *)self->_clockSyncs objectForKeyedSubscript:v6];
   v5 = v4;

@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$10
-- (id)lookupOrdWithLong:(int64_t)a3;
+- (id)lookupOrdWithLong:(int64_t)long;
 - (id)termsEnum;
-- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (int64_t)nextOrd;
-- (int64_t)ordAtWithInt:(int)a3;
+- (int64_t)ordAtWithInt:(int)int;
 - (void)dealloc;
-- (void)setDocumentWithInt:(int)a3;
+- (void)setDocumentWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_$10
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (void)setDocumentWithInt:(int)a3
+- (void)setDocumentWithInt:(int)int
 {
   v4 = self->val$ordIndex_;
   if (!v4)
@@ -39,10 +39,10 @@
   v6 = [(OrgApacheLuceneUtilLongValues *)v4 getWithInt:?];
   self->offset_ = v6;
   self->startOffset_ = v6;
-  self->endOffset_ = [(OrgApacheLuceneUtilPackedMonotonicBlockPackedReader *)self->val$ordIndex_ getWithLong:a3 + 1];
+  self->endOffset_ = [(OrgApacheLuceneUtilPackedMonotonicBlockPackedReader *)self->val$ordIndex_ getWithLong:int + 1];
 }
 
-- (id)lookupOrdWithLong:(int64_t)a3
+- (id)lookupOrdWithLong:(int64_t)long
 {
   v4 = self->val$binary_;
   if (!v4)
@@ -50,10 +50,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v4 getWithLong:a3];
+  return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v4 getWithLong:long];
 }
 
-- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v5 = self->val$binary_;
   objc_opt_class();
@@ -71,14 +71,14 @@
       JreThrowClassCastException();
     }
 
-    return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v6 lookupTermWithOrgApacheLuceneUtilBytesRef:a3];
+    return [(OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer_LongBinaryDocValues *)v6 lookupTermWithOrgApacheLuceneUtilBytesRef:ref];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = OrgApacheLuceneCodecsLucene50Lucene50DocValuesProducer__10;
-    return [(OrgApacheLuceneIndexSortedSetDocValues *)&v8 lookupTermWithOrgApacheLuceneUtilBytesRef:a3];
+    return [(OrgApacheLuceneIndexSortedSetDocValues *)&v8 lookupTermWithOrgApacheLuceneUtilBytesRef:ref];
   }
 }
 
@@ -111,14 +111,14 @@
   }
 }
 
-- (int64_t)ordAtWithInt:(int)a3
+- (int64_t)ordAtWithInt:(int)int
 {
   if (!self->val$ordinals_)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = self->startOffset_ + a3;
+  v4 = self->startOffset_ + int;
   v5 = self->val$ordinals_;
 
   return [(OrgApacheLuceneUtilLongValues *)v5 getWithLong:v4];

@@ -1,11 +1,11 @@
 @interface ASKRebootstrapCoordinator
 + (ASKRebootstrapCoordinator)sharedCoordinator;
 - (ASKRebootstrapCoordinator)init;
-- (id)registerCleanupHandler:(id)a3;
+- (id)registerCleanupHandler:(id)handler;
 - (void)beginDelayingNotifications;
 - (void)endDelayingNotifications;
 - (void)notify;
-- (void)removeCleanupHandler:(id)a3;
+- (void)removeCleanupHandler:(id)handler;
 - (void)scheduleNotification;
 @end
 
@@ -90,11 +90,11 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
       v3 = +[AMSLogConfig sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       *v6 = 0;
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEBUG, "Deferring storefront change notification", v6, 2u);
+      _os_log_impl(&dword_0, oSLogObject, OS_LOG_TYPE_DEBUG, "Deferring storefront change notification", v6, 2u);
     }
 
     [(ASKRebootstrapCoordinator *)self setHasPendingNotification:1];
@@ -114,8 +114,8 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(ASKRebootstrapCoordinator *)self handlerTokens];
-  v4 = [v3 copy];
+  handlerTokens = [(ASKRebootstrapCoordinator *)self handlerTokens];
+  v4 = [handlerTokens copy];
 
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
@@ -132,8 +132,8 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) handler];
-        v9[2]();
+        handler = [*(*(&v12 + 1) + 8 * v8) handler];
+        handler[2]();
 
         v8 = v8 + 1;
       }
@@ -145,12 +145,12 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
     while (v6);
   }
 
-  v10 = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
+  appBootstrapHandler = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
 
-  if (v10)
+  if (appBootstrapHandler)
   {
-    v11 = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
-    v11[2]();
+    appBootstrapHandler2 = [(ASKRebootstrapCoordinator *)self appBootstrapHandler];
+    appBootstrapHandler2[2]();
   }
 }
 
@@ -176,11 +176,11 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
           v3 = +[AMSLogConfig sharedConfig];
         }
 
-        v4 = [v3 OSLogObject];
-        if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+        oSLogObject = [v3 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
         {
           *v5 = 0;
-          _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEBUG, "Flushing deferred storefront change notification", v5, 2u);
+          _os_log_impl(&dword_0, oSLogObject, OS_LOG_TYPE_DEBUG, "Flushing deferred storefront change notification", v5, 2u);
         }
 
         [(ASKRebootstrapCoordinator *)self performSelector:"notify" withObject:0 afterDelay:0.0];
@@ -190,22 +190,22 @@ void __33__ASKRebootstrapCoordinator_init__block_invoke(uint64_t a1)
   }
 }
 
-- (id)registerCleanupHandler:(id)a3
+- (id)registerCleanupHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[ASKStorefrontChangeHandlerToken alloc] initWithHandler:v4];
+  handlerCopy = handler;
+  v5 = [[ASKStorefrontChangeHandlerToken alloc] initWithHandler:handlerCopy];
 
-  v6 = [(ASKRebootstrapCoordinator *)self handlerTokens];
-  [v6 addObject:v5];
+  handlerTokens = [(ASKRebootstrapCoordinator *)self handlerTokens];
+  [handlerTokens addObject:v5];
 
   return v5;
 }
 
-- (void)removeCleanupHandler:(id)a3
+- (void)removeCleanupHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ASKRebootstrapCoordinator *)self handlerTokens];
-  [v5 removeObject:v4];
+  handlerCopy = handler;
+  handlerTokens = [(ASKRebootstrapCoordinator *)self handlerTokens];
+  [handlerTokens removeObject:handlerCopy];
 }
 
 @end

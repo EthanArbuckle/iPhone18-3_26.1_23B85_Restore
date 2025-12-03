@@ -1,13 +1,13 @@
 @interface SKUIAttributedStringLayoutRequest
-- (SKUIAttributedStringLayoutRequest)initWithAttributedString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKUIAttributedStringLayoutRequest)initWithAttributedString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKUIAttributedStringLayoutRequest
 
-- (SKUIAttributedStringLayoutRequest)initWithAttributedString:(id)a3
+- (SKUIAttributedStringLayoutRequest)initWithAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIAttributedStringLayoutRequest initWithAttributedString:];
@@ -18,7 +18,7 @@
   v5 = [(SKUIAttributedStringLayoutRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     attributedString = v5->_attributedString;
     v5->_attributedString = v6;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithAttributedString:", self->_attributedString}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithAttributedString:", self->_attributedString}];
   *(result + 2) = self->_numberOfLines;
   *(result + 24) = self->_wantsBaselineOffset;
   *(result + 4) = *&self->_width;

@@ -15,7 +15,7 @@
 
 - (SHListeningLayer)layer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23E3727E0();
 
   return v3;

@@ -6,13 +6,13 @@
 
 - (BOOL)_maps_isHovering
 {
-  v3 = [(UIHoverGestureRecognizer *)self state];
-  if (v3 != 1)
+  state = [(UIHoverGestureRecognizer *)self state];
+  if (state != 1)
   {
-    LOBYTE(v3) = [(UIHoverGestureRecognizer *)self state]== 2;
+    LOBYTE(state) = [(UIHoverGestureRecognizer *)self state]== 2;
   }
 
-  return v3;
+  return state;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface CNContactListStyleProvider
 + (id)contactListStyle;
-+ (id)contactListStyleWithContactStyle:(id)a3;
++ (id)contactListStyleWithContactStyle:(id)style;
 @end
 
 @implementation CNContactListStyleProvider
 
-+ (id)contactListStyleWithContactStyle:(id)a3
++ (id)contactListStyleWithContactStyle:(id)style
 {
-  v3 = a3;
-  v4 = [[CNContactListStyleWrapperProvider alloc] initWithContactStyle:v3];
+  styleCopy = style;
+  v4 = [[CNContactListStyleWrapperProvider alloc] initWithContactStyle:styleCopy];
 
   return v4;
 }

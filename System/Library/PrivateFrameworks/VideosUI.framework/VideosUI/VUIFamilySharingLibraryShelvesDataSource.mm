@@ -1,23 +1,23 @@
 @interface VUIFamilySharingLibraryShelvesDataSource
-- (VUIFamilySharingLibraryShelvesDataSource)initWithValidShelfTypes:(id)a3 withFamilyMember:(id)a4;
+- (VUIFamilySharingLibraryShelvesDataSource)initWithValidShelfTypes:(id)types withFamilyMember:(id)member;
 - (id)_dataSourceForShelves;
-- (void)dataSourceDidFinishFetching:(id)a3;
+- (void)dataSourceDidFinishFetching:(id)fetching;
 - (void)dealloc;
 - (void)startFetch;
 @end
 
 @implementation VUIFamilySharingLibraryShelvesDataSource
 
-- (VUIFamilySharingLibraryShelvesDataSource)initWithValidShelfTypes:(id)a3 withFamilyMember:(id)a4
+- (VUIFamilySharingLibraryShelvesDataSource)initWithValidShelfTypes:(id)types withFamilyMember:(id)member
 {
-  v7 = a4;
+  memberCopy = member;
   v11.receiver = self;
   v11.super_class = VUIFamilySharingLibraryShelvesDataSource;
-  v8 = [(VUILibraryShelvesDataSource *)&v11 initWithValidShelfTypes:a3];
+  v8 = [(VUILibraryShelvesDataSource *)&v11 initWithValidShelfTypes:types];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_familyMember, a4);
+    objc_storeStrong(&v8->_familyMember, member);
   }
 
   return v9;
@@ -37,17 +37,17 @@
   fetchedDataSources = self->_fetchedDataSources;
   self->_fetchedDataSources = v3;
 
-  v5 = [(VUIFamilySharingLibraryShelvesDataSource *)self _dataSourceForShelves];
-  [(VUILibraryShelvesDataSource *)self setDataSourcesByShelfType:v5];
+  _dataSourceForShelves = [(VUIFamilySharingLibraryShelvesDataSource *)self _dataSourceForShelves];
+  [(VUILibraryShelvesDataSource *)self setDataSourcesByShelfType:_dataSourceForShelves];
 }
 
-- (void)dataSourceDidFinishFetching:(id)a3
+- (void)dataSourceDidFinishFetching:(id)fetching
 {
-  v4 = a3;
-  [(NSMutableSet *)self->_fetchedDataSources addObject:v4];
+  fetchingCopy = fetching;
+  [(NSMutableSet *)self->_fetchedDataSources addObject:fetchingCopy];
   v5 = [(NSMutableSet *)self->_fetchedDataSources count];
-  v6 = [(VUILibraryShelvesDataSource *)self shelfTypes];
-  v7 = [v6 count];
+  shelfTypes = [(VUILibraryShelvesDataSource *)self shelfTypes];
+  v7 = [shelfTypes count];
 
   if (v5 >= v7)
   {
@@ -107,9 +107,9 @@ void __72__VUIFamilySharingLibraryShelvesDataSource_dataSourceDidFinishFetching_
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 unsignedIntegerValue];
-        v10 = [(VUIFamilySharingLibraryShelvesDataSource *)self familyMember];
-        v11 = [VUIMediaEntitiesDataSourceFactory dataSourceForShelf:v9 withFamilyMember:v10];
+        unsignedIntegerValue = [v8 unsignedIntegerValue];
+        familyMember = [(VUIFamilySharingLibraryShelvesDataSource *)self familyMember];
+        v11 = [VUIMediaEntitiesDataSourceFactory dataSourceForShelf:unsignedIntegerValue withFamilyMember:familyMember];
 
         [v11 setDelegate:self];
         [v11 startFetch];

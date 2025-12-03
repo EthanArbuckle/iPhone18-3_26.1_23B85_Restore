@@ -1,58 +1,58 @@
 @interface PKDashboardMessageSectionController
-- (PKDashboardMessageSectionController)initWithMessages:(id)a3 delegate:(id)a4;
+- (PKDashboardMessageSectionController)initWithMessages:(id)messages delegate:(id)delegate;
 - (PKDashboardMessageSectionControllerDelegate)delegate;
-- (id)cellRegistrationForItem:(id)a3;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_decorateCell:(id)a3 forItem:(id)a4;
-- (void)messagesView:(id)a3 scrolledToMessageWithIdentifier:(id)a4;
-- (void)updateWithMessages:(id)a3 currentMessageIndex:(unint64_t)a4;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_decorateCell:(id)cell forItem:(id)item;
+- (void)messagesView:(id)view scrolledToMessageWithIdentifier:(id)identifier;
+- (void)updateWithMessages:(id)messages currentMessageIndex:(unint64_t)index;
 @end
 
 @implementation PKDashboardMessageSectionController
 
-- (PKDashboardMessageSectionController)initWithMessages:(id)a3 delegate:(id)a4
+- (PKDashboardMessageSectionController)initWithMessages:(id)messages delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKDashboardMessageSectionController;
   v8 = [(PKDashboardMessageSectionController *)&v12 init];
   if (v8)
   {
-    v9 = [[PKDashboardMessageRowItem alloc] initWithMessages:v6 currentMessageIndex:0 messagesViewDelegate:v8];
+    v9 = [[PKDashboardMessageRowItem alloc] initWithMessages:messagesCopy currentMessageIndex:0 messagesViewDelegate:v8];
     item = v8->_item;
     v8->_item = v9;
 
-    objc_storeWeak(&v8->_delegate, v7);
-    [(PKDashboardMessageSectionController *)v8 updateWithMessages:v6 currentMessageIndex:0];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    [(PKDashboardMessageSectionController *)v8 updateWithMessages:messagesCopy currentMessageIndex:0];
   }
 
   return v8;
 }
 
-- (void)updateWithMessages:(id)a3 currentMessageIndex:(unint64_t)a4
+- (void)updateWithMessages:(id)messages currentMessageIndex:(unint64_t)index
 {
-  v10 = a3;
-  v6 = [(PKDashboardMessageRowItem *)self->_item messages];
+  messagesCopy = messages;
+  messages = [(PKDashboardMessageRowItem *)self->_item messages];
   if (!PKEqualObjects())
   {
 
     goto LABEL_5;
   }
 
-  v7 = [(PKDashboardMessageRowItem *)self->_item currentMessageIndex];
+  currentMessageIndex = [(PKDashboardMessageRowItem *)self->_item currentMessageIndex];
 
-  v8 = v10;
-  if (v7 != a4)
+  v8 = messagesCopy;
+  if (currentMessageIndex != index)
   {
 LABEL_5:
-    [(PKDashboardMessageRowItem *)self->_item setMessages:v10];
-    [(PKDashboardMessageRowItem *)self->_item setCurrentMessageIndex:a4];
+    [(PKDashboardMessageRowItem *)self->_item setMessages:messagesCopy];
+    [(PKDashboardMessageRowItem *)self->_item setCurrentMessageIndex:index];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained reloadDataAnimated:1];
 
-    v8 = v10;
+    v8 = messagesCopy;
   }
 }
 
@@ -65,7 +65,7 @@ LABEL_5:
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -76,9 +76,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -112,36 +112,36 @@ void __63__PKDashboardMessageSectionController_cellRegistrationForItem___block_i
   [WeakRetained _decorateCell:v7 forItem:v6];
 }
 
-- (void)_decorateCell:(id)a3 forItem:(id)a4
+- (void)_decorateCell:(id)cell forItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
+  itemCopy = item;
+  cellCopy = cell;
   v7 = [PKDashboardMessagesView alloc];
   v12 = [(PKDashboardMessagesView *)v7 initWithInsets:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-  v8 = [v5 messagesViewDelegate];
-  [(PKDashboardMessagesView *)v12 setDelegate:v8];
+  messagesViewDelegate = [itemCopy messagesViewDelegate];
+  [(PKDashboardMessagesView *)v12 setDelegate:messagesViewDelegate];
 
-  v9 = [v5 messages];
-  v10 = [v5 currentMessageIndex];
+  messages = [itemCopy messages];
+  currentMessageIndex = [itemCopy currentMessageIndex];
 
-  [(PKDashboardMessagesView *)v12 updateWithMessages:v9 currentIndex:v10];
-  [v6 setHostedContentView:v12];
-  v11 = [v6 backgroundConfiguration];
-  [v11 setBackgroundInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  [v6 setBackgroundConfiguration:v11];
+  [(PKDashboardMessagesView *)v12 updateWithMessages:messages currentIndex:currentMessageIndex];
+  [cellCopy setHostedContentView:v12];
+  backgroundConfiguration = [cellCopy backgroundConfiguration];
+  [backgroundConfiguration setBackgroundInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  [cellCopy setBackgroundConfiguration:backgroundConfiguration];
 }
 
-- (void)messagesView:(id)a3 scrolledToMessageWithIdentifier:(id)a4
+- (void)messagesView:(id)view scrolledToMessageWithIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    [v9 messagesView:v10 scrolledToMessageWithIdentifier:v6];
+    [v9 messagesView:viewCopy scrolledToMessageWithIdentifier:identifierCopy];
   }
 }
 

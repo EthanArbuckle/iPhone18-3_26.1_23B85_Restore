@@ -1,7 +1,7 @@
 @interface AAUIFamilySetupPrompter
 - (AAUIFamilySetupPrompter)init;
 - (AAUIFamilySetupPrompterDelegate)delegate;
-- (void)familySetupPrompterDidFinish:(id)a3;
+- (void)familySetupPrompterDidFinish:(id)finish;
 @end
 
 @implementation AAUIFamilySetupPrompter
@@ -13,8 +13,8 @@
   v2 = [(AAUIFamilySetupPrompter *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v4 = [v3 ams_activeiTunesAccount];
+    ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
     v12 = 0;
     v13 = &v12;
@@ -34,7 +34,7 @@
 
     v6 = v5;
     _Block_object_dispose(&v12, 8);
-    v7 = [[v5 alloc] initWithiTunesAccount:v4];
+    v7 = [[v5 alloc] initWithiTunesAccount:ams_activeiTunesAccount];
     familySetupPrompter = v2->_familySetupPrompter;
     v2->_familySetupPrompter = v7;
 
@@ -44,7 +44,7 @@
   return v2;
 }
 
-- (void)familySetupPrompterDidFinish:(id)a3
+- (void)familySetupPrompterDidFinish:(id)finish
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained familySetupPrompterDidFinish:self];

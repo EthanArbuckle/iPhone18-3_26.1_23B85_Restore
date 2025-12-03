@@ -1,20 +1,20 @@
 @interface CDPUIAccountRecoveryController
-- (id)_accountRecoveryDevicePickerEscapeOfferWithCDPContext:(id)a3;
-- (id)_accountRecoveryEscapeOfferForDevice:(id)a3;
-- (id)devicePicker:(id)a3 escapeOffersForDevices:(id)a4;
-- (void)_presentRemoteSecretControllerWithNewestDevice:(id)a3;
-- (void)_setupDevicePickerController:(id)a3;
-- (void)devicePicker:(id)a3 didSelectDevice:(id)a4;
-- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)a3 newestDevice:(id)a4;
+- (id)_accountRecoveryDevicePickerEscapeOfferWithCDPContext:(id)context;
+- (id)_accountRecoveryEscapeOfferForDevice:(id)device;
+- (id)devicePicker:(id)picker escapeOffersForDevices:(id)devices;
+- (void)_presentRemoteSecretControllerWithNewestDevice:(id)device;
+- (void)_setupDevicePickerController:(id)controller;
+- (void)devicePicker:(id)picker didSelectDevice:(id)device;
+- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)controller newestDevice:(id)device;
 @end
 
 @implementation CDPUIAccountRecoveryController
 
-- (void)devicePicker:(id)a3 didSelectDevice:(id)a4
+- (void)devicePicker:(id)picker didSelectDevice:(id)device
 {
-  v6 = a3;
+  pickerCopy = picker;
   v7 = MEMORY[0x277CFD560];
-  v8 = a4;
+  deviceCopy = device;
   if ([v7 isICSCHarmonizationEnabled])
   {
     v9 = _CDPLogSystem();
@@ -25,82 +25,82 @@
 
     v12.receiver = self;
     v12.super_class = CDPUIAccountRecoveryController;
-    [(CDPUIController *)&v12 devicePicker:v6 didSelectDevice:v8];
+    [(CDPUIController *)&v12 devicePicker:pickerCopy didSelectDevice:deviceCopy];
   }
 
   else
   {
-    v10 = [(CDPUIController *)self _remoteSecretControllerForDevice:v8];
+    v10 = [(CDPUIController *)self _remoteSecretControllerForDevice:deviceCopy];
     [v10 setHidesCancelButton:1];
-    v11 = [(CDPUIAccountRecoveryController *)self _accountRecoveryEscapeOfferForDevice:v8];
+    v11 = [(CDPUIAccountRecoveryController *)self _accountRecoveryEscapeOfferForDevice:deviceCopy];
 
     [v10 setEscapeOffer:v11];
     [(UINavigationController *)self->super._navController pushViewController:v10 animated:1];
   }
 }
 
-- (id)devicePicker:(id)a3 escapeOffersForDevices:(id)a4
+- (id)devicePicker:(id)picker escapeOffersForDevices:(id)devices
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CFD4A8];
-  v6 = a3;
-  v7 = [v5 contextForPrimaryAccount];
-  v8 = [(CDPUIAccountRecoveryController *)self _accountRecoveryDevicePickerEscapeOfferWithCDPContext:v7];
+  pickerCopy = picker;
+  contextForPrimaryAccount = [v5 contextForPrimaryAccount];
+  v8 = [(CDPUIAccountRecoveryController *)self _accountRecoveryDevicePickerEscapeOfferWithCDPContext:contextForPrimaryAccount];
 
-  [v8 setPresentingViewController:v6];
+  [v8 setPresentingViewController:pickerCopy];
   v11[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
   return v9;
 }
 
-- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)a3 newestDevice:(id)a4
+- (void)remoteSecretEntryDidRequestAccountRecoveryFromViewController:(id)controller newestDevice:(id)device
 {
-  v6 = a3;
-  v7 = [(CDPUIAccountRecoveryController *)self _accountRecoveryEscapeOfferForDevice:a4];
-  [v7 setPresentingViewController:v6];
-  [v7 handleEscapeAction:v6];
+  controllerCopy = controller;
+  v7 = [(CDPUIAccountRecoveryController *)self _accountRecoveryEscapeOfferForDevice:device];
+  [v7 setPresentingViewController:controllerCopy];
+  [v7 handleEscapeAction:controllerCopy];
 }
 
-- (void)_presentRemoteSecretControllerWithNewestDevice:(id)a3
+- (void)_presentRemoteSecretControllerWithNewestDevice:(id)device
 {
-  v4 = a3;
-  v6 = [(CDPUIController *)self _remoteSecretControllerForNewestDevice:v4];
-  v5 = [(CDPUIAccountRecoveryController *)self _accountRecoveryEscapeOfferForDevice:v4];
+  deviceCopy = device;
+  v6 = [(CDPUIController *)self _remoteSecretControllerForNewestDevice:deviceCopy];
+  v5 = [(CDPUIAccountRecoveryController *)self _accountRecoveryEscapeOfferForDevice:deviceCopy];
 
   [v6 setEscapeOffer:v5];
   [(CDPUIController *)self _presentRootController:v6 completion:0];
 }
 
-- (id)_accountRecoveryEscapeOfferForDevice:(id)a3
+- (id)_accountRecoveryEscapeOfferForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [CDPRemoteValidationEscapeOffer alloc];
-  v6 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-  v7 = [(CDPRemoteValidationEscapeOffer *)v5 initWithCDPContext:v6];
+  contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+  v7 = [(CDPRemoteValidationEscapeOffer *)v5 initWithCDPContext:contextForPrimaryAccount];
 
   v8 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-  v9 = [v4 modelClass];
-  v10 = [v8 addDeviceClass:v9];
-  v11 = [v10 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v12 = [v11 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setEscapeOfferName:v12];
+  modelClass = [deviceCopy modelClass];
+  v10 = [v8 addDeviceClass:modelClass];
+  v11 = [v10 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString = [v11 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setEscapeOfferName:localizedString];
 
   v13 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_HATCH"];
-  v14 = [v4 modelClass];
-  v15 = [v13 addDeviceClass:v14];
-  v16 = [v15 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-  v17 = [v16 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:v17];
+  modelClass2 = [deviceCopy modelClass];
+  v15 = [v13 addDeviceClass:modelClass2];
+  v16 = [v15 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+  localizedString2 = [v16 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v7 setTitle:localizedString2];
 
   [(CDPRemoteValidationEscapeOffer *)v7 setTitleTelemetryKey:*MEMORY[0x277CFD9A0]];
   v18 = objc_alloc_init(CDPEscapeOption);
-  v19 = [(CDPRemoteDeviceSecretValidator *)self->super._remoteSecretValidator supportedEscapeOfferMask];
-  v42 = (v19 & 0x40) == 0;
+  supportedEscapeOfferMask = [(CDPRemoteDeviceSecretValidator *)self->super._remoteSecretValidator supportedEscapeOfferMask];
+  v42 = (supportedEscapeOfferMask & 0x40) == 0;
   objc_initWeak(&location, self);
   if ([(NSArray *)self->super._devices count]< 2)
   {
-    if ((v19 & 0x40) != 0)
+    if ((supportedEscapeOfferMask & 0x40) != 0)
     {
       [(CDPRemoteValidationEscapeOffer *)v7 setTitle:0];
       [(CDPEscapeOption *)v18 setStyle:4];
@@ -110,12 +110,12 @@
     {
       v30 = MEMORY[0x277CCACA8];
       v31 = [MEMORY[0x277CFD508] builderForKey:@"ACCOUNT_RECOVERY_FORGOT_CODE_DIALOG_MESSAGE_SINGLE_REBRAND"];
-      v32 = [v31 addSecretType:{objc_msgSend(v4, "localSecretType")}];
-      v33 = [v4 modelClass];
-      v34 = [v32 addDeviceClass:v33];
-      v35 = [v34 localizedString];
-      v36 = [v4 localizedName];
-      v37 = [v30 stringWithValidatedFormat:v35 validFormatSpecifiers:@"%@" error:0, v36];
+      v32 = [v31 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
+      modelClass3 = [deviceCopy modelClass];
+      v34 = [v32 addDeviceClass:modelClass3];
+      localizedString3 = [v34 localizedString];
+      localizedName = [deviceCopy localizedName];
+      v37 = [v30 stringWithValidatedFormat:localizedString3 validFormatSpecifiers:@"%@" error:0, localizedName];
       [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v37];
     }
 
@@ -137,11 +137,11 @@
   {
     v20 = MEMORY[0x277CCACA8];
     v21 = [MEMORY[0x277CFD508] builderForKey:@"REMOTE_SECRET_ENTRY_FORGOT_CODE_DIALOG_MESSAGE_ANOTHER_DEVICE"];
-    v22 = [v21 addSecretType:{objc_msgSend(v4, "localSecretType")}];
+    v22 = [v21 addSecretType:{objc_msgSend(deviceCopy, "localSecretType")}];
     v23 = [v22 addSecretType:{-[NSArray prevailingLocalSecretType](self->super._devices, "prevailingLocalSecretType")}];
-    v24 = [v23 localizedString];
-    v25 = [v4 localizedName];
-    v26 = [v20 stringWithValidatedFormat:v24 validFormatSpecifiers:@"%@" error:0, v25];
+    localizedString4 = [v23 localizedString];
+    localizedName2 = [deviceCopy localizedName];
+    v26 = [v20 stringWithValidatedFormat:localizedString4 validFormatSpecifiers:@"%@" error:0, localizedName2];
     [(CDPRemoteValidationEscapeOffer *)v7 setMessage:v26];
 
     v27 = CDPLocalizedString();
@@ -205,9 +205,9 @@ void __71__CDPUIAccountRecoveryController__accountRecoveryEscapeOfferForDevice__
   [v1 cancelValidationWithError:v2];
 }
 
-- (void)_setupDevicePickerController:(id)a3
+- (void)_setupDevicePickerController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   v4 = [[CDPDevicePickerViewController alloc] initWithDevices:self->super._devices delegate:self];
   devicePicker = self->super._devicePicker;
   self->super._devicePicker = v4;
@@ -219,29 +219,29 @@ void __71__CDPUIAccountRecoveryController__accountRecoveryEscapeOfferForDevice__
     self->super._devicePicker = v6;
   }
 
-  v8[2](v8, self->super._devicePicker);
+  controllerCopy[2](controllerCopy, self->super._devicePicker);
 }
 
-- (id)_accountRecoveryDevicePickerEscapeOfferWithCDPContext:(id)a3
+- (id)_accountRecoveryDevicePickerEscapeOfferWithCDPContext:(id)context
 {
-  v4 = a3;
-  v5 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:v4];
-  v6 = [(NSArray *)self->super._devices prevailingLocalSecretType];
+  contextCopy = context;
+  v5 = [[CDPRemoteValidationEscapeOffer alloc] initWithCDPContext:contextCopy];
+  prevailingLocalSecretType = [(NSArray *)self->super._devices prevailingLocalSecretType];
   v7 = [MEMORY[0x277CFD508] builderForKey:@"DEVICE_PICKER_FORGOT_CODE_DIALOG_TITLE"];
-  v8 = [v7 addSecretType:v6];
-  v9 = [v8 localizedString];
+  v8 = [v7 addSecretType:prevailingLocalSecretType];
+  localizedString = [v8 localizedString];
 
   v10 = [MEMORY[0x277CFD508] builderForKey:@"ACCOUNT_RECOVERY_FORGOT_CODE_DIALOG_MESSAGE_MULTI_REBRAND"];
-  v11 = [v10 addSecretType:v6];
-  v12 = [v11 localizedString];
+  v11 = [v10 addSecretType:prevailingLocalSecretType];
+  localizedString2 = [v11 localizedString];
 
   v13 = [MEMORY[0x277CFD508] builderForKey:@"DEVICE_PICKER_APPROVE_FROM_ANOTHER_DEVICE"];
-  v14 = [v13 addSecretType:v6];
-  v15 = [v14 localizedString];
-  [(CDPRemoteValidationEscapeOffer *)v5 setEscapeOfferName:v15];
+  v14 = [v13 addSecretType:prevailingLocalSecretType];
+  localizedString3 = [v14 localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v5 setEscapeOfferName:localizedString3];
 
-  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:v9];
-  [(CDPRemoteValidationEscapeOffer *)v5 setMessage:v12];
+  [(CDPRemoteValidationEscapeOffer *)v5 setTitle:localizedString];
+  [(CDPRemoteValidationEscapeOffer *)v5 setMessage:localizedString2];
   objc_initWeak(&location, self);
   v16 = objc_alloc_init(CDPEscapeOption);
   v17 = CDPLocalizedString();

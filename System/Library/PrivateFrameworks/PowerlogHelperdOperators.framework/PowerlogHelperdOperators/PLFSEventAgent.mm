@@ -2,10 +2,10 @@
 + (id)entryEventIntervalDefinitions;
 + (void)load;
 - (PLFSEventAgent)init;
-- (void)addLogFileNameEntry:(BOOL)a3 withType:(id)a4 withName:(id)a5;
+- (void)addLogFileNameEntry:(BOOL)entry withType:(id)type withName:(id)name;
 - (void)dealloc;
 - (void)initOperatorDependancies;
-- (void)logLogFileName:(id)a3 withName:(id)a4;
+- (void)logLogFileName:(id)name withName:(id)withName;
 - (void)registerforFSEventNotification;
 - (void)startMonitoring;
 - (void)stopMonitoring;
@@ -15,7 +15,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLFSEventAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -34,17 +34,17 @@
   v20[0] = v3;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"timestampEnd";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v16[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v16[0] = commonTypeDict_DateFormat;
   v15[1] = @"FileType";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v16[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v16[1] = commonTypeDict_StringFormat;
   v15[2] = @"FilePath";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v16[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v16[2] = commonTypeDict_StringFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -60,7 +60,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -68,10 +68,10 @@
     v5.receiver = self;
     v5.super_class = PLFSEventAgent;
     self = [(PLAgent *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -190,15 +190,15 @@ id __42__PLFSEventAgent_initOperatorDependancies__block_invoke(uint64_t a1, int 
   return v16;
 }
 
-- (void)addLogFileNameEntry:(BOOL)a3 withType:(id)a4 withName:(id)a5
+- (void)addLogFileNameEntry:(BOOL)entry withType:(id)type withName:(id)name
 {
-  v6 = a3;
+  entryCopy = entry;
   v8 = *MEMORY[0x277D3F5D8];
-  v9 = a5;
-  v10 = a4;
+  nameCopy = name;
+  typeCopy = type;
   v15 = [(PLOperator *)PLFSEventAgent entryKeyForType:v8 andName:@"LogFile"];
   v11 = objc_alloc(MEMORY[0x277D3F190]);
-  if (v6)
+  if (entryCopy)
   {
     v12 = [v11 initWithEntryKey:v15];
     [v12 setObject:0 forKeyedSubscript:@"timestampEnd"];
@@ -207,30 +207,30 @@ id __42__PLFSEventAgent_initOperatorDependancies__block_invoke(uint64_t a1, int 
   else
   {
     v13 = [v11 initWithEntryKey:v15 withDate:0];
-    v14 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v13 setObject:v14 forKeyedSubscript:@"timestampEnd"];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [v13 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
 
     v12 = 0;
   }
 
-  [v12 setObject:v10 forKeyedSubscript:@"FileType"];
+  [v12 setObject:typeCopy forKeyedSubscript:@"FileType"];
 
-  [v12 setObject:v9 forKeyedSubscript:@"FilePath"];
+  [v12 setObject:nameCopy forKeyedSubscript:@"FilePath"];
   [(PLOperator *)self logEntry:v12];
 }
 
-- (void)logLogFileName:(id)a3 withName:(id)a4
+- (void)logLogFileName:(id)name withName:(id)withName
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  nameCopy = name;
+  withNameCopy = withName;
+  v8 = withNameCopy;
+  if (nameCopy && withNameCopy)
   {
     v9 = PLLogFSEvent();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(PLFSEventAgent *)v6 logLogFileName:v8 withName:v9];
+      [(PLFSEventAgent *)nameCopy logLogFileName:v8 withName:v9];
     }
 
     v10 = [v8 componentsSeparatedByString:@"."];
@@ -246,15 +246,15 @@ id __42__PLFSEventAgent_initOperatorDependancies__block_invoke(uint64_t a1, int 
     }
 
     v13 = [(PLOperator *)PLFSEventAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"LogFile"];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@", @"FileType", v6];
-    v15 = [(PLOperator *)self storage];
-    v42[0] = v14;
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@", @"FileType", nameCopy];
+    storage = [(PLOperator *)self storage];
+    v42[0] = nameCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
-    v17 = [v15 lastEntryForKey:v13 withFilters:v16];
+    v17 = [storage lastEntryForKey:v13 withFilters:v16];
 
     if (!v17)
     {
-      [(PLFSEventAgent *)self addLogFileNameEntry:v12 withType:v6 withName:v8];
+      [(PLFSEventAgent *)self addLogFileNameEntry:v12 withType:nameCopy withName:v8];
       v19 = v10;
 LABEL_22:
 
@@ -276,7 +276,7 @@ LABEL_22:
       v21 = 0;
     }
 
-    v22 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     if (v21)
     {
       if (v12)
@@ -294,8 +294,8 @@ LABEL_22:
           v26 = v17;
           v27 = &v41;
           v40 = v26;
-          v41 = v22;
-          v28 = v22;
+          v41 = monotonicDate;
+          v28 = monotonicDate;
           [(PLOperator *)self updateEntry:v26 withBlock:v39];
 LABEL_19:
 
@@ -307,8 +307,8 @@ LABEL_21:
 
       else
       {
-        v29 = [v17 entryDate];
-        v30 = [v22 compare:v29];
+        entryDate = [v17 entryDate];
+        v30 = [monotonicDate compare:entryDate];
 
         if (v30 == 1)
         {
@@ -320,9 +320,9 @@ LABEL_21:
           v31 = v17;
           v27 = &v37;
           v36 = v31;
-          v37 = v22;
+          v37 = monotonicDate;
           v38 = v8;
-          v32 = v22;
+          v32 = monotonicDate;
           [(PLOperator *)self updateEntry:v31 withBlock:v35];
 
           goto LABEL_19;
@@ -330,7 +330,7 @@ LABEL_21:
       }
     }
 
-    [(PLFSEventAgent *)self addLogFileNameEntry:v12 withType:v6 withName:v8];
+    [(PLFSEventAgent *)self addLogFileNameEntry:v12 withType:nameCopy withName:v8];
     goto LABEL_21;
   }
 

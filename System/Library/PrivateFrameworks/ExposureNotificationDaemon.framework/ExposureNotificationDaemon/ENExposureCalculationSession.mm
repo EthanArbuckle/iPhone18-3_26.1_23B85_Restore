@@ -1,62 +1,62 @@
 @interface ENExposureCalculationSession
-- ($6B14AE857B43CEDA041F2BA42EED81B6)scanInstanceFromAdvertisement:(SEL)a3 key:(id)a4;
-- (BOOL)_shouldMatchKey:(id)a3;
-- (id)attenuationDurationMapDataForExposureWindows:(id)a3;
+- ($6B14AE857B43CEDA041F2BA42EED81B6)scanInstanceFromAdvertisement:(SEL)advertisement key:(id)key;
+- (BOOL)_shouldMatchKey:(id)key;
+- (id)attenuationDurationMapDataForExposureWindows:(id)windows;
 - (id)cachedExposuresDifferentialPrivacyRiskParameters;
-- (id)exposureInfoForExposureWindows:(id)a3 key:(id)a4;
-- (id)exposureInfoForMatchedAdvertisements:(id)a3 key:(id)a4;
-- (id)exposureInfosForEachExposureWindow:(id)a3 key:(id)a4;
-- (id)exposureWindowsForMatchedAdvertisements:(id)a3 key:(id)a4 options:(int64_t)a5;
-- (id)filterAdvertisements:(id)a3 fromKey:(id)a4;
-- (id)groupExposureWindowsByDay:(id)a3;
-- (id)groupExposureWindowsByInfectiousness:(id)a3;
-- (unsigned)weightedAttenuationValueForDurations:(unsigned int *)a3;
+- (id)exposureInfoForExposureWindows:(id)windows key:(id)key;
+- (id)exposureInfoForMatchedAdvertisements:(id)advertisements key:(id)key;
+- (id)exposureInfosForEachExposureWindow:(id)window key:(id)key;
+- (id)exposureWindowsForMatchedAdvertisements:(id)advertisements key:(id)key options:(int64_t)options;
+- (id)filterAdvertisements:(id)advertisements fromKey:(id)key;
+- (id)groupExposureWindowsByDay:(id)day;
+- (id)groupExposureWindowsByInfectiousness:(id)infectiousness;
+- (unsigned)weightedAttenuationValueForDurations:(unsigned int *)durations;
 - (void)dealloc;
-- (void)enumerateCachedExposureInfo:(id)a3 inRange:(_NSRange)a4 withBatchSize:(unsigned int)a5;
-- (void)enumerateCachedExposureWindows:(id)a3 inRange:(_NSRange)a4 withBatchSize:(unsigned int)a5 options:(int64_t)a6;
-- (void)setExposureConfiguration:(id)a3;
+- (void)enumerateCachedExposureInfo:(id)info inRange:(_NSRange)range withBatchSize:(unsigned int)size;
+- (void)enumerateCachedExposureWindows:(id)windows inRange:(_NSRange)range withBatchSize:(unsigned int)size options:(int64_t)options;
+- (void)setExposureConfiguration:(id)configuration;
 @end
 
 @implementation ENExposureCalculationSession
 
 - (void)dealloc
 {
-  v1 = *(a1 + 32);
-  v2 = *(a1 + 48);
-  v4 = [*(a1 + 64) description];
+  v1 = *(self + 32);
+  v2 = *(self + 48);
+  v4 = [*(self + 64) description];
   v3 = v4;
   [v4 UTF8String];
   LogPrintF_safe();
 }
 
-- (void)setExposureConfiguration:(id)a3
+- (void)setExposureConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   exposureConfiguration = self->_exposureConfiguration;
   self->_exposureConfiguration = v4;
 
   v6 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v7 = [v6 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v6 isSensitiveLoggingAllowed];
 
-  if (v7 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
   {
     [ENExposureCalculationSession setExposureConfiguration:?];
   }
 
-  v18 = [(ENExposureConfiguration *)self->_exposureConfiguration attenuationDurationThresholds];
-  v8 = [v18 count];
+  attenuationDurationThresholds = [(ENExposureConfiguration *)self->_exposureConfiguration attenuationDurationThresholds];
+  v8 = [attenuationDurationThresholds count];
   if ((v8 & 0xFE) == 2)
   {
     v9 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v10 = [v9 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed2 = [v9 isSensitiveLoggingAllowed];
 
-    if (v10 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed2 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
     {
-      [ENExposureCalculationSession setExposureConfiguration:v18];
+      [ENExposureCalculationSession setExposureConfiguration:attenuationDurationThresholds];
     }
 
     v11 = v8;
-    v12 = v18;
+    v12 = attenuationDurationThresholds;
     if (v8)
     {
       v13 = 0;
@@ -64,10 +64,10 @@
       do
       {
         v15 = [v12 objectAtIndex:v13];
-        v16 = [v15 unsignedIntValue];
+        unsignedIntValue = [v15 unsignedIntValue];
 
-        v12 = v18;
-        attenuationDurationThresholds[v13++] = v16;
+        v12 = attenuationDurationThresholds;
+        attenuationDurationThresholds[v13++] = unsignedIntValue;
       }
 
       while (v11 != v13);
@@ -76,31 +76,31 @@
 
   else
   {
-    v12 = v18;
+    v12 = attenuationDurationThresholds;
     if (gLogCategory__ENExposureCalculationSession <= 90)
     {
-      if (gLogCategory__ENExposureCalculationSession != -1 || (v17 = _LogCategory_Initialize(), v12 = v18, v17))
+      if (gLogCategory__ENExposureCalculationSession != -1 || (v17 = _LogCategory_Initialize(), v12 = attenuationDurationThresholds, v17))
       {
         [ENExposureCalculationSession setExposureConfiguration:];
-        v12 = v18;
+        v12 = attenuationDurationThresholds;
       }
     }
   }
 }
 
-- (unsigned)weightedAttenuationValueForDurations:(unsigned int *)a3
+- (unsigned)weightedAttenuationValueForDurations:(unsigned int *)durations
 {
-  v4 = [(ENExposureConfiguration *)self->_exposureConfiguration attenuationLevelValues];
-  if ([v4 count] == 8)
+  attenuationLevelValues = [(ENExposureConfiguration *)self->_exposureConfiguration attenuationLevelValues];
+  if ([attenuationLevelValues count] == 8)
   {
-    v5 = v4;
+    v5 = attenuationLevelValues;
   }
 
   else
   {
     if (gLogCategory__ENExposureCalculationSession <= 90 && (gLogCategory__ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
     {
-      [ENExposureCalculationSession weightedAttenuationValueForDurations:v4];
+      [ENExposureCalculationSession weightedAttenuationValueForDurations:attenuationLevelValues];
     }
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB10]);
@@ -119,7 +119,7 @@
   v9 = 0.0;
   do
   {
-    v10 = a3[v7];
+    v10 = durations[v7];
     v11 = [v5 objectAtIndexedSubscript:v7];
     [v11 doubleValue];
     v13 = v12 * v10;
@@ -160,11 +160,11 @@
   return v16;
 }
 
-- (id)exposureInfoForExposureWindows:(id)a3 key:(id)a4
+- (id)exposureInfoForExposureWindows:(id)windows key:(id)key
 {
   v51[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  windowsCopy = windows;
+  keyCopy = key;
   v51[0] = 0;
   v51[1] = 0;
   memset(v50, 0, sizeof(v50));
@@ -172,9 +172,9 @@
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v6;
-  v38 = [v6 countByEnumeratingWithState:&v44 objects:v49 count:16];
-  v35 = self;
+  obj = windowsCopy;
+  v38 = [windowsCopy countByEnumeratingWithState:&v44 objects:v49 count:16];
+  selfCopy = self;
   v8 = 0;
   if (v38)
   {
@@ -187,7 +187,7 @@
       {
         if (*v45 != v37)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(windowsCopy);
         }
 
         v39 = v10;
@@ -196,8 +196,8 @@
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v12 = [v11 scanInstances];
-        v13 = [v12 countByEnumeratingWithState:&v40 objects:v48 count:16];
+        scanInstances = [v11 scanInstances];
+        v13 = [scanInstances countByEnumeratingWithState:&v40 objects:v48 count:16];
         if (v13)
         {
           v14 = v13;
@@ -208,15 +208,15 @@
             {
               if (*v41 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(scanInstances);
               }
 
               v17 = *(*(&v40 + 1) + 8 * i);
-              v18 = [v17 secondsSinceLastScan];
-              v8 += v18;
-              v19 = [v17 typicalAttenuation];
+              secondsSinceLastScan = [v17 secondsSinceLastScan];
+              v8 += secondsSinceLastScan;
+              typicalAttenuation = [v17 typicalAttenuation];
               v20 = 0;
-              while (v19 > attenuationDurationThresholds[v20])
+              while (typicalAttenuation > attenuationDurationThresholds[v20])
               {
                 if (++v20 == 4)
                 {
@@ -224,14 +224,14 @@
                 }
               }
 
-              *(v51 + v20) += v18;
+              *(v51 + v20) += secondsSinceLastScan;
 LABEL_16:
               v21 = &byte_24A28BFB8;
               v22 = 28;
               while (1)
               {
                 v23 = *v21++;
-                if (v19 <= v23)
+                if (typicalAttenuation <= v23)
                 {
                   break;
                 }
@@ -243,12 +243,12 @@ LABEL_16:
                 }
               }
 
-              *(v50 + v22) += v18;
+              *(v50 + v22) += secondsSinceLastScan;
 LABEL_21:
               ;
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v40 objects:v48 count:16];
+            v14 = [scanInstances countByEnumeratingWithState:&v40 objects:v48 count:16];
           }
 
           while (v14);
@@ -258,13 +258,13 @@ LABEL_21:
       }
 
       while (v39 + 1 != v38);
-      v38 = [v6 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v38 = [windowsCopy countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v38);
   }
 
-  v24 = [(ENExposureCalculationSession *)v35 weightedAttenuationValueForDurations:v50, v35];
+  selfCopy = [(ENExposureCalculationSession *)selfCopy weightedAttenuationValueForDurations:v50, selfCopy];
   v25 = objc_alloc_init(MEMORY[0x277CBEB10]);
   for (j = 0; j != 16; j += 4)
   {
@@ -293,33 +293,33 @@ LABEL_21:
     v29 = v8;
   }
 
-  v30 = [v7 rollingStartNumber];
-  v31 = [MEMORY[0x277CBEAA0] dateWithTimeIntervalSince1970:(86400 * (600 * v30 / 0x15180u))];
+  rollingStartNumber = [keyCopy rollingStartNumber];
+  v31 = [MEMORY[0x277CBEAA0] dateWithTimeIntervalSince1970:(86400 * (600 * rollingStartNumber / 0x15180u))];
   v32 = objc_alloc_init(MEMORY[0x277CC5C60]);
   [v32 setDate:v31];
-  [v32 setAttenuationValue:v24];
+  [v32 setAttenuationValue:selfCopy];
   [v32 setDuration:v29];
   [v32 setAttenuationDurations:v25];
-  [v32 setTransmissionRiskLevel:{objc_msgSend(v7, "transmissionRiskLevel")}];
-  [v32 setDiagnosisReportType:{objc_msgSend(v7, "diagnosisReportType")}];
-  [v32 setDaysSinceOnsetOfSymptoms:{objc_msgSend(v7, "daysSinceOnsetOfSymptoms")}];
+  [v32 setTransmissionRiskLevel:{objc_msgSend(keyCopy, "transmissionRiskLevel")}];
+  [v32 setDiagnosisReportType:{objc_msgSend(keyCopy, "diagnosisReportType")}];
+  [v32 setDaysSinceOnsetOfSymptoms:{objc_msgSend(keyCopy, "daysSinceOnsetOfSymptoms")}];
 
   v33 = *MEMORY[0x277D85DE8];
 
   return v32;
 }
 
-- (id)exposureInfosForEachExposureWindow:(id)a3 key:(id)a4
+- (id)exposureInfosForEachExposureWindow:(id)window key:(id)key
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v41 = a4;
-  v40 = [MEMORY[0x277CBEB10] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  windowCopy = window;
+  keyCopy = key;
+  v40 = [MEMORY[0x277CBEB10] arrayWithCapacity:{objc_msgSend(windowCopy, "count")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v5;
+  obj = windowCopy;
   v42 = [obj countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v42)
   {
@@ -344,8 +344,8 @@ LABEL_21:
         v48 = 0u;
         v43 = v7;
         v44 = v6;
-        v8 = [v7 scanInstances];
-        v9 = [v8 countByEnumeratingWithState:&v45 objects:v53 count:16];
+        scanInstances = [v7 scanInstances];
+        v9 = [scanInstances countByEnumeratingWithState:&v45 objects:v53 count:16];
         if (v9)
         {
           v10 = v9;
@@ -357,15 +357,15 @@ LABEL_21:
             {
               if (*v46 != v12)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(scanInstances);
               }
 
               v14 = *(*(&v45 + 1) + 8 * i);
-              v15 = [v14 secondsSinceLastScan];
-              v11 += v15;
-              v16 = [v14 typicalAttenuation];
+              secondsSinceLastScan = [v14 secondsSinceLastScan];
+              v11 += secondsSinceLastScan;
+              typicalAttenuation = [v14 typicalAttenuation];
               v17 = 0;
-              while (v16 > self->_attenuationDurationThresholds[v17])
+              while (typicalAttenuation > self->_attenuationDurationThresholds[v17])
               {
                 if (++v17 == 4)
                 {
@@ -373,14 +373,14 @@ LABEL_21:
                 }
               }
 
-              *(v55 + v17) += v15;
+              *(v55 + v17) += secondsSinceLastScan;
 LABEL_16:
               v18 = &byte_24A28BFB8;
               v19 = 28;
               while (1)
               {
                 v20 = *v18++;
-                if (v16 <= v20)
+                if (typicalAttenuation <= v20)
                 {
                   break;
                 }
@@ -392,12 +392,12 @@ LABEL_16:
                 }
               }
 
-              *(v54 + v19) += v15;
+              *(v54 + v19) += secondsSinceLastScan;
 LABEL_21:
               ;
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v45 objects:v53 count:16];
+            v10 = [scanInstances countByEnumeratingWithState:&v45 objects:v53 count:16];
           }
 
           while (v10);
@@ -437,20 +437,20 @@ LABEL_21:
           v26 = v11;
         }
 
-        v27 = [v41 rollingStartNumber];
-        v28 = [MEMORY[0x277CBEAA0] dateWithTimeIntervalSince1970:(86400 * (600 * v27 / 0x15180u))];
+        rollingStartNumber = [keyCopy rollingStartNumber];
+        v28 = [MEMORY[0x277CBEAA0] dateWithTimeIntervalSince1970:(86400 * (600 * rollingStartNumber / 0x15180u))];
         v29 = objc_alloc_init(MEMORY[0x277CC5C60]);
         [v29 setDate:v28];
         [v29 setAttenuationValue:v21];
         [v29 setDuration:v26];
         [v29 setAttenuationDurations:v22];
-        [v29 setTransmissionRiskLevel:{objc_msgSend(v41, "transmissionRiskLevel")}];
-        [v29 setDiagnosisReportType:{objc_msgSend(v41, "diagnosisReportType")}];
-        [v29 setDaysSinceOnsetOfSymptoms:{objc_msgSend(v41, "daysSinceOnsetOfSymptoms")}];
+        [v29 setTransmissionRiskLevel:{objc_msgSend(keyCopy, "transmissionRiskLevel")}];
+        [v29 setDiagnosisReportType:{objc_msgSend(keyCopy, "diagnosisReportType")}];
+        [v29 setDaysSinceOnsetOfSymptoms:{objc_msgSend(keyCopy, "daysSinceOnsetOfSymptoms")}];
         v30 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v31 = [v30 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed = [v30 isSensitiveLoggingAllowed];
 
-        if ((v31 & 1) != 0 && gLogCategory_ENExposureCalculationSession <= 10 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+        if ((isSensitiveLoggingAllowed & 1) != 0 && gLogCategory_ENExposureCalculationSession <= 10 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
         {
           v35 = v43;
           v36 = v29;
@@ -475,13 +475,13 @@ LABEL_21:
   return v32;
 }
 
-- (id)exposureInfoForMatchedAdvertisements:(id)a3 key:(id)a4
+- (id)exposureInfoForMatchedAdvertisements:(id)advertisements key:(id)key
 {
-  v6 = a4;
-  v7 = [(ENExposureCalculationSession *)self exposureWindowsForMatchedAdvertisements:a3 key:v6 options:1];
+  keyCopy = key;
+  v7 = [(ENExposureCalculationSession *)self exposureWindowsForMatchedAdvertisements:advertisements key:keyCopy options:1];
   if (v7)
   {
-    v8 = [(ENExposureCalculationSession *)self exposureInfoForExposureWindows:v7 key:v6];
+    v8 = [(ENExposureCalculationSession *)self exposureInfoForExposureWindows:v7 key:keyCopy];
   }
 
   else
@@ -492,18 +492,18 @@ LABEL_21:
   return v8;
 }
 
-- (void)enumerateCachedExposureInfo:(id)a3 inRange:(_NSRange)a4 withBatchSize:(unsigned int)a5
+- (void)enumerateCachedExposureInfo:(id)info inRange:(_NSRange)range withBatchSize:(unsigned int)size
 {
-  length = a4.length;
-  location = a4.location;
-  v38 = a3;
+  length = range.length;
+  location = range.location;
+  infoCopy = info;
   if (length)
   {
     cachedScanInstanceCount = self->_cachedScanInstanceCount;
     if (location >= cachedScanInstanceCount)
     {
-      v34 = [MEMORY[0x277CCA888] currentHandler];
-      [v34 handleFailureInMethod:a2 object:self file:@"ENExposureCalculationSession.m" lineNumber:599 description:{@"Invalid parameter not satisfying: %@", @"range.location < _cachedScanInstanceCount"}];
+      currentHandler = [MEMORY[0x277CCA888] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ENExposureCalculationSession.m" lineNumber:599 description:{@"Invalid parameter not satisfying: %@", @"range.location < _cachedScanInstanceCount"}];
 
       cachedScanInstanceCount = self->_cachedScanInstanceCount;
     }
@@ -534,16 +534,16 @@ LABEL_21:
     v37 = location + length;
     if (location < location + length)
     {
-      v36 = a5;
+      sizeCopy = size;
       do
       {
         v14 = objc_autoreleasePoolPush();
         cachedExposureWindowMetadataCount = self->_cachedExposureWindowMetadataCount;
         context = v14;
-        v40 = location + v36;
-        if (location + v36 <= cachedExposureWindowMetadataCount)
+        v40 = location + sizeCopy;
+        if (location + sizeCopy <= cachedExposureWindowMetadataCount)
         {
-          v16 = v36;
+          v16 = sizeCopy;
         }
 
         else
@@ -612,8 +612,8 @@ LABEL_21:
             [v31 setDaysSinceOnsetOfSymptoms:var1];
             [v31 setDiagnosisReportType:var3];
             [v31 setVariantOfConcernType:var5];
-            v32 = [(ENExposureCalculationSession *)self exposureConfiguration];
-            LOBYTE(var3) = [v32 flags];
+            exposureConfiguration = [(ENExposureCalculationSession *)self exposureConfiguration];
+            LOBYTE(var3) = [exposureConfiguration flags];
 
             if ((var3 & 2) != 0)
             {
@@ -639,7 +639,7 @@ LABEL_21:
           while (location < v17);
         }
 
-        v38[2](v38, v41, 0);
+        infoCopy[2](infoCopy, v41, 0);
         [v41 removeAllObjects];
         objc_autoreleasePoolPop(context);
         v11 = v18;
@@ -651,27 +651,27 @@ LABEL_21:
   }
 }
 
-- (id)filterAdvertisements:(id)a3 fromKey:(id)a4
+- (id)filterAdvertisements:(id)advertisements fromKey:(id)key
 {
   v111 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 rollingPeriod];
-  v9 = v8;
-  if (v8 >= 0x91)
+  advertisementsCopy = advertisements;
+  keyCopy = key;
+  rollingPeriod = [keyCopy rollingPeriod];
+  v9 = rollingPeriod;
+  if (rollingPeriod >= 0x91)
   {
     v10 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v11 = [v10 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v10 isSensitiveLoggingAllowed];
 
-    if (v11 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
     {
       [ENExposureCalculationSession filterAdvertisements:fromKey:];
     }
 
     v12 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v13 = [v12 isRPILoggingAllowed];
+    isRPILoggingAllowed = [v12 isRPILoggingAllowed];
 
-    if (!v13)
+    if (!isRPILoggingAllowed)
     {
       v90 = MEMORY[0x277CBEBF0];
       goto LABEL_116;
@@ -685,7 +685,7 @@ LABEL_21:
     goto LABEL_91;
   }
 
-  v14 = malloc_type_malloc(16 * v8, 0x1000040451B5BE8uLL);
+  v14 = malloc_type_malloc(16 * rollingPeriod, 0x1000040451B5BE8uLL);
   if (!v14)
   {
     if (gLogCategory__ENExposureCalculationSession <= 90 && (gLogCategory__ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
@@ -699,10 +699,10 @@ LABEL_91:
   }
 
   v15 = v14;
-  v91 = self;
+  selfCopy = self;
   v16 = v9;
-  v88 = v7;
-  [v7 deriveRollingProximityIdentifiersWithBuffer:v14 count:v9];
+  v88 = keyCopy;
+  [keyCopy deriveRollingProximityIdentifiersWithBuffer:v14 count:v9];
   v17 = objc_alloc_init(MEMORY[0x277CBEB10]);
   if (v9)
   {
@@ -727,8 +727,8 @@ LABEL_91:
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v87 = v6;
-  v22 = v6;
+  v87 = advertisementsCopy;
+  v22 = advertisementsCopy;
   v23 = [v22 countByEnumeratingWithState:&v103 objects:v109 count:16];
   if (v23)
   {
@@ -756,17 +756,17 @@ LABEL_91:
         else
         {
           v30 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v31 = [v30 isSensitiveLoggingAllowed];
+          isSensitiveLoggingAllowed2 = [v30 isSensitiveLoggingAllowed];
 
-          if (v31 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+          if (isSensitiveLoggingAllowed2 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
           {
             [ENExposureCalculationSession filterAdvertisements:fromKey:];
           }
 
           v32 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v33 = [v32 isRPILoggingAllowed];
+          isRPILoggingAllowed2 = [v32 isRPILoggingAllowed];
 
-          if (v33 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+          if (isRPILoggingAllowed2 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
           {
             [ENExposureCalculationSession filterAdvertisements:fromKey:];
           }
@@ -806,31 +806,31 @@ LABEL_91:
 
         v39 = *(*(&v99 + 1) + 8 * v38);
         v40 = [v39 decryptedMetadataForTemporaryExposureKey:{v88, v85, v86}];
-        v41 = [v39 saturated];
-        v42 = [v40 attenuationForRSSI:objc_msgSend(v39 saturated:{"typicalRSSI"), v41}];
-        v43 = [v40 attenuationForRSSI:objc_msgSend(v39 saturated:{"maxRSSI"), v41}];
+        saturated = [v39 saturated];
+        v42 = [v40 attenuationForRSSI:objc_msgSend(v39 saturated:{"typicalRSSI"), saturated}];
+        v43 = [v40 attenuationForRSSI:objc_msgSend(v39 saturated:{"maxRSSI"), saturated}];
         if ([v40 txPower] >= -60 && objc_msgSend(v40, "txPower") < 21)
         {
           if (v42)
           {
             if (v43)
             {
-              v48 = [v39 counter];
-              v49 = [(NSNumber *)v91->_advertisementSampleCountThreshold unsignedShortValue];
-              if (v48 >= v49)
+              counter = [v39 counter];
+              unsignedShortValue = [(NSNumber *)selfCopy->_advertisementSampleCountThreshold unsignedShortValue];
+              if (counter >= unsignedShortValue)
               {
                 [v89 addObject:v39];
               }
 
               else
               {
-                v50 = v49;
+                v50 = unsignedShortValue;
                 v51 = +[ENLoggingPrefs sharedENLoggingPrefs];
-                v52 = [v51 isSensitiveLoggingAllowed];
+                isSensitiveLoggingAllowed3 = [v51 isSensitiveLoggingAllowed];
 
-                if (v52 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+                if (isSensitiveLoggingAllowed3 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
                 {
-                  v85 = v48;
+                  v85 = counter;
                   v86 = v50;
                   LogPrintF_safe();
                 }
@@ -840,17 +840,17 @@ LABEL_91:
             else
             {
               v57 = +[ENLoggingPrefs sharedENLoggingPrefs];
-              v58 = [v57 isSensitiveLoggingAllowed];
+              isSensitiveLoggingAllowed4 = [v57 isSensitiveLoggingAllowed];
 
-              if (v58 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+              if (isSensitiveLoggingAllowed4 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
               {
                 [ENExposureCalculationSession filterAdvertisements:fromKey:];
               }
 
               v59 = +[ENLoggingPrefs sharedENLoggingPrefs];
-              v60 = [v59 isRPILoggingAllowed];
+              isRPILoggingAllowed3 = [v59 isRPILoggingAllowed];
 
-              if (v60 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+              if (isRPILoggingAllowed3 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
               {
                 [ENExposureCalculationSession filterAdvertisements:fromKey:];
               }
@@ -860,17 +860,17 @@ LABEL_91:
           else
           {
             v53 = +[ENLoggingPrefs sharedENLoggingPrefs];
-            v54 = [v53 isSensitiveLoggingAllowed];
+            isSensitiveLoggingAllowed5 = [v53 isSensitiveLoggingAllowed];
 
-            if (v54 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+            if (isSensitiveLoggingAllowed5 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
             {
               [ENExposureCalculationSession filterAdvertisements:fromKey:];
             }
 
             v55 = +[ENLoggingPrefs sharedENLoggingPrefs];
-            v56 = [v55 isRPILoggingAllowed];
+            isRPILoggingAllowed4 = [v55 isRPILoggingAllowed];
 
-            if (v56 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+            if (isRPILoggingAllowed4 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
             {
               [ENExposureCalculationSession filterAdvertisements:fromKey:];
             }
@@ -880,17 +880,17 @@ LABEL_91:
         else
         {
           v44 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v45 = [v44 isSensitiveLoggingAllowed];
+          isSensitiveLoggingAllowed6 = [v44 isSensitiveLoggingAllowed];
 
-          if (v45 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+          if (isSensitiveLoggingAllowed6 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
           {
             [ENExposureCalculationSession filterAdvertisements:fromKey:];
           }
 
           v46 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v47 = [v46 isRPILoggingAllowed];
+          isRPILoggingAllowed5 = [v46 isRPILoggingAllowed];
 
-          if (v47 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+          if (isRPILoggingAllowed5 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
           {
             [ENExposureCalculationSession filterAdvertisements:v40 fromKey:?];
           }
@@ -909,7 +909,7 @@ LABEL_91:
 
   v62 = objc_alloc_init(MEMORY[0x277CBEB30]);
   v90 = objc_alloc_init(MEMORY[0x277CBEB10]);
-  [(NSNumber *)v91->_allowedRPIBroadcastDuration floatValue];
+  [(NSNumber *)selfCopy->_allowedRPIBroadcastDuration floatValue];
   if (v63 >= 1200.0)
   {
     v65 = 1200.0;
@@ -917,7 +917,7 @@ LABEL_91:
 
   else
   {
-    [(NSNumber *)v91->_allowedRPIBroadcastDuration floatValue];
+    [(NSNumber *)selfCopy->_allowedRPIBroadcastDuration floatValue];
     v65 = v64;
   }
 
@@ -966,17 +966,17 @@ LABEL_91:
         else
         {
           v78 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v79 = [v78 isSensitiveLoggingAllowed];
+          isSensitiveLoggingAllowed7 = [v78 isSensitiveLoggingAllowed];
 
-          if (v79 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+          if (isSensitiveLoggingAllowed7 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
           {
             [ENExposureCalculationSession filterAdvertisements:fromKey:];
           }
 
           v80 = +[ENLoggingPrefs sharedENLoggingPrefs];
-          v81 = [v80 isRPILoggingAllowed];
+          isRPILoggingAllowed6 = [v80 isRPILoggingAllowed];
 
-          if (v81 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
+          if (isRPILoggingAllowed6 && gLogCategory_ENExposureCalculationSession <= 50 && (gLogCategory_ENExposureCalculationSession != -1 || _LogCategory_Initialize()))
           {
             [ENExposureCalculationSession filterAdvertisements:fromKey:];
           }
@@ -993,8 +993,8 @@ LABEL_91:
     while (v82);
   }
 
-  v6 = v87;
-  v7 = v88;
+  advertisementsCopy = v87;
+  keyCopy = v88;
 LABEL_116:
 
   v83 = *MEMORY[0x277D85DE8];
@@ -1002,36 +1002,36 @@ LABEL_116:
   return v90;
 }
 
-- ($6B14AE857B43CEDA041F2BA42EED81B6)scanInstanceFromAdvertisement:(SEL)a3 key:(id)a4
+- ($6B14AE857B43CEDA041F2BA42EED81B6)scanInstanceFromAdvertisement:(SEL)advertisement key:(id)key
 {
-  v6 = a4;
-  v7 = [v6 decryptedMetadataForTemporaryExposureKey:a5];
-  v8 = [v6 saturated];
-  [v7 attenuationForRSSI:objc_msgSend(v6 saturated:{"typicalRSSI"), v8}];
-  [v7 attenuationForRSSI:objc_msgSend(v6 saturated:{"maxRSSI"), v8}];
+  keyCopy = key;
+  v7 = [keyCopy decryptedMetadataForTemporaryExposureKey:a5];
+  saturated = [keyCopy saturated];
+  [v7 attenuationForRSSI:objc_msgSend(keyCopy saturated:{"typicalRSSI"), saturated}];
+  [v7 attenuationForRSSI:objc_msgSend(keyCopy saturated:{"maxRSSI"), saturated}];
   LODWORD(v11) = 0;
-  [v6 timestamp];
+  [keyCopy timestamp];
   HIDWORD(v11) = v9;
-  [v6 scanInterval];
+  [keyCopy scanInterval];
 
   return v11;
 }
 
-- (id)exposureWindowsForMatchedAdvertisements:(id)a3 key:(id)a4 options:(int64_t)a5
+- (id)exposureWindowsForMatchedAdvertisements:(id)advertisements key:(id)key options:(int64_t)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v74 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v64 = v8;
-  if (![(ENExposureCalculationSession *)self _shouldMatchKey:v9])
+  advertisementsCopy = advertisements;
+  keyCopy = key;
+  v64 = advertisementsCopy;
+  if (![(ENExposureCalculationSession *)self _shouldMatchKey:keyCopy])
   {
     v50 = 0;
     goto LABEL_58;
   }
 
-  v62 = v5;
-  v63 = [(ENExposureCalculationSession *)self filterAdvertisements:v8 fromKey:v9];
+  v62 = optionsCopy;
+  v63 = [(ENExposureCalculationSession *)self filterAdvertisements:advertisementsCopy fromKey:keyCopy];
   v10 = v63;
   if ([v63 count])
   {
@@ -1115,7 +1115,7 @@ LABEL_116:
           {
             v38 = objc_autoreleasePoolPush();
             v39 = [v13 objectAtIndex:v36];
-            *(v37 - 1) = [(ENExposureCalculationSession *)self scanInstanceFromAdvertisement:v39 key:v9];
+            *(v37 - 1) = [(ENExposureCalculationSession *)self scanInstanceFromAdvertisement:v39 key:keyCopy];
             *v37 = v40;
 
             objc_autoreleasePoolPop(v38);
@@ -1126,17 +1126,17 @@ LABEL_116:
           while (v33 != v36);
         }
 
-        v41 = [v13 lastObject];
-        v42 = [v41 decryptedMetadataForTemporaryExposureKey:v9];
-        v43 = v9;
-        v44 = [v43 rollingStartNumber];
-        v61 = [v43 daysSinceOnsetOfSymptoms];
-        v60 = [v43 transmissionRiskLevel];
-        v59 = [v43 diagnosisReportType];
-        v58 = [v43 variantOfConcernType];
+        lastObject = [v13 lastObject];
+        v42 = [lastObject decryptedMetadataForTemporaryExposureKey:keyCopy];
+        v43 = keyCopy;
+        rollingStartNumber = [v43 rollingStartNumber];
+        daysSinceOnsetOfSymptoms = [v43 daysSinceOnsetOfSymptoms];
+        transmissionRiskLevel = [v43 transmissionRiskLevel];
+        diagnosisReportType = [v43 diagnosisReportType];
+        variantOfConcernType = [v43 variantOfConcernType];
 
-        v45 = [v42 calibrationConfidence];
-        v46 = v45;
+        calibrationConfidence = [v42 calibrationConfidence];
+        v46 = calibrationConfidence;
         if ((v62 & 2) != 0)
         {
           v47 = INFINITY;
@@ -1177,13 +1177,13 @@ LABEL_116:
           cachedExposureWindowMetadataCount = self->_cachedExposureWindowMetadataCount;
           self->_cachedExposureWindowMetadataCount = cachedExposureWindowMetadataCount + 1;
           v49 = &self->_exposureWindowMetadataBuffer[cachedExposureWindowMetadataCount];
-          v49->var0 = v44;
+          v49->var0 = rollingStartNumber;
           *(&v49->var0 + 1) = 0;
-          v49->var1 = v61;
-          v49->var2 = v60;
-          v49->var3 = v59;
-          v49->var4 = v45;
-          v49->var5 = v58;
+          v49->var1 = daysSinceOnsetOfSymptoms;
+          v49->var2 = transmissionRiskLevel;
+          v49->var3 = diagnosisReportType;
+          v49->var4 = calibrationConfidence;
+          v49->var5 = variantOfConcernType;
           *(&v49->var5 + 1) = 0;
           v65[0] = MEMORY[0x277D85DD0];
           v65[1] = 3221225472;
@@ -1229,12 +1229,12 @@ LABEL_54:
         _Block_object_dispose(&v71, 8);
 LABEL_55:
         exposureConfiguration = self->_exposureConfiguration;
-        *&v71 = v44;
-        *(&v71 + 1) = v61;
-        LOBYTE(v72) = v60;
-        BYTE1(v72) = v59;
+        *&v71 = rollingStartNumber;
+        *(&v71 + 1) = daysSinceOnsetOfSymptoms;
+        LOBYTE(v72) = transmissionRiskLevel;
+        BYTE1(v72) = diagnosisReportType;
         BYTE2(v72) = v46;
-        BYTE3(v72) = v58;
+        BYTE3(v72) = variantOfConcernType;
         HIDWORD(v72) = 0;
         v50 = exposureWindowsForScanInstances(v35, v33, &v71, (v62 & 1) == 0, exposureConfiguration, v47);
         free(v35);
@@ -1301,29 +1301,29 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
   return result;
 }
 
-- (BOOL)_shouldMatchKey:(id)a3
+- (BOOL)_shouldMatchKey:(id)key
 {
-  v4 = [a3 diagnosisReportType];
-  if (v4 == 5)
+  diagnosisReportType = [key diagnosisReportType];
+  if (diagnosisReportType == 5)
   {
     return 0;
   }
 
   else
   {
-    return v4 != 4 || self->_allowRecursiveReportType;
+    return diagnosisReportType != 4 || self->_allowRecursiveReportType;
   }
 }
 
-- (void)enumerateCachedExposureWindows:(id)a3 inRange:(_NSRange)a4 withBatchSize:(unsigned int)a5 options:(int64_t)a6
+- (void)enumerateCachedExposureWindows:(id)windows inRange:(_NSRange)range withBatchSize:(unsigned int)size options:(int64_t)options
 {
-  location = a4.location;
-  v41 = a4.location + a4.length;
-  v42 = a3;
+  location = range.location;
+  v41 = range.location + range.length;
+  windowsCopy = windows;
   cachedExposureWindowCount = self->_cachedExposureWindowCount;
   if (v41 <= cachedExposureWindowCount)
   {
-    if ((a6 & 2) != 0)
+    if ((options & 2) != 0)
     {
       v11 = INFINITY;
     }
@@ -1333,12 +1333,12 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
       v11 = 1800.0;
     }
 
-    if ((a6 & 2) != 0)
+    if ((options & 2) != 0)
     {
       cachedExposureWindowCount = self->_cachedExposureWindowMetadataCount;
     }
 
-    v44 = a5;
+    sizeCopy = size;
     scanInstanceBuffer = self->_scanInstanceBuffer;
     p_scanInstanceBuffer = &self->_scanInstanceBuffer;
     v38 = a2;
@@ -1392,7 +1392,7 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
     v24 = objc_alloc_init(MEMORY[0x277CBEB10]);
     if (location < v41)
     {
-      v39 = v44;
+      v39 = sizeCopy;
       v47 = v24;
       do
       {
@@ -1425,7 +1425,7 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
             if (v14 < cachedScanInstanceCount)
             {
               v31 = v25;
-              v32 = a6;
+              optionsCopy = options;
               v33 = v28[1];
               v34 = v28 + 1;
               v26 = v14;
@@ -1439,7 +1439,7 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
                 }
               }
 
-              a6 = v32;
+              options = optionsCopy;
               v25 = v31;
               v24 = v47;
             }
@@ -1453,7 +1453,7 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
             v35 = &self->_exposureWindowMetadataBuffer[v29];
             v48 = *&v35->var0;
             v49 = *&v35->var2;
-            v36 = exposureWindowsForScanInstances(v27 + 2 * v14, (v26 - v14), &v48, (a6 & 1) == 0, self->_exposureConfiguration, v11);
+            v36 = exposureWindowsForScanInstances(v27 + 2 * v14, (v26 - v14), &v48, (options & 1) == 0, self->_exposureConfiguration, v11);
             [v24 addObjectsFromArray:v36];
 
             v14 = v26;
@@ -1462,7 +1462,7 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
           while ([v24 count] < v25);
         }
 
-        v42[2](v42, v24, 0);
+        windowsCopy[2](windowsCopy, v24, 0);
         [v24 removeAllObjects];
         objc_autoreleasePoolPop(context);
         location = v45;
@@ -1474,16 +1474,16 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
   }
 }
 
-- (id)groupExposureWindowsByDay:(id)a3
+- (id)groupExposureWindowsByDay:(id)day
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dayCopy = day;
   v4 = [MEMORY[0x277CBEA88] calendarWithIdentifier:*MEMORY[0x277CBE5B8]];
   v25 = [MEMORY[0x277CBEBA8] timeZoneForSecondsFromGMT:0];
   [v4 setTimeZone:?];
-  v5 = [MEMORY[0x277CBEAA0] date];
+  date = [MEMORY[0x277CBEAA0] date];
   v26 = v4;
-  v6 = [v4 startOfDayForDate:v5];
+  v6 = [v4 startOfDayForDate:date];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB10]);
   v8 = 7;
@@ -1500,7 +1500,7 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = dayCopy;
   v10 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
@@ -1516,8 +1516,8 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = [v14 date];
-        [v6 timeIntervalSinceDate:v15];
+        date2 = [v14 date];
+        [v6 timeIntervalSinceDate:date2];
         v17 = v16 / 0x15180;
 
         v18 = -1;
@@ -1543,10 +1543,10 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
   return v7;
 }
 
-- (id)groupExposureWindowsByInfectiousness:(id)a3
+- (id)groupExposureWindowsByInfectiousness:(id)infectiousness
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infectiousnessCopy = infectiousness;
   v4 = objc_alloc_init(MEMORY[0x277CBEB10]);
   v5 = 3;
   do
@@ -1562,7 +1562,7 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v3;
+  v7 = infectiousnessCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1603,16 +1603,16 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
   return v4;
 }
 
-- (id)attenuationDurationMapDataForExposureWindows:(id)a3
+- (id)attenuationDurationMapDataForExposureWindows:(id)windows
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  windowsCopy = windows;
   v4 = objc_alloc_init(MEMORY[0x277CBEB10]);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v3;
+  v5 = windowsCopy;
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v6)
   {
@@ -1627,8 +1627,8 @@ uint64_t __84__ENExposureCalculationSession_exposureWindowsForMatchedAdvertiseme
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v33 + 1) + 8 * i) scanInstances];
-        [v4 addObjectsFromArray:v10];
+        scanInstances = [*(*(&v33 + 1) + 8 * i) scanInstances];
+        [v4 addObjectsFromArray:scanInstances];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];

@@ -1,21 +1,21 @@
 @interface PREditingRequestRemoteViewControllerPresentationAction
 - (CGRect)presentedViewScreenRect;
-- (PREditingRequestRemoteViewControllerPresentationAction)initWithSourceLayerRenderId:(unint64_t)a3 sourceContextId:(unsigned int)a4 presentedViewScreenRect:(CGRect)a5;
+- (PREditingRequestRemoteViewControllerPresentationAction)initWithSourceLayerRenderId:(unint64_t)id sourceContextId:(unsigned int)contextId presentedViewScreenRect:(CGRect)rect;
 - (unint64_t)sourceLayerRenderId;
 - (unsigned)sourceContextId;
 @end
 
 @implementation PREditingRequestRemoteViewControllerPresentationAction
 
-- (PREditingRequestRemoteViewControllerPresentationAction)initWithSourceLayerRenderId:(unint64_t)a3 sourceContextId:(unsigned int)a4 presentedViewScreenRect:(CGRect)a5
+- (PREditingRequestRemoteViewControllerPresentationAction)initWithSourceLayerRenderId:(unint64_t)id sourceContextId:(unsigned int)contextId presentedViewScreenRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = *&a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = *&contextId;
   v12 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:id];
   [v12 setObject:v13 forSetting:1];
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v9];
@@ -37,26 +37,26 @@
 
 - (unint64_t)sourceLayerRenderId
 {
-  v2 = [(PREditingRequestRemoteViewControllerPresentationAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedLongLongValue];
+  info = [(PREditingRequestRemoteViewControllerPresentationAction *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unsigned)sourceContextId
 {
-  v2 = [(PREditingRequestRemoteViewControllerPresentationAction *)self info];
-  v3 = [v2 objectForSetting:2];
-  v4 = [v3 unsignedIntValue];
+  info = [(PREditingRequestRemoteViewControllerPresentationAction *)self info];
+  v3 = [info objectForSetting:2];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (CGRect)presentedViewScreenRect
 {
-  v2 = [(PREditingRequestRemoteViewControllerPresentationAction *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(PREditingRequestRemoteViewControllerPresentationAction *)self info];
+  v3 = [info objectForSetting:3];
   [v3 bs_CGRectValue];
   v5 = v4;
   v7 = v6;

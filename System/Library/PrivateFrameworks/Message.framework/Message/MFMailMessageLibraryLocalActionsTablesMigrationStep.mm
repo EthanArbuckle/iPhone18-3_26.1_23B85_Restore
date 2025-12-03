@@ -2,7 +2,7 @@
 + (id)log;
 - (BOOL)_populateServerMessages;
 - (BOOL)performMigrationStep;
-- (MFMailMessageLibraryLocalActionsTablesMigrationStep)initWithSQLiteConnection:(id)a3;
+- (MFMailMessageLibraryLocalActionsTablesMigrationStep)initWithSQLiteConnection:(id)connection;
 - (id)_offlineCacheOperations;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __58__MFMailMessageLibraryLocalActionsTablesMigrationStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_16 != -1)
   {
     dispatch_once(&log_onceToken_16, block);
@@ -33,16 +33,16 @@ void __58__MFMailMessageLibraryLocalActionsTablesMigrationStep_log__block_invoke
   log_log_16 = v1;
 }
 
-- (MFMailMessageLibraryLocalActionsTablesMigrationStep)initWithSQLiteConnection:(id)a3
+- (MFMailMessageLibraryLocalActionsTablesMigrationStep)initWithSQLiteConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = MFMailMessageLibraryLocalActionsTablesMigrationStep;
   v6 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -51,39 +51,39 @@ void __58__MFMailMessageLibraryLocalActionsTablesMigrationStep_log__block_invoke
 - (BOOL)performMigrationStep
 {
   v32[14] = *MEMORY[0x1E69E9840];
-  v3 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self connection];
-  v25 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _serverMessagesTableDefinition];
-  v32[0] = v25;
-  v24 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _serverMessagesMessageIndexDefinition];
-  v32[1] = v24;
-  v23 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _serverLabelsTableDefinition];
-  v32[2] = v23;
-  v22 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _localMessageActionsTableDefinition];
-  v32[3] = v22;
-  v21 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _localMessageActionsMailboxRowIDIndexDefinition];
-  v32[4] = v21;
-  v20 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesTableDefinition];
-  v32[5] = v20;
-  v4 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesActionIndexDefinition];
-  v32[6] = v4;
-  v5 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesMessageIndexDefinition];
-  v32[7] = v5;
-  v6 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesDestinationMessageIndexDefinition];
-  v32[8] = v6;
-  v7 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionLabelsTableDefinition];
-  v32[9] = v7;
-  v8 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionLabelsActionIndexDefinition];
-  v32[10] = v8;
-  v9 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionLabelsLabelIndexDefinition];
-  v32[11] = v9;
-  v10 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionFlagsTableDefinition];
-  v32[12] = v10;
-  v11 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionFlagsActionIndexDefinition];
-  v32[13] = v11;
+  connection = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self connection];
+  _serverMessagesTableDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _serverMessagesTableDefinition];
+  v32[0] = _serverMessagesTableDefinition;
+  _serverMessagesMessageIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _serverMessagesMessageIndexDefinition];
+  v32[1] = _serverMessagesMessageIndexDefinition;
+  _serverLabelsTableDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _serverLabelsTableDefinition];
+  v32[2] = _serverLabelsTableDefinition;
+  _localMessageActionsTableDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _localMessageActionsTableDefinition];
+  v32[3] = _localMessageActionsTableDefinition;
+  _localMessageActionsMailboxRowIDIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _localMessageActionsMailboxRowIDIndexDefinition];
+  v32[4] = _localMessageActionsMailboxRowIDIndexDefinition;
+  _actionMessagesTableDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesTableDefinition];
+  v32[5] = _actionMessagesTableDefinition;
+  _actionMessagesActionIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesActionIndexDefinition];
+  v32[6] = _actionMessagesActionIndexDefinition;
+  _actionMessagesMessageIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesMessageIndexDefinition];
+  v32[7] = _actionMessagesMessageIndexDefinition;
+  _actionMessagesDestinationMessageIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionMessagesDestinationMessageIndexDefinition];
+  v32[8] = _actionMessagesDestinationMessageIndexDefinition;
+  _actionLabelsTableDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionLabelsTableDefinition];
+  v32[9] = _actionLabelsTableDefinition;
+  _actionLabelsActionIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionLabelsActionIndexDefinition];
+  v32[10] = _actionLabelsActionIndexDefinition;
+  _actionLabelsLabelIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionLabelsLabelIndexDefinition];
+  v32[11] = _actionLabelsLabelIndexDefinition;
+  _actionFlagsTableDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionFlagsTableDefinition];
+  v32[12] = _actionFlagsTableDefinition;
+  _actionFlagsActionIndexDefinition = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self _actionFlagsActionIndexDefinition];
+  v32[13] = _actionFlagsActionIndexDefinition;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:14];
 
   v12 = [v26 componentsJoinedByString:@"\n"];
-  if (![v3 executeStatementString:v12 errorMessage:@"Creating server messages and local actions tables"] || !-[MFMailMessageLibraryLocalActionsTablesMigrationStep _populateServerMessages](self, "_populateServerMessages"))
+  if (![connection executeStatementString:v12 errorMessage:@"Creating server messages and local actions tables"] || !-[MFMailMessageLibraryLocalActionsTablesMigrationStep _populateServerMessages](self, "_populateServerMessages"))
   {
     goto LABEL_14;
   }
@@ -106,7 +106,7 @@ void __58__MFMailMessageLibraryLocalActionsTablesMigrationStep_log__block_invoke
           objc_enumerationMutation(v13);
         }
 
-        if (([*(*(&v27 + 1) + 8 * i) translateToLocalActionWithConnection:v3] & 1) == 0)
+        if (([*(*(&v27 + 1) + 8 * i) translateToLocalActionWithConnection:connection] & 1) == 0)
         {
 
           goto LABEL_14;
@@ -123,9 +123,9 @@ void __58__MFMailMessageLibraryLocalActionsTablesMigrationStep_log__block_invoke
     }
   }
 
-  if ([v3 executeStatementString:@"DROP TABLE offline_cache_operations" errorMessage:@"Dropping offline_cache_operations"])
+  if ([connection executeStatementString:@"DROP TABLE offline_cache_operations" errorMessage:@"Dropping offline_cache_operations"])
   {
-    v17 = [v3 executeStatementString:@"DROP TABLE offline_cache_replay_data" errorMessage:@"Dropping offline_cache_replay_data"];
+    v17 = [connection executeStatementString:@"DROP TABLE offline_cache_replay_data" errorMessage:@"Dropping offline_cache_replay_data"];
   }
 
   else
@@ -140,7 +140,7 @@ LABEL_14:
 
 - (BOOL)_populateServerMessages
 {
-  v2 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self connection];
+  connection = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self connection];
   v3 = objc_opt_new();
   v4 = objc_opt_new();
   [v3 addObject:@"message"];
@@ -174,15 +174,15 @@ LABEL_14:
   v7 = [v4 componentsJoinedByString:{@", "}];
   v8 = [v5 stringWithFormat:@"INSERT OR IGNORE INTO server_messages (%@) SELECT %@ FROM messages JOIN mailboxes ON messages.mailbox = mailboxes.ROWID WHERE %@", v6, v7, @"((messages.flags & (1 << 32)) == 0) AND (mailboxes.url LIKE 'imap://%%')"];
 
-  LOBYTE(v6) = [v2 executeStatementString:v8 errorMessage:@"Creating server_messages from messages"];
+  LOBYTE(v6) = [connection executeStatementString:v8 errorMessage:@"Creating server_messages from messages"];
   return v6;
 }
 
 - (id)_offlineCacheOperations
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self connection];
-  v5 = [v4 preparedStatementForQueryString:@"SELECT operation_data FROM offline_cache_operations WHERE completed = '0' ORDER BY rowid ASC"];
+  connection = [(MFMailMessageLibraryLocalActionsTablesMigrationStep *)self connection];
+  v5 = [connection preparedStatementForQueryString:@"SELECT operation_data FROM offline_cache_operations WHERE completed = '0' ORDER BY rowid ASC"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __78__MFMailMessageLibraryLocalActionsTablesMigrationStep__offlineCacheOperations__block_invoke;
@@ -194,7 +194,7 @@ LABEL_14:
   v8 = v12;
   if ((v7 & 1) == 0)
   {
-    [v4 handleError:v8 message:@"getting offline cache operations"];
+    [connection handleError:v8 message:@"getting offline cache operations"];
   }
 
   v9 = v14;

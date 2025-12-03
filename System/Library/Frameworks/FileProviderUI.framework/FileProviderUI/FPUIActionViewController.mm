@@ -1,29 +1,29 @@
 @interface FPUIActionViewController
-+ (id)actionControllerForActionIdentifier:(id)a3 actionTitle:(id)a4 items:(id)a5 providerIdentifier:(id)a6 domainIdentifier:(id)a7;
-+ (id)actionControllerForAuthenticationUsingURL:(id)a3 providerIdentifier:(id)a4;
-+ (id)actionControllerForConnectingToServerURL:(id)a3 actionTitle:(id)a4 providerIdentifier:(id)a5;
-+ (id)actionControllerForError:(id)a3 extensionIdentifier:(id)a4 providerDomainIdentifier:(id)a5;
-+ (id)actionControllerForError:(id)a3 providerIdentifier:(id)a4;
-+ (id)actionControllerForInlineError:(id)a3 providerIdentifier:(id)a4;
-+ (id)actionControllerForInlineError:(id)a3 providerIdentifier:(id)a4 providerDomainIdentifier:(id)a5;
-- (FPUIActionViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (id)actionControllerForActionIdentifier:(id)identifier actionTitle:(id)title items:(id)items providerIdentifier:(id)providerIdentifier domainIdentifier:(id)domainIdentifier;
++ (id)actionControllerForAuthenticationUsingURL:(id)l providerIdentifier:(id)identifier;
++ (id)actionControllerForConnectingToServerURL:(id)l actionTitle:(id)title providerIdentifier:(id)identifier;
++ (id)actionControllerForError:(id)error extensionIdentifier:(id)identifier providerDomainIdentifier:(id)domainIdentifier;
++ (id)actionControllerForError:(id)error providerIdentifier:(id)identifier;
++ (id)actionControllerForInlineError:(id)error providerIdentifier:(id)identifier;
++ (id)actionControllerForInlineError:(id)error providerIdentifier:(id)identifier providerDomainIdentifier:(id)domainIdentifier;
+- (FPUIActionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (FPUIActionViewControllerDelegate)delegate;
-- (id)_getExtensionWithError:(id *)a3;
-- (void)_delegateDidFinishWithUserInfo:(id)a3 error:(id)a4;
+- (id)_getExtensionWithError:(id *)error;
+- (void)_delegateDidFinishWithUserInfo:(id)info error:(id)error;
 - (void)_dismissViewController;
-- (void)effectiveAppearanceDidChange:(id)a3;
-- (void)embedViewController:(id)a3;
-- (void)remoteActionContext:(id)a3 didEncounterError:(id)a4 completionHandler:(id)a5;
+- (void)effectiveAppearanceDidChange:(id)change;
+- (void)embedViewController:(id)controller;
+- (void)remoteActionContext:(id)context didEncounterError:(id)error completionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
 @implementation FPUIActionViewController
 
-- (FPUIActionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FPUIActionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = FPUIActionViewController;
-  v4 = [(FPUIActionViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(FPUIActionViewController *)&v8 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -34,126 +34,126 @@
   return v5;
 }
 
-+ (id)actionControllerForActionIdentifier:(id)a3 actionTitle:(id)a4 items:(id)a5 providerIdentifier:(id)a6 domainIdentifier:(id)a7
++ (id)actionControllerForActionIdentifier:(id)identifier actionTitle:(id)title items:(id)items providerIdentifier:(id)providerIdentifier domainIdentifier:(id)domainIdentifier
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  domainIdentifierCopy = domainIdentifier;
+  providerIdentifierCopy = providerIdentifier;
+  itemsCopy = items;
+  titleCopy = title;
+  identifierCopy = identifier;
   v16 = [[FPUIActionViewController alloc] initWithNibName:0 bundle:0];
-  [(FPUIActionViewController *)v16 setProviderIdentifier:v12];
+  [(FPUIActionViewController *)v16 setProviderIdentifier:providerIdentifierCopy];
 
-  [(FPUIActionViewController *)v16 setActionIdentifier:v15];
-  [(FPUIActionViewController *)v16 setItems:v13];
+  [(FPUIActionViewController *)v16 setActionIdentifier:identifierCopy];
+  [(FPUIActionViewController *)v16 setItems:itemsCopy];
 
-  [(FPUIActionViewController *)v16 setActionTitle:v14];
-  [(FPUIActionViewController *)v16 setDomainIdentifier:v11];
+  [(FPUIActionViewController *)v16 setActionTitle:titleCopy];
+  [(FPUIActionViewController *)v16 setDomainIdentifier:domainIdentifierCopy];
 
   [(FPUIActionViewController *)v16 setModalPresentationStyle:2];
 
   return v16;
 }
 
-+ (id)actionControllerForAuthenticationUsingURL:(id)a3 providerIdentifier:(id)a4
++ (id)actionControllerForAuthenticationUsingURL:(id)l providerIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  lCopy = l;
   v7 = [[FPUIActionViewController alloc] initWithNibName:0 bundle:0];
-  [(FPUIActionViewController *)v7 setProviderIdentifier:v5];
+  [(FPUIActionViewController *)v7 setProviderIdentifier:identifierCopy];
 
   [(FPUIActionViewController *)v7 setActionIdentifier:@"com.apple.FileProviderUI.authenticate"];
   [(FPUIActionViewController *)v7 setItems:MEMORY[0x277CBEBF8]];
-  [(FPUIActionViewController *)v7 setAuthenticationURL:v6];
+  [(FPUIActionViewController *)v7 setAuthenticationURL:lCopy];
 
   [(FPUIActionViewController *)v7 setActionTitle:@"Authenticate"];
 
   return v7;
 }
 
-+ (id)actionControllerForConnectingToServerURL:(id)a3 actionTitle:(id)a4 providerIdentifier:(id)a5
++ (id)actionControllerForConnectingToServerURL:(id)l actionTitle:(id)title providerIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  titleCopy = title;
+  lCopy = l;
   v10 = [[FPUIActionViewController alloc] initWithNibName:0 bundle:0];
-  [(FPUIActionViewController *)v10 setProviderIdentifier:v7];
+  [(FPUIActionViewController *)v10 setProviderIdentifier:identifierCopy];
 
   [(FPUIActionViewController *)v10 setActionIdentifier:@"com.apple.FileProviderUI.authenticate"];
   [(FPUIActionViewController *)v10 setItems:MEMORY[0x277CBEBF8]];
-  [(FPUIActionViewController *)v10 setActionTitle:v8];
+  [(FPUIActionViewController *)v10 setActionTitle:titleCopy];
 
   [(FPUIActionViewController *)v10 setDomainIdentifier:0];
-  [(FPUIActionViewController *)v10 setServerConnectionURL:v9];
+  [(FPUIActionViewController *)v10 setServerConnectionURL:lCopy];
 
   [(FPUIActionViewController *)v10 setModalPresentationStyle:2];
 
   return v10;
 }
 
-+ (id)actionControllerForError:(id)a3 providerIdentifier:(id)a4
++ (id)actionControllerForError:(id)error providerIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  errorCopy = error;
   v7 = [[FPUIActionViewController alloc] initWithNibName:0 bundle:0];
-  [(FPUIActionViewController *)v7 setProviderIdentifier:v5];
+  [(FPUIActionViewController *)v7 setProviderIdentifier:identifierCopy];
 
   [(FPUIActionViewController *)v7 setActionIdentifier:@"com.apple.FileProviderUI.authenticate"];
   [(FPUIActionViewController *)v7 setItems:MEMORY[0x277CBEBF8]];
-  [(FPUIActionViewController *)v7 setError:v6];
+  [(FPUIActionViewController *)v7 setError:errorCopy];
 
   [(FPUIActionViewController *)v7 setActionTitle:@"Authenticate"];
 
   return v7;
 }
 
-+ (id)actionControllerForError:(id)a3 extensionIdentifier:(id)a4 providerDomainIdentifier:(id)a5
++ (id)actionControllerForError:(id)error extensionIdentifier:(id)identifier providerDomainIdentifier:(id)domainIdentifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  domainIdentifierCopy = domainIdentifier;
+  identifierCopy = identifier;
+  errorCopy = error;
   v10 = [[FPUIActionViewController alloc] initWithNibName:0 bundle:0];
-  [(FPUIActionViewController *)v10 setProviderIdentifier:v8];
+  [(FPUIActionViewController *)v10 setProviderIdentifier:identifierCopy];
 
-  [(FPUIActionViewController *)v10 setDomainIdentifier:v7];
+  [(FPUIActionViewController *)v10 setDomainIdentifier:domainIdentifierCopy];
   [(FPUIActionViewController *)v10 setActionIdentifier:@"com.apple.FileProviderUI.authenticate"];
   [(FPUIActionViewController *)v10 setItems:MEMORY[0x277CBEBF8]];
-  [(FPUIActionViewController *)v10 setError:v9];
+  [(FPUIActionViewController *)v10 setError:errorCopy];
 
   [(FPUIActionViewController *)v10 setActionTitle:@"Authenticate"];
 
   return v10;
 }
 
-+ (id)actionControllerForInlineError:(id)a3 providerIdentifier:(id)a4
++ (id)actionControllerForInlineError:(id)error providerIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  errorCopy = error;
   v7 = [[FPUIActionViewController alloc] initWithNibName:0 bundle:0];
-  [(FPUIActionViewController *)v7 setProviderIdentifier:v5];
+  [(FPUIActionViewController *)v7 setProviderIdentifier:identifierCopy];
 
   [(FPUIActionViewController *)v7 setActionIdentifier:@"com.apple.FileProviderUI.authenticate"];
   [(FPUIActionViewController *)v7 setItems:MEMORY[0x277CBEBF8]];
-  [(FPUIActionViewController *)v7 setError:v6];
+  [(FPUIActionViewController *)v7 setError:errorCopy];
 
   [(FPUIActionViewController *)v7 setDisplayInline:1];
 
   return v7;
 }
 
-+ (id)actionControllerForInlineError:(id)a3 providerIdentifier:(id)a4 providerDomainIdentifier:(id)a5
++ (id)actionControllerForInlineError:(id)error providerIdentifier:(id)identifier providerDomainIdentifier:(id)domainIdentifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  domainIdentifierCopy = domainIdentifier;
+  identifierCopy = identifier;
+  errorCopy = error;
   v10 = [[FPUIActionViewController alloc] initWithNibName:0 bundle:0];
-  [(FPUIActionViewController *)v10 setProviderIdentifier:v8];
+  [(FPUIActionViewController *)v10 setProviderIdentifier:identifierCopy];
 
   [(FPUIActionViewController *)v10 setActionIdentifier:@"com.apple.FileProviderUI.authenticate"];
-  [(FPUIActionViewController *)v10 setDomainIdentifier:v7];
+  [(FPUIActionViewController *)v10 setDomainIdentifier:domainIdentifierCopy];
 
   [(FPUIActionViewController *)v10 setItems:MEMORY[0x277CBEBF8]];
-  [(FPUIActionViewController *)v10 setError:v9];
+  [(FPUIActionViewController *)v10 setError:errorCopy];
 
   [(FPUIActionViewController *)v10 setDisplayInline:1];
 
@@ -194,9 +194,9 @@
 
     [(_UIResilientRemoteViewContainerViewController *)self->_placeholderVC delayDisplayOfRemoteController];
     [(FPUIActionViewController *)self embedViewController:self->_placeholderVC];
-    v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v13 = [(FPUIActionViewController *)self view];
-    [v13 setBackgroundColor:v12];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    view = [(FPUIActionViewController *)self view];
+    [view setBackgroundColor:systemBackgroundColor];
 
     if ([(FPUIActionViewController *)self displayInline])
     {
@@ -204,10 +204,10 @@
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v14 = [(_UIResilientRemoteViewContainerViewController *)self->_placeholderVC view];
-      v15 = [v14 subviews];
+      view2 = [(_UIResilientRemoteViewContainerViewController *)self->_placeholderVC view];
+      subviews = [view2 subviews];
 
-      v16 = [v15 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v16 = [subviews countByEnumeratingWithState:&v22 objects:v32 count:16];
       if (v16)
       {
         v17 = v16;
@@ -218,13 +218,13 @@
           {
             if (*v23 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(subviews);
             }
 
             [*(*(&v22 + 1) + 8 * i) setBackgroundColor:0];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v22 objects:v32 count:16];
+          v17 = [subviews countByEnumeratingWithState:&v22 objects:v32 count:16];
         }
 
         while (v17);
@@ -370,53 +370,53 @@ void __39__FPUIActionViewController_viewDidLoad__block_invoke_4(uint64_t a1, uin
   }
 }
 
-- (void)embedViewController:(id)a3
+- (void)embedViewController:(id)controller
 {
-  v18 = a3;
-  v4 = [v18 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:1];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
-  v5 = [v18 view];
-  [v5 setAutoresizingMask:18];
+  view2 = [controllerCopy view];
+  [view2 setAutoresizingMask:18];
 
-  v6 = [(FPUIActionViewController *)self view];
-  [v6 bounds];
+  view3 = [(FPUIActionViewController *)self view];
+  [view3 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v18 view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view4 = [controllerCopy view];
+  [view4 setFrame:{v8, v10, v12, v14}];
 
-  [(FPUIActionViewController *)self addChildViewController:v18];
-  v16 = [(FPUIActionViewController *)self view];
-  v17 = [v18 view];
-  [v16 addSubview:v17];
+  [(FPUIActionViewController *)self addChildViewController:controllerCopy];
+  view5 = [(FPUIActionViewController *)self view];
+  view6 = [controllerCopy view];
+  [view5 addSubview:view6];
 
-  [v18 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)effectiveAppearanceDidChange:(id)a3
+- (void)effectiveAppearanceDidChange:(id)change
 {
-  v6 = a3;
+  changeCopy = change;
   if ([(FPUIActionViewController *)self displayInline])
   {
     browserUserInterfaceStyle = self->_browserUserInterfaceStyle;
-    if (browserUserInterfaceStyle != [v6 browserUserInterfaceStyle])
+    if (browserUserInterfaceStyle != [changeCopy browserUserInterfaceStyle])
     {
-      v5 = [v6 browserUserInterfaceStyle];
-      self->_browserUserInterfaceStyle = v5;
-      [(FPUIActionExtensionViewControllerProtocol *)self->_extensionViewController _setBrowserUserInterfaceStyle:v5];
+      browserUserInterfaceStyle = [changeCopy browserUserInterfaceStyle];
+      self->_browserUserInterfaceStyle = browserUserInterfaceStyle;
+      [(FPUIActionExtensionViewControllerProtocol *)self->_extensionViewController _setBrowserUserInterfaceStyle:browserUserInterfaceStyle];
     }
   }
 }
 
-- (id)_getExtensionWithError:(id *)a3
+- (id)_getExtensionWithError:(id *)error
 {
   v5 = MEMORY[0x277CCA9C8];
-  v6 = [(FPUIActionViewController *)self providerIdentifier];
+  providerIdentifier = [(FPUIActionViewController *)self providerIdentifier];
   v12 = 0;
-  v7 = [v5 extensionWithIdentifier:v6 error:&v12];
+  v7 = [v5 extensionWithIdentifier:providerIdentifier error:&v12];
   v8 = v12;
 
   if (!v7)
@@ -430,7 +430,7 @@ void __39__FPUIActionViewController_viewDidLoad__block_invoke_4(uint64_t a1, uin
 
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      if (!a3)
+      if (!error)
       {
         goto LABEL_7;
       }
@@ -439,11 +439,11 @@ void __39__FPUIActionViewController_viewDidLoad__block_invoke_4(uint64_t a1, uin
     }
 
     [(FPUIActionViewController *)v9 _getExtensionWithError:?];
-    if (a3)
+    if (error)
     {
 LABEL_6:
       v10 = v8;
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -471,13 +471,13 @@ LABEL_7:
   }
 }
 
-- (void)_delegateDidFinishWithUserInfo:(id)a3 error:(id)a4
+- (void)_delegateDidFinishWithUserInfo:(id)info error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  errorCopy = error;
   v8 = fpuiLogHandle;
-  if (v7)
+  if (errorCopy)
   {
     if (!fpuiLogHandle)
     {
@@ -502,38 +502,38 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [(FPUIActionViewController *)self actionIdentifier];
+      actionIdentifier = [(FPUIActionViewController *)self actionIdentifier];
       v16 = 138412290;
-      v17 = v10;
+      v17 = actionIdentifier;
       _os_log_impl(&dword_238356000, v9, OS_LOG_TYPE_INFO, "Action with identifier (%@) did finish.", &v16, 0xCu);
     }
   }
 
-  v11 = [(FPUIActionViewController *)self delegate];
+  delegate = [(FPUIActionViewController *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
-  v13 = [(FPUIActionViewController *)self delegate];
-  v14 = v13;
+  delegate2 = [(FPUIActionViewController *)self delegate];
+  v14 = delegate2;
   if (v12)
   {
-    [v13 actionControllerDidFinishAction:self userInfo:v6 error:v7];
+    [delegate2 actionControllerDidFinishAction:self userInfo:infoCopy error:errorCopy];
   }
 
   else
   {
-    [v13 actionControllerDidFinishAction:self error:v7];
+    [delegate2 actionControllerDidFinishAction:self error:errorCopy];
   }
 
   [(FPUIActionViewController *)self _dismissViewController];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteActionContext:(id)a3 didEncounterError:(id)a4 completionHandler:(id)a5
+- (void)remoteActionContext:(id)context didEncounterError:(id)error completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(FPUIActionViewController *)self delegate];
+  errorCopy = error;
+  handlerCopy = handler;
+  delegate = [(FPUIActionViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
@@ -543,8 +543,8 @@ LABEL_7:
     block[2] = __84__FPUIActionViewController_remoteActionContext_didEncounterError_completionHandler___block_invoke;
     block[3] = &unk_278A51398;
     block[4] = self;
-    v14 = v7;
-    v15 = v8;
+    v14 = errorCopy;
+    v15 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -560,11 +560,11 @@ LABEL_7:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = v7;
+      v17 = errorCopy;
       _os_log_impl(&dword_238356000, v11, OS_LOG_TYPE_INFO, "An error occurred on the service side, but the client won't present it: %@", buf, 0xCu);
     }
 
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
   v12 = *MEMORY[0x277D85DE8];

@@ -1,13 +1,13 @@
 @interface HMDAppleMediaAccessoryMetricsDispatcher
-- (HMDAppleMediaAccessoryMetricsDispatcher)initWithDataSource:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5;
+- (HMDAppleMediaAccessoryMetricsDispatcher)initWithDataSource:(id)source logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler;
 - (HMDAppleMediaAccessoryMetricsDispatcherDataSource)dataSource;
 - (NSString)previousRoomName;
 - (void)registerForDailySetRoomLogEvents;
 - (void)runDailyTask;
-- (void)setPreviousRoomName:(id)a3;
+- (void)setPreviousRoomName:(id)name;
 - (void)submitDailySetRoomEvent;
 - (void)submitDailyStatusEvent;
-- (void)submitRoomChangeEvent:(id)a3 previousRoom:(id)a4;
+- (void)submitRoomChangeEvent:(id)event previousRoom:(id)room;
 @end
 
 @implementation HMDAppleMediaAccessoryMetricsDispatcher
@@ -29,11 +29,11 @@
 - (void)submitDailyStatusEvent
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAppleMediaAccessoryMetricsDispatcher *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDAppleMediaAccessoryMetricsDispatcher *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 numberOfCurrentAccessoryPairedSensorsForAppleMediaAccessoryMetricsDispatcher:self];
+    v5 = [dataSource numberOfCurrentAccessoryPairedSensorsForAppleMediaAccessoryMetricsDispatcher:self];
     v6 = [v4 numberOfTriggersWithCurrentAccessoryPairedSensorsForAppleMediaAccessoryMetricsDispatcher:self];
     v7 = [v4 numberOfActionSetsWithCurrentAccessoryMediaActionForAppleMediaAccessoryMetricsDispatcher:self];
     *&buf = 0;
@@ -68,7 +68,7 @@
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -97,11 +97,11 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
   [v7 submitLogEvent:v8];
 }
 
-- (void)setPreviousRoomName:(id)a3
+- (void)setPreviousRoomName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [nameCopy copy];
   previousRoomName = self->_previousRoomName;
   self->_previousRoomName = v4;
 
@@ -117,13 +117,13 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
   return v3;
 }
 
-- (void)submitRoomChangeEvent:(id)a3 previousRoom:(id)a4
+- (void)submitRoomChangeEvent:(id)event previousRoom:(id)room
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  roomCopy = room;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -134,10 +134,10 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
   }
 
   objc_autoreleasePoolPop(v8);
-  if (!v7)
+  if (!roomCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v9;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -148,10 +148,10 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
     }
 
     objc_autoreleasePoolPop(v12);
-    v7 = &stru_286509E58;
+    roomCopy = &stru_286509E58;
   }
 
-  [(HMDAppleMediaAccessoryMetricsDispatcher *)v9 setPreviousRoomName:v7];
+  [(HMDAppleMediaAccessoryMetricsDispatcher *)selfCopy setPreviousRoomName:roomCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -160,7 +160,7 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
 {
   v33 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -171,19 +171,19 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDAppleMediaAccessoryMetricsDispatcher *)v4 dataSource];
-  v8 = v7;
-  if (v7)
+  dataSource = [(HMDAppleMediaAccessoryMetricsDispatcher *)selfCopy dataSource];
+  v8 = dataSource;
+  if (dataSource)
   {
-    v9 = [v7 currentRoomForAppleMediaAccessoryMetricsDispatcher:v4];
+    v9 = [dataSource currentRoomForAppleMediaAccessoryMetricsDispatcher:selfCopy];
     if (v9)
     {
       os_unfair_lock_lock_with_options();
-      v10 = v4->_previousRoomName;
-      objc_storeStrong(&v4->_previousRoomName, v9);
-      os_unfair_lock_unlock(&v4->_lock);
+      v10 = selfCopy->_previousRoomName;
+      objc_storeStrong(&selfCopy->_previousRoomName, v9);
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v11 = objc_autoreleasePoolPush();
-      v12 = v4;
+      v12 = selfCopy;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -199,23 +199,23 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
 
       objc_autoreleasePoolPop(v11);
       v15 = [[HMDAppleMediaAccessoryDailySetRoomEvent alloc] initWithCurrentRoom:v9 previousRoom:v10];
-      v16 = [(HMDAppleMediaAccessoryMetricsDispatcher *)v12 logEventSubmitter];
-      [v16 submitLogEvent:v15];
+      logEventSubmitter = [(HMDAppleMediaAccessoryMetricsDispatcher *)v12 logEventSubmitter];
+      [logEventSubmitter submitLogEvent:v15];
     }
 
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = v4;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v24 = HMFGetLogIdentifier();
-        v25 = [(HMDAppleMediaAccessoryMetricsDispatcher *)v22 previousRoomName];
+        previousRoomName = [(HMDAppleMediaAccessoryMetricsDispatcher *)v22 previousRoomName];
         v27 = 138543618;
         v28 = v24;
         v29 = 2112;
-        v30 = v25;
+        v30 = previousRoomName;
         _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_ERROR, "%{public}@Data sourced nil current room name when submitting set room event metric with previous room name %@", &v27, 0x16u);
       }
 
@@ -226,7 +226,7 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v4;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -244,25 +244,25 @@ void __65__HMDAppleMediaAccessoryMetricsDispatcher_submitDailyStatusEvent__block
 
 - (void)registerForDailySetRoomLogEvents
 {
-  v4 = [(HMDAppleMediaAccessoryMetricsDispatcher *)self dataSource];
-  v3 = [v4 currentRoomForAppleMediaAccessoryMetricsDispatcher:self];
+  dataSource = [(HMDAppleMediaAccessoryMetricsDispatcher *)self dataSource];
+  v3 = [dataSource currentRoomForAppleMediaAccessoryMetricsDispatcher:self];
   [(HMDAppleMediaAccessoryMetricsDispatcher *)self setPreviousRoomName:v3];
 }
 
-- (HMDAppleMediaAccessoryMetricsDispatcher)initWithDataSource:(id)a3 logEventSubmitter:(id)a4 dailyScheduler:(id)a5
+- (HMDAppleMediaAccessoryMetricsDispatcher)initWithDataSource:(id)source logEventSubmitter:(id)submitter dailyScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  submitterCopy = submitter;
+  schedulerCopy = scheduler;
   v15.receiver = self;
   v15.super_class = HMDAppleMediaAccessoryMetricsDispatcher;
   v11 = [(HMDAppleMediaAccessoryMetricsDispatcher *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_dataSource, v8);
-    objc_storeStrong(&v12->_logEventSubmitter, a4);
-    objc_storeStrong(&v12->_dailyScheduler, a5);
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeStrong(&v12->_logEventSubmitter, submitter);
+    objc_storeStrong(&v12->_dailyScheduler, scheduler);
     previousRoomName = v12->_previousRoomName;
     v12->_previousRoomName = @"UNSET";
 

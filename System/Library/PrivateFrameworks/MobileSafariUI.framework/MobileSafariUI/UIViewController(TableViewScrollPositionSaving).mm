@@ -10,21 +10,21 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 tableView];
+    tableView = [self tableView];
   }
 
   else
   {
-    v2 = 0;
+    tableView = 0;
   }
 
-  return v2;
+  return tableView;
 }
 
 - (id)_safari_tableViewScrollPositionKey
 {
-  v1 = [a1 safari_tableViewScrollPositionSaveIdentifier];
-  v2 = [@"SavedScrollPosition-" stringByAppendingString:v1];
+  safari_tableViewScrollPositionSaveIdentifier = [self safari_tableViewScrollPositionSaveIdentifier];
+  v2 = [@"SavedScrollPosition-" stringByAppendingString:safari_tableViewScrollPositionSaveIdentifier];
 
   return v2;
 }

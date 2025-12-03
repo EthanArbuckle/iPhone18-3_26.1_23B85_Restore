@@ -1,5 +1,5 @@
 @interface SleepOnboardingSetupViewController
-- (void)hksp_cancelButtonTapped:(id)a3;
+- (void)hksp_cancelButtonTapped:(id)tapped;
 - (void)hksp_nextButtonTapped;
 - (void)hksp_skipButtonTapped;
 - (void)viewDidLoad;
@@ -17,7 +17,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269D29D18();
 }
 
@@ -31,7 +31,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269D2D160();
   sub_269D2D458();
 }
@@ -46,9 +46,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269D28AC4(1, 5, &OBJC_IVAR____TtC13SleepHealthUI29SleepOnboardingFlowController_userInfo);
-  v4 = (&v3->super.super.super.super.super.super.isa + OBJC_IVAR____TtC13SleepHealthUI29SleepOnboardingFlowController_delegate);
+  v4 = (&selfCopy->super.super.super.super.super.super.isa + OBJC_IVAR____TtC13SleepHealthUI29SleepOnboardingFlowController_delegate);
   swift_beginAccess();
   if (*v4)
   {
@@ -66,7 +66,7 @@
   }
 }
 
-- (void)hksp_cancelButtonTapped:(id)a3
+- (void)hksp_cancelButtonTapped:(id)tapped
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -85,10 +85,10 @@
   v9[2] = sub_269CA6718;
   v9[3] = &block_descriptor_21;
   v6 = _Block_copy(v9);
-  v7 = self;
-  v8 = a3;
+  selfCopy = self;
+  tappedCopy = tapped;
 
-  [(OBWelcomeController *)v7 hksp_presentCancelConfirmationAlertWithSender:v8 cancelHandler:v6];
+  [(OBWelcomeController *)selfCopy hksp_presentCancelConfirmationAlertWithSender:tappedCopy cancelHandler:v6];
 
   _Block_release(v6);
 }

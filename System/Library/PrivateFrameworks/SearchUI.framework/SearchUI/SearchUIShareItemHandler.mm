@@ -1,42 +1,42 @@
 @interface SearchUIShareItemHandler
-- (BOOL)presentShareViewControllerForItems:(id)a3;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (BOOL)presentShareViewControllerForItems:(id)items;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIShareItemHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SearchUIShareItemHandler *)self handlerForSharing];
-  v8 = v7;
-  if (v7)
+  commandCopy = command;
+  handlerForSharing = [(SearchUIShareItemHandler *)self handlerForSharing];
+  v8 = handlerForSharing;
+  if (handlerForSharing)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __68__SearchUIShareItemHandler_performCommand_triggerEvent_environment___block_invoke;
     v28[3] = &unk_1E85B3B78;
     v28[4] = self;
-    v29 = v7;
+    v29 = handlerForSharing;
     [v29 fetchShareableURLWithCompletionHandler:v28];
   }
 
   else
   {
     v9 = objc_opt_new();
-    v10 = [v6 shareItems];
-    v11 = [v10 count];
+    shareItems = [commandCopy shareItems];
+    v11 = [shareItems count];
 
     if (v11)
     {
-      v20 = self;
+      selfCopy = self;
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v12 = [v6 shareItems];
-      v13 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      shareItems2 = [commandCopy shareItems];
+      v13 = [shareItems2 countByEnumeratingWithState:&v24 objects:v30 count:16];
       if (v13)
       {
         v14 = v13;
@@ -47,7 +47,7 @@
           {
             if (*v25 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(shareItems2);
             }
 
             v17 = *(*(&v24 + 1) + 8 * i);
@@ -59,28 +59,28 @@
             [v17 searchUI_fetchShareableItemWithCompletionHandler:v22];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v24 objects:v30 count:16];
+          v14 = [shareItems2 countByEnumeratingWithState:&v24 objects:v30 count:16];
         }
 
         while (v14);
       }
 
-      [(SearchUIShareItemHandler *)v20 presentShareViewControllerForItems:v9];
+      [(SearchUIShareItemHandler *)selfCopy presentShareViewControllerForItems:v9];
     }
 
     else
     {
-      v18 = [v6 shareItem];
+      shareItem = [commandCopy shareItem];
 
-      if (v18)
+      if (shareItem)
       {
-        v19 = [v6 shareItem];
+        shareItem2 = [commandCopy shareItem];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __68__SearchUIShareItemHandler_performCommand_triggerEvent_environment___block_invoke_2;
         v21[3] = &unk_1E85B3BA0;
         v21[4] = self;
-        [v19 searchUI_fetchShareableItemWithCompletionHandler:v21];
+        [shareItem2 searchUI_fetchShareableItemWithCompletionHandler:v21];
       }
     }
   }
@@ -120,18 +120,18 @@ void __68__SearchUIShareItemHandler_performCommand_triggerEvent_environment___bl
   [v2 presentShareViewControllerForItems:{v5, v6, v7}];
 }
 
-- (BOOL)presentShareViewControllerForItems:(id)a3
+- (BOOL)presentShareViewControllerForItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 count];
+  itemsCopy = items;
+  v5 = [itemsCopy count];
   if (v5)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __63__SearchUIShareItemHandler_presentShareViewControllerForItems___block_invoke;
     v7[3] = &unk_1E85B2540;
-    v8 = v4;
-    v9 = self;
+    v8 = itemsCopy;
+    selfCopy = self;
     [SearchUIUtilities dispatchMainIfNecessary:v7];
   }
 

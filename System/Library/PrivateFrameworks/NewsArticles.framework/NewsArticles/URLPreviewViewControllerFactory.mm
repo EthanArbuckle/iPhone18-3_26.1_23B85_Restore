@@ -1,11 +1,11 @@
 @interface URLPreviewViewControllerFactory
 - (_TtC12NewsArticles31URLPreviewViewControllerFactory)init;
-- (id)createViewControllerForURL:(id)a3;
+- (id)createViewControllerForURL:(id)l;
 @end
 
 @implementation URLPreviewViewControllerFactory
 
-- (id)createViewControllerForURL:(id)a3
+- (id)createViewControllerForURL:(id)l
 {
   v3 = sub_1D7D2824C();
   v4 = *(v3 - 8);

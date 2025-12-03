@@ -3,7 +3,7 @@
 - (CGRect)homeAffordanceFrame;
 - (CGRect)homeAffordanceHitTestRect;
 - (SBFHomeAffordanceInteractionDelegate)delegate;
-- (SBHomeAffordanceInteraction)initWithHomeAffordanceInteractionManager:(id)a3;
+- (SBHomeAffordanceInteraction)initWithHomeAffordanceInteractionManager:(id)manager;
 - (SBHomeAffordanceInteractionManager)homeAffordanceInteractionManager;
 - (UIEdgeInsets)expandedHomeAffordanceHitTestRectOutsets;
 - (UIEdgeInsets)standardHomeAffordanceHitTestRectOutsets;
@@ -14,12 +14,12 @@
 - (void)notifyDidRecognizeDoubleTap;
 - (void)notifyDidRecognizeSingleClick;
 - (void)notifyDidRecognizeSingleTap;
-- (void)notifyDidRecognizeTouchThatShouldUnhideViewImmediately:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHomeAffordanceHitTestRect:(CGRect)a3;
+- (void)notifyDidRecognizeTouchThatShouldUnhideViewImmediately:(BOOL)immediately;
+- (void)setDelegate:(id)delegate;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHomeAffordanceHitTestRect:(CGRect)rect;
 - (void)setNeedsUpdate;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBHomeAffordanceInteraction
@@ -32,17 +32,17 @@
 
 - (id)_assistantController
 {
-  v2 = [(SBHomeAffordanceInteraction *)self view];
-  v3 = [v2 _sbWindowScene];
-  v4 = [v3 assistantController];
+  view = [(SBHomeAffordanceInteraction *)self view];
+  _sbWindowScene = [view _sbWindowScene];
+  assistantController = [_sbWindowScene assistantController];
 
-  return v4;
+  return assistantController;
 }
 
 - (CGRect)homeAffordanceFrame
 {
-  v3 = [(SBHomeAffordanceInteraction *)self view];
-  v4 = v3;
+  view = [(SBHomeAffordanceInteraction *)self view];
+  v4 = view;
   if (*&self->_delegateRespondsTo)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -53,9 +53,9 @@
     v12 = v17;
   }
 
-  else if (v3)
+  else if (view)
   {
-    [v3 bounds];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -103,16 +103,16 @@
   else
   {
     WeakRetained = [(SBHomeAffordanceInteraction *)self view];
-    v4 = [WeakRetained window];
+    window = [WeakRetained window];
     [(SBHomeAffordanceInteraction *)self homeAffordanceFrame];
-    [WeakRetained convertRect:v4 toView:?];
+    [WeakRetained convertRect:window toView:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v4 safeAreaInsets];
+    [window safeAreaInsets];
     v14 = v13;
-    [v4 bounds];
+    [window bounds];
     v15 = CGRectGetMaxY(v37) - v14;
     v38.origin.x = v6;
     v38.origin.y = v8;
@@ -120,10 +120,10 @@
     v38.size.height = v12;
     v16 = 0.0;
     v17 = fmax(CGRectGetMaxY(v38) - v15, 0.0);
-    v18 = [(SBHomeAffordanceInteraction *)self _assistantController];
-    v19 = [v18 isHomeAffordanceDoubleTapGestureEnabled];
+    _assistantController = [(SBHomeAffordanceInteraction *)self _assistantController];
+    isHomeAffordanceDoubleTapGestureEnabled = [_assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
-    if (v19)
+    if (isHomeAffordanceDoubleTapGestureEnabled)
     {
       v16 = v17;
     }
@@ -169,24 +169,24 @@
   return result;
 }
 
-- (SBHomeAffordanceInteraction)initWithHomeAffordanceInteractionManager:(id)a3
+- (SBHomeAffordanceInteraction)initWithHomeAffordanceInteractionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = SBHomeAffordanceInteraction;
   v5 = [(SBHomeAffordanceInteraction *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_homeAffordanceInteractionManager, v4);
-    v7 = [MEMORY[0x277D65E80] rootSettings];
+    objc_storeWeak(&v5->_homeAffordanceInteractionManager, managerCopy);
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
     homeGrabberSettings = v6->_homeGrabberSettings;
-    v6->_homeGrabberSettings = v7;
+    v6->_homeGrabberSettings = rootSettings;
 
     [(SBFHomeGrabberSettings *)v6->_homeGrabberSettings addKeyObserver:v6];
-    v9 = [MEMORY[0x277D26708] sharedInstance];
+    mEMORY[0x277D26708] = [MEMORY[0x277D26708] sharedInstance];
     lumaDodgePillSettings = v6->_lumaDodgePillSettings;
-    v6->_lumaDodgePillSettings = v9;
+    v6->_lumaDodgePillSettings = mEMORY[0x277D26708];
 
     [(MTLumaDodgePillSettings *)v6->_lumaDodgePillSettings addKeyObserver:v6];
     v11 = *(MEMORY[0x277CBF398] + 16);
@@ -239,13 +239,13 @@
   return result;
 }
 
-- (void)setHomeAffordanceHitTestRect:(CGRect)a3
+- (void)setHomeAffordanceHitTestRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_homeAffordanceHitTestRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->_homeAffordanceHitTestRect))
   {
     self->_homeAffordanceHitTestRect.origin.x = x;
     self->_homeAffordanceHitTestRect.origin.y = y;
@@ -266,11 +266,11 @@
     return 1;
   }
 
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained homeAffordanceInteractionAllowsUserInteraction:v3];
+  LOBYTE(selfCopy) = [WeakRetained homeAffordanceInteractionAllowsUserInteraction:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)notifyDidRecognizeSingleTap
@@ -309,19 +309,19 @@
   }
 }
 
-- (void)notifyDidRecognizeTouchThatShouldUnhideViewImmediately:(BOOL)a3
+- (void)notifyDidRecognizeTouchThatShouldUnhideViewImmediately:(BOOL)immediately
 {
   if ((*&self->_delegateRespondsTo & 0x200) != 0)
   {
-    v4 = a3;
+    immediatelyCopy = immediately;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained homeAffordanceInteraction:self didRecognizeTouchThatShouldUnhideViewImmediately:v4];
+    [WeakRetained homeAffordanceInteraction:self didRecognizeTouchThatShouldUnhideViewImmediately:immediatelyCopy];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -430,15 +430,15 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     WeakRetained = objc_loadWeakRetained(&self->_homeAffordanceInteractionManager);
     v7 = WeakRetained;
-    if (v4)
+    if (enabledCopy)
     {
       [WeakRetained registerHomeAffordanceInteraction:self];
     }
@@ -450,9 +450,9 @@
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_homeGrabberSettings == a3 || self->_lumaDodgePillSettings == a3)
+  if (self->_homeGrabberSettings == settings || self->_lumaDodgePillSettings == settings)
   {
     [(SBHomeAffordanceInteraction *)self setNeedsUpdate];
   }

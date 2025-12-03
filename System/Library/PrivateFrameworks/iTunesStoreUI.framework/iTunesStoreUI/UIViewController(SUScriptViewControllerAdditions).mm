@@ -6,14 +6,14 @@
 
 - (uint64_t)copyScriptViewController
 {
-  v2 = [a1 parentViewController];
+  parentViewController = [self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v3 = SUScriptNavigationController;
 LABEL_8:
     v4 = objc_alloc_init(v3);
-    [v4 setNativeViewController:a1];
+    [v4 setNativeViewController:self];
     return v4;
   }
 
@@ -24,13 +24,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!v2 || [a1 _remoteViewControllerProxy])
+  if (!parentViewController || [self _remoteViewControllerProxy])
   {
     v3 = SUScriptViewController;
     goto LABEL_8;
   }
 
-  return [v2 copyScriptViewController];
+  return [parentViewController copyScriptViewController];
 }
 
 @end

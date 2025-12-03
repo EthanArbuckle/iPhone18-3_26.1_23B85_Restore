@@ -1,73 +1,73 @@
 @interface FigTimeRangeAndObject
-+ (id)rangeAndObjectWithRange:(id *)a3 andObject:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (FigTimeRangeAndObject)initWithCMTimeRange:(id *)a3 andObject:(id)a4;
-- (FigTimeRangeAndObject)initWithCoder:(id)a3;
-- (FigTimeRangeAndObject)initWithFigTimeRange:(id *)a3 andObject:(id)a4;
++ (id)rangeAndObjectWithRange:(id *)range andObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (FigTimeRangeAndObject)initWithCMTimeRange:(id *)range andObject:(id)object;
+- (FigTimeRangeAndObject)initWithCoder:(id)coder;
+- (FigTimeRangeAndObject)initWithFigTimeRange:(id *)range andObject:(id)object;
 - (id)description;
 - (id)durationObject;
 - (id)startTimeObject;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FigTimeRangeAndObject
 
-+ (id)rangeAndObjectWithRange:(id *)a3 andObject:(id)a4
++ (id)rangeAndObjectWithRange:(id *)range andObject:(id)object
 {
   v6 = objc_alloc(objc_opt_class());
-  v7 = *&a3->var0.var3;
-  v9[0] = *&a3->var0.var0;
+  v7 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v7;
-  v9[2] = *&a3->var1.var1;
-  return [v6 initWithCMTimeRange:v9 andObject:a4];
+  v9[2] = *&range->var1.var1;
+  return [v6 initWithCMTimeRange:v9 andObject:object];
 }
 
-- (FigTimeRangeAndObject)initWithFigTimeRange:(id *)a3 andObject:(id)a4
+- (FigTimeRangeAndObject)initWithFigTimeRange:(id *)range andObject:(id)object
 {
-  v4 = *&a3->var0.var3;
-  v6[0] = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v6[0] = *&range->var0.var0;
   v6[1] = v4;
-  v6[2] = *&a3->var1.var1;
-  return [(FigTimeRangeAndObject *)self initWithCMTimeRange:v6 andObject:a4];
+  v6[2] = *&range->var1.var1;
+  return [(FigTimeRangeAndObject *)self initWithCMTimeRange:v6 andObject:object];
 }
 
-- (FigTimeRangeAndObject)initWithCMTimeRange:(id *)a3 andObject:(id)a4
+- (FigTimeRangeAndObject)initWithCMTimeRange:(id *)range andObject:(id)object
 {
-  v5 = *&a3->var0.var3;
-  v9[0] = *&a3->var0.var0;
+  v5 = *&range->var0.var3;
+  v9[0] = *&range->var0.var0;
   v9[1] = v5;
-  v9[2] = *&a3->var1.var1;
+  v9[2] = *&range->var1.var1;
   v8.receiver = self;
   v8.super_class = FigTimeRangeAndObject;
   v6 = [(FigTimeRangeObj *)&v8 initWithCMTimeRange:v9];
   if (v6)
   {
-    v6->_object = a4;
+    v6->_object = object;
   }
 
   return v6;
 }
 
-- (FigTimeRangeAndObject)initWithCoder:(id)a3
+- (FigTimeRangeAndObject)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FigTimeRangeAndObject;
   v4 = [(FigTimeRangeObj *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_object = [a3 decodeObjectOfClasses:objc_msgSend(a3 forKey:{"allowedClasses"), @"object"}];
+    v4->_object = [coder decodeObjectOfClasses:objc_msgSend(coder forKey:{"allowedClasses"), @"object"}];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FigTimeRangeAndObject;
   [(FigTimeRangeObj *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_object forKey:@"object"];
+  [coder encodeObject:self->_object forKey:@"object"];
 }
 
 - (void)dealloc
@@ -114,9 +114,9 @@
   return [FigTimeObj timeWithTime:&v5, v3, *&v4[0]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v9) = 1;
   }
@@ -132,23 +132,23 @@
       *&v14.start.value = *&self->super._range.start.value;
       *&v14.start.epoch = v7;
       *&v14.duration.timescale = *&self->super._range.duration.timescale;
-      v8 = *(a3 + 24);
-      *&range2.start.value = *(a3 + 8);
+      v8 = *(equal + 24);
+      *&range2.start.value = *(equal + 8);
       *&range2.start.epoch = v8;
-      *&range2.duration.timescale = *(a3 + 40);
+      *&range2.duration.timescale = *(equal + 40);
       v9 = CMTimeRangeEqual(&v14, &range2);
       if (v9)
       {
-        LOBYTE(v9) = [self->_object isEqual:*(a3 + 7)];
+        LOBYTE(v9) = [self->_object isEqual:*(equal + 7)];
       }
     }
 
     else
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([a3 objCType], "{?={?=qiIq}{?=qiIq}}"))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && !strcmp([equal objCType], "{?={?=qiIq}{?=qiIq}}"))
       {
-        [a3 getValue:&v14];
+        [equal getValue:&v14];
         v10 = *&self->super._range.start.epoch;
         *&range2.start.value = *&self->super._range.start.value;
         *&range2.start.epoch = v10;

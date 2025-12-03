@@ -1,20 +1,20 @@
 @interface TextFieldValidator
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (_TtC8StocksUI18TextFieldValidator)init;
 @end
 
 @implementation TextFieldValidator
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8StocksUI18TextFieldValidator_isTextValid);
-  v5 = a3;
-  v6 = self;
-  v7 = [v5 text];
-  if (v7)
+  returnCopy = return;
+  selfCopy = self;
+  text = [returnCopy text];
+  if (text)
   {
-    v8 = v7;
+    v8 = text;
     v9 = sub_22089136C();
     v11 = v10;
   }
@@ -29,18 +29,18 @@
 
   if (v12)
   {
-    (*(&v6->super.isa + OBJC_IVAR____TtC8StocksUI18TextFieldValidator_submit))(v13);
+    (*(&selfCopy->super.isa + OBJC_IVAR____TtC8StocksUI18TextFieldValidator_submit))(v13);
   }
 
   return v12 & 1;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   sub_22089136C();
-  v7 = a3;
-  v8 = self;
-  sub_22085D5AC(v7);
+  fieldCopy = field;
+  selfCopy = self;
+  sub_22085D5AC(fieldCopy);
 
   return 1;
 }

@@ -1,7 +1,7 @@
 @interface BSAtomicFlag
 - (BOOL)getFlag;
-- (BOOL)setFlag:(BOOL)a3;
-- (BSAtomicFlag)initWithFlag:(BOOL)a3;
+- (BOOL)setFlag:(BOOL)flag;
+- (BSAtomicFlag)initWithFlag:(BOOL)flag;
 - (id)description;
 @end
 
@@ -14,24 +14,24 @@
   return v2 == 1;
 }
 
-- (BSAtomicFlag)initWithFlag:(BOOL)a3
+- (BSAtomicFlag)initWithFlag:(BOOL)flag
 {
   v5.receiver = self;
   v5.super_class = BSAtomicFlag;
   result = [(BSAtomicFlag *)&v5 init];
   if (result)
   {
-    atomic_store(a3, &result->_flag);
+    atomic_store(flag, &result->_flag);
   }
 
   return result;
 }
 
-- (BOOL)setFlag:(BOOL)a3
+- (BOOL)setFlag:(BOOL)flag
 {
-  v3 = !a3;
-  atomic_compare_exchange_strong_explicit(&self->_flag, &v3, a3, memory_order_relaxed, memory_order_relaxed);
-  return v3 == !a3;
+  v3 = !flag;
+  atomic_compare_exchange_strong_explicit(&self->_flag, &v3, flag, memory_order_relaxed, memory_order_relaxed);
+  return v3 == !flag;
 }
 
 - (id)description
@@ -43,11 +43,11 @@
   v11 = &unk_1E72CACC0;
   v4 = v3;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:&v8];
-  v6 = [v4 build];
+  build = [v4 build];
 
-  return v6;
+  return build;
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface HMDCameraRecordingAudioCodecParameters
 - (BOOL)_parseFromTLVData;
-- (HMDCameraRecordingAudioCodecParameters)initWithChannelCount:(id)a3 bitRateModes:(id)a4 audioSampleRates:(id)a5 maxAudioBitRate:(id)a6;
-- (HMDCameraRecordingAudioCodecParameters)initWithCoder:(id)a3;
+- (HMDCameraRecordingAudioCodecParameters)initWithChannelCount:(id)count bitRateModes:(id)modes audioSampleRates:(id)rates maxAudioBitRate:(id)rate;
+- (HMDCameraRecordingAudioCodecParameters)initWithCoder:(id)coder;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCameraRecordingAudioCodecParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCameraRecordingAudioCodecParameters *)self audioChannelCount];
-  [v4 encodeObject:v5 forKey:@"kAudioCodecParametersChannels"];
+  coderCopy = coder;
+  audioChannelCount = [(HMDCameraRecordingAudioCodecParameters *)self audioChannelCount];
+  [coderCopy encodeObject:audioChannelCount forKey:@"kAudioCodecParametersChannels"];
 
-  v6 = [(HMDCameraRecordingAudioCodecParameters *)self bitRateModes];
-  [v4 encodeObject:v6 forKey:@"kAudioCodecParametersBitRateModes"];
+  bitRateModes = [(HMDCameraRecordingAudioCodecParameters *)self bitRateModes];
+  [coderCopy encodeObject:bitRateModes forKey:@"kAudioCodecParametersBitRateModes"];
 
-  v7 = [(HMDCameraRecordingAudioCodecParameters *)self audioSampleRates];
-  [v4 encodeObject:v7 forKey:@"kAudioCodecParametersSampleRates"];
+  audioSampleRates = [(HMDCameraRecordingAudioCodecParameters *)self audioSampleRates];
+  [coderCopy encodeObject:audioSampleRates forKey:@"kAudioCodecParametersSampleRates"];
 
-  v8 = [(HMDCameraRecordingAudioCodecParameters *)self maxAudioBitRate];
-  [v4 encodeObject:v8 forKey:@"kAudioCodecParametersMaxAudioBitrate"];
+  maxAudioBitRate = [(HMDCameraRecordingAudioCodecParameters *)self maxAudioBitRate];
+  [coderCopy encodeObject:maxAudioBitRate forKey:@"kAudioCodecParametersMaxAudioBitrate"];
 }
 
-- (HMDCameraRecordingAudioCodecParameters)initWithCoder:(id)a3
+- (HMDCameraRecordingAudioCodecParameters)initWithCoder:(id)coder
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = HMDCameraRecordingAudioCodecParameters;
   v5 = [(HMDCameraRecordingAudioCodecParameters *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecParametersChannels"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecParametersChannels"];
     audioChannelCount = v5->_audioChannelCount;
     v5->_audioChannelCount = v6;
 
@@ -43,7 +43,7 @@
     v24[1] = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kAudioCodecParametersBitRateModes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"kAudioCodecParametersBitRateModes"];
     bitRateModes = v5->_bitRateModes;
     v5->_bitRateModes = v11;
 
@@ -52,11 +52,11 @@
     v23[1] = objc_opt_class();
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v15 = [v13 setWithArray:v14];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"kAudioCodecParametersSampleRates"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"kAudioCodecParametersSampleRates"];
     audioSampleRates = v5->_audioSampleRates;
     v5->_audioSampleRates = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecParametersMaxAudioBitrate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kAudioCodecParametersMaxAudioBitrate"];
     maxAudioBitRate = v5->_maxAudioBitRate;
     v5->_maxAudioBitRate = v18;
   }
@@ -65,52 +65,52 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n%@tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n%@tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDCameraRecordingAudioCodecParameters *)self audioChannelCount];
-  [v7 appendFormat:@"\n%@channels = %@ ", v6, v9];
+  audioChannelCount = [(HMDCameraRecordingAudioCodecParameters *)self audioChannelCount];
+  [descriptionCopy appendFormat:@"\n%@channels = %@ ", indentCopy, audioChannelCount];
 
-  v10 = [(HMDCameraRecordingAudioCodecParameters *)self bitRateModes];
+  bitRateModes = [(HMDCameraRecordingAudioCodecParameters *)self bitRateModes];
   v11 = HAPTLVCreateParseArrayToString();
-  [v7 appendFormat:@"\n%@bitRateModes = %@", v6, v11];
+  [descriptionCopy appendFormat:@"\n%@bitRateModes = %@", indentCopy, v11];
 
-  v12 = [(HMDCameraRecordingAudioCodecParameters *)self audioSampleRates];
+  audioSampleRates = [(HMDCameraRecordingAudioCodecParameters *)self audioSampleRates];
   v13 = HAPTLVCreateParseArrayToString();
-  [v7 appendFormat:@"\n%@audioSampleRates = %@", v6, v13];
+  [descriptionCopy appendFormat:@"\n%@audioSampleRates = %@", indentCopy, v13];
 
-  v14 = [(HMDCameraRecordingAudioCodecParameters *)self maxAudioBitRate];
-  [v7 appendFormat:@"\n%@maxAudioBitRate = %@", v6, v14];
+  maxAudioBitRate = [(HMDCameraRecordingAudioCodecParameters *)self maxAudioBitRate];
+  [descriptionCopy appendFormat:@"\n%@maxAudioBitRate = %@", indentCopy, maxAudioBitRate];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDCameraRecordingAudioCodecParameters *)self audioChannelCount];
-  [v3 addTLV:1 length:1 number:v4];
+  creator = [MEMORY[0x277CFEC80] creator];
+  audioChannelCount = [(HMDCameraRecordingAudioCodecParameters *)self audioChannelCount];
+  [creator addTLV:1 length:1 number:audioChannelCount];
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(HMDCameraRecordingAudioCodecParameters *)self bitRateModes];
-  v7 = [v6 firstObject];
-  v8 = [v5 numberWithInteger:{objc_msgSend(v7, "type")}];
-  [v3 addTLV:2 length:1 number:v8];
+  bitRateModes = [(HMDCameraRecordingAudioCodecParameters *)self bitRateModes];
+  firstObject = [bitRateModes firstObject];
+  v8 = [v5 numberWithInteger:{objc_msgSend(firstObject, "type")}];
+  [creator addTLV:2 length:1 number:v8];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(HMDCameraRecordingAudioCodecParameters *)self audioSampleRates];
-  v11 = [v10 firstObject];
-  v12 = [v9 numberWithInteger:{objc_msgSend(v11, "type")}];
-  [v3 addTLV:3 length:1 number:v12];
+  audioSampleRates = [(HMDCameraRecordingAudioCodecParameters *)self audioSampleRates];
+  firstObject2 = [audioSampleRates firstObject];
+  v12 = [v9 numberWithInteger:{objc_msgSend(firstObject2, "type")}];
+  [creator addTLV:3 length:1 number:v12];
 
-  v13 = [(HMDCameraRecordingAudioCodecParameters *)self maxAudioBitRate];
-  [v3 addTLV:4 length:4 number:v13];
+  maxAudioBitRate = [(HMDCameraRecordingAudioCodecParameters *)self maxAudioBitRate];
+  [creator addTLV:4 length:4 number:maxAudioBitRate];
 
-  v14 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v14;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -129,22 +129,22 @@
   v9 = [(HAPTLVBase *)self _parseMandatory:v7 optional:v8];
   if (v9)
   {
-    v10 = [v4 field];
+    field = [v4 field];
     bitRateModes = self->_bitRateModes;
-    self->_bitRateModes = v10;
+    self->_bitRateModes = field;
 
-    v12 = [v5 field];
+    field2 = [v5 field];
     audioSampleRates = self->_audioSampleRates;
-    self->_audioSampleRates = v12;
+    self->_audioSampleRates = field2;
 
-    v14 = [v3 field];
+    field3 = [v3 field];
     audioChannelCount = self->_audioChannelCount;
-    self->_audioChannelCount = v14;
+    self->_audioChannelCount = field3;
   }
 
-  v16 = [v6 field];
+  field4 = [v6 field];
   maxAudioBitRate = self->_maxAudioBitRate;
-  self->_maxAudioBitRate = v16;
+  self->_maxAudioBitRate = field4;
 
   v18 = *MEMORY[0x277D85DE8];
   return v9;
@@ -166,22 +166,22 @@ HMDCameraRecordingAudioBitRateMode *__59__HMDCameraRecordingAudioCodecParameters
   return v3;
 }
 
-- (HMDCameraRecordingAudioCodecParameters)initWithChannelCount:(id)a3 bitRateModes:(id)a4 audioSampleRates:(id)a5 maxAudioBitRate:(id)a6
+- (HMDCameraRecordingAudioCodecParameters)initWithChannelCount:(id)count bitRateModes:(id)modes audioSampleRates:(id)rates maxAudioBitRate:(id)rate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  countCopy = count;
+  modesCopy = modes;
+  ratesCopy = rates;
+  rateCopy = rate;
   v18.receiver = self;
   v18.super_class = HMDCameraRecordingAudioCodecParameters;
   v15 = [(HMDCameraRecordingAudioCodecParameters *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_audioChannelCount, a3);
-    objc_storeStrong(&v16->_bitRateModes, a4);
-    objc_storeStrong(&v16->_audioSampleRates, a5);
-    objc_storeStrong(&v16->_maxAudioBitRate, a6);
+    objc_storeStrong(&v15->_audioChannelCount, count);
+    objc_storeStrong(&v16->_bitRateModes, modes);
+    objc_storeStrong(&v16->_audioSampleRates, rates);
+    objc_storeStrong(&v16->_maxAudioBitRate, rate);
   }
 
   return v16;

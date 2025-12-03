@@ -7,28 +7,28 @@
 - (id)_printableState;
 - (id)printableState;
 - (void)_configureCBDiscovery;
-- (void)_didDiscoverDevice:(id)a3;
-- (void)_didDiscoverSample:(id)a3;
-- (void)_registerForInternalBluetoothSamples:(id)a3 reportCache:(BOOL)a4;
-- (void)_startBTScanningWithMaxRateForPrototypeHomeSession:(id)a3;
-- (void)_startHighPriorityScanningForToken:(id)a3 forConsumer:(id)a4;
-- (void)_startLeechingForConsumer:(id)a3;
+- (void)_didDiscoverDevice:(id)device;
+- (void)_didDiscoverSample:(id)sample;
+- (void)_registerForInternalBluetoothSamples:(id)samples reportCache:(BOOL)cache;
+- (void)_startBTScanningWithMaxRateForPrototypeHomeSession:(id)session;
+- (void)_startHighPriorityScanningForToken:(id)token forConsumer:(id)consumer;
+- (void)_startLeechingForConsumer:(id)consumer;
 - (void)_stopBTScanningWithMaxRateForPrototypeHomeSession;
 - (void)_stopHighPriorityScanning;
-- (void)_stopLeechingForConsumer:(id)a3;
+- (void)_stopLeechingForConsumer:(id)consumer;
 - (void)configureBTMaxRateScanningForPrototypeHomeSession;
 - (void)handleCBDiscoveryInterrupted;
 - (void)handleCBDiscoveryStateChanged;
 - (void)handleCBDiscoverySystemOverride;
-- (void)registerForInternalBluetoothSamples:(id)a3;
-- (void)registerForInternalBluetoothSamples:(id)a3 reportCache:(BOOL)a4;
-- (void)startBTScanningWithMaxRateForPrototypeHomeSession:(id)a3;
-- (void)startHighPriorityScanningForToken:(id)a3 forConsumer:(id)a4;
-- (void)startLeechingForConsumer:(id)a3;
+- (void)registerForInternalBluetoothSamples:(id)samples;
+- (void)registerForInternalBluetoothSamples:(id)samples reportCache:(BOOL)cache;
+- (void)startBTScanningWithMaxRateForPrototypeHomeSession:(id)session;
+- (void)startHighPriorityScanningForToken:(id)token forConsumer:(id)consumer;
+- (void)startLeechingForConsumer:(id)consumer;
 - (void)stopBTScanningWithMaxRateForPrototypeHomeSession;
 - (void)stopHighPriorityScanning;
-- (void)stopLeechingForConsumer:(id)a3;
-- (void)unregisterForInternalBluetoothSamples:(id)a3;
+- (void)stopLeechingForConsumer:(id)consumer;
+- (void)unregisterForInternalBluetoothSamples:(id)samples;
 @end
 
 @implementation NIServerBluetoothSampleInternalObserver
@@ -67,13 +67,13 @@
 
       v13 = mach_continuous_time();
       v14 = sub_100005348(v13);
-      v15 = [objc_opt_class() _cachePreloadValue];
-      if (v15 >= 1)
+      _cachePreloadValue = [objc_opt_class() _cachePreloadValue];
+      if (_cachePreloadValue >= 1)
       {
-        LODWORD(v16) = v15;
-        v17 = v15 + 43;
-        v18 = v15 + 6;
-        v19 = 8 * v15 - 1;
+        LODWORD(v16) = _cachePreloadValue;
+        v17 = _cachePreloadValue + 43;
+        v18 = _cachePreloadValue + 6;
+        v19 = 8 * _cachePreloadValue - 1;
         do
         {
           v35 = v16;
@@ -106,8 +106,8 @@
       v25 = qword_1009F9820;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(NIBluetoothAdvertisementCache *)val->_advertisementCache allSamples];
-        v27 = [v26 count];
+        allSamples = [(NIBluetoothAdvertisementCache *)val->_advertisementCache allSamples];
+        v27 = [allSamples count];
         v28 = mach_continuous_time();
         v29 = sub_100005348(v28);
         *buf = 134218240;
@@ -158,7 +158,7 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#btsampledistributor AdvertisementCache Enabled default override: %@", &v8, 0xCu);
     }
 
-    v6 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
@@ -169,10 +169,10 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#btsampledistributor AdvertisementCache Enabled: YES", &v8, 2u);
     }
 
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 + (unint64_t)_cachePreloadValue
@@ -190,7 +190,7 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#btsampledistributor AdvertisementCache PreloadValue default override: %@", &v8, 0xCu);
     }
 
-    v6 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
@@ -201,10 +201,10 @@
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#btsampledistributor AdvertisementCache PreloadValue: 0", &v8, 2u);
     }
 
-    v6 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v6;
+  return unsignedLongLongValue;
 }
 
 + (id)sharedObserver
@@ -213,7 +213,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001B49AC;
   block[3] = &unk_10098AD98;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1009F02D8 != -1)
   {
     dispatch_once(&qword_1009F02D8, block);
@@ -250,7 +250,7 @@
 {
   v3 = objc_opt_new();
   v4 = objc_autoreleasePoolPush();
-  v5 = [(NIBluetoothAdvertisementCache *)self->_advertisementCache deviceCount];
+  deviceCount = [(NIBluetoothAdvertisementCache *)self->_advertisementCache deviceCount];
   v6 = atomic_load(&self->_activated);
   if (v6)
   {
@@ -273,7 +273,7 @@
     v9 = @"NO";
   }
 
-  v10 = [NSString stringWithFormat:@"Cache deviceCount: %d. Activated: %@, AggressiveScanning: %@. Consumers: %d, Active: %d, HighPrio: %d", v5, v7, v9, [(NSHashTable *)self->_consumers count], [(NSHashTable *)self->_activeConsumers count], [(NSHashTable *)self->_currentHighPriorityConsumer count]];
+  v10 = [NSString stringWithFormat:@"Cache deviceCount: %d. Activated: %@, AggressiveScanning: %@. Consumers: %d, Active: %d, HighPrio: %d", deviceCount, v7, v9, [(NSHashTable *)self->_consumers count], [(NSHashTable *)self->_activeConsumers count], [(NSHashTable *)self->_currentHighPriorityConsumer count]];
   [v3 addObject:v10];
 
   objc_autoreleasePoolPop(v4);
@@ -281,66 +281,66 @@
   return v3;
 }
 
-- (void)registerForInternalBluetoothSamples:(id)a3
+- (void)registerForInternalBluetoothSamples:(id)samples
 {
-  v4 = a3;
-  -[NIServerBluetoothSampleInternalObserver registerForInternalBluetoothSamples:reportCache:](self, "registerForInternalBluetoothSamples:reportCache:", v4, [objc_opt_class() _advertisementCacheEnabled]);
+  samplesCopy = samples;
+  -[NIServerBluetoothSampleInternalObserver registerForInternalBluetoothSamples:reportCache:](self, "registerForInternalBluetoothSamples:reportCache:", samplesCopy, [objc_opt_class() _advertisementCacheEnabled]);
 }
 
-- (void)registerForInternalBluetoothSamples:(id)a3 reportCache:(BOOL)a4
+- (void)registerForInternalBluetoothSamples:(id)samples reportCache:(BOOL)cache
 {
-  v6 = a3;
+  samplesCopy = samples;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B4D88;
   block[3] = &unk_10099BAD8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = samplesCopy;
+  cacheCopy = cache;
+  v8 = samplesCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_registerForInternalBluetoothSamples:(id)a3 reportCache:(BOOL)a4
+- (void)_registerForInternalBluetoothSamples:(id)samples reportCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
-  if (([v6 supportsDevicePresence] & 1) == 0)
+  cacheCopy = cache;
+  samplesCopy = samples;
+  if (([samplesCopy supportsDevicePresence] & 1) == 0)
   {
     sub_1004A46C4(qword_1009F9820);
   }
 
   v7 = qword_1009F9820;
-  v8 = os_signpost_id_make_with_pointer(qword_1009F9820, v6);
+  v8 = os_signpost_id_make_with_pointer(qword_1009F9820, samplesCopy);
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v9 = v8;
     if (os_signpost_enabled(v7))
     {
       *buf = 67109120;
-      v20 = v4;
+      v20 = cacheCopy;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, v9, "registerForInternalBluetoothSamples", "reportCache %d", buf, 8u);
     }
   }
 
-  [(NSHashTable *)self->_consumers addObject:v6];
-  if (v4)
+  [(NSHashTable *)self->_consumers addObject:samplesCopy];
+  if (cacheCopy)
   {
-    v10 = [(NIBluetoothAdvertisementCache *)self->_advertisementCache allSamples];
-    v11 = [v6 getQueueForInputingData];
+    allSamples = [(NIBluetoothAdvertisementCache *)self->_advertisementCache allSamples];
+    getQueueForInputingData = [samplesCopy getQueueForInputingData];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1001B4FE0;
     v16[3] = &unk_10098A2E8;
-    v17 = v10;
-    v18 = v6;
-    v12 = v10;
-    dispatch_async(v11, v16);
+    v17 = allSamples;
+    v18 = samplesCopy;
+    v12 = allSamples;
+    dispatch_async(getQueueForInputingData, v16);
   }
 
   v13 = qword_1009F9820;
-  v14 = os_signpost_id_make_with_pointer(qword_1009F9820, v6);
+  v14 = os_signpost_id_make_with_pointer(qword_1009F9820, samplesCopy);
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v15 = v14;
@@ -352,38 +352,38 @@
   }
 }
 
-- (void)unregisterForInternalBluetoothSamples:(id)a3
+- (void)unregisterForInternalBluetoothSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B523C;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = samplesCopy;
+  v6 = samplesCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)startLeechingForConsumer:(id)a3
+- (void)startLeechingForConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B52E8;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = consumerCopy;
+  v6 = consumerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_startLeechingForConsumer:(id)a3
+- (void)_startLeechingForConsumer:(id)consumer
 {
-  v4 = a3;
-  [(NSHashTable *)self->_activeConsumers addObject:v4];
+  consumerCopy = consumer;
+  [(NSHashTable *)self->_activeConsumers addObject:consumerCopy];
   if (![(CBDiscovery *)self->_cbDiscovery discoveryFlags])
   {
     [(CBDiscovery *)self->_cbDiscovery setDiscoveryFlags:0x101202000040];
@@ -392,31 +392,31 @@
   v5 = atomic_load(&self->_activated);
   if ((v5 & 1) == 0)
   {
-    v6 = [(NIServerBluetoothSampleInternalObserver *)self _activateCBDiscovery];
-    if (v6 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
+    _activateCBDiscovery = [(NIServerBluetoothSampleInternalObserver *)self _activateCBDiscovery];
+    if (_activateCBDiscovery && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       sub_1004A4790();
     }
   }
 }
 
-- (void)startBTScanningWithMaxRateForPrototypeHomeSession:(id)a3
+- (void)startBTScanningWithMaxRateForPrototypeHomeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B5450;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_startBTScanningWithMaxRateForPrototypeHomeSession:(id)a3
+- (void)_startBTScanningWithMaxRateForPrototypeHomeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   homeSessionAggressiveScanner = self->_homeSessionAggressiveScanner;
   if (!homeSessionAggressiveScanner)
   {
@@ -481,27 +481,27 @@
   }
 }
 
-- (void)stopLeechingForConsumer:(id)a3
+- (void)stopLeechingForConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001B5868;
   v7[3] = &unk_10098A2E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = consumerCopy;
+  v6 = consumerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_stopLeechingForConsumer:(id)a3
+- (void)_stopLeechingForConsumer:(id)consumer
 {
-  v4 = a3;
-  [(NSHashTable *)self->_activeConsumers removeObject:v4];
-  if ([(NSHashTable *)self->_currentHighPriorityConsumer containsObject:v4])
+  consumerCopy = consumer;
+  [(NSHashTable *)self->_activeConsumers removeObject:consumerCopy];
+  if ([(NSHashTable *)self->_currentHighPriorityConsumer containsObject:consumerCopy])
   {
-    [(NSHashTable *)self->_currentHighPriorityConsumer removeObject:v4];
+    [(NSHashTable *)self->_currentHighPriorityConsumer removeObject:consumerCopy];
     [(NIServerBluetoothSampleInternalObserver *)self _stopHighPriorityScanning];
   }
 
@@ -532,48 +532,48 @@
   }
 }
 
-- (void)startHighPriorityScanningForToken:(id)a3 forConsumer:(id)a4
+- (void)startHighPriorityScanningForToken:(id)token forConsumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  consumerCopy = consumer;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B5A54;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  v13 = consumerCopy;
+  v9 = consumerCopy;
+  v10 = tokenCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_startHighPriorityScanningForToken:(id)a3 forConsumer:(id)a4
+- (void)_startHighPriorityScanningForToken:(id)token forConsumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  consumerCopy = consumer;
   v8 = objc_alloc_init(CBOOBKeyInfo);
-  v9 = [v6 objectInRawTokenOPACKDictForKey:&off_1009C3DD0];
+  v9 = [tokenCopy objectInRawTokenOPACKDictForKey:&off_1009C3DD0];
   [v8 setIrkData:v9];
 
-  v10 = [v6 objectInRawTokenOPACKDictForKey:&off_1009C3DE8];
+  v10 = [tokenCopy objectInRawTokenOPACKDictForKey:&off_1009C3DE8];
   if (v10)
   {
     [v8 setBtAddressData:v10];
     v11 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", 3 * [v10 length]);
-    v12 = [v10 bytes];
+    bytes = [v10 bytes];
     for (i = 0; i < [v10 length]; ++i)
     {
-      [v11 appendFormat:@"%02x:", v12[i]];
+      [v11 appendFormat:@"%02x:", bytes[i]];
     }
 
     if (![v11 length])
     {
-      v19 = qword_1009F9820;
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      _activateCBDiscovery = qword_1009F9820;
+      if (os_log_type_enabled(_activateCBDiscovery, OS_LOG_TYPE_ERROR))
       {
-        sub_1004A48F4(buf, [v11 length], v19);
+        sub_1004A48F4(buf, [v11 length], _activateCBDiscovery);
       }
 
       goto LABEL_25;
@@ -586,7 +586,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      v30 = [v15 UTF8String];
+      uTF8String = [v15 UTF8String];
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "#btsampledistributor #nibtfinding starting token finding for btaddress: %s", buf, 0xCu);
     }
 
@@ -600,11 +600,11 @@
     {
       if (v17 != 7)
       {
-        v19 = qword_1009F9820;
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        _activateCBDiscovery = qword_1009F9820;
+        if (os_log_type_enabled(_activateCBDiscovery, OS_LOG_TYPE_ERROR))
         {
           v26 = v15;
-          sub_1004A48AC([v15 UTF8String], buf, v19);
+          sub_1004A48AC([v15 UTF8String], buf, _activateCBDiscovery);
         }
 
         v11 = v15;
@@ -619,9 +619,9 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v21 = v11;
-      v22 = [v11 UTF8String];
+      uTF8String2 = [v11 UTF8String];
       *buf = 136315138;
-      v30 = v22;
+      uTF8String = uTF8String2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "#btsampledistributor #nibtfinding setting device filter: %s", buf, 0xCu);
     }
 
@@ -637,15 +637,15 @@
     [(CBDiscovery *)self->_cbDiscovery setBleScanRate:60];
     [(CBDiscovery *)self->_cbDiscovery setUseCase:589824];
     [(CBDiscovery *)self->_cbDiscovery addDiscoveryType:14];
-    [(NSHashTable *)self->_currentHighPriorityConsumer addObject:v7];
+    [(NSHashTable *)self->_currentHighPriorityConsumer addObject:consumerCopy];
     v25 = atomic_load(&self->_activated);
     if (v25)
     {
       goto LABEL_26;
     }
 
-    v19 = [(NIServerBluetoothSampleInternalObserver *)self _activateCBDiscovery];
-    if (v19 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
+    _activateCBDiscovery = [(NIServerBluetoothSampleInternalObserver *)self _activateCBDiscovery];
+    if (_activateCBDiscovery && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
       sub_1004A4790();
     }
@@ -758,11 +758,11 @@ LABEL_27:
   objc_destroyWeak(&location);
 }
 
-- (void)_didDiscoverSample:(id)a3
+- (void)_didDiscoverSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   v5 = qword_1009F9820;
-  v6 = os_signpost_id_make_with_pointer(qword_1009F9820, v4);
+  v6 = os_signpost_id_make_with_pointer(qword_1009F9820, sampleCopy);
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v7 = v6;
@@ -773,7 +773,7 @@ LABEL_27:
     }
   }
 
-  [v4 rssi];
+  [sampleCopy rssi];
   if (v8 >= 0.0)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -782,25 +782,25 @@ LABEL_27:
     }
   }
 
-  else if ([(NIBluetoothAdvertisementCache *)self->_advertisementCache isSampleInCache:v4])
+  else if ([(NIBluetoothAdvertisementCache *)self->_advertisementCache isSampleInCache:sampleCopy])
   {
     v9 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v4;
+      v29 = sampleCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#btsampledistributor Dropping sample that is already in the cache %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v10 = [v4 identifier];
-    v11 = v10 == 0;
+    identifier = [sampleCopy identifier];
+    v11 = identifier == 0;
 
     if (!v11)
     {
-      [(NIBluetoothAdvertisementCache *)self->_advertisementCache addSample:v4];
+      [(NIBluetoothAdvertisementCache *)self->_advertisementCache addSample:sampleCopy];
     }
 
     v25 = 0u;
@@ -822,14 +822,14 @@ LABEL_27:
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = [v16 getQueueForInputingData];
+          getQueueForInputingData = [v16 getQueueForInputingData];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_1001B6A44;
           v21[3] = &unk_10098A2E8;
           v21[4] = v16;
-          v22 = v4;
-          dispatch_async(v17, v21);
+          v22 = sampleCopy;
+          dispatch_async(getQueueForInputingData, v21);
         }
 
         v13 = [(NSHashTable *)v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -839,7 +839,7 @@ LABEL_27:
     }
 
     v18 = qword_1009F9820;
-    v19 = os_signpost_id_make_with_pointer(qword_1009F9820, v4);
+    v19 = os_signpost_id_make_with_pointer(qword_1009F9820, sampleCopy);
     if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v20 = v19;
@@ -893,20 +893,20 @@ LABEL_27:
   objc_destroyWeak(&location);
 }
 
-- (void)_didDiscoverDevice:(id)a3
+- (void)_didDiscoverDevice:(id)device
 {
-  v4 = a3;
-  v39 = v4;
-  v5 = [v4 model];
-  if (!v5)
+  deviceCopy = device;
+  v39 = deviceCopy;
+  model = [deviceCopy model];
+  if (!model)
   {
-    v47 = [v4 proximityPairingProductID];
-    sub_100004AC0(&v47, __p);
+    proximityPairingProductID = [deviceCopy proximityPairingProductID];
+    sub_100004AC0(&proximityPairingProductID, __p);
     if (v49 < 0)
     {
       if (!__p[1])
       {
-        v5 = 0;
+        model = 0;
 LABEL_44:
         operator delete(__p[0]);
         goto LABEL_2;
@@ -919,14 +919,14 @@ LABEL_44:
     {
       if (!v49)
       {
-        v5 = 0;
+        model = 0;
         goto LABEL_2;
       }
 
       v12 = __p;
     }
 
-    v5 = [NSString stringWithUTF8String:v12];
+    model = [NSString stringWithUTF8String:v12];
     if ((v49 & 0x80000000) == 0)
     {
       goto LABEL_2;
@@ -936,35 +936,35 @@ LABEL_44:
   }
 
 LABEL_2:
-  v6 = [v4 rssi];
-  if (!v5)
+  rssi = [deviceCopy rssi];
+  if (!model)
   {
     goto LABEL_15;
   }
 
-  v7 = [v4 bleChannel];
-  switch(v7)
+  bleChannel = [deviceCopy bleChannel];
+  switch(bleChannel)
   {
     case '%':
-      v8 = [v4 transmitPowerOne];
-      v47 = 37;
-      v14 = v5;
-      sub_100004A08(__p, [v5 UTF8String]);
-      v10 = sub_10000884C(&v47, __p);
+      transmitPowerOne = [deviceCopy transmitPowerOne];
+      proximityPairingProductID = 37;
+      v14 = model;
+      sub_100004A08(__p, [model UTF8String]);
+      v10 = sub_10000884C(&proximityPairingProductID, __p);
       break;
     case '&':
-      v8 = [v4 transmitPowerTwo];
-      v47 = 38;
-      v13 = v5;
-      sub_100004A08(__p, [v5 UTF8String]);
-      v10 = sub_10000884C(&v47, __p);
+      transmitPowerOne = [deviceCopy transmitPowerTwo];
+      proximityPairingProductID = 38;
+      v13 = model;
+      sub_100004A08(__p, [model UTF8String]);
+      v10 = sub_10000884C(&proximityPairingProductID, __p);
       break;
     case '\'':
-      v8 = [v4 transmitPowerThree];
-      v47 = 39;
-      v9 = v5;
-      sub_100004A08(__p, [v5 UTF8String]);
-      v10 = sub_10000884C(&v47, __p);
+      transmitPowerOne = [deviceCopy transmitPowerThree];
+      proximityPairingProductID = 39;
+      v9 = model;
+      sub_100004A08(__p, [model UTF8String]);
+      v10 = sub_10000884C(&proximityPairingProductID, __p);
       break;
     default:
       goto LABEL_15;
@@ -986,19 +986,19 @@ LABEL_2:
   if (v16)
   {
 LABEL_14:
-    v6 = v6 - (COERCE_DOUBLE(v15 ^ 0x8000000000000000) + v8 * 0.1);
+    rssi = rssi - (COERCE_DOUBLE(v15 ^ 0x8000000000000000) + transmitPowerOne * 0.1);
   }
 
 LABEL_15:
-  v17 = [v4 identifier];
-  v18 = [v4 idsDeviceID];
-  v19 = v18 == 0;
+  identifier = [deviceCopy identifier];
+  idsDeviceID = [deviceCopy idsDeviceID];
+  v19 = idsDeviceID == 0;
 
   if (!v19)
   {
-    v20 = [v39 idsDeviceID];
+    idsDeviceID2 = [v39 idsDeviceID];
 
-    v17 = v20;
+    identifier = idsDeviceID2;
   }
 
   if ([v39 productID] == 8212)
@@ -1021,26 +1021,26 @@ LABEL_15:
   }
 
   v22 = [NIBluetoothSample alloc];
-  v23 = [v39 bleChannel];
-  v24 = [v39 bleAdvertisementTimestampMachContinuous];
-  v25 = [v39 name];
-  v26 = [(NIBluetoothSample *)v22 initWithRSSI:v17 identifier:v5 model:v23 channel:v21 machContinuousTimeSeconds:v25 partIdentifier:0 name:v6 presenceConfigData:v24 / 1000000.0];
+  bleChannel2 = [v39 bleChannel];
+  bleAdvertisementTimestampMachContinuous = [v39 bleAdvertisementTimestampMachContinuous];
+  name = [v39 name];
+  v26 = [(NIBluetoothSample *)v22 initWithRSSI:identifier identifier:model model:bleChannel2 channel:v21 machContinuousTimeSeconds:name partIdentifier:0 name:rssi presenceConfigData:bleAdvertisementTimestampMachContinuous / 1000000.0];
 
-  v27 = [v39 name];
-  if (v27)
+  name2 = [v39 name];
+  if (name2)
   {
-    v28 = [v39 name];
-    v29 = [v28 isEqualToString:@"Bluetooth Device"];
+    name3 = [v39 name];
+    v29 = [name3 isEqualToString:@"Bluetooth Device"];
 
     if ((v29 & 1) == 0)
     {
-      v30 = [v39 name];
-      [(NIBluetoothSample *)v26 setName:v30];
+      name4 = [v39 name];
+      [(NIBluetoothSample *)v26 setName:name4];
     }
   }
 
-  v31 = [v39 idsDeviceID];
-  v32 = v31 == 0;
+  idsDeviceID3 = [v39 idsDeviceID];
+  v32 = idsDeviceID3 == 0;
 
   if (!v32)
   {
@@ -1066,7 +1066,7 @@ LABEL_15:
         }
 
         v37 = *(*(&v43 + 1) + 8 * i);
-        v38 = [v37 getQueueForInputingData];
+        getQueueForInputingData = [v37 getQueueForInputingData];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1001B75A4;
@@ -1074,7 +1074,7 @@ LABEL_15:
         block[4] = v37;
         v41 = v39;
         v42 = v26;
-        dispatch_async(v38, block);
+        dispatch_async(getQueueForInputingData, block);
       }
 
       v34 = [(NSHashTable *)v33 countByEnumeratingWithState:&v43 objects:v50 count:16];
@@ -1105,13 +1105,13 @@ LABEL_15:
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 getQueueForInputingData];
+        getQueueForInputingData = [v6 getQueueForInputingData];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1001B777C;
         block[3] = &unk_10098BD28;
         block[4] = v6;
-        dispatch_async(v7, block);
+        dispatch_async(getQueueForInputingData, block);
       }
 
       v3 = [(NSHashTable *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -1123,18 +1123,18 @@ LABEL_15:
 
 - (void)handleCBDiscoveryStateChanged
 {
-  v3 = [(CBDiscovery *)self->_cbDiscovery bluetoothState];
+  bluetoothState = [(CBDiscovery *)self->_cbDiscovery bluetoothState];
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3 > 0xA)
+    if (bluetoothState > 0xA)
     {
       v5 = "?";
     }
 
     else
     {
-      v5 = off_10099BCE0[v3];
+      v5 = off_10099BCE0[bluetoothState];
     }
 
     *buf = 136315138;
@@ -1161,14 +1161,14 @@ LABEL_15:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 getQueueForInputingData];
+        getQueueForInputingData = [v10 getQueueForInputingData];
         v12[0] = _NSConcreteStackBlock;
         v12[1] = 3221225472;
         v12[2] = sub_1001B7988;
         v12[3] = &unk_10098A450;
         v12[4] = v10;
-        v12[5] = v3;
-        dispatch_async(v11, v12);
+        v12[5] = bluetoothState;
+        dispatch_async(getQueueForInputingData, v12);
       }
 
       v7 = [(NSHashTable *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1190,18 +1190,18 @@ LABEL_24:
       return;
     }
 
-    v4 = [(CBDiscovery *)self->_cbDiscovery bleScanRate];
-    if (v4 > 34)
+    bleScanRate = [(CBDiscovery *)self->_cbDiscovery bleScanRate];
+    if (bleScanRate > 34)
     {
-      if (v4 > 49)
+      if (bleScanRate > 49)
       {
-        if (v4 == 50)
+        if (bleScanRate == 50)
         {
           v5 = "High";
           goto LABEL_23;
         }
 
-        if (v4 == 60)
+        if (bleScanRate == 60)
         {
           v5 = "Max";
           goto LABEL_23;
@@ -1210,13 +1210,13 @@ LABEL_24:
 
       else
       {
-        if (v4 == 35)
+        if (bleScanRate == 35)
         {
           v5 = "MediumLow";
           goto LABEL_23;
         }
 
-        if (v4 == 40)
+        if (bleScanRate == 40)
         {
           v5 = "Medium";
           goto LABEL_23;
@@ -1224,15 +1224,15 @@ LABEL_24:
       }
     }
 
-    else if (v4 > 19)
+    else if (bleScanRate > 19)
     {
-      if (v4 == 20)
+      if (bleScanRate == 20)
       {
         v5 = "Background";
         goto LABEL_23;
       }
 
-      if (v4 == 30)
+      if (bleScanRate == 30)
       {
         v5 = "Low";
         goto LABEL_23;
@@ -1241,13 +1241,13 @@ LABEL_24:
 
     else
     {
-      if (!v4)
+      if (!bleScanRate)
       {
         v5 = "Default";
         goto LABEL_23;
       }
 
-      if (v4 == 10)
+      if (bleScanRate == 10)
       {
         v5 = "Periodic";
 LABEL_23:

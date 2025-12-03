@@ -43,12 +43,12 @@
     {
       if (state)
       {
-        v7 = @"Preparing";
+        state = @"Preparing";
       }
 
       else
       {
-        v7 = @"Invalid";
+        state = @"Invalid";
       }
     }
 
@@ -57,17 +57,17 @@
       switch(state)
       {
         case 2:
-          v7 = @"Ready";
+          state = @"Ready";
           break;
         case 3:
-          v7 = @"Restarting";
+          state = @"Restarting";
           break;
         case 4:
-          v7 = @"Failed";
+          state = @"Failed";
           break;
         default:
           v8 = v4;
-          v7 = [[NSString alloc] initWithFormat:@"Unknown(%u)", state];
+          state = [[NSString alloc] initWithFormat:@"Unknown(%u)", state];
           v4 = v8;
           break;
       }
@@ -78,11 +78,11 @@
   {
     v4 = [NSString alloc];
     identifier = 0;
-    v7 = @"Invalid";
+    state = @"Invalid";
     v3 = "NRDNSProxyClient";
   }
 
-  v9 = [v4 initWithFormat:@"%s[%llu, %@]", v3, identifier, v7];
+  v9 = [v4 initWithFormat:@"%s[%llu, %@]", v3, identifier, state];
 
   return v9;
 }
@@ -107,10 +107,10 @@
     {
       if (!dnsProtocol)
       {
-        v4 = self;
+        selfCopy2 = self;
         v5 = 2;
 LABEL_16:
-        sub_100023B5C(v4, v5);
+        sub_100023B5C(selfCopy2, v5);
         return;
       }
 
@@ -134,7 +134,7 @@ LABEL_13:
       }
 
 LABEL_15:
-      v4 = self;
+      selfCopy2 = self;
       v5 = 4;
       goto LABEL_16;
     }
@@ -181,17 +181,17 @@ LABEL_15:
       v13 = self->super._serverEndpoint;
       if (v12 == 2)
       {
-        v14 = [(NWAddressEndpoint *)v13 address];
-        v15 = bswap32(v14[1]);
-        v16 = bswap32(*(v14 + 1));
+        address = [(NWAddressEndpoint *)v13 address];
+        v15 = bswap32(address[1]);
+        v16 = bswap32(*(address + 1));
         mrc_discovery_proxy_parameters_add_server_ipv4_address();
       }
 
       else if ([(NWAddressEndpoint *)v13 addressFamily]== 30)
       {
-        v23 = [(NWAddressEndpoint *)self->super._serverEndpoint address];
-        v24 = bswap32(v23[1]);
-        v25 = *(v23 + 6);
+        address2 = [(NWAddressEndpoint *)self->super._serverEndpoint address];
+        v24 = bswap32(address2[1]);
+        v25 = *(address2 + 6);
         mrc_discovery_proxy_parameters_add_server_ipv6_address();
       }
 

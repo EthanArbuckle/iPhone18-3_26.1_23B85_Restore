@@ -1,6 +1,6 @@
 @interface PuzzleEmbedMenuDismissMessageHandler
 - (_TtC7NewsUI236PuzzleEmbedMenuDismissMessageHandler)init;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation PuzzleEmbedMenuDismissMessageHandler
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_218E35DD8();
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

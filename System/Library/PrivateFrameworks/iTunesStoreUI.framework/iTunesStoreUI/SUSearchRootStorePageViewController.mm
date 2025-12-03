@@ -1,47 +1,47 @@
 @interface SUSearchRootStorePageViewController
 - (id)copyArchivableContext;
 - (void)reloadCancelBarButtonItem;
-- (void)resetNavigationItem:(id)a3;
-- (void)setParentViewController:(id)a3;
-- (void)setSection:(id)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)resetNavigationItem:(id)item;
+- (void)setParentViewController:(id)controller;
+- (void)setSection:(id)section;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUSearchRootStorePageViewController
 
 - (void)reloadCancelBarButtonItem
 {
-  v3 = [(SUViewController *)self navigationItem];
-  if ([-[SUNavigationItem leftBarButtonItem](v3 "leftBarButtonItem")] == 1397244748)
+  navigationItem = [(SUViewController *)self navigationItem];
+  if ([-[SUNavigationItem leftBarButtonItem](navigationItem "leftBarButtonItem")] == 1397244748)
   {
-    [(SUNavigationItem *)v3 setLeftBarButtonItem:0];
+    [(SUNavigationItem *)navigationItem setLeftBarButtonItem:0];
   }
 
-  else if ([-[SUNavigationItem rightBarButtonItem](v3 "rightBarButtonItem")] == 1397244748)
+  else if ([-[SUNavigationItem rightBarButtonItem](navigationItem "rightBarButtonItem")] == 1397244748)
   {
-    [(SUNavigationItem *)v3 setRightBarButtonItem:0];
+    [(SUNavigationItem *)navigationItem setRightBarButtonItem:0];
   }
 
-  v4 = [(SUSearchFieldController *)[(SUStorePageViewController *)self searchFieldController] searchFieldConfiguration];
-  if (!v4)
+  searchFieldConfiguration = [(SUSearchFieldController *)[(SUStorePageViewController *)self searchFieldController] searchFieldConfiguration];
+  if (!searchFieldConfiguration)
   {
-    v4 = [-[UIViewController section](self "section")];
+    searchFieldConfiguration = [-[UIViewController section](self "section")];
   }
 
-  v5 = [(SUSearchFieldConfiguration *)v4 cancelString];
-  if ([(NSString *)v5 length])
+  cancelString = [(SUSearchFieldConfiguration *)searchFieldConfiguration cancelString];
+  if ([(NSString *)cancelString length])
   {
-    v6 = [[SUBarButtonItem alloc] initWithTitle:v5 style:2 target:0 action:sel_cancelTransientViewController_];
+    v6 = [[SUBarButtonItem alloc] initWithTitle:cancelString style:2 target:0 action:sel_cancelTransientViewController_];
     [(SUUIAppearance *)[(SUClientInterface *)[(SUViewController *)self clientInterface] appearance] styleBarButtonItem:v6];
     [(SUBarButtonItem *)v6 setTag:1397244748];
-    if ([(SUSearchFieldConfiguration *)v4 location]== 1)
+    if ([(SUSearchFieldConfiguration *)searchFieldConfiguration location]== 1)
     {
-      [(SUNavigationItem *)v3 setRightBarButtonItem:v6];
+      [(SUNavigationItem *)navigationItem setRightBarButtonItem:v6];
     }
 
     else
     {
-      [(SUNavigationItem *)v3 setLeftBarButtonItem:v6];
+      [(SUNavigationItem *)navigationItem setLeftBarButtonItem:v6];
     }
   }
 }
@@ -50,47 +50,47 @@
 {
   v4.receiver = self;
   v4.super_class = SUSearchRootStorePageViewController;
-  v2 = [(SUStorePageViewController *)&v4 copyArchivableContext];
-  [v2 setType:6];
-  return v2;
+  copyArchivableContext = [(SUStorePageViewController *)&v4 copyArchivableContext];
+  [copyArchivableContext setType:6];
+  return copyArchivableContext;
 }
 
-- (void)resetNavigationItem:(id)a3
+- (void)resetNavigationItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = SUSearchRootStorePageViewController;
-  [(SUStorePageViewController *)&v4 resetNavigationItem:a3];
+  [(SUStorePageViewController *)&v4 resetNavigationItem:item];
   [(SUSearchRootStorePageViewController *)self reloadCancelBarButtonItem];
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
-  v5 = [(UIViewController *)self section];
+  section = [(UIViewController *)self section];
   v6.receiver = self;
   v6.super_class = SUSearchRootStorePageViewController;
-  [(SUStorePageViewController *)&v6 setParentViewController:a3];
-  if (v5 != [(UIViewController *)self section])
+  [(SUStorePageViewController *)&v6 setParentViewController:controller];
+  if (section != [(UIViewController *)self section])
   {
     [(SUSearchRootStorePageViewController *)self reloadCancelBarButtonItem];
   }
 }
 
-- (void)setSection:(id)a3
+- (void)setSection:(id)section
 {
   v4.receiver = self;
   v4.super_class = SUSearchRootStorePageViewController;
-  [(SUStorePageViewController *)&v4 setSection:a3];
+  [(SUStorePageViewController *)&v4 setSection:section];
   [(SUSearchRootStorePageViewController *)self reloadCancelBarButtonItem];
   [(SUViewController *)self setTitle:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(UISearchBar *)[(SUSearchFieldController *)[(SUStorePageViewController *)self searchFieldController] searchBar] resignFirstResponder];
   v5.receiver = self;
   v5.super_class = SUSearchRootStorePageViewController;
-  [(SUStorePageViewController *)&v5 viewWillDisappear:v3];
+  [(SUStorePageViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 @end

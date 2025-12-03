@@ -1,27 +1,27 @@
 @interface CSFocusActivityManager
 - (BOOL)isFocusActivityIndicatorVisible;
 - (CSFocusActivityDelegate)delegate;
-- (CSFocusActivityManager)initWithItemDestination:(id)a3;
+- (CSFocusActivityManager)initWithItemDestination:(id)destination;
 - (id)_activityForDisplayInIndicator;
 - (void)_addOrUpdateFocusActivityIndicatorItemIfNecessary;
 - (void)_updateFocusActivityIndicator;
-- (void)activeActivityDidChangeForManager:(id)a3;
-- (void)availableActivitiesDidChangeForManager:(id)a3;
-- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)a3;
+- (void)activeActivityDidChangeForManager:(id)manager;
+- (void)availableActivitiesDidChangeForManager:(id)manager;
+- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)visible;
 @end
 
 @implementation CSFocusActivityManager
 
-- (CSFocusActivityManager)initWithItemDestination:(id)a3
+- (CSFocusActivityManager)initWithItemDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   v15.receiver = self;
   v15.super_class = CSFocusActivityManager;
   v6 = [(CSFocusActivityManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemDestination, a3);
+    objc_storeStrong(&v6->_itemDestination, destination);
     v8 = objc_alloc_init(CSFocusActivityViewController);
     focusActivityViewController = v7->_focusActivityViewController;
     v7->_focusActivityViewController = v8;
@@ -32,9 +32,9 @@
     activityManagerQueue = v7->_activityManagerQueue;
     v7->_activityManagerQueue = Serial;
 
-    v12 = [MEMORY[0x277D0A9E8] sharedActivityManager];
+    mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
     activityManager = v7->_activityManager;
-    v7->_activityManager = v12;
+    v7->_activityManager = mEMORY[0x277D0A9E8];
 
     [(FCActivityManager *)v7->_activityManager addObserver:v7];
     [(CSFocusActivityManager *)v7 _updateFocusActivityIndicator];
@@ -43,25 +43,25 @@
   return v7;
 }
 
-- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)a3
+- (void)focusActivityViewIndicatorDidChangeToVisible:(BOOL)visible
 {
-  v3 = a3;
-  v7 = [(CSFocusActivityManager *)self delegate];
-  v5 = [(CSFocusActivityManager *)self _activityForDisplayInIndicator];
+  visibleCopy = visible;
+  delegate = [(CSFocusActivityManager *)self delegate];
+  _activityForDisplayInIndicator = [(CSFocusActivityManager *)self _activityForDisplayInIndicator];
 
-  if (!v5)
+  if (!_activityForDisplayInIndicator)
   {
     [(CSItemDestination *)self->_itemDestination removeItemForIdentifier:@"focus activity identifier"];
     focusActivityItem = self->_focusActivityItem;
     self->_focusActivityItem = 0;
   }
 
-  [v7 focusActivityIndicatorDidChangeToVisible:v3];
+  [delegate focusActivityIndicatorDidChangeToVisible:visibleCopy];
 }
 
-- (void)activeActivityDidChangeForManager:(id)a3
+- (void)activeActivityDidChangeForManager:(id)manager
 {
-  if (self->_activityManager == a3)
+  if (self->_activityManager == manager)
   {
     v8 = v3;
     v9 = v4;
@@ -77,9 +77,9 @@
   }
 }
 
-- (void)availableActivitiesDidChangeForManager:(id)a3
+- (void)availableActivitiesDidChangeForManager:(id)manager
 {
-  if (self->_activityManager == a3)
+  if (self->_activityManager == manager)
   {
     v8 = v3;
     v9 = v4;
@@ -108,9 +108,9 @@
 
 - (void)_addOrUpdateFocusActivityIndicatorItemIfNecessary
 {
-  v3 = [(CSFocusActivityManager *)self _activityForDisplayInIndicator];
+  _activityForDisplayInIndicator = [(CSFocusActivityManager *)self _activityForDisplayInIndicator];
 
-  if (v3)
+  if (_activityForDisplayInIndicator)
   {
     focusActivityItem = self->_focusActivityItem;
     if (!focusActivityItem)
@@ -134,15 +134,15 @@
 {
   if (CSAutobahnEnabledForPlatform())
   {
-    v3 = 0;
+    activeActivity = 0;
   }
 
   else
   {
-    v3 = [(FCActivityManager *)self->_activityManager activeActivity];
+    activeActivity = [(FCActivityManager *)self->_activityManager activeActivity];
   }
 
-  return v3;
+  return activeActivity;
 }
 
 - (void)_updateFocusActivityIndicator

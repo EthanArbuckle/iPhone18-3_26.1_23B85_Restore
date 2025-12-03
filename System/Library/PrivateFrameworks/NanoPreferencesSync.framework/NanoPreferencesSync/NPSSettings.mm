@@ -1,8 +1,8 @@
 @interface NPSSettings
-+ (BOOL)domainShouldSyncFirst:(id)a3 key:(id)a4;
++ (BOOL)domainShouldSyncFirst:(id)first key:(id)key;
 + (id)bbAppsSettings;
-+ (id)preprocessItemSyncGroups:(id)a3 forDomain:(id)a4 key:(id)a5;
-- (id)_settingBundlesInDirectories:(id)a3;
++ (id)preprocessItemSyncGroups:(id)groups forDomain:(id)domain key:(id)key;
+- (id)_settingBundlesInDirectories:(id)directories;
 - (void)loadSettingsBundles;
 @end
 
@@ -28,7 +28,7 @@
   if ([v10 count])
   {
     v119 = v10;
-    v120 = self;
+    selfCopy = self;
     v208 = 0u;
     v207 = 0u;
     v206 = 0u;
@@ -242,7 +242,7 @@ LABEL_45:
                       if (sub_100002640(v18, @"NPSCloudEnabled", 0, v56, v57))
                       {
                         v137 = v56;
-                        v130 = [v56 BOOLValue];
+                        bOOLValue = [v56 BOOLValue];
                         goto LABEL_49;
                       }
 
@@ -271,7 +271,7 @@ LABEL_101:
                     }
 
                     v137 = 0;
-                    v130 = 0;
+                    bOOLValue = 0;
 LABEL_49:
                     v58 = [v26 objectForKey:@"NPSSyncGroups"];
                     v136 = v58;
@@ -289,7 +289,7 @@ LABEL_49:
                     if (!v59)
                     {
                       v133 = 0;
-                      v128 = 0;
+                      bOOLValue2 = 0;
                       v47 = v143;
                       goto LABEL_56;
                     }
@@ -302,7 +302,7 @@ LABEL_49:
                     }
 
                     v133 = v59;
-                    v128 = [v59 BOOLValue];
+                    bOOLValue2 = [v59 BOOLValue];
 LABEL_56:
                     v61 = [v26 objectForKey:@"NPSMirrorableBBDomain"];
                     if (v61)
@@ -396,7 +396,7 @@ LABEL_93:
                     if (([(__CFString *)v142 isEqualToString:@"OneWaySync"]& 1) != 0 || [(__CFString *)v142 isEqualToString:@"TwoWaySync"])
                     {
                       v72 = [(__CFString *)v142 isEqualToString:@"TwoWaySync"];
-                      v73 = [(NSMutableDictionary *)v120->_syncedUserDefaults objectForKey:v146];
+                      v73 = [(NSMutableDictionary *)selfCopy->_syncedUserDefaults objectForKey:v146];
                       v74 = v132;
                       if (!v73)
                       {
@@ -411,7 +411,7 @@ LABEL_93:
 
                         v65 = v75;
                         v74 = v132;
-                        [(NSMutableDictionary *)v120->_syncedUserDefaults setObject:v73 forKey:v146];
+                        [(NSMutableDictionary *)selfCopy->_syncedUserDefaults setObject:v73 forKey:v146];
                       }
 
                       v182[0] = _NSConcreteStackBlock;
@@ -424,14 +424,14 @@ LABEL_93:
                       v194 = v72;
                       v185 = v141;
                       v186 = v140;
-                      v195 = v130;
+                      v195 = bOOLValue;
                       v187 = v138;
                       v188 = v146;
-                      v196 = v128;
+                      v196 = bOOLValue2;
                       v189 = v74;
                       v190 = v129;
                       v191 = v65;
-                      v192 = v120;
+                      v192 = selfCopy;
                       v193 = v44;
                       v78 = objc_retainBlock(v182);
                       v178 = 0u;
@@ -515,7 +515,7 @@ LABEL_69:
                         goto LABEL_90;
                       }
 
-                      v90 = [(NSMutableDictionary *)v120->_permittedUserDefaults objectForKey:v146];
+                      v90 = [(NSMutableDictionary *)selfCopy->_permittedUserDefaults objectForKey:v146];
                       if (!v90)
                       {
                         v90 = objc_opt_new();
@@ -526,7 +526,7 @@ LABEL_69:
                         v92 = objc_opt_new();
                         [v90 setKeyPrefixes:v92];
 
-                        [(NSMutableDictionary *)v120->_permittedUserDefaults setObject:v90 forKey:v146];
+                        [(NSMutableDictionary *)selfCopy->_permittedUserDefaults setObject:v90 forKey:v146];
                       }
 
                       v165[0] = _NSConcreteStackBlock;
@@ -538,7 +538,7 @@ LABEL_69:
                       v167 = v131;
                       v168 = v141;
                       v169 = v146;
-                      v173 = v128;
+                      v173 = bOOLValue2;
                       v170 = v140;
                       v171 = v138;
                       v172 = v44;
@@ -657,7 +657,7 @@ LABEL_126:
     v156 = 0u;
     v153 = 0u;
     v154 = 0u;
-    v107 = v120->_syncedUserDefaults;
+    v107 = selfCopy->_syncedUserDefaults;
     v108 = [(NSMutableDictionary *)v107 countByEnumeratingWithState:&v153 objects:v210 count:16];
     if (v108)
     {
@@ -672,8 +672,8 @@ LABEL_126:
             objc_enumerationMutation(v107);
           }
 
-          v112 = [(NSMutableDictionary *)v120->_syncedUserDefaults objectForKeyedSubscript:*(*(&v153 + 1) + 8 * ii), v119];
-          [v112 log];
+          v119 = [(NSMutableDictionary *)selfCopy->_syncedUserDefaults objectForKeyedSubscript:*(*(&v153 + 1) + 8 * ii), v119];
+          [v119 log];
         }
 
         v109 = [(NSMutableDictionary *)v107 countByEnumeratingWithState:&v153 objects:v210 count:16];
@@ -686,7 +686,7 @@ LABEL_126:
     v152 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v113 = v120->_permittedUserDefaults;
+    v113 = selfCopy->_permittedUserDefaults;
     v114 = [(NSMutableDictionary *)v113 countByEnumeratingWithState:&v149 objects:v209 count:16];
     if (v114)
     {
@@ -701,8 +701,8 @@ LABEL_126:
             objc_enumerationMutation(v113);
           }
 
-          v118 = [(NSMutableDictionary *)v120->_permittedUserDefaults objectForKeyedSubscript:*(*(&v149 + 1) + 8 * jj), v119];
-          [v118 log];
+          v1192 = [(NSMutableDictionary *)selfCopy->_permittedUserDefaults objectForKeyedSubscript:*(*(&v149 + 1) + 8 * jj), v119];
+          [v1192 log];
         }
 
         v115 = [(NSMutableDictionary *)v113 countByEnumeratingWithState:&v149 objects:v209 count:16];
@@ -715,27 +715,27 @@ LABEL_126:
   }
 }
 
-+ (BOOL)domainShouldSyncFirst:(id)a3 key:(id)a4
++ (BOOL)domainShouldSyncFirst:(id)first key:(id)key
 {
   v5 = qword_100045720;
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  firstCopy = first;
   if (v5 != -1)
   {
     sub_100026E5C();
   }
 
-  v8 = [qword_100045718 objectForKeyedSubscript:v7];
+  v8 = [qword_100045718 objectForKeyedSubscript:firstCopy];
 
-  v9 = [v8 containsObject:v6];
+  v9 = [v8 containsObject:keyCopy];
   return v9;
 }
 
-+ (id)preprocessItemSyncGroups:(id)a3 forDomain:(id)a4 key:(id)a5
++ (id)preprocessItemSyncGroups:(id)groups forDomain:(id)domain key:(id)key
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 mutableCopy];
+  keyCopy = key;
+  domainCopy = domain;
+  v9 = [groups mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -749,11 +749,11 @@ LABEL_126:
 
   v12 = v11;
 
-  v13 = [NPSSettings domainShouldSyncFirst:v8 key:v7];
+  v13 = [NPSSettings domainShouldSyncFirst:domainCopy key:keyCopy];
   if (v13)
   {
     [v12 addObject:@"First"];
-    if (a3)
+    if (groups)
     {
       goto LABEL_9;
     }
@@ -762,7 +762,7 @@ LABEL_126:
   else
   {
     [v12 removeObject:@"First"];
-    if (a3)
+    if (groups)
     {
       goto LABEL_9;
     }
@@ -774,9 +774,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)_settingBundlesInDirectories:(id)a3
+- (id)_settingBundlesInDirectories:(id)directories
 {
-  v3 = a3;
+  directoriesCopy = directories;
   v4 = objc_alloc_init(NSMutableDictionary);
   v28 = [NSPredicate predicateWithFormat:@"self ENDSWITH '.bundle'"];
   v5 = +[NSFileManager defaultManager];
@@ -784,7 +784,7 @@ LABEL_9:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = directoriesCopy;
   v6 = [obj countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v6)
   {
@@ -877,9 +877,9 @@ LABEL_9:
     while (v8);
   }
 
-  v23 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  return v23;
+  return allValues;
 }
 
 + (id)bbAppsSettings

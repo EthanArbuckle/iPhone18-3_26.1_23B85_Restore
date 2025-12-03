@@ -1,32 +1,32 @@
 @interface SwipeActionManager
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (void)handlePanGestureWithRecognizer:(id)a3;
-- (void)handleTapGestureWithRecognizer:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (void)handlePanGestureWithRecognizer:(id)recognizer;
+- (void)handleTapGestureWithRecognizer:(id)recognizer;
 @end
 
 @implementation SwipeActionManager
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1D80FB234(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_1D80FB234(beginCopy);
 
   return self & 1;
 }
 
-- (void)handlePanGestureWithRecognizer:(id)a3
+- (void)handlePanGestureWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D80FBB48(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_1D80FBB48(recognizerCopy);
 }
 
-- (void)handleTapGestureWithRecognizer:(id)a3
+- (void)handleTapGestureWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D80FD238(v4);
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  sub_1D80FD238(recognizerCopy);
 }
 
 @end

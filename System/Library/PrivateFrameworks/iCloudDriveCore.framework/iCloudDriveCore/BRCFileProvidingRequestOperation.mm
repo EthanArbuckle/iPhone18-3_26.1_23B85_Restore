@@ -1,73 +1,73 @@
 @interface BRCFileProvidingRequestOperation
-- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)a3 client:(id)a4 sessionContext:(id)a5 downloadTrackersManager:(id)a6;
-- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)a3 client:(id)a4 sessionContext:(id)a5 downloadTrackersManager:(id)a6 etagIfLoser:(id)a7 stageFileName:(id)a8 options:(unint64_t)a9;
+- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)item client:(id)client sessionContext:(id)context downloadTrackersManager:(id)manager;
+- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)item client:(id)client sessionContext:(id)context downloadTrackersManager:(id)manager etagIfLoser:(id)loser stageFileName:(id)name options:(unint64_t)options;
 - (NSSet)trackedFileObjects;
-- (void)_detachAllTrackedDocID:(id)a3 error:(id)a4;
-- (void)_finishAfterWaitingForDocumentsWithID:(id)a3 withEtagIfLoser:(id)a4 error:(id)a5;
-- (void)_provideDocument:(id)a3;
+- (void)_detachAllTrackedDocID:(id)d error:(id)error;
+- (void)_finishAfterWaitingForDocumentsWithID:(id)d withEtagIfLoser:(id)loser error:(id)error;
+- (void)_provideDocument:(id)document;
 - (void)_provideItem;
-- (void)addCompletionCallback:(id)a3;
+- (void)addCompletionCallback:(id)callback;
 - (void)cancel;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
-- (void)networkReachabilityChanged:(BOOL)a3;
+- (void)networkReachabilityChanged:(BOOL)changed;
 @end
 
 @implementation BRCFileProvidingRequestOperation
 
-- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)a3 client:(id)a4 sessionContext:(id)a5 downloadTrackersManager:(id)a6 etagIfLoser:(id)a7 stageFileName:(id)a8 options:(unint64_t)a9
+- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)item client:(id)client sessionContext:(id)context downloadTrackersManager:(id)manager etagIfLoser:(id)loser stageFileName:(id)name options:(unint64_t)options
 {
-  v16 = a7;
-  v17 = a8;
-  v18 = [(BRCFileProvidingRequestOperation *)self initWithDocumentItem:a3 client:a4 sessionContext:a5 downloadTrackersManager:a6];
+  loserCopy = loser;
+  nameCopy = name;
+  v18 = [(BRCFileProvidingRequestOperation *)self initWithDocumentItem:item client:client sessionContext:context downloadTrackersManager:manager];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_etagIfLoser, a7);
-    objc_storeStrong(&v19->_stageFileName, a8);
-    v19->_options = a9;
+    objc_storeStrong(&v18->_etagIfLoser, loser);
+    objc_storeStrong(&v19->_stageFileName, name);
+    v19->_options = options;
   }
 
   return v19;
 }
 
-- (void)addCompletionCallback:(id)a3
+- (void)addCompletionCallback:(id)callback
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  callbacks = v4->_callbacks;
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  callbacks = selfCopy->_callbacks;
   if (!callbacks)
   {
     v6 = objc_opt_new();
-    v7 = v4->_callbacks;
-    v4->_callbacks = v6;
+    v7 = selfCopy->_callbacks;
+    selfCopy->_callbacks = v6;
 
-    callbacks = v4->_callbacks;
+    callbacks = selfCopy->_callbacks;
   }
 
-  v8 = MEMORY[0x22AA4A310](v9);
+  v8 = MEMORY[0x22AA4A310](callbackCopy);
   [(NSMutableArray *)callbacks addObject:v8];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSSet)trackedFileObjects
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableSet *)v2->_trackerFileObjects copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableSet *)selfCopy->_trackerFileObjects copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)a3 client:(id)a4 sessionContext:(id)a5 downloadTrackersManager:(id)a6
+- (BRCFileProvidingRequestOperation)initWithDocumentItem:(id)item client:(id)client sessionContext:(id)context downloadTrackersManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [(_BRCOperation *)self initWithName:@"document-download" syncContext:0 sessionContext:a5];
+  itemCopy = item;
+  clientCopy = client;
+  managerCopy = manager;
+  v14 = [(_BRCOperation *)self initWithName:@"document-download" syncContext:0 sessionContext:context];
   if (v14)
   {
     if (initWithDocumentItem_client_sessionContext_downloadTrackersManager__onceToken != -1)
@@ -75,21 +75,21 @@
       [BRCFileProvidingRequestOperation initWithDocumentItem:client:sessionContext:downloadTrackersManager:];
     }
 
-    v15 = [(_BRCOperation *)v14 callbackQueue];
-    dispatch_set_target_queue(v15, initWithDocumentItem_client_sessionContext_downloadTrackersManager__queue);
+    callbackQueue = [(_BRCOperation *)v14 callbackQueue];
+    dispatch_set_target_queue(callbackQueue, initWithDocumentItem_client_sessionContext_downloadTrackersManager__queue);
 
     [(_BRCOperation *)v14 setNonDiscretionary:1];
-    v16 = [(BRCSessionContext *)v14->super.super._sessionContext analyticsReporter];
-    v17 = [(_BRCOperation *)v14 operationID];
-    [v16 createUserDownloadEventForOperationID:v17 isRecursive:0 isForBackup:0];
+    analyticsReporter = [(BRCSessionContext *)v14->super.super._sessionContext analyticsReporter];
+    operationID = [(_BRCOperation *)v14 operationID];
+    [analyticsReporter createUserDownloadEventForOperationID:operationID isRecursive:0 isForBackup:0];
 
-    objc_storeStrong(&v14->_documentItem, a3);
-    objc_storeStrong(&v14->_client, a4);
+    objc_storeStrong(&v14->_documentItem, item);
+    objc_storeStrong(&v14->_client, client);
     v18 = objc_opt_new();
     trackerFileObjects = v14->_trackerFileObjects;
     v14->_trackerFileObjects = v18;
 
-    objc_storeStrong(&v14->_downloadTrackersManager, a6);
+    objc_storeStrong(&v14->_downloadTrackersManager, manager);
     [(_BRCFrameworkOperation *)v14 setIgnoreMissingRemoteClientProxy:1];
   }
 
@@ -111,27 +111,27 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
   v6.receiver = self;
   v6.super_class = BRCFileProvidingRequestOperation;
   [(_BRCOperation *)&v6 cancel];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = [(NSMutableSet *)v3->_trackerFileObjects copy];
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = [(NSMutableSet *)selfCopy->_trackerFileObjects copy];
+  objc_sync_exit(selfCopy);
 
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
-  [(BRCFileProvidingRequestOperation *)v3 _detachAllTrackedDocID:v4 error:v5];
+  [(BRCFileProvidingRequestOperation *)selfCopy _detachAllTrackedDocID:v4 error:v5];
 }
 
-- (void)_detachAllTrackedDocID:(id)a3 error:(id)a4
+- (void)_detachAllTrackedDocID:(id)d error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dCopy = d;
+  errorCopy = error;
+  if ([dCopy count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v6;
+    v8 = dCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -147,9 +147,9 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 fileObjectID];
-          v15 = [v13 etagIfLoser];
-          [(BRCFileProvidingRequestOperation *)self downloadTrackedForFileObjectID:v14 withEtagIfLoser:v15 didFinishWithError:v7];
+          fileObjectID = [v13 fileObjectID];
+          etagIfLoser = [v13 etagIfLoser];
+          [(BRCFileProvidingRequestOperation *)self downloadTrackedForFileObjectID:fileObjectID withEtagIfLoser:etagIfLoser didFinishWithError:errorCopy];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -161,24 +161,24 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
 
   else
   {
-    [(BRCFileProvidingRequestOperation *)self downloadTrackedForFileObjectID:0 withEtagIfLoser:0 didFinishWithError:v7];
+    [(BRCFileProvidingRequestOperation *)self downloadTrackedForFileObjectID:0 withEtagIfLoser:0 didFinishWithError:errorCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_provideDocument:(id)a3
+- (void)_provideDocument:(id)document
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 fileObjectID];
+  documentCopy = document;
+  fileObjectID = [documentCopy fileObjectID];
   if (self->_client)
   {
-    v6 = [v4 appLibrary];
-    if (v6 && ([(NSMutableSet *)self->_appLibrariesMonitored containsObject:v6]& 1) == 0)
+    appLibrary = [documentCopy appLibrary];
+    if (appLibrary && ([(NSMutableSet *)self->_appLibrariesMonitored containsObject:appLibrary]& 1) == 0)
     {
-      [(NSMutableSet *)self->_appLibrariesMonitored addObject:v6];
-      [(BRCXPCClient *)self->_client addAppLibrary:v6];
+      [(NSMutableSet *)self->_appLibrariesMonitored addObject:appLibrary];
+      [(BRCXPCClient *)self->_client addAppLibrary:appLibrary];
     }
   }
 
@@ -186,7 +186,7 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
   etagIfLoser = self->_etagIfLoser;
   stageFileName = self->_stageFileName;
   v29 = 0;
-  v10 = [v4 startDownloadInTask:0 options:options etagIfLoser:etagIfLoser stageFileName:stageFileName error:&v29];
+  v10 = [documentCopy startDownloadInTask:0 options:options etagIfLoser:etagIfLoser stageFileName:stageFileName error:&v29];
   v11 = v29;
   if ((v10 & 1) == 0)
   {
@@ -195,7 +195,7 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v31 = v4;
+      v31 = documentCopy;
       v32 = 2112;
       v33 = v11;
       v34 = 2112;
@@ -207,10 +207,10 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
     goto LABEL_20;
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(BRCFileProvidingRequestOperation *)v12 isCancelled];
-  if (v13)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCancelled = [(BRCFileProvidingRequestOperation *)selfCopy isCancelled];
+  if (isCancelled)
   {
     v14 = 0;
   }
@@ -218,23 +218,23 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
   else
   {
     v17 = +[BRCSystemResourcesManager manager];
-    v18 = [v17 isNetworkReachable];
+    isNetworkReachable = [v17 isNetworkReachable];
 
-    if (v18)
+    if (isNetworkReachable)
     {
-      trackerFileObjects = v12->_trackerFileObjects;
-      v20 = [BRCTrackedVersion trackedVersionFor:v5 withEtagIfLoser:self->_etagIfLoser kind:[(BRCFileProvidingRequestOperation *)v12 kind]];
+      trackerFileObjects = selfCopy->_trackerFileObjects;
+      v20 = [BRCTrackedVersion trackedVersionFor:fileObjectID withEtagIfLoser:self->_etagIfLoser kind:[(BRCFileProvidingRequestOperation *)selfCopy kind]];
       [(NSMutableSet *)trackerFileObjects addObject:v20];
 
-      v21 = [(BRCSessionContext *)v12->super.super._sessionContext analyticsReporter];
-      v22 = [(_BRCOperation *)v12 operationID];
+      analyticsReporter = [(BRCSessionContext *)selfCopy->super.super._sessionContext analyticsReporter];
+      operationID = [(_BRCOperation *)selfCopy operationID];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __53__BRCFileProvidingRequestOperation__provideDocument___block_invoke;
       v26[3] = &unk_278504BE8;
-      v27 = v5;
-      v28 = v4;
-      [v21 lookupUserDownloadEventByOperationID:v22 accessor:v26];
+      v27 = fileObjectID;
+      v28 = documentCopy;
+      [analyticsReporter lookupUserDownloadEventByOperationID:operationID accessor:v26];
 
       v23 = v27;
     }
@@ -247,30 +247,30 @@ void __103__BRCFileProvidingRequestOperation_initWithDocumentItem_client_session
     }
 
     v14 = 0;
-    if (!v12->_isMonitoringReachability && !v11)
+    if (!selfCopy->_isMonitoringReachability && !v11)
     {
       v14 = 1;
-      v12->_isMonitoringReachability = 1;
+      selfCopy->_isMonitoringReachability = 1;
     }
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   if (v11)
   {
-    [(BRCFileProvidingRequestOperation *)v12 _finishAfterWaitingForDocumentsWithID:v5 withEtagIfLoser:self->_etagIfLoser error:v11];
+    [(BRCFileProvidingRequestOperation *)selfCopy _finishAfterWaitingForDocumentsWithID:fileObjectID withEtagIfLoser:self->_etagIfLoser error:v11];
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  if ((v13 & 1) == 0)
+  if ((isCancelled & 1) == 0)
   {
-    [(BRCDownloadTrackerManaging *)v12->_downloadTrackersManager addDownloadTracker:v12 forFileObjectID:v5 withEtagIfLoser:self->_etagIfLoser];
+    [(BRCDownloadTrackerManaging *)selfCopy->_downloadTrackersManager addDownloadTracker:selfCopy forFileObjectID:fileObjectID withEtagIfLoser:self->_etagIfLoser];
     if (v14)
     {
       v11 = +[BRCSystemResourcesManager manager];
-      [v11 addReachabilityObserver:v12];
+      [v11 addReachabilityObserver:selfCopy];
       goto LABEL_20;
     }
   }
@@ -308,7 +308,7 @@ void __53__BRCFileProvidingRequestOperation__provideDocument___block_invoke(uint
 {
   v5 = *MEMORY[0x277D85DE8];
   LODWORD(v4) = 138412546;
-  *(&v4 + 4) = a1;
+  *(&v4 + 4) = self;
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_4(&dword_223E7A000, v1, v2, "[DEBUG] %@ was cancelled%@", v4, DWORD2(v4));
   v3 = *MEMORY[0x277D85DE8];
@@ -335,10 +335,10 @@ void __40__BRCFileProvidingRequestOperation_main__block_invoke(uint64_t a1)
   }
 }
 
-- (void)networkReachabilityChanged:(BOOL)a3
+- (void)networkReachabilityChanged:(BOOL)changed
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!changed)
   {
     memset(v21, 0, sizeof(v21));
     __brc_create_section(0, "[BRCFileProvidingRequestOperation networkReachabilityChanged:]", 208, 0, v21);
@@ -350,7 +350,7 @@ void __40__BRCFileProvidingRequestOperation_main__block_invoke(uint64_t a1)
     }
 
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4355 userInfo:0];
-    v7 = [(_BRCOperation *)self callbackQueue];
+    callbackQueue = [(_BRCOperation *)self callbackQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __63__BRCFileProvidingRequestOperation_networkReachabilityChanged___block_invoke;
@@ -358,7 +358,7 @@ void __40__BRCFileProvidingRequestOperation_main__block_invoke(uint64_t a1)
     v19[4] = self;
     v8 = v6;
     v20 = v8;
-    v9 = v7;
+    v9 = callbackQueue;
     v10 = v19;
     v11 = objc_autoreleasePoolPush();
     v22 = 0uLL;
@@ -405,69 +405,69 @@ void __63__BRCFileProvidingRequestOperation_networkReachabilityChanged___block_i
   [v2 _detachAllTrackedDocID:v3 error:*(a1 + 40)];
 }
 
-- (void)_finishAfterWaitingForDocumentsWithID:(id)a3 withEtagIfLoser:(id)a4 error:(id)a5
+- (void)_finishAfterWaitingForDocumentsWithID:(id)d withEtagIfLoser:(id)loser error:(id)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v10->_isFinished)
+  dCopy = d;
+  loserCopy = loser;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isFinished)
   {
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    if (v9)
+    if (errorCopy)
     {
-      objc_storeStrong(&v10->_lastDownloadError, a5);
+      objc_storeStrong(&selfCopy->_lastDownloadError, error);
     }
 
     else
     {
-      v9 = v10->_lastDownloadError;
+      errorCopy = selfCopy->_lastDownloadError;
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
 
-    v11 = v10;
+    v11 = selfCopy;
     objc_sync_enter(v11);
-    if (v14)
+    if (dCopy)
     {
       v12 = v11[69];
-      v13 = +[BRCTrackedVersion trackedVersionFor:withEtagIfLoser:kind:](BRCTrackedVersion, "trackedVersionFor:withEtagIfLoser:kind:", v14, v8, [v11 kind]);
+      v13 = +[BRCTrackedVersion trackedVersionFor:withEtagIfLoser:kind:](BRCTrackedVersion, "trackedVersionFor:withEtagIfLoser:kind:", dCopy, loserCopy, [v11 kind]);
       [v12 removeObject:v13];
     }
 
-    if (![v11[69] count] || v9)
+    if (![v11[69] count] || errorCopy)
     {
-      v10->_isFinished = 1;
+      selfCopy->_isFinished = 1;
       objc_sync_exit(v11);
 
-      [v11 completedWithResult:0 error:v9];
+      [v11 completedWithResult:0 error:errorCopy];
     }
 
     else
     {
       objc_sync_exit(v11);
-      v9 = v11;
+      errorCopy = v11;
     }
   }
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  resultCopy = result;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [BRCFileProvidingRequestOperation finishWithResult:v7 error:?];
+      [BRCFileProvidingRequestOperation finishWithResult:errorCopy error:?];
     }
   }
 
@@ -481,18 +481,18 @@ void __63__BRCFileProvidingRequestOperation_networkReachabilityChanged___block_i
     }
   }
 
-  v10 = [(BRCSessionContext *)self->super.super._sessionContext analyticsReporter];
-  v11 = [(_BRCOperation *)self operationID];
+  analyticsReporter = [(BRCSessionContext *)self->super.super._sessionContext analyticsReporter];
+  operationID = [(_BRCOperation *)self operationID];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __59__BRCFileProvidingRequestOperation_finishWithResult_error___block_invoke;
   v37[3] = &unk_278504BE8;
-  v12 = v7;
+  v12 = errorCopy;
   v38 = v12;
-  v39 = self;
-  [v10 lookupUserDownloadEventByOperationID:v11 accessor:v37];
+  selfCopy = self;
+  [analyticsReporter lookupUserDownloadEventByOperationID:operationID accessor:v37];
 
-  if (!v7)
+  if (!errorCopy)
   {
     [(BRCSessionContext *)self->super.super._sessionContext performSyncOnClientReadWriteDatabaseSerialQueue:&__block_literal_global_12];
   }
@@ -529,13 +529,13 @@ void __63__BRCFileProvidingRequestOperation_networkReachabilityChanged___block_i
   [v18 removeReachabilityObserver:self];
 
   [(BRCDownloadTrackerManaging *)self->_downloadTrackersManager removeDownloadTracker:self];
-  v19 = self;
-  objc_sync_enter(v19);
-  v20 = v19->_callbacks;
-  callbacks = v19->_callbacks;
-  v19->_callbacks = 0;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v20 = selfCopy2->_callbacks;
+  callbacks = selfCopy2->_callbacks;
+  selfCopy2->_callbacks = 0;
 
-  objc_sync_exit(v19);
+  objc_sync_exit(selfCopy2);
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -573,9 +573,9 @@ LABEL_17:
     }
   }
 
-  v28.receiver = v19;
+  v28.receiver = selfCopy2;
   v28.super_class = BRCFileProvidingRequestOperation;
-  [(_BRCFrameworkOperation *)&v28 finishWithResult:v6 error:v12];
+  [(_BRCFrameworkOperation *)&v28 finishWithResult:resultCopy error:v12];
 
   v27 = *MEMORY[0x277D85DE8];
 }

@@ -1,28 +1,28 @@
 @interface VSGenericBlockHolder
-- (VSGenericBlockHolder)initWithBlock:(id)a3;
-- (void)invokeUpdateWithObject:(id)a3;
+- (VSGenericBlockHolder)initWithBlock:(id)block;
+- (void)invokeUpdateWithObject:(id)object;
 @end
 
 @implementation VSGenericBlockHolder
 
-- (void)invokeUpdateWithObject:(id)a3
+- (void)invokeUpdateWithObject:(id)object
 {
   block = self->_block;
   if (block)
   {
-    block[2](block, a3);
+    block[2](block, object);
   }
 }
 
-- (VSGenericBlockHolder)initWithBlock:(id)a3
+- (VSGenericBlockHolder)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = VSGenericBlockHolder;
   v5 = [(VSGenericBlockHolder *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x2743CEF70](v4);
+    v6 = MEMORY[0x2743CEF70](blockCopy);
     block = v5->_block;
     v5->_block = v6;
   }

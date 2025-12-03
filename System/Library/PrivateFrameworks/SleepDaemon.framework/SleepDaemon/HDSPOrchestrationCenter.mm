@@ -1,32 +1,32 @@
 @interface HDSPOrchestrationCenter
 - (HDSPEnvironment)environment;
-- (HDSPOrchestrationCenter)initWithEnvironment:(id)a3;
-- (void)publishNotificationForEvent:(id)a3;
+- (HDSPOrchestrationCenter)initWithEnvironment:(id)environment;
+- (void)publishNotificationForEvent:(id)event;
 @end
 
 @implementation HDSPOrchestrationCenter
 
-- (HDSPOrchestrationCenter)initWithEnvironment:(id)a3
+- (HDSPOrchestrationCenter)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPOrchestrationCenter;
   v5 = [(HDSPOrchestrationCenter *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)publishNotificationForEvent:(id)a3
+- (void)publishNotificationForEvent:(id)event
 {
-  v3 = [a3 identifier];
+  identifier = [event identifier];
   v4 = HKSHSleepScoreResultsNotificationEventIdentifier();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [identifier isEqualToString:v4];
 
   if (v5)
   {

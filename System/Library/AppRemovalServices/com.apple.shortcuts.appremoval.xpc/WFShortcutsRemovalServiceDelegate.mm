@@ -1,32 +1,32 @@
 @interface WFShortcutsRemovalServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation WFShortcutsRemovalServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LSAppRemovalServiceProtocol];
-  [v6 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, connectionCopy);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100000F2C;
   v12[3] = &unk_100004118;
   objc_copyWeak(&v13, &location);
-  [v6 setInterruptionHandler:v12];
+  [connectionCopy setInterruptionHandler:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100000FF0;
   v10[3] = &unk_100004118;
   objc_copyWeak(&v11, &location);
-  [v6 setInvalidationHandler:v10];
+  [connectionCopy setInvalidationHandler:v10];
   v8 = objc_opt_new();
-  [v6 setExportedObject:v8];
-  [v6 resume];
+  [connectionCopy setExportedObject:v8];
+  [connectionCopy resume];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);

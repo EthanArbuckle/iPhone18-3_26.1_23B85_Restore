@@ -1,32 +1,32 @@
 @interface CDASchemaCDAElectionDecisionMade
-- (BOOL)isEqual:(id)a3;
-- (CDASchemaCDAElectionDecisionMade)initWithDictionary:(id)a3;
-- (CDASchemaCDAElectionDecisionMade)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CDASchemaCDAElectionDecisionMade)initWithDictionary:(id)dictionary;
+- (CDASchemaCDAElectionDecisionMade)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHeardParticipants:(id)a3;
-- (void)setHasDecision:(BOOL)a3;
-- (void)setHasPreviousDecision:(BOOL)a3;
-- (void)setHasRawGoodnessScore:(BOOL)a3;
-- (void)setHasTimeSinceLastDecisionInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHeardParticipants:(id)participants;
+- (void)setHasDecision:(BOOL)decision;
+- (void)setHasPreviousDecision:(BOOL)decision;
+- (void)setHasRawGoodnessScore:(BOOL)score;
+- (void)setHasTimeSinceLastDecisionInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CDASchemaCDAElectionDecisionMade
 
-- (CDASchemaCDAElectionDecisionMade)initWithDictionary:(id)a3
+- (CDASchemaCDAElectionDecisionMade)initWithDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = CDASchemaCDAElectionDecisionMade;
   v5 = [(CDASchemaCDAElectionDecisionMade *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"version"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"version"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,21 +34,21 @@
       [(CDASchemaCDAElectionDecisionMade *)v5 setVersion:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"decision"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"decision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAElectionDecisionMade setDecision:](v5, "setDecision:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"previousDecision"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"previousDecision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAElectionDecisionMade setPreviousDecision:](v5, "setPreviousDecision:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"thisDevice"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"thisDevice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
     }
 
     v30 = v9;
-    v11 = [v4 objectForKeyedSubscript:@"winningDevice"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"winningDevice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
     }
 
     v29 = v11;
-    v13 = [v4 objectForKeyedSubscript:@"heardParticipants"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"heardParticipants"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,21 +110,21 @@
       v8 = v27;
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"timeSinceLastDecisionInMs"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastDecisionInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAElectionDecisionMade setTimeSinceLastDecisionInMs:](v5, "setTimeSinceLastDecisionInMs:", [v21 unsignedLongLongValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"rawGoodnessScore"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"rawGoodnessScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CDASchemaCDAElectionDecisionMade setRawGoodnessScore:](v5, "setRawGoodnessScore:", [v22 unsignedIntValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"goodnessScoreBoosts"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"goodnessScoreBoosts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,30 +138,30 @@
   return v5;
 }
 
-- (CDASchemaCDAElectionDecisionMade)initWithJSON:(id)a3
+- (CDASchemaCDAElectionDecisionMade)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CDASchemaCDAElectionDecisionMade *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CDASchemaCDAElectionDecisionMade *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CDASchemaCDAElectionDecisionMade *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -175,11 +175,11 @@
 - (id)dictionaryRepresentation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
-    v4 = [(CDASchemaCDAElectionDecisionMade *)self decision];
-    if (v4 == 1)
+    decision = [(CDASchemaCDAElectionDecisionMade *)self decision];
+    if (decision == 1)
     {
       v5 = @"CDADECISION_WIN";
     }
@@ -189,7 +189,7 @@
       v5 = @"CDADECISION_UNKNOWN";
     }
 
-    if (v4 == 2)
+    if (decision == 2)
     {
       v6 = @"CDADECISION_LOSS";
     }
@@ -199,28 +199,28 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"decision"];
+    [dictionary setObject:v6 forKeyedSubscript:@"decision"];
   }
 
   if (self->_goodnessScoreBoosts)
   {
-    v7 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    goodnessScoreBoosts = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
+    dictionaryRepresentation = [goodnessScoreBoosts dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"goodnessScoreBoosts"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"goodnessScoreBoosts"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"goodnessScoreBoosts"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"goodnessScoreBoosts"];
     }
   }
 
   if ([(NSArray *)self->_heardParticipants count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -240,16 +240,16 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation2 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -259,14 +259,14 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"heardParticipants"];
+    [dictionary setObject:array forKeyedSubscript:@"heardParticipants"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v19 = [(CDASchemaCDAElectionDecisionMade *)self previousDecision];
-    if (v19 == 1)
+    previousDecision = [(CDASchemaCDAElectionDecisionMade *)self previousDecision];
+    if (previousDecision == 1)
     {
       v20 = @"CDADECISION_WIN";
     }
@@ -276,7 +276,7 @@
       v20 = @"CDADECISION_UNKNOWN";
     }
 
-    if (v19 == 2)
+    if (previousDecision == 2)
     {
       v21 = @"CDADECISION_LOSS";
     }
@@ -286,29 +286,29 @@
       v21 = v20;
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"previousDecision"];
+    [dictionary setObject:v21 forKeyedSubscript:@"previousDecision"];
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CDASchemaCDAElectionDecisionMade rawGoodnessScore](self, "rawGoodnessScore")}];
-    [v3 setObject:v22 forKeyedSubscript:@"rawGoodnessScore"];
+    [dictionary setObject:v22 forKeyedSubscript:@"rawGoodnessScore"];
   }
 
   if (self->_thisDevice)
   {
-    v23 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    thisDevice = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
+    dictionaryRepresentation3 = [thisDevice dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"thisDevice"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"thisDevice"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"thisDevice"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"thisDevice"];
     }
   }
 
@@ -316,7 +316,7 @@
   if ((v26 & 8) != 0)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[CDASchemaCDAElectionDecisionMade timeSinceLastDecisionInMs](self, "timeSinceLastDecisionInMs")}];
-    [v3 setObject:v27 forKeyedSubscript:@"timeSinceLastDecisionInMs"];
+    [dictionary setObject:v27 forKeyedSubscript:@"timeSinceLastDecisionInMs"];
 
     v26 = self->_has;
   }
@@ -326,28 +326,28 @@
     v28 = MEMORY[0x1E696AD98];
     [(CDASchemaCDAElectionDecisionMade *)self version];
     v29 = [v28 numberWithFloat:?];
-    [v3 setObject:v29 forKeyedSubscript:@"version"];
+    [dictionary setObject:v29 forKeyedSubscript:@"version"];
   }
 
   if (self->_winningDevice)
   {
-    v30 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    winningDevice = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
+    dictionaryRepresentation4 = [winningDevice dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"winningDevice"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"winningDevice"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"winningDevice"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"winningDevice"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -439,16 +439,16 @@ LABEL_17:
   return v10 ^ v5 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ [(CDASchemaCDAScoreBoosters *)self->_goodnessScoreBoosts hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
   has = self->_has;
-  v6 = v4[72];
+  v6 = equalCopy[72];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_40;
@@ -457,14 +457,14 @@ LABEL_17:
   if (*&has)
   {
     version = self->_version;
-    [v4 version];
+    [equalCopy version];
     if (version != v8)
     {
       goto LABEL_40;
     }
 
     has = self->_has;
-    v6 = v4[72];
+    v6 = equalCopy[72];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -476,13 +476,13 @@ LABEL_17:
   if (v9)
   {
     decision = self->_decision;
-    if (decision != [v4 decision])
+    if (decision != [equalCopy decision])
     {
       goto LABEL_40;
     }
 
     has = self->_has;
-    v6 = v4[72];
+    v6 = equalCopy[72];
   }
 
   v11 = (*&has >> 2) & 1;
@@ -494,26 +494,26 @@ LABEL_17:
   if (v11)
   {
     previousDecision = self->_previousDecision;
-    if (previousDecision != [v4 previousDecision])
+    if (previousDecision != [equalCopy previousDecision])
     {
       goto LABEL_40;
     }
   }
 
-  v13 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
-  v14 = [v4 thisDevice];
-  if ((v13 != 0) == (v14 == 0))
+  thisDevice = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
+  thisDevice2 = [equalCopy thisDevice];
+  if ((thisDevice != 0) == (thisDevice2 == 0))
   {
     goto LABEL_39;
   }
 
-  v15 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
-  if (v15)
+  thisDevice3 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
+  if (thisDevice3)
   {
-    v16 = v15;
-    v17 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
-    v18 = [v4 thisDevice];
-    v19 = [v17 isEqual:v18];
+    v16 = thisDevice3;
+    thisDevice4 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
+    thisDevice5 = [equalCopy thisDevice];
+    v19 = [thisDevice4 isEqual:thisDevice5];
 
     if (!v19)
     {
@@ -525,20 +525,20 @@ LABEL_17:
   {
   }
 
-  v13 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
-  v14 = [v4 winningDevice];
-  if ((v13 != 0) == (v14 == 0))
+  thisDevice = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
+  thisDevice2 = [equalCopy winningDevice];
+  if ((thisDevice != 0) == (thisDevice2 == 0))
   {
     goto LABEL_39;
   }
 
-  v20 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
-  if (v20)
+  winningDevice = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
+  if (winningDevice)
   {
-    v21 = v20;
-    v22 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
-    v23 = [v4 winningDevice];
-    v24 = [v22 isEqual:v23];
+    v21 = winningDevice;
+    winningDevice2 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
+    winningDevice3 = [equalCopy winningDevice];
+    v24 = [winningDevice2 isEqual:winningDevice3];
 
     if (!v24)
     {
@@ -550,20 +550,20 @@ LABEL_17:
   {
   }
 
-  v13 = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
-  v14 = [v4 heardParticipants];
-  if ((v13 != 0) == (v14 == 0))
+  thisDevice = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
+  thisDevice2 = [equalCopy heardParticipants];
+  if ((thisDevice != 0) == (thisDevice2 == 0))
   {
     goto LABEL_39;
   }
 
-  v25 = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
-  if (v25)
+  heardParticipants = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
+  if (heardParticipants)
   {
-    v26 = v25;
-    v27 = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
-    v28 = [v4 heardParticipants];
-    v29 = [v27 isEqual:v28];
+    v26 = heardParticipants;
+    heardParticipants2 = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
+    heardParticipants3 = [equalCopy heardParticipants];
+    v29 = [heardParticipants2 isEqual:heardParticipants3];
 
     if (!v29)
     {
@@ -577,7 +577,7 @@ LABEL_17:
 
   v30 = self->_has;
   v31 = (*&v30 >> 3) & 1;
-  v32 = v4[72];
+  v32 = equalCopy[72];
   if (v31 != ((v32 >> 3) & 1))
   {
     goto LABEL_40;
@@ -586,13 +586,13 @@ LABEL_17:
   if (v31)
   {
     timeSinceLastDecisionInMs = self->_timeSinceLastDecisionInMs;
-    if (timeSinceLastDecisionInMs != [v4 timeSinceLastDecisionInMs])
+    if (timeSinceLastDecisionInMs != [equalCopy timeSinceLastDecisionInMs])
     {
       goto LABEL_40;
     }
 
     v30 = self->_has;
-    v32 = v4[72];
+    v32 = equalCopy[72];
   }
 
   v34 = (*&v30 >> 4) & 1;
@@ -604,23 +604,23 @@ LABEL_17:
   if (v34)
   {
     rawGoodnessScore = self->_rawGoodnessScore;
-    if (rawGoodnessScore != [v4 rawGoodnessScore])
+    if (rawGoodnessScore != [equalCopy rawGoodnessScore])
     {
       goto LABEL_40;
     }
   }
 
-  v13 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
-  v14 = [v4 goodnessScoreBoosts];
-  if ((v13 != 0) == (v14 == 0))
+  thisDevice = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
+  thisDevice2 = [equalCopy goodnessScoreBoosts];
+  if ((thisDevice != 0) == (thisDevice2 == 0))
   {
 LABEL_39:
 
     goto LABEL_40;
   }
 
-  v36 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
-  if (!v36)
+  goodnessScoreBoosts = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
+  if (!goodnessScoreBoosts)
   {
 
 LABEL_43:
@@ -628,10 +628,10 @@ LABEL_43:
     goto LABEL_41;
   }
 
-  v37 = v36;
-  v38 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
-  v39 = [v4 goodnessScoreBoosts];
-  v40 = [v38 isEqual:v39];
+  v37 = goodnessScoreBoosts;
+  goodnessScoreBoosts2 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
+  goodnessScoreBoosts3 = [equalCopy goodnessScoreBoosts];
+  v40 = [goodnessScoreBoosts2 isEqual:goodnessScoreBoosts3];
 
   if (v40)
   {
@@ -645,10 +645,10 @@ LABEL_41:
   return v41;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -679,19 +679,19 @@ LABEL_4:
   }
 
 LABEL_5:
-  v6 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
+  thisDevice = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
 
-  if (v6)
+  if (thisDevice)
   {
-    v7 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
+    thisDevice2 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
+  winningDevice = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
 
-  if (v8)
+  if (winningDevice)
   {
-    v9 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
+    winningDevice2 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
     PBDataWriterWriteSubmessage();
   }
 
@@ -735,18 +735,18 @@ LABEL_5:
     PBDataWriterWriteUint32Field();
   }
 
-  v16 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
+  goodnessScoreBoosts = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
 
-  if (v16)
+  if (goodnessScoreBoosts)
   {
-    v17 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
+    goodnessScoreBoosts2 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasRawGoodnessScore:(BOOL)a3
+- (void)setHasRawGoodnessScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -759,9 +759,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTimeSinceLastDecisionInMs:(BOOL)a3
+- (void)setHasTimeSinceLastDecisionInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -774,27 +774,27 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addHeardParticipants:(id)a3
+- (void)addHeardParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   heardParticipants = self->_heardParticipants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!heardParticipants)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_heardParticipants;
-    self->_heardParticipants = v6;
+    self->_heardParticipants = array;
 
-    v4 = v8;
+    participantsCopy = v8;
     heardParticipants = self->_heardParticipants;
   }
 
-  [(NSArray *)heardParticipants addObject:v4];
+  [(NSArray *)heardParticipants addObject:participantsCopy];
 }
 
-- (void)setHasPreviousDecision:(BOOL)a3
+- (void)setHasPreviousDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 4;
   }
@@ -807,9 +807,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDecision:(BOOL)a3
+- (void)setHasDecision:(BOOL)decision
 {
-  if (a3)
+  if (decision)
   {
     v3 = 2;
   }
@@ -822,39 +822,39 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = CDASchemaCDAElectionDecisionMade;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  thisDevice = [(CDASchemaCDAElectionDecisionMade *)self thisDevice];
+  v7 = [thisDevice applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CDASchemaCDAElectionDecisionMade *)self deleteThisDevice];
   }
 
-  v9 = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  winningDevice = [(CDASchemaCDAElectionDecisionMade *)self winningDevice];
+  v10 = [winningDevice applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CDASchemaCDAElectionDecisionMade *)self deleteWinningDevice];
   }
 
-  v12 = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  heardParticipants = [(CDASchemaCDAElectionDecisionMade *)self heardParticipants];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:heardParticipants underConditions:policyCopy];
   [(CDASchemaCDAElectionDecisionMade *)self setHeardParticipants:v13];
 
-  v14 = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  goodnessScoreBoosts = [(CDASchemaCDAElectionDecisionMade *)self goodnessScoreBoosts];
+  v15 = [goodnessScoreBoosts applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(CDASchemaCDAElectionDecisionMade *)self deleteGoodnessScoreBoosts];
   }

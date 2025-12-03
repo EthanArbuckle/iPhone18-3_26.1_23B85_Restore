@@ -7,13 +7,13 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7EBA754();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F5796C();
 }
 

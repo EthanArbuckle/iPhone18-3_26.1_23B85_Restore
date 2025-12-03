@@ -1,11 +1,11 @@
 @interface UIImage
 - (id)_imageResizedForDisplayInInspector;
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4;
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UIImage
 
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error
 {
   v6 = objc_opt_class();
   if (!v6 || (v7 = v6, !object_isClass(v6)))
@@ -34,7 +34,7 @@ LABEL_7:
   v57[1] = v12;
   v53 = v12;
   v13 = [NSDictionary dictionaryWithObjects:v57 forKeys:v56 count:2];
-  *a3 = v13;
+  *options = v13;
   v14 = _UIImageIsFromMainBundle();
   IsUIKitImage = _UIImageIsUIKitImage();
   IsSystemSymbol = _UIImageIsSystemSymbol();
@@ -70,11 +70,11 @@ LABEL_7:
     [v24 setObject:v26 forKeyedSubscript:@"bundleIdentifier"];
   }
 
-  v27 = [(UIImage *)self symbolConfiguration];
+  symbolConfiguration = [(UIImage *)self symbolConfiguration];
 
-  if (v27)
+  if (symbolConfiguration)
   {
-    v28 = [(UIImage *)self symbolConfiguration];
+    symbolConfiguration2 = [(UIImage *)self symbolConfiguration];
     v29 = _UIImageSymbolConfigurationTextualSummary();
 
     if (v29)
@@ -126,9 +126,9 @@ LABEL_30:
 
   if (objc_opt_respondsToSelector())
   {
-    v44 = [(UIImage *)self _CGSVGDocument];
+    _CGSVGDocument = [(UIImage *)self _CGSVGDocument];
 
-    if (v44)
+    if (_CGSVGDocument)
     {
       v43 = @"SVG";
       goto LABEL_30;
@@ -136,8 +136,8 @@ LABEL_30:
   }
 
 LABEL_31:
-  v45 = [(UIImage *)self _imageResizedForDisplayInInspector];
-  v46 = UIImagePNGRepresentation(v45);
+  _imageResizedForDisplayInInspector = [(UIImage *)self _imageResizedForDisplayInInspector];
+  v46 = UIImagePNGRepresentation(_imageResizedForDisplayInInspector);
 
   v47 = v46;
   v48 = v24;
@@ -178,16 +178,16 @@ LABEL_31:
     v11.height = 84.0;
     UIGraphicsBeginImageContextWithOptions(v11, 0, 0.0);
     [(UIImage *)self drawInRect:0.0, 0.0, v8, 84.0];
-    v4 = UIGraphicsGetImageFromCurrentImageContext();
+    selfCopy = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

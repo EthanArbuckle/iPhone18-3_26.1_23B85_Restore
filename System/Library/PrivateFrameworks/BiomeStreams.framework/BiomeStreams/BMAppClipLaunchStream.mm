@@ -15,9 +15,9 @@
   {
     v3 = BMRootLibraryBridge();
     v4 = [v3 App];
-    v5 = [v4 Clip];
-    v6 = [v5 InFocus];
-    v7 = [v6 storeStreamWithLegacyClass:objc_opt_class()];
+    clip = [v4 Clip];
+    inFocus = [clip InFocus];
+    v7 = [inFocus storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v7;
 
@@ -37,8 +37,8 @@
 - (id)source
 {
   v3 = [BMAppClipLaunchSource alloc];
-  v4 = [(BMStoreStream *)self->_storeStream source];
-  v5 = [(BMAppClipLaunchSource *)v3 initWithStoreSource:v4];
+  source = [(BMStoreStream *)self->_storeStream source];
+  v5 = [(BMAppClipLaunchSource *)v3 initWithStoreSource:source];
 
   return v5;
 }
@@ -46,8 +46,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMAppClipLaunchStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMAppClipLaunchStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

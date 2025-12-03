@@ -1,14 +1,14 @@
 @interface HUAccessibilityIdentifierUtilities
-+ (void)setAccessibilityIDForViews:(id)a3 withIDDictionary:(id)a4;
++ (void)setAccessibilityIDForViews:(id)views withIDDictionary:(id)dictionary;
 @end
 
 @implementation HUAccessibilityIdentifierUtilities
 
-+ (void)setAccessibilityIDForViews:(id)a3 withIDDictionary:(id)a4
++ (void)setAccessibilityIDForViews:(id)views withIDDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  obj = a3;
-  v19 = a4;
+  obj = views;
+  dictionaryCopy = dictionary;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -32,7 +32,7 @@
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v19;
+        v10 = dictionaryCopy;
         v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {

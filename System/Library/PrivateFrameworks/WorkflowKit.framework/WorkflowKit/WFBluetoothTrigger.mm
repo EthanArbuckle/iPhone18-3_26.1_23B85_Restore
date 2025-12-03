@@ -1,15 +1,15 @@
 @interface WFBluetoothTrigger
 + (id)localizedDisplayExplanation;
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 + (id)tintColor;
 - (BOOL)hasValidConfiguration;
 - (WFBluetoothTrigger)init;
-- (WFBluetoothTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFBluetoothTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
 - (id)localizedPastTenseDescription;
 - (id)suggestedActions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFBluetoothTrigger
@@ -22,13 +22,13 @@
   return v3;
 }
 
-- (WFBluetoothTrigger)initWithCoder:(id)a3
+- (WFBluetoothTrigger)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = WFBluetoothTrigger;
-  v5 = [(WFTrigger *)&v17 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -36,25 +36,25 @@
     v18[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"selectedDevices"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"selectedDevices"];
     selectedDevices = v5->_selectedDevices;
     v5->_selectedDevices = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selection"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selection"];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
     }
 
     else
     {
-      v13 = 1;
+      unsignedIntegerValue = 1;
     }
 
-    v5->_selection = v13;
-    v5->_onConnect = [v4 decodeBoolForKey:@"onConnect"];
-    v5->_onDisconnect = [v4 decodeBoolForKey:@"onDisconnect"];
+    v5->_selection = unsignedIntegerValue;
+    v5->_onConnect = [coderCopy decodeBoolForKey:@"onConnect"];
+    v5->_onDisconnect = [coderCopy decodeBoolForKey:@"onDisconnect"];
     if (![(WFBluetoothTrigger *)v5 onConnect]&& ![(WFBluetoothTrigger *)v5 onDisconnect])
     {
       v5->_onConnect = 1;
@@ -67,29 +67,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFBluetoothTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFBluetoothTrigger *)self selectedDevices:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"selectedDevices"];
+  [coderCopy encodeObject:v5 forKey:@"selectedDevices"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFBluetoothTrigger selection](self, "selection")}];
-  [v4 encodeObject:v6 forKey:@"selection"];
+  [coderCopy encodeObject:v6 forKey:@"selection"];
 
-  [v4 encodeBool:-[WFBluetoothTrigger onConnect](self forKey:{"onConnect"), @"onConnect"}];
-  [v4 encodeBool:-[WFBluetoothTrigger onDisconnect](self forKey:{"onDisconnect"), @"onDisconnect"}];
+  [coderCopy encodeBool:-[WFBluetoothTrigger onConnect](self forKey:{"onConnect"), @"onConnect"}];
+  [coderCopy encodeBool:-[WFBluetoothTrigger onDisconnect](self forKey:{"onDisconnect"), @"onDisconnect"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = WFBluetoothTrigger;
-  v4 = [(WFTrigger *)&v8 copyWithZone:a3];
-  v5 = [(WFBluetoothTrigger *)self selectedDevices];
-  v6 = [v5 copy];
+  v4 = [(WFTrigger *)&v8 copyWithZone:zone];
+  selectedDevices = [(WFBluetoothTrigger *)self selectedDevices];
+  v6 = [selectedDevices copy];
   [v4 setSelectedDevices:v6];
 
   [v4 setSelection:{-[WFBluetoothTrigger selection](self, "selection")}];
@@ -100,8 +100,8 @@
 
 - (id)localizedPastTenseDescription
 {
-  v3 = [MEMORY[0x1E69E0A90] currentDevice];
-  v4 = [v3 name];
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  name = [currentDevice name];
 
   if (!-[WFBluetoothTrigger selection](self, "selection") || -[WFBluetoothTrigger selection](self, "selection") == 1 && (-[WFBluetoothTrigger selectedDevices](self, "selectedDevices"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 >= 2))
   {
@@ -111,7 +111,7 @@
       v8 = @"%1$@ connected or disconnected from Bluetooth device";
 LABEL_15:
       v12 = WFLocalizedString(v8);
-      v14 = [v7 localizedStringWithFormat:v12, v4];
+      v14 = [v7 localizedStringWithFormat:v12, name];
       goto LABEL_22;
     }
 
@@ -134,16 +134,16 @@ LABEL_16:
     goto LABEL_23;
   }
 
-  v9 = [(WFBluetoothTrigger *)self selectedDevices];
-  v10 = [v9 count];
+  selectedDevices = [(WFBluetoothTrigger *)self selectedDevices];
+  v10 = [selectedDevices count];
 
   if (v10 != 1)
   {
     goto LABEL_16;
   }
 
-  v11 = [(WFBluetoothTrigger *)self selectedDevices];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  selectedDevices2 = [(WFBluetoothTrigger *)self selectedDevices];
+  v12 = [selectedDevices2 objectAtIndexedSubscript:0];
 
   if ([(WFBluetoothTrigger *)self onConnect]&& [(WFBluetoothTrigger *)self onDisconnect])
   {
@@ -168,7 +168,7 @@ LABEL_16:
 
   v15 = MEMORY[0x1E696AEC0];
   v16 = WFLocalizedString(v13);
-  v14 = [v15 localizedStringWithFormat:v16, v4, v12];
+  v14 = [v15 localizedStringWithFormat:v16, name, v12];
 
 LABEL_22:
 LABEL_23:
@@ -178,8 +178,8 @@ LABEL_23:
 
 - (id)localizedDescriptionWithConfigurationSummary
 {
-  v3 = [MEMORY[0x1E69E0A90] currentDevice];
-  v4 = [v3 name];
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  name = [currentDevice name];
 
   if (![(WFBluetoothTrigger *)self selection])
   {
@@ -207,17 +207,17 @@ LABEL_23:
     }
 
     v8 = WFLocalizedString(v11);
-    v14 = [v10 localizedStringWithFormat:v8, v4];
+    v14 = [v10 localizedStringWithFormat:v8, name];
     goto LABEL_27;
   }
 
-  v5 = [(WFBluetoothTrigger *)self selectedDevices];
-  v6 = [v5 count];
+  selectedDevices = [(WFBluetoothTrigger *)self selectedDevices];
+  v6 = [selectedDevices count];
 
   if (v6 == 1)
   {
-    v7 = [(WFBluetoothTrigger *)self selectedDevices];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    selectedDevices2 = [(WFBluetoothTrigger *)self selectedDevices];
+    v8 = [selectedDevices2 objectAtIndexedSubscript:0];
 
     if ([(WFBluetoothTrigger *)self onConnect]&& [(WFBluetoothTrigger *)self onDisconnect])
     {
@@ -242,7 +242,7 @@ LABEL_23:
 
     v15 = MEMORY[0x1E696AEC0];
     v16 = WFLocalizedString(v9);
-    v14 = [v15 localizedStringWithFormat:v16, v4, v8];
+    v14 = [v15 localizedStringWithFormat:v16, name, v8];
 
 LABEL_27:
     goto LABEL_28;
@@ -254,8 +254,8 @@ LABEL_27:
     v13 = @"When %2$@ is connected or disconnected from any of %1$lu Bluetooth devices";
 LABEL_26:
     v8 = WFLocalizedPluralString(v13);
-    v17 = [(WFBluetoothTrigger *)self selectedDevices];
-    v14 = [v12 localizedStringWithFormat:v8, objc_msgSend(v17, "count"), v4];
+    selectedDevices3 = [(WFBluetoothTrigger *)self selectedDevices];
+    v14 = [v12 localizedStringWithFormat:v8, objc_msgSend(selectedDevices3, "count"), name];
 
     goto LABEL_27;
   }
@@ -283,8 +283,8 @@ LABEL_28:
 
 - (BOOL)hasValidConfiguration
 {
-  v3 = [(WFBluetoothTrigger *)self selectedDevices];
-  if ([v3 count])
+  selectedDevices = [(WFBluetoothTrigger *)self selectedDevices];
+  if ([selectedDevices count])
   {
     v4 = 1;
   }
@@ -294,8 +294,8 @@ LABEL_28:
     v4 = [(WFBluetoothTrigger *)self selection]== 0;
   }
 
-  v5 = [(WFBluetoothTrigger *)self onConnect]|| [(WFBluetoothTrigger *)self onDisconnect];
-  return v4 && v5;
+  onDisconnect = [(WFBluetoothTrigger *)self onConnect]|| [(WFBluetoothTrigger *)self onDisconnect];
+  return v4 && onDisconnect;
 }
 
 - (WFBluetoothTrigger)init
@@ -326,21 +326,21 @@ LABEL_28:
 
 + (id)localizedDisplayExplanation
 {
-  v2 = [MEMORY[0x1E69E0A90] currentDevice];
-  v3 = [v2 localizedModel];
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  localizedModel = [currentDevice localizedModel];
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = WFLocalizedString(@"“When my %@ connects to AirPods”");
-  v6 = [v4 localizedStringWithFormat:v5, v3];
+  v6 = [v4 localizedStringWithFormat:v5, localizedModel];
 
   return v6;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Bluetooth", @"Bluetooth");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

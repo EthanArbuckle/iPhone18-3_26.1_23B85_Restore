@@ -1,11 +1,11 @@
 @interface SUUISwooshViewController
-- (CGRect)frameForItemAtIndex:(int64_t)a3;
+- (CGRect)frameForItemAtIndex:(int64_t)index;
 - (SUUISwooshViewControllerDelegate)delegate;
 @end
 
 @implementation SUUISwooshViewController
 
-- (CGRect)frameForItemAtIndex:(int64_t)a3
+- (CGRect)frameForItemAtIndex:(int64_t)index
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);

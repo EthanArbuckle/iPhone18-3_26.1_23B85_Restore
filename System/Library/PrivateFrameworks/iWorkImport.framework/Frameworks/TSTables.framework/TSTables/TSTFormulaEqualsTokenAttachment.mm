@@ -1,13 +1,13 @@
 @interface TSTFormulaEqualsTokenAttachment
-- (BOOL)wantsSelectionAtPoint:(CGPoint)a3;
+- (BOOL)wantsSelectionAtPoint:(CGPoint)point;
 - (CGSize)size;
 - (double)baselineOffset;
 - (id)description;
 - (id)rendererForAttachment;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSTFormulaEqualsTokenAttachment
@@ -46,15 +46,15 @@
   return result;
 }
 
-- (BOOL)wantsSelectionAtPoint:(CGPoint)a3
+- (BOOL)wantsSelectionAtPoint:(CGPoint)point
 {
-  x = a3.x;
-  if (a3.x < 4.0)
+  x = point.x;
+  if (point.x < 4.0)
   {
     return 0;
   }
 
-  y = a3.y;
+  y = point.y;
   objc_msgSend_size(self, a2, v3, v4, v5);
   if (x > v9 + -5.0)
   {
@@ -66,29 +66,29 @@
   return [(TSWPUIGraphicalAttachment *)&v11 wantsSelectionAtPoint:x, y];
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v10 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v10, v4, off_2812E4498[286], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E4498[286], v5, v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v10, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy, v9);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v9 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v9, v4, sub_2214D1078, off_2812E4498[286], v5);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2214D1078, off_2812E4498[286], v5);
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v9, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy, v8);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v4 = *(a3 + 3);
+    v4 = *(archive + 3);
   }
 
   else
@@ -98,29 +98,29 @@
 
   v5.receiver = self;
   v5.super_class = TSTFormulaEqualsTokenAttachment;
-  [(TSWPUIGraphicalAttachment *)&v5 loadFromArchive:v4 unarchiver:a4];
+  [(TSWPUIGraphicalAttachment *)&v5 loadFromArchive:v4 unarchiver:unarchiver];
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = MEMORY[0x223DA03E0](v8);
-    *(a3 + 3) = v7;
+    *(archive + 3) = v7;
   }
 
   v9.receiver = self;
   v9.super_class = TSTFormulaEqualsTokenAttachment;
-  [(TSWPUIGraphicalAttachment *)&v9 saveToArchive:v7 archiver:v6];
+  [(TSWPUIGraphicalAttachment *)&v9 saveToArchive:v7 archiver:archiverCopy];
 }
 
 - (id)description

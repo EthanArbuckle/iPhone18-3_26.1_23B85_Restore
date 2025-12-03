@@ -1,28 +1,28 @@
 @interface MRUVolumeView
 - (BOOL)isGroupRenderingRequired;
-- (MRUVolumeView)initWithFrame:(CGRect)a3;
+- (MRUVolumeView)initWithFrame:(CGRect)frame;
 - (NSArray)punchOutRenderingViews;
 - (void)layoutSubviews;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setPrimaryInteractionEnabled:(BOOL)a3;
-- (void)setSecondaryInteractionEnabled:(BOOL)a3;
-- (void)setShowEnvironmentSlider:(BOOL)a3;
-- (void)setShowSecondarySlider:(BOOL)a3;
-- (void)setShowSpatialAudioModeButton:(BOOL)a3;
-- (void)setShowStepper:(BOOL)a3;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setPrimaryInteractionEnabled:(BOOL)enabled;
+- (void)setSecondaryInteractionEnabled:(BOOL)enabled;
+- (void)setShowEnvironmentSlider:(BOOL)slider;
+- (void)setShowSecondarySlider:(BOOL)slider;
+- (void)setShowSpatialAudioModeButton:(BOOL)button;
+- (void)setShowStepper:(BOOL)stepper;
 - (void)updateContentMetrics;
 - (void)updateVisibility;
 @end
 
 @implementation MRUVolumeView
 
-- (MRUVolumeView)initWithFrame:(CGRect)a3
+- (MRUVolumeView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = MRUVolumeView;
-  v3 = [(MRUVolumeView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUVolumeView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MRUContinuousSliderView alloc];
@@ -171,11 +171,11 @@
   [(CCUIContinuousSliderView *)self->_environmentSlider setFrame:v17, v6, v13, v10];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    self->_expanded = a3;
+    self->_expanded = expanded;
     [(MRUVolumeView *)self updateContentMetrics];
     [(MRUVolumeView *)self updateVisibility];
 
@@ -183,81 +183,81 @@
   }
 }
 
-- (void)setShowSecondarySlider:(BOOL)a3
+- (void)setShowSecondarySlider:(BOOL)slider
 {
-  if (self->_showSecondarySlider != a3)
+  if (self->_showSecondarySlider != slider)
   {
-    self->_showSecondarySlider = a3;
+    self->_showSecondarySlider = slider;
     [(MRUVolumeView *)self updateVisibility];
 
     [(MRUVolumeView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowEnvironmentSlider:(BOOL)a3
+- (void)setShowEnvironmentSlider:(BOOL)slider
 {
-  if (self->_showEnvironmentSlider != a3)
+  if (self->_showEnvironmentSlider != slider)
   {
-    self->_showEnvironmentSlider = a3;
+    self->_showEnvironmentSlider = slider;
     [(MRUVolumeView *)self updateVisibility];
 
     [(MRUVolumeView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowStepper:(BOOL)a3
+- (void)setShowStepper:(BOOL)stepper
 {
-  if (self->_showStepper != a3)
+  if (self->_showStepper != stepper)
   {
-    self->_showStepper = a3;
+    self->_showStepper = stepper;
     [(MRUVolumeView *)self updateVisibility];
 
     [(MRUVolumeView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowSpatialAudioModeButton:(BOOL)a3
+- (void)setShowSpatialAudioModeButton:(BOOL)button
 {
-  if (self->_showSpatialAudioModeButton != a3)
+  if (self->_showSpatialAudioModeButton != button)
   {
-    self->_showSpatialAudioModeButton = a3;
+    self->_showSpatialAudioModeButton = button;
     [(MRUVolumeView *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimaryInteractionEnabled:(BOOL)a3
+- (void)setPrimaryInteractionEnabled:(BOOL)enabled
 {
-  if (self->_primaryInteractionEnabled != a3)
+  if (self->_primaryInteractionEnabled != enabled)
   {
-    self->_primaryInteractionEnabled = a3;
+    self->_primaryInteractionEnabled = enabled;
     [(MRUVolumeView *)self updateVisibility];
   }
 }
 
-- (void)setSecondaryInteractionEnabled:(BOOL)a3
+- (void)setSecondaryInteractionEnabled:(BOOL)enabled
 {
-  if (self->_secondaryInteractionEnabled != a3)
+  if (self->_secondaryInteractionEnabled != enabled)
   {
-    self->_secondaryInteractionEnabled = a3;
+    self->_secondaryInteractionEnabled = enabled;
     [(MRUVolumeView *)self updateVisibility];
   }
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
-  if (self->_compactContinuousCornerRadius != a3)
+  if (self->_compactContinuousCornerRadius != radius)
   {
-    self->_compactContinuousCornerRadius = a3;
+    self->_compactContinuousCornerRadius = radius;
     [(MRUVolumeView *)self updateVisibility];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v8 = a3;
+  metricsCopy = metrics;
   v5 = self->_contentMetrics;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == metricsCopy)
   {
   }
 
@@ -267,7 +267,7 @@
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_contentMetrics, a3);
+      objc_storeStrong(&self->_contentMetrics, metrics);
       [(MRUVolumeView *)self updateContentMetrics];
     }
   }
@@ -293,11 +293,11 @@
 - (NSArray)punchOutRenderingViews
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-  v4 = [(CCUIBaseSliderView *)self->_primarySlider punchOutRenderingViews];
-  [v3 addObjectsFromArray:v4];
+  punchOutRenderingViews = [(CCUIBaseSliderView *)self->_primarySlider punchOutRenderingViews];
+  [v3 addObjectsFromArray:punchOutRenderingViews];
 
-  v5 = [(CCUIBaseSliderView *)self->_secondarySlider punchOutRenderingViews];
-  [v3 addObjectsFromArray:v5];
+  punchOutRenderingViews2 = [(CCUIBaseSliderView *)self->_secondarySlider punchOutRenderingViews];
+  [v3 addObjectsFromArray:punchOutRenderingViews2];
 
   v6 = [v3 copy];
 

@@ -29,14 +29,14 @@
 {
   v12[4] = *MEMORY[0x277D85DE8];
   v11[0] = @"ARQLCanonicalWebPageURL";
-  v3 = [(ARQuickLookPreviewItem *)self canonicalWebPageURL];
-  v4 = v3;
-  if (!v3)
+  canonicalWebPageURL = [(ARQuickLookPreviewItem *)self canonicalWebPageURL];
+  null = canonicalWebPageURL;
+  if (!canonicalWebPageURL)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v12[0] = v4;
+  v12[0] = null;
   v11[1] = @"allowObjectScaling";
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[ARQuickLookPreviewItem allowsContentScaling](self, "allowsContentScaling")}];
   v12[1] = v5;
@@ -48,7 +48,7 @@
   v12[3] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:4];
 
-  if (!v3)
+  if (!canonicalWebPageURL)
   {
   }
 

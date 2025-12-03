@@ -1,34 +1,34 @@
 @interface BLTBulletinDistributorSubscriber
-- (BLTBulletinDistributorSubscriber)initWithClient:(id)a3;
+- (BLTBulletinDistributorSubscriber)initWithClient:(id)client;
 - (BLTBulletinDistributorSubscriberDelegate)delegate;
 - (BLTBulletinDistributorSubscriberDeviceDelegate)deviceDelegate;
 - (NSSet)sectionIDs;
 - (void)_connectIfNecessary;
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 completion:(id)a4;
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 subsectionIDs:(id)a4 completion:(id)a5;
-- (void)pingWithBulletin:(id)a3 ack:(id)a4;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4;
-- (void)sendBulletinSummary:(id)a3;
-- (void)subscribeToSectionID:(id)a3 forFullBulletins:(BOOL)a4 withAck:(BOOL)a5 ackAllowedOnLocalConnection:(BOOL)a6;
-- (void)subscribeWithMachServiceName:(id)a3;
-- (void)unsubscribeFromSectionID:(id)a3;
+- (void)getWillNanoPresentNotificationForSectionID:(id)d completion:(id)completion;
+- (void)getWillNanoPresentNotificationForSectionID:(id)d subsectionIDs:(id)ds completion:(id)completion;
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD;
+- (void)sendBulletinSummary:(id)summary;
+- (void)subscribeToSectionID:(id)d forFullBulletins:(BOOL)bulletins withAck:(BOOL)ack ackAllowedOnLocalConnection:(BOOL)connection;
+- (void)subscribeWithMachServiceName:(id)name;
+- (void)unsubscribeFromSectionID:(id)d;
 @end
 
 @implementation BLTBulletinDistributorSubscriber
 
-- (BLTBulletinDistributorSubscriber)initWithClient:(id)a3
+- (BLTBulletinDistributorSubscriber)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v14.receiver = self;
   v14.super_class = BLTBulletinDistributorSubscriber;
   v6 = [(BLTBulletinDistributorSubscriber *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_client, client);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     subscriptions = v7->_subscriptions;
-    v7->_subscriptions = v8;
+    v7->_subscriptions = dictionary;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.bulletindistributor.subscriber", v10);
@@ -72,20 +72,20 @@ void __46__BLTBulletinDistributorSubscriber_sectionIDs__block_invoke(uint64_t a1
   *(v4 + 40) = v3;
 }
 
-- (void)subscribeToSectionID:(id)a3 forFullBulletins:(BOOL)a4 withAck:(BOOL)a5 ackAllowedOnLocalConnection:(BOOL)a6
+- (void)subscribeToSectionID:(id)d forFullBulletins:(BOOL)bulletins withAck:(BOOL)ack ackAllowedOnLocalConnection:(BOOL)connection
 {
-  v10 = a3;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __110__BLTBulletinDistributorSubscriber_subscribeToSectionID_forFullBulletins_withAck_ackAllowedOnLocalConnection___block_invoke;
   block[3] = &unk_278D31678;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  bulletinsCopy = bulletins;
+  ackCopy = ack;
+  connectionCopy = connection;
   block[4] = self;
-  v14 = v10;
-  v12 = v10;
+  v14 = dCopy;
+  v12 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -98,34 +98,34 @@ void __110__BLTBulletinDistributorSubscriber_subscribeToSectionID_forFullBulleti
   [*(*(a1 + 32) + 8) setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)unsubscribeFromSectionID:(id)a3
+- (void)unsubscribeFromSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__BLTBulletinDistributorSubscriber_unsubscribeFromSectionID___block_invoke;
   v7[3] = &unk_278D31400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)pingWithBulletin:(id)a3 ack:(id)a4
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack
 {
-  v6 = a3;
-  v7 = a4;
+  bulletinCopy = bulletin;
+  ackCopy = ack;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__BLTBulletinDistributorSubscriber_pingWithBulletin_ack___block_invoke;
   block[3] = &unk_278D316A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bulletinCopy;
+  v13 = ackCopy;
+  v9 = ackCopy;
+  v10 = bulletinCopy;
   dispatch_async(queue, block);
 }
 
@@ -205,20 +205,20 @@ LABEL_15:
 LABEL_20:
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__BLTBulletinDistributorSubscriber_pingWithRecordID_forSectionID___block_invoke;
   block[3] = &unk_278D316C8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = iDCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = iDCopy;
   dispatch_async(queue, block);
 }
 
@@ -246,20 +246,20 @@ void __66__BLTBulletinDistributorSubscriber_pingWithRecordID_forSectionID___bloc
   }
 }
 
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 completion:(id)a4
+- (void)getWillNanoPresentNotificationForSectionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = BLTWorkQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__BLTBulletinDistributorSubscriber_getWillNanoPresentNotificationForSectionID_completion___block_invoke;
   block[3] = &unk_278D316A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(v8, block);
 }
 
@@ -269,23 +269,23 @@ void __90__BLTBulletinDistributorSubscriber_getWillNanoPresentNotificationForSec
   [v2 getWillNanoPresentNotificationForSectionID:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)getWillNanoPresentNotificationForSectionID:(id)a3 subsectionIDs:(id)a4 completion:(id)a5
+- (void)getWillNanoPresentNotificationForSectionID:(id)d subsectionIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dsCopy = ds;
+  completionCopy = completion;
   v11 = BLTWorkQueue();
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __104__BLTBulletinDistributorSubscriber_getWillNanoPresentNotificationForSectionID_subsectionIDs_completion___block_invoke;
   v15[3] = &unk_278D316F0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = dsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dsCopy;
+  v14 = dCopy;
   dispatch_async(v11, v15);
 }
 
@@ -295,17 +295,17 @@ void __104__BLTBulletinDistributorSubscriber_getWillNanoPresentNotificationForSe
   [v2 getWillNanoPresentNotificationForSectionID:*(a1 + 40) subsectionIDs:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)sendBulletinSummary:(id)a3
+- (void)sendBulletinSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v5 = BLTWorkQueue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__BLTBulletinDistributorSubscriber_sendBulletinSummary___block_invoke;
   v7[3] = &unk_278D31400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = summaryCopy;
+  v6 = summaryCopy;
   dispatch_async(v5, v7);
 }
 
@@ -315,17 +315,17 @@ void __56__BLTBulletinDistributorSubscriber_sendBulletinSummary___block_invoke(u
   [v2 sendBulletinSummary:*(a1 + 40)];
 }
 
-- (void)subscribeWithMachServiceName:(id)a3
+- (void)subscribeWithMachServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__BLTBulletinDistributorSubscriber_subscribeWithMachServiceName___block_invoke;
   v7[3] = &unk_278D31400;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = nameCopy;
+  selfCopy = self;
+  v6 = nameCopy;
   dispatch_async(queue, v7);
 }
 
@@ -357,15 +357,15 @@ void __65__BLTBulletinDistributorSubscriber_subscribeWithMachServiceName___block
 - (void)_connectIfNecessary
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(BLTBulletinDistributorSubscriber *)self machServiceName];
+  machServiceName = [(BLTBulletinDistributorSubscriber *)self machServiceName];
 
-  if (v3)
+  if (machServiceName)
   {
     if (!self->_connection)
     {
       v4 = objc_alloc(MEMORY[0x277CCAE80]);
-      v5 = [(BLTBulletinDistributorSubscriber *)self machServiceName];
-      v6 = [v4 initWithMachServiceName:v5 options:4096];
+      machServiceName2 = [(BLTBulletinDistributorSubscriber *)self machServiceName];
+      v6 = [v4 initWithMachServiceName:machServiceName2 options:4096];
       connection = self->_connection;
       self->_connection = v6;
 

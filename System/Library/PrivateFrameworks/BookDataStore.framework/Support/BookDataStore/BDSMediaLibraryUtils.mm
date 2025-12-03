@@ -1,25 +1,25 @@
 @interface BDSMediaLibraryUtils
-+ (id)_storeRepresentativeItem:(id)a3;
-+ (id)representativeDAAPMediaItemsWithAssetId:(id)a3;
++ (id)_storeRepresentativeItem:(id)item;
++ (id)representativeDAAPMediaItemsWithAssetId:(id)id;
 @end
 
 @implementation BDSMediaLibraryUtils
 
-+ (id)representativeDAAPMediaItemsWithAssetId:(id)a3
++ (id)representativeDAAPMediaItemsWithAssetId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
   v6 = +[MPMediaQuery audiobooksQuery];
   [v6 setIgnoreSystemFilterPredicates:1];
   if (v6)
   {
-    v7 = [MPMediaPropertyPredicate predicateWithValue:v4 forProperty:MPMediaItemPropertyStoreID];
+    v7 = [MPMediaPropertyPredicate predicateWithValue:idCopy forProperty:MPMediaItemPropertyStoreID];
     [v6 addFilterPredicate:v7];
-    v8 = [v6 collections];
-    if ([v8 count])
+    collections = [v6 collections];
+    if ([collections count])
     {
-      v9 = [v8 lastObject];
-      v10 = [a1 _storeRepresentativeItem:v9];
+      lastObject = [collections lastObject];
+      v10 = [self _storeRepresentativeItem:lastObject];
 
       if (v10)
       {
@@ -31,7 +31,7 @@ LABEL_12:
       v11 = sub_10000DC90();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_1001C29F8(v4, v11);
+        sub_1001C29F8(idCopy, v11);
       }
     }
 
@@ -40,7 +40,7 @@ LABEL_12:
       v11 = sub_10000DC90();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_1001C2A70(v4, v11);
+        sub_1001C2A70(idCopy, v11);
       }
     }
 
@@ -62,14 +62,14 @@ LABEL_13:
   return v10;
 }
 
-+ (id)_storeRepresentativeItem:(id)a3
++ (id)_storeRepresentativeItem:(id)item
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a3 items];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  items = [item items];
+  v4 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -81,7 +81,7 @@ LABEL_13:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -94,7 +94,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;

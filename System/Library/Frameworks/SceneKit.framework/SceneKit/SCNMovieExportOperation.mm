@@ -1,25 +1,25 @@
 @interface SCNMovieExportOperation
-- (CGImage)_copySnapshot:(CGSize)a3;
-- (SCNMovieExportOperation)initWithRenderer:(id)a3 size:(CGSize)a4 attributes:(id)a5 outputURL:(id)a6;
+- (CGImage)_copySnapshot:(CGSize)snapshot;
+- (SCNMovieExportOperation)initWithRenderer:(id)renderer size:(CGSize)size attributes:(id)attributes outputURL:(id)l;
 - (void)_finishedExport;
-- (void)appendImage:(CGImage *)a3 withPresentationTime:(id *)a4 usingAdaptor:(id)a5;
+- (void)appendImage:(CGImage *)image withPresentationTime:(id *)time usingAdaptor:(id)adaptor;
 - (void)dealloc;
 - (void)main;
-- (void)renderAndAppendWithPresentationTime:(id *)a3 usingAdaptor:(id)a4 metalTextureCache:(__CVMetalTextureCache *)a5 cvQueue:(id)a6 completionBlock:(id)a7;
+- (void)renderAndAppendWithPresentationTime:(id *)time usingAdaptor:(id)adaptor metalTextureCache:(__CVMetalTextureCache *)cache cvQueue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation SCNMovieExportOperation
 
-- (SCNMovieExportOperation)initWithRenderer:(id)a3 size:(CGSize)a4 attributes:(id)a5 outputURL:(id)a6
+- (SCNMovieExportOperation)initWithRenderer:(id)renderer size:(CGSize)size attributes:(id)attributes outputURL:(id)l
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v33.receiver = self;
   v33.super_class = SCNMovieExportOperation;
   v11 = [(SCNMovieExportOperation *)&v33 init];
   if (v11)
   {
-    v12 = [a5 mutableCopy];
+    v12 = [attributes mutableCopy];
     if (!v12)
     {
       v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -65,34 +65,34 @@
     [v12 setValue:v18 forKey:*MEMORY[0x277CE6360]];
     v19 = objc_alloc(MEMORY[0x277CE6468]);
     v11->_assetWriterInput = [v19 initWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:v12];
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     [(AVAssetWriterInput *)v11->_assetWriterInput setExpectsMediaDataInRealTime:0];
     v21 = [MEMORY[0x277CCABB0] numberWithInt:1111970369];
-    [v20 setObject:v21 forKey:*MEMORY[0x277CC4E30]];
+    [dictionary setObject:v21 forKey:*MEMORY[0x277CC4E30]];
     v22 = [MEMORY[0x277CCABB0] numberWithInt:width];
-    [v20 setObject:v22 forKey:*MEMORY[0x277CC4EC8]];
+    [dictionary setObject:v22 forKey:*MEMORY[0x277CC4EC8]];
     v23 = [MEMORY[0x277CCABB0] numberWithInt:height];
-    [v20 setObject:v23 forKey:*MEMORY[0x277CC4DD8]];
-    v24 = [a3 device];
+    [dictionary setObject:v23 forKey:*MEMORY[0x277CC4DD8]];
+    device = [renderer device];
     v25 = MEMORY[0x277CC4D70];
-    if (v24)
+    if (device)
     {
       v25 = MEMORY[0x277CC4E08];
     }
 
-    [v20 setObject:MEMORY[0x277CBEC38] forKey:*v25];
-    v11->_avAdaptor = [objc_alloc(MEMORY[0x277CE6478]) initWithAssetWriterInput:v11->_assetWriterInput sourcePixelBufferAttributes:v20];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*v25];
+    v11->_avAdaptor = [objc_alloc(MEMORY[0x277CE6478]) initWithAssetWriterInput:v11->_assetWriterInput sourcePixelBufferAttributes:dictionary];
     v32 = 0;
     [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
     v26 = objc_alloc(MEMORY[0x277CE6460]);
-    v27 = [v26 initWithURL:a6 fileType:*MEMORY[0x277CE5DA8] error:&v32];
+    v27 = [v26 initWithURL:l fileType:*MEMORY[0x277CE5DA8] error:&v32];
     v11->_assetWriter = v27;
     if ([(AVAssetWriter *)v27 status]== AVAssetWriterStatusFailed)
     {
       v28 = scn_default_log();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        [SCNMovieExportOperation initWithRenderer:a6 size:&v32 attributes:v28 outputURL:?];
+        [SCNMovieExportOperation initWithRenderer:l size:&v32 attributes:v28 outputURL:?];
       }
 
       return 0;
@@ -107,15 +107,15 @@
       v31[1] = 0x100000001;
       v31[2] = 0;
       [(AVAssetWriter *)assetWriter startSessionAtSourceTime:v31];
-      [(_SCNExportOperation *)v11 setRenderer:a3];
+      [(_SCNExportOperation *)v11 setRenderer:renderer];
       [(_SCNExportOperation *)v11 setSize:width, height];
       [(_SCNExportOperation *)v11 setAttributes:v12];
-      [objc_msgSend(a3 "scene")];
+      [objc_msgSend(renderer "scene")];
       [(_SCNExportOperation *)v11 setStartTime:?];
-      [objc_msgSend(a3 "scene")];
+      [objc_msgSend(renderer "scene")];
       [(_SCNExportOperation *)v11 setEndTime:?];
-      [(_SCNExportOperation *)v11 setOutputURL:a6];
-      -[_SCNExportOperation setPointOfView:](v11, "setPointOfView:", [a5 objectForKey:@"kExportPointOfViewAttribute"]);
+      [(_SCNExportOperation *)v11 setOutputURL:l];
+      -[_SCNExportOperation setPointOfView:](v11, "setPointOfView:", [attributes objectForKey:@"kExportPointOfViewAttribute"]);
     }
   }
 
@@ -129,11 +129,11 @@
   [(_SCNExportOperation *)&v3 dealloc];
 }
 
-- (CGImage)_copySnapshot:(CGSize)a3
+- (CGImage)_copySnapshot:(CGSize)snapshot
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_SCNExportOperation *)self renderer];
+  height = snapshot.height;
+  width = snapshot.width;
+  renderer = [(_SCNExportOperation *)self renderer];
   systemTime = self->super._systemTime;
   if (systemTime == 0.0)
   {
@@ -146,9 +146,9 @@
   }
 
   self->super._systemTime = v8;
-  v9 = [(UIImage *)[(SCNRenderer *)v6 snapshotAtTime:[(_SCNExportOperation *)self antialiasingMode] withSize:v8 antialiasingMode:width CGImage];
+  cGImage = [(UIImage *)[(SCNRenderer *)renderer snapshotAtTime:[(_SCNExportOperation *)self antialiasingMode] withSize:v8 antialiasingMode:width CGImage];
 
-  return CGImageRetain(v9);
+  return CGImageRetain(cGImage);
 }
 
 - (void)_finishedExport
@@ -158,32 +158,32 @@
     [(_SCNExportOperation *)self setSucceded:1];
   }
 
-  v3 = [(_SCNExportOperation *)self delegate];
+  delegate = [(_SCNExportOperation *)self delegate];
   [(_SCNExportOperation *)self didEndSelector];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_SCNExportOperation *)self didEndSelector];
-    v5 = [(_SCNExportOperation *)self userInfo];
+    didEndSelector = [(_SCNExportOperation *)self didEndSelector];
+    userInfo = [(_SCNExportOperation *)self userInfo];
 
-    [v3 v4];
+    [delegate didEndSelector];
   }
 }
 
-- (void)appendImage:(CGImage *)a3 withPresentationTime:(id *)a4 usingAdaptor:(id)a5
+- (void)appendImage:(CGImage *)image withPresentationTime:(id *)time usingAdaptor:(id)adaptor
 {
   pixelBufferOut = 0;
-  v10 = [a5 pixelBufferPool];
-  if (v10)
+  pixelBufferPool = [adaptor pixelBufferPool];
+  if (pixelBufferPool)
   {
-    v11 = v10;
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    v11 = pixelBufferPool;
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     if (CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], v11, &pixelBufferOut))
     {
       [SCNMovieExportOperation appendImage:a2 withPresentationTime:self usingAdaptor:?];
     }
 
-    ColorSpace = CGImageGetColorSpace(a3);
+    ColorSpace = CGImageGetColorSpace(image);
     CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
     BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
     BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBufferOut);
@@ -197,13 +197,13 @@
     v24.origin.y = 0.0;
     v24.size.width = Width;
     v24.size.height = Height;
-    CGContextDrawImage(v17, v24, a3);
+    CGContextDrawImage(v17, v24, image);
     CGContextFlush(v17);
     CFRelease(v17);
     CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
-    v20 = *&a4->var0;
-    var3 = a4->var3;
-    if (([a5 appendPixelBuffer:pixelBufferOut withPresentationTime:&v20] & 1) == 0)
+    v20 = *&time->var0;
+    var3 = time->var3;
+    if (([adaptor appendPixelBuffer:pixelBufferOut withPresentationTime:&v20] & 1) == 0)
     {
       v18 = scn_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -225,15 +225,15 @@
   }
 }
 
-- (void)renderAndAppendWithPresentationTime:(id *)a3 usingAdaptor:(id)a4 metalTextureCache:(__CVMetalTextureCache *)a5 cvQueue:(id)a6 completionBlock:(id)a7
+- (void)renderAndAppendWithPresentationTime:(id *)time usingAdaptor:(id)adaptor metalTextureCache:(__CVMetalTextureCache *)cache cvQueue:(id)queue completionBlock:(id)block
 {
   pixelBufferOut = 0;
-  v14 = [a4 pixelBufferPool];
-  if (v14)
+  pixelBufferPool = [adaptor pixelBufferPool];
+  if (pixelBufferPool)
   {
-    v32 = a6;
+    queueCopy = queue;
     v15 = *MEMORY[0x277CBECE8];
-    if (CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], v14, &pixelBufferOut))
+    if (CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], pixelBufferPool, &pixelBufferOut))
     {
       [SCNMovieExportOperation renderAndAppendWithPresentationTime:a2 usingAdaptor:self metalTextureCache:? cvQueue:? completionBlock:?];
     }
@@ -251,7 +251,7 @@
 
     WidthOfPlane = CVPixelBufferGetWidthOfPlane(pixelBufferOut, 0);
     HeightOfPlane = CVPixelBufferGetHeightOfPlane(pixelBufferOut, 0);
-    CVMetalTextureCacheCreateTextureFromImage(v15, a5, pixelBufferOut, 0, v16, WidthOfPlane, HeightOfPlane, 0, &textureOut);
+    CVMetalTextureCacheCreateTextureFromImage(v15, cache, pixelBufferOut, 0, v16, WidthOfPlane, HeightOfPlane, 0, &textureOut);
     systemTime = self->super._systemTime;
     if (systemTime == 0.0)
     {
@@ -264,9 +264,9 @@
     }
 
     self->super._systemTime = v20;
-    v22 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-    [objc_msgSend(objc_msgSend(v22 "colorAttachments")];
-    v23 = [(SCNMaterialProperty *)[(SCNScene *)[(SCNRenderer *)[(_SCNExportOperation *)self renderer] scene] background] contents];
+    renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+    [objc_msgSend(objc_msgSend(renderPassDescriptor "colorAttachments")];
+    contents = [(SCNMaterialProperty *)[(SCNScene *)[(SCNRenderer *)[(_SCNExportOperation *)self renderer] scene] background] contents];
     objc_opt_class();
     v24 = 1.0;
     v25 = 1.0;
@@ -278,14 +278,14 @@
       v37 = 0.0;
       v38 = 0.0;
       v36 = 0.0;
-      [v23 getRed:&v39 green:&v38 blue:&v37 alpha:&v36];
+      [contents getRed:&v39 green:&v38 blue:&v37 alpha:&v36];
       v24 = v39;
       v26 = v37;
       v25 = v38;
       v27 = v36;
     }
 
-    [objc_msgSend(objc_msgSend(v22 "colorAttachments")];
+    [objc_msgSend(objc_msgSend(renderPassDescriptor "colorAttachments")];
     v28 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v16 width:WidthOfPlane height:HeightOfPlane mipmapped:0];
     if (SCNMTLDeviceSupportsMemorylessStorage([(SCNRenderer *)[(_SCNExportOperation *)self renderer] device]))
     {
@@ -304,33 +304,33 @@
       [v28 setSampleCount:{1 << -[_SCNExportOperation antialiasingMode](self, "antialiasingMode")}];
       [v28 setTextureType:4];
       v30 = [(MTLDevice *)[(SCNRenderer *)[(_SCNExportOperation *)self renderer] device] newTextureWithDescriptor:v28];
-      [objc_msgSend(objc_msgSend(v22 "colorAttachments")];
-      [objc_msgSend(objc_msgSend(v22 "colorAttachments")];
-      [objc_msgSend(objc_msgSend(v22 "colorAttachments")];
+      [objc_msgSend(objc_msgSend(renderPassDescriptor "colorAttachments")];
+      [objc_msgSend(objc_msgSend(renderPassDescriptor "colorAttachments")];
+      [objc_msgSend(objc_msgSend(renderPassDescriptor "colorAttachments")];
     }
 
     else
     {
-      [objc_msgSend(objc_msgSend(v22 "colorAttachments")];
+      [objc_msgSend(objc_msgSend(renderPassDescriptor "colorAttachments")];
     }
 
-    v31 = [(MTLCommandQueue *)[(SCNRenderer *)[(_SCNExportOperation *)self renderer] commandQueue] commandBuffer];
-    [(SCNRenderer *)[(_SCNExportOperation *)self renderer] renderAtTime:v31 viewport:v22 commandBuffer:self->super._systemTime passDescriptor:0.0, 0.0, WidthOfPlane, HeightOfPlane];
+    commandBuffer = [(MTLCommandQueue *)[(SCNRenderer *)[(_SCNExportOperation *)self renderer] commandQueue] commandBuffer];
+    [(SCNRenderer *)[(_SCNExportOperation *)self renderer] renderAtTime:commandBuffer viewport:renderPassDescriptor commandBuffer:self->super._systemTime passDescriptor:0.0, 0.0, WidthOfPlane, HeightOfPlane];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __118__SCNMovieExportOperation_renderAndAppendWithPresentationTime_usingAdaptor_metalTextureCache_cvQueue_completionBlock___block_invoke;
     v33[3] = &unk_2783009E8;
-    v33[4] = v32;
+    v33[4] = queueCopy;
     v33[5] = self;
-    v34 = *&a3->var0;
-    var3 = a3->var3;
+    v34 = *&time->var0;
+    var3 = time->var3;
     v33[8] = pixelBufferOut;
     v33[9] = textureOut;
-    v33[10] = a5;
-    v33[6] = a4;
-    v33[7] = a7;
-    [v31 addCompletedHandler:v33];
-    [v31 commit];
+    v33[10] = cache;
+    v33[6] = adaptor;
+    v33[7] = block;
+    [commandBuffer addCompletedHandler:v33];
+    [commandBuffer commit];
   }
 
   else
@@ -397,7 +397,7 @@ uint64_t __118__SCNMovieExportOperation_renderAndAppendWithPresentationTime_usin
 - (void)main
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_21BEF7000, log, OS_LOG_TYPE_ERROR, "Error: error while exporting movie: %@", buf, 0xCu);
 }
 

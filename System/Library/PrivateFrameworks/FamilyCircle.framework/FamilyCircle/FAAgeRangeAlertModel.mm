@@ -1,62 +1,62 @@
 @interface FAAgeRangeAlertModel
-- (FAAgeRangeAlertModel)initWithAgeRangeResponse:(id)a3 shouldPrompt:(BOOL)a4 flowType:(int64_t)a5 title:(id)a6 message:(id)a7 primaryButtonText:(id)a8 secondaryButtonText:(id)a9;
-- (FAAgeRangeAlertModel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FAAgeRangeAlertModel)initWithAgeRangeResponse:(id)response shouldPrompt:(BOOL)prompt flowType:(int64_t)type title:(id)title message:(id)message primaryButtonText:(id)text secondaryButtonText:(id)buttonText;
+- (FAAgeRangeAlertModel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FAAgeRangeAlertModel
 
-- (FAAgeRangeAlertModel)initWithAgeRangeResponse:(id)a3 shouldPrompt:(BOOL)a4 flowType:(int64_t)a5 title:(id)a6 message:(id)a7 primaryButtonText:(id)a8 secondaryButtonText:(id)a9
+- (FAAgeRangeAlertModel)initWithAgeRangeResponse:(id)response shouldPrompt:(BOOL)prompt flowType:(int64_t)type title:(id)title message:(id)message primaryButtonText:(id)text secondaryButtonText:(id)buttonText
 {
-  v23 = a3;
-  v22 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  responseCopy = response;
+  titleCopy = title;
+  messageCopy = message;
+  textCopy = text;
+  buttonTextCopy = buttonText;
   v24.receiver = self;
   v24.super_class = FAAgeRangeAlertModel;
   v18 = [(FAAgeRangeAlertModel *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_ageRangeResponse, a3);
-    v19->_shouldPrompt = a4;
-    v19->_flowType = a5;
-    objc_storeStrong(&v19->_title, a6);
-    objc_storeStrong(&v19->_message, a7);
-    objc_storeStrong(&v19->_primaryButtonText, a8);
-    objc_storeStrong(&v19->_secondaryButtonText, a9);
+    objc_storeStrong(&v18->_ageRangeResponse, response);
+    v19->_shouldPrompt = prompt;
+    v19->_flowType = type;
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v19->_message, message);
+    objc_storeStrong(&v19->_primaryButtonText, text);
+    objc_storeStrong(&v19->_secondaryButtonText, buttonText);
   }
 
   return v19;
 }
 
-- (FAAgeRangeAlertModel)initWithCoder:(id)a3
+- (FAAgeRangeAlertModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FAAgeRangeAlertModel *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ageRangeResponse"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ageRangeResponse"];
     ageRangeResponse = v5->_ageRangeResponse;
     v5->_ageRangeResponse = v6;
 
-    v5->_shouldPrompt = [v4 decodeBoolForKey:@"_shouldPrompt"];
-    v5->_flowType = [v4 decodeIntegerForKey:@"_flowType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title "];
+    v5->_shouldPrompt = [coderCopy decodeBoolForKey:@"_shouldPrompt"];
+    v5->_flowType = [coderCopy decodeIntegerForKey:@"_flowType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title "];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_message"];
     message = v5->_message;
     v5->_message = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_primaryButtonText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_primaryButtonText"];
     primaryButtonText = v5->_primaryButtonText;
     v5->_primaryButtonText = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButtonText"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButtonText"];
     secondaryButtonText = v5->_secondaryButtonText;
     v5->_secondaryButtonText = v14;
   }
@@ -64,20 +64,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ageRangeResponse = self->_ageRangeResponse;
-  v5 = a3;
-  [v5 encodeObject:ageRangeResponse forKey:@"_ageRangeResponse"];
-  [v5 encodeBool:self->_shouldPrompt forKey:@"_shouldPrompt"];
-  [v5 encodeInteger:self->_flowType forKey:@"_flowType"];
-  [v5 encodeObject:self->_title forKey:@"_title "];
-  [v5 encodeObject:self->_message forKey:@"_message"];
-  [v5 encodeObject:self->_primaryButtonText forKey:@"_primaryButtonText"];
-  [v5 encodeObject:self->_secondaryButtonText forKey:@"_secondaryButtonText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:ageRangeResponse forKey:@"_ageRangeResponse"];
+  [coderCopy encodeBool:self->_shouldPrompt forKey:@"_shouldPrompt"];
+  [coderCopy encodeInteger:self->_flowType forKey:@"_flowType"];
+  [coderCopy encodeObject:self->_title forKey:@"_title "];
+  [coderCopy encodeObject:self->_message forKey:@"_message"];
+  [coderCopy encodeObject:self->_primaryButtonText forKey:@"_primaryButtonText"];
+  [coderCopy encodeObject:self->_secondaryButtonText forKey:@"_secondaryButtonText"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(FAAgeRangeResponse *)self->_ageRangeResponse copy];

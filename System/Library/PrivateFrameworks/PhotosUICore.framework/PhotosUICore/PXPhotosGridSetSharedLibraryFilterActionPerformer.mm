@@ -1,5 +1,5 @@
 @interface PXPhotosGridSetSharedLibraryFilterActionPerformer
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
@@ -8,22 +8,22 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v4 = [v3 libraryFilterState];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
 
-  [v4 setViewMode:2];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToLibraryFilterStateAndFinishTask:v4];
+  [libraryFilterState setViewMode:2];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToLibraryFilterStateAndFinishTask:libraryFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v4 = [v3 dataSourceManager];
-  v5 = [v4 dataSource];
-  v6 = [v5 containerCollection];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  containerCollection = [dataSource containerCollection];
 
-  v7 = [v6 photoLibrary];
-  v8 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v7];
+  photoLibrary = [containerCollection photoLibrary];
+  v8 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
   [v8 hasPreview];
   v9 = PXLocalizedSharedLibraryString(@"PXSharedLibrary_FilterMenu_Shared");
@@ -33,9 +33,9 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v3 = [v2 libraryFilterState];
-  v4 = [v3 isLibraryFilterActive:2];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
+  v4 = [libraryFilterState isLibraryFilterActive:2];
 
   return v4;
 }

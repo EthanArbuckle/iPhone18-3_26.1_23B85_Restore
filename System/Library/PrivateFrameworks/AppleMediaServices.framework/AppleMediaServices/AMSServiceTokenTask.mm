@@ -1,32 +1,32 @@
 @interface AMSServiceTokenTask
-- (AMSServiceTokenTask)initWithAccount:(id)a3 accountStore:(id)a4 serviceIdentifier:(id)a5 tokenValidationHandler:(id)a6 useCachedServiceToken:(BOOL)a7;
+- (AMSServiceTokenTask)initWithAccount:(id)account accountStore:(id)store serviceIdentifier:(id)identifier tokenValidationHandler:(id)handler useCachedServiceToken:(BOOL)token;
 - (id)_authKitUpdateTask;
 - (id)perform;
 @end
 
 @implementation AMSServiceTokenTask
 
-- (AMSServiceTokenTask)initWithAccount:(id)a3 accountStore:(id)a4 serviceIdentifier:(id)a5 tokenValidationHandler:(id)a6 useCachedServiceToken:(BOOL)a7
+- (AMSServiceTokenTask)initWithAccount:(id)account accountStore:(id)store serviceIdentifier:(id)identifier tokenValidationHandler:(id)handler useCachedServiceToken:(BOOL)token
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  accountCopy = account;
+  storeCopy = store;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = AMSServiceTokenTask;
   v17 = [(AMSTask *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_account, a3);
-    v19 = v14;
-    if (!v14)
+    objc_storeStrong(&v17->_account, account);
+    ams_sharedAccountStore = storeCopy;
+    if (!storeCopy)
     {
-      v19 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
     }
 
-    objc_storeStrong(&v18->_accountStore, v19);
-    if (!v14)
+    objc_storeStrong(&v18->_accountStore, ams_sharedAccountStore);
+    if (!storeCopy)
     {
     }
 
@@ -34,15 +34,15 @@
     authKitUpdateTaskClass = v18->_authKitUpdateTaskClass;
     v18->_authKitUpdateTaskClass = v20;
 
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     serviceIdentifier = v18->_serviceIdentifier;
     v18->_serviceIdentifier = v22;
 
-    v24 = _Block_copy(v16);
+    v24 = _Block_copy(handlerCopy);
     tokenValidationHandler = v18->_tokenValidationHandler;
     v18->_tokenValidationHandler = v24;
 
-    v18->_useCachedServiceToken = a7;
+    v18->_useCachedServiceToken = token;
   }
 
   return v18;
@@ -51,13 +51,13 @@
 - (id)_authKitUpdateTask
 {
   v3 = objc_alloc_init(AMSAuthenticateOptions);
-  v4 = [(AMSServiceTokenTask *)self serviceIdentifier];
-  [(AMSAuthenticateOptions *)v3 setServiceIdentifier:v4];
+  serviceIdentifier = [(AMSServiceTokenTask *)self serviceIdentifier];
+  [(AMSAuthenticateOptions *)v3 setServiceIdentifier:serviceIdentifier];
 
   [(AMSAuthenticateOptions *)v3 setServiceTokenOnly:1];
   v5 = objc_alloc([(AMSServiceTokenTask *)self authKitUpdateTaskClass]);
-  v6 = [(AMSServiceTokenTask *)self account];
-  v7 = [v5 initWithAccount:v6 options:v3];
+  account = [(AMSServiceTokenTask *)self account];
+  v7 = [v5 initWithAccount:account options:v3];
 
   return v7;
 }
@@ -66,10 +66,10 @@
 {
   if ([(AMSServiceTokenTask *)self useCachedServiceToken])
   {
-    v3 = [(AMSServiceTokenTask *)self accountStore];
-    v4 = [(AMSServiceTokenTask *)self account];
-    v5 = [(AMSServiceTokenTask *)self serviceIdentifier];
-    v6 = [v3 ams_fetchGrandSlamTokenForAccount:v4 withIdentifier:v5];
+    accountStore = [(AMSServiceTokenTask *)self accountStore];
+    account = [(AMSServiceTokenTask *)self account];
+    serviceIdentifier = [(AMSServiceTokenTask *)self serviceIdentifier];
+    v6 = [accountStore ams_fetchGrandSlamTokenForAccount:account withIdentifier:serviceIdentifier];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;

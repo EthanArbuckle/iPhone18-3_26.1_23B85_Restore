@@ -1,19 +1,19 @@
 @interface AXSSMotionTrackingCameraManager
-+ (id)_sortedAndFilteredCaptureDevicesFromDevices:(id)a3;
++ (id)_sortedAndFilteredCaptureDevicesFromDevices:(id)devices;
 - (AVCaptureDevice)defaultCaptureDevice;
 - (AXSSMotionTrackingCameraManager)init;
 - (AXSSMotionTrackingCameraManagerDelegate)delegate;
 - (NSArray)allCaptureDevices;
 - (NSArray)compatibleCaptureDevices;
-- (void)_allCaptureDevicesChanged:(id)a3;
-- (void)_captureDeviceConnected:(id)a3;
-- (void)_captureDeviceDisconnected:(id)a3;
+- (void)_allCaptureDevicesChanged:(id)changed;
+- (void)_captureDeviceConnected:(id)connected;
+- (void)_captureDeviceDisconnected:(id)disconnected;
 - (void)_captureDeviceUpdated;
 - (void)_resetDiscoverySession;
 - (void)_startDiscoverySession;
 - (void)_stopDiscoverySession;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
@@ -27,13 +27,13 @@
   v2 = [(AXSSMotionTrackingCameraManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     compatibleCaptureDevices = v2->__compatibleCaptureDevices;
-    v2->__compatibleCaptureDevices = v3;
+    v2->__compatibleCaptureDevices = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     allCaptureDevices = v2->__allCaptureDevices;
-    v2->__allCaptureDevices = v5;
+    v2->__allCaptureDevices = array2;
   }
 
   return v2;
@@ -57,13 +57,13 @@
     v6 = NSStringFromSelector(sel_allCaptureDevices);
     [(AXSSMotionTrackingCameraManager *)self removeObserver:self forKeyPath:v6 context:kAllCaptureDevicesKVOContext];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v8 = getAVCaptureDeviceWasConnectedNotification();
-    [v7 removeObserver:self name:v8 object:0];
+    [defaultCenter removeObserver:self name:v8 object:0];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = getAVCaptureDeviceWasDisconnectedNotification();
-    [v9 removeObserver:self name:v10 object:0];
+    [defaultCenter2 removeObserver:self name:v10 object:0];
   }
 
   v11.receiver = self;
@@ -74,7 +74,7 @@
 - (void)startMonitoring
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 _captureDeviceDiscoverySession];
+  _captureDeviceDiscoverySession = [self _captureDeviceDiscoverySession];
   [MEMORY[0x1E696AF00] isMainThread];
   OUTLINED_FUNCTION_0_7();
   OUTLINED_FUNCTION_0_5();
@@ -86,7 +86,7 @@
 - (void)stopMonitoring
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 _captureDeviceDiscoverySession];
+  _captureDeviceDiscoverySession = [self _captureDeviceDiscoverySession];
   [MEMORY[0x1E696AF00] isMainThread];
   OUTLINED_FUNCTION_0_7();
   OUTLINED_FUNCTION_0_5();
@@ -105,16 +105,16 @@ void __49__AXSSMotionTrackingCameraManager_stopMonitoring__block_invoke(uint64_t
 
 - (NSArray)compatibleCaptureDevices
 {
-  v2 = [(AXSSMotionTrackingCameraManager *)self _compatibleCaptureDevices];
-  v3 = [v2 copy];
+  _compatibleCaptureDevices = [(AXSSMotionTrackingCameraManager *)self _compatibleCaptureDevices];
+  v3 = [_compatibleCaptureDevices copy];
 
   return v3;
 }
 
 - (NSArray)allCaptureDevices
 {
-  v2 = [(AXSSMotionTrackingCameraManager *)self _allCaptureDevices];
-  v3 = [v2 copy];
+  _allCaptureDevices = [(AXSSMotionTrackingCameraManager *)self _allCaptureDevices];
+  v3 = [_allCaptureDevices copy];
 
   return v3;
 }
@@ -138,12 +138,12 @@ void __49__AXSSMotionTrackingCameraManager_stopMonitoring__block_invoke(uint64_t
   return v8;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (kCaptureDeviceDiscoverySessionKVOContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (kCaptureDeviceDiscoverySessionKVOContext == context)
   {
     v13 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -154,9 +154,9 @@ void __49__AXSSMotionTrackingCameraManager_stopMonitoring__block_invoke(uint64_t
     goto LABEL_15;
   }
 
-  if (kAllCaptureDevicesKVOContext != a6)
+  if (kAllCaptureDevicesKVOContext != context)
   {
-    if (kCaptureDeviceSuspendedKVOContext == a6)
+    if (kCaptureDeviceSuspendedKVOContext == context)
     {
       v13 = AXSSLogForCategory(2);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -167,11 +167,11 @@ void __49__AXSSMotionTrackingCameraManager_stopMonitoring__block_invoke(uint64_t
 
     else
     {
-      if (kCaptureDeviceConnectedKVOContext != a6)
+      if (kCaptureDeviceConnectedKVOContext != context)
       {
         v15.receiver = self;
         v15.super_class = AXSSMotionTrackingCameraManager;
-        [(AXSSMotionTrackingCameraManager *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+        [(AXSSMotionTrackingCameraManager *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
         goto LABEL_16;
       }
 
@@ -194,16 +194,16 @@ LABEL_15:
     [AXSSMotionTrackingCameraManager observeValueForKeyPath:ofObject:change:context:];
   }
 
-  [(AXSSMotionTrackingCameraManager *)self _allCaptureDevicesChanged:v12];
+  [(AXSSMotionTrackingCameraManager *)self _allCaptureDevicesChanged:changeCopy];
 LABEL_16:
 }
 
-+ (id)_sortedAndFilteredCaptureDevicesFromDevices:(id)a3
++ (id)_sortedAndFilteredCaptureDevicesFromDevices:(id)devices
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = [v3 predicateWithBlock:&__block_literal_global_13];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [devicesCopy filteredArrayUsingPredicate:v5];
 
   if ([v6 count] > 1)
   {
@@ -528,18 +528,18 @@ void __56__AXSSMotionTrackingCameraManager__captureDeviceUpdated__block_invoke(u
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_allCaptureDevicesChanged:(id)a3
+- (void)_allCaptureDevicesChanged:(id)changed
 {
   v4 = *MEMORY[0x1E696A500];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
+  changedCopy = changed;
+  v6 = [changedCopy objectForKeyedSubscript:v4];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__AXSSMotionTrackingCameraManager__allCaptureDevicesChanged___block_invoke;
   v9[3] = &unk_1E8135558;
   v9[4] = self;
   [v6 enumerateObjectsUsingBlock:v9];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  v7 = [changedCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -552,7 +552,7 @@ void __56__AXSSMotionTrackingCameraManager__captureDeviceUpdated__block_invoke(u
 - (void)_startDiscoverySession
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = [a1 _captureDeviceDiscoverySession];
+  _captureDeviceDiscoverySession = [self _captureDeviceDiscoverySession];
   [MEMORY[0x1E696AF00] isMainThread];
   OUTLINED_FUNCTION_0_5();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x1Cu);
@@ -563,7 +563,7 @@ void __56__AXSSMotionTrackingCameraManager__captureDeviceUpdated__block_invoke(u
 - (void)_stopDiscoverySession
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 _captureDeviceDiscoverySession];
+  _captureDeviceDiscoverySession = [self _captureDeviceDiscoverySession];
   [MEMORY[0x1E696AF00] isMainThread];
   OUTLINED_FUNCTION_0_7();
   OUTLINED_FUNCTION_0_5();
@@ -574,9 +574,9 @@ void __56__AXSSMotionTrackingCameraManager__captureDeviceUpdated__block_invoke(u
 
 - (void)_resetDiscoverySession
 {
-  v3 = [(AXSSMotionTrackingCameraManager *)self _captureDeviceDiscoverySession];
+  _captureDeviceDiscoverySession = [(AXSSMotionTrackingCameraManager *)self _captureDeviceDiscoverySession];
 
-  if (v3)
+  if (_captureDeviceDiscoverySession)
   {
     [(AXSSMotionTrackingCameraManager *)self _stopDiscoverySession];
     [(AXSSMotionTrackingCameraManager *)self _startDiscoverySession];
@@ -585,9 +585,9 @@ void __56__AXSSMotionTrackingCameraManager__captureDeviceUpdated__block_invoke(u
   }
 }
 
-- (void)_captureDeviceConnected:(id)a3
+- (void)_captureDeviceConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   v5 = AXSSLogForCategory(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -598,9 +598,9 @@ void __56__AXSSMotionTrackingCameraManager__captureDeviceUpdated__block_invoke(u
   [(AXSSMotionTrackingCameraManager *)self _captureDeviceUpdated];
 }
 
-- (void)_captureDeviceDisconnected:(id)a3
+- (void)_captureDeviceDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   v5 = AXSSLogForCategory(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {

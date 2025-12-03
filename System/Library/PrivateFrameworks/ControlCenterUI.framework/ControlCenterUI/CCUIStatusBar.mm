@@ -1,40 +1,40 @@
 @interface CCUIStatusBar
 + (Class)statusBarClass;
-- (CCUIStatusBar)initWithFrame:(CGRect)a3;
+- (CCUIStatusBar)initWithFrame:(CGRect)frame;
 - (CCUIStatusBarDelegate)delegate;
 - (CGAffineTransform)compactScaleTransform;
 - (CGRect)compactAvoidanceFrame;
 - (CGRect)expandedAvoidanceFrame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)compactEdgeInsets;
 - (UIEdgeInsets)expandedEdgeInsets;
 - (UIStatusBarStyleRequest)compactTrailingStyleRequest;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateCompactTrailingStatusBarAvoidanceFrame;
 - (void)_updateCompactTrailingStatusBarStyleRequest;
 - (void)_updateMetricsIfNeeded;
 - (void)_updateShadow;
 - (void)controlCenterApplyPrimaryContentShadow;
 - (void)layoutSubviews;
-- (void)setCompactEdgeInsets:(UIEdgeInsets)a3;
-- (void)setCompactScaleTransform:(CGAffineTransform *)a3;
-- (void)setDelegate:(id)a3;
-- (void)setExpandedEdgeInsets:(UIEdgeInsets)a3;
-- (void)setExpandedStatusBarTranslation:(double)a3;
-- (void)setExpandedTrailingAlpha:(double)a3;
-- (void)setLeadingState:(unint64_t)a3;
-- (void)setTrailingState:(unint64_t)a3;
+- (void)setCompactEdgeInsets:(UIEdgeInsets)insets;
+- (void)setCompactScaleTransform:(CGAffineTransform *)transform;
+- (void)setDelegate:(id)delegate;
+- (void)setExpandedEdgeInsets:(UIEdgeInsets)insets;
+- (void)setExpandedStatusBarTranslation:(double)translation;
+- (void)setExpandedTrailingAlpha:(double)alpha;
+- (void)setLeadingState:(unint64_t)state;
+- (void)setTrailingState:(unint64_t)state;
 @end
 
 @implementation CCUIStatusBar
 
-- (CCUIStatusBar)initWithFrame:(CGRect)a3
+- (CCUIStatusBar)initWithFrame:(CGRect)frame
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v24.receiver = self;
   v24.super_class = CCUIStatusBar;
-  v3 = [(CCUIStatusBar *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CCUIStatusBar *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,14 +43,14 @@
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [objc_opt_class() statusBarClass];
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    v15 = [[v13 alloc] initWithFrame:1 showForegroundView:{v6, v8, v10, v12}];
+    statusBarClass = [objc_opt_class() statusBarClass];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    v15 = [[statusBarClass alloc] initWithFrame:1 showForegroundView:{v6, v8, v10, v12}];
     compactTrailingStatusBar = v4->_compactTrailingStatusBar;
     v4->_compactTrailingStatusBar = v15;
 
     v17 = CCUIStatusBarForStatusBar(v4->_compactTrailingStatusBar);
-    [v17 setTargetScreen:v14];
+    [v17 setTargetScreen:mainScreen];
 
     v18 = v4->_compactTrailingStatusBar;
     v25[0] = *MEMORY[0x277D775E0];
@@ -58,12 +58,12 @@
     [(UIStatusBar *)v18 setEnabledPartIdentifiers:v19];
 
     [(CCUIStatusBar *)v4 addSubview:v4->_compactTrailingStatusBar];
-    v20 = [[v13 alloc] initWithFrame:1 showForegroundView:{v6, v8, v10, v12}];
+    v20 = [[statusBarClass alloc] initWithFrame:1 showForegroundView:{v6, v8, v10, v12}];
     expandedStatusBar = v4->_expandedStatusBar;
     v4->_expandedStatusBar = v20;
 
     v22 = CCUIStatusBarForStatusBar(v4->_expandedStatusBar);
-    [v22 setTargetScreen:v14];
+    [v22 setTargetScreen:mainScreen];
 
     [(UIStatusBar *)v4->_expandedStatusBar requestStyle:1 animated:0];
     [(UIStatusBar *)v4->_expandedStatusBar setMode:1];
@@ -158,12 +158,12 @@
     v64.size.width = v51;
     v64.size.height = v19;
     v23 = MaxY / CGRectGetHeight(v64);
-    v24 = [(UIStatusBar *)self->_compactTrailingStatusBar layer];
+    layer = [(UIStatusBar *)self->_compactTrailingStatusBar layer];
     v25 = v23;
     v26 = x;
     v27 = y;
     v28 = v20;
-    [v24 setAnchorPoint:{v52, v25}];
+    [layer setAnchorPoint:{v52, v25}];
 
     if (!self->_preparedMarginDelta)
     {
@@ -172,10 +172,10 @@
       v53 = v31;
       v48 = v33;
       v49 = v32;
-      v34 = [MEMORY[0x277D75128] sharedApplication];
-      v35 = [v34 userInterfaceLayoutDirection];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-      if (v35 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v65.origin.x = x;
         v65.origin.y = v27;
@@ -235,8 +235,8 @@
     }
 
     self->_verticalBatteryAlignmentDelta = v43;
-    v44 = [MEMORY[0x277D75418] currentDevice];
-    if ([v44 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
     }
 
@@ -276,8 +276,8 @@ LABEL_21:
 
 - (UIStatusBarStyleRequest)compactTrailingStyleRequest
 {
-  v3 = [(CCUIStatusBar *)self delegate];
-  v4 = [v3 compactTrailingStyleRequestForStatusBar:self];
+  delegate = [(CCUIStatusBar *)self delegate];
+  v4 = [delegate compactTrailingStyleRequestForStatusBar:self];
 
   v5 = [v4 copy];
 
@@ -286,8 +286,8 @@ LABEL_21:
 
 - (CGRect)compactAvoidanceFrame
 {
-  v3 = [(CCUIStatusBar *)self delegate];
-  [v3 compactAvoidanceFrameForStatusBar:self];
+  delegate = [(CCUIStatusBar *)self delegate];
+  [delegate compactAvoidanceFrameForStatusBar:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -306,8 +306,8 @@ LABEL_21:
 
 - (CGRect)expandedAvoidanceFrame
 {
-  v3 = [(CCUIStatusBar *)self delegate];
-  [v3 expandedAvoidanceFrameForStatusBar:self];
+  delegate = [(CCUIStatusBar *)self delegate];
+  [delegate expandedAvoidanceFrameForStatusBar:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -324,9 +324,9 @@ LABEL_21:
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -339,24 +339,24 @@ LABEL_21:
   }
 }
 
-- (void)setLeadingState:(unint64_t)a3
+- (void)setLeadingState:(unint64_t)state
 {
-  if (self->_leadingState != a3)
+  if (self->_leadingState != state)
   {
-    self->_leadingState = a3;
+    self->_leadingState = state;
     [(CCUIStatusBar *)self setNeedsLayout];
 
     [(CCUIStatusBar *)self layoutIfNeeded];
   }
 }
 
-- (void)setTrailingState:(unint64_t)a3
+- (void)setTrailingState:(unint64_t)state
 {
-  if (self->_trailingState != a3)
+  if (self->_trailingState != state)
   {
     v8 = v3;
-    self->_trailingState = a3;
-    if (!a3)
+    self->_trailingState = state;
+    if (!state)
     {
       [(CCUIStatusBar *)self _updateCompactTrailingStatusBarStyleRequest];
       self->_preparedMarginDelta = 0;
@@ -368,35 +368,35 @@ LABEL_21:
   }
 }
 
-- (void)setCompactEdgeInsets:(UIEdgeInsets)a3
+- (void)setCompactEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_compactEdgeInsets.top, v3), vceqq_f64(*&self->_compactEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_compactEdgeInsets = a3;
+    self->_compactEdgeInsets = insets;
     [(CCUIStatusBar *)self setNeedsLayout];
   }
 }
 
-- (void)setExpandedEdgeInsets:(UIEdgeInsets)a3
+- (void)setExpandedEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_expandedEdgeInsets.top, v3), vceqq_f64(*&self->_expandedEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_expandedEdgeInsets = a3;
+    self->_expandedEdgeInsets = insets;
     [(CCUIStatusBar *)self setNeedsLayout];
   }
 }
 
-- (void)setExpandedTrailingAlpha:(double)a3
+- (void)setExpandedTrailingAlpha:(double)alpha
 {
-  [(UIStatusBar *)self->_expandedStatusBar setAlpha:*MEMORY[0x277D775E0] forPartWithIdentifier:a3];
+  [(UIStatusBar *)self->_expandedStatusBar setAlpha:*MEMORY[0x277D775E0] forPartWithIdentifier:alpha];
 
   [(CCUIStatusBar *)self _updateShadow];
 }
@@ -410,33 +410,33 @@ LABEL_21:
   return self;
 }
 
-- (void)setCompactScaleTransform:(CGAffineTransform *)a3
+- (void)setCompactScaleTransform:(CGAffineTransform *)transform
 {
   p_compactScaleTransform = &self->_compactScaleTransform;
   v6 = *&self->_compactScaleTransform.c;
   *&t1.a = *&self->_compactScaleTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_compactScaleTransform.tx;
-  v7 = *&a3->c;
-  *&v10.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v10.a = *&transform->a;
   *&v10.c = v7;
-  *&v10.tx = *&a3->tx;
+  *&v10.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_compactScaleTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_compactScaleTransform->c = *&transform->c;
     *&p_compactScaleTransform->tx = v9;
     *&p_compactScaleTransform->a = v8;
     [(CCUIStatusBar *)self setNeedsLayout];
   }
 }
 
-- (void)setExpandedStatusBarTranslation:(double)a3
+- (void)setExpandedStatusBarTranslation:(double)translation
 {
-  if (vabdd_f64(self->_expandedStatusBarTranslation, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_expandedStatusBarTranslation, translation) >= 2.22044605e-16)
   {
-    self->_expandedStatusBarTranslation = a3;
+    self->_expandedStatusBarTranslation = translation;
     [(CCUIStatusBar *)self setNeedsLayout];
   }
 }
@@ -488,12 +488,12 @@ LABEL_21:
     v35 = v19;
     v37 = *MEMORY[0x277D76DA8];
     v36 = *(MEMORY[0x277D76DA8] + 8);
-    v38 = [(CCUIStatusBar *)self leadingState];
+    leadingState = [(CCUIStatusBar *)self leadingState];
     v67 = v37;
     v39 = v37;
     v40 = v33;
     v41 = v36;
-    if (!v38)
+    if (!leadingState)
     {
       v76.origin.x = v70;
       v76.origin.y = rect;
@@ -509,18 +509,18 @@ LABEL_21:
     }
 
     v69 = v39;
-    v43 = [(CCUIStatusBar *)self trailingState];
+    trailingState = [(CCUIStatusBar *)self trailingState];
     v68 = v41;
-    if (v43 == 1)
+    if (trailingState == 1)
     {
-      v54 = [MEMORY[0x277D75128] sharedApplication];
-      v55 = [v54 userInterfaceLayoutDirection];
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
       v56 = v40;
       v57 = v30;
       v58 = v24;
       v59 = v27;
-      if (v55 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v60 = CGRectGetMinX(*&v56);
         v79.origin.x = v70;
@@ -547,7 +547,7 @@ LABEL_21:
       v61 = v36;
     }
 
-    else if (v43)
+    else if (trailingState)
     {
       v53 = v67;
       v61 = v36;
@@ -558,14 +558,14 @@ LABEL_21:
 
     else
     {
-      v44 = [MEMORY[0x277D75128] sharedApplication];
-      v45 = [v44 userInterfaceLayoutDirection];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      userInterfaceLayoutDirection2 = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
 
       v46 = v70;
       v47 = rect;
       v48 = v35;
       v49 = v34;
-      if (v45 == 1)
+      if (userInterfaceLayoutDirection2 == 1)
       {
         v50 = CGRectGetMinX(*&v46);
         v78.origin.x = v40;
@@ -610,18 +610,18 @@ LABEL_21:
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([(CCUIStatusBar *)self leadingState]!= 1 || ([(UIStatusBar *)self->_expandedStatusBar frameForPartWithIdentifier:*MEMORY[0x277D775D0]], v15.x = x, v15.y = y, !CGRectContainsPoint(v17, v15)) || (v8 = self->_expandedStatusBar, [(CCUIStatusBar *)self convertPoint:v8 toView:x, y], [(UIStatusBar *)v8 hitTest:v7 withEvent:?], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([(CCUIStatusBar *)self leadingState]!= 1 || ([(UIStatusBar *)self->_expandedStatusBar frameForPartWithIdentifier:*MEMORY[0x277D775D0]], v15.x = x, v15.y = y, !CGRectContainsPoint(v17, v15)) || (v8 = self->_expandedStatusBar, [(CCUIStatusBar *)self convertPoint:v8 toView:x, y], [(UIStatusBar *)v8 hitTest:eventCopy withEvent:?], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if ([(CCUIStatusBar *)self trailingState]!= 1 || ([(UIStatusBar *)self->_expandedStatusBar frameForPartWithIdentifier:*MEMORY[0x277D775E0]], v16.x = x, v16.y = y, !CGRectContainsPoint(v18, v16)) || (expandedStatusBar = self->_expandedStatusBar, [(CCUIStatusBar *)self convertPoint:expandedStatusBar toView:x, y], [(UIStatusBar *)expandedStatusBar hitTest:v7 withEvent:?], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ([(CCUIStatusBar *)self trailingState]!= 1 || ([(UIStatusBar *)self->_expandedStatusBar frameForPartWithIdentifier:*MEMORY[0x277D775E0]], v16.x = x, v16.y = y, !CGRectContainsPoint(v18, v16)) || (expandedStatusBar = self->_expandedStatusBar, [(CCUIStatusBar *)self convertPoint:expandedStatusBar toView:x, y], [(UIStatusBar *)expandedStatusBar hitTest:eventCopy withEvent:?], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v13.receiver = self;
       v13.super_class = CCUIStatusBar;
-      v9 = [(CCUIStatusBar *)&v13 hitTest:v7 withEvent:x, y];
+      v9 = [(CCUIStatusBar *)&v13 hitTest:eventCopy withEvent:x, y];
     }
   }
 
@@ -630,9 +630,9 @@ LABEL_21:
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = CCUIStatusBarHeight();
   v5 = width;
   result.height = v4;
@@ -651,14 +651,14 @@ LABEL_21:
 - (void)_updateShadow
 {
   [(UIStatusBar *)self->_expandedStatusBar _controlCenterApplyPrimaryContentShadow];
-  v8 = [(UIStatusBar *)self->_expandedStatusBar layer];
-  v3 = [(UIStatusBar *)self->_expandedStatusBar layer];
-  [v3 shadowOpacity];
+  layer = [(UIStatusBar *)self->_expandedStatusBar layer];
+  layer2 = [(UIStatusBar *)self->_expandedStatusBar layer];
+  [layer2 shadowOpacity];
   v5 = v4;
   [(CCUIStatusBar *)self expandedTrailingAlpha];
   v7 = v6 * v5;
   *&v7 = v7;
-  [v8 setShadowOpacity:v7];
+  [layer setShadowOpacity:v7];
 }
 
 - (void)controlCenterApplyPrimaryContentShadow
@@ -692,8 +692,8 @@ LABEL_21:
     CGPathAddRect(Mutable, 0, v17);
   }
 
-  v12 = [(UIStatusBar *)self->_expandedStatusBar layer];
-  [v12 setShadowPath:Mutable];
+  layer = [(UIStatusBar *)self->_expandedStatusBar layer];
+  [layer setShadowPath:Mutable];
 
   CGPathRelease(Mutable);
 
@@ -702,8 +702,8 @@ LABEL_21:
 
 - (void)_updateCompactTrailingStatusBarStyleRequest
 {
-  v3 = [(CCUIStatusBar *)self compactTrailingStyleRequest];
-  [(UIStatusBar *)self->_compactTrailingStatusBar setStyleRequest:v3];
+  compactTrailingStyleRequest = [(CCUIStatusBar *)self compactTrailingStyleRequest];
+  [(UIStatusBar *)self->_compactTrailingStatusBar setStyleRequest:compactTrailingStyleRequest];
 }
 
 - (void)_updateCompactTrailingStatusBarAvoidanceFrame
@@ -718,16 +718,16 @@ LABEL_21:
   y = v13;
   width = v15;
   height = v17;
-  v19 = [MEMORY[0x277D75418] currentDevice];
-  v20 = [v19 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(CCUIStatusBar *)self compactEdgeInsets];
     v22 = v21;
     v24 = v23;
-    v25 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v25 userInterfaceLayoutDirection] == 1)
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1)
     {
       v26 = v24;
     }

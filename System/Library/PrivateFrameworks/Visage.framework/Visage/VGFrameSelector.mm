@@ -1,20 +1,20 @@
 @interface VGFrameSelector
 + (id)invalidPose;
-+ (optional<std::vector<TargetPoseData>>)_computeTargetPosesForFrameCount:(SEL)a3 limit:(unint64_t)a4 desiredFrontPoseFrustumOffsets:(float)a5 desiredFrontPoseFrustumOffset:(optional<const VGFrameSelectorFrustumOffsets> *)a6 anglesDegrees:(optional<const VGFrameSelectorFrustumOffsets> *)a7 motionType:(id)a8 detectFrontPose:(int)a9 options:(BOOL)a10;
++ (optional<std::vector<TargetPoseData>>)_computeTargetPosesForFrameCount:(SEL)count limit:(unint64_t)limit desiredFrontPoseFrustumOffsets:(float)offsets desiredFrontPoseFrustumOffset:(optional<const VGFrameSelectorFrustumOffsets> *)offset anglesDegrees:(optional<const VGFrameSelectorFrustumOffsets> *)degrees motionType:(id)type detectFrontPose:(int)pose options:(BOOL)self0;
 - (BOOL)completedPitch;
 - (BOOL)completedYaw;
-- (FrameRejectionState)applyExpressionFilters:(SEL)a3 trackingData:(const void *)a4 frameTimestampMS:(id)a5 score:(unint64_t)a6;
-- (FrameRejectionState)applyVisionFaceLandmarksFilter:(SEL)a3 bestTargetPoseData:(id)a4 frameTimestampMS:(const void *)a5;
-- (FrameRejectionState)applyVisionFilters:(SEL)a3 bestTargetPoseData:(id)a4 frameTimestampMS:(const void *)a5;
-- (VGFrameSelector)initWithOptions:(id)a3;
+- (FrameRejectionState)applyExpressionFilters:(SEL)filters trackingData:(const void *)data frameTimestampMS:(id)s score:(unint64_t)score;
+- (FrameRejectionState)applyVisionFaceLandmarksFilter:(SEL)filter bestTargetPoseData:(id)data frameTimestampMS:(const void *)s;
+- (FrameRejectionState)applyVisionFilters:(SEL)filters bestTargetPoseData:(id)data frameTimestampMS:(const void *)s;
+- (VGFrameSelector)initWithOptions:(id)options;
 - (id).cxx_construct;
-- (id)processCaptureData:(int32x4_t)a3 trackingData:(int32x4_t)a4 framePose:(float32x4_t)a5 validDataFrameBounds:(uint64_t)a6;
-- (id)processHeadPose:(HeadPoseData)a3 captureData:(id)a4 trackingData:(id)a5 validDataBounds:(const void *)a6 frameTimestampMS:(unint64_t)a7;
-- (id)processHeadPoseSimple:(HeadPoseData)a3 frameTimestampMS:(unint64_t)a4;
-- (id)resultsForMotionType:(optional<vg::frame_selection::MotionType>)a3;
-- (id)selectedValidPosesForMotion:(optional<vg::frame_selection::MotionType>)a3;
-- (optional<simd_float4x4>)parseAtlasToCameraTransformation:(id)a3;
-- (void)checkDepthFoVFilter:(uint64_t)a3@<X3> framePose:(double *)a4@<X4> bestTargetPoseData:(uint64_t)a5@<X5> validDataBounds:(uint64_t)a6@<X8> frameTimestampMS:(__n128)a7@<Q3>;
+- (id)processCaptureData:(int32x4_t)data trackingData:(int32x4_t)trackingData framePose:(float32x4_t)pose validDataFrameBounds:(uint64_t)bounds;
+- (id)processHeadPose:(HeadPoseData)pose captureData:(id)data trackingData:(id)trackingData validDataBounds:(const void *)bounds frameTimestampMS:(unint64_t)s;
+- (id)processHeadPoseSimple:(HeadPoseData)simple frameTimestampMS:(unint64_t)s;
+- (id)resultsForMotionType:(optional<vg::frame_selection::MotionType>)type;
+- (id)selectedValidPosesForMotion:(optional<vg::frame_selection::MotionType>)motion;
+- (optional<simd_float4x4>)parseAtlasToCameraTransformation:(id)transformation;
+- (void)checkDepthFoVFilter:(uint64_t)filter@<X3> framePose:(double *)pose@<X4> bestTargetPoseData:(uint64_t)data@<X5> validDataBounds:(uint64_t)bounds@<X8> frameTimestampMS:(__n128)s@<Q3>;
 - (void)processHeadPose:captureData:trackingData:validDataBounds:frameTimestampMS:;
 @end
 
@@ -39,20 +39,20 @@ void __30__VGFrameSelector_invalidPose__block_invoke()
   +[VGFrameSelector invalidPose]::invalidPose = v0;
 }
 
-+ (optional<std::vector<TargetPoseData>>)_computeTargetPosesForFrameCount:(SEL)a3 limit:(unint64_t)a4 desiredFrontPoseFrustumOffsets:(float)a5 desiredFrontPoseFrustumOffset:(optional<const VGFrameSelectorFrustumOffsets> *)a6 anglesDegrees:(optional<const VGFrameSelectorFrustumOffsets> *)a7 motionType:(id)a8 detectFrontPose:(int)a9 options:(BOOL)a10
++ (optional<std::vector<TargetPoseData>>)_computeTargetPosesForFrameCount:(SEL)count limit:(unint64_t)limit desiredFrontPoseFrustumOffsets:(float)offsets desiredFrontPoseFrustumOffset:(optional<const VGFrameSelectorFrustumOffsets> *)offset anglesDegrees:(optional<const VGFrameSelectorFrustumOffsets> *)degrees motionType:(id)type detectFrontPose:(int)pose options:(BOOL)self0
 {
-  v11 = a10;
+  optionsCopy = options;
   v78 = retstr;
   v101 = *MEMORY[0x277D85DE8];
-  v17 = a8;
+  typeCopy = type;
   v84 = a11;
-  if (a9 < 2)
+  if (pose < 2)
   {
-    std::vector<TargetPoseData>::vector[abi:ne200100](&v86, a4);
-    v19 = a5 + a5;
-    if (v17)
+    std::vector<TargetPoseData>::vector[abi:ne200100](&v86, limit);
+    v19 = offsets + offsets;
+    if (typeCopy)
     {
-      if (!a6->var1)
+      if (!offset->var1)
       {
         v29 = __VGLogSharedInstance();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -66,19 +66,19 @@ void __30__VGFrameSelector_invalidPose__block_invoke()
         goto LABEL_79;
       }
 
-      var0 = a6->var0;
-      v80 = a5 + a5;
-      if (a7->var1)
+      var0 = offset->var0;
+      v80 = offsets + offsets;
+      if (degrees->var1)
       {
-        v83 = *&a7->var0.var0;
-        v82 = *&a7->var0.var1.pitchOffsetDegreesTop;
-        if (!a4)
+        v83 = *&degrees->var0.var0;
+        v82 = *&degrees->var0.var1.pitchOffsetDegreesTop;
+        if (!limit)
         {
 LABEL_62:
           v63 = __VGLogSharedInstance();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
           {
-            v64 = &vg::frame_selection::motionTypeToString(vg::frame_selection::MotionType)::kMotionTypeToString[24 * a9];
+            v64 = &vg::frame_selection::motionTypeToString(vg::frame_selection::MotionType)::kMotionTypeToString[24 * pose];
             if (v64[23] < 0)
             {
               std::string::__init_copy_ctor_external(&buf, *v64, 0);
@@ -172,9 +172,9 @@ LABEL_79:
 
       else
       {
-        v82 = *&a6->var0.var1.pitchOffsetDegreesTop;
-        v83 = *&a6->var0.var0;
-        if (!a4)
+        v82 = *&offset->var0.var1.pitchOffsetDegreesTop;
+        v83 = *&offset->var0.var0;
+        if (!limit)
         {
           goto LABEL_62;
         }
@@ -183,9 +183,9 @@ LABEL_79:
 
     else
     {
-      if (a4 >= 3)
+      if (limit >= 3)
       {
-        v19 = v19 / (a4 - 1);
+        v19 = v19 / (limit - 1);
       }
 
       v20 = ((v19 * 0.5) * 180.0) / 3.14159265;
@@ -193,13 +193,13 @@ LABEL_79:
       v21 = vdup_lane_s32(*&v20, 0);
       v22 = v21;
       v23 = v21;
-      if (a6->var1)
+      if (offset->var1)
       {
-        v22 = vabs_f32(*&a6->var0.var0);
-        v23 = vabs_f32(*&a6->var0.var1.pitchOffsetDegreesTop);
+        v22 = vabs_f32(*&offset->var0.var0);
+        v23 = vabs_f32(*&offset->var0.var1.pitchOffsetDegreesTop);
         v24 = COERCE_DOUBLE(vbsl_s8(vcgt_f32(v23, v21), v21, v23));
         v25 = COERCE_DOUBLE(vbsl_s8(vcgt_f32(v22, v21), v21, v22));
-        if (a9)
+        if (pose)
         {
           *&v23 = v24;
         }
@@ -214,11 +214,11 @@ LABEL_79:
       *&v26.var1.pitchOffsetDegreesTop = v23;
       var0 = v26;
       v80 = v19;
-      if (a7->var1)
+      if (degrees->var1)
       {
-        v27 = vabs_f32(*&a7->var0.var0);
-        v28 = vabs_f32(*&a7->var0.var1.pitchOffsetDegreesTop);
-        if (a9)
+        v27 = vabs_f32(*&degrees->var0.var0);
+        v28 = vabs_f32(*&degrees->var0.var1.pitchOffsetDegreesTop);
+        if (pose)
         {
           v28 = vbsl_s8(vcgt_f32(v28, v21), v21, v28);
         }
@@ -230,7 +230,7 @@ LABEL_79:
 
         v82 = v28;
         v83 = v27;
-        if (!a4)
+        if (!limit)
         {
           goto LABEL_62;
         }
@@ -240,7 +240,7 @@ LABEL_79:
       {
         v82 = v23;
         v83 = v22;
-        if (!a4)
+        if (!limit)
         {
           goto LABEL_62;
         }
@@ -249,9 +249,9 @@ LABEL_79:
 
     v32 = 0;
     v33 = 0;
-    if (v11)
+    if (optionsCopy)
     {
-      v34 = (a4 >> 1);
+      v34 = (limit >> 1);
     }
 
     else
@@ -259,12 +259,12 @@ LABEL_79:
       v34 = 0xFFFFFFFFLL;
     }
 
-    v79 = 1.5708 - a5;
+    v79 = 1.5708 - offsets;
     do
     {
-      if (v17)
+      if (typeCopy)
       {
-        v35 = [v17 objectAtIndexedSubscript:v33];
+        v35 = [typeCopy objectAtIndexedSubscript:v33];
         [v35 floatValue];
         v37 = v36;
 
@@ -278,12 +278,12 @@ LABEL_79:
       }
 
       v40 = (v86 + v32);
-      *(v86 + v32 + 64) = a9;
+      *(v86 + v32 + 64) = pose;
       v41 = __sincosf_stret(v39);
       v42.i32[0] = 0;
       v42.i64[1] = 0;
       v42.i32[1] = LODWORD(v41.__cosval);
-      if (a9)
+      if (pose)
       {
         v43 = -1;
       }
@@ -362,11 +362,11 @@ LABEL_79:
         v46[23] = v51;
         v46[24] = v48;
         *(v45 + v32 + 80) = 1;
-        v52 = [v84 bodyPoseGuidanceOptions];
-        if (v52)
+        bodyPoseGuidanceOptions = [v84 bodyPoseGuidanceOptions];
+        if (bodyPoseGuidanceOptions)
         {
-          v53 = [v84 bodyPoseGuidanceOptions];
-          [v53 bestAlignmentToleranceAngleFrontPose];
+          bodyPoseGuidanceOptions2 = [v84 bodyPoseGuidanceOptions];
+          [bodyPoseGuidanceOptions2 bestAlignmentToleranceAngleFrontPose];
           v55 = v54 * 3.14159265 / 180.0;
           *(v86 + 28 * v34 + 14) = fmaxf(v55, 0.0);
         }
@@ -392,7 +392,7 @@ LABEL_79:
       v32 += 112;
     }
 
-    while (a4 != v33);
+    while (limit != v33);
     goto LABEL_62;
   }
 
@@ -400,7 +400,7 @@ LABEL_79:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf.__r_.__value_.__l.__data_) = 67109120;
-    HIDWORD(buf.__r_.__value_.__r.__words[0]) = a9;
+    HIDWORD(buf.__r_.__value_.__r.__words[0]) = pose;
     _os_log_impl(&dword_270F06000, v18, OS_LOG_TYPE_DEBUG, " VGFrameSelector received unknown / unsupported MotionType: %d ", &buf, 8u);
   }
 
@@ -412,20 +412,20 @@ LABEL_80:
   return result;
 }
 
-- (VGFrameSelector)initWithOptions:(id)a3
+- (VGFrameSelector)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v60.receiver = self;
   v60.super_class = VGFrameSelector;
   v6 = [(VGFrameSelector *)&v60 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
-    v8 = [(VGFrameSelectorOptions *)v7->_options yawFrameCount];
-    v9 = [(VGFrameSelectorOptions *)v7->_options pitchFrameCount];
-    v7->_requiredPosesCount = v9 + v8;
-    v7->_remainingPosesCount = v9 + v8;
+    objc_storeStrong(&v6->_options, options);
+    yawFrameCount = [(VGFrameSelectorOptions *)v7->_options yawFrameCount];
+    pitchFrameCount = [(VGFrameSelectorOptions *)v7->_options pitchFrameCount];
+    v7->_requiredPosesCount = pitchFrameCount + yawFrameCount;
+    v7->_remainingPosesCount = pitchFrameCount + yawFrameCount;
     if ([(VGFrameSelectorOptions *)v7->_options useSimpleSelector])
     {
       [(VGFrameSelectorOptions *)v7->_options simpleSelectorMinOffsetAngle];
@@ -441,9 +441,9 @@ LABEL_80:
       v57 = 0;
       v58 = 0;
       v59 = 0;
-      if ([v5 yawFrameCount])
+      if ([optionsCopy yawFrameCount])
       {
-        v14 = [(VGFrameSelectorOptions *)v7->_options yawFrameCount];
+        yawFrameCount2 = [(VGFrameSelectorOptions *)v7->_options yawFrameCount];
         [(VGFrameSelectorOptions *)v7->_options yawLimit];
         v16 = v15;
         [(VGFrameSelectorOptions *)v7->_options yawPosesFrustumOffsets];
@@ -455,10 +455,10 @@ LABEL_80:
         v51 = v23;
         v52 = v24;
         v53 = 1;
-        v25 = [(VGFrameSelectorOptions *)v7->_options yawAngles];
-        v26 = [(VGFrameSelectorOptions *)v7->_options detectFrontPose];
+        yawAngles = [(VGFrameSelectorOptions *)v7->_options yawAngles];
+        detectFrontPose = [(VGFrameSelectorOptions *)v7->_options detectFrontPose];
         LODWORD(v27) = v16;
-        [VGFrameSelector _computeTargetPosesForFrameCount:v14 limit:&v47 desiredFrontPoseFrustumOffsets:&v50 desiredFrontPoseFrustumOffset:v25 anglesDegrees:0 motionType:v26 detectFrontPose:v27 options:v5];
+        [VGFrameSelector _computeTargetPosesForFrameCount:yawFrameCount2 limit:&v47 desiredFrontPoseFrustumOffsets:&v50 desiredFrontPoseFrustumOffset:yawAngles anglesDegrees:0 motionType:detectFrontPose detectFrontPose:v27 options:optionsCopy];
 
         if ((v56 & 1) == 0)
         {
@@ -480,9 +480,9 @@ LABEL_30:
       v47 = 0;
       v48 = 0;
       v49 = 0;
-      if ([v5 pitchFrameCount])
+      if ([optionsCopy pitchFrameCount])
       {
-        v28 = [(VGFrameSelectorOptions *)v7->_options pitchFrameCount];
+        pitchFrameCount2 = [(VGFrameSelectorOptions *)v7->_options pitchFrameCount];
         [(VGFrameSelectorOptions *)v7->_options pitchLimit];
         v30 = v29;
         [(VGFrameSelectorOptions *)v7->_options pitchPosesFrustumOffsets];
@@ -492,9 +492,9 @@ LABEL_30:
         v53 = 1;
         v46[0] = 0;
         v46[16] = 0;
-        v35 = [(VGFrameSelectorOptions *)v7->_options pitchAngles];
+        pitchAngles = [(VGFrameSelectorOptions *)v7->_options pitchAngles];
         LODWORD(v36) = v30;
-        [VGFrameSelector _computeTargetPosesForFrameCount:v28 limit:&v50 desiredFrontPoseFrustumOffsets:v46 desiredFrontPoseFrustumOffset:v35 anglesDegrees:1 motionType:0 detectFrontPose:v36 options:v5];
+        [VGFrameSelector _computeTargetPosesForFrameCount:pitchFrameCount2 limit:&v50 desiredFrontPoseFrustumOffsets:v46 desiredFrontPoseFrustumOffset:pitchAngles anglesDegrees:1 motionType:0 detectFrontPose:v36 options:optionsCopy];
 
         if ((v56 & 1) == 0)
         {
@@ -519,13 +519,13 @@ LABEL_30:
           vg::shared::VNWarmupDetector(buf);
         }
 
-        v37 = [(VGFrameSelectorOptions *)v7->_options bodyPoseGuidanceOptions];
+        bodyPoseGuidanceOptions = [(VGFrameSelectorOptions *)v7->_options bodyPoseGuidanceOptions];
 
-        if (v37)
+        if (bodyPoseGuidanceOptions)
         {
           v38 = [VGUserBodyPoseGuidance alloc];
-          v39 = [(VGFrameSelectorOptions *)v7->_options bodyPoseGuidanceOptions];
-          v40 = [(VGUserBodyPoseGuidance *)v38 initWithOptions:v39];
+          bodyPoseGuidanceOptions2 = [(VGFrameSelectorOptions *)v7->_options bodyPoseGuidanceOptions];
+          v40 = [(VGUserBodyPoseGuidance *)v38 initWithOptions:bodyPoseGuidanceOptions2];
           userBodyPoseGuidance = v7->_userBodyPoseGuidance;
           v7->_userBodyPoseGuidance = v40;
         }
@@ -563,10 +563,10 @@ LABEL_31:
   return v42;
 }
 
-- (FrameRejectionState)applyVisionFilters:(SEL)a3 bestTargetPoseData:(id)a4 frameTimestampMS:(const void *)a5
+- (FrameRejectionState)applyVisionFilters:(SEL)filters bestTargetPoseData:(id)data frameTimestampMS:(const void *)s
 {
-  v9 = a4;
-  if (*(a5 + 80) == 1 && [(VGFrameSelectorOptions *)self->_options useVNFilters])
+  dataCopy = data;
+  if (*(s + 80) == 1 && [(VGFrameSelectorOptions *)self->_options useVNFilters])
   {
     v10 = VGLogVGFrameSelector();
     if (os_signpost_enabled(v10))
@@ -575,16 +575,16 @@ LABEL_31:
       _os_signpost_emit_with_name_impl(&dword_270F06000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ApplyVisionFilters", &unk_270FBF062, v34, 2u);
     }
 
-    Width = CVPixelBufferGetWidth([v9 rgbRectified]);
-    Height = CVPixelBufferGetHeight([v9 rgbRectified]);
-    v13 = [v9 face];
-    [v13 bounds];
+    Width = CVPixelBufferGetWidth([dataCopy rgbRectified]);
+    Height = CVPixelBufferGetHeight([dataCopy rgbRectified]);
+    face = [dataCopy face];
+    [face bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    CroppedCVPixelBuffer = createCroppedCVPixelBuffer([v9 rgbRectified], (v15 * Width), (v17 * Height), ((v15 + v19) * Width), ((v17 + v21) * Height));
+    CroppedCVPixelBuffer = createCroppedCVPixelBuffer([dataCopy rgbRectified], (v15 * Width), (v17 * Height), ((v15 + v19) * Width), ((v17 + v21) * Height));
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __74__VGFrameSelector_applyVisionFilters_bestTargetPoseData_frameTimestampMS___block_invoke_633;
@@ -644,10 +644,10 @@ void __74__VGFrameSelector_applyVisionFilters_bestTargetPoseData_frameTimestampM
   }
 }
 
-- (FrameRejectionState)applyVisionFaceLandmarksFilter:(SEL)a3 bestTargetPoseData:(id)a4 frameTimestampMS:(const void *)a5
+- (FrameRejectionState)applyVisionFaceLandmarksFilter:(SEL)filter bestTargetPoseData:(id)data frameTimestampMS:(const void *)s
 {
-  v9 = a4;
-  if (*(a5 + 80) == 1 && [(VGFrameSelectorOptions *)self->_options useVNFaceLandmarksFilter])
+  dataCopy = data;
+  if (*(s + 80) == 1 && [(VGFrameSelectorOptions *)self->_options useVNFaceLandmarksFilter])
   {
     v10 = VGLogVGFrameSelector();
     if (os_signpost_enabled(v10))
@@ -656,16 +656,16 @@ void __74__VGFrameSelector_applyVisionFilters_bestTargetPoseData_frameTimestampM
       _os_signpost_emit_with_name_impl(&dword_270F06000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "ApplyVisionFaceLandmarkFilter", &unk_270FBF062, &buf, 2u);
     }
 
-    Width = CVPixelBufferGetWidth([v9 rgbRectified]);
-    Height = CVPixelBufferGetHeight([v9 rgbRectified]);
-    v13 = [v9 face];
-    [v13 bounds];
+    Width = CVPixelBufferGetWidth([dataCopy rgbRectified]);
+    Height = CVPixelBufferGetHeight([dataCopy rgbRectified]);
+    face = [dataCopy face];
+    [face bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    CroppedCVPixelBuffer = createCroppedCVPixelBuffer([v9 rgbRectified], (v15 * Width), (v17 * Height), ((v15 + v19) * Width), ((v17 + v21) * Height));
+    CroppedCVPixelBuffer = createCroppedCVPixelBuffer([dataCopy rgbRectified], (v15 * Width), (v17 * Height), ((v15 + v19) * Width), ((v17 + v21) * Height));
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __86__VGFrameSelector_applyVisionFaceLandmarksFilter_bestTargetPoseData_frameTimestampMS___block_invoke_640;
@@ -685,9 +685,9 @@ void __74__VGFrameSelector_applyVisionFilters_bestTargetPoseData_frameTimestampM
       retstr->reason = 9;
       v33 = MEMORY[0x277CCACA8];
       [v31 confidence];
-      v35 = [v33 stringWithFormat:@"face landmarks not detected [confidence: %g < %g]", v34, 0x3FE99999A0000000];
+      0x3FE99999A0000000 = [v33 stringWithFormat:@"face landmarks not detected [confidence: %g < %g]", v34, 0x3FE99999A0000000];
       retstr->debugDictionary = 0;
-      retstr->description = v35;
+      retstr->description = 0x3FE99999A0000000;
     }
 
     else
@@ -724,62 +724,62 @@ void __86__VGFrameSelector_applyVisionFaceLandmarksFilter_bestTargetPoseData_fra
   }
 }
 
-- (void)checkDepthFoVFilter:(uint64_t)a3@<X3> framePose:(double *)a4@<X4> bestTargetPoseData:(uint64_t)a5@<X5> validDataBounds:(uint64_t)a6@<X8> frameTimestampMS:(__n128)a7@<Q3>
+- (void)checkDepthFoVFilter:(uint64_t)filter@<X3> framePose:(double *)pose@<X4> bestTargetPoseData:(uint64_t)data@<X5> validDataBounds:(uint64_t)bounds@<X8> frameTimestampMS:(__n128)s@<Q3>
 {
-  v59 = a7.n128_f32[2];
+  v59 = s.n128_f32[2];
   v95[2] = *MEMORY[0x277D85DE8];
   v12 = a2;
-  v13 = [v12 face];
-  [v13 bounds];
+  face = [v12 face];
+  [face bounds];
   v62.f64[0] = v14;
   v62.f64[1] = v15;
   v63.f64[0] = v16;
   v63.f64[1] = v17;
 
-  if ((*(a3 + 112) & 1) == 0)
+  if ((*(filter + 112) & 1) == 0)
   {
-    v19 = *(a1 + 40);
+    v19 = *(self + 40);
 LABEL_5:
-    v18 = [v19 yawMarginRatio];
+    yawMarginRatio = [v19 yawMarginRatio];
     goto LABEL_8;
   }
 
-  if (*(a3 + 80) == 1)
+  if (*(filter + 80) == 1)
   {
-    v18 = [*(a1 + 40) frontPoseMarginRatio];
+    yawMarginRatio = [*(self + 40) frontPoseMarginRatio];
     goto LABEL_8;
   }
 
-  v19 = *(a1 + 40);
-  if (!*(a3 + 64))
+  v19 = *(self + 40);
+  if (!*(filter + 64))
   {
     goto LABEL_5;
   }
 
-  v18 = [v19 pitchMarginRatio];
+  yawMarginRatio = [v19 pitchMarginRatio];
 LABEL_8:
-  v20 = v18;
-  if (v18)
+  v20 = yawMarginRatio;
+  if (yawMarginRatio)
   {
-    v58 = *a4;
-    [v18 leftMarginHeadRatio];
+    v58 = *pose;
+    [yawMarginRatio leftMarginHeadRatio];
     v57 = v21;
-    v56 = a4[1];
+    v56 = pose[1];
     [v20 topMarginHeadRatio];
     v23 = v22;
-    v24 = *a4;
-    v25 = a4[2];
+    v24 = *pose;
+    v25 = pose[2];
     [v20 rightMarginHeadRatio];
     v27 = v26;
-    v28 = a4[1];
-    v29 = a4[3];
+    v28 = pose[1];
+    v29 = pose[3];
     [v20 bottomMarginHeadRatio];
     v60.f64[0] = v58 + v63.f64[0] * v57;
     v60.f64[1] = v56 + v63.f64[1] * v23;
     v61.f64[0] = fmax(v24 + v25 - v63.f64[0] * v27 - v60.f64[0], 0.0);
     v61.f64[1] = fmax(v28 + v29 - v63.f64[1] * v30 - v60.f64[1], 0.0);
     v92[0] = @"validDataBounds";
-    v31 = [VGSerializationHelpers cgRectToDict:a4];
+    v31 = [VGSerializationHelpers cgRectToDict:pose];
     v93[0] = v31;
     v92[1] = @"faceBounds";
     v32 = [VGSerializationHelpers cgRectToDict:&v62];
@@ -795,9 +795,9 @@ LABEL_8:
     v97.size = v63;
     if (CGRectContainsRect(v96, v97))
     {
-      *a6 = 0;
-      *(a6 + 8) = 0;
-      *(a6 + 16) = 0;
+      *bounds = 0;
+      *(bounds + 8) = 0;
+      *(bounds + 16) = 0;
     }
 
     else
@@ -805,12 +805,12 @@ LABEL_8:
       v37 = __VGLogSharedInstance();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
       {
-        v38 = *a4;
-        v39 = *(a4 + 1);
-        v40 = *(a4 + 2);
-        v41 = *(a4 + 3);
+        v38 = *pose;
+        v39 = *(pose + 1);
+        v40 = *(pose + 2);
+        v41 = *(pose + 3);
         *buf = 134221315;
-        v65 = a5;
+        dataCopy = data;
         v66 = 2049;
         v67 = v62.f64[0];
         v68 = 2049;
@@ -876,40 +876,40 @@ LABEL_8:
         }
       }
 
-      *a6 = v53;
-      *(a6 + 8) = [MEMORY[0x277CCACA8] stringWithFormat:@"out of FoV offset: %g cm", v52];
-      *(a6 + 16) = v52;
-      *(a6 + 20) = 0;
+      *bounds = v53;
+      *(bounds + 8) = [MEMORY[0x277CCACA8] stringWithFormat:@"out of FoV offset: %g cm", v52];
+      *(bounds + 16) = v52;
+      *(bounds + 20) = 0;
     }
 
-    *(a6 + 24) = v34;
+    *(bounds + 24) = v34;
   }
 
   else
   {
-    *a6 = 0;
-    *(a6 + 8) = 0;
-    *(a6 + 16) = 0;
+    *bounds = 0;
+    *(bounds + 8) = 0;
+    *(bounds + 16) = 0;
     v94[0] = @"validDataBounds";
-    v35 = [VGSerializationHelpers cgRectToDict:a4];
+    v35 = [VGSerializationHelpers cgRectToDict:pose];
     v94[1] = @"faceBounds";
     v95[0] = v35;
     v36 = [VGSerializationHelpers cgRectToDict:&v62];
     v95[1] = v36;
-    *(a6 + 24) = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v95 forKeys:v94 count:2];
+    *(bounds + 24) = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v95 forKeys:v94 count:2];
   }
 
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (FrameRejectionState)applyExpressionFilters:(SEL)a3 trackingData:(const void *)a4 frameTimestampMS:(id)a5 score:(unint64_t)a6
+- (FrameRejectionState)applyExpressionFilters:(SEL)filters trackingData:(const void *)data frameTimestampMS:(id)s score:(unint64_t)score
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a5;
+  sCopy = s;
   v12 = VGLogVGFrameSelector();
   if (os_signpost_enabled(v12))
   {
-    if (*(a4 + 80))
+    if (*(data + 80))
     {
       v13 = @"true";
     }
@@ -928,17 +928,17 @@ LABEL_8:
   v34[1] = 3221225472;
   v34[2] = __78__VGFrameSelector_applyExpressionFilters_trackingData_frameTimestampMS_score___block_invoke;
   v34[3] = &__block_descriptor_40_e5_v8__0l;
-  v34[4] = a4;
+  v34[4] = data;
   v14 = MEMORY[0x2743B9AA0](v34);
-  if (*(a4 + 80) == 1)
+  if (*(data + 80) == 1)
   {
-    v15 = [(VGFrameSelectorOptions *)self->_options frontExpressionFilters];
+    frontExpressionFilters = [(VGFrameSelectorOptions *)self->_options frontExpressionFilters];
   }
 
   else
   {
     options = self->_options;
-    if (*(a4 + 16))
+    if (*(data + 16))
     {
       [(VGFrameSelectorOptions *)options pitchExpressionFilters];
     }
@@ -947,18 +947,18 @@ LABEL_8:
     {
       [(VGFrameSelectorOptions *)options yawExpressionFilters];
     }
-    v15 = ;
+    frontExpressionFilters = ;
   }
 
-  v17 = v15;
-  if (v15)
+  v17 = frontExpressionFilters;
+  if (frontExpressionFilters)
   {
     v29 = v14;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v15;
+    v18 = frontExpressionFilters;
     v19 = [v18 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v19)
     {
@@ -973,13 +973,13 @@ LABEL_8:
           }
 
           v22 = *(*(&v30 + 1) + 8 * i);
-          [v22 filter:v11];
+          [v22 filter:sCopy];
           v24 = v23 * *a7;
           *a7 = v24;
           if (v24 == 0.0)
           {
             retstr->reason = [v22 rejectionReason];
-            if (*(a4 + 80))
+            if (*(data + 80))
             {
               v25 = @"YES";
             }
@@ -1047,7 +1047,7 @@ void __78__VGFrameSelector_applyExpressionFilters_trackingData_frameTimestampMS_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)processHeadPoseSimple:(HeadPoseData)a3 frameTimestampMS:(unint64_t)a4
+- (id)processHeadPoseSimple:(HeadPoseData)simple frameTimestampMS:(unint64_t)s
 {
   v6 = objc_opt_new();
   v7 = self->_requiredPosesCount - self->_remainingPosesCount;
@@ -1062,7 +1062,7 @@ void __78__VGFrameSelector_applyExpressionFilters_trackingData_frameTimestampMS_
       v10 = *(self->_targetPosesData.__begin_ + v8 + 16);
       if ([v10 valid])
       {
-        v11 = vmulq_f32(*(a4 + 16), *(self->_targetPosesData.__begin_ + v8 + 32));
+        v11 = vmulq_f32(*(s + 16), *(self->_targetPosesData.__begin_ + v8 + 32));
         v12 = v11.f32[2] + vaddv_f32(*v11.f32);
         simpleSelectorMinAlignment = self->_simpleSelectorMinAlignment;
         simpleSelectorMaxAlignment = self->_simpleSelectorMaxAlignment;
@@ -1081,10 +1081,10 @@ void __78__VGFrameSelector_applyExpressionFilters_trackingData_frameTimestampMS_
     }
 
     v22 = 24;
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"viewdir alignment to previously selected poses does not satisfy the limit criteria %g not within (%g, %g)", v12, simpleSelectorMinAlignment, simpleSelectorMaxAlignment];;
+    simpleSelectorMaxAlignment = [MEMORY[0x277CCACA8] stringWithFormat:@"viewdir alignment to previously selected poses does not satisfy the limit criteria %g not within (%g, %g)", v12, simpleSelectorMinAlignment, simpleSelectorMaxAlignment];;
     v24 = 0;
     v25 = 0;
-    v23 = v16;
+    v23 = simpleSelectorMaxAlignment;
     if (v6)
     {
       [v6 setRejectionState:&v22];
@@ -1098,7 +1098,7 @@ void __78__VGFrameSelector_applyExpressionFilters_trackingData_frameTimestampMS_
   else
   {
 LABEL_9:
-    *(self->_targetPosesData.__begin_ + 7 * v7 + 2) = *(a4 + 16);
+    *(self->_targetPosesData.__begin_ + 7 * v7 + 2) = *(s + 16);
     v18 = 0;
     v20 = 0;
     v21 = 0;
@@ -1112,12 +1112,12 @@ LABEL_9:
   return v6;
 }
 
-- (id)processHeadPose:(HeadPoseData)a3 captureData:(id)a4 trackingData:(id)a5 validDataBounds:(const void *)a6 frameTimestampMS:(unint64_t)a7
+- (id)processHeadPose:(HeadPoseData)pose captureData:(id)data trackingData:(id)trackingData validDataBounds:(const void *)bounds frameTimestampMS:(unint64_t)s
 {
   v8 = v7;
   v147 = *MEMORY[0x277D85DE8];
-  v92 = a5;
-  v13 = a6;
+  trackingDataCopy = trackingData;
+  boundsCopy = bounds;
   v14 = VGLogVGFrameSelector();
   if (os_signpost_enabled(v14))
   {
@@ -1126,7 +1126,7 @@ LABEL_9:
   }
 
   v15 = objc_opt_new();
-  if (!v13)
+  if (!boundsCopy)
   {
     v128 = 2;
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"no tracking data"];
@@ -1151,7 +1151,7 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  [(VGFrameSelector *)self parseAtlasToCameraTransformation:v13];
+  [(VGFrameSelector *)self parseAtlasToCameraTransformation:boundsCopy];
   if ((v139 & 1) == 0)
   {
     v24 = __VGLogSharedInstance();
@@ -1167,7 +1167,7 @@ LABEL_15:
     goto LABEL_23;
   }
 
-  [v92 cameraToDeviceTransform];
+  [trackingDataCopy cameraToDeviceTransform];
   v20 = 0;
   v132 = *buf;
   v133 = *&buf[16];
@@ -1185,10 +1185,10 @@ LABEL_15:
   v85 = v146;
   v86 = v145;
   userBodyPoseGuidance = self->_userBodyPoseGuidance;
-  v22 = [v92 skeleton];
-  if (v92)
+  skeleton = [trackingDataCopy skeleton];
+  if (trackingDataCopy)
   {
-    [v92 timestamp];
+    [trackingDataCopy timestamp];
   }
 
   else
@@ -1197,10 +1197,10 @@ LABEL_15:
     *&v144 = 0;
   }
 
-  v91 = [(VGUserBodyPoseGuidance *)userBodyPoseGuidance calculatePoseGuidanceFromSkeleton:v22 andAtlasToDeviceTransform:v90 atTimestamp:v88, v86, v85, CMTimeGetSeconds(v143)];
+  v91 = [(VGUserBodyPoseGuidance *)userBodyPoseGuidance calculatePoseGuidanceFromSkeleton:skeleton andAtlasToDeviceTransform:v90 atTimestamp:v88, v86, v85, CMTimeGetSeconds(v143)];
 
-  v26 = [v91 frameState];
-  [v15 setBodyPoseFrameState:v26];
+  frameState = [v91 frameState];
+  [v15 setBodyPoseFrameState:frameState];
 
   if (v91)
   {
@@ -1221,7 +1221,7 @@ LABEL_23:
   requiredPosesCount = self->_requiredPosesCount;
   if (!requiredPosesCount)
   {
-    v127 = self;
+    selfCopy = self;
 LABEL_49:
     if (![(VGFrameSelectorOptions *)self->_options useDepthFovFilterForBadAlignment])
     {
@@ -1230,7 +1230,7 @@ LABEL_49:
 
     buf[0] = 0;
     v142 = 0;
-    [VGFrameSelector processHeadPose:captureData:trackingData:validDataBounds:frameTimestampMS:]::$_3::operator()(&v127, v92, a4, buf, a7, v8, v15);
+    [VGFrameSelector processHeadPose:captureData:trackingData:validDataBounds:frameTimestampMS:]::$_3::operator()(&selfCopy, trackingDataCopy, data, buf, s, v8, v15);
     if (v142 == 1)
     {
     }
@@ -1239,7 +1239,7 @@ LABEL_49:
     {
 LABEL_54:
       v123 = 24;
-      v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad alignment [yaw %g pitch %g] with all target poses", *a4, *(a4 + 1)];
+      v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad alignment [yaw %g pitch %g] with all target poses", *data, *(data + 1)];
       v125 = 0;
       v126 = 0;
       v124 = v50;
@@ -1258,8 +1258,8 @@ LABEL_54:
   }
 
   v29 = 0;
-  v30 = *a4;
-  v31 = *(a4 + 1);
+  v30 = *data;
+  v31 = *(data + 1);
   v32 = (self->_targetPosesData.__begin_ + 96);
   v33 = 0.0;
   v34 = -1;
@@ -1267,7 +1267,7 @@ LABEL_54:
   {
     if (*(v32 - 3) <= v30 && *(v32 - 2) >= v30 && *(v32 - 1) <= v31 && *v32 >= v31)
     {
-      v35 = vmulq_f32(*(a4 + 1), *(v32 - 24));
+      v35 = vmulq_f32(*(data + 1), *(v32 - 24));
       v36 = vaddv_f32(*v35.f32);
       if ((v35.f32[2] + v36) > v33)
       {
@@ -1281,14 +1281,14 @@ LABEL_54:
   }
 
   while (requiredPosesCount != v29);
-  v37 = self;
-  v127 = v37;
+  selfCopy2 = self;
+  selfCopy = selfCopy2;
   if (v34 == -1)
   {
     goto LABEL_49;
   }
 
-  v38 = v37;
+  v38 = selfCopy2;
   v39 = self->_targetPosesData.__begin_ + 112 * v34;
   v40 = VGLogVGFrameSelector();
   if (os_signpost_enabled(v40))
@@ -1350,7 +1350,7 @@ LABEL_54:
   v140 = v46;
   v138 = v44;
   v142 = 1;
-  [VGFrameSelector processHeadPose:captureData:trackingData:validDataBounds:frameTimestampMS:]::$_3::operator()(&v127, v92, a4, buf, a7, v8, v15);
+  [VGFrameSelector processHeadPose:captureData:trackingData:validDataBounds:frameTimestampMS:]::$_3::operator()(&selfCopy, trackingDataCopy, data, buf, s, v8, v15);
   if (v142 == 1)
   {
   }
@@ -1360,7 +1360,7 @@ LABEL_54:
     memset(buf, 0, sizeof(buf));
 
 LABEL_59:
-    [(VGFrameSelector *)v38 applyVisionFaceLandmarksFilter:v92 bestTargetPoseData:v39 frameTimestampMS:v8];
+    [(VGFrameSelector *)v38 applyVisionFaceLandmarksFilter:trackingDataCopy bestTargetPoseData:v39 frameTimestampMS:v8];
     if (*buf)
     {
       v118 = *buf;
@@ -1383,7 +1383,7 @@ LABEL_59:
     }
 
     v117 = 1.0;
-    [(VGFrameSelector *)v38 applyExpressionFilters:v39 trackingData:v13 frameTimestampMS:v8 score:&v117];
+    [(VGFrameSelector *)v38 applyExpressionFilters:v39 trackingData:boundsCopy frameTimestampMS:v8 score:&v117];
     if (*v143)
     {
       v113 = *v143;
@@ -1461,12 +1461,12 @@ LABEL_88:
       goto LABEL_89;
     }
 
-    [(VGFrameSelector *)v38 applyVisionFilters:v92 bestTargetPoseData:v39 frameTimestampMS:v8, v54];
+    [(VGFrameSelector *)v38 applyVisionFilters:trackingDataCopy bestTargetPoseData:v39 frameTimestampMS:v8, v54];
     if (v132)
     {
       v101 = v132;
-      v66 = *(&v132 + 1);
-      v102 = v66;
+      frameState3 = *(&v132 + 1);
+      v102 = frameState3;
       v103 = v133;
       v67 = *(&v133 + 1);
       v104 = v67;
@@ -1481,7 +1481,7 @@ LABEL_105:
         goto LABEL_90;
       }
 
-      v78 = v67;
+      bodyPoseFrameState2 = v67;
     }
 
     else
@@ -1496,11 +1496,11 @@ LABEL_105:
         goto LABEL_98;
       }
 
-      v69 = [v91 frameState];
-      [v69 aggregatedScore];
+      frameState2 = [v91 frameState];
+      [frameState2 aggregatedScore];
       v71 = v70;
-      v72 = [*(v39 + 2) bodyPoseFrameState];
-      [v72 aggregatedScore];
+      bodyPoseFrameState = [*(v39 + 2) bodyPoseFrameState];
+      [bodyPoseFrameState aggregatedScore];
       v74 = v71 < v73;
 
       if (!v74)
@@ -1529,11 +1529,11 @@ LABEL_98:
 
       v97 = 41;
       v75 = MEMORY[0x277CCACA8];
-      v66 = [v91 frameState];
-      [v66 aggregatedScore];
+      frameState3 = [v91 frameState];
+      [frameState3 aggregatedScore];
       v77 = v76;
-      v78 = [*(v39 + 2) bodyPoseFrameState];
-      [v78 aggregatedScore];
+      bodyPoseFrameState2 = [*(v39 + 2) bodyPoseFrameState];
+      [bodyPoseFrameState2 aggregatedScore];
       v80 = [v75 stringWithFormat:@"lower body pose aggregated score [%g < %g]", v77, v79];
       v99 = 0;
       v100 = 0;
@@ -1563,7 +1563,7 @@ LABEL_98:
 LABEL_92:
 
   v87[2](v87);
-  self = v127;
+  self = selfCopy;
 LABEL_93:
 
 LABEL_94:
@@ -1590,9 +1590,9 @@ void __93__VGFrameSelector_processHeadPose_captureData_trackingData_validDataBou
   v14 = a7;
   if (*(a5 + 32) == 1)
   {
-    if (*a1)
+    if (*self)
     {
-      [*a1 checkDepthFoVFilter:v13 framePose:a4 bestTargetPoseData:a5 validDataBounds:a6 frameTimestampMS:{a3[4], a3[6], a3[8], a3[10]}];
+      [*self checkDepthFoVFilter:v13 framePose:a4 bestTargetPoseData:a5 validDataBounds:a6 frameTimestampMS:{a3[4], a3[6], a3[8], a3[10]}];
       v15 = *(&v23 + 1);
     }
 
@@ -1648,10 +1648,10 @@ void __93__VGFrameSelector_processHeadPose_captureData_trackingData_validDataBou
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (optional<simd_float4x4>)parseAtlasToCameraTransformation:(id)a3
+- (optional<simd_float4x4>)parseAtlasToCameraTransformation:(id)transformation
 {
   v4 = v3;
-  v55 = [a3 objectForKeyedSubscript:@"tracked_faces"];
+  v55 = [transformation objectForKeyedSubscript:@"tracked_faces"];
   if (![v55 count])
   {
     v5 = __VGLogSharedInstance();
@@ -1812,7 +1812,7 @@ LABEL_26:
   return v48;
 }
 
-- (id)processCaptureData:(int32x4_t)a3 trackingData:(int32x4_t)a4 framePose:(float32x4_t)a5 validDataFrameBounds:(uint64_t)a6
+- (id)processCaptureData:(int32x4_t)data trackingData:(int32x4_t)trackingData framePose:(float32x4_t)pose validDataFrameBounds:(uint64_t)bounds
 {
   v89 = *MEMORY[0x277D85DE8];
   v13 = a7;
@@ -1837,14 +1837,14 @@ LABEL_26:
   Seconds = CMTimeGetSeconds(buf);
   v17 = __VGLogSharedInstance();
   v18 = (Seconds * 1000.0);
-  v19 = vmulq_f32(a5, a5);
+  v19 = vmulq_f32(pose, pose);
   *&v20 = v19.f32[2] + vaddv_f32(*v19.f32);
   *v19.f32 = vrsqrte_f32(v20);
   *v19.f32 = vmul_f32(*v19.f32, vrsqrts_f32(v20, vmul_f32(*v19.f32, *v19.f32)));
-  v21 = vmulq_n_f32(a5, vmul_f32(*v19.f32, vrsqrts_f32(v20, vmul_f32(*v19.f32, *v19.f32))).f32[0]);
-  v22 = vtrn2q_s32(a2, a3);
-  v22.i32[2] = a4.i32[1];
-  v80 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(a2, a4), a3), v21.f32[0]), v22, *v21.f32, 1), vzip1q_s32(vzip2q_s32(a2, a4), vdupq_laneq_s32(a3, 2)), v21, 2);
+  v21 = vmulq_n_f32(pose, vmul_f32(*v19.f32, vrsqrts_f32(v20, vmul_f32(*v19.f32, *v19.f32))).f32[0]);
+  v22 = vtrn2q_s32(a2, data);
+  v22.i32[2] = trackingData.i32[1];
+  v80 = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(a2, trackingData), data), v21.f32[0]), v22, *v21.f32, 1), vzip1q_s32(vzip2q_s32(a2, trackingData), vdupq_laneq_s32(data, 2)), v21, 2);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v23 = (asinf(v80.f32[0]) * 180.0) / 3.14159265;
@@ -1853,12 +1853,12 @@ LABEL_26:
     *buf = 134219265;
     *&buf[4] = (Seconds * 1000.0);
     *&buf[12] = 2049;
-    *&buf[14] = a5.f32[0];
+    *&buf[14] = pose.f32[0];
     *&buf[22] = 2049;
-    *&buf[24] = a5.f32[1];
+    *&buf[24] = pose.f32[1];
     v26 = (v25 * 180.0) / 3.14159265;
     *v86 = 2049;
-    *&v86[2] = a5.f32[2];
+    *&v86[2] = pose.f32[2];
     *&v86[10] = 2049;
     *&v86[12] = v24;
     *&v86[20] = 2049;
@@ -1869,12 +1869,12 @@ LABEL_26:
   v27 = __VGLogSharedInstance();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v28 = [v13 allFaces];
-    if (v28)
+    allFaces = [v13 allFaces];
+    if (allFaces)
     {
       v29 = MEMORY[0x277CCABB0];
-      v9 = [v13 allFaces];
-      v30 = [v29 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+      allFaces2 = [v13 allFaces];
+      v30 = [v29 numberWithUnsignedInteger:{objc_msgSend(allFaces2, "count")}];
     }
 
     else
@@ -1887,14 +1887,14 @@ LABEL_26:
     *&buf[12] = 2112;
     *&buf[14] = v30;
     _os_log_impl(&dword_270F06000, v27, OS_LOG_TYPE_DEBUG, " Frame#%zu number of face bounding boxes: %@  ", buf, 0x16u);
-    if (v28)
+    if (allFaces)
     {
     }
   }
 
-  v31 = [v13 mirrored];
+  mirrored = [v13 mirrored];
   v32 = (atan2f(-v80.f32[0], v80.f32[2]) * 180.0) / 3.14159265;
-  if (v31)
+  if (mirrored)
   {
     v33 = -v32;
   }
@@ -1918,17 +1918,17 @@ LABEL_26:
     _os_log_impl(&dword_270F06000, v35, OS_LOG_TYPE_DEBUG, " Frame#%zu [yaw pitch] (degrees): [%{private}g %{private}g] ", buf, 0x20u);
   }
 
-  if ([*(a1 + 40) useSimpleSelector])
+  if ([*(self + 40) useSimpleSelector])
   {
     *buf = v33;
     *&buf[4] = v36;
     *&buf[8] = 0;
     *&buf[16] = v80;
     *v86 = a2;
-    *&v86[16] = a3;
-    v87 = a4;
-    v88 = a5;
-    [a1 processHeadPoseSimple:buf frameTimestampMS:v18];
+    *&v86[16] = data;
+    trackingDataCopy2 = trackingData;
+    poseCopy2 = pose;
+    [self processHeadPoseSimple:buf frameTimestampMS:v18];
   }
 
   else
@@ -1938,17 +1938,17 @@ LABEL_26:
     *&buf[8] = 0;
     *&buf[16] = v80;
     *v86 = a2;
-    *&v86[16] = a3;
-    v87 = a4;
-    v88 = a5;
-    [a1 processHeadPose:buf captureData:v13 trackingData:v14 validDataBounds:a9 frameTimestampMS:v18];
+    *&v86[16] = data;
+    trackingDataCopy2 = trackingData;
+    poseCopy2 = pose;
+    [self processHeadPose:buf captureData:v13 trackingData:v14 validDataBounds:a9 frameTimestampMS:v18];
   }
   v37 = ;
   *&v38 = v33;
   [v37 setYawInDegrees:v38];
   *&v39 = v36;
   v40 = vg::shared::VisualLogger::sharedLogger([v37 setPitchInDegrees:v39]);
-  v41 = [v13 rgbRectified];
+  rgbRectified = [v13 rgbRectified];
   if (v13)
   {
     [v13 timestamp];
@@ -1960,7 +1960,7 @@ LABEL_26:
   }
 
   v42 = CMTimeGetSeconds(buf);
-  vg::shared::VisualLogger::logPixelBuffer(v40, v41, v42, &cfstr_VisageFramesel.isa, 0);
+  vg::shared::VisualLogger::logPixelBuffer(v40, rgbRectified, v42, &cfstr_VisageFramesel.isa, 0);
   v43 = MEMORY[0x277CCACA8];
   if (v37)
   {
@@ -2012,9 +2012,9 @@ LABEL_26:
 LABEL_39:
 
   v83[0] = @"picked";
-  v48 = [v37 isSuccessful];
+  isSuccessful = [v37 isSuccessful];
   v49 = @"no";
-  if (v48)
+  if (isSuccessful)
   {
     v49 = @"yes";
   }
@@ -2041,13 +2041,13 @@ LABEL_39:
   v53 = vg::shared::VisualLogger::sharedLogger(v52);
   if ([v37 isSuccessful])
   {
-    v54 = *(a1 + 8) + 112 * [v37 poseIndex];
+    v54 = *(self + 8) + 112 * [v37 poseIndex];
     [v37 setTargetAngleId:*(v54 + 72)];
     LODWORD(v55) = *(v54 + 68);
     [v37 setAngleInDegrees:v55];
     if (*(v54 + 80) == 1 && vg::shared::VisualLogger::isLoggerEnabled(v53, &cfstr_VisageFramesel_1.isa))
     {
-      v56 = [v13 rgbRectified];
+      rgbRectified2 = [v13 rgbRectified];
       if (v13)
       {
         [v13 timestamp];
@@ -2059,7 +2059,7 @@ LABEL_39:
       }
 
       v59 = CMTimeGetSeconds(buf);
-      vg::shared::VisualLogger::logPixelBuffer(v53, v56, v59, &cfstr_VisageFramesel_1.isa, 0);
+      vg::shared::VisualLogger::logPixelBuffer(v53, rgbRectified2, v59, &cfstr_VisageFramesel_1.isa, 0);
     }
 
     if (*(v54 + 64))
@@ -2095,8 +2095,8 @@ LABEL_39:
 
     [v65 setTrackingData:v14];
     [v65 setFrontPose:*(v54 + 80)];
-    v67 = [v37 bodyPoseFrameState];
-    [v65 setBodyPoseFrameState:v67];
+    bodyPoseFrameState = [v37 bodyPoseFrameState];
+    [v65 setBodyPoseFrameState:bodyPoseFrameState];
 
     if (*(v54 + 64))
     {
@@ -2119,7 +2119,7 @@ LABEL_39:
 
     if (v71)
     {
-      --*(a1 + 64);
+      --*(self + 64);
     }
 
     v73 = *(v54 + 16);
@@ -2165,7 +2165,7 @@ void __82__VGFrameSelector_processCaptureData_trackingData_framePose_validDataFr
   }
 }
 
-- (id)resultsForMotionType:(optional<vg::frame_selection::MotionType>)a3
+- (id)resultsForMotionType:(optional<vg::frame_selection::MotionType>)type
 {
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:self->_requiredPosesCount];
   requiredPosesCount = self->_requiredPosesCount;
@@ -2175,7 +2175,7 @@ void __82__VGFrameSelector_processCaptureData_trackingData_framePose_validDataFr
     for (i = 0; i < requiredPosesCount; ++i)
     {
       begin = self->_targetPosesData.__begin_;
-      if ((*&a3 & 0x100000000) == 0 || *(begin + v8 + 64) == a3.var0.var1)
+      if ((*&type & 0x100000000) == 0 || *(begin + v8 + 64) == type.var0.var1)
       {
         v11 = *(begin + v8 + 16);
         LODWORD(v6) = *(begin + v8 + 68);
@@ -2192,7 +2192,7 @@ void __82__VGFrameSelector_processCaptureData_trackingData_framePose_validDataFr
   return v5;
 }
 
-- (id)selectedValidPosesForMotion:(optional<vg::frame_selection::MotionType>)a3
+- (id)selectedValidPosesForMotion:(optional<vg::frame_selection::MotionType>)motion
 {
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:self->_requiredPosesCount];
   if (self->_requiredPosesCount)
@@ -2202,7 +2202,7 @@ void __82__VGFrameSelector_processCaptureData_trackingData_framePose_validDataFr
     do
     {
       begin = self->_targetPosesData.__begin_;
-      if (((*&a3 & 0x100000000) == 0 || *(begin + v6 + 64) == a3.var0.var1) && [*(begin + v6 + 16) valid])
+      if (((*&motion & 0x100000000) == 0 || *(begin + v6 + 64) == motion.var0.var1) && [*(begin + v6 + 16) valid])
       {
         v10 = *(begin + v6 + 16);
         LODWORD(v9) = *(begin + v6 + 68);
@@ -2222,22 +2222,22 @@ void __82__VGFrameSelector_processCaptureData_trackingData_framePose_validDataFr
 
 - (BOOL)completedYaw
 {
-  v2 = self;
-  v3 = [(VGFrameSelector *)self selectedYawValidPoses];
-  v4 = [v3 count];
-  LOBYTE(v2) = v4 == [(VGFrameSelectorOptions *)v2->_options yawFrameCount];
+  selfCopy = self;
+  selectedYawValidPoses = [(VGFrameSelector *)self selectedYawValidPoses];
+  v4 = [selectedYawValidPoses count];
+  LOBYTE(selfCopy) = v4 == [(VGFrameSelectorOptions *)selfCopy->_options yawFrameCount];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)completedPitch
 {
-  v2 = self;
-  v3 = [(VGFrameSelector *)self selectedPitchValidPoses];
-  v4 = [v3 count];
-  LOBYTE(v2) = v4 == [(VGFrameSelectorOptions *)v2->_options pitchFrameCount];
+  selfCopy = self;
+  selectedPitchValidPoses = [(VGFrameSelector *)self selectedPitchValidPoses];
+  v4 = [selectedPitchValidPoses count];
+  LOBYTE(selfCopy) = v4 == [(VGFrameSelectorOptions *)selfCopy->_options pitchFrameCount];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id).cxx_construct

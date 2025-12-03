@@ -1,21 +1,21 @@
 @interface ABPKAlgorithmParams
 - (CGSize)regImageResolution;
-- (__n128)initWithRegIntrinsics:(__n128)a3 regImageResolution:(__n128)a4;
+- (__n128)initWithRegIntrinsics:(__n128)intrinsics regImageResolution:(__n128)resolution;
 - (id)toDict;
-- (void)setRegIntrinsics:(__n128)a3;
+- (void)setRegIntrinsics:(__n128)intrinsics;
 @end
 
 @implementation ABPKAlgorithmParams
 
-- (__n128)initWithRegIntrinsics:(__n128)a3 regImageResolution:(__n128)a4
+- (__n128)initWithRegIntrinsics:(__n128)intrinsics regImageResolution:(__n128)resolution
 {
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = ABPKAlgorithmParams;
   v8 = [(ABPKAlgorithmParams *)&v13 init];
   *&v8[1].super.isa = a2;
-  v8[1]._regImageResolution = a3;
-  result = a4;
-  *&v8[2].super.isa = a4;
+  v8[1]._regImageResolution = intrinsics;
+  result = resolution;
+  *&v8[2].super.isa = resolution;
   v8->_regImageResolution.width = a5;
   v8->_regImageResolution.height = a6;
   return result;
@@ -45,12 +45,12 @@
   return v3;
 }
 
-- (void)setRegIntrinsics:(__n128)a3
+- (void)setRegIntrinsics:(__n128)intrinsics
 {
   v4[0] = a2;
-  v4[1] = a3;
+  v4[1] = intrinsics;
   v4[2] = a4;
-  objc_copyStruct((a1 + 32), v4, 48, 1, 0);
+  objc_copyStruct((self + 32), v4, 48, 1, 0);
 }
 
 - (CGSize)regImageResolution

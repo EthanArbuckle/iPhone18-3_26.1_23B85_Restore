@@ -1,44 +1,44 @@
 @interface MBCKCodeOperator
-- (MBCKCodeOperator)initWithService:(id)a3 function:(id)a4 responseType:(Class)a5;
-- (id)operationForRequest:(id)a3 callback:(id)a4;
+- (MBCKCodeOperator)initWithService:(id)service function:(id)function responseType:(Class)type;
+- (id)operationForRequest:(id)request callback:(id)callback;
 @end
 
 @implementation MBCKCodeOperator
 
-- (MBCKCodeOperator)initWithService:(id)a3 function:(id)a4 responseType:(Class)a5
+- (MBCKCodeOperator)initWithService:(id)service function:(id)function responseType:(Class)type
 {
-  v9 = a3;
-  v10 = a4;
+  serviceCopy = service;
+  functionCopy = function;
   v14.receiver = self;
   v14.super_class = MBCKCodeOperator;
   v11 = [(MBCKCodeOperator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_serviceName, a3);
-    objc_storeStrong(&v12->_functionName, a4);
-    objc_storeStrong(&v12->_responseType, a5);
+    objc_storeStrong(&v11->_serviceName, service);
+    objc_storeStrong(&v12->_functionName, function);
+    objc_storeStrong(&v12->_responseType, type);
   }
 
   return v12;
 }
 
-- (id)operationForRequest:(id)a3 callback:(id)a4
+- (id)operationForRequest:(id)request callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  requestCopy = request;
+  callbackCopy = callback;
+  if (!requestCopy)
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"MBCKCodeOperator.m" lineNumber:45 description:@"request is required"];
   }
 
-  v9 = [(MBCKCodeOperator *)self serviceName];
-  v10 = [(MBCKCodeOperator *)self functionName];
-  v11 = sub_100269780(v7, v9, v10, [(MBCKCodeOperator *)self responseType]);
+  serviceName = [(MBCKCodeOperator *)self serviceName];
+  functionName = [(MBCKCodeOperator *)self functionName];
+  v11 = sub_100269780(requestCopy, serviceName, functionName, [(MBCKCodeOperator *)self responseType]);
 
   [(MBCKCodeOperator *)self responseType];
-  sub_100269820(v11, v8);
+  sub_100269820(v11, callbackCopy);
 
   return v11;
 }

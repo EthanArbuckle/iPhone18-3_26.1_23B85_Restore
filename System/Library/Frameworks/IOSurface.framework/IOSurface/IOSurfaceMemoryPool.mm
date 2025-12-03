@@ -1,14 +1,14 @@
 @interface IOSurfaceMemoryPool
-- (IOSurfaceMemoryPool)initWithProperties:(id)a3;
+- (IOSurfaceMemoryPool)initWithProperties:(id)properties;
 - (id)copyDebugInfo;
-- (int)ensureMemory:(id)a3;
-- (int)flush:(id)a3;
+- (int)ensureMemory:(id)memory;
+- (int)flush:(id)flush;
 - (void)dealloc;
 @end
 
 @implementation IOSurfaceMemoryPool
 
-- (IOSurfaceMemoryPool)initWithProperties:(id)a3
+- (IOSurfaceMemoryPool)initWithProperties:(id)properties
 {
   v18 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -16,7 +16,7 @@
   v4 = [(IOSurfaceMemoryPool *)&v15 init];
   if (v4)
   {
-    v5 = IOCFSerialize(a3, 1uLL);
+    v5 = IOCFSerialize(properties, 1uLL);
     if (v5)
     {
       v6 = v5;
@@ -45,10 +45,10 @@ LABEL_7:
   return v4;
 }
 
-- (int)ensureMemory:(id)a3
+- (int)ensureMemory:(id)memory
 {
   input[1] = *MEMORY[0x1E69E9840];
-  v4 = IOCFSerialize(a3, 1uLL);
+  v4 = IOCFSerialize(memory, 1uLL);
   if (v4)
   {
     v5 = v4;
@@ -102,10 +102,10 @@ LABEL_7:
   return v3;
 }
 
-- (int)flush:(id)a3
+- (int)flush:(id)flush
 {
   input[1] = *MEMORY[0x1E69E9840];
-  v4 = IOCFSerialize(a3, 1uLL);
+  v4 = IOCFSerialize(flush, 1uLL);
   if (v4)
   {
     v5 = v4;

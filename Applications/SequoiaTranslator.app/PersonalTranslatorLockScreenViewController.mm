@@ -1,12 +1,12 @@
 @interface PersonalTranslatorLockScreenViewController
-- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithCoder:(id)a3;
-- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithCoder:(id)coder;
+- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation PersonalTranslatorLockScreenViewController
 
-- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithCoder:(id)a3
+- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C09FC();
 }
 
-- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator42PersonalTranslatorLockScreenViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

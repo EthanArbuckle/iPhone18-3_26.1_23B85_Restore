@@ -1,34 +1,34 @@
 @interface CAMHistogramResult
-- (CAMHistogramResult)initWithHistogramObject:(id)a3 forDeviceFormat:(id)a4;
+- (CAMHistogramResult)initWithHistogramObject:(id)object forDeviceFormat:(id)format;
 - (NSString)metadataType;
 @end
 
 @implementation CAMHistogramResult
 
-- (CAMHistogramResult)initWithHistogramObject:(id)a3 forDeviceFormat:(id)a4
+- (CAMHistogramResult)initWithHistogramObject:(id)object forDeviceFormat:(id)format
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  formatCopy = format;
   v38.receiver = self;
   v38.super_class = CAMHistogramResult;
   v9 = [(CAMHistogramResult *)&v38 init];
   if (v9)
   {
-    v10 = [v7 lumaHistogramData];
-    v11 = [v7 lumaHistogramBinCount];
-    if (v11)
+    lumaHistogramData = [objectCopy lumaHistogramData];
+    lumaHistogramBinCount = [objectCopy lumaHistogramBinCount];
+    if (lumaHistogramBinCount)
     {
-      if ([v10 length])
+      if ([lumaHistogramData length])
       {
-        objc_storeStrong(&v9->__metadataHistogramObject, a3);
-        v12 = [v7 type];
+        objc_storeStrong(&v9->__metadataHistogramObject, object);
+        type = [objectCopy type];
         uniqueIdentifier = v9->_uniqueIdentifier;
-        v9->_uniqueIdentifier = v12;
+        v9->_uniqueIdentifier = type;
 
         MEMORY[0x1EEE9AC00](v14);
         v16 = block - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-        [v10 getBytes:v16 length:{objc_msgSend(v10, "length")}];
+        [lumaHistogramData getBytes:v16 length:{objc_msgSend(lumaHistogramData, "length")}];
         v17 = 0;
         v18 = 0;
         do
@@ -36,7 +36,7 @@
           v18 += *&v16[4 * v17++];
         }
 
-        while (v11 != v17);
+        while (lumaHistogramBinCount != v17);
         if (v18 <= 1)
         {
           v19 = 1;
@@ -47,8 +47,8 @@
           v19 = v18;
         }
 
-        v20 = vcvtmd_u64_f64(v11 * 0.0390625);
-        MediaSubType = CMFormatDescriptionGetMediaSubType([v8 formatDescription]);
+        v20 = vcvtmd_u64_f64(lumaHistogramBinCount * 0.0390625);
+        MediaSubType = CMFormatDescriptionGetMediaSubType([formatCopy formatDescription]);
         v22 = 0;
         if (MediaSubType <= 875704437)
         {
@@ -150,7 +150,7 @@ LABEL_28:
         if (v24 + v20)
         {
           v32 = 0;
-          v33 = &v16[4 * v11 - 4];
+          v33 = &v16[4 * lumaHistogramBinCount - 4];
           do
           {
             v34 = *v33;
@@ -165,11 +165,11 @@ LABEL_28:
 
         v9->_shadowClipping = v26 / v19;
         v9->_highlightClipping = v25 / v19;
-        v11 = v9;
+        lumaHistogramBinCount = v9;
         goto LABEL_37;
       }
 
-      v11 = 0;
+      lumaHistogramBinCount = 0;
     }
 
 LABEL_37:
@@ -177,10 +177,10 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v11 = 0;
+  lumaHistogramBinCount = 0;
 LABEL_38:
 
-  return v11;
+  return lumaHistogramBinCount;
 }
 
 void __62__CAMHistogramResult_initWithHistogramObject_forDeviceFormat___block_invoke(uint64_t a1)
@@ -194,10 +194,10 @@ void __62__CAMHistogramResult_initWithHistogramObject_forDeviceFormat___block_in
 
 - (NSString)metadataType
 {
-  v2 = [(CAMHistogramResult *)self _metadataHistogramObject];
-  v3 = [v2 type];
+  _metadataHistogramObject = [(CAMHistogramResult *)self _metadataHistogramObject];
+  type = [_metadataHistogramObject type];
 
-  return v3;
+  return type;
 }
 
 void __62__CAMHistogramResult_initWithHistogramObject_forDeviceFormat___block_invoke_cold_1(uint64_t a1, NSObject *a2)

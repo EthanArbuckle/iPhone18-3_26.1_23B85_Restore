@@ -1,17 +1,17 @@
 @interface VideoMitigation
 - ($43C834F0531B50B92CAF4577069D180C)configuration;
-- (VideoMitigation)initWithConfig:(id *)a3 metalContext:(id)a4 imageDimensions:(id)a5 tuningParameters:(id)a6;
-- (int64_t)mitigate:(__CVBuffer *)a3 info:(id)a4 futureFrames:(id *)a5 inputTexture:(id)a6;
-- (int64_t)updateFrameQueuesWithInputFrame:(__CVBuffer *)a3 inputTexture:(id)a4 index:(signed __int16)a5;
-- (int64_t)updateMetaQueuesWithInfo:(id)a3 index:(signed __int16)a4;
-- (int64_t)updateQueuesWithFutureFrame:(id *)a3 futureFrameIndex:(signed __int16)a4 atBaseIndex:(signed __int16)a5;
+- (VideoMitigation)initWithConfig:(id *)config metalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters;
+- (int64_t)mitigate:(__CVBuffer *)mitigate info:(id)info futureFrames:(id *)frames inputTexture:(id)texture;
+- (int64_t)updateFrameQueuesWithInputFrame:(__CVBuffer *)frame inputTexture:(id)texture index:(signed __int16)index;
+- (int64_t)updateMetaQueuesWithInfo:(id)info index:(signed __int16)index;
+- (int64_t)updateQueuesWithFutureFrame:(id *)frame futureFrameIndex:(signed __int16)index atBaseIndex:(signed __int16)baseIndex;
 - (void)_resetIntermediateVariables;
 - (void)_spatialMitigate;
 - (void)_temporalMitigateWithFuture;
 - (void)_temporalMitigateWithPast;
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3;
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index;
 - (void)dealloc;
-- (void)setConfiguration:(id *)a3;
+- (void)setConfiguration:(id *)configuration;
 @end
 
 @implementation VideoMitigation
@@ -46,16 +46,16 @@
   [(VideoMitigation *)&v2 dealloc];
 }
 
-- (int64_t)updateFrameQueuesWithInputFrame:(__CVBuffer *)a3 inputTexture:(id)a4 index:(signed __int16)a5
+- (int64_t)updateFrameQueuesWithInputFrame:(__CVBuffer *)frame inputTexture:(id)texture index:(signed __int16)index
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = &self->super.isa + v5;
+  indexCopy = index;
+  textureCopy = texture;
+  v9 = &self->super.isa + indexCopy;
   v10 = v9[5];
-  v9[5] = a3;
-  if (a3)
+  v9[5] = frame;
+  if (frame)
   {
-    CFRetain(a3);
+    CFRetain(frame);
   }
 
   if (v10)
@@ -66,9 +66,9 @@
   return 0;
 }
 
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index
 {
-  v3 = a3;
+  indexCopy = index;
   inputFrameQueue = self->_inputFrameQueue;
   inputInfoQueue = self->_inputInfoQueue;
   v6 = 1;
@@ -76,8 +76,8 @@
   do
   {
     v8 = v6;
-    v9 = v7 + v3;
-    v10 = v7 + v3 - 5;
+    v9 = v7 + indexCopy;
+    v10 = v7 + indexCopy - 5;
     if (v9 >= 5)
     {
       LOWORD(v9) = v10;
@@ -101,20 +101,20 @@
   while ((v8 & 1) != 0);
 }
 
-- (int64_t)mitigate:(__CVBuffer *)a3 info:(id)a4 futureFrames:(id *)a5 inputTexture:(id)a6
+- (int64_t)mitigate:(__CVBuffer *)mitigate info:(id)info futureFrames:(id *)frames inputTexture:(id)texture
 {
-  v10 = a4;
-  v11 = a6;
+  infoCopy = info;
+  textureCopy = texture;
   kdebug_trace();
   kdebug_trace();
   frameIndexInVideo = self->_frameIndexInVideo;
-  var2 = a5->var2;
-  v14 = [(VideoMitigation *)self getFrameIndexInQueue];
+  var2 = frames->var2;
+  getFrameIndexInQueue = [(VideoMitigation *)self getFrameIndexInQueue];
   if (self->_frameIndexInVideo)
   {
     if (var2 >= 2)
     {
-      v15 = [(VideoMitigation *)self updateQueuesWithFutureFrame:a5 futureFrameIndex:1 atBaseIndex:v14];
+      v15 = [(VideoMitigation *)self updateQueuesWithFutureFrame:frames futureFrameIndex:1 atBaseIndex:getFrameIndexInQueue];
       if (v15)
       {
         v16 = v15;
@@ -127,7 +127,7 @@ LABEL_21:
     }
 
 LABEL_10:
-    v22 = [(VideoMitigation *)self updateMetaQueuesWithInfo:v10 index:v14];
+    v22 = [(VideoMitigation *)self updateMetaQueuesWithInfo:infoCopy index:getFrameIndexInQueue];
     if (v22)
     {
       v16 = v22;
@@ -163,7 +163,7 @@ LABEL_10:
       do
       {
         v19 = v18;
-        v20 = [(VideoMitigation *)self updateQueuesWithFutureFrame:a5 futureFrameIndex:v17 atBaseIndex:v14];
+        v20 = [(VideoMitigation *)self updateQueuesWithFutureFrame:frames futureFrameIndex:v17 atBaseIndex:getFrameIndexInQueue];
         if (v20)
         {
           v16 = v20;
@@ -175,7 +175,7 @@ LABEL_10:
       }
 
       while ((v19 & 1) != 0);
-      v21 = [(VideoMitigation *)self updateQueuesWithInputFrame:a3 inputTexture:v11 info:v10 index:v14];
+      v21 = [(VideoMitigation *)self updateQueuesWithInputFrame:mitigate inputTexture:textureCopy info:infoCopy index:getFrameIndexInQueue];
       if (!v21)
       {
         goto LABEL_10;
@@ -204,8 +204,8 @@ LABEL_18:
 - (void)_temporalMitigateWithPast
 {
   kdebug_trace();
-  v3 = [(VideoMitigation *)self getFrameIndexInQueue];
-  if (v3 > 0)
+  getFrameIndexInQueue = [(VideoMitigation *)self getFrameIndexInQueue];
+  if (getFrameIndexInQueue > 0)
   {
     v4 = -1;
   }
@@ -215,8 +215,8 @@ LABEL_18:
     v4 = 4;
   }
 
-  v5 = v4 + v3;
-  if (v3 <= 1)
+  v5 = v4 + getFrameIndexInQueue;
+  if (getFrameIndexInQueue <= 1)
   {
     v6 = 3;
   }
@@ -226,9 +226,9 @@ LABEL_18:
     v6 = -2;
   }
 
-  v7 = (v6 + v3);
+  v7 = (v6 + getFrameIndexInQueue);
   LOBYTE(v8) = 1;
-  [(MitigationHW *)self->_mitigationHW spatialTemporalRepairThenFuseInplaceYUVInputBuf:self->_inputFrameQueue[v3] frmIdx:self->_frameIndexInVideo frRef0Buf:self->_inputFrameQueue[v5] frRef1Buf:self->_inputFrameQueue[v7] metaBuf:self->_inputMetaQueue[v3] ref0MetaBuf:self->_inputMetaQueue[v5] ref1MetaBuf:self->_inputMetaQueue[v7] metaBufHW:self->_inputMetaQueue_HW[v3] info:self->_inputInfoQueue[v3] infoTPlusOrMinus1:self->_inputInfoQueue[v5] infoTPlusOrMinus2:self->_inputInfoQueue[v7] usePastAsRef:v8];
+  [(MitigationHW *)self->_mitigationHW spatialTemporalRepairThenFuseInplaceYUVInputBuf:self->_inputFrameQueue[getFrameIndexInQueue] frmIdx:self->_frameIndexInVideo frRef0Buf:self->_inputFrameQueue[v5] frRef1Buf:self->_inputFrameQueue[v7] metaBuf:self->_inputMetaQueue[getFrameIndexInQueue] ref0MetaBuf:self->_inputMetaQueue[v5] ref1MetaBuf:self->_inputMetaQueue[v7] metaBufHW:self->_inputMetaQueue_HW[getFrameIndexInQueue] info:self->_inputInfoQueue[getFrameIndexInQueue] infoTPlusOrMinus1:self->_inputInfoQueue[v5] infoTPlusOrMinus2:self->_inputInfoQueue[v7] usePastAsRef:v8];
 
   kdebug_trace();
 }
@@ -236,14 +236,14 @@ LABEL_18:
 - (void)_temporalMitigateWithFuture
 {
   kdebug_trace();
-  v3 = [(VideoMitigation *)self getFrameIndexInQueue];
-  v4 = v3 - 4;
-  if (v3 < 4)
+  getFrameIndexInQueue = [(VideoMitigation *)self getFrameIndexInQueue];
+  v4 = getFrameIndexInQueue - 4;
+  if (getFrameIndexInQueue < 4)
   {
-    v4 = v3 + 1;
+    v4 = getFrameIndexInQueue + 1;
   }
 
-  if (v3 > 2)
+  if (getFrameIndexInQueue > 2)
   {
     v5 = -3;
   }
@@ -253,9 +253,9 @@ LABEL_18:
     v5 = 2;
   }
 
-  v6 = (v5 + v3);
+  v6 = (v5 + getFrameIndexInQueue);
   LOBYTE(v7) = 0;
-  [(MitigationHW *)self->_mitigationHW spatialTemporalRepairThenFuseInplaceYUVInputBuf:self->_inputFrameQueue[v3] frmIdx:self->_frameIndexInVideo frRef0Buf:self->_inputFrameQueue[v4] frRef1Buf:self->_inputFrameQueue[v6] metaBuf:self->_inputMetaQueue[v3] ref0MetaBuf:self->_inputMetaQueue[v4] ref1MetaBuf:self->_inputMetaQueue[v6] metaBufHW:self->_inputMetaQueue_HW[v3] info:self->_inputInfoQueue[v3] infoTPlusOrMinus1:self->_inputInfoQueue[v4] infoTPlusOrMinus2:self->_inputInfoQueue[v6] usePastAsRef:v7];
+  [(MitigationHW *)self->_mitigationHW spatialTemporalRepairThenFuseInplaceYUVInputBuf:self->_inputFrameQueue[getFrameIndexInQueue] frmIdx:self->_frameIndexInVideo frRef0Buf:self->_inputFrameQueue[v4] frRef1Buf:self->_inputFrameQueue[v6] metaBuf:self->_inputMetaQueue[getFrameIndexInQueue] ref0MetaBuf:self->_inputMetaQueue[v4] ref1MetaBuf:self->_inputMetaQueue[v6] metaBufHW:self->_inputMetaQueue_HW[getFrameIndexInQueue] info:self->_inputInfoQueue[getFrameIndexInQueue] infoTPlusOrMinus1:self->_inputInfoQueue[v4] infoTPlusOrMinus2:self->_inputInfoQueue[v6] usePastAsRef:v7];
 
   kdebug_trace();
 }
@@ -278,22 +278,22 @@ LABEL_18:
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var4;
-  *&self->_configuration.externalCfg.lightMode = *&a3->var1.var0;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var4;
+  *&self->_configuration.externalCfg.lightMode = *&configuration->var1.var0;
   *&self->_configuration.externalCfg.frameDelay = v5;
   *&self->_configuration.internalCfg.clipThreshold = v3;
   *&self->_configuration.internalCfg.enableColorMask = v4;
 }
 
-- (VideoMitigation)initWithConfig:(id *)a3 metalContext:(id)a4 imageDimensions:(id)a5 tuningParameters:(id)a6
+- (VideoMitigation)initWithConfig:(id *)config metalContext:(id)context imageDimensions:(id)dimensions tuningParameters:(id)parameters
 {
-  v11 = a4;
-  v12 = a6;
-  if (v11)
+  contextCopy = context;
+  parametersCopy = parameters;
+  if (contextCopy)
   {
     v29.receiver = self;
     v29.super_class = VideoMitigation;
@@ -304,16 +304,16 @@ LABEL_18:
       goto LABEL_12;
     }
 
-    v14 = *&a3->var0.var0;
-    v15 = *&a3->var0.var7;
-    v16 = *&a3->var1.var4;
-    *&v13->_configuration.externalCfg.lightMode = *&a3->var1.var0;
+    v14 = *&config->var0.var0;
+    v15 = *&config->var0.var7;
+    v16 = *&config->var1.var4;
+    *&v13->_configuration.externalCfg.lightMode = *&config->var1.var0;
     *&v13->_configuration.externalCfg.frameDelay = v16;
     *&v13->_configuration.internalCfg.clipThreshold = v14;
     *&v13->_configuration.internalCfg.enableColorMask = v15;
-    objc_storeStrong(&v13->_metalContext, a4);
-    self->_hwMode = a3->var1.var11 != 0;
-    v17 = [[MitigationHW alloc] initWithimageDimensions:a5 tuningParameters:v12];
+    objc_storeStrong(&v13->_metalContext, context);
+    self->_hwMode = config->var1.var11 != 0;
+    v17 = [[MitigationHW alloc] initWithimageDimensions:dimensions tuningParameters:parametersCopy];
     mitigationHW = self->_mitigationHW;
     self->_mitigationHW = v17;
 
@@ -335,8 +335,8 @@ LABEL_18:
     v21 = 120;
     while (1)
     {
-      v22 = [(FigMetalContext *)self->_metalContext device];
-      v23 = [v22 newBufferWithLength:10192 options:0];
+      device = [(FigMetalContext *)self->_metalContext device];
+      v23 = [device newBufferWithLength:10192 options:0];
       v24 = *(&self->super.isa + v21);
       *(&self->super.isa + v21) = v23;
 
@@ -354,7 +354,7 @@ LABEL_18:
 
         self->_useStockGpuSim = !self->_hwMode;
         self = self;
-        v27 = self;
+        selfCopy = self;
         goto LABEL_9;
       }
     }
@@ -371,38 +371,38 @@ LABEL_18:
 
   FigDebugAssert3();
 LABEL_12:
-  v27 = 0;
+  selfCopy = 0;
 LABEL_9:
 
-  return v27;
+  return selfCopy;
 }
 
-- (int64_t)updateMetaQueuesWithInfo:(id)a3 index:(signed __int16)a4
+- (int64_t)updateMetaQueuesWithInfo:(id)info index:(signed __int16)index
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_inputInfoQueue[v4], a3);
-  v8 = [v7 objectForKeyedSubscript:@"RepairMetaContainer"];
+  indexCopy = index;
+  infoCopy = info;
+  objc_storeStrong(&self->_inputInfoQueue[indexCopy], info);
+  v8 = [infoCopy objectForKeyedSubscript:@"RepairMetaContainer"];
   v9 = v8;
   if (!v8 || ![v8 mutableBytes])
   {
-    v11 = 0;
+    contents = 0;
 LABEL_9:
     v12 = 5;
     goto LABEL_7;
   }
 
-  v10 = (&self->super.isa + v4);
-  v11 = [v10[15] contents];
-  if (!v11)
+  v10 = (&self->super.isa + indexCopy);
+  contents = [v10[15] contents];
+  if (!contents)
   {
     goto LABEL_9;
   }
 
-  memcpy(v11, [v9 mutableBytes], 0x27D0uLL);
-  v11 = [v7 objectForKeyedSubscript:@"RepairMetaContainer_HW"];
-  v10[20] = [v11 mutableBytes];
-  if (!v11 || ![v11 mutableBytes])
+  memcpy(contents, [v9 mutableBytes], 0x27D0uLL);
+  contents = [infoCopy objectForKeyedSubscript:@"RepairMetaContainer_HW"];
+  v10[20] = [contents mutableBytes];
+  if (!contents || ![contents mutableBytes])
   {
     goto LABEL_9;
   }
@@ -413,19 +413,19 @@ LABEL_7:
   return v12;
 }
 
-- (int64_t)updateQueuesWithFutureFrame:(id *)a3 futureFrameIndex:(signed __int16)a4 atBaseIndex:(signed __int16)a5
+- (int64_t)updateQueuesWithFutureFrame:(id *)frame futureFrameIndex:(signed __int16)index atBaseIndex:(signed __int16)baseIndex
 {
-  if (a4 + a5 + 1 < 5)
+  if (index + baseIndex + 1 < 5)
   {
-    v6 = a4 + a5 + 1;
+    v6 = index + baseIndex + 1;
   }
 
   else
   {
-    v6 = a4 + a5 - 4;
+    v6 = index + baseIndex - 4;
   }
 
-  v7 = (a3->var0 + 48 * a4);
+  v7 = (frame->var0 + 48 * index);
   v8 = *v7;
   v9 = v7[1];
   v10 = v7[2];

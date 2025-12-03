@@ -1,22 +1,22 @@
 @interface DMMigrationSentinelManager
-- (DMMigrationSentinelManager)initWithFileManager:(id)a3 sentinelPath:(id)a4;
+- (DMMigrationSentinelManager)initWithFileManager:(id)manager sentinelPath:(id)path;
 - (void)removeSentinelIfPresent;
 @end
 
 @implementation DMMigrationSentinelManager
 
-- (DMMigrationSentinelManager)initWithFileManager:(id)a3 sentinelPath:(id)a4
+- (DMMigrationSentinelManager)initWithFileManager:(id)manager sentinelPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = DMMigrationSentinelManager;
   v9 = [(DMMigrationSentinelManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fileManager, a3);
-    objc_storeStrong(&v10->_sentinelPath, a4);
+    objc_storeStrong(&v9->_fileManager, manager);
+    objc_storeStrong(&v10->_sentinelPath, path);
   }
 
   return v10;
@@ -32,12 +32,12 @@
   v6 = v5;
   if ((v4 & 1) == 0)
   {
-    v7 = [v5 domain];
-    if ([v7 isEqualToString:NSCocoaErrorDomain])
+    domain = [v5 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v8 = [v6 code];
+      code = [v6 code];
 
-      if (v8 == 4)
+      if (code == 4)
       {
         goto LABEL_7;
       }

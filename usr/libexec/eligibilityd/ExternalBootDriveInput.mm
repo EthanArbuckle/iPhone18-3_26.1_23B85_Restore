@@ -1,11 +1,11 @@
 @interface ExternalBootDriveInput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ExternalBootDriveInput)init;
-- (ExternalBootDriveInput)initWithCoder:(id)a3;
+- (ExternalBootDriveInput)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ExternalBootDriveInput
@@ -30,17 +30,17 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = ExternalBootDriveInput;
-  if (![(EligibilityInput *)&v11 isEqual:v4])
+  if (![(EligibilityInput *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_11;
@@ -49,9 +49,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ExternalBootDriveInput *)self hasExternalBootDrive];
-    v7 = v6 ^ [(ExternalBootDriveInput *)v5 hasExternalBootDrive];
+    v5 = equalCopy;
+    hasExternalBootDrive = [(ExternalBootDriveInput *)self hasExternalBootDrive];
+    v7 = hasExternalBootDrive ^ [(ExternalBootDriveInput *)v5 hasExternalBootDrive];
     if (v7 == 1)
     {
       v8 = sub_10001F638();
@@ -87,16 +87,16 @@ LABEL_11:
   return v3 ^ [(ExternalBootDriveInput *)self hasExternalBootDrive];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = ExternalBootDriveInput;
-  v4 = [(EligibilityInput *)&v6 copyWithZone:a3];
+  v4 = [(EligibilityInput *)&v6 copyWithZone:zone];
   [v4 setHasExternalBootDrive:{-[ExternalBootDriveInput hasExternalBootDrive](self, "hasExternalBootDrive")}];
   return v4;
 }
 
-- (ExternalBootDriveInput)initWithCoder:(id)a3
+- (ExternalBootDriveInput)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ExternalBootDriveInput;
@@ -109,11 +109,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = ExternalBootDriveInput;
-  [(EligibilityInput *)&v3 encodeWithCoder:a3];
+  [(EligibilityInput *)&v3 encodeWithCoder:coder];
 }
 
 - (ExternalBootDriveInput)init

@@ -12,7 +12,7 @@
 {
   v6 = a3;
   objc_opt_class();
-  v7 = [a1 objectForKeyedSubscript:v6];
+  v7 = [self objectForKeyedSubscript:v6];
 
   v8 = FCDynamicCast();
 
@@ -25,7 +25,7 @@
 {
   v4 = a3;
   objc_opt_class();
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
 
   v6 = FCDynamicCast();
 
@@ -40,7 +40,7 @@
   v4[1] = 3221225472;
   v4[2] = __57__FCKeyValueStore_FRRingBufferContainer__setRingBuffers___block_invoke;
   v4[3] = &unk_279983998;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateKeysAndObjectsUsingBlock:v4];
 }
 
@@ -48,7 +48,7 @@
 {
   v4 = a3;
   objc_opt_class();
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
 
   v6 = FCDynamicCast();
 
@@ -74,7 +74,7 @@
 {
   v4 = a3;
   objc_opt_class();
-  v5 = [a1 objectForKeyedSubscript:v4];
+  v5 = [self objectForKeyedSubscript:v4];
 
   v6 = FCDynamicCast();
 

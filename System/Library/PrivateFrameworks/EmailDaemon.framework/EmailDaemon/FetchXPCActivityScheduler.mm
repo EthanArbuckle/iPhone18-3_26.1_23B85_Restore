@@ -1,16 +1,16 @@
 @interface FetchXPCActivityScheduler
-+ (const)_xpcActivityIdentifierForType:(int)a3;
-- (FetchXPCActivityScheduler)initWithType:(int)a3 interval:(double)a4 delegate:(id)a5;
++ (const)_xpcActivityIdentifierForType:(int)type;
+- (FetchXPCActivityScheduler)initWithType:(int)type interval:(double)interval delegate:(id)delegate;
 - (FetchXPCActivitySchedulerDelegate)delegate;
 - (const)_xpcActivityIdentifier;
 - (id)criteriaBuilder;
 - (int64_t)initialXPCActivityInterval;
 - (int64_t)xpcActivityInterval;
-- (void)_markFetchXPCActivityAsRunning:(id)a3;
+- (void)_markFetchXPCActivityAsRunning:(id)running;
 - (void)_markXPCActivitiesAsDone;
 - (void)_runForTimer;
-- (void)_runXPCActivity:(id)a3;
-- (void)_updateIntervalIfNeededForXPCActivity:(id)a3;
+- (void)_runXPCActivity:(id)activity;
+- (void)_updateIntervalIfNeededForXPCActivity:(id)activity;
 - (void)markAsDone;
 - (void)schedule;
 - (void)tearDown;
@@ -19,18 +19,18 @@
 
 @implementation FetchXPCActivityScheduler
 
-- (FetchXPCActivityScheduler)initWithType:(int)a3 interval:(double)a4 delegate:(id)a5
+- (FetchXPCActivityScheduler)initWithType:(int)type interval:(double)interval delegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = FetchXPCActivityScheduler;
   v9 = [(FetchXPCActivityScheduler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    v9->_schedulerType = a3;
-    v9->_interval = a4;
-    objc_storeWeak(&v9->_delegate, v8);
+    v9->_schedulerType = type;
+    v9->_interval = interval;
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v10;
@@ -56,10 +56,10 @@
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FetchXPCActivityScheduler *)self schedulerType];
+      schedulerType = [(FetchXPCActivityScheduler *)self schedulerType];
       [(FetchXPCActivityScheduler *)self interval];
       LODWORD(buf) = 67109376;
-      HIDWORD(buf) = v6;
+      HIDWORD(buf) = schedulerType;
       v11 = 2048;
       v12 = v7;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Scheduling fetch for type %d with interval %g seconds.", &buf, 0x12u);
@@ -67,7 +67,7 @@
 
     objc_initWeak(&buf, self);
     [(FetchXPCActivityScheduler *)self _xpcActivityIdentifier];
-    v8 = [(FetchXPCActivityScheduler *)self criteriaBuilder];
+    criteriaBuilder = [(FetchXPCActivityScheduler *)self criteriaBuilder];
     objc_copyWeak(&v9, &buf);
     ef_xpc_activity_register();
 
@@ -111,16 +111,16 @@
   }
 }
 
-- (void)_runXPCActivity:(id)a3
+- (void)_runXPCActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = +[DaemonFetchController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(FetchXPCActivityScheduler *)self schedulerType];
+    schedulerType = [(FetchXPCActivityScheduler *)self schedulerType];
     [(FetchXPCActivityScheduler *)self interval];
     v25[0] = 67109376;
-    v25[1] = v6;
+    v25[1] = schedulerType;
     v26 = 2048;
     v27 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "XPC activity triggered for fetch scheduler (type %d, interval %g seconds).", v25, 0x12u);
@@ -131,21 +131,21 @@
   os_unfair_lock_unlock(&self->_lock);
   if (tornDown)
   {
-    v9 = +[DaemonFetchController log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    delegate = +[DaemonFetchController log];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
-      sub_1000D3364(v9, v10, v11, v12, v13, v14, v15, v16);
+      sub_1000D3364(delegate, v10, v11, v12, v13, v14, v15, v16);
     }
   }
 
   else
   {
-    [(FetchXPCActivityScheduler *)self _updateIntervalIfNeededForXPCActivity:v4];
-    v9 = [(FetchXPCActivityScheduler *)self delegate];
-    if (v9)
+    [(FetchXPCActivityScheduler *)self _updateIntervalIfNeededForXPCActivity:activityCopy];
+    delegate = [(FetchXPCActivityScheduler *)self delegate];
+    if (delegate)
     {
-      [(FetchXPCActivityScheduler *)self _markFetchXPCActivityAsRunning:v4];
-      [v9 fetchSchedulerDidTrigger:self];
+      [(FetchXPCActivityScheduler *)self _markFetchXPCActivityAsRunning:activityCopy];
+      [delegate fetchSchedulerDidTrigger:self];
     }
 
     else
@@ -164,20 +164,20 @@
   v3 = +[DaemonFetchController log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FetchXPCActivityScheduler *)self schedulerType];
+    schedulerType = [(FetchXPCActivityScheduler *)self schedulerType];
     [(FetchXPCActivityScheduler *)self interval];
     v16[0] = 67109376;
-    v16[1] = v4;
+    v16[1] = schedulerType;
     v17 = 2048;
     v18 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Dispatch timer triggered for fetch scheduler (type %d, interval %g seconds).", v16, 0x12u);
   }
 
-  v6 = [(FetchXPCActivityScheduler *)self delegate];
-  v7 = v6;
-  if (v6)
+  delegate = [(FetchXPCActivityScheduler *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    [v6 fetchSchedulerDidTrigger:self];
+    [delegate fetchSchedulerDidTrigger:self];
   }
 
   else
@@ -203,13 +203,13 @@
   [(FetchXPCActivityScheduler *)self _markXPCActivitiesAsDone];
 }
 
-- (void)_markFetchXPCActivityAsRunning:(id)a3
+- (void)_markFetchXPCActivityAsRunning:(id)running
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  runningCopy = running;
+  v5 = runningCopy;
+  if (runningCopy)
   {
-    if (xpc_activity_set_state(v4, 4))
+    if (xpc_activity_set_state(runningCopy, 4))
     {
       v6 = +[DaemonFetchController log];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -316,14 +316,14 @@
   }
 }
 
-- (void)_updateIntervalIfNeededForXPCActivity:(id)a3
+- (void)_updateIntervalIfNeededForXPCActivity:(id)activity
 {
-  activity = a3;
-  v4 = [(FetchXPCActivityScheduler *)self xpcActivityInterval];
+  activity = activity;
+  xpcActivityInterval = [(FetchXPCActivityScheduler *)self xpcActivityInterval];
   v5 = xpc_activity_copy_criteria(activity);
-  if (xpc_dictionary_get_int64(v5, XPC_ACTIVITY_INTERVAL) != v4)
+  if (xpc_dictionary_get_int64(v5, XPC_ACTIVITY_INTERVAL) != xpcActivityInterval)
   {
-    xpc_dictionary_set_int64(v5, XPC_ACTIVITY_INTERVAL, v4);
+    xpc_dictionary_set_int64(v5, XPC_ACTIVITY_INTERVAL, xpcActivityInterval);
     xpc_activity_set_criteria(activity, v5);
   }
 }
@@ -331,36 +331,36 @@
 - (const)_xpcActivityIdentifier
 {
   v3 = objc_opt_class();
-  v4 = [(FetchXPCActivityScheduler *)self schedulerType];
+  schedulerType = [(FetchXPCActivityScheduler *)self schedulerType];
 
-  return [v3 _xpcActivityIdentifierForType:v4];
+  return [v3 _xpcActivityIdentifierForType:schedulerType];
 }
 
-+ (const)_xpcActivityIdentifierForType:(int)a3
++ (const)_xpcActivityIdentifierForType:(int)type
 {
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     sub_1000D34D4();
   }
 
-  return (&off_1001572B0)[a3 - 1];
+  return (&off_1001572B0)[type - 1];
 }
 
 - (id)criteriaBuilder
 {
-  v3 = [(FetchXPCActivityScheduler *)self initialXPCActivityInterval];
-  v4 = [(FetchXPCActivityScheduler *)self schedulerType];
-  switch(v4)
+  initialXPCActivityInterval = [(FetchXPCActivityScheduler *)self initialXPCActivityInterval];
+  schedulerType = [(FetchXPCActivityScheduler *)self schedulerType];
+  switch(schedulerType)
   {
     case 1u:
-      v6 = [(FetchXPCActivityScheduler *)self isAutomatic];
+      isAutomatic = [(FetchXPCActivityScheduler *)self isAutomatic];
       v5 = v10;
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1000271B8;
       v10[3] = &unk_100157248;
-      v10[4] = v3;
-      v11 = v6;
+      v10[4] = initialXPCActivityInterval;
+      v11 = isAutomatic;
       break;
     case 3u:
       v5 = v9;
@@ -368,8 +368,8 @@
       v9[1] = 3221225472;
       v9[2] = sub_1000273CC;
       v9[3] = &unk_100157268;
-      v9[4] = v3;
-      v9[5] = v3;
+      v9[4] = initialXPCActivityInterval;
+      v9[5] = initialXPCActivityInterval;
       break;
     case 2u:
       v5 = v12;
@@ -377,7 +377,7 @@
       v12[1] = 3221225472;
       v12[2] = sub_10002711C;
       v12[3] = &unk_100157228;
-      v12[4] = v3;
+      v12[4] = initialXPCActivityInterval;
       break;
     default:
       sub_1000D3500();
@@ -390,15 +390,15 @@
 
 - (int64_t)initialXPCActivityInterval
 {
-  v3 = [(FetchXPCActivityScheduler *)self schedulerType];
-  if (v3 != 1)
+  schedulerType = [(FetchXPCActivityScheduler *)self schedulerType];
+  if (schedulerType != 1)
   {
-    if (v3 == 2)
+    if (schedulerType == 2)
     {
       return 300;
     }
 
-    if (v3 != 3)
+    if (schedulerType != 3)
     {
       sub_1000D352C();
     }

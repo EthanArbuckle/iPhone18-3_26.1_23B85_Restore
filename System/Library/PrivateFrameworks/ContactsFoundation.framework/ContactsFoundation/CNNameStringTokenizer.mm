@@ -1,38 +1,38 @@
 @interface CNNameStringTokenizer
-+ (id)tokenizeNameString:(id)a3;
-+ (id)tokenizeNameString:(id)a3 usingLocale:(id)a4 inferredNameOrder:(int64_t *)a5;
-+ (void)setInferredNameOrder:(int64_t *)a3 toTokenizerNameOrder:(int)a4;
++ (id)tokenizeNameString:(id)string;
++ (id)tokenizeNameString:(id)string usingLocale:(id)locale inferredNameOrder:(int64_t *)order;
++ (void)setInferredNameOrder:(int64_t *)order toTokenizerNameOrder:(int)nameOrder;
 - (CNNameStringTokenizer)init;
-- (CNNameStringTokenizer)initWithLocale:(id)a3;
-- (id)tokenizeNameString:(id)a3 inferredNameOrder:(int64_t *)a4;
+- (CNNameStringTokenizer)initWithLocale:(id)locale;
+- (id)tokenizeNameString:(id)string inferredNameOrder:(int64_t *)order;
 - (void)dealloc;
 @end
 
 @implementation CNNameStringTokenizer
 
-+ (id)tokenizeNameString:(id)a3
++ (id)tokenizeNameString:(id)string
 {
   v4 = MEMORY[0x1E695DF58];
-  v5 = a3;
-  v6 = [v4 currentLocale];
-  v7 = [a1 tokenizeNameString:v5 usingLocale:v6 inferredNameOrder:0];
+  stringCopy = string;
+  currentLocale = [v4 currentLocale];
+  v7 = [self tokenizeNameString:stringCopy usingLocale:currentLocale inferredNameOrder:0];
 
   return v7;
 }
 
-+ (id)tokenizeNameString:(id)a3 usingLocale:(id)a4 inferredNameOrder:(int64_t *)a5
++ (id)tokenizeNameString:(id)string usingLocale:(id)locale inferredNameOrder:(int64_t *)order
 {
-  v8 = a3;
-  v9 = a4;
-  if (off_1EF440708(&__block_literal_global_120, v8))
+  stringCopy = string;
+  localeCopy = locale;
+  if (off_1EF440708(&__block_literal_global_120, stringCopy))
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [[a1 alloc] initWithLocale:v9];
-    v10 = [v11 tokenizeNameString:v8 inferredNameOrder:a5];
+    v11 = [[self alloc] initWithLocale:localeCopy];
+    v10 = [v11 tokenizeNameString:stringCopy inferredNameOrder:order];
   }
 
   return v10;
@@ -40,15 +40,15 @@
 
 - (CNNameStringTokenizer)init
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [(CNNameStringTokenizer *)self initWithLocale:v3];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [(CNNameStringTokenizer *)self initWithLocale:currentLocale];
 
   return v4;
 }
 
-- (CNNameStringTokenizer)initWithLocale:(id)a3
+- (CNNameStringTokenizer)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v10.receiver = self;
   v10.super_class = CNNameStringTokenizer;
   v5 = [(CNNameStringTokenizer *)&v10 init];
@@ -56,7 +56,7 @@
   {
     v11.location = -1;
     v11.length = 0;
-    v5->_tokenizer = CFStringTokenizerCreate(*MEMORY[0x1E695E480], &stru_1EF441028, v11, 0, v4);
+    v5->_tokenizer = CFStringTokenizerCreate(*MEMORY[0x1E695E480], &stru_1EF441028, v11, 0, localeCopy);
     v6 = objc_alloc_init(CNUnfairLock);
     lock = v5->_lock;
     v5->_lock = v6;
@@ -80,10 +80,10 @@
   [(CNNameStringTokenizer *)&v4 dealloc];
 }
 
-- (id)tokenizeNameString:(id)a3 inferredNameOrder:(int64_t *)a4
+- (id)tokenizeNameString:(id)string inferredNameOrder:(int64_t *)order
 {
-  v6 = a3;
-  if (off_1EF440708(&__block_literal_global_120, v6))
+  stringCopy = string;
+  if (off_1EF440708(&__block_literal_global_120, stringCopy))
   {
     v7 = 0;
   }
@@ -104,19 +104,19 @@
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 0;
-    v8 = [(CNNameStringTokenizer *)self lock];
+    lock = [(CNNameStringTokenizer *)self lock];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__CNNameStringTokenizer_tokenizeNameString_inferredNameOrder___block_invoke;
     v11[3] = &unk_1E6ED77C8;
     v13 = &v26;
     v11[4] = self;
-    v12 = v6;
+    v12 = stringCopy;
     v14 = &v16;
     v15 = &v20;
-    CNRunWithLock(v8, v11);
+    CNRunWithLock(lock, v11);
 
-    [objc_opt_class() setInferredNameOrder:a4 toTokenizerNameOrder:*(v17 + 6)];
+    [objc_opt_class() setInferredNameOrder:order toTokenizerNameOrder:*(v17 + 6)];
     _Block_object_dispose(&v16, 8);
     v9 = v27[3];
     if (v9)
@@ -147,11 +147,11 @@ uint64_t __62__CNNameStringTokenizer_tokenizeNameString_inferredNameOrder___bloc
   return MEMORY[0x1EEE66BB8](v4, v6);
 }
 
-+ (void)setInferredNameOrder:(int64_t *)a3 toTokenizerNameOrder:(int)a4
++ (void)setInferredNameOrder:(int64_t *)order toTokenizerNameOrder:(int)nameOrder
 {
-  if (a3)
+  if (order)
   {
-    if (a4 == -1)
+    if (nameOrder == -1)
     {
       v4 = -1;
     }
@@ -161,12 +161,12 @@ uint64_t __62__CNNameStringTokenizer_tokenizeNameString_inferredNameOrder___bloc
       v4 = 0;
     }
 
-    if (a4 == 1)
+    if (nameOrder == 1)
     {
       v4 = 1;
     }
 
-    *a3 = v4;
+    *order = v4;
   }
 }
 

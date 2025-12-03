@@ -1,6 +1,6 @@
 @interface _UIPlatterMenuDynamicsController
 - (BOOL)_isPlatterInYLockedPosition;
-- (BOOL)isDefaultAnimatorBehavior:(id)a3;
+- (BOOL)isDefaultAnimatorBehavior:(id)behavior;
 - (BOOL)isSelectingSwipeAction;
 - (BOOL)platterPanned;
 - (CGPoint)centerForCurrentPlatterPosition;
@@ -10,62 +10,62 @@
 - (CGPoint)platterCenter;
 - (CGVector)currentTranslation;
 - (CGVector)currentVelocity;
-- (CGVector)modifiedOffsetForPosition:(CGPoint)a3 offset:(CGVector)a4 touchPosition:(CGPoint)a5 axisLock:(unint64_t)a6;
+- (CGVector)modifiedOffsetForPosition:(CGPoint)position offset:(CGVector)offset touchPosition:(CGPoint)touchPosition axisLock:(unint64_t)lock;
 - (UIDynamicItem)platterItem;
 - (UIView)containerView;
 - (UIView)menuView;
 - (UIView)platterView;
-- (_UIPlatterMenuDynamicsController)initWithContainerView:(id)a3 platterView:(id)a4 menuView:(id)a5 delegate:(id)a6;
+- (_UIPlatterMenuDynamicsController)initWithContainerView:(id)view platterView:(id)platterView menuView:(id)menuView delegate:(id)delegate;
 - (_UIPlatterMenuDynamicsControllerDelegate)delegate;
 - (_UIPlatterMenuPanningTransformer)panningLockTransformer;
-- (int64_t)_stateForPosition:(CGPoint)a3 offset:(CGVector)a4 velocity:(CGVector)a5;
+- (int64_t)_stateForPosition:(CGPoint)position offset:(CGVector)offset velocity:(CGVector)velocity;
 - (void)_activateFeedbackIfNeeded;
-- (void)_animateToPlatterDismissedWithDuration:(double)a3 completion:(id)a4;
-- (void)_animateToPlatterPresentedWithVelocity:(CGVector)a3;
+- (void)_animateToPlatterDismissedWithDuration:(double)duration completion:(id)completion;
+- (void)_animateToPlatterPresentedWithVelocity:(CGVector)velocity;
 - (void)_beginInYLockedStatePresented;
 - (void)_configureAnimator;
 - (void)_configureFeedbackGenerator;
 - (void)_deactivateFeedbackIfNeeded;
-- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)a3 finalSelectionState:(BOOL)a4;
+- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)state finalSelectionState:(BOOL)selectionState;
 - (void)_positionSwipeActionViewsForCurrentPlatterViewPosition;
-- (void)_updateSwipeEdgeMultipliersIfNeededForTouchPosition:(CGPoint)a3;
-- (void)addBehaviorIfNotPresent:(id)a3;
-- (void)beginTransitionWithAnimatorUsingBehaviors:(id)a3 observedItems:(id)a4 stateIfCompleted:(int64_t)a5;
+- (void)_updateSwipeEdgeMultipliersIfNeededForTouchPosition:(CGPoint)position;
+- (void)addBehaviorIfNotPresent:(id)present;
+- (void)beginTransitionWithAnimatorUsingBehaviors:(id)behaviors observedItems:(id)items stateIfCompleted:(int64_t)completed;
 - (void)dealloc;
-- (void)didBeginPanningWithPoint:(CGPoint)a3;
-- (void)didEndPanningWithPoint:(CGPoint)a3;
-- (void)didPanWithPoint:(CGPoint)a3;
+- (void)didBeginPanningWithPoint:(CGPoint)point;
+- (void)didEndPanningWithPoint:(CGPoint)point;
+- (void)didPanWithPoint:(CGPoint)point;
 - (void)lockIntoYAxis;
-- (void)panningTransformer:(id)a3 didBeginPanToTransformedPosition:(CGPoint)a4;
-- (void)panningTransformer:(id)a3 didEndPanToTransformedPosition:(CGPoint)a4 offsetFromPrevious:(CGVector)a5 velocity:(CGVector)a6;
-- (void)panningTransformer:(id)a3 didPanToTransformedPosition:(CGPoint)a4 offsetFromPrevious:(CGVector)a5 touchPosition:(CGPoint)a6 velocity:(CGVector)a7 didChangeAxis:(BOOL)a8 axisLock:(unint64_t)a9;
-- (void)performActionsAndEnterState:(int64_t)a3 velocity:(CGVector)a4 underDirectManipulation:(BOOL)a5;
+- (void)panningTransformer:(id)transformer didBeginPanToTransformedPosition:(CGPoint)position;
+- (void)panningTransformer:(id)transformer didEndPanToTransformedPosition:(CGPoint)position offsetFromPrevious:(CGVector)previous velocity:(CGVector)velocity;
+- (void)panningTransformer:(id)transformer didPanToTransformedPosition:(CGPoint)position offsetFromPrevious:(CGVector)previous touchPosition:(CGPoint)touchPosition velocity:(CGVector)velocity didChangeAxis:(BOOL)axis axisLock:(unint64_t)lock;
+- (void)performActionsAndEnterState:(int64_t)state velocity:(CGVector)velocity underDirectManipulation:(BOOL)manipulation;
 - (void)resetAnimator;
 - (void)resetAnimatorToDefaultBehaviors;
-- (void)setLeadingSwipeActionViewSelected:(BOOL)a3;
-- (void)setTrailingSwipeActionViewSelected:(BOOL)a3;
+- (void)setLeadingSwipeActionViewSelected:(BOOL)selected;
+- (void)setTrailingSwipeActionViewSelected:(BOOL)selected;
 - (void)stopObservingBehavior;
 - (void)toggleAnimatorDebugState;
 @end
 
 @implementation _UIPlatterMenuDynamicsController
 
-- (_UIPlatterMenuDynamicsController)initWithContainerView:(id)a3 platterView:(id)a4 menuView:(id)a5 delegate:(id)a6
+- (_UIPlatterMenuDynamicsController)initWithContainerView:(id)view platterView:(id)platterView menuView:(id)menuView delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  platterViewCopy = platterView;
+  menuViewCopy = menuView;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = _UIPlatterMenuDynamicsController;
   v14 = [(_UIPlatterMenuDynamicsController *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v13);
-    objc_storeWeak(&v15->_containerView, v10);
-    objc_storeWeak(&v15->_platterView, v11);
-    objc_storeWeak(&v15->_menuView, v12);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeWeak(&v15->_containerView, viewCopy);
+    objc_storeWeak(&v15->_platterView, platterViewCopy);
+    objc_storeWeak(&v15->_menuView, menuViewCopy);
     v15->_state = 0;
     [(_UIPlatterMenuDynamicsController *)v15 _configureAnimator];
     [(_UIPlatterMenuDynamicsController *)v15 _configureFeedbackGenerator];
@@ -76,8 +76,8 @@
 
 - (CGVector)currentTranslation
 {
-  v2 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  [v2 offset];
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  [panningLockTransformer offset];
   v4 = v3;
   v6 = v5;
 
@@ -90,8 +90,8 @@
 
 - (CGVector)currentVelocity
 {
-  v2 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  [v2 velocity];
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  [panningLockTransformer velocity];
   v4 = v3;
   v6 = v5;
 
@@ -102,54 +102,54 @@
   return result;
 }
 
-- (void)didBeginPanningWithPoint:(CGPoint)a3
+- (void)didBeginPanningWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(_UIPlatterMenuDynamicsController *)self _activateFeedbackIfNeeded];
   [(_UIPlatterMenuDynamicsController *)self setInitialTouchPoint:x, y];
   [(_UIPlatterMenuDynamicsController *)self setIsCurrentlyUnderDirectManipulation:1];
   [(_UIPlatterMenuDynamicsController *)self _updateSwipeEdgeMultipliersIfNeededForTouchPosition:x, y];
-  v9 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  v6 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v6 center];
-  [v9 didBeginPanningWithTouchPosition:x currentTransformedPosition:{y, v7, v8}];
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
+  [panningLockTransformer didBeginPanningWithTouchPosition:x currentTransformedPosition:{y, v7, v8}];
 }
 
-- (void)didPanWithPoint:(CGPoint)a3
+- (void)didPanWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  v6 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v6 center];
-  [v9 didPanWithTouchPosition:x currentTransformedPosition:{y, v7, v8}];
+  y = point.y;
+  x = point.x;
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
+  [panningLockTransformer didPanWithTouchPosition:x currentTransformedPosition:{y, v7, v8}];
 }
 
-- (void)didEndPanningWithPoint:(CGPoint)a3
+- (void)didEndPanningWithPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(_UIPlatterMenuDynamicsController *)self _deactivateFeedbackIfNeeded];
   [(_UIPlatterMenuDynamicsController *)self setIsCurrentlyUnderDirectManipulation:0];
-  v9 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  v6 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v6 center];
-  [v9 didEndPanningWithTouchPosition:x currentTransformedPosition:{y, v7, v8}];
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
+  [panningLockTransformer didEndPanningWithTouchPosition:x currentTransformedPosition:{y, v7, v8}];
 }
 
 - (void)toggleAnimatorDebugState
 {
-  v5 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v3 = [v5 isDebugEnabled];
-  v4 = [(_UIPlatterMenuDynamicsController *)self animator];
-  [v4 setDebugEnabled:v3 ^ 1u];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  isDebugEnabled = [animator isDebugEnabled];
+  animator2 = [(_UIPlatterMenuDynamicsController *)self animator];
+  [animator2 setDebugEnabled:isDebugEnabled ^ 1u];
 }
 
 - (void)dealloc
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self animator];
-  [v3 removeAllBehaviors];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  [animator removeAllBehaviors];
 
   [(_UIPlatterMenuDynamicsController *)self _deactivateFeedbackIfNeeded];
   v4.receiver = self;
@@ -159,21 +159,21 @@
 
 - (void)resetAnimator
 {
-  v2 = [(_UIPlatterMenuDynamicsController *)self animator];
-  [v2 removeAllBehaviors];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  [animator removeAllBehaviors];
 }
 
 - (BOOL)isSelectingSwipeAction
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  v4 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v5 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-  [v4 updateItemFromCurrentState:v5];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+  [animator updateItemFromCurrentState:platterItem];
 
-  [v3 center];
+  [platterView center];
   v7 = v6;
-  v8 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  [v8 centerForPlatterWithMenuViewDismissed];
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  [delegate centerForPlatterWithMenuViewDismissed];
   v10 = v9;
 
   return vabdd_f64(v7, v10) > 2.0;
@@ -181,13 +181,13 @@
 
 - (BOOL)platterPanned
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  [v3 centerForPlatterWithMenuViewDismissed];
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  [delegate centerForPlatterWithMenuViewDismissed];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v8 center];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
   v10 = v9;
   v12 = v11;
 
@@ -197,38 +197,38 @@
 
 - (void)lockIntoYAxis
 {
-  v2 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  [v2 lockIntoYAxis];
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  [panningLockTransformer lockIntoYAxis];
 }
 
 - (void)_beginInYLockedStatePresented
 {
   [(_UIPlatterMenuDynamicsController *)self setState:2];
-  v3 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  [v3 _enterYLockedState];
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  [panningLockTransformer _enterYLockedState];
 }
 
-- (void)_animateToPlatterPresentedWithVelocity:(CGVector)a3
+- (void)_animateToPlatterPresentedWithVelocity:(CGVector)velocity
 {
-  dy = a3.dy;
-  dx = a3.dx;
-  v6 = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
-  [v6 lockIntoYAxis];
+  dy = velocity.dy;
+  dx = velocity.dx;
+  panningLockTransformer = [(_UIPlatterMenuDynamicsController *)self panningLockTransformer];
+  [panningLockTransformer lockIntoYAxis];
 
   [(_UIPlatterMenuDynamicsController *)self performActionsAndEnterState:1 velocity:0 underDirectManipulation:dx, dy];
 }
 
-- (void)_animateToPlatterDismissedWithDuration:(double)a3 completion:(id)a4
+- (void)_animateToPlatterDismissedWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(_UIPlatterMenuDynamicsController *)self resetAnimator];
-  v7 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  [v7 centerForPlatterWithMenuViewDismissed];
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  [delegate centerForPlatterWithMenuViewDismissed];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  [v12 centerForMenuDismissed];
+  delegate2 = [(_UIPlatterMenuDynamicsController *)self delegate];
+  [delegate2 centerForMenuDismissed];
   v14 = v13;
   v16 = v15;
 
@@ -245,90 +245,90 @@
   v18[1] = 3221225472;
   v18[2] = __86___UIPlatterMenuDynamicsController__animateToPlatterDismissedWithDuration_completion___block_invoke_2;
   v18[3] = &unk_1E70F3608;
-  v19 = v6;
-  v17 = v6;
-  [UIView animateWithDuration:v20 animations:v18 completion:a3];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [UIView animateWithDuration:v20 animations:v18 completion:duration];
 }
 
-- (void)panningTransformer:(id)a3 didBeginPanToTransformedPosition:(CGPoint)a4
+- (void)panningTransformer:(id)transformer didBeginPanToTransformedPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   [(_UIPlatterMenuDynamicsController *)self resetAnimatorToDefaultBehaviors];
-  v7 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-  [v7 setAnchorPoint:{x, y}];
+  gestureAttachmentBehavior = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+  [gestureAttachmentBehavior setAnchorPoint:{x, y}];
 
-  v8 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-  [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v8];
+  gestureAttachmentBehavior2 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+  [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:gestureAttachmentBehavior2];
 
-  v9 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v10 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-  [v9 updateItemFromCurrentState:v10];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+  [animator updateItemFromCurrentState:platterItem];
 
-  v11 = [(_UIPlatterMenuDynamicsController *)self state];
+  state = [(_UIPlatterMenuDynamicsController *)self state];
 
-  [(_UIPlatterMenuDynamicsController *)self performActionsAndEnterState:v11];
+  [(_UIPlatterMenuDynamicsController *)self performActionsAndEnterState:state];
 }
 
-- (void)panningTransformer:(id)a3 didPanToTransformedPosition:(CGPoint)a4 offsetFromPrevious:(CGVector)a5 touchPosition:(CGPoint)a6 velocity:(CGVector)a7 didChangeAxis:(BOOL)a8 axisLock:(unint64_t)a9
+- (void)panningTransformer:(id)transformer didPanToTransformedPosition:(CGPoint)position offsetFromPrevious:(CGVector)previous touchPosition:(CGPoint)touchPosition velocity:(CGVector)velocity didChangeAxis:(BOOL)axis axisLock:(unint64_t)lock
 {
-  v10 = a8;
-  dy = a7.dy;
-  dx = a7.dx;
-  y = a6.y;
-  x = a6.x;
-  v14 = a5.dy;
-  v15 = a5.dx;
-  v16 = a4.y;
-  v17 = a4.x;
-  v19 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v20 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-  [v19 updateItemFromCurrentState:v20];
+  axisCopy = axis;
+  dy = velocity.dy;
+  dx = velocity.dx;
+  y = touchPosition.y;
+  x = touchPosition.x;
+  v14 = previous.dy;
+  v15 = previous.dx;
+  v16 = position.y;
+  v17 = position.x;
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+  [animator updateItemFromCurrentState:platterItem];
 
-  v21 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v22 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  [v21 updateItemFromCurrentState:v22];
+  animator2 = [(_UIPlatterMenuDynamicsController *)self animator];
+  menuView = [(_UIPlatterMenuDynamicsController *)self menuView];
+  [animator2 updateItemFromCurrentState:menuView];
 
-  if (a9)
+  if (lock)
   {
     v49 = dy;
-    [(_UIPlatterMenuDynamicsController *)self modifiedOffsetForPosition:a9 offset:v17 touchPosition:v16 axisLock:v15, v14, x, y];
+    [(_UIPlatterMenuDynamicsController *)self modifiedOffsetForPosition:lock offset:v17 touchPosition:v16 axisLock:v15, v14, x, y];
     v24 = v23;
     v26 = v25;
-    v27 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-    [v27 anchorPoint];
+    gestureAttachmentBehavior = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+    [gestureAttachmentBehavior anchorPoint];
     v29 = v28;
     v31 = v30;
 
     v32 = v24 + v29;
     v33 = v26 + v31;
-    v34 = [(_UIPlatterMenuDynamicsController *)self delegate];
-    v51 = v34;
-    if (v10)
+    delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+    v51 = delegate;
+    if (axisCopy)
     {
-      if (a9 == 1)
+      if (lock == 1)
       {
-        [v34 centerForPlatterWithMenuViewDismissed];
+        [delegate centerForPlatterWithMenuViewDismissed];
         v33 = v36;
       }
 
-      else if (a9 == 2)
+      else if (lock == 2)
       {
-        [v34 centerForPlatterWithMenuViewDismissed];
+        [delegate centerForPlatterWithMenuViewDismissed];
         v32 = v35;
       }
     }
 
-    v37 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-    [v37 setAnchorPoint:{v32, v33}];
+    gestureAttachmentBehavior2 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+    [gestureAttachmentBehavior2 setAnchorPoint:{v32, v33}];
 
     if ([(_UIPlatterMenuDynamicsController *)self state]== 2 || [(_UIPlatterMenuDynamicsController *)self state]== 1)
     {
       [(_UIPlatterMenuDynamicsController *)self centerForMenuPresentedRelativeToCurrentPlatter];
       v39 = v38;
       v41 = v26 + v40;
-      v42 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-      [v42 setAnchorPoint:{v39, v41}];
+      menuPresentedSnapBehavior = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+      [menuPresentedSnapBehavior setAnchorPoint:{v39, v41}];
     }
 
     [v51 centerForPlatterWithMenuViewPresented];
@@ -336,9 +336,9 @@
     [v51 minimumSpacingBetweenPlatterAndMenu];
     if (v16 + v45 * 0.5 < v44)
     {
-      v46 = [(_UIPlatterMenuDynamicsController *)self animator];
-      v47 = [(_UIPlatterMenuDynamicsController *)self platterMenuSlidingAttachmentBehavior];
-      [v46 removeBehavior:v47];
+      animator3 = [(_UIPlatterMenuDynamicsController *)self animator];
+      platterMenuSlidingAttachmentBehavior = [(_UIPlatterMenuDynamicsController *)self platterMenuSlidingAttachmentBehavior];
+      [animator3 removeBehavior:platterMenuSlidingAttachmentBehavior];
     }
 
     [(_UIPlatterMenuDynamicsController *)self _positionSwipeActionViewsForCurrentPlatterViewPosition];
@@ -355,21 +355,21 @@
   }
 }
 
-- (void)panningTransformer:(id)a3 didEndPanToTransformedPosition:(CGPoint)a4 offsetFromPrevious:(CGVector)a5 velocity:(CGVector)a6
+- (void)panningTransformer:(id)transformer didEndPanToTransformedPosition:(CGPoint)position offsetFromPrevious:(CGVector)previous velocity:(CGVector)velocity
 {
-  dy = a6.dy;
-  dx = a6.dx;
-  v8 = a5.dy;
-  v9 = a5.dx;
-  y = a4.y;
-  x = a4.x;
-  v13 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v14 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  [v13 updateItemFromCurrentState:v14];
+  dy = velocity.dy;
+  dx = velocity.dx;
+  v8 = previous.dy;
+  v9 = previous.dx;
+  y = position.y;
+  x = position.x;
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  menuView = [(_UIPlatterMenuDynamicsController *)self menuView];
+  [animator updateItemFromCurrentState:menuView];
 
-  v15 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v16 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-  [v15 updateItemFromCurrentState:v16];
+  animator2 = [(_UIPlatterMenuDynamicsController *)self animator];
+  platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+  [animator2 updateItemFromCurrentState:platterItem];
 
   v17 = [(_UIPlatterMenuDynamicsController *)self _stateForPosition:x offset:y velocity:v9, v8, dx, dy];
   v18 = 3;
@@ -395,12 +395,12 @@
 {
   v69[1] = *MEMORY[0x1E69E9840];
   v3 = [_UIPlatterItem alloc];
-  v4 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  v5 = [(_UIPlatterItem *)v3 initWithView:v4];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  v5 = [(_UIPlatterItem *)v3 initWithView:platterView];
 
   v6 = [UIDynamicAnimator alloc];
-  v7 = [(_UIPlatterMenuDynamicsController *)self containerView];
-  v8 = [(UIDynamicAnimator *)v6 initWithReferenceView:v7];
+  containerView = [(_UIPlatterMenuDynamicsController *)self containerView];
+  v8 = [(UIDynamicAnimator *)v6 initWithReferenceView:containerView];
   [(_UIPlatterMenuDynamicsController *)self setAnimator:v8];
 
   v9 = [UIDynamicItemBehavior alloc];
@@ -409,41 +409,41 @@
   v11 = [(UIDynamicItemBehavior *)v9 initWithItems:v10];
   [(_UIPlatterMenuDynamicsController *)self setPlatterItemBehavior:v11];
 
-  v12 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
-  [v12 setDensity:0.0001];
+  platterItemBehavior = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
+  [platterItemBehavior setDensity:0.0001];
 
-  v13 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
-  [v13 setResistance:0.2];
+  platterItemBehavior2 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
+  [platterItemBehavior2 setResistance:0.2];
 
-  v14 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
-  [v14 setElasticity:0.1];
+  platterItemBehavior3 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
+  [platterItemBehavior3 setElasticity:0.1];
 
   v15 = [UIDynamicItemBehavior alloc];
-  v16 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v68 = v16;
+  menuView = [(_UIPlatterMenuDynamicsController *)self menuView];
+  v68 = menuView;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v68 count:1];
   v18 = [(UIDynamicItemBehavior *)v15 initWithItems:v17];
   [(_UIPlatterMenuDynamicsController *)self setMenuItemBehavior:v18];
 
-  v19 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
-  [v19 setDensity:0.01];
+  menuItemBehavior = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
+  [menuItemBehavior setDensity:0.01];
 
-  v20 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
-  [v20 setResistance:0.2];
+  menuItemBehavior2 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
+  [menuItemBehavior2 setResistance:0.2];
 
-  v21 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
-  [v21 setElasticity:0.1];
+  menuItemBehavior3 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
+  [menuItemBehavior3 setElasticity:0.1];
 
   v22 = [UIAttachmentBehavior alloc];
-  v23 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v24 = [(UIAttachmentBehavior *)v22 initWithItem:v23 attachedToItem:v5];
+  menuView2 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  v24 = [(UIAttachmentBehavior *)v22 initWithItem:menuView2 attachedToItem:v5];
   [(_UIPlatterMenuDynamicsController *)self setPlatterMenuAttachmentBehavior:v24];
 
-  v25 = [(_UIPlatterMenuDynamicsController *)self platterMenuAttachmentBehavior];
-  [v25 setDamping:0.6];
+  platterMenuAttachmentBehavior = [(_UIPlatterMenuDynamicsController *)self platterMenuAttachmentBehavior];
+  [platterMenuAttachmentBehavior setDamping:0.6];
 
-  v26 = [(_UIPlatterMenuDynamicsController *)self platterMenuAttachmentBehavior];
-  [v26 setFrequency:2.0];
+  platterMenuAttachmentBehavior2 = [(_UIPlatterMenuDynamicsController *)self platterMenuAttachmentBehavior];
+  [platterMenuAttachmentBehavior2 setFrequency:2.0];
 
   v27 = [UIAttachmentBehavior alloc];
   v28 = *MEMORY[0x1E695EFF8];
@@ -455,104 +455,104 @@
   [(_UIPlatterMenuDynamicsController *)self setPlatterSnapBehavior:v31];
 
   v32 = [_UIPlatterMenuSnapBehavior alloc];
-  v33 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v34 = [(_UIPlatterMenuSnapBehavior *)v32 initWithItem:v33 attachedToAnchor:v28, v29];
+  menuView3 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  v34 = [(_UIPlatterMenuSnapBehavior *)v32 initWithItem:menuView3 attachedToAnchor:v28, v29];
   [(_UIPlatterMenuDynamicsController *)self setMenuPresentedSnapBehavior:v34];
 
-  v35 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-  [v35 setDamping:0.55];
+  menuPresentedSnapBehavior = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+  [menuPresentedSnapBehavior setDamping:0.55];
 
-  v36 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-  [v36 setFrequency:2.0];
+  menuPresentedSnapBehavior2 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+  [menuPresentedSnapBehavior2 setFrequency:2.0];
 
   v37 = [_UIPlatterMenuSnapBehavior alloc];
-  v38 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v39 = [(_UIPlatterMenuSnapBehavior *)v37 initWithItem:v38 attachedToAnchor:v28, v29];
+  menuView4 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  v39 = [(_UIPlatterMenuSnapBehavior *)v37 initWithItem:menuView4 attachedToAnchor:v28, v29];
   [(_UIPlatterMenuDynamicsController *)self setMenuDismissedSnapBehavior:v39];
 
-  v40 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-  [v40 setDamping:0.3];
+  menuDismissedSnapBehavior = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+  [menuDismissedSnapBehavior setDamping:0.3];
 
-  v41 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-  [v41 setFrequency:1.0];
+  menuDismissedSnapBehavior2 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+  [menuDismissedSnapBehavior2 setFrequency:1.0];
 
   v42 = [UIDynamicItemBehavior alloc];
-  v43 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v67[0] = v43;
+  menuView5 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  v67[0] = menuView5;
   v67[1] = v5;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
   v45 = [(UIDynamicItemBehavior *)v42 initWithItems:v44];
   [(_UIPlatterMenuDynamicsController *)self setNoRotationBehavior:v45];
 
-  v46 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
-  [v46 setDensity:0.0];
+  noRotationBehavior = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
+  [noRotationBehavior setDensity:0.0];
 
-  v47 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
-  [v47 setResistance:0.0];
+  noRotationBehavior2 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
+  [noRotationBehavior2 setResistance:0.0];
 
-  v48 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
-  [v48 setFriction:0.0];
+  noRotationBehavior3 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
+  [noRotationBehavior3 setFriction:0.0];
 
-  v49 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
-  [v49 setAllowsRotation:0];
+  noRotationBehavior4 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
+  [noRotationBehavior4 setAllowsRotation:0];
 
-  v50 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v51 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  [v51 center];
-  v52 = [UIAttachmentBehavior slidingAttachmentWithItem:"slidingAttachmentWithItem:attachmentAnchor:axisOfTranslation:" attachmentAnchor:v50 axisOfTranslation:?];
+  menuView6 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  menuView7 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  [menuView7 center];
+  v52 = [UIAttachmentBehavior slidingAttachmentWithItem:"slidingAttachmentWithItem:attachmentAnchor:axisOfTranslation:" attachmentAnchor:menuView6 axisOfTranslation:?];
   [(_UIPlatterMenuDynamicsController *)self setMenuVerticalLockAttachment:v52];
 
   v53 = [UICollisionBehavior alloc];
   v66[0] = v5;
-  v54 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v66[1] = v54;
+  menuView8 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  v66[1] = menuView8;
   v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
   v56 = [(UICollisionBehavior *)v53 initWithItems:v55];
   [(_UIPlatterMenuDynamicsController *)self setPlatterMenuCollisionBounds:v56];
 
-  v57 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v58 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v58 center];
-  v59 = [UIAttachmentBehavior pinAttachmentWithItem:v5 attachedToItem:v57 attachmentAnchor:?];
+  menuView9 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  platterView2 = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView2 center];
+  v59 = [UIAttachmentBehavior pinAttachmentWithItem:v5 attachedToItem:menuView9 attachmentAnchor:?];
   [(_UIPlatterMenuDynamicsController *)self setPlatterMenuSlidingAttachmentBehavior:v59];
 
-  v60 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v61 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
-  [v60 addBehavior:v61];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  noRotationBehavior5 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
+  [animator addBehavior:noRotationBehavior5];
 
-  v62 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v63 = [(_UIPlatterMenuDynamicsController *)self menuVerticalLockAttachment];
-  [v62 addBehavior:v63];
+  animator2 = [(_UIPlatterMenuDynamicsController *)self animator];
+  menuVerticalLockAttachment = [(_UIPlatterMenuDynamicsController *)self menuVerticalLockAttachment];
+  [animator2 addBehavior:menuVerticalLockAttachment];
 
-  v64 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v65 = [(_UIPlatterMenuDynamicsController *)self platterMenuCollisionBounds];
-  [v64 addBehavior:v65];
+  animator3 = [(_UIPlatterMenuDynamicsController *)self animator];
+  platterMenuCollisionBounds = [(_UIPlatterMenuDynamicsController *)self platterMenuCollisionBounds];
+  [animator3 addBehavior:platterMenuCollisionBounds];
 
   [(_UIPlatterMenuDynamicsController *)self setPlatterItem:v5];
 }
 
 - (void)stopObservingBehavior
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
-  [v3 cancel];
+  observingBehavior = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
+  [observingBehavior cancel];
 
   [(_UIPlatterMenuDynamicsController *)self setObservingBehavior:0];
 }
 
-- (int64_t)_stateForPosition:(CGPoint)a3 offset:(CGVector)a4 velocity:(CGVector)a5
+- (int64_t)_stateForPosition:(CGPoint)position offset:(CGVector)offset velocity:(CGVector)velocity
 {
-  dy = a5.dy;
-  y = a3.y;
-  v8 = [(_UIPlatterMenuDynamicsController *)self _isPlatterInYLockedPosition:a3.x];
-  v9 = [(_UIPlatterMenuDynamicsController *)self state];
+  dy = velocity.dy;
+  y = position.y;
+  v8 = [(_UIPlatterMenuDynamicsController *)self _isPlatterInYLockedPosition:position.x];
+  state = [(_UIPlatterMenuDynamicsController *)self state];
   if (v8)
   {
-    v10 = [(_UIPlatterMenuDynamicsController *)self delegate];
+    delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
     if ([(_UIPlatterMenuDynamicsController *)self state])
     {
       if ([(_UIPlatterMenuDynamicsController *)self state]== 2)
       {
-        [v10 centerForMenuPresented];
+        [delegate centerForMenuPresented];
         v12 = v11;
         [(_UIPlatterMenuDynamicsController *)self menuCenter];
         goto LABEL_5;
@@ -560,7 +560,7 @@
 
       if ([(_UIPlatterMenuDynamicsController *)self state]== 1)
       {
-        [v10 centerForMenuPresented];
+        [delegate centerForMenuPresented];
         v12 = v16;
         [(_UIPlatterMenuDynamicsController *)self menuCenter];
         if (dy >= 0.0 || v13 >= v12 + -40.0)
@@ -568,16 +568,16 @@
 LABEL_5:
           if (v13 > v12 + 40.0 && dy > 0.0)
           {
-            v9 = 3;
+            state = 3;
           }
 
           goto LABEL_23;
         }
 
-        v9 = 2;
+        state = 2;
 LABEL_23:
 
-        return v9;
+        return state;
       }
 
       if ([(_UIPlatterMenuDynamicsController *)self state]!= 3)
@@ -590,7 +590,7 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      [v10 centerForPlatterWithMenuViewDismissed];
+      [delegate centerForPlatterWithMenuViewDismissed];
       if (y >= v17 + -70.0)
       {
         goto LABEL_23;
@@ -599,129 +599,129 @@ LABEL_23:
 
     else
     {
-      [v10 centerForPlatterWithMenuViewDismissed];
+      [delegate centerForPlatterWithMenuViewDismissed];
       if (y >= v15 + -60.0 && (dy >= 0.0 || fabs(dy) <= 500.0))
       {
         goto LABEL_23;
       }
     }
 
-    v9 = 1;
+    state = 1;
     goto LABEL_23;
   }
 
-  return v9;
+  return state;
 }
 
-- (void)performActionsAndEnterState:(int64_t)a3 velocity:(CGVector)a4 underDirectManipulation:(BOOL)a5
+- (void)performActionsAndEnterState:(int64_t)state velocity:(CGVector)velocity underDirectManipulation:(BOOL)manipulation
 {
-  v5 = a5;
-  dy = a4.dy;
+  manipulationCopy = manipulation;
+  dy = velocity.dy;
   v117[4] = *MEMORY[0x1E69E9840];
-  [(_UIPlatterMenuDynamicsController *)self setState:a4.dx];
-  v9 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  v10 = v9;
-  if (a3 > 1)
+  [(_UIPlatterMenuDynamicsController *)self setState:velocity.dx];
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  v10 = delegate;
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [(_UIPlatterMenuDynamicsController *)self setDidPresentCount:[(_UIPlatterMenuDynamicsController *)self didPresentCount]+ 1];
       [(_UIPlatterMenuDynamicsController *)self resetAnimatorToDefaultBehaviors];
-      if (v5)
+      if (manipulationCopy)
       {
-        v35 = [(_UIPlatterMenuDynamicsController *)self platterMenuSlidingAttachmentBehavior];
-        [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v35];
+        platterMenuSlidingAttachmentBehavior = [(_UIPlatterMenuDynamicsController *)self platterMenuSlidingAttachmentBehavior];
+        [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:platterMenuSlidingAttachmentBehavior];
 
-        v36 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-        [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v36];
+        gestureAttachmentBehavior = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+        [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:gestureAttachmentBehavior];
 
         [v10 centerForMenuPresented];
         v38 = v37;
         v40 = v39;
-        v41 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-        [v41 setAnchorPoint:{v38, v40}];
+        menuPresentedSnapBehavior = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+        [menuPresentedSnapBehavior setAnchorPoint:{v38, v40}];
 
         [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
       }
 
       else
       {
-        v99 = [(_UIPlatterMenuDynamicsController *)self animator];
-        v100 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-        [v99 removeBehavior:v100];
+        animator = [(_UIPlatterMenuDynamicsController *)self animator];
+        gestureAttachmentBehavior2 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+        [animator removeBehavior:gestureAttachmentBehavior2];
 
         [v10 centerForMenuPresented];
         v102 = v101;
         v104 = v103;
-        v105 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-        [v105 setAnchorPoint:{v102, v104}];
+        menuPresentedSnapBehavior2 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+        [menuPresentedSnapBehavior2 setAnchorPoint:{v102, v104}];
 
-        v106 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-        [v106 setDamping:0.4];
+        platterSnapBehavior = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+        [platterSnapBehavior setDamping:0.4];
 
-        v107 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-        [v107 setFrequency:1.4];
+        platterSnapBehavior2 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+        [platterSnapBehavior2 setFrequency:1.4];
 
         [v10 centerForPlatterWithMenuViewPresented];
         v109 = v108;
         v111 = v110;
-        v112 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-        [v112 setAnchorPoint:{v109, v111}];
+        platterSnapBehavior3 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+        [platterSnapBehavior3 setAnchorPoint:{v109, v111}];
 
-        v113 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-        [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v113];
+        menuPresentedSnapBehavior3 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+        [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:menuPresentedSnapBehavior3];
 
         [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
       }
-      v34 = ;
+      menuItemBehavior2 = ;
       goto LABEL_24;
     }
 
-    if (a3 != 3)
+    if (state != 3)
     {
       goto LABEL_26;
     }
 
     [(_UIPlatterMenuDynamicsController *)self resetAnimatorToDefaultBehaviors];
-    if (!v5)
+    if (!manipulationCopy)
     {
-      v68 = [(_UIPlatterMenuDynamicsController *)self animator];
-      v69 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-      [v68 removeBehavior:v69];
+      animator2 = [(_UIPlatterMenuDynamicsController *)self animator];
+      gestureAttachmentBehavior3 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+      [animator2 removeBehavior:gestureAttachmentBehavior3];
 
       [v10 centerForPlatterWithMenuViewDismissed];
       v71 = v70;
       v73 = v72;
-      v74 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-      [v74 setAnchorPoint:{v71, v73}];
+      platterSnapBehavior4 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+      [platterSnapBehavior4 setAnchorPoint:{v71, v73}];
 
-      v75 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-      [v75 setDamping:0.3];
+      platterSnapBehavior5 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+      [platterSnapBehavior5 setDamping:0.3];
 
-      v76 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-      [v76 setFrequency:3.0];
+      platterSnapBehavior6 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+      [platterSnapBehavior6 setFrequency:3.0];
 
       [v10 centerForMenuDismissed];
       v78 = v77;
       v80 = v79;
-      v81 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-      [v81 setAnchorPoint:{v78, v80}];
+      menuDismissedSnapBehavior = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+      [menuDismissedSnapBehavior setAnchorPoint:{v78, v80}];
 
-      v56 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-      v117[0] = v56;
-      v57 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
-      v117[1] = v57;
-      v58 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-      v117[2] = v58;
-      v59 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
-      v117[3] = v59;
+      platterSnapBehavior7 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+      v117[0] = platterSnapBehavior7;
+      platterItemBehavior = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
+      v117[1] = platterItemBehavior;
+      menuDismissedSnapBehavior2 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+      v117[2] = menuDismissedSnapBehavior2;
+      menuItemBehavior = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
+      v117[3] = menuItemBehavior;
       v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v117 count:4];
-      v61 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-      v116[0] = v61;
-      v62 = [(_UIPlatterMenuDynamicsController *)self menuView];
-      v116[1] = v62;
+      platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+      v116[0] = platterItem;
+      menuView = [(_UIPlatterMenuDynamicsController *)self menuView];
+      v116[1] = menuView;
       v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:v116 count:2];
-      v64 = self;
+      selfCopy2 = self;
       v65 = v60;
       v66 = v63;
       v67 = 0;
@@ -731,26 +731,26 @@ LABEL_23:
     [v10 centerForMenuDismissed];
     v20 = v19;
     v22 = v21;
-    v23 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-    [v23 setAnchorPoint:{v20, v22}];
+    menuDismissedSnapBehavior3 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+    [menuDismissedSnapBehavior3 setAnchorPoint:{v20, v22}];
 
-    v24 = [(_UIPlatterMenuDynamicsController *)self animator];
-    v25 = [(_UIPlatterMenuDynamicsController *)self platterMenuSlidingAttachmentBehavior];
-    [v24 removeBehavior:v25];
+    animator3 = [(_UIPlatterMenuDynamicsController *)self animator];
+    platterMenuSlidingAttachmentBehavior2 = [(_UIPlatterMenuDynamicsController *)self platterMenuSlidingAttachmentBehavior];
+    [animator3 removeBehavior:platterMenuSlidingAttachmentBehavior2];
 
-    v26 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v26];
+    menuDismissedSnapBehavior4 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:menuDismissedSnapBehavior4];
 
-    v27 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+    gestureAttachmentBehavior4 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
 LABEL_22:
-    v98 = v27;
-    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v27];
+    v98 = gestureAttachmentBehavior4;
+    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:gestureAttachmentBehavior4];
 
-    v34 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
+    menuItemBehavior2 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
     goto LABEL_24;
   }
 
-  if (!a3)
+  if (!state)
   {
     if ([(_UIPlatterMenuDynamicsController *)self didPresentCount]>= 1)
     {
@@ -758,119 +758,119 @@ LABEL_22:
     }
 
     [(_UIPlatterMenuDynamicsController *)self resetAnimatorToDefaultBehaviors];
-    if (v5)
+    if (manipulationCopy)
     {
       [v10 centerForMenuDismissed];
       v29 = v28;
       v31 = v30;
-      v32 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-      [v32 setAnchorPoint:{v29, v31}];
+      menuDismissedSnapBehavior5 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+      [menuDismissedSnapBehavior5 setAnchorPoint:{v29, v31}];
 
-      v18 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+      menuDismissedSnapBehavior6 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
       goto LABEL_14;
     }
 
-    v82 = [(_UIPlatterMenuDynamicsController *)self animator];
-    v83 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-    [v82 removeBehavior:v83];
+    animator4 = [(_UIPlatterMenuDynamicsController *)self animator];
+    gestureAttachmentBehavior5 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+    [animator4 removeBehavior:gestureAttachmentBehavior5];
 
     [v10 centerForPlatterWithMenuViewDismissed];
     v85 = v84;
     v87 = v86;
-    v88 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    [v88 setAnchorPoint:{v85, v87}];
+    platterSnapBehavior8 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    [platterSnapBehavior8 setAnchorPoint:{v85, v87}];
 
-    v89 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    [v89 setDamping:0.3];
+    platterSnapBehavior9 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    [platterSnapBehavior9 setDamping:0.3];
 
-    v90 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    [v90 setFrequency:3.0];
+    platterSnapBehavior10 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    [platterSnapBehavior10 setFrequency:3.0];
 
     [v10 centerForMenuDismissed];
     v92 = v91;
     v94 = v93;
-    v95 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-    [v95 setAnchorPoint:{v92, v94}];
+    menuDismissedSnapBehavior7 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+    [menuDismissedSnapBehavior7 setAnchorPoint:{v92, v94}];
 
-    v96 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v96];
+    platterSnapBehavior11 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:platterSnapBehavior11];
 
-    v97 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
-    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v97];
+    menuDismissedSnapBehavior8 = [(_UIPlatterMenuDynamicsController *)self menuDismissedSnapBehavior];
+    [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:menuDismissedSnapBehavior8];
 
-    v27 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
+    gestureAttachmentBehavior4 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
     goto LABEL_22;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    [v9 centerForMenuPresented];
-    if (v5)
+    [delegate centerForMenuPresented];
+    if (manipulationCopy)
     {
       [(_UIPlatterMenuDynamicsController *)self resetAnimatorToDefaultBehaviors];
       [(_UIPlatterMenuDynamicsController *)self centerForMenuPresentedRelativeToCurrentPlatter];
       v14 = v13;
       v16 = v15;
-      v17 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-      [v17 setAnchorPoint:{v14, v16}];
+      menuPresentedSnapBehavior4 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+      [menuPresentedSnapBehavior4 setAnchorPoint:{v14, v16}];
 
-      v18 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+      menuDismissedSnapBehavior6 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
 LABEL_14:
-      v33 = v18;
-      [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v18];
+      v33 = menuDismissedSnapBehavior6;
+      [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:menuDismissedSnapBehavior6];
 
-      v34 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+      menuItemBehavior2 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
 LABEL_24:
-      v56 = v34;
-      [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v34];
+      platterSnapBehavior7 = menuItemBehavior2;
+      [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:menuItemBehavior2];
       goto LABEL_25;
     }
 
     v42 = v11;
     v43 = v12;
     [(_UIPlatterMenuDynamicsController *)self resetAnimatorToDefaultBehaviors];
-    v44 = [(_UIPlatterMenuDynamicsController *)self animator];
-    v45 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-    [v44 removeBehavior:v45];
+    animator5 = [(_UIPlatterMenuDynamicsController *)self animator];
+    gestureAttachmentBehavior6 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+    [animator5 removeBehavior:gestureAttachmentBehavior6];
 
     [v10 centerForPlatterWithMenuViewPresented];
     v47 = v46;
     v49 = v48;
-    v50 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    [v50 setAnchorPoint:{v47, v49}];
+    platterSnapBehavior12 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    [platterSnapBehavior12 setAnchorPoint:{v47, v49}];
 
-    v51 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    [v51 setDamping:0.4];
+    platterSnapBehavior13 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    [platterSnapBehavior13 setDamping:0.4];
 
-    v52 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    [v52 setFrequency:1.4];
+    platterSnapBehavior14 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    [platterSnapBehavior14 setFrequency:1.4];
 
-    v53 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-    [v53 setAnchorPoint:{v42, v43}];
+    menuPresentedSnapBehavior5 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+    [menuPresentedSnapBehavior5 setAnchorPoint:{v42, v43}];
 
-    v54 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
-    v55 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-    [v54 addLinearVelocity:v55 forItem:{0.0, dy}];
+    platterItemBehavior2 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
+    platterItem2 = [(_UIPlatterMenuDynamicsController *)self platterItem];
+    [platterItemBehavior2 addLinearVelocity:platterItem2 forItem:{0.0, dy}];
 
-    v56 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
-    v115[0] = v56;
-    v57 = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
-    v115[1] = v57;
-    v58 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
-    v115[2] = v58;
-    v59 = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
-    v115[3] = v59;
+    platterSnapBehavior7 = [(_UIPlatterMenuDynamicsController *)self platterSnapBehavior];
+    v115[0] = platterSnapBehavior7;
+    platterItemBehavior = [(_UIPlatterMenuDynamicsController *)self menuPresentedSnapBehavior];
+    v115[1] = platterItemBehavior;
+    menuDismissedSnapBehavior2 = [(_UIPlatterMenuDynamicsController *)self platterItemBehavior];
+    v115[2] = menuDismissedSnapBehavior2;
+    menuItemBehavior = [(_UIPlatterMenuDynamicsController *)self menuItemBehavior];
+    v115[3] = menuItemBehavior;
     v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:v115 count:4];
-    v61 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-    v62 = [(_UIPlatterMenuDynamicsController *)self menuView];
-    v114[1] = v62;
+    platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+    menuView = [(_UIPlatterMenuDynamicsController *)self menuView];
+    v114[1] = menuView;
     v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:v114 count:2];
-    v64 = self;
+    selfCopy2 = self;
     v65 = v60;
     v66 = v63;
     v67 = 2;
 LABEL_20:
-    [(_UIPlatterMenuDynamicsController *)v64 beginTransitionWithAnimatorUsingBehaviors:v65 observedItems:v66 stateIfCompleted:v67];
+    [(_UIPlatterMenuDynamicsController *)selfCopy2 beginTransitionWithAnimatorUsingBehaviors:v65 observedItems:v66 stateIfCompleted:v67];
 
 LABEL_25:
   }
@@ -878,10 +878,10 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)beginTransitionWithAnimatorUsingBehaviors:(id)a3 observedItems:(id)a4 stateIfCompleted:(int64_t)a5
+- (void)beginTransitionWithAnimatorUsingBehaviors:(id)behaviors observedItems:(id)items stateIfCompleted:(int64_t)completed
 {
-  v8 = a3;
-  v9 = a4;
+  behaviorsCopy = behaviors;
+  itemsCopy = items;
   [(_UIPlatterMenuDynamicsController *)self stopObservingBehavior];
   [(_UIPlatterMenuDynamicsController *)self resetAnimatorToDefaultBehaviors];
   v18[0] = MEMORY[0x1E69E9820];
@@ -889,49 +889,49 @@ LABEL_26:
   v18[2] = __109___UIPlatterMenuDynamicsController_beginTransitionWithAnimatorUsingBehaviors_observedItems_stateIfCompleted___block_invoke;
   v18[3] = &unk_1E711AB60;
   v18[4] = self;
-  [v8 enumerateObjectsUsingBlock:v18];
+  [behaviorsCopy enumerateObjectsUsingBlock:v18];
   objc_initWeak(&location, self);
-  v10 = [(UIDynamicItemBehavior *)[_UIDynamicItemObservingBehavior alloc] initWithItems:v9];
+  v10 = [(UIDynamicItemBehavior *)[_UIDynamicItemObservingBehavior alloc] initWithItems:itemsCopy];
   [(_UIPlatterMenuDynamicsController *)self setObservingBehavior:v10];
 
-  v11 = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
-  [v11 setTargetVelocity:{50.0, 50.0}];
+  observingBehavior = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
+  [observingBehavior setTargetVelocity:{50.0, 50.0}];
 
-  v12 = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
-  [v12 setCompletionHandlerInvocationDelay:0.1];
+  observingBehavior2 = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
+  [observingBehavior2 setCompletionHandlerInvocationDelay:0.1];
 
   v15 = MEMORY[0x1E69E9820];
   objc_copyWeak(v16, &location);
-  v16[1] = a5;
+  v16[1] = completed;
   v13 = [(_UIPlatterMenuDynamicsController *)self observingBehavior:v15];
   [v13 setCompletionHandler:&v15];
 
-  v14 = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
-  [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:v14];
+  observingBehavior3 = [(_UIPlatterMenuDynamicsController *)self observingBehavior];
+  [(_UIPlatterMenuDynamicsController *)self addBehaviorIfNotPresent:observingBehavior3];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
 }
 
-- (CGVector)modifiedOffsetForPosition:(CGPoint)a3 offset:(CGVector)a4 touchPosition:(CGPoint)a5 axisLock:(unint64_t)a6
+- (CGVector)modifiedOffsetForPosition:(CGPoint)position offset:(CGVector)offset touchPosition:(CGPoint)touchPosition axisLock:(unint64_t)lock
 {
-  y = a5.y;
-  x = a5.x;
-  dy = a4.dy;
-  dx = a4.dx;
-  v11 = a3.y;
-  v12 = a3.x;
-  v14 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  v15 = v14;
-  if (!a6)
+  y = touchPosition.y;
+  x = touchPosition.x;
+  dy = offset.dy;
+  dx = offset.dx;
+  v11 = position.y;
+  v12 = position.x;
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  v15 = delegate;
+  if (!lock)
   {
     goto LABEL_25;
   }
 
   v16 = 1.0;
-  if (a6 == 1)
+  if (lock == 1)
   {
-    [v14 centerForPlatterWithMenuViewDismissed];
+    [delegate centerForPlatterWithMenuViewDismissed];
     v22 = v21;
     [(_UIPlatterMenuDynamicsController *)self _updateSwipeEdgeMultipliersIfNeededForTouchPosition:x, y];
     if (v12 <= v22)
@@ -941,9 +941,9 @@ LABEL_26:
         goto LABEL_20;
       }
 
-      v26 = [v15 trailingSwipeActionView];
+      trailingSwipeActionView = [v15 trailingSwipeActionView];
 
-      if (!v26)
+      if (!trailingSwipeActionView)
       {
         v18 = 1.0;
         if (dx < 0.0)
@@ -971,9 +971,9 @@ LABEL_26:
 
     else
     {
-      v23 = [v15 leadingSwipeActionView];
+      leadingSwipeActionView = [v15 leadingSwipeActionView];
 
-      if (!v23)
+      if (!leadingSwipeActionView)
       {
         v18 = 1.0;
         if (dx > 0.0)
@@ -1004,22 +1004,22 @@ LABEL_26:
     goto LABEL_21;
   }
 
-  if (a6 != 2)
+  if (lock != 2)
   {
 LABEL_20:
     v18 = 1.0;
     goto LABEL_21;
   }
 
-  [v14 centerForPlatterWithMenuViewPresented];
+  [delegate centerForPlatterWithMenuViewPresented];
   if (v11 >= v17 || (v18 = 2.25, dy >= 0.0))
   {
     [v15 centerForPlatterWithMenuViewDismissed];
     if (v11 > v19 && dy > 0.0)
     {
-      v20 = [(_UIPlatterMenuDynamicsController *)self state];
+      state = [(_UIPlatterMenuDynamicsController *)self state];
       v18 = 2.25;
-      if (v20 != 2)
+      if (state != 2)
       {
         v18 = 15.0;
       }
@@ -1055,23 +1055,23 @@ LABEL_25:
 
 - (CGPoint)centerForMenuPresentedRelativeToCurrentPlatter
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  v4 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v5 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-  [v4 updateItemFromCurrentState:v5];
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+  [animator updateItemFromCurrentState:platterItem];
 
   [(_UIPlatterMenuDynamicsController *)self centerForCurrentPlatterPosition];
   v7 = v6;
   v9 = v8;
-  [v3 centerForMenuPresented];
+  [delegate centerForMenuPresented];
   v11 = v10;
-  v12 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v12 bounds];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView bounds];
   v13 = v9 + CGRectGetHeight(v21) * 0.5;
-  [v3 minimumSpacingBetweenPlatterAndMenu];
+  [delegate minimumSpacingBetweenPlatterAndMenu];
   v15 = v14 + v13;
-  v16 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  [v16 bounds];
+  menuView = [(_UIPlatterMenuDynamicsController *)self menuView];
+  [menuView bounds];
   v17 = v15 + CGRectGetHeight(v22) * 0.5;
 
   if (v17 < v11)
@@ -1088,16 +1088,16 @@ LABEL_25:
 
 - (CGPoint)centerForCurrentPlatterPosition
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v4 = [v3 referenceView];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  referenceView = [animator referenceView];
 
-  v5 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v5 center];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
   v7 = v6;
   v9 = v8;
-  v10 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  v11 = [v10 superview];
-  [v4 convertPoint:v11 fromView:{v7, v9}];
+  platterView2 = [(_UIPlatterMenuDynamicsController *)self platterView];
+  superview = [platterView2 superview];
+  [referenceView convertPoint:superview fromView:{v7, v9}];
   v13 = v12;
   v15 = v14;
 
@@ -1110,15 +1110,15 @@ LABEL_25:
 
 - (CGPoint)platterCenter
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v4 = [v3 referenceView];
-  v5 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v5 center];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  referenceView = [animator referenceView];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
   v7 = v6;
   v9 = v8;
-  v10 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  v11 = [v10 superview];
-  [v4 convertPoint:v11 fromView:{v7, v9}];
+  platterView2 = [(_UIPlatterMenuDynamicsController *)self platterView];
+  superview = [platterView2 superview];
+  [referenceView convertPoint:superview fromView:{v7, v9}];
   v13 = v12;
   v15 = v14;
 
@@ -1131,15 +1131,15 @@ LABEL_25:
 
 - (CGPoint)menuCenter
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v4 = [v3 referenceView];
-  v5 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  [v5 center];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  referenceView = [animator referenceView];
+  menuView = [(_UIPlatterMenuDynamicsController *)self menuView];
+  [menuView center];
   v7 = v6;
   v9 = v8;
-  v10 = [(_UIPlatterMenuDynamicsController *)self menuView];
-  v11 = [v10 superview];
-  [v4 convertPoint:v11 fromView:{v7, v9}];
+  menuView2 = [(_UIPlatterMenuDynamicsController *)self menuView];
+  superview = [menuView2 superview];
+  [referenceView convertPoint:superview fromView:{v7, v9}];
   v13 = v12;
   v15 = v14;
 
@@ -1152,17 +1152,17 @@ LABEL_25:
 
 - (void)resetAnimatorToDefaultBehaviors
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v5 = [v4 behaviors];
+  array = [MEMORY[0x1E695DF70] array];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  behaviors = [animator behaviors];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67___UIPlatterMenuDynamicsController_resetAnimatorToDefaultBehaviors__block_invoke;
   v8[3] = &unk_1E711AB88;
   v8[4] = self;
-  v9 = v3;
-  v6 = v3;
-  [v5 enumerateObjectsUsingBlock:v8];
+  v9 = array;
+  v6 = array;
+  [behaviors enumerateObjectsUsingBlock:v8];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -1172,49 +1172,49 @@ LABEL_25:
   [v6 enumerateObjectsUsingBlock:v7];
 }
 
-- (void)addBehaviorIfNotPresent:(id)a3
+- (void)addBehaviorIfNotPresent:(id)present
 {
-  v8 = a3;
-  v4 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v5 = [v4 behaviors];
-  v6 = [v5 containsObject:v8];
+  presentCopy = present;
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  behaviors = [animator behaviors];
+  v6 = [behaviors containsObject:presentCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(_UIPlatterMenuDynamicsController *)self animator];
-    [v7 addBehavior:v8];
+    animator2 = [(_UIPlatterMenuDynamicsController *)self animator];
+    [animator2 addBehavior:presentCopy];
   }
 }
 
-- (BOOL)isDefaultAnimatorBehavior:(id)a3
+- (BOOL)isDefaultAnimatorBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = [(_UIPlatterMenuDynamicsController *)self platterMenuCollisionBounds];
-  if (v5 == v4)
+  behaviorCopy = behavior;
+  platterMenuCollisionBounds = [(_UIPlatterMenuDynamicsController *)self platterMenuCollisionBounds];
+  if (platterMenuCollisionBounds == behaviorCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = [(_UIPlatterMenuDynamicsController *)self menuVerticalLockAttachment];
-    if (v6 == v4)
+    menuVerticalLockAttachment = [(_UIPlatterMenuDynamicsController *)self menuVerticalLockAttachment];
+    if (menuVerticalLockAttachment == behaviorCopy)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
-      if (v7 == v4)
+      noRotationBehavior = [(_UIPlatterMenuDynamicsController *)self noRotationBehavior];
+      if (noRotationBehavior == behaviorCopy)
       {
         v9 = 1;
       }
 
       else
       {
-        v8 = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
-        v9 = v8 == v4;
+        gestureAttachmentBehavior = [(_UIPlatterMenuDynamicsController *)self gestureAttachmentBehavior];
+        v9 = gestureAttachmentBehavior == behaviorCopy;
       }
     }
   }
@@ -1227,8 +1227,8 @@ LABEL_25:
   panningLockTransformer = self->_panningLockTransformer;
   if (!panningLockTransformer)
   {
-    v4 = [(_UIPlatterMenuDynamicsController *)self delegate];
-    [v4 centerForPlatterWithMenuViewDismissed];
+    delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+    [delegate centerForPlatterWithMenuViewDismissed];
     v6 = v5;
     v8 = v7;
 
@@ -1246,23 +1246,23 @@ LABEL_25:
 
 - (void)_positionSwipeActionViewsForCurrentPlatterViewPosition
 {
-  v29 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  v3 = [v29 leadingSwipeActionView];
-  [v29 initialCenterForLeadingSwipeActionView];
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  leadingSwipeActionView = [delegate leadingSwipeActionView];
+  [delegate initialCenterForLeadingSwipeActionView];
   v5 = v4;
   v7 = v6;
-  v8 = [v29 trailingSwipeActionView];
-  [v29 initialCenterForTrailingSwipeActionView];
+  trailingSwipeActionView = [delegate trailingSwipeActionView];
+  [delegate initialCenterForTrailingSwipeActionView];
   v10 = v9;
   v12 = v11;
-  v13 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v13 frame];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  if (v3)
+  if (leadingSwipeActionView)
   {
     v31.origin.x = v15;
     v31.origin.y = v17;
@@ -1274,13 +1274,13 @@ LABEL_25:
       v22 = v5;
     }
 
-    [v29 platterMenuDynamicsController:self didMoveSwipeView:v3 toPosition:{v22, v7}];
+    [delegate platterMenuDynamicsController:self didMoveSwipeView:leadingSwipeActionView toPosition:{v22, v7}];
   }
 
-  if (v8)
+  if (trailingSwipeActionView)
   {
-    v23 = [(_UIPlatterMenuDynamicsController *)self containerView];
-    [v23 bounds];
+    containerView = [(_UIPlatterMenuDynamicsController *)self containerView];
+    [containerView bounds];
     Width = CGRectGetWidth(v32);
     v33.origin.x = v15;
     v33.origin.y = v17;
@@ -1288,8 +1288,8 @@ LABEL_25:
     v33.size.height = v21;
     v25 = Width - CGRectGetMaxX(v33);
 
-    v26 = [(_UIPlatterMenuDynamicsController *)self containerView];
-    [v26 bounds];
+    containerView2 = [(_UIPlatterMenuDynamicsController *)self containerView];
+    [containerView2 bounds];
     v27 = CGRectGetWidth(v34) + v25 * -0.5;
 
     if (v27 <= v10)
@@ -1302,36 +1302,36 @@ LABEL_25:
       v28 = v10;
     }
 
-    [v29 platterMenuDynamicsController:self didMoveSwipeView:v8 toPosition:{v28, v12}];
+    [delegate platterMenuDynamicsController:self didMoveSwipeView:trailingSwipeActionView toPosition:{v28, v12}];
   }
 }
 
-- (void)_updateSwipeEdgeMultipliersIfNeededForTouchPosition:(CGPoint)a3
+- (void)_updateSwipeEdgeMultipliersIfNeededForTouchPosition:(CGPoint)position
 {
-  x = a3.x;
-  [(_UIPlatterMenuDynamicsController *)self setLeadingSwipeEdgeMultiplier:1.0, a3.y];
+  x = position.x;
+  [(_UIPlatterMenuDynamicsController *)self setLeadingSwipeEdgeMultiplier:1.0, position.y];
   [(_UIPlatterMenuDynamicsController *)self setTrailingSwipeEdgeMultiplier:1.0];
-  v5 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  [v5 centerForPlatterWithMenuViewDismissed];
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  [delegate centerForPlatterWithMenuViewDismissed];
   v7 = v6;
 
-  v8 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v8 center];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
   v10 = v9;
 
   if (v10 >= v7)
   {
     if (v10 > v7)
     {
-      v14 = [(_UIPlatterMenuDynamicsController *)self containerView];
-      [v14 bounds];
+      containerView = [(_UIPlatterMenuDynamicsController *)self containerView];
+      [containerView bounds];
       Width = CGRectGetWidth(v24);
 
-      v16 = [(_UIPlatterMenuDynamicsController *)self platterView];
-      [v16 bounds];
+      platterView2 = [(_UIPlatterMenuDynamicsController *)self platterView];
+      [platterView2 bounds];
       v17 = CGRectGetWidth(v25);
-      v18 = [(_UIPlatterMenuDynamicsController *)self platterView];
-      [v18 center];
+      platterView3 = [(_UIPlatterMenuDynamicsController *)self platterView];
+      [platterView3 center];
       v20 = v17 - v19 + 88.0;
 
       v21 = Width - x;
@@ -1369,18 +1369,18 @@ LABEL_25:
 
 - (BOOL)_isPlatterInYLockedPosition
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self animator];
-  v4 = [(_UIPlatterMenuDynamicsController *)self platterItem];
-  [v3 updateItemFromCurrentState:v4];
+  animator = [(_UIPlatterMenuDynamicsController *)self animator];
+  platterItem = [(_UIPlatterMenuDynamicsController *)self platterItem];
+  [animator updateItemFromCurrentState:platterItem];
 
-  v5 = [(_UIPlatterMenuDynamicsController *)self platterView];
-  [v5 center];
+  platterView = [(_UIPlatterMenuDynamicsController *)self platterView];
+  [platterView center];
   v7 = v6;
-  v8 = [(_UIPlatterMenuDynamicsController *)self delegate];
-  [v8 centerForPlatterWithMenuViewDismissed];
-  LOBYTE(v4) = vabdd_f64(v7, v9) < 2.0;
+  delegate = [(_UIPlatterMenuDynamicsController *)self delegate];
+  [delegate centerForPlatterWithMenuViewDismissed];
+  LOBYTE(platterItem) = vabdd_f64(v7, v9) < 2.0;
 
-  return v4;
+  return platterItem;
 }
 
 - (void)_configureFeedbackGenerator
@@ -1389,77 +1389,77 @@ LABEL_25:
   v7 = [v3 tweakedConfigurationForClass:objc_opt_class() usage:@"swipeAction"];
 
   v4 = [_UIStatesFeedbackGenerator alloc];
-  v5 = [(_UIPlatterMenuDynamicsController *)self containerView];
-  v6 = [(_UIStatesFeedbackGenerator *)v4 initWithConfiguration:v7 view:v5];
+  containerView = [(_UIPlatterMenuDynamicsController *)self containerView];
+  v6 = [(_UIStatesFeedbackGenerator *)v4 initWithConfiguration:v7 view:containerView];
   [(_UIPlatterMenuDynamicsController *)self setSwipeFeedbackGenerator:v6];
 }
 
 - (void)_activateFeedbackIfNeeded
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
-  v4 = [v3 isActive];
+  swipeFeedbackGenerator = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
+  isActive = [swipeFeedbackGenerator isActive];
 
-  if ((v4 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v5 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
-    [v5 activateWithCompletionBlock:0];
+    swipeFeedbackGenerator2 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
+    [swipeFeedbackGenerator2 activateWithCompletionBlock:0];
   }
 }
 
 - (void)_deactivateFeedbackIfNeeded
 {
-  v3 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
-  v4 = [v3 isActive];
+  swipeFeedbackGenerator = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
+  isActive = [swipeFeedbackGenerator isActive];
 
-  if (v4)
+  if (isActive)
   {
-    v5 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
-    [v5 deactivate];
+    swipeFeedbackGenerator2 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
+    [swipeFeedbackGenerator2 deactivate];
   }
 }
 
-- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)a3 finalSelectionState:(BOOL)a4
+- (void)_fireConfirmFeedbackIfNeededForInitialSelectionState:(BOOL)state finalSelectionState:(BOOL)selectionState
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
-  v8 = [v7 isActive];
+  selectionStateCopy = selectionState;
+  stateCopy = state;
+  swipeFeedbackGenerator = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
+  isActive = [swipeFeedbackGenerator isActive];
 
-  if (v8)
+  if (isActive)
   {
-    if (!v4 || v5)
+    if (!selectionStateCopy || stateCopy)
     {
-      if (!v5 || v4)
+      if (!stateCopy || selectionStateCopy)
       {
         return;
       }
 
-      v11 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
+      swipeFeedbackGenerator2 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
       v9 = +[_UIStatesFeedbackGeneratorSwipeActionConfiguration openState];
     }
 
     else
     {
-      v11 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
+      swipeFeedbackGenerator2 = [(_UIPlatterMenuDynamicsController *)self swipeFeedbackGenerator];
       v9 = +[_UIStatesFeedbackGeneratorSwipeActionConfiguration confirmState];
     }
 
     v10 = v9;
-    [v11 transitionToState:v9 ended:1];
+    [swipeFeedbackGenerator2 transitionToState:v9 ended:1];
   }
 }
 
-- (void)setLeadingSwipeActionViewSelected:(BOOL)a3
+- (void)setLeadingSwipeActionViewSelected:(BOOL)selected
 {
   leadingSwipeActionViewSelected = self->_leadingSwipeActionViewSelected;
-  self->_leadingSwipeActionViewSelected = a3;
+  self->_leadingSwipeActionViewSelected = selected;
   [(_UIPlatterMenuDynamicsController *)self _fireConfirmFeedbackIfNeededForInitialSelectionState:leadingSwipeActionViewSelected finalSelectionState:?];
 }
 
-- (void)setTrailingSwipeActionViewSelected:(BOOL)a3
+- (void)setTrailingSwipeActionViewSelected:(BOOL)selected
 {
   trailingSwipeActionViewSelected = self->_trailingSwipeActionViewSelected;
-  self->_trailingSwipeActionViewSelected = a3;
+  self->_trailingSwipeActionViewSelected = selected;
   [(_UIPlatterMenuDynamicsController *)self _fireConfirmFeedbackIfNeededForInitialSelectionState:trailingSwipeActionViewSelected finalSelectionState:?];
 }
 

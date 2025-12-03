@@ -1,26 +1,26 @@
 @interface SUUIGiftTemplateViewElement
-- (SUUIGiftTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIGiftTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIItem)productItem;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIGiftTemplateViewElement
 
-- (SUUIGiftTemplateViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIGiftTemplateViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUIGiftTemplateViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"type"];
+    v10 = [elementCopy getAttribute:@"type"];
     v9->_giftType = [v10 isEqualToString:@"product"];
-    v11 = [v8 getAttribute:@"buyParams"];
+    v11 = [elementCopy getAttribute:@"buyParams"];
     productBuyParams = v9->_productBuyParams;
     v9->_productBuyParams = v11;
 
-    v13 = [v8 getAttribute:@"data-content-id"];
+    v13 = [elementCopy getAttribute:@"data-content-id"];
     v9->_productItemIdentifier = [v13 longLongValue];
   }
 
@@ -76,8 +76,8 @@
 
   if ([v26[5] count])
   {
-    v7 = [v26[5] firstObject];
-    [v3 setObject:v7 forKey:*MEMORY[0x277D6A2F0]];
+    firstObject = [v26[5] firstObject];
+    [v3 setObject:firstObject forKey:*MEMORY[0x277D6A2F0]];
   }
 
   if ([v26[5] count] >= 2)
@@ -234,21 +234,21 @@ void __42__SUUIGiftTemplateViewElement_productItem__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIGiftTemplateViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_giftType = [(SUUIGiftTemplateViewElement *)v4 giftType];
-    v7 = [(NSString *)v4->_productBuyParams copy];
+    self->_giftType = [(SUUIGiftTemplateViewElement *)elementCopy giftType];
+    v7 = [(NSString *)elementCopy->_productBuyParams copy];
     productBuyParams = self->_productBuyParams;
     self->_productBuyParams = v7;
 
-    self->_productItemIdentifier = v4->_productItemIdentifier;
+    self->_productItemIdentifier = elementCopy->_productItemIdentifier;
   }
 
   return v6;

@@ -1,12 +1,12 @@
 @interface PLKCachedLegibilityContentDataSource
 + (id)_sharedImageCaches;
-+ (id)attributedStringContentDataSourceForMaxSize:(CGSize)a3 scale:(double)a4 cacheProvider:(id)a5 metricsProvider:(id)a6;
++ (id)attributedStringContentDataSourceForMaxSize:(CGSize)size scale:(double)scale cacheProvider:(id)provider metricsProvider:(id)metricsProvider;
 - (BOOL)isEmpty;
-- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)a3;
-- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)a3 legibilityGenerator:(id)a4;
-- (void)prewarmContentForObjects:(id)a3 legibilityDescriptors:(id)a4;
-- (void)removeAllObjectsWithCompletion:(id)a3;
-- (void)removeContentForObjects:(id)a3 legibilityDescriptors:(id)a4;
+- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)generator;
+- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)generator legibilityGenerator:(id)legibilityGenerator;
+- (void)prewarmContentForObjects:(id)objects legibilityDescriptors:(id)descriptors;
+- (void)removeAllObjectsWithCompletion:(id)completion;
+- (void)removeContentForObjects:(id)objects legibilityDescriptors:(id)descriptors;
 - (void)synchonrouslyRemoveAllObjects;
 @end
 
@@ -32,34 +32,34 @@ uint64_t __58__PLKCachedLegibilityContentDataSource__sharedImageCaches__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)attributedStringContentDataSourceForMaxSize:(CGSize)a3 scale:(double)a4 cacheProvider:(id)a5 metricsProvider:(id)a6
++ (id)attributedStringContentDataSourceForMaxSize:(CGSize)size scale:(double)scale cacheProvider:(id)provider metricsProvider:(id)metricsProvider
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a5;
-  v12 = a6;
-  v43 = [MEMORY[0x277CEC5B0] plk_sharedMemoryPoolForMaxSize:0 scale:width contextType:{height, a4}];
-  v13 = [PLKImageRendererFormat formatForContextType:0 scale:a4 memoryPool:?];
-  if (!v12)
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
+  metricsProviderCopy = metricsProvider;
+  v43 = [MEMORY[0x277CEC5B0] plk_sharedMemoryPoolForMaxSize:0 scale:width contextType:{height, scale}];
+  v13 = [PLKImageRendererFormat formatForContextType:0 scale:scale memoryPool:?];
+  if (!metricsProviderCopy)
   {
-    v12 = objc_opt_new();
+    metricsProviderCopy = objc_opt_new();
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v11 plk_contentCache];
+    plk_contentCache = [providerCopy plk_contentCache];
   }
 
   else
   {
-    v14 = 0;
+    plk_contentCache = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v11 plk_legibilityCache];
-    v16 = v15;
-    if (v14 && v15)
+    plk_legibilityCache = [providerCopy plk_legibilityCache];
+    v16 = plk_legibilityCache;
+    if (plk_contentCache && plk_legibilityCache)
     {
       goto LABEL_16;
     }
@@ -72,38 +72,38 @@ uint64_t __58__PLKCachedLegibilityContentDataSource__sharedImageCaches__block_in
 
   v17 = +[PLKCachedLegibilityContentDataSource _sharedImageCaches];
   objc_sync_enter(v17);
-  v18 = [MEMORY[0x277CF0D70] optionsWithContainerPathProvider:v11];
-  v19 = [v11 plk_contentCacheIdentifier];
-  v20 = [v17 objectForKey:v19];
+  v18 = [MEMORY[0x277CF0D70] optionsWithContainerPathProvider:providerCopy];
+  plk_contentCacheIdentifier = [providerCopy plk_contentCacheIdentifier];
+  v20 = [v17 objectForKey:plk_contentCacheIdentifier];
 
-  v14 = v20;
+  plk_contentCache = v20;
   if (!v20)
   {
     v21 = objc_alloc(MEMORY[0x277CF0D68]);
-    v22 = [v11 plk_contentCacheIdentifier];
-    v14 = [v21 initWithUniqueIdentifier:v22 options:v18];
+    plk_contentCacheIdentifier2 = [providerCopy plk_contentCacheIdentifier];
+    plk_contentCache = [v21 initWithUniqueIdentifier:plk_contentCacheIdentifier2 options:v18];
 
-    v23 = [v11 plk_contentCacheIdentifier];
-    [v17 setObject:v14 forKey:v23];
+    plk_contentCacheIdentifier3 = [providerCopy plk_contentCacheIdentifier];
+    [v17 setObject:plk_contentCache forKey:plk_contentCacheIdentifier3];
   }
 
-  v24 = [v11 plk_legibilityCacheIdentifier];
-  v25 = [v17 objectForKey:v24];
+  plk_legibilityCacheIdentifier = [providerCopy plk_legibilityCacheIdentifier];
+  v25 = [v17 objectForKey:plk_legibilityCacheIdentifier];
 
   if (!v25)
   {
     v26 = objc_alloc(MEMORY[0x277CF0D68]);
-    v27 = [v11 plk_legibilityCacheIdentifier];
-    v25 = [v26 initWithUniqueIdentifier:v27 options:v18];
+    plk_legibilityCacheIdentifier2 = [providerCopy plk_legibilityCacheIdentifier];
+    v25 = [v26 initWithUniqueIdentifier:plk_legibilityCacheIdentifier2 options:v18];
 
-    v28 = [v11 plk_legibilityCacheIdentifier];
-    [v17 setObject:v25 forKey:v28];
+    plk_legibilityCacheIdentifier3 = [providerCopy plk_legibilityCacheIdentifier];
+    [v17 setObject:v25 forKey:plk_legibilityCacheIdentifier3];
   }
 
   objc_sync_exit(v17);
   v16 = v25;
 LABEL_16:
-  if (v14 && v16)
+  if (plk_contentCache && v16)
   {
     v29 = [PLKCachedImageGenerator alloc];
     v47[0] = MEMORY[0x277D85DD0];
@@ -112,18 +112,18 @@ LABEL_16:
     v47[3] = &unk_27835B3A8;
     v50 = width;
     v51 = height;
-    v48 = v12;
+    v48 = metricsProviderCopy;
     v49 = v13;
     v30 = v13;
-    v31 = v12;
-    v32 = [(PLKCachedImageGenerator *)v29 initWithCache:v14 keyGenerator:&__block_literal_global_98 imageGenerator:v47];
+    v31 = metricsProviderCopy;
+    v32 = [(PLKCachedImageGenerator *)v29 initWithCache:plk_contentCache keyGenerator:&__block_literal_global_98 imageGenerator:v47];
     v33 = [PLKCachedImageGenerator alloc];
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSourceForMaxSize_scale_cacheProvider_metricsProvider___block_invoke_2;
     v44[3] = &unk_27835B3D0;
     v45 = v32;
-    v46 = a4;
+    scaleCopy = scale;
     v34 = v32;
     v35 = [(PLKCachedImageGenerator *)v33 initWithCache:v16 keyGenerator:&__block_literal_global_98 imageGenerator:v44];
     v36 = [MEMORY[0x277D3EC60] operationQueueSchedulerWithMaxConcurrentOperationCount:4 qualityOfService:6 name:@"Key Scheduler"];
@@ -145,7 +145,7 @@ LABEL_16:
     v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLKCachedLegibilityContentDataSource Image caches could not be setup!"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [PLKCachedLegibilityContentDataSource attributedStringContentDataSourceForMaxSize:a2 scale:a1 cacheProvider:v41 metricsProvider:?];
+      [PLKCachedLegibilityContentDataSource attributedStringContentDataSourceForMaxSize:a2 scale:self cacheProvider:v41 metricsProvider:?];
     }
 
     [v41 UTF8String];
@@ -211,48 +211,48 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
   return v19;
 }
 
-- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)a3
+- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)generator
 {
   [(PLKCachedLegibilityContentDataSource *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)a3 legibilityGenerator:(id)a4
+- (PLKCachedLegibilityContentDataSource)initWithContentGenerator:(id)generator legibilityGenerator:(id)legibilityGenerator
 {
   v5.receiver = self;
   v5.super_class = PLKCachedLegibilityContentDataSource;
-  return [(PLKLegibilityContentDataSource *)&v5 initWithContentGenerator:a3 legibilityGenerator:a4];
+  return [(PLKLegibilityContentDataSource *)&v5 initWithContentGenerator:generator legibilityGenerator:legibilityGenerator];
 }
 
 - (BOOL)isEmpty
 {
-  v3 = [(PLKLegibilityContentDataSource *)self contentGenerator];
-  v4 = [v3 cache];
-  v5 = [v4 allKeys];
-  v6 = [v5 count];
+  contentGenerator = [(PLKLegibilityContentDataSource *)self contentGenerator];
+  cache = [contentGenerator cache];
+  allKeys = [cache allKeys];
+  v6 = [allKeys count];
 
-  v7 = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
-  v8 = [v7 cache];
-  v9 = [v8 allKeys];
-  v10 = v6 | [v9 count];
+  legibilityGenerator = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
+  cache2 = [legibilityGenerator cache];
+  allKeys2 = [cache2 allKeys];
+  v10 = v6 | [allKeys2 count];
 
   return v10 == 0;
 }
 
-- (void)prewarmContentForObjects:(id)a3 legibilityDescriptors:(id)a4
+- (void)prewarmContentForObjects:(id)objects legibilityDescriptors:(id)descriptors
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] && objc_msgSend(v7, "count"))
+  objectsCopy = objects;
+  descriptorsCopy = descriptors;
+  if ([objectsCopy count] && objc_msgSend(descriptorsCopy, "count"))
   {
-    v33 = [(PLKLegibilityContentDataSource *)self contentGenerator];
-    v32 = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
+    contentGenerator = [(PLKLegibilityContentDataSource *)self contentGenerator];
+    legibilityGenerator = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
     v8 = _os_activity_create(&dword_21E5D5000, "<PLKCachedLegibilityContentDataSource prewarmContentForObjects:legibilityDescriptor:>", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = [MEMORY[0x277D3EC38] activityWrapping:v8];
 
-    v29 = [v9 track];
+    track = [v9 track];
 
     v10 = PLKLogRendering();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -262,11 +262,11 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
       *buf = 138544130;
       v40 = v12;
       v41 = 2048;
-      v42 = self;
+      selfCopy = self;
       v43 = 2112;
-      v44 = v6;
+      v44 = objectsCopy;
       v45 = 2114;
-      v46 = v7;
+      v46 = descriptorsCopy;
       _os_log_impl(&dword_21E5D5000, v10, OS_LOG_TYPE_INFO, "<%{public}@:%p prewarmContentForObjects:%@ legibilityDescriptors:%{public}@>", buf, 0x2Au);
     }
 
@@ -276,8 +276,8 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v30 = v7;
-    obj = v7;
+    v30 = descriptorsCopy;
+    obj = descriptorsCopy;
     v15 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v15)
     {
@@ -294,12 +294,12 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
           }
 
           v19 = *(*(&v34 + 1) + 8 * v18);
-          v20 = [MEMORY[0x277CBEB98] setWithArray:v6];
-          v21 = [v33 prewarmObjects:v20 context:v19];
+          v20 = [MEMORY[0x277CBEB98] setWithArray:objectsCopy];
+          v21 = [contentGenerator prewarmObjects:v20 context:v19];
 
           [v13 bs_safeAddObject:v21];
-          v22 = [MEMORY[0x277CBEB98] setWithArray:v6];
-          v23 = [v32 prewarmObjects:v22 context:v19];
+          v22 = [MEMORY[0x277CBEB98] setWithArray:objectsCopy];
+          v23 = [legibilityGenerator prewarmObjects:v22 context:v19];
 
           [v14 bs_safeAddObject:v23];
           ++v18;
@@ -315,28 +315,28 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
     v24 = MEMORY[0x277D3EC50];
     v25 = [v13 arrayByAddingObjectsFromArray:v14];
     v26 = [v24 join:v25];
-    v27 = [v26 trackWithActivity:v29];
+    v27 = [v26 trackWithActivity:track];
 
-    v7 = v30;
+    descriptorsCopy = v30;
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeContentForObjects:(id)a3 legibilityDescriptors:(id)a4
+- (void)removeContentForObjects:(id)objects legibilityDescriptors:(id)descriptors
 {
   v62 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v38 = v6;
-  if ([v6 count])
+  objectsCopy = objects;
+  descriptorsCopy = descriptors;
+  v38 = objectsCopy;
+  if ([objectsCopy count])
   {
-    v37 = [(PLKLegibilityContentDataSource *)self contentGenerator];
-    v36 = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
+    contentGenerator = [(PLKLegibilityContentDataSource *)self contentGenerator];
+    legibilityGenerator = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
     v8 = _os_activity_create(&dword_21E5D5000, "<PLKCachedLegibilityContentDataSource removeContentForObjects:legibilityDescriptors:>", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
     v9 = [MEMORY[0x277D3EC38] activityWrapping:v8];
 
-    v30 = [v9 track];
+    track = [v9 track];
 
     v10 = PLKLogRendering();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -346,11 +346,11 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
       *buf = 138544130;
       v55 = v12;
       v56 = 2048;
-      v57 = self;
+      selfCopy = self;
       v58 = 2048;
-      v59 = [v6 count];
+      v59 = [objectsCopy count];
       v60 = 2114;
-      v61 = v7;
+      v61 = descriptorsCopy;
       _os_log_impl(&dword_21E5D5000, v10, OS_LOG_TYPE_INFO, "<%{public}@:%p removeContentForObjects:%lu legibilityDescriptors:%{public}@>", buf, 0x2Au);
     }
 
@@ -360,8 +360,8 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v31 = v7;
-    obj = v7;
+    v31 = descriptorsCopy;
+    obj = descriptorsCopy;
     v13 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v13)
     {
@@ -381,7 +381,7 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
           v46[1] = 3221225472;
           v46[2] = __86__PLKCachedLegibilityContentDataSource_removeContentForObjects_legibilityDescriptors___block_invoke;
           v46[3] = &unk_27835B3F8;
-          v17 = v37;
+          v17 = contentGenerator;
           v47 = v17;
           v48 = v16;
           v18 = [v38 bs_mapNoNulls:v46];
@@ -389,7 +389,7 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
           v43[1] = 3221225472;
           v43[2] = __86__PLKCachedLegibilityContentDataSource_removeContentForObjects_legibilityDescriptors___block_invoke_2;
           v43[3] = &unk_27835B3F8;
-          v19 = v36;
+          v19 = legibilityGenerator;
           v44 = v19;
           v45 = v16;
           v20 = [v38 bs_mapNoNulls:v43];
@@ -422,9 +422,9 @@ id __120__PLKCachedLegibilityContentDataSource_attributedStringContentDataSource
     v25 = MEMORY[0x277D3EC50];
     v26 = [v35 arrayByAddingObjectsFromArray:v34];
     v27 = [v25 join:v26];
-    v28 = [v27 trackWithActivity:v30];
+    v28 = [v27 trackWithActivity:track];
 
-    v7 = v31;
+    descriptorsCopy = v31;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -448,14 +448,14 @@ id __86__PLKCachedLegibilityContentDataSource_removeContentForObjects_legibility
   return v4;
 }
 
-- (void)removeAllObjectsWithCompletion:(id)a3
+- (void)removeAllObjectsWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_21E5D5000, "<PLKCachedLegibilityContentDataSource removeContentForObjects:legibilityDescriptors:>", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v6 = [MEMORY[0x277D3EC38] activityWrapping:v5];
 
-  v7 = [v6 track];
+  track = [v6 track];
 
   v8 = PLKLogRendering();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -465,30 +465,30 @@ id __86__PLKCachedLegibilityContentDataSource_removeContentForObjects_legibility
     *buf = 138543618;
     v27 = v10;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21E5D5000, v8, OS_LOG_TYPE_INFO, "<%{public}@:%p removeAllObjects>", buf, 0x16u);
   }
 
-  v11 = [(PLKLegibilityContentDataSource *)self contentGenerator];
+  contentGenerator = [(PLKLegibilityContentDataSource *)self contentGenerator];
   v12 = [MEMORY[0x277CCAC30] predicateWithValue:1];
-  v13 = [v11 removeImagesForPredicate:v12];
+  v13 = [contentGenerator removeImagesForPredicate:v12];
 
-  v14 = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
+  legibilityGenerator = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
   v15 = [MEMORY[0x277CCAC30] predicateWithValue:1];
-  v16 = [v14 removeImagesForPredicate:v15];
+  v16 = [legibilityGenerator removeImagesForPredicate:v15];
 
   v17 = MEMORY[0x277D3EC50];
   v25[0] = v13;
   v25[1] = v16;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
   v19 = [v17 join:v18];
-  v20 = [v19 trackWithActivity:v7];
+  v20 = [v19 trackWithActivity:track];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __71__PLKCachedLegibilityContentDataSource_removeAllObjectsWithCompletion___block_invoke;
   v23[3] = &unk_27835B448;
-  v24 = v4;
-  v21 = v4;
+  v24 = completionCopy;
+  v21 = completionCopy;
   [v20 addCompletionBlock:v23];
 
   v22 = *MEMORY[0x277D85DE8];
@@ -519,9 +519,9 @@ uint64_t __71__PLKCachedLegibilityContentDataSource_removeAllObjectsWithCompleti
   {
     do
     {
-      v5 = [MEMORY[0x277CBEB88] currentRunLoop];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
       v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:0.5];
-      [v5 runUntilDate:v6];
+      [currentRunLoop runUntilDate:v6];
     }
 
     while (![v4 hasBeenSignalled]);

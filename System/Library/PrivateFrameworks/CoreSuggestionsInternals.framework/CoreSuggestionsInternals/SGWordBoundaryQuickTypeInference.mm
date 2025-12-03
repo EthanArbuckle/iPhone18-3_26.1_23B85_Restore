@@ -1,20 +1,20 @@
 @interface SGWordBoundaryQuickTypeInference
-+ (BOOL)_probablePriorPredictionInContext:(id)a3 predictedLabel:(int64_t)a4;
-+ (id)quickTypeTriggerForContext:(id)a3 localeIdentifier:(id)a4 modelConfigPath:(id)a5 espressoBinFilePath:(id)a6 useContactNames:(BOOL)a7;
++ (BOOL)_probablePriorPredictionInContext:(id)context predictedLabel:(int64_t)label;
++ (id)quickTypeTriggerForContext:(id)context localeIdentifier:(id)identifier modelConfigPath:(id)path espressoBinFilePath:(id)filePath useContactNames:(BOOL)names;
 @end
 
 @implementation SGWordBoundaryQuickTypeInference
 
-+ (BOOL)_probablePriorPredictionInContext:(id)a3 predictedLabel:(int64_t)a4
++ (BOOL)_probablePriorPredictionInContext:(id)context predictedLabel:(int64_t)label
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy__1496;
   v13[4] = __Block_byref_object_dispose__1497;
-  v14 = [SGDataDetectorMatch detectionsInPlainText:v5 baseDate:0];
+  v14 = [SGDataDetectorMatch detectionsInPlainText:contextCopy baseDate:0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__SGWordBoundaryQuickTypeInference__probablePriorPredictionInContext_predictedLabel___block_invoke;
@@ -22,13 +22,13 @@
   v12[4] = v13;
   v6 = MEMORY[0x2383809F0](v12);
   v7 = v6;
-  if ((a4 - 1) >= 6)
+  if ((label - 1) >= 6)
   {
     v9 = sgQuicktypeLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
       *buf = 134217984;
-      v16 = a4;
+      labelCopy = label;
       _os_log_fault_impl(&dword_231E60000, v9, OS_LOG_TYPE_FAULT, "SGWordBoundaryQuickTypeInference - Unexpected label %ld", buf, 0xCu);
     }
 
@@ -37,7 +37,7 @@
 
   else
   {
-    v8 = (*(v6 + 16))(v6, dword_232106DB8[a4 - 1]);
+    v8 = (*(v6 + 16))(v6, dword_232106DB8[label - 1]);
   }
 
   _Block_object_dispose(v13, 8);
@@ -95,15 +95,15 @@ LABEL_11:
   return v8;
 }
 
-+ (id)quickTypeTriggerForContext:(id)a3 localeIdentifier:(id)a4 modelConfigPath:(id)a5 espressoBinFilePath:(id)a6 useContactNames:(BOOL)a7
++ (id)quickTypeTriggerForContext:(id)context localeIdentifier:(id)identifier modelConfigPath:(id)path espressoBinFilePath:(id)filePath useContactNames:(BOOL)names
 {
   v82 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [MEMORY[0x277D02548] languageForLocaleIdentifier:v12];
-  v16 = [objc_alloc(MEMORY[0x277CBEB38]) initWithContentsOfFile:v13];
+  contextCopy = context;
+  identifierCopy = identifier;
+  pathCopy = path;
+  filePathCopy = filePath;
+  v15 = [MEMORY[0x277D02548] languageForLocaleIdentifier:identifierCopy];
+  v16 = [objc_alloc(MEMORY[0x277CBEB38]) initWithContentsOfFile:pathCopy];
   v17 = v16;
   if (v16)
   {
@@ -168,9 +168,9 @@ LABEL_11:
           v58[3] = &unk_27894B0C8;
           v61 = &v64;
           v62 = v78;
-          v63 = a7;
+          namesCopy = names;
           v59 = v15;
-          v24 = v57;
+          v24 = contextCopy;
           v60 = v24;
           v52 = MEMORY[0x2383809F0](v58);
           v76[0] = @"INPUT_TEXT";
@@ -178,7 +178,7 @@ LABEL_11:
           v77[0] = v24;
           v77[1] = MEMORY[0x277CBEC38];
           v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v77 forKeys:v76 count:2];
-          v25 = [(SGEspressoModel *)SGContactSharingModel modelWithConfigPath:v13 binPath:v14];
+          v25 = [(SGEspressoModel *)SGContactSharingModel modelWithConfigPath:pathCopy binPath:filePathCopy];
           v51 = v25;
           if (!v25)
           {
@@ -186,9 +186,9 @@ LABEL_11:
             if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
             {
               *buf = 138412546;
-              v71 = v13;
+              v71 = pathCopy;
               v72 = 2112;
-              v73 = v14;
+              v73 = filePathCopy;
               _os_log_fault_impl(&dword_231E60000, log, OS_LOG_TYPE_FAULT, "SGWordBoundaryQuickTypeInference - Could not initialize model with config path: %@, bin path: %@", buf, 0x16u);
             }
 
@@ -239,7 +239,7 @@ LABEL_11:
 
           else
           {
-            if (![a1 _probablePriorPredictionInContext:v49 predictedLabel:v53])
+            if (![self _probablePriorPredictionInContext:v49 predictedLabel:v53])
             {
               v41 = sgQuicktypeLogHandle();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -324,7 +324,7 @@ LABEL_32:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         *v78 = 138412802;
-        *&v78[4] = v12;
+        *&v78[4] = identifierCopy;
         *&v78[12] = 2112;
         *&v78[14] = v15;
         *&v78[22] = 2112;

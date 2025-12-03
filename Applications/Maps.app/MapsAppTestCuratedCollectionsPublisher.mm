@@ -1,20 +1,20 @@
 @interface MapsAppTestCuratedCollectionsPublisher
 - (BOOL)runTest;
-- (void)_dispatchAfterShortDelay:(id)a3;
+- (void)_dispatchAfterShortDelay:(id)delay;
 - (void)_enterSearchModeAndPerformPublisherScrollTest;
-- (void)_performScrollTestOfScrollView:(id)a3 completion:(id)a4;
+- (void)_performScrollTestOfScrollView:(id)view completion:(id)completion;
 - (void)_selectAndScrollPublisherCollections;
 - (void)_startTestAndPerformScrollTest;
 @end
 
 @implementation MapsAppTestCuratedCollectionsPublisher
 
-- (void)_performScrollTestOfScrollView:(id)a3 completion:(id)a4
+- (void)_performScrollTestOfScrollView:(id)view completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MapsAppTest *)self testName];
-  v9 = [v8 stringByAppendingString:@" - scroll"];
+  viewCopy = view;
+  completionCopy = completion;
+  testName = [(MapsAppTest *)self testName];
+  v9 = [testName stringByAppendingString:@" - scroll"];
 
   [(MapsAppTest *)self startedSubTest:v9];
   objc_initWeak(&location, self);
@@ -32,7 +32,7 @@
   objc_copyWeak(&v27, &location);
   v18 = v9;
   v25 = v18;
-  v19 = v7;
+  v19 = completionCopy;
   v26 = v19;
   v20 = [RPTGroupScrollTestParameters newWithTestName:v18 parameters:v17 completionHandler:&v21];
 
@@ -42,23 +42,23 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_dispatchAfterShortDelay:(id)a3
+- (void)_dispatchAfterShortDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v4 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100949A74;
   block[3] = &unk_101661760;
-  v7 = v3;
-  v5 = v3;
+  v7 = delayCopy;
+  v5 = delayCopy;
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
 - (void)_selectAndScrollPublisherCollections
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptSelectFirstGuidePublisher];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptSelectFirstGuidePublisher];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -70,8 +70,8 @@
 
 - (void)_enterSearchModeAndPerformPublisherScrollTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestEnterSearchMode];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestEnterSearchMode];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -90,10 +90,10 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_isUsingSampleProactiveData];
+  options = [(MapsAppTest *)self options];
+  _mapstest_isUsingSampleProactiveData = [options _mapstest_isUsingSampleProactiveData];
 
-  if (v4)
+  if (_mapstest_isUsingSampleProactiveData)
   {
     v5 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;

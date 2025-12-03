@@ -1,43 +1,43 @@
 @interface EKICSPreviewModel
-- (BOOL)shouldAllowDeleteEvent:(id)a3;
-- (BOOL)shouldAllowUpdateEvent:(id)a3;
-- (EKICSPreviewModel)initWithICSData:(id)a3 eventStore:(id)a4 options:(unint64_t)a5;
+- (BOOL)shouldAllowDeleteEvent:(id)event;
+- (BOOL)shouldAllowUpdateEvent:(id)event;
+- (EKICSPreviewModel)initWithICSData:(id)data eventStore:(id)store options:(unint64_t)options;
 - (NSArray)allEvents;
 - (NSArray)importedEvents;
 - (NSArray)unimportedEvents;
-- (id)importEvent:(id)a3 intoCalendar:(id)a4;
-- (void)importAllIntoCalendar:(id)a3;
+- (id)importEvent:(id)event intoCalendar:(id)calendar;
+- (void)importAllIntoCalendar:(id)calendar;
 @end
 
 @implementation EKICSPreviewModel
 
-- (EKICSPreviewModel)initWithICSData:(id)a3 eventStore:(id)a4 options:(unint64_t)a5
+- (EKICSPreviewModel)initWithICSData:(id)data eventStore:(id)store options:(unint64_t)options
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  storeCopy = store;
   v48.receiver = self;
   v48.super_class = EKICSPreviewModel;
   v10 = [(EKICSPreviewModel *)&v48 init];
   v11 = v10;
   if (v10)
   {
-    v42 = v9;
-    objc_storeStrong(&v10->_destStore, a4);
-    v43 = v8;
-    v12 = [v8 copy];
+    v42 = storeCopy;
+    objc_storeStrong(&v10->_destStore, store);
+    v43 = dataCopy;
+    v12 = [dataCopy copy];
     data = v11->_data;
     v11->_data = v12;
 
-    v11->_options = a5;
+    v11->_options = options;
     v14 = [objc_alloc(MEMORY[0x1E6966A18]) initWithEKOptions:48];
     tempStore = v11->_tempStore;
     v11->_tempStore = v14;
 
     v17 = v11->_data;
     v16 = v11->_tempStore;
-    v18 = [(EKEventStore *)v16 defaultCalendarForNewEvents];
-    v19 = [(EKEventStore *)v16 importICSData:v17 intoCalendar:v18 options:*MEMORY[0x1E6992E30] | *MEMORY[0x1E6992E28] | v11->_options];
+    defaultCalendarForNewEvents = [(EKEventStore *)v16 defaultCalendarForNewEvents];
+    v19 = [(EKEventStore *)v16 importICSData:v17 intoCalendar:defaultCalendarForNewEvents options:*MEMORY[0x1E6992E30] | *MEMORY[0x1E6992E28] | v11->_options];
 
     v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
     importedEvents = v11->_importedEvents;
@@ -78,25 +78,25 @@
         }
 
         v33 = *(*(&v44 + 1) + 8 * i);
-        if (a5)
+        if (options)
         {
-          v34 = [*(*(&v44 + 1) + 8 * i) notes];
-          v35 = [v34 stringByReplacingOccurrencesOfString:@"=0D=0A" withString:&stru_1F4EF6790];
+          notes = [*(*(&v44 + 1) + 8 * i) notes];
+          v35 = [notes stringByReplacingOccurrencesOfString:@"=0D=0A" withString:&stru_1F4EF6790];
           [v33 setNotes:v35];
         }
 
-        v36 = [v33 uniqueID];
-        v37 = [(EKEventStore *)v11->_destStore eventWithUniqueId:v36];
+        uniqueID = [v33 uniqueID];
+        v37 = [(EKEventStore *)v11->_destStore eventWithUniqueId:uniqueID];
         if (!v37)
         {
           goto LABEL_12;
         }
 
-        [(NSMutableSet *)v11->_eventsAllowingDelete addObject:v36];
-        v38 = [v37 sequenceNumber];
-        if (v38 < [v33 sequenceNumber])
+        [(NSMutableSet *)v11->_eventsAllowingDelete addObject:uniqueID];
+        sequenceNumber = [v37 sequenceNumber];
+        if (sequenceNumber < [v33 sequenceNumber])
         {
-          [(NSMutableSet *)v11->_eventsAllowingUpdate addObject:v36];
+          [(NSMutableSet *)v11->_eventsAllowingUpdate addObject:uniqueID];
 LABEL_12:
           v39 = v11->_unimportedEvents;
           v40 = v33;
@@ -115,8 +115,8 @@ LABEL_14:
       {
 LABEL_16:
 
-        v9 = v42;
-        v8 = v43;
+        storeCopy = v42;
+        dataCopy = v43;
         break;
       }
     }
@@ -155,18 +155,18 @@ LABEL_16:
   return v3;
 }
 
-- (id)importEvent:(id)a3 intoCalendar:(id)a4
+- (id)importEvent:(id)event intoCalendar:(id)calendar
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  calendarCopy = calendar;
   v8 = self->_data;
   if (v8)
   {
-    v9 = [v6 uniqueID];
-    v28 = v9;
-    v10 = [MEMORY[0x1E695DFB0] null];
-    v29[0] = v10;
+    uniqueID = [eventCopy uniqueID];
+    v28 = uniqueID;
+    null = [MEMORY[0x1E695DFB0] null];
+    v29[0] = null;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
 
     destStore = self->_destStore;
@@ -175,58 +175,58 @@ LABEL_16:
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
     v26 = v8;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-    v25 = v7;
+    v25 = calendarCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
     v16 = [(EKEventStore *)destStore importEventsWithExternalIDs:v13 fromICSData:v14 intoCalendars:v15 options:*MEMORY[0x1E6992E38] | *MEMORY[0x1E6992E28] | self->_options | 0x100000 batchSize:0];
-    v17 = [v16 firstObject];
-    v18 = [v17 firstObject];
+    firstObject = [v16 firstObject];
+    v17FirstObject = [firstObject firstObject];
 
-    if (v18)
+    if (v17FirstObject)
     {
       [(EKICSPreviewModel *)self willChangeValueForKey:@"unimportedEvents"];
       [(EKICSPreviewModel *)self willChangeValueForKey:@"importedEvents"];
-      [(NSMutableArray *)self->_unimportedEvents removeObject:v6];
-      [(NSMutableArray *)self->_importedEvents addObject:v18];
+      [(NSMutableArray *)self->_unimportedEvents removeObject:eventCopy];
+      [(NSMutableArray *)self->_importedEvents addObject:v17FirstObject];
       [(EKICSPreviewModel *)self didChangeValueForKey:@"unimportedEvents"];
       [(EKICSPreviewModel *)self didChangeValueForKey:@"importedEvents"];
       eventsAllowingUpdate = self->_eventsAllowingUpdate;
-      v20 = [v18 uniqueID];
-      [(NSMutableSet *)eventsAllowingUpdate removeObject:v20];
+      uniqueID2 = [v17FirstObject uniqueID];
+      [(NSMutableSet *)eventsAllowingUpdate removeObject:uniqueID2];
 
       eventsAllowingDelete = self->_eventsAllowingDelete;
-      v22 = [v18 uniqueID];
-      [(NSMutableSet *)eventsAllowingDelete addObject:v22];
+      uniqueID3 = [v17FirstObject uniqueID];
+      [(NSMutableSet *)eventsAllowingDelete addObject:uniqueID3];
     }
   }
 
   else
   {
-    v18 = 0;
+    v17FirstObject = 0;
   }
 
-  return v18;
+  return v17FirstObject;
 }
 
-- (void)importAllIntoCalendar:(id)a3
+- (void)importAllIntoCalendar:(id)calendar
 {
-  v3 = self;
+  selfCopy = self;
   v35 = *MEMORY[0x1E69E9840];
-  v4 = [(EKEventStore *)self->_destStore importICSData:v3->_data intoCalendar:a3 options:*MEMORY[0x1E6992E38] | *MEMORY[0x1E6992E28] | v3->_options | 0x8100000];
-  if ([v4 count])
+  0x8100000 = [(EKEventStore *)self->_destStore importICSData:selfCopy->_data intoCalendar:calendar options:*MEMORY[0x1E6992E38] | *MEMORY[0x1E6992E28] | selfCopy->_options | 0x8100000];
+  if ([0x8100000 count])
   {
-    [(EKICSPreviewModel *)v3 willChangeValueForKey:@"unimportedEvents"];
-    [(EKICSPreviewModel *)v3 willChangeValueForKey:@"importedEvents"];
+    [(EKICSPreviewModel *)selfCopy willChangeValueForKey:@"unimportedEvents"];
+    [(EKICSPreviewModel *)selfCopy willChangeValueForKey:@"importedEvents"];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v20 = v4;
-    obj = v4;
+    v20 = 0x8100000;
+    obj = 0x8100000;
     v23 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v23)
     {
       v22 = *v30;
-      v24 = v3;
+      v24 = selfCopy;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -241,7 +241,7 @@ LABEL_16:
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v7 = v3->_unimportedEvents;
+          v7 = selfCopy->_unimportedEvents;
           v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v8)
           {
@@ -257,13 +257,13 @@ LABEL_16:
                 }
 
                 v12 = *(*(&v25 + 1) + 8 * j);
-                v13 = [v12 uniqueID];
-                v14 = [v6 uniqueID];
-                v15 = [v13 isEqualToString:v14];
+                uniqueID = [v12 uniqueID];
+                uniqueID2 = [v6 uniqueID];
+                v15 = [uniqueID isEqualToString:uniqueID2];
 
                 if (v15)
                 {
-                  v3 = v24;
+                  selfCopy = v24;
                   [(NSMutableArray *)v24->_unimportedEvents removeObject:v12];
                   [(NSMutableArray *)v24->_importedEvents addObject:v6];
                   goto LABEL_17;
@@ -271,7 +271,7 @@ LABEL_16:
               }
 
               v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
-              v3 = v24;
+              selfCopy = v24;
               if (v9)
               {
                 continue;
@@ -283,13 +283,13 @@ LABEL_16:
 
 LABEL_17:
 
-          eventsAllowingUpdate = v3->_eventsAllowingUpdate;
-          v17 = [v6 uniqueID];
-          [(NSMutableSet *)eventsAllowingUpdate removeObject:v17];
+          eventsAllowingUpdate = selfCopy->_eventsAllowingUpdate;
+          uniqueID3 = [v6 uniqueID];
+          [(NSMutableSet *)eventsAllowingUpdate removeObject:uniqueID3];
 
-          eventsAllowingDelete = v3->_eventsAllowingDelete;
-          v19 = [v6 uniqueID];
-          [(NSMutableSet *)eventsAllowingDelete addObject:v19];
+          eventsAllowingDelete = selfCopy->_eventsAllowingDelete;
+          uniqueID4 = [v6 uniqueID];
+          [(NSMutableSet *)eventsAllowingDelete addObject:uniqueID4];
         }
 
         v23 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -298,26 +298,26 @@ LABEL_17:
       while (v23);
     }
 
-    [(EKICSPreviewModel *)v3 didChangeValueForKey:@"unimportedEvents"];
-    [(EKICSPreviewModel *)v3 didChangeValueForKey:@"importedEvents"];
-    v4 = v20;
+    [(EKICSPreviewModel *)selfCopy didChangeValueForKey:@"unimportedEvents"];
+    [(EKICSPreviewModel *)selfCopy didChangeValueForKey:@"importedEvents"];
+    0x8100000 = v20;
   }
 }
 
-- (BOOL)shouldAllowDeleteEvent:(id)a3
+- (BOOL)shouldAllowDeleteEvent:(id)event
 {
   eventsAllowingDelete = self->_eventsAllowingDelete;
-  v4 = [a3 uniqueID];
-  LOBYTE(eventsAllowingDelete) = [(NSMutableSet *)eventsAllowingDelete containsObject:v4];
+  uniqueID = [event uniqueID];
+  LOBYTE(eventsAllowingDelete) = [(NSMutableSet *)eventsAllowingDelete containsObject:uniqueID];
 
   return eventsAllowingDelete;
 }
 
-- (BOOL)shouldAllowUpdateEvent:(id)a3
+- (BOOL)shouldAllowUpdateEvent:(id)event
 {
   eventsAllowingUpdate = self->_eventsAllowingUpdate;
-  v4 = [a3 uniqueID];
-  LOBYTE(eventsAllowingUpdate) = [(NSMutableSet *)eventsAllowingUpdate containsObject:v4];
+  uniqueID = [event uniqueID];
+  LOBYTE(eventsAllowingUpdate) = [(NSMutableSet *)eventsAllowingUpdate containsObject:uniqueID];
 
   return eventsAllowingUpdate;
 }

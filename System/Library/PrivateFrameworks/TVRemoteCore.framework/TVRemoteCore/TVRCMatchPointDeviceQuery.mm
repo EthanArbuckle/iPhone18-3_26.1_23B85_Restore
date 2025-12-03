@@ -1,14 +1,14 @@
 @interface TVRCMatchPointDeviceQuery
 - (TVRCMatchPointDeviceQuery)init;
 - (TVRCServiceDeviceQueryDelegate)delegate;
-- (void)_matchPointServiceAdded:(id)a3;
-- (void)_matchPointServiceNameChanged:(id)a3;
-- (void)_matchPointServiceRemoved:(id)a3;
-- (void)_notifyAddedService:(id)a3;
-- (void)_notifyRemovedService:(id)a3;
+- (void)_matchPointServiceAdded:(id)added;
+- (void)_matchPointServiceNameChanged:(id)changed;
+- (void)_matchPointServiceRemoved:(id)removed;
+- (void)_notifyAddedService:(id)service;
+- (void)_notifyRemovedService:(id)service;
 - (void)dealloc;
-- (void)homeManagerDidUpdateCurrentHome:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateCurrentHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)start;
 - (void)stop;
 @end
@@ -47,10 +47,10 @@
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "Starting query for HomeKit services", v10, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__matchPointServiceAdded_ name:@"TVRCMatchPointServiceAddedNotification" object:0];
-  [v4 addObserver:self selector:sel__matchPointServiceRemoved_ name:@"TVRCMatchPointServiceRemovedNotification" object:0];
-  [v4 addObserver:self selector:sel__matchPointServiceNameChanged_ name:@"TVRCMatchPointServiceNameChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__matchPointServiceAdded_ name:@"TVRCMatchPointServiceAddedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__matchPointServiceRemoved_ name:@"TVRCMatchPointServiceRemovedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__matchPointServiceNameChanged_ name:@"TVRCMatchPointServiceNameChangedNotification" object:0];
   if (!self->_homeManager)
   {
     v5 = [objc_alloc(MEMORY[0x277CD1C60]) initWithOptions:1024 cachePolicy:1];
@@ -90,16 +90,16 @@
   v6 = +[TVRCHMHomeObserver sharedInstance];
   [v6 setCurrentHome:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:@"TVRCMatchPointServiceAddedNotification" object:0];
-  [v7 removeObserver:self name:@"TVRCMatchPointServiceRemovedNotification" object:0];
-  [v7 removeObserver:self name:@"TVRCMatchPointServiceNameChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"TVRCMatchPointServiceAddedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"TVRCMatchPointServiceRemovedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"TVRCMatchPointServiceNameChangedNotification" object:0];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  homesCopy = homes;
   v4 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -107,11 +107,11 @@
     _os_log_impl(&dword_26CF7F000, v4, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it updated homes", &v9, 2u);
   }
 
-  v5 = [v3 currentHome];
-  if (v5)
+  currentHome = [homesCopy currentHome];
+  if (currentHome)
   {
     v6 = +[TVRCHMHomeObserver sharedInstance];
-    [v6 setCurrentHome:v5];
+    [v6 setCurrentHome:currentHome];
   }
 
   else
@@ -119,11 +119,11 @@
     v6 = _TVRCHomeKitLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 homes];
+      homes = [homesCopy homes];
       v9 = 138412546;
-      v10 = v3;
+      v10 = homesCopy;
       v11 = 2112;
-      v12 = v7;
+      v12 = homes;
       _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "No current home found for manager %@. All homes - %@", &v9, 0x16u);
     }
   }
@@ -131,10 +131,10 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)homeManagerDidUpdateCurrentHome:(id)a3
+- (void)homeManagerDidUpdateCurrentHome:(id)home
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -142,21 +142,21 @@
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it updated current home", &v12, 2u);
   }
 
-  if (self->_homeManager == v4)
+  if (self->_homeManager == homeCopy)
   {
-    v6 = [(HMHomeManager *)v4 currentHome];
-    if (v6)
+    currentHome = [(HMHomeManager *)homeCopy currentHome];
+    if (currentHome)
     {
       v7 = +[TVRCHMHomeObserver sharedInstance];
-      v8 = [v7 currentHome];
+      currentHome2 = [v7 currentHome];
 
-      if (v8 == v6)
+      if (currentHome2 == currentHome)
       {
         goto LABEL_12;
       }
 
       v9 = +[TVRCHMHomeObserver sharedInstance];
-      [v9 setCurrentHome:v6];
+      [v9 setCurrentHome:currentHome];
     }
 
     else
@@ -164,11 +164,11 @@
       v9 = _TVRCHomeKitLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(HMHomeManager *)v4 homes];
+        homes = [(HMHomeManager *)homeCopy homes];
         v12 = 138412546;
-        v13 = v4;
+        v13 = homeCopy;
         v14 = 2112;
-        v15 = v10;
+        v15 = homes;
         _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "No current home found for manager %@. All homes - %@", &v12, 0x16u);
       }
     }
@@ -176,11 +176,11 @@
     goto LABEL_12;
   }
 
-  v6 = _TVRCHomeKitLog();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  currentHome = _TVRCHomeKitLog();
+  if (os_log_type_enabled(currentHome, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v12) = 0;
-    _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "HomeKit home manager does not match", &v12, 2u);
+    _os_log_impl(&dword_26CF7F000, currentHome, OS_LOG_TYPE_DEFAULT, "HomeKit home manager does not match", &v12, 2u);
   }
 
 LABEL_12:
@@ -188,25 +188,25 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_matchPointServiceAdded:(id)a3
+- (void)_matchPointServiceAdded:(id)added
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
+  object = [added object];
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
     v15 = objc_opt_class();
     v16 = 2112;
-    v17 = v4;
+    v17 = object;
     v6 = v15;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ got notification that MatchPoint service added %@", &v14, 0x16u);
   }
 
-  v7 = [v4 uniqueIdentifier];
-  v8 = [v7 UUIDString];
+  uniqueIdentifier = [object uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v9 = [(NSMutableDictionary *)self->_deviceImplMap objectForKey:v8];
+  v9 = [(NSMutableDictionary *)self->_deviceImplMap objectForKey:uUIDString];
 
   v10 = _TVRCHomeKitLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -215,7 +215,7 @@ LABEL_12:
     if (v11)
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = object;
       _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "Found existing mapping for service: %@", &v14, 0xCu);
     }
   }
@@ -225,67 +225,67 @@ LABEL_12:
     if (v11)
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = object;
       _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "Creating mapping for service %@", &v14, 0xCu);
     }
 
-    v10 = [TVRCHMServiceWrapper wrapperWithService:v4];
+    v10 = [TVRCHMServiceWrapper wrapperWithService:object];
     v12 = [TVRCMatchPointDeviceImpl implWithService:v10];
-    [(NSMutableDictionary *)self->_deviceImplMap setObject:v12 forKey:v8];
+    [(NSMutableDictionary *)self->_deviceImplMap setObject:v12 forKey:uUIDString];
     [(TVRCMatchPointDeviceQuery *)self _notifyAddedService:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_matchPointServiceRemoved:(id)a3
+- (void)_matchPointServiceRemoved:(id)removed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
+  object = [removed object];
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2112;
-    v14 = v4;
+    v14 = object;
     v6 = v12;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ got notification that MatchPoint service removed %@", &v11, 0x16u);
   }
 
-  v7 = [v4 uniqueIdentifier];
-  v8 = [v7 UUIDString];
+  uniqueIdentifier = [object uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v9 = [(NSMutableDictionary *)self->_deviceImplMap objectForKey:v8];
+  v9 = [(NSMutableDictionary *)self->_deviceImplMap objectForKey:uUIDString];
   if (v9)
   {
-    [(NSMutableDictionary *)self->_deviceImplMap removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_deviceImplMap removeObjectForKey:uUIDString];
     [(TVRCMatchPointDeviceQuery *)self _notifyRemovedService:v9];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_matchPointServiceNameChanged:(id)a3
+- (void)_matchPointServiceNameChanged:(id)changed
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
+  object = [changed object];
+  uniqueIdentifier = [object uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  v7 = [(NSMutableDictionary *)self->_deviceImplMap objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_deviceImplMap objectForKey:uUIDString];
   v8 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v4 name];
+    name = [object name];
     v13 = 138543874;
     v14 = v9;
     v15 = 2112;
-    v16 = v4;
+    v16 = object;
     v17 = 2112;
-    v18 = v11;
+    v18 = name;
     _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ got notification that service updated name %@. New name : %@", &v13, 0x20u);
   }
 
@@ -298,10 +298,10 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyAddedService:(id)a3
+- (void)_notifyAddedService:(id)service
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -311,21 +311,21 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = serviceCopy;
       _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "Informing delegate we added MatchPoint service, %@", &v10, 0xCu);
     }
 
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 addedDevice:v4];
+    [v8 addedDevice:serviceCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyRemovedService:(id)a3
+- (void)_notifyRemovedService:(id)service
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -335,12 +335,12 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = serviceCopy;
       _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "Informing delegate we removed MatchPoint service, %@", &v10, 0xCu);
     }
 
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 removedDevice:v4];
+    [v8 removedDevice:serviceCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];

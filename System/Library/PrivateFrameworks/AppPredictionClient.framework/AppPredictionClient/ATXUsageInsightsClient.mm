@@ -1,13 +1,13 @@
 @interface ATXUsageInsightsClient
 - (ATXUsageInsightsClient)init;
-- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)a3;
-- (void)fetchAllDeliveredNotificationsWithCompletion:(id)a3;
-- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)a3;
-- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)a3;
-- (void)fetchAllPhubbingSessionsWithCompletion:(id)a3;
-- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)a3;
-- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)a3;
-- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)a3;
+- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)completion;
+- (void)fetchAllDeliveredNotificationsWithCompletion:(id)completion;
+- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)completion;
+- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)completion;
+- (void)fetchAllPhubbingSessionsWithCompletion:(id)completion;
+- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)completion;
+- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)completion;
+- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)completion;
 @end
 
 @implementation ATXUsageInsightsClient
@@ -53,11 +53,11 @@ void __30__ATXUsageInsightsClient_init__block_invoke_8()
   }
 }
 
-- (void)fetchAllDeliveredNotificationsWithCompletion:(id)a3
+- (void)fetchAllDeliveredNotificationsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v16[0] = MEMORY[0x1E69E9820];
@@ -66,7 +66,7 @@ void __30__ATXUsageInsightsClient_init__block_invoke_8()
     v16[3] = &unk_1E80C1100;
     v18 = a2;
     v16[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v17 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v16];
     [v9 fetchAllDeliveredNotificationsWithCompletion:v8];
@@ -101,11 +101,11 @@ void __71__ATXUsageInsightsClient_fetchAllDeliveredNotificationsWithCompletion__
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)a3
+- (void)fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v16[0] = MEMORY[0x1E69E9820];
@@ -114,7 +114,7 @@ void __71__ATXUsageInsightsClient_fetchAllDeliveredNotificationsWithCompletion__
     v16[3] = &unk_1E80C1100;
     v18 = a2;
     v16[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v17 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v16];
     [v9 fetchSuggestedBundleIDsForAllowListForAllModesWithCompletion:v8];
@@ -149,11 +149,11 @@ void __87__ATXUsageInsightsClient_fetchSuggestedBundleIDsForAllowListForAllModes
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)a3
+- (void)fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v16[0] = MEMORY[0x1E69E9820];
@@ -162,7 +162,7 @@ void __87__ATXUsageInsightsClient_fetchSuggestedBundleIDsForAllowListForAllModes
     v16[3] = &unk_1E80C1100;
     v18 = a2;
     v16[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v17 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v16];
     [v9 fetchSuggestedBundleIDsForDenyListForAllModesWithCompletion:v8];
@@ -197,11 +197,11 @@ void __86__ATXUsageInsightsClient_fetchSuggestedBundleIDsForDenyListForAllModesW
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)a3
+- (void)fetchUsageInsightsInferredATXModeEventsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v16[0] = MEMORY[0x1E69E9820];
@@ -210,7 +210,7 @@ void __86__ATXUsageInsightsClient_fetchSuggestedBundleIDsForDenyListForAllModesW
     v16[3] = &unk_1E80C1100;
     v18 = a2;
     v16[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v17 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v16];
     [v9 fetchUsageInsightsInferredATXModeEventsWithCompletion:v8];
@@ -245,11 +245,11 @@ void __80__ATXUsageInsightsClient_fetchUsageInsightsInferredATXModeEventsWithCom
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)a3
+- (void)fetchAllInterruptingAppSessionsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v18[0] = MEMORY[0x1E69E9820];
@@ -258,7 +258,7 @@ void __80__ATXUsageInsightsClient_fetchUsageInsightsInferredATXModeEventsWithCom
     v18[3] = &unk_1E80C1100;
     v20 = a2;
     v18[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v19 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v18];
     v16[0] = MEMORY[0x1E69E9820];
@@ -298,11 +298,11 @@ void __72__ATXUsageInsightsClient_fetchAllInterruptingAppSessionsWithCompletion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAllPhubbingSessionsWithCompletion:(id)a3
+- (void)fetchAllPhubbingSessionsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v18[0] = MEMORY[0x1E69E9820];
@@ -311,7 +311,7 @@ void __72__ATXUsageInsightsClient_fetchAllInterruptingAppSessionsWithCompletion_
     v18[3] = &unk_1E80C1100;
     v20 = a2;
     v18[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v19 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v18];
     v16[0] = MEMORY[0x1E69E9820];
@@ -351,11 +351,11 @@ void __65__ATXUsageInsightsClient_fetchAllPhubbingSessionsWithCompletion___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)a3
+- (void)fetchAllMindlessCyclingSessionsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v18[0] = MEMORY[0x1E69E9820];
@@ -364,7 +364,7 @@ void __65__ATXUsageInsightsClient_fetchAllPhubbingSessionsWithCompletion___block
     v18[3] = &unk_1E80C1100;
     v20 = a2;
     v18[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v19 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v18];
     v16[0] = MEMORY[0x1E69E9820];
@@ -404,11 +404,11 @@ void __72__ATXUsageInsightsClient_fetchAllMindlessCyclingSessionsWithCompletion_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)a3
+- (void)fetchAllContinuousUsageSessionsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     xpcConnection = self->_xpcConnection;
     v18[0] = MEMORY[0x1E69E9820];
@@ -417,7 +417,7 @@ void __72__ATXUsageInsightsClient_fetchAllMindlessCyclingSessionsWithCompletion_
     v18[3] = &unk_1E80C1100;
     v20 = a2;
     v18[4] = self;
-    v8 = v5;
+    v8 = completionCopy;
     v19 = v8;
     v9 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v18];
     v16[0] = MEMORY[0x1E69E9820];

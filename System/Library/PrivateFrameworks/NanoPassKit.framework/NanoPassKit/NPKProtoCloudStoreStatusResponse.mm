@@ -1,20 +1,20 @@
 @interface NPKProtoCloudStoreStatusResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPending:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPending:(BOOL)pending;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCloudStoreStatusResponse
 
-- (void)setHasPending:(BOOL)a3
+- (void)setHasPending:(BOOL)pending
 {
-  if (a3)
+  if (pending)
   {
     v3 = 2;
   }
@@ -33,105 +33,105 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCloudStoreStatusResponse;
   v4 = [(NPKProtoCloudStoreStatusResponse *)&v8 description];
-  v5 = [(NPKProtoCloudStoreStatusResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCloudStoreStatusResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v4 forKey:@"pending"];
+    [dictionary setObject:v4 forKey:@"pending"];
   }
 
   accountInfoData = self->_accountInfoData;
   if (accountInfoData)
   {
-    [v3 setObject:accountInfoData forKey:@"accountInfoData"];
+    [dictionary setObject:accountInfoData forKey:@"accountInfoData"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_cloudStoreIsSetup];
-    [v3 setObject:v6 forKey:@"cloudStoreIsSetup"];
+    [dictionary setObject:v6 forKey:@"cloudStoreIsSetup"];
   }
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_accountInfoData)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     cloudStoreIsSetup = self->_cloudStoreIsSetup;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[25] = self->_pending;
-    v4[28] |= 2u;
+    toCopy[25] = self->_pending;
+    toCopy[28] |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_accountInfoData)
   {
-    [v4 setAccountInfoData:?];
-    v4 = v5;
+    [toCopy setAccountInfoData:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_cloudStoreIsSetup;
-    v4[28] |= 1u;
+    toCopy[24] = self->_cloudStoreIsSetup;
+    toCopy[28] |= 1u;
   }
 
   if (self->_errorData)
   {
     [v5 setErrorData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -139,7 +139,7 @@
     *(v5 + 28) |= 2u;
   }
 
-  v7 = [(NSData *)self->_accountInfoData copyWithZone:a3];
+  v7 = [(NSData *)self->_accountInfoData copyWithZone:zone];
   v8 = *(v6 + 8);
   *(v6 + 8) = v7;
 
@@ -149,52 +149,52 @@
     *(v6 + 28) |= 1u;
   }
 
-  v9 = [(NSData *)self->_errorData copyWithZone:a3];
+  v9 = [(NSData *)self->_errorData copyWithZone:zone];
   v10 = *(v6 + 16);
   *(v6 + 16) = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_23;
     }
 
-    v11 = *(v4 + 25);
+    v11 = *(equalCopy + 25);
     if (self->_pending)
     {
-      if ((*(v4 + 25) & 1) == 0)
+      if ((*(equalCopy + 25) & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(v4 + 25))
+    else if (*(equalCopy + 25))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   accountInfoData = self->_accountInfoData;
-  if (accountInfoData | *(v4 + 1))
+  if (accountInfoData | *(equalCopy + 1))
   {
     if (![(NSData *)accountInfoData isEqual:?])
     {
@@ -204,10 +204,10 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 28);
+  v8 = *(equalCopy + 28);
   if ((has & 1) == 0)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -217,28 +217,28 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  v12 = *(v4 + 24);
+  v12 = *(equalCopy + 24);
   if (self->_cloudStoreIsSetup)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_23;
   }
 
 LABEL_9:
   errorData = self->_errorData;
-  if (errorData | *(v4 + 2))
+  if (errorData | *(equalCopy + 2))
   {
     v10 = [(NSData *)errorData isEqual:?];
   }
@@ -279,32 +279,32 @@ LABEL_24:
   return v4 ^ v3 ^ v5 ^ [(NSData *)self->_errorData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[28] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[28] & 2) != 0)
   {
-    self->_pending = v4[25];
+    self->_pending = fromCopy[25];
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 1))
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NPKProtoCloudStoreStatusResponse *)self setAccountInfoData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_cloudStoreIsSetup = v4[24];
+    self->_cloudStoreIsSetup = fromCopy[24];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoCloudStoreStatusResponse *)self setErrorData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

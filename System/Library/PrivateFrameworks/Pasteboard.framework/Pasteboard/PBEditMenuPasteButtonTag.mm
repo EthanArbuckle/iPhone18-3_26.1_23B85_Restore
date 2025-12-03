@@ -1,66 +1,66 @@
 @interface PBEditMenuPasteButtonTag
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (CGPoint)contentOrigin;
 - (CGSize)size;
-- (PBEditMenuPasteButtonTag)initWithCoder:(id)a3;
-- (PBEditMenuPasteButtonTag)initWithSecureName:(unsigned int)a3 size:(CGSize)a4 contentOrigin:(CGPoint)a5 displayMode:(unint64_t)a6;
-- (float)backgroundStatisticsForegroundForStyle:(id)a3;
-- (id)_acceptCalloutBarPasteButtonTagVisit:(id)a3 systemInputAssistantPasteButtonTagVisit:(id)a4 undoInteractionHUDIconPasteButtonTagVisit:(id)a5 undoInteractionHUDTextPasteButtonTagVisit:(id)a6 contextMenuPasteButtonTagVisit:(id)a7 contextMenuDynamicPasteButtonTagVisit:(id)a8 editMenuPasteButtonTagVisit:(id)a9;
-- (id)resolvedStyleForStyle:(id)a3;
-- (unint64_t)authenticationMessageContextForStyle:(id)a3;
+- (PBEditMenuPasteButtonTag)initWithCoder:(id)coder;
+- (PBEditMenuPasteButtonTag)initWithSecureName:(unsigned int)name size:(CGSize)size contentOrigin:(CGPoint)origin displayMode:(unint64_t)mode;
+- (float)backgroundStatisticsForegroundForStyle:(id)style;
+- (id)_acceptCalloutBarPasteButtonTagVisit:(id)visit systemInputAssistantPasteButtonTagVisit:(id)tagVisit undoInteractionHUDIconPasteButtonTagVisit:(id)buttonTagVisit undoInteractionHUDTextPasteButtonTagVisit:(id)pasteButtonTagVisit contextMenuPasteButtonTagVisit:(id)menuPasteButtonTagVisit contextMenuDynamicPasteButtonTagVisit:(id)dynamicPasteButtonTagVisit editMenuPasteButtonTagVisit:(id)editMenuPasteButtonTagVisit;
+- (id)resolvedStyleForStyle:(id)style;
+- (unint64_t)authenticationMessageContextForStyle:(id)style;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBEditMenuPasteButtonTag
 
-- (PBEditMenuPasteButtonTag)initWithSecureName:(unsigned int)a3 size:(CGSize)a4 contentOrigin:(CGPoint)a5 displayMode:(unint64_t)a6
+- (PBEditMenuPasteButtonTag)initWithSecureName:(unsigned int)name size:(CGSize)size contentOrigin:(CGPoint)origin displayMode:(unint64_t)mode
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.height;
-  width = a4.width;
+  y = origin.y;
+  x = origin.x;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = PBEditMenuPasteButtonTag;
   result = [(PBEditMenuPasteButtonTag *)&v13 init];
   if (result)
   {
-    result->_secureName = a3;
+    result->_secureName = name;
     result->_size.width = width;
     result->_size.height = height;
     result->_contentOrigin.x = x;
     result->_contentOrigin.y = y;
-    result->_displayMode = a6;
+    result->_displayMode = mode;
   }
 
   return result;
 }
 
-- (PBEditMenuPasteButtonTag)initWithCoder:(id)a3
+- (PBEditMenuPasteButtonTag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PBEditMenuPasteButtonTag;
-  v5 = [(PBPasteButtonTag *)&v11 initWithCoder:v4];
+  v5 = [(PBPasteButtonTag *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_secureName = [v4 decodeInt32ForKey:@"secureName"];
-    [v4 decodeSizeForKey:@"size"];
+    v5->_secureName = [coderCopy decodeInt32ForKey:@"secureName"];
+    [coderCopy decodeSizeForKey:@"size"];
     v5->_size.width = v6;
     v5->_size.height = v7;
-    [v4 decodePointForKey:@"titleOrigin"];
+    [coderCopy decodePointForKey:@"titleOrigin"];
     v5->_contentOrigin.x = v8;
     v5->_contentOrigin.y = v9;
-    v5->_displayMode = [v4 decodeIntegerForKey:@"displayMode"];
+    v5->_displayMode = [coderCopy decodeIntegerForKey:@"displayMode"];
   }
 
   return v5;
 }
 
-- (unint64_t)authenticationMessageContextForStyle:(id)a3
+- (unint64_t)authenticationMessageContextForStyle:(id)style
 {
-  if ([a3 userInterfaceStyle])
+  if ([style userInterfaceStyle])
   {
     return 0x926FA0AD41ACE950;
   }
@@ -71,16 +71,16 @@
   }
 }
 
-- (float)backgroundStatisticsForegroundForStyle:(id)a3
+- (float)backgroundStatisticsForegroundForStyle:(id)style
 {
-  v3 = [a3 userInterfaceStyle];
+  userInterfaceStyle = [style userInterfaceStyle];
   result = NAN;
-  if (v3 == 1)
+  if (userInterfaceStyle == 1)
   {
     result = 1.0;
   }
 
-  if (!v3)
+  if (!userInterfaceStyle)
   {
     return 0.0;
   }
@@ -88,16 +88,16 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PBEditMenuPasteButtonTag;
-  v4 = a3;
-  [(PBPasteButtonTag *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt32:self->_secureName forKey:{@"secureName", v5.receiver, v5.super_class}];
-  [v4 encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
-  [v4 encodePoint:@"titleOrigin" forKey:{self->_contentOrigin.x, self->_contentOrigin.y}];
-  [v4 encodeInteger:self->_displayMode forKey:@"displayMode"];
+  coderCopy = coder;
+  [(PBPasteButtonTag *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:self->_secureName forKey:{@"secureName", v5.receiver, v5.super_class}];
+  [coderCopy encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
+  [coderCopy encodePoint:@"titleOrigin" forKey:{self->_contentOrigin.x, self->_contentOrigin.y}];
+  [coderCopy encodeInteger:self->_displayMode forKey:@"displayMode"];
 }
 
 - (unint64_t)hash
@@ -107,11 +107,11 @@
   return *&veor_s8(*v4.i8, *&vextq_s8(v4, v4, 8uLL)) ^ self->_displayMode ^ v3 ^ self->_secureName;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_secureName == *(v4 + 2) && (self->_size.width == v4[3] ? (v5 = self->_size.height == v4[4]) : (v5 = 0), v5 && (self->_contentOrigin.x == v4[5] ? (v6 = self->_contentOrigin.y == v4[6]) : (v6 = 0), v6)) && self->_displayMode == *(v4 + 2);
+  v7 = (objc_opt_isKindOfClass() & 1) != 0 && self->_secureName == *(equalCopy + 2) && (self->_size.width == equalCopy[3] ? (v5 = self->_size.height == equalCopy[4]) : (v5 = 0), v5 && (self->_contentOrigin.x == equalCopy[5] ? (v6 = self->_contentOrigin.y == equalCopy[6]) : (v6 = 0), v6)) && self->_displayMode == *(equalCopy + 2);
 
   return v7;
 }
@@ -248,16 +248,16 @@
   return !v26 && !v27 && self->_displayMode < 3;
 }
 
-- (id)resolvedStyleForStyle:(id)a3
+- (id)resolvedStyleForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__PBEditMenuPasteButtonTag_resolvedStyleForStyle___block_invoke;
   v8[3] = &unk_279A06210;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = styleCopy;
+  v5 = styleCopy;
   v6 = [v5 copyWithChangeBlock:v8];
 
   return v6;
@@ -275,15 +275,15 @@ void __50__PBEditMenuPasteButtonTag_resolvedStyleForStyle___block_invoke(uint64_
   [v4 setUserInterfaceIdiom:0];
 }
 
-- (id)_acceptCalloutBarPasteButtonTagVisit:(id)a3 systemInputAssistantPasteButtonTagVisit:(id)a4 undoInteractionHUDIconPasteButtonTagVisit:(id)a5 undoInteractionHUDTextPasteButtonTagVisit:(id)a6 contextMenuPasteButtonTagVisit:(id)a7 contextMenuDynamicPasteButtonTagVisit:(id)a8 editMenuPasteButtonTagVisit:(id)a9
+- (id)_acceptCalloutBarPasteButtonTagVisit:(id)visit systemInputAssistantPasteButtonTagVisit:(id)tagVisit undoInteractionHUDIconPasteButtonTagVisit:(id)buttonTagVisit undoInteractionHUDTextPasteButtonTagVisit:(id)pasteButtonTagVisit contextMenuPasteButtonTagVisit:(id)menuPasteButtonTagVisit contextMenuDynamicPasteButtonTagVisit:(id)dynamicPasteButtonTagVisit editMenuPasteButtonTagVisit:(id)editMenuPasteButtonTagVisit
 {
-  v9 = a9;
-  if (a9)
+  editMenuPasteButtonTagVisitCopy = editMenuPasteButtonTagVisit;
+  if (editMenuPasteButtonTagVisit)
   {
-    v9 = (*(a9 + 2))();
+    editMenuPasteButtonTagVisitCopy = (*(editMenuPasteButtonTagVisit + 2))();
   }
 
-  return v9;
+  return editMenuPasteButtonTagVisitCopy;
 }
 
 - (CGSize)size

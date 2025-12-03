@@ -1,43 +1,43 @@
 @interface AXAuditService
-- (AXAuditService)initWithTransport:(id)a3;
+- (AXAuditService)initWithTransport:(id)transport;
 - (id)deviceAccessibilitySettings;
 - (id)deviceAllSupportedAuditTypes;
 - (id)deviceCapabilities;
-- (void)auditer:(id)a3 didAppendLogWithMessage:(id)a4;
-- (void)auditer:(id)a3 didCompleteWithResults:(id)a4;
-- (void)auditer:(id)a3 didEncounterIssue:(id)a4;
-- (void)axAuditDeviceManager:(id)a3 settingDidChange:(id)a4;
+- (void)auditer:(id)auditer didAppendLogWithMessage:(id)message;
+- (void)auditer:(id)auditer didCompleteWithResults:(id)results;
+- (void)auditer:(id)auditer didEncounterIssue:(id)issue;
+- (void)axAuditDeviceManager:(id)manager settingDidChange:(id)change;
 - (void)cancel;
 - (void)connectionInterrupted;
-- (void)deviceBeginAuditTypes:(id)a3;
-- (void)deviceHighlightIssue:(id)a3;
-- (void)deviceHighlightIssues:(id)a3;
-- (void)deviceInspectorEnable:(id)a3;
-- (void)deviceInspectorSetMonitoredEventType:(id)a3;
+- (void)deviceBeginAuditTypes:(id)types;
+- (void)deviceHighlightIssue:(id)issue;
+- (void)deviceHighlightIssues:(id)issues;
+- (void)deviceInspectorEnable:(id)enable;
+- (void)deviceInspectorSetMonitoredEventType:(id)type;
 - (void)deviceResetToDefaultAccessibilitySettings;
-- (void)deviceSetAppMonitoringEnabled:(id)a3;
-- (void)deviceSetAuditTargetPid:(id)a3;
-- (void)deviceUpdateAccessibilitySetting:(id)a3 withValue:(id)a4;
+- (void)deviceSetAppMonitoringEnabled:(id)enabled;
+- (void)deviceSetAuditTargetPid:(id)pid;
+- (void)deviceUpdateAccessibilitySetting:(id)setting withValue:(id)value;
 - (void)requestHostAPIVersion;
 - (void)resume;
-- (void)setMaxConnectionEnqueue:(unint64_t)a3;
+- (void)setMaxConnectionEnqueue:(unint64_t)enqueue;
 @end
 
 @implementation AXAuditService
 
-- (AXAuditService)initWithTransport:(id)a3
+- (AXAuditService)initWithTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   v22.receiver = self;
   v22.super_class = AXAuditService;
   v5 = [(AXAuditService *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (transportCopy)
     {
       objc_initWeak(&location, v5);
-      v7 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:v4];
+      v7 = [objc_alloc(MEMORY[0x277D03650]) initWithTransport:transportCopy];
       [v7 publishCapability:@"com.apple.accessibility.axAuditDaemon.protocolVersion" withVersion:157 forClass:0];
       [v7 setMaximumEnqueueSize:0x800000];
       [v7 setDispatchTarget:v6];
@@ -120,24 +120,24 @@ void __36__AXAuditService_initWithTransport___block_invoke_2(uint64_t a1, void *
 
 - (void)cancel
 {
-  v3 = [(AXAuditService *)self connection];
-  [v3 cancel];
+  connection = [(AXAuditService *)self connection];
+  [connection cancel];
 
   [(AXAuditService *)self set_channelRestrictBlock:0];
 }
 
 - (void)resume
 {
-  v3 = [(AXAuditService *)self connection];
-  [v3 resume];
+  connection = [(AXAuditService *)self connection];
+  [connection resume];
 
   [(AXAuditService *)self requestHostAPIVersion];
 }
 
-- (void)setMaxConnectionEnqueue:(unint64_t)a3
+- (void)setMaxConnectionEnqueue:(unint64_t)enqueue
 {
-  v4 = [(AXAuditService *)self connection];
-  [v4 setMaximumEnqueueSize:a3];
+  connection = [(AXAuditService *)self connection];
+  [connection setMaximumEnqueueSize:enqueue];
 }
 
 - (void)requestHostAPIVersion
@@ -151,8 +151,8 @@ void __36__AXAuditService_initWithTransport___block_invoke_2(uint64_t a1, void *
   v4 = [MEMORY[0x277D03668] messageWithSelector:sel_hostApiVersion objectArguments:0];
   if ([(AXAuditService *)self hostAPIVersion]<= 0)
   {
-    v5 = [(AXAuditService *)self connection];
-    [v5 sendControlAsync:v4 replyHandler:v3];
+    connection = [(AXAuditService *)self connection];
+    [connection sendControlAsync:v4 replyHandler:v3];
   }
 }
 
@@ -186,52 +186,52 @@ void __39__AXAuditService_requestHostAPIVersion__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)axAuditDeviceManager:(id)a3 settingDidChange:(id)a4
+- (void)axAuditDeviceManager:(id)manager settingDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v6 = +[AXAuditObjectTransportManager sharedManager];
-  v9 = [v6 transportDictionaryForObject:v5];
+  v9 = [v6 transportDictionaryForObject:changeCopy];
 
   v7 = [MEMORY[0x277D03668] messageWithSelector:sel_hostAccessibilitySettingDidChange_ objectArguments:{v9, 0}];
-  v8 = [(AXAuditService *)self connection];
-  [v8 sendControlAsync:v7 replyHandler:0];
+  connection = [(AXAuditService *)self connection];
+  [connection sendControlAsync:v7 replyHandler:0];
 }
 
-- (void)auditer:(id)a3 didEncounterIssue:(id)a4
+- (void)auditer:(id)auditer didEncounterIssue:(id)issue
 {
-  v5 = a4;
+  issueCopy = issue;
   v6 = +[AXAuditObjectTransportManager sharedManager];
-  v10 = [v6 transportDictionaryForObject:v5];
+  v10 = [v6 transportDictionaryForObject:issueCopy];
 
   v7 = v10;
   if (v10)
   {
     v8 = [MEMORY[0x277D03668] messageWithSelector:sel_hostFoundAuditIssue_ objectArguments:{v10, 0}];
-    v9 = [(AXAuditService *)self connection];
-    [v9 sendControlAsync:v8 replyHandler:0];
+    connection = [(AXAuditService *)self connection];
+    [connection sendControlAsync:v8 replyHandler:0];
 
     v7 = v10;
   }
 }
 
-- (void)auditer:(id)a3 didAppendLogWithMessage:(id)a4
+- (void)auditer:(id)auditer didAppendLogWithMessage:(id)message
 {
-  v6 = [MEMORY[0x277D03668] messageWithSelector:sel_hostAppendAuditLog_ objectArguments:{a4, 0}];
-  v5 = [(AXAuditService *)self connection];
-  [v5 sendControlAsync:v6 replyHandler:0];
+  v6 = [MEMORY[0x277D03668] messageWithSelector:sel_hostAppendAuditLog_ objectArguments:{message, 0}];
+  connection = [(AXAuditService *)self connection];
+  [connection sendControlAsync:v6 replyHandler:0];
 }
 
-- (void)auditer:(id)a3 didCompleteWithResults:(id)a4
+- (void)auditer:(id)auditer didCompleteWithResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   v6 = dispatch_get_global_queue(0, 0);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__AXAuditService_auditer_didCompleteWithResults___block_invoke;
   v8[3] = &unk_278BE2CA8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = resultsCopy;
+  selfCopy = self;
+  v7 = resultsCopy;
   dispatch_async(v6, v8);
 }
 
@@ -319,8 +319,8 @@ void __49__AXAuditService_auditer_didCompleteWithResults___block_invoke(uint64_t
 
 - (void)connectionInterrupted
 {
-  v3 = [(AXAuditService *)self deviceSettingsManager];
-  [v3 restoreDeviceSettingsValues];
+  deviceSettingsManager = [(AXAuditService *)self deviceSettingsManager];
+  [deviceSettingsManager restoreDeviceSettingsValues];
 
   [(AXAuditService *)self setApplicationStateNotificationsEnabled:0];
   [(AXAuditService *)self deviceInspectorSetMonitoredEventType:&unk_284FC4300];
@@ -330,19 +330,19 @@ void __49__AXAuditService_auditer_didCompleteWithResults___block_invoke(uint64_t
   [(AXAuditService *)self deviceInspectorShowVisuals:v4];
 }
 
-- (void)deviceSetAuditTargetPid:(id)a3
+- (void)deviceSetAuditTargetPid:(id)pid
 {
-  if (a3)
+  if (pid)
   {
-    v4 = [a3 longValue];
+    longValue = [pid longValue];
 
-    [(AXAuditService *)self setTargetPid:v4];
+    [(AXAuditService *)self setTargetPid:longValue];
   }
 }
 
 - (id)deviceCapabilities
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   outCount = 0;
   v3 = &unk_284FCB1D0;
   v4 = protocol_copyMethodDescriptionList(v3, 1, 1, &outCount);
@@ -359,7 +359,7 @@ void __49__AXAuditService_auditer_didCompleteWithResults___block_invoke(uint64_t
         if (*p_name)
         {
           v9 = NSStringFromSelector(*p_name);
-          [v2 addObject:v9];
+          [array addObject:v9];
 
           v6 = outCount;
         }
@@ -374,31 +374,31 @@ void __49__AXAuditService_auditer_didCompleteWithResults___block_invoke(uint64_t
     free(v5);
   }
 
-  return v2;
+  return array;
 }
 
-- (void)deviceSetAppMonitoringEnabled:(id)a3
+- (void)deviceSetAppMonitoringEnabled:(id)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [a3 BOOLValue];
+    bOOLValue = [enabled BOOLValue];
 
-    [(AXAuditService *)self setApplicationStateNotificationsEnabled:v4];
+    [(AXAuditService *)self setApplicationStateNotificationsEnabled:bOOLValue];
   }
 }
 
 - (id)deviceAllSupportedAuditTypes
 {
   v2 = objc_opt_new();
-  v3 = [v2 allSupportedAuditTypes];
-  v4 = [v3 allObjects];
+  allSupportedAuditTypes = [v2 allSupportedAuditTypes];
+  allObjects = [allSupportedAuditTypes allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (void)deviceBeginAuditTypes:(id)a3
+- (void)deviceBeginAuditTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   if (![(AXAuditService *)self runningAudit])
   {
     [(AXAuditService *)self setRunningAudit:1];
@@ -409,7 +409,7 @@ void __49__AXAuditService_auditer_didCompleteWithResults___block_invoke(uint64_t
     v6[2] = __40__AXAuditService_deviceBeginAuditTypes___block_invoke;
     v6[3] = &unk_278BE2CA8;
     v6[4] = self;
-    v7 = v4;
+    v7 = typesCopy;
     dispatch_async(v5, v6);
   }
 }
@@ -424,31 +424,31 @@ void __40__AXAuditService_deviceBeginAuditTypes___block_invoke(uint64_t a1)
   [v2 startWithAuditTypes:*(a1 + 40)];
 }
 
-- (void)deviceInspectorSetMonitoredEventType:(id)a3
+- (void)deviceInspectorSetMonitoredEventType:(id)type
 {
-  if (a3)
+  if (type)
   {
-    v4 = [a3 integerValue];
-    if (v4)
+    integerValue = [type integerValue];
+    if (integerValue)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = v4 & 2;
+      v5 = integerValue & 2;
     }
 
     [(AXAuditService *)self setMonitoredEventType:v5];
   }
 }
 
-- (void)deviceInspectorEnable:(id)a3
+- (void)deviceInspectorEnable:(id)enable
 {
-  if (a3)
+  if (enable)
   {
-    v4 = [a3 BOOLValue];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v4];
+    bOOLValue = [enable BOOLValue];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:bOOLValue];
     [(AXAuditService *)self deviceInspectorSetMonitoredEventType:v5];
   }
 }
@@ -456,61 +456,61 @@ void __40__AXAuditService_deviceBeginAuditTypes___block_invoke(uint64_t a1)
 - (id)deviceAccessibilitySettings
 {
   v3 = +[AXAuditObjectTransportManager sharedManager];
-  v4 = [(AXAuditService *)self deviceSettingsManager];
-  v5 = [v4 settings];
-  v6 = [v3 transportDictionaryForObject:v5];
+  deviceSettingsManager = [(AXAuditService *)self deviceSettingsManager];
+  settings = [deviceSettingsManager settings];
+  v6 = [v3 transportDictionaryForObject:settings];
 
   return v6;
 }
 
 - (void)deviceResetToDefaultAccessibilitySettings
 {
-  v2 = [(AXAuditService *)self deviceSettingsManager];
-  [v2 resetToDefaultAccessibilitySettings];
+  deviceSettingsManager = [(AXAuditService *)self deviceSettingsManager];
+  [deviceSettingsManager resetToDefaultAccessibilitySettings];
 }
 
-- (void)deviceUpdateAccessibilitySetting:(id)a3 withValue:(id)a4
+- (void)deviceUpdateAccessibilitySetting:(id)setting withValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  settingCopy = setting;
   v11 = +[AXAuditObjectTransportManager sharedManager];
-  v8 = [v11 objectForTransportDictionary:v7 expectedClass:objc_opt_class()];
+  v8 = [v11 objectForTransportDictionary:settingCopy expectedClass:objc_opt_class()];
 
-  v9 = [v11 objectForTransportDictionary:v6 expectedClass:objc_opt_class()];
+  v9 = [v11 objectForTransportDictionary:valueCopy expectedClass:objc_opt_class()];
 
-  v10 = [(AXAuditService *)self deviceSettingsManager];
-  [v10 updateSetting:v8 withNumberValue:v9];
+  deviceSettingsManager = [(AXAuditService *)self deviceSettingsManager];
+  [deviceSettingsManager updateSetting:v8 withNumberValue:v9];
 }
 
-- (void)deviceHighlightIssue:(id)a3
+- (void)deviceHighlightIssue:(id)issue
 {
-  v7 = a3;
-  if ([v7 count])
+  issueCopy = issue;
+  if ([issueCopy count])
   {
     v4 = +[AXAuditObjectTransportManager sharedManager];
-    v5 = [v4 objectForTransportDictionary:v7 expectedClass:objc_opt_class()];
+    v5 = [v4 objectForTransportDictionary:issueCopy expectedClass:objc_opt_class()];
 
-    v6 = [v5 auditElement];
+    auditElement = [v5 auditElement];
   }
 
   else
   {
-    v6 = 0;
+    auditElement = 0;
   }
 
-  [(AXAuditService *)self highlightElement:v6];
+  [(AXAuditService *)self highlightElement:auditElement];
 }
 
-- (void)deviceHighlightIssues:(id)a3
+- (void)deviceHighlightIssues:(id)issues
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  issuesCopy = issues;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = issuesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -531,12 +531,12 @@ void __40__AXAuditService_deviceBeginAuditTypes___block_invoke(uint64_t a1)
           v12 = +[AXAuditObjectTransportManager sharedManager];
           v13 = [v12 objectForTransportDictionary:v11 expectedClass:objc_opt_class()];
 
-          v14 = [v13 auditElement];
+          auditElement = [v13 auditElement];
 
-          if (v14)
+          if (auditElement)
           {
-            v15 = [v13 auditElement];
-            [v5 addObject:v15];
+            auditElement2 = [v13 auditElement];
+            [array addObject:auditElement2];
           }
         }
       }
@@ -547,7 +547,7 @@ void __40__AXAuditService_deviceBeginAuditTypes___block_invoke(uint64_t a1)
     while (v8);
   }
 
-  [(AXAuditService *)self highlightElements:v5];
+  [(AXAuditService *)self highlightElements:array];
   v16 = *MEMORY[0x277D85DE8];
 }
 

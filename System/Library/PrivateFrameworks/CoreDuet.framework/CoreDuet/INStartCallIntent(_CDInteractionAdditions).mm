@@ -8,27 +8,27 @@
 
 - (id)cd_sender
 {
-  v2 = [a1 contacts];
-  v3 = [v2 count];
+  contacts = [self contacts];
+  v3 = [contacts count];
 
   if (v3 == 1)
   {
-    v4 = [a1 contacts];
-    v5 = [v4 firstObject];
+    contacts2 = [self contacts];
+    firstObject = [contacts2 firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (id)cd_derivedIntentIdentifier
 {
-  v2 = [a1 notificationThreadIdentifier];
-  if (!v2)
+  notificationThreadIdentifier = [self notificationThreadIdentifier];
+  if (!notificationThreadIdentifier)
   {
     v6 = 0;
 LABEL_8:
@@ -36,24 +36,24 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v3 = [a1 notificationThreadIdentifier];
-  v4 = [v3 length];
+  notificationThreadIdentifier2 = [self notificationThreadIdentifier];
+  v4 = [notificationThreadIdentifier2 length];
 
   if (!v4)
   {
     v6 = 0;
-    v2 = 0;
+    notificationThreadIdentifier = 0;
     goto LABEL_8;
   }
 
-  v2 = NSStringFromSelector(sel_notificationThreadIdentifier);
-  v5 = [a1 notificationThreadIdentifier];
-  v6 = _CDNormalizeString(v5);
+  notificationThreadIdentifier = NSStringFromSelector(sel_notificationThreadIdentifier);
+  notificationThreadIdentifier3 = [self notificationThreadIdentifier];
+  v6 = _CDNormalizeString(notificationThreadIdentifier3);
 
   v7 = 0;
-  if (v6 && v2)
+  if (v6 && notificationThreadIdentifier)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", v2, v6];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(%@)", notificationThreadIdentifier, v6];
   }
 
 LABEL_9:
@@ -63,27 +63,27 @@ LABEL_9:
 
 - (uint64_t)cd_interactionMechanism
 {
-  if ([a1 callCapability] == 1 && objc_msgSend(a1, "preferredCallProvider") == 1)
+  if ([self callCapability] == 1 && objc_msgSend(self, "preferredCallProvider") == 1)
   {
     return 16;
   }
 
-  if ([a1 callCapability] == 1 && objc_msgSend(a1, "preferredCallProvider") == 2)
+  if ([self callCapability] == 1 && objc_msgSend(self, "preferredCallProvider") == 2)
   {
     return 11;
   }
 
-  if ([a1 callCapability] == 1)
+  if ([self callCapability] == 1)
   {
     return 0;
   }
 
-  if ([a1 callCapability] == 2 && objc_msgSend(a1, "preferredCallProvider") == 2)
+  if ([self callCapability] == 2 && objc_msgSend(self, "preferredCallProvider") == 2)
   {
     return 17;
   }
 
-  if ([a1 callCapability] == 2)
+  if ([self callCapability] == 2)
   {
     return 12;
   }

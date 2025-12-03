@@ -1,30 +1,30 @@
 @interface PHBrandedCallingController
 - (BOOL)featureEnabledForAtLeastOneContext;
-- (BOOL)getBrandedCallingCapabilityEnabledForContext:(id)a3;
-- (BOOL)getBrandedCallingStateForContext:(id)a3;
-- (PHBrandedCallingController)initWithCoreTelephonyClient:(id)a3 parentListController:(id)a4;
+- (BOOL)getBrandedCallingCapabilityEnabledForContext:(id)context;
+- (BOOL)getBrandedCallingStateForContext:(id)context;
+- (PHBrandedCallingController)initWithCoreTelephonyClient:(id)client parentListController:(id)controller;
 - (PSListController)parentListController;
-- (id)fetchCarrierBundleValue:(id)a3 context:(id)a4;
+- (id)fetchCarrierBundleValue:(id)value context:(id)context;
 - (id)fetchSubscriptionsInUse;
 - (id)getBrandedCallingEnabled;
 - (void)configurationChanged;
-- (void)setBrandedCallingEnabled:(id)a3;
+- (void)setBrandedCallingEnabled:(id)enabled;
 - (void)updateBrandedCallingState;
 @end
 
 @implementation PHBrandedCallingController
 
-- (PHBrandedCallingController)initWithCoreTelephonyClient:(id)a3 parentListController:(id)a4
+- (PHBrandedCallingController)initWithCoreTelephonyClient:(id)client parentListController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = PHBrandedCallingController;
   v9 = [(PHBrandedCallingController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_ctClient, a3);
+    objc_storeStrong(&v9->_ctClient, client);
     v11 = objc_alloc_init(MEMORY[0x277D6EED8]);
     featureFlags = v10->_featureFlags;
     v10->_featureFlags = v11;
@@ -38,7 +38,7 @@
       [(TUConfigurationProvider *)v10->_configurationProvider setDelegate:v10];
     }
 
-    objc_storeWeak(&v10->_parentListController, v8);
+    objc_storeWeak(&v10->_parentListController, controllerCopy);
     [(PHBrandedCallingController *)v10 updateBrandedCallingState];
   }
 
@@ -70,15 +70,15 @@
   return v6;
 }
 
-- (BOOL)getBrandedCallingStateForContext:(id)a3
+- (BOOL)getBrandedCallingStateForContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if ([(TUFeatureFlags *)self->_featureFlags deviceExpertMigrationEnabled])
   {
-    v5 = [v4 slotID] == 1;
-    v6 = [(PHBrandedCallingController *)self configurationProvider];
-    v7 = [v6 isBrandedCallingEnabled:v5];
+    v5 = [contextCopy slotID] == 1;
+    configurationProvider = [(PHBrandedCallingController *)self configurationProvider];
+    v7 = [configurationProvider isBrandedCallingEnabled:v5];
   }
 
   else
@@ -87,7 +87,7 @@
     ctClient = self->_ctClient;
     v9 = *MEMORY[0x277CC3808];
     v17 = 0;
-    v10 = [(CoreTelephonyClient *)ctClient context:v4 getCapability:v9 status:&v18 with:&v17];
+    v10 = [(CoreTelephonyClient *)ctClient context:contextCopy getCapability:v9 status:&v18 with:&v17];
     v11 = v17;
     v12 = TPSLog();
     v13 = v12;
@@ -95,7 +95,7 @@
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(PHBrandedCallingController *)v4 getBrandedCallingStateForContext:v13];
+        [(PHBrandedCallingController *)contextCopy getBrandedCallingStateForContext:v13];
       }
 
       v7 = 0;
@@ -112,7 +112,7 @@
         }
 
         *buf = 138412546;
-        v20 = v4;
+        v20 = contextCopy;
         v21 = 2112;
         v22 = v14;
         _os_log_impl(&dword_21B8E9000, v13, OS_LOG_TYPE_DEFAULT, "Fetched state of branded calling for context: %@, state: %@", buf, 0x16u);
@@ -129,12 +129,12 @@
 - (BOOL)featureEnabledForAtLeastOneContext
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(PHBrandedCallingController *)self fetchSubscriptionsInUse];
+  fetchSubscriptionsInUse = [(PHBrandedCallingController *)self fetchSubscriptionsInUse];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [fetchSubscriptionsInUse countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -146,13 +146,13 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(fetchSubscriptionsInUse);
         }
 
         v6 |= [(PHBrandedCallingController *)self getBrandedCallingStateForContext:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [fetchSubscriptionsInUse countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -167,16 +167,16 @@
   return v6 & 1;
 }
 
-- (void)setBrandedCallingEnabled:(id)a3
+- (void)setBrandedCallingEnabled:(id)enabled
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [enabledCopy BOOLValue];
     v7 = @"Disabled";
-    if (v6)
+    if (bOOLValue)
     {
       v7 = @"Enabled";
     }
@@ -186,7 +186,7 @@
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "User set branded calling to: %@", &v10, 0xCu);
   }
 
-  v8 = -[CoreTelephonyClient setShouldShowBrandedCallingInfo:](self->_ctClient, "setShouldShowBrandedCallingInfo:", [v4 BOOLValue]);
+  v8 = -[CoreTelephonyClient setShouldShowBrandedCallingInfo:](self->_ctClient, "setShouldShowBrandedCallingInfo:", [enabledCopy BOOLValue]);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -216,10 +216,10 @@
 
   v4 = v3;
   _Block_object_dispose(&v22, 8);
-  v5 = [v3 sharedInstance];
-  v6 = [v5 subscriptionsInUse];
+  sharedInstance = [v3 sharedInstance];
+  subscriptionsInUse = [sharedInstance subscriptionsInUse];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v7 = [subscriptionsInUse countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
     v9 = *v19;
@@ -231,7 +231,7 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptionsInUse);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -240,9 +240,9 @@
           v12 = TPSLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v11 uuid];
+            uuid = [v11 uuid];
             LODWORD(buf) = v17;
-            *(&buf + 4) = v13;
+            *(&buf + 4) = uuid;
             _os_log_impl(&dword_21B8E9000, v12, OS_LOG_TYPE_DEFAULT, "Subscription: %@ is hidden", &buf, 0xCu);
           }
         }
@@ -253,7 +253,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v7 = [subscriptionsInUse countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v7);
@@ -265,15 +265,15 @@
   return v14;
 }
 
-- (BOOL)getBrandedCallingCapabilityEnabledForContext:(id)a3
+- (BOOL)getBrandedCallingCapabilityEnabledForContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v16 = 0;
   ctClient = self->_ctClient;
   v6 = *MEMORY[0x277CC3808];
   v15 = 0;
-  v7 = [(CoreTelephonyClient *)ctClient context:v4 canSetCapability:v6 allowed:&v16 with:&v15];
+  v7 = [(CoreTelephonyClient *)ctClient context:contextCopy canSetCapability:v6 allowed:&v16 with:&v15];
   v8 = v15;
   v9 = TPSLog();
   v10 = v9;
@@ -298,7 +298,7 @@
       }
 
       *buf = 138412546;
-      v18 = v4;
+      v18 = contextCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&dword_21B8E9000, v10, OS_LOG_TYPE_DEFAULT, "kCTCapabilityBrandedCallingInfo fetched for context: %@, capability enabled: %@", buf, 0x16u);
@@ -311,12 +311,12 @@
   return v11 & 1;
 }
 
-- (id)fetchCarrierBundleValue:(id)a3 context:(id)a4
+- (id)fetchCarrierBundleValue:(id)value context:(id)context
 {
-  v6 = a3;
+  valueCopy = value;
   ctClient = self->_ctClient;
   v12 = 0;
-  v8 = [(CoreTelephonyClient *)ctClient context:a4 getCarrierBundleValue:v6 error:&v12];
+  v8 = [(CoreTelephonyClient *)ctClient context:context getCarrierBundleValue:valueCopy error:&v12];
   v9 = v12;
   if (v9)
   {
@@ -335,13 +335,13 @@
 - (void)updateBrandedCallingState
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(PHBrandedCallingController *)self fetchSubscriptionsInUse];
+  fetchSubscriptionsInUse = [(PHBrandedCallingController *)self fetchSubscriptionsInUse];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = fetchSubscriptionsInUse;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -395,8 +395,8 @@
 
 - (void)configurationChanged
 {
-  v2 = [(PHBrandedCallingController *)self parentListController];
-  [v2 reloadSpecifiers];
+  parentListController = [(PHBrandedCallingController *)self parentListController];
+  [parentListController reloadSpecifiers];
 }
 
 - (PSListController)parentListController

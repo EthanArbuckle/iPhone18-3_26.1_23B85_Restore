@@ -1,6 +1,6 @@
 @interface BESimpleTemplate
 + (id)_appVersionNumber;
-+ (id)javascriptStringFromJavascriptSource:(id)a3 replacements:(id)a4;
++ (id)javascriptStringFromJavascriptSource:(id)source replacements:(id)replacements;
 @end
 
 @implementation BESimpleTemplate
@@ -17,32 +17,32 @@
   return v3;
 }
 
-+ (id)javascriptStringFromJavascriptSource:(id)a3 replacements:(id)a4
++ (id)javascriptStringFromJavascriptSource:(id)source replacements:(id)replacements
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v7 objectForKeyedSubscript:@"version"];
+  sourceCopy = source;
+  replacementsCopy = replacements;
+  v8 = sourceCopy;
+  v9 = [replacementsCopy objectForKeyedSubscript:@"version"];
 
   if (!v9)
   {
-    v10 = [v7 mutableCopy];
+    v10 = [replacementsCopy mutableCopy];
     if (!v10)
     {
       v10 = objc_alloc_init(NSMutableDictionary);
     }
 
-    v11 = [a1 _appVersionNumber];
-    [v10 setObject:v11 forKeyedSubscript:@"version"];
+    _appVersionNumber = [self _appVersionNumber];
+    [v10 setObject:_appVersionNumber forKeyedSubscript:@"version"];
 
-    v7 = v10;
+    replacementsCopy = v10;
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = [v7 allKeys];
+  obj = [replacementsCopy allKeys];
   v12 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   v23 = v8;
   if (v12)
@@ -61,7 +61,7 @@
         }
 
         v17 = *(*(&v26 + 1) + 8 * v15);
-        v18 = [v7 objectForKeyedSubscript:v17];
+        v18 = [replacementsCopy objectForKeyedSubscript:v17];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {

@@ -12,24 +12,24 @@
 - (BOOL)shouldStartVIOSession;
 - (BOOL)shouldStartVLFSession;
 - (PlatformController)platformController;
-- (VIOSessionTask)initWithPlatformController:(id)a3;
+- (VIOSessionTask)initWithPlatformController:(id)controller;
 - (id)activeMonitors;
 - (id)configuration;
-- (void)createMonitorsForConfiguration:(id)a3;
+- (void)createMonitorsForConfiguration:(id)configuration;
 - (void)dealloc;
-- (void)handleTransportTypeChanged:(int64_t)a3;
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleTransportTypeChanged:(int64_t)changed;
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pauseVIOSession;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)sceneDidActivateNotification:(id)a3;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4;
-- (void)sessionManager:(id)a3 didResignSessionOwnership:(id)a4;
-- (void)sessionWasInterrupted:(id)a3;
-- (void)setCurrentNavigationSession:(id)a3;
-- (void)setCurrentRoutePlanningSession:(id)a3;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)sceneDidActivateNotification:(id)notification;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership;
+- (void)sessionManager:(id)manager didResignSessionOwnership:(id)ownership;
+- (void)sessionWasInterrupted:(id)interrupted;
+- (void)setCurrentNavigationSession:(id)session;
+- (void)setCurrentRoutePlanningSession:(id)session;
 - (void)startVIOSession;
 @end
 
@@ -42,23 +42,23 @@
   return WeakRetained;
 }
 
-- (void)sceneDidActivateNotification:(id)a3
+- (void)sceneDidActivateNotification:(id)notification
 {
-  v4 = [(VIOSessionTask *)self session];
+  session = [(VIOSessionTask *)self session];
 
-  if (v4)
+  if (session)
   {
-    v5 = [(VIOSessionTask *)self session];
-    v6 = [v5 state];
+    session2 = [(VIOSessionTask *)self session];
+    state = [session2 state];
 
-    if (!v6)
+    if (!state)
     {
-      v7 = [(VIOSessionTask *)self shouldStartVIOSession];
-      v8 = [(VIOSessionTask *)self shouldStartVLFSession];
-      if ((v7 & 1) != 0 || v8)
+      shouldStartVIOSession = [(VIOSessionTask *)self shouldStartVIOSession];
+      shouldStartVLFSession = [(VIOSessionTask *)self shouldStartVLFSession];
+      if ((shouldStartVIOSession & 1) != 0 || shouldStartVLFSession)
       {
-        v9 = [(VIOSessionTask *)self analyticsCapturer];
-        [v9 startRecording];
+        analyticsCapturer = [(VIOSessionTask *)self analyticsCapturer];
+        [analyticsCapturer startRecording];
 
         [(VIOSessionTask *)self startVIOSession];
       }
@@ -66,9 +66,9 @@
   }
 }
 
-- (void)sessionManager:(id)a3 didResignSessionOwnership:(id)a4
+- (void)sessionManager:(id)manager didResignSessionOwnership:(id)ownership
 {
-  v5 = [(VIOSessionTask *)self session:a3];
+  v5 = [(VIOSessionTask *)self session:manager];
 
   if (!v5)
   {
@@ -99,30 +99,30 @@
     }
   }
 
-  v6 = [(VIOSessionTask *)self session];
+  session = [(VIOSessionTask *)self session];
 
-  if (v6)
+  if (session)
   {
-    v7 = [(VIOSessionTask *)self analyticsCapturer];
-    [v7 pauseRecording];
+    analyticsCapturer = [(VIOSessionTask *)self analyticsCapturer];
+    [analyticsCapturer pauseRecording];
 
-    v8 = [(VIOSessionTask *)self monitors];
-    [v8 removeAllObjects];
+    monitors = [(VIOSessionTask *)self monitors];
+    [monitors removeAllObjects];
 
-    v9 = [(VIOSessionTask *)self session];
-    [v9 _removeObserver:self];
+    session2 = [(VIOSessionTask *)self session];
+    [session2 _removeObserver:self];
 
     session = self->_session;
     self->_session = 0;
   }
 }
 
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership
 {
-  v6 = a4;
-  v7 = [(VIOSessionTask *)self session];
+  ownershipCopy = ownership;
+  session = [(VIOSessionTask *)self session];
 
-  if (v7)
+  if (session)
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -151,23 +151,23 @@
     }
   }
 
-  v8 = [(VIOSessionTask *)self session];
+  session2 = [(VIOSessionTask *)self session];
 
-  if (!v8)
+  if (!session2)
   {
-    objc_storeStrong(&self->_session, a4);
-    v9 = [(VIOSessionTask *)self analyticsCapturer];
-    [v9 resumeRecording];
+    objc_storeStrong(&self->_session, ownership);
+    analyticsCapturer = [(VIOSessionTask *)self analyticsCapturer];
+    [analyticsCapturer resumeRecording];
 
-    v10 = [(VIOSessionTask *)self session];
-    [v10 _addObserver:self];
+    session3 = [(VIOSessionTask *)self session];
+    [session3 _addObserver:self];
 
-    LOBYTE(v10) = [(VIOSessionTask *)self shouldStartVIOSession];
-    v11 = [(VIOSessionTask *)self shouldStartVLFSession];
-    if ((v10 & 1) != 0 || v11)
+    LOBYTE(session3) = [(VIOSessionTask *)self shouldStartVIOSession];
+    shouldStartVLFSession = [(VIOSessionTask *)self shouldStartVLFSession];
+    if ((session3 & 1) != 0 || shouldStartVLFSession)
     {
-      v12 = [(VIOSessionTask *)self analyticsCapturer];
-      [v12 startRecording];
+      analyticsCapturer2 = [(VIOSessionTask *)self analyticsCapturer];
+      [analyticsCapturer2 startRecording];
 
       [(VIOSessionTask *)self startVIOSession];
     }
@@ -179,14 +179,14 @@
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v7 = a4;
-  v8 = a5;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = toSessionCopy;
   }
 
   else
@@ -197,7 +197,7 @@
   v10 = v9;
   [(VIOSessionTask *)self setCurrentRoutePlanningSession:v10];
 
-  v11 = v8;
+  v11 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -212,31 +212,31 @@
   v13 = v12;
 
   [(VIOSessionTask *)self setCurrentNavigationSession:v13];
-  v14 = [(VIOSessionTask *)self session];
+  session = [(VIOSessionTask *)self session];
 
-  if (!v14)
+  if (!session)
   {
     goto LABEL_48;
   }
 
   if ([(VIOSessionTask *)self isVLFSessionRunning])
   {
-    v15 = [(VIOSessionTask *)self currentNavigationSession];
-    if (v15 && (v16 = v15, -[VIOSessionTask currentNavigationSession](self, "currentNavigationSession"), v17 = objc_claimAutoreleasedReturnValue(), v18 = +[VLFSessionTask isSupportedForTransportType:](VLFSessionTask, "isSupportedForTransportType:", [v17 currentTransportType]), v17, v16, (v18 & 1) == 0))
+    currentNavigationSession = [(VIOSessionTask *)self currentNavigationSession];
+    if (currentNavigationSession && (v16 = currentNavigationSession, -[VIOSessionTask currentNavigationSession](self, "currentNavigationSession"), v17 = objc_claimAutoreleasedReturnValue(), v18 = +[VLFSessionTask isSupportedForTransportType:](VLFSessionTask, "isSupportedForTransportType:", [v17 currentTransportType]), v17, v16, (v18 & 1) == 0))
     {
       v19 = sub_100AF99D4();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [(VIOSessionTask *)self currentNavigationSession];
-        v21 = [v20 currentTransportType];
-        if ((v21 - 1) > 4)
+        currentNavigationSession2 = [(VIOSessionTask *)self currentNavigationSession];
+        currentTransportType = [currentNavigationSession2 currentTransportType];
+        if ((currentTransportType - 1) > 4)
         {
           v22 = @"Undefined";
         }
 
         else
         {
-          v22 = off_101637F28[(v21 - 1)];
+          v22 = off_101637F28[(currentTransportType - 1)];
         }
 
         *v38 = 138412290;
@@ -261,8 +261,8 @@
       }
     }
 
-    v23 = [(VIOSessionTask *)self analyticsCapturer];
-    [v23 stopRecording];
+    analyticsCapturer = [(VIOSessionTask *)self analyticsCapturer];
+    [analyticsCapturer stopRecording];
 
     [(VIOSessionTask *)self pauseVIOSession];
   }
@@ -272,8 +272,8 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && ([(VIOSessionTask *)self currentNavigationSession], v28 = objc_claimAutoreleasedReturnValue(), v28, !v28))
     {
-      v34 = [(VIOSessionTask *)self analyticsCapturer];
-      [v34 stopRecording];
+      analyticsCapturer2 = [(VIOSessionTask *)self analyticsCapturer];
+      [analyticsCapturer2 stopRecording];
 
       if ([(VIOSessionTask *)self isVIOSessionRunning])
       {
@@ -294,8 +294,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v29 = [(VIOSessionTask *)self analyticsCapturer];
-        [v29 stopRecording];
+        analyticsCapturer3 = [(VIOSessionTask *)self analyticsCapturer];
+        [analyticsCapturer3 stopRecording];
 
         if ([(VIOSessionTask *)self isVIOSessionRunning])
         {
@@ -327,8 +327,8 @@ LABEL_45:
           goto LABEL_48;
         }
 
-        v32 = [(VIOSessionTask *)self analyticsCapturer];
-        [v32 stopRecording];
+        analyticsCapturer4 = [(VIOSessionTask *)self analyticsCapturer];
+        [analyticsCapturer4 stopRecording];
 
         if ([(VIOSessionTask *)self isVIOSessionRunning])
         {
@@ -347,20 +347,20 @@ LABEL_46:
       }
     }
 
-    v35 = [(VIOSessionTask *)self monitors];
-    [v35 removeAllObjects];
+    monitors = [(VIOSessionTask *)self monitors];
+    [monitors removeAllObjects];
 
     goto LABEL_48;
   }
 
-  v24 = [(VIOSessionTask *)self analyticsCapturer];
-  [v24 startRecording];
+  analyticsCapturer5 = [(VIOSessionTask *)self analyticsCapturer];
+  [analyticsCapturer5 startRecording];
 
   if (![(VIOSessionTask *)self isVIOSessionRunning])
   {
-    v25 = [(VIOSessionTask *)self currentRoutePlanningSession];
+    currentRoutePlanningSession = [(VIOSessionTask *)self currentRoutePlanningSession];
 
-    if (v25)
+    if (currentRoutePlanningSession)
     {
       v26 = sub_100AF99D4();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -374,9 +374,9 @@ LABEL_39:
 
     else
     {
-      v33 = [(VIOSessionTask *)self currentNavigationSession];
+      currentNavigationSession3 = [(VIOSessionTask *)self currentNavigationSession];
 
-      if (v33)
+      if (currentNavigationSession3)
       {
         v26 = sub_100AF99D4();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -424,30 +424,30 @@ LABEL_41:
 LABEL_48:
 }
 
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100AF9AF8;
   v4[3] = &unk_101661650;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = type;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100AF9B9C;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  endedCopy = ended;
+  v3 = endedCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -457,7 +457,7 @@ LABEL_48:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -467,34 +467,34 @@ LABEL_48:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = v13;
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
 
 LABEL_10:
     v21.receiver = self;
     v21.super_class = VIOSessionTask;
-    [(VIOSessionTask *)&v21 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VIOSessionTask *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_11;
   }
 
-  v15 = [v10 isEqualToString:@"MapsWalkingEnableImageBasedHeading"];
+  v15 = [pathCopy isEqualToString:@"MapsWalkingEnableImageBasedHeading"];
 
   if (!v15)
   {
     goto LABEL_10;
   }
 
-  v16 = [v12 objectForKey:NSKeyValueChangeNewKey];
-  v17 = [v16 BOOLValue];
+  v16 = [changeCopy objectForKey:NSKeyValueChangeNewKey];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
     if ([(VIOSessionTask *)self shouldStartVIOSession]&& ![(VIOSessionTask *)self isVIOSessionRunning])
     {
@@ -519,8 +519,8 @@ LABEL_10:
     }
 
     [(VIOSessionTask *)self pauseVIOSession];
-    v20 = [(VIOSessionTask *)self monitors];
-    [v20 removeAllObjects];
+    monitors = [(VIOSessionTask *)self monitors];
+    [monitors removeAllObjects];
   }
 
 LABEL_11:
@@ -575,9 +575,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v3 = [(VIOSessionTask *)self session];
+  session = [(VIOSessionTask *)self session];
 
-  if (!v3)
+  if (!session)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -606,9 +606,9 @@ LABEL_14:
     }
   }
 
-  v4 = [(VIOSessionTask *)self session];
+  session2 = [(VIOSessionTask *)self session];
 
-  if (!v4)
+  if (!session2)
   {
     v10 = sub_100AF99D4();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -621,18 +621,18 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v5 = [(VIOSessionTask *)self currentNavigationSession];
+  currentNavigationSession = [(VIOSessionTask *)self currentNavigationSession];
 
-  if (!v5)
+  if (!currentNavigationSession)
   {
     return 1;
   }
 
-  v6 = [(VIOSessionTask *)self currentNavigationSession];
-  v7 = [v6 currentTransportType];
+  currentNavigationSession2 = [(VIOSessionTask *)self currentNavigationSession];
+  currentTransportType = [currentNavigationSession2 currentTransportType];
 
   v8 = &OBJC_METACLASS___NavShareETACell;
-  if (![VLFSessionTask isSupportedForTransportType:v7])
+  if (![VLFSessionTask isSupportedForTransportType:currentTransportType])
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -663,7 +663,7 @@ LABEL_14:
     }
   }
 
-  if ([&v8[16] isSupportedForTransportType:v7])
+  if ([&v8[16] isSupportedForTransportType:currentTransportType])
   {
     return 1;
   }
@@ -671,14 +671,14 @@ LABEL_14:
   v10 = sub_100AF99D4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    if ((v7 - 1) > 4)
+    if ((currentTransportType - 1) > 4)
     {
       v14 = @"Undefined";
     }
 
     else
     {
-      v14 = off_101637F28[(v7 - 1)];
+      v14 = off_101637F28[(currentTransportType - 1)];
     }
 
     v24 = 138412290;
@@ -738,9 +738,9 @@ LABEL_15:
     goto LABEL_38;
   }
 
-  v3 = [(VIOSessionTask *)self session];
+  session = [(VIOSessionTask *)self session];
 
-  if (!v3)
+  if (!session)
   {
     v34 = sub_10006D178();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -769,9 +769,9 @@ LABEL_15:
     }
   }
 
-  v4 = [(VIOSessionTask *)self session];
+  session2 = [(VIOSessionTask *)self session];
 
-  if (!v4)
+  if (!session2)
   {
     v10 = sub_100AF99D4();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -784,9 +784,9 @@ LABEL_15:
     goto LABEL_38;
   }
 
-  v5 = [(VIOSessionTask *)self currentRoutePlanningSession];
+  currentRoutePlanningSession = [(VIOSessionTask *)self currentRoutePlanningSession];
 
-  if (v5)
+  if (currentRoutePlanningSession)
   {
     if (([objc_opt_class() isVIOModeEnabledInRoutePlanning] & 1) == 0)
     {
@@ -819,10 +819,10 @@ LABEL_15:
 
     if ([objc_opt_class() isVIOModeEnabledInRoutePlanning])
     {
-      v6 = [(VIOSessionTask *)self currentRoutePlanningSession];
-      v7 = [v6 currentTransportType];
+      currentRoutePlanningSession2 = [(VIOSessionTask *)self currentRoutePlanningSession];
+      currentTransportType = [currentRoutePlanningSession2 currentTransportType];
 
-      if (v7 != 2)
+      if (currentTransportType != 2)
       {
         v40 = sub_10006D178();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -851,24 +851,24 @@ LABEL_15:
         }
       }
 
-      v8 = [(VIOSessionTask *)self currentRoutePlanningSession];
-      v9 = [v8 currentTransportType];
+      currentRoutePlanningSession3 = [(VIOSessionTask *)self currentRoutePlanningSession];
+      currentTransportType2 = [currentRoutePlanningSession3 currentTransportType];
 
-      if (v9 != 2)
+      if (currentTransportType2 != 2)
       {
         v10 = sub_100AF99D4();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v11 = [(VIOSessionTask *)self currentRoutePlanningSession];
-          v12 = [v11 currentTransportType];
-          if ((v12 - 1) > 4)
+          currentRoutePlanningSession4 = [(VIOSessionTask *)self currentRoutePlanningSession];
+          currentTransportType3 = [currentRoutePlanningSession4 currentTransportType];
+          if ((currentTransportType3 - 1) > 4)
           {
             v13 = @"Undefined";
           }
 
           else
           {
-            v13 = off_101637F28[(v12 - 1)];
+            v13 = off_101637F28[(currentTransportType3 - 1)];
           }
 
           v49 = 138412290;
@@ -899,9 +899,9 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v15 = [(VIOSessionTask *)self currentNavigationSession];
+  currentNavigationSession = [(VIOSessionTask *)self currentNavigationSession];
 
-  if (!v15)
+  if (!currentNavigationSession)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -938,10 +938,10 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v16 = [(VIOSessionTask *)self currentNavigationSession];
-  v17 = [v16 currentTransportType];
+  currentNavigationSession2 = [(VIOSessionTask *)self currentNavigationSession];
+  currentTransportType4 = [currentNavigationSession2 currentTransportType];
 
-  if (v17 != 2)
+  if (currentTransportType4 != 2)
   {
     v43 = sub_10006D178();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -970,15 +970,15 @@ LABEL_38:
     }
   }
 
-  v18 = [(VIOSessionTask *)self currentNavigationSession];
-  v19 = [v18 currentTransportType];
+  currentNavigationSession3 = [(VIOSessionTask *)self currentNavigationSession];
+  currentTransportType5 = [currentNavigationSession3 currentTransportType];
 
-  if (v19 == 2)
+  if (currentTransportType5 == 2)
   {
-    v20 = [(VIOSessionTask *)self currentNavigationSession];
-    v21 = [v20 navigationType];
+    currentNavigationSession4 = [(VIOSessionTask *)self currentNavigationSession];
+    navigationType = [currentNavigationSession4 navigationType];
 
-    if (v21 != 3)
+    if (navigationType != 3)
     {
       v46 = sub_10006D178();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -1007,10 +1007,10 @@ LABEL_38:
       }
     }
 
-    v22 = [(VIOSessionTask *)self currentNavigationSession];
-    v23 = [v22 navigationType];
+    currentNavigationSession5 = [(VIOSessionTask *)self currentNavigationSession];
+    navigationType2 = [currentNavigationSession5 navigationType];
 
-    if (v23 == 3)
+    if (navigationType2 == 3)
     {
       return 1;
     }
@@ -1029,16 +1029,16 @@ LABEL_38:
   v10 = sub_100AF99D4();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [(VIOSessionTask *)self currentNavigationSession];
-    v28 = [v11 currentTransportType];
-    if ((v28 - 1) > 4)
+    currentRoutePlanningSession4 = [(VIOSessionTask *)self currentNavigationSession];
+    currentTransportType6 = [currentRoutePlanningSession4 currentTransportType];
+    if ((currentTransportType6 - 1) > 4)
     {
       v29 = @"Undefined";
     }
 
     else
     {
-      v29 = off_101637F28[(v28 - 1)];
+      v29 = off_101637F28[(currentTransportType6 - 1)];
     }
 
     v49 = 138412290;
@@ -1052,21 +1052,21 @@ LABEL_39:
   return 0;
 }
 
-- (void)handleTransportTypeChanged:(int64_t)a3
+- (void)handleTransportTypeChanged:(int64_t)changed
 {
-  if ([(VIOSessionTask *)self isVLFSessionRunning]&& [VLFSessionTask isSupportedForTransportType:a3])
+  if ([(VIOSessionTask *)self isVLFSessionRunning]&& [VLFSessionTask isSupportedForTransportType:changed])
   {
     return;
   }
 
-  if (a3 != 2)
+  if (changed != 2)
   {
-    v8 = [(VIOSessionTask *)self analyticsCapturer];
-    [v8 stopRecording];
+    analyticsCapturer = [(VIOSessionTask *)self analyticsCapturer];
+    [analyticsCapturer stopRecording];
 
-    LOBYTE(v8) = [(VIOSessionTask *)self isVIOSessionRunning];
-    v9 = [(VIOSessionTask *)self isVLFSessionRunning];
-    if ((v8 & 1) == 0 && !v9)
+    LOBYTE(analyticsCapturer) = [(VIOSessionTask *)self isVIOSessionRunning];
+    isVLFSessionRunning = [(VIOSessionTask *)self isVLFSessionRunning];
+    if ((analyticsCapturer & 1) == 0 && !isVLFSessionRunning)
     {
       goto LABEL_29;
     }
@@ -1074,14 +1074,14 @@ LABEL_39:
     v10 = sub_100AF99D4();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      if ((a3 - 1) > 4)
+      if ((changed - 1) > 4)
       {
         v11 = @"Undefined";
       }
 
       else
       {
-        v11 = off_101637F00[a3 - 1];
+        v11 = off_101637F00[changed - 1];
       }
 
       v23 = 138412290;
@@ -1092,31 +1092,31 @@ LABEL_39:
     goto LABEL_28;
   }
 
-  v5 = [(VIOSessionTask *)self currentRoutePlanningSession];
+  currentRoutePlanningSession = [(VIOSessionTask *)self currentRoutePlanningSession];
   v6 = objc_opt_class();
-  if (v5)
+  if (currentRoutePlanningSession)
   {
-    v7 = [v6 isVIOModeEnabledInRoutePlanning];
+    isVIOModeEnabledInRoutePlanning = [v6 isVIOModeEnabledInRoutePlanning];
   }
 
   else
   {
-    v7 = [v6 isVIOModeEnabled];
+    isVIOModeEnabledInRoutePlanning = [v6 isVIOModeEnabled];
   }
 
-  v12 = v7;
+  v12 = isVIOModeEnabledInRoutePlanning;
 
-  v13 = [(VIOSessionTask *)self session];
+  session = [(VIOSessionTask *)self session];
 
-  v14 = [(VIOSessionTask *)self analyticsCapturer];
-  v15 = v14;
-  if (!v12 || !v13)
+  analyticsCapturer2 = [(VIOSessionTask *)self analyticsCapturer];
+  v15 = analyticsCapturer2;
+  if (!v12 || !session)
   {
-    [v14 stopRecording];
+    [analyticsCapturer2 stopRecording];
 
-    v17 = [(VIOSessionTask *)self isVIOSessionRunning];
-    v18 = [(VIOSessionTask *)self isVLFSessionRunning];
-    if ((v17 & 1) == 0 && !v18)
+    isVIOSessionRunning = [(VIOSessionTask *)self isVIOSessionRunning];
+    isVLFSessionRunning2 = [(VIOSessionTask *)self isVLFSessionRunning];
+    if ((isVIOSessionRunning & 1) == 0 && !isVLFSessionRunning2)
     {
       goto LABEL_29;
     }
@@ -1124,9 +1124,9 @@ LABEL_39:
     v19 = sub_100AF99D4();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(VIOSessionTask *)self currentRoutePlanningSession];
+      currentRoutePlanningSession2 = [(VIOSessionTask *)self currentRoutePlanningSession];
       v21 = @"VIO mode in route planning";
-      if (!v20)
+      if (!currentRoutePlanningSession2)
       {
         v21 = @"VIO mode";
       }
@@ -1141,13 +1141,13 @@ LABEL_39:
 LABEL_28:
     [(VIOSessionTask *)self pauseVIOSession];
 LABEL_29:
-    v22 = [(VIOSessionTask *)self monitors];
-    [v22 removeAllObjects];
+    monitors = [(VIOSessionTask *)self monitors];
+    [monitors removeAllObjects];
 
     return;
   }
 
-  [v14 startRecording];
+  [analyticsCapturer2 startRecording];
 
   if (![(VIOSessionTask *)self isVIOSessionRunning])
   {
@@ -1163,48 +1163,48 @@ LABEL_29:
   }
 }
 
-- (void)setCurrentRoutePlanningSession:(id)a3
+- (void)setCurrentRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   currentRoutePlanningSession = self->_currentRoutePlanningSession;
-  if (currentRoutePlanningSession != v5)
+  if (currentRoutePlanningSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [currentRoutePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_currentRoutePlanningSession, a3);
+    objc_storeStrong(&self->_currentRoutePlanningSession, session);
     [self->_currentRoutePlanningSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)setCurrentNavigationSession:(id)a3
+- (void)setCurrentNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   currentNavigationSession = self->_currentNavigationSession;
-  if (currentNavigationSession != v5)
+  if (currentNavigationSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [currentNavigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_currentNavigationSession, a3);
+    objc_storeStrong(&self->_currentNavigationSession, session);
     [self->_currentNavigationSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
 - (BOOL)isVLFSessionRunning
 {
-  v2 = [(VIOSessionTask *)self session];
-  v3 = [v2 isVLFRunning];
+  session = [(VIOSessionTask *)self session];
+  isVLFRunning = [session isVLFRunning];
 
-  return v3;
+  return isVLFRunning;
 }
 
 - (BOOL)isVIOSessionRunning
 {
-  v2 = [(VIOSessionTask *)self session];
-  v3 = [v2 isVIORunning];
+  session = [(VIOSessionTask *)self session];
+  isVIORunning = [session isVIORunning];
 
-  return v3;
+  return isVIORunning;
 }
 
 - (BOOL)areMonitorsDisablingVIO
@@ -1213,8 +1213,8 @@ LABEL_29:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(VIOSessionTask *)self monitors];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  monitors = [(VIOSessionTask *)self monitors];
+  v3 = [monitors countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v3)
   {
     v5 = v3;
@@ -1227,7 +1227,7 @@ LABEL_29:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(monitors);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -1254,7 +1254,7 @@ LABEL_29:
         }
       }
 
-      v5 = [v2 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v5 = [monitors countByEnumeratingWithState:&v14 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -1270,32 +1270,32 @@ LABEL_16:
   return v10;
 }
 
-- (void)createMonitorsForConfiguration:(id)a3
+- (void)createMonitorsForConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 isVIO])
+  configurationCopy = configuration;
+  if ([configurationCopy isVIO])
   {
-    v5 = [(VIOSessionTask *)self session];
-    v6 = [v5 configuration];
-    v7 = [v6 isVIO];
+    session = [(VIOSessionTask *)self session];
+    configuration = [session configuration];
+    isVIO = [configuration isVIO];
   }
 
   else
   {
-    v7 = 0;
+    isVIO = 0;
   }
 
-  if ([v4 isVLF])
+  if ([configurationCopy isVLF])
   {
-    v8 = [(VIOSessionTask *)self session];
-    v9 = [v8 configuration];
-    v7 |= [v9 isVLF];
+    session2 = [(VIOSessionTask *)self session];
+    configuration2 = [session2 configuration];
+    isVIO |= [configuration2 isVLF];
   }
 
-  v10 = [(VIOSessionTask *)self monitors];
-  v11 = [v10 count];
+  monitors = [(VIOSessionTask *)self monitors];
+  v11 = [monitors count];
 
-  if (v11 && v7)
+  if (v11 && isVIO)
   {
     v12 = sub_100AF99D4();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1307,13 +1307,13 @@ LABEL_16:
 
   else
   {
-    v13 = [(VIOSessionTask *)self monitors];
-    [v13 removeAllObjects];
+    monitors2 = [(VIOSessionTask *)self monitors];
+    [monitors2 removeAllObjects];
 
     v14 = [VIOSessionStateManager alloc];
-    v15 = [(VIOSessionTask *)self session];
-    v34 = v4;
-    v12 = [(VIOSessionStateManager *)v14 initWithSession:v15 configuration:v4];
+    session3 = [(VIOSessionTask *)self session];
+    v34 = configurationCopy;
+    v12 = [(VIOSessionStateManager *)v14 initWithSession:session3 configuration:configurationCopy];
 
     v37 = 0u;
     v38 = 0u;
@@ -1347,24 +1347,24 @@ LABEL_16:
           }
 
           v21 = *(*(&v35 + 1) + 8 * i);
-          v22 = [v21 isAvailable];
-          v23 = sub_100AF99D4();
-          v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
-          if (v22)
+          isAvailable = [v21 isAvailable];
+          monitors3 = sub_100AF99D4();
+          v24 = os_log_type_enabled(monitors3, OS_LOG_TYPE_INFO);
+          if (isAvailable)
           {
             if (v24)
             {
               v25 = NSStringFromClass(v21);
               *buf = 138412290;
               v40 = v25;
-              _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%@ is available; creating it", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, monitors3, OS_LOG_TYPE_INFO, "%@ is available; creating it", buf, 0xCu);
             }
 
-            v23 = [(VIOSessionTask *)self monitors];
+            monitors3 = [(VIOSessionTask *)self monitors];
             v26 = [v21 alloc];
-            v27 = [(VIOSessionTask *)self platformController];
-            v28 = [v26 initWithStateManager:v12 platformController:v27];
-            [v23 addObject:v28];
+            platformController = [(VIOSessionTask *)self platformController];
+            v28 = [v26 initWithStateManager:v12 platformController:platformController];
+            [monitors3 addObject:v28];
           }
 
           else if (v24)
@@ -1372,7 +1372,7 @@ LABEL_16:
             v29 = NSStringFromClass(v21);
             *buf = 138412290;
             v40 = v29;
-            _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%@ is unavailable; NOT creating it", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, monitors3, OS_LOG_TYPE_INFO, "%@ is unavailable; NOT creating it", buf, 0xCu);
           }
         }
 
@@ -1382,12 +1382,12 @@ LABEL_16:
       while (v18);
     }
 
-    v30 = [(VIOSessionTask *)self analyticsCapturer];
-    [v30 setStateManager:v12];
+    analyticsCapturer = [(VIOSessionTask *)self analyticsCapturer];
+    [analyticsCapturer setStateManager:v12];
 
-    v31 = [(VIOSessionTask *)self session];
-    v32 = [(VIOSessionTask *)self analyticsCapturer];
-    [v32 setSession:v31];
+    session4 = [(VIOSessionTask *)self session];
+    analyticsCapturer2 = [(VIOSessionTask *)self analyticsCapturer];
+    [analyticsCapturer2 setSession:session4];
 
     v33 = sub_100AF99D4();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -1396,7 +1396,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "New monitors have been created", buf, 2u);
     }
 
-    v4 = v34;
+    configurationCopy = v34;
   }
 }
 
@@ -1409,25 +1409,25 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Pausing VIO session", v6, 2u);
   }
 
-  v4 = [(VIOSessionTask *)self session];
-  [v4 pause];
+  session = [(VIOSessionTask *)self session];
+  [session pause];
 
-  v5 = [(VIOSessionTask *)self monitors];
-  [v5 removeAllObjects];
+  monitors = [(VIOSessionTask *)self monitors];
+  [monitors removeAllObjects];
 }
 
 - (void)startVIOSession
 {
   if ([(VIOSessionTask *)self shouldStartVIOSession]&& ![(VIOSessionTask *)self isEligibleToStartVIO])
   {
-    v3 = sub_100AF99D4();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    configuration = sub_100AF99D4();
+    if (os_log_type_enabled(configuration, OS_LOG_TYPE_INFO))
     {
       v23 = 0;
       v16 = "VIO should not start or is not eligible to start; not starting";
       v17 = &v23;
 LABEL_20:
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, v16, v17, 2u);
+      _os_log_impl(&_mh_execute_header, configuration, OS_LOG_TYPE_INFO, v16, v17, 2u);
     }
   }
 
@@ -1435,7 +1435,7 @@ LABEL_20:
   {
     if (![(VIOSessionTask *)self shouldStartVLFSession]|| [(VIOSessionTask *)self isEligibleToStartVLF])
     {
-      v3 = [(VIOSessionTask *)self configuration];
+      configuration = [(VIOSessionTask *)self configuration];
       v4 = +[NSUserDefaults standardUserDefaults];
       v5 = [v4 BOOLForKey:@"MapsARSessionRecordingEnabledKey"];
 
@@ -1451,12 +1451,12 @@ LABEL_20:
         v7 = +[NSDate now];
         [v7 timeIntervalSince1970];
         v9 = [NSString stringWithFormat:@"vio.%.0f.mov", v8 * 1000.0];
-        v10 = [v3 recordingConfigurationWithFileName:v9];
+        v10 = [configuration recordingConfigurationWithFileName:v9];
 
-        v3 = v10;
+        configuration = v10;
       }
 
-      [(VIOSessionTask *)self createMonitorsForConfiguration:v3];
+      [(VIOSessionTask *)self createMonitorsForConfiguration:configuration];
       if ([(VIOSessionTask *)self areMonitorsDisablingVIO])
       {
         v11 = sub_100AF99D4();
@@ -1466,12 +1466,12 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "VIO session will not start because a monitor wants to disable the session", v18, 2u);
         }
 
-        v12 = [(VIOSessionTask *)self session];
-        [v12 pause];
+        session = [(VIOSessionTask *)self session];
+        [session pause];
         goto LABEL_27;
       }
 
-      if ([v3 isVIO])
+      if ([configuration isVIO])
       {
         v13 = sub_100AF99D4();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -1486,11 +1486,11 @@ LABEL_24:
 
       else
       {
-        if (![v3 isVLF])
+        if (![configuration isVLF])
         {
 LABEL_26:
-          v12 = [(VIOSessionTask *)self session];
-          [v12 runWithConfiguration:v3];
+          session = [(VIOSessionTask *)self session];
+          [session runWithConfiguration:configuration];
 LABEL_27:
 
           goto LABEL_28;
@@ -1509,8 +1509,8 @@ LABEL_27:
       goto LABEL_26;
     }
 
-    v3 = sub_100AF99D4();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    configuration = sub_100AF99D4();
+    if (os_log_type_enabled(configuration, OS_LOG_TYPE_INFO))
     {
       *v22 = 0;
       v16 = "Post-VLF VIO should not start or is not eligible to start; not starting";
@@ -1546,8 +1546,8 @@ LABEL_28:
     v9 = [NSNumber numberWithDouble:v5];
     v22[2] = v9;
     v10 = [NSArray arrayWithObjects:v22 count:3];
-    v11 = [v3 videoFormat];
-    [v11 setFrameRatesByPowerUsage:v10];
+    videoFormat = [v3 videoFormat];
+    [videoFormat setFrameRatesByPowerUsage:v10];
   }
 
   else if ([(VIOSessionTask *)self shouldStartVIOSession])
@@ -1604,8 +1604,8 @@ LABEL_28:
     }
 
     v5 = v4;
-    v21 = [(VIOSessionTask *)self session];
-    if (v21)
+    session = [(VIOSessionTask *)self session];
+    if (session)
     {
       v6 = @"YES";
     }
@@ -1616,8 +1616,8 @@ LABEL_28:
     }
 
     v7 = v6;
-    v8 = [(VIOSessionTask *)self session];
-    if ([v8 state] == 1)
+    session2 = [(VIOSessionTask *)self session];
+    if ([session2 state] == 1)
     {
       v9 = @"YES";
     }
@@ -1628,9 +1628,9 @@ LABEL_28:
     }
 
     v10 = v9;
-    v11 = [(VIOSessionTask *)self session];
-    v12 = [v11 technique];
-    if ([v12 vlfLocalized])
+    session3 = [(VIOSessionTask *)self session];
+    technique = [session3 technique];
+    if ([technique vlfLocalized])
     {
       v13 = @"YES";
     }
@@ -1657,63 +1657,63 @@ LABEL_28:
     return 0;
   }
 
-  v15 = [(VIOSessionTask *)self session];
-  if (v15)
+  session4 = [(VIOSessionTask *)self session];
+  if (session4)
   {
-    v16 = [(VIOSessionTask *)self session];
-    if ([v16 state] == 1)
+    session5 = [(VIOSessionTask *)self session];
+    if ([session5 state] == 1)
     {
-      v17 = [(VIOSessionTask *)self session];
-      v18 = [v17 technique];
-      v19 = [v18 vlfLocalized];
+      session6 = [(VIOSessionTask *)self session];
+      technique2 = [session6 technique];
+      vlfLocalized = [technique2 vlfLocalized];
     }
 
     else
     {
-      v19 = 0;
+      vlfLocalized = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    vlfLocalized = 0;
   }
 
-  return v19;
+  return vlfLocalized;
 }
 
 - (BOOL)shouldStartVIOSession
 {
-  v3 = [(VIOSessionTask *)self session];
+  session = [(VIOSessionTask *)self session];
 
-  if (v3)
+  if (session)
   {
     if (![(VIOSessionTask *)self shouldStartVLFSession])
     {
-      v10 = [(VIOSessionTask *)self platformController];
-      v11 = [v10 chromeViewController];
-      v12 = [v11 _maps_uiScene];
-      v13 = [v12 activationState];
+      platformController = [(VIOSessionTask *)self platformController];
+      chromeViewController = [platformController chromeViewController];
+      _maps_uiScene = [chromeViewController _maps_uiScene];
+      activationState = [_maps_uiScene activationState];
 
-      if (v13 >= 2)
+      if (activationState >= 2)
       {
-        v4 = sub_100AF99D4();
-        if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+        currentRoutePlanningSession3 = sub_100AF99D4();
+        if (!os_log_type_enabled(currentRoutePlanningSession3, OS_LOG_TYPE_DEBUG))
         {
           goto LABEL_9;
         }
 
         v35 = 134217984;
-        v36 = v13;
+        v36 = activationState;
         v5 = "Our scene's activation state is not foreground (%ld); VIO should not start";
-        v6 = v4;
+        v6 = currentRoutePlanningSession3;
         v7 = 12;
         goto LABEL_8;
       }
 
-      v14 = [(VIOSessionTask *)self currentRoutePlanningSession];
+      currentRoutePlanningSession = [(VIOSessionTask *)self currentRoutePlanningSession];
 
-      if (v14)
+      if (currentRoutePlanningSession)
       {
         v15 = sub_100AF99D4();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1729,8 +1729,8 @@ LABEL_28:
           }
 
           v17 = v16;
-          v18 = [(VIOSessionTask *)self currentRoutePlanningSession];
-          if ([v18 currentTransportType] == 2)
+          currentRoutePlanningSession2 = [(VIOSessionTask *)self currentRoutePlanningSession];
+          if ([currentRoutePlanningSession2 currentTransportType] == 2)
           {
             v19 = @"YES";
           }
@@ -1750,19 +1750,19 @@ LABEL_28:
 
         if ([objc_opt_class() isVIOModeEnabledInRoutePlanning])
         {
-          v4 = [(VIOSessionTask *)self currentRoutePlanningSession];
-          v8 = [v4 currentTransportType]== 2;
+          currentRoutePlanningSession3 = [(VIOSessionTask *)self currentRoutePlanningSession];
+          v8 = [currentRoutePlanningSession3 currentTransportType]== 2;
           goto LABEL_10;
         }
       }
 
       else
       {
-        v21 = [(VIOSessionTask *)self currentNavigationSession];
-        if (!v21 || (v22 = v21, -[VIOSessionTask currentNavigationSession](self, "currentNavigationSession"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 guidanceType], v23, v22, v24 == 2))
+        currentNavigationSession = [(VIOSessionTask *)self currentNavigationSession];
+        if (!currentNavigationSession || (v22 = currentNavigationSession, -[VIOSessionTask currentNavigationSession](self, "currentNavigationSession"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 guidanceType], v23, v22, v24 == 2))
         {
-          v4 = sub_100AF99D4();
-          if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+          currentRoutePlanningSession3 = sub_100AF99D4();
+          if (!os_log_type_enabled(currentRoutePlanningSession3, OS_LOG_TYPE_DEBUG))
           {
             goto LABEL_9;
           }
@@ -1786,8 +1786,8 @@ LABEL_28:
           }
 
           v27 = v26;
-          v28 = [(VIOSessionTask *)self currentNavigationSession];
-          if ([v28 currentTransportType] == 2)
+          currentNavigationSession2 = [(VIOSessionTask *)self currentNavigationSession];
+          if ([currentNavigationSession2 currentTransportType] == 2)
           {
             v29 = @"YES";
           }
@@ -1798,8 +1798,8 @@ LABEL_28:
           }
 
           v30 = v29;
-          v31 = [(VIOSessionTask *)self currentNavigationSession];
-          if ([v31 navigationType] == 3)
+          currentNavigationSession3 = [(VIOSessionTask *)self currentNavigationSession];
+          if ([currentNavigationSession3 navigationType] == 3)
           {
             v32 = @"YES";
           }
@@ -1821,11 +1821,11 @@ LABEL_28:
 
         if ([objc_opt_class() isVIOModeEnabled])
         {
-          v4 = [(VIOSessionTask *)self currentNavigationSession];
-          if ([v4 currentTransportType]== 2)
+          currentRoutePlanningSession3 = [(VIOSessionTask *)self currentNavigationSession];
+          if ([currentRoutePlanningSession3 currentTransportType]== 2)
           {
-            v34 = [(VIOSessionTask *)self currentNavigationSession];
-            v8 = [v34 navigationType] == 3;
+            currentNavigationSession4 = [(VIOSessionTask *)self currentNavigationSession];
+            v8 = [currentNavigationSession4 navigationType] == 3;
 
             goto LABEL_10;
           }
@@ -1837,13 +1837,13 @@ LABEL_28:
       return 0;
     }
 
-    v4 = sub_100AF99D4();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    currentRoutePlanningSession3 = sub_100AF99D4();
+    if (os_log_type_enabled(currentRoutePlanningSession3, OS_LOG_TYPE_DEBUG))
     {
       LOWORD(v35) = 0;
       v5 = "Post-VLF VIO should start instead; VIO should not start";
 LABEL_7:
-      v6 = v4;
+      v6 = currentRoutePlanningSession3;
       v7 = 2;
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, v5, &v35, v7);
@@ -1852,8 +1852,8 @@ LABEL_8:
 
   else
   {
-    v4 = sub_100AF99D4();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+    currentRoutePlanningSession3 = sub_100AF99D4();
+    if (os_log_type_enabled(currentRoutePlanningSession3, OS_LOG_TYPE_DEBUG))
     {
       LOWORD(v35) = 0;
       v5 = "We don't own the session; VIO should not start";
@@ -1870,8 +1870,8 @@ LABEL_10:
 
 - (id)activeMonitors
 {
-  v2 = [(VIOSessionTask *)self monitors];
-  v3 = [v2 copy];
+  monitors = [(VIOSessionTask *)self monitors];
+  v3 = [monitors copy];
 
   return v3;
 }
@@ -1889,10 +1889,10 @@ LABEL_10:
   [(VIOSessionTask *)&v5 dealloc];
 }
 
-- (VIOSessionTask)initWithPlatformController:(id)a3
+- (VIOSessionTask)initWithPlatformController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v19 = sub_10006D178();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1927,7 +1927,7 @@ LABEL_10:
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = +[NSMutableSet set];
     monitors = v6->_monitors;
     v6->_monitors = v7;
@@ -1944,9 +1944,9 @@ LABEL_10:
 
     v13 = +[NSNotificationCenter defaultCenter];
     WeakRetained = objc_loadWeakRetained(&v6->_platformController);
-    v15 = [WeakRetained chromeViewController];
-    v16 = [v15 _maps_uiScene];
-    [v13 addObserver:v6 selector:"sceneDidActivateNotification:" name:UISceneDidActivateNotification object:v16];
+    chromeViewController = [WeakRetained chromeViewController];
+    _maps_uiScene = [chromeViewController _maps_uiScene];
+    [v13 addObserver:v6 selector:"sceneDidActivateNotification:" name:UISceneDidActivateNotification object:_maps_uiScene];
 
     v17 = +[MapsARSessionManager sharedManager];
     [v17 requestSessionWithOwner:v6];
@@ -1970,40 +1970,40 @@ LABEL_10:
 
 + (BOOL)isVIOModeEnabledInRoutePlanning
 {
-  v2 = [a1 isVIOModeEnabled];
-  if (v2)
+  isVIOModeEnabled = [self isVIOModeEnabled];
+  if (isVIOModeEnabled)
   {
 
-    LOBYTE(v2) = GEOConfigGetBOOL();
+    LOBYTE(isVIOModeEnabled) = GEOConfigGetBOOL();
   }
 
-  return v2;
+  return isVIOModeEnabled;
 }
 
 + (BOOL)isVIOModeEnabled
 {
-  v2 = [a1 isVIOModeSupported];
-  if (v2)
+  isVIOModeSupported = [self isVIOModeSupported];
+  if (isVIOModeSupported)
   {
     v3 = +[NSUserDefaults standardUserDefaults];
     v4 = [v3 BOOLForKey:@"MapsWalkingEnableImageBasedHeading"];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isVIOModeSupported) = v4;
   }
 
-  return v2;
+  return isVIOModeSupported;
 }
 
 + (BOOL)isVIOModeSupportedInRoutePlanning
 {
-  v2 = [a1 isVIOModeSupported];
-  if (v2)
+  isVIOModeSupported = [self isVIOModeSupported];
+  if (isVIOModeSupported)
   {
 
-    LOBYTE(v2) = GEOConfigGetBOOL();
+    LOBYTE(isVIOModeSupported) = GEOConfigGetBOOL();
   }
 
-  return v2;
+  return isVIOModeSupported;
 }
 
 + (BOOL)isVIOModeSupported

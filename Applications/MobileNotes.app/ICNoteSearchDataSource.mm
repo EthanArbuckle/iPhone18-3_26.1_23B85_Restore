@@ -1,37 +1,37 @@
 @interface ICNoteSearchDataSource
-+ (int64_t)numberOfItemsInSection:(id)a3 forSnapshot:(id)a4;
++ (int64_t)numberOfItemsInSection:(id)section forSnapshot:(id)snapshot;
 - (BOOL)shouldShowEmptyState;
 - (BOOL)shouldShowLoadingState;
-- (ICNoteSearchDataSource)initWithCollectionView:(id)a3 noteContainerViewMode:(int64_t)a4 viewControllerManager:(id)a5 legacyViewContext:(id)a6 modernViewContext:(id)a7 searchContext:(id)a8;
+- (ICNoteSearchDataSource)initWithCollectionView:(id)view noteContainerViewMode:(int64_t)mode viewControllerManager:(id)manager legacyViewContext:(id)context modernViewContext:(id)viewContext searchContext:(id)searchContext;
 - (ICNoteSearchDataSourceDelegate)delegate;
 - (ICViewControllerManager)viewControllerManager;
-- (id)associatedCellsForItemIdentifiers:(id)a3;
+- (id)associatedCellsForItemIdentifiers:(id)identifiers;
 - (id)firstRelevantItemIdentifier;
 - (id)legacyViewContext;
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4;
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects;
 - (id)modernViewContext;
-- (id)nextRelevantItemIdentifierAfter:(id)a3;
+- (id)nextRelevantItemIdentifierAfter:(id)after;
 - (void)cancelSearchQuery;
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4;
-- (void)noteLockManagerDidToggleLock:(id)a3;
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds;
+- (void)noteLockManagerDidToggleLock:(id)lock;
 - (void)performUpdatesIfNeededAndWait;
-- (void)searchSnapshotDidUpdateSuggestions:(id)a3;
-- (void)searchWithUserInput:(id)a3 updateHandler:(id)a4;
-- (void)switchToMode:(unint64_t)a3;
+- (void)searchSnapshotDidUpdateSuggestions:(id)suggestions;
+- (void)searchWithUserInput:(id)input updateHandler:(id)handler;
+- (void)switchToMode:(unint64_t)mode;
 @end
 
 @implementation ICNoteSearchDataSource
 
-- (ICNoteSearchDataSource)initWithCollectionView:(id)a3 noteContainerViewMode:(int64_t)a4 viewControllerManager:(id)a5 legacyViewContext:(id)a6 modernViewContext:(id)a7 searchContext:(id)a8
+- (ICNoteSearchDataSource)initWithCollectionView:(id)view noteContainerViewMode:(int64_t)mode viewControllerManager:(id)manager legacyViewContext:(id)context modernViewContext:(id)viewContext searchContext:(id)searchContext
 {
-  v13 = a3;
-  obj = a5;
-  v51 = a6;
-  v50 = a7;
-  v52 = a8;
+  viewCopy = view;
+  obj = manager;
+  contextCopy = context;
+  viewContextCopy = viewContext;
+  searchContextCopy = searchContext;
   objc_initWeak(location, self);
-  v53 = v13;
-  objc_initWeak(&from, v13);
+  v53 = viewCopy;
+  objc_initWeak(&from, viewCopy);
   v14 = objc_opt_class();
   v72[0] = _NSConcreteStackBlock;
   v72[1] = 3221225472;
@@ -90,21 +90,21 @@
     searchResultsController = v29->_searchResultsController;
     v29->_searchResultsController = v30;
 
-    v29->_noteContainerViewMode = a4;
+    v29->_noteContainerViewMode = mode;
     objc_storeWeak(&v29->_viewControllerManager, obj);
     v32 = [ICNoteSearchSnapshot alloc];
-    v33 = [(ICNoteSearchDataSource *)v29 collectionViewDiffableDataSource];
-    v34 = [obj hasCompactWidth];
-    v35 = [(ICNoteSearchDataSource *)v29 collectionView];
-    v36 = [(ICNoteSearchSnapshot *)v32 initWithDiffableDataSource:v33 containerViewMode:a4 isCompactSize:v34 collectionView:v35 searchContext:v52];
+    collectionViewDiffableDataSource = [(ICNoteSearchDataSource *)v29 collectionViewDiffableDataSource];
+    hasCompactWidth = [obj hasCompactWidth];
+    collectionView = [(ICNoteSearchDataSource *)v29 collectionView];
+    v36 = [(ICNoteSearchSnapshot *)v32 initWithDiffableDataSource:collectionViewDiffableDataSource containerViewMode:mode isCompactSize:hasCompactWidth collectionView:collectionView searchContext:searchContextCopy];
     snapshot = v29->_snapshot;
     v29->_snapshot = v36;
 
-    v38 = [(ICNoteSearchDataSource *)v29 collectionView];
-    -[ICNoteSearchSnapshot setBehavior:](v29->_snapshot, "setBehavior:", [v38 ic_behavior]);
+    collectionView2 = [(ICNoteSearchDataSource *)v29 collectionView];
+    -[ICNoteSearchSnapshot setBehavior:](v29->_snapshot, "setBehavior:", [collectionView2 ic_behavior]);
 
     [(ICNoteSearchSnapshot *)v29->_snapshot setDelegate:v29];
-    v39 = [NSSet setWithObjects:v51, v50, 0, v47];
+    v39 = [NSSet setWithObjects:contextCopy, viewContextCopy, 0, v47];
     v40 = [[ICManagedObjectContextChangeController alloc] initWithManagedObjectContexts:v39 delegate:v29];
     removedObjectsManagedObjectContextChangeController = v29->_removedObjectsManagedObjectContextChangeController;
     v29->_removedObjectsManagedObjectContextChangeController = v40;
@@ -127,8 +127,8 @@
     v55[3] = &unk_10064A5A0;
     objc_copyWeak(&v57, &from);
     v56 = v49;
-    v44 = [(ICNoteSearchDataSource *)v29 collectionViewDiffableDataSource];
-    [v44 setSupplementaryViewProvider:v55];
+    collectionViewDiffableDataSource2 = [(ICNoteSearchDataSource *)v29 collectionViewDiffableDataSource];
+    [collectionViewDiffableDataSource2 setSupplementaryViewProvider:v55];
 
     objc_destroyWeak(&v57);
   }
@@ -152,19 +152,19 @@
 
 - (void)cancelSearchQuery
 {
-  v3 = [(ICNoteSearchDataSource *)self searchResultsController];
-  [v3 cancelSearchQuery];
+  searchResultsController = [(ICNoteSearchDataSource *)self searchResultsController];
+  [searchResultsController cancelSearchQuery];
 
   [(ICNoteSearchDataSource *)self setCurrentSearchUserInput:0];
 }
 
-- (void)searchWithUserInput:(id)a3 updateHandler:(id)a4
+- (void)searchWithUserInput:(id)input updateHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [(ICNoteSearchDataSource *)self setCurrentSearchUserInput:v6];
+  inputCopy = input;
+  handlerCopy = handler;
+  [(ICNoteSearchDataSource *)self setCurrentSearchUserInput:inputCopy];
   [(ICNoteSearchDataSource *)self switchToMode:1];
-  if ([v6 isEmpty])
+  if ([inputCopy isEmpty])
   {
     v8 = os_log_create("com.apple.notes", "SearchIndexer");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -173,44 +173,44 @@
     }
 
     [(ICNoteSearchDataSource *)self cancelSearchQuery];
-    v9 = [(ICNoteSearchDataSource *)self snapshot];
-    [v9 clear];
+    snapshot = [(ICNoteSearchDataSource *)self snapshot];
+    [snapshot clear];
   }
 
   else
   {
-    v10 = [(ICNoteSearchDataSource *)self noteContainerViewMode];
-    v11 = [(ICNoteSearchDataSource *)self searchResultsController];
-    v12 = [(ICNoteSearchDataSource *)self accountIdentifier];
-    v13 = [v11 isUpToDateForInput:v6 accountIdentifier:v12];
+    noteContainerViewMode = [(ICNoteSearchDataSource *)self noteContainerViewMode];
+    searchResultsController = [(ICNoteSearchDataSource *)self searchResultsController];
+    accountIdentifier = [(ICNoteSearchDataSource *)self accountIdentifier];
+    v13 = [searchResultsController isUpToDateForInput:inputCopy accountIdentifier:accountIdentifier];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [v6 tokens];
-      v15 = [v14 ic_containsObjectPassingTest:&stru_10064A5E0];
+      tokens = [inputCopy tokens];
+      v15 = [tokens ic_containsObjectPassingTest:&stru_10064A5E0];
 
-      v16 = [(ICNoteSearchDataSource *)self snapshot];
-      [v16 prepareSearchWithCannedSuggestionToken:v15];
+      snapshot2 = [(ICNoteSearchDataSource *)self snapshot];
+      [snapshot2 prepareSearchWithCannedSuggestionToken:v15];
 
       +[NSDate timeIntervalSinceReferenceDate];
       [(ICNoteSearchDataSource *)self setUncompletedSearchStartTime:?];
     }
 
-    v17 = [(ICNoteSearchDataSource *)self collectionView];
-    v18 = [v17 ic_behavior];
+    collectionView = [(ICNoteSearchDataSource *)self collectionView];
+    ic_behavior = [collectionView ic_behavior];
 
     objc_initWeak(&location, self);
-    v19 = [(ICNoteSearchDataSource *)self searchResultsController];
-    v20 = [(ICNoteSearchDataSource *)self snapshot];
-    v21 = [(ICNoteSearchDataSource *)self accountIdentifier];
+    searchResultsController2 = [(ICNoteSearchDataSource *)self searchResultsController];
+    snapshot3 = [(ICNoteSearchDataSource *)self snapshot];
+    accountIdentifier2 = [(ICNoteSearchDataSource *)self accountIdentifier];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100119A48;
     v22[3] = &unk_10064A608;
     objc_copyWeak(v24, &location);
-    v24[1] = v18;
-    v23 = v7;
-    [v19 performSearchWithInput:v6 suggestionsResponder:v20 accountIdentifier:v21 modernResultsOnly:v10 == 1 updateHandler:v22];
+    v24[1] = ic_behavior;
+    v23 = handlerCopy;
+    [searchResultsController2 performSearchWithInput:inputCopy suggestionsResponder:snapshot3 accountIdentifier:accountIdentifier2 modernResultsOnly:noteContainerViewMode == 1 updateHandler:v22];
 
     objc_destroyWeak(v24);
     objc_destroyWeak(&location);
@@ -219,16 +219,16 @@
 
 - (BOOL)shouldShowLoadingState
 {
-  v3 = [(ICNoteSearchDataSource *)self stillSearching];
-  if (v3)
+  stillSearching = [(ICNoteSearchDataSource *)self stillSearching];
+  if (stillSearching)
   {
     +[NSDate timeIntervalSinceReferenceDate];
     v5 = v4;
     [(ICNoteSearchDataSource *)self uncompletedSearchStartTime];
-    LOBYTE(v3) = v5 - v6 >= 0.8;
+    LOBYTE(stillSearching) = v5 - v6 >= 0.8;
   }
 
-  return v3;
+  return stillSearching;
 }
 
 - (BOOL)shouldShowEmptyState
@@ -238,39 +238,39 @@
     return 0;
   }
 
-  v4 = [(ICNoteSearchDataSource *)self snapshot];
-  v5 = [v4 currentSnapshot];
-  v3 = [v5 numberOfItems] == 0;
+  snapshot = [(ICNoteSearchDataSource *)self snapshot];
+  currentSnapshot = [snapshot currentSnapshot];
+  v3 = [currentSnapshot numberOfItems] == 0;
 
   return v3;
 }
 
-- (void)switchToMode:(unint64_t)a3
+- (void)switchToMode:(unint64_t)mode
 {
-  v5 = [(ICNoteSearchDataSource *)self snapshot];
+  snapshot = [(ICNoteSearchDataSource *)self snapshot];
   if (+[ICSearchSuggestionsContext supportsSearchSuggestions])
   {
-    v4 = a3;
+    modeCopy = mode;
   }
 
   else
   {
-    v4 = 0;
+    modeCopy = 0;
   }
 
-  [v5 switchToMode:v4];
+  [snapshot switchToMode:modeCopy];
 }
 
-+ (int64_t)numberOfItemsInSection:(id)a3 forSnapshot:(id)a4
++ (int64_t)numberOfItemsInSection:(id)section forSnapshot:(id)snapshot
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 sectionIdentifiers];
-  v8 = [v7 containsObject:v5];
+  sectionCopy = section;
+  snapshotCopy = snapshot;
+  sectionIdentifiers = [snapshotCopy sectionIdentifiers];
+  v8 = [sectionIdentifiers containsObject:sectionCopy];
 
   if (v8)
   {
-    v9 = [v6 numberOfItemsInSection:v5];
+    v9 = [snapshotCopy numberOfItemsInSection:sectionCopy];
   }
 
   else
@@ -283,26 +283,26 @@
 
 - (void)performUpdatesIfNeededAndWait
 {
-  v2 = [(ICNoteSearchDataSource *)self removedObjectsManagedObjectContextChangeController];
-  [v2 performUpdatesIfNeededAndWait];
+  removedObjectsManagedObjectContextChangeController = [(ICNoteSearchDataSource *)self removedObjectsManagedObjectContextChangeController];
+  [removedObjectsManagedObjectContextChangeController performUpdatesIfNeededAndWait];
 }
 
 - (id)firstRelevantItemIdentifier
 {
-  v2 = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
-  v3 = [v2 snapshot];
+  collectionViewDiffableDataSource = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v4 = [v3 itemIdentifiers];
-  v5 = [v4 ic_firstObjectOfClass:objc_opt_class()];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v5 = [itemIdentifiers ic_firstObjectOfClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)nextRelevantItemIdentifierAfter:(id)a3
+- (id)nextRelevantItemIdentifierAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   objc_opt_class();
-  v5 = [v4 lastObject];
+  lastObject = [afterCopy lastObject];
 
   v6 = ICDynamicCast();
 
@@ -311,11 +311,11 @@
     goto LABEL_11;
   }
 
-  v7 = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
-  v8 = [v7 snapshot];
+  collectionViewDiffableDataSource = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v9 = [v8 itemIdentifiers];
-  v10 = [v9 ic_map:&stru_10064A628];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v10 = [itemIdentifiers ic_map:&stru_10064A628];
 
   v11 = [v10 indexOfObject:v6];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -334,8 +334,8 @@
     else
     {
       objc_opt_class();
-      v14 = [v8 itemIdentifiers];
-      v15 = [v14 objectAtIndexedSubscript:v13];
+      itemIdentifiers2 = [snapshot itemIdentifiers];
+      v15 = [itemIdentifiers2 objectAtIndexedSubscript:v13];
       v16 = ICDynamicCast();
 
       if (!v12)
@@ -347,8 +347,8 @@
     if (!v16)
     {
       objc_opt_class();
-      v17 = [v8 itemIdentifiers];
-      v18 = [v17 objectAtIndexedSubscript:v12 - 1];
+      itemIdentifiers3 = [snapshot itemIdentifiers];
+      v18 = [itemIdentifiers3 objectAtIndexedSubscript:v12 - 1];
       v16 = ICDynamicCast();
     }
 
@@ -364,13 +364,13 @@ LABEL_10:
 
 LABEL_11:
   objc_opt_class();
-  v19 = [(ICNoteSearchDataSource *)self firstRelevantItemIdentifier];
+  firstRelevantItemIdentifier = [(ICNoteSearchDataSource *)self firstRelevantItemIdentifier];
   v16 = ICDynamicCast();
 
 LABEL_12:
-  v20 = [v16 object];
-  v21 = [v20 objectID];
-  v22 = [v21 isEqual:v6];
+  object = [v16 object];
+  objectID = [object objectID];
+  v22 = [objectID isEqual:v6];
 
   if (v22)
   {
@@ -381,35 +381,35 @@ LABEL_12:
   return v16;
 }
 
-- (id)associatedCellsForItemIdentifiers:(id)a3
+- (id)associatedCellsForItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
-  v6 = [v5 snapshot];
+  identifiersCopy = identifiers;
+  collectionViewDiffableDataSource = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v7 = [v6 itemIdentifiers];
-  v8 = [NSSet setWithArray:v7];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v8 = [NSSet setWithArray:itemIdentifiers];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10011A30C;
   v12[3] = &unk_10064A650;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
+  v13 = identifiersCopy;
+  v9 = identifiersCopy;
   v10 = [v8 ic_compactMap:v12];
 
   return v10;
 }
 
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects
 {
-  v5 = a4;
-  v6 = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
-  v7 = [v6 snapshot];
-  v8 = [v7 numberOfItems];
+  objectsCopy = objects;
+  collectionViewDiffableDataSource = [(ICNoteSearchDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
+  numberOfItems = [snapshot numberOfItems];
 
-  if (v8)
+  if (numberOfItems)
   {
     +[NSMutableSet set];
     v12[0] = _NSConcreteStackBlock;
@@ -417,7 +417,7 @@ LABEL_12:
     v12[2] = sub_10011A554;
     v13 = v12[3] = &unk_10064A678;
     v9 = v13;
-    [v5 enumerateObjectsUsingBlock:v12];
+    [objectsCopy enumerateObjectsUsingBlock:v12];
     v10 = [v9 copy];
   }
 
@@ -429,68 +429,68 @@ LABEL_12:
   return v10;
 }
 
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds
 {
-  v5 = a4;
-  v6 = [(ICNoteSearchDataSource *)self snapshot];
+  dsCopy = ds;
+  snapshot = [(ICNoteSearchDataSource *)self snapshot];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10011A73C;
   v8[3] = &unk_10064A6C8;
-  v9 = v5;
-  v7 = v5;
-  [v6 performBlockAndUpdateHeaders:1 animated:1 block:v8];
+  v9 = dsCopy;
+  v7 = dsCopy;
+  [snapshot performBlockAndUpdateHeaders:1 animated:1 block:v8];
 }
 
-- (void)searchSnapshotDidUpdateSuggestions:(id)a3
+- (void)searchSnapshotDidUpdateSuggestions:(id)suggestions
 {
   if ([(ICNoteSearchDataSource *)self noteDisplayMode]== 1 || _UISolariumEnabled())
   {
-    v4 = [(ICNoteSearchDataSource *)self delegate];
-    [v4 searchDataSourceDidUpdateSuggestions:self];
+    delegate = [(ICNoteSearchDataSource *)self delegate];
+    [delegate searchDataSourceDidUpdateSuggestions:self];
   }
 }
 
-- (void)noteLockManagerDidToggleLock:(id)a3
+- (void)noteLockManagerDidToggleLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [lockCopy object];
   v6 = ICCheckedDynamicCast();
 
-  v7 = [v6 updatedNote];
+  updatedNote = [v6 updatedNote];
 
-  if (v7)
+  if (updatedNote)
   {
-    v8 = [(ICNoteSearchDataSource *)self snapshot];
+    snapshot = [(ICNoteSearchDataSource *)self snapshot];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10011AA70;
     v10[3] = &unk_10064A6C8;
     v11 = v6;
-    [v8 performBlockAndUpdateHeaders:0 animated:1 block:v10];
+    [snapshot performBlockAndUpdateHeaders:0 animated:1 block:v10];
   }
 
   v9.receiver = self;
   v9.super_class = ICNoteSearchDataSource;
-  [(ICNoteSearchDataSource *)&v9 noteLockManagerDidToggleLock:v4];
+  [(ICNoteSearchDataSource *)&v9 noteLockManagerDidToggleLock:lockCopy];
 }
 
 - (id)legacyViewContext
 {
   v2 = +[NotesApp sharedNotesApp];
-  v3 = [v2 noteContext];
-  v4 = [v3 managedObjectContext];
+  noteContext = [v2 noteContext];
+  managedObjectContext = [noteContext managedObjectContext];
 
-  return v4;
+  return managedObjectContext;
 }
 
 - (id)modernViewContext
 {
   v2 = +[ICNoteContext sharedContext];
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [v2 managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (ICNoteSearchDataSourceDelegate)delegate

@@ -1,7 +1,7 @@
 @interface TSCESumAccumulator
 - (TSCESumAccumulator)init;
-- (id)resultForFunction:(id)a3;
-- (void)addValue:(id)a3 evaluationContext:(id)a4 functionSpec:(id)a5;
+- (id)resultForFunction:(id)function;
+- (void)addValue:(id)value evaluationContext:(id)context functionSpec:(id)spec;
 @end
 
 @implementation TSCESumAccumulator
@@ -28,17 +28,17 @@
   return v7;
 }
 
-- (void)addValue:(id)a3 evaluationContext:(id)a4 functionSpec:(id)a5
+- (void)addValue:(id)value evaluationContext:(id)context functionSpec:(id)spec
 {
-  v8 = a3;
-  v13 = a4;
+  valueCopy = value;
+  contextCopy = context;
   p_error = &self->_error;
-  if (self->_error || (objc_msgSend_isNil(v8, v9, v10, v11, v12) & 1) != 0)
+  if (self->_error || (objc_msgSend_isNil(valueCopy, v9, v10, v11, v12) & 1) != 0)
   {
     goto LABEL_39;
   }
 
-  v22 = objc_msgSend_deepType_(v8, v15, v13, v16, v17);
+  v22 = objc_msgSend_deepType_(valueCopy, v15, contextCopy, v16, v17);
   if (v22 > 4)
   {
     if (v22 != 5)
@@ -48,7 +48,7 @@
         goto LABEL_39;
       }
 
-      v25 = objc_msgSend_errorWithContext_(v8, v18, v13, v20, v21);
+      v25 = objc_msgSend_errorWithContext_(valueCopy, v18, contextCopy, v20, v21);
       if (!v25)
       {
         goto LABEL_39;
@@ -61,7 +61,7 @@ LABEL_18:
     }
 
     v84 = 0;
-    v26 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v18, v13, a5, 0, &v84);
+    v26 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(valueCopy, v18, contextCopy, spec, 0, &v84);
     v35 = v84;
     if (v35)
     {
@@ -85,7 +85,7 @@ LABEL_16:
       {
         numberAccumulator = self->_numberAccumulator;
         v83 = 0;
-        v65 = objc_msgSend_add_functionSpec_outError_(numberAccumulator, v36, v26, a5, &v83);
+        v65 = objc_msgSend_add_functionSpec_outError_(numberAccumulator, v36, v26, spec, &v83);
         v25 = v83;
         v66 = self->_numberAccumulator;
         self->_numberAccumulator = v65;
@@ -125,7 +125,7 @@ LABEL_34:
   if (v22 == 1)
   {
     v82 = 0;
-    v26 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v8, v18, v13, a5, 0, 0, &v82);
+    v26 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(valueCopy, v18, contextCopy, spec, 0, 0, &v82);
     v27 = v82;
     v28 = v82;
     if (v28)
@@ -141,9 +141,9 @@ LABEL_17:
 
     v80 = 0;
     v81 = objc_msgSend_dimensions(v26, v29, v30, v31, v32);
-    v60 = v13;
+    v60 = contextCopy;
     v74[0] = v60;
-    v74[1] = a5;
+    v74[1] = spec;
     v75 = 0;
     v76[0] = 0;
     *(v76 + 7) = 0;
@@ -153,7 +153,7 @@ LABEL_17:
     do
     {
       v61 = objc_msgSend_valueAtGridCoord_accessContext_(v26, v58, *&v80, v74, v59);
-      objc_msgSend_addValue_evaluationContext_functionSpec_(self, v62, v61, v60, a5);
+      objc_msgSend_addValue_evaluationContext_functionSpec_(self, v62, v61, v60, spec);
       v80 = TSCEGridDimensions::nextCoordRowMajorOrder(&v81, &v80);
     }
 
@@ -175,7 +175,7 @@ LABEL_38:
     else
     {
       v85 = 0;
-      v40 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v18, v13, a5, 0, &v85);
+      v40 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(valueCopy, v18, contextCopy, spec, 0, &v85);
       v41 = v85;
       self->_dateAccumulator = v40;
 
@@ -201,7 +201,7 @@ LABEL_38:
 LABEL_39:
 }
 
-- (id)resultForFunction:(id)a3
+- (id)resultForFunction:(id)function
 {
   error = self->_error;
   if (error)
@@ -214,7 +214,7 @@ LABEL_3:
 
   if (self->_dateAccumulator)
   {
-    v8 = objc_msgSend_dateByAddingTimeInterval_(self->_dateAccumulator, a2, a3, v3, v4, self->_secondsToAdd);
+    v8 = objc_msgSend_dateByAddingTimeInterval_(self->_dateAccumulator, a2, function, v3, v4, self->_secondsToAdd);
     v7 = objc_msgSend_dateValue_(TSCEDateValue, v9, v8, v10, v11);
   }
 
@@ -222,11 +222,11 @@ LABEL_3:
   {
     if (!self->_mixedDurationsAndNumbers)
     {
-      v6 = objc_msgSend_copy(self->_numberAccumulator, a2, a3, v3, v4);
+      v6 = objc_msgSend_copy(self->_numberAccumulator, a2, function, v3, v4);
       goto LABEL_3;
     }
 
-    v8 = objc_msgSend_functionName(a3, a2, a3, v3, v4);
+    v8 = objc_msgSend_functionName(function, a2, function, v3, v4);
     v15 = objc_msgSend_sumMixedDurationsAndUnitlessWithoutADateErrorForFunctionName_(TSCEError, v12, v8, v13, v14);
     v7 = objc_msgSend_errorValue_(TSCEErrorValue, v16, v15, v17, v18);
   }

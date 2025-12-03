@@ -1,15 +1,15 @@
 @interface VNCreateSceneprintRequestConfiguration
-- (VNCreateSceneprintRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNCreateSceneprintRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNCreateSceneprintRequestConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNCreateSceneprintRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (VNCreateSceneprintRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNCreateSceneprintRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNCreateSceneprintRequestConfiguration;
-  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:a3];
+  result = [(VNImageBasedRequestConfiguration *)&v4 initWithRequestClass:class];
   if (result)
   {
     result->_returnAllResults = 0;

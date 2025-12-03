@@ -1,5 +1,5 @@
 @interface ADClientLiteWorkItem
-- (ADClientLiteWorkItem)initWithWork:(id)a3 timeout:(id)a4;
+- (ADClientLiteWorkItem)initWithWork:(id)work timeout:(id)timeout;
 - (id)timeout;
 - (id)workItem;
 @end
@@ -20,20 +20,20 @@
   return v2;
 }
 
-- (ADClientLiteWorkItem)initWithWork:(id)a3 timeout:(id)a4
+- (ADClientLiteWorkItem)initWithWork:(id)work timeout:(id)timeout
 {
-  v6 = a3;
-  v7 = a4;
+  workCopy = work;
+  timeoutCopy = timeout;
   v14.receiver = self;
   v14.super_class = ADClientLiteWorkItem;
   v8 = [(ADClientLiteWorkItem *)&v14 init];
   if (v8)
   {
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(workCopy);
     workItem = v8->_workItem;
     v8->_workItem = v9;
 
-    v11 = objc_retainBlock(v7);
+    v11 = objc_retainBlock(timeoutCopy);
     timeout = v8->_timeout;
     v8->_timeout = v11;
   }

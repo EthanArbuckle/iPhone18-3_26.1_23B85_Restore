@@ -2,31 +2,31 @@
 - (id)_blueCorrectionIntensity;
 - (id)_greenCorrectionIntensity;
 - (id)_redCorrectionIntensity;
-- (id)_subtitleForSpec:(id)a3;
-- (id)_titleForFilter:(unint64_t)a3;
+- (id)_subtitleForSpec:(id)spec;
+- (id)_titleForFilter:(unint64_t)filter;
 - (id)globalColorFilterEnabled;
 - (id)specifiers;
 - (unint64_t)_selectedFilter;
-- (void)setGlobalColorFilterEnabled:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setGlobalColorFilterEnabled:(id)enabled;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation DisplayFilterController
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v54 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D3FC48];
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v5 addObject:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [array addObject:emptyGroupSpecifier];
     v7 = MEMORY[0x277D3FAD8];
     v8 = settingsLocString(@"COLOR_FILTERS_ROW_TITLE", @"AccessibilitySettings");
-    v9 = [v7 preferenceSpecifierNamed:v8 target:v2 set:sel_setGlobalColorFilterEnabled_ get:sel_globalColorFilterEnabled detail:0 cell:6 edit:0];
+    v9 = [v7 preferenceSpecifierNamed:v8 target:selfCopy set:sel_setGlobalColorFilterEnabled_ get:sel_globalColorFilterEnabled detail:0 cell:6 edit:0];
 
     v10 = MEMORY[0x277CBEC38];
     v46 = *MEMORY[0x277D3FFE0];
@@ -35,32 +35,32 @@
     [v9 setProperty:v10 forKey:?];
     v44 = *MEMORY[0x277D3FEF8];
     [v9 setProperty:@"com.apple.Accessibility" forKey:?];
-    [v5 addObject:v9];
-    v11 = [(DisplayFilterController *)v2 globalColorFilterEnabled];
-    LODWORD(v8) = [v11 BOOLValue];
+    [array addObject:v9];
+    globalColorFilterEnabled = [(DisplayFilterController *)selfCopy globalColorFilterEnabled];
+    LODWORD(v8) = [globalColorFilterEnabled BOOLValue];
 
     if (!v8)
     {
 LABEL_32:
-      v36 = *(&v2->super.super.super.super.super.super.isa + v3);
-      *(&v2->super.super.super.super.super.super.isa + v3) = v5;
+      v36 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
+      *(&selfCopy->super.super.super.super.super.super.isa + v3) = array;
 
-      v4 = *(&v2->super.super.super.super.super.super.isa + v3);
+      v4 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
       goto LABEL_33;
     }
 
     v39 = v9;
-    v40 = v5;
-    v41 = v6;
+    v40 = array;
+    v41 = emptyGroupSpecifier;
     v42 = v3;
-    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[DisplayFilterController _selectedFilter](v2, "_selectedFilter")}];
-    v48 = [MEMORY[0x277CBEB18] array];
+    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[DisplayFilterController _selectedFilter](selfCopy, "_selectedFilter")}];
+    array2 = [MEMORY[0x277CBEB18] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v12 = v2;
-    obj = [(DisplayFilterController *)v2 _supportedDisplayFilters];
+    v12 = selfCopy;
+    obj = [(DisplayFilterController *)selfCopy _supportedDisplayFilters];
     v13 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v13)
     {
@@ -92,7 +92,7 @@ LABEL_32:
             v15 = v23;
           }
 
-          [v48 addObject:v22];
+          [array2 addObject:v22];
         }
 
         v14 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
@@ -106,13 +106,13 @@ LABEL_32:
       v15 = 0;
     }
 
-    v2 = v12;
-    v5 = v40;
-    v6 = v41;
+    selfCopy = v12;
+    array = v40;
+    emptyGroupSpecifier = v41;
     v9 = v39;
-    if ([v48 count])
+    if ([array2 count])
     {
-      v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v2 set:0 get:0 detail:0 cell:0 edit:0];
+      v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:0 edit:0];
       [v24 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
       [v40 addObject:v24];
       if (v15)
@@ -120,10 +120,10 @@ LABEL_32:
         [v24 setProperty:v15 forKey:*MEMORY[0x277D40090]];
       }
 
-      [v40 addObjectsFromArray:v48];
+      [v40 addObjectsFromArray:array2];
     }
 
-    if (![(DisplayFilterController *)v2 _shouldShowColorIntensitySlider])
+    if (![(DisplayFilterController *)selfCopy _shouldShowColorIntensitySlider])
     {
 LABEL_31:
 
@@ -131,8 +131,8 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v25 = [(DisplayFilterController *)v2 _selectedFilter];
-    switch(v25)
+    _selectedFilter = [(DisplayFilterController *)selfCopy _selectedFilter];
+    switch(_selectedFilter)
     {
       case 2:
         v26 = &selRef__setRedCorrectionIntensity_;
@@ -175,7 +175,7 @@ LABEL_30:
     v32 = [v30 groupSpecifierWithName:v31];
 
     [v40 addObject:v32];
-    v33 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:v2 set:v28 get:v29 detail:0 cell:5 edit:0];
+    v33 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:selfCopy set:v28 get:v29 detail:0 cell:5 edit:0];
     v34 = [MEMORY[0x277CCABB0] numberWithDouble:0.25];
     [v33 setProperty:v34 forKey:*MEMORY[0x277D3FEC0]];
 
@@ -192,9 +192,9 @@ LABEL_33:
   return v4;
 }
 
-- (void)setGlobalColorFilterEnabled:(id)a3
+- (void)setGlobalColorFilterEnabled:(id)enabled
 {
-  [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:a3 forKey:@"ColorFiltersEnabled"];
+  [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:enabled forKey:@"ColorFiltersEnabled"];
 
   [(DisplayFilterController *)self reloadSpecifiers];
 }
@@ -202,44 +202,44 @@ LABEL_33:
 - (id)globalColorFilterEnabled
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "BOOLForKey:", @"ColorFiltersEnabled"}];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v4 = [v2 numberWithBool:{objc_msgSend(accessibilityDomainAccessor, "BOOLForKey:", @"ColorFiltersEnabled"}];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = DisplayFilterController;
-  v6 = a4;
-  [(DisplayFilterController *)&v21 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(DisplayFilterController *)self indexForIndexPath:v6, v21.receiver, v21.super_class];
-  v8 = [(DisplayFilterController *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(DisplayFilterController *)&v21 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(DisplayFilterController *)self indexForIndexPath:pathCopy, v21.receiver, v21.super_class];
+  specifiers = [(DisplayFilterController *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(DisplayFilterController *)self specifierAtIndex:[(DisplayFilterController *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(DisplayFilterController *)self specifierAtIndex:[(DisplayFilterController *)self indexOfGroup:section]];
   v12 = [v11 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v14 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 unsignedIntegerValue];
-      v17 = [MEMORY[0x277CCABB0] numberWithInt:v16 == 2];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
+      v17 = [MEMORY[0x277CCABB0] numberWithInt:unsignedIntegerValue == 2];
       [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:v17 forKey:@"RedGreenDisplay"];
 
-      v18 = [MEMORY[0x277CCABB0] numberWithInt:v16 == 4];
+      v18 = [MEMORY[0x277CCABB0] numberWithInt:unsignedIntegerValue == 4];
       [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:v18 forKey:@"GreenRedDisplay"];
 
-      v19 = [MEMORY[0x277CCABB0] numberWithInt:v16 == 8];
+      v19 = [MEMORY[0x277CCABB0] numberWithInt:unsignedIntegerValue == 8];
       [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:v19 forKey:@"BlueYellowDisplay"];
 
-      v20 = [MEMORY[0x277CCABB0] numberWithInt:v16 == 1];
+      v20 = [MEMORY[0x277CCABB0] numberWithInt:unsignedIntegerValue == 1];
       [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:v20 forKey:@"GrayscaleDisplay"];
 
       [(DisplayFilterController *)self reloadSpecifiers];
@@ -249,35 +249,35 @@ LABEL_33:
 
 - (unint64_t)_selectedFilter
 {
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v4 = [v3 synchronize];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  synchronize = [accessibilityDomainAccessor synchronize];
 
-  v5 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v6 = [v5 BOOLForKey:@"GrayscaleDisplay"];
+  accessibilityDomainAccessor2 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v6 = [accessibilityDomainAccessor2 BOOLForKey:@"GrayscaleDisplay"];
 
   if (v6)
   {
     return 1;
   }
 
-  v8 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v9 = [v8 BOOLForKey:@"RedGreenDisplay"];
+  accessibilityDomainAccessor3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v9 = [accessibilityDomainAccessor3 BOOLForKey:@"RedGreenDisplay"];
 
   if (v9)
   {
     return 2;
   }
 
-  v10 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v11 = [v10 BOOLForKey:@"GreenRedDisplay"];
+  accessibilityDomainAccessor4 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v11 = [accessibilityDomainAccessor4 BOOLForKey:@"GreenRedDisplay"];
 
   if (v11)
   {
     return 4;
   }
 
-  v12 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v13 = [v12 BOOLForKey:@"BlueYellowDisplay"];
+  accessibilityDomainAccessor5 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v13 = [accessibilityDomainAccessor5 BOOLForKey:@"BlueYellowDisplay"];
 
   if (v13)
   {
@@ -290,10 +290,10 @@ LABEL_33:
   }
 }
 
-- (id)_titleForFilter:(unint64_t)a3
+- (id)_titleForFilter:(unint64_t)filter
 {
-  v4 = a3 - 1;
-  if (a3 - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
+  v4 = filter - 1;
+  if (filter - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     v5 = settingsLocString(off_278B90B10[v4], @"AccessibilitySettings");
   }
@@ -306,11 +306,11 @@ LABEL_33:
   return v5;
 }
 
-- (id)_subtitleForSpec:(id)a3
+- (id)_subtitleForSpec:(id)spec
 {
-  v3 = [a3 propertyForKey:*MEMORY[0x277D401A8]];
-  v4 = [v3 unsignedIntegerValue];
-  switch(v4)
+  v3 = [spec propertyForKey:*MEMORY[0x277D401A8]];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  switch(unsignedIntegerValue)
   {
     case 2:
       v5 = @"RED_GREEN_ROW_SUBTITLE";
@@ -334,8 +334,8 @@ LABEL_9:
 - (id)_redCorrectionIntensity
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v3 floatForKey:@"RedGreenColorIntensity"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor floatForKey:@"RedGreenColorIntensity"];
   v4 = [v2 numberWithFloat:?];
 
   return v4;
@@ -344,8 +344,8 @@ LABEL_9:
 - (id)_greenCorrectionIntensity
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v3 floatForKey:@"GreenRedColorIntensity"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor floatForKey:@"GreenRedColorIntensity"];
   v4 = [v2 numberWithFloat:?];
 
   return v4;
@@ -354,8 +354,8 @@ LABEL_9:
 - (id)_blueCorrectionIntensity
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v3 floatForKey:@"BlueYellowColorIntensity"];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor floatForKey:@"BlueYellowColorIntensity"];
   v4 = [v2 numberWithFloat:?];
 
   return v4;

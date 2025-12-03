@@ -1,17 +1,17 @@
 @interface ArcadeDownloadPackCategoryListView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)preferredContentSizeCategoryDidChange;
 @end
 
 @implementation ArcadeDownloadPackCategoryListView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
 
-  [*(&v5->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension34ArcadeDownloadPackCategoryListView_contentView) systemLayoutSizeFittingSize:{width, height}];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension34ArcadeDownloadPackCategoryListView_contentView) systemLayoutSizeFittingSize:{width, height}];
   v7 = v6;
   v9 = v8;
   v10 = sub_1005A7480();
@@ -27,7 +27,7 @@
 
 - (void)preferredContentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005A7B60();
 }
 

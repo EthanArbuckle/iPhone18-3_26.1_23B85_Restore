@@ -7,7 +7,7 @@
 
 - (NSString)dsid
 {
-  v2 = self;
+  selfCopy = self;
   sub_21B46421C();
   v4 = v3;
 

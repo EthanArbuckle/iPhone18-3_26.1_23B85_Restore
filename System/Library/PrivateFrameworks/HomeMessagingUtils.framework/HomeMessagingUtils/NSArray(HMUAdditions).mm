@@ -16,7 +16,7 @@
   v15 = v4;
   v6 = v5;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:&v10];
+  [self enumerateObjectsUsingBlock:&v10];
   v8 = [v6 copy];
 
   return v8;

@@ -1,30 +1,30 @@
 @interface ATIDSService
-+ (int64_t)openSocketPriorityFromATPendingChangePriority:(int)a3;
-- (ATIDSService)initWithServiceName:(id)a3;
++ (int64_t)openSocketPriorityFromATPendingChangePriority:(int)priority;
+- (ATIDSService)initWithServiceName:(id)name;
 - (BOOL)hasPairedDevice;
 - (BOOL)start;
-- (id)_messageTypeToString:(int)a3;
-- (id)deviceForId:(id)a3;
+- (id)_messageTypeToString:(int)string;
+- (id)deviceForId:(id)id;
 - (id)pairedDevice;
 - (void)_cancelPendingConnectionRequests;
 - (void)_connect;
-- (void)_handleReconnectEvent:(id)a3;
+- (void)_handleReconnectEvent:(id)event;
 - (void)_initiateReconnectIfNeeded;
-- (void)_scheduleConnectWithPriority:(int64_t)a3;
+- (void)_scheduleConnectWithPriority:(int64_t)priority;
 - (void)_scheduleReconnect;
 - (void)_sendWakeup;
-- (void)addListener:(id)a3;
-- (void)removeListener:(id)a3;
-- (void)requestConnectionToPairedDeviceWithPriority:(int64_t)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)setPreferWifi:(BOOL)a3;
-- (void)socket:(id)a3 hasDataAvailable:(const char *)a4 length:(int64_t)a5;
-- (void)socketDidClose:(id)a3;
+- (void)addListener:(id)listener;
+- (void)removeListener:(id)listener;
+- (void)requestConnectionToPairedDeviceWithPriority:(int64_t)priority;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)setPreferWifi:(BOOL)wifi;
+- (void)socket:(id)socket hasDataAvailable:(const char *)available length:(int64_t)length;
+- (void)socketDidClose:(id)close;
 - (void)stop;
 @end
 
@@ -39,20 +39,20 @@
     v3 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(ATIDSConnectionInfo *)self->_connectionInfo device];
-      v5 = [v4 uniqueID];
+      device = [(ATIDSConnectionInfo *)self->_connectionInfo device];
+      uniqueID = [device uniqueID];
       v10 = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v5;
+      v13 = uniqueID;
       _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ cancelling pending connection request to %{public}@", &v10, 0x16u);
     }
 
-    v6 = [(ATIDSConnectionInfo *)self->_connectionInfo socket];
-    v7 = v6;
-    if (v6)
+    socket = [(ATIDSConnectionInfo *)self->_connectionInfo socket];
+    v7 = socket;
+    if (socket)
     {
-      [v6 removeDelegate:self];
+      [socket removeDelegate:self];
       if ([v7 isOpen])
       {
         [v7 close];
@@ -62,8 +62,8 @@
     connectionInfo = self->_connectionInfo;
     self->_connectionInfo = 0;
 
-    v9 = [MEMORY[0x277D7FA38] sharedTaskScheduler];
-    [v9 cancelTask:@"com.apple.atc.ATIDSService.reconnect"];
+    mEMORY[0x277D7FA38] = [MEMORY[0x277D7FA38] sharedTaskScheduler];
+    [mEMORY[0x277D7FA38] cancelTask:@"com.apple.atc.ATIDSService.reconnect"];
   }
 }
 
@@ -75,15 +75,15 @@
   if (connectionInfo && ![(ATIDSConnectionInfo *)connectionInfo connectionState])
   {
     [(ATIDSConnectionInfo *)self->_connectionInfo setConnectionState:1];
-    v4 = [(ATIDSConnectionInfo *)self->_connectionInfo device];
+    device = [(ATIDSConnectionInfo *)self->_connectionInfo device];
     v5 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 uniqueID];
+      uniqueID = [device uniqueID];
       *buf = 138543618;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2114;
-      v27 = v6;
+      v27 = uniqueID;
       _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ sending wakeup to device %{public}@", buf, 0x16u);
     }
 
@@ -117,7 +117,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2114;
         v27 = v16;
         _os_log_impl(&dword_223819000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ wakeup message sent. id=%{public}@", buf, 0x16u);
@@ -129,7 +129,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2114;
         v27 = v17;
         _os_log_impl(&dword_223819000, v19, OS_LOG_TYPE_ERROR, "%{public}@ failed to send wakeup message. err=%{public}@", buf, 0x16u);
@@ -149,13 +149,13 @@
   connectionInfo = self->_connectionInfo;
   if (connectionInfo && [(ATIDSConnectionInfo *)connectionInfo connectionState]<= 1)
   {
-    v4 = [(ATIDSConnectionInfo *)self->_connectionInfo device];
+    device = [(ATIDSConnectionInfo *)self->_connectionInfo device];
     [(ATIDSConnectionInfo *)self->_connectionInfo setConnectionState:2];
-    v5 = [(ATIDSConnectionInfo *)self->_connectionInfo socket];
-    v6 = v5;
-    if (v5)
+    socket = [(ATIDSConnectionInfo *)self->_connectionInfo socket];
+    v6 = socket;
+    if (socket)
     {
-      [v5 removeDelegate:self];
+      [socket removeDelegate:self];
       if ([v6 isOpen])
       {
         [v6 close];
@@ -164,17 +164,17 @@
       [(ATIDSConnectionInfo *)self->_connectionInfo setSocket:0];
     }
 
-    v7 = [[ATIDSSocket alloc] initWithDevice:v4 service:self priority:[(ATIDSConnectionInfo *)self->_connectionInfo priority]];
+    v7 = [[ATIDSSocket alloc] initWithDevice:device service:self priority:[(ATIDSConnectionInfo *)self->_connectionInfo priority]];
     [(ATSocket *)v7 addDelegate:self];
     [(ATIDSConnectionInfo *)self->_connectionInfo setSocket:v7];
     v8 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 uniqueID];
+      uniqueID = [device uniqueID];
       *buf = 138543874;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
-      v17 = v9;
+      v17 = uniqueID;
       v18 = 2114;
       v19 = v7;
       _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ attempting to connect to %{public}@ using socket %{public}@", buf, 0x20u);
@@ -187,7 +187,7 @@
     v11[3] = &unk_2784E4750;
     objc_copyWeak(&v13, buf);
     v11[4] = self;
-    v10 = v4;
+    v10 = device;
     v12 = v10;
     [(ATIDSSocket *)v7 connectWithCompletion:v11];
 
@@ -316,12 +316,12 @@ LABEL_11:
     v4 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(ATIDSConnectionInfo *)self->_connectionInfo device];
-      v6 = [v5 uniqueID];
+      device = [(ATIDSConnectionInfo *)self->_connectionInfo device];
+      uniqueID = [device uniqueID];
       v10 = 138543618;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2114;
-      v13 = v6;
+      v13 = uniqueID;
       _os_log_impl(&dword_223819000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Initiating reconnect to %{public}@", &v10, 0x16u);
     }
 
@@ -333,12 +333,12 @@ LABEL_11:
     v7 = _ATLogCategoryFramework();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ATIDSConnectionInfo *)self->_connectionInfo device];
-      v9 = [v8 uniqueID];
+      device2 = [(ATIDSConnectionInfo *)self->_connectionInfo device];
+      uniqueID2 = [device2 uniqueID];
       v10 = 138543618;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2114;
-      v13 = v9;
+      v13 = uniqueID2;
       _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Not initiating reconnect to %{public}@ because we are already connected", &v10, 0x16u);
     }
   }
@@ -363,24 +363,24 @@ LABEL_11:
       v5 = v4;
     }
 
-    v6 = [MEMORY[0x277D7FA38] sharedTaskScheduler];
-    v7 = v6;
+    mEMORY[0x277D7FA38] = [MEMORY[0x277D7FA38] sharedTaskScheduler];
+    v7 = mEMORY[0x277D7FA38];
     if (v4)
     {
       v8 = _ATLogCategoryFramework();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(ATIDSConnectionInfo *)self->_connectionInfo device];
-        v10 = [v9 uniqueID];
-        v11 = [(ATIDSConnectionInfo *)self->_connectionInfo failureCount];
+        device = [(ATIDSConnectionInfo *)self->_connectionInfo device];
+        uniqueID = [device uniqueID];
+        failureCount = [(ATIDSConnectionInfo *)self->_connectionInfo failureCount];
         v12 = 138544130;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2114;
-        v15 = v10;
+        v15 = uniqueID;
         v16 = 2048;
         v17 = v5;
         v18 = 1024;
-        v19 = v11;
+        v19 = failureCount;
         _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ scheduling reconnect to %{public}@ in %llu seconds. failureCount=%d", &v12, 0x26u);
       }
 
@@ -389,7 +389,7 @@ LABEL_11:
 
     else
     {
-      [v6 cancelTask:@"com.apple.atc.ATIDSService.reconnect"];
+      [mEMORY[0x277D7FA38] cancelTask:@"com.apple.atc.ATIDSService.reconnect"];
       [(ATIDSService *)self _initiateReconnectIfNeeded];
     }
   }
@@ -400,41 +400,41 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Not attempting to reconnect as connectionInfo is nil", &v12, 0xCu);
     }
   }
 }
 
-- (void)_scheduleConnectWithPriority:(int64_t)a3
+- (void)_scheduleConnectWithPriority:(int64_t)priority
 {
   v17 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   if (self->_running)
   {
-    v5 = [(ATIDSService *)self pairedDevice];
-    if (v5)
+    pairedDevice = [(ATIDSService *)self pairedDevice];
+    if (pairedDevice)
     {
       connectionInfo = self->_connectionInfo;
-      if (!connectionInfo || [(ATIDSConnectionInfo *)connectionInfo connectionState]<= 2 && [(ATIDSConnectionInfo *)self->_connectionInfo priority]< a3)
+      if (!connectionInfo || [(ATIDSConnectionInfo *)connectionInfo connectionState]<= 2 && [(ATIDSConnectionInfo *)self->_connectionInfo priority]< priority)
       {
         v7 = _ATLogCategoryFramework();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v5 uniqueID];
+          uniqueID = [pairedDevice uniqueID];
           v11 = 138543874;
-          v12 = self;
+          selfCopy2 = self;
           v13 = 1024;
-          v14 = a3;
+          priorityCopy2 = priority;
           v15 = 2114;
-          v16 = v8;
+          v16 = uniqueID;
           _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ requesting new IDS connection with priority %d to device %{public}@", &v11, 0x1Cu);
         }
 
         [(ATIDSService *)self _cancelPendingConnectionRequests];
         v9 = objc_alloc_init(ATIDSConnectionInfo);
-        [(ATIDSConnectionInfo *)v9 setDevice:v5];
-        [(ATIDSConnectionInfo *)v9 setPriority:a3];
+        [(ATIDSConnectionInfo *)v9 setDevice:pairedDevice];
+        [(ATIDSConnectionInfo *)v9 setPriority:priority];
         v10 = self->_connectionInfo;
         self->_connectionInfo = v9;
 
@@ -445,21 +445,21 @@ LABEL_11:
 
   else
   {
-    v5 = _ATLogCategoryFramework();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    pairedDevice = _ATLogCategoryFramework();
+    if (os_log_type_enabled(pairedDevice, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 1024;
-      v14 = a3;
-      _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Not requesting connection to IDS with priority %d as the service is not started", &v11, 0x12u);
+      priorityCopy2 = priority;
+      _os_log_impl(&dword_223819000, pairedDevice, OS_LOG_TYPE_DEFAULT, "%{public}@ Not requesting connection to IDS with priority %d as the service is not started", &v11, 0x12u);
     }
   }
 }
 
-- (id)_messageTypeToString:(int)a3
+- (id)_messageTypeToString:(int)string
 {
-  if (a3)
+  if (string)
   {
     return @"unknown";
   }
@@ -470,7 +470,7 @@ LABEL_11:
   }
 }
 
-- (void)_handleReconnectEvent:(id)a3
+- (void)_handleReconnectEvent:(id)event
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -481,17 +481,17 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)socket:(id)a3 hasDataAvailable:(const char *)a4 length:(int64_t)a5
+- (void)socket:(id)socket hasDataAvailable:(const char *)available length:(int64_t)length
 {
-  v6 = a3;
+  socketCopy = socket;
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__ATIDSService_socket_hasDataAvailable_length___block_invoke;
   v9[3] = &unk_2784E5960;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = socketCopy;
+  selfCopy = self;
+  v8 = socketCopy;
   dispatch_async(queue, v9);
 }
 
@@ -522,20 +522,20 @@ void __47__ATIDSService_socket_hasDataAvailable_length___block_invoke(uint64_t a
   }
 }
 
-- (void)socketDidClose:(id)a3
+- (void)socketDidClose:(id)close
 {
-  v4 = a3;
-  v5 = [v4 description];
+  closeCopy = close;
+  v5 = [closeCopy description];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__ATIDSService_socketDidClose___block_invoke;
   block[3] = &unk_2784E59B0;
   block[4] = self;
-  v10 = v4;
+  v10 = closeCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = closeCopy;
   dispatch_async(queue, block);
 }
 
@@ -603,17 +603,17 @@ void __31__ATIDSService_socketDidClose___block_invoke(uint64_t a1)
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  identifierCopy = identifier;
   v8 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v7;
+    v15 = identifierCopy;
     _os_log_impl(&dword_223819000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ ids message delivered. id=%{public}@", buf, 0x16u);
   }
 
@@ -651,20 +651,20 @@ unint64_t __71__ATIDSService_service_account_identifier_hasBeenDeliveredWithCont
   return [v2 _connect];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v9 = a5;
-  v10 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__ATIDSService_service_account_identifier_didSendWithSuccess_error___block_invoke;
   block[3] = &unk_2784E59B0;
-  v15 = v10;
-  v16 = self;
-  v17 = v9;
-  v12 = v9;
-  v13 = v10;
+  v15 = errorCopy;
+  selfCopy = self;
+  v17 = identifierCopy;
+  v12 = identifierCopy;
+  v13 = errorCopy;
   dispatch_async(queue, block);
 }
 
@@ -711,9 +711,9 @@ void __68__ATIDSService_service_account_identifier_didSendWithSuccess_error___bl
   }
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v5 = [(ATIDSService *)self pairedDevice:a3];
+  v5 = [(ATIDSService *)self pairedDevice:service];
   if ([v5 isConnected])
   {
     queue = self->_queue;
@@ -752,9 +752,9 @@ void *__48__ATIDSService_service_connectedDevicesChanged___block_invoke(uint64_t
   return result;
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
-  v5 = [(ATIDSService *)self pairedDevice:a3];
+  v5 = [(ATIDSService *)self pairedDevice:service];
   if ([v5 isNearby])
   {
     queue = self->_queue;
@@ -793,15 +793,15 @@ void *__45__ATIDSService_service_nearbyDevicesChanged___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(ATIDSService *)self pairedDevice:a3];
+  v5 = [(ATIDSService *)self pairedDevice:service];
   v6 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v5;
     _os_log_impl(&dword_223819000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ ids devices have changed. pairedDevice=%{public}@", buf, 0x16u);
@@ -813,7 +813,7 @@ void *__45__ATIDSService_service_nearbyDevicesChanged___block_invoke(uint64_t a1
   v9[2] = __39__ATIDSService_service_devicesChanged___block_invoke;
   v9[3] = &unk_2784E5960;
   v10 = v5;
-  v11 = self;
+  selfCopy2 = self;
   v8 = v5;
   dispatch_async(queue, v9);
 }
@@ -857,20 +857,20 @@ void __39__ATIDSService_service_devicesChanged___block_invoke(uint64_t a1)
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  v10 = a6;
+  protobufCopy = protobuf;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__ATIDSService_service_account_incomingUnhandledProtobuf_fromID_context___block_invoke;
   block[3] = &unk_2784E59B0;
   block[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = protobufCopy;
+  v16 = dCopy;
+  v12 = dCopy;
+  v13 = protobufCopy;
   dispatch_async(queue, block);
 }
 
@@ -953,17 +953,17 @@ void __73__ATIDSService_service_account_incomingUnhandledProtobuf_fromID_context
   }
 }
 
-- (void)setPreferWifi:(BOOL)a3
+- (void)setPreferWifi:(BOOL)wifi
 {
-  v3 = a3;
+  wifiCopy = wifi;
   v13 = *MEMORY[0x277D85DE8];
   v5 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1024;
-    v12 = v3;
+    v12 = wifiCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ setting IDSService setPreferInfraWiFi to %d", buf, 0x12u);
   }
 
@@ -971,7 +971,7 @@ void __73__ATIDSService_service_account_incomingUnhandledProtobuf_fromID_context
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AllowIDSToPreferWifi", @"com.apple.atc", &keyExistsAndHasValidFormat);
   if (!keyExistsAndHasValidFormat || AppBooleanValue)
   {
-    [(IDSService *)self->_service setPreferInfraWiFi:v3];
+    [(IDSService *)self->_service setPreferInfraWiFi:wifiCopy];
   }
 
   else
@@ -980,13 +980,13 @@ void __73__ATIDSService_service_account_incomingUnhandledProtobuf_fromID_context
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_223819000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ IDSService setPreferInfraWiFi is currently disabled!", buf, 0xCu);
     }
   }
 }
 
-- (void)requestConnectionToPairedDeviceWithPriority:(int64_t)a3
+- (void)requestConnectionToPairedDeviceWithPriority:(int64_t)priority
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -994,20 +994,20 @@ void __73__ATIDSService_service_account_incomingUnhandledProtobuf_fromID_context
   v4[2] = __60__ATIDSService_requestConnectionToPairedDeviceWithPriority___block_invoke;
   v4[3] = &unk_2784E5578;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = priority;
   dispatch_async(queue, v4);
 }
 
-- (id)deviceForId:(id)a3
+- (id)deviceForId:(id)id
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(IDSService *)self->_service devices];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [(IDSService *)self->_service devices];
+  v6 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1017,12 +1017,12 @@ void __73__ATIDSService_service_account_incomingUnhandledProtobuf_fromID_context
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uniqueID];
-        v11 = [v10 isEqualToString:v4];
+        uniqueID = [v9 uniqueID];
+        v11 = [uniqueID isEqualToString:idCopy];
 
         if (v11)
         {
@@ -1031,7 +1031,7 @@ void __73__ATIDSService_service_account_incomingUnhandledProtobuf_fromID_context
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -1053,8 +1053,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSService *)self->_service devices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(IDSService *)self->_service devices];
+  v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -1064,7 +1064,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -1075,7 +1075,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -1092,37 +1092,37 @@ LABEL_11:
 
 - (BOOL)hasPairedDevice
 {
-  v2 = [(ATIDSService *)self pairedDevice];
-  v3 = v2 != 0;
+  pairedDevice = [(ATIDSService *)self pairedDevice];
+  v3 = pairedDevice != 0;
 
   return v3;
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __31__ATIDSService_removeListener___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__ATIDSService_addListener___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -1133,7 +1133,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ stopping ids service", buf, 0xCu);
   }
 
@@ -1160,14 +1160,14 @@ uint64_t __20__ATIDSService_stop__block_invoke(uint64_t a1)
   v3 = _ATLogCategoryFramework();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(IDSService *)self->_service accounts];
-    v5 = [(IDSService *)self->_service devices];
+    accounts = [(IDSService *)self->_service accounts];
+    devices = [(IDSService *)self->_service devices];
     v7 = 138543874;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = accounts;
     v11 = 2114;
-    v12 = v5;
+    v12 = devices;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting ids service. accounts=%{public}@, devices=%{public}@", &v7, 0x20u);
   }
 
@@ -1176,9 +1176,9 @@ uint64_t __20__ATIDSService_stop__block_invoke(uint64_t a1)
   return 1;
 }
 
-- (ATIDSService)initWithServiceName:(id)a3
+- (ATIDSService)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = ATIDSService;
   v5 = [(ATIDSService *)&v16 init];
@@ -1190,30 +1190,30 @@ uint64_t __20__ATIDSService_stop__block_invoke(uint64_t a1)
     queue = v5->_queue;
     v5->_queue = v8;
 
-    v10 = [objc_alloc(MEMORY[0x277D18778]) initWithService:v4];
+    v10 = [objc_alloc(MEMORY[0x277D18778]) initWithService:nameCopy];
     service = v5->_service;
     v5->_service = v10;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     listeners = v5->_listeners;
-    v5->_listeners = v12;
+    v5->_listeners = array;
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v5 selector:sel__handleReconnectEvent_ name:@"com.apple.atc.ATIDSService.reconnect" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__handleReconnectEvent_ name:@"com.apple.atc.ATIDSService.reconnect" object:0];
   }
 
   return v5;
 }
 
-+ (int64_t)openSocketPriorityFromATPendingChangePriority:(int)a3
++ (int64_t)openSocketPriorityFromATPendingChangePriority:(int)priority
 {
   v3 = 300;
-  if (a3 == 1)
+  if (priority == 1)
   {
     v3 = 200;
   }
 
-  if (a3 == 2)
+  if (priority == 2)
   {
     return 100;
   }

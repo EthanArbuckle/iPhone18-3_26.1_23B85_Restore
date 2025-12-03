@@ -1,19 +1,19 @@
 @interface _UIBarPanGestureRecognizer
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (_UIBarPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (_UIBarPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (id)description;
-- (void)_setDelegate:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)_setDelegate:(id)delegate;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIBarPanGestureRecognizer
 
-- (_UIBarPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UIBarPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UIBarPanGestureRecognizer;
-  v4 = [(UIPanGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIPanGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -24,45 +24,45 @@
   return v5;
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = _UIBarPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v3 setDelegate:a3];
+  [(UIPanGestureRecognizer *)&v3 setDelegate:delegate];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_barAction = 0;
   self->_bias = 0.0;
   v4.receiver = self;
   v4.super_class = _UIBarPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v4 touchesBegan:a3 withEvent:a4];
+  [(UIPanGestureRecognizer *)&v4 touchesBegan:began withEvent:event];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = _UIBarPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v12 touchesMoved:a3 withEvent:a4];
-  v5 = [(UIGestureRecognizer *)self delegate];
-  v6 = [v5 isNavigationBarHidden];
+  [(UIPanGestureRecognizer *)&v12 touchesMoved:moved withEvent:event];
+  delegate = [(UIGestureRecognizer *)self delegate];
+  isNavigationBarHidden = [delegate isNavigationBarHidden];
 
   if (!self->_barAction)
   {
-    v7 = [(UIGestureRecognizer *)self view];
-    [(UIPanGestureRecognizer *)self translationInView:v7];
+    view = [(UIGestureRecognizer *)self view];
+    [(UIPanGestureRecognizer *)self translationInView:view];
     v9 = v8;
 
     [(UIPanGestureRecognizer *)self _hysteresis];
-    if (((v9 > v10) & v6) != 0)
+    if (((v9 > v10) & isNavigationBarHidden) != 0)
     {
       v11 = 2;
     }
 
     else
     {
-      if ((v9 >= -v10) | v6 & 1)
+      if ((v9 >= -v10) | isNavigationBarHidden & 1)
       {
         return;
       }
@@ -75,10 +75,10 @@
   }
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if ([v4 _isGestureType:8])
+  recognizerCopy = recognizer;
+  if ([recognizerCopy _isGestureType:8])
   {
     v5 = 0;
   }
@@ -87,7 +87,7 @@
   {
     v7.receiver = self;
     v7.super_class = _UIBarPanGestureRecognizer;
-    v5 = [(UIGestureRecognizer *)&v7 canPreventGestureRecognizer:v4];
+    v5 = [(UIGestureRecognizer *)&v7 canPreventGestureRecognizer:recognizerCopy];
   }
 
   return v5;

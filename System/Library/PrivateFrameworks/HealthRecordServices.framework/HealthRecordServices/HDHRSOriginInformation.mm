@@ -1,25 +1,25 @@
 @interface HDHRSOriginInformation
-- (BOOL)isEqual:(id)a3;
-- (HDHRSOriginInformation)initWithCoder:(id)a3;
-- (HDHRSOriginInformation)initWithOperatingSystemVersion:(id *)a3 build:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDHRSOriginInformation)initWithCoder:(id)coder;
+- (HDHRSOriginInformation)initWithOperatingSystemVersion:(id *)version build:(id)build;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDHRSOriginInformation
 
-- (HDHRSOriginInformation)initWithOperatingSystemVersion:(id *)a3 build:(id)a4
+- (HDHRSOriginInformation)initWithOperatingSystemVersion:(id *)version build:(id)build
 {
-  v6 = a4;
+  buildCopy = build;
   v13.receiver = self;
   v13.super_class = HDHRSOriginInformation;
   v7 = [(HDHRSOriginInformation *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v9 = *&a3->var0;
-    v7->_operatingSystemVersion.patchVersion = a3->var2;
+    v9 = *&version->var0;
+    v7->_operatingSystemVersion.patchVersion = version->var2;
     *&v7->_operatingSystemVersion.majorVersion = v9;
-    v10 = [v6 copy];
+    v10 = [buildCopy copy];
     operatingSystemBuild = v8->_operatingSystemBuild;
     v8->_operatingSystemBuild = v10;
   }
@@ -27,10 +27,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (v5)
       {
@@ -76,17 +76,17 @@
 
       if (minorVersion == self->_operatingSystemVersion.patchVersion)
       {
-        v9 = [(HDHRSOriginInformation *)v6 operatingSystemBuild];
+        operatingSystemBuild = [(HDHRSOriginInformation *)v6 operatingSystemBuild];
         operatingSystemBuild = self->_operatingSystemBuild;
-        if (v9 == operatingSystemBuild)
+        if (operatingSystemBuild == operatingSystemBuild)
         {
           v8 = 1;
         }
 
         else if (operatingSystemBuild)
         {
-          v11 = [(HDHRSOriginInformation *)v6 operatingSystemBuild];
-          v8 = [v11 isEqualToString:self->_operatingSystemBuild];
+          operatingSystemBuild2 = [(HDHRSOriginInformation *)v6 operatingSystemBuild];
+          v8 = [operatingSystemBuild2 isEqualToString:self->_operatingSystemBuild];
         }
 
         else
@@ -112,36 +112,36 @@ LABEL_17:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   majorVersion = self->_operatingSystemVersion.majorVersion;
-  v5 = a3;
-  [v5 encodeInt64:majorVersion forKey:@"OperatingSystemVersionMajor"];
-  [v5 encodeInt64:self->_operatingSystemVersion.minorVersion forKey:@"OperatingSystemVersionMinor"];
-  [v5 encodeInt64:self->_operatingSystemVersion.patchVersion forKey:@"OperatingSystemVersionPatch"];
-  [v5 encodeObject:self->_operatingSystemBuild forKey:@"OperatingSystemBuild"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:majorVersion forKey:@"OperatingSystemVersionMajor"];
+  [coderCopy encodeInt64:self->_operatingSystemVersion.minorVersion forKey:@"OperatingSystemVersionMinor"];
+  [coderCopy encodeInt64:self->_operatingSystemVersion.patchVersion forKey:@"OperatingSystemVersionPatch"];
+  [coderCopy encodeObject:self->_operatingSystemBuild forKey:@"OperatingSystemBuild"];
 }
 
-- (HDHRSOriginInformation)initWithCoder:(id)a3
+- (HDHRSOriginInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OperatingSystemBuild"];
-  if (v5 && [v4 containsValueForKey:@"OperatingSystemVersionMajor"] && objc_msgSend(v4, "containsValueForKey:", @"OperatingSystemVersionMinor") && (objc_msgSend(v4, "containsValueForKey:", @"OperatingSystemVersionPatch") & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OperatingSystemBuild"];
+  if (v5 && [coderCopy containsValueForKey:@"OperatingSystemVersionMajor"] && objc_msgSend(coderCopy, "containsValueForKey:", @"OperatingSystemVersionMinor") && (objc_msgSend(coderCopy, "containsValueForKey:", @"OperatingSystemVersionPatch") & 1) != 0)
   {
-    v8[0] = [v4 decodeInt64ForKey:@"OperatingSystemVersionMajor"];
-    v8[1] = [v4 decodeInt64ForKey:@"OperatingSystemVersionMinor"];
-    v8[2] = [v4 decodeInt64ForKey:@"OperatingSystemVersionPatch"];
+    v8[0] = [coderCopy decodeInt64ForKey:@"OperatingSystemVersionMajor"];
+    v8[1] = [coderCopy decodeInt64ForKey:@"OperatingSystemVersionMinor"];
+    v8[2] = [coderCopy decodeInt64ForKey:@"OperatingSystemVersionPatch"];
     self = [(HDHRSOriginInformation *)self initWithOperatingSystemVersion:v8 build:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v6 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

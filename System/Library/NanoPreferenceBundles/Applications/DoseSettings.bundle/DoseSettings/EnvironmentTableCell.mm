@@ -1,27 +1,27 @@
 @interface EnvironmentTableCell
-- (EnvironmentTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (EnvironmentTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation EnvironmentTableCell
 
-- (EnvironmentTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (EnvironmentTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = EnvironmentTableCell;
-  v5 = [(EnvironmentTableCell *)&v12 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(EnvironmentTableCell *)&v12 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-    v7 = [(EnvironmentTableCell *)v5 titleLabel];
-    [v7 setFont:v6];
+    titleLabel = [(EnvironmentTableCell *)v5 titleLabel];
+    [titleLabel setFont:v6];
 
     v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    v9 = [(EnvironmentTableCell *)v5 detailTextLabel];
-    [v9 setFont:v8];
+    detailTextLabel = [(EnvironmentTableCell *)v5 detailTextLabel];
+    [detailTextLabel setFont:v8];
 
-    v10 = [(EnvironmentTableCell *)v5 detailTextLabel];
-    [v10 setNumberOfLines:0];
+    detailTextLabel2 = [(EnvironmentTableCell *)v5 detailTextLabel];
+    [detailTextLabel2 setNumberOfLines:0];
 
     [(EnvironmentTableCell *)v5 setAccessoryView:0];
   }
@@ -29,20 +29,20 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = EnvironmentTableCell;
-  v4 = a3;
-  [(EnvironmentTableCell *)&v9 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"EDSpecifierTitleKey", v9.receiver, v9.super_class}];
-  v6 = [(EnvironmentTableCell *)self titleLabel];
-  [v6 setText:v5];
+  specifierCopy = specifier;
+  [(EnvironmentTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"EDSpecifierTitleKey", v9.receiver, v9.super_class}];
+  titleLabel = [(EnvironmentTableCell *)self titleLabel];
+  [titleLabel setText:v5];
 
-  v7 = [v4 propertyForKey:@"EDSpecifierSubtitleKey"];
+  v7 = [specifierCopy propertyForKey:@"EDSpecifierSubtitleKey"];
 
-  v8 = [(EnvironmentTableCell *)self detailTextLabel];
-  [v8 setText:v7];
+  detailTextLabel = [(EnvironmentTableCell *)self detailTextLabel];
+  [detailTextLabel setText:v7];
 }
 
 @end

@@ -3,64 +3,64 @@
 - (BOOL)_outputToExternalStorage;
 - (BOOL)_shouldRequestUnlock;
 - (BOOL)canPresentCameraRollViewController;
-- (BOOL)dismissCameraRollViewControllerForced:(BOOL)a3 animated:(BOOL)a4;
+- (BOOL)dismissCameraRollViewControllerForced:(BOOL)forced animated:(BOOL)animated;
 - (BOOL)isCameraRollViewControllerPresented;
-- (BOOL)oneUpPresentationHelperEnableFreezeLayoutOnOrientationChange:(id)a3;
+- (BOOL)oneUpPresentationHelperEnableFreezeLayoutOnOrientationChange:(id)change;
 - (BOOL)wantsInstalledPhotosAppActions;
 - (CAMCameraRollController)init;
 - (CAMCameraRollControllerImageWellDelegate)imageWellDelegate;
 - (CAMCameraRollControllerPresentationDelegate)presentationDelegate;
 - (CAMCameraRollControllerSessionDelegate)sessionDelegate;
 - (PUOneUpViewController)oneUpViewController;
-- (id)oneUpPresentationHelper:(id)a3 regionOfInterestForAssetReference:(id)a4 cropInsets:(UIEdgeInsets *)a5;
-- (id)oneUpPresentationHelperViewController:(id)a3;
+- (id)oneUpPresentationHelper:(id)helper regionOfInterestForAssetReference:(id)reference cropInsets:(UIEdgeInsets *)insets;
+- (id)oneUpPresentationHelperViewController:(id)controller;
 - (id)persistedThumbnailImage;
-- (int64_t)oneUpPresentationHelperPreferredPresentationOrientation:(id)a3;
+- (int64_t)oneUpPresentationHelperPreferredPresentationOrientation:(id)orientation;
 - (unint64_t)currentAssetIndexFromEnd;
-- (void)_createPhotosDatasourceIfNeededWithAllowedUUIds:(id)a3 animated:(BOOL)a4;
-- (void)_createUndoActionsInvalidatorAsynchronouslyIfNeededWithPhotoLibrary:(id)a3;
+- (void)_createPhotosDatasourceIfNeededWithAllowedUUIds:(id)ids animated:(BOOL)animated;
+- (void)_createUndoActionsInvalidatorAsynchronouslyIfNeededWithPhotoLibrary:(id)library;
 - (void)_ensureCameraRollViewController;
 - (void)_scheduleUpdateIfOneUpIsActive;
-- (void)_setExternalStorageBrowsingSession:(id)a3;
-- (void)_setObserveCameraPreviewWellChanges:(BOOL)a3;
-- (void)_setPhotosDataSource:(id)a3;
-- (void)_setPrefersPresentingStatusbarHidden:(BOOL)a3;
-- (void)_setStagedDataSource:(id)a3;
+- (void)_setExternalStorageBrowsingSession:(id)session;
+- (void)_setObserveCameraPreviewWellChanges:(BOOL)changes;
+- (void)_setPhotosDataSource:(id)source;
+- (void)_setPrefersPresentingStatusbarHidden:(BOOL)hidden;
+- (void)_setStagedDataSource:(id)source;
 - (void)_startNewSession;
 - (void)_stopCaptureSessionIfNecessary;
-- (void)_unlockDeviceIfNeededForActionType:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_updateAnimated:(BOOL)a3;
-- (void)_updateExternalStorageThumbnail:(id)a3 withUUID:(id)a4;
+- (void)_unlockDeviceIfNeededForActionType:(unint64_t)type completionHandler:(id)handler;
+- (void)_updateAnimated:(BOOL)animated;
+- (void)_updateExternalStorageThumbnail:(id)thumbnail withUUID:(id)d;
 - (void)_updateTransientDataSourceIfNeeded;
-- (void)applicationWillEnterForeground:(id)a3;
+- (void)applicationWillEnterForeground:(id)foreground;
 - (void)beginAllowingStagedMediaLoading;
-- (void)cameraPreviewWellImageDidChange:(id)a3;
+- (void)cameraPreviewWellImageDidChange:(id)change;
 - (void)clearIgnoredImageWellUUIDs;
 - (void)dealloc;
-- (void)didPersistAssetWithUUID:(id)a3 captureSession:(unsigned __int16)a4;
-- (void)handlePresentingPanGestureRecognizer:(id)a3;
-- (void)ignoreImageWellChangeNotificationForEV0UUID:(id)a3 withHDRUUID:(id)a4;
-- (void)oneUpPresentationHelper:(id)a3 didDismissOneUpViewController:(id)a4;
-- (void)oneUpPresentationHelper:(id)a3 didPresentOneUpViewController:(id)a4;
-- (void)oneUpPresentationHelper:(id)a3 shouldHideAssetReferences:(id)a4;
-- (void)oneUpPresentationHelper:(id)a3 willPresentOneUpViewController:(id)a4;
-- (void)photosDataSource:(id)a3 didChange:(id)a4;
-- (void)ppt_awaitPreload:(id)a3;
+- (void)didPersistAssetWithUUID:(id)d captureSession:(unsigned __int16)session;
+- (void)handlePresentingPanGestureRecognizer:(id)recognizer;
+- (void)ignoreImageWellChangeNotificationForEV0UUID:(id)d withHDRUUID:(id)iD;
+- (void)oneUpPresentationHelper:(id)helper didDismissOneUpViewController:(id)controller;
+- (void)oneUpPresentationHelper:(id)helper didPresentOneUpViewController:(id)controller;
+- (void)oneUpPresentationHelper:(id)helper shouldHideAssetReferences:(id)references;
+- (void)oneUpPresentationHelper:(id)helper willPresentOneUpViewController:(id)controller;
+- (void)photosDataSource:(id)source didChange:(id)change;
+- (void)ppt_awaitPreload:(id)preload;
 - (void)preload;
-- (void)presentCameraRollViewControllerAnimated:(BOOL)a3 interactive:(BOOL)a4 deferringStagedMediaLoading:(BOOL)a5;
-- (void)presentingViewControllerViewDidAppear:(BOOL)a3;
-- (void)presentingViewControllerViewDidDisappear:(BOOL)a3;
-- (void)presentingViewControllerViewWillAppear:(BOOL)a3;
-- (void)presentingViewControllerViewWillDisappear:(BOOL)a3;
+- (void)presentCameraRollViewControllerAnimated:(BOOL)animated interactive:(BOOL)interactive deferringStagedMediaLoading:(BOOL)loading;
+- (void)presentingViewControllerViewDidAppear:(BOOL)appear;
+- (void)presentingViewControllerViewDidDisappear:(BOOL)disappear;
+- (void)presentingViewControllerViewWillAppear:(BOOL)appear;
+- (void)presentingViewControllerViewWillDisappear:(BOOL)disappear;
 - (void)prewarmPhotosAppInstallationState;
 - (void)processPendingBursts;
-- (void)processTransientAssetUpdate:(id)a3 preventingInsertion:(BOOL)a4 persistenceOptions:(int64_t)a5;
-- (void)processTransientPairedVideoUpdate:(id)a3 filterType:(int64_t)a4;
+- (void)processTransientAssetUpdate:(id)update preventingInsertion:(BOOL)insertion persistenceOptions:(int64_t)options;
+- (void)processTransientPairedVideoUpdate:(id)update filterType:(int64_t)type;
 - (void)resetNavigation;
-- (void)setCurrentAssetIndexFromEnd:(unint64_t)a3;
-- (void)setExternalStorage:(id)a3;
-- (void)setPresentationDelegate:(id)a3;
-- (void)willPersistAssetWithUUID:(id)a3 captureSession:(unsigned __int16)a4;
+- (void)setCurrentAssetIndexFromEnd:(unint64_t)end;
+- (void)setExternalStorage:(id)storage;
+- (void)setPresentationDelegate:(id)delegate;
+- (void)willPersistAssetWithUUID:(id)d captureSession:(unsigned __int16)session;
 @end
 
 @implementation CAMCameraRollController
@@ -114,30 +114,30 @@
 
 - (BOOL)isCameraRollViewControllerPresented
 {
-  v2 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  v3 = [v2 isOneUpPresented];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  isOneUpPresented = [_oneUpPresentationHelper isOneUpPresented];
 
-  return v3;
+  return isOneUpPresented;
 }
 
 - (id)persistedThumbnailImage
 {
   if ([(CAMCameraRollController *)self _outputToExternalStorage])
   {
-    v3 = [(CAMCameraRollController *)self _externalStorageBrowsingSessionLastThumbnailImage];
+    _externalStorageBrowsingSessionLastThumbnailImage = [(CAMCameraRollController *)self _externalStorageBrowsingSessionLastThumbnailImage];
   }
 
   else if ([(CAMCameraRollController *)self _isPhotoLibraryLocked])
   {
-    v3 = 0;
+    _externalStorageBrowsingSessionLastThumbnailImage = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69BF170] cameraPreviewWellImage];
+    _externalStorageBrowsingSessionLastThumbnailImage = [MEMORY[0x1E69BF170] cameraPreviewWellImage];
   }
 
-  return v3;
+  return _externalStorageBrowsingSessionLastThumbnailImage;
 }
 
 - (void)preload
@@ -195,10 +195,10 @@ void __34__CAMCameraRollController_preload__block_invoke_2(uint64_t a1)
 {
   if (![(CAMCameraRollController *)self _updateIsScheduled])
   {
-    v3 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-    v4 = [v3 isOneUpPresented];
+    _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+    isOneUpPresented = [_oneUpPresentationHelper isOneUpPresented];
 
-    if (v4)
+    if (isOneUpPresented)
     {
       [(CAMCameraRollController *)self _setUpdateIsScheduled:1];
       objc_initWeak(&location, self);
@@ -303,28 +303,28 @@ void __34__CAMCameraRollController_preload__block_invoke_5(uint64_t a1)
 
 - (void)_startNewSession
 {
-  v3 = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
-  v8 = [(CAMCameraRollController *)self _transientDataSource];
+  _isPhotoLibraryLocked = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
+  _transientDataSource = [(CAMCameraRollController *)self _transientDataSource];
   [(CAMCameraRollController *)self _setSessionIdentifier:([(CAMCameraRollController *)self sessionIdentifier]+ 1)];
   [(CAMCameraRollController *)self _setAllowUpdating:0];
-  if (v3)
+  if (_isPhotoLibraryLocked)
   {
-    [v8 removeAllAssets];
+    [_transientDataSource removeAllAssets];
   }
 
-  v4 = [(CAMCameraRollController *)self _sessionAssetUUIDs];
-  [v4 removeAllObjects];
+  _sessionAssetUUIDs = [(CAMCameraRollController *)self _sessionAssetUUIDs];
+  [_sessionAssetUUIDs removeAllObjects];
 
-  v5 = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
-  [v5 removeAllObjects];
+  _ignoredEV0UUIDs = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
+  [_ignoredEV0UUIDs removeAllObjects];
 
-  v6 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
-  [v6 removeAllObjects];
+  _HDRUUIDToIgnoredEV0UUIDs = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
+  [_HDRUUIDToIgnoredEV0UUIDs removeAllObjects];
 
-  v7 = [(CAMCameraRollController *)self sessionDelegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  sessionDelegate = [(CAMCameraRollController *)self sessionDelegate];
+  if (sessionDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 cameraRollControllerDidStartSession:self];
+    [sessionDelegate cameraRollControllerDidStartSession:self];
   }
 }
 
@@ -339,16 +339,16 @@ void __34__CAMCameraRollController_preload__block_invoke_5(uint64_t a1)
 {
   if ([(CAMCameraRollController *)self _isDeferringStagedMediaLoading])
   {
-    v3 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-    v4 = [v3 browsingSession];
-    v5 = [v4 viewModel];
+    _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+    browsingSession = [_oneUpPresentationHelper browsingSession];
+    viewModel = [browsingSession viewModel];
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __58__CAMCameraRollController_beginAllowingStagedMediaLoading__block_invoke;
     v7[3] = &unk_1E76F77B0;
-    v8 = v5;
-    v6 = v5;
+    v8 = viewModel;
+    v6 = viewModel;
     [v6 performChanges:v7];
     [(CAMCameraRollController *)self _setDeferringStagedMediaLoading:0];
   }
@@ -380,12 +380,12 @@ void __34__CAMCameraRollController_preload__block_invoke_5(uint64_t a1)
   if (![(CAMCameraRollController *)self _transientAssetsAreValid])
   {
     [(CAMCameraRollController *)self _setTransientAssetsAreValid:1];
-    v3 = [(CAMCameraRollController *)self _transientDataSource];
-    v4 = [(CAMCameraRollController *)self _photoKitDataSourceManager];
-    v5 = [v4 assetsDataSource];
+    _transientDataSource = [(CAMCameraRollController *)self _transientDataSource];
+    _photoKitDataSourceManager = [(CAMCameraRollController *)self _photoKitDataSourceManager];
+    assetsDataSource = [_photoKitDataSourceManager assetsDataSource];
 
-    v6 = [v5 lastItemIndexPath];
-    if (v6)
+    lastItemIndexPath = [assetsDataSource lastItemIndexPath];
+    if (lastItemIndexPath)
     {
       v18[0] = 0;
       v18[1] = v18;
@@ -396,13 +396,13 @@ void __34__CAMCameraRollController_preload__block_invoke_5(uint64_t a1)
       v13[1] = 3221225472;
       v13[2] = __61__CAMCameraRollController__updateTransientDataSourceIfNeeded__block_invoke;
       v13[3] = &unk_1E76FA7E8;
-      v14 = v5;
-      v8 = v3;
+      v14 = assetsDataSource;
+      v8 = _transientDataSource;
       v15 = v8;
       v9 = v7;
       v16 = v9;
       v17 = v18;
-      [v14 enumerateIndexPathsStartingAtIndexPath:v6 reverseDirection:1 usingBlock:v13];
+      [v14 enumerateIndexPathsStartingAtIndexPath:lastItemIndexPath reverseDirection:1 usingBlock:v13];
       if ([v9 count])
       {
         v10[0] = MEMORY[0x1E69E9820];
@@ -481,45 +481,45 @@ void __60__CAMCameraRollController_prewarmPhotosAppInstallationState__block_invo
 
 - (BOOL)wantsInstalledPhotosAppActions
 {
-  v2 = [(CAMCameraRollController *)self photosAppInstallationState];
-  if (v2 == 2)
+  photosAppInstallationState = [(CAMCameraRollController *)self photosAppInstallationState];
+  if (photosAppInstallationState == 2)
   {
     return 1;
   }
 
-  if (v2 == 1)
+  if (photosAppInstallationState == 1)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 valueForKey:@"PHOTOS_APP_INSTALLED_DEFAULTS_KEY"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults valueForKey:@"PHOTOS_APP_INSTALLED_DEFAULTS_KEY"];
 
   if (!v5)
   {
     return 1;
   }
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 BOOLForKey:@"PHOTOS_APP_INSTALLED_DEFAULTS_KEY"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults2 BOOLForKey:@"PHOTOS_APP_INSTALLED_DEFAULTS_KEY"];
 
   return v7;
 }
 
 - (void)resetNavigation
 {
-  v2 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  if ([v2 state] == 2)
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  if ([_oneUpPresentationHelper state] == 2)
   {
-    v3 = [v2 browsingSession];
-    v4 = [v3 viewModel];
+    browsingSession = [_oneUpPresentationHelper browsingSession];
+    viewModel = [browsingSession viewModel];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__CAMCameraRollController_resetNavigation__block_invoke;
     v6[3] = &unk_1E76F77B0;
-    v7 = v4;
-    v5 = v4;
+    v7 = viewModel;
+    v5 = viewModel;
     [v5 performChanges:v6];
   }
 }
@@ -532,45 +532,45 @@ void __42__CAMCameraRollController_resetNavigation__block_invoke(uint64_t a1)
   [*(a1 + 32) setCurrentAssetReference:v3];
 }
 
-- (void)willPersistAssetWithUUID:(id)a3 captureSession:(unsigned __int16)a4
+- (void)willPersistAssetWithUUID:(id)d captureSession:(unsigned __int16)session
 {
-  v4 = a4;
-  v6 = a3;
+  sessionCopy = session;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v6)
+  if (dCopy)
   {
-    v7 = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
-    v8 = [(CAMCameraRollController *)self sessionIdentifier];
-    if (v7 && (v9 = v8, v8 != v4))
+    _isPhotoLibraryLocked = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
+    sessionIdentifier = [(CAMCameraRollController *)self sessionIdentifier];
+    if (_isPhotoLibraryLocked && (v9 = sessionIdentifier, sessionIdentifier != sessionCopy))
     {
-      v10 = os_log_create("com.apple.camera", "CameraRoll");
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      _sessionAssetUUIDs = os_log_create("com.apple.camera", "CameraRoll");
+      if (os_log_type_enabled(_sessionAssetUUIDs, OS_LOG_TYPE_DEBUG))
       {
-        [(CAMCameraRollController *)v6 willPersistAssetWithUUID:v9 captureSession:v10];
+        [(CAMCameraRollController *)dCopy willPersistAssetWithUUID:v9 captureSession:_sessionAssetUUIDs];
       }
     }
 
     else
     {
-      v10 = [(CAMCameraRollController *)self _sessionAssetUUIDs];
-      [v10 addObject:v6];
+      _sessionAssetUUIDs = [(CAMCameraRollController *)self _sessionAssetUUIDs];
+      [_sessionAssetUUIDs addObject:dCopy];
     }
   }
 }
 
-- (void)didPersistAssetWithUUID:(id)a3 captureSession:(unsigned __int16)a4
+- (void)didPersistAssetWithUUID:(id)d captureSession:(unsigned __int16)session
 {
-  v4 = a4;
-  v6 = a3;
+  sessionCopy = session;
+  dCopy = d;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v6)
+  if (dCopy)
   {
-    v7 = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
-    v8 = [(CAMCameraRollController *)self sessionIdentifier];
-    if (!v7 || v8 == v4)
+    _isPhotoLibraryLocked = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
+    sessionIdentifier = [(CAMCameraRollController *)self sessionIdentifier];
+    if (!_isPhotoLibraryLocked || sessionIdentifier == sessionCopy)
     {
-      v10 = [(CAMCameraRollController *)self _sessionAssetUUIDs];
-      [v10 addObject:v6];
+      _sessionAssetUUIDs = [(CAMCameraRollController *)self _sessionAssetUUIDs];
+      [_sessionAssetUUIDs addObject:dCopy];
 
       [(CAMCameraRollController *)self _scheduleUpdateIfOneUpIsActive];
       objc_initWeak(&location, self);
@@ -580,7 +580,7 @@ void __42__CAMCameraRollController_resetNavigation__block_invoke(uint64_t a1)
       block[2] = __66__CAMCameraRollController_didPersistAssetWithUUID_captureSession___block_invoke;
       block[3] = &unk_1E76F7DC0;
       objc_copyWeak(&v15, &location);
-      v14 = v6;
+      v14 = dCopy;
       v12 = MEMORY[0x1E69E96A0];
       dispatch_after(v11, MEMORY[0x1E69E96A0], block);
 
@@ -593,7 +593,7 @@ void __42__CAMCameraRollController_resetNavigation__block_invoke(uint64_t a1)
       v9 = os_log_create("com.apple.camera", "CameraRoll");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        [CAMCameraRollController didPersistAssetWithUUID:v6 captureSession:self];
+        [CAMCameraRollController didPersistAssetWithUUID:dCopy captureSession:self];
       }
     }
   }
@@ -651,17 +651,17 @@ void __34__CAMCameraRollController_preload__block_invoke_3_226()
   [v0 _issueNonLaunchingCommand:@"commit"];
 }
 
-- (void)ppt_awaitPreload:(id)a3
+- (void)ppt_awaitPreload:(id)preload
 {
-  v4 = a3;
+  preloadCopy = preload;
   v5 = camSoftLinkQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__CAMCameraRollController_ppt_awaitPreload___block_invoke;
   v7[3] = &unk_1E76F7E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = preloadCopy;
+  v6 = preloadCopy;
   dispatch_async(v5, v7);
 }
 
@@ -712,22 +712,22 @@ uint64_t __44__CAMCameraRollController_ppt_awaitPreload___block_invoke_4(uint64_
   return v2();
 }
 
-- (void)cameraPreviewWellImageDidChange:(id)a3
+- (void)cameraPreviewWellImageDidChange:(id)change
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMCameraRollController *)self imageWellDelegate];
-  if (v5)
+  changeCopy = change;
+  imageWellDelegate = [(CAMCameraRollController *)self imageWellDelegate];
+  if (imageWellDelegate)
   {
-    v26 = [v4 image];
-    v6 = [v4 assetUUID];
-    v7 = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
-    v8 = [(CAMCameraRollController *)self _sessionAssetUUIDs];
-    v9 = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
-    v10 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
-    if (v7)
+    image = [changeCopy image];
+    assetUUID = [changeCopy assetUUID];
+    _isPhotoLibraryLocked = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
+    _sessionAssetUUIDs = [(CAMCameraRollController *)self _sessionAssetUUIDs];
+    _ignoredEV0UUIDs = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
+    _HDRUUIDToIgnoredEV0UUIDs = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
+    if (_isPhotoLibraryLocked)
     {
-      v24 = [v8 containsObject:v6] ^ 1;
+      v24 = [_sessionAssetUUIDs containsObject:assetUUID] ^ 1;
     }
 
     else
@@ -735,44 +735,44 @@ uint64_t __44__CAMCameraRollController_ppt_awaitPreload___block_invoke_4(uint64_
       v24 = 0;
     }
 
-    v11 = [v10 objectForKeyedSubscript:v6];
+    v11 = [_HDRUUIDToIgnoredEV0UUIDs objectForKeyedSubscript:assetUUID];
     if (v11)
     {
-      v12 = v9;
+      v12 = _ignoredEV0UUIDs;
       v13 = os_log_create("com.apple.camera", "ImageWell");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v28 = v6;
+        v28 = assetUUID;
         v29 = 2114;
         v30 = v11;
         _os_log_impl(&dword_1A3640000, v13, OS_LOG_TYPE_DEFAULT, "ImageWell %{public}@: removing ignored EV0 UUID %{public}@ since we received HDR image from assetsd", buf, 0x16u);
       }
 
-      [v10 removeObjectForKey:v6];
-      v9 = v12;
+      [_HDRUUIDToIgnoredEV0UUIDs removeObjectForKey:assetUUID];
+      _ignoredEV0UUIDs = v12;
       [v12 removeObject:v11];
     }
 
-    v25 = v9;
-    v14 = [v9 containsObject:v6];
-    v15 = [(CAMCameraRollController *)self _outputToExternalStorage];
+    v25 = _ignoredEV0UUIDs;
+    v14 = [_ignoredEV0UUIDs containsObject:assetUUID];
+    _outputToExternalStorage = [(CAMCameraRollController *)self _outputToExternalStorage];
     v16 = os_log_create("com.apple.camera", "ImageWell");
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-    if (v15)
+    if (_outputToExternalStorage)
     {
       if (!v17)
       {
 LABEL_13:
 
-        v19 = v26;
+        v19 = image;
 LABEL_25:
 
         goto LABEL_26;
       }
 
       *buf = 138543362;
-      v28 = v6;
+      v28 = assetUUID;
       v18 = "ImageWell %{public}@: rejecting update from assetsd since we're currently on external storage mode";
 LABEL_12:
       _os_log_impl(&dword_1A3640000, v16, OS_LOG_TYPE_DEFAULT, v18, buf, 0xCu);
@@ -781,16 +781,16 @@ LABEL_12:
 
     if (v24)
     {
-      v19 = v26;
+      v19 = image;
       if (v17)
       {
         *buf = 138543362;
-        v28 = v6;
+        v28 = assetUUID;
         _os_log_impl(&dword_1A3640000, v16, OS_LOG_TYPE_DEFAULT, "ImageWell %{public}@: rejecting update from assetsd for secure session", buf, 0xCu);
       }
 
-      v20 = v5;
-      v21 = self;
+      v20 = imageWellDelegate;
+      selfCopy2 = self;
       v22 = 0;
       v23 = 0;
     }
@@ -805,59 +805,59 @@ LABEL_12:
         }
 
         *buf = 138543362;
-        v28 = v6;
+        v28 = assetUUID;
         v18 = "ImageWell %{public}@: ignoring from assetsd because in ignored list";
         goto LABEL_12;
       }
 
-      v19 = v26;
+      v19 = image;
       if (v17)
       {
         *buf = 138543618;
-        v28 = v6;
+        v28 = assetUUID;
         v29 = 2114;
-        v30 = v26;
+        v30 = image;
         _os_log_impl(&dword_1A3640000, v16, OS_LOG_TYPE_DEFAULT, "ImageWell %{public}@: updating from assetsd with %{public}@", buf, 0x16u);
       }
 
-      v20 = v5;
-      v21 = self;
-      v22 = v26;
-      v23 = v6;
+      v20 = imageWellDelegate;
+      selfCopy2 = self;
+      v22 = image;
+      v23 = assetUUID;
     }
 
-    [v20 cameraRollController:v21 didChangeImageWellImage:v22 withUUID:v23 animated:1];
+    [v20 cameraRollController:selfCopy2 didChangeImageWellImage:v22 withUUID:v23 animated:1];
     goto LABEL_25;
   }
 
 LABEL_26:
 }
 
-- (void)ignoreImageWellChangeNotificationForEV0UUID:(id)a3 withHDRUUID:(id)a4
+- (void)ignoreImageWellChangeNotificationForEV0UUID:(id)d withHDRUUID:(id)iD
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  dCopy = d;
+  iDCopy = iD;
+  v8 = iDCopy;
+  if (dCopy && iDCopy)
   {
-    v9 = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
-    [v9 addObject:v6];
+    _ignoredEV0UUIDs = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
+    [_ignoredEV0UUIDs addObject:dCopy];
 
-    v10 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
-    [v10 setObject:v6 forKey:v8];
+    _HDRUUIDToIgnoredEV0UUIDs = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
+    [_HDRUUIDToIgnoredEV0UUIDs setObject:dCopy forKey:v8];
   }
 
   else
   {
-    v10 = os_log_create("com.apple.camera", "ImageWell");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    _HDRUUIDToIgnoredEV0UUIDs = os_log_create("com.apple.camera", "ImageWell");
+    if (os_log_type_enabled(_HDRUUIDToIgnoredEV0UUIDs, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = v6;
+      v12 = dCopy;
       v13 = 2114;
       v14 = v8;
-      _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "ignoreImageWellChangeNotificationForEV0UUID called with missing EV0UUID=%{public}@ or HDRUUID=%{public}@", &v11, 0x16u);
+      _os_log_impl(&dword_1A3640000, _HDRUUIDToIgnoredEV0UUIDs, OS_LOG_TYPE_DEFAULT, "ignoreImageWellChangeNotificationForEV0UUID called with missing EV0UUID=%{public}@ or HDRUUID=%{public}@", &v11, 0x16u);
     }
   }
 }
@@ -865,29 +865,29 @@ LABEL_26:
 - (void)clearIgnoredImageWellUUIDs
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
-  v4 = [v3 count];
+  _HDRUUIDToIgnoredEV0UUIDs = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
+  v4 = [_HDRUUIDToIgnoredEV0UUIDs count];
 
   if (v4)
   {
     v5 = os_log_create("com.apple.camera", "ImageWell");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
+      _HDRUUIDToIgnoredEV0UUIDs2 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
       v9 = 138543362;
-      v10 = v6;
+      v10 = _HDRUUIDToIgnoredEV0UUIDs2;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "ImageWell: clearIgnoredImageWellUUIDs called while still ignoring HDR to EV0 UUIDs %{public}@", &v9, 0xCu);
     }
   }
 
-  v7 = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
-  [v7 removeAllObjects];
+  _ignoredEV0UUIDs = [(CAMCameraRollController *)self _ignoredEV0UUIDs];
+  [_ignoredEV0UUIDs removeAllObjects];
 
-  v8 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
-  [v8 removeAllObjects];
+  _HDRUUIDToIgnoredEV0UUIDs3 = [(CAMCameraRollController *)self _HDRUUIDToIgnoredEV0UUIDs];
+  [_HDRUUIDToIgnoredEV0UUIDs3 removeAllObjects];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   +[CAMFrameworkUtilities setPasscodeLockedNeedsUpdate];
   +[CAMFrameworkUtilities setPhotosAppLockedNeedsUpdate];
@@ -896,44 +896,44 @@ LABEL_26:
   [(CAMCameraRollController *)self prewarmPhotosAppInstallationState];
 }
 
-- (void)processTransientAssetUpdate:(id)a3 preventingInsertion:(BOOL)a4 persistenceOptions:(int64_t)a5
+- (void)processTransientAssetUpdate:(id)update preventingInsertion:(BOOL)insertion persistenceOptions:(int64_t)options
 {
-  v8 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v9 = [(CAMCameraRollController *)self _transientDataSource];
-  if (a5 != 3)
+  _transientDataSource = [(CAMCameraRollController *)self _transientDataSource];
+  if (options != 3)
   {
-    v10 = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
-    v11 = [v8 sessionIdentifier];
-    v12 = [(CAMCameraRollController *)self sessionIdentifier];
-    if (!v10 || v11 == v12)
+    _isPhotoLibraryLocked = [(CAMCameraRollController *)self _isPhotoLibraryLocked];
+    sessionIdentifier = [updateCopy sessionIdentifier];
+    sessionIdentifier2 = [(CAMCameraRollController *)self sessionIdentifier];
+    if (!_isPhotoLibraryLocked || sessionIdentifier == sessionIdentifier2)
     {
-      v14 = [v8 uuid];
-      v15 = [v8 burstIdentifier];
-      v16 = [v9 existingRepresentativeAssetForBurstIdentifier:v15];
+      uuid = [updateCopy uuid];
+      burstIdentifier = [updateCopy burstIdentifier];
+      v16 = [_transientDataSource existingRepresentativeAssetForBurstIdentifier:burstIdentifier];
       v17 = v16;
-      if (v15 && v16)
+      if (burstIdentifier && v16)
       {
-        [v9 updateAssetWithConvertible:v8];
+        [_transientDataSource updateAssetWithConvertible:updateCopy];
       }
 
-      else if (!v15 || v16 || a4)
+      else if (!burstIdentifier || v16 || insertion)
       {
-        v18 = [v9 existingAssetForUUID:v14];
-        if (v18 || a4)
+        v18 = [_transientDataSource existingAssetForUUID:uuid];
+        if (v18 || insertion)
         {
-          [v9 updateAssetWithConvertible:v8];
+          [_transientDataSource updateAssetWithConvertible:updateCopy];
         }
 
         else
         {
-          v19 = [v9 insertAssetWithConvertible:v8];
+          v19 = [_transientDataSource insertAssetWithConvertible:updateCopy];
         }
       }
 
       else
       {
-        [v9 enqueuePendingBurstAssetWithConvertible:v8];
+        [_transientDataSource enqueuePendingBurstAssetWithConvertible:updateCopy];
       }
     }
 
@@ -942,7 +942,7 @@ LABEL_26:
       v13 = os_log_create("com.apple.camera", "CameraRoll");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        [CAMCameraRollController processTransientAssetUpdate:v8 preventingInsertion:self persistenceOptions:?];
+        [CAMCameraRollController processTransientAssetUpdate:updateCopy preventingInsertion:self persistenceOptions:?];
       }
     }
   }
@@ -950,48 +950,48 @@ LABEL_26:
 
 - (void)processPendingBursts
 {
-  v2 = [(CAMCameraRollController *)self _transientDataSource];
-  [v2 processPendingBurstAssets];
+  _transientDataSource = [(CAMCameraRollController *)self _transientDataSource];
+  [_transientDataSource processPendingBurstAssets];
 }
 
-- (void)processTransientPairedVideoUpdate:(id)a3 filterType:(int64_t)a4
+- (void)processTransientPairedVideoUpdate:(id)update filterType:(int64_t)type
 {
-  v8 = a3;
-  v6 = [(CAMCameraRollController *)self _transientImageManager];
-  v7 = [v6 insertPairedVideoWithConvertible:v8 filterType:a4];
+  updateCopy = update;
+  _transientImageManager = [(CAMCameraRollController *)self _transientImageManager];
+  v7 = [_transientImageManager insertPairedVideoWithConvertible:updateCopy filterType:type];
 }
 
-- (void)photosDataSource:(id)a3 didChange:(id)a4
+- (void)photosDataSource:(id)source didChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMCameraRollController *)self _photosDataSource];
-  v9 = v8;
-  if (v8 == v6)
+  sourceCopy = source;
+  changeCopy = change;
+  _photosDataSource = [(CAMCameraRollController *)self _photosDataSource];
+  v9 = _photosDataSource;
+  if (_photosDataSource == sourceCopy)
   {
   }
 
   else
   {
-    v10 = [(CAMCameraRollController *)self _stagedDataSource];
+    _stagedDataSource = [(CAMCameraRollController *)self _stagedDataSource];
 
-    if (v10 != v6)
+    if (_stagedDataSource != sourceCopy)
     {
       goto LABEL_15;
     }
   }
 
-  v11 = [v6 versionIdentifier];
-  v12 = [(CAMCameraRollController *)self _stagedDataSource];
+  versionIdentifier = [sourceCopy versionIdentifier];
+  _stagedDataSource2 = [(CAMCameraRollController *)self _stagedDataSource];
 
-  if (v12)
+  if (_stagedDataSource2)
   {
     [(CAMCameraRollController *)self _update];
   }
 
-  v13 = [(CAMCameraRollController *)self _photosDataSource];
-  v14 = v13;
-  if (v13 != v6)
+  _photosDataSource2 = [(CAMCameraRollController *)self _photosDataSource];
+  v14 = _photosDataSource2;
+  if (_photosDataSource2 != sourceCopy)
   {
 
 LABEL_14:
@@ -1000,16 +1000,16 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v15 = [v6 versionIdentifier];
+  versionIdentifier2 = [sourceCopy versionIdentifier];
 
-  if (v15 != v11 || ![v7 hasIncrementalChanges])
+  if (versionIdentifier2 != versionIdentifier || ![changeCopy hasIncrementalChanges])
   {
     goto LABEL_14;
   }
 
-  v16 = [(CAMCameraRollController *)self _transientDataSource];
-  v17 = [(CAMCameraRollController *)self _transientImageManager];
-  if ([v16 isEmpty] && (objc_msgSend(v17, "isEmpty") & 1) != 0)
+  _transientDataSource = [(CAMCameraRollController *)self _transientDataSource];
+  _transientImageManager = [(CAMCameraRollController *)self _transientImageManager];
+  if ([_transientDataSource isEmpty] && (objc_msgSend(_transientImageManager, "isEmpty") & 1) != 0)
   {
   }
 
@@ -1019,11 +1019,11 @@ LABEL_14:
     v19[1] = 3221225472;
     v19[2] = __54__CAMCameraRollController_photosDataSource_didChange___block_invoke;
     v19[3] = &unk_1E76F7938;
-    v20 = v17;
-    v21 = v16;
-    v22 = self;
-    v18 = v16;
-    v16 = v17;
+    v20 = _transientImageManager;
+    v21 = _transientDataSource;
+    selfCopy = self;
+    v18 = _transientDataSource;
+    _transientDataSource = _transientImageManager;
     [v18 performChanges:v19];
   }
 
@@ -1306,9 +1306,9 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
   }
 }
 
-- (void)setPresentationDelegate:(id)a3
+- (void)setPresentationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_presentationDelegate);
 
   if (WeakRetained != obj)
@@ -1325,34 +1325,34 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
 - (BOOL)canPresentCameraRollViewController
 {
   [(CAMCameraRollController *)self _ensureCameraRollViewController];
-  v3 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  v4 = [v3 canPresentOneUpViewControllerAnimated:1];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  v4 = [_oneUpPresentationHelper canPresentOneUpViewControllerAnimated:1];
 
   return v4;
 }
 
-- (void)presentCameraRollViewControllerAnimated:(BOOL)a3 interactive:(BOOL)a4 deferringStagedMediaLoading:(BOOL)a5
+- (void)presentCameraRollViewControllerAnimated:(BOOL)animated interactive:(BOOL)interactive deferringStagedMediaLoading:(BOOL)loading
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  loadingCopy = loading;
+  interactiveCopy = interactive;
+  animatedCopy = animated;
   v16 = *MEMORY[0x1E69E9840];
   v9 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v13[0] = 67109376;
-    v13[1] = v6;
+    v13[1] = interactiveCopy;
     v14 = 1024;
-    v15 = v5;
+    v15 = loadingCopy;
     _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "Presenting the Camera Roll interactively=%d deferring media loading=%d", v13, 0xEu);
   }
 
   [(CAMCameraRollController *)self _stopCaptureSessionIfNecessary];
-  [(CAMCameraRollController *)self _setDeferringStagedMediaLoading:v5];
+  [(CAMCameraRollController *)self _setDeferringStagedMediaLoading:loadingCopy];
   [(CAMCameraRollController *)self _ensureCameraRollViewController];
-  v10 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  v11 = v10;
-  if (v6)
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  v11 = _oneUpPresentationHelper;
+  if (interactiveCopy)
   {
     v12 = 2;
   }
@@ -1362,18 +1362,18 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
     v12 = 0;
   }
 
-  [v10 presentOneUpViewControllerAnimated:v7 interactiveMode:v12];
+  [_oneUpPresentationHelper presentOneUpViewControllerAnimated:animatedCopy interactiveMode:v12];
 }
 
-- (BOOL)dismissCameraRollViewControllerForced:(BOOL)a3 animated:(BOOL)a4
+- (BOOL)dismissCameraRollViewControllerForced:(BOOL)forced animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  forcedCopy = forced;
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  v7 = _oneUpPresentationHelper;
+  if (_oneUpPresentationHelper)
   {
-    v8 = [v6 dismissOneUpViewControllerForced:v5 animated:v4];
+    v8 = [_oneUpPresentationHelper dismissOneUpViewControllerForced:forcedCopy animated:animatedCopy];
   }
 
   else
@@ -1384,16 +1384,16 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
   return v8;
 }
 
-- (void)handlePresentingPanGestureRecognizer:(id)a3
+- (void)handlePresentingPanGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  [v5 handlePresentingPanGestureRecognizer:v4];
+  recognizerCopy = recognizer;
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  [_oneUpPresentationHelper handlePresentingPanGestureRecognizer:recognizerCopy];
 }
 
-- (void)presentingViewControllerViewWillAppear:(BOOL)a3
+- (void)presentingViewControllerViewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1401,30 +1401,30 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Viewfinder will appear", v10, 2u);
   }
 
-  v6 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  [v6 presentingViewControllerViewWillAppear:v3];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  [_oneUpPresentationHelper presentingViewControllerViewWillAppear:appearCopy];
 
   [(CAMCameraRollController *)self prewarmPhotosAppInstallationState];
-  v7 = [(CAMCameraRollController *)self _didStopCaptureSession];
+  _didStopCaptureSession = [(CAMCameraRollController *)self _didStopCaptureSession];
   [(CAMCameraRollController *)self _setDidStopCaptureSession:0];
   if ([(CAMCameraRollController *)self _isOneUpVisible])
   {
-    if (v7)
+    if (_didStopCaptureSession)
     {
-      v8 = [MEMORY[0x1E69DC668] sharedApplication];
-      v7 = [v8 applicationState] != 2;
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      _didStopCaptureSession = [mEMORY[0x1E69DC668] applicationState] != 2;
     }
 
-    v9 = [(CAMCameraRollController *)self presentationDelegate];
-    [v9 cameraRollController:self willShowPresentingViewControllerShouldStartCaptureSession:v7];
+    presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+    [presentationDelegate cameraRollController:self willShowPresentingViewControllerShouldStartCaptureSession:_didStopCaptureSession];
   }
 
   [(CAMCameraRollController *)self _setPrefersPresentingStatusbarHidden:1];
 }
 
-- (void)presentingViewControllerViewDidAppear:(BOOL)a3
+- (void)presentingViewControllerViewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1432,22 +1432,22 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Viewfinder did appear", v8, 2u);
   }
 
-  v6 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  [v6 presentingViewControllerViewDidAppear:v3];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  [_oneUpPresentationHelper presentingViewControllerViewDidAppear:appearCopy];
 
   if ([(CAMCameraRollController *)self _isOneUpFullyPresented])
   {
-    v7 = [(CAMCameraRollController *)self presentationDelegate];
-    [v7 cameraRollControllerDidDismissFullyPresentedCameraRoll:self];
+    presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+    [presentationDelegate cameraRollControllerDidDismissFullyPresentedCameraRoll:self];
   }
 
   [(CAMCameraRollController *)self _setOneUpFullyPresented:0];
   [(CAMCameraRollController *)self _setOneUpVisible:0];
 }
 
-- (void)presentingViewControllerViewWillDisappear:(BOOL)a3
+- (void)presentingViewControllerViewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1455,22 +1455,22 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Viewfinder will disappear", v10, 2u);
   }
 
-  v6 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  [v6 presentingViewControllerViewWillDisappear:v3];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  [_oneUpPresentationHelper presentingViewControllerViewWillDisappear:disappearCopy];
 
   [(CAMCameraRollController *)self _setOneUpVisible:1];
   [(CAMCameraRollController *)self clearIgnoredImageWellUUIDs];
   [(CAMCameraRollController *)self _stopCaptureSessionIfNecessary];
-  v7 = [(CAMCameraRollController *)self presentationDelegate];
-  v8 = [v7 cameraRollControllerPresentingViewController:self];
+  presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+  v8 = [presentationDelegate cameraRollControllerPresentingViewController:self];
 
-  v9 = [v8 presentedViewController];
-  -[CAMCameraRollController _setPrefersPresentingStatusbarHidden:](self, "_setPrefersPresentingStatusbarHidden:", [v9 prefersStatusBarHidden]);
+  presentedViewController = [v8 presentedViewController];
+  -[CAMCameraRollController _setPrefersPresentingStatusbarHidden:](self, "_setPrefersPresentingStatusbarHidden:", [presentedViewController prefersStatusBarHidden]);
 }
 
-- (void)presentingViewControllerViewDidDisappear:(BOOL)a3
+- (void)presentingViewControllerViewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1478,13 +1478,13 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
     _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "Viewfinder did disappear", v8, 2u);
   }
 
-  v6 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  [v6 presentingViewControllerViewDidDisappear:v3];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  [_oneUpPresentationHelper presentingViewControllerViewDidDisappear:disappearCopy];
 
   if (![(CAMCameraRollController *)self _isOneUpFullyPresented])
   {
-    v7 = [(CAMCameraRollController *)self presentationDelegate];
-    [v7 cameraRollControllerDidFullyPresentCameraRoll:self];
+    presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+    [presentationDelegate cameraRollControllerDidFullyPresentCameraRoll:self];
   }
 
   [(CAMCameraRollController *)self _setOneUpFullyPresented:1];
@@ -1495,8 +1495,8 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
   if (![(CAMCameraRollController *)self _didStopCaptureSession])
   {
     [(CAMCameraRollController *)self _setDidStopCaptureSession:1];
-    v3 = [(CAMCameraRollController *)self presentationDelegate];
-    [v3 cameraRollControllerRequestsCaptureSessionStopped:self];
+    presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+    [presentationDelegate cameraRollControllerRequestsCaptureSessionStopped:self];
   }
 }
 
@@ -1512,16 +1512,16 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
 
 - (BOOL)_shouldRequestUnlock
 {
-  v2 = self;
-  v3 = [(CAMCameraRollController *)self presentationDelegate];
-  LOBYTE(v2) = [v3 cameraRollControllerShouldRequestUnlock:v2];
+  selfCopy = self;
+  presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+  LOBYTE(selfCopy) = [presentationDelegate cameraRollControllerShouldRequestUnlock:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_updateAnimated:(BOOL)a3
+- (void)_updateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v73[2] = *MEMORY[0x1E69E9840];
   if (![(CAMCameraRollController *)self _allowUpdating])
   {
@@ -1529,13 +1529,13 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
   }
 
   objc_initWeak(&location, self);
-  v5 = [(CAMCameraRollController *)self _photosFrameworksPreheatQueue];
+  _photosFrameworksPreheatQueue = [(CAMCameraRollController *)self _photosFrameworksPreheatQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__CAMCameraRollController__updateAnimated___block_invoke;
   block[3] = &unk_1E76F8580;
   objc_copyWeak(&v71, &location);
-  dispatch_async(v5, block);
+  dispatch_async(_photosFrameworksPreheatQueue, block);
 
   if (-[CAMCameraRollController _isPhotoLibraryLocked](self, "_isPhotoLibraryLocked") && (-[CAMCameraRollController _sessionAssetUUIDs](self, "_sessionAssetUUIDs"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 copy], v6, v7))
   {
@@ -1544,14 +1544,14 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
 
   else
   {
-    v9 = [(CAMCameraRollController *)self _photosDataSource];
-    v10 = [v9 allowedUUIDs];
-    if (v10)
+    _photosDataSource = [(CAMCameraRollController *)self _photosDataSource];
+    allowedUUIDs = [_photosDataSource allowedUUIDs];
+    if (allowedUUIDs)
     {
-      v11 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-      v12 = [v11 isOneUpPresented];
+      _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+      isOneUpPresented = [_oneUpPresentationHelper isOneUpPresented];
 
-      if ((v12 & 1) == 0)
+      if ((isOneUpPresented & 1) == 0)
       {
         [(CAMCameraRollController *)self _setStagedDataSource:0];
         [(CAMCameraRollController *)self _setPhotosDataSource:0];
@@ -1567,18 +1567,18 @@ void __54__CAMCameraRollController_photosDataSource_didChange___block_invoke_2(u
     v8 = 1;
   }
 
-  v54 = [(CAMCameraRollController *)self _transientDataSource];
-  v53 = [(CAMCameraRollController *)self _transientImageManager];
+  _transientDataSource = [(CAMCameraRollController *)self _transientDataSource];
+  _transientImageManager = [(CAMCameraRollController *)self _transientImageManager];
   if (![(CAMCameraRollController *)self _outputToExternalStorage])
   {
-    [(CAMCameraRollController *)self _createPhotosDatasourceIfNeededWithAllowedUUIds:v7 animated:v3];
+    [(CAMCameraRollController *)self _createPhotosDatasourceIfNeededWithAllowedUUIds:v7 animated:animatedCopy];
   }
 
   [(PXPhotosDataSource *)self->__photosDataSource setAllowedUUIDs:v7];
   [(PXPhotosDataSource *)self->__photosDataSource startBackgroundFetchIfNeeded];
-  v13 = [(CAMCameraRollController *)self _stagedDataSource];
-  v14 = v13;
-  if (!v13)
+  _stagedDataSource = [(CAMCameraRollController *)self _stagedDataSource];
+  v14 = _stagedDataSource;
+  if (!_stagedDataSource)
   {
     goto LABEL_17;
   }
@@ -1597,9 +1597,9 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  v16 = [(PXPhotosDataSource *)photosDataSource isEmpty];
+  isEmpty = [(PXPhotosDataSource *)photosDataSource isEmpty];
 
-  if ((v16 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
 LABEL_19:
     v17 = [(CAMCameraRollController *)self _setStagedDataSource:0];
@@ -1611,19 +1611,19 @@ LABEL_20:
     [CAMCameraRollController _updateAnimated:];
   }
 
-  v18 = [(CAMCameraRollController *)self _stagedDataSource];
-  v19 = v18;
-  if (v18)
+  _stagedDataSource2 = [(CAMCameraRollController *)self _stagedDataSource];
+  v19 = _stagedDataSource2;
+  if (_stagedDataSource2)
   {
-    v20 = v18;
+    _photosDataSource2 = _stagedDataSource2;
   }
 
   else
   {
-    v20 = [(CAMCameraRollController *)self _photosDataSource];
+    _photosDataSource2 = [(CAMCameraRollController *)self _photosDataSource];
   }
 
-  v21 = v20;
+  v21 = _photosDataSource2;
 
   if (!self->__oneUpPresentationHelper)
   {
@@ -1642,12 +1642,12 @@ LABEL_20:
     v52 = _Block_copy(v65);
     if ([(CAMCameraRollController *)self _outputToExternalStorage])
     {
-      v22 = [(CAMCameraRollController *)self externalStorage];
+      externalStorage = [(CAMCameraRollController *)self externalStorage];
       v23 = MEMORY[0x1E69C4910];
-      v51 = v22;
-      v24 = [v22 uniqueIdentifier];
-      v25 = [v24 UUIDString];
-      v26 = [v23 importBrowsingSessionWithDeviceUUID:v25];
+      v51 = externalStorage;
+      uniqueIdentifier = [externalStorage uniqueIdentifier];
+      uUIDString = [uniqueIdentifier UUIDString];
+      v26 = [v23 importBrowsingSessionWithDeviceUUID:uUIDString];
 
       [(CAMCameraRollController *)self _setExternalStorageBrowsingSession:v26];
       v63[0] = MEMORY[0x1E69E9820];
@@ -1670,7 +1670,7 @@ LABEL_20:
       [v29 setEnableNavigateToPhotos:{-[CAMCameraRollController wantsInstalledPhotosAppActions](self, "wantsInstalledPhotosAppActions")}];
       [MEMORY[0x1E69C4900] setUnlockDeviceHandlerWithActionType:v52];
       [(CAMCameraRollController *)self _updateTransientDataSourceIfNeeded];
-      v48 = [objc_alloc(MEMORY[0x1E69C4920]) initWithTransientDataSource:v54];
+      v48 = [objc_alloc(MEMORY[0x1E69C4920]) initWithTransientDataSource:_transientDataSource];
       v31 = objc_alloc(MEMORY[0x1E69C4928]);
       v61[0] = MEMORY[0x1E69E9820];
       v61[1] = 3221225472;
@@ -1678,7 +1678,7 @@ LABEL_20:
       v61[3] = &unk_1E76FA778;
       v27 = v30;
       v62 = v27;
-      v49 = [v31 initWithTransientImageManager:v53 supplementaryLivePhotoImageSource:v61];
+      v49 = [v31 initWithTransientImageManager:_transientImageManager supplementaryLivePhotoImageSource:v61];
       v47 = objc_alloc_init(MEMORY[0x1E69C4918]);
       v32 = objc_alloc(MEMORY[0x1E69C4938]);
       v73[0] = v51;
@@ -1723,21 +1723,21 @@ LABEL_20:
     objc_destroyWeak(&from);
   }
 
-  v42 = [(CAMCameraRollController *)self _photoKitDataSourceManager];
-  [v42 setPhotosDataSource:v21];
+  _photoKitDataSourceManager = [(CAMCameraRollController *)self _photoKitDataSourceManager];
+  [_photoKitDataSourceManager setPhotosDataSource:v21];
 
   [(CAMCameraRollController *)self _updateTransientDataSourceIfNeeded];
   if ([(CAMCameraRollController *)self _isDeferringStagedMediaLoading])
   {
-    v43 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-    v44 = [v43 browsingSession];
-    v45 = [v44 viewModel];
+    _oneUpPresentationHelper2 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+    browsingSession = [_oneUpPresentationHelper2 browsingSession];
+    viewModel = [browsingSession viewModel];
 
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __43__CAMCameraRollController__updateAnimated___block_invoke_9;
     v55[3] = &unk_1E76F77B0;
-    v46 = v45;
+    v46 = viewModel;
     v56 = v46;
     [v46 performChanges:v55];
   }
@@ -1807,24 +1807,24 @@ id __43__CAMCameraRollController__updateAnimated___block_invoke_8(void *a1)
   return v1;
 }
 
-- (void)_unlockDeviceIfNeededForActionType:(unint64_t)a3 completionHandler:(id)a4
+- (void)_unlockDeviceIfNeededForActionType:(unint64_t)type completionHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   if ([(CAMCameraRollController *)self _shouldRequestUnlock])
   {
-    v6 = [(CAMCameraRollController *)self presentationDelegate];
-    [v6 cameraRollController:self didRequestPasscodeUnlockForAction:a3 completionBlock:v7];
+    presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+    [presentationDelegate cameraRollController:self didRequestPasscodeUnlockForAction:type completionBlock:handlerCopy];
   }
 
   else
   {
-    v7[2](v7, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (void)_createUndoActionsInvalidatorAsynchronouslyIfNeededWithPhotoLibrary:(id)a3
+- (void)_createUndoActionsInvalidatorAsynchronouslyIfNeededWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (!self->__undoActionsInvalidator && !self->__preparingUndoActionsInvalidator)
   {
     v5 = os_log_create("com.apple.camera", "ImageWell");
@@ -1835,16 +1835,16 @@ id __43__CAMCameraRollController__updateAnimated___block_invoke_8(void *a1)
     }
 
     self->__preparingUndoActionsInvalidator = 1;
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v7 = dispatch_get_global_queue(17, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __95__CAMCameraRollController__createUndoActionsInvalidatorAsynchronouslyIfNeededWithPhotoLibrary___block_invoke;
     block[3] = &unk_1E76F7938;
-    v10 = v4;
-    v11 = self;
-    v12 = v6;
-    v8 = v6;
+    v10 = libraryCopy;
+    selfCopy = self;
+    v12 = date;
+    v8 = date;
     dispatch_async(v7, block);
   }
 }
@@ -1905,23 +1905,23 @@ void __95__CAMCameraRollController__createUndoActionsInvalidatorAsynchronouslyIf
   *(*(a1 + 40) + 27) = 0;
 }
 
-- (void)_createPhotosDatasourceIfNeededWithAllowedUUIds:(id)a3 animated:(BOOL)a4
+- (void)_createPhotosDatasourceIfNeededWithAllowedUUIds:(id)ids animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v21[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CAMCameraRollController *)self _photosDataSource];
+  idsCopy = ids;
+  _photosDataSource = [(CAMCameraRollController *)self _photosDataSource];
 
-  if (!v7)
+  if (!_photosDataSource)
   {
-    v8 = [(CAMCameraRollController *)self _cameraRollCollectionListFetchResult];
+    _cameraRollCollectionListFetchResult = [(CAMCameraRollController *)self _cameraRollCollectionListFetchResult];
     v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"addedDate" ascending:1];
     v21[0] = v9;
     v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"sortToken" ascending:1];
     v21[1] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
 
-    if (v6)
+    if (idsCopy)
     {
       v12 = 8;
     }
@@ -1929,7 +1929,7 @@ void __95__CAMCameraRollController__createUndoActionsInvalidatorAsynchronouslyIf
     else
     {
       v12 = 8;
-      v13 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:v8 options:8];
+      v13 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:_cameraRollCollectionListFetchResult options:8];
       v14 = [objc_alloc(MEMORY[0x1E69C3870]) initWithPhotosDataSourceConfiguration:v13];
       [v14 setFetchLimit:100];
       [v14 setSortDescriptors:v11];
@@ -1940,17 +1940,17 @@ void __95__CAMCameraRollController__createUndoActionsInvalidatorAsynchronouslyIf
       }
     }
 
-    v15 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:v8 options:v12];
+    v15 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:_cameraRollCollectionListFetchResult options:v12];
     v16 = [objc_alloc(MEMORY[0x1E69C3870]) initWithPhotosDataSourceConfiguration:v15];
-    [v16 setAllowedUUIDs:v6];
+    [v16 setAllowedUUIDs:idsCopy];
     [v16 setSortDescriptors:v11];
     [(CAMCameraRollController *)self _setPhotosDataSource:v16];
     [v16 isEmpty];
     [(CAMCameraRollController *)self _setObserveCameraPreviewWellChanges:1];
-    v17 = [(CAMCameraRollController *)self imageWellDelegate];
-    if (v17)
+    imageWellDelegate = [(CAMCameraRollController *)self imageWellDelegate];
+    if (imageWellDelegate)
     {
-      v18 = [(CAMCameraRollController *)self persistedThumbnailImage];
+      persistedThumbnailImage = [(CAMCameraRollController *)self persistedThumbnailImage];
       v19 = os_log_create("com.apple.camera", "ImageWell");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
@@ -1958,7 +1958,7 @@ void __95__CAMCameraRollController__createUndoActionsInvalidatorAsynchronouslyIf
         _os_log_impl(&dword_1A3640000, v19, OS_LOG_TYPE_DEFAULT, "ImageWell: updating from persistedThumbnailImage after setting up photos data source", v20, 2u);
       }
 
-      [v17 cameraRollController:self didChangeImageWellImage:v18 withUUID:0 animated:v4];
+      [imageWellDelegate cameraRollController:self didChangeImageWellImage:persistedThumbnailImage withUUID:0 animated:animatedCopy];
     }
   }
 }
@@ -2050,111 +2050,111 @@ void __61__CAMCameraRollController__updateTransientDataSourceIfNeeded__block_inv
   }
 }
 
-- (void)_setPrefersPresentingStatusbarHidden:(BOOL)a3
+- (void)_setPrefersPresentingStatusbarHidden:(BOOL)hidden
 {
-  if (self->_prefersPresentingStatusbarHidden != a3)
+  if (self->_prefersPresentingStatusbarHidden != hidden)
   {
-    self->_prefersPresentingStatusbarHidden = a3;
+    self->_prefersPresentingStatusbarHidden = hidden;
     if (self->_presentationDelegateFlags.respondsToPrefersPresentingStatusbarHiddenDidChange)
     {
-      v4 = [(CAMCameraRollController *)self presentationDelegate];
-      [v4 cameraRollControllerPrefersPresentingStatusbarHiddenDidChange:self];
+      presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+      [presentationDelegate cameraRollControllerPrefersPresentingStatusbarHiddenDidChange:self];
     }
   }
 }
 
-- (void)_setPhotosDataSource:(id)a3
+- (void)_setPhotosDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   photosDataSource = self->__photosDataSource;
-  if (photosDataSource != v5)
+  if (photosDataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     if (photosDataSource)
     {
       [(PXPhotosDataSource *)photosDataSource unregisterChangeObserver:self];
     }
 
-    objc_storeStrong(&self->__photosDataSource, a3);
+    objc_storeStrong(&self->__photosDataSource, source);
     photosDataSource = [(PXPhotosDataSource *)self->__photosDataSource registerChangeObserver:self];
-    v5 = v7;
+    sourceCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](photosDataSource, v5);
+  MEMORY[0x1EEE66BB8](photosDataSource, sourceCopy);
 }
 
-- (void)_setStagedDataSource:(id)a3
+- (void)_setStagedDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   stagedDataSource = self->__stagedDataSource;
-  if (stagedDataSource != v5)
+  if (stagedDataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     if (stagedDataSource)
     {
       [(PXPhotosDataSource *)stagedDataSource unregisterChangeObserver:self];
     }
 
-    objc_storeStrong(&self->__stagedDataSource, a3);
+    objc_storeStrong(&self->__stagedDataSource, source);
     stagedDataSource = [(PXPhotosDataSource *)self->__stagedDataSource registerChangeObserver:self];
-    v5 = v7;
+    sourceCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](stagedDataSource, v5);
+  MEMORY[0x1EEE66BB8](stagedDataSource, sourceCopy);
 }
 
-- (void)_setObserveCameraPreviewWellChanges:(BOOL)a3
+- (void)_setObserveCameraPreviewWellChanges:(BOOL)changes
 {
-  if (self->__observeCameraPreviewWellChanges != a3)
+  if (self->__observeCameraPreviewWellChanges != changes)
   {
-    v4 = a3;
-    self->__observeCameraPreviewWellChanges = a3;
-    v6 = [MEMORY[0x1E69BE2F0] defaultCenter];
-    v7 = v6;
-    if (v4)
+    changesCopy = changes;
+    self->__observeCameraPreviewWellChanges = changes;
+    defaultCenter = [MEMORY[0x1E69BE2F0] defaultCenter];
+    v7 = defaultCenter;
+    if (changesCopy)
     {
-      [v6 addCameraPreviewWellImageChangeObserver:self];
+      [defaultCenter addCameraPreviewWellImageChangeObserver:self];
     }
 
     else
     {
-      [v6 removeCameraPreviewWellImageChangeObserver:self];
+      [defaultCenter removeCameraPreviewWellImageChangeObserver:self];
     }
   }
 }
 
-- (void)_setExternalStorageBrowsingSession:(id)a3
+- (void)_setExternalStorageBrowsingSession:(id)session
 {
-  v5 = a3;
-  v6 = [(CAMCameraRollController *)self _externalStorageBrowsingSession];
+  sessionCopy = session;
+  _externalStorageBrowsingSession = [(CAMCameraRollController *)self _externalStorageBrowsingSession];
 
-  if (v6 != v5)
+  if (_externalStorageBrowsingSession != sessionCopy)
   {
-    v7 = [(CAMCameraRollController *)self _externalStorageBrowsingSession];
-    if (v7)
+    _externalStorageBrowsingSession2 = [(CAMCameraRollController *)self _externalStorageBrowsingSession];
+    if (_externalStorageBrowsingSession2)
     {
-      v8 = v7;
-      v9 = [(CAMCameraRollController *)self _externalStorageBrowsingSessionThumbnailRequest];
+      v8 = _externalStorageBrowsingSession2;
+      _externalStorageBrowsingSessionThumbnailRequest = [(CAMCameraRollController *)self _externalStorageBrowsingSessionThumbnailRequest];
 
-      if (v9 >= 1)
+      if (_externalStorageBrowsingSessionThumbnailRequest >= 1)
       {
-        v10 = [(CAMCameraRollController *)self _externalStorageBrowsingSession];
-        v11 = [v10 imageWellThumbnailProvider];
-        [v11 cancelThumbnailRequest:{-[CAMCameraRollController _externalStorageBrowsingSessionThumbnailRequest](self, "_externalStorageBrowsingSessionThumbnailRequest")}];
+        _externalStorageBrowsingSession3 = [(CAMCameraRollController *)self _externalStorageBrowsingSession];
+        imageWellThumbnailProvider = [_externalStorageBrowsingSession3 imageWellThumbnailProvider];
+        [imageWellThumbnailProvider cancelThumbnailRequest:{-[CAMCameraRollController _externalStorageBrowsingSessionThumbnailRequest](self, "_externalStorageBrowsingSessionThumbnailRequest")}];
 
         [(CAMCameraRollController *)self set_externalStorageBrowsingSessionThumbnailRequest:0];
       }
     }
 
-    objc_storeStrong(&self->__externalStorageBrowsingSession, a3);
+    objc_storeStrong(&self->__externalStorageBrowsingSession, session);
     objc_initWeak(&location, self);
-    v12 = [v5 imageWellThumbnailProvider];
+    imageWellThumbnailProvider2 = [sessionCopy imageWellThumbnailProvider];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __62__CAMCameraRollController__setExternalStorageBrowsingSession___block_invoke;
     v13[3] = &unk_1E76FA810;
     objc_copyWeak(&v14, &location);
-    [v12 requestImageAndUUIDForStartingAssetFillingTargetSize:v13 resultHandler:{360.0, 640.0}];
+    [imageWellThumbnailProvider2 requestImageAndUUIDForStartingAssetFillingTargetSize:v13 resultHandler:{360.0, 640.0}];
     objc_destroyWeak(&v14);
 
     objc_destroyWeak(&location);
@@ -2169,22 +2169,22 @@ void __62__CAMCameraRollController__setExternalStorageBrowsingSession___block_in
   [WeakRetained _updateExternalStorageThumbnail:v6 withUUID:v5];
 }
 
-- (void)_updateExternalStorageThumbnail:(id)a3 withUUID:(id)a4
+- (void)_updateExternalStorageThumbnail:(id)thumbnail withUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  thumbnailCopy = thumbnail;
+  dCopy = d;
   if ([(CAMCameraRollController *)self _outputToExternalStorage]&& !+[CAMFrameworkUtilities isPasscodeLocked])
   {
-    v8 = [(CAMCameraRollController *)self imageWellDelegate];
+    imageWellDelegate = [(CAMCameraRollController *)self imageWellDelegate];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __68__CAMCameraRollController__updateExternalStorageThumbnail_withUUID___block_invoke;
     v10[3] = &unk_1E76F8230;
     v10[4] = self;
-    v11 = v6;
-    v12 = v8;
-    v13 = v7;
-    v9 = v8;
+    v11 = thumbnailCopy;
+    v12 = imageWellDelegate;
+    v13 = dCopy;
+    v9 = imageWellDelegate;
     cam_perform_on_main_asap(v10);
   }
 }
@@ -2229,67 +2229,67 @@ uint64_t __68__CAMCameraRollController__updateExternalStorageThumbnail_withUUID_
   return result;
 }
 
-- (id)oneUpPresentationHelperViewController:(id)a3
+- (id)oneUpPresentationHelperViewController:(id)controller
 {
-  v4 = [(CAMCameraRollController *)self presentationDelegate];
-  v5 = [v4 cameraRollControllerPresentingViewController:self];
+  presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+  v5 = [presentationDelegate cameraRollControllerPresentingViewController:self];
 
   return v5;
 }
 
-- (void)oneUpPresentationHelper:(id)a3 willPresentOneUpViewController:(id)a4
+- (void)oneUpPresentationHelper:(id)helper willPresentOneUpViewController:(id)controller
 {
-  v6 = a4;
-  objc_storeWeak(&self->_oneUpViewController, v6);
+  controllerCopy = controller;
+  objc_storeWeak(&self->_oneUpViewController, controllerCopy);
   if (self->_presentationDelegateFlags.respondsToWillPresentCameraRoll)
   {
-    v5 = [(CAMCameraRollController *)self presentationDelegate];
-    [v5 cameraRollControllerWillPresentCameraRoll:self withOneUpController:v6];
+    presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+    [presentationDelegate cameraRollControllerWillPresentCameraRoll:self withOneUpController:controllerCopy];
   }
 }
 
-- (void)oneUpPresentationHelper:(id)a3 didPresentOneUpViewController:(id)a4
+- (void)oneUpPresentationHelper:(id)helper didPresentOneUpViewController:(id)controller
 {
-  v5 = [(CAMCameraRollController *)self _stagedDataSource:a3];
+  v5 = [(CAMCameraRollController *)self _stagedDataSource:helper];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    _photosDataSource = v5;
   }
 
   else
   {
-    v7 = [(CAMCameraRollController *)self _photosDataSource];
+    _photosDataSource = [(CAMCameraRollController *)self _photosDataSource];
   }
 
-  v9 = v7;
+  v9 = _photosDataSource;
 
-  v8 = [v9 photoLibrary];
-  [(CAMCameraRollController *)self _createUndoActionsInvalidatorAsynchronouslyIfNeededWithPhotoLibrary:v8];
+  photoLibrary = [v9 photoLibrary];
+  [(CAMCameraRollController *)self _createUndoActionsInvalidatorAsynchronouslyIfNeededWithPhotoLibrary:photoLibrary];
 }
 
-- (void)oneUpPresentationHelper:(id)a3 didDismissOneUpViewController:(id)a4
+- (void)oneUpPresentationHelper:(id)helper didDismissOneUpViewController:(id)controller
 {
-  v5 = a3;
+  helperCopy = helper;
   objc_storeWeak(&self->_oneUpViewController, 0);
-  v6 = [(CAMCameraRollController *)self _outgoingOneUpPresentationHelpers];
-  [v6 removeObject:v5];
+  _outgoingOneUpPresentationHelpers = [(CAMCameraRollController *)self _outgoingOneUpPresentationHelpers];
+  [_outgoingOneUpPresentationHelpers removeObject:helperCopy];
 }
 
-- (BOOL)oneUpPresentationHelperEnableFreezeLayoutOnOrientationChange:(id)a3
+- (BOOL)oneUpPresentationHelperEnableFreezeLayoutOnOrientationChange:(id)change
 {
-  v4 = [(CAMCameraRollController *)self presentationDelegate];
-  v5 = [v4 cameraRollControllerPresentingViewController:self];
+  presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+  v5 = [presentationDelegate cameraRollControllerPresentingViewController:self];
 
-  LOBYTE(v4) = [v5 supportedInterfaceOrientations] == 2;
-  return v4;
+  LOBYTE(presentationDelegate) = [v5 supportedInterfaceOrientations] == 2;
+  return presentationDelegate;
 }
 
-- (id)oneUpPresentationHelper:(id)a3 regionOfInterestForAssetReference:(id)a4 cropInsets:(UIEdgeInsets *)a5
+- (id)oneUpPresentationHelper:(id)helper regionOfInterestForAssetReference:(id)reference cropInsets:(UIEdgeInsets *)insets
 {
   if (self->_presentationDelegateFlags.respondsToRegionOfInterestForAsset)
   {
-    v6 = [(CAMCameraRollController *)self presentationDelegate:a3];
+    v6 = [(CAMCameraRollController *)self presentationDelegate:helper];
     v7 = [v6 cameraRollControllerSourceAssetRegionOfInterest:self];
   }
 
@@ -2301,42 +2301,42 @@ uint64_t __68__CAMCameraRollController__updateExternalStorageThumbnail_withUUID_
   return v7;
 }
 
-- (void)oneUpPresentationHelper:(id)a3 shouldHideAssetReferences:(id)a4
+- (void)oneUpPresentationHelper:(id)helper shouldHideAssetReferences:(id)references
 {
   if (self->_presentationDelegateFlags.respondsToShouldHideSourceAsset)
   {
-    v6 = [a4 count] != 0;
-    v7 = [(CAMCameraRollController *)self presentationDelegate];
-    [v7 cameraRollController:self shouldHideSourceAsset:v6];
+    v6 = [references count] != 0;
+    presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+    [presentationDelegate cameraRollController:self shouldHideSourceAsset:v6];
   }
 }
 
-- (int64_t)oneUpPresentationHelperPreferredPresentationOrientation:(id)a3
+- (int64_t)oneUpPresentationHelperPreferredPresentationOrientation:(id)orientation
 {
   if (!self->_presentationDelegateFlags.respondsToPreferredPresentationOrientation)
   {
     return 1;
   }
 
-  v4 = [(CAMCameraRollController *)self presentationDelegate];
-  v5 = [v4 cameraRollControllerPreferredPresentationOrientation:self];
+  presentationDelegate = [(CAMCameraRollController *)self presentationDelegate];
+  v5 = [presentationDelegate cameraRollControllerPreferredPresentationOrientation:self];
 
   return v5;
 }
 
-- (void)setExternalStorage:(id)a3
+- (void)setExternalStorage:(id)storage
 {
-  if (self->_externalStorage != a3)
+  if (self->_externalStorage != storage)
   {
-    self->_externalStorage = a3;
+    self->_externalStorage = storage;
     [(CAMCameraRollController *)self _setStagedDataSource:0];
     [(CAMCameraRollController *)self _setPhotosDataSource:0];
     [(CAMCameraRollController *)self _invalidateTransientAssets];
-    v6 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-    if ([v6 state])
+    _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+    if ([_oneUpPresentationHelper state])
     {
-      v5 = [(CAMCameraRollController *)self _outgoingOneUpPresentationHelpers];
-      [v5 addObject:v6];
+      _outgoingOneUpPresentationHelpers = [(CAMCameraRollController *)self _outgoingOneUpPresentationHelpers];
+      [_outgoingOneUpPresentationHelpers addObject:_oneUpPresentationHelper];
     }
 
     [(CAMCameraRollController *)self set_oneUpPresentationHelper:0];
@@ -2351,45 +2351,45 @@ uint64_t __68__CAMCameraRollController__updateExternalStorageThumbnail_withUUID_
 
 - (BOOL)_outputToExternalStorage
 {
-  v2 = [(CAMCameraRollController *)self externalStorage];
-  v3 = v2 != 0;
+  externalStorage = [(CAMCameraRollController *)self externalStorage];
+  v3 = externalStorage != 0;
 
   return v3;
 }
 
 - (unint64_t)currentAssetIndexFromEnd
 {
-  v2 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  v3 = [v2 browsingSession];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  browsingSession = [_oneUpPresentationHelper browsingSession];
 
-  v4 = [v3 viewModel];
-  v5 = [v4 currentAssetReference];
-  v6 = [v5 indexPath];
+  viewModel = [browsingSession viewModel];
+  currentAssetReference = [viewModel currentAssetReference];
+  indexPath = [currentAssetReference indexPath];
 
-  v7 = [v4 assetsDataSource];
-  v8 = [v7 lastItemIndexPath];
+  assetsDataSource = [viewModel assetsDataSource];
+  lastItemIndexPath = [assetsDataSource lastItemIndexPath];
 
   v9 = 0;
-  if (v8 && v6)
+  if (lastItemIndexPath && indexPath)
   {
-    v10 = [v8 row];
-    v9 = v10 - [v6 row];
+    v10 = [lastItemIndexPath row];
+    v9 = v10 - [indexPath row];
   }
 
   return v9;
 }
 
-- (void)setCurrentAssetIndexFromEnd:(unint64_t)a3
+- (void)setCurrentAssetIndexFromEnd:(unint64_t)end
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(CAMCameraRollController *)self _oneUpPresentationHelper];
-  v5 = [v4 browsingSession];
+  _oneUpPresentationHelper = [(CAMCameraRollController *)self _oneUpPresentationHelper];
+  browsingSession = [_oneUpPresentationHelper browsingSession];
 
-  v6 = [v5 viewModel];
-  v7 = [v6 assetsDataSource];
-  v8 = [v7 lastItemIndexPath];
+  viewModel = [browsingSession viewModel];
+  assetsDataSource = [viewModel assetsDataSource];
+  lastItemIndexPath = [assetsDataSource lastItemIndexPath];
 
-  v9 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v8 inSection:{"row") - a3, objc_msgSend(v8, "section")}];
+  v9 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(lastItemIndexPath inSection:{"row") - end, objc_msgSend(lastItemIndexPath, "section")}];
   if ([v9 row] <= 0)
   {
     v11 = os_log_create("com.apple.camera", "CameraRoll");
@@ -2398,15 +2398,15 @@ uint64_t __68__CAMCameraRollController__updateExternalStorageThumbnail_withUUID_
       *buf = 134218240;
       v17 = [v9 row];
       v18 = 2048;
-      v19 = a3;
+      endCopy = end;
       _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring setCurrentAssetIndexFromEnd row=%ld, indexFromEnd=%ld", buf, 0x16u);
     }
   }
 
   else
   {
-    v10 = [v6 assetsDataSource];
-    v11 = [v10 assetReferenceAtIndexPath:v9];
+    assetsDataSource2 = [viewModel assetsDataSource];
+    v11 = [assetsDataSource2 assetReferenceAtIndexPath:v9];
 
     if (v11)
     {
@@ -2414,7 +2414,7 @@ uint64_t __68__CAMCameraRollController__updateExternalStorageThumbnail_withUUID_
       v13[1] = 3221225472;
       v13[2] = __55__CAMCameraRollController_setCurrentAssetIndexFromEnd___block_invoke;
       v13[3] = &unk_1E76F7960;
-      v14 = v6;
+      v14 = viewModel;
       v15 = v11;
       [v14 performChanges:v13];
 
@@ -2426,7 +2426,7 @@ uint64_t __68__CAMCameraRollController__updateExternalStorageThumbnail_withUUID_
       v12 = os_log_create("com.apple.camera", "CameraRoll");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(CAMCameraRollController *)v9 setCurrentAssetIndexFromEnd:a3, v12];
+        [(CAMCameraRollController *)v9 setCurrentAssetIndexFromEnd:end, v12];
       }
     }
   }

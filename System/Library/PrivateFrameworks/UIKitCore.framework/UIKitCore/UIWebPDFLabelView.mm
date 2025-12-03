@@ -1,22 +1,22 @@
 @interface UIWebPDFLabelView
-- (UIWebPDFLabelView)initWithFrame:(CGRect)a3;
+- (UIWebPDFLabelView)initWithFrame:(CGRect)frame;
 - (void)_fadeOutAnimationDidStop;
 - (void)_makeRoundedCorners;
 - (void)clearTimer;
 - (void)dealloc;
 - (void)fadeOut;
-- (void)setText:(id)a3;
-- (void)showNowInSuperView:(id)a3 atOrigin:(CGPoint)a4 withText:(id)a5 animated:(BOOL)a6;
+- (void)setText:(id)text;
+- (void)showNowInSuperView:(id)view atOrigin:(CGPoint)origin withText:(id)text animated:(BOOL)animated;
 - (void)sizeToFit;
 @end
 
 @implementation UIWebPDFLabelView
 
-- (UIWebPDFLabelView)initWithFrame:(CGRect)a3
+- (UIWebPDFLabelView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = UIWebPDFLabelView;
-  v3 = [(UIView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,8 +34,8 @@
     -[UILabel setFont:](v4->_label, "setFont:", [off_1E70ECC18 boldSystemFontOfSize:16.0]);
     [(UILabel *)v4->_label setTextColor:+[UIColor blackColor]];
     [(UIView *)v4->_label setAlpha:0.4];
-    v7 = [(UIView *)v4->_label layer];
-    -[CALayer setCompositingFilter:](v7, "setCompositingFilter:", [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]]);
+    layer = [(UIView *)v4->_label layer];
+    -[CALayer setCompositingFilter:](layer, "setCompositingFilter:", [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]]);
     [(UIView *)v4 addSubview:v4->_label];
   }
 
@@ -70,32 +70,32 @@
   [(UIView *)self setSize:v4, v6];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  [(UILabel *)self->_label setText:a3];
+  [(UILabel *)self->_label setText:text];
 
   [(UIWebPDFLabelView *)self sizeToFit];
 }
 
-- (void)showNowInSuperView:(id)a3 atOrigin:(CGPoint)a4 withText:(id)a5 animated:(BOOL)a6
+- (void)showNowInSuperView:(id)view atOrigin:(CGPoint)origin withText:(id)text animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
+  animatedCopy = animated;
+  y = origin.y;
+  x = origin.x;
   [(UIView *)self setAlpha:1.0];
-  if (a5)
+  if (text)
   {
-    [(UIWebPDFLabelView *)self setText:a5];
+    [(UIWebPDFLabelView *)self setText:text];
   }
 
-  if ([(UIView *)self superview]== a3)
+  if ([(UIView *)self superview]== view)
   {
-    [a3 bringSubviewToFront:self];
+    [view bringSubviewToFront:self];
   }
 
   else
   {
-    [a3 addSubview:self];
+    [view addSubview:self];
   }
 
   v13[1] = 3221225472;
@@ -105,7 +105,7 @@
   v13[4] = self;
   *&v13[5] = x + 20.0;
   *&v13[6] = y + 20.0;
-  [UIView conditionallyAnimate:v6 withAnimation:&__block_literal_global_739 layout:v13 completion:0];
+  [UIView conditionallyAnimate:animatedCopy withAnimation:&__block_literal_global_739 layout:v13 completion:0];
   [(UIWebPDFLabelView *)self _fadeOutDelay];
   timer = self->_timer;
   if (timer)
@@ -138,7 +138,7 @@ uint64_t __67__UIWebPDFLabelView_showNowInSuperView_atOrigin_withText_animated__
 {
   if ([(UIWebPDFLabelView *)self isTimerInstalled])
   {
-    v3 = self;
+    selfCopy = self;
     [(UIWebPDFLabelView *)self clearTimer];
     [(UIWebPDFLabelView *)self _fadeOutDuration];
     v4[4] = self;
@@ -182,14 +182,14 @@ uint64_t __67__UIWebPDFLabelView_showNowInSuperView_atOrigin_withText_animated__
   CGContextRestoreGState(v5);
   ImageFromCurrentImageContext = _UIGraphicsGetImageFromCurrentImageContext(0);
   UIGraphicsEndImageContext();
-  v7 = [(_UIBackdropView *)self->_backdropView contentView];
+  contentView = [(_UIBackdropView *)self->_backdropView contentView];
   v8 = -[UIImageView initWithImage:]([UIImageView alloc], "initWithImage:", [ImageFromCurrentImageContext resizableImageWithCapInsets:{7.0, 7.0, 7.0, 7.0}]);
   [(UIView *)v8 setAlpha:0.0];
   [(UIView *)v8 _setBackdropMaskViewFlags:7];
   [(UIView *)v8 setAutoresizingMask:18];
-  [(UIView *)v7 bounds];
+  [(UIView *)contentView bounds];
   [(UIImageView *)v8 setFrame:?];
-  [(UIView *)v7 addSubview:v8];
+  [(UIView *)contentView addSubview:v8];
 }
 
 @end

@@ -1,82 +1,82 @@
 @interface PIRetouchAdjustmentController
 - (NSArray)detectedFaces;
 - (unint64_t)retouchStrokeCount;
-- (void)appendStroke:(id)a3;
-- (void)setDetectedFaces:(id)a3;
+- (void)appendStroke:(id)stroke;
+- (void)setDetectedFaces:(id)faces;
 @end
 
 @implementation PIRetouchAdjustmentController
 
 - (unint64_t)retouchStrokeCount
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIRetouchAdjustmentController inputStrokesKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
 
   v5 = [v4 count];
   return v5;
 }
 
-- (void)setDetectedFaces:(id)a3
+- (void)setDetectedFaces:(id)faces
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  facesCopy = faces;
+  v5 = facesCopy;
+  if (facesCopy)
   {
-    v9 = v4;
-    v4 = [v4 count];
+    v9 = facesCopy;
+    facesCopy = [facesCopy count];
     v5 = v9;
-    if (v4)
+    if (facesCopy)
     {
       v6 = [v9 copy];
-      v7 = [(PIAdjustmentController *)self adjustment];
+      adjustment = [(PIAdjustmentController *)self adjustment];
       v8 = +[PIRetouchAdjustmentController detectedFacesKey];
-      [v7 setObject:v6 forKeyedSubscript:v8];
+      [adjustment setObject:v6 forKeyedSubscript:v8];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](facesCopy, v5);
 }
 
 - (NSArray)detectedFaces
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v3 = +[PIRetouchAdjustmentController detectedFacesKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [adjustment objectForKeyedSubscript:v3];
   v5 = [v4 copy];
 
   return v5;
 }
 
-- (void)appendStroke:(id)a3
+- (void)appendStroke:(id)stroke
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = [PIRetouchBrushStroke dictionaryFromBrushStroke:a3];
+  v5 = [PIRetouchBrushStroke dictionaryFromBrushStroke:stroke];
   v14 = [v4 dictionaryWithDictionary:v5];
 
-  v6 = [(PIAdjustmentController *)self adjustment];
+  adjustment = [(PIAdjustmentController *)self adjustment];
   v7 = +[PIRetouchAdjustmentController inputStrokesKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  array = [adjustment objectForKeyedSubscript:v7];
 
-  if (!v8)
+  if (!array)
   {
-    v8 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  if (![v8 count])
+  if (![array count])
   {
-    v9 = [(PIAdjustmentController *)self adjustment];
+    adjustment2 = [(PIAdjustmentController *)self adjustment];
     v10 = +[PIRetouchAdjustmentController enabledKey];
-    [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v10];
+    [adjustment2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v10];
   }
 
-  v11 = [v8 arrayByAddingObject:v14];
+  v11 = [array arrayByAddingObject:v14];
 
-  v12 = [(PIAdjustmentController *)self adjustment];
+  adjustment3 = [(PIAdjustmentController *)self adjustment];
   v13 = +[PIRetouchAdjustmentController inputStrokesKey];
-  [v12 setObject:v11 forKeyedSubscript:v13];
+  [adjustment3 setObject:v11 forKeyedSubscript:v13];
 }
 
 @end

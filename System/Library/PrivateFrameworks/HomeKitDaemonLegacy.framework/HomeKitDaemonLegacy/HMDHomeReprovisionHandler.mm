@@ -6,15 +6,15 @@
 - (id)home;
 - (id)logIdentifier;
 - (id)messageDestination;
-- (void)_handleReprovisionAccessory:(id)a3;
-- (void)_handleRequestSearchForAccessoriesNeedingReprovisioning:(id)a3;
-- (void)_reportAccessoryNeedingReprovision:(void *)a3 error:;
-- (void)_reprovisionAccessory:(void *)a3 networkCredential:(void *)a4 requestMessage:;
-- (void)configure:(id)a3 queue:(id)a4 messageDispatcher:(id)a5;
+- (void)_handleReprovisionAccessory:(id)accessory;
+- (void)_handleRequestSearchForAccessoriesNeedingReprovisioning:(id)reprovisioning;
+- (void)_reportAccessoryNeedingReprovision:(void *)reprovision error:;
+- (void)_reprovisionAccessory:(void *)accessory networkCredential:(void *)credential requestMessage:;
+- (void)configure:(id)configure queue:(id)queue messageDispatcher:(id)dispatcher;
 - (void)dealloc;
-- (void)handleFoundAccessoryNeedingReprovisioning:(id)a3 error:(id)a4;
-- (void)handleReprovionedAccessory:(id)a3 identifier:(id)a4 error:(id)a5;
-- (void)timerDidFire:(id)a3;
+- (void)handleFoundAccessoryNeedingReprovisioning:(id)reprovisioning error:(id)error;
+- (void)handleReprovionedAccessory:(id)accessory identifier:(id)identifier error:(id)error;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDHomeReprovisionHandler
@@ -31,10 +31,10 @@
 
 - (NSUUID)messageTargetUUID
 {
-  v2 = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
-  v3 = [v2 uuid];
+  home = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
+  uuid = [home uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (id)home
@@ -48,21 +48,21 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v24 = *MEMORY[0x277D85DE8];
-  v17 = a3;
+  fireCopy = fire;
   if (self)
   {
     dispatch_assert_queue_V2(self->_workQueue);
-    v4 = v17;
-    if (self->_disableReprovisionBrowsingTimer != v17)
+    v4 = fireCopy;
+    if (self->_disableReprovisionBrowsingTimer != fireCopy)
     {
       goto LABEL_11;
     }
 
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -73,16 +73,16 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    if (v6->_reprovisionBrowsingPending)
+    if (selfCopy->_reprovisionBrowsingPending)
     {
-      v6->_reprovisionBrowsingPending = 0;
-      v6->_reprovisionBrowsingAllowed = 0;
-      WeakRetained = objc_loadWeakRetained(&v6->_accessoryBrowser);
+      selfCopy->_reprovisionBrowsingPending = 0;
+      selfCopy->_reprovisionBrowsingAllowed = 0;
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_accessoryBrowser);
       [WeakRetained startDiscoveringAccessoriesNeedingReprovisioning];
 
-      [(HMFTimer *)v6->_disableReprovisionBrowsingTimer resume];
+      [(HMFTimer *)selfCopy->_disableReprovisionBrowsingTimer resume];
       v10 = objc_autoreleasePoolPush();
-      v11 = v6;
+      v11 = selfCopy;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -102,10 +102,10 @@
 
     else
     {
-      v6->_reprovisionBrowsingAllowed = 1;
-      [(HMFTimer *)v6->_disableReprovisionBrowsingTimer cancel];
-      v15 = v6->_disableReprovisionBrowsingTimer;
-      v6->_disableReprovisionBrowsingTimer = 0;
+      selfCopy->_reprovisionBrowsingAllowed = 1;
+      [(HMFTimer *)selfCopy->_disableReprovisionBrowsingTimer cancel];
+      v15 = selfCopy->_disableReprovisionBrowsingTimer;
+      selfCopy->_disableReprovisionBrowsingTimer = 0;
     }
   }
 
@@ -114,16 +114,16 @@
     dispatch_assert_queue_V2(0);
   }
 
-  v4 = v17;
+  v4 = fireCopy;
 LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleReprovionedAccessory:(id)a3 identifier:(id)a4 error:(id)a5
+- (void)handleReprovionedAccessory:(id)accessory identifier:(id)identifier error:(id)error
 {
-  v36 = a3;
-  v8 = a4;
-  v9 = a5;
+  accessoryCopy = accessory;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (self)
   {
     pendingReprovisionRequests = self->_pendingReprovisionRequests;
@@ -134,20 +134,20 @@ LABEL_11:
     pendingReprovisionRequests = 0;
   }
 
-  v11 = [(NSMutableDictionary *)pendingReprovisionRequests valueForKey:v8];
+  v11 = [(NSMutableDictionary *)pendingReprovisionRequests valueForKey:identifierCopy];
 
   if (v11)
   {
-    [v36 setAccessoryReprovisionState:0];
-    v12 = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
-    v13 = [v12 homeManager];
-    v14 = [v36 uuid];
-    [v13 updateGenerationCounterWithReason:@"ReprovisionNotRequired" sourceUUID:v14 shouldNotifyClients:0];
+    [accessoryCopy setAccessoryReprovisionState:0];
+    home = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
+    homeManager = [home homeManager];
+    uuid = [accessoryCopy uuid];
+    [homeManager updateGenerationCounterWithReason:@"ReprovisionNotRequired" sourceUUID:uuid shouldNotifyClients:0];
 
-    v15 = [MEMORY[0x277CBEB38] dictionary];
-    v16 = [v36 uuid];
-    v17 = [v16 UUIDString];
-    [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x277CCF0B0]];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    uuid2 = [accessoryCopy uuid];
+    uUIDString = [uuid2 UUIDString];
+    [dictionary setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CCF0B0]];
 
     if (self)
     {
@@ -159,7 +159,7 @@ LABEL_11:
       v18 = 0;
     }
 
-    v19 = [(NSMutableDictionary *)v18 objectForKey:v8];
+    v19 = [(NSMutableDictionary *)v18 objectForKey:identifierCopy];
     if (self)
     {
       v20 = self->_pendingReprovisionRequests;
@@ -170,23 +170,23 @@ LABEL_11:
       v20 = 0;
     }
 
-    [(NSMutableDictionary *)v20 removeObjectForKey:v8];
-    if (v9)
+    [(NSMutableDictionary *)v20 removeObjectForKey:identifierCopy];
+    if (errorCopy)
     {
-      v21 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
-      if (v21)
+      networkCredential3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:0];
+      if (networkCredential3)
       {
-        [v15 setObject:v21 forKeyedSubscript:@"kPairedAccessoryErrorDataKey"];
+        [dictionary setObject:networkCredential3 forKeyedSubscript:@"kPairedAccessoryErrorDataKey"];
       }
     }
 
     else
     {
-      v22 = [v19 networkCredential];
-      v23 = [v22 wiFiPSK];
-      v24 = [v19 networkCredential];
-      v25 = [v24 wiFiPSK];
-      if (v25)
+      networkCredential = [v19 networkCredential];
+      wiFiPSK = [networkCredential wiFiPSK];
+      networkCredential2 = [v19 networkCredential];
+      wiFiPSK2 = [networkCredential2 wiFiPSK];
+      if (wiFiPSK2)
       {
         v26 = 3;
       }
@@ -196,22 +196,22 @@ LABEL_11:
         v26 = 2;
       }
 
-      [v36 saveWiFiUniquePreSharedKey:v23 credentialType:v26];
+      [accessoryCopy saveWiFiUniquePreSharedKey:wiFiPSK credentialType:v26];
 
-      v21 = [v19 networkCredential];
-      v27 = [v21 clientIdentifier];
-      v28 = [v19 networkCredential];
-      v29 = [v28 networkRouterUUID];
-      [v36 saveNetworkClientIdentifier:v27 networkRouterUUID:v29 clearProfileFingerprint:1];
+      networkCredential3 = [v19 networkCredential];
+      clientIdentifier = [networkCredential3 clientIdentifier];
+      networkCredential4 = [v19 networkCredential];
+      networkRouterUUID = [networkCredential4 networkRouterUUID];
+      [accessoryCopy saveNetworkClientIdentifier:clientIdentifier networkRouterUUID:networkRouterUUID clearProfileFingerprint:1];
     }
 
     v30 = MEMORY[0x277D0F818];
     v31 = *MEMORY[0x277CD2000];
-    v32 = [v19 messageIdentifier];
-    v33 = [v30 entitledMessageWithName:v31 identifier:v32 messagePayload:v15];
+    messageIdentifier = [v19 messageIdentifier];
+    v33 = [v30 entitledMessageWithName:v31 identifier:messageIdentifier messagePayload:dictionary];
 
-    v34 = [(HMDHomeReprovisionHandler *)self messageDestination];
-    [v33 setDestination:v34];
+    messageDestination = [(HMDHomeReprovisionHandler *)self messageDestination];
+    [v33 setDestination:messageDestination];
 
     if (self)
     {
@@ -229,89 +229,89 @@ LABEL_11:
 
 - (id)messageDestination
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc(MEMORY[0x277D0F820]);
-    v3 = [v1 messageTargetUUID];
-    v1 = [v2 initWithTarget:v3];
+    messageTargetUUID = [selfCopy messageTargetUUID];
+    selfCopy = [v2 initWithTarget:messageTargetUUID];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)handleFoundAccessoryNeedingReprovisioning:(id)a3 error:(id)a4
+- (void)handleFoundAccessoryNeedingReprovisioning:(id)reprovisioning error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 accessoryReprovisionState])
+  reprovisioningCopy = reprovisioning;
+  errorCopy = error;
+  if (![reprovisioningCopy accessoryReprovisionState])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v6 name];
+      name = [reprovisioningCopy name];
       v17 = 138543618;
       v18 = v11;
       v19 = 2112;
-      v20 = v12;
+      v20 = name;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Accessory %@ reprovision state is updated to Required", &v17, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    [v6 setAccessoryReprovisionState:1];
-    v13 = [(HMDHomeReprovisionHandler *)&v9->super.super.isa home];
-    v14 = [v13 homeManager];
-    v15 = [v6 uuid];
-    [v14 updateGenerationCounterWithReason:@"ReprovisionRequired" sourceUUID:v15 shouldNotifyClients:0];
+    [reprovisioningCopy setAccessoryReprovisionState:1];
+    home = [(HMDHomeReprovisionHandler *)&selfCopy->super.super.isa home];
+    homeManager = [home homeManager];
+    uuid = [reprovisioningCopy uuid];
+    [homeManager updateGenerationCounterWithReason:@"ReprovisionRequired" sourceUUID:uuid shouldNotifyClients:0];
 
-    [(HMDHomeReprovisionHandler *)&v9->super.super.isa _reportAccessoryNeedingReprovision:v6 error:v7];
+    [(HMDHomeReprovisionHandler *)&selfCopy->super.super.isa _reportAccessoryNeedingReprovision:reprovisioningCopy error:errorCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportAccessoryNeedingReprovision:(void *)a3 error:
+- (void)_reportAccessoryNeedingReprovision:(void *)reprovision error:
 {
-  v5 = a3;
-  if (a1)
+  reprovisionCopy = reprovision;
+  if (self)
   {
     v6 = MEMORY[0x277CBEB38];
-    v16 = v5;
+    v16 = reprovisionCopy;
     v7 = a2;
-    v8 = [v6 dictionary];
-    v9 = [v7 uuid];
+    dictionary = [v6 dictionary];
+    uuid = [v7 uuid];
 
-    v10 = [v9 UUIDString];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCF0B0]];
+    uUIDString = [uuid UUIDString];
+    [dictionary setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CCF0B0]];
 
-    [v8 setObject:&unk_2866285B8 forKeyedSubscript:*MEMORY[0x277CD2008]];
+    [dictionary setObject:&unk_2866285B8 forKeyedSubscript:*MEMORY[0x277CD2008]];
     if (v16)
     {
       v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v16 requiringSecureCoding:1 error:0];
       if (v11)
       {
-        [v8 setObject:v11 forKeyedSubscript:@"kPairedAccessoryErrorDataKey"];
+        [dictionary setObject:v11 forKeyedSubscript:@"kPairedAccessoryErrorDataKey"];
       }
     }
 
     v12 = MEMORY[0x277D0F848];
     v13 = *MEMORY[0x277CD1FF8];
-    v14 = [(HMDHomeReprovisionHandler *)a1 messageDestination];
-    v15 = [v12 messageWithName:v13 destination:v14 payload:v8];
+    messageDestination = [(HMDHomeReprovisionHandler *)self messageDestination];
+    v15 = [v12 messageWithName:v13 destination:messageDestination payload:dictionary];
 
-    [a1[3] sendMessage:v15 completionHandler:0];
-    v5 = v16;
+    [self[3] sendMessage:v15 completionHandler:0];
+    reprovisionCopy = v16;
   }
 }
 
-- (void)_handleReprovisionAccessory:(id)a3
+- (void)_handleReprovisionAccessory:(id)accessory
 {
   v86 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   if (isiOSDevice())
   {
     if (self)
@@ -328,40 +328,40 @@ LABEL_11:
     }
 
     v5 = *MEMORY[0x277CCF0B0];
-    v6 = [v4 uuidForKey:*MEMORY[0x277CCF0B0]];
-    if (!v6)
+    responseHandler9 = [accessoryCopy uuidForKey:*MEMORY[0x277CCF0B0]];
+    if (!responseHandler9)
     {
       v32 = objc_autoreleasePoolPush();
-      v33 = self;
+      selfCopy = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         v35 = HMFGetLogIdentifier();
-        v36 = [v4 messagePayload];
+        messagePayload = [accessoryCopy messagePayload];
         *buf = 138543618;
         v83 = v35;
         v84 = 2112;
-        v85 = v36;
+        v85 = messagePayload;
         _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_ERROR, "%{public}@Missing target accessory UUID from message payload: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v32);
-      v37 = [v4 responseHandler];
+      responseHandler = [accessoryCopy responseHandler];
 
-      if (!v37)
+      if (!responseHandler)
       {
         goto LABEL_47;
       }
 
-      v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      v8 = [v4 responseHandler];
-      (v8)[2](v8, v7, 0);
+      home = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
+      responseHandler2 = [accessoryCopy responseHandler];
+      (responseHandler2)[2](responseHandler2, home, 0);
       goto LABEL_46;
     }
 
-    v7 = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
-    v8 = [v7 homeManager];
-    v9 = [v7 accessoryWithUUID:v6];
+    home = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
+    responseHandler2 = [home homeManager];
+    v9 = [home accessoryWithUUID:responseHandler9];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -378,54 +378,54 @@ LABEL_11:
     v78 = v11;
     if (v11)
     {
-      v77 = v8;
+      v77 = responseHandler2;
       if ([v11 reachableTransports])
       {
-        v76 = v7;
+        v76 = home;
         v44 = objc_autoreleasePoolPush();
-        v45 = self;
+        selfCopy2 = self;
         v46 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
           v47 = HMFGetLogIdentifier();
-          v48 = [v9 name];
+          name = [v9 name];
           *buf = 138543618;
           v83 = v47;
           v84 = 2112;
-          v85 = v48;
+          v85 = name;
           _os_log_impl(&dword_2531F8000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@Reprovision accessory failed since the accessory: %@ is already in the network", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v44);
         v49 = objc_autoreleasePoolPush();
-        v50 = v45;
+        v50 = selfCopy2;
         v51 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
           v52 = HMFGetLogIdentifier();
-          v53 = [v9 name];
+          name2 = [v9 name];
           *buf = 138543618;
           v83 = v52;
           v84 = 2112;
-          v85 = v53;
+          v85 = name2;
           _os_log_impl(&dword_2531F8000, v51, OS_LOG_TYPE_INFO, "%{public}@Accessory %@ reprovision state is updated to NotRequired", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v49);
         [v9 setAccessoryReprovisionState:0];
-        v54 = [v9 uuid];
-        [v77 updateGenerationCounterWithReason:@"ReprovisionNotRequired" sourceUUID:v54 shouldNotifyClients:0];
+        uuid = [v9 uuid];
+        [v77 updateGenerationCounterWithReason:@"ReprovisionNotRequired" sourceUUID:uuid shouldNotifyClients:0];
 
-        v21 = [MEMORY[0x277CBEB38] dictionary];
-        v55 = [v9 uuid];
-        v56 = [v55 UUIDString];
-        [v21 setObject:v56 forKeyedSubscript:v5];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        uuid2 = [v9 uuid];
+        uUIDString = [uuid2 UUIDString];
+        [dictionary setObject:uUIDString forKeyedSubscript:v5];
 
-        [v21 setObject:&unk_286628588 forKeyedSubscript:*MEMORY[0x277CD2008]];
+        [dictionary setObject:&unk_286628588 forKeyedSubscript:*MEMORY[0x277CD2008]];
         v57 = MEMORY[0x277D0F848];
         v58 = *MEMORY[0x277CD1FF8];
-        v59 = [(HMDHomeReprovisionHandler *)v50 messageDestination];
-        v27 = [v57 messageWithName:v58 destination:v59 payload:v21];
+        messageDestination = [(HMDHomeReprovisionHandler *)v50 messageDestination];
+        responseHandler7 = [v57 messageWithName:v58 destination:messageDestination payload:dictionary];
 
         if (self)
         {
@@ -437,29 +437,29 @@ LABEL_11:
           msgDispatcher = 0;
         }
 
-        v7 = v76;
-        [(HMFMessageDispatcher *)msgDispatcher sendMessage:v27 completionHandler:0];
-        v61 = [v4 responseHandler];
+        home = v76;
+        [(HMFMessageDispatcher *)msgDispatcher sendMessage:responseHandler7 completionHandler:0];
+        responseHandler3 = [accessoryCopy responseHandler];
 
-        v8 = v77;
-        if (v61)
+        responseHandler2 = v77;
+        if (responseHandler3)
         {
           v62 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52 description:@"Accessory already in the network" reason:0 suggestion:0 underlyingError:0];
-          v63 = [v4 responseHandler];
-          (v63)[2](v63, v62, 0);
+          responseHandler4 = [accessoryCopy responseHandler];
+          (responseHandler4)[2](responseHandler4, v62, 0);
         }
 
         goto LABEL_44;
       }
 
-      v12 = [v11 isPaired];
+      isPaired = [v11 isPaired];
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy3 = self;
       v15 = HMFGetOSLogHandle();
       v16 = v15;
-      if (v12)
+      if (isPaired)
       {
-        v75 = v7;
+        v75 = home;
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v17 = HMFGetLogIdentifier();
@@ -476,26 +476,26 @@ LABEL_11:
 
         objc_autoreleasePoolPop(v13);
         [v9 setAccessoryReprovisionState:2];
-        v20 = [v9 uuid];
-        [v77 updateGenerationCounterWithReason:@"ReprovisionInProgress" sourceUUID:v20 shouldNotifyClients:0];
+        uuid3 = [v9 uuid];
+        [v77 updateGenerationCounterWithReason:@"ReprovisionInProgress" sourceUUID:uuid3 shouldNotifyClients:0];
 
-        v21 = [MEMORY[0x277CBEB38] dictionary];
-        v22 = [v9 uuid];
-        v23 = [v22 UUIDString];
-        [v21 setObject:v23 forKeyedSubscript:v5];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        uuid4 = [v9 uuid];
+        uUIDString2 = [uuid4 UUIDString];
+        [dictionary setObject:uUIDString2 forKeyedSubscript:v5];
 
-        [v21 setObject:&unk_2866285A0 forKeyedSubscript:*MEMORY[0x277CD2008]];
+        [dictionary setObject:&unk_2866285A0 forKeyedSubscript:*MEMORY[0x277CD2008]];
         v24 = MEMORY[0x277D0F848];
         v25 = *MEMORY[0x277CD1FF8];
-        v26 = [(HMDHomeReprovisionHandler *)v14 messageDestination];
-        v27 = [v24 messageWithName:v25 destination:v26 payload:v21];
+        messageDestination2 = [(HMDHomeReprovisionHandler *)selfCopy3 messageDestination];
+        responseHandler7 = [v24 messageWithName:v25 destination:messageDestination2 payload:dictionary];
 
-        v28 = [v4 transport];
-        [v27 setTransport:v28];
+        transport = [accessoryCopy transport];
+        [responseHandler7 setTransport:transport];
 
         if (self)
         {
-          v29 = v14->_msgDispatcher;
+          v29 = selfCopy3->_msgDispatcher;
         }
 
         else
@@ -503,22 +503,22 @@ LABEL_11:
           v29 = 0;
         }
 
-        v7 = v75;
-        [(HMFMessageDispatcher *)v29 sendMessage:v27 completionHandler:0];
+        home = v75;
+        [(HMFMessageDispatcher *)v29 sendMessage:responseHandler7 completionHandler:0];
         if (([v75 networkRouterSupport] & 8) != 0)
         {
-          v68 = [v78 wiFiUniquePreSharedKey];
+          wiFiUniquePreSharedKey = [v78 wiFiUniquePreSharedKey];
 
-          if (v68)
+          if (wiFiUniquePreSharedKey)
           {
             v74 = [HMDAccessoryNetworkCredential alloc];
-            v73 = [v78 networkRouterUUID];
-            v69 = [v78 networkClientIdentifier];
-            v70 = [v78 wiFiUniquePreSharedKey];
-            v71 = [(HMDAccessoryNetworkCredential *)v74 initWithNetworkRouterUUID:v73 clientIdentifier:v69 wiFiPSK:v70];
+            networkRouterUUID = [v78 networkRouterUUID];
+            networkClientIdentifier = [v78 networkClientIdentifier];
+            wiFiUniquePreSharedKey2 = [v78 wiFiUniquePreSharedKey];
+            v71 = [(HMDAccessoryNetworkCredential *)v74 initWithNetworkRouterUUID:networkRouterUUID clientIdentifier:networkClientIdentifier wiFiPSK:wiFiUniquePreSharedKey2];
 
-            v7 = v75;
-            [(HMDHomeReprovisionHandler *)v14 _reprovisionAccessory:v78 networkCredential:v71 requestMessage:v4];
+            home = v75;
+            [(HMDHomeReprovisionHandler *)selfCopy3 _reprovisionAccessory:v78 networkCredential:v71 requestMessage:accessoryCopy];
           }
 
           else
@@ -527,19 +527,19 @@ LABEL_11:
             v79[1] = 3221225472;
             v79[2] = __57__HMDHomeReprovisionHandler__handleReprovisionAccessory___block_invoke;
             v79[3] = &unk_279729598;
-            v79[4] = v14;
+            v79[4] = selfCopy3;
             v80 = v78;
-            v81 = v4;
+            v81 = accessoryCopy;
             [v75 _createUniquePSKClientConfigurationWithRequestMessage:v81 pairingEvent:0 completion:v79];
           }
         }
 
         else
         {
-          [(HMDHomeReprovisionHandler *)v14 _reprovisionAccessory:v78 networkCredential:0 requestMessage:v4];
+          [(HMDHomeReprovisionHandler *)selfCopy3 _reprovisionAccessory:v78 networkCredential:0 requestMessage:accessoryCopy];
         }
 
-        v8 = v77;
+        responseHandler2 = v77;
         goto LABEL_44;
       }
 
@@ -558,10 +558,10 @@ LABEL_11:
       }
 
       objc_autoreleasePoolPop(v13);
-      v67 = [v4 responseHandler];
+      responseHandler5 = [accessoryCopy responseHandler];
 
-      v8 = v77;
-      if (!v67)
+      responseHandler2 = v77;
+      if (!responseHandler5)
       {
         goto LABEL_45;
       }
@@ -572,7 +572,7 @@ LABEL_11:
     else
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = self;
+      selfCopy4 = self;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -580,14 +580,14 @@ LABEL_11:
         *buf = 138543618;
         v83 = v41;
         v84 = 2112;
-        v85 = v6;
+        v85 = responseHandler9;
         _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_ERROR, "%{public}@Failed to find accessory with UUID: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v38);
-      v42 = [v4 responseHandler];
+      responseHandler6 = [accessoryCopy responseHandler];
 
-      if (!v42)
+      if (!responseHandler6)
       {
         goto LABEL_45;
       }
@@ -595,9 +595,9 @@ LABEL_11:
       v43 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
     }
 
-    v21 = v43;
-    v27 = [v4 responseHandler];
-    (v27)[2](v27, v21, 0);
+    dictionary = v43;
+    responseHandler7 = [accessoryCopy responseHandler];
+    (responseHandler7)[2](responseHandler7, dictionary, 0);
 LABEL_44:
 
 LABEL_45:
@@ -606,13 +606,13 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  v30 = [v4 responseHandler];
+  responseHandler8 = [accessoryCopy responseHandler];
 
-  if (v30)
+  if (responseHandler8)
   {
-    v6 = [v4 responseHandler];
+    responseHandler9 = [accessoryCopy responseHandler];
     v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    (v6)[2](v6, v31, 0);
+    (responseHandler9)[2](responseHandler9, v31, 0);
 
 LABEL_47:
   }
@@ -620,53 +620,53 @@ LABEL_47:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reprovisionAccessory:(void *)a3 networkCredential:(void *)a4 requestMessage:
+- (void)_reprovisionAccessory:(void *)accessory networkCredential:(void *)credential requestMessage:
 {
   v36 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v26 = a4;
-  if (a1)
+  accessoryCopy = accessory;
+  credentialCopy = credential;
+  if (self)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v7 identifier];
+      identifier = [v7 identifier];
       *buf = 138543618;
       v33 = v12;
       v34 = 2112;
-      v35 = v13;
+      v35 = identifier;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Storing reprovison request message identifier for accessory with identifier: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
     v14 = [HMDHomeReprovisioningPendingInformation alloc];
-    v15 = [v26 identifier];
-    v16 = [(HMDHomeReprovisioningPendingInformation *)v14 initWithMessageUUID:v15 networkCredential:v8];
+    identifier2 = [credentialCopy identifier];
+    v16 = [(HMDHomeReprovisioningPendingInformation *)v14 initWithMessageUUID:identifier2 networkCredential:accessoryCopy];
 
-    v17 = v10[7];
-    v18 = [v7 identifier];
-    [v17 setObject:v16 forKey:v18];
+    v17 = selfCopy[7];
+    identifier3 = [v7 identifier];
+    [v17 setObject:v16 forKey:identifier3];
 
-    objc_initWeak(buf, v10);
-    WeakRetained = objc_loadWeakRetained(v10 + 5);
-    v20 = [v7 identifier];
-    v21 = [v8 wiFiPSK];
-    v22 = [v7 home];
-    v23 = [v22 homeLocationHandler];
-    v24 = [v23 isoCountryCode];
+    objc_initWeak(buf, selfCopy);
+    WeakRetained = objc_loadWeakRetained(selfCopy + 5);
+    identifier4 = [v7 identifier];
+    wiFiPSK = [accessoryCopy wiFiPSK];
+    home = [v7 home];
+    homeLocationHandler = [home homeLocationHandler];
+    isoCountryCode = [homeLocationHandler isoCountryCode];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_requestMessage___block_invoke;
     v27[3] = &unk_27972F820;
     objc_copyWeak(&v31, buf);
-    v28 = v26;
+    v28 = credentialCopy;
     v29 = v7;
-    v30 = v8;
-    [WeakRetained reprovisionAccessoryWithIdentifier:v20 wiFiPSK:v21 countryCode:v24 withCompletion:v27];
+    v30 = accessoryCopy;
+    [WeakRetained reprovisionAccessoryWithIdentifier:identifier4 wiFiPSK:wiFiPSK countryCode:isoCountryCode withCompletion:v27];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
@@ -850,12 +850,12 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRequestSearchForAccessoriesNeedingReprovisioning:(id)a3
+- (void)_handleRequestSearchForAccessoriesNeedingReprovisioning:(id)reprovisioning
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reprovisioningCopy = reprovisioning;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -866,27 +866,27 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v6 && v6->_reprovisionBrowsingAllowed)
+  if (selfCopy && selfCopy->_reprovisionBrowsingAllowed)
   {
-    WeakRetained = objc_loadWeakRetained(&v6->_accessoryBrowser);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_accessoryBrowser);
     [WeakRetained startDiscoveringAccessoriesNeedingReprovisioning];
 
-    v6->_reprovisionBrowsingPending = 0;
-    if (!v6->_disableReprovisionBrowsingTimer)
+    selfCopy->_reprovisionBrowsingPending = 0;
+    if (!selfCopy->_disableReprovisionBrowsingTimer)
     {
-      v6->_reprovisionBrowsingAllowed = 0;
+      selfCopy->_reprovisionBrowsingAllowed = 0;
       v10 = objc_alloc(MEMORY[0x277D0F920]);
       v11 = [v10 initWithTimeInterval:1 options:*&disableReprivsionBrowsingPeriodInMinutes];
-      objc_storeStrong(&v6->_disableReprovisionBrowsingTimer, v11);
+      objc_storeStrong(&selfCopy->_disableReprovisionBrowsingTimer, v11);
 
-      [(HMFTimer *)v6->_disableReprovisionBrowsingTimer setDelegate:v6];
-      disableReprovisionBrowsingTimer = v6->_disableReprovisionBrowsingTimer;
-      v13 = v6->_workQueue;
+      [(HMFTimer *)selfCopy->_disableReprovisionBrowsingTimer setDelegate:selfCopy];
+      disableReprovisionBrowsingTimer = selfCopy->_disableReprovisionBrowsingTimer;
+      v13 = selfCopy->_workQueue;
       [(HMFTimer *)disableReprovisionBrowsingTimer setDelegateQueue:v13];
 
-      [(HMFTimer *)v6->_disableReprovisionBrowsingTimer resume];
+      [(HMFTimer *)selfCopy->_disableReprovisionBrowsingTimer resume];
       v14 = objc_autoreleasePoolPush();
-      v15 = v6;
+      v15 = selfCopy;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -908,7 +908,7 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v6;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -919,20 +919,20 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
     }
 
     objc_autoreleasePoolPop(v19);
-    if (v6)
+    if (selfCopy)
     {
       v20->_reprovisionBrowsingPending = 1;
     }
   }
 
-  [v4 respondWithSuccess];
+  [reprovisioningCopy respondWithSuccess];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v23 = [(HMDHomeReprovisionHandler *)&v6->super.super.isa home];
-  v24 = [v23 accessories];
-  v25 = [v24 copy];
+  home = [(HMDHomeReprovisionHandler *)&selfCopy->super.super.isa home];
+  accessories = [home accessories];
+  v25 = [accessories copy];
 
   v26 = [v25 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v26)
@@ -951,7 +951,7 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
         v30 = *(*(&v32 + 1) + 8 * i);
         if ([v30 accessoryReprovisionState] == 1)
         {
-          [(HMDHomeReprovisionHandler *)&v6->super.super.isa _reportAccessoryNeedingReprovision:v30 error:0];
+          [(HMDHomeReprovisionHandler *)&selfCopy->super.super.isa _reportAccessoryNeedingReprovision:v30 error:0];
         }
       }
 
@@ -967,71 +967,71 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
 - (id)logIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
-  v4 = [v3 name];
-  v5 = [v2 stringWithFormat:@"%@", v4];
+  home = [(HMDHomeReprovisionHandler *)&self->super.super.isa home];
+  name = [home name];
+  v5 = [v2 stringWithFormat:@"%@", name];
 
   return v5;
 }
 
-- (void)configure:(id)a3 queue:(id)a4 messageDispatcher:(id)a5
+- (void)configure:(id)configure queue:(id)queue messageDispatcher:(id)dispatcher
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v30 = a4;
-  v9 = a5;
+  configureCopy = configure;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
   if (self)
   {
-    objc_storeWeak(&self->_home, v8);
-    objc_storeStrong(&self->_workQueue, a4);
-    objc_storeStrong(&self->_msgDispatcher, a5);
-    v10 = [v8 accessoryBrowser];
-    objc_storeWeak(&self->_accessoryBrowser, v10);
+    objc_storeWeak(&self->_home, configureCopy);
+    objc_storeStrong(&self->_workQueue, queue);
+    objc_storeStrong(&self->_msgDispatcher, dispatcher);
+    accessoryBrowser = [configureCopy accessoryBrowser];
+    objc_storeWeak(&self->_accessoryBrowser, accessoryBrowser);
   }
 
   else
   {
-    v10 = [v8 accessoryBrowser];
+    accessoryBrowser = [configureCopy accessoryBrowser];
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [(HMDHomeReprovisionHandler *)&v12->super.super.isa home];
+    home = [(HMDHomeReprovisionHandler *)&selfCopy->super.super.isa home];
     *buf = 138543618;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v15;
+    *&buf[14] = home;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Configured reprovision handler for home %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
   if (self)
   {
-    WeakRetained = objc_loadWeakRetained(&v12->_home);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_home);
     v17 = [HMDUserMessagePolicy userMessagePolicyWithHome:WeakRetained userPrivilege:3 remoteAccessRequired:0];
 
     v18 = [HMDXPCMessagePolicy policyWithEntitlements:5];
-    msgDispatcher = v12->_msgDispatcher;
+    msgDispatcher = selfCopy->_msgDispatcher;
     v20 = *MEMORY[0x277CD2570];
     *buf = v18;
     *&buf[8] = v17;
     v21 = MEMORY[0x277CBEA60];
     v22 = msgDispatcher;
     v23 = [v21 arrayWithObjects:buf count:2];
-    [(HMFMessageDispatcher *)v22 registerForMessage:v20 receiver:v12 policies:v23 selector:sel__handleRequestSearchForAccessoriesNeedingReprovisioning_];
+    [(HMFMessageDispatcher *)v22 registerForMessage:v20 receiver:selfCopy policies:v23 selector:sel__handleRequestSearchForAccessoriesNeedingReprovisioning_];
 
-    v24 = v12->_msgDispatcher;
+    v24 = selfCopy->_msgDispatcher;
     v25 = *MEMORY[0x277CD2560];
     v32[0] = v18;
     v32[1] = v17;
     v26 = MEMORY[0x277CBEA60];
     v27 = v24;
     v28 = [v26 arrayWithObjects:v32 count:2];
-    [(HMFMessageDispatcher *)v27 registerForMessage:v25 receiver:v12 policies:v28 selector:sel__handleReprovisionAccessory_];
+    [(HMFMessageDispatcher *)v27 registerForMessage:v25 receiver:selfCopy policies:v28 selector:sel__handleReprovisionAccessory_];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -1039,18 +1039,18 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_msgDispatcher;
   }
 
-  [(HMDHomeReprovisionHandler *)self deregisterReceiver:v2];
-  v3 = [(HMDHomeReprovisionHandler *)&v2->super.super.isa home];
-  v4 = [v3 administratorHandler];
-  [v4 deregisterReceiver:v2];
+  [(HMDHomeReprovisionHandler *)self deregisterReceiver:selfCopy];
+  home = [(HMDHomeReprovisionHandler *)&selfCopy->super.super.isa home];
+  administratorHandler = [home administratorHandler];
+  [administratorHandler deregisterReceiver:selfCopy];
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = HMDHomeReprovisionHandler;
   [(HMDHomeReprovisionHandler *)&v5 dealloc];
 }
@@ -1064,9 +1064,9 @@ void __84__HMDHomeReprovisionHandler__reprovisionAccessory_networkCredential_req
   if (v2)
   {
     v2->_reprovisionBrowsingAllowed = 1;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingReprovisionRequests = v3->_pendingReprovisionRequests;
-    v3->_pendingReprovisionRequests = v4;
+    v3->_pendingReprovisionRequests = dictionary;
   }
 
   return v3;

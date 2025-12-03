@@ -1,13 +1,13 @@
 @interface SKAnimate
-+ (id)animateWithNormalTextures:(id)a3 timePerFrame:(double)a4 resize:(BOOL)a5 restore:(BOOL)a6;
-+ (id)animateWithTextures:(id)a3 timePerFrame:(double)a4 resize:(BOOL)a5 restore:(BOOL)a6;
++ (id)animateWithNormalTextures:(id)textures timePerFrame:(double)frame resize:(BOOL)resize restore:(BOOL)restore;
++ (id)animateWithTextures:(id)textures timePerFrame:(double)frame resize:(BOOL)resize restore:(BOOL)restore;
 - (SKAnimate)init;
-- (SKAnimate)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKAnimate)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setTimePerFrame:(double)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDuration:(double)duration;
+- (void)setTimePerFrame:(double)frame;
 @end
 
 @implementation SKAnimate
@@ -24,13 +24,13 @@
   return 0;
 }
 
-- (SKAnimate)initWithCoder:(id)a3
+- (SKAnimate)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKAnimate;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -38,31 +38,31 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKAnimate;
-  [(SKAction *)&v6 encodeWithCoder:v4];
+  [(SKAction *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:*(self->_mycaction + 17)];
-  [v4 encodeObject:v5 forKey:@"_timePerFrame"];
+  [coderCopy encodeObject:v5 forKey:@"_timePerFrame"];
 
-  [v4 encodeObject:self->_textures forKey:@"_textures"];
-  [v4 encodeBool:*(self->_mycaction + 161) forKey:@"_resize"];
-  [v4 encodeBool:*(self->_mycaction + 160) forKey:@"_restore"];
+  [coderCopy encodeObject:self->_textures forKey:@"_textures"];
+  [coderCopy encodeBool:*(self->_mycaction + 161) forKey:@"_resize"];
+  [coderCopy encodeBool:*(self->_mycaction + 160) forKey:@"_restore"];
 }
 
-+ (id)animateWithTextures:(id)a3 timePerFrame:(double)a4 resize:(BOOL)a5 restore:(BOOL)a6
++ (id)animateWithTextures:(id)textures timePerFrame:(double)frame resize:(BOOL)resize restore:(BOOL)restore
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (![v9 count])
+  texturesCopy = textures;
+  if (![texturesCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"SKAction animateWithTextures: textures array cannot be empty"];
   }
 
   v10 = objc_alloc_init(SKAnimate);
-  v11 = [v9 copy];
+  v11 = [texturesCopy copy];
   textures = v10->_textures;
   v10->_textures = v11;
 
@@ -94,26 +94,26 @@
     while (v14);
   }
 
-  *(v10->_mycaction + 17) = a4;
-  -[SKAnimate setDuration:](v10, "setDuration:", [v9 count] * a4);
+  *(v10->_mycaction + 17) = frame;
+  -[SKAnimate setDuration:](v10, "setDuration:", [texturesCopy count] * frame);
   mycaction = v10->_mycaction;
-  mycaction[160] = a6;
-  mycaction[161] = a5;
+  mycaction[160] = restore;
+  mycaction[161] = resize;
 
   return v10;
 }
 
-+ (id)animateWithNormalTextures:(id)a3 timePerFrame:(double)a4 resize:(BOOL)a5 restore:(BOOL)a6
++ (id)animateWithNormalTextures:(id)textures timePerFrame:(double)frame resize:(BOOL)resize restore:(BOOL)restore
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (![v9 count])
+  texturesCopy = textures;
+  if (![texturesCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"SKAction animateWithNormalTextures: textures array cannot be empty"];
   }
 
   v10 = objc_alloc_init(SKAnimate);
-  v11 = [v9 copy];
+  v11 = [texturesCopy copy];
   textures = v10->_textures;
   v10->_textures = v11;
 
@@ -145,33 +145,33 @@
     while (v14);
   }
 
-  *(v10->_mycaction + 17) = a4;
-  -[SKAnimate setDuration:](v10, "setDuration:", [v9 count] * a4);
+  *(v10->_mycaction + 17) = frame;
+  -[SKAnimate setDuration:](v10, "setDuration:", [texturesCopy count] * frame);
   mycaction = v10->_mycaction;
-  mycaction[160] = a6;
-  mycaction[161] = a5;
+  mycaction[160] = restore;
+  mycaction[161] = resize;
   mycaction[162] = 1;
 
   return v10;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v5.receiver = self;
   v5.super_class = SKAnimate;
   [(SKAction *)&v5 setDuration:?];
-  *(self->_mycaction + 17) = a3 / [(NSArray *)self->_textures count];
+  *(self->_mycaction + 17) = duration / [(NSArray *)self->_textures count];
 }
 
-- (void)setTimePerFrame:(double)a3
+- (void)setTimePerFrame:(double)frame
 {
-  *(self->_mycaction + 17) = a3;
-  v4 = [(NSArray *)self->_textures count]* a3;
+  *(self->_mycaction + 17) = frame;
+  v4 = [(NSArray *)self->_textures count]* frame;
 
   [(SKAnimate *)self setDuration:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   textures = self->_textures;
   [(SKAnimate *)self timePerFrame];

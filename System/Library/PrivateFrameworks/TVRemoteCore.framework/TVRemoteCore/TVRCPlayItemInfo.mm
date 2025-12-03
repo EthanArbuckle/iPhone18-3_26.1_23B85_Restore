@@ -1,47 +1,47 @@
 @interface TVRCPlayItemInfo
-+ (id)playItemWithDictionary:(id)a3;
-+ (id)playItemWithMediaIdentifier:(id)a3 kind:(unint64_t)a4;
-+ (id)playItemWithURL:(id)a3;
++ (id)playItemWithDictionary:(id)dictionary;
++ (id)playItemWithMediaIdentifier:(id)identifier kind:(unint64_t)kind;
++ (id)playItemWithURL:(id)l;
 - (BOOL)hasMediaIdentifierAndKind;
 - (BOOL)hasURL;
 - (BOOL)isValid;
-- (TVRCPlayItemInfo)initWithCoder:(id)a3;
-- (TVRCPlayItemInfo)initWithMediaIdentifier:(id)a3 kind:(id)a4 url:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TVRCPlayItemInfo)initWithCoder:(id)coder;
+- (TVRCPlayItemInfo)initWithMediaIdentifier:(id)identifier kind:(id)kind url:(id)url;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCPlayItemInfo
 
-+ (id)playItemWithMediaIdentifier:(id)a3 kind:(unint64_t)a4
++ (id)playItemWithMediaIdentifier:(id)identifier kind:(unint64_t)kind
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v9 = [v7 initWithMediaIdentifier:v6 kind:v8 url:0];
+  identifierCopy = identifier;
+  v7 = [self alloc];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:kind];
+  v9 = [v7 initWithMediaIdentifier:identifierCopy kind:v8 url:0];
 
   return v9;
 }
 
-+ (id)playItemWithURL:(id)a3
++ (id)playItemWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMediaIdentifier:0 kind:0 url:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithMediaIdentifier:0 kind:0 url:lCopy];
 
   return v5;
 }
 
-+ (id)playItemWithDictionary:(id)a3
++ (id)playItemWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"IdentifierKey"];
-  v6 = [v4 objectForKeyedSubscript:@"KindKey"];
-  v7 = [v4 objectForKeyedSubscript:@"TVRCURLKey"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"IdentifierKey"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"KindKey"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"TVRCURLKey"];
 
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
-  v9 = [[a1 alloc] initWithMediaIdentifier:v5 kind:v6 url:v8];
+  v9 = [[self alloc] initWithMediaIdentifier:v5 kind:v6 url:v8];
 
   return v9;
 }
@@ -52,11 +52,11 @@
   if ([(TVRCPlayItemInfo *)self hasMediaIdentifierAndKind])
   {
     v14[0] = @"IdentifierKey";
-    v3 = [(TVRCPlayItemInfo *)self mediaIdentifier];
-    v15[0] = v3;
+    mediaIdentifier = [(TVRCPlayItemInfo *)self mediaIdentifier];
+    v15[0] = mediaIdentifier;
     v14[1] = @"KindKey";
-    v4 = [(TVRCPlayItemInfo *)self kind];
-    v15[1] = v4;
+    kind = [(TVRCPlayItemInfo *)self kind];
+    v15[1] = kind;
     v5 = MEMORY[0x277CBEAC0];
     v6 = v15;
     v7 = v14;
@@ -70,9 +70,9 @@ LABEL_5:
   if ([(TVRCPlayItemInfo *)self hasURL])
   {
     v12 = @"TVRCURLKey";
-    v3 = [(TVRCPlayItemInfo *)self url];
-    v4 = [v3 absoluteString];
-    v13 = v4;
+    mediaIdentifier = [(TVRCPlayItemInfo *)self url];
+    kind = [mediaIdentifier absoluteString];
+    v13 = kind;
     v5 = MEMORY[0x277CBEAC0];
     v6 = &v13;
     v7 = &v12;
@@ -99,11 +99,11 @@ LABEL_7:
 
 - (BOOL)hasMediaIdentifierAndKind
 {
-  v3 = [(TVRCPlayItemInfo *)self mediaIdentifier];
-  if (v3)
+  mediaIdentifier = [(TVRCPlayItemInfo *)self mediaIdentifier];
+  if (mediaIdentifier)
   {
-    v4 = [(TVRCPlayItemInfo *)self kind];
-    v5 = v4 != 0;
+    kind = [(TVRCPlayItemInfo *)self kind];
+    v5 = kind != 0;
   }
 
   else
@@ -127,42 +127,42 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TVRCPlayItemInfo *)self mediaIdentifier];
-  v7 = [(TVRCPlayItemInfo *)self kind];
+  mediaIdentifier = [(TVRCPlayItemInfo *)self mediaIdentifier];
+  kind = [(TVRCPlayItemInfo *)self kind];
   v8 = [(TVRCPlayItemInfo *)self url];
-  v9 = [v3 stringWithFormat:@"<%@ %p: mediaIdentifier: %@ kind: %@ url: %@>", v5, self, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@ %p: mediaIdentifier: %@ kind: %@ url: %@>", v5, self, mediaIdentifier, kind, v8];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TVRCPlayItemInfo *)self mediaIdentifier];
-  v6 = [(TVRCPlayItemInfo *)self kind];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  mediaIdentifier = [(TVRCPlayItemInfo *)self mediaIdentifier];
+  kind = [(TVRCPlayItemInfo *)self kind];
   v7 = [(TVRCPlayItemInfo *)self url];
-  v8 = [v4 initWithMediaIdentifier:v5 kind:v6 url:v7];
+  v8 = [v4 initWithMediaIdentifier:mediaIdentifier kind:kind url:v7];
 
   return v8;
 }
 
-- (TVRCPlayItemInfo)initWithCoder:(id)a3
+- (TVRCPlayItemInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TVRCPlayItemInfo;
   v5 = [(TVRCPlayItemInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaIdentifier"];
     mediaIdentifier = v5->_mediaIdentifier;
     v5->_mediaIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     kind = v5->_kind;
     v5->_kind = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v10;
   }
@@ -170,29 +170,29 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mediaIdentifier = self->_mediaIdentifier;
-  v5 = a3;
-  [v5 encodeObject:mediaIdentifier forKey:@"mediaIdentifier"];
-  [v5 encodeObject:self->_kind forKey:@"kind"];
-  [v5 encodeObject:self->_url forKey:@"url"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mediaIdentifier forKey:@"mediaIdentifier"];
+  [coderCopy encodeObject:self->_kind forKey:@"kind"];
+  [coderCopy encodeObject:self->_url forKey:@"url"];
 }
 
-- (TVRCPlayItemInfo)initWithMediaIdentifier:(id)a3 kind:(id)a4 url:(id)a5
+- (TVRCPlayItemInfo)initWithMediaIdentifier:(id)identifier kind:(id)kind url:(id)url
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  urlCopy = url;
   v15.receiver = self;
   v15.super_class = TVRCPlayItemInfo;
   v12 = [(TVRCPlayItemInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mediaIdentifier, a3);
-    objc_storeStrong(&v13->_kind, a4);
-    objc_storeStrong(&v13->_url, a5);
+    objc_storeStrong(&v12->_mediaIdentifier, identifier);
+    objc_storeStrong(&v13->_kind, kind);
+    objc_storeStrong(&v13->_url, url);
   }
 
   return v13;

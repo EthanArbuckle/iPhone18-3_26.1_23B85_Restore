@@ -1,14 +1,14 @@
 @interface VCMediaNegotiatorStreamGroupConfiguration
-+ (id)streamGroupConfigWithGroupID:(unsigned int)a3 mediaType:(unsigned int)a4 subtype:(unsigned int)a5 syncGroupID:(unsigned int)a6 cipherSuite:(unsigned int)a7;
-- (BOOL)isEqual:(id)a3;
++ (id)streamGroupConfigWithGroupID:(unsigned int)d mediaType:(unsigned int)type subtype:(unsigned int)subtype syncGroupID:(unsigned int)iD cipherSuite:(unsigned int)suite;
+- (BOOL)isEqual:(id)equal;
 - (VCMediaNegotiatorStreamGroupConfiguration)init;
-- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)a3 mediaType:(unsigned int)a4 subtype:(unsigned int)a5 syncGroupID:(unsigned int)a6;
-- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)a3 mediaType:(unsigned int)a4 subtype:(unsigned int)a5 syncGroupID:(unsigned int)a6 cipherSuite:(unsigned int)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)d mediaType:(unsigned int)type subtype:(unsigned int)subtype syncGroupID:(unsigned int)iD;
+- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)d mediaType:(unsigned int)type subtype:(unsigned int)subtype syncGroupID:(unsigned int)iD cipherSuite:(unsigned int)suite;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)indexOfCodecConfig:(id)a3;
-- (void)addCodecConfig:(id)a3;
-- (void)addStreamConfig:(id)a3;
+- (unint64_t)indexOfCodecConfig:(id)config;
+- (void)addCodecConfig:(id)config;
+- (void)addStreamConfig:(id)config;
 - (void)dealloc;
 @end
 
@@ -29,34 +29,34 @@
   return v2;
 }
 
-- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)a3 mediaType:(unsigned int)a4 subtype:(unsigned int)a5 syncGroupID:(unsigned int)a6
+- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)d mediaType:(unsigned int)type subtype:(unsigned int)subtype syncGroupID:(unsigned int)iD
 {
   result = [(VCMediaNegotiatorStreamGroupConfiguration *)self init];
   if (result)
   {
-    result->_groupID = a3;
-    result->_mediaType = a4;
-    result->_mediaSubtype = a5;
-    result->_syncGroupID = a6;
+    result->_groupID = d;
+    result->_mediaType = type;
+    result->_mediaSubtype = subtype;
+    result->_syncGroupID = iD;
   }
 
   return result;
 }
 
-- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)a3 mediaType:(unsigned int)a4 subtype:(unsigned int)a5 syncGroupID:(unsigned int)a6 cipherSuite:(unsigned int)a7
+- (VCMediaNegotiatorStreamGroupConfiguration)initWithGroupID:(unsigned int)d mediaType:(unsigned int)type subtype:(unsigned int)subtype syncGroupID:(unsigned int)iD cipherSuite:(unsigned int)suite
 {
-  result = [(VCMediaNegotiatorStreamGroupConfiguration *)self initWithGroupID:*&a3 mediaType:*&a4 subtype:*&a5 syncGroupID:*&a6];
+  result = [(VCMediaNegotiatorStreamGroupConfiguration *)self initWithGroupID:*&d mediaType:*&type subtype:*&subtype syncGroupID:*&iD];
   if (result)
   {
-    result->_cipherSuite = a7;
+    result->_cipherSuite = suite;
   }
 
   return result;
 }
 
-+ (id)streamGroupConfigWithGroupID:(unsigned int)a3 mediaType:(unsigned int)a4 subtype:(unsigned int)a5 syncGroupID:(unsigned int)a6 cipherSuite:(unsigned int)a7
++ (id)streamGroupConfigWithGroupID:(unsigned int)d mediaType:(unsigned int)type subtype:(unsigned int)subtype syncGroupID:(unsigned int)iD cipherSuite:(unsigned int)suite
 {
-  v7 = [[VCMediaNegotiatorStreamGroupConfiguration alloc] initWithGroupID:*&a3 mediaType:*&a4 subtype:*&a5 syncGroupID:*&a6 cipherSuite:*&a7];
+  v7 = [[VCMediaNegotiatorStreamGroupConfiguration alloc] initWithGroupID:*&d mediaType:*&type subtype:*&subtype syncGroupID:*&iD cipherSuite:*&suite];
 
   return v7;
 }
@@ -78,27 +78,27 @@
   return [v3 stringWithFormat:@"_groupID=%s, _mediaType=%s, _syncGroupID=%s, _cipherSuite=%d streamConfigs=%@", v4, v5, FourccToCStr(self->_syncGroupID), self->_cipherSuite, self->_streamConfigs];
 }
 
-- (void)addStreamConfig:(id)a3
+- (void)addStreamConfig:(id)config
 {
-  if (a3 && ([(NSMutableOrderedSet *)self->_streamConfigs containsObject:?]& 1) == 0)
+  if (config && ([(NSMutableOrderedSet *)self->_streamConfigs containsObject:?]& 1) == 0)
   {
     streamConfigs = self->_streamConfigs;
 
-    [(NSMutableOrderedSet *)streamConfigs addObject:a3];
+    [(NSMutableOrderedSet *)streamConfigs addObject:config];
   }
 }
 
-- (void)addCodecConfig:(id)a3
+- (void)addCodecConfig:(id)config
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (config)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(NSMutableOrderedSet *)self->_codecConfigs array];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    array = [(NSMutableOrderedSet *)self->_codecConfigs array];
+    v6 = [array countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v6)
     {
       v7 = v6;
@@ -109,17 +109,17 @@ LABEL_4:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(array);
         }
 
-        if ([a3 isEqual:*(*(&v11 + 1) + 8 * v9)])
+        if ([config isEqual:*(*(&v11 + 1) + 8 * v9)])
         {
           break;
         }
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
+          v7 = [array countByEnumeratingWithState:&v11 objects:v10 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -133,12 +133,12 @@ LABEL_4:
     else
     {
 LABEL_10:
-      [(NSMutableOrderedSet *)self->_codecConfigs addObject:a3];
+      [(NSMutableOrderedSet *)self->_codecConfigs addObject:config];
     }
   }
 }
 
-- (unint64_t)indexOfCodecConfig:(id)a3
+- (unint64_t)indexOfCodecConfig:(id)config
 {
   if (![(NSMutableOrderedSet *)self->_codecConfigs count])
   {
@@ -149,7 +149,7 @@ LABEL_10:
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    if ([a3 isEqual:{-[NSMutableOrderedSet objectAtIndexedSubscript:](self->_codecConfigs, "objectAtIndexedSubscript:", v5)}])
+    if ([config isEqual:{-[NSMutableOrderedSet objectAtIndexedSubscript:](self->_codecConfigs, "objectAtIndexedSubscript:", v5)}])
     {
       v6 = v5;
     }
@@ -161,7 +161,7 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v12 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -172,34 +172,34 @@ LABEL_10:
 
   v11.receiver = self;
   v11.super_class = VCMediaNegotiatorStreamGroupConfiguration;
-  if (![(VCMediaNegotiatorStreamGroupConfiguration *)&v11 isEqual:a3])
+  if (![(VCMediaNegotiatorStreamGroupConfiguration *)&v11 isEqual:equal])
   {
     return 0;
   }
 
-  if ([a3 mediaType] != self->_mediaType)
+  if ([equal mediaType] != self->_mediaType)
   {
     return 0;
   }
 
-  if ([a3 mediaSubtype] != self->_mediaSubtype)
+  if ([equal mediaSubtype] != self->_mediaSubtype)
   {
     return 0;
   }
 
-  v5 = [objc_msgSend(a3 "streamConfigs")];
+  v5 = [objc_msgSend(equal "streamConfigs")];
   if (v5 != [(NSMutableOrderedSet *)self->_streamConfigs count])
   {
     return 0;
   }
 
-  v6 = [objc_msgSend(a3 "codecConfigs")];
+  v6 = [objc_msgSend(equal "codecConfigs")];
   if (v6 != [(NSMutableOrderedSet *)self->_codecConfigs count])
   {
     return 0;
   }
 
-  if (![a3 u1Config])
+  if (![equal u1Config])
   {
     if (!self->_u1Config)
     {
@@ -209,7 +209,7 @@ LABEL_10:
     return 0;
   }
 
-  if (([objc_msgSend(a3 "u1Config")] & 1) == 0)
+  if (([objc_msgSend(equal "u1Config")] & 1) == 0)
   {
     return 0;
   }
@@ -218,7 +218,7 @@ LABEL_13:
   if ([(NSMutableOrderedSet *)self->_streamConfigs count])
   {
     v9 = 0;
-    while (([objc_msgSend(objc_msgSend(a3 "streamConfigs")] & 1) != 0)
+    while (([objc_msgSend(objc_msgSend(equal "streamConfigs")] & 1) != 0)
     {
       if (++v9 >= [(NSMutableOrderedSet *)self->_streamConfigs count])
       {
@@ -238,7 +238,7 @@ LABEL_17:
   v10 = 0;
   do
   {
-    v7 = [objc_msgSend(objc_msgSend(a3 "codecConfigs")];
+    v7 = [objc_msgSend(objc_msgSend(equal "codecConfigs")];
     if ((v7 & 1) == 0)
     {
       break;
@@ -251,10 +251,10 @@ LABEL_17:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithGroupID:mediaType:subtype:syncGroupID:", self->_groupID, self->_mediaType, self->_mediaSubtype, self->_syncGroupID}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithGroupID:mediaType:subtype:syncGroupID:", self->_groupID, self->_mediaType, self->_mediaSubtype, self->_syncGroupID}];
   if (v5)
   {
     v29 = 0u;
@@ -276,7 +276,7 @@ LABEL_17:
             objc_enumerationMutation(streamConfigs);
           }
 
-          v11 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+          v11 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
           if (v11)
           {
             v12 = v11;
@@ -309,7 +309,7 @@ LABEL_17:
             objc_enumerationMutation(codecConfigs);
           }
 
-          v18 = [*(*(&v22 + 1) + 8 * j) copyWithZone:a3];
+          v18 = [*(*(&v22 + 1) + 8 * j) copyWithZone:zone];
           if (v18)
           {
             v19 = v18;

@@ -1,13 +1,13 @@
 @interface PKSavingsAccountSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)formattedAPY;
 - (PKSavingsAccountSummary)init;
-- (PKSavingsAccountSummary)initWithCoder:(id)a3;
-- (PKSavingsAccountSummary)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKSavingsAccountSummary)initWithCoder:(id)coder;
+- (PKSavingsAccountSummary)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSavingsAccountSummary
@@ -32,38 +32,38 @@
   return v2;
 }
 
-- (PKSavingsAccountSummary)initWithDictionary:(id)a3
+- (PKSavingsAccountSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PKSavingsAccountSummary *)self init];
   if (v5)
   {
-    v6 = [v4 PKDecimalNumberFromStringForKey:@"currentBalance"];
+    v6 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v6;
 
-    v8 = [v4 PKDecimalNumberFromStringForKey:@"availableBalance"];
+    v8 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"availableBalance"];
     availableBalance = v5->_availableBalance;
     v5->_availableBalance = v8;
 
-    v10 = [v4 PKDecimalNumberFromStringForKey:@"pendingBalance"];
+    v10 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"pendingBalance"];
     pendingBalance = v5->_pendingBalance;
     v5->_pendingBalance = v10;
 
-    v12 = [v4 PKDecimalNumberFromStringForKey:@"interestYTD"];
+    v12 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"interestYTD"];
     interestYTD = v5->_interestYTD;
     v5->_interestYTD = v12;
 
-    v14 = [v4 PKDecimalNumberFromStringForKey:@"interestTotal"];
+    v14 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"interestTotal"];
     interestTotal = v5->_interestTotal;
     v5->_interestTotal = v14;
 
-    v16 = [v4 PKDecimalNumberFromStringForKey:@"apy"];
+    v16 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"apy"];
     apy = v5->_apy;
     v5->_apy = v16;
 
-    v5->_hasWithdrawalLimit = [v4 PKBoolForKey:@"hasWithdrawalLimit"];
-    v5->_withdrawalsRemaining = [v4 PKIntegerForKey:@"withdrawalsRemaining"];
+    v5->_hasWithdrawalLimit = [dictionaryCopy PKBoolForKey:@"hasWithdrawalLimit"];
+    v5->_withdrawalsRemaining = [dictionaryCopy PKIntegerForKey:@"withdrawalsRemaining"];
   }
 
   return v5;
@@ -73,8 +73,8 @@
 {
   if (self->_apy)
   {
-    v3 = [(PKSavingsAccountSummary *)self apyFormatter];
-    v4 = [v3 stringFromNumber:self->_apy];
+    apyFormatter = [(PKSavingsAccountSummary *)self apyFormatter];
+    v4 = [apyFormatter stringFromNumber:self->_apy];
   }
 
   else
@@ -85,60 +85,60 @@
   return v4;
 }
 
-- (PKSavingsAccountSummary)initWithCoder:(id)a3
+- (PKSavingsAccountSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSavingsAccountSummary *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentBalance"];
     currentBalance = v5->_currentBalance;
     v5->_currentBalance = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"availableBalance"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"availableBalance"];
     availableBalance = v5->_availableBalance;
     v5->_availableBalance = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pendingBalance"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pendingBalance"];
     pendingBalance = v5->_pendingBalance;
     v5->_pendingBalance = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interestYTD"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interestYTD"];
     interestYTD = v5->_interestYTD;
     v5->_interestYTD = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interestTotal"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interestTotal"];
     interestTotal = v5->_interestTotal;
     v5->_interestTotal = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"apy"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"apy"];
     apy = v5->_apy;
     v5->_apy = v16;
 
-    v5->_hasWithdrawalLimit = [v4 decodeBoolForKey:@"hasWithdrawalLimit"];
-    v5->_withdrawalsRemaining = [v4 decodeIntegerForKey:@"withdrawalsRemaining"];
+    v5->_hasWithdrawalLimit = [coderCopy decodeBoolForKey:@"hasWithdrawalLimit"];
+    v5->_withdrawalsRemaining = [coderCopy decodeIntegerForKey:@"withdrawalsRemaining"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   currentBalance = self->_currentBalance;
-  v5 = a3;
-  [v5 encodeObject:currentBalance forKey:@"currentBalance"];
-  [v5 encodeObject:self->_availableBalance forKey:@"availableBalance"];
-  [v5 encodeObject:self->_pendingBalance forKey:@"pendingBalance"];
-  [v5 encodeObject:self->_interestYTD forKey:@"interestYTD"];
-  [v5 encodeObject:self->_interestTotal forKey:@"interestTotal"];
-  [v5 encodeObject:self->_apy forKey:@"apy"];
-  [v5 encodeBool:self->_hasWithdrawalLimit forKey:@"hasWithdrawalLimit"];
-  [v5 encodeInteger:self->_withdrawalsRemaining forKey:@"withdrawalsRemaining"];
+  coderCopy = coder;
+  [coderCopy encodeObject:currentBalance forKey:@"currentBalance"];
+  [coderCopy encodeObject:self->_availableBalance forKey:@"availableBalance"];
+  [coderCopy encodeObject:self->_pendingBalance forKey:@"pendingBalance"];
+  [coderCopy encodeObject:self->_interestYTD forKey:@"interestYTD"];
+  [coderCopy encodeObject:self->_interestTotal forKey:@"interestTotal"];
+  [coderCopy encodeObject:self->_apy forKey:@"apy"];
+  [coderCopy encodeBool:self->_hasWithdrawalLimit forKey:@"hasWithdrawalLimit"];
+  [coderCopy encodeInteger:self->_withdrawalsRemaining forKey:@"withdrawalsRemaining"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -146,7 +146,7 @@
   }
 
   currentBalance = self->_currentBalance;
-  v6 = v4[3];
+  v6 = equalCopy[3];
   if (currentBalance && v6)
   {
     if (([(NSDecimalNumber *)currentBalance isEqual:?]& 1) == 0)
@@ -161,7 +161,7 @@
   }
 
   availableBalance = self->_availableBalance;
-  v8 = v4[4];
+  v8 = equalCopy[4];
   if (availableBalance && v8)
   {
     if (([(NSDecimalNumber *)availableBalance isEqual:?]& 1) == 0)
@@ -176,7 +176,7 @@
   }
 
   pendingBalance = self->_pendingBalance;
-  v10 = v4[5];
+  v10 = equalCopy[5];
   if (pendingBalance && v10)
   {
     if (([(NSDecimalNumber *)pendingBalance isEqual:?]& 1) == 0)
@@ -191,7 +191,7 @@
   }
 
   interestYTD = self->_interestYTD;
-  v12 = v4[6];
+  v12 = equalCopy[6];
   if (interestYTD && v12)
   {
     if (([(NSDecimalNumber *)interestYTD isEqual:?]& 1) == 0)
@@ -206,7 +206,7 @@
   }
 
   interestTotal = self->_interestTotal;
-  v14 = v4[7];
+  v14 = equalCopy[7];
   if (interestTotal && v14)
   {
     if (([(NSDecimalNumber *)interestTotal isEqual:?]& 1) == 0)
@@ -221,7 +221,7 @@
   }
 
   apy = self->_apy;
-  v16 = v4[8];
+  v16 = equalCopy[8];
   if (!apy || !v16)
   {
     if (apy == v16)
@@ -240,12 +240,12 @@ LABEL_34:
   }
 
 LABEL_32:
-  if (self->_hasWithdrawalLimit != *(v4 + 16))
+  if (self->_hasWithdrawalLimit != *(equalCopy + 16))
   {
     goto LABEL_34;
   }
 
-  v17 = self->_withdrawalsRemaining == v4[9];
+  v17 = self->_withdrawalsRemaining == equalCopy[9];
 LABEL_35:
 
   return v17;
@@ -253,14 +253,14 @@ LABEL_35:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_currentBalance];
-  [v3 safelyAddObject:self->_availableBalance];
-  [v3 safelyAddObject:self->_pendingBalance];
-  [v3 safelyAddObject:self->_interestYTD];
-  [v3 safelyAddObject:self->_interestTotal];
-  [v3 safelyAddObject:self->_apy];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_currentBalance];
+  [array safelyAddObject:self->_availableBalance];
+  [array safelyAddObject:self->_pendingBalance];
+  [array safelyAddObject:self->_interestYTD];
+  [array safelyAddObject:self->_interestTotal];
+  [array safelyAddObject:self->_apy];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_hasWithdrawalLimit - v4 + 32 * v4;
   v6 = self->_withdrawalsRemaining - v5 + 32 * v5;
 
@@ -270,23 +270,23 @@ LABEL_35:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(NSDecimalNumber *)self->_currentBalance stringValue];
-  [v3 appendFormat:@"currentBalance: '%@'; ", v4];
+  stringValue = [(NSDecimalNumber *)self->_currentBalance stringValue];
+  [v3 appendFormat:@"currentBalance: '%@'; ", stringValue];
 
-  v5 = [(NSDecimalNumber *)self->_availableBalance stringValue];
-  [v3 appendFormat:@"availableBalance: '%@'; ", v5];
+  stringValue2 = [(NSDecimalNumber *)self->_availableBalance stringValue];
+  [v3 appendFormat:@"availableBalance: '%@'; ", stringValue2];
 
-  v6 = [(NSDecimalNumber *)self->_pendingBalance stringValue];
-  [v3 appendFormat:@"pendingBalance: '%@'; ", v6];
+  stringValue3 = [(NSDecimalNumber *)self->_pendingBalance stringValue];
+  [v3 appendFormat:@"pendingBalance: '%@'; ", stringValue3];
 
-  v7 = [(NSDecimalNumber *)self->_interestYTD stringValue];
-  [v3 appendFormat:@"interestYTD: '%@'; ", v7];
+  stringValue4 = [(NSDecimalNumber *)self->_interestYTD stringValue];
+  [v3 appendFormat:@"interestYTD: '%@'; ", stringValue4];
 
-  v8 = [(NSDecimalNumber *)self->_interestTotal stringValue];
-  [v3 appendFormat:@"interestTotal: '%@'; ", v8];
+  stringValue5 = [(NSDecimalNumber *)self->_interestTotal stringValue];
+  [v3 appendFormat:@"interestTotal: '%@'; ", stringValue5];
 
-  v9 = [(NSDecimalNumber *)self->_apy stringValue];
-  [v3 appendFormat:@"apy: '%@'; ", v9];
+  stringValue6 = [(NSDecimalNumber *)self->_apy stringValue];
+  [v3 appendFormat:@"apy: '%@'; ", stringValue6];
 
   if (self->_hasWithdrawalLimit)
   {
@@ -304,30 +304,30 @@ LABEL_35:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKSavingsAccountSummary allocWithZone:](PKSavingsAccountSummary init];
-  v6 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:zone];
   currentBalance = v5->_currentBalance;
   v5->_currentBalance = v6;
 
-  v8 = [(NSDecimalNumber *)self->_availableBalance copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_availableBalance copyWithZone:zone];
   availableBalance = v5->_availableBalance;
   v5->_availableBalance = v8;
 
-  v10 = [(NSDecimalNumber *)self->_pendingBalance copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_pendingBalance copyWithZone:zone];
   pendingBalance = v5->_pendingBalance;
   v5->_pendingBalance = v10;
 
-  v12 = [(NSDecimalNumber *)self->_interestYTD copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_interestYTD copyWithZone:zone];
   interestYTD = v5->_interestYTD;
   v5->_interestYTD = v12;
 
-  v14 = [(NSDecimalNumber *)self->_interestTotal copyWithZone:a3];
+  v14 = [(NSDecimalNumber *)self->_interestTotal copyWithZone:zone];
   interestTotal = v5->_interestTotal;
   v5->_interestTotal = v14;
 
-  v16 = [(NSDecimalNumber *)self->_apy copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_apy copyWithZone:zone];
   apy = v5->_apy;
   v5->_apy = v16;
 

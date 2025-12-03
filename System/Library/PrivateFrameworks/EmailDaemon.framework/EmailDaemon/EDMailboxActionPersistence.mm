@@ -1,16 +1,16 @@
 @interface EDMailboxActionPersistence
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-- (EDMailboxActionPersistence)initWithDatabase:(id)a3;
-- (id)allMailboxActionForAccountID:(id)a3;
-- (id)nextMailboxActionForAccountID:(id)a3;
-- (void)deleteMailboxAction:(int64_t)a3;
-- (void)deleteMailboxActions:(id)a3;
-- (void)saveMailboxActionForAccountID:(id)a3 action:(id)a4;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
+- (EDMailboxActionPersistence)initWithDatabase:(id)database;
+- (id)allMailboxActionForAccountID:(id)d;
+- (id)nextMailboxActionForAccountID:(id)d;
+- (void)deleteMailboxAction:(int64_t)action;
+- (void)deleteMailboxActions:(id)actions;
+- (void)saveMailboxActionForAccountID:(id)d action:(id)action;
 @end
 
 @implementation EDMailboxActionPersistence
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v16[5] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E699B958]);
@@ -35,36 +35,36 @@
   return v12;
 }
 
-- (EDMailboxActionPersistence)initWithDatabase:(id)a3
+- (EDMailboxActionPersistence)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = EDMailboxActionPersistence;
   v6 = [(EDMailboxActionPersistence *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
   }
 
   return v7;
 }
 
-- (void)saveMailboxActionForAccountID:(id)a3 action:(id)a4
+- (void)saveMailboxActionForAccountID:(id)d action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDMailboxActionPersistence *)self database];
+  dCopy = d;
+  actionCopy = action;
+  database = [(EDMailboxActionPersistence *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMailboxActionPersistence saveMailboxActionForAccountID:action:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__EDMailboxActionPersistence_saveMailboxActionForAccountID_action___block_invoke;
   v12[3] = &unk_1E8250328;
-  v10 = v6;
+  v10 = dCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = actionCopy;
   v14 = v11;
-  [v8 __performWriteWithCaller:v9 usingBlock:v12];
+  [database __performWriteWithCaller:v9 usingBlock:v12];
 }
 
 uint64_t __67__EDMailboxActionPersistence_saveMailboxActionForAccountID_action___block_invoke(uint64_t a1, void *a2)
@@ -106,21 +106,21 @@ uint64_t __67__EDMailboxActionPersistence_saveMailboxActionForAccountID_action__
   return 1;
 }
 
-- (id)allMailboxActionForAccountID:(id)a3
+- (id)allMailboxActionForAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(EDMailboxActionPersistence *)self database];
+  dCopy = d;
+  array = [MEMORY[0x1E695DF70] array];
+  database = [(EDMailboxActionPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMailboxActionPersistence allMailboxActionForAccountID:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__EDMailboxActionPersistence_allMailboxActionForAccountID___block_invoke;
   v13[3] = &unk_1E8250328;
-  v8 = v4;
+  v8 = dCopy;
   v14 = v8;
-  v9 = v5;
+  v9 = array;
   v15 = v9;
-  [v6 __performReadWithCaller:v7 usingBlock:v13];
+  [database __performReadWithCaller:v7 usingBlock:v13];
 
   v10 = v15;
   v11 = v9;
@@ -167,25 +167,25 @@ void __59__EDMailboxActionPersistence_allMailboxActionForAccountID___block_invok
   [*(a1 + 32) addObject:v12];
 }
 
-- (id)nextMailboxActionForAccountID:(id)a3
+- (id)nextMailboxActionForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__18;
   v17 = __Block_byref_object_dispose__18;
   v18 = 0;
-  v5 = [(EDMailboxActionPersistence *)self database];
+  database = [(EDMailboxActionPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMailboxActionPersistence nextMailboxActionForAccountID:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__EDMailboxActionPersistence_nextMailboxActionForAccountID___block_invoke;
   v10[3] = &unk_1E8250350;
-  v7 = v4;
+  v7 = dCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 __performReadWithCaller:v6 usingBlock:v10];
+  [database __performReadWithCaller:v6 usingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -233,16 +233,16 @@ void __60__EDMailboxActionPersistence_nextMailboxActionForAccountID___block_invo
   *(v13 + 40) = v12;
 }
 
-- (void)deleteMailboxAction:(int64_t)a3
+- (void)deleteMailboxAction:(int64_t)action
 {
-  v4 = [(EDMailboxActionPersistence *)self database];
+  database = [(EDMailboxActionPersistence *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMailboxActionPersistence deleteMailboxAction:]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__EDMailboxActionPersistence_deleteMailboxAction___block_invoke;
   v6[3] = &__block_descriptor_40_e41_B16__0__EDPersistenceDatabaseConnection_8l;
-  v6[4] = a3;
-  [v4 __performWriteWithCaller:v5 usingBlock:v6];
+  v6[4] = action;
+  [database __performWriteWithCaller:v5 usingBlock:v6];
 }
 
 uint64_t __50__EDMailboxActionPersistence_deleteMailboxAction___block_invoke(uint64_t a1, void *a2)
@@ -258,18 +258,18 @@ uint64_t __50__EDMailboxActionPersistence_deleteMailboxAction___block_invoke(uin
   return 1;
 }
 
-- (void)deleteMailboxActions:(id)a3
+- (void)deleteMailboxActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(EDMailboxActionPersistence *)self database];
+  actionsCopy = actions;
+  database = [(EDMailboxActionPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDMailboxActionPersistence deleteMailboxActions:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __51__EDMailboxActionPersistence_deleteMailboxActions___block_invoke;
   v8[3] = &unk_1E8251CB8;
-  v7 = v4;
+  v7 = actionsCopy;
   v9 = v7;
-  [v5 __performWriteWithCaller:v6 usingBlock:v8];
+  [database __performWriteWithCaller:v6 usingBlock:v8];
 }
 
 uint64_t __51__EDMailboxActionPersistence_deleteMailboxActions___block_invoke(uint64_t a1, void *a2)

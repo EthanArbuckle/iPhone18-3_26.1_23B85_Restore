@@ -1,31 +1,31 @@
 @interface PKTileTask
-- (PKTileTask)initWithStrokes:(id)a3 additionalStrokes:(id)a4 intoTile:(id)a5 completionBlock:(id)a6;
+- (PKTileTask)initWithStrokes:(id)strokes additionalStrokes:(id)additionalStrokes intoTile:(id)tile completionBlock:(id)block;
 - (id)description;
 @end
 
 @implementation PKTileTask
 
-- (PKTileTask)initWithStrokes:(id)a3 additionalStrokes:(id)a4 intoTile:(id)a5 completionBlock:(id)a6
+- (PKTileTask)initWithStrokes:(id)strokes additionalStrokes:(id)additionalStrokes intoTile:(id)tile completionBlock:(id)block
 {
-  v10 = a5;
+  tileCopy = tile;
   v25.receiver = self;
   v25.super_class = PKTileTask;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  blockCopy = block;
+  additionalStrokesCopy = additionalStrokes;
+  strokesCopy = strokes;
   v14 = [(PKTileTask *)&v25 init];
-  v15 = [v13 copy];
+  v15 = [strokesCopy copy];
 
   renderStrokes = v14->_renderStrokes;
   v14->_renderStrokes = v15;
 
-  v17 = [v12 copy];
+  v17 = [additionalStrokesCopy copy];
   additionalStrokes = v14->_additionalStrokes;
   v14->_additionalStrokes = v17;
 
   tile = v14->_tile;
-  v14->_tile = v10;
-  v20 = v10;
+  v14->_tile = tileCopy;
+  v20 = tileCopy;
 
   if (v20)
   {
@@ -38,7 +38,7 @@
   }
 
   v14->_renderCount = v21;
-  v22 = _Block_copy(v11);
+  v22 = _Block_copy(blockCopy);
 
   completionBlock = v14->_completionBlock;
   v14->_completionBlock = v22;
@@ -75,9 +75,9 @@
     renderCount = 0;
   }
 
-  v11 = [v3 stringWithFormat:@"<%@ %p %@ additionalStrokes:%ld renderCount:%ld>", v5, self, v6, v9, renderCount];
+  renderCount = [v3 stringWithFormat:@"<%@ %p %@ additionalStrokes:%ld renderCount:%ld>", v5, self, v6, v9, renderCount];
 
-  return v11;
+  return renderCount;
 }
 
 @end

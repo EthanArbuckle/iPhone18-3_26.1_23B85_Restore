@@ -7,7 +7,7 @@
 
 - (__CFString)px_symbolImageName
 {
-  if ([a1 px_isTrip])
+  if ([self px_isTrip])
   {
     v1 = @"suitcase";
   }
@@ -22,10 +22,10 @@
 
 - (uint64_t)px_isTrip
 {
-  result = [a1 type];
+  result = [self type];
   if (result != 1)
   {
-    return [a1 type] == 2;
+    return [self type] == 2;
   }
 
   return result;

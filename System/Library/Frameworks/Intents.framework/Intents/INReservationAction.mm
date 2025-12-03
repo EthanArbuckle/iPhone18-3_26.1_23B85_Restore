@@ -1,13 +1,13 @@
 @interface INReservationAction
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INReservationAction)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INReservationAction)initWithCoder:(id)coder;
 - (INReservationAction)initWithType:(INReservationActionType)type validDuration:(INDateComponentsRange *)validDuration userActivity:(NSUserActivity *)userActivity;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INReservationAction
@@ -20,22 +20,22 @@
   v12[0] = v3;
   v11[1] = @"validDuration";
   validDuration = self->_validDuration;
-  v5 = validDuration;
+  null = validDuration;
   if (!validDuration)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[1] = v5;
+  v12[1] = null;
   v11[2] = @"userActivity";
   userActivity = self->_userActivity;
-  v7 = userActivity;
+  null2 = userActivity;
   if (!userActivity)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[2] = v7;
+  v12[2] = null2;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
   if (userActivity)
   {
@@ -60,24 +60,24 @@ LABEL_7:
   return v8;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INReservationAction;
   v6 = [(INReservationAction *)&v11 description];
-  v7 = [(INReservationAction *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INReservationAction *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
   if (self->_type == 1)
   {
     v8 = @"checkIn";
@@ -89,35 +89,35 @@ LABEL_7:
   }
 
   v9 = v8;
-  [v7 if_setObjectIfNonNil:v9 forKey:@"type"];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"type"];
 
-  v10 = [v6 encodeObject:self->_validDuration];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"validDuration"];
+  v10 = [encoderCopy encodeObject:self->_validDuration];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"validDuration"];
 
   v11 = INUserActivitySerializeToData(self->_userActivity);
-  v12 = [v6 encodeObject:v11];
+  v12 = [encoderCopy encodeObject:v11];
 
-  [v7 if_setObjectIfNonNil:v12 forKey:@"userActivity"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"userActivity"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_validDuration forKey:@"validDuration"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_validDuration forKey:@"validDuration"];
   v6 = INUserActivitySerializeToData(self->_userActivity);
-  [v5 encodeObject:v6 forKey:@"userActivity"];
+  [coderCopy encodeObject:v6 forKey:@"userActivity"];
 }
 
-- (INReservationAction)initWithCoder:(id)a3
+- (INReservationAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"validDuration"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validDuration"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivity"];
 
   v8 = INUserActivityDeserializeFromData(v7);
   v9 = [(INReservationAction *)self initWithType:v5 validDuration:v6 userActivity:v8];
@@ -125,10 +125,10 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -138,7 +138,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = 0;
       if (self->_type == v5->_type)
       {
@@ -188,32 +188,32 @@ LABEL_7:
     v13 = v11->_validDuration;
     v11->_validDuration = v12;
 
-    v14 = [(NSUserActivity *)v9 _intents_copy];
+    _intents_copy = [(NSUserActivity *)v9 _intents_copy];
     v15 = v11->_userActivity;
-    v11->_userActivity = v14;
+    v11->_userActivity = _intents_copy;
   }
 
   return v11;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 objectForKeyedSubscript:@"type"];
+  fromCopy = from;
+  decoderCopy = decoder;
+  v9 = [fromCopy objectForKeyedSubscript:@"type"];
   v10 = [v9 isEqualToString:@"checkIn"];
 
   v11 = objc_opt_class();
-  v12 = [v7 objectForKeyedSubscript:@"validDuration"];
-  v13 = [v8 decodeObjectOfClass:v11 from:v12];
+  v12 = [fromCopy objectForKeyedSubscript:@"validDuration"];
+  v13 = [decoderCopy decodeObjectOfClass:v11 from:v12];
 
   v14 = objc_opt_class();
-  v15 = [v7 objectForKeyedSubscript:@"userActivity"];
+  v15 = [fromCopy objectForKeyedSubscript:@"userActivity"];
 
-  v16 = [v8 decodeObjectOfClass:v14 from:v15];
+  v16 = [decoderCopy decodeObjectOfClass:v14 from:v15];
 
   v17 = INUserActivityDeserializeFromData(v16);
-  v18 = [[a1 alloc] initWithType:v10 validDuration:v13 userActivity:v17];
+  v18 = [[self alloc] initWithType:v10 validDuration:v13 userActivity:v17];
 
   return v18;
 }

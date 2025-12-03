@@ -1,29 +1,29 @@
 @interface ASRSchemaASRRescoringDeliberationResult
-- (ASRSchemaASRRescoringDeliberationResult)initWithDictionary:(id)a3;
-- (ASRSchemaASRRescoringDeliberationResult)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRRescoringDeliberationResult)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRRescoringDeliberationResult)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRescoringEvents:(id)a3;
-- (void)setHasRescoringFinalizeDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRescoringEvents:(id)events;
+- (void)setHasRescoringFinalizeDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRRescoringDeliberationResult
 
-- (ASRSchemaASRRescoringDeliberationResult)initWithDictionary:(id)a3
+- (ASRSchemaASRRescoringDeliberationResult)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = ASRSchemaASRRescoringDeliberationResult;
   v5 = [(ASRSchemaASRRescoringDeliberationResult *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rescoringLinkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rescoringLinkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(ASRSchemaASRRescoringDeliberationResult *)v5 setRescoringLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"rescoringResultDuration"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rescoringResultDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(ASRSchemaASRRescoringDeliberationResult *)v5 setRescoringResultDuration:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"rescoringFinalizeDuration"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"rescoringFinalizeDuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(ASRSchemaASRRescoringDeliberationResult *)v5 setRescoringFinalizeDuration:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"rescoringEvents"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rescoringEvents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,30 +97,30 @@
   return v5;
 }
 
-- (ASRSchemaASRRescoringDeliberationResult)initWithJSON:(id)a3
+- (ASRSchemaASRRescoringDeliberationResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRRescoringDeliberationResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRRescoringDeliberationResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRRescoringDeliberationResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,10 +134,10 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_rescoringEvents count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -157,16 +157,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -176,7 +176,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"rescoringEvents"];
+    [dictionary setObject:array forKeyedSubscript:@"rescoringEvents"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -184,22 +184,22 @@
     v12 = MEMORY[0x1E696AD98];
     [(ASRSchemaASRRescoringDeliberationResult *)self rescoringFinalizeDuration];
     v13 = [v12 numberWithFloat:?];
-    [v3 setObject:v13 forKeyedSubscript:@"rescoringFinalizeDuration"];
+    [dictionary setObject:v13 forKeyedSubscript:@"rescoringFinalizeDuration"];
   }
 
   if (self->_rescoringLinkId)
   {
-    v14 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    rescoringLinkId = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
+    dictionaryRepresentation2 = [rescoringLinkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"rescoringLinkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"rescoringLinkId"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"rescoringLinkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"rescoringLinkId"];
     }
   }
 
@@ -208,12 +208,12 @@
     v17 = MEMORY[0x1E696AD98];
     [(ASRSchemaASRRescoringDeliberationResult *)self rescoringResultDuration];
     v18 = [v17 numberWithFloat:?];
-    [v3 setObject:v18 forKeyedSubscript:@"rescoringResultDuration"];
+    [dictionary setObject:v18 forKeyedSubscript:@"rescoringResultDuration"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v20];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v20];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -299,28 +299,28 @@
   return v6 ^ v3 ^ v11 ^ [(NSArray *)self->_rescoringEvents hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
-  v6 = [v4 rescoringLinkId];
-  if ((v5 != 0) == (v6 == 0))
+  rescoringLinkId = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
+  rescoringLinkId2 = [equalCopy rescoringLinkId];
+  if ((rescoringLinkId != 0) == (rescoringLinkId2 == 0))
   {
     goto LABEL_18;
   }
 
-  v7 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
-  if (v7)
+  rescoringLinkId3 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
+  if (rescoringLinkId3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
-    v10 = [v4 rescoringLinkId];
-    v11 = [v9 isEqual:v10];
+    v8 = rescoringLinkId3;
+    rescoringLinkId4 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
+    rescoringLinkId5 = [equalCopy rescoringLinkId];
+    v11 = [rescoringLinkId4 isEqual:rescoringLinkId5];
 
     if (!v11)
     {
@@ -333,7 +333,7 @@
   }
 
   has = self->_has;
-  v13 = v4[32];
+  v13 = equalCopy[32];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_19;
@@ -342,14 +342,14 @@
   if (*&has)
   {
     rescoringResultDuration = self->_rescoringResultDuration;
-    [v4 rescoringResultDuration];
+    [equalCopy rescoringResultDuration];
     if (rescoringResultDuration != v15)
     {
       goto LABEL_19;
     }
 
     has = self->_has;
-    v13 = v4[32];
+    v13 = equalCopy[32];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -361,24 +361,24 @@
   if (v16)
   {
     rescoringFinalizeDuration = self->_rescoringFinalizeDuration;
-    [v4 rescoringFinalizeDuration];
+    [equalCopy rescoringFinalizeDuration];
     if (rescoringFinalizeDuration != v18)
     {
       goto LABEL_19;
     }
   }
 
-  v5 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
-  v6 = [v4 rescoringEvents];
-  if ((v5 != 0) == (v6 == 0))
+  rescoringLinkId = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
+  rescoringLinkId2 = [equalCopy rescoringEvents];
+  if ((rescoringLinkId != 0) == (rescoringLinkId2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v19 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
-  if (!v19)
+  rescoringEvents = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
+  if (!rescoringEvents)
   {
 
 LABEL_22:
@@ -386,10 +386,10 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v20 = v19;
-  v21 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
-  v22 = [v4 rescoringEvents];
-  v23 = [v21 isEqual:v22];
+  v20 = rescoringEvents;
+  rescoringEvents2 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
+  rescoringEvents3 = [equalCopy rescoringEvents];
+  v23 = [rescoringEvents2 isEqual:rescoringEvents3];
 
   if (v23)
   {
@@ -403,15 +403,15 @@ LABEL_20:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
+  toCopy = to;
+  rescoringLinkId = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
 
-  if (v5)
+  if (rescoringLinkId)
   {
-    v6 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
+    rescoringLinkId2 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -456,27 +456,27 @@ LABEL_20:
   }
 }
 
-- (void)addRescoringEvents:(id)a3
+- (void)addRescoringEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   rescoringEvents = self->_rescoringEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!rescoringEvents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rescoringEvents;
-    self->_rescoringEvents = v6;
+    self->_rescoringEvents = array;
 
-    v4 = v8;
+    eventsCopy = v8;
     rescoringEvents = self->_rescoringEvents;
   }
 
-  [(NSArray *)rescoringEvents addObject:v4];
+  [(NSArray *)rescoringEvents addObject:eventsCopy];
 }
 
-- (void)setHasRescoringFinalizeDuration:(BOOL)a3
+- (void)setHasRescoringFinalizeDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -489,23 +489,23 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = ASRSchemaASRRescoringDeliberationResult;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  rescoringLinkId = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringLinkId];
+  v7 = [rescoringLinkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRRescoringDeliberationResult *)self deleteRescoringLinkId];
   }
 
-  v9 = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  rescoringEvents = [(ASRSchemaASRRescoringDeliberationResult *)self rescoringEvents];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:rescoringEvents underConditions:policyCopy];
   [(ASRSchemaASRRescoringDeliberationResult *)self setRescoringEvents:v10];
 
   return v5;

@@ -6,7 +6,7 @@
 
 - (void)fetchSharing
 {
-  v2 = self;
+  selfCopy = self;
   SafetyCheckManager.fetchSharing()();
 }
 

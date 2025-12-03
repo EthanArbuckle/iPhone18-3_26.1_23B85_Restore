@@ -1,42 +1,42 @@
 @interface ANSTE5MLNetwork
-- (ANSTE5MLNetwork)initWithE5BundlePath:(id)a3 e5FunctionName:(id)a4;
-- (ANSTE5MLNetwork)initWithInferenceDescriptor:(id)a3 error:(id *)p_isa;
-- (ANSTE5MLNetwork)initWithMILPath:(id)a3 e5FunctionName:(id)a4;
-- (BOOL)_allocateAndBindBufferPort:(e5rt_io_port *)a3 error:(id *)a4;
-- (BOOL)_allocateAndBindNetworkInputsExcept:(id)a3 error:(id *)a4;
-- (BOOL)_allocateAndBindNetworkOutputsExcept:(id)a3 error:(id *)a4;
-- (BOOL)_allocateAndBindPort:(e5rt_io_port *)a3 portName:(const char *)a4 error:(id *)a5;
-- (BOOL)_allocateAndBindSurfacePort:(e5rt_io_port *)a3 error:(id *)a4;
-- (BOOL)_bindBufferPort:(e5rt_io_port *)a3 toTensor:(id)a4 error:(id *)a5;
-- (BOOL)_bindNetworkInputsToExistingNetwork:(id)a3 error:(id *)a4;
-- (BOOL)_bindNetworkOutputsToExistingNetwork:(id)a3 error:(id *)a4;
-- (BOOL)_bindSurfacePort:(e5rt_io_port *)a3 toPixelBuffer:(__CVBuffer *)a4 error:(id *)a5;
-- (BOOL)_loadExecutionStreamOperationWithError:(id *)a3;
-- (BOOL)allocateAndBindNetworkIOExceptInputsNamed:(id)a3 outputsNamed:(id)a4 error:(id *)a5;
-- (BOOL)bindNetworkIOToExistingNetwork:(id)a3 error:(id *)a4;
-- (BOOL)bindNetworkInputNamed:(id)a3 toPixelBuffer:(id)a4 error:(id *)a5;
-- (BOOL)bindNetworkInputNamed:(id)a3 toTensor:(id)a4 error:(id *)a5;
-- (BOOL)bindNetworkOutputNamed:(id)a3 toPixelBuffer:(id)a4 error:(id *)a5;
-- (BOOL)bindNetworkOutputNamed:(id)a3 toTensor:(id)a4 error:(id *)a5;
-- (BOOL)commitNetworkIOBindingsWithError:(id *)a3;
-- (BOOL)executeInferenceWithError:(id *)a3;
-- (BOOL)loadNetworkWithError:(id *)a3;
-- (BOOL)registerNetworkOutputNamed:(id)a3 asDataSourceForNetworkInputNamed:(id)a4 error:(id *)a5;
-- (id)_pixelBufferForPort:(e5rt_io_port *)a3 name:(id)a4 error:(id *)a5;
-- (id)_tensorSurfaceForPort:(e5rt_io_port *)a3 name:(id)a4 error:(id *)a5;
-- (id)pixelBufferForNetworkInputNamed:(id)a3 error:(id *)a4;
-- (id)pixelBufferForNetworkOutputNamed:(id)a3 error:(id *)a4;
-- (id)tensorSurfaceForNetworkInputNamed:(id)a3 error:(id *)a4;
-- (id)tensorSurfaceForNetworkOutputNamed:(id)a3 error:(id *)a4;
+- (ANSTE5MLNetwork)initWithE5BundlePath:(id)path e5FunctionName:(id)name;
+- (ANSTE5MLNetwork)initWithInferenceDescriptor:(id)descriptor error:(id *)p_isa;
+- (ANSTE5MLNetwork)initWithMILPath:(id)path e5FunctionName:(id)name;
+- (BOOL)_allocateAndBindBufferPort:(e5rt_io_port *)port error:(id *)error;
+- (BOOL)_allocateAndBindNetworkInputsExcept:(id)except error:(id *)error;
+- (BOOL)_allocateAndBindNetworkOutputsExcept:(id)except error:(id *)error;
+- (BOOL)_allocateAndBindPort:(e5rt_io_port *)port portName:(const char *)name error:(id *)error;
+- (BOOL)_allocateAndBindSurfacePort:(e5rt_io_port *)port error:(id *)error;
+- (BOOL)_bindBufferPort:(e5rt_io_port *)port toTensor:(id)tensor error:(id *)error;
+- (BOOL)_bindNetworkInputsToExistingNetwork:(id)network error:(id *)error;
+- (BOOL)_bindNetworkOutputsToExistingNetwork:(id)network error:(id *)error;
+- (BOOL)_bindSurfacePort:(e5rt_io_port *)port toPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (BOOL)_loadExecutionStreamOperationWithError:(id *)error;
+- (BOOL)allocateAndBindNetworkIOExceptInputsNamed:(id)named outputsNamed:(id)outputsNamed error:(id *)error;
+- (BOOL)bindNetworkIOToExistingNetwork:(id)network error:(id *)error;
+- (BOOL)bindNetworkInputNamed:(id)named toPixelBuffer:(id)buffer error:(id *)error;
+- (BOOL)bindNetworkInputNamed:(id)named toTensor:(id)tensor error:(id *)error;
+- (BOOL)bindNetworkOutputNamed:(id)named toPixelBuffer:(id)buffer error:(id *)error;
+- (BOOL)bindNetworkOutputNamed:(id)named toTensor:(id)tensor error:(id *)error;
+- (BOOL)commitNetworkIOBindingsWithError:(id *)error;
+- (BOOL)executeInferenceWithError:(id *)error;
+- (BOOL)loadNetworkWithError:(id *)error;
+- (BOOL)registerNetworkOutputNamed:(id)named asDataSourceForNetworkInputNamed:(id)inputNamed error:(id *)error;
+- (id)_pixelBufferForPort:(e5rt_io_port *)port name:(id)name error:(id *)error;
+- (id)_tensorSurfaceForPort:(e5rt_io_port *)port name:(id)name error:(id *)error;
+- (id)pixelBufferForNetworkInputNamed:(id)named error:(id *)error;
+- (id)pixelBufferForNetworkOutputNamed:(id)named error:(id *)error;
+- (id)tensorSurfaceForNetworkInputNamed:(id)named error:(id *)error;
+- (id)tensorSurfaceForNetworkOutputNamed:(id)named error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation ANSTE5MLNetwork
 
-- (ANSTE5MLNetwork)initWithMILPath:(id)a3 e5FunctionName:(id)a4
+- (ANSTE5MLNetwork)initWithMILPath:(id)path e5FunctionName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = ANSTE5MLNetwork;
   v9 = [(ANSTE5MLNetwork *)&v13 init];
@@ -44,8 +44,8 @@
   if (v9)
   {
     v9->_assetType = 1;
-    objc_storeStrong(&v9->_assetURL, a3);
-    objc_storeStrong(&v10->_e5FunctionName, a4);
+    objc_storeStrong(&v9->_assetURL, path);
+    objc_storeStrong(&v10->_e5FunctionName, name);
     stateTensorTuples = v10->_stateTensorTuples;
     v10->_stateTensorTuples = 0;
   }
@@ -53,10 +53,10 @@
   return v10;
 }
 
-- (ANSTE5MLNetwork)initWithE5BundlePath:(id)a3 e5FunctionName:(id)a4
+- (ANSTE5MLNetwork)initWithE5BundlePath:(id)path e5FunctionName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = ANSTE5MLNetwork;
   v9 = [(ANSTE5MLNetwork *)&v13 init];
@@ -64,8 +64,8 @@
   if (v9)
   {
     v9->_assetType = 0;
-    objc_storeStrong(&v9->_assetURL, a3);
-    objc_storeStrong(&v10->_e5FunctionName, a4);
+    objc_storeStrong(&v9->_assetURL, path);
+    objc_storeStrong(&v10->_e5FunctionName, name);
     stateTensorTuples = v10->_stateTensorTuples;
     v10->_stateTensorTuples = 0;
   }
@@ -73,18 +73,18 @@
   return v10;
 }
 
-- (ANSTE5MLNetwork)initWithInferenceDescriptor:(id)a3 error:(id *)p_isa
+- (ANSTE5MLNetwork)initWithInferenceDescriptor:(id)descriptor error:(id *)p_isa
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = objc_msgSend_e5FunctionName(v6, v7, v8);
+  descriptorCopy = descriptor;
+  v9 = objc_msgSend_e5FunctionName(descriptorCopy, v7, v8);
 
   if (v9)
   {
-    if (objc_msgSend_assetType(v6, v10, v11) == 1)
+    if (objc_msgSend_assetType(descriptorCopy, v10, v11) == 1)
     {
-      v14 = objc_msgSend_assetURL(v6, v12, v13);
-      v17 = objc_msgSend_e5FunctionName(v6, v15, v16);
+      v14 = objc_msgSend_assetURL(descriptorCopy, v12, v13);
+      v17 = objc_msgSend_e5FunctionName(descriptorCopy, v15, v16);
       v19 = objc_msgSend_initWithMILPath_e5FunctionName_(self, v18, v14, v17);
 LABEL_15:
       self = v19;
@@ -93,10 +93,10 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (!objc_msgSend_assetType(v6, v12, v13))
+    if (!objc_msgSend_assetType(descriptorCopy, v12, v13))
     {
-      v14 = objc_msgSend_assetURL(v6, v30, v31);
-      v17 = objc_msgSend_e5FunctionName(v6, v43, v44);
+      v14 = objc_msgSend_assetURL(descriptorCopy, v30, v31);
+      v17 = objc_msgSend_e5FunctionName(descriptorCopy, v43, v44);
       v19 = objc_msgSend_initWithE5BundlePath_e5FunctionName_(self, v45, v14, v17);
       goto LABEL_15;
     }
@@ -201,10 +201,10 @@ LABEL_16:
   [(ANSTE5MLNetwork *)&v22 dealloc];
 }
 
-- (BOOL)loadNetworkWithError:(id *)a3
+- (BOOL)loadNetworkWithError:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  ExecutionStreamOperationWithError = objc_msgSend__loadExecutionStreamOperationWithError_(self, a2, a3);
+  ExecutionStreamOperationWithError = objc_msgSend__loadExecutionStreamOperationWithError_(self, a2, error);
   if (ExecutionStreamOperationWithError)
   {
     if (self->_stream || (v6 = e5rt_execution_stream_create(), !v6))
@@ -223,13 +223,13 @@ LABEL_16:
         sub_22E658808();
       }
 
-      if (a3)
+      if (error)
       {
         v13 = MEMORY[0x277CCA9B8];
         v18 = *MEMORY[0x277CCA068];
         v19[0] = v10;
         v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v19, &v18, 1);
-        *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
       }
 
       LOBYTE(ExecutionStreamOperationWithError) = 0;
@@ -240,12 +240,12 @@ LABEL_16:
   return ExecutionStreamOperationWithError;
 }
 
-- (BOOL)allocateAndBindNetworkIOExceptInputsNamed:(id)a3 outputsNamed:(id)a4 error:(id *)a5
+- (BOOL)allocateAndBindNetworkIOExceptInputsNamed:(id)named outputsNamed:(id)outputsNamed error:(id *)error
 {
-  v8 = a4;
-  if (objc_msgSend__allocateAndBindNetworkInputsExcept_error_(self, v9, a3, a5))
+  outputsNamedCopy = outputsNamed;
+  if (objc_msgSend__allocateAndBindNetworkInputsExcept_error_(self, v9, named, error))
   {
-    v11 = objc_msgSend__allocateAndBindNetworkOutputsExcept_error_(self, v10, v8, a5);
+    v11 = objc_msgSend__allocateAndBindNetworkOutputsExcept_error_(self, v10, outputsNamedCopy, error);
   }
 
   else
@@ -256,12 +256,12 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)bindNetworkIOToExistingNetwork:(id)a3 error:(id *)a4
+- (BOOL)bindNetworkIOToExistingNetwork:(id)network error:(id *)error
 {
-  v6 = a3;
-  if (objc_msgSend__bindNetworkInputsToExistingNetwork_error_(self, v7, v6, a4))
+  networkCopy = network;
+  if (objc_msgSend__bindNetworkInputsToExistingNetwork_error_(self, v7, networkCopy, error))
   {
-    v9 = objc_msgSend__bindNetworkOutputsToExistingNetwork_error_(self, v8, v6, a4);
+    v9 = objc_msgSend__bindNetworkOutputsToExistingNetwork_error_(self, v8, networkCopy, error);
   }
 
   else
@@ -272,15 +272,15 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)registerNetworkOutputNamed:(id)a3 asDataSourceForNetworkInputNamed:(id)a4 error:(id *)a5
+- (BOOL)registerNetworkOutputNamed:(id)named asDataSourceForNetworkInputNamed:(id)inputNamed error:(id *)error
 {
   v63[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_tensorSurfaceForNetworkOutputNamed_error_(self, v10, v8, a5);
+  namedCopy = named;
+  inputNamedCopy = inputNamed;
+  v12 = objc_msgSend_tensorSurfaceForNetworkOutputNamed_error_(self, v10, namedCopy, error);
   if (v12)
   {
-    v15 = objc_msgSend_tensorSurfaceForNetworkInputNamed_error_(self, v11, v9, a5);
+    v15 = objc_msgSend_tensorSurfaceForNetworkInputNamed_error_(self, v11, inputNamedCopy, error);
     if (v15)
     {
       v16 = objc_msgSend_tensorDescriptor(v12, v13, v14);
@@ -296,7 +296,7 @@ LABEL_16:
         if (AllocSize == v29)
         {
           v32 = [_ANSTE5MLNetworkStateTensorTuple alloc];
-          a5 = objc_msgSend_initWithInputTensor_outputTensor_(v32, v33, v15, v12);
+          error = objc_msgSend_initWithInputTensor_outputTensor_(v32, v33, v15, v12);
           stateTensorTuples = self->_stateTensorTuples;
           if (!stateTensorTuples)
           {
@@ -307,9 +307,9 @@ LABEL_16:
             stateTensorTuples = self->_stateTensorTuples;
           }
 
-          objc_msgSend_addObject_(stateTensorTuples, v34, a5);
+          objc_msgSend_addObject_(stateTensorTuples, v34, error);
 
-          LOBYTE(a5) = 1;
+          LOBYTE(error) = 1;
           goto LABEL_23;
         }
 
@@ -338,12 +338,12 @@ LABEL_16:
           }
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_23;
         }
 
-        v38 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v53, @"Network output %@ can't be data source for network input %@ due to different IOSurface alloc size", v8, v9);
+        v38 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v53, @"Network output %@ can't be data source for network input %@ due to different IOSurface alloc size", namedCopy, inputNamedCopy);
         v39 = MEMORY[0x277CCA9B8];
         v60 = *MEMORY[0x277CCA068];
         v61 = v38;
@@ -352,35 +352,35 @@ LABEL_16:
 
       else
       {
-        if (!a5)
+        if (!error)
         {
 LABEL_23:
 
           goto LABEL_24;
         }
 
-        v38 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v22, @"Network output %@ can't be data source for network input %@ due to different memory layout", v8, v9);
+        v38 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v22, @"Network output %@ can't be data source for network input %@ due to different memory layout", namedCopy, inputNamedCopy);
         v39 = MEMORY[0x277CCA9B8];
         v62 = *MEMORY[0x277CCA068];
         v63[0] = v38;
         objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v40, v63, &v62, 1);
       }
       v56 = ;
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v39, v57, @"ANSTErrorDomain", 2, v56);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v39, v57, @"ANSTErrorDomain", 2, v56);
     }
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_23;
   }
 
-  LOBYTE(a5) = 0;
+  LOBYTE(error) = 0;
 LABEL_24:
 
   v58 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (BOOL)commitNetworkIOBindingsWithError:(id *)a3
+- (BOOL)commitNetworkIOBindingsWithError:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   stream = self->_stream;
@@ -396,13 +396,13 @@ LABEL_24:
       sub_22E658940();
     }
 
-    if (a3)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v17 = *MEMORY[0x277CCA068];
       v18[0] = v9;
       v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, v18, &v17, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 5, v13);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 5, v13);
     }
   }
 
@@ -411,7 +411,7 @@ LABEL_24:
   return result;
 }
 
-- (BOOL)executeInferenceWithError:(id *)a3
+- (BOOL)executeInferenceWithError:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
   stream = self->_stream;
@@ -426,13 +426,13 @@ LABEL_24:
       sub_22E6589B4();
     }
 
-    if (a3)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v43 = *MEMORY[0x277CCA068];
       v44[0] = v9;
       v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, v44, &v43, 1);
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 5, v13);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 5, v13);
     }
   }
 
@@ -485,7 +485,7 @@ LABEL_24:
   return v6 == 0;
 }
 
-- (BOOL)_loadExecutionStreamOperationWithError:(id *)a3
+- (BOOL)_loadExecutionStreamOperationWithError:(id *)error
 {
   v141[1] = *MEMORY[0x277D85DE8];
   if (!self->_operation)
@@ -510,13 +510,13 @@ LABEL_24:
           sub_22E658A28();
         }
 
-        if (a3)
+        if (error)
         {
           v42 = MEMORY[0x277CCA9B8];
           v138 = *MEMORY[0x277CCA068];
           v139 = v39;
           v43 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v41, &v139, &v138, 1);
-          *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v42, v44, @"ANSTErrorDomain", 5, v43);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v42, v44, @"ANSTErrorDomain", 5, v43);
         }
       }
 
@@ -533,13 +533,13 @@ LABEL_24:
             sub_22E658A28();
           }
 
-          if (a3)
+          if (error)
           {
             v60 = MEMORY[0x277CCA9B8];
             v136 = *MEMORY[0x277CCA068];
             v137 = v57;
             v61 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v59, &v137, &v136, 1);
-            *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v60, v62, @"ANSTErrorDomain", 5, v61);
+            *error = objc_msgSend_errorWithDomain_code_userInfo_(v60, v62, @"ANSTErrorDomain", 5, v61);
           }
         }
 
@@ -556,13 +556,13 @@ LABEL_24:
               sub_22E658A28();
             }
 
-            if (a3)
+            if (error)
             {
               v69 = MEMORY[0x277CCA9B8];
               v134 = *MEMORY[0x277CCA068];
               v135 = v66;
               v70 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v68, &v135, &v134, 1);
-              *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v69, v71, @"ANSTErrorDomain", 5, v70);
+              *error = objc_msgSend_errorWithDomain_code_userInfo_(v69, v71, @"ANSTErrorDomain", 5, v70);
             }
           }
 
@@ -579,13 +579,13 @@ LABEL_24:
                 sub_22E658A28();
               }
 
-              if (a3)
+              if (error)
               {
                 v78 = MEMORY[0x277CCA9B8];
                 v132 = *MEMORY[0x277CCA068];
                 v133 = v75;
                 v79 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v77, &v133, &v132, 1);
-                *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v78, v80, @"ANSTErrorDomain", 5, v79);
+                *error = objc_msgSend_errorWithDomain_code_userInfo_(v78, v80, @"ANSTErrorDomain", 5, v79);
               }
             }
 
@@ -602,13 +602,13 @@ LABEL_24:
                   sub_22E658A28();
                 }
 
-                if (a3)
+                if (error)
                 {
                   v87 = MEMORY[0x277CCA9B8];
                   v130 = *MEMORY[0x277CCA068];
                   v131 = v84;
                   v88 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v86, &v131, &v130, 1);
-                  *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v87, v89, @"ANSTErrorDomain", 5, v88);
+                  *error = objc_msgSend_errorWithDomain_code_userInfo_(v87, v89, @"ANSTErrorDomain", 5, v88);
                 }
               }
 
@@ -625,13 +625,13 @@ LABEL_24:
                     sub_22E658A28();
                   }
 
-                  if (a3)
+                  if (error)
                   {
                     v96 = MEMORY[0x277CCA9B8];
                     v128 = *MEMORY[0x277CCA068];
                     v129 = v93;
                     v97 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v95, &v129, &v128, 1);
-                    *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v96, v98, @"ANSTErrorDomain", 5, v97);
+                    *error = objc_msgSend_errorWithDomain_code_userInfo_(v96, v98, @"ANSTErrorDomain", 5, v97);
                   }
                 }
 
@@ -650,13 +650,13 @@ LABEL_24:
                       sub_22E658A28();
                     }
 
-                    if (a3)
+                    if (error)
                     {
                       v108 = MEMORY[0x277CCA9B8];
                       v126 = *MEMORY[0x277CCA068];
                       v127 = v105;
                       v109 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v107, &v127, &v126, 1);
-                      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v108, v110, @"ANSTErrorDomain", 5, v109);
+                      *error = objc_msgSend_errorWithDomain_code_userInfo_(v108, v110, @"ANSTErrorDomain", 5, v109);
                     }
                   }
 
@@ -677,13 +677,13 @@ LABEL_24:
                       sub_22E658A28();
                     }
 
-                    if (a3)
+                    if (error)
                     {
                       v117 = MEMORY[0x277CCA9B8];
                       v124 = *MEMORY[0x277CCA068];
                       v125 = v114;
                       v118 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v116, &v125, &v124, 1);
-                      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v117, v119, @"ANSTErrorDomain", 5, v118);
+                      *error = objc_msgSend_errorWithDomain_code_userInfo_(v117, v119, @"ANSTErrorDomain", 5, v118);
                     }
                   }
                 }
@@ -710,13 +710,13 @@ LABEL_24:
           sub_22E658A28();
         }
 
-        if (a3)
+        if (error)
         {
           v51 = MEMORY[0x277CCA9B8];
           v122 = *MEMORY[0x277CCA068];
           v123 = v48;
           v52 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v50, &v123, &v122, 1);
-          *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v51, v53, @"ANSTErrorDomain", 3, v52);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v51, v53, @"ANSTErrorDomain", 3, v52);
         }
 
         goto LABEL_22;
@@ -741,13 +741,13 @@ LABEL_24:
           sub_22E658A28();
         }
 
-        if (a3)
+        if (error)
         {
           v27 = MEMORY[0x277CCA9B8];
           v140 = *MEMORY[0x277CCA068];
           v141[0] = v24;
           v28 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v26, v141, &v140, 1);
-          *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v27, v29, @"ANSTErrorDomain", 5, v28);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v27, v29, @"ANSTErrorDomain", 5, v28);
         }
 
 LABEL_22:
@@ -766,10 +766,10 @@ LABEL_67:
   return v3;
 }
 
-- (BOOL)_allocateAndBindNetworkInputsExcept:(id)a3 error:(id *)a4
+- (BOOL)_allocateAndBindNetworkInputsExcept:(id)except error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  exceptCopy = except;
   if (!self->_operation)
   {
     v17 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"E5 execution stream operation is NULL");
@@ -779,13 +779,13 @@ LABEL_67:
       sub_22E658A9C();
     }
 
-    if (a4)
+    if (error)
     {
       v20 = MEMORY[0x277CCA9B8];
       v41 = *MEMORY[0x277CCA068];
       v42[0] = v17;
       v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, v42, &v41, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 3, v21);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 3, v21);
     }
 
     goto LABEL_13;
@@ -802,13 +802,13 @@ LABEL_67:
       sub_22E658A9C();
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v39 = *MEMORY[0x277CCA068];
       v40 = v11;
       v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, &v40, &v39, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
     }
 
 LABEL_13:
@@ -829,13 +829,13 @@ LABEL_13:
       sub_22E658A9C();
     }
 
-    if (a4)
+    if (error)
     {
       v32 = MEMORY[0x277CCA9B8];
       v37 = *MEMORY[0x277CCA068];
       v38 = v29;
       v33 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v31, &v38, &v37, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 5, v33);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 5, v33);
     }
 
     v23 = 0;
@@ -853,10 +853,10 @@ LABEL_22:
   return v23;
 }
 
-- (BOOL)_allocateAndBindNetworkOutputsExcept:(id)a3 error:(id *)a4
+- (BOOL)_allocateAndBindNetworkOutputsExcept:(id)except error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  exceptCopy = except;
   if (!self->_operation)
   {
     v17 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"E5 execution stream operation is NULL");
@@ -866,13 +866,13 @@ LABEL_22:
       sub_22E658B10();
     }
 
-    if (a4)
+    if (error)
     {
       v20 = MEMORY[0x277CCA9B8];
       v41 = *MEMORY[0x277CCA068];
       v42[0] = v17;
       v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, v42, &v41, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 3, v21);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 3, v21);
     }
 
     goto LABEL_13;
@@ -889,13 +889,13 @@ LABEL_22:
       sub_22E658B10();
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v39 = *MEMORY[0x277CCA068];
       v40 = v11;
       v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, &v40, &v39, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
     }
 
 LABEL_13:
@@ -916,13 +916,13 @@ LABEL_13:
       sub_22E658B10();
     }
 
-    if (a4)
+    if (error)
     {
       v32 = MEMORY[0x277CCA9B8];
       v37 = *MEMORY[0x277CCA068];
       v38 = v29;
       v33 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v31, &v38, &v37, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 5, v33);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 5, v33);
     }
 
     v23 = 0;
@@ -940,7 +940,7 @@ LABEL_22:
   return v23;
 }
 
-- (BOOL)_allocateAndBindPort:(e5rt_io_port *)a3 portName:(const char *)a4 error:(id *)a5
+- (BOOL)_allocateAndBindPort:(e5rt_io_port *)port portName:(const char *)name error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
   is_tensor = e5rt_io_port_is_tensor();
@@ -955,7 +955,7 @@ LABEL_22:
       sub_22E658B84();
     }
 
-    if (a5)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v34 = *MEMORY[0x277CCA068];
@@ -963,7 +963,7 @@ LABEL_22:
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v35, &v34, 1);
       v15 = LABEL_6:;
       objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
-      *a5 = LABEL_7:;
+      *error = LABEL_7:;
     }
   }
 
@@ -981,7 +981,7 @@ LABEL_22:
         sub_22E658B84();
       }
 
-      if (a5)
+      if (error)
       {
         v14 = MEMORY[0x277CCA9B8];
         v32 = *MEMORY[0x277CCA068];
@@ -993,14 +993,14 @@ LABEL_22:
 
     else
     {
-      v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v20, @"E5 network port named '%s' is neither a tensor port nor a surface port!", a4);
+      v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v20, @"E5 network port named '%s' is neither a tensor port nor a surface port!", name);
       v26 = _ANSTLoggingGetOSLogForCategoryANSTKit();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         sub_22E658B84();
       }
 
-      if (a5)
+      if (error)
       {
         v28 = MEMORY[0x277CCA9B8];
         v30 = *MEMORY[0x277CCA068];
@@ -1017,7 +1017,7 @@ LABEL_22:
   return result;
 }
 
-- (BOOL)_allocateAndBindBufferPort:(e5rt_io_port *)a3 error:(id *)a4
+- (BOOL)_allocateAndBindBufferPort:(e5rt_io_port *)port error:(id *)error
 {
   v52[1] = *MEMORY[0x277D85DE8];
   e5rt_io_port_retain_buffer_object();
@@ -1032,13 +1032,13 @@ LABEL_22:
       sub_22E658BF8();
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v51 = *MEMORY[0x277CCA068];
       v52[0] = v8;
       v12 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, v52, &v51, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
     }
 
     goto LABEL_25;
@@ -1055,13 +1055,13 @@ LABEL_22:
       sub_22E658BF8();
     }
 
-    if (a4)
+    if (error)
     {
       v20 = MEMORY[0x277CCA9B8];
       v49 = *MEMORY[0x277CCA068];
       v50 = v17;
       v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, &v50, &v49, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 5, v21);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 5, v21);
     }
 
     goto LABEL_25;
@@ -1078,7 +1078,7 @@ LABEL_22:
       sub_22E658BF8();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1112,7 +1112,7 @@ LABEL_22:
       sub_22E658BF8();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1124,7 +1124,7 @@ LABEL_22:
     v32 = objc_msgSend_errorWithDomain_code_userInfo_(v40, v41, @"ANSTErrorDomain", 5, v30);
   }
 
-  *a4 = v32;
+  *error = v32;
 
 LABEL_24:
 LABEL_25:
@@ -1134,7 +1134,7 @@ LABEL_26:
   return v42;
 }
 
-- (BOOL)_allocateAndBindSurfacePort:(e5rt_io_port *)a3 error:(id *)a4
+- (BOOL)_allocateAndBindSurfacePort:(e5rt_io_port *)port error:(id *)error
 {
   v52[1] = *MEMORY[0x277D85DE8];
   e5rt_io_port_retain_surface_object();
@@ -1149,13 +1149,13 @@ LABEL_26:
       sub_22E658C6C();
     }
 
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v51 = *MEMORY[0x277CCA068];
       v52[0] = v8;
       v12 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v10, v52, &v51, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v11, v13, @"ANSTErrorDomain", 5, v12);
     }
 
     goto LABEL_25;
@@ -1172,13 +1172,13 @@ LABEL_26:
       sub_22E658C6C();
     }
 
-    if (a4)
+    if (error)
     {
       v20 = MEMORY[0x277CCA9B8];
       v49 = *MEMORY[0x277CCA068];
       v50 = v17;
       v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v19, &v50, &v49, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 5, v21);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v20, v22, @"ANSTErrorDomain", 5, v21);
     }
 
     goto LABEL_25;
@@ -1195,7 +1195,7 @@ LABEL_26:
       sub_22E658C6C();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1229,7 +1229,7 @@ LABEL_26:
       sub_22E658C6C();
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1241,7 +1241,7 @@ LABEL_26:
     v32 = objc_msgSend_errorWithDomain_code_userInfo_(v40, v41, @"ANSTErrorDomain", 5, v30);
   }
 
-  *a4 = v32;
+  *error = v32;
 
 LABEL_24:
 LABEL_25:
@@ -1251,10 +1251,10 @@ LABEL_26:
   return v42;
 }
 
-- (BOOL)_bindNetworkInputsToExistingNetwork:(id)a3 error:(id *)a4
+- (BOOL)_bindNetworkInputsToExistingNetwork:(id)network error:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  networkCopy = network;
   operation = self->_operation;
   num_inputs = e5rt_execution_stream_operation_get_num_inputs();
   if (num_inputs)
@@ -1267,13 +1267,13 @@ LABEL_26:
       sub_22E658CE0();
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v33 = *MEMORY[0x277CCA068];
       v34[0] = v11;
       v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v34, &v33, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
     }
 
     v17 = 0;
@@ -1294,13 +1294,13 @@ LABEL_26:
         sub_22E658CE0();
       }
 
-      if (a4)
+      if (error)
       {
         v26 = MEMORY[0x277CCA9B8];
         v31 = *MEMORY[0x277CCA068];
         v32 = v23;
         v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, &v32, &v31, 1);
-        *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"ANSTErrorDomain", 5, v27);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"ANSTErrorDomain", 5, v27);
       }
 
       v17 = 0;
@@ -1318,10 +1318,10 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)_bindNetworkOutputsToExistingNetwork:(id)a3 error:(id *)a4
+- (BOOL)_bindNetworkOutputsToExistingNetwork:(id)network error:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  networkCopy = network;
   operation = self->_operation;
   num_outputs = e5rt_execution_stream_operation_get_num_outputs();
   if (num_outputs)
@@ -1334,13 +1334,13 @@ LABEL_26:
       sub_22E658D54();
     }
 
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x277CCA9B8];
       v33 = *MEMORY[0x277CCA068];
       v34[0] = v11;
       v15 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v13, v34, &v33, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v14, v16, @"ANSTErrorDomain", 5, v15);
     }
 
     v17 = 0;
@@ -1361,13 +1361,13 @@ LABEL_26:
         sub_22E658D54();
       }
 
-      if (a4)
+      if (error)
       {
         v26 = MEMORY[0x277CCA9B8];
         v31 = *MEMORY[0x277CCA068];
         v32 = v23;
         v27 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v25, &v32, &v31, 1);
-        *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"ANSTErrorDomain", 5, v27);
+        *error = objc_msgSend_errorWithDomain_code_userInfo_(v26, v28, @"ANSTErrorDomain", 5, v27);
       }
 
       v17 = 0;
@@ -1385,13 +1385,13 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)bindNetworkInputNamed:(id)a3 toTensor:(id)a4 error:(id *)a5
+- (BOOL)bindNetworkInputNamed:(id)named toTensor:(id)tensor error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  tensorCopy = tensor;
   operation = self->_operation;
-  v10 = a3;
-  objc_msgSend_UTF8String(v10, v11, v12);
+  namedCopy = named;
+  objc_msgSend_UTF8String(namedCopy, v11, v12);
   v13 = e5rt_execution_stream_operation_retain_input_port();
   if (v13)
   {
@@ -1404,7 +1404,7 @@ LABEL_26:
       sub_22E658DC8();
     }
 
-    if (!a5)
+    if (!error)
     {
       v24 = 0;
       goto LABEL_11;
@@ -1415,14 +1415,14 @@ LABEL_26:
     v32[0] = v18;
     v22 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v20, v32, &v31, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v21, v23, @"ANSTErrorDomain", 5, v22);
-    *a5 = v24 = 0;
+    *error = v24 = 0;
 LABEL_9:
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v24 = objc_msgSend__bindBufferPort_toTensor_error_(self, v14, 0, v8, a5);
+  v24 = objc_msgSend__bindBufferPort_toTensor_error_(self, v14, 0, tensorCopy, error);
   v25 = e5rt_io_port_release();
   if (v25)
   {
@@ -1444,13 +1444,13 @@ LABEL_12:
   return v24;
 }
 
-- (BOOL)bindNetworkOutputNamed:(id)a3 toTensor:(id)a4 error:(id *)a5
+- (BOOL)bindNetworkOutputNamed:(id)named toTensor:(id)tensor error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  tensorCopy = tensor;
   operation = self->_operation;
-  v10 = a3;
-  objc_msgSend_UTF8String(v10, v11, v12);
+  namedCopy = named;
+  objc_msgSend_UTF8String(namedCopy, v11, v12);
   v13 = e5rt_execution_stream_operation_retain_output_port();
   if (v13)
   {
@@ -1463,7 +1463,7 @@ LABEL_12:
       sub_22E658E3C();
     }
 
-    if (!a5)
+    if (!error)
     {
       v24 = 0;
       goto LABEL_11;
@@ -1474,14 +1474,14 @@ LABEL_12:
     v32[0] = v18;
     v22 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v20, v32, &v31, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v21, v23, @"ANSTErrorDomain", 5, v22);
-    *a5 = v24 = 0;
+    *error = v24 = 0;
 LABEL_9:
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v24 = objc_msgSend__bindBufferPort_toTensor_error_(self, v14, 0, v8, a5);
+  v24 = objc_msgSend__bindBufferPort_toTensor_error_(self, v14, 0, tensorCopy, error);
   v25 = e5rt_io_port_release();
   if (v25)
   {
@@ -1503,12 +1503,12 @@ LABEL_12:
   return v24;
 }
 
-- (id)tensorSurfaceForNetworkInputNamed:(id)a3 error:(id *)a4
+- (id)tensorSurfaceForNetworkInputNamed:(id)named error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  namedCopy = named;
   operation = self->_operation;
-  v8 = v6;
+  v8 = namedCopy;
   objc_msgSend_UTF8String(v8, v9, v10);
   v11 = e5rt_execution_stream_operation_retain_input_port();
   if (v11)
@@ -1522,7 +1522,7 @@ LABEL_12:
       sub_22E658EB0();
     }
 
-    if (!a4)
+    if (!error)
     {
       v22 = 0;
       goto LABEL_11;
@@ -1533,12 +1533,12 @@ LABEL_12:
     v30[0] = v16;
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v18, v30, &v29, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v19, v21, @"ANSTErrorDomain", 5, v20);
-    *a4 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
   {
-    v22 = objc_msgSend__tensorSurfaceForPort_name_error_(self, v12, 0, v6, a4);
+    v22 = objc_msgSend__tensorSurfaceForPort_name_error_(self, v12, 0, namedCopy, error);
     v23 = e5rt_io_port_release();
     if (!v23)
     {
@@ -1563,12 +1563,12 @@ LABEL_12:
   return v22;
 }
 
-- (id)tensorSurfaceForNetworkOutputNamed:(id)a3 error:(id *)a4
+- (id)tensorSurfaceForNetworkOutputNamed:(id)named error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  namedCopy = named;
   operation = self->_operation;
-  v8 = v6;
+  v8 = namedCopy;
   objc_msgSend_UTF8String(v8, v9, v10);
   v11 = e5rt_execution_stream_operation_retain_output_port();
   if (v11)
@@ -1582,7 +1582,7 @@ LABEL_12:
       sub_22E658F24();
     }
 
-    if (!a4)
+    if (!error)
     {
       v22 = 0;
       goto LABEL_11;
@@ -1593,12 +1593,12 @@ LABEL_12:
     v30[0] = v16;
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v18, v30, &v29, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v19, v21, @"ANSTErrorDomain", 5, v20);
-    *a4 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
   {
-    v22 = objc_msgSend__tensorSurfaceForPort_name_error_(self, v12, 0, v6, a4);
+    v22 = objc_msgSend__tensorSurfaceForPort_name_error_(self, v12, 0, namedCopy, error);
     v23 = e5rt_io_port_release();
     if (!v23)
     {
@@ -1623,10 +1623,10 @@ LABEL_12:
   return v22;
 }
 
-- (BOOL)_bindBufferPort:(e5rt_io_port *)a3 toTensor:(id)a4 error:(id *)a5
+- (BOOL)_bindBufferPort:(e5rt_io_port *)port toTensor:(id)tensor error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  tensorCopy = tensor;
   v9 = e5rt_io_port_retain_tensor_desc();
   if (v9)
   {
@@ -1638,24 +1638,24 @@ LABEL_12:
       sub_22E658F98();
     }
 
-    if (a5)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
       v48 = *MEMORY[0x277CCA068];
       v49[0] = v12;
       v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v14, v49, &v48, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 5, v16);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v17, @"ANSTErrorDomain", 5, v16);
     }
   }
 
   else
   {
-    v18 = objc_msgSend_tensorDescriptor(v6, v7, v8);
-    v20 = objc_msgSend_matchesE5TensorDescriptor_error_(v18, v19, 0, a5);
+    v18 = objc_msgSend_tensorDescriptor(tensorCopy, v7, v8);
+    v20 = objc_msgSend_matchesE5TensorDescriptor_error_(v18, v19, 0, error);
 
     if (v20)
     {
-      objc_msgSend_surface(v6, v21, v22);
+      objc_msgSend_surface(tensorCopy, v21, v22);
       v23 = e5rt_buffer_object_create_from_iosurface();
       if (v23)
       {
@@ -1667,13 +1667,13 @@ LABEL_12:
           sub_22E658F98();
         }
 
-        if (a5)
+        if (error)
         {
           v29 = MEMORY[0x277CCA9B8];
           v46 = *MEMORY[0x277CCA068];
           v47 = v26;
           v30 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v28, &v47, &v46, 1);
-          *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 5, v30);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v29, v31, @"ANSTErrorDomain", 5, v30);
         }
       }
 
@@ -1694,13 +1694,13 @@ LABEL_12:
           sub_22E658F98();
         }
 
-        if (a5)
+        if (error)
         {
           v38 = MEMORY[0x277CCA9B8];
           v44 = *MEMORY[0x277CCA068];
           v45 = v35;
           v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v37, &v45, &v44, 1);
-          *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v38, v40, @"ANSTErrorDomain", 5, v39);
+          *error = objc_msgSend_errorWithDomain_code_userInfo_(v38, v40, @"ANSTErrorDomain", 5, v39);
         }
       }
     }
@@ -1713,10 +1713,10 @@ LABEL_21:
   return v41;
 }
 
-- (id)_tensorSurfaceForPort:(e5rt_io_port *)a3 name:(id)a4 error:(id *)a5
+- (id)_tensorSurfaceForPort:(e5rt_io_port *)port name:(id)name error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   v7 = e5rt_io_port_retain_buffer_object();
   if (v7)
   {
@@ -1728,13 +1728,13 @@ LABEL_21:
       sub_22E65900C();
     }
 
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v48 = *MEMORY[0x277CCA068];
       v49[0] = v10;
       v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v49, &v48, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
     }
 
 LABEL_19:
@@ -1754,13 +1754,13 @@ LABEL_19:
       sub_22E65900C();
     }
 
-    if (a5)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v46 = *MEMORY[0x277CCA068];
       v47 = v19;
       v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v21, &v47, &v46, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v22, v24, @"ANSTErrorDomain", 5, v23);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v22, v24, @"ANSTErrorDomain", 5, v23);
     }
 
     goto LABEL_19;
@@ -1777,24 +1777,24 @@ LABEL_19:
       sub_22E65900C();
     }
 
-    if (a5)
+    if (error)
     {
       v31 = MEMORY[0x277CCA9B8];
       v44 = *MEMORY[0x277CCA068];
       v45 = v28;
       v32 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v30, &v45, &v44, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v31, v33, @"ANSTErrorDomain", 5, v32);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v31, v33, @"ANSTErrorDomain", 5, v32);
     }
 
     goto LABEL_19;
   }
 
   v39 = [ANSTTensorDescriptor alloc];
-  v41 = objc_msgSend_initWithE5TensorDescriptor_name_error_(v39, v40, 0, v6, a5);
+  v41 = objc_msgSend_initWithE5TensorDescriptor_name_error_(v39, v40, 0, nameCopy, error);
   if (v41)
   {
     v42 = [ANSTTensorSurface alloc];
-    v35 = objc_msgSend_initWithDescriptor_ioSurface_error_(v42, v43, v41, 0, a5);
+    v35 = objc_msgSend_initWithDescriptor_ioSurface_error_(v42, v43, v41, 0, error);
   }
 
   else
@@ -1819,13 +1819,13 @@ LABEL_20:
   return v36;
 }
 
-- (BOOL)bindNetworkInputNamed:(id)a3 toPixelBuffer:(id)a4 error:(id *)a5
+- (BOOL)bindNetworkInputNamed:(id)named toPixelBuffer:(id)buffer error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  bufferCopy = buffer;
   operation = self->_operation;
-  v10 = a3;
-  objc_msgSend_UTF8String(v10, v11, v12);
+  namedCopy = named;
+  objc_msgSend_UTF8String(namedCopy, v11, v12);
   v13 = e5rt_execution_stream_operation_retain_input_port();
   if (v13)
   {
@@ -1838,7 +1838,7 @@ LABEL_20:
       sub_22E659080();
     }
 
-    if (!a5)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_11;
@@ -1849,15 +1849,15 @@ LABEL_20:
     v35[0] = v19;
     v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v21, v35, &v34, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v22, v24, @"ANSTErrorDomain", 5, v23);
-    *a5 = v25 = 0;
+    *error = v25 = 0;
 LABEL_9:
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v26 = objc_msgSend_pixelBuffer(v8, v14, v15);
-  v25 = objc_msgSend__bindSurfacePort_toPixelBuffer_error_(self, v27, 0, v26, a5);
+  v26 = objc_msgSend_pixelBuffer(bufferCopy, v14, v15);
+  v25 = objc_msgSend__bindSurfacePort_toPixelBuffer_error_(self, v27, 0, v26, error);
   v28 = e5rt_io_port_release();
   if (v28)
   {
@@ -1879,13 +1879,13 @@ LABEL_12:
   return v25;
 }
 
-- (BOOL)bindNetworkOutputNamed:(id)a3 toPixelBuffer:(id)a4 error:(id *)a5
+- (BOOL)bindNetworkOutputNamed:(id)named toPixelBuffer:(id)buffer error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  bufferCopy = buffer;
   operation = self->_operation;
-  v10 = a3;
-  objc_msgSend_UTF8String(v10, v11, v12);
+  namedCopy = named;
+  objc_msgSend_UTF8String(namedCopy, v11, v12);
   v13 = e5rt_execution_stream_operation_retain_output_port();
   if (v13)
   {
@@ -1898,7 +1898,7 @@ LABEL_12:
       sub_22E6590F4();
     }
 
-    if (!a5)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_11;
@@ -1909,15 +1909,15 @@ LABEL_12:
     v35[0] = v19;
     v23 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v21, v35, &v34, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v22, v24, @"ANSTErrorDomain", 5, v23);
-    *a5 = v25 = 0;
+    *error = v25 = 0;
 LABEL_9:
 
 LABEL_11:
     goto LABEL_12;
   }
 
-  v26 = objc_msgSend_pixelBuffer(v8, v14, v15);
-  v25 = objc_msgSend__bindSurfacePort_toPixelBuffer_error_(self, v27, 0, v26, a5);
+  v26 = objc_msgSend_pixelBuffer(bufferCopy, v14, v15);
+  v25 = objc_msgSend__bindSurfacePort_toPixelBuffer_error_(self, v27, 0, v26, error);
   v28 = e5rt_io_port_release();
   if (v28)
   {
@@ -1939,12 +1939,12 @@ LABEL_12:
   return v25;
 }
 
-- (id)pixelBufferForNetworkInputNamed:(id)a3 error:(id *)a4
+- (id)pixelBufferForNetworkInputNamed:(id)named error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  namedCopy = named;
   operation = self->_operation;
-  v8 = v6;
+  v8 = namedCopy;
   objc_msgSend_UTF8String(v8, v9, v10);
   v11 = e5rt_execution_stream_operation_retain_input_port();
   if (v11)
@@ -1958,7 +1958,7 @@ LABEL_12:
       sub_22E659168();
     }
 
-    if (!a4)
+    if (!error)
     {
       v22 = 0;
       goto LABEL_11;
@@ -1969,12 +1969,12 @@ LABEL_12:
     v30[0] = v16;
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v18, v30, &v29, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v19, v21, @"ANSTErrorDomain", 5, v20);
-    *a4 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
   {
-    v22 = objc_msgSend__pixelBufferForPort_name_error_(self, v12, 0, v6, a4);
+    v22 = objc_msgSend__pixelBufferForPort_name_error_(self, v12, 0, namedCopy, error);
     v23 = e5rt_io_port_release();
     if (!v23)
     {
@@ -1999,12 +1999,12 @@ LABEL_12:
   return v22;
 }
 
-- (id)pixelBufferForNetworkOutputNamed:(id)a3 error:(id *)a4
+- (id)pixelBufferForNetworkOutputNamed:(id)named error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  namedCopy = named;
   operation = self->_operation;
-  v8 = v6;
+  v8 = namedCopy;
   objc_msgSend_UTF8String(v8, v9, v10);
   v11 = e5rt_execution_stream_operation_retain_output_port();
   if (v11)
@@ -2018,7 +2018,7 @@ LABEL_12:
       sub_22E6591DC();
     }
 
-    if (!a4)
+    if (!error)
     {
       v22 = 0;
       goto LABEL_11;
@@ -2029,12 +2029,12 @@ LABEL_12:
     v30[0] = v16;
     v20 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v18, v30, &v29, 1);
     objc_msgSend_errorWithDomain_code_userInfo_(v19, v21, @"ANSTErrorDomain", 5, v20);
-    *a4 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
   {
-    v22 = objc_msgSend__pixelBufferForPort_name_error_(self, v12, 0, v6, a4);
+    v22 = objc_msgSend__pixelBufferForPort_name_error_(self, v12, 0, namedCopy, error);
     v23 = e5rt_io_port_release();
     if (!v23)
     {
@@ -2059,7 +2059,7 @@ LABEL_12:
   return v22;
 }
 
-- (BOOL)_bindSurfacePort:(e5rt_io_port *)a3 toPixelBuffer:(__CVBuffer *)a4 error:(id *)a5
+- (BOOL)_bindSurfacePort:(e5rt_io_port *)port toPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v91[1] = *MEMORY[0x277D85DE8];
   v7 = e5rt_io_port_retain_surface_desc();
@@ -2073,21 +2073,21 @@ LABEL_12:
       sub_22E659250();
     }
 
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v76 = *MEMORY[0x277CCA068];
       v77 = v10;
       v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, &v77, &v76, 1);
-      *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
     }
 
     goto LABEL_30;
   }
 
-  if (CVPixelBufferGetIOSurface(a4))
+  if (CVPixelBufferGetIOSurface(buffer))
   {
-    Width = CVPixelBufferGetWidth(a4);
+    Width = CVPixelBufferGetWidth(buffer);
     v19 = e5rt_surface_desc_get_width();
     if (v19)
     {
@@ -2099,7 +2099,7 @@ LABEL_12:
         sub_22E6592C4();
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -2110,7 +2110,7 @@ LABEL_12:
       v26 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v24, &v89, &v88, 1);
       v28 = objc_msgSend_errorWithDomain_code_userInfo_(v25, v27, @"ANSTErrorDomain", 5, v26);
 LABEL_28:
-      *a5 = v28;
+      *error = v28;
 
 LABEL_29:
       goto LABEL_30;
@@ -2125,7 +2125,7 @@ LABEL_29:
         sub_22E6592C4();
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -2138,7 +2138,7 @@ LABEL_29:
       goto LABEL_28;
     }
 
-    Height = CVPixelBufferGetHeight(a4);
+    Height = CVPixelBufferGetHeight(buffer);
     v37 = e5rt_surface_desc_get_height();
     if (v37)
     {
@@ -2150,7 +2150,7 @@ LABEL_29:
         sub_22E6592C4();
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_42;
       }
@@ -2161,7 +2161,7 @@ LABEL_29:
       v44 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v42, &v85, &v84, 1);
       v46 = objc_msgSend_errorWithDomain_code_userInfo_(v43, v45, @"ANSTErrorDomain", 5, v44);
 LABEL_41:
-      *a5 = v46;
+      *error = v46;
 
 LABEL_42:
       goto LABEL_30;
@@ -2176,7 +2176,7 @@ LABEL_42:
         sub_22E6592C4();
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_42;
       }
@@ -2189,7 +2189,7 @@ LABEL_42:
       goto LABEL_41;
     }
 
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
     format = e5rt_surface_desc_get_format();
     if (format)
     {
@@ -2201,7 +2201,7 @@ LABEL_42:
         sub_22E6592C4();
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_63;
       }
@@ -2212,7 +2212,7 @@ LABEL_42:
       v62 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v60, &v81, &v80, 1);
       v64 = objc_msgSend_errorWithDomain_code_userInfo_(v61, v63, @"ANSTErrorDomain", 5, v62);
 LABEL_62:
-      *a5 = v64;
+      *error = v64;
 
 LABEL_63:
       goto LABEL_30;
@@ -2237,7 +2237,7 @@ LABEL_57:
         sub_22E6592C4();
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_63;
       }
@@ -2268,13 +2268,13 @@ LABEL_57:
     sub_22E6592C4();
   }
 
-  if (a5)
+  if (error)
   {
     v32 = MEMORY[0x277CCA9B8];
     v90 = *MEMORY[0x277CCA068];
     v91[0] = v29;
     v33 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v31, v91, &v90, 1);
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 13, v33);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v32, v34, @"ANSTErrorDomain", 13, v33);
   }
 
 LABEL_30:
@@ -2282,10 +2282,10 @@ LABEL_30:
   return 0;
 }
 
-- (id)_pixelBufferForPort:(e5rt_io_port *)a3 name:(id)a4 error:(id *)a5
+- (id)_pixelBufferForPort:(e5rt_io_port *)port name:(id)name error:(id *)error
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   pixelBufferOut = 0;
   v7 = e5rt_io_port_retain_surface_object();
   if (!v7)
@@ -2301,7 +2301,7 @@ LABEL_30:
         sub_22E6593AC();
       }
 
-      if (a5)
+      if (error)
       {
         v24 = MEMORY[0x277CCA9B8];
         v58 = *MEMORY[0x277CCA068];
@@ -2311,7 +2311,7 @@ LABEL_30:
 LABEL_17:
         v16 = 0;
         v17 = 0;
-        *a5 = v27;
+        *error = v27;
 LABEL_20:
 
         goto LABEL_21;
@@ -2342,21 +2342,21 @@ LABEL_20:
         v21 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v45, v55, v54, 4);
 
         v46 = [ANSTPixelBufferDescriptor alloc];
-        v25 = objc_msgSend_initWithName_pixelBufferAttributes_error_(v46, v47, v6, v21, a5);
+        v25 = objc_msgSend_initWithName_pixelBufferAttributes_error_(v46, v47, nameCopy, v21, error);
         v48 = [ANSTPixelBuffer alloc];
-        v17 = objc_msgSend_initWithDescriptor_pixelBuffer_orientation_error_(v48, v49, v25, pixelBufferOut, 0, a5);
+        v17 = objc_msgSend_initWithDescriptor_pixelBuffer_orientation_error_(v48, v49, v25, pixelBufferOut, 0, error);
         v16 = 1;
         goto LABEL_20;
       }
 
-      v21 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v28, @"Failed to create CVPixelBuffer from E5 surface object named %@", v6);
+      v21 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v28, @"Failed to create CVPixelBuffer from E5 surface object named %@", nameCopy);
       v29 = _ANSTLoggingGetOSLogForCategoryANSTKit();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         sub_22E6593AC();
       }
 
-      if (a5)
+      if (error)
       {
         v31 = MEMORY[0x277CCA9B8];
         v56 = *MEMORY[0x277CCA068];
@@ -2382,13 +2382,13 @@ LABEL_21:
     sub_22E6593AC();
   }
 
-  if (a5)
+  if (error)
   {
     v13 = MEMORY[0x277CCA9B8];
     v60 = *MEMORY[0x277CCA068];
     v61[0] = v10;
     v14 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v12, v61, &v60, 1);
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v13, v15, @"ANSTErrorDomain", 5, v14);
   }
 
   v16 = 0;

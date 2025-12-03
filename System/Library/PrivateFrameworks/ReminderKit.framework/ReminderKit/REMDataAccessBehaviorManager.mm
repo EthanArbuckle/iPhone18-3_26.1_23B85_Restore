@@ -1,18 +1,18 @@
 @interface REMDataAccessBehaviorManager
-- (BOOL)_getBoolForKey:(id)a3 withDefaultValue:(BOOL)a4;
+- (BOOL)_getBoolForKey:(id)key withDefaultValue:(BOOL)value;
 - (REMDataAccessBehaviorManager)init;
-- (REMDataAccessBehaviorManager)initWithDaemonController:(id)a3;
-- (id)_debugPerformerWithReason:(id)a3 errorHandler:(id)a4;
-- (id)fetchStatusReportsWithError:(id *)a3;
-- (int64_t)_getIntegerForKey:(id)a3 withDefaultValue:(int64_t)a4;
-- (void)_crashDaemonWithMessage:(id)a3;
-- (void)_setIntegerValue:(int64_t)a3 forBehaviorKey:(id)a4;
-- (void)applyChangeTrackingBehavior:(int64_t)a3;
+- (REMDataAccessBehaviorManager)initWithDaemonController:(id)controller;
+- (id)_debugPerformerWithReason:(id)reason errorHandler:(id)handler;
+- (id)fetchStatusReportsWithError:(id *)error;
+- (int64_t)_getIntegerForKey:(id)key withDefaultValue:(int64_t)value;
+- (void)_crashDaemonWithMessage:(id)message;
+- (void)_setIntegerValue:(int64_t)value forBehaviorKey:(id)key;
+- (void)applyChangeTrackingBehavior:(int64_t)behavior;
 - (void)disableBabySitter;
 - (void)disableDataAccess;
 - (void)enableBabySitter;
 - (void)enableDataAccess;
-- (void)unapplyChangeTrackingBehavior:(int64_t)a3;
+- (void)unapplyChangeTrackingBehavior:(int64_t)behavior;
 @end
 
 @implementation REMDataAccessBehaviorManager
@@ -25,22 +25,22 @@
   return v4;
 }
 
-- (REMDataAccessBehaviorManager)initWithDaemonController:(id)a3
+- (REMDataAccessBehaviorManager)initWithDaemonController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = REMDataAccessBehaviorManager;
   v6 = [(REMDataAccessBehaviorManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_daemonController, a3);
+    objc_storeStrong(&v6->_daemonController, controller);
   }
 
   return v7;
 }
 
-- (id)fetchStatusReportsWithError:(id *)a3
+- (id)fetchStatusReportsWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -67,9 +67,9 @@
   v7[4] = &v15;
   v7[5] = &v9;
   [v4 dataAccessStatusReports:v7];
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v5 = v16[5];
@@ -146,40 +146,40 @@ void __60__REMDataAccessBehaviorManager_fetchStatusReportsWithError___block_invo
   [(REMDataAccessBehaviorManager *)self _crashDaemonWithMessage:@"Disable Babysitter"];
 }
 
-- (void)applyChangeTrackingBehavior:(int64_t)a3
+- (void)applyChangeTrackingBehavior:(int64_t)behavior
 {
-  [(REMDataAccessBehaviorManager *)self _setIntegerValue:[(REMDataAccessBehaviorManager *)self changeTrackingBehaviors]| a3 forBehaviorKey:@"DADREMChangeTrackingBehaviors"];
+  [(REMDataAccessBehaviorManager *)self _setIntegerValue:[(REMDataAccessBehaviorManager *)self changeTrackingBehaviors]| behavior forBehaviorKey:@"DADREMChangeTrackingBehaviors"];
 
   notify_post("com.apple.dataaccess.BehaviorOptionsChanged");
 }
 
-- (void)unapplyChangeTrackingBehavior:(int64_t)a3
+- (void)unapplyChangeTrackingBehavior:(int64_t)behavior
 {
-  [(REMDataAccessBehaviorManager *)self _setIntegerValue:[(REMDataAccessBehaviorManager *)self changeTrackingBehaviors]& ~a3 forBehaviorKey:@"DADREMChangeTrackingBehaviors"];
+  [(REMDataAccessBehaviorManager *)self _setIntegerValue:[(REMDataAccessBehaviorManager *)self changeTrackingBehaviors]& ~behavior forBehaviorKey:@"DADREMChangeTrackingBehaviors"];
 
   notify_post("com.apple.dataaccess.BehaviorOptionsChanged");
 }
 
-- (BOOL)_getBoolForKey:(id)a3 withDefaultValue:(BOOL)a4
+- (BOOL)_getBoolForKey:(id)key withDefaultValue:(BOOL)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = CFPreferencesCopyAppValue(@"BehaviorOptions", @"com.apple.DataAccess.BehaviorOptions");
   if (v6)
   {
     v7 = CFPreferencesCopyAppValue(@"BehaviorOptions", @"com.apple.DataAccess.BehaviorOptions");
-    v8 = [v7 objectForKeyedSubscript:v5];
+    v8 = [v7 objectForKeyedSubscript:keyCopy];
     if (objc_opt_respondsToSelector())
     {
-      a4 = [v8 BOOLValue];
+      value = [v8 BOOLValue];
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (void)_setIntegerValue:(int64_t)a3 forBehaviorKey:(id)a4
+- (void)_setIntegerValue:(int64_t)value forBehaviorKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = CFPreferencesCopyAppValue(@"BehaviorOptions", @"com.apple.DataAccess.BehaviorOptions");
   v10 = v6;
   if (v6)
@@ -193,34 +193,34 @@ void __60__REMDataAccessBehaviorManager_fetchStatusReportsWithError___block_invo
   }
 
   v8 = v7;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v8 setObject:v9 forKeyedSubscript:v5];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:value];
+  [v8 setObject:v9 forKeyedSubscript:keyCopy];
 
   CFPreferencesSetAppValue(@"BehaviorOptions", v8, @"com.apple.DataAccess.BehaviorOptions");
 }
 
-- (int64_t)_getIntegerForKey:(id)a3 withDefaultValue:(int64_t)a4
+- (int64_t)_getIntegerForKey:(id)key withDefaultValue:(int64_t)value
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = CFPreferencesCopyAppValue(@"BehaviorOptions", @"com.apple.DataAccess.BehaviorOptions");
   if (v6)
   {
     v7 = CFPreferencesCopyAppValue(@"BehaviorOptions", @"com.apple.DataAccess.BehaviorOptions");
-    v8 = [v7 objectForKeyedSubscript:v5];
+    v8 = [v7 objectForKeyedSubscript:keyCopy];
     if (objc_opt_respondsToSelector())
     {
-      a4 = [v8 integerValue];
+      value = [v8 integerValue];
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (void)_crashDaemonWithMessage:(id)a3
+- (void)_crashDaemonWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [(REMDataAccessBehaviorManager *)self _debugPerformerWithReason:@"DA_crashDaemon" errorHandler:&__block_literal_global_33];
-  [v5 crashDaemonWithMessage:v4];
+  [v5 crashDaemonWithMessage:messageCopy];
 }
 
 void __56__REMDataAccessBehaviorManager__crashDaemonWithMessage___block_invoke(uint64_t a1, void *a2)
@@ -233,18 +233,18 @@ void __56__REMDataAccessBehaviorManager__crashDaemonWithMessage___block_invoke(u
   }
 }
 
-- (id)_debugPerformerWithReason:(id)a3 errorHandler:(id)a4
+- (id)_debugPerformerWithReason:(id)reason errorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMDataAccessBehaviorManager *)self daemonController];
+  handlerCopy = handler;
+  reasonCopy = reason;
+  daemonController = [(REMDataAccessBehaviorManager *)self daemonController];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__REMDataAccessBehaviorManager__debugPerformerWithReason_errorHandler___block_invoke;
   v12[3] = &unk_1E7507CE0;
-  v13 = v6;
-  v9 = v6;
-  v10 = [v8 syncDebugPerformerWithReason:v7 errorHandler:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [daemonController syncDebugPerformerWithReason:reasonCopy errorHandler:v12];
 
   return v10;
 }

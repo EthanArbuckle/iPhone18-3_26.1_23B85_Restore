@@ -1,10 +1,10 @@
 @interface RBShaderLibrary
 + (RBShaderLibrary)defaultLibrary;
-+ (RBShaderLibrary)libraryWithContentsOfURL:(id)a3;
-+ (RBShaderLibrary)libraryWithData:(id)a3;
-+ (RBShaderLibrary)libraryWithSource:(id)a3;
++ (RBShaderLibrary)libraryWithContentsOfURL:(id)l;
++ (RBShaderLibrary)libraryWithData:(id)data;
++ (RBShaderLibrary)libraryWithSource:(id)source;
 + (RBShaderLibrary)systemLibrary;
-+ (id)defaultLibraryWithBundle:(id)a3;
++ (id)defaultLibraryWithBundle:(id)bundle;
 + (uint64_t)nullLibrary;
 - (MTLLibrary)metalLibrary;
 - (NSBundle)bundle;
@@ -44,11 +44,11 @@
   return +[RBShaderLibrary defaultLibrary]::default_library;
 }
 
-+ (id)defaultLibraryWithBundle:(id)a3
++ (id)defaultLibraryWithBundle:(id)bundle
 {
-  if (a3)
+  if (bundle)
   {
-    result = objc_getAssociatedObject(a3, "RBShaderLibrary");
+    result = objc_getAssociatedObject(bundle, "RBShaderLibrary");
     if (!result)
     {
       objc_opt_new();
@@ -65,23 +65,23 @@
   return result;
 }
 
-+ (RBShaderLibrary)libraryWithData:(id)a3
++ (RBShaderLibrary)libraryWithData:(id)data
 {
-  [a3 copy];
+  [data copy];
   objc_opt_new();
   operator new();
 }
 
-+ (RBShaderLibrary)libraryWithContentsOfURL:(id)a3
++ (RBShaderLibrary)libraryWithContentsOfURL:(id)l
 {
-  [a3 copy];
+  [l copy];
   objc_opt_new();
   operator new();
 }
 
-+ (RBShaderLibrary)libraryWithSource:(id)a3
++ (RBShaderLibrary)libraryWithSource:(id)source
 {
-  [a3 copy];
+  [source copy];
   objc_opt_new();
   operator new();
 }

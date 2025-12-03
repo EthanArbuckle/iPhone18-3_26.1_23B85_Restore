@@ -1,6 +1,6 @@
 @interface SQLitePropertyPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)SQLJoinClausesForEntityClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLJoinClausesForEntityClass:(Class)class;
 - (unint64_t)hash;
 @end
 
@@ -14,15 +14,15 @@
   return v3 + [(NSString *)self->_property hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = SQLitePropertyPredicate;
-  if ([(SQLitePredicate *)&v8 isEqual:v4])
+  if ([(SQLitePredicate *)&v8 isEqual:equalCopy])
   {
     property = self->_property;
-    if (property == v4[1])
+    if (property == equalCopy[1])
     {
       v6 = 1;
     }
@@ -41,10 +41,10 @@
   return v6;
 }
 
-- (id)SQLJoinClausesForEntityClass:(Class)a3
+- (id)SQLJoinClausesForEntityClass:(Class)class
 {
   v5 = objc_alloc_init(NSMutableSet);
-  [(objc_class *)a3 addJoinClausesForProperty:self->_property toJoins:v5];
+  [(objc_class *)class addJoinClausesForProperty:self->_property toJoins:v5];
 
   return v5;
 }

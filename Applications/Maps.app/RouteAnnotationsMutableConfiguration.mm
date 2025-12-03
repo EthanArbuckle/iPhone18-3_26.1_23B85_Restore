@@ -1,19 +1,19 @@
 @interface RouteAnnotationsMutableConfiguration
-+ (id)_customSelectedRouteTextFromIncidentAlert:(id)a3;
-+ (id)navConfigurationWithCurrentRoute:(id)a3 incidentAlert:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_customSelectedRouteTextFromIncidentAlert:(id)alert;
++ (id)navConfigurationWithCurrentRoute:(id)route incidentAlert:(id)alert;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)clear;
-- (void)filterTransitVehiclePositionsForTripsNotInSet:(id)a3;
-- (void)updateNavConfigurationWithCurrentRoute:(id)a3 incidentAlert:(id)a4;
+- (void)filterTransitVehiclePositionsForTripsNotInSet:(id)set;
+- (void)updateNavConfigurationWithCurrentRoute:(id)route incidentAlert:(id)alert;
 @end
 
 @implementation RouteAnnotationsMutableConfiguration
 
-- (void)filterTransitVehiclePositionsForTripsNotInSet:(id)a3
+- (void)filterTransitVehiclePositionsForTripsNotInSet:(id)set
 {
-  v4 = a3;
-  v5 = [(RouteAnnotationsConfiguration *)self transitVehiclePositions];
-  v6 = [v5 mutableCopy];
+  setCopy = set;
+  transitVehiclePositions = [(RouteAnnotationsConfiguration *)self transitVehiclePositions];
+  v6 = [transitVehiclePositions mutableCopy];
 
   if ([v6 count])
   {
@@ -21,9 +21,9 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v15 = self;
-    v7 = [(RouteAnnotationsConfiguration *)self transitVehiclePositions];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    selfCopy = self;
+    transitVehiclePositions2 = [(RouteAnnotationsConfiguration *)self transitVehiclePositions];
+    v8 = [transitVehiclePositions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -34,12 +34,12 @@
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(transitVehiclePositions2);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
           v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 tripID]);
-          v14 = [v4 containsObject:v13];
+          v14 = [setCopy containsObject:v13];
 
           if ((v14 & 1) == 0)
           {
@@ -47,13 +47,13 @@
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [transitVehiclePositions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
     }
 
-    self = v15;
+    self = selfCopy;
   }
 
   [(RouteAnnotationsConfiguration *)self setTransitVehiclePositions:v6];
@@ -65,20 +65,20 @@
   [v3 _copyPropertiesTo:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RouteAnnotationsConfiguration allocWithZone:?], "initWithRoute:", 0];
   [(RouteAnnotationsConfiguration *)self _copyPropertiesTo:v4];
   return v4;
 }
 
-- (void)updateNavConfigurationWithCurrentRoute:(id)a3 incidentAlert:(id)a4
+- (void)updateNavConfigurationWithCurrentRoute:(id)route incidentAlert:(id)alert
 {
-  v14 = a3;
-  v6 = a4;
+  routeCopy = route;
+  alertCopy = alert;
   v7 = objc_opt_new();
   v8 = v7;
-  if (!v14)
+  if (!routeCopy)
   {
     v10 = 0;
     v11 = 0x7FFFFFFFFFFFFFFFLL;
@@ -87,14 +87,14 @@
   }
 
   [v7 addObject:?];
-  if (v6)
+  if (alertCopy)
   {
-    v9 = [v6 alternateRouteToDisplay];
-    if (v9)
+    alternateRouteToDisplay = [alertCopy alternateRouteToDisplay];
+    if (alternateRouteToDisplay)
     {
-      [v8 addObject:v9];
-      v10 = [objc_opt_class() _customSelectedRouteTextFromIncidentAlert:v6];
-      if ([v6 isReroute])
+      [v8 addObject:alternateRouteToDisplay];
+      v10 = [objc_opt_class() _customSelectedRouteTextFromIncidentAlert:alertCopy];
+      if ([alertCopy isReroute])
       {
         v11 = [v8 count] - 1;
       }
@@ -112,9 +112,9 @@
   else
   {
     v13 = +[MNNavigationService sharedService];
-    v9 = [v13 alternateRoutes];
+    alternateRouteToDisplay = [v13 alternateRoutes];
 
-    [v8 addObjectsFromArray:v9];
+    [v8 addObjectsFromArray:alternateRouteToDisplay];
   }
 
   v10 = 0;
@@ -130,19 +130,19 @@ LABEL_12:
   [(RouteAnnotationsConfiguration *)self setRouteTrafficFeaturesActive:1];
 }
 
-+ (id)_customSelectedRouteTextFromIncidentAlert:(id)a3
++ (id)_customSelectedRouteTextFromIncidentAlert:(id)alert
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  alertCopy = alert;
+  v4 = alertCopy;
+  if (alertCopy)
   {
-    v5 = [v3 alertType];
-    if (v5 == 4)
+    alertType = [alertCopy alertType];
+    if (alertType == 4)
     {
       goto LABEL_5;
     }
 
-    if (v5 == 3)
+    if (alertType == 3)
     {
       if ([v4 secondsSaved] != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -164,7 +164,7 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    if (v5 == 1)
+    if (alertType == 1)
     {
 LABEL_5:
       v6 = +[NSBundle mainBundle];
@@ -180,12 +180,12 @@ LABEL_9:
   return v9;
 }
 
-+ (id)navConfigurationWithCurrentRoute:(id)a3 incidentAlert:(id)a4
++ (id)navConfigurationWithCurrentRoute:(id)route incidentAlert:(id)alert
 {
-  v5 = a4;
-  v6 = a3;
+  alertCopy = alert;
+  routeCopy = route;
   v7 = objc_alloc_init(RouteAnnotationsMutableConfiguration);
-  [(RouteAnnotationsMutableConfiguration *)v7 updateNavConfigurationWithCurrentRoute:v6 incidentAlert:v5];
+  [(RouteAnnotationsMutableConfiguration *)v7 updateNavConfigurationWithCurrentRoute:routeCopy incidentAlert:alertCopy];
 
   return v7;
 }

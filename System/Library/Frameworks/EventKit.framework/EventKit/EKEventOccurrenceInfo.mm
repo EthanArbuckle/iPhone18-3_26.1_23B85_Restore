@@ -1,21 +1,21 @@
 @interface EKEventOccurrenceInfo
-- (EKEventOccurrenceInfo)initWithObjectID:(id)a3 date:(double)a4;
+- (EKEventOccurrenceInfo)initWithObjectID:(id)d date:(double)date;
 - (id)description;
 @end
 
 @implementation EKEventOccurrenceInfo
 
-- (EKEventOccurrenceInfo)initWithObjectID:(id)a3 date:(double)a4
+- (EKEventOccurrenceInfo)initWithObjectID:(id)d date:(double)date
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = EKEventOccurrenceInfo;
   v8 = [(EKEventOccurrenceInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_objectID, a3);
-    v9->_date = a4;
+    objc_storeStrong(&v8->_objectID, d);
+    v9->_date = date;
   }
 
   return v9;

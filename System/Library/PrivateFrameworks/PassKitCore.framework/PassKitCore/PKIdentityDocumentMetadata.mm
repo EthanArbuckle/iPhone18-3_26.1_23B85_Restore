@@ -3,53 +3,53 @@
 - (NSString)cardTemplateIdentifier;
 - (NSString)description;
 - (NSString)serverEnvironmentIdentifier;
-- (PKIdentityDocumentMetadata)initWithCoder:(id)a3;
-- (PKIdentityDocumentMetadata)initWithProvisioningCredentialIdentifier:(id)a3 sharingInstanceIdentifier:(id)a4 cardConfigurationIdentifier:(id)a5 cardTemplateIdentifier:(id)a6 requiresSimultaneousRequestRouting:(BOOL)a7 issuingCountryCode:(id)a8 documentType:(int64_t)a9 preview:(id)a10;
-- (PKIdentityDocumentMetadata)initWithPushProvisioningTarget:(id)a3 preview:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKIdentityDocumentMetadata)initWithCoder:(id)coder;
+- (PKIdentityDocumentMetadata)initWithProvisioningCredentialIdentifier:(id)identifier sharingInstanceIdentifier:(id)instanceIdentifier cardConfigurationIdentifier:(id)configurationIdentifier cardTemplateIdentifier:(id)templateIdentifier requiresSimultaneousRequestRouting:(BOOL)routing issuingCountryCode:(id)code documentType:(int64_t)type preview:(id)self0;
+- (PKIdentityDocumentMetadata)initWithPushProvisioningTarget:(id)target preview:(id)preview;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)documentType;
-- (void)_extendableDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_extendableDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIdentityDocumentMetadata
 
-- (PKIdentityDocumentMetadata)initWithProvisioningCredentialIdentifier:(id)a3 sharingInstanceIdentifier:(id)a4 cardConfigurationIdentifier:(id)a5 cardTemplateIdentifier:(id)a6 requiresSimultaneousRequestRouting:(BOOL)a7 issuingCountryCode:(id)a8 documentType:(int64_t)a9 preview:(id)a10
+- (PKIdentityDocumentMetadata)initWithProvisioningCredentialIdentifier:(id)identifier sharingInstanceIdentifier:(id)instanceIdentifier cardConfigurationIdentifier:(id)configurationIdentifier cardTemplateIdentifier:(id)templateIdentifier requiresSimultaneousRequestRouting:(BOOL)routing issuingCountryCode:(id)code documentType:(int64_t)type preview:(id)self0
 {
-  v31 = a10;
-  v15 = a8;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  previewCopy = preview;
+  codeCopy = code;
+  templateIdentifierCopy = templateIdentifier;
+  configurationIdentifierCopy = configurationIdentifier;
+  instanceIdentifierCopy = instanceIdentifier;
+  identifierCopy = identifier;
   v20 = [PKPushProvisioningTarget alloc];
-  v21 = [v19 copy];
+  v21 = [identifierCopy copy];
 
-  v22 = [v17 copy];
-  v23 = [v18 copy];
+  v22 = [configurationIdentifierCopy copy];
+  v23 = [instanceIdentifierCopy copy];
 
-  v24 = [v16 copy];
-  v25 = [v15 copy];
+  v24 = [templateIdentifierCopy copy];
+  v25 = [codeCopy copy];
 
-  LOBYTE(v29) = a7;
-  v26 = [(PKPushProvisioningTarget *)v20 initWithAppleIdentifier:0 appleIdentifierType:3 provisioningCredentialIdentifier:v21 cardConfigurationIdentifier:v22 sharingInstanceIdentifier:v23 nonce:0 accountHash:0 templateIdentifier:v24 relyingPartyIdentifier:0 requiresSimultaneousRequestRouting:v29 targetDevice:0 issuingCountryCode:v25 documentType:a9 environmentIdentifier:0];
+  LOBYTE(v29) = routing;
+  v26 = [(PKPushProvisioningTarget *)v20 initWithAppleIdentifier:0 appleIdentifierType:3 provisioningCredentialIdentifier:v21 cardConfigurationIdentifier:v22 sharingInstanceIdentifier:v23 nonce:0 accountHash:0 templateIdentifier:v24 relyingPartyIdentifier:0 requiresSimultaneousRequestRouting:v29 targetDevice:0 issuingCountryCode:v25 documentType:type environmentIdentifier:0];
 
-  v27 = [(PKIdentityDocumentMetadata *)self initWithPushProvisioningTarget:v26 preview:v31];
+  v27 = [(PKIdentityDocumentMetadata *)self initWithPushProvisioningTarget:v26 preview:previewCopy];
   return v27;
 }
 
-- (PKIdentityDocumentMetadata)initWithPushProvisioningTarget:(id)a3 preview:(id)a4
+- (PKIdentityDocumentMetadata)initWithPushProvisioningTarget:(id)target preview:(id)preview
 {
-  v7 = a3;
-  v8 = a4;
+  targetCopy = target;
+  previewCopy = preview;
   v12.receiver = self;
   v12.super_class = PKIdentityDocumentMetadata;
   v9 = [(PKIdentityDocumentMetadata *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_provisioningTarget, a3);
-    objc_storeStrong(&v10->_underlyingPreview, a4);
+    objc_storeStrong(&v9->_provisioningTarget, target);
+    objc_storeStrong(&v10->_underlyingPreview, preview);
   }
 
   return v10;
@@ -57,25 +57,25 @@
 
 - (int64_t)documentType
 {
-  v2 = [(PKPushProvisioningTarget *)self->_provisioningTarget documentType];
-  if ((v2 - 1) > 2)
+  documentType = [(PKPushProvisioningTarget *)self->_provisioningTarget documentType];
+  if ((documentType - 1) > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_1ADB9A990[v2 - 1];
+    return qword_1ADB9A990[documentType - 1];
   }
 }
 
 - (NSString)cardTemplateIdentifier
 {
-  v2 = [(PKPushProvisioningTarget *)self->_provisioningTarget templateIdentifier];
-  v3 = v2;
-  if (v2)
+  templateIdentifier = [(PKPushProvisioningTarget *)self->_provisioningTarget templateIdentifier];
+  v3 = templateIdentifier;
+  if (templateIdentifier)
   {
-    v4 = v2;
+    v4 = templateIdentifier;
   }
 
   else
@@ -90,11 +90,11 @@
 
 - (NSString)cardConfigurationIdentifier
 {
-  v2 = [(PKPushProvisioningTarget *)self->_provisioningTarget cardConfigurationIdentifier];
-  v3 = v2;
-  if (v2)
+  cardConfigurationIdentifier = [(PKPushProvisioningTarget *)self->_provisioningTarget cardConfigurationIdentifier];
+  v3 = cardConfigurationIdentifier;
+  if (cardConfigurationIdentifier)
   {
-    v4 = v2;
+    v4 = cardConfigurationIdentifier;
   }
 
   else
@@ -109,11 +109,11 @@
 
 - (NSString)serverEnvironmentIdentifier
 {
-  v2 = [(PKPushProvisioningTarget *)self->_provisioningTarget environmentIdentifier];
-  v3 = v2;
-  if (v2)
+  environmentIdentifier = [(PKPushProvisioningTarget *)self->_provisioningTarget environmentIdentifier];
+  v3 = environmentIdentifier;
+  if (environmentIdentifier)
   {
-    v4 = v2;
+    v4 = environmentIdentifier;
   }
 
   else
@@ -136,27 +136,27 @@
   return v4;
 }
 
-- (void)_extendableDescription:(id)a3
+- (void)_extendableDescription:(id)description
 {
   underlyingPreview = self->_underlyingPreview;
-  v5 = a3;
-  [v5 appendFormat:@"passPreview: '%@'; ", underlyingPreview];
-  [v5 appendFormat:@"provisioningTarget: '%@';", self->_provisioningTarget];
+  descriptionCopy = description;
+  [descriptionCopy appendFormat:@"passPreview: '%@'; ", underlyingPreview];
+  [descriptionCopy appendFormat:@"provisioningTarget: '%@';", self->_provisioningTarget];
 }
 
-- (PKIdentityDocumentMetadata)initWithCoder:(id)a3
+- (PKIdentityDocumentMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKIdentityDocumentMetadata;
   v5 = [(PKIdentityDocumentMetadata *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
     underlyingPreview = v5->_underlyingPreview;
     v5->_underlyingPreview = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTarget"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningTarget"];
     provisioningTarget = v5->_provisioningTarget;
     v5->_provisioningTarget = v8;
   }
@@ -164,17 +164,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   underlyingPreview = self->_underlyingPreview;
-  v5 = a3;
-  [v5 encodeObject:underlyingPreview forKey:@"preview"];
-  [v5 encodeObject:self->_provisioningTarget forKey:@"provisioningTarget"];
+  coderCopy = coder;
+  [coderCopy encodeObject:underlyingPreview forKey:@"preview"];
+  [coderCopy encodeObject:self->_provisioningTarget forKey:@"provisioningTarget"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(PKAddPassMetadataPreview *)self->_underlyingPreview copy];
   v6 = v4[2];
   v4[2] = v5;

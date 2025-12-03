@@ -1,14 +1,14 @@
 @interface IMBImageTableViewCell
-- (_TtC8Business21IMBImageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8Business21IMBImageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation IMBImageTableViewCell
 
-- (_TtC8Business21IMBImageTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8Business21IMBImageTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1000AC06C();
+    identifier = sub_1000AC06C();
     v6 = v5;
   }
 
@@ -17,7 +17,7 @@
     v6 = 0;
   }
 
-  return sub_100083984(a3, a4, v6);
+  return sub_100083984(style, identifier, v6);
 }
 
 @end

@@ -1,71 +1,71 @@
 @interface PBTextRun
-+ (void)readTextRun:(id)a3 plainText:(id)a4 characterAttributes:(id)a5 state:(id)a6;
++ (void)readTextRun:(id)run plainText:(id)text characterAttributes:(id)attributes state:(id)state;
 @end
 
 @implementation PBTextRun
 
-+ (void)readTextRun:(id)a3 plainText:(id)a4 characterAttributes:(id)a5 state:(id)a6
++ (void)readTextRun:(id)run plainText:(id)text characterAttributes:(id)attributes state:(id)state
 {
-  v54 = a3;
-  v55 = a4;
-  v9 = a5;
-  v53 = a6;
-  v10 = [v54 textRunCount];
-  v11 = [v9 objectForKey:@"PptCharacterPropertyRunAttribute"];
-  v50 = [v11 pointerValue];
+  runCopy = run;
+  textCopy = text;
+  attributesCopy = attributes;
+  stateCopy = state;
+  textRunCount = [runCopy textRunCount];
+  v11 = [attributesCopy objectForKey:@"PptCharacterPropertyRunAttribute"];
+  pointerValue = [v11 pointerValue];
 
-  v12 = [v9 objectForKey:@"PptSpecialInfoRunAttribute"];
-  v49 = [v12 pointerValue];
+  v12 = [attributesCopy objectForKey:@"PptSpecialInfoRunAttribute"];
+  pointerValue2 = [v12 pointerValue];
 
-  v13 = [v9 objectForKey:@"PptClickHyperlinkRunAttribute"];
-  v52 = [v13 pointerValue];
+  v13 = [attributesCopy objectForKey:@"PptClickHyperlinkRunAttribute"];
+  pointerValue3 = [v13 pointerValue];
 
-  v14 = [v9 objectForKey:@"PptHoverHyperlinkRunAttribute"];
-  v51 = [v14 pointerValue];
+  v14 = [attributesCopy objectForKey:@"PptHoverHyperlinkRunAttribute"];
+  pointerValue4 = [v14 pointerValue];
 
-  v15 = [v9 objectForKey:@"PptMetaCharacterRunAttribute"];
-  v16 = [v15 nonretainedObjectValue];
+  v15 = [attributesCopy objectForKey:@"PptMetaCharacterRunAttribute"];
+  nonretainedObjectValue = [v15 nonretainedObjectValue];
 
-  v47 = v9;
-  v48 = v16;
-  if (v16)
+  v47 = attributesCopy;
+  v48 = nonretainedObjectValue;
+  if (nonretainedObjectValue)
   {
-    v17 = [v16 type];
-    if (v17 <= 1)
+    type = [nonretainedObjectValue type];
+    if (type <= 1)
     {
-      if (v17)
+      if (type)
       {
-        if (v17 == 1)
+        if (type == 1)
         {
-          v18 = [v54 addDateTimeFieldWithFormat:0];
+          v18 = [runCopy addDateTimeFieldWithFormat:0];
         }
       }
 
       else
       {
-        v35 = [v54 addFooterField];
+        addFooterField = [runCopy addFooterField];
       }
 
       goto LABEL_29;
     }
 
-    if (v17 == 2)
+    if (type == 2)
     {
-      v33 = [v54 addDateTimeFieldWithFormat:0];
-      [v33 setFormat:objc_msgSend(v16, "extraData") + 1];
+      addSlideNumberField = [runCopy addDateTimeFieldWithFormat:0];
+      [addSlideNumberField setFormat:objc_msgSend(nonretainedObjectValue, "extraData") + 1];
 LABEL_28:
 
       goto LABEL_29;
     }
 
-    if (v17 != 4)
+    if (type != 4)
     {
       goto LABEL_29;
     }
 
-    v33 = [v54 addSlideNumberField];
-    v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v53, "numberOfSlideIndexes")];
-    [v33 setText:v34];
+    addSlideNumberField = [runCopy addSlideNumberField];
+    text2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(stateCopy, "numberOfSlideIndexes")];
+    [addSlideNumberField setText:text2];
 LABEL_27:
 
     goto LABEL_28;
@@ -76,7 +76,7 @@ LABEL_27:
     +[PBTextRun readTextRun:plainText:characterAttributes:state:];
   }
 
-  v19 = [v55 length];
+  v19 = [textCopy length];
   v20 = v19;
   if (v19)
   {
@@ -84,7 +84,7 @@ LABEL_27:
     v46 = v19;
     while (1)
     {
-      v22 = [v55 rangeOfCharacterFromSet:+[PBTextRun readTextRun:plainText:characterAttributes:state:]::specialCharSet options:2 range:{v21, v20 - v21}];
+      v22 = [textCopy rangeOfCharacterFromSet:+[PBTextRun readTextRun:plainText:characterAttributes:state:]::specialCharSet options:2 range:{v21, v20 - v21}];
       v24 = v22;
       if (v22 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -94,10 +94,10 @@ LABEL_27:
       v25 = v23;
       if (v22 > v21)
       {
-        v26 = [v54 addRegularTextRun];
-        v27 = [v26 text];
-        v28 = [v55 substringWithRange:{v21, v24 - v21}];
-        [v27 setString:v28];
+        addRegularTextRun = [runCopy addRegularTextRun];
+        text = [addRegularTextRun text];
+        v28 = [textCopy substringWithRange:{v21, v24 - v21}];
+        [text setString:v28];
 
         v21 = v24;
       }
@@ -107,9 +107,9 @@ LABEL_27:
       {
         do
         {
-          if ([v55 characterAtIndex:v21] == 11)
+          if ([textCopy characterAtIndex:v21] == 11)
           {
-            v30 = [v54 addTextLineBreak];
+            addTextLineBreak = [runCopy addTextLineBreak];
           }
 
           else
@@ -135,54 +135,54 @@ LABEL_27:
       }
     }
 
-    v33 = [v54 addRegularTextRun];
-    v34 = [v33 text];
-    v36 = [v55 substringFromIndex:v21];
-    [v34 setString:v36];
+    addSlideNumberField = [runCopy addRegularTextRun];
+    text2 = [addSlideNumberField text];
+    v36 = [textCopy substringFromIndex:v21];
+    [text2 setString:v36];
 
     goto LABEL_27;
   }
 
 LABEL_29:
-  v37 = [v54 textRunCount];
+  textRunCount2 = [runCopy textRunCount];
   v39 = v47;
   v38 = v48;
-  if (v10 < v37)
+  if (textRunCount < textRunCount2)
   {
     do
     {
-      v40 = [v54 textRunAtIndex:v10];
-      v41 = [v40 properties];
-      if (v50)
+      v40 = [runCopy textRunAtIndex:textRunCount];
+      properties = [v40 properties];
+      if (pointerValue)
       {
-        [PBCharacterProperties readCharacterProperties:v41 characterPropertyRun:v50 state:v53];
+        [PBCharacterProperties readCharacterProperties:properties characterPropertyRun:pointerValue state:stateCopy];
       }
 
-      if (v49)
+      if (pointerValue2)
       {
-        [PBCharacterProperties readCharacterProperties:v41 specialInfoRun:v49 state:v53];
+        [PBCharacterProperties readCharacterProperties:properties specialInfoRun:pointerValue2 state:stateCopy];
       }
 
-      if (v52)
+      if (pointerValue3)
       {
-        v42 = [v52 interactiveInfoContainerHolder];
-        v43 = [PBHyperlink readAnimationInfoContainerHolder:v42 presentationState:v53];
-        [v41 setClickHyperlink:v43];
+        interactiveInfoContainerHolder = [pointerValue3 interactiveInfoContainerHolder];
+        v43 = [PBHyperlink readAnimationInfoContainerHolder:interactiveInfoContainerHolder presentationState:stateCopy];
+        [properties setClickHyperlink:v43];
       }
 
-      if (v51)
+      if (pointerValue4)
       {
-        v44 = [v51 interactiveInfoContainerHolder];
-        v45 = [PBHyperlink readAnimationInfoContainerHolder:v44 presentationState:v53];
-        [v41 setHoverHyperlink:v45];
+        interactiveInfoContainerHolder2 = [pointerValue4 interactiveInfoContainerHolder];
+        v45 = [PBHyperlink readAnimationInfoContainerHolder:interactiveInfoContainerHolder2 presentationState:stateCopy];
+        [properties setHoverHyperlink:v45];
       }
 
-      ++v10;
+      ++textRunCount;
       v39 = v47;
       v38 = v48;
     }
 
-    while (v37 != v10);
+    while (textRunCount2 != textRunCount);
   }
 }
 

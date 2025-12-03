@@ -1,58 +1,58 @@
 @interface TSPDataManager
-+ (void)readWithChannel:(id)a3 handler:(id)a4;
-- (BOOL)linkTemporaryPath:(id)a3 fromURL:(id)a4;
-- (TSPDataManager)initWithContext:(id)a3;
++ (void)readWithChannel:(id)channel handler:(id)handler;
+- (BOOL)linkTemporaryPath:(id)path fromURL:(id)l;
+- (TSPDataManager)initWithContext:(id)context;
 - (TSPObjectContext)context;
 - (id).cxx_construct;
-- (id)addNewDataForStorage:(id)a3 digest:(const void *)a4 filename:(id)a5;
-- (id)checkForPersistenceWarningsWithPackageURL:(id)a3;
-- (id)copyData:(id)a3;
-- (id)createTemporaryDirectoryForPackageURL:(id)a3;
-- (id)dataForDigest:(const void *)a3;
-- (id)dataForDigestImpl:(const void *)a3 accessorBlock:(id)a4;
-- (id)dataForDigestImpl:(const void *)a3 skipDocumentResourcesLookup:(BOOL)a4 accessorBlock:(id)a5;
-- (id)dataForExistingData:(id)a3 digest:(const void *)a4 filename:(id)a5 temporaryPath:(id)a6;
-- (id)dataForIdentifier:(int64_t)a3;
-- (id)dataForIdentifierImpl:(int64_t)a3;
-- (id)dataFromExternalReferenceURL:(id)a3 useFileCoordination:(BOOL)a4;
-- (id)dataFromFileURL:(id)a3 useFileCoordination:(BOOL)a4;
-- (id)dataFromNSData:(id)a3 filename:(id)a4;
-- (id)dataFromReadChannel:(id)a3 filename:(id)a4;
-- (id)dataFromReadChannel:(id)a3 filename:(id)a4 linkURLOrNil:(id)a5;
-- (id)dataFromReadChannel:(id)a3 filename:(id)a4 temporaryPath:(id)a5;
-- (id)dataFromURL:(id)a3 useFileCoordination:(BOOL)a4;
-- (id)dataOrNilForIdentifier:(int64_t)a3;
-- (id)dataWithStorage:(id)a3 digest:(const void *)a4 filename:(id)a5 skipDocumentResourcesLookup:(BOOL)a6 accessorBlock:(id)a7;
-- (id)dataWithTemporaryPath:(id)a3 digest:(const void *)a4 filename:(id)a5;
-- (id)documentResourceDataWithStorage:(id)a3 digestString:(id)a4 filename:(id)a5;
-- (id)temporaryPathForFilename:(id)a3;
-- (int)openTemporaryPath:(id)a3;
-- (void)addData:(id)a3;
-- (void)coordinateReadingNewFileURL:(id)a3 byAccessor:(id)a4;
-- (void)dataForDigest:(const void *)a3 queue:(id)a4 completion:(id)a5;
+- (id)addNewDataForStorage:(id)storage digest:(const void *)digest filename:(id)filename;
+- (id)checkForPersistenceWarningsWithPackageURL:(id)l;
+- (id)copyData:(id)data;
+- (id)createTemporaryDirectoryForPackageURL:(id)l;
+- (id)dataForDigest:(const void *)digest;
+- (id)dataForDigestImpl:(const void *)impl accessorBlock:(id)block;
+- (id)dataForDigestImpl:(const void *)impl skipDocumentResourcesLookup:(BOOL)lookup accessorBlock:(id)block;
+- (id)dataForExistingData:(id)data digest:(const void *)digest filename:(id)filename temporaryPath:(id)path;
+- (id)dataForIdentifier:(int64_t)identifier;
+- (id)dataForIdentifierImpl:(int64_t)impl;
+- (id)dataFromExternalReferenceURL:(id)l useFileCoordination:(BOOL)coordination;
+- (id)dataFromFileURL:(id)l useFileCoordination:(BOOL)coordination;
+- (id)dataFromNSData:(id)data filename:(id)filename;
+- (id)dataFromReadChannel:(id)channel filename:(id)filename;
+- (id)dataFromReadChannel:(id)channel filename:(id)filename linkURLOrNil:(id)nil;
+- (id)dataFromReadChannel:(id)channel filename:(id)filename temporaryPath:(id)path;
+- (id)dataFromURL:(id)l useFileCoordination:(BOOL)coordination;
+- (id)dataOrNilForIdentifier:(int64_t)identifier;
+- (id)dataWithStorage:(id)storage digest:(const void *)digest filename:(id)filename skipDocumentResourcesLookup:(BOOL)lookup accessorBlock:(id)block;
+- (id)dataWithTemporaryPath:(id)path digest:(const void *)digest filename:(id)filename;
+- (id)documentResourceDataWithStorage:(id)storage digestString:(id)string filename:(id)filename;
+- (id)temporaryPathForFilename:(id)filename;
+- (int)openTemporaryPath:(id)path;
+- (void)addData:(id)data;
+- (void)coordinateReadingNewFileURL:(id)l byAccessor:(id)accessor;
+- (void)dataForDigest:(const void *)digest queue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)enumerateDatasUsingBlock:(id)a3;
-- (void)findExistingDataForReadChannel:(id)a3 dataURL:(id)a4 readHandler:(id)a5 completion:(id)a6;
-- (void)findExistingDataForReadChannel:(id)a3 dataURL:(id)a4 temporaryPath:(id)a5 shouldWriteIfFound:(BOOL)a6 completion:(id)a7;
-- (void)removeExternalReferenceForData:(id)a3 storage:(id)a4;
+- (void)enumerateDatasUsingBlock:(id)block;
+- (void)findExistingDataForReadChannel:(id)channel dataURL:(id)l readHandler:(id)handler completion:(id)completion;
+- (void)findExistingDataForReadChannel:(id)channel dataURL:(id)l temporaryPath:(id)path shouldWriteIfFound:(BOOL)found completion:(id)completion;
+- (void)removeExternalReferenceForData:(id)data storage:(id)storage;
 - (void)removeExternalReferences;
-- (void)removeFileAtPath:(id)a3;
+- (void)removeFileAtPath:(id)path;
 - (void)removeTemporaryDirectory;
-- (void)setDocumentURL:(id)a3;
+- (void)setDocumentURL:(id)l;
 @end
 
 @implementation TSPDataManager
 
-- (TSPDataManager)initWithContext:(id)a3
+- (TSPDataManager)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = TSPDataManager;
   v5 = [(TSPDataManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
     v7 = dispatch_queue_create("TSPDataManager.Datas", 0);
     datasQueue = v6->_datasQueue;
     v6->_datasQueue = v7;
@@ -80,21 +80,21 @@
   [(TSPDataManager *)&v3 dealloc];
 }
 
-- (id)dataFromURL:(id)a3 useFileCoordination:(BOOL)a4
+- (id)dataFromURL:(id)l useFileCoordination:(BOOL)coordination
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 isFileURL])
+  coordinationCopy = coordination;
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v7 = [(TSPDataManager *)self dataFromFileURL:v6 useFileCoordination:v4];
+    v7 = [(TSPDataManager *)self dataFromFileURL:lCopy useFileCoordination:coordinationCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager dataFromURL:useFileCoordination:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:180 description:@"Unsupported URL scheme"];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:180 description:@"Unsupported URL scheme"];
 
     v7 = 0;
   }
@@ -102,10 +102,10 @@
   return v7;
 }
 
-- (id)dataFromFileURL:(id)a3 useFileCoordination:(BOOL)a4
+- (id)dataFromFileURL:(id)l useFileCoordination:(BOOL)coordination
 {
-  v4 = a4;
-  v6 = a3;
+  coordinationCopy = coordination;
+  lCopy = l;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -118,11 +118,11 @@
   aBlock[3] = &unk_279D46B40;
   v14 = &v15;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = lCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v4)
+  if (coordinationCopy)
   {
     [(TSPDataManager *)self coordinateReadingNewFileURL:v7 byAccessor:v8];
   }
@@ -153,12 +153,12 @@ void __54__TSPDataManager_dataFromFileURL_useFileCoordination___block_invoke(uin
   [v3 close];
 }
 
-- (void)coordinateReadingNewFileURL:(id)a3 byAccessor:(id)a4
+- (void)coordinateReadingNewFileURL:(id)l byAccessor:(id)accessor
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  accessorCopy = accessor;
   v9 = 0;
-  v7 = [MEMORY[0x277CCA9E8] tsp_coordinateReadingItemAtURL:v5 options:0 filePresenter:0 error:&v9 byAccessor:v6];
+  v7 = [MEMORY[0x277CCA9E8] tsp_coordinateReadingItemAtURL:lCopy options:0 filePresenter:0 error:&v9 byAccessor:accessorCopy];
   v8 = v9;
   if (v8)
   {
@@ -167,33 +167,33 @@ void __54__TSPDataManager_dataFromFileURL_useFileCoordination___block_invoke(uin
 
   if ((v7 & 1) == 0)
   {
-    v6[2](v6, 0);
+    accessorCopy[2](accessorCopy, 0);
   }
 }
 
-- (id)dataFromReadChannel:(id)a3 filename:(id)a4
+- (id)dataFromReadChannel:(id)channel filename:(id)filename
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TSPDataManager *)self temporaryPathForFilename:v7];
-  v9 = [(TSPDataManager *)self dataFromReadChannel:v6 filename:v7 temporaryPath:v8];
+  channelCopy = channel;
+  filenameCopy = filename;
+  v8 = [(TSPDataManager *)self temporaryPathForFilename:filenameCopy];
+  v9 = [(TSPDataManager *)self dataFromReadChannel:channelCopy filename:filenameCopy temporaryPath:v8];
 
   return v9;
 }
 
-- (id)dataFromReadChannel:(id)a3 filename:(id)a4 linkURLOrNil:(id)a5
+- (id)dataFromReadChannel:(id)channel filename:(id)filename linkURLOrNil:(id)nil
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TSPDataManager *)self temporaryPathForFilename:v9];
+  channelCopy = channel;
+  filenameCopy = filename;
+  nilCopy = nil;
+  v11 = [(TSPDataManager *)self temporaryPathForFilename:filenameCopy];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__2;
   v26 = __Block_byref_object_dispose__2;
   v27 = 0;
-  if (v10 && [(TSPDataManager *)self linkTemporaryPath:v11 fromURL:v10])
+  if (nilCopy && [(TSPDataManager *)self linkTemporaryPath:v11 fromURL:nilCopy])
   {
     v12 = dispatch_semaphore_create(0);
     v17[0] = MEMORY[0x277D85DD0];
@@ -203,16 +203,16 @@ void __54__TSPDataManager_dataFromFileURL_useFileCoordination___block_invoke(uin
     v17[4] = self;
     v18 = v11;
     v21 = &v22;
-    v19 = v9;
+    v19 = filenameCopy;
     v20 = v12;
     v13 = v12;
-    [(TSPDataManager *)self findExistingDataForReadChannel:v8 dataURL:v10 readHandler:0 completion:v17];
+    [(TSPDataManager *)self findExistingDataForReadChannel:channelCopy dataURL:nilCopy readHandler:0 completion:v17];
     dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else
   {
-    v14 = [(TSPDataManager *)self dataFromReadChannel:v8 filename:v9 temporaryPath:v11];
+    v14 = [(TSPDataManager *)self dataFromReadChannel:channelCopy filename:filenameCopy temporaryPath:v11];
     v13 = v23[5];
     v23[5] = v14;
   }
@@ -242,11 +242,11 @@ void __60__TSPDataManager_dataFromReadChannel_filename_linkURLOrNil___block_invo
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (id)dataFromReadChannel:(id)a3 filename:(id)a4 temporaryPath:(id)a5
+- (id)dataFromReadChannel:(id)channel filename:(id)filename temporaryPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  filenameCopy = filename;
+  pathCopy = path;
+  channelCopy = channel;
   v11 = dispatch_semaphore_create(0);
   v22 = 0;
   v23 = &v22;
@@ -261,12 +261,12 @@ void __60__TSPDataManager_dataFromReadChannel_filename_linkURLOrNil___block_invo
   v20 = v11;
   v21 = &v22;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
+  v18 = filenameCopy;
+  v19 = pathCopy;
   v12 = v11;
-  v13 = v9;
-  v14 = v8;
-  [(TSPDataManager *)self findExistingDataForReadChannel:v10 dataURL:0 temporaryPath:v13 shouldWriteIfFound:0 completion:v17];
+  v13 = pathCopy;
+  v14 = filenameCopy;
+  [(TSPDataManager *)self findExistingDataForReadChannel:channelCopy dataURL:0 temporaryPath:v13 shouldWriteIfFound:0 completion:v17];
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
   v15 = v23[5];
@@ -291,46 +291,46 @@ void __61__TSPDataManager_dataFromReadChannel_filename_temporaryPath___block_inv
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (id)dataForExistingData:(id)a3 digest:(const void *)a4 filename:(id)a5 temporaryPath:(id)a6
+- (id)dataForExistingData:(id)data digest:(const void *)digest filename:(id)filename temporaryPath:(id)path
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  dataCopy = data;
+  filenameCopy = filename;
+  pathCopy = path;
+  if (dataCopy)
   {
-    v13 = v10;
+    v13 = dataCopy;
   }
 
   else
   {
     v14 = [TSPTemporaryDataStorage alloc];
-    v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12 isDirectory:0];
+    v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:0];
     v16 = [(TSPTemporaryDataStorage *)v14 initWithURL:v15];
 
-    v13 = [(TSPDataManager *)self addNewDataForStorage:v16 digest:a4 filename:v11];
+    v13 = [(TSPDataManager *)self addNewDataForStorage:v16 digest:digest filename:filenameCopy];
   }
 
   return v13;
 }
 
-- (void)findExistingDataForReadChannel:(id)a3 dataURL:(id)a4 temporaryPath:(id)a5 shouldWriteIfFound:(BOOL)a6 completion:(id)a7
+- (void)findExistingDataForReadChannel:(id)channel dataURL:(id)l temporaryPath:(id)path shouldWriteIfFound:(BOOL)found completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  channelCopy = channel;
+  lCopy = l;
+  pathCopy = path;
+  completionCopy = completion;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
-  v43 = v12 != 0;
-  if (!v12 || (v16 = [(TSPDataManager *)self openTemporaryPath:v14], *(v41 + 24) = v16 >= 0, v16 < 0))
+  v43 = channelCopy != 0;
+  if (!channelCopy || (v16 = [(TSPDataManager *)self openTemporaryPath:pathCopy], *(v41 + 24) = v16 >= 0, v16 < 0))
   {
     datasQueue = self->_datasQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__TSPDataManager_findExistingDataForReadChannel_dataURL_temporaryPath_shouldWriteIfFound_completion___block_invoke;
     block[3] = &unk_279D46BB8;
-    v39 = v15;
+    v39 = completionCopy;
     dispatch_async(datasQueue, block);
     v20 = v39;
   }
@@ -350,7 +350,7 @@ void __61__TSPDataManager_dataFromReadChannel_filename_temporaryPath___block_inv
     aBlock[2] = __101__TSPDataManager_findExistingDataForReadChannel_dataURL_temporaryPath_shouldWriteIfFound_completion___block_invoke_3;
     aBlock[3] = &unk_279D46C30;
     v34 = &v40;
-    v35 = a6;
+    foundCopy = found;
     v19 = v18;
     v32 = v19;
     v33 = v17;
@@ -360,14 +360,14 @@ void __61__TSPDataManager_dataFromReadChannel_filename_temporaryPath___block_inv
     v24[1] = 3221225472;
     v24[2] = __101__TSPDataManager_findExistingDataForReadChannel_dataURL_temporaryPath_shouldWriteIfFound_completion___block_invoke_5;
     v24[3] = &unk_279D46CD0;
-    v30 = a6;
+    foundCopy2 = found;
     v29 = &v40;
     v25 = v19;
-    v26 = self;
-    v27 = v14;
-    v28 = v15;
+    selfCopy = self;
+    v27 = pathCopy;
+    v28 = completionCopy;
     v22 = v19;
-    [(TSPDataManager *)self findExistingDataForReadChannel:v12 dataURL:v13 readHandler:v21 completion:v24];
+    [(TSPDataManager *)self findExistingDataForReadChannel:channelCopy dataURL:lCopy readHandler:v21 completion:v24];
   }
 
   _Block_object_dispose(&v40, 8);
@@ -477,16 +477,16 @@ void __101__TSPDataManager_findExistingDataForReadChannel_dataURL_temporaryPath_
   v4[2](v4, v3);
 }
 
-- (void)findExistingDataForReadChannel:(id)a3 dataURL:(id)a4 readHandler:(id)a5 completion:(id)a6
+- (void)findExistingDataForReadChannel:(id)channel dataURL:(id)l readHandler:(id)handler completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v10)
+  channelCopy = channel;
+  lCopy = l;
+  handlerCopy = handler;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (channelCopy)
   {
-    if (!v13)
+    if (!completionCopy)
     {
       goto LABEL_5;
     }
@@ -494,18 +494,18 @@ void __101__TSPDataManager_findExistingDataForReadChannel_dataURL_temporaryPath_
 
   else
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager findExistingDataForReadChannel:dataURL:readHandler:completion:]"];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-    [v15 handleFailureInFunction:v16 file:v17 lineNumber:409 description:{@"Invalid parameter not satisfying: %s", "readChannel"}];
+    [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:409 description:{@"Invalid parameter not satisfying: %s", "readChannel"}];
 
     if (!v14)
     {
 LABEL_5:
-      v18 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager findExistingDataForReadChannel:dataURL:readHandler:completion:]"];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-      [v18 handleFailureInFunction:v19 file:v20 lineNumber:410 description:{@"Invalid parameter not satisfying: %s", "completion"}];
+      [currentHandler2 handleFailureInFunction:v19 file:v20 lineNumber:410 description:{@"Invalid parameter not satisfying: %s", "completion"}];
     }
   }
 
@@ -515,13 +515,13 @@ LABEL_5:
   v25[2] = __80__TSPDataManager_findExistingDataForReadChannel_dataURL_readHandler_completion___block_invoke;
   v25[3] = &unk_279D46D20;
   v25[4] = self;
-  v22 = v11;
+  v22 = lCopy;
   v26 = v22;
-  v23 = v12;
+  v23 = handlerCopy;
   v27 = v23;
   v24 = v14;
   v28 = v24;
-  [v21 readWithChannel:v10 handler:v25];
+  [v21 readWithChannel:channelCopy handler:v25];
 }
 
 void __80__TSPDataManager_findExistingDataForReadChannel_dataURL_readHandler_completion___block_invoke(uint64_t a1, int a2, void *a3, void *a4)
@@ -582,11 +582,11 @@ void __80__TSPDataManager_findExistingDataForReadChannel_dataURL_readHandler_com
   }
 }
 
-+ (void)readWithChannel:(id)a3 handler:(id)a4
++ (void)readWithChannel:(id)channel handler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  channelCopy = channel;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v17 = 0;
     v18 = &v17;
@@ -606,8 +606,8 @@ void __80__TSPDataManager_findExistingDataForReadChannel_dataURL_readHandler_com
     v11[3] = &unk_279D46D70;
     v13 = v15;
     v14 = &v17;
-    v12 = v6;
-    [v5 readWithQueue:v7 handler:v11];
+    v12 = handlerCopy;
+    [channelCopy readWithQueue:v7 handler:v11];
 
     _Block_object_dispose(v15, 8);
     _Block_object_dispose(&v17, 8);
@@ -615,10 +615,10 @@ void __80__TSPDataManager_findExistingDataForReadChannel_dataURL_readHandler_com
 
   else
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSPDataManager readWithChannel:handler:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:450 description:{@"Invalid parameter not satisfying: %s", "handler"}];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:450 description:{@"Invalid parameter not satisfying: %s", "handler"}];
   }
 }
 
@@ -680,22 +680,22 @@ void __42__TSPDataManager_readWithChannel_handler___block_invoke(void *a1, int a
 LABEL_13:
 }
 
-- (id)dataFromNSData:(id)a3 filename:(id)a4
+- (id)dataFromNSData:(id)data filename:(id)filename
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dataCopy = data;
+  filenameCopy = filename;
+  if (!filenameCopy)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager dataFromNSData:filename:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-    [v8 handleFailureInFunction:v9 file:v10 lineNumber:510 description:@"Filename was not provided for data."];
+    [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:510 description:@"Filename was not provided for data."];
   }
 
-  v11 = [v7 lastPathComponent];
+  lastPathComponent = [filenameCopy lastPathComponent];
 
-  CC_SHA1([v6 bytes], objc_msgSend(v6, "length"), &md);
+  CC_SHA1([dataCopy bytes], objc_msgSend(dataCopy, "length"), &md);
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -729,10 +729,10 @@ LABEL_13:
   v24 = v40;
   v25 = &v34;
   aBlock[4] = self;
-  v12 = v11;
+  v12 = lastPathComponent;
   v22 = v12;
   v26 = &v30;
-  v13 = v6;
+  v13 = dataCopy;
   v23 = v13;
   v27 = v28;
   v14 = _Block_copy(aBlock);
@@ -834,23 +834,23 @@ void __42__TSPDataManager_dataFromNSData_filename___block_invoke_3(void *a1, voi
   }
 }
 
-- (id)documentResourceDataWithStorage:(id)a3 digestString:(id)a4 filename:(id)a5
+- (id)documentResourceDataWithStorage:(id)storage digestString:(id)string filename:(id)filename
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  TSP::DataDigestForString(v9, v13);
-  v11 = [(TSPDataManager *)self dataWithStorage:v8 digest:v13 filename:v10 skipDocumentResourcesLookup:1 accessorBlock:0];
+  storageCopy = storage;
+  stringCopy = string;
+  filenameCopy = filename;
+  TSP::DataDigestForString(stringCopy, v13);
+  v11 = [(TSPDataManager *)self dataWithStorage:storageCopy digest:v13 filename:filenameCopy skipDocumentResourcesLookup:1 accessorBlock:0];
 
   return v11;
 }
 
-- (id)copyData:(id)a3
+- (id)copyData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 context], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v5, "context"), v7 = objc_claimAutoreleasedReturnValue(), -[TSPDataManager context](self, "context"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && ([dataCopy context], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v5, "context"), v7 = objc_claimAutoreleasedReturnValue(), -[TSPDataManager context](self, "context"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v7 != v8))
   {
     v23 = 0;
     v24 = &v23;
@@ -871,15 +871,15 @@ void __42__TSPDataManager_dataFromNSData_filename___block_invoke_3(void *a1, voi
     v11 = v24[5];
     if (!v11)
     {
-      v12 = [(TSPDataManager *)self context];
+      context = [(TSPDataManager *)self context];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __27__TSPDataManager_copyData___block_invoke_2;
       v16[3] = &unk_279D46E38;
       v19 = &v23;
       v17 = v10;
-      v18 = v12;
-      v13 = v12;
+      v18 = context;
+      v13 = context;
       [v17 performIOChannelReadWithAccessor:v16];
 
       v11 = v24[5];
@@ -939,11 +939,11 @@ void __27__TSPDataManager_copyData___block_invoke_2(uint64_t a1, void *a2)
   }
 }
 
-- (void)enumerateDatasUsingBlock:(id)a3
+- (void)enumerateDatasUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     datasQueue = self->_datasQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -951,7 +951,7 @@ void __27__TSPDataManager_copyData___block_invoke_2(uint64_t a1, void *a2)
     v7[2] = __43__TSPDataManager_enumerateDatasUsingBlock___block_invoke;
     v7[3] = &unk_279D46E60;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_sync(datasQueue, v7);
   }
 }
@@ -968,7 +968,7 @@ void __43__TSPDataManager_enumerateDatasUsingBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (id)dataOrNilForIdentifier:(int64_t)a3
+- (id)dataOrNilForIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -983,7 +983,7 @@ void __43__TSPDataManager_enumerateDatasUsingBlock___block_invoke(uint64_t a1)
   block[3] = &unk_279D469E0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   dispatch_sync(datasQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -998,11 +998,11 @@ uint64_t __41__TSPDataManager_dataOrNilForIdentifier___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)dataForIdentifier:(int64_t)a3
+- (id)dataForIdentifier:(int64_t)identifier
 {
   v4 = [(TSPDataManager *)self dataOrNilForIdentifier:?];
   v5 = v4;
-  if (!a3 || v4)
+  if (!identifier || v4)
   {
     if (v4)
     {
@@ -1013,10 +1013,10 @@ uint64_t __41__TSPDataManager_dataOrNilForIdentifier___block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager dataForIdentifier:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:857 description:{@"No data loaded for identifier: %qu", a3}];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:857 description:{@"No data loaded for identifier: %qu", identifier}];
   }
 
   v9 = +[TSPData null];
@@ -1026,10 +1026,10 @@ LABEL_7:
   return v10;
 }
 
-- (id)dataForIdentifierImpl:(int64_t)a3
+- (id)dataForIdentifierImpl:(int64_t)impl
 {
-  v7 = a3;
-  WeakRetained = std::__hash_table<std::__hash_value_type<long long const,NSMutableArray * {__strong}>,std::__unordered_map_hasher<long long const,std::__hash_value_type<long long const,NSMutableArray * {__strong}>,TSP::IdentifierHash,std::equal_to<long long const>,true>,std::__unordered_map_equal<long long const,std::__hash_value_type<long long const,NSMutableArray * {__strong}>,std::equal_to<long long const>,TSP::IdentifierHash,true>,std::allocator<std::__hash_value_type<long long const,NSMutableArray * {__strong}>>>::find<long long>(&self->_identifierToDataMap.__table_.__bucket_list_.__ptr_, &v7);
+  implCopy = impl;
+  WeakRetained = std::__hash_table<std::__hash_value_type<long long const,NSMutableArray * {__strong}>,std::__unordered_map_hasher<long long const,std::__hash_value_type<long long const,NSMutableArray * {__strong}>,TSP::IdentifierHash,std::equal_to<long long const>,true>,std::__unordered_map_equal<long long const,std::__hash_value_type<long long const,NSMutableArray * {__strong}>,std::equal_to<long long const>,TSP::IdentifierHash,true>,std::allocator<std::__hash_value_type<long long const,NSMutableArray * {__strong}>>>::find<long long>(&self->_identifierToDataMap.__table_.__bucket_list_.__ptr_, &implCopy);
   if (WeakRetained)
   {
     v5 = WeakRetained;
@@ -1045,10 +1045,10 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (int)openTemporaryPath:(id)a3
+- (int)openTemporaryPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v4 = TSUOpen();
     if (v4 < 0)
@@ -1065,23 +1065,23 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)linkTemporaryPath:(id)a3 fromURL:(id)a4
+- (BOOL)linkTemporaryPath:(id)path fromURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  pathCopy = path;
+  lCopy = l;
+  v7 = lCopy;
+  if (pathCopy)
   {
-    if (([v6 isFileURL] & 1) == 0)
+    if (([lCopy isFileURL] & 1) == 0)
     {
-      v8 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager linkTemporaryPath:fromURL:]"];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-      [v8 handleFailureInFunction:v9 file:v10 lineNumber:913 description:@"Can't link to non-file URL"];
+      [currentHandler handleFailureInFunction:v9 file:v10 lineNumber:913 description:@"Can't link to non-file URL"];
     }
 
-    v11 = [v7 path];
-    v12 = [TSPFileManager linkFileAtPath:v11 toPath:v5];
+    path = [v7 path];
+    v12 = [TSPFileManager linkFileAtPath:path toPath:pathCopy];
   }
 
   else
@@ -1092,9 +1092,9 @@ LABEL_7:
   return v12;
 }
 
-- (id)temporaryPathForFilename:(id)a3
+- (id)temporaryPathForFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1107,9 +1107,9 @@ LABEL_7:
   block[2] = __43__TSPDataManager_temporaryPathForFilename___block_invoke;
   block[3] = &unk_279D46AA8;
   block[4] = self;
-  v10 = v4;
+  v10 = filenameCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = filenameCopy;
   dispatch_sync(temporaryDirectoryQueue, block);
   v7 = v13[5];
 
@@ -1173,11 +1173,11 @@ void __43__TSPDataManager_temporaryPathForFilename___block_invoke(void *a1)
   *(v25 + 40) = v24;
 }
 
-- (id)dataWithTemporaryPath:(id)a3 digest:(const void *)a4 filename:(id)a5
+- (id)dataWithTemporaryPath:(id)path digest:(const void *)digest filename:(id)filename
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8 isDirectory:0];
+  pathCopy = path;
+  filenameCopy = filename;
+  v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:0];
   v11 = [[TSPTemporaryDataStorage alloc] initWithURL:v10];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -1185,22 +1185,22 @@ void __43__TSPDataManager_temporaryPathForFilename___block_invoke(void *a1)
   v15[3] = &unk_279D46C58;
   v12 = v10;
   v16 = v12;
-  v13 = [(TSPDataManager *)self dataWithStorage:v11 digest:a4 filename:v9 skipDocumentResourcesLookup:0 accessorBlock:v15];
+  v13 = [(TSPDataManager *)self dataWithStorage:v11 digest:digest filename:filenameCopy skipDocumentResourcesLookup:0 accessorBlock:v15];
 
   return v13;
 }
 
-- (void)setDocumentURL:(id)a3
+- (void)setDocumentURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   temporaryDirectoryQueue = self->_temporaryDirectoryQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__TSPDataManager_setDocumentURL___block_invoke;
   v7[3] = &unk_279D46A58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_async(temporaryDirectoryQueue, v7);
 }
 
@@ -1215,10 +1215,10 @@ uint64_t __33__TSPDataManager_setDocumentURL___block_invoke(uint64_t a1)
 {
   if (self->_temporaryUniqueDirectoryURL)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     temporaryUniqueDirectoryURL = self->_temporaryUniqueDirectoryURL;
     v13 = 0;
-    v5 = [v3 removeItemAtURL:temporaryUniqueDirectoryURL error:&v13];
+    v5 = [defaultManager removeItemAtURL:temporaryUniqueDirectoryURL error:&v13];
     v6 = v13;
 
     if ((v5 & 1) == 0)
@@ -1232,8 +1232,8 @@ uint64_t __33__TSPDataManager_setDocumentURL___block_invoke(uint64_t a1)
   {
     if (temporaryDirectoryURL != self->_temporaryUniqueDirectoryURL)
     {
-      v8 = [(NSURL *)temporaryDirectoryURL path];
-      v9 = rmdir([v8 fileSystemRepresentation]);
+      path = [(NSURL *)temporaryDirectoryURL path];
+      v9 = rmdir([path fileSystemRepresentation]);
 
       if (v9)
       {
@@ -1256,19 +1256,19 @@ uint64_t __33__TSPDataManager_setDocumentURL___block_invoke(uint64_t a1)
   self->_temporaryPathSet = 0;
 }
 
-- (id)dataFromExternalReferenceURL:(id)a3 useFileCoordination:(BOOL)a4
+- (id)dataFromExternalReferenceURL:(id)l useFileCoordination:(BOOL)coordination
 {
-  v4 = a4;
-  v6 = a3;
-  if (([v6 isFileURL] & 1) == 0)
+  coordinationCopy = coordination;
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager dataFromExternalReferenceURL:useFileCoordination:]"];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:1022 description:@"External references must be added from a file URL"];
+    [currentHandler handleFailureInFunction:v8 file:v9 lineNumber:1022 description:@"External references must be added from a file URL"];
   }
 
-  v10 = self;
+  selfCopy = self;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1279,16 +1279,16 @@ uint64_t __33__TSPDataManager_setDocumentURL___block_invoke(uint64_t a1)
   aBlock[1] = 3221225472;
   aBlock[2] = __67__TSPDataManager_dataFromExternalReferenceURL_useFileCoordination___block_invoke;
   aBlock[3] = &unk_279D46EB0;
-  aBlock[4] = v10;
+  aBlock[4] = selfCopy;
   v22 = &v23;
-  v11 = v10;
+  v11 = selfCopy;
   v21 = v11;
   v12 = _Block_copy(aBlock);
   v13 = v12;
-  if (v4)
+  if (coordinationCopy)
   {
     v19 = 0;
-    [MEMORY[0x277CCA9E8] tsp_coordinateReadingItemAtURL:v6 options:0 filePresenter:0 error:&v19 byAccessor:v12];
+    [MEMORY[0x277CCA9E8] tsp_coordinateReadingItemAtURL:lCopy options:0 filePresenter:0 error:&v19 byAccessor:v12];
     v14 = v19;
     if (v14)
     {
@@ -1305,7 +1305,7 @@ uint64_t __33__TSPDataManager_setDocumentURL___block_invoke(uint64_t a1)
 
   else
   {
-    (*(v12 + 2))(v12, v6);
+    (*(v12 + 2))(v12, lCopy);
     v16 = 0;
   }
 
@@ -1410,21 +1410,21 @@ void __42__TSPDataManager_removeExternalReferences__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeExternalReferenceForData:(id)a3 storage:(id)a4
+- (void)removeExternalReferenceForData:(id)data storage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  storageCopy = storage;
   v8 = dispatch_get_global_queue(0, 0);
   dispatch_group_enter(self->_externalReferenceRemovalGroup);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__TSPDataManager_removeExternalReferenceForData_storage___block_invoke;
   block[3] = &unk_279D46F28;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = storageCopy;
+  selfCopy = self;
+  v14 = dataCopy;
+  v9 = dataCopy;
+  v10 = storageCopy;
   dispatch_async(v8, block);
 }
 
@@ -1492,17 +1492,17 @@ void __57__TSPDataManager_removeExternalReferenceForData_storage___block_invoke_
   dispatch_group_leave(*(*(a1 + 56) + 160));
 }
 
-- (id)dataForDigestImpl:(const void *)a3 accessorBlock:(id)a4
+- (id)dataForDigestImpl:(const void *)impl accessorBlock:(id)block
 {
-  v4 = [(TSPDataManager *)self dataForDigestImpl:a3 skipDocumentResourcesLookup:0 accessorBlock:a4];
+  v4 = [(TSPDataManager *)self dataForDigestImpl:impl skipDocumentResourcesLookup:0 accessorBlock:block];
 
   return v4;
 }
 
-- (id)dataForDigestImpl:(const void *)a3 skipDocumentResourcesLookup:(BOOL)a4 accessorBlock:(id)a5
+- (id)dataForDigestImpl:(const void *)impl skipDocumentResourcesLookup:(BOOL)lookup accessorBlock:(id)block
 {
-  v7 = a5;
-  v8 = std::__hash_table<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,std::__unordered_map_hasher<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestHash,TSP::DataDigestEqualTo,true>,std::__unordered_map_equal<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestEqualTo,TSP::DataDigestHash,true>,std::allocator<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>>>::find<std::array<unsigned char,20ul>>(&self->_digestToDataMap.__table_.__bucket_list_.__ptr_, a3);
+  blockCopy = block;
+  v8 = std::__hash_table<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,std::__unordered_map_hasher<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestHash,TSP::DataDigestEqualTo,true>,std::__unordered_map_equal<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestEqualTo,TSP::DataDigestHash,true>,std::allocator<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>>>::find<std::array<unsigned char,20ul>>(&self->_digestToDataMap.__table_.__bucket_list_.__ptr_, impl);
   v9 = v8;
   if (v8)
   {
@@ -1522,7 +1522,7 @@ void __57__TSPDataManager_removeExternalReferenceForData_storage___block_invoke_
   return WeakRetained;
 }
 
-- (id)dataForDigest:(const void *)a3
+- (id)dataForDigest:(const void *)digest
 {
   v7 = 0;
   v8 = &v7;
@@ -1537,7 +1537,7 @@ void __57__TSPDataManager_removeExternalReferenceForData_storage___block_invoke_
   block[3] = &unk_279D469E0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = digest;
   dispatch_sync(datasQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1552,21 +1552,21 @@ uint64_t __32__TSPDataManager_dataForDigest___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)dataForDigest:(const void *)a3 queue:(id)a4 completion:(id)a5
+- (void)dataForDigest:(const void *)digest queue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   datasQueue = self->_datasQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__TSPDataManager_dataForDigest_queue_completion___block_invoke;
   v13[3] = &unk_279D46F50;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v15 = completionCopy;
+  digestCopy = digest;
+  v11 = completionCopy;
+  v12 = queueCopy;
   dispatch_async(datasQueue, v13);
 }
 
@@ -1585,14 +1585,14 @@ void __49__TSPDataManager_dataForDigest_queue_completion___block_invoke(uint64_t
   dispatch_async(v3, v6);
 }
 
-- (id)dataWithStorage:(id)a3 digest:(const void *)a4 filename:(id)a5 skipDocumentResourcesLookup:(BOOL)a6 accessorBlock:(id)a7
+- (id)dataWithStorage:(id)storage digest:(const void *)digest filename:(id)filename skipDocumentResourcesLookup:(BOOL)lookup accessorBlock:(id)block
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if (v12)
+  storageCopy = storage;
+  filenameCopy = filename;
+  blockCopy = block;
+  if (storageCopy)
   {
-    if (v13)
+    if (filenameCopy)
     {
       goto LABEL_6;
     }
@@ -1600,21 +1600,21 @@ void __49__TSPDataManager_dataForDigest_queue_completion___block_invoke(uint64_t
 
   else
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager dataWithStorage:digest:filename:skipDocumentResourcesLookup:accessorBlock:]"];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-    [v15 handleFailureInFunction:v16 file:v17 lineNumber:1265 description:{@"Invalid parameter not satisfying: %s", "storage"}];
+    [currentHandler handleFailureInFunction:v16 file:v17 lineNumber:1265 description:{@"Invalid parameter not satisfying: %s", "storage"}];
 
-    if (v13)
+    if (filenameCopy)
     {
       goto LABEL_6;
     }
   }
 
-  v18 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPDataManager dataWithStorage:digest:filename:skipDocumentResourcesLookup:accessorBlock:]"];
   v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPDataManager.mm"];
-  [v18 handleFailureInFunction:v19 file:v20 lineNumber:1266 description:{@"Invalid parameter not satisfying: %s", "filename"}];
+  [currentHandler2 handleFailureInFunction:v19 file:v20 lineNumber:1266 description:{@"Invalid parameter not satisfying: %s", "filename"}];
 
 LABEL_6:
   v34 = 0;
@@ -1629,15 +1629,15 @@ LABEL_6:
   block[2] = __92__TSPDataManager_dataWithStorage_digest_filename_skipDocumentResourcesLookup_accessorBlock___block_invoke;
   block[3] = &unk_279D46F78;
   v31 = &v34;
-  v32 = a4;
-  v33 = a6;
+  digestCopy = digest;
+  lookupCopy = lookup;
   block[4] = self;
-  v28 = v12;
-  v29 = v13;
-  v30 = v14;
-  v22 = v13;
-  v23 = v12;
-  v24 = v14;
+  v28 = storageCopy;
+  v29 = filenameCopy;
+  v30 = blockCopy;
+  v22 = filenameCopy;
+  v23 = storageCopy;
+  v24 = blockCopy;
   dispatch_sync(datasQueue, block);
   v25 = v35[5];
 
@@ -1664,27 +1664,27 @@ void __92__TSPDataManager_dataWithStorage_digest_filename_skipDocumentResourcesL
   }
 }
 
-- (id)addNewDataForStorage:(id)a3 digest:(const void *)a4 filename:(id)a5
+- (id)addNewDataForStorage:(id)storage digest:(const void *)digest filename:(id)filename
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [[TSPData alloc] initWithIdentifier:self->_nextNewIdentifier digest:a4 filename:v9 storage:v8 manager:self];
+  storageCopy = storage;
+  filenameCopy = filename;
+  v10 = [[TSPData alloc] initWithIdentifier:self->_nextNewIdentifier digest:digest filename:filenameCopy storage:storageCopy manager:self];
   [(TSPDataManager *)self addData:v10];
   ++self->_nextNewIdentifier;
 
   return v10;
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
-  v4 = a3;
-  v8 = [v4 identifier];
-  v9 = &v8;
-  v5 = std::__hash_table<std::__hash_value_type<long long const,TSPData * {__weak}>,std::__unordered_map_hasher<long long const,std::__hash_value_type<long long const,TSPData * {__weak}>,TSP::ObjectIdentifierHash,std::equal_to<long long const>,true>,std::__unordered_map_equal<long long const,std::__hash_value_type<long long const,TSPData * {__weak}>,std::equal_to<long long const>,TSP::ObjectIdentifierHash,true>,std::allocator<std::__hash_value_type<long long const,TSPData * {__weak}>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_identifierToDataMap.__table_.__bucket_list_.__ptr_, &v8);
-  objc_storeWeak(v5 + 3, v4);
-  v9 = [v4 digest];
-  v6 = std::__hash_table<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,std::__unordered_map_hasher<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestHash,TSP::DataDigestEqualTo,true>,std::__unordered_map_equal<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestEqualTo,TSP::DataDigestHash,true>,std::allocator<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>>>::__emplace_unique_key_args<std::array<unsigned char,20ul>,std::piecewise_construct_t const&,std::tuple<std::array<unsigned char,20ul> const&>,std::tuple<>>(&self->_digestToDataMap.__table_.__bucket_list_.__ptr_, v9);
-  objc_storeWeak(v6 + 5, v4);
+  dataCopy = data;
+  identifier = [dataCopy identifier];
+  digest = &identifier;
+  v5 = std::__hash_table<std::__hash_value_type<long long const,TSPData * {__weak}>,std::__unordered_map_hasher<long long const,std::__hash_value_type<long long const,TSPData * {__weak}>,TSP::ObjectIdentifierHash,std::equal_to<long long const>,true>,std::__unordered_map_equal<long long const,std::__hash_value_type<long long const,TSPData * {__weak}>,std::equal_to<long long const>,TSP::ObjectIdentifierHash,true>,std::allocator<std::__hash_value_type<long long const,TSPData * {__weak}>>>::__emplace_unique_key_args<long long,std::piecewise_construct_t const&,std::tuple<long long const&>,std::tuple<>>(&self->_identifierToDataMap.__table_.__bucket_list_.__ptr_, &identifier);
+  objc_storeWeak(v5 + 3, dataCopy);
+  digest = [dataCopy digest];
+  v6 = std::__hash_table<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,std::__unordered_map_hasher<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestHash,TSP::DataDigestEqualTo,true>,std::__unordered_map_equal<std::array<unsigned char,20ul> const,std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>,TSP::DataDigestEqualTo,TSP::DataDigestHash,true>,std::allocator<std::__hash_value_type<std::array<unsigned char,20ul> const,TSPData * {__weak}>>>::__emplace_unique_key_args<std::array<unsigned char,20ul>,std::piecewise_construct_t const&,std::tuple<std::array<unsigned char,20ul> const&>,std::tuple<>>(&self->_digestToDataMap.__table_.__bucket_list_.__ptr_, digest);
+  objc_storeWeak(v6 + 5, dataCopy);
   if (self->_hasExternalReferences)
   {
     self->_hasExternalReferences = 1;
@@ -1692,16 +1692,16 @@ void __92__TSPDataManager_dataWithStorage_digest_filename_skipDocumentResourcesL
 
   else
   {
-    v7 = [v4 storage];
+    storage = [dataCopy storage];
     objc_opt_class();
     self->_hasExternalReferences = objc_opt_isKindOfClass() & 1;
   }
 }
 
-- (id)checkForPersistenceWarningsWithPackageURL:(id)a3
+- (id)checkForPersistenceWarningsWithPackageURL:(id)l
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v5 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
 
   if (objc_opt_respondsToSelector())
   {
@@ -1712,7 +1712,7 @@ void __92__TSPDataManager_dataWithStorage_digest_filename_skipDocumentResourcesL
     v11[3] = &unk_279D46FA0;
     v7 = v6;
     v12 = v7;
-    v13 = v5;
+    v13 = delegate;
     [(TSPDataManager *)self enumerateDatasUsingBlock:v11];
     v8 = v13;
     v9 = v7;
@@ -1742,12 +1742,12 @@ void __60__TSPDataManager_checkForPersistenceWarningsWithPackageURL___block_invo
   }
 }
 
-- (void)removeFileAtPath:(id)a3
+- (void)removeFileAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v7 = 0;
-  v5 = [v4 removeItemAtPath:v3 error:&v7];
+  v5 = [defaultManager removeItemAtPath:pathCopy error:&v7];
   v6 = v7;
 
   if ((v5 & 1) == 0)
@@ -1774,20 +1774,20 @@ void __60__TSPDataManager_checkForPersistenceWarningsWithPackageURL___block_invo
   return self;
 }
 
-- (id)createTemporaryDirectoryForPackageURL:(id)a3
+- (id)createTemporaryDirectoryForPackageURL:(id)l
 {
   v3 = [objc_alloc(MEMORY[0x277D6C378]) initWithSignature:@"DocumentData"];
   [v3 leakTemporaryDirectory];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = [v3 URL];
   v6 = *MEMORY[0x277CCA1A0];
   v12 = 0;
-  [v4 changeFileProtectionAtURL:v5 toProtection:v6 recursively:0 error:&v12];
+  [defaultManager changeFileProtectionAtURL:v5 toProtection:v6 recursively:0 error:&v12];
   v7 = v12;
 
   v8 = MEMORY[0x277CBEBC0];
-  v9 = [v3 path];
-  v10 = [v8 fileURLWithPath:v9 isDirectory:1];
+  path = [v3 path];
+  v10 = [v8 fileURLWithPath:path isDirectory:1];
 
   return v10;
 }

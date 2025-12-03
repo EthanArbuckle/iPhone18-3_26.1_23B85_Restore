@@ -1,11 +1,11 @@
 @interface CKSQLiteTOCTable
 + (id)dbProperties;
-- (BOOL)migrateEntryDataFromTable:(id)a3 entry:(id)a4 toEntry:(id)a5 addedProperties:(id)a6;
-- (id)_tocEntriesWithGroupID:(id)a3 error:(id *)a4 label:(_CKSQLiteCompiledStatementLabel *)a5 properties:(id)a6;
-- (id)addEntryForTable:(id)a3;
-- (id)setSchema:(id)a3 forTable:(id)a4;
-- (id)tocEntriesWithGroupID:(id)a3 error:(id *)a4;
-- (id)tocEntryWithGroupID:(id)a3 logicalTableName:(id)a4 error:(id *)a5;
+- (BOOL)migrateEntryDataFromTable:(id)table entry:(id)entry toEntry:(id)toEntry addedProperties:(id)properties;
+- (id)_tocEntriesWithGroupID:(id)d error:(id *)error label:(_CKSQLiteCompiledStatementLabel *)label properties:(id)properties;
+- (id)addEntryForTable:(id)table;
+- (id)setSchema:(id)schema forTable:(id)table;
+- (id)tocEntriesWithGroupID:(id)d error:(id *)error;
+- (id)tocEntryWithGroupID:(id)d logicalTableName:(id)name error:(id *)error;
 @end
 
 @implementation CKSQLiteTOCTable
@@ -35,15 +35,15 @@
   return v2;
 }
 
-- (BOOL)migrateEntryDataFromTable:(id)a3 entry:(id)a4 toEntry:(id)a5 addedProperties:(id)a6
+- (BOOL)migrateEntryDataFromTable:(id)table entry:(id)entry toEntry:(id)toEntry addedProperties:(id)properties
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tableCopy = table;
+  entryCopy = entry;
+  toEntryCopy = toEntry;
+  propertiesCopy = properties;
   v14 = objc_opt_class();
   v16 = objc_msgSend_propertyInfo_(v14, v15, CKSQLiteTOCTableEntryCreatingClassName);
-  v18 = objc_msgSend_valueForProperty_propertyInfo_inObject_(v10, v17, CKSQLiteTOCTableEntryCreatingClassName, v16, v11);
+  v18 = objc_msgSend_valueForProperty_propertyInfo_inObject_(tableCopy, v17, CKSQLiteTOCTableEntryCreatingClassName, v16, entryCopy);
   v19 = NSClassFromString(v18);
   if (v19 && (v20 = v19, v21 = objc_opt_class(), (objc_msgSend_isSubclassOfClass_(v20, v22, v21) & 1) != 0))
   {
@@ -54,20 +54,20 @@
   {
     v25.receiver = self;
     v25.super_class = CKSQLiteTOCTable;
-    v23 = [(CKSQLiteTable *)&v25 migrateEntryDataFromTable:v10 entry:v11 toEntry:v12 addedProperties:v13];
+    v23 = [(CKSQLiteTable *)&v25 migrateEntryDataFromTable:tableCopy entry:entryCopy toEntry:toEntryCopy addedProperties:propertiesCopy];
   }
 
   return v23;
 }
 
-- (id)addEntryForTable:(id)a3
+- (id)addEntryForTable:(id)table
 {
   v98[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tableCopy = table;
   v7 = objc_msgSend_tableGroup(self, v5, v6);
   isMigrationTOC = objc_msgSend_isMigrationTOC(v7, v8, v9);
 
-  v13 = objc_msgSend_tableGroup(v4, v11, v12);
+  v13 = objc_msgSend_tableGroup(tableCopy, v11, v12);
   hasFlag = objc_msgSend_hasFlag_(v13, v14, 1);
   if (isMigrationTOC && (hasFlag & 1) != 0)
   {
@@ -122,9 +122,9 @@ LABEL_13:
   }
 
   v18 = objc_alloc_init(CKSQLiteTOCTableEntry);
-  v44 = objc_msgSend_logicalTableName(v4, v45, v46);
+  v44 = objc_msgSend_logicalTableName(tableCopy, v45, v46);
   objc_msgSend_setLogicalTableName_(v18, v47, v44);
-  v23 = objc_msgSend_dbTableName(v4, v48, v49);
+  v23 = objc_msgSend_dbTableName(tableCopy, v48, v49);
   if (v23)
   {
     objc_msgSend_setDbTableName_(v18, v50, v23);
@@ -153,12 +153,12 @@ LABEL_13:
   }
 
   v35 = objc_msgSend_tableID(v18, v70, v71);
-  objc_msgSend_setTableID_(v4, v72, v35);
+  objc_msgSend_setTableID_(tableCopy, v72, v35);
   if (!v23)
   {
     v38 = objc_msgSend_stringValue(v35, v73, v74);
     objc_msgSend_setDbTableName_(v18, v89, v38);
-    objc_msgSend_setDbTableName_(v4, v90, v38);
+    objc_msgSend_setDbTableName_(tableCopy, v90, v38);
     v98[0] = CKSQLiteTOCTableEntryDbTablePropertyName;
     v87 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v91, v98, 1);
     v43 = objc_msgSend_updateProperties_usingObject_label_(self, v92, v87, v18, off_1EA9111C0);
@@ -174,16 +174,16 @@ LABEL_16:
   return v43;
 }
 
-- (id)setSchema:(id)a3 forTable:(id)a4
+- (id)setSchema:(id)schema forTable:(id)table
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  tableCopy = table;
+  schemaCopy = schema;
   v8 = objc_alloc_init(CKSQLiteTOCTableEntry);
-  v11 = objc_msgSend_tableID(v6, v9, v10);
+  v11 = objc_msgSend_tableID(tableCopy, v9, v10);
 
   objc_msgSend_setTableID_(v8, v12, v11);
-  objc_msgSend_setSchema_(v8, v13, v7);
+  objc_msgSend_setSchema_(v8, v13, schemaCopy);
 
   v20[0] = CKSQLiteTOCTableEntrySchemaPropertyName;
   v15 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v14, v20, 1);
@@ -194,13 +194,13 @@ LABEL_16:
   return v17;
 }
 
-- (id)_tocEntriesWithGroupID:(id)a3 error:(id *)a4 label:(_CKSQLiteCompiledStatementLabel *)a5 properties:(id)a6
+- (id)_tocEntriesWithGroupID:(id)d error:(id *)error label:(_CKSQLiteCompiledStatementLabel *)label properties:(id)properties
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  propertiesCopy = properties;
   v34 = @"ID";
-  v35[0] = v10;
+  v35[0] = dCopy;
   v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v12, v35, &v34, 1);
   v28 = 0;
   v29 = &v28;
@@ -215,16 +215,16 @@ LABEL_16:
   v23[4] = self;
   v14 = v13;
   v24 = v14;
-  v27 = a5;
-  v15 = v11;
+  labelCopy = label;
+  v15 = propertiesCopy;
   v25 = v15;
   v26 = &v28;
   v17 = objc_msgSend_performInTransaction_(self, v16, v23);
   v18 = v17;
-  if (a4 && v17)
+  if (error && v17)
   {
     v19 = v17;
-    *a4 = v18;
+    *error = v18;
   }
 
   v20 = v29[5];
@@ -235,31 +235,31 @@ LABEL_16:
   return v20;
 }
 
-- (id)tocEntriesWithGroupID:(id)a3 error:(id *)a4
+- (id)tocEntriesWithGroupID:(id)d error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v14 = CKSQLiteTOCTableEntryLogicalTablePropertyName;
   v15 = CKSQLiteTOCTableEntryDbTablePropertyName;
   v16 = CKSQLiteTOCTableEntryTableIDPropertyName;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
+  dCopy = d;
   v9 = objc_msgSend_arrayWithObjects_count_(v6, v8, &v14, 3);
-  v11 = objc_msgSend__tocEntriesWithGroupID_error_label_properties_(self, v10, v7, a4, off_1EA9111F0, v9, v14, v15, v16, v17);
+  v11 = objc_msgSend__tocEntriesWithGroupID_error_label_properties_(self, v10, dCopy, error, off_1EA9111F0, v9, v14, v15, v16, v17);
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-- (id)tocEntryWithGroupID:(id)a3 logicalTableName:(id)a4 error:(id *)a5
+- (id)tocEntryWithGroupID:(id)d logicalTableName:(id)name error:(id *)error
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v29[0] = @"ID";
   v29[1] = @"NAME";
-  v30[0] = v8;
-  v30[1] = v9;
+  v30[0] = dCopy;
+  v30[1] = nameCopy;
   v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v10, v30, v29, 2);
   v23 = 0;
   v24 = &v23;
@@ -277,10 +277,10 @@ LABEL_16:
   v22 = &v23;
   v14 = objc_msgSend_performInTransaction_(self, v13, v20);
   v15 = v14;
-  if (a5 && v14)
+  if (error && v14)
   {
     v16 = v14;
-    *a5 = v15;
+    *error = v15;
   }
 
   v17 = v24[5];

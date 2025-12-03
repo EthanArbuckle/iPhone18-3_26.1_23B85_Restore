@@ -1,14 +1,14 @@
 @interface _UINavigationControllerVisualStyleTVOS
-- (_UINavigationControllerVisualStyleTVOS)initWithNavigationController:(id)a3;
+- (_UINavigationControllerVisualStyleTVOS)initWithNavigationController:(id)controller;
 @end
 
 @implementation _UINavigationControllerVisualStyleTVOS
 
-- (_UINavigationControllerVisualStyleTVOS)initWithNavigationController:(id)a3
+- (_UINavigationControllerVisualStyleTVOS)initWithNavigationController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = _UINavigationControllerVisualStyleTVOS;
-  v3 = [(_UINavigationControllerVisualStyle *)&v7 initWithNavigationController:a3];
+  v3 = [(_UINavigationControllerVisualStyle *)&v7 initWithNavigationController:controller];
   if (v3)
   {
     v4 = objc_alloc_init(_UINavigationCrossfadeAnimator);

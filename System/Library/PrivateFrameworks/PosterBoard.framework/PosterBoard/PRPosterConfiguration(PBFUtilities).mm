@@ -7,20 +7,20 @@
 
 - (id)pbf_posterUUID
 {
-  v1 = [a1 _path];
-  v2 = [v1 serverIdentity];
-  v3 = [v2 posterUUID];
+  _path = [self _path];
+  serverIdentity = [_path serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
 
-  return v3;
+  return posterUUID;
 }
 
 - (id)pbf_posterProvider
 {
-  v1 = [a1 _path];
-  v2 = [v1 serverIdentity];
-  v3 = [v2 provider];
+  _path = [self _path];
+  serverIdentity = [_path serverIdentity];
+  provider = [serverIdentity provider];
 
-  return v3;
+  return provider;
 }
 
 @end

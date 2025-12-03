@@ -1,7 +1,7 @@
 @interface STKeyboardMonitor
 - (STKeyboardMonitor)init;
-- (void)_didHidePasscodeUI:(id)a3;
-- (void)_didShowPasscodeUI:(id)a3;
+- (void)_didHidePasscodeUI:(id)i;
+- (void)_didShowPasscodeUI:(id)i;
 @end
 
 @implementation STKeyboardMonitor
@@ -18,26 +18,26 @@
   return v2;
 }
 
-- (void)_didShowPasscodeUI:(id)a3
+- (void)_didShowPasscodeUI:(id)i
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [a3 name];
+    name = [i name];
     v6 = 138543362;
-    v7 = v5;
+    v7 = name;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Received %{public}@ notification", &v6, 0xCu);
   }
 
   [(STKeyboardMonitor *)self setNeedsKeyboard:1];
 }
 
-- (void)_didHidePasscodeUI:(id)a3
+- (void)_didHidePasscodeUI:(id)i
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [a3 name];
+    name = [i name];
     v6 = 138543362;
-    v7 = v5;
+    v7 = name;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Received %{public}@ notification", &v6, 0xCu);
   }
 

@@ -2,34 +2,34 @@
 + (id)sharedProvider;
 - (BOOL)_locked_acquireAssertion;
 - (MSVBackgroundTaskProvider)init;
-- (unint64_t)beginTaskWithName:(id)a3 expirationHandler:(id)a4;
+- (unint64_t)beginTaskWithName:(id)name expirationHandler:(id)handler;
 - (void)_locked_releaseAssertion;
-- (void)endTask:(unint64_t)a3;
+- (void)endTask:(unint64_t)task;
 @end
 
 @implementation MSVBackgroundTaskProvider
 
-- (void)endTask:(unint64_t)a3
+- (void)endTask:(unint64_t)task
 {
   v14 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(MSVBackgroundTaskProvider *)self timeoutGuards];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  timeoutGuards = [(MSVBackgroundTaskProvider *)self timeoutGuards];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:task];
+  v7 = [timeoutGuards objectForKeyedSubscript:v6];
 
   if (v7)
   {
     [v7 disarm];
-    v8 = [(MSVBackgroundTaskProvider *)self timeoutGuards];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-    [v8 setObject:0 forKeyedSubscript:v9];
+    timeoutGuards2 = [(MSVBackgroundTaskProvider *)self timeoutGuards];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:task];
+    [timeoutGuards2 setObject:0 forKeyedSubscript:v9];
 
     [(MSVBackgroundTaskProvider *)self _locked_releaseAssertion];
     v10 = os_log_create("com.apple.amp.MediaServices", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = a3;
+      taskCopy = task;
       _os_log_impl(&dword_1AC81F000, v10, OS_LOG_TYPE_DEFAULT, "[MSVBackgroundTaskProvider] Background Task #%ld ended", &v12, 0xCu);
     }
   }
@@ -39,19 +39,19 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)beginTaskWithName:(id)a3 expirationHandler:(id)a4
+- (unint64_t)beginTaskWithName:(id)name expirationHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   if ([(MSVBackgroundTaskProvider *)self _locked_acquireAssertion])
   {
     v8 = [(MSVBackgroundTaskProvider *)self lastIdentifier]+ 1;
     [(MSVBackgroundTaskProvider *)self setLastIdentifier:v8];
-    if (!v6)
+    if (!nameCopy)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BackgroundTask#%ld", v8];
+      nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"BackgroundTask#%ld", v8];
     }
 
     v9 = [MSVBlockGuard alloc];
@@ -60,14 +60,14 @@
     v16[2] = __65__MSVBackgroundTaskProvider_beginTaskWithName_expirationHandler___block_invoke;
     v16[3] = &unk_1E79817C8;
     v20 = v8;
-    v6 = v6;
-    v17 = v6;
-    v18 = self;
-    v19 = v7;
+    nameCopy = nameCopy;
+    v17 = nameCopy;
+    selfCopy = self;
+    v19 = handlerCopy;
     v10 = [(MSVBlockGuard *)v9 initWithTimeout:v16 interruptionHandler:30.0];
-    v11 = [(MSVBackgroundTaskProvider *)self timeoutGuards];
+    timeoutGuards = [(MSVBackgroundTaskProvider *)self timeoutGuards];
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-    [v11 setObject:v10 forKeyedSubscript:v12];
+    [timeoutGuards setObject:v10 forKeyedSubscript:v12];
 
     v13 = os_log_create("com.apple.amp.MediaServices", "Default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -75,7 +75,7 @@
       *buf = 134218242;
       v22 = v8;
       v23 = 2114;
-      v24 = v6;
+      v24 = nameCopy;
       _os_log_impl(&dword_1AC81F000, v13, OS_LOG_TYPE_DEFAULT, "[MSVBackgroundTaskProvider] Background Task #%ld started (%{public}@)", buf, 0x16u);
     }
   }
@@ -197,7 +197,7 @@ LABEL_13:
   assertion = self->_assertion;
   self->_assertion = v7;
 
-  v9 = [(BKSProcessAssertion *)self->_assertion acquire];
+  acquire = [(BKSProcessAssertion *)self->_assertion acquire];
   if (v4)
   {
     v10 = os_log_create("com.apple.amp.MediaServices", "Default");
@@ -211,7 +211,7 @@ LABEL_13:
   }
 
   ++self->_assertionCount;
-  if (v9)
+  if (acquire)
   {
     goto LABEL_13;
   }
@@ -235,8 +235,8 @@ LABEL_14:
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    [(MSVBackgroundTaskProvider *)v3 setTimeoutGuards:v4];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(MSVBackgroundTaskProvider *)v3 setTimeoutGuards:dictionary];
   }
 
   return v3;

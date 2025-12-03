@@ -1,14 +1,14 @@
 @interface WFFileLabelColorPickerParameter
-- (WFFileLabelColorPickerParameter)initWithDefinition:(id)a3;
-- (id)accessoryColorForPossibleState:(id)a3;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (WFFileLabelColorPickerParameter)initWithDefinition:(id)definition;
+- (id)accessoryColorForPossibleState:(id)state;
+- (id)localizedLabelForPossibleState:(id)state;
 @end
 
 @implementation WFFileLabelColorPickerParameter
 
-- (id)accessoryColorForPossibleState:(id)a3
+- (id)accessoryColorForPossibleState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -27,33 +27,33 @@
 
   v5 = v4;
   _Block_object_dispose(&v13, 8);
-  v6 = [v3 number];
-  v7 = [v6 unsignedIntValue];
+  number = [stateCopy number];
+  unsignedIntValue = [number unsignedIntValue];
 
   v8 = 0;
-  if (v7 <= 3)
+  if (unsignedIntValue <= 3)
   {
-    if (v7 <= 1)
+    if (unsignedIntValue <= 1)
     {
-      if (v7)
+      if (unsignedIntValue)
       {
-        if (v7 != 1)
+        if (unsignedIntValue != 1)
         {
           goto LABEL_24;
         }
 
-        v9 = [v4 systemGrayColor];
+        systemGrayColor = [v4 systemGrayColor];
       }
 
       else
       {
-        v9 = [v4 clearColor];
+        systemGrayColor = [v4 clearColor];
       }
 
       goto LABEL_21;
     }
 
-    if (v7 == 2)
+    if (unsignedIntValue == 2)
     {
       [v4 systemGreenColor];
     }
@@ -66,9 +66,9 @@
     goto LABEL_11;
   }
 
-  if (v7 <= 5)
+  if (unsignedIntValue <= 5)
   {
-    if (v7 == 4)
+    if (unsignedIntValue == 4)
     {
       [v4 systemBlueColor];
     }
@@ -78,30 +78,30 @@
       [v4 systemYellowColor];
     }
 
-    v9 = LABEL_11:;
+    systemGrayColor = LABEL_11:;
     goto LABEL_21;
   }
 
-  if (v7 == 6)
+  if (unsignedIntValue == 6)
   {
-    v9 = [v4 systemRedColor];
+    systemGrayColor = [v4 systemRedColor];
   }
 
   else
   {
-    if (v7 != 7)
+    if (unsignedIntValue != 7)
     {
       goto LABEL_24;
     }
 
-    v9 = [v4 systemOrangeColor];
+    systemGrayColor = [v4 systemOrangeColor];
   }
 
 LABEL_21:
-  v10 = v9;
-  if (v9)
+  v10 = systemGrayColor;
+  if (systemGrayColor)
   {
-    v8 = [objc_alloc(MEMORY[0x277D79E20]) initWithPlatformColor:v9];
+    v8 = [objc_alloc(MEMORY[0x277D79E20]) initWithPlatformColor:systemGrayColor];
   }
 
   else
@@ -114,23 +114,23 @@ LABEL_24:
   return v8;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFFileLabelColorPickerParameter *)self localizedLabelsForLabelNumbers];
-  v6 = [v4 number];
+  stateCopy = state;
+  localizedLabelsForLabelNumbers = [(WFFileLabelColorPickerParameter *)self localizedLabelsForLabelNumbers];
+  number = [stateCopy number];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [localizedLabelsForLabelNumbers objectForKeyedSubscript:number];
 
   return v7;
 }
 
-- (WFFileLabelColorPickerParameter)initWithDefinition:(id)a3
+- (WFFileLabelColorPickerParameter)initWithDefinition:(id)definition
 {
   v21[8] = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = WFFileLabelColorPickerParameter;
-  v3 = [(WFFileLabelColorPickerParameter *)&v19 initWithDefinition:a3];
+  v3 = [(WFFileLabelColorPickerParameter *)&v19 initWithDefinition:definition];
   if (v3)
   {
     v4 = [&unk_28509CB18 if_map:&__block_literal_global_203];

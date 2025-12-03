@@ -1,45 +1,45 @@
 @interface PKPeerPaymentAssociatedAccountPresentationContext
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithFAFamilyMember:(id)a3 options:(id)a4;
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)a3 options:(id)a4;
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)a3 setupType:(int64_t)a4;
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)a3 transaction:(id)a4;
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithFAFamilyMember:(id)member options:(id)options;
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)member options:(id)options;
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)member setupType:(int64_t)type;
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)member transaction:(id)transaction;
 - (id)description;
 @end
 
 @implementation PKPeerPaymentAssociatedAccountPresentationContext
 
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithFAFamilyMember:(id)a3 options:(id)a4
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithFAFamilyMember:(id)member options:(id)options
 {
-  v6 = a4;
-  if (a3)
+  optionsCopy = options;
+  if (member)
   {
     v7 = MEMORY[0x1E69B8898];
-    v8 = a3;
-    a3 = [[v7 alloc] initWithFAFamilyMember:v8];
+    memberCopy = member;
+    member = [[v7 alloc] initWithFAFamilyMember:memberCopy];
   }
 
-  v9 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self initWithPKFamilyMember:a3 options:v6];
+  v9 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self initWithPKFamilyMember:member options:optionsCopy];
 
   return v9;
 }
 
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)a3 options:(id)a4
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)member options:(id)options
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  memberCopy = member;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = PKPeerPaymentAssociatedAccountPresentationContext;
   v9 = [(PKPeerPaymentAssociatedAccountPresentationContext *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_member, a3);
+    objc_storeStrong(&v9->_member, member);
     v11 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v8;
+      v15 = optionsCopy;
       _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "Creating PKPeerPaymentAssociatedAccountPresentationContext with options %@", buf, 0xCu);
     }
   }
@@ -47,31 +47,31 @@
   return v10;
 }
 
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)a3 transaction:(id)a4
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)member transaction:(id)transaction
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self initWithPKFamilyMember:a3 options:0];
+  transactionCopy = transaction;
+  v8 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self initWithPKFamilyMember:member options:0];
   if (v8)
   {
     v9 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v7;
+      v12 = transactionCopy;
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "Creating PKPeerPaymentAssociatedAccountPresentationContext with transaction %@", &v11, 0xCu);
     }
 
-    objc_storeStrong(&v8->_transaction, a4);
+    objc_storeStrong(&v8->_transaction, transaction);
   }
 
   return v8;
 }
 
-- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)a3 setupType:(int64_t)a4
+- (PKPeerPaymentAssociatedAccountPresentationContext)initWithPKFamilyMember:(id)member setupType:(int64_t)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self initWithPKFamilyMember:a3 options:0];
+  v5 = [(PKPeerPaymentAssociatedAccountPresentationContext *)self initWithPKFamilyMember:member options:0];
   if (v5)
   {
     v6 = PKLogFacilityTypeGetObject();
@@ -83,7 +83,7 @@
       _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "Creating PKPeerPaymentAssociatedAccountPresentationContext with setupType %@", &v9, 0xCu);
     }
 
-    v5->_setupType = a4;
+    v5->_setupType = type;
   }
 
   return v5;

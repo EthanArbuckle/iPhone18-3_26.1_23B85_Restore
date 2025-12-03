@@ -1,12 +1,12 @@
 @interface MKPlacePoisInlineMapViewController
-+ (id)inlineMapWithMapItem:(id)a3 configuration:(id)a4;
++ (id)inlineMapWithMapItem:(id)item configuration:(id)configuration;
 - (id)geoCamera;
 - (id)visibleMapItems;
 - (void)_handleTapOnMap;
 - (void)_updateMap;
 - (void)fetchPoisForBrand;
 - (void)loadView;
-- (void)setLocation:(id)a3;
+- (void)setLocation:(id)location;
 - (void)viewDidLoad;
 @end
 
@@ -16,32 +16,32 @@
 {
   if ([(_MKPlacePoisInlineMapContentView *)self->_mapContentView visible])
   {
-    v3 = [(MKPlaceInlineMapViewController *)self mapItem];
-    [v3 _launchActivityForBrandItem];
+    mapItem = [(MKPlaceInlineMapViewController *)self mapItem];
+    [mapItem _launchActivityForBrandItem];
   }
 }
 
 - (id)geoCamera
 {
   v3 = objc_alloc_init(MEMORY[0x1E69A26B8]);
-  v4 = [(MKPlaceInlineMapViewController *)self mapCamera];
-  [v4 centerCoordinate];
+  mapCamera = [(MKPlaceInlineMapViewController *)self mapCamera];
+  [mapCamera centerCoordinate];
   [v3 setLatitude:?];
 
-  v5 = [(MKPlaceInlineMapViewController *)self mapCamera];
-  [v5 centerCoordinate];
+  mapCamera2 = [(MKPlaceInlineMapViewController *)self mapCamera];
+  [mapCamera2 centerCoordinate];
   [v3 setLongitude:v6];
 
-  v7 = [(MKPlaceInlineMapViewController *)self mapCamera];
-  [v7 heading];
+  mapCamera3 = [(MKPlaceInlineMapViewController *)self mapCamera];
+  [mapCamera3 heading];
   [v3 setHeading:?];
 
-  v8 = [(MKPlaceInlineMapViewController *)self mapCamera];
-  [v8 pitch];
+  mapCamera4 = [(MKPlaceInlineMapViewController *)self mapCamera];
+  [mapCamera4 pitch];
   [v3 setPitch:?];
 
-  v9 = [(MKPlaceInlineMapViewController *)self mapCamera];
-  [v9 altitude];
+  mapCamera5 = [(MKPlaceInlineMapViewController *)self mapCamera];
+  [mapCamera5 altitude];
   [v3 setAltitude:?];
 
   [v3 latitude];
@@ -56,9 +56,9 @@
 - (void)fetchPoisForBrand
 {
   v3 = +[MKMapService sharedService];
-  v4 = [v3 defaultTraits];
+  defaultTraits = [v3 defaultTraits];
 
-  if ([v4 hasDeviceLocation])
+  if ([defaultTraits hasDeviceLocation])
   {
     goto LABEL_4;
   }
@@ -66,14 +66,14 @@
   if (self->_location)
   {
     v5 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:self->_location];
-    [v4 setDeviceLocation:v5];
+    [defaultTraits setDeviceLocation:v5];
 
 LABEL_4:
-    v6 = [(MKPlaceInlineMapViewController *)self mapItem];
-    v7 = [v6 _muid];
+    mapItem = [(MKPlaceInlineMapViewController *)self mapItem];
+    _muid = [mapItem _muid];
 
     v8 = +[MKMapService sharedService];
-    v9 = [v8 ticketForSearchPoisForBrandMUID:v7 traits:v4];
+    v9 = [v8 ticketForSearchPoisForBrandMUID:_muid traits:defaultTraits];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -121,24 +121,24 @@ void __55__MKPlacePoisInlineMapViewController_fetchPoisForBrand__block_invoke(ui
   }
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v5 = a3;
-  if (v5 && !self->_location)
+  locationCopy = location;
+  if (locationCopy && !self->_location)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_location, a3);
+    v6 = locationCopy;
+    objc_storeStrong(&self->_location, location);
     [(MKPlacePoisInlineMapViewController *)self fetchPoisForBrand];
-    v5 = v6;
+    locationCopy = v6;
   }
 }
 
 - (void)_updateMap
 {
-  v3 = [(MKPlaceInlineMapViewController *)self mapItem];
-  v4 = [v3 _isMapItemTypeBrand];
+  mapItem = [(MKPlaceInlineMapViewController *)self mapItem];
+  _isMapItemTypeBrand = [mapItem _isMapItemTypeBrand];
 
-  if (v4)
+  if (_isMapItemTypeBrand)
   {
 
     [(MKPlacePoisInlineMapViewController *)self fetchPoisForBrand];
@@ -166,9 +166,9 @@ void __55__MKPlacePoisInlineMapViewController_fetchPoisForBrand__block_invoke(ui
   v5.receiver = self;
   v5.super_class = MKPlacePoisInlineMapViewController;
   [(MKPlaceInlineMapViewController *)&v5 viewDidLoad];
-  v3 = [(MKPlacePoisInlineMapViewController *)self view];
+  view = [(MKPlacePoisInlineMapViewController *)self view];
   mapContentView = self->_mapContentView;
-  self->_mapContentView = v3;
+  self->_mapContentView = view;
 }
 
 - (void)loadView
@@ -178,13 +178,13 @@ void __55__MKPlacePoisInlineMapViewController_fetchPoisForBrand__block_invoke(ui
   [(MKPlacePoisInlineMapViewController *)self setView:v4];
 }
 
-+ (id)inlineMapWithMapItem:(id)a3 configuration:(id)a4
++ (id)inlineMapWithMapItem:(id)item configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 _isMapItemTypeBrand] && (objc_msgSend(v5, "_isStandAloneBrand") & 1) == 0)
+  itemCopy = item;
+  configurationCopy = configuration;
+  if ([itemCopy _isMapItemTypeBrand] && (objc_msgSend(itemCopy, "_isStandAloneBrand") & 1) == 0)
   {
-    v7 = [(MKPlaceInlineMapViewController *)[MKPlacePoisInlineMapViewController alloc] initWithMKMapItem:v5 configuration:v6];
+    v7 = [(MKPlaceInlineMapViewController *)[MKPlacePoisInlineMapViewController alloc] initWithMKMapItem:itemCopy configuration:configurationCopy];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface PXGViewPayload
-- (BOOL)isEqual:(id)a3;
-- (PXGViewPayload)initWithViewClass:(Class)a3 userData:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PXGViewPayload)initWithViewClass:(Class)class userData:(id)data;
 - (unint64_t)hash;
 @end
 
@@ -8,17 +8,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXGViewPayload *)self userData];
-  v4 = [v3 hash];
+  userData = [(PXGViewPayload *)self userData];
+  v4 = [userData hash];
   v5 = [(objc_class *)[(PXGViewPayload *)self viewClass] hash];
 
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -28,20 +28,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXGViewPayload *)v5 viewClass];
-      if (v6 == [(PXGViewPayload *)self viewClass])
+      v5 = equalCopy;
+      viewClass = [(PXGViewPayload *)v5 viewClass];
+      if (viewClass == [(PXGViewPayload *)self viewClass])
       {
-        v8 = [(PXGViewPayload *)v5 userData];
-        v9 = [(PXGViewPayload *)self userData];
-        if (v8 == v9)
+        userData = [(PXGViewPayload *)v5 userData];
+        userData2 = [(PXGViewPayload *)self userData];
+        if (userData == userData2)
         {
           v7 = 1;
         }
 
         else
         {
-          v7 = [v8 isEqual:v9];
+          v7 = [userData isEqual:userData2];
         }
       }
 
@@ -60,28 +60,28 @@
   return v7;
 }
 
-- (PXGViewPayload)initWithViewClass:(Class)a3 userData:(id)a4
+- (PXGViewPayload)initWithViewClass:(Class)class userData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = PXGViewPayload;
   v7 = [(PXGViewPayload *)&v14 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_viewClass, a3);
-    v9 = [v6 copyWithZone:0];
+    objc_storeStrong(&v7->_viewClass, class);
+    v9 = [dataCopy copyWithZone:0];
     userData = v8->_userData;
     v8->_userData = v9;
 
     v11 = objc_opt_respondsToSelector();
-    v12 = 0;
+    viewFloatingAxis = 0;
     if (v11)
     {
-      v12 = [v6 viewFloatingAxis];
+      viewFloatingAxis = [dataCopy viewFloatingAxis];
     }
 
-    v8->_floatingAxis = v12;
+    v8->_floatingAxis = viewFloatingAxis;
   }
 
   return v8;

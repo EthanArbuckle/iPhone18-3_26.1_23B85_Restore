@@ -1,15 +1,15 @@
 @interface PKAccountWebServicePassDetailsRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3 deviceIdentifier:(id)a4;
+- (id)_urlRequestWithAppleAccountInformation:(id)information deviceIdentifier:(id)identifier;
 @end
 
 @implementation PKAccountWebServicePassDetailsRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3 deviceIdentifier:(id)a4
+- (id)_urlRequestWithAppleAccountInformation:(id)information deviceIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  informationCopy = information;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -31,7 +31,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v6)
+  if (!informationCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -66,7 +66,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!identifierCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -88,21 +88,21 @@ LABEL_17:
   v23[0] = @"accounts";
   v23[1] = accountIdentifier;
   v23[2] = @"devices";
-  v23[3] = v7;
+  v23[3] = identifierCopy;
   v23[4] = @"pass";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:5];
-  v12 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v11 queryParameters:0 appleAccountInformation:v6];
+  v12 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:baseURL endpointComponents:v11 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v12 setHTTPMethod:@"POST"];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  v14 = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
-  if (v14)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionaryRepresentation = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v13 setObject:v14 forKey:@"deviceMetadata"];
+    [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
   }
 
-  [v13 setObject:self->_sharingInstanceIdentifier forKeyedSubscript:@"sharingInstanceIdentifier"];
-  v15 = [objc_opt_class() _HTTPBodyWithDictionary:v13];
+  [dictionary setObject:self->_sharingInstanceIdentifier forKeyedSubscript:@"sharingInstanceIdentifier"];
+  v15 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v12 setHTTPBody:v15];
 
   v16 = [v12 copy];

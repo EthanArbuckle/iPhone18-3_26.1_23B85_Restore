@@ -1,28 +1,28 @@
 @interface READSchemaREADPlaybackSessionStartedOrChanged
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (READSchemaREADPlaybackSessionStartedOrChanged)initWithDictionary:(id)a3;
-- (READSchemaREADPlaybackSessionStartedOrChanged)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (READSchemaREADPlaybackSessionStartedOrChanged)initWithDictionary:(id)dictionary;
+- (READSchemaREADPlaybackSessionStartedOrChanged)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasPlaybackStateChange:(BOOL)a3;
-- (void)setHasVolume:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasPlaybackStateChange:(BOOL)change;
+- (void)setHasVolume:(BOOL)volume;
+- (void)writeTo:(id)to;
 @end
 
 @implementation READSchemaREADPlaybackSessionStartedOrChanged
 
-- (READSchemaREADPlaybackSessionStartedOrChanged)initWithDictionary:(id)a3
+- (READSchemaREADPlaybackSessionStartedOrChanged)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = READSchemaREADPlaybackSessionStartedOrChanged;
   v5 = [(READSchemaREADPlaybackSessionStartedOrChanged *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"customerPerceivedLatency"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"customerPerceivedLatency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(READSchemaREADPlaybackSessionStartedOrChanged *)v5 setCustomerPerceivedLatency:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"audioInterface"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"audioInterface"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(READSchemaREADPlaybackSessionStartedOrChanged *)v5 setAudioInterface:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"volume"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"volume"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(READSchemaREADPlaybackSessionStartedOrChanged *)v5 setVolume:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"playbackStateChange"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"playbackStateChange"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (READSchemaREADPlaybackSessionStartedOrChanged)initWithJSON:(id)a3
+- (READSchemaREADPlaybackSessionStartedOrChanged)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(READSchemaREADPlaybackSessionStartedOrChanged *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(READSchemaREADPlaybackSessionStartedOrChanged *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -95,20 +95,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioInterface)
   {
-    v4 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    audioInterface = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
+    dictionaryRepresentation = [audioInterface dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"audioInterface"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioInterface"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"audioInterface"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioInterface"];
     }
   }
 
@@ -118,7 +118,7 @@
     v11 = MEMORY[0x1E696AD98];
     [(READSchemaREADPlaybackSessionStartedOrChanged *)self customerPerceivedLatency];
     v12 = [v11 numberWithFloat:?];
-    [v3 setObject:v12 forKeyedSubscript:@"customerPerceivedLatency"];
+    [dictionary setObject:v12 forKeyedSubscript:@"customerPerceivedLatency"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -149,7 +149,7 @@ LABEL_8:
     v14 = off_1E78E18E0[v13];
   }
 
-  [v3 setObject:v14 forKeyedSubscript:@"playbackStateChange"];
+  [dictionary setObject:v14 forKeyedSubscript:@"playbackStateChange"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_10;
@@ -159,12 +159,12 @@ LABEL_9:
   v8 = MEMORY[0x1E696AD98];
   [(READSchemaREADPlaybackSessionStartedOrChanged *)self volume];
   v9 = [v8 numberWithFloat:?];
-  [v3 setObject:v9 forKeyedSubscript:@"volume"];
+  [dictionary setObject:v9 forKeyedSubscript:@"volume"];
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -259,15 +259,15 @@ LABEL_10:
   return v10 ^ v5 ^ v13 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_19;
   }
@@ -275,29 +275,29 @@ LABEL_10:
   if (*&self->_has)
   {
     customerPerceivedLatency = self->_customerPerceivedLatency;
-    [v4 customerPerceivedLatency];
+    [equalCopy customerPerceivedLatency];
     if (customerPerceivedLatency != v6)
     {
       goto LABEL_19;
     }
   }
 
-  v7 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
-  v8 = [v4 audioInterface];
-  v9 = v8;
-  if ((v7 != 0) == (v8 == 0))
+  audioInterface = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
+  audioInterface2 = [equalCopy audioInterface];
+  v9 = audioInterface2;
+  if ((audioInterface != 0) == (audioInterface2 == 0))
   {
 
     goto LABEL_19;
   }
 
-  v10 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
-  if (v10)
+  audioInterface3 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
+  if (audioInterface3)
   {
-    v11 = v10;
-    v12 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
-    v13 = [v4 audioInterface];
-    v14 = [v12 isEqual:v13];
+    v11 = audioInterface3;
+    audioInterface4 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
+    audioInterface5 = [equalCopy audioInterface];
+    v14 = [audioInterface4 isEqual:audioInterface5];
 
     if (!v14)
     {
@@ -311,7 +311,7 @@ LABEL_10:
 
   has = self->_has;
   v16 = (*&has >> 1) & 1;
-  v17 = v4[32];
+  v17 = equalCopy[32];
   if (v16 != ((v17 >> 1) & 1))
   {
 LABEL_19:
@@ -322,11 +322,11 @@ LABEL_19:
   if (v16)
   {
     volume = self->_volume;
-    [v4 volume];
+    [equalCopy volume];
     if (volume == v19)
     {
       has = self->_has;
-      v17 = v4[32];
+      v17 = equalCopy[32];
       goto LABEL_15;
     }
 
@@ -343,7 +343,7 @@ LABEL_15:
   if (v20)
   {
     playbackStateChange = self->_playbackStateChange;
-    if (playbackStateChange != [v4 playbackStateChange])
+    if (playbackStateChange != [equalCopy playbackStateChange])
     {
       goto LABEL_19;
     }
@@ -355,19 +355,19 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteFloatField();
   }
 
-  v4 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
+  audioInterface = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
 
-  if (v4)
+  if (audioInterface)
   {
-    v5 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
+    audioInterface2 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface];
     PBDataWriterWriteSubmessage();
   }
 
@@ -384,9 +384,9 @@ LABEL_20:
   }
 }
 
-- (void)setHasPlaybackStateChange:(BOOL)a3
+- (void)setHasPlaybackStateChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     v3 = 4;
   }
@@ -399,9 +399,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasVolume:(BOOL)a3
+- (void)setHasVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 2;
   }
@@ -414,17 +414,17 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = READSchemaREADPlaybackSessionStartedOrChanged;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(READSchemaREADPlaybackSessionStartedOrChanged *)self audioInterface:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(READSchemaREADPlaybackSessionStartedOrChanged *)self deleteAudioInterface];
   }

@@ -1,39 +1,39 @@
 @interface BMSiriPostSiriEngagementSignal
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriPostSiriEngagementSignal)initWithDomain:(id)a3 action:(id)a4 isPostSiriEngagement:(id)a5 pseDelta:(id)a6 pseContents:(id)a7 donatedTimestamp:(id)a8;
-- (BMSiriPostSiriEngagementSignal)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriPostSiriEngagementSignal)initWithDomain:(id)domain action:(id)action isPostSiriEngagement:(id)engagement pseDelta:(id)delta pseContents:(id)contents donatedTimestamp:(id)timestamp;
+- (BMSiriPostSiriEngagementSignal)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_pseContentsJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriPostSiriEngagementSignal
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriPostSiriEngagementSignal *)self domain];
-    v7 = [v5 domain];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    domain = [(BMSiriPostSiriEngagementSignal *)self domain];
+    domain2 = [v5 domain];
+    v8 = domain2;
+    if (domain == domain2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriPostSiriEngagementSignal *)self domain];
-      v10 = [v5 domain];
-      v11 = [v9 isEqual:v10];
+      domain3 = [(BMSiriPostSiriEngagementSignal *)self domain];
+      domain4 = [v5 domain];
+      v11 = [domain3 isEqual:domain4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMSiriPostSiriEngagementSignal *)self action];
-    v14 = [v5 action];
-    v15 = v14;
-    if (v13 == v14)
+    action = [(BMSiriPostSiriEngagementSignal *)self action];
+    action2 = [v5 action];
+    v15 = action2;
+    if (action == action2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriPostSiriEngagementSignal *)self action];
-      v17 = [v5 action];
-      v18 = [v16 isEqual:v17];
+      action3 = [(BMSiriPostSiriEngagementSignal *)self action];
+      action4 = [v5 action];
+      v18 = [action3 isEqual:action4];
 
       if (!v18)
       {
@@ -72,25 +72,25 @@
         goto LABEL_29;
       }
 
-      v19 = [(BMSiriPostSiriEngagementSignal *)self isPostSiriEngagement];
-      if (v19 != [v5 isPostSiriEngagement])
+      isPostSiriEngagement = [(BMSiriPostSiriEngagementSignal *)self isPostSiriEngagement];
+      if (isPostSiriEngagement != [v5 isPostSiriEngagement])
       {
         goto LABEL_29;
       }
     }
 
-    v20 = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
-    v21 = [v5 pseDelta];
-    v22 = v21;
-    if (v20 == v21)
+    pseDelta = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
+    pseDelta2 = [v5 pseDelta];
+    v22 = pseDelta2;
+    if (pseDelta == pseDelta2)
     {
     }
 
     else
     {
-      v23 = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
-      v24 = [v5 pseDelta];
-      v25 = [v23 isEqual:v24];
+      pseDelta3 = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
+      pseDelta4 = [v5 pseDelta];
+      v25 = [pseDelta3 isEqual:pseDelta4];
 
       if (!v25)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v26 = [(BMSiriPostSiriEngagementSignal *)self pseContents];
-    v27 = [v5 pseContents];
-    v28 = v27;
-    if (v26 == v27)
+    pseContents = [(BMSiriPostSiriEngagementSignal *)self pseContents];
+    pseContents2 = [v5 pseContents];
+    v28 = pseContents2;
+    if (pseContents == pseContents2)
     {
     }
 
     else
     {
-      v29 = [(BMSiriPostSiriEngagementSignal *)self pseContents];
-      v30 = [v5 pseContents];
-      v31 = [v29 isEqual:v30];
+      pseContents3 = [(BMSiriPostSiriEngagementSignal *)self pseContents];
+      pseContents4 = [v5 pseContents];
+      v31 = [pseContents3 isEqual:pseContents4];
 
       if (!v31)
       {
@@ -148,8 +148,8 @@ LABEL_31:
 - (id)jsonDictionary
 {
   v26[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriPostSiriEngagementSignal *)self domain];
-  v4 = [(BMSiriPostSiriEngagementSignal *)self action];
+  domain = [(BMSiriPostSiriEngagementSignal *)self domain];
+  action = [(BMSiriPostSiriEngagementSignal *)self action];
   if ([(BMSiriPostSiriEngagementSignal *)self hasIsPostSiriEngagement])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriPostSiriEngagementSignal isPostSiriEngagement](self, "isPostSiriEngagement")}];
@@ -160,10 +160,10 @@ LABEL_31:
     v5 = 0;
   }
 
-  v6 = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
-  v7 = [v6 jsonDictionary];
+  pseDelta = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
+  jsonDictionary = [pseDelta jsonDictionary];
 
-  v8 = [(BMSiriPostSiriEngagementSignal *)self _pseContentsJSONArray];
+  _pseContentsJSONArray = [(BMSiriPostSiriEngagementSignal *)self _pseContentsJSONArray];
   if (![(BMSiriPostSiriEngagementSignal *)self hasDonatedTimestamp]|| ([(BMSiriPostSiriEngagementSignal *)self donatedTimestamp], fabs(v9) == INFINITY))
   {
     v11 = 0;
@@ -178,67 +178,67 @@ LABEL_31:
   }
 
   v25[0] = @"domain";
-  v12 = v3;
-  if (!v3)
+  null = domain;
+  if (!domain)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v12;
-  v23 = v4;
-  v26[0] = v12;
+  v21 = null;
+  v23 = action;
+  v26[0] = null;
   v25[1] = @"action";
-  v13 = v4;
-  if (!v4)
+  null2 = action;
+  if (!action)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[1] = v13;
+  v26[1] = null2;
   v25[2] = @"isPostSiriEngagement";
-  v14 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v3;
-  v26[2] = v14;
+  v24 = domain;
+  v26[2] = null3;
   v25[3] = @"pseDelta";
-  v15 = v7;
-  if (!v7)
+  null4 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v15;
+  v26[3] = null4;
   v25[4] = @"pseContents";
-  v16 = v8;
-  if (!v8)
+  null5 = _pseContentsJSONArray;
+  if (!_pseContentsJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v16;
+  v26[4] = null5;
   v25[5] = @"donatedTimestamp";
-  v17 = v11;
+  null6 = v11;
   if (!v11)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v17;
+  v26[5] = null6;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:{6, v21}];
   if (v11)
   {
-    if (v8)
+    if (_pseContentsJSONArray)
     {
       goto LABEL_22;
     }
 
 LABEL_31:
 
-    if (v7)
+    if (jsonDictionary)
     {
       goto LABEL_23;
     }
@@ -246,13 +246,13 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (!v8)
+  if (!_pseContentsJSONArray)
   {
     goto LABEL_31;
   }
 
 LABEL_22:
-  if (v7)
+  if (jsonDictionary)
   {
     goto LABEL_23;
   }
@@ -295,8 +295,8 @@ LABEL_27:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSiriPostSiriEngagementSignal *)self pseContents];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pseContents = [(BMSiriPostSiriEngagementSignal *)self pseContents];
+  v5 = [pseContents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -307,14 +307,14 @@ LABEL_27:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pseContents);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [pseContents countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -325,11 +325,11 @@ LABEL_27:
   return v3;
 }
 
-- (BMSiriPostSiriEngagementSignal)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMSiriPostSiriEngagementSignal)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v96[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"domain"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
   v70 = p_isa;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -364,7 +364,7 @@ LABEL_27:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"action"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"action"];
   v71 = v9;
   if (v9 && (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -399,7 +399,7 @@ LABEL_27:
     v11 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"isPostSiriEngagement"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"isPostSiriEngagement"];
   if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -437,7 +437,7 @@ LABEL_27:
     v69 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"pseDelta"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"pseDelta"];
   if (v13)
   {
     objc_opt_class();
@@ -498,15 +498,15 @@ LABEL_27:
   v64 = v7;
   v67 = 0;
 LABEL_13:
-  v14 = [v6 objectForKeyedSubscript:@"pseContents"];
-  v15 = [MEMORY[0x1E695DFB0] null];
-  v16 = [v14 isEqual:v15];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"pseContents"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v16 = [v14 isEqual:null];
 
   if (v16)
   {
     v60 = v11;
     v61 = v8;
-    v62 = self;
+    selfCopy2 = self;
 
     v14 = 0;
   }
@@ -542,7 +542,7 @@ LABEL_62:
 
     v60 = v11;
     v61 = v8;
-    v62 = self;
+    selfCopy2 = self;
   }
 
   v72 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v14, "count")}];
@@ -559,7 +559,7 @@ LABEL_62:
 
   v18 = v17;
   v19 = *v76;
-  v59 = v6;
+  v59 = dictionaryCopy;
   while (2)
   {
     for (i = 0; i != v18; ++i)
@@ -586,10 +586,10 @@ LABEL_62:
 LABEL_55:
           p_isa = 0;
           v26 = v14;
-          v6 = v59;
+          dictionaryCopy = v59;
           v11 = v60;
           v8 = v61;
-          self = v62;
+          self = selfCopy2;
           v36 = v66;
           goto LABEL_67;
         }
@@ -616,10 +616,10 @@ LABEL_55:
 LABEL_61:
         p_isa = 0;
         v26 = v14;
-        v6 = v59;
+        dictionaryCopy = v59;
         v11 = v60;
         v8 = v61;
-        self = v62;
+        self = selfCopy2;
         goto LABEL_62;
       }
 
@@ -640,10 +640,10 @@ LABEL_61:
 
         p_isa = 0;
         v26 = v14;
-        v6 = v59;
+        dictionaryCopy = v59;
         v11 = v60;
         v8 = v61;
-        self = v62;
+        self = selfCopy2;
         goto LABEL_67;
       }
 
@@ -651,7 +651,7 @@ LABEL_61:
     }
 
     v18 = [v14 countByEnumeratingWithState:&v75 objects:v86 count:16];
-    v6 = v59;
+    dictionaryCopy = v59;
     if (v18)
     {
       continue;
@@ -662,12 +662,12 @@ LABEL_61:
 
 LABEL_32:
 
-  v22 = [v6 objectForKeyedSubscript:@"donatedTimestamp"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"donatedTimestamp"];
   if (v22)
   {
     objc_opt_class();
     v8 = v61;
-    self = v62;
+    self = selfCopy2;
     v11 = v60;
     if (objc_opt_isKindOfClass())
     {
@@ -708,7 +708,7 @@ LABEL_32:
   {
     v26 = 0;
     v8 = v61;
-    self = v62;
+    self = selfCopy2;
     v11 = v60;
 LABEL_65:
     v36 = v66;
@@ -741,15 +741,15 @@ LABEL_74:
 {
   v3 = objc_opt_new();
   [(BMSiriPostSiriEngagementSignal *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -770,7 +770,7 @@ LABEL_74:
   {
     v18 = 0;
     PBDataWriterPlaceMark();
-    [(BMSiriPostSiriEngagementSignalDeltaEvent *)self->_pseDelta writeTo:v4];
+    [(BMSiriPostSiriEngagementSignalDeltaEvent *)self->_pseDelta writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -797,7 +797,7 @@ LABEL_74:
         v11 = *(*(&v14 + 1) + 8 * v10);
         v18 = 0;
         PBDataWriterPlaceMark();
-        [v11 writeTo:{v4, v14}];
+        [v11 writeTo:{toCopy, v14}];
         PBDataWriterRecallMark();
         ++v10;
       }
@@ -818,9 +818,9 @@ LABEL_74:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v40.receiver = self;
   v40.super_class = BMSiriPostSiriEngagementSignal;
   v5 = [(BMEventBase *)&v40 init];
@@ -830,12 +830,12 @@ LABEL_74:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_53;
       }
@@ -846,18 +846,18 @@ LABEL_74:
       while (1)
       {
         LOBYTE(v41) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (LOBYTE(v41) & 0x7F) << v8;
@@ -875,9 +875,9 @@ LABEL_74:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_53;
       }
@@ -893,7 +893,7 @@ LABEL_16:
         case 4:
           v41 = 0.0;
           v42 = 0;
-          if (!PBReaderPlaceMark() || (v28 = [[BMSiriPostSiriEngagementSignalDeltaEvent alloc] initByReadFrom:v4]) == 0)
+          if (!PBReaderPlaceMark() || (v28 = [[BMSiriPostSiriEngagementSignalDeltaEvent alloc] initByReadFrom:fromCopy]) == 0)
           {
 LABEL_57:
 
@@ -913,7 +913,7 @@ LABEL_57:
             goto LABEL_57;
           }
 
-          v31 = [[BMSiriPostSiriEngagementSignalContent alloc] initByReadFrom:v4];
+          v31 = [[BMSiriPostSiriEngagementSignalContent alloc] initByReadFrom:fromCopy];
           if (!v31)
           {
             goto LABEL_57;
@@ -927,18 +927,18 @@ LABEL_57:
         case 6:
           v5->_hasDonatedTimestamp = 1;
           v41 = 0.0;
-          v24 = [v4 position] + 8;
-          if (v24 >= [v4 position] && (v25 = objc_msgSend(v4, "position") + 8, v25 <= objc_msgSend(v4, "length")))
+          v24 = [fromCopy position] + 8;
+          if (v24 >= [fromCopy position] && (v25 = objc_msgSend(fromCopy, "position") + 8, v25 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:&v41 range:{objc_msgSend(v4, "position"), 8}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v5->_donatedTimestamp = v41;
@@ -954,8 +954,8 @@ LABEL_41:
       }
 
 LABEL_52:
-      v34 = [v4 position];
-      if (v34 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_53;
       }
@@ -983,18 +983,18 @@ LABEL_44:
         while (1)
         {
           LOBYTE(v41) = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:&v41 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v41 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (LOBYTE(v41) & 0x7F) << v17;
@@ -1012,7 +1012,7 @@ LABEL_44:
           }
         }
 
-        v23 = (v19 != 0) & ~[v4 hasError];
+        v23 = (v19 != 0) & ~[fromCopy hasError];
 LABEL_49:
         v5->_isPostSiriEngagement = v23;
         goto LABEL_52;
@@ -1026,8 +1026,8 @@ LABEL_53:
   pseContents = v5->_pseContents;
   v5->_pseContents = v35;
 
-  v37 = [v4 hasError];
-  if (v37)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_54:
     v38 = 0;
@@ -1045,39 +1045,39 @@ LABEL_55:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriPostSiriEngagementSignal *)self domain];
-  v5 = [(BMSiriPostSiriEngagementSignal *)self action];
+  domain = [(BMSiriPostSiriEngagementSignal *)self domain];
+  action = [(BMSiriPostSiriEngagementSignal *)self action];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriPostSiriEngagementSignal isPostSiriEngagement](self, "isPostSiriEngagement")}];
-  v7 = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
-  v8 = [(BMSiriPostSiriEngagementSignal *)self pseContents];
+  pseDelta = [(BMSiriPostSiriEngagementSignal *)self pseDelta];
+  pseContents = [(BMSiriPostSiriEngagementSignal *)self pseContents];
   v9 = MEMORY[0x1E696AD98];
   [(BMSiriPostSiriEngagementSignal *)self donatedTimestamp];
   v10 = [v9 numberWithDouble:?];
-  v11 = [v3 initWithFormat:@"BMSiriPostSiriEngagementSignal with domain: %@, action: %@, isPostSiriEngagement: %@, pseDelta: %@, pseContents: %@, donatedTimestamp: %@", v4, v5, v6, v7, v8, v10];
+  v11 = [v3 initWithFormat:@"BMSiriPostSiriEngagementSignal with domain: %@, action: %@, isPostSiriEngagement: %@, pseDelta: %@, pseContents: %@, donatedTimestamp: %@", domain, action, v6, pseDelta, pseContents, v10];
 
   return v11;
 }
 
-- (BMSiriPostSiriEngagementSignal)initWithDomain:(id)a3 action:(id)a4 isPostSiriEngagement:(id)a5 pseDelta:(id)a6 pseContents:(id)a7 donatedTimestamp:(id)a8
+- (BMSiriPostSiriEngagementSignal)initWithDomain:(id)domain action:(id)action isPostSiriEngagement:(id)engagement pseDelta:(id)delta pseContents:(id)contents donatedTimestamp:(id)timestamp
 {
-  v23 = a3;
-  v22 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  domainCopy = domain;
+  actionCopy = action;
+  engagementCopy = engagement;
+  deltaCopy = delta;
+  contentsCopy = contents;
+  timestampCopy = timestamp;
   v24.receiver = self;
   v24.super_class = BMSiriPostSiriEngagementSignal;
   v19 = [(BMEventBase *)&v24 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_domain, a3);
-    objc_storeStrong(&v19->_action, a4);
-    if (v15)
+    objc_storeStrong(&v19->_domain, domain);
+    objc_storeStrong(&v19->_action, action);
+    if (engagementCopy)
     {
       v19->_hasIsPostSiriEngagement = 1;
-      v19->_isPostSiriEngagement = [v15 BOOLValue];
+      v19->_isPostSiriEngagement = [engagementCopy BOOLValue];
     }
 
     else
@@ -1086,12 +1086,12 @@ LABEL_55:
       v19->_isPostSiriEngagement = 0;
     }
 
-    objc_storeStrong(&v19->_pseDelta, a6);
-    objc_storeStrong(&v19->_pseContents, a7);
-    if (v18)
+    objc_storeStrong(&v19->_pseDelta, delta);
+    objc_storeStrong(&v19->_pseContents, contents);
+    if (timestampCopy)
     {
       v19->_hasDonatedTimestamp = 1;
-      [v18 doubleValue];
+      [timestampCopy doubleValue];
     }
 
     else
@@ -1169,13 +1169,13 @@ id __41__BMSiriPostSiriEngagementSignal_columns__block_invoke(uint64_t a1, void 
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMSiriPostSiriEngagementSignal alloc] initByReadFrom:v6];
     v8 = v7;

@@ -1,19 +1,19 @@
 @interface HABloodOxygenCalculator
-+ (HABloodOxygenAnalysis)analyzeBloodOxygenFromRawData:(SEL)a3 withPressureInKilopascals:(id)a4;
-+ (id)calculateBloodOxygenFromRawData:(id)a3;
-- (HABloodOxygenAnalysis)runBloodOxygenAnalysisFromRawData:(SEL)a3 withPressureInKilopascals:(id)a4;
-- (id)calculateBloodOxygenFromRawData:(id)a3;
-- (void)finalizeAnalytics:(const SCAnalytics *)a3 timestamp:(double)a4;
-- (void)handleAbort:(unsigned __int8)a3 withAnalytics:(const SCAnalytics *)a4 atTimestamp:(double)a5;
-- (void)handleResult:(const SCResult *)a3 withAnalytics:(const SCAnalytics *)a4 atTimestamp:(double)a5;
++ (HABloodOxygenAnalysis)analyzeBloodOxygenFromRawData:(SEL)data withPressureInKilopascals:(id)kilopascals;
++ (id)calculateBloodOxygenFromRawData:(id)data;
+- (HABloodOxygenAnalysis)runBloodOxygenAnalysisFromRawData:(SEL)data withPressureInKilopascals:(id)kilopascals;
+- (id)calculateBloodOxygenFromRawData:(id)data;
+- (void)finalizeAnalytics:(const SCAnalytics *)analytics timestamp:(double)timestamp;
+- (void)handleAbort:(unsigned __int8)abort withAnalytics:(const SCAnalytics *)analytics atTimestamp:(double)timestamp;
+- (void)handleResult:(const SCResult *)result withAnalytics:(const SCAnalytics *)analytics atTimestamp:(double)timestamp;
 @end
 
 @implementation HABloodOxygenCalculator
 
-+ (id)calculateBloodOxygenFromRawData:(id)a3
++ (id)calculateBloodOxygenFromRawData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = ha_diagnostic_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,17 +23,17 @@
   }
 
   v5 = objc_opt_new();
-  v6 = [v5 calculateBloodOxygenFromRawData:v3];
+  v6 = [v5 calculateBloodOxygenFromRawData:dataCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-+ (HABloodOxygenAnalysis)analyzeBloodOxygenFromRawData:(SEL)a3 withPressureInKilopascals:(id)a4
++ (HABloodOxygenAnalysis)analyzeBloodOxygenFromRawData:(SEL)data withPressureInKilopascals:(id)kilopascals
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  kilopascalsCopy = kilopascals;
   v8 = a5;
   v9 = ha_diagnostic_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -50,7 +50,7 @@
   retstr->coreAnalytics = 0;
   if (v10)
   {
-    [v10 runBloodOxygenAnalysisFromRawData:v7 withPressureInKilopascals:v8];
+    [v10 runBloodOxygenAnalysisFromRawData:kilopascalsCopy withPressureInKilopascals:v8];
     v12 = v15;
   }
 
@@ -69,10 +69,10 @@
   return result;
 }
 
-- (HABloodOxygenAnalysis)runBloodOxygenAnalysisFromRawData:(SEL)a3 withPressureInKilopascals:(id)a4
+- (HABloodOxygenAnalysis)runBloodOxygenAnalysisFromRawData:(SEL)data withPressureInKilopascals:(id)kilopascals
 {
   v8 = a5;
-  v9 = a4;
+  kilopascalsCopy = kilopascals;
   v10 = ha_diagnostic_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -83,7 +83,7 @@
   self->_pressure = v8;
   v18 = v8;
 
-  v19 = [(HABloodOxygenCalculator *)self calculateBloodOxygenFromRawData:v9];
+  v19 = [(HABloodOxygenCalculator *)self calculateBloodOxygenFromRawData:kilopascalsCopy];
 
   measurement = self->_measurement;
   self->_measurement = v19;
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (id)calculateBloodOxygenFromRawData:(id)a3
+- (id)calculateBloodOxygenFromRawData:(id)data
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!ScandiumLibraryCore() || (v46 = 0, [v4 length] < 2) || (objc_msgSend(v4, "getBytes:range:", &v46, 0, 2), v46 != 5))
+  dataCopy = data;
+  if (!ScandiumLibraryCore() || (v46 = 0, [dataCopy length] < 2) || (objc_msgSend(dataCopy, "getBytes:range:", &v46, 0, 2), v46 != 5))
   {
     v32 = 0;
     goto LABEL_32;
@@ -112,7 +112,7 @@
   scandiumProcessor = self->_scandiumProcessor;
   self->_scandiumProcessor = 0;
 
-  if ([v4 length] >= 3)
+  if ([dataCopy length] >= 3)
   {
     v6 = 0;
     v7 = 2;
@@ -120,20 +120,20 @@
     {
       v44 = 0;
       v8 = v7 + 4;
-      if (v7 + 4 > [v4 length])
+      if (v7 + 4 > [dataCopy length])
       {
         goto LABEL_40;
       }
 
-      [v4 getBytes:&v44 range:{v7, 4}];
+      [dataCopy getBytes:&v44 range:{v7, 4}];
       v9 = HIWORD(v44);
       v7 = v8 + v9;
-      if (v8 + v9 > [v4 length])
+      if (v8 + v9 > [dataCopy length])
       {
         goto LABEL_40;
       }
 
-      v10 = [v4 subdataWithRange:{v8, v9}];
+      v10 = [dataCopy subdataWithRange:{v8, v9}];
       v11 = ha_diagnostic_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
@@ -212,10 +212,10 @@
         _Block_object_dispose(&v47, 8);
         v21 = [v19 alloc];
         v22 = v10;
-        v23 = [v10 bytes];
+        bytes = [v10 bytes];
         v24 = [v10 length];
         v43 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_bootTime];
-        v25 = [v21 initWithStartPacket:v23 ofLength:v24 delegate:self withSignalQualityMetricsEnabled:1 bypassingAlgorithms:0 forWindbreaker:0 bootDate:? hardwareModel:?];
+        v25 = [v21 initWithStartPacket:bytes ofLength:v24 delegate:self withSignalQualityMetricsEnabled:1 bypassingAlgorithms:0 forWindbreaker:0 bootDate:? hardwareModel:?];
         v26 = self->_scandiumProcessor;
         self->_scandiumProcessor = v25;
 
@@ -227,7 +227,7 @@ LABEL_39:
         }
       }
 
-      if (v7 >= [v4 length])
+      if (v7 >= [dataCopy length])
       {
         goto LABEL_36;
       }
@@ -246,9 +246,9 @@ LABEL_40:
   v35 = MEMORY[0x277CBEAA8];
   p_scandiumProcessor = &self->_scandiumProcessor;
   bootTime = self->_bootTime;
-  v38 = [(SCProcessor *)self->_scandiumProcessor startTimestamp];
+  startTimestamp = [(SCProcessor *)self->_scandiumProcessor startTimestamp];
   LODWORD(v39) = *&v45[8];
-  v40 = [v35 dateWithTimeIntervalSinceReferenceDate:bootTime + v38 / v39];
+  v40 = [v35 dateWithTimeIntervalSinceReferenceDate:bootTime + startTimestamp / v39];
   measurement = self->_measurement;
   p_measurement = &self->_measurement;
   [(HABloodOxygenMeasurement *)measurement setDate:v40];
@@ -263,14 +263,14 @@ LABEL_32:
   return v32;
 }
 
-- (void)finalizeAnalytics:(const SCAnalytics *)a3 timestamp:(double)a4
+- (void)finalizeAnalytics:(const SCAnalytics *)analytics timestamp:(double)timestamp
 {
   v50 = *MEMORY[0x277D85DE8];
   p_scandiumProcessor = &self->_scandiumProcessor;
   self->_analysis.background = [(SCProcessor *)self->_scandiumProcessor forBackground];
-  if (a3)
+  if (analytics)
   {
-    v8 = [(SCProcessor *)*p_scandiumProcessor dictionaryForAnalytics:a3 sessionDuration:@"notApplicable" systemInterface:a4];
+    v8 = [(SCProcessor *)*p_scandiumProcessor dictionaryForAnalytics:analytics sessionDuration:@"notApplicable" systemInterface:timestamp];
     v9 = [v8 mutableCopy];
 
     if (v9)
@@ -282,23 +282,23 @@ LABEL_32:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         bootTime = self->_bootTime;
-        v13 = [(SCProcessor *)self->_scandiumProcessor startTimestamp];
+        startTimestamp = [(SCProcessor *)self->_scandiumProcessor startTimestamp];
         ticksPerSecond = self->_ticksPerSecond;
         *buf = 134218752;
         v43 = bootTime;
         v44 = 2048;
-        v45 = v13;
+        v45 = startTimestamp;
         v46 = 1024;
         v47 = ticksPerSecond;
         v48 = 2048;
-        v49 = a4;
+        timestampCopy = timestamp;
         _os_log_impl(&dword_251282000, v11, OS_LOG_TYPE_DEFAULT, "bootTime: %f, sessionStartTime %llu, ticksPerSecond: %d, sessionDuration: %f", buf, 0x26u);
       }
 
       v15 = self->_bootTime;
-      v16 = [(SCProcessor *)self->_scandiumProcessor startTimestamp];
+      startTimestamp2 = [(SCProcessor *)self->_scandiumProcessor startTimestamp];
       LODWORD(v17) = self->_ticksPerSecond;
-      v18 = v15 + v16 / v17 + a4;
+      v18 = v15 + startTimestamp2 / v17 + timestamp;
       if (!self->_analysis.background)
       {
         v19 = [MEMORY[0x277CCABB0] numberWithLong:llround(v18)];
@@ -315,16 +315,16 @@ LABEL_32:
 
       v23 = objc_alloc(MEMORY[0x277CBEA80]);
       v24 = [v23 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
-      v25 = [MEMORY[0x277CBEBB0] localTimeZone];
-      [v24 setTimeZone:v25];
+      localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+      [v24 setTimeZone:localTimeZone];
 
       v26 = [v24 component:32 fromDate:v21];
       v27 = [v20 numberWithInteger:v26];
       [v9 setObject:v27 forKeyedSubscript:@"hourOfDay"];
 
       objc_storeStrong(&self->_analysis.coreAnalytics, v9);
-      v28 = [MEMORY[0x277D262A0] sharedConnection];
-      LOBYTE(v27) = [v28 isHealthDataSubmissionAllowed];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      LOBYTE(v27) = [mEMORY[0x277D262A0] isHealthDataSubmissionAllowed];
 
       if ((v27 & 1) == 0)
       {
@@ -368,7 +368,7 @@ LABEL_32:
       v35 = ha_diagnostic_log();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
       {
-        [(HABloodOxygenCalculator *)a3 finalizeAnalytics:v35 timestamp:?];
+        [(HABloodOxygenCalculator *)analytics finalizeAnalytics:v35 timestamp:?];
       }
     }
   }
@@ -376,7 +376,7 @@ LABEL_32:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAbort:(unsigned __int8)a3 withAnalytics:(const SCAnalytics *)a4 atTimestamp:(double)a5
+- (void)handleAbort:(unsigned __int8)abort withAnalytics:(const SCAnalytics *)analytics atTimestamp:(double)timestamp
 {
   v8 = ha_diagnostic_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -384,10 +384,10 @@ LABEL_32:
     [(HABloodOxygenCalculator *)v8 handleAbort:v9 withAnalytics:v10 atTimestamp:v11, v12, v13, v14, v15];
   }
 
-  [(HABloodOxygenCalculator *)self finalizeAnalytics:a4 timestamp:a5];
+  [(HABloodOxygenCalculator *)self finalizeAnalytics:analytics timestamp:timestamp];
 }
 
-- (void)handleResult:(const SCResult *)a3 withAnalytics:(const SCAnalytics *)a4 atTimestamp:(double)a5
+- (void)handleResult:(const SCResult *)result withAnalytics:(const SCAnalytics *)analytics atTimestamp:(double)timestamp
 {
   v9 = ha_diagnostic_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -399,11 +399,11 @@ LABEL_32:
   measurement = self->_measurement;
   self->_measurement = v17;
 
-  *&v19 = a3->var0;
+  *&v19 = result->var0;
   [(HABloodOxygenMeasurement *)self->_measurement setOxygenSaturationPercentage:v19];
-  *&v20 = a3->var1;
+  *&v20 = result->var1;
   [(HABloodOxygenMeasurement *)self->_measurement setAverageHeartRate:v20];
-  [(HABloodOxygenCalculator *)self finalizeAnalytics:a4 timestamp:a5];
+  [(HABloodOxygenCalculator *)self finalizeAnalytics:analytics timestamp:timestamp];
 }
 
 - (void)runBloodOxygenAnalysisFromRawData:(uint64_t)a3 withPressureInKilopascals:(uint64_t)a4 .cold.1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

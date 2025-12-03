@@ -1,21 +1,21 @@
 @interface SKUIPostReviewOperation
 - (NSDictionary)responseDictionary;
-- (SKUIPostReviewOperation)initWithReviewMetadata:(id)a3;
+- (SKUIPostReviewOperation)initWithReviewMetadata:(id)metadata;
 - (id)_httpBody;
 - (void)run;
 @end
 
 @implementation SKUIPostReviewOperation
 
-- (SKUIPostReviewOperation)initWithReviewMetadata:(id)a3
+- (SKUIPostReviewOperation)initWithReviewMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = SKUIPostReviewOperation;
   v5 = [(SKUIPostReviewOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [metadataCopy copy];
     review = v5->_review;
     v5->_review = v6;
   }
@@ -36,31 +36,31 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277D7FD48]);
   v4 = objc_alloc(MEMORY[0x277D69BD0]);
-  v5 = [(SKUIReviewMetadata *)self->_review submitURL];
-  v6 = [v4 initWithURL:v5];
+  submitURL = [(SKUIReviewMetadata *)self->_review submitURL];
+  v6 = [v4 initWithURL:submitURL];
 
   [v6 setAllowedRetryCount:0];
   [v6 setCachePolicy:1];
-  v7 = [(SKUIPostReviewOperation *)self _httpBody];
-  [v6 setHTTPBody:v7];
+  _httpBody = [(SKUIPostReviewOperation *)self _httpBody];
+  [v6 setHTTPBody:_httpBody];
 
   [v6 setHTTPMethod:@"POST"];
   [v3 setRequestProperties:v6];
-  v8 = [MEMORY[0x277D7FD30] provider];
-  [v8 setShouldProcessDialogs:0];
-  [v3 setDataProvider:v8];
+  provider = [MEMORY[0x277D7FD30] provider];
+  [provider setShouldProcessDialogs:0];
+  [v3 setDataProvider:provider];
   v16 = 0;
   v9 = [(SKUIPostReviewOperation *)self runSubOperation:v3 returningError:&v16];
   v10 = v16;
   v11 = 0;
   if (v9)
   {
-    v12 = [v8 output];
-    v13 = [v12 objectForKey:@"status-code"];
+    output = [provider output];
+    v13 = [output objectForKey:@"status-code"];
     objc_opt_class();
     v11 = (objc_opt_isKindOfClass() & 1) != 0 && [v13 integerValue] == 3200;
     [(SKUIPostReviewOperation *)self lock];
-    v14 = [v12 copy];
+    v14 = [output copy];
     responseDictionary = self->_responseDictionary;
     self->_responseDictionary = v14;
 
@@ -79,32 +79,32 @@
   v6 = [v4 stringWithFormat:@"%.2f", v5];
   [v3 setObject:v6 forKey:@"rating"];
 
-  v7 = [(SKUIReviewMetadata *)self->_review body];
-  if ([v7 length])
+  body = [(SKUIReviewMetadata *)self->_review body];
+  if ([body length])
   {
-    [v3 setObject:v7 forKey:@"body"];
+    [v3 setObject:body forKey:@"body"];
   }
 
-  v8 = [MEMORY[0x277D7FCE0] sharedInstance];
-  v9 = [v8 guid];
+  mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+  guid = [mEMORY[0x277D7FCE0] guid];
 
-  if (v9)
+  if (guid)
   {
-    [v3 setObject:v9 forKey:@"guid"];
+    [v3 setObject:guid forKey:@"guid"];
   }
 
-  v10 = [(SKUIReviewMetadata *)self->_review nickname];
+  nickname = [(SKUIReviewMetadata *)self->_review nickname];
 
-  if ([v10 length])
+  if ([nickname length])
   {
-    [v3 setObject:v10 forKey:@"nickname"];
+    [v3 setObject:nickname forKey:@"nickname"];
   }
 
-  v11 = [(SKUIReviewMetadata *)self->_review title];
+  title = [(SKUIReviewMetadata *)self->_review title];
 
-  if ([v11 length])
+  if ([title length])
   {
-    [v3 setObject:v11 forKey:@"title"];
+    [v3 setObject:title forKey:@"title"];
   }
 
   v12 = [MEMORY[0x277CBEBC0] queryStringForDictionary:v3 escapedValues:1];

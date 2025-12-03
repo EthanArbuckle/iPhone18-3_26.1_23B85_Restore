@@ -1,13 +1,13 @@
 @interface _LSDataBackedPropertyList
-- (BOOL)_getPropertyList:(id *)a3;
-- (BOOL)_getValue:(id *)a3 forPropertyListKey:(id)a4;
-- (_LSDataBackedPropertyList)initWithCoder:(id)a3;
-- (_LSDataBackedPropertyList)initWithPropertyListData:(id)a3;
+- (BOOL)_getPropertyList:(id *)list;
+- (BOOL)_getValue:(id *)value forPropertyListKey:(id)key;
+- (_LSDataBackedPropertyList)initWithCoder:(id)coder;
+- (_LSDataBackedPropertyList)initWithPropertyListData:(id)data;
 - (id)_plistHint;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)uncheckedObjectsForKeys:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)uncheckedObjectsForKeys:(id)keys;
 - (void)detach;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)prewarm;
 @end
 
@@ -40,16 +40,16 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (_LSDataBackedPropertyList)initWithPropertyListData:(id)a3
+- (_LSDataBackedPropertyList)initWithPropertyListData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = _LSDataBackedPropertyList;
   v6 = [(_LSLazyPropertyList *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawPlistData, a3);
+    objc_storeStrong(&v6->_rawPlistData, data);
     plistHint = v7->_plistHint;
     v7->_plistHint = 0;
   }
@@ -57,13 +57,13 @@
   return v7;
 }
 
-- (id)uncheckedObjectsForKeys:(id)a3
+- (id)uncheckedObjectsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   os_unfair_lock_lock(&self->_lock);
   rawPlistData = self->_rawPlistData;
-  v6 = [(_LSDataBackedPropertyList *)self _plistHint];
-  v7 = _LSPlistDataGetValuesForKeys(rawPlistData, v4, v6);
+  _plistHint = [(_LSDataBackedPropertyList *)self _plistHint];
+  v7 = _LSPlistDataGetValuesForKeys(rawPlistData, keysCopy, _plistHint);
 
   v8 = MEMORY[0x1E695E0F8];
   if (v7)
@@ -77,41 +77,41 @@
   return v9;
 }
 
-- (BOOL)_getPropertyList:(id *)a3
+- (BOOL)_getPropertyList:(id *)list
 {
   os_unfair_lock_lock(&self->_lock);
   rawPlistData = self->_rawPlistData;
-  v6 = [(_LSDataBackedPropertyList *)self _plistHint];
-  *a3 = _LSPlistDataGetDictionary(rawPlistData, v6);
+  _plistHint = [(_LSDataBackedPropertyList *)self _plistHint];
+  *list = _LSPlistDataGetDictionary(rawPlistData, _plistHint);
 
-  LOBYTE(a3) = *a3 != 0;
+  LOBYTE(list) = *list != 0;
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return list;
 }
 
-- (BOOL)_getValue:(id *)a3 forPropertyListKey:(id)a4
+- (BOOL)_getValue:(id *)value forPropertyListKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   rawPlistData = self->_rawPlistData;
-  v8 = [(_LSDataBackedPropertyList *)self _plistHint];
-  *a3 = _LSPlistDataGetValueForKey(rawPlistData, v6, v8);
+  _plistHint = [(_LSDataBackedPropertyList *)self _plistHint];
+  *value = _LSPlistDataGetValueForKey(rawPlistData, keyCopy, _plistHint);
 
-  LOBYTE(a3) = *a3 != 0;
+  LOBYTE(value) = *value != 0;
   os_unfair_lock_unlock(&self->_lock);
 
-  return a3;
+  return value;
 }
 
 - (void)prewarm
 {
-  v3 = *a1;
+  v3 = *self;
   *buf = 67109120;
   *(buf + 1) = v3;
   _os_log_error_impl(&dword_18162D000, log, OS_LOG_TYPE_ERROR, "could not prewarm data backed property list: %d", buf, 8u);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = [_LSDataBackedPropertyList alloc];
@@ -129,26 +129,26 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _LSDataBackedPropertyList;
-  [(_LSLazyPropertyList *)&v5 encodeWithCoder:v4];
+  [(_LSLazyPropertyList *)&v5 encodeWithCoder:coderCopy];
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeObject:self->_rawPlistData forKey:@"plistData"];
+  [coderCopy encodeObject:self->_rawPlistData forKey:@"plistData"];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (_LSDataBackedPropertyList)initWithCoder:(id)a3
+- (_LSDataBackedPropertyList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _LSDataBackedPropertyList;
-  v5 = [(_LSLazyPropertyList *)&v11 initWithCoder:v4];
+  v5 = [(_LSLazyPropertyList *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"plistData"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"plistData"];
     rawPlistData = v5->_rawPlistData;
     v5->_rawPlistData = v6;
     v8 = v6;

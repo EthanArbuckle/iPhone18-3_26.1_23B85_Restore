@@ -1,7 +1,7 @@
 @interface _DKSync3TransportPolicy
 - (_DKSync3TransportPolicy)init;
 - (id)description;
-- (id)initWithName:(void *)a3 properties:;
+- (id)initWithName:(void *)name properties:;
 @end
 
 @implementation _DKSync3TransportPolicy
@@ -19,26 +19,26 @@
   return result;
 }
 
-- (id)initWithName:(void *)a3 properties:
+- (id)initWithName:(void *)name properties:
 {
   v65[2] = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    v64.receiver = a1;
+    v64.receiver = self;
     v64.super_class = _DKSync3TransportPolicy;
     v8 = objc_msgSendSuper2(&v64, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       *(v8 + 8) = 1;
       if (v6)
       {
-        if (v7)
+        if (nameCopy)
         {
-          v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
-          objc_storeStrong(a1 + 3, a2);
+          v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(nameCopy, "count")}];
+          objc_storeStrong(self + 3, a2);
           OUTLINED_FUNCTION_4_7();
           _DKSync3PolicyDuplicateNSStringPropertyValue(v10, v11, v12);
           OUTLINED_FUNCTION_4_7();
@@ -60,10 +60,10 @@
           OUTLINED_FUNCTION_4_7();
           _DKSync3PolicyDuplicateNSNumberPropertyValue(v37, v38, v39);
           v40 = [v9 objectForKeyedSubscript:@"IsSyncDisabled"];
-          v41 = [v40 BOOLValue];
+          bOOLValue = [v40 BOOLValue];
 
-          *(a1 + 8) = v41;
-          if ((v41 & 1) == 0)
+          *(self + 8) = bOOLValue;
+          if ((bOOLValue & 1) == 0)
           {
             v65[0] = @"Transport";
             v65[1] = @"SyncBatchSizeInEvents";
@@ -72,43 +72,43 @@
 
             if (v43)
             {
-              objc_storeStrong(a1 + 2, v9);
+              objc_storeStrong(self + 2, v9);
               v44 = [v9 objectForKeyedSubscript:@"Transport"];
-              v45 = a1[4];
-              a1[4] = v44;
+              v45 = self[4];
+              self[4] = v44;
 
               v46 = [v9 objectForKeyedSubscript:@"MaximumSyncsPerDay"];
-              v47 = [v46 unsignedIntegerValue];
+              unsignedIntegerValue = [v46 unsignedIntegerValue];
 
-              a1[5] = v47;
+              self[5] = unsignedIntegerValue;
               v48 = [v9 objectForKeyedSubscript:@"SyncBatchSizeInEvents"];
-              v49 = [v48 unsignedIntegerValue];
+              unsignedIntegerValue2 = [v48 unsignedIntegerValue];
 
-              a1[6] = v49;
+              self[6] = unsignedIntegerValue2;
               v50 = [v9 objectForKeyedSubscript:@"MaximumBatchesPerSync"];
-              v51 = [v50 unsignedIntegerValue];
+              unsignedIntegerValue3 = [v50 unsignedIntegerValue];
 
-              a1[7] = v51;
+              self[7] = unsignedIntegerValue3;
               v52 = [v9 objectForKeyedSubscript:@"MaximumSyncWindowInSeconds"];
-              v53 = [v52 unsignedIntegerValue];
+              unsignedIntegerValue4 = [v52 unsignedIntegerValue];
 
-              a1[8] = v53;
+              self[8] = unsignedIntegerValue4;
               v54 = [v9 objectForKeyedSubscript:@"MinimumTimeBetweenSyncsInSeconds"];
-              v55 = [v54 unsignedIntegerValue];
+              unsignedIntegerValue5 = [v54 unsignedIntegerValue];
 
-              a1[9] = v55;
+              self[9] = unsignedIntegerValue5;
               v56 = [v9 objectForKeyedSubscript:@"SingleDevicePeriodicSyncCadenceInDays"];
-              v57 = [v56 unsignedIntegerValue];
+              unsignedIntegerValue6 = [v56 unsignedIntegerValue];
 
-              a1[10] = v57;
+              self[10] = unsignedIntegerValue6;
               v58 = [v9 objectForKeyedSubscript:@"AdditionsBucketCountTriggeringSync"];
-              v59 = [v58 unsignedIntegerValue];
+              unsignedIntegerValue7 = [v58 unsignedIntegerValue];
 
-              a1[11] = v59;
+              self[11] = unsignedIntegerValue7;
               v60 = [v9 objectForKeyedSubscript:@"DeletionsBucketCountTriggeringSync"];
-              v61 = [v60 unsignedIntegerValue];
+              unsignedIntegerValue8 = [v60 unsignedIntegerValue];
 
-              a1[12] = v61;
+              self[12] = unsignedIntegerValue8;
             }
           }
         }
@@ -117,7 +117,7 @@
   }
 
   v62 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (id)description

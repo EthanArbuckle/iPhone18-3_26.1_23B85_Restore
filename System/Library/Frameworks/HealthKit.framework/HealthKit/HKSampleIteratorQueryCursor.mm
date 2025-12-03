@@ -1,10 +1,10 @@
 @interface HKSampleIteratorQueryCursor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSampleIteratorQueryCursor)init;
-- (HKSampleIteratorQueryCursor)initWithCoder:(id)a3;
-- (HKSampleIteratorQueryCursor)initWithQueryDescriptors:(id)a3 sortDescriptors:(id)a4 followingAnchor:(id)a5 upToAndIncludingAnchor:(id)a6 distinctByKeyPaths:(id)a7 state:(id)a8;
+- (HKSampleIteratorQueryCursor)initWithCoder:(id)coder;
+- (HKSampleIteratorQueryCursor)initWithQueryDescriptors:(id)descriptors sortDescriptors:(id)sortDescriptors followingAnchor:(id)anchor upToAndIncludingAnchor:(id)includingAnchor distinctByKeyPaths:(id)paths state:(id)state;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSampleIteratorQueryCursor
@@ -19,15 +19,15 @@
   return 0;
 }
 
-- (HKSampleIteratorQueryCursor)initWithQueryDescriptors:(id)a3 sortDescriptors:(id)a4 followingAnchor:(id)a5 upToAndIncludingAnchor:(id)a6 distinctByKeyPaths:(id)a7 state:(id)a8
+- (HKSampleIteratorQueryCursor)initWithQueryDescriptors:(id)descriptors sortDescriptors:(id)sortDescriptors followingAnchor:(id)anchor upToAndIncludingAnchor:(id)includingAnchor distinctByKeyPaths:(id)paths state:(id)state
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (!v15)
+  descriptorsCopy = descriptors;
+  sortDescriptorsCopy = sortDescriptors;
+  anchorCopy = anchor;
+  includingAnchorCopy = includingAnchor;
+  pathsCopy = paths;
+  stateCopy = state;
+  if (!descriptorsCopy)
   {
     [HKSampleIteratorQueryCursor initWithQueryDescriptors:a2 sortDescriptors:self followingAnchor:? upToAndIncludingAnchor:? distinctByKeyPaths:? state:?];
   }
@@ -37,27 +37,27 @@
   v21 = [(HKSampleIteratorQueryCursor *)&v35 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [descriptorsCopy copy];
     queryDescriptors = v21->_queryDescriptors;
     v21->_queryDescriptors = v22;
 
-    v24 = [v16 copy];
+    v24 = [sortDescriptorsCopy copy];
     sortDescriptors = v21->_sortDescriptors;
     v21->_sortDescriptors = v24;
 
-    v26 = [v17 copy];
+    v26 = [anchorCopy copy];
     followingAnchor = v21->_followingAnchor;
     v21->_followingAnchor = v26;
 
-    v28 = [v18 copy];
+    v28 = [includingAnchorCopy copy];
     upToAndIncludingAnchor = v21->_upToAndIncludingAnchor;
     v21->_upToAndIncludingAnchor = v28;
 
-    v30 = [v19 copy];
+    v30 = [pathsCopy copy];
     distinctByKeyPaths = v21->_distinctByKeyPaths;
     v21->_distinctByKeyPaths = v30;
 
-    v32 = [v20 copy];
+    v32 = [stateCopy copy];
     state = v21->_state;
     v21->_state = v32;
   }
@@ -75,10 +75,10 @@
   return v6 ^ v7 ^ [(NSData *)self->_state hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -88,7 +88,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       queryDescriptors = self->_queryDescriptors;
       v7 = v5->_queryDescriptors;
       if (queryDescriptors != v7 && (!v7 || ![(NSArray *)queryDescriptors isEqual:?]))
@@ -131,34 +131,34 @@ LABEL_24:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   queryDescriptors = self->_queryDescriptors;
-  v5 = a3;
-  [v5 encodeObject:queryDescriptors forKey:@"queryDescriptors"];
-  [v5 encodeObject:self->_sortDescriptors forKey:@"SortDescriptors"];
-  [v5 encodeObject:self->_followingAnchor forKey:@"FollowingAnchor"];
-  [v5 encodeObject:self->_upToAndIncludingAnchor forKey:@"UpToAndIncludingAnchor"];
-  [v5 encodeObject:self->_distinctByKeyPaths forKey:@"DistinctByKeyPaths"];
-  [v5 encodeObject:self->_state forKey:@"State"];
+  coderCopy = coder;
+  [coderCopy encodeObject:queryDescriptors forKey:@"queryDescriptors"];
+  [coderCopy encodeObject:self->_sortDescriptors forKey:@"SortDescriptors"];
+  [coderCopy encodeObject:self->_followingAnchor forKey:@"FollowingAnchor"];
+  [coderCopy encodeObject:self->_upToAndIncludingAnchor forKey:@"UpToAndIncludingAnchor"];
+  [coderCopy encodeObject:self->_distinctByKeyPaths forKey:@"DistinctByKeyPaths"];
+  [coderCopy encodeObject:self->_state forKey:@"State"];
 }
 
-- (HKSampleIteratorQueryCursor)initWithCoder:(id)a3
+- (HKSampleIteratorQueryCursor)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-  v5 = [v3 decodeObjectOfClasses:v4 forKey:@"queryDescriptors"];
+  v5 = [coderCopy decodeObjectOfClasses:v4 forKey:@"queryDescriptors"];
 
   v6 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-  v7 = [v3 decodeObjectOfClasses:v6 forKey:@"SortDescriptors"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"SortDescriptors"];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"FollowingAnchor"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"UpToAndIncludingAnchor"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FollowingAnchor"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UpToAndIncludingAnchor"];
   v10 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-  v11 = [v3 decodeObjectOfClasses:v10 forKey:@"DistinctByKeyPaths"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"DistinctByKeyPaths"];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"State"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"State"];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;

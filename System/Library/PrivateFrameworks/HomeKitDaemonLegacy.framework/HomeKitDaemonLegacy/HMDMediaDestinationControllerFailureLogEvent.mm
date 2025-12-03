@@ -1,5 +1,5 @@
 @interface HMDMediaDestinationControllerFailureLogEvent
-- (HMDMediaDestinationControllerFailureLogEvent)initWithDestinationControllerErrorCode:(id)a3 errorCode:(id)a4 errorDomain:(id)a5 isTriggeredOnControllerDevice:(id)a6 userPrivilege:(id)a7;
+- (HMDMediaDestinationControllerFailureLogEvent)initWithDestinationControllerErrorCode:(id)code errorCode:(id)errorCode errorDomain:(id)domain isTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -9,20 +9,20 @@
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v11[0] = @"isTriggeredOnControllerDevice";
-  v3 = [(HMDMediaDestinationControllerLogEvent *)self isTriggeredOnControllerDevice];
-  v12[0] = v3;
+  isTriggeredOnControllerDevice = [(HMDMediaDestinationControllerLogEvent *)self isTriggeredOnControllerDevice];
+  v12[0] = isTriggeredOnControllerDevice;
   v11[1] = @"destinationControllerErrorCode";
-  v4 = [(HMDMediaDestinationControllerFailureLogEvent *)self destinationControllerErrorCode];
-  v12[1] = v4;
+  destinationControllerErrorCode = [(HMDMediaDestinationControllerFailureLogEvent *)self destinationControllerErrorCode];
+  v12[1] = destinationControllerErrorCode;
   v11[2] = @"userPrivilege";
-  v5 = [(HMDMediaDestinationControllerLogEvent *)self userPrivilege];
-  v12[2] = v5;
+  userPrivilege = [(HMDMediaDestinationControllerLogEvent *)self userPrivilege];
+  v12[2] = userPrivilege;
   v11[3] = @"errorCode";
-  v6 = [(HMDMediaDestinationControllerFailureLogEvent *)self errorCode];
-  v12[3] = v6;
+  errorCode = [(HMDMediaDestinationControllerFailureLogEvent *)self errorCode];
+  v12[3] = errorCode;
   v11[4] = @"errorDomain";
-  v7 = [(HMDMediaDestinationControllerFailureLogEvent *)self errorDomain];
-  v12[4] = v7;
+  errorDomain = [(HMDMediaDestinationControllerFailureLogEvent *)self errorDomain];
+  v12[4] = errorDomain;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:5];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -30,27 +30,27 @@
   return v8;
 }
 
-- (HMDMediaDestinationControllerFailureLogEvent)initWithDestinationControllerErrorCode:(id)a3 errorCode:(id)a4 errorDomain:(id)a5 isTriggeredOnControllerDevice:(id)a6 userPrivilege:(id)a7
+- (HMDMediaDestinationControllerFailureLogEvent)initWithDestinationControllerErrorCode:(id)code errorCode:(id)errorCode errorDomain:(id)domain isTriggeredOnControllerDevice:(id)device userPrivilege:(id)privilege
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13)
+  codeCopy = code;
+  errorCodeCopy = errorCode;
+  domainCopy = domain;
+  deviceCopy = device;
+  privilegeCopy = privilege;
+  if (!codeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v14)
+  if (!errorCodeCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v15)
+  if (!domainCopy)
   {
 LABEL_9:
     v22 = _HMFPreconditionFailure();
@@ -58,16 +58,16 @@ LABEL_9:
     return result;
   }
 
-  v18 = v17;
+  v18 = privilegeCopy;
   v24.receiver = self;
   v24.super_class = HMDMediaDestinationControllerFailureLogEvent;
-  v19 = [(HMDMediaDestinationControllerLogEvent *)&v24 initWithIsTriggeredOnControllerDevice:v16 userPrivilege:v17];
+  v19 = [(HMDMediaDestinationControllerLogEvent *)&v24 initWithIsTriggeredOnControllerDevice:deviceCopy userPrivilege:privilegeCopy];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_destinationControllerErrorCode, a3);
-    objc_storeStrong(&v20->_errorCode, a4);
-    objc_storeStrong(&v20->_errorDomain, a5);
+    objc_storeStrong(&v19->_destinationControllerErrorCode, code);
+    objc_storeStrong(&v20->_errorCode, errorCode);
+    objc_storeStrong(&v20->_errorDomain, domain);
   }
 
   return v20;

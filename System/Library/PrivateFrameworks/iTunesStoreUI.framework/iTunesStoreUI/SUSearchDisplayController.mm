@@ -1,25 +1,25 @@
 @interface SUSearchDisplayController
 - (id)_createPopoverController;
-- (void)_noEventSetSearchFieldText:(id)a3;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNavigationBarHidingEnabled:(BOOL)a3;
+- (void)_noEventSetSearchFieldText:(id)text;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
+- (void)setNavigationBarHidingEnabled:(BOOL)enabled;
 @end
 
 @implementation SUSearchDisplayController
 
-- (void)_noEventSetSearchFieldText:(id)a3
+- (void)_noEventSetSearchFieldText:(id)text
 {
-  v5 = [(UISearchDisplayController *)self searchBar];
-  v6 = [(UISearchBar *)v5 delegate];
-  [(UISearchBar *)v5 setDelegate:0];
-  [(UISearchBar *)v5 setController:0];
-  [(UISearchBar *)v5 setText:a3];
-  [(UISearchBar *)v5 setController:self];
-  [(UISearchBar *)v5 setDelegate:v6];
-  if (![a3 length])
+  searchBar = [(UISearchDisplayController *)self searchBar];
+  delegate = [(UISearchBar *)searchBar delegate];
+  [(UISearchBar *)searchBar setDelegate:0];
+  [(UISearchBar *)searchBar setController:0];
+  [(UISearchBar *)searchBar setText:text];
+  [(UISearchBar *)searchBar setController:self];
+  [(UISearchBar *)searchBar setDelegate:delegate];
+  if (![text length])
   {
 
-    [(UISearchBar *)v5 setShowsSearchResultsButton:0];
+    [(UISearchBar *)searchBar setShowsSearchResultsButton:0];
   }
 }
 
@@ -27,28 +27,28 @@
 {
   v4.receiver = self;
   v4.super_class = SUSearchDisplayController;
-  v2 = [(UISearchDisplayController *)&v4 _createPopoverController];
-  [v2 _setPopoverBackgroundStyle:3];
-  return v2;
+  _createPopoverController = [(UISearchDisplayController *)&v4 _createPopoverController];
+  [_createPopoverController _setPopoverBackgroundStyle:3];
+  return _createPopoverController;
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  activeCopy = active;
   if (![(UISearchDisplayController *)self displaysSearchBarInNavigationBar])
   {
-    v4 = _UIApplicationUsesLegacyUI() & v4;
+    animatedCopy = _UIApplicationUsesLegacyUI() & animatedCopy;
   }
 
-  v7 = [(UISearchBar *)[(UISearchDisplayController *)self searchBar] text];
+  text = [(UISearchBar *)[(UISearchDisplayController *)self searchBar] text];
   v11.receiver = self;
   v11.super_class = SUSearchDisplayController;
-  [(UISearchDisplayController *)&v11 setActive:v5 animated:v4];
-  [(SUSearchDisplayController *)self _noEventSetSearchFieldText:v7];
-  if (v5)
+  [(UISearchDisplayController *)&v11 setActive:activeCopy animated:animatedCopy];
+  [(SUSearchDisplayController *)self _noEventSetSearchFieldText:text];
+  if (activeCopy)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v8 = 300000000;
     }
@@ -64,7 +64,7 @@
     v10[2] = __48__SUSearchDisplayController_setActive_animated___block_invoke;
     v10[3] = &unk_1E8164370;
     v10[4] = self;
-    v10[5] = v7;
+    v10[5] = text;
     dispatch_after(v9, MEMORY[0x1E69E96A0], v10);
   }
 }
@@ -77,9 +77,9 @@ uint64_t __48__SUSearchDisplayController_setActive_animated___block_invoke(uint6
   return [v2 setText:v3];
 }
 
-- (void)setNavigationBarHidingEnabled:(BOOL)a3
+- (void)setNavigationBarHidingEnabled:(BOOL)enabled
 {
-  self->_store_navigationBarHidingEnabled = a3;
+  self->_store_navigationBarHidingEnabled = enabled;
   v3.receiver = self;
   v3.super_class = SUSearchDisplayController;
   [(UISearchDisplayController *)&v3 setNavigationBarHidingEnabled:?];

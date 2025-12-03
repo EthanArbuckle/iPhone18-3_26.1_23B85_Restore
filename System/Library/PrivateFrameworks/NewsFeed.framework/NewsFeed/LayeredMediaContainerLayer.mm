@@ -1,6 +1,6 @@
 @interface LayeredMediaContainerLayer
 - (_TtC8NewsFeedP33_F669C03278D43A4B0F24735E6C90190F26LayeredMediaContainerLayer)init;
-- (_TtC8NewsFeedP33_F669C03278D43A4B0F24735E6C90190F26LayeredMediaContainerLayer)initWithLayer:(id)a3;
+- (_TtC8NewsFeedP33_F669C03278D43A4B0F24735E6C90190F26LayeredMediaContainerLayer)initWithLayer:(id)layer;
 @end
 
 @implementation LayeredMediaContainerLayer
@@ -24,7 +24,7 @@
   return [(TUNonAnimatingLayer *)&v11 init];
 }
 
-- (_TtC8NewsFeedP33_F669C03278D43A4B0F24735E6C90190F26LayeredMediaContainerLayer)initWithLayer:(id)a3
+- (_TtC8NewsFeedP33_F669C03278D43A4B0F24735E6C90190F26LayeredMediaContainerLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();

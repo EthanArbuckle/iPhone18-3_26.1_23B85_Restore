@@ -1,6 +1,6 @@
 @interface MOContextHistoryReader
 - (id)_getFrameworkClientIdentity;
-- (void)loadPersonalizedContextWithOptions:(id)a3 withReply:(id)a4;
+- (void)loadPersonalizedContextWithOptions:(id)options withReply:(id)reply;
 @end
 
 @implementation MOContextHistoryReader
@@ -30,12 +30,12 @@
   v5 = [MEMORY[0x277CCACA8] stringWithCString:*_CFGetProgname() encoding:4];
 LABEL_8:
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v9)
+  if (bundleIdentifier)
   {
-    [v7 setObject:v9 forKeyedSubscript:@"bundle-Id"];
+    [v7 setObject:bundleIdentifier forKeyedSubscript:@"bundle-Id"];
   }
 
   if (v5)
@@ -50,7 +50,7 @@ LABEL_8:
         _os_log_impl(&dword_25E48F000, v10, OS_LOG_TYPE_DEFAULT, "Client is photoanalysisd test alias.", &v15, 2u);
       }
 
-      v9 = @"com.apple.photoanalysisd";
+      bundleIdentifier = @"com.apple.photoanalysisd";
     }
   }
 
@@ -58,7 +58,7 @@ LABEL_8:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v9;
+    v16 = bundleIdentifier;
     _os_log_impl(&dword_25E48F000, v11, OS_LOG_TYPE_DEFAULT, "client bundle-id: %@", &v15, 0xCu);
   }
 
@@ -75,10 +75,10 @@ LABEL_8:
   return v7;
 }
 
-- (void)loadPersonalizedContextWithOptions:(id)a3 withReply:(id)a4
+- (void)loadPersonalizedContextWithOptions:(id)options withReply:(id)reply
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  replyCopy = reply;
   v5 = _mo_log_facility_get_os_log(MOLogFacilityContextCrossPlatform);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -91,7 +91,7 @@ LABEL_8:
   v12[0] = @"Context biome stream persistency unavailable";
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v8 = [v6 errorWithDomain:@"MOContextErrorDomain" code:1025 userInfo:v7];
-  v4[2](v4, 0, v8);
+  replyCopy[2](replyCopy, 0, v8);
 
   v9 = *MEMORY[0x277D85DE8];
 }

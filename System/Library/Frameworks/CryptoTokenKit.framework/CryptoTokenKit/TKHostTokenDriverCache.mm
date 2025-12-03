@@ -3,13 +3,13 @@
 - (TKHostTokenDriverCache)init;
 - (TKHostTokenRegistry)registry;
 - (TKSmartCardTokenRegistrationRegistry)smartCardTokenRegistrationRegistry;
-- (id)beginMatchingTokenExtensionsWithAttributes:(id)a3;
-- (id)hostTokenDriverFromExtension:(id)a3;
-- (id)hostTokenDriverWithClassID:(id)a3 error:(id *)a4;
+- (id)beginMatchingTokenExtensionsWithAttributes:(id)attributes;
+- (id)hostTokenDriverFromExtension:(id)extension;
+- (id)hostTokenDriverWithClassID:(id)d error:(id *)error;
 - (void)dealloc;
 - (void)invalidate;
 - (void)preloadTokens;
-- (void)removeDriverWithClassID:(id)a3;
+- (void)removeDriverWithClassID:(id)d;
 @end
 
 @implementation TKHostTokenDriverCache
@@ -102,28 +102,28 @@
   [(TKHostTokenDriverCache *)&v4 dealloc];
 }
 
-- (void)removeDriverWithClassID:(id)a3
+- (void)removeDriverWithClassID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100018CF8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100021594();
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)v6->_drivers objectForKey:v4];
-  [(NSMutableDictionary *)v6->_drivers removeObjectForKey:v4];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableDictionary *)selfCopy->_drivers objectForKey:dCopy];
+  [(NSMutableDictionary *)selfCopy->_drivers removeObjectForKey:dCopy];
+  objc_sync_exit(selfCopy);
 
   [v7 invalidate];
 }
 
-- (id)beginMatchingTokenExtensionsWithAttributes:(id)a3
+- (id)beginMatchingTokenExtensionsWithAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  attributesCopy = attributes;
+  v5 = [attributesCopy mutableCopy];
   [v5 setObject:@"com.apple.ctk-tokens" forKeyedSubscript:NSExtensionPointName];
   extensionClass = self->_extensionClass;
   v17 = 0;
@@ -138,12 +138,12 @@
     }
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  objc_storeStrong(&v10->_matchingExtensions, v7);
-  objc_sync_exit(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_matchingExtensions, v7);
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(&location, v10);
+  objc_initWeak(&location, selfCopy);
   v11 = self->_extensionClass;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -159,24 +159,24 @@
 
 - (NSDictionary)extensions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v24 = v2;
-  if (!v2->_matchingContext)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v24 = selfCopy;
+  if (!selfCopy->_matchingContext)
   {
-    v3 = [(TKHostTokenDriverCache *)v2 beginMatchingTokenExtensionsWithAttributes:&__NSDictionary0__struct];
-    matchingContext = v2->_matchingContext;
-    v2->_matchingContext = v3;
+    v3 = [(TKHostTokenDriverCache *)selfCopy beginMatchingTokenExtensionsWithAttributes:&__NSDictionary0__struct];
+    matchingContext = selfCopy->_matchingContext;
+    selfCopy->_matchingContext = v3;
   }
 
-  if (v2->_matchingExtensions)
+  if (selfCopy->_matchingExtensions)
   {
     v22 = [&__NSDictionary0__struct mutableCopy];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = v2->_matchingExtensions;
+    obj = selfCopy->_matchingExtensions;
     v5 = [(NSArray *)obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v5)
     {
@@ -193,8 +193,8 @@
           }
 
           v7 = *(*(&v32 + 1) + 8 * i);
-          v8 = [v7 attributes];
-          v9 = [v8 objectForKeyedSubscript:v25];
+          attributes = [v7 attributes];
+          v9 = [attributes objectForKeyedSubscript:v25];
 
           v30 = 0u;
           v31 = 0u;
@@ -215,9 +215,9 @@
                 }
 
                 v14 = [[TKTokenID alloc] initWithTokenID:*(*(&v28 + 1) + 8 * j)];
-                v15 = [v14 classID];
+                classID = [v14 classID];
 
-                LOBYTE(v14) = [v15 isEqualToString:v9];
+                LOBYTE(v14) = [classID isEqualToString:v9];
                 if (v14)
                 {
 
@@ -236,8 +236,8 @@
           }
 
           disabledExtensionIDs = v24->_disabledExtensionIDs;
-          v17 = [v7 identifier];
-          LOBYTE(disabledExtensionIDs) = [(NSArray *)disabledExtensionIDs containsObject:v17];
+          identifier = [v7 identifier];
+          LOBYTE(disabledExtensionIDs) = [(NSArray *)disabledExtensionIDs containsObject:identifier];
 
           if ((disabledExtensionIDs & 1) == 0)
           {
@@ -271,16 +271,16 @@ LABEL_22:
 {
   if ([(NSArray *)self->_toBePreloadedExtensionIDs count])
   {
-    v3 = self;
-    objc_sync_enter(v3);
-    p_isa = &v3->super.isa;
-    v4 = [(TKHostTokenDriverCache *)v3 extensions];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    p_isa = &selfCopy->super.isa;
+    extensions = [(TKHostTokenDriverCache *)selfCopy extensions];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = [v4 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    allKeys = [extensions allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (!v6)
     {
       goto LABEL_18;
@@ -289,7 +289,7 @@ LABEL_22:
     v8 = *v25;
     *&v7 = 138543618;
     v20 = v7;
-    obj = v5;
+    obj = allKeys;
     while (1)
     {
       for (i = 0; i != v6; i = i + 1)
@@ -300,10 +300,10 @@ LABEL_22:
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:{v10, v20}];
+        v11 = [extensions objectForKeyedSubscript:{v10, v20}];
         toBePreloadedExtensionIDs = self->_toBePreloadedExtensionIDs;
-        v13 = [v11 identifier];
-        if ([(NSArray *)toBePreloadedExtensionIDs containsObject:v13])
+        identifier = [v11 identifier];
+        if ([(NSArray *)toBePreloadedExtensionIDs containsObject:identifier])
         {
           v14 = [p_isa[11] objectForKey:v10];
           v15 = v14 == 0;
@@ -324,17 +324,17 @@ LABEL_22:
           v17 = [p_isa hostTokenDriverFromExtension:v11];
           v23 = 0;
           v18 = [v17 contextWithError:&v23];
-          v13 = v23;
+          identifier = v23;
           if (!v18)
           {
             v18 = sub_100018CF8();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v19 = [v11 identifier];
+              identifier2 = [v11 identifier];
               *buf = v20;
-              v29 = v19;
+              v29 = identifier2;
               v30 = 2114;
-              v31 = v13;
+              v31 = identifier;
               _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "failed to preload token extension: '%{public}@', error: %{public}@", buf, 0x16u);
             }
           }
@@ -343,7 +343,7 @@ LABEL_22:
 LABEL_16:
       }
 
-      v5 = obj;
+      allKeys = obj;
       v6 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (!v6)
       {
@@ -356,25 +356,25 @@ LABEL_18:
   }
 }
 
-- (id)hostTokenDriverFromExtension:(id)a3
+- (id)hostTokenDriverFromExtension:(id)extension
 {
-  v5 = a3;
-  v6 = [v5 attributes];
+  extensionCopy = extension;
+  attributes = [extensionCopy attributes];
   v7 = TKTokenClassDriverClassIDKey;
-  v8 = [v6 objectForKeyedSubscript:TKTokenClassDriverClassIDKey];
+  v8 = [attributes objectForKeyedSubscript:TKTokenClassDriverClassIDKey];
 
   if (!v8)
   {
-    sub_100021754(v5, a2, self, v7);
+    sub_100021754(extensionCopy, a2, self, v7);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(NSMutableDictionary *)v9->_drivers objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = [(NSMutableDictionary *)selfCopy->_drivers objectForKeyedSubscript:v8];
   if (!v10)
   {
-    v10 = [[TKHostTokenDriver alloc] initWithExtension:v5 cache:v9];
-    [(NSMutableDictionary *)v9->_drivers setObject:v10 forKeyedSubscript:v8];
+    v10 = [[TKHostTokenDriver alloc] initWithExtension:extensionCopy cache:selfCopy];
+    [(NSMutableDictionary *)selfCopy->_drivers setObject:v10 forKeyedSubscript:v8];
     v11 = sub_100018CF8();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -382,16 +382,16 @@ LABEL_18:
     }
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (id)hostTokenDriverWithClassID:(id)a3 error:(id *)a4
+- (id)hostTokenDriverWithClassID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TKHostTokenDriverCache *)self extensions];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  extensions = [(TKHostTokenDriverCache *)self extensions];
+  v8 = [extensions objectForKeyedSubscript:dCopy];
 
   if (v8)
   {
@@ -404,14 +404,14 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = dCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "requested driver for token class '%{public}@' not found in the system", &v12, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       [NSError errorWithDomain:TKErrorDomain code:-7 userInfo:0];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -425,23 +425,23 @@ LABEL_18:
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_drivers allValues];
-  [(NSMutableDictionary *)v2->_drivers removeAllObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_drivers allValues];
+  [(NSMutableDictionary *)selfCopy->_drivers removeAllObjects];
+  objc_sync_exit(selfCopy);
 
   v4 = sub_100018CF8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_10002185C(v3, v4);
+    sub_10002185C(allValues, v4);
   }
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = v3;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {

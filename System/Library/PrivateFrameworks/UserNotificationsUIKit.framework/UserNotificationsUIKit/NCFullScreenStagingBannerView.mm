@@ -2,59 +2,59 @@
 + (id)_detailSecondaryFont;
 - (CGRect)_contentFrameForActiveStage;
 - (CGRect)_contentHitRectForActiveStage;
-- (NCFullScreenStagingBannerView)initWithSettings:(id)a3;
-- (double)_detailTextMaxWidthForBounds:(CGRect)a3 thumbnailVisible:(BOOL)a4;
-- (id)_composedDateStringWithDateString:(id)a3 staticContentProvider:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (NCFullScreenStagingBannerView)initWithSettings:(id)settings;
+- (double)_detailTextMaxWidthForBounds:(CGRect)bounds thumbnailVisible:(BOOL)visible;
+- (id)_composedDateStringWithDateString:(id)string staticContentProvider:(id)provider;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (unint64_t)_detailLabelsNumberOfLines;
 - (void)_configureContentHitRectViewIfNecessary;
-- (void)_configureDateLabelIfNecessaryWithStaticContentProvider:(id)a3;
+- (void)_configureDateLabelIfNecessaryWithStaticContentProvider:(id)provider;
 - (void)_configureDetailScrollViewIfNecessary;
 - (void)_configureDetailSecondaryLabel;
 - (void)_configureGrabberViewIfNecessary;
 - (void)_configureInitialViewsForBriefStage;
 - (void)_configureInitialViewsForDetailStage;
-- (void)_configureInitialViewsForStage:(int64_t)a3;
+- (void)_configureInitialViewsForStage:(int64_t)stage;
 - (void)_configureTapGestureIfNecessary;
-- (void)_configureThumbnailViewIfNecessaryWithStaticContentProvider:(id)a3;
-- (void)_handleTap:(id)a3;
+- (void)_configureThumbnailViewIfNecessaryWithStaticContentProvider:(id)provider;
+- (void)_handleTap:(id)tap;
 - (void)_layoutContentHitRectViewForActiveStage;
-- (void)_layoutForBriefStageWithSettings:(id)a3 completion:(id)a4;
-- (void)_layoutForDetailStageWithSettings:(id)a3 completion:(id)a4;
-- (void)_layoutForDismissedStageFromBriefStageWithSettings:(id)a3 completion:(id)a4;
-- (void)_layoutForDismissedStageFromDetailStageWithSettings:(id)a3 completion:(id)a4;
-- (void)_layoutForStage:(int64_t)a3 fromStage:(int64_t)a4 settings:(id)a5 completion:(id)a6;
+- (void)_layoutForBriefStageWithSettings:(id)settings completion:(id)completion;
+- (void)_layoutForDetailStageWithSettings:(id)settings completion:(id)completion;
+- (void)_layoutForDismissedStageFromBriefStageWithSettings:(id)settings completion:(id)completion;
+- (void)_layoutForDismissedStageFromDetailStageWithSettings:(id)settings completion:(id)completion;
+- (void)_layoutForStage:(int64_t)stage fromStage:(int64_t)fromStage settings:(id)settings completion:(id)completion;
 - (void)_prepareForTransitionToBriefStage;
 - (void)_prepareForTransitionToDetailStage;
-- (void)_prepareForTransitionToStage:(int64_t)a3;
-- (void)_setBadgedIconView:(id)a3;
-- (void)_setImportantTextVisualStylingProvider:(id)a3;
-- (void)_transitionToStage:(int64_t)a3 fromStage:(int64_t)a4 settings:(id)a5 completion:(id)a6;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_updateWithStaticContentForStage:(int64_t)a3;
-- (void)dateLabelDidChange:(id)a3;
+- (void)_prepareForTransitionToStage:(int64_t)stage;
+- (void)_setBadgedIconView:(id)view;
+- (void)_setImportantTextVisualStylingProvider:(id)provider;
+- (void)_transitionToStage:(int64_t)stage fromStage:(int64_t)fromStage settings:(id)settings completion:(id)completion;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_updateWithStaticContentForStage:(int64_t)stage;
+- (void)dateLabelDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)setStaticContentProvider:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)transitionToStage:(int64_t)a3 completion:(id)a4;
+- (void)setStaticContentProvider:(id)provider;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)transitionToStage:(int64_t)stage completion:(id)completion;
 @end
 
 @implementation NCFullScreenStagingBannerView
 
-- (NCFullScreenStagingBannerView)initWithSettings:(id)a3
+- (NCFullScreenStagingBannerView)initWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v10.receiver = self;
   v10.super_class = NCFullScreenStagingBannerView;
   v5 = [(NCFullScreenStagingBannerView *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [settingsCopy copy];
     settings = v5->_settings;
     v5->_settings = v6;
 
-    v8 = [(NCFullScreenStagingBannerView *)v5 layer];
-    [v8 setHitTestsAsOpaque:1];
+    layer = [(NCFullScreenStagingBannerView *)v5 layer];
+    [layer setHitTestsAsOpaque:1];
 
     [(NCFullScreenStagingBannerView *)v5 _configureTapGestureIfNecessary];
   }
@@ -62,33 +62,33 @@
   return v5;
 }
 
-- (void)setStaticContentProvider:(id)a3
+- (void)setStaticContentProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_staticContentProvider, a3);
+    objc_storeStrong(&self->_staticContentProvider, provider);
   }
 }
 
-- (void)transitionToStage:(int64_t)a3 completion:(id)a4
+- (void)transitionToStage:(int64_t)stage completion:(id)completion
 {
-  if (self->_stage < a3)
+  if (self->_stage < stage)
   {
-    self->_stage = a3;
+    self->_stage = stage;
     [NCFullScreenStagingBannerView _transitionToStage:"_transitionToStage:fromStage:settings:completion:" fromStage:? settings:? completion:?];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = NCFullScreenStagingBannerView;
-  v5 = [(NCFullScreenStagingBannerView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(NCFullScreenStagingBannerView *)&v10 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
-    v6 = [(NCFullScreenStagingBannerView *)self layer];
-    if ([v6 allowsHitTesting])
+    layer = [(NCFullScreenStagingBannerView *)self layer];
+    if ([layer allowsHitTesting])
     {
       v7 = v5;
     }
@@ -149,28 +149,28 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
+  providerCopy = provider;
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
-  if (strokeVisualStylingProvider != v6)
+  if (strokeVisualStylingProvider != providerCopy)
   {
-    v11 = v6;
-    v8 = v6;
+    v11 = providerCopy;
+    v8 = providerCopy;
     v9 = self->_strokeVisualStylingProvider;
     self->_strokeVisualStylingProvider = v8;
     v10 = strokeVisualStylingProvider;
 
-    [(NCFullScreenStagingBannerView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:a4 outgoingProvider:v10];
-    v6 = v11;
+    [(NCFullScreenStagingBannerView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:category outgoingProvider:v10];
+    providerCopy = v11;
   }
 }
 
-- (void)dateLabelDidChange:(id)a3
+- (void)dateLabelDidChange:(id)change
 {
   dateLabel = self->_dateLabel;
-  v6 = [(BSUIDateLabel *)self->_referenceDateLabel text];
-  v5 = [(NCFullScreenStagingBannerView *)self _composedDateStringWithDateString:v6 staticContentProvider:self->_staticContentProvider];
+  text = [(BSUIDateLabel *)self->_referenceDateLabel text];
+  v5 = [(NCFullScreenStagingBannerView *)self _composedDateStringWithDateString:text staticContentProvider:self->_staticContentProvider];
   [(UILabel *)dateLabel setAttributedText:v5];
 }
 
@@ -187,31 +187,31 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
   }
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 
-- (void)_setImportantTextVisualStylingProvider:(id)a3
+- (void)_setImportantTextVisualStylingProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   importantTextVisualStylingProvider = self->_importantTextVisualStylingProvider;
-  if (importantTextVisualStylingProvider != v4)
+  if (importantTextVisualStylingProvider != providerCopy)
   {
-    v9 = v4;
-    v6 = v4;
+    v9 = providerCopy;
+    v6 = providerCopy;
     v7 = self->_importantTextVisualStylingProvider;
     self->_importantTextVisualStylingProvider = v6;
     v8 = importantTextVisualStylingProvider;
 
     [(NCFullScreenStagingBannerView *)self _updateVisualStylingOfView:self->_dateLabel style:1 visualStylingProvider:self->_importantTextVisualStylingProvider outgoingProvider:v8];
-    v4 = v9;
+    providerCopy = v9;
   }
 }
 
@@ -241,11 +241,11 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
 
     [(BSUIPartialStylingLabelView *)self->_briefPrimaryLabelView setNumberOfLines:1];
     v5 = self->_briefPrimaryLabelView;
-    v6 = [MEMORY[0x277D75348] labelColor];
-    [(BSUIPartialStylingLabelView *)v5 setTextColor:v6];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(BSUIPartialStylingLabelView *)v5 setTextColor:labelColor];
 
-    v7 = [(NCFullScreenStagingBannerView *)self _briefPrimaryLabelViewFont];
-    [(BSUIPartialStylingLabelView *)self->_briefPrimaryLabelView setFont:v7];
+    _briefPrimaryLabelViewFont = [(NCFullScreenStagingBannerView *)self _briefPrimaryLabelViewFont];
+    [(BSUIPartialStylingLabelView *)self->_briefPrimaryLabelView setFont:_briefPrimaryLabelViewFont];
     [(NCFullScreenStagingBannerView *)self addSubview:self->_briefPrimaryLabelView];
   }
 
@@ -275,17 +275,17 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
   }
 }
 
-- (id)_composedDateStringWithDateString:(id)a3 staticContentProvider:(id)a4
+- (id)_composedDateStringWithDateString:(id)string staticContentProvider:(id)provider
 {
-  v5 = a3;
-  v6 = [a4 importantText];
-  v7 = v5;
-  if ([v6 length])
+  stringCopy = string;
+  importantText = [provider importantText];
+  v7 = stringCopy;
+  if ([importantText length])
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = NCUserNotificationsUIKitFrameworkBundle();
     v10 = [v9 localizedStringForKey:@"IMPORTANT_TEXT_FULLSCREEN_FORMAT" value:&stru_282FE84F8 table:0];
-    v7 = [v8 stringWithFormat:v10, v5, v6];
+    v7 = [v8 stringWithFormat:v10, stringCopy, importantText];
   }
 
   v11 = [MEMORY[0x277CCA898] nc_safeAttributedStringWithString:v7];
@@ -309,18 +309,18 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
   }
 }
 
-- (void)_configureDateLabelIfNecessaryWithStaticContentProvider:(id)a3
+- (void)_configureDateLabelIfNecessaryWithStaticContentProvider:(id)provider
 {
   if (!self->_dateLabel)
   {
     v4 = MEMORY[0x277CF0D50];
-    v5 = a3;
-    v6 = [v4 sharedInstance];
-    v7 = [v5 date];
-    v8 = [v5 timeZone];
-    v9 = [v5 isDateAllDay];
+    providerCopy = provider;
+    sharedInstance = [v4 sharedInstance];
+    date = [providerCopy date];
+    timeZone = [providerCopy timeZone];
+    isDateAllDay = [providerCopy isDateAllDay];
 
-    v10 = [v6 startLabelWithStartDate:v7 endDate:0 timeZone:v8 allDay:v9 forStyle:1];
+    v10 = [sharedInstance startLabelWithStartDate:date endDate:0 timeZone:timeZone allDay:isDateAllDay forStyle:1];
     referenceDateLabel = self->_referenceDateLabel;
     self->_referenceDateLabel = v10;
 
@@ -331,8 +331,8 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
 
     [(UILabel *)self->_dateLabel setNumberOfLines:1];
     v14 = self->_dateLabel;
-    v15 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v14 setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v14 setTextColor:secondaryLabelColor];
 
     v16 = [MEMORY[0x277D74300] bsui_defaultFontForTextStyle:*MEMORY[0x277D76A08] hiFontStyle:4];
     [(UILabel *)self->_dateLabel setFont:v16];
@@ -343,27 +343,27 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
   }
 }
 
-- (void)_configureThumbnailViewIfNecessaryWithStaticContentProvider:(id)a3
+- (void)_configureThumbnailViewIfNecessaryWithStaticContentProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (!self->_thumbnailView)
   {
-    v10 = v4;
-    v5 = [v4 thumbnail];
+    v10 = providerCopy;
+    thumbnail = [providerCopy thumbnail];
 
-    v4 = v10;
-    if (v5)
+    providerCopy = v10;
+    if (thumbnail)
     {
       v6 = objc_alloc(MEMORY[0x277D755E8]);
-      v7 = [v10 thumbnail];
-      v8 = [v6 initWithImage:v7];
+      thumbnail2 = [v10 thumbnail];
+      v8 = [v6 initWithImage:thumbnail2];
       thumbnailView = self->_thumbnailView;
       self->_thumbnailView = v8;
 
       [(UIImageView *)self->_thumbnailView _setContinuousCornerRadius:20.0];
       [(UIImageView *)self->_thumbnailView setClipsToBounds:1];
       [(NCFullScreenStagingBannerView *)self addSubview:self->_thumbnailView];
-      v4 = v10;
+      providerCopy = v10;
     }
   }
 }
@@ -377,12 +377,12 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
     self->_contentHitRectView = v3;
 
     v5 = self->_contentHitRectView;
-    v6 = [MEMORY[0x277D75348] systemRedColor];
-    v7 = [v6 colorWithAlphaComponent:0.25];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    v7 = [systemRedColor colorWithAlphaComponent:0.25];
     [(UIView *)v5 setBackgroundColor:v7];
 
-    v8 = [(UIView *)self->_contentHitRectView layer];
-    [v8 setAllowsHitTesting:0];
+    layer = [(UIView *)self->_contentHitRectView layer];
+    [layer setAllowsHitTesting:0];
 
     [(UIView *)self->_contentHitRectView setAlpha:0.0];
     v9 = self->_contentHitRectView;
@@ -402,8 +402,8 @@ void __47__NCFullScreenStagingBannerView_layoutSubviews__block_invoke(uint64_t a
 
     [(UILabel *)self->_detailPrimaryLabel setNumberOfLines:[(NCFullScreenStagingBannerView *)self _detailLabelsNumberOfLines]];
     v5 = self->_detailPrimaryLabel;
-    v6 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v5 setTextColor:v6];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v5 setTextColor:labelColor];
 
     v7 = self->_detailPrimaryLabel;
     v8 = [MEMORY[0x277D74300] boldSystemFontOfSize:48.0];
@@ -460,34 +460,34 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
 - (void)_configureDetailSecondaryLabel
 {
   detailSecondaryLabel = self->_detailSecondaryLabel;
-  v4 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UILabel *)detailSecondaryLabel setTextColor:v4];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UILabel *)detailSecondaryLabel setTextColor:secondaryLabelColor];
 
   v5 = self->_detailSecondaryLabel;
-  v6 = [objc_opt_class() _detailSecondaryFont];
-  [(UILabel *)v5 setFont:v6];
+  _detailSecondaryFont = [objc_opt_class() _detailSecondaryFont];
+  [(UILabel *)v5 setFont:_detailSecondaryFont];
 }
 
-- (void)_configureInitialViewsForStage:(int64_t)a3
+- (void)_configureInitialViewsForStage:(int64_t)stage
 {
-  if (a3 == 2)
+  if (stage == 2)
   {
     [(NCFullScreenStagingBannerView *)self _configureInitialViewsForDetailStage];
   }
 
-  else if (a3 == 1)
+  else if (stage == 1)
   {
     [(NCFullScreenStagingBannerView *)self _configureInitialViewsForBriefStage];
   }
 }
 
-- (void)_setBadgedIconView:(id)a3
+- (void)_setBadgedIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if ((BSEqualObjects() & 1) == 0)
   {
     [(NCBadgedIconView *)self->_badgedIconView removeFromSuperview];
-    objc_storeStrong(&self->_badgedIconView, a3);
+    objc_storeStrong(&self->_badgedIconView, view);
     if (self->_badgedIconView)
     {
       [(NCFullScreenStagingBannerView *)self addSubview:?];
@@ -507,11 +507,11 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   }
 }
 
-- (void)_updateWithStaticContentForStage:(int64_t)a3
+- (void)_updateWithStaticContentForStage:(int64_t)stage
 {
   v34[2] = *MEMORY[0x277D85DE8];
   staticContentProvider = self->_staticContentProvider;
-  if (a3 >= 2)
+  if (stage >= 2)
   {
     v6 = staticContentProvider;
   }
@@ -522,44 +522,44 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   }
 
   v7 = v6;
-  v8 = [(NCNotificationStaticContentProviding *)v6 badgedIconDescription];
-  if (v8 && !self->_badgedIconView)
+  badgedIconDescription = [(NCNotificationStaticContentProviding *)v6 badgedIconDescription];
+  if (badgedIconDescription && !self->_badgedIconView)
   {
-    v9 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:v8 pointSize:176.0];
+    v9 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:badgedIconDescription pointSize:176.0];
     [(NCFullScreenStagingBannerView *)self _setBadgedIconView:v9];
   }
 
-  v10 = [(NCNotificationStaticContentProviding *)v7 secondaryText];
-  v11 = [objc_opt_class() _detailSecondaryFont];
-  v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v13 = [v10 nc_styledTextWithGylphAddedIfNecessaryForFont:v11 glyphColor:v12];
+  secondaryText = [(NCNotificationStaticContentProviding *)v7 secondaryText];
+  _detailSecondaryFont = [objc_opt_class() _detailSecondaryFont];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v13 = [secondaryText nc_styledTextWithGylphAddedIfNecessaryForFont:_detailSecondaryFont glyphColor:secondaryLabelColor];
 
-  if (a3 == 2)
+  if (stage == 2)
   {
-    v30 = [(NCNotificationStaticContentProviding *)v7 importantTextVisualStylingProvider];
-    [(NCFullScreenStagingBannerView *)self _setImportantTextVisualStylingProvider:v30];
+    importantTextVisualStylingProvider = [(NCNotificationStaticContentProviding *)v7 importantTextVisualStylingProvider];
+    [(NCFullScreenStagingBannerView *)self _setImportantTextVisualStylingProvider:importantTextVisualStylingProvider];
 
     [(NCFullScreenStagingBannerView *)self _configureDateLabelIfNecessaryWithStaticContentProvider:v7];
     [(NCFullScreenStagingBannerView *)self _configureThumbnailViewIfNecessaryWithStaticContentProvider:v7];
     detailPrimaryLabel = self->_detailPrimaryLabel;
-    v32 = [(NCNotificationStaticContentProviding *)v7 primaryText];
-    [(UILabel *)detailPrimaryLabel setText:v32];
+    primaryText = [(NCNotificationStaticContentProviding *)v7 primaryText];
+    [(UILabel *)detailPrimaryLabel setText:primaryText];
 
     [(UILabel *)self->_detailSecondaryLabel setAttributedText:v13];
     [(NCFullScreenStagingBannerView *)self _configureDetailSecondaryLabel];
   }
 
-  else if (a3 == 1)
+  else if (stage == 1)
   {
     v14 = MEMORY[0x277D755D0];
-    v15 = [(NCFullScreenStagingBannerView *)self _briefPrimaryLabelViewFont];
-    v16 = [v14 configurationWithFont:v15];
+    _briefPrimaryLabelViewFont = [(NCFullScreenStagingBannerView *)self _briefPrimaryLabelViewFont];
+    v16 = [v14 configurationWithFont:_briefPrimaryLabelViewFont];
 
     v17 = MEMORY[0x277D755D0];
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    v34[0] = v18;
-    v19 = [MEMORY[0x277D75348] systemRedColor];
-    v34[1] = v19;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v34[0] = whiteColor;
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    v34[1] = systemRedColor;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
     v21 = [v17 configurationWithPaletteColors:v20];
     v22 = [v16 configurationByApplyingConfiguration:v21];
@@ -567,22 +567,22 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
     v23 = [(NCNotificationStaticContentProviding *)v7 importantAttributedTextWithImageConfiguration:v22 importantAdornmentEligibleOptions:-1];
     if ([v23 length])
     {
-      v24 = [v23 mutableCopy];
+      primaryText3 = [v23 mutableCopy];
       v25 = objc_alloc(MEMORY[0x277CCA898]);
       v26 = MEMORY[0x277CCACA8];
-      v27 = [(NCNotificationStaticContentProviding *)v7 primaryText];
-      v28 = [v26 stringWithFormat:@" %@", v27];
+      primaryText2 = [(NCNotificationStaticContentProviding *)v7 primaryText];
+      v28 = [v26 stringWithFormat:@" %@", primaryText2];
       v29 = [v25 initWithString:v28];
-      [v24 appendAttributedString:v29];
+      [primaryText3 appendAttributedString:v29];
 
-      [(BSUIPartialStylingLabelView *)self->_briefPrimaryLabelView setAttributedText:v24];
+      [(BSUIPartialStylingLabelView *)self->_briefPrimaryLabelView setAttributedText:primaryText3];
     }
 
     else
     {
       briefPrimaryLabelView = self->_briefPrimaryLabelView;
-      v24 = [(NCNotificationStaticContentProviding *)v7 primaryText];
-      [(BSUIPartialStylingLabelView *)briefPrimaryLabelView setText:v24];
+      primaryText3 = [(NCNotificationStaticContentProviding *)v7 primaryText];
+      [(BSUIPartialStylingLabelView *)briefPrimaryLabelView setText:primaryText3];
     }
 
     [(UILabel *)self->_briefSecondaryLabel setAttributedText:v13];
@@ -597,8 +597,8 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   v63 = v5;
   v7 = v6;
   v9 = v8;
-  v10 = [(NCFullScreenStagingBannerView *)self traitCollection];
-  [v10 displayScale];
+  traitCollection = [(NCFullScreenStagingBannerView *)self traitCollection];
+  [traitCollection displayScale];
   v64 = v11;
 
   grabberView = self->_grabberView;
@@ -703,20 +703,20 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   [(UILabel *)self->_briefSecondaryLabel setAlpha:0.0];
 }
 
-- (double)_detailTextMaxWidthForBounds:(CGRect)a3 thumbnailVisible:(BOOL)a4
+- (double)_detailTextMaxWidthForBounds:(CGRect)bounds thumbnailVisible:(BOOL)visible
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  visibleCopy = visible;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(NCFullScreenStagingBannerView *)self safeAreaInsets];
   v11 = v10;
   v13 = v12;
-  v14 = [(NCFullScreenStagingBannerView *)self traitCollection];
-  v15 = [v14 layoutDirection];
+  traitCollection = [(NCFullScreenStagingBannerView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v15 == 1)
+  if (layoutDirection == 1)
   {
     v16 = v11;
   }
@@ -726,7 +726,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
     v16 = v13;
   }
 
-  if (v15 == 1)
+  if (layoutDirection == 1)
   {
     v17 = v13;
   }
@@ -736,7 +736,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
     v17 = v11;
   }
 
-  if (v4)
+  if (visibleCopy)
   {
     v18 = v16 + 118.0;
   }
@@ -765,15 +765,15 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   v65 = v7;
   v66 = v9;
   v10 = v9;
-  v11 = [(NCFullScreenStagingBannerView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(NCFullScreenStagingBannerView *)self traitCollection];
+  [traitCollection displayScale];
 
-  v12 = [(UIImageView *)self->_thumbnailView image];
+  image = [(UIImageView *)self->_thumbnailView image];
 
-  v13 = [(NCFullScreenStagingBannerView *)self traitCollection];
-  v14 = [v13 layoutDirection];
+  traitCollection2 = [(NCFullScreenStagingBannerView *)self traitCollection];
+  layoutDirection = [traitCollection2 layoutDirection];
 
-  [(NCFullScreenStagingBannerView *)self _detailTextMaxWidthForBounds:v12 != 0 thumbnailVisible:v4, v6, v8, v10];
+  [(NCFullScreenStagingBannerView *)self _detailTextMaxWidthForBounds:image != 0 thumbnailVisible:v4, v6, v8, v10];
   v16 = v15;
   [(UILabel *)self->_dateLabel sizeThatFits:?];
   BSRectWithSize();
@@ -831,7 +831,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
     v41 = v39;
   }
 
-  if (v14 == 1)
+  if (layoutDirection == 1)
   {
     v42 = 10.0;
   }
@@ -860,7 +860,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   [(PLGrabberView *)self->_grabberView frame];
   BSRectWithSize();
   UIRectCenteredYInRect();
-  if (v14 == 1)
+  if (layoutDirection == 1)
   {
     v76.origin.y = v67;
     v76.origin.x = v68;
@@ -901,14 +901,14 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   UIRectRoundToScale();
   [(UILabel *)detailSecondaryLabel setFrame:?];
   [(UILabel *)self->_detailSecondaryLabel setAlpha:0.0];
-  if (v12)
+  if (image)
   {
     BSRectWithSize();
     v49 = v48;
     v51 = v50;
     v53 = v52;
     v55 = v54;
-    if (v14 != 1)
+    if (layoutDirection != 1)
     {
       v80.origin.x = v68;
       v80.origin.y = v67;
@@ -932,31 +932,31 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   }
 }
 
-- (void)_prepareForTransitionToStage:(int64_t)a3
+- (void)_prepareForTransitionToStage:(int64_t)stage
 {
   [(NCFullScreenStagingBannerView *)self _configureInitialViewsForStage:?];
-  [(NCFullScreenStagingBannerView *)self _updateWithStaticContentForStage:a3];
-  if (a3 == 2)
+  [(NCFullScreenStagingBannerView *)self _updateWithStaticContentForStage:stage];
+  if (stage == 2)
   {
 
     [(NCFullScreenStagingBannerView *)self _prepareForTransitionToDetailStage];
   }
 
-  else if (a3 == 1)
+  else if (stage == 1)
   {
 
     [(NCFullScreenStagingBannerView *)self _prepareForTransitionToBriefStage];
   }
 }
 
-- (void)_layoutForBriefStageWithSettings:(id)a3 completion:(id)a4
+- (void)_layoutForBriefStageWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v84 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   [(NCFullScreenStagingBannerView *)self bounds];
-  v8 = [(NCFullScreenStagingBannerView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(NCFullScreenStagingBannerView *)self traitCollection];
+  [traitCollection displayScale];
   v93 = v9;
 
   BSRectWithSize();
@@ -1009,7 +1009,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   aBlock[1] = 3221225472;
   aBlock[2] = __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_completion___block_invoke;
   aBlock[3] = &unk_27836F9A8;
-  v38 = v6;
+  v38 = settingsCopy;
   v146 = v38;
   v39 = v7;
   v147 = v39;
@@ -1085,7 +1085,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   }
 
   objc_initWeak(&v126, self->_floatAnimatablePropertyForBriefIcon);
-  v56 = [v43 briefIconOpacitySettings];
+  briefIconOpacitySettings = [v43 briefIconOpacitySettings];
   v122[0] = MEMORY[0x277D85DD0];
   v122[1] = 3221225472;
   v122[2] = __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_completion___block_invoke_12;
@@ -1101,7 +1101,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   v119 = v57;
   objc_copyWeak(&v120, &v135);
   objc_copyWeak(&v121, &v126);
-  NCPerformActionsAnimatingIfNecessary(v56, v122, v118);
+  NCPerformActionsAnimatingIfNecessary(briefIconOpacitySettings, v122, v118);
 
   *&v155.origin.x = v31;
   *&v155.origin.y = v33;
@@ -1167,7 +1167,7 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   }
 
   objc_initWeak(&v107, self->_floatAnimatablePropertyForBriefTextPosition);
-  v81 = [v70 briefTextOpacitySettings];
+  briefTextOpacitySettings = [v70 briefTextOpacitySettings];
   v102[0] = MEMORY[0x277D85DD0];
   v102[1] = 3221225472;
   v102[2] = __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_completion___block_invoke_18;
@@ -1184,14 +1184,14 @@ void __53__NCFullScreenStagingBannerView__detailSecondaryFont__block_invoke()
   v99 = v82;
   objc_copyWeak(&v100, &v135);
   objc_copyWeak(&v101, &v107);
-  NCPerformActionsAnimatingIfNecessary(v81, v102, v98);
+  NCPerformActionsAnimatingIfNecessary(briefTextOpacitySettings, v102, v98);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_completion___block_invoke_20;
   block[3] = &unk_27836F910;
-  v97 = v84;
-  v83 = v84;
+  v97 = completionCopy;
+  v83 = completionCopy;
   dispatch_group_notify(v82, MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v101);
@@ -1475,18 +1475,18 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   return result;
 }
 
-- (void)_layoutForDetailStageWithSettings:(id)a3 completion:(id)a4
+- (void)_layoutForDetailStageWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v85 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   [(NCFullScreenStagingBannerView *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(NCFullScreenStagingBannerView *)self traitCollection];
-  [v16 displayScale];
+  traitCollection = [(NCFullScreenStagingBannerView *)self traitCollection];
+  [traitCollection displayScale];
   v88 = v17;
 
   [(BSUIPartialStylingLabelView *)self->_briefPrimaryLabelView frame];
@@ -1515,7 +1515,7 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   v31 = CGRectGetHeight(v185);
   objc_initWeak(location, self->_briefPrimaryLabelView);
   objc_initWeak(&from, self->_briefSecondaryLabel);
-  v32 = [v6 detailOutgoingTextPositionSettings];
+  detailOutgoingTextPositionSettings = [settingsCopy detailOutgoingTextPositionSettings];
   v178[0] = MEMORY[0x277D85DD0];
   v178[1] = 3221225472;
   v178[2] = __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_completion___block_invoke;
@@ -1537,9 +1537,9 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   v176[3] = &unk_27836F980;
   v33 = v179;
   v177 = v33;
-  NCPerformActionsAnimatingIfNecessary(v32, v178, v176);
+  NCPerformActionsAnimatingIfNecessary(detailOutgoingTextPositionSettings, v178, v176);
 
-  v34 = [v6 detailOutgoingTextOpacitySettings];
+  detailOutgoingTextOpacitySettings = [settingsCopy detailOutgoingTextOpacitySettings];
   v172[0] = MEMORY[0x277D85DD0];
   v172[1] = 3221225472;
   v172[2] = __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_completion___block_invoke_3;
@@ -1553,7 +1553,7 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   v170[3] = &unk_27836F980;
   v35 = v173;
   v171 = v35;
-  NCPerformActionsAnimatingIfNecessary(v34, v172, v170);
+  NCPerformActionsAnimatingIfNecessary(detailOutgoingTextOpacitySettings, v172, v170);
 
   [(NCBadgedIconView *)self->_badgedIconView center];
   UIRectGetCenter();
@@ -1561,7 +1561,7 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   v37 = v36;
   v39 = v38;
   objc_initWeak(&v169, self->_badgedIconView);
-  v40 = [v6 detailIconPositionSettings];
+  detailIconPositionSettings = [settingsCopy detailIconPositionSettings];
   v166[0] = MEMORY[0x277D85DD0];
   v166[1] = 3221225472;
   v166[2] = __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_completion___block_invoke_5;
@@ -1576,13 +1576,13 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   v164[3] = &unk_27836F980;
   v41 = v167;
   v165 = v41;
-  NCPerformActionsAnimatingIfNecessary(v40, v166, v164);
+  NCPerformActionsAnimatingIfNecessary(detailIconPositionSettings, v166, v164);
 
-  v42 = [(NCFullScreenStagingBannerView *)self traitCollection];
-  v43 = [v42 layoutDirection];
+  traitCollection2 = [(NCFullScreenStagingBannerView *)self traitCollection];
+  layoutDirection = [traitCollection2 layoutDirection];
 
   [(NCFullScreenStagingBannerView *)self safeAreaInsets];
-  if (v43 == 1)
+  if (layoutDirection == 1)
   {
     v46 = v45;
     v186.origin.x = v87;
@@ -1619,7 +1619,7 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   v152[1] = 3221225472;
   v152[2] = __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_completion___block_invoke_8;
   v152[3] = &unk_27836FBD0;
-  v51 = v6;
+  v51 = settingsCopy;
   v153 = v51;
   v52 = v41;
   v154 = v52;
@@ -1750,7 +1750,7 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   }
 
   objc_initWeak(&v111, self->_floatAnimatablePropertyForDetailIconPosition);
-  v82 = [v61 detailIconScaleSettings];
+  detailIconScaleSettings = [v61 detailIconScaleSettings];
   v107[0] = MEMORY[0x277D85DD0];
   v107[1] = 3221225472;
   v107[2] = __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_completion___block_invoke_7_41;
@@ -1766,14 +1766,14 @@ uint64_t __77__NCFullScreenStagingBannerView__layoutForBriefStageWithSettings_co
   v104 = v83;
   objc_copyWeak(&v105, &v163);
   objc_copyWeak(&v106, &v111);
-  NCPerformActionsAnimatingIfNecessary(v82, v107, v103);
+  NCPerformActionsAnimatingIfNecessary(detailIconScaleSettings, v107, v103);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_completion___block_invoke_9_43;
   block[3] = &unk_27836F910;
-  v102 = v85;
-  v84 = v85;
+  v102 = completionCopy;
+  v84 = completionCopy;
   dispatch_group_notify(v83, MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v106);
@@ -2132,10 +2132,10 @@ uint64_t __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_c
   return result;
 }
 
-- (void)_layoutForDismissedStageFromBriefStageWithSettings:(id)a3 completion:(id)a4
+- (void)_layoutForDismissedStageFromBriefStageWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   [(NCFullScreenStagingBannerView *)self bounds];
   v10 = v9;
@@ -2144,7 +2144,7 @@ uint64_t __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_c
   v16 = v15;
   objc_initWeak(&location, self->_badgedIconView);
   objc_initWeak(&from, self->_grabberView);
-  v17 = [v6 dismissIconOpacitySettings];
+  dismissIconOpacitySettings = [settingsCopy dismissIconOpacitySettings];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefStageWithSettings_completion___block_invoke;
@@ -2158,11 +2158,11 @@ uint64_t __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_c
   v45[3] = &unk_27836F980;
   v18 = v48;
   v46 = v18;
-  NCPerformActionsAnimatingIfNecessary(v17, v47, v45);
+  NCPerformActionsAnimatingIfNecessary(dismissIconOpacitySettings, v47, v45);
 
   objc_initWeak(&v44, self->_briefPrimaryLabelView);
   objc_initWeak(&v43, self->_briefSecondaryLabel);
-  v19 = [v6 dismissTextOpacitySettings];
+  dismissTextOpacitySettings = [settingsCopy dismissTextOpacitySettings];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefStageWithSettings_completion___block_invoke_3;
@@ -2176,7 +2176,7 @@ uint64_t __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_c
   v37[3] = &unk_27836F980;
   v20 = v40;
   v38 = v20;
-  NCPerformActionsAnimatingIfNecessary(v19, v39, v37);
+  NCPerformActionsAnimatingIfNecessary(dismissTextOpacitySettings, v39, v37);
 
   v53.origin.x = v10;
   v53.origin.y = v12;
@@ -2189,7 +2189,7 @@ uint64_t __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_c
   aBlock[3] = &__block_descriptor_40_e16_v16__0__UIView_8l;
   *&aBlock[4] = Height * 0.0703986429;
   v22 = _Block_copy(aBlock);
-  v23 = [v6 dismissTextPositionSettings];
+  dismissTextPositionSettings = [settingsCopy dismissTextPositionSettings];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefStageWithSettings_completion___block_invoke_6;
@@ -2205,14 +2205,14 @@ uint64_t __78__NCFullScreenStagingBannerView__layoutForDetailStageWithSettings_c
   v29[3] = &unk_27836F980;
   v25 = v32;
   v30 = v25;
-  NCPerformActionsAnimatingIfNecessary(v23, v31, v29);
+  NCPerformActionsAnimatingIfNecessary(dismissTextPositionSettings, v31, v29);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefStageWithSettings_completion___block_invoke_8;
   block[3] = &unk_27836F910;
-  v28 = v7;
-  v26 = v7;
+  v28 = completionCopy;
+  v26 = completionCopy;
   dispatch_group_notify(v25, MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v35);
@@ -2281,10 +2281,10 @@ uint64_t __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefSt
   return result;
 }
 
-- (void)_layoutForDismissedStageFromDetailStageWithSettings:(id)a3 completion:(id)a4
+- (void)_layoutForDismissedStageFromDetailStageWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   v8 = dispatch_group_create();
   [(NCFullScreenStagingBannerView *)self bounds];
   v10 = v9;
@@ -2293,7 +2293,7 @@ uint64_t __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefSt
   v16 = v15;
   objc_initWeak(&location, self->_badgedIconView);
   objc_initWeak(&from, self->_grabberView);
-  v17 = [v6 dismissIconOpacitySettings];
+  dismissIconOpacitySettings = [settingsCopy dismissIconOpacitySettings];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __96__NCFullScreenStagingBannerView__layoutForDismissedStageFromDetailStageWithSettings_completion___block_invoke;
@@ -2307,13 +2307,13 @@ uint64_t __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefSt
   v51[3] = &unk_27836F980;
   v18 = v54;
   v52 = v18;
-  NCPerformActionsAnimatingIfNecessary(v17, v53, v51);
+  NCPerformActionsAnimatingIfNecessary(dismissIconOpacitySettings, v53, v51);
 
   objc_initWeak(&v50, self->_dateLabel);
   objc_initWeak(&v49, self->_detailPrimaryLabel);
   objc_initWeak(&v48, self->_detailSecondaryLabel);
   objc_initWeak(&v47, self->_thumbnailView);
-  v19 = [v6 dismissTextOpacitySettings];
+  dismissTextOpacitySettings = [settingsCopy dismissTextOpacitySettings];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __96__NCFullScreenStagingBannerView__layoutForDismissedStageFromDetailStageWithSettings_completion___block_invoke_3;
@@ -2329,7 +2329,7 @@ uint64_t __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefSt
   v39[3] = &unk_27836F980;
   v20 = v42;
   v40 = v20;
-  NCPerformActionsAnimatingIfNecessary(v19, v41, v39);
+  NCPerformActionsAnimatingIfNecessary(dismissTextOpacitySettings, v41, v39);
 
   v59.origin.x = v10;
   v59.origin.y = v12;
@@ -2342,7 +2342,7 @@ uint64_t __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefSt
   aBlock[3] = &__block_descriptor_40_e16_v16__0__UIView_8l;
   *&aBlock[4] = Height * 0.0703986429;
   v22 = _Block_copy(aBlock);
-  v23 = [v6 dismissTextPositionSettings];
+  dismissTextPositionSettings = [settingsCopy dismissTextPositionSettings];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __96__NCFullScreenStagingBannerView__layoutForDismissedStageFromDetailStageWithSettings_completion___block_invoke_6;
@@ -2360,14 +2360,14 @@ uint64_t __95__NCFullScreenStagingBannerView__layoutForDismissedStageFromBriefSt
   v29[3] = &unk_27836F980;
   v25 = v32;
   v30 = v25;
-  NCPerformActionsAnimatingIfNecessary(v23, v31, v29);
+  NCPerformActionsAnimatingIfNecessary(dismissTextPositionSettings, v31, v29);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__NCFullScreenStagingBannerView__layoutForDismissedStageFromDetailStageWithSettings_completion___block_invoke_8;
   block[3] = &unk_27836F910;
-  v28 = v7;
-  v26 = v7;
+  v28 = completionCopy;
+  v26 = completionCopy;
   dispatch_group_notify(v25, MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v37);
@@ -2559,9 +2559,9 @@ LABEL_5:
   width = v65.size.width;
   height = v65.size.height;
   p_briefSecondaryLabel = &self->_thumbnailView;
-  v49 = [(UIImageView *)self->_thumbnailView image];
+  image = [(UIImageView *)self->_thumbnailView image];
 
-  if (v49)
+  if (image)
   {
     goto LABEL_5;
   }
@@ -2591,12 +2591,12 @@ LABEL_7:
 
   else
   {
-    v7 = [(NCFullScreenStagingBannerView *)self traitCollection];
-    v8 = [v7 layoutDirection];
+    traitCollection = [(NCFullScreenStagingBannerView *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
     [(NCUNUIKitPrototypeSettings *)self->_settings contentHitRectTopMargin];
     settings = self->_settings;
-    if (v8 == 1)
+    if (layoutDirection == 1)
     {
       [(NCUNUIKitPrototypeSettings *)settings contentHitRectLeadingMargin];
       [(NCUNUIKitPrototypeSettings *)self->_settings contentHitRectBottomMargin];
@@ -2625,8 +2625,8 @@ LABEL_7:
     v32.size.width = v15;
     v32.size.height = v17;
     CGRectIntersection(v32, v34);
-    v22 = [(NCFullScreenStagingBannerView *)self traitCollection];
-    [v22 displayScale];
+    traitCollection2 = [(NCFullScreenStagingBannerView *)self traitCollection];
+    [traitCollection2 displayScale];
     UIRectRoundToScale();
     v3 = v23;
     v4 = v24;
@@ -2656,15 +2656,15 @@ LABEL_7:
   }
 }
 
-- (void)_layoutForStage:(int64_t)a3 fromStage:(int64_t)a4 settings:(id)a5 completion:(id)a6
+- (void)_layoutForStage:(int64_t)stage fromStage:(int64_t)fromStage settings:(id)settings completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  settingsCopy = settings;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__NCFullScreenStagingBannerView__layoutForStage_fromStage_settings_completion___block_invoke;
   aBlock[3] = &unk_27836F8E8;
-  v12 = v11;
+  v12 = completionCopy;
   v24 = v12;
   v13 = _Block_copy(aBlock);
   [(NCFullScreenStagingBannerView *)self _configureContentHitRectViewIfNecessary];
@@ -2692,28 +2692,28 @@ LABEL_7:
     v13 = v15;
   }
 
-  switch(a3)
+  switch(stage)
   {
     case 3:
-      v16 = [(NCFullScreenStagingBannerView *)self layer];
-      [v16 setAllowsHitTesting:0];
+      layer = [(NCFullScreenStagingBannerView *)self layer];
+      [layer setAllowsHitTesting:0];
 
-      if (a4 == 2)
+      if (fromStage == 2)
       {
-        [(NCFullScreenStagingBannerView *)self _layoutForDismissedStageFromDetailStageWithSettings:v10 completion:v13];
+        [(NCFullScreenStagingBannerView *)self _layoutForDismissedStageFromDetailStageWithSettings:settingsCopy completion:v13];
       }
 
-      else if (a4 == 1)
+      else if (fromStage == 1)
       {
-        [(NCFullScreenStagingBannerView *)self _layoutForDismissedStageFromBriefStageWithSettings:v10 completion:v13];
+        [(NCFullScreenStagingBannerView *)self _layoutForDismissedStageFromBriefStageWithSettings:settingsCopy completion:v13];
       }
 
       break;
     case 2:
-      [(NCFullScreenStagingBannerView *)self _layoutForDetailStageWithSettings:v10 completion:v13];
+      [(NCFullScreenStagingBannerView *)self _layoutForDetailStageWithSettings:settingsCopy completion:v13];
       break;
     case 1:
-      [(NCFullScreenStagingBannerView *)self _layoutForBriefStageWithSettings:v10 completion:v13];
+      [(NCFullScreenStagingBannerView *)self _layoutForBriefStageWithSettings:settingsCopy completion:v13];
       break;
   }
 }
@@ -2770,19 +2770,19 @@ void __79__NCFullScreenStagingBannerView__layoutForStage_fromStage_settings_comp
   }
 }
 
-- (void)_transitionToStage:(int64_t)a3 fromStage:(int64_t)a4 settings:(id)a5 completion:(id)a6
+- (void)_transitionToStage:(int64_t)stage fromStage:(int64_t)fromStage settings:(id)settings completion:(id)completion
 {
   v10 = MEMORY[0x277D75D18];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __82__NCFullScreenStagingBannerView__transitionToStage_fromStage_settings_completion___block_invoke;
   v16 = &unk_27836FDD0;
-  v17 = self;
-  v18 = a3;
-  v11 = a6;
-  v12 = a5;
+  selfCopy = self;
+  stageCopy = stage;
+  completionCopy = completion;
+  settingsCopy = settings;
   [v10 performWithoutAnimation:&v13];
-  [(NCFullScreenStagingBannerView *)self _layoutForStage:a3 fromStage:a4 settings:v12 completion:v11, v13, v14, v15, v16, v17, v18];
+  [(NCFullScreenStagingBannerView *)self _layoutForStage:stage fromStage:fromStage settings:settingsCopy completion:completionCopy, v13, v14, v15, v16, selfCopy, stageCopy];
 }
 
 - (void)_configureTapGestureIfNecessary
@@ -2800,15 +2800,15 @@ void __79__NCFullScreenStagingBannerView__layoutForStage_fromStage_settings_comp
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   [(NCFullScreenStagingBannerView *)self _contentHitRectForActiveStage];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 locationInView:self];
+  [tapCopy locationInView:self];
   v14 = v13;
   v16 = v15;
 

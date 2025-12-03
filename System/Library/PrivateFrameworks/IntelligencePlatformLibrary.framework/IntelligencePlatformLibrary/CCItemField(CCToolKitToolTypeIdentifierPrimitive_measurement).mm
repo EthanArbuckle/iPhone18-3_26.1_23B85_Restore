@@ -6,7 +6,7 @@
 
 - (uint64_t)toolKitToolTypeIdentifierPrimitiveMeasurement
 {
-  LODWORD(result) = [a1 uint32Value];
+  LODWORD(result) = [self uint32Value];
   if (result >= 0x17)
   {
     return 0;

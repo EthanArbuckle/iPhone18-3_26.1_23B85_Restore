@@ -1,39 +1,39 @@
 @interface deoc_model_iphoneOutput
-- (deoc_model_iphoneOutput)initWithNext_drain_is_significant:(int64_t)a3 classProbability:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (deoc_model_iphoneOutput)initWithNext_drain_is_significant:(int64_t)next_drain_is_significant classProbability:(id)probability;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation deoc_model_iphoneOutput
 
-- (deoc_model_iphoneOutput)initWithNext_drain_is_significant:(int64_t)a3 classProbability:(id)a4
+- (deoc_model_iphoneOutput)initWithNext_drain_is_significant:(int64_t)next_drain_is_significant classProbability:(id)probability
 {
-  v7 = a4;
+  probabilityCopy = probability;
   v11.receiver = self;
   v11.super_class = deoc_model_iphoneOutput;
   v8 = [(deoc_model_iphoneOutput *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_next_drain_is_significant = a3;
-    objc_storeStrong(&v8->_classProbability, a4);
+    v8->_next_drain_is_significant = next_drain_is_significant;
+    objc_storeStrong(&v8->_classProbability, probability);
   }
 
   return v9;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"next_drain_is_significant"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"next_drain_is_significant"])
   {
     v5 = [MEMORY[0x277CBFEF8] featureValueWithInt64:{-[deoc_model_iphoneOutput next_drain_is_significant](self, "next_drain_is_significant")}];
   }
 
-  else if ([v4 isEqualToString:@"classProbability"])
+  else if ([nameCopy isEqualToString:@"classProbability"])
   {
     v6 = MEMORY[0x277CBFEF8];
-    v7 = [(deoc_model_iphoneOutput *)self classProbability];
-    v5 = [v6 featureValueWithDictionary:v7 error:0];
+    classProbability = [(deoc_model_iphoneOutput *)self classProbability];
+    v5 = [v6 featureValueWithDictionary:classProbability error:0];
   }
 
   else

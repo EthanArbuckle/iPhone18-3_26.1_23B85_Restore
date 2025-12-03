@@ -1,21 +1,21 @@
 @interface HFAccessoryProfileFilter
-+ (BOOL)_shouldIncludeObject:(id)a3 passingNullableFilterSet:(id)a4;
-+ (id)filterProfiles:(id)a3 options:(id)a4;
++ (BOOL)_shouldIncludeObject:(id)object passingNullableFilterSet:(id)set;
++ (id)filterProfiles:(id)profiles options:(id)options;
 @end
 
 @implementation HFAccessoryProfileFilter
 
-+ (id)filterProfiles:(id)a3 options:(id)a4
++ (id)filterProfiles:(id)profiles options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__HFAccessoryProfileFilter_filterProfiles_options___block_invoke;
   v10[3] = &unk_277DFDC00;
-  v11 = v6;
-  v12 = a1;
-  v7 = v6;
-  v8 = [a3 na_filter:v10];
+  v11 = optionsCopy;
+  selfCopy = self;
+  v7 = optionsCopy;
+  v8 = [profiles na_filter:v10];
 
   return v8;
 }
@@ -145,14 +145,14 @@ uint64_t __51__HFAccessoryProfileFilter_filterProfiles_options___block_invoke(ui
   return v29;
 }
 
-+ (BOOL)_shouldIncludeObject:(id)a3 passingNullableFilterSet:(id)a4
++ (BOOL)_shouldIncludeObject:(id)object passingNullableFilterSet:(id)set
 {
-  if (a3)
+  if (object)
   {
-    a3 = [a4 containsObject:?];
+    object = [set containsObject:?];
   }
 
-  return [a1 _shouldIncludeObjectPassingFilter:a3 shouldApplyFilter:a4 != 0];
+  return [self _shouldIncludeObjectPassingFilter:object shouldApplyFilter:set != 0];
 }
 
 @end

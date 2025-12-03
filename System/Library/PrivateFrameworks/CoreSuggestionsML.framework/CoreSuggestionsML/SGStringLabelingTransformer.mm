@@ -1,42 +1,42 @@
 @interface SGStringLabelingTransformer
-+ (id)convertLabelsToMapping:(id)a3;
-+ (id)withLabelStrings:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStringLabelingTransformer:(id)a3;
-- (SGStringLabelingTransformer)initWithLabelMapping:(id)a3;
-- (SGStringLabelingTransformer)initWithLabelStrings:(id)a3;
-- (SGStringLabelingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
++ (id)convertLabelsToMapping:(id)mapping;
++ (id)withLabelStrings:(id)strings;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStringLabelingTransformer:(id)transformer;
+- (SGStringLabelingTransformer)initWithLabelMapping:(id)mapping;
+- (SGStringLabelingTransformer)initWithLabelStrings:(id)strings;
+- (SGStringLabelingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
 @end
 
 @implementation SGStringLabelingTransformer
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStringLabelingTransformer *)self isEqualToStringLabelingTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGStringLabelingTransformer *)self isEqualToStringLabelingTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToStringLabelingTransformer:(id)a3
+- (BOOL)isEqualToStringLabelingTransformer:(id)transformer
 {
-  v4 = a3;
-  if (v4)
+  transformerCopy = transformer;
+  if (transformerCopy)
   {
     v5 = self->_labelMapping;
     v6 = v5;
-    if (v5 == v4[1])
+    if (v5 == transformerCopy[1])
     {
       v7 = 1;
     }
@@ -55,15 +55,15 @@
   return v7;
 }
 
-- (SGStringLabelingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGStringLabelingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = [a3 objectForKeyedSubscript:{@"LABEL_MAPPING", a4, a5}];
+  v6 = [plist objectForKeyedSubscript:{@"LABEL_MAPPING", chunks, context}];
   v7 = [(SGStringLabelingTransformer *)self initWithLabelMapping:v6];
 
   return v7;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v8[1] = *MEMORY[0x277D85DE8];
   labelMapping = self->_labelMapping;
@@ -75,16 +75,16 @@
   return v4;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     __assert_rtn("[SGStringLabelingTransformer transform:]", "SGStringLabelingTransformer.m", 58, "[input isKindOfClass:[NSString class]]");
   }
 
-  v5 = [(NSDictionary *)self->_labelMapping objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_labelMapping objectForKeyedSubscript:transformCopy];
   v6 = v5;
   if (v5)
   {
@@ -101,13 +101,13 @@
   return v7;
 }
 
-- (SGStringLabelingTransformer)initWithLabelMapping:(id)a3
+- (SGStringLabelingTransformer)initWithLabelMapping:(id)mapping
 {
-  v6 = a3;
-  if (!v6)
+  mappingCopy = mapping;
+  if (!mappingCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGStringLabelingTransformer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"mapping"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStringLabelingTransformer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"mapping"}];
   }
 
   v11.receiver = self;
@@ -116,46 +116,46 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_labelMapping, a3);
+    objc_storeStrong(&v7->_labelMapping, mapping);
   }
 
   return v8;
 }
 
-- (SGStringLabelingTransformer)initWithLabelStrings:(id)a3
+- (SGStringLabelingTransformer)initWithLabelStrings:(id)strings
 {
-  v5 = a3;
-  if (!v5)
+  stringsCopy = strings;
+  if (!stringsCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"SGStringLabelingTransformer.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStringLabelingTransformer.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
   }
 
-  v6 = [SGStringLabelingTransformer convertLabelsToMapping:v5];
+  v6 = [SGStringLabelingTransformer convertLabelsToMapping:stringsCopy];
   v7 = [(SGStringLabelingTransformer *)self initWithLabelMapping:v6];
 
   return v7;
 }
 
-+ (id)convertLabelsToMapping:(id)a3
++ (id)convertLabelsToMapping:(id)mapping
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  mappingCopy = mapping;
+  if (!mappingCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"SGStringLabelingTransformer.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGStringLabelingTransformer.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"labels"}];
   }
 
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([mappingCopy count])
   {
     v5 = 0;
-    v22 = v3;
+    v22 = mappingCopy;
     do
     {
       context = objc_autoreleasePoolPush();
-      v6 = [v3 objectAtIndex:v5];
+      v6 = [mappingCopy objectAtIndex:v5];
       v24 = v5 + 1;
       v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5 + 1];
       v27 = 0u;
@@ -187,8 +187,8 @@
 
               if ((v17 & 1) == 0)
               {
-                v18 = [MEMORY[0x277CCA890] currentHandler];
-                [v18 handleFailureInMethod:a2 object:a1 file:@"SGStringLabelingTransformer.m" lineNumber:34 description:{@"duplicate label %@", v13}];
+                currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGStringLabelingTransformer.m" lineNumber:34 description:{@"duplicate label %@", v13}];
               }
             }
 
@@ -202,7 +202,7 @@
       }
 
       objc_autoreleasePoolPop(context);
-      v3 = v22;
+      mappingCopy = v22;
       v5 = v24;
     }
 
@@ -214,10 +214,10 @@
   return v4;
 }
 
-+ (id)withLabelStrings:(id)a3
++ (id)withLabelStrings:(id)strings
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithLabelStrings:v4];
+  stringsCopy = strings;
+  v5 = [[self alloc] initWithLabelStrings:stringsCopy];
 
   return v5;
 }

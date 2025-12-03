@@ -1,11 +1,11 @@
 @interface BCSICloudServerEnvironment
-- (BCSICloudServerEnvironment)initWithUserDefaults:(id)a3 isInternalInstall:(BOOL)a4 type:(int64_t)a5;
+- (BCSICloudServerEnvironment)initWithUserDefaults:(id)defaults isInternalInstall:(BOOL)install type:(int64_t)type;
 - (BOOL)isStagingMode;
 - (NSDictionary)additionalRequestHTTPHeaders;
 - (NSString)containerID;
 - (__CFString)_productionContainerID;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)pirEnvironmentForServerType:(int64_t)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)pirEnvironmentForServerType:(int64_t)type;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)containerEnvironment;
@@ -13,18 +13,18 @@
 
 @implementation BCSICloudServerEnvironment
 
-- (BCSICloudServerEnvironment)initWithUserDefaults:(id)a3 isInternalInstall:(BOOL)a4 type:(int64_t)a5
+- (BCSICloudServerEnvironment)initWithUserDefaults:(id)defaults isInternalInstall:(BOOL)install type:(int64_t)type
 {
-  v9 = a3;
+  defaultsCopy = defaults;
   v13.receiver = self;
   v13.super_class = BCSICloudServerEnvironment;
   v10 = [(BCSICloudServerEnvironment *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_userDefaults, a3);
-    v11->_type = a5;
-    v11->_isInternalInstall = a4;
+    objc_storeStrong(&v10->_userDefaults, defaults);
+    v11->_type = type;
+    v11->_isInternalInstall = install;
   }
 
   return v11;
@@ -32,15 +32,15 @@
 
 - (NSString)containerID
 {
-  v3 = [(BCSICloudServerEnvironment *)self _productionContainerID];
+  _productionContainerID = [(BCSICloudServerEnvironment *)self _productionContainerID];
   if ([(BCSICloudServerEnvironment *)self isInternalInstall])
   {
     v4 = [(BCSICloudServerEnvironment *)self type]- 1;
     if (v4 <= 4 && (v5 = off_278D39298[v4], -[BCSICloudServerEnvironment userDefaults](self, "userDefaults"), v6 = objc_claimAutoreleasedReturnValue(), [v6 stringForKey:*v5], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
     {
-      v8 = v7;
+      _productionContainerID2 = v7;
 
-      v3 = v8;
+      _productionContainerID = _productionContainerID2;
     }
 
     else
@@ -52,34 +52,34 @@
         _os_log_error_impl(&dword_242072000, v9, OS_LOG_TYPE_ERROR, "No custom cloudKit containerID set in user defaults, using production", v11, 2u);
       }
 
-      v8 = [(BCSICloudServerEnvironment *)self _productionContainerID];
+      _productionContainerID2 = [(BCSICloudServerEnvironment *)self _productionContainerID];
     }
 
-    v3 = v8;
+    _productionContainerID = _productionContainerID2;
   }
 
-  return v3;
+  return _productionContainerID;
 }
 
 - (__CFString)_productionContainerID
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(__CFString *)a1 type];
-    if ((v2 - 1) > 4)
+    type = [(__CFString *)self type];
+    if ((type - 1) > 4)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1 = *off_278D392C0[v2 - 1];
+      self = *off_278D392C0[type - 1];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (int64_t)containerEnvironment
@@ -103,13 +103,13 @@
     goto LABEL_17;
   }
 
-  v3 = [(BCSICloudServerEnvironment *)self type];
-  if (v3 <= 2)
+  type = [(BCSICloudServerEnvironment *)self type];
+  if (type <= 2)
   {
-    if (v3 == 1)
+    if (type == 1)
     {
-      v10 = [(BCSICloudServerEnvironment *)self userDefaults];
-      v11 = [v10 BOOLForKey:@"BCSSkipEdgeCaching"];
+      userDefaults = [(BCSICloudServerEnvironment *)self userDefaults];
+      v11 = [userDefaults BOOLForKey:@"BCSSkipEdgeCaching"];
 
       if (v11)
       {
@@ -119,33 +119,33 @@
       goto LABEL_17;
     }
 
-    if (v3 != 2)
+    if (type != 2)
     {
       goto LABEL_17;
     }
 
-    v4 = [(BCSICloudServerEnvironment *)self userDefaults];
-    v5 = v4;
+    userDefaults2 = [(BCSICloudServerEnvironment *)self userDefaults];
+    v5 = userDefaults2;
     v6 = kBCSDefaultsLinkSkipEdgeCaching;
   }
 
   else
   {
-    switch(v3)
+    switch(type)
     {
       case 3:
-        v4 = [(BCSICloudServerEnvironment *)self userDefaults];
-        v5 = v4;
+        userDefaults2 = [(BCSICloudServerEnvironment *)self userDefaults];
+        v5 = userDefaults2;
         v6 = kBCSDefaultsBusinessCallerSkipEdgeCaching;
         break;
       case 4:
-        v4 = [(BCSICloudServerEnvironment *)self userDefaults];
-        v5 = v4;
+        userDefaults2 = [(BCSICloudServerEnvironment *)self userDefaults];
+        v5 = userDefaults2;
         v6 = kBCSDefaultsBusinessEmailSkipEdgeCaching;
         break;
       case 5:
-        v4 = [(BCSICloudServerEnvironment *)self userDefaults];
-        v5 = v4;
+        userDefaults2 = [(BCSICloudServerEnvironment *)self userDefaults];
+        v5 = userDefaults2;
         v6 = kBCSDefaultsWebPresentmentSkipEdgeCaching;
         break;
       default:
@@ -153,7 +153,7 @@
     }
   }
 
-  v7 = [v4 BOOLForKey:*v6];
+  v7 = [userDefaults2 BOOLForKey:*v6];
 
   if (v7)
   {
@@ -186,7 +186,7 @@ LABEL_20:
   return v9;
 }
 
-- (id)pirEnvironmentForServerType:(int64_t)a3
+- (id)pirEnvironmentForServerType:(int64_t)type
 {
   if (([(BCSICloudServerEnvironment *)self type]- 3) > 2)
   {
@@ -196,8 +196,8 @@ LABEL_20:
   else
   {
     v5 = [BCSPIRServerEnvironment alloc];
-    v6 = [(BCSICloudServerEnvironment *)self userDefaults];
-    v7 = [(BCSPIRServerEnvironment *)v5 initWithUserDefaults:v6 isInternalInstall:[(BCSICloudServerEnvironment *)self isInternalInstall] type:[(BCSICloudServerEnvironment *)self type] serverType:a3];
+    userDefaults = [(BCSICloudServerEnvironment *)self userDefaults];
+    v7 = [(BCSPIRServerEnvironment *)v5 initWithUserDefaults:userDefaults isInternalInstall:[(BCSICloudServerEnvironment *)self isInternalInstall] type:[(BCSICloudServerEnvironment *)self type] serverType:type];
   }
 
   return v7;
@@ -212,25 +212,25 @@ LABEL_20:
   }
 
   v4 = off_278D392E8[v3];
-  v5 = [(BCSICloudServerEnvironment *)self userDefaults];
-  LOBYTE(v4) = [v5 BOOLForKey:*v4];
+  userDefaults = [(BCSICloudServerEnvironment *)self userDefaults];
+  LOBYTE(v4) = [userDefaults BOOLForKey:*v4];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BCSICloudServerEnvironment *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BCSICloudServerEnvironment *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BCSICloudServerEnvironment *)self containerID];
-  v5 = [v3 appendObject:v4 withName:@"containerID"];
+  containerID = [(BCSICloudServerEnvironment *)self containerID];
+  v5 = [v3 appendObject:containerID withName:@"containerID"];
 
   [(BCSICloudServerEnvironment *)self containerEnvironment];
   v6 = CKContainerEnvironmentString();
@@ -239,12 +239,12 @@ LABEL_20:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BCSICloudServerEnvironment *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BCSICloudServerEnvironment *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

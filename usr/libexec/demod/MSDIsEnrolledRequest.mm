@@ -1,29 +1,29 @@
 @interface MSDIsEnrolledRequest
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDIsEnrolledRequest
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  payloadCopy = payload;
   v19.receiver = self;
   v19.super_class = MSDIsEnrolledRequest;
-  v8 = [(MSDServerRequest *)&v19 parseResponseForError:v6 andPayload:v7];
-  v9 = [v8 error];
+  v8 = [(MSDServerRequest *)&v19 parseResponseForError:errorCopy andPayload:payloadCopy];
+  error = [v8 error];
 
-  if (v9)
+  if (error)
   {
     v12 = 0;
     v10 = 0;
-    v11 = v6;
+    v11 = errorCopy;
   }
 
   else
   {
-    v18 = v6;
-    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:v7 error:&v18];
+    v18 = errorCopy;
+    v10 = [(MSDCommandServerRequest *)self getDataDictFromPayload:payloadCopy error:&v18];
     v11 = v18;
 
     if (v10)
@@ -57,9 +57,9 @@
     }
   }
 
-  v15 = [v8 error];
+  error2 = [v8 error];
 
-  if (!v15)
+  if (!error2)
   {
     v17 = v11;
     sub_1000C1390(&v17, 3727744512, @"Unexpected server response.");

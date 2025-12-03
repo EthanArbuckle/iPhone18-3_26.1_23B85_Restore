@@ -1,32 +1,32 @@
 @interface NPKProtoReserveStorageForAppletTypesRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addAppletTypes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppletTypes:(id)types;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoReserveStorageForAppletTypesRequest
 
-- (void)addAppletTypes:(id)a3
+- (void)addAppletTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   appletTypes = self->_appletTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!appletTypes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_appletTypes;
     self->_appletTypes = v6;
 
-    v4 = v8;
+    typesCopy = v8;
     appletTypes = self->_appletTypes;
   }
 
-  [(NSMutableArray *)appletTypes addObject:v4];
+  [(NSMutableArray *)appletTypes addObject:typesCopy];
 }
 
 - (id)description
@@ -35,20 +35,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoReserveStorageForAppletTypesRequest;
   v4 = [(NPKProtoReserveStorageForAppletTypesRequest *)&v8 description];
-  v5 = [(NPKProtoReserveStorageForAppletTypesRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoReserveStorageForAppletTypesRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   appletTypes = self->_appletTypes;
   if (appletTypes)
   {
-    [v3 setObject:appletTypes forKey:@"appletTypes"];
+    [dictionary setObject:appletTypes forKey:@"appletTypes"];
   }
 
   metadata = self->_metadata;
@@ -60,10 +60,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -104,34 +104,34 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(NPKProtoReserveStorageForAppletTypesRequest *)self appletTypesCount])
   {
-    [v8 clearAppletTypes];
-    v4 = [(NPKProtoReserveStorageForAppletTypesRequest *)self appletTypesCount];
-    if (v4)
+    [toCopy clearAppletTypes];
+    appletTypesCount = [(NPKProtoReserveStorageForAppletTypesRequest *)self appletTypesCount];
+    if (appletTypesCount)
     {
-      v5 = v4;
+      v5 = appletTypesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoReserveStorageForAppletTypesRequest *)self appletTypesAtIndex:i];
-        [v8 addAppletTypes:v7];
+        [toCopy addAppletTypes:v7];
       }
     }
   }
 
   if (self->_metadata)
   {
-    [v8 setMetadata:?];
+    [toCopy setMetadata:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -152,7 +152,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{a3, v16}];
+        v11 = [*(*(&v16 + 1) + 8 * v10) copyWithZone:{zone, v16}];
         [v5 addAppletTypes:v11];
 
         ++v10;
@@ -165,7 +165,7 @@
     while (v8);
   }
 
-  v12 = [(NSData *)self->_metadata copyWithZone:a3];
+  v12 = [(NSData *)self->_metadata copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
@@ -173,13 +173,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((appletTypes = self->_appletTypes, !(appletTypes | v4[1])) || -[NSMutableArray isEqual:](appletTypes, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((appletTypes = self->_appletTypes, !(appletTypes | equalCopy[1])) || -[NSMutableArray isEqual:](appletTypes, "isEqual:")))
   {
     metadata = self->_metadata;
-    if (metadata | v4[2])
+    if (metadata | equalCopy[2])
     {
       v7 = [(NSData *)metadata isEqual:?];
     }
@@ -198,15 +198,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -230,7 +230,7 @@
     while (v7);
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoReserveStorageForAppletTypesRequest *)self setMetadata:?];
   }

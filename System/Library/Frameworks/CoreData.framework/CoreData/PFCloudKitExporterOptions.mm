@@ -1,20 +1,20 @@
 @interface PFCloudKitExporterOptions
-- (PFCloudKitExporterOptions)initWithDatabase:(id)a3 options:(id)a4;
+- (PFCloudKitExporterOptions)initWithDatabase:(id)database options:(id)options;
 - (id)copy;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitExporterOptions
 
-- (PFCloudKitExporterOptions)initWithDatabase:(id)a3 options:(id)a4
+- (PFCloudKitExporterOptions)initWithDatabase:(id)database options:(id)options
 {
   v8.receiver = self;
   v8.super_class = PFCloudKitExporterOptions;
   v6 = [(PFCloudKitExporterOptions *)&v8 init];
   if (v6)
   {
-    *(v6 + 1) = a3;
-    *(v6 + 2) = a4;
+    *(v6 + 1) = database;
+    *(v6 + 2) = options;
     *(v6 + 24) = xmmword_18592ED90;
   }
 

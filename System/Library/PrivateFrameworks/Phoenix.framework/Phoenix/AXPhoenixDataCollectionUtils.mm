@@ -1,34 +1,34 @@
 @interface AXPhoenixDataCollectionUtils
-+ (id)createFilename:(id)a3 usingTimestamp:(id)a4 withFileExtension:(id)a5 underDirectory:(id)a6;
-+ (void)deleteItem:(id)a3;
-+ (void)moveFiles:(id)a3 from:(id)a4 to:(id)a5;
++ (id)createFilename:(id)filename usingTimestamp:(id)timestamp withFileExtension:(id)extension underDirectory:(id)directory;
++ (void)deleteItem:(id)item;
++ (void)moveFiles:(id)files from:(id)from to:(id)to;
 @end
 
 @implementation AXPhoenixDataCollectionUtils
 
-+ (id)createFilename:(id)a3 usingTimestamp:(id)a4 withFileExtension:(id)a5 underDirectory:(id)a6
++ (id)createFilename:(id)filename usingTimestamp:(id)timestamp withFileExtension:(id)extension underDirectory:(id)directory
 {
   v33 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, filename);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, timestamp);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
+  objc_storeStrong(&v29, extension);
   v28 = 0;
-  objc_storeStrong(&v28, a6);
+  objc_storeStrong(&v28, directory);
   v27 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v27 setDateFormat:@"YYYY-MM-dd-HH-mm-ss-SSS"];
   v26 = [v27 stringFromDate:v30];
-  v18 = [MEMORY[0x277D75418] currentDevice];
-  v17 = [v18 identifierForVendor];
-  v16 = [v17 UUIDString];
-  v25 = [v16 substringToIndex:5];
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  identifierForVendor = [currentDevice identifierForVendor];
+  uUIDString = [identifierForVendor UUIDString];
+  v25 = [uUIDString substringToIndex:5];
+  MEMORY[0x277D82BD8](uUIDString);
+  MEMORY[0x277D82BD8](identifierForVendor);
+  MEMORY[0x277D82BD8](currentDevice);
   v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@_%@.%@", v25, v26, location[0], v29];
   if ([v26 isEqualToString:&stru_287032B48])
   {
@@ -38,17 +38,17 @@
     MEMORY[0x277D82BD8](v7);
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v11 fileExistsAtPath:v28 isDirectory:0];
-  MEMORY[0x277D82BD8](v11);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:v28 isDirectory:0];
+  MEMORY[0x277D82BD8](defaultManager);
   if ((v12 & 1) == 0)
   {
     v23 = 0;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v22 = v23;
-    [v10 createDirectoryAtPath:v28 withIntermediateDirectories:1 attributes:0 error:&v22];
+    [defaultManager2 createDirectoryAtPath:v28 withIntermediateDirectories:1 attributes:0 error:&v22];
     objc_storeStrong(&v23, v22);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](defaultManager2);
     if (v23)
     {
       v21 = AXLogBackTap();
@@ -81,19 +81,19 @@
   return v9;
 }
 
-+ (void)deleteItem:(id)a3
++ (void)deleteItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v17 = 0;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = v17;
-  [v9 removeItemAtPath:location[0] error:&v16];
+  [defaultManager removeItemAtPath:location[0] error:&v16];
   objc_storeStrong(&v17, v16);
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](defaultManager);
   if (v17)
   {
     v15 = AXLogBackTap();
@@ -102,11 +102,11 @@
     {
       log = v15;
       type = v14;
-      v8 = [location[0] lastPathComponent];
-      v13 = MEMORY[0x277D82BE0](v8);
+      lastPathComponent = [location[0] lastPathComponent];
+      v13 = MEMORY[0x277D82BE0](lastPathComponent);
       __os_log_helper_16_2_3_8_32_8_64_8_64(v20, "+[AXPhoenixDataCollectionUtils deleteItem:]", v13, v17);
       _os_log_impl(&dword_25E4AC000, log, type, "[PHOENIX] %s Error deleting %@: %@", v20, 0x20u);
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](lastPathComponent);
       objc_storeStrong(&v13, 0);
     }
 
@@ -121,11 +121,11 @@
     {
       v3 = oslog;
       v4 = v11;
-      v5 = [location[0] lastPathComponent];
-      v10 = MEMORY[0x277D82BE0](v5);
+      lastPathComponent2 = [location[0] lastPathComponent];
+      v10 = MEMORY[0x277D82BE0](lastPathComponent2);
       __os_log_helper_16_2_2_8_32_8_64(v19, "+[AXPhoenixDataCollectionUtils deleteItem:]", v10);
       _os_log_impl(&dword_25E4AC000, v3, v4, "[PHOENIX] %s Deleted: %@", v19, 0x16u);
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](lastPathComponent2);
       objc_storeStrong(&v10, 0);
     }
 
@@ -137,21 +137,21 @@
   *MEMORY[0x277D85DE8];
 }
 
-+ (void)moveFiles:(id)a3 from:(id)a4 to:(id)a5
++ (void)moveFiles:(id)files from:(id)from to:(id)to
 {
   v37 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, files);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, from);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
-  v28 = [MEMORY[0x277CCAA00] defaultManager];
-  if (([v28 fileExistsAtPath:v29] & 1) == 0)
+  objc_storeStrong(&v29, to);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if (([defaultManager fileExistsAtPath:v29] & 1) == 0)
   {
-    [v28 createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:0 error:?];
+    [defaultManager createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:0 error:?];
   }
 
   oslog = AXLogBackTap();
@@ -181,7 +181,7 @@
 
       v25 = *(__b[1] + 8 * v15);
       v23 = 0;
-      v8 = v28;
+      v8 = defaultManager;
       v6 = MEMORY[0x277CCACA8];
       v34[0] = v30;
       v34[1] = v25;
@@ -227,7 +227,7 @@
   }
 
   MEMORY[0x277D82BD8](v17);
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(location, 0);

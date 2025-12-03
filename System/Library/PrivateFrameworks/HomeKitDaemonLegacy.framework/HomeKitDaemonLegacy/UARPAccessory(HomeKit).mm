@@ -6,13 +6,13 @@
 
 - (id)availableSoftwareVersion
 {
-  v2 = [a1 availableFirmwareVersion];
+  availableFirmwareVersion = [self availableFirmwareVersion];
 
-  if (v2)
+  if (availableFirmwareVersion)
   {
     v3 = objc_alloc(MEMORY[0x277D0F8F8]);
-    v4 = [a1 availableFirmwareVersion];
-    v5 = [v3 initWithString:v4];
+    availableFirmwareVersion2 = [self availableFirmwareVersion];
+    v5 = [v3 initWithString:availableFirmwareVersion2];
   }
 
   else

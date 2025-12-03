@@ -1,7 +1,7 @@
 @interface AVTSpringDynamic
-+ (void)enumerateDynamicsInHierarchy:(void *)a3 forAvatar:(void *)a4 usingBlock:;
++ (void)enumerateDynamicsInHierarchy:(void *)hierarchy forAvatar:(void *)avatar usingBlock:;
 - (NSString)description;
-- (void)evaluateAtTime:(double)a3 physicsController:(id)a4;
+- (void)evaluateAtTime:(double)time physicsController:(id)controller;
 - (void)resetTarget;
 @end
 
@@ -11,30 +11,30 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(VFXNode *)self->_dynamicNode name];
-  v6 = [v3 stringWithFormat:@"<%@ %p | Spring %@>", v4, self, v5];
+  name = [(VFXNode *)self->_dynamicNode name];
+  v6 = [v3 stringWithFormat:@"<%@ %p | Spring %@>", v4, self, name];
 
   return v6;
 }
 
-+ (void)enumerateDynamicsInHierarchy:(void *)a3 forAvatar:(void *)a4 usingBlock:
++ (void)enumerateDynamicsInHierarchy:(void *)hierarchy forAvatar:(void *)avatar usingBlock:
 {
-  v5 = a4;
-  v6 = a3;
+  avatarCopy = avatar;
+  hierarchyCopy = hierarchy;
   objc_opt_self();
-  v7 = [v6 avatarNode];
-  v8 = [v6 specializationSettings];
+  avatarNode = [hierarchyCopy avatarNode];
+  specializationSettings = [hierarchyCopy specializationSettings];
 
-  v9 = [v8 objectForKeyedSubscript:@"dynamics"];
+  v9 = [specializationSettings objectForKeyedSubscript:@"dynamics"];
   v10 = [v9 objectForKeyedSubscript:@"dynamic nodes"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__AVTSpringDynamic_enumerateDynamicsInHierarchy_forAvatar_usingBlock___block_invoke;
   v13[3] = &unk_1E7F47E08;
-  v14 = v7;
-  v15 = v5;
-  v11 = v5;
-  v12 = v7;
+  v14 = avatarNode;
+  v15 = avatarCopy;
+  v11 = avatarCopy;
+  v12 = avatarNode;
   [v10 enumerateKeysAndObjectsUsingBlock:v13];
 }
 
@@ -150,13 +150,13 @@ void __70__AVTSpringDynamic_enumerateDynamicsInHierarchy_forAvatar_usingBlock___
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evaluateAtTime:(double)a3 physicsController:(id)a4
+- (void)evaluateAtTime:(double)time physicsController:(id)controller
 {
   [(VFXNode *)self->_targetPresentationNode worldPosition];
   if (self->_shouldReset)
   {
     self->_shouldReset = 0;
-    self->_beginTime = a3;
+    self->_beginTime = time;
     *self->_beginVelocity = 0u;
     *self->_beginWorldPosition = v6;
     *self->_endWorldPosition = v6;
@@ -221,7 +221,7 @@ void __70__AVTSpringDynamic_enumerateDynamicsInHierarchy_forAvatar_usingBlock___
   *self->_lastWorldPosition = v6;
   [(VFXNode *)self->_dynamicParentPresentationNode convertPosition:0 fromNode:?];
   [(VFXNode *)self->_dynamicNode setPosition:?];
-  self->_lastEvaluationTime = a3;
+  self->_lastEvaluationTime = time;
 }
 
 - (void)resetTarget

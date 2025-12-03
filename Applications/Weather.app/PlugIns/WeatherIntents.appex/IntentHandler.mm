@@ -1,18 +1,18 @@
 @interface IntentHandler
-- (id)defaultLocationForWeather:(id)a3;
-- (id)handlerForIntent:(id)a3;
-- (void)provideLocationOptionsCollectionForWeather:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5;
+- (id)defaultLocationForWeather:(id)weather;
+- (id)handlerForIntent:(id)intent;
+- (void)provideLocationOptionsCollectionForWeather:(id)weather searchTerm:(id)term withCompletion:(id)completion;
 @end
 
 @implementation IntentHandler
 
-- (void)provideLocationOptionsCollectionForWeather:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5
+- (void)provideLocationOptionsCollectionForWeather:(id)weather searchTerm:(id)term withCompletion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(completion);
+  if (term)
   {
     v9 = sub_10000FCB4();
-    a4 = v10;
+    term = v10;
   }
 
   else
@@ -22,21 +22,21 @@
 
   v11 = swift_allocObject();
   *(v11 + 16) = v8;
-  v12 = a3;
-  v13 = self;
-  sub_100008590(v13, v9, a4, sub_10000B468, v11);
+  weatherCopy = weather;
+  selfCopy = self;
+  sub_100008590(selfCopy, v9, term, sub_10000B468, v11);
 }
 
-- (id)defaultLocationForWeather:(id)a3
+- (id)defaultLocationForWeather:(id)weather
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10000972C(v4);
+  weatherCopy = weather;
+  selfCopy = self;
+  v6 = sub_10000972C(weatherCopy);
 
   return v6;
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
   sub_100009C5C(v5);
   sub_1000053E8(v5, v5[3]);

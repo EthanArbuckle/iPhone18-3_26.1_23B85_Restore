@@ -1,5 +1,5 @@
 @interface ATThreadSafeHeadTracker
-- (ATThreadSafeHeadTracker)initWithRateLimit:(float)a3 detectPredictionAnchor:(BOOL)a4 userContext:(void *)a5 factory:(void *)a6 execution:(void *)a7 finalizer:(void *)a8 useSleepWakeDetector:(BOOL)a9;
+- (ATThreadSafeHeadTracker)initWithRateLimit:(float)limit detectPredictionAnchor:(BOOL)anchor userContext:(void *)context factory:(void *)factory execution:(void *)execution finalizer:(void *)finalizer useSleepWakeDetector:(BOOL)detector;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)handleSystemSleepMonitorDidWakeFromSleep;
@@ -65,15 +65,15 @@
   [(ATThreadSafeHeadTracker *)&v3 dealloc];
 }
 
-- (ATThreadSafeHeadTracker)initWithRateLimit:(float)a3 detectPredictionAnchor:(BOOL)a4 userContext:(void *)a5 factory:(void *)a6 execution:(void *)a7 finalizer:(void *)a8 useSleepWakeDetector:(BOOL)a9
+- (ATThreadSafeHeadTracker)initWithRateLimit:(float)limit detectPredictionAnchor:(BOOL)anchor userContext:(void *)context factory:(void *)factory execution:(void *)execution finalizer:(void *)finalizer useSleepWakeDetector:(BOOL)detector
 {
   v13.receiver = self;
   v13.super_class = ATThreadSafeHeadTracker;
   if ([(ATThreadSafeHeadTracker *)&v13 init])
   {
-    if (a6 && a7)
+    if (factory && execution)
     {
-      if (a8)
+      if (finalizer)
       {
         operator new();
       }

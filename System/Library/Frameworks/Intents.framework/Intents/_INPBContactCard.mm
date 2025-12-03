@@ -1,42 +1,42 @@
 @interface _INPBContactCard
-- (BOOL)isEqual:(id)a3;
-- (_INPBContactCard)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBContactCard)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContactRelations:(id)a3;
-- (void)addDates:(id)a3;
-- (void)addEmailAddresses:(id)a3;
-- (void)addInstantMessageAddresses:(id)a3;
-- (void)addPhoneNumbers:(id)a3;
-- (void)addPostalAddresses:(id)a3;
-- (void)addUrlAddresses:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setContactIdentifier:(id)a3;
-- (void)setContactRelations:(id)a3;
-- (void)setDates:(id)a3;
-- (void)setDepartmentName:(id)a3;
-- (void)setEmailAddresses:(id)a3;
-- (void)setFirstName:(id)a3;
-- (void)setFullName:(id)a3;
-- (void)setInstantMessageAddresses:(id)a3;
-- (void)setJobTitle:(id)a3;
-- (void)setLastName:(id)a3;
-- (void)setMiddleName:(id)a3;
-- (void)setNamePrefix:(id)a3;
-- (void)setNameSuffix:(id)a3;
-- (void)setNickName:(id)a3;
-- (void)setOrganizationName:(id)a3;
-- (void)setPhoneNumbers:(id)a3;
-- (void)setPhoneticFirstName:(id)a3;
-- (void)setPhoneticLastName:(id)a3;
-- (void)setPhoneticMiddleName:(id)a3;
-- (void)setPhoneticNamePrefix:(id)a3;
-- (void)setPhoneticNameSuffix:(id)a3;
-- (void)setPhoneticNickName:(id)a3;
-- (void)setPostalAddresses:(id)a3;
-- (void)setUrlAddresses:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContactRelations:(id)relations;
+- (void)addDates:(id)dates;
+- (void)addEmailAddresses:(id)addresses;
+- (void)addInstantMessageAddresses:(id)addresses;
+- (void)addPhoneNumbers:(id)numbers;
+- (void)addPostalAddresses:(id)addresses;
+- (void)addUrlAddresses:(id)addresses;
+- (void)encodeWithCoder:(id)coder;
+- (void)setContactIdentifier:(id)identifier;
+- (void)setContactRelations:(id)relations;
+- (void)setDates:(id)dates;
+- (void)setDepartmentName:(id)name;
+- (void)setEmailAddresses:(id)addresses;
+- (void)setFirstName:(id)name;
+- (void)setFullName:(id)name;
+- (void)setInstantMessageAddresses:(id)addresses;
+- (void)setJobTitle:(id)title;
+- (void)setLastName:(id)name;
+- (void)setMiddleName:(id)name;
+- (void)setNamePrefix:(id)prefix;
+- (void)setNameSuffix:(id)suffix;
+- (void)setNickName:(id)name;
+- (void)setOrganizationName:(id)name;
+- (void)setPhoneNumbers:(id)numbers;
+- (void)setPhoneticFirstName:(id)name;
+- (void)setPhoneticLastName:(id)name;
+- (void)setPhoneticMiddleName:(id)name;
+- (void)setPhoneticNamePrefix:(id)prefix;
+- (void)setPhoneticNameSuffix:(id)suffix;
+- (void)setPhoneticNickName:(id)name;
+- (void)setPostalAddresses:(id)addresses;
+- (void)setUrlAddresses:(id)addresses;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBContactCard
@@ -44,21 +44,21 @@
 - (id)dictionaryRepresentation
 {
   v132 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBContactCard *)self birthday];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"birthday"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  birthday = [(_INPBContactCard *)self birthday];
+  dictionaryRepresentation = [birthday dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"birthday"];
 
   if (self->_contactIdentifier)
   {
-    v6 = [(_INPBContactCard *)self contactIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"contactIdentifier"];
+    contactIdentifier = [(_INPBContactCard *)self contactIdentifier];
+    v7 = [contactIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"contactIdentifier"];
   }
 
   if ([(NSArray *)self->_contactRelations count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v121 = 0u;
     v122 = 0u;
     v123 = 0u;
@@ -79,8 +79,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v121 + 1) + 8 * v13) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v121 + 1) + 8 * v13) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
 
           ++v13;
         }
@@ -92,12 +92,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"contactRelations"];
+    [dictionary setObject:array forKeyedSubscript:@"contactRelations"];
   }
 
   if ([(NSArray *)self->_dates count])
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v117 = 0u;
     v118 = 0u;
     v119 = 0u;
@@ -118,8 +118,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v117 + 1) + 8 * v20) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v117 + 1) + 8 * v20) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation3];
 
           ++v20;
         }
@@ -131,19 +131,19 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"dates"];
+    [dictionary setObject:array2 forKeyedSubscript:@"dates"];
   }
 
   if (self->_departmentName)
   {
-    v22 = [(_INPBContactCard *)self departmentName];
-    v23 = [v22 copy];
-    [v3 setObject:v23 forKeyedSubscript:@"departmentName"];
+    departmentName = [(_INPBContactCard *)self departmentName];
+    v23 = [departmentName copy];
+    [dictionary setObject:v23 forKeyedSubscript:@"departmentName"];
   }
 
   if ([(NSArray *)self->_emailAddresses count])
   {
-    v24 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v113 = 0u;
     v114 = 0u;
     v115 = 0u;
@@ -164,8 +164,8 @@
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v113 + 1) + 8 * v29) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation4 = [*(*(&v113 + 1) + 8 * v29) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation4];
 
           ++v29;
         }
@@ -177,30 +177,30 @@
       while (v27);
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"emailAddresses"];
+    [dictionary setObject:array3 forKeyedSubscript:@"emailAddresses"];
   }
 
   if (self->_firstName)
   {
-    v31 = [(_INPBContactCard *)self firstName];
-    v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"firstName"];
+    firstName = [(_INPBContactCard *)self firstName];
+    v32 = [firstName copy];
+    [dictionary setObject:v32 forKeyedSubscript:@"firstName"];
   }
 
   if (self->_fullName)
   {
-    v33 = [(_INPBContactCard *)self fullName];
-    v34 = [v33 copy];
-    [v3 setObject:v34 forKeyedSubscript:@"fullName"];
+    fullName = [(_INPBContactCard *)self fullName];
+    v34 = [fullName copy];
+    [dictionary setObject:v34 forKeyedSubscript:@"fullName"];
   }
 
-  v35 = [(_INPBContactCard *)self image];
-  v36 = [v35 dictionaryRepresentation];
-  [v3 setObject:v36 forKeyedSubscript:@"image"];
+  image = [(_INPBContactCard *)self image];
+  dictionaryRepresentation5 = [image dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"image"];
 
   if ([(NSArray *)self->_instantMessageAddresses count])
   {
-    v37 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v109 = 0u;
     v110 = 0u;
     v111 = 0u;
@@ -221,8 +221,8 @@
             objc_enumerationMutation(v38);
           }
 
-          v43 = [*(*(&v109 + 1) + 8 * v42) dictionaryRepresentation];
-          [v37 addObject:v43];
+          dictionaryRepresentation6 = [*(*(&v109 + 1) + 8 * v42) dictionaryRepresentation];
+          [array4 addObject:dictionaryRepresentation6];
 
           ++v42;
         }
@@ -234,71 +234,71 @@
       while (v40);
     }
 
-    [v3 setObject:v37 forKeyedSubscript:@"instantMessageAddresses"];
+    [dictionary setObject:array4 forKeyedSubscript:@"instantMessageAddresses"];
   }
 
   if ([(_INPBContactCard *)self hasIsMe])
   {
     v44 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBContactCard isMe](self, "isMe")}];
-    [v3 setObject:v44 forKeyedSubscript:@"isMe"];
+    [dictionary setObject:v44 forKeyedSubscript:@"isMe"];
   }
 
   if (self->_jobTitle)
   {
-    v45 = [(_INPBContactCard *)self jobTitle];
-    v46 = [v45 copy];
-    [v3 setObject:v46 forKeyedSubscript:@"jobTitle"];
+    jobTitle = [(_INPBContactCard *)self jobTitle];
+    v46 = [jobTitle copy];
+    [dictionary setObject:v46 forKeyedSubscript:@"jobTitle"];
   }
 
   if (self->_lastName)
   {
-    v47 = [(_INPBContactCard *)self lastName];
-    v48 = [v47 copy];
-    [v3 setObject:v48 forKeyedSubscript:@"lastName"];
+    lastName = [(_INPBContactCard *)self lastName];
+    v48 = [lastName copy];
+    [dictionary setObject:v48 forKeyedSubscript:@"lastName"];
   }
 
   if (self->_middleName)
   {
-    v49 = [(_INPBContactCard *)self middleName];
-    v50 = [v49 copy];
-    [v3 setObject:v50 forKeyedSubscript:@"middleName"];
+    middleName = [(_INPBContactCard *)self middleName];
+    v50 = [middleName copy];
+    [dictionary setObject:v50 forKeyedSubscript:@"middleName"];
   }
 
   if (self->_namePrefix)
   {
-    v51 = [(_INPBContactCard *)self namePrefix];
-    v52 = [v51 copy];
-    [v3 setObject:v52 forKeyedSubscript:@"namePrefix"];
+    namePrefix = [(_INPBContactCard *)self namePrefix];
+    v52 = [namePrefix copy];
+    [dictionary setObject:v52 forKeyedSubscript:@"namePrefix"];
   }
 
   if (self->_nameSuffix)
   {
-    v53 = [(_INPBContactCard *)self nameSuffix];
-    v54 = [v53 copy];
-    [v3 setObject:v54 forKeyedSubscript:@"nameSuffix"];
+    nameSuffix = [(_INPBContactCard *)self nameSuffix];
+    v54 = [nameSuffix copy];
+    [dictionary setObject:v54 forKeyedSubscript:@"nameSuffix"];
   }
 
   if (self->_nickName)
   {
-    v55 = [(_INPBContactCard *)self nickName];
-    v56 = [v55 copy];
-    [v3 setObject:v56 forKeyedSubscript:@"nickName"];
+    nickName = [(_INPBContactCard *)self nickName];
+    v56 = [nickName copy];
+    [dictionary setObject:v56 forKeyedSubscript:@"nickName"];
   }
 
-  v57 = [(_INPBContactCard *)self nonGregorianBirthday];
-  v58 = [v57 dictionaryRepresentation];
-  [v3 setObject:v58 forKeyedSubscript:@"nonGregorianBirthday"];
+  nonGregorianBirthday = [(_INPBContactCard *)self nonGregorianBirthday];
+  dictionaryRepresentation7 = [nonGregorianBirthday dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"nonGregorianBirthday"];
 
   if (self->_organizationName)
   {
-    v59 = [(_INPBContactCard *)self organizationName];
-    v60 = [v59 copy];
-    [v3 setObject:v60 forKeyedSubscript:@"organizationName"];
+    organizationName = [(_INPBContactCard *)self organizationName];
+    v60 = [organizationName copy];
+    [dictionary setObject:v60 forKeyedSubscript:@"organizationName"];
   }
 
   if ([(NSArray *)self->_phoneNumbers count])
   {
-    v61 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v105 = 0u;
     v106 = 0u;
     v107 = 0u;
@@ -319,8 +319,8 @@
             objc_enumerationMutation(v62);
           }
 
-          v67 = [*(*(&v105 + 1) + 8 * v66) dictionaryRepresentation];
-          [v61 addObject:v67];
+          dictionaryRepresentation8 = [*(*(&v105 + 1) + 8 * v66) dictionaryRepresentation];
+          [array5 addObject:dictionaryRepresentation8];
 
           ++v66;
         }
@@ -332,54 +332,54 @@
       while (v64);
     }
 
-    [v3 setObject:v61 forKeyedSubscript:@"phoneNumbers"];
+    [dictionary setObject:array5 forKeyedSubscript:@"phoneNumbers"];
   }
 
   if (self->_phoneticFirstName)
   {
-    v68 = [(_INPBContactCard *)self phoneticFirstName];
-    v69 = [v68 copy];
-    [v3 setObject:v69 forKeyedSubscript:@"phoneticFirstName"];
+    phoneticFirstName = [(_INPBContactCard *)self phoneticFirstName];
+    v69 = [phoneticFirstName copy];
+    [dictionary setObject:v69 forKeyedSubscript:@"phoneticFirstName"];
   }
 
   if (self->_phoneticLastName)
   {
-    v70 = [(_INPBContactCard *)self phoneticLastName];
-    v71 = [v70 copy];
-    [v3 setObject:v71 forKeyedSubscript:@"phoneticLastName"];
+    phoneticLastName = [(_INPBContactCard *)self phoneticLastName];
+    v71 = [phoneticLastName copy];
+    [dictionary setObject:v71 forKeyedSubscript:@"phoneticLastName"];
   }
 
   if (self->_phoneticMiddleName)
   {
-    v72 = [(_INPBContactCard *)self phoneticMiddleName];
-    v73 = [v72 copy];
-    [v3 setObject:v73 forKeyedSubscript:@"phoneticMiddleName"];
+    phoneticMiddleName = [(_INPBContactCard *)self phoneticMiddleName];
+    v73 = [phoneticMiddleName copy];
+    [dictionary setObject:v73 forKeyedSubscript:@"phoneticMiddleName"];
   }
 
   if (self->_phoneticNamePrefix)
   {
-    v74 = [(_INPBContactCard *)self phoneticNamePrefix];
-    v75 = [v74 copy];
-    [v3 setObject:v75 forKeyedSubscript:@"phoneticNamePrefix"];
+    phoneticNamePrefix = [(_INPBContactCard *)self phoneticNamePrefix];
+    v75 = [phoneticNamePrefix copy];
+    [dictionary setObject:v75 forKeyedSubscript:@"phoneticNamePrefix"];
   }
 
   if (self->_phoneticNameSuffix)
   {
-    v76 = [(_INPBContactCard *)self phoneticNameSuffix];
-    v77 = [v76 copy];
-    [v3 setObject:v77 forKeyedSubscript:@"phoneticNameSuffix"];
+    phoneticNameSuffix = [(_INPBContactCard *)self phoneticNameSuffix];
+    v77 = [phoneticNameSuffix copy];
+    [dictionary setObject:v77 forKeyedSubscript:@"phoneticNameSuffix"];
   }
 
   if (self->_phoneticNickName)
   {
-    v78 = [(_INPBContactCard *)self phoneticNickName];
-    v79 = [v78 copy];
-    [v3 setObject:v79 forKeyedSubscript:@"phoneticNickName"];
+    phoneticNickName = [(_INPBContactCard *)self phoneticNickName];
+    v79 = [phoneticNickName copy];
+    [dictionary setObject:v79 forKeyedSubscript:@"phoneticNickName"];
   }
 
   if ([(NSArray *)self->_postalAddresses count])
   {
-    v80 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
@@ -400,8 +400,8 @@
             objc_enumerationMutation(v81);
           }
 
-          v86 = [*(*(&v101 + 1) + 8 * v85) dictionaryRepresentation];
-          [v80 addObject:v86];
+          dictionaryRepresentation9 = [*(*(&v101 + 1) + 8 * v85) dictionaryRepresentation];
+          [array6 addObject:dictionaryRepresentation9];
 
           ++v85;
         }
@@ -413,12 +413,12 @@
       while (v83);
     }
 
-    [v3 setObject:v80 forKeyedSubscript:@"postalAddresses"];
+    [dictionary setObject:array6 forKeyedSubscript:@"postalAddresses"];
   }
 
   if ([(NSArray *)self->_urlAddresses count])
   {
-    v87 = [MEMORY[0x1E695DF70] array];
+    array7 = [MEMORY[0x1E695DF70] array];
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
@@ -439,8 +439,8 @@
             objc_enumerationMutation(v88);
           }
 
-          v93 = [*(*(&v97 + 1) + 8 * v92) dictionaryRepresentation];
-          [v87 addObject:v93];
+          dictionaryRepresentation10 = [*(*(&v97 + 1) + 8 * v92) dictionaryRepresentation];
+          [array7 addObject:dictionaryRepresentation10];
 
           ++v92;
         }
@@ -452,13 +452,13 @@
       while (v90);
     }
 
-    [v3 setObject:v87 forKeyedSubscript:@"urlAddresses"];
+    [dictionary setObject:array7 forKeyedSubscript:@"urlAddresses"];
   }
 
-  v94 = v3;
+  v94 = dictionary;
 
   v95 = *MEMORY[0x1E69E9840];
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -503,28 +503,28 @@
   return v24 ^ v29 ^ [(NSArray *)self->_urlAddresses hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_141;
   }
 
-  v5 = [(_INPBContactCard *)self birthday];
-  v6 = [v4 birthday];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self birthday];
+  birthday2 = [equalCopy birthday];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v7 = [(_INPBContactCard *)self birthday];
-  if (v7)
+  birthday3 = [(_INPBContactCard *)self birthday];
+  if (birthday3)
   {
-    v8 = v7;
-    v9 = [(_INPBContactCard *)self birthday];
-    v10 = [v4 birthday];
-    v11 = [v9 isEqual:v10];
+    v8 = birthday3;
+    birthday4 = [(_INPBContactCard *)self birthday];
+    birthday5 = [equalCopy birthday];
+    v11 = [birthday4 isEqual:birthday5];
 
     if (!v11)
     {
@@ -536,20 +536,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self contactIdentifier];
-  v6 = [v4 contactIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self contactIdentifier];
+  birthday2 = [equalCopy contactIdentifier];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v12 = [(_INPBContactCard *)self contactIdentifier];
-  if (v12)
+  contactIdentifier = [(_INPBContactCard *)self contactIdentifier];
+  if (contactIdentifier)
   {
-    v13 = v12;
-    v14 = [(_INPBContactCard *)self contactIdentifier];
-    v15 = [v4 contactIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = contactIdentifier;
+    contactIdentifier2 = [(_INPBContactCard *)self contactIdentifier];
+    contactIdentifier3 = [equalCopy contactIdentifier];
+    v16 = [contactIdentifier2 isEqual:contactIdentifier3];
 
     if (!v16)
     {
@@ -561,20 +561,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self contactRelations];
-  v6 = [v4 contactRelations];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self contactRelations];
+  birthday2 = [equalCopy contactRelations];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v17 = [(_INPBContactCard *)self contactRelations];
-  if (v17)
+  contactRelations = [(_INPBContactCard *)self contactRelations];
+  if (contactRelations)
   {
-    v18 = v17;
-    v19 = [(_INPBContactCard *)self contactRelations];
-    v20 = [v4 contactRelations];
-    v21 = [v19 isEqual:v20];
+    v18 = contactRelations;
+    contactRelations2 = [(_INPBContactCard *)self contactRelations];
+    contactRelations3 = [equalCopy contactRelations];
+    v21 = [contactRelations2 isEqual:contactRelations3];
 
     if (!v21)
     {
@@ -586,20 +586,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self dates];
-  v6 = [v4 dates];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self dates];
+  birthday2 = [equalCopy dates];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v22 = [(_INPBContactCard *)self dates];
-  if (v22)
+  dates = [(_INPBContactCard *)self dates];
+  if (dates)
   {
-    v23 = v22;
-    v24 = [(_INPBContactCard *)self dates];
-    v25 = [v4 dates];
-    v26 = [v24 isEqual:v25];
+    v23 = dates;
+    dates2 = [(_INPBContactCard *)self dates];
+    dates3 = [equalCopy dates];
+    v26 = [dates2 isEqual:dates3];
 
     if (!v26)
     {
@@ -611,20 +611,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self departmentName];
-  v6 = [v4 departmentName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self departmentName];
+  birthday2 = [equalCopy departmentName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v27 = [(_INPBContactCard *)self departmentName];
-  if (v27)
+  departmentName = [(_INPBContactCard *)self departmentName];
+  if (departmentName)
   {
-    v28 = v27;
-    v29 = [(_INPBContactCard *)self departmentName];
-    v30 = [v4 departmentName];
-    v31 = [v29 isEqual:v30];
+    v28 = departmentName;
+    departmentName2 = [(_INPBContactCard *)self departmentName];
+    departmentName3 = [equalCopy departmentName];
+    v31 = [departmentName2 isEqual:departmentName3];
 
     if (!v31)
     {
@@ -636,20 +636,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self emailAddresses];
-  v6 = [v4 emailAddresses];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self emailAddresses];
+  birthday2 = [equalCopy emailAddresses];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v32 = [(_INPBContactCard *)self emailAddresses];
-  if (v32)
+  emailAddresses = [(_INPBContactCard *)self emailAddresses];
+  if (emailAddresses)
   {
-    v33 = v32;
-    v34 = [(_INPBContactCard *)self emailAddresses];
-    v35 = [v4 emailAddresses];
-    v36 = [v34 isEqual:v35];
+    v33 = emailAddresses;
+    emailAddresses2 = [(_INPBContactCard *)self emailAddresses];
+    emailAddresses3 = [equalCopy emailAddresses];
+    v36 = [emailAddresses2 isEqual:emailAddresses3];
 
     if (!v36)
     {
@@ -661,20 +661,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self firstName];
-  v6 = [v4 firstName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self firstName];
+  birthday2 = [equalCopy firstName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v37 = [(_INPBContactCard *)self firstName];
-  if (v37)
+  firstName = [(_INPBContactCard *)self firstName];
+  if (firstName)
   {
-    v38 = v37;
-    v39 = [(_INPBContactCard *)self firstName];
-    v40 = [v4 firstName];
-    v41 = [v39 isEqual:v40];
+    v38 = firstName;
+    firstName2 = [(_INPBContactCard *)self firstName];
+    firstName3 = [equalCopy firstName];
+    v41 = [firstName2 isEqual:firstName3];
 
     if (!v41)
     {
@@ -686,20 +686,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self fullName];
-  v6 = [v4 fullName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self fullName];
+  birthday2 = [equalCopy fullName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v42 = [(_INPBContactCard *)self fullName];
-  if (v42)
+  fullName = [(_INPBContactCard *)self fullName];
+  if (fullName)
   {
-    v43 = v42;
-    v44 = [(_INPBContactCard *)self fullName];
-    v45 = [v4 fullName];
-    v46 = [v44 isEqual:v45];
+    v43 = fullName;
+    fullName2 = [(_INPBContactCard *)self fullName];
+    fullName3 = [equalCopy fullName];
+    v46 = [fullName2 isEqual:fullName3];
 
     if (!v46)
     {
@@ -711,20 +711,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self image];
+  birthday2 = [equalCopy image];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v47 = [(_INPBContactCard *)self image];
-  if (v47)
+  image = [(_INPBContactCard *)self image];
+  if (image)
   {
-    v48 = v47;
-    v49 = [(_INPBContactCard *)self image];
-    v50 = [v4 image];
-    v51 = [v49 isEqual:v50];
+    v48 = image;
+    image2 = [(_INPBContactCard *)self image];
+    image3 = [equalCopy image];
+    v51 = [image2 isEqual:image3];
 
     if (!v51)
     {
@@ -736,20 +736,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self instantMessageAddresses];
-  v6 = [v4 instantMessageAddresses];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self instantMessageAddresses];
+  birthday2 = [equalCopy instantMessageAddresses];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v52 = [(_INPBContactCard *)self instantMessageAddresses];
-  if (v52)
+  instantMessageAddresses = [(_INPBContactCard *)self instantMessageAddresses];
+  if (instantMessageAddresses)
   {
-    v53 = v52;
-    v54 = [(_INPBContactCard *)self instantMessageAddresses];
-    v55 = [v4 instantMessageAddresses];
-    v56 = [v54 isEqual:v55];
+    v53 = instantMessageAddresses;
+    instantMessageAddresses2 = [(_INPBContactCard *)self instantMessageAddresses];
+    instantMessageAddresses3 = [equalCopy instantMessageAddresses];
+    v56 = [instantMessageAddresses2 isEqual:instantMessageAddresses3];
 
     if (!v56)
     {
@@ -761,38 +761,38 @@
   {
   }
 
-  v57 = [(_INPBContactCard *)self hasIsMe];
-  if (v57 != [v4 hasIsMe])
+  hasIsMe = [(_INPBContactCard *)self hasIsMe];
+  if (hasIsMe != [equalCopy hasIsMe])
   {
     goto LABEL_141;
   }
 
   if ([(_INPBContactCard *)self hasIsMe])
   {
-    if ([v4 hasIsMe])
+    if ([equalCopy hasIsMe])
     {
       isMe = self->_isMe;
-      if (isMe != [v4 isMe])
+      if (isMe != [equalCopy isMe])
       {
         goto LABEL_141;
       }
     }
   }
 
-  v5 = [(_INPBContactCard *)self jobTitle];
-  v6 = [v4 jobTitle];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self jobTitle];
+  birthday2 = [equalCopy jobTitle];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v59 = [(_INPBContactCard *)self jobTitle];
-  if (v59)
+  jobTitle = [(_INPBContactCard *)self jobTitle];
+  if (jobTitle)
   {
-    v60 = v59;
-    v61 = [(_INPBContactCard *)self jobTitle];
-    v62 = [v4 jobTitle];
-    v63 = [v61 isEqual:v62];
+    v60 = jobTitle;
+    jobTitle2 = [(_INPBContactCard *)self jobTitle];
+    jobTitle3 = [equalCopy jobTitle];
+    v63 = [jobTitle2 isEqual:jobTitle3];
 
     if (!v63)
     {
@@ -804,20 +804,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self lastName];
-  v6 = [v4 lastName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self lastName];
+  birthday2 = [equalCopy lastName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v64 = [(_INPBContactCard *)self lastName];
-  if (v64)
+  lastName = [(_INPBContactCard *)self lastName];
+  if (lastName)
   {
-    v65 = v64;
-    v66 = [(_INPBContactCard *)self lastName];
-    v67 = [v4 lastName];
-    v68 = [v66 isEqual:v67];
+    v65 = lastName;
+    lastName2 = [(_INPBContactCard *)self lastName];
+    lastName3 = [equalCopy lastName];
+    v68 = [lastName2 isEqual:lastName3];
 
     if (!v68)
     {
@@ -829,20 +829,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self middleName];
-  v6 = [v4 middleName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self middleName];
+  birthday2 = [equalCopy middleName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v69 = [(_INPBContactCard *)self middleName];
-  if (v69)
+  middleName = [(_INPBContactCard *)self middleName];
+  if (middleName)
   {
-    v70 = v69;
-    v71 = [(_INPBContactCard *)self middleName];
-    v72 = [v4 middleName];
-    v73 = [v71 isEqual:v72];
+    v70 = middleName;
+    middleName2 = [(_INPBContactCard *)self middleName];
+    middleName3 = [equalCopy middleName];
+    v73 = [middleName2 isEqual:middleName3];
 
     if (!v73)
     {
@@ -854,20 +854,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self namePrefix];
-  v6 = [v4 namePrefix];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self namePrefix];
+  birthday2 = [equalCopy namePrefix];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v74 = [(_INPBContactCard *)self namePrefix];
-  if (v74)
+  namePrefix = [(_INPBContactCard *)self namePrefix];
+  if (namePrefix)
   {
-    v75 = v74;
-    v76 = [(_INPBContactCard *)self namePrefix];
-    v77 = [v4 namePrefix];
-    v78 = [v76 isEqual:v77];
+    v75 = namePrefix;
+    namePrefix2 = [(_INPBContactCard *)self namePrefix];
+    namePrefix3 = [equalCopy namePrefix];
+    v78 = [namePrefix2 isEqual:namePrefix3];
 
     if (!v78)
     {
@@ -879,20 +879,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self nameSuffix];
-  v6 = [v4 nameSuffix];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self nameSuffix];
+  birthday2 = [equalCopy nameSuffix];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v79 = [(_INPBContactCard *)self nameSuffix];
-  if (v79)
+  nameSuffix = [(_INPBContactCard *)self nameSuffix];
+  if (nameSuffix)
   {
-    v80 = v79;
-    v81 = [(_INPBContactCard *)self nameSuffix];
-    v82 = [v4 nameSuffix];
-    v83 = [v81 isEqual:v82];
+    v80 = nameSuffix;
+    nameSuffix2 = [(_INPBContactCard *)self nameSuffix];
+    nameSuffix3 = [equalCopy nameSuffix];
+    v83 = [nameSuffix2 isEqual:nameSuffix3];
 
     if (!v83)
     {
@@ -904,20 +904,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self nickName];
-  v6 = [v4 nickName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self nickName];
+  birthday2 = [equalCopy nickName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v84 = [(_INPBContactCard *)self nickName];
-  if (v84)
+  nickName = [(_INPBContactCard *)self nickName];
+  if (nickName)
   {
-    v85 = v84;
-    v86 = [(_INPBContactCard *)self nickName];
-    v87 = [v4 nickName];
-    v88 = [v86 isEqual:v87];
+    v85 = nickName;
+    nickName2 = [(_INPBContactCard *)self nickName];
+    nickName3 = [equalCopy nickName];
+    v88 = [nickName2 isEqual:nickName3];
 
     if (!v88)
     {
@@ -929,20 +929,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self nonGregorianBirthday];
-  v6 = [v4 nonGregorianBirthday];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self nonGregorianBirthday];
+  birthday2 = [equalCopy nonGregorianBirthday];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v89 = [(_INPBContactCard *)self nonGregorianBirthday];
-  if (v89)
+  nonGregorianBirthday = [(_INPBContactCard *)self nonGregorianBirthday];
+  if (nonGregorianBirthday)
   {
-    v90 = v89;
-    v91 = [(_INPBContactCard *)self nonGregorianBirthday];
-    v92 = [v4 nonGregorianBirthday];
-    v93 = [v91 isEqual:v92];
+    v90 = nonGregorianBirthday;
+    nonGregorianBirthday2 = [(_INPBContactCard *)self nonGregorianBirthday];
+    nonGregorianBirthday3 = [equalCopy nonGregorianBirthday];
+    v93 = [nonGregorianBirthday2 isEqual:nonGregorianBirthday3];
 
     if (!v93)
     {
@@ -954,20 +954,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self organizationName];
-  v6 = [v4 organizationName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self organizationName];
+  birthday2 = [equalCopy organizationName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v94 = [(_INPBContactCard *)self organizationName];
-  if (v94)
+  organizationName = [(_INPBContactCard *)self organizationName];
+  if (organizationName)
   {
-    v95 = v94;
-    v96 = [(_INPBContactCard *)self organizationName];
-    v97 = [v4 organizationName];
-    v98 = [v96 isEqual:v97];
+    v95 = organizationName;
+    organizationName2 = [(_INPBContactCard *)self organizationName];
+    organizationName3 = [equalCopy organizationName];
+    v98 = [organizationName2 isEqual:organizationName3];
 
     if (!v98)
     {
@@ -979,20 +979,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self phoneNumbers];
-  v6 = [v4 phoneNumbers];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self phoneNumbers];
+  birthday2 = [equalCopy phoneNumbers];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v99 = [(_INPBContactCard *)self phoneNumbers];
-  if (v99)
+  phoneNumbers = [(_INPBContactCard *)self phoneNumbers];
+  if (phoneNumbers)
   {
-    v100 = v99;
-    v101 = [(_INPBContactCard *)self phoneNumbers];
-    v102 = [v4 phoneNumbers];
-    v103 = [v101 isEqual:v102];
+    v100 = phoneNumbers;
+    phoneNumbers2 = [(_INPBContactCard *)self phoneNumbers];
+    phoneNumbers3 = [equalCopy phoneNumbers];
+    v103 = [phoneNumbers2 isEqual:phoneNumbers3];
 
     if (!v103)
     {
@@ -1004,20 +1004,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self phoneticFirstName];
-  v6 = [v4 phoneticFirstName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self phoneticFirstName];
+  birthday2 = [equalCopy phoneticFirstName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v104 = [(_INPBContactCard *)self phoneticFirstName];
-  if (v104)
+  phoneticFirstName = [(_INPBContactCard *)self phoneticFirstName];
+  if (phoneticFirstName)
   {
-    v105 = v104;
-    v106 = [(_INPBContactCard *)self phoneticFirstName];
-    v107 = [v4 phoneticFirstName];
-    v108 = [v106 isEqual:v107];
+    v105 = phoneticFirstName;
+    phoneticFirstName2 = [(_INPBContactCard *)self phoneticFirstName];
+    phoneticFirstName3 = [equalCopy phoneticFirstName];
+    v108 = [phoneticFirstName2 isEqual:phoneticFirstName3];
 
     if (!v108)
     {
@@ -1029,20 +1029,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self phoneticLastName];
-  v6 = [v4 phoneticLastName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self phoneticLastName];
+  birthday2 = [equalCopy phoneticLastName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v109 = [(_INPBContactCard *)self phoneticLastName];
-  if (v109)
+  phoneticLastName = [(_INPBContactCard *)self phoneticLastName];
+  if (phoneticLastName)
   {
-    v110 = v109;
-    v111 = [(_INPBContactCard *)self phoneticLastName];
-    v112 = [v4 phoneticLastName];
-    v113 = [v111 isEqual:v112];
+    v110 = phoneticLastName;
+    phoneticLastName2 = [(_INPBContactCard *)self phoneticLastName];
+    phoneticLastName3 = [equalCopy phoneticLastName];
+    v113 = [phoneticLastName2 isEqual:phoneticLastName3];
 
     if (!v113)
     {
@@ -1054,20 +1054,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self phoneticMiddleName];
-  v6 = [v4 phoneticMiddleName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self phoneticMiddleName];
+  birthday2 = [equalCopy phoneticMiddleName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v114 = [(_INPBContactCard *)self phoneticMiddleName];
-  if (v114)
+  phoneticMiddleName = [(_INPBContactCard *)self phoneticMiddleName];
+  if (phoneticMiddleName)
   {
-    v115 = v114;
-    v116 = [(_INPBContactCard *)self phoneticMiddleName];
-    v117 = [v4 phoneticMiddleName];
-    v118 = [v116 isEqual:v117];
+    v115 = phoneticMiddleName;
+    phoneticMiddleName2 = [(_INPBContactCard *)self phoneticMiddleName];
+    phoneticMiddleName3 = [equalCopy phoneticMiddleName];
+    v118 = [phoneticMiddleName2 isEqual:phoneticMiddleName3];
 
     if (!v118)
     {
@@ -1079,20 +1079,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self phoneticNamePrefix];
-  v6 = [v4 phoneticNamePrefix];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self phoneticNamePrefix];
+  birthday2 = [equalCopy phoneticNamePrefix];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v119 = [(_INPBContactCard *)self phoneticNamePrefix];
-  if (v119)
+  phoneticNamePrefix = [(_INPBContactCard *)self phoneticNamePrefix];
+  if (phoneticNamePrefix)
   {
-    v120 = v119;
-    v121 = [(_INPBContactCard *)self phoneticNamePrefix];
-    v122 = [v4 phoneticNamePrefix];
-    v123 = [v121 isEqual:v122];
+    v120 = phoneticNamePrefix;
+    phoneticNamePrefix2 = [(_INPBContactCard *)self phoneticNamePrefix];
+    phoneticNamePrefix3 = [equalCopy phoneticNamePrefix];
+    v123 = [phoneticNamePrefix2 isEqual:phoneticNamePrefix3];
 
     if (!v123)
     {
@@ -1104,20 +1104,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self phoneticNameSuffix];
-  v6 = [v4 phoneticNameSuffix];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self phoneticNameSuffix];
+  birthday2 = [equalCopy phoneticNameSuffix];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v124 = [(_INPBContactCard *)self phoneticNameSuffix];
-  if (v124)
+  phoneticNameSuffix = [(_INPBContactCard *)self phoneticNameSuffix];
+  if (phoneticNameSuffix)
   {
-    v125 = v124;
-    v126 = [(_INPBContactCard *)self phoneticNameSuffix];
-    v127 = [v4 phoneticNameSuffix];
-    v128 = [v126 isEqual:v127];
+    v125 = phoneticNameSuffix;
+    phoneticNameSuffix2 = [(_INPBContactCard *)self phoneticNameSuffix];
+    phoneticNameSuffix3 = [equalCopy phoneticNameSuffix];
+    v128 = [phoneticNameSuffix2 isEqual:phoneticNameSuffix3];
 
     if (!v128)
     {
@@ -1129,20 +1129,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self phoneticNickName];
-  v6 = [v4 phoneticNickName];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self phoneticNickName];
+  birthday2 = [equalCopy phoneticNickName];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v129 = [(_INPBContactCard *)self phoneticNickName];
-  if (v129)
+  phoneticNickName = [(_INPBContactCard *)self phoneticNickName];
+  if (phoneticNickName)
   {
-    v130 = v129;
-    v131 = [(_INPBContactCard *)self phoneticNickName];
-    v132 = [v4 phoneticNickName];
-    v133 = [v131 isEqual:v132];
+    v130 = phoneticNickName;
+    phoneticNickName2 = [(_INPBContactCard *)self phoneticNickName];
+    phoneticNickName3 = [equalCopy phoneticNickName];
+    v133 = [phoneticNickName2 isEqual:phoneticNickName3];
 
     if (!v133)
     {
@@ -1154,20 +1154,20 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self postalAddresses];
-  v6 = [v4 postalAddresses];
-  if ((v5 != 0) == (v6 == 0))
+  birthday = [(_INPBContactCard *)self postalAddresses];
+  birthday2 = [equalCopy postalAddresses];
+  if ((birthday != 0) == (birthday2 == 0))
   {
     goto LABEL_140;
   }
 
-  v134 = [(_INPBContactCard *)self postalAddresses];
-  if (v134)
+  postalAddresses = [(_INPBContactCard *)self postalAddresses];
+  if (postalAddresses)
   {
-    v135 = v134;
-    v136 = [(_INPBContactCard *)self postalAddresses];
-    v137 = [v4 postalAddresses];
-    v138 = [v136 isEqual:v137];
+    v135 = postalAddresses;
+    postalAddresses2 = [(_INPBContactCard *)self postalAddresses];
+    postalAddresses3 = [equalCopy postalAddresses];
+    v138 = [postalAddresses2 isEqual:postalAddresses3];
 
     if (!v138)
     {
@@ -1179,12 +1179,12 @@
   {
   }
 
-  v5 = [(_INPBContactCard *)self urlAddresses];
-  v6 = [v4 urlAddresses];
-  if ((v5 != 0) != (v6 == 0))
+  birthday = [(_INPBContactCard *)self urlAddresses];
+  birthday2 = [equalCopy urlAddresses];
+  if ((birthday != 0) != (birthday2 == 0))
   {
-    v139 = [(_INPBContactCard *)self urlAddresses];
-    if (!v139)
+    urlAddresses = [(_INPBContactCard *)self urlAddresses];
+    if (!urlAddresses)
     {
 
 LABEL_144:
@@ -1192,10 +1192,10 @@ LABEL_144:
       goto LABEL_142;
     }
 
-    v140 = v139;
-    v141 = [(_INPBContactCard *)self urlAddresses];
-    v142 = [v4 urlAddresses];
-    v143 = [v141 isEqual:v142];
+    v140 = urlAddresses;
+    urlAddresses2 = [(_INPBContactCard *)self urlAddresses];
+    urlAddresses3 = [equalCopy urlAddresses];
+    v143 = [urlAddresses2 isEqual:urlAddresses3];
 
     if (v143)
     {
@@ -1215,37 +1215,37 @@ LABEL_142:
   return v144;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBContactCard allocWithZone:](_INPBContactCard init];
-  v6 = [(_INPBDateTimeRangeValue *)self->_birthday copyWithZone:a3];
+  v6 = [(_INPBDateTimeRangeValue *)self->_birthday copyWithZone:zone];
   [(_INPBContactCard *)v5 setBirthday:v6];
 
-  v7 = [(NSString *)self->_contactIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_contactIdentifier copyWithZone:zone];
   [(_INPBContactCard *)v5 setContactIdentifier:v7];
 
-  v8 = [(NSArray *)self->_contactRelations copyWithZone:a3];
+  v8 = [(NSArray *)self->_contactRelations copyWithZone:zone];
   [(_INPBContactCard *)v5 setContactRelations:v8];
 
-  v9 = [(NSArray *)self->_dates copyWithZone:a3];
+  v9 = [(NSArray *)self->_dates copyWithZone:zone];
   [(_INPBContactCard *)v5 setDates:v9];
 
-  v10 = [(NSString *)self->_departmentName copyWithZone:a3];
+  v10 = [(NSString *)self->_departmentName copyWithZone:zone];
   [(_INPBContactCard *)v5 setDepartmentName:v10];
 
-  v11 = [(NSArray *)self->_emailAddresses copyWithZone:a3];
+  v11 = [(NSArray *)self->_emailAddresses copyWithZone:zone];
   [(_INPBContactCard *)v5 setEmailAddresses:v11];
 
-  v12 = [(NSString *)self->_firstName copyWithZone:a3];
+  v12 = [(NSString *)self->_firstName copyWithZone:zone];
   [(_INPBContactCard *)v5 setFirstName:v12];
 
-  v13 = [(NSString *)self->_fullName copyWithZone:a3];
+  v13 = [(NSString *)self->_fullName copyWithZone:zone];
   [(_INPBContactCard *)v5 setFullName:v13];
 
-  v14 = [(_INPBImageValue *)self->_image copyWithZone:a3];
+  v14 = [(_INPBImageValue *)self->_image copyWithZone:zone];
   [(_INPBContactCard *)v5 setImage:v14];
 
-  v15 = [(NSArray *)self->_instantMessageAddresses copyWithZone:a3];
+  v15 = [(NSArray *)self->_instantMessageAddresses copyWithZone:zone];
   [(_INPBContactCard *)v5 setInstantMessageAddresses:v15];
 
   if ([(_INPBContactCard *)self hasIsMe])
@@ -1253,99 +1253,99 @@ LABEL_142:
     [(_INPBContactCard *)v5 setIsMe:[(_INPBContactCard *)self isMe]];
   }
 
-  v16 = [(NSString *)self->_jobTitle copyWithZone:a3];
+  v16 = [(NSString *)self->_jobTitle copyWithZone:zone];
   [(_INPBContactCard *)v5 setJobTitle:v16];
 
-  v17 = [(NSString *)self->_lastName copyWithZone:a3];
+  v17 = [(NSString *)self->_lastName copyWithZone:zone];
   [(_INPBContactCard *)v5 setLastName:v17];
 
-  v18 = [(NSString *)self->_middleName copyWithZone:a3];
+  v18 = [(NSString *)self->_middleName copyWithZone:zone];
   [(_INPBContactCard *)v5 setMiddleName:v18];
 
-  v19 = [(NSString *)self->_namePrefix copyWithZone:a3];
+  v19 = [(NSString *)self->_namePrefix copyWithZone:zone];
   [(_INPBContactCard *)v5 setNamePrefix:v19];
 
-  v20 = [(NSString *)self->_nameSuffix copyWithZone:a3];
+  v20 = [(NSString *)self->_nameSuffix copyWithZone:zone];
   [(_INPBContactCard *)v5 setNameSuffix:v20];
 
-  v21 = [(NSString *)self->_nickName copyWithZone:a3];
+  v21 = [(NSString *)self->_nickName copyWithZone:zone];
   [(_INPBContactCard *)v5 setNickName:v21];
 
-  v22 = [(_INPBDateTimeRangeValue *)self->_nonGregorianBirthday copyWithZone:a3];
+  v22 = [(_INPBDateTimeRangeValue *)self->_nonGregorianBirthday copyWithZone:zone];
   [(_INPBContactCard *)v5 setNonGregorianBirthday:v22];
 
-  v23 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v23 = [(NSString *)self->_organizationName copyWithZone:zone];
   [(_INPBContactCard *)v5 setOrganizationName:v23];
 
-  v24 = [(NSArray *)self->_phoneNumbers copyWithZone:a3];
+  v24 = [(NSArray *)self->_phoneNumbers copyWithZone:zone];
   [(_INPBContactCard *)v5 setPhoneNumbers:v24];
 
-  v25 = [(NSString *)self->_phoneticFirstName copyWithZone:a3];
+  v25 = [(NSString *)self->_phoneticFirstName copyWithZone:zone];
   [(_INPBContactCard *)v5 setPhoneticFirstName:v25];
 
-  v26 = [(NSString *)self->_phoneticLastName copyWithZone:a3];
+  v26 = [(NSString *)self->_phoneticLastName copyWithZone:zone];
   [(_INPBContactCard *)v5 setPhoneticLastName:v26];
 
-  v27 = [(NSString *)self->_phoneticMiddleName copyWithZone:a3];
+  v27 = [(NSString *)self->_phoneticMiddleName copyWithZone:zone];
   [(_INPBContactCard *)v5 setPhoneticMiddleName:v27];
 
-  v28 = [(NSString *)self->_phoneticNamePrefix copyWithZone:a3];
+  v28 = [(NSString *)self->_phoneticNamePrefix copyWithZone:zone];
   [(_INPBContactCard *)v5 setPhoneticNamePrefix:v28];
 
-  v29 = [(NSString *)self->_phoneticNameSuffix copyWithZone:a3];
+  v29 = [(NSString *)self->_phoneticNameSuffix copyWithZone:zone];
   [(_INPBContactCard *)v5 setPhoneticNameSuffix:v29];
 
-  v30 = [(NSString *)self->_phoneticNickName copyWithZone:a3];
+  v30 = [(NSString *)self->_phoneticNickName copyWithZone:zone];
   [(_INPBContactCard *)v5 setPhoneticNickName:v30];
 
-  v31 = [(NSArray *)self->_postalAddresses copyWithZone:a3];
+  v31 = [(NSArray *)self->_postalAddresses copyWithZone:zone];
   [(_INPBContactCard *)v5 setPostalAddresses:v31];
 
-  v32 = [(NSArray *)self->_urlAddresses copyWithZone:a3];
+  v32 = [(NSArray *)self->_urlAddresses copyWithZone:zone];
   [(_INPBContactCard *)v5 setUrlAddresses:v32];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBContactCard *)self data];
+  coderCopy = coder;
+  data = [(_INPBContactCard *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBContactCard)initWithCoder:(id)a3
+- (_INPBContactCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBContactCard *)self initWithData:v6];
+    self = [(_INPBContactCard *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v124 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBContactCard *)self birthday];
+  toCopy = to;
+  birthday = [(_INPBContactCard *)self birthday];
 
-  if (v5)
+  if (birthday)
   {
-    v6 = [(_INPBContactCard *)self birthday];
+    birthday2 = [(_INPBContactCard *)self birthday];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBContactCard *)self contactIdentifier];
+  contactIdentifier = [(_INPBContactCard *)self contactIdentifier];
 
-  if (v7)
+  if (contactIdentifier)
   {
     contactIdentifier = self->_contactIdentifier;
     PBDataWriterWriteStringField();
@@ -1415,9 +1415,9 @@ LABEL_142:
     while (v17);
   }
 
-  v21 = [(_INPBContactCard *)self departmentName];
+  departmentName = [(_INPBContactCard *)self departmentName];
 
-  if (v21)
+  if (departmentName)
   {
     departmentName = self->_departmentName;
     PBDataWriterWriteStringField();
@@ -1455,27 +1455,27 @@ LABEL_142:
     while (v25);
   }
 
-  v29 = [(_INPBContactCard *)self firstName];
+  firstName = [(_INPBContactCard *)self firstName];
 
-  if (v29)
+  if (firstName)
   {
     firstName = self->_firstName;
     PBDataWriterWriteStringField();
   }
 
-  v31 = [(_INPBContactCard *)self fullName];
+  fullName = [(_INPBContactCard *)self fullName];
 
-  if (v31)
+  if (fullName)
   {
     fullName = self->_fullName;
     PBDataWriterWriteStringField();
   }
 
-  v33 = [(_INPBContactCard *)self image];
+  image = [(_INPBContactCard *)self image];
 
-  if (v33)
+  if (image)
   {
-    v34 = [(_INPBContactCard *)self image];
+    image2 = [(_INPBContactCard *)self image];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1517,65 +1517,65 @@ LABEL_142:
     PBDataWriterWriteBOOLField();
   }
 
-  v42 = [(_INPBContactCard *)self jobTitle];
+  jobTitle = [(_INPBContactCard *)self jobTitle];
 
-  if (v42)
+  if (jobTitle)
   {
     jobTitle = self->_jobTitle;
     PBDataWriterWriteStringField();
   }
 
-  v44 = [(_INPBContactCard *)self lastName];
+  lastName = [(_INPBContactCard *)self lastName];
 
-  if (v44)
+  if (lastName)
   {
     lastName = self->_lastName;
     PBDataWriterWriteStringField();
   }
 
-  v46 = [(_INPBContactCard *)self middleName];
+  middleName = [(_INPBContactCard *)self middleName];
 
-  if (v46)
+  if (middleName)
   {
     middleName = self->_middleName;
     PBDataWriterWriteStringField();
   }
 
-  v48 = [(_INPBContactCard *)self namePrefix];
+  namePrefix = [(_INPBContactCard *)self namePrefix];
 
-  if (v48)
+  if (namePrefix)
   {
     namePrefix = self->_namePrefix;
     PBDataWriterWriteStringField();
   }
 
-  v50 = [(_INPBContactCard *)self nameSuffix];
+  nameSuffix = [(_INPBContactCard *)self nameSuffix];
 
-  if (v50)
+  if (nameSuffix)
   {
     nameSuffix = self->_nameSuffix;
     PBDataWriterWriteStringField();
   }
 
-  v52 = [(_INPBContactCard *)self nickName];
+  nickName = [(_INPBContactCard *)self nickName];
 
-  if (v52)
+  if (nickName)
   {
     nickName = self->_nickName;
     PBDataWriterWriteStringField();
   }
 
-  v54 = [(_INPBContactCard *)self nonGregorianBirthday];
+  nonGregorianBirthday = [(_INPBContactCard *)self nonGregorianBirthday];
 
-  if (v54)
+  if (nonGregorianBirthday)
   {
-    v55 = [(_INPBContactCard *)self nonGregorianBirthday];
+    nonGregorianBirthday2 = [(_INPBContactCard *)self nonGregorianBirthday];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(_INPBContactCard *)self organizationName];
+  organizationName = [(_INPBContactCard *)self organizationName];
 
-  if (v56)
+  if (organizationName)
   {
     organizationName = self->_organizationName;
     PBDataWriterWriteStringField();
@@ -1613,49 +1613,49 @@ LABEL_142:
     while (v60);
   }
 
-  v64 = [(_INPBContactCard *)self phoneticFirstName];
+  phoneticFirstName = [(_INPBContactCard *)self phoneticFirstName];
 
-  if (v64)
+  if (phoneticFirstName)
   {
     phoneticFirstName = self->_phoneticFirstName;
     PBDataWriterWriteStringField();
   }
 
-  v66 = [(_INPBContactCard *)self phoneticLastName];
+  phoneticLastName = [(_INPBContactCard *)self phoneticLastName];
 
-  if (v66)
+  if (phoneticLastName)
   {
     phoneticLastName = self->_phoneticLastName;
     PBDataWriterWriteStringField();
   }
 
-  v68 = [(_INPBContactCard *)self phoneticMiddleName];
+  phoneticMiddleName = [(_INPBContactCard *)self phoneticMiddleName];
 
-  if (v68)
+  if (phoneticMiddleName)
   {
     phoneticMiddleName = self->_phoneticMiddleName;
     PBDataWriterWriteStringField();
   }
 
-  v70 = [(_INPBContactCard *)self phoneticNamePrefix];
+  phoneticNamePrefix = [(_INPBContactCard *)self phoneticNamePrefix];
 
-  if (v70)
+  if (phoneticNamePrefix)
   {
     phoneticNamePrefix = self->_phoneticNamePrefix;
     PBDataWriterWriteStringField();
   }
 
-  v72 = [(_INPBContactCard *)self phoneticNameSuffix];
+  phoneticNameSuffix = [(_INPBContactCard *)self phoneticNameSuffix];
 
-  if (v72)
+  if (phoneticNameSuffix)
   {
     phoneticNameSuffix = self->_phoneticNameSuffix;
     PBDataWriterWriteStringField();
   }
 
-  v74 = [(_INPBContactCard *)self phoneticNickName];
+  phoneticNickName = [(_INPBContactCard *)self phoneticNickName];
 
-  if (v74)
+  if (phoneticNickName)
   {
     phoneticNickName = self->_phoneticNickName;
     PBDataWriterWriteStringField();
@@ -1728,342 +1728,342 @@ LABEL_142:
   v88 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addUrlAddresses:(id)a3
+- (void)addUrlAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   urlAddresses = self->_urlAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!urlAddresses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_urlAddresses;
-    self->_urlAddresses = v6;
+    self->_urlAddresses = array;
 
-    v4 = v8;
+    addressesCopy = v8;
     urlAddresses = self->_urlAddresses;
   }
 
-  [(NSArray *)urlAddresses addObject:v4];
+  [(NSArray *)urlAddresses addObject:addressesCopy];
 }
 
-- (void)setUrlAddresses:(id)a3
+- (void)setUrlAddresses:(id)addresses
 {
-  v4 = [a3 mutableCopy];
+  v4 = [addresses mutableCopy];
   urlAddresses = self->_urlAddresses;
   self->_urlAddresses = v4;
 
   MEMORY[0x1EEE66BB8](v4, urlAddresses);
 }
 
-- (void)addPostalAddresses:(id)a3
+- (void)addPostalAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   postalAddresses = self->_postalAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!postalAddresses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_postalAddresses;
-    self->_postalAddresses = v6;
+    self->_postalAddresses = array;
 
-    v4 = v8;
+    addressesCopy = v8;
     postalAddresses = self->_postalAddresses;
   }
 
-  [(NSArray *)postalAddresses addObject:v4];
+  [(NSArray *)postalAddresses addObject:addressesCopy];
 }
 
-- (void)setPostalAddresses:(id)a3
+- (void)setPostalAddresses:(id)addresses
 {
-  v4 = [a3 mutableCopy];
+  v4 = [addresses mutableCopy];
   postalAddresses = self->_postalAddresses;
   self->_postalAddresses = v4;
 
   MEMORY[0x1EEE66BB8](v4, postalAddresses);
 }
 
-- (void)setPhoneticNickName:(id)a3
+- (void)setPhoneticNickName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   phoneticNickName = self->_phoneticNickName;
   self->_phoneticNickName = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticNickName);
 }
 
-- (void)setPhoneticNameSuffix:(id)a3
+- (void)setPhoneticNameSuffix:(id)suffix
 {
-  v4 = [a3 copy];
+  v4 = [suffix copy];
   phoneticNameSuffix = self->_phoneticNameSuffix;
   self->_phoneticNameSuffix = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticNameSuffix);
 }
 
-- (void)setPhoneticNamePrefix:(id)a3
+- (void)setPhoneticNamePrefix:(id)prefix
 {
-  v4 = [a3 copy];
+  v4 = [prefix copy];
   phoneticNamePrefix = self->_phoneticNamePrefix;
   self->_phoneticNamePrefix = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticNamePrefix);
 }
 
-- (void)setPhoneticMiddleName:(id)a3
+- (void)setPhoneticMiddleName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   phoneticMiddleName = self->_phoneticMiddleName;
   self->_phoneticMiddleName = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticMiddleName);
 }
 
-- (void)setPhoneticLastName:(id)a3
+- (void)setPhoneticLastName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   phoneticLastName = self->_phoneticLastName;
   self->_phoneticLastName = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticLastName);
 }
 
-- (void)setPhoneticFirstName:(id)a3
+- (void)setPhoneticFirstName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   phoneticFirstName = self->_phoneticFirstName;
   self->_phoneticFirstName = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneticFirstName);
 }
 
-- (void)addPhoneNumbers:(id)a3
+- (void)addPhoneNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   phoneNumbers = self->_phoneNumbers;
-  v8 = v4;
+  v8 = numbersCopy;
   if (!phoneNumbers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_phoneNumbers;
-    self->_phoneNumbers = v6;
+    self->_phoneNumbers = array;
 
-    v4 = v8;
+    numbersCopy = v8;
     phoneNumbers = self->_phoneNumbers;
   }
 
-  [(NSArray *)phoneNumbers addObject:v4];
+  [(NSArray *)phoneNumbers addObject:numbersCopy];
 }
 
-- (void)setPhoneNumbers:(id)a3
+- (void)setPhoneNumbers:(id)numbers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [numbers mutableCopy];
   phoneNumbers = self->_phoneNumbers;
   self->_phoneNumbers = v4;
 
   MEMORY[0x1EEE66BB8](v4, phoneNumbers);
 }
 
-- (void)setOrganizationName:(id)a3
+- (void)setOrganizationName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   organizationName = self->_organizationName;
   self->_organizationName = v4;
 
   MEMORY[0x1EEE66BB8](v4, organizationName);
 }
 
-- (void)setNickName:(id)a3
+- (void)setNickName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   nickName = self->_nickName;
   self->_nickName = v4;
 
   MEMORY[0x1EEE66BB8](v4, nickName);
 }
 
-- (void)setNameSuffix:(id)a3
+- (void)setNameSuffix:(id)suffix
 {
-  v4 = [a3 copy];
+  v4 = [suffix copy];
   nameSuffix = self->_nameSuffix;
   self->_nameSuffix = v4;
 
   MEMORY[0x1EEE66BB8](v4, nameSuffix);
 }
 
-- (void)setNamePrefix:(id)a3
+- (void)setNamePrefix:(id)prefix
 {
-  v4 = [a3 copy];
+  v4 = [prefix copy];
   namePrefix = self->_namePrefix;
   self->_namePrefix = v4;
 
   MEMORY[0x1EEE66BB8](v4, namePrefix);
 }
 
-- (void)setMiddleName:(id)a3
+- (void)setMiddleName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   middleName = self->_middleName;
   self->_middleName = v4;
 
   MEMORY[0x1EEE66BB8](v4, middleName);
 }
 
-- (void)setLastName:(id)a3
+- (void)setLastName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   lastName = self->_lastName;
   self->_lastName = v4;
 
   MEMORY[0x1EEE66BB8](v4, lastName);
 }
 
-- (void)setJobTitle:(id)a3
+- (void)setJobTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   jobTitle = self->_jobTitle;
   self->_jobTitle = v4;
 
   MEMORY[0x1EEE66BB8](v4, jobTitle);
 }
 
-- (void)addInstantMessageAddresses:(id)a3
+- (void)addInstantMessageAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   instantMessageAddresses = self->_instantMessageAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!instantMessageAddresses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_instantMessageAddresses;
-    self->_instantMessageAddresses = v6;
+    self->_instantMessageAddresses = array;
 
-    v4 = v8;
+    addressesCopy = v8;
     instantMessageAddresses = self->_instantMessageAddresses;
   }
 
-  [(NSArray *)instantMessageAddresses addObject:v4];
+  [(NSArray *)instantMessageAddresses addObject:addressesCopy];
 }
 
-- (void)setInstantMessageAddresses:(id)a3
+- (void)setInstantMessageAddresses:(id)addresses
 {
-  v4 = [a3 mutableCopy];
+  v4 = [addresses mutableCopy];
   instantMessageAddresses = self->_instantMessageAddresses;
   self->_instantMessageAddresses = v4;
 
   MEMORY[0x1EEE66BB8](v4, instantMessageAddresses);
 }
 
-- (void)setFullName:(id)a3
+- (void)setFullName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   fullName = self->_fullName;
   self->_fullName = v4;
 
   MEMORY[0x1EEE66BB8](v4, fullName);
 }
 
-- (void)setFirstName:(id)a3
+- (void)setFirstName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   firstName = self->_firstName;
   self->_firstName = v4;
 
   MEMORY[0x1EEE66BB8](v4, firstName);
 }
 
-- (void)addEmailAddresses:(id)a3
+- (void)addEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   emailAddresses = self->_emailAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!emailAddresses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_emailAddresses;
-    self->_emailAddresses = v6;
+    self->_emailAddresses = array;
 
-    v4 = v8;
+    addressesCopy = v8;
     emailAddresses = self->_emailAddresses;
   }
 
-  [(NSArray *)emailAddresses addObject:v4];
+  [(NSArray *)emailAddresses addObject:addressesCopy];
 }
 
-- (void)setEmailAddresses:(id)a3
+- (void)setEmailAddresses:(id)addresses
 {
-  v4 = [a3 mutableCopy];
+  v4 = [addresses mutableCopy];
   emailAddresses = self->_emailAddresses;
   self->_emailAddresses = v4;
 
   MEMORY[0x1EEE66BB8](v4, emailAddresses);
 }
 
-- (void)setDepartmentName:(id)a3
+- (void)setDepartmentName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   departmentName = self->_departmentName;
   self->_departmentName = v4;
 
   MEMORY[0x1EEE66BB8](v4, departmentName);
 }
 
-- (void)addDates:(id)a3
+- (void)addDates:(id)dates
 {
-  v4 = a3;
+  datesCopy = dates;
   dates = self->_dates;
-  v8 = v4;
+  v8 = datesCopy;
   if (!dates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dates;
-    self->_dates = v6;
+    self->_dates = array;
 
-    v4 = v8;
+    datesCopy = v8;
     dates = self->_dates;
   }
 
-  [(NSArray *)dates addObject:v4];
+  [(NSArray *)dates addObject:datesCopy];
 }
 
-- (void)setDates:(id)a3
+- (void)setDates:(id)dates
 {
-  v4 = [a3 mutableCopy];
+  v4 = [dates mutableCopy];
   dates = self->_dates;
   self->_dates = v4;
 
   MEMORY[0x1EEE66BB8](v4, dates);
 }
 
-- (void)addContactRelations:(id)a3
+- (void)addContactRelations:(id)relations
 {
-  v4 = a3;
+  relationsCopy = relations;
   contactRelations = self->_contactRelations;
-  v8 = v4;
+  v8 = relationsCopy;
   if (!contactRelations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contactRelations;
-    self->_contactRelations = v6;
+    self->_contactRelations = array;
 
-    v4 = v8;
+    relationsCopy = v8;
     contactRelations = self->_contactRelations;
   }
 
-  [(NSArray *)contactRelations addObject:v4];
+  [(NSArray *)contactRelations addObject:relationsCopy];
 }
 
-- (void)setContactRelations:(id)a3
+- (void)setContactRelations:(id)relations
 {
-  v4 = [a3 mutableCopy];
+  v4 = [relations mutableCopy];
   contactRelations = self->_contactRelations;
   self->_contactRelations = v4;
 
   MEMORY[0x1EEE66BB8](v4, contactRelations);
 }
 
-- (void)setContactIdentifier:(id)a3
+- (void)setContactIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   contactIdentifier = self->_contactIdentifier;
   self->_contactIdentifier = v4;
 

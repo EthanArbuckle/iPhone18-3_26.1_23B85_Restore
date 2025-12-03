@@ -2,9 +2,9 @@
 + (IOSObjectArray)getInterfaceNames;
 + (JavaUtilArrayList)getNetworkInterfacesList;
 + (id)getNetworkInterfaces;
-+ (id)rethrowAsSocketExceptionWithJavaLangException:(id)a3;
-+ (int)getInterfaceIndexWithNSString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)rethrowAsSocketExceptionWithJavaLangException:(id)exception;
++ (int)getInterfaceIndexWithNSString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)getHardwareAddress;
 - (int)getMTU;
@@ -14,10 +14,10 @@
 
 @implementation JavaNetNetworkInterface
 
-+ (id)rethrowAsSocketExceptionWithJavaLangException:(id)a3
++ (id)rethrowAsSocketExceptionWithJavaLangException:(id)exception
 {
   v4 = new_JavaNetSocketException_init();
-  [(JavaLangThrowable *)v4 initCauseWithJavaLangThrowable:a3];
+  [(JavaLangThrowable *)v4 initCauseWithJavaLangThrowable:exception];
   objc_exception_throw(v4);
 }
 
@@ -28,9 +28,9 @@
   return JavaUtilCollections_enumerationWithJavaUtilCollection_(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
     return v6;
@@ -43,7 +43,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_16;
   }
@@ -53,7 +53,7 @@
     JreThrowClassCastException();
   }
 
-  if (self->interfaceIndex_ != *(a3 + 4))
+  if (self->interfaceIndex_ != *(equal + 4))
   {
 LABEL_12:
     LOBYTE(v6) = 0;
@@ -66,7 +66,7 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v6 = [(NSString *)name isEqual:*(a3 + 1)];
+  v6 = [(NSString *)name isEqual:*(equal + 1)];
   if (!v6)
   {
     return v6;
@@ -79,7 +79,7 @@ LABEL_16:
     JreThrowNullPointerException();
   }
 
-  v8 = *(a3 + 4);
+  v8 = *(equal + 4);
 
   LOBYTE(v6) = [(JavaUtilList *)addresses isEqual:v8];
   return v6;
@@ -151,8 +151,8 @@ LABEL_11:
 
 - (id)getHardwareAddress
 {
-  v2 = [(NSString *)self->name_ UTF8String];
-  if (!v2)
+  uTF8String = [(NSString *)self->name_ UTF8String];
+  if (!uTF8String)
   {
     return 0;
   }
@@ -168,7 +168,7 @@ LABEL_11:
   v5[2] = sub_1001CFD74;
   v5[3] = &unk_100427740;
   v5[4] = &v6;
-  sub_1001CFE14(v2, v5);
+  sub_1001CFE14(uTF8String, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -210,11 +210,11 @@ LABEL_11:
   return 0;
 }
 
-+ (int)getInterfaceIndexWithNSString:(id)a3
++ (int)getInterfaceIndexWithNSString:(id)string
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [string UTF8String];
 
-  return if_nametoindex(v3);
+  return if_nametoindex(uTF8String);
 }
 
 - (void)dealloc

@@ -1,64 +1,64 @@
 @interface SIIOSurface
-+ (unint64_t)getSurfaceIdentifierForPixelBuffer:(__CVBuffer *)a3;
++ (unint64_t)getSurfaceIdentifierForPixelBuffer:(__CVBuffer *)buffer;
 - (NSString)description;
-- (__CVBuffer)createPixelBufferWithAttributes:(id)a3;
+- (__CVBuffer)createPixelBufferWithAttributes:(id)attributes;
 - (e5rt_buffer_object)createE5RTBuffer;
 - (e5rt_surface_object)createE5RTSurface;
 - (id)debugQuickLookObject;
-- (id)initFromE5RTBuffer:(e5rt_buffer_object *)a3;
-- (id)initFromPixelBuffer:(__CVBuffer *)a3;
-- (id)initFromSurface:(__IOSurface *)a3;
+- (id)initFromE5RTBuffer:(e5rt_buffer_object *)buffer;
+- (id)initFromPixelBuffer:(__CVBuffer *)buffer;
+- (id)initFromSurface:(__IOSurface *)surface;
 - (unint64_t)allocationSize;
 - (unint64_t)bytesPerElement;
-- (unint64_t)bytesPerElementOfPlane:(unint64_t)a3;
+- (unint64_t)bytesPerElementOfPlane:(unint64_t)plane;
 - (unint64_t)bytesPerRow;
-- (unint64_t)bytesPerRowOfPlane:(unint64_t)a3;
+- (unint64_t)bytesPerRowOfPlane:(unint64_t)plane;
 - (unint64_t)elementHeight;
-- (unint64_t)elementHeightOfPlane:(unint64_t)a3;
+- (unint64_t)elementHeightOfPlane:(unint64_t)plane;
 - (unint64_t)elementWidth;
-- (unint64_t)elementWidthOfPlane:(unint64_t)a3;
+- (unint64_t)elementWidthOfPlane:(unint64_t)plane;
 - (unint64_t)height;
-- (unint64_t)heightOfPlane:(unint64_t)a3;
-- (unint64_t)offsetOfPlane:(unint64_t)a3;
+- (unint64_t)heightOfPlane:(unint64_t)plane;
+- (unint64_t)offsetOfPlane:(unint64_t)plane;
 - (unint64_t)planes;
 - (unint64_t)width;
-- (unint64_t)widthOfPlane:(unint64_t)a3;
+- (unint64_t)widthOfPlane:(unint64_t)plane;
 - (unsigned)pixelFormat;
 - (void)dealloc;
-- (void)getMutableBytesOfPlane:(unint64_t)a3 withHandler:(id)a4;
-- (void)getMutableBytesWithHandler:(id)a3;
-- (void)saveByteToDisk:(id)a3;
+- (void)getMutableBytesOfPlane:(unint64_t)plane withHandler:(id)handler;
+- (void)getMutableBytesWithHandler:(id)handler;
+- (void)saveByteToDisk:(id)disk;
 @end
 
 @implementation SIIOSurface
 
-- (id)initFromSurface:(__IOSurface *)a3
+- (id)initFromSurface:(__IOSurface *)surface
 {
-  v3 = a3;
-  if (a3)
+  selfCopy2 = surface;
+  if (surface)
   {
     v6.receiver = self;
     v6.super_class = SIIOSurface;
     self = [(SIIOSurface *)&v6 init];
     if (self)
     {
-      v4 = self;
-      [(SIIOSurface *)self setSurface:v3];
-      CFRetain([(SIIOSurface *)v4 surface]);
-      self = v4;
-      v3 = self;
+      selfCopy = self;
+      [(SIIOSurface *)self setSurface:selfCopy2];
+      CFRetain([(SIIOSurface *)selfCopy surface]);
+      self = selfCopy;
+      selfCopy2 = self;
     }
 
     else
     {
-      v3 = 0;
+      selfCopy2 = 0;
     }
   }
 
-  return v3;
+  return selfCopy2;
 }
 
-- (id)initFromE5RTBuffer:(e5rt_buffer_object *)a3
+- (id)initFromE5RTBuffer:(e5rt_buffer_object *)buffer
 {
   v16 = *MEMORY[0x277D85DE8];
   if (e5rt_buffer_object_get_iosurface())
@@ -86,25 +86,25 @@
       _os_log_impl(&dword_21DE0D000, v6, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to get the internal iosurface from output port. ***", buf, 0x12u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SIIOSurface *)self initFromSurface:0];
-    v7 = self;
+    selfCopy = self;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (id)initFromPixelBuffer:(__CVBuffer *)a3
+- (id)initFromPixelBuffer:(__CVBuffer *)buffer
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (buffer)
   {
-    IOSurface = CVPixelBufferGetIOSurface(a3);
+    IOSurface = CVPixelBufferGetIOSurface(buffer);
     if (!IOSurface)
     {
       v5 = __SceneIntelligenceLogSharedInstance();
@@ -119,16 +119,16 @@
     }
 
     self = [(SIIOSurface *)self initFromSurface:IOSurface];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v6;
+  return selfCopy;
 }
 
 - (e5rt_buffer_object)createE5RTBuffer
@@ -153,23 +153,23 @@
     v5 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(SIIOSurface *)self identifier];
-      v7 = [(SIIOSurface *)self width];
-      v8 = [(SIIOSurface *)self height];
-      v9 = [(SIIOSurface *)self bytesPerRow];
+      identifier = [(SIIOSurface *)self identifier];
+      width = [(SIIOSurface *)self width];
+      height = [(SIIOSurface *)self height];
+      bytesPerRow = [(SIIOSurface *)self bytesPerRow];
       v10 = SIPixelFormatToStr([(SIIOSurface *)self pixelFormat]);
       *buf = 136382211;
       v14 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/Surface/SIIOSurface.m";
       v15 = 1025;
       v16 = 77;
       v17 = 2048;
-      v18 = v6;
+      v18 = identifier;
       v19 = 2049;
-      v20 = v7;
+      v20 = width;
       v21 = 2049;
-      v22 = v8;
+      v22 = height;
       v23 = 2049;
-      v24 = v9;
+      v24 = bytesPerRow;
       v25 = 2113;
       v26 = v10;
       _os_log_impl(&dword_21DE0D000, v5, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to create the e5rt buffer from an existing surface: id=%lld, width=%{private}lu, height=%{private}lu, stride=%{private}lu, format=%{private}@ ***", buf, 0x44u);
@@ -209,23 +209,23 @@
     v5 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(SIIOSurface *)self identifier];
-      v7 = [(SIIOSurface *)self width];
-      v8 = [(SIIOSurface *)self height];
-      v9 = [(SIIOSurface *)self bytesPerRow];
+      identifier = [(SIIOSurface *)self identifier];
+      width = [(SIIOSurface *)self width];
+      height = [(SIIOSurface *)self height];
+      bytesPerRow = [(SIIOSurface *)self bytesPerRow];
       v10 = SIPixelFormatToStr([(SIIOSurface *)self pixelFormat]);
       *buf = 136382211;
       v14 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/Surface/SIIOSurface.m";
       v15 = 1025;
       v16 = 91;
       v17 = 2048;
-      v18 = v6;
+      v18 = identifier;
       v19 = 2049;
-      v20 = v7;
+      v20 = width;
       v21 = 2049;
-      v22 = v8;
+      v22 = height;
       v23 = 2049;
-      v24 = v9;
+      v24 = bytesPerRow;
       v25 = 2113;
       v26 = v10;
       _os_log_impl(&dword_21DE0D000, v5, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to create the e5rt surface from an existing surface: id=%lld, width=%{private}lu, height=%{private}lu, stride=%{private}lu, format=%{private}@ ***", buf, 0x44u);
@@ -245,32 +245,32 @@
 
 - (unsigned)pixelFormat
 {
-  v2 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetPixelFormat(v2);
+  return IOSurfaceGetPixelFormat(surface);
 }
 
 - (unint64_t)height
 {
-  v2 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetHeight(v2);
+  return IOSurfaceGetHeight(surface);
 }
 
 - (unint64_t)width
 {
-  v2 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetWidth(v2);
+  return IOSurfaceGetWidth(surface);
 }
 
 - (unint64_t)bytesPerRow
 {
   if ([(SIIOSurface *)self planes]< 2)
   {
-    v4 = [(SIIOSurface *)self surface];
+    surface = [(SIIOSurface *)self surface];
 
-    return IOSurfaceGetBytesPerRow(v4);
+    return IOSurfaceGetBytesPerRow(surface);
   }
 
   else
@@ -282,30 +282,30 @@
 
 - (unint64_t)allocationSize
 {
-  v2 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetAllocSize(v2);
+  return IOSurfaceGetAllocSize(surface);
 }
 
 - (unint64_t)bytesPerElement
 {
-  v2 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetBytesPerElement(v2);
+  return IOSurfaceGetBytesPerElement(surface);
 }
 
 - (unint64_t)elementWidth
 {
-  v2 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetElementWidth(v2);
+  return IOSurfaceGetElementWidth(surface);
 }
 
 - (unint64_t)elementHeight
 {
-  v2 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetElementHeight(v2);
+  return IOSurfaceGetElementHeight(surface);
 }
 
 - (unint64_t)planes
@@ -319,28 +319,28 @@
   return result;
 }
 
-- (unint64_t)heightOfPlane:(unint64_t)a3
+- (unint64_t)heightOfPlane:(unint64_t)plane
 {
-  v4 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetHeightOfPlane(v4, a3);
+  return IOSurfaceGetHeightOfPlane(surface, plane);
 }
 
-- (unint64_t)widthOfPlane:(unint64_t)a3
+- (unint64_t)widthOfPlane:(unint64_t)plane
 {
-  v4 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetWidthOfPlane(v4, a3);
+  return IOSurfaceGetWidthOfPlane(surface, plane);
 }
 
-- (unint64_t)bytesPerRowOfPlane:(unint64_t)a3
+- (unint64_t)bytesPerRowOfPlane:(unint64_t)plane
 {
-  v4 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetBytesPerRowOfPlane(v4, a3);
+  return IOSurfaceGetBytesPerRowOfPlane(surface, plane);
 }
 
-- (unint64_t)offsetOfPlane:(unint64_t)a3
+- (unint64_t)offsetOfPlane:(unint64_t)plane
 {
   v6 = 0;
   v7 = &v6;
@@ -351,7 +351,7 @@
   v5[2] = __29__SIIOSurface_offsetOfPlane___block_invoke;
   v5[3] = &unk_27833C390;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = plane;
   v5[4] = self;
   [(SIIOSurface *)self getMutableBytesWithHandler:v5];
   v3 = v7[3];
@@ -372,62 +372,62 @@ uint64_t __29__SIIOSurface_offsetOfPlane___block_invoke(void *a1, uint64_t a2)
   return [v3 getMutableBytesOfPlane:v2 withHandler:v5];
 }
 
-- (unint64_t)bytesPerElementOfPlane:(unint64_t)a3
+- (unint64_t)bytesPerElementOfPlane:(unint64_t)plane
 {
-  v4 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetBytesPerElementOfPlane(v4, a3);
+  return IOSurfaceGetBytesPerElementOfPlane(surface, plane);
 }
 
-- (unint64_t)elementWidthOfPlane:(unint64_t)a3
+- (unint64_t)elementWidthOfPlane:(unint64_t)plane
 {
-  v4 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetElementWidthOfPlane(v4, a3);
+  return IOSurfaceGetElementWidthOfPlane(surface, plane);
 }
 
-- (unint64_t)elementHeightOfPlane:(unint64_t)a3
+- (unint64_t)elementHeightOfPlane:(unint64_t)plane
 {
-  v4 = [(SIIOSurface *)self surface];
+  surface = [(SIIOSurface *)self surface];
 
-  return IOSurfaceGetElementHeightOfPlane(v4, a3);
+  return IOSurfaceGetElementHeightOfPlane(surface, plane);
 }
 
-- (void)getMutableBytesWithHandler:(id)a3
+- (void)getMutableBytesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SIIOSurface *)self surface];
-  CFRetain(v5);
-  IOSurfaceLock(v5, 0, 0);
-  BaseAddress = IOSurfaceGetBaseAddress(v5);
-  v4[2](v4, BaseAddress);
+  handlerCopy = handler;
+  surface = [(SIIOSurface *)self surface];
+  CFRetain(surface);
+  IOSurfaceLock(surface, 0, 0);
+  BaseAddress = IOSurfaceGetBaseAddress(surface);
+  handlerCopy[2](handlerCopy, BaseAddress);
 
-  IOSurfaceUnlock(v5, 0, 0);
+  IOSurfaceUnlock(surface, 0, 0);
 
-  CFRelease(v5);
+  CFRelease(surface);
 }
 
-- (void)getMutableBytesOfPlane:(unint64_t)a3 withHandler:(id)a4
+- (void)getMutableBytesOfPlane:(unint64_t)plane withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(SIIOSurface *)self surface];
-  CFRetain(v7);
-  IOSurfaceLock(v7, 0, 0);
-  BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane(v7, a3);
-  v6[2](v6, BaseAddressOfPlane);
+  handlerCopy = handler;
+  surface = [(SIIOSurface *)self surface];
+  CFRetain(surface);
+  IOSurfaceLock(surface, 0, 0);
+  BaseAddressOfPlane = IOSurfaceGetBaseAddressOfPlane(surface, plane);
+  handlerCopy[2](handlerCopy, BaseAddressOfPlane);
 
-  IOSurfaceUnlock(v7, 0, 0);
+  IOSurfaceUnlock(surface, 0, 0);
 
-  CFRelease(v7);
+  CFRelease(surface);
 }
 
-- (__CVBuffer)createPixelBufferWithAttributes:(id)a3
+- (__CVBuffer)createPixelBufferWithAttributes:(id)attributes
 {
   v17 = *MEMORY[0x277D85DE8];
   pixelBufferOut = 0;
   v4 = *MEMORY[0x277CBECE8];
-  v5 = a3;
-  v6 = CVPixelBufferCreateWithIOSurface(v4, [(SIIOSurface *)self surface], v5, &pixelBufferOut);
+  attributesCopy = attributes;
+  v6 = CVPixelBufferCreateWithIOSurface(v4, [(SIIOSurface *)self surface], attributesCopy, &pixelBufferOut);
 
   if (v6)
   {
@@ -449,9 +449,9 @@ uint64_t __29__SIIOSurface_offsetOfPlane___block_invoke(void *a1, uint64_t a2)
   return result;
 }
 
-+ (unint64_t)getSurfaceIdentifierForPixelBuffer:(__CVBuffer *)a3
++ (unint64_t)getSurfaceIdentifierForPixelBuffer:(__CVBuffer *)buffer
 {
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   if (!IOSurface)
   {
     +[SIIOSurface getSurfaceIdentifierForPixelBuffer:];
@@ -462,8 +462,8 @@ uint64_t __29__SIIOSurface_offsetOfPlane___block_invoke(void *a1, uint64_t a2)
 
 - (NSString)description
 {
-  v2 = [(SIIOSurface *)self propertiesDictionary];
-  v3 = [v2 description];
+  propertiesDictionary = [(SIIOSurface *)self propertiesDictionary];
+  v3 = [propertiesDictionary description];
 
   return v3;
 }
@@ -491,11 +491,11 @@ uint64_t __29__SIIOSurface_offsetOfPlane___block_invoke(void *a1, uint64_t a2)
   [(SIIOSurface *)&v3 dealloc];
 }
 
-- (void)saveByteToDisk:(id)a3
+- (void)saveByteToDisk:(id)disk
 {
-  v4 = a3;
-  v5 = [(SIIOSurface *)self copyData];
-  [v5 writeToFile:v4 atomically:1];
+  diskCopy = disk;
+  copyData = [(SIIOSurface *)self copyData];
+  [copyData writeToFile:diskCopy atomically:1];
 }
 
 @end

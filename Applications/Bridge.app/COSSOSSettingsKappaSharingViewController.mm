@@ -1,5 +1,5 @@
 @interface COSSOSSettingsKappaSharingViewController
-- (void)disableKappaThirdPartyAppForSpecifier:(id)a3;
+- (void)disableKappaThirdPartyAppForSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -10,11 +10,11 @@
   v12.receiver = self;
   v12.super_class = COSSOSSettingsKappaSharingViewController;
   [(COSSOSSettingsKappaSharingViewController *)&v12 viewDidLoad];
-  v3 = [sub_10004C1B4() crashDetectionThirdPartyDescription];
-  [(COSSOSSettingsKappaSharingViewController *)self setTitle:v3];
+  crashDetectionThirdPartyDescription = [sub_10004C1B4() crashDetectionThirdPartyDescription];
+  [(COSSOSSettingsKappaSharingViewController *)self setTitle:crashDetectionThirdPartyDescription];
 
-  v4 = [(COSSOSSettingsKappaSharingViewController *)self specifier];
-  v5 = [v4 propertyForKey:PSValueKey];
+  specifier = [(COSSOSSettingsKappaSharingViewController *)self specifier];
+  v5 = [specifier propertyForKey:PSValueKey];
   app = self->_app;
   self->_app = v5;
 
@@ -31,9 +31,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)disableKappaThirdPartyAppForSpecifier:(id)a3
+- (void)disableKappaThirdPartyAppForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   v5 = sub_10004C1B4();
   app = self->_app;

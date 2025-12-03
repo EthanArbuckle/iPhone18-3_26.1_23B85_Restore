@@ -2,27 +2,27 @@
 + (OS_os_log)log;
 - (MFSwipableCollectionViewLayoutDelegate)swipeDelegate;
 - (NSIndexPath)swipedIndexPath;
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4;
-- (id)gestureRecognizerViewForSwipeActionController:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)itemContainerViewForSwipeActionController:(id)a3;
-- (id)swipeActionController:(id)a3 indexPathForTouchLocation:(CGPoint)a4;
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4;
-- (id)swipeActionController:(id)a3 trailingSwipeConfigurationForItemAtIndexPath:(id)a4;
-- (id)swipeActionController:(id)a3 viewForItemAtIndexPath:(id)a4;
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path;
+- (id)gestureRecognizerViewForSwipeActionController:(id)controller;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)itemContainerViewForSwipeActionController:(id)controller;
+- (id)swipeActionController:(id)controller indexPathForTouchLocation:(CGPoint)location;
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path;
+- (id)swipeActionController:(id)controller trailingSwipeConfigurationForItemAtIndexPath:(id)path;
+- (id)swipeActionController:(id)controller viewForItemAtIndexPath:(id)path;
 - (id)traitCollection;
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3;
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller;
 - (void)finalizeCollectionViewUpdates;
-- (void)invalidateLayoutWithContext:(id)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
-- (void)prepareForTransitionFromLayout:(id)a3;
-- (void)prepareForTransitionToLayout:(id)a3;
-- (void)setSwipeDelegate:(id)a3;
-- (void)setSwipedIndexPath:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)swipeActionController:(id)a3 animateView:(id)a4 actionsView:(id)a5 forDestructiveAction:(id)a6 atIndexPath:(id)a7 withSwipeInfo:(id *)a8 completion:(id)a9;
-- (void)swipeActionController:(id)a3 willBeginSwipeForItemAtIndexPath:(id)a4;
-- (void)swipeActionController:(id)a3 willEndSwipeForItemAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
+- (void)prepareForCollectionViewUpdates:(id)updates;
+- (void)prepareForTransitionFromLayout:(id)layout;
+- (void)prepareForTransitionToLayout:(id)layout;
+- (void)setSwipeDelegate:(id)delegate;
+- (void)setSwipedIndexPath:(id)path animated:(BOOL)animated completion:(id)completion;
+- (void)swipeActionController:(id)controller animateView:(id)view actionsView:(id)actionsView forDestructiveAction:(id)action atIndexPath:(id)path withSwipeInfo:(id *)info completion:(id)completion;
+- (void)swipeActionController:(id)controller willBeginSwipeForItemAtIndexPath:(id)path;
+- (void)swipeActionController:(id)controller willEndSwipeForItemAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MFSwipableCollectionViewLayout
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = sub_10021A90C;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD6E0 != -1)
   {
     dispatch_once(&qword_1006DD6E0, block);
@@ -44,9 +44,9 @@
   return v2;
 }
 
-- (void)setSwipeDelegate:(id)a3
+- (void)setSwipeDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_swipeDelegate);
 
   v5 = obj;
@@ -61,81 +61,81 @@
   }
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = MFSwipableCollectionViewLayout;
-  [(MFSwipableCollectionViewLayout *)&v9 invalidateLayoutWithContext:v4];
-  if ([v4 invalidateEverything])
+  [(MFSwipableCollectionViewLayout *)&v9 invalidateLayoutWithContext:contextCopy];
+  if ([contextCopy invalidateEverything])
   {
-    v5 = [(MFSwipableCollectionViewLayout *)self swipeController];
-    [v5 resetSwipedItemAnimated:0 completion:0];
+    swipeController = [(MFSwipableCollectionViewLayout *)self swipeController];
+    [swipeController resetSwipedItemAnimated:0 completion:0];
   }
 
   v6 = +[MFSwipableCollectionViewLayout log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 invalidateEverything];
-    v8 = [v4 invalidateDataSourceCounts];
+    invalidateEverything = [contextCopy invalidateEverything];
+    invalidateDataSourceCounts = [contextCopy invalidateDataSourceCounts];
     *buf = 134218496;
-    v11 = v4;
+    v11 = contextCopy;
     v12 = 2048;
-    v13 = v7;
+    v13 = invalidateEverything;
     v14 = 2048;
-    v15 = v8;
+    v15 = invalidateDataSourceCounts;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "invalidateLayoutWithContext:%p invalidateEverything: %ld invalidateDataSourceCounts: %ld", buf, 0x20u);
   }
 }
 
 - (id)traitCollection
 {
-  v2 = [(MFSwipableCollectionViewLayout *)self collectionView];
-  v3 = [v2 traitCollection];
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+  traitCollection = [collectionView traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v4 = [(MFSwipableCollectionViewLayout *)self collectionView];
-  [v4 traitCollectionDidChange:v5];
+  changeCopy = change;
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+  [collectionView traitCollectionDidChange:changeCopy];
 }
 
-- (void)prepareForTransitionFromLayout:(id)a3
+- (void)prepareForTransitionFromLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v6.receiver = self;
   v6.super_class = MFSwipableCollectionViewLayout;
-  [(MFSwipableCollectionViewLayout *)&v6 prepareForTransitionFromLayout:v4];
-  v5 = [(MFSwipableCollectionViewLayout *)self swipeController];
-  [v5 setSwipeEnabled:1];
+  [(MFSwipableCollectionViewLayout *)&v6 prepareForTransitionFromLayout:layoutCopy];
+  swipeController = [(MFSwipableCollectionViewLayout *)self swipeController];
+  [swipeController setSwipeEnabled:1];
 }
 
-- (void)prepareForTransitionToLayout:(id)a3
+- (void)prepareForTransitionToLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v6.receiver = self;
   v6.super_class = MFSwipableCollectionViewLayout;
-  [(MFSwipableCollectionViewLayout *)&v6 prepareForTransitionToLayout:v4];
-  v5 = [(MFSwipableCollectionViewLayout *)self swipeController];
-  [v5 setSwipeEnabled:0];
+  [(MFSwipableCollectionViewLayout *)&v6 prepareForTransitionToLayout:layoutCopy];
+  swipeController = [(MFSwipableCollectionViewLayout *)self swipeController];
+  [swipeController setSwipeEnabled:0];
 }
 
 - (NSIndexPath)swipedIndexPath
 {
-  v2 = [(MFSwipableCollectionViewLayout *)self swipeController];
-  v3 = [v2 swipedIndexPath];
+  swipeController = [(MFSwipableCollectionViewLayout *)self swipeController];
+  swipedIndexPath = [swipeController swipedIndexPath];
 
-  return v3;
+  return swipedIndexPath;
 }
 
-- (UIEdgeInsets)swipeActionController:(id)a3 extraInsetsForItemAtIndexPath:(id)a4
+- (UIEdgeInsets)swipeActionController:(id)controller extraInsetsForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MFSwipableCollectionViewLayout *)self collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   [v7 safeAreaInsets];
   v9 = v8;
@@ -154,27 +154,27 @@
   return result;
 }
 
-- (id)gestureRecognizerViewForSwipeActionController:(id)a3
+- (id)gestureRecognizerViewForSwipeActionController:(id)controller
 {
-  v3 = [(MFSwipableCollectionViewLayout *)self collectionView];
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
 
-  return v3;
+  return collectionView;
 }
 
-- (id)itemContainerViewForSwipeActionController:(id)a3
+- (id)itemContainerViewForSwipeActionController:(id)controller
 {
-  v3 = [(MFSwipableCollectionViewLayout *)self collectionView];
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
 
-  return v3;
+  return collectionView;
 }
 
-- (id)swipeActionController:(id)a3 leadingSwipeConfigurationForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller leadingSwipeConfigurationForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
+  pathCopy = path;
+  swipeDelegate = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 swipableCollectionViewLayout:self leadingSwipeActionsConfigurationForItemAtIndexPath:v5];
+    v7 = [swipeDelegate swipableCollectionViewLayout:self leadingSwipeActionsConfigurationForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -185,13 +185,13 @@
   return v7;
 }
 
-- (id)swipeActionController:(id)a3 trailingSwipeConfigurationForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller trailingSwipeConfigurationForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
+  pathCopy = path;
+  swipeDelegate = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 swipableCollectionViewLayout:self trailingSwipeActionsConfigurationForItemAtIndexPath:v5];
+    v7 = [swipeDelegate swipableCollectionViewLayout:self trailingSwipeActionsConfigurationForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -202,113 +202,113 @@
   return v7;
 }
 
-- (id)swipeActionController:(id)a3 indexPathForTouchLocation:(CGPoint)a4
+- (id)swipeActionController:(id)controller indexPathForTouchLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(MFSwipableCollectionViewLayout *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = location.y;
+  x = location.x;
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   return v7;
 }
 
-- (id)swipeActionController:(id)a3 viewForItemAtIndexPath:(id)a4
+- (id)swipeActionController:(id)controller viewForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MFSwipableCollectionViewLayout *)self collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v5];
-  v8 = [v7 contentWrapperView];
+  pathCopy = path;
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
+  contentWrapperView = [v7 contentWrapperView];
 
-  return v8;
+  return contentWrapperView;
 }
 
-- (void)setSwipedIndexPath:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setSwipedIndexPath:(id)path animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v13 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  pathCopy = path;
+  completionCopy = completion;
   [(MFSwipableCollectionViewLayout *)self swipeController];
-  if (v13)
+  if (pathCopy)
     v9 = {;
-    v10 = [(MFSwipableCollectionViewLayout *)self swipeActionController:v9 trailingSwipeConfigurationForItemAtIndexPath:v13];
+    v10 = [(MFSwipableCollectionViewLayout *)self swipeActionController:v9 trailingSwipeConfigurationForItemAtIndexPath:pathCopy];
 
-    v11 = [(MFSwipableCollectionViewLayout *)self swipeController];
-    v12 = [(MFSwipableCollectionViewLayout *)self collectionView];
-    [v11 swipeItemAtIndexPath:v13 configuration:v10 direction:sub_10022BBE8(0 animated:v12) completion:{v6, v8}];
+    swipeController = [(MFSwipableCollectionViewLayout *)self swipeController];
+    collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+    [swipeController swipeItemAtIndexPath:pathCopy configuration:v10 direction:sub_10022BBE8(0 animated:collectionView) completion:{animatedCopy, completionCopy}];
   }
 
   else
     v10 = {;
-    [v10 resetSwipedItemAnimated:v6 completion:v8];
+    [v10 resetSwipedItemAnimated:animatedCopy completion:completionCopy];
   }
 }
 
-- (void)swipeActionController:(id)a3 animateView:(id)a4 actionsView:(id)a5 forDestructiveAction:(id)a6 atIndexPath:(id)a7 withSwipeInfo:(id *)a8 completion:(id)a9
+- (void)swipeActionController:(id)controller animateView:(id)view actionsView:(id)actionsView forDestructiveAction:(id)action atIndexPath:(id)path withSwipeInfo:(id *)info completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a9;
-  v15 = [(MFSwipableCollectionViewLayout *)self collectionView];
-  [v15 frame];
+  viewCopy = view;
+  actionsViewCopy = actionsView;
+  completionCopy = completion;
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+  [collectionView frame];
   v17 = v16;
   _UIDirectionalMultiplierForSwipeDirection();
   v19 = v17 * 1.5 * v18;
 
-  var4 = a8->var4;
+  var4 = info->var4;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10021B4E8;
   v26[3] = &unk_10064CF10;
-  v21 = v12;
+  v21 = viewCopy;
   v27 = v21;
   v29 = v19;
-  v22 = v13;
+  v22 = actionsViewCopy;
   v28 = v22;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10021B5AC;
   v24[3] = &unk_10064FAE0;
   v24[4] = self;
-  v23 = v14;
+  v23 = completionCopy;
   v25 = v23;
   [UIView animateWithDuration:0 delay:v26 usingSpringWithDamping:v24 initialSpringVelocity:0.400000006 options:0.0 animations:1.0 completion:var4];
 }
 
-- (void)swipeActionController:(id)a3 willBeginSwipeForItemAtIndexPath:(id)a4
+- (void)swipeActionController:(id)controller willBeginSwipeForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v5 = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
+  pathCopy = path;
+  swipeDelegate = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 swipableCollectionViewLayout:self willBeginSwipeAtIndexPath:v6];
+    [swipeDelegate swipableCollectionViewLayout:self willBeginSwipeAtIndexPath:pathCopy];
   }
 }
 
-- (void)swipeActionController:(id)a3 willEndSwipeForItemAtIndexPath:(id)a4
+- (void)swipeActionController:(id)controller willEndSwipeForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v5 = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
+  pathCopy = path;
+  swipeDelegate = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 swipableCollectionViewLayout:self willEndSwipeForItemAtIndexPath:v6];
+    [swipeDelegate swipableCollectionViewLayout:self willEndSwipeForItemAtIndexPath:pathCopy];
   }
 }
 
-- (int64_t)layoutDirectionForSwipeActionController:(id)a3
+- (int64_t)layoutDirectionForSwipeActionController:(id)controller
 {
-  v3 = [(MFSwipableCollectionViewLayout *)self collectionView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 layoutDirection];
+  collectionView = [(MFSwipableCollectionViewLayout *)self collectionView];
+  traitCollection = [collectionView traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  return v5;
+  return layoutDirection;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v7.receiver = self;
   v7.super_class = MFSwipableCollectionViewLayout;
-  [(MFSwipableCollectionViewLayout *)&v7 prepareForCollectionViewUpdates:v4];
+  [(MFSwipableCollectionViewLayout *)&v7 prepareForCollectionViewUpdates:updatesCopy];
   v5 = objc_opt_new();
   [(MFSwipableCollectionViewLayout *)self setInsertedIndexPaths:v5];
 
@@ -317,7 +317,7 @@
   v6[2] = sub_10021B8A4;
   v6[3] = &unk_100655C60;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [updatesCopy enumerateObjectsUsingBlock:v6];
 }
 
 - (void)finalizeCollectionViewUpdates
@@ -328,17 +328,17 @@
   [(MFSwipableCollectionViewLayout *)self setInsertedIndexPaths:0];
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = MFSwipableCollectionViewLayout;
-  v5 = [(MFSwipableCollectionViewLayout *)&v12 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
-  v6 = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
-  v7 = [(MFSwipableCollectionViewLayout *)self insertedIndexPaths];
-  v8 = [v7 containsObject:v4];
+  v5 = [(MFSwipableCollectionViewLayout *)&v12 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
+  swipeDelegate = [(MFSwipableCollectionViewLayout *)self swipeDelegate];
+  insertedIndexPaths = [(MFSwipableCollectionViewLayout *)self insertedIndexPaths];
+  v8 = [insertedIndexPaths containsObject:pathCopy];
 
-  LODWORD(self) = [v6 swipableCollectionViewLayout:self shouldAnimateAppearingItemAtIndexPath:v4];
+  LODWORD(self) = [swipeDelegate swipableCollectionViewLayout:self shouldAnimateAppearingItemAtIndexPath:pathCopy];
   if ((_os_feature_enabled_impl() & v8 & self) == 1)
   {
     [v5 setAlpha:1.0];

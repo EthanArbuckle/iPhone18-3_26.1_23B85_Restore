@@ -1,5 +1,5 @@
 @interface CNContactListLimitedAccessTipView
-- (CNContactListLimitedAccessTipView)initWithAppName:(id)a3 isLimited:(BOOL)a4;
+- (CNContactListLimitedAccessTipView)initWithAppName:(id)name isLimited:(BOOL)limited;
 - (CNContactListLimitedAccessTipViewDelegate)delegate;
 - (void)didTapDismiss;
 @end
@@ -15,15 +15,15 @@
 
 - (void)didTapDismiss
 {
-  v3 = [(CNContactListLimitedAccessTipView *)self delegate];
-  [v3 limitedAccessTipViewDidTapDismiss:self];
+  delegate = [(CNContactListLimitedAccessTipView *)self delegate];
+  [delegate limitedAccessTipViewDidTapDismiss:self];
 }
 
-- (CNContactListLimitedAccessTipView)initWithAppName:(id)a3 isLimited:(BOOL)a4
+- (CNContactListLimitedAccessTipView)initWithAppName:(id)name isLimited:(BOOL)limited
 {
-  v4 = a4;
+  limitedCopy = limited;
   v110[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   v107.receiver = self;
   v107.super_class = CNContactListLimitedAccessTipView;
   v7 = [(CNContactListLimitedAccessTipView *)&v107 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -35,13 +35,13 @@
     [v9 setCornerRadius:12.0];
 
     [(CNContactListLimitedAccessTipView *)v102 setClipsToBounds:1];
-    v10 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-    [(CNContactListLimitedAccessTipView *)v102 setBackgroundColor:v10];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    [(CNContactListLimitedAccessTipView *)v102 setBackgroundColor:quaternarySystemFillColor];
 
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     v12 = CNContactsUIBundle();
     v13 = v12;
-    if (v4)
+    if (limitedCopy)
     {
       v14 = @"LIMITED_TIP";
     }
@@ -51,7 +51,7 @@
       v14 = @"PRIVATE_TIP";
     }
 
-    if (v4)
+    if (limitedCopy)
     {
       v15 = @"LIMITED_TIP_HINT";
     }
@@ -73,8 +73,8 @@
     v19 = MEMORY[0x1E696AEC0];
     v20 = CNContactsUIBundle();
     v21 = [v20 localizedStringForKey:v15 value:&stru_1F0CE7398 table:@"Localized"];
-    v22 = [v19 stringWithFormat:v21, v6];
-    [v18 setText:v22];
+    nameCopy = [v19 stringWithFormat:v21, nameCopy];
+    [v18 setText:nameCopy];
 
     v23 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD78]];
     v100 = [v23 fontDescriptorWithSymbolicTraits:0x8000];
@@ -82,8 +82,8 @@
     v24 = [MEMORY[0x1E69DB878] fontWithDescriptor:v100 size:0.0];
     [v18 setFont:v24];
 
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v18 setTextColor:v25];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v18 setTextColor:secondaryLabelColor];
 
     [v18 setNumberOfLines:0];
     v99 = v18;
@@ -108,15 +108,15 @@
     [v27 setCustomSpacing:v11 afterView:5.0];
     v96 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:@"com.apple.MobileAddressBook"];
     v29 = objc_alloc(MEMORY[0x1E69A8A30]);
-    v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v30 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v95 = [v29 initWithSize:30.0 scale:{30.0, v31}];
 
     v94 = [v96 prepareImageForDescriptor:v95];
     v32 = MEMORY[0x1E69DCAB8];
-    v33 = [v94 CGImage];
+    cGImage = [v94 CGImage];
     [v94 scale];
-    v93 = [v32 imageWithCGImage:v33 scale:0 orientation:?];
+    v93 = [v32 imageWithCGImage:cGImage scale:0 orientation:?];
     v34 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v93];
     [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v35) = 1144750080;
@@ -124,22 +124,22 @@
     LODWORD(v36) = 1148846080;
     [v34 setContentCompressionResistancePriority:0 forAxis:v36];
     [v34 setContentMode:1];
-    v37 = [MEMORY[0x1E69DC888] blackColor];
-    v38 = [v37 CGColor];
-    v39 = [v34 layer];
-    [v39 setShadowColor:v38];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor = [blackColor CGColor];
+    layer = [v34 layer];
+    [layer setShadowColor:cGColor];
 
-    v40 = [v34 layer];
+    layer2 = [v34 layer];
     LODWORD(v41) = 1041865114;
-    [v40 setShadowOpacity:v41];
+    [layer2 setShadowOpacity:v41];
 
     v42 = *MEMORY[0x1E695F060];
     v43 = *(MEMORY[0x1E695F060] + 8);
-    v44 = [v34 layer];
-    [v44 setShadowOffset:{v42, v43}];
+    layer3 = [v34 layer];
+    [layer3 setShadowOffset:{v42, v43}];
 
-    v45 = [v34 layer];
-    [v45 setShadowRadius:1.0];
+    layer4 = [v34 layer];
+    [layer4 setShadowRadius:1.0];
 
     v46 = objc_alloc_init(MEMORY[0x1E69DCF90]);
     [v46 setAxis:0];
@@ -158,21 +158,21 @@
     [v47 _cn_each:v103];
 
     v49 = MEMORY[0x1E69DCAD8];
-    v50 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    v91 = [v49 configurationWithHierarchicalColor:v50];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    v91 = [v49 configurationWithHierarchicalColor:tertiaryLabelColor];
 
-    v51 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v51 setContentInsets:{2.0, 2.0, 2.0, 2.0}];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setContentInsets:{2.0, 2.0, 2.0, 2.0}];
     v52 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:*MEMORY[0x1E69DB980] weight:15.0];
     v53 = [v52 configurationByApplyingConfiguration:v91];
-    [v51 setPreferredSymbolConfigurationForImage:v53];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v53];
 
-    v90 = v51;
-    [v51 setButtonSize:1];
+    v90 = plainButtonConfiguration;
+    [plainButtonConfiguration setButtonSize:1];
     v54 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark"];
-    [v51 setImage:v54];
+    [plainButtonConfiguration setImage:v54];
 
-    v55 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v51 primaryAction:0];
+    v55 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     [v55 setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v56) = 1148846080;
     [v55 setContentHuggingPriority:0 forAxis:v56];
@@ -182,50 +182,50 @@
     [v55 addTarget:v102 action:sel_didTapDismiss forControlEvents:64];
     [(CNContactListLimitedAccessTipView *)v102 addSubview:v48];
     [(CNContactListLimitedAccessTipView *)v102 addSubview:v55];
-    v101 = [MEMORY[0x1E695DF70] array];
-    v88 = [v48 leadingAnchor];
-    v89 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
-    v87 = [v89 leadingAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87 constant:4.0];
+    array = [MEMORY[0x1E695DF70] array];
+    leadingAnchor = [v48 leadingAnchor];
+    layoutMarginsGuide = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v86 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
     v108[0] = v86;
-    v84 = [v48 trailingAnchor];
-    v85 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
-    v82 = [v85 trailingAnchor];
-    v81 = [v84 constraintEqualToAnchor:v82 constant:-4.0];
+    trailingAnchor = [v48 trailingAnchor];
+    layoutMarginsGuide2 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v81 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-4.0];
     v108[1] = v81;
-    v78 = [v48 topAnchor];
-    v79 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
-    v77 = [v79 topAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77 constant:4.0];
+    topAnchor = [v48 topAnchor];
+    layoutMarginsGuide3 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v76 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:4.0];
     v108[2] = v76;
     v80 = v48;
-    v74 = [v48 bottomAnchor];
-    v75 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
-    v73 = [v75 bottomAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73 constant:-4.0];
+    bottomAnchor = [v48 bottomAnchor];
+    layoutMarginsGuide4 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v72 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-4.0];
     v108[3] = v72;
     v83 = v34;
-    v71 = [v34 widthAnchor];
-    v70 = [v34 heightAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    widthAnchor = [v34 widthAnchor];
+    heightAnchor = [v34 heightAnchor];
+    v69 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v108[4] = v69;
-    v58 = [v55 trailingAnchor];
-    v59 = [v48 trailingAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59];
+    trailingAnchor3 = [v55 trailingAnchor];
+    trailingAnchor4 = [v48 trailingAnchor];
+    v60 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v108[5] = v60;
-    v61 = [v55 topAnchor];
-    v62 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
-    v63 = [v62 topAnchor];
-    [v61 constraintEqualToAnchor:v63];
-    v65 = v64 = v6;
+    topAnchor3 = [v55 topAnchor];
+    layoutMarginsGuide5 = [(CNContactListLimitedAccessTipView *)v102 layoutMarginsGuide];
+    topAnchor4 = [layoutMarginsGuide5 topAnchor];
+    [topAnchor3 constraintEqualToAnchor:topAnchor4];
+    v65 = v64 = nameCopy;
     v108[6] = v65;
     v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:v108 count:7];
-    [v101 addObjectsFromArray:v66];
+    [array addObjectsFromArray:v66];
 
-    v6 = v64;
+    nameCopy = v64;
     v8 = v102;
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v101];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
     v67 = v102;
   }
 

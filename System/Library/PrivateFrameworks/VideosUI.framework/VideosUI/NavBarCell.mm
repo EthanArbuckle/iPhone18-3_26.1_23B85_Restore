@@ -1,5 +1,5 @@
 @interface NavBarCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -8,20 +8,20 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3DFCAAC();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3DFCB98();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1E3DFD100(width);
   v7 = v6;
 

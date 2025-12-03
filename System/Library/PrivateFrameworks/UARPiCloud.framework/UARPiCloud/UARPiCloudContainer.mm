@@ -3,42 +3,42 @@
 - (BOOL)requiresPrefForSigningBeta;
 - (CKServerChangeToken)databaseChangeToken;
 - (NSData)verificationCertificate;
-- (UARPiCloudContainer)initWithContainerID:(id)a3;
+- (UARPiCloudContainer)initWithContainerID:(id)d;
 - (id)publicKey;
-- (void)createContainerWithIdentifier:(id)a3;
-- (void)processVerificationCertificateRecord:(id)a3;
-- (void)setDatabaseChangeToken:(id)a3;
-- (void)setPublicKey:(id)a3;
-- (void)setUpdatedRecords:(id)a3;
-- (void)setUpdatedZones:(id)a3;
-- (void)setVerificationCertificate:(id)a3;
+- (void)createContainerWithIdentifier:(id)identifier;
+- (void)processVerificationCertificateRecord:(id)record;
+- (void)setDatabaseChangeToken:(id)token;
+- (void)setPublicKey:(id)key;
+- (void)setUpdatedRecords:(id)records;
+- (void)setUpdatedZones:(id)zones;
+- (void)setVerificationCertificate:(id)certificate;
 @end
 
 @implementation UARPiCloudContainer
 
-- (UARPiCloudContainer)initWithContainerID:(id)a3
+- (UARPiCloudContainer)initWithContainerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = UARPiCloudContainer;
   v5 = [(UARPiCloudContainer *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    [(UARPiCloudContainer *)v5 createContainerWithIdentifier:v4];
+    [(UARPiCloudContainer *)v5 createContainerWithIdentifier:dCopy];
     if (!v6->_container)
     {
       v15 = 0;
       goto LABEL_6;
     }
 
-    v7 = [v4 copy];
+    v7 = [dCopy copy];
     containerID = v6->_containerID;
     v6->_containerID = v7;
 
-    v9 = [(CKContainer *)v6->_container publicCloudDatabase];
+    publicCloudDatabase = [(CKContainer *)v6->_container publicCloudDatabase];
     database = v6->_database;
-    v6->_database = v9;
+    v6->_database = publicCloudDatabase;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB58]);
     updatedZones = v6->_updatedZones;
@@ -55,12 +55,12 @@ LABEL_6:
   return v15;
 }
 
-- (void)createContainerWithIdentifier:(id)a3
+- (void)createContainerWithIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = CFPreferencesGetAppBooleanValue(@"developmentEnvironment", @"com.apple.UARPiCloud", 0) != 0;
-  if ([v4 containsString:@"com.apple.chip"])
+  identifierCopy = identifier;
+  bOOLValue = CFPreferencesGetAppBooleanValue(@"developmentEnvironment", @"com.apple.UARPiCloud", 0) != 0;
+  if ([identifierCopy containsString:@"com.apple.chip"])
   {
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/Library/Managed Preferences/mobile/com.apple.UARPiCloud.plist"];
     v15 = 0;
@@ -72,7 +72,7 @@ LABEL_6:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
       }
     }
 
@@ -88,7 +88,7 @@ LABEL_6:
     }
   }
 
-  if (v5)
+  if (bOOLValue)
   {
     v10 = 2;
   }
@@ -98,7 +98,7 @@ LABEL_6:
     v10 = 1;
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CBC228]) initWithContainerIdentifier:v4 environment:v10];
+  v11 = [objc_alloc(MEMORY[0x277CBC228]) initWithContainerIdentifier:identifierCopy environment:v10];
   v12 = [objc_alloc(MEMORY[0x277CBC210]) initWithContainerID:v11];
   container = self->_container;
   self->_container = v12;
@@ -106,38 +106,38 @@ LABEL_6:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUpdatedZones:(id)a3
+- (void)setUpdatedZones:(id)zones
 {
-  v4 = [a3 mutableCopy];
+  v4 = [zones mutableCopy];
   updatedZones = self->_updatedZones;
   self->_updatedZones = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setUpdatedRecords:(id)a3
+- (void)setUpdatedRecords:(id)records
 {
-  v4 = [a3 mutableCopy];
+  v4 = [records mutableCopy];
   updatedRecords = self->_updatedRecords;
   self->_updatedRecords = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDatabaseChangeToken:(id)a3
+- (void)setDatabaseChangeToken:(id)token
 {
-  v4 = a3;
-  if (![(UARPiCloudContainer *)self isCHIPContainer]&& v4)
+  tokenCopy = token;
+  if (![(UARPiCloudContainer *)self isCHIPContainer]&& tokenCopy)
   {
     v9 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v9];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v9];
     v6 = v9;
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", self->_containerID, @"Database"];
     saveEntryForKey(v5, v7);
   }
 
   databaseChangeToken = self->_databaseChangeToken;
-  self->_databaseChangeToken = v4;
+  self->_databaseChangeToken = tokenCopy;
 }
 
 - (CKServerChangeToken)databaseChangeToken
@@ -166,30 +166,30 @@ LABEL_6:
   return v10;
 }
 
-- (void)setVerificationCertificate:(id)a3
+- (void)setVerificationCertificate:(id)certificate
 {
-  v4 = a3;
-  if (v4)
+  certificateCopy = certificate;
+  if (certificateCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", self->_containerID, @"VerificationCertificate"];
-    saveEntryForKey(v4, v5);
+    saveEntryForKey(certificateCopy, v5);
   }
 
   verificationCertificate = self->_verificationCertificate;
-  self->_verificationCertificate = v4;
+  self->_verificationCertificate = certificateCopy;
 }
 
-- (void)setPublicKey:(id)a3
+- (void)setPublicKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", self->_containerID, @"PublicKey"];
-    saveEntryForKey(v4, v5);
+    saveEntryForKey(keyCopy, v5);
   }
 
   publicKey = self->_publicKey;
-  self->_publicKey = v4;
+  self->_publicKey = keyCopy;
 }
 
 - (NSData)verificationCertificate
@@ -254,13 +254,13 @@ LABEL_6:
   return [(NSString *)containerID isEqualToString:@"com.apple.chip.staging"];
 }
 
-- (void)processVerificationCertificateRecord:(id)a3
+- (void)processVerificationCertificateRecord:(id)record
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   if ([(UARPiCloudContainer *)self isCHIPContainer])
   {
-    v5 = [v4 objectForKey:@"certificate"];
+    v5 = [recordCopy objectForKey:@"certificate"];
     if (v5)
     {
       v6 = v5;

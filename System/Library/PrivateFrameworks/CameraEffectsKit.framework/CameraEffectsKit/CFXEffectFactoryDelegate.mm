@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (BOOL)CFX_disableExpensiveFilters;
 - (BOOL)CFX_enoughPowerForStyleTransfer;
-- (BOOL)CFX_isExpensiveEffectID:(id)a3 withFactory:(id)a4;
-- (Class)JFXEffectClassForType:(int)a3;
-- (id)CFX_filterEffectsWithFactory:(id)a3;
-- (id)CFX_overlayEffectsWithFactory:(id)a3;
-- (id)effectFactory:(id)a3 createEffectContentDataSourceForEffectID:(id)a4 ofType:(int)a5;
-- (void)effectFactory:(id)a3 effectIDsAvailableForType:(int)a4 completion:(id)a5;
+- (BOOL)CFX_isExpensiveEffectID:(id)d withFactory:(id)factory;
+- (Class)JFXEffectClassForType:(int)type;
+- (id)CFX_filterEffectsWithFactory:(id)factory;
+- (id)CFX_overlayEffectsWithFactory:(id)factory;
+- (id)effectFactory:(id)factory createEffectContentDataSourceForEffectID:(id)d ofType:(int)type;
+- (void)effectFactory:(id)factory effectIDsAvailableForType:(int)type completion:(id)completion;
 @end
 
 @implementation CFXEffectFactoryDelegate
@@ -31,11 +31,11 @@ uint64_t __42__CFXEffectFactoryDelegate_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)effectFactory:(id)a3 effectIDsAvailableForType:(int)a4 completion:(id)a5
+- (void)effectFactory:(id)factory effectIDsAvailableForType:(int)type completion:(id)completion
 {
-  v6 = *&a4;
+  v6 = *&type;
   v19[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  factoryCopy = factory;
   v9 = *MEMORY[0x277D419D8];
   v18[0] = &unk_28556D1E8;
   v18[1] = &unk_28556D200;
@@ -49,26 +49,26 @@ uint64_t __42__CFXEffectFactoryDelegate_sharedInstance__block_invoke()
   v18[4] = &unk_28556D248;
   v19[4] = v9;
   v11 = MEMORY[0x277CBEAC0];
-  v12 = a5;
+  completionCopy = completion;
   v13 = [v11 dictionaryWithObjects:v19 forKeys:v18 count:5];
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v6];
   v15 = [v13 objectForKeyedSubscript:v14];
 
   if (v6 == 7)
   {
-    v16 = [(CFXEffectFactoryDelegate *)self CFX_animojiEffectsWithFactory:v8];
+    v16 = [(CFXEffectFactoryDelegate *)self CFX_animojiEffectsWithFactory:factoryCopy];
   }
 
   else if (v6 == 2)
   {
-    v16 = [(CFXEffectFactoryDelegate *)self CFX_overlayEffectsWithFactory:v8];
+    v16 = [(CFXEffectFactoryDelegate *)self CFX_overlayEffectsWithFactory:factoryCopy];
   }
 
   else
   {
     if (v6 == 1)
     {
-      [(CFXEffectFactoryDelegate *)self CFX_filterEffectsWithFactory:v8];
+      [(CFXEffectFactoryDelegate *)self CFX_filterEffectsWithFactory:factoryCopy];
     }
 
     else
@@ -79,15 +79,15 @@ uint64_t __42__CFXEffectFactoryDelegate_sharedInstance__block_invoke()
   }
 
   v17 = v16;
-  v12[2](v12, v16);
+  completionCopy[2](completionCopy, v16);
 }
 
-- (id)effectFactory:(id)a3 createEffectContentDataSourceForEffectID:(id)a4 ofType:(int)a5
+- (id)effectFactory:(id)factory createEffectContentDataSourceForEffectID:(id)d ofType:(int)type
 {
-  if (a5 == 1)
+  if (type == 1)
   {
-    v5 = a4;
-    v6 = [[CFXFilterEffectContentDataSource alloc] initWithEffectID:v5];
+    dCopy = d;
+    v6 = [[CFXFilterEffectContentDataSource alloc] initWithEffectID:dCopy];
   }
 
   else
@@ -98,12 +98,12 @@ uint64_t __42__CFXEffectFactoryDelegate_sharedInstance__block_invoke()
   return v6;
 }
 
-- (id)CFX_filterEffectsWithFactory:(id)a3
+- (id)CFX_filterEffectsWithFactory:(id)factory
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"showAllRegisteredFilters"];
+  factoryCopy = factory;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"showAllRegisteredFilters"];
 
   if (v6)
   {
@@ -126,7 +126,7 @@ uint64_t __42__CFXEffectFactoryDelegate_sharedInstance__block_invoke()
     v30 = &v31;
     v9 = v8;
     v29 = v9;
-    [v4 effectCategoriesForType:1 completion:v28];
+    [factoryCopy effectCategoriesForType:1 completion:v28];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     v7 = objc_opt_new();
     v26 = 0u;
@@ -147,8 +147,8 @@ uint64_t __42__CFXEffectFactoryDelegate_sharedInstance__block_invoke()
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v24 + 1) + 8 * i) effectIDs];
-          [v7 addObjectsFromArray:v14];
+          effectIDs = [*(*(&v24 + 1) + 8 * i) effectIDs];
+          [v7 addObjectsFromArray:effectIDs];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v24 objects:v37 count:16];
@@ -164,10 +164,10 @@ uint64_t __42__CFXEffectFactoryDelegate_sharedInstance__block_invoke()
       v19 = 3221225472;
       v20 = __57__CFXEffectFactoryDelegate_CFX_filterEffectsWithFactory___block_invoke_2;
       v21 = &unk_278D7A950;
-      v22 = self;
-      v23 = v4;
+      selfCopy = self;
+      v23 = factoryCopy;
       v16 = [v15 predicateWithBlock:&v18];
-      [v7 filterUsingPredicate:{v16, v18, v19, v20, v21, v22}];
+      [v7 filterUsingPredicate:{v16, v18, v19, v20, v21, selfCopy}];
     }
 
     _Block_object_dispose(&v31, 8);
@@ -183,10 +183,10 @@ void __57__CFXEffectFactoryDelegate_CFX_filterEffectsWithFactory___block_invoke(
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)CFX_overlayEffectsWithFactory:(id)a3
+- (id)CFX_overlayEffectsWithFactory:(id)factory
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  factoryCopy = factory;
   v4 = dispatch_semaphore_create(0);
   v20 = 0;
   v21 = &v20;
@@ -201,7 +201,7 @@ void __57__CFXEffectFactoryDelegate_CFX_filterEffectsWithFactory___block_invoke(
   v19 = &v20;
   v5 = v4;
   v18 = v5;
-  [v3 effectCategoriesForType:2 completion:v17];
+  [factoryCopy effectCategoriesForType:2 completion:v17];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = objc_opt_new();
   v15 = 0u;
@@ -222,8 +222,8 @@ void __57__CFXEffectFactoryDelegate_CFX_filterEffectsWithFactory___block_invoke(
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) effectIDs];
-        [v6 addObjectsFromArray:v11];
+        effectIDs = [*(*(&v13 + 1) + 8 * i) effectIDs];
+        [v6 addObjectsFromArray:effectIDs];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v13 objects:v26 count:16];
@@ -244,17 +244,17 @@ void __58__CFXEffectFactoryDelegate_CFX_overlayEffectsWithFactory___block_invoke
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)CFX_isExpensiveEffectID:(id)a3 withFactory:(id)a4
+- (BOOL)CFX_isExpensiveEffectID:(id)d withFactory:(id)factory
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D416F8]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D41700]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D41708]) & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D416F0]))
+  dCopy = d;
+  if ([dCopy isEqualToString:*MEMORY[0x277D416F8]] & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277D41700]) & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277D41708]) & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x277D416F0]))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:*MEMORY[0x277D416E8]];
+    v5 = [dCopy isEqualToString:*MEMORY[0x277D416E8]];
   }
 
   return v5;
@@ -300,9 +300,9 @@ LABEL_18:
   }
 }
 
-- (Class)JFXEffectClassForType:(int)a3
+- (Class)JFXEffectClassForType:(int)type
 {
-  if (a3 == 1 || a3 == 7 || a3 == 2)
+  if (type == 1 || type == 7 || type == 2)
   {
     v4 = objc_opt_class();
   }

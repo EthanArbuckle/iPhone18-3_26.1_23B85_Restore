@@ -1,51 +1,51 @@
 @interface RTMotionActivityHistogramBin
-- (RTMotionActivityHistogramBin)initWithType:(unint64_t)a3 confidence:(unint64_t)a4 interval:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTMotionActivityHistogramBin)initWithType:(unint64_t)type confidence:(unint64_t)confidence interval:(double)interval;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addInterval:(double)a3;
-- (void)updateConfidence:(unint64_t)a3;
+- (void)addInterval:(double)interval;
+- (void)updateConfidence:(unint64_t)confidence;
 @end
 
 @implementation RTMotionActivityHistogramBin
 
-- (RTMotionActivityHistogramBin)initWithType:(unint64_t)a3 confidence:(unint64_t)a4 interval:(double)a5
+- (RTMotionActivityHistogramBin)initWithType:(unint64_t)type confidence:(unint64_t)confidence interval:(double)interval
 {
   v9.receiver = self;
   v9.super_class = RTMotionActivityHistogramBin;
   result = [(RTMotionActivityHistogramBin *)&v9 init];
   if (result)
   {
-    result->_type = a3;
-    result->_confidence = a4;
-    result->_interval = a5;
+    result->_type = type;
+    result->_confidence = confidence;
+    result->_interval = interval;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTMotionActivityHistogramBin alloc];
-  v5 = [(RTMotionActivityHistogramBin *)self type];
-  v6 = [(RTMotionActivityHistogramBin *)self confidence];
+  type = [(RTMotionActivityHistogramBin *)self type];
+  confidence = [(RTMotionActivityHistogramBin *)self confidence];
   [(RTMotionActivityHistogramBin *)self interval];
 
-  return [(RTMotionActivityHistogramBin *)v4 initWithType:v5 confidence:v6 interval:?];
+  return [(RTMotionActivityHistogramBin *)v4 initWithType:type confidence:confidence interval:?];
 }
 
-- (void)updateConfidence:(unint64_t)a3
+- (void)updateConfidence:(unint64_t)confidence
 {
-  if ([(RTMotionActivityHistogramBin *)self confidence]< a3)
+  if ([(RTMotionActivityHistogramBin *)self confidence]< confidence)
   {
 
-    [(RTMotionActivityHistogramBin *)self setConfidence:a3];
+    [(RTMotionActivityHistogramBin *)self setConfidence:confidence];
   }
 }
 
-- (void)addInterval:(double)a3
+- (void)addInterval:(double)interval
 {
   [(RTMotionActivityHistogramBin *)self interval];
-  v6 = v5 + a3;
+  v6 = v5 + interval;
 
   [(RTMotionActivityHistogramBin *)self setInterval:v6];
 }

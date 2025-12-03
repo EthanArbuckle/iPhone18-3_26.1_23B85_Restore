@@ -1,10 +1,10 @@
 @interface RMModelManagementTestCommandCommand_Status
 + (NSSet)allowedReasons;
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithEcho:(id)a3;
-+ (id)buildWithEcho:(id)a3;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithEcho:(id)echo;
++ (id)buildWithEcho:(id)echo;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelManagementTestCommandCommand_Status
@@ -29,30 +29,30 @@
   return v2;
 }
 
-+ (id)buildWithEcho:(id)a3
++ (id)buildWithEcho:(id)echo
 {
-  v3 = a3;
+  echoCopy = echo;
   v4 = objc_opt_new();
-  [v4 setStatusEcho:v3];
+  [v4 setStatusEcho:echoCopy];
 
   return v4;
 }
 
-+ (id)buildRequiredOnlyWithEcho:(id)a3
++ (id)buildRequiredOnlyWithEcho:(id)echo
 {
-  v3 = a3;
+  echoCopy = echo;
   v4 = objc_opt_new();
-  [v4 setStatusEcho:v3];
+  [v4 setStatusEcho:echoCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
   v7 = MEMORY[0x277CBEB58];
-  v8 = a3;
-  v9 = [v8 allKeys];
-  v10 = [v7 setWithArray:v9];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v7 setWithArray:allKeys];
 
   v11 = +[RMModelManagementTestCommandCommand_Status allowedStatusKeys];
   [v10 minusSet:v11];
@@ -60,15 +60,15 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  LOBYTE(a5) = [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Echo" forKeyPath:@"statusEcho" isRequired:1 defaultValue:0 error:a5];
-  return a5;
+  LOBYTE(error) = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Echo" forKeyPath:@"statusEcho" isRequired:1 defaultValue:0 error:error];
+  return error;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelManagementTestCommandCommand_Status *)self statusEcho];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Echo" value:v5 isRequired:1 defaultValue:0];
+  statusEcho = [(RMModelManagementTestCommandCommand_Status *)self statusEcho];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"Echo" value:statusEcho isRequired:1 defaultValue:0];
 
   v6 = [v4 copy];
 

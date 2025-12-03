@@ -1,15 +1,15 @@
 @interface DNDAppConfigurationService
-+ (id)serviceForClientIdentifier:(id)a3;
-- (id)_initWithClientIdentifier:(id)a3;
-- (void)getCurrentAppConfigurationForActionIdentifier:(id)a3 withCompletionHandler:(id)a4;
-- (void)invalidateAppContextForActionIdentifier:(id)a3;
++ (id)serviceForClientIdentifier:(id)identifier;
+- (id)_initWithClientIdentifier:(id)identifier;
+- (void)getCurrentAppConfigurationForActionIdentifier:(id)identifier withCompletionHandler:(id)handler;
+- (void)invalidateAppContextForActionIdentifier:(id)identifier;
 @end
 
 @implementation DNDAppConfigurationService
 
-+ (id)serviceForClientIdentifier:(id)a3
++ (id)serviceForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (serviceForClientIdentifier__onceToken_1 != -1)
   {
     +[DNDAppConfigurationService serviceForClientIdentifier:];
@@ -26,10 +26,10 @@
   block[1] = 3221225472;
   block[2] = __57__DNDAppConfigurationService_serviceForClientIdentifier___block_invoke_2;
   block[3] = &unk_27843A080;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -74,11 +74,11 @@ void __57__DNDAppConfigurationService_serviceForClientIdentifier___block_invoke_
   }
 }
 
-- (void)getCurrentAppConfigurationForActionIdentifier:(id)a3 withCompletionHandler:(id)a4
+- (void)getCurrentAppConfigurationForActionIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v8 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDAppConfigurationService.getCurrentAppConfigurationForActionIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -90,7 +90,7 @@ void __57__DNDAppConfigurationService_serviceForClientIdentifier___block_invoke_
     *buf = 138543618;
     v22 = v9;
     v23 = 2112;
-    v24 = v6;
+    v24 = identifierCopy;
     _os_log_impl(&dword_22002F000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting current app configuration for action identifier %@", buf, 0x16u);
   }
 
@@ -100,10 +100,10 @@ void __57__DNDAppConfigurationService_serviceForClientIdentifier___block_invoke_
   v16[2] = __98__DNDAppConfigurationService_getCurrentAppConfigurationForActionIdentifier_withCompletionHandler___block_invoke;
   v16[3] = &unk_27843A4F8;
   v17 = v9;
-  v18 = v6;
-  v19 = v7;
-  v12 = v7;
-  v13 = v6;
+  v18 = identifierCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
   v14 = v9;
   [v11 getCurrentAppConfigurationForActionIdentifier:v13 withRequestDetails:v14 completionHandler:v16];
 
@@ -178,10 +178,10 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateAppContextForActionIdentifier:(id)a3
+- (void)invalidateAppContextForActionIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_22002F000, "com.apple.donotdisturb.DNDAppConfigurationService.invalidateAppContextForActionIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -193,7 +193,7 @@ LABEL_12:
     *buf = 138543618;
     v17 = v6;
     v18 = 2112;
-    v19 = v4;
+    v19 = identifierCopy;
     _os_log_impl(&dword_22002F000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Invalidating app context for action identifier %@", buf, 0x16u);
   }
 
@@ -203,8 +203,8 @@ LABEL_12:
   v12[2] = __70__DNDAppConfigurationService_invalidateAppContextForActionIdentifier___block_invoke;
   v12[3] = &unk_27843A520;
   v13 = v6;
-  v14 = v4;
-  v9 = v4;
+  v14 = identifierCopy;
+  v9 = identifierCopy;
   v10 = v6;
   [v8 invalidateAppContextForActionIdentifier:v9 withRequestDetails:v10 completionHandler:v12];
 
@@ -240,15 +240,15 @@ void __70__DNDAppConfigurationService_invalidateAppContextForActionIdentifier___
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_initWithClientIdentifier:(id)a3
+- (id)_initWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DNDAppConfigurationService;
   v5 = [(DNDAppConfigurationService *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v6;
   }

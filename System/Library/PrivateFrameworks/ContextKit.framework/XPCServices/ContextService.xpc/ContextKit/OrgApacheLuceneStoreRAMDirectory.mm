@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneStoreRAMDirectory
-- (BOOL)fileNameExistsWithNSString:(id)a3;
+- (BOOL)fileNameExistsWithNSString:(id)string;
 - (OrgApacheLuceneStoreRAMDirectory)init;
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
 - (id)listAll;
 - (id)newRAMFile;
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
-- (int64_t)fileLengthWithNSString:(id)a3;
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
+- (int64_t)fileLengthWithNSString:(id)string;
 - (int64_t)ramBytesUsed;
 - (void)close;
 - (void)dealloc;
-- (void)deleteFileWithNSString:(id)a3;
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4;
+- (void)deleteFileWithNSString:(id)string;
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString;
 @end
 
 @implementation OrgApacheLuceneStoreRAMDirectory
@@ -63,7 +63,7 @@
   return [(JavaUtilArrayList *)v6 toArrayWithNSObjectArray:[IOSObjectArray arrayWithLength:[(JavaUtilArrayList *)v6 size] type:NSString_class_()]];
 }
 
-- (BOOL)fileNameExistsWithNSString:(id)a3
+- (BOOL)fileNameExistsWithNSString:(id)string
 {
   [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen];
   fileMap = self->fileMap_;
@@ -72,10 +72,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilMap *)fileMap containsKeyWithId:a3];
+  return [(JavaUtilMap *)fileMap containsKeyWithId:string];
 }
 
-- (int64_t)fileLengthWithNSString:(id)a3
+- (int64_t)fileLengthWithNSString:(id)string
 {
   [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen];
   fileMap = self->fileMap_;
@@ -84,10 +84,10 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaUtilMap *)fileMap getWithId:a3];
+  v6 = [(JavaUtilMap *)fileMap getWithId:string];
   if (!v6)
   {
-    v8 = new_JavaIoFileNotFoundException_initWithNSString_(a3);
+    v8 = new_JavaIoFileNotFoundException_initWithNSString_(string);
     objc_exception_throw(v8);
   }
 
@@ -106,7 +106,7 @@
   return [(JavaUtilConcurrentAtomicAtomicLong *)sizeInBytes get];
 }
 
-- (void)deleteFileWithNSString:(id)a3
+- (void)deleteFileWithNSString:(id)string
 {
   [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen];
   fileMap = self->fileMap_;
@@ -115,10 +115,10 @@
     goto LABEL_7;
   }
 
-  v6 = [(JavaUtilMap *)fileMap removeWithId:a3];
+  v6 = [(JavaUtilMap *)fileMap removeWithId:string];
   if (!v6)
   {
-    v10 = new_JavaIoFileNotFoundException_initWithNSString_(a3);
+    v10 = new_JavaIoFileNotFoundException_initWithNSString_(string);
     objc_exception_throw(v10);
   }
 
@@ -136,17 +136,17 @@ LABEL_7:
   [(JavaUtilConcurrentAtomicAtomicLong *)sizeInBytes addAndGetWithLong:v9];
 }
 
-- (id)createOutputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)createOutputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
-  [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen:a3];
-  v6 = [(OrgApacheLuceneStoreRAMDirectory *)self newRAMFile];
+  [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen:string];
+  newRAMFile = [(OrgApacheLuceneStoreRAMDirectory *)self newRAMFile];
   fileMap = self->fileMap_;
   if (!fileMap)
   {
     goto LABEL_8;
   }
 
-  v8 = [(JavaUtilMap *)fileMap removeWithId:a3];
+  v8 = [(JavaUtilMap *)fileMap removeWithId:string];
   if (!v8)
   {
     goto LABEL_5;
@@ -163,8 +163,8 @@ LABEL_8:
   [(JavaUtilConcurrentAtomicAtomicLong *)sizeInBytes addAndGetWithLong:-*(v9 + 4)];
   JreStrongAssign(v9 + 3, 0);
 LABEL_5:
-  [(JavaUtilMap *)self->fileMap_ putWithId:a3 withId:v6];
-  v11 = new_OrgApacheLuceneStoreRAMOutputStream_initWithNSString_withOrgApacheLuceneStoreRAMFile_withBoolean_(a3, v6, 1);
+  [(JavaUtilMap *)self->fileMap_ putWithId:string withId:newRAMFile];
+  v11 = new_OrgApacheLuceneStoreRAMOutputStream_initWithNSString_withOrgApacheLuceneStoreRAMFile_withBoolean_(string, newRAMFile, 1);
 
   return v11;
 }
@@ -176,7 +176,7 @@ LABEL_5:
   return v2;
 }
 
-- (void)renameFileWithNSString:(id)a3 withNSString:(id)a4
+- (void)renameFileWithNSString:(id)string withNSString:(id)sString
 {
   [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen];
   fileMap = self->fileMap_;
@@ -185,36 +185,36 @@ LABEL_5:
     JreThrowNullPointerException();
   }
 
-  v8 = [(JavaUtilMap *)fileMap getWithId:a3];
+  v8 = [(JavaUtilMap *)fileMap getWithId:string];
   if (!v8)
   {
-    v10 = new_JavaIoFileNotFoundException_initWithNSString_(a3);
+    v10 = new_JavaIoFileNotFoundException_initWithNSString_(string);
     objc_exception_throw(v10);
   }
 
-  [(JavaUtilMap *)self->fileMap_ putWithId:a4 withId:v8];
+  [(JavaUtilMap *)self->fileMap_ putWithId:sString withId:v8];
   v9 = self->fileMap_;
 
-  [(JavaUtilMap *)v9 removeWithId:a3];
+  [(JavaUtilMap *)v9 removeWithId:string];
 }
 
-- (id)openInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)openInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
-  [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen:a3];
+  [(OrgApacheLuceneStoreBaseDirectory *)self ensureOpen:string];
   fileMap = self->fileMap_;
   if (!fileMap)
   {
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilMap *)fileMap getWithId:a3];
+  v7 = [(JavaUtilMap *)fileMap getWithId:string];
   if (!v7)
   {
-    v10 = new_JavaIoFileNotFoundException_initWithNSString_(a3);
+    v10 = new_JavaIoFileNotFoundException_initWithNSString_(string);
     objc_exception_throw(v10);
   }
 
-  v8 = new_OrgApacheLuceneStoreRAMInputStream_initWithNSString_withOrgApacheLuceneStoreRAMFile_(a3, v7);
+  v8 = new_OrgApacheLuceneStoreRAMInputStream_initWithNSString_withOrgApacheLuceneStoreRAMFile_(string, v7);
 
   return v8;
 }

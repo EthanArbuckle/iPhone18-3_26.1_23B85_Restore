@@ -1,11 +1,11 @@
 @interface AXDeviceEventMonitor
 - (AXDeviceEventMonitor)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)enumerateObservers:(id)a3;
-- (void)enumerateObserversInQueue:(id)a3;
-- (void)notifyObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)enumerateObservers:(id)observers;
+- (void)enumerateObserversInQueue:(id)queue;
+- (void)notifyObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AXDeviceEventMonitor
@@ -35,69 +35,69 @@
   [(AXDeviceEventMonitor *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AXDeviceEventMonitor *)self queue];
+  observerCopy = observer;
+  queue = [(AXDeviceEventMonitor *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2708;
   v7[3] = &unk_309A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(AXDeviceEventMonitor *)self queue];
+  observerCopy = observer;
+  queue = [(AXDeviceEventMonitor *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_287C;
   v7[3] = &unk_309A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)notifyObserver:(id)a3
+- (void)notifyObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 deviceEventMonitorDidReceiveEvent:self];
+    [observerCopy deviceEventMonitorDidReceiveEvent:self];
   }
 }
 
-- (void)enumerateObserversInQueue:(id)a3
+- (void)enumerateObserversInQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(AXDeviceEventMonitor *)self queue];
+  queueCopy = queue;
+  queue = [(AXDeviceEventMonitor *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_2A20;
   v7[3] = &unk_309C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)enumerateObservers:(id)a3
+- (void)enumerateObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(AXDeviceEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  observersCopy = observers;
+  queue = [(AXDeviceEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(AXDeviceEventMonitor *)self observers];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(AXDeviceEventMonitor *)self observers];
+  v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -109,19 +109,19 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observers);
         }
 
-        if (v4)
+        if (observersCopy)
         {
-          v4[2](v4, *(*(&v11 + 1) + 8 * v10));
+          observersCopy[2](observersCopy, *(*(&v11 + 1) + 8 * v10));
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);

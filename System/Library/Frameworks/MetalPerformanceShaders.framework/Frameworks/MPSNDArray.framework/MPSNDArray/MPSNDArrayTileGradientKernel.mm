@@ -1,55 +1,55 @@
 @interface MPSNDArrayTileGradientKernel
 - ($96B0F76142A215457D5EFBC15591F05E)multiples;
-- (MPSNDArrayTileGradientKernel)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayTileGradientKernel)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMultiples:(id *)a3;
+- (MPSNDArrayTileGradientKernel)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayTileGradientKernel)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMultiples:(id *)multiples;
 @end
 
 @implementation MPSNDArrayTileGradientKernel
 
-- (MPSNDArrayTileGradientKernel)initWithDevice:(id)a3
+- (MPSNDArrayTileGradientKernel)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayTileGradientKernel;
-  result = [(MPSNDArrayUnaryGradientKernel *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryGradientKernel *)&v4 initWithDevice:device];
   result->super.super.super._encodeGradient = EncodeTileGradient;
   result->super.super.super._encodeData = result;
   return result;
 }
 
-- (MPSNDArrayTileGradientKernel)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayTileGradientKernel)initWithCoder:(id)coder device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MPSNDArrayTileGradientKernel;
-  result = [(MPSNDArrayUnaryGradientKernel *)&v7 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayUnaryGradientKernel *)&v7 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super.super._encodeGradient = EncodeTileGradient;
     result->super.super.super._encodeData = result;
     v6 = result;
-    decodeMultiples(a3, &result->_multiples);
+    decodeMultiples(coder, &result->_multiples);
     return v6;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v5.receiver = self;
   v5.super_class = MPSNDArrayTileGradientKernel;
   [(MPSNDArrayMultiaryGradientKernel *)&v5 encodeWithCoder:?];
-  encodeMultiples(a3, &self->_multiples);
+  encodeMultiples(coder, &self->_multiples);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v12.receiver = self;
   v12.super_class = MPSNDArrayTileGradientKernel;
-  result = [(MPSNDArrayMultiaryGradientKernel *)&v12 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryGradientKernel *)&v12 copyWithZone:zone device:device];
   if (result)
   {
     v6 = *&self->_multiples.dimensions[6];
@@ -88,19 +88,19 @@
   return self;
 }
 
-- (void)setMultiples:(id *)a3
+- (void)setMultiples:(id *)multiples
 {
-  v3 = *&a3->var0[6];
-  v5 = *a3->var0;
-  v4 = *&a3->var0[2];
-  *&self->_multiples.dimensions[4] = *&a3->var0[4];
+  v3 = *&multiples->var0[6];
+  v5 = *multiples->var0;
+  v4 = *&multiples->var0[2];
+  *&self->_multiples.dimensions[4] = *&multiples->var0[4];
   *&self->_multiples.dimensions[6] = v3;
   *self->_multiples.dimensions = v5;
   *&self->_multiples.dimensions[2] = v4;
-  v6 = *&a3->var0[14];
-  v8 = *&a3->var0[8];
-  v7 = *&a3->var0[10];
-  *&self->_multiples.dimensions[12] = *&a3->var0[12];
+  v6 = *&multiples->var0[14];
+  v8 = *&multiples->var0[8];
+  v7 = *&multiples->var0[10];
+  *&self->_multiples.dimensions[12] = *&multiples->var0[12];
   *&self->_multiples.dimensions[14] = v6;
   *&self->_multiples.dimensions[8] = v8;
   *&self->_multiples.dimensions[10] = v7;

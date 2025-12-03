@@ -1,24 +1,24 @@
 @interface CPLFingerprintScheme
 + (BOOL)alwaysCreateEPPMomentShares;
-+ (BOOL)isMMCSv1Fingerprint:(id)a3;
-+ (BOOL)isMMCSv1Signature:(id)a3;
-+ (BOOL)isMMCSv2Fingerprint:(id)a3;
-+ (BOOL)isMMCSv2Signature:(id)a3;
++ (BOOL)isMMCSv1Fingerprint:(id)fingerprint;
++ (BOOL)isMMCSv1Signature:(id)signature;
++ (BOOL)isMMCSv2Fingerprint:(id)fingerprint;
++ (BOOL)isMMCSv2Signature:(id)signature;
 + (BOOL)supportsEPP;
 + (BOOL)supportsEPPAutoEnable;
 + (CPLFingerprintScheme)invalidFingerprintScheme;
 + (CPLFingerprintSchemeV1)defaultMMCSv1FingerprintScheme;
-+ (id)normalizeBoundaryKey:(id)a3;
++ (id)normalizeBoundaryKey:(id)key;
 + (void)initialize;
-- (BOOL)isCompatibleWithFingerprintScheme:(id)a3;
-- (BOOL)isValidFingerprint:(id)a3;
-- (BOOL)isValidSignature:(id)a3;
+- (BOOL)isCompatibleWithFingerprintScheme:(id)scheme;
+- (BOOL)isValidFingerprint:(id)fingerprint;
+- (BOOL)isValidSignature:(id)signature;
 - (CPLFingerprintScheme)init;
 - (NSString)fingerprintSchemeDescription;
 - (NSString)zeroByteFileFingerprint;
-- (id)fingerPrintForData:(id)a3 error:(id *)a4;
-- (id)fingerPrintForFD:(int)a3 error:(id *)a4;
-- (id)fingerPrintForFileAtURL:(id)a3 error:(id *)a4;
+- (id)fingerPrintForData:(id)data error:(id *)error;
+- (id)fingerPrintForFD:(int)d error:(id *)error;
+- (id)fingerPrintForFileAtURL:(id)l error:(id *)error;
 - (void)_createSignatureGenerator;
 @end
 
@@ -26,48 +26,48 @@
 
 - (NSString)fingerprintSchemeDescription
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLFingerprintScheme.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:220 description:{@"%@ be implemented by subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:220 description:{@"%@ be implemented by subclasses", v6}];
 
   abort();
 }
 
-- (BOOL)isValidFingerprint:(id)a3
+- (BOOL)isValidFingerprint:(id)fingerprint
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  fingerprintCopy = fingerprint;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLFingerprintScheme.m"];
   v8 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:216 description:{@"%@ be implemented by subclasses", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:216 description:{@"%@ be implemented by subclasses", v8}];
 
   abort();
 }
 
-- (BOOL)isValidSignature:(id)a3
+- (BOOL)isValidSignature:(id)signature
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  signatureCopy = signature;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLFingerprintScheme.m"];
   v8 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:212 description:{@"%@ be implemented by subclasses", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:212 description:{@"%@ be implemented by subclasses", v8}];
 
   abort();
 }
 
-- (BOOL)isCompatibleWithFingerprintScheme:(id)a3
+- (BOOL)isCompatibleWithFingerprintScheme:(id)scheme
 {
-  v4 = a3;
-  if (v4 == self)
+  schemeCopy = scheme;
+  if (schemeCopy == self)
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    v5 = [(CPLFingerprintScheme *)self isMMCSv2];
-    v6 = v5 ^ [(CPLFingerprintScheme *)v4 isMMCSv2]^ 1;
+    isMMCSv2 = [(CPLFingerprintScheme *)self isMMCSv2];
+    v6 = isMMCSv2 ^ [(CPLFingerprintScheme *)schemeCopy isMMCSv2]^ 1;
   }
 
   return v6;
@@ -79,7 +79,7 @@
   v5[1] = 3221225472;
   v6 = __47__CPLFingerprintScheme_zeroByteFileFingerprint__block_invoke;
   v7 = &unk_1E861B100;
-  v8 = self;
+  selfCopy = self;
   v9 = a2;
   v3 = v5;
   os_unfair_lock_lock(&self->_lock);
@@ -132,13 +132,13 @@ void __47__CPLFingerprintScheme_zeroByteFileFingerprint__block_invoke(uint64_t a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fingerPrintForFD:(int)a3 error:(id *)a4
+- (id)fingerPrintForFD:(int)d error:(id *)error
 {
-  lseek(a3, 0, 0);
+  lseek(d, 0, 0);
   v7 = malloc_type_malloc(0x20000uLL, 0x100004077774924uLL);
   for (i = [(CPLFingerprintScheme *)self _createSignatureGenerator]; ; MEMORY[0x1E128E220](i, v7, v9, 1))
   {
-    v9 = read(a3, v7, 0x20000uLL);
+    v9 = read(d, v7, 0x20000uLL);
     if (!v9)
     {
       break;
@@ -146,9 +146,9 @@ void __47__CPLFingerprintScheme_zeroByteFileFingerprint__block_invoke(uint64_t a
 
     if (v9 == -1)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [CPLErrors posixErrorForURL:0];
+        *error = [CPLErrors posixErrorForURL:0];
       }
 
       MMCSSignatureGeneratorFinish();
@@ -177,14 +177,14 @@ void __47__CPLFingerprintScheme_zeroByteFileFingerprint__block_invoke(uint64_t a
   return v12;
 }
 
-- (id)fingerPrintForData:(id)a3 error:(id *)a4
+- (id)fingerPrintForData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [(CPLFingerprintScheme *)self _createSignatureGenerator];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  _createSignatureGenerator = [(CPLFingerprintScheme *)self _createSignatureGenerator];
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
 
-  MEMORY[0x1E128E220](v6, v7, v8, 1);
+  MEMORY[0x1E128E220](_createSignatureGenerator, bytes, v8, 1);
   v9 = MMCSSignatureGeneratorFinish();
   v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v9 length:MEMORY[0x1E128E1E0](v9) freeWhenDone:1];
   v11 = [v10 base64EncodedStringWithOptions:0];
@@ -194,54 +194,54 @@ void __47__CPLFingerprintScheme_zeroByteFileFingerprint__block_invoke(uint64_t a
 
 - (void)_createSignatureGenerator
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLFingerprintScheme.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:120 description:{@"%@ be implemented by subclasses", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:120 description:{@"%@ be implemented by subclasses", v6}];
 
   abort();
 }
 
-- (id)fingerPrintForFileAtURL:(id)a3 error:(id *)a4
+- (id)fingerPrintForFileAtURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:a3 error:?];
+  v6 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:l error:?];
   v7 = v6;
   if (v6)
   {
-    v8 = -[CPLFingerprintScheme fingerPrintForFD:error:](self, "fingerPrintForFD:error:", [v6 fileDescriptor], a4);
+    v8 = -[CPLFingerprintScheme fingerPrintForFD:error:](self, "fingerPrintForFD:error:", [v6 fileDescriptor], error);
     [v7 closeFile];
   }
 
-  else if (a4)
+  else if (error)
   {
-    v9 = *a4;
-    v10 = [v9 domain];
+    v9 = *error;
+    domain = [v9 domain];
     v11 = *MEMORY[0x1E696A250];
-    v12 = [v10 isEqualToString:*MEMORY[0x1E696A250]];
+    v12 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
     if (v12)
     {
-      v13 = [v9 userInfo];
+      userInfo = [v9 userInfo];
       v14 = *MEMORY[0x1E696AA08];
-      v15 = [v13 objectForKey:*MEMORY[0x1E696AA08]];
+      v15 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
       if (!v15)
       {
         v16 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:objc_msgSend(v9 userInfo:{"code"), 0}];
-        v17 = [v9 userInfo];
-        v18 = [v17 mutableCopy];
+        userInfo2 = [v9 userInfo];
+        v18 = [userInfo2 mutableCopy];
         v19 = v18;
         if (v18)
         {
-          v20 = v18;
+          dictionary = v18;
         }
 
         else
         {
-          v20 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        v21 = v20;
+        v21 = dictionary;
 
         [v21 setObject:v16 forKey:v14];
         v22 = [MEMORY[0x1E696ABC0] errorWithDomain:v11 code:objc_msgSend(v9 userInfo:{"code"), v21}];
@@ -252,7 +252,7 @@ void __47__CPLFingerprintScheme_zeroByteFileFingerprint__block_invoke(uint64_t a
 
     v23 = v9;
     v8 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -278,21 +278,21 @@ void __47__CPLFingerprintScheme_zeroByteFileFingerprint__block_invoke(uint64_t a
 
 + (BOOL)alwaysCreateEPPMomentShares
 {
-  v2 = [a1 supportsEPP];
-  if (v2)
+  supportsEPP = [self supportsEPP];
+  if (supportsEPP)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"CPLAlwaysCreateEPPMomentShare"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"CPLAlwaysCreateEPPMomentShare"];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(supportsEPP) = v4;
   }
 
-  return v2;
+  return supportsEPP;
 }
 
 + (BOOL)supportsEPPAutoEnable
 {
-  if ([a1 supportsEPP])
+  if ([self supportsEPP])
   {
     if (supportsEPPAutoEnable_onceToken != -1)
     {
@@ -345,28 +345,28 @@ void __35__CPLFingerprintScheme_supportsEPP__block_invoke()
   supportsEPP_result = v1;
 }
 
-+ (BOOL)isMMCSv2Fingerprint:(id)a3
++ (BOOL)isMMCSv2Fingerprint:(id)fingerprint
 {
-  if (!a3)
+  if (!fingerprint)
   {
     return 0;
   }
 
   v4 = MEMORY[0x1E695DEF0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithBase64EncodedString:v5 options:0];
+  fingerprintCopy = fingerprint;
+  v6 = [[v4 alloc] initWithBase64EncodedString:fingerprintCopy options:0];
 
-  LOBYTE(a1) = [a1 isMMCSv2Signature:v6];
-  return a1;
+  LOBYTE(self) = [self isMMCSv2Signature:v6];
+  return self;
 }
 
-+ (BOOL)isMMCSv2Signature:(id)a3
++ (BOOL)isMMCSv2Signature:(id)signature
 {
-  v3 = a3;
-  if ([v3 length])
+  signatureCopy = signature;
+  if ([signatureCopy length])
   {
     v6 = 0;
-    [v3 getBytes:&v6 length:1];
+    [signatureCopy getBytes:&v6 length:1];
     v4 = v6 == 4;
   }
 
@@ -378,28 +378,28 @@ void __35__CPLFingerprintScheme_supportsEPP__block_invoke()
   return v4;
 }
 
-+ (BOOL)isMMCSv1Fingerprint:(id)a3
++ (BOOL)isMMCSv1Fingerprint:(id)fingerprint
 {
-  if (!a3)
+  if (!fingerprint)
   {
     return 0;
   }
 
   v4 = MEMORY[0x1E695DEF0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithBase64EncodedString:v5 options:0];
+  fingerprintCopy = fingerprint;
+  v6 = [[v4 alloc] initWithBase64EncodedString:fingerprintCopy options:0];
 
-  LOBYTE(a1) = [a1 isMMCSv1Signature:v6];
-  return a1;
+  LOBYTE(self) = [self isMMCSv1Signature:v6];
+  return self;
 }
 
-+ (BOOL)isMMCSv1Signature:(id)a3
++ (BOOL)isMMCSv1Signature:(id)signature
 {
-  v3 = a3;
-  if ([v3 length])
+  signatureCopy = signature;
+  if ([signatureCopy length])
   {
     v6 = 0;
-    [v3 getBytes:&v6 length:1];
+    [signatureCopy getBytes:&v6 length:1];
     v4 = v6 == 1;
   }
 
@@ -411,10 +411,10 @@ void __35__CPLFingerprintScheme_supportsEPP__block_invoke()
   return v4;
 }
 
-+ (id)normalizeBoundaryKey:(id)a3
++ (id)normalizeBoundaryKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 lengthOfBytesUsingEncoding:4];
+  keyCopy = key;
+  v4 = [keyCopy lengthOfBytesUsingEncoding:4];
   if (v4 < 0x21)
   {
     if (v4 == 32)
@@ -422,22 +422,22 @@ void __35__CPLFingerprintScheme_supportsEPP__block_invoke()
       goto LABEL_6;
     }
 
-    v7 = [v3 stringByAppendingFormat:@"%.*s", (32 - v4), "================================"];
+    v7 = [keyCopy stringByAppendingFormat:@"%.*s", (32 - v4), "================================"];
   }
 
   else
   {
-    v5 = [v3 dataUsingEncoding:4];
+    v5 = [keyCopy dataUsingEncoding:4];
     v6 = [v5 subdataWithRange:{0, 32}];
 
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v6 encoding:4];
-    v3 = v6;
+    keyCopy = v6;
   }
 
-  v3 = v7;
+  keyCopy = v7;
 LABEL_6:
 
-  return v3;
+  return keyCopy;
 }
 
 + (CPLFingerprintScheme)invalidFingerprintScheme
@@ -492,10 +492,10 @@ uint64_t __54__CPLFingerprintScheme_defaultMMCSv1FingerprintScheme__block_invoke
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    _disableInvalidFingerprintScheme = [v2 BOOLForKey:@"CPLDisableInvalidFingerprintScheme"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    _disableInvalidFingerprintScheme = [standardUserDefaults BOOLForKey:@"CPLDisableInvalidFingerprintScheme"];
   }
 }
 

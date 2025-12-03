@@ -1,20 +1,20 @@
 @interface IDSQRProtoTestRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequestedMessageType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequestedMessageType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoTestRequest
 
-- (void)setHasRequestedMessageType:(BOOL)a3
+- (void)setHasRequestedMessageType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -33,23 +33,23 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoTestRequest;
   v4 = [(IDSQRProtoTestRequest *)&v8 description];
-  v5 = [(IDSQRProtoTestRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoTestRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_testOptionFlags];
-  [v3 setObject:v4 forKey:@"test_option_flags"];
+  [dictionary setObject:v4 forKey:@"test_option_flags"];
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_requestedMessageType];
-    [v3 setObject:v6 forKey:@"requested_message_type"];
+    [dictionary setObject:v6 forKey:@"requested_message_type"];
 
     has = self->_has;
   }
@@ -57,21 +57,21 @@
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_requestedErrorCode];
-    [v3 setObject:v7 forKey:@"requested_error_code"];
+    [dictionary setObject:v7 forKey:@"requested_error_code"];
   }
 
   subOperation = self->_subOperation;
   if (subOperation)
   {
-    [v3 setObject:subOperation forKey:@"sub_operation"];
+    [dictionary setObject:subOperation forKey:@"sub_operation"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   has = self->_has;
   if ((has & 2) != 0)
@@ -85,43 +85,43 @@
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = v6;
+  v5 = toCopy;
   if (self->_subOperation)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[6] = self->_testOptionFlags;
+  toCopy = to;
+  toCopy[6] = self->_testOptionFlags;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_requestedMessageType;
-    *(v4 + 28) |= 2u;
+    toCopy[3] = self->_requestedMessageType;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_requestedErrorCode;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_requestedErrorCode;
+    *(toCopy + 28) |= 1u;
   }
 
   if (self->_subOperation)
   {
-    v6 = v4;
-    [v4 setSubOperation:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setSubOperation:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   *(v5 + 24) = self->_testOptionFlags;
   has = self->_has;
@@ -138,30 +138,30 @@
     *(v5 + 28) |= 1u;
   }
 
-  v8 = [(NSString *)self->_subOperation copyWithZone:a3];
+  v8 = [(NSString *)self->_subOperation copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_testOptionFlags != *(v4 + 6))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_testOptionFlags != *(equalCopy + 6))
   {
     goto LABEL_15;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_requestedMessageType != *(v4 + 3))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_requestedMessageType != *(equalCopy + 3))
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
 LABEL_15:
     v6 = 0;
@@ -170,19 +170,19 @@ LABEL_15:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_requestedErrorCode != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_requestedErrorCode != *(equalCopy + 2))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_15;
   }
 
   subOperation = self->_subOperation;
-  if (subOperation | *(v4 + 2))
+  if (subOperation | *(equalCopy + 2))
   {
     v6 = [(NSString *)subOperation isEqual:?];
   }
@@ -225,29 +225,29 @@ LABEL_6:
   return v7 ^ v8 ^ [(NSString *)self->_subOperation hash:v3]^ (2654435761 * testOptionFlags);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_testOptionFlags = v4[6];
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  self->_testOptionFlags = fromCopy[6];
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_requestedMessageType = v4[3];
+    self->_requestedMessageType = fromCopy[3];
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
   }
 
   if (v5)
   {
-    self->_requestedErrorCode = v4[2];
+    self->_requestedErrorCode = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(IDSQRProtoTestRequest *)self setSubOperation:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

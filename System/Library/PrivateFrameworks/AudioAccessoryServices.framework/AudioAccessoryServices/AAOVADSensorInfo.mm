@@ -1,29 +1,29 @@
 @interface AAOVADSensorInfo
-- (AAOVADSensorInfo)initWithBTAddress:(id)a3;
-- (AAOVADSensorInfo)initWithCoder:(id)a3;
-- (BOOL)update:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AAOVADSensorInfo)initWithBTAddress:(id)address;
+- (AAOVADSensorInfo)initWithCoder:(id)coder;
+- (BOOL)update:(id)update;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAOVADSensorInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AASensorInfo *)self btAddress];
-  v6 = [v4 initWithBTAddress:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  btAddress = [(AASensorInfo *)self btAddress];
+  v6 = [v4 initWithBTAddress:btAddress];
 
   [v6 setOwnVoiceActivityLevel:{-[AAOVADSensorInfo ownVoiceActivityLevel](self, "ownVoiceActivityLevel")}];
   return v6;
 }
 
-- (AAOVADSensorInfo)initWithCoder:(id)a3
+- (AAOVADSensorInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = AAOVADSensorInfo;
-  v5 = [(AASensorInfo *)&v8 initWithCoder:v4];
+  v5 = [(AASensorInfo *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v9 = 0;
@@ -38,32 +38,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = AAOVADSensorInfo;
-  [(AASensorInfo *)&v6 encodeWithCoder:v4];
+  [(AASensorInfo *)&v6 encodeWithCoder:coderCopy];
   ownVoiceActivityLevel = self->_ownVoiceActivityLevel;
   if (ownVoiceActivityLevel)
   {
-    [v4 encodeInt64:ownVoiceActivityLevel forKey:@"ovLv"];
+    [coderCopy encodeInt64:ownVoiceActivityLevel forKey:@"ovLv"];
   }
 }
 
-- (AAOVADSensorInfo)initWithBTAddress:(id)a3
+- (AAOVADSensorInfo)initWithBTAddress:(id)address
 {
   v4.receiver = self;
   v4.super_class = AAOVADSensorInfo;
-  result = [(AASensorInfo *)&v4 initWithBTAddress:a3];
+  result = [(AASensorInfo *)&v4 initWithBTAddress:address];
   result->_ownVoiceActivityLevel = 0;
   return result;
 }
 
-- (BOOL)update:(id)a3
+- (BOOL)update:(id)update
 {
-  v4 = a3;
-  if ([v4 length] < 2)
+  updateCopy = update;
+  if ([updateCopy length] < 2)
   {
     if (gLogCategory_AASensorService <= 90 && (gLogCategory_AASensorService != -1 || _LogCategory_Initialize()))
     {
@@ -74,7 +74,7 @@
   else
   {
     v10 = 0;
-    [v4 getBytes:&v10 length:2];
+    [updateCopy getBytes:&v10 length:2];
     if (v10 == 1)
     {
       if (HIBYTE(v10) == 1)

@@ -1,14 +1,14 @@
 @interface RPDeviceKeyValueStore_Internal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)getKeyValuePairsWithDomain:(id)a3;
+- (id)getKeyValuePairsWithDomain:(id)domain;
 @end
 
 @implementation RPDeviceKeyValueStore_Internal
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_261FA1600();
 
   v3 = sub_26203A18C();
@@ -16,9 +16,9 @@
   return v3;
 }
 
-- (id)getKeyValuePairsWithDomain:(id)a3
+- (id)getKeyValuePairsWithDomain:(id)domain
 {
-  if (a3)
+  if (domain)
   {
     v4 = sub_26203A1BC();
     v6 = v5;
@@ -30,7 +30,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_261FA1E90(v4, v6);
 
   if (v8)
@@ -46,11 +46,11 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_26203A73C();
     swift_unknownObjectRelease();
@@ -59,7 +59,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_261FA33DC(v9);

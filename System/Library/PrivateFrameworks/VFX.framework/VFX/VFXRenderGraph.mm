@@ -1,19 +1,19 @@
 @interface VFXRenderGraph
 - (NSArray)attachments;
 - (VFXRenderGraph)init;
-- (VFXRenderGraph)initWithCoder:(id)a3;
+- (VFXRenderGraph)initWithCoder:(id)coder;
 - (VFXWorld)world;
 - (__CFXWorld)worldRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_compileRenderGraphIfNeeded;
-- (void)addWorldReference:(id)a3;
+- (void)addWorldReference:(id)reference;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)finishLoadingWithSerializationContext:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)finishLoadingWithSerializationContext:(id)context;
 - (void)invalidateCompiledGraph;
-- (void)removeWorldReference:(id)a3;
-- (void)setAuthoringGraph:(id)a3;
-- (void)setWorld:(id)a3;
+- (void)removeWorldReference:(id)reference;
+- (void)setAuthoringGraph:(id)graph;
+- (void)setWorld:(id)world;
 @end
 
 @implementation VFXRenderGraph
@@ -41,9 +41,9 @@
   [(VFXRenderGraph *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = objc_msgSend_allocWithZone_(VFXRenderGraph, a2, a3, v3);
+  v5 = objc_msgSend_allocWithZone_(VFXRenderGraph, a2, zone, v3);
   v9 = objc_msgSend_init(v5, v6, v7, v8);
 
   *(v9 + 8) = sub_1AF3C4D38();
@@ -51,10 +51,10 @@
   return v9;
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
   world = self->_world;
-  if (world == a3)
+  if (world == reference)
   {
     v6 = self->_worldReferenceCounter + 1;
   }
@@ -66,17 +66,17 @@
       self->_worldReferenceCounter = 0;
     }
 
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
     v6 = 1;
   }
 
   self->_worldReferenceCounter = v6;
 }
 
-- (void)removeWorldReference:(id)a3
+- (void)removeWorldReference:(id)reference
 {
   p_world = &self->_world;
-  if (!a3 || self->_world == a3)
+  if (!reference || self->_world == reference)
   {
     worldReferenceCounter = self->_worldReferenceCounter;
     if (worldReferenceCounter)
@@ -101,10 +101,10 @@
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -118,8 +118,8 @@
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -155,13 +155,13 @@
   return sub_1AF1C3FAC(v4);
 }
 
-- (void)setAuthoringGraph:(id)a3
+- (void)setAuthoringGraph:(id)graph
 {
   authoringGraph = self->_authoringGraph;
-  if (authoringGraph != a3)
+  if (authoringGraph != graph)
   {
 
-    self->_authoringGraph = a3;
+    self->_authoringGraph = graph;
   }
 }
 
@@ -207,7 +207,7 @@
   return sub_1AF3D4238();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = objc_msgSend_valueForKey_(VFXTransaction, a2, @"serializationContext", v3);
   if (objc_msgSend_authoringGraph(self, v7, v8, v9))
@@ -218,18 +218,18 @@
       v14 = sub_1AF3D41AC(v13, v6);
       if (v14)
       {
-        objc_msgSend_encodeObject_forKey_(a3, v10, v14, @"authoringGraph");
+        objc_msgSend_encodeObject_forKey_(coder, v10, v14, @"authoringGraph");
       }
     }
   }
 
-  objc_msgSend_encodeObject_forKey_(a3, v10, self->_name, @"name");
+  objc_msgSend_encodeObject_forKey_(coder, v10, self->_name, @"name");
   identifier = self->_identifier;
 
-  objc_msgSend_encodeObject_forKey_(a3, v15, identifier, @"identifier");
+  objc_msgSend_encodeObject_forKey_(coder, v15, identifier, @"identifier");
 }
 
-- (VFXRenderGraph)initWithCoder:(id)a3
+- (VFXRenderGraph)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = VFXRenderGraph;
@@ -237,22 +237,22 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_name = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"name");
+    v4->_name = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"name");
     v7 = objc_opt_class();
-    v4->_identifier = objc_msgSend_decodeObjectOfClass_forKey_(a3, v8, v7, @"identifier");
+    v4->_identifier = objc_msgSend_decodeObjectOfClass_forKey_(coder, v8, v7, @"identifier");
     v9 = objc_opt_class();
-    v4->_deferredLoadingData = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"authoringGraph");
+    v4->_deferredLoadingData = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"authoringGraph");
   }
 
   return v4;
 }
 
-- (void)finishLoadingWithSerializationContext:(id)a3
+- (void)finishLoadingWithSerializationContext:(id)context
 {
   deferredLoadingData = self->_deferredLoadingData;
   if (deferredLoadingData)
   {
-    v5 = sub_1AF3D4120(deferredLoadingData, a3);
+    v5 = sub_1AF3D4120(deferredLoadingData, context);
   }
 
   else

@@ -1,17 +1,17 @@
 @interface PKPeerPaymentRecipientRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier;
 @end
 
 @implementation PKPeerPaymentRecipientRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (!lCopy)
   {
     v20 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v9)
+  if (!informationCopy)
   {
     v20 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     v20 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -102,19 +102,19 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v8 endpointComponents:&unk_1F23B46E8 queryParameters:0 appleAccountInformation:v9];
+  v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B46E8 queryParameters:0 appleAccountInformation:informationCopy];
   [v12 setHTTPMethod:@"POST"];
   [v12 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v12 setTimeoutInterval:15.0];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  [v13 setObject:v11 forKey:@"deviceIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v11 forKey:@"deviceIdentifier"];
   recipientAddress = self->_recipientAddress;
   if (recipientAddress)
   {
     v15 = PKIDSNormalizedAddress(recipientAddress);
     if (v15)
     {
-      [v13 setObject:v15 forKey:@"recipientQuery"];
+      [dictionary setObject:v15 forKey:@"recipientQuery"];
     }
   }
 
@@ -124,7 +124,7 @@ LABEL_27:
     v17 = PKIDSNormalizedAddress(senderAddress);
     if (v17)
     {
-      [v13 setObject:v17 forKey:@"senderAddress"];
+      [dictionary setObject:v17 forKey:@"senderAddress"];
     }
   }
 
@@ -139,8 +139,8 @@ LABEL_27:
     v19 = off_1E79E2E80[v18];
   }
 
-  [v13 setObject:v19 forKey:@"recipientSource"];
-  v29 = [objc_opt_class() _HTTPBodyWithDictionary:v13];
+  [dictionary setObject:v19 forKey:@"recipientSource"];
+  v29 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v12 setHTTPBody:v29];
 
   v27 = [v12 copy];

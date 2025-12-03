@@ -1,6 +1,6 @@
 @interface THWGutterObjectPositioning
 - (CGSize)offset;
-- (void)setOffset:(CGSize)a3;
+- (void)setOffset:(CGSize)offset;
 @end
 
 @implementation THWGutterObjectPositioning
@@ -14,10 +14,10 @@
   return result;
 }
 
-- (void)setOffset:(CGSize)a3
+- (void)setOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
+  height = offset.height;
+  width = offset.width;
   [(THWGutterObjectPositioning *)self willModify];
   self->mOffset.width = width;
   self->mOffset.height = height;

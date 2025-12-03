@@ -1,28 +1,28 @@
 @interface MTIPCUTunnelParser
 - (BOOL)_isLockdownModeEnabled;
-- (BOOL)_isXPCInterruptionError:(id)a3;
+- (BOOL)_isXPCInterruptionError:(id)error;
 - (MTIPCUTunnelParser)init;
-- (id)_commandFlush:(id)a3;
-- (id)_commandGetEncryptionKey:(id)a3;
-- (id)_commandGetProfileList:(id)a3;
-- (id)_commandInstallProfile:(id)a3;
-- (id)_commandRemoveProfile:(id)a3;
-- (id)_commandSetCertificate:(id)a3;
-- (id)_commandSetWiFiPower:(id)a3;
-- (id)_commandStoreProfile:(id)a3;
-- (id)_configuratorCloudConfigurationErrorWithCloudConfigDetails:(id)a3 error:(id)a4;
-- (id)_configuratorProvisionalEnrollmentErrorWithDetails:(id)a3 error:(id)a4;
-- (id)_underlyingCloudConfigErrorFromError:(id)a3;
-- (void)_commandDownloadAndApplyCloudConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)_commandEraseDevice:(id)a3 completionBlock:(id)a4;
-- (void)_commandEscalate:(id)a3 completionBlock:(id)a4;
-- (void)_commandEscalateResponse:(id)a3 completionBlock:(id)a4;
-- (void)_commandEstablishProvisionalEnrollmentRequest:(id)a3 completionBlock:(id)a4;
-- (void)_commandGetCloudConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)_commandGetStoredProfile:(id)a3 completionBlock:(id)a4;
-- (void)_commandPollMDMIfNetworkTetheredRequest:(id)a3 completionBlock:(id)a4;
-- (void)_commandSetCloudConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)processRequest:(id)a3 assertion:(id)a4 completionBlock:(id)a5;
+- (id)_commandFlush:(id)flush;
+- (id)_commandGetEncryptionKey:(id)key;
+- (id)_commandGetProfileList:(id)list;
+- (id)_commandInstallProfile:(id)profile;
+- (id)_commandRemoveProfile:(id)profile;
+- (id)_commandSetCertificate:(id)certificate;
+- (id)_commandSetWiFiPower:(id)power;
+- (id)_commandStoreProfile:(id)profile;
+- (id)_configuratorCloudConfigurationErrorWithCloudConfigDetails:(id)details error:(id)error;
+- (id)_configuratorProvisionalEnrollmentErrorWithDetails:(id)details error:(id)error;
+- (id)_underlyingCloudConfigErrorFromError:(id)error;
+- (void)_commandDownloadAndApplyCloudConfiguration:(id)configuration completionBlock:(id)block;
+- (void)_commandEraseDevice:(id)device completionBlock:(id)block;
+- (void)_commandEscalate:(id)escalate completionBlock:(id)block;
+- (void)_commandEscalateResponse:(id)response completionBlock:(id)block;
+- (void)_commandEstablishProvisionalEnrollmentRequest:(id)request completionBlock:(id)block;
+- (void)_commandGetCloudConfiguration:(id)configuration completionBlock:(id)block;
+- (void)_commandGetStoredProfile:(id)profile completionBlock:(id)block;
+- (void)_commandPollMDMIfNetworkTetheredRequest:(id)request completionBlock:(id)block;
+- (void)_commandSetCloudConfiguration:(id)configuration completionBlock:(id)block;
+- (void)processRequest:(id)request assertion:(id)assertion completionBlock:(id)block;
 @end
 
 @implementation MTIPCUTunnelParser
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (id)_commandFlush:(id)a3
+- (id)_commandFlush:(id)flush
 {
   v3 = *DMCLogObjects();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -56,7 +56,7 @@
   return v4;
 }
 
-- (id)_commandGetEncryptionKey:(id)a3
+- (id)_commandGetEncryptionKey:(id)key
 {
   v4 = DMCLogObjects();
   if (os_log_type_enabled(*v4, OS_LOG_TYPE_DEBUG))
@@ -64,16 +64,16 @@
     sub_100008360();
   }
 
-  v5 = [(MTIPCUTunnelParser *)self hostIdentifier];
+  hostIdentifier = [(MTIPCUTunnelParser *)self hostIdentifier];
 
-  if (!v5)
+  if (!hostIdentifier)
   {
     goto LABEL_19;
   }
 
-  v6 = [(MTIPCUTunnelParser *)self hostIdentifier];
+  hostIdentifier2 = [(MTIPCUTunnelParser *)self hostIdentifier];
   v7 = +[MDMConfiguration sharedConfiguration];
-  v8 = [v7 personaID];
+  personaID = [v7 personaID];
   v9 = DMCHCUCopyCertificateFromKeychainForMappedLabel();
 
   if (v9)
@@ -115,9 +115,9 @@ LABEL_15:
     CFRelease(v9);
   }
 
-  v17 = [(MTIPCUTunnelParser *)self hostIdentifier];
+  hostIdentifier3 = [(MTIPCUTunnelParser *)self hostIdentifier];
 
-  if (v17)
+  if (hostIdentifier3)
   {
     v18 = objc_alloc_init(NSMutableDictionary);
     [(MTIPCUTunnelParser *)self setCSR:v18];
@@ -145,7 +145,7 @@ LABEL_20:
   return v23;
 }
 
-- (id)_commandGetProfileList:(id)a3
+- (id)_commandGetProfileList:(id)list
 {
   v3 = DMCLogObjects();
   if (os_log_type_enabled(*v3, OS_LOG_TYPE_DEBUG))
@@ -158,16 +158,16 @@ LABEL_20:
   return v4;
 }
 
-- (id)_commandRemoveProfile:(id)a3
+- (id)_commandRemoveProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = DMCLogObjects();
   if (os_log_type_enabled(*v4, OS_LOG_TYPE_DEBUG))
   {
     sub_100008470();
   }
 
-  v5 = [v3 objectForKey:kMCTPProfileIdentifier];
+  v5 = [profileCopy objectForKey:kMCTPProfileIdentifier];
 
   v6 = [MDMMCInterface ipcuRemoveProfileWithIdentifier:v5];
 
@@ -177,9 +177,9 @@ LABEL_20:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = v7;
-      v9 = [v6 DMCVerboseDescription];
+      dMCVerboseDescription = [v6 DMCVerboseDescription];
       v13 = 138543362;
-      v14 = v9;
+      v14 = dMCVerboseDescription;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Error: %{public}@", &v13, 0xCu);
     }
 
@@ -196,23 +196,23 @@ LABEL_20:
   return v11;
 }
 
-- (id)_commandSetCertificate:(id)a3
+- (id)_commandSetCertificate:(id)certificate
 {
-  v4 = a3;
+  certificateCopy = certificate;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1000084F8();
   }
 
-  v6 = [(MTIPCUTunnelParser *)self hostIdentifier];
-  if (v6 && (v7 = v6, [(MTIPCUTunnelParser *)self CSR], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  hostIdentifier = [(MTIPCUTunnelParser *)self hostIdentifier];
+  if (hostIdentifier && (v7 = hostIdentifier, [(MTIPCUTunnelParser *)self CSR], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [v4 objectForKey:@"CertificateData"];
-    v10 = [(MTIPCUTunnelParser *)self hostIdentifier];
+    v9 = [certificateCopy objectForKey:@"CertificateData"];
+    hostIdentifier2 = [(MTIPCUTunnelParser *)self hostIdentifier];
     v11 = [(MTIPCUTunnelParser *)self CSR];
     v12 = +[MDMConfiguration sharedConfiguration];
-    v13 = [v12 personaID];
+    personaID = [v12 personaID];
     v14 = DMCHCUSetCertificateDataForMappedLabel();
 
     [(MTIPCUTunnelParser *)self setCSR:0];
@@ -256,9 +256,9 @@ LABEL_20:
   return v17;
 }
 
-- (id)_commandInstallProfile:(id)a3
+- (id)_commandInstallProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = DMCLogObjects();
   if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEBUG))
   {
@@ -266,7 +266,7 @@ LABEL_20:
   }
 
   v6 = kMCTPPayloadKey;
-  v7 = [v4 objectForKey:kMCTPPayloadKey];
+  v7 = [profileCopy objectForKey:kMCTPPayloadKey];
 
   if (v7)
   {
@@ -287,15 +287,15 @@ LABEL_20:
       v10 = +[DMFConnection systemConnection];
       v26 = 0;
       v11 = [v10 performRequest:v9 error:&v26];
-      v12 = v26;
+      dMCCopyAsPrimaryError = v26;
 
-      if (!v12)
+      if (!dMCCopyAsPrimaryError)
       {
 LABEL_19:
 
-        if (v12)
+        if (dMCCopyAsPrimaryError)
         {
-          [MTIPCUTunnelParser responseWithError:v12];
+          [MTIPCUTunnelParser responseWithError:dMCCopyAsPrimaryError];
         }
 
         else
@@ -307,11 +307,11 @@ LABEL_19:
         goto LABEL_23;
       }
 
-      if ([v12 code] == 2000)
+      if ([dMCCopyAsPrimaryError code] == 2000)
       {
-        v13 = [(MTIPCUTunnelParser *)self _isLockdownModeEnabled];
+        _isLockdownModeEnabled = [(MTIPCUTunnelParser *)self _isLockdownModeEnabled];
         v14 = DMCInstallationErrorDomain;
-        if (v13)
+        if (_isLockdownModeEnabled)
         {
           v15 = DMCErrorArray();
           v16 = DMCErrorTypeFatal;
@@ -331,8 +331,8 @@ LABEL_19:
         goto LABEL_17;
       }
 
-      v21 = [v12 userInfo];
-      v15 = [v21 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo = [dMCCopyAsPrimaryError userInfo];
+      v15 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
       if (v15)
       {
@@ -341,7 +341,7 @@ LABEL_19:
 LABEL_17:
         v23 = v22;
 
-        v12 = v23;
+        dMCCopyAsPrimaryError = v23;
       }
     }
 
@@ -351,7 +351,7 @@ LABEL_17:
       v25 = v6;
       v9 = DMCErrorArray();
       v15 = [NSError DMCErrorWithDomain:v20 code:14000 descriptionArray:v9 errorType:DMCErrorTypeFatal, v25, 0];
-      v12 = [v15 DMCCopyAsPrimaryError];
+      dMCCopyAsPrimaryError = [v15 DMCCopyAsPrimaryError];
     }
 
     goto LABEL_19;
@@ -366,14 +366,14 @@ LABEL_23:
 - (BOOL)_isLockdownModeEnabled
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isLockdownModeEnabled];
+  isLockdownModeEnabled = [v2 isLockdownModeEnabled];
 
-  return v3;
+  return isLockdownModeEnabled;
 }
 
-- (id)_commandStoreProfile:(id)a3
+- (id)_commandStoreProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = *DMCLogObjects();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -381,7 +381,7 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Storing profile", buf, 2u);
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"ProfileData"];
+  v5 = [profileCopy objectForKeyedSubscript:@"ProfileData"];
   if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusCommandFormatError];
@@ -398,7 +398,7 @@ LABEL_23:
     goto LABEL_17;
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"Purpose"];
+  v8 = [profileCopy objectForKeyedSubscript:@"Purpose"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v8 isEqualToString:@"PostSetupInstallation"] & 1) != 0)
   {
     if ([v8 isEqualToString:@"PostSetupInstallation"] && (v14 & 1) == 0)
@@ -426,10 +426,10 @@ LABEL_18:
   return v10;
 }
 
-- (void)_commandGetStoredProfile:(id)a3 completionBlock:(id)a4
+- (void)_commandGetStoredProfile:(id)profile completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  profileCopy = profile;
   v7 = *DMCLogObjects();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -437,7 +437,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Retrieving stored profile", buf, 2u);
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"Purpose"];
+  v8 = [profileCopy objectForKeyedSubscript:@"Purpose"];
 
   if (v8)
   {
@@ -448,7 +448,7 @@ LABEL_18:
       v10[1] = 3221225472;
       v10[2] = sub_100005488;
       v10[3] = &unk_100010950;
-      v11 = v5;
+      v11 = blockCopy;
       [MDMMCInterface storedProfileDataWithCompletion:v10];
       v9 = v11;
 LABEL_9:
@@ -457,19 +457,19 @@ LABEL_9:
     }
   }
 
-  if (v5)
+  if (blockCopy)
   {
     v9 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusCommandFormatError];
-    (*(v5 + 2))(v5, v9);
+    (*(blockCopy + 2))(blockCopy, v9);
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)_commandGetCloudConfiguration:(id)a3 completionBlock:(id)a4
+- (void)_commandGetCloudConfiguration:(id)configuration completionBlock:(id)block
 {
-  v7 = a4;
+  blockCopy = block;
   v4 = +[MDMMCInterface cloudConfigurationDetails];
   v5 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusAcknowledged];
   v6 = v5;
@@ -478,16 +478,16 @@ LABEL_10:
     [v5 setObject:v4 forKeyedSubscript:@"CloudConfiguration"];
   }
 
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
-- (void)_commandSetCloudConfiguration:(id)a3 completionBlock:(id)a4
+- (void)_commandSetCloudConfiguration:(id)configuration completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   v8 = +[MDMMCInterface cloudConfigurationDetails];
   if (v8)
   {
@@ -495,16 +495,16 @@ LABEL_10:
     v10 = DMCErrorArray();
     v11 = [NSError DMCErrorWithDomain:v9 code:14002 descriptionArray:v10 errorType:DMCErrorTypeFatal, 0];
 
-    if (v7)
+    if (blockCopy)
     {
       v12 = [MTIPCUTunnelParser responseWithError:v11];
-      v7[2](v7, v12);
+      blockCopy[2](blockCopy, v12);
     }
   }
 
   else
   {
-    v13 = [v6 objectForKeyedSubscript:@"CloudConfiguration"];
+    v13 = [configurationCopy objectForKeyedSubscript:@"CloudConfiguration"];
     v14 = [v13 mutableCopy];
 
     [v14 setObject:&off_100011430 forKeyedSubscript:kCCConfigurationSourceKey];
@@ -531,23 +531,23 @@ LABEL_10:
     v17[2] = sub_100005858;
     v17[3] = &unk_100010978;
     v17[4] = self;
-    v18 = v6;
-    v19 = v7;
+    v18 = configurationCopy;
+    v19 = blockCopy;
     [MDMMCInterface storeCloudConfigurationDetails:v14 completion:v17];
   }
 }
 
-- (id)_underlyingCloudConfigErrorFromError:(id)a3
+- (id)_underlyingCloudConfigErrorFromError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 userInfo];
-  v6 = [v5 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
   if (!v6 || ([v6 domain], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", DEPCloudConfigErrorDomain), v7, (v8 & 1) == 0))
   {
@@ -559,12 +559,12 @@ LABEL_5:
   return v6;
 }
 
-- (id)_configuratorProvisionalEnrollmentErrorWithDetails:(id)a3 error:(id)a4
+- (id)_configuratorProvisionalEnrollmentErrorWithDetails:(id)details error:(id)error
 {
-  v5 = a4;
-  v6 = [(MTIPCUTunnelParser *)self _underlyingCloudConfigErrorFromError:v5];
+  errorCopy = error;
+  v6 = [(MTIPCUTunnelParser *)self _underlyingCloudConfigErrorFromError:errorCopy];
   v7 = v6;
-  v8 = v5;
+  v8 = errorCopy;
   if (v6)
   {
     if ([v6 code] == 33014)
@@ -574,7 +574,7 @@ LABEL_5:
 
     else
     {
-      v8 = v5;
+      v8 = errorCopy;
     }
   }
 
@@ -583,12 +583,12 @@ LABEL_5:
   return v9;
 }
 
-- (id)_configuratorCloudConfigurationErrorWithCloudConfigDetails:(id)a3 error:(id)a4
+- (id)_configuratorCloudConfigurationErrorWithCloudConfigDetails:(id)details error:(id)error
 {
-  v5 = a4;
-  v6 = [(MTIPCUTunnelParser *)self _underlyingCloudConfigErrorFromError:v5];
+  errorCopy = error;
+  v6 = [(MTIPCUTunnelParser *)self _underlyingCloudConfigErrorFromError:errorCopy];
   v7 = v6;
-  v8 = v5;
+  v8 = errorCopy;
   if (v6)
   {
     if ([v6 code] == 33005)
@@ -598,7 +598,7 @@ LABEL_5:
 
     else
     {
-      v8 = v5;
+      v8 = errorCopy;
     }
   }
 
@@ -607,13 +607,13 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)_isXPCInterruptionError:(id)a3
+- (BOOL)_isXPCInterruptionError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:NSCocoaErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:NSCocoaErrorDomain])
   {
-    v5 = [v3 code] == 4097 || objc_msgSend(v3, "code") == 4099;
+    v5 = [errorCopy code] == 4097 || objc_msgSend(errorCopy, "code") == 4099;
   }
 
   else
@@ -624,10 +624,10 @@ LABEL_5:
   return v5;
 }
 
-- (void)_commandDownloadAndApplyCloudConfiguration:(id)a3 completionBlock:(id)a4
+- (void)_commandDownloadAndApplyCloudConfiguration:(id)configuration completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   v8 = *DMCLogObjects();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -640,9 +640,9 @@ LABEL_5:
   v17[2] = sub_100005DAC;
   v17[3] = &unk_1000109C8;
   v17[4] = self;
-  v9 = v6;
+  v9 = configurationCopy;
   v18 = v9;
-  v10 = v7;
+  v10 = blockCopy;
   v19 = v10;
   v11 = objc_retainBlock(v17);
   v12 = +[MDMMCInterface mdmProfileIdentifier];
@@ -666,55 +666,55 @@ LABEL_5:
   }
 }
 
-- (void)_commandPollMDMIfNetworkTetheredRequest:(id)a3 completionBlock:(id)a4
+- (void)_commandPollMDMIfNetworkTetheredRequest:(id)request completionBlock:(id)block
 {
-  v4 = a4;
+  blockCopy = block;
   v5 = +[MDMClient sharedClient];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006A48;
   v7[3] = &unk_100010B38;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [v5 simulatePushIfNetworkTetheredWithCompletion:v7];
 }
 
-- (void)_commandEraseDevice:(id)a3 completionBlock:(id)a4
+- (void)_commandEraseDevice:(id)device completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"PreserveDataPlan"];
+  deviceCopy = device;
+  blockCopy = block;
+  v7 = [deviceCopy objectForKeyedSubscript:@"PreserveDataPlan"];
   if (!v7)
   {
     v8 = 1;
 LABEL_5:
-    v9 = [v5 objectForKeyedSubscript:@"DisallowProximitySetup"];
+    v9 = [deviceCopy objectForKeyedSubscript:@"DisallowProximitySetup"];
     if (v9)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v13 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusCommandFormatError];
-        v6[2](v6, v13);
+        blockCopy[2](blockCopy, v13);
         goto LABEL_12;
       }
 
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue = 0;
     }
 
     v11 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusAcknowledged];
-    v6[2](v6, v11);
+    blockCopy[2](blockCopy, v11);
 
     v12 = dispatch_semaphore_create(0);
     v13 = objc_alloc_init(DDRResetOptions);
     [v13 setHideProgress:1];
     [v13 setEraseDataPlan:v8];
-    [v13 setDisallowProximitySetup:v10];
+    [v13 setDisallowProximitySetup:bOOLValue];
     v14 = [[DDRResetRequest alloc] initWithMode:4 options:v13 reason:@"mc_mobile_tunnel erase device command"];
     v15 = +[DDRResetService sharedInstance];
     v17[0] = _NSConcreteStackBlock;
@@ -739,14 +739,14 @@ LABEL_12:
   }
 
   v9 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusCommandFormatError];
-  v6[2](v6, v9);
+  blockCopy[2](blockCopy, v9);
 LABEL_13:
 }
 
-- (void)_commandEscalate:(id)a3 completionBlock:(id)a4
+- (void)_commandEscalate:(id)escalate completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 objectForKeyedSubscript:@"SupervisorCertificate"];
+  blockCopy = block;
+  v7 = [escalate objectForKeyedSubscript:@"SupervisorCertificate"];
   v8 = +[MDMMCInterface cloudConfigurationDetails];
   v9 = [v8 objectForKeyedSubscript:kCCSupervisorHostCertificatesKey];
 
@@ -758,10 +758,10 @@ LABEL_13:
     [(MTIPCUTunnelParser *)self setChallenge:v10];
 
     v11 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusAcknowledged];
-    v12 = [(MTIPCUTunnelParser *)self challenge];
-    [v11 setObject:v12 forKeyedSubscript:@"Challenge"];
+    challenge = [(MTIPCUTunnelParser *)self challenge];
+    [v11 setObject:challenge forKeyedSubscript:@"Challenge"];
 
-    if (!v6)
+    if (!blockCopy)
     {
       goto LABEL_6;
     }
@@ -770,19 +770,19 @@ LABEL_13:
   }
 
   v11 = [MTIPCUTunnelParser responseWithStatus:@"CertificateRejected"];
-  if (v6)
+  if (blockCopy)
   {
 LABEL_5:
-    v6[2](v6, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
 LABEL_6:
 }
 
-- (void)_commandEscalateResponse:(id)a3 completionBlock:(id)a4
+- (void)_commandEscalateResponse:(id)response completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = [a3 objectForKeyedSubscript:@"SignedRequest"];
+  blockCopy = block;
+  v7 = [response objectForKeyedSubscript:@"SignedRequest"];
   BasicX509 = SecPolicyCreateBasicX509();
   if (!BasicX509)
   {
@@ -808,13 +808,13 @@ LABEL_16:
     v13 = [v12 objectAtIndexedSubscript:0];
 
     v14 = SecCertificateCopyData(v13);
-    v15 = [(MTIPCUTunnelParser *)self challengeCertificate];
-    v16 = [(__CFData *)v14 isEqualToData:v15];
+    challengeCertificate = [(MTIPCUTunnelParser *)self challengeCertificate];
+    v16 = [(__CFData *)v14 isEqualToData:challengeCertificate];
 
     if (v16)
     {
-      v17 = [(MTIPCUTunnelParser *)self challenge];
-      v18 = [v28 isEqualToData:v17];
+      challenge = [(MTIPCUTunnelParser *)self challenge];
+      v18 = [v28 isEqualToData:challenge];
 
       if (v18)
       {
@@ -830,12 +830,12 @@ LABEL_16:
         }
 
         v20 = [MTIPCUTunnelParser responseWithStatus:kMCTPStatusAcknowledged];
-        v21 = [(MTIPCUTunnelParser *)self escalationBlock];
+        escalationBlock = [(MTIPCUTunnelParser *)self escalationBlock];
 
-        if (v21)
+        if (escalationBlock)
         {
-          v22 = [(MTIPCUTunnelParser *)self escalationBlock];
-          v22[2]();
+          escalationBlock2 = [(MTIPCUTunnelParser *)self escalationBlock];
+          escalationBlock2[2]();
         }
 
         goto LABEL_21;
@@ -883,16 +883,16 @@ LABEL_18:
 
   v20 = [MTIPCUTunnelParser responseWithStatus:@"SignedRequestRejected"];
 LABEL_21:
-  if (v6)
+  if (blockCopy)
   {
-    v6[2](v6, v20);
+    blockCopy[2](blockCopy, v20);
   }
 }
 
-- (void)_commandEstablishProvisionalEnrollmentRequest:(id)a3 completionBlock:(id)a4
+- (void)_commandEstablishProvisionalEnrollmentRequest:(id)request completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   v8 = *DMCLogObjects();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -904,7 +904,7 @@ LABEL_21:
   v17[1] = 3221225472;
   v17[2] = sub_100007680;
   v17[3] = &unk_100010B88;
-  v9 = v7;
+  v9 = blockCopy;
   v18 = v9;
   v10 = objc_retainBlock(v17);
   if (DMCIsSetupBuddyDone())
@@ -922,7 +922,7 @@ LABEL_21:
 
   else
   {
-    v12 = [v6 objectForKeyedSubscript:@"Nonce"];
+    v12 = [requestCopy objectForKeyedSubscript:@"Nonce"];
     if (v12)
     {
       v15[0] = _NSConcreteStackBlock;
@@ -949,10 +949,10 @@ LABEL_21:
   }
 }
 
-- (id)_commandSetWiFiPower:(id)a3
+- (id)_commandSetWiFiPower:(id)power
 {
-  v3 = [a3 objectForKeyedSubscript:@"PowerState"];
-  v4 = [v3 BOOLValue];
+  v3 = [power objectForKeyedSubscript:@"PowerState"];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = *DMCLogObjects();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -970,7 +970,7 @@ LABEL_21:
     v9 = v8;
     CFRunLoopGetCurrent();
     WiFiManagerClientScheduleWithRunLoop();
-    if (WiFiManagerClientGetPower() == v4 || (WiFiManagerClientSetPower(), WiFiManagerClientGetPower() == v4))
+    if (WiFiManagerClientGetPower() == bOOLValue || (WiFiManagerClientSetPower(), WiFiManagerClientGetPower() == bOOLValue))
     {
       CFRunLoopGetCurrent();
       WiFiManagerClientUnscheduleFromRunLoop();
@@ -989,7 +989,7 @@ LABEL_21:
     CFRunLoopGetCurrent();
     WiFiManagerClientUnscheduleFromRunLoop();
     CFRelease(v9);
-    v18 = [@"TUNNEL_ERROR_COULD_NOT_SET_WIFI_POWER" DMCAppendGreenteaSuffix];
+    dMCAppendGreenteaSuffix = [@"TUNNEL_ERROR_COULD_NOT_SET_WIFI_POWER" DMCAppendGreenteaSuffix];
     v13 = DMCUnformattedErrorArray();
 
     v14 = DMCTunnelErrorDomain;
@@ -1006,7 +1006,7 @@ LABEL_21:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to create WiFi manager client.", buf, 2u);
     }
 
-    v12 = [@"TUNNEL_ERROR_COULD_NOT_CREATE_WIFI_MANAGER_CLIENT" DMCAppendGreenteaSuffix];
+    dMCAppendGreenteaSuffix2 = [@"TUNNEL_ERROR_COULD_NOT_CREATE_WIFI_MANAGER_CLIENT" DMCAppendGreenteaSuffix];
     v13 = DMCUnformattedErrorArray();
 
     v14 = DMCTunnelErrorDomain;
@@ -1022,16 +1022,16 @@ LABEL_14:
   return v10;
 }
 
-- (void)processRequest:(id)a3 assertion:(id)a4 completionBlock:(id)a5
+- (void)processRequest:(id)request assertion:(id)assertion completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKey:@"IPCUIdentifier"];
+  requestCopy = request;
+  assertionCopy = assertion;
+  blockCopy = block;
+  v11 = [requestCopy objectForKey:@"IPCUIdentifier"];
 
   if (v11)
   {
-    v12 = [v8 objectForKey:@"IPCUIdentifier"];
+    v12 = [requestCopy objectForKey:@"IPCUIdentifier"];
     v13 = [v12 copy];
     [(MTIPCUTunnelParser *)self setHostIdentifier:v13];
 
@@ -1039,21 +1039,21 @@ LABEL_14:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = v14;
-      v16 = [(MTIPCUTunnelParser *)self hostIdentifier];
+      hostIdentifier = [(MTIPCUTunnelParser *)self hostIdentifier];
       *buf = 138543362;
-      v30 = v16;
+      v30 = hostIdentifier;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Got iPCU Identifier: %{public}@", buf, 0xCu);
     }
   }
 
-  v17 = [v8 objectForKey:@"HostCertificateData"];
-  v18 = [(MTIPCUTunnelParser *)self hostIdentifier];
+  v17 = [requestCopy objectForKey:@"HostCertificateData"];
+  hostIdentifier2 = [(MTIPCUTunnelParser *)self hostIdentifier];
 
-  if (v18 && v17)
+  if (hostIdentifier2 && v17)
   {
-    v19 = [(MTIPCUTunnelParser *)self hostIdentifier];
+    hostIdentifier3 = [(MTIPCUTunnelParser *)self hostIdentifier];
     v20 = +[MDMConfiguration sharedConfiguration];
-    v21 = [v20 personaID];
+    personaID = [v20 personaID];
     v22 = DMCHCUCopyHostCertificateForMappedLabel();
 
     if (v22)
@@ -1063,12 +1063,12 @@ LABEL_14:
 
     else
     {
-      v23 = [(MTIPCUTunnelParser *)self hostIdentifier];
-      [MDMMCInterface storeCertificateData:v17 forHostIdentifier:v23];
+      hostIdentifier4 = [(MTIPCUTunnelParser *)self hostIdentifier];
+      [MDMMCInterface storeCertificateData:v17 forHostIdentifier:hostIdentifier4];
     }
   }
 
-  v24 = [v8 objectForKey:kMCTPRequestTypeKey];
+  v24 = [requestCopy objectForKey:kMCTPRequestTypeKey];
   v25 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -1085,55 +1085,55 @@ LABEL_14:
 
   if ([v24 isEqualToString:@"GetEncryptionKey"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandGetEncryptionKey:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandGetEncryptionKey:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"SetCertificate"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandSetCertificate:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandSetCertificate:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"HelloHostIdentifier"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandHello:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandHello:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"Flush"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandFlush:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandFlush:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"GetProfileList"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandGetProfileList:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandGetProfileList:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"InstallProfile"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandInstallProfile:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandInstallProfile:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"RemoveProfile"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandRemoveProfile:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandRemoveProfile:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"StoreProfile"])
   {
-    v26 = [(MTIPCUTunnelParser *)self _commandStoreProfile:v8];
+    v26 = [(MTIPCUTunnelParser *)self _commandStoreProfile:requestCopy];
     goto LABEL_29;
   }
 
   if ([v24 isEqualToString:@"GetStoredProfile"])
   {
-    [(MTIPCUTunnelParser *)self _commandGetStoredProfile:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandGetStoredProfile:requestCopy completionBlock:blockCopy];
 LABEL_53:
     v27 = 0;
     goto LABEL_31;
@@ -1141,49 +1141,49 @@ LABEL_53:
 
   if ([v24 isEqualToString:@"GetCloudConfiguration"])
   {
-    [(MTIPCUTunnelParser *)self _commandGetCloudConfiguration:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandGetCloudConfiguration:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
   if ([v24 isEqualToString:@"SetCloudConfiguration"])
   {
-    [(MTIPCUTunnelParser *)self _commandSetCloudConfiguration:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandSetCloudConfiguration:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
   if ([v24 isEqualToString:@"DownloadAndApplyCloudConfiguration"])
   {
-    [(MTIPCUTunnelParser *)self _commandDownloadAndApplyCloudConfiguration:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandDownloadAndApplyCloudConfiguration:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
   if ([v24 isEqualToString:@"PollMDMIfNetworkTethered"])
   {
-    [(MTIPCUTunnelParser *)self _commandPollMDMIfNetworkTetheredRequest:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandPollMDMIfNetworkTetheredRequest:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
   if ([v24 isEqualToString:@"Escalate"])
   {
-    [(MTIPCUTunnelParser *)self _commandEscalate:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandEscalate:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
   if ([v24 isEqualToString:@"EscalateResponse"])
   {
-    [(MTIPCUTunnelParser *)self _commandEscalateResponse:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandEscalateResponse:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
   if ([v24 isEqualToString:@"EstablishProvisionalEnrollment"])
   {
-    [(MTIPCUTunnelParser *)self _commandEstablishProvisionalEnrollmentRequest:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandEstablishProvisionalEnrollmentRequest:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
   if ([v24 isEqualToString:@"EraseDevice"])
   {
-    [(MTIPCUTunnelParser *)self _commandEraseDevice:v8 completionBlock:v10];
+    [(MTIPCUTunnelParser *)self _commandEraseDevice:requestCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
@@ -1191,16 +1191,16 @@ LABEL_53:
   {
     v28.receiver = self;
     v28.super_class = MTIPCUTunnelParser;
-    [(MTIPCUTunnelParser *)&v28 processRequest:v8 assertion:v9 completionBlock:v10];
+    [(MTIPCUTunnelParser *)&v28 processRequest:requestCopy assertion:assertionCopy completionBlock:blockCopy];
     goto LABEL_53;
   }
 
-  v26 = [(MTIPCUTunnelParser *)self _commandSetWiFiPower:v8];
+  v26 = [(MTIPCUTunnelParser *)self _commandSetWiFiPower:requestCopy];
 LABEL_29:
   v27 = v26;
-  if (v10)
+  if (blockCopy)
   {
-    v10[2](v10, v26);
+    blockCopy[2](blockCopy, v26);
   }
 
 LABEL_31:

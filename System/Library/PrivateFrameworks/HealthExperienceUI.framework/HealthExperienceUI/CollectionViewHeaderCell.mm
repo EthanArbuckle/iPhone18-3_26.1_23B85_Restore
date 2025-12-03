@@ -1,16 +1,16 @@
 @interface CollectionViewHeaderCell
-- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CollectionViewHeaderCell
 
-- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC18HealthExperienceUI24CollectionViewHeaderCell_item;
   v9 = type metadata accessor for CollectionViewHeaderCell();
   *v8 = 0u;
@@ -18,15 +18,15 @@
   *(v8 + 4) = 0;
   v14.receiver = self;
   v14.super_class = v9;
-  v10 = [(CollectionViewHeaderCell *)&v14 initWithFrame:x, y, width, height];
-  v11 = *((*MEMORY[0x1E69E7D40] & v10->super.super.super.super.super.super.isa) + 0x70);
-  v12 = v10;
+  height = [(CollectionViewHeaderCell *)&v14 initWithFrame:x, y, width, height];
+  v11 = *((*MEMORY[0x1E69E7D40] & height->super.super.super.super.super.super.isa) + 0x70);
+  v12 = height;
   v11();
 
   return v12;
 }
 
-- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI24CollectionViewHeaderCell)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI24CollectionViewHeaderCell_item;
   *v3 = 0u;

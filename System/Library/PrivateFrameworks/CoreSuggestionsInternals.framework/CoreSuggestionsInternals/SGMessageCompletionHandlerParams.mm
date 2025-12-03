@@ -1,29 +1,29 @@
 @interface SGMessageCompletionHandlerParams
-- (SGMessageCompletionHandlerParams)initWithError:(id)a3 foundContacts:(id)a4 foundEvents:(id)a5 invalidatedMessageIdentifiers:(id)a6;
+- (SGMessageCompletionHandlerParams)initWithError:(id)error foundContacts:(id)contacts foundEvents:(id)events invalidatedMessageIdentifiers:(id)identifiers;
 @end
 
 @implementation SGMessageCompletionHandlerParams
 
-- (SGMessageCompletionHandlerParams)initWithError:(id)a3 foundContacts:(id)a4 foundEvents:(id)a5 invalidatedMessageIdentifiers:(id)a6
+- (SGMessageCompletionHandlerParams)initWithError:(id)error foundContacts:(id)contacts foundEvents:(id)events invalidatedMessageIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  errorCopy = error;
+  contactsCopy = contacts;
+  eventsCopy = events;
+  identifiersCopy = identifiers;
   v20.receiver = self;
   v20.super_class = SGMessageCompletionHandlerParams;
   v15 = [(SGMessageCompletionHandlerParams *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_error, a3);
+    objc_storeStrong(&v15->_error, error);
     v17 = objc_opt_new();
     tuple = v16->_tuple;
     v16->_tuple = v17;
 
-    [(SGRealtimeSuggestionsTuple *)v16->_tuple setContacts:v12];
-    [(SGRealtimeSuggestionsTuple *)v16->_tuple setEvents:v13];
-    [(SGRealtimeSuggestionsTuple *)v16->_tuple setInvalidatedIdentifiers:v14];
+    [(SGRealtimeSuggestionsTuple *)v16->_tuple setContacts:contactsCopy];
+    [(SGRealtimeSuggestionsTuple *)v16->_tuple setEvents:eventsCopy];
+    [(SGRealtimeSuggestionsTuple *)v16->_tuple setInvalidatedIdentifiers:identifiersCopy];
   }
 
   return v16;

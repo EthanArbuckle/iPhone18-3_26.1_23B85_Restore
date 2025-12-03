@@ -1,17 +1,17 @@
 @interface MapsSuggestionsSignalPack
-+ (id)extractFromDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4;
-+ (id)extractFromDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4;
-+ (id)signalPackFromData:(id)a3;
-- (BOOL)mergeIntoSignalPack:(id)a3;
-- (MapsSuggestionsSignalPack)initWithCoder:(id)a3;
-- (MapsSuggestionsSignalPack)initWithSignalPack:(id)a3;
++ (id)extractFromDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate;
++ (id)extractFromDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate;
++ (id)signalPackFromData:(id)data;
+- (BOOL)mergeIntoSignalPack:(id)pack;
+- (MapsSuggestionsSignalPack)initWithCoder:(id)coder;
+- (MapsSuggestionsSignalPack)initWithSignalPack:(id)pack;
 - (id).cxx_construct;
 - (id)copy;
 - (id)encodedFeatureDictionary;
 - (id)mutableCopy;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)rawSignalDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MapsSuggestionsSignalPack
@@ -38,18 +38,18 @@
   return [(MapsSuggestionsSignalPack *)&v3 mutableCopy];
 }
 
-+ (id)extractFromDestinationEntry:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4
++ (id)extractFromDestinationEntry:(id)entry originCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v57 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  entryCopy = entry;
+  v8 = entryCopy;
+  if (entryCopy)
   {
-    v9 = [v7 geoMapItem];
+    geoMapItem = [entryCopy geoMapItem];
 
-    if (!v9 || ([v8 geoMapItem], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(a1, "extractFromDestinationMapItem:originCoordinate:", v10, latitude, longitude), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+    if (!geoMapItem || ([v8 geoMapItem], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(self, "extractFromDestinationMapItem:originCoordinate:", v10, latitude, longitude), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
     {
       v11 = objc_alloc_init(MapsSuggestionsMutableSignalPack);
     }
@@ -237,16 +237,16 @@
   return v20;
 }
 
-+ (id)extractFromDestinationMapItem:(id)a3 originCoordinate:(CLLocationCoordinate2D)a4
++ (id)extractFromDestinationMapItem:(id)item originCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v56 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  itemCopy = item;
+  if (itemCopy)
   {
     v7 = objc_alloc_init(MapsSuggestionsMutableSignalPack);
-    v8 = v6;
+    v8 = itemCopy;
     v9 = MapsSuggestionsCurrentBestLocation();
     if (v9)
     {
@@ -472,16 +472,16 @@ LABEL_46:
   return v19;
 }
 
-- (MapsSuggestionsSignalPack)initWithSignalPack:(id)a3
+- (MapsSuggestionsSignalPack)initWithSignalPack:(id)pack
 {
-  v4 = a3;
+  packCopy = pack;
   v9.receiver = self;
   v9.super_class = MapsSuggestionsSignalPack;
   v5 = [(MapsSuggestionsSignalPack *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = v5 == v4;
+    v7 = v5 == packCopy;
   }
 
   else
@@ -491,29 +491,29 @@ LABEL_46:
 
   if (!v7)
   {
-    v5->_innerSignalPack.dict_.__table_.__max_load_factor_ = v4->_innerSignalPack.dict_.__table_.__max_load_factor_;
-    std::__hash_table<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::__unordered_map_hasher<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::hash<MapsSuggestionsSignalType>,std::equal_to<MapsSuggestionsSignalType>,true>,std::__unordered_map_equal<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::equal_to<MapsSuggestionsSignalType>,std::hash<MapsSuggestionsSignalType>,true>,std::allocator<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,void *> *>>(&v5->_innerSignalPack.dict_.__table_.__bucket_list_.__ptr_, v4->_innerSignalPack.dict_.__table_.__first_node_.__next_, 0);
+    v5->_innerSignalPack.dict_.__table_.__max_load_factor_ = packCopy->_innerSignalPack.dict_.__table_.__max_load_factor_;
+    std::__hash_table<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::__unordered_map_hasher<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::hash<MapsSuggestionsSignalType>,std::equal_to<MapsSuggestionsSignalType>,true>,std::__unordered_map_equal<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::equal_to<MapsSuggestionsSignalType>,std::hash<MapsSuggestionsSignalType>,true>,std::allocator<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,void *> *>>(&v5->_innerSignalPack.dict_.__table_.__bucket_list_.__ptr_, packCopy->_innerSignalPack.dict_.__table_.__first_node_.__next_, 0);
   }
 
   return v6;
 }
 
-+ (id)signalPackFromData:(id)a3
++ (id)signalPackFromData:(id)data
 {
-  v3 = MapsSuggestionsSignalPackFromData(a3);
+  v3 = MapsSuggestionsSignalPackFromData(data);
 
   return v3;
 }
 
-- (BOOL)mergeIntoSignalPack:(id)a3
+- (BOOL)mergeIntoSignalPack:(id)pack
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  packCopy = pack;
+  if (packCopy)
   {
     for (i = self->_innerSignalPack.dict_.__table_.__first_node_.__next_; i; i = *i)
     {
-      std::unordered_map<MapsSuggestionsSignalType,MSg::Signal>::insert_or_assign[abi:ne200100]<MSg::Signal const&>(v4 + 1, i + 2, (i + 3));
+      std::unordered_map<MapsSuggestionsSignalType,MSg::Signal>::insert_or_assign[abi:ne200100]<MSg::Signal const&>(packCopy + 1, i + 2, (i + 3));
     }
   }
 
@@ -534,7 +534,7 @@ LABEL_46:
     }
   }
 
-  return v4 != 0;
+  return packCopy != 0;
 }
 
 - (id)rawSignalDictionary
@@ -609,17 +609,17 @@ LABEL_46:
   return v17;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [MapsSuggestionsMutableSignalPack allocWithZone:a3];
+  v4 = [MapsSuggestionsMutableSignalPack allocWithZone:zone];
 
   return [(MapsSuggestionsSignalPack *)v4 initWithSignalPack:self];
 }
 
-- (MapsSuggestionsSignalPack)initWithCoder:(id)a3
+- (MapsSuggestionsSignalPack)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsSignalPackInnerDataKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MapsSuggestionsSignalPackInnerDataKey"];
   if ([(MSg::SignalPack *)v5 length])
   {
     v6 = objc_alloc_init(MapsSuggestionsSignalPack);
@@ -629,7 +629,7 @@ LABEL_46:
     std::__hash_table<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::__unordered_map_hasher<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::hash<MapsSuggestionsSignalType>,std::equal_to<MapsSuggestionsSignalType>,true>,std::__unordered_map_equal<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::equal_to<MapsSuggestionsSignalType>,std::hash<MapsSuggestionsSignalType>,true>,std::allocator<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>>>::__move_assign(&v6->_innerSignalPack, v10);
     std::__hash_table<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::__unordered_map_hasher<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::hash<MapsSuggestionsSignalType>,std::equal_to<MapsSuggestionsSignalType>,true>,std::__unordered_map_equal<MapsSuggestionsSignalType,std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>,std::equal_to<MapsSuggestionsSignalType>,std::hash<MapsSuggestionsSignalType>,true>,std::allocator<std::__hash_value_type<MapsSuggestionsSignalType,MSg::Signal>>>::~__hash_table(v10);
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -641,20 +641,20 @@ LABEL_46:
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_ERROR, "Decoded empty data for MapsSuggestionsSignalPack?", v10, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:3800];
   v5 = MSg::SignalPack::serialize(&self->_innerSignalPack, v4);
 
   v6 = [v5 copy];
-  [v7 encodeObject:v6 forKey:@"MapsSuggestionsSignalPackInnerDataKey"];
+  [coderCopy encodeObject:v6 forKey:@"MapsSuggestionsSignalPackInnerDataKey"];
 }
 
 @end

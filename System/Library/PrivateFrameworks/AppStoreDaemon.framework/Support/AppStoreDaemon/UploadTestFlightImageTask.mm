@@ -1,12 +1,12 @@
 @interface UploadTestFlightImageTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation UploadTestFlightImageTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [NSMutableURLRequest alloc];
   v6 = *(&self->super._bag + 2);
   if (v6)
@@ -27,8 +27,8 @@
   [v8 setHTTPBody:v10];
 
   [v8 setHTTPMethod:@"PUT"];
-  v11 = [(UploadTestFlightImageTask *)self contentTypeHeaderValue];
-  [v8 setHTTPContentType:v11];
+  contentTypeHeaderValue = [(UploadTestFlightImageTask *)self contentTypeHeaderValue];
+  [v8 setHTTPContentType:contentTypeHeaderValue];
 
   v12 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   [v12 set_sourceApplicationBundleIdentifier:@"com.apple.AppStore"];
@@ -37,9 +37,9 @@
   v17 = 3221225472;
   v18 = sub_100239F5C;
   v19 = &unk_10051E2A8;
-  v20 = self;
-  v21 = v4;
-  v14 = v4;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v14 = handlerCopy;
   v15 = [v13 dataTaskWithRequest:v8 completionHandler:&v16];
   [v15 resume];
 }

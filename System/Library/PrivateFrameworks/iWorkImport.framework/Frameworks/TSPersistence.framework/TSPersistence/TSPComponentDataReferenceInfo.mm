@@ -1,21 +1,21 @@
 @interface TSPComponentDataReferenceInfo
 - (TSPComponentDataReferenceInfo)init;
-- (TSPComponentDataReferenceInfo)initWithComponentDataReferenceMap:(id)a3 packageIdentifier:(unsigned __int8)a4;
+- (TSPComponentDataReferenceInfo)initWithComponentDataReferenceMap:(id)map packageIdentifier:(unsigned __int8)identifier;
 @end
 
 @implementation TSPComponentDataReferenceInfo
 
-- (TSPComponentDataReferenceInfo)initWithComponentDataReferenceMap:(id)a3 packageIdentifier:(unsigned __int8)a4
+- (TSPComponentDataReferenceInfo)initWithComponentDataReferenceMap:(id)map packageIdentifier:(unsigned __int8)identifier
 {
-  v7 = a3;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = TSPComponentDataReferenceInfo;
   v8 = [(TSPComponentDataReferenceInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_componentDataReferenceMap, a3);
-    v9->_packageIdentifier = a4;
+    objc_storeStrong(&v8->_componentDataReferenceMap, map);
+    v9->_packageIdentifier = identifier;
   }
 
   return v9;

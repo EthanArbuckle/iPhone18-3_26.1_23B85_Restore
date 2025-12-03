@@ -1,65 +1,65 @@
 @interface UICalendarView
-- (BOOL)_canSelectItemAtIndexPath:(id)a3 forSelection:(BOOL)a4;
-- (BOOL)_shouldUpdateDateViewForVisibleMonth:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (BOOL)_canSelectItemAtIndexPath:(id)path forSelection:(BOOL)selection;
+- (BOOL)_shouldUpdateDateViewForVisibleMonth:(id)month;
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (NSDateComponents)visibleDateComponents;
-- (UICalendarView)initWithCoder:(id)a3;
-- (UICalendarView)initWithFrame:(CGRect)a3;
+- (UICalendarView)initWithCoder:(id)coder;
+- (UICalendarView)initWithFrame:(CGRect)frame;
 - (_UICalendarViewDecorationSystem)decorationSystem;
 - (double)__dayAndWeekdayLabelWidth;
-- (double)_preferredCollectionViewHeightForWidth:(double)a3;
-- (id)_configuedCellForCollectionView:(id)a3 indexPath:(id)a4 day:(id)a5;
-- (id)_contentSizeCategoryForContentWidth:(double)a3;
-- (id)_delegateDecorationForDay:(id)a3;
+- (double)_preferredCollectionViewHeightForWidth:(double)width;
+- (id)_configuedCellForCollectionView:(id)view indexPath:(id)path day:(id)day;
+- (id)_contentSizeCategoryForContentWidth:(double)width;
+- (id)_delegateDecorationForDay:(id)day;
 - (id)delegate;
-- (unint64_t)_selectionRoundedEdgeForDay:(id)a3;
+- (unint64_t)_selectionRoundedEdgeForDay:(id)day;
 - (void)_cleanupDataIfNecessary;
 - (void)_configureMonthYearSelector;
-- (void)_deselectDates:(id)a3 animated:(BOOL)a4;
+- (void)_deselectDates:(id)dates animated:(BOOL)animated;
 - (void)_destroyMonthYearSelector;
 - (void)_freezeContentOffset;
-- (void)_performIfNotIgnoringScrollCallbacks:(id)a3;
-- (void)_performIgnoringScrollCallbacks:(id)a3;
+- (void)_performIfNotIgnoringScrollCallbacks:(id)callbacks;
+- (void)_performIgnoringScrollCallbacks:(id)callbacks;
 - (void)_reconfigureVisibleItems;
 - (void)_reloadCollectionViewLayout;
 - (void)_reloadDataSourceController;
 - (void)_reloadDateFormatters;
-- (void)_reloadEverythingIncludingLayout:(BOOL)a3;
+- (void)_reloadEverythingIncludingLayout:(BOOL)layout;
 - (void)_reloadPossibleDayValues;
 - (void)_reloadVisibleMonthIfNeeded;
-- (void)_restoreContentOffsetWithPageOffset:(int64_t)a3;
-- (void)_selectDates:(id)a3 animated:(BOOL)a4;
-- (void)_setVisibleMonth:(id)a3 animated:(BOOL)a4;
-- (void)_setVisibleMonth:(id)a3 animated:(BOOL)a4 updateDataSource:(BOOL)a5 updateCollectionView:(BOOL)a6 notifyDelegate:(BOOL)a7;
+- (void)_restoreContentOffsetWithPageOffset:(int64_t)offset;
+- (void)_selectDates:(id)dates animated:(BOOL)animated;
+- (void)_setVisibleMonth:(id)month animated:(BOOL)animated;
+- (void)_setVisibleMonth:(id)month animated:(BOOL)animated updateDataSource:(BOOL)source updateCollectionView:(BOOL)view notifyDelegate:(BOOL)delegate;
 - (void)_setupInitialValues;
 - (void)_setupViewHierarchy;
 - (void)_updateCollectionViewContentInsets;
-- (void)_updateCollectionViewScrollPosition:(BOOL)a3;
-- (void)_updateCollectionViewSelection:(BOOL)a3;
+- (void)_updateCollectionViewScrollPosition:(BOOL)position;
+- (void)_updateCollectionViewSelection:(BOOL)selection;
 - (void)_updateContentSizeLimitations;
 - (void)_updateForChangedLayoutMargins;
 - (void)_updateSizing;
-- (void)_updateViewState:(int64_t)a3 animated:(BOOL)a4;
-- (void)_updateVisibleMonth:(id)a3 animated:(BOOL)a4;
+- (void)_updateViewState:(int64_t)state animated:(BOOL)animated;
+- (void)_updateVisibleMonth:(id)month animated:(BOOL)animated;
 - (void)_updateVisibleMonthIfNecessary;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)headerViewDidStepBackward:(id)a3;
-- (void)headerViewDidStepForward:(id)a3;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)headerViewDidStepBackward:(id)backward;
+- (void)headerViewDidStepForward:(id)forward;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)monthYearSelector:(id)a3 didSelectMonth:(id)a4;
+- (void)monthYearSelector:(id)selector didSelectMonth:(id)month;
 - (void)reloadDecorationsForDateComponents:(NSArray *)dates animated:(BOOL)animated;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)setAvailableDateRange:(NSDateInterval *)availableDateRange;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCalendar:(NSCalendar *)calendar;
 - (void)setDelegate:(id)delegate;
 - (void)setFontDesign:(UIFontDescriptorSystemDesign)fontDesign;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 - (void)setLocale:(NSLocale *)locale;
 - (void)setSelectionBehavior:(UICalendarSelection *)selectionBehavior;
 - (void)setTimeZone:(NSTimeZone *)timeZone;
@@ -69,11 +69,11 @@
 
 @implementation UICalendarView
 
-- (UICalendarView)initWithFrame:(CGRect)a3
+- (UICalendarView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UICalendarView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -85,11 +85,11 @@
   return v4;
 }
 
-- (UICalendarView)initWithCoder:(id)a3
+- (UICalendarView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UICalendarView;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -120,26 +120,26 @@
 
 - (void)_reloadDateFormatters
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  [(NSDateFormatter *)self->_cellFormatter setCalendar:v3];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  [(NSDateFormatter *)self->_cellFormatter setCalendar:effectiveCalendar];
 
-  v4 = [(_UICalendarDataModel *)self->_dataModel effectiveLocale];
-  [(NSDateFormatter *)self->_cellFormatter setLocale:v4];
+  effectiveLocale = [(_UICalendarDataModel *)self->_dataModel effectiveLocale];
+  [(NSDateFormatter *)self->_cellFormatter setLocale:effectiveLocale];
 
-  v5 = [(_UICalendarDataModel *)self->_dataModel effectiveTimeZone];
-  [(NSDateFormatter *)self->_cellFormatter setTimeZone:v5];
+  effectiveTimeZone = [(_UICalendarDataModel *)self->_dataModel effectiveTimeZone];
+  [(NSDateFormatter *)self->_cellFormatter setTimeZone:effectiveTimeZone];
 }
 
 - (void)_setupViewHierarchy
 {
   v28[2] = *MEMORY[0x1E69E9840];
   [(UIView *)self setPreservesSuperviewLayoutMargins:1];
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UICalendarViewGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [v4 headerViewLayoutMarginsForProposedLayoutMargins];
+  headerViewLayoutMarginsForProposedLayoutMargins = [v4 headerViewLayoutMarginsForProposedLayoutMargins];
   [(UIView *)self layoutMargins];
-  v5[2](v5);
+  headerViewLayoutMarginsForProposedLayoutMargins[2](headerViewLayoutMarginsForProposedLayoutMargins);
   [(UIView *)self setLayoutMargins:?];
 
   v6 = [[_UICalendarHeaderView alloc] initWithDataModel:self->_dataModel delegate:self];
@@ -194,8 +194,8 @@
   [(UIView *)self->_contentView addSubview:self->_headerView];
   [(UIView *)self->_contentView addSubview:self->_weekdayView];
   [(UIView *)self->_contentView addSubview:self->_collectionView];
-  v22 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v22 addObserver:self selector:sel__shouldDifferentiateWithoutColorUpdated_ name:@"UIAccessibilityShouldDifferentiateWithoutColorDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__shouldDifferentiateWithoutColorUpdated_ name:@"UIAccessibilityShouldDifferentiateWithoutColorDidChangeNotification" object:0];
 
   [(UICalendarView *)self _updateContentSizeLimitations];
   v28[0] = objc_opt_class();
@@ -234,13 +234,13 @@ void __37__UICalendarView__setupViewHierarchy__block_invoke_2(uint64_t a1, void 
   [v2 invalidateIntrinsicContentSize];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v7.receiver = self;
   v7.super_class = UICalendarView;
-  [(UIView *)&v7 setFrame:a3.origin.x, a3.origin.y];
+  [(UIView *)&v7 setFrame:frame.origin.x, frame.origin.y];
   if (width != self->_lastKnownSize.width || height != self->_lastKnownSize.height)
   {
     self->_lastKnownSize.width = width;
@@ -251,13 +251,13 @@ void __37__UICalendarView__setupViewHierarchy__block_invoke_2(uint64_t a1, void 
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v7.receiver = self;
   v7.super_class = UICalendarView;
-  [(UIView *)&v7 setBounds:a3.origin.x, a3.origin.y];
+  [(UIView *)&v7 setBounds:bounds.origin.x, bounds.origin.y];
   if (width != self->_lastKnownSize.width || height != self->_lastKnownSize.height)
   {
     self->_lastKnownSize.width = width;
@@ -314,16 +314,16 @@ void __37__UICalendarView__setupViewHierarchy__block_invoke_2(uint64_t a1, void 
     v51.size.height = v10;
     if (CGRectGetHeight(v51) != 0.0)
     {
-      v11 = [(UIView *)self traitCollection];
-      v12 = _UICalendarViewGetPlatformMetrics([v11 userInterfaceIdiom]);
+      traitCollection = [(UIView *)self traitCollection];
+      v12 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
       [(UIView *)self layoutMargins];
       v14 = v13;
       [(UIView *)self layoutMargins];
       v16 = v10 - (v14 + v15);
-      v17 = [v12 maximumContentWidthForLayoutMargins];
+      maximumContentWidthForLayoutMargins = [v12 maximumContentWidthForLayoutMargins];
       [(UIView *)self layoutMargins];
-      v18 = fmax((v8 - v17[2](v17)) * 0.5, 0.0);
+      v18 = fmax((v8 - maximumContentWidthForLayoutMargins[2](maximumContentWidthForLayoutMargins)) * 0.5, 0.0);
       v52.origin.x = v4 + 0.0;
       v52.origin.y = v6 + v14;
       v52.size.width = v8;
@@ -355,9 +355,9 @@ void __37__UICalendarView__setupViewHierarchy__block_invoke_2(uint64_t a1, void 
       [(_UICalendarHeaderView *)self->_headerView sizeThatFits:v25, height];
       v29 = v28;
       [v12 minimumContentWidth];
-      v30 = [v12 maximumContentWidthForLayoutMargins];
+      maximumContentWidthForLayoutMargins2 = [v12 maximumContentWidthForLayoutMargins];
       [(UIView *)self layoutMargins];
-      v30[2](v30);
+      maximumContentWidthForLayoutMargins2[2](maximumContentWidthForLayoutMargins2);
 
       v31 = *(MEMORY[0x1E695F058] + 16);
       slice.origin = *MEMORY[0x1E695F058];
@@ -478,15 +478,15 @@ LABEL_15:
   }
 }
 
-- (id)_contentSizeCategoryForContentWidth:(double)a3
+- (id)_contentSizeCategoryForContentWidth:(double)width
 {
   v3 = &UIContentSizeCategoryExtraExtraLarge;
-  if (a3 >= 280.0)
+  if (width >= 280.0)
   {
     v3 = &UIContentSizeCategoryExtraExtraExtraLarge;
   }
 
-  if (a3 >= 330.0)
+  if (width >= 330.0)
   {
     v3 = &UIContentSizeCategoryAccessibilityMedium;
   }
@@ -502,23 +502,23 @@ LABEL_15:
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIView *)self traitCollection];
-  v7 = _UICalendarViewGetPlatformMetrics([v6 userInterfaceIdiom]);
+  height = size.height;
+  width = size.width;
+  traitCollection = [(UIView *)self traitCollection];
+  v7 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v8 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  [v8 maximumRangeOfUnit:4096];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  [effectiveCalendar maximumRangeOfUnit:4096];
 
   [v7 minimumContentWidth];
   v10 = v9;
-  v11 = [v7 maximumContentWidthForLayoutMargins];
+  maximumContentWidthForLayoutMargins = [v7 maximumContentWidthForLayoutMargins];
   [(UIView *)self layoutMargins];
-  v12 = fmax(v10, fmin(width, v11[2](v11)));
+  v12 = fmax(v10, fmin(width, maximumContentWidthForLayoutMargins[2](maximumContentWidthForLayoutMargins)));
 
-  v13 = [(UIView *)self->_contentView maximumContentSizeCategory];
+  maximumContentSizeCategory = [(UIView *)self->_contentView maximumContentSizeCategory];
   v14 = [(UICalendarView *)self _contentSizeCategoryForContentWidth:v12];
   [(UIView *)self->_contentView setMaximumContentSizeCategory:v14];
   [(_UICalendarWeekdayView *)self->_weekdayView sizeThatFits:width, height];
@@ -529,11 +529,11 @@ LABEL_15:
   v22 = v21;
   [v7 minimumContentWidth];
   v24 = v23;
-  v25 = [v7 maximumContentWidthForLayoutMargins];
+  maximumContentWidthForLayoutMargins2 = [v7 maximumContentWidthForLayoutMargins];
   [(UIView *)self layoutMargins];
-  v26 = fmax(v24, fmin(fmax(v16, v20), v25[2](v25)));
+  v26 = fmax(v24, fmin(fmax(v16, v20), maximumContentWidthForLayoutMargins2[2](maximumContentWidthForLayoutMargins2)));
 
-  [(UIView *)self->_contentView setMaximumContentSizeCategory:v13];
+  [(UIView *)self->_contentView setMaximumContentSizeCategory:maximumContentSizeCategory];
   [(UICalendarView *)self _preferredCollectionViewHeightForWidth:v26];
   v28 = v18 + 16.0 + v22 + v27;
   [(UIView *)self layoutMargins];
@@ -551,9 +551,9 @@ LABEL_15:
 - (void)_updateForChangedLayoutMargins
 {
   *&self->_flags &= ~8u;
-  v3 = [(UICalendarView *)self collectionView];
-  v2 = [v3 collectionViewLayout];
-  [v2 invalidateLayout];
+  collectionView = [(UICalendarView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)layoutMarginsDidChange
@@ -567,25 +567,25 @@ LABEL_15:
   [(UICalendarView *)self _setNeedsUpdateForChangedLayoutMargins];
 }
 
-- (double)_preferredCollectionViewHeightForWidth:(double)a3
+- (double)_preferredCollectionViewHeightForWidth:(double)width
 {
   if ([(UICalendarView *)self _hasCellDecorations])
   {
-    v4 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-    [v4 maximumRangeOfUnit:4096];
+    effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+    [effectiveCalendar maximumRangeOfUnit:4096];
 
-    v5 = [(UIView *)self->_contentView traitCollection];
-    [UICalendarViewDecoration _referenceHeightForTraitCollection:v5];
+    traitCollection = [(UIView *)self->_contentView traitCollection];
+    [UICalendarViewDecoration _referenceHeightForTraitCollection:traitCollection];
   }
 
-  v6 = [(UIView *)self traitCollection];
-  v7 = _UICalendarViewGetPlatformMetrics([v6 userInterfaceIdiom]);
+  traitCollection2 = [(UIView *)self traitCollection];
+  v7 = _UICalendarViewGetPlatformMetrics([traitCollection2 userInterfaceIdiom]);
 
   [v7 dateViewCellSpacing];
   if (v8 > 0.0)
   {
-    v9 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-    [v9 maximumRangeOfUnit:4096];
+    effectiveCalendar2 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+    [effectiveCalendar2 maximumRangeOfUnit:4096];
 
     [v7 dateViewCellBackgroundSize];
     [v7 dateViewCellSpacing];
@@ -599,27 +599,27 @@ LABEL_15:
 
 - (double)__dayAndWeekdayLabelWidth
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UICalendarViewGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UICalendarViewGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   v5 = [_UICalendarDateViewCellState alloc];
-  v6 = [(UIView *)self traitCollection];
-  v7 = [(_UICalendarDateViewCellState *)v5 initWithTraits:v6];
+  traitCollection2 = [(UIView *)self traitCollection];
+  v7 = [(_UICalendarDateViewCellState *)v5 initWithTraits:traitCollection2];
 
   [(_UICalendarDateViewCellState *)v7 setForceEmphasizedFont:1];
-  v8 = [v4 dateCellFontProvider];
-  v9 = [(_UICalendarDataModel *)self->_dataModel fontDesign];
-  v10 = [(UIView *)self->_contentView traitCollection];
-  v11 = (v8)[2](v8, v7, v9, v10);
+  dateCellFontProvider = [v4 dateCellFontProvider];
+  fontDesign = [(_UICalendarDataModel *)self->_dataModel fontDesign];
+  traitCollection3 = [(UIView *)self->_contentView traitCollection];
+  v11 = (dateCellFontProvider)[2](dateCellFontProvider, v7, fontDesign, traitCollection3);
   [(_UIDatePickerLinkedLabel *)self->_daySizingLabel setFont:v11];
 
-  v12 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v13 = [v12 weekdaySymbols];
-  v14 = [v13 count];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  weekdaySymbols = [effectiveCalendar weekdaySymbols];
+  v14 = [weekdaySymbols count];
 
-  v15 = [(_UICalendarWeekdayView *)self->_weekdayView sizingLabel];
+  sizingLabel = [(_UICalendarWeekdayView *)self->_weekdayView sizingLabel];
   [(UIView *)self bounds];
-  [v15 sizeThatFits:{v16, v17}];
+  [sizingLabel sizeThatFits:{v16, v17}];
   v19 = v18;
 
   daySizingLabel = self->_daySizingLabel;
@@ -636,57 +636,57 @@ LABEL_15:
   return v29;
 }
 
-- (BOOL)_shouldUpdateDateViewForVisibleMonth:(id)a3
+- (BOOL)_shouldUpdateDateViewForVisibleMonth:(id)month
 {
   dataModel = self->_dataModel;
-  v4 = a3;
-  v5 = [(_UICalendarDataModel *)dataModel visibleMonth];
-  v6 = [v5 isEqual:v4];
+  monthCopy = month;
+  visibleMonth = [(_UICalendarDataModel *)dataModel visibleMonth];
+  v6 = [visibleMonth isEqual:monthCopy];
 
   return v6 ^ 1;
 }
 
-- (void)_updateVisibleMonth:(id)a3 animated:(BOOL)a4
+- (void)_updateVisibleMonth:(id)month animated:(BOOL)animated
 {
-  [(UICalendarView *)self _updateDateViewForVisibleMonth:a3 animated:a4];
+  [(UICalendarView *)self _updateDateViewForVisibleMonth:month animated:animated];
   headerView = self->_headerView;
 
   [(_UICalendarHeaderView *)headerView didUpdateVisibleMonth];
 }
 
-- (void)headerViewDidStepForward:(id)a3
+- (void)headerViewDidStepForward:(id)forward
 {
-  v4 = [a3 dataModel];
-  v5 = [v4 visibleMonth];
-  v6 = [v5 nextMonth];
+  dataModel = [forward dataModel];
+  visibleMonth = [dataModel visibleMonth];
+  nextMonth = [visibleMonth nextMonth];
 
-  [(UICalendarView *)self _updateVisibleMonth:v6 animated:1];
+  [(UICalendarView *)self _updateVisibleMonth:nextMonth animated:1];
 }
 
-- (void)headerViewDidStepBackward:(id)a3
+- (void)headerViewDidStepBackward:(id)backward
 {
-  v4 = [a3 dataModel];
-  v5 = [v4 visibleMonth];
-  v6 = [v5 previousMonth];
+  dataModel = [backward dataModel];
+  visibleMonth = [dataModel visibleMonth];
+  previousMonth = [visibleMonth previousMonth];
 
-  [(UICalendarView *)self _updateVisibleMonth:v6 animated:1];
+  [(UICalendarView *)self _updateVisibleMonth:previousMonth animated:1];
 }
 
-- (void)_updateViewState:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateViewState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_viewState != a3)
+  if (self->_viewState != state)
   {
-    v4 = a4;
+    animatedCopy = animated;
     monthYearSelector = self->_monthYearSelector;
-    v9 = a3 == 1;
-    if (a3 == 1 && !monthYearSelector)
+    v9 = state == 1;
+    if (state == 1 && !monthYearSelector)
     {
       [(UICalendarView *)self _configureMonthYearSelector];
       monthYearSelector = self->_monthYearSelector;
     }
 
     [(UIView *)monthYearSelector setNeedsLayout];
-    self->_viewState = a3;
+    self->_viewState = state;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __44__UICalendarView__updateViewState_animated___block_invoke;
@@ -703,7 +703,7 @@ LABEL_15:
     v13[1] = a2;
     v11 = _Block_copy(v12);
     ++self->_stateUpdatesInFlight;
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:4 delay:v10 options:v11 animations:0.25 completion:0.0];
     }
@@ -714,7 +714,7 @@ LABEL_15:
       v11[2](v11, 1);
     }
 
-    [(_UICalendarHeaderView *)self->_headerView setExpanded:a3 == 1 animated:v4];
+    [(_UICalendarHeaderView *)self->_headerView setExpanded:state == 1 animated:animatedCopy];
 
     objc_destroyWeak(v13);
     objc_destroyWeak(&location);
@@ -804,29 +804,29 @@ void __44__UICalendarView__updateViewState_animated___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)monthYearSelector:(id)a3 didSelectMonth:(id)a4
+- (void)monthYearSelector:(id)selector didSelectMonth:(id)month
 {
   selectionBehavior = self->_selectionBehavior;
-  v7 = a4;
-  v6 = [v7 components];
-  [(UICalendarSelection *)selectionBehavior didChangeVisibleMonth:v6];
+  monthCopy = month;
+  components = [monthCopy components];
+  [(UICalendarSelection *)selectionBehavior didChangeVisibleMonth:components];
 
-  [(UICalendarView *)self _updateVisibleMonth:v7 animated:0];
+  [(UICalendarView *)self _updateVisibleMonth:monthCopy animated:0];
 }
 
-- (id)_configuedCellForCollectionView:(id)a3 indexPath:(id)a4 day:(id)a5
+- (id)_configuedCellForCollectionView:(id)view indexPath:(id)path day:(id)day
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  pathCopy = path;
+  dayCopy = day;
   collectionView = self->_collectionView;
   v10 = +[_UICalendarDateViewCell reuseIdentifier];
-  v11 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v7];
+  v11 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
   [v11 setCalendarView:self];
   if ([(UICalendarView *)self _hasCellDecorations])
   {
-    v12 = [(UICalendarView *)self _delegateDecorationForDay:v8];
+    v12 = [(UICalendarView *)self _delegateDecorationForDay:dayCopy];
     v13 = v12;
     if (v12)
     {
@@ -845,26 +845,26 @@ void __44__UICalendarView__updateViewState_animated___block_invoke_2(uint64_t a1
     v14 = 0;
   }
 
-  [v11 setSelectionRoundedEdge:{-[UICalendarView _selectionRoundedEdgeForDay:](self, "_selectionRoundedEdgeForDay:", v8)}];
+  [v11 setSelectionRoundedEdge:{-[UICalendarView _selectionRoundedEdgeForDay:](self, "_selectionRoundedEdgeForDay:", dayCopy)}];
   cellFormatter = self->_cellFormatter;
-  v16 = [(_UICalendarDataModel *)self->_dataModel fontDesign];
-  v17 = [(UICalendarView *)self _canSelectItemAtIndexPath:v7 forSelection:0];
-  v18 = [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays];
+  fontDesign = [(_UICalendarDataModel *)self->_dataModel fontDesign];
+  v17 = [(UICalendarView *)self _canSelectItemAtIndexPath:pathCopy forSelection:0];
+  renderOverhangDays = [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays];
   LOBYTE(v20) = [(UICalendarSelection *)self->_selectionBehavior highlightsToday];
-  [v11 configureWithDay:v8 formatter:cellFormatter fontDesign:v16 decorations:v14 outOfRange:!v17 renderOverhangDays:v18 highlightsToday:v20];
+  [v11 configureWithDay:dayCopy formatter:cellFormatter fontDesign:fontDesign decorations:v14 outOfRange:!v17 renderOverhangDays:renderOverhangDays highlightsToday:v20];
 
   return v11;
 }
 
-- (id)_delegateDecorationForDay:(id)a3
+- (id)_delegateDecorationForDay:(id)day
 {
   if ((*&self->_flags & 0x20) != 0)
   {
-    v5 = a3;
-    v6 = [(UICalendarView *)self delegate];
-    v7 = [v5 components];
+    dayCopy = day;
+    delegate = [(UICalendarView *)self delegate];
+    components = [dayCopy components];
 
-    v3 = [v6 calendarView:self decorationForDateComponents:v7];
+    v3 = [delegate calendarView:self decorationForDateComponents:components];
   }
 
   else
@@ -875,16 +875,16 @@ void __44__UICalendarView__updateViewState_animated___block_invoke_2(uint64_t a1
   return v3;
 }
 
-- (unint64_t)_selectionRoundedEdgeForDay:(id)a3
+- (unint64_t)_selectionRoundedEdgeForDay:(id)day
 {
-  v4 = a3;
-  v5 = [(UICalendarView *)self selectionBehavior];
+  dayCopy = day;
+  selectionBehavior = [(UICalendarView *)self selectionBehavior];
 
-  if (v5)
+  if (selectionBehavior)
   {
-    v6 = [(UICalendarView *)self selectionBehavior];
-    v7 = [v4 components];
-    v8 = [v6 roundedEdgeForDate:v7];
+    selectionBehavior2 = [(UICalendarView *)self selectionBehavior];
+    components = [dayCopy components];
+    v8 = [selectionBehavior2 roundedEdgeForDate:components];
   }
 
   else
@@ -897,10 +897,10 @@ void __44__UICalendarView__updateViewState_animated___block_invoke_2(uint64_t a1
 
 - (void)_reloadCollectionViewLayout
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  [v3 maximumRangeOfUnit:512];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  [effectiveCalendar maximumRangeOfUnit:512];
   v5 = v4;
-  [v3 maximumRangeOfUnit:4096];
+  [effectiveCalendar maximumRangeOfUnit:4096];
   v7 = (v6 - 1);
   self->_collectionViewAspectRatio = (v6 - 1) / v5;
   v8 = objc_opt_new();
@@ -912,7 +912,7 @@ void __44__UICalendarView__updateViewState_animated___block_invoke_2(uint64_t a1
   v15[2] = __45__UICalendarView__reloadCollectionViewLayout__block_invoke;
   v15[3] = &unk_1E7109580;
   objc_copyWeak(v17, &location);
-  v10 = v3;
+  v10 = effectiveCalendar;
   v16 = v10;
   v17[1] = v5;
   v17[2] = v7;
@@ -1089,14 +1089,14 @@ id __45__UICalendarView__reloadCollectionViewLayout__block_invoke(uint64_t a1, u
   return v23;
 }
 
-- (void)_reloadEverythingIncludingLayout:(BOOL)a3
+- (void)_reloadEverythingIncludingLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   [(UICalendarView *)self _reloadVisibleMonthIfNeeded];
   [(UICalendarView *)self _reloadDateFormatters];
   [(UICalendarView *)self _reloadPossibleDayValues];
   [(UICalendarView *)self _reloadDataSourceController];
-  if (v3)
+  if (layoutCopy)
   {
 
     [(UICalendarView *)self _reloadCollectionViewLayout];
@@ -1105,20 +1105,20 @@ id __45__UICalendarView__reloadCollectionViewLayout__block_invoke(uint64_t a1, u
 
 - (void)_reloadVisibleMonthIfNeeded
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-  v4 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v5 = [v3 _ui_containsMonth:v4];
+  availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  v5 = [availableDateRange _ui_containsMonth:visibleMonth];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-    v7 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-    v8 = [v7 date];
-    v12 = [v6 _ui_dateInRangeForDate:v8];
+    availableDateRange2 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+    visibleMonth2 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+    date = [visibleMonth2 date];
+    v12 = [availableDateRange2 _ui_dateInRangeForDate:date];
 
     v9 = [_UIDatePickerCalendarMonth alloc];
-    v10 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-    v11 = [(_UIDatePickerCalendarDateComponent *)v9 initWithDate:v12 calendar:v10];
+    effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+    v11 = [(_UIDatePickerCalendarDateComponent *)v9 initWithDate:v12 calendar:effectiveCalendar];
 
     [(UICalendarView *)self _setVisibleMonth:v11 animated:0 updateDataSource:1 updateCollectionView:1 notifyDelegate:0];
   }
@@ -1126,16 +1126,16 @@ id __45__UICalendarView__reloadCollectionViewLayout__block_invoke(uint64_t a1, u
 
 - (void)_reloadDataSourceController
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
   v5 = MEMORY[0x1E69E9820];
   v6 = 3221225472;
   v7 = __45__UICalendarView__reloadDataSourceController__block_invoke;
   v8 = &unk_1E70F35B8;
-  v9 = self;
-  v10 = v3;
-  v4 = v3;
+  selfCopy = self;
+  v10 = visibleMonth;
+  v4 = visibleMonth;
   [(UICalendarView *)self _performIgnoringScrollCallbacks:&v5];
-  [(UICalendarView *)self _setVisibleMonth:v4, v5, v6, v7, v8, v9];
+  [(UICalendarView *)self _setVisibleMonth:v4, v5, v6, v7, v8, selfCopy];
 }
 
 uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t a1)
@@ -1157,12 +1157,12 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(_UICalendarDataModel *)self->_dataModel effectiveLocale];
-  [v3 setLocale:v4];
+  effectiveLocale = [(_UICalendarDataModel *)self->_dataModel effectiveLocale];
+  [v3 setLocale:effectiveLocale];
 
   v5 = objc_opt_new();
-  v6 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v7 = [v6 maximumRangeOfUnit:16];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  v7 = [effectiveCalendar maximumRangeOfUnit:16];
   v9 = v8;
 
   if (v7 < v7 + v9)
@@ -1205,14 +1205,14 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
   [(UICalendarView *)self _reconfigureVisibleItems];
 }
 
-- (void)_selectDates:(id)a3 animated:(BOOL)a4
+- (void)_selectDates:(id)dates animated:(BOOL)animated
 {
-  v17 = a4;
+  animatedCopy = animated;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v16 = v5;
-  v7 = _asCalendarDay(v5, v6, [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays]);
+  datesCopy = dates;
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  v16 = datesCopy;
+  v7 = _asCalendarDay(datesCopy, effectiveCalendar, [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays]);
 
   v20 = 0u;
   v21 = 0u;
@@ -1239,7 +1239,7 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
         {
           v15 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v14];
           [v15 setSelectionRoundedEdge:{-[UICalendarView _selectionRoundedEdgeForDay:](self, "_selectionRoundedEdgeForDay:", v13)}];
-          [(UICollectionView *)self->_collectionView selectItemAtIndexPath:v14 animated:v17 scrollPosition:0];
+          [(UICollectionView *)self->_collectionView selectItemAtIndexPath:v14 animated:animatedCopy scrollPosition:0];
         }
       }
 
@@ -1250,13 +1250,13 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
   }
 }
 
-- (void)_deselectDates:(id)a3 animated:(BOOL)a4
+- (void)_deselectDates:(id)dates animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v8 = _asCalendarDay(v6, v7, [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays]);
+  datesCopy = dates;
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  v8 = _asCalendarDay(datesCopy, effectiveCalendar, [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays]);
 
   v17 = 0u;
   v18 = 0u;
@@ -1279,7 +1279,7 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
         }
 
         v14 = [(UICollectionViewDiffableDataSource *)self->_dataSource indexPathForItemIdentifier:*(*(&v15 + 1) + 8 * v13), v15];
-        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:v14 animated:v4];
+        [(UICollectionView *)self->_collectionView deselectItemAtIndexPath:v14 animated:animatedCopy];
 
         ++v13;
       }
@@ -1310,17 +1310,17 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
 - (void)_reconfigureVisibleItems
 {
   [(UICalendarView *)self _reloadCollectionViewLayout];
-  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v4 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__UICalendarView__reconfigureVisibleItems__block_invoke;
   v6[3] = &unk_1E71095A8;
   v6[4] = self;
-  v5 = _UICalendarMap(v4, v6);
+  v5 = _UICalendarMap(indexPathsForVisibleItems, v6);
 
-  [v3 reconfigureItemsWithIdentifiers:v5];
-  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v3 animatingDifferences:0];
+  [snapshot reconfigureItemsWithIdentifiers:v5];
+  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:0];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
 }
@@ -1328,7 +1328,7 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
 - (void)setDelegate:(id)delegate
 {
   v4 = delegate;
-  v5 = [(UICalendarView *)self _hasCellDecorations];
+  _hasCellDecorations = [(UICalendarView *)self _hasCellDecorations];
   objc_storeWeak(&self->_delegate, v4);
   if (objc_opt_respondsToSelector())
   {
@@ -1354,7 +1354,7 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
   }
 
   *&self->_flags = *&self->_flags & 0xBF | v8;
-  if (v5 != [(UICalendarView *)self _hasCellDecorations])
+  if (_hasCellDecorations != [(UICalendarView *)self _hasCellDecorations])
   {
 
     [(UICalendarView *)self _reconfigureVisibleItems];
@@ -1364,7 +1364,7 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
 - (void)setWantsDateDecorations:(BOOL)wantsDateDecorations
 {
   v3 = wantsDateDecorations;
-  v5 = [(UICalendarView *)self _hasCellDecorations];
+  _hasCellDecorations = [(UICalendarView *)self _hasCellDecorations];
   if (v3)
   {
     v6 = 0x80;
@@ -1376,7 +1376,7 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
   }
 
   *&self->_flags = v6 & 0x80 | *&self->_flags & 0x7F;
-  if (v5 != [(UICalendarView *)self _hasCellDecorations])
+  if (_hasCellDecorations != [(UICalendarView *)self _hasCellDecorations])
   {
     if (![(UICalendarView *)self _hasCellDecorations])
     {
@@ -1392,38 +1392,38 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
   v4 = animated;
   dataSource = self->_dataSource;
   v7 = dates;
-  v14 = [(UICollectionViewDiffableDataSource *)dataSource snapshot];
-  v8 = [v14 itemIdentifiers];
-  v9 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v10 = _asCalendarDay(v7, v9, [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays]);
+  snapshot = [(UICollectionViewDiffableDataSource *)dataSource snapshot];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  v10 = _asCalendarDay(v7, effectiveCalendar, [(UICalendarSelection *)self->_selectionBehavior renderOverhangDays]);
 
-  v11 = [MEMORY[0x1E695DFA8] setWithArray:v8];
+  v11 = [MEMORY[0x1E695DFA8] setWithArray:itemIdentifiers];
   v12 = [MEMORY[0x1E695DFD8] setWithArray:v10];
   [v11 intersectSet:v12];
 
-  v13 = [v11 allObjects];
-  [v14 reconfigureItemsWithIdentifiers:v13];
+  allObjects = [v11 allObjects];
+  [snapshot reconfigureItemsWithIdentifiers:allObjects];
 
-  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v14 animatingDifferences:v4];
+  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:snapshot animatingDifferences:v4];
 }
 
-- (BOOL)_canSelectItemAtIndexPath:(id)a3 forSelection:(BOOL)a4
+- (BOOL)_canSelectItemAtIndexPath:(id)path forSelection:(BOOL)selection
 {
-  v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a3];
+  v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
   if ((-[UICalendarSelection renderOverhangDays](self->_selectionBehavior, "renderOverhangDays") || ([v6 assignedMonth], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7)) && (-[_UICalendarDataModel availableDateRange](self->_dataModel, "availableDateRange"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "_ui_containsDay:", v6), v8, v9))
   {
     if (self->_selectionBehavior)
     {
-      v10 = [v6 components];
-      v11 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-      [v10 setCalendar:v11];
+      components = [v6 components];
+      effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+      [components setCalendar:effectiveCalendar];
 
-      v12 = [(UICalendarSelection *)self->_selectionBehavior canSelectDate:v10];
+      v12 = [(UICalendarSelection *)self->_selectionBehavior canSelectDate:components];
     }
 
     else
     {
-      v12 = !a4;
+      v12 = !selection;
     }
   }
 
@@ -1435,44 +1435,44 @@ uint64_t __45__UICalendarView__reloadDataSourceController__block_invoke(uint64_t
   return v12;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a4];
-  v5 = [v7 components];
-  v6 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  [v5 setCalendar:v6];
+  v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  components = [v7 components];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  [components setCalendar:effectiveCalendar];
 
-  [(UICalendarSelection *)self->_selectionBehavior didSelectDate:v5];
+  [(UICalendarSelection *)self->_selectionBehavior didSelectDate:components];
 }
 
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path
 {
-  v4 = self;
-  v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a4];
-  v6 = [v5 components];
-  v7 = [(_UICalendarDataModel *)v4->_dataModel effectiveCalendar];
-  [v6 setCalendar:v7];
+  selfCopy = self;
+  v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  components = [v5 components];
+  effectiveCalendar = [(_UICalendarDataModel *)selfCopy->_dataModel effectiveCalendar];
+  [components setCalendar:effectiveCalendar];
 
-  LOBYTE(v4) = [(UICalendarSelection *)v4->_selectionBehavior shouldDeselectDate:v6];
-  return v4;
+  LOBYTE(selfCopy) = [(UICalendarSelection *)selfCopy->_selectionBehavior shouldDeselectDate:components];
+  return selfCopy;
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a4];
-  v5 = [v7 components];
-  v6 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  [v5 setCalendar:v6];
+  v7 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:path];
+  components = [v7 components];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  [components setCalendar:effectiveCalendar];
 
-  [(UICalendarSelection *)self->_selectionBehavior didDeselectDate:v5];
+  [(UICalendarSelection *)self->_selectionBehavior didDeselectDate:components];
 }
 
 - (void)setCalendar:(NSCalendar *)calendar
 {
   v4 = calendar;
-  v5 = [(_UICalendarDataModel *)self->_dataModel calendar];
+  calendar = [(_UICalendarDataModel *)self->_dataModel calendar];
   v8 = v4;
-  v6 = v5;
+  v6 = calendar;
   if (v6 == v8)
   {
 
@@ -1504,9 +1504,9 @@ LABEL_9:
 - (void)setLocale:(NSLocale *)locale
 {
   v4 = locale;
-  v5 = [(_UICalendarDataModel *)self->_dataModel locale];
+  locale = [(_UICalendarDataModel *)self->_dataModel locale];
   v8 = v4;
-  v6 = v5;
+  v6 = locale;
   if (v6 == v8)
   {
 
@@ -1537,9 +1537,9 @@ LABEL_9:
 - (void)setTimeZone:(NSTimeZone *)timeZone
 {
   v4 = timeZone;
-  v5 = [(_UICalendarDataModel *)self->_dataModel timeZone];
+  timeZone = [(_UICalendarDataModel *)self->_dataModel timeZone];
   v8 = v4;
-  v6 = v5;
+  v6 = timeZone;
   if (v6 == v8)
   {
 
@@ -1569,22 +1569,22 @@ LABEL_9:
 - (void)setFontDesign:(UIFontDescriptorSystemDesign)fontDesign
 {
   v4 = fontDesign;
-  v5 = [(_UICalendarDataModel *)self->_dataModel fontDesign];
+  fontDesign = [(_UICalendarDataModel *)self->_dataModel fontDesign];
   v6 = v4;
   v8 = v6;
-  if (v5 == v6)
+  if (fontDesign == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !fontDesign)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSString *)v5 isEqual:v6];
+  v7 = [(NSString *)fontDesign isEqual:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -1602,22 +1602,22 @@ LABEL_9:
 - (void)setAvailableDateRange:(NSDateInterval *)availableDateRange
 {
   v4 = availableDateRange;
-  v5 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
   v6 = v4;
   v8 = v6;
-  if (v5 == v6)
+  if (availableDateRange == v6)
   {
 
     goto LABEL_9;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !availableDateRange)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSDateInterval *)v5 isEqual:v6];
+  v7 = [(NSDateInterval *)availableDateRange isEqual:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -1634,10 +1634,10 @@ LABEL_9:
 
 - (NSDateComponents)visibleDateComponents
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v4 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v5 = [v4 date];
-  v6 = [v3 components:1048590 fromDate:v5];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  date = [visibleMonth date];
+  v6 = [effectiveCalendar components:1048590 fromDate:date];
 
   return v6;
 }
@@ -1646,35 +1646,35 @@ LABEL_9:
 {
   v4 = animated;
   v18 = dateComponents;
-  v6 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
   if (v18)
   {
     v7 = [(NSDateComponents *)v18 copy];
-    v8 = [v7 calendar];
+    calendar = [v7 calendar];
 
-    if (!v8)
+    if (!calendar)
     {
-      [v7 setCalendar:v6];
+      [v7 setCalendar:effectiveCalendar];
     }
 
-    if (v6)
+    if (effectiveCalendar)
     {
-      v9 = [v7 calendar];
-      v10 = [v9 isEqual:v6];
+      calendar2 = [v7 calendar];
+      v10 = [calendar2 isEqual:effectiveCalendar];
 
       if ((v10 & 1) == 0)
       {
-        v11 = [v7 calendar];
-        v12 = [v11 dateFromComponents:v7];
+        calendar3 = [v7 calendar];
+        v12 = [calendar3 dateFromComponents:v7];
 
         if (!v12)
         {
-          v16 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"NSDateComponents * _Nullable _UICalendarSanitizeWithCalendar(NSDateComponents * _Nonnull __strong, NSCalendar * _Nonnull __strong)"}];
-          [v16 handleFailureInFunction:v17 file:@"_UICalendarViewHelper.h" lineNumber:92 description:@"Date components yielded an invalid NSDate"];
+          [currentHandler handleFailureInFunction:v17 file:@"_UICalendarViewHelper.h" lineNumber:92 description:@"Date components yielded an invalid NSDate"];
         }
 
-        v13 = [v6 components:1048606 fromDate:v12];
+        v13 = [effectiveCalendar components:1048606 fromDate:v12];
 
         v7 = v13;
       }
@@ -1686,9 +1686,9 @@ LABEL_9:
     v7 = 0;
   }
 
-  v14 = [v7 date];
+  date = [v7 date];
 
-  v15 = [(_UIDatePickerCalendarDateComponent *)[_UIDatePickerCalendarMonth alloc] initWithDate:v14 calendar:v6];
+  v15 = [(_UIDatePickerCalendarDateComponent *)[_UIDatePickerCalendarMonth alloc] initWithDate:date calendar:effectiveCalendar];
   [(UICalendarView *)self _setVisibleMonth:v15 animated:v4];
 }
 
@@ -1699,8 +1699,8 @@ LABEL_9:
   v5 = INFINITY;
   if (self->_frozenContentOffset.x != INFINITY || y != INFINITY)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1157 description:@"Frozen content offset found. You need to clear the current one out by calling _restoreContentOffsetWithPageOffset: first."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1157 description:@"Frozen content offset found. You need to clear the current one out by calling _restoreContentOffsetWithPageOffset: first."];
   }
 
   [(UIScrollView *)self->_collectionView contentOffset:v5];
@@ -1708,41 +1708,41 @@ LABEL_9:
   p_frozenContentOffset->y = v8;
 }
 
-- (void)_restoreContentOffsetWithPageOffset:(int64_t)a3
+- (void)_restoreContentOffsetWithPageOffset:(int64_t)offset
 {
   p_frozenContentOffset = &self->_frozenContentOffset;
   x = self->_frozenContentOffset.x;
   y = self->_frozenContentOffset.y;
   if (x == INFINITY && y == INFINITY)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1164 description:@"No content offset found to restore. You need to call _freezeContentOffset first."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1164 description:@"No content offset found to restore. You need to call _freezeContentOffset first."];
   }
 
   [(UIView *)self->_collectionView bounds];
-  [(UICollectionView *)self->_collectionView setContentOffset:x + CGRectGetWidth(v11) * a3, y];
+  [(UICollectionView *)self->_collectionView setContentOffset:x + CGRectGetWidth(v11) * offset, y];
   *p_frozenContentOffset = InvalidFrozenContentOffset;
 }
 
-- (void)_setVisibleMonth:(id)a3 animated:(BOOL)a4
+- (void)_setVisibleMonth:(id)month animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v9 = [v7 isEqual:v8];
+  animatedCopy = animated;
+  monthCopy = month;
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  v9 = [monthCopy isEqual:visibleMonth];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-    v11 = [v10 _ui_containsMonth:v7];
+    availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+    v11 = [availableDateRange _ui_containsMonth:monthCopy];
 
     if ((v11 & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1187 description:@"Unable to set a visible month that is before the minimum or after the maximum date."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1187 description:@"Unable to set a visible month that is before the minimum or after the maximum date."];
     }
 
-    [(UICalendarView *)self _setVisibleMonth:v7 animated:v4 updateDataSource:1 updateCollectionView:1 notifyDelegate:0];
+    [(UICalendarView *)self _setVisibleMonth:monthCopy animated:animatedCopy updateDataSource:1 updateCollectionView:1 notifyDelegate:0];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __44__UICalendarView__setVisibleMonth_animated___block_invoke;
@@ -1752,45 +1752,45 @@ LABEL_9:
   }
 }
 
-- (void)_setVisibleMonth:(id)a3 animated:(BOOL)a4 updateDataSource:(BOOL)a5 updateCollectionView:(BOOL)a6 notifyDelegate:(BOOL)a7
+- (void)_setVisibleMonth:(id)month animated:(BOOL)animated updateDataSource:(BOOL)source updateCollectionView:(BOOL)view notifyDelegate:(BOOL)delegate
 {
-  v7 = a7;
-  v8 = a6;
-  v10 = a4;
-  v12 = a3;
-  v13 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-  v14 = [v13 _ui_containsMonth:v12];
+  delegateCopy = delegate;
+  viewCopy = view;
+  animatedCopy = animated;
+  monthCopy = month;
+  availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  v14 = [availableDateRange _ui_containsMonth:monthCopy];
 
   if (v14)
   {
-    v15 = [(UICalendarView *)self visibleDateComponents];
-    [(_UICalendarDataModel *)self->_dataModel setVisibleMonth:v12];
+    visibleDateComponents = [(UICalendarView *)self visibleDateComponents];
+    [(_UICalendarDataModel *)self->_dataModel setVisibleMonth:monthCopy];
     [(_UICalendarHeaderView *)self->_headerView didUpdateVisibleMonth];
     [(_UICalendarMonthYearSelector *)self->_monthYearSelector didUpdateVisibleMonth];
-    if (a5 || v8)
+    if (source || viewCopy)
     {
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __97__UICalendarView__setVisibleMonth_animated_updateDataSource_updateCollectionView_notifyDelegate___block_invoke;
       v22 = &unk_1E70F35B8;
-      v23 = self;
-      v24 = v12;
+      selfCopy = self;
+      v24 = monthCopy;
       [(UICalendarView *)self _performIgnoringScrollCallbacks:&v19];
-      [(UICalendarView *)self _updateCollectionViewSelection:0, v19, v20, v21, v22, v23];
+      [(UICalendarView *)self _updateCollectionViewSelection:0, v19, v20, v21, v22, selfCopy];
     }
 
-    if (v8)
+    if (viewCopy)
     {
-      [(UICalendarView *)self _updateCollectionViewScrollPosition:v10];
+      [(UICalendarView *)self _updateCollectionViewScrollPosition:animatedCopy];
     }
 
-    v16 = [(UICalendarView *)self visibleDateComponents];
-    v17 = [v15 isEqual:v16];
+    visibleDateComponents2 = [(UICalendarView *)self visibleDateComponents];
+    v17 = [visibleDateComponents isEqual:visibleDateComponents2];
 
-    if (v7 && (v17 & 1) == 0 && (*&self->_flags & 0x40) != 0)
+    if (delegateCopy && (v17 & 1) == 0 && (*&self->_flags & 0x40) != 0)
     {
-      v18 = [(UICalendarView *)self delegate];
-      [v18 calendarView:self didChangeVisibleDateComponentsFrom:v15];
+      delegate = [(UICalendarView *)self delegate];
+      [delegate calendarView:self didChangeVisibleDateComponentsFrom:visibleDateComponents];
     }
   }
 }
@@ -1804,9 +1804,9 @@ uint64_t __97__UICalendarView__setVisibleMonth_animated_updateDataSource_updateC
   return [v3 _restoreContentOffsetWithPageOffset:v2];
 }
 
-- (void)_updateCollectionViewSelection:(BOOL)a3
+- (void)_updateCollectionViewSelection:(BOOL)selection
 {
-  v3 = a3;
+  selectionCopy = selection;
   *&self->_flags &= ~1u;
   [(UIView *)self->_collectionView bounds];
   if (v6 == 0.0 || v5 == 0.0)
@@ -1817,15 +1817,15 @@ uint64_t __97__UICalendarView__setVisibleMonth_animated_updateDataSource_updateC
 
   else
   {
-    [(UICalendarSelection *)self->_selectionBehavior selectAllDatesAnimated:v3];
+    [(UICalendarSelection *)self->_selectionBehavior selectAllDatesAnimated:selectionCopy];
 
     [(UICalendarView *)self _updateCollectionViewContentInsets];
   }
 }
 
-- (void)_updateCollectionViewScrollPosition:(BOOL)a3
+- (void)_updateCollectionViewScrollPosition:(BOOL)position
 {
-  v3 = a3;
+  positionCopy = position;
   *&self->_flags &= ~2u;
   [(UIView *)self->_collectionView bounds];
   if (v7 == 0.0 || v6 == 0.0)
@@ -1836,49 +1836,49 @@ uint64_t __97__UICalendarView__setVisibleMonth_animated_updateDataSource_updateC
 
   else
   {
-    v14 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-    v8 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    v9 = [v8 sectionIdentifiers];
-    v10 = [v9 indexOfObject:v14];
+    visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    v10 = [sectionIdentifiers indexOfObject:visibleMonth];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1289 description:@"Trying to scroll to a month marked as visible that is not loaded."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1289 description:@"Trying to scroll to a month marked as visible that is not loaded."];
     }
 
     collectionView = self->_collectionView;
     v12 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v10];
-    [(UICollectionView *)collectionView scrollToItemAtIndexPath:v12 atScrollPosition:9 animated:v3];
+    [(UICollectionView *)collectionView scrollToItemAtIndexPath:v12 atScrollPosition:9 animated:positionCopy];
   }
 }
 
 - (void)_updateCollectionViewContentInsets
 {
-  v4 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v17 = [v4 sectionIdentifiers];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
 
-  if ([v17 count] <= 2)
+  if ([sectionIdentifiers count] <= 2)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1298 description:{@"Internal inconsistency. Unable to set content insets, need at least 3 loaded months."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1298 description:{@"Internal inconsistency. Unable to set content insets, need at least 3 loaded months."}];
   }
 
-  if ([v17 count])
+  if ([sectionIdentifiers count])
   {
     v5 = 0;
     while (1)
     {
-      v6 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-      v7 = [v17 objectAtIndexedSubscript:v5];
-      v8 = [v6 _ui_containsMonth:v7];
+      availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+      v7 = [sectionIdentifiers objectAtIndexedSubscript:v5];
+      v8 = [availableDateRange _ui_containsMonth:v7];
 
       if (v8)
       {
         break;
       }
 
-      if (++v5 >= [v17 count])
+      if (++v5 >= [sectionIdentifiers count])
       {
         goto LABEL_7;
       }
@@ -1891,12 +1891,12 @@ LABEL_7:
     v5 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v9 = [v17 count];
+  v9 = [sectionIdentifiers count];
   while (--v9 >= 0)
   {
-    v10 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-    v11 = [v17 objectAtIndexedSubscript:v9];
-    v12 = [v10 _ui_containsMonth:v11];
+    availableDateRange2 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+    v11 = [sectionIdentifiers objectAtIndexedSubscript:v9];
+    v12 = [availableDateRange2 _ui_containsMonth:v11];
 
     if (v12)
     {
@@ -1908,44 +1908,44 @@ LABEL_7:
 LABEL_13:
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1322 description:@"Invalid state. Unable to find a lower bounds in range."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1322 description:@"Invalid state. Unable to find a lower bounds in range."];
   }
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1323 description:@"Invalid state. Unable to find an upper bounds in range."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1323 description:@"Invalid state. Unable to find an upper bounds in range."];
   }
 
   [(UIView *)self->_collectionView bounds];
-  -[UICollectionView setContentInset:](self->_collectionView, "setContentInset:", 0.0, -(v13 * v5), 0.0, -(v13 * ([v17 count] + ~v9)));
+  -[UICollectionView setContentInset:](self->_collectionView, "setContentInset:", 0.0, -(v13 * v5), 0.0, -(v13 * ([sectionIdentifiers count] + ~v9)));
 }
 
-- (void)_performIgnoringScrollCallbacks:(id)a3
+- (void)_performIgnoringScrollCallbacks:(id)callbacks
 {
-  v5 = a3;
+  callbacksCopy = callbacks;
   flags = self->_flags;
-  v8 = v5;
+  v8 = callbacksCopy;
   if ((flags & 0x10) != 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1336 description:@"A block is already being executed while ignoring scroll callbacks. This guard is not reentrant safe."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarView.m" lineNumber:1336 description:@"A block is already being executed while ignoring scroll callbacks. This guard is not reentrant safe."];
 
-    v5 = v8;
+    callbacksCopy = v8;
     flags = self->_flags;
   }
 
   *&self->_flags = flags | 0x10;
-  (*(v5 + 2))();
+  (*(callbacksCopy + 2))();
   *&self->_flags &= ~0x10u;
 }
 
-- (void)_performIfNotIgnoringScrollCallbacks:(id)a3
+- (void)_performIfNotIgnoringScrollCallbacks:(id)callbacks
 {
   if ((*&self->_flags & 0x10) == 0)
   {
-    (*(a3 + 2))(a3);
+    (*(callbacks + 2))(callbacks);
   }
 }
 
@@ -1962,14 +1962,14 @@ LABEL_13:
     v8 = v5 + CGRectGetWidth(v34) * 0.5;
     [(UIView *)v3 bounds];
     v9 = (v8 / CGRectGetWidth(v35));
-    v10 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-    v11 = [v10 sectionIdentifiers];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
 
-    if ([v11 count] > v9)
+    if ([sectionIdentifiers count] > v9)
     {
-      v12 = [v11 objectAtIndexedSubscript:v9];
-      v13 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-      v14 = [v13 isEqual:v12];
+      v12 = [sectionIdentifiers objectAtIndexedSubscript:v9];
+      visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+      v14 = [visibleMonth isEqual:v12];
 
       if ((v14 & 1) == 0)
       {
@@ -1995,7 +1995,7 @@ LABEL_13:
       v33.y = v7;
       v20 = NSStringFromCGPoint(v33);
       v23 = 138412802;
-      v24 = v11;
+      v24 = sectionIdentifiers;
       v25 = 2112;
       v26 = v19;
       v27 = 2112;
@@ -2022,7 +2022,7 @@ LABEL_11:
       v31.y = v7;
       v20 = NSStringFromCGPoint(v31);
       v23 = 138412802;
-      v24 = v11;
+      v24 = sectionIdentifiers;
       v25 = 2112;
       v26 = v19;
       v27 = 2112;
@@ -2061,7 +2061,7 @@ uint64_t __41__UICalendarView__cleanupDataIfNecessary__block_invoke(uint64_t a1)
   return [v6 _restoreContentOffsetWithPageOffset:v5];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -2071,16 +2071,16 @@ uint64_t __41__UICalendarView__cleanupDataIfNecessary__block_invoke(uint64_t a1)
   [(UICalendarView *)self _performIfNotIgnoringScrollCallbacks:v3];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__UICalendarView_scrollViewDidEndScrollingAnimation___block_invoke;
   v6[3] = &unk_1E70F35B8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = animationCopy;
+  selfCopy = self;
+  v5 = animationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2114,7 +2114,7 @@ uint64_t __53__UICalendarView_scrollViewDidEndScrollingAnimation___block_invoke(
   return result;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;

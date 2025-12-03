@@ -1,16 +1,16 @@
 @interface VNMTLDeviceWisdomParameters
-- (id)_cachedMetalDeviceWisdomParametersAndReturnError:(id *)a3;
+- (id)_cachedMetalDeviceWisdomParametersAndReturnError:(id *)error;
 - (id)_wisdomResourcesPath;
-- (id)wisdomParameterForMTLDevice:(id)a3 error:(id *)a4;
-- (id)wisdomParameterForMTLDeviceWithName:(id)a3 error:(id *)a4;
+- (id)wisdomParameterForMTLDevice:(id)device error:(id *)error;
+- (id)wisdomParameterForMTLDeviceWithName:(id)name error:(id *)error;
 @end
 
 @implementation VNMTLDeviceWisdomParameters
 
-- (id)wisdomParameterForMTLDeviceWithName:(id)a3 error:(id *)a4
+- (id)wisdomParameterForMTLDeviceWithName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNMTLDeviceWisdomParameters *)self _cachedMetalDeviceWisdomParametersAndReturnError:a4];
+  nameCopy = name;
+  v7 = [(VNMTLDeviceWisdomParameters *)self _cachedMetalDeviceWisdomParametersAndReturnError:error];
   if (v7)
   {
     v16 = 0;
@@ -23,7 +23,7 @@
     v13[1] = 3221225472;
     v13[2] = __73__VNMTLDeviceWisdomParameters_wisdomParameterForMTLDeviceWithName_error___block_invoke;
     v13[3] = &unk_1E77B35E0;
-    v8 = v6;
+    v8 = nameCopy;
     v14 = v8;
     v15 = &v16;
     [v7 enumerateKeysAndObjectsUsingBlock:v13];
@@ -33,10 +33,10 @@
       v10 = v9;
     }
 
-    else if (a4)
+    else if (error)
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wisdom parameters are not available for the device %@", v8];
-      *a4 = [VNError errorForDataUnavailableWithLocalizedDescription:v11];
+      *error = [VNError errorForDataUnavailableWithLocalizedDescription:v11];
     }
 
     _Block_object_dispose(&v16, 8);
@@ -60,19 +60,19 @@ void __73__VNMTLDeviceWisdomParameters_wisdomParameterForMTLDeviceWithName_error
   }
 }
 
-- (id)wisdomParameterForMTLDevice:(id)a3 error:(id *)a4
+- (id)wisdomParameterForMTLDevice:(id)device error:(id *)error
 {
-  v6 = [a3 name];
-  v7 = [(VNMTLDeviceWisdomParameters *)self wisdomParameterForMTLDeviceWithName:v6 error:a4];
+  name = [device name];
+  v7 = [(VNMTLDeviceWisdomParameters *)self wisdomParameterForMTLDeviceWithName:name error:error];
 
   return v7;
 }
 
-- (id)_cachedMetalDeviceWisdomParametersAndReturnError:(id *)a3
+- (id)_cachedMetalDeviceWisdomParametersAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [VNError errorForDataUnavailableWithLocalizedDescription:@"wisdom parameters are not available for the system"];
+    *error = [VNError errorForDataUnavailableWithLocalizedDescription:@"wisdom parameters are not available for the system"];
   }
 
   return 0;
@@ -81,8 +81,8 @@ void __73__VNMTLDeviceWisdomParameters_wisdomParameterForMTLDeviceWithName_error
 - (id)_wisdomResourcesPath
 {
   v2 = VNFrameworkBundle();
-  v3 = [v2 resourcePath];
-  v4 = [v3 stringByAppendingPathComponent:@"Wisdom"];
+  resourcePath = [v2 resourcePath];
+  v4 = [resourcePath stringByAppendingPathComponent:@"Wisdom"];
 
   return v4;
 }

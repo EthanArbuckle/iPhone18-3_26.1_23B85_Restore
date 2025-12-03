@@ -68,14 +68,14 @@
     v10 = [v9 appendRelativeTimestamp:?];
 
     v11 = [v4 appendString:@" type: "];
-    v12 = [(PLChangeHandlingNotificationEvent *)self notificationType];
+    notificationType = [(PLChangeHandlingNotificationEvent *)self notificationType];
     v13 = @"<Unknown>";
-    if (v12 == 1)
+    if (notificationType == 1)
     {
       v13 = @"H";
     }
 
-    if (v12)
+    if (notificationType)
     {
       v14 = v13;
     }
@@ -102,33 +102,33 @@
 
   else
   {
-    v21 = [(PLChangeHandlingNotificationEvent *)self kind];
+    kind = [(PLChangeHandlingNotificationEvent *)self kind];
     v18 = [v4 appendString:@" kind: "];
-    v22 = [(PLChangeHandlingNotificationEvent *)self kind];
-    if (v21 != 2)
+    kind2 = [(PLChangeHandlingNotificationEvent *)self kind];
+    if (kind != 2)
     {
-      if (v22 > 4)
+      if (kind2 > 4)
       {
         v24 = @"<Unknown>";
       }
 
       else
       {
-        v24 = off_1E756E8E0[v22];
+        v24 = off_1E756E8E0[kind2];
       }
 
       v27 = [v18 appendString:v24];
       goto LABEL_22;
     }
 
-    if (v22 > 4)
+    if (kind2 > 4)
     {
       v23 = @"<Unknown>";
     }
 
     else
     {
-      v23 = off_1E756E8E0[v22];
+      v23 = off_1E756E8E0[kind2];
     }
 
     v25 = [v18 appendString:v23];

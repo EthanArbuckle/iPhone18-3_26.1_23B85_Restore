@@ -1,32 +1,32 @@
 @interface HUStringDisplayFormatter
-+ (id)_stringByApplyingHomeKit8DigitFormatToString:(id)a3;
-+ (id)_stringByApplyingMatter11DigitFormatToString:(id)a3;
-+ (id)_stringByApplyingMatter21DigitFormatToString:(id)a3;
-+ (id)stringByApplyingCodeFormatToString:(id)a3;
++ (id)_stringByApplyingHomeKit8DigitFormatToString:(id)string;
++ (id)_stringByApplyingMatter11DigitFormatToString:(id)string;
++ (id)_stringByApplyingMatter21DigitFormatToString:(id)string;
++ (id)stringByApplyingCodeFormatToString:(id)string;
 @end
 
 @implementation HUStringDisplayFormatter
 
-+ (id)stringByApplyingCodeFormatToString:(id)a3
++ (id)stringByApplyingCodeFormatToString:(id)string
 {
-  v3 = [a3 hf_extractDecimalDigits];
-  if ([v3 length] > 8)
+  hf_extractDecimalDigits = [string hf_extractDecimalDigits];
+  if ([hf_extractDecimalDigits length] > 8)
   {
-    if ([v3 length] > 0xB)
+    if ([hf_extractDecimalDigits length] > 0xB)
     {
-      [HUStringDisplayFormatter _stringByApplyingMatter21DigitFormatToString:v3];
+      [HUStringDisplayFormatter _stringByApplyingMatter21DigitFormatToString:hf_extractDecimalDigits];
     }
 
     else
     {
-      [HUStringDisplayFormatter _stringByApplyingMatter11DigitFormatToString:v3];
+      [HUStringDisplayFormatter _stringByApplyingMatter11DigitFormatToString:hf_extractDecimalDigits];
     }
     v4 = ;
   }
 
   else
   {
-    v4 = [HUStringDisplayFormatter _stringByApplyingHomeKit8DigitFormatToString:v3];
+    v4 = [HUStringDisplayFormatter _stringByApplyingHomeKit8DigitFormatToString:hf_extractDecimalDigits];
   }
 
   v5 = v4;
@@ -34,29 +34,29 @@
   return v5;
 }
 
-+ (id)_stringByApplyingHomeKit8DigitFormatToString:(id)a3
++ (id)_stringByApplyingHomeKit8DigitFormatToString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] > 4)
+  stringCopy = string;
+  if ([stringCopy length] > 4)
   {
-    v4 = [v3 mutableCopy];
+    v4 = [stringCopy mutableCopy];
     [v4 insertString:@"-" atIndex:4];
   }
 
   else
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   return v4;
 }
 
-+ (id)_stringByApplyingMatter11DigitFormatToString:(id)a3
++ (id)_stringByApplyingMatter11DigitFormatToString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] > 4)
+  stringCopy = string;
+  if ([stringCopy length] > 4)
   {
-    v4 = [v3 mutableCopy];
+    v4 = [stringCopy mutableCopy];
     [v4 insertString:@"-" atIndex:4];
     if ([v4 length] >= 9)
     {
@@ -66,18 +66,18 @@
 
   else
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   return v4;
 }
 
-+ (id)_stringByApplyingMatter21DigitFormatToString:(id)a3
++ (id)_stringByApplyingMatter21DigitFormatToString:(id)string
 {
-  v3 = a3;
-  if ([v3 length] > 4)
+  stringCopy = string;
+  if ([stringCopy length] > 4)
   {
-    v4 = [v3 mutableCopy];
+    v4 = [stringCopy mutableCopy];
     [v4 insertString:@"-" atIndex:4];
     if ([v4 length] >= 9)
     {
@@ -107,7 +107,7 @@
 
   else
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   return v4;

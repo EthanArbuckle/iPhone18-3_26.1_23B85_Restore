@@ -1,7 +1,7 @@
 @interface POUserRegistrationStatus
-- (POUserRegistrationStatus)initWithCoder:(id)a3;
+- (POUserRegistrationStatus)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation POUserRegistrationStatus
@@ -77,9 +77,9 @@
   return v16;
 }
 
-- (POUserRegistrationStatus)initWithCoder:(id)a3
+- (POUserRegistrationStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = POUserRegistrationStatus;
   v5 = [(POUserRegistrationStatus *)&v32 init];
@@ -87,85 +87,85 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_isPlatformSSOEnabled);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     v5->_platformSSOEnabled = [v8 BOOLValue];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_loginUserName);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     loginUserName = v5->_loginUserName;
     v5->_loginUserName = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_authenticationMethod);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     v5->_authenticationMethod = [v15 intValue];
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_userRegistrationStatus);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     v5->_userRegistrationStatus = [v18 intValue];
 
     v19 = objc_opt_class();
     v20 = NSStringFromSelector(sel_isActionButtonEnabled);
-    v21 = [v4 decodeObjectOfClass:v19 forKey:v20];
+    v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
     v5->_actionButtonEnabled = [v21 BOOLValue];
 
     v22 = objc_opt_class();
     v23 = NSStringFromSelector(sel_actionButtonAction);
-    v24 = [v4 decodeObjectOfClass:v22 forKey:v23];
+    v24 = [coderCopy decodeObjectOfClass:v22 forKey:v23];
     v5->_actionButtonAction = [v24 intValue];
 
     v25 = objc_opt_class();
     v26 = NSStringFromSelector(sel_userTokenStatus);
-    v27 = [v4 decodeObjectOfClass:v25 forKey:v26];
+    v27 = [coderCopy decodeObjectOfClass:v25 forKey:v26];
     v5->_userTokenStatus = [v27 intValue];
 
     v28 = objc_opt_class();
     v29 = NSStringFromSelector(sel_isAuthenticateButtonEnabled);
-    v30 = [v4 decodeObjectOfClass:v28 forKey:v29];
+    v30 = [coderCopy decodeObjectOfClass:v28 forKey:v29];
     v5->_authenticateButtonEnabled = [v30 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   platformSSOEnabled = self->_platformSSOEnabled;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:platformSSOEnabled];
   v8 = NSStringFromSelector(sel_isPlatformSSOEnabled);
-  [v6 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:v7 forKey:v8];
 
   loginUserName = self->_loginUserName;
   v10 = NSStringFromSelector(sel_loginUserName);
-  [v6 encodeObject:loginUserName forKey:v10];
+  [coderCopy encodeObject:loginUserName forKey:v10];
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:self->_authenticationMethod];
   v12 = NSStringFromSelector(sel_authenticationMethod);
-  [v6 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:v11 forKey:v12];
 
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:self->_userRegistrationStatus];
   v14 = NSStringFromSelector(sel_userRegistrationStatus);
-  [v6 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:v13 forKey:v14];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_actionButtonEnabled];
   v16 = NSStringFromSelector(sel_isActionButtonEnabled);
-  [v6 encodeObject:v15 forKey:v16];
+  [coderCopy encodeObject:v15 forKey:v16];
 
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:self->_actionButtonAction];
   v18 = NSStringFromSelector(sel_actionButtonAction);
-  [v6 encodeObject:v17 forKey:v18];
+  [coderCopy encodeObject:v17 forKey:v18];
 
   v19 = [MEMORY[0x277CCABB0] numberWithInteger:self->_userTokenStatus];
   v20 = NSStringFromSelector(sel_userTokenStatus);
-  [v6 encodeObject:v19 forKey:v20];
+  [coderCopy encodeObject:v19 forKey:v20];
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:self->_authenticateButtonEnabled];
   v21 = NSStringFromSelector(sel_isAuthenticateButtonEnabled);
-  [v6 encodeObject:v22 forKey:v21];
+  [coderCopy encodeObject:v22 forKey:v21];
 }
 
 @end

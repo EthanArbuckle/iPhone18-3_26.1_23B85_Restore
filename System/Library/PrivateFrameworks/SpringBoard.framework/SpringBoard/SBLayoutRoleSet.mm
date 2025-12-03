@@ -1,10 +1,10 @@
 @interface SBLayoutRoleSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBLayoutRoleSet)init;
 - (id)description;
-- (id)setByRemovingRole:(int64_t)a3;
-- (void)_initWithRoles:(void *)a1;
-- (void)enumerateRolesUsingBlock:(id)a3;
+- (id)setByRemovingRole:(int64_t)role;
+- (void)_initWithRoles:(void *)roles;
+- (void)enumerateRolesUsingBlock:(id)block;
 @end
 
 @implementation SBLayoutRoleSet
@@ -22,7 +22,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"SBLayoutRole.m";
     v17 = 1024;
@@ -38,40 +38,40 @@
   return result;
 }
 
-- (id)setByRemovingRole:(int64_t)a3
+- (id)setByRemovingRole:(int64_t)role
 {
   p_roles = &self->_roles;
   if ([(NSIndexSet *)self->_roles containsIndex:?])
   {
-    [(SBLayoutRoleSet *)p_roles setByRemovingRole:a3, &v8];
-    v6 = v8;
+    [(SBLayoutRoleSet *)p_roles setByRemovingRole:role, &v8];
+    selfCopy = v8;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)enumerateRolesUsingBlock:(id)a3
+- (void)enumerateRolesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   roles = self->_roles;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SBLayoutRoleSet_enumerateRolesUsingBlock___block_invoke;
   v7[3] = &unk_2783C0A40;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSIndexSet *)roles enumerateIndexesUsingBlock:v7];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -79,7 +79,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && [(NSIndexSet *)self->_roles isEqualToIndexSet:v4->_roles];
+    v6 = v5 == objc_opt_class() && [(NSIndexSet *)self->_roles isEqualToIndexSet:equalCopy->_roles];
   }
 
   return v6;
@@ -94,14 +94,14 @@
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     roles = self->_roles;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __30__SBLayoutRoleSet_description__block_invoke;
     v8[3] = &unk_2783AC9B8;
-    v9 = v4;
-    v6 = v4;
+    v9 = array;
+    v6 = array;
     [(NSIndexSet *)roles enumerateIndexesUsingBlock:v8];
     v3 = [v6 componentsJoinedByString:{@", "}];
   }
@@ -116,23 +116,23 @@ void __30__SBLayoutRoleSet_description__block_invoke(uint64_t a1, uint64_t a2)
   [v2 addObject:v3];
 }
 
-- (void)_initWithRoles:(void *)a1
+- (void)_initWithRoles:(void *)roles
 {
   v3 = a2;
-  if (a1)
+  if (roles)
   {
-    v7.receiver = a1;
+    v7.receiver = roles;
     v7.super_class = SBLayoutRoleSet;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    roles = objc_msgSendSuper2(&v7, sel_init);
+    if (roles)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = roles[1];
+      roles[1] = v4;
     }
   }
 
-  return a1;
+  return roles;
 }
 
 - (void)setByRemovingRole:(void *)a3 .cold.1(id *a1, uint64_t a2, void *a3)

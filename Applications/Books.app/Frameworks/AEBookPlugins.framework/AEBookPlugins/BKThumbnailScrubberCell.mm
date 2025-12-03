@@ -1,19 +1,19 @@
 @interface BKThumbnailScrubberCell
 + (id)emptyBackgroundColor;
-- (BKThumbnailScrubberCell)initWithFrame:(CGRect)a3;
+- (BKThumbnailScrubberCell)initWithFrame:(CGRect)frame;
 - (id)imageView;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)setImage:(id)image;
+- (void)setStrokeColor:(id)color;
 @end
 
 @implementation BKThumbnailScrubberCell
 
-- (BKThumbnailScrubberCell)initWithFrame:(CGRect)a3
+- (BKThumbnailScrubberCell)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = BKThumbnailScrubberCell;
-  v3 = [(BKThumbnailScrubberCell *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKThumbnailScrubberCell *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,8 +27,8 @@
     v4->_imageView = v9;
 
     v11 = v4->_imageView;
-    v12 = [objc_opt_class() emptyBackgroundColor];
-    [(UIImageView *)v11 setBackgroundColor:v12];
+    emptyBackgroundColor = [objc_opt_class() emptyBackgroundColor];
+    [(UIImageView *)v11 setBackgroundColor:emptyBackgroundColor];
 
     [(BKThumbnailScrubberCell *)v4 insertSubview:v4->_imageView atIndex:0];
     v13 = objc_opt_new();
@@ -48,8 +48,8 @@
     v21 = [NSDictionary dictionaryWithObjectsAndKeys:v19, @"bounds", v20, @"position", 0];
     [(CALayer *)v18 setActions:v21];
 
-    v22 = [(BKThumbnailScrubberCell *)v4 layer];
-    [v22 addSublayer:v4->_borderLayer];
+    layer = [(BKThumbnailScrubberCell *)v4 layer];
+    [layer addSublayer:v4->_borderLayer];
   }
 
   return v4;
@@ -67,17 +67,17 @@
   [(UIImageView *)self->_imageView setFrame:?];
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  if (self->_strokeColor != v5)
+  colorCopy = color;
+  if (self->_strokeColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_strokeColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(&self->_strokeColor, color);
     borderLayer = self->_borderLayer;
     v7 = v8;
     [(CALayer *)borderLayer setBorderColor:[(UIColor *)v8 CGColor]];
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
@@ -106,8 +106,8 @@
     self->_imageView = v4;
 
     v6 = self->_imageView;
-    v7 = [objc_opt_class() emptyBackgroundColor];
-    [(UIImageView *)v6 setBackgroundColor:v7];
+    emptyBackgroundColor = [objc_opt_class() emptyBackgroundColor];
+    [(UIImageView *)v6 setBackgroundColor:emptyBackgroundColor];
 
     [(BKThumbnailScrubberCell *)self insertSubview:self->_imageView atIndex:0];
     imageView = self->_imageView;
@@ -116,11 +116,11 @@
   return imageView;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(BKThumbnailScrubberCell *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(BKThumbnailScrubberCell *)self imageView];
+  [imageView setImage:imageCopy];
 
   [(BKThumbnailScrubberCell *)self setNeedsLayout];
 }

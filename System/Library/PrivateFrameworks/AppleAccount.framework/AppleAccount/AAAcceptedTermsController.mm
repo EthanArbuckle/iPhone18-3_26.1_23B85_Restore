@@ -1,18 +1,18 @@
 @interface AAAcceptedTermsController
-- (BOOL)_shouldRecordTermsForBuddyWithTermsInfo:(id)a3;
-- (void)_recordTermsForBuddyWithTermsInfo:(id)a3;
-- (void)_repairTermsBackup:(id)a3 forAccount:(id)a4;
-- (void)fetchTermsAcceptanceForAccount:(id)a3 completion:(id)a4;
-- (void)saveTermsAcceptance:(id)a3 forAccount:(id)a4;
+- (BOOL)_shouldRecordTermsForBuddyWithTermsInfo:(id)info;
+- (void)_recordTermsForBuddyWithTermsInfo:(id)info;
+- (void)_repairTermsBackup:(id)backup forAccount:(id)account;
+- (void)fetchTermsAcceptanceForAccount:(id)account completion:(id)completion;
+- (void)saveTermsAcceptance:(id)acceptance forAccount:(id)account;
 @end
 
 @implementation AAAcceptedTermsController
 
-- (void)saveTermsAcceptance:(id)a3 forAccount:(id)a4
+- (void)saveTermsAcceptance:(id)acceptance forAccount:(id)account
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  acceptanceCopy = acceptance;
+  accountCopy = account;
   v8 = _AASignpostLogSystem();
   v9 = _AASignpostCreate(v8);
   v11 = v10;
@@ -33,14 +33,14 @@
     _os_log_impl(&dword_1B6F6A000, v14, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: RecordTerms  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  if ([(AAAcceptedTermsController *)self _shouldRecordTermsForBuddyWithTermsInfo:v6])
+  if ([(AAAcceptedTermsController *)self _shouldRecordTermsForBuddyWithTermsInfo:acceptanceCopy])
   {
-    [(AAAcceptedTermsController *)self _recordTermsForBuddyWithTermsInfo:v6];
+    [(AAAcceptedTermsController *)self _recordTermsForBuddyWithTermsInfo:acceptanceCopy];
   }
 
-  [v7 _aa_setLastAgreedTermsInfo:v6];
-  [v7 aa_setNeedsToVerifyTerms:0];
-  v15 = [v7 aa_isAccountClass:@"primary"];
+  [accountCopy _aa_setLastAgreedTermsInfo:acceptanceCopy];
+  [accountCopy aa_setNeedsToVerifyTerms:0];
+  v15 = [accountCopy aa_isAccountClass:@"primary"];
 
   if (v15)
   {
@@ -48,7 +48,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v6;
+      v25 = acceptanceCopy;
       _os_log_impl(&dword_1B6F6A000, v16, OS_LOG_TYPE_DEFAULT, "Saving terms acceptance: %@", buf, 0xCu);
     }
 
@@ -59,7 +59,7 @@
     v23[3] = &__block_descriptor_48_e17_v16__0__NSError_8l;
     v23[4] = v9;
     v23[5] = v11;
-    [v17 saveTermsAcceptance:v6 completion:v23];
+    [v17 saveTermsAcceptance:acceptanceCopy completion:v23];
   }
 
   else
@@ -137,20 +137,20 @@ void __60__AAAcceptedTermsController_saveTermsAcceptance_forAccount___block_invo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldRecordTermsForBuddyWithTermsInfo:(id)a3
+- (BOOL)_shouldRecordTermsForBuddyWithTermsInfo:(id)info
 {
-  v3 = [a3 objectForKey:@"proxiedcontext"];
+  v3 = [info objectForKey:@"proxiedcontext"];
   v4 = v3 == 0;
 
   return v4;
 }
 
-- (void)fetchTermsAcceptanceForAccount:(id)a3 completion:(id)a4
+- (void)fetchTermsAcceptanceForAccount:(id)account completion:(id)completion
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 aa_isAccountClass:@"primary"])
+  accountCopy = account;
+  completionCopy = completion;
+  if ([accountCopy aa_isAccountClass:@"primary"])
   {
     v8 = _AASignpostLogSystem();
     v9 = _AASignpostCreate(v8);
@@ -176,12 +176,12 @@ void __60__AAAcceptedTermsController_saveTermsAcceptance_forAccount___block_invo
     aBlock[1] = 3221225472;
     aBlock[2] = __71__AAAcceptedTermsController_fetchTermsAcceptanceForAccount_completion___block_invoke;
     aBlock[3] = &unk_1E7C9C770;
-    v15 = v6;
+    v15 = accountCopy;
     v26 = v15;
-    v27 = self;
+    selfCopy = self;
     v29 = v9;
     v30 = v11;
-    v28 = v7;
+    v28 = completionCopy;
     v16 = _Block_copy(aBlock);
     v17 = objc_alloc_init(getCDPTermsInfoBackupControllerClass());
     v23[0] = MEMORY[0x1E69E9820];
@@ -202,7 +202,7 @@ void __60__AAAcceptedTermsController_saveTermsAcceptance_forAccount___block_invo
     v34[0] = @"Terms acceptance not available for non-primary AppleAccount";
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v21 = [v20 aa_errorWithCode:-15 userInfo:v19];
-    (*(v7 + 2))(v7, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, v21);
   }
 
   v22 = *MEMORY[0x1E69E9840];
@@ -302,12 +302,12 @@ void __71__AAAcceptedTermsController_fetchTermsAcceptanceForAccount_completion__
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recordTermsForBuddyWithTermsInfo:(id)a3
+- (void)_recordTermsForBuddyWithTermsInfo:(id)info
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"SLAVersion"];
-  v5 = [v3 objectForKeyedSubscript:@"ioswarrantyVersion"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"SLAVersion"];
+  v5 = [infoCopy objectForKeyedSubscript:@"ioswarrantyVersion"];
   if (v4)
   {
     v6 = _AALogSystem();
@@ -372,15 +372,15 @@ void __71__AAAcceptedTermsController_fetchTermsAcceptanceForAccount_completion__
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_repairTermsBackup:(id)a3 forAccount:(id)a4
+- (void)_repairTermsBackup:(id)backup forAccount:(id)account
 {
-  v5 = a3;
+  backupCopy = backup;
   v6 = MEMORY[0x1E6959A48];
-  v7 = a4;
-  v8 = [v6 defaultStore];
-  v9 = [v7 aa_altDSID];
+  accountCopy = account;
+  defaultStore = [v6 defaultStore];
+  aa_altDSID = [accountCopy aa_altDSID];
 
-  v10 = [v8 aa_appleAccountWithAltDSID:v9];
+  v10 = [defaultStore aa_appleAccountWithAltDSID:aa_altDSID];
 
   v11 = _AALogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -393,7 +393,7 @@ void __71__AAAcceptedTermsController_fetchTermsAcceptanceForAccount_completion__
     }
 
     v11 = objc_alloc_init(getCDPTermsInfoBackupControllerClass());
-    [v11 saveTermsAcceptance:v5 completion:&__block_literal_global_19];
+    [v11 saveTermsAcceptance:backupCopy completion:&__block_literal_global_19];
   }
 
   else if (v12)

@@ -1,26 +1,26 @@
 @interface TXRAssetCatalogParser
-+ (id)exportSet:(id)a3 location:(id)a4 error:(id *)a5;
++ (id)exportSet:(id)set location:(id)location error:(id *)error;
 @end
 
 @implementation TXRAssetCatalogParser
 
-+ (id)exportSet:(id)a3 location:(id)a4 error:(id *)a5
++ (id)exportSet:(id)set location:(id)location error:(id *)error
 {
   v102[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 configs];
-  v10 = [v9 objectAtIndexedSubscript:0];
-  v11 = [v10 texture];
-  v12 = [v11 cubemap];
+  setCopy = set;
+  locationCopy = location;
+  configs = [setCopy configs];
+  v10 = [configs objectAtIndexedSubscript:0];
+  texture = [v10 texture];
+  cubemap = [texture cubemap];
 
   v13 = objc_alloc(MEMORY[0x277CCAB68]);
-  v84 = v8;
-  v14 = [v8 absoluteString];
-  v15 = [v7 name];
-  v16 = v15;
-  v92 = v12;
-  if (v12)
+  v84 = locationCopy;
+  absoluteString = [locationCopy absoluteString];
+  name = [setCopy name];
+  v16 = name;
+  v92 = cubemap;
+  if (cubemap)
   {
     v17 = @"%@/%@.cubetextureset";
   }
@@ -30,20 +30,20 @@
     v17 = @"%@/%@.textureset";
   }
 
-  v18 = [v13 initWithFormat:v17, v14, v15];
+  v18 = [v13 initWithFormat:v17, absoluteString, name];
 
   v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/Contents.json", v18];
   [MEMORY[0x277CCAA00] defaultManager];
   v91 = v97 = 0;
-  v87 = a5;
-  v83 = v7;
+  errorCopy = error;
+  v83 = setCopy;
   v81 = v19;
   if ([v91 fileExistsAtPath:v19 isDirectory:&v97] && (v97 & 1) == 0)
   {
-    v25 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithFileAtPath:v19];
-    [v25 open];
-    v39 = [MEMORY[0x277CCAAA0] JSONObjectWithStream:v25 options:1 error:a5];
-    [v25 close];
+    configs2 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithFileAtPath:v19];
+    [configs2 open];
+    v39 = [MEMORY[0x277CCAAA0] JSONObjectWithStream:configs2 options:1 error:error];
+    [configs2 close];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,9 +52,9 @@
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = _newTXRErrorWithCodeAndErrorString(3, @"Unexpected format of Contents.json");
+        *error = _newTXRErrorWithCodeAndErrorString(3, @"Unexpected format of Contents.json");
 
         v82 = 0;
         v86 = 0;
@@ -78,7 +78,7 @@
       goto LABEL_98;
     }
 
-    if (!a5)
+    if (!error)
     {
 LABEL_97:
       v82 = 0;
@@ -94,11 +94,11 @@ LABEL_98:
 
         else
         {
-          if (a5)
+          if (error)
           {
             _newTXRErrorWithCodeAndErrorString(3, @"Value of textures key is not an array");
             v75 = 0;
-            *a5 = v86 = 0;
+            *error = v86 = 0;
             goto LABEL_107;
           }
 
@@ -109,11 +109,11 @@ LABEL_98:
       else
       {
         v71 = objc_alloc(MEMORY[0x277CBEB18]);
-        [v7 configs];
-        v73 = v72 = v25;
+        [setCopy configs];
+        v73 = v72 = configs2;
         v74 = [v71 initWithCapacity:{objc_msgSend(v73, "count")}];
 
-        v25 = v72;
+        configs2 = v72;
         v86 = v74;
         [v36 setObject:v74 forKeyedSubscript:@"textures"];
       }
@@ -129,7 +129,7 @@ LABEL_111:
       }
 
       v37 = v82;
-      if (![v7 interpretation])
+      if (![setCopy interpretation])
       {
         if (v82)
         {
@@ -137,7 +137,7 @@ LABEL_111:
         }
 
 LABEL_25:
-        if ([v7 origin] == 1)
+        if ([setCopy origin] == 1)
         {
           if (v37)
           {
@@ -150,13 +150,13 @@ LABEL_38:
             v96 = 0u;
             v93 = 0u;
             v94 = 0u;
-            v25 = [v7 configs];
-            v77 = [v25 countByEnumeratingWithState:&v93 objects:v98 count:16];
+            configs2 = [setCopy configs];
+            v77 = [configs2 countByEnumeratingWithState:&v93 objects:v98 count:16];
             if (v77)
             {
               v41 = *v94;
               v85 = v18;
-              v79 = v25;
+              v79 = configs2;
               v80 = v36;
               v76 = *v94;
               while (1)
@@ -165,14 +165,14 @@ LABEL_38:
 LABEL_41:
                 if (*v94 != v41)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(configs2);
                 }
 
                 v43 = *(*(&v93 + 1) + 8 * v42);
-                v44 = [v43 texture];
-                v45 = [v44 cubemap];
+                texture2 = [v43 texture];
+                cubemap2 = [texture2 cubemap];
 
-                if (v92 != v45)
+                if (v92 != cubemap2)
                 {
                   break;
                 }
@@ -181,8 +181,8 @@ LABEL_41:
                 v46 = 0;
                 do
                 {
-                  v47 = [v43 idiom];
-                  if (v47 > 5)
+                  idiom = [v43 idiom];
+                  if (idiom > 5)
                   {
                     v48 = 0;
                     v49 = 0;
@@ -190,8 +190,8 @@ LABEL_41:
 
                   else
                   {
-                    v48 = off_279DBC098[v47];
-                    v49 = off_279DBC0C8[v47];
+                    v48 = off_279DBC098[idiom];
+                    v49 = off_279DBC0C8[idiom];
                   }
 
                   v50 = [v43 graphicsFeatureSet] - 1;
@@ -220,14 +220,14 @@ LABEL_41:
                     v53 = off_279DBC158[v51];
                   }
 
-                  v54 = [v43 displayColorSpace];
+                  displayColorSpace = [v43 displayColorSpace];
                   v55 = @"sRGB";
-                  if (v54 != 1)
+                  if (displayColorSpace != 1)
                   {
                     v55 = 0;
                   }
 
-                  if (v54 == 2)
+                  if (displayColorSpace == 2)
                   {
                     v56 = @"P3";
                   }
@@ -244,15 +244,15 @@ LABEL_41:
                     v57 = off_279DBC178[v58];
                   }
 
-                  v59 = [v43 pixelFormat];
-                  if ((v59 - 1) > 0xB)
+                  pixelFormat = [v43 pixelFormat];
+                  if ((pixelFormat - 1) > 0xB)
                   {
                     v88 = 0;
                   }
 
                   else
                   {
-                    v88 = off_279DBC190[v59 - 1];
+                    v88 = off_279DBC190[pixelFormat - 1];
                   }
 
                   v60 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -281,7 +281,7 @@ LABEL_41:
                     [v60 appendString:v90];
                   }
 
-                  a5 = v87;
+                  error = errorCopy;
                   if ([v43 displayColorSpace])
                   {
                     [v61 setObject:v56 forKeyedSubscript:@"color-space"];
@@ -306,14 +306,14 @@ LABEL_41:
                   [v86 addObject:v61];
                   v18 = v85;
                   v63 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@/%@", v85, v60];
-                  [v91 createDirectoryAtPath:v63 withIntermediateDirectories:1 attributes:0 error:v87];
-                  v64 = [TXRAssetCatalogParser exportSetConfig:v43 face:v46 directoryPath:v63 error:v87];
+                  [v91 createDirectoryAtPath:v63 withIntermediateDirectories:1 attributes:0 error:errorCopy];
+                  v64 = [TXRAssetCatalogParser exportSetConfig:v43 face:v46 directoryPath:v63 error:errorCopy];
 
                   if (!v64)
                   {
                     v40 = 0;
-                    v7 = v83;
-                    v25 = v79;
+                    setCopy = v83;
+                    configs2 = v79;
                     v36 = v80;
                     goto LABEL_93;
                   }
@@ -333,8 +333,8 @@ LABEL_41:
 
                 while (v66 == 1);
                 v42 = v78 + 1;
-                v7 = v83;
-                v25 = v79;
+                setCopy = v83;
+                configs2 = v79;
                 v36 = v80;
                 v41 = v76;
                 if (v78 + 1 != v77)
@@ -350,18 +350,18 @@ LABEL_41:
               }
 
               _newTXRErrorWithCodeAndErrorString(7, @"Inconsistant set specifed.  Some mipmapsets specified are cubemap textures while other mipmapsets are 2D textures");
-              *a5 = v40 = 0;
-              v7 = v83;
+              *error = v40 = 0;
+              setCopy = v83;
               v36 = v80;
               goto LABEL_93;
             }
 
 LABEL_83:
 
-            if (writeContentsJsonAtPath(v36, v18, a5))
+            if (writeContentsJsonAtPath(v36, v18, error))
             {
-              v25 = [v18 stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-              v40 = [MEMORY[0x277CBEBC0] fileURLWithPath:v25];
+              configs2 = [v18 stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+              v40 = [MEMORY[0x277CBEBC0] fileURLWithPath:configs2];
               goto LABEL_93;
             }
 
@@ -389,14 +389,14 @@ LABEL_83:
       if (v82)
       {
 LABEL_17:
-        if ([v7 interpretation] == 1)
+        if ([setCopy interpretation] == 1)
         {
           v38 = @"non-premultiplied-colors";
         }
 
         else
         {
-          if ([v7 interpretation] != 2)
+          if ([setCopy interpretation] != 2)
           {
             +[TXRAssetCatalogParser exportSet:location:error:];
           }
@@ -413,7 +413,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    *a5 = _newTXRErrorWithCodeAndErrorString(3, @"Value of properties key is not an object");
+    *error = _newTXRErrorWithCodeAndErrorString(3, @"Value of properties key is not an object");
 
     v82 = 0;
     v86 = 0;
@@ -422,25 +422,25 @@ LABEL_92:
     goto LABEL_93;
   }
 
-  v20 = [v7 name];
-  v21 = [v20 componentsSeparatedByString:@"/"];
+  name2 = [setCopy name];
+  v21 = [name2 componentsSeparatedByString:@"/"];
 
   v22 = objc_alloc(MEMORY[0x277CCAB68]);
-  v23 = [v8 absoluteString];
-  v24 = [v22 initWithFormat:@"%@", v23];
+  absoluteString2 = [locationCopy absoluteString];
+  v24 = [v22 initWithFormat:@"%@", absoluteString2];
 
-  v25 = v21;
+  configs2 = v21;
   if ([v21 count] == 1)
   {
     v26 = 1;
     v27 = v21;
 LABEL_15:
     v31 = v26 & 1;
-    a5 = v87;
-    [v91 createDirectoryAtPath:v18 withIntermediateDirectories:v31 attributes:0 error:v87];
+    error = errorCopy;
+    [v91 createDirectoryAtPath:v18 withIntermediateDirectories:v31 attributes:0 error:errorCopy];
     v32 = objc_alloc(MEMORY[0x277CBEB18]);
-    v33 = [v7 configs];
-    v34 = [v32 initWithCapacity:{objc_msgSend(v33, "count")}];
+    configs3 = [setCopy configs];
+    v34 = [v32 initWithCapacity:{objc_msgSend(configs3, "count")}];
 
     v99[0] = @"info";
     v99[1] = @"textures";
@@ -450,7 +450,7 @@ LABEL_15:
     v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v100 forKeys:v99 count:2];
     v36 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v35];
 
-    if (![v7 interpretation])
+    if (![setCopy interpretation])
     {
       v37 = 0;
       goto LABEL_25;
@@ -473,16 +473,16 @@ LABEL_15:
       goto LABEL_14;
     }
 
-    if (([v91 createDirectoryAtPath:v24 withIntermediateDirectories:v26 & 1 attributes:0 error:v87] & 1) == 0)
+    if (([v91 createDirectoryAtPath:v24 withIntermediateDirectories:v26 & 1 attributes:0 error:errorCopy] & 1) == 0)
     {
-      *v87 = _newTXRErrorWithCodeAndErrorString(5, @"Could not create folder hierarchy for texture name");
+      *errorCopy = _newTXRErrorWithCodeAndErrorString(5, @"Could not create folder hierarchy for texture name");
       goto LABEL_34;
     }
 
     v101 = @"info";
     v102[0] = &unk_287F0A090;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:&v101 count:1];
-    if (!writeContentsJsonAtPath(v30, v24, v87))
+    if (!writeContentsJsonAtPath(v30, v24, errorCopy))
     {
       break;
     }
@@ -497,7 +497,7 @@ LABEL_14:
     }
   }
 
-  *v87 = _newTXRErrorWithCodeAndErrorString(5, @"Could not create Content.json for hierarchy of texture name");
+  *errorCopy = _newTXRErrorWithCodeAndErrorString(5, @"Could not create Content.json for hierarchy of texture name");
 
 LABEL_34:
   v82 = 0;

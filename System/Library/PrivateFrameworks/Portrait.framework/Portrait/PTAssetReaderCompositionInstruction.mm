@@ -2,7 +2,7 @@
 - ($69C59A32909E13F94AB58097350E6BB9)timeRange;
 - (NSArray)requiredSourceTrackIDs;
 - (PTAssetReader)assetReader;
-- (void)setTimeRange:(id *)a3;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation PTAssetReaderCompositionInstruction
@@ -28,11 +28,11 @@
   return self;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_timeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_timeRange.duration.timescale = *&range->var1.var1;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.start.value = v3;
 }

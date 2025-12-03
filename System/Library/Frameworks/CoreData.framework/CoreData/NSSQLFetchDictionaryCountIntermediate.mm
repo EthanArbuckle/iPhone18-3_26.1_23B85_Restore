@@ -1,6 +1,6 @@
 @interface NSSQLFetchDictionaryCountIntermediate
-- (NSSQLFetchDictionaryCountIntermediate)initWithFetchIntermediate:(id)a3 inScope:(id)a4;
-- (id)generateSQLStringInContext:(id)a3;
+- (NSSQLFetchDictionaryCountIntermediate)initWithFetchIntermediate:(id)intermediate inScope:(id)scope;
+- (id)generateSQLStringInContext:(id)context;
 - (void)dealloc;
 @end
 
@@ -14,32 +14,32 @@
   [(NSSQLStatementIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLFetchDictionaryCountIntermediate)initWithFetchIntermediate:(id)a3 inScope:(id)a4
+- (NSSQLFetchDictionaryCountIntermediate)initWithFetchIntermediate:(id)intermediate inScope:(id)scope
 {
   v7.receiver = self;
   v7.super_class = NSSQLFetchDictionaryCountIntermediate;
-  v5 = [(NSSQLIntermediate *)&v7 initWithScope:a4];
+  v5 = [(NSSQLIntermediate *)&v7 initWithScope:scope];
   if (v5)
   {
-    v5->_realFetch = a3;
+    v5->_realFetch = intermediate;
   }
 
   return v5;
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     return 0;
   }
 
-  v6 = [(NSSQLFetchIntermediate *)self->_realFetch generateSQLStringInContext:a3];
+  v6 = [(NSSQLFetchIntermediate *)self->_realFetch generateSQLStringInContext:context];
   if (!v6)
   {
-    if (![a3 objectForKey:@"NSUnderlyingException"])
+    if (![context objectForKey:@"NSUnderlyingException"])
     {
-      [a3 setValue:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], @"Unable to generate SQL for fetch", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(a3, "objectForKey:", @"outerFetch", @"Bad request", @"NSUnderlyingException"}];
+      [context setValue:objc_msgSend(MEMORY[0x1E695DF30] forKey:{"exceptionWithName:reason:userInfo:", *MEMORY[0x1E695D940], @"Unable to generate SQL for fetch", objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(context, "objectForKey:", @"outerFetch", @"Bad request", @"NSUnderlyingException"}];
     }
 
     return 0;

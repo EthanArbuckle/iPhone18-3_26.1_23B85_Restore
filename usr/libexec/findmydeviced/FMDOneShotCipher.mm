@@ -1,25 +1,25 @@
 @interface FMDOneShotCipher
-- (FMDOneShotCipher)initWithDictionary:(id)a3;
+- (FMDOneShotCipher)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation FMDOneShotCipher
 
-- (FMDOneShotCipher)initWithDictionary:(id)a3
+- (FMDOneShotCipher)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FMDOneShotCipher;
   v5 = [(FMDOneShotCipher *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"iv"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"iv"];
     [(FMDOneShotCipher *)v5 setInitializationVector:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"key"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"key"];
     [(FMDOneShotCipher *)v5 setKey:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"tag"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tag"];
     [(FMDOneShotCipher *)v5 setTag:v8];
   }
 
@@ -29,8 +29,8 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(FMDOneShotCipher *)self initializationVector];
-  [v3 fm_safeSetObject:v4 forKey:@"iv"];
+  initializationVector = [(FMDOneShotCipher *)self initializationVector];
+  [v3 fm_safeSetObject:initializationVector forKey:@"iv"];
 
   v5 = [(FMDOneShotCipher *)self key];
   [v3 fm_safeSetObject:v5 forKey:@"key"];

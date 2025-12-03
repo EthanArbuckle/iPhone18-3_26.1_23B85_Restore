@@ -1,17 +1,17 @@
 @interface CSDHandoffAudioController
 + (NSString)continueHandoffAudioRouteNotification;
 + (NSString)routeIdentifierChangedNotification;
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4;
-- (void)handleContinueHandoffAudioRouteNotification:(id)a3;
-- (void)routesChangedForRouteController:(id)a3;
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation;
+- (void)handleContinueHandoffAudioRouteNotification:(id)notification;
+- (void)routesChangedForRouteController:(id)controller;
 @end
 
 @implementation CSDHandoffAudioController
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   HandoffAudioController.routesChanged(for:)();
 }
 
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (void)handleContinueHandoffAudioRouteNotification:(id)a3
+- (void)handleContinueHandoffAudioRouteNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -37,17 +37,17 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   sub_10045BB8C();
 
   (*(v5 + 8))(v9, v4);
 }
 
-- (void)conversationManager:(id)a3 stateChangedForConversation:(id)a4
+- (void)conversationManager:(id)manager stateChangedForConversation:(id)conversation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  conversationCopy = conversation;
+  selfCopy = self;
   HandoffAudioController.conversationManager(_:stateChangedFor:)();
 }
 

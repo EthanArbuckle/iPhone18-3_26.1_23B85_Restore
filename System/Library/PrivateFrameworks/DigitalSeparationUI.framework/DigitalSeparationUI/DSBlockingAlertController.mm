@@ -1,16 +1,16 @@
 @interface DSBlockingAlertController
-+ (id)_localizedTitleForPeople:(id)a3;
-+ (id)alertControllerWithBlockedPeople:(id)a3;
++ (id)_localizedTitleForPeople:(id)people;
++ (id)alertControllerWithBlockedPeople:(id)people;
 - (id)showSafetyCheckHandler;
 @end
 
 @implementation DSBlockingAlertController
 
-+ (id)alertControllerWithBlockedPeople:(id)a3
++ (id)alertControllerWithBlockedPeople:(id)people
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  peopleCopy = people;
+  if ([peopleCopy count])
   {
     v5 = DSLog_6;
     if (!DSLog_6)
@@ -25,24 +25,24 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v20 = 138412290;
-      v21 = v4;
+      v21 = peopleCopy;
       _os_log_impl(&dword_248C7E000, v5, OS_LOG_TYPE_INFO, "[DSBlockingAlertController] creating alert for %@", &v20, 0xCu);
     }
 
-    v8 = [a1 _localizedTitleForPeople:v4];
-    v9 = [a1 _localizedMessage];
-    v10 = [a1 alertControllerWithTitle:v8 message:v9 preferredStyle:0];
+    v8 = [self _localizedTitleForPeople:peopleCopy];
+    _localizedMessage = [self _localizedMessage];
+    v10 = [self alertControllerWithTitle:v8 message:_localizedMessage preferredStyle:0];
 
     v11 = MEMORY[0x277D750F8];
-    v12 = [a1 localizedShowSafetyCheckButtonTitle];
-    v13 = [v10 showSafetyCheckHandler];
-    v14 = [v11 actionWithTitle:v12 style:0 handler:v13];
+    localizedShowSafetyCheckButtonTitle = [self localizedShowSafetyCheckButtonTitle];
+    showSafetyCheckHandler = [v10 showSafetyCheckHandler];
+    v14 = [v11 actionWithTitle:localizedShowSafetyCheckButtonTitle style:0 handler:showSafetyCheckHandler];
 
     [v10 addAction:v14];
     [v10 setPreferredAction:v14];
     v15 = MEMORY[0x277D750F8];
-    v16 = [a1 localizedCancelButtonTitle];
-    v17 = [v15 actionWithTitle:v16 style:1 handler:&__block_literal_global_13];
+    localizedCancelButtonTitle = [self localizedCancelButtonTitle];
+    v17 = [v15 actionWithTitle:localizedCancelButtonTitle style:1 handler:&__block_literal_global_13];
 
     [v10 addAction:v17];
   }
@@ -57,11 +57,11 @@
   return v10;
 }
 
-+ (id)_localizedTitleForPeople:(id)a3
++ (id)_localizedTitleForPeople:(id)people
 {
-  v3 = a3;
-  v4 = [v3 valueForKey:@"displayName"];
-  v5 = [v3 count];
+  peopleCopy = people;
+  v4 = [peopleCopy valueForKey:@"displayName"];
+  v5 = [peopleCopy count];
 
   if (v5 == 1)
   {

@@ -1,9 +1,9 @@
 @interface STUIStatusBarMenuBarItem
 - (STUIStatusBarDisplayableContainerView)menuBarContainer;
 - (UIView)backgroundView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)createDisplayItemForIdentifier:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)createDisplayItemForIdentifier:(id)identifier;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_backgroundView;
 - (void)_create_menuBarContainer;
 - (void)invalidateMenuBar;
@@ -15,54 +15,54 @@
 - (void)updateMenuBarContainer
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v3 = [(STUIStatusBarMenuBarItem *)self menuBarView];
+  menuBarView = [(STUIStatusBarMenuBarItem *)self menuBarView];
 
-  if (!v3)
+  if (!menuBarView)
   {
-    v4 = [(STUIStatusBarMenuBarItem *)self menuBarContainer];
-    v5 = [(STUIStatusBarItem *)self statusBar];
-    v6 = [v5 menuBarProvider];
-    v7 = [(STUIStatusBarItem *)self statusBar];
-    v8 = [v6 menuBarViewForStatusBar:v7];
+    menuBarContainer = [(STUIStatusBarMenuBarItem *)self menuBarContainer];
+    statusBar = [(STUIStatusBarItem *)self statusBar];
+    menuBarProvider = [statusBar menuBarProvider];
+    statusBar2 = [(STUIStatusBarItem *)self statusBar];
+    v8 = [menuBarProvider menuBarViewForStatusBar:statusBar2];
 
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v4 addSubview:v8];
-    [v4 setSubviewForBaselineAlignment:v8];
-    v21 = [v8 leadingAnchor];
-    v20 = [v4 leadingAnchor];
-    v19 = [v21 constraintEqualToAnchor:v20];
+    [menuBarContainer addSubview:v8];
+    [menuBarContainer setSubviewForBaselineAlignment:v8];
+    leadingAnchor = [v8 leadingAnchor];
+    leadingAnchor2 = [menuBarContainer leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v22[0] = v19;
-    v18 = [v8 trailingAnchor];
-    v17 = [v4 trailingAnchor];
-    v16 = [v18 constraintEqualToAnchor:v17];
+    trailingAnchor = [v8 trailingAnchor];
+    trailingAnchor2 = [menuBarContainer trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v22[1] = v16;
-    v9 = [v8 topAnchor];
-    v10 = [v4 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [v8 topAnchor];
+    topAnchor2 = [menuBarContainer topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v22[2] = v11;
-    v12 = [v8 bottomAnchor];
-    v13 = [v4 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [v8 bottomAnchor];
+    bottomAnchor2 = [menuBarContainer bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v22[3] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v15];
-    [v4 invalidateIntrinsicContentSize];
+    [menuBarContainer invalidateIntrinsicContentSize];
     [(STUIStatusBarMenuBarItem *)self setMenuBarView:v8];
   }
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v11.receiver = self;
   v11.super_class = STUIStatusBarMenuBarItem;
-  v6 = a4;
-  v7 = [(STUIStatusBarItem *)&v11 applyUpdate:a3 toDisplayItem:v6];
-  v8 = [v6 identifier];
+  itemCopy = item;
+  v7 = [(STUIStatusBarItem *)&v11 applyUpdate:update toDisplayItem:itemCopy];
+  identifier = [itemCopy identifier];
 
-  v9 = [objc_opt_class() defaultDisplayIdentifier];
+  defaultDisplayIdentifier = [objc_opt_class() defaultDisplayIdentifier];
 
-  if (v8 == v9)
+  if (identifier == defaultDisplayIdentifier)
   {
     [(STUIStatusBarMenuBarItem *)self updateMenuBarContainer];
   }
@@ -89,8 +89,8 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = v4;
 
-  v6 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)self->_backgroundView setBackgroundColor:v6];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)self->_backgroundView setBackgroundColor:blackColor];
 }
 
 - (STUIStatusBarDisplayableContainerView)menuBarContainer
@@ -118,12 +118,12 @@
   [(STUIStatusBarDisplayableContainerView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  identifierCopy = identifier;
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v5 == v4)
+  if (backgroundDisplayIdentifier == identifierCopy)
   {
     [(STUIStatusBarMenuBarItem *)self backgroundView];
   }
@@ -138,15 +138,15 @@
   return v6;
 }
 
-- (id)createDisplayItemForIdentifier:(id)a3
+- (id)createDisplayItemForIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = STUIStatusBarMenuBarItem;
-  v3 = [(STUIStatusBarItem *)&v7 createDisplayItemForIdentifier:a3];
-  v4 = [v3 identifier];
-  v5 = [objc_opt_class() backgroundDisplayIdentifier];
+  v3 = [(STUIStatusBarItem *)&v7 createDisplayItemForIdentifier:identifier];
+  identifier = [v3 identifier];
+  backgroundDisplayIdentifier = [objc_opt_class() backgroundDisplayIdentifier];
 
-  if (v4 == v5)
+  if (identifier == backgroundDisplayIdentifier)
   {
     [v3 setBackground:1];
   }
@@ -156,8 +156,8 @@
 
 - (void)invalidateMenuBar
 {
-  v3 = [(STUIStatusBarMenuBarItem *)self menuBarView];
-  [v3 removeFromSuperview];
+  menuBarView = [(STUIStatusBarMenuBarItem *)self menuBarView];
+  [menuBarView removeFromSuperview];
 
   [(STUIStatusBarMenuBarItem *)self setMenuBarView:0];
 

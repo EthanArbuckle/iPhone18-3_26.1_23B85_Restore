@@ -1,19 +1,19 @@
 @interface NSWritingToolsProofreadingController
-- (BOOL)replaceCharactersInRange:(_NSRange)a3 attributedString:(id)a4 state:(int64_t)a5 identifier:(id)a6 completion:(id)a7;
+- (BOOL)replaceCharactersInRange:(_NSRange)range attributedString:(id)string state:(int64_t)state identifier:(id)identifier completion:(id)completion;
 - (NSWritingToolsProofreadingController)init;
-- (NSWritingToolsProofreadingController)initWithContextString:(id)a3 contextRange:(_NSRange)a4 delegate:(id)a5;
+- (NSWritingToolsProofreadingController)initWithContextString:(id)string contextRange:(_NSRange)range delegate:(id)delegate;
 - (NSWritingToolsProofreadingControllerDelegate)delegate;
-- (id)replacementTextForSuggestion:(id)a3 state:(int64_t)a4;
-- (void)_addSuggestion:(id)a3;
-- (void)_finalizeNextSuggestion:(id)a3 enumerator:(id)a4 state:(int64_t)a5 completion:(id)a6;
-- (void)addSuggestionWithUUID:(id)a3 originalRange:(_NSRange)a4 replacementString:(id)a5;
-- (void)addSuggestionWithUUID:(id)a3 originalRange:(_NSRange)a4 replacementString:(id)a5 completion:(id)a6;
+- (id)replacementTextForSuggestion:(id)suggestion state:(int64_t)state;
+- (void)_addSuggestion:(id)suggestion;
+- (void)_finalizeNextSuggestion:(id)suggestion enumerator:(id)enumerator state:(int64_t)state completion:(id)completion;
+- (void)addSuggestionWithUUID:(id)d originalRange:(_NSRange)range replacementString:(id)string;
+- (void)addSuggestionWithUUID:(id)d originalRange:(_NSRange)range replacementString:(id)string completion:(id)completion;
 - (void)dealloc;
 - (void)finish;
-- (void)finish:(BOOL)a3;
-- (void)finish:(BOOL)a3 completion:(id)a4;
-- (void)updateSuggestionWithUUID:(id)a3 state:(int64_t)a4;
-- (void)updateSuggestionWithUUID:(id)a3 state:(int64_t)a4 completion:(id)a5;
+- (void)finish:(BOOL)finish;
+- (void)finish:(BOOL)finish completion:(id)completion;
+- (void)updateSuggestionWithUUID:(id)d state:(int64_t)state;
+- (void)updateSuggestionWithUUID:(id)d state:(int64_t)state completion:(id)completion;
 @end
 
 @implementation NSWritingToolsProofreadingController
@@ -25,22 +25,22 @@
   return 0;
 }
 
-- (NSWritingToolsProofreadingController)initWithContextString:(id)a3 contextRange:(_NSRange)a4 delegate:(id)a5
+- (NSWritingToolsProofreadingController)initWithContextString:(id)string contextRange:(_NSRange)range delegate:(id)delegate
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = NSWritingToolsProofreadingController;
   v11 = [(NSWritingToolsProofreadingController *)&v30 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [stringCopy copy];
     contextString = v11->_contextString;
     v11->_contextString = v12;
 
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v14 = [[NSWritingToolsEditTracker alloc] initWithContextRange:location, length];
     editTracker = v11->_editTracker;
     v11->_editTracker = v14;
@@ -123,22 +123,22 @@ id __84__NSWritingToolsProofreadingController_initWithContextString_contextRange
   [(NSWritingToolsProofreadingController *)&v5 dealloc];
 }
 
-- (BOOL)replaceCharactersInRange:(_NSRange)a3 attributedString:(id)a4 state:(int64_t)a5 identifier:(id)a6 completion:(id)a7
+- (BOOL)replaceCharactersInRange:(_NSRange)range attributedString:(id)string state:(int64_t)state identifier:(id)identifier completion:(id)completion
 {
-  length = a3.length;
-  location = a3.location;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  identifierCopy = identifier;
+  completionCopy = completion;
   delegateVersion = self->_delegateVersion;
   if (delegateVersion == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v23 = v13;
-    v20 = [WeakRetained proofreadingController:self replaceCharactersInRange:location state:length replacementAttributedString:{a5, &v23}];
+    v23 = stringCopy;
+    v20 = [WeakRetained proofreadingController:self replaceCharactersInRange:location state:length replacementAttributedString:{state, &v23}];
     v18 = v23;
 
-    v15[2](v15, v14, v18, v20);
+    completionCopy[2](completionCopy, identifierCopy, v18, v20);
   }
 
   else
@@ -154,8 +154,8 @@ id __84__NSWritingToolsProofreadingController_initWithContextString_contextRange
     v24[1] = 3221225472;
     v24[2] = __110__NSWritingToolsProofreadingController_replaceCharactersInRange_attributedString_state_identifier_completion___block_invoke;
     v24[3] = &unk_1E7266C40;
-    v25 = v15;
-    [v17 proofreadingController:self replaceCharactersInRange:location attributedString:length state:v13 identifier:a5 completion:{v14, v24}];
+    v25 = completionCopy;
+    [v17 proofreadingController:self replaceCharactersInRange:location attributedString:length state:stringCopy identifier:state completion:{identifierCopy, v24}];
 
     v18 = v25;
   }
@@ -166,37 +166,37 @@ LABEL_7:
   return v21;
 }
 
-- (void)_addSuggestion:(id)a3
+- (void)_addSuggestion:(id)suggestion
 {
   editTracker = self->_editTracker;
-  v5 = a3;
-  v6 = [v5 originalRange];
+  suggestionCopy = suggestion;
+  originalRange = [suggestionCopy originalRange];
   v8 = v7;
-  v9 = [v5 lengthDelta];
-  v10 = [v5 uuid];
-  [(NSWritingToolsEditTracker *)editTracker addEditForSuggestionWithRange:v6 lengthDelta:v8 UUID:v9, v10];
+  lengthDelta = [suggestionCopy lengthDelta];
+  uuid = [suggestionCopy uuid];
+  [(NSWritingToolsEditTracker *)editTracker addEditForSuggestionWithRange:originalRange lengthDelta:v8 UUID:lengthDelta, uuid];
 
   suggestionsByUUID = self->_suggestionsByUUID;
-  v12 = [v5 uuid];
-  [(NSMutableDictionary *)suggestionsByUUID setObject:v5 forKeyedSubscript:v12];
+  uuid2 = [suggestionCopy uuid];
+  [(NSMutableDictionary *)suggestionsByUUID setObject:suggestionCopy forKeyedSubscript:uuid2];
 
-  [(NSMutableArray *)self->_suggestionsByRange addObject:v5];
+  [(NSMutableArray *)self->_suggestionsByRange addObject:suggestionCopy];
   self->_finished = 0;
 }
 
-- (void)addSuggestionWithUUID:(id)a3 originalRange:(_NSRange)a4 replacementString:(id)a5 completion:(id)a6
+- (void)addSuggestionWithUUID:(id)d originalRange:(_NSRange)range replacementString:(id)string completion:(id)completion
 {
-  length = a4.length;
-  v9 = a4.location;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSMutableArray *)self->_suggestionsByRange lastObject];
-  if (v14)
+  length = range.length;
+  v9 = range.location;
+  dCopy = d;
+  stringCopy = string;
+  completionCopy = completion;
+  lastObject = [(NSMutableArray *)self->_suggestionsByRange lastObject];
+  if (lastObject)
   {
-    v15 = [(NSMutableArray *)self->_suggestionsByRange lastObject];
-    v16 = [v15 originalRange];
-    v18 = v16 + v17 <= v9;
+    lastObject2 = [(NSMutableArray *)self->_suggestionsByRange lastObject];
+    originalRange = [lastObject2 originalRange];
+    v18 = originalRange + v17 <= v9;
   }
 
   else
@@ -204,7 +204,7 @@ LABEL_7:
     v18 = 1;
   }
 
-  v19 = [(NSMutableDictionary *)self->_suggestionsByUUID objectForKeyedSubscript:v11];
+  v19 = [(NSMutableDictionary *)self->_suggestionsByUUID objectForKeyedSubscript:dCopy];
 
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
@@ -227,7 +227,7 @@ LABEL_7:
 
   if (v22 == 1)
   {
-    v23 = [(NSWritingToolsEditTracker *)self->_editTracker rangeOfSuggestionWithRange:v9 UUID:length applyDelta:v11, 0];
+    v23 = [(NSWritingToolsEditTracker *)self->_editTracker rangeOfSuggestionWithRange:v9 UUID:length applyDelta:dCopy, 0];
     if (v23 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v25 = v23;
@@ -239,7 +239,7 @@ LABEL_7:
       v32 = __105__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalRange_replacementString_completion___block_invoke_2;
       v33 = &unk_1E7266C88;
       objc_copyWeak(v36, &location);
-      v28 = v11;
+      v28 = dCopy;
       v34 = v28;
       v36[1] = v9;
       v36[2] = length;
@@ -247,11 +247,11 @@ LABEL_7:
       v36[4] = v25;
       v37 = v27;
       v36[5] = v26;
-      v35 = v13;
+      v35 = completionCopy;
       v29 = MEMORY[0x193AD48B0](&v30);
-      if (![(NSWritingToolsProofreadingController *)self replaceCharactersInRange:v25 attributedString:v26 state:v12 identifier:0 completion:v28, v29, v30, v31, v32, v33])
+      if (![(NSWritingToolsProofreadingController *)self replaceCharactersInRange:v25 attributedString:v26 state:stringCopy identifier:0 completion:v28, v29, v30, v31, v32, v33])
       {
-        (v29)[2](v29, v28, v12, 1);
+        (v29)[2](v29, v28, stringCopy, 1);
       }
 
       objc_destroyWeak(v36);
@@ -305,29 +305,29 @@ void __105__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalR
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)replacementTextForSuggestion:(id)a3 state:(int64_t)a4
+- (id)replacementTextForSuggestion:(id)suggestion state:(int64_t)state
 {
-  if (a4 == 3)
+  if (state == 3)
   {
     contextString = self->_contextString;
-    v5 = [a3 originalRange];
-    [(NSAttributedString *)contextString attributedSubstringFromRange:v5, v6];
+    originalRange = [suggestion originalRange];
+    [(NSAttributedString *)contextString attributedSubstringFromRange:originalRange, v6];
   }
 
   else
   {
-    [a3 replacementString];
+    [suggestion replacementString];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)updateSuggestionWithUUID:(id)a3 state:(int64_t)a4 completion:(id)a5
+- (void)updateSuggestionWithUUID:(id)d state:(int64_t)state completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_suggestionsByUUID objectForKeyedSubscript:v8];
+  dCopy = d;
+  completionCopy = completion;
+  v10 = [(NSMutableDictionary *)self->_suggestionsByUUID objectForKeyedSubscript:dCopy];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   _UIFoundationAssert(self, v12, v10 != 0, &__block_literal_global_69);
@@ -336,16 +336,16 @@ void __105__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalR
   {
     v13 = ![v10 state] || objc_msgSend(v10, "state") == 1 || objc_msgSend(v10, "state") == 2;
     editTracker = self->_editTracker;
-    v15 = [v10 originalRange];
+    originalRange = [v10 originalRange];
     v17 = v16;
-    v18 = [v10 uuid];
-    v19 = [(NSWritingToolsEditTracker *)editTracker rangeOfSuggestionWithRange:v15 UUID:v17 applyDelta:v18, v13];
+    uuid = [v10 uuid];
+    v19 = [(NSWritingToolsEditTracker *)editTracker rangeOfSuggestionWithRange:originalRange UUID:v17 applyDelta:uuid, v13];
     v21 = v20;
 
     if (v19 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [v10 setState:4];
-      v9[2](v9, v8, v10);
+      completionCopy[2](completionCopy, dCopy, v10);
     }
 
     else
@@ -358,22 +358,22 @@ void __105__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalR
       objc_copyWeak(v30, &location);
       v22 = v10;
       v28 = v22;
-      v30[1] = a4;
-      v29 = v9;
+      v30[1] = state;
+      v29 = completionCopy;
       v23 = MEMORY[0x193AD48B0](v27);
-      v24 = [(NSWritingToolsProofreadingController *)self replacementTextForSuggestion:v22 state:a4];
-      if (a4 == 4)
+      v24 = [(NSWritingToolsProofreadingController *)self replacementTextForSuggestion:v22 state:state];
+      if (state == 4)
       {
         [v22 setState:4];
-        (v23)[2](v23, v8, v24, 1);
+        (v23)[2](v23, dCopy, v24, 1);
       }
 
-      else if (![(NSWritingToolsProofreadingController *)self replaceCharactersInRange:v19 attributedString:v21 state:v24 identifier:a4 completion:v8, v23])
+      else if (![(NSWritingToolsProofreadingController *)self replaceCharactersInRange:v19 attributedString:v21 state:v24 identifier:state completion:dCopy, v23])
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v25 = [WeakRetained proofreadingController:self replaceCharactersInRange:v19 withSuggestion:v21 state:{v22, a4}];
+        v25 = [WeakRetained proofreadingController:self replaceCharactersInRange:v19 withSuggestion:v21 state:{v22, state}];
 
-        (v23)[2](v23, v8, v24, v25);
+        (v23)[2](v23, dCopy, v24, v25);
       }
 
       objc_destroyWeak(v30);
@@ -383,7 +383,7 @@ void __105__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalR
 
   else
   {
-    v9[2](v9, v8, 0);
+    completionCopy[2](completionCopy, dCopy, 0);
   }
 }
 
@@ -417,22 +417,22 @@ void __82__NSWritingToolsProofreadingController_updateSuggestionWithUUID_state_c
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_finalizeNextSuggestion:(id)a3 enumerator:(id)a4 state:(int64_t)a5 completion:(id)a6
+- (void)_finalizeNextSuggestion:(id)suggestion enumerator:(id)enumerator state:(int64_t)state completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v9)
+  suggestionCopy = suggestion;
+  enumeratorCopy = enumerator;
+  completionCopy = completion;
+  if (suggestionCopy)
   {
     while (1)
     {
-      if (![v9 state] || objc_msgSend(v9, "state") == 1)
+      if (![suggestionCopy state] || objc_msgSend(suggestionCopy, "state") == 1)
       {
         editTracker = self->_editTracker;
-        v13 = [v9 originalRange];
+        originalRange = [suggestionCopy originalRange];
         v15 = v14;
-        v16 = [v9 uuid];
-        v17 = [(NSWritingToolsEditTracker *)editTracker rangeOfSuggestionWithRange:v13 UUID:v15 applyDelta:v16, 1];
+        uuid = [suggestionCopy uuid];
+        v17 = [(NSWritingToolsEditTracker *)editTracker rangeOfSuggestionWithRange:originalRange UUID:v15 applyDelta:uuid, 1];
         v19 = v18;
 
         if (v17 != 0x7FFFFFFFFFFFFFFFLL)
@@ -441,34 +441,34 @@ void __82__NSWritingToolsProofreadingController_updateSuggestionWithUUID_state_c
         }
       }
 
-      v20 = [v10 nextObject];
+      nextObject = [enumeratorCopy nextObject];
 
-      v9 = v20;
-      if (!v20)
+      suggestionCopy = nextObject;
+      if (!nextObject)
       {
         goto LABEL_6;
       }
     }
 
-    v21 = [(NSWritingToolsProofreadingController *)self replacementTextForSuggestion:v9 state:a5];
-    v22 = [v9 uuid];
+    v21 = [(NSWritingToolsProofreadingController *)self replacementTextForSuggestion:suggestionCopy state:state];
+    uuid2 = [suggestionCopy uuid];
     objc_initWeak(&location, self);
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __92__NSWritingToolsProofreadingController__finalizeNextSuggestion_enumerator_state_completion___block_invoke;
     v28[3] = &unk_1E7266CB0;
-    v31[1] = a5;
+    v31[1] = state;
     objc_copyWeak(v31, &location);
-    v29 = v10;
-    v30 = v11;
+    v29 = enumeratorCopy;
+    v30 = completionCopy;
     v23 = MEMORY[0x193AD48B0](v28);
     v26 = v21;
-    if (![(NSWritingToolsProofreadingController *)self replaceCharactersInRange:v17 attributedString:v19 state:v21 identifier:a5 completion:v22, v23])
+    if (![(NSWritingToolsProofreadingController *)self replaceCharactersInRange:v17 attributedString:v19 state:v21 identifier:state completion:uuid2, v23])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v25 = [WeakRetained proofreadingController:self replaceCharactersInRange:v17 withSuggestion:v19 state:{v9, a5}];
+      v25 = [WeakRetained proofreadingController:self replaceCharactersInRange:v17 withSuggestion:v19 state:{suggestionCopy, state}];
 
-      (v23)[2](v23, v22, v26, v25);
+      (v23)[2](v23, uuid2, v26, v25);
     }
 
     objc_destroyWeak(v31);
@@ -481,7 +481,7 @@ LABEL_6:
     [(NSMutableArray *)self->_suggestionsByRange removeAllObjects];
     [(NSMutableDictionary *)self->_suggestionsByUUID removeAllObjects];
     self->_finished = 1;
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -500,23 +500,23 @@ void __92__NSWritingToolsProofreadingController__finalizeNextSuggestion_enumerat
   [v7 _finalizeNextSuggestion:v6 enumerator:*(a1 + 32) state:*(a1 + 56) completion:*(a1 + 40)];
 }
 
-- (void)finish:(BOOL)a3 completion:(id)a4
+- (void)finish:(BOOL)finish completion:(id)completion
 {
   if (self->_finished)
   {
-    v4 = *(a4 + 2);
-    v12 = a4;
+    v4 = *(completion + 2);
+    completionCopy = completion;
     v4();
   }
 
   else
   {
-    v5 = a3;
+    finishCopy = finish;
     suggestionsByRange = self->_suggestionsByRange;
-    v8 = a4;
-    v9 = [(NSMutableArray *)suggestionsByRange objectEnumerator];
-    v12 = v9;
-    if (v5)
+    completionCopy2 = completion;
+    objectEnumerator = [(NSMutableArray *)suggestionsByRange objectEnumerator];
+    completionCopy = objectEnumerator;
+    if (finishCopy)
     {
       v10 = 2;
     }
@@ -526,27 +526,27 @@ void __92__NSWritingToolsProofreadingController__finalizeNextSuggestion_enumerat
       v10 = 3;
     }
 
-    v11 = [v9 nextObject];
-    [(NSWritingToolsProofreadingController *)self _finalizeNextSuggestion:v11 enumerator:v12 state:v10 completion:v8];
+    nextObject = [objectEnumerator nextObject];
+    [(NSWritingToolsProofreadingController *)self _finalizeNextSuggestion:nextObject enumerator:completionCopy state:v10 completion:completionCopy2];
   }
 }
 
-- (void)addSuggestionWithUUID:(id)a3 originalRange:(_NSRange)a4 replacementString:(id)a5
+- (void)addSuggestionWithUUID:(id)d originalRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   delegateVersion = self->_delegateVersion;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __94__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalRange_replacementString___block_invoke;
   v16 = &unk_1E7266CD8;
   v10 = delegateVersion != 0;
-  v17 = self;
+  selfCopy = self;
   v18 = a2;
-  v11 = a5;
-  v12 = a3;
+  stringCopy = string;
+  dCopy = d;
   _UIFoundationAssert(self, @"NSWritingTools", v10, &v13);
-  [(NSWritingToolsProofreadingController *)self addSuggestionWithUUID:v12 originalRange:location replacementString:length completion:v11, &__block_literal_global_78_0, v13, v14, v15, v16, v17, v18];
+  [(NSWritingToolsProofreadingController *)self addSuggestionWithUUID:dCopy originalRange:location replacementString:length completion:stringCopy, &__block_literal_global_78_0, v13, v14, v15, v16, selfCopy, v18];
 }
 
 id __94__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalRange_replacementString___block_invoke(uint64_t a1)
@@ -559,7 +559,7 @@ id __94__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalRang
   return v5;
 }
 
-- (void)updateSuggestionWithUUID:(id)a3 state:(int64_t)a4
+- (void)updateSuggestionWithUUID:(id)d state:(int64_t)state
 {
   delegateVersion = self->_delegateVersion;
   v9 = MEMORY[0x1E69E9820];
@@ -567,11 +567,11 @@ id __94__NSWritingToolsProofreadingController_addSuggestionWithUUID_originalRang
   v11 = __71__NSWritingToolsProofreadingController_updateSuggestionWithUUID_state___block_invoke;
   v12 = &unk_1E7266CD8;
   v7 = delegateVersion != 0;
-  v13 = self;
+  selfCopy = self;
   v14 = a2;
-  v8 = a3;
+  dCopy = d;
   _UIFoundationAssert(self, @"NSWritingTools", v7, &v9);
-  [(NSWritingToolsProofreadingController *)self updateSuggestionWithUUID:v8 state:a4 completion:&__block_literal_global_80, v9, v10, v11, v12, v13, v14];
+  [(NSWritingToolsProofreadingController *)self updateSuggestionWithUUID:dCopy state:state completion:&__block_literal_global_80, v9, v10, v11, v12, selfCopy, v14];
 }
 
 id __71__NSWritingToolsProofreadingController_updateSuggestionWithUUID_state___block_invoke(uint64_t a1)
@@ -584,18 +584,18 @@ id __71__NSWritingToolsProofreadingController_updateSuggestionWithUUID_state___b
   return v5;
 }
 
-- (void)finish:(BOOL)a3
+- (void)finish:(BOOL)finish
 {
-  v3 = a3;
+  finishCopy = finish;
   delegateVersion = self->_delegateVersion;
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __47__NSWritingToolsProofreadingController_finish___block_invoke;
   v9 = &unk_1E7266CD8;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
   _UIFoundationAssert(self, @"NSWritingTools", delegateVersion != 0, &v6);
-  [(NSWritingToolsProofreadingController *)self finish:v3 completion:&__block_literal_global_83, v6, v7, v8, v9];
+  [(NSWritingToolsProofreadingController *)self finish:finishCopy completion:&__block_literal_global_83, v6, v7, v8, v9];
 }
 
 id __47__NSWritingToolsProofreadingController_finish___block_invoke(uint64_t a1)
@@ -610,9 +610,9 @@ id __47__NSWritingToolsProofreadingController_finish___block_invoke(uint64_t a1)
 
 - (void)finish
 {
-  v3 = [(NSWritingToolsProofreadingController *)self acceptOpenSuggestionsInFinish];
+  acceptOpenSuggestionsInFinish = [(NSWritingToolsProofreadingController *)self acceptOpenSuggestionsInFinish];
 
-  [(NSWritingToolsProofreadingController *)self finish:v3];
+  [(NSWritingToolsProofreadingController *)self finish:acceptOpenSuggestionsInFinish];
 }
 
 - (NSWritingToolsProofreadingControllerDelegate)delegate

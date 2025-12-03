@@ -1,21 +1,21 @@
 @interface AKMarkupBarButtonItem
-+ (id)markupBarButtonWithTarget:(id)a3 action:(SEL)a4;
++ (id)markupBarButtonWithTarget:(id)target action:(SEL)action;
 - (AKMarkupBarButtonItem)init;
-- (void)setAction:(SEL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTarget:(id)a3;
+- (void)setAction:(SEL)action;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setSelected:(BOOL)selected;
+- (void)setTarget:(id)target;
 @end
 
 @implementation AKMarkupBarButtonItem
 
-+ (id)markupBarButtonWithTarget:(id)a3 action:(SEL)a4
++ (id)markupBarButtonWithTarget:(id)target action:(SEL)action
 {
-  v5 = a3;
+  targetCopy = target;
   v6 = objc_alloc_init(AKMarkupBarButtonItem);
-  [(AKMarkupBarButtonItem *)v6 setTarget:v5];
+  [(AKMarkupBarButtonItem *)v6 setTarget:targetCopy];
 
-  [(AKMarkupBarButtonItem *)v6 setAction:a4];
+  [(AKMarkupBarButtonItem *)v6 setAction:action];
 
   return v6;
 }
@@ -38,54 +38,54 @@
   return v2;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
   v9.receiver = self;
   v9.super_class = AKMarkupBarButtonItem;
-  [(AKMarkupBarButtonItem *)&v9 setTarget:a3];
-  v4 = [(AKMarkupBarButtonItem *)self toggleView];
-  v5 = [v4 button];
-  [v5 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  [(AKMarkupBarButtonItem *)&v9 setTarget:target];
+  toggleView = [(AKMarkupBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  [button removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v6 = [(AKMarkupBarButtonItem *)self toggleView];
-  v7 = [v6 button];
-  v8 = [(AKMarkupBarButtonItem *)self target];
-  [v7 addTarget:v8 action:-[AKMarkupBarButtonItem action](self forControlEvents:{"action"), 64}];
+  toggleView2 = [(AKMarkupBarButtonItem *)self toggleView];
+  button2 = [toggleView2 button];
+  target = [(AKMarkupBarButtonItem *)self target];
+  [button2 addTarget:target action:-[AKMarkupBarButtonItem action](self forControlEvents:{"action"), 64}];
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
   v9.receiver = self;
   v9.super_class = AKMarkupBarButtonItem;
-  [(AKMarkupBarButtonItem *)&v9 setAction:a3];
-  v4 = [(AKMarkupBarButtonItem *)self toggleView];
-  v5 = [v4 button];
-  [v5 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  [(AKMarkupBarButtonItem *)&v9 setAction:action];
+  toggleView = [(AKMarkupBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  [button removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v6 = [(AKMarkupBarButtonItem *)self toggleView];
-  v7 = [v6 button];
-  v8 = [(AKMarkupBarButtonItem *)self target];
-  [v7 addTarget:v8 action:-[AKMarkupBarButtonItem action](self forControlEvents:{"action"), 64}];
+  toggleView2 = [(AKMarkupBarButtonItem *)self toggleView];
+  button2 = [toggleView2 button];
+  target = [(AKMarkupBarButtonItem *)self target];
+  [button2 addTarget:target action:-[AKMarkupBarButtonItem action](self forControlEvents:{"action"), 64}];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v5.receiver = self;
   v5.super_class = AKMarkupBarButtonItem;
-  [(AKMarkupBarButtonItem *)&v5 setSelected:a3];
-  v4 = [(AKMarkupBarButtonItem *)self toggleView];
-  [v4 setSelected:{-[AKMarkupBarButtonItem isSelected](self, "isSelected")}];
+  [(AKMarkupBarButtonItem *)&v5 setSelected:selected];
+  toggleView = [(AKMarkupBarButtonItem *)self toggleView];
+  [toggleView setSelected:{-[AKMarkupBarButtonItem isSelected](self, "isSelected")}];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = AKMarkupBarButtonItem;
   [(AKMarkupBarButtonItem *)&v7 setEnabled:?];
-  v5 = [(AKMarkupBarButtonItem *)self toggleView];
-  v6 = [v5 button];
-  [v6 setEnabled:v3];
+  toggleView = [(AKMarkupBarButtonItem *)self toggleView];
+  button = [toggleView button];
+  [button setEnabled:enabledCopy];
 }
 
 @end

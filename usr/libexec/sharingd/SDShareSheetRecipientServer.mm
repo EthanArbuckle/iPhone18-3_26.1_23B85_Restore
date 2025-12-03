@@ -1,9 +1,9 @@
 @interface SDShareSheetRecipientServer
-- (BOOL)shouldAcceptNewConnection:(id)a3;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
 - (void)activate;
 - (void)invalidate;
-- (void)requestMessagesRecipientInfoForSessionID:(id)a3 completionHandler:(id)a4;
-- (void)requestRecipientsForSessionID:(id)a3 completionHandler:(id)a4;
+- (void)requestMessagesRecipientInfoForSessionID:(id)d completionHandler:(id)handler;
+- (void)requestRecipientsForSessionID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation SDShareSheetRecipientServer
@@ -22,10 +22,10 @@
   [(SDXPCDaemon *)&v2 _invalidate];
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.sharesheet.recipients"];
+  connectionCopy = connection;
+  v4 = [connectionCopy valueForEntitlement:@"com.apple.sharesheet.recipients"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 BOOLValue])
   {
@@ -33,7 +33,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 67109120;
-      v9 = [v3 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Allowing connection from pid %d to sharingd recipient server", &v8, 8u);
     }
 
@@ -46,7 +46,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 67109120;
-      v9 = [v3 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "process %d tried to connect to the sharingd recipient server, but it was not entitled!", &v8, 8u);
     }
 
@@ -56,24 +56,24 @@
   return v6;
 }
 
-- (void)requestMessagesRecipientInfoForSessionID:(id)a3 completionHandler:(id)a4
+- (void)requestMessagesRecipientInfoForSessionID:(id)d completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v7 = +[SDShareSheetSlotManager sharedManager];
-  [v7 requestMessagesRecipientInfoForSessionID:v6 completionHandler:v5];
+  [v7 requestMessagesRecipientInfoForSessionID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)requestRecipientsForSessionID:(id)a3 completionHandler:(id)a4
+- (void)requestRecipientsForSessionID:(id)d completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = a3;
+    handlerCopy = handler;
+    dCopy = d;
     v9 = +[SDShareSheetSlotManager sharedManager];
-    v8 = [v9 recipientHandlesForSessionID:v7];
+    v8 = [v9 recipientHandlesForSessionID:dCopy];
 
-    (*(a4 + 2))(v6, v8);
+    (*(handler + 2))(handlerCopy, v8);
   }
 }
 

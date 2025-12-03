@@ -1,24 +1,24 @@
 @interface HFServiceMigrationController
-+ (BOOL)homeNeedsMigration:(id)a3;
++ (BOOL)homeNeedsMigration:(id)migration;
 + (BOOL)homeNeedsToDisplayMigrationOnboardingUI;
-+ (id)accessoriesToMigrateFavoritesForHome:(id)a3;
-+ (id)primaryServicesToMigrateForHome:(id)a3;
-- (HFServiceMigrationController)initWithHome:(id)a3;
++ (id)accessoriesToMigrateFavoritesForHome:(id)home;
++ (id)primaryServicesToMigrateForHome:(id)home;
+- (HFServiceMigrationController)initWithHome:(id)home;
 - (id)migrateServicesToAccessory;
 @end
 
 @implementation HFServiceMigrationController
 
-- (HFServiceMigrationController)initWithHome:(id)a3
+- (HFServiceMigrationController)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HFServiceMigrationController;
   v5 = [(HFServiceMigrationController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(HFServiceMigrationController *)v5 setHome:v4];
+    [(HFServiceMigrationController *)v5 setHome:homeCopy];
     v7 = +[HFHomeKitDispatcher sharedDispatcher];
     [(HFServiceMigrationController *)v6 setDispatcher:v7];
 
@@ -31,21 +31,21 @@
 - (id)migrateServicesToAccessory
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(HFServiceMigrationController *)self home];
-  v4 = [(HFServiceMigrationController *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 homeAccessControlForUser:v5];
-  v7 = [v6 isAdministrator];
+  home = [(HFServiceMigrationController *)self home];
+  home2 = [(HFServiceMigrationController *)self home];
+  currentUser = [home2 currentUser];
+  v6 = [home homeAccessControlForUser:currentUser];
+  isAdministrator = [v6 isAdministrator];
 
-  if (v7)
+  if (isAdministrator)
   {
     v8 = objc_opt_class();
-    v9 = [(HFServiceMigrationController *)self home];
-    v10 = [v8 primaryServicesToMigrateForHome:v9];
+    home3 = [(HFServiceMigrationController *)self home];
+    v10 = [v8 primaryServicesToMigrateForHome:home3];
 
     v11 = objc_opt_class();
-    v12 = [(HFServiceMigrationController *)self home];
-    v13 = [v11 accessoriesToMigrateFavoritesForHome:v12];
+    home4 = [(HFServiceMigrationController *)self home];
+    v13 = [v11 accessoriesToMigrateFavoritesForHome:home4];
 
     v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v10, "count")}];
     v15 = HFLogForCategory(9uLL);
@@ -78,10 +78,10 @@
     v29[3] = &unk_277DF2720;
     v29[4] = self;
     v19 = [v18 addSuccessBlock:v29];
-    v20 = [(HFServiceMigrationController *)self timeoutOverride];
-    if (v20)
+    timeoutOverride = [(HFServiceMigrationController *)self timeoutOverride];
+    if (timeoutOverride)
     {
-      v21 = 1000000000 * v20;
+      v21 = 1000000000 * timeoutOverride;
     }
 
     else
@@ -94,8 +94,8 @@
     v27[1] = 3221225472;
     v27[2] = __58__HFServiceMigrationController_migrateServicesToAccessory__block_invoke_20;
     v27[3] = &unk_277DF3D38;
-    v23 = v18;
-    v28 = v23;
+    futureWithNoResult = v18;
+    v28 = futureWithNoResult;
     dispatch_after(v22, MEMORY[0x277D85CD0], v27);
 
     _Block_object_dispose(&buf, 8);
@@ -110,12 +110,12 @@
       _os_log_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_DEFAULT, "User is not an admin - skipping.", &buf, 2u);
     }
 
-    v23 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return futureWithNoResult;
 }
 
 void __58__HFServiceMigrationController_migrateServicesToAccessory__block_invoke(uint64_t a1, void *a2)
@@ -331,13 +331,13 @@ uint64_t __58__HFServiceMigrationController_migrateServicesToAccessory__block_in
   return result;
 }
 
-+ (id)primaryServicesToMigrateForHome:(id)a3
++ (id)primaryServicesToMigrateForHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   v4 = objc_opt_new();
-  v5 = [v3 accessories];
+  accessories = [homeCopy accessories];
 
-  v6 = [v5 na_filter:&__block_literal_global_25_1];
+  v6 = [accessories na_filter:&__block_literal_global_25_1];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -375,10 +375,10 @@ void __64__HFServiceMigrationController_primaryServicesToMigrateForHome___block_
   }
 }
 
-+ (id)accessoriesToMigrateFavoritesForHome:(id)a3
++ (id)accessoriesToMigrateFavoritesForHome:(id)home
 {
-  v3 = [a3 accessories];
-  v4 = [v3 na_filter:&__block_literal_global_28_1];
+  accessories = [home accessories];
+  v4 = [accessories na_filter:&__block_literal_global_28_1];
 
   v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
 
@@ -393,21 +393,21 @@ uint64_t __69__HFServiceMigrationController_accessoriesToMigrateFavoritesForHome
   return v3;
 }
 
-+ (BOOL)homeNeedsMigration:(id)a3
++ (BOOL)homeNeedsMigration:(id)migration
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 hf_homeHasMigratedServicesToAccessories];
-  v5 = [objc_opt_class() primaryServicesToMigrateForHome:v3];
+  migrationCopy = migration;
+  hf_homeHasMigratedServicesToAccessories = [migrationCopy hf_homeHasMigratedServicesToAccessories];
+  v5 = [objc_opt_class() primaryServicesToMigrateForHome:migrationCopy];
   v6 = [v5 count];
 
   v7 = HFForceAccessoryNamingMigration();
-  v8 = [v3 currentUser];
-  v9 = [v3 homeAccessControlForUser:v8];
+  currentUser = [migrationCopy currentUser];
+  v9 = [migrationCopy homeAccessControlForUser:currentUser];
 
-  v10 = [v9 isAdministrator];
+  isAdministrator = [v9 isAdministrator];
   v11 = HFLogForCategory(9uLL);
-  v12 = v4 ^ 1;
+  v12 = hf_homeHasMigratedServicesToAccessories ^ 1;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16[0] = 67109888;
@@ -417,7 +417,7 @@ uint64_t __69__HFServiceMigrationController_accessoriesToMigrateFavoritesForHome
     v19 = 1024;
     v20 = v7;
     v21 = 1024;
-    v22 = v10;
+    v22 = isAdministrator;
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "homeNeedsMigration %{BOOL}d homeHasVisibleServicesToMigrate %{BOOL}d forcedMigrationPref %{BOOL}d isAdmin %{BOOL}d", v16, 0x1Au);
   }
 
@@ -432,23 +432,23 @@ uint64_t __69__HFServiceMigrationController_accessoriesToMigrateFavoritesForHome
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return (v13 & v10 | v7) & 1;
+  return (v13 & isAdministrator | v7) & 1;
 }
 
 + (BOOL)homeNeedsToDisplayMigrationOnboardingUI
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 homeManager];
+  homeManager = [v3 homeManager];
 
-  v5 = [v4 homes];
+  homes = [homeManager homes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HFServiceMigrationController_homeNeedsToDisplayMigrationOnboardingUI__block_invoke;
   v7[3] = &__block_descriptor_40_e16_B16__0__HMHome_8l;
-  v7[4] = a1;
-  LOBYTE(a1) = [v5 na_any:v7];
+  v7[4] = self;
+  LOBYTE(self) = [homes na_any:v7];
 
-  return a1;
+  return self;
 }
 
 BOOL __71__HFServiceMigrationController_homeNeedsToDisplayMigrationOnboardingUI__block_invoke(uint64_t a1, void *a2)

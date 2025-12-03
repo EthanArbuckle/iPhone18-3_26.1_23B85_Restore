@@ -1,90 +1,90 @@
 @interface UITextInputSessionActionAnalytics
 + (id)allowedValuesForTextInputSource;
 + (id)sharedPunctuationCharacterSet;
-+ (id)stringForKeyboardDockItemButtonPressResult:(unint64_t)a3;
-+ (id)stringForKeyboardDockItemButtonType:(unint64_t)a3;
-+ (id)stringForReplaceWithCandidateType:(int64_t)a3;
-+ (id)stringValueForSource:(int64_t)a3;
-+ (void)addEndingObserver:(id)a3;
-+ (void)populateActionInputMode:(id)a3 withLanguage:(id)a4;
-+ (void)q_notifyEndingObserversWithSessionAnalytics:(id)a3;
++ (id)stringForKeyboardDockItemButtonPressResult:(unint64_t)result;
++ (id)stringForKeyboardDockItemButtonType:(unint64_t)type;
++ (id)stringForReplaceWithCandidateType:(int64_t)type;
++ (id)stringValueForSource:(int64_t)source;
++ (void)addEndingObserver:(id)observer;
++ (void)populateActionInputMode:(id)mode withLanguage:(id)language;
++ (void)q_notifyEndingObserversWithSessionAnalytics:(id)analytics;
 + (void)q_notifyStartingObservers;
 - (UITextInputSessionActionAnalytics)init;
-- (UITextInputSessionActionAnalytics)initWithEventHandler:(id)a3;
+- (UITextInputSessionActionAnalytics)initWithEventHandler:(id)handler;
 - (UITextInputSessionActionAnalyticsDelegateSource)delegateSource;
-- (id)_instanceOfActionClass:(Class)a3;
-- (id)_textInsertionActionForText:(id)a3 relativeRangeBefore:(_NSRange)a4 withLanguage:(id)a5;
+- (id)_instanceOfActionClass:(Class)class;
+- (id)_textInsertionActionForText:(id)text relativeRangeBefore:(_NSRange)before withLanguage:(id)language;
 - (id)allAccumulatorNames;
 - (id)allEfficacyAccumulatorNames;
 - (id)appBundleId;
 - (id)getAppBundleId;
-- (id)getDynamicAccumulatorWithName:(id)a3;
-- (id)getEfficacyAccumulatorWithName:(id)a3;
+- (id)getDynamicAccumulatorWithName:(id)name;
+- (id)getEfficacyAccumulatorWithName:(id)name;
 - (id)processBundleId;
-- (id)q_copyAccumulatorWithName:(id)a3;
+- (id)q_copyAccumulatorWithName:(id)name;
 - (int64_t)_getActiveTextInputSource;
 - (int64_t)flagOptions;
 - (int64_t)source;
-- (unint64_t)_emojiCountForText:(id)a3;
-- (unint64_t)_normalizedTextLength:(id)a3;
-- (unint64_t)_optionsForText:(id)a3;
-- (unint64_t)_punctuationCountForText:(id)a3;
-- (void)_didCommitText:(id)a3 withSource:(int64_t)a4;
-- (void)_didDeleteBackwardAction:(id)a3;
-- (void)_didDeleteBackwardCount:(unint64_t)a3 shouldOverrideInputActionCountToZero:(BOOL)a4 withLanguage:(id)a5;
-- (void)_didDeleteBackwardText:(id)a3 shouldOverrideInputActionCountToZero:(BOOL)a4 withLanguage:(id)a5;
-- (void)_didInsertTextAction:(id)a3 numCharsDeleted:(unint64_t)a4 withLanguage:(id)a5;
-- (void)_performWithInputModeOverride:(id)a3 block:(id)a4;
-- (void)_performWithTextInputActionsSource:(int64_t)a3 block:(id)a4;
-- (void)addAccumulator:(id)a3;
-- (void)addDynamicAccumulator:(id)a3;
-- (void)addEfficacyAccumulator:(id)a3;
+- (unint64_t)_emojiCountForText:(id)text;
+- (unint64_t)_normalizedTextLength:(id)length;
+- (unint64_t)_optionsForText:(id)text;
+- (unint64_t)_punctuationCountForText:(id)text;
+- (void)_didCommitText:(id)text withSource:(int64_t)source;
+- (void)_didDeleteBackwardAction:(id)action;
+- (void)_didDeleteBackwardCount:(unint64_t)count shouldOverrideInputActionCountToZero:(BOOL)zero withLanguage:(id)language;
+- (void)_didDeleteBackwardText:(id)text shouldOverrideInputActionCountToZero:(BOOL)zero withLanguage:(id)language;
+- (void)_didInsertTextAction:(id)action numCharsDeleted:(unint64_t)deleted withLanguage:(id)language;
+- (void)_performWithInputModeOverride:(id)override block:(id)block;
+- (void)_performWithTextInputActionsSource:(int64_t)source block:(id)block;
+- (void)addAccumulator:(id)accumulator;
+- (void)addDynamicAccumulator:(id)accumulator;
+- (void)addEfficacyAccumulator:(id)accumulator;
 - (void)decrementAllowCursorMovementCount;
-- (void)didAutocorrectReplacementForText:(id)a3 withText:(id)a4;
-- (void)didAutocorrectTapOnCompletionReplacementForText:(id)a3 withText:(id)a4;
+- (void)didAutocorrectReplacementForText:(id)text withText:(id)withText;
+- (void)didAutocorrectTapOnCompletionReplacementForText:(id)text withText:(id)withText;
 - (void)didBegin;
-- (void)didCalloutBarReplacementForText:(id)a3 withText:(id)a4;
-- (void)didCandidateBarReplacementForText:(id)a3 withText:(id)a4;
-- (void)didChangeToSelection:(_NSRange)a3 relativeRangeBefore:(_NSRange)a4;
-- (void)didCompositionReplacementForText:(id)a3 withText:(id)a4;
+- (void)didCalloutBarReplacementForText:(id)text withText:(id)withText;
+- (void)didCandidateBarReplacementForText:(id)text withText:(id)withText;
+- (void)didChangeToSelection:(_NSRange)selection relativeRangeBefore:(_NSRange)before;
+- (void)didCompositionReplacementForText:(id)text withText:(id)withText;
 - (void)didCopy;
 - (void)didCut;
-- (void)didDecompositionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didDeleteBackwardCount:(unint64_t)a3;
-- (void)didDeleteBackwardText:(id)a3;
-- (void)didDeleteKeyPressWithInputSource:(int64_t)a3;
-- (void)didDictationBegin:(BOOL)a3 usesMultiModalDictation:(BOOL)a4;
+- (void)didDecompositionReplacementForText:(id)text withText:(id)withText;
+- (void)didDeleteBackwardCount:(unint64_t)count;
+- (void)didDeleteBackwardText:(id)text;
+- (void)didDeleteKeyPressWithInputSource:(int64_t)source;
+- (void)didDictationBegin:(BOOL)begin usesMultiModalDictation:(BOOL)dictation;
 - (void)didDictationEnd;
-- (void)didGlomojiTap:(unint64_t)a3 originalInputMode:(id)a4 newInputMode:(id)a5;
-- (void)didInlineCompletionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)a3 withText:(id)a4;
-- (void)didInsertKeyPressWithInputSource:(int64_t)a3;
-- (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 selectedTextBefore:(id)a5 withLanguage:(id)a6;
-- (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 withLanguage:(id)a5;
-- (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 withNumAlternatives:(int64_t)a5;
-- (void)didKBMenuAppear:(unint64_t)a3 originalInputMode:(id)a4;
-- (void)didKBMenuDismiss:(unint64_t)a3;
-- (void)didKBMenuInteraction:(unint64_t)a3 selectedAction:(unint64_t)a4 newInputMode:(id)a5;
-- (void)didKeyPress:(id)a3 inputSource:(int64_t)a4;
-- (void)didKeyboardDockItemButtonPress:(unint64_t)a3 buttonType:(unint64_t)a4 buttonSize:(CGSize)a5 touchDown:(CGPoint)a6 touchUp:(CGPoint)a7 touchDuration:(double)a8 inputSource:(int64_t)a9;
-- (void)didOnWebSearchKeyboardPressKey:(id)a3 withMetadata:(id)a4;
+- (void)didGlomojiTap:(unint64_t)tap originalInputMode:(id)mode newInputMode:(id)inputMode;
+- (void)didInlineCompletionReplacementForText:(id)text withText:(id)withText;
+- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)text withText:(id)withText;
+- (void)didInsertKeyPressWithInputSource:(int64_t)source;
+- (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before selectedTextBefore:(id)textBefore withLanguage:(id)language;
+- (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before withLanguage:(id)language;
+- (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before withNumAlternatives:(int64_t)alternatives;
+- (void)didKBMenuAppear:(unint64_t)appear originalInputMode:(id)mode;
+- (void)didKBMenuDismiss:(unint64_t)dismiss;
+- (void)didKBMenuInteraction:(unint64_t)interaction selectedAction:(unint64_t)action newInputMode:(id)mode;
+- (void)didKeyPress:(id)press inputSource:(int64_t)source;
+- (void)didKeyboardDockItemButtonPress:(unint64_t)press buttonType:(unint64_t)type buttonSize:(CGSize)size touchDown:(CGPoint)down touchUp:(CGPoint)up touchDuration:(double)duration inputSource:(int64_t)source;
+- (void)didOnWebSearchKeyboardPressKey:(id)key withMetadata:(id)metadata;
 - (void)didOther;
 - (void)didPaste;
 - (void)didRedo;
-- (void)didReplaceWithCandidate:(int64_t)a3;
-- (void)didReplacementForText:(id)a3 withText:(id)a4 withSource:(int64_t)a5 withType:(int64_t)a6 withInputActionCount:(int64_t)a7;
-- (void)didRevisionBubbleReplacementForText:(id)a3 withText:(id)a4;
+- (void)didReplaceWithCandidate:(int64_t)candidate;
+- (void)didReplacementForText:(id)text withText:(id)withText withSource:(int64_t)source withType:(int64_t)type withInputActionCount:(int64_t)count;
+- (void)didRevisionBubbleReplacementForText:(id)text withText:(id)withText;
 - (void)didRevisionBubbleTap;
 - (void)didSessionEnd;
 - (void)didUndo;
-- (void)enumerateAnalytics:(id)a3;
-- (void)enumerateSeparateCycleAnalytics:(id)a3;
-- (void)q_addAccumulator:(id)a3;
-- (void)q_addActionAndUpdate:(id)a3;
+- (void)enumerateAnalytics:(id)analytics;
+- (void)enumerateSeparateCycleAnalytics:(id)analytics;
+- (void)q_addAccumulator:(id)accumulator;
+- (void)q_addActionAndUpdate:(id)update;
 - (void)q_flushRecentActions;
 - (void)q_setupDefaultAnalytics;
 - (void)q_updateAnalyticsFromAccumulators;
-- (void)setSessionIdentifier:(id)a3;
+- (void)setSessionIdentifier:(id)identifier;
 - (void)writeAnalytics;
 @end
 
@@ -258,9 +258,9 @@
   [(UITextInputSessionActionAnalytics *)self q_addAccumulator:v60];
 
   v61 = +[UIDevice currentDevice];
-  v62 = [v61 userInterfaceIdiom];
+  userInterfaceIdiom = [v61 userInterfaceIdiom];
 
-  if (!v62)
+  if (!userInterfaceIdiom)
   {
     v63 = [_UITextInputSessionDynamicAccumulator accumulatorWithName:@"com.apple.inputAnalytics.accidentalDictation" depthRange:1 block:3, &__block_literal_global_418];
     [(UITextInputSessionActionAnalytics *)self q_addDynamicAccumulator:v63];
@@ -377,12 +377,12 @@ uint64_t __45__UITextInputSessionActionAnalytics_didBegin__block_invoke(uint64_t
     overrideInputModeString = v3->_overrideInputModeString;
     v3->_overrideInputModeString = 0;
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v3 selector:sel_writeAnalytics name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-    [v16 addObserver:v3 selector:sel_didBegin name:@"UIApplicationDidBecomeActiveNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_writeAnalytics name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_didBegin name:@"UIApplicationDidBecomeActiveNotification" object:0];
     if (!+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP") || +[UIKeyboard isKeyboardProcess])
     {
-      [v16 addObserver:v3 selector:sel_didDictationEnd name:@"UIDictationControllerDictationDidFinish" object:0];
+      [defaultCenter addObserver:v3 selector:sel_didDictationEnd name:@"UIDictationControllerDictationDidFinish" object:0];
     }
 
     v17 = v3->_queue;
@@ -433,18 +433,18 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke(uint64_t a1)
   v3 = UITextInputSessionLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(UITextInputSessionActionAnalytics *)self sessionIdentifier];
+    sessionIdentifier = [(UITextInputSessionActionAnalytics *)self sessionIdentifier];
     *buf = 138412290;
-    v14 = v10;
+    v14 = sessionIdentifier;
     _os_log_debug_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didBegin: sessionIdentifier=%@", buf, 0xCu);
   }
 
-  v4 = [(UITextInputSessionActionAnalytics *)self delegateSource];
-  v5 = [v4 _sessionIdentifier];
-  [(UITextInputSessionActionAnalytics *)self setSessionIdentifier:v5];
+  delegateSource = [(UITextInputSessionActionAnalytics *)self delegateSource];
+  _sessionIdentifier = [delegateSource _sessionIdentifier];
+  [(UITextInputSessionActionAnalytics *)self setSessionIdentifier:_sessionIdentifier];
 
   v6 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v7 = [v6 asBegan];
+  asBegan = [v6 asBegan];
 
   [_MergedGlobals_1147 didSessionBegin];
   queue = self->_queue;
@@ -453,41 +453,41 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke(uint64_t a1)
   v11[2] = __45__UITextInputSessionActionAnalytics_didBegin__block_invoke;
   v11[3] = &unk_1E70F35B8;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
+  v12 = asBegan;
+  v9 = asBegan;
   dispatch_async(queue, v11);
 }
 
 - (int64_t)_getActiveTextInputSource
 {
-  v3 = [(UITextInputSessionActionAnalytics *)self delegateSource];
+  delegateSource = [(UITextInputSessionActionAnalytics *)self delegateSource];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(UITextInputSessionActionAnalytics *)self delegateSource];
-  v6 = v5;
+  delegateSource2 = [(UITextInputSessionActionAnalytics *)self delegateSource];
+  v6 = delegateSource2;
   if (v4)
   {
-    v7 = [v5 _overrideTextInputSource];
+    _overrideTextInputSource = [delegateSource2 _overrideTextInputSource];
   }
 
   else
   {
-    v8 = [v5 _delegateAsResponder];
+    _delegateAsResponder = [delegateSource2 _delegateAsResponder];
 
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v8 _textInputSource];
+      _overrideTextInputSource = [_delegateAsResponder _textInputSource];
     }
 
     else
     {
-      v7 = 0;
+      _overrideTextInputSource = 0;
     }
 
-    v6 = v8;
+    v6 = _delegateAsResponder;
   }
 
-  return v7;
+  return _overrideTextInputSource;
 }
 
 - (id)getAppBundleId
@@ -510,12 +510,12 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
   if (self->_useOverrideSourceCounter < 1)
   {
-    v5 = [(UITextInputSessionActionAnalytics *)self _getActiveTextInputSource];
-    v4 = _UITextInputActionsSourceFromTextInputSource(v5);
+    _getActiveTextInputSource = [(UITextInputSessionActionAnalytics *)self _getActiveTextInputSource];
+    v4 = _UITextInputActionsSourceFromTextInputSource(_getActiveTextInputSource);
     v6 = UITextInputSessionLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [UITextInputSessionActionAnalytics stringValueForSource:v5];
+      v9 = [UITextInputSessionActionAnalytics stringValueForSource:_getActiveTextInputSource];
       v10 = 138478083;
       v11 = v9;
       v12 = 2048;
@@ -545,10 +545,10 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke(uint64_t a1)
 {
   v2 = +[UIKeyboard isShowingEmojiSearch];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 inputDelegateManager];
-  v5 = [v4 hasAsyncCapableInputDelegate];
+  inputDelegateManager = [v3 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-  if (v5)
+  if (hasAsyncCapableInputDelegate)
   {
     return v2 | 4;
   }
@@ -562,16 +562,16 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke(uint64_t a1)
 - (id)appBundleId
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(UITextInputSessionActionAnalytics *)self getAppBundleId];
+  getAppBundleId = [(UITextInputSessionActionAnalytics *)self getAppBundleId];
   v3 = UITextInputSessionLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138477827;
-    v6 = v2;
+    v6 = getAppBundleId;
     _os_log_debug_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] appBundleId - returning '%{private}@'", &v5, 0xCu);
   }
 
-  return v2;
+  return getAppBundleId;
 }
 
 - (id)processBundleId
@@ -589,16 +589,16 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)stringValueForSource:(int64_t)a3
++ (id)stringValueForSource:(int64_t)source
 {
-  if ((a3 - 1) > 6)
+  if ((source - 1) > 6)
   {
     return @"Unspecified";
   }
 
   else
   {
-    return off_1E70F8798[a3 - 1];
+    return off_1E70F8798[source - 1];
   }
 }
 
@@ -2719,28 +2719,28 @@ id __69__UITextInputSessionActionAnalytics_Default__q_setupDefaultAnalytics__blo
   return v3;
 }
 
-+ (void)addEndingObserver:(id)a3
++ (void)addEndingObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   v4 = __endingObservers;
-  v7 = v3;
+  v7 = observerCopy;
   if (!__endingObservers)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = __endingObservers;
-    __endingObservers = v5;
+    __endingObservers = weakObjectsHashTable;
 
-    v3 = v7;
+    observerCopy = v7;
     v4 = __endingObservers;
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:observerCopy];
 }
 
-+ (void)q_notifyEndingObserversWithSessionAnalytics:(id)a3
++ (void)q_notifyEndingObserversWithSessionAnalytics:(id)analytics
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  analyticsCopy = analytics;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -2761,15 +2761,15 @@ id __69__UITextInputSessionActionAnalytics_Default__q_setupDefaultAnalytics__blo
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 matchingAccumulatorNames];
-        v11 = v3[3];
+        matchingAccumulatorNames = [v9 matchingAccumulatorNames];
+        v11 = analyticsCopy[3];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __81__UITextInputSessionActionAnalytics_q_notifyEndingObserversWithSessionAnalytics___block_invoke;
         v13[3] = &unk_1E710C5A0;
-        v14 = v10;
+        v14 = matchingAccumulatorNames;
         v15 = v9;
-        v12 = v10;
+        v12 = matchingAccumulatorNames;
         [v11 enumerateObjectsUsingBlock:v13];
       }
 
@@ -2857,11 +2857,11 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke_63(uint64_t a1)
   }
 }
 
-- (UITextInputSessionActionAnalytics)initWithEventHandler:(id)a3
+- (UITextInputSessionActionAnalytics)initWithEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(UITextInputSessionActionAnalytics *)self init];
-  v6 = [objc_alloc(getIATextInputActionsAnalyticsClass()) initWithAnalyticsMetadataObserver:v5 withEventHandler:v4];
+  v6 = [objc_alloc(getIATextInputActionsAnalyticsClass()) initWithAnalyticsMetadataObserver:v5 withEventHandler:handlerCopy];
 
   v7 = _MergedGlobals_1147;
   _MergedGlobals_1147 = v6;
@@ -2901,11 +2901,11 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke_63(uint64_t a1)
   }
 }
 
-- (void)enumerateAnalytics:(id)a3
+- (void)enumerateAnalytics:(id)analytics
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  analyticsCopy = analytics;
+  v5 = analyticsCopy;
+  if (analyticsCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -2913,7 +2913,7 @@ void __41__UITextInputSessionActionAnalytics_init__block_invoke_63(uint64_t a1)
     v7[2] = __56__UITextInputSessionActionAnalytics_enumerateAnalytics___block_invoke;
     v7[3] = &unk_1E70F37C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = analyticsCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -3002,11 +3002,11 @@ void __56__UITextInputSessionActionAnalytics_allAccumulatorNames__block_invoke(u
   }
 }
 
-- (void)enumerateSeparateCycleAnalytics:(id)a3
+- (void)enumerateSeparateCycleAnalytics:(id)analytics
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  analyticsCopy = analytics;
+  v5 = analyticsCopy;
+  if (analyticsCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -3014,7 +3014,7 @@ void __56__UITextInputSessionActionAnalytics_allAccumulatorNames__block_invoke(u
     v7[2] = __69__UITextInputSessionActionAnalytics_enumerateSeparateCycleAnalytics___block_invoke;
     v7[3] = &unk_1E70F37C0;
     v7[4] = self;
-    v8 = v4;
+    v8 = analyticsCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -3115,9 +3115,9 @@ void __64__UITextInputSessionActionAnalytics_allEfficacyAccumulatorNames__block_
   v3 = UITextInputSessionLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(UITextInputSessionActionAnalytics *)self sessionIdentifier];
+    sessionIdentifier = [(UITextInputSessionActionAnalytics *)self sessionIdentifier];
     *buf = 138412290;
-    v8 = v5;
+    v8 = sessionIdentifier;
     _os_log_debug_impl(&dword_188A29000, v3, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] writeAnalytics for sessionIdentifier=%@", buf, 0xCu);
   }
 
@@ -3146,38 +3146,38 @@ uint64_t __51__UITextInputSessionActionAnalytics_writeAnalytics__block_invoke(ui
   return [*(*(a1 + 32) + 40) enumerateObjectsUsingBlock:&__block_literal_global_80];
 }
 
-- (void)addAccumulator:(id)a3
+- (void)addAccumulator:(id)accumulator
 {
-  v4 = a3;
+  accumulatorCopy = accumulator;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__UITextInputSessionActionAnalytics_addAccumulator___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accumulatorCopy;
+  v6 = accumulatorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)q_addAccumulator:(id)a3
+- (void)q_addAccumulator:(id)accumulator
 {
   maxDepth = self->_maxDepth;
-  v8 = a3;
-  v5 = [v8 depthRange];
-  v7 = v5 + v6;
-  if (maxDepth > v5 + v6)
+  accumulatorCopy = accumulator;
+  depthRange = [accumulatorCopy depthRange];
+  v7 = depthRange + v6;
+  if (maxDepth > depthRange + v6)
   {
     v7 = maxDepth;
   }
 
   self->_maxDepth = v7;
-  [(NSMutableSet *)self->_accumulators addObject:v8];
+  [(NSMutableSet *)self->_accumulators addObject:accumulatorCopy];
 }
 
-- (id)q_copyAccumulatorWithName:(id)a3
+- (id)q_copyAccumulatorWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -3189,7 +3189,7 @@ uint64_t __51__UITextInputSessionActionAnalytics_writeAnalytics__block_invoke(ui
   v10 = 3221225472;
   v11 = __63__UITextInputSessionActionAnalytics_q_copyAccumulatorWithName___block_invoke;
   v12 = &unk_1E710C678;
-  v6 = v4;
+  v6 = nameCopy;
   v13 = v6;
   v14 = &v15;
   [(NSMutableSet *)accumulators enumerateObjectsWithOptions:2 usingBlock:&v9];
@@ -3213,89 +3213,89 @@ void __63__UITextInputSessionActionAnalytics_q_copyAccumulatorWithName___block_i
   }
 }
 
-- (void)addEfficacyAccumulator:(id)a3
+- (void)addEfficacyAccumulator:(id)accumulator
 {
-  v4 = a3;
+  accumulatorCopy = accumulator;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__UITextInputSessionActionAnalytics_addEfficacyAccumulator___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accumulatorCopy;
+  v6 = accumulatorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addDynamicAccumulator:(id)a3
+- (void)addDynamicAccumulator:(id)accumulator
 {
-  v4 = a3;
+  accumulatorCopy = accumulator;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__UITextInputSessionActionAnalytics_addDynamicAccumulator___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accumulatorCopy;
+  v6 = accumulatorCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)getDynamicAccumulatorWithName:(id)a3
+- (id)getDynamicAccumulatorWithName:(id)name
 {
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.name == %@", a3];
-  v5 = [(NSMutableSet *)self->_dynamicAccumulators filteredSetUsingPredicate:v4];
+  name = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.name == %@", name];
+  v5 = [(NSMutableSet *)self->_dynamicAccumulators filteredSetUsingPredicate:name];
   if ([v5 count])
   {
-    v6 = [v5 anyObject];
+    anyObject = [v5 anyObject];
   }
 
   else
   {
-    v6 = 0;
+    anyObject = 0;
   }
 
-  return v6;
+  return anyObject;
 }
 
-- (id)getEfficacyAccumulatorWithName:(id)a3
+- (id)getEfficacyAccumulatorWithName:(id)name
 {
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.name == %@", a3];
-  v5 = [(NSMutableSet *)self->_efficacyAccumulators filteredSetUsingPredicate:v4];
+  name = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF.name == %@", name];
+  v5 = [(NSMutableSet *)self->_efficacyAccumulators filteredSetUsingPredicate:name];
   if ([v5 count])
   {
-    v6 = [v5 anyObject];
+    anyObject = [v5 anyObject];
   }
 
   else
   {
-    v6 = 0;
+    anyObject = 0;
   }
 
-  return v6;
+  return anyObject;
 }
 
-- (void)q_addActionAndUpdate:(id)a3
+- (void)q_addActionAndUpdate:(id)update
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  updateCopy = update;
+  if (updateCopy)
   {
-    v5 = [(NSMutableOrderedSet *)self->_recentActions firstObject];
-    v6 = [v5 mergeActionIfPossible:v4];
+    firstObject = [(NSMutableOrderedSet *)self->_recentActions firstObject];
+    v6 = [firstObject mergeActionIfPossible:updateCopy];
     v7 = UITextInputSessionLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = 134218498;
       v9 = v6;
       v10 = 2112;
-      v11 = v5;
+      v11 = firstObject;
       v12 = 2112;
-      v13 = v4;
+      v13 = updateCopy;
       _os_log_debug_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] q_addActionAndUpdate: Merge result %lu lastAction:%@ newAction:%@", &v8, 0x20u);
     }
 
-    if (v5)
+    if (firstObject)
     {
       if (v6)
       {
@@ -3311,7 +3311,7 @@ LABEL_9:
       }
     }
 
-    [(NSMutableOrderedSet *)self->_recentActions insertObject:v4 atIndex:0];
+    [(NSMutableOrderedSet *)self->_recentActions insertObject:updateCopy atIndex:0];
     goto LABEL_9;
   }
 
@@ -3356,7 +3356,7 @@ LABEL_10:
 
   if (v3)
   {
-    v10 = [(NSMutableOrderedSet *)self->_recentActions firstObject];
+    firstObject = [(NSMutableOrderedSet *)self->_recentActions firstObject];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -3376,7 +3376,7 @@ LABEL_10:
             objc_enumerationMutation(v11);
           }
 
-          [*(*(&v26 + 1) + 8 * j) increaseWithAction:v10];
+          [*(*(&v26 + 1) + 8 * j) increaseWithAction:firstObject];
         }
 
         v13 = [(NSMutableSet *)v11 countByEnumeratingWithState:&v26 objects:v35 count:16];
@@ -3427,19 +3427,19 @@ LABEL_10:
   [(NSMutableOrderedSet *)recentActions removeAllObjects];
 }
 
-- (id)_instanceOfActionClass:(Class)a3
+- (id)_instanceOfActionClass:(Class)class
 {
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v5 = objc_alloc_init(a3);
+    v5 = objc_alloc_init(class);
     [v5 setSource:{-[UITextInputSessionActionAnalytics _getActiveTextInputSource](self, "_getActiveTextInputSource")}];
     if (+[UIKeyboard isShowingEmojiSearch])
     {
       [v5 setFlagOptions:{objc_msgSend(v5, "flagOptions") | 1}];
     }
 
-    v6 = [(UITextInputSessionActionAnalytics *)self getAppBundleId];
-    [v5 setAppBundleId:v6];
+    getAppBundleId = [(UITextInputSessionActionAnalytics *)self getAppBundleId];
+    [v5 setAppBundleId:getAppBundleId];
 
     [UITextInputSessionActionAnalytics populateActionInputMode:v5];
   }
@@ -3452,17 +3452,17 @@ LABEL_10:
   return v5;
 }
 
-- (void)setSessionIdentifier:(id)a3
+- (void)setSessionIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+  identifierCopy = identifier;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
     LOWORD(v9) = 0;
     _os_log_fault_impl(&dword_188A29000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "UITextInputSessionActionAnalytics is nil", &v9, 2u);
   }
 
-  if (([(NSUUID *)self->_sessionIdentifier isEqual:v4]& 1) == 0)
+  if (([(NSUUID *)self->_sessionIdentifier isEqual:identifierCopy]& 1) == 0)
   {
     v5 = UITextInputSessionLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -3471,56 +3471,56 @@ LABEL_10:
       v9 = 138412546;
       v10 = sessionIdentifier;
       v11 = 2112;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] setSessionIdentifier:%@ -> %@", &v9, 0x16u);
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [identifierCopy copy];
   v7 = self->_sessionIdentifier;
   self->_sessionIdentifier = v6;
 }
 
-- (void)_performWithTextInputActionsSource:(int64_t)a3 block:(id)a4
+- (void)_performWithTextInputActionsSource:(int64_t)source block:(id)block
 {
   overrideSource = self->_overrideSource;
   v6 = self->_useOverrideSourceCounter + 1;
-  self->_overrideSource = a3;
+  self->_overrideSource = source;
   self->_useOverrideSourceCounter = v6;
-  (*(a4 + 2))(a4, a2);
+  (*(block + 2))(block, a2);
   v7 = self->_useOverrideSourceCounter - 1;
   self->_overrideSource = overrideSource;
   self->_useOverrideSourceCounter = v7;
 }
 
-- (void)_performWithInputModeOverride:(id)a3 block:(id)a4
+- (void)_performWithInputModeOverride:(id)override block:(id)block
 {
-  v6 = a3;
+  overrideCopy = override;
   v7 = self->_overrideInputModeString;
   overrideInputModeString = self->_overrideInputModeString;
-  self->_overrideInputModeString = v6;
-  v11 = v6;
-  v9 = a4;
+  self->_overrideInputModeString = overrideCopy;
+  v11 = overrideCopy;
+  blockCopy = block;
 
-  v9[2](v9);
+  blockCopy[2](blockCopy);
   v10 = self->_overrideInputModeString;
   self->_overrideInputModeString = v7;
 }
 
-- (void)didKeyboardDockItemButtonPress:(unint64_t)a3 buttonType:(unint64_t)a4 buttonSize:(CGSize)a5 touchDown:(CGPoint)a6 touchUp:(CGPoint)a7 touchDuration:(double)a8 inputSource:(int64_t)a9
+- (void)didKeyboardDockItemButtonPress:(unint64_t)press buttonType:(unint64_t)type buttonSize:(CGSize)size touchDown:(CGPoint)down touchUp:(CGPoint)up touchDuration:(double)duration inputSource:(int64_t)source
 {
-  y = a7.y;
-  x = a7.x;
-  v13 = a6.y;
-  v14 = a6.x;
-  height = a5.height;
-  width = a5.width;
+  y = up.y;
+  x = up.x;
+  v13 = down.y;
+  v14 = down.x;
+  height = size.height;
+  width = size.width;
   v61 = *MEMORY[0x1E69E9840];
   v20 = UITextInputSessionLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [UITextInputSessionActionAnalytics stringForKeyboardDockItemButtonPressResult:a3];
-    v28 = [UITextInputSessionActionAnalytics stringForKeyboardDockItemButtonType:a4];
+    v27 = [UITextInputSessionActionAnalytics stringForKeyboardDockItemButtonPressResult:press];
+    v28 = [UITextInputSessionActionAnalytics stringForKeyboardDockItemButtonType:type];
     *buf = 138414338;
     v44 = v27;
     v45 = 2112;
@@ -3538,38 +3538,38 @@ LABEL_10:
     v57 = 2048;
     v58 = y;
     v59 = 2048;
-    v60 = a8;
+    durationCopy = duration;
     _os_log_debug_impl(&dword_188A29000, v20, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didKeyboardDockItemButtonPress:%@ buttonType:%@ buttonSize:(%fw %fh) touchDown:(%f,%f) touchUp:(%f,%f) touchDuration:%f", buf, 0x5Cu);
   }
 
   v21 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v22 = [v21 asKeyboardDockItemButtonPress];
+  asKeyboardDockItemButtonPress = [v21 asKeyboardDockItemButtonPress];
 
-  [v22 setSource:a9];
-  [UITextInputSessionActionAnalytics populateActionInputMode:v22];
-  [v22 setButtonPressResult:a3];
-  [v22 setButtonType:a4];
-  [v22 setUiOrientation:{objc_msgSend(UIApp, "activeInterfaceOrientation")}];
-  [v22 setButtonSize:{width, height}];
-  [v22 setTouchDownPoint:{v14, v13}];
-  [v22 setTouchUpPoint:{x, y}];
-  [v22 setTouchDuration:a8];
-  v23 = +[UIInputAnalyticsTranslator iaTextInputActionsSourceFor:](UIInputAnalyticsTranslator, "iaTextInputActionsSourceFor:", [v22 textInputActionsSource]);
+  [asKeyboardDockItemButtonPress setSource:source];
+  [UITextInputSessionActionAnalytics populateActionInputMode:asKeyboardDockItemButtonPress];
+  [asKeyboardDockItemButtonPress setButtonPressResult:press];
+  [asKeyboardDockItemButtonPress setButtonType:type];
+  [asKeyboardDockItemButtonPress setUiOrientation:{objc_msgSend(UIApp, "activeInterfaceOrientation")}];
+  [asKeyboardDockItemButtonPress setButtonSize:{width, height}];
+  [asKeyboardDockItemButtonPress setTouchDownPoint:{v14, v13}];
+  [asKeyboardDockItemButtonPress setTouchUpPoint:{x, y}];
+  [asKeyboardDockItemButtonPress setTouchDuration:duration];
+  v23 = +[UIInputAnalyticsTranslator iaTextInputActionsSourceFor:](UIInputAnalyticsTranslator, "iaTextInputActionsSourceFor:", [asKeyboardDockItemButtonPress textInputActionsSource]);
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __134__UITextInputSessionActionAnalytics_didKeyboardDockItemButtonPress_buttonType_buttonSize_touchDown_touchUp_touchDuration_inputSource___block_invoke;
   v31[3] = &unk_1E710C6A0;
-  v33 = a3;
-  v34 = a4;
+  pressCopy = press;
+  typeCopy = type;
   v35 = width;
   v36 = height;
   v37 = v14;
   v38 = v13;
   v39 = x;
   v40 = y;
-  v41 = a8;
+  durationCopy2 = duration;
   v42 = v23;
-  v24 = v22;
+  v24 = asKeyboardDockItemButtonPress;
   v32 = v24;
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:v23 block:v31];
   queue = self->_queue;
@@ -3610,51 +3610,51 @@ uint64_t __134__UITextInputSessionActionAnalytics_didKeyboardDockItemButtonPress
   return [v1 q_notifyStartingObservers];
 }
 
-- (void)didGlomojiTap:(unint64_t)a3 originalInputMode:(id)a4 newInputMode:(id)a5
+- (void)didGlomojiTap:(unint64_t)tap originalInputMode:(id)mode newInputMode:(id)inputMode
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [UIInputAnalyticsTranslator iaGlomojiButtonTypeFor:a3];
+  modeCopy = mode;
+  inputModeCopy = inputMode;
+  v8 = [UIInputAnalyticsTranslator iaGlomojiButtonTypeFor:tap];
   if (objc_opt_respondsToSelector())
   {
-    [_MergedGlobals_1147 didGlomojiTap:v8 originalInputMode:v9 newInputMode:v7];
+    [_MergedGlobals_1147 didGlomojiTap:v8 originalInputMode:modeCopy newInputMode:inputModeCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [_MergedGlobals_1147 didGlomojiTap:v9 newInputMode:v7];
+    [_MergedGlobals_1147 didGlomojiTap:modeCopy newInputMode:inputModeCopy];
   }
 }
 
-- (void)didKBMenuAppear:(unint64_t)a3 originalInputMode:(id)a4
+- (void)didKBMenuAppear:(unint64_t)appear originalInputMode:(id)mode
 {
-  v6 = a4;
-  v5 = [UIInputAnalyticsTranslator iaGlomojiButtonTypeFor:a3];
+  modeCopy = mode;
+  v5 = [UIInputAnalyticsTranslator iaGlomojiButtonTypeFor:appear];
   if (objc_opt_respondsToSelector())
   {
-    [_MergedGlobals_1147 didKBMenuAppear:v5 originalInputMode:v6];
+    [_MergedGlobals_1147 didKBMenuAppear:v5 originalInputMode:modeCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [_MergedGlobals_1147 didKBMenuAppear:v6];
+    [_MergedGlobals_1147 didKBMenuAppear:modeCopy];
   }
 }
 
-- (void)didKBMenuInteraction:(unint64_t)a3 selectedAction:(unint64_t)a4 newInputMode:(id)a5
+- (void)didKBMenuInteraction:(unint64_t)interaction selectedAction:(unint64_t)action newInputMode:(id)mode
 {
-  v9 = a5;
-  v7 = [UIInputAnalyticsTranslator iaGlomojiSourceTypeFor:a3];
-  v8 = [UIInputAnalyticsTranslator iaGlomojiSelectedActionTypeFor:a4];
+  modeCopy = mode;
+  v7 = [UIInputAnalyticsTranslator iaGlomojiSourceTypeFor:interaction];
+  v8 = [UIInputAnalyticsTranslator iaGlomojiSelectedActionTypeFor:action];
   if (objc_opt_respondsToSelector())
   {
-    [_MergedGlobals_1147 didKBMenuInteraction:v7 selectedAction:v8 newInputMode:v9];
+    [_MergedGlobals_1147 didKBMenuInteraction:v7 selectedAction:v8 newInputMode:modeCopy];
   }
 }
 
-- (void)didKBMenuDismiss:(unint64_t)a3
+- (void)didKBMenuDismiss:(unint64_t)dismiss
 {
-  v3 = [UIInputAnalyticsTranslator iaGlomojiSourceTypeFor:a3];
+  v3 = [UIInputAnalyticsTranslator iaGlomojiSourceTypeFor:dismiss];
   if (objc_opt_respondsToSelector())
   {
     v4 = _MergedGlobals_1147;
@@ -3663,10 +3663,10 @@ uint64_t __134__UITextInputSessionActionAnalytics_didKeyboardDockItemButtonPress
   }
 }
 
-- (void)didDictationBegin:(BOOL)a3 usesMultiModalDictation:(BOOL)a4
+- (void)didDictationBegin:(BOOL)begin usesMultiModalDictation:(BOOL)dictation
 {
-  v4 = a4;
-  v5 = a3;
+  dictationCopy = dictation;
+  beginCopy = begin;
   v7 = UITextInputSessionLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -3675,20 +3675,20 @@ uint64_t __134__UITextInputSessionActionAnalytics_didKeyboardDockItemButtonPress
   }
 
   v8 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v9 = [v8 asDictationBegan];
+  asDictationBegan = [v8 asDictationBegan];
 
-  [v9 setSource:2];
-  [_MergedGlobals_1147 didDictationBegin:v5 usesMultiModalDictation:v4];
+  [asDictationBegan setSource:2];
+  [_MergedGlobals_1147 didDictationBegin:beginCopy usesMultiModalDictation:dictationCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__UITextInputSessionActionAnalytics_didDictationBegin_usesMultiModalDictation___block_invoke;
   block[3] = &unk_1E70F67F8;
-  v15 = v5;
-  v16 = v4;
-  v13 = v9;
-  v14 = self;
-  v11 = v9;
+  v15 = beginCopy;
+  v16 = dictationCopy;
+  v13 = asDictationBegan;
+  selfCopy = self;
+  v11 = asDictationBegan;
   dispatch_async(queue, block);
 }
 
@@ -3726,7 +3726,7 @@ uint64_t __79__UITextInputSessionActionAnalytics_didDictationBegin_usesMultiModa
   }
 
   v4 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v5 = [v4 asDictationEnded];
+  asDictationEnded = [v4 asDictationEnded];
 
   [_MergedGlobals_1147 didDictationEnd];
   queue = self->_queue;
@@ -3735,8 +3735,8 @@ uint64_t __79__UITextInputSessionActionAnalytics_didDictationBegin_usesMultiModa
   v8[2] = __52__UITextInputSessionActionAnalytics_didDictationEnd__block_invoke;
   v8[3] = &unk_1E70F35B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = asDictationEnded;
+  v7 = asDictationEnded;
   dispatch_async(queue, v8);
 }
 
@@ -3748,10 +3748,10 @@ uint64_t __52__UITextInputSessionActionAnalytics_didDictationEnd__block_invoke(u
   return [v1 q_notifyStartingObservers];
 }
 
-- (unint64_t)_optionsForText:(id)a3
+- (unint64_t)_optionsForText:(id)text
 {
-  v3 = a3;
-  v4 = [v3 length];
+  textCopy = text;
+  v4 = [textCopy length];
   if (v4)
   {
     v5 = v4;
@@ -3760,16 +3760,16 @@ uint64_t __52__UITextInputSessionActionAnalytics_didDictationEnd__block_invoke(u
       dispatch_once(&qword_1ED49E6F0, &__block_literal_global_109);
     }
 
-    v6 = [v3 rangeOfCharacterFromSet:qword_1ED49E6E8];
+    v6 = [textCopy rangeOfCharacterFromSet:qword_1ED49E6E8];
     v7 = 4 * (v6 != 0x7FFFFFFFFFFFFFFFLL);
     if (v5 != 1 || v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [objc_opt_class() sharedPunctuationCharacterSet];
-      v9 = [v3 rangeOfCharacterFromSet:v8];
+      sharedPunctuationCharacterSet = [objc_opt_class() sharedPunctuationCharacterSet];
+      v9 = [textCopy rangeOfCharacterFromSet:sharedPunctuationCharacterSet];
 
       if (v9 == 0x7FFFFFFFFFFFFFFFLL || (v7 |= 2uLL, v5 != 1))
       {
-        v7 |= [v3 _containsEmoji];
+        v7 |= [textCopy _containsEmoji];
       }
     }
   }
@@ -3789,22 +3789,22 @@ void __53__UITextInputSessionActionAnalytics__optionsForText___block_invoke()
   qword_1ED49E6E8 = v0;
 }
 
-- (unint64_t)_emojiCountForText:(id)a3
+- (unint64_t)_emojiCountForText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if ([v3 length] && objc_msgSend(v3, "_containsEmoji"))
+  if ([textCopy length] && objc_msgSend(textCopy, "_containsEmoji"))
   {
-    v4 = [v3 length];
+    v4 = [textCopy length];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __56__UITextInputSessionActionAnalytics__emojiCountForText___block_invoke;
     v7[3] = &unk_1E710C6C8;
     v7[4] = &v8;
-    [v3 _enumerateEmojiTokensInRange:0 block:{v4, v7}];
+    [textCopy _enumerateEmojiTokensInRange:0 block:{v4, v7}];
   }
 
   v5 = v9[3];
@@ -3813,9 +3813,9 @@ void __53__UITextInputSessionActionAnalytics__optionsForText___block_invoke()
   return v5;
 }
 
-- (unint64_t)_normalizedTextLength:(id)a3
+- (unint64_t)_normalizedTextLength:(id)length
 {
-  v3 = a3;
+  lengthCopy = length;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -3824,23 +3824,23 @@ void __53__UITextInputSessionActionAnalytics__optionsForText___block_invoke()
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  if ([v3 length] && objc_msgSend(v3, "_containsEmoji"))
+  if ([lengthCopy length] && objc_msgSend(lengthCopy, "_containsEmoji"))
   {
-    v4 = [v3 length];
+    v4 = [lengthCopy length];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__UITextInputSessionActionAnalytics__normalizedTextLength___block_invoke;
     v8[3] = &unk_1E710C6F0;
     v8[4] = &v13;
     v8[5] = &v9;
-    [v3 _enumerateEmojiTokensInRange:0 block:{v4, v8}];
-    v5 = [v3 length];
+    [lengthCopy _enumerateEmojiTokensInRange:0 block:{v4, v8}];
+    v5 = [lengthCopy length];
     v6 = v5 - v10[3] + v14[3];
   }
 
   else
   {
-    v6 = [v3 length];
+    v6 = [lengthCopy length];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -3856,13 +3856,13 @@ uint64_t __59__UITextInputSessionActionAnalytics__normalizedTextLength___block_i
   return result;
 }
 
-- (unint64_t)_punctuationCountForText:(id)a3
+- (unint64_t)_punctuationCountForText:(id)text
 {
-  v3 = a3;
-  if ([v3 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v4 = [v3 length];
-    v5 = [MEMORY[0x1E696AD60] stringWithString:v3];
+    v4 = [textCopy length];
+    v5 = [MEMORY[0x1E696AD60] stringWithString:textCopy];
     [v5 _removeCharactersFromSet:{objc_msgSend(objc_opt_class(), "sharedPunctuationCharacterSet")}];
     v6 = v4 - [v5 length];
   }
@@ -3875,123 +3875,123 @@ uint64_t __59__UITextInputSessionActionAnalytics__normalizedTextLength___block_i
   return v6;
 }
 
-+ (void)populateActionInputMode:(id)a3 withLanguage:(id)a4
++ (void)populateActionInputMode:(id)mode withLanguage:(id)language
 {
-  v18 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  modeCopy = mode;
+  languageCopy = language;
+  v6 = languageCopy;
+  if (languageCopy)
   {
-    v7 = v5;
+    identifierWithLayouts = languageCopy;
   }
 
   else
   {
     v8 = +[UIKeyboardInputModeController sharedInputModeController];
-    v9 = [v8 currentInputMode];
-    v7 = [v9 identifierWithLayouts];
+    currentInputMode = [v8 currentInputMode];
+    identifierWithLayouts = [currentInputMode identifierWithLayouts];
 
-    if (!v7)
+    if (!identifierWithLayouts)
     {
       goto LABEL_8;
     }
   }
 
   v10 = TIInputModeGetLanguage();
-  [v18 setLanguage:v10];
+  [modeCopy setLanguage:v10];
 
   v11 = TIInputModeGetRegion();
-  [v18 setRegion:v11];
+  [modeCopy setRegion:v11];
 
   v12 = TIInputModeGetVariant();
-  [v18 setKeyboardVariant:v12];
+  [modeCopy setKeyboardVariant:v12];
 
-  if ([v18 source] == 4)
+  if ([modeCopy source] == 4)
   {
     v13 = TIInputModeGetComponentsFromIdentifier();
     v14 = [v13 objectForKey:@"hw"];
-    [v18 setKeyboardLayout:v14];
+    [modeCopy setKeyboardLayout:v14];
   }
 
   else
   {
     v13 = TIInputModeGetSWLayout();
-    [v18 setKeyboardLayout:v13];
+    [modeCopy setKeyboardLayout:v13];
   }
 
 LABEL_8:
   v15 = +[UIKeyboardImpl activeInstance];
-  v16 = [v15 inputDelegateManager];
-  v17 = [v16 hasAsyncCapableInputDelegate];
+  inputDelegateManager = [v15 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-  if (v17)
+  if (hasAsyncCapableInputDelegate)
   {
-    [v18 setKeyboardType:@"Web"];
+    [modeCopy setKeyboardType:@"Web"];
   }
 }
 
-- (id)_textInsertionActionForText:(id)a3 relativeRangeBefore:(_NSRange)a4 withLanguage:(id)a5
+- (id)_textInsertionActionForText:(id)text relativeRangeBefore:(_NSRange)before withLanguage:(id)language
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = before.length;
+  location = before.location;
+  textCopy = text;
+  languageCopy = language;
   v11 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v12 = [v11 asInsertion];
+  asInsertion = [v11 asInsertion];
 
-  [v12 setRelativeRangeBefore:{location, length}];
-  if (v9)
+  [asInsertion setRelativeRangeBefore:{location, length}];
+  if (textCopy)
   {
-    [v12 setInsertedTextLength:{-[UITextInputSessionActionAnalytics _normalizedTextLength:](self, "_normalizedTextLength:", v9)}];
-    [v12 setOptions:{-[UITextInputSessionActionAnalytics _optionsForText:](self, "_optionsForText:", v9)}];
-    [v12 setInsertedEmojiCount:{-[UITextInputSessionActionAnalytics _emojiCountForText:](self, "_emojiCountForText:", v9)}];
-    [v12 setInsertedPunctuationCount:{-[UITextInputSessionActionAnalytics _punctuationCountForText:](self, "_punctuationCountForText:", v9)}];
+    [asInsertion setInsertedTextLength:{-[UITextInputSessionActionAnalytics _normalizedTextLength:](self, "_normalizedTextLength:", textCopy)}];
+    [asInsertion setOptions:{-[UITextInputSessionActionAnalytics _optionsForText:](self, "_optionsForText:", textCopy)}];
+    [asInsertion setInsertedEmojiCount:{-[UITextInputSessionActionAnalytics _emojiCountForText:](self, "_emojiCountForText:", textCopy)}];
+    [asInsertion setInsertedPunctuationCount:{-[UITextInputSessionActionAnalytics _punctuationCountForText:](self, "_punctuationCountForText:", textCopy)}];
   }
 
-  if (v10)
+  if (languageCopy)
   {
-    [UITextInputSessionActionAnalytics populateActionInputMode:v12 withLanguage:v10];
+    [UITextInputSessionActionAnalytics populateActionInputMode:asInsertion withLanguage:languageCopy];
   }
 
-  return v12;
+  return asInsertion;
 }
 
-- (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 withLanguage:(id)a5
+- (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before withLanguage:(id)language
 {
-  length = a4.length;
-  location = a4.location;
+  length = before.length;
+  location = before.location;
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  textCopy = text;
+  languageCopy = language;
   v11 = UITextInputSessionLog();
   v12 = v11;
-  if (v9)
+  if (textCopy)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138740739;
-      v23 = v9;
+      v23 = textCopy;
       v24 = 2048;
       v25 = location;
       v26 = 2048;
       v27 = length;
       v28 = 2112;
-      v29 = v10;
+      v29 = languageCopy;
       _os_log_debug_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didInsertText:'%{sensitive}@' relativeRangeBefore:(%lu, %lu) withLanguage:%@", buf, 0x2Au);
     }
 
-    v13 = [(UITextInputSessionActionAnalytics *)self _textInsertionActionForText:v9 relativeRangeBefore:location withLanguage:length, v10];
+    languageCopy = [(UITextInputSessionActionAnalytics *)self _textInsertionActionForText:textCopy relativeRangeBefore:location withLanguage:length, languageCopy];
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __84__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBefore_withLanguage___block_invoke;
     v17 = &unk_1E70F9780;
-    v18 = v9;
-    v19 = v13;
+    v18 = textCopy;
+    v19 = languageCopy;
     v20 = location;
     v21 = length;
-    v12 = v13;
-    [(UITextInputSessionActionAnalytics *)self _performWithInputModeOverride:v10 block:&v14];
-    [(UITextInputSessionActionAnalytics *)self _didInsertTextAction:v12 numCharsDeleted:length withLanguage:v10, v14, v15, v16, v17];
+    v12 = languageCopy;
+    [(UITextInputSessionActionAnalytics *)self _performWithInputModeOverride:languageCopy block:&v14];
+    [(UITextInputSessionActionAnalytics *)self _didInsertTextAction:v12 numCharsDeleted:length withLanguage:languageCopy, v14, v15, v16, v17];
   }
 
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -4001,57 +4001,57 @@ LABEL_8:
     v24 = 2048;
     v25 = length;
     v26 = 2112;
-    v27 = v10;
+    v27 = languageCopy;
     _os_log_error_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "[UITextInputSessionActionAnalytics] didInsertText: relativeRangeBefore:(%lu, %lu) withLanguage:%@ called with nil text", buf, 0x20u);
   }
 }
 
-- (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 selectedTextBefore:(id)a5 withLanguage:(id)a6
+- (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before selectedTextBefore:(id)textBefore withLanguage:(id)language
 {
-  length = a4.length;
-  location = a4.location;
+  length = before.length;
+  location = before.location;
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  textCopy = text;
+  textBeforeCopy = textBefore;
+  languageCopy = language;
   v14 = UITextInputSessionLog();
   v15 = v14;
-  if (v11)
+  if (textCopy)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138740995;
-      v28 = v11;
+      v28 = textCopy;
       v29 = 2048;
       v30 = location;
       v31 = 2048;
       v32 = length;
       v33 = 2117;
-      v34 = v12;
+      v34 = textBeforeCopy;
       v35 = 2112;
-      v36 = v13;
+      v36 = languageCopy;
       _os_log_debug_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didInsertText:'%{sensitive}@' relativeRangeBefore:(%lu, %lu) selectedTextBefore:'%{sensitive}@' withLanguage:%@", buf, 0x34u);
     }
 
-    if ([v12 length])
+    if ([textBeforeCopy length])
     {
-      [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardText:v12 shouldOverrideInputActionCountToZero:1 withLanguage:v13];
+      [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardText:textBeforeCopy shouldOverrideInputActionCountToZero:1 withLanguage:languageCopy];
     }
 
-    v16 = [(UITextInputSessionActionAnalytics *)self _textInsertionActionForText:v11 relativeRangeBefore:location withLanguage:length, v13];
+    languageCopy = [(UITextInputSessionActionAnalytics *)self _textInsertionActionForText:textCopy relativeRangeBefore:location withLanguage:length, languageCopy];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBefore_selectedTextBefore_withLanguage___block_invoke;
     v20 = &unk_1E710C718;
-    v21 = v16;
-    v22 = self;
-    v23 = v11;
+    v21 = languageCopy;
+    selfCopy = self;
+    v23 = textCopy;
     v25 = location;
     v26 = length;
-    v24 = v12;
-    v15 = v16;
-    [(UITextInputSessionActionAnalytics *)self _performWithInputModeOverride:v13 block:&v17];
-    [(UITextInputSessionActionAnalytics *)self _didInsertTextAction:v15 numCharsDeleted:0 withLanguage:v13, v17, v18, v19, v20];
+    v24 = textBeforeCopy;
+    v15 = languageCopy;
+    [(UITextInputSessionActionAnalytics *)self _performWithInputModeOverride:languageCopy block:&v17];
+    [(UITextInputSessionActionAnalytics *)self _didInsertTextAction:v15 numCharsDeleted:0 withLanguage:languageCopy, v17, v18, v19, v20];
   }
 
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -4061,9 +4061,9 @@ LABEL_8:
     v29 = 2048;
     v30 = length;
     v31 = 2117;
-    v32 = v12;
+    v32 = textBeforeCopy;
     v33 = 2112;
-    v34 = v13;
+    v34 = languageCopy;
     _os_log_error_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "[UITextInputSessionActionAnalytics] didInsertText: relativeRangeBefore:(%lu, %lu) selectedTextBefore:'%{sensitive}@' withLanguage:%@ called with nil text", buf, 0x2Au);
   }
 }
@@ -4097,32 +4097,32 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   return [v1 didInsertionKeyPressOfKey:0 withType:1];
 }
 
-- (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 withNumAlternatives:(int64_t)a5
+- (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before withNumAlternatives:(int64_t)alternatives
 {
-  length = a4.length;
-  location = a4.location;
+  length = before.length;
+  location = before.location;
   v20 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  textCopy = text;
   v10 = UITextInputSessionLog();
   v11 = v10;
-  if (v9)
+  if (textCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138740739;
-      v13 = v9;
+      v13 = textCopy;
       v14 = 2048;
       v15 = location;
       v16 = 2048;
-      v17 = length;
+      alternativesCopy2 = length;
       v18 = 2048;
-      v19 = a5;
+      alternativesCopy = alternatives;
       _os_log_debug_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didInsertText:'%{sensitive}@' relativeRangeBefore:(%lu, %lu) withNumAlternatives:%ld", buf, 0x2Au);
     }
 
-    v11 = [(UITextInputSessionActionAnalytics *)self _textInsertionActionForText:v9 relativeRangeBefore:location withLanguage:length, 0];
-    [v11 setWithAlternativesCount:a5 > 0];
-    [_MergedGlobals_1147 didInsertText:v9 withType:-[NSObject textInputActionsType](v11 relativeRangeBefore:"textInputActionsType") withNumAlternatives:location selectedTextBefore:length withInputMode:{0, 0, 0}];
+    v11 = [(UITextInputSessionActionAnalytics *)self _textInsertionActionForText:textCopy relativeRangeBefore:location withLanguage:length, 0];
+    [v11 setWithAlternativesCount:alternatives > 0];
+    [_MergedGlobals_1147 didInsertText:textCopy withType:-[NSObject textInputActionsType](v11 relativeRangeBefore:"textInputActionsType") withNumAlternatives:location selectedTextBefore:length withInputMode:{0, 0, 0}];
     [(UITextInputSessionActionAnalytics *)self _didInsertTextAction:v11 numCharsDeleted:length withLanguage:0];
   }
 
@@ -4133,27 +4133,27 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
     v14 = 2048;
     v15 = length;
     v16 = 2048;
-    v17 = a5;
+    alternativesCopy2 = alternatives;
     _os_log_error_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "[UITextInputSessionActionAnalytics] didInsertText: relativeRangeBefore:(%lu, %lu) withNumAlternatives:%ld called with nil text", buf, 0x20u);
   }
 }
 
-- (void)_didInsertTextAction:(id)a3 numCharsDeleted:(unint64_t)a4 withLanguage:(id)a5
+- (void)_didInsertTextAction:(id)action numCharsDeleted:(unint64_t)deleted withLanguage:(id)language
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  actionCopy = action;
+  languageCopy = language;
+  if (deleted)
   {
-    [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardCount:a4 shouldOverrideInputActionCountToZero:1 withLanguage:v9];
+    [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardCount:deleted shouldOverrideInputActionCountToZero:1 withLanguage:languageCopy];
   }
 
-  if (([v8 flagOptions] & 1) != 0 && objc_msgSend(v8, "source") == 5)
+  if (([actionCopy flagOptions] & 1) != 0 && objc_msgSend(actionCopy, "source") == 5)
   {
-    [v8 setSource:1];
-    [UITextInputSessionActionAnalytics populateActionInputMode:v8];
-    if ([v8 insertedEmojiCount] == 1 && objc_msgSend(v8, "insertedTextLength") == 1)
+    [actionCopy setSource:1];
+    [UITextInputSessionActionAnalytics populateActionInputMode:actionCopy];
+    if ([actionCopy insertedEmojiCount] == 1 && objc_msgSend(actionCopy, "insertedTextLength") == 1)
     {
-      [v8 setInputActionCountFromMergedActions:1];
+      [actionCopy setInputActionCountFromMergedActions:1];
     }
   }
 
@@ -4162,130 +4162,130 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   v13 = 3221225472;
   v14 = __87__UITextInputSessionActionAnalytics__didInsertTextAction_numCharsDeleted_withLanguage___block_invoke;
   v15 = &unk_1E70F35B8;
-  v16 = self;
-  v17 = v8;
-  v11 = v8;
+  selfCopy = self;
+  v17 = actionCopy;
+  v11 = actionCopy;
   dispatch_async(queue, &v12);
   [(UITextInputSessionActionAnalytics *)self beginTrackingSessionDurationIfNecessary:v12];
 }
 
-- (void)_didDeleteBackwardCount:(unint64_t)a3 shouldOverrideInputActionCountToZero:(BOOL)a4 withLanguage:(id)a5
+- (void)_didDeleteBackwardCount:(unint64_t)count shouldOverrideInputActionCountToZero:(BOOL)zero withLanguage:(id)language
 {
-  v5 = a4;
+  zeroCopy = zero;
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  languageCopy = language;
   v9 = UITextInputSessionLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134217984;
-    v13 = a3;
+    countCopy = count;
     _os_log_debug_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didDeleteBackwardCount:%lu", &v12, 0xCu);
   }
 
   v10 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v11 = [v10 asDeletion];
+  asDeletion = [v10 asDeletion];
 
-  [v11 setRemovedTextLength:a3];
-  if (v5)
+  [asDeletion setRemovedTextLength:count];
+  if (zeroCopy)
   {
-    [v11 setInputActionCountFromMergedActions:{-objc_msgSend(v11, "inputActionCount")}];
+    [asDeletion setInputActionCountFromMergedActions:{-objc_msgSend(asDeletion, "inputActionCount")}];
   }
 
-  if (v8)
+  if (languageCopy)
   {
-    [UITextInputSessionActionAnalytics populateActionInputMode:v11 withLanguage:v8];
+    [UITextInputSessionActionAnalytics populateActionInputMode:asDeletion withLanguage:languageCopy];
   }
 
-  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardAction:v11];
+  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardAction:asDeletion];
 }
 
-- (void)didDeleteBackwardCount:(unint64_t)a3
+- (void)didDeleteBackwardCount:(unint64_t)count
 {
-  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardCount:a3 shouldOverrideInputActionCountToZero:0 withLanguage:0];
+  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardCount:count shouldOverrideInputActionCountToZero:0 withLanguage:0];
   v5 = _MergedGlobals_1147;
   v6 = [UIInputAnalyticsTranslator iaTextInputActionsTypeFor:_UITextInputActionsTypeFromTextInputSource([(UITextInputSessionActionAnalytics *)self _getActiveTextInputSource])];
 
-  [v5 didDeleteBackwardCount:a3 withType:v6];
+  [v5 didDeleteBackwardCount:count withType:v6];
 }
 
-- (void)_didDeleteBackwardText:(id)a3 shouldOverrideInputActionCountToZero:(BOOL)a4 withLanguage:(id)a5
+- (void)_didDeleteBackwardText:(id)text shouldOverrideInputActionCountToZero:(BOOL)zero withLanguage:(id)language
 {
-  v6 = a4;
+  zeroCopy = zero;
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  textCopy = text;
+  languageCopy = language;
   v10 = UITextInputSessionLog();
-  v11 = v10;
-  if (v8)
+  asDeletion = v10;
+  if (textCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138739971;
-      v14 = v8;
-      _os_log_debug_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didDeleteBackwardText:'%{sensitive}@'", &v13, 0xCu);
+      v14 = textCopy;
+      _os_log_debug_impl(&dword_188A29000, asDeletion, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didDeleteBackwardText:'%{sensitive}@'", &v13, 0xCu);
     }
 
     v12 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-    v11 = [v12 asDeletion];
+    asDeletion = [v12 asDeletion];
 
-    [v11 setRemovedTextLength:[(UITextInputSessionActionAnalytics *)self _normalizedTextLength:v8]];
-    [v11 setRemovedEmojiCount:[(UITextInputSessionActionAnalytics *)self _emojiCountForText:v8]];
-    [v11 setOptions:[(UITextInputSessionActionAnalytics *)self _optionsForText:v8]];
-    if (v9)
+    [asDeletion setRemovedTextLength:[(UITextInputSessionActionAnalytics *)self _normalizedTextLength:textCopy]];
+    [asDeletion setRemovedEmojiCount:[(UITextInputSessionActionAnalytics *)self _emojiCountForText:textCopy]];
+    [asDeletion setOptions:[(UITextInputSessionActionAnalytics *)self _optionsForText:textCopy]];
+    if (languageCopy)
     {
-      [UITextInputSessionActionAnalytics populateActionInputMode:v11 withLanguage:v9];
+      [UITextInputSessionActionAnalytics populateActionInputMode:asDeletion withLanguage:languageCopy];
     }
 
-    if (v6)
+    if (zeroCopy)
     {
-      [v11 setInputActionCountFromMergedActions:[v11]];
+      [asDeletion setInputActionCountFromMergedActions:[asDeletion]];
     }
 
-    [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardAction:v11];
+    [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardAction:asDeletion];
   }
 
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     LOWORD(v13) = 0;
-    _os_log_error_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "[UITextInputSessionActionAnalytics] didDeleteBackwardText: called with nil text", &v13, 2u);
+    _os_log_error_impl(&dword_188A29000, asDeletion, OS_LOG_TYPE_ERROR, "[UITextInputSessionActionAnalytics] didDeleteBackwardText: called with nil text", &v13, 2u);
   }
 }
 
-- (void)didDeleteBackwardText:(id)a3
+- (void)didDeleteBackwardText:(id)text
 {
-  v4 = a3;
-  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardText:v4 shouldOverrideInputActionCountToZero:0 withLanguage:0];
-  [_MergedGlobals_1147 didDeleteBackwardText:v4 withType:{+[UIInputAnalyticsTranslator iaTextInputActionsTypeFor:](UIInputAnalyticsTranslator, "iaTextInputActionsTypeFor:", _UITextInputActionsTypeFromTextInputSource(-[UITextInputSessionActionAnalytics _getActiveTextInputSource](self, "_getActiveTextInputSource")))}];
+  textCopy = text;
+  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardText:textCopy shouldOverrideInputActionCountToZero:0 withLanguage:0];
+  [_MergedGlobals_1147 didDeleteBackwardText:textCopy withType:{+[UIInputAnalyticsTranslator iaTextInputActionsTypeFor:](UIInputAnalyticsTranslator, "iaTextInputActionsTypeFor:", _UITextInputActionsTypeFromTextInputSource(-[UITextInputSessionActionAnalytics _getActiveTextInputSource](self, "_getActiveTextInputSource")))}];
 }
 
-- (void)_didDeleteBackwardAction:(id)a3
+- (void)_didDeleteBackwardAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   queue = self->_queue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __62__UITextInputSessionActionAnalytics__didDeleteBackwardAction___block_invoke;
   v10 = &unk_1E70F35B8;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = actionCopy;
+  v6 = actionCopy;
   dispatch_async(queue, &v7);
   [(UITextInputSessionActionAnalytics *)self beginTrackingSessionDurationIfNecessary:v7];
 }
 
-- (void)didChangeToSelection:(_NSRange)a3 relativeRangeBefore:(_NSRange)a4
+- (void)didChangeToSelection:(_NSRange)selection relativeRangeBefore:(_NSRange)before
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3.length;
-  v7 = a3.location;
+  length = before.length;
+  location = before.location;
+  v6 = selection.length;
+  v7 = selection.location;
   v30 = *MEMORY[0x1E69E9840];
-  if (a3.length != a4.length || a3.location != a4.location)
+  if (selection.length != before.length || selection.location != before.location)
   {
-    v9 = [(UITextInputSessionActionAnalytics *)self allowCursorMovementCounter];
+    allowCursorMovementCounter = [(UITextInputSessionActionAnalytics *)self allowCursorMovementCounter];
     v10 = UITextInputSessionLog();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-    if (v9)
+    if (allowCursorMovementCounter)
     {
       if (v11)
       {
@@ -4301,11 +4301,11 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
       }
 
       v12 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-      v13 = [v12 asSelection];
+      asSelection = [v12 asSelection];
 
-      [v13 setSource:0];
-      [v13 setRelativeRangeBefore:{location, length}];
-      [v13 setRangeAfter:{v7, v6}];
+      [asSelection setSource:0];
+      [asSelection setRelativeRangeBefore:{location, length}];
+      [asSelection setRangeAfter:{v7, v6}];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __78__UITextInputSessionActionAnalytics_didChangeToSelection_relativeRangeBefore___block_invoke;
@@ -4320,9 +4320,9 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
       v16 = 3221225472;
       v17 = __78__UITextInputSessionActionAnalytics_didChangeToSelection_relativeRangeBefore___block_invoke_2;
       v18 = &unk_1E70F35B8;
-      v19 = self;
-      v20 = v13;
-      v10 = v13;
+      selfCopy = self;
+      v20 = asSelection;
+      v10 = asSelection;
       dispatch_async(queue, &v15);
       [(UITextInputSessionActionAnalytics *)self beginTrackingSessionDurationIfNecessary:v15];
     }
@@ -4352,10 +4352,10 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   }
 
   v4 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v5 = [v4 asCopy];
+  asCopy = [v4 asCopy];
 
-  [v5 setSource:0];
-  [v5 setTextInputActionsType:11];
+  [asCopy setSource:0];
+  [asCopy setTextInputActionsType:11];
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:0 block:&__block_literal_global_125_0];
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4363,8 +4363,8 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   v8[2] = __44__UITextInputSessionActionAnalytics_didCopy__block_invoke_2;
   v8[3] = &unk_1E70F35B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = asCopy;
+  v7 = asCopy;
   dispatch_async(queue, v8);
 }
 
@@ -4378,10 +4378,10 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   }
 
   v4 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v5 = [v4 asCut];
+  asCut = [v4 asCut];
 
-  [v5 setSource:0];
-  [v5 setTextInputActionsType:10];
+  [asCut setSource:0];
+  [asCut setTextInputActionsType:10];
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:0 block:&__block_literal_global_128];
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4389,8 +4389,8 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   v8[2] = __43__UITextInputSessionActionAnalytics_didCut__block_invoke_2;
   v8[3] = &unk_1E70F35B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = asCut;
+  v7 = asCut;
   dispatch_async(queue, v8);
 }
 
@@ -4404,10 +4404,10 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   }
 
   v4 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v5 = [v4 asPaste];
+  asPaste = [v4 asPaste];
 
-  [v5 setSource:0];
-  [v5 setTextInputActionsType:12];
+  [asPaste setSource:0];
+  [asPaste setTextInputActionsType:12];
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:0 block:&__block_literal_global_131_0];
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4415,8 +4415,8 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   v8[2] = __45__UITextInputSessionActionAnalytics_didPaste__block_invoke_2;
   v8[3] = &unk_1E70F35B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = asPaste;
+  v7 = asPaste;
   dispatch_async(queue, v8);
 }
 
@@ -4430,10 +4430,10 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   }
 
   v4 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v5 = [v4 asUndo];
+  asUndo = [v4 asUndo];
 
-  [v5 setSource:0];
-  [v5 setTextInputActionsType:13];
+  [asUndo setSource:0];
+  [asUndo setTextInputActionsType:13];
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:0 block:&__block_literal_global_134];
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4441,8 +4441,8 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   v8[2] = __44__UITextInputSessionActionAnalytics_didUndo__block_invoke_2;
   v8[3] = &unk_1E70F35B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = asUndo;
+  v7 = asUndo;
   dispatch_async(queue, v8);
 }
 
@@ -4456,10 +4456,10 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   }
 
   v4 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v5 = [v4 asRedo];
+  asRedo = [v4 asRedo];
 
-  [v5 setSource:0];
-  [v5 setTextInputActionsType:14];
+  [asRedo setSource:0];
+  [asRedo setTextInputActionsType:14];
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:0 block:&__block_literal_global_137_0];
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -4467,183 +4467,183 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   v8[2] = __44__UITextInputSessionActionAnalytics_didRedo__block_invoke_2;
   v8[3] = &unk_1E70F35B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = asRedo;
+  v7 = asRedo;
   dispatch_async(queue, v8);
 }
 
-- (void)didReplaceWithCandidate:(int64_t)a3
+- (void)didReplaceWithCandidate:(int64_t)candidate
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = UITextInputSessionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [UITextInputSessionActionAnalytics stringForReplaceWithCandidateType:a3];
+    v10 = [UITextInputSessionActionAnalytics stringForReplaceWithCandidateType:candidate];
     *buf = 138739971;
     v14 = v10;
     _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didReplaceWithCandidate:'%{sensitive}@'", buf, 0xCu);
   }
 
   v6 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v7 = [v6 asReplaceWithCandidate];
+  asReplaceWithCandidate = [v6 asReplaceWithCandidate];
 
-  [v7 setReplaceWithCandidateType:a3];
-  [v7 setInputActionCountFromMergedActions:{-objc_msgSend(v7, "inputActionCount")}];
-  [_MergedGlobals_1147 didReplaceWithCandidate:a3];
+  [asReplaceWithCandidate setReplaceWithCandidateType:candidate];
+  [asReplaceWithCandidate setInputActionCountFromMergedActions:{-objc_msgSend(asReplaceWithCandidate, "inputActionCount")}];
+  [_MergedGlobals_1147 didReplaceWithCandidate:candidate];
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__UITextInputSessionActionAnalytics_didReplaceWithCandidate___block_invoke;
   v11[3] = &unk_1E70F35B8;
   v11[4] = self;
-  v12 = v7;
-  v9 = v7;
+  v12 = asReplaceWithCandidate;
+  v9 = asReplaceWithCandidate;
   dispatch_async(queue, v11);
 }
 
-- (void)didCandidateBarReplacementForText:(id)a3 withText:(id)a4
+- (void)didCandidateBarReplacementForText:(id)text withText:(id)withText
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = UITextInputSessionLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138740227;
-    v10 = v6;
+    v10 = textCopy;
     v11 = 2117;
-    v12 = v7;
+    v12 = withTextCopy;
     _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didCandidateBarReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v9, 0x16u);
   }
 
-  [_MergedGlobals_1147 didCandidateBarReplacementForText:v6 withText:v7];
-  [(UITextInputSessionActionAnalytics *)self didReplacementForText:v6 withText:v7 withSource:7 withType:1 withInputActionCount:1];
+  [_MergedGlobals_1147 didCandidateBarReplacementForText:textCopy withText:withTextCopy];
+  [(UITextInputSessionActionAnalytics *)self didReplacementForText:textCopy withText:withTextCopy withSource:7 withType:1 withInputActionCount:1];
 }
 
-- (void)didCalloutBarReplacementForText:(id)a3 withText:(id)a4
+- (void)didCalloutBarReplacementForText:(id)text withText:(id)withText
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v8 = UITextInputSessionLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138740227;
-    v10 = v6;
+    v10 = textCopy;
     v11 = 2117;
-    v12 = v7;
+    v12 = withTextCopy;
     _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didCalloutBarReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v9, 0x16u);
   }
 
-  [_MergedGlobals_1147 didCalloutBarReplacementForText:v6 withText:v7];
-  [(UITextInputSessionActionAnalytics *)self didReplacementForText:v6 withText:v7 withSource:8 withType:1 withInputActionCount:1];
+  [_MergedGlobals_1147 didCalloutBarReplacementForText:textCopy withText:withTextCopy];
+  [(UITextInputSessionActionAnalytics *)self didReplacementForText:textCopy withText:withTextCopy withSource:8 withType:1 withInputActionCount:1];
 }
 
-- (void)didAutocorrectReplacementForText:(id)a3 withText:(id)a4
+- (void)didAutocorrectReplacementForText:(id)text withText:(id)withText
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [_MergedGlobals_1147 didAutocorrectReplacementForText:v6 withText:v7];
-  if (v6 && [v6 length])
+  textCopy = text;
+  withTextCopy = withText;
+  [_MergedGlobals_1147 didAutocorrectReplacementForText:textCopy withText:withTextCopy];
+  if (textCopy && [textCopy length])
   {
-    if (!v7)
+    if (!withTextCopy)
     {
-      v7 = &stru_1EFB14550;
+      withTextCopy = &stru_1EFB14550;
     }
 
     v8 = UITextInputSessionLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138740227;
-      v10 = v6;
+      v10 = textCopy;
       v11 = 2117;
-      v12 = v7;
+      v12 = withTextCopy;
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didAutocorrectReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v9, 0x16u);
     }
 
-    [(UITextInputSessionActionAnalytics *)self didReplacementForText:v6 withText:v7 withSource:0 withType:6 withInputActionCount:1];
+    [(UITextInputSessionActionAnalytics *)self didReplacementForText:textCopy withText:withTextCopy withSource:0 withType:6 withInputActionCount:1];
   }
 }
 
-- (void)didAutocorrectTapOnCompletionReplacementForText:(id)a3 withText:(id)a4
+- (void)didAutocorrectTapOnCompletionReplacementForText:(id)text withText:(id)withText
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [_MergedGlobals_1147 didAutocorrectTapOnCompletionReplacementForText:v6 withText:v7];
-  if (v6 && [v6 length])
+  textCopy = text;
+  withTextCopy = withText;
+  [_MergedGlobals_1147 didAutocorrectTapOnCompletionReplacementForText:textCopy withText:withTextCopy];
+  if (textCopy && [textCopy length])
   {
-    if (!v7)
+    if (!withTextCopy)
     {
-      v7 = &stru_1EFB14550;
+      withTextCopy = &stru_1EFB14550;
     }
 
     v8 = UITextInputSessionLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138740227;
-      v10 = v6;
+      v10 = textCopy;
       v11 = 2117;
-      v12 = v7;
+      v12 = withTextCopy;
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didAutocorrectTapOnCompletionReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v9, 0x16u);
     }
 
-    [(UITextInputSessionActionAnalytics *)self didReplacementForText:v6 withText:v7 withSource:12 withType:6 withInputActionCount:1];
+    [(UITextInputSessionActionAnalytics *)self didReplacementForText:textCopy withText:withTextCopy withSource:12 withType:6 withInputActionCount:1];
   }
 }
 
-- (void)didInlineCompletionReplacementForText:(id)a3 withText:(id)a4
+- (void)didInlineCompletionReplacementForText:(id)text withText:(id)withText
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [_MergedGlobals_1147 didInlineCompletionReplacementForText:v6 withText:v7];
-  if (v6 | v7)
+  textCopy = text;
+  withTextCopy = withText;
+  [_MergedGlobals_1147 didInlineCompletionReplacementForText:textCopy withText:withTextCopy];
+  if (textCopy | withTextCopy)
   {
-    if (!v7)
+    if (!withTextCopy)
     {
-      v7 = &stru_1EFB14550;
+      withTextCopy = &stru_1EFB14550;
     }
 
     v8 = UITextInputSessionLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138740227;
-      v10 = v6;
+      v10 = textCopy;
       v11 = 2117;
-      v12 = v7;
+      v12 = withTextCopy;
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didInlineCompletionReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v9, 0x16u);
     }
 
-    [(UITextInputSessionActionAnalytics *)self didReplacementForText:v6 withText:v7 withSource:0 withType:15 withInputActionCount:1];
+    [(UITextInputSessionActionAnalytics *)self didReplacementForText:textCopy withText:withTextCopy withSource:0 withType:15 withInputActionCount:1];
   }
 }
 
-- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)a3 withText:(id)a4
+- (void)didInlineCompletionTapOnCompletionReplacementForText:(id)text withText:(id)withText
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [_MergedGlobals_1147 didInlineCompletionTapOnCompletionReplacementForText:v6 withText:v7];
-  if (v6 | v7)
+  textCopy = text;
+  withTextCopy = withText;
+  [_MergedGlobals_1147 didInlineCompletionTapOnCompletionReplacementForText:textCopy withText:withTextCopy];
+  if (textCopy | withTextCopy)
   {
-    if (!v7)
+    if (!withTextCopy)
     {
-      v7 = &stru_1EFB14550;
+      withTextCopy = &stru_1EFB14550;
     }
 
     v8 = UITextInputSessionLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138740227;
-      v10 = v6;
+      v10 = textCopy;
       v11 = 2117;
-      v12 = v7;
+      v12 = withTextCopy;
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didInlineCompletionTapOnCompletionReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v9, 0x16u);
     }
 
-    [(UITextInputSessionActionAnalytics *)self didReplacementForText:v6 withText:v7 withSource:12 withType:15 withInputActionCount:1];
+    [(UITextInputSessionActionAnalytics *)self didReplacementForText:textCopy withText:withTextCopy withSource:12 withType:15 withInputActionCount:1];
   }
 }
 
@@ -4660,74 +4660,74 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   [(UITextInputSessionActionAnalytics *)self didReplacementForText:&stru_1EFB14550 withText:&stru_1EFB14550 withSource:11 withType:1 withInputActionCount:1];
 }
 
-- (void)didRevisionBubbleReplacementForText:(id)a3 withText:(id)a4
+- (void)didRevisionBubbleReplacementForText:(id)text withText:(id)withText
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [_MergedGlobals_1147 didRevisionBubbleReplacementForText:v6 withText:v7];
-  if (v6)
+  textCopy = text;
+  withTextCopy = withText;
+  [_MergedGlobals_1147 didRevisionBubbleReplacementForText:textCopy withText:withTextCopy];
+  if (textCopy)
   {
     v8 = UITextInputSessionLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138740227;
-      v10 = v6;
+      v10 = textCopy;
       v11 = 2117;
-      v12 = v7;
+      v12 = withTextCopy;
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didRevisionBubbleReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v9, 0x16u);
     }
 
-    [(UITextInputSessionActionAnalytics *)self didReplacementForText:v6 withText:v7 withSource:11 withType:1 withInputActionCount:0];
+    [(UITextInputSessionActionAnalytics *)self didReplacementForText:textCopy withText:withTextCopy withSource:11 withType:1 withInputActionCount:0];
   }
 }
 
-- (void)didCompositionReplacementForText:(id)a3 withText:(id)a4
+- (void)didCompositionReplacementForText:(id)text withText:(id)withText
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v7 = UITextInputSessionLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138740227;
-    v9 = v5;
+    v9 = textCopy;
     v10 = 2117;
-    v11 = v6;
+    v11 = withTextCopy;
     _os_log_debug_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didCompositionReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v8, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [_MergedGlobals_1147 didCompositionReplacementForText:v5 withText:v6];
+    [_MergedGlobals_1147 didCompositionReplacementForText:textCopy withText:withTextCopy];
   }
 }
 
-- (void)didDecompositionReplacementForText:(id)a3 withText:(id)a4
+- (void)didDecompositionReplacementForText:(id)text withText:(id)withText
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  withTextCopy = withText;
   v7 = UITextInputSessionLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138740227;
-    v9 = v5;
+    v9 = textCopy;
     v10 = 2117;
-    v11 = v6;
+    v11 = withTextCopy;
     _os_log_debug_impl(&dword_188A29000, v7, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didDecompositionReplacementForText:'%{sensitive}@' withText:'%{sensitive}@'", &v8, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [_MergedGlobals_1147 didDecompositionReplacementForText:v5 withText:v6];
+    [_MergedGlobals_1147 didDecompositionReplacementForText:textCopy withText:withTextCopy];
   }
 }
 
-- (void)_didCommitText:(id)a3 withSource:(int64_t)a4
+- (void)_didCommitText:(id)text withSource:(int64_t)source
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  textCopy = text;
   v7 = objc_opt_respondsToSelector();
   v8 = UITextInputSessionLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -4736,9 +4736,9 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
     if (v9)
     {
       *buf = 138740227;
-      v13 = v6;
+      v13 = textCopy;
       v14 = 2048;
-      v15 = a4;
+      sourceCopy = source;
       _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] _didCommitText:'%{sensitive}@' withSource:'%lu'", buf, 0x16u);
     }
 
@@ -4746,8 +4746,8 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
     v10[1] = 3221225472;
     v10[2] = __63__UITextInputSessionActionAnalytics__didCommitText_withSource___block_invoke;
     v10[3] = &unk_1E70F3590;
-    v11 = v6;
-    [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:a4 block:v10];
+    v11 = textCopy;
+    [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:source block:v10];
     v8 = v11;
   }
 
@@ -4758,45 +4758,45 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   }
 }
 
-- (void)didReplacementForText:(id)a3 withText:(id)a4 withSource:(int64_t)a5 withType:(int64_t)a6 withInputActionCount:(int64_t)a7
+- (void)didReplacementForText:(id)text withText:(id)withText withSource:(int64_t)source withType:(int64_t)type withInputActionCount:(int64_t)count
 {
-  v12 = a3;
-  v13 = v12;
-  if (a4)
+  textCopy = text;
+  v13 = textCopy;
+  if (withText)
   {
-    if (!v12)
+    if (!textCopy)
     {
       v13 = &stru_1EFB14550;
     }
 
-    v14 = a4;
+    withTextCopy = withText;
     v15 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-    v16 = [v15 asReplaceText];
+    asReplaceText = [v15 asReplaceText];
 
-    if (a5)
+    if (source)
     {
-      [v16 setTextInputActionsSource:a5];
+      [asReplaceText setTextInputActionsSource:source];
     }
 
-    [v16 setTextInputActionsType:a6];
-    [v16 setRemovedTextLength:{-[__CFString length](v13, "length")}];
-    [v16 setInsertedTextLength:{objc_msgSend(v14, "length")}];
-    [v16 setOptions:{-[UITextInputSessionActionAnalytics _optionsForText:](self, "_optionsForText:", v13)}];
-    [v16 setRemovedEmojiCount:{-[UITextInputSessionActionAnalytics _emojiCountForText:](self, "_emojiCountForText:", v13)}];
-    [v16 setInsertedEmojiCount:{-[UITextInputSessionActionAnalytics _emojiCountForText:](self, "_emojiCountForText:", v14)}];
-    [v16 setRemovedPunctuationCount:{-[UITextInputSessionActionAnalytics _punctuationCountForText:](self, "_punctuationCountForText:", v13)}];
-    v17 = [(UITextInputSessionActionAnalytics *)self _punctuationCountForText:v14];
+    [asReplaceText setTextInputActionsType:type];
+    [asReplaceText setRemovedTextLength:{-[__CFString length](v13, "length")}];
+    [asReplaceText setInsertedTextLength:{objc_msgSend(withTextCopy, "length")}];
+    [asReplaceText setOptions:{-[UITextInputSessionActionAnalytics _optionsForText:](self, "_optionsForText:", v13)}];
+    [asReplaceText setRemovedEmojiCount:{-[UITextInputSessionActionAnalytics _emojiCountForText:](self, "_emojiCountForText:", v13)}];
+    [asReplaceText setInsertedEmojiCount:{-[UITextInputSessionActionAnalytics _emojiCountForText:](self, "_emojiCountForText:", withTextCopy)}];
+    [asReplaceText setRemovedPunctuationCount:{-[UITextInputSessionActionAnalytics _punctuationCountForText:](self, "_punctuationCountForText:", v13)}];
+    v17 = [(UITextInputSessionActionAnalytics *)self _punctuationCountForText:withTextCopy];
 
-    [v16 setInsertedPunctuationCount:v17];
-    [v16 setInputActionCountFromMergedActions:{a7 - objc_msgSend(v16, "inputActionCount")}];
+    [asReplaceText setInsertedPunctuationCount:v17];
+    [asReplaceText setInputActionCountFromMergedActions:{count - objc_msgSend(asReplaceText, "inputActionCount")}];
     queue = self->_queue;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __109__UITextInputSessionActionAnalytics_didReplacementForText_withText_withSource_withType_withInputActionCount___block_invoke;
     v20[3] = &unk_1E70F35B8;
     v20[4] = self;
-    v21 = v16;
-    v19 = v16;
+    v21 = asReplaceText;
+    v19 = asReplaceText;
     dispatch_async(queue, v20);
   }
 }
@@ -4811,7 +4811,7 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   }
 
   v4 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v5 = [v4 asEnd];
+  asEnd = [v4 asEnd];
 
   [_MergedGlobals_1147 didSessionEnd];
   queue = self->_queue;
@@ -4820,8 +4820,8 @@ uint64_t __103__UITextInputSessionActionAnalytics_didInsertText_relativeRangeBef
   v8[2] = __50__UITextInputSessionActionAnalytics_didSessionEnd__block_invoke;
   v8[3] = &unk_1E70F35B8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = asEnd;
+  v7 = asEnd;
   dispatch_async(queue, v8);
 }
 
@@ -4851,32 +4851,32 @@ uint64_t __50__UITextInputSessionActionAnalytics_didSessionEnd__block_invoke(uin
   dispatch_async(queue, block);
 }
 
-- (void)didInsertKeyPressWithInputSource:(int64_t)a3
+- (void)didInsertKeyPressWithInputSource:(int64_t)source
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = UITextInputSessionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v11 = a3;
+    sourceCopy = source;
     _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didInsertKeyPressWithInputSource:%lu", buf, 0xCu);
   }
 
   v6 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v7 = [v6 asInsertion];
+  asInsertion = [v6 asInsertion];
 
-  [v7 setInsertedTextLength:0];
-  [v7 setSource:a3];
-  [UITextInputSessionActionAnalytics populateActionInputMode:v7];
-  [v7 setInputActionCountFromMergedActions:1];
-  v8 = [UIInputAnalyticsTranslator iaTextInputActionsSourceFor:_UITextInputActionsSourceFromTextInputSource(a3)];
+  [asInsertion setInsertedTextLength:0];
+  [asInsertion setSource:source];
+  [UITextInputSessionActionAnalytics populateActionInputMode:asInsertion];
+  [asInsertion setInputActionCountFromMergedActions:1];
+  v8 = [UIInputAnalyticsTranslator iaTextInputActionsSourceFor:_UITextInputActionsSourceFromTextInputSource(source)];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__UITextInputSessionActionAnalytics_didInsertKeyPressWithInputSource___block_invoke;
   v9[3] = &__block_descriptor_40_e5_v8__0l;
-  v9[4] = a3;
+  v9[4] = source;
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:v8 block:v9];
-  [(UITextInputSessionActionAnalytics *)self _didInsertTextAction:v7 numCharsDeleted:0 withLanguage:0];
+  [(UITextInputSessionActionAnalytics *)self _didInsertTextAction:asInsertion numCharsDeleted:0 withLanguage:0];
 }
 
 uint64_t __70__UITextInputSessionActionAnalytics_didInsertKeyPressWithInputSource___block_invoke(uint64_t a1)
@@ -4887,32 +4887,32 @@ uint64_t __70__UITextInputSessionActionAnalytics_didInsertKeyPressWithInputSourc
   return [v1 didInsertionKeyPressOfKey:0 withType:v2];
 }
 
-- (void)didDeleteKeyPressWithInputSource:(int64_t)a3
+- (void)didDeleteKeyPressWithInputSource:(int64_t)source
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = UITextInputSessionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v11 = a3;
+    sourceCopy = source;
     _os_log_debug_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEBUG, "[UITextInputSessionActionAnalytics] didDeleteKeyPressWithInputSource:%lu", buf, 0xCu);
   }
 
   v6 = [(UITextInputSessionActionAnalytics *)self _instanceOfActionClass:objc_opt_class()];
-  v7 = [v6 asDeletion];
+  asDeletion = [v6 asDeletion];
 
-  [v7 setRemovedTextLength:0];
-  [v7 setSource:a3];
-  [UITextInputSessionActionAnalytics populateActionInputMode:v7];
-  [v7 setInputActionCountFromMergedActions:1];
-  v8 = [UIInputAnalyticsTranslator iaTextInputActionsSourceFor:_UITextInputActionsSourceFromTextInputSource(a3)];
+  [asDeletion setRemovedTextLength:0];
+  [asDeletion setSource:source];
+  [UITextInputSessionActionAnalytics populateActionInputMode:asDeletion];
+  [asDeletion setInputActionCountFromMergedActions:1];
+  v8 = [UIInputAnalyticsTranslator iaTextInputActionsSourceFor:_UITextInputActionsSourceFromTextInputSource(source)];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__UITextInputSessionActionAnalytics_didDeleteKeyPressWithInputSource___block_invoke;
   v9[3] = &__block_descriptor_40_e5_v8__0l;
-  v9[4] = a3;
+  v9[4] = source;
   [(UITextInputSessionActionAnalytics *)self _performWithTextInputActionsSource:v8 block:v9];
-  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardAction:v7];
+  [(UITextInputSessionActionAnalytics *)self _didDeleteBackwardAction:asDeletion];
 }
 
 uint64_t __70__UITextInputSessionActionAnalytics_didDeleteKeyPressWithInputSource___block_invoke(uint64_t a1)
@@ -4923,23 +4923,23 @@ uint64_t __70__UITextInputSessionActionAnalytics_didDeleteKeyPressWithInputSourc
   return [v1 didDeletionKeyPressOfKey:0 withType:v2];
 }
 
-- (void)didKeyPress:(id)a3 inputSource:(int64_t)a4
+- (void)didKeyPress:(id)press inputSource:(int64_t)source
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  pressCopy = press;
+  v7 = pressCopy;
+  if (pressCopy)
   {
-    v8 = [v6 name];
-    v9 = [v8 isEqual:@"Delete-Key"];
+    name = [pressCopy name];
+    v9 = [name isEqual:@"Delete-Key"];
 
     if (v9)
     {
-      [(UITextInputSessionActionAnalytics *)self didDeleteKeyPressWithInputSource:a4];
+      [(UITextInputSessionActionAnalytics *)self didDeleteKeyPressWithInputSource:source];
     }
 
     else
     {
-      [(UITextInputSessionActionAnalytics *)self didInsertKeyPressWithInputSource:a4];
+      [(UITextInputSessionActionAnalytics *)self didInsertKeyPressWithInputSource:source];
     }
   }
 
@@ -4954,54 +4954,54 @@ uint64_t __70__UITextInputSessionActionAnalytics_didDeleteKeyPressWithInputSourc
   }
 }
 
-- (void)didOnWebSearchKeyboardPressKey:(id)a3 withMetadata:(id)a4
+- (void)didOnWebSearchKeyboardPressKey:(id)key withMetadata:(id)metadata
 {
-  if (a3)
+  if (key)
   {
-    v5 = a3;
-    v6 = [a4 mutableCopy];
-    [v6 setObject:v5 forKeyedSubscript:@"KeyName"];
+    keyCopy = key;
+    v6 = [metadata mutableCopy];
+    [v6 setObject:keyCopy forKeyedSubscript:@"KeyName"];
 
     [_UISignalAnalytics asyncSendSafariSignal:@"KeyPressed" payload:v6];
   }
 }
 
-+ (id)stringForReplaceWithCandidateType:(int64_t)a3
++ (id)stringForReplaceWithCandidateType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"?";
   }
 
   else
   {
-    return off_1E710C788[a3];
+    return off_1E710C788[type];
   }
 }
 
-+ (id)stringForKeyboardDockItemButtonPressResult:(unint64_t)a3
++ (id)stringForKeyboardDockItemButtonPressResult:(unint64_t)result
 {
-  if (a3 > 3)
+  if (result > 3)
   {
     return @"?";
   }
 
   else
   {
-    return off_1E710C7A8[a3];
+    return off_1E710C7A8[result];
   }
 }
 
-+ (id)stringForKeyboardDockItemButtonType:(unint64_t)a3
++ (id)stringForKeyboardDockItemButtonType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"?";
   }
 
   else
   {
-    return off_1E710C7C8[a3];
+    return off_1E710C7C8[type];
   }
 }
 

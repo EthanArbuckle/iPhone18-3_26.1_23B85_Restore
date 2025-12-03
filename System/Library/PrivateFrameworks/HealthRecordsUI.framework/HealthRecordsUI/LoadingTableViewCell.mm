@@ -1,6 +1,6 @@
 @interface LoadingTableViewCell
 - (_TtC15HealthRecordsUI20LoadingTableViewCell)init;
-- (_TtC15HealthRecordsUI20LoadingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC15HealthRecordsUI20LoadingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation LoadingTableViewCell
@@ -13,11 +13,11 @@
   return v4;
 }
 
-- (_TtC15HealthRecordsUI20LoadingTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15HealthRecordsUI20LoadingTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1D139016C();
+    identifier = sub_1D139016C();
     v6 = v5;
   }
 
@@ -26,7 +26,7 @@
     v6 = 0;
   }
 
-  return sub_1D10710E8(a3, a4, v6);
+  return sub_1D10710E8(style, identifier, v6);
 }
 
 @end

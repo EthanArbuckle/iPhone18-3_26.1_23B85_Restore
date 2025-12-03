@@ -1,23 +1,23 @@
 @interface MapsSuggestionsBiome
-- (BOOL)_shouldAllowEventType:(int)a3;
-- (BOOL)entriesFromFindMyWithCompletionHandler:(id)a3;
-- (BOOL)entriesFromSmartRepliesWithCompletionHandler:(id)a3;
+- (BOOL)_shouldAllowEventType:(int)type;
+- (BOOL)entriesFromFindMyWithCompletionHandler:(id)handler;
+- (BOOL)entriesFromSmartRepliesWithCompletionHandler:(id)handler;
 - (NSString)uniqueName;
-- (id)_entriesFromFindMy:(id)a3;
-- (id)_entriesFromSmartReplies:(id)a3;
-- (id)initFromResourceDepot:(id)a3;
+- (id)_entriesFromFindMy:(id)my;
+- (id)_entriesFromSmartReplies:(id)replies;
+- (id)initFromResourceDepot:(id)depot;
 - (void)dealloc;
-- (void)registerForUpdatesWithHandler:(id)a3;
+- (void)registerForUpdatesWithHandler:(id)handler;
 @end
 
 @implementation MapsSuggestionsBiome
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  depotCopy = depot;
+  v5 = depotCopy;
+  if (!depotCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -37,13 +37,13 @@ LABEL_10:
 
 LABEL_11:
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  v6 = [v4 oneBiomeConnector];
+  oneBiomeConnector = [depotCopy oneBiomeConnector];
 
-  if (!v6)
+  if (!oneBiomeConnector)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -73,31 +73,31 @@ LABEL_11:
     queue = v7->_queue;
     v7->_queue = v9;
 
-    v11 = [v5 oneBiomeConnector];
+    oneBiomeConnector2 = [v5 oneBiomeConnector];
     connector = v7->_connector;
-    v7->_connector = v11;
+    v7->_connector = oneBiomeConnector2;
 
     GEOConfigGetDouble();
     v7->_expirationDuration = v13;
   }
 
   self = v7;
-  v14 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)registerForUpdatesWithHandler:(id)a3
+- (void)registerForUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke;
   block[3] = &unk_1E81F5D88;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   dispatch_sync(queue, block);
   if (!self->_registeredForFindMy || !self->_registeredForSmartReplies)
@@ -335,9 +335,9 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
   }
 }
 
-- (BOOL)_shouldAllowEventType:(int)a3
+- (BOOL)_shouldAllowEventType:(int)type
 {
-  if (a3 == 1 || (a3 & 0xFFFFFFFE) == 2)
+  if (type == 1 || (type & 0xFFFFFFFE) == 2)
   {
     return GEOConfigGetBOOL();
   }
@@ -348,12 +348,12 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
   }
 }
 
-- (id)_entriesFromFindMy:(id)a3
+- (id)_entriesFromFindMy:(id)my
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  myCopy = my;
   dispatch_assert_queue_V2(self->_queue);
-  if (![v4 count])
+  if (![myCopy count])
   {
     v55 = 0;
     goto LABEL_50;
@@ -363,9 +363,9 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v5 = v4;
+  v5 = myCopy;
   v6 = [v5 countByEnumeratingWithState:&v67 objects:v75 count:16];
-  v58 = v4;
+  v58 = myCopy;
   if (!v6)
   {
     v63 = 0;
@@ -375,7 +375,7 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
   v7 = v6;
   v63 = 0;
   v8 = *v68;
-  v64 = self;
+  selfCopy = self;
   v59 = v5;
   v61 = *v68;
   do
@@ -393,26 +393,26 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 handle];
-        if (v11)
+        handle = [v10 handle];
+        if (handle)
         {
           if (-[MapsSuggestionsBiome _shouldAllowEventType:](self, "_shouldAllowEventType:", [v10 actionType]))
           {
-            v12 = self;
+            selfCopy2 = self;
             v13 = v5;
-            v14 = [v10 eventTimestampBegin];
-            v15 = [v14 dateByAddingTimeInterval:v12->_expirationDuration];
+            eventTimestampBegin = [v10 eventTimestampBegin];
+            v15 = [eventTimestampBegin dateByAddingTimeInterval:selfCopy2->_expirationDuration];
 
-            v16 = [v10 eventTimestampBegin];
+            eventTimestampBegin2 = [v10 eventTimestampBegin];
             GEOConfigGetDouble();
-            v66 = [v16 dateByAddingTimeInterval:?];
+            v66 = [eventTimestampBegin2 dateByAddingTimeInterval:?];
 
-            v17 = [v10 eventTimestampEnd];
+            eventTimestampEnd = [v10 eventTimestampEnd];
             v65 = v15;
-            if (v17)
+            if (eventTimestampEnd)
             {
-              v18 = [v10 eventTimestampEnd];
-              v19 = [v18 earlierDate:v15];
+              eventTimestampEnd2 = [v10 eventTimestampEnd];
+              v19 = [eventTimestampEnd2 earlierDate:v15];
             }
 
             else
@@ -420,15 +420,15 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
               v19 = v15;
             }
 
-            v22 = [v10 actionType];
-            if (v22 == 1)
+            actionType = [v10 actionType];
+            if (actionType == 1)
             {
               v26 = 1;
               v5 = v13;
               goto LABEL_25;
             }
 
-            if (v22 == 3)
+            if (actionType == 3)
             {
 
               v19 = 0;
@@ -437,15 +437,15 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
             }
 
             v5 = v13;
-            if (v22 == 2)
+            if (actionType == 2)
             {
-              v23 = [v10 eventTimestampEnd];
-              if (v23)
+              eventTimestampEnd3 = [v10 eventTimestampEnd];
+              if (eventTimestampEnd3)
               {
-                v24 = [v10 eventTimestampEnd];
-                v25 = [v24 earlierDate:v66];
+                eventTimestampEnd4 = [v10 eventTimestampEnd];
+                v25 = [eventTimestampEnd4 earlierDate:v66];
 
-                v19 = v24;
+                v19 = eventTimestampEnd4;
                 v5 = v13;
               }
 
@@ -458,7 +458,7 @@ void __54__MapsSuggestionsBiome_registerForUpdatesWithHandler___block_invoke_184
               v19 = v25;
               v8 = v61;
 LABEL_25:
-              self = v64;
+              self = selfCopy;
               if (!MapsSuggestionsIsInThePast(v19))
               {
 LABEL_26:
@@ -466,12 +466,12 @@ LABEL_26:
                 v27 = [MapsSuggestionsEntry alloc];
                 GEOConfigGetDouble();
                 v28 = [(MapsSuggestionsEntry *)v27 initWithType:24 title:@"Contact Activity" subtitle:@"From Biome/FindMy" weight:v19 expires:0 geoMapItem:0 sourceSpecificInfo:?];
-                [(MapsSuggestionsEntry *)v28 setString:v11 forKey:@"MapsSuggestionsContactActivityPK"];
+                [(MapsSuggestionsEntry *)v28 setString:handle forKey:@"MapsSuggestionsContactActivityPK"];
                 [(MapsSuggestionsEntry *)v28 setString:@"MapsSuggestionsContactActivityPK" forKey:@"MapsSuggestionsPrimaryKey"];
-                v29 = [v10 bundleID];
-                [(MapsSuggestionsEntry *)v28 setString:v29 forKey:@"MapsSuggestionsOriginBundleIDKey"];
+                bundleID = [v10 bundleID];
+                [(MapsSuggestionsEntry *)v28 setString:bundleID forKey:@"MapsSuggestionsOriginBundleIDKey"];
 
-                v30 = v11;
+                v30 = handle;
                 if ([v30 containsString:@"@"] && (objc_msgSend(v30, "containsString:", @".") & 1) != 0)
                 {
 
@@ -509,9 +509,9 @@ LABEL_26:
 
                 v39 = [v37 stringByReplacingOccurrencesOfString:@"+" withString:&stru_1F444C108];
 
-                v40 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-                v41 = [v40 invertedSet];
-                v42 = [v39 rangeOfCharacterFromSet:v41];
+                decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+                invertedSet = [decimalDigitCharacterSet invertedSet];
+                v42 = [v39 rangeOfCharacterFromSet:invertedSet];
 
                 if (v42 == 0x7FFFFFFFFFFFFFFFLL)
                 {
@@ -531,12 +531,12 @@ LABEL_26:
                 [(MapsSuggestionsEntry *)v28 setString:@"FindMy" forKey:@"MapsSuggestionsOriginatingAppName"];
                 v45 = objc_alloc(MEMORY[0x1E695DFA8]);
                 v46 = [v45 initWithObjects:{MapsSuggestionsFindMyAppBundleID, 0}];
-                v47 = [v10 bundleID];
+                bundleID2 = [v10 bundleID];
 
-                if (v47)
+                if (bundleID2)
                 {
-                  v48 = [v10 bundleID];
-                  [v46 addObject:v48];
+                  bundleID3 = [v10 bundleID];
+                  [v46 addObject:bundleID3];
                 }
 
                 v49 = [v46 copy];
@@ -557,7 +557,7 @@ LABEL_26:
                 v63 = v50;
                 [v50 setObject:v28 forKey:v54];
 
-                self = v64;
+                self = selfCopy;
                 v7 = v60;
                 v8 = v61;
                 v5 = v59;
@@ -566,7 +566,7 @@ LABEL_26:
 
             else
             {
-              self = v64;
+              self = selfCopy;
             }
 
             v20 = v65;
@@ -597,21 +597,21 @@ LABEL_26:
   while (v7);
 LABEL_49:
 
-  v56 = [v63 allValues];
-  v55 = [v56 copy];
+  allValues = [v63 allValues];
+  v55 = [allValues copy];
 
-  v4 = v58;
+  myCopy = v58;
 LABEL_50:
 
   return v55;
 }
 
-- (id)_entriesFromSmartReplies:(id)a3
+- (id)_entriesFromSmartReplies:(id)replies
 {
   v87 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  repliesCopy = replies;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v4 count])
+  if ([repliesCopy count])
   {
     if (GEOConfigGetBOOL())
     {
@@ -619,8 +619,8 @@ LABEL_50:
       v81 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v59 = v4;
-      obj = v4;
+      v59 = repliesCopy;
+      obj = repliesCopy;
       v5 = [obj countByEnumeratingWithState:&v78 objects:v86 count:16];
       if (!v5)
       {
@@ -651,8 +651,8 @@ LABEL_50:
           }
 
           v67 = v10;
-          v11 = [v10 contactInformation];
-          if (!v11)
+          contactInformation = [v10 contactInformation];
+          if (!contactInformation)
           {
             goto LABEL_50;
           }
@@ -660,16 +660,16 @@ LABEL_50:
           v65 = v7;
           v66 = v9;
           v12 = objc_alloc(MEMORY[0x1E695DF70]);
-          v13 = [v11 phoneNumber];
-          v14 = [v12 initWithCapacity:{objc_msgSend(v13, "count")}];
+          phoneNumber = [contactInformation phoneNumber];
+          v14 = [v12 initWithCapacity:{objc_msgSend(phoneNumber, "count")}];
 
           v76 = 0u;
           v77 = 0u;
           v74 = 0u;
           v75 = 0u;
-          v69 = v11;
-          v15 = [v11 phoneNumber];
-          v16 = [v15 countByEnumeratingWithState:&v74 objects:v85 count:16];
+          v69 = contactInformation;
+          phoneNumber2 = [contactInformation phoneNumber];
+          v16 = [phoneNumber2 countByEnumeratingWithState:&v74 objects:v85 count:16];
           if (!v16)
           {
             goto LABEL_22;
@@ -683,7 +683,7 @@ LABEL_50:
             {
               if (*v75 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(phoneNumber2);
               }
 
               v20 = *(*(&v74 + 1) + 8 * i);
@@ -707,22 +707,22 @@ LABEL_50:
               }
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v74 objects:v85 count:16];
+            v17 = [phoneNumber2 countByEnumeratingWithState:&v74 objects:v85 count:16];
           }
 
           while (v17);
 LABEL_22:
 
           v25 = objc_alloc(MEMORY[0x1E695DF70]);
-          v26 = [v69 emailAddress];
-          v27 = [v25 initWithCapacity:{objc_msgSend(v26, "count")}];
+          emailAddress = [v69 emailAddress];
+          v27 = [v25 initWithCapacity:{objc_msgSend(emailAddress, "count")}];
 
           v72 = 0u;
           v73 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v28 = [v69 emailAddress];
-          v29 = [v28 countByEnumeratingWithState:&v70 objects:v84 count:16];
+          emailAddress2 = [v69 emailAddress];
+          v29 = [emailAddress2 countByEnumeratingWithState:&v70 objects:v84 count:16];
           if (v29)
           {
             v30 = v29;
@@ -733,7 +733,7 @@ LABEL_22:
               {
                 if (*v71 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(emailAddress2);
                 }
 
                 v33 = *(*(&v70 + 1) + 8 * j);
@@ -748,7 +748,7 @@ LABEL_22:
                 }
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v70 objects:v84 count:16];
+              v30 = [emailAddress2 countByEnumeratingWithState:&v70 objects:v84 count:16];
             }
 
             while (v30);
@@ -756,21 +756,21 @@ LABEL_22:
 
           if ([v14 count] || objc_msgSend(v27, "count"))
           {
-            v11 = v69;
-            v34 = [v69 identifier];
+            contactInformation = v69;
+            identifier = [v69 identifier];
 
             v7 = v65;
             v9 = v66;
-            if (v34)
+            if (identifier)
             {
-              v35 = [v67 predictionTimestamp];
-              v36 = [v35 dateByAddingTimeInterval:self->_expirationDuration];
+              predictionTimestamp = [v67 predictionTimestamp];
+              v36 = [predictionTimestamp dateByAddingTimeInterval:self->_expirationDuration];
 
-              v37 = [v67 predictionExpiration];
-              if (v37)
+              predictionExpiration = [v67 predictionExpiration];
+              if (predictionExpiration)
               {
-                v38 = [v67 predictionExpiration];
-                v62 = [v38 earlierDate:v36];
+                predictionExpiration2 = [v67 predictionExpiration];
+                v62 = [predictionExpiration2 earlierDate:v36];
               }
 
               else
@@ -781,33 +781,33 @@ LABEL_22:
               v39 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
               {
-                v40 = [v69 phoneNumber];
+                phoneNumber3 = [v69 phoneNumber];
                 *buf = 138412290;
-                v83 = v40;
+                v83 = phoneNumber3;
                 _os_log_impl(&dword_1C5126000, v39, OS_LOG_TYPE_DEBUG, "All Phone Numbers: %@", buf, 0xCu);
               }
 
               v41 = GEOFindOrCreateLog();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
               {
-                v42 = [v69 emailAddress];
+                emailAddress3 = [v69 emailAddress];
                 *buf = 138412290;
-                v83 = v42;
+                v83 = emailAddress3;
                 _os_log_impl(&dword_1C5126000, v41, OS_LOG_TYPE_DEBUG, "All Email Addresses: %@", buf, 0xCu);
               }
 
               v43 = [MapsSuggestionsEntry alloc];
               GEOConfigGetDouble();
               v44 = [(MapsSuggestionsEntry *)v43 initWithType:24 title:@"Contact Activity" subtitle:@"From Biome/SmartReplies" weight:v62 expires:0 geoMapItem:0 sourceSpecificInfo:?];
-              v45 = [v69 fullDisplayName];
-              [(MapsSuggestionsEntry *)v44 setString:v45 forKey:@"MapsSuggestionsContactDisplayNameKey"];
+              fullDisplayName = [v69 fullDisplayName];
+              [(MapsSuggestionsEntry *)v44 setString:fullDisplayName forKey:@"MapsSuggestionsContactDisplayNameKey"];
 
-              v46 = [v69 identifier];
-              [(MapsSuggestionsEntry *)v44 setString:v46 forKey:@"MapsSuggestionsContactActivityPK"];
+              identifier2 = [v69 identifier];
+              [(MapsSuggestionsEntry *)v44 setString:identifier2 forKey:@"MapsSuggestionsContactActivityPK"];
 
               [(MapsSuggestionsEntry *)v44 setString:@"MapsSuggestionsContactActivityPK" forKey:@"MapsSuggestionsPrimaryKey"];
-              v47 = [v67 bundleID];
-              [(MapsSuggestionsEntry *)v44 setString:v47 forKey:@"MapsSuggestionsOriginBundleIDKey"];
+              bundleID = [v67 bundleID];
+              [(MapsSuggestionsEntry *)v44 setString:bundleID forKey:@"MapsSuggestionsOriginBundleIDKey"];
 
               v48 = [v27 copy];
               [(MapsSuggestionsEntry *)v44 setArray:v48 forKey:@"MapsSuggestionsContactAllEmailAddressesKey"];
@@ -819,12 +819,12 @@ LABEL_22:
               [(MapsSuggestionsEntry *)v44 setString:@"Messages" forKey:@"MapsSuggestionsOriginatingAppName"];
               v50 = objc_alloc(MEMORY[0x1E695DFA8]);
               v64 = [v50 initWithObjects:{MapsSuggestionsFindMyAppBundleID, 0}];
-              v51 = [v67 bundleID];
+              bundleID2 = [v67 bundleID];
 
-              if (v51)
+              if (bundleID2)
               {
-                v52 = [v67 bundleID];
-                [v64 addObject:v52];
+                bundleID3 = [v67 bundleID];
+                [v64 addObject:bundleID3];
               }
 
               v68 = v36;
@@ -836,9 +836,9 @@ LABEL_22:
                 v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(obj, "count")}];
               }
 
-              v11 = v69;
-              v54 = [v69 identifier];
-              v55 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@", v54, @"BMMapsRecentConversationsIntentActionTypeMeetup"];
+              contactInformation = v69;
+              identifier3 = [v69 identifier];
+              v55 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@", identifier3, @"BMMapsRecentConversationsIntentActionTypeMeetup"];
 
               [v7 setObject:v44 forKeyedSubscript:v55];
               v9 = v66;
@@ -849,7 +849,7 @@ LABEL_22:
           {
             v7 = v65;
             v9 = v66;
-            v11 = v69;
+            contactInformation = v69;
           }
 
           v6 = v61;
@@ -866,10 +866,10 @@ LABEL_51:
         {
 LABEL_59:
 
-          v57 = [v7 allValues];
-          v56 = [v57 copy];
+          allValues = [v7 allValues];
+          v56 = [allValues copy];
 
-          v4 = v59;
+          repliesCopy = v59;
           goto LABEL_60;
         }
       }
@@ -894,11 +894,11 @@ LABEL_60:
   return v56;
 }
 
-- (BOOL)entriesFromFindMyWithCompletionHandler:(id)a3
+- (BOOL)entriesFromFindMyWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(location, self);
     connector = self->_connector;
@@ -906,7 +906,7 @@ LABEL_60:
     v9[1] = 3221225472;
     v9[2] = __63__MapsSuggestionsBiome_entriesFromFindMyWithCompletionHandler___block_invoke;
     v9[3] = &unk_1E81F5DD8;
-    v10 = v4;
+    v10 = handlerCopy;
     objc_copyWeak(&v11, location);
     v6 = [(MapsSuggestionsBiomeConnector *)connector getFindMyStreamsWithHandler:v9];
     objc_destroyWeak(&v11);
@@ -1093,11 +1093,11 @@ void __63__MapsSuggestionsBiome_entriesFromFindMyWithCompletionHandler___block_i
   }
 }
 
-- (BOOL)entriesFromSmartRepliesWithCompletionHandler:(id)a3
+- (BOOL)entriesFromSmartRepliesWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_initWeak(location, self);
     connector = self->_connector;
@@ -1105,7 +1105,7 @@ void __63__MapsSuggestionsBiome_entriesFromFindMyWithCompletionHandler___block_i
     v9[1] = 3221225472;
     v9[2] = __69__MapsSuggestionsBiome_entriesFromSmartRepliesWithCompletionHandler___block_invoke;
     v9[3] = &unk_1E81F5DD8;
-    v10 = v4;
+    v10 = handlerCopy;
     objc_copyWeak(&v11, location);
     v6 = [(MapsSuggestionsBiomeConnector *)connector getSmartRepliesStreamsWithHandler:v9];
     objc_destroyWeak(&v11);

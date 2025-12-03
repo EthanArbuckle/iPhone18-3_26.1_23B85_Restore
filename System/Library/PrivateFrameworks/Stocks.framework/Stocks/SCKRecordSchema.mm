@@ -1,26 +1,26 @@
 @interface SCKRecordSchema
-- (BOOL)isValidRecord:(id)a3;
+- (BOOL)isValidRecord:(id)record;
 - (NSArray)fieldNames;
-- (SCKRecordSchema)initWithRecordType:(id)a3 fieldSchemas:(id)a4;
-- (id)schemaForFieldName:(id)a3;
+- (SCKRecordSchema)initWithRecordType:(id)type fieldSchemas:(id)schemas;
+- (id)schemaForFieldName:(id)name;
 @end
 
 @implementation SCKRecordSchema
 
-- (SCKRecordSchema)initWithRecordType:(id)a3 fieldSchemas:(id)a4
+- (SCKRecordSchema)initWithRecordType:(id)type fieldSchemas:(id)schemas
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  schemasCopy = schemas;
   v14.receiver = self;
   v14.super_class = SCKRecordSchema;
   v8 = [(SCKRecordSchema *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     recordType = v8->_recordType;
     v8->_recordType = v9;
 
-    v11 = [v7 copy];
+    v11 = [schemasCopy copy];
     fieldSchemas = v8->_fieldSchemas;
     v8->_fieldSchemas = v11;
   }
@@ -31,13 +31,13 @@
 - (NSArray)fieldNames
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SCKRecordSchema *)self fieldSchemas];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  fieldSchemas = [(SCKRecordSchema *)self fieldSchemas];
+  v5 = [fieldSchemas countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -48,32 +48,32 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fieldSchemas);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) name];
-        [v3 addObject:v9];
+        name = [*(*(&v11 + 1) + 8 * i) name];
+        [array addObject:name];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [fieldSchemas countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)schemaForFieldName:(id)a3
+- (id)schemaForFieldName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SCKRecordSchema *)self fieldSchemas];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  fieldSchemas = [(SCKRecordSchema *)self fieldSchemas];
+  v6 = [fieldSchemas countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -83,12 +83,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(fieldSchemas);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -97,7 +97,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [fieldSchemas countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -112,13 +112,13 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isValidRecord:(id)a3
+- (BOOL)isValidRecord:(id)record
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [(SCKRecordSchema *)self recordType];
-  v7 = [v5 isEqualToString:v6];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  recordType2 = [(SCKRecordSchema *)self recordType];
+  v7 = [recordType isEqualToString:recordType2];
 
   if (v7)
   {
@@ -126,8 +126,8 @@ LABEL_11:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(SCKRecordSchema *)self fieldSchemas];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    fieldSchemas = [(SCKRecordSchema *)self fieldSchemas];
+    v9 = [fieldSchemas countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -138,17 +138,17 @@ LABEL_11:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(fieldSchemas);
           }
 
-          if (![*(*(&v15 + 1) + 8 * i) isValidRecord:v4])
+          if (![*(*(&v15 + 1) + 8 * i) isValidRecord:recordCopy])
           {
             v13 = 0;
             goto LABEL_13;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [fieldSchemas countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           continue;

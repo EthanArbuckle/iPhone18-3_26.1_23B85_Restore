@@ -1,8 +1,8 @@
 @interface _PSContactHandleFeatureProvider
 + (NSArray)featureNames;
 - (_PSContactHandleFeatureProvider)init;
-- (id)_interactionFeaturesForHandle:(id)a3;
-- (id)interactionFeaturesForHandle:(id)a3;
+- (id)_interactionFeaturesForHandle:(id)handle;
+- (id)interactionFeaturesForHandle:(id)handle;
 - (void)dealloc;
 @end
 
@@ -55,9 +55,9 @@
   return v6;
 }
 
-- (id)interactionFeaturesForHandle:(id)a3
+- (id)interactionFeaturesForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   connection = self->_connection;
   if (connection)
   {
@@ -73,7 +73,7 @@
     v9[2] = __64___PSContactHandleFeatureProvider_interactionFeaturesForHandle___block_invoke_16;
     v9[3] = &unk_1E7C25420;
     v9[4] = &v10;
-    [v6 interactionFeaturesForHandle:v4 reply:v9];
+    [v6 interactionFeaturesForHandle:handleCopy reply:v9];
     v7 = v11[5];
 
     _Block_object_dispose(&v10, 8);
@@ -87,18 +87,18 @@
   return v7;
 }
 
-- (id)_interactionFeaturesForHandle:(id)a3
+- (id)_interactionFeaturesForHandle:(id)handle
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  handleCopy = handle;
   v4 = objc_opt_new();
   v5 = objc_alloc_init(MEMORY[0x1E698F2E0]);
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v6 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v8 = v7;
 
-  v45 = v3;
-  v9 = [v3 stringByReplacingOccurrencesOfString:@"'" withString:@"''" options:2 range:{0, objc_msgSend(v3, "length")}];
+  v45 = handleCopy;
+  v9 = [handleCopy stringByReplacingOccurrencesOfString:@"'" withString:@"''" options:2 range:{0, objc_msgSend(handleCopy, "length")}];
   v10 = MEMORY[0x1E696AEC0];
   v11 = +[_PSContactHandleFeatureProvider timeSinceLastOutgoingInteraction];
   v12 = +[_PSContactHandleFeatureProvider timeSinceLastIncomingInteraction];
@@ -114,11 +114,11 @@
   }
 
   v17 = [v5 executeQuery:{@"%@", v15}];
-  v18 = [v17 error];
+  error = [v17 error];
 
   v44 = v5;
   v42 = v15;
-  if (v18)
+  if (error)
   {
     v19 = +[_PSLogging featureGenerationChannel];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))

@@ -1,43 +1,43 @@
 @interface CARBluetoothClassicDiscoverer
-+ (id)_sanitizeName:(id)a3;
-- (BOOL)pairBluetoothDevice:(id)a3;
++ (id)_sanitizeName:(id)name;
+- (BOOL)pairBluetoothDevice:(id)device;
 - (CARBluetoothClassicDiscoverer)init;
 - (CARBluetoothClassicDiscovery)bluetoothDiscoveryDelegate;
 - (NSSet)discoveredBluetoothDevices;
 - (id)_presentingViewController;
-- (id)_vehicleDeviceFromBluetoothDevice:(id)a3;
-- (void)_handleRemovedDevice:(id)a3;
-- (void)_handleUpdatedDevice:(id)a3;
-- (void)_presentPairingFailedForDevice:(id)a3 error:(int)a4;
-- (void)_saveVehicleForDevice:(id)a3;
-- (void)_shouldListenToBluetoothNotifications:(BOOL)a3;
+- (id)_vehicleDeviceFromBluetoothDevice:(id)device;
+- (void)_handleRemovedDevice:(id)device;
+- (void)_handleUpdatedDevice:(id)device;
+- (void)_presentPairingFailedForDevice:(id)device error:(int)error;
+- (void)_saveVehicleForDevice:(id)device;
+- (void)_shouldListenToBluetoothNotifications:(BOOL)notifications;
 - (void)dealloc;
-- (void)deviceAuthenticationRequestHandler:(id)a3;
-- (void)deviceConnectedHandler:(id)a3;
-- (void)deviceDisconnectedHandler:(id)a3;
-- (void)deviceDiscoveredHandler:(id)a3;
-- (void)devicePairingFailureHandler:(id)a3;
-- (void)devicePairingSuccessHandler:(id)a3;
-- (void)deviceRemovedHandler:(id)a3;
-- (void)deviceUnpairedHandler:(id)a3;
-- (void)deviceUpdatedHandler:(id)a3;
-- (void)handleDiscoveredVehicle:(id)a3;
-- (void)handlePowerChangedNotification:(id)a3;
-- (void)handleRemovedVehicle:(id)a3;
-- (void)handleUpdatedVehicle:(id)a3;
-- (void)pauseDiscoveryForApplicationNotification:(id)a3;
-- (void)restartDiscoveryForApplicationNotification:(id)a3;
-- (void)setPairing:(BOOL)a3;
+- (void)deviceAuthenticationRequestHandler:(id)handler;
+- (void)deviceConnectedHandler:(id)handler;
+- (void)deviceDisconnectedHandler:(id)handler;
+- (void)deviceDiscoveredHandler:(id)handler;
+- (void)devicePairingFailureHandler:(id)handler;
+- (void)devicePairingSuccessHandler:(id)handler;
+- (void)deviceRemovedHandler:(id)handler;
+- (void)deviceUnpairedHandler:(id)handler;
+- (void)deviceUpdatedHandler:(id)handler;
+- (void)handleDiscoveredVehicle:(id)vehicle;
+- (void)handlePowerChangedNotification:(id)notification;
+- (void)handleRemovedVehicle:(id)vehicle;
+- (void)handleUpdatedVehicle:(id)vehicle;
+- (void)pauseDiscoveryForApplicationNotification:(id)notification;
+- (void)restartDiscoveryForApplicationNotification:(id)notification;
+- (void)setPairing:(BOOL)pairing;
 - (void)startDiscovery;
 - (void)stopDiscovery;
 @end
 
 @implementation CARBluetoothClassicDiscoverer
 
-+ (id)_sanitizeName:(id)a3
++ (id)_sanitizeName:(id)name
 {
-  v3 = a3;
-  v4 = [NSScanner scannerWithString:v3];
+  nameCopy = name;
+  v4 = [NSScanner scannerWithString:nameCopy];
   v5 = +[NSCharacterSet illegalCharacterSet];
   [v4 setCharactersToBeSkipped:v5];
 
@@ -103,8 +103,8 @@
     [(CARBluetoothClassicDiscoverer *)v2 setCanAddObservers:1];
     [(CARBluetoothClassicDiscoverer *)v2 _shouldListenToBluetoothNotifications:1];
     v7 = objc_alloc_init(CRCarPlayPreferences);
-    v8 = [v7 isCarPlaySetupEnabled];
-    v2->_carPlaySetupEnabled = [v8 BOOLValue];
+    isCarPlaySetupEnabled = [v7 isCarPlaySetupEnabled];
+    v2->_carPlaySetupEnabled = [isCarPlaySetupEnabled BOOLValue];
 
     v2->_pairing = 0;
   }
@@ -112,13 +112,13 @@
   return v2;
 }
 
-- (void)_shouldListenToBluetoothNotifications:(BOOL)a3
+- (void)_shouldListenToBluetoothNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [(CARBluetoothClassicDiscoverer *)self canAddObservers];
-  if (v3)
+  notificationsCopy = notifications;
+  canAddObservers = [(CARBluetoothClassicDiscoverer *)self canAddObservers];
+  if (notificationsCopy)
   {
-    if (v5)
+    if (canAddObservers)
     {
       [(CARBluetoothClassicDiscoverer *)self setCanAddObservers:0];
       v6 = +[NSNotificationCenter defaultCenter];
@@ -159,7 +159,7 @@
     }
   }
 
-  else if ((v5 & 1) == 0)
+  else if ((canAddObservers & 1) == 0)
   {
     v17 = +[NSNotificationCenter defaultCenter];
     [v17 removeObserver:self name:BluetoothAvailabilityChangedNotification object:0];
@@ -228,7 +228,7 @@
   [(CARBluetoothClassicDiscoverer *)self _shouldListenToBluetoothNotifications:0];
 }
 
-- (void)restartDiscoveryForApplicationNotification:(id)a3
+- (void)restartDiscoveryForApplicationNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -238,7 +238,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)pauseDiscoveryForApplicationNotification:(id)a3
+- (void)pauseDiscoveryForApplicationNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -248,7 +248,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)handlePowerChangedNotification:(id)a3
+- (void)handlePowerChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -258,78 +258,78 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)handleDiscoveredVehicle:(id)a3
+- (void)handleDiscoveredVehicle:(id)vehicle
 {
-  v7 = a3;
-  v4 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+  vehicleCopy = vehicle;
+  bluetoothDiscoveryDelegate = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
-    [v6 bluetoothDiscoverer:self didDiscoverDevice:v7];
+    bluetoothDiscoveryDelegate2 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+    [bluetoothDiscoveryDelegate2 bluetoothDiscoverer:self didDiscoverDevice:vehicleCopy];
   }
 }
 
-- (void)handleUpdatedVehicle:(id)a3
+- (void)handleUpdatedVehicle:(id)vehicle
 {
-  v7 = a3;
-  v4 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+  vehicleCopy = vehicle;
+  bluetoothDiscoveryDelegate = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
-    [v6 bluetoothDiscoverer:self didUpdateDevice:v7];
+    bluetoothDiscoveryDelegate2 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+    [bluetoothDiscoveryDelegate2 bluetoothDiscoverer:self didUpdateDevice:vehicleCopy];
   }
 }
 
-- (void)handleRemovedVehicle:(id)a3
+- (void)handleRemovedVehicle:(id)vehicle
 {
-  v7 = a3;
-  v4 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+  vehicleCopy = vehicle;
+  bluetoothDiscoveryDelegate = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
-    [v6 bluetoothDiscoverer:self didRemoveDevice:v7];
+    bluetoothDiscoveryDelegate2 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+    [bluetoothDiscoveryDelegate2 bluetoothDiscoverer:self didRemoveDevice:vehicleCopy];
   }
 }
 
 - (NSSet)discoveredBluetoothDevices
 {
-  v2 = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
-  v3 = [v2 allValues];
-  v4 = [NSSet setWithArray:v3];
+  deviceForAddress = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
+  allValues = [deviceForAddress allValues];
+  v4 = [NSSet setWithArray:allValues];
 
   return v4;
 }
 
-- (id)_vehicleDeviceFromBluetoothDevice:(id)a3
+- (id)_vehicleDeviceFromBluetoothDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 address];
-  if ([(CARBluetoothClassicDiscoverer *)self _supportsCarPlay:v4])
+  deviceCopy = device;
+  address = [deviceCopy address];
+  if ([(CARBluetoothClassicDiscoverer *)self _supportsCarPlay:deviceCopy])
   {
-    v6 = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
-    v7 = [v6 objectForKey:v5];
+    deviceForAddress = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
+    v7 = [deviceForAddress objectForKey:address];
 
     if (!v7)
     {
       v7 = objc_alloc_init(CARBluetoothClassicDevice);
-      v8 = [v4 address];
-      [(CARBluetoothClassicDevice *)v7 setBluetoothAddress:v8];
+      address2 = [deviceCopy address];
+      [(CARBluetoothClassicDevice *)v7 setBluetoothAddress:address2];
 
-      v9 = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
-      [v9 setObject:v7 forKey:v5];
+      deviceForAddress2 = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
+      [deviceForAddress2 setObject:v7 forKey:address];
     }
 
-    v10 = [v4 name];
-    [(CARBluetoothClassicDevice *)v7 setName:v10];
+    name = [deviceCopy name];
+    [(CARBluetoothClassicDevice *)v7 setName:name];
 
-    -[CARBluetoothClassicDevice setPaired:](v7, "setPaired:", [v4 paired]);
-    if ([v4 connected])
+    -[CARBluetoothClassicDevice setPaired:](v7, "setPaired:", [deviceCopy paired]);
+    if ([deviceCopy connected])
     {
       v11 = 4;
     }
@@ -340,7 +340,7 @@
     }
 
     [(CARBluetoothClassicDevice *)v7 setConnectionStatus:v11];
-    [(CARBluetoothClassicDevice *)v7 setBtDevice:v4];
+    [(CARBluetoothClassicDevice *)v7 setBtDevice:deviceCopy];
   }
 
   else
@@ -351,15 +351,15 @@
   return v7;
 }
 
-- (void)setPairing:(BOOL)a3
+- (void)setPairing:(BOOL)pairing
 {
-  v3 = a3;
-  self->_pairing = a3;
+  pairingCopy = pairing;
+  self->_pairing = pairing;
   v4 = CarPairingLogging();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (pairingCopy)
     {
       v5 = @"YES";
     }
@@ -370,27 +370,27 @@
   }
 }
 
-- (BOOL)pairBluetoothDevice:(id)a3
+- (BOOL)pairBluetoothDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if ([(CARBluetoothClassicDiscoverer *)self isCarPlaySetupEnabled])
   {
-    v5 = [v4 bluetoothAddress];
+    bluetoothAddress = [deviceCopy bluetoothAddress];
     v6 = CarPairingLogging();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 141558275;
       v15 = 1752392040;
       v16 = 2113;
-      v17 = v5;
+      v17 = bluetoothAddress;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "starting pairing for  %{private, mask.hash}@", buf, 0x16u);
     }
 
     [(CARBluetoothClassicDiscoverer *)self setPairing:1];
     [(CARBluetoothClassicDiscoverer *)self pauseDiscovery];
-    v12 = v5;
-    v13 = v4;
-    v7 = v5;
+    v12 = bluetoothAddress;
+    v13 = deviceCopy;
+    v7 = bluetoothAddress;
     CRStartBluetoothClassicPairing();
 
     v8 = 0;
@@ -398,43 +398,43 @@
 
   else
   {
-    v9 = [v4 btDevice];
-    v10 = v9;
-    v8 = v9 != 0;
-    if (v9)
+    btDevice = [deviceCopy btDevice];
+    v10 = btDevice;
+    v8 = btDevice != 0;
+    if (btDevice)
     {
-      [v9 connect];
+      [btDevice connect];
     }
   }
 
-  [v4 setConnectionStatus:2];
-  [(CARBluetoothClassicDiscoverer *)self handleUpdatedVehicle:v4];
+  [deviceCopy setConnectionStatus:2];
+  [(CARBluetoothClassicDiscoverer *)self handleUpdatedVehicle:deviceCopy];
 
   return v8;
 }
 
-- (void)deviceDiscoveredHandler:(id)a3
+- (void)deviceDiscoveredHandler:(id)handler
 {
-  v4 = [a3 object];
+  object = [handler object];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 address];
+    address = [object address];
     v8 = 138412290;
-    v9 = v6;
+    v9 = address;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "discovered %@", &v8, 0xCu);
   }
 
-  v7 = [(CARBluetoothClassicDiscoverer *)self _vehicleDeviceFromBluetoothDevice:v4];
+  v7 = [(CARBluetoothClassicDiscoverer *)self _vehicleDeviceFromBluetoothDevice:object];
   if (v7)
   {
     [(CARBluetoothClassicDiscoverer *)self handleDiscoveredVehicle:v7];
   }
 }
 
-- (void)_handleUpdatedDevice:(id)a3
+- (void)_handleUpdatedDevice:(id)device
 {
-  v4 = [(CARBluetoothClassicDiscoverer *)self _vehicleDeviceFromBluetoothDevice:a3];
+  v4 = [(CARBluetoothClassicDiscoverer *)self _vehicleDeviceFromBluetoothDevice:device];
   if (v4)
   {
     v5 = v4;
@@ -443,181 +443,181 @@
   }
 }
 
-- (void)_handleRemovedDevice:(id)a3
+- (void)_handleRemovedDevice:(id)device
 {
-  v7 = a3;
+  deviceCopy = device;
   v4 = [(CARBluetoothClassicDiscoverer *)self _vehicleDeviceFromBluetoothDevice:?];
   if (v4)
   {
     [(CARBluetoothClassicDiscoverer *)self handleRemovedVehicle:v4];
-    v5 = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
-    v6 = [v7 address];
-    [v5 removeObjectForKey:v6];
+    deviceForAddress = [(CARBluetoothClassicDiscoverer *)self deviceForAddress];
+    address = [deviceCopy address];
+    [deviceForAddress removeObjectForKey:address];
   }
 }
 
-- (void)deviceUpdatedHandler:(id)a3
+- (void)deviceUpdatedHandler:(id)handler
 {
-  v4 = [a3 object];
+  object = [handler object];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 address];
+    address = [object address];
     v7 = 138412290;
-    v8 = v6;
+    v8 = address;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "updated %@", &v7, 0xCu);
   }
 
-  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:v4];
+  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:object];
 }
 
-- (void)devicePairingFailureHandler:(id)a3
+- (void)devicePairingFailureHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:BluetoothErrorKey];
+  handlerCopy = handler;
+  object = [handlerCopy object];
+  userInfo = [handlerCopy userInfo];
+  v7 = [userInfo objectForKey:BluetoothErrorKey];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   else
   {
-    v8 = 0;
+    intValue = 0;
   }
 
   v9 = CarGeneralLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    sub_4A3F0(v4, v9);
+    sub_4A3F0(handlerCopy, v9);
   }
 
-  [(CARBluetoothClassicDiscoverer *)self _presentPairingFailedForDevice:v5 error:v8];
-  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:v5];
+  [(CARBluetoothClassicDiscoverer *)self _presentPairingFailedForDevice:object error:intValue];
+  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:object];
 }
 
-- (void)devicePairingSuccessHandler:(id)a3
+- (void)devicePairingSuccessHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(CARBluetoothClassicDiscoverer *)self isCarPlaySetupEnabled])
   {
-    v5 = CarGeneralLogging();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    object = CarGeneralLogging();
+    if (os_log_type_enabled(object, OS_LOG_TYPE_ERROR))
     {
-      sub_4A468(v5, v6, v7, v8, v9, v10, v11, v12);
+      sub_4A468(object, v6, v7, v8, v9, v10, v11, v12);
     }
   }
 
   else
   {
-    v5 = [v4 object];
+    object = [handlerCopy object];
     v13 = CarGeneralLogging();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v5 address];
+      address = [object address];
       v15 = 138412290;
-      v16 = v14;
+      v16 = address;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "paired %@", &v15, 0xCu);
     }
 
     [(CARBluetoothClassicDiscoverer *)self setPairing:0];
-    [(CARBluetoothClassicDiscoverer *)self _saveVehicleForDevice:v5];
-    [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:v5];
+    [(CARBluetoothClassicDiscoverer *)self _saveVehicleForDevice:object];
+    [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:object];
   }
 }
 
-- (void)deviceRemovedHandler:(id)a3
+- (void)deviceRemovedHandler:(id)handler
 {
-  v4 = [a3 object];
+  object = [handler object];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 address];
+    address = [object address];
     v7 = 138412290;
-    v8 = v6;
+    v8 = address;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "removed %@", &v7, 0xCu);
   }
 
-  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:v4];
+  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:object];
 }
 
-- (void)deviceUnpairedHandler:(id)a3
+- (void)deviceUnpairedHandler:(id)handler
 {
-  v4 = [a3 object];
+  object = [handler object];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 address];
+    address = [object address];
     v7 = 138412290;
-    v8 = v6;
+    v8 = address;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "unpaired %@", &v7, 0xCu);
   }
 
-  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:v4];
+  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:object];
 }
 
-- (void)deviceConnectedHandler:(id)a3
+- (void)deviceConnectedHandler:(id)handler
 {
-  v4 = [a3 object];
+  object = [handler object];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 address];
+    address = [object address];
     v7 = 138412290;
-    v8 = v6;
+    v8 = address;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "connected %@", &v7, 0xCu);
   }
 
-  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:v4];
+  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:object];
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v4 = [a3 object];
+  object = [handler object];
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 address];
+    address = [object address];
     v7 = 138412290;
-    v8 = v6;
+    v8 = address;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "disconnected %@", &v7, 0xCu);
   }
 
-  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:v4];
+  [(CARBluetoothClassicDiscoverer *)self _handleUpdatedDevice:object];
 }
 
-- (void)deviceAuthenticationRequestHandler:(id)a3
+- (void)deviceAuthenticationRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
-    v7 = [v4 object];
+    name = [handlerCopy name];
+    object = [handlerCopy object];
     *buf = 138412546;
-    v28 = v6;
+    v28 = name;
     v29 = 2112;
-    v30 = v7;
+    v30 = object;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "deviceAuthenticationRequestHandler received %@ for %@", buf, 0x16u);
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:BluetoothPairingUserNumericComparisionNotification];
+  name2 = [handlerCopy name];
+  v9 = [name2 isEqualToString:BluetoothPairingUserNumericComparisionNotification];
 
   if (v9)
   {
-    v10 = [v4 object];
-    v11 = [v10 valueForKey:@"device"];
+    object2 = [handlerCopy object];
+    v11 = [object2 valueForKey:@"device"];
 
-    v12 = [v4 object];
-    v13 = [v12 valueForKey:@"value"];
+    object3 = [handlerCopy object];
+    v13 = [object3 valueForKey:@"value"];
 
-    v14 = [v11 address];
+    address = [v11 address];
     v15 = objc_opt_class();
-    v16 = [v11 name];
-    v17 = [v15 _sanitizeName:v16];
+    name3 = [v11 name];
+    v17 = [v15 _sanitizeName:name3];
 
     v18 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%06u", [v13 unsignedIntValue]);
     if ([(CARBluetoothClassicDiscoverer *)self isCarPlaySetupEnabled])
@@ -639,7 +639,7 @@
         v25[3] = sub_F20C;
         v25[4] = &unk_6E738;
         v25[5] = self;
-        v26 = v14;
+        v26 = address;
         CRConfirmAndContinueBluetoothClassicPairing();
       }
     }
@@ -656,10 +656,10 @@
       v22[3] = &unk_6E788;
       objc_copyWeak(v25, buf);
       v23 = v11;
-      v24 = self;
+      selfCopy = self;
       [(CARBluetoothPairingPrompt *)v20 setConfirmationCompletion:v22];
-      v21 = [(CARBluetoothClassicDiscoverer *)self _presentingViewController];
-      [(CARBluetoothPairingPrompt *)v20 presentFromViewController:v21];
+      _presentingViewController = [(CARBluetoothClassicDiscoverer *)self _presentingViewController];
+      [(CARBluetoothPairingPrompt *)v20 presentFromViewController:_presentingViewController];
 
       objc_destroyWeak(v25);
       objc_destroyWeak(buf);
@@ -671,14 +671,14 @@
     v11 = CarGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_4A4A0(v4, v11);
+      sub_4A4A0(handlerCopy, v11);
     }
   }
 }
 
-- (void)_presentPairingFailedForDevice:(id)a3 error:(int)a4
+- (void)_presentPairingFailedForDevice:(id)device error:(int)error
 {
-  v5 = a3;
+  deviceCopy = device;
   if ([(CARBluetoothClassicDiscoverer *)self isCarPlaySetupEnabled])
   {
     v6 = CarGeneralLogging();
@@ -692,22 +692,22 @@
   {
     if ([(CARBluetoothClassicDiscoverer *)self isPairing])
     {
-      v14 = [v5 address];
+      address = [deviceCopy address];
       v15 = objc_opt_class();
-      v16 = [v5 name];
-      v17 = [v15 _sanitizeName:v16];
+      name = [deviceCopy name];
+      v17 = [v15 _sanitizeName:name];
 
-      v18 = [(CARBluetoothClassicDiscoverer *)self _presentingViewController];
-      if (v18)
+      _presentingViewController = [(CARBluetoothClassicDiscoverer *)self _presentingViewController];
+      if (_presentingViewController)
       {
-        v19 = [(CARBluetoothClassicDiscoverer *)self outstandingPairingPrompt];
+        outstandingPairingPrompt = [(CARBluetoothClassicDiscoverer *)self outstandingPairingPrompt];
 
-        if (v19 || ([(CARBluetoothClassicDiscoverer *)self outstandingContactsPrompt], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
+        if (outstandingPairingPrompt || ([(CARBluetoothClassicDiscoverer *)self outstandingContactsPrompt], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
         {
-          [v18 dismissViewControllerAnimated:1 completion:0];
+          [_presentingViewController dismissViewControllerAnimated:1 completion:0];
         }
 
-        [CARBluetoothPairingFailedPrompt presentPairingFailure:v19 != 0 forDeviceName:v17 fromViewController:v18 completion:0];
+        [CARBluetoothPairingFailedPrompt presentPairingFailure:outstandingPairingPrompt != 0 forDeviceName:v17 fromViewController:_presentingViewController completion:0];
       }
 
       [(CARBluetoothClassicDiscoverer *)self setOutstandingPairingPrompt:0];
@@ -718,14 +718,14 @@
   }
 }
 
-- (void)_saveVehicleForDevice:(id)a3
+- (void)_saveVehicleForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 address];
+  deviceCopy = device;
+  address = [deviceCopy address];
   v5 = objc_opt_class();
-  v6 = [v3 name];
+  name = [deviceCopy name];
 
-  v7 = [v5 _sanitizeName:v6];
+  v7 = [v5 _sanitizeName:name];
 
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -733,7 +733,7 @@
     v9 = 138412546;
     v10 = v7;
     v11 = 2112;
-    v12 = v4;
+    v12 = address;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "telling carkitd to handle the pairing for %@ (%@)", &v9, 0x16u);
   }
 
@@ -742,13 +742,13 @@
 
 - (id)_presentingViewController
 {
-  v3 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+  bluetoothDiscoveryDelegate = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
-    v6 = [v5 viewControllerPresentingPairingForBluetoothDiscoverer:self];
+    bluetoothDiscoveryDelegate2 = [(CARBluetoothClassicDiscoverer *)self bluetoothDiscoveryDelegate];
+    v6 = [bluetoothDiscoveryDelegate2 viewControllerPresentingPairingForBluetoothDiscoverer:self];
   }
 
   else

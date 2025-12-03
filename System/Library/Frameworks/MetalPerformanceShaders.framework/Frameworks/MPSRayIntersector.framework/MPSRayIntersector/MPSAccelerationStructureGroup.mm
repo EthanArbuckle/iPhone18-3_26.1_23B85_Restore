@@ -1,18 +1,18 @@
 @interface MPSAccelerationStructureGroup
-- (MPSAccelerationStructureGroup)initWithDevice:(id)a3 storageMode:(unint64_t)a4;
 - (MPSAccelerationStructureGroup)initWithDevice:(id)device;
+- (MPSAccelerationStructureGroup)initWithDevice:(id)device storageMode:(unint64_t)mode;
 - (void)dealloc;
 @end
 
 @implementation MPSAccelerationStructureGroup
 
-- (MPSAccelerationStructureGroup)initWithDevice:(id)a3 storageMode:(unint64_t)a4
+- (MPSAccelerationStructureGroup)initWithDevice:(id)device storageMode:(unint64_t)mode
 {
   v7.receiver = self;
   v7.super_class = MPSAccelerationStructureGroup;
   if ([(MPSAccelerationStructureGroup *)&v7 init])
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if ((mode & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       sub_239E24918();
     }

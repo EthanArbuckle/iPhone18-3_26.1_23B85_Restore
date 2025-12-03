@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengeInviteInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -44,27 +44,27 @@ void __63__GKLeaderboardChallengeInviteInternal_secureCodedPropertyKeys__block_i
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeInviteInternal);
-  v5 = [v3 objectForKeyedSubscript:@"challenge-id"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"challenge-id"];
   [(GKLeaderboardChallengeInviteInternal *)v4 setChallengeID:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"challenge-vendor-id"];
+  v6 = [fragmentCopy objectForKeyedSubscript:@"challenge-vendor-id"];
   [(GKLeaderboardChallengeInviteInternal *)v4 setChallengeVendorID:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"bundle-id"];
+  v7 = [fragmentCopy objectForKeyedSubscript:@"bundle-id"];
   [(GKLeaderboardChallengeInviteInternal *)v4 setBundleID:v7];
 
-  v8 = [v3 objectForKeyedSubscript:@"bundle-ids"];
+  v8 = [fragmentCopy objectForKeyedSubscript:@"bundle-ids"];
   [(GKLeaderboardChallengeInviteInternal *)v4 setBundleIDs:v8];
 
-  v9 = [v3 objectForKeyedSubscript:@"from-player-id"];
+  v9 = [fragmentCopy objectForKeyedSubscript:@"from-player-id"];
   [(GKLeaderboardChallengeInviteInternal *)v4 setFromPlayerID:v9];
 
   v10 = MEMORY[0x277CBEAA8];
-  v11 = [v3 objectForKeyedSubscript:@"invited-timestamp"];
+  v11 = [fragmentCopy objectForKeyedSubscript:@"invited-timestamp"];
 
   v12 = [v10 _gkDateFromServerTimestamp:v11];
   [(GKLeaderboardChallengeInviteInternal *)v4 setInvitedDate:v12];

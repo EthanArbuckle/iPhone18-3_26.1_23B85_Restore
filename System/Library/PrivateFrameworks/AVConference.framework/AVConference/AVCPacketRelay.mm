@@ -1,29 +1,29 @@
 @interface AVCPacketRelay
-- (AVCPacketRelay)initWithConnection:(id)a3 connection:(id)a4 error:(id *)a5;
-- (AVCPacketRelay)initWithConnections:(id)a3 multiplexedConnection:(id)a4 error:(id *)a5;
-- (BOOL)isAllConnectionTypeValid:(id)a3;
+- (AVCPacketRelay)initWithConnection:(id)connection connection:(id)a4 error:(id *)error;
+- (AVCPacketRelay)initWithConnections:(id)connections multiplexedConnection:(id)connection error:(id *)error;
+- (BOOL)isAllConnectionTypeValid:(id)valid;
 - (BOOL)stopAllConnections;
-- (id)findConnectionToForwardData:(const void *)a3 size:(int)a4;
+- (id)findConnectionToForwardData:(const void *)data size:(int)size;
 - (int)startAllConnections;
 - (void)dealloc;
-- (void)healthPrint:(unint64_t)a3 isSend:(BOOL)a4;
+- (void)healthPrint:(unint64_t)print isSend:(BOOL)send;
 - (void)start;
 - (void)startAllConnections;
 - (void)stop;
 - (void)stopAllConnections;
-- (void)updateDemuxPacketStatsWithPacketFilterPacketType:(unsigned __int8)a3;
+- (void)updateDemuxPacketStatsWithPacketFilterPacketType:(unsigned __int8)type;
 @end
 
 @implementation AVCPacketRelay
 
-- (AVCPacketRelay)initWithConnection:(id)a3 connection:(id)a4 error:(id *)a5
+- (AVCPacketRelay)initWithConnection:(id)connection connection:(id)a4 error:(id *)error
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v6[0] = a3;
-  return -[AVCPacketRelay initWithConnections:multiplexedConnection:error:](self, "initWithConnections:multiplexedConnection:error:", [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1], a4, a5);
+  v6[0] = connection;
+  return -[AVCPacketRelay initWithConnections:multiplexedConnection:error:](self, "initWithConnections:multiplexedConnection:error:", [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1], a4, error);
 }
 
-- (AVCPacketRelay)initWithConnections:(id)a3 multiplexedConnection:(id)a4 error:(id *)a5
+- (AVCPacketRelay)initWithConnections:(id)connections multiplexedConnection:(id)connection error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -35,8 +35,8 @@
     return v9;
   }
 
-  v10 = [a3 count];
-  if (!a4 || !v10)
+  v10 = [connections count];
+  if (!connection || !v10)
   {
     v22 = -2144731135;
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -59,24 +59,24 @@ LABEL_23:
     if (VRTraceGetErrorLogLevelForModule() >= 3 && (VRTraceErrorLogLevelToCSTR(), os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR)))
     {
       [AVCPacketRelay initWithConnections:multiplexedConnection:error:];
-      if (!a5)
+      if (!error)
       {
         goto LABEL_28;
       }
     }
 
-    else if (!a5)
+    else if (!error)
     {
 LABEL_28:
 
       return 0;
     }
 
-    *a5 = v24;
+    *error = v24;
     goto LABEL_28;
   }
 
-  if (![a4 type] || !-[AVCPacketRelay isAllConnectionTypeValid:](v9, "isAllConnectionTypeValid:", a3))
+  if (![connection type] || !-[AVCPacketRelay isAllConnectionTypeValid:](v9, "isAllConnectionTypeValid:", connections))
   {
     v22 = -2144731135;
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -121,14 +121,14 @@ LABEL_28:
   v26[2] = __66__AVCPacketRelay_initWithConnections_multiplexedConnection_error___block_invoke;
   v26[3] = &unk_1E85F91D0;
   v26[4] = v13;
-  [a4 setIsDemuxNeeded:1];
-  [a4 setReadHandler:v26];
-  [(AVCPacketRelay *)v9 setMultiplexedConnection:a4];
+  [connection setIsDemuxNeeded:1];
+  [connection setReadHandler:v26];
+  [(AVCPacketRelay *)v9 setMultiplexedConnection:connection];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v14 = [a3 countByEnumeratingWithState:&v37 objects:v36 count:16];
+  v14 = [connections countByEnumeratingWithState:&v37 objects:v36 count:16];
   if (v14)
   {
     v15 = v14;
@@ -139,7 +139,7 @@ LABEL_28:
       {
         if (*v38 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(connections);
         }
 
         v18 = *(*(&v37 + 1) + 8 * i);
@@ -147,13 +147,13 @@ LABEL_28:
         [v18 setReadHandler:v26];
       }
 
-      v15 = [a3 countByEnumeratingWithState:&v37 objects:v36 count:16];
+      v15 = [connections countByEnumeratingWithState:&v37 objects:v36 count:16];
     }
 
     while (v15);
   }
 
-  [(AVCPacketRelay *)v9 setConnections:a3];
+  [(AVCPacketRelay *)v9 setConnections:connections];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v19 = VRTraceErrorLogLevelToCSTR();
@@ -393,14 +393,14 @@ uint64_t __22__AVCPacketRelay_stop__block_invoke(uint64_t a1)
   [(AVCPacketRelay *)&v6 dealloc];
 }
 
-- (BOOL)isAllConnectionTypeValid:(id)a3
+- (BOOL)isAllConnectionTypeValid:(id)valid
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v4 = [valid countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
@@ -411,18 +411,18 @@ LABEL_3:
     {
       if (*v12 != v6)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(valid);
       }
 
-      v8 = [*(*(&v11 + 1) + 8 * v7) type];
-      if (!v8)
+      type = [*(*(&v11 + 1) + 8 * v7) type];
+      if (!type)
       {
         break;
       }
 
       if (v5 == ++v7)
       {
-        v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v5 = [valid countByEnumeratingWithState:&v11 objects:v10 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -436,10 +436,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v8) = 1;
+    LOBYTE(type) = 1;
   }
 
-  return v8;
+  return type;
 }
 
 - (int)startAllConnections
@@ -464,10 +464,10 @@ LABEL_9:
           objc_enumerationMutation(connections);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) start];
-        if (v8 < 0)
+        start = [*(*(&v12 + 1) + 8 * i) start];
+        if (start < 0)
         {
-          v9 = v8;
+          start2 = start;
           goto LABEL_12;
         }
       }
@@ -482,8 +482,8 @@ LABEL_9:
     }
   }
 
-  v9 = [(AVCPacketRelayConnectionProtocol *)self->_multiplexedConnection start];
-  if (v9 < 0)
+  start2 = [(AVCPacketRelayConnectionProtocol *)self->_multiplexedConnection start];
+  if (start2 < 0)
   {
 LABEL_12:
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -496,7 +496,7 @@ LABEL_12:
     }
   }
 
-  return v9;
+  return start2;
 }
 
 - (BOOL)stopAllConnections
@@ -523,10 +523,10 @@ LABEL_12:
           objc_enumerationMutation(connections);
         }
 
-        v9 = [*(*(&v24 + 1) + 8 * i) stop];
-        if (v9 < 0)
+        stop = [*(*(&v24 + 1) + 8 * i) stop];
+        if (stop < 0)
         {
-          v10 = v9;
+          v10 = stop;
           if (VRTraceGetErrorLogLevelForModule() >= 3)
           {
             v11 = VRTraceErrorLogLevelToCSTR();
@@ -590,9 +590,9 @@ LABEL_12:
   return v5 != 0;
 }
 
-- (id)findConnectionToForwardData:(const void *)a3 size:(int)a4
+- (id)findConnectionToForwardData:(const void *)data size:(int)size
 {
-  v4 = *&a4;
+  v4 = *&size;
   v18 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
@@ -617,7 +617,7 @@ LABEL_3:
     }
 
     v11 = *(*(&v14 + 1) + 8 * v10);
-    if (![v11 packetFilter] || (objc_msgSend(objc_msgSend(v11, "packetFilter"), "isMatchedPacket:size:", a3, v4) & 1) != 0)
+    if (![v11 packetFilter] || (objc_msgSend(objc_msgSend(v11, "packetFilter"), "isMatchedPacket:size:", data, v4) & 1) != 0)
     {
       return v11;
     }
@@ -636,16 +636,16 @@ LABEL_3:
   }
 }
 
-- (void)healthPrint:(unint64_t)a3 isSend:(BOOL)a4
+- (void)healthPrint:(unint64_t)print isSend:(BOOL)send
 {
-  v4 = a4;
-  v5 = a3;
+  sendCopy = send;
+  printCopy = print;
   v48 = *MEMORY[0x1E69E9840];
   v7 = micro();
-  if (v4)
+  if (sendCopy)
   {
     v8.i32[0] = 1;
-    v8.i32[1] = v5;
+    v8.i32[1] = printCopy;
     *&self->_healthStats.sendPacketCount = vadd_s32(*&self->_healthStats.sendPacketCount, v8);
     v9 = v7 - self->_healthStats.lastSendTimePrint;
     if (v9 > 0.0 && v9 > 5.0)
@@ -684,7 +684,7 @@ LABEL_3:
   else
   {
     v15.i32[0] = 1;
-    v15.i32[1] = v5;
+    v15.i32[1] = printCopy;
     *&self->_healthStats.receivePacketCount = vadd_s32(*&self->_healthStats.receivePacketCount, v15);
     v16 = v7 - self->_healthStats.lastReceiveTimePrint;
     if (v16 > 0.0 && v16 > 5.0)
@@ -735,19 +735,19 @@ LABEL_3:
   }
 }
 
-- (void)updateDemuxPacketStatsWithPacketFilterPacketType:(unsigned __int8)a3
+- (void)updateDemuxPacketStatsWithPacketFilterPacketType:(unsigned __int8)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     ++self->_healthStats.demuxPacketStats.rtcpPacketCount;
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     ++self->_healthStats.demuxPacketStats.rtpPacketCount;
   }
 
-  else if (a3)
+  else if (type)
   {
     ++self->_healthStats.demuxPacketStats.droppedPacketCount;
   }

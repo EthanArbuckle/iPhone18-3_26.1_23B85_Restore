@@ -1,10 +1,10 @@
 @interface RMProtocolStatusReport_StatusReason
 + (NSSet)allowedReportKeys;
-+ (id)buildRequiredOnlyWithCode:(id)a3;
-+ (id)buildWithCode:(id)a3 description:(id)a4 details:(id)a5;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithCode:(id)code;
++ (id)buildWithCode:(id)code description:(id)description details:(id)details;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMProtocolStatusReport_StatusReason
@@ -24,98 +24,98 @@
   return v4;
 }
 
-+ (id)buildWithCode:(id)a3 description:(id)a4 details:(id)a5
++ (id)buildWithCode:(id)code description:(id)description details:(id)details
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  detailsCopy = details;
+  descriptionCopy = description;
+  codeCopy = code;
   v10 = objc_opt_new();
-  [v10 setReportCode:v9];
+  [v10 setReportCode:codeCopy];
 
-  [v10 setReportDescription:v8];
-  [v10 setReportDetails:v7];
+  [v10 setReportDescription:descriptionCopy];
+  [v10 setReportDetails:detailsCopy];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithCode:(id)a3
++ (id)buildRequiredOnlyWithCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v4 = objc_opt_new();
-  [v4 setReportCode:v3];
+  [v4 setReportCode:codeCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMProtocolStatusReport_StatusReason allowedReportKeys];
   [v11 minusSet:v12];
 
   if ([v11 count])
   {
-    if (a5)
+    if (error)
     {
       v13 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277CCA450];
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected payload keys: %@", v11];
       v20[0] = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      *a5 = [v13 errorWithDomain:@"error" code:1 userInfo:v15];
+      *error = [v13 errorWithDomain:@"error" code:1 userInfo:v15];
 
 LABEL_7:
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    if (![(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Code" forKeyPath:@"reportCode" isRequired:1 defaultValue:0 error:a5]|| ![(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"Description" forKeyPath:@"reportDescription" isRequired:0 defaultValue:0 error:a5])
+    if (![(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Code" forKeyPath:@"reportCode" isRequired:1 defaultValue:0 error:error]|| ![(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"Description" forKeyPath:@"reportDescription" isRequired:0 defaultValue:0 error:error])
     {
       goto LABEL_7;
     }
 
-    LOWORD(v18) = a4;
-    LOBYTE(a5) = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"Details" forKeyPath:@"reportDetails" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:a5];
+    LOWORD(v18) = type;
+    LOBYTE(error) = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Details" forKeyPath:@"reportDetails" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:error];
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMProtocolStatusReport_StatusReason *)self reportCode];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Code" value:v6 isRequired:1 defaultValue:0];
+  reportCode = [(RMProtocolStatusReport_StatusReason *)self reportCode];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Code" value:reportCode isRequired:1 defaultValue:0];
 
-  v7 = [(RMProtocolStatusReport_StatusReason *)self reportDescription];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Description" value:v7 isRequired:0 defaultValue:0];
+  reportDescription = [(RMProtocolStatusReport_StatusReason *)self reportDescription];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"Description" value:reportDescription isRequired:0 defaultValue:0];
 
-  v8 = [(RMProtocolStatusReport_StatusReason *)self reportDetails];
+  reportDetails = [(RMProtocolStatusReport_StatusReason *)self reportDetails];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__RMProtocolStatusReport_StatusReason_serializeWithType___block_invoke;
   v11[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v12 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Details" value:v8 dictSerializer:v11 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Details" value:reportDetails dictSerializer:v11 isRequired:0 defaultValue:0];
 
   v9 = [v5 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMProtocolStatusReport_StatusReason;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_reportCode copy];
   v6 = v4[2];
   v4[2] = v5;

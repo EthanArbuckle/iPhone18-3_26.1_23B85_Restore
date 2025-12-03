@@ -12,22 +12,22 @@
   v2 = [(_ExplorerDotLayer *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     noServicePillLayer = v2->_noServicePillLayer;
-    v2->_noServicePillLayer = v3;
+    v2->_noServicePillLayer = layer;
 
     v5 = v2->_noServicePillLayer;
     CATransform3DMakeRotation(&v11, 1.57079633, 1.0, 0.0, 0.0);
     [(CALayer *)v5 setTransform:&v11];
     [(_ExplorerDotLayer *)v2 addSublayer:v2->_noServicePillLayer];
-    v6 = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     connectivityDotBackingLayer = v2->_connectivityDotBackingLayer;
-    v2->_connectivityDotBackingLayer = v6;
+    v2->_connectivityDotBackingLayer = layer2;
 
     [(_ExplorerDotLayer *)v2 addSublayer:v2->_connectivityDotBackingLayer];
-    v8 = [MEMORY[0x277CD9ED0] layer];
+    layer3 = [MEMORY[0x277CD9ED0] layer];
     connectivityDotLayer = v2->_connectivityDotLayer;
-    v2->_connectivityDotLayer = v8;
+    v2->_connectivityDotLayer = layer3;
 
     [(_ExplorerDotLayer *)v2 addSublayer:v2->_connectivityDotLayer];
   }

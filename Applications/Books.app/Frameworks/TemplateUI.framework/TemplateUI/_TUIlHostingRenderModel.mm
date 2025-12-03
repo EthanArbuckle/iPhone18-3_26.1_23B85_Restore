@@ -1,34 +1,34 @@
 @interface _TUIlHostingRenderModel
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGPoint)anchorPoint;
 - (CGSize)requestedSize;
 - (UIEdgeInsets)insets;
-- (_TUIlHostingRenderModel)initWithIdentifier:(id)a3 size:(CGSize)a4 requestedSize:(CGSize)a5 usingGeometry:(BOOL)a6 insets:(UIEdgeInsets)a7 hostingIdentifier:(id)a8 hostingProperties:(id)a9 anchorPoint:(CGPoint)a10;
+- (_TUIlHostingRenderModel)initWithIdentifier:(id)identifier size:(CGSize)size requestedSize:(CGSize)requestedSize usingGeometry:(BOOL)geometry insets:(UIEdgeInsets)insets hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties anchorPoint:(CGPoint)self0;
 @end
 
 @implementation _TUIlHostingRenderModel
 
-- (_TUIlHostingRenderModel)initWithIdentifier:(id)a3 size:(CGSize)a4 requestedSize:(CGSize)a5 usingGeometry:(BOOL)a6 insets:(UIEdgeInsets)a7 hostingIdentifier:(id)a8 hostingProperties:(id)a9 anchorPoint:(CGPoint)a10
+- (_TUIlHostingRenderModel)initWithIdentifier:(id)identifier size:(CGSize)size requestedSize:(CGSize)requestedSize usingGeometry:(BOOL)geometry insets:(UIEdgeInsets)insets hostingIdentifier:(id)hostingIdentifier hostingProperties:(id)properties anchorPoint:(CGPoint)self0
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
-  height = a5.height;
-  width = a5.width;
-  v18 = a4.height;
-  v19 = a4.width;
-  v22 = a8;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = requestedSize.height;
+  width = requestedSize.width;
+  v18 = size.height;
+  v19 = size.width;
+  hostingIdentifierCopy = hostingIdentifier;
   v26.receiver = self;
   v26.super_class = _TUIlHostingRenderModel;
-  v23 = [(TUIRenderModelView *)&v26 initWithReuseIdentifier:@"TUIReuseIdentifierHostingView" identifier:a3 submodel:0];
+  v23 = [(TUIRenderModelView *)&v26 initWithReuseIdentifier:@"TUIReuseIdentifierHostingView" identifier:identifier submodel:0];
   v24 = v23;
   if (v23)
   {
     v23->_requestedSize.width = width;
     v23->_requestedSize.height = height;
-    v23->_usingGeometry = a6;
-    objc_storeStrong(&v23->_hostingIdentifier, a8);
+    v23->_usingGeometry = geometry;
+    objc_storeStrong(&v23->_hostingIdentifier, hostingIdentifier);
     v24->_anchorPoint.x = v27;
     v24->_anchorPoint.y = v28;
     v24->_insets.top = top;
@@ -41,16 +41,16 @@
   return v24;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
     v5 = objc_opt_class();
     v6 = objc_opt_class();
     if (v5 == v6)
     {
-      v7 = v4;
+      v7 = modelCopy;
     }
 
     else
@@ -59,10 +59,10 @@
     }
 
     v8 = v7;
-    if (v5 == v6 && (v14.receiver = self, v14.super_class = _TUIlHostingRenderModel, [(TUIRenderModelView *)&v14 isEqualToRenderModel:v4]) && (self->_requestedSize.width == *(v4 + 11) ? (v9 = self->_requestedSize.height == *(v4 + 12)) : (v9 = 0), v9 && self->_usingGeometry == v4[64] && (self->_anchorPoint.x == *(v4 + 13) ? (v10 = self->_anchorPoint.y == *(v4 + 14)) : (v10 = 0), v10 && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_insets.top, *(v4 + 120)), vceqq_f64(*&self->_insets.bottom, *(v4 + 136))))) & 1) != 0)))
+    if (v5 == v6 && (v14.receiver = self, v14.super_class = _TUIlHostingRenderModel, [(TUIRenderModelView *)&v14 isEqualToRenderModel:modelCopy]) && (self->_requestedSize.width == *(modelCopy + 11) ? (v9 = self->_requestedSize.height == *(modelCopy + 12)) : (v9 = 0), v9 && self->_usingGeometry == modelCopy[64] && (self->_anchorPoint.x == *(modelCopy + 13) ? (v10 = self->_anchorPoint.y == *(modelCopy + 14)) : (v10 = 0), v10 && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_insets.top, *(modelCopy + 120)), vceqq_f64(*&self->_insets.bottom, *(modelCopy + 136))))) & 1) != 0)))
     {
       hostingIdentifier = self->_hostingIdentifier;
-      if (hostingIdentifier == *(v4 + 9))
+      if (hostingIdentifier == *(modelCopy + 9))
       {
         v11 = 1;
       }

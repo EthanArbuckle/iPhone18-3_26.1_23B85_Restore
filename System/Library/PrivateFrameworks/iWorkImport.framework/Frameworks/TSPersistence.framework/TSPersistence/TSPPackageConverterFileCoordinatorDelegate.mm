@@ -1,6 +1,6 @@
 @interface TSPPackageConverterFileCoordinatorDelegate
 - (TSPPackageConverterFileCoordinatorDelegate)init;
-- (TSPPackageConverterFileCoordinatorDelegate)initWithURL:(id)a3;
+- (TSPPackageConverterFileCoordinatorDelegate)initWithURL:(id)l;
 @end
 
 @implementation TSPPackageConverterFileCoordinatorDelegate
@@ -21,15 +21,15 @@
   objc_exception_throw(v13);
 }
 
-- (TSPPackageConverterFileCoordinatorDelegate)initWithURL:(id)a3
+- (TSPPackageConverterFileCoordinatorDelegate)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = TSPPackageConverterFileCoordinatorDelegate;
   v7 = [(TSPPackageConverterFileCoordinatorDelegate *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_copy(v4, v5, v6);
+    v8 = objc_msgSend_copy(lCopy, v5, v6);
     URL = v7->_URL;
     v7->_URL = v8;
   }

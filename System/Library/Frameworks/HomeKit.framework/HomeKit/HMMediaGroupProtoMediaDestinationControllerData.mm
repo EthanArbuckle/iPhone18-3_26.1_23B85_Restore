@@ -1,32 +1,32 @@
 @interface HMMediaGroupProtoMediaDestinationControllerData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAvailableDestinations:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAvailableDestinations:(id)destinations;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMMediaGroupProtoMediaDestinationControllerData
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(HMMediaGroupProtoMediaDestinationControllerData *)self setIdentifier:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HMMediaGroupProtoMediaDestinationControllerData *)self setParentIdentifier:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HMMediaGroupProtoMediaDestinationControllerData *)self setDestinationIdentifier:?];
   }
@@ -35,7 +35,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -59,9 +59,9 @@
     while (v7);
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_supportedOptions = *(v4 + 1);
+    self->_supportedOptions = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -87,16 +87,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -105,7 +105,7 @@
   }
 
   parentIdentifier = self->_parentIdentifier;
-  if (parentIdentifier | *(v4 + 5))
+  if (parentIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)parentIdentifier isEqual:?])
     {
@@ -114,7 +114,7 @@
   }
 
   destinationIdentifier = self->_destinationIdentifier;
-  if (destinationIdentifier | *(v4 + 3))
+  if (destinationIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)destinationIdentifier isEqual:?])
     {
@@ -123,7 +123,7 @@
   }
 
   availableDestinations = self->_availableDestinations;
-  if (availableDestinations | *(v4 + 2))
+  if (availableDestinations | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)availableDestinations isEqual:?])
     {
@@ -131,10 +131,10 @@
     }
   }
 
-  v9 = (*(v4 + 48) & 1) == 0;
+  v9 = (*(equalCopy + 48) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) != 0 && self->_supportedOptions == *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) != 0 && self->_supportedOptions == *(equalCopy + 1))
     {
       v9 = 1;
       goto LABEL_15;
@@ -149,19 +149,19 @@ LABEL_15:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_parentIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_parentIdentifier copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSString *)self->_destinationIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_destinationIdentifier copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -185,7 +185,7 @@ LABEL_15:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addAvailableDestinations:v17];
 
         ++v16;
@@ -208,50 +208,50 @@ LABEL_15:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
-    [v8 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if (self->_parentIdentifier)
   {
-    [v8 setParentIdentifier:?];
+    [toCopy setParentIdentifier:?];
   }
 
   if (self->_destinationIdentifier)
   {
-    [v8 setDestinationIdentifier:?];
+    [toCopy setDestinationIdentifier:?];
   }
 
   if ([(HMMediaGroupProtoMediaDestinationControllerData *)self availableDestinationsCount])
   {
-    [v8 clearAvailableDestinations];
-    v4 = [(HMMediaGroupProtoMediaDestinationControllerData *)self availableDestinationsCount];
-    if (v4)
+    [toCopy clearAvailableDestinations];
+    availableDestinationsCount = [(HMMediaGroupProtoMediaDestinationControllerData *)self availableDestinationsCount];
+    if (availableDestinationsCount)
     {
-      v5 = v4;
+      v5 = availableDestinationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMMediaGroupProtoMediaDestinationControllerData *)self availableDestinationsAtIndex:i];
-        [v8 addAvailableDestinations:v7];
+        [toCopy addAvailableDestinations:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 1) = self->_supportedOptions;
-    *(v8 + 48) |= 1u;
+    *(toCopy + 1) = self->_supportedOptions;
+    *(toCopy + 48) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -310,12 +310,12 @@ LABEL_15:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   parentIdentifier = self->_parentIdentifier;
@@ -351,28 +351,28 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = HMMediaGroupProtoMediaDestinationControllerData;
   v4 = [(HMMediaGroupProtoMediaDestinationControllerData *)&v8 description];
-  v5 = [(HMMediaGroupProtoMediaDestinationControllerData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMMediaGroupProtoMediaDestinationControllerData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addAvailableDestinations:(id)a3
+- (void)addAvailableDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   availableDestinations = self->_availableDestinations;
-  v8 = v4;
+  v8 = destinationsCopy;
   if (!availableDestinations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_availableDestinations;
     self->_availableDestinations = v6;
 
-    v4 = v8;
+    destinationsCopy = v8;
     availableDestinations = self->_availableDestinations;
   }
 
-  [(NSMutableArray *)availableDestinations addObject:v4];
+  [(NSMutableArray *)availableDestinations addObject:destinationsCopy];
 }
 
 @end

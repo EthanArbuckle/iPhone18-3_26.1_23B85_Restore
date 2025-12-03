@@ -1,5 +1,5 @@
 @interface MPCFWrapper
-- (MPCFWrapper)initWithCFType:(void *)a3;
+- (MPCFWrapper)initWithCFType:(void *)type;
 - (void)dealloc;
 @end
 
@@ -17,22 +17,22 @@
   [(MPCFWrapper *)&v3 dealloc];
 }
 
-- (MPCFWrapper)initWithCFType:(void *)a3
+- (MPCFWrapper)initWithCFType:(void *)type
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = type;
+  if (type)
   {
     v6.receiver = self;
     v6.super_class = MPCFWrapper;
     v4 = [(MPCFWrapper *)&v6 init];
     if (v4)
     {
-      CFRetain(v3);
-      v4->_refValue = v3;
+      CFRetain(selfCopy);
+      v4->_refValue = selfCopy;
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
   else
@@ -40,7 +40,7 @@
     self->_nullRef = 1;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

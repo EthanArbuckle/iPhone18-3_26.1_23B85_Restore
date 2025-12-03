@@ -2,28 +2,28 @@
 + (id)_sharedSessionConfiguration;
 + (id)sharedDomainPolicyProvider;
 + (id)sharedPARSession;
-+ (void)_parsecEnabledDidChange:(id)a3;
-+ (void)_updateAutoFillTLDsIfNeededForSession:(id)a3 completionHandler:(id)a4;
-+ (void)_updateParsecAvailabilityInSessionConfiguration:(id)a3;
++ (void)_parsecEnabledDidChange:(id)change;
++ (void)_updateAutoFillTLDsIfNeededForSession:(id)session completionHandler:(id)handler;
++ (void)_updateParsecAvailabilityInSessionConfiguration:(id)configuration;
 + (void)clearAllParsecFeedbackAndEngagedCompletions;
-- (WBSParsecDSession)initWithParsecdSession:(id)a3 skipAutoFillDataUpdates:(BOOL)a4;
-- (void)_didReceiveResponse:(id)a3 error:(id)a4 forTask:(id)a5 query:(id)a6;
-- (void)_setCurrentQuery:(id)a3 withKeyboardInputType:(id)a4;
-- (void)_simulatePARResponseFromJSON:(id)a3 response:(id)a4 task:(id)a5 error:(id)a6;
-- (void)_startUpdatingAutoFillDataInBackgroundIfPossibleForSession:(id)a3;
-- (void)setCurrentQuery:(id)a3;
-- (void)setDelegate:(id)a3;
+- (WBSParsecDSession)initWithParsecdSession:(id)session skipAutoFillDataUpdates:(BOOL)updates;
+- (void)_didReceiveResponse:(id)response error:(id)error forTask:(id)task query:(id)query;
+- (void)_setCurrentQuery:(id)query withKeyboardInputType:(id)type;
+- (void)_simulatePARResponseFromJSON:(id)n response:(id)response task:(id)task error:(id)error;
+- (void)_startUpdatingAutoFillDataInBackgroundIfPossibleForSession:(id)session;
+- (void)setCurrentQuery:(id)query;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation WBSParsecDSession
 
 + (id)sharedPARSession
 {
-  v2 = [a1 _sharedSessionConfiguration];
+  _sharedSessionConfiguration = [self _sharedSessionConfiguration];
   objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [MEMORY[0x1E6998670] sharedPARSessionWithConfiguration:v2];
+    v3 = [MEMORY[0x1E6998670] sharedPARSessionWithConfiguration:_sharedSessionConfiguration];
   }
 
   else
@@ -32,7 +32,7 @@
     block[1] = 3221225472;
     block[2] = __37__WBSParsecDSession_sharedPARSession__block_invoke;
     block[3] = &unk_1E7FB6F80;
-    v6 = v2;
+    v6 = _sharedSessionConfiguration;
     if (+[WBSParsecDSession sharedPARSession]::onceToken != -1)
     {
       dispatch_once(&+[WBSParsecDSession sharedPARSession]::onceToken, block);
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = __48__WBSParsecDSession__sharedSessionConfiguration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[WBSParsecDSession _sharedSessionConfiguration]::onceToken != -1)
   {
     dispatch_once(&+[WBSParsecDSession _sharedSessionConfiguration]::onceToken, block);
@@ -102,29 +102,29 @@ void __47__WBSParsecDSession_sharedDomainPolicyProvider__block_invoke()
   +[WBSParsecDSession sharedDomainPolicyProvider]::sharedDomainPolicyProvider = v1;
 }
 
-+ (void)_parsecEnabledDidChange:(id)a3
++ (void)_parsecEnabledDidChange:(id)change
 {
-  v4 = [a1 _sharedSessionConfiguration];
-  [a1 _updateParsecAvailabilityInSessionConfiguration:?];
+  _sharedSessionConfiguration = [self _sharedSessionConfiguration];
+  [self _updateParsecAvailabilityInSessionConfiguration:?];
 }
 
-+ (void)_updateParsecAvailabilityInSessionConfiguration:(id)a3
++ (void)_updateParsecAvailabilityInSessionConfiguration:(id)configuration
 {
-  v3 = a3;
-  [v3 setParsecEnabled:{+[WBSSharedFeatureAvailability areSiriSearchSuggestionsEnabled](WBSSharedFeatureAvailability, "areSiriSearchSuggestionsEnabled")}];
+  configurationCopy = configuration;
+  [configurationCopy setParsecEnabled:{+[WBSSharedFeatureAvailability areSiriSearchSuggestionsEnabled](WBSSharedFeatureAvailability, "areSiriSearchSuggestionsEnabled")}];
 }
 
 + (void)clearAllParsecFeedbackAndEngagedCompletions
 {
-  v4 = [objc_opt_class() sharedPARSession];
+  sharedPARSession = [objc_opt_class() sharedPARSession];
   if (objc_opt_respondsToSelector())
   {
-    [v4 clearSafariFeedback:&__block_literal_global_27_3];
+    [sharedPARSession clearSafariFeedback:&__block_literal_global_27_3];
   }
 
-  v2 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v3 = [MEMORY[0x1E695DF00] now];
-  [v4 clearEngagementsFromDate:v2 toDate:v3];
+  [sharedPARSession clearEngagementsFromDate:distantPast toDate:v3];
 }
 
 void __64__WBSParsecDSession_clearAllParsecFeedbackAndEngagedCompletions__block_invoke(uint64_t a1, uint64_t a2)
@@ -146,23 +146,23 @@ void __64__WBSParsecDSession_clearAllParsecFeedbackAndEngagedCompletions__block_
   }
 }
 
-- (WBSParsecDSession)initWithParsecdSession:(id)a3 skipAutoFillDataUpdates:(BOOL)a4
+- (WBSParsecDSession)initWithParsecdSession:(id)session skipAutoFillDataUpdates:(BOOL)updates
 {
-  v6 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = WBSParsecDSession;
   v7 = [(WBSParsecDSession *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_parsecdSession, a3);
+    objc_storeStrong(&v7->_parsecdSession, session);
     [(PARSession *)v8->_parsecdSession setDelegate:v8];
     if ([WBSParsecDSession initWithParsecdSession:skipAutoFillDataUpdates:]::onceToken != -1)
     {
       [WBSParsecDSession initWithParsecdSession:skipAutoFillDataUpdates:];
     }
 
-    v9 = [[WBSParsecDFeedbackDispatcher alloc] initWithSession:v6];
+    v9 = [[WBSParsecDFeedbackDispatcher alloc] initWithSession:sessionCopy];
     feedbackDispatcher = v8->_feedbackDispatcher;
     v8->_feedbackDispatcher = v9;
 
@@ -180,31 +180,31 @@ void __68__WBSParsecDSession_initWithParsecdSession_skipAutoFillDataUpdates___bl
   _requestProcessingQueue = v0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = _requestProcessingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__WBSParsecDSession_setDelegate___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)setCurrentQuery:(id)a3
+- (void)setCurrentQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = _requestProcessingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__WBSParsecDSession_setCurrentQuery___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queryCopy;
+  v6 = queryCopy;
   dispatch_async(v5, v7);
 }
 
@@ -229,20 +229,20 @@ void __37__WBSParsecDSession_setCurrentQuery___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setCurrentQuery:(id)a3 withKeyboardInputType:(id)a4
+- (void)_setCurrentQuery:(id)query withKeyboardInputType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  typeCopy = type;
   v8 = _requestProcessingQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_invoke;
   block[3] = &unk_1E7FB7DD0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queryCopy;
+  v13 = typeCopy;
+  v9 = typeCopy;
+  v10 = queryCopy;
   dispatch_async(v8, block);
 }
 
@@ -380,22 +380,22 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
   return [v14 _didReceiveResponse:v12 error:v10 forTask:v11 query:v13];
 }
 
-- (void)_simulatePARResponseFromJSON:(id)a3 response:(id)a4 task:(id)a5 error:(id)a6
+- (void)_simulatePARResponseFromJSON:(id)n response:(id)response task:(id)task error:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  nCopy = n;
+  taskCopy = task;
+  errorCopy = error;
   v12 = +[WBSPegasusResponseFuzzer sharedFuzzer];
-  v13 = [(WBSCompletionQuery *)self->_currentQuery queryString];
-  v14 = [v12 responseForQuery:v13];
+  queryString = [(WBSCompletionQuery *)self->_currentQuery queryString];
+  v14 = [v12 responseForQuery:queryString];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = [v14 results];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  results = [v14 results];
+  v16 = [results countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v16)
   {
     v17 = *v30;
@@ -406,14 +406,14 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
       {
         if (*v30 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(results);
         }
 
-        [*(*(&v29 + 1) + 8 * v18++) setQueryId:{objc_msgSend(v9, "queryID")}];
+        [*(*(&v29 + 1) + 8 * v18++) setQueryId:{objc_msgSend(nCopy, "queryID")}];
       }
 
       while (v16 != v18);
-      v16 = [v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v16 = [results countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v16);
@@ -426,39 +426,39 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
   block[3] = &unk_1E7FC7D58;
   block[4] = self;
   v25 = v14;
-  v26 = v11;
-  v27 = v10;
-  v28 = v9;
-  v20 = v9;
-  v21 = v10;
-  v22 = v11;
+  v26 = errorCopy;
+  v27 = taskCopy;
+  v28 = nCopy;
+  v20 = nCopy;
+  v21 = taskCopy;
+  v22 = errorCopy;
   v23 = v14;
   dispatch_async(v19, block);
 }
 
-- (void)_didReceiveResponse:(id)a3 error:(id)a4 forTask:(id)a5 query:(id)a6
+- (void)_didReceiveResponse:(id)response error:(id)error forTask:(id)task query:(id)query
 {
   v76 = *MEMORY[0x1E69E9840];
-  v51 = a3;
-  v47 = a4;
-  v48 = a5;
-  v49 = a6;
-  v10 = [v48 queryId];
-  if (v10 == [(WBSParsecDSession *)self currentQueryID])
+  responseCopy = response;
+  errorCopy = error;
+  taskCopy = task;
+  queryCopy = query;
+  queryId = [taskCopy queryId];
+  if (queryId == [(WBSParsecDSession *)self currentQueryID])
   {
-    v46 = self;
-    if (v47)
+    selfCopy = self;
+    if (errorCopy)
     {
       v11 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v45 = [v47 safari_privacyPreservingDescription];
+        safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
         *buf = 134218498;
-        v71 = v48;
+        v71 = taskCopy;
         v72 = 2048;
-        v73 = v51;
+        v73 = responseCopy;
         v74 = 2114;
-        v75 = v45;
+        v75 = safari_privacyPreservingDescription;
         _os_log_error_impl(&dword_1BB6F3000, v11, OS_LOG_TYPE_ERROR, "Response to task %p was %p with error %{public}@", buf, 0x20u);
       }
     }
@@ -469,9 +469,9 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v71 = v48;
+        v71 = taskCopy;
         v72 = 2048;
-        v73 = v51;
+        v73 = responseCopy;
         _os_log_impl(&dword_1BB6F3000, v13, OS_LOG_TYPE_INFO, "Response to task %p was %p", buf, 0x16u);
       }
     }
@@ -479,10 +479,10 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
     v14 = WBS_LOG_CHANNEL_PREFIXSafariSuggestions();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      [WBSParsecDSession _didReceiveResponse:v48 error:v51 forTask:v14 query:?];
+      [WBSParsecDSession _didReceiveResponse:taskCopy error:responseCopy forTask:v14 query:?];
     }
 
-    [v51 results];
+    [responseCopy results];
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
@@ -501,8 +501,8 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
           }
 
           v18 = *(*(&v64 + 1) + 8 * i);
-          v19 = [v51 serverCompletion];
-          [v18 setServerCompletion:v19];
+          serverCompletion = [responseCopy serverCompletion];
+          [v18 setServerCompletion:serverCompletion];
         }
 
         v15 = [obj countByEnumeratingWithState:&v64 objects:v69 count:16];
@@ -513,7 +513,7 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
 
     if ([MEMORY[0x1E69C8880] isSearchEvaluationLoggingEnabled])
     {
-      v20 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
       v62 = 0u;
       v63 = 0u;
       v61 = 0u;
@@ -533,11 +533,11 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
             }
 
             v25 = *(*(&v60 + 1) + 8 * j);
-            v26 = [v25 uuidString];
+            uuidString = [v25 uuidString];
             v27 = [v25 url];
-            v28 = [v27 absoluteString];
-            v29 = [v28 safari_urlHashesOfComponents];
-            [v20 appendFormat:@" %@ <%@>, ", v26, v29];
+            absoluteString = [v27 absoluteString];
+            safari_urlHashesOfComponents = [absoluteString safari_urlHashesOfComponents];
+            [string appendFormat:@" %@ <%@>, ", uuidString, safari_urlHashesOfComponents];
           }
 
           v22 = [v21 countByEnumeratingWithState:&v60 objects:v68 count:16];
@@ -549,42 +549,42 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
       v30 = WBS_LOG_CHANNEL_PREFIXParsec();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        [WBSParsecDSession _didReceiveResponse:v20 error:v30 forTask:? query:?];
+        [WBSParsecDSession _didReceiveResponse:string error:v30 forTask:? query:?];
       }
     }
 
-    v31 = [v51 corrections];
-    v32 = [v31 firstObject];
-    v33 = [v32 suggestion];
-    [v49 setRewrittenQueryStringFromParsec:v33];
+    corrections = [responseCopy corrections];
+    firstObject = [corrections firstObject];
+    suggestion = [firstObject suggestion];
+    [queryCopy setRewrittenQueryStringFromParsec:suggestion];
 
-    v34 = [v51 suggestions];
-    v35 = [v34 safari_setByApplyingBlock:&__block_literal_global_49_1];
+    suggestions = [responseCopy suggestions];
+    v35 = [suggestions safari_setByApplyingBlock:&__block_literal_global_49_1];
 
-    v36 = [v49 querySuggestions];
+    querySuggestions = [queryCopy querySuggestions];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __61__WBSParsecDSession__didReceiveResponse_error_forTask_query___block_invoke_2;
     v58[3] = &unk_1E7FCA4E0;
     v37 = v35;
     v59 = v37;
-    v38 = [v36 safari_filterObjectsUsingBlock:v58];
-    [v49 setQuerySuggestions:v38];
+    v38 = [querySuggestions safari_filterObjectsUsingBlock:v58];
+    [queryCopy setQuerySuggestions:v38];
 
-    v39 = v46->_delegate;
-    v40 = [v49 rewrittenQueryStringFromParsec];
-    v41 = [v40 copy];
+    v39 = selfCopy->_delegate;
+    rewrittenQueryStringFromParsec = [queryCopy rewrittenQueryStringFromParsec];
+    v41 = [rewrittenQueryStringFromParsec copy];
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__WBSParsecDSession__didReceiveResponse_error_forTask_query___block_invoke_3;
     block[3] = &unk_1E7FCA508;
-    block[4] = v46;
+    block[4] = selfCopy;
     v53 = v41;
-    v54 = v48;
+    v54 = taskCopy;
     v55 = v39;
     v56 = obj;
-    v57 = v49;
+    v57 = queryCopy;
     v42 = obj;
     v43 = v39;
     v44 = v41;
@@ -597,7 +597,7 @@ uint64_t __60__WBSParsecDSession__setCurrentQuery_withKeyboardInputType___block_
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v71 = v48;
+      v71 = taskCopy;
       _os_log_impl(&dword_1BB6F3000, v12, OS_LOG_TYPE_INFO, "Ignoring response to stale task %p", buf, 0xCu);
     }
   }
@@ -637,13 +637,13 @@ uint64_t __61__WBSParsecDSession__didReceiveResponse_error_forTask_query___block
   return result;
 }
 
-- (void)_startUpdatingAutoFillDataInBackgroundIfPossibleForSession:(id)a3
+- (void)_startUpdatingAutoFillDataInBackgroundIfPossibleForSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
+  sessionCopy = session;
+  v5 = sessionCopy;
   if (!self->_skipAutoFillDataUpdates)
   {
-    v6 = [v4 bag];
+    v6 = [sessionCopy bag];
 
     if (v6)
     {
@@ -793,21 +793,21 @@ void __80__WBSParsecDSession__startUpdatingAutoFillDataInBackgroundIfPossibleFor
   }
 }
 
-+ (void)_updateAutoFillTLDsIfNeededForSession:(id)a3 completionHandler:(id)a4
++ (void)_updateAutoFillTLDsIfNeededForSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedDomainPolicyProvider];
+  sessionCopy = session;
+  handlerCopy = handler;
+  sharedDomainPolicyProvider = [self sharedDomainPolicyProvider];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__WBSParsecDSession__updateAutoFillTLDsIfNeededForSession_completionHandler___block_invoke;
   v12[3] = &unk_1E7FC5960;
-  v9 = v6;
+  v9 = sessionCopy;
   v13 = v9;
-  v10 = v7;
-  v14 = v8;
+  v10 = handlerCopy;
+  v14 = sharedDomainPolicyProvider;
   v15 = v10;
-  v11 = v8;
+  v11 = sharedDomainPolicyProvider;
   [v11 getLastPolicyRetrievalURLStringWithResultHandler:v12];
 }
 

@@ -1,22 +1,22 @@
 @interface PKFloatArray
-- (double)floatAtIndex:(uint64_t)a1;
+- (double)floatAtIndex:(uint64_t)index;
 - (double)lastFloat;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)setFloat:(double)a3 atIndex:;
-- (void)initWithCapacity:(void *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)setFloat:(double)float atIndex:;
+- (void)initWithCapacity:(void *)capacity;
 @end
 
 @implementation PKFloatArray
 
-- (void)initWithCapacity:(void *)a1
+- (void)initWithCapacity:(void *)capacity
 {
-  if (!a1)
+  if (!capacity)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = capacity;
   v6.super_class = PKFloatArray;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;
@@ -29,7 +29,7 @@
   return v4;
 }
 
-- (uint64_t)setFloat:(double)a3 atIndex:
+- (uint64_t)setFloat:(double)float atIndex:
 {
   if (result)
   {
@@ -39,48 +39,48 @@
       objc_exception_throw(v5);
     }
 
-    *(*(result + 8) + 8 * a2) = a3;
+    *(*(result + 8) + 8 * a2) = float;
   }
 
   return result;
 }
 
-- (double)floatAtIndex:(uint64_t)a1
+- (double)floatAtIndex:(uint64_t)index
 {
-  if (!a1)
+  if (!index)
   {
     return 0.0;
   }
 
-  if (*(a1 + 32) <= a2)
+  if (*(index + 32) <= a2)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"index is out of bounds" userInfo:{0, v2, v3}];
     objc_exception_throw(v5);
   }
 
-  return *(*(a1 + 8) + 8 * a2);
+  return *(*(index + 8) + 8 * a2);
 }
 
 - (double)lastFloat
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v3 = *(a1 + 32);
+  v3 = *(self + 32);
   if (!v3)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"container is empty" userInfo:{0, v1, v2}];
     objc_exception_throw(v5);
   }
 
-  return [(PKFloatArray *)a1 floatAtIndex:?];
+  return [(PKFloatArray *)self floatAtIndex:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(PKFloatArray *)v4 initWithCapacity:?];
   v6 = v5;
   if (v5)

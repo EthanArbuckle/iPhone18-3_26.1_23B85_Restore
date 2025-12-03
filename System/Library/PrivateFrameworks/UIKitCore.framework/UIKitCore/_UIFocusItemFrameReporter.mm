@@ -1,32 +1,32 @@
 @interface _UIFocusItemFrameReporter
-- (BOOL)_rect:(CGRect)a3 differsFromRect:(CGRect)a4 lowerThreshold:(double)a5 upperThreshold:(double)a6;
-- (CGRect)_globalFrameForFocusedItemInSystem:(id)a3;
+- (BOOL)_rect:(CGRect)_rect differsFromRect:(CGRect)rect lowerThreshold:(double)threshold upperThreshold:(double)upperThreshold;
+- (CGRect)_globalFrameForFocusedItemInSystem:(id)system;
 - (UIFocusSystem)focusSystem;
-- (_UIFocusItemFrameReporter)initWithFocusSystem:(id)a3;
+- (_UIFocusItemFrameReporter)initWithFocusSystem:(id)system;
 - (void)_cancelRepeatingFrameUpdate;
-- (void)_focusSystemEnabledStateDidChange:(id)a3;
+- (void)_focusSystemEnabledStateDidChange:(id)change;
 - (void)_reportFocusFrameForCurrentlyFocusedItem;
-- (void)_reportFocusFrameUpdateForGlobalFrame:(CGRect)a3;
+- (void)_reportFocusFrameUpdateForGlobalFrame:(CGRect)frame;
 - (void)_scheduleRepeatingFrameUpdate;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIFocusItemFrameReporter
 
-- (_UIFocusItemFrameReporter)initWithFocusSystem:(id)a3
+- (_UIFocusItemFrameReporter)initWithFocusSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   v9.receiver = self;
   v9.super_class = _UIFocusItemFrameReporter;
   v5 = [(_UIFocusItemFrameReporter *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_focusSystem, v4);
-    -[_UIFocusItemFrameReporter setEnabled:](v6, "setEnabled:", [v4 _isEnabled]);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__focusSystemEnabledStateDidChange_ name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
+    objc_storeWeak(&v5->_focusSystem, systemCopy);
+    -[_UIFocusItemFrameReporter setEnabled:](v6, "setEnabled:", [systemCopy _isEnabled]);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__focusSystemEnabledStateDidChange_ name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
   }
 
   return v6;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIFocusItemFrameReporter;
@@ -57,35 +57,35 @@
   }
 }
 
-- (void)_reportFocusFrameUpdateForGlobalFrame:(CGRect)a3
+- (void)_reportFocusFrameUpdateForGlobalFrame:(CGRect)frame
 {
   if (self->_enabled)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v8 = [(_UIFocusItemFrameReporter *)self focusSystem];
-    v9 = [v8 focusedItem];
-    v10 = _UIFocusEnvironmentContainingView(v9);
-    v11 = [v10 _window];
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    focusSystem = [(_UIFocusItemFrameReporter *)self focusSystem];
+    focusedItem = [focusSystem focusedItem];
+    v10 = _UIFocusEnvironmentContainingView(focusedItem);
+    _window = [v10 _window];
 
-    if (v11)
+    if (_window)
     {
-      v12 = [v11 _windowHostingScene];
-      v13 = [v12 _effectiveUIClientSettings];
-      [v13 screenFocusedFrame];
+      _windowHostingScene = [_window _windowHostingScene];
+      _effectiveUIClientSettings = [_windowHostingScene _effectiveUIClientSettings];
+      [_effectiveUIClientSettings screenFocusedFrame];
       v46 = v15;
       v47 = v14;
       v44 = v17;
       v45 = v16;
 
-      [v11 frame];
+      [_window frame];
       v19 = v18;
       v21 = v20;
       v41 = v22;
       v42 = v23;
-      [v11 safeAreaInsets];
+      [_window safeAreaInsets];
       v25 = v24;
       v26 = y;
       v28 = v27;
@@ -141,7 +141,7 @@
 
       if ([(_UIFocusItemFrameReporter *)self _rect:x differsFromRect:v32 lowerThreshold:width upperThreshold:height, v47, v46, v45, v44, 0x3FECCCCCCCCCCCCDLL, 0x3FF199999999999ALL])
       {
-        v39 = [v11 _windowHostingScene];
+        _windowHostingScene2 = [_window _windowHostingScene];
         v48[0] = MEMORY[0x1E69E9820];
         v48[1] = 3221225472;
         v48[2] = __67___UIFocusItemFrameReporter__reportFocusFrameUpdateForGlobalFrame___block_invoke;
@@ -150,7 +150,7 @@
         *&v48[5] = v32;
         *&v48[6] = width;
         *&v48[7] = height;
-        [v39 _updateUIClientSettingsWithBlock:v48];
+        [_windowHostingScene2 _updateUIClientSettingsWithBlock:v48];
       }
     }
   }
@@ -201,45 +201,45 @@
   }
 }
 
-- (void)_focusSystemEnabledStateDidChange:(id)a3
+- (void)_focusSystemEnabledStateDidChange:(id)change
 {
-  v4 = a3;
-  v7 = [(_UIFocusItemFrameReporter *)self focusSystem];
-  v5 = [v4 object];
+  changeCopy = change;
+  focusSystem = [(_UIFocusItemFrameReporter *)self focusSystem];
+  object = [changeCopy object];
 
-  v6 = v7;
-  if (v5 == v7)
+  v6 = focusSystem;
+  if (object == focusSystem)
   {
-    -[_UIFocusItemFrameReporter setEnabled:](self, "setEnabled:", [v7 _isEnabled]);
-    v6 = v7;
+    -[_UIFocusItemFrameReporter setEnabled:](self, "setEnabled:", [focusSystem _isEnabled]);
+    v6 = focusSystem;
   }
 }
 
-- (BOOL)_rect:(CGRect)a3 differsFromRect:(CGRect)a4 lowerThreshold:(double)a5 upperThreshold:(double)a6
+- (BOOL)_rect:(CGRect)_rect differsFromRect:(CGRect)rect lowerThreshold:(double)threshold upperThreshold:(double)upperThreshold
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  IsNull = CGRectIsNull(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = _rect.size.height;
+  v11 = _rect.size.width;
+  v12 = _rect.origin.y;
+  v13 = _rect.origin.x;
+  IsNull = CGRectIsNull(_rect);
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
-  if (IsNull == CGRectIsNull(v23) && (v24.origin.x = v13, v24.origin.y = v12, v24.size.width = v11, v24.size.height = v10, v26.origin.x = x, v26.origin.y = y, v26.size.width = width, v26.size.height = height, v25 = CGRectIntersection(v24, v26), v15 = v25.size.width, v16 = v25.size.height, !CGRectIsNull(v25)) && ((v17 = v11 * v10 / (v15 * v16), v17 >= a5) ? (v18 = v17 <= a6) : (v18 = 0), v18))
+  if (IsNull == CGRectIsNull(v23) && (v24.origin.x = v13, v24.origin.y = v12, v24.size.width = v11, v24.size.height = v10, v26.origin.x = x, v26.origin.y = y, v26.size.width = width, v26.size.height = height, v25 = CGRectIntersection(v24, v26), v15 = v25.size.width, v16 = v25.size.height, !CGRectIsNull(v25)) && ((v17 = v11 * v10 / (v15 * v16), v17 >= threshold) ? (v18 = v17 <= upperThreshold) : (v18 = 0), v18))
   {
-    v21 = v10 / height < a5;
-    if (v10 / height > a6)
+    v21 = v10 / height < threshold;
+    if (v10 / height > upperThreshold)
     {
       v21 = 1;
     }
 
-    v22 = v11 / width < a5;
-    if (v11 / width > a6)
+    v22 = v11 / width < threshold;
+    if (v11 / width > upperThreshold)
     {
       v22 = 1;
     }
@@ -255,21 +255,21 @@
   return v19 & 1;
 }
 
-- (CGRect)_globalFrameForFocusedItemInSystem:(id)a3
+- (CGRect)_globalFrameForFocusedItemInSystem:(id)system
 {
-  v3 = a3;
-  v4 = [v3 focusedItem];
-  v5 = [v4 parentFocusEnvironment];
-  v6 = [v5 focusItemContainer];
+  systemCopy = system;
+  focusedItem = [systemCopy focusedItem];
+  parentFocusEnvironment = [focusedItem parentFocusEnvironment];
+  focusItemContainer = [parentFocusEnvironment focusItemContainer];
 
-  if (v4 && v6)
+  if (focusedItem && focusItemContainer)
   {
-    v7 = [v3 focusItemContainer];
-    v8 = [v7 coordinateSpace];
+    focusItemContainer2 = [systemCopy focusItemContainer];
+    coordinateSpace = [focusItemContainer2 coordinateSpace];
 
-    v9 = [v6 coordinateSpace];
-    [v4 frame];
-    [v9 convertRect:v8 toCoordinateSpace:?];
+    coordinateSpace2 = [focusItemContainer coordinateSpace];
+    [focusedItem frame];
+    [coordinateSpace2 convertRect:coordinateSpace toCoordinateSpace:?];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -295,11 +295,11 @@
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    if (a3)
+    if (enabled)
     {
       self->_enabled = 1;
 

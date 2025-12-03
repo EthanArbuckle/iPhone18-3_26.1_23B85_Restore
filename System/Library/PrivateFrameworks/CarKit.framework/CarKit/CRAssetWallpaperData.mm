@@ -1,37 +1,37 @@
 @interface CRAssetWallpaperData
-- (BOOL)isEqual:(id)a3;
-- (CRAssetWallpaperData)initWithBSXPCCoder:(id)a3;
-- (CRAssetWallpaperData)initWithCoder:(id)a3;
-- (CRAssetWallpaperData)initWithDictionary:(id)a3;
-- (CRAssetWallpaperData)initWithWallpaperIdentifier:(id)a3 displayID:(id)a4 layoutID:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (CRAssetWallpaperData)initWithBSXPCCoder:(id)coder;
+- (CRAssetWallpaperData)initWithCoder:(id)coder;
+- (CRAssetWallpaperData)initWithDictionary:(id)dictionary;
+- (CRAssetWallpaperData)initWithWallpaperIdentifier:(id)identifier displayID:(id)d layoutID:(id)iD;
 - (NSString)description;
 - (NSString)identifier;
 - (id)asDictionary;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRAssetWallpaperData
 
-- (CRAssetWallpaperData)initWithWallpaperIdentifier:(id)a3 displayID:(id)a4 layoutID:(id)a5
+- (CRAssetWallpaperData)initWithWallpaperIdentifier:(id)identifier displayID:(id)d layoutID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
   v19.receiver = self;
   v19.super_class = CRAssetWallpaperData;
   v11 = [(CRAssetWallpaperData *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     wallpaperID = v11->_wallpaperID;
     v11->_wallpaperID = v12;
 
-    v14 = [v9 copy];
+    v14 = [dCopy copy];
     displayID = v11->_displayID;
     v11->_displayID = v14;
 
-    v16 = [v10 copy];
+    v16 = [iDCopy copy];
     layoutID = v11->_layoutID;
     v11->_layoutID = v16;
   }
@@ -42,19 +42,19 @@
 - (NSString)identifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CRAssetWallpaperData *)self displayID];
-  v5 = [(CRAssetWallpaperData *)self layoutID];
-  v6 = [(CRAssetWallpaperData *)self wallpaperID];
-  v7 = [v3 stringWithFormat:@"%@:%@:%@", v4, v5, v6];
+  displayID = [(CRAssetWallpaperData *)self displayID];
+  layoutID = [(CRAssetWallpaperData *)self layoutID];
+  wallpaperID = [(CRAssetWallpaperData *)self wallpaperID];
+  v7 = [v3 stringWithFormat:@"%@:%@:%@", displayID, layoutID, wallpaperID];
 
   return v7;
 }
 
-- (CRAssetWallpaperData)initWithDictionary:(id)a3
+- (CRAssetWallpaperData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v5 = [v4 objectForKey:@"displayIdentifier"];
+  v5 = [dictionaryCopy objectForKey:@"displayIdentifier"];
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v6 = v5;
@@ -66,7 +66,7 @@
   }
 
   objc_opt_class();
-  v7 = [v4 objectForKey:@"layoutIdentifier"];
+  v7 = [dictionaryCopy objectForKey:@"layoutIdentifier"];
   if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v7;
@@ -78,7 +78,7 @@
   }
 
   objc_opt_class();
-  v9 = [v4 objectForKey:@"wallpaperIdentifier"];
+  v9 = [dictionaryCopy objectForKey:@"wallpaperIdentifier"];
   if (v9 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v10 = v9;
@@ -89,40 +89,40 @@
     v10 = 0;
   }
 
-  v11 = 0;
+  selfCopy = 0;
   if (v6 && v8 && v10)
   {
     self = [(CRAssetWallpaperData *)self initWithWallpaperIdentifier:v10 displayID:v6 layoutID:v8];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)asDictionary
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CRAssetWallpaperData *)self displayID];
-  if (v3)
+  displayID = [(CRAssetWallpaperData *)self displayID];
+  if (displayID)
   {
-    v4 = v3;
-    v5 = [(CRAssetWallpaperData *)self layoutID];
-    if (v5)
+    v4 = displayID;
+    layoutID = [(CRAssetWallpaperData *)self layoutID];
+    if (layoutID)
     {
-      v6 = v5;
-      v7 = [(CRAssetWallpaperData *)self wallpaperID];
+      v6 = layoutID;
+      wallpaperID = [(CRAssetWallpaperData *)self wallpaperID];
 
-      if (v7)
+      if (wallpaperID)
       {
         v13[0] = @"displayIdentifier";
-        v8 = [(CRAssetWallpaperData *)self displayID];
-        v14[0] = v8;
+        displayID2 = [(CRAssetWallpaperData *)self displayID];
+        v14[0] = displayID2;
         v13[1] = @"layoutIdentifier";
-        v9 = [(CRAssetWallpaperData *)self layoutID];
-        v14[1] = v9;
+        layoutID2 = [(CRAssetWallpaperData *)self layoutID];
+        v14[1] = layoutID2;
         v13[2] = @"wallpaperIdentifier";
-        v10 = [(CRAssetWallpaperData *)self wallpaperID];
-        v14[2] = v10;
+        wallpaperID2 = [(CRAssetWallpaperData *)self wallpaperID];
+        v14[2] = wallpaperID2;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
         goto LABEL_9;
@@ -134,8 +134,8 @@
     }
   }
 
-  v8 = CarGeneralLogging();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+  displayID2 = CarGeneralLogging();
+  if (os_log_type_enabled(displayID2, OS_LOG_TYPE_FAULT))
   {
     [(CRSystemWallpaperData *)self asDictionary];
   }
@@ -146,24 +146,24 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = [(CRAssetWallpaperData *)self wallpaperID];
-    v7 = [v5 wallpaperID];
-    if ([v6 isEqualToString:v7])
+    wallpaperID = [(CRAssetWallpaperData *)self wallpaperID];
+    wallpaperID2 = [v5 wallpaperID];
+    if ([wallpaperID isEqualToString:wallpaperID2])
     {
-      v8 = [(CRAssetWallpaperData *)self displayID];
-      v9 = [v5 displayID];
-      if ([v8 isEqualToString:v9])
+      displayID = [(CRAssetWallpaperData *)self displayID];
+      displayID2 = [v5 displayID];
+      if ([displayID isEqualToString:displayID2])
       {
-        v10 = [(CRAssetWallpaperData *)self layoutID];
-        v11 = [v5 layoutID];
-        v12 = [v10 isEqualToString:v11];
+        layoutID = [(CRAssetWallpaperData *)self layoutID];
+        layoutID2 = [v5 layoutID];
+        v12 = [layoutID isEqualToString:layoutID2];
       }
 
       else
@@ -192,27 +192,27 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = CRAssetWallpaperData;
   v4 = [(CRAssetWallpaperData *)&v8 description];
-  v5 = [(CRAssetWallpaperData *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ {identifier: %@}", v4, v5];
+  identifier = [(CRAssetWallpaperData *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ {identifier: %@}", v4, identifier];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   displayID = self->_displayID;
-  v5 = a3;
-  [v5 encodeObject:displayID forKey:@"displayIdentifier"];
-  [v5 encodeObject:self->_layoutID forKey:@"layoutIdentifier"];
-  [v5 encodeObject:self->_wallpaperID forKey:@"wallpaperIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayID forKey:@"displayIdentifier"];
+  [coderCopy encodeObject:self->_layoutID forKey:@"layoutIdentifier"];
+  [coderCopy encodeObject:self->_wallpaperID forKey:@"wallpaperIdentifier"];
 }
 
-- (CRAssetWallpaperData)initWithCoder:(id)a3
+- (CRAssetWallpaperData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperIdentifier"];
 
   if (v5)
   {
@@ -226,33 +226,33 @@ LABEL_9:
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CRAssetWallpaperData *)self initWithWallpaperIdentifier:v7 displayID:v5 layoutID:v6];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   displayID = self->_displayID;
-  v5 = a3;
-  [v5 encodeObject:displayID forKey:@"displayIdentifier"];
-  [v5 encodeObject:self->_layoutID forKey:@"layoutIdentifier"];
-  [v5 encodeObject:self->_wallpaperID forKey:@"wallpaperIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:displayID forKey:@"displayIdentifier"];
+  [coderCopy encodeObject:self->_layoutID forKey:@"layoutIdentifier"];
+  [coderCopy encodeObject:self->_wallpaperID forKey:@"wallpaperIdentifier"];
 }
 
-- (CRAssetWallpaperData)initWithBSXPCCoder:(id)a3
+- (CRAssetWallpaperData)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperIdentifier"];
 
   if (v5)
   {
@@ -266,16 +266,16 @@ LABEL_9:
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CRAssetWallpaperData *)self initWithWallpaperIdentifier:v7 displayID:v5 layoutID:v6];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

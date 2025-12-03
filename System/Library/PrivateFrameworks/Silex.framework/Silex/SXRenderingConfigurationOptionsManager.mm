@@ -1,16 +1,16 @@
 @interface SXRenderingConfigurationOptionsManager
-- (BOOL)validateConfigurationOption:(id)a3;
-- (BOOL)validateConfigurationOption:(id)a3 documentSpecVersion:(id)a4 clientSpecVersion:(id)a5;
+- (BOOL)validateConfigurationOption:(id)option;
+- (BOOL)validateConfigurationOption:(id)option documentSpecVersion:(id)version clientSpecVersion:(id)specVersion;
 - (SXHintsConfigurationOption)hints;
-- (SXRenderingConfigurationOptionsManager)initWithDocumentProvider:(id)a3 configurationProvider:(id)a4;
+- (SXRenderingConfigurationOptionsManager)initWithDocumentProvider:(id)provider configurationProvider:(id)configurationProvider;
 @end
 
 @implementation SXRenderingConfigurationOptionsManager
 
-- (SXRenderingConfigurationOptionsManager)initWithDocumentProvider:(id)a3 configurationProvider:(id)a4
+- (SXRenderingConfigurationOptionsManager)initWithDocumentProvider:(id)provider configurationProvider:(id)configurationProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  configurationProviderCopy = configurationProvider;
   v12.receiver = self;
   v12.super_class = SXRenderingConfigurationOptionsManager;
   v9 = [(SXRenderingConfigurationOptionsManager *)&v12 init];
@@ -18,8 +18,8 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_documentProvider, a3);
-    objc_storeStrong(&v10->_configurationProvider, a4);
+    objc_storeStrong(&v9->_documentProvider, provider);
+    objc_storeStrong(&v10->_configurationProvider, configurationProvider);
   }
 
   return v10;
@@ -28,20 +28,20 @@
 - (SXHintsConfigurationOption)hints
 {
   os_unfair_lock_lock_with_options();
-  v3 = self->_hints;
+  hints = self->_hints;
   os_unfair_lock_unlock(&self->_lock);
-  if (!v3)
+  if (!hints)
   {
-    v4 = [(SXRenderingConfigurationProvider *)self->_configurationProvider configuration];
-    v3 = [v4 hints];
+    configuration = [(SXRenderingConfigurationProvider *)self->_configurationProvider configuration];
+    hints = [configuration hints];
 
-    if ([(SXRenderingConfigurationOptionsManager *)self validateConfigurationOption:v3])
+    if ([(SXRenderingConfigurationOptionsManager *)self validateConfigurationOption:hints])
     {
-      if (v3)
+      if (hints)
       {
 LABEL_7:
         os_unfair_lock_lock_with_options();
-        objc_storeStrong(&self->_hints, v3);
+        objc_storeStrong(&self->_hints, hints);
         os_unfair_lock_unlock(&self->_lock);
         goto LABEL_8;
       }
@@ -51,41 +51,41 @@ LABEL_7:
     {
     }
 
-    v3 = objc_alloc_init(SXDefaultHintsConfigurationOption);
+    hints = objc_alloc_init(SXDefaultHintsConfigurationOption);
     goto LABEL_7;
   }
 
 LABEL_8:
-  v5 = v3;
+  v5 = hints;
 
   return v5;
 }
 
-- (BOOL)validateConfigurationOption:(id)a3
+- (BOOL)validateConfigurationOption:(id)option
 {
-  v3 = self;
+  selfCopy = self;
   documentProvider = self->_documentProvider;
-  v5 = a3;
-  v6 = [(SXDocumentProviding *)documentProvider document];
-  v7 = [v6 specVersion];
-  LOBYTE(v3) = [(SXRenderingConfigurationOptionsManager *)v3 validateConfigurationOption:v5 documentSpecVersion:v7 clientSpecVersion:@"1.30"];
+  optionCopy = option;
+  document = [(SXDocumentProviding *)documentProvider document];
+  specVersion = [document specVersion];
+  LOBYTE(selfCopy) = [(SXRenderingConfigurationOptionsManager *)selfCopy validateConfigurationOption:optionCopy documentSpecVersion:specVersion clientSpecVersion:@"1.30"];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)validateConfigurationOption:(id)a3 documentSpecVersion:(id)a4 clientSpecVersion:(id)a5
+- (BOOL)validateConfigurationOption:(id)option documentSpecVersion:(id)version clientSpecVersion:(id)specVersion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  optionCopy = option;
+  versionCopy = version;
+  specVersionCopy = specVersion;
+  if (versionCopy)
   {
-    v10 = [v7 minDocumentSpecVersion];
-    if (v10)
+    minDocumentSpecVersion = [optionCopy minDocumentSpecVersion];
+    if (minDocumentSpecVersion)
     {
-      v11 = v10;
-      v12 = [v7 minDocumentSpecVersion];
-      v13 = SXSpecVersionCompare(v8, v12);
+      v11 = minDocumentSpecVersion;
+      minDocumentSpecVersion2 = [optionCopy minDocumentSpecVersion];
+      v13 = SXSpecVersionCompare(versionCopy, minDocumentSpecVersion2);
 
       if (v13 == -1)
       {
@@ -93,12 +93,12 @@ LABEL_8:
       }
     }
 
-    v14 = [v7 maxDocumentSpecVersion];
-    if (v14)
+    maxDocumentSpecVersion = [optionCopy maxDocumentSpecVersion];
+    if (maxDocumentSpecVersion)
     {
-      v15 = v14;
-      v16 = [v7 maxDocumentSpecVersion];
-      v17 = SXSpecVersionCompare(v8, v16);
+      v15 = maxDocumentSpecVersion;
+      maxDocumentSpecVersion2 = [optionCopy maxDocumentSpecVersion];
+      v17 = SXSpecVersionCompare(versionCopy, maxDocumentSpecVersion2);
 
       if (v17 == 1)
       {
@@ -107,19 +107,19 @@ LABEL_8:
     }
   }
 
-  if (!v9)
+  if (!specVersionCopy)
   {
 LABEL_12:
     v25 = 1;
     goto LABEL_13;
   }
 
-  v18 = [v7 minClientSpecVersion];
-  if (v18)
+  minClientSpecVersion = [optionCopy minClientSpecVersion];
+  if (minClientSpecVersion)
   {
-    v19 = v18;
-    v20 = [v7 minClientSpecVersion];
-    v21 = SXSpecVersionCompare(v8, v20);
+    v19 = minClientSpecVersion;
+    minClientSpecVersion2 = [optionCopy minClientSpecVersion];
+    v21 = SXSpecVersionCompare(versionCopy, minClientSpecVersion2);
 
     if (v21 == -1)
     {
@@ -129,15 +129,15 @@ LABEL_11:
     }
   }
 
-  v22 = [v7 maxClientSpecVersion];
-  if (!v22)
+  maxClientSpecVersion = [optionCopy maxClientSpecVersion];
+  if (!maxClientSpecVersion)
   {
     goto LABEL_12;
   }
 
-  v23 = v22;
-  v24 = [v7 maxClientSpecVersion];
-  v25 = SXSpecVersionCompare(v9, v24) != 1;
+  v23 = maxClientSpecVersion;
+  maxClientSpecVersion2 = [optionCopy maxClientSpecVersion];
+  v25 = SXSpecVersionCompare(specVersionCopy, maxClientSpecVersion2) != 1;
 
 LABEL_13:
   return v25;

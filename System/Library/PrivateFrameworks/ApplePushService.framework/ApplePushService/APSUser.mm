@@ -1,12 +1,12 @@
 @interface APSUser
-- (APSUser)initWithUserName:(id)a3;
-- (id)initUserWithSystemMode:(unint64_t)a3;
-- (int)bootstrapLookupForPortName:(const char *)a3 outConnectionPort:(unsigned int *)a4;
+- (APSUser)initWithUserName:(id)name;
+- (id)initUserWithSystemMode:(unint64_t)mode;
+- (int)bootstrapLookupForPortName:(const char *)name outConnectionPort:(unsigned int *)port;
 @end
 
 @implementation APSUser
 
-- (id)initUserWithSystemMode:(unint64_t)a3
+- (id)initUserWithSystemMode:(unint64_t)mode
 {
   v10.receiver = self;
   v10.super_class = APSUser;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v6 = a3 == 0;
+    v6 = mode == 0;
     if (v6)
     {
       v7 = APSDefaultUserName;
@@ -34,30 +34,30 @@
   return v5;
 }
 
-- (APSUser)initWithUserName:(id)a3
+- (APSUser)initWithUserName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = APSUser;
   v6 = [(APSUser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
-    v7->_isDefaultUser = [v5 isEqualToString:APSDefaultUserName];
-    objc_storeStrong(&v7->_pubSubName, a3);
+    objc_storeStrong(&v6->_name, name);
+    v7->_isDefaultUser = [nameCopy isEqualToString:APSDefaultUserName];
+    objc_storeStrong(&v7->_pubSubName, name);
   }
 
   return v7;
 }
 
-- (int)bootstrapLookupForPortName:(const char *)a3 outConnectionPort:(unsigned int *)a4
+- (int)bootstrapLookupForPortName:(const char *)name outConnectionPort:(unsigned int *)port
 {
   sp = 0;
-  result = bootstrap_look_up(bootstrap_port, a3, &sp);
-  if (a4)
+  result = bootstrap_look_up(bootstrap_port, name, &sp);
+  if (port)
   {
-    *a4 = sp;
+    *port = sp;
   }
 
   return result;

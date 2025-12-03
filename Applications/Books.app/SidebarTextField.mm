@@ -1,8 +1,8 @@
 @interface SidebarTextField
-- (BOOL)endEditing:(BOOL)a3;
+- (BOOL)endEditing:(BOOL)editing;
 - (UIFocusEffect)focusEffect;
-- (_TtC5Books16SidebarTextField)initWithCoder:(id)a3;
-- (_TtC5Books16SidebarTextField)initWithFrame:(CGRect)a3;
+- (_TtC5Books16SidebarTextField)initWithCoder:(id)coder;
+- (_TtC5Books16SidebarTextField)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SidebarTextField
@@ -14,35 +14,35 @@
   return v2;
 }
 
-- (BOOL)endEditing:(BOOL)a3
+- (BOOL)endEditing:(BOOL)editing
 {
-  v3 = a3;
-  v4 = self;
-  [(SidebarTextField *)v4 setUserInteractionEnabled:0];
-  v6.receiver = v4;
+  editingCopy = editing;
+  selfCopy = self;
+  [(SidebarTextField *)selfCopy setUserInteractionEnabled:0];
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for SidebarTextField();
-  LOBYTE(v3) = [(SidebarTextField *)&v6 endEditing:v3];
+  LOBYTE(editingCopy) = [(SidebarTextField *)&v6 endEditing:editingCopy];
 
-  return v3;
+  return editingCopy;
 }
 
-- (_TtC5Books16SidebarTextField)initWithFrame:(CGRect)a3
+- (_TtC5Books16SidebarTextField)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SidebarTextField();
   return [(SidebarTextField *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC5Books16SidebarTextField)initWithCoder:(id)a3
+- (_TtC5Books16SidebarTextField)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SidebarTextField();
-  v4 = a3;
-  v5 = [(SidebarTextField *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SidebarTextField *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

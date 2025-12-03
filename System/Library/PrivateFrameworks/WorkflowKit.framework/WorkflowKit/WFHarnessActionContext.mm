@@ -1,16 +1,16 @@
 @interface WFHarnessActionContext
-- (WFHarnessActionContext)initWithIdentifier:(id)a3 indexInWorkflow:(unint64_t)a4;
+- (WFHarnessActionContext)initWithIdentifier:(id)identifier indexInWorkflow:(unint64_t)workflow;
 @end
 
 @implementation WFHarnessActionContext
 
-- (WFHarnessActionContext)initWithIdentifier:(id)a3 indexInWorkflow:(unint64_t)a4
+- (WFHarnessActionContext)initWithIdentifier:(id)identifier indexInWorkflow:(unint64_t)workflow
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFHarnessActionSelector.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFHarnessActionSelector.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v14.receiver = self;
@@ -18,11 +18,11 @@
   v8 = [(WFHarnessActionContext *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v8->_indexInWorkflow = a4;
+    v8->_indexInWorkflow = workflow;
     v11 = v8;
   }
 

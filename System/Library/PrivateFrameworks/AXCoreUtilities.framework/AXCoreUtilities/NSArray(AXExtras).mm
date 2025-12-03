@@ -17,8 +17,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -28,7 +28,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -39,7 +39,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -58,10 +58,10 @@ LABEL_11:
 
 - (id)ax_filteredArrayUsingBlock:()AXExtras
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
+  v2 = [self indexesOfObjectsPassingTest:?];
   if (v2)
   {
-    v3 = [a1 objectsAtIndexes:v2];
+    v3 = [self objectsAtIndexes:v2];
   }
 
   else
@@ -74,7 +74,7 @@ LABEL_11:
 
 - (BOOL)ax_containsObjectUsingBlock:()AXExtras
 {
-  v1 = [a1 ax_firstObjectUsingBlock:?];
+  v1 = [self ax_firstObjectUsingBlock:?];
   v2 = v1 != 0;
 
   return v2;
@@ -84,16 +84,16 @@ LABEL_11:
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
+    selfCopy2 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = a1;
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -104,14 +104,14 @@ LABEL_11:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selfCopy);
           }
 
           v12 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
-          [v6 addObject:{v12, v15}];
+          [selfCopy2 addObject:{v12, v15}];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -120,28 +120,28 @@ LABEL_11:
 
   else
   {
-    v6 = a1;
+    selfCopy2 = self;
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return selfCopy2;
 }
 
 - (id)ax_flatMappedArrayUsingBlock:()AXExtras
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
+    selfCopy2 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = a1;
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -152,17 +152,17 @@ LABEL_11:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(selfCopy);
           }
 
           v12 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
           if (v12)
           {
-            [v6 addObject:{v12, v15}];
+            [selfCopy2 addObject:{v12, v15}];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -171,26 +171,26 @@ LABEL_11:
 
   else
   {
-    v6 = a1;
+    selfCopy2 = self;
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return selfCopy2;
 }
 
 - (id)ax_arrayByRemovingDuplicates
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [a1 count];
+  v2 = [self count];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:v2];
   v4 = [MEMORY[0x1E695DFA8] setWithCapacity:v2];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -201,7 +201,7 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -212,7 +212,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

@@ -1,17 +1,17 @@
 @interface IntentHandler
-- (id)defaultPeopleForSelectPeople:(id)a3;
-- (void)providePeopleOptionsCollectionForSelectPeople:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5;
+- (id)defaultPeopleForSelectPeople:(id)people;
+- (void)providePeopleOptionsCollectionForSelectPeople:(id)people searchTerm:(id)term withCompletion:(id)completion;
 @end
 
 @implementation IntentHandler
 
-- (void)providePeopleOptionsCollectionForSelectPeople:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5
+- (void)providePeopleOptionsCollectionForSelectPeople:(id)people searchTerm:(id)term withCompletion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(completion);
+  if (term)
   {
     v9 = sub_100005174();
-    a4 = v10;
+    term = v10;
   }
 
   else
@@ -21,15 +21,15 @@
 
   v11 = swift_allocObject();
   *(v11 + 16) = v8;
-  v12 = a3;
-  v13 = self;
-  sub_10000185C(v12, v9, a4, sub_100004A98, v11);
+  peopleCopy = people;
+  selfCopy = self;
+  sub_10000185C(peopleCopy, v9, term, sub_100004A98, v11);
 }
 
-- (id)defaultPeopleForSelectPeople:(id)a3
+- (id)defaultPeopleForSelectPeople:(id)people
 {
-  v4 = a3;
-  v5 = self;
+  peopleCopy = people;
+  selfCopy = self;
   v6 = sub_1000041D0();
 
   if (v6)

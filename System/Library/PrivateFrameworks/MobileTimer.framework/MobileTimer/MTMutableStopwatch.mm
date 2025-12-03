@@ -1,14 +1,14 @@
 @interface MTMutableStopwatch
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MTMutableStopwatch
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MTStopwatch allocWithZone:a3];
-  v5 = [(MTStopwatch *)self identifier];
-  v6 = [(MTStopwatch *)v4 initWithId:v5];
+  v4 = [MTStopwatch allocWithZone:zone];
+  identifier = [(MTStopwatch *)self identifier];
+  v6 = [(MTStopwatch *)v4 initWithId:identifier];
 
   [(MTStopwatch *)self _copyStateOntoStopwatch:v6];
   return v6;

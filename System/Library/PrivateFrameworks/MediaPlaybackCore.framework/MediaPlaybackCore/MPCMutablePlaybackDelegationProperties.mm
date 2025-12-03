@@ -1,19 +1,19 @@
 @interface MPCMutablePlaybackDelegationProperties
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setDeviceGUID:(id)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setRequestUserAgent:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setDeviceGUID:(id)d;
+- (void)setDeviceName:(id)name;
+- (void)setRequestUserAgent:(id)agent;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation MPCMutablePlaybackDelegationProperties
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  if (self->super._timeZone != a3)
+  if (self->super._timeZone != zone)
   {
-    v5 = [a3 copy];
+    v5 = [zone copy];
     timeZone = self->super._timeZone;
     self->super._timeZone = v5;
 
@@ -21,11 +21,11 @@
   }
 }
 
-- (void)setRequestUserAgent:(id)a3
+- (void)setRequestUserAgent:(id)agent
 {
-  if (self->super._requestUserAgent != a3)
+  if (self->super._requestUserAgent != agent)
   {
-    v5 = [a3 copy];
+    v5 = [agent copy];
     requestUserAgent = self->super._requestUserAgent;
     self->super._requestUserAgent = v5;
 
@@ -33,11 +33,11 @@
   }
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  if (self->super._deviceName != a3)
+  if (self->super._deviceName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     deviceName = self->super._deviceName;
     self->super._deviceName = v5;
 
@@ -45,11 +45,11 @@
   }
 }
 
-- (void)setDeviceGUID:(id)a3
+- (void)setDeviceGUID:(id)d
 {
-  if (self->super._deviceGUID != a3)
+  if (self->super._deviceGUID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     deviceGUID = self->super._deviceGUID;
     self->super._deviceGUID = v5;
 
@@ -57,18 +57,18 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MPCPlaybackDelegationProperties *)self _copyWithClass:v5 zone:a3];
+  return [(MPCPlaybackDelegationProperties *)self _copyWithClass:v5 zone:zone];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MPCPlaybackDelegationProperties *)self _copyWithClass:v5 zone:a3];
+  return [(MPCPlaybackDelegationProperties *)self _copyWithClass:v5 zone:zone];
 }
 
 @end

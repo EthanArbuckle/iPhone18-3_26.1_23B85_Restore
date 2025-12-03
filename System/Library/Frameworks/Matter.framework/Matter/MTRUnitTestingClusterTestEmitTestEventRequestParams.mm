@@ -1,8 +1,8 @@
 @interface MTRUnitTestingClusterTestEmitTestEventRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRUnitTestingClusterTestEmitTestEventRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestEmitTestEventRequestParams);
-  v5 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg1];
-  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg1];
+  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg2];
-  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setArg2:v6];
+  arg2 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg2];
+  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setArg2:arg2];
 
-  v7 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg3];
-  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setArg3:v7];
+  arg3 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg3];
+  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setArg3:arg3];
 
-  v8 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v9 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self serverSideProcessingTimeout];
-  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setServerSideProcessingTimeout:v9];
+  serverSideProcessingTimeout = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self serverSideProcessingTimeout];
+  [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -66,21 +66,21 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v24 = 0;
-  v25 = 0;
+  bOOLValue = 0;
   v23[0] = 0;
   v23[1] = 0;
   v22 = v23;
-  v5 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg1];
-  LOBYTE(v24) = [v5 unsignedCharValue];
+  arg1 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg1];
+  LOBYTE(v24) = [arg1 unsignedCharValue];
 
-  v6 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg2];
-  HIBYTE(v24) = [v6 unsignedCharValue];
+  arg2 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg2];
+  HIBYTE(v24) = [arg2 unsignedCharValue];
 
-  v7 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg3];
-  v25 = [v7 BOOLValue];
+  arg3 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self arg3];
+  bOOLValue = [arg3 BOOLValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v21);
   if (v21)
@@ -101,8 +101,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v21);
-      v8 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v21);
+      v8 = sub_2393C7114(reader, 21, 256);
       v11 = v15;
       v10 = v8;
     }
@@ -130,19 +130,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRUnitTestingClusterTestEmitTestEventRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -153,7 +153,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xBDE900000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

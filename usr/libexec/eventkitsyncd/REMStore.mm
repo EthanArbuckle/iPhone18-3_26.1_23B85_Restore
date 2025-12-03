@@ -40,13 +40,13 @@
 
 - (id)eks_defaultLocalList
 {
-  v2 = [(REMStore *)self eks_localAccount];
+  eks_localAccount = [(REMStore *)self eks_localAccount];
   v8 = 0;
-  v3 = [v2 fetchListsWithError:&v8];
+  v3 = [eks_localAccount fetchListsWithError:&v8];
   v4 = v8;
   if (v3)
   {
-    v5 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
   else
@@ -57,10 +57,10 @@
       sub_10006ED14(v4, v6);
     }
 
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface PGAssetDebugInformation
-+ (id)_personDescriptionStringsInAsset:(id)a3;
-+ (id)_sceneprintDistanceStringFromAsset:(id)a3 toAsset:(id)a4;
-+ (id)debugInformationForAsset:(id)a3 curationContext:(id)a4;
++ (id)_personDescriptionStringsInAsset:(id)asset;
++ (id)_sceneprintDistanceStringFromAsset:(id)asset toAsset:(id)toAsset;
++ (id)debugInformationForAsset:(id)asset curationContext:(id)context;
 @end
 
 @implementation PGAssetDebugInformation
 
-+ (id)_personDescriptionStringsInAsset:(id)a3
++ (id)_personDescriptionStringsInAsset:(id)asset
 {
   v77[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 librarySpecificFetchOptions];
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"verifiedType" ascending:0];
   v77[0] = v6;
   v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v77[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:2];
-  [v5 setSortDescriptors:v8];
+  [librarySpecificFetchOptions setSortDescriptors:v8];
 
-  [v5 setIncludedDetectionTypes:&unk_284486108];
-  [v5 setPersonContext:5];
-  v62 = v5;
-  v9 = [MEMORY[0x277CD9938] fetchPersonsInAsset:v3 options:v5];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_284486108];
+  [librarySpecificFetchOptions setPersonContext:5];
+  v62 = librarySpecificFetchOptions;
+  v9 = [MEMORY[0x277CD9938] fetchPersonsInAsset:assetCopy options:librarySpecificFetchOptions];
   if ([v9 count])
   {
-    v60 = v4;
-    v10 = [v4 librarySpecificFetchOptions];
-    [v10 setIncludedDetectionTypes:&unk_284486120];
-    [v10 setIncludeTorsoAndFaceDetectionData:1];
-    v61 = v3;
-    v58 = v10;
-    v11 = [MEMORY[0x277CD9868] fetchFacesInAsset:v3 options:v10];
+    v60 = photoLibrary;
+    librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions2 setIncludedDetectionTypes:&unk_284486120];
+    [librarySpecificFetchOptions2 setIncludeTorsoAndFaceDetectionData:1];
+    v61 = assetCopy;
+    v58 = librarySpecificFetchOptions2;
+    v11 = [MEMORY[0x277CD9868] fetchFacesInAsset:assetCopy options:librarySpecificFetchOptions2];
     v12 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v11, "count")}];
     v71 = 0u;
     v72 = 0u;
@@ -53,10 +53,10 @@
           }
 
           v18 = *(*(&v71 + 1) + 8 * i);
-          v19 = [v18 personLocalIdentifier];
-          if (v19)
+          personLocalIdentifier = [v18 personLocalIdentifier];
+          if (personLocalIdentifier)
           {
-            [v12 setObject:v18 forKeyedSubscript:v19];
+            [v12 setObject:v18 forKeyedSubscript:personLocalIdentifier];
           }
         }
 
@@ -90,75 +90,75 @@
           }
 
           v22 = *(*(&v67 + 1) + 8 * j);
-          v23 = [v22 name];
-          if (![v23 length])
+          name = [v22 name];
+          if (![name length])
           {
-            v24 = [v22 uuid];
+            uuid = [v22 uuid];
             v25 = *(v20 + 3240);
-            v26 = [v24 substringToIndex:19];
-            v27 = [v24 substringFromIndex:19];
+            v26 = [uuid substringToIndex:19];
+            v27 = [uuid substringFromIndex:19];
             v28 = [v25 stringWithFormat:@"%@\n%@", v26, v27];
 
             v20 = 0x277CCA000;
-            v23 = v28;
+            name = v28;
           }
 
-          v29 = [v22 verifiedType];
+          verifiedType = [v22 verifiedType];
           v30 = @"Unvrfd";
-          if (v29 == 2)
+          if (verifiedType == 2)
           {
             v30 = @"Graph";
           }
 
-          if (v29 == 1)
+          if (verifiedType == 1)
           {
             v30 = @"User";
           }
 
           v31 = v30;
           v32 = objc_alloc_init(MEMORY[0x277CCAB68]);
-          v33 = [v22 detectionType];
+          detectionType = [v22 detectionType];
           v34 = @"🐶 ";
-          if (v33 == 3 || (v35 = [v22 detectionType], v34 = @"🐱 ", v35 == 4))
+          if (detectionType == 3 || (v35 = [v22 detectionType], v34 = @"🐱 ", v35 == 4))
           {
             [v32 appendString:v34];
           }
 
-          [v32 appendFormat:@"%@ (%@):\n", v23, v31];
+          [v32 appendFormat:@"%@ (%@):\n", name, v31];
           [v22 mergeCandidateConfidence];
           if (v36 > 0.0)
           {
             v37 = v36;
             v38 = [MEMORY[0x277CD9938] fetchMergeCandidateWithConfidencePersonsForPerson:v22 options:v62];
-            v39 = [v38 firstObject];
+            firstObject = [v38 firstObject];
 
-            v40 = [v39 name];
-            if (![v40 length])
+            name2 = [firstObject name];
+            if (![name2 length])
             {
-              v41 = [v39 uuid];
-              v42 = [v41 substringToIndex:8];
+              uuid2 = [firstObject uuid];
+              v42 = [uuid2 substringToIndex:8];
 
-              v40 = v42;
+              name2 = v42;
             }
 
-            [v32 appendFormat:@"\t-> %@ (%.2f)\n", v40, *&v37];
+            [v32 appendFormat:@"\t-> %@ (%.2f)\n", name2, *&v37];
 
             v20 = 0x277CCA000uLL;
           }
 
-          v43 = [v22 localIdentifier];
-          v44 = [v12 objectForKeyedSubscript:v43];
+          localIdentifier = [v22 localIdentifier];
+          v44 = [v12 objectForKeyedSubscript:localIdentifier];
 
           if (v44)
           {
             v45 = @"🙈";
             if ([v44 eyesState] == 2)
             {
-              v46 = [v44 faceExpressionType];
+              faceExpressionType = [v44 faceExpressionType];
               v45 = @"⁉️";
-              if (v46 <= 6)
+              if (faceExpressionType <= 6)
               {
-                v45 = off_278884FA0[v46];
+                v45 = off_278884FA0[faceExpressionType];
               }
             }
 
@@ -196,8 +196,8 @@
       while (v66);
     }
 
-    v4 = v60;
-    v3 = v61;
+    photoLibrary = v60;
+    assetCopy = v61;
     v9 = v59;
   }
 
@@ -211,33 +211,33 @@
   return v65;
 }
 
-+ (id)_sceneprintDistanceStringFromAsset:(id)a3 toAsset:(id)a4
++ (id)_sceneprintDistanceStringFromAsset:(id)asset toAsset:(id)toAsset
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  toAssetCopy = toAsset;
   v7 = [objc_alloc(MEMORY[0x277D277B8]) initWithSimilarityModelClass:objc_opt_class()];
-  [v7 distanceBetweenItem:v5 andItem:v6];
+  [v7 distanceBetweenItem:assetCopy andItem:toAssetCopy];
   v9 = v8;
   if (v8 >= 1.79769313e308)
   {
-    v16 = [v6 clsSceneprint];
-    if (v16)
+    clsSceneprint = [toAssetCopy clsSceneprint];
+    if (clsSceneprint)
     {
-      v17 = [v5 sceneAnalysisProperties];
-      v18 = [v17 sceneAnalysisVersion];
+      sceneAnalysisProperties = [assetCopy sceneAnalysisProperties];
+      sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
 
-      v19 = [v6 sceneAnalysisProperties];
-      v20 = [v19 sceneAnalysisVersion];
+      sceneAnalysisProperties2 = [toAssetCopy sceneAnalysisProperties];
+      sceneAnalysisVersion2 = [sceneAnalysisProperties2 sceneAnalysisVersion];
 
-      if (v18 == v20)
+      if (sceneAnalysisVersion == sceneAnalysisVersion2)
       {
         v21 = @"Error in computation";
       }
 
       else
       {
-        v23 = v18;
-        v24 = v20;
+        v23 = sceneAnalysisVersion;
+        v24 = sceneAnalysisVersion2;
         v21 = @"%hd != %hd";
       }
 
@@ -252,10 +252,10 @@
 
   else
   {
-    v10 = [v5 clsSimilarityModelVersion];
-    [v7 distanceThresholdForSimilarity:0 withSimilarityModelVersion:v10];
+    clsSimilarityModelVersion = [assetCopy clsSimilarityModelVersion];
+    [v7 distanceThresholdForSimilarity:0 withSimilarityModelVersion:clsSimilarityModelVersion];
     v12 = v11;
-    [v7 distanceThresholdForSimilarity:2 withSimilarityModelVersion:v10];
+    [v7 distanceThresholdForSimilarity:2 withSimilarityModelVersion:clsSimilarityModelVersion];
     v13 = @"-";
     if (v9 <= v14)
     {
@@ -273,26 +273,26 @@
   return v15;
 }
 
-+ (id)debugInformationForAsset:(id)a3 curationContext:(id)a4
++ (id)debugInformationForAsset:(id)asset curationContext:(id)context
 {
   v222[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v182 = [v6 photoLibrary];
-  v7 = [v182 librarySpecificFetchOptions];
+  contextCopy = context;
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v8 = [PGWallpaperSuggestionUtilities assetFetchPropertySetsIncludingGating:1];
-  [v7 setFetchPropertySets:v8];
+  [librarySpecificFetchOptions setFetchPropertySets:v8];
 
-  [v7 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
   v9 = MEMORY[0x277CD97A8];
-  v10 = [v6 localIdentifier];
+  localIdentifier = [assetCopy localIdentifier];
 
-  v222[0] = v10;
+  v222[0] = localIdentifier;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v222 count:1];
-  v12 = [v9 fetchAssetsWithLocalIdentifiers:v11 options:v7];
+  v12 = [v9 fetchAssetsWithLocalIdentifiers:v11 options:librarySpecificFetchOptions];
 
-  v13 = [MEMORY[0x277CD97A8] clsAllAssetsFromFetchResult:v12 prefetchOptions:31 curationContext:v5];
-  v14 = [v13 firstObject];
+  v13 = [MEMORY[0x277CD97A8] clsAllAssetsFromFetchResult:v12 prefetchOptions:31 curationContext:contextCopy];
+  firstObject = [v13 firstObject];
 
   v15 = objc_opt_new();
   v16 = MEMORY[0x277D3C7A0];
@@ -302,12 +302,12 @@
   v213[3] = &unk_278884F80;
   v189 = v15;
   v214 = v189;
-  [v16 enumerateSignalsFromAsset:v14 fullHierarchyName:1 usingBlock:v213];
+  [v16 enumerateSignalsFromAsset:firstObject fullHierarchyName:1 usingBlock:v213];
   v220[0] = @"latest";
   v17 = [MEMORY[0x277CCABB0] numberWithInt:*MEMORY[0x277D26840]];
   v220[1] = @"current";
   v221[0] = v17;
-  v18 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(v14, "faceAnalysisVersion")}];
+  v18 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(firstObject, "faceAnalysisVersion")}];
   v221[1] = v18;
   v188 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v221 forKeys:v220 count:2];
 
@@ -316,60 +316,60 @@
   v218[1] = @"current";
   v219[0] = v19;
   v20 = MEMORY[0x277CCABB0];
-  v21 = [v14 sceneAnalysisProperties];
-  v22 = [v20 numberWithShort:{objc_msgSend(v21, "sceneAnalysisVersion")}];
+  sceneAnalysisProperties = [firstObject sceneAnalysisProperties];
+  v22 = [v20 numberWithShort:{objc_msgSend(sceneAnalysisProperties, "sceneAnalysisVersion")}];
   v219[1] = v22;
   v187 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v219 forKeys:v218 count:2];
 
-  v23 = [v14 curationModel];
-  [v23 scoreWithAsset:v14 inContext:0];
+  curationModel = [firstObject curationModel];
+  [curationModel scoreWithAsset:firstObject inContext:0];
   v25 = v24;
 
-  v26 = [v14 photoLibrary];
-  [PGGraphBuilder topTierAestheticScoreForRatio:v26 inPhotoLibrary:0.01];
+  photoLibrary2 = [firstObject photoLibrary];
+  [PGGraphBuilder topTierAestheticScoreForRatio:photoLibrary2 inPhotoLibrary:0.01];
   v28 = v27;
 
   v29 = objc_autoreleasePoolPush();
-  v30 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:v14 withType:3 options:0];
-  v31 = [v30 firstObject];
+  v30 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:firstObject withType:3 options:0];
+  firstObject2 = [v30 firstObject];
 
   v32 = +[PGCurationManager assetPropertySetsForCuration];
-  [v7 setFetchPropertySets:v32];
+  [librarySpecificFetchOptions setFetchPropertySets:v32];
 
   v33 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v217[0] = v33;
   v34 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v217[1] = v34;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v217 count:2];
-  [v7 setSortDescriptors:v35];
+  [librarySpecificFetchOptions setSortDescriptors:v35];
 
-  v181 = v7;
-  v36 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v31 options:v7];
-  v37 = [v36 fetchedObjects];
+  v181 = librarySpecificFetchOptions;
+  v36 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:firstObject2 options:librarySpecificFetchOptions];
+  fetchedObjects = [v36 fetchedObjects];
 
-  v183 = v5;
-  v38 = [v5 curationSession];
-  [v38 prepareAssets:v37];
+  v183 = contextCopy;
+  curationSession = [contextCopy curationSession];
+  [curationSession prepareAssets:fetchedObjects];
 
-  v39 = [MEMORY[0x277D3C7A0] scoringContextWithAssets:v37 aestheticScoreThresholdToBeAwesome:v28];
-  v40 = [v14 curationModel];
-  [v40 scoreWithAsset:v14 inContext:v39];
+  v39 = [MEMORY[0x277D3C7A0] scoringContextWithAssets:fetchedObjects aestheticScoreThresholdToBeAwesome:v28];
+  curationModel2 = [firstObject curationModel];
+  [curationModel2 scoreWithAsset:firstObject inContext:v39];
   v42 = v41;
 
-  v43 = [PGMemoryGenerationHelper scoringContextForMemoriesWithAssets:v37 withTopTierAestheticScore:v28];
-  v44 = [v14 curationModel];
-  [v44 scoreWithAsset:v14 inContext:v43];
+  v43 = [PGMemoryGenerationHelper scoringContextForMemoriesWithAssets:fetchedObjects withTopTierAestheticScore:v28];
+  curationModel3 = [firstObject curationModel];
+  [curationModel3 scoreWithAsset:firstObject inContext:v43];
   v46 = v45;
 
-  v47 = [v14 clsSceneprint];
-  if (v47)
+  clsSceneprint = [firstObject clsSceneprint];
+  if (clsSceneprint)
   {
-    v48 = [v37 indexOfObject:v14];
+    v48 = [fetchedObjects indexOfObject:firstObject];
     v49 = v48;
     if (v48)
     {
-      v50 = [v37 objectAtIndexedSubscript:v48 - 1];
-      v186 = [a1 _sceneprintDistanceStringFromAsset:v14 toAsset:v50];
+      v50 = [fetchedObjects objectAtIndexedSubscript:v48 - 1];
+      v186 = [self _sceneprintDistanceStringFromAsset:firstObject toAsset:v50];
     }
 
     else
@@ -377,15 +377,15 @@
       v186 = @"No asset";
     }
 
-    if (v49 >= [v37 count] - 1)
+    if (v49 >= [fetchedObjects count] - 1)
     {
       v185 = @"No asset";
     }
 
     else
     {
-      v51 = [v37 objectAtIndexedSubscript:v49 + 1];
-      v185 = [a1 _sceneprintDistanceStringFromAsset:v14 toAsset:v51];
+      v51 = [fetchedObjects objectAtIndexedSubscript:v49 + 1];
+      v185 = [self _sceneprintDistanceStringFromAsset:firstObject toAsset:v51];
     }
   }
 
@@ -396,55 +396,55 @@
   }
 
   objc_autoreleasePoolPop(v29);
-  v52 = [MEMORY[0x277CBEB38] dictionary];
-  v53 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "clsIsBlurry")}];
-  [v52 setObject:v53 forKeyedSubscript:@"isBlurryMedia"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v53 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(firstObject, "clsIsBlurry")}];
+  [dictionary setObject:v53 forKeyedSubscript:@"isBlurryMedia"];
 
   v54 = MEMORY[0x277CCABB0];
-  v55 = [v14 curationModel];
-  v56 = [v55 mediaPreAnalysisModel];
-  v57 = [v56 sharpnessNode];
-  [v57 highRecallOperatingPoint];
+  curationModel4 = [firstObject curationModel];
+  mediaPreAnalysisModel = [curationModel4 mediaPreAnalysisModel];
+  sharpnessNode = [mediaPreAnalysisModel sharpnessNode];
+  [sharpnessNode highRecallOperatingPoint];
   v58 = [v54 numberWithDouble:?];
-  [v52 setObject:v58 forKeyedSubscript:@"sharpnessThreshold"];
+  [dictionary setObject:v58 forKeyedSubscript:@"sharpnessThreshold"];
 
-  [v52 setObject:v188 forKeyedSubscript:@"faceAnalysisVersions"];
-  [v52 setObject:v187 forKeyedSubscript:@"sceneAnalysisVersions"];
-  v59 = [v14 curationModel];
-  v60 = [v59 sceneModel];
-  v61 = [v60 identifier];
-  [v52 setObject:v61 forKeyedSubscript:@"sceneTaxonomyDigest"];
+  [dictionary setObject:v188 forKeyedSubscript:@"faceAnalysisVersions"];
+  [dictionary setObject:v187 forKeyedSubscript:@"sceneAnalysisVersions"];
+  curationModel5 = [firstObject curationModel];
+  sceneModel = [curationModel5 sceneModel];
+  identifier = [sceneModel identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"sceneTaxonomyDigest"];
 
-  [v52 setObject:v189 forKeyedSubscript:@"classification"];
+  [dictionary setObject:v189 forKeyedSubscript:@"classification"];
   v62 = [MEMORY[0x277CCABB0] numberWithDouble:v42];
-  [v52 setObject:v62 forKeyedSubscript:@"curationScoreWithContext"];
+  [dictionary setObject:v62 forKeyedSubscript:@"curationScoreWithContext"];
 
   v63 = [MEMORY[0x277CCABB0] numberWithDouble:v25];
-  [v52 setObject:v63 forKeyedSubscript:@"curationScoreWithoutContext"];
+  [dictionary setObject:v63 forKeyedSubscript:@"curationScoreWithoutContext"];
 
   v64 = [MEMORY[0x277CCABB0] numberWithDouble:v46];
-  [v52 setObject:v64 forKeyedSubscript:@"curationScoreForMemories"];
+  [dictionary setObject:v64 forKeyedSubscript:@"curationScoreForMemories"];
 
   v65 = [MEMORY[0x277CCABB0] numberWithDouble:v28];
-  [v52 setObject:v65 forKeyedSubscript:@"libraryTopTierAestheticScore"];
+  [dictionary setObject:v65 forKeyedSubscript:@"libraryTopTierAestheticScore"];
 
-  v66 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "clsIsUtility")}];
-  [v52 setObject:v66 forKeyedSubscript:@"isUtility"];
+  v66 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(firstObject, "clsIsUtility")}];
+  [dictionary setObject:v66 forKeyedSubscript:@"isUtility"];
 
   v67 = MEMORY[0x277CCABB0];
-  v68 = [v14 curationModel];
-  v69 = [v183 userFeedbackCalculator];
-  v70 = [v67 numberWithBool:{objc_msgSend(v68, "isUtilityForMemoriesWithAsset:userFeedbackCalculator:blockSocialMediaImportedAssets:", v14, v69, 0)}];
-  [v52 setObject:v70 forKeyedSubscript:@"isUtilityForMemories"];
+  curationModel6 = [firstObject curationModel];
+  userFeedbackCalculator = [v183 userFeedbackCalculator];
+  v70 = [v67 numberWithBool:{objc_msgSend(curationModel6, "isUtilityForMemoriesWithAsset:userFeedbackCalculator:blockSocialMediaImportedAssets:", firstObject, userFeedbackCalculator, 0)}];
+  [dictionary setObject:v70 forKeyedSubscript:@"isUtilityForMemories"];
 
-  v71 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "clsIsTragicFailure")}];
-  [v52 setObject:v71 forKeyedSubscript:@"isTragicFailure"];
+  v71 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(firstObject, "clsIsTragicFailure")}];
+  [dictionary setObject:v71 forKeyedSubscript:@"isTragicFailure"];
 
   v212 = 0;
-  v72 = [v14 clsAvoidIfPossibleAsKeyItemForMemories:0 allowGuestAsset:0 reason:&v212];
+  v72 = [firstObject clsAvoidIfPossibleAsKeyItemForMemories:0 allowGuestAsset:0 reason:&v212];
   v73 = v212;
   v74 = [MEMORY[0x277CCABB0] numberWithBool:v72];
-  [v52 setObject:v74 forKeyedSubscript:@"avoidForKeyAsset"];
+  [dictionary setObject:v74 forKeyedSubscript:@"avoidForKeyAsset"];
 
   if (v72)
   {
@@ -458,255 +458,255 @@
       v75 = @"Unknown";
     }
 
-    [v52 setObject:v75 forKeyedSubscript:@"avoidForKeyAssetReason"];
+    [dictionary setObject:v75 forKeyedSubscript:@"avoidForKeyAssetReason"];
   }
 
-  v76 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "clsAvoidIfPossibleAsKeyItemForMemories:allowGuestAsset:", 1, 0)}];
-  [v52 setObject:v76 forKeyedSubscript:@"avoidForMemoryKeyAsset"];
+  v76 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(firstObject, "clsAvoidIfPossibleAsKeyItemForMemories:allowGuestAsset:", 1, 0)}];
+  [dictionary setObject:v76 forKeyedSubscript:@"avoidForMemoryKeyAsset"];
 
-  v77 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(MEMORY[0x277D3C7C0], "assetIsSafeForWidgetDisplay:", v14)}];
-  [v52 setObject:v77 forKeyedSubscript:@"isSafeForWidgetDisplay"];
+  v77 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(MEMORY[0x277D3C7C0], "assetIsSafeForWidgetDisplay:", firstObject)}];
+  [dictionary setObject:v77 forKeyedSubscript:@"isSafeForWidgetDisplay"];
 
-  v78 = [a1 _personDescriptionStringsInAsset:v14];
-  [v52 setObject:v78 forKeyedSubscript:@"peopleNames"];
+  v78 = [self _personDescriptionStringsInAsset:firstObject];
+  [dictionary setObject:v78 forKeyedSubscript:@"peopleNames"];
 
-  [v52 setObject:v186 forKeyedSubscript:@"sceneprintDistanceToPreviousAsset"];
-  [v52 setObject:v185 forKeyedSubscript:@"sceneprintDistanceToNextAsset"];
+  [dictionary setObject:v186 forKeyedSubscript:@"sceneprintDistanceToPreviousAsset"];
+  [dictionary setObject:v185 forKeyedSubscript:@"sceneprintDistanceToNextAsset"];
   v79 = MEMORY[0x277CCABB0];
-  [v14 clsSquareCropScore];
+  [firstObject clsSquareCropScore];
   v80 = [v79 numberWithDouble:?];
-  [v52 setObject:v80 forKeyedSubscript:@"squareCropScore"];
+  [dictionary setObject:v80 forKeyedSubscript:@"squareCropScore"];
 
-  [v14 cropScoreForTargetAspectRatio:1 forFaces:0.75];
+  [firstObject cropScoreForTargetAspectRatio:1 forFaces:0.75];
   v81 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [v52 setObject:v81 forKeyedSubscript:@"3x4CropScore"];
+  [dictionary setObject:v81 forKeyedSubscript:@"3x4CropScore"];
 
-  [v14 cropScoreForTargetAspectRatio:1 forFaces:1.5];
+  [firstObject cropScoreForTargetAspectRatio:1 forFaces:1.5];
   v82 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  [v52 setObject:v82 forKeyedSubscript:@"3x2CropScore"];
+  [dictionary setObject:v82 forKeyedSubscript:@"3x2CropScore"];
 
   v83 = MEMORY[0x277CCABB0];
   v211 = v73;
-  v84 = [(PGPeopleWallpaperSuggester *)PGTopPeopleWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v211];
+  v84 = [(PGPeopleWallpaperSuggester *)PGTopPeopleWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v211];
   v85 = v211;
 
   v86 = [v83 numberWithBool:v84];
-  [v52 setObject:v86 forKeyedSubscript:@"WSTopPeoplePortraitPass"];
+  [dictionary setObject:v86 forKeyedSubscript:@"WSTopPeoplePortraitPass"];
 
-  [v52 setObject:v85 forKeyedSubscript:@"WSTopPeoplePortraitReason"];
+  [dictionary setObject:v85 forKeyedSubscript:@"WSTopPeoplePortraitReason"];
   v87 = MEMORY[0x277CCABB0];
   v210 = v85;
-  v88 = [(PGPeopleWallpaperSuggester *)PGTopPeopleWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v210];
+  v88 = [(PGPeopleWallpaperSuggester *)PGTopPeopleWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v210];
   v89 = v210;
 
   v90 = [v87 numberWithBool:v88];
-  [v52 setObject:v90 forKeyedSubscript:@"WSTopPeopleLandscapePass"];
+  [dictionary setObject:v90 forKeyedSubscript:@"WSTopPeopleLandscapePass"];
 
-  [v52 setObject:v89 forKeyedSubscript:@"WSTopPeopleLandscapeReason"];
+  [dictionary setObject:v89 forKeyedSubscript:@"WSTopPeopleLandscapeReason"];
   v91 = MEMORY[0x277CCABB0];
   v209 = v89;
-  v92 = [(PGPetWallpaperSuggester *)PGTopPetWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v209];
+  v92 = [(PGPetWallpaperSuggester *)PGTopPetWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v209];
   v93 = v209;
 
   v94 = [v91 numberWithBool:v92];
-  [v52 setObject:v94 forKeyedSubscript:@"WSTopPetPortraitPass"];
+  [dictionary setObject:v94 forKeyedSubscript:@"WSTopPetPortraitPass"];
 
-  [v52 setObject:v93 forKeyedSubscript:@"WSTopPetPortraitReason"];
+  [dictionary setObject:v93 forKeyedSubscript:@"WSTopPetPortraitReason"];
   v95 = MEMORY[0x277CCABB0];
   v208 = v93;
-  v96 = [(PGPetWallpaperSuggester *)PGTopPetWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v208];
+  v96 = [(PGPetWallpaperSuggester *)PGTopPetWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v208];
   v97 = v208;
 
   v98 = [v95 numberWithBool:v96];
-  [v52 setObject:v98 forKeyedSubscript:@"WSTopPetLandscapePass"];
+  [dictionary setObject:v98 forKeyedSubscript:@"WSTopPetLandscapePass"];
 
-  [v52 setObject:v97 forKeyedSubscript:@"WSTopPetLandscapeReason"];
+  [dictionary setObject:v97 forKeyedSubscript:@"WSTopPetLandscapeReason"];
   v99 = MEMORY[0x277CCABB0];
   v207 = v97;
-  v100 = [(PGLandscapeWallpaperSuggester *)PGTopLandscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v207];
+  v100 = [(PGLandscapeWallpaperSuggester *)PGTopLandscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v207];
   v101 = v207;
 
   v102 = [v99 numberWithBool:v100];
-  [v52 setObject:v102 forKeyedSubscript:@"WSTopNaturePortraitPass"];
+  [dictionary setObject:v102 forKeyedSubscript:@"WSTopNaturePortraitPass"];
 
-  [v52 setObject:v101 forKeyedSubscript:@"WSTopNaturePortraitReason"];
+  [dictionary setObject:v101 forKeyedSubscript:@"WSTopNaturePortraitReason"];
   v103 = MEMORY[0x277CCABB0];
   v206 = v101;
-  v104 = [(PGLandscapeWallpaperSuggester *)PGTopLandscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v206];
+  v104 = [(PGLandscapeWallpaperSuggester *)PGTopLandscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v206];
   v105 = v206;
 
   v106 = [v103 numberWithBool:v104];
-  [v52 setObject:v106 forKeyedSubscript:@"WSTopNatureLandscapePass"];
+  [dictionary setObject:v106 forKeyedSubscript:@"WSTopNatureLandscapePass"];
 
-  [v52 setObject:v105 forKeyedSubscript:@"WSTopNatureLandscapeReason"];
+  [dictionary setObject:v105 forKeyedSubscript:@"WSTopNatureLandscapeReason"];
   v107 = MEMORY[0x277CCABB0];
   v205 = v105;
-  v108 = [(PGCityscapeWallpaperSuggester *)PGTopCityscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v205];
+  v108 = [(PGCityscapeWallpaperSuggester *)PGTopCityscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v205];
   v109 = v205;
 
   v110 = [v107 numberWithBool:v108];
-  [v52 setObject:v110 forKeyedSubscript:@"WSTopCityscapePortraitPass"];
+  [dictionary setObject:v110 forKeyedSubscript:@"WSTopCityscapePortraitPass"];
 
-  [v52 setObject:v109 forKeyedSubscript:@"WSTopCityscapePortraitReason"];
+  [dictionary setObject:v109 forKeyedSubscript:@"WSTopCityscapePortraitReason"];
   v111 = MEMORY[0x277CCABB0];
   v204 = v109;
-  v112 = [(PGCityscapeWallpaperSuggester *)PGTopCityscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v204];
+  v112 = [(PGCityscapeWallpaperSuggester *)PGTopCityscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v204];
   v113 = v204;
 
   v114 = [v111 numberWithBool:v112];
-  [v52 setObject:v114 forKeyedSubscript:@"WSTopCityscapeLandscapePass"];
+  [dictionary setObject:v114 forKeyedSubscript:@"WSTopCityscapeLandscapePass"];
 
-  [v52 setObject:v113 forKeyedSubscript:@"WSTopCityscapeLandscapeReason"];
+  [dictionary setObject:v113 forKeyedSubscript:@"WSTopCityscapeLandscapeReason"];
   v115 = MEMORY[0x277CCABB0];
   v203 = v113;
-  v116 = [PGPeopleWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v203];
+  v116 = [PGPeopleWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v203];
   v117 = v203;
 
   v118 = [v115 numberWithBool:v116];
-  [v52 setObject:v118 forKeyedSubscript:@"WSPeoplePortraitPass"];
+  [dictionary setObject:v118 forKeyedSubscript:@"WSPeoplePortraitPass"];
 
-  [v52 setObject:v117 forKeyedSubscript:@"WSPeoplePortraitReason"];
+  [dictionary setObject:v117 forKeyedSubscript:@"WSPeoplePortraitReason"];
   v119 = MEMORY[0x277CCABB0];
   v202 = v117;
-  v120 = [PGPeopleWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v202];
+  v120 = [PGPeopleWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v202];
   v121 = v202;
 
   v122 = [v119 numberWithBool:v120];
-  [v52 setObject:v122 forKeyedSubscript:@"WSPeopleLandscapePass"];
+  [dictionary setObject:v122 forKeyedSubscript:@"WSPeopleLandscapePass"];
 
-  [v52 setObject:v121 forKeyedSubscript:@"WSPeopleLandscapeReason"];
+  [dictionary setObject:v121 forKeyedSubscript:@"WSPeopleLandscapeReason"];
   v123 = MEMORY[0x277CCABB0];
   v201 = v121;
-  v124 = [PGPetWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v201];
+  v124 = [PGPetWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v201];
   v125 = v201;
 
   v126 = [v123 numberWithBool:v124];
-  [v52 setObject:v126 forKeyedSubscript:@"WSPetPortraitPass"];
+  [dictionary setObject:v126 forKeyedSubscript:@"WSPetPortraitPass"];
 
-  [v52 setObject:v125 forKeyedSubscript:@"WSPetPortraitReason"];
+  [dictionary setObject:v125 forKeyedSubscript:@"WSPetPortraitReason"];
   v127 = MEMORY[0x277CCABB0];
   v200 = v125;
-  v128 = [PGPetWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v200];
+  v128 = [PGPetWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v200];
   v129 = v200;
 
   v130 = [v127 numberWithBool:v128];
-  [v52 setObject:v130 forKeyedSubscript:@"WSPetLandscapePass"];
+  [dictionary setObject:v130 forKeyedSubscript:@"WSPetLandscapePass"];
 
-  [v52 setObject:v129 forKeyedSubscript:@"WSPetLandscapeReason"];
+  [dictionary setObject:v129 forKeyedSubscript:@"WSPetLandscapeReason"];
   v131 = MEMORY[0x277CCABB0];
   v199 = v129;
-  v132 = [PGLandscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v199];
+  v132 = [PGLandscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v199];
   v133 = v199;
 
   v134 = [v131 numberWithBool:v132];
-  [v52 setObject:v134 forKeyedSubscript:@"WSNaturePortraitPass"];
+  [dictionary setObject:v134 forKeyedSubscript:@"WSNaturePortraitPass"];
 
-  [v52 setObject:v133 forKeyedSubscript:@"WSNaturePortraitReason"];
+  [dictionary setObject:v133 forKeyedSubscript:@"WSNaturePortraitReason"];
   v135 = MEMORY[0x277CCABB0];
   v198 = v133;
-  v136 = [PGLandscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v198];
+  v136 = [PGLandscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v198];
   v137 = v198;
 
   v138 = [v135 numberWithBool:v136];
-  [v52 setObject:v138 forKeyedSubscript:@"WSNatureLandscapePass"];
+  [dictionary setObject:v138 forKeyedSubscript:@"WSNatureLandscapePass"];
 
-  [v52 setObject:v137 forKeyedSubscript:@"WSNatureLandscapeReason"];
+  [dictionary setObject:v137 forKeyedSubscript:@"WSNatureLandscapeReason"];
   v139 = MEMORY[0x277CCABB0];
   v197 = v137;
-  v140 = [PGCityscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v197];
+  v140 = [PGCityscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v197];
   v141 = v197;
 
   v142 = [v139 numberWithBool:v140];
-  [v52 setObject:v142 forKeyedSubscript:@"WSCityscapePortraitPass"];
+  [dictionary setObject:v142 forKeyedSubscript:@"WSCityscapePortraitPass"];
 
-  [v52 setObject:v141 forKeyedSubscript:@"WSCityscapePortraitReason"];
+  [dictionary setObject:v141 forKeyedSubscript:@"WSCityscapePortraitReason"];
   v143 = MEMORY[0x277CCABB0];
   v196 = v141;
-  v144 = [PGCityscapeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v196];
+  v144 = [PGCityscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v196];
   v145 = v196;
 
   v146 = [v143 numberWithBool:v144];
-  [v52 setObject:v146 forKeyedSubscript:@"WSCityscapeLandscapePass"];
+  [dictionary setObject:v146 forKeyedSubscript:@"WSCityscapeLandscapePass"];
 
-  [v52 setObject:v145 forKeyedSubscript:@"WSCityscapeLandscapeReason"];
+  [dictionary setObject:v145 forKeyedSubscript:@"WSCityscapeLandscapeReason"];
   v147 = MEMORY[0x277CCABB0];
   v195 = v145;
-  v148 = [PGSettlingEffectWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v195];
+  v148 = [PGSettlingEffectWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v195];
   v149 = v195;
 
   v150 = [v147 numberWithBool:v148];
-  [v52 setObject:v150 forKeyedSubscript:@"WSSettlingEffectPortraitPass"];
+  [dictionary setObject:v150 forKeyedSubscript:@"WSSettlingEffectPortraitPass"];
 
-  [v52 setObject:v149 forKeyedSubscript:@"WSSettlingEffectPortraitReason"];
+  [dictionary setObject:v149 forKeyedSubscript:@"WSSettlingEffectPortraitReason"];
   v151 = MEMORY[0x277CCABB0];
   v194 = v149;
-  v152 = [PGSettlingEffectWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v194];
+  v152 = [PGSettlingEffectWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v194];
   v153 = v194;
 
   v154 = [v151 numberWithBool:v152];
-  [v52 setObject:v154 forKeyedSubscript:@"WSSettlingEffectLandscapePass"];
+  [dictionary setObject:v154 forKeyedSubscript:@"WSSettlingEffectLandscapePass"];
 
-  [v52 setObject:v153 forKeyedSubscript:@"WSSettlingEffectLandscapeReason"];
+  [dictionary setObject:v153 forKeyedSubscript:@"WSSettlingEffectLandscapeReason"];
   v155 = MEMORY[0x277CCABB0];
   v193 = v153;
-  v156 = [(PGPeopleWallpaperSuggester *)PGMeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:1 reason:&v193];
+  v156 = [(PGPeopleWallpaperSuggester *)PGMeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:1 reason:&v193];
   v157 = v193;
 
   v158 = [v155 numberWithBool:v156];
-  [v52 setObject:v158 forKeyedSubscript:@"WSMePortraitPass"];
+  [dictionary setObject:v158 forKeyedSubscript:@"WSMePortraitPass"];
 
-  [v52 setObject:v157 forKeyedSubscript:@"WSMePortraitReason"];
+  [dictionary setObject:v157 forKeyedSubscript:@"WSMePortraitReason"];
   v159 = MEMORY[0x277CCABB0];
   v192 = v157;
-  v160 = [(PGPeopleWallpaperSuggester *)PGMeWallpaperSuggester passesFilteringWithAsset:v14 curationContext:v183 orientation:2 reason:&v192];
+  v160 = [(PGPeopleWallpaperSuggester *)PGMeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:v183 orientation:2 reason:&v192];
   v161 = v192;
 
   v162 = [v159 numberWithBool:v160];
-  [v52 setObject:v162 forKeyedSubscript:@"WSMeLandscapePass"];
+  [dictionary setObject:v162 forKeyedSubscript:@"WSMeLandscapePass"];
 
-  [v52 setObject:v161 forKeyedSubscript:@"WSMeLandscapeReason"];
-  v163 = [v14 photoAnalysisWallpaperProperties];
+  [dictionary setObject:v161 forKeyedSubscript:@"WSMeLandscapeReason"];
+  photoAnalysisWallpaperProperties = [firstObject photoAnalysisWallpaperProperties];
   v215[0] = @"current";
   v164 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{+[PGWallpaperSuggestionAssetGater currentWallpaperPropertiesVersion](PGWallpaperSuggestionAssetGater, "currentWallpaperPropertiesVersion")}];
   v215[1] = @"persisted";
   v216[0] = v164;
-  v165 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v163, "wallpaperPropertiesVersion")}];
+  v165 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(photoAnalysisWallpaperProperties, "wallpaperPropertiesVersion")}];
   v216[1] = v165;
   v166 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v216 forKeys:v215 count:2];
-  [v52 setObject:v166 forKeyedSubscript:@"NSWallpaperPropertiesVersions"];
+  [dictionary setObject:v166 forKeyedSubscript:@"NSWallpaperPropertiesVersions"];
 
-  v167 = [v163 wallpaperPropertiesTimestamp];
-  if (v167)
+  wallpaperPropertiesTimestamp = [photoAnalysisWallpaperProperties wallpaperPropertiesTimestamp];
+  if (wallpaperPropertiesTimestamp)
   {
     v168 = MEMORY[0x277CCA968];
-    v169 = [v163 wallpaperPropertiesTimestamp];
-    v170 = [v168 localizedStringFromDate:v169 dateStyle:1 timeStyle:1];
-    [v52 setObject:v170 forKeyedSubscript:@"NSWallpaperPropertiesTimestamp"];
+    wallpaperPropertiesTimestamp2 = [photoAnalysisWallpaperProperties wallpaperPropertiesTimestamp];
+    v170 = [v168 localizedStringFromDate:wallpaperPropertiesTimestamp2 dateStyle:1 timeStyle:1];
+    [dictionary setObject:v170 forKeyedSubscript:@"NSWallpaperPropertiesTimestamp"];
   }
 
   else
   {
-    [v52 setObject:@"Never computed" forKeyedSubscript:@"NSWallpaperPropertiesTimestamp"];
+    [dictionary setObject:@"Never computed" forKeyedSubscript:@"NSWallpaperPropertiesTimestamp"];
   }
 
-  v171 = [v163 wallpaperPropertiesData];
+  wallpaperPropertiesData = [photoAnalysisWallpaperProperties wallpaperPropertiesData];
 
-  if (v171)
+  if (wallpaperPropertiesData)
   {
     v172 = MEMORY[0x277CCAC58];
-    v173 = [v163 wallpaperPropertiesData];
+    wallpaperPropertiesData2 = [photoAnalysisWallpaperProperties wallpaperPropertiesData];
     v191 = 0;
-    v174 = [v172 propertyListWithData:v173 options:0 format:0 error:&v191];
+    v174 = [v172 propertyListWithData:wallpaperPropertiesData2 options:0 format:0 error:&v191];
     v175 = v191;
   }
 
   else
   {
     v176 = [PGWallpaperSuggestionAssetGater alloc];
-    v173 = [(PGWallpaperSuggestionAssetGater *)v176 initWithType:1 loggingConnection:MEMORY[0x277D86220]];
-    [(PGWallpaperSuggestionAssetGater *)v173 setIsUserInitiated:1];
+    wallpaperPropertiesData2 = [(PGWallpaperSuggestionAssetGater *)v176 initWithType:1 loggingConnection:MEMORY[0x277D86220]];
+    [(PGWallpaperSuggestionAssetGater *)wallpaperPropertiesData2 setIsUserInitiated:1];
     v190 = 0;
-    v174 = [(PGWallpaperSuggestionAssetGater *)v173 requestWallpaperPropertiesForAsset:v14 progressBlock:&__block_literal_global_47611 error:&v190];
+    v174 = [(PGWallpaperSuggestionAssetGater *)wallpaperPropertiesData2 requestWallpaperPropertiesForAsset:firstObject progressBlock:&__block_literal_global_47611 error:&v190];
     v175 = v190;
   }
 
@@ -714,18 +714,18 @@
 
   if (v174)
   {
-    [v52 setObject:v174 forKeyedSubscript:@"NSWallpaperProperties"];
+    [dictionary setObject:v174 forKeyedSubscript:@"NSWallpaperProperties"];
   }
 
   else
   {
     v178 = [v177 description];
-    [v52 setObject:v178 forKeyedSubscript:@"NSWallpaperProperties"];
+    [dictionary setObject:v178 forKeyedSubscript:@"NSWallpaperProperties"];
   }
 
   v179 = *MEMORY[0x277D85DE8];
 
-  return v52;
+  return dictionary;
 }
 
 void __68__PGAssetDebugInformation_debugInformationForAsset_curationContext___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5, double a6, double a7, uint64_t a8, void *a9)

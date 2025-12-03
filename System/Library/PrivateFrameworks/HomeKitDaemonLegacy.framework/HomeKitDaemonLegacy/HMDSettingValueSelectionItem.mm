@@ -1,6 +1,6 @@
 @interface HMDSettingValueSelectionItem
-- (BOOL)isEqual:(id)a3;
-- (HMDSettingValueSelectionItem)initWithIdentifier:(id)a3 selection:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDSettingValueSelectionItem)initWithIdentifier:(id)identifier selection:(id)selection;
 - (unint64_t)hash;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDSettingValueSelectionItem *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDSettingValueSelectionItem *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -27,7 +27,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -38,13 +38,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDSettingValueSelectionItem *)self identifier];
-      v8 = [(HMDSettingValueSelectionItem *)v6 identifier];
-      if ([v7 isEqual:v8])
+      identifier = [(HMDSettingValueSelectionItem *)self identifier];
+      identifier2 = [(HMDSettingValueSelectionItem *)v6 identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v9 = [(HMDSettingValueSelectionItem *)self selection];
-        v10 = [(HMDSettingValueSelectionItem *)v6 selection];
-        v11 = [v9 isEqualToString:v10];
+        selection = [(HMDSettingValueSelectionItem *)self selection];
+        selection2 = [(HMDSettingValueSelectionItem *)v6 selection];
+        v11 = [selection isEqualToString:selection2];
       }
 
       else
@@ -62,18 +62,18 @@
   return v11;
 }
 
-- (HMDSettingValueSelectionItem)initWithIdentifier:(id)a3 selection:(id)a4
+- (HMDSettingValueSelectionItem)initWithIdentifier:(id)identifier selection:(id)selection
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  selectionCopy = selection;
   v12.receiver = self;
   v12.super_class = HMDSettingValueSelectionItem;
   v9 = [(HMDSettingValueSelectionItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_selection, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_selection, selection);
   }
 
   return v10;

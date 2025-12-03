@@ -8,18 +8,18 @@
 
 - (void)_configureView
 {
-  v3 = [(NCNotificationManagementAlertController *)self request];
-  v4 = [v3 topLevelSectionIdentifier];
+  request = [(NCNotificationManagementAlertController *)self request];
+  topLevelSectionIdentifier = [request topLevelSectionIdentifier];
 
-  v5 = [(NCNotificationManagementAlertController *)self settingsDelegate];
-  v6 = [v5 notificationManagementController:self sectionSettingsForSectionIdentifier:v4];
+  settingsDelegate = [(NCNotificationManagementAlertController *)self settingsDelegate];
+  v6 = [settingsDelegate notificationManagementController:self sectionSettingsForSectionIdentifier:topLevelSectionIdentifier];
 
   v7 = MEMORY[0x277CCACA8];
   v8 = NCUserNotificationsUIKitFrameworkBundle();
   v9 = [v8 localizedStringForKey:@"NOTIFICATION_REMOTE_MANAGEMENT_MUTING_MENU_THREAD_TITLE" value:&stru_282FE84F8 table:0];
-  v10 = [v6 displayName];
-  v11 = [(NCNotificationManagementMuteThreadAlertController *)self _threadName];
-  v12 = [v7 stringWithFormat:v9, v10, v11];
+  displayName = [v6 displayName];
+  _threadName = [(NCNotificationManagementMuteThreadAlertController *)self _threadName];
+  v12 = [v7 stringWithFormat:v9, displayName, _threadName];
   [(NCNotificationManagementMuteThreadAlertController *)self setTitle:v12];
 
   v13 = MEMORY[0x277D750F8];
@@ -85,27 +85,27 @@ uint64_t __67__NCNotificationManagementMuteThreadAlertController__configureView_
 {
   if ([(NCNotificationManagementMuteThreadAlertController *)self _isMessagingThread])
   {
-    v3 = [(NCNotificationManagementAlertController *)self request];
-    v4 = [v3 content];
-    v5 = [v4 communicationContext];
-    v6 = [v5 preferredDescription];
+    request = [(NCNotificationManagementAlertController *)self request];
+    content = [request content];
+    communicationContext = [content communicationContext];
+    preferredDescription = [communicationContext preferredDescription];
   }
 
   else
   {
-    v6 = 0;
+    preferredDescription = 0;
   }
 
-  return v6;
+  return preferredDescription;
 }
 
 - (BOOL)_isMessagingThread
 {
-  v2 = [(NCNotificationManagementAlertController *)self request];
-  v3 = [v2 content];
-  v4 = [v3 isMessagingType];
+  request = [(NCNotificationManagementAlertController *)self request];
+  content = [request content];
+  isMessagingType = [content isMessagingType];
 
-  return v4;
+  return isMessagingType;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface SearchHomeDataDownloader
 - (NSString)naturalSearchCachedKey;
-- (SearchHomeDataDownloader)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4;
+- (SearchHomeDataDownloader)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route;
 - (SearchHomeDataFetcherDelegate)delegate;
-- (id)_searchHomeTipDataProvider:(id)a3;
-- (id)browseCategoriesDataProviderWithSearchCategories:(id)a3 title:(id)a4;
-- (id)citiesNearYouDataProviderWithSuggestions:(id)a3 title:(id)a4;
-- (id)curatedCollectionsDataProviderWithCollectionSuggestions:(id)a3 title:(id)a4;
-- (id)publishersDataProviderWithPublisherSuggestions:(id)a3 title:(id)a4;
+- (id)_searchHomeTipDataProvider:(id)provider;
+- (id)browseCategoriesDataProviderWithSearchCategories:(id)categories title:(id)title;
+- (id)citiesNearYouDataProviderWithSuggestions:(id)suggestions title:(id)title;
+- (id)curatedCollectionsDataProviderWithCollectionSuggestions:(id)suggestions title:(id)title;
+- (id)publishersDataProviderWithPublisherSuggestions:(id)suggestions title:(id)title;
 - (void)fetchContent;
-- (void)parseResponse:(id)a3;
+- (void)parseResponse:(id)response;
 @end
 
 @implementation SearchHomeDataDownloader
@@ -35,19 +35,19 @@
   return naturalSearchCachedKey;
 }
 
-- (id)citiesNearYouDataProviderWithSuggestions:(id)a3 title:(id)a4
+- (id)citiesNearYouDataProviderWithSuggestions:(id)suggestions title:(id)title
 {
-  v5 = a3;
-  v6 = a4;
+  suggestionsCopy = suggestions;
+  titleCopy = title;
   if (MapsFeature_IsEnabled_Maps269())
   {
     v7 = +[NSUUID UUID];
-    v8 = [v7 UUIDString];
-    v9 = [NSString stringWithFormat:@"SearchHomeCitiesNearYou-%@", v8];
+    uUIDString = [v7 UUIDString];
+    v9 = [NSString stringWithFormat:@"SearchHomeCitiesNearYou-%@", uUIDString];
 
     v10 = [SearchHomeCitiesDataProvider alloc];
-    v11 = [v5 guideLocations];
-    v12 = [(SearchHomeCitiesDataProvider *)v10 initWithObjects:v11 type:5 identifier:v9 title:v6];
+    guideLocations = [suggestionsCopy guideLocations];
+    v12 = [(SearchHomeCitiesDataProvider *)v10 initWithObjects:guideLocations type:5 identifier:v9 title:titleCopy];
   }
 
   else
@@ -58,19 +58,19 @@
   return v12;
 }
 
-- (id)publishersDataProviderWithPublisherSuggestions:(id)a3 title:(id)a4
+- (id)publishersDataProviderWithPublisherSuggestions:(id)suggestions title:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 publishers];
-  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  suggestionsCopy = suggestions;
+  titleCopy = title;
+  publishers = [suggestionsCopy publishers];
+  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [publishers count]);
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v5 publishers];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  publishers2 = [suggestionsCopy publishers];
+  v10 = [publishers2 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -81,46 +81,46 @@
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(publishers2);
         }
 
-        v14 = [*(*(&v22 + 1) + 8 * i) publisher];
-        if (v14)
+        publisher = [*(*(&v22 + 1) + 8 * i) publisher];
+        if (publisher)
         {
-          [v8 addObject:v14];
+          [v8 addObject:publisher];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [publishers2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
   }
 
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
-  v17 = [NSString stringWithFormat:@"SearchHomePublishers-%@", v16];
+  uUIDString = [v15 UUIDString];
+  v17 = [NSString stringWithFormat:@"SearchHomePublishers-%@", uUIDString];
 
   v18 = [SearchHomePublishersDataProvider alloc];
   v19 = [v8 copy];
-  v20 = [(SearchHomePublishersDataProvider *)v18 initWithObjects:v19 type:4 identifier:v17 title:v6];
+  v20 = [(SearchHomePublishersDataProvider *)v18 initWithObjects:v19 type:4 identifier:v17 title:titleCopy];
 
   return v20;
 }
 
-- (id)curatedCollectionsDataProviderWithCollectionSuggestions:(id)a3 title:(id)a4
+- (id)curatedCollectionsDataProviderWithCollectionSuggestions:(id)suggestions title:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 collections];
-  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  suggestionsCopy = suggestions;
+  titleCopy = title;
+  collections = [suggestionsCopy collections];
+  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [collections count]);
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v5 collections];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  collections2 = [suggestionsCopy collections];
+  v10 = [collections2 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -131,54 +131,54 @@
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(collections2);
         }
 
-        v14 = [*(*(&v24 + 1) + 8 * i) collection];
-        if (v14)
+        collection = [*(*(&v24 + 1) + 8 * i) collection];
+        if (collection)
         {
-          [v8 addObject:v14];
+          [v8 addObject:collection];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [collections2 countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);
   }
 
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
-  v17 = [NSString stringWithFormat:@"SearchHomeCuratedCollections-%@", v16];
+  uUIDString = [v15 UUIDString];
+  v17 = [NSString stringWithFormat:@"SearchHomeCuratedCollections-%@", uUIDString];
 
   v18 = [SearchHomeCollectionsDataProvider alloc];
   v19 = [v8 copy];
-  v20 = [(SearchHomeCollectionsDataProvider *)v18 initWithObjects:v19 type:3 identifier:v17 title:v6];
+  v20 = [(SearchHomeCollectionsDataProvider *)v18 initWithObjects:v19 type:3 identifier:v17 title:titleCopy];
 
   if (MapsFeature_IsEnabled_Maps269())
   {
-    v21 = [v5 exploreGuides];
+    exploreGuides = [suggestionsCopy exploreGuides];
 
-    if (v21)
+    if (exploreGuides)
     {
-      v22 = [v5 exploreGuides];
-      [(SearchHomeCollectionsDataProvider *)v20 configureWithExploreGuides:v22];
+      exploreGuides2 = [suggestionsCopy exploreGuides];
+      [(SearchHomeCollectionsDataProvider *)v20 configureWithExploreGuides:exploreGuides2];
     }
   }
 
   return v20;
 }
 
-- (id)browseCategoriesDataProviderWithSearchCategories:(id)a3 title:(id)a4
+- (id)browseCategoriesDataProviderWithSearchCategories:(id)categories title:(id)title
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  categoriesCopy = categories;
+  titleCopy = title;
+  v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [categoriesCopy count]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v5;
+  v8 = categoriesCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v9)
   {
@@ -215,17 +215,17 @@
   }
 
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
-  v17 = [NSString stringWithFormat:@"SearchHomeBrowseCategories-%@", v16];
+  uUIDString = [v15 UUIDString];
+  v17 = [NSString stringWithFormat:@"SearchHomeBrowseCategories-%@", uUIDString];
 
   v18 = [SearchHomeBrowseCategoriesDataProvider alloc];
   v19 = [v7 copy];
-  v20 = [(SearchHomeBrowseCategoriesDataProvider *)v18 initWithObjects:v19 type:2 identifier:v17 title:v6];
+  v20 = [(SearchHomeBrowseCategoriesDataProvider *)v18 initWithObjects:v19 type:2 identifier:v17 title:titleCopy];
 
   return v20;
 }
 
-- (id)_searchHomeTipDataProvider:(id)a3
+- (id)_searchHomeTipDataProvider:(id)provider
 {
   v3 = [SearchHomeTipDataProvider alloc];
   v7 = @"SearchHomeTip";
@@ -235,9 +235,9 @@
   return v5;
 }
 
-- (void)parseResponse:(id)a3
+- (void)parseResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = sub_100EC1E20();
   v6 = os_signpost_id_generate(v5);
 
@@ -252,12 +252,12 @@
 
   spid = v6;
 
-  v9 = [v4 cachedNaturalSearchKey];
+  cachedNaturalSearchKey = [responseCopy cachedNaturalSearchKey];
   naturalSearchCachedKey = self->_naturalSearchCachedKey;
-  self->_naturalSearchCachedKey = v9;
+  self->_naturalSearchCachedKey = cachedNaturalSearchKey;
 
-  v11 = [v4 sections];
-  v12 = [v11 count];
+  sections = [responseCopy sections];
+  v12 = [sections count];
   if ([(NSString *)self->_naturalSearchCachedKey length])
   {
     v13 = [(SearchHomeDataDownloader *)self searchAlongRoute]^ 1;
@@ -273,9 +273,9 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v41 = v4;
-  v15 = [v4 sections];
-  v16 = [v15 countByEnumeratingWithState:&v42 objects:v47 count:16];
+  v41 = responseCopy;
+  sections2 = [responseCopy sections];
+  v16 = [sections2 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v16)
   {
     v17 = v16;
@@ -287,48 +287,48 @@
       {
         if (*v43 != v19)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(sections2);
         }
 
         v21 = *(*(&v42 + 1) + 8 * i);
-        v22 = [v21 sectionType];
-        if (v22 <= 2)
+        sectionType = [v21 sectionType];
+        if (sectionType <= 2)
         {
-          if (v22 == 1)
+          if (sectionType == 1)
           {
-            v26 = [v21 searchCategories];
-            v27 = [v21 name];
-            v28 = [(SearchHomeDataDownloader *)self browseCategoriesDataProviderWithSearchCategories:v26 title:v27];
+            searchCategories = [v21 searchCategories];
+            name = [v21 name];
+            v28 = [(SearchHomeDataDownloader *)self browseCategoriesDataProviderWithSearchCategories:searchCategories title:name];
 
             [v14 addObject:v28];
             v18 = v28;
             continue;
           }
 
-          if (v22 != 2)
+          if (sectionType != 2)
           {
             continue;
           }
 
-          v23 = [v21 collectionSuggestions];
-          v24 = [v21 name];
-          v25 = [(SearchHomeDataDownloader *)self curatedCollectionsDataProviderWithCollectionSuggestions:v23 title:v24];
+          collectionSuggestions = [v21 collectionSuggestions];
+          name2 = [v21 name];
+          v25 = [(SearchHomeDataDownloader *)self curatedCollectionsDataProviderWithCollectionSuggestions:collectionSuggestions title:name2];
           goto LABEL_22;
         }
 
-        if (v22 == 3)
+        if (sectionType == 3)
         {
-          v23 = [v21 publisherSuggestions];
-          v24 = [v21 name];
-          v25 = [(SearchHomeDataDownloader *)self publishersDataProviderWithPublisherSuggestions:v23 title:v24];
+          collectionSuggestions = [v21 publisherSuggestions];
+          name2 = [v21 name];
+          v25 = [(SearchHomeDataDownloader *)self publishersDataProviderWithPublisherSuggestions:collectionSuggestions title:name2];
           goto LABEL_22;
         }
 
-        if (v22 == 4 && MapsFeature_IsEnabled_Maps269())
+        if (sectionType == 4 && MapsFeature_IsEnabled_Maps269())
         {
-          v23 = [v21 guideLocationSuggestsions];
-          v24 = [v21 name];
-          v25 = [(SearchHomeDataDownloader *)self citiesNearYouDataProviderWithSuggestions:v23 title:v24];
+          collectionSuggestions = [v21 guideLocationSuggestsions];
+          name2 = [v21 name];
+          v25 = [(SearchHomeDataDownloader *)self citiesNearYouDataProviderWithSuggestions:collectionSuggestions title:name2];
 LABEL_22:
           v29 = v25;
           [v14 addObject:v25];
@@ -337,7 +337,7 @@ LABEL_22:
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      v17 = [sections2 countByEnumeratingWithState:&v42 objects:v47 count:16];
       if (!v17)
       {
         goto LABEL_27;
@@ -351,10 +351,10 @@ LABEL_27:
   v30 = +[MapsOfflineUIHelper sharedHelper];
   if ([v30 isUsingOfflineMaps] && !-[SearchHomeDataDownloader searchAlongRoute](self, "searchAlongRoute"))
   {
-    v38 = [(SearchHomeDataDownloader *)self supportsFullTextSearch];
+    supportsFullTextSearch = [(SearchHomeDataDownloader *)self supportsFullTextSearch];
 
     v31 = v41;
-    if ((v38 & 1) == 0)
+    if ((supportsFullTextSearch & 1) == 0)
     {
       v32 = 0;
       goto LABEL_31;
@@ -380,8 +380,8 @@ LABEL_31:
   v34 = [v14 copy];
   [(SearchHomeDataDownloader *)self setDataProviders:v34];
 
-  v35 = [(SearchHomeDataDownloader *)self delegate];
-  [v35 didUpdateDataFetcher:self];
+  delegate = [(SearchHomeDataDownloader *)self delegate];
+  [delegate didUpdateDataFetcher:self];
 
   v36 = sub_100EC1E20();
   v37 = v36;
@@ -395,43 +395,43 @@ LABEL_31:
 - (void)fetchContent
 {
   self->_isFetchingDataComplete = 0;
-  v3 = [(SearchHomeDataDownloader *)self delegate];
-  v4 = [v3 newTraits];
+  delegate = [(SearchHomeDataDownloader *)self delegate];
+  newTraits = [delegate newTraits];
 
-  if (!v4)
+  if (!newTraits)
   {
     v5 = sub_100798B6C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(SearchHomeDataDownloader *)self delegate];
+      delegate2 = [(SearchHomeDataDownloader *)self delegate];
       *buf = 138412290;
-      v50 = v6;
+      v50 = delegate2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "The defaultTraits are being used because the delegate was found nil, hence the traits were nil. Delegate %@", buf, 0xCu);
     }
 
     v7 = +[MKMapService sharedService];
-    v4 = [v7 defaultTraits];
+    newTraits = [v7 defaultTraits];
   }
 
   v8 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v9 = [v8 virtualGarage];
-  v10 = [v9 selectedVehicle];
+  virtualGarage = [v8 virtualGarage];
+  selectedVehicle = [virtualGarage selectedVehicle];
 
-  if (v10)
+  if (selectedVehicle)
   {
-    v11 = [v10 lprPowerType];
+    lprPowerType = [selectedVehicle lprPowerType];
     lprPowerType = self->_lprPowerType;
-    self->_lprPowerType = v11;
+    self->_lprPowerType = lprPowerType;
   }
 
   v13 = [SearchHomeDataDownloaderCacheKey alloc];
-  v14 = [v4 mapRegion];
+  mapRegion = [newTraits mapRegion];
   GEOMapRectForMapRegion();
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v4 mode] - 1;
+  v23 = [newTraits mode] - 1;
   if (v23 > 3)
   {
     v24 = 103;
@@ -444,8 +444,8 @@ LABEL_31:
 
   v25 = [(SearchHomeDataDownloaderCacheKey *)v13 initWithMapRect:v24 mapType:self->_lprPowerType time:v16 lprPowerType:v18, v20, v22, CFAbsoluteTimeGetCurrent()];
 
-  v26 = [(SearchHomeDataDownloader *)self cache];
-  v27 = [v26 objectForKey:v25];
+  cache = [(SearchHomeDataDownloader *)self cache];
+  v27 = [cache objectForKey:v25];
 
   if (v27)
   {
@@ -453,9 +453,9 @@ LABEL_31:
     v28 = sub_100798B6C();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
-      v29 = [v27 sections];
+      sections = [v27 sections];
       *buf = 138412290;
-      v50 = v29;
+      v50 = sections;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "The cached categories are being used. Sections %@", buf, 0xCu);
     }
   }
@@ -474,27 +474,27 @@ LABEL_31:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_INTERVAL_BEGIN, v31, "FetchingSearchHome", "", buf, 2u);
     }
 
-    v34 = [(SearchHomeDataDownloader *)self delegate];
-    [v34 isTouristHereValue];
-    [v4 setIsTourist:?];
+    delegate3 = [(SearchHomeDataDownloader *)self delegate];
+    [delegate3 isTouristHereValue];
+    [newTraits setIsTourist:?];
 
-    [v4 setSearchOriginationType:0];
+    [newTraits setSearchOriginationType:0];
     if ([(SearchHomeDataDownloader *)self searchAlongRoute])
     {
-      [v4 setNavigating:{-[SearchHomeDataDownloader searchAlongRoute](self, "searchAlongRoute")}];
+      [newTraits setNavigating:{-[SearchHomeDataDownloader searchAlongRoute](self, "searchAlongRoute")}];
       v35 = +[MNNavigationService sharedService];
       if ([v35 isInNavigatingState])
       {
-        v36 = [v35 navigationTransportType];
+        navigationTransportType = [v35 navigationTransportType];
       }
 
       else
       {
-        v36 = [v35 desiredTransportType];
+        navigationTransportType = [v35 desiredTransportType];
       }
 
-      [v4 setNavigationTransportType:v36];
-      [v4 setSearchOriginationType:2];
+      [newTraits setNavigationTransportType:navigationTransportType];
+      [newTraits setSearchOriginationType:2];
       if (MapsFeature_IsEnabled_VisitedPlaces())
       {
         v37 = 37;
@@ -505,14 +505,14 @@ LABEL_31:
         v37 = 35;
       }
 
-      [v4 setPlaceSummaryRevision:v37];
-      [v4 addSupportedPlaceSummaryFormatType:1];
-      [v4 addSupportedPlaceSummaryFormatType:2];
-      [v4 addSupportedPlaceSummaryFormatType:3];
+      [newTraits setPlaceSummaryRevision:v37];
+      [newTraits addSupportedPlaceSummaryFormatType:1];
+      [newTraits addSupportedPlaceSummaryFormatType:2];
+      [newTraits addSupportedPlaceSummaryFormatType:3];
     }
 
     v38 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-    v39 = [v38 updatedTraitsForCurrentGarageState:v4];
+    v39 = [v38 updatedTraitsForCurrentGarageState:newTraits];
 
     v40 = sub_100798B6C();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
@@ -533,8 +533,8 @@ LABEL_31:
     objc_copyWeak(v47, &location);
     v47[1] = v31;
     v45 = v25;
-    v4 = v39;
-    v46 = v4;
+    newTraits = v39;
+    v46 = newTraits;
     [v42 submitWithCallbackQueue:parsingQueue handler:v44 networkActivity:0];
 
     objc_destroyWeak(v47);
@@ -542,17 +542,17 @@ LABEL_31:
   }
 }
 
-- (SearchHomeDataDownloader)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4
+- (SearchHomeDataDownloader)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = SearchHomeDataDownloader;
   v7 = [(SearchHomeDataDownloader *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_searchAlongRoute = a4;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_searchAlongRoute = route;
     v9 = objc_alloc_init(SearchHomeDataDownloaderCache);
     cache = v8->_cache;
     v8->_cache = v9;

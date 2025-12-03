@@ -1,6 +1,6 @@
 @interface DMCProfileDetailsSummaryCell
 + (id)cellIdentifier;
-- (void)setProfileViewModel:(id)a3;
+- (void)setProfileViewModel:(id)model;
 @end
 
 @implementation DMCProfileDetailsSummaryCell
@@ -12,42 +12,42 @@
   return NSStringFromClass(v2);
 }
 
-- (void)setProfileViewModel:(id)a3
+- (void)setProfileViewModel:(id)model
 {
-  v31 = a3;
-  v3 = [v31 profile];
+  modelCopy = model;
+  profile = [modelCopy profile];
   v4 = objc_opt_new();
-  v5 = [v3 signerSummary];
-  if (![(__CFString *)v5 length])
+  signerSummary = [profile signerSummary];
+  if (![(__CFString *)signerSummary length])
   {
 
-    v5 = &stru_2859FB650;
+    signerSummary = &stru_2859FB650;
   }
 
   v6 = MEMORY[0x277CCACA8];
   v7 = DMCEnrollmentLocalizedString(@"DMC_SIGNED_BY");
   v8 = [v6 stringWithFormat:@"%@ ", v7];
 
-  v28 = [DMCProfileViewModel trustTextForProfile:v3];
+  v28 = [DMCProfileViewModel trustTextForProfile:profile];
   v29 = v8;
-  v27 = [[DMCProfileItemDetail alloc] initWithTitle:v8 detail:v5 trustText:v28];
+  v27 = [[DMCProfileItemDetail alloc] initWithTitle:v8 detail:signerSummary trustText:v28];
   [v4 addObject:?];
-  v9 = [v3 profileDescription];
-  if ([v9 length])
+  profileDescription = [profile profileDescription];
+  if ([profileDescription length])
   {
     v10 = DMCEnrollmentLocalizedString(@"DMC_DESCRIPTION_TITLE");
-    v11 = [DMCProfileItemDetail itemDetailWithTitle:v10 detail:v9];
+    v11 = [DMCProfileItemDetail itemDetailWithTitle:v10 detail:profileDescription];
 
     [v4 addObject:v11];
   }
 
-  v12 = [v31 payloadInfoSectionSummaries];
-  v13 = [v12 mutableCopy];
+  payloadInfoSectionSummaries = [modelCopy payloadInfoSectionSummaries];
+  v13 = [payloadInfoSectionSummaries mutableCopy];
 
-  if ([v3 isLocked])
+  if ([profile isLocked])
   {
-    v14 = [v3 removalPasscode];
-    v15 = [v14 length];
+    removalPasscode = [profile removalPasscode];
+    v15 = [removalPasscode length];
 
     if (v15)
     {
@@ -56,26 +56,26 @@
     }
   }
 
-  v17 = [v3 payloadsWithClass:objc_opt_class()];
-  v18 = [v17 firstObject];
+  v17 = [profile payloadsWithClass:objc_opt_class()];
+  firstObject = [v17 firstObject];
 
-  v19 = [v18 managedAppleID];
-  if (!v19)
+  managedAppleID = [firstObject managedAppleID];
+  if (!managedAppleID)
   {
-    v19 = [v18 personaID];
+    managedAppleID = [firstObject personaID];
 
-    if (v19)
+    if (managedAppleID)
     {
       v20 = MEMORY[0x277D03490];
-      v21 = [v18 personaID];
-      v19 = [v20 managedAppleIDNameWithPersonaID:v21];
+      personaID = [firstObject personaID];
+      managedAppleID = [v20 managedAppleIDNameWithPersonaID:personaID];
     }
   }
 
-  if ([v19 length])
+  if ([managedAppleID length])
   {
     v22 = DMCEnrollmentLocalizedString(@"DMC_APPLE_ACCOUNT_TITLE");
-    v23 = [DMCProfileItemDetail itemDetailWithTitle:v22 detail:v19];
+    v23 = [DMCProfileItemDetail itemDetailWithTitle:v22 detail:managedAppleID];
     [v4 addObject:v23];
   }
 

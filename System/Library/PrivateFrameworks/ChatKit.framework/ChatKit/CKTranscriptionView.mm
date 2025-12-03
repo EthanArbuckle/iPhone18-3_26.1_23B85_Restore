@@ -1,13 +1,13 @@
 @interface CKTranscriptionView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)didMoveToSuperview;
-- (void)didToggleLineCountChange:(id)a3;
+- (void)didToggleLineCountChange:(id)change;
 - (void)layoutSubviews;
 @end
 
 @implementation CKTranscriptionView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit19CKTranscriptionView_textView) sizeThatFits_];
   result.height = v4;
@@ -17,14 +17,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908DCAEC();
 }
 
-- (void)didToggleLineCountChange:(id)a3
+- (void)didToggleLineCountChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_1908DD524();
 }
 

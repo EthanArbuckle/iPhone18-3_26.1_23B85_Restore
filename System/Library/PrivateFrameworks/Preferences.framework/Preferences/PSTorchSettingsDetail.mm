@@ -1,7 +1,7 @@
 @interface PSTorchSettingsDetail
 + (BOOL)isEnabled;
 + (int64_t)torchState;
-+ (void)setEnabled:(BOOL)a3;
++ (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation PSTorchSettingsDetail
@@ -12,31 +12,31 @@
   v2 = [MEMORY[0x1E69870A0] defaultDeviceWithMediaType:*MEMORY[0x1E6987608]];
   if ([v2 hasTorch])
   {
-    v3 = [v2 isTorchAvailable];
+    isTorchAvailable = [v2 isTorchAvailable];
   }
 
   else
   {
-    v3 = -1;
+    isTorchAvailable = -1;
   }
 
   v4 = _PSLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = isTorchAvailable;
     _os_log_impl(&dword_18B008000, v4, OS_LOG_TYPE_DEFAULT, "########### Torch state (%d)", v6, 8u);
   }
 
-  return v3;
+  return isTorchAvailable;
 }
 
-+ (void)setEnabled:(BOOL)a3
++ (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E69870A0] defaultDeviceWithMediaType:*MEMORY[0x1E6987608]];
-  if ([v4 isTorchModeSupported:v3])
+  if ([v4 isTorchModeSupported:enabledCopy])
   {
     v13 = 0;
     v5 = [v4 lockForConfiguration:&v13];
@@ -44,7 +44,7 @@
     v8 = v6;
     if (v5)
     {
-      if (v3)
+      if (enabledCopy)
       {
         LODWORD(v7) = *MEMORY[0x1E69869A0];
         v12 = v6;
@@ -66,7 +66,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = @"OFF";
-      if (v3)
+      if (enabledCopy)
       {
         v11 = @"ON";
       }

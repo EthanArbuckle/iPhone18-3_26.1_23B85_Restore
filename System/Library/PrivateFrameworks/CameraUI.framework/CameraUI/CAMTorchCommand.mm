@@ -1,15 +1,15 @@
 @interface CAMTorchCommand
-- (CAMTorchCommand)initWithCoder:(id)a3;
-- (CAMTorchCommand)initWithTorchLevel:(float)a3;
-- (CAMTorchCommand)initWithTorchMode:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMTorchCommand)initWithCoder:(id)coder;
+- (CAMTorchCommand)initWithTorchLevel:(float)level;
+- (CAMTorchCommand)initWithTorchMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMTorchCommand
 
-- (CAMTorchCommand)initWithTorchMode:(int64_t)a3
+- (CAMTorchCommand)initWithTorchMode:(int64_t)mode
 {
   v8.receiver = self;
   v8.super_class = CAMTorchCommand;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->__torchMode = a3;
+    v4->__torchMode = mode;
     v4->__level = 3.4028e38;
     v6 = v4;
   }
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (CAMTorchCommand)initWithTorchLevel:(float)a3
+- (CAMTorchCommand)initWithTorchLevel:(float)level
 {
   v8.receiver = self;
   v8.super_class = CAMTorchCommand;
@@ -34,23 +34,23 @@
   if (v4)
   {
     v4->__torchMode = 1;
-    v4->__level = a3;
+    v4->__level = level;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMTorchCommand)initWithCoder:(id)a3
+- (CAMTorchCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CAMTorchCommand;
-  v5 = [(CAMCaptureCommand *)&v9 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->__torchMode = [v4 decodeIntegerForKey:@"CAMTorchCommandTorchMode"];
-    [v4 decodeFloatForKey:@"CAMTorchCommandTorchLevel"];
+    v5->__torchMode = [coderCopy decodeIntegerForKey:@"CAMTorchCommandTorchMode"];
+    [coderCopy decodeFloatForKey:@"CAMTorchCommandTorchLevel"];
     v5->__level = v6;
     v7 = v5;
   }
@@ -58,46 +58,46 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMTorchCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[CAMTorchCommand _torchMode](self forKey:{"_torchMode", v5.receiver, v5.super_class), @"CAMTorchCommandTorchMode"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[CAMTorchCommand _torchMode](self forKey:{"_torchMode", v5.receiver, v5.super_class), @"CAMTorchCommandTorchMode"}];
   [(CAMTorchCommand *)self _level];
-  [v4 encodeFloat:@"CAMTorchCommandTorchLevel" forKey:?];
+  [coderCopy encodeFloat:@"CAMTorchCommandTorchLevel" forKey:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CAMTorchCommand;
-  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:zone];
   v4[4] = [(CAMTorchCommand *)self _torchMode];
   [(CAMTorchCommand *)self _level];
   *(v4 + 6) = v5;
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = [a3 currentVideoDevice];
+  currentVideoDevice = [context currentVideoDevice];
   v5 = [CAMCaptureConversions captureTorchModeForTorchMode:[(CAMTorchCommand *)self _torchMode]];
   [(CAMTorchCommand *)self _level];
   v7 = v6;
-  if ([v4 hasTorch] && objc_msgSend(v4, "isTorchModeSupported:", v5))
+  if ([currentVideoDevice hasTorch] && objc_msgSend(currentVideoDevice, "isTorchModeSupported:", v5))
   {
     if (v7 >= 3.4028e38)
     {
-      [v4 setTorchMode:v5];
+      [currentVideoDevice setTorchMode:v5];
     }
 
     else
     {
       v12 = 0;
       *&v8 = v7;
-      [v4 setTorchModeOnWithLevel:&v12 error:v8];
+      [currentVideoDevice setTorchModeOnWithLevel:&v12 error:v8];
       v9 = v12;
       if (v9)
       {
@@ -110,12 +110,12 @@
     }
   }
 
-  else if ([v4 hasTorch])
+  else if ([currentVideoDevice hasTorch])
   {
     v11 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(CAMTorchCommand *)v4 executeWithContext:v5, v11];
+      [(CAMTorchCommand *)currentVideoDevice executeWithContext:v5, v11];
     }
   }
 }

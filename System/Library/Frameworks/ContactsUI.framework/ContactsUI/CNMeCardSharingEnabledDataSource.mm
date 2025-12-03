@@ -1,9 +1,9 @@
 @interface CNMeCardSharingEnabledDataSource
-- (CNMeCardSharingEnabledDataSource)initWithSharingEnabled:(BOOL)a3;
+- (CNMeCardSharingEnabledDataSource)initWithSharingEnabled:(BOOL)enabled;
 - (CNMeCardSharingEnabledDelegate)delegate;
 - (void)buildItems;
-- (void)didToggleEnabledSwitch:(id)a3;
-- (void)setSharingEnabled:(BOOL)a3;
+- (void)didToggleEnabledSwitch:(id)switch;
+- (void)setSharingEnabled:(BOOL)enabled;
 @end
 
 @implementation CNMeCardSharingEnabledDataSource
@@ -15,11 +15,11 @@
   return WeakRetained;
 }
 
-- (void)didToggleEnabledSwitch:(id)a3
+- (void)didToggleEnabledSwitch:(id)switch
 {
   self->_sharingEnabled = [(UISwitch *)self->_enabledSwitch isOn];
-  v4 = [(CNMeCardSharingEnabledDataSource *)self delegate];
-  [v4 sharingEnabledDataSource:self didChangeEnabledState:self->_sharingEnabled];
+  delegate = [(CNMeCardSharingEnabledDataSource *)self delegate];
+  [delegate sharingEnabledDataSource:self didChangeEnabledState:self->_sharingEnabled];
 }
 
 - (void)buildItems
@@ -35,30 +35,30 @@
   self->_items = v7;
 }
 
-- (void)setSharingEnabled:(BOOL)a3
+- (void)setSharingEnabled:(BOOL)enabled
 {
-  if (self->_sharingEnabled != a3)
+  if (self->_sharingEnabled != enabled)
   {
-    self->_sharingEnabled = a3;
+    self->_sharingEnabled = enabled;
     [(UISwitch *)self->_enabledSwitch setOn:?];
   }
 }
 
-- (CNMeCardSharingEnabledDataSource)initWithSharingEnabled:(BOOL)a3
+- (CNMeCardSharingEnabledDataSource)initWithSharingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v10.receiver = self;
   v10.super_class = CNMeCardSharingEnabledDataSource;
   v4 = [(CNMeCardSharingEnabledDataSource *)&v10 init];
   v5 = v4;
   if (v4)
   {
-    v4->_sharingEnabled = v3;
+    v4->_sharingEnabled = enabledCopy;
     v6 = [objc_alloc(MEMORY[0x1E69DCFD0]) initWithFrame:{0.0, 0.0, 50.0, 50.0}];
     enabledSwitch = v5->_enabledSwitch;
     v5->_enabledSwitch = v6;
 
-    [(UISwitch *)v5->_enabledSwitch setOn:v3];
+    [(UISwitch *)v5->_enabledSwitch setOn:enabledCopy];
     [(UISwitch *)v5->_enabledSwitch addTarget:v5 action:sel_didToggleEnabledSwitch_ forControlEvents:4096];
     [(CNMeCardSharingEnabledDataSource *)v5 buildItems];
     v8 = v5;

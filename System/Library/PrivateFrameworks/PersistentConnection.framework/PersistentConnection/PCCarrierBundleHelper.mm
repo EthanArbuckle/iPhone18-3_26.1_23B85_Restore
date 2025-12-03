@@ -1,15 +1,15 @@
 @interface PCCarrierBundleHelper
 + (id)helper;
-- (BOOL)BOOLValueFromPushBundleForKey:(id)a3 error:(id *)a4;
+- (BOOL)BOOLValueFromPushBundleForKey:(id)key error:(id *)error;
 - (PCCarrierBundleHelper)init;
-- (id)copyValueForKey:(id)a3 error:(id *)a4;
-- (id)copyValueFromPushBundleForKey:(id)a3 error:(id *)a4;
-- (void)_processCarrierBundleChange:(id)a3;
-- (void)_updateCurrentDataSimContext:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)currentDataSimChanged:(id)a3;
-- (void)operatorBundleChange:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (id)copyValueForKey:(id)key error:(id *)error;
+- (id)copyValueFromPushBundleForKey:(id)key error:(id *)error;
+- (void)_processCarrierBundleChange:(id)change;
+- (void)_updateCurrentDataSimContext:(id)context;
+- (void)addDelegate:(id)delegate;
+- (void)currentDataSimChanged:(id)changed;
+- (void)operatorBundleChange:(id)change;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation PCCarrierBundleHelper
@@ -83,38 +83,38 @@ uint64_t __31__PCCarrierBundleHelper_helper__block_invoke()
   return v2;
 }
 
-- (id)copyValueForKey:(id)a3 error:(id *)a4
+- (id)copyValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(CTXPCServiceSubscriptionContext *)v7->_currentDataContext copy];
-  objc_sync_exit(v7);
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(CTXPCServiceSubscriptionContext *)selfCopy->_currentDataContext copy];
+  objc_sync_exit(selfCopy);
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
-    ctClient = v7->_ctClient;
-    bundle = v7->_bundle;
+    ctClient = selfCopy->_ctClient;
+    bundle = selfCopy->_bundle;
     v15 = 0;
-    v11 = [(CoreTelephonyClient *)ctClient copyCarrierBundleValue:v8 key:v6 bundleType:bundle error:&v15];
+    v11 = [(CoreTelephonyClient *)ctClient copyCarrierBundleValue:v8 key:keyCopy bundleType:bundle error:&v15];
     v12 = v15;
     if (v12)
     {
 
-      if (a4)
+      if (error)
       {
         v13 = v12;
-        *a4 = v12;
+        *error = v12;
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [PCCarrierBundleHelper copyValueForKey:v6 error:v12];
+        [PCCarrierBundleHelper copyValueForKey:keyCopy error:v12];
       }
 
       v11 = 0;
@@ -135,50 +135,50 @@ uint64_t __31__PCCarrierBundleHelper_helper__block_invoke()
   return v11;
 }
 
-- (id)copyValueFromPushBundleForKey:(id)a3 error:(id *)a4
+- (id)copyValueFromPushBundleForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  keyCopy = key;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  cachedPushSettings = v7->_cachedPushSettings;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedPushSettings = selfCopy->_cachedPushSettings;
   if (cachedPushSettings)
   {
-    v9 = [(NSDictionary *)cachedPushSettings objectForKey:v6];
+    v9 = [(NSDictionary *)cachedPushSettings objectForKey:keyCopy];
     v10 = [v9 copy];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
     v22 = 0;
-    v11 = [(PCCarrierBundleHelper *)v7 copyValueForKey:@"PushSettings" error:&v22];
+    v11 = [(PCCarrierBundleHelper *)selfCopy copyValueForKey:@"PushSettings" error:&v22];
     v12 = v22;
     v13 = v12;
-    if (a4)
+    if (error)
     {
       v14 = v12;
-      *a4 = v13;
+      *error = v13;
     }
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v15 = v11;
-      v16 = v7;
+      v16 = selfCopy;
       objc_sync_enter(v16);
-      v17 = v7->_cachedPushSettings;
-      v7->_cachedPushSettings = v15;
+      v17 = selfCopy->_cachedPushSettings;
+      selfCopy->_cachedPushSettings = v15;
       v18 = v15;
 
       objc_sync_exit(v16);
-      v19 = [(NSDictionary *)v18 objectForKey:v6];
+      v19 = [(NSDictionary *)v18 objectForKey:keyCopy];
 
       v20 = [v19 copy];
     }
@@ -194,84 +194,84 @@ uint64_t __31__PCCarrierBundleHelper_helper__block_invoke()
   return v10;
 }
 
-- (BOOL)BOOLValueFromPushBundleForKey:(id)a3 error:(id *)a4
+- (BOOL)BOOLValueFromPushBundleForKey:(id)key error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v5 = a3;
+  keyCopy = key;
   v6 = +[PCCarrierBundleHelper helper];
   v12 = 0;
-  v7 = [v6 copyValueFromPushBundleForKey:v5 error:&v12];
+  v7 = [v6 copyValueFromPushBundleForKey:keyCopy error:&v12];
 
   v8 = v12;
-  if (a4)
+  if (error)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
-  v10 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v9;
-  delegates = v4->_delegates;
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = delegateCopy;
+  delegates = selfCopy->_delegates;
   if (!delegates)
   {
     v7 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:517 capacity:1];
-    v8 = v4->_delegates;
-    v4->_delegates = v7;
+    v8 = selfCopy->_delegates;
+    selfCopy->_delegates = v7;
 
-    delegates = v4->_delegates;
-    v5 = v9;
+    delegates = selfCopy->_delegates;
+    v5 = delegateCopy;
   }
 
   [(NSHashTable *)delegates addObject:v5];
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_delegates removeObject:v6];
-  if (![(NSHashTable *)v4->_delegates count])
+  delegateCopy = delegate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_delegates removeObject:delegateCopy];
+  if (![(NSHashTable *)selfCopy->_delegates count])
   {
-    delegates = v4->_delegates;
-    v4->_delegates = 0;
+    delegates = selfCopy->_delegates;
+    selfCopy->_delegates = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_processCarrierBundleChange:(id)a3
+- (void)_processCarrierBundleChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = 0;
-  if (v4 && v5->_currentDataContext)
+  if (changeCopy && selfCopy->_currentDataContext)
   {
-    v7 = [v4 slotID];
-    v6 = v7 == [(CTXPCServiceSubscriptionContext *)v5->_currentDataContext slotID];
+    slotID = [changeCopy slotID];
+    v6 = slotID == [(CTXPCServiceSubscriptionContext *)selfCopy->_currentDataContext slotID];
   }
 
-  v8 = [(NSHashTable *)v5->_delegates copy];
-  cachedPushSettings = v5->_cachedPushSettings;
-  v5->_cachedPushSettings = 0;
+  v8 = [(NSHashTable *)selfCopy->_delegates copy];
+  cachedPushSettings = selfCopy->_cachedPushSettings;
+  selfCopy->_cachedPushSettings = 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if (v6)
   {
     v17 = 0u;
@@ -307,46 +307,46 @@ uint64_t __31__PCCarrierBundleHelper_helper__block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCurrentDataSimContext:(id)a3
+- (void)_updateCurrentDataSimContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   obj = self;
   objc_sync_enter(obj);
   currentDataContext = obj->_currentDataContext;
-  obj->_currentDataContext = v4;
+  obj->_currentDataContext = contextCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)operatorBundleChange:(id)a3
+- (void)operatorBundleChange:(id)change
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changeCopy;
     _os_log_impl(&dword_25E3EF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "operatorBundleChange - context %@", &v6, 0xCu);
   }
 
-  [(PCCarrierBundleHelper *)self _processCarrierBundleChange:v4];
+  [(PCCarrierBundleHelper *)self _processCarrierBundleChange:changeCopy];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changedCopy;
     _os_log_impl(&dword_25E3EF000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "currentDataSimChanged - context %@", &v6, 0xCu);
   }
 
-  [(PCCarrierBundleHelper *)self _updateCurrentDataSimContext:v4];
-  [(PCCarrierBundleHelper *)self _processCarrierBundleChange:v4];
+  [(PCCarrierBundleHelper *)self _updateCurrentDataSimContext:changedCopy];
+  [(PCCarrierBundleHelper *)self _processCarrierBundleChange:changedCopy];
 
   v5 = *MEMORY[0x277D85DE8];
 }

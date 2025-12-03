@@ -1,16 +1,16 @@
 @interface CCUIContentModuleContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityLoadAccessibilityInformationSupplementaryItems;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CCUIContentModuleContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIContentModuleContainerViewController" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIContentModuleContainerViewController" hasInstanceMethod:@"contentModule" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIContentModuleContainerViewController" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIContentModuleContainerViewController" hasInstanceMethod:@"contentModule" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityLoadAccessibilityInformationSupplementaryItems

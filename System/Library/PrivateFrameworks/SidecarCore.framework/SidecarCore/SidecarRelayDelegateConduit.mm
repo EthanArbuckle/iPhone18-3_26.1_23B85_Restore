@@ -1,13 +1,13 @@
 @interface SidecarRelayDelegateConduit
-- (void)sendDataRequest:(id)a3 completion:(id)a4;
+- (void)sendDataRequest:(id)request completion:(id)completion;
 @end
 
 @implementation SidecarRelayDelegateConduit
 
-- (void)sendDataRequest:(id)a3 completion:(id)a4
+- (void)sendDataRequest:(id)request completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v7 = SidecarCoreLogSubsystem(OS_LOG_TYPE_INFO);
   v8 = v7;
   if (v7 && os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -21,10 +21,10 @@
   v12[1] = 3221225472;
   v12[2] = __58__SidecarRelayDelegateConduit_sendDataRequest_completion___block_invoke;
   v12[3] = &unk_279BC34C8;
-  v13 = v5;
-  v14 = v6;
-  v10 = v5;
-  v11 = v6;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v10 = requestCopy;
+  v11 = completionCopy;
   dispatch_async(v9, v12);
 }
 

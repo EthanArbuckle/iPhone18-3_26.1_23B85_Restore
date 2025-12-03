@@ -1,31 +1,31 @@
 @interface WGCheckView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (BOOL)isChecked;
-- (CGPath)_newPathForBounds:(CGRect)a3;
-- (WGCheckView)initWithFrame:(CGRect)a3;
+- (CGPath)_newPathForBounds:(CGRect)bounds;
+- (WGCheckView)initWithFrame:(CGRect)frame;
 - (void)_invalidatePath;
 - (void)layoutSubviews;
-- (void)setChecked:(BOOL)a3;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation WGCheckView
 
-- (WGCheckView)initWithFrame:(CGRect)a3
+- (WGCheckView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = WGCheckView;
-  v3 = [(WGCheckView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WGCheckView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WGCheckView *)v3 _shapeLayer];
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [v5 setFillColor:{objc_msgSend(v6, "CGColor")}];
+    _shapeLayer = [(WGCheckView *)v3 _shapeLayer];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [_shapeLayer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [v5 setStrokeColor:{objc_msgSend(v7, "CGColor")}];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [_shapeLayer setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
 
-    [v5 setLineWidth:1.0];
+    [_shapeLayer setLineWidth:1.0];
     [(WGCheckView *)v4 setChecked:0];
   }
 
@@ -34,47 +34,47 @@
 
 - (BOOL)isChecked
 {
-  v2 = [(WGCheckView *)self _shapeLayer];
-  [v2 strokeEnd];
+  _shapeLayer = [(WGCheckView *)self _shapeLayer];
+  [_shapeLayer strokeEnd];
   v4 = fabs(v3 + -1.0) < 2.22044605e-16;
 
   return v4;
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
-  v4 = [(WGCheckView *)self _shapeLayer];
-  v6 = v4;
+  checkedCopy = checked;
+  _shapeLayer = [(WGCheckView *)self _shapeLayer];
+  v6 = _shapeLayer;
   v5 = 0.0;
-  if (v3)
+  if (checkedCopy)
   {
     v5 = 1.0;
   }
 
-  [v4 setStrokeEnd:v5];
+  [_shapeLayer setStrokeEnd:v5];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(WGCheckView *)self _shapeLayer];
-  v4 = [v3 path];
+  _shapeLayer = [(WGCheckView *)self _shapeLayer];
+  path = [_shapeLayer path];
 
-  if (!v4)
+  if (!path)
   {
     [(WGCheckView *)self bounds];
     v5 = [(WGCheckView *)self _newPathForBounds:?];
-    v6 = [(WGCheckView *)self _shapeLayer];
-    [v6 setPath:v5];
+    _shapeLayer2 = [(WGCheckView *)self _shapeLayer];
+    [_shapeLayer2 setPath:v5];
 
     CGPathRelease(v5);
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqual:@"strokeEnd"])
+  keyCopy = key;
+  if ([keyCopy isEqual:@"strokeEnd"])
   {
     v5 = 1;
   }
@@ -83,7 +83,7 @@
   {
     v7.receiver = self;
     v7.super_class = WGCheckView;
-    v5 = [(WGCheckView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(WGCheckView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -91,18 +91,18 @@
 
 - (void)_invalidatePath
 {
-  v3 = [(WGCheckView *)self _shapeLayer];
-  [v3 setPath:0];
+  _shapeLayer = [(WGCheckView *)self _shapeLayer];
+  [_shapeLayer setPath:0];
 
   [(WGCheckView *)self setNeedsLayout];
 }
 
-- (CGPath)_newPathForBounds:(CGRect)a3
+- (CGPath)_newPathForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   Mutable = CGPathCreateMutable();
   v15.origin.x = x;
   v15.origin.y = y;

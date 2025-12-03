@@ -1,66 +1,66 @@
 @interface SFLayerEditorViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (_TtC12MobileSafari27SFLayerEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (_TtC12MobileSafari27SFLayerEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SFLayerEditorViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB71EA0();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BB72334();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = self;
-  sub_18BB76DC8(v3);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_18BB76DC8(appearCopy);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_18BB7B324(v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_18BB7BDB0();
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v26 = self;
+  selfCopy = self;
   v7 = sub_18BC1EDD8();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
@@ -74,8 +74,8 @@
   sub_18BC1ED88();
   sub_18BC1ED88();
   sub_18BC1ED88();
-  v20 = a3;
-  v21 = v26;
+  viewCopy = view;
+  v21 = selfCopy;
   sub_18BB78F54(v16, v10, v19);
 
   v22 = *(v8 + 8);
@@ -88,9 +88,9 @@
   return v23;
 }
 
-- (_TtC12MobileSafari27SFLayerEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12MobileSafari27SFLayerEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_18BC20BD8();
     v7 = v6;
@@ -102,8 +102,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_18BB79258(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_18BB79258(v5, v7, bundle);
 }
 
 @end

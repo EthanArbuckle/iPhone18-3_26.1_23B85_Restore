@@ -1,17 +1,17 @@
 @interface DYBaseStreamTransport
-- (BOOL)_packMessage:(id)a3 error:(id *)a4;
+- (BOOL)_packMessage:(id)message error:(id *)error;
 - (DYBaseStreamTransport)init;
-- (int64_t)_performRead:(void *)a3 size:(unint64_t)a4;
+- (int64_t)_performRead:(void *)read size:(unint64_t)size;
 - (int64_t)_readAndAccumulate;
-- (int64_t)_relayBuffer:(const void *)a3 size:(unint64_t)a4;
-- (int64_t)_relayBufferInner:(const void *)a3 size:(unint64_t)a4;
-- (int64_t)_sendMessage:(id)a3 error:(id *)a4;
-- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)a3 ioBlock:(id)a4;
-- (int64_t)_writeBuffers:(id *)a3;
+- (int64_t)_relayBuffer:(const void *)buffer size:(unint64_t)size;
+- (int64_t)_relayBufferInner:(const void *)inner size:(unint64_t)size;
+- (int64_t)_sendMessage:(id)message error:(id *)error;
+- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)header ioBlock:(id)block;
+- (int64_t)_writeBuffers:(id *)buffers;
 - (void)_allocateMessageBuffer;
 - (void)_clearBuffers;
 - (void)_invalidate;
-- (void)_scheduleInvalidation:(id)a3;
+- (void)_scheduleInvalidation:(id)invalidation;
 - (void)_unpackAndDispatchMessage;
 - (void)dealloc;
 @end
@@ -87,28 +87,28 @@
   [(DYTransport *)&v3 _invalidate];
 }
 
-- (void)_scheduleInvalidation:(id)a3
+- (void)_scheduleInvalidation:(id)invalidation
 {
   v4.receiver = self;
   v4.super_class = DYBaseStreamTransport;
-  [(DYTransport *)&v4 _scheduleInvalidation:a3];
+  [(DYTransport *)&v4 _scheduleInvalidation:invalidation];
   dispatch_semaphore_signal(self->_sendSema);
 }
 
-- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)a3 ioBlock:(id)a4
+- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)header ioBlock:(id)block
 {
-  result = (*(a4 + 2))(a4, a2);
-  if (result != -1 && !a3->var3)
+  result = (*(block + 2))(block, a2);
+  if (result != -1 && !header->var3)
   {
-    a3->var5 = 1;
-    v7 = *&a3->var0.var0;
-    *&a3->var0.var0 = vrev32q_s8(*&a3->var0.var0);
-    v8 = vrev32_s8(*&a3->var0.var4);
-    *&a3->var0.var4 = v8;
+    header->var5 = 1;
+    v7 = *&header->var0.var0;
+    *&header->var0.var0 = vrev32q_s8(*&header->var0.var0);
+    v8 = vrev32_s8(*&header->var0.var4);
+    *&header->var0.var4 = v8;
     if (v7 == 1296389188)
     {
-      a3->var3 = (v8.i32[1] & 0x7FFFFFFF) + (v8.i32[0] & 0x7FFFFFFFu);
-      a3->var4 = 0;
+      header->var3 = (v8.i32[1] & 0x7FFFFFFF) + (v8.i32[0] & 0x7FFFFFFFu);
+      header->var4 = 0;
       if (self->_tmu->var3 + self->_tmu->var1 - 1 + self->_tmu->var2 - 1 < 0xF4240001)
       {
         return result;
@@ -138,9 +138,9 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = self->_tmu->var0.var4 & 0x7FFFFFFF;
-  v5 = [(DYVMBuffer *)self->_messageBuffer mutableBytes];
+  mutableBytes = [(DYVMBuffer *)self->_messageBuffer mutableBytes];
   tmu = self->_tmu;
-  v7 = (v5 + tmu->var1 - 1) & -tmu->var1;
+  v7 = (mutableBytes + tmu->var1 - 1) & -tmu->var1;
   if ((tmu->var0.var4 & 0x80000000) == 0)
   {
     v8 = 0;
@@ -228,16 +228,16 @@ LABEL_5:
   }
 }
 
-- (int64_t)_performRead:(void *)a3 size:(unint64_t)a4
+- (int64_t)_performRead:(void *)read size:(unint64_t)size
 {
   if (!self->_bytesToRead)
   {
-    self->_bytesToRead = a4;
+    self->_bytesToRead = size;
   }
 
   do
   {
-    v6 = [(DYBaseStreamTransport *)self _read:a3 size:self->_bytesToRead];
+    v6 = [(DYBaseStreamTransport *)self _read:read size:self->_bytesToRead];
     v7 = v6;
     if (v6 != -1)
     {
@@ -290,7 +290,7 @@ LABEL_5:
   while (v2 != 3);
 }
 
-- (int64_t)_writeBuffers:(id *)a3
+- (int64_t)_writeBuffers:(id *)buffers
 {
   v5 = 0;
   v6 = 0;
@@ -383,9 +383,9 @@ LABEL_21:
 
       if (LOBYTE(self->super._interposerVersion) == 1)
       {
-        if (a3)
+        if (buffers)
         {
-          *a3 = [(DYTransport *)self error];
+          *buffers = [(DYTransport *)self error];
         }
 
         goto LABEL_25;
@@ -398,9 +398,9 @@ LABEL_21:
     _DYOLog(self, 3, @"io failure writing message: %@ (%d)", v24, v25, v26, v27, v28, v23);
     v29 = [DYError errorWithDomain:*MEMORY[0x277CCA5B8] code:v18 userInfo:0];
     [(DYBaseStreamTransport *)self _scheduleInvalidation:v29];
-    if (a3)
+    if (buffers)
     {
-      *a3 = v29;
+      *buffers = v29;
     }
 
     *__error() = v18;
@@ -413,29 +413,29 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)_packMessage:(id)a3 error:(id *)a4
+- (BOOL)_packMessage:(id)message error:(id *)error
 {
-  if ([a3 attributes])
+  if ([message attributes])
   {
     v21 = 0;
     v7 = objc_autoreleasePoolPush();
-    v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:objc_msgSend(a3 format:"attributes") options:200 error:{0, &v21}];
+    v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:objc_msgSend(message format:"attributes") options:200 error:{0, &v21}];
     v9 = v8;
     v10 = v21;
     objc_autoreleasePoolPop(v7);
     if (!v8)
     {
-      if (a4)
+      if (error)
       {
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v21 forKey:*MEMORY[0x277CCA7E8]];
 
-        *a4 = [DYError errorWithDomain:@"DYErrorDomain" code:36 userInfo:v19];
+        *error = [DYError errorWithDomain:@"DYErrorDomain" code:36 userInfo:v19];
       }
 
       return 0;
     }
 
-    [a3 setEncodedAttributes:v8];
+    [message setEncodedAttributes:v8];
   }
 
   else
@@ -444,39 +444,39 @@ LABEL_26:
   }
 
   v11 = [v8 length];
-  if (v11 + [objc_msgSend(a3 "payload")] + 24 < 0xF4240001uLL)
+  if (v11 + [objc_msgSend(message "payload")] + 24 < 0xF4240001uLL)
   {
-    [a3 _setTransportSize:?];
+    [message _setTransportSize:?];
     return 1;
   }
 
-  [a3 setEncodedAttributes:0];
+  [message setEncodedAttributes:0];
   _DYOLog(self, 3, @"message buffer too large", v13, v14, v15, v16, v17, v20);
-  if (a4)
+  if (error)
   {
     v18 = [DYError errorWithDomain:@"DYErrorDomain" code:261 userInfo:0];
     result = 0;
-    *a4 = v18;
+    *error = v18;
     return result;
   }
 
   return 0;
 }
 
-- (int64_t)_sendMessage:(id)a3 error:(id *)a4
+- (int64_t)_sendMessage:(id)message error:(id *)error
 {
-  v7 = [a3 payload];
-  v8 = [a3 encodedAttributes];
-  v9 = [a3 kind];
-  v10 = [a3 serial];
-  v11 = [a3 replySerial];
-  if (v8)
+  payload = [message payload];
+  encodedAttributes = [message encodedAttributes];
+  kind = [message kind];
+  serial = [message serial];
+  replySerial = [message replySerial];
+  if (encodedAttributes)
   {
-    v12 = [v8 length] | 0x80000000;
-    if (v7)
+    v12 = [encodedAttributes length] | 0x80000000;
+    if (payload)
     {
 LABEL_3:
-      v13 = [v7 length] | 0x80000000;
+      v13 = [payload length] | 0x80000000;
       goto LABEL_6;
     }
   }
@@ -484,7 +484,7 @@ LABEL_3:
   else
   {
     v12 = 0;
-    if (v7)
+    if (payload)
     {
       goto LABEL_3;
     }
@@ -493,23 +493,23 @@ LABEL_3:
   v13 = 0;
 LABEL_6:
   v17[0] = 1296389188;
-  v17[1] = bswap32(v9);
-  v17[2] = bswap32(v10);
-  v17[3] = bswap32(v11);
+  v17[1] = bswap32(kind);
+  v17[2] = bswap32(serial);
+  v17[3] = bswap32(replySerial);
   v17[4] = bswap32(v12);
   v17[5] = bswap32(v13);
   dispatch_semaphore_wait(self->_sendSema, 0xFFFFFFFFFFFFFFFFLL);
   if (LOBYTE(self->super._interposerVersion) == 1)
   {
-    [DYBaseStreamTransport _sendMessage:a3 error:?];
+    [DYBaseStreamTransport _sendMessage:message error:?];
     return -1;
   }
 
   self->_buffers[0] = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v17 length:24];
-  if (!v8)
+  if (!encodedAttributes)
   {
     v14 = 1;
-    if (!v7)
+    if (!payload)
     {
       goto LABEL_10;
     }
@@ -517,17 +517,17 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  self->_buffers[1] = v8;
-  [a3 setEncodedAttributes:0];
+  self->_buffers[1] = encodedAttributes;
+  [message setEncodedAttributes:0];
   v14 = 2;
-  if (v7)
+  if (payload)
   {
 LABEL_9:
-    self->_buffers[v14] = v7;
+    self->_buffers[v14] = payload;
   }
 
 LABEL_10:
-  v15 = [(DYBaseStreamTransport *)self _writeBuffers:a4];
+  v15 = [(DYBaseStreamTransport *)self _writeBuffers:error];
   dispatch_semaphore_signal(self->_sendSema);
   return v15;
 }
@@ -551,7 +551,7 @@ size_t __48__DYBaseStreamTransport__relayBufferInner_size___block_invoke(uint64_
   return v3;
 }
 
-- (int64_t)_relayBuffer:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_relayBuffer:(const void *)buffer size:(unint64_t)size
 {
   v7 = BYTE1(self->super._interposerVersion);
   if (v7 == 1)
@@ -570,8 +570,8 @@ size_t __48__DYBaseStreamTransport__relayBufferInner_size___block_invoke(uint64_
   block[3] = &unk_27930D1A0;
   block[4] = self;
   block[5] = &v13;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = buffer;
+  block[7] = size;
   v12 = v7;
   dispatch_sync(relayQueue, block);
   v9 = v14[3];
@@ -628,9 +628,9 @@ LABEL_16:
     }
 
     [(DYBaseStreamTransport *)self _allocateMessageBuffer];
-    v9 = [(DYVMBuffer *)self->_messageBuffer mutableBytes];
+    mutableBytes = [(DYVMBuffer *)self->_messageBuffer mutableBytes];
     var1 = self->_tmu->var1;
-    self->_messageBufferWritePtr = ((v9 + var1 - 1) & -var1);
+    self->_messageBufferWritePtr = ((mutableBytes + var1 - 1) & -var1);
     tmu = self->_tmu;
     if (!tmu->var5)
     {
@@ -671,19 +671,19 @@ LABEL_16:
   return v4;
 }
 
-- (int64_t)_relayBufferInner:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_relayBufferInner:(const void *)inner size:(unint64_t)size
 {
   if (self->super._interposerVersion)
   {
     return -1;
   }
 
-  v4 = a4;
+  sizeCopy = size;
   v7 = 0x27F082000uLL;
   if (self->_relayTmu->var5)
   {
     v8 = 0;
-    if (!a4)
+    if (!size)
     {
       goto LABEL_5;
     }
@@ -723,14 +723,14 @@ LABEL_16:
     return 0;
   }
 
-  v4 -= v17;
-  a3 = a3 + v17;
+  sizeCopy -= v17;
+  inner = inner + v17;
   v8 = 1;
   v7 = 0x27F082000;
-  if (v4)
+  if (sizeCopy)
   {
 LABEL_4:
-    self->_buffers[v8] = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:a3 length:v4 freeWhenDone:0];
+    self->_buffers[v8] = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:inner length:sizeCopy freeWhenDone:0];
   }
 
 LABEL_5:

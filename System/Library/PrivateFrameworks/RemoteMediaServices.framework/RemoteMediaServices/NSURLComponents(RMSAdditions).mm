@@ -8,7 +8,7 @@
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 copy];
+  v5 = [self copy];
   v6 = objc_opt_new();
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
@@ -19,12 +19,12 @@
   [v4 enumerateKeysAndObjectsUsingBlock:&v14];
 
   v8 = [v7 componentsJoinedByString:{@"&", v14, v15, v16, v17}];
-  v9 = [v5 query];
+  query = [v5 query];
 
-  if (v9)
+  if (query)
   {
-    v10 = [v5 query];
-    v19[0] = v10;
+    query2 = [v5 query];
+    v19[0] = query2;
     v19[1] = v8;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v12 = [v11 componentsJoinedByString:@"&"];

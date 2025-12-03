@@ -1,25 +1,25 @@
 @interface _UIStatusBarRadarView
 - (CGSize)intrinsicContentSize;
-- (_UIStatusBarRadarView)initWithFrame:(CGRect)a3;
+- (_UIStatusBarRadarView)initWithFrame:(CGRect)frame;
 - (id)_tintColor;
 - (void)_updateTintColor;
-- (void)applyStyleAttributes:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation _UIStatusBarRadarView
 
-- (_UIStatusBarRadarView)initWithFrame:(CGRect)a3
+- (_UIStatusBarRadarView)initWithFrame:(CGRect)frame
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UIStatusBarRadarView;
-  v3 = [(_UIStatusBarImageView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIStatusBarImageView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
-    [v5 setCornerRadius:12.0];
+    layer = [(UIView *)v3 layer];
+    [layer setCornerRadius:12.0];
 
     v10[0] = objc_opt_class();
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
@@ -29,25 +29,25 @@
   return v4;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = _UIStatusBarRadarView;
-  [(_UIStatusBarImageView *)&v4 applyStyleAttributes:a3];
+  [(_UIStatusBarImageView *)&v4 applyStyleAttributes:attributes];
   [(_UIStatusBarRadarView *)self _updateTintColor];
 }
 
 - (void)_updateTintColor
 {
-  v3 = [(_UIStatusBarRadarView *)self _tintColor];
-  [(UIView *)self setTintColor:v3];
+  _tintColor = [(_UIStatusBarRadarView *)self _tintColor];
+  [(UIView *)self setTintColor:_tintColor];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
+  nextFocusedItem = [context nextFocusedItem];
 
-  if (v5 == self)
+  if (nextFocusedItem == self)
   {
     v6 = +[UIColor _carSystemFocusColor];
     [(UIImageView *)self setBackgroundColor:v6];
@@ -72,11 +72,11 @@
 
 - (id)_tintColor
 {
-  v4 = [(UIView *)self isFocused];
-  if (v4)
+  isFocused = [(UIView *)self isFocused];
+  if (isFocused)
   {
-    v2 = [(UIView *)self traitCollection];
-    if ([v2 userInterfaceStyle] == 1)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 1)
     {
 
 LABEL_7:
@@ -85,14 +85,14 @@ LABEL_7:
     }
   }
 
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection2 = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-  if (v4)
+  if (isFocused)
   {
   }
 
-  if (v6 == 2)
+  if (userInterfaceStyle == 2)
   {
     goto LABEL_7;
   }

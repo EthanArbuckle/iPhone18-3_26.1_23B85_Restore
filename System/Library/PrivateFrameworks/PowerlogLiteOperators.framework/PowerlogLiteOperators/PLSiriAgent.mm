@@ -10,24 +10,24 @@
 + (id)entryEventPointSelfTriggerSuppressionDetected;
 + (void)load;
 - (PLSiriAgent)init;
-- (unint64_t)convertASREvent:(id)a3;
-- (unint64_t)convertMode:(id)a3;
-- (unint64_t)convertRecognition:(id)a3;
-- (unint64_t)convertSiriEvent:(id)a3;
+- (unint64_t)convertASREvent:(id)event;
+- (unint64_t)convertMode:(id)mode;
+- (unint64_t)convertRecognition:(id)recognition;
+- (unint64_t)convertSiriEvent:(id)event;
 - (void)initOperatorDependancies;
-- (void)logEventForwardASREvent:(id)a3;
-- (void)logEventForwardDictationConnection:(id)a3;
-- (void)logEventForwardSiriConfig:(id)a3;
-- (void)logEventIntervalSelfTriggerSuppression:(id)a3;
-- (void)logEventPointSelfTriggerSuppressionDetected:(id)a3;
-- (void)logEventPointSiriWakes:(id)a3;
+- (void)logEventForwardASREvent:(id)event;
+- (void)logEventForwardDictationConnection:(id)connection;
+- (void)logEventForwardSiriConfig:(id)config;
+- (void)logEventIntervalSelfTriggerSuppression:(id)suppression;
+- (void)logEventPointSelfTriggerSuppressionDetected:(id)detected;
+- (void)logEventPointSiriWakes:(id)wakes;
 @end
 
 @implementation PLSiriAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSiriAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -36,11 +36,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"SiriWakes";
-  v3 = [a1 entryEventPointDefinitionSiriWakes];
+  entryEventPointDefinitionSiriWakes = [self entryEventPointDefinitionSiriWakes];
   v8[1] = @"SelfTriggerSuppressionDetected";
-  v9[0] = v3;
-  v4 = [a1 entryEventPointSelfTriggerSuppressionDetected];
-  v9[1] = v4;
+  v9[0] = entryEventPointDefinitionSiriWakes;
+  entryEventPointSelfTriggerSuppressionDetected = [self entryEventPointSelfTriggerSuppressionDetected];
+  v9[1] = entryEventPointSelfTriggerSuppressionDetected;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -58,17 +58,17 @@
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"phID";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"secondPassState";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat2;
   v13[2] = @"secondPassScore";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198]3 commonTypeDict_RealFormat];
+  v14[2] = commonTypeDict_RealFormat;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -88,17 +88,17 @@
   v18[0] = v2;
   v17[1] = *MEMORY[0x277D3F540];
   v13[0] = @"AudioClientType";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"AudioPlaybackRouteType";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v14[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat2;
   v13[2] = @"AudioSourceType";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v14[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v14[2] = commonTypeDict_IntegerFormat3;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -112,14 +112,14 @@
 {
   v10[3] = *MEMORY[0x277D85DE8];
   v9[0] = @"ASR";
-  v3 = [a1 entryEventForwardASREvent];
-  v10[0] = v3;
+  entryEventForwardASREvent = [self entryEventForwardASREvent];
+  v10[0] = entryEventForwardASREvent;
   v9[1] = @"DictationConnection";
-  v4 = [a1 entryEventForwardDefinitionDictationConnection];
-  v10[1] = v4;
+  entryEventForwardDefinitionDictationConnection = [self entryEventForwardDefinitionDictationConnection];
+  v10[1] = entryEventForwardDefinitionDictationConnection;
   v9[2] = @"SiriConfig";
-  v5 = [a1 entryEventForwardDefinitionSiriConfig];
-  v10[2] = v5;
+  entryEventForwardDefinitionSiriConfig = [self entryEventForwardDefinitionSiriConfig];
+  v10[2] = entryEventForwardDefinitionSiriConfig;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -142,21 +142,21 @@
   v21[0] = v15;
   v20[1] = *MEMORY[0x277D3F540];
   v16[0] = @"ASREvent";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v17[0] = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v17[0] = commonTypeDict_IntegerFormat;
   v16[1] = @"ApplicationName";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat_withBundleID];
-  v17[1] = v6;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v17[1] = commonTypeDict_StringFormat_withBundleID;
   v16[2] = @"Language";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v17[2] = v8;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v17[2] = commonTypeDict_StringFormat;
   v16[3] = @"ModelVersion";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat];
-  v17[3] = v10;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v17[3] = commonTypeDict_StringFormat2;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
   v21[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
@@ -181,29 +181,29 @@
   v25[0] = v19;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"SiriEvent";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v21[0] = v17;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v21[0] = commonTypeDict_IntegerFormat;
   v20[1] = @"Mode";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v21[1] = v15;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v21[1] = commonTypeDict_IntegerFormat2;
   v20[2] = @"startReason";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v21[2] = v4;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v21[2] = commonTypeDict_StringFormat;
   v20[3] = @"stopReason";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v21[3] = v6;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v21[3] = commonTypeDict_StringFormat2;
   v20[4] = @"appBundleID";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat_withBundleID];
-  v21[4] = v8;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat_withBundleID];
+  v21[4] = commonTypeDict_StringFormat_withBundleID;
   v20[5] = @"Recognition";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v21[5] = v10;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v21[5] = commonTypeDict_IntegerFormat3;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:6];
   v25[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
@@ -230,17 +230,17 @@
     v18[0] = v3;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"HeySiriEnabled";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_BoolFormat];
-    v14[0] = v5;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+    v14[0] = commonTypeDict_BoolFormat;
     v13[1] = @"Language";
-    v6 = [MEMORY[0x277D3F198] sharedInstance];
-    v7 = [v6 commonTypeDict_StringFormat];
-    v14[1] = v7;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+    v14[1] = commonTypeDict_StringFormat;
     v13[2] = @"ModelVersion";
-    v8 = [MEMORY[0x277D3F198] sharedInstance];
-    v9 = [v8 commonTypeDict_StringFormat];
-    v14[2] = v9;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v14[2] = commonTypeDict_StringFormat2;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v10;
     v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -255,8 +255,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"SelfTriggerSuppression";
-  v2 = [a1 entryEventIntervalSelfTriggerSuppression];
-  v7[0] = v2;
+  entryEventIntervalSelfTriggerSuppression = [self entryEventIntervalSelfTriggerSuppression];
+  v7[0] = entryEventIntervalSelfTriggerSuppression;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -274,29 +274,29 @@
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"AudioClientType";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v20[0] = commonTypeDict_IntegerFormat;
   v19[1] = @"AudioPlaybackRouteType";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v20[1] = v14;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v20[1] = commonTypeDict_IntegerFormat2;
   v19[2] = @"AudioSourceType";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v20[2] = v3;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v20[2] = commonTypeDict_IntegerFormat3;
   v19[3] = @"NumSelfTriggers";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v20[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat4;
   v19[4] = @"DurationSec";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v20[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v20[4] = commonTypeDict_IntegerFormat5;
   v19[5] = @"timestampEnd";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_DateFormat];
-  v20[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]6 commonTypeDict_DateFormat];
+  v20[5] = commonTypeDict_DateFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:6];
   v24[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -469,38 +469,38 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventPointSelfTriggerSuppressionDetected:(id)a3
+- (void)logEventPointSelfTriggerSuppressionDetected:(id)detected
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  detectedCopy = detected;
   v14 = [(PLOperator *)PLSiriAgent entryKeyForType:v4 andName:@"SelfTriggerSuppressionDetected"];
   v6 = MEMORY[0x277CBEAA8];
-  v7 = [v5 objectForKeyedSubscript:@"DetectedTime"];
+  v7 = [detectedCopy objectForKeyedSubscript:@"DetectedTime"];
   [v7 doubleValue];
   v8 = [v6 dateWithTimeIntervalSince1970:?];
 
-  v9 = [v8 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic = [v8 convertFromSystemToMonotonic];
 
-  v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v14 withDate:v9];
-  v11 = [v5 objectForKeyedSubscript:@"PhoneCallConnected"];
+  v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v14 withDate:convertFromSystemToMonotonic];
+  v11 = [detectedCopy objectForKeyedSubscript:@"PhoneCallConnected"];
   [v10 setObject:v11 forKeyedSubscript:@"AudioClientType"];
 
-  v12 = [v5 objectForKeyedSubscript:@"AudioPlaybackRouteType"];
+  v12 = [detectedCopy objectForKeyedSubscript:@"AudioPlaybackRouteType"];
   [v10 setObject:v12 forKeyedSubscript:@"AudioPlaybackRouteType"];
 
-  v13 = [v5 objectForKeyedSubscript:@"AudioSourceType"];
+  v13 = [detectedCopy objectForKeyedSubscript:@"AudioSourceType"];
 
   [v10 setObject:v13 forKeyedSubscript:@"AudioSourceType"];
   [(PLOperator *)self logEntry:v10];
 }
 
-- (void)logEventPointSiriWakes:(id)a3
+- (void)logEventPointSiriWakes:(id)wakes
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  wakesCopy = wakes;
   v6 = [(PLOperator *)PLSiriAgent entryKeyForType:v4 andName:@"SiriWakes"];
-  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:v5];
+  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6 withRawData:wakesCopy];
 
   v8 = PLLogSiri();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -512,9 +512,9 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   }
 
   v9 = [v7 objectForKeyedSubscript:@"secondPassState"];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
-  if (v10 == 11)
+  if (intValue == 11)
   {
     [v7 setObject:&unk_282C102C0 forKeyedSubscript:@"secondPassState"];
   }
@@ -524,31 +524,31 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)convertASREvent:(id)a3
+- (unint64_t)convertASREvent:(id)event
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"preheatSpeechRecognitionWithAssetConfig"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"preheatSpeechRecognitionWithAssetConfig"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"startSpeechRecognitionWithParameters"])
+  else if ([eventCopy isEqualToString:@"startSpeechRecognitionWithParameters"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"createSpeechProfileWithLanguage"])
+  else if ([eventCopy isEqualToString:@"createSpeechProfileWithLanguage"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"compileAllAssetsWithCompletion"])
+  else if ([eventCopy isEqualToString:@"compileAllAssetsWithCompletion"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"didFinishRecognitionWithError"])
+  else if ([eventCopy isEqualToString:@"didFinishRecognitionWithError"])
   {
     v4 = 4;
   }
@@ -559,7 +559,7 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = eventCopy;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Unknown/Other ASR siriEvent %@", &v8, 0xCu);
     }
 
@@ -570,13 +570,13 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   return v4;
 }
 
-- (void)logEventForwardASREvent:(id)a3
+- (void)logEventForwardASREvent:(id)event
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  eventCopy = event;
   v10 = [(PLOperator *)PLSiriAgent entryKeyForType:v4 andName:@"ASR"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"ASR Event"];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10 withRawData:eventCopy];
+  v7 = [eventCopy objectForKeyedSubscript:@"ASR Event"];
 
   v8 = [(PLSiriAgent *)self convertASREvent:v7];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
@@ -585,26 +585,26 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   [(PLOperator *)self logEntry:v6];
 }
 
-- (unint64_t)convertMode:(id)a3
+- (unint64_t)convertMode:(id)mode
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"Location"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Location"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Person"])
+  else if ([modeCopy isEqualToString:@"Person"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Text"])
+  else if ([modeCopy isEqualToString:@"Text"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PhonemeTranscription"])
+  else if ([modeCopy isEqualToString:@"PhonemeTranscription"])
   {
     v4 = 3;
   }
@@ -615,7 +615,7 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = modeCopy;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Unknown Dictation mode %@", &v8, 0xCu);
     }
 
@@ -626,16 +626,16 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   return v4;
 }
 
-- (unint64_t)convertRecognition:(id)a3
+- (unint64_t)convertRecognition:(id)recognition
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"on-device"])
+  recognitionCopy = recognition;
+  if ([recognitionCopy isEqualToString:@"on-device"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"server"])
+  else if ([recognitionCopy isEqualToString:@"server"])
   {
     v4 = 1;
   }
@@ -646,7 +646,7 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = recognitionCopy;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Unknown/Other Dictation recognition %@", &v8, 0xCu);
     }
 
@@ -657,31 +657,31 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   return v4;
 }
 
-- (unint64_t)convertSiriEvent:(id)a3
+- (unint64_t)convertSiriEvent:(id)event
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isEqualToString:@"Dictation start"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"Dictation start"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Dictation stop"])
+  else if ([eventCopy isEqualToString:@"Dictation stop"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Dictation endSession"])
+  else if ([eventCopy isEqualToString:@"Dictation endSession"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Dictation pause"])
+  else if ([eventCopy isEqualToString:@"Dictation pause"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Dictation resume"])
+  else if ([eventCopy isEqualToString:@"Dictation resume"])
   {
     v4 = 3;
   }
@@ -692,7 +692,7 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = eventCopy;
       _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "Unknown/Other Dictation siriEvent %@", &v8, 0xCu);
     }
 
@@ -703,12 +703,12 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   return v4;
 }
 
-- (void)logEventForwardDictationConnection:(id)a3
+- (void)logEventForwardDictationConnection:(id)connection
 {
-  v15 = a3;
+  connectionCopy = connection;
   v4 = [(PLOperator *)PLSiriAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"DictationConnection"];
-  v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withRawData:v15];
-  v6 = [v15 objectForKeyedSubscript:@"Siri Event"];
+  v5 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v4 withRawData:connectionCopy];
+  v6 = [connectionCopy objectForKeyedSubscript:@"Siri Event"];
   v7 = [(PLSiriAgent *)self convertSiriEvent:v6];
 
   if (v7 != 5)
@@ -716,12 +716,12 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
     if (v7 == 1)
     {
       v8 = MEMORY[0x277CCABB0];
-      v9 = [v15 objectForKeyedSubscript:@"mode"];
+      v9 = [connectionCopy objectForKeyedSubscript:@"mode"];
       v10 = [v8 numberWithUnsignedInteger:{-[PLSiriAgent convertMode:](self, "convertMode:", v9)}];
       [v5 setObject:v10 forKeyedSubscript:@"Mode"];
 
       v11 = MEMORY[0x277CCABB0];
-      v12 = [v15 objectForKeyedSubscript:@"recognition"];
+      v12 = [connectionCopy objectForKeyedSubscript:@"recognition"];
       v13 = [v11 numberWithUnsignedInteger:{-[PLSiriAgent convertRecognition:](self, "convertRecognition:", v12)}];
       [v5 setObject:v13 forKeyedSubscript:@"Recognition"];
     }
@@ -733,53 +733,53 @@ void __39__PLSiriAgent_initOperatorDependancies__block_invoke_137(uint64_t a1, u
   }
 }
 
-- (void)logEventForwardSiriConfig:(id)a3
+- (void)logEventForwardSiriConfig:(id)config
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  configCopy = config;
   v7 = [(PLOperator *)PLSiriAgent entryKeyForType:v4 andName:@"SiriConfig"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:configCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventIntervalSelfTriggerSuppression:(id)a3
+- (void)logEventIntervalSelfTriggerSuppression:(id)suppression
 {
   v4 = *MEMORY[0x277D3F5D8];
-  v5 = a3;
+  suppressionCopy = suppression;
   v20 = [(PLOperator *)PLSiriAgent entryKeyForType:v4 andName:@"SelfTriggerSuppression"];
   v6 = MEMORY[0x277CBEAA8];
-  v7 = [v5 objectForKeyedSubscript:@"StartTime"];
+  v7 = [suppressionCopy objectForKeyedSubscript:@"StartTime"];
   [v7 doubleValue];
   v8 = [v6 dateWithTimeIntervalSince1970:?];
 
-  v9 = [v8 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic = [v8 convertFromSystemToMonotonic];
 
-  v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v20 withDate:v9];
-  v11 = [v5 objectForKeyedSubscript:@"PhoneCallConnected"];
+  v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v20 withDate:convertFromSystemToMonotonic];
+  v11 = [suppressionCopy objectForKeyedSubscript:@"PhoneCallConnected"];
   [v10 setObject:v11 forKeyedSubscript:@"AudioClientType"];
 
-  v12 = [v5 objectForKeyedSubscript:@"AudioPlaybackRouteType"];
+  v12 = [suppressionCopy objectForKeyedSubscript:@"AudioPlaybackRouteType"];
   [v10 setObject:v12 forKeyedSubscript:@"AudioPlaybackRouteType"];
 
-  v13 = [v5 objectForKeyedSubscript:@"AudioSourceType"];
+  v13 = [suppressionCopy objectForKeyedSubscript:@"AudioSourceType"];
   [v10 setObject:v13 forKeyedSubscript:@"AudioSourceType"];
 
-  v14 = [v5 objectForKeyedSubscript:@"DurationSec"];
+  v14 = [suppressionCopy objectForKeyedSubscript:@"DurationSec"];
   [v10 setObject:v14 forKeyedSubscript:@"DurationSec"];
 
-  v15 = [v5 objectForKeyedSubscript:@"NumSelfTriggersInInterval"];
+  v15 = [suppressionCopy objectForKeyedSubscript:@"NumSelfTriggersInInterval"];
   [v10 setObject:v15 forKeyedSubscript:@"NumSelfTriggers"];
 
   v16 = MEMORY[0x277CBEAA8];
-  v17 = [v5 objectForKeyedSubscript:@"StopTime"];
+  v17 = [suppressionCopy objectForKeyedSubscript:@"StopTime"];
 
   [v17 doubleValue];
   v18 = [v16 dateWithTimeIntervalSince1970:?];
 
-  v19 = [v18 convertFromSystemToMonotonic];
+  convertFromSystemToMonotonic2 = [v18 convertFromSystemToMonotonic];
 
-  [v10 setObject:v19 forKeyedSubscript:@"timestampEnd"];
+  [v10 setObject:convertFromSystemToMonotonic2 forKeyedSubscript:@"timestampEnd"];
   [(PLOperator *)self logEntry:v10];
 }
 

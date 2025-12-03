@@ -1,9 +1,9 @@
 @interface SUICApplicationStateHelper
 - (SUICApplicationStateHelper)init;
-- (id)_foregroundAppInfosFor:(int64_t)a3;
-- (void)_appInfoDictionariesForDisplayLayout:(id)a3 completion:(id)a4;
-- (void)_handleApplicationStateUpdate:(id)a3;
-- (void)_updateForAppInfoDictionaries:(id)a3 displayType:(id)a4;
+- (id)_foregroundAppInfosFor:(int64_t)for;
+- (void)_appInfoDictionariesForDisplayLayout:(id)layout completion:(id)completion;
+- (void)_handleApplicationStateUpdate:(id)update;
+- (void)_updateForAppInfoDictionaries:(id)dictionaries displayType:(id)type;
 - (void)dealloc;
 @end
 
@@ -92,9 +92,9 @@ void __34__SUICApplicationStateHelper_init__block_invoke_2_10(uint64_t a1, void 
     v28[3] = &unk_1E81E7BB0;
     objc_copyWeak(&v29, &location);
     [(BKSApplicationStateMonitor *)v10 setHandler:v28];
-    v11 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
     v12 = MEMORY[0x1E698D0A0];
-    if (v11)
+    if (configurationForDefaultMainDisplayMonitor)
     {
       v13 = *MEMORY[0x1E698D0A0];
       if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_INFO))
@@ -109,16 +109,16 @@ void __34__SUICApplicationStateHelper_init__block_invoke_2_10(uint64_t a1, void 
       v26[2] = __34__SUICApplicationStateHelper_init__block_invoke_4;
       v26[3] = &unk_1E81E7C00;
       objc_copyWeak(&v27, &location);
-      [v11 setTransitionHandler:v26];
-      v14 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:v11];
+      [configurationForDefaultMainDisplayMonitor setTransitionHandler:v26];
+      v14 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
       displayLayoutMonitor = v2->_displayLayoutMonitor;
       v2->_displayLayoutMonitor = v14;
 
       objc_destroyWeak(&v27);
     }
 
-    v16 = [MEMORY[0x1E699FAF8] configurationForCarDisplayMonitor];
-    if (v16)
+    configurationForCarDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForCarDisplayMonitor];
+    if (configurationForCarDisplayMonitor)
     {
       v17 = *v12;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -133,8 +133,8 @@ void __34__SUICApplicationStateHelper_init__block_invoke_2_10(uint64_t a1, void 
       v23 = __34__SUICApplicationStateHelper_init__block_invoke_9;
       v24 = &unk_1E81E7C00;
       objc_copyWeak(&v25, &location);
-      [v16 setTransitionHandler:&v21];
-      v18 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:{v16, v21, v22, v23, v24}];
+      [configurationForCarDisplayMonitor setTransitionHandler:&v21];
+      v18 = [MEMORY[0x1E699FAE0] monitorWithConfiguration:{configurationForCarDisplayMonitor, v21, v22, v23, v24}];
       carplayDisplayLayoutMonitor = v2->_carplayDisplayLayoutMonitor;
       v2->_carplayDisplayLayoutMonitor = v18;
 
@@ -168,7 +168,7 @@ void __34__SUICApplicationStateHelper_init__block_invoke_2_10(uint64_t a1, void 
   [(SUICApplicationStateHelper *)&v5 dealloc];
 }
 
-- (id)_foregroundAppInfosFor:(int64_t)a3
+- (id)_foregroundAppInfosFor:(int64_t)for
 {
   v7 = 0;
   v8 = &v7;
@@ -183,7 +183,7 @@ void __34__SUICApplicationStateHelper_init__block_invoke_2_10(uint64_t a1, void 
   block[3] = &unk_1E81E7AE0;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = for;
   dispatch_sync(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -202,35 +202,35 @@ void __53__SUICApplicationStateHelper__foregroundAppInfosFor___block_invoke(void
   *(v5 + 40) = v4;
 }
 
-- (void)_handleApplicationStateUpdate:(id)a3
+- (void)_handleApplicationStateUpdate:(id)update
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v9[0] = a3;
+  v9[0] = update;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  updateCopy = update;
   v6 = [v4 arrayWithObjects:v9 count:1];
   [(SUICApplicationStateHelper *)self _updateForAppInfoDictionaries:v6 displayType:&unk_1F43C73C8];
 
-  v8 = v5;
+  v8 = updateCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1];
 
   [(SUICApplicationStateHelper *)self _updateForAppInfoDictionaries:v7 displayType:&unk_1F43C73E0];
 }
 
-- (void)_updateForAppInfoDictionaries:(id)a3 displayType:(id)a4
+- (void)_updateForAppInfoDictionaries:(id)dictionaries displayType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dictionariesCopy = dictionaries;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__SUICApplicationStateHelper__updateForAppInfoDictionaries_displayType___block_invoke;
   block[3] = &unk_1E81E7C50;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dictionariesCopy;
+  selfCopy = self;
+  v14 = typeCopy;
+  v9 = typeCopy;
+  v10 = dictionariesCopy;
   dispatch_async(queue, block);
 }
 
@@ -281,20 +281,20 @@ void __72__SUICApplicationStateHelper__updateForAppInfoDictionaries_displayType_
   }
 }
 
-- (void)_appInfoDictionariesForDisplayLayout:(id)a3 completion:(id)a4
+- (void)_appInfoDictionariesForDisplayLayout:(id)layout completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__SUICApplicationStateHelper__appInfoDictionariesForDisplayLayout_completion___block_invoke;
   block[3] = &unk_1E81E7D40;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = layoutCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = layoutCopy;
   dispatch_async(v8, block);
 }
 

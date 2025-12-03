@@ -1,38 +1,38 @@
 @interface HUCCRemoteDashboardViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (HUCCRemoteDashboardDelegate)delegate;
 - (void)authorizeIfLocked;
 - (void)requestDismissal;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation HUCCRemoteDashboardViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"HCSRemoteViewController" fromServiceWithBundleIdentifier:@"com.apple.Home.HomeControlService" connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"HCSRemoteViewController" fromServiceWithBundleIdentifier:@"com.apple.Home.HomeControlService" connectionHandler:handlerCopy];
 
   return v4;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HUCCRemoteDashboardViewController *)self delegate];
-  [v5 remoteDashboard:self viewServiceDidTerminateWithError:v4];
+  errorCopy = error;
+  delegate = [(HUCCRemoteDashboardViewController *)self delegate];
+  [delegate remoteDashboard:self viewServiceDidTerminateWithError:errorCopy];
 }
 
 - (void)authorizeIfLocked
 {
-  v3 = [(HUCCRemoteDashboardViewController *)self delegate];
-  [v3 requestLockAuthenticationForRemoteDashboard:self];
+  delegate = [(HUCCRemoteDashboardViewController *)self delegate];
+  [delegate requestLockAuthenticationForRemoteDashboard:self];
 }
 
 - (void)requestDismissal
 {
-  v2 = [(HUCCRemoteDashboardViewController *)self delegate];
-  [v2 requestDismissal];
+  delegate = [(HUCCRemoteDashboardViewController *)self delegate];
+  [delegate requestDismissal];
 }
 
 - (HUCCRemoteDashboardDelegate)delegate

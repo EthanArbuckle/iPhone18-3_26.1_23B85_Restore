@@ -1,11 +1,11 @@
 @interface NSProgressSubscriberProxy
 - (NSFileAccessNode)itemLocation;
-- (NSProgressSubscriberProxy)initWithForwarder:(id)a3 onConnection:(id)a4 subscriberID:(id)a5 appBundleID:(id)a6;
+- (NSProgressSubscriberProxy)initWithForwarder:(id)forwarder onConnection:(id)connection subscriberID:(id)d appBundleID:(id)iD;
 - (id)appBundleID;
 - (void)dealloc;
-- (void)observePublisherForID:(id)a3 values:(id)a4 forKeys:(id)a5;
-- (void)observePublisherUserInfoForID:(id)a3 value:(id)a4 forKey:(id)a5;
-- (void)setItemLocation:(id)a3;
+- (void)observePublisherForID:(id)d values:(id)values forKeys:(id)keys;
+- (void)observePublisherUserInfoForID:(id)d value:(id)value forKey:(id)key;
+- (void)setItemLocation:(id)location;
 @end
 
 @implementation NSProgressSubscriberProxy
@@ -17,7 +17,7 @@
   return v2;
 }
 
-- (NSProgressSubscriberProxy)initWithForwarder:(id)a3 onConnection:(id)a4 subscriberID:(id)a5 appBundleID:(id)a6
+- (NSProgressSubscriberProxy)initWithForwarder:(id)forwarder onConnection:(id)connection subscriberID:(id)d appBundleID:(id)iD
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -25,10 +25,10 @@
   v10 = [(NSProgressSubscriberProxy *)&v12 init];
   if (v10)
   {
-    v10->_forwarder = a3;
-    v10->_subscriberID = [a5 copy];
-    v10->_bundleID = [a6 copy];
-    v10->_connection = a4;
+    v10->_forwarder = forwarder;
+    v10->_subscriberID = [d copy];
+    v10->_bundleID = [iD copy];
+    v10->_connection = connection;
   }
 
   return v10;
@@ -43,15 +43,15 @@
   [(NSProgressSubscriberProxy *)&v3 dealloc];
 }
 
-- (void)setItemLocation:(id)a3
+- (void)setItemLocation:(id)location
 {
   itemLocation = self->_itemLocation;
-  if (itemLocation != a3)
+  if (itemLocation != location)
   {
     [(NSFileAccessNode *)itemLocation removeProgressSubscriber:self];
-    self->_itemLocation = a3;
+    self->_itemLocation = location;
 
-    [a3 addProgressSubscriber:self];
+    [location addProgressSubscriber:self];
   }
 }
 
@@ -62,18 +62,18 @@
   return v2;
 }
 
-- (void)observePublisherForID:(id)a3 values:(id)a4 forKeys:(id)a5
+- (void)observePublisherForID:(id)d values:(id)values forKeys:(id)keys
 {
-  v8 = [(NSProgressSubscriber *)self->_forwarder _unboostingRemoteObjectProxy];
+  _unboostingRemoteObjectProxy = [(NSProgressSubscriber *)self->_forwarder _unboostingRemoteObjectProxy];
 
-  [v8 observePublisherForID:a3 values:a4 forKeys:a5];
+  [_unboostingRemoteObjectProxy observePublisherForID:d values:values forKeys:keys];
 }
 
-- (void)observePublisherUserInfoForID:(id)a3 value:(id)a4 forKey:(id)a5
+- (void)observePublisherUserInfoForID:(id)d value:(id)value forKey:(id)key
 {
-  v8 = [(NSProgressSubscriber *)self->_forwarder _unboostingRemoteObjectProxy];
+  _unboostingRemoteObjectProxy = [(NSProgressSubscriber *)self->_forwarder _unboostingRemoteObjectProxy];
 
-  [v8 observePublisherUserInfoForID:a3 value:a4 forKey:a5];
+  [_unboostingRemoteObjectProxy observePublisherUserInfoForID:d value:value forKey:key];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface DOCSourceObserver
 - (BOOL)hasReceivedFirstFullUpdate;
-- (BOOL)isProviderNode:(id)a3;
-- (DOCSourceObserver)initWithUserAction:(unint64_t)a3 hostIdentifier:(id)a4;
+- (BOOL)isProviderNode:(id)node;
+- (DOCSourceObserver)initWithUserAction:(unint64_t)action hostIdentifier:(id)identifier;
 - (NSArray)providerNodes;
 - (NSArray)providers;
-- (id)_addSubscriberForConfiguration:(id)a3 usingBlock:(id)a4;
+- (id)_addSubscriberForConfiguration:(id)configuration usingBlock:(id)block;
 - (id)_sourcesByBuildingWithSourceBuilder;
 - (id)actionManagersFromSources;
-- (id)addSubscriberForConfiguration:(id)a3 usingBlock:(id)a4;
-- (id)cachedDisplayNameForSourceIdentifier:(id)a3;
+- (id)addSubscriberForConfiguration:(id)configuration usingBlock:(id)block;
+- (id)cachedDisplayNameForSourceIdentifier:(id)identifier;
 - (id)consolidatedErrorIfExists;
-- (id)sourceForIdentifier:(id)a3;
+- (id)sourceForIdentifier:(id)identifier;
 - (id)startObservingLegacyPickers;
 - (int)startObservingDefaultSaveLocation;
-- (void)childChanged:(id)a3 in:(id)a4 for:(unsigned int)a5;
-- (void)childrenAdded:(id)a3 to:(id)a4;
-- (void)childrenDeleted:(id)a3 from:(id)a4;
+- (void)childChanged:(id)changed in:(id)in for:(unsigned int)for;
+- (void)childrenAdded:(id)added to:(id)to;
+- (void)childrenDeleted:(id)deleted from:(id)from;
 - (void)dealloc;
 - (void)didReceiveSourceUpdate;
-- (void)domainDisplayNameForItem:(id)a3 completion:(id)a4;
-- (void)nodeShouldBeReloaded:(id)a3;
-- (void)notifySubscriber:(id)a3;
+- (void)domainDisplayNameForItem:(id)item completion:(id)completion;
+- (void)nodeShouldBeReloaded:(id)reloaded;
+- (void)notifySubscriber:(id)subscriber;
 - (void)notifySubscribers;
-- (void)openSyncCompleted:(id)a3;
+- (void)openSyncCompleted:(id)completed;
 - (void)providersChanged;
-- (void)removeSubscriberForToken:(id)a3;
-- (void)retrieveSourcesForConfiguration:(id)a3 usingBlock:(id)a4;
-- (void)setProviderNodes:(id)a3;
+- (void)removeSubscriberForToken:(id)token;
+- (void)retrieveSourcesForConfiguration:(id)configuration usingBlock:(id)block;
+- (void)setProviderNodes:(id)nodes;
 - (void)sourceObserverQueue_didReceiveSourceUpdate;
 - (void)startObservingSources;
 - (void)stopObservingDefaultSaveLocation;
@@ -38,9 +38,9 @@
 
 @implementation DOCSourceObserver
 
-- (DOCSourceObserver)initWithUserAction:(unint64_t)a3 hostIdentifier:(id)a4
+- (DOCSourceObserver)initWithUserAction:(unint64_t)action hostIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v31.receiver = self;
   v31.super_class = DOCSourceObserver;
   v7 = [(DOCSourceObserver *)&v31 init];
@@ -54,11 +54,11 @@
     v7->_sourceObserverQueue = v10;
 
     v7->_observationCount = 0;
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sourcesSubscribers = v7->_sourcesSubscribers;
-    v7->_sourcesSubscribers = v12;
+    v7->_sourcesSubscribers = dictionary;
 
-    v14 = [[DOCSourceBuilder alloc] initWithUserAction:a3 hostIdentifier:v6];
+    v14 = [[DOCSourceBuilder alloc] initWithUserAction:action hostIdentifier:identifierCopy];
     sourceBuilder = v7->_sourceBuilder;
     v7->_sourceBuilder = v14;
 
@@ -67,24 +67,24 @@
     v7->_sourcesActionManager = v16;
 
     StartFINode();
-    v18 = [MEMORY[0x277D04700] providerDomainsContainer];
+    providerDomainsContainer = [MEMORY[0x277D04700] providerDomainsContainer];
     providerDomainsNode = v7->_providerDomainsNode;
-    v7->_providerDomainsNode = v18;
+    v7->_providerDomainsNode = providerDomainsContainer;
 
     v20 = [MEMORY[0x277D04708] observerForFINode:v7->_providerDomainsNode withObserver:v7];
     providerDomainsFINodeObserver = v7->_providerDomainsFINodeObserver;
     v7->_providerDomainsFINodeObserver = v20;
 
     objc_initWeak(&location, v7);
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    v23 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v24 = *MEMORY[0x277D06148];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __55__DOCSourceObserver_initWithUserAction_hostIdentifier___block_invoke;
     v28[3] = &unk_278FA1C58;
     objc_copyWeak(&v29, &location);
-    v25 = [v22 addObserverForName:v24 object:0 queue:v23 usingBlock:v28];
+    v25 = [defaultCenter addObserverForName:v24 object:0 queue:mainQueue usingBlock:v28];
     mdmHostIdentifierDidChangeNotificationObserver = v7->_mdmHostIdentifierDidChangeNotificationObserver;
     v7->_mdmHostIdentifierDidChangeNotificationObserver = v25;
 
@@ -140,8 +140,8 @@ uint64_t __55__DOCSourceObserver_initWithUserAction_hostIdentifier___block_invok
 {
   if (self->_mdmHostIdentifierDidChangeNotificationObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_mdmHostIdentifierDidChangeNotificationObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_mdmHostIdentifierDidChangeNotificationObserver];
   }
 
   v4.receiver = self;
@@ -152,13 +152,13 @@ uint64_t __55__DOCSourceObserver_initWithUserAction_hostIdentifier___block_invok
 - (void)startObservingSources
 {
   objc_initWeak(&location, self);
-  v3 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__DOCSourceObserver_startObservingSources__block_invoke;
   v4[3] = &unk_278FA1C80;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(sourceObserverQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -191,13 +191,13 @@ void __42__DOCSourceObserver_startObservingSources__block_invoke(uint64_t a1)
 - (void)stopObservingSources
 {
   objc_initWeak(&location, self);
-  v3 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__DOCSourceObserver_stopObservingSources__block_invoke;
   v4[3] = &unk_278FA1C80;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(sourceObserverQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -224,25 +224,25 @@ void __41__DOCSourceObserver_stopObservingSources__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_addSubscriberForConfiguration:(id)a3 usingBlock:(id)a4
+- (id)_addSubscriberForConfiguration:(id)configuration usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   v8 = objc_alloc_init(DOCSourceObserverToken);
   objc_initWeak(&location, self);
-  v9 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__DOCSourceObserver__addSubscriberForConfiguration_usingBlock___block_invoke;
   block[3] = &unk_278FA1CA8;
   objc_copyWeak(&v20, &location);
-  v19 = v7;
+  v19 = blockCopy;
   v10 = v8;
   v17 = v10;
-  v18 = v6;
-  v11 = v6;
-  v12 = v7;
-  dispatch_async(v9, block);
+  v18 = configurationCopy;
+  v11 = configurationCopy;
+  v12 = blockCopy;
+  dispatch_async(sourceObserverQueue, block);
 
   v13 = v18;
   v14 = v10;
@@ -276,33 +276,33 @@ void __63__DOCSourceObserver__addSubscriberForConfiguration_usingBlock___block_i
   }
 }
 
-- (id)addSubscriberForConfiguration:(id)a3 usingBlock:(id)a4
+- (id)addSubscriberForConfiguration:(id)configuration usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__DOCSourceObserver_addSubscriberForConfiguration_usingBlock___block_invoke;
   v10[3] = &unk_278FA1CD0;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(DOCSourceObserver *)self _addSubscriberForConfiguration:a3 usingBlock:v10];
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = [(DOCSourceObserver *)self _addSubscriberForConfiguration:configuration usingBlock:v10];
 
   return v8;
 }
 
-- (void)removeSubscriberForToken:(id)a3
+- (void)removeSubscriberForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   objc_initWeak(&location, self);
-  v5 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__DOCSourceObserver_removeSubscriberForToken___block_invoke;
   block[3] = &unk_278FA1CF8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  dispatch_async(sourceObserverQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -316,19 +316,19 @@ void __46__DOCSourceObserver_removeSubscriberForToken___block_invoke(uint64_t a1
   [v2 removeObjectForKey:v3];
 }
 
-- (void)retrieveSourcesForConfiguration:(id)a3 usingBlock:(id)a4
+- (void)retrieveSourcesForConfiguration:(id)configuration usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__DOCSourceObserver_retrieveSourcesForConfiguration_usingBlock___block_invoke;
   v10[3] = &unk_278FA1D20;
   objc_copyWeak(&v12, &location);
-  v8 = v7;
+  v8 = blockCopy;
   v11 = v8;
-  v9 = [(DOCSourceObserver *)self _addSubscriberForConfiguration:v6 usingBlock:v10];
+  v9 = [(DOCSourceObserver *)self _addSubscriberForConfiguration:configurationCopy usingBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -349,18 +349,18 @@ void __64__DOCSourceObserver_retrieveSourcesForConfiguration_usingBlock___block_
   }
 }
 
-- (void)domainDisplayNameForItem:(id)a3 completion:(id)a4
+- (void)domainDisplayNameForItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__DOCSourceObserver_domainDisplayNameForItem_completion___block_invoke;
   v10[3] = &unk_278FA1D48;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = itemCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = itemCopy;
   [(DOCSourceObserver *)self retrieveAllSourcesCompletionBlock:v10];
 }
 
@@ -436,16 +436,16 @@ LABEL_10:
   }
 }
 
-- (id)sourceForIdentifier:(id)a3
+- (id)sourceForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(DOCSourceObserver *)self sources];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sources = [(DOCSourceObserver *)self sources];
+  v6 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -455,12 +455,12 @@ LABEL_10:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sources);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -469,7 +469,7 @@ LABEL_10:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -484,20 +484,20 @@ LABEL_11:
   return v6;
 }
 
-- (void)childrenAdded:(id)a3 to:(id)a4
+- (void)childrenAdded:(id)added to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  toCopy = to;
   objc_initWeak(&location, self);
-  v8 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__DOCSourceObserver_childrenAdded_to___block_invoke;
   block[3] = &unk_278FA1CF8;
   objc_copyWeak(&v12, &location);
-  v11 = v6;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v11 = addedCopy;
+  v9 = addedCopy;
+  dispatch_async(sourceObserverQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -520,20 +520,20 @@ void __38__DOCSourceObserver_childrenAdded_to___block_invoke(uint64_t a1)
   }
 }
 
-- (void)childrenDeleted:(id)a3 from:(id)a4
+- (void)childrenDeleted:(id)deleted from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  deletedCopy = deleted;
+  fromCopy = from;
   objc_initWeak(&location, self);
-  v8 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__DOCSourceObserver_childrenDeleted_from___block_invoke;
   block[3] = &unk_278FA1CF8;
   objc_copyWeak(&v12, &location);
-  v11 = v6;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v11 = deletedCopy;
+  v9 = deletedCopy;
+  dispatch_async(sourceObserverQueue, block);
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -556,43 +556,43 @@ void __42__DOCSourceObserver_childrenDeleted_from___block_invoke(uint64_t a1)
   }
 }
 
-- (void)childChanged:(id)a3 in:(id)a4 for:(unsigned int)a5
+- (void)childChanged:(id)changed in:(id)in for:(unsigned int)for
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
-  if ([(DOCSourceObserver *)self isProviderNode:v8])
+  v5 = *&for;
+  changedCopy = changed;
+  inCopy = in;
+  if ([(DOCSourceObserver *)self isProviderNode:changedCopy])
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    v11 = [(DOCSourceObserver *)v10 pendingChildPropertyChanges];
-    v12 = [v11 count];
-    if (v11)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    pendingChildPropertyChanges = [(DOCSourceObserver *)selfCopy pendingChildPropertyChanges];
+    v12 = [pendingChildPropertyChanges count];
+    if (pendingChildPropertyChanges)
     {
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v5];
-      [v11 addObject:v13];
+      [pendingChildPropertyChanges addObject:v13];
     }
 
     else
     {
       v14 = MEMORY[0x277CBEB58];
       v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v5];
-      v11 = [v14 setWithObject:v15];
+      pendingChildPropertyChanges = [v14 setWithObject:v15];
 
-      [(DOCSourceObserver *)v10 setPendingChildPropertyChanges:v11];
+      [(DOCSourceObserver *)selfCopy setPendingChildPropertyChanges:pendingChildPropertyChanges];
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     if (!v12)
     {
-      objc_initWeak(&location, v10);
-      v16 = [(DOCSourceObserver *)v10 sourceObserverQueue];
+      objc_initWeak(&location, selfCopy);
+      sourceObserverQueue = [(DOCSourceObserver *)selfCopy sourceObserverQueue];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __41__DOCSourceObserver_childChanged_in_for___block_invoke;
       v17[3] = &unk_278FA1C80;
       objc_copyWeak(&v18, &location);
-      dispatch_async(v16, v17);
+      dispatch_async(sourceObserverQueue, v17);
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -633,17 +633,17 @@ void __41__DOCSourceObserver_childChanged_in_for___block_invoke(uint64_t a1)
   }
 }
 
-- (void)openSyncCompleted:(id)a3
+- (void)openSyncCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   objc_initWeak(&location, self);
-  v5 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__DOCSourceObserver_openSyncCompleted___block_invoke;
   v6[3] = &unk_278FA1C80;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(sourceObserverQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -655,17 +655,17 @@ void __39__DOCSourceObserver_openSyncCompleted___block_invoke(uint64_t a1)
   [WeakRetained updateProviderNodes];
 }
 
-- (void)nodeShouldBeReloaded:(id)a3
+- (void)nodeShouldBeReloaded:(id)reloaded
 {
-  v4 = a3;
+  reloadedCopy = reloaded;
   objc_initWeak(&location, self);
-  v5 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__DOCSourceObserver_nodeShouldBeReloaded___block_invoke;
   v6[3] = &unk_278FA1C80;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(sourceObserverQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -680,15 +680,15 @@ void __42__DOCSourceObserver_nodeShouldBeReloaded___block_invoke(uint64_t a1)
 - (NSArray)providers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(DOCSourceObserver *)v2 providerNodes];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  providerNodes = [(DOCSourceObserver *)selfCopy providerNodes];
+  v5 = [providerNodes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -698,103 +698,103 @@ void __42__DOCSourceObserver_nodeShouldBeReloaded___block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(providerNodes);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) fpDomain];
-        if (v8)
+        fpDomain = [*(*(&v10 + 1) + 8 * i) fpDomain];
+        if (fpDomain)
         {
-          [v3 addObject:v8];
+          [array addObject:fpDomain];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [providerNodes countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return array;
 }
 
 - (void)updateProviderNodes
 {
-  v3 = [(DOCSourceObserver *)self sourceObserverQueue];
-  dispatch_assert_queue_V2(v3);
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
+  dispatch_assert_queue_V2(sourceObserverQueue);
 
-  v4 = [(DOCSourceObserver *)self providerDomainsNode];
-  v9 = [v4 iteratorWithOptions:0];
+  providerDomainsNode = [(DOCSourceObserver *)self providerDomainsNode];
+  v9 = [providerDomainsNode iteratorWithOptions:0];
 
   -[DOCSourceObserver setProviderNodesFullyPopulated:](self, "setProviderNodesFullyPopulated:", [v9 fullyPopulated]);
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v9 first];
-  if (v6)
+  array = [MEMORY[0x277CBEB18] array];
+  first = [v9 first];
+  if (first)
   {
-    v7 = v6;
+    v7 = first;
     do
     {
-      [v5 addObject:v7];
-      v8 = [v9 next];
+      [array addObject:v7];
+      next = [v9 next];
 
-      v7 = v8;
+      v7 = next;
     }
 
-    while (v8);
+    while (next);
   }
 
-  [(DOCSourceObserver *)self setProviderNodes:v5];
+  [(DOCSourceObserver *)self setProviderNodes:array];
 }
 
 - (NSArray)providerNodes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_providerNodes;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_providerNodes;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setProviderNodes:(id)a3
+- (void)setProviderNodes:(id)nodes
 {
-  v8 = a3;
-  v4 = [(DOCSourceObserver *)self sourceObserverQueue];
-  dispatch_assert_queue_V2(v4);
+  nodesCopy = nodes;
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
+  dispatch_assert_queue_V2(sourceObserverQueue);
 
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(NSArray *)v5->_providerNodes isEqualToArray:v8])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSArray *)selfCopy->_providerNodes isEqualToArray:nodesCopy])
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v6 = [v8 copy];
-    providerNodes = v5->_providerNodes;
-    v5->_providerNodes = v6;
+    v6 = [nodesCopy copy];
+    providerNodes = selfCopy->_providerNodes;
+    selfCopy->_providerNodes = v6;
 
-    objc_sync_exit(v5);
-    [(DOCSourceObserver *)v5 providersChanged];
-    [(DOCSourceObserver *)v5 sourceObserverQueue_didReceiveSourceUpdate];
+    objc_sync_exit(selfCopy);
+    [(DOCSourceObserver *)selfCopy providersChanged];
+    [(DOCSourceObserver *)selfCopy sourceObserverQueue_didReceiveSourceUpdate];
   }
 }
 
 - (void)providersChanged
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(DOCSourceObserver *)self sourceObserverQueue];
-  dispatch_assert_queue_V2(v3);
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
+  dispatch_assert_queue_V2(sourceObserverQueue);
 
-  v4 = [(DOCSourceObserver *)self providers];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  providers = [(DOCSourceObserver *)self providers];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = providers;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -810,8 +810,8 @@ void __42__DOCSourceObserver_nodeShouldBeReloaded___block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        [v5 setObject:v11 forKeyedSubscript:v12];
+        identifier = [v11 identifier];
+        [dictionary setObject:v11 forKeyedSubscript:identifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -820,16 +820,16 @@ void __42__DOCSourceObserver_nodeShouldBeReloaded___block_invoke(uint64_t a1)
     while (v8);
   }
 
-  [MEMORY[0x277CC6420] setDomainCache:v5];
-  v13 = [MEMORY[0x277D06218] defaultPermission];
-  [v13 cachePersonaStringForProviders:v6];
+  [MEMORY[0x277CC6420] setDomainCache:dictionary];
+  defaultPermission = [MEMORY[0x277D06218] defaultPermission];
+  [defaultPermission cachePersonaStringForProviders:v6];
 }
 
-- (BOOL)isProviderNode:(id)a3
+- (BOOL)isProviderNode:(id)node
 {
-  v4 = a3;
-  v5 = [(DOCSourceObserver *)self providerNodes];
-  v6 = [v5 containsObject:v4];
+  nodeCopy = node;
+  providerNodes = [(DOCSourceObserver *)self providerNodes];
+  v6 = [providerNodes containsObject:nodeCopy];
 
   return v6;
 }
@@ -908,13 +908,13 @@ LABEL_7:
 
 - (void)stopObservingLegacyPickers
 {
-  v3 = [(DOCSourceObserver *)self legacyPickersObserverContext];
+  legacyPickersObserverContext = [(DOCSourceObserver *)self legacyPickersObserverContext];
 
-  if (v3)
+  if (legacyPickersObserverContext)
   {
     v4 = MEMORY[0x277CCA9C8];
-    v5 = [(DOCSourceObserver *)self legacyPickersObserverContext];
-    [v4 endMatchingExtensions:v5];
+    legacyPickersObserverContext2 = [(DOCSourceObserver *)self legacyPickersObserverContext];
+    [v4 endMatchingExtensions:legacyPickersObserverContext2];
 
     [(DOCSourceObserver *)self setLegacyPickersObserverContext:0];
   }
@@ -959,13 +959,13 @@ void __54__DOCSourceObserver_startObservingDefaultSaveLocation__block_invoke(uin
 - (void)didReceiveSourceUpdate
 {
   objc_initWeak(&location, self);
-  v3 = [(DOCSourceObserver *)self sourceObserverQueue];
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__DOCSourceObserver_didReceiveSourceUpdate__block_invoke;
   v4[3] = &unk_278FA1C80;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(sourceObserverQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -979,31 +979,31 @@ void __43__DOCSourceObserver_didReceiveSourceUpdate__block_invoke(uint64_t a1)
 
 - (id)_sourcesByBuildingWithSourceBuilder
 {
-  v3 = [(DOCSourceObserver *)self sourceBuilder];
-  v4 = [(DOCSourceObserver *)self providers];
-  v5 = [(DOCSourceObserver *)self legacyPickers];
-  v6 = [v3 buildSourcesProviders:v4 legacyWebViewFileProviders:v5];
+  sourceBuilder = [(DOCSourceObserver *)self sourceBuilder];
+  providers = [(DOCSourceObserver *)self providers];
+  legacyPickers = [(DOCSourceObserver *)self legacyPickers];
+  v6 = [sourceBuilder buildSourcesProviders:providers legacyWebViewFileProviders:legacyPickers];
 
   return v6;
 }
 
 - (void)sourceObserverQueue_didReceiveSourceUpdate
 {
-  v3 = [(DOCSourceObserver *)self sourceObserverQueue];
-  dispatch_assert_queue_V2(v3);
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
+  dispatch_assert_queue_V2(sourceObserverQueue);
 
   if ([(DOCSourceObserver *)self hasReceivedFirstFullUpdate])
   {
-    v4 = [(DOCSourceObserver *)self _sourcesByBuildingWithSourceBuilder];
-    [(DOCSourceObserver *)self setSources:v4];
+    _sourcesByBuildingWithSourceBuilder = [(DOCSourceObserver *)self _sourcesByBuildingWithSourceBuilder];
+    [(DOCSourceObserver *)self setSources:_sourcesByBuildingWithSourceBuilder];
 
     [(DOCSourceObserver *)self updateCachedDisplayNamesFromSources];
-    v5 = [(DOCSourceObserver *)self consolidatedErrorIfExists];
-    [(DOCSourceObserver *)self setSourcesObserverError:v5];
+    consolidatedErrorIfExists = [(DOCSourceObserver *)self consolidatedErrorIfExists];
+    [(DOCSourceObserver *)self setSourcesObserverError:consolidatedErrorIfExists];
 
-    v6 = [(DOCSourceObserver *)self actionManagersFromSources];
-    v7 = [(DOCSourceObserver *)self sourcesActionManager];
-    [v7 setAssociatedActionManagers:v6];
+    actionManagersFromSources = [(DOCSourceObserver *)self actionManagersFromSources];
+    sourcesActionManager = [(DOCSourceObserver *)self sourcesActionManager];
+    [sourcesActionManager setAssociatedActionManagers:actionManagersFromSources];
 
     [(DOCSourceObserver *)self notifySubscribers];
   }
@@ -1012,25 +1012,25 @@ void __43__DOCSourceObserver_didReceiveSourceUpdate__block_invoke(uint64_t a1)
 - (void)notifySubscribers
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(DOCSourceObserver *)self sourceObserverQueue];
-  dispatch_assert_queue_V2(v3);
+  sourceObserverQueue = [(DOCSourceObserver *)self sourceObserverQueue];
+  dispatch_assert_queue_V2(sourceObserverQueue);
 
-  v4 = [(DOCSourceObserver *)self sources];
+  sources = [(DOCSourceObserver *)self sources];
 
-  if (!v4)
+  if (!sources)
   {
-    v5 = [(DOCSourceObserver *)self _sourcesByBuildingWithSourceBuilder];
-    [(DOCSourceObserver *)self setSources:v5];
+    _sourcesByBuildingWithSourceBuilder = [(DOCSourceObserver *)self _sourcesByBuildingWithSourceBuilder];
+    [(DOCSourceObserver *)self setSources:_sourcesByBuildingWithSourceBuilder];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(DOCSourceObserver *)self sourcesSubscribers];
-  v7 = [v6 allValues];
+  sourcesSubscribers = [(DOCSourceObserver *)self sourcesSubscribers];
+  allValues = [sourcesSubscribers allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1042,51 +1042,51 @@ void __43__DOCSourceObserver_didReceiveSourceUpdate__block_invoke(uint64_t a1)
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         [(DOCSourceObserver *)self notifySubscriber:*(*(&v12 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)notifySubscriber:(id)a3
+- (void)notifySubscriber:(id)subscriber
 {
-  v4 = a3;
-  v5 = [v4 configuration];
+  subscriberCopy = subscriber;
+  configuration = [subscriberCopy configuration];
 
-  if (v5)
+  if (configuration)
   {
     v6 = MEMORY[0x277CCAC30];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __38__DOCSourceObserver_notifySubscriber___block_invoke;
     v18[3] = &unk_278FA1DE8;
-    v7 = v4;
+    v7 = subscriberCopy;
     v19 = v7;
     v8 = [v6 predicateWithBlock:v18];
-    v9 = [(DOCSourceObserver *)self sources];
-    v10 = [v9 filteredArrayUsingPredicate:v8];
+    sources = [(DOCSourceObserver *)self sources];
+    v10 = [sources filteredArrayUsingPredicate:v8];
 
-    v11 = [v7 block];
-    v12 = [v7 token];
-    v13 = [(DOCSourceObserver *)self sourcesObserverError];
-    (v11)[2](v11, v12, v10, v13);
+    block = [v7 block];
+    token = [v7 token];
+    sourcesObserverError = [(DOCSourceObserver *)self sourcesObserverError];
+    (block)[2](block, token, v10, sourcesObserverError);
   }
 
   else
   {
-    v14 = [v4 block];
-    v15 = [v4 token];
-    v16 = [(DOCSourceObserver *)self sources];
-    v17 = [(DOCSourceObserver *)self sourcesObserverError];
-    (v14)[2](v14, v15, v16, v17);
+    block2 = [subscriberCopy block];
+    token2 = [subscriberCopy token];
+    sources2 = [(DOCSourceObserver *)self sources];
+    sourcesObserverError2 = [(DOCSourceObserver *)self sourcesObserverError];
+    (block2)[2](block2, token2, sources2, sourcesObserverError2);
   }
 }
 
@@ -1102,18 +1102,18 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
 
 - (id)consolidatedErrorIfExists
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(DOCSourceObserver *)self legacyPickersObserverError];
+  array = [MEMORY[0x277CBEB18] array];
+  legacyPickersObserverError = [(DOCSourceObserver *)self legacyPickersObserverError];
 
-  if (v4)
+  if (legacyPickersObserverError)
   {
-    v5 = [(DOCSourceObserver *)self legacyPickersObserverError];
-    [v3 addObject:v5];
+    legacyPickersObserverError2 = [(DOCSourceObserver *)self legacyPickersObserverError];
+    [array addObject:legacyPickersObserverError2];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v6 = [MEMORY[0x277CCA9B8] observerErrorWithUnderlyingErrors:v3];
+    v6 = [MEMORY[0x277CCA9B8] observerErrorWithUnderlyingErrors:array];
   }
 
   else
@@ -1126,16 +1126,16 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
 
 - (BOOL)hasReceivedFirstFullUpdate
 {
-  v3 = [(DOCSourceObserver *)self legacyPickers];
-  if (v3)
+  legacyPickers = [(DOCSourceObserver *)self legacyPickers];
+  if (legacyPickers)
   {
   }
 
   else
   {
-    v4 = [(DOCSourceObserver *)self legacyPickersObserverError];
+    legacyPickersObserverError = [(DOCSourceObserver *)self legacyPickersObserverError];
 
-    if (!v4)
+    if (!legacyPickersObserverError)
     {
       return 0;
     }
@@ -1147,13 +1147,13 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
 - (id)actionManagersFromSources
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(DOCSourceObserver *)self sources];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sources = [(DOCSourceObserver *)self sources];
+  v5 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1164,24 +1164,24 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sources);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 actionManager];
-          [v3 addObject:v10];
+          actionManager = [v9 actionManager];
+          [array addObject:actionManager];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
@@ -1189,17 +1189,17 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
 - (void)updateCachedDisplayNamesFromSources
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(DOCSourceObserver *)self sourceBuilder];
-  v4 = [v3 userAction];
+  sourceBuilder = [(DOCSourceObserver *)self sourceBuilder];
+  userAction = [sourceBuilder userAction];
 
-  if (!v4)
+  if (!userAction)
   {
     v5 = objc_alloc(MEMORY[0x277CBEBD0]);
     v6 = [v5 initWithSuiteName:*MEMORY[0x277D060B0]];
     v7 = *MEMORY[0x277D05E00];
     v8 = [v6 dictionaryForKey:*MEMORY[0x277D05E00]];
-    v9 = [(DOCSourceObserver *)self sources];
-    v10 = v9;
+    sources = [(DOCSourceObserver *)self sources];
+    v10 = sources;
     if (v8)
     {
       v11 = [v8 mutableCopy];
@@ -1207,7 +1207,7 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
 
     else
     {
-      v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+      v11 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(sources, "count")}];
     }
 
     v12 = v11;
@@ -1231,9 +1231,9 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
           }
 
           v18 = *(*(&v21 + 1) + 8 * i);
-          v19 = [v18 displayName];
-          v20 = [v18 identifier];
-          [v12 setObject:v19 forKeyedSubscript:v20];
+          displayName = [v18 displayName];
+          identifier = [v18 identifier];
+          [v12 setObject:displayName forKeyedSubscript:identifier];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1249,13 +1249,13 @@ uint64_t __38__DOCSourceObserver_notifySubscriber___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)cachedDisplayNameForSourceIdentifier:(id)a3
+- (id)cachedDisplayNameForSourceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc(MEMORY[0x277CBEBD0]);
   v5 = [v4 initWithSuiteName:*MEMORY[0x277D060B0]];
   v6 = [v5 dictionaryForKey:*MEMORY[0x277D05E00]];
-  v7 = [v6 objectForKeyedSubscript:v3];
+  v7 = [v6 objectForKeyedSubscript:identifierCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

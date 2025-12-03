@@ -1,32 +1,32 @@
 @interface VLLocalizationDebugInfo
 - ($91CD28BF998EF1D34D1F6E7D57520290)_location;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_heading;
-- (BOOL)isEqual:(id)a3;
-- (VLLocalizationDebugInfo)initWithCoder:(id)a3;
-- (VLLocalizationDebugInfo)initWithPixelBuffer:(double)a3 monotonicTimestamp:(double)a4 timestamp:(double)a5 duration:(double)a6 location:(uint64_t)a7 clLocation:(__CVBuffer *)a8 heading:(__int128 *)a9 gravity:(void *)a10 transform:(__int128 *)a11 cameraIntrinsics:(uint64_t)a12 radialDistortion:(unint64_t)a13 exposureTargetOffset:(double)a14 statistics:(double)a15 resultStatus:(double)a16 resultPose:(__int128)a17 preserveImageData:(__int128)a18;
+- (BOOL)isEqual:(id)equal;
+- (VLLocalizationDebugInfo)initWithCoder:(id)coder;
+- (VLLocalizationDebugInfo)initWithPixelBuffer:(double)buffer monotonicTimestamp:(double)timestamp timestamp:(double)a5 duration:(double)duration location:(uint64_t)location clLocation:(__CVBuffer *)clLocation heading:(__int128 *)heading gravity:(void *)self0 transform:(__int128 *)self1 cameraIntrinsics:(uint64_t)self2 radialDistortion:(unint64_t)self3 exposureTargetOffset:(double)self4 statistics:(double)self5 resultStatus:(double)self6 resultPose:(__int128)self7 preserveImageData:(__int128)self8;
 - (__n128)_gravity;
 - (double)points3D;
 - (float)_fusedConfidences;
 - (float)_solverConfidences;
 - (float)points2D;
-- (id)analyticsInformationWithSessionStartMonotonicTime:(double)a3;
+- (id)analyticsInformationWithSessionStartMonotonicTime:(double)time;
 - (id)inputParameters;
 - (id)results;
 - (int)_inlierIndices;
 - (unint64_t)_solutionsCount;
 - (unint64_t)inliersCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VLLocalizationDebugInfo
 
-- (VLLocalizationDebugInfo)initWithPixelBuffer:(double)a3 monotonicTimestamp:(double)a4 timestamp:(double)a5 duration:(double)a6 location:(uint64_t)a7 clLocation:(__CVBuffer *)a8 heading:(__int128 *)a9 gravity:(void *)a10 transform:(__int128 *)a11 cameraIntrinsics:(uint64_t)a12 radialDistortion:(unint64_t)a13 exposureTargetOffset:(double)a14 statistics:(double)a15 resultStatus:(double)a16 resultPose:(__int128)a17 preserveImageData:(__int128)a18
+- (VLLocalizationDebugInfo)initWithPixelBuffer:(double)buffer monotonicTimestamp:(double)timestamp timestamp:(double)a5 duration:(double)duration location:(uint64_t)location clLocation:(__CVBuffer *)clLocation heading:(__int128 *)heading gravity:(void *)self0 transform:(__int128 *)self1 cameraIntrinsics:(uint64_t)self2 radialDistortion:(unint64_t)self3 exposureTargetOffset:(double)self4 statistics:(double)self5 resultStatus:(double)self6 resultPose:(__int128)self7 preserveImageData:(__int128)self8
 {
   v119 = *MEMORY[0x277D85DE8];
-  v91 = a11[1];
-  v92 = *a11;
-  v33 = a10;
-  v102.receiver = a1;
+  v91 = transform[1];
+  v92 = *transform;
+  gravityCopy = gravity;
+  v102.receiver = self;
   v102.super_class = VLLocalizationDebugInfo;
   v34 = [(VLLocalizationDebugInfo *)&v102 init];
   if (!v34)
@@ -34,13 +34,13 @@
     goto LABEL_42;
   }
 
-  v35 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   identifier = v34->_identifier;
-  v34->_identifier = v35;
+  v34->_identifier = uUID;
 
   if (a27)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a8);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(clLocation);
     if (PixelFormatType > 1714696751)
     {
       if (PixelFormatType != 2033463856 && PixelFormatType != 1714696752)
@@ -54,16 +54,16 @@
       goto LABEL_15;
     }
 
-    CVPixelBufferLockBaseAddress(a8, 1uLL);
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a8, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a8, 0);
-    if (CVPixelBufferGetBytesPerRowOfPlane(a8, 0) == WidthOfPlane)
+    CVPixelBufferLockBaseAddress(clLocation, 1uLL);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(clLocation, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(clLocation, 0);
+    if (CVPixelBufferGetBytesPerRowOfPlane(clLocation, 0) == WidthOfPlane)
     {
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a8, 0);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(clLocation, 0);
       space = CGColorSpaceCreateDeviceGray();
       context = CGBitmapContextCreate(BaseAddressOfPlane, WidthOfPlane, HeightOfPlane, 8uLL, WidthOfPlane, space, 0);
       Image = CGBitmapContextCreateImage(context);
-      v42 = [MEMORY[0x277CBEB28] data];
+      data = [MEMORY[0x277CBEB28] data];
       v115 = *MEMORY[0x277CD3438];
       v113 = *MEMORY[0x277CD3428];
       v114 = &unk_2881031C8;
@@ -71,13 +71,13 @@
       v116 = v43;
       v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
 
-      v45 = [*MEMORY[0x277CE1E10] identifier];
-      v46 = CGImageDestinationCreateWithData(v42, v45, 1uLL, 0);
+      identifier = [*MEMORY[0x277CE1E10] identifier];
+      v46 = CGImageDestinationCreateWithData(data, identifier, 1uLL, 0);
 
       CGImageDestinationAddImage(v46, Image, v44);
       if (CGImageDestinationFinalize(v46))
       {
-        v47 = v42;
+        v47 = data;
       }
 
       else
@@ -90,7 +90,7 @@
       CGContextRelease(context);
       CGColorSpaceRelease(space);
 
-      CVPixelBufferUnlockBaseAddress(a8, 1uLL);
+      CVPixelBufferUnlockBaseAddress(clLocation, 1uLL);
       if (v47)
       {
         goto LABEL_33;
@@ -99,7 +99,7 @@
 
     else
     {
-      CVPixelBufferUnlockBaseAddress(a8, 1uLL);
+      CVPixelBufferUnlockBaseAddress(clLocation, 1uLL);
     }
 
 LABEL_15:
@@ -150,7 +150,7 @@ LABEL_15:
 
     v50 = v48;
     _Block_object_dispose(&v108, 8);
-    v51 = [[v48 alloc] initWithCVPixelBuffer:a8];
+    v51 = [[v48 alloc] initWithCVPixelBuffer:clLocation];
     v108 = 0;
     v109 = &v108;
     v110 = 0x2050000000;
@@ -161,18 +161,18 @@ LABEL_15:
 LABEL_29:
       v54 = v52;
       _Block_object_dispose(&v108, 8);
-      v55 = [v52 context];
+      context = [v52 context];
       [v51 extent];
-      v56 = [v55 createCGImage:v51 fromRect:?];
+      v56 = [context createCGImage:v51 fromRect:?];
 
-      v57 = [MEMORY[0x277CBEB28] data];
-      v58 = [*MEMORY[0x277CE1E10] identifier];
-      v59 = CGImageDestinationCreateWithData(v57, v58, 1uLL, 0);
+      data2 = [MEMORY[0x277CBEB28] data];
+      identifier2 = [*MEMORY[0x277CE1E10] identifier];
+      v59 = CGImageDestinationCreateWithData(data2, identifier2, 1uLL, 0);
 
       CGImageDestinationAddImage(v59, v56, 0);
       if (CGImageDestinationFinalize(v59))
       {
-        v47 = v57;
+        v47 = data2;
       }
 
       else
@@ -236,19 +236,19 @@ LABEL_34:
   *(&v62 + 1) = *(&a20 + 1);
   *(&v63 + 1) = *(&a21 + 1);
   v34->_monotonicTimestamp = a2;
-  v34->_timestamp = a3;
-  v34->_duration = a4;
-  v64 = *a9;
-  v65 = a9[1];
-  *&v34->_location.type = *(a9 + 4);
+  v34->_timestamp = buffer;
+  v34->_duration = timestamp;
+  v64 = *heading;
+  v65 = heading[1];
+  *&v34->_location.type = *(heading + 4);
   *v34->_location.pos_geoc = v64;
   *&v34->_location.pos_geoc[2] = v65;
   v34->_heading.trueHeading = a5;
-  v34->_heading.accuracy = a6;
+  v34->_heading.accuracy = duration;
   *v34->_gravity = v92;
   *&v34->_gravity[16] = v91;
-  *v34->_anon_90 = a17;
-  *&v34->_anon_90[16] = a18;
+  *v34->_anon_90 = pose;
+  *&v34->_anon_90[16] = data;
   *&v34->_anon_90[32] = a19;
   *&v34->_anon_90[48] = a20;
   *v34->_anon_d0 = a21;
@@ -256,10 +256,10 @@ LABEL_34:
   *&v34->_anon_d0[32] = a23;
   *v34->_radialDistortion = a24;
   v34->_exposureTargetOffset = a25;
-  v34->_resultStatus = a13;
-  if (a12)
+  v34->_resultStatus = distortion;
+  if (intrinsics)
   {
-    v66 = [[_VLStatistics alloc] initWithStats:a12];
+    v66 = [[_VLStatistics alloc] initWithStats:intrinsics];
     statistics = v34->_statistics;
     v34->_statistics = v66;
   }
@@ -331,7 +331,7 @@ LABEL_34:
     v34->_resultCovariance.v[5][5] = *(a26 + 240);
   }
 
-  v77 = [objc_alloc(MEMORY[0x277D0EDF8]) initWithCLLocation:v33 location:a9 heading:a5];
+  v77 = [objc_alloc(MEMORY[0x277D0EDF8]) initWithCLLocation:gravityCopy location:heading heading:a5];
   analyticsLocation = v34->_analyticsLocation;
   v34->_analyticsLocation = v77;
 
@@ -362,10 +362,10 @@ LABEL_42:
   return v34;
 }
 
-- (VLLocalizationDebugInfo)initWithCoder:(id)a3
+- (VLLocalizationDebugInfo)initWithCoder:(id)coder
 {
   v77[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v71.receiver = self;
   v71.super_class = VLLocalizationDebugInfo;
   v5 = [(VLLocalizationDebugInfo *)&v71 init];
@@ -374,49 +374,49 @@ LABEL_42:
     goto LABEL_19;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
   imageData = v5->_imageData;
   v5->_imageData = v8;
 
-  [v4 decodeDoubleForKey:@"monotonicTimestamp"];
+  [coderCopy decodeDoubleForKey:@"monotonicTimestamp"];
   v5->_monotonicTimestamp = v10;
-  [v4 decodeDoubleForKey:@"timestamp"];
+  [coderCopy decodeDoubleForKey:@"timestamp"];
   v5->_timestamp = v11;
-  [v4 decodeDoubleForKey:@"duration"];
+  [coderCopy decodeDoubleForKey:@"duration"];
   v5->_duration = v12;
-  [v4 decodeDoubleForKey:@"location_x"];
+  [coderCopy decodeDoubleForKey:@"location_x"];
   v5->_location.pos_geoc[0] = v13;
-  [v4 decodeDoubleForKey:@"location_y"];
+  [coderCopy decodeDoubleForKey:@"location_y"];
   v5->_location.pos_geoc[1] = v14;
-  [v4 decodeDoubleForKey:@"location_z"];
+  [coderCopy decodeDoubleForKey:@"location_z"];
   v5->_location.pos_geoc[2] = v15;
-  [v4 decodeFloatForKey:@"location_accuracy"];
+  [coderCopy decodeFloatForKey:@"location_accuracy"];
   v5->_location.horz_accuracy = v16;
-  v5->_location.is_vl_fused = [v4 decodeIntForKey:@"location_fused"];
-  v5->_location.type = [v4 decodeIntForKey:@"location_type"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"full_location"];
+  v5->_location.is_vl_fused = [coderCopy decodeIntForKey:@"location_fused"];
+  v5->_location.type = [coderCopy decodeIntForKey:@"location_type"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"full_location"];
   analyticsLocation = v5->_analyticsLocation;
   v5->_analyticsLocation = v17;
 
-  [v4 decodeDoubleForKey:@"heading"];
+  [coderCopy decodeDoubleForKey:@"heading"];
   v5->_heading.trueHeading = v19;
-  [v4 decodeDoubleForKey:@"heading_accuracy"];
+  [coderCopy decodeDoubleForKey:@"heading_accuracy"];
   v5->_heading.accuracy = v20;
-  [v4 decodeDoubleForKey:@"gravity_x"];
+  [coderCopy decodeDoubleForKey:@"gravity_x"];
   v65 = v21;
-  [v4 decodeDoubleForKey:@"gravity_y"];
+  [coderCopy decodeDoubleForKey:@"gravity_y"];
   v63 = v22;
-  [v4 decodeDoubleForKey:@"gravity_z"];
+  [coderCopy decodeDoubleForKey:@"gravity_z"];
   *&v23 = v65;
   *(&v23 + 1) = v63;
   *v5->_gravity = v23;
   *&v5->_gravity[16] = v24;
   v70 = 0;
-  v25 = [v4 decodeBytesForKey:@"transform" returnedLength:&v70];
+  v25 = [coderCopy decodeBytesForKey:@"transform" returnedLength:&v70];
   if (!v25 || v70 != 64)
   {
     v55 = MEMORY[0x277CCA9B8];
@@ -429,7 +429,7 @@ LABEL_42:
 LABEL_18:
     v60 = [v57 dictionaryWithObjects:v58 forKeys:v59 count:1];
     v61 = [v55 errorWithDomain:v56 code:4864 userInfo:v60];
-    [v4 failWithError:v61];
+    [coderCopy failWithError:v61];
 
 LABEL_19:
     v54 = 0;
@@ -444,7 +444,7 @@ LABEL_19:
   *&v5->_anon_90[32] = v27;
   *&v5->_anon_90[48] = v28;
   v69 = 0;
-  v29 = [v4 decodeBytesForKey:@"camera_intrinsics" returnedLength:&v69];
+  v29 = [coderCopy decodeBytesForKey:@"camera_intrinsics" returnedLength:&v69];
   if (!v29 || v69 != 36)
   {
     v55 = MEMORY[0x277CCA9B8];
@@ -469,7 +469,7 @@ LABEL_19:
   *&v5->_anon_d0[40] = v34;
   *&v5->_anon_d0[32] = v33;
   v68 = 0;
-  v35 = [v4 decodeBytesForKey:@"radial_distortion" returnedLength:&v68];
+  v35 = [coderCopy decodeBytesForKey:@"radial_distortion" returnedLength:&v68];
   if (!v35 || v68 != 8)
   {
     v55 = MEMORY[0x277CCA9B8];
@@ -483,36 +483,36 @@ LABEL_19:
   }
 
   *v5->_radialDistortion = *v35;
-  [v4 decodeDoubleForKey:@"exposure_target_offset"];
+  [coderCopy decodeDoubleForKey:@"exposure_target_offset"];
   v5->_exposureTargetOffset = v36;
-  v5->_resultStatus = [v4 decodeIntegerForKey:@"status"];
-  v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statistics"];
+  v5->_resultStatus = [coderCopy decodeIntegerForKey:@"status"];
+  v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statistics"];
   statistics = v5->_statistics;
   v5->_statistics = v37;
 
-  v39 = [v4 containsValueForKey:@"result_transform"];
+  v39 = [coderCopy containsValueForKey:@"result_transform"];
   v5->_hasResultPose = v39;
   if (v39)
   {
-    [v4 decodeDoubleForKey:@"result_location_x"];
+    [coderCopy decodeDoubleForKey:@"result_location_x"];
     v66 = v40;
-    [v4 decodeDoubleForKey:@"result_location_y"];
+    [coderCopy decodeDoubleForKey:@"result_location_y"];
     v64 = v41;
-    [v4 decodeDoubleForKey:@"result_location_z"];
+    [coderCopy decodeDoubleForKey:@"result_location_z"];
     *&v42 = v66;
     *(&v42 + 1) = v64;
     *v5->_anon_1b0 = v42;
     *&v5->_anon_1b0[16] = v43;
-    [v4 decodeDoubleForKey:@"result_location_accuracy"];
+    [coderCopy decodeDoubleForKey:@"result_location_accuracy"];
     *&v5->_anon_1b0[32] = v44;
-    if (![v4 _vl_decodeSimdDouble4x4:v5->_anon_130 forKey:@"result_transform"])
+    if (![coderCopy _vl_decodeSimdDouble4x4:v5->_anon_130 forKey:@"result_transform"])
     {
       goto LABEL_19;
     }
 
-    [v4 decodeFloatForKey:@"result_confidence"];
+    [coderCopy decodeFloatForKey:@"result_confidence"];
     v5->_resultConfidence = v45;
-    if (![v4 _vl_decodeFloat6x6:&v5->_resultCovariance forKey:@"result_covariance"])
+    if (![coderCopy _vl_decodeFloat6x6:&v5->_resultCovariance forKey:@"result_covariance"])
     {
       goto LABEL_19;
     }
@@ -550,8 +550,8 @@ LABEL_20:
   result = self->_statistics;
   if (result)
   {
-    v3 = [result stats];
-    return *(v3 + 88) & ~(*(v3 + 88) >> 31);
+    stats = [result stats];
+    return *(stats + 88) & ~(*(stats + 88) >> 31);
   }
 
   return result;
@@ -595,8 +595,8 @@ LABEL_20:
   result = self->_statistics;
   if (result)
   {
-    v3 = [result stats];
-    return *(v3 + 80) & ~(*(v3 + 80) >> 31);
+    stats = [result stats];
+    return *(stats + 80) & ~(*(stats + 80) >> 31);
   }
 
   return result;
@@ -624,40 +624,40 @@ LABEL_20:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeObject:self->_identifier forKey:@"uuid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"uuid"];
   imageData = self->_imageData;
   if (imageData)
   {
-    [v4 encodeObject:imageData forKey:@"image"];
+    [coderCopy encodeObject:imageData forKey:@"image"];
   }
 
-  [v4 encodeDouble:@"monotonicTimestamp" forKey:self->_monotonicTimestamp];
-  [v4 encodeDouble:@"timestamp" forKey:self->_timestamp];
-  [v4 encodeDouble:@"duration" forKey:self->_duration];
-  [v4 encodeDouble:@"location_x" forKey:self->_location.pos_geoc[0]];
-  [v4 encodeDouble:@"location_y" forKey:self->_location.pos_geoc[1]];
-  [v4 encodeDouble:@"location_z" forKey:self->_location.pos_geoc[2]];
+  [coderCopy encodeDouble:@"monotonicTimestamp" forKey:self->_monotonicTimestamp];
+  [coderCopy encodeDouble:@"timestamp" forKey:self->_timestamp];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
+  [coderCopy encodeDouble:@"location_x" forKey:self->_location.pos_geoc[0]];
+  [coderCopy encodeDouble:@"location_y" forKey:self->_location.pos_geoc[1]];
+  [coderCopy encodeDouble:@"location_z" forKey:self->_location.pos_geoc[2]];
   *&v6 = self->_location.horz_accuracy;
-  [v4 encodeFloat:@"location_accuracy" forKey:v6];
-  [v4 encodeInt:self->_location.is_vl_fused forKey:@"location_fused"];
-  [v4 encodeInt:self->_location.type forKey:@"location_type"];
-  [v4 encodeObject:self->_analyticsLocation forKey:@"full_location"];
-  [v4 encodeDouble:@"heading" forKey:self->_heading.trueHeading];
-  [v4 encodeDouble:@"heading_accuracy" forKey:self->_heading.accuracy];
-  [v4 encodeDouble:@"gravity_x" forKey:*self->_gravity];
-  [v4 encodeDouble:@"gravity_y" forKey:*&self->_gravity[8]];
-  [v4 encodeDouble:@"gravity_z" forKey:*&self->_gravity[16]];
+  [coderCopy encodeFloat:@"location_accuracy" forKey:v6];
+  [coderCopy encodeInt:self->_location.is_vl_fused forKey:@"location_fused"];
+  [coderCopy encodeInt:self->_location.type forKey:@"location_type"];
+  [coderCopy encodeObject:self->_analyticsLocation forKey:@"full_location"];
+  [coderCopy encodeDouble:@"heading" forKey:self->_heading.trueHeading];
+  [coderCopy encodeDouble:@"heading_accuracy" forKey:self->_heading.accuracy];
+  [coderCopy encodeDouble:@"gravity_x" forKey:*self->_gravity];
+  [coderCopy encodeDouble:@"gravity_y" forKey:*&self->_gravity[8]];
+  [coderCopy encodeDouble:@"gravity_z" forKey:*&self->_gravity[16]];
   v7 = *&self->_anon_90[16];
   v34[0] = *self->_anon_90;
   v34[1] = v7;
   v8 = *&self->_anon_90[48];
   v34[2] = *&self->_anon_90[32];
   v34[3] = v8;
-  [v4 encodeBytes:v34 length:64 forKey:@"transform"];
+  [coderCopy encodeBytes:v34 length:64 forKey:@"transform"];
   v9 = *self->_anon_d0;
   HIDWORD(v9) = *&self->_anon_d0[16];
   v10 = *&self->_anon_d0[32];
@@ -665,22 +665,22 @@ LABEL_20:
   v32[0] = v9;
   v32[1] = v11;
   v33 = v10.i32[2];
-  [v4 encodeBytes:v32 length:36 forKey:@"camera_intrinsics"];
+  [coderCopy encodeBytes:v32 length:36 forKey:@"camera_intrinsics"];
   v31 = *self->_radialDistortion;
-  [v4 encodeBytes:&v31 length:8 forKey:@"radial_distortion"];
-  [v4 encodeDouble:@"exposure_target_offset" forKey:self->_exposureTargetOffset];
+  [coderCopy encodeBytes:&v31 length:8 forKey:@"radial_distortion"];
+  [coderCopy encodeDouble:@"exposure_target_offset" forKey:self->_exposureTargetOffset];
   statistics = self->_statistics;
   if (statistics)
   {
-    [v4 encodeObject:statistics forKey:@"statistics"];
+    [coderCopy encodeObject:statistics forKey:@"statistics"];
   }
 
   if (self->_hasResultPose)
   {
-    [v4 encodeDouble:@"result_location_x" forKey:*self->_anon_1b0];
-    [v4 encodeDouble:@"result_location_y" forKey:*&self->_anon_1b0[8]];
-    [v4 encodeDouble:@"result_location_z" forKey:*&self->_anon_1b0[16]];
-    [v4 encodeDouble:@"result_location_accuracy" forKey:*&self->_anon_1b0[32]];
+    [coderCopy encodeDouble:@"result_location_x" forKey:*self->_anon_1b0];
+    [coderCopy encodeDouble:@"result_location_y" forKey:*&self->_anon_1b0[8]];
+    [coderCopy encodeDouble:@"result_location_z" forKey:*&self->_anon_1b0[16]];
+    [coderCopy encodeDouble:@"result_location_accuracy" forKey:*&self->_anon_1b0[32]];
     v13 = *&self->_anon_130[80];
     v26 = *&self->_anon_130[64];
     v27 = v13;
@@ -693,9 +693,9 @@ LABEL_20:
     v16 = *&self->_anon_130[48];
     v24 = *&self->_anon_130[32];
     v25 = v16;
-    [v4 _vl_encodeSimdDouble4x4:&v22 forKey:@"result_transform"];
+    [coderCopy _vl_encodeSimdDouble4x4:&v22 forKey:@"result_transform"];
     *&v17 = self->_resultConfidence;
-    [v4 encodeFloat:@"result_confidence" forKey:v17];
+    [coderCopy encodeFloat:@"result_confidence" forKey:v17];
     v18 = *&self->_resultCovariance.v[4][4];
     v28 = *&self->_resultCovariance.v[4][0];
     v29 = v18;
@@ -709,17 +709,17 @@ LABEL_20:
     v21 = *&self->_resultCovariance.v[0][4];
     v22 = *&self->_resultCovariance.v[0][0];
     v23 = v21;
-    [v4 _vl_encodeFloat6x6:&v22 forKey:@"result_covariance"];
+    [coderCopy _vl_encodeFloat6x6:&v22 forKey:@"result_covariance"];
   }
 
-  [v4 encodeInteger:self->_resultStatus forKey:@"status"];
+  [coderCopy encodeInteger:self->_resultStatus forKey:@"status"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
 
     return 1;
@@ -746,12 +746,12 @@ LABEL_20:
 - (id)inputParameters
 {
   v98 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-  [v3 setObject:v4 forKeyedSubscript:@"timestamp"];
+  [dictionary setObject:v4 forKeyedSubscript:@"timestamp"];
 
   v5 = MGCopyAnswer();
-  [v3 setObject:v5 forKeyedSubscript:@"device_name"];
+  [dictionary setObject:v5 forKeyedSubscript:@"device_name"];
 
   v90[0] = @"K";
   LODWORD(v6) = *self->_anon_d0;
@@ -792,10 +792,10 @@ LABEL_20:
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:2];
   v91[1] = v21;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v91 forKeys:v90 count:2];
-  [v3 setObject:v22 forKeyedSubscript:@"lens"];
+  [dictionary setObject:v22 forKeyedSubscript:@"lens"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithDouble:self->_exposureTargetOffset];
-  [v3 setObject:v23 forKeyedSubscript:@"exposure_target_offset"];
+  [dictionary setObject:v23 forKeyedSubscript:@"exposure_target_offset"];
 
   v25 = self->_location.pos_geoc[0];
   v24 = self->_location.pos_geoc[1];
@@ -803,7 +803,7 @@ LABEL_20:
   v27 = v26 * 0.99330562;
   v28 = 0.0;
   v29 = 1.57079633;
-  v72 = v3;
+  v72 = dictionary;
   if (v26 * 0.99330562 != 0.0)
   {
     v69 = self->_location.pos_geoc[1];
@@ -932,48 +932,48 @@ LABEL_12:
 - (id)results
 {
   v101 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_resultStatus];
-  [v3 setObject:v4 forKeyedSubscript:@"status"];
+  [dictionary setObject:v4 forKeyedSubscript:@"status"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-  [v3 setObject:v5 forKeyedSubscript:@"duration"];
+  [dictionary setObject:v5 forKeyedSubscript:@"duration"];
 
   if (self->_statistics)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v7 = [MEMORY[0x277CCABB0] numberWithInt:{-[_VLStatistics stats](self->_statistics, "stats")[88]}];
-    [v6 setObject:v7 forKeyedSubscript:@"num_inliers"];
+    [dictionary2 setObject:v7 forKeyedSubscript:@"num_inliers"];
 
     if ([(_VLStatistics *)self->_statistics stats][88] >= 1)
     {
       v8 = MEMORY[0x277CBEA90];
       v9 = [(_VLStatistics *)self->_statistics stats][8];
-      v10 = [(_VLStatistics *)self->_statistics stats];
-      v11 = [v8 dataWithBytesNoCopy:v9 length:8 * (v10->var12 & ~(v10->var12 >> 31)) freeWhenDone:0];
+      stats = [(_VLStatistics *)self->_statistics stats];
+      v11 = [v8 dataWithBytesNoCopy:v9 length:8 * (stats->var12 & ~(stats->var12 >> 31)) freeWhenDone:0];
       v12 = [v11 base64EncodedStringWithOptions:0];
 
-      [v6 setObject:v12 forKeyedSubscript:@"points2D"];
+      [dictionary2 setObject:v12 forKeyedSubscript:@"points2D"];
       v13 = MEMORY[0x277CBEA90];
       v14 = *[(_VLStatistics *)self->_statistics stats];
-      v15 = [(_VLStatistics *)self->_statistics stats];
-      v16 = [v13 dataWithBytesNoCopy:v14 length:24 * (v15->var12 & ~(v15->var12 >> 31)) freeWhenDone:0];
+      stats2 = [(_VLStatistics *)self->_statistics stats];
+      v16 = [v13 dataWithBytesNoCopy:v14 length:24 * (stats2->var12 & ~(stats2->var12 >> 31)) freeWhenDone:0];
       v17 = [v16 base64EncodedStringWithOptions:0];
 
-      [v6 setObject:v17 forKeyedSubscript:@"points3D"];
+      [dictionary2 setObject:v17 forKeyedSubscript:@"points3D"];
     }
 
     v18 = [MEMORY[0x277CCABB0] numberWithInt:{-[_VLStatistics stats](self->_statistics, "stats")[92]}];
-    [v6 setObject:v18 forKeyedSubscript:@"num_keypoints"];
+    [dictionary2 setObject:v18 forKeyedSubscript:@"num_keypoints"];
 
     v19 = [MEMORY[0x277CCABB0] numberWithInt:{-[_VLStatistics stats](self->_statistics, "stats")[96]}];
-    [v6 setObject:v19 forKeyedSubscript:@"num_tracks"];
+    [dictionary2 setObject:v19 forKeyedSubscript:@"num_tracks"];
 
     v20 = [MEMORY[0x277CCABB0] numberWithInt:{-[_VLStatistics stats](self->_statistics, "stats")[100]}];
-    [v6 setObject:v20 forKeyedSubscript:@"num_matches"];
+    [dictionary2 setObject:v20 forKeyedSubscript:@"num_matches"];
 
     v21 = [MEMORY[0x277CCABB0] numberWithInt:{-[_VLStatistics stats](self->_statistics, "stats")[56]}];
-    [v6 setObject:v21 forKeyedSubscript:@"status_ps"];
+    [dictionary2 setObject:v21 forKeyedSubscript:@"status_ps"];
 
     if ([(_VLStatistics *)self->_statistics stats][136] >= 1)
     {
@@ -983,26 +983,26 @@ LABEL_12:
       v25 = *(v23 - 12);
       v27 = *(v23 - 8);
       v26 = *(v23 - 4);
-      v28 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
       v29 = [MEMORY[0x277CCABB0] numberWithInt:v25];
-      [v28 setObject:v29 forKeyedSubscript:@"x"];
+      [dictionary3 setObject:v29 forKeyedSubscript:@"x"];
 
       v30 = [MEMORY[0x277CCABB0] numberWithInt:v27];
-      [v28 setObject:v30 forKeyedSubscript:@"y"];
+      [dictionary3 setObject:v30 forKeyedSubscript:@"y"];
 
       v31 = [MEMORY[0x277CCABB0] numberWithInt:v24];
-      [v28 setObject:v31 forKeyedSubscript:@"level"];
+      [dictionary3 setObject:v31 forKeyedSubscript:@"level"];
 
       v32 = [MEMORY[0x277CCABB0] numberWithInt:v26];
-      [v28 setObject:v32 forKeyedSubscript:@"uncertainty"];
+      [dictionary3 setObject:v32 forKeyedSubscript:@"uncertainty"];
 
-      [v6 setObject:v28 forKeyedSubscript:@"tile"];
+      [dictionary2 setObject:dictionary3 forKeyedSubscript:@"tile"];
     }
 
     v33 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[_VLStatistics stats](self->_statistics, "stats")[488]}];
-    [v6 setObject:v33 forKeyedSubscript:@"tracks_file_size"];
+    [dictionary2 setObject:v33 forKeyedSubscript:@"tracks_file_size"];
 
-    [v3 setObject:v6 forKeyedSubscript:@"statistics"];
+    [dictionary setObject:dictionary2 forKeyedSubscript:@"statistics"];
   }
 
   if (self->_hasResultPose)
@@ -1036,10 +1036,10 @@ LABEL_12:
     v98[1] = v45;
     v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:2];
 
-    [v3 setObject:v46 forKeyedSubscript:@"pose"];
+    [dictionary setObject:v46 forKeyedSubscript:@"pose"];
     *&v47 = self->_resultConfidence;
     v48 = [MEMORY[0x277CCABB0] numberWithFloat:v47];
-    [v3 setObject:v48 forKeyedSubscript:@"confidence"];
+    [dictionary setObject:v48 forKeyedSubscript:@"confidence"];
 
     v49 = *self->_anon_1b0;
     v50 = *&self->_anon_1b0[8];
@@ -1112,7 +1112,7 @@ LABEL_19:
     v68 = [MEMORY[0x277CCABB0] numberWithDouble:v53];
     v96[3] = v68;
     v69 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v96 forKeys:v95 count:4];
-    [v3 setObject:v69 forKeyedSubscript:@"location"];
+    [dictionary setObject:v69 forKeyedSubscript:@"location"];
 
     v91 = @"heading";
     v70 = *&self->_anon_130[80];
@@ -1130,21 +1130,21 @@ LABEL_19:
     v74 = [MEMORY[0x277CCABB0] numberWithDouble:VLHeadingForTransform(&v83)];
     v92 = v74;
     v75 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-    [v3 setObject:v75 forKeyedSubscript:@"ori"];
+    [dictionary setObject:v75 forKeyedSubscript:@"ori"];
 
     v76 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:&self->_resultCovariance length:144 freeWhenDone:0];
     v77 = [v76 base64EncodedStringWithOptions:0];
 
-    [v3 setObject:v77 forKeyedSubscript:@"covariance"];
+    [dictionary setObject:v77 forKeyedSubscript:@"covariance"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)analyticsInformationWithSessionStartMonotonicTime:(double)a3
+- (id)analyticsInformationWithSessionStartMonotonicTime:(double)time
 {
   v5 = objc_alloc_init(MEMORY[0x277D0EDF0]);
-  [v5 setRelativeTimestampMs:((self->_monotonicTimestamp - a3) * 1000.0)];
+  [v5 setRelativeTimestampMs:((self->_monotonicTimestamp - time) * 1000.0)];
   [v5 setRunTimeMs:(self->_duration * 1000.0)];
   v6 = objc_alloc_init(MEMORY[0x277D0EDD8]);
   [v6 setX:*self->_gravity];
@@ -1172,14 +1172,14 @@ LABEL_19:
         v39 = objc_alloc_init(MEMORY[0x277D0EE20]);
         [v38 setTileId:v39];
 
-        v40 = [v38 tileId];
-        [v40 setXCoordinate:v35];
+        tileId = [v38 tileId];
+        [tileId setXCoordinate:v35];
 
-        v41 = [v38 tileId];
-        [v41 setYCoordinate:v36];
+        tileId2 = [v38 tileId];
+        [tileId2 setYCoordinate:v36];
 
-        v42 = [v38 tileId];
-        [v42 setUncertainty:v37];
+        tileId3 = [v38 tileId];
+        [tileId3 setUncertainty:v37];
 
         [v38 setTileSizeBytes:{-[_VLStatistics stats](self->_statistics, "stats")[488]}];
         [v5 setTileDetails:v38];
@@ -1201,10 +1201,10 @@ LABEL_19:
 
     v11 = objc_alloc_init(MEMORY[0x277D0EDE8]);
     [v11 setNumberOfInliers:v10];
-    v12 = [(_VLStatistics *)self->_statistics stats];
-    [v11 setNumberOfKeypoints:v12->var13 & ~(v12->var13 >> 31)];
-    v13 = [(_VLStatistics *)self->_statistics stats];
-    [v11 setNumberOfMatches:v13->var15 & ~(v13->var15 >> 31)];
+    stats = [(_VLStatistics *)self->_statistics stats];
+    [v11 setNumberOfKeypoints:stats->var13 & ~(stats->var13 >> 31)];
+    stats2 = [(_VLStatistics *)self->_statistics stats];
+    [v11 setNumberOfMatches:stats2->var15 & ~(stats2->var15 >> 31)];
     if ([(_VLStatistics *)self->_statistics stats][80] >= 1 && [(_VLStatistics *)self->_statistics stats][80])
     {
       v14 = 0;
@@ -1495,10 +1495,10 @@ LABEL_47:
     do
     {
       [v15 addInlierSuccessIndices:{*(-[_VLStatistics stats](self->_statistics, "stats")[16] + 4 * v62++)}];
-      v63 = [(_VLStatistics *)self->_statistics stats];
+      stats3 = [(_VLStatistics *)self->_statistics stats];
     }
 
-    while (v62 < (v63->var12 & ~(v63->var12 >> 31)));
+    while (v62 < (stats3->var12 & ~(stats3->var12 >> 31)));
   }
 
   [v5 setSuccessDetails:v15];
@@ -1528,8 +1528,8 @@ LABEL_87:
 
 - (__n128)_gravity
 {
-  result = a1[7];
-  a2[1].n128_u64[0] = a1[8].n128_u64[0];
+  result = self[7];
+  a2[1].n128_u64[0] = self[8].n128_u64[0];
   *a2 = result;
   return result;
 }

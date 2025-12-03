@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterWANFirewallRuleList
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterWANFirewallRuleList)init;
-- (HMDNetworkRouterWANFirewallRuleList)initWithPortRules:(id)a3 icmpRules:(id)a4;
+- (HMDNetworkRouterWANFirewallRuleList)initWithPortRules:(id)rules icmpRules:(id)icmpRules;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterWANFirewallRuleList
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
-  v5 = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
-  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterWANFirewallRuleList portRules=%@, icmpRules=%@>", v4, v5];
+  portRules = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
+  icmpRules = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
+  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterWANFirewallRuleList portRules=%@, icmpRules=%@>", portRules, icmpRules];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
-      v8 = [(HMDNetworkRouterWANFirewallRuleList *)v6 portRules];
-      if (v7 != v8)
+      v6 = equalCopy;
+      portRules = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
+      portRules2 = [(HMDNetworkRouterWANFirewallRuleList *)v6 portRules];
+      if (portRules != portRules2)
       {
-        v9 = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
-        v3 = [(HMDNetworkRouterWANFirewallRuleList *)v6 portRules];
-        if (![v9 isEqual:v3])
+        portRules3 = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
+        portRules4 = [(HMDNetworkRouterWANFirewallRuleList *)v6 portRules];
+        if (![portRules3 isEqual:portRules4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = portRules3;
       }
 
-      v11 = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
-      v12 = [(HMDNetworkRouterWANFirewallRuleList *)v6 icmpRules];
-      if (v11 == v12)
+      icmpRules = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
+      icmpRules2 = [(HMDNetworkRouterWANFirewallRuleList *)v6 icmpRules];
+      if (icmpRules == icmpRules2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
-        v14 = [(HMDNetworkRouterWANFirewallRuleList *)v6 icmpRules];
-        v10 = [v13 isEqual:v14];
+        icmpRules3 = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
+        icmpRules4 = [(HMDNetworkRouterWANFirewallRuleList *)v6 icmpRules];
+        v10 = [icmpRules3 isEqual:icmpRules4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      portRules3 = v16;
+      if (portRules == portRules2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterWANFirewallRuleList allocWithZone:a3];
-  v5 = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
-  v6 = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
-  v7 = [(HMDNetworkRouterWANFirewallRuleList *)v4 initWithPortRules:v5 icmpRules:v6];
+  v4 = [HMDNetworkRouterWANFirewallRuleList allocWithZone:zone];
+  portRules = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
+  icmpRules = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
+  v7 = [(HMDNetworkRouterWANFirewallRuleList *)v4 initWithPortRules:portRules icmpRules:icmpRules];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
   v58 = 0u;
@@ -123,8 +123,8 @@ LABEL_15:
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
-  v5 = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  portRules = [(HMDNetworkRouterWANFirewallRuleList *)self portRules];
+  v6 = [portRules countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -136,7 +136,7 @@ LABEL_3:
     {
       if (*v34 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(portRules);
       }
 
       v11 = *(*(&v33 + 1) + 8 * v10);
@@ -156,14 +156,14 @@ LABEL_3:
 LABEL_24:
         v23 = v13;
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_29;
         }
 
         v24 = v23;
         v22 = 0;
-        *a3 = v23;
+        *error = v23;
         goto LABEL_30;
       }
 
@@ -180,7 +180,7 @@ LABEL_24:
       v8 = 1;
       if (v7 == v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v7 = [portRules countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -199,8 +199,8 @@ LABEL_12:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
-    v15 = [v5 countByEnumeratingWithState:&v28 objects:v37 count:16];
+    portRules = [(HMDNetworkRouterWANFirewallRuleList *)self icmpRules];
+    v15 = [portRules countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (!v15)
     {
 LABEL_23:
@@ -219,7 +219,7 @@ LABEL_14:
     {
       if (*v29 != v18)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(portRules);
       }
 
       v20 = *(*(&v28 + 1) + 8 * v19);
@@ -252,7 +252,7 @@ LABEL_14:
       v17 = 1;
       if (v16 == v19)
       {
-        v16 = [v5 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        v16 = [portRules countByEnumeratingWithState:&v28 objects:v37 count:16];
         if (v16)
         {
           goto LABEL_14;
@@ -263,11 +263,11 @@ LABEL_14:
     }
   }
 
-  if (a3)
+  if (error)
   {
     HMErrorFromOSStatus();
     v23 = 0;
-    *a3 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -285,25 +285,25 @@ LABEL_30:
   return v22;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   if (!v9)
   {
 LABEL_27:
-    if ([v10 count])
+    if ([array count])
     {
-      v21 = v10;
+      v21 = array;
     }
 
     else
@@ -312,9 +312,9 @@ LABEL_27:
     }
 
     [(HMDNetworkRouterWANFirewallRuleList *)self setPortRules:v21];
-    if ([v11 count])
+    if ([array2 count])
     {
-      v22 = v11;
+      v22 = array2;
     }
 
     else
@@ -328,9 +328,9 @@ LABEL_27:
     goto LABEL_35;
   }
 
-  v24 = self;
+  selfCopy = self;
   v12 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   while (1)
   {
     v31 = 0;
@@ -340,10 +340,10 @@ LABEL_27:
     v28 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v18 = 0;
+        *error = v18 = 0;
         goto LABEL_35;
       }
 
@@ -367,9 +367,9 @@ LABEL_27:
         goto LABEL_13;
       }
 
-      v17 = v11;
+      v17 = array2;
 LABEL_15:
-      [v17 addObject:{v15, v24}];
+      [v17 addObject:{v15, selfCopy}];
       v12 = 0;
 LABEL_16:
 
@@ -385,7 +385,7 @@ LABEL_16:
 
       if (!v16)
       {
-        v17 = v10;
+        v17 = array;
         goto LABEL_15;
       }
 
@@ -410,17 +410,17 @@ LABEL_17:
 
   v12 = v19;
 LABEL_24:
-  self = v24;
+  self = selfCopy;
   if (!v12)
   {
     goto LABEL_27;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v12;
     v18 = 0;
-    *a4 = v12;
+    *error = v12;
     goto LABEL_35;
   }
 
@@ -431,18 +431,18 @@ LABEL_35:
   return v18;
 }
 
-- (HMDNetworkRouterWANFirewallRuleList)initWithPortRules:(id)a3 icmpRules:(id)a4
+- (HMDNetworkRouterWANFirewallRuleList)initWithPortRules:(id)rules icmpRules:(id)icmpRules
 {
-  v7 = a3;
-  v8 = a4;
+  rulesCopy = rules;
+  icmpRulesCopy = icmpRules;
   v12.receiver = self;
   v12.super_class = HMDNetworkRouterWANFirewallRuleList;
   v9 = [(HMDNetworkRouterWANFirewallRuleList *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_portRules, a3);
-    objc_storeStrong(&v10->_icmpRules, a4);
+    objc_storeStrong(&v9->_portRules, rules);
+    objc_storeStrong(&v10->_icmpRules, icmpRules);
   }
 
   return v10;
@@ -455,24 +455,24 @@ LABEL_35:
   return [(HMDNetworkRouterWANFirewallRuleList *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterWANFirewallRuleList);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterWANFirewallRuleList *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterWANFirewallRuleList *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

@@ -1,21 +1,21 @@
 @interface STKUserEventMonitor
 - (STKUserEventMonitor)init;
 - (STKUserEventMonitorDelegate)delegate;
-- (id)_initWithAttentionAwarenessClient:(id)a3;
-- (void)_queue_handleAttentionAwarenessEvent:(id)a3;
+- (id)_initWithAttentionAwarenessClient:(id)client;
+- (void)_queue_handleAttentionAwarenessEvent:(id)event;
 - (void)_resume;
 - (void)_suspend;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation STKUserEventMonitor
 
-- (id)_initWithAttentionAwarenessClient:(id)a3
+- (id)_initWithAttentionAwarenessClient:(id)client
 {
-  v6 = a3;
-  if (!v6)
+  clientCopy = client;
+  if (!clientCopy)
   {
     [(STKUserEventMonitor *)a2 _initWithAttentionAwarenessClient:?];
   }
@@ -26,7 +26,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_attentionAwarenessClient, a3);
+    objc_storeStrong(&v7->_attentionAwarenessClient, client);
     v9 = dispatch_queue_create("com.apple.stk.AttentionAwareQueue", 0);
     queue = v8->_queue;
     v8->_queue = v9;
@@ -69,16 +69,16 @@ void __57__STKUserEventMonitor__initWithAttentionAwarenessClient___block_invoke(
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"STKUserEventMonitor.m" lineNumber:52 description:@"Monitor must be invalidated before it can deallocate."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"STKUserEventMonitor.m" lineNumber:52 description:@"Monitor must be invalidated before it can deallocate."];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (!self->_invalidated && self->_enabled != a3)
+  if (!self->_invalidated && self->_enabled != enabled)
   {
-    self->_enabled = a3;
-    if (a3)
+    self->_enabled = enabled;
+    if (enabled)
     {
       [(STKUserEventMonitor *)self _resume];
     }
@@ -113,13 +113,13 @@ void __57__STKUserEventMonitor__initWithAttentionAwarenessClient___block_invoke(
   }
 }
 
-- (void)_queue_handleAttentionAwarenessEvent:(id)a3
+- (void)_queue_handleAttentionAwarenessEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v5 = a3;
+  eventCopy = event;
   BSDispatchQueueAssert();
-  LOBYTE(queue) = [v5 eventMask];
+  LOBYTE(queue) = [eventCopy eventMask];
 
   if ((queue & 1) == 0)
   {

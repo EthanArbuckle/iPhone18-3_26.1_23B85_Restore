@@ -1,28 +1,28 @@
 @interface MCAnimationPathExpression
-+ (id)animationPathWithKey:(id)a3 andExpression:(id)a4;
-- (MCAnimationPathExpression)initWithImprint:(id)a3;
++ (id)animationPathWithKey:(id)key andExpression:(id)expression;
+- (MCAnimationPathExpression)initWithImprint:(id)imprint;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
 @end
 
 @implementation MCAnimationPathExpression
 
-+ (id)animationPathWithKey:(id)a3 andExpression:(id)a4
++ (id)animationPathWithKey:(id)key andExpression:(id)expression
 {
-  v5 = [MCAnimationPathExpression animationPathWithKey:a3];
-  [v5 setExpression:a4];
+  v5 = [MCAnimationPathExpression animationPathWithKey:key];
+  [v5 setExpression:expression];
   return v5;
 }
 
-- (MCAnimationPathExpression)initWithImprint:(id)a3
+- (MCAnimationPathExpression)initWithImprint:(id)imprint
 {
   v6.receiver = self;
   v6.super_class = MCAnimationPathExpression;
   v4 = [(MCAnimationPath *)&v6 initWithImprint:?];
   if (v4)
   {
-    v4->mExpression = [a3 objectForKey:@"expression"];
+    v4->mExpression = [imprint objectForKey:@"expression"];
   }
 
   return v4;
@@ -40,18 +40,18 @@
 {
   v7.receiver = self;
   v7.super_class = MCAnimationPathExpression;
-  v3 = [(MCAnimationPath *)&v7 imprint];
-  v4 = v3;
+  imprint = [(MCAnimationPath *)&v7 imprint];
+  v4 = imprint;
   mExpression = self->mExpression;
   if (mExpression)
   {
-    [v3 setObject:mExpression forKey:@"expression"];
+    [imprint setObject:mExpression forKey:@"expression"];
   }
 
   return v4;
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v6.receiver = self;
   v6.super_class = MCAnimationPathExpression;
@@ -59,7 +59,7 @@
   mExpression = self->mExpression;
   if (mExpression)
   {
-    *(a3 + 3) = [(NSString *)mExpression copy];
+    *(snapshot + 3) = [(NSString *)mExpression copy];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface WFTimeUntilActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFTimeUntilActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"900"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"900"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.gettimebetweendates", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.gettimebetweendates", migrationCopy);
   }
 
   else
@@ -28,13 +28,13 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v23;
-    v21 = v3;
+    v21 = actions;
     do
     {
       v7 = 0;
@@ -42,17 +42,17 @@
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v22 + 1) + 8 * v7);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKey:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKey:actionIdentifierKey];
 
         if ([v10 isEqualToString:@"is.workflow.actions.gettimebetweendates"])
         {
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 objectForKey:@"WFTimeUntilFromDate"];
 
@@ -76,10 +76,10 @@
               {
                 v16 = objc_alloc_init(WFCurrentDateVariable);
                 v17 = [[WFVariableStringParameterState alloc] initWithVariable:v16];
-                v18 = [(WFVariableStringParameterState *)v17 serializedRepresentation];
-                [v12 setObject:v18 forKey:@"WFTimeUntilFromDate"];
+                serializedRepresentation = [(WFVariableStringParameterState *)v17 serializedRepresentation];
+                [v12 setObject:serializedRepresentation forKey:@"WFTimeUntilFromDate"];
 
-                v3 = v21;
+                actions = v21;
               }
             }
 
@@ -99,7 +99,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [actions countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);

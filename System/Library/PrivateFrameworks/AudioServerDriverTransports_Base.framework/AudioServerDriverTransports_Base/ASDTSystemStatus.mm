@@ -2,8 +2,8 @@
 + (id)systemStatus;
 - (ASDTSystemStatus)init;
 - (BOOL)enabled;
-- (void)publishMicrophoneEnabled:(BOOL)a3;
-- (void)recordingIsEnabled:(BOOL)a3 forDeviceUID:(id)a4;
+- (void)publishMicrophoneEnabled:(BOOL)enabled;
+- (void)recordingIsEnabled:(BOOL)enabled forDeviceUID:(id)d;
 @end
 
 @implementation ASDTSystemStatus
@@ -43,8 +43,8 @@ uint64_t __32__ASDTSystemStatus_systemStatus__block_invoke()
   v4 = [MEMORY[0x277CBEB58] setWithCapacity:2];
   [(ASDTSystemStatus *)v2 setDeviceUIDs:v4];
 
-  v5 = [(ASDTSystemStatus *)v2 mutex];
-  if (!v5 || ([(ASDTSystemStatus *)v2 deviceUIDs], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  mutex = [(ASDTSystemStatus *)v2 mutex];
+  if (!mutex || ([(ASDTSystemStatus *)v2 deviceUIDs], v6 = objc_claimAutoreleasedReturnValue(), v6, mutex, !v6))
   {
     v8 = ASDTBaseLogType();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -86,9 +86,9 @@ uint64_t __32__ASDTSystemStatus_systemStatus__block_invoke()
   v10 = objc_alloc_init(MEMORY[0x277D6B9E8]);
   [(ASDTSystemStatus *)v2 setPublisher:v10];
 
-  v11 = [(ASDTSystemStatus *)v2 publisher];
+  publisher = [(ASDTSystemStatus *)v2 publisher];
 
-  if (!v11)
+  if (!publisher)
   {
     v8 = ASDTBaseLogType();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -107,9 +107,9 @@ uint64_t __32__ASDTSystemStatus_systemStatus__block_invoke()
     v12 = [objc_alloc(MEMORY[0x277D6B9D8]) initWithActivityAttribution:v8];
     [(ASDTSystemStatus *)v2 setAttribution:v12];
 
-    v13 = [(ASDTSystemStatus *)v2 attribution];
+    attribution = [(ASDTSystemStatus *)v2 attribution];
 
-    if (v13)
+    if (attribution)
     {
 
 LABEL_17:
@@ -142,54 +142,54 @@ LABEL_18:
 
 - (BOOL)enabled
 {
-  v3 = [(ASDTSystemStatus *)self mutex];
-  [v3 lock];
+  mutex = [(ASDTSystemStatus *)self mutex];
+  [mutex lock];
 
-  v4 = [(ASDTSystemStatus *)self deviceUIDs];
-  v5 = [v4 count];
+  deviceUIDs = [(ASDTSystemStatus *)self deviceUIDs];
+  v5 = [deviceUIDs count];
 
-  v6 = [(ASDTSystemStatus *)self mutex];
-  [v6 unlock];
+  mutex2 = [(ASDTSystemStatus *)self mutex];
+  [mutex2 unlock];
 
   return v5 != 0;
 }
 
-- (void)recordingIsEnabled:(BOOL)a3 forDeviceUID:(id)a4
+- (void)recordingIsEnabled:(BOOL)enabled forDeviceUID:(id)d
 {
-  v14 = a4;
-  if (!v14)
+  dCopy = d;
+  if (!dCopy)
   {
     goto LABEL_10;
   }
 
-  v6 = [(ASDTSystemStatus *)self mutex];
-  [v6 lock];
+  mutex = [(ASDTSystemStatus *)self mutex];
+  [mutex lock];
 
-  v7 = [(ASDTSystemStatus *)self deviceUIDs];
-  v8 = [v7 containsObject:v14];
+  deviceUIDs = [(ASDTSystemStatus *)self deviceUIDs];
+  v8 = [deviceUIDs containsObject:dCopy];
 
-  if (!(v8 & 1 | !a3))
+  if (!(v8 & 1 | !enabled))
   {
-    v10 = [(ASDTSystemStatus *)self deviceUIDs];
-    [v10 addObject:v14];
+    deviceUIDs2 = [(ASDTSystemStatus *)self deviceUIDs];
+    [deviceUIDs2 addObject:dCopy];
     goto LABEL_7;
   }
 
   v9 = 0;
-  if (!a3 && ((v8 ^ 1) & 1) == 0)
+  if (!enabled && ((v8 ^ 1) & 1) == 0)
   {
-    v10 = [(ASDTSystemStatus *)self deviceUIDs];
-    [v10 removeObject:v14];
+    deviceUIDs2 = [(ASDTSystemStatus *)self deviceUIDs];
+    [deviceUIDs2 removeObject:dCopy];
 LABEL_7:
 
     v9 = 1;
   }
 
-  v11 = [(ASDTSystemStatus *)self deviceUIDs];
-  v12 = [v11 count];
+  deviceUIDs3 = [(ASDTSystemStatus *)self deviceUIDs];
+  v12 = [deviceUIDs3 count];
 
-  v13 = [(ASDTSystemStatus *)self mutex];
-  [v13 unlock];
+  mutex2 = [(ASDTSystemStatus *)self mutex];
+  [mutex2 unlock];
 
   if (v9)
   {
@@ -199,16 +199,16 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)publishMicrophoneEnabled:(BOOL)a3
+- (void)publishMicrophoneEnabled:(BOOL)enabled
 {
-  v5 = [(ASDTSystemStatus *)self publisher];
+  publisher = [(ASDTSystemStatus *)self publisher];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__ASDTSystemStatus_publishMicrophoneEnabled___block_invoke;
   v6[3] = &unk_278CE6438;
-  v7 = a3;
+  enabledCopy = enabled;
   v6[4] = self;
-  [v5 updateVolatileDataWithBlock:v6];
+  [publisher updateVolatileDataWithBlock:v6];
 }
 
 void __45__ASDTSystemStatus_publishMicrophoneEnabled___block_invoke(uint64_t a1, void *a2)

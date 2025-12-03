@@ -1,20 +1,20 @@
 @interface MFTimeWheelCollectionViewCell
-- (MFTimeWheelCollectionViewCell)initWithFrame:(CGRect)a3;
+- (MFTimeWheelCollectionViewCell)initWithFrame:(CGRect)frame;
 - (MFTimeWheelCollectionViewCellDelegate)delegate;
 - (NSDate)date;
 - (NSDate)minimumDate;
-- (void)datePickerChanged:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setMinimumDate:(id)a3;
+- (void)datePickerChanged:(id)changed;
+- (void)setDate:(id)date;
+- (void)setMinimumDate:(id)date;
 @end
 
 @implementation MFTimeWheelCollectionViewCell
 
-- (MFTimeWheelCollectionViewCell)initWithFrame:(CGRect)a3
+- (MFTimeWheelCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MFTimeWheelCollectionViewCell;
-  v3 = [(MFTimeWheelCollectionViewCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFTimeWheelCollectionViewCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DC920]);
@@ -30,54 +30,54 @@
     [v4 setAccessibilityIdentifier:*MEMORY[0x1E69ADBB0]];
     [v4 addTarget:v3 action:sel_datePickerChanged_ forControlEvents:4096];
     [(MFTimeWheelCollectionViewCell *)v3 setTimePicker:v4];
-    v7 = [(MFTimeWheelCollectionViewCell *)v3 contentView];
-    v8 = [(MFTimeWheelCollectionViewCell *)v3 timePicker];
-    [v7 addSubview:v8];
+    contentView = [(MFTimeWheelCollectionViewCell *)v3 contentView];
+    timePicker = [(MFTimeWheelCollectionViewCell *)v3 timePicker];
+    [contentView addSubview:timePicker];
 
-    v9 = [(MFTimeWheelCollectionViewCell *)v3 timePicker];
-    v10 = [(MFTimeWheelCollectionViewCell *)v3 contentView];
-    [v9 mf_pinToView:v10 usingLayoutMargins:0];
+    timePicker2 = [(MFTimeWheelCollectionViewCell *)v3 timePicker];
+    contentView2 = [(MFTimeWheelCollectionViewCell *)v3 contentView];
+    [timePicker2 mf_pinToView:contentView2 usingLayoutMargins:0];
   }
 
   return v3;
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v6 = a3;
-  v4 = [(MFTimeWheelCollectionViewCell *)self delegate];
-  v5 = [v6 date];
-  [v4 timeCollectionViewCell:self didChangeDate:v5];
+  changedCopy = changed;
+  delegate = [(MFTimeWheelCollectionViewCell *)self delegate];
+  date = [changedCopy date];
+  [delegate timeCollectionViewCell:self didChangeDate:date];
 }
 
-- (void)setMinimumDate:(id)a3
+- (void)setMinimumDate:(id)date
 {
-  v5 = a3;
-  v4 = [(MFTimeWheelCollectionViewCell *)self timePicker];
-  [v4 setMinimumDate:v5];
+  dateCopy = date;
+  timePicker = [(MFTimeWheelCollectionViewCell *)self timePicker];
+  [timePicker setMinimumDate:dateCopy];
 }
 
 - (NSDate)minimumDate
 {
-  v2 = [(MFTimeWheelCollectionViewCell *)self timePicker];
-  v3 = [v2 minimumDate];
+  timePicker = [(MFTimeWheelCollectionViewCell *)self timePicker];
+  minimumDate = [timePicker minimumDate];
 
-  return v3;
+  return minimumDate;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v5 = a3;
-  v4 = [(MFTimeWheelCollectionViewCell *)self timePicker];
-  [v4 setDate:v5];
+  dateCopy = date;
+  timePicker = [(MFTimeWheelCollectionViewCell *)self timePicker];
+  [timePicker setDate:dateCopy];
 }
 
 - (NSDate)date
 {
-  v2 = [(MFTimeWheelCollectionViewCell *)self timePicker];
-  v3 = [v2 date];
+  timePicker = [(MFTimeWheelCollectionViewCell *)self timePicker];
+  date = [timePicker date];
 
-  return v3;
+  return date;
 }
 
 - (MFTimeWheelCollectionViewCellDelegate)delegate

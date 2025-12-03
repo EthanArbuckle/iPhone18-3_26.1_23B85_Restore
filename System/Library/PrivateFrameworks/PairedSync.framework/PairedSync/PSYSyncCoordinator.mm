@@ -1,42 +1,42 @@
 @interface PSYSyncCoordinator
-+ (PSYSyncCoordinator)syncCoordinatorWithServiceName:(id)a3;
-+ (id)filteredErrorWithError:(id)a3;
-- (BOOL)_pairedSyncFinishedMigrationSyncWithPairingID:(id)a3;
++ (PSYSyncCoordinator)syncCoordinatorWithServiceName:(id)name;
++ (id)filteredErrorWithError:(id)error;
+- (BOOL)_pairedSyncFinishedMigrationSyncWithPairingID:(id)d;
 - (BOOL)_pairedSyncFinishedReunionSync;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PSYServiceSyncSession)activeSyncSession;
-- (PSYSyncCoordinator)initWithServiceName:(id)a3;
-- (PSYSyncCoordinator)initWithServiceName:(id)a3 serviceLookupPath:(id)a4;
+- (PSYSyncCoordinator)initWithServiceName:(id)name;
+- (PSYSyncCoordinator)initWithServiceName:(id)name serviceLookupPath:(id)path;
 - (PSYSyncCoordinatorDelegate)delegate;
 - (id)progressHandler;
-- (id)syncSessionForOptions:(id)a3 supportsMigrationSync:(BOOL)a4;
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5;
+- (id)syncSessionForOptions:(id)options supportsMigrationSync:(BOOL)sync;
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block;
 - (unint64_t)_syncRestriction;
-- (unint64_t)readNotifyToken:(int)a3;
+- (unint64_t)readNotifyToken:(int)token;
 - (unint64_t)syncRestriction;
 - (void)_cleanup;
-- (void)_registerMonitorAllNRDevicesForMigrationChanges:(id)a3;
-- (void)_syncRestrictionDidUpdate:(id)a3 forServiceName:(id)a4;
+- (void)_registerMonitorAllNRDevicesForMigrationChanges:(id)changes;
+- (void)_syncRestrictionDidUpdate:(id)update forServiceName:(id)name;
 - (void)_unregisterNRDeviceMonitors;
-- (void)abortSyncWithCompletion:(id)a3;
-- (void)beginDryRunSyncWithOptions:(id)a3 completion:(id)a4;
-- (void)beginSyncWithOptions:(id)a3 completion:(id)a4;
+- (void)abortSyncWithCompletion:(id)completion;
+- (void)beginDryRunSyncWithOptions:(id)options completion:(id)completion;
+- (void)beginSyncWithOptions:(id)options completion:(id)completion;
 - (void)dealloc;
-- (void)deviceChanged:(id)a3;
-- (void)exitForTestInput:(id)a3;
+- (void)deviceChanged:(id)changed;
+- (void)exitForTestInput:(id)input;
 - (void)invalidateActiveSyncSession;
-- (void)performDelegateBlock:(id)a3;
-- (void)registry:(id)a3 added:(id)a4;
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5;
-- (void)reportProgress:(double)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
+- (void)performDelegateBlock:(id)block;
+- (void)registry:(id)registry added:(id)added;
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties;
+- (void)reportProgress:(double)progress;
+- (void)setDelegate:(id)delegate queue:(id)queue;
 - (void)syncDidComplete;
 - (void)syncDidCompleteSending;
-- (void)syncDidFailWithError:(id)a3;
-- (void)syncSession:(id)a3 didFailWithError:(id)a4;
-- (void)syncSession:(id)a3 reportProgress:(double)a4;
-- (void)syncSessionDidComplete:(id)a3;
-- (void)syncSessionDidCompleteSending:(id)a3;
+- (void)syncDidFailWithError:(id)error;
+- (void)syncSession:(id)session didFailWithError:(id)error;
+- (void)syncSession:(id)session reportProgress:(double)progress;
+- (void)syncSessionDidComplete:(id)complete;
+- (void)syncSessionDidCompleteSending:(id)sending;
 @end
 
 @implementation PSYSyncCoordinator
@@ -70,14 +70,14 @@ uint64_t __37__PSYSyncCoordinator_syncRestriction__block_invoke(uint64_t a1)
 - (unint64_t)_syncRestriction
 {
   v3 = +[PSYRegistrySingleton registry];
-  v4 = [v3 pairingID];
+  pairingID = [v3 pairingID];
 
-  if (v4 && ((v5 = [(PSYSyncCoordinator *)self _pairedSyncFinishedMigrationSyncWithPairingID:v4], syncIDOfStartedSync = self->_syncIDOfStartedSync, v5) || syncIDOfStartedSync))
+  if (pairingID && ((v5 = [(PSYSyncCoordinator *)self _pairedSyncFinishedMigrationSyncWithPairingID:pairingID], syncIDOfStartedSync = self->_syncIDOfStartedSync, v5) || syncIDOfStartedSync))
   {
     v9 = +[PSYRegistrySingleton registry];
-    v10 = [v9 switchIndex];
+    switchIndex = [v9 switchIndex];
 
-    if (syncIDOfStartedSync == v10)
+    if (syncIDOfStartedSync == switchIndex)
     {
       v7 = 0;
     }
@@ -96,25 +96,25 @@ uint64_t __37__PSYSyncCoordinator_syncRestriction__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (PSYSyncCoordinator)syncCoordinatorWithServiceName:(id)a3
++ (PSYSyncCoordinator)syncCoordinatorWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (syncCoordinatorWithServiceName__onceToken != -1)
   {
     +[PSYSyncCoordinator syncCoordinatorWithServiceName:];
   }
 
   pthread_mutex_lock(&__serviceLock);
-  v5 = [syncCoordinatorWithServiceName____listeners objectForKey:v4];
+  v5 = [syncCoordinatorWithServiceName____listeners objectForKey:nameCopy];
   v6 = v5;
-  if (v4)
+  if (nameCopy)
   {
     if (!v5)
     {
-      v6 = [[a1 alloc] initWithServiceName:v4];
+      v6 = [[self alloc] initWithServiceName:nameCopy];
       if (v6)
       {
-        [syncCoordinatorWithServiceName____listeners setObject:v6 forKey:v4];
+        [syncCoordinatorWithServiceName____listeners setObject:v6 forKey:nameCopy];
       }
     }
   }
@@ -131,20 +131,20 @@ uint64_t __53__PSYSyncCoordinator_syncCoordinatorWithServiceName___block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (PSYSyncCoordinator)initWithServiceName:(id)a3
+- (PSYSyncCoordinator)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = PSYGetClientListDirectory();
-  v6 = [(PSYSyncCoordinator *)self initWithServiceName:v4 serviceLookupPath:v5];
+  v6 = [(PSYSyncCoordinator *)self initWithServiceName:nameCopy serviceLookupPath:v5];
 
   return v6;
 }
 
-- (PSYSyncCoordinator)initWithServiceName:(id)a3 serviceLookupPath:(id)a4
+- (PSYSyncCoordinator)initWithServiceName:(id)name serviceLookupPath:(id)path
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v36.receiver = self;
   v36.super_class = PSYSyncCoordinator;
   v8 = [(PSYSyncCoordinator *)&v36 init];
@@ -161,14 +161,14 @@ uint64_t __53__PSYSyncCoordinator_syncCoordinatorWithServiceName___block_invoke(
         *buf = 136315394;
         v38 = "[PSYSyncCoordinator initWithServiceName:serviceLookupPath:]";
         v39 = 2114;
-        v40 = v6;
+        v40 = nameCopy;
         _os_log_impl(&dword_25DF25000, v11, OS_LOG_TYPE_DEFAULT, "%s: %{public}@", buf, 0x16u);
       }
     }
 
     v8->_syncSwitchIDToken = -1;
-    v29 = [v6 stringByAppendingPathExtension:@"plist"];
-    v12 = [v7 URLByAppendingPathComponent:v29];
+    v29 = [nameCopy stringByAppendingPathExtension:@"plist"];
+    v12 = [pathCopy URLByAppendingPathComponent:v29];
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v12];
     v14 = [PSYActivityInfo activityWithPlist:v13];
     v8->_syncRestriction = 1;
@@ -181,7 +181,7 @@ uint64_t __53__PSYSyncCoordinator_syncCoordinatorWithServiceName___block_invoke(
       v8->_queue = v15;
 
       objc_storeStrong(&v8->_delegateQueue, MEMORY[0x277D85CD0]);
-      v17 = [v6 copy];
+      v17 = [nameCopy copy];
       serviceName = v8->_serviceName;
       v8->_serviceName = v17;
 
@@ -205,8 +205,8 @@ uint64_t __53__PSYSyncCoordinator_syncCoordinatorWithServiceName___block_invoke(
       [PSYRegistrySingleton addDelegate:v19];
       pthread_mutex_init(&v19->_delegateLock, 0);
       v22 = objc_alloc(MEMORY[0x277CCAE98]);
-      v23 = [v14 machServiceName];
-      v24 = [v22 initWithMachServiceName:v23];
+      machServiceName = [v14 machServiceName];
+      v24 = [v22 initWithMachServiceName:machServiceName];
       listener = v19->_listener;
       v19->_listener = v24;
 
@@ -219,7 +219,7 @@ uint64_t __53__PSYSyncCoordinator_syncCoordinatorWithServiceName___block_invoke(
     else
     {
 
-      NSLog(&cfstr_ErrorCouldNotC.isa, v12, v6);
+      NSLog(&cfstr_ErrorCouldNotC.isa, v12, nameCopy);
       v19 = 0;
     }
 
@@ -263,15 +263,15 @@ void __60__PSYSyncCoordinator_initWithServiceName_serviceLookupPath___block_invo
   }
 }
 
-- (unint64_t)readNotifyToken:(int)a3
+- (unint64_t)readNotifyToken:(int)token
 {
-  if (a3 == -1)
+  if (token == -1)
   {
     return 0;
   }
 
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     return 0;
   }
@@ -282,22 +282,22 @@ void __60__PSYSyncCoordinator_initWithServiceName_serviceLookupPath___block_invo
   }
 }
 
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   out_token = -1;
-  v10 = [v7 UTF8String];
-  if (v9)
+  uTF8String = [nameCopy UTF8String];
+  if (blockCopy)
   {
-    v11 = notify_register_dispatch(v10, &out_token, v8, v9);
+    v11 = notify_register_dispatch(uTF8String, &out_token, queueCopy, blockCopy);
   }
 
   else
   {
-    v11 = notify_register_check(v10, &out_token);
+    v11 = notify_register_check(uTF8String, &out_token);
   }
 
   v12 = v11;
@@ -314,7 +314,7 @@ void __60__PSYSyncCoordinator_initWithServiceName_serviceLookupPath___block_invo
         *buf = 67109378;
         v21 = v12;
         v22 = 2114;
-        v23 = v7;
+        v23 = nameCopy;
         _os_log_impl(&dword_25DF25000, v15, OS_LOG_TYPE_DEFAULT, "notify_register call failed with state: (%u) for %{public}@", buf, 0x12u);
       }
     }
@@ -326,9 +326,9 @@ void __60__PSYSyncCoordinator_initWithServiceName_serviceLookupPath___block_invo
   return v16;
 }
 
-- (void)_registerMonitorAllNRDevicesForMigrationChanges:(id)a3
+- (void)_registerMonitorAllNRDevicesForMigrationChanges:(id)changes
 {
-  v4 = [a3 copy];
+  v4 = [changes copy];
   migrationChangeBlock = self->_migrationChangeBlock;
   self->_migrationChangeBlock = v4;
 
@@ -342,33 +342,33 @@ void __60__PSYSyncCoordinator_initWithServiceName_serviceLookupPath___block_invo
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"com.apple.pairedsync.scheduler"];
-  v9 = [v8 BOOLValue];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"com.apple.pairedsync.scheduler"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = PSYActivityXPCInterface();
-    [v7 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v11 = PSYActivityProgressXPCInterface();
-    [v7 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
     objc_initWeak(location, self);
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __57__PSYSyncCoordinator_listener_shouldAcceptNewConnection___block_invoke;
     v20 = &unk_2799FB7C8;
-    v21 = self;
+    selfCopy = self;
     objc_copyWeak(&v22, location);
-    [v7 setInvalidationHandler:&v17];
-    objc_storeStrong(&self->_connection, a4);
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v17];
+    objc_storeStrong(&self->_connection, connection);
+    [connectionCopy resume];
     objc_destroyWeak(&v22);
     objc_destroyWeak(location);
   }
@@ -384,7 +384,7 @@ void __60__PSYSyncCoordinator_initWithServiceName_serviceLookupPath___block_invo
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *location = 138543618;
-        *&location[4] = v7;
+        *&location[4] = connectionCopy;
         v24 = 2112;
         v25 = @"com.apple.pairedsync.scheduler";
         _os_log_impl(&dword_25DF25000, v14, OS_LOG_TYPE_DEFAULT, "Dropping connection %{public}@ because it's missing the entitlement for %@", location, 0x16u);
@@ -393,7 +393,7 @@ void __60__PSYSyncCoordinator_initWithServiceName_serviceLookupPath___block_invo
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue;
 }
 
 void __57__PSYSyncCoordinator_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -439,36 +439,36 @@ void __57__PSYSyncCoordinator_listener_shouldAcceptNewConnection___block_invoke_
   return v2;
 }
 
-- (BOOL)_pairedSyncFinishedMigrationSyncWithPairingID:(id)a3
+- (BOOL)_pairedSyncFinishedMigrationSyncWithPairingID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 UUIDString];
+  dCopy = d;
+  uUIDString = [dCopy UUIDString];
   v5 = +[PSYRegistrySingleton registry];
-  v6 = [v5 deviceForPairingID:v3];
+  v6 = [v5 deviceForPairingID:dCopy];
 
   v7 = [v6 valueForProperty:*MEMORY[0x277D37BD0]];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
   v9 = *MEMORY[0x277CBF010];
   CFPreferencesSynchronize(@"com.apple.pairedsyncd", @"mobile", *MEMORY[0x277CBF010]);
   v10 = CFPreferencesCopyValue(@"pairingIDMigrationCountDictionary", @"com.apple.pairedsyncd", @"mobile", v9);
-  v11 = [v10 objectForKeyedSubscript:v4];
-  LOBYTE(v8) = v8 == [v11 integerValue];
+  v11 = [v10 objectForKeyedSubscript:uUIDString];
+  LOBYTE(integerValue) = integerValue == [v11 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
-- (void)_syncRestrictionDidUpdate:(id)a3 forServiceName:(id)a4
+- (void)_syncRestrictionDidUpdate:(id)update forServiceName:(id)name
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  nameCopy = name;
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_syncRestriction];
-  v9 = [v8 isEqual:v6];
+  v9 = [v8 isEqual:updateCopy];
 
   if ((v9 & 1) == 0)
   {
-    self->_syncRestriction = [v6 integerValue];
-    if ([v7 isEqual:self->_serviceName])
+    self->_syncRestriction = [updateCopy integerValue];
+    if ([nameCopy isEqual:self->_serviceName])
     {
       pthread_mutex_lock(&self->_delegateLock);
       v10 = self->_delegateQueue;
@@ -490,7 +490,7 @@ void __57__PSYSyncCoordinator_listener_shouldAcceptNewConnection___block_invoke_
           v25 = 2112;
           v26 = v17;
           v27 = 1024;
-          v28 = [v6 integerValue];
+          integerValue = [updateCopy integerValue];
           _os_log_impl(&dword_25DF25000, v14, OS_LOG_TYPE_DEFAULT, "PSYSyncCoordinator - dispatching sync restriction did update on queue %{public}@ to delegate %@ (%d)", buf, 0x1Cu);
         }
       }
@@ -500,7 +500,7 @@ void __57__PSYSyncCoordinator_listener_shouldAcceptNewConnection___block_invoke_
       v20[2] = __63__PSYSyncCoordinator__syncRestrictionDidUpdate_forServiceName___block_invoke;
       v20[3] = &unk_2799FB588;
       v21 = WeakRetained;
-      v22 = self;
+      selfCopy = self;
       v18 = WeakRetained;
       dispatch_async(v10, v20);
     }
@@ -524,11 +524,11 @@ uint64_t __63__PSYSyncCoordinator__syncRestrictionDidUpdate_forServiceName___blo
   return result;
 }
 
-- (void)beginSyncWithOptions:(id)a3 completion:(id)a4
+- (void)beginSyncWithOptions:(id)options completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = psy_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -538,7 +538,7 @@ uint64_t __63__PSYSyncCoordinator__syncRestrictionDidUpdate_forServiceName___blo
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = v6;
+      v19 = optionsCopy;
       _os_log_impl(&dword_25DF25000, v10, OS_LOG_TYPE_DEFAULT, "PSYSyncCoordinator - beginSyncWithOptions: %{public}@", buf, 0xCu);
     }
   }
@@ -549,10 +549,10 @@ uint64_t __63__PSYSyncCoordinator__syncRestrictionDidUpdate_forServiceName___blo
   block[2] = __54__PSYSyncCoordinator_beginSyncWithOptions_completion___block_invoke;
   block[3] = &unk_2799FB7F0;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v16 = optionsCopy;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = optionsCopy;
   dispatch_async(queue, block);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -812,9 +812,9 @@ LABEL_15:
   }
 }
 
-- (void)abortSyncWithCompletion:(id)a3
+- (void)abortSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = psy_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -834,8 +834,8 @@ LABEL_15:
   v10[2] = __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke;
   v10[3] = &unk_2799FB818;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   dispatch_async(queue, v10);
 }
 
@@ -871,19 +871,19 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
 
 - (id)progressHandler
 {
-  v2 = [(PSYSyncCoordinator *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(PSYSyncCoordinator *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)syncSessionDidCompleteSending:(id)a3
+- (void)syncSessionDidCompleteSending:(id)sending
 {
-  v3 = [(PSYSyncCoordinator *)self progressHandler];
-  [v3 activityDidCompleteSending];
+  progressHandler = [(PSYSyncCoordinator *)self progressHandler];
+  [progressHandler activityDidCompleteSending];
 }
 
-- (void)syncSessionDidComplete:(id)a3
+- (void)syncSessionDidComplete:(id)complete
 {
   pendingCompletion = self->_pendingCompletion;
   if (pendingCompletion)
@@ -895,10 +895,10 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
   }
 }
 
-- (void)syncSession:(id)a3 didFailWithError:(id)a4
+- (void)syncSession:(id)session didFailWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = psy_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -907,17 +907,17 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
     v8 = psy_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 psy_safeDescription];
+      psy_safeDescription = [errorCopy psy_safeDescription];
       v15 = 138543362;
-      v16 = v9;
+      v16 = psy_safeDescription;
       _os_log_impl(&dword_25DF25000, v8, OS_LOG_TYPE_DEFAULT, "PSYSyncCoordinator client called syncDidFailWithError: %{public}@", &v15, 0xCu);
     }
   }
 
   if (self->_pendingCompletion)
   {
-    v10 = [PSYSyncCoordinator filteredErrorWithError:v5];
-    if (v10 != v5)
+    v10 = [PSYSyncCoordinator filteredErrorWithError:errorCopy];
+    if (v10 != errorCopy)
     {
       v11 = psy_log();
       v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -942,34 +942,34 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)filteredErrorWithError:(id)a3
++ (id)filteredErrorWithError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [PSYPlistFilter filteredPlistDictionary:v4];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [PSYPlistFilter filteredPlistDictionary:userInfo];
 
-  v6 = [v3 userInfo];
+  userInfo2 = [errorCopy userInfo];
 
-  if (v5 == v6)
+  if (v5 == userInfo2)
   {
-    v9 = v3;
+    v9 = errorCopy;
   }
 
   else
   {
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [v3 domain];
-    v9 = [v7 errorWithDomain:v8 code:objc_msgSend(v3 userInfo:{"code"), v5}];
+    domain = [errorCopy domain];
+    v9 = [v7 errorWithDomain:domain code:objc_msgSend(errorCopy userInfo:{"code"), v5}];
   }
 
   return v9;
 }
 
-- (void)syncSession:(id)a3 reportProgress:(double)a4
+- (void)syncSession:(id)session reportProgress:(double)progress
 {
-  v6 = [(PSYSyncCoordinator *)self progressHandler];
-  *&v5 = a4;
-  [v6 activityDidUpdateProgress:v5];
+  progressHandler = [(PSYSyncCoordinator *)self progressHandler];
+  *&v5 = progress;
+  [progressHandler activityDidUpdateProgress:v5];
 }
 
 - (void)syncDidCompleteSending
@@ -994,21 +994,21 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
   dispatch_async(queue, block);
 }
 
-- (void)syncDidFailWithError:(id)a3
+- (void)syncDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__PSYSyncCoordinator_syncDidFailWithError___block_invoke;
   v7[3] = &unk_2799FB588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)reportProgress:(double)a3
+- (void)reportProgress:(double)progress
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1016,22 +1016,22 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
   v4[2] = __37__PSYSyncCoordinator_reportProgress___block_invoke;
   v4[3] = &unk_2799FB738;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = progress;
   dispatch_async(queue, v4);
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  obj = a4;
+  obj = queue;
   if (!obj)
   {
     obj = MEMORY[0x277D85CD0];
     v6 = MEMORY[0x277D85CD0];
   }
 
-  v7 = a3;
+  delegateCopy = delegate;
   pthread_mutex_lock(&self->_delegateLock);
-  objc_storeWeak(&self->_delegate, v7);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   objc_storeStrong(&self->_delegateQueue, obj);
   if (!self->_hasStartedListening)
@@ -1052,9 +1052,9 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
   return WeakRetained;
 }
 
-- (void)performDelegateBlock:(id)a3
+- (void)performDelegateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   pthread_mutex_lock(&self->_delegateLock);
   v5 = self->_delegateQueue;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1064,9 +1064,9 @@ uint64_t __46__PSYSyncCoordinator_abortSyncWithCompletion___block_invoke(uint64_
   v9[2] = __43__PSYSyncCoordinator_performDelegateBlock___block_invoke;
   v9[3] = &unk_2799FB600;
   v10 = WeakRetained;
-  v11 = v4;
+  v11 = blockCopy;
   v7 = WeakRetained;
-  v8 = v4;
+  v8 = blockCopy;
   dispatch_async(v5, v9);
 }
 
@@ -1140,7 +1140,7 @@ void __49__PSYSyncCoordinator_invalidateActiveSyncSession__block_invoke(uint64_t
   MEMORY[0x2821F96F8]();
 }
 
-- (void)deviceChanged:(id)a3
+- (void)deviceChanged:(id)changed
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1182,19 +1182,19 @@ void __36__PSYSyncCoordinator_deviceChanged___block_invoke(uint64_t a1)
   }
 }
 
-- (id)syncSessionForOptions:(id)a3 supportsMigrationSync:(BOOL)a4
+- (id)syncSessionForOptions:(id)options supportsMigrationSync:(BOOL)sync
 {
-  v25 = a4;
+  syncCopy = sync;
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v6 = +[PSYRegistrySingleton registry];
-  v7 = [v6 getPairedDevices];
+  getPairedDevices = [v6 getPairedDevices];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v7;
+  v8 = getPairedDevices;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
@@ -1210,9 +1210,9 @@ LABEL_3:
       }
 
       v13 = *(*(&v26 + 1) + 8 * v12);
-      v14 = [v13 pairingID];
-      v15 = [v5 pairingIdentifier];
-      v16 = [v14 isEqual:v15];
+      pairingID = [v13 pairingID];
+      pairingIdentifier = [optionsCopy pairingIdentifier];
+      v16 = [pairingID isEqual:pairingIdentifier];
 
       if (v16)
       {
@@ -1238,11 +1238,11 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    v18 = [[PSYServiceSyncSession alloc] initWithQueue:self->_queue supportsMigrationSync:v25];
+    v18 = [[PSYServiceSyncSession alloc] initWithQueue:self->_queue supportsMigrationSync:syncCopy];
     [(PSYServiceSyncSession *)v18 setPdrPairedDevice:v17];
-    -[PSYServiceSyncSession setSyncSessionType:](v18, "setSyncSessionType:", [v5 syncSessionType]);
-    v19 = [v5 sessionIdentifier];
-    [(PSYServiceSyncSession *)v18 setSessionIdentifier:v19];
+    -[PSYServiceSyncSession setSyncSessionType:](v18, "setSyncSessionType:", [optionsCopy syncSessionType]);
+    sessionIdentifier = [optionsCopy sessionIdentifier];
+    [(PSYServiceSyncSession *)v18 setSessionIdentifier:sessionIdentifier];
 
     [(PSYServiceSyncSession *)v18 setDelegate:self];
     [(PSYServiceSyncSession *)v18 setSyncCoordinator:self];
@@ -1280,16 +1280,16 @@ LABEL_18:
   return v18;
 }
 
-- (void)beginDryRunSyncWithOptions:(id)a3 completion:(id)a4
+- (void)beginDryRunSyncWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
   v24 = 0;
-  v8 = [v6 testInput];
-  v9 = [v8 action];
+  testInput = [optionsCopy testInput];
+  action = [testInput action];
   v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v11 = dispatch_queue_create(0, v10);
   v12 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v11);
@@ -1309,11 +1309,11 @@ LABEL_18:
   v16[2] = __60__PSYSyncCoordinator_beginDryRunSyncWithOptions_completion___block_invoke_2;
   v16[3] = &unk_2799FB890;
   v16[4] = self;
-  v17 = v8;
-  v18 = v7;
-  v19 = v9;
-  v14 = v7;
-  v15 = v8;
+  v17 = testInput;
+  v18 = completionCopy;
+  v19 = action;
+  v14 = completionCopy;
+  v15 = testInput;
   dispatch_source_set_cancel_handler(v13, v16);
   dispatch_resume(v13);
 
@@ -1387,10 +1387,10 @@ void __60__PSYSyncCoordinator_beginDryRunSyncWithOptions_completion___block_invo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)exitForTestInput:(id)a3
+- (void)exitForTestInput:(id)input
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inputCopy = input;
   v4 = psy_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -1399,7 +1399,7 @@ void __60__PSYSyncCoordinator_beginDryRunSyncWithOptions_completion___block_invo
     v6 = psy_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "action")}];
+      v7 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(inputCopy, "action")}];
       v8 = 138543362;
       v9 = v7;
       _os_log_impl(&dword_25DF25000, v6, OS_LOG_TYPE_DEFAULT, "Exiting due to test input action: %{public}@", &v8, 0xCu);
@@ -1409,43 +1409,43 @@ void __60__PSYSyncCoordinator_beginDryRunSyncWithOptions_completion___block_invo
   exit(1);
 }
 
-- (void)registry:(id)a3 added:(id)a4
+- (void)registry:(id)registry added:(id)added
 {
-  v5 = a4;
-  v6 = v5;
+  addedCopy = added;
+  v6 = addedCopy;
   if (self->_monitoringDeviceChanges)
   {
-    v7 = v5;
-    v5 = [v5 isActive];
+    v7 = addedCopy;
+    addedCopy = [addedCopy isActive];
     v6 = v7;
-    if (v5)
+    if (addedCopy)
     {
-      v5 = [(PSYSyncCoordinator *)self deviceChanged:v7];
+      addedCopy = [(PSYSyncCoordinator *)self deviceChanged:v7];
       v6 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](addedCopy, v6);
 }
 
-- (void)registry:(id)a3 changed:(id)a4 properties:(id)a5
+- (void)registry:(id)registry changed:(id)changed properties:(id)properties
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  registryCopy = registry;
+  changedCopy = changed;
+  propertiesCopy = properties;
+  v10 = propertiesCopy;
   if (self->_monitoringDeviceChanges)
   {
-    v11 = [v9 containsObject:*MEMORY[0x277D37BB8]];
-    v12 = [v10 containsObject:*MEMORY[0x277D37BA8]];
-    if (v12)
+    v11 = [propertiesCopy containsObject:*MEMORY[0x277D37BB8]];
+    isActive = [v10 containsObject:*MEMORY[0x277D37BA8]];
+    if (isActive)
     {
-      v12 = [v8 isActive];
+      isActive = [changedCopy isActive];
     }
 
-    if (v12 | v11)
+    if (isActive | v11)
     {
-      [(PSYSyncCoordinator *)self deviceChanged:v8];
+      [(PSYSyncCoordinator *)self deviceChanged:changedCopy];
     }
   }
 

@@ -1,8 +1,8 @@
 @interface _EditScript
-- (_EditScript)initWithOperationPrecedence:(int64_t)a3 orderAtomsAscending:(BOOL)a4;
+- (_EditScript)initWithOperationPrecedence:(int64_t)precedence orderAtomsAscending:(BOOL)ascending;
 - (id)description;
-- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)a3;
-- (void)addToCurrentScriptAtomEditOperation:(int64_t)a3 editIndex:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6;
+- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)precedence;
+- (void)addToCurrentScriptAtomEditOperation:(int64_t)operation editIndex:(unint64_t)index newText:(id)text indexInArrayB:(unint64_t)b;
 - (void)computeDistanceMatrix;
 - (void)computeEditsFromMatrix;
 - (void)finalizeCurrentScriptAtom;
@@ -11,20 +11,20 @@
 
 @implementation _EditScript
 
-- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)a3
+- (id)operationPrecedenceArrayFromOperationPrecedence:(int64_t)precedence
 {
-  if ((a3 - 1) > 4)
+  if ((precedence - 1) > 4)
   {
     return &unk_1EFE2CAA8;
   }
 
   else
   {
-    return qword_1E7115A18[a3 - 1];
+    return qword_1E7115A18[precedence - 1];
   }
 }
 
-- (_EditScript)initWithOperationPrecedence:(int64_t)a3 orderAtomsAscending:(BOOL)a4
+- (_EditScript)initWithOperationPrecedence:(int64_t)precedence orderAtomsAscending:(BOOL)ascending
 {
   v13.receiver = self;
   v13.super_class = _EditScript;
@@ -35,8 +35,8 @@
     distanceMatrix = v6->_distanceMatrix;
     v6->_distanceMatrix = 0;
 
-    v7->_orderAtomsAscending = a4;
-    v9 = [(_EditScript *)v7 operationPrecedenceArrayFromOperationPrecedence:a3];
+    v7->_orderAtomsAscending = ascending;
+    v9 = [(_EditScript *)v7 operationPrecedenceArrayFromOperationPrecedence:precedence];
     operationPrecedenceArray = v7->_operationPrecedenceArray;
     v7->_operationPrecedenceArray = v9;
 
@@ -222,14 +222,14 @@ LABEL_40:
     while (1)
     {
       v20 = [(NSArray *)self->_operationPrecedenceArray objectAtIndex:v13];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
 
-      if (v21 == 3)
+      if (integerValue == 3)
       {
         break;
       }
 
-      if (v21 == 2)
+      if (integerValue == 2)
       {
         if (((v13 != 0) & ~v17) == 0)
         {
@@ -249,7 +249,7 @@ LABEL_40:
         }
       }
 
-      else if (v21 == 1)
+      else if (integerValue == 1)
       {
         if (v13)
         {
@@ -269,8 +269,8 @@ LABEL_40:
 
       else
       {
-        v23 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v23 handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:184 description:{@"The operation precedence array MUST NOT contain values other than eOperationSubstitute, eOperationInsert, and eOperationDelete, and MUST contain all 3."}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:184 description:{@"The operation precedence array MUST NOT contain values other than eOperationSubstitute, eOperationInsert, and eOperationDelete, and MUST contain all 3."}];
       }
 
 LABEL_38:
@@ -331,20 +331,20 @@ LABEL_59:
 
 - (void)initializeCurrentScriptAtom
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:204 description:@"Subclasses of _EditScript need to implement initailizeCurrentScriptAtom"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:204 description:@"Subclasses of _EditScript need to implement initailizeCurrentScriptAtom"];
 }
 
-- (void)addToCurrentScriptAtomEditOperation:(int64_t)a3 editIndex:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6
+- (void)addToCurrentScriptAtomEditOperation:(int64_t)operation editIndex:(unint64_t)index newText:(id)text indexInArrayB:(unint64_t)b
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v8 handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:210 description:@"Subclasses of _EditScript need to implement appendToScriptAtomIndex:string:operation:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:210 description:@"Subclasses of _EditScript need to implement appendToScriptAtomIndex:string:operation:"];
 }
 
 - (void)finalizeCurrentScriptAtom
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:216 description:@"Subclasses of _EditScript need to implement finalizeCurrentScriptAtom"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_EditScript.m" lineNumber:216 description:@"Subclasses of _EditScript need to implement finalizeCurrentScriptAtom"];
 }
 
 @end

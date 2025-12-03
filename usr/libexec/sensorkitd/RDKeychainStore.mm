@@ -1,21 +1,21 @@
 @interface RDKeychainStore
-- (BOOL)addToKeychainKey:(id)a3 withName:(id)a4 sensor:(id)a5;
-- (BOOL)removeFromKeychain:(id)a3;
-- (id)keyDataFromKeyChainWithName:(id)a3;
-- (id)keyNamesForSensor:(id)a3;
+- (BOOL)addToKeychainKey:(id)key withName:(id)name sensor:(id)sensor;
+- (BOOL)removeFromKeychain:(id)keychain;
+- (id)keyDataFromKeyChainWithName:(id)name;
+- (id)keyNamesForSensor:(id)sensor;
 @end
 
 @implementation RDKeychainStore
 
-- (BOOL)addToKeychainKey:(id)a3 withName:(id)a4 sensor:(id)a5
+- (BOOL)addToKeychainKey:(id)key withName:(id)name sensor:(id)sensor
 {
   v14[0] = kSecValueData;
   v14[1] = kSecAttrAccount;
-  v15[0] = a3;
-  v15[1] = a4;
+  v15[0] = key;
+  v15[1] = name;
   v14[2] = kSecAttrService;
   v14[3] = kSecClass;
-  v15[2] = a5;
+  v15[2] = sensor;
   v15[3] = kSecClassGenericPassword;
   v6 = SecItemAdd([NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4], 0);
   if (!v6)
@@ -47,7 +47,7 @@ LABEL_5:
     }
 
     v12 = 138543362;
-    v13 = a4;
+    nameCopy = name;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Key for %{public}@ already in keychain", &v12, 0xCu);
     LOBYTE(v8) = 1;
     return v8;
@@ -76,13 +76,13 @@ LABEL_5:
   }
 
   v12 = 138543362;
-  v13 = SecCopyErrorMessageString(v9, 0);
+  nameCopy = SecCopyErrorMessageString(v9, 0);
   _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to store key in the keychain. %{public}@", &v12, 0xCu);
   LOBYTE(v8) = 0;
   return v8;
 }
 
-- (id)keyDataFromKeyChainWithName:(id)a3
+- (id)keyDataFromKeyChainWithName:(id)name
 {
   v14[0] = kSecClass;
   v14[1] = kSecMatchLimit;
@@ -90,7 +90,7 @@ LABEL_5:
   v15[1] = kSecMatchLimitOne;
   v14[2] = kSecAttrAccount;
   v14[3] = kSecReturnData;
-  v15[2] = a3;
+  v15[2] = name;
   v15[3] = &__kCFBooleanTrue;
   result = 0;
   v4 = SecItemCopyMatching([NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:4], &result);
@@ -118,7 +118,7 @@ LABEL_5:
 
     v7 = SecCopyErrorMessageString(v5, 0);
     *buf = 138543618;
-    v11 = a3;
+    nameCopy = name;
     v12 = 2114;
     v13 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Failed to find key matching %{public}@. %{public}@", buf, 0x16u);
@@ -128,12 +128,12 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)removeFromKeychain:(id)a3
+- (BOOL)removeFromKeychain:(id)keychain
 {
   v14[0] = kSecClass;
   v14[1] = kSecAttrAccount;
   v15[0] = kSecClassGenericPassword;
-  v15[1] = a3;
+  v15[1] = keychain;
   v4 = SecItemDelete([NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2]);
   if (!v4)
   {
@@ -163,7 +163,7 @@ LABEL_5:
     }
 
     v10 = 138543618;
-    v11 = a3;
+    keychainCopy2 = keychain;
     v12 = 2114;
     v13 = SecCopyErrorMessageString(v7, 0);
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to find key matching %{public}@. %{public}@", &v10, 0x16u);
@@ -180,14 +180,14 @@ LABEL_5:
   if (os_log_type_enabled(qword_1000719D8, OS_LOG_TYPE_INFO))
   {
     v10 = 138543362;
-    v11 = a3;
+    keychainCopy2 = keychain;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Key %{public}@ not found in keychain", &v10, 0xCu);
   }
 
   return v6;
 }
 
-- (id)keyNamesForSensor:(id)a3
+- (id)keyNamesForSensor:(id)sensor
 {
   v30[0] = kSecClass;
   v30[1] = kSecMatchLimit;
@@ -195,7 +195,7 @@ LABEL_5:
   v31[1] = kSecMatchLimitAll;
   v30[2] = kSecAttrService;
   v30[3] = kSecReturnAttributes;
-  v31[2] = a3;
+  v31[2] = sensor;
   v31[3] = &__kCFBooleanTrue;
   result = 0;
   v4 = SecItemCopyMatching([NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:4], &result);
@@ -223,7 +223,7 @@ LABEL_5:
       }
 
       *buf = 138543362;
-      v27 = a3;
+      sensorCopy2 = sensor;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "No keys found for sensor %{public}@", buf, 0xCu);
       return &__NSArray0__struct;
     }
@@ -250,9 +250,9 @@ LABEL_5:
 
     v15 = SecCopyErrorMessageString(v13, 0);
     *buf = 138543618;
-    v27 = a3;
+    sensorCopy2 = sensor;
     v28 = 2114;
-    v29 = v15;
+    sensorCopy3 = v15;
     v16 = "Failed to find keys for sensor %{public}@ because %{public}@";
     v17 = v14;
 LABEL_27:
@@ -284,9 +284,9 @@ LABEL_27:
     }
 
     *buf = 134218242;
-    v27 = v6;
+    sensorCopy2 = v6;
     v28 = 2114;
-    v29 = a3;
+    sensorCopy3 = sensor;
     v16 = "Expecting CFArrayTypeID but got %lu when searching for keys for %{public}@";
     v17 = v18;
     goto LABEL_27;

@@ -1,7 +1,7 @@
 @interface PushNotificationServer
 - (_TtC15VisionCompanion22PushNotificationServer)init;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation PushNotificationServer
@@ -13,11 +13,11 @@
   return result;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = self;
+  connectionCopy = connection;
+  tokenCopy = token;
+  selfCopy = self;
   v8 = sub_2330F1E00();
   v10 = v9;
 
@@ -25,12 +25,12 @@
   sub_2330B52A8(v8, v10);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2330EF268(v7);
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
+  sub_2330EF268(messageCopy);
 }
 
 @end

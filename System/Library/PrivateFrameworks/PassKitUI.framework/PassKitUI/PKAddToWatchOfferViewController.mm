@@ -1,26 +1,26 @@
 @interface PKAddToWatchOfferViewController
-- (PKAddToWatchOfferViewController)initWithPass:(id)a3 context:(int64_t)a4;
+- (PKAddToWatchOfferViewController)initWithPass:(id)pass context:(int64_t)context;
 - (void)_clearInteractionDisabledView;
 - (void)_configureNavigationItem;
-- (void)_setIdleTimerDisabled:(BOOL)a3;
+- (void)_setIdleTimerDisabled:(BOOL)disabled;
 - (void)dealloc;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)showSpinner:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)showSpinner:(BOOL)spinner;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKAddToWatchOfferViewController
 
-- (PKAddToWatchOfferViewController)initWithPass:(id)a3 context:(int64_t)a4
+- (PKAddToWatchOfferViewController)initWithPass:(id)pass context:(int64_t)context
 {
-  v7 = a3;
-  v8 = [(PKExplanationViewController *)self initWithContext:a4];
+  passCopy = pass;
+  v8 = [(PKExplanationViewController *)self initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pass, a3);
+    objc_storeStrong(&v8->_pass, pass);
     v10 = objc_alloc_init(PKHeroCardWatchExplainationHeaderView);
     heroView = v9->_heroView;
     v9->_heroView = v10;
@@ -66,11 +66,11 @@ void __56__PKAddToWatchOfferViewController_initWithPass_context___block_invoke(u
 
 - (void)_configureNavigationItem
 {
-  v3 = [(PKAddToWatchOfferViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(PKAddToWatchOfferViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v4 = [(PKAddToWatchOfferViewController *)self navigationItem];
-  [v4 setTitle:&stru_1F3BD7330];
+  navigationItem2 = [(PKAddToWatchOfferViewController *)self navigationItem];
+  [navigationItem2 setTitle:&stru_1F3BD7330];
 }
 
 - (void)loadView
@@ -78,36 +78,36 @@ void __56__PKAddToWatchOfferViewController_initWithPass_context___block_invoke(u
   v16.receiver = self;
   v16.super_class = PKAddToWatchOfferViewController;
   [(PKExplanationViewController *)&v16 loadView];
-  v3 = [(PKAddToWatchOfferViewController *)self view];
+  view = [(PKAddToWatchOfferViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  [v5 setHeroView:self->_heroView];
-  [v5 setTopBackgroundColor:0];
+  [explanationView setHeroView:self->_heroView];
+  [explanationView setTopBackgroundColor:0];
   [(PKExplanationViewController *)self setPrivacyLinkController:0];
   v6 = PKLocalizedPaymentString(&cfstr_AddToAppleWatc.isa);
-  [v5 setTitleText:v6];
+  [explanationView setTitleText:v6];
 
-  v7 = [(PKSecureElementPass *)self->_pass paymentPass];
-  v8 = [v7 localizedDescription];
-  v9 = PKLocalizedPaymentString(&cfstr_AddToAppleWatc_0.isa, &stru_1F3BD5BF0.isa, v8);
-  [v5 setBodyText:v9];
+  paymentPass = [(PKSecureElementPass *)self->_pass paymentPass];
+  localizedDescription = [paymentPass localizedDescription];
+  v9 = PKLocalizedPaymentString(&cfstr_AddToAppleWatc_0.isa, &stru_1F3BD5BF0.isa, localizedDescription);
+  [explanationView setBodyText:v9];
 
-  v10 = [v5 dockView];
-  v11 = [v10 primaryButton];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
   v12 = PKLocalizedPaymentString(&cfstr_AddCard.isa);
-  [v11 setTitle:v12 forState:0];
+  [primaryButton setTitle:v12 forState:0];
 
-  [v11 addTarget:self action:sel__addToWatch forControlEvents:64];
-  v13 = [v10 footerView];
-  v14 = [v13 secondaryActionButton];
+  [primaryButton addTarget:self action:sel__addToWatch forControlEvents:64];
+  footerView = [dockView footerView];
+  secondaryActionButton = [footerView secondaryActionButton];
 
   v15 = PKLocalizedPaymentString(&cfstr_DoNotAddNow.isa);
-  [v14 setTitle:v15 forState:0];
+  [secondaryActionButton setTitle:v15 forState:0];
 
-  [v14 addTarget:self action:sel__addLater forControlEvents:64];
+  [secondaryActionButton addTarget:self action:sel__addLater forControlEvents:64];
 }
 
 - (void)viewWillLayoutSubviews
@@ -117,52 +117,52 @@ void __56__PKAddToWatchOfferViewController_initWithPass_context___block_invoke(u
   [(PKExplanationViewController *)&v2 viewWillLayoutSubviews];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKAddToWatchOfferViewController;
-  [(PKAddToWatchOfferViewController *)&v4 viewWillDisappear:a3];
+  [(PKAddToWatchOfferViewController *)&v4 viewWillDisappear:disappear];
   [(PKAddToWatchOfferViewController *)self _clearInteractionDisabledView];
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v17 = [(PKExplanationViewController *)self explanationView];
-  v5 = [v17 dockView];
-  v6 = [v5 primaryButton];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
 
-  v7 = !v3;
-  [v6 setEnabled:v7];
+  v7 = !spinnerCopy;
+  [primaryButton setEnabled:v7];
   if (v7)
   {
-    [v6 setShowSpinner:0];
-    v15 = [(PKAddToWatchOfferViewController *)self navigationItem];
-    v16 = [v15 rightBarButtonItem];
-    [v16 setEnabled:1];
+    [primaryButton setShowSpinner:0];
+    navigationItem = [(PKAddToWatchOfferViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:1];
 
     [(PKAddToWatchOfferViewController *)self _clearInteractionDisabledView];
   }
 
   else
   {
-    [v6 setShowSpinner:1];
-    v8 = [(PKAddToWatchOfferViewController *)self navigationItem];
-    v9 = [v8 rightBarButtonItem];
-    [v9 setEnabled:0];
+    [primaryButton setShowSpinner:1];
+    navigationItem2 = [(PKAddToWatchOfferViewController *)self navigationItem];
+    rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem2 setEnabled:0];
 
     if (!self->_interactionDisabledView)
     {
-      v10 = [(PKAddToWatchOfferViewController *)self navigationController];
-      v11 = v10;
-      if (!v10)
+      selfCopy = [(PKAddToWatchOfferViewController *)self navigationController];
+      v11 = selfCopy;
+      if (!selfCopy)
       {
-        v10 = self;
+        selfCopy = self;
       }
 
-      v12 = [v10 view];
+      view = [selfCopy view];
       interactionDisabledView = self->_interactionDisabledView;
-      self->_interactionDisabledView = v12;
+      self->_interactionDisabledView = view;
 
       v14 = self->_interactionDisabledView;
       if (v14)
@@ -187,15 +187,15 @@ void __56__PKAddToWatchOfferViewController_initWithPass_context___block_invoke(u
   }
 }
 
-- (void)_setIdleTimerDisabled:(BOOL)a3
+- (void)_setIdleTimerDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v11 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"enabled";
-    if (v3)
+    if (disabledCopy)
     {
       v5 = @"disabled";
     }
@@ -207,17 +207,17 @@ void __56__PKAddToWatchOfferViewController_initWithPass_context___block_invoke(u
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Payment Setup has %@ the Idle Timer. (For: %@)", &v7, 0x16u);
   }
 
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v6 _setIdleTimerDisabled:v3 forReason:@"PKAddToWatchOfferViewController"];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] _setIdleTimerDisabled:disabledCopy forReason:@"PKAddToWatchOfferViewController"];
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKAddToWatchOfferViewController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(PKAddToWatchOfferViewController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  [(PKAddToWatchOfferViewController *)self showSpinner:v4];
+  [(PKAddToWatchOfferViewController *)self showSpinner:iCopy];
 }
 
 @end

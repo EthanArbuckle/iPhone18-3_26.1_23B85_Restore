@@ -2,18 +2,18 @@
 - (BOOL)paused;
 - (BOOL)shouldAccentDesaturatedView;
 - (BOOL)shouldCallRenderStatsHandlerOnMainQueue;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CLKMonochromeFilterProvider)filterProvider;
 - (NSData)viewData;
 - (_TtC19ComplicationDisplay20_ComplicationHosting)init;
 - (id)renderStatsHandler;
 - (void)dealloc;
-- (void)setPaused:(BOOL)a3;
-- (void)setRenderStatsHandler:(id)a3;
-- (void)setShouldAccentDesaturatedView:(BOOL)a3;
-- (void)setShouldCallRenderStatsHandlerOnMainQueue:(BOOL)a3;
-- (void)setViewData:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)setRenderStatsHandler:(id)handler;
+- (void)setShouldAccentDesaturatedView:(BOOL)view;
+- (void)setShouldCallRenderStatsHandlerOnMainQueue:(BOOL)queue;
+- (void)setViewData:(id)data;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)waitForAsyncRendering;
 @end
 
@@ -51,9 +51,9 @@
   return v4;
 }
 
-- (void)setRenderStatsHandler:(id)a3
+- (void)setRenderStatsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -72,7 +72,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_243DA0B20(v7);
 }
 
@@ -83,11 +83,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldCallRenderStatsHandlerOnMainQueue:(BOOL)a3
+- (void)setShouldCallRenderStatsHandlerOnMainQueue:(BOOL)queue
 {
   v5 = OBJC_IVAR____TtC19ComplicationDisplay20_ComplicationHosting_shouldCallRenderStatsHandlerOnMainQueue;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = queue;
 }
 
 - (BOOL)shouldAccentDesaturatedView
@@ -97,11 +97,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldAccentDesaturatedView:(BOOL)a3
+- (void)setShouldAccentDesaturatedView:(BOOL)view
 {
   v5 = OBJC_IVAR____TtC19ComplicationDisplay20_ComplicationHosting_shouldAccentDesaturatedView;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = view;
 }
 
 - (void)dealloc
@@ -109,22 +109,22 @@
   v3 = *(self + OBJC_IVAR____TtC19ComplicationDisplay20_ComplicationHosting_hostingViewController);
   v4 = *(self + OBJC_IVAR____TtC19ComplicationDisplay20_ComplicationHosting_hostingViewController + 8);
   swift_getObjectType();
-  v5 = self;
+  selfCopy = self;
   v6 = v3;
   sub_243DAE080();
   sub_243DADB30();
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for _ComplicationHosting();
   [(_ComplicationHosting *)&v7 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = *(self + OBJC_IVAR____TtC19ComplicationDisplay20_ComplicationHosting_hostingViewController);
   v5 = *(self + OBJC_IVAR____TtC19ComplicationDisplay20_ComplicationHosting_hostingViewController + 8);
   swift_getObjectType();
-  v6 = self;
+  selfCopy = self;
   sub_243DADAF0();
   v8 = v7;
   v10 = v9;
@@ -154,20 +154,20 @@
   return v3;
 }
 
-- (void)setViewData:(id)a3
+- (void)setViewData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_243DAD7A0();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = sub_243DAD7A0();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -175,7 +175,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = dataCopy;
   v10[1] = v8;
   sub_243DA2C0C(v11, v12);
 }
@@ -187,16 +187,16 @@
   return *(self + v3);
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   v5 = OBJC_IVAR____TtC19ComplicationDisplay20_ComplicationHosting_paused;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = paused;
 }
 
 - (void)waitForAsyncRendering
 {
-  v2 = self;
+  selfCopy = self;
   sub_243DA1B74();
 }
 
@@ -207,9 +207,9 @@
   return result;
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v3 = self;
+  selfCopy = self;
   _ComplicationHosting.transitionToMonochrome(withFraction:)();
 }
 

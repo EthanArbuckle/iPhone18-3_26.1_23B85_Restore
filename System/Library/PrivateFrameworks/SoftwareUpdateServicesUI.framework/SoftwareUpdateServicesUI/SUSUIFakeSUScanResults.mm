@@ -8,19 +8,19 @@
 
 - (SUSUIFakeSUScanResults)init
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v5 = [(SUSUIFakeSUScanResults *)self fakePreferredDescriptor];
-  v4 = [(SUSUIFakeSUScanResults *)v9 fakeAlternateDescriptor];
-  v9 = 0;
+  fakePreferredDescriptor = [(SUSUIFakeSUScanResults *)self fakePreferredDescriptor];
+  fakeAlternateDescriptor = [(SUSUIFakeSUScanResults *)selfCopy fakeAlternateDescriptor];
+  selfCopy = 0;
   v7.receiver = self;
   v7.super_class = SUSUIFakeSUScanResults;
-  v9 = [(SUScanResults *)&v7 initWithPreferredDescriptor:v5 alternateDescriptor:?];
-  objc_storeStrong(&v9, v9);
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  v6 = MEMORY[0x277D82BE0](v9);
-  objc_storeStrong(&v9, 0);
+  selfCopy = [(SUScanResults *)&v7 initWithPreferredDescriptor:fakePreferredDescriptor alternateDescriptor:?];
+  objc_storeStrong(&selfCopy, selfCopy);
+  MEMORY[0x277D82BD8](fakeAlternateDescriptor);
+  MEMORY[0x277D82BD8](fakePreferredDescriptor);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 

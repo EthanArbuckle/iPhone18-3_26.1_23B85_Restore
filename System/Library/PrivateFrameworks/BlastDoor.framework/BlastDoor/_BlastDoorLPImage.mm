@@ -1,12 +1,12 @@
 @interface _BlastDoorLPImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_BlastDoorLPImage)init;
-- (_BlastDoorLPImage)initWithCoder:(id)a3;
+- (_BlastDoorLPImage)initWithCoder:(id)coder;
 - (_BlastDoorLPImageProperties)properties;
-- (id)_initWithImage:(id)a3;
-- (id)_initWithImage:(id)a3 properties:(id)a4;
+- (id)_initWithImage:(id)image;
+- (id)_initWithImage:(id)image properties:(id)properties;
 - (unint64_t)_encodedSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPImage
@@ -21,59 +21,59 @@
   return result;
 }
 
-- (id)_initWithImage:(id)a3
+- (id)_initWithImage:(id)image
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && (v14.receiver = self, v14.super_class = _BlastDoorLPImage, (self = [(_BlastDoorLPImage *)&v14 init]) != 0))
+  imageCopy = image;
+  if (imageCopy && (v14.receiver = self, v14.super_class = _BlastDoorLPImage, (self = [(_BlastDoorLPImage *)&v14 init]) != 0))
   {
-    v5 = [v4[1] copy];
+    v5 = [imageCopy[1] copy];
     data = self->_data;
     self->_data = v5;
 
-    v7 = [v4[2] copy];
+    v7 = [imageCopy[2] copy];
     MIMEType = self->_MIMEType;
     self->_MIMEType = v7;
 
-    objc_storeStrong(&self->_fileURL, v4[3]);
-    v9 = [v4[4] copy];
+    objc_storeStrong(&self->_fileURL, imageCopy[3]);
+    v9 = [imageCopy[4] copy];
     properties = self->_properties;
     self->_properties = v9;
 
     self = self;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
-- (id)_initWithImage:(id)a3 properties:(id)a4
+- (id)_initWithImage:(id)image properties:(id)properties
 {
-  v7 = a4;
-  v8 = [(_BlastDoorLPImage *)self _initWithImage:a3];
+  propertiesCopy = properties;
+  v8 = [(_BlastDoorLPImage *)self _initWithImage:image];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 4, a4);
+    objc_storeStrong(v8 + 4, properties);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = _BlastDoorLPImage;
-  if ([(_BlastDoorLPImage *)&v13 isEqual:v4])
+  if ([(_BlastDoorLPImage *)&v13 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -83,7 +83,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6[1];
       if (v7 | self->_data && ![v7 isEqual:?] || (v8 = v6[2], v8 | self->_MIMEType) && !objc_msgSend(v8, "isEqual:") || (v9 = v6[3], v9 | self->_fileURL) && !objc_msgSend(v9, "isEqual:"))
       {
@@ -115,20 +115,20 @@
   return v5;
 }
 
-- (_BlastDoorLPImage)initWithCoder:(id)a3
+- (_BlastDoorLPImage)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = _BlastDoorLPImage;
   v5 = [(_BlastDoorLPImage *)&v18 init];
   if (v5)
   {
-    v6 = [v4 _bd_lp_strictlyDecodeNSDataForKey:@"data"];
+    v6 = [coderCopy _bd_lp_strictlyDecodeNSDataForKey:@"data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 _bd_lp_strictlyDecodeNSStringForKey:@"MIMEType"];
+    v8 = [coderCopy _bd_lp_strictlyDecodeNSStringForKey:@"MIMEType"];
     MIMEType = v5->_MIMEType;
     v5->_MIMEType = v8;
 
@@ -136,16 +136,16 @@
     properties = v5->_properties;
     v5->_properties = v10;
 
-    v12 = [v4 _bd_lp_strictlyDecodeNSStringForKey:@"accessibilityText"];
+    v12 = [coderCopy _bd_lp_strictlyDecodeNSStringForKey:@"accessibilityText"];
     [(_BlastDoorLPImageProperties *)v5->_properties setAccessibilityText:v12];
 
-    v13 = [v4 _bd_lp_strictlyDecodeColorForKey:@"overlaidTextColor"];
+    v13 = [coderCopy _bd_lp_strictlyDecodeColorForKey:@"overlaidTextColor"];
     [(_BlastDoorLPImageProperties *)v5->_properties setOverlaidTextColor:v13];
 
-    v14 = [v4 _bd_lp_strictlyDecodeColorForKey:@"dominantColor"];
+    v14 = [coderCopy _bd_lp_strictlyDecodeColorForKey:@"dominantColor"];
     [(_BlastDoorLPImageProperties *)v5->_properties setDominantColor:v14];
 
-    -[_BlastDoorLPImageProperties setType:](v5->_properties, "setType:", [v4 decodeIntegerForKey:@"imageType"]);
+    -[_BlastDoorLPImageProperties setType:](v5->_properties, "setType:", [coderCopy decodeIntegerForKey:@"imageType"]);
     if ([(_BlastDoorLPImageProperties *)v5->_properties type]>= 8)
     {
       [(_BlastDoorLPImageProperties *)v5->_properties setType:0];
@@ -158,25 +158,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   if ([(_BlastDoorLPImage *)self _shouldEncodeData])
   {
-    [v7 _bd_lp_encodeObjectIfNotNil:self->_data forKey:@"data"];
+    [coderCopy _bd_lp_encodeObjectIfNotNil:self->_data forKey:@"data"];
   }
 
-  [v7 _bd_lp_encodeObjectIfNotNil:self->_MIMEType forKey:@"MIMEType"];
-  v4 = [(_BlastDoorLPImageProperties *)self->_properties accessibilityText];
-  [v7 _bd_lp_encodeObjectIfNotNil:v4 forKey:@"accessibilityText"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_MIMEType forKey:@"MIMEType"];
+  accessibilityText = [(_BlastDoorLPImageProperties *)self->_properties accessibilityText];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:accessibilityText forKey:@"accessibilityText"];
 
-  v5 = [(_BlastDoorLPImageProperties *)self->_properties overlaidTextColor];
-  [v7 _bd_lp_encodeColorIfNotNil:v5 forKey:@"overlaidTextColor"];
+  overlaidTextColor = [(_BlastDoorLPImageProperties *)self->_properties overlaidTextColor];
+  [coderCopy _bd_lp_encodeColorIfNotNil:overlaidTextColor forKey:@"overlaidTextColor"];
 
-  v6 = [(_BlastDoorLPImageProperties *)self->_properties dominantColor];
-  [v7 _bd_lp_encodeColorIfNotNil:v6 forKey:@"dominantColor"];
+  dominantColor = [(_BlastDoorLPImageProperties *)self->_properties dominantColor];
+  [coderCopy _bd_lp_encodeColorIfNotNil:dominantColor forKey:@"dominantColor"];
 
-  [v7 encodeInteger:-[_BlastDoorLPImageProperties type](self->_properties forKey:{"type"), @"imageType"}];
+  [coderCopy encodeInteger:-[_BlastDoorLPImageProperties type](self->_properties forKey:{"type"), @"imageType"}];
 }
 
 - (_BlastDoorLPImageProperties)properties
@@ -188,8 +188,8 @@
 
 - (unint64_t)_encodedSize
 {
-  v2 = [(_BlastDoorLPImage *)self data];
-  v3 = [v2 length];
+  data = [(_BlastDoorLPImage *)self data];
+  v3 = [data length];
 
   return v3;
 }

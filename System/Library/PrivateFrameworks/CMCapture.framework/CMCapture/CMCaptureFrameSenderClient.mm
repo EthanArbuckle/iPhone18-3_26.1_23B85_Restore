@@ -1,15 +1,15 @@
 @interface CMCaptureFrameSenderClient
-- (CMCaptureFrameSenderClient)initWithConnection:(id)a3 queue:(id)a4;
-- (int)sendXCPSampleBuffer:(id)a3;
+- (CMCaptureFrameSenderClient)initWithConnection:(id)connection queue:(id)queue;
+- (int)sendXCPSampleBuffer:(id)buffer;
 - (void)_invalidate;
 - (void)dealloc;
 @end
 
 @implementation CMCaptureFrameSenderClient
 
-- (CMCaptureFrameSenderClient)initWithConnection:(id)a3 queue:(id)a4
+- (CMCaptureFrameSenderClient)initWithConnection:(id)connection queue:(id)queue
 {
-  if (!a3 || !a4)
+  if (!connection || !queue)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Need a connection and a queue" userInfo:0]);
   }
@@ -21,7 +21,7 @@
   {
     memset(&error[1], 0, 32);
     xpc_connection_get_audit_token();
-    pid = xpc_connection_get_pid(a3);
+    pid = xpc_connection_get_pid(connection);
     v7 = *MEMORY[0x1E695E480];
     token = *&error[1];
     v8 = SecTaskCreateWithAuditToken(v7, &token);
@@ -47,7 +47,7 @@ LABEL_23:
 
         if (v20)
         {
-          v21 = xpc_connection_get_pid(a3);
+          v21 = xpc_connection_get_pid(connection);
           LODWORD(error[1]) = 136315651;
           *(&error[1] + 4) = "[CMCaptureFrameSenderClient initWithConnection:queue:]";
           if (v15)
@@ -72,9 +72,9 @@ LABEL_23:
 
       if (v15)
       {
-        v5->_connection = a3;
+        v5->_connection = connection;
         v5->_queue = v5->_queue;
-        v5->_pid = xpc_connection_get_pid(a3);
+        v5->_pid = xpc_connection_get_pid(connection);
         v5->_connectionIsValid = 1;
         objc_initWeak(&token, v5);
         handler[0] = MEMORY[0x1E69E9820];
@@ -82,9 +82,9 @@ LABEL_23:
         handler[2] = __55__CMCaptureFrameSenderClient_initWithConnection_queue___block_invoke;
         handler[3] = &unk_1E798F8E8;
         objc_copyWeak(&v25, &token);
-        handler[4] = a3;
-        xpc_connection_set_event_handler(a3, handler);
-        xpc_connection_activate(a3);
+        handler[4] = connection;
+        xpc_connection_set_event_handler(connection, handler);
+        xpc_connection_activate(connection);
         objc_destroyWeak(&v25);
         objc_destroyWeak(&token);
       }
@@ -228,13 +228,13 @@ void __55__CMCaptureFrameSenderClient_initWithConnection_queue___block_invoke(ui
   }
 }
 
-- (int)sendXCPSampleBuffer:(id)a3
+- (int)sendXCPSampleBuffer:(id)buffer
 {
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v5, "call", "frame-output-notification");
-  if (a3)
+  if (buffer)
   {
-    xpc_dictionary_set_value(v5, "sample-buffer", a3);
+    xpc_dictionary_set_value(v5, "sample-buffer", buffer);
   }
 
   v6 = xpc_connection_send_message_with_reply_sync(self->_connection, v5);
@@ -243,7 +243,7 @@ void __55__CMCaptureFrameSenderClient_initWithConnection_queue___block_invoke(ui
     v7 = v6;
     v8 = MEMORY[0x1B26F2E20]();
     int64 = 0;
-    if (a3 && MEMORY[0x1E69E9E98] != MEMORY[0x1E69E9E80] && v8 == MEMORY[0x1E69E9E80])
+    if (buffer && MEMORY[0x1E69E9E98] != MEMORY[0x1E69E9E80] && v8 == MEMORY[0x1E69E9E80])
     {
       int64 = xpc_dictionary_get_int64(v7, "errorReturn");
     }

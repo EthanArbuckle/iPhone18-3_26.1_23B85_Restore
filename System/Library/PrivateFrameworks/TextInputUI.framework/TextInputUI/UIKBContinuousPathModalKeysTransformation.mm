@@ -1,19 +1,19 @@
 @interface UIKBContinuousPathModalKeysTransformation
-+ (id)_donorControlKeysForLastDisplayRowForKeyplane:(id)a3 transformationContext:(id)a4;
-+ (id)_donorKeyplaneForKeyplane:(id)a3 transformationContext:(id)a4;
-+ (id)rollbackKeyplane:(id)a3 withTransformationContext:(id)a4;
-+ (id)transformKeyplane:(id)a3 withTransformationContext:(id)a4;
++ (id)_donorControlKeysForLastDisplayRowForKeyplane:(id)keyplane transformationContext:(id)context;
++ (id)_donorKeyplaneForKeyplane:(id)keyplane transformationContext:(id)context;
++ (id)rollbackKeyplane:(id)keyplane withTransformationContext:(id)context;
++ (id)transformKeyplane:(id)keyplane withTransformationContext:(id)context;
 @end
 
 @implementation UIKBContinuousPathModalKeysTransformation
 
-+ (id)rollbackKeyplane:(id)a3 withTransformationContext:(id)a4
++ (id)rollbackKeyplane:(id)keyplane withTransformationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 keys];
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_25];
+  keyplaneCopy = keyplane;
+  keys = [keyplaneCopy keys];
+  [keys enumerateObjectsUsingBlock:&__block_literal_global_25];
 
-  return v4;
+  return keyplaneCopy;
 }
 
 void __88__UIKBContinuousPathModalKeysTransformation_rollbackKeyplane_withTransformationContext___block_invoke(uint64_t a1, void *a2)
@@ -44,13 +44,13 @@ void __88__UIKBContinuousPathModalKeysTransformation_rollbackKeyplane_withTransf
   }
 }
 
-+ (id)transformKeyplane:(id)a3 withTransformationContext:(id)a4
++ (id)transformKeyplane:(id)keyplane withTransformationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 keys];
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_3175];
+  keyplaneCopy = keyplane;
+  keys = [keyplaneCopy keys];
+  [keys enumerateObjectsUsingBlock:&__block_literal_global_3175];
 
-  return v4;
+  return keyplaneCopy;
 }
 
 void __89__UIKBContinuousPathModalKeysTransformation_transformKeyplane_withTransformationContext___block_invoke(uint64_t a1, void *a2)
@@ -92,11 +92,11 @@ void __89__UIKBContinuousPathModalKeysTransformation_transformKeyplane_withTrans
   }
 }
 
-+ (id)_donorControlKeysForLastDisplayRowForKeyplane:(id)a3 transformationContext:(id)a4
++ (id)_donorControlKeysForLastDisplayRowForKeyplane:(id)keyplane transformationContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _donorKeyplaneForKeyplane:a3 transformationContext:a4];
-  v5 = [MEMORY[0x1E695DFA0] orderedSet];
+  v4 = [self _donorKeyplaneForKeyplane:keyplane transformationContext:context];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -119,21 +119,21 @@ void __89__UIKBContinuousPathModalKeysTransformation_transformKeyplane_withTrans
         v11 = [v4 firstCachedKeyWithName:v10];
         if (v11)
         {
-          v12 = v11;
+          firstObject = v11;
         }
 
         else
         {
           v13 = [v4 keysByKeyName:v10];
-          v12 = [v13 firstObject];
+          firstObject = [v13 firstObject];
 
-          if (!v12)
+          if (!firstObject)
           {
             continue;
           }
         }
 
-        [v5 addObject:v12];
+        [orderedSet addObject:firstObject];
       }
 
       v7 = [&unk_1F03D8F60 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -142,16 +142,16 @@ void __89__UIKBContinuousPathModalKeysTransformation_transformKeyplane_withTrans
     while (v7);
   }
 
-  return v5;
+  return orderedSet;
 }
 
-+ (id)_donorKeyplaneForKeyplane:(id)a3 transformationContext:(id)a4
++ (id)_donorKeyplaneForKeyplane:(id)keyplane transformationContext:(id)context
 {
-  v5 = a4;
-  v6 = [a3 alternateKeyplaneName];
-  v7 = [v5 activeKeyboard];
+  contextCopy = context;
+  alternateKeyplaneName = [keyplane alternateKeyplaneName];
+  activeKeyboard = [contextCopy activeKeyboard];
 
-  v8 = [v7 subtreeWithName:v6];
+  v8 = [activeKeyboard subtreeWithName:alternateKeyplaneName];
 
   return v8;
 }

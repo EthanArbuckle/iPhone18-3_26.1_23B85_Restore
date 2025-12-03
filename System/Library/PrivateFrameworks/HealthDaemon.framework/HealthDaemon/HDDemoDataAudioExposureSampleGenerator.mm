@@ -1,12 +1,12 @@
 @interface HDDemoDataAudioExposureSampleGenerator
 - (HDDemoDataAudioExposureSampleGenerator)init;
-- (HDDemoDataAudioExposureSampleGenerator)initWithCoder:(id)a3;
+- (HDDemoDataAudioExposureSampleGenerator)initWithCoder:(id)coder;
 - (id)_headphoneAudioExposureMetadata;
-- (id)_headphoneProvenanceWithPerson:(void *)a1;
-- (id)_makeNormallyDistributedAudioExposureLevelsWithCount:(unint64_t)a1 audioLevelType:(uint64_t)a2 loudData:(char)a3;
-- (id)_makeQuantitySampleWithType:(void *)a1 value:(void *)a2 unit:(void *)a3 startDate:(void *)a4 endDate:(void *)a5 metadata:(void *)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
+- (id)_headphoneProvenanceWithPerson:(void *)person;
+- (id)_makeNormallyDistributedAudioExposureLevelsWithCount:(unint64_t)count audioLevelType:(uint64_t)type loudData:(char)data;
+- (id)_makeQuantitySampleWithType:(void *)type value:(void *)value unit:(void *)unit startDate:(void *)date endDate:(void *)endDate metadata:(void *)metadata;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
 @end
 
 @implementation HDDemoDataAudioExposureSampleGenerator
@@ -33,25 +33,25 @@
   return v3;
 }
 
-- (HDDemoDataAudioExposureSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataAudioExposureSampleGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HDDemoDataAudioExposureSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v13 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"NextEnvironmentalAudioExposureSampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"NextEnvironmentalAudioExposureSampleTimeKey"];
     v5->_nextEnvironmentalAudioExposureSampleTime = v6;
-    v5->_didGenerateEnvironmentalAudioExposureSamples = [v4 decodeBoolForKey:@"DidGenerateEnvironmentalAudioExposureSamplesKey"];
-    [v4 decodeDoubleForKey:@"NextHeadphoneAudioExposureSampleTimeKey"];
+    v5->_didGenerateEnvironmentalAudioExposureSamples = [coderCopy decodeBoolForKey:@"DidGenerateEnvironmentalAudioExposureSamplesKey"];
+    [coderCopy decodeDoubleForKey:@"NextHeadphoneAudioExposureSampleTimeKey"];
     v5->_nextHeadphoneAudioExposureSampleTime = v7;
-    v5->_didGenerateHeadphoneAudioExposureSamples = [v4 decodeBoolForKey:@"DidGenerateHeadphoneAudioExposureSamplesKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastEnvironmentalSampleEndDateKey"];
+    v5->_didGenerateHeadphoneAudioExposureSamples = [coderCopy decodeBoolForKey:@"DidGenerateHeadphoneAudioExposureSamplesKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastEnvironmentalSampleEndDateKey"];
     lastEnvironmentalSampleEndDate = v5->_lastEnvironmentalSampleEndDate;
     v5->_lastEnvironmentalSampleEndDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastHeadphoneSampleEndDateKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastHeadphoneSampleEndDateKey"];
     lastHeadphoneSampleEndDate = v5->_lastHeadphoneSampleEndDate;
     v5->_lastHeadphoneSampleEndDate = v10;
   }
@@ -59,49 +59,49 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = HDDemoDataAudioExposureSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v6 encodeWithCoder:v4];
+  [(HDDemoDataBaseSampleGenerator *)&v6 encodeWithCoder:coderCopy];
   if (self)
   {
-    [v4 encodeDouble:@"NextEnvironmentalAudioExposureSampleTimeKey" forKey:self->_nextEnvironmentalAudioExposureSampleTime];
-    [v4 encodeBool:self->_didGenerateEnvironmentalAudioExposureSamples forKey:@"DidGenerateEnvironmentalAudioExposureSamplesKey"];
-    [v4 encodeDouble:@"NextHeadphoneAudioExposureSampleTimeKey" forKey:self->_nextHeadphoneAudioExposureSampleTime];
-    [v4 encodeBool:self->_didGenerateHeadphoneAudioExposureSamples forKey:@"DidGenerateHeadphoneAudioExposureSamplesKey"];
-    [v4 encodeObject:self->_lastHeadphoneSampleEndDate forKey:@"LastHeadphoneSampleEndDateKey"];
+    [coderCopy encodeDouble:@"NextEnvironmentalAudioExposureSampleTimeKey" forKey:self->_nextEnvironmentalAudioExposureSampleTime];
+    [coderCopy encodeBool:self->_didGenerateEnvironmentalAudioExposureSamples forKey:@"DidGenerateEnvironmentalAudioExposureSamplesKey"];
+    [coderCopy encodeDouble:@"NextHeadphoneAudioExposureSampleTimeKey" forKey:self->_nextHeadphoneAudioExposureSampleTime];
+    [coderCopy encodeBool:self->_didGenerateHeadphoneAudioExposureSamples forKey:@"DidGenerateHeadphoneAudioExposureSamplesKey"];
+    [coderCopy encodeObject:self->_lastHeadphoneSampleEndDate forKey:@"LastHeadphoneSampleEndDateKey"];
     lastEnvironmentalSampleEndDate = self->_lastEnvironmentalSampleEndDate;
   }
 
   else
   {
-    [v4 encodeDouble:@"NextEnvironmentalAudioExposureSampleTimeKey" forKey:0.0];
-    [v4 encodeBool:0 forKey:@"DidGenerateEnvironmentalAudioExposureSamplesKey"];
-    [v4 encodeDouble:@"NextHeadphoneAudioExposureSampleTimeKey" forKey:0.0];
-    [v4 encodeBool:0 forKey:@"DidGenerateHeadphoneAudioExposureSamplesKey"];
-    [v4 encodeObject:0 forKey:@"LastHeadphoneSampleEndDateKey"];
+    [coderCopy encodeDouble:@"NextEnvironmentalAudioExposureSampleTimeKey" forKey:0.0];
+    [coderCopy encodeBool:0 forKey:@"DidGenerateEnvironmentalAudioExposureSamplesKey"];
+    [coderCopy encodeDouble:@"NextHeadphoneAudioExposureSampleTimeKey" forKey:0.0];
+    [coderCopy encodeBool:0 forKey:@"DidGenerateHeadphoneAudioExposureSamplesKey"];
+    [coderCopy encodeObject:0 forKey:@"LastHeadphoneSampleEndDateKey"];
     lastEnvironmentalSampleEndDate = 0;
   }
 
-  [v4 encodeObject:lastEnvironmentalSampleEndDate forKey:@"LastEnvironmentalSampleEndDateKey"];
+  [coderCopy encodeObject:lastEnvironmentalSampleEndDate forKey:@"LastEnvironmentalSampleEndDateKey"];
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
-  v10 = self;
+  selfCopy = self;
   v201 = *MEMORY[0x277D85DE8];
   v187.receiver = self;
   v187.super_class = HDDemoDataAudioExposureSampleGenerator;
-  v11 = a7;
-  v12 = a6;
-  v13 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v187 generateObjectsForDemoPerson:v13 fromTime:v12 toTime:v11 currentDate:a5 objectCollection:a5];
-  v14 = v13;
-  v152 = v12;
-  v159 = v11;
-  if (!v10)
+  collectionCopy = collection;
+  dateCopy = date;
+  personCopy = person;
+  [(HDDemoDataBaseSampleGenerator *)&v187 generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:collectionCopy currentDate:toTime objectCollection:toTime];
+  v14 = personCopy;
+  v152 = dateCopy;
+  v159 = collectionCopy;
+  if (!selfCopy)
   {
 
     v15 = v152;
@@ -111,27 +111,27 @@
     goto LABEL_70;
   }
 
-  v158 = v10;
-  if (v10->_nextEnvironmentalAudioExposureSampleTime > a5)
+  v158 = selfCopy;
+  if (selfCopy->_nextEnvironmentalAudioExposureSampleTime > toTime)
   {
-    v10->_didGenerateEnvironmentalAudioExposureSamples = 0;
+    selfCopy->_didGenerateEnvironmentalAudioExposureSamples = 0;
     v15 = v152;
     goto LABEL_30;
   }
 
   v15 = v152;
-  if (v10->_lastEnvironmentalSampleEndDate)
+  if (selfCopy->_lastEnvironmentalSampleEndDate)
   {
-    v16 = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
-    v17 = v10->_lastEnvironmentalSampleEndDate;
+    decibelAWeightedSoundPressureLevelUnit = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
+    v17 = selfCopy->_lastEnvironmentalSampleEndDate;
     v18 = v152;
-    v19 = [MEMORY[0x277CBEA80] currentCalendar];
-    v20 = [v19 component:32 fromDate:v18];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v20 = [currentCalendar component:32 fromDate:v18];
 
     if (v20 >= 22)
     {
-      v21 = [MEMORY[0x277CBEA80] currentCalendar];
-      v22 = [v21 dateBySettingHour:22 minute:0 second:0 ofDate:v18 options:2];
+      currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+      v22 = [currentCalendar2 dateBySettingHour:22 minute:0 second:0 ofDate:v18 options:2];
 
       v18 = v22;
     }
@@ -140,10 +140,10 @@
     if (v23 >= 120)
     {
       v146 = v18;
-      v148 = v16;
+      v148 = decibelAWeightedSoundPressureLevelUnit;
       v149 = v14;
       v24 = v23 / 0x78uLL;
-      v173 = v16;
+      v173 = decibelAWeightedSoundPressureLevelUnit;
       v147 = v17;
       v25 = v17;
       v167 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB58]];
@@ -186,12 +186,12 @@
 
         v178 = [HDDemoDataAudioExposureSampleGenerator _makeQuantitySampleWithType:v167 value:v30 unit:v173 startDate:v26 endDate:v27 metadata:0];
         [v175 addObject:?];
-        v33 = [MEMORY[0x277CBEA80] currentCalendar];
-        if ([v33 component:32 fromDate:v26] >= 11)
+        currentCalendar3 = [MEMORY[0x277CBEA80] currentCalendar];
+        if ([currentCalendar3 component:32 fromDate:v26] >= 11)
         {
-          v34 = [MEMORY[0x277CBEA80] currentCalendar];
+          currentCalendar4 = [MEMORY[0x277CBEA80] currentCalendar];
           v35 = v30;
-          v36 = [v34 component:32 fromDate:v27];
+          v36 = [currentCalendar4 component:32 fromDate:v27];
 
           v37 = v36 <= 11;
           v30 = v35;
@@ -200,8 +200,8 @@
             goto LABEL_19;
           }
 
-          v33 = [HDDemoDataAudioExposureSampleGenerator _makeQuantitySampleWithType:v151 value:v184 unit:v173 startDate:v26 endDate:v27 metadata:0];
-          [v175 addObject:v33];
+          currentCalendar3 = [HDDemoDataAudioExposureSampleGenerator _makeQuantitySampleWithType:v151 value:v184 unit:v173 startDate:v26 endDate:v27 metadata:0];
+          [v175 addObject:currentCalendar3];
         }
 
 LABEL_19:
@@ -251,33 +251,33 @@ LABEL_19:
             [v159 addObjectsFromWatch:v52];
           }
 
-          v53 = [v52 lastObject];
-          v54 = [v53 endDate];
-          v10 = v158;
+          lastObject = [v52 lastObject];
+          endDate = [lastObject endDate];
+          selfCopy = v158;
           lastEnvironmentalSampleEndDate = v158->_lastEnvironmentalSampleEndDate;
-          v158->_lastEnvironmentalSampleEndDate = v54;
+          v158->_lastEnvironmentalSampleEndDate = endDate;
 
-          v56 = [MEMORY[0x277CBEA80] currentCalendar];
-          v57 = [v56 dateByAddingUnit:32 value:1 toDate:v158->_lastEnvironmentalSampleEndDate options:2];
+          currentCalendar5 = [MEMORY[0x277CBEA80] currentCalendar];
+          v57 = [currentCalendar5 dateByAddingUnit:32 value:1 toDate:v158->_lastEnvironmentalSampleEndDate options:2];
 
-          v58 = [MEMORY[0x277CBEA80] currentCalendar];
-          v59 = [v58 dateBySettingHour:22 minute:0 second:0 ofDate:v158->_lastEnvironmentalSampleEndDate options:2];
+          currentCalendar6 = [MEMORY[0x277CBEA80] currentCalendar];
+          v59 = [currentCalendar6 dateBySettingHour:22 minute:0 second:0 ofDate:v158->_lastEnvironmentalSampleEndDate options:2];
 
           if ([v57 hk_isAfterDate:v59])
           {
-            v158->_nextEnvironmentalAudioExposureSampleTime = ceil(a5) + 0.25;
+            v158->_nextEnvironmentalAudioExposureSampleTime = ceil(toTime) + 0.25;
             v60 = v158->_lastEnvironmentalSampleEndDate;
             v158->_lastEnvironmentalSampleEndDate = 0;
           }
 
           else
           {
-            v158->_nextEnvironmentalAudioExposureSampleTime = a5 + 0.0416666667;
+            v158->_nextEnvironmentalAudioExposureSampleTime = toTime + 0.0416666667;
           }
 
           v15 = v152;
           v17 = v147;
-          v16 = v148;
+          decibelAWeightedSoundPressureLevelUnit = v148;
           v18 = v146;
           v158->_didGenerateEnvironmentalAudioExposureSamples = 1;
 
@@ -290,13 +290,13 @@ LABEL_19:
 
   else
   {
-    v61 = [MEMORY[0x277CBEA80] currentCalendar];
-    v62 = [v61 dateBySettingHour:6 minute:0 second:0 ofDate:v152 options:2];
-    v63 = v10->_lastEnvironmentalSampleEndDate;
-    v10->_lastEnvironmentalSampleEndDate = v62;
+    currentCalendar7 = [MEMORY[0x277CBEA80] currentCalendar];
+    v62 = [currentCalendar7 dateBySettingHour:6 minute:0 second:0 ofDate:v152 options:2];
+    v63 = selfCopy->_lastEnvironmentalSampleEndDate;
+    selfCopy->_lastEnvironmentalSampleEndDate = v62;
 
-    v10->_nextEnvironmentalAudioExposureSampleTime = 0.291666667;
-    v10->_didGenerateEnvironmentalAudioExposureSamples = 0;
+    selfCopy->_nextEnvironmentalAudioExposureSampleTime = 0.291666667;
+    selfCopy->_didGenerateEnvironmentalAudioExposureSamples = 0;
   }
 
 LABEL_30:
@@ -304,33 +304,33 @@ LABEL_30:
   v64 = v14;
   v65 = v15;
   v66 = v159;
-  if (v10->_nextHeadphoneAudioExposureSampleTime > a5)
+  if (selfCopy->_nextHeadphoneAudioExposureSampleTime > toTime)
   {
 LABEL_35:
-    v10->_didGenerateHeadphoneAudioExposureSamples = 0;
+    selfCopy->_didGenerateHeadphoneAudioExposureSamples = 0;
     goto LABEL_70;
   }
 
-  if (!v10->_lastHeadphoneSampleEndDate)
+  if (!selfCopy->_lastHeadphoneSampleEndDate)
   {
-    v76 = [MEMORY[0x277CBEA80] currentCalendar];
-    v77 = [v76 dateBySettingHour:6 minute:30 second:0 ofDate:v65 options:2];
-    lastHeadphoneSampleEndDate = v10->_lastHeadphoneSampleEndDate;
-    v10->_lastHeadphoneSampleEndDate = v77;
+    currentCalendar8 = [MEMORY[0x277CBEA80] currentCalendar];
+    v77 = [currentCalendar8 dateBySettingHour:6 minute:30 second:0 ofDate:v65 options:2];
+    lastHeadphoneSampleEndDate = selfCopy->_lastHeadphoneSampleEndDate;
+    selfCopy->_lastHeadphoneSampleEndDate = v77;
 
-    v10->_nextHeadphoneAudioExposureSampleTime = 0.3125;
+    selfCopy->_nextHeadphoneAudioExposureSampleTime = 0.3125;
     goto LABEL_35;
   }
 
   v150 = v14;
   v67 = *MEMORY[0x277CCCB88];
   v68 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCB88]];
-  v69 = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
-  v168 = v10->_lastHeadphoneSampleEndDate;
+  decibelAWeightedSoundPressureLevelUnit2 = [MEMORY[0x277CCDAB0] decibelAWeightedSoundPressureLevelUnit];
+  v168 = selfCopy->_lastHeadphoneSampleEndDate;
   v70 = v65;
   v71 = 0x277CBE000uLL;
-  v72 = [MEMORY[0x277CBEA80] currentCalendar];
-  v73 = [v72 component:32 fromDate:v70];
+  currentCalendar9 = [MEMORY[0x277CBEA80] currentCalendar];
+  v73 = [currentCalendar9 component:32 fromDate:v70];
 
   if (v73 < 23)
   {
@@ -339,25 +339,25 @@ LABEL_35:
 
   else
   {
-    v74 = [MEMORY[0x277CBEA80] currentCalendar];
-    v75 = [v74 dateBySettingHour:22 minute:0 second:0 ofDate:v70 options:2];
+    currentCalendar10 = [MEMORY[0x277CBEA80] currentCalendar];
+    v75 = [currentCalendar10 dateBySettingHour:22 minute:0 second:0 ofDate:v70 options:2];
   }
 
-  v79 = [v64 createHighFidelityData];
+  createHighFidelityData = [v64 createHighFidelityData];
   v161 = v75;
   [v75 timeIntervalSinceDate:v168];
-  v80 = [(HDDemoDataBaseSampleGenerator *)v10 demoDataGenerator];
-  v81 = [v80 configuration];
-  v82 = [v81 shouldGenerateLoudHeadphoneData];
-  v163 = v69;
+  demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+  configuration = [demoDataGenerator configuration];
+  shouldGenerateLoudHeadphoneData = [configuration shouldGenerateLoudHeadphoneData];
+  v163 = decibelAWeightedSoundPressureLevelUnit2;
   v165 = v68;
-  if (v79)
+  if (createHighFidelityData)
   {
-    v83 = [HDDemoDataAudioExposureSampleGenerator _makeNormallyDistributedAudioExposureLevelsWithCount:0 audioLevelType:v82 loudData:?];
+    v83 = [HDDemoDataAudioExposureSampleGenerator _makeNormallyDistributedAudioExposureLevelsWithCount:0 audioLevelType:shouldGenerateLoudHeadphoneData loudData:?];
 
     v84 = v68;
     v85 = v83;
-    v86 = v69;
+    v86 = decibelAWeightedSoundPressureLevelUnit2;
     v87 = v168;
     v88 = v64;
     if ([v85 count])
@@ -371,25 +371,25 @@ LABEL_35:
 
       v179 = v92;
       v185 = [MEMORY[0x277CCD800] _unfrozenQuantitySampleWithQuantityType:v84 quantity:v92 startDate:v87 device:0];
-      v93 = [v84 identifier];
-      LODWORD(v91) = [v93 isEqualToString:v67];
+      identifier = [v84 identifier];
+      LODWORD(v91) = [identifier isEqualToString:v67];
 
       if (v91)
       {
-        v94 = [HDDemoDataAudioExposureSampleGenerator _headphoneAudioExposureMetadata];
-        [v185 _setMetadata:v94];
+        _headphoneAudioExposureMetadata = [HDDemoDataAudioExposureSampleGenerator _headphoneAudioExposureMetadata];
+        [v185 _setMetadata:_headphoneAudioExposureMetadata];
       }
 
-      v95 = [(HDDemoDataBaseSampleGenerator *)v10 demoDataGenerator];
-      v96 = [v95 profile];
-      v97 = [v96 dataManager];
+      demoDataGenerator2 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+      profile = [demoDataGenerator2 profile];
+      dataManager = [profile dataManager];
 
-      v98 = [(HDDemoDataAudioExposureSampleGenerator *)v10 _headphoneProvenanceWithPerson:v88];
+      v98 = [(HDDemoDataAudioExposureSampleGenerator *)selfCopy _headphoneProvenanceWithPerson:v88];
       if (v98)
       {
-        v99 = [(HDDemoDataBaseSampleGenerator *)v10 demoDataGenerator];
-        v100 = [v99 profile];
-        [v100 database];
+        demoDataGenerator3 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+        profile2 = [demoDataGenerator3 profile];
+        [profile2 database];
         v102 = v101 = v85;
         v188 = 0;
         *v190 = MEMORY[0x277D85DD0];
@@ -398,8 +398,8 @@ LABEL_35:
         v193 = &unk_278614558;
         v194 = v87;
         v199 = 0x4008000000000000;
-        v176 = v97;
-        v195 = v97;
+        v176 = dataManager;
+        v195 = dataManager;
         v103 = v185;
         v196 = v103;
         v197 = v98;
@@ -424,11 +424,11 @@ LABEL_35:
         *&buf = v103;
         v106 = [MEMORY[0x277CBEA60] arrayWithObjects:&buf count:1];
 
-        v10 = v158;
+        selfCopy = v158;
         v71 = 0x277CBE000;
         v85 = v171;
         v86 = contexta;
-        v97 = v176;
+        dataManager = v176;
       }
 
       else
@@ -454,20 +454,20 @@ LABEL_35:
 
   else
   {
-    v107 = [HDDemoDataAudioExposureSampleGenerator _makeNormallyDistributedAudioExposureLevelsWithCount:0 audioLevelType:v82 loudData:?];
+    v107 = [HDDemoDataAudioExposureSampleGenerator _makeNormallyDistributedAudioExposureLevelsWithCount:0 audioLevelType:shouldGenerateLoudHeadphoneData loudData:?];
 
     contextb = v68;
     v85 = v107;
-    v180 = v69;
+    v180 = decibelAWeightedSoundPressureLevelUnit2;
     v108 = v168;
     v109 = v64;
     v110 = v108;
     v111 = [(NSDate *)v110 dateByAddingTimeInterval:120.0];
-    v112 = [(HDDemoDataBaseSampleGenerator *)v10 demoDataGenerator];
-    v113 = [v112 profile];
-    v177 = [v113 dataManager];
+    demoDataGenerator4 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+    profile3 = [demoDataGenerator4 profile];
+    dataManager2 = [profile3 dataManager];
 
-    v174 = [(HDDemoDataAudioExposureSampleGenerator *)v10 _headphoneProvenanceWithPerson:v109];
+    v174 = [(HDDemoDataAudioExposureSampleGenerator *)selfCopy _headphoneProvenanceWithPerson:v109];
     if (v174)
     {
       v157 = v109;
@@ -485,20 +485,20 @@ LABEL_35:
 
         v186 = objc_autoreleasePoolPush();
         v117 = [v85 objectAtIndex:{objc_msgSend(v115, "count")}];
-        v118 = [HDDemoDataAudioExposureSampleGenerator _headphoneAudioExposureMetadata];
-        v119 = [HDDemoDataAudioExposureSampleGenerator _makeQuantitySampleWithType:v117 value:v180 unit:v114 startDate:v111 endDate:v118 metadata:?];
+        _headphoneAudioExposureMetadata2 = [HDDemoDataAudioExposureSampleGenerator _headphoneAudioExposureMetadata];
+        v119 = [HDDemoDataAudioExposureSampleGenerator _makeQuantitySampleWithType:v117 value:v180 unit:v114 startDate:v111 endDate:_headphoneAudioExposureMetadata2 metadata:?];
 
         [v115 addObject:v119];
-        v120 = [(HDDemoDataBaseSampleGenerator *)v10 demoDataGenerator];
-        v121 = [v120 profile];
-        [v121 database];
+        demoDataGenerator5 = [(HDDemoDataBaseSampleGenerator *)selfCopy demoDataGenerator];
+        profile4 = [demoDataGenerator5 profile];
+        [profile4 database];
         v123 = v122 = v111;
         v188 = 0;
         *v190 = MEMORY[0x277D85DD0];
         v191 = 3221225472;
         v192 = __166__HDDemoDataAudioExposureSampleGenerator__makeHeadphoneSamplesWithType_rawSampleValues_sampleUnit_initialSampleDate_sampleDuration_distanceBetweenSamples_demoPerson___block_invoke;
         v193 = &unk_278615D40;
-        v194 = v177;
+        v194 = dataManager2;
         v124 = v119;
         v195 = v124;
         v196 = v174;
@@ -530,7 +530,7 @@ LABEL_35:
         }
 
         objc_autoreleasePoolPop(v186);
-        v10 = v158;
+        selfCopy = v158;
         v71 = 0x277CBE000;
         v85 = v172;
         if (!v125)
@@ -555,34 +555,34 @@ LABEL_59:
   }
 
   v130 = v106;
-  v131 = [v106 lastObject];
-  v132 = [v131 endDate];
-  v133 = v10->_lastHeadphoneSampleEndDate;
-  v10->_lastHeadphoneSampleEndDate = v132;
+  lastObject2 = [v106 lastObject];
+  endDate2 = [lastObject2 endDate];
+  v133 = selfCopy->_lastHeadphoneSampleEndDate;
+  selfCopy->_lastHeadphoneSampleEndDate = endDate2;
 
   v134 = arc4random_uniform(5u) + 1;
-  v135 = [*(v71 + 2688) currentCalendar];
-  v136 = [v135 dateByAddingUnit:32 value:v134 toDate:v10->_lastHeadphoneSampleEndDate options:2];
+  currentCalendar11 = [*(v71 + 2688) currentCalendar];
+  v136 = [currentCalendar11 dateByAddingUnit:32 value:v134 toDate:selfCopy->_lastHeadphoneSampleEndDate options:2];
 
-  v137 = [*(v71 + 2688) currentCalendar];
-  v138 = [v137 dateBySettingHour:22 minute:0 second:0 ofDate:v10->_lastHeadphoneSampleEndDate options:2];
+  currentCalendar12 = [*(v71 + 2688) currentCalendar];
+  v138 = [currentCalendar12 dateBySettingHour:22 minute:0 second:0 ofDate:selfCopy->_lastHeadphoneSampleEndDate options:2];
 
   if ([v136 hk_isAfterDate:v138])
   {
     v139 = 0;
-    v140 = ceil(a5) + 0.25;
+    v140 = ceil(toTime) + 0.25;
   }
 
   else
   {
-    v140 = (v134 * 3600.0 + 0.0 + 0.0) * 0.0000115740741 + a5;
+    v140 = (v134 * 3600.0 + 0.0 + 0.0) * 0.0000115740741 + toTime;
     v139 = v136;
   }
 
   v15 = v152;
-  v10->_nextHeadphoneAudioExposureSampleTime = v140;
-  objc_storeStrong(&v10->_lastHeadphoneSampleEndDate, v139);
-  v10->_didGenerateHeadphoneAudioExposureSamples = 1;
+  selfCopy->_nextHeadphoneAudioExposureSampleTime = v140;
+  objc_storeStrong(&selfCopy->_lastHeadphoneSampleEndDate, v139);
+  selfCopy->_didGenerateHeadphoneAudioExposureSamples = 1;
 
   v14 = v150;
 LABEL_70:
@@ -590,9 +590,9 @@ LABEL_70:
   v141 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_makeNormallyDistributedAudioExposureLevelsWithCount:(unint64_t)a1 audioLevelType:(uint64_t)a2 loudData:(char)a3
+- (id)_makeNormallyDistributedAudioExposureLevelsWithCount:(unint64_t)count audioLevelType:(uint64_t)type loudData:(char)data
 {
-  if (a2 == 2)
+  if (type == 2)
   {
     v5 = 25.0;
     v6 = &__block_literal_global_530_0;
@@ -601,7 +601,7 @@ LABEL_70:
   else
   {
     v5 = 105.0;
-    if (a2 == 1)
+    if (type == 1)
     {
       v6 = &__block_literal_global_112;
     }
@@ -613,19 +613,19 @@ LABEL_70:
       v23[1] = 3221225472;
       v23[2] = __119__HDDemoDataAudioExposureSampleGenerator__makeNormallyDistributedAudioExposureLevelsWithCount_audioLevelType_loudData___block_invoke;
       v23[3] = &__block_descriptor_33_e18_B16__0__NSNumber_8l;
-      v24 = a3;
+      dataCopy = data;
     }
   }
 
   v8 = [&unk_283CAF0D0 hk_filter:v6];
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:a1];
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
   v10 = v8;
   v11 = [v10 objectAtIndex:{arc4random_uniform(objc_msgSend(v10, "count"))}];
 
   [v11 doubleValue];
   v13 = v12;
 
-  if (!a2)
+  if (!type)
   {
     v14 = arc4random_uniform(0x28u);
     if (!v14)
@@ -633,10 +633,10 @@ LABEL_70:
       v13 = 96.0;
     }
 
-    a1 >>= v14 == 0;
+    count >>= v14 == 0;
   }
 
-  while ([v9 count] < a1)
+  while ([v9 count] < count)
   {
     v15 = objc_autoreleasePoolPush();
     v16 = arc4random() / 4294967300.0;
@@ -740,88 +740,88 @@ BOOL __119__HDDemoDataAudioExposureSampleGenerator__makeNormallyDistributedAudio
   return v4;
 }
 
-- (id)_headphoneProvenanceWithPerson:(void *)a1
+- (id)_headphoneProvenanceWithPerson:(void *)person
 {
   v69[4] = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = objc_alloc(MEMORY[0x277CCD2E8]);
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v4 initWithName:@"AirPods" manufacturer:@"Apple model:Inc." hardwareVersion:@"AirPods 1 firmwareVersion:1" softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{0, v6, 0}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [v4 initWithName:@"AirPods" manufacturer:@"Apple model:Inc." hardwareVersion:@"AirPods 1 firmwareVersion:1" softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{0, uUIDString, 0}];
 
   v69[0] = v7;
   v8 = objc_alloc(MEMORY[0x277CCD2E8]);
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [v8 initWithName:@"EarPods" manufacturer:@"Apple model:Inc." hardwareVersion:@"EarPods 1 firmwareVersion:1" softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{0, v10, 0}];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  v11 = [v8 initWithName:@"EarPods" manufacturer:@"Apple model:Inc." hardwareVersion:@"EarPods 1 firmwareVersion:1" softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{0, uUIDString2, 0}];
 
   v69[1] = v11;
   v12 = objc_alloc(MEMORY[0x277CCD2E8]);
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [v12 initWithName:@"Powerbeats Pro" manufacturer:@"Beats By Dre" model:@"Powerbeats Pro 1 hardwareVersion:1" firmwareVersion:0 softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{v14, 0}];
+  uUID3 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString3 = [uUID3 UUIDString];
+  v15 = [v12 initWithName:@"Powerbeats Pro" manufacturer:@"Beats By Dre" model:@"Powerbeats Pro 1 hardwareVersion:1" firmwareVersion:0 softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{uUIDString3, 0}];
 
   v69[2] = v15;
   v16 = objc_alloc(MEMORY[0x277CCD2E8]);
-  v17 = [MEMORY[0x277CCAD78] UUID];
-  v18 = [v17 UUIDString];
-  v19 = [v16 initWithName:0 manufacturer:@"Foo model:Inc." hardwareVersion:@"FooPods 1 firmwareVersion:1" softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{0, v18, 0}];
+  uUID4 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString4 = [uUID4 UUIDString];
+  v19 = [v16 initWithName:0 manufacturer:@"Foo model:Inc." hardwareVersion:@"FooPods 1 firmwareVersion:1" softwareVersion:0 localIdentifier:0 UDIDeviceIdentifier:{0, uUIDString4, 0}];
 
   v69[3] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:4];
 
   v21 = MEMORY[0x277CCACA8];
-  v22 = [v3 firstName];
+  firstName = [v3 firstName];
 
-  v23 = [v21 stringWithFormat:@"%@'s Watch", v22];
+  v23 = [v21 stringWithFormat:@"%@'s Watch", firstName];
 
-  v24 = [a1 demoDataGenerator];
-  v25 = [v24 profile];
-  v26 = [v25 sourceManager];
+  demoDataGenerator = [person demoDataGenerator];
+  profile = [demoDataGenerator profile];
+  sourceManager = [profile sourceManager];
 
-  if (v26)
+  if (sourceManager)
   {
     v27 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"];
     v67 = 0;
-    v28 = [v26 sourceForAppleDeviceWithUUID:v27 identifier:@"com.apple.health.demo_watch" name:v23 productType:@"Watch1 createIfNecessary:2" error:{1, &v67}];
+    v28 = [sourceManager sourceForAppleDeviceWithUUID:v27 identifier:@"com.apple.health.demo_watch" name:v23 productType:@"Watch1 createIfNecessary:2" error:{1, &v67}];
     v29 = v67;
 
     if (v28)
     {
       v64 = v28;
-      v30 = [a1 demoDataGenerator];
-      v31 = [v30 profile];
-      v32 = [v31 deviceManager];
+      demoDataGenerator2 = [person demoDataGenerator];
+      profile2 = [demoDataGenerator2 profile];
+      deviceManager = [profile2 deviceManager];
       v33 = [v20 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v20, "count"))}];
       v66 = v29;
-      v34 = [v32 deviceEntityForDevice:v33 error:&v66];
+      v34 = [deviceManager deviceEntityForDevice:v33 error:&v66];
       v65 = v66;
 
       if (v34)
       {
         v62 = v23;
-        v35 = [a1 demoDataGenerator];
-        v36 = [v35 profile];
-        v37 = [v36 daemon];
-        v38 = [v37 behavior];
+        demoDataGenerator3 = [person demoDataGenerator];
+        profile3 = [demoDataGenerator3 profile];
+        daemon = [profile3 daemon];
+        behavior = [daemon behavior];
 
-        v60 = [a1 demoDataGenerator];
-        v59 = [v60 profile];
-        v58 = [v59 currentSyncIdentityPersistentID];
-        v39 = [v38 currentOSBuild];
-        v40 = v39;
+        demoDataGenerator4 = [person demoDataGenerator];
+        profile4 = [demoDataGenerator4 profile];
+        currentSyncIdentityPersistentID = [profile4 currentSyncIdentityPersistentID];
+        currentOSBuild = [behavior currentOSBuild];
+        v40 = currentOSBuild;
         v41 = @"UnknownBuild";
-        if (v39)
+        if (currentOSBuild)
         {
-          v41 = v39;
+          v41 = currentOSBuild;
         }
 
         v57 = v41;
         v63 = v20;
-        v61 = v26;
-        if (v38)
+        v61 = sourceManager;
+        if (behavior)
         {
-          [v38 currentOSVersionStruct];
+          [behavior currentOSVersionStruct];
         }
 
         else
@@ -829,18 +829,18 @@ BOOL __119__HDDemoDataAudioExposureSampleGenerator__makeNormallyDistributedAudio
           memset(buf, 0, 24);
         }
 
-        v46 = [v38 currentOSVersion];
-        v47 = [v38 localTimeZone];
-        v48 = [v47 name];
+        currentOSVersion = [behavior currentOSVersion];
+        localTimeZone = [behavior localTimeZone];
+        name = [localTimeZone name];
         v28 = v64;
         v49 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v64, "persistentID")}];
         v50 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v34, "persistentID")}];
-        v43 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:0 syncIdentity:v58 productType:@"Watch1 systemBuild:2" operatingSystemVersion:v57 sourceVersion:buf timeZoneName:v46 sourceID:v48 deviceID:v49 contributorReference:v50, 0];
+        v43 = [HDDataOriginProvenance dataProvenanceWithSyncProvenance:0 syncIdentity:currentSyncIdentityPersistentID productType:@"Watch1 systemBuild:2" operatingSystemVersion:v57 sourceVersion:buf timeZoneName:currentOSVersion sourceID:name deviceID:v49 contributorReference:v50, 0];
 
         v23 = v62;
         v20 = v63;
         v29 = v65;
-        v26 = v61;
+        sourceManager = v61;
       }
 
       else
@@ -889,13 +889,13 @@ BOOL __119__HDDemoDataAudioExposureSampleGenerator__makeNormallyDistributedAudio
     if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_ERROR))
     {
       v53 = v42;
-      v54 = [a1 demoDataGenerator];
-      v55 = [a1 demoDataGenerator];
-      v56 = [v55 profile];
+      demoDataGenerator5 = [person demoDataGenerator];
+      demoDataGenerator6 = [person demoDataGenerator];
+      profile5 = [demoDataGenerator6 profile];
       *buf = 138543618;
-      *&buf[4] = v54;
+      *&buf[4] = demoDataGenerator5;
       *&buf[12] = 2114;
-      *&buf[14] = v56;
+      *&buf[14] = profile5;
       _os_log_error_impl(&dword_228986000, v53, OS_LOG_TYPE_ERROR, "No source manager found on generator %{public}@ for profile %{public}@", buf, 0x16u);
     }
 
@@ -918,20 +918,20 @@ BOOL __119__HDDemoDataAudioExposureSampleGenerator__makeNormallyDistributedAudio
   return v0;
 }
 
-- (id)_makeQuantitySampleWithType:(void *)a1 value:(void *)a2 unit:(void *)a3 startDate:(void *)a4 endDate:(void *)a5 metadata:(void *)a6
+- (id)_makeQuantitySampleWithType:(void *)type value:(void *)value unit:(void *)unit startDate:(void *)date endDate:(void *)endDate metadata:(void *)metadata
 {
   v11 = MEMORY[0x277CCD7E8];
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = a1;
-  [a2 doubleValue];
-  v17 = [v11 quantityWithUnit:v15 doubleValue:?];
+  metadataCopy = metadata;
+  endDateCopy = endDate;
+  dateCopy = date;
+  unitCopy = unit;
+  typeCopy = type;
+  [value doubleValue];
+  v17 = [v11 quantityWithUnit:unitCopy doubleValue:?];
 
-  v18 = [MEMORY[0x277CCD800] quantitySampleWithType:v16 quantity:v17 startDate:v14 endDate:v13];
+  v18 = [MEMORY[0x277CCD800] quantitySampleWithType:typeCopy quantity:v17 startDate:dateCopy endDate:endDateCopy];
 
-  [v18 _setMetadata:v12];
+  [v18 _setMetadata:metadataCopy];
 
   return v18;
 }

@@ -3,7 +3,7 @@
 - (CHUISWidgetHostViewController)parentController;
 - (double)_currentDisplayScale;
 - (id)accessibilityHUDRepresentation;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CHUISWidgetHostViewControllerView
@@ -11,25 +11,25 @@
 - (double)_currentDisplayScale
 {
   BSDispatchQueueAssertMain();
-  v3 = [(CHUISWidgetHostViewControllerView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(CHUISWidgetHostViewControllerView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v32 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_parentController);
-  v9 = [WeakRetained metrics];
+  metrics = [WeakRetained metrics];
 
   [(CHUISWidgetHostViewControllerView *)self _currentDisplayScale];
-  [v9 _effectiveSizePixelAlignedForDisplayScale:?];
+  [metrics _effectiveSizePixelAlignedForDisplayScale:?];
   v12 = width == v11 && height == v10;
   if (v12 || (v13 = objc_loadWeakRetained(&self->_parentController), v14 = [v13 metricsDefineSize], v13, (v14 & 1) == 0))
   {
@@ -40,14 +40,14 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v19 = objc_loadWeakRetained(&self->_parentController);
-      v20 = [v19 _cachedSceneLogDigest];
+      _cachedSceneLogDigest = [v19 _cachedSceneLogDigest];
       v33.width = width;
       v33.height = height;
       v21 = NSStringFromCGSize(v33);
       *buf = 134218498;
       v27 = v19;
       v28 = 2114;
-      v29 = v20;
+      v29 = _cachedSceneLogDigest;
       v30 = 2112;
       v31 = v21;
       _os_log_impl(&dword_1D928E000, v18, OS_LOG_TYPE_DEFAULT, "[%p-%{public}@] Changing frame to %@", buf, 0x20u);
@@ -74,11 +74,11 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_loadWeakRetained(&self->_parentController);
-      v17 = [v16 _cachedSceneLogDigest];
+      _cachedSceneLogDigest2 = [v16 _cachedSceneLogDigest];
       *buf = 134218242;
       v27 = v16;
       v28 = 2114;
-      v29 = v17;
+      v29 = _cachedSceneLogDigest2;
       _os_log_impl(&dword_1D928E000, v15, OS_LOG_TYPE_DEFAULT, "[%p-%{public}@] Eating frame change in view because not configured to change the frame.", buf, 0x16u);
     }
   }
@@ -106,16 +106,16 @@ id __46__CHUISWidgetHostViewControllerView_setFrame___block_invoke(uint64_t a1, 
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CHUISWidgetHostViewControllerView *)self parentController];
-  v4 = [v3 metricsDefineSize];
+  parentController = [(CHUISWidgetHostViewControllerView *)self parentController];
+  metricsDefineSize = [parentController metricsDefineSize];
 
-  if (v4)
+  if (metricsDefineSize)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentController);
-    v6 = [WeakRetained metrics];
+    metrics = [WeakRetained metrics];
 
     [(CHUISWidgetHostViewControllerView *)self _currentDisplayScale];
-    [v6 _effectiveSizePixelAlignedForDisplayScale:?];
+    [metrics _effectiveSizePixelAlignedForDisplayScale:?];
     v8 = v7;
     v10 = v9;
   }
@@ -143,11 +143,11 @@ id __46__CHUISWidgetHostViewControllerView_setFrame___block_invoke(uint64_t a1, 
 
   [v4 setAutoresizingMask:18];
   [v4 setContentMode:1];
-  v5 = [(CHUISWidgetHostViewControllerView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(CHUISWidgetHostViewControllerView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v7 = objc_alloc(MEMORY[0x1E698E810]);
-  if (v6 == 2)
+  if (userInterfaceStyle == 2)
   {
     v8 = 2;
   }
@@ -162,8 +162,8 @@ id __46__CHUISWidgetHostViewControllerView_setFrame___block_invoke(uint64_t a1, 
   [v4 bounds];
   v11 = [v10 initWithFrame:?];
   [v11 setConfiguration:v9];
-  v12 = [v11 contentView];
-  [v12 addSubview:v4];
+  contentView = [v11 contentView];
+  [contentView addSubview:v4];
 
   v13 = [objc_alloc(MEMORY[0x1E69DC618]) initWithCustomView:v11];
 

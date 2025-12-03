@@ -1,10 +1,10 @@
 @interface NSConcreteAttributedString
-- (NSConcreteAttributedString)initWithAttributedString:(id)a3;
-- (NSConcreteAttributedString)initWithString:(id)a3;
-- (NSConcreteAttributedString)initWithString:(id)a3 attributes:(id)a4;
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSConcreteAttributedString)initWithAttributedString:(id)string;
+- (NSConcreteAttributedString)initWithString:(id)string;
+- (NSConcreteAttributedString)initWithString:(id)string attributes:(id)attributes;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -19,10 +19,10 @@
   [(NSConcreteAttributedString *)&v3 dealloc];
 }
 
-- (NSConcreteAttributedString)initWithString:(id)a3
+- (NSConcreteAttributedString)initWithString:(id)string
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!string)
   {
     if (_CFExecutableLinkedOnOrAfter())
     {
@@ -47,9 +47,9 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [a3 copyWithZone:{-[NSConcreteAttributedString zone](v8, "zone")}];
+    v10 = [string copyWithZone:{-[NSConcreteAttributedString zone](v8, "zone")}];
     v9->string = v10;
-    if (!a3 || v10)
+    if (!string || v10)
     {
       v9->attributes = 0;
     }
@@ -64,14 +64,14 @@
   return v9;
 }
 
-- (NSConcreteAttributedString)initWithString:(id)a3 attributes:(id)a4
+- (NSConcreteAttributedString)initWithString:(id)string attributes:(id)attributes
 {
-  v5 = [(NSConcreteAttributedString *)self initWithString:a3];
+  v5 = [(NSConcreteAttributedString *)self initWithString:string];
   v6 = v5;
-  if (a4 && v5)
+  if (attributes && v5)
   {
     v7 = [(NSRLEArray *)[NSMutableRLEArray allocWithZone:?]];
-    v8 = [_NSAttributeDictionaryClass() newWithDictionary:a4];
+    v8 = [_NSAttributeDictionaryClass() newWithDictionary:attributes];
     [(NSMutableRLEArray *)v7 insertObject:v8 range:0, [(NSConcreteAttributedString *)v6 length]];
     if ([(NSAttributedString *)v6 _willRequireIntentResolutionWhenContainingAttributes:v8])
     {
@@ -84,18 +84,18 @@
   return v6;
 }
 
-- (NSConcreteAttributedString)initWithAttributedString:(id)a3
+- (NSConcreteAttributedString)initWithAttributedString:(id)string
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = -[NSConcreteAttributedString initWithString:](self, "initWithString:", [a3 string]);
+  v4 = -[NSConcreteAttributedString initWithString:](self, "initWithString:", [string string]);
   if (v4)
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [a3 _runArrayHoldingAttributes];
-      if (v5)
+      _runArrayHoldingAttributes = [string _runArrayHoldingAttributes];
+      if (_runArrayHoldingAttributes)
       {
-        v4->attributes = [v5 copyWithZone:{-[NSConcreteAttributedString zone](v4, "zone")}];
+        v4->attributes = [_runArrayHoldingAttributes copyWithZone:{-[NSConcreteAttributedString zone](v4, "zone")}];
       }
     }
 
@@ -109,7 +109,7 @@
         {
           v13 = 0;
           v14 = 0;
-          v9 = [_NSAttributeDictionaryClass() newWithDictionary:{objc_msgSend(a3, "attributesAtIndex:effectiveRange:", i, &v13)}];
+          v9 = [_NSAttributeDictionaryClass() newWithDictionary:{objc_msgSend(string, "attributesAtIndex:effectiveRange:", i, &v13)}];
           if (v14 + v13 <= v6)
           {
             v10 = v13 - i + v14;
@@ -132,7 +132,7 @@
       v4->attributes = &v7->super;
     }
 
-    if ([a3 _mayRequireIntentResolution])
+    if ([string _mayRequireIntentResolution])
     {
       [(NSAttributedString *)v4 _markRequiringIntentResolution];
     }
@@ -141,7 +141,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
   if (_CFExecutableLinkedOnOrAfter())
@@ -154,26 +154,26 @@
   {
     v6.receiver = self;
     v6.super_class = NSConcreteAttributedString;
-    return [(NSAttributedString *)&v6 copyWithZone:a3];
+    return [(NSAttributedString *)&v6 copyWithZone:zone];
   }
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   if (self->attributes)
   {
     attributes = self->attributes;
 
-    return [(NSRLEArray *)attributes objectAtIndex:a3 effectiveRange:?];
+    return [(NSRLEArray *)attributes objectAtIndex:index effectiveRange:?];
   }
 
   else
   {
-    if (a4)
+    if (range)
     {
       v7 = [(NSString *)self->string length];
-      a4->location = 0;
-      a4->length = v7;
+      range->location = 0;
+      range->length = v7;
     }
 
     v8 = _NSAttributeDictionaryClass();
@@ -182,22 +182,22 @@
   }
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   if (self->attributes)
   {
-    v7 = [(NSRLEArray *)self->attributes objectAtIndex:a4 effectiveRange:a5];
+    v7 = [(NSRLEArray *)self->attributes objectAtIndex:index effectiveRange:range];
 
-    return [v7 objectForKey:a3];
+    return [v7 objectForKey:attribute];
   }
 
   else
   {
-    if (a5)
+    if (range)
     {
-      v9 = [(NSString *)self->string length:a3];
-      a5->location = 0;
-      a5->length = v9;
+      v9 = [(NSString *)self->string length:attribute];
+      range->location = 0;
+      range->length = v9;
     }
 
     return 0;

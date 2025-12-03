@@ -5,7 +5,7 @@
 - (CGSize)renderSize;
 - (MTLTexture)depthStencilTexture;
 - (PXGMetalRenderDestinationDelegate)delegate;
-- (PXGPixelBufferMetalRenderDestination)initWithLayoutQueue:(id)a3 pixelBufferPool:(id)a4 scale:(double)a5 enablePoolRelease:(BOOL)a6;
+- (PXGPixelBufferMetalRenderDestination)initWithLayoutQueue:(id)queue pixelBufferPool:(id)pool scale:(double)scale enablePoolRelease:(BOOL)release;
 - (PXGPixelBufferPool)pixelBufferPool;
 - (unint64_t)destinationColorSpaceName;
 - (void)_createRenderPassDescriptor;
@@ -15,15 +15,15 @@
 - (void)_releaseResourcesForRenderingFrame;
 - (void)_updatePixelBufferProperties;
 - (void)dealloc;
-- (void)notifyDidCompleteRenderForFrameID:(int64_t)a3;
+- (void)notifyDidCompleteRenderForFrameID:(int64_t)d;
 - (void)releaseCachedResources;
 - (void)renderImmediately;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDestinationColorSpace:(CGColorSpace *)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDestinationColorSpace:(CGColorSpace *)space;
 - (void)setNeedsRender;
-- (void)setPixelBufferPool:(id)a3;
-- (void)setRenderSize:(CGSize)a3;
-- (void)setScale:(double)a3;
+- (void)setPixelBufferPool:(id)pool;
+- (void)setRenderSize:(CGSize)size;
+- (void)setScale:(double)scale;
 @end
 
 @implementation PXGPixelBufferMetalRenderDestination
@@ -72,8 +72,8 @@
 
 - (void)releaseCachedResources
 {
-  v3 = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
-  dispatch_assert_queue_V2(v3);
+  layoutQueue = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   CVMetalTextureCacheFlush(self->_textureCache, 0);
   pixelBufferPool = self->_pixelBufferPool;
@@ -90,20 +90,20 @@
   }
 }
 
-- (void)notifyDidCompleteRenderForFrameID:(int64_t)a3
+- (void)notifyDidCompleteRenderForFrameID:(int64_t)d
 {
-  v5 = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
-  dispatch_assert_queue_V2(v5);
+  layoutQueue = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
-  v6 = [(PXGPixelBufferMetalRenderDestination *)self renderCompletionBlock];
-  if (v6)
+  renderCompletionBlock = [(PXGPixelBufferMetalRenderDestination *)self renderCompletionBlock];
+  if (renderCompletionBlock)
   {
     pixelBuffer = self->_pixelBuffer;
 
     if (pixelBuffer)
     {
-      v8 = [(PXGPixelBufferMetalRenderDestination *)self renderCompletionBlock];
-      (v8)[2](v8, self->_pixelBuffer, a3);
+      renderCompletionBlock2 = [(PXGPixelBufferMetalRenderDestination *)self renderCompletionBlock];
+      (renderCompletionBlock2)[2](renderCompletionBlock2, self->_pixelBuffer, d);
     }
   }
 
@@ -112,27 +112,27 @@
 
 - (void)renderImmediately
 {
-  v3 = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
-  dispatch_assert_queue_V2(v3);
+  layoutQueue = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   [(PXGPixelBufferMetalRenderDestination *)self _createResourceForRenderingFrame];
-  v4 = [(PXGPixelBufferMetalRenderDestination *)self delegate];
-  [v4 renderDestinationRequestRender:self];
+  delegate = [(PXGPixelBufferMetalRenderDestination *)self delegate];
+  [delegate renderDestinationRequestRender:self];
 }
 
 - (void)setNeedsRender
 {
-  v3 = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
-  dispatch_assert_queue_V2(v3);
+  layoutQueue = [(PXGPixelBufferMetalRenderDestination *)self layoutQueue];
+  dispatch_assert_queue_V2(layoutQueue);
 
   [(PXGPixelBufferMetalRenderDestination *)self renderImmediately];
 }
 
 - (unint64_t)destinationColorSpaceName
 {
-  v2 = [(PXGPixelBufferMetalRenderDestination *)self destinationColorSpace];
+  destinationColorSpace = [(PXGPixelBufferMetalRenderDestination *)self destinationColorSpace];
 
-  return MEMORY[0x28219D168](v2);
+  return MEMORY[0x28219D168](destinationColorSpace);
 }
 
 - (void)_releaseResourcesForRenderingFrame
@@ -150,9 +150,9 @@
 
 - (void)_createRenderPassDescriptor
 {
-  v23 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v3 = [v23 colorAttachments];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v4 = [colorAttachments objectAtIndexedSubscript:0];
   [v4 setLoadAction:2];
 
   [(PXGPixelBufferMetalRenderDestination *)self clearColor];
@@ -160,34 +160,34 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v23 colorAttachments];
-  v14 = [v13 objectAtIndexedSubscript:0];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v14 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v14 setClearColor:{v6, v8, v10, v12}];
 
-  v15 = [(PXGPixelBufferMetalRenderDestination *)self renderTexture];
-  v16 = [v23 colorAttachments];
-  v17 = [v16 objectAtIndexedSubscript:0];
-  [v17 setTexture:v15];
+  renderTexture = [(PXGPixelBufferMetalRenderDestination *)self renderTexture];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v17 = [colorAttachments3 objectAtIndexedSubscript:0];
+  [v17 setTexture:renderTexture];
 
-  [(PXGPixelBufferMetalRenderDestination *)self setCurrentRenderPassDescriptor:v23];
-  v18 = [(PXGPixelBufferMetalRenderDestination *)self depthStencilTexture];
+  [(PXGPixelBufferMetalRenderDestination *)self setCurrentRenderPassDescriptor:renderPassDescriptor];
+  depthStencilTexture = [(PXGPixelBufferMetalRenderDestination *)self depthStencilTexture];
 
-  if (v18)
+  if (depthStencilTexture)
   {
-    v19 = [v23 depthAttachment];
-    v20 = [(PXGPixelBufferMetalRenderDestination *)self depthStencilTexture];
-    [v19 setTexture:v20];
+    depthAttachment = [renderPassDescriptor depthAttachment];
+    depthStencilTexture2 = [(PXGPixelBufferMetalRenderDestination *)self depthStencilTexture];
+    [depthAttachment setTexture:depthStencilTexture2];
 
-    [v19 setLoadAction:2];
-    [v19 setStoreAction:0];
-    [v19 setClearDepth:1.0];
-    v21 = [v23 stencilAttachment];
-    v22 = [(PXGPixelBufferMetalRenderDestination *)self depthStencilTexture];
-    [v21 setTexture:v22];
+    [depthAttachment setLoadAction:2];
+    [depthAttachment setStoreAction:0];
+    [depthAttachment setClearDepth:1.0];
+    stencilAttachment = [renderPassDescriptor stencilAttachment];
+    depthStencilTexture3 = [(PXGPixelBufferMetalRenderDestination *)self depthStencilTexture];
+    [stencilAttachment setTexture:depthStencilTexture3];
 
-    [v21 setLoadAction:2];
-    [v21 setStoreAction:0];
-    [v21 setClearStencil:0];
+    [stencilAttachment setLoadAction:2];
+    [stencilAttachment setStoreAction:0];
+    [stencilAttachment setClearStencil:0];
   }
 }
 
@@ -195,8 +195,8 @@
 {
   [(PXGPixelBufferMetalRenderDestination *)self _releaseResourcesForRenderingFrame];
   v3 = *MEMORY[0x277CBECE8];
-  v4 = [(PXGPixelBufferMetalRenderDestination *)self pixelBufferPool];
-  PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(v3, [v4 pixelBufferPool], &self->_pixelBuffer);
+  pixelBufferPool = [(PXGPixelBufferMetalRenderDestination *)self pixelBufferPool];
+  PixelBuffer = CVPixelBufferPoolCreatePixelBuffer(v3, [pixelBufferPool pixelBufferPool], &self->_pixelBuffer);
 
   if (PixelBuffer)
   {
@@ -214,11 +214,11 @@
   {
     textureCache = self->_textureCache;
     v8 = self->_pixelBuffer;
-    v9 = [(PXGPixelBufferMetalRenderDestination *)self colorPixelFormat];
+    colorPixelFormat = [(PXGPixelBufferMetalRenderDestination *)self colorPixelFormat];
     [(PXGPixelBufferMetalRenderDestination *)self renderSize];
     v11 = v10;
     [(PXGPixelBufferMetalRenderDestination *)self renderSize];
-    if (CVMetalTextureCacheCreateTextureFromImage(v3, textureCache, v8, 0, v9, v11, v12, 0, &self->_cvMetalTexture))
+    if (CVMetalTextureCacheCreateTextureFromImage(v3, textureCache, v8, 0, colorPixelFormat, v11, v12, 0, &self->_cvMetalTexture))
     {
       v13 = PXAssertGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -247,13 +247,13 @@
     self->_poolPixelSize.width = v4;
     self->_poolPixelSize.height = v5;
     self->_poolPixelFormatType = [(PXGPixelBufferPool *)self->_pixelBufferPool pixelFormatType];
-    v6 = [(PXGPixelBufferPool *)self->_pixelBufferPool colorSpace];
-    if (!v6)
+    colorSpace = [(PXGPixelBufferPool *)self->_pixelBufferPool colorSpace];
+    if (!colorSpace)
     {
-      v6 = PXGetColorSpace();
+      colorSpace = PXGetColorSpace();
     }
 
-    [(PXGPixelBufferMetalRenderDestination *)self setDestinationColorSpace:v6];
+    [(PXGPixelBufferMetalRenderDestination *)self setDestinationColorSpace:colorSpace];
     [(PXGPixelBufferPool *)self->_pixelBufferPool pixelSize];
     [(PXGPixelBufferMetalRenderDestination *)self setRenderSize:?];
     PXSizeScale();
@@ -261,15 +261,15 @@
     self->_renderBoundsInPoints.origin.y = 0.0;
     self->_renderBoundsInPoints.size.width = v7;
     self->_renderBoundsInPoints.size.height = v8;
-    v9 = [(PXGPixelBufferPool *)self->_pixelBufferPool pixelFormatType];
-    self->_pixelBufferFormatType = v9;
-    if (v9 == 1380411457)
+    pixelFormatType = [(PXGPixelBufferPool *)self->_pixelBufferPool pixelFormatType];
+    self->_pixelBufferFormatType = pixelFormatType;
+    if (pixelFormatType == 1380411457)
     {
       v10 = 115;
       goto LABEL_8;
     }
 
-    if (v9 == 1111970369)
+    if (pixelFormatType == 1111970369)
     {
       v10 = 80;
 LABEL_8:
@@ -298,15 +298,15 @@ LABEL_8:
   return v3;
 }
 
-- (void)setDestinationColorSpace:(CGColorSpace *)a3
+- (void)setDestinationColorSpace:(CGColorSpace *)space
 {
   destinationColorSpace = self->_destinationColorSpace;
-  if (destinationColorSpace != a3)
+  if (destinationColorSpace != space)
   {
     CGColorSpaceRelease(destinationColorSpace);
-    self->_destinationColorSpace = a3;
+    self->_destinationColorSpace = space;
 
-    CGColorSpaceRetain(a3);
+    CGColorSpaceRetain(space);
   }
 }
 
@@ -353,8 +353,8 @@ LABEL_8:
   {
     if (!self->_poolPixelFormatType)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXGPixelBufferMetalRenderDestination.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"_poolPixelFormatType != 0"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGPixelBufferMetalRenderDestination.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"_poolPixelFormatType != 0"}];
     }
 
     v4 = [PXGPixelBufferPool pixelBufferPoolWithSize:self->_poolPixelSize.width format:self->_poolPixelSize.height];
@@ -374,14 +374,14 @@ LABEL_8:
   self->_pixelBufferPool = 0;
 }
 
-- (void)setRenderSize:(CGSize)a3
+- (void)setRenderSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (self->_renderSize.width != a3.width || self->_renderSize.height != a3.height)
+  height = size.height;
+  width = size.width;
+  if (self->_renderSize.width != size.width || self->_renderSize.height != size.height)
   {
-    v7 = [(PXGPixelBufferMetalRenderDestination *)self delegate];
-    [v7 renderDestination:self renderSizeWillChange:{width, height}];
+    delegate = [(PXGPixelBufferMetalRenderDestination *)self delegate];
+    [delegate renderDestination:self renderSizeWillChange:{width, height}];
 
     self->_renderSize.width = width;
     self->_renderSize.height = height;
@@ -390,27 +390,27 @@ LABEL_8:
   }
 }
 
-- (void)setPixelBufferPool:(id)a3
+- (void)setPixelBufferPool:(id)pool
 {
-  v5 = a3;
-  if (self->_pixelBufferPool != v5)
+  poolCopy = pool;
+  if (self->_pixelBufferPool != poolCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_pixelBufferPool, a3);
+    v6 = poolCopy;
+    objc_storeStrong(&self->_pixelBufferPool, pool);
     [(PXGPixelBufferMetalRenderDestination *)self _updatePixelBufferProperties];
-    v5 = v6;
+    poolCopy = v6;
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   backgroundColor = self->_backgroundColor;
-  if (backgroundColor != v4)
+  if (backgroundColor != colorCopy)
   {
-    v13 = v4;
-    v6 = [(UIColor *)backgroundColor isEqual:v4];
-    v4 = v13;
+    v13 = colorCopy;
+    v6 = [(UIColor *)backgroundColor isEqual:colorCopy];
+    colorCopy = v13;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIColor *)v13 copy];
@@ -421,19 +421,19 @@ LABEL_8:
       self->_clearColor.green = v9;
       self->_clearColor.blue = v10;
       self->_clearColor.alpha = v11;
-      v12 = [(PXGPixelBufferMetalRenderDestination *)self delegate];
-      [v12 renderDestinationRequestRender:self];
+      delegate = [(PXGPixelBufferMetalRenderDestination *)self delegate];
+      [delegate renderDestinationRequestRender:self];
 
-      v4 = v13;
+      colorCopy = v13;
     }
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(PXGPixelBufferMetalRenderDestination *)self _updatePixelBufferProperties];
   }
 }
@@ -463,25 +463,25 @@ LABEL_8:
   [(PXGPixelBufferMetalRenderDestination *)&v7 dealloc];
 }
 
-- (PXGPixelBufferMetalRenderDestination)initWithLayoutQueue:(id)a3 pixelBufferPool:(id)a4 scale:(double)a5 enablePoolRelease:(BOOL)a6
+- (PXGPixelBufferMetalRenderDestination)initWithLayoutQueue:(id)queue pixelBufferPool:(id)pool scale:(double)scale enablePoolRelease:(BOOL)release
 {
-  v11 = a3;
-  v12 = a4;
+  queueCopy = queue;
+  poolCopy = pool;
   v22.receiver = self;
   v22.super_class = PXGPixelBufferMetalRenderDestination;
   v13 = [(PXGPixelBufferMetalRenderDestination *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_layoutQueue, a3);
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_layoutQueue, queue);
+    v15 = [poolCopy copy];
     pixelBufferPool = v14->_pixelBufferPool;
     v14->_pixelBufferPool = v15;
 
-    v14->_scale = a5;
-    v17 = [MEMORY[0x277D75348] blackColor];
+    v14->_scale = scale;
+    blackColor = [MEMORY[0x277D75348] blackColor];
     backgroundColor = v14->_backgroundColor;
-    v14->_backgroundColor = v17;
+    v14->_backgroundColor = blackColor;
 
     v14->_clearColor.red = 0.0;
     v14->_clearColor.green = 0.0;
@@ -491,7 +491,7 @@ LABEL_8:
     device = v14->_device;
     v14->_device = v19;
 
-    v14->_enablePoolRelease = a6;
+    v14->_enablePoolRelease = release;
     CVMetalTextureCacheCreate(*MEMORY[0x277CBECE8], 0, v14->_device, 0, &v14->_textureCache);
     [(PXGPixelBufferMetalRenderDestination *)v14 _updatePixelBufferProperties];
   }

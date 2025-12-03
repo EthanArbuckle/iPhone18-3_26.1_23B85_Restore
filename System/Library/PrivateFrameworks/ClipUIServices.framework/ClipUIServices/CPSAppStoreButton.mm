@@ -1,22 +1,22 @@
 @interface CPSAppStoreButton
 - (CGSize)intrinsicContentSize;
-- (CPSAppStoreButton)initWithCoder:(id)a3;
-- (CPSAppStoreButton)initWithFrame:(CGRect)a3;
+- (CPSAppStoreButton)initWithCoder:(id)coder;
+- (CPSAppStoreButton)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShowsArcadeAttribution:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShowsArcadeAttribution:(BOOL)attribution;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPSAppStoreButton
 
-- (CPSAppStoreButton)initWithFrame:(CGRect)a3
+- (CPSAppStoreButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CPSAppStoreButton;
-  v3 = [(CPSButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (CPSAppStoreButton)initWithCoder:(id)a3
+- (CPSAppStoreButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPSAppStoreButton;
-  v3 = [(CPSButton *)&v7 initWithCoder:a3];
+  v3 = [(CPSButton *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -96,45 +96,45 @@
   [(UIStackView *)self->_glyphOnlyStack setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CPSAppStoreButton *)self addSubview:self->_glyphOnlyStack];
   v44 = MEMORY[0x277CCAAD0];
-  v56 = [(UIStackView *)self->_fullSizeStack centerXAnchor];
-  v55 = [(CPSAppStoreButton *)self centerXAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  centerXAnchor = [(UIStackView *)self->_fullSizeStack centerXAnchor];
+  centerXAnchor2 = [(CPSAppStoreButton *)self centerXAnchor];
+  v54 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v57[0] = v54;
-  v53 = [(UIStackView *)self->_fullSizeStack centerYAnchor];
-  v52 = [(CPSAppStoreButton *)self centerYAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  centerYAnchor = [(UIStackView *)self->_fullSizeStack centerYAnchor];
+  centerYAnchor2 = [(CPSAppStoreButton *)self centerYAnchor];
+  v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v57[1] = v51;
-  v50 = [(UIStackView *)self->_fullSizeStack widthAnchor];
-  v49 = [(CPSAppStoreButton *)self widthAnchor];
-  v48 = [v50 constraintLessThanOrEqualToAnchor:v49];
+  widthAnchor = [(UIStackView *)self->_fullSizeStack widthAnchor];
+  widthAnchor2 = [(CPSAppStoreButton *)self widthAnchor];
+  v48 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   v57[2] = v48;
-  v47 = [(UIStackView *)self->_fullSizeStack heightAnchor];
-  v46 = [(CPSAppStoreButton *)self heightAnchor];
-  v45 = [v47 constraintLessThanOrEqualToAnchor:v46];
+  heightAnchor = [(UIStackView *)self->_fullSizeStack heightAnchor];
+  heightAnchor2 = [(CPSAppStoreButton *)self heightAnchor];
+  v45 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
   v57[3] = v45;
-  v43 = [(UIStackView *)self->_fullSizeStack heightAnchor];
-  v42 = [(CPSAppStoreButton *)self heightAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  heightAnchor3 = [(UIStackView *)self->_fullSizeStack heightAnchor];
+  heightAnchor4 = [(CPSAppStoreButton *)self heightAnchor];
+  v41 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   LODWORD(v24) = 1144750080;
   v40 = [v41 cps_setPriority:v24];
   v57[4] = v40;
-  v39 = [(UIStackView *)self->_glyphOnlyStack centerYAnchor];
-  v38 = [(CPSAppStoreButton *)self centerYAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  centerYAnchor3 = [(UIStackView *)self->_glyphOnlyStack centerYAnchor];
+  centerYAnchor4 = [(CPSAppStoreButton *)self centerYAnchor];
+  v37 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v57[5] = v37;
-  v36 = [(UIStackView *)self->_glyphOnlyStack heightAnchor];
-  v25 = [(CPSAppStoreButton *)self heightAnchor];
-  v26 = [v36 constraintLessThanOrEqualToAnchor:v25];
+  heightAnchor5 = [(UIStackView *)self->_glyphOnlyStack heightAnchor];
+  heightAnchor6 = [(CPSAppStoreButton *)self heightAnchor];
+  v26 = [heightAnchor5 constraintLessThanOrEqualToAnchor:heightAnchor6];
   v57[6] = v26;
-  v27 = [(UIStackView *)self->_glyphOnlyStack heightAnchor];
-  v28 = [(CPSAppStoreButton *)self heightAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  heightAnchor7 = [(UIStackView *)self->_glyphOnlyStack heightAnchor];
+  heightAnchor8 = [(CPSAppStoreButton *)self heightAnchor];
+  v29 = [heightAnchor7 constraintEqualToAnchor:heightAnchor8];
   LODWORD(v30) = 1144750080;
   v31 = [v29 cps_setPriority:v30];
   v57[7] = v31;
-  v32 = [(UIStackView *)self->_glyphOnlyStack trailingAnchor];
-  v33 = [(CPSAppStoreButton *)self trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  trailingAnchor = [(UIStackView *)self->_glyphOnlyStack trailingAnchor];
+  trailingAnchor2 = [(CPSAppStoreButton *)self trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v57[8] = v34;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:9];
   [v44 activateConstraints:v35];
@@ -168,17 +168,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = CPSAppStoreButton;
-  v4 = a3;
-  [(CPSAppStoreButton *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CPSAppStoreButton *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(CPSAppStoreButton *)self traitCollection:v10.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = UIContentSizeCategoryCompareToCategory(v6, v7);
+  v8 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     v9 = *(MEMORY[0x277CBF398] + 16);
@@ -189,28 +189,28 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = CPSAppStoreButton;
-  [(CPSButton *)&v4 setHighlighted:a3];
+  [(CPSButton *)&v4 setHighlighted:highlighted];
   [(UIStackView *)self->_fullSizeStack cps_configureForAnimatesAlphaWhenHighlighted:[(CPSAppStoreButton *)self isHighlighted]];
   [(UIStackView *)self->_glyphOnlyStack cps_configureForAnimatesAlphaWhenHighlighted:[(CPSAppStoreButton *)self isHighlighted]];
 }
 
-- (void)setShowsArcadeAttribution:(BOOL)a3
+- (void)setShowsArcadeAttribution:(BOOL)attribution
 {
-  if (self->_showsArcadeAttribution != a3)
+  if (self->_showsArcadeAttribution != attribution)
   {
-    v4 = a3;
-    self->_showsArcadeAttribution = a3;
+    attributionCopy = attribution;
+    self->_showsArcadeAttribution = attribution;
     v6 = _CPSLocalizedString();
     [(UILabel *)self->_label setText:v6];
 
-    [(UIView *)self->_fullSizeStackAppStoreImageView setHidden:v4];
+    [(UIView *)self->_fullSizeStackAppStoreImageView setHidden:attributionCopy];
     glyphOnlyStackAppStoreImageView = self->_glyphOnlyStackAppStoreImageView;
 
-    [(UIView *)glyphOnlyStackAppStoreImageView setHidden:v4];
+    [(UIView *)glyphOnlyStackAppStoreImageView setHidden:attributionCopy];
   }
 }
 

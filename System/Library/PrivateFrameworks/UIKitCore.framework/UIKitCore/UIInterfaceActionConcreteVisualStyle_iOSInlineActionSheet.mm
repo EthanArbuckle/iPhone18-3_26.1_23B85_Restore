@@ -4,8 +4,8 @@
 - (double)_actionTitleFontSize;
 - (id)_preferredActionFont;
 - (id)_regularActionFont;
-- (id)newActionBackgroundViewForViewState:(id)a3;
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3;
+- (id)newActionBackgroundViewForViewState:(id)state;
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle_iOSInlineActionSheet
@@ -21,8 +21,8 @@
 
 - (UIEdgeInsets)contentMargin
 {
-  v3 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -46,10 +46,10 @@
   return result;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v3 = a3;
-  if ((_UISolariumEnabled() & 1) != 0 || ![v3 isHighlighted])
+  stateCopy = state;
+  if ((_UISolariumEnabled() & 1) != 0 || ![stateCopy isHighlighted])
   {
     v4 = 0;
   }
@@ -62,7 +62,7 @@
   return v4;
 }
 
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state
 {
   inlineBackgroundView = self->_inlineBackgroundView;
   if (!inlineBackgroundView)
@@ -105,8 +105,8 @@
   v2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:11];
   v3 = UIApp;
   v4 = v2;
-  v5 = [v3 preferredContentSizeCategory];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
+  v6 = [v4 objectForKeyedSubscript:preferredContentSizeCategory];
 
   if (v6)
   {

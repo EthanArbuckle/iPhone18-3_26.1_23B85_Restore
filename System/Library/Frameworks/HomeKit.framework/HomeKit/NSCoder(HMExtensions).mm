@@ -11,7 +11,7 @@
 {
   v6 = a4;
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$count", v6];
-  v7 = [a1 decodeInt32ForKey:?];
+  v7 = [self decodeInt32ForKey:?];
   v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v7];
   if (v7 >= 1)
   {
@@ -19,7 +19,7 @@
     do
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$%d", v6, v9];
-      v11 = [a1 decodeObjectOfClass:a3 forKey:v10];
+      v11 = [self decodeObjectOfClass:a3 forKey:v10];
       if (v11)
       {
         [v8 addObject:v11];
@@ -40,10 +40,10 @@
   v6 = a3;
   v7 = a4;
   v8 = [MEMORY[0x1E695DFD8] set];
-  [a1 encodeObject:v8 forKey:v7];
+  [self encodeObject:v8 forKey:v7];
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$count", v7];
-  [a1 encodeInt32:objc_msgSend(v6 forKey:{"count"), v18}];
+  [self encodeInt32:objc_msgSend(v6 forKey:{"count"), v18}];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -67,7 +67,7 @@
 
         v15 = *(*(&v19 + 1) + 8 * v14);
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$%d", v7, v12];
-        [a1 encodeConditionalObject:v15 forKey:v16];
+        [self encodeConditionalObject:v15 forKey:v16];
         v12 = (v12 + 1);
 
         ++v14;
@@ -87,7 +87,7 @@
 {
   v6 = a4;
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$count", v6];
-  v7 = [a1 decodeInt32ForKey:?];
+  v7 = [self decodeInt32ForKey:?];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
   if (v7 >= 1)
   {
@@ -95,7 +95,7 @@
     do
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$%d", v6, v9];
-      v11 = [a1 decodeObjectOfClass:a3 forKey:v10];
+      v11 = [self decodeObjectOfClass:a3 forKey:v10];
       if (v11)
       {
         [v8 addObject:v11];
@@ -115,11 +115,11 @@
   v24 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [MEMORY[0x1E695DEC8] array];
-  [a1 encodeObject:v8 forKey:v7];
+  array = [MEMORY[0x1E695DEC8] array];
+  [self encodeObject:array forKey:v7];
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$count", v7];
-  [a1 encodeInt32:objc_msgSend(v6 forKey:{"count"), v18}];
+  [self encodeInt32:objc_msgSend(v6 forKey:{"count"), v18}];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -143,7 +143,7 @@
 
         v15 = *(*(&v19 + 1) + 8 * v14);
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-$%d", v7, v12];
-        [a1 encodeConditionalObject:v15 forKey:v16];
+        [self encodeConditionalObject:v15 forKey:v16];
         v12 = (v12 + 1);
 
         ++v14;

@@ -1,20 +1,20 @@
 @interface MusicApplicationContextProvider
 - (double)lastMessageDisplayTime;
-- (id)contextPropertyWithName:(id)a3;
-- (id)presentationPolicyForPolicyGroup:(int64_t)a3;
+- (id)contextPropertyWithName:(id)name;
+- (id)presentationPolicyForPolicyGroup:(int64_t)group;
 - (id)viewControllerForModalPresentation;
-- (void)messageCoordinator:(id)a3 didRequestAction:(id)a4;
-- (void)setLastMessageDisplayTime:(double)a3;
+- (void)messageCoordinator:(id)coordinator didRequestAction:(id)action;
+- (void)setLastMessageDisplayTime:(double)time;
 @end
 
 @implementation MusicApplicationContextProvider
 
-- (id)contextPropertyWithName:(id)a3
+- (id)contextPropertyWithName:(id)name
 {
   v5 = sub_AB92A0();
   v7 = v6;
-  v8 = a3;
-  v9 = self;
+  nameCopy = name;
+  selfCopy = self;
   sub_192828(v5, v7, v17);
 
   v10 = v18;
@@ -71,36 +71,36 @@ LABEL_6:
   return v5;
 }
 
-- (void)messageCoordinator:(id)a3 didRequestAction:(id)a4
+- (void)messageCoordinator:(id)coordinator didRequestAction:(id)action
 {
   v7 = sub_AB8FF0();
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_19358C(v8, v7);
+  coordinatorCopy = coordinator;
+  actionCopy = action;
+  selfCopy = self;
+  sub_19358C(coordinatorCopy, v7);
 }
 
-- (id)presentationPolicyForPolicyGroup:(int64_t)a3
+- (id)presentationPolicyForPolicyGroup:(int64_t)group
 {
-  v4 = self;
-  v5 = sub_193888(a3);
+  selfCopy = self;
+  v5 = sub_193888(group);
 
   return v5;
 }
 
 - (double)lastMessageDisplayTime
 {
-  v2 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v3 = sub_193E0C();
 
   return v3;
 }
 
-- (void)setLastMessageDisplayTime:(double)a3
+- (void)setLastMessageDisplayTime:(double)time
 {
-  v4 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   v6[3] = &type metadata for Double;
-  *v6 = a3;
+  *v6 = time;
   v5[0] = 0xD00000000000001CLL;
   v5[1] = 0x8000000000B551D0;
   sub_36A48();

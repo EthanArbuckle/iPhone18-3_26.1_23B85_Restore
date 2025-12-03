@@ -1,8 +1,8 @@
 @interface CalAccountUtils
-+ (BOOL)isAccountDataSeparated:(id)a3;
-+ (BOOL)isiCloudAccount:(id)a3;
++ (BOOL)isAccountDataSeparated:(id)separated;
++ (BOOL)isiCloudAccount:(id)account;
 + (id)_accountStore;
-+ (id)personaIdentifierForAccountIdentifier:(id)a3;
++ (id)personaIdentifierForAccountIdentifier:(id)identifier;
 @end
 
 @implementation CalAccountUtils
@@ -71,37 +71,37 @@ void __32__CalAccountUtils__accountStore__block_invoke_2()
   _accountStore_idleTimer = 0;
 }
 
-+ (id)personaIdentifierForAccountIdentifier:(id)a3
++ (id)personaIdentifierForAccountIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [a1 _accountStore];
-    v6 = [v5 accountWithIdentifier:v4];
+    identifierCopy = identifier;
+    _accountStore = [self _accountStore];
+    v6 = [_accountStore accountWithIdentifier:identifierCopy];
 
     if (v6)
     {
-      v7 = [v6 cal_personaIdentifier];
+      cal_personaIdentifier = [v6 cal_personaIdentifier];
     }
 
     else
     {
-      v7 = 0;
+      cal_personaIdentifier = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    cal_personaIdentifier = 0;
   }
 
-  return v7;
+  return cal_personaIdentifier;
 }
 
-+ (BOOL)isAccountDataSeparated:(id)a3
++ (BOOL)isAccountDataSeparated:(id)separated
 {
-  v4 = a3;
-  v5 = [a1 personaIdentifierForAccountIdentifier:v4];
+  separatedCopy = separated;
+  v5 = [self personaIdentifierForAccountIdentifier:separatedCopy];
   if (v5)
   {
     v9 = 0;
@@ -133,33 +133,33 @@ uint64_t __42__CalAccountUtils_isAccountDataSeparated___block_invoke(uint64_t a1
   return result;
 }
 
-+ (BOOL)isiCloudAccount:(id)a3
++ (BOOL)isiCloudAccount:(id)account
 {
-  if (!a3)
+  if (!account)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [a1 _accountStore];
-  v6 = [v5 accountWithIdentifier:v4];
+  accountCopy = account;
+  _accountStore = [self _accountStore];
+  v6 = [_accountStore accountWithIdentifier:accountCopy];
 
   if (v6)
   {
     v7 = *MEMORY[0x1E69597F8];
-    v8 = [v6 accountType];
-    v9 = [v8 identifier];
-    if ([v7 isEqualToString:v9])
+    accountType = [v6 accountType];
+    identifier = [accountType identifier];
+    if ([v7 isEqualToString:identifier])
     {
       v10 = 1;
     }
 
     else
     {
-      v11 = [v6 parentAccount];
-      v12 = [v11 accountType];
-      v13 = [v12 identifier];
-      v10 = [v7 isEqualToString:v13];
+      parentAccount = [v6 parentAccount];
+      accountType2 = [parentAccount accountType];
+      identifier2 = [accountType2 identifier];
+      v10 = [v7 isEqualToString:identifier2];
     }
   }
 

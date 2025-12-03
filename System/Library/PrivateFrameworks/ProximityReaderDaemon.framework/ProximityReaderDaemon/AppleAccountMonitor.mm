@@ -1,30 +1,30 @@
 @interface AppleAccountMonitor
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 @end
 
 @implementation AppleAccountMonitor
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v4 = a3;
-  v5 = self;
-  sub_261300C18(v4, "accountWasAdded");
+  addedCopy = added;
+  selfCopy = self;
+  sub_261300C18(addedCopy, "accountWasAdded");
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = self;
-  sub_261300968(v4);
+  removedCopy = removed;
+  selfCopy = self;
+  sub_261300968(removedCopy);
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
-  v4 = a3;
-  v5 = self;
-  sub_261300C18(v4, "accountWasModified");
+  modifiedCopy = modified;
+  selfCopy = self;
+  sub_261300C18(modifiedCopy, "accountWasModified");
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface _TUIInstantiateEntry
-- (_TUIInstantiateEntry)initWithTemplate:(id)a3 bindings:(id)a4 actionObject:(id)a5;
+- (_TUIInstantiateEntry)initWithTemplate:(id)template bindings:(id)bindings actionObject:(id)object;
 @end
 
 @implementation _TUIInstantiateEntry
 
-- (_TUIInstantiateEntry)initWithTemplate:(id)a3 bindings:(id)a4 actionObject:(id)a5
+- (_TUIInstantiateEntry)initWithTemplate:(id)template bindings:(id)bindings actionObject:(id)object
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  templateCopy = template;
+  bindingsCopy = bindings;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = _TUIInstantiateEntry;
   v12 = [(_TUIInstantiateEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_aTemplate, a3);
-    objc_storeStrong(&v13->_bindings, a4);
-    objc_storeStrong(&v13->_actionObject, a5);
+    objc_storeStrong(&v12->_aTemplate, template);
+    objc_storeStrong(&v13->_bindings, bindings);
+    objc_storeStrong(&v13->_actionObject, object);
   }
 
   return v13;

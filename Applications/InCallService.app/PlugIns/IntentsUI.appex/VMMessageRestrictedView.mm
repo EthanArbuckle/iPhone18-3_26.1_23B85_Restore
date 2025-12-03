@@ -3,7 +3,7 @@
 - (void)_updateTextColor;
 - (void)commonInit;
 - (void)loadView;
-- (void)setLocalizedAttributedRestrictedAlertTitle:(id)a3;
+- (void)setLocalizedAttributedRestrictedAlertTitle:(id)title;
 - (void)tintColorDidChange;
 @end
 
@@ -23,62 +23,62 @@
   [(VMMessageRestrictedView *)self setTitleLabel:v3];
 
   v4 = +[UIFont telephonyUISubheadlineShortFont];
-  v5 = [(VMMessageRestrictedView *)self titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [(VMMessageRestrictedView *)self titleLabel];
+  [titleLabel setFont:v4];
 
-  v6 = [(VMMessageRestrictedView *)self titleLabel];
-  [v6 setNumberOfLines:0];
+  titleLabel2 = [(VMMessageRestrictedView *)self titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v7 = [(VMMessageRestrictedView *)self titleLabel];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel3 = [(VMMessageRestrictedView *)self titleLabel];
+  [titleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(VMMessageRestrictedView *)self _updateTextColor];
-  v8 = [(VMMessageRestrictedView *)self titleLabel];
-  [(VMMessageRestrictedView *)self addSubview:v8];
+  titleLabel4 = [(VMMessageRestrictedView *)self titleLabel];
+  [(VMMessageRestrictedView *)self addSubview:titleLabel4];
 
-  v9 = [(VMMessageRestrictedView *)self titleLabel];
-  v10 = [v9 firstBaselineAnchor];
-  v11 = [(VMMessageRestrictedView *)self topAnchor];
+  titleLabel5 = [(VMMessageRestrictedView *)self titleLabel];
+  firstBaselineAnchor = [titleLabel5 firstBaselineAnchor];
+  topAnchor = [(VMMessageRestrictedView *)self topAnchor];
   [(VMMessageRestrictedView *)self titleLabelBaselineAnchorLayoutConstraintConstant];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:?];
+  v12 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [(VMMessageRestrictedView *)self setTitleLabelFirstBaselineAnchorLayoutConstraint:v12];
 
-  v13 = [(VMMessageRestrictedView *)self titleLabel];
-  v14 = [v13 lastBaselineAnchor];
-  v15 = [(VMMessageRestrictedView *)self bottomAnchor];
+  titleLabel6 = [(VMMessageRestrictedView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel6 lastBaselineAnchor];
+  bottomAnchor = [(VMMessageRestrictedView *)self bottomAnchor];
   [(VMMessageRestrictedView *)self titleLabelBaselineAnchorLayoutConstraintConstant];
-  v17 = [v14 constraintEqualToAnchor:v15 constant:-v16];
+  v17 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-v16];
   [(VMMessageRestrictedView *)self setTitleLabelLastBaselineAnchorLayoutConstraint:v17];
 
-  v28 = [(VMMessageRestrictedView *)self titleLabel];
-  v18 = [v28 leadingAnchor];
-  v19 = [(VMMessageRestrictedView *)self leadingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  titleLabel7 = [(VMMessageRestrictedView *)self titleLabel];
+  leadingAnchor = [titleLabel7 leadingAnchor];
+  leadingAnchor2 = [(VMMessageRestrictedView *)self leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v20;
-  v21 = [(VMMessageRestrictedView *)self titleLabel];
-  v22 = [v21 trailingAnchor];
-  v23 = [(VMMessageRestrictedView *)self trailingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  titleLabel8 = [(VMMessageRestrictedView *)self titleLabel];
+  trailingAnchor = [titleLabel8 trailingAnchor];
+  trailingAnchor2 = [(VMMessageRestrictedView *)self trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[1] = v24;
-  v25 = [(VMMessageRestrictedView *)self titleLabelFirstBaselineAnchorLayoutConstraint];
-  v29[2] = v25;
-  v26 = [(VMMessageRestrictedView *)self titleLabelLastBaselineAnchorLayoutConstraint];
-  v29[3] = v26;
+  titleLabelFirstBaselineAnchorLayoutConstraint = [(VMMessageRestrictedView *)self titleLabelFirstBaselineAnchorLayoutConstraint];
+  v29[2] = titleLabelFirstBaselineAnchorLayoutConstraint;
+  titleLabelLastBaselineAnchorLayoutConstraint = [(VMMessageRestrictedView *)self titleLabelLastBaselineAnchorLayoutConstraint];
+  v29[3] = titleLabelLastBaselineAnchorLayoutConstraint;
   v27 = [NSArray arrayWithObjects:v29 count:4];
   [NSLayoutConstraint activateConstraints:v27];
 }
 
-- (void)setLocalizedAttributedRestrictedAlertTitle:(id)a3
+- (void)setLocalizedAttributedRestrictedAlertTitle:(id)title
 {
-  v5 = a3;
-  if (self->_localizedAttributedRestrictedAlertTitle != v5)
+  titleCopy = title;
+  if (self->_localizedAttributedRestrictedAlertTitle != titleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_localizedAttributedRestrictedAlertTitle, a3);
-    v6 = [(VMMessageRestrictedView *)self titleLabel];
-    [v6 setAttributedText:v7];
+    v7 = titleCopy;
+    objc_storeStrong(&self->_localizedAttributedRestrictedAlertTitle, title);
+    titleLabel = [(VMMessageRestrictedView *)self titleLabel];
+    [titleLabel setAttributedText:v7];
 
-    v5 = v7;
+    titleCopy = v7;
   }
 }
 
@@ -94,8 +94,8 @@
 {
   v5 = +[UIColor dynamicSecondaryLabelColor];
   v3 = [(VMMessageRestrictedView *)self _accessibilityHigherContrastTintColorForColor:v5];
-  v4 = [(VMMessageRestrictedView *)self titleLabel];
-  [v4 setTextColor:v3];
+  titleLabel = [(VMMessageRestrictedView *)self titleLabel];
+  [titleLabel setTextColor:v3];
 }
 
 - (double)titleLabelBaselineAnchorLayoutConstraintConstant

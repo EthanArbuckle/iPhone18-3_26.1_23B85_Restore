@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __84__UISApplicationSupportDisplayEdgeInfo_SBHScreenTypes__sb_thisDeviceDisplayEdgeInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sb_thisDeviceDisplayEdgeInfo_onceToken != -1)
   {
     dispatch_once(&sb_thisDeviceDisplayEdgeInfo_onceToken, block);
@@ -185,7 +185,7 @@ LABEL_26:
       [v15 additionalTopSafeAreaInset];
       v17 = v16;
 
-      v18 = objc_alloc_init(a1);
+      v18 = objc_alloc_init(self);
       if (!SBHScreenTypeHasHomeButton(a3) && (SBHScreenTypeIsPhone(a3) || SBHScreenTypeIsPad(a3)))
       {
         v19 = v10 + v17;
@@ -227,16 +227,16 @@ LABEL_26:
 - (void)sb_applyDisplayEdgeInfoToSceneSettings:()SBHScreenTypes
 {
   v4 = a3;
-  v5 = [a1 safeAreaInsetsPortrait];
+  safeAreaInsetsPortrait = [self safeAreaInsetsPortrait];
   UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper();
   [v4 setSafeAreaInsetsPortrait:?];
 
-  v6 = [a1 peripheryInsets];
+  peripheryInsets = [self peripheryInsets];
   UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper();
   [v4 setPeripheryInsets:?];
 
-  v7 = [a1 homeAffordanceOverlayAllowance];
-  [v7 doubleValue];
+  homeAffordanceOverlayAllowance = [self homeAffordanceOverlayAllowance];
+  [homeAffordanceOverlayAllowance doubleValue];
   [v4 setHomeAffordanceOverlayAllowance:?];
 }
 

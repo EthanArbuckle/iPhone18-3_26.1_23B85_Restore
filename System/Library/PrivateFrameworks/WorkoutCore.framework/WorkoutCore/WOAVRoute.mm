@@ -1,5 +1,5 @@
 @interface WOAVRoute
-+ (id)pickableRoutesForCategory:(id)a3;
++ (id)pickableRoutesForCategory:(id)category;
 - (NSString)description;
 - (_TtC11WorkoutCore9WOAVRoute)init;
 @end
@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WOAVRoute.description.getter();
   v5 = v4;
 
@@ -17,7 +17,7 @@
   return v6;
 }
 
-+ (id)pickableRoutesForCategory:(id)a3
++ (id)pickableRoutesForCategory:(id)category
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   specialized static WOAVRoute.pickableRoutes(for:)(v3, v4);

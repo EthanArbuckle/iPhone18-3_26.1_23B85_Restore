@@ -1,5 +1,5 @@
 @interface BRCThrottler
-- (BRCThrottler)initWithName:(id)a3 throttleParameters:(id)a4 queue:(id)a5 handler:(id)a6;
+- (BRCThrottler)initWithName:(id)name throttleParameters:(id)parameters queue:(id)queue handler:(id)handler;
 - (void)cancel;
 - (void)reset;
 - (void)scheduleNextEvent;
@@ -7,35 +7,35 @@
 
 @implementation BRCThrottler
 
-- (BRCThrottler)initWithName:(id)a3 throttleParameters:(id)a4 queue:(id)a5 handler:(id)a6
+- (BRCThrottler)initWithName:(id)name throttleParameters:(id)parameters queue:(id)queue handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  parametersCopy = parameters;
+  queueCopy = queue;
+  handlerCopy = handler;
   v30.receiver = self;
   v30.super_class = BRCThrottler;
   v14 = [(BRCThrottler *)&v30 init];
   if (v14)
   {
-    v15 = [[BRCThrottleBase alloc] initWithName:v10 andParameters:v11];
+    v15 = [[BRCThrottleBase alloc] initWithName:nameCopy andParameters:parametersCopy];
     throttle = v14->_throttle;
     v14->_throttle = v15;
 
-    v17 = [v10 UTF8String];
+    uTF8String = [nameCopy UTF8String];
     v18 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v19 = dispatch_queue_attr_make_with_autorelease_frequency(v18, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v20 = dispatch_queue_create_with_target_V2(v17, v19, v12);
+    v20 = dispatch_queue_create_with_target_V2(uTF8String, v19, queueCopy);
 
     queue = v14->_queue;
     v14->_queue = v20;
 
-    v22 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v12);
+    v22 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queueCopy);
     source = v14->_source;
     v14->_source = v22;
 
     v24 = v14->_source;
-    v25 = v13;
+    v25 = handlerCopy;
     v26 = v25;
     v27 = v25;
     if (*MEMORY[0x277CFB010])

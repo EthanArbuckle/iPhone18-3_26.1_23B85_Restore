@@ -1,26 +1,26 @@
 @interface WebFeature
-- (WebFeature)initWithKey:(id)a3 preferenceKey:(id)a4 name:(id)a5 status:(unint64_t)a6 category:(unint64_t)a7 details:(id)a8 defaultValue:(BOOL)a9 hidden:(BOOL)a10;
+- (WebFeature)initWithKey:(id)key preferenceKey:(id)preferenceKey name:(id)name status:(unint64_t)status category:(unint64_t)category details:(id)details defaultValue:(BOOL)value hidden:(BOOL)self0;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation WebFeature
 
-- (WebFeature)initWithKey:(id)a3 preferenceKey:(id)a4 name:(id)a5 status:(unint64_t)a6 category:(unint64_t)a7 details:(id)a8 defaultValue:(BOOL)a9 hidden:(BOOL)a10
+- (WebFeature)initWithKey:(id)key preferenceKey:(id)preferenceKey name:(id)name status:(unint64_t)status category:(unint64_t)category details:(id)details defaultValue:(BOOL)value hidden:(BOOL)self0
 {
   v18.receiver = self;
   v18.super_class = WebFeature;
   v16 = [(WebFeature *)&v18 init];
   if (v16)
   {
-    v16->_key = [a3 copy];
-    v16->_preferenceKey = [a4 copy];
-    v16->_name = [a5 copy];
-    v16->_status = a6;
-    v16->_category = a7;
-    v16->_details = [a8 copy];
-    v16->_defaultValue = a9;
-    v16->_hidden = a10;
+    v16->_key = [key copy];
+    v16->_preferenceKey = [preferenceKey copy];
+    v16->_name = [name copy];
+    v16->_status = status;
+    v16->_category = category;
+    v16->_details = [details copy];
+    v16->_defaultValue = value;
+    v16->_hidden = hidden;
   }
 
   return v16;
@@ -38,16 +38,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WebFeature *)self name];
+  name = [(WebFeature *)self name];
   v7 = [(WebFeature *)self key];
-  v8 = [(WebFeature *)self defaultValue];
+  defaultValue = [(WebFeature *)self defaultValue];
   v9 = @"off";
-  if (v8)
+  if (defaultValue)
   {
     v9 = @"on";
   }
 
-  return [v3 stringWithFormat:@"<%@: %p; name = %@; key = %@; defaultValue = %@>", v5, self, v6, v7, v9];
+  return [v3 stringWithFormat:@"<%@: %p; name = %@; key = %@; defaultValue = %@>", v5, self, name, v7, v9];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface HKSleepSomnogramConnection
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
-- (HKSleepSomnogramConnection)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4;
+- (HKSleepSomnogramConnection)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
 @end
 
 @implementation HKSleepSomnogramConnection
 
-- (HKSleepSomnogramConnection)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4
+- (HKSleepSomnogramConnection)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   v9.receiver = self;
   v9.super_class = HKSleepSomnogramConnection;
   result = [(HKSleepSomnogramConnection *)&v9 init];

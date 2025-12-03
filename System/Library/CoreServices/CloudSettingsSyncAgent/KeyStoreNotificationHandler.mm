@@ -1,7 +1,7 @@
 @interface KeyStoreNotificationHandler
 - (KeyStoreNotificationHandler)init;
-- (int)buddyLaunchType:(id)a3;
-- (int)handleKeystoreNotification:(id)a3;
+- (int)buddyLaunchType:(id)type;
+- (int)handleKeystoreNotification:(id)notification;
 @end
 
 @implementation KeyStoreNotificationHandler
@@ -19,16 +19,16 @@
   return [(KeyStoreNotificationHandler *)&v4 init];
 }
 
-- (int)handleKeystoreNotification:(id)a3
+- (int)handleKeystoreNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (_os_feature_enabled_impl())
   {
     v5 = +[CloudSettingsManager sharedCloudSettingsManager];
-    v6 = [(KeyStoreNotificationHandler *)self buddyLaunchType:v4];
+    v6 = [(KeyStoreNotificationHandler *)self buddyLaunchType:notificationCopy];
     if (!v6)
     {
-      v11 = v4;
+      v11 = notificationCopy;
       v12 = v11;
       if (v11)
       {
@@ -51,7 +51,7 @@
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v18 = v12;
+          uTF8String = v12;
           v19 = 1024;
           v20 = v14;
           v21 = 1024;
@@ -87,7 +87,7 @@
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315394;
-          v18 = [v4 UTF8String];
+          uTF8String = [notificationCopy UTF8String];
           v19 = 1024;
           v20 = v7;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "ERROR: notification: %s, unknown buddy launch type: %d", buf, 0x12u);
@@ -124,15 +124,15 @@ LABEL_27:
   return 0;
 }
 
-- (int)buddyLaunchType:(id)a3
+- (int)buddyLaunchType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.fakebuddy.launchnew"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"com.apple.fakebuddy.launchnew"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.fakebuddy.launchupdate"])
+  else if ([typeCopy isEqualToString:@"com.apple.fakebuddy.launchupdate"])
   {
     v4 = 2;
   }

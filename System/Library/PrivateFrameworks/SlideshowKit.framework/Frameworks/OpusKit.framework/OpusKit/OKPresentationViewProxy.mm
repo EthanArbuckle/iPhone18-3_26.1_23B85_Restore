@@ -1,9 +1,9 @@
 @interface OKPresentationViewProxy
 - (void)commonInit;
 - (void)dealloc;
-- (void)handleAllGesture:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)handleAllGesture:(id)gesture;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation OKPresentationViewProxy
@@ -36,12 +36,12 @@
   [(OFUIView *)&v4 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OKPresentationViewProxy *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -55,12 +55,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OKPresentationViewProxy *)self frame];
   v9 = v8;
   v11 = v10;
@@ -74,21 +74,21 @@
   }
 }
 
-- (void)handleAllGesture:(id)a3
+- (void)handleAllGesture:(id)gesture
 {
-  v4 = [a3 state];
-  if (v4 == 4 || v4 == 3)
+  state = [gesture state];
+  if (state == 4 || state == 3)
   {
-    v6 = [(OKPresentationViewProxy *)self presentationViewController];
+    presentationViewController = [(OKPresentationViewProxy *)self presentationViewController];
 
-    [v6 prepareCouchPotatoPlayback];
+    [presentationViewController prepareCouchPotatoPlayback];
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
-    v5 = [(OKPresentationViewProxy *)self presentationViewController];
+    presentationViewController2 = [(OKPresentationViewProxy *)self presentationViewController];
 
-    [v5 cancelCouchPotatoPlayback];
+    [presentationViewController2 cancelCouchPotatoPlayback];
   }
 }
 

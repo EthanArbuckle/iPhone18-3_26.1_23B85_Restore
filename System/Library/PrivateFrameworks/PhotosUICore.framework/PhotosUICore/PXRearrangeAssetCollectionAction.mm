@@ -1,16 +1,16 @@
 @interface PXRearrangeAssetCollectionAction
 - (BOOL)_canPerformUndo;
-- (PXRearrangeAssetCollectionAction)initWithAssetCollection:(id)a3 movedAssets:(id)a4 targetAsset:(id)a5;
-- (int64_t)adjustedTargetIndexForFetchResult:(id)a3 movedAssets:(id)a4 targetAsset:(id)a5;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXRearrangeAssetCollectionAction)initWithAssetCollection:(id)collection movedAssets:(id)assets targetAsset:(id)asset;
+- (int64_t)adjustedTargetIndexForFetchResult:(id)result movedAssets:(id)assets targetAsset:(id)asset;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXRearrangeAssetCollectionAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   if ([(PXRearrangeAssetCollectionAction *)self _canPerformUndo])
   {
     v5 = self->_assetCollection;
@@ -23,14 +23,14 @@
     v11 = v6;
     v7 = v6;
     v8 = v5;
-    [(PXPhotosAction *)self performChanges:v9 completionHandler:v4];
+    [(PXPhotosAction *)self performChanges:v9 completionHandler:undoCopy];
 
-    v4 = v8;
+    undoCopy = v8;
   }
 
   else
   {
-    (*&v4->super.super._propertyHintLock._os_unfair_lock_opaque)(v4, 0, 0);
+    (*&undoCopy->super.super._propertyHintLock._os_unfair_lock_opaque)(undoCopy, 0, 0);
   }
 }
 
@@ -41,14 +41,14 @@ void __48__PXRearrangeAssetCollectionAction_performUndo___block_invoke(uint64_t 
   [v2 addAssets:*(a1 + 40)];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = self->_assetCollection;
   v6 = self->_movedAssets;
   v7 = self->_targetAsset;
-  v8 = [(PXPhotosAction *)self standardFetchOptions];
-  v9 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:v8];
+  standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+  v9 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:standardFetchOptions];
   beforeFetchResult = self->_beforeFetchResult;
   self->_beforeFetchResult = v9;
 
@@ -66,10 +66,10 @@ void __48__PXRearrangeAssetCollectionAction_performUndo___block_invoke(uint64_t 
   v16[3] = &unk_1E774AD10;
   v16[4] = self;
   v17 = v23;
-  v18 = v8;
-  v19 = v4;
-  v11 = v4;
-  v12 = v8;
+  v18 = standardFetchOptions;
+  v19 = actionCopy;
+  v11 = actionCopy;
+  v12 = standardFetchOptions;
   v13 = v23;
   v14 = v7;
   v15 = v6;
@@ -108,50 +108,50 @@ void __50__PXRearrangeAssetCollectionAction_performAction___block_invoke_2(void 
 
 - (BOOL)_canPerformUndo
 {
-  v3 = [(PXPhotosAction *)self standardFetchOptions];
-  v4 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_assetCollection options:v3];
-  v5 = [v4 fetchedObjectIDs];
-  v6 = [(PHFetchResult *)self->_afterFetchResult fetchedObjectIDs];
-  v7 = [v5 isEqualToArray:v6];
+  standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+  v4 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:self->_assetCollection options:standardFetchOptions];
+  fetchedObjectIDs = [v4 fetchedObjectIDs];
+  fetchedObjectIDs2 = [(PHFetchResult *)self->_afterFetchResult fetchedObjectIDs];
+  v7 = [fetchedObjectIDs isEqualToArray:fetchedObjectIDs2];
 
   return v7;
 }
 
-- (int64_t)adjustedTargetIndexForFetchResult:(id)a3 movedAssets:(id)a4 targetAsset:(id)a5
+- (int64_t)adjustedTargetIndexForFetchResult:(id)result movedAssets:(id)assets targetAsset:(id)asset
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  assetsCopy = assets;
+  resultCopy = result;
+  v9 = resultCopy;
+  if (asset)
   {
-    v10 = [v8 indexOfObject:a5];
+    v10 = [resultCopy indexOfObject:asset];
   }
 
   else
   {
-    v10 = [v8 count];
+    v10 = [resultCopy count];
   }
 
-  v11 = [PXDragAndDropUtilities adjustedTargetIndexForCollection:v9 movedObjects:v7 targetIndex:v10];
+  v11 = [PXDragAndDropUtilities adjustedTargetIndexForCollection:v9 movedObjects:assetsCopy targetIndex:v10];
 
   return v11;
 }
 
-- (PXRearrangeAssetCollectionAction)initWithAssetCollection:(id)a3 movedAssets:(id)a4 targetAsset:(id)a5
+- (PXRearrangeAssetCollectionAction)initWithAssetCollection:(id)collection movedAssets:(id)assets targetAsset:(id)asset
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 photoLibrary];
+  collectionCopy = collection;
+  assetsCopy = assets;
+  assetCopy = asset;
+  photoLibrary = [collectionCopy photoLibrary];
   v15.receiver = self;
   v15.super_class = PXRearrangeAssetCollectionAction;
-  v13 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:v12];
+  v13 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:photoLibrary];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_assetCollection, a3);
-    objc_storeStrong(&v13->_movedAssets, a4);
-    objc_storeStrong(&v13->_targetAsset, a5);
+    objc_storeStrong(&v13->_assetCollection, collection);
+    objc_storeStrong(&v13->_movedAssets, assets);
+    objc_storeStrong(&v13->_targetAsset, asset);
   }
 
   return v13;

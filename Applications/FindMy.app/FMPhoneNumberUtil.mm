@@ -1,13 +1,13 @@
 @interface FMPhoneNumberUtil
-+ (BOOL)isEmailValidWithEmail:(id)a3;
-+ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)a3;
-+ (id)unformatWithPhoneNumber:(id)a3;
++ (BOOL)isEmailValidWithEmail:(id)email;
++ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)number;
++ (id)unformatWithPhoneNumber:(id)number;
 - (_TtC6FindMy17FMPhoneNumberUtil)init;
 @end
 
 @implementation FMPhoneNumberUtil
 
-+ (id)unformatWithPhoneNumber:(id)a3
++ (id)unformatWithPhoneNumber:(id)number
 {
   v3 = type metadata accessor for CharacterSet();
   v4 = *(v3 - 8);
@@ -25,16 +25,16 @@
   return v10;
 }
 
-+ (BOOL)isEmailValidWithEmail:(id)a3
++ (BOOL)isEmailValidWithEmail:(id)email
 {
-  v3 = a3;
+  emailCopy = email;
   v4 = static String.emailPredicate.getter();
-  v5 = [v4 evaluateWithObject:v3];
+  v5 = [v4 evaluateWithObject:emailCopy];
 
   return v5;
 }
 
-+ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)a3
++ (BOOL)isPhoneNumberValidWithPhoneNumber:(id)number
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = sub_100122BFC(v3, v4);

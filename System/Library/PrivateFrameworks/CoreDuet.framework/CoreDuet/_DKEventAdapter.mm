@@ -1,8 +1,8 @@
 @interface _DKEventAdapter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)valueDouble;
 - (id)customMetadata;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)streamName;
 - (id)structuredMetadata;
 - (id)uuid;
@@ -22,41 +22,41 @@
 
 - (id)uuid
 {
-  v2 = [(_DKObject *)self->_dkEvent UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(_DKObject *)self->_dkEvent UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)uuidHash
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(_DKEventAdapter *)self uuid];
-  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(v3, "hash")}];
+  uuid = [(_DKEventAdapter *)self uuid];
+  v4 = [v2 numberWithUnsignedInteger:{objc_msgSend(uuid, "hash")}];
 
   return v4;
 }
 
 - (id)streamName
 {
-  v2 = [(_DKEvent *)self->_dkEvent stream];
-  v3 = [v2 name];
+  stream = [(_DKEvent *)self->_dkEvent stream];
+  name = [stream name];
 
-  return v3;
+  return name;
 }
 
 - (int64_t)secondsFromGMT
 {
-  v2 = [(_DKEvent *)self->_dkEvent timeZone];
-  v3 = [v2 secondsFromGMT];
+  timeZone = [(_DKEvent *)self->_dkEvent timeZone];
+  secondsFromGMT = [timeZone secondsFromGMT];
 
-  return v3;
+  return secondsFromGMT;
 }
 
 - (int64_t)startSecondOfDay
 {
-  v2 = [(_DKEvent *)self->_dkEvent startDate];
-  [v2 timeIntervalSinceReferenceDate];
+  startDate = [(_DKEvent *)self->_dkEvent startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v4 = v3 % 86400;
 
   return v4;
@@ -73,23 +73,23 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [(_DKEvent *)self->_dkEvent startDate];
-    v7 = [v5 components:512 fromDate:v6];
-    v8 = [v7 weekday];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    startDate = [(_DKEvent *)self->_dkEvent startDate];
+    v7 = [currentCalendar components:512 fromDate:startDate];
+    weekday = [v7 weekday];
 
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:weekday];
     v10 = self->_startDayOfWeek;
     self->_startDayOfWeek = v9;
 
-    return v8;
+    return weekday;
   }
 }
 
 - (int64_t)endSecondOfDay
 {
-  v2 = [(_DKEvent *)self->_dkEvent endDate];
-  [v2 timeIntervalSinceReferenceDate];
+  endDate = [(_DKEvent *)self->_dkEvent endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v4 = v3 % 86400;
 
   return v4;
@@ -106,23 +106,23 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [(_DKEvent *)self->_dkEvent endDate];
-    v7 = [v5 components:512 fromDate:v6];
-    v8 = [v7 weekday];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    endDate = [(_DKEvent *)self->_dkEvent endDate];
+    v7 = [currentCalendar components:512 fromDate:endDate];
+    weekday = [v7 weekday];
 
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v8];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:weekday];
     v10 = self->_endDayOfWeek;
     self->_endDayOfWeek = v9;
 
-    return v8;
+    return weekday;
   }
 }
 
 - (double)valueDouble
 {
-  v2 = [(_DKEvent *)self->_dkEvent value];
-  [v2 doubleValue];
+  value = [(_DKEvent *)self->_dkEvent value];
+  [value doubleValue];
   v4 = v3;
 
   return v4;
@@ -130,43 +130,43 @@
 
 - (int64_t)valueInteger
 {
-  v2 = [(_DKEvent *)self->_dkEvent value];
-  v3 = [v2 integerValue];
+  value = [(_DKEvent *)self->_dkEvent value];
+  integerValue = [value integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)valueString
 {
-  v3 = [(_DKEvent *)self->_dkEvent value];
+  value = [(_DKEvent *)self->_dkEvent value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(_DKEvent *)self->_dkEvent value];
-    v6 = [v5 stringValue];
+    value2 = [(_DKEvent *)self->_dkEvent value];
+    stringValue = [value2 stringValue];
   }
 
   else
   {
-    v6 = 0;
+    stringValue = 0;
   }
 
-  return v6;
+  return stringValue;
 }
 
 - (signed)valueClass
 {
-  v3 = [(_DKEvent *)self->_dkEvent value];
-  v4 = [v3 UUID];
+  value = [(_DKEvent *)self->_dkEvent value];
+  uUID = [value UUID];
 
-  if (v4)
+  if (uUID)
   {
     return 0;
   }
 
-  v6 = [(_DKEvent *)self->_dkEvent value];
+  value2 = [(_DKEvent *)self->_dkEvent value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -175,7 +175,7 @@
     return 1;
   }
 
-  v8 = [(_DKEvent *)self->_dkEvent value];
+  value3 = [(_DKEvent *)self->_dkEvent value];
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
 
@@ -184,7 +184,7 @@
     return 2;
   }
 
-  v10 = [(_DKEvent *)self->_dkEvent value];
+  value4 = [(_DKEvent *)self->_dkEvent value];
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
 
@@ -206,10 +206,10 @@
     return 0;
   }
 
-  v3 = [(_DKEvent *)self->_dkEvent value];
-  v4 = [v3 typeCode];
+  value = [(_DKEvent *)self->_dkEvent value];
+  typeCode = [value typeCode];
 
-  return v4;
+  return typeCode;
 }
 
 - (id)structuredMetadata
@@ -225,13 +225,13 @@
   {
     v5 = objc_opt_new();
     v6 = objc_autoreleasePoolPush();
-    v7 = [(_DKEvent *)self->_dkEvent metadata];
+    metadata = [(_DKEvent *)self->_dkEvent metadata];
     v8 = +[_DKMetadataPersistenceLookupTable keyToAttribute];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v7;
+    v9 = metadata;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -286,14 +286,14 @@
 
   v5 = objc_opt_new();
   context = objc_autoreleasePoolPush();
-  v42 = self;
-  v6 = [(_DKEvent *)self->_dkEvent metadata];
+  selfCopy = self;
+  metadata = [(_DKEvent *)self->_dkEvent metadata];
   v7 = +[_DKMetadataPersistenceLookupTable keyToAttribute];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v8 = v6;
+  v8 = metadata;
   v9 = [v8 countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (!v9)
   {
@@ -452,8 +452,8 @@ LABEL_35:
 
   objc_autoreleasePoolPop(context);
   v37 = [v5 copy];
-  v38 = v42->_customMetadata;
-  v42->_customMetadata = v37;
+  v38 = selfCopy->_customMetadata;
+  selfCopy->_customMetadata = v37;
 
   v3 = v37;
 LABEL_36:
@@ -462,16 +462,16 @@ LABEL_36:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_DKEvent *)self->_dkEvent isEqual:v4[5]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_DKEvent *)self->_dkEvent isEqual:equalCopy[5]];
 
   return v5;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   dkEvent = self->_dkEvent;
   if (objc_opt_respondsToSelector())

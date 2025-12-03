@@ -1,18 +1,18 @@
 @interface SBHLibraryCategoryFolder
-- (SBHLibraryCategoryFolder)initWithDisplayName:(id)a3 maxListCount:(unint64_t)a4 listGridSize:(SBHIconGridSize)a5 libraryCategoryIdentifier:(id)a6;
+- (SBHLibraryCategoryFolder)initWithDisplayName:(id)name maxListCount:(unint64_t)count listGridSize:(SBHIconGridSize)size libraryCategoryIdentifier:(id)identifier;
 @end
 
 @implementation SBHLibraryCategoryFolder
 
-- (SBHLibraryCategoryFolder)initWithDisplayName:(id)a3 maxListCount:(unint64_t)a4 listGridSize:(SBHIconGridSize)a5 libraryCategoryIdentifier:(id)a6
+- (SBHLibraryCategoryFolder)initWithDisplayName:(id)name maxListCount:(unint64_t)count listGridSize:(SBHIconGridSize)size libraryCategoryIdentifier:(id)identifier
 {
-  v10 = a6;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SBHLibraryCategoryFolder;
-  v11 = [(SBFolder *)&v15 initWithDisplayName:a3 maxListCount:a4 listGridSize:*&a5];
+  v11 = [(SBFolder *)&v15 initWithDisplayName:name maxListCount:count listGridSize:*&size];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [identifierCopy copy];
     libraryCategoryIdentifier = v11->_libraryCategoryIdentifier;
     v11->_libraryCategoryIdentifier = v12;
   }

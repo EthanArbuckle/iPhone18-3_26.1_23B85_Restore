@@ -4,8 +4,8 @@
 - (id)connection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)synchronizeNanoDomain:(id)a3 keys:(id)a4 cloudEnabled:(BOOL)a5;
-- (void)synchronizeUserDefaultsDomain:(id)a3 keys:(id)a4 container:(id)a5 appGroupContainer:(id)a6 cloudEnabled:(BOOL)a7;
+- (void)synchronizeNanoDomain:(id)domain keys:(id)keys cloudEnabled:(BOOL)enabled;
+- (void)synchronizeUserDefaultsDomain:(id)domain keys:(id)keys container:(id)container appGroupContainer:(id)groupContainer cloudEnabled:(BOOL)enabled;
 - (void)unsafe_invalidate;
 @end
 
@@ -100,7 +100,7 @@
   if (os_log_type_enabled(nps_framework_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C0D93000, v3, OS_LOG_TYPE_DEFAULT, "self: (%p)", buf, 0xCu);
   }
 
@@ -169,7 +169,7 @@ void __24__NPSManager_connection__block_invoke_71(uint64_t a1)
   if (os_log_type_enabled(nps_framework_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C0D93000, v3, OS_LOG_TYPE_DEFAULT, "self: (%p)", buf, 0xCu);
   }
 
@@ -183,24 +183,24 @@ void __24__NPSManager_connection__block_invoke_71(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)synchronizeUserDefaultsDomain:(id)a3 keys:(id)a4 container:(id)a5 appGroupContainer:(id)a6 cloudEnabled:(BOOL)a7
+- (void)synchronizeUserDefaultsDomain:(id)domain keys:(id)keys container:(id)container appGroupContainer:(id)groupContainer cloudEnabled:(BOOL)enabled
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  domainCopy = domain;
+  keysCopy = keys;
+  containerCopy = container;
+  groupContainerCopy = groupContainer;
   v16 = nps_framework_log;
   if (os_log_type_enabled(nps_framework_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v30 = v12;
+    v30 = domainCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = keysCopy;
     v33 = 2112;
-    v34 = v14;
+    v34 = containerCopy;
     v35 = 2112;
-    v36 = v15;
+    v36 = groupContainerCopy;
     _os_log_impl(&dword_1C0D93000, v16, OS_LOG_TYPE_DEFAULT, "synchronizeUserDefaultsDomain: (%@); keys: (%@); container: (%@); appGroupContainer: (%@)", buf, 0x2Au);
   }
 
@@ -210,15 +210,15 @@ void __24__NPSManager_connection__block_invoke_71(uint64_t a1)
   v23[2] = __90__NPSManager_synchronizeUserDefaultsDomain_keys_container_appGroupContainer_cloudEnabled___block_invoke;
   v23[3] = &unk_1E81296D0;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = a7;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v24 = domainCopy;
+  v25 = keysCopy;
+  v26 = containerCopy;
+  v27 = groupContainerCopy;
+  enabledCopy = enabled;
+  v18 = groupContainerCopy;
+  v19 = containerCopy;
+  v20 = keysCopy;
+  v21 = domainCopy;
   dispatch_sync(internalQueue, v23);
 
   v22 = *MEMORY[0x1E69E9840];
@@ -272,20 +272,20 @@ void __90__NPSManager_synchronizeUserDefaultsDomain_keys_container_appGroupConta
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)synchronizeNanoDomain:(id)a3 keys:(id)a4 cloudEnabled:(BOOL)a5
+- (void)synchronizeNanoDomain:(id)domain keys:(id)keys cloudEnabled:(BOOL)enabled
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  domainCopy = domain;
+  keysCopy = keys;
   v10 = nps_framework_log;
   if (os_log_type_enabled(nps_framework_log, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v20 = "[NPSManager synchronizeNanoDomain:keys:cloudEnabled:]";
     v21 = 2114;
-    v22 = v8;
+    v22 = domainCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = keysCopy;
     _os_log_impl(&dword_1C0D93000, v10, OS_LOG_TYPE_DEFAULT, "%s: (%{public}@); keys: (%@)", buf, 0x20u);
   }
 
@@ -295,11 +295,11 @@ void __90__NPSManager_synchronizeUserDefaultsDomain_keys_container_appGroupConta
   v15[2] = __54__NPSManager_synchronizeNanoDomain_keys_cloudEnabled___block_invoke;
   v15[3] = &unk_1E8129720;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a5;
-  v12 = v9;
-  v13 = v8;
+  v16 = domainCopy;
+  v17 = keysCopy;
+  enabledCopy = enabled;
+  v12 = keysCopy;
+  v13 = domainCopy;
   dispatch_sync(internalQueue, v15);
 
   v14 = *MEMORY[0x1E69E9840];

@@ -1,28 +1,28 @@
 @interface SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMatchingSpans:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatchingSpans:(id)spans;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)self setUtterance:?];
   }
 
   tokenChain = self->_tokenChain;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (tokenChain)
   {
     if (v6)
@@ -40,7 +40,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -65,7 +65,7 @@
   }
 
   turnInput = self->_turnInput;
-  v13 = *(v4 + 3);
+  v13 = *(fromCopy + 3);
   if (turnInput)
   {
     if (v13)
@@ -90,13 +90,13 @@
   return v4 ^ v5 ^ [(SIRINLUEXTERNALTurnInput *)self->_turnInput hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((utterance = self->_utterance, !(utterance | v4[4])) || -[NSString isEqual:](utterance, "isEqual:")) && ((tokenChain = self->_tokenChain, !(tokenChain | v4[2])) || -[SIRINLUINTERNALTokenChain isEqual:](tokenChain, "isEqual:")) && ((matchingSpans = self->_matchingSpans, !(matchingSpans | v4[1])) || -[NSMutableArray isEqual:](matchingSpans, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((utterance = self->_utterance, !(utterance | equalCopy[4])) || -[NSString isEqual:](utterance, "isEqual:")) && ((tokenChain = self->_tokenChain, !(tokenChain | equalCopy[2])) || -[SIRINLUINTERNALTokenChain isEqual:](tokenChain, "isEqual:")) && ((matchingSpans = self->_matchingSpans, !(matchingSpans | equalCopy[1])) || -[NSMutableArray isEqual:](matchingSpans, "isEqual:")))
   {
     turnInput = self->_turnInput;
-    if (turnInput | v4[3])
+    if (turnInput | equalCopy[3])
     {
       v9 = [(SIRINLUEXTERNALTurnInput *)turnInput isEqual:?];
     }
@@ -115,15 +115,15 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_utterance copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_utterance copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:a3];
+  v8 = [(SIRINLUINTERNALTokenChain *)self->_tokenChain copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -147,7 +147,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * v14) copyWithZone:{a3, v20}];
+        v15 = [*(*(&v20 + 1) + 8 * v14) copyWithZone:{zone, v20}];
         [v5 addMatchingSpans:v15];
 
         ++v14;
@@ -160,7 +160,7 @@
     while (v12);
   }
 
-  v16 = [(SIRINLUEXTERNALTurnInput *)self->_turnInput copyWithZone:a3];
+  v16 = [(SIRINLUEXTERNALTurnInput *)self->_turnInput copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
@@ -168,44 +168,44 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_utterance)
   {
-    [v8 setUtterance:?];
+    [toCopy setUtterance:?];
   }
 
   if (self->_tokenChain)
   {
-    [v8 setTokenChain:?];
+    [toCopy setTokenChain:?];
   }
 
   if ([(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)self matchingSpansCount])
   {
-    [v8 clearMatchingSpans];
-    v4 = [(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)self matchingSpansCount];
-    if (v4)
+    [toCopy clearMatchingSpans];
+    matchingSpansCount = [(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)self matchingSpansCount];
+    if (matchingSpansCount)
     {
-      v5 = v4;
+      v5 = matchingSpansCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)self matchingSpansAtIndex:i];
-        [v8 addMatchingSpans:v7];
+        [toCopy addMatchingSpans:v7];
       }
     }
   }
 
   if (self->_turnInput)
   {
-    [v8 setTurnInput:?];
+    [toCopy setTurnInput:?];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_utterance)
   {
     PBDataWriterWriteStringField();
@@ -259,19 +259,19 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   utterance = self->_utterance;
   if (utterance)
   {
-    [v3 setObject:utterance forKey:@"utterance"];
+    [dictionary setObject:utterance forKey:@"utterance"];
   }
 
   tokenChain = self->_tokenChain;
   if (tokenChain)
   {
-    v7 = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"token_chain"];
+    dictionaryRepresentation = [(SIRINLUINTERNALTokenChain *)tokenChain dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"token_chain"];
   }
 
   if ([(NSMutableArray *)self->_matchingSpans count])
@@ -296,8 +296,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -312,8 +312,8 @@
   turnInput = self->_turnInput;
   if (turnInput)
   {
-    v16 = [(SIRINLUEXTERNALTurnInput *)turnInput dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"turn_input"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALTurnInput *)turnInput dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"turn_input"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -327,28 +327,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing;
   v4 = [(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)&v8 description];
-  v5 = [(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALOVERRIDESTurnInputAndPreprocessing *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addMatchingSpans:(id)a3
+- (void)addMatchingSpans:(id)spans
 {
-  v4 = a3;
+  spansCopy = spans;
   matchingSpans = self->_matchingSpans;
-  v8 = v4;
+  v8 = spansCopy;
   if (!matchingSpans)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_matchingSpans;
     self->_matchingSpans = v6;
 
-    v4 = v8;
+    spansCopy = v8;
     matchingSpans = self->_matchingSpans;
   }
 
-  [(NSMutableArray *)matchingSpans addObject:v4];
+  [(NSMutableArray *)matchingSpans addObject:spansCopy];
 }
 
 @end

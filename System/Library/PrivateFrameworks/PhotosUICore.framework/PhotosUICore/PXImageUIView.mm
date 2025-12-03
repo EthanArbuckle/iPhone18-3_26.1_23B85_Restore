@@ -2,25 +2,25 @@
 - (BOOL)allowsFocus;
 - (BOOL)drawsFocusRing;
 - (CGRect)contentsRect;
-- (PXImageUIView)initWithCoder:(id)a3;
-- (PXImageUIView)initWithFrame:(CGRect)a3;
+- (PXImageUIView)initWithCoder:(id)coder;
+- (PXImageUIView)initWithFrame:(CGRect)frame;
 - (id)focusEffect;
 - (void)_PXImageUIViewInitialization;
-- (void)_setOverlaySpecs:(id)a3;
+- (void)_setOverlaySpecs:(id)specs;
 - (void)_updateCorners;
 - (void)_updateFloatingOverlay;
 - (void)_updateSubviewsOrdering;
-- (void)setAllowsFocus:(BOOL)a3;
-- (void)setAnimating:(BOOL)a3 withFlags:(unint64_t)a4;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setDrawsFocusRing:(BOOL)a3;
-- (void)setFloatingOverlay:(id)a3 withInsets:(UIEdgeInsets)a4 parallax:(BOOL)a5;
-- (void)setFloatingRotationEnabled:(BOOL)a3;
-- (void)setFloatingViewEnabled:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setSpec:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAllowsFocus:(BOOL)focus;
+- (void)setAnimating:(BOOL)animating withFlags:(unint64_t)flags;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setDrawsFocusRing:(BOOL)ring;
+- (void)setFloatingOverlay:(id)overlay withInsets:(UIEdgeInsets)insets parallax:(BOOL)parallax;
+- (void)setFloatingRotationEnabled:(BOOL)enabled;
+- (void)setFloatingViewEnabled:(BOOL)enabled;
+- (void)setImage:(id)image;
+- (void)setSpec:(id)spec;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXImageUIView
@@ -38,13 +38,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PXImageUIView *)self traitCollection];
-  [v5 displayScale];
+  changeCopy = change;
+  traitCollection = [(PXImageUIView *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
@@ -54,31 +54,31 @@
   }
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_contentsRect = &self->_contentsRect;
-  if (!CGRectEqualToRect(self->_contentsRect, a3))
+  if (!CGRectEqualToRect(self->_contentsRect, rect))
   {
     p_contentsRect->origin.x = x;
     p_contentsRect->origin.y = y;
     p_contentsRect->size.width = width;
     p_contentsRect->size.height = height;
-    v10 = [(PXImageUIView *)self _imageView];
-    v9 = [v10 layer];
-    [v9 setContentsRect:{p_contentsRect->origin.x, p_contentsRect->origin.y, p_contentsRect->size.width, p_contentsRect->size.height}];
+    _imageView = [(PXImageUIView *)self _imageView];
+    layer = [_imageView layer];
+    [layer setContentsRect:{p_contentsRect->origin.x, p_contentsRect->origin.y, p_contentsRect->size.width, p_contentsRect->size.height}];
   }
 }
 
-- (void)setAnimating:(BOOL)a3 withFlags:(unint64_t)a4
+- (void)setAnimating:(BOOL)animating withFlags:(unint64_t)flags
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    v6 = a3 & (a4 >> 1);
+    self->_animating = animating;
+    v6 = animating & (flags >> 1);
     snapshotView = self->_snapshotView;
     if (snapshotView)
     {
@@ -87,8 +87,8 @@
       self->_snapshotView = 0;
     }
 
-    v9 = [(PXImageUIView *)self _imageView];
-    [v9 setHidden:v6];
+    _imageView = [(PXImageUIView *)self _imageView];
+    [_imageView setHidden:v6];
   }
 }
 
@@ -101,49 +101,49 @@
   v5[3] = &unk_1E7740568;
   v5[4] = self;
   [(NSMutableArray *)overlayViews enumerateObjectsUsingBlock:v5];
-  v4 = [(PXImageUIView *)self _cornerView];
-  [(PXImageUIView *)self bringSubviewToFront:v4];
+  _cornerView = [(PXImageUIView *)self _cornerView];
+  [(PXImageUIView *)self bringSubviewToFront:_cornerView];
 }
 
 - (void)_updateCorners
 {
-  v3 = [(PXImageUIView *)self spec];
-  [v3 cornerRadius];
+  spec = [(PXImageUIView *)self spec];
+  [spec cornerRadius];
   v5 = v4;
-  v6 = [v3 roundedCornersMode];
-  v7 = [(PXImageUIView *)self _imageView];
+  roundedCornersMode = [spec roundedCornersMode];
+  _imageView = [(PXImageUIView *)self _imageView];
   if (![(PXImageUIView *)self floatingViewEnabled])
   {
-    [v7 setClipsToBounds:1];
-    if (v5 > 0.0 && v6 == 1)
+    [_imageView setClipsToBounds:1];
+    if (v5 > 0.0 && roundedCornersMode == 1)
     {
       v17 = +[PXMemoriesFeedSettings sharedInstance];
-      v18 = [v17 disableRoundedOverlays];
+      disableRoundedOverlays = [v17 disableRoundedOverlays];
 
-      v19 = [(PXImageUIView *)self _cornerView];
-      v8 = v19;
-      if ((v18 & 1) == 0)
+      _cornerView = [(PXImageUIView *)self _cornerView];
+      _cornerView2 = _cornerView;
+      if ((disableRoundedOverlays & 1) == 0)
       {
-        if (!v19)
+        if (!_cornerView)
         {
-          v8 = objc_alloc_init(PXRoundedCornerOverlayView);
-          [(PXRoundedCornerOverlayView *)v8 setTranslatesAutoresizingMaskIntoConstraints:1];
-          [(PXRoundedCornerOverlayView *)v8 setAutoresizingMask:18];
-          [(PXImageUIView *)self _setCornerView:v8];
-          [(PXImageUIView *)self addSubview:v8];
+          _cornerView2 = objc_alloc_init(PXRoundedCornerOverlayView);
+          [(PXRoundedCornerOverlayView *)_cornerView2 setTranslatesAutoresizingMaskIntoConstraints:1];
+          [(PXRoundedCornerOverlayView *)_cornerView2 setAutoresizingMask:18];
+          [(PXImageUIView *)self _setCornerView:_cornerView2];
+          [(PXImageUIView *)self addSubview:_cornerView2];
           [(PXImageUIView *)self _updateSubviewsOrdering];
         }
 
         [(PXImageUIView *)self bounds];
-        [(PXRoundedCornerOverlayView *)v8 setFrame:?];
+        [(PXRoundedCornerOverlayView *)_cornerView2 setFrame:?];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __31__PXImageUIView__updateCorners__block_invoke;
         v22[3] = &unk_1E7740540;
         v25 = v5;
-        v23 = v3;
-        v24 = self;
-        [(PXRoundedCornerOverlayView *)v8 performChanges:v22];
+        v23 = spec;
+        selfCopy = self;
+        [(PXRoundedCornerOverlayView *)_cornerView2 performChanges:v22];
 
         v20 = 0;
         v5 = 0.0;
@@ -153,59 +153,59 @@
 
     else
     {
-      v8 = [(PXImageUIView *)self _cornerView];
+      _cornerView2 = [(PXImageUIView *)self _cornerView];
     }
 
     v20 = 1;
 LABEL_21:
-    [(PXRoundedCornerOverlayView *)v8 setHidden:v20];
-    v21 = [v7 layer];
-    [v21 setCornerRadius:v5];
+    [(PXRoundedCornerOverlayView *)_cornerView2 setHidden:v20];
+    layer = [_imageView layer];
+    [layer setCornerRadius:v5];
 
     goto LABEL_22;
   }
 
-  v8 = [v7 _layeredImageContainer];
-  v9 = [(PXRoundedCornerOverlayView *)v8 config];
-  [v7 _setLayeredImageCornerRadius:v5];
-  [v9 defaultFocusedShadowRadius];
-  [v9 setDefaultUnfocusedShadowRadius:?];
-  [v9 setBoostBrightness:self->_floatingRotationEnabled];
+  _cornerView2 = [_imageView _layeredImageContainer];
+  config = [(PXRoundedCornerOverlayView *)_cornerView2 config];
+  [_imageView _setLayeredImageCornerRadius:v5];
+  [config defaultFocusedShadowRadius];
+  [config setDefaultUnfocusedShadowRadius:?];
+  [config setBoostBrightness:self->_floatingRotationEnabled];
   v10 = 0.0;
   if (self->_hasParallax)
   {
-    [v9 maximumParallaxDepth];
+    [config maximumParallaxDepth];
   }
 
-  [v9 setOverlayDepth:v10];
+  [config setOverlayDepth:v10];
   v11 = 0.0799999982;
   if (!self->_floatingRotationEnabled)
   {
     v11 = 0.0;
   }
 
-  [v9 setRotationAmount:v11];
+  [config setRotationAmount:v11];
   v12 = 8.0;
   v13 = 8.0;
   if (self->_floatingRotationEnabled)
   {
-    [v9 translationOffset];
+    [config translationOffset];
   }
 
-  [v9 setTranslationOffset:{v12, v13}];
+  [config setTranslationOffset:{v12, v13}];
   v14 = 0.200000003;
   if (!self->_floatingRotationEnabled)
   {
     v14 = 0.0;
   }
 
-  [v9 setSpecularOpacity:v14];
-  [v9 setAllowsNonOpaqueShadow:0];
-  v15 = [(PXImageUIView *)self _cornerView];
-  [v15 removeFromSuperview];
+  [config setSpecularOpacity:v14];
+  [config setAllowsNonOpaqueShadow:0];
+  _cornerView3 = [(PXImageUIView *)self _cornerView];
+  [_cornerView3 removeFromSuperview];
 
   [(PXImageUIView *)self _setCornerView:0];
-  [v7 setClipsToBounds:0];
+  [_imageView setClipsToBounds:0];
 
 LABEL_22:
 }
@@ -226,49 +226,49 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
 {
   if (self->_floatingOverlayView)
   {
-    v2 = [(PXImageUIView *)self _imageView];
+    _imageView = [(PXImageUIView *)self _imageView];
     [MEMORY[0x1E69DD250] setAnimationsEnabled:0];
-    [v2 bounds];
+    [_imageView bounds];
     PXEdgeInsetsInsetRect();
   }
 }
 
-- (void)setFloatingOverlay:(id)a3 withInsets:(UIEdgeInsets)a4 parallax:(BOOL)a5
+- (void)setFloatingOverlay:(id)overlay withInsets:(UIEdgeInsets)insets parallax:(BOOL)parallax
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v12 = a3;
-  if (self->_floatingOverlayView != v12)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  overlayCopy = overlay;
+  if (self->_floatingOverlayView != overlayCopy)
   {
-    v13 = v12;
-    objc_storeStrong(&self->_floatingOverlayView, a3);
+    v13 = overlayCopy;
+    objc_storeStrong(&self->_floatingOverlayView, overlay);
     self->_floatingInsets.top = top;
     self->_floatingInsets.left = left;
     self->_floatingInsets.bottom = bottom;
     self->_floatingInsets.right = right;
-    self->_hasParallax = a5;
+    self->_hasParallax = parallax;
     [(PXImageUIView *)self _updateFloatingOverlay];
-    v12 = v13;
+    overlayCopy = v13;
   }
 }
 
-- (void)setFloatingRotationEnabled:(BOOL)a3
+- (void)setFloatingRotationEnabled:(BOOL)enabled
 {
-  if (self->_floatingRotationEnabled != a3)
+  if (self->_floatingRotationEnabled != enabled)
   {
-    self->_floatingRotationEnabled = a3;
+    self->_floatingRotationEnabled = enabled;
     [(PXImageUIView *)self _updateCorners];
   }
 }
 
-- (void)_setOverlaySpecs:(id)a3
+- (void)_setOverlaySpecs:(id)specs
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->__overlaySpecs != v4 && ([(NSArray *)v4 isEqual:?]& 1) == 0)
+  specsCopy = specs;
+  v5 = specsCopy;
+  if (self->__overlaySpecs != specsCopy && ([(NSArray *)specsCopy isEqual:?]& 1) == 0)
   {
     v6 = [(NSArray *)v5 copy];
     overlaySpecs = self->__overlaySpecs;
@@ -276,8 +276,8 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
 
     [(NSMutableArray *)self->_overlayViews makeObjectsPerformSelector:sel_removeFromSuperview];
     [(NSMutableArray *)self->_overlayViews removeAllObjects];
-    v29 = [(PXImageUIView *)self _imageView];
-    [v29 bounds];
+    _imageView = [(PXImageUIView *)self _imageView];
+    [_imageView bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -306,11 +306,11 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
           v21 = *(*(&v31 + 1) + 8 * i);
           v22 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v9, v11, v13, v15}];
           [v22 setAutoresizingMask:18];
-          v23 = [v22 layer];
+          layer = [v22 layer];
           v24 = [MEMORY[0x1E6979378] px_filterWithPXCompositingFilterType:{objc_msgSend(v21, "compositingFilterType")}];
-          [v23 setCompositingFilter:v24];
-          v25 = [v21 backgroundColor];
-          [v23 setBackgroundColor:{objc_msgSend(v25, "CGColor")}];
+          [layer setCompositingFilter:v24];
+          backgroundColor = [v21 backgroundColor];
+          [layer setBackgroundColor:{objc_msgSend(backgroundColor, "CGColor")}];
 
           [(NSMutableArray *)self->_overlayViews addObject:v22];
           if (self->_floatingViewEnabled)
@@ -320,7 +320,7 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
 
           else
           {
-            [v29 addSubview:v22];
+            [_imageView addSubview:v22];
           }
 
           v18 |= v24 != 0;
@@ -339,26 +339,26 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
       v26 = 1;
     }
 
-    v27 = [v29 layer];
-    [v27 setAllowsGroupBlending:v26 & 1];
+    layer2 = [_imageView layer];
+    [layer2 setAllowsGroupBlending:v26 & 1];
 
     [(PXImageUIView *)self _updateSubviewsOrdering];
   }
 }
 
-- (void)setFloatingViewEnabled:(BOOL)a3
+- (void)setFloatingViewEnabled:(BOOL)enabled
 {
-  if (self->_floatingViewEnabled != a3)
+  if (self->_floatingViewEnabled != enabled)
   {
-    self->_floatingViewEnabled = a3;
+    self->_floatingViewEnabled = enabled;
     [(PXImageUIView *)self _updateCorners];
   }
 }
 
 - (void)_PXImageUIViewInitialization
 {
-  v3 = [(PXImageUIView *)self layer];
-  [v3 setAllowsGroupOpacity:0];
+  layer = [(PXImageUIView *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
   v4 = objc_alloc_init(PXFocusableUIImageView);
   imageView = self->__imageView;
@@ -372,8 +372,8 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
   [(PXFocusableUIImageView *)self->__imageView setClipsToBounds:1];
   [(PXFocusableUIImageView *)self->__imageView setAutoresizingMask:18];
   v7 = self->__imageView;
-  v8 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
-  [(PXFocusableUIImageView *)v7 setBackgroundColor:v8];
+  quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+  [(PXFocusableUIImageView *)v7 setBackgroundColor:quaternarySystemFillColor];
 
   [(PXImageUIView *)self addSubview:self->__imageView];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -385,100 +385,100 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
   [(PXImageUIView *)self setFloatingRotationEnabled:1];
 }
 
-- (void)setDrawsFocusRing:(BOOL)a3
+- (void)setDrawsFocusRing:(BOOL)ring
 {
-  v3 = a3;
-  v4 = [(PXImageUIView *)self _imageView];
-  [v4 setDrawsFocusRing:v3];
+  ringCopy = ring;
+  _imageView = [(PXImageUIView *)self _imageView];
+  [_imageView setDrawsFocusRing:ringCopy];
 }
 
 - (BOOL)drawsFocusRing
 {
-  v2 = [(PXImageUIView *)self _imageView];
-  v3 = [v2 drawsFocusRing];
+  _imageView = [(PXImageUIView *)self _imageView];
+  drawsFocusRing = [_imageView drawsFocusRing];
 
-  return v3;
+  return drawsFocusRing;
 }
 
-- (void)setAllowsFocus:(BOOL)a3
+- (void)setAllowsFocus:(BOOL)focus
 {
-  v3 = a3;
-  v4 = [(PXImageUIView *)self _imageView];
-  [v4 setAllowsFocus:v3];
+  focusCopy = focus;
+  _imageView = [(PXImageUIView *)self _imageView];
+  [_imageView setAllowsFocus:focusCopy];
 }
 
 - (BOOL)allowsFocus
 {
-  v2 = [(PXImageUIView *)self _imageView];
-  v3 = [v2 allowsFocus];
+  _imageView = [(PXImageUIView *)self _imageView];
+  allowsFocus = [_imageView allowsFocus];
 
-  return v3;
+  return allowsFocus;
 }
 
 - (id)focusEffect
 {
-  v3 = [(PXImageUIView *)self _cornerView];
-  if ([v3 isHidden])
+  _cornerView = [(PXImageUIView *)self _cornerView];
+  if ([_cornerView isHidden])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 focusInfo];
-    v4 = [v5 makeHaloEffectForSourceView:self];
+    focusInfo = [_cornerView focusInfo];
+    v4 = [focusInfo makeHaloEffectForSourceView:self];
   }
 
   return v4;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = PXImageUIView;
   [(PXImageUIView *)&v6 setContentMode:?];
-  v5 = [(PXImageUIView *)self _imageView];
-  [v5 setContentMode:a3];
+  _imageView = [(PXImageUIView *)self _imageView];
+  [_imageView setContentMode:mode];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_image, a3);
-    v6 = [(PXImageUIView *)self _imageView];
-    [v6 setImage:v7];
+    v7 = imageCopy;
+    objc_storeStrong(&self->_image, image);
+    _imageView = [(PXImageUIView *)self _imageView];
+    [_imageView setImage:v7];
 
     [(PXImageUIView *)self _updateFloatingOverlay];
     [(PXImageUIView *)self _updateCorners];
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v7 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXImageUIView *)self setFloatingViewEnabled:[(PXImageViewSpec *)self->_spec shouldEnableFocus]];
     [(PXImageUIView *)self _updateFloatingOverlay];
     [(PXImageUIView *)self _updateCorners];
-    v6 = [(PXImageViewSpec *)self->_spec overlaySpecs];
-    [(PXImageUIView *)self _setOverlaySpecs:v6];
+    overlaySpecs = [(PXImageViewSpec *)self->_spec overlaySpecs];
+    [(PXImageUIView *)self _setOverlaySpecs:overlaySpecs];
 
-    v5 = v7;
+    specCopy = v7;
   }
 }
 
-- (PXImageUIView)initWithCoder:(id)a3
+- (PXImageUIView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PXImageUIView;
-  v3 = [(PXImageUIView *)&v6 initWithCoder:a3];
+  v3 = [(PXImageUIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -488,11 +488,11 @@ void __31__PXImageUIView__updateCorners__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (PXImageUIView)initWithFrame:(CGRect)a3
+- (PXImageUIView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXImageUIView;
-  v3 = [(PXImageUIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXImageUIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

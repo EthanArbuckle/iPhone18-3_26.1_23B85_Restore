@@ -1,44 +1,44 @@
 @interface INPlayMediaMediaItemResolutionResult
 + (INPlayMediaMediaItemResolutionResult)unsupportedForReason:(INPlayMediaMediaItemUnsupportedReason)reason;
 + (NSArray)successesWithResolvedMediaItems:(NSArray *)resolvedMediaItems;
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3;
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4;
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description;
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description;
 @end
 
 @implementation INPlayMediaMediaItemResolutionResult
 
 + (INPlayMediaMediaItemResolutionResult)unsupportedForReason:(INPlayMediaMediaItemUnsupportedReason)reason
 {
-  v4 = [a1 unsupported];
-  [v4 setUnsupportedReason:reason];
+  unsupported = [self unsupported];
+  [unsupported setUnsupportedReason:reason];
 
-  return v4;
+  return unsupported;
 }
 
 + (NSArray)successesWithResolvedMediaItems:(NSArray *)resolvedMediaItems
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___INPlayMediaMediaItemResolutionResult;
   v3 = objc_msgSendSuper2(&v5, sel_successesWithResolvedMediaItems_, resolvedMediaItems);
 
   return v3;
 }
 
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description
 {
   v15.receiver = self;
   v15.super_class = INPlayMediaMediaItemResolutionResult;
-  v4 = [(INIntentResolutionResult *)&v15 _buildIntentSlotResolutionResultWithIntentSlotDescription:a3];
+  v4 = [(INIntentResolutionResult *)&v15 _buildIntentSlotResolutionResultWithIntentSlotDescription:description];
   if ([(INIntentResolutionResult *)self resolutionResultCode]== 1 && [(INIntentResolutionResult *)self unsupportedReason])
   {
-    v5 = [v4 payloadUnsupported];
-    [v5 setReason:1000];
+    payloadUnsupported = [v4 payloadUnsupported];
+    [payloadUnsupported setReason:1000];
 
-    v6 = [v4 payloadUnsupported];
-    v7 = [(INIntentResolutionResult *)self unsupportedReason];
-    if (v7 <= 6)
+    payloadUnsupported2 = [v4 payloadUnsupported];
+    unsupportedReason = [(INIntentResolutionResult *)self unsupportedReason];
+    if (unsupportedReason <= 6)
     {
-      if (v7 == 6)
+      if (unsupportedReason == 6)
       {
         v9 = 6;
       }
@@ -48,7 +48,7 @@
         v9 = 0x7FFFFFFF;
       }
 
-      if (v7 == 5)
+      if (unsupportedReason == 5)
       {
         v10 = 5;
       }
@@ -58,7 +58,7 @@
         v10 = v9;
       }
 
-      if (v7 == 4)
+      if (unsupportedReason == 4)
       {
         v11 = 4;
       }
@@ -68,7 +68,7 @@
         v11 = v10;
       }
 
-      if (v7 == 3)
+      if (unsupportedReason == 3)
       {
         v12 = 3;
       }
@@ -78,17 +78,17 @@
         v12 = 0x7FFFFFFF;
       }
 
-      if (v7 == 2)
+      if (unsupportedReason == 2)
       {
         v12 = 2;
       }
 
-      if (v7 == 1)
+      if (unsupportedReason == 1)
       {
         v12 = 1;
       }
 
-      if (v7 <= 3)
+      if (unsupportedReason <= 3)
       {
         v8 = v12;
       }
@@ -101,7 +101,7 @@
 
     else
     {
-      switch(v7)
+      switch(unsupportedReason)
       {
         case 1000:
           v8 = 9;
@@ -146,7 +146,7 @@
           v8 = 1006;
           break;
         default:
-          if (v7 == 8)
+          if (unsupportedReason == 8)
           {
             v13 = 8;
           }
@@ -156,7 +156,7 @@
             v13 = 0x7FFFFFFF;
           }
 
-          if (v7 == 7)
+          if (unsupportedReason == 7)
           {
             v8 = 7;
           }
@@ -170,43 +170,43 @@
       }
     }
 
-    [v6 setPlayMediaIntentMediaItemsUnsupportedReason:v8];
+    [payloadUnsupported2 setPlayMediaIntentMediaItemsUnsupportedReason:v8];
   }
 
   return v4;
 }
 
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description
 {
-  v6 = a3;
+  resultCopy = result;
   v35.receiver = self;
   v35.super_class = INPlayMediaMediaItemResolutionResult;
-  v7 = [(INIntentResolutionResult *)&v35 _initWithIntentSlotResolutionResult:v6 slotDescription:a4];
+  v7 = [(INIntentResolutionResult *)&v35 _initWithIntentSlotResolutionResult:resultCopy slotDescription:description];
   if (v7)
   {
-    v8 = [v6 payloadUnsupported];
-    v9 = [v8 hasPlayMediaIntentMediaItemsUnsupportedReason];
+    payloadUnsupported = [resultCopy payloadUnsupported];
+    hasPlayMediaIntentMediaItemsUnsupportedReason = [payloadUnsupported hasPlayMediaIntentMediaItemsUnsupportedReason];
 
-    if (v9)
+    if (hasPlayMediaIntentMediaItemsUnsupportedReason)
     {
-      v10 = [v6 payloadUnsupported];
-      v11 = [v10 playMediaIntentMediaItemsUnsupportedReason];
-      if (v11 > 101)
+      payloadUnsupported2 = [resultCopy payloadUnsupported];
+      playMediaIntentMediaItemsUnsupportedReason = [payloadUnsupported2 playMediaIntentMediaItemsUnsupportedReason];
+      if (playMediaIntentMediaItemsUnsupportedReason > 101)
       {
         v12 = 1011;
         v24 = 1012;
         v25 = 1013;
-        if (v11 != 1006)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1006)
         {
           v25 = 0;
         }
 
-        if (v11 != 1005)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1005)
         {
           v24 = v25;
         }
 
-        if (v11 != 1004)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1004)
         {
           v12 = v24;
         }
@@ -214,22 +214,22 @@
         v26 = 1008;
         v27 = 1009;
         v28 = 1010;
-        if (v11 != 1003)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1003)
         {
           v28 = 0;
         }
 
-        if (v11 != 1002)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1002)
         {
           v27 = v28;
         }
 
-        if (v11 != 1001)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1001)
         {
           v26 = v27;
         }
 
-        if (v11 <= 1003)
+        if (playMediaIntentMediaItemsUnsupportedReason <= 1003)
         {
           v12 = v26;
         }
@@ -237,39 +237,39 @@
         v18 = 1005;
         v29 = 1006;
         v30 = 1007;
-        if (v11 != 1000)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1000)
         {
           v30 = 0;
         }
 
-        if (v11 != 105)
+        if (playMediaIntentMediaItemsUnsupportedReason != 105)
         {
           v29 = v30;
         }
 
-        if (v11 != 104)
+        if (playMediaIntentMediaItemsUnsupportedReason != 104)
         {
           v18 = v29;
         }
 
         v31 = 1003;
         v32 = 1004;
-        if (v11 != 103)
+        if (playMediaIntentMediaItemsUnsupportedReason != 103)
         {
           v32 = 0;
         }
 
-        if (v11 != 102)
+        if (playMediaIntentMediaItemsUnsupportedReason != 102)
         {
           v31 = v32;
         }
 
-        if (v11 <= 103)
+        if (playMediaIntentMediaItemsUnsupportedReason <= 103)
         {
           v18 = v31;
         }
 
-        v23 = v11 <= 1000;
+        v23 = playMediaIntentMediaItemsUnsupportedReason <= 1000;
       }
 
       else
@@ -277,17 +277,17 @@
         v12 = 1000;
         v13 = 1001;
         v14 = 1002;
-        if (v11 != 101)
+        if (playMediaIntentMediaItemsUnsupportedReason != 101)
         {
           v14 = 0;
         }
 
-        if (v11 != 100)
+        if (playMediaIntentMediaItemsUnsupportedReason != 100)
         {
           v13 = v14;
         }
 
-        if (v11 != 9)
+        if (playMediaIntentMediaItemsUnsupportedReason != 9)
         {
           v12 = v13;
         }
@@ -295,22 +295,22 @@
         v15 = 6;
         v16 = 7;
         v17 = 8;
-        if (v11 != 8)
+        if (playMediaIntentMediaItemsUnsupportedReason != 8)
         {
           v17 = 0;
         }
 
-        if (v11 != 7)
+        if (playMediaIntentMediaItemsUnsupportedReason != 7)
         {
           v16 = v17;
         }
 
-        if (v11 != 6)
+        if (playMediaIntentMediaItemsUnsupportedReason != 6)
         {
           v15 = v16;
         }
 
-        if (v11 <= 8)
+        if (playMediaIntentMediaItemsUnsupportedReason <= 8)
         {
           v12 = v15;
         }
@@ -318,39 +318,39 @@
         v18 = 3;
         v19 = 4;
         v20 = 5;
-        if (v11 != 5)
+        if (playMediaIntentMediaItemsUnsupportedReason != 5)
         {
           v20 = 0;
         }
 
-        if (v11 != 4)
+        if (playMediaIntentMediaItemsUnsupportedReason != 4)
         {
           v19 = v20;
         }
 
-        if (v11 != 3)
+        if (playMediaIntentMediaItemsUnsupportedReason != 3)
         {
           v18 = v19;
         }
 
         v21 = 1;
         v22 = 2;
-        if (v11 != 2)
+        if (playMediaIntentMediaItemsUnsupportedReason != 2)
         {
           v22 = 0;
         }
 
-        if (v11 != 1)
+        if (playMediaIntentMediaItemsUnsupportedReason != 1)
         {
           v21 = v22;
         }
 
-        if (v11 <= 2)
+        if (playMediaIntentMediaItemsUnsupportedReason <= 2)
         {
           v18 = v21;
         }
 
-        v23 = v11 <= 5;
+        v23 = playMediaIntentMediaItemsUnsupportedReason <= 5;
       }
 
       if (v23)

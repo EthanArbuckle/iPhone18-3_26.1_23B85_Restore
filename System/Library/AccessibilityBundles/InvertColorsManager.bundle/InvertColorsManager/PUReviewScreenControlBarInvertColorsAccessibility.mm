@@ -6,7 +6,7 @@
 
 - (BOOL)accessibilityIgnoresInvertColors
 {
-  v2 = [(PUReviewScreenControlBarInvertColorsAccessibility *)self backgroundColor];
+  backgroundColor = [(PUReviewScreenControlBarInvertColorsAccessibility *)self backgroundColor];
   AXColorGetLuma();
   v4 = v3 < 0.5;
 

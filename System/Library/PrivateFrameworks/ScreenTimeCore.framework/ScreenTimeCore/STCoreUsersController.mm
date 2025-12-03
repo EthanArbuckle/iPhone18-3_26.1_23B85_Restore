@@ -1,54 +1,54 @@
 @interface STCoreUsersController
-- (BOOL)_updateSelectedIndexForDSID:(id)a3 isManaged:(BOOL)a4;
+- (BOOL)_updateSelectedIndexForDSID:(id)d isManaged:(BOOL)managed;
 - (NSArray)users;
 - (NSFetchedResultsController)childUserController;
 - (NSFetchedResultsController)localUserController;
 - (STCoreUser)localUser;
 - (STCoreUser)selectedUser;
-- (STCoreUsersController)initWithManagedObjectContext:(id)a3;
+- (STCoreUsersController)initWithManagedObjectContext:(id)context;
 - (void)childUserController;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)controllerWillChangeContent:(id)a3;
+- (void)controllerDidChangeContent:(id)content;
+- (void)controllerWillChangeContent:(id)content;
 - (void)localUser;
 - (void)localUserController;
 - (void)refresh;
-- (void)setSelectedIndex:(unint64_t)a3;
+- (void)setSelectedIndex:(unint64_t)index;
 @end
 
 @implementation STCoreUsersController
 
-- (STCoreUsersController)initWithManagedObjectContext:(id)a3
+- (STCoreUsersController)initWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = STCoreUsersController;
   v5 = [(STCoreUsersController *)&v8 init];
   managedObjectContext = v5->_managedObjectContext;
-  v5->_managedObjectContext = v4;
+  v5->_managedObjectContext = contextCopy;
 
   return v5;
 }
 
 - (STCoreUser)localUser
 {
-  v4 = [(STCoreUsersController *)self localUserController];
-  v5 = [v4 fetchedObjects];
+  localUserController = [(STCoreUsersController *)self localUserController];
+  fetchedObjects = [localUserController fetchedObjects];
 
-  if (![v5 count])
+  if (![fetchedObjects count])
   {
     [(STCoreUsersController *)a2 localUser];
   }
 
-  if ([v5 count] >= 2)
+  if ([fetchedObjects count] >= 2)
   {
     v6 = +[STLog screentime];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [(STCoreUsersController *)v5 localUser];
+      [(STCoreUsersController *)fetchedObjects localUser];
     }
   }
 
-  v7 = [v5 objectAtIndexedSubscript:0];
+  v7 = [fetchedObjects objectAtIndexedSubscript:0];
 
   return v7;
 }
@@ -67,17 +67,17 @@
 
     [v4 setShouldRefreshRefetchedObjects:1];
     v7 = objc_alloc(MEMORY[0x1E695D600]);
-    v8 = [(STCoreUsersController *)self managedObjectContext];
-    v9 = [v7 initWithFetchRequest:v4 managedObjectContext:v8 sectionNameKeyPath:0 cacheName:0];
+    managedObjectContext = [(STCoreUsersController *)self managedObjectContext];
+    v9 = [v7 initWithFetchRequest:v4 managedObjectContext:managedObjectContext sectionNameKeyPath:0 cacheName:0];
     v10 = self->_localUserController;
     self->_localUserController = v9;
 
     [(NSFetchedResultsController *)self->_localUserController setDelegate:self];
     v11 = self->_localUserController;
     v15 = 0;
-    LOBYTE(v8) = [(NSFetchedResultsController *)v11 performFetch:&v15];
+    LOBYTE(managedObjectContext) = [(NSFetchedResultsController *)v11 performFetch:&v15];
     v12 = v15;
-    if ((v8 & 1) == 0)
+    if ((managedObjectContext & 1) == 0)
     {
       [STCoreUsersController localUserController];
     }
@@ -97,23 +97,23 @@
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v3 = [(STCoreUsersController *)self localUser];
-  v4 = [(STCoreUsersController *)self managedObjectContext];
+  localUser = [(STCoreUsersController *)self localUser];
+  managedObjectContext = [(STCoreUsersController *)self managedObjectContext];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __30__STCoreUsersController_users__block_invoke;
   v11[3] = &unk_1E7CE7558;
   v13 = &v14;
-  v5 = v3;
+  v5 = localUser;
   v12 = v5;
-  [v4 performBlockAndWait:v11];
+  [managedObjectContext performBlockAndWait:v11];
 
   if (*(v15 + 24) == 1)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v5, 0}];
-    v7 = [(STCoreUsersController *)self childUserController];
-    v8 = [v7 fetchedObjects];
-    [v6 addObjectsFromArray:v8];
+    childUserController = [(STCoreUsersController *)self childUserController];
+    fetchedObjects = [childUserController fetchedObjects];
+    [v6 addObjectsFromArray:fetchedObjects];
   }
 
   else
@@ -161,17 +161,17 @@ uint64_t __30__STCoreUsersController_users__block_invoke(uint64_t a1)
 
     [v4 setShouldRefreshRefetchedObjects:1];
     v8 = objc_alloc(MEMORY[0x1E695D600]);
-    v9 = [(STCoreUsersController *)self managedObjectContext];
-    v10 = [v8 initWithFetchRequest:v4 managedObjectContext:v9 sectionNameKeyPath:0 cacheName:0];
+    managedObjectContext = [(STCoreUsersController *)self managedObjectContext];
+    v10 = [v8 initWithFetchRequest:v4 managedObjectContext:managedObjectContext sectionNameKeyPath:0 cacheName:0];
     v11 = self->_childUserController;
     self->_childUserController = v10;
 
     [(NSFetchedResultsController *)self->_childUserController setDelegate:self];
     v12 = self->_childUserController;
     v16 = 0;
-    LOBYTE(v9) = [(NSFetchedResultsController *)v12 performFetch:&v16];
+    LOBYTE(managedObjectContext) = [(NSFetchedResultsController *)v12 performFetch:&v16];
     v13 = v16;
-    if ((v9 & 1) == 0)
+    if ((managedObjectContext & 1) == 0)
     {
       [STCoreUsersController childUserController];
     }
@@ -186,37 +186,37 @@ uint64_t __30__STCoreUsersController_users__block_invoke(uint64_t a1)
 
 - (STCoreUser)selectedUser
 {
-  v3 = [(STCoreUsersController *)self users];
-  v4 = [v3 objectAtIndexedSubscript:{-[STCoreUsersController selectedIndex](self, "selectedIndex")}];
+  users = [(STCoreUsersController *)self users];
+  v4 = [users objectAtIndexedSubscript:{-[STCoreUsersController selectedIndex](self, "selectedIndex")}];
 
   return v4;
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  v6 = [(STCoreUsersController *)self users];
-  v7 = [v6 count];
+  users = [(STCoreUsersController *)self users];
+  v7 = [users count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     [(STCoreUsersController *)a2 setSelectedIndex:?];
   }
 
-  self->_selectedIndex = a3;
+  self->_selectedIndex = index;
 }
 
-- (BOOL)_updateSelectedIndexForDSID:(id)a3 isManaged:(BOOL)a4
+- (BOOL)_updateSelectedIndexForDSID:(id)d isManaged:(BOOL)managed
 {
-  v6 = a3;
-  v7 = [(STCoreUsersController *)self users];
+  dCopy = d;
+  users = [(STCoreUsersController *)self users];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __63__STCoreUsersController__updateSelectedIndexForDSID_isManaged___block_invoke;
   v15 = &unk_1E7CE75D0;
-  v8 = v6;
+  v8 = dCopy;
   v16 = v8;
-  v17 = a4;
-  v9 = [v7 indexOfObjectPassingTest:&v12];
+  managedCopy = managed;
+  v9 = [users indexOfObjectPassingTest:&v12];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -280,35 +280,35 @@ uint64_t __63__STCoreUsersController__updateSelectedIndexForDSID_isManaged___blo
 - (void)refresh
 {
   OUTLINED_FUNCTION_0_10();
-  v3 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v3 handleFailureInMethod:v2 object:v1 file:@"STCoreUsersController.m" lineNumber:204 description:{@"Failed to fetch the local Screen Time settings: %@", v0}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:v2 object:v1 file:@"STCoreUsersController.m" lineNumber:204 description:{@"Failed to fetch the local Screen Time settings: %@", v0}];
 }
 
-- (void)controllerWillChangeContent:(id)a3
+- (void)controllerWillChangeContent:(id)content
 {
-  v9 = a3;
-  v4 = [(STCoreUsersController *)self localUserController];
+  contentCopy = content;
+  localUserController = [(STCoreUsersController *)self localUserController];
 
-  if (v4 == v9)
+  if (localUserController == contentCopy)
   {
     v8 = @"localUser";
   }
 
   else
   {
-    v5 = [(STCoreUsersController *)self childUserController];
+    childUserController = [(STCoreUsersController *)self childUserController];
 
-    if (v5 == v9)
+    if (childUserController == contentCopy)
     {
       v8 = @"users";
     }
 
     else
     {
-      v6 = [(STCoreUsersController *)self settingsController];
+      settingsController = [(STCoreUsersController *)self settingsController];
 
-      v7 = v9;
-      if (v6 != v9)
+      v7 = contentCopy;
+      if (settingsController != contentCopy)
       {
         goto LABEL_8;
       }
@@ -319,35 +319,35 @@ uint64_t __63__STCoreUsersController__updateSelectedIndexForDSID_isManaged___blo
   }
 
   [(STCoreUsersController *)self willChangeValueForKey:v8];
-  v7 = v9;
+  v7 = contentCopy;
 LABEL_8:
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v9 = a3;
-  v4 = [(STCoreUsersController *)self localUserController];
+  contentCopy = content;
+  localUserController = [(STCoreUsersController *)self localUserController];
 
-  if (v4 == v9)
+  if (localUserController == contentCopy)
   {
     v8 = @"localUser";
   }
 
   else
   {
-    v5 = [(STCoreUsersController *)self childUserController];
+    childUserController = [(STCoreUsersController *)self childUserController];
 
-    if (v5 == v9)
+    if (childUserController == contentCopy)
     {
       v8 = @"users";
     }
 
     else
     {
-      v6 = [(STCoreUsersController *)self settingsController];
+      settingsController = [(STCoreUsersController *)self settingsController];
 
-      v7 = v9;
-      if (v6 != v9)
+      v7 = contentCopy;
+      if (settingsController != contentCopy)
       {
         goto LABEL_8;
       }
@@ -358,7 +358,7 @@ LABEL_8:
   }
 
   [(STCoreUsersController *)self didChangeValueForKey:v8];
-  v7 = v9;
+  v7 = contentCopy;
 LABEL_8:
 }
 
@@ -366,7 +366,7 @@ LABEL_8:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1B831F000, a2, OS_LOG_TYPE_FAULT, "Fetched more than one local user: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -374,15 +374,15 @@ LABEL_8:
 - (void)localUserController
 {
   OUTLINED_FUNCTION_0_10();
-  v3 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v3 handleFailureInMethod:v2 object:v1 file:@"STCoreUsersController.m" lineNumber:76 description:{@"Failed to fetch the local user: %@", v0}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:v2 object:v1 file:@"STCoreUsersController.m" lineNumber:76 description:{@"Failed to fetch the local user: %@", v0}];
 }
 
 - (void)childUserController
 {
   OUTLINED_FUNCTION_0_10();
-  v3 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v3 handleFailureInMethod:v2 object:v1 file:@"STCoreUsersController.m" lineNumber:131 description:{@"Failed to fetch child users: %@", v0}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:v2 object:v1 file:@"STCoreUsersController.m" lineNumber:131 description:{@"Failed to fetch child users: %@", v0}];
 }
 
 - (void)setSelectedIndex:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

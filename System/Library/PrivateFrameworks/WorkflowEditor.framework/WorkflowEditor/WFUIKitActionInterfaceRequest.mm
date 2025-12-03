@@ -1,8 +1,8 @@
 @interface WFUIKitActionInterfaceRequest
 - (CGSize)presentationSize;
-- (WFUIKitActionInterfaceRequest)initWithActionClassName:(id)a3 userInterfaceClassName:(id)a4 presentationSize:(CGSize)a5;
-- (WFUIKitActionInterfaceRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFUIKitActionInterfaceRequest)initWithActionClassName:(id)name userInterfaceClassName:(id)className presentationSize:(CGSize)size;
+- (WFUIKitActionInterfaceRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFUIKitActionInterfaceRequest
@@ -16,25 +16,25 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFUIKitActionInterfaceRequest *)self actionClassName];
-  [v4 encodeObject:v5 forKey:@"actionClassName"];
+  coderCopy = coder;
+  actionClassName = [(WFUIKitActionInterfaceRequest *)self actionClassName];
+  [coderCopy encodeObject:actionClassName forKey:@"actionClassName"];
 
-  v6 = [(WFUIKitActionInterfaceRequest *)self userInterfaceClassName];
-  [v4 encodeObject:v6 forKey:@"userInterfaceClassName"];
+  userInterfaceClassName = [(WFUIKitActionInterfaceRequest *)self userInterfaceClassName];
+  [coderCopy encodeObject:userInterfaceClassName forKey:@"userInterfaceClassName"];
 
   v7 = [MEMORY[0x277CCAE60] value:&self->_presentationSize withObjCType:"{CGSize=dd}"];
-  [v4 encodeObject:v7 forKey:@"presentationSize"];
+  [coderCopy encodeObject:v7 forKey:@"presentationSize"];
 }
 
-- (WFUIKitActionInterfaceRequest)initWithCoder:(id)a3
+- (WFUIKitActionInterfaceRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionClassName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userInterfaceClassName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presentationSize"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionClassName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userInterfaceClassName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presentationSize"];
 
   [v7 wf_CGSizeValue];
   v9 = v8;
@@ -52,28 +52,28 @@
 
   if (v12 || (v9 == *MEMORY[0x277CBF3A8] ? (v13 = v11 == *(MEMORY[0x277CBF3A8] + 8)) : (v13 = 0), v13))
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(WFUIKitActionInterfaceRequest *)self initWithActionClassName:v5 userInterfaceClassName:v6 presentationSize:v9, v11];
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (WFUIKitActionInterfaceRequest)initWithActionClassName:(id)a3 userInterfaceClassName:(id)a4 presentationSize:(CGSize)a5
+- (WFUIKitActionInterfaceRequest)initWithActionClassName:(id)name userInterfaceClassName:(id)className presentationSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  height = size.height;
+  width = size.width;
+  nameCopy = name;
+  classNameCopy = className;
+  v12 = classNameCopy;
+  if (nameCopy)
   {
-    if (v11)
+    if (classNameCopy)
     {
       goto LABEL_3;
     }
@@ -81,8 +81,8 @@
 
   else
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFUIKitActionInterfaceRequest.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"actionClassName"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFUIKitActionInterfaceRequest.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"actionClassName"}];
 
     if (v12)
     {
@@ -90,8 +90,8 @@
     }
   }
 
-  v21 = [MEMORY[0x277CCA890] currentHandler];
-  [v21 handleFailureInMethod:a2 object:self file:@"WFUIKitActionInterfaceRequest.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"userInterfaceClassName"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFUIKitActionInterfaceRequest.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"userInterfaceClassName"}];
 
 LABEL_3:
   v22.receiver = self;
@@ -99,7 +99,7 @@ LABEL_3:
   v13 = [(WFUIKitActionInterfaceRequest *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     actionClassName = v13->_actionClassName;
     v13->_actionClassName = v14;
 

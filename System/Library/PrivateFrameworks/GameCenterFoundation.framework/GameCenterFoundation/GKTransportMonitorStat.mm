@@ -1,5 +1,5 @@
 @interface GKTransportMonitorStat
-- (GKTransportMonitorStat)initWithPlayerStats:(id)a3;
+- (GKTransportMonitorStat)initWithPlayerStats:(id)stats;
 - (NSArray)playerStats;
 - (double)overallAverageLatency;
 - (double)overallLatency;
@@ -19,7 +19,7 @@
 
 - (double)overallLatency
 {
-  v2 = self;
+  selfCopy = self;
   TransportMonitorStat.overallLatency.getter();
   v4 = v3;
 
@@ -28,7 +28,7 @@
 
 - (double)overallAverageLatency
 {
-  v2 = self;
+  selfCopy = self;
   TransportMonitorStat.overallAverageLatency.getter();
   v4 = v3;
 
@@ -37,14 +37,14 @@
 
 - (double)overallPacketLoss
 {
-  v2 = self;
+  selfCopy = self;
   TransportMonitorStat.overallPacketLoss.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (GKTransportMonitorStat)initWithPlayerStats:(id)a3
+- (GKTransportMonitorStat)initWithPlayerStats:(id)stats
 {
   type metadata accessor for TransportMonitorPlayerStat();
   v3 = sub_227A7269C();

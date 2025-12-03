@@ -1,17 +1,17 @@
 @interface SleepApneaOnboardingSetupCompleteAnimatedSymbolView
 - (CGSize)intrinsicContentSize;
-- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithCoder:(id)a3;
-- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithFrame:(CGRect)a3;
+- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithCoder:(id)coder;
+- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SleepApneaOnboardingSetupCompleteAnimatedSymbolView
 
-- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithFrame:(CGRect)a3
+- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_29E7544C8();
   sub_29E7544B8();
   sub_29E754468();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithCoder:(id)a3
+- (_TtC20SleepHealthAppPluginP33_31BB715BF67FD8DC8AF8C4FEE67A753351SleepApneaOnboardingSetupCompleteAnimatedSymbolView)initWithCoder:(id)coder
 {
   sub_29E7544C8();
   sub_29E7544B8();
@@ -35,7 +35,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_29E6970F8(a3);
+  v4 = sub_29E6970F8(coder);
 
   return v4;
 }

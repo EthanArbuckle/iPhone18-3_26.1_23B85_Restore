@@ -1,39 +1,39 @@
 @interface CLFenceAnalyticsMotionActivityHistogramBin
-- (CLFenceAnalyticsMotionActivityHistogramBin)initWithInterval:(double)a3 motionActivityType:(unint64_t)a4 motionActivityConfidence:(int64_t)a5;
-- (void)addInterval:(double)a3;
-- (void)updateConfidence:(int64_t)a3;
+- (CLFenceAnalyticsMotionActivityHistogramBin)initWithInterval:(double)interval motionActivityType:(unint64_t)type motionActivityConfidence:(int64_t)confidence;
+- (void)addInterval:(double)interval;
+- (void)updateConfidence:(int64_t)confidence;
 @end
 
 @implementation CLFenceAnalyticsMotionActivityHistogramBin
 
-- (CLFenceAnalyticsMotionActivityHistogramBin)initWithInterval:(double)a3 motionActivityType:(unint64_t)a4 motionActivityConfidence:(int64_t)a5
+- (CLFenceAnalyticsMotionActivityHistogramBin)initWithInterval:(double)interval motionActivityType:(unint64_t)type motionActivityConfidence:(int64_t)confidence
 {
   v9.receiver = self;
   v9.super_class = CLFenceAnalyticsMotionActivityHistogramBin;
   result = [(CLFenceAnalyticsMotionActivityHistogramBin *)&v9 init];
   if (result)
   {
-    result->_motionActivityType = a4;
-    result->_motionActivityConfidence = a5;
-    result->_interval = a3;
+    result->_motionActivityType = type;
+    result->_motionActivityConfidence = confidence;
+    result->_interval = interval;
   }
 
   return result;
 }
 
-- (void)updateConfidence:(int64_t)a3
+- (void)updateConfidence:(int64_t)confidence
 {
-  if ([(CLFenceAnalyticsMotionActivityHistogramBin *)self motionActivityConfidence]< a3)
+  if ([(CLFenceAnalyticsMotionActivityHistogramBin *)self motionActivityConfidence]< confidence)
   {
 
-    [(CLFenceAnalyticsMotionActivityHistogramBin *)self setMotionActivityConfidence:a3];
+    [(CLFenceAnalyticsMotionActivityHistogramBin *)self setMotionActivityConfidence:confidence];
   }
 }
 
-- (void)addInterval:(double)a3
+- (void)addInterval:(double)interval
 {
   [(CLFenceAnalyticsMotionActivityHistogramBin *)self interval];
-  v6 = v5 + a3;
+  v6 = v5 + interval;
 
   [(CLFenceAnalyticsMotionActivityHistogramBin *)self setInterval:v6];
 }

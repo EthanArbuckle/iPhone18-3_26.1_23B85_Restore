@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_setInitialhasPeopleSceneMidOrGreaterConfidenceValue
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_setInitialhasPeopleSceneMidOrGreaterConfidenceValue
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v111[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v71 = 0;
   v72 = &v71;
   v73 = 0x2020000000;
@@ -18,9 +18,9 @@
   v68 = __Block_byref_object_copy__1060;
   v69 = __Block_byref_object_dispose__1061;
   v70 = 0;
-  v7 = [(PLModelMigrationActionBackground *)self resumeMarker];
-  v8 = v6;
-  v9 = v7;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v8 = contextCopy;
+  v9 = resumeMarker;
   if (v9)
   {
     v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
@@ -31,8 +31,8 @@
     v10 = 0;
   }
 
-  v11 = [v8 persistentStoreCoordinator];
-  v12 = [v11 managedObjectIDForURIRepresentation:v10];
+  persistentStoreCoordinator = [v8 persistentStoreCoordinator];
+  v12 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v10];
 
   v13 = +[PLAdditionalAssetAttributes fetchRequest];
   v14 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:1];
@@ -100,8 +100,8 @@
       goto LABEL_22;
     }
 
-    v27 = [(PLModelMigrationActionBackground *)self logger];
-    v28 = v27 == 0;
+    logger = [(PLModelMigrationActionBackground *)self logger];
+    v28 = logger == 0;
 
     if (!v28)
     {
@@ -179,8 +179,8 @@ LABEL_15:
       goto LABEL_22;
     }
 
-    v36 = [(PLModelMigrationActionBackground *)self logger];
-    v37 = v36 == 0;
+    logger2 = [(PLModelMigrationActionBackground *)self logger];
+    v37 = logger2 == 0;
 
     if (!v37)
     {
@@ -262,10 +262,10 @@ LABEL_22:
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v49 = v72[3];
   v50 = v66[5];
-  if (v49 != 1 && a4)
+  if (v49 != 1 && error)
   {
     v50 = v50;
-    *a4 = v50;
+    *error = v50;
   }
 
   v51 = v72[3];

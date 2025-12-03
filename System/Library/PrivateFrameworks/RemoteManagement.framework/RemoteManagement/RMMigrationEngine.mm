@@ -1,18 +1,18 @@
 @interface RMMigrationEngine
-- (BOOL)_migrateWithActions:(id)a3 error:(id *)a4;
-- (BOOL)_writeProcessedActions:(id)a3 error:(id *)a4;
-- (BOOL)migrateOnStartupReturningError:(id *)a3;
-- (BOOL)migrateWithCoreDataReturningError:(id *)a3;
+- (BOOL)_migrateWithActions:(id)actions error:(id *)error;
+- (BOOL)_writeProcessedActions:(id)actions error:(id *)error;
+- (BOOL)migrateOnStartupReturningError:(id *)error;
+- (BOOL)migrateWithCoreDataReturningError:(id *)error;
 - (id)_coreDataActions;
-- (id)_fixFilePermissionsAndReadDataForURL:(id)a3;
-- (id)_readMigrationStateReturningError:(id *)a3;
-- (id)_readProcessedActionsReturningError:(id *)a3;
+- (id)_fixFilePermissionsAndReadDataForURL:(id)l;
+- (id)_readMigrationStateReturningError:(id *)error;
+- (id)_readProcessedActionsReturningError:(id *)error;
 - (id)_startupActions;
 @end
 
 @implementation RMMigrationEngine
 
-- (BOOL)migrateOnStartupReturningError:(id *)a3
+- (BOOL)migrateOnStartupReturningError:(id *)error
 {
   v5 = +[RMLog migrationEngine];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -21,13 +21,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting to migrate on startup", v9, 2u);
   }
 
-  v6 = [(RMMigrationEngine *)self _startupActions];
-  v7 = [(RMMigrationEngine *)self _migrateWithActions:v6 error:a3];
+  _startupActions = [(RMMigrationEngine *)self _startupActions];
+  v7 = [(RMMigrationEngine *)self _migrateWithActions:_startupActions error:error];
 
   return v7;
 }
 
-- (BOOL)migrateWithCoreDataReturningError:(id *)a3
+- (BOOL)migrateWithCoreDataReturningError:(id *)error
 {
   v5 = +[RMLog migrationEngine];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -36,23 +36,23 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting to migrate with CoreData", v9, 2u);
   }
 
-  v6 = [(RMMigrationEngine *)self _coreDataActions];
-  v7 = [(RMMigrationEngine *)self _migrateWithActions:v6 error:a3];
+  _coreDataActions = [(RMMigrationEngine *)self _coreDataActions];
+  v7 = [(RMMigrationEngine *)self _migrateWithActions:_coreDataActions error:error];
 
   return v7;
 }
 
-- (BOOL)_migrateWithActions:(id)a3 error:(id *)a4
+- (BOOL)_migrateWithActions:(id)actions error:(id *)error
 {
-  v6 = a3;
+  actionsCopy = actions;
   v58 = 0;
-  v45 = self;
+  selfCopy = self;
   v7 = [(RMMigrationEngine *)self _readProcessedActionsReturningError:&v58];
   v8 = v58;
   v9 = v8;
   if (v7)
   {
-    v42 = a4;
+    errorCopy = error;
     v10 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v7 count]);
     v54 = 0u;
     v55 = 0u;
@@ -94,15 +94,15 @@
     v19 = +[RMLog migrationEngine];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      sub_100053AF8(v6);
+      sub_100053AF8(actionsCopy);
     }
 
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v44 = v6;
-    v20 = v6;
+    v44 = actionsCopy;
+    v20 = actionsCopy;
     v21 = [v20 countByEnumeratingWithState:&v50 objects:v63 count:16];
     if (v21)
     {
@@ -119,27 +119,27 @@
           }
 
           v24 = *(*(&v50 + 1) + 8 * j);
-          v25 = [v24 identifier];
-          v26 = [v10 containsObject:v25];
+          identifier = [v24 identifier];
+          v26 = [v10 containsObject:identifier];
           v27 = v17;
-          v28 = [v17[235] migrationEngine];
-          v29 = v28;
+          migrationEngine = [v17[235] migrationEngine];
+          v29 = migrationEngine;
           if (v26)
           {
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+            if (os_log_type_enabled(migrationEngine, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543362;
-              v62 = v25;
+              v62 = identifier;
               _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Already processed migration action: %{public}@", buf, 0xCu);
             }
           }
 
           else
           {
-            if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(migrationEngine, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v62 = v25;
+              v62 = identifier;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Processing migration action: %{public}@", buf, 0xCu);
             }
 
@@ -147,19 +147,19 @@
             v30 = [v24 executeReturningError:&v49];
             v31 = v49;
 
-            v32 = [v27[235] migrationEngine];
-            v33 = v32;
+            migrationEngine2 = [v27[235] migrationEngine];
+            v33 = migrationEngine2;
             if ((v30 & 1) == 0)
             {
-              if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(migrationEngine2, OS_LOG_TYPE_ERROR))
               {
                 sub_100053B84();
               }
 
               v7 = v43;
-              v6 = v44;
-              v39 = v42;
-              if (!v42 || !v31)
+              actionsCopy = v44;
+              v39 = errorCopy;
+              if (!errorCopy || !v31)
               {
                 goto LABEL_44;
               }
@@ -171,37 +171,37 @@ LABEL_44:
 
               v37 = 0;
               v9 = v31;
-              v36 = obj;
+              migrationEngine3 = obj;
               goto LABEL_45;
             }
 
-            if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
+            if (os_log_type_enabled(migrationEngine2, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543362;
-              v62 = v25;
+              v62 = identifier;
               _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "Processed migration action: %{public}@", buf, 0xCu);
             }
 
             v59[0] = @"Identifier";
             v59[1] = @"Timestamp";
-            v60[0] = v25;
+            v60[0] = identifier;
             v34 = +[NSDate now];
             v60[1] = v34;
             v35 = [NSDictionary dictionaryWithObjects:v60 forKeys:v59 count:2];
             [v11 addObject:v35];
 
             v48 = v31;
-            LOBYTE(v34) = [(RMMigrationEngine *)v45 _writeProcessedActions:v11 error:&v48];
+            LOBYTE(v34) = [(RMMigrationEngine *)selfCopy _writeProcessedActions:v11 error:&v48];
             v9 = v48;
 
             if ((v34 & 1) == 0)
             {
-              v39 = v42;
-              if (v42)
+              v39 = errorCopy;
+              if (errorCopy)
               {
                 v31 = v9;
                 v7 = v43;
-                v6 = v44;
+                actionsCopy = v44;
                 if (v9)
                 {
                   goto LABEL_43;
@@ -212,7 +212,7 @@ LABEL_44:
               {
                 v31 = v9;
                 v7 = v43;
-                v6 = v44;
+                actionsCopy = v44;
               }
 
               goto LABEL_44;
@@ -233,27 +233,27 @@ LABEL_44:
       }
     }
 
-    v36 = [v17[235] migrationEngine];
+    migrationEngine3 = [v17[235] migrationEngine];
     v37 = 1;
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(migrationEngine3, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "Finished migrating", buf, 2u);
+      _os_log_impl(&_mh_execute_header, migrationEngine3, OS_LOG_TYPE_INFO, "Finished migrating", buf, 2u);
     }
 
     v7 = v43;
-    v6 = v44;
+    actionsCopy = v44;
 LABEL_45:
   }
 
   else
   {
     v37 = 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v38 = v8;
       v37 = 0;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -286,7 +286,7 @@ LABEL_45:
   return v4;
 }
 
-- (id)_readProcessedActionsReturningError:(id *)a3
+- (id)_readProcessedActionsReturningError:(id *)error
 {
   v14 = 0;
   v4 = [(RMMigrationEngine *)self _readMigrationStateReturningError:&v14];
@@ -306,13 +306,13 @@ LABEL_45:
           sub_100053C08();
         }
 
-        if (a3)
+        if (error)
         {
           v12 = +[RMErrorUtilities createInternalError];
           if (v12)
           {
             v12 = v12;
-            *a3 = v12;
+            *error = v12;
           }
         }
 
@@ -335,11 +335,11 @@ LABEL_17:
   }
 
   v9 = 0;
-  if (a3 && v5)
+  if (error && v5)
   {
     v10 = v5;
     v9 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
 LABEL_18:
@@ -347,12 +347,12 @@ LABEL_18:
   return v9;
 }
 
-- (id)_readMigrationStateReturningError:(id *)a3
+- (id)_readMigrationStateReturningError:(id *)error
 {
   v5 = [RMLocations migrationStatusFileURLCreateIfNeeded:0];
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:0];
+  path = [v5 path];
+  v8 = [v6 fileExistsAtPath:path isDirectory:0];
 
   if (v8)
   {
@@ -380,10 +380,10 @@ LABEL_3:
           sub_100053CB4();
         }
 
-        if (a3 && v13)
+        if (error && v13)
         {
           v17 = v13;
-          *a3 = v13;
+          *error = v13;
         }
       }
 
@@ -407,11 +407,11 @@ LABEL_3:
     }
 
     v12 = 0;
-    if (a3 && v11)
+    if (error && v11)
     {
       v19 = v11;
       v12 = 0;
-      *a3 = v11;
+      *error = v11;
     }
 
     v13 = v11;
@@ -433,9 +433,9 @@ LABEL_23:
   return v12;
 }
 
-- (BOOL)_writeProcessedActions:(id)a3 error:(id *)a4
+- (BOOL)_writeProcessedActions:(id)actions error:(id *)error
 {
-  v6 = a3;
+  actionsCopy = actions;
   v20 = 0;
   v7 = [(RMMigrationEngine *)self _readMigrationStateReturningError:&v20];
   v8 = v20;
@@ -443,7 +443,7 @@ LABEL_23:
   if (v7)
   {
     v10 = [v7 mutableCopy];
-    [v10 setObject:v6 forKeyedSubscript:@"ProcessedActions"];
+    [v10 setObject:actionsCopy forKeyedSubscript:@"ProcessedActions"];
     v11 = [RMLocations migrationStatusFileURLCreateIfNeeded:1];
     v19 = v9;
     v12 = [v10 rm_atomicWriteToURL:v11 error:&v19];
@@ -466,10 +466,10 @@ LABEL_23:
         sub_100053D84();
       }
 
-      if (a4 && v13)
+      if (error && v13)
       {
         v17 = v13;
-        *a4 = v13;
+        *error = v13;
       }
     }
   }
@@ -477,11 +477,11 @@ LABEL_23:
   else
   {
     v12 = 0;
-    if (a4 && v8)
+    if (error && v8)
     {
       v16 = v8;
       v12 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     v13 = v9;
@@ -490,13 +490,13 @@ LABEL_23:
   return v12;
 }
 
-- (id)_fixFilePermissionsAndReadDataForURL:(id)a3
+- (id)_fixFilePermissionsAndReadDataForURL:(id)l
 {
-  v3 = a3;
-  if ([RMLocations fixFilePermissionsForURL:v3])
+  lCopy = l;
+  if ([RMLocations fixFilePermissionsForURL:lCopy])
   {
     v8 = 0;
-    v4 = [NSData dataWithContentsOfURL:v3 options:0 error:&v8];
+    v4 = [NSData dataWithContentsOfURL:lCopy options:0 error:&v8];
     v5 = v8;
     if (!v4)
     {

@@ -1,5 +1,5 @@
 @interface PKPaymentOfferSetupInstallmentsPostPurchaseConfirmationRecord
-- (PKPaymentOfferSetupInstallmentsPostPurchaseConfirmationRecord)initWithTransaction:(id)a3 passUniqueID:(id)a4 context:(unint64_t)a5 criteriaIdentifier:(id)a6;
+- (PKPaymentOfferSetupInstallmentsPostPurchaseConfirmationRecord)initWithTransaction:(id)transaction passUniqueID:(id)d context:(unint64_t)context criteriaIdentifier:(id)identifier;
 - (id)_init;
 - (id)description;
 @end
@@ -13,25 +13,25 @@
   return [(PKPaymentOfferConfirmationRecord *)&v3 _init];
 }
 
-- (PKPaymentOfferSetupInstallmentsPostPurchaseConfirmationRecord)initWithTransaction:(id)a3 passUniqueID:(id)a4 context:(unint64_t)a5 criteriaIdentifier:(id)a6
+- (PKPaymentOfferSetupInstallmentsPostPurchaseConfirmationRecord)initWithTransaction:(id)transaction passUniqueID:(id)d context:(unint64_t)context criteriaIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PKPaymentOfferSetupInstallmentsPostPurchaseConfirmationRecord;
-  return [(PKPaymentOfferConfirmationRecord *)&v7 initWithTransaction:a3 passUniqueID:a4 criteriaIdentifier:a6 context:a5 type:3];
+  return [(PKPaymentOfferConfirmationRecord *)&v7 initWithTransaction:transaction passUniqueID:d criteriaIdentifier:identifier context:context type:3];
 }
 
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
-  v4 = [(PKPaymentOfferConfirmationRecord *)self transaction];
-  [v3 appendFormat:@"transaction: '%@'; ", v4];
+  transaction = [(PKPaymentOfferConfirmationRecord *)self transaction];
+  [v3 appendFormat:@"transaction: '%@'; ", transaction];
 
-  v5 = [(PKPaymentOfferConfirmationRecord *)self passUniqueID];
-  [v3 appendFormat:@"passUniqueID: '%@'; ", v5];
+  passUniqueID = [(PKPaymentOfferConfirmationRecord *)self passUniqueID];
+  [v3 appendFormat:@"passUniqueID: '%@'; ", passUniqueID];
 
-  v6 = [(PKPaymentOfferConfirmationRecord *)self criteriaIdentifier];
-  [v3 appendFormat:@"criteriaIdentifier: '%@'; ", v6];
+  criteriaIdentifier = [(PKPaymentOfferConfirmationRecord *)self criteriaIdentifier];
+  [v3 appendFormat:@"criteriaIdentifier: '%@'; ", criteriaIdentifier];
 
   v7 = PKPaymentOffersSessionDetailsContextToString([(PKPaymentOfferConfirmationRecord *)self context]);
   [v3 appendFormat:@"context: '%@'; ", v7];

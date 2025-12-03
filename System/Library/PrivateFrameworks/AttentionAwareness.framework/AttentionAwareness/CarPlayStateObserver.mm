@@ -1,18 +1,18 @@
 @interface CarPlayStateObserver
 - (BOOL)getCarPlayState;
-- (CarPlayStateObserver)initWithCallbackQueue:(id)a3 observer:(id)a4;
-- (void)setCarPlayState:(BOOL)a3;
+- (CarPlayStateObserver)initWithCallbackQueue:(id)queue observer:(id)observer;
+- (void)setCarPlayState:(BOOL)state;
 @end
 
 @implementation CarPlayStateObserver
 
-- (void)setCarPlayState:(BOOL)a3
+- (void)setCarPlayState:(BOOL)state
 {
-  if (self->_carPlayConnected != a3)
+  if (self->_carPlayConnected != state)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_carPlayConnected = a3;
+    self->_carPlayConnected = state;
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -48,28 +48,28 @@ void __39__CarPlayStateObserver_getCarPlayState__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (CarPlayStateObserver)initWithCallbackQueue:(id)a3 observer:(id)a4
+- (CarPlayStateObserver)initWithCallbackQueue:(id)queue observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  observerCopy = observer;
   v14.receiver = self;
   v14.super_class = CarPlayStateObserver;
   v9 = [(CarPlayStateObserver *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!queueCopy)
     {
       __assert_rtn("[CarPlayStateObserver initWithCallbackQueue:observer:]", "CarPlayStateObserver.m", 26, "callbackQueue != nil");
     }
 
-    if (!v8)
+    if (!observerCopy)
     {
       __assert_rtn("[CarPlayStateObserver initWithCallbackQueue:observer:]", "CarPlayStateObserver.m", 27, "observer != nil");
     }
 
-    objc_storeStrong(&v9->_observer, a4);
-    objc_storeStrong(&v10->_callbackQueue, a3);
+    objc_storeStrong(&v9->_observer, observer);
+    objc_storeStrong(&v10->_callbackQueue, queue);
     v10->_carPlayConnected = 0;
     v11 = objc_opt_new();
     carSessionStatus = v10->_carSessionStatus;

@@ -1,6 +1,6 @@
 @interface PHPTPAssetReader
-- (PHPTPAssetReader)initWithPath:(id)a3;
-- (PHPTPAssetReader)initWithTemporaryFileDeletedOnDeallocPath:(id)a3;
+- (PHPTPAssetReader)initWithPath:(id)path;
+- (PHPTPAssetReader)initWithTemporaryFileDeletedOnDeallocPath:(id)path;
 - (id)description;
 - (void)dealloc;
 @end
@@ -11,9 +11,9 @@
 {
   v3 = [MEMORY[0x1E69BE3C8] descriptionBuilderWithObject:self];
   [v3 appendName:@"path" typeCode:"@" value:&self->_path];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)dealloc
@@ -21,14 +21,14 @@
   v33 = *MEMORY[0x1E69E9840];
   if (self->_shouldDeleteTemporaryFileOnDeallocation)
   {
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v28 = -1;
     v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_path isDirectory:0];
     v5 = MEMORY[0x1E695DFF8];
     v6 = NSTemporaryDirectory();
     v7 = [v5 fileURLWithPath:v6 isDirectory:1];
     v27 = 0;
-    v8 = [v3 getRelationship:&v28 ofDirectoryAtURL:v7 toItemAtURL:v4 error:&v27];
+    v8 = [defaultManager getRelationship:&v28 ofDirectoryAtURL:v7 toItemAtURL:v4 error:&v27];
     v9 = v27;
 
     if ((v8 & 1) == 0)
@@ -72,7 +72,7 @@ LABEL_8:
     }
 
     v26 = v9;
-    v16 = [v3 removeItemAtURL:v4 error:&v26];
+    v16 = [defaultManager removeItemAtURL:v4 error:&v26];
     v17 = v26;
 
     v18 = PLPTPGetLog();
@@ -117,9 +117,9 @@ LABEL_17:
   [(PHPTPAssetReader *)&v25 dealloc];
 }
 
-- (PHPTPAssetReader)initWithTemporaryFileDeletedOnDeallocPath:(id)a3
+- (PHPTPAssetReader)initWithTemporaryFileDeletedOnDeallocPath:(id)path
 {
-  v3 = [(PHPTPAssetReader *)self initWithPath:a3];
+  v3 = [(PHPTPAssetReader *)self initWithPath:path];
   v4 = v3;
   if (v3)
   {
@@ -130,15 +130,15 @@ LABEL_17:
   return v4;
 }
 
-- (PHPTPAssetReader)initWithPath:(id)a3
+- (PHPTPAssetReader)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = PHPTPAssetReader;
   v5 = [(PHPTPAssetReader *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 

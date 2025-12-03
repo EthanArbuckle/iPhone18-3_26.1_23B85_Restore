@@ -1,7 +1,7 @@
 @interface AVTPhysicalizedSkeletonDynamic
-+ (void)enumerateDynamicsInHierarchy:(void *)a3 forAvatar:(void *)a4 usingBlock:;
++ (void)enumerateDynamicsInHierarchy:(void *)hierarchy forAvatar:(void *)avatar usingBlock:;
 - (NSString)description;
-- (void)evaluateAtTime:(double)a3 physicsController:(id)a4;
+- (void)evaluateAtTime:(double)time physicsController:(id)controller;
 - (void)resetTarget;
 @end
 
@@ -12,33 +12,33 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   rootJoint = self->_rootJoint;
-  v6 = [(VFXNode *)self->_drivingNode name];
-  v7 = [v3 stringWithFormat:@"<%@ %p | Skeleton %p driven by %@>", v4, self, rootJoint, v6];
+  name = [(VFXNode *)self->_drivingNode name];
+  v7 = [v3 stringWithFormat:@"<%@ %p | Skeleton %p driven by %@>", v4, self, rootJoint, name];
 
   return v7;
 }
 
-+ (void)enumerateDynamicsInHierarchy:(void *)a3 forAvatar:(void *)a4 usingBlock:
++ (void)enumerateDynamicsInHierarchy:(void *)hierarchy forAvatar:(void *)avatar usingBlock:
 {
-  v5 = a4;
-  v6 = a3;
+  avatarCopy = avatar;
+  hierarchyCopy = hierarchy;
   objc_opt_self();
-  v7 = [v6 avatarNode];
-  v8 = [v7 childNodeWithName:@"head_JNT" recursively:1];
-  v9 = [v6 specializationSettings];
+  avatarNode = [hierarchyCopy avatarNode];
+  v8 = [avatarNode childNodeWithName:@"head_JNT" recursively:1];
+  specializationSettings = [hierarchyCopy specializationSettings];
 
-  v10 = [v9 objectForKeyedSubscript:@"dynamics"];
+  v10 = [specializationSettings objectForKeyedSubscript:@"dynamics"];
   v11 = [v10 objectForKeyedSubscript:@"dynamic nodes"];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__AVTPhysicalizedSkeletonDynamic_enumerateDynamicsInHierarchy_forAvatar_usingBlock___block_invoke;
   v15[3] = &unk_1E7F47DE0;
-  v16 = v7;
+  v16 = avatarNode;
   v17 = v8;
-  v18 = v5;
-  v12 = v5;
+  v18 = avatarCopy;
+  v12 = avatarCopy;
   v13 = v8;
-  v14 = v7;
+  v14 = avatarNode;
   [v11 enumerateKeysAndObjectsUsingBlock:v15];
 }
 
@@ -297,11 +297,11 @@ void __84__AVTPhysicalizedSkeletonDynamic_enumerateDynamicsInHierarchy_forAvatar
   }
 }
 
-- (void)evaluateAtTime:(double)a3 physicsController:(id)a4
+- (void)evaluateAtTime:(double)time physicsController:(id)controller
 {
   v34 = *MEMORY[0x1E69E9840];
   simulationFactor = self->_simulationFactor;
-  [a4 offsetFromRestingPositionForNode:self->_drivingNode inCoordinateSpaceOfNode:self->_referenceNode];
+  [controller offsetFromRestingPositionForNode:self->_drivingNode inCoordinateSpaceOfNode:self->_referenceNode];
   v23 = v5;
   side = self->_side;
   v26 = *self->_leftRightRotation;

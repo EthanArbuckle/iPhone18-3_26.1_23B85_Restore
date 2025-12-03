@@ -1,19 +1,19 @@
 @interface VITextLookupResult
-- (BOOL)isEqual:(id)a3;
-- (VITextLookupResult)initWithSections:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VITextLookupResult)initWithSections:(id)sections;
 @end
 
 @implementation VITextLookupResult
 
-- (VITextLookupResult)initWithSections:(id)a3
+- (VITextLookupResult)initWithSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v9.receiver = self;
   v9.super_class = VITextLookupResult;
   v5 = [(VITextLookupResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sectionsCopy copy];
     sections = v5->_sections;
     v5->_sections = v6;
   }
@@ -21,20 +21,20 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   v15 = v5;
   v16 = v3;
-  v10 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = equalCopy;
   }
 
   else
@@ -43,8 +43,8 @@
   }
 
   sections = self->_sections;
-  v13 = [v11 sections];
-  LOBYTE(sections) = VIObjectIsEqual(sections, v13);
+  sections = [v11 sections];
+  LOBYTE(sections) = VIObjectIsEqual(sections, sections);
 
   return sections;
 }

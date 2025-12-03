@@ -1,49 +1,49 @@
 @interface CPSButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGRect)_boundingRectForSubstring:(id)a3;
-- (CPSButton)initWithCoder:(id)a3;
-- (CPSButton)initWithTitle:(id)a3 enabledTitleColor:(id)a4 disabledTitleColor:(id)a5 backgroundColor:(id)a6 textStyle:(id)a7 cornerRadius:(double)a8 animatesAlphaWhenHighlighted:(BOOL)a9;
-- (void)setHighlighted:(BOOL)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGRect)_boundingRectForSubstring:(id)substring;
+- (CPSButton)initWithCoder:(id)coder;
+- (CPSButton)initWithTitle:(id)title enabledTitleColor:(id)color disabledTitleColor:(id)titleColor backgroundColor:(id)backgroundColor textStyle:(id)style cornerRadius:(double)radius animatesAlphaWhenHighlighted:(BOOL)highlighted;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateCornerRadius;
 @end
 
 @implementation CPSButton
 
-- (CPSButton)initWithTitle:(id)a3 enabledTitleColor:(id)a4 disabledTitleColor:(id)a5 backgroundColor:(id)a6 textStyle:(id)a7 cornerRadius:(double)a8 animatesAlphaWhenHighlighted:(BOOL)a9
+- (CPSButton)initWithTitle:(id)title enabledTitleColor:(id)color disabledTitleColor:(id)titleColor backgroundColor:(id)backgroundColor textStyle:(id)style cornerRadius:(double)radius animatesAlphaWhenHighlighted:(BOOL)highlighted
 {
-  v9 = a9;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  highlightedCopy = highlighted;
+  titleCopy = title;
+  colorCopy = color;
+  titleColorCopy = titleColor;
+  backgroundColorCopy = backgroundColor;
+  styleCopy = style;
   v27.receiver = self;
   v27.super_class = CPSButton;
   v21 = [(CPSButton *)&v27 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v22 = v21;
   if (v21)
   {
-    [(CPSButton *)v21 _setContinuousCornerRadius:a8];
+    [(CPSButton *)v21 _setContinuousCornerRadius:radius];
     [(CPSButton *)v22 setClipsToBounds:1];
-    [(CPSButton *)v22 setAnimatesAlphaWhenHighlighted:v9];
-    v23 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v20 variant:256];
-    v24 = [(CPSButton *)v22 titleLabel];
-    [v24 setFont:v23];
+    [(CPSButton *)v22 setAnimatesAlphaWhenHighlighted:highlightedCopy];
+    v23 = [MEMORY[0x277D74300] _preferredFontForTextStyle:styleCopy variant:256];
+    titleLabel = [(CPSButton *)v22 titleLabel];
+    [titleLabel setFont:v23];
 
-    [(CPSButton *)v22 setTitle:v16 forState:0];
-    if (v17)
+    [(CPSButton *)v22 setTitle:titleCopy forState:0];
+    if (colorCopy)
     {
-      [(CPSButton *)v22 setTitleColor:v17 forState:0];
+      [(CPSButton *)v22 setTitleColor:colorCopy forState:0];
     }
 
-    if (v18)
+    if (titleColorCopy)
     {
-      [(CPSButton *)v22 setTitleColor:v18 forState:2];
+      [(CPSButton *)v22 setTitleColor:titleColorCopy forState:2];
     }
 
-    if (v19)
+    if (backgroundColorCopy)
     {
-      [(CPSButton *)v22 setBackgroundColor:v19];
+      [(CPSButton *)v22 setBackgroundColor:backgroundColorCopy];
     }
 
     v25 = v22;
@@ -52,11 +52,11 @@
   return v22;
 }
 
-- (CPSButton)initWithCoder:(id)a3
+- (CPSButton)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPSButton;
-  v3 = [(CPSButton *)&v7 initWithCoder:a3];
+  v3 = [(CPSButton *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -75,11 +75,11 @@
   [(CPSButton *)self _setContinuousCornerRadius:v3];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if (self->_tapTargetSideMargin != 0.0)
   {
     [(CPSButton *)self bounds];
@@ -111,8 +111,8 @@
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(CPSButton *)self titleLabel];
-  [v24 convertRect:self toView:{v17, v19, v21, v23}];
+  titleLabel = [(CPSButton *)self titleLabel];
+  [titleLabel convertRect:self toView:{v17, v19, v21, v23}];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -151,41 +151,41 @@ LABEL_15:
 LABEL_16:
     v42.receiver = self;
     v42.super_class = CPSButton;
-    v40 = [(CPSButton *)&v42 pointInside:v7 withEvent:x, y];
+    v40 = [(CPSButton *)&v42 pointInside:eventCopy withEvent:x, y];
   }
 
   return v40;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CPSButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CPSButton *)self isHighlighted];
   v7.receiver = self;
   v7.super_class = CPSButton;
-  [(CPSButton *)&v7 setHighlighted:v3];
-  if (self->_animatesAlphaWhenHighlighted && v5 != v3)
+  [(CPSButton *)&v7 setHighlighted:highlightedCopy];
+  if (self->_animatesAlphaWhenHighlighted && isHighlighted != highlightedCopy)
   {
     [(UIView *)self cps_configureForAnimatesAlphaWhenHighlighted:[(CPSButton *)self isHighlighted]];
   }
 }
 
-- (CGRect)_boundingRectForSubstring:(id)a3
+- (CGRect)_boundingRectForSubstring:(id)substring
 {
-  v4 = a3;
-  v5 = [(CPSButton *)self titleLabel];
-  v6 = [v5 text];
-  v7 = [v6 rangeOfString:v4];
+  substringCopy = substring;
+  titleLabel = [(CPSButton *)self titleLabel];
+  text = [titleLabel text];
+  v7 = [text rangeOfString:substringCopy];
   v9 = v8;
 
   v10 = objc_alloc(MEMORY[0x277D742D8]);
-  v11 = [v5 attributedText];
-  v12 = [v10 initWithAttributedString:v11];
+  attributedText = [titleLabel attributedText];
+  v12 = [v10 initWithAttributedString:attributedText];
 
   v13 = objc_alloc_init(MEMORY[0x277D74238]);
   [v12 addLayoutManager:v13];
   v14 = objc_alloc(MEMORY[0x277D74278]);
-  [v5 bounds];
+  [titleLabel bounds];
   v15 = [v14 initWithSize:{CGRectGetWidth(v30), 1.79769313e308}];
   [v15 setLineFragmentPadding:0.0];
   [v13 addTextContainer:v15];
@@ -193,7 +193,7 @@ LABEL_16:
   v29 = 0;
   [v13 characterRangeForGlyphRange:v7 actualGlyphRange:{v9, &v28}];
   [v13 boundingRectForGlyphRange:v28 inTextContainer:{v29, v15}];
-  [v5 convertRect:self toView:?];
+  [titleLabel convertRect:self toView:?];
   v17 = v16;
   v19 = v18;
   v21 = v20;

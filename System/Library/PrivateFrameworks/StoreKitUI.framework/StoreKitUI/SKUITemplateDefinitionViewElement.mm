@@ -40,8 +40,8 @@
     }
   }
 
-  v11 = [(SKUITemplateDefinitionViewElement *)self attributes];
-  v12 = [v11 objectForKey:@"mode"];
+  attributes = [(SKUITemplateDefinitionViewElement *)self attributes];
+  v12 = [attributes objectForKey:@"mode"];
 
   return v12;
 }
@@ -60,8 +60,8 @@
     }
   }
 
-  v11 = [(SKUITemplateDefinitionViewElement *)self attributes];
-  v12 = [v11 objectForKey:@"type"];
+  attributes = [(SKUITemplateDefinitionViewElement *)self attributes];
+  v12 = [attributes objectForKey:@"type"];
 
   return v12;
 }

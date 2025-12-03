@@ -8,9 +8,9 @@
 
 - (id)gzipDeflate:()GZip
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v10.avail_in = [a1 length];
+    v10.avail_in = [self length];
     v10.avail_out = 0;
     v10.total_out = 0;
     memset(&v10.zalloc, 0, 24);
@@ -26,8 +26,8 @@
           [v5 setLength:{objc_msgSend(v5, "length") + 0x8000}];
         }
 
-        v7 = [v5 mutableBytes];
-        v10.next_out = (v7 + v10.total_out);
+        mutableBytes = [v5 mutableBytes];
+        v10.next_out = (mutableBytes + v10.total_out);
         v8 = [v5 length];
         v10.avail_out = v8 - LODWORD(v10.total_out);
         if (deflate(&v10, 4))
@@ -66,7 +66,7 @@ LABEL_11:
       v11.total_out = 0;
       memset(&v11.zalloc, 0, 24);
       v5 = 0;
-      if (!deflateInit2_(&v11, (fmaxf(fminf(a1, 1.0), 0.0) * 9.0), 8, 31, 8, 0, "1.2.12", 112))
+      if (!deflateInit2_(&v11, (fmaxf(fminf(self, 1.0), 0.0) * 9.0), 8, 31, 8, 0, "1.2.12", 112))
       {
         v6 = [MEMORY[0x277CBEB28] dataWithLength:0x8000];
         while (!v11.avail_out)
@@ -77,8 +77,8 @@ LABEL_11:
             [v6 setLength:{objc_msgSend(v6, "length") + 0x8000}];
           }
 
-          v8 = [v6 mutableBytes];
-          v11.next_out = (v8 + v11.total_out);
+          mutableBytes = [v6 mutableBytes];
+          v11.next_out = (mutableBytes + v11.total_out);
           v9 = [v6 length];
           v11.avail_out = v9 - LODWORD(v11.total_out);
           if (deflate(&v11, 4))
@@ -102,12 +102,12 @@ LABEL_11:
 
 - (id)gzipInflate
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 length];
-    v3 = [a1 length];
+    v2 = [self length];
+    v3 = [self length];
     v4 = [MEMORY[0x277CBEB28] dataWithLength:v2 + (v3 >> 1)];
-    v15.avail_in = [a1 length];
+    v15.avail_in = [self length];
     v15.zalloc = 0;
     v15.zfree = 0;
     v15.total_out = 0;
@@ -125,8 +125,8 @@ LABEL_11:
         [v4 increaseLengthBy:v5];
       }
 
-      v7 = [v4 mutableBytes];
-      v15.next_out = (v7 + v15.total_out);
+      mutableBytes = [v4 mutableBytes];
+      v15.next_out = (mutableBytes + v15.total_out);
       v8 = [v4 length];
       v15.avail_out = v8 - LODWORD(v15.total_out);
       v9 = inflate(&v15, 2);

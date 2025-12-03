@@ -1,16 +1,16 @@
 @interface SKUISettingsHeaderFooterDescription
-+ (Class)viewClassForSettingsHeaderFooterDescription:(id)a3;
-+ (id)_settingsHeaderFooterDescriptionWithFooterElement:(id)a3;
-+ (id)_settingsHeaderFooterDescriptionWithHeaderElement:(id)a3;
-+ (id)settingsHeaderFooterDescriptionWithViewElement:(id)a3;
-- (SKUISettingsHeaderFooterDescription)initWithViewElement:(id)a3;
++ (Class)viewClassForSettingsHeaderFooterDescription:(id)description;
++ (id)_settingsHeaderFooterDescriptionWithFooterElement:(id)element;
++ (id)_settingsHeaderFooterDescriptionWithHeaderElement:(id)element;
++ (id)settingsHeaderFooterDescriptionWithViewElement:(id)element;
+- (SKUISettingsHeaderFooterDescription)initWithViewElement:(id)element;
 @end
 
 @implementation SKUISettingsHeaderFooterDescription
 
-- (SKUISettingsHeaderFooterDescription)initWithViewElement:(id)a3
+- (SKUISettingsHeaderFooterDescription)initWithViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -27,15 +27,15 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_viewElement, a3);
+    objc_storeStrong(&v14->_viewElement, element);
   }
 
   return v15;
 }
 
-+ (id)settingsHeaderFooterDescriptionWithViewElement:(id)a3
++ (id)settingsHeaderFooterDescriptionWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -48,16 +48,16 @@
     }
   }
 
-  v13 = [v4 elementType];
-  if (v13 == 41)
+  elementType = [elementCopy elementType];
+  if (elementType == 41)
   {
-    v14 = [a1 _settingsHeaderFooterDescriptionWithFooterElement:v4];
+    v14 = [self _settingsHeaderFooterDescriptionWithFooterElement:elementCopy];
     goto LABEL_9;
   }
 
-  if (v13 == 48)
+  if (elementType == 48)
   {
-    v14 = [a1 _settingsHeaderFooterDescriptionWithHeaderElement:v4];
+    v14 = [self _settingsHeaderFooterDescriptionWithHeaderElement:elementCopy];
 LABEL_9:
     v15 = v14;
     goto LABEL_11;
@@ -69,9 +69,9 @@ LABEL_11:
   return v15;
 }
 
-+ (Class)viewClassForSettingsHeaderFooterDescription:(id)a3
++ (Class)viewClassForSettingsHeaderFooterDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -84,14 +84,14 @@ LABEL_11:
     }
   }
 
-  v12 = [v3 _viewClassForSettingsHeaderFooterDescription:v3];
+  v12 = [descriptionCopy _viewClassForSettingsHeaderFooterDescription:descriptionCopy];
 
   return v12;
 }
 
-+ (id)_settingsHeaderFooterDescriptionWithFooterElement:(id)a3
++ (id)_settingsHeaderFooterDescriptionWithFooterElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -104,22 +104,22 @@ LABEL_11:
     }
   }
 
-  v12 = [v3 children];
-  v13 = [v12 firstObject];
+  children = [elementCopy children];
+  firstObject = [children firstObject];
 
-  if (!v13)
+  if (!firstObject)
   {
     goto LABEL_9;
   }
 
-  v14 = [v13 elementType];
-  if (v14 == 138)
+  elementType = [firstObject elementType];
+  if (elementType == 138)
   {
     v15 = off_2781F6820;
     goto LABEL_11;
   }
 
-  if (v14 != 12)
+  if (elementType != 12)
   {
 LABEL_9:
     v16 = 0;
@@ -128,15 +128,15 @@ LABEL_9:
 
   v15 = off_2781F6220;
 LABEL_11:
-  v16 = [objc_alloc(*v15) initWithViewElement:v3];
+  v16 = [objc_alloc(*v15) initWithViewElement:elementCopy];
 LABEL_12:
 
   return v16;
 }
 
-+ (id)_settingsHeaderFooterDescriptionWithHeaderElement:(id)a3
++ (id)_settingsHeaderFooterDescriptionWithHeaderElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -149,12 +149,12 @@ LABEL_12:
     }
   }
 
-  v12 = [v3 children];
-  v13 = [v12 firstObject];
+  children = [elementCopy children];
+  firstObject = [children firstObject];
 
-  if (v13 && [v13 elementType] == 138)
+  if (firstObject && [firstObject elementType] == 138)
   {
-    v14 = [(SKUISettingsHeaderFooterDescription *)[SKUITextHeaderSettingsHeaderFooterDescription alloc] initWithViewElement:v3];
+    v14 = [(SKUISettingsHeaderFooterDescription *)[SKUITextHeaderSettingsHeaderFooterDescription alloc] initWithViewElement:elementCopy];
   }
 
   else

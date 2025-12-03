@@ -1,6 +1,6 @@
 @interface SBSRemoteDeviceReceiver
 - (SBSImplementerInternal)delegate;
-- (SBSRemoteDeviceReceiver)initWithDelegate:(id)a3;
+- (SBSRemoteDeviceReceiver)initWithDelegate:(id)delegate;
 - (void)_deregisterClearHomeSWUpdate;
 - (void)_deregisterDisassociateCurrentNetwork;
 - (void)_deregisterDisassociateNetworkWithName;
@@ -111,20 +111,20 @@
 
 - (void)_deregisterHandoffComplete
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUICompleteKey"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUICompleteKey"];
 }
 
 - (void)_registerHandoffComplete
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__SBSRemoteDeviceReceiver__registerHandoffComplete__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUICompleteKey" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUICompleteKey" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -149,20 +149,20 @@ void __51__SBSRemoteDeviceReceiver__registerHandoffComplete__block_invoke(uint64
 
 - (void)_deregisterHandoffCancel
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUICancelKey"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUICancelKey"];
 }
 
 - (void)_registerHandoffCancel
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__SBSRemoteDeviceReceiver__registerHandoffCancel__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUICancelKey" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUICancelKey" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -187,20 +187,20 @@ void __49__SBSRemoteDeviceReceiver__registerHandoffCancel__block_invoke(uint64_t
 
 - (void)_deregisterHandoffUpdateIntensity
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUIUpdateIntensityKey"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUIUpdateIntensityKey"];
 }
 
 - (void)_registerHandoffUpdateIntensity
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__SBSRemoteDeviceReceiver__registerHandoffUpdateIntensity__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUIUpdateIntensityKey" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUIUpdateIntensityKey" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -231,20 +231,20 @@ void __58__SBSRemoteDeviceReceiver__registerHandoffUpdateIntensity__block_invoke
 
 - (void)_deregisterHandoffStartWithArtworkColors
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartWithArtworkColorsKey"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartWithArtworkColorsKey"];
 }
 
 - (void)_registerHandoffStartWithArtworkColors
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__SBSRemoteDeviceReceiver__registerHandoffStartWithArtworkColors__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartWithArtworkColorsKey" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartWithArtworkColorsKey" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -270,20 +270,20 @@ void __65__SBSRemoteDeviceReceiver__registerHandoffStartWithArtworkColors__block
 
 - (void)_deregisterHandoffStart
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartKey"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartKey"];
 }
 
 - (void)_registerHandoffStart
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __48__SBSRemoteDeviceReceiver__registerHandoffStart__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartKey" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.kSBSProximityHandoffUIStartKey" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -308,20 +308,20 @@ void __48__SBSRemoteDeviceReceiver__registerHandoffStart__block_invoke(uint64_t 
 
 - (void)_deregisterRemoveProfileByIdentifier
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.RemoveProfileByIdentifier"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.RemoveProfileByIdentifier"];
 }
 
 - (void)_registerRemoveProfileByIdentifier
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __61__SBSRemoteDeviceReceiver__registerRemoveProfileByIdentifier__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.RemoveProfileByIdentifier" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.RemoveProfileByIdentifier" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -371,20 +371,20 @@ void __61__SBSRemoteDeviceReceiver__registerRemoveProfileByIdentifier__block_inv
 
 - (void)_deregisterInstallProfileData
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.InstallProfileData"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.InstallProfileData"];
 }
 
 - (void)_registerInstallProfileData
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__SBSRemoteDeviceReceiver__registerInstallProfileData__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.InstallProfileData" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.InstallProfileData" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -434,20 +434,20 @@ void __54__SBSRemoteDeviceReceiver__registerInstallProfileData__block_invoke_2(u
 
 - (void)_deregisterGetInstalledProfiles
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.GetInstalledProfiles"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.GetInstalledProfiles"];
 }
 
 - (void)_registerGetInstalledProfiles
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__SBSRemoteDeviceReceiver__registerGetInstalledProfiles__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.GetInstalledProfiles" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.GetInstalledProfiles" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -494,20 +494,20 @@ void __56__SBSRemoteDeviceReceiver__registerGetInstalledProfiles__block_invoke_2
 
 - (void)_deregisterGetPowerEstimateForInterval
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.GetPowerEstimateForInterval"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.GetPowerEstimateForInterval"];
 }
 
 - (void)_registerGetPowerEstimateForInterval
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__SBSRemoteDeviceReceiver__registerGetPowerEstimateForInterval__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.GetPowerEstimateForInterval" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.GetPowerEstimateForInterval" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -555,20 +555,20 @@ void __63__SBSRemoteDeviceReceiver__registerGetPowerEstimateForInterval__block_i
 
 - (void)_deregisterRequestForFetchingAlarmsAndTimers
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.SystemRequestFetchAlarmsAndTimers"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.SystemRequestFetchAlarmsAndTimers"];
 }
 
 - (void)_registerRequestForFetchingAlarmsAndTimers
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__SBSRemoteDeviceReceiver__registerRequestForFetchingAlarmsAndTimers__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.SystemRequestFetchAlarmsAndTimers" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.SystemRequestFetchAlarmsAndTimers" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -607,20 +607,20 @@ void __69__SBSRemoteDeviceReceiver__registerRequestForFetchingAlarmsAndTimers__b
 
 - (void)_deregisterIntercomWithOptions
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.Intercom"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.Intercom"];
 }
 
 - (void)_registerIntercomWithOptions
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__SBSRemoteDeviceReceiver__registerIntercomWithOptions__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.Intercom" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.Intercom" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -643,20 +643,20 @@ void __55__SBSRemoteDeviceReceiver__registerIntercomWithOptions__block_invoke(ui
 
 - (void)_deregisterIdentifyWithOptions
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.Identify"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.Identify"];
 }
 
 - (void)_registerIdentifyWithOptions
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__SBSRemoteDeviceReceiver__registerIdentifyWithOptions__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.Identify" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.Identify" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -679,20 +679,20 @@ void __55__SBSRemoteDeviceReceiver__registerIdentifyWithOptions__block_invoke(ui
 
 - (void)_deregisterObliterate
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.Obliterate"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.Obliterate"];
 }
 
 - (void)_registerObliterate
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__SBSRemoteDeviceReceiver__registerObliterate__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.Obliterate" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.Obliterate" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -715,20 +715,20 @@ void __46__SBSRemoteDeviceReceiver__registerObliterate__block_invoke(uint64_t a1
 
 - (void)_deregisterRequestDeferredReboot
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.SystemRequestDeferredReboot"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.SystemRequestDeferredReboot"];
 }
 
 - (void)_registerRequestDeferredReboot
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__SBSRemoteDeviceReceiver__registerRequestDeferredReboot__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.SystemRequestDeferredReboot" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.SystemRequestDeferredReboot" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -749,20 +749,20 @@ void __57__SBSRemoteDeviceReceiver__registerRequestDeferredReboot__block_invoke(
 
 - (void)_deregisterReboot
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.SystemReboot"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.SystemReboot"];
 }
 
 - (void)_registerReboot
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__SBSRemoteDeviceReceiver__registerReboot__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.SystemReboot" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.SystemReboot" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -785,20 +785,20 @@ void __42__SBSRemoteDeviceReceiver__registerReboot__block_invoke(uint64_t a1, vo
 
 - (void)_deregisterSysdiagnoseHasStarted
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.SysdiagnoseSysdiagnoseHasStarted"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.SysdiagnoseSysdiagnoseHasStarted"];
 }
 
 - (void)_registerSysdiagnoseHasStarted
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__SBSRemoteDeviceReceiver__registerSysdiagnoseHasStarted__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.SysdiagnoseSysdiagnoseHasStarted" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.SysdiagnoseSysdiagnoseHasStarted" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -821,20 +821,20 @@ void __57__SBSRemoteDeviceReceiver__registerSysdiagnoseHasStarted__block_invoke(
 
 - (void)_deregisterIsDeviceStereoFollower
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.StereoLeaderRoleIsDeviceStereoFollower"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.StereoLeaderRoleIsDeviceStereoFollower"];
 }
 
 - (void)_registerIsDeviceStereoFollower
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__SBSRemoteDeviceReceiver__registerIsDeviceStereoFollower__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.StereoLeaderRoleIsDeviceStereoFollower" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.StereoLeaderRoleIsDeviceStereoFollower" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -872,20 +872,20 @@ void __58__SBSRemoteDeviceReceiver__registerIsDeviceStereoFollower__block_invoke
 
 - (void)_deregisterSetDeviceAsStereoLeader
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.StereoLeaderRoleSetDeviceAsStereoLeader"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.StereoLeaderRoleSetDeviceAsStereoLeader"];
 }
 
 - (void)_registerSetDeviceAsStereoLeader
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__SBSRemoteDeviceReceiver__registerSetDeviceAsStereoLeader__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.StereoLeaderRoleSetDeviceAsStereoLeader" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.StereoLeaderRoleSetDeviceAsStereoLeader" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -910,20 +910,20 @@ void __59__SBSRemoteDeviceReceiver__registerSetDeviceAsStereoLeader__block_invok
 
 - (void)_deregisterSetVolume
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetVolume"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetVolume"];
 }
 
 - (void)_registerSetVolume
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__SBSRemoteDeviceReceiver__registerSetVolume__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetVolume" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetVolume" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -948,20 +948,20 @@ void __45__SBSRemoteDeviceReceiver__registerSetVolume__block_invoke(uint64_t a1,
 
 - (void)_deregisterGetVolume
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoGetVolume"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoGetVolume"];
 }
 
 - (void)_registerGetVolume
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__SBSRemoteDeviceReceiver__registerGetVolume__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoGetVolume" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoGetVolume" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -999,20 +999,20 @@ void __45__SBSRemoteDeviceReceiver__registerGetVolume__block_invoke_2(uint64_t a
 
 - (void)_deregisterSUScanForSoftwareUpdate
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSUScanForSoftwareUpdate"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSUScanForSoftwareUpdate"];
 }
 
 - (void)_registerSUScanForSoftwareUpdate
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__SBSRemoteDeviceReceiver__registerSUScanForSoftwareUpdate__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSUScanForSoftwareUpdate" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSUScanForSoftwareUpdate" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1033,20 +1033,20 @@ void __59__SBSRemoteDeviceReceiver__registerSUScanForSoftwareUpdate__block_invok
 
 - (void)_deregisterSiriSay
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSiriSay"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSiriSay"];
 }
 
 - (void)_registerSiriSay
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__SBSRemoteDeviceReceiver__registerSiriSay__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSiriSay" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSiriSay" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1069,20 +1069,20 @@ void __43__SBSRemoteDeviceReceiver__registerSiriSay__block_invoke(uint64_t a1, v
 
 - (void)_deregisterSetLEDContents
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetLEDContents"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetLEDContents"];
 }
 
 - (void)_registerSetLEDContents
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__SBSRemoteDeviceReceiver__registerSetLEDContents__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetLEDContents" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetLEDContents" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1105,20 +1105,20 @@ void __50__SBSRemoteDeviceReceiver__registerSetLEDContents__block_invoke(uint64_
 
 - (void)_deregisterSetFeatureFlags
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetFeatureFlags"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetFeatureFlags"];
 }
 
 - (void)_registerSetFeatureFlags
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__SBSRemoteDeviceReceiver__registerSetFeatureFlags__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetFeatureFlags" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetFeatureFlags" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1141,20 +1141,20 @@ void __51__SBSRemoteDeviceReceiver__registerSetFeatureFlags__block_invoke(uint64
 
 - (void)_deregisterGetFeatureFlags
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoGetFeatureFlags"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoGetFeatureFlags"];
 }
 
 - (void)_registerGetFeatureFlags
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__SBSRemoteDeviceReceiver__registerGetFeatureFlags__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoGetFeatureFlags" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoGetFeatureFlags" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1193,20 +1193,20 @@ void __51__SBSRemoteDeviceReceiver__registerGetFeatureFlags__block_invoke_2(uint
 
 - (void)_deregisterDisassociateNetworkWithName
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoDisassociateNetworkWithName"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoDisassociateNetworkWithName"];
 }
 
 - (void)_registerDisassociateNetworkWithName
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__SBSRemoteDeviceReceiver__registerDisassociateNetworkWithName__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoDisassociateNetworkWithName" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoDisassociateNetworkWithName" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1231,20 +1231,20 @@ void __63__SBSRemoteDeviceReceiver__registerDisassociateNetworkWithName__block_i
 
 - (void)_deregisterDisassociateCurrentNetwork
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoDisassociateCurrentNetwork"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoDisassociateCurrentNetwork"];
 }
 
 - (void)_registerDisassociateCurrentNetwork
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __62__SBSRemoteDeviceReceiver__registerDisassociateCurrentNetwork__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoDisassociateCurrentNetwork" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoDisassociateCurrentNetwork" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1265,20 +1265,20 @@ void __62__SBSRemoteDeviceReceiver__registerDisassociateCurrentNetwork__block_in
 
 - (void)_deregisterSetWifiEnabled
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetWifiEnabled"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetWifiEnabled"];
 }
 
 - (void)_registerSetWifiEnabled
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__SBSRemoteDeviceReceiver__registerSetWifiEnabled__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetWifiEnabled" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetWifiEnabled" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1301,20 +1301,20 @@ void __50__SBSRemoteDeviceReceiver__registerSetWifiEnabled__block_invoke(uint64_
 
 - (void)_deregisterSetBootSpinner
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetBootSpinner"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetBootSpinner"];
 }
 
 - (void)_registerSetBootSpinner
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__SBSRemoteDeviceReceiver__registerSetBootSpinner__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetBootSpinner" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetBootSpinner" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1337,20 +1337,20 @@ void __50__SBSRemoteDeviceReceiver__registerSetBootSpinner__block_invoke(uint64_
 
 - (void)_deregisterClearHomeSWUpdate
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState"];
 }
 
 - (void)_registerClearHomeSWUpdate
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__SBSRemoteDeviceReceiver__registerClearHomeSWUpdate__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1371,20 +1371,20 @@ void __53__SBSRemoteDeviceReceiver__registerClearHomeSWUpdate__block_invoke(uint
 
 - (void)_deregisterSetHomeUpdateState
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState"];
 }
 
 - (void)_registerSetHomeUpdateState
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__SBSRemoteDeviceReceiver__registerSetHomeUpdateState__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetHomeUpdateState" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1407,20 +1407,20 @@ void __54__SBSRemoteDeviceReceiver__registerSetHomeUpdateState__block_invoke(uin
 
 - (void)_deregisterInjectSWUpdateToHome
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoInjectSWUpdateToHome"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoInjectSWUpdateToHome"];
 }
 
 - (void)_registerInjectSWUpdateToHome
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__SBSRemoteDeviceReceiver__registerInjectSWUpdateToHome__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoInjectSWUpdateToHome" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoInjectSWUpdateToHome" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1443,20 +1443,20 @@ void __56__SBSRemoteDeviceReceiver__registerInjectSWUpdateToHome__block_invoke(u
 
 - (void)_deregisterSendButtonCommand
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSendButtonCommand"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSendButtonCommand"];
 }
 
 - (void)_registerSendButtonCommand
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__SBSRemoteDeviceReceiver__registerSendButtonCommand__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSendButtonCommand" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSendButtonCommand" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1479,20 +1479,20 @@ void __53__SBSRemoteDeviceReceiver__registerSendButtonCommand__block_invoke(uint
 
 - (void)_deregisterTriggerWiFiCoreCapture
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.TriggerWiFiCoreCapture"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.TriggerWiFiCoreCapture"];
 }
 
 - (void)_registerTriggerWiFiCoreCapture
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__SBSRemoteDeviceReceiver__registerTriggerWiFiCoreCapture__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.TriggerWiFiCoreCapture" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.TriggerWiFiCoreCapture" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1515,20 +1515,20 @@ void __58__SBSRemoteDeviceReceiver__registerTriggerWiFiCoreCapture__block_invoke
 
 - (void)_deregisterRender
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoRender"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoRender"];
 }
 
 - (void)_registerRender
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__SBSRemoteDeviceReceiver__registerRender__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoRender" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoRender" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1550,20 +1550,20 @@ void __42__SBSRemoteDeviceReceiver__registerRender__block_invoke(uint64_t a1, vo
 
 - (void)_deregisterSendLEDCommand
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSendLEDCommand"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSendLEDCommand"];
 }
 
 - (void)_registerSendLEDCommand
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__SBSRemoteDeviceReceiver__registerSendLEDCommand__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSendLEDCommand" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSendLEDCommand" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1586,20 +1586,20 @@ void __50__SBSRemoteDeviceReceiver__registerSendLEDCommand__block_invoke(uint64_
 
 - (void)_deregisterResetUserDefault
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoResetUserDefault"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoResetUserDefault"];
 }
 
 - (void)_registerResetUserDefault
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__SBSRemoteDeviceReceiver__registerResetUserDefault__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoResetUserDefault" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoResetUserDefault" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1622,20 +1622,20 @@ void __52__SBSRemoteDeviceReceiver__registerResetUserDefault__block_invoke(uint6
 
 - (void)_deregisterResetAllUserDefaults
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoResetAllUserDefaults"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoResetAllUserDefaults"];
 }
 
 - (void)_registerResetAllUserDefaults
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__SBSRemoteDeviceReceiver__registerResetAllUserDefaults__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoResetAllUserDefaults" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoResetAllUserDefaults" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1656,20 +1656,20 @@ void __56__SBSRemoteDeviceReceiver__registerResetAllUserDefaults__block_invoke(u
 
 - (void)_deregisterSetUserDefaults
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetUserDefaults"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetUserDefaults"];
 }
 
 - (void)_registerSetUserDefaults
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__SBSRemoteDeviceReceiver__registerSetUserDefaults__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetUserDefaults" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetUserDefaults" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1693,20 +1693,20 @@ void __51__SBSRemoteDeviceReceiver__registerSetUserDefaults__block_invoke(uint64
 
 - (void)_deregisterGetUserDefaults
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoGetUserDefaults"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoGetUserDefaults"];
 }
 
 - (void)_registerGetUserDefaults
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__SBSRemoteDeviceReceiver__registerGetUserDefaults__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoGetUserDefaults" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoGetUserDefaults" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1745,20 +1745,20 @@ void __51__SBSRemoteDeviceReceiver__registerGetUserDefaults__block_invoke_2(uint
 
 - (void)_deregisterStopTone
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoStopTone"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoStopTone"];
 }
 
 - (void)_registerStopTone
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__SBSRemoteDeviceReceiver__registerStopTone__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoStopTone" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoStopTone" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1781,20 +1781,20 @@ void __44__SBSRemoteDeviceReceiver__registerStopTone__block_invoke(uint64_t a1, 
 
 - (void)_deregisterPlayTone
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoPlayTone"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoPlayTone"];
 }
 
 - (void)_registerPlayTone
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__SBSRemoteDeviceReceiver__registerPlayTone__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoPlayTone" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoPlayTone" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1817,20 +1817,20 @@ void __44__SBSRemoteDeviceReceiver__registerPlayTone__block_invoke(uint64_t a1, 
 
 - (void)_deregisterSetTuningInfoOnBox
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoSetTuningInfoOnBox"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoSetTuningInfoOnBox"];
 }
 
 - (void)_registerSetTuningInfoOnBox
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__SBSRemoteDeviceReceiver__registerSetTuningInfoOnBox__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoSetTuningInfoOnBox" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoSetTuningInfoOnBox" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1857,20 +1857,20 @@ void __54__SBSRemoteDeviceReceiver__registerSetTuningInfoOnBox__block_invoke(uin
 
 - (void)_deregisterGetTuningInfo
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoGetTuningInfo"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoGetTuningInfo"];
 }
 
 - (void)_registerGetTuningInfo
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__SBSRemoteDeviceReceiver__registerGetTuningInfo__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoGetTuningInfo" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoGetTuningInfo" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1909,20 +1909,20 @@ void __49__SBSRemoteDeviceReceiver__registerGetTuningInfo__block_invoke_2(uint64
 
 - (void)_deregisterGetLEDInfo
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoGetLEDInfo"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoGetLEDInfo"];
 }
 
 - (void)_registerGetLEDInfo
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __46__SBSRemoteDeviceReceiver__registerGetLEDInfo__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoGetLEDInfo" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoGetLEDInfo" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1961,20 +1961,20 @@ void __46__SBSRemoteDeviceReceiver__registerGetLEDInfo__block_invoke_2(uint64_t 
 
 - (void)_deregisterGetSelectDebugInfo
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoGetSelectDebugInfo"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoGetSelectDebugInfo"];
 }
 
 - (void)_registerGetSelectDebugInfo
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__SBSRemoteDeviceReceiver__registerGetSelectDebugInfo__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoGetSelectDebugInfo" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoGetSelectDebugInfo" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2016,20 +2016,20 @@ void __54__SBSRemoteDeviceReceiver__registerGetSelectDebugInfo__block_invoke_2(u
 
 - (void)_deregisterGetAllDebugInfo
 {
-  v2 = [(SBSRemoteDeviceReceiver *)self client];
-  [v2 deregisterRequestID:@"com.apple.sbs.DebugInfoGetAllDebugInfo"];
+  client = [(SBSRemoteDeviceReceiver *)self client];
+  [client deregisterRequestID:@"com.apple.sbs.DebugInfoGetAllDebugInfo"];
 }
 
 - (void)_registerGetAllDebugInfo
 {
   objc_initWeak(&location, self);
-  v3 = [(SBSRemoteDeviceReceiver *)self client];
+  client = [(SBSRemoteDeviceReceiver *)self client];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__SBSRemoteDeviceReceiver__registerGetAllDebugInfo__block_invoke;
   v4[3] = &unk_279CD53F0;
   objc_copyWeak(&v5, &location);
-  [v3 registerRequestID:@"com.apple.sbs.DebugInfoGetAllDebugInfo" options:0 handler:v4];
+  [client registerRequestID:@"com.apple.sbs.DebugInfoGetAllDebugInfo" options:0 handler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2178,17 +2178,17 @@ void __51__SBSRemoteDeviceReceiver__registerGetAllDebugInfo__block_invoke_2(uint
   [(SBSRemoteDeviceReceiver *)&v3 dealloc];
 }
 
-- (SBSRemoteDeviceReceiver)initWithDelegate:(id)a3
+- (SBSRemoteDeviceReceiver)initWithDelegate:(id)delegate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SBSRemoteDeviceReceiver;
   v5 = [(SBSRemoteDeviceReceiver *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v8 = dispatch_queue_create("com.apple.soundboardservices.RapportMessageReceivingQueue", v7);
     v9 = objc_alloc_init(MEMORY[0x277D44160]);

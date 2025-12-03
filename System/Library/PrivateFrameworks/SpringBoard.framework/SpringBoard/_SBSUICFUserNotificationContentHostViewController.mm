@@ -1,15 +1,15 @@
 @interface _SBSUICFUserNotificationContentHostViewController
 - (SBUserNotificationAlert)userNotification;
-- (void)configureWithCompletion:(id)a3;
-- (void)invalidateWithCompletion:(id)a3;
+- (void)configureWithCompletion:(id)completion;
+- (void)invalidateWithCompletion:(id)completion;
 @end
 
 @implementation _SBSUICFUserNotificationContentHostViewController
 
-- (void)configureWithCompletion:(id)a3
+- (void)configureWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_userNotification);
   v6 = SBLogCFUserNotifications();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -24,8 +24,8 @@
   v14 = __77___SBSUICFUserNotificationContentHostViewController_configureWithCompletion___block_invoke;
   v15 = &unk_2783A98A0;
   v16 = WeakRetained;
-  v17 = v4;
-  v7 = v4;
+  v17 = completionCopy;
+  v7 = completionCopy;
   v8 = WeakRetained;
   v9 = MEMORY[0x223D6F7F0](&v12);
   v10 = [(_UIRemoteViewController *)self serviceViewControllerProxy:v12];
@@ -41,10 +41,10 @@
   }
 }
 
-- (void)invalidateWithCompletion:(id)a3
+- (void)invalidateWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_userNotification);
   v6 = SBLogCFUserNotifications();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -54,8 +54,8 @@
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "<%p> Invalidating user notification content extension view controller.", &v8, 0xCu);
   }
 
-  v7 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v7 invalidateWithCompletion:v4];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy invalidateWithCompletion:completionCopy];
 }
 
 - (SBUserNotificationAlert)userNotification

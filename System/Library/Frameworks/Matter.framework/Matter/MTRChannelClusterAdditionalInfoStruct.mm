@@ -1,6 +1,6 @@
 @interface MTRChannelClusterAdditionalInfoStruct
 - (MTRChannelClusterAdditionalInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterAdditionalInfoStruct);
-  v5 = [(MTRChannelClusterAdditionalInfoStruct *)self name];
-  [(MTRChannelClusterAdditionalInfoStruct *)v4 setName:v5];
+  name = [(MTRChannelClusterAdditionalInfoStruct *)self name];
+  [(MTRChannelClusterAdditionalInfoStruct *)v4 setName:name];
 
-  v6 = [(MTRChannelClusterAdditionalInfoStruct *)self value];
-  [(MTRChannelClusterAdditionalInfoStruct *)v4 setValue:v6];
+  value = [(MTRChannelClusterAdditionalInfoStruct *)self value];
+  [(MTRChannelClusterAdditionalInfoStruct *)v4 setValue:value];
 
   return v4;
 }

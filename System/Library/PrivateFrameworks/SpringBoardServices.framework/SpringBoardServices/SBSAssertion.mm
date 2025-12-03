@@ -1,44 +1,44 @@
 @interface SBSAssertion
 - (SBSAssertion)init;
-- (SBSAssertion)initWithAssertionName:(id)a3 reason:(id)a4 port:(unsigned int)a5;
-- (SBSAssertion)initWithAssertionName:(id)a3 reason:(id)a4 receiveRight:(id)a5;
-- (void)addHandler:(id)a3 forDeathOfServerPort:(id)a4;
+- (SBSAssertion)initWithAssertionName:(id)name reason:(id)reason port:(unsigned int)port;
+- (SBSAssertion)initWithAssertionName:(id)name reason:(id)reason receiveRight:(id)right;
+- (void)addHandler:(id)handler forDeathOfServerPort:(id)port;
 - (void)dealloc;
 @end
 
 @implementation SBSAssertion
 
-- (SBSAssertion)initWithAssertionName:(id)a3 reason:(id)a4 port:(unsigned int)a5
+- (SBSAssertion)initWithAssertionName:(id)name reason:(id)reason port:(unsigned int)port
 {
-  v5 = *&a5;
+  v5 = *&port;
   v8 = MEMORY[0x1E698E6C0];
-  v9 = a4;
-  v10 = a3;
+  reasonCopy = reason;
+  nameCopy = name;
   v11 = [[v8 alloc] initWithPort:v5];
-  v12 = [(SBSAssertion *)self initWithAssertionName:v10 reason:v9 receiveRight:v11];
+  v12 = [(SBSAssertion *)self initWithAssertionName:nameCopy reason:reasonCopy receiveRight:v11];
 
   return v12;
 }
 
-- (SBSAssertion)initWithAssertionName:(id)a3 reason:(id)a4 receiveRight:(id)a5
+- (SBSAssertion)initWithAssertionName:(id)name reason:(id)reason receiveRight:(id)right
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  reasonCopy = reason;
+  rightCopy = right;
   v17.receiver = self;
   v17.super_class = SBSAssertion;
   v11 = [(SBSAssertion *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     assertionName = v11->_assertionName;
     v11->_assertionName = v12;
 
-    v14 = [v9 copy];
+    v14 = [reasonCopy copy];
     reason = v11->_reason;
     v11->_reason = v14;
 
-    objc_storeStrong(&v11->_receiveRight, a5);
+    objc_storeStrong(&v11->_receiveRight, right);
   }
 
   return v11;
@@ -46,8 +46,8 @@
 
 - (SBSAssertion)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBSAssertion.m" lineNumber:41 description:@"use initWithAssertionName:..."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSAssertion.m" lineNumber:41 description:@"use initWithAssertionName:..."];
 
   return 0;
 }
@@ -60,10 +60,10 @@
   [(SBSAssertion *)&v3 dealloc];
 }
 
-- (void)addHandler:(id)a3 forDeathOfServerPort:(id)a4
+- (void)addHandler:(id)handler forDeathOfServerPort:(id)port
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  portCopy = port;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E698E738];
   v10[0] = MEMORY[0x1E69E9820];
@@ -71,9 +71,9 @@
   v10[2] = __48__SBSAssertion_addHandler_forDeathOfServerPort___block_invoke;
   v10[3] = &unk_1E7361468;
   objc_copyWeak(&v12, &location);
-  v9 = v6;
+  v9 = handlerCopy;
   v11 = v9;
-  [v8 monitorSendRight:v7 withHandler:v10];
+  [v8 monitorSendRight:portCopy withHandler:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

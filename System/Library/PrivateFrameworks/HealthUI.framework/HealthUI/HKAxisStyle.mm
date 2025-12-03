@@ -1,6 +1,6 @@
 @interface HKAxisStyle
 + (id)defaultStyle;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HKAxisStyle
@@ -11,8 +11,8 @@
   v3 = objc_opt_new();
   [v2 setLabelStyle:v3];
 
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  [v2[7] setTextColor:v4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v2[7] setTextColor:blackColor];
 
   v5 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
   [v2[7] setFont:v5];
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(HKStrokeStyle *)self->_gridLineStyle copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;

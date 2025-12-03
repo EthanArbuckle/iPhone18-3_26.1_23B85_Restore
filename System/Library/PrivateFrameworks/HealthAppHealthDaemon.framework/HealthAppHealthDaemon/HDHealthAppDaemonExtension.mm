@@ -1,33 +1,33 @@
 @interface HDHealthAppDaemonExtension
 - (HDDaemon)daemon;
-- (HDHealthAppDaemonExtension)initWithDaemon:(id)a3;
-- (HDHealthAppDaemonExtension)initWithDaemon:(id)a3 queue:(id)a4;
-- (void)daemonReady:(id)a3;
+- (HDHealthAppDaemonExtension)initWithDaemon:(id)daemon;
+- (HDHealthAppDaemonExtension)initWithDaemon:(id)daemon queue:(id)queue;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion;
+- (void)profileDidBecomeReady:(id)ready;
 - (void)profileListDidChange;
 - (void)resetProfileObservers;
-- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)a3;
-- (void)sharingEntriesDidUpdate:(id)a3;
+- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)change;
+- (void)sharingEntriesDidUpdate:(id)update;
 - (void)updateSharingReminderScheduledAlarm;
 @end
 
 @implementation HDHealthAppDaemonExtension
 
-- (HDHealthAppDaemonExtension)initWithDaemon:(id)a3
+- (HDHealthAppDaemonExtension)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = HKCreateSerialDispatchQueue();
-  v6 = [(HDHealthAppDaemonExtension *)self initWithDaemon:v4 queue:v5];
+  v6 = [(HDHealthAppDaemonExtension *)self initWithDaemon:daemonCopy queue:v5];
 
   return v6;
 }
 
-- (HDHealthAppDaemonExtension)initWithDaemon:(id)a3 queue:(id)a4
+- (HDHealthAppDaemonExtension)initWithDaemon:(id)daemon queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  daemonCopy = daemon;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = HDHealthAppDaemonExtension;
   v8 = [(HDHealthAppDaemonExtension *)&v24 init];
@@ -35,14 +35,14 @@
   if (v8)
   {
     v8->_observerLock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v8->_daemon, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_daemon, daemonCopy);
+    objc_storeStrong(&v9->_queue, queue);
     WeakRetained = objc_loadWeakRetained(&v9->_daemon);
     [WeakRetained registerDaemonReadyObserver:v9 queue:v9->_queue];
 
     v11 = objc_loadWeakRetained(&v9->_daemon);
-    v12 = [v11 primaryProfile];
-    [v12 registerProfileReadyObserver:v9 queue:v9->_queue];
+    primaryProfile = [v11 primaryProfile];
+    [primaryProfile registerProfileReadyObserver:v9 queue:v9->_queue];
 
     v13 = [HDHealthAppRestorableAlarmManager alloc];
     v14 = objc_loadWeakRetained(&v9->_daemon);
@@ -99,13 +99,13 @@ void __51__HDHealthAppDaemonExtension_initWithDaemon_queue___block_invoke_305()
 {
   [(_HKDelayedOperation *)self->_delayedOperation invalidate];
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v4 = [WeakRetained profileManager];
-  [v4 removeProfileManagerObserver:self];
+  profileManager = [WeakRetained profileManager];
+  [profileManager removeProfileManagerObserver:self];
 
   v5 = objc_loadWeakRetained(&self->_daemon);
-  v6 = [v5 primaryProfile];
-  v7 = [v6 sharingEntryManager];
-  [v7 removeObserver:self];
+  primaryProfile = [v5 primaryProfile];
+  sharingEntryManager = [primaryProfile sharingEntryManager];
+  [sharingEntryManager removeObserver:self];
 
   v8.receiver = self;
   v8.super_class = HDHealthAppDaemonExtension;
@@ -118,11 +118,11 @@ void __51__HDHealthAppDaemonExtension_initWithDaemon_queue___block_invoke_305()
   os_unfair_lock_lock(&self->_observerLock);
   v3 = MEMORY[0x277CBEB98];
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v5 = [WeakRetained profileManager];
-  v6 = [v5 allProfileIdentifiers];
-  v7 = [v3 setWithArray:v6];
+  profileManager = [WeakRetained profileManager];
+  allProfileIdentifiers = [profileManager allProfileIdentifiers];
+  v7 = [v3 setWithArray:allProfileIdentifiers];
 
-  v8 = self;
+  selfCopy = self;
   v9 = self->_observedProfileIdentifiers;
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v27 = 0u;
@@ -154,9 +154,9 @@ void __51__HDHealthAppDaemonExtension_initWithDaemon_queue___block_invoke_305()
 
         else
         {
-          v17 = objc_loadWeakRetained(&v8->_daemon);
-          v18 = [v17 profileManager];
-          v19 = [v18 profileForIdentifier:v16];
+          v17 = objc_loadWeakRetained(&selfCopy->_daemon);
+          profileManager2 = [v17 profileManager];
+          v19 = [profileManager2 profileForIdentifier:v16];
 
           if (v19 && [v19 profileType] == 2)
           {
@@ -164,14 +164,14 @@ void __51__HDHealthAppDaemonExtension_initWithDaemon_queue___block_invoke_305()
             v20 = HKLogWellnessDashboard();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v19 profileIdentifier];
+              profileIdentifier = [v19 profileIdentifier];
               *buf = v25;
-              v32 = v21;
+              v32 = profileIdentifier;
               _os_log_impl(&dword_22939E000, v20, OS_LOG_TYPE_DEFAULT, "HDHealthAppDaemonExtension observing changes for: %@", buf, 0xCu);
             }
 
-            v22 = [v19 sharedSummaryManager];
-            [v22 registerObserver:v8];
+            sharedSummaryManager = [v19 sharedSummaryManager];
+            [sharedSummaryManager registerObserver:selfCopy];
 
             [(NSSet *)v10 addObject:v16];
           }
@@ -184,16 +184,16 @@ void __51__HDHealthAppDaemonExtension_initWithDaemon_queue___block_invoke_305()
     while (v13);
   }
 
-  observedProfileIdentifiers = v8->_observedProfileIdentifiers;
-  v8->_observedProfileIdentifiers = v10;
+  observedProfileIdentifiers = selfCopy->_observedProfileIdentifiers;
+  selfCopy->_observedProfileIdentifiers = v10;
 
-  os_unfair_lock_unlock(&v8->_observerLock);
+  os_unfair_lock_unlock(&selfCopy->_observerLock);
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   _HKInitializeLogging();
   v5 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -202,20 +202,20 @@ void __51__HDHealthAppDaemonExtension_initWithDaemon_queue___block_invoke_305()
     _os_log_impl(&dword_22939E000, v5, OS_LOG_TYPE_DEFAULT, "HDHealthAppDaemonExtension reported daemon ready, starting observing for profile list changes", v10, 2u);
   }
 
-  v6 = [v4 profileManager];
-  [v6 addProfileManagerObserver:self];
+  profileManager = [readyCopy profileManager];
+  [profileManager addProfileManagerObserver:self];
 
   [(HDHealthAppDaemonExtension *)self resetProfileObservers];
-  v7 = [v4 primaryProfile];
-  v8 = [v7 sharingEntryManager];
-  [v8 addObserver:self];
+  primaryProfile = [readyCopy primaryProfile];
+  sharingEntryManager = [primaryProfile sharingEntryManager];
+  [sharingEntryManager addObserver:self];
 
-  v9 = [v4 postInstallUpdateManager];
+  postInstallUpdateManager = [readyCopy postInstallUpdateManager];
 
-  [v9 registerUpdateTaskHandler:self queue:0];
+  [postInstallUpdateManager registerUpdateTaskHandler:self queue:0];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   [(HDHealthAppDaemonExtension *)self updateSharingReminderScheduledAlarm];
   unitTest_profileReadyObserverDidFinish = self->_unitTest_profileReadyObserverDidFinish;
@@ -253,9 +253,9 @@ void __50__HDHealthAppDaemonExtension_profileListDidChange__block_invoke(uint64_
   [v1 execute];
 }
 
-- (void)performPostInstallUpdateTaskForManager:(id)a3 completion:(id)a4
+- (void)performPostInstallUpdateTaskForManager:(id)manager completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -270,9 +270,9 @@ void __50__HDHealthAppDaemonExtension_profileListDidChange__block_invoke(uint64_
   v9[2] = __80__HDHealthAppDaemonExtension_performPostInstallUpdateTaskForManager_completion___block_invoke;
   v9[3] = &unk_278658650;
   v10 = v6;
-  v11 = v4;
+  v11 = completionCopy;
   v7 = v6;
-  v8 = v4;
+  v8 = completionCopy;
   [(HealthAppHealthDaemonOrchestrationClient *)v7 requestBackgroundGenerationForAllModelsAfterUnlockWithCompletion:v9];
 }
 
@@ -295,7 +295,7 @@ uint64_t __80__HDHealthAppDaemonExtension_performPostInstallUpdateTaskForManager
   return result;
 }
 
-- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)a3
+- (void)sharedSummaryManagerCommittedTransactionsDidChange:(id)change
 {
   _HKInitializeLogging();
   v3 = HKLogWellnessDashboard();
@@ -326,16 +326,16 @@ void __81__HDHealthAppDaemonExtension_sharedSummaryManagerCommittedTransactionsD
   }
 }
 
-- (void)sharingEntriesDidUpdate:(id)a3
+- (void)sharingEntriesDidUpdate:(id)update
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   [(HDHealthAppDaemonExtension *)self updateSharingReminderScheduledAlarm];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v4;
+  v5 = updateCopy;
   v6 = [(HealthAppHealthDaemonOrchestrationClient *)v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
   v7 = v5;
   if (!v6)

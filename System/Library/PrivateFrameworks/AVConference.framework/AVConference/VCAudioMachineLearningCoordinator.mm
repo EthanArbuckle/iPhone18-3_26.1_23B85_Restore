@@ -1,70 +1,70 @@
 @interface VCAudioMachineLearningCoordinator
-+ (id)errorCodeWithEvent:(unsigned int)a3 errorPath:(id)a4;
++ (id)errorCodeWithEvent:(unsigned int)event errorPath:(id)path;
 - (BOOL)captionsEnabled;
 - (BOOL)lockedCaptionsEnabled;
-- (BOOL)lockedEnableCaptions:(BOOL)a3 withError:(id *)a4;
-- (BOOL)lockedEnableMediaAnalyzer:(BOOL)a3 withError:(id *)a4;
-- (BOOL)prewarmCaptionsWithError:(id *)a3;
-- (BOOL)registerStreamWithConfig:(const tagVCAudioCaptionsStreamConfig *)a3;
-- (BOOL)setUpAudioCaptionsUsingFrameworkType:(unsigned __int8)a3;
-- (BOOL)setUpInternalStateForReporting:(unsigned __int8)a3;
+- (BOOL)lockedEnableCaptions:(BOOL)captions withError:(id *)error;
+- (BOOL)lockedEnableMediaAnalyzer:(BOOL)analyzer withError:(id *)error;
+- (BOOL)prewarmCaptionsWithError:(id *)error;
+- (BOOL)registerStreamWithConfig:(const tagVCAudioCaptionsStreamConfig *)config;
+- (BOOL)setUpAudioCaptionsUsingFrameworkType:(unsigned __int8)type;
+- (BOOL)setUpInternalStateForReporting:(unsigned __int8)reporting;
 - (BOOL)setUpReportingAgent;
-- (BOOL)startDelegateAudioStackIfNeededWithError:(id *)a3;
-- (BOOL)toggleDelegateAudioStackEnabledIfNeeded:(BOOL)a3 withError:(id *)a4;
-- (VCAudioMachineLearningCoordinator)initWithConfiguration:(const tagVCAudioMachineLearningCoordinatorConfiguration *)a3 delegate:(id)a4;
-- (VCAudioMachineLearningCoordinator)initWithOneToOneEnabled:(BOOL)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6 delegate:(id)a7;
+- (BOOL)startDelegateAudioStackIfNeededWithError:(id *)error;
+- (BOOL)toggleDelegateAudioStackEnabledIfNeeded:(BOOL)needed withError:(id *)error;
+- (VCAudioMachineLearningCoordinator)initWithConfiguration:(const tagVCAudioMachineLearningCoordinatorConfiguration *)configuration delegate:(id)delegate;
+- (VCAudioMachineLearningCoordinator)initWithOneToOneEnabled:(BOOL)enabled isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent delegate:(id)delegate;
 - (__CFDictionary)clientSpecificUserInfo;
 - (__CFDictionary)reportingInitialConfiguration;
 - (id)lockedDelegate;
-- (void)captions:(id)a3 didChangeSourceLocale:(id)a4;
-- (void)captions:(id)a3 didProduceLanguageHypothesis:(id)a4 streamToken:(int64_t)a5;
-- (void)captions:(id)a3 didStopLanguageDetectorWithError:(id)a4 streamToken:(int64_t)a5;
+- (void)captions:(id)captions didChangeSourceLocale:(id)locale;
+- (void)captions:(id)captions didProduceLanguageHypothesis:(id)hypothesis streamToken:(int64_t)token;
+- (void)captions:(id)captions didStopLanguageDetectorWithError:(id)error streamToken:(int64_t)token;
 - (void)dealloc;
-- (void)didConfigureCaptionsWithError:(id)a3;
-- (void)didDisableCaptions:(BOOL)a3 error:(id)a4;
-- (void)didEnableCaptions:(BOOL)a3 error:(id)a4;
-- (void)didStartCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4;
-- (void)didStopCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4;
-- (void)didUpdateCaptions:(id)a3;
+- (void)didConfigureCaptionsWithError:(id)error;
+- (void)didDisableCaptions:(BOOL)captions error:(id)error;
+- (void)didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)didStartCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token;
+- (void)didStopCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token;
+- (void)didUpdateCaptions:(id)captions;
 - (void)disableMediaAnalyzerAndNotifyClient;
-- (void)enableCaptions:(BOOL)a3;
-- (void)enableMediaAnalyzer:(BOOL)a3;
-- (void)enableV2SpeechAPI:(BOOL)a3;
+- (void)enableCaptions:(BOOL)captions;
+- (void)enableMediaAnalyzer:(BOOL)analyzer;
+- (void)enableV2SpeechAPI:(BOOL)i;
 - (void)invalidate;
-- (void)lockedRegisterMediaAnalyzerWithStreamToken:(int64_t)a3;
-- (void)mediaAnalyzer:(id)a3 didProduceMediaAnalysis:(id)a4 streamToken:(int64_t)a5;
-- (void)processAudioControlEventEnable:(BOOL)a3 moduleID:(unsigned int)a4;
-- (void)registerCaptionsEventDelegate:(id)a3;
-- (void)registerMediaAnalyzerSourceDelegate:(id)a3;
+- (void)lockedRegisterMediaAnalyzerWithStreamToken:(int64_t)token;
+- (void)mediaAnalyzer:(id)analyzer didProduceMediaAnalysis:(id)analysis streamToken:(int64_t)token;
+- (void)processAudioControlEventEnable:(BOOL)enable moduleID:(unsigned int)d;
+- (void)registerCaptionsEventDelegate:(id)delegate;
+- (void)registerMediaAnalyzerSourceDelegate:(id)delegate;
 - (void)removeDelegateAudioStackIfNeeded;
-- (void)reportCaptionsUsage:(unsigned __int8)a3;
-- (void)setCaptionsSourceLocale:(id)a3;
-- (void)setLowPriorityThresholdSeconds:(double)a3;
-- (void)setMediaAnalyzerTaskType:(int64_t)a3;
-- (void)setOneToOneModeEnabled:(BOOL)a3;
-- (void)setUpForTranslatorMode:(unsigned __int8)a3;
+- (void)reportCaptionsUsage:(unsigned __int8)usage;
+- (void)setCaptionsSourceLocale:(id)locale;
+- (void)setLowPriorityThresholdSeconds:(double)seconds;
+- (void)setMediaAnalyzerTaskType:(int64_t)type;
+- (void)setOneToOneModeEnabled:(BOOL)enabled;
+- (void)setUpForTranslatorMode:(unsigned __int8)mode;
 - (void)unregisterStreamTokens;
-- (void)updateCaptionsConfig:(id)a3;
+- (void)updateCaptionsConfig:(id)config;
 @end
 
 @implementation VCAudioMachineLearningCoordinator
 
-- (VCAudioMachineLearningCoordinator)initWithOneToOneEnabled:(BOOL)a3 isLocal:(BOOL)a4 taskIdentifier:(id)a5 reportingAgent:(opaqueRTCReporting *)a6 delegate:(id)a7
+- (VCAudioMachineLearningCoordinator)initWithOneToOneEnabled:(BOOL)enabled isLocal:(BOOL)local taskIdentifier:(id)identifier reportingAgent:(opaqueRTCReporting *)agent delegate:(id)delegate
 {
   v12 = *MEMORY[0x1E69E9840];
   v8[0] = 0xAAAAAAAAAAAAAAAALL;
   v8[3] = 0xAAAAAAAAAAAA0000;
-  LOBYTE(v8[0]) = a3;
-  BYTE1(v8[0]) = a4;
-  v8[1] = a5;
-  v8[2] = a6;
+  LOBYTE(v8[0]) = enabled;
+  BYTE1(v8[0]) = local;
+  v8[1] = identifier;
+  v8[2] = agent;
   v9 = 0uLL;
   v10 = 0;
   v11 = 0xAAAAAAAA00000000;
-  return [(VCAudioMachineLearningCoordinator *)self initWithConfiguration:v8 delegate:a7];
+  return [(VCAudioMachineLearningCoordinator *)self initWithConfiguration:v8 delegate:delegate];
 }
 
-- (VCAudioMachineLearningCoordinator)initWithConfiguration:(const tagVCAudioMachineLearningCoordinatorConfiguration *)a3 delegate:(id)a4
+- (VCAudioMachineLearningCoordinator)initWithConfiguration:(const tagVCAudioMachineLearningCoordinatorConfiguration *)configuration delegate:(id)delegate
 {
   v46 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAudioMachineLearningCoordinator-init");
@@ -74,8 +74,8 @@
     v8 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      var4 = a3->var4;
-      var6 = a3->var6;
+      var4 = configuration->var4;
+      var6 = configuration->var6;
       *buf = 136316674;
       v33 = v7;
       v34 = 2080;
@@ -83,13 +83,13 @@
       v36 = 1024;
       v37 = 158;
       v38 = 2048;
-      v39 = self;
+      selfCopy = self;
       v40 = 1024;
       v41 = var4;
       v42 = 2048;
       v43 = var6;
       v44 = 2048;
-      v45 = a4;
+      delegateCopy = delegate;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioMachineLearningCoordinator-init (%p) init with frameworkType=%d, streamToken=%ld, delegate=%p", buf, 0x40u);
     }
   }
@@ -99,17 +99,17 @@
   v11 = [(VCObject *)&v31 init];
   if (v11)
   {
-    var2 = a3->var2;
+    var2 = configuration->var2;
     if (var2)
     {
-      v11->_isLocal = a3->var1;
+      v11->_isLocal = configuration->var1;
       v11->_taskIdentifier = [var2 copy];
-      v11->_initialStreamToken = a3->var6;
-      v11->_translatorIdentifier = [a3->var7 copy];
-      v11->_reportingSamplingUUID = [a3->var8 copy];
-      v11->_direction = a3->var9;
-      v11->_translatorMode = a3->var5;
-      v11->_captionsFrameworkType = a3->var4;
+      v11->_initialStreamToken = configuration->var6;
+      v11->_translatorIdentifier = [configuration->var7 copy];
+      v11->_reportingSamplingUUID = [configuration->var8 copy];
+      v11->_direction = configuration->var9;
+      v11->_translatorMode = configuration->var5;
+      v11->_captionsFrameworkType = configuration->var4;
       MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCAudioMachineLearningCoordinator-init");
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
@@ -117,7 +117,7 @@
         v14 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v15 = a3->var4;
+          v15 = configuration->var4;
           *buf = 136316162;
           v33 = v13;
           v34 = 2080;
@@ -125,7 +125,7 @@
           v36 = 1024;
           v37 = 174;
           v38 = 2048;
-          v39 = v11;
+          selfCopy = v11;
           v40 = 1024;
           v41 = v15;
           _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioMachineLearningCoordinator-init (%p) init with frameworkType=%d", buf, 0x2Cu);
@@ -151,9 +151,9 @@
 
       v18 = [VCCaptionsGibberishDetector alloc];
       DoubleValueForKey = VCDefaults_GetDoubleValueForKey(@"captionsConfidenceGibberishThreshold", 0.6875);
-      v20 = [(VCCaptionsGibberishDetector *)v18 initWithGibberishThreshold:VCDefaults_GetIntValueForKey(@"captionsConfidenceGibberishDetectionWindowLength" windowLength:30), DoubleValueForKey];
-      v11->_gibberishDetector = v20;
-      if (v20)
+      doubleValueForKey = [(VCCaptionsGibberishDetector *)v18 initWithGibberishThreshold:VCDefaults_GetIntValueForKey(@"captionsConfidenceGibberishDetectionWindowLength" windowLength:30), DoubleValueForKey];
+      v11->_gibberishDetector = doubleValueForKey;
+      if (doubleValueForKey)
       {
         v11->_currentMediaAnalyzerStreamToken = 0;
         v21 = [[VCAudioCaptionsBufferInfoCollection alloc] initWithBufferLength:0.5];
@@ -165,11 +165,11 @@
           v11->_delegateQueue = v23;
           if (v23)
           {
-            objc_storeWeak(&v11->_delegate, a4);
-            v11->_oneToOneEnabled = a3->var0;
+            objc_storeWeak(&v11->_delegate, delegate);
+            v11->_oneToOneEnabled = configuration->var0;
             v11->_stateLock._os_unfair_lock_opaque = 0;
             v11->_startStopSemaphore = dispatch_semaphore_create(0);
-            [(VCObject *)v11 setReportingAgent:a3->var3];
+            [(VCObject *)v11 setReportingAgent:configuration->var3];
             if ([(VCAudioMachineLearningCoordinator *)v11 setUpInternalStateForReporting:v11->_translatorMode])
             {
               IsInternalOSInstalled = VRTraceIsInternalOSInstalled();
@@ -192,7 +192,7 @@
                 if ([(VCAudioMachineLearningCoordinator *)v11 setUpAudioCaptionsUsingFrameworkType:v11->_captionsFrameworkType])
                 {
                   v11->_isReadyForCaptioning = 1;
-                  v26 = [[VCMediaAnalyzer alloc] initWithDelegate:v11 delegateQueue:v11->_delegateQueue reportingAgent:a3->var3];
+                  v26 = [[VCMediaAnalyzer alloc] initWithDelegate:v11 delegateQueue:v11->_delegateQueue reportingAgent:configuration->var3];
                   v11->_mediaAnalyzer = v26;
                   if (v26)
                   {
@@ -282,7 +282,7 @@ LABEL_30:
       v36 = 1024;
       v37 = 223;
       v38 = 2048;
-      v39 = v11;
+      selfCopy = v11;
       v40 = 1024;
       v41 = v11 != 0;
       _os_log_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioMachineLearningCoordinator-init Finished (%p) Finished with success=%{BOOL}d", buf, 0x2Cu);
@@ -292,10 +292,10 @@ LABEL_30:
   return v11;
 }
 
-- (void)setLowPriorityThresholdSeconds:(double)a3
+- (void)setLowPriorityThresholdSeconds:(double)seconds
 {
   os_unfair_lock_lock(&self->_stateLock);
-  self->_lowPriorityThresholdSeconds = a3;
+  self->_lowPriorityThresholdSeconds = seconds;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
@@ -305,20 +305,20 @@ LABEL_30:
   block[6] = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
   [(VCAudioMachineLearningCoordinator *)self lockedEnableMediaAnalyzer:0 withError:0];
-  v3 = [(VCAudioMachineLearningCoordinator *)self mediaAnalyzerSourceDelegate];
+  mediaAnalyzerSourceDelegate = [(VCAudioMachineLearningCoordinator *)self mediaAnalyzerSourceDelegate];
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__VCAudioMachineLearningCoordinator_disableMediaAnalyzerAndNotifyClient__block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = v3;
+  block[4] = mediaAnalyzerSourceDelegate;
   block[5] = self;
   dispatch_sync(delegateQueue, block);
 }
 
 - (void)invalidate
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -358,15 +358,15 @@ LABEL_11:
   }
 }
 
-- (void)reportCaptionsUsage:(unsigned __int8)a3
+- (void)reportCaptionsUsage:(unsigned __int8)usage
 {
-  v3 = a3;
+  usageCopy = usage;
   v6[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
   if (!self->_invalidated)
   {
     v5 = @"ACSU";
-    v6[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v3];
+    v6[0] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:usageCopy];
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
     [(VCObject *)self reportingAgent];
     reportingGenericEvent();
@@ -392,7 +392,7 @@ LABEL_11:
       v17 = 1024;
       v18 = 279;
       v19 = 2048;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioMachineLearningCoordinator-dealloc (%p)", buf, 0x26u);
     }
   }
@@ -440,7 +440,7 @@ LABEL_11:
       v17 = 1024;
       v18 = 302;
       v19 = 2048;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCAudioMachineLearningCoordinator-dealloc (%p) Finished", buf, 0x26u);
     }
   }
@@ -450,11 +450,11 @@ LABEL_11:
   [(VCObject *)&v12 dealloc];
 }
 
-- (BOOL)startDelegateAudioStackIfNeededWithError:(id *)a3
+- (BOOL)startDelegateAudioStackIfNeededWithError:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
-  v5 = [(VCAudioMachineLearningCoordinator *)self lockedDelegate];
+  lockedDelegate = [(VCAudioMachineLearningCoordinator *)self lockedDelegate];
   v24 = 0;
   v6 = [(NSArray *)[(VCAudioCaptionsBufferInfoCollection *)self->_bufferInfos streamTokens] copy];
   v40 = 0u;
@@ -475,11 +475,11 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v40 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v40 + 1) + 8 * i) unsignedIntegerValue];
         v22[1] = &v23;
-        v23 = v11;
+        v23 = unsignedIntegerValue;
         v22[0] = 0xAAAAAAAAAAAAAA01;
-        if (([(VCAudioMachineLearningCoordinator *)v5 actionWillBeginForContext:v22 withError:&v24]& 1) == 0)
+        if (([(VCAudioMachineLearningCoordinator *)lockedDelegate actionWillBeginForContext:v22 withError:&v24]& 1) == 0)
         {
           if (objc_opt_class() == self)
           {
@@ -504,7 +504,7 @@ LABEL_11:
             v31 = 2048;
             v32 = v23;
             v33 = 2112;
-            v34 = v5;
+            selfCopy = lockedDelegate;
             v15 = " [%s] %s:%d Failed to start delegate audio stack for token=%ld delegate=%@";
             v16 = v14;
             v17 = 48;
@@ -543,11 +543,11 @@ LABEL_11:
             v31 = 2112;
             v32 = v12;
             v33 = 2048;
-            v34 = self;
+            selfCopy = self;
             v35 = 2048;
             v36 = v23;
             v37 = 2112;
-            v38 = v5;
+            v38 = lockedDelegate;
             v15 = " [%s] %s:%d %@(%p) Failed to start delegate audio stack for token=%ld delegate=%@";
             v16 = v19;
             v17 = 68;
@@ -571,9 +571,9 @@ LABEL_11:
 LABEL_19:
 
   v20 = v24;
-  if (a3)
+  if (error)
   {
-    *a3 = v24;
+    *error = v24;
   }
 
   return v20 == 0;
@@ -583,7 +583,7 @@ LABEL_19:
 {
   v44 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
-  v3 = [(VCAudioMachineLearningCoordinator *)self lockedDelegate];
+  lockedDelegate = [(VCAudioMachineLearningCoordinator *)self lockedDelegate];
   v24 = 0;
   v4 = [(NSArray *)[(VCAudioCaptionsBufferInfoCollection *)self->_bufferInfos streamTokens] copy];
   v40 = 0u;
@@ -608,11 +608,11 @@ LABEL_19:
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v40 + 1) + 8 * v9) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v40 + 1) + 8 * v9) unsignedIntegerValue];
         v22[1] = &v23;
-        v23 = v10;
+        v23 = unsignedIntegerValue;
         v22[0] = 0xAAAAAAAAAAAAAA01;
-        if (([(VCAudioMachineLearningCoordinator *)v3 actionDidFinishForContext:v22 withError:&v24]& 1) == 0)
+        if (([(VCAudioMachineLearningCoordinator *)lockedDelegate actionDidFinishForContext:v22 withError:&v24]& 1) == 0)
         {
           if (objc_opt_class() == self)
           {
@@ -631,7 +631,7 @@ LABEL_19:
                 v31 = 2048;
                 v32 = v23;
                 v33 = 2112;
-                v34 = v3;
+                selfCopy = lockedDelegate;
                 v14 = v18;
                 v15 = " [%s] %s:%d Failed to remove delegate audio stack for token=%ld delegate=%@";
                 v16 = 48;
@@ -663,11 +663,11 @@ LABEL_19:
                 v31 = 2112;
                 v32 = v11;
                 v33 = 2048;
-                v34 = self;
+                selfCopy = self;
                 v35 = 2048;
                 v36 = v23;
                 v37 = 2112;
-                v38 = v3;
+                v38 = lockedDelegate;
                 v14 = v13;
                 v15 = " [%s] %s:%d %@(%p) Failed to remove delegate audio stack for token=%ld delegate=%@";
                 v16 = 68;
@@ -690,17 +690,17 @@ LABEL_18:
   }
 }
 
-- (BOOL)toggleDelegateAudioStackEnabledIfNeeded:(BOOL)a3 withError:(id *)a4
+- (BOOL)toggleDelegateAudioStackEnabledIfNeeded:(BOOL)needed withError:(id *)error
 {
-  v5 = a3;
+  neededCopy = needed;
   v32 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
-  if (![(VCAudioMachineLearningCoordinator *)self lockedDelegate]|| self->_delegateAudioStackStarted == v5)
+  if (![(VCAudioMachineLearningCoordinator *)self lockedDelegate]|| self->_delegateAudioStackStarted == neededCopy)
   {
     return 1;
   }
 
-  if (v5 && [(VCAudioMachineLearningCoordinator *)self startDelegateAudioStackIfNeededWithError:a4])
+  if (neededCopy && [(VCAudioMachineLearningCoordinator *)self startDelegateAudioStackIfNeededWithError:error])
   {
     v8 = 1;
   }
@@ -716,14 +716,14 @@ LABEL_18:
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
-      return self->_delegateAudioStackStarted == v5;
+      return self->_delegateAudioStackStarted == neededCopy;
     }
 
     v10 = VRTraceErrorLogLevelToCSTR();
     v11 = *MEMORY[0x1E6986650];
     if (!os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      return self->_delegateAudioStackStarted == v5;
+      return self->_delegateAudioStackStarted == neededCopy;
     }
 
     delegateAudioStackStarted = self->_delegateAudioStackStarted;
@@ -734,7 +734,7 @@ LABEL_18:
     v23 = 1024;
     v24 = 373;
     v25 = 1024;
-    *v26 = v5;
+    *v26 = neededCopy;
     *&v26[4] = 1024;
     *&v26[6] = delegateAudioStackStarted;
     v13 = " [%s] %s:%d shouldEnable=%{BOOL}d, _delegateAudioStackStarted=%{BOOL}d";
@@ -756,14 +756,14 @@ LABEL_18:
 
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
-      return self->_delegateAudioStackStarted == v5;
+      return self->_delegateAudioStackStarted == neededCopy;
     }
 
     v16 = VRTraceErrorLogLevelToCSTR();
     v17 = *MEMORY[0x1E6986650];
     if (!os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      return self->_delegateAudioStackStarted == v5;
+      return self->_delegateAudioStackStarted == neededCopy;
     }
 
     v18 = self->_delegateAudioStackStarted;
@@ -776,9 +776,9 @@ LABEL_18:
     v25 = 2112;
     *v26 = v9;
     *&v26[8] = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 1024;
-    v29 = v5;
+    v29 = neededCopy;
     v30 = 1024;
     v31 = v18;
     v13 = " [%s] %s:%d %@(%p) shouldEnable=%{BOOL}d, _delegateAudioStackStarted=%{BOOL}d";
@@ -787,19 +787,19 @@ LABEL_18:
   }
 
   _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, v13, &v19, v15);
-  return self->_delegateAudioStackStarted == v5;
+  return self->_delegateAudioStackStarted == neededCopy;
 }
 
-- (void)processAudioControlEventEnable:(BOOL)a3 moduleID:(unsigned int)a4
+- (void)processAudioControlEventEnable:(BOOL)enable moduleID:(unsigned int)d
 {
-  v5 = a3;
+  enableCopy = enable;
   v63 = *MEMORY[0x1E69E9840];
   v7 = malloc_type_calloc(1uLL, 0x10uLL, 0x108004057E67DB5uLL);
   *buf = v7;
   if (v7)
   {
     v8 = v7;
-    if (v5)
+    if (enableCopy)
     {
       v9 = 1;
     }
@@ -810,9 +810,9 @@ LABEL_18:
     }
 
     *v7 = v9;
-    v7[1] = a4;
+    v7[1] = d;
     moduleIDsEnabled = self->_moduleIDsEnabled;
-    if (v5)
+    if (enableCopy)
     {
       if (!moduleIDsEnabled)
       {
@@ -825,7 +825,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if (moduleIDsEnabled == a4)
+    if (moduleIDsEnabled == d)
     {
       v11 = dispatch_semaphore_create(0);
       *(v8 + 1) = v11;
@@ -988,7 +988,7 @@ LABEL_36:
     }
   }
 
-  if (!v12 || v5)
+  if (!v12 || enableCopy)
   {
 LABEL_37:
     if (!v12)
@@ -1107,7 +1107,7 @@ LABEL_47:
       *&v62[8] = 2048;
       *&v62[10] = self;
       *&v62[18] = 1024;
-      *&v62[20] = a4;
+      *&v62[20] = d;
       *&v62[24] = 1024;
       *&v62[26] = 2;
       *&v62[30] = 1024;
@@ -1136,7 +1136,7 @@ LABEL_47:
     v59 = 1024;
     v60 = 806;
     v61 = 1024;
-    *v62 = a4;
+    *v62 = d;
     *&v62[4] = 1024;
     *&v62[6] = 2;
     *&v62[10] = 1024;
@@ -1182,7 +1182,7 @@ LABEL_47:
       *&v62[8] = 2048;
       *&v62[10] = self;
       *&v62[18] = 1024;
-      *&v62[20] = a4;
+      *&v62[20] = d;
       *&v62[24] = 1024;
       *&v62[26] = 2;
       *&v62[30] = 1024;
@@ -1214,7 +1214,7 @@ LABEL_70:
     v59 = 1024;
     v60 = 804;
     v61 = 1024;
-    *v62 = a4;
+    *v62 = d;
     *&v62[4] = 1024;
     *&v62[6] = 2;
     *&v62[10] = 1024;
@@ -1230,29 +1230,29 @@ LABEL_38:
   dispatch_release(v12);
 }
 
-- (void)setOneToOneModeEnabled:(BOOL)a3
+- (void)setOneToOneModeEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_stateLock);
   if (!self->_invalidated)
   {
-    self->_oneToOneEnabled = a3;
+    self->_oneToOneEnabled = enabled;
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)registerStreamWithConfig:(const tagVCAudioCaptionsStreamConfig *)a3
+- (BOOL)registerStreamWithConfig:(const tagVCAudioCaptionsStreamConfig *)config
 {
   v33 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
-  if (!a3)
+  if (!config)
   {
     [(VCAudioMachineLearningCoordinator *)self registerStreamWithConfig:v29];
     v15 = v29[0];
     goto LABEL_16;
   }
 
-  if (self->_invalidated || (VCAudioCaptionsBufferInfoCollection_AddBufferInfo(self->_bufferInfos, &a3->var0, 0) & 1) == 0)
+  if (self->_invalidated || (VCAudioCaptionsBufferInfoCollection_AddBufferInfo(self->_bufferInfos, &config->var0, 0) & 1) == 0)
   {
     if (objc_opt_class() == self)
     {
@@ -1268,7 +1268,7 @@ LABEL_38:
         goto LABEL_27;
       }
 
-      var0 = a3->var0;
+      var0 = config->var0;
       invalidated = self->_invalidated;
       *v29 = 136316162;
       *&v29[4] = v18;
@@ -1279,7 +1279,7 @@ LABEL_38:
       WORD2(v30) = 2048;
       *(&v30 + 6) = var0;
       HIWORD(v30) = 1024;
-      LODWORD(v31) = invalidated;
+      LODWORD(selfCopy2) = invalidated;
       v22 = " [%s] %s:%d Could not register streamToken=%ld for captions, invalidated=%{BOOL}d";
       v23 = v19;
       v24 = 44;
@@ -1310,7 +1310,7 @@ LABEL_38:
       }
 
       v27 = self->_invalidated;
-      v28 = a3->var0;
+      v28 = config->var0;
       *v29 = 136316674;
       *&v29[4] = v25;
       *&v29[12] = 2080;
@@ -1320,7 +1320,7 @@ LABEL_38:
       WORD2(v30) = 2112;
       *(&v30 + 6) = v17;
       HIWORD(v30) = 2048;
-      v31 = self;
+      selfCopy2 = self;
       LOWORD(v32) = 2048;
       *(&v32 + 2) = v28;
       WORD5(v32) = 1024;
@@ -1336,7 +1336,7 @@ LABEL_27:
     goto LABEL_16;
   }
 
-  self->_initialStreamToken = a3->var0;
+  self->_initialStreamToken = config->var0;
   [+[VCCaptionsManager defaultManager](VCCaptionsManager "defaultManager")];
   if (objc_opt_class() == self)
   {
@@ -1352,7 +1352,7 @@ LABEL_27:
       goto LABEL_15;
     }
 
-    v8 = a3->var0;
+    v8 = config->var0;
     *v29 = 136315906;
     *&v29[4] = v6;
     *&v29[12] = 2080;
@@ -1390,7 +1390,7 @@ LABEL_27:
       goto LABEL_15;
     }
 
-    v14 = a3->var0;
+    v14 = config->var0;
     *v29 = 136316418;
     *&v29[4] = v12;
     *&v29[12] = 2080;
@@ -1400,7 +1400,7 @@ LABEL_27:
     WORD2(v30) = 2112;
     *(&v30 + 6) = v5;
     HIWORD(v30) = 2048;
-    v31 = self;
+    selfCopy2 = self;
     LOWORD(v32) = 2048;
     *(&v32 + 2) = v14;
     v9 = " [%s] %s:%d %@(%p) Register captions source streamToken=%ld";
@@ -1410,7 +1410,7 @@ LABEL_27:
 
   _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, v9, v29, v11);
 LABEL_15:
-  [(VCAudioMachineLearningCoordinator *)self lockedRegisterMediaAnalyzerWithStreamToken:a3->var0, *v29, *&v29[16], v30, v31, v32];
+  [(VCAudioMachineLearningCoordinator *)self lockedRegisterMediaAnalyzerWithStreamToken:config->var0, *v29, *&v29[16], v30, selfCopy2, v32];
   v15 = 1;
 LABEL_16:
   os_unfair_lock_unlock(&self->_stateLock);
@@ -1425,7 +1425,7 @@ LABEL_16:
   if (bufferInfos)
   {
     v4 = VCAudioCaptionsBufferInfoCollection_CopyOrderedBufferInfos(bufferInfos);
-    v11 = [(VCAudioMachineLearningCoordinator *)self captionsDelegate];
+    captionsDelegate = [(VCAudioMachineLearningCoordinator *)self captionsDelegate];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -1453,7 +1453,7 @@ LABEL_16:
             block[1] = 3221225472;
             block[2] = __59__VCAudioMachineLearningCoordinator_unregisterStreamTokens__block_invoke;
             block[3] = &unk_1E85F37F0;
-            block[4] = v11;
+            block[4] = captionsDelegate;
             block[5] = v9;
             dispatch_sync(delegateQueue, block);
           }
@@ -1480,14 +1480,14 @@ uint64_t __59__VCAudioMachineLearningCoordinator_unregisterStreamTokens__block_i
   return [v1 streamToken:v2 didDisableCaptions:1 error:0];
 }
 
-- (void)lockedRegisterMediaAnalyzerWithStreamToken:(int64_t)a3
+- (void)lockedRegisterMediaAnalyzerWithStreamToken:(int64_t)token
 {
   v29 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
-  [+[VCMediaAnalyzerManager sharedInstance](VCMediaAnalyzerManager registerMediaAnalyzerSource:"registerMediaAnalyzerSource:streamToken:" streamToken:self, a3];
+  [+[VCMediaAnalyzerManager sharedInstance](VCMediaAnalyzerManager registerMediaAnalyzerSource:"registerMediaAnalyzerSource:streamToken:" streamToken:self, token];
   if (!self->_currentMediaAnalyzerStreamToken)
   {
-    self->_currentMediaAnalyzerStreamToken = a3;
+    self->_currentMediaAnalyzerStreamToken = token;
   }
 
   if (objc_opt_class() == self)
@@ -1506,9 +1506,9 @@ uint64_t __59__VCAudioMachineLearningCoordinator_unregisterStreamTokens__block_i
         v19 = 1024;
         v20 = 456;
         v21 = 2048;
-        v22 = a3;
+        tokenCopy = token;
         v23 = 2048;
-        v24 = currentMediaAnalyzerStreamToken;
+        selfCopy = currentMediaAnalyzerStreamToken;
         v9 = " [%s] %s:%d Register media analyzer source for streamToken=%ld _currentMediaAnalyzerStreamToken=%ld";
         v10 = v7;
         v11 = 48;
@@ -1544,11 +1544,11 @@ LABEL_13:
         v19 = 1024;
         v20 = 456;
         v21 = 2112;
-        v22 = v5;
+        tokenCopy = v5;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v25 = 2048;
-        v26 = a3;
+        tokenCopy2 = token;
         v27 = 2048;
         v28 = v14;
         v9 = " [%s] %s:%d %@(%p) Register media analyzer source for streamToken=%ld _currentMediaAnalyzerStreamToken=%ld";
@@ -1560,13 +1560,13 @@ LABEL_13:
   }
 }
 
-- (void)enableV2SpeechAPI:(BOOL)a3
+- (void)enableV2SpeechAPI:(BOOL)i
 {
-  v3 = a3;
+  iCopy = i;
   v31 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
   v5 = VCFeatureFlagManager_UseAnalyzerSpeechAPI();
-  self->_isV2SpeechAPIEnabled = v3 && v5;
+  self->_isV2SpeechAPIEnabled = iCopy && v5;
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -1583,11 +1583,11 @@ LABEL_13:
         *&v26[22] = 1024;
         LODWORD(v27) = 464;
         WORD2(v27) = 1024;
-        *(&v27 + 6) = v3;
+        *(&v27 + 6) = iCopy;
         WORD5(v27) = 1024;
         HIDWORD(v27) = v5;
-        LOWORD(v28) = 1024;
-        *(&v28 + 2) = isV2SpeechAPIEnabled;
+        LOWORD(selfCopy2) = 1024;
+        *(&selfCopy2 + 2) = isV2SpeechAPIEnabled;
         v10 = " [%s] %s:%d VCAudioMLCoordinator: Setting enable=%{BOOL}d (featureFlagValue=%{BOOL}d), enableV2SpeechAPI=%{BOOL}d";
         v11 = v8;
         v12 = 46;
@@ -1625,9 +1625,9 @@ LABEL_11:
         WORD2(v27) = 2112;
         *(&v27 + 6) = v6;
         HIWORD(v27) = 2048;
-        v28 = self;
+        selfCopy2 = self;
         LOWORD(v29) = 1024;
-        *(&v29 + 2) = v3;
+        *(&v29 + 2) = iCopy;
         HIWORD(v29) = 1024;
         LODWORD(v30) = v5;
         WORD2(v30) = 1024;
@@ -1696,7 +1696,7 @@ LABEL_23:
           WORD2(v27) = 2112;
           *(&v27 + 6) = v16;
           HIWORD(v27) = 2048;
-          v28 = self;
+          selfCopy2 = self;
           LOWORD(v29) = 1024;
           *(&v29 + 2) = v25;
           v20 = " [%s] %s:%d %@(%p) Expected not to be in _translatorMode=%d when client calls enable V2 Speech API";
@@ -1708,15 +1708,15 @@ LABEL_23:
     }
   }
 
-  [(VCAudioMachineLearningCoordinator *)self setUpForTranslatorMode:0, *v26, *&v26[16], v27, v28, v29, v30, v31];
+  [(VCAudioMachineLearningCoordinator *)self setUpForTranslatorMode:0, *v26, *&v26[16], v27, selfCopy2, v29, v30, v31];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)setUpAudioCaptionsUsingFrameworkType:(unsigned __int8)a3
+- (BOOL)setUpAudioCaptionsUsingFrameworkType:(unsigned __int8)type
 {
-  v3 = a3;
+  typeCopy = type;
   v47 = *MEMORY[0x1E69E9840];
-  if ([(VCAudioCaptions *)self->_audioCaptions frameworkType]== a3)
+  if ([(VCAudioCaptions *)self->_audioCaptions frameworkType]== type)
   {
     if (objc_opt_class() == self)
     {
@@ -1739,7 +1739,7 @@ LABEL_23:
       v36 = 1024;
       v37 = 478;
       v38 = 1024;
-      LODWORD(v39) = v3;
+      LODWORD(v39) = typeCopy;
       v11 = " [%s] %s:%d Already in requested frameworkType=%d";
       v12 = v10;
       v13 = 34;
@@ -1780,7 +1780,7 @@ LABEL_23:
       v40 = 2048;
       *v41 = self;
       *&v41[8] = 1024;
-      LODWORD(v42) = v3;
+      LODWORD(v42) = typeCopy;
       v11 = " [%s] %s:%d %@(%p) Already in requested frameworkType=%d";
       v12 = v23;
       v13 = 54;
@@ -1796,7 +1796,7 @@ LABEL_23:
   v31 = 0xAAAAAAAAAAAAAAAALL;
   v30[2] = [(VCObject *)self reportingAgent:self];
   LOBYTE(v31) = self->_isLocal;
-  v6 = [VCAudioCaptionsSpeechFactory captionsProviderForFrameworkType:v3 withSpeechConfig:v30];
+  v6 = [VCAudioCaptionsSpeechFactory captionsProviderForFrameworkType:typeCopy withSpeechConfig:v30];
   self->_audioCaptions = v6;
   v7 = v6 != 0;
   if (!v6)
@@ -1821,9 +1821,9 @@ LABEL_23:
       v15 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(VCAudioCaptions *)self->_audioCaptions streamToken];
-        v17 = [(VCAudioCaptions *)self->_audioCaptions translatorMode];
-        v18 = [(VCAudioCaptions *)self->_audioCaptions frameworkType];
+        streamToken = [(VCAudioCaptions *)self->_audioCaptions streamToken];
+        translatorMode = [(VCAudioCaptions *)self->_audioCaptions translatorMode];
+        frameworkType = [(VCAudioCaptions *)self->_audioCaptions frameworkType];
         *buf = 136316418;
         v33 = v14;
         v34 = 2080;
@@ -1831,11 +1831,11 @@ LABEL_23:
         v36 = 1024;
         v37 = 498;
         v38 = 2048;
-        v39 = v16;
+        v39 = streamToken;
         v40 = 1024;
-        *v41 = v17;
+        *v41 = translatorMode;
         *&v41[4] = 1024;
-        *&v41[6] = v18;
+        *&v41[6] = frameworkType;
         v19 = " [%s] %s:%d Set up audioCaptions with info (streamToken=%lu, translatorMode=%d, frameworkType=%d)";
         v20 = v15;
         v21 = 50;
@@ -1863,9 +1863,9 @@ LABEL_27:
       v25 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [(VCAudioCaptions *)self->_audioCaptions streamToken];
-        v27 = [(VCAudioCaptions *)self->_audioCaptions translatorMode];
-        v28 = [(VCAudioCaptions *)self->_audioCaptions frameworkType];
+        streamToken2 = [(VCAudioCaptions *)self->_audioCaptions streamToken];
+        translatorMode2 = [(VCAudioCaptions *)self->_audioCaptions translatorMode];
+        frameworkType2 = [(VCAudioCaptions *)self->_audioCaptions frameworkType];
         *buf = 136316930;
         v33 = v24;
         v34 = 2080;
@@ -1877,11 +1877,11 @@ LABEL_27:
         v40 = 2048;
         *v41 = self;
         *&v41[8] = 2048;
-        v42 = v26;
+        v42 = streamToken2;
         v43 = 1024;
-        v44 = v27;
+        v44 = translatorMode2;
         v45 = 1024;
-        v46 = v28;
+        v46 = frameworkType2;
         v19 = " [%s] %s:%d %@(%p) Set up audioCaptions with info (streamToken=%lu, translatorMode=%d, frameworkType=%d)";
         v20 = v25;
         v21 = 70;
@@ -1893,7 +1893,7 @@ LABEL_27:
   return v7;
 }
 
-- (void)registerCaptionsEventDelegate:(id)a3
+- (void)registerCaptionsEventDelegate:(id)delegate
 {
   block[6] = *MEMORY[0x1E69E9840];
   delegateQueue = self->_delegateQueue;
@@ -1902,27 +1902,27 @@ LABEL_27:
   block[2] = __67__VCAudioMachineLearningCoordinator_registerCaptionsEventDelegate___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = delegate;
   dispatch_async(delegateQueue, block);
 }
 
-- (void)setCaptionsSourceLocale:(id)a3
+- (void)setCaptionsSourceLocale:(id)locale
 {
   os_unfair_lock_lock(&self->_stateLock);
 
-  self->_sourceLocale = [a3 copy];
-  [(VCAudioCaptions *)self->_audioCaptions setSourceLocale:a3];
+  self->_sourceLocale = [locale copy];
+  [(VCAudioCaptions *)self->_audioCaptions setSourceLocale:locale];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)updateCaptionsConfig:(id)a3
+- (void)updateCaptionsConfig:(id)config
 {
   os_unfair_lock_lock(&self->_stateLock);
-  -[VCAudioMachineLearningCoordinator reportCaptionsUsage:](self, "reportCaptionsUsage:", [a3 usage]);
+  -[VCAudioMachineLearningCoordinator reportCaptionsUsage:](self, "reportCaptionsUsage:", [config usage]);
 
-  self->_locale = [objc_msgSend(a3 "locale")];
-  [(VCAudioCaptions *)self->_audioCaptions updateConfig:a3];
+  self->_locale = [objc_msgSend(config "locale")];
+  [(VCAudioCaptions *)self->_audioCaptions updateConfig:config];
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
@@ -1943,24 +1943,24 @@ LABEL_27:
   return v3;
 }
 
-- (BOOL)prewarmCaptionsWithError:(id *)a3
+- (BOOL)prewarmCaptionsWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_stateLock);
   if (self->_invalidated)
   {
     os_unfair_lock_unlock(&self->_stateLock);
-    if (a3)
+    if (error)
     {
       v5 = +[VCAudioMachineLearningCoordinator errorCodeWithEvent:errorPath:](VCAudioMachineLearningCoordinator, "errorCodeWithEvent:errorPath:", 0, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCAudioMachineLearningCoordinator.m", 596]);
       result = 0;
-      *a3 = v5;
+      *error = v5;
       return result;
     }
   }
 
   else
   {
-    if ([(VCAudioMachineLearningCoordinator *)self toggleDelegateAudioStackEnabledIfNeeded:1 withError:a3])
+    if ([(VCAudioMachineLearningCoordinator *)self toggleDelegateAudioStackEnabledIfNeeded:1 withError:error])
     {
       [(VCAudioCaptions *)self->_audioCaptions prewarmCaptions];
       os_unfair_lock_unlock(&self->_stateLock);
@@ -1973,21 +1973,21 @@ LABEL_27:
   return 0;
 }
 
-- (BOOL)lockedEnableCaptions:(BOOL)a3 withError:(id *)a4
+- (BOOL)lockedEnableCaptions:(BOOL)captions withError:(id *)error
 {
-  v5 = a3;
+  captionsCopy = captions;
   v51 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
   if (!self->_invalidated)
   {
-    if ([(VCAudioMachineLearningCoordinator *)self lockedCaptionsEnabled]== v5)
+    if ([(VCAudioMachineLearningCoordinator *)self lockedCaptionsEnabled]== captionsCopy)
     {
       goto LABEL_54;
     }
 
-    if (!v5)
+    if (!captionsCopy)
     {
-      [(VCAudioMachineLearningCoordinator *)self toggleDelegateAudioStackEnabledIfNeeded:self->_moduleIDsEnabled > 1 withError:a4];
+      [(VCAudioMachineLearningCoordinator *)self toggleDelegateAudioStackEnabledIfNeeded:self->_moduleIDsEnabled > 1 withError:error];
       [(VCAudioCaptions *)self->_audioCaptions enableCaptions:0];
       v12 = self->_moduleIDsEnabled & 0xFFFFFFFE;
 LABEL_43:
@@ -2015,7 +2015,7 @@ LABEL_43:
         v43 = 1024;
         v44 = 656;
         v45 = 1024;
-        *v46 = v5;
+        *v46 = captionsCopy;
         *&v46[4] = 2048;
         *&v46[6] = captionsState;
         *&v46[14] = 2048;
@@ -2062,7 +2062,7 @@ LABEL_43:
         *&v46[8] = 2048;
         *&v46[10] = self;
         *&v46[18] = 1024;
-        *&v46[20] = v5;
+        *&v46[20] = captionsCopy;
         v47 = 2048;
         v48 = v36;
         v49 = 2048;
@@ -2090,7 +2090,7 @@ LABEL_54:
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
             {
               [VCAudioMachineLearningCoordinator lockedEnableCaptions:withError:];
-              if (!a4)
+              if (!error)
               {
                 goto LABEL_56;
               }
@@ -2129,7 +2129,7 @@ LABEL_54:
               *&v46[8] = 2048;
               *&v46[10] = self;
               _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid audio captions translator mode or identifier.", buf, 0x30u);
-              if (!a4)
+              if (!error)
               {
                 goto LABEL_56;
               }
@@ -2139,7 +2139,7 @@ LABEL_54:
           }
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_56;
         }
@@ -2156,12 +2156,12 @@ LABEL_29:
     sourceLocale = self->_sourceLocale;
     if (sourceLocale && self->_locale && ([(NSLocale *)sourceLocale isEqual:?]& 1) == 0)
     {
-      v17 = self;
+      selfCopy2 = self;
       v18 = 1;
 LABEL_40:
-      [(VCAudioMachineLearningCoordinator *)v17 setUpForTranslatorMode:v18];
+      [(VCAudioMachineLearningCoordinator *)selfCopy2 setUpForTranslatorMode:v18];
 LABEL_41:
-      v10 = [(VCAudioMachineLearningCoordinator *)self toggleDelegateAudioStackEnabledIfNeeded:1 withError:a4];
+      v10 = [(VCAudioMachineLearningCoordinator *)self toggleDelegateAudioStackEnabledIfNeeded:1 withError:error];
       if (!v10)
       {
         return v10;
@@ -2242,12 +2242,12 @@ LABEL_41:
     }
 
 LABEL_39:
-    v17 = self;
+    selfCopy2 = self;
     v18 = 0;
     goto LABEL_40;
   }
 
-  if (!a4)
+  if (!error)
   {
 LABEL_56:
     LOBYTE(v10) = 0;
@@ -2259,13 +2259,13 @@ LABEL_56:
 LABEL_4:
   v9 = [VCAudioMachineLearningCoordinator errorCodeWithEvent:v8 errorPath:v7];
   LOBYTE(v10) = 0;
-  *a4 = v9;
+  *error = v9;
   return v10;
 }
 
-- (void)enableCaptions:(BOOL)a3
+- (void)enableCaptions:(BOOL)captions
 {
-  v3 = a3;
+  captionsCopy = captions;
   v44 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -2282,7 +2282,7 @@ LABEL_4:
         v33 = 1024;
         v34 = 661;
         v35 = 1024;
-        *v36 = v3;
+        *v36 = captionsCopy;
         v8 = " [%s] %s:%d enableCaptions=%d";
         v9 = v7;
         v10 = 34;
@@ -2319,9 +2319,9 @@ LABEL_11:
         v35 = 2112;
         *v36 = v5;
         *&v36[8] = 2048;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 1024;
-        v39 = v3;
+        v39 = captionsCopy;
         v8 = " [%s] %s:%d %@(%p) enableCaptions=%d";
         v9 = v12;
         v10 = 54;
@@ -2332,9 +2332,9 @@ LABEL_11:
 
   v28 = 0;
   os_unfair_lock_lock(&self->_stateLock);
-  if (v3)
+  if (captionsCopy)
   {
-    if ([(VCAudioMachineLearningCoordinator *)self lockedEnableCaptions:v3 withError:&v28])
+    if ([(VCAudioMachineLearningCoordinator *)self lockedEnableCaptions:captionsCopy withError:&v28])
     {
       [(VCAudioMachineLearningCoordinator *)self processAudioControlEventEnable:1 moduleID:1];
       os_unfair_lock_unlock(&self->_stateLock);
@@ -2350,7 +2350,7 @@ LABEL_11:
   else
   {
     [(VCAudioMachineLearningCoordinator *)self processAudioControlEventEnable:0 moduleID:1];
-    v13 = [(VCAudioMachineLearningCoordinator *)self lockedEnableCaptions:v3 withError:&v28];
+    v13 = [(VCAudioMachineLearningCoordinator *)self lockedEnableCaptions:captionsCopy withError:&v28];
     os_unfair_lock_unlock(&self->_stateLock);
     if (!v13)
     {
@@ -2379,8 +2379,8 @@ LABEL_11:
         *v36 = moduleIDsEnabled;
         *&v36[4] = 1024;
         *&v36[6] = activeModuleIDs;
-        LOWORD(v37) = 1024;
-        *(&v37 + 2) = delegateAudioStackStarted;
+        LOWORD(selfCopy2) = 1024;
+        *(&selfCopy2 + 2) = delegateAudioStackStarted;
         v20 = " [%s] %s:%d moduleIDsEnabled=%d, audioProcessingEnabled=%d, delegateAudioStackStarted=%{BOOL}d";
         v21 = v16;
         v22 = 46;
@@ -2420,7 +2420,7 @@ LABEL_28:
         v35 = 2112;
         *v36 = v14;
         *&v36[8] = 2048;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 1024;
         v39 = v25;
         v40 = 1024;
@@ -2443,30 +2443,30 @@ LABEL_28:
   return objc_loadWeak(&self->_delegate);
 }
 
-- (void)registerMediaAnalyzerSourceDelegate:(id)a3
+- (void)registerMediaAnalyzerSourceDelegate:(id)delegate
 {
   os_unfair_lock_lock(&self->_stateLock);
-  objc_storeWeak(&self->_mediaAnalyzerSourceDelegate, a3);
+  objc_storeWeak(&self->_mediaAnalyzerSourceDelegate, delegate);
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)setMediaAnalyzerTaskType:(int64_t)a3
+- (void)setMediaAnalyzerTaskType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_stateLock);
-  self->_mediaAnalyzerAnalysisType = a3;
+  self->_mediaAnalyzerAnalysisType = type;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)lockedEnableMediaAnalyzer:(BOOL)a3 withError:(id *)a4
+- (BOOL)lockedEnableMediaAnalyzer:(BOOL)analyzer withError:(id *)error
 {
-  v5 = a3;
+  analyzerCopy = analyzer;
   v39 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
-  if ((((self->_moduleIDsEnabled & 2) == 0) ^ v5))
+  if ((((self->_moduleIDsEnabled & 2) == 0) ^ analyzerCopy))
   {
-    return v5;
+    return analyzerCopy;
   }
 
   BufferInfo = VCAudioCaptionsBufferInfoCollection_GetBufferInfo(self->_bufferInfos, self->_currentMediaAnalyzerStreamToken);
@@ -2486,7 +2486,7 @@ LABEL_28:
   }
 
   v23 = 0;
-  if (v5)
+  if (analyzerCopy)
   {
     v9 = [(VCAudioMachineLearningCoordinator *)self toggleDelegateAudioStackEnabledIfNeeded:1 withError:&v23];
     if (!v9 || v23)
@@ -2526,9 +2526,9 @@ LABEL_16:
       v29 = 1024;
       v30 = 731;
       v31 = 1024;
-      *v32 = v5;
+      *v32 = analyzerCopy;
       *&v32[4] = 1024;
-      *&v32[6] = v5;
+      *&v32[6] = analyzerCopy;
       *v33 = 2048;
       *&v33[2] = moduleIDsEnabled;
       v16 = " [%s] %s:%d enable=%d, didEnable=%d, moduleIDsEnabled=%ld";
@@ -2572,9 +2572,9 @@ LABEL_16:
       *&v32[8] = 2048;
       *v33 = self;
       *&v33[8] = 1024;
-      v34 = v5;
+      v34 = analyzerCopy;
       v35 = 1024;
-      v36 = v5;
+      v36 = analyzerCopy;
       v37 = 2048;
       v38 = v21;
       v16 = " [%s] %s:%d %@(%p) enable=%d, didEnable=%d, moduleIDsEnabled=%ld";
@@ -2597,18 +2597,18 @@ LABEL_27:
   }
 
 LABEL_28:
-  if (a4)
+  if (error)
   {
-    *a4 = v23;
+    *error = v23;
   }
 
-  LOBYTE(v5) = v9 && v5;
-  return v5;
+  LOBYTE(analyzerCopy) = v9 && analyzerCopy;
+  return analyzerCopy;
 }
 
-- (void)enableMediaAnalyzer:(BOOL)a3
+- (void)enableMediaAnalyzer:(BOOL)analyzer
 {
-  v3 = a3;
+  analyzerCopy = analyzer;
   v49 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -2631,7 +2631,7 @@ LABEL_28:
     v38 = 1024;
     v39 = 814;
     v40 = 1024;
-    *v41 = v3;
+    *v41 = analyzerCopy;
     v8 = " [%s] %s:%d enableMediaAnalyzer=%d";
     v9 = v7;
     v10 = 34;
@@ -2663,9 +2663,9 @@ LABEL_28:
       v40 = 2112;
       *v41 = v5;
       *&v41[8] = 2048;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 1024;
-      v44 = v3;
+      v44 = analyzerCopy;
       v8 = " [%s] %s:%d %@(%p) enableMediaAnalyzer=%d";
       v9 = v12;
       v10 = 54;
@@ -2677,9 +2677,9 @@ LABEL_11:
 LABEL_12:
   os_unfair_lock_lock(&self->_stateLock);
   v33 = 0;
-  if (v3)
+  if (analyzerCopy)
   {
-    if ([(VCAudioMachineLearningCoordinator *)self lockedEnableMediaAnalyzer:v3 withError:&v33])
+    if ([(VCAudioMachineLearningCoordinator *)self lockedEnableMediaAnalyzer:analyzerCopy withError:&v33])
     {
       v13 = 1;
       [(VCAudioMachineLearningCoordinator *)self processAudioControlEventEnable:1 moduleID:2];
@@ -2694,10 +2694,10 @@ LABEL_12:
   else
   {
     [(VCAudioMachineLearningCoordinator *)self processAudioControlEventEnable:0 moduleID:2];
-    v13 = [(VCAudioMachineLearningCoordinator *)self lockedEnableMediaAnalyzer:v3 withError:&v33];
+    v13 = [(VCAudioMachineLearningCoordinator *)self lockedEnableMediaAnalyzer:analyzerCopy withError:&v33];
   }
 
-  v14 = [(VCAudioMachineLearningCoordinator *)self mediaAnalyzerSourceDelegate];
+  mediaAnalyzerSourceDelegate = [(VCAudioMachineLearningCoordinator *)self mediaAnalyzerSourceDelegate];
   currentMediaAnalyzerStreamToken = self->_currentMediaAnalyzerStreamToken;
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2706,7 +2706,7 @@ LABEL_12:
   block[3] = &unk_1E85F63A0;
   block[6] = currentMediaAnalyzerStreamToken;
   v32 = v13;
-  block[4] = v14;
+  block[4] = mediaAnalyzerSourceDelegate;
   block[5] = v33;
   dispatch_async(delegateQueue, block);
   os_unfair_lock_unlock(&self->_stateLock);
@@ -2731,8 +2731,8 @@ LABEL_12:
         *v41 = moduleIDsEnabled;
         *&v41[4] = 1024;
         *&v41[6] = activeModuleIDs;
-        LOWORD(v42) = 1024;
-        *(&v42 + 2) = delegateAudioStackStarted;
+        LOWORD(selfCopy2) = 1024;
+        *(&selfCopy2 + 2) = delegateAudioStackStarted;
         v23 = " [%s] %s:%d moduleIDsEnabled=%d, audioProcessingEnabled=%d, delegateAudioStackStarted=%{BOOL}d";
         v24 = v19;
         v25 = 46;
@@ -2772,7 +2772,7 @@ LABEL_27:
         v40 = 2112;
         *v41 = v17;
         *&v41[8] = 2048;
-        v42 = self;
+        selfCopy2 = self;
         v43 = 1024;
         v44 = v28;
         v45 = 1024;
@@ -2788,7 +2788,7 @@ LABEL_27:
   }
 }
 
-- (void)didConfigureCaptionsWithError:(id)a3
+- (void)didConfigureCaptionsWithError:(id)error
 {
   v7[6] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -2812,7 +2812,7 @@ LABEL_27:
     v6[1] = 3221225472;
     v6[2] = __67__VCAudioMachineLearningCoordinator_didConfigureCaptionsWithError___block_invoke;
     v6[3] = &unk_1E85F3E08;
-    v6[5] = a3;
+    v6[5] = error;
     v6[6] = v7;
     v6[4] = self;
     dispatch_async(delegateQueue, v6);
@@ -2915,7 +2915,7 @@ LABEL_15:
   }
 }
 
-- (void)didDisableCaptions:(BOOL)a3 error:(id)a4
+- (void)didDisableCaptions:(BOOL)captions error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -2944,9 +2944,9 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __62__VCAudioMachineLearningCoordinator_didDisableCaptions_error___block_invoke;
     block[3] = &unk_1E85F63C8;
-    block[5] = a4;
+    block[5] = error;
     block[6] = &v11;
-    v10 = a3;
+    captionsCopy = captions;
     block[4] = self;
     dispatch_async(delegateQueue, block);
     _Block_object_dispose(&v11, 8);
@@ -3048,7 +3048,7 @@ LABEL_15:
   }
 }
 
-- (void)didEnableCaptions:(BOOL)a3 error:(id)a4
+- (void)didEnableCaptions:(BOOL)captions error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -3077,9 +3077,9 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __61__VCAudioMachineLearningCoordinator_didEnableCaptions_error___block_invoke;
     block[3] = &unk_1E85F63C8;
-    block[5] = a4;
+    block[5] = error;
     block[6] = &v11;
-    v10 = a3;
+    captionsCopy = captions;
     block[4] = self;
     dispatch_async(delegateQueue, block);
     _Block_object_dispose(&v11, 8);
@@ -3181,7 +3181,7 @@ LABEL_15:
   }
 }
 
-- (void)didStartCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4
+- (void)didStartCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token
 {
   v31 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -3210,7 +3210,7 @@ LABEL_15:
       v23 = 1024;
       v24 = 900;
       v25 = 2048;
-      v26 = a4;
+      tokenCopy = token;
       v11 = " [%s] %s:%d Started captioning for token=%ld";
       v12 = v10;
       v13 = 38;
@@ -3247,11 +3247,11 @@ LABEL_15:
       v23 = 1024;
       v24 = 900;
       v25 = 2112;
-      v26 = v8;
+      tokenCopy = v8;
       v27 = 2048;
-      v28 = self;
+      selfCopy = self;
       v29 = 2048;
-      v30 = a4;
+      tokenCopy2 = token;
       v11 = " [%s] %s:%d %@(%p) Started captioning for token=%ld";
       v12 = v15;
       v13 = 58;
@@ -3265,13 +3265,13 @@ LABEL_13:
     block[2] = __78__VCAudioMachineLearningCoordinator_didStartCaptioningWithReason_streamToken___block_invoke;
     block[3] = &unk_1E85F4180;
     block[4] = self;
-    block[5] = a4;
-    v18 = a3;
+    block[5] = token;
+    reasonCopy = reason;
     dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)didStopCaptioningWithReason:(unsigned __int8)a3 streamToken:(int64_t)a4
+- (void)didStopCaptioningWithReason:(unsigned __int8)reason streamToken:(int64_t)token
 {
   v31 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -3300,7 +3300,7 @@ LABEL_13:
       v23 = 1024;
       v24 = 913;
       v25 = 2048;
-      v26 = a4;
+      tokenCopy = token;
       v11 = " [%s] %s:%d Stopped captioning for token=%ld";
       v12 = v10;
       v13 = 38;
@@ -3337,11 +3337,11 @@ LABEL_13:
       v23 = 1024;
       v24 = 913;
       v25 = 2112;
-      v26 = v8;
+      tokenCopy = v8;
       v27 = 2048;
-      v28 = self;
+      selfCopy = self;
       v29 = 2048;
-      v30 = a4;
+      tokenCopy2 = token;
       v11 = " [%s] %s:%d %@(%p) Stopped captioning for token=%ld";
       v12 = v15;
       v13 = 58;
@@ -3355,13 +3355,13 @@ LABEL_13:
     block[2] = __77__VCAudioMachineLearningCoordinator_didStopCaptioningWithReason_streamToken___block_invoke;
     block[3] = &unk_1E85F4180;
     block[4] = self;
-    block[5] = a4;
-    v18 = a3;
+    block[5] = token;
+    reasonCopy = reason;
     dispatch_async(delegateQueue, block);
   }
 }
 
-- (void)didUpdateCaptions:(id)a3
+- (void)didUpdateCaptions:(id)captions
 {
   v32 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -3390,7 +3390,7 @@ LABEL_13:
       v24 = 1024;
       v25 = 926;
       v26 = 2048;
-      v27 = [a3 streamToken];
+      streamToken = [captions streamToken];
       v9 = " [%s] %s:%d Got transcription for token=%ld";
       v10 = v8;
       v11 = 38;
@@ -3427,11 +3427,11 @@ LABEL_13:
       v24 = 1024;
       v25 = 926;
       v26 = 2112;
-      v27 = v6;
+      streamToken = v6;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2048;
-      v31 = [a3 streamToken];
+      streamToken2 = [captions streamToken];
       v9 = " [%s] %s:%d %@(%p) Got transcription for token=%ld";
       v10 = v13;
       v11 = 58;
@@ -3439,8 +3439,8 @@ LABEL_13:
 
     _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, v9, buf, v11);
 LABEL_13:
-    v14 = [(VCCaptionsGibberishDetector *)self->_gibberishDetector processTranscript:a3];
-    v15 = -[VCCaptionsGibberishDetector gibberishStateForCaptionsToken:](self->_gibberishDetector, "gibberishStateForCaptionsToken:", [a3 streamToken]);
+    v14 = [(VCCaptionsGibberishDetector *)self->_gibberishDetector processTranscript:captions];
+    v15 = -[VCCaptionsGibberishDetector gibberishStateForCaptionsToken:](self->_gibberishDetector, "gibberishStateForCaptionsToken:", [captions streamToken]);
     delegateQueue = self->_delegateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -3448,7 +3448,7 @@ LABEL_13:
     block[3] = &unk_1E85F63F0;
     v18 = v14;
     block[4] = self;
-    block[5] = a3;
+    block[5] = captions;
     v19 = v15;
     dispatch_async(delegateQueue, block);
   }
@@ -3468,7 +3468,7 @@ uint64_t __55__VCAudioMachineLearningCoordinator_didUpdateCaptions___block_invok
   return [v2 streamToken:v3 didUpdateCaptions:v4];
 }
 
-- (void)captions:(id)a3 didProduceLanguageHypothesis:(id)a4 streamToken:(int64_t)a5
+- (void)captions:(id)captions didProduceLanguageHypothesis:(id)hypothesis streamToken:(int64_t)token
 {
   v10[7] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -3481,14 +3481,14 @@ uint64_t __55__VCAudioMachineLearningCoordinator_didUpdateCaptions___block_invok
     v10[1] = 3221225472;
     v10[2] = __87__VCAudioMachineLearningCoordinator_captions_didProduceLanguageHypothesis_streamToken___block_invoke;
     v10[3] = &unk_1E85F50D8;
-    v10[5] = a4;
-    v10[6] = a5;
+    v10[5] = hypothesis;
+    v10[6] = token;
     v10[4] = self;
     dispatch_async(delegateQueue, v10);
   }
 }
 
-- (void)captions:(id)a3 didStopLanguageDetectorWithError:(id)a4 streamToken:(int64_t)a5
+- (void)captions:(id)captions didStopLanguageDetectorWithError:(id)error streamToken:(int64_t)token
 {
   v10[7] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -3501,14 +3501,14 @@ uint64_t __55__VCAudioMachineLearningCoordinator_didUpdateCaptions___block_invok
     v10[1] = 3221225472;
     v10[2] = __91__VCAudioMachineLearningCoordinator_captions_didStopLanguageDetectorWithError_streamToken___block_invoke;
     v10[3] = &unk_1E85F50D8;
-    v10[5] = a4;
-    v10[6] = a5;
+    v10[5] = error;
+    v10[6] = token;
     v10[4] = self;
     dispatch_async(delegateQueue, v10);
   }
 }
 
-- (void)captions:(id)a3 didChangeSourceLocale:(id)a4
+- (void)captions:(id)captions didChangeSourceLocale:(id)locale
 {
   v15 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
@@ -3534,7 +3534,7 @@ uint64_t __55__VCAudioMachineLearningCoordinator_didUpdateCaptions___block_invok
     v8[1] = 3221225472;
     v8[2] = __68__VCAudioMachineLearningCoordinator_captions_didChangeSourceLocale___block_invoke;
     v8[3] = &unk_1E85F3E08;
-    v8[5] = a4;
+    v8[5] = locale;
     v8[6] = &v9;
     v8[4] = self;
     dispatch_async(delegateQueue, v8);
@@ -3637,9 +3637,9 @@ LABEL_15:
   }
 }
 
-- (BOOL)setUpInternalStateForReporting:(unsigned __int8)a3
+- (BOOL)setUpInternalStateForReporting:(unsigned __int8)reporting
 {
-  if (a3 == 2)
+  if (reporting == 2)
   {
     self->_configUsage = 2;
     self->_configCallSource = 1;
@@ -3648,7 +3648,7 @@ LABEL_15:
 
   else
   {
-    if (a3)
+    if (reporting)
     {
       v4 = 2;
     }
@@ -3727,15 +3727,15 @@ void __56__VCAudioMachineLearningCoordinator_setUpReportingAgent__block_invoke(u
   translatorIdentifier = self->_translatorIdentifier;
   if (translatorIdentifier)
   {
-    v3 = [(NSUUID *)translatorIdentifier UUIDString];
+    uUIDString = [(NSUUID *)translatorIdentifier UUIDString];
   }
 
   else
   {
-    v3 = &stru_1F570E008;
+    uUIDString = &stru_1F570E008;
   }
 
-  v6[0] = v3;
+  v6[0] = uUIDString;
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:&v5 count:1];
 }
 
@@ -3751,24 +3751,24 @@ void __56__VCAudioMachineLearningCoordinator_setUpReportingAgent__block_invoke(u
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:v4 count:3];
 }
 
-+ (id)errorCodeWithEvent:(unsigned int)a3 errorPath:(id)a4
++ (id)errorCodeWithEvent:(unsigned int)event errorPath:(id)path
 {
-  if (a3 == 1)
+  if (event == 1)
   {
     v5 = MEMORY[0x1E696ABC0];
     v6 = @"Failed to enable captions";
     v7 = @"Invalid audio captions translator mode or identifier";
     v8 = 1;
-    return [v5 AVConferenceServiceError:32000 detailedCode:v8 returnCode:0 filePath:a4 description:v6 reason:v7];
+    return [v5 AVConferenceServiceError:32000 detailedCode:v8 returnCode:0 filePath:path description:v6 reason:v7];
   }
 
-  if (!a3)
+  if (!event)
   {
     v5 = MEMORY[0x1E696ABC0];
     v6 = @"Failed to prewarm or enable the captions client";
     v7 = @"The coordinator was invalidated";
     v8 = 0;
-    return [v5 AVConferenceServiceError:32000 detailedCode:v8 returnCode:0 filePath:a4 description:v6 reason:v7];
+    return [v5 AVConferenceServiceError:32000 detailedCode:v8 returnCode:0 filePath:path description:v6 reason:v7];
   }
 
   return 0;
@@ -3889,13 +3889,13 @@ intptr_t ___VCAudioMachineLearningCoordinator_StopCaptioning_block_invoke(uint64
   return dispatch_semaphore_signal(*(*(a1 + 32) + 240));
 }
 
-- (void)setUpForTranslatorMode:(unsigned __int8)a3
+- (void)setUpForTranslatorMode:(unsigned __int8)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v59 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_stateLock);
   v5 = objc_opt_class();
-  if (v3 == 2)
+  if (modeCopy == 2)
   {
     if (v5 == self)
     {
@@ -3972,7 +3972,7 @@ intptr_t ___VCAudioMachineLearningCoordinator_StopCaptioning_block_invoke(uint64
     *&v47[14] = "[VCAudioMachineLearningCoordinator setUpForTranslatorMode:]";
     OUTLINED_FUNCTION_4_2();
     OUTLINED_FUNCTION_21();
-    *v50 = v3;
+    *v50 = modeCopy;
     OUTLINED_FUNCTION_23();
     v13 = 34;
   }
@@ -4003,7 +4003,7 @@ intptr_t ___VCAudioMachineLearningCoordinator_StopCaptioning_block_invoke(uint64
     OUTLINED_FUNCTION_8_15();
     *&v50[10] = self;
     *&v50[18] = v16;
-    *&v50[20] = v3;
+    *&v50[20] = modeCopy;
     v8 = &dword_1DB56E000;
     v11 = " [%s] %s:%d %@(%p) Set up for requested translatorMode=%d";
     v12 = v47;
@@ -4014,8 +4014,8 @@ intptr_t ___VCAudioMachineLearningCoordinator_StopCaptioning_block_invoke(uint64
 
   _os_log_impl(v8, v9, v10, v11, v12, v13);
 LABEL_12:
-  [(VCAudioMachineLearningCoordinator *)self setUpInternalStateForReporting:v3, *v47, *&v47[16]];
-  if (v3 == 1)
+  [(VCAudioMachineLearningCoordinator *)self setUpInternalStateForReporting:modeCopy, *v47, *&v47[16]];
+  if (modeCopy == 1)
   {
     self->_translatorMode = 1;
     if (![(VCAudioMachineLearningCoordinator *)self setUpAudioCaptionsUsingFrameworkType:3])
@@ -4030,7 +4030,7 @@ LABEL_12:
     self->_translatorIdentifier = [(NSUUID *)[(VCAudioCaptions *)self->_audioCaptions translatorIdentifier] copy];
   }
 
-  else if (!v3)
+  else if (!modeCopy)
   {
     self->_translatorMode = 0;
     if (self->_isV2SpeechAPIEnabled)
@@ -4064,20 +4064,20 @@ LABEL_12:
       if (OUTLINED_FUNCTION_35())
       {
         translatorMode = self->_translatorMode;
-        v20 = [(VCAudioCaptions *)self->_audioCaptions streamToken];
-        v21 = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions sourceLocale] localeIdentifier];
-        v22 = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions locale] localeIdentifier];
+        streamToken = [(VCAudioCaptions *)self->_audioCaptions streamToken];
+        localeIdentifier = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions sourceLocale] localeIdentifier];
+        localeIdentifier2 = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions locale] localeIdentifier];
         [(VCAudioCaptions *)self->_audioCaptions translatorMode];
         OUTLINED_FUNCTION_17_3();
         OUTLINED_FUNCTION_10_10();
         OUTLINED_FUNCTION_21();
         *v50 = translatorMode;
         *&v50[4] = 2048;
-        *&v50[6] = v20;
+        *&v50[6] = streamToken;
         *&v50[14] = 2112;
-        *&v50[16] = v21;
+        *&v50[16] = localeIdentifier;
         v51 = 2112;
-        v52 = v22;
+        v52 = localeIdentifier2;
         v53 = v23;
         LODWORD(v54) = v24;
         OUTLINED_FUNCTION_16();
@@ -4106,9 +4106,9 @@ LABEL_31:
       if (OUTLINED_FUNCTION_35())
       {
         v31 = self->_translatorMode;
-        v32 = [(VCAudioCaptions *)self->_audioCaptions streamToken];
-        v33 = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions sourceLocale] localeIdentifier];
-        v34 = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions locale] localeIdentifier];
+        streamToken2 = [(VCAudioCaptions *)self->_audioCaptions streamToken];
+        localeIdentifier3 = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions sourceLocale] localeIdentifier];
+        localeIdentifier4 = [(NSLocale *)[(VCAudioCaptions *)self->_audioCaptions locale] localeIdentifier];
         [(VCAudioCaptions *)self->_audioCaptions translatorMode];
         OUTLINED_FUNCTION_10();
         *&v47[12] = v35;
@@ -4122,11 +4122,11 @@ LABEL_31:
         *&v50[18] = v36;
         *&v50[20] = v31;
         v51 = 2048;
-        v52 = v32;
+        v52 = streamToken2;
         v53 = 2112;
-        v54 = v33;
+        v54 = localeIdentifier3;
         v55 = 2112;
-        v56 = v34;
+        v56 = localeIdentifier4;
         v57 = v36;
         v58 = v37;
         OUTLINED_FUNCTION_16();
@@ -4137,21 +4137,21 @@ LABEL_31:
   }
 }
 
-- (void)mediaAnalyzer:(id)a3 didProduceMediaAnalysis:(id)a4 streamToken:(int64_t)a5
+- (void)mediaAnalyzer:(id)analyzer didProduceMediaAnalysis:(id)analysis streamToken:(int64_t)token
 {
   v10[7] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_stateLock);
   if (!self->_invalidated)
   {
-    v8 = [(VCAudioMachineLearningCoordinator *)self mediaAnalyzerSourceDelegate];
+    mediaAnalyzerSourceDelegate = [(VCAudioMachineLearningCoordinator *)self mediaAnalyzerSourceDelegate];
     delegateQueue = self->_delegateQueue;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __87__VCAudioMachineLearningCoordinator_mediaAnalyzer_didProduceMediaAnalysis_streamToken___block_invoke;
     v10[3] = &unk_1E85F50D8;
-    v10[5] = a4;
-    v10[6] = a5;
-    v10[4] = v8;
+    v10[5] = analysis;
+    v10[6] = token;
+    v10[4] = mediaAnalyzerSourceDelegate;
     dispatch_async(delegateQueue, v10);
   }
 
@@ -4225,10 +4225,10 @@ LABEL_13:
   }
 
   initialStreamToken = self->_initialStreamToken;
-  v14 = [(NSUUID *)self->_reportingSamplingUUID UUIDString];
+  uUIDString = [(NSUUID *)self->_reportingSamplingUUID UUIDString];
   *buf = initialStreamToken;
   v27[0] = 0;
-  *&v27[1] = v14;
+  *&v27[1] = uUIDString;
   *&v27[3] = 0;
   v28 = 27;
   memset(v29, 0, sizeof(v29));

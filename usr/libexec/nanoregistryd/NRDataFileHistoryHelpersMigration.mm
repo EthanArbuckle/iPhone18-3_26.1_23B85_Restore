@@ -1,5 +1,5 @@
 @interface NRDataFileHistoryHelpersMigration
-+ (BOOL)archiveMigrationRoutingSlip:(id)a3;
++ (BOOL)archiveMigrationRoutingSlip:(id)slip;
 + (BOOL)createClassAFile;
 + (BOOL)hasClassAFile;
 + (BOOL)removeMigrationRoutingSlip;
@@ -8,12 +8,12 @@
 
 @implementation NRDataFileHistoryHelpersMigration
 
-+ (BOOL)archiveMigrationRoutingSlip:(id)a3
++ (BOOL)archiveMigrationRoutingSlip:(id)slip
 {
-  v3 = a3;
+  slipCopy = slip;
   v4 = +[NRDataFilePaths pathToNanoRegistryMigrationRoutingSlip];
   v5 = objc_autoreleasePoolPush();
-  v6 = [NSKeyedArchiver nr_secureArchivedDataWithRootObject:v3];
+  v6 = [NSKeyedArchiver nr_secureArchivedDataWithRootObject:slipCopy];
   v7 = v6;
   if (!v6)
   {

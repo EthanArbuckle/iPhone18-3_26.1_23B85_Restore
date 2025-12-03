@@ -1,7 +1,7 @@
 @interface InStoreTopUpTokenModel
 - (_TtC9PassKitUI22InStoreTopUpTokenModel)init;
 - (void)dealloc;
-- (void)didUpdateInStoreTopUpToken:(id)a3 forAccountIdentifier:(id)a4;
+- (void)didUpdateInStoreTopUpToken:(id)token forAccountIdentifier:(id)identifier;
 @end
 
 @implementation InStoreTopUpTokenModel
@@ -16,7 +16,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   v5.receiver = self;
@@ -24,9 +24,9 @@
   [(InStoreTopUpTokenModel *)&v5 dealloc];
 }
 
-- (void)didUpdateInStoreTopUpToken:(id)a3 forAccountIdentifier:(id)a4
+- (void)didUpdateInStoreTopUpToken:(id)token forAccountIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v6 = sub_1BE052434();
     v8 = v7;
@@ -38,9 +38,9 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_1BD85D060(a3, v6, v8);
+  tokenCopy = token;
+  selfCopy = self;
+  sub_1BD85D060(token, v6, v8);
 }
 
 - (_TtC9PassKitUI22InStoreTopUpTokenModel)init

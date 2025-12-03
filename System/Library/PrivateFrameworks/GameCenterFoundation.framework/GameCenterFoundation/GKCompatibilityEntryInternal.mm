@@ -1,6 +1,6 @@
 @interface GKCompatibilityEntryInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -43,28 +43,28 @@ void __55__GKCompatibilityEntryInternal_secureCodedPropertyKeys__block_invoke()
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKCompatibilityEntryInternal *)self bundleID];
-    v7 = [v5 bundleID];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    bundleID = [(GKCompatibilityEntryInternal *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    if ([bundleID isEqualToString:bundleID2])
     {
-      v8 = [(GKCompatibilityEntryInternal *)self adamID];
-      v9 = [v5 adamID];
-      if ([v8 isEqualToNumber:v9] && (v10 = -[GKCompatibilityEntryInternal platform](self, "platform"), v10 == objc_msgSend(v5, "platform")))
+      adamID = [(GKCompatibilityEntryInternal *)self adamID];
+      adamID2 = [v5 adamID];
+      if ([adamID isEqualToNumber:adamID2] && (v10 = -[GKCompatibilityEntryInternal platform](self, "platform"), v10 == objc_msgSend(v5, "platform")))
       {
-        v11 = [(GKCompatibilityEntryInternal *)self versions];
-        v12 = [v5 versions];
-        if ([v11 isEqual:v12])
+        versions = [(GKCompatibilityEntryInternal *)self versions];
+        versions2 = [v5 versions];
+        if ([versions isEqual:versions2])
         {
-          v16 = [(GKCompatibilityEntryInternal *)self shortVersions];
-          v13 = [v5 shortVersions];
-          v14 = [v16 isEqual:v13];
+          shortVersions = [(GKCompatibilityEntryInternal *)self shortVersions];
+          shortVersions2 = [v5 shortVersions];
+          v14 = [shortVersions isEqual:shortVersions2];
         }
 
         else
@@ -96,9 +96,9 @@ void __55__GKCompatibilityEntryInternal_secureCodedPropertyKeys__block_invoke()
 - (unint64_t)hash
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKCompatibilityEntryInternal *)self bundleID];
-  v5 = [(GKCompatibilityEntryInternal *)self versions];
-  v6 = [v3 stringWithFormat:@"%@%@", v4, v5];
+  bundleID = [(GKCompatibilityEntryInternal *)self bundleID];
+  versions = [(GKCompatibilityEntryInternal *)self versions];
+  v6 = [v3 stringWithFormat:@"%@%@", bundleID, versions];
   v7 = [v6 hash];
 
   return v7;

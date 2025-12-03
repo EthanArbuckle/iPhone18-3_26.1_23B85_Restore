@@ -1,43 +1,43 @@
 @interface DMPluginsProvider
-- (DMPluginsProvider)initWithReps:(id)a3 categories:(unsigned int)a4 pluginAllowedList:(id)a5;
+- (DMPluginsProvider)initWithReps:(id)reps categories:(unsigned int)categories pluginAllowedList:(id)list;
 - (NSArray)allPluginsInRunOrder;
 - (NSSet)allPlugins;
 @end
 
 @implementation DMPluginsProvider
 
-- (DMPluginsProvider)initWithReps:(id)a3 categories:(unsigned int)a4 pluginAllowedList:(id)a5
+- (DMPluginsProvider)initWithReps:(id)reps categories:(unsigned int)categories pluginAllowedList:(id)list
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  categoriesCopy = categories;
+  repsCopy = reps;
+  listCopy = list;
   v109.receiver = self;
   v109.super_class = DMPluginsProvider;
   v10 = [(DMPluginsProvider *)&v109 init];
   if (v10)
   {
-    obj = [v9 orderedUserAgnosticPluginSpecifiers];
-    v82 = [v9 orderedUserSpecificPluginSpecifiers];
-    v77 = [v9 concurrentUserSpecificPluginSpecifiers];
-    if (v6)
+    obj = [listCopy orderedUserAgnosticPluginSpecifiers];
+    orderedUserSpecificPluginSpecifiers = [listCopy orderedUserSpecificPluginSpecifiers];
+    concurrentUserSpecificPluginSpecifiers = [listCopy concurrentUserSpecificPluginSpecifiers];
+    if (categoriesCopy)
     {
       _DMLogFunc();
     }
 
     v74 = v10;
-    v75 = v9;
-    if ((v6 & 2) != 0)
+    v75 = listCopy;
+    if ((categoriesCopy & 2) != 0)
     {
       _DMLogFunc();
     }
 
-    v84 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+    v84 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(repsCopy, "count")}];
     v105 = 0u;
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
-    v76 = v8;
-    v11 = v8;
+    v76 = repsCopy;
+    v11 = repsCopy;
     v12 = [v11 countByEnumeratingWithState:&v105 objects:v115 count:16];
     if (v12)
     {
@@ -53,37 +53,37 @@
           }
 
           v16 = *(*(&v105 + 1) + 8 * i);
-          v17 = [v16 name];
-          if ([v17 hasPrefix:@"."])
+          name = [v16 name];
+          if ([name hasPrefix:@"."])
           {
             goto LABEL_17;
           }
 
-          v18 = [v16 name];
-          v19 = [v18 hasSuffix:@".migrator"];
+          name2 = [v16 name];
+          v19 = [name2 hasSuffix:@".migrator"];
 
           if (v19)
           {
             if ([v16 isBundleValid])
             {
-              v20 = [v16 bundleIdentifier];
+              bundleIdentifier = [v16 bundleIdentifier];
 
-              if (v20)
+              if (bundleIdentifier)
               {
-                v21 = [v16 bundleIdentifier];
-                [v84 setObject:v16 forKey:v21];
+                bundleIdentifier2 = [v16 bundleIdentifier];
+                [v84 setObject:v16 forKey:bundleIdentifier2];
                 goto LABEL_19;
               }
             }
 
-            v17 = [v16 name];
-            v72 = v17;
+            name = [v16 name];
+            v72 = name;
             _DMLogFunc();
 LABEL_17:
           }
 
-          v21 = [v16 name];
-          v72 = v21;
+          bundleIdentifier2 = [v16 name];
+          v72 = bundleIdentifier2;
           _DMLogFunc();
 LABEL_19:
         }
@@ -94,7 +94,7 @@ LABEL_19:
       while (v13);
     }
 
-    v22 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(obj, "count") + objc_msgSend(v82, "count")}];
+    v22 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(obj, "count") + objc_msgSend(orderedUserSpecificPluginSpecifiers, "count")}];
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
@@ -115,10 +115,10 @@ LABEL_19:
           }
 
           v27 = *(*(&v101 + 1) + 8 * j);
-          if (v6)
+          if (categoriesCopy)
           {
-            v29 = [*(*(&v101 + 1) + 8 * j) dmps_identifier];
-            v28 = [v84 objectForKeyedSubscript:v29];
+            dmps_identifier = [*(*(&v101 + 1) + 8 * j) dmps_identifier];
+            v28 = [v84 objectForKeyedSubscript:dmps_identifier];
           }
 
           else
@@ -127,8 +127,8 @@ LABEL_19:
           }
 
           v30 = [DataMigrationPlugin alloc];
-          v31 = [v27 dmps_identifier];
-          v32 = [(DataMigrationPlugin *)v30 initWithIdentifier:v31 fileSystemRep:v28 isUserAgnostic:1];
+          dmps_identifier2 = [v27 dmps_identifier];
+          v32 = [(DataMigrationPlugin *)v30 initWithIdentifier:dmps_identifier2 fileSystemRep:v28 isUserAgnostic:1];
 
           [v27 dmps_estimate];
           [(DataMigrationPlugin *)v32 setTimeEstimate:?];
@@ -149,7 +149,7 @@ LABEL_19:
     v100 = 0u;
     v97 = 0u;
     v98 = 0u;
-    v79 = v82;
+    v79 = orderedUserSpecificPluginSpecifiers;
     v33 = [v79 countByEnumeratingWithState:&v97 objects:v113 count:16];
     if (v33)
     {
@@ -165,10 +165,10 @@ LABEL_19:
           }
 
           v37 = *(*(&v97 + 1) + 8 * k);
-          if ((v6 & 2) != 0 || ([*(*(&v97 + 1) + 8 * k) dmps_excludedFromFirstLogin] & 1) == 0)
+          if ((categoriesCopy & 2) != 0 || ([*(*(&v97 + 1) + 8 * k) dmps_excludedFromFirstLogin] & 1) == 0)
           {
-            v39 = [v37 dmps_identifier];
-            v38 = [v84 objectForKeyedSubscript:v39];
+            dmps_identifier3 = [v37 dmps_identifier];
+            v38 = [v84 objectForKeyedSubscript:dmps_identifier3];
           }
 
           else
@@ -177,8 +177,8 @@ LABEL_19:
           }
 
           v40 = [DataMigrationPlugin alloc];
-          v41 = [v37 dmps_identifier];
-          v42 = [(DataMigrationPlugin *)v40 initWithIdentifier:v41 fileSystemRep:v38 isUserAgnostic:0];
+          dmps_identifier4 = [v37 dmps_identifier];
+          v42 = [(DataMigrationPlugin *)v40 initWithIdentifier:dmps_identifier4 fileSystemRep:v38 isUserAgnostic:0];
 
           [v37 dmps_estimate];
           [(DataMigrationPlugin *)v42 setTimeEstimate:?];
@@ -195,12 +195,12 @@ LABEL_19:
       while (v34);
     }
 
-    v83 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v77, "count")}];
+    v83 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(concurrentUserSpecificPluginSpecifiers, "count")}];
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v78 = v77;
+    v78 = concurrentUserSpecificPluginSpecifiers;
     v43 = [v78 countByEnumeratingWithState:&v93 objects:v112 count:16];
     if (v43)
     {
@@ -216,10 +216,10 @@ LABEL_19:
           }
 
           v47 = *(*(&v93 + 1) + 8 * m);
-          if ((v6 & 2) != 0 || ([*(*(&v93 + 1) + 8 * m) dmps_excludedFromFirstLogin] & 1) == 0)
+          if ((categoriesCopy & 2) != 0 || ([*(*(&v93 + 1) + 8 * m) dmps_excludedFromFirstLogin] & 1) == 0)
           {
-            v49 = [v47 dmps_identifier];
-            v48 = [v84 objectForKeyedSubscript:v49];
+            dmps_identifier5 = [v47 dmps_identifier];
+            v48 = [v84 objectForKeyedSubscript:dmps_identifier5];
           }
 
           else
@@ -228,11 +228,11 @@ LABEL_19:
           }
 
           v50 = [DataMigrationPlugin alloc];
-          v51 = [v47 dmps_identifier];
-          v52 = [(DataMigrationPlugin *)v50 initWithIdentifier:v51 fileSystemRep:v48 isUserAgnostic:0];
+          dmps_identifier6 = [v47 dmps_identifier];
+          v52 = [(DataMigrationPlugin *)v50 initWithIdentifier:dmps_identifier6 fileSystemRep:v48 isUserAgnostic:0];
 
-          v53 = [v47 dmps_concurrentPluginDependencyIdentifier];
-          [(DataMigrationPlugin *)v52 setIdentifierOfDependency:v53];
+          dmps_concurrentPluginDependencyIdentifier = [v47 dmps_concurrentPluginDependencyIdentifier];
+          [(DataMigrationPlugin *)v52 setIdentifierOfDependency:dmps_concurrentPluginDependencyIdentifier];
 
           [v47 dmps_estimate];
           [(DataMigrationPlugin *)v52 setTimeEstimate:?];
@@ -341,8 +341,8 @@ LABEL_19:
     concurrentPlugins = v74->_concurrentPlugins;
     v74->_concurrentPlugins = v69;
 
-    v9 = v75;
-    v8 = v76;
+    listCopy = v75;
+    repsCopy = v76;
   }
 
   return v10;
@@ -350,36 +350,36 @@ LABEL_19:
 
 - (NSSet)allPlugins
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_allPlugins)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_allPlugins)
   {
-    v3 = [(NSSet *)v2->_concurrentPlugins setByAddingObjectsFromArray:v2->_serialPluginsInRunOrder];
-    allPlugins = v2->_allPlugins;
-    v2->_allPlugins = v3;
+    v3 = [(NSSet *)selfCopy->_concurrentPlugins setByAddingObjectsFromArray:selfCopy->_serialPluginsInRunOrder];
+    allPlugins = selfCopy->_allPlugins;
+    selfCopy->_allPlugins = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_allPlugins;
+  v5 = selfCopy->_allPlugins;
 
   return v5;
 }
 
 - (NSArray)allPluginsInRunOrder
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v17 = v2;
-  if (!v2->_allPluginsInRunOrder)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v17 = selfCopy;
+  if (!selfCopy->_allPluginsInRunOrder)
   {
-    v22 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](v2->_serialPluginsInRunOrder, "count") + -[NSSet count](v2->_concurrentPlugins, "count")}];
-    v3 = [(NSSet *)v2->_concurrentPlugins mutableCopy];
+    v22 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](selfCopy->_serialPluginsInRunOrder, "count") + -[NSSet count](selfCopy->_concurrentPlugins, "count")}];
+    v3 = [(NSSet *)selfCopy->_concurrentPlugins mutableCopy];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v2->_serialPluginsInRunOrder;
+    obj = selfCopy->_serialPluginsInRunOrder;
     v20 = [(NSArray *)obj countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v20)
     {
@@ -414,9 +414,9 @@ LABEL_19:
                 }
 
                 v9 = *(*(&v23 + 1) + 8 * j);
-                v10 = [v9 identifierOfDependency];
-                v11 = [v4 identifier];
-                v12 = [v10 isEqualToString:v11];
+                identifierOfDependency = [v9 identifierOfDependency];
+                identifier = [v4 identifier];
+                v12 = [identifierOfDependency isEqualToString:identifier];
 
                 if (v12)
                 {
@@ -442,10 +442,10 @@ LABEL_19:
     allPluginsInRunOrder = v17->_allPluginsInRunOrder;
     v17->_allPluginsInRunOrder = v13;
 
-    v2 = v17;
+    selfCopy = v17;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v15 = v17->_allPluginsInRunOrder;
 

@@ -1,53 +1,53 @@
 @interface MPSGraphPruningOp
-- (MPSGraphPruningOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 shape:(id)a6 descriptor:(id)a7 name:(id)a8;
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphPruningOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies shape:(id)shape descriptor:(id)descriptor name:(id)name;
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphPruningOp
 
-- (MPSGraphPruningOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 shape:(id)a6 descriptor:(id)a7 name:(id)a8
+- (MPSGraphPruningOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies shape:(id)shape descriptor:(id)descriptor name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a8;
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  shapeCopy = shape;
+  nameCopy = name;
   v16 = [(MPSGraphPruningDescriptor *)self->_pruningDesc copy];
   pruningDesc = self->_pruningDesc;
   self->_pruningDesc = v16;
 
-  objc_storeStrong(&self->_shape, a6);
+  objc_storeStrong(&self->_shape, shape);
   v18 = [MPSGraphPruningOp alloc];
-  v19 = [(MPSGraphOperation *)v18 initWithGraph:v12 inputTensors:v13 controlDependencies:MEMORY[0x1E695E0F0] name:v15];
+  v19 = [(MPSGraphOperation *)v18 initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:MEMORY[0x1E695E0F0] name:nameCopy];
 
   return v19;
 }
 
-- (id)partialDerivativeForInputTensor:(id)a3 incomingGradient:(id)a4 inputIndex:(unint64_t)a5 name:(id)a6
+- (id)partialDerivativeForInputTensor:(id)tensor incomingGradient:(id)gradient inputIndex:(unint64_t)index name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
+  tensorCopy = tensor;
+  gradientCopy = gradient;
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
-  v11 = [WeakRetained prunedGradientTensorWithDescriptor:self->_pruningDesc inputTensor:v8 gradientTensor:v9 shape:self->_shape name:0];
+  v11 = [WeakRetained prunedGradientTensorWithDescriptor:self->_pruningDesc inputTensor:tensorCopy gradientTensor:gradientCopy shape:self->_shape name:0];
 
   return v11;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v57 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphPruningOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphPruningOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v54 = 260;
   v53[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v53);
+  StringAttr = mlir::Builder::getStringAttr(builder, v53);
   v15 = mlir::FileLineColLoc::get(StringAttr, 0x8Fu, 0);
   if (v12)
   {
     v16 = v12;
-    v17 = [v12 UTF8String];
-    v18 = strlen(v17);
+    uTF8String = [v12 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -62,7 +62,7 @@
     v56[0].n128_u8[15] = v18;
     if (v18)
     {
-      memmove(&__dst, v17, v18);
+      memmove(&__dst, uTF8String, v18);
     }
 
     v20 = &__dst + v19;
@@ -77,7 +77,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v14, &v49);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v14, &v49);
   v21 = v49.__r_.__value_.__r.__words[0];
   if ((v49.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -93,7 +93,7 @@
   }
 
   LOBYTE(v54) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v53);
+  v23 = mlir::Builder::getStringAttr(builder, v53);
   v24 = mlir::NameLoc::get(v23, v15);
   if (SHIBYTE(v49.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -117,14 +117,14 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v25 = *a5;
-  if (*(a5 + 1) == *a5)
+  v25 = *values;
+  if (*(values + 1) == *values)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v26 = [(MPSGraphPruningDescriptor *)self->_pruningDesc pruningMetric];
-  v27 = [(MPSGraphPruningDescriptor *)self->_pruningDesc pruningStructure];
+  pruningMetric = [(MPSGraphPruningDescriptor *)self->_pruningDesc pruningMetric];
+  pruningStructure = [(MPSGraphPruningDescriptor *)self->_pruningDesc pruningStructure];
   [(MPSGraphPruningDescriptor *)self->_pruningDesc sparsity];
   v29 = llvm::detail::IEEEFloat::IEEEFloat(v53, v28);
   v30 = llvm::APFloatBase::IEEEsingle(v29);
@@ -157,7 +157,7 @@ LABEL_16:
     llvm::detail::IEEEFloat::IEEEFloat(v56, &v52);
   }
 
-  mlir::mps::PruningOp::build(a3, v53, v34, v26, v27, &__dst);
+  mlir::mps::PruningOp::build(builder, v53, v34, pruningMetric, pruningStructure, &__dst);
   if (v37 == v56[0].n128_u64[0])
   {
     llvm::detail::DoubleAPFloat::~DoubleAPFloat(v56);
@@ -168,7 +168,7 @@ LABEL_16:
     llvm::detail::IEEEFloat::~IEEEFloat(v56);
   }
 
-  v38 = mlir::OpBuilder::create(a3, v53);
+  v38 = mlir::OpBuilder::create(builder, v53);
   v39 = *(*(v38 + 48) + 16);
   mlir::OperationState::~OperationState(v53);
   if (v39 == &mlir::detail::TypeIDResolver<mlir::mps::PruningOp,void>::id)

@@ -1,12 +1,12 @@
 @interface ModelMonitoringDataDataStateFromSingleSource
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ModelMonitoringDataDataStateFromSingleSource
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = ModelMonitoringDataDataStateFromSingleSource;
   v3 = [(ModelMonitoringDataDataStateFromSingleSource *)&v7 description];
-  v4 = [(ModelMonitoringDataDataStateFromSingleSource *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ModelMonitoringDataDataStateFromSingleSource *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -41,45 +41,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sourceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     recordCount = self->_recordCount;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_sourceName)
   {
-    v5 = v4;
-    [v4 setSourceName:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setSourceName:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_recordCount;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 2) = self->_recordCount;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sourceName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sourceName copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -92,16 +92,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   sourceName = self->_sourceName;
-  if (sourceName | *(v4 + 2))
+  if (sourceName | *(equalCopy + 2))
   {
     if (![(NSString *)sourceName isEqual:?])
     {
@@ -109,10 +109,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_recordCount == *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_recordCount == *(equalCopy + 2))
     {
       v6 = 1;
       goto LABEL_9;
@@ -143,19 +143,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(ModelMonitoringDataDataStateFromSingleSource *)self setSourceName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
-    self->_recordCount = v4[2];
+    self->_recordCount = fromCopy[2];
     *&self->_has |= 1u;
   }
 }

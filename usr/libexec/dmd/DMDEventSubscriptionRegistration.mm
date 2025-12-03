@@ -1,40 +1,40 @@
 @interface DMDEventSubscriptionRegistration
-+ (id)fetchRequestMatchingRegistrationFromOrganizationWithIdentifier:(id)a3 payloadIdentifier:(id)a4;
++ (id)fetchRequestMatchingRegistrationFromOrganizationWithIdentifier:(id)identifier payloadIdentifier:(id)payloadIdentifier;
 - (id)identifier;
-- (void)setPayloadMetadata:(id)a3;
+- (void)setPayloadMetadata:(id)metadata;
 @end
 
 @implementation DMDEventSubscriptionRegistration
 
 - (id)identifier
 {
-  v3 = [(DMDEventSubscriptionRegistration *)self payloadMetadata];
-  v4 = [v3 organization];
-  v5 = [v4 identifier];
-  v6 = [(DMDEventSubscriptionRegistration *)self payloadMetadata];
-  v7 = [v6 identifier];
-  v8 = [NSString stringWithFormat:@"%@-%@", v5, v7];
+  payloadMetadata = [(DMDEventSubscriptionRegistration *)self payloadMetadata];
+  organization = [payloadMetadata organization];
+  identifier = [organization identifier];
+  payloadMetadata2 = [(DMDEventSubscriptionRegistration *)self payloadMetadata];
+  identifier2 = [payloadMetadata2 identifier];
+  v8 = [NSString stringWithFormat:@"%@-%@", identifier, identifier2];
 
   return v8;
 }
 
-- (void)setPayloadMetadata:(id)a3
+- (void)setPayloadMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   [(DMDEventSubscriptionRegistration *)self willChangeValueForKey:@"payloadMetadata"];
-  [(DMDEventSubscriptionRegistration *)self setPrimitiveValue:v4 forKey:@"payloadMetadata"];
+  [(DMDEventSubscriptionRegistration *)self setPrimitiveValue:metadataCopy forKey:@"payloadMetadata"];
 
   [(DMDEventSubscriptionRegistration *)self didChangeValueForKey:@"payloadMetadata"];
 }
 
-+ (id)fetchRequestMatchingRegistrationFromOrganizationWithIdentifier:(id)a3 payloadIdentifier:(id)a4
++ (id)fetchRequestMatchingRegistrationFromOrganizationWithIdentifier:(id)identifier payloadIdentifier:(id)payloadIdentifier
 {
-  v5 = a4;
-  v6 = a3;
+  payloadIdentifierCopy = payloadIdentifier;
+  identifierCopy = identifier;
   v7 = +[DMDEventSubscriptionRegistration fetchRequest];
-  v8 = [NSPredicate predicateWithFormat:@"payloadMetadata.organization.identifier = %@ AND payloadMetadata.identifier = %@", v6, v5];
+  payloadIdentifierCopy = [NSPredicate predicateWithFormat:@"payloadMetadata.organization.identifier = %@ AND payloadMetadata.identifier = %@", identifierCopy, payloadIdentifierCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:payloadIdentifierCopy];
 
   return v7;
 }

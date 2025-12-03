@@ -14,78 +14,78 @@
 
 - (uint64_t)_preferOverServer
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:@"PreferOverServer"];
-  v3 = [v2 BOOLValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:@"PreferOverServer"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_assetMetadataAvailable
 {
-  v1 = [a1 metadata];
-  v2 = [v1 count] != 0;
+  metadata = [self metadata];
+  v2 = [metadata count] != 0;
 
   return v2;
 }
 
 - (uint64_t)_supportsContinuousListening
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:@"SupportsContinuousListening"];
-  v3 = [v2 BOOLValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:@"SupportsContinuousListening"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_supportsOnDeviceSearch
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:@"SupportsOnDeviceSearch"];
-  v3 = [v2 BOOLValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:@"SupportsOnDeviceSearch"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_supportsAutoPunctuation
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:@"SupportsAutoPunctuation"];
-  v3 = [v2 BOOLValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:@"SupportsAutoPunctuation"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_supportsEmojiRecognition
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:@"SupportsEmojiRecognition"];
-  v3 = [v2 BOOLValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:@"SupportsEmojiRecognition"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)_supportsVoiceCommands
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:@"SupportsVoiceCommands"];
-  v3 = [v2 BOOLValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:@"SupportsVoiceCommands"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)_assetId
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:*MEMORY[0x1E69DEF18]];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:*MEMORY[0x1E69DEF18]];
 
   return v2;
 }
 
 - (id)_assetVersion
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:*MEMORY[0x1E69DEF28]];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:*MEMORY[0x1E69DEF28]];
 
   return v2;
 }

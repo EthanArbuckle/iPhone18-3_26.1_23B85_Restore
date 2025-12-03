@@ -1,31 +1,31 @@
 @interface TVSetupAuthViewController
-- (_TtC16TVSetupUIService25TVSetupAuthViewController)initWithContentView:(id)a3;
-- (void)didCompleteTextEntry:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC16TVSetupUIService25TVSetupAuthViewController)initWithContentView:(id)view;
+- (void)didCompleteTextEntry:(id)entry;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVSetupAuthViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100004B0C(a3);
+  selfCopy = self;
+  sub_100004B0C(appear);
 }
 
-- (void)didCompleteTextEntry:(id)a3
+- (void)didCompleteTextEntry:(id)entry
 {
-  v4 = a3;
-  v5 = self;
-  sub_100004DA8(v4);
+  entryCopy = entry;
+  selfCopy = self;
+  sub_100004DA8(entryCopy);
 }
 
-- (_TtC16TVSetupUIService25TVSetupAuthViewController)initWithContentView:(id)a3
+- (_TtC16TVSetupUIService25TVSetupAuthViewController)initWithContentView:(id)view
 {
   *&self->delegate[OBJC_IVAR____TtC16TVSetupUIService25TVSetupAuthViewController_delegate] = 0;
   swift_unknownObjectWeakInit();
   v6.receiver = self;
   v6.super_class = type metadata accessor for TVSetupAuthViewController();
-  return [(TVSetupAuthViewController *)&v6 initWithContentView:a3];
+  return [(TVSetupAuthViewController *)&v6 initWithContentView:view];
 }
 
 @end

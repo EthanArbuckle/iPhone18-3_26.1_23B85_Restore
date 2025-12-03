@@ -1,15 +1,15 @@
 @interface CKCatchUpButtonManager
 - (_TtC7ChatKit22CKCatchUpButtonManager)init;
-- (_TtC7ChatKit22CKCatchUpButtonManager)initWithDidTapButton:(id)a3;
-- (void)animateInResumingFromBackground:(BOOL)a3;
-- (void)animateOutWithCompletion:(id)a3;
+- (_TtC7ChatKit22CKCatchUpButtonManager)initWithDidTapButton:(id)button;
+- (void)animateInResumingFromBackground:(BOOL)background;
+- (void)animateOutWithCompletion:(id)completion;
 @end
 
 @implementation CKCatchUpButtonManager
 
-- (_TtC7ChatKit22CKCatchUpButtonManager)initWithDidTapButton:(id)a3
+- (_TtC7ChatKit22CKCatchUpButtonManager)initWithDidTapButton:(id)button
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(button);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   v5 = sub_190CD5824(sub_190CD5D54, v4);
@@ -17,15 +17,15 @@
   return v5;
 }
 
-- (void)animateInResumingFromBackground:(BOOL)a3
+- (void)animateInResumingFromBackground:(BOOL)background
 {
-  v4 = self;
-  sub_190CD4450(a3);
+  selfCopy = self;
+  sub_190CD4450(background);
 }
 
-- (void)animateOutWithCompletion:(id)a3
+- (void)animateOutWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -37,7 +37,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_190CD4854(v5);
   sub_19022123C(v5);
 }

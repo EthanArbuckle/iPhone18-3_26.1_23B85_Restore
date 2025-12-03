@@ -1,29 +1,29 @@
 @interface _HDHealthConceptAuthorizationPromptSession
 - (os_unfair_lock_s)requestCount;
-- (void)addCompletion:(uint64_t)a1;
-- (void)endPromptTransactionWithSuccess:(void *)a3 error:;
+- (void)addCompletion:(uint64_t)completion;
+- (void)endPromptTransactionWithSuccess:(void *)success error:;
 @end
 
 @implementation _HDHealthConceptAuthorizationPromptSession
 
-- (void)endPromptTransactionWithSuccess:(void *)a3 error:
+- (void)endPromptTransactionWithSuccess:(void *)success error:
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  successCopy = success;
+  if (self)
   {
-    v6 = *(a1 + 40);
+    v6 = *(self + 40);
     if (v6)
     {
       v23 = _Block_copy(v6);
-      v7 = *(a1 + 40);
-      *(a1 + 40) = 0;
+      v7 = *(self + 40);
+      *(self + 40) = 0;
 
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v8 = *(a1 + 16);
+      v8 = *(self + 16);
       v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v9)
       {
@@ -39,7 +39,7 @@
             }
 
             v13 = *(*(&v31 + 1) + 8 * i);
-            v14 = v5;
+            v14 = successCopy;
             if (v13)
             {
               v15 = *(v13 + 8);
@@ -60,7 +60,7 @@
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v16 = *(a1 + 24);
+      v16 = *(self + 24);
       v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
       if (v17)
       {
@@ -76,7 +76,7 @@
             }
 
             v26 = *(*(&v27 + 1) + 8 * j);
-            v25 = v5;
+            v25 = successCopy;
             HKDispatchAsyncOnGlobalConcurrentQueue();
           }
 
@@ -86,7 +86,7 @@
         while (v18);
       }
 
-      v24 = v5;
+      v24 = successCopy;
       v21 = v23;
       HKDispatchAsyncOnGlobalConcurrentQueue();
     }
@@ -109,18 +109,18 @@
   return result;
 }
 
-- (void)addCompletion:(uint64_t)a1
+- (void)addCompletion:(uint64_t)completion
 {
-  if (a1)
+  if (completion)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 36));
-    v4 = *(a1 + 24);
+    os_unfair_lock_lock((completion + 36));
+    v4 = *(completion + 24);
     v5 = _Block_copy(v3);
 
     [v4 addObject:v5];
 
-    os_unfair_lock_unlock((a1 + 36));
+    os_unfair_lock_unlock((completion + 36));
   }
 }
 

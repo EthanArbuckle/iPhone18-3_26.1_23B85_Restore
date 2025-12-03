@@ -1,7 +1,7 @@
 @interface PushNotificationDataManager
 - (_TtC7NewsUI227PushNotificationDataManager)init;
 - (void)dealloc;
-- (void)userInfoDidChangeSportsTopicNotificationsEnabledState:(id)a3 fromCloud:(BOOL)a4;
+- (void)userInfoDidChangeSportsTopicNotificationsEnabledState:(id)state fromCloud:(BOOL)cloud;
 @end
 
 @implementation PushNotificationDataManager
@@ -10,9 +10,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC7NewsUI227PushNotificationDataManager_userInfo);
-  v5 = self;
+  selfCopy = self;
   [v4 removeObserver_];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(PushNotificationDataManager *)&v6 dealloc];
 }
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)userInfoDidChangeSportsTopicNotificationsEnabledState:(id)a3 fromCloud:(BOOL)a4
+- (void)userInfoDidChangeSportsTopicNotificationsEnabledState:(id)state fromCloud:(BOOL)cloud
 {
-  v6 = a3;
-  v7 = self;
-  PushNotificationDataManager.userInfoDidChangeSportsTopicNotificationsEnabledState(_:fromCloud:)(v6, a4);
+  stateCopy = state;
+  selfCopy = self;
+  PushNotificationDataManager.userInfoDidChangeSportsTopicNotificationsEnabledState(_:fromCloud:)(stateCopy, cloud);
 }
 
 @end

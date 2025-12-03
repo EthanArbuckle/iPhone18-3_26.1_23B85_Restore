@@ -1,19 +1,19 @@
 @interface SBElasticVolumeViewController
-- (BOOL)updateActiveRouteDisplay:(id *)a3;
-- (SBElasticVolumeViewController)initWithDataSource:(id)a3;
+- (BOOL)updateActiveRouteDisplay:(id *)display;
+- (SBElasticVolumeViewController)initWithDataSource:(id)source;
 - (id)createSliderView;
 - (id)dataSource;
-- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)orientation;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation SBElasticVolumeViewController
 
-- (SBElasticVolumeViewController)initWithDataSource:(id)a3
+- (SBElasticVolumeViewController)initWithDataSource:(id)source
 {
   v11.receiver = self;
   v11.super_class = SBElasticVolumeViewController;
-  v3 = [(SBElasticValueViewController *)&v11 initWithDataSource:a3];
+  v3 = [(SBElasticValueViewController *)&v11 initWithDataSource:source];
   if (v3)
   {
     v4 = [MEMORY[0x277D755D0] configurationWithPointSize:6 weight:2 scale:26.0];
@@ -33,30 +33,30 @@
   return v3;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v23.receiver = self;
   v23.super_class = SBElasticVolumeViewController;
-  [(SBElasticValueViewController *)&v23 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(SBElasticValueViewController *)&v23 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
-    v7 = [v6 windowScene];
-    v8 = [v7 _FBSScene];
-    v9 = [v8 identity];
+    windowScene = [windowCopy windowScene];
+    _FBSScene = [windowScene _FBSScene];
+    identity = [_FBSScene identity];
 
     v10 = MEMORY[0x277D65F10];
-    v11 = [MEMORY[0x277CF0CD0] processHandle];
-    v12 = [v11 auditToken];
-    v13 = [v10 targetWithPhysicalButton:1 generation:1 auditToken:v12 identifier:1];
+    processHandle = [MEMORY[0x277CF0CD0] processHandle];
+    auditToken = [processHandle auditToken];
+    v13 = [v10 targetWithPhysicalButton:1 generation:1 auditToken:auditToken identifier:1];
 
     v14 = MEMORY[0x277D65F10];
-    v15 = [MEMORY[0x277CF0CD0] processHandle];
-    v16 = [v15 auditToken];
-    v17 = [v14 targetWithPhysicalButton:2 generation:1 auditToken:v16 identifier:1];
+    processHandle2 = [MEMORY[0x277CF0CD0] processHandle];
+    auditToken2 = [processHandle2 auditToken];
+    v17 = [v14 targetWithPhysicalButton:2 generation:1 auditToken:auditToken2 identifier:1];
 
-    v18 = [MEMORY[0x277D65F00] targetWithSceneIdentity:v9];
+    v18 = [MEMORY[0x277D65F00] targetWithSceneIdentity:identity];
     [v18 addButtonTarget:v13];
     [v18 addButtonTarget:v17];
     v19 = MEMORY[0x277CBEA60];
@@ -68,7 +68,7 @@
 
   else
   {
-    v9 = self->_physicalButtonSceneTargets;
+    identity = self->_physicalButtonSceneTargets;
     self->_physicalButtonSceneTargets = 0;
   }
 }
@@ -77,22 +77,22 @@
 {
   v4.receiver = self;
   v4.super_class = SBElasticVolumeViewController;
-  v2 = [(SBElasticValueViewController *)&v4 dataSource];
+  dataSource = [(SBElasticValueViewController *)&v4 dataSource];
 
-  return v2;
+  return dataSource;
 }
 
-- (BOOL)updateActiveRouteDisplay:(id *)a3
+- (BOOL)updateActiveRouteDisplay:(id *)display
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = self->_routeDescriptionProvider;
-  v6 = [(MRUVolumeHUDRouteDescriptionProvider *)v5 outputDeviceAsset];
-  v7 = [v6 localizedDisplayTitle];
-  if ([v6 kind])
+  outputDeviceAsset = [(MRUVolumeHUDRouteDescriptionProvider *)v5 outputDeviceAsset];
+  localizedDisplayTitle = [outputDeviceAsset localizedDisplayTitle];
+  if ([outputDeviceAsset kind])
   {
-    v8 = [v6 icon];
-    v9 = [v8 symbolConfiguration];
-    v10 = [v9 configurationByApplyingConfiguration:self->_routeImageSymbolConfiguration];
+    icon = [outputDeviceAsset icon];
+    symbolConfiguration = [icon symbolConfiguration];
+    v10 = [symbolConfiguration configurationByApplyingConfiguration:self->_routeImageSymbolConfiguration];
     routeImageSymbolConfiguration = v10;
     if (!v10)
     {
@@ -101,35 +101,35 @@
 
     v12 = routeImageSymbolConfiguration;
 
-    v13 = [v8 imageByApplyingSymbolConfiguration:v12];
+    packageDescription = [icon imageByApplyingSymbolConfiguration:v12];
 
-    v14 = [SBElasticRouteDisplayContext routeContextWithName:v7 glyphImage:v13];
+    v14 = [SBElasticRouteDisplayContext routeContextWithName:localizedDisplayTitle glyphImage:packageDescription];
   }
 
   else
   {
-    v13 = [v6 packageDescription];
+    packageDescription = [outputDeviceAsset packageDescription];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __58__SBElasticVolumeViewController_updateActiveRouteDisplay___block_invoke;
     v21[3] = &unk_2783B6918;
     v22 = v5;
     v15 = MEMORY[0x223D6F7F0](v21);
-    v14 = [SBElasticRouteDisplayContext routeContextWithName:v7 valueTransformer:v15 glyphPackage:v13];
+    v14 = [SBElasticRouteDisplayContext routeContextWithName:localizedDisplayTitle valueTransformer:v15 glyphPackage:packageDescription];
   }
 
   v16 = v14;
-  *a3 = v14;
+  *display = v14;
   mediaProvidedRouteDisplayInfoNeedsUpdate = self->_mediaProvidedRouteDisplayInfoNeedsUpdate;
   self->_mediaProvidedRouteDisplayInfoNeedsUpdate = 0;
   v18 = [(SBElasticVolumeViewController *)self log];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [v6 type];
+    type = [outputDeviceAsset type];
     *buf = 134218498;
-    v24 = v19;
+    v24 = type;
     v25 = 2112;
-    v26 = v7;
+    v26 = localizedDisplayTitle;
     v27 = 1024;
     v28 = mediaProvidedRouteDisplayInfoNeedsUpdate;
     _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_INFO, "Set route display info for audio route: (%li) named '%@'; updated: %{BOOL}u", buf, 0x1Cu);
@@ -138,12 +138,12 @@
   return mediaProvidedRouteDisplayInfoNeedsUpdate;
 }
 
-- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)a3
+- (unint64_t)layoutAxisForInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1 && (a3 - 3) >= 2)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && (orientation - 3) >= 2)
   {
     return 2;
   }
@@ -158,11 +158,11 @@
 {
   v4.receiver = self;
   v4.super_class = SBElasticVolumeViewController;
-  v2 = [(SBElasticValueViewController *)&v4 createSliderView];
-  [v2 setBehaviorIdentifier:1];
-  [v2 setShouldIncludeVolumeButtonsInput:1];
+  createSliderView = [(SBElasticValueViewController *)&v4 createSliderView];
+  [createSliderView setBehaviorIdentifier:1];
+  [createSliderView setShouldIncludeVolumeButtonsInput:1];
 
-  return v2;
+  return createSliderView;
 }
 
 @end

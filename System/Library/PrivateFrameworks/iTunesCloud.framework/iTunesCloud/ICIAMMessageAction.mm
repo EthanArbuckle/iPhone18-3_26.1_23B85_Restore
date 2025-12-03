@@ -1,43 +1,43 @@
 @interface ICIAMMessageAction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)messageRemovalPolicyAsString:(int)a3;
-- (int)StringAsMessageRemovalPolicy:(id)a3;
+- (id)messageRemovalPolicyAsString:(int)string;
+- (int)StringAsMessageRemovalPolicy:(id)policy;
 - (int)messageRemovalPolicy;
 - (unint64_t)hash;
-- (void)addActionParameters:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequiresDelegate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActionParameters:(id)parameters;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequiresDelegate:(BOOL)delegate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMMessageAction
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(ICIAMMessageAction *)self setIdentifier:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ICIAMMessageAction *)self setDisplayText:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ICIAMMessageAction *)self setURL:?];
   }
 
-  if ((*(v4 + 60) & 2) != 0)
+  if ((*(fromCopy + 60) & 2) != 0)
   {
-    self->_requiresDelegate = *(v4 + 56);
+    self->_requiresDelegate = *(fromCopy + 56);
     *&self->_has |= 2u;
   }
 
@@ -45,7 +45,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -70,7 +70,7 @@
   }
 
   clickEvent = self->_clickEvent;
-  v11 = *(v4 + 2);
+  v11 = *(fromCopy + 2);
   if (clickEvent)
   {
     if (v11)
@@ -84,9 +84,9 @@
     [(ICIAMMessageAction *)self setClickEvent:?];
   }
 
-  if (*(v4 + 60))
+  if (*(fromCopy + 60))
   {
-    self->_messageRemovalPolicy = *(v4 + 10);
+    self->_messageRemovalPolicy = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 }
@@ -121,16 +121,16 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -139,7 +139,7 @@
   }
 
   displayText = self->_displayText;
-  if (displayText | *(v4 + 3))
+  if (displayText | *(equalCopy + 3))
   {
     if (![(NSString *)displayText isEqual:?])
     {
@@ -148,7 +148,7 @@
   }
 
   uRL = self->_uRL;
-  if (uRL | *(v4 + 6))
+  if (uRL | *(equalCopy + 6))
   {
     if (![(NSString *)uRL isEqual:?])
     {
@@ -158,38 +158,38 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0)
+    if ((*(equalCopy + 60) & 2) == 0)
     {
       goto LABEL_19;
     }
 
     if (self->_requiresDelegate)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   actionParameters = self->_actionParameters;
-  if (actionParameters | *(v4 + 1) && ![(NSMutableArray *)actionParameters isEqual:?])
+  if (actionParameters | *(equalCopy + 1) && ![(NSMutableArray *)actionParameters isEqual:?])
   {
     goto LABEL_19;
   }
 
   clickEvent = self->_clickEvent;
-  if (clickEvent | *(v4 + 2))
+  if (clickEvent | *(equalCopy + 2))
   {
     if (![(ICIAMMetricEvent *)clickEvent isEqual:?])
     {
@@ -197,10 +197,10 @@
     }
   }
 
-  v10 = (*(v4 + 60) & 1) == 0;
+  v10 = (*(equalCopy + 60) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) != 0 && self->_messageRemovalPolicy == *(v4 + 10))
+    if ((*(equalCopy + 60) & 1) != 0 && self->_messageRemovalPolicy == *(equalCopy + 10))
     {
       v10 = 1;
       goto LABEL_20;
@@ -215,19 +215,19 @@ LABEL_20:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_displayText copyWithZone:a3];
+  v8 = [(NSString *)self->_displayText copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_uRL copyWithZone:a3];
+  v10 = [(NSString *)self->_uRL copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
@@ -257,7 +257,7 @@ LABEL_20:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * v16) copyWithZone:{a3, v21}];
+        v17 = [*(*(&v21 + 1) + 8 * v16) copyWithZone:{zone, v21}];
         [v5 addActionParameters:v17];
 
         ++v16;
@@ -270,7 +270,7 @@ LABEL_20:
     while (v14);
   }
 
-  v18 = [(ICIAMMetricEvent *)self->_clickEvent copyWithZone:a3];
+  v18 = [(ICIAMMetricEvent *)self->_clickEvent copyWithZone:zone];
   v19 = *(v5 + 16);
   *(v5 + 16) = v18;
 
@@ -283,41 +283,41 @@ LABEL_20:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v9;
+    [toCopy setIdentifier:?];
+    toCopy = v9;
   }
 
   if (self->_displayText)
   {
     [v9 setDisplayText:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_uRL)
   {
     [v9 setURL:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[56] = self->_requiresDelegate;
-    v4[60] |= 2u;
+    toCopy[56] = self->_requiresDelegate;
+    toCopy[60] |= 2u;
   }
 
   if ([(ICIAMMessageAction *)self actionParametersCount])
   {
     [v9 clearActionParameters];
-    v5 = [(ICIAMMessageAction *)self actionParametersCount];
-    if (v5)
+    actionParametersCount = [(ICIAMMessageAction *)self actionParametersCount];
+    if (actionParametersCount)
     {
-      v6 = v5;
+      v6 = actionParametersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ICIAMMessageAction *)self actionParametersAtIndex:i];
@@ -338,10 +338,10 @@ LABEL_20:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -407,12 +407,12 @@ LABEL_20:
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   displayText = self->_displayText;
@@ -455,8 +455,8 @@ LABEL_20:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -471,8 +471,8 @@ LABEL_20:
   clickEvent = self->_clickEvent;
   if (clickEvent)
   {
-    v17 = [(ICIAMMetricEvent *)clickEvent dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"clickEvent"];
+    dictionaryRepresentation2 = [(ICIAMMetricEvent *)clickEvent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"clickEvent"];
   }
 
   if (*&self->_has)
@@ -500,26 +500,26 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = ICIAMMessageAction;
   v4 = [(ICIAMMessageAction *)&v8 description];
-  v5 = [(ICIAMMessageAction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMMessageAction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsMessageRemovalPolicy:(id)a3
+- (int)StringAsMessageRemovalPolicy:(id)policy
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  policyCopy = policy;
+  if ([policyCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Local"])
+  else if ([policyCopy isEqualToString:@"Local"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Global"])
+  else if ([policyCopy isEqualToString:@"Global"])
   {
     v4 = 2;
   }
@@ -532,16 +532,16 @@ LABEL_20:
   return v4;
 }
 
-- (id)messageRemovalPolicyAsString:(int)a3
+- (id)messageRemovalPolicyAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7BF6220[a3];
+    v4 = off_1E7BF6220[string];
   }
 
   return v4;
@@ -560,27 +560,27 @@ LABEL_20:
   }
 }
 
-- (void)addActionParameters:(id)a3
+- (void)addActionParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   actionParameters = self->_actionParameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!actionParameters)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_actionParameters;
     self->_actionParameters = v6;
 
-    v4 = v8;
+    parametersCopy = v8;
     actionParameters = self->_actionParameters;
   }
 
-  [(NSMutableArray *)actionParameters addObject:v4];
+  [(NSMutableArray *)actionParameters addObject:parametersCopy];
 }
 
-- (void)setHasRequiresDelegate:(BOOL)a3
+- (void)setHasRequiresDelegate:(BOOL)delegate
 {
-  if (a3)
+  if (delegate)
   {
     v3 = 2;
   }

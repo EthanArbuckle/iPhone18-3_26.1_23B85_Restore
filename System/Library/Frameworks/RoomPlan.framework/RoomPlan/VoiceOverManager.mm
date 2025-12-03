@@ -1,10 +1,10 @@
 @interface VoiceOverManager
-- (void)announcementFinished:(id)a3;
+- (void)announcementFinished:(id)finished;
 @end
 
 @implementation VoiceOverManager
 
-- (void)announcementFinished:(id)a3
+- (void)announcementFinished:(id)finished
 {
   v4 = sub_23AA0BD14();
   v5 = *(v4 - 8);

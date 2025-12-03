@@ -1,14 +1,14 @@
 @interface TSUUUIDSubsetCreator
-- (TSUUUIDSubsetCreator)initWithUuidSetStore:(id)a3 baseUuidVector:(const void *)a4;
+- (TSUUUIDSubsetCreator)initWithUuidSetStore:(id)store baseUuidVector:(const void *)vector;
 - (id).cxx_construct;
-- (unsigned)uuidSetStoreIndexForIndexesInRange:(_NSRange)a3;
+- (unsigned)uuidSetStoreIndexForIndexesInRange:(_NSRange)range;
 @end
 
 @implementation TSUUUIDSubsetCreator
 
-- (TSUUUIDSubsetCreator)initWithUuidSetStore:(id)a3 baseUuidVector:(const void *)a4
+- (TSUUUIDSubsetCreator)initWithUuidSetStore:(id)store baseUuidVector:(const void *)vector
 {
-  v7 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = TSUUUIDSubsetCreator;
   v8 = [(TSUUUIDSubsetCreator *)&v14 init];
@@ -16,10 +16,10 @@
   v10 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_uuidSetStore, a3);
-    if (&v9->_baseUuidVector != a4)
+    objc_storeStrong(&v8->_uuidSetStore, store);
+    if (&v9->_baseUuidVector != vector)
     {
-      std::vector<TSU::UUIDData<TSP::UUIDData>>::__assign_with_size[abi:ne200100]<TSU::UUIDData<TSP::UUIDData>*,TSU::UUIDData<TSP::UUIDData>*>(&v9->_baseUuidVector.__begin_, *a4, *(a4 + 1), (*(a4 + 1) - *a4) >> 4);
+      std::vector<TSU::UUIDData<TSP::UUIDData>>::__assign_with_size[abi:ne200100]<TSU::UUIDData<TSP::UUIDData>*,TSU::UUIDData<TSP::UUIDData>*>(&v9->_baseUuidVector.__begin_, *vector, *(vector + 1), (*(vector + 1) - *vector) >> 4);
     }
 
     v11 = objc_opt_new();
@@ -30,13 +30,13 @@
   return v10;
 }
 
-- (unsigned)uuidSetStoreIndexForIndexesInRange:(_NSRange)a3
+- (unsigned)uuidSetStoreIndexForIndexesInRange:(_NSRange)range
 {
-  length = a3.length;
-  if (a3.length)
+  length = range.length;
+  if (range.length)
   {
-    location = a3.location;
-    v6 = NSStringFromRange(a3);
+    location = range.location;
+    v6 = NSStringFromRange(range);
     v7 = [(NSMutableDictionary *)self->_createdSubsetsByRange objectForKey:v6];
     v8 = v7;
     if (v7)

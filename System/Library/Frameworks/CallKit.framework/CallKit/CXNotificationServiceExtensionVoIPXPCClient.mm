@@ -1,11 +1,11 @@
 @interface CXNotificationServiceExtensionVoIPXPCClient
 - (BOOL)requestDidArriveFromExtensionPoint;
-- (BOOL)taskHasEntitlement:(id)a3;
+- (BOOL)taskHasEntitlement:(id)entitlement;
 - (CXNotificationServiceExtensionVoIPXPCClient)init;
 - (NSXPCConnection)connection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)requestApplicationLaunchForIncomingCall:(id)a3 completion:(id)a4;
+- (void)requestApplicationLaunchForIncomingCall:(id)call completion:(id)completion;
 @end
 
 @implementation CXNotificationServiceExtensionVoIPXPCClient
@@ -43,8 +43,8 @@
     v5 = self->_connection;
     self->_connection = v4;
 
-    v6 = [MEMORY[0x1E696B0D0] cx_notificationServiceExtensionInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
+    cx_notificationServiceExtensionInterface = [MEMORY[0x1E696B0D0] cx_notificationServiceExtensionInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:cx_notificationServiceExtensionInterface];
 
     [(NSXPCConnection *)self->_connection setExportedObject:self];
     objc_initWeak(&location, self);
@@ -116,18 +116,18 @@ void __57__CXNotificationServiceExtensionVoIPXPCClient_connection__block_invoke_
 
 - (void)invalidate
 {
-  v2 = [(CXNotificationServiceExtensionVoIPXPCClient *)self connection];
-  [v2 invalidate];
+  connection = [(CXNotificationServiceExtensionVoIPXPCClient *)self connection];
+  [connection invalidate];
 }
 
-- (BOOL)taskHasEntitlement:(id)a3
+- (BOOL)taskHasEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   v4 = SecTaskCreateFromSelf(0);
   v5 = v4;
   if (v4)
   {
-    v6 = SecTaskCopyValueForEntitlement(v4, v3, 0);
+    v6 = SecTaskCopyValueForEntitlement(v4, entitlementCopy, 0);
     CFRelease(v5);
     if (v6)
     {
@@ -147,10 +147,10 @@ void __57__CXNotificationServiceExtensionVoIPXPCClient_connection__block_invoke_
 
 - (BOOL)requestDidArriveFromExtensionPoint
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 infoDictionary];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
-  v4 = [v3 objectForKey:@"NSExtension"];
+  v4 = [infoDictionary objectForKey:@"NSExtension"];
   if (v4)
   {
     v5 = 1;
@@ -158,20 +158,20 @@ void __57__CXNotificationServiceExtensionVoIPXPCClient_connection__block_invoke_
 
   else
   {
-    v6 = [v3 objectForKey:@"PlugInKit"];
+    v6 = [infoDictionary objectForKey:@"PlugInKit"];
     v5 = v6 != 0;
   }
 
   return v5;
 }
 
-- (void)requestApplicationLaunchForIncomingCall:(id)a3 completion:(id)a4
+- (void)requestApplicationLaunchForIncomingCall:(id)call completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  completionCopy = completion;
   if (![(CXNotificationServiceExtensionVoIPXPCClient *)self taskHasEntitlement:@"com.apple.developer.usernotifications.filtering"])
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
@@ -180,14 +180,14 @@ void __57__CXNotificationServiceExtensionVoIPXPCClient_connection__block_invoke_
     v12 = 2;
 LABEL_8:
     v13 = [v11 cx_notificationServiceExtensionErrorWithCode:v12];
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, v13);
 
     goto LABEL_9;
   }
 
   if (![(CXNotificationServiceExtensionVoIPXPCClient *)self requestDidArriveFromExtensionPoint])
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
@@ -197,15 +197,15 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v8 = [(CXNotificationServiceExtensionVoIPXPCClient *)self connection];
+  connection = [(CXNotificationServiceExtensionVoIPXPCClient *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __98__CXNotificationServiceExtensionVoIPXPCClient_requestApplicationLaunchForIncomingCall_completion___block_invoke;
   v14[3] = &unk_1E7C07230;
-  v9 = v7;
+  v9 = completionCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-  [v10 notificationServiceExtension:v6 reply:v9];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
+  [v10 notificationServiceExtension:callCopy reply:v9];
 
 LABEL_9:
 }

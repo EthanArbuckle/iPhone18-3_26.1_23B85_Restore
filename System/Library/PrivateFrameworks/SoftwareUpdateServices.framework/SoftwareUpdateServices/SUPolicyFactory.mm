@@ -7,32 +7,32 @@
 - (SUPolicyGlobalOptions)globalOptions;
 - (SURollbackOptions)rollbackOptions;
 - (SUScanOptions)scanOptions;
-- (id)_SUAssetTypeForScanOptions:(id)a3;
-- (id)existingExtensionOfClass:(Class)a3 inPolicy:(id)a4;
-- (unint64_t)coreMDMPathForSUSPath:(unint64_t)a3;
-- (void)augmentCorePolicy:(id)a3 WithApplyPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithDocumentationDownloadPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithDocumentationScanPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithGlobalPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithLoadBrainPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithPreflightPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithPreparePolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithResumePolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithRollbackPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithSUDownloadPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithSUScanPolicy:(id)a4;
-- (void)augmentCorePolicy:(id)a3 WithSuspendPolicy:(id)a4;
-- (void)augmentPolicy:(id)a3;
+- (id)_SUAssetTypeForScanOptions:(id)options;
+- (id)existingExtensionOfClass:(Class)class inPolicy:(id)policy;
+- (unint64_t)coreMDMPathForSUSPath:(unint64_t)path;
+- (void)augmentCorePolicy:(id)policy WithApplyPolicy:(id)applyPolicy;
+- (void)augmentCorePolicy:(id)policy WithDocumentationDownloadPolicy:(id)downloadPolicy;
+- (void)augmentCorePolicy:(id)policy WithDocumentationScanPolicy:(id)scanPolicy;
+- (void)augmentCorePolicy:(id)policy WithGlobalPolicy:(id)globalPolicy;
+- (void)augmentCorePolicy:(id)policy WithLoadBrainPolicy:(id)brainPolicy;
+- (void)augmentCorePolicy:(id)policy WithPreflightPolicy:(id)preflightPolicy;
+- (void)augmentCorePolicy:(id)policy WithPreparePolicy:(id)preparePolicy;
+- (void)augmentCorePolicy:(id)policy WithResumePolicy:(id)resumePolicy;
+- (void)augmentCorePolicy:(id)policy WithRollbackPolicy:(id)rollbackPolicy;
+- (void)augmentCorePolicy:(id)policy WithSUDownloadPolicy:(id)downloadPolicy;
+- (void)augmentCorePolicy:(id)policy WithSUScanPolicy:(id)scanPolicy;
+- (void)augmentCorePolicy:(id)policy WithSuspendPolicy:(id)suspendPolicy;
+- (void)augmentPolicy:(id)policy;
 - (void)createCorePolicy;
 - (void)createRollbackPolicy;
-- (void)modifyPolicy:(id)a3 forTypes:(id)a4;
-- (void)removePolicyExtensionOfClass:(Class)a3 forPolicy:(id)a4;
-- (void)setDownloadOptions:(id)a3;
-- (void)setGlobalOptions:(id)a3;
-- (void)setInstallOptions:(id)a3;
-- (void)setPolicyExtension:(id)a3 forPolicy:(id)a4;
-- (void)setRollbackOptions:(id)a3;
-- (void)setScanOptions:(id)a3;
+- (void)modifyPolicy:(id)policy forTypes:(id)types;
+- (void)removePolicyExtensionOfClass:(Class)class forPolicy:(id)policy;
+- (void)setDownloadOptions:(id)options;
+- (void)setGlobalOptions:(id)options;
+- (void)setInstallOptions:(id)options;
+- (void)setPolicyExtension:(id)extension forPolicy:(id)policy;
+- (void)setRollbackOptions:(id)options;
+- (void)setScanOptions:(id)options;
 @end
 
 @implementation SUPolicyFactory
@@ -98,17 +98,17 @@ uint64_t __23__SUPolicyFactory_init__block_invoke(uint64_t a1)
   return [v17 createRollbackPolicy];
 }
 
-- (void)setGlobalOptions:(id)a3
+- (void)setGlobalOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__SUPolicyFactory_setGlobalOptions___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -122,17 +122,17 @@ uint64_t __36__SUPolicyFactory_setGlobalOptions___block_invoke(uint64_t a1)
   return [v2 modifyPolicy:v3 forTypes:&unk_287B6F8B0];
 }
 
-- (void)setScanOptions:(id)a3
+- (void)setScanOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__SUPolicyFactory_setScanOptions___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -165,17 +165,17 @@ uint64_t __34__SUPolicyFactory_setScanOptions___block_invoke(uint64_t a1)
   return [v5 modifyPolicy:v6 forTypes:&unk_287B6F8C8];
 }
 
-- (void)setDownloadOptions:(id)a3
+- (void)setDownloadOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SUPolicyFactory_setDownloadOptions___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -188,17 +188,17 @@ uint64_t __38__SUPolicyFactory_setDownloadOptions___block_invoke(uint64_t a1)
   return [v2 modifyPolicy:v3 forTypes:&unk_287B6F8E0];
 }
 
-- (void)setInstallOptions:(id)a3
+- (void)setInstallOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__SUPolicyFactory_setInstallOptions___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -211,17 +211,17 @@ uint64_t __37__SUPolicyFactory_setInstallOptions___block_invoke(uint64_t a1)
   return [v2 modifyPolicy:v3 forTypes:&unk_287B6F8F8];
 }
 
-- (void)setRollbackOptions:(id)a3
+- (void)setRollbackOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SUPolicyFactory_setRollbackOptions___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(stateQueue, v7);
 }
 
@@ -417,16 +417,16 @@ uint64_t __38__SUPolicyFactory_setRollbackOptions___block_invoke(uint64_t a1)
   self->_rollbackPolicy = v4;
 }
 
-- (void)augmentPolicy:(id)a3
+- (void)augmentPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   dispatch_assert_queue_V2(self->_stateQueue);
   v5 = +[SUPreferences sharedInstance];
-  v6 = [v5 queryCustomerBuilds];
+  queryCustomerBuilds = [v5 queryCustomerBuilds];
 
-  if (v6)
+  if (queryCustomerBuilds)
   {
-    v7 = v4;
+    v7 = policyCopy;
     v8 = 0;
 LABEL_3:
     [v7 setReleaseType:v8];
@@ -441,7 +441,7 @@ LABEL_3:
     if (v10)
     {
       v8 = @"Empty";
-      v7 = v4;
+      v7 = policyCopy;
       goto LABEL_3;
     }
   }
@@ -454,118 +454,118 @@ LABEL_8:
   if (_os_feature_enabled_impl())
   {
     v11 = +[SUPreferences sharedInstance];
-    [v4 setUseReserveSpace:{objc_msgSend(v11, "softwareUpdateReserveDisabled") ^ 1}];
+    [policyCopy setUseReserveSpace:{objc_msgSend(v11, "softwareUpdateReserveDisabled") ^ 1}];
   }
 
   else
   {
-    [v4 setUseReserveSpace:1];
+    [policyCopy setUseReserveSpace:1];
   }
 
   v12 = +[SUPreferences sharedInstance];
-  [v4 setDisableSplatCombo:{objc_msgSend(v12, "disableSplombo")}];
+  [policyCopy setDisableSplatCombo:{objc_msgSend(v12, "disableSplombo")}];
 
   v13 = +[SUPreferences sharedInstance];
-  [v4 setEnablePreSUStaging:{objc_msgSend(v13, "enablePreSUStaging")}];
+  [policyCopy setEnablePreSUStaging:{objc_msgSend(v13, "enablePreSUStaging")}];
 
   v14 = +[SUPreferences sharedInstance];
-  [v4 setEnablePreSUStagingForOptionalAssets:{objc_msgSend(v14, "enablePreSUStagingForOptionalAssets")}];
+  [policyCopy setEnablePreSUStagingForOptionalAssets:{objc_msgSend(v14, "enablePreSUStagingForOptionalAssets")}];
 
   v15 = +[SUPreferences sharedInstance];
-  [v4 setDisableAlternateUpdate:{objc_msgSend(v15, "disableAlternateScan")}];
+  [policyCopy setDisableAlternateUpdate:{objc_msgSend(v15, "disableAlternateScan")}];
 
   v16 = +[SUPreferences sharedInstance];
-  v17 = [v16 alternateAudience];
-  [v4 setAlternateAssetAudienceUUID:v17];
+  alternateAudience = [v16 alternateAudience];
+  [policyCopy setAlternateAssetAudienceUUID:alternateAudience];
 
   v18 = +[SUPreferences sharedInstance];
-  v19 = [v18 softwareUpdateReserveSize];
-  [v4 setReserveSpaceSizeOverride:v19];
+  softwareUpdateReserveSize = [v18 softwareUpdateReserveSize];
+  [policyCopy setReserveSpaceSizeOverride:softwareUpdateReserveSize];
 
   v20 = +[SUPreferences sharedInstance];
-  v21 = [v20 systemGrowthMarginSize];
-  [v4 setSystemGrowthMarginOverride:v21];
+  systemGrowthMarginSize = [v20 systemGrowthMarginSize];
+  [policyCopy setSystemGrowthMarginOverride:systemGrowthMarginSize];
 
   v22 = +[SUPreferences sharedInstance];
-  v23 = [v22 ssoUsernameForPersonalization];
-  if (!v23)
+  ssoUsernameForPersonalization = [v22 ssoUsernameForPersonalization];
+  if (!ssoUsernameForPersonalization)
   {
     goto LABEL_14;
   }
 
-  v24 = v23;
+  v24 = ssoUsernameForPersonalization;
   v25 = +[SUPreferences sharedInstance];
-  v26 = [v25 ssoTokenForPersonalization];
+  ssoTokenForPersonalization = [v25 ssoTokenForPersonalization];
 
-  if (v26)
+  if (ssoTokenForPersonalization)
   {
     SULogInfo(@"SSO UserName and Token are set for personalization, setting it in policy", v27, v28, v29, v30, v31, v32, v33, v52);
     v34 = +[SUPreferences sharedInstance];
-    v35 = [v34 ssoTokenForPersonalization];
-    v22 = [v35 dataUsingEncoding:4];
+    ssoTokenForPersonalization2 = [v34 ssoTokenForPersonalization];
+    v22 = [ssoTokenForPersonalization2 dataUsingEncoding:4];
 
     v36 = +[SUPreferences sharedInstance];
-    v37 = [v36 ssoUsernameForPersonalization];
-    v38 = [v37 dataUsingEncoding:4];
+    ssoUsernameForPersonalization2 = [v36 ssoUsernameForPersonalization];
+    v38 = [ssoUsernameForPersonalization2 dataUsingEncoding:4];
 
     v53 = 0;
     v39 = [MEMORY[0x277CBEB28] dataWithCapacity:{objc_msgSend(v38, "length") + objc_msgSend(v22, "length") + 1}];
     [v39 appendData:v38];
     [v39 appendBytes:&v53 length:1];
     [v39 appendData:v22];
-    [v4 setSsoToken:v39];
+    [policyCopy setSsoToken:v39];
 
 LABEL_14:
   }
 
   v40 = [[SUPolicyGlobal alloc] initWithGlobalOptions:self->_globalOptions];
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithGlobalPolicy:v40];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithGlobalPolicy:v40];
 
   v41 = [[SUPolicyScanSoftwareUpdate alloc] initWithScanOptions:self->_scanOption];
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithSUScanPolicy:v41];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithSUScanPolicy:v41];
 
   v42 = [[SUPolicyScanSUDocumentation alloc] initWithScanOptions:0];
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithDocumentationScanPolicy:v42];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithDocumentationScanPolicy:v42];
 
   v43 = objc_alloc_init(SUPolicyDocumentationDownload);
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithDocumentationDownloadPolicy:v43];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithDocumentationDownloadPolicy:v43];
 
   v44 = objc_alloc_init(SUPolicyScanBrain);
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithLoadBrainPolicy:v44];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithLoadBrainPolicy:v44];
 
   v45 = objc_alloc_init(SUPolicy);
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithPreflightPolicy:v45];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithPreflightPolicy:v45];
 
   v46 = [[SUPolicyDownload alloc] initWithDownloadOptions:0];
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithSUDownloadPolicy:v46];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithSUDownloadPolicy:v46];
 
   v47 = objc_alloc_init(SUPolicy);
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithPreparePolicy:v47];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithPreparePolicy:v47];
 
   v48 = objc_alloc_init(SUPolicy);
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithSuspendPolicy:v48];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithSuspendPolicy:v48];
 
   v49 = objc_alloc_init(SUPolicy);
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithResumePolicy:v49];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithResumePolicy:v49];
 
   v50 = [[SUPolicyApply alloc] initWithInstallOptions:0];
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithApplyPolicy:v50];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithApplyPolicy:v50];
 
   v51 = [[SUPolicyRollback alloc] initWithRollbackOptions:0];
-  [(SUPolicyFactory *)self augmentCorePolicy:v4 WithRollbackPolicy:v51];
+  [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithRollbackPolicy:v51];
 }
 
-- (void)modifyPolicy:(id)a3 forTypes:(id)a4
+- (void)modifyPolicy:(id)policy forTypes:(id)types
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  typesCopy = types;
   dispatch_assert_queue_V2(self->_stateQueue);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v7;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -581,71 +581,71 @@ LABEL_14:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) intValue];
-        if (v13 <= 3)
+        intValue = [*(*(&v16 + 1) + 8 * v12) intValue];
+        if (intValue <= 3)
         {
-          if (v13)
+          if (intValue)
           {
-            if (v13 == 1)
+            if (intValue == 1)
             {
               v14 = [[SUPolicyScanSoftwareUpdate alloc] initWithScanOptions:self->_scanOption];
-              [(SUPolicyFactory *)self augmentCorePolicy:v6 WithSUScanPolicy:v14];
+              [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithSUScanPolicy:v14];
             }
 
             else
             {
-              if (v13 != 2)
+              if (intValue != 2)
               {
                 goto LABEL_23;
               }
 
               v14 = [[SUPolicyScanSUDocumentation alloc] initWithScanOptions:self->_scanOption];
-              [(SUPolicyFactory *)self augmentCorePolicy:v6 WithDocumentationScanPolicy:v14];
+              [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithDocumentationScanPolicy:v14];
             }
           }
 
           else
           {
             v14 = [[SUPolicyGlobal alloc] initWithGlobalOptions:self->_globalOptions];
-            [(SUPolicyFactory *)self augmentCorePolicy:v6 WithGlobalPolicy:v14];
+            [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithGlobalPolicy:v14];
           }
         }
 
-        else if (v13 > 9)
+        else if (intValue > 9)
         {
-          if (v13 == 10)
+          if (intValue == 10)
           {
             v14 = [[SUPolicyApply alloc] initWithInstallOptions:self->_installOptions];
-            [(SUPolicyFactory *)self augmentCorePolicy:v6 WithApplyPolicy:v14];
+            [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithApplyPolicy:v14];
           }
 
           else
           {
-            if (v13 != 12)
+            if (intValue != 12)
             {
               goto LABEL_23;
             }
 
             v14 = [[SUPolicyRollback alloc] initWithRollbackOptions:self->_rollbackOptions];
-            [(SUPolicyFactory *)self augmentCorePolicy:v6 WithRollbackPolicy:v14];
+            [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithRollbackPolicy:v14];
           }
         }
 
-        else if (v13 == 4)
+        else if (intValue == 4)
         {
           v14 = [[SUPolicyScanBrain alloc] initWithScanOptions:self->_scanOption];
-          [(SUPolicyFactory *)self augmentCorePolicy:v6 WithLoadBrainPolicy:v14];
+          [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithLoadBrainPolicy:v14];
         }
 
         else
         {
-          if (v13 != 6)
+          if (intValue != 6)
           {
             goto LABEL_23;
           }
 
           v14 = [[SUPolicyDownload alloc] initWithDownloadOptions:self->_downloadOptions];
-          [(SUPolicyFactory *)self augmentCorePolicy:v6 WithSUDownloadPolicy:v14];
+          [(SUPolicyFactory *)self augmentCorePolicy:policyCopy WithSUDownloadPolicy:v14];
         }
 
 LABEL_23:
@@ -662,22 +662,22 @@ LABEL_23:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPolicyExtension:(id)a3 forPolicy:(id)a4
+- (void)setPolicyExtension:(id)extension forPolicy:(id)policy
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  policyCopy = policy;
   dispatch_assert_queue_V2(self->_stateQueue);
   v8 = MEMORY[0x277CBEB18];
-  v9 = [v7 policyExtensions];
-  v10 = [v8 arrayWithArray:v9];
+  policyExtensions = [policyCopy policyExtensions];
+  v10 = [v8 arrayWithArray:policyExtensions];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v7 policyExtensions];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  policyExtensions2 = [policyCopy policyExtensions];
+  v12 = [policyExtensions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -688,7 +688,7 @@ LABEL_23:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(policyExtensions2);
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
@@ -700,7 +700,7 @@ LABEL_23:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [policyExtensions2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v13)
       {
         continue;
@@ -712,26 +712,26 @@ LABEL_23:
 
 LABEL_11:
 
-  [v10 addObject:v6];
-  [v7 setPolicyExtensions:v10];
+  [v10 addObject:extensionCopy];
+  [policyCopy setPolicyExtensions:v10];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePolicyExtensionOfClass:(Class)a3 forPolicy:(id)a4
+- (void)removePolicyExtensionOfClass:(Class)class forPolicy:(id)policy
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  policyCopy = policy;
   v5 = MEMORY[0x277CBEB18];
-  v6 = [v4 policyExtensions];
-  v7 = [v5 arrayWithArray:v6];
+  policyExtensions = [policyCopy policyExtensions];
+  v7 = [v5 arrayWithArray:policyExtensions];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v4 policyExtensions];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  policyExtensions2 = [policyCopy policyExtensions];
+  v9 = [policyExtensions2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -742,7 +742,7 @@ LABEL_11:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(policyExtensions2);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
@@ -753,7 +753,7 @@ LABEL_11:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [policyExtensions2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
         continue;
@@ -765,21 +765,21 @@ LABEL_11:
 
 LABEL_11:
 
-  [v4 setPolicyExtensions:v7];
+  [policyCopy setPolicyExtensions:v7];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)existingExtensionOfClass:(Class)a3 inPolicy:(id)a4
+- (id)existingExtensionOfClass:(Class)class inPolicy:(id)policy
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  policyCopy = policy;
   dispatch_assert_queue_V2(self->_stateQueue);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 policyExtensions];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  policyExtensions = [policyCopy policyExtensions];
+  v7 = [policyExtensions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -790,7 +790,7 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(policyExtensions);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -801,7 +801,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [policyExtensions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -819,301 +819,301 @@ LABEL_11:
   return v12;
 }
 
-- (void)augmentCorePolicy:(id)a3 WithGlobalPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithGlobalPolicy:(id)globalPolicy
 {
-  v11 = a3;
+  policyCopy = policy;
   stateQueue = self->_stateQueue;
-  v7 = a4;
+  globalPolicyCopy = globalPolicy;
   dispatch_assert_queue_V2(stateQueue);
-  [v11 setCacheDeleteUrgency:{objc_msgSend(v7, "cacheDeleteUrgency")}];
-  [v11 setCheckAvailableSpace:{objc_msgSend(v7, "checkAvailableSpace")}];
-  v8 = [v7 updateMetricContext];
-  [v11 setUpdateMetricContext:v8];
+  [policyCopy setCacheDeleteUrgency:{objc_msgSend(globalPolicyCopy, "cacheDeleteUrgency")}];
+  [policyCopy setCheckAvailableSpace:{objc_msgSend(globalPolicyCopy, "checkAvailableSpace")}];
+  updateMetricContext = [globalPolicyCopy updateMetricContext];
+  [policyCopy setUpdateMetricContext:updateMetricContext];
 
-  v9 = [v7 updateMetricEventFields];
+  updateMetricEventFields = [globalPolicyCopy updateMetricEventFields];
 
-  v10 = [v11 setUpdateMetricEventFieldsFromDictionary:v9];
+  v10 = [policyCopy setUpdateMetricEventFieldsFromDictionary:updateMetricEventFields];
 }
 
-- (void)augmentCorePolicy:(id)a3 WithSUScanPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithSUScanPolicy:(id)scanPolicy
 {
-  v32 = a3;
-  v6 = a4;
+  policyCopy = policy;
+  scanPolicyCopy = scanPolicy;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v7 = [v32 softwareUpdateScanPolicy];
-  [v7 setAllowsCellular:{objc_msgSend(v6, "allowsCellular")}];
-  [v7 setDiscretionary:{objc_msgSend(v6, "discretionary")}];
-  [v7 setRequiresPowerPluggedIn:{objc_msgSend(v6, "requiresPowerPluggedIn")}];
-  [v7 setRestrictToIncremental:{objc_msgSend(v6, "restrictToIncremental")}];
-  [v7 setRestrictToFull:{objc_msgSend(v6, "restrictToFull")}];
-  [v7 setAllowSameVersion:{objc_msgSend(v6, "allowSameVersion")}];
-  [v7 setDownloadTimeoutSecs:{objc_msgSend(v6, "downloadTimeoutSecs")}];
-  v8 = [v6 scanType];
-  [v7 setRampingScanType:v8];
+  softwareUpdateScanPolicy = [policyCopy softwareUpdateScanPolicy];
+  [softwareUpdateScanPolicy setAllowsCellular:{objc_msgSend(scanPolicyCopy, "allowsCellular")}];
+  [softwareUpdateScanPolicy setDiscretionary:{objc_msgSend(scanPolicyCopy, "discretionary")}];
+  [softwareUpdateScanPolicy setRequiresPowerPluggedIn:{objc_msgSend(scanPolicyCopy, "requiresPowerPluggedIn")}];
+  [softwareUpdateScanPolicy setRestrictToIncremental:{objc_msgSend(scanPolicyCopy, "restrictToIncremental")}];
+  [softwareUpdateScanPolicy setRestrictToFull:{objc_msgSend(scanPolicyCopy, "restrictToFull")}];
+  [softwareUpdateScanPolicy setAllowSameVersion:{objc_msgSend(scanPolicyCopy, "allowSameVersion")}];
+  [softwareUpdateScanPolicy setDownloadTimeoutSecs:{objc_msgSend(scanPolicyCopy, "downloadTimeoutSecs")}];
+  scanType = [scanPolicyCopy scanType];
+  [softwareUpdateScanPolicy setRampingScanType:scanType];
 
-  v9 = [v6 sessionID];
-  [v7 setSessionId:v9];
+  sessionID = [scanPolicyCopy sessionID];
+  [softwareUpdateScanPolicy setSessionId:sessionID];
 
-  v10 = [v6 scanOptions];
-  v11 = [v10 managedScanOptions];
+  scanOptions = [scanPolicyCopy scanOptions];
+  managedScanOptions = [scanOptions managedScanOptions];
 
-  if (v11)
+  if (managedScanOptions)
   {
     v12 = objc_alloc_init(MEMORY[0x277D641B8]);
     [v12 setSupervised:1];
-    [v12 setMDMUseDelayPeriod:{objc_msgSend(v11, "useDelayPeriod") == 1}];
-    v13 = [v11 requestedProductMarketingVersion];
-    [v12 setRequestedPMV:v13];
+    [v12 setMDMUseDelayPeriod:{objc_msgSend(managedScanOptions, "useDelayPeriod") == 1}];
+    requestedProductMarketingVersion = [managedScanOptions requestedProductMarketingVersion];
+    [v12 setRequestedPMV:requestedProductMarketingVersion];
 
-    [v12 setDelayPeriodSecs:{objc_msgSend(v11, "delayPeriodSeconds")}];
-    [v12 setMdmSoftwareUpdatePath:{-[SUPolicyFactory coreMDMPathForSUSPath:](self, "coreMDMPathForSUSPath:", objc_msgSend(v11, "MDMSoftwareUpdatePath"))}];
-    [(SUPolicyFactory *)self setPolicyExtension:v12 forPolicy:v32];
+    [v12 setDelayPeriodSecs:{objc_msgSend(managedScanOptions, "delayPeriodSeconds")}];
+    [v12 setMdmSoftwareUpdatePath:{-[SUPolicyFactory coreMDMPathForSUSPath:](self, "coreMDMPathForSUSPath:", objc_msgSend(managedScanOptions, "MDMSoftwareUpdatePath"))}];
+    [(SUPolicyFactory *)self setPolicyExtension:v12 forPolicy:policyCopy];
     SULogDebug(@"%s: managed scan options = %@, mdmExtension = %@", v14, v15, v16, v17, v18, v19, v20, "[SUPolicyFactory augmentCorePolicy:WithSUScanPolicy:]");
   }
 
-  if ([v6 isSplatOnlyScan])
+  if ([scanPolicyCopy isSplatOnlyScan])
   {
     v21 = +[SUPreferences sharedInstance];
-    [v7 setAllowSameVersion:{objc_msgSend(v21, "allowSameRestoreVersionSplatUpdate")}];
+    [softwareUpdateScanPolicy setAllowSameVersion:{objc_msgSend(v21, "allowSameRestoreVersionSplatUpdate")}];
 
     v22 = objc_alloc_init(MEMORY[0x277D641C0]);
-    v23 = [MEMORY[0x277D64420] sharedDevice];
-    v24 = [v23 splatRestoreVersion];
-    [v22 setInstalledSplatRestoreVersion:v24];
+    mEMORY[0x277D64420] = [MEMORY[0x277D64420] sharedDevice];
+    splatRestoreVersion = [mEMORY[0x277D64420] splatRestoreVersion];
+    [v22 setInstalledSplatRestoreVersion:splatRestoreVersion];
 
-    v25 = [MEMORY[0x277D64420] sharedDevice];
-    v26 = [v25 splatBuildVersion];
-    [v22 setInstalledSplatBuildVersion:v26];
+    mEMORY[0x277D64420]2 = [MEMORY[0x277D64420] sharedDevice];
+    splatBuildVersion = [mEMORY[0x277D64420]2 splatBuildVersion];
+    [v22 setInstalledSplatBuildVersion:splatBuildVersion];
 
-    v27 = [MEMORY[0x277D64420] sharedDevice];
-    v28 = [v27 splatProductVersion];
-    [v22 setInstalledSplatProductVersion:v28];
+    mEMORY[0x277D64420]3 = [MEMORY[0x277D64420] sharedDevice];
+    splatProductVersion = [mEMORY[0x277D64420]3 splatProductVersion];
+    [v22 setInstalledSplatProductVersion:splatProductVersion];
 
-    v29 = [MEMORY[0x277D64420] sharedDevice];
-    v30 = [v29 splatReleaseType];
-    [v22 setInstalledSplatReleaseType:v30];
+    mEMORY[0x277D64420]4 = [MEMORY[0x277D64420] sharedDevice];
+    splatReleaseType = [mEMORY[0x277D64420]4 splatReleaseType];
+    [v22 setInstalledSplatReleaseType:splatReleaseType];
 
     v31 = +[SUPreferences sharedInstance];
     [v22 setAllowSameRestoreVersion:{objc_msgSend(v31, "allowSameRestoreVersionSplatUpdate")}];
 
-    [(SUPolicyFactory *)self setPolicyExtension:v22 forPolicy:v32];
+    [(SUPolicyFactory *)self setPolicyExtension:v22 forPolicy:policyCopy];
   }
 }
 
-- (void)augmentCorePolicy:(id)a3 WithDocumentationScanPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithDocumentationScanPolicy:(id)scanPolicy
 {
-  v20 = a3;
+  policyCopy = policy;
   stateQueue = self->_stateQueue;
-  v7 = a4;
+  scanPolicyCopy = scanPolicy;
   dispatch_assert_queue_V2(stateQueue);
-  v8 = [v20 documentationScanPolicy];
-  [v8 setAllowsCellular:{objc_msgSend(v7, "allowsCellular")}];
-  [v8 setDiscretionary:{objc_msgSend(v7, "discretionary")}];
-  [v8 setRequiresPowerPluggedIn:{objc_msgSend(v7, "requiresPowerPluggedIn")}];
-  [v8 setDownloadTimeoutSecs:{objc_msgSend(v7, "downloadTimeoutSecs")}];
-  v9 = [v7 scanOptions];
+  documentationScanPolicy = [policyCopy documentationScanPolicy];
+  [documentationScanPolicy setAllowsCellular:{objc_msgSend(scanPolicyCopy, "allowsCellular")}];
+  [documentationScanPolicy setDiscretionary:{objc_msgSend(scanPolicyCopy, "discretionary")}];
+  [documentationScanPolicy setRequiresPowerPluggedIn:{objc_msgSend(scanPolicyCopy, "requiresPowerPluggedIn")}];
+  [documentationScanPolicy setDownloadTimeoutSecs:{objc_msgSend(scanPolicyCopy, "downloadTimeoutSecs")}];
+  scanOptions = [scanPolicyCopy scanOptions];
 
-  v10 = [v9 managedScanOptions];
+  managedScanOptions = [scanOptions managedScanOptions];
 
-  if (v10)
+  if (managedScanOptions)
   {
     v11 = objc_alloc_init(MEMORY[0x277D641B8]);
     [v11 setSupervised:1];
-    [v11 setMDMUseDelayPeriod:{objc_msgSend(v10, "useDelayPeriod") == 1}];
-    v12 = [v10 requestedProductMarketingVersion];
-    [v11 setRequestedPMV:v12];
+    [v11 setMDMUseDelayPeriod:{objc_msgSend(managedScanOptions, "useDelayPeriod") == 1}];
+    requestedProductMarketingVersion = [managedScanOptions requestedProductMarketingVersion];
+    [v11 setRequestedPMV:requestedProductMarketingVersion];
 
-    [v11 setDelayPeriodSecs:{objc_msgSend(v10, "delayPeriodSeconds")}];
-    [v11 setMdmSoftwareUpdatePath:{-[SUPolicyFactory coreMDMPathForSUSPath:](self, "coreMDMPathForSUSPath:", objc_msgSend(v10, "MDMSoftwareUpdatePath"))}];
-    [(SUPolicyFactory *)self setPolicyExtension:v11 forPolicy:v20];
+    [v11 setDelayPeriodSecs:{objc_msgSend(managedScanOptions, "delayPeriodSeconds")}];
+    [v11 setMdmSoftwareUpdatePath:{-[SUPolicyFactory coreMDMPathForSUSPath:](self, "coreMDMPathForSUSPath:", objc_msgSend(managedScanOptions, "MDMSoftwareUpdatePath"))}];
+    [(SUPolicyFactory *)self setPolicyExtension:v11 forPolicy:policyCopy];
     SULogDebug(@"%s: managed scan options = %@, mdmExtension = %@", v13, v14, v15, v16, v17, v18, v19, "[SUPolicyFactory augmentCorePolicy:WithDocumentationScanPolicy:]");
   }
 }
 
-- (void)augmentCorePolicy:(id)a3 WithDocumentationDownloadPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithDocumentationDownloadPolicy:(id)downloadPolicy
 {
   stateQueue = self->_stateQueue;
-  v6 = a4;
-  v7 = a3;
+  downloadPolicyCopy = downloadPolicy;
+  policyCopy = policy;
   dispatch_assert_queue_V2(stateQueue);
-  v9 = [v7 documentationDownloadPolicy];
+  documentationDownloadPolicy = [policyCopy documentationDownloadPolicy];
 
-  [v9 setAllowsCellular:{objc_msgSend(v6, "allowsCellular")}];
-  [v9 setDiscretionary:{objc_msgSend(v6, "discretionary")}];
-  [v9 setRequiresPowerPluggedIn:{objc_msgSend(v6, "requiresPowerPluggedIn")}];
-  [v9 setRequiresInexpensiveAccess:{objc_msgSend(v6, "allowExpensiveNetwork") ^ 1}];
-  v8 = [v6 downloadTimeoutSecs];
+  [documentationDownloadPolicy setAllowsCellular:{objc_msgSend(downloadPolicyCopy, "allowsCellular")}];
+  [documentationDownloadPolicy setDiscretionary:{objc_msgSend(downloadPolicyCopy, "discretionary")}];
+  [documentationDownloadPolicy setRequiresPowerPluggedIn:{objc_msgSend(downloadPolicyCopy, "requiresPowerPluggedIn")}];
+  [documentationDownloadPolicy setRequiresInexpensiveAccess:{objc_msgSend(downloadPolicyCopy, "allowExpensiveNetwork") ^ 1}];
+  downloadTimeoutSecs = [downloadPolicyCopy downloadTimeoutSecs];
 
-  [v9 setDownloadTimeoutSecs:v8];
+  [documentationDownloadPolicy setDownloadTimeoutSecs:downloadTimeoutSecs];
 }
 
-- (void)augmentCorePolicy:(id)a3 WithLoadBrainPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithLoadBrainPolicy:(id)brainPolicy
 {
-  v20 = a3;
+  policyCopy = policy;
   stateQueue = self->_stateQueue;
-  v7 = a4;
+  brainPolicyCopy = brainPolicy;
   dispatch_assert_queue_V2(stateQueue);
-  v8 = [v20 loadBrainPolicy];
-  [v8 setAllowsCellular:{objc_msgSend(v7, "allowsCellular")}];
-  [v8 setDiscretionary:{objc_msgSend(v7, "discretionary")}];
-  [v8 setSkipPhase:{objc_msgSend(v7, "skipPhase")}];
-  v9 = [v7 scanOptions];
+  loadBrainPolicy = [policyCopy loadBrainPolicy];
+  [loadBrainPolicy setAllowsCellular:{objc_msgSend(brainPolicyCopy, "allowsCellular")}];
+  [loadBrainPolicy setDiscretionary:{objc_msgSend(brainPolicyCopy, "discretionary")}];
+  [loadBrainPolicy setSkipPhase:{objc_msgSend(brainPolicyCopy, "skipPhase")}];
+  scanOptions = [brainPolicyCopy scanOptions];
 
-  v10 = [v9 managedScanOptions];
+  managedScanOptions = [scanOptions managedScanOptions];
 
-  if (v10)
+  if (managedScanOptions)
   {
     v11 = objc_alloc_init(MEMORY[0x277D641B8]);
     [v11 setSupervised:1];
-    [v11 setMDMUseDelayPeriod:{objc_msgSend(v10, "useDelayPeriod") == 1}];
-    v12 = [v10 requestedProductMarketingVersion];
-    [v11 setRequestedPMV:v12];
+    [v11 setMDMUseDelayPeriod:{objc_msgSend(managedScanOptions, "useDelayPeriod") == 1}];
+    requestedProductMarketingVersion = [managedScanOptions requestedProductMarketingVersion];
+    [v11 setRequestedPMV:requestedProductMarketingVersion];
 
-    [v11 setDelayPeriodSecs:{objc_msgSend(v10, "delayPeriodSeconds")}];
-    [v11 setMdmSoftwareUpdatePath:{-[SUPolicyFactory coreMDMPathForSUSPath:](self, "coreMDMPathForSUSPath:", objc_msgSend(v10, "MDMSoftwareUpdatePath"))}];
-    [(SUPolicyFactory *)self setPolicyExtension:v11 forPolicy:v20];
+    [v11 setDelayPeriodSecs:{objc_msgSend(managedScanOptions, "delayPeriodSeconds")}];
+    [v11 setMdmSoftwareUpdatePath:{-[SUPolicyFactory coreMDMPathForSUSPath:](self, "coreMDMPathForSUSPath:", objc_msgSend(managedScanOptions, "MDMSoftwareUpdatePath"))}];
+    [(SUPolicyFactory *)self setPolicyExtension:v11 forPolicy:policyCopy];
     SULogDebug(@"%s: managed scan options = %@, mdmExtension = %@", v13, v14, v15, v16, v17, v18, v19, "[SUPolicyFactory augmentCorePolicy:WithLoadBrainPolicy:]");
   }
 }
 
-- (void)augmentCorePolicy:(id)a3 WithPreflightPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithPreflightPolicy:(id)preflightPolicy
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  policyCopy = policy;
   dispatch_assert_queue_V2(stateQueue);
-  v6 = [v5 downloadPreflightPolicy];
+  downloadPreflightPolicy = [policyCopy downloadPreflightPolicy];
 
-  [v6 setSkipPhase:0];
+  [downloadPreflightPolicy setSkipPhase:0];
 }
 
-- (void)augmentCorePolicy:(id)a3 WithSUDownloadPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithSUDownloadPolicy:(id)downloadPolicy
 {
   stateQueue = self->_stateQueue;
-  v6 = a4;
-  v7 = a3;
+  downloadPolicyCopy = downloadPolicy;
+  policyCopy = policy;
   dispatch_assert_queue_V2(stateQueue);
-  v9 = [v7 softwareUpdateDownloadPolicy];
+  softwareUpdateDownloadPolicy = [policyCopy softwareUpdateDownloadPolicy];
 
-  [v9 setAllowsCellular:{objc_msgSend(v6, "allowsCellular")}];
-  [v9 setDiscretionary:{objc_msgSend(v6, "discretionary")}];
-  [v9 setRequiresPowerPluggedIn:{objc_msgSend(v6, "requiresPowerPluggedIn")}];
-  [v9 setDownloadTimeoutSecs:{objc_msgSend(v6, "downloadTimeoutSecs")}];
-  [v9 setRequiresInexpensiveAccess:{objc_msgSend(v6, "allowExpensiveNetwork") ^ 1}];
-  [v9 setSkipPhase:{objc_msgSend(v6, "skipPhase")}];
-  v8 = [v6 maxPreSUStagingOptionalSize];
+  [softwareUpdateDownloadPolicy setAllowsCellular:{objc_msgSend(downloadPolicyCopy, "allowsCellular")}];
+  [softwareUpdateDownloadPolicy setDiscretionary:{objc_msgSend(downloadPolicyCopy, "discretionary")}];
+  [softwareUpdateDownloadPolicy setRequiresPowerPluggedIn:{objc_msgSend(downloadPolicyCopy, "requiresPowerPluggedIn")}];
+  [softwareUpdateDownloadPolicy setDownloadTimeoutSecs:{objc_msgSend(downloadPolicyCopy, "downloadTimeoutSecs")}];
+  [softwareUpdateDownloadPolicy setRequiresInexpensiveAccess:{objc_msgSend(downloadPolicyCopy, "allowExpensiveNetwork") ^ 1}];
+  [softwareUpdateDownloadPolicy setSkipPhase:{objc_msgSend(downloadPolicyCopy, "skipPhase")}];
+  maxPreSUStagingOptionalSize = [downloadPolicyCopy maxPreSUStagingOptionalSize];
 
-  [v9 setMaxPreSUStagingOptionalSize:v8];
+  [softwareUpdateDownloadPolicy setMaxPreSUStagingOptionalSize:maxPreSUStagingOptionalSize];
 }
 
-- (void)augmentCorePolicy:(id)a3 WithPreparePolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithPreparePolicy:(id)preparePolicy
 {
   stateQueue = self->_stateQueue;
-  v6 = a4;
-  v7 = a3;
+  preparePolicyCopy = preparePolicy;
+  policyCopy = policy;
   dispatch_assert_queue_V2(stateQueue);
-  v9 = [v7 preparePolicy];
+  preparePolicy = [policyCopy preparePolicy];
 
-  v8 = [v6 skipPhase];
-  [v9 setSkipPhase:v8];
+  skipPhase = [preparePolicyCopy skipPhase];
+  [preparePolicy setSkipPhase:skipPhase];
 }
 
-- (void)augmentCorePolicy:(id)a3 WithSuspendPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithSuspendPolicy:(id)suspendPolicy
 {
   stateQueue = self->_stateQueue;
-  v6 = a4;
-  v7 = a3;
+  suspendPolicyCopy = suspendPolicy;
+  policyCopy = policy;
   dispatch_assert_queue_V2(stateQueue);
-  v9 = [v7 suspendPolicy];
+  suspendPolicy = [policyCopy suspendPolicy];
 
-  v8 = [v6 skipPhase];
-  [v9 setSkipPhase:v8];
+  skipPhase = [suspendPolicyCopy skipPhase];
+  [suspendPolicy setSkipPhase:skipPhase];
 }
 
-- (void)augmentCorePolicy:(id)a3 WithResumePolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithResumePolicy:(id)resumePolicy
 {
   stateQueue = self->_stateQueue;
-  v6 = a4;
-  v7 = a3;
+  resumePolicyCopy = resumePolicy;
+  policyCopy = policy;
   dispatch_assert_queue_V2(stateQueue);
-  v9 = [v7 resumePolicy];
+  resumePolicy = [policyCopy resumePolicy];
 
-  v8 = [v6 skipPhase];
-  [v9 setSkipPhase:v8];
+  skipPhase = [resumePolicyCopy skipPhase];
+  [resumePolicy setSkipPhase:skipPhase];
 }
 
-- (void)augmentCorePolicy:(id)a3 WithApplyPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithApplyPolicy:(id)applyPolicy
 {
-  v14 = a3;
-  v6 = a4;
+  policyCopy = policy;
+  applyPolicyCopy = applyPolicy;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v7 = [v14 applyPolicy];
-  [v7 setSkipPhase:{objc_msgSend(v6, "skipPhase")}];
+  applyPolicy = [policyCopy applyPolicy];
+  [applyPolicy setSkipPhase:{objc_msgSend(applyPolicyCopy, "skipPhase")}];
   if (+[SUUtility isVirtualDevice])
   {
-    [v7 setBaseApplyOptions:&unk_287B6F828];
+    [applyPolicy setBaseApplyOptions:&unk_287B6F828];
   }
 
-  v8 = [v6 installOptions];
-  v9 = [v8 isManaged];
+  installOptions = [applyPolicyCopy installOptions];
+  isManaged = [installOptions isManaged];
 
-  if (v9)
+  if (isManaged)
   {
-    v10 = [(SUDownloadOptions *)self->_downloadOptions descriptor];
-    v11 = [v10 updateType];
+    descriptor = [(SUDownloadOptions *)self->_downloadOptions descriptor];
+    updateType = [descriptor updateType];
 
     v12 = objc_opt_class();
-    if (v11 == 4)
+    if (updateType == 4)
     {
-      [(SUPolicyFactory *)self removePolicyExtensionOfClass:v12 forPolicy:v14];
+      [(SUPolicyFactory *)self removePolicyExtensionOfClass:v12 forPolicy:policyCopy];
     }
 
     else
     {
-      v13 = [(SUPolicyFactory *)self existingExtensionOfClass:v12 inPolicy:v14];
+      v13 = [(SUPolicyFactory *)self existingExtensionOfClass:v12 inPolicy:policyCopy];
       if (!v13)
       {
         v13 = objc_alloc_init(MEMORY[0x277D641B8]);
       }
 
       [v13 setSupervised:1];
-      [(SUPolicyFactory *)self setPolicyExtension:v13 forPolicy:v14];
+      [(SUPolicyFactory *)self setPolicyExtension:v13 forPolicy:policyCopy];
     }
   }
 }
 
-- (void)augmentCorePolicy:(id)a3 WithRollbackPolicy:(id)a4
+- (void)augmentCorePolicy:(id)policy WithRollbackPolicy:(id)rollbackPolicy
 {
   stateQueue = self->_stateQueue;
-  v6 = a4;
-  v7 = a3;
+  rollbackPolicyCopy = rollbackPolicy;
+  policyCopy = policy;
   dispatch_assert_queue_V2(stateQueue);
-  v8 = [v7 rollbackPolicy];
+  rollbackPolicy = [policyCopy rollbackPolicy];
 
-  [v8 setPerformPhase:{objc_msgSend(v6, "skipPhase") ^ 1}];
-  LODWORD(v7) = [v6 cancelActiveUpdate];
+  [rollbackPolicy setPerformPhase:{objc_msgSend(rollbackPolicyCopy, "skipPhase") ^ 1}];
+  LODWORD(policyCopy) = [rollbackPolicyCopy cancelActiveUpdate];
 
-  [v8 setSkipCancelPreviousUpdate:v7 ^ 1];
-  [v8 setAdditionalOptions:0];
-  [v8 setBaseRollbackOptions:0];
+  [rollbackPolicy setSkipCancelPreviousUpdate:policyCopy ^ 1];
+  [rollbackPolicy setAdditionalOptions:0];
+  [rollbackPolicy setBaseRollbackOptions:0];
 }
 
-- (unint64_t)coreMDMPathForSUSPath:(unint64_t)a3
+- (unint64_t)coreMDMPathForSUSPath:(unint64_t)path
 {
-  result = a3;
-  if (a3 >= 3)
+  result = path;
+  if (path >= 3)
   {
-    SULogInfo(@"Unable to map SUS MDM SU path to SUCore MDM SU path (%lu). Returning SUCoreMDMSoftwareUpdatePathDefault", a2, a3, v3, v4, v5, v6, v7, a3);
+    SULogInfo(@"Unable to map SUS MDM SU path to SUCore MDM SU path (%lu). Returning SUCoreMDMSoftwareUpdatePathDefault", a2, path, v3, v4, v5, v6, v7, path);
     return 0;
   }
 
   return result;
 }
 
-- (id)_SUAssetTypeForScanOptions:(id)a3
+- (id)_SUAssetTypeForScanOptions:(id)options
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 containsType:4] && (objc_msgSend(v4, "types"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 == 1))
+  optionsCopy = options;
+  v4 = optionsCopy;
+  if (optionsCopy && [optionsCopy containsType:4] && (objc_msgSend(v4, "types"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6 == 1))
   {
     v7 = 7;
   }

@@ -1,18 +1,18 @@
 @interface AXLargeTextController
 + (void)initialize;
-- (id)_customViewForSpecifier:(id)a3 class:(Class)a4 isHeader:(BOOL)a5;
+- (id)_customViewForSpecifier:(id)specifier class:(Class)class isHeader:(BOOL)header;
 - (id)getSizeCategoryBlock;
 - (id)getValueSelectedBlock;
 - (id)readPreferredContentSizeCategoryName;
-- (id)readPreferredContentSizeCategoryNameForAppID:(id)a3;
+- (id)readPreferredContentSizeCategoryNameForAppID:(id)d;
 - (id)setSizeCategoryBlock;
 - (id)setValueSelectedBlock;
 - (id)specifiers;
 - (void)loadView;
 - (void)resetContentSizeCategoryName;
-- (void)savePreferredContentSizeCategoryName:(id)a3;
-- (void)setAppID:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)savePreferredContentSizeCategoryName:(id)name;
+- (void)setAppID:(id)d;
+- (void)setSpecifier:(id)specifier;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -66,14 +66,14 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
   if (AXProcessIsSetup())
   {
     v3 = sharedBFFStyle();
-    v4 = [v3 backgroundColor];
-    v5 = [(AXLargeTextController *)self view];
-    [v5 setBackgroundColor:v4];
+    backgroundColor = [v3 backgroundColor];
+    view = [(AXLargeTextController *)self view];
+    [view setBackgroundColor:backgroundColor];
 
     v6 = sharedBFFStyle();
-    v7 = [v6 backgroundColor];
-    v8 = [(AXLargeTextController *)self table];
-    [v8 setBackgroundColor:v7];
+    backgroundColor2 = [v6 backgroundColor];
+    table = [(AXLargeTextController *)self table];
+    [table setBackgroundColor:backgroundColor2];
   }
 }
 
@@ -84,8 +84,8 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
   [(AXLargeTextController *)&v34 viewDidLayoutSubviews];
   if (AXProcessIsSetup())
   {
-    v3 = [(AXLargeTextController *)self view];
-    [v3 bounds];
+    view = [(AXLargeTextController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -96,14 +96,14 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
     v30 = 3221225472;
     v31 = __46__AXLargeTextController_viewDidLayoutSubviews__block_invoke;
     v32 = &unk_2553B0;
-    v33 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = [(AXLargeTextController *)self childViewControllers];
-    v13 = [v12 countByEnumeratingWithState:&v25 objects:v35 count:16];
+    childViewControllers = [(AXLargeTextController *)self childViewControllers];
+    v13 = [childViewControllers countByEnumeratingWithState:&v25 objects:v35 count:16];
     if (v13)
     {
       v14 = v13;
@@ -115,7 +115,7 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(childViewControllers);
           }
 
           v17 = *(*(&v25 + 1) + 8 * v16);
@@ -123,21 +123,21 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
           if (objc_opt_isKindOfClass())
           {
             v18 = v17;
-            v19 = [v18 view];
-            [v19 frame];
+            view2 = [v18 view];
+            [view2 frame];
             v21 = v20;
             v23 = v22;
 
-            v24 = [v18 view];
+            view3 = [v18 view];
 
-            [v24 setFrame:{v5, v21, v9, v23}];
+            [view3 setFrame:{v5, v21, v9, v23}];
           }
 
           v16 = v16 + 1;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v25 objects:v35 count:16];
+        v14 = [childViewControllers countByEnumeratingWithState:&v25 objects:v35 count:16];
       }
 
       while (v14);
@@ -171,29 +171,29 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
       v4 = *&self->DBSLargeTextController_opaque[v3];
     }
 
-    v12 = v4;
+    specifiers = v4;
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = AXLargeTextController;
-    v12 = [(AXLargeTextController *)&v14 specifiers];
+    specifiers = [(AXLargeTextController *)&v14 specifiers];
   }
 
-  return v12;
+  return specifiers;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = AXLargeTextController;
-  v4 = a3;
-  [(AXLargeTextController *)&v7 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"BundleIdentifier", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(AXLargeTextController *)&v7 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"BundleIdentifier", v7.receiver, v7.super_class}];
   [(AXLargeTextController *)self setAppID:v5];
 
-  v6 = [v4 propertyForKey:PSTitleKey];
+  v6 = [specifierCopy propertyForKey:PSTitleKey];
 
   if (v6)
   {
@@ -201,38 +201,38 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
   }
 }
 
-- (id)_customViewForSpecifier:(id)a3 class:(Class)a4 isHeader:(BOOL)a5
+- (id)_customViewForSpecifier:(id)specifier class:(Class)class isHeader:(BOOL)header
 {
-  v5 = a5;
-  v8 = a3;
+  headerCopy = header;
+  specifierCopy = specifier;
   v16.receiver = self;
   v16.super_class = AXLargeTextController;
-  v9 = [(AXLargeTextController *)&v16 _customViewForSpecifier:v8 class:a4 isHeader:v5];
+  v9 = [(AXLargeTextController *)&v16 _customViewForSpecifier:specifierCopy class:class isHeader:headerCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [(AXLargeTextController *)self readPreferredContentSizeCategoryName];
-    [v10 setCategoryName:v11];
+    readPreferredContentSizeCategoryName = [(AXLargeTextController *)self readPreferredContentSizeCategoryName];
+    [v10 setCategoryName:readPreferredContentSizeCategoryName];
 
-    v12 = [(AXLargeTextController *)self specifier];
-    v13 = [v12 propertyForKey:@"exampleText"];
+    specifier = [(AXLargeTextController *)self specifier];
+    v13 = [specifier propertyForKey:@"exampleText"];
 
     if (v13)
     {
-      v14 = [v10 bodyExampleLabel];
-      [v14 setText:v13];
+      bodyExampleLabel = [v10 bodyExampleLabel];
+      [bodyExampleLabel setText:v13];
     }
   }
 
   return v9;
 }
 
-- (void)setAppID:(id)a3
+- (void)setAppID:(id)d
 {
-  objc_storeStrong(&self->_appID, a3);
-  if (a3)
+  objc_storeStrong(&self->_appID, d);
+  if (d)
   {
     [(AXLargeTextController *)self setShowsResetSliderButton:1];
     [(AXLargeTextController *)self setSavesCategoryNameOnlyOnSliderEvent:1];
@@ -244,12 +244,12 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
 
 - (id)readPreferredContentSizeCategoryName
 {
-  v3 = [(AXLargeTextController *)self getSizeCategoryBlock];
+  getSizeCategoryBlock = [(AXLargeTextController *)self getSizeCategoryBlock];
 
-  if (v3)
+  if (getSizeCategoryBlock)
   {
-    v4 = [(AXLargeTextController *)self getSizeCategoryBlock];
-    v5 = v4[2]();
+    getSizeCategoryBlock2 = [(AXLargeTextController *)self getSizeCategoryBlock];
+    v5 = getSizeCategoryBlock2[2]();
   }
 
   else
@@ -280,33 +280,33 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
   return v5;
 }
 
-- (void)savePreferredContentSizeCategoryName:(id)a3
+- (void)savePreferredContentSizeCategoryName:(id)name
 {
-  v10 = a3;
-  v4 = [(AXLargeTextController *)self setSizeCategoryBlock];
+  nameCopy = name;
+  setSizeCategoryBlock = [(AXLargeTextController *)self setSizeCategoryBlock];
 
-  if (v4)
+  if (setSizeCategoryBlock)
   {
-    v5 = [(AXLargeTextController *)self setSizeCategoryBlock];
-    (v5)[2](v5, v10);
+    setSizeCategoryBlock2 = [(AXLargeTextController *)self setSizeCategoryBlock];
+    (setSizeCategoryBlock2)[2](setSizeCategoryBlock2, nameCopy);
     goto LABEL_3;
   }
 
-  [(AXLargeTextController *)self savePreferredContentSizeCategoryName:v10 forAppID:self->_appID];
+  [(AXLargeTextController *)self savePreferredContentSizeCategoryName:nameCopy forAppID:self->_appID];
   if (self->_appID)
   {
     v6 = +[AXSettings sharedInstance];
     [v6 aggregatePerAppSettingsStatistics];
 
-    v7 = [(AXLargeTextController *)self setValueSelectedBlock];
+    setValueSelectedBlock = [(AXLargeTextController *)self setValueSelectedBlock];
 
-    if (!v7)
+    if (!setValueSelectedBlock)
     {
       goto LABEL_4;
     }
 
-    v5 = [(AXLargeTextController *)self setValueSelectedBlock];
-    if (v10)
+    setSizeCategoryBlock2 = [(AXLargeTextController *)self setValueSelectedBlock];
+    if (nameCopy)
     {
       v8 = 1;
     }
@@ -317,7 +317,7 @@ void __35__AXLargeTextController_initialize__block_invoke_4(id a1, AXValidationM
     }
 
     v9 = [NSNumber numberWithInt:v8];
-    (v5)[2](v5, v9);
+    (setSizeCategoryBlock2)[2](setSizeCategoryBlock2, v9);
 
 LABEL_3:
 LABEL_4:
@@ -335,24 +335,24 @@ LABEL_4:
   }
 
   [(AXLargeTextController *)self savePreferredContentSizeCategoryName:0];
-  v4 = [(AXLargeTextController *)self setSizeCategoryBlock];
+  setSizeCategoryBlock = [(AXLargeTextController *)self setSizeCategoryBlock];
 
-  if (v4)
+  if (setSizeCategoryBlock)
   {
-    v5 = [(AXLargeTextController *)self setSizeCategoryBlock];
-    v6 = v5[2];
+    setSizeCategoryBlock2 = [(AXLargeTextController *)self setSizeCategoryBlock];
+    v6 = setSizeCategoryBlock2[2];
 LABEL_7:
     v6();
 
     goto LABEL_8;
   }
 
-  v7 = [(AXLargeTextController *)self setValueSelectedBlock];
+  setValueSelectedBlock = [(AXLargeTextController *)self setValueSelectedBlock];
 
-  if (v7)
+  if (setValueSelectedBlock)
   {
-    v5 = [(AXLargeTextController *)self setValueSelectedBlock];
-    v6 = v5[2];
+    setSizeCategoryBlock2 = [(AXLargeTextController *)self setValueSelectedBlock];
+    v6 = setSizeCategoryBlock2[2];
     goto LABEL_7;
   }
 
@@ -360,7 +360,7 @@ LABEL_8:
   [(AXLargeTextController *)self updateSlider];
 }
 
-- (id)readPreferredContentSizeCategoryNameForAppID:(id)a3
+- (id)readPreferredContentSizeCategoryNameForAppID:(id)d
 {
   v3 = _AXSCopyPreferredContentSizeCategoryNameApp();
 
@@ -369,32 +369,32 @@ LABEL_8:
 
 - (id)getValueSelectedBlock
 {
-  v2 = [(AXLargeTextController *)self specifier];
-  v3 = [v2 propertyForKey:@"getValueSelectedBlock"];
+  specifier = [(AXLargeTextController *)self specifier];
+  v3 = [specifier propertyForKey:@"getValueSelectedBlock"];
 
   return v3;
 }
 
 - (id)setValueSelectedBlock
 {
-  v2 = [(AXLargeTextController *)self specifier];
-  v3 = [v2 propertyForKey:@"setValueSelectedBlock"];
+  specifier = [(AXLargeTextController *)self specifier];
+  v3 = [specifier propertyForKey:@"setValueSelectedBlock"];
 
   return v3;
 }
 
 - (id)setSizeCategoryBlock
 {
-  v2 = [(AXLargeTextController *)self specifier];
-  v3 = [v2 propertyForKey:@"setSizeCategory"];
+  specifier = [(AXLargeTextController *)self specifier];
+  v3 = [specifier propertyForKey:@"setSizeCategory"];
 
   return v3;
 }
 
 - (id)getSizeCategoryBlock
 {
-  v2 = [(AXLargeTextController *)self specifier];
-  v3 = [v2 propertyForKey:@"getSizeCategory"];
+  specifier = [(AXLargeTextController *)self specifier];
+  v3 = [specifier propertyForKey:@"getSizeCategory"];
 
   return v3;
 }

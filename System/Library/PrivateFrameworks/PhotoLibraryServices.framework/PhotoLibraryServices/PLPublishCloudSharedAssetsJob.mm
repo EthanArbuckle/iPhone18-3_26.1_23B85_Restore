@@ -1,41 +1,41 @@
 @interface PLPublishCloudSharedAssetsJob
-+ (id)videoComplementURLForSharingFromAsset:(id)a3;
-+ (void)publishBatchOfOriginalAssetUUIDs:(id)a3 toSharedAlbum:(id)a4 withAssetsSharingInfos:(id)a5 customExportsInfo:(id)a6 trimmedVideoPathInfo:(id)a7 isNewAlbum:(BOOL)a8 batchCommentText:(id)a9;
-- (BOOL)retrieveURLsFromAssetWithUUID:(id)a3 withExportedFileURL:(id)a4 primaryURL:(id *)a5 videoComplementURL:(id *)a6;
++ (id)videoComplementURLForSharingFromAsset:(id)asset;
++ (void)publishBatchOfOriginalAssetUUIDs:(id)ds toSharedAlbum:(id)album withAssetsSharingInfos:(id)infos customExportsInfo:(id)info trimmedVideoPathInfo:(id)pathInfo isNewAlbum:(BOOL)newAlbum batchCommentText:(id)text;
+- (BOOL)retrieveURLsFromAssetWithUUID:(id)d withExportedFileURL:(id)l primaryURL:(id *)rL videoComplementURL:(id *)uRL;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (void)encodeToXPCObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (void)encodeToXPCObject:(id)object;
 - (void)executeDaemonOperation;
 - (void)runDaemonSide;
 @end
 
 @implementation PLPublishCloudSharedAssetsJob
 
-- (BOOL)retrieveURLsFromAssetWithUUID:(id)a3 withExportedFileURL:(id)a4 primaryURL:(id *)a5 videoComplementURL:(id *)a6
+- (BOOL)retrieveURLsFromAssetWithUUID:(id)d withExportedFileURL:(id)l primaryURL:(id *)rL videoComplementURL:(id *)uRL
 {
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  lCopy = l;
   v11 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v40 = v10;
+    v40 = lCopy;
     v41 = 2114;
-    v42 = v9;
+    v42 = dCopy;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Determining URLs to share for exported file URL: %@, asset UUID: %{public}@", buf, 0x16u);
   }
 
-  v12 = [v10 pathExtension];
-  if ([v12 isEqualToString:*MEMORY[0x1E69C09D0]])
+  pathExtension = [lCopy pathExtension];
+  if ([pathExtension isEqualToString:*MEMORY[0x1E69C09D0]])
   {
-    v13 = [objc_alloc(MEMORY[0x1E69C0918]) initWithBundleAtURL:v10];
-    v14 = [v13 imagePath];
-    v15 = [v13 videoPath];
-    v16 = v15;
-    if (v14)
+    v13 = [objc_alloc(MEMORY[0x1E69C0918]) initWithBundleAtURL:lCopy];
+    imagePath = [v13 imagePath];
+    videoPath = [v13 videoPath];
+    v16 = videoPath;
+    if (imagePath)
     {
-      v17 = v15 == 0;
+      v17 = videoPath == 0;
     }
 
     else
@@ -46,12 +46,12 @@
     v18 = !v17;
     if (v17)
     {
-      v32 = v15;
-      v33 = v14;
-      v34 = v9;
+      v32 = videoPath;
+      v33 = imagePath;
+      v34 = dCopy;
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v21 = [MEMORY[0x1E696AC08] defaultManager];
-      v22 = [v21 enumeratorAtURL:v10 includingPropertiesForKeys:0 options:5 errorHandler:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v22 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:5 errorHandler:0];
 
       v37 = 0u;
       v38 = 0u;
@@ -72,8 +72,8 @@
               objc_enumerationMutation(v23);
             }
 
-            v28 = [*(*(&v35 + 1) + 8 * i) pathExtension];
-            [v20 addObject:v28];
+            pathExtension2 = [*(*(&v35 + 1) + 8 * i) pathExtension];
+            [v20 addObject:pathExtension2];
           }
 
           v25 = [v23 countByEnumeratingWithState:&v35 objects:v45 count:16];
@@ -83,12 +83,12 @@
       }
 
       v29 = PLPhotoSharingGetLog();
-      v9 = v34;
+      dCopy = v34;
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v30 = [v20 componentsJoinedByString:{@", "}];
         *buf = 138412802;
-        v40 = v10;
+        v40 = lCopy;
         v41 = 2114;
         v42 = v30;
         v43 = 2114;
@@ -97,20 +97,20 @@
       }
 
       v16 = v32;
-      v14 = v33;
+      imagePath = v33;
     }
 
     else
     {
-      *a5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14];
-      *a6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v16];
+      *rL = [MEMORY[0x1E695DFF8] fileURLWithPath:imagePath];
+      *uRL = [MEMORY[0x1E695DFF8] fileURLWithPath:v16];
     }
   }
 
   else
   {
-    v19 = v10;
-    *a5 = v10;
+    v19 = lCopy;
+    *rL = lCopy;
     v18 = 1;
   }
 
@@ -120,8 +120,8 @@
 - (void)executeDaemonOperation
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(PLPublishCloudSharedAssetsJob *)self originalAssetUUIDs];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  originalAssetUUIDs = [(PLPublishCloudSharedAssetsJob *)self originalAssetUUIDs];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(originalAssetUUIDs, "count")}];
 
   v24[0] = 0;
   v24[1] = v24;
@@ -129,9 +129,9 @@
   v24[3] = __Block_byref_object_copy__75175;
   v24[4] = __Block_byref_object_dispose__75176;
   v25 = 0;
-  v6 = [(PLCloudSharingJob *)self transientPhotoLibrary];
-  v7 = [v6 pathManager];
-  v8 = [v7 capabilities];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  pathManager = [transientPhotoLibrary pathManager];
+  capabilities = [pathManager capabilities];
 
   v22[0] = 0;
   v22[1] = v22;
@@ -145,9 +145,9 @@
   v16[3] = &unk_1E7576F10;
   v20 = v24;
   v16[4] = self;
-  v9 = v6;
+  v9 = transientPhotoLibrary;
   v17 = v9;
-  v10 = v8;
+  v10 = capabilities;
   v18 = v10;
   v19 = v5;
   v21 = v22;
@@ -906,13 +906,13 @@ void __55__PLPublishCloudSharedAssetsJob_executeDaemonOperation__block_invoke_65
     *buf = 138412546;
     v11 = objc_opt_class();
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v4 = v11;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ : runDaemonSide %@", buf, 0x16u);
   }
 
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLPublishCloudSharedAssetsJob runDaemonSide]"];
-  v6 = [objc_opt_class() highPriorityOperationQueue];
+  highPriorityOperationQueue = [objc_opt_class() highPriorityOperationQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke;
@@ -920,7 +920,7 @@ void __55__PLPublishCloudSharedAssetsJob_executeDaemonOperation__block_invoke_65
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  [v6 addOperationWithBlock:v8];
+  [highPriorityOperationQueue addOperationWithBlock:v8];
 }
 
 void __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -938,8 +938,8 @@ void __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke(uint64_t a1
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLPublishCloudSharedAssetsJob *)self publishAlbumCloudGUID];
-  v6 = [(PLPublishCloudSharedAssetsJob *)self originalAssetUUIDs];
+  publishAlbumCloudGUID = [(PLPublishCloudSharedAssetsJob *)self publishAlbumCloudGUID];
+  originalAssetUUIDs = [(PLPublishCloudSharedAssetsJob *)self originalAssetUUIDs];
   if ([(PLPublishCloudSharedAssetsJob *)self isNewAlbum])
   {
     v7 = @"YES";
@@ -950,18 +950,18 @@ void __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke(uint64_t a1
     v7 = @"NO";
   }
 
-  v8 = [(PLPublishCloudSharedAssetsJob *)self batchCommentText];
-  v9 = [v3 stringWithFormat:@"%@ (albumGUID=%@ originalAssetUUIDs=%@ isNewAlbum=%@ batchComment=%@)", v4, v5, v6, v7, v8];
+  batchCommentText = [(PLPublishCloudSharedAssetsJob *)self batchCommentText];
+  v9 = [v3 stringWithFormat:@"%@ (albumGUID=%@ originalAssetUUIDs=%@ isNewAlbum=%@ batchComment=%@)", v4, publishAlbumCloudGUID, originalAssetUUIDs, v7, batchCommentText];
 
   return v9;
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = PLPublishCloudSharedAssetsJob;
-  v7 = [(PLCloudSharingJob *)&v15 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v15 initFromXPCObject:objectCopy libraryServicesManager:manager];
   if (v7)
   {
     v8 = PLStringFromXPCDictionary();
@@ -973,7 +973,7 @@ void __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke(uint64_t a1
     v10 = PLArrayFromXPCDictionary();
     [v7 setStillImageOnlyAssetUUIDs:v10];
 
-    [v7 setIsNewAlbum:{xpc_dictionary_get_BOOL(v6, propertyKeyIsNewAlbum)}];
+    [v7 setIsNewAlbum:{xpc_dictionary_get_BOOL(objectCopy, propertyKeyIsNewAlbum)}];
     v11 = PLStringFromXPCDictionary();
     [v7 setBatchCommentText:v11];
 
@@ -987,65 +987,65 @@ void __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke(uint64_t a1
   return v7;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = PLPublishCloudSharedAssetsJob;
-  [(PLDaemonJob *)&v13 encodeToXPCObject:v4];
-  v5 = [(PLPublishCloudSharedAssetsJob *)self publishAlbumCloudGUID];
+  [(PLDaemonJob *)&v13 encodeToXPCObject:objectCopy];
+  publishAlbumCloudGUID = [(PLPublishCloudSharedAssetsJob *)self publishAlbumCloudGUID];
   PLXPCDictionarySetString();
 
-  v6 = [(PLPublishCloudSharedAssetsJob *)self originalAssetUUIDs];
+  originalAssetUUIDs = [(PLPublishCloudSharedAssetsJob *)self originalAssetUUIDs];
   PLXPCDictionarySetArray();
 
-  v7 = [(PLPublishCloudSharedAssetsJob *)self stillImageOnlyAssetUUIDs];
+  stillImageOnlyAssetUUIDs = [(PLPublishCloudSharedAssetsJob *)self stillImageOnlyAssetUUIDs];
   PLXPCDictionarySetArray();
 
-  xpc_dictionary_set_BOOL(v4, propertyKeyIsNewAlbum, [(PLPublishCloudSharedAssetsJob *)self isNewAlbum]);
-  v8 = [(PLPublishCloudSharedAssetsJob *)self batchCommentText];
+  xpc_dictionary_set_BOOL(objectCopy, propertyKeyIsNewAlbum, [(PLPublishCloudSharedAssetsJob *)self isNewAlbum]);
+  batchCommentText = [(PLPublishCloudSharedAssetsJob *)self batchCommentText];
   PLXPCDictionarySetString();
 
-  v9 = [(PLPublishCloudSharedAssetsJob *)self customExportsInfo];
+  customExportsInfo = [(PLPublishCloudSharedAssetsJob *)self customExportsInfo];
 
-  if (v9)
+  if (customExportsInfo)
   {
-    v10 = [(PLPublishCloudSharedAssetsJob *)self customExportsInfo];
+    customExportsInfo2 = [(PLPublishCloudSharedAssetsJob *)self customExportsInfo];
     PLXPCDictionarySetDictionary();
   }
 
-  v11 = [(PLPublishCloudSharedAssetsJob *)self trimmedVideoPathInfo];
+  trimmedVideoPathInfo = [(PLPublishCloudSharedAssetsJob *)self trimmedVideoPathInfo];
 
-  if (v11)
+  if (trimmedVideoPathInfo)
   {
-    v12 = [(PLPublishCloudSharedAssetsJob *)self trimmedVideoPathInfo];
+    trimmedVideoPathInfo2 = [(PLPublishCloudSharedAssetsJob *)self trimmedVideoPathInfo];
     PLXPCDictionarySetDictionary();
   }
 }
 
-+ (id)videoComplementURLForSharingFromAsset:(id)a3
++ (id)videoComplementURLForSharingFromAsset:(id)asset
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetCopy = asset;
   v4 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138412290;
-    v20 = v5;
+    v20 = uuid;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Determining video complement path to use. UUID: %@", buf, 0xCu);
   }
 
   v18 = 0;
-  v6 = [v3 isPlayableVideo:&v18];
+  v6 = [assetCopy isPlayableVideo:&v18];
   v7 = v18;
   if (v6)
   {
-    v8 = [v3 hasAdjustedVideoComplement];
+    hasAdjustedVideoComplement = [assetCopy hasAdjustedVideoComplement];
     v9 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (v8)
+      if (hasAdjustedVideoComplement)
       {
         v10 = @"adjusted";
       }
@@ -1055,24 +1055,24 @@ void __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke(uint64_t a1
         v10 = @"original";
       }
 
-      v11 = [v3 uuid];
+      uuid2 = [assetCopy uuid];
       *buf = 138412546;
       v20 = v10;
       v21 = 2112;
-      v22 = v11;
+      v22 = uuid2;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Using the %@ original video component. UUID: %@", buf, 0x16u);
     }
 
-    if (v8)
+    if (hasAdjustedVideoComplement)
     {
-      [v3 pathForFullsizeRenderVideoFile];
+      [assetCopy pathForFullsizeRenderVideoFile];
     }
 
     else
     {
-      [v3 pathForVideoComplementFile];
+      [assetCopy pathForVideoComplementFile];
     }
-    v12 = ;
+    pathForMediumVideoFile = ;
   }
 
   else
@@ -1080,55 +1080,55 @@ void __46__PLPublishCloudSharedAssetsJob_runDaemonSide__block_invoke(uint64_t a1
     v13 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v3 uuid];
+      uuid3 = [assetCopy uuid];
       *buf = 138412546;
       v20 = v7;
       v21 = 2112;
-      v22 = v14;
+      v22 = uuid3;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Falling back to medium, since the original video component is unsupported. Codec: %@, UUID: %@", buf, 0x16u);
     }
 
-    v12 = [v3 pathForMediumVideoFile];
+    pathForMediumVideoFile = [assetCopy pathForMediumVideoFile];
   }
 
-  v15 = v12;
-  v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:0];
+  v15 = pathForMediumVideoFile;
+  v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathForMediumVideoFile isDirectory:0];
 
   return v16;
 }
 
-+ (void)publishBatchOfOriginalAssetUUIDs:(id)a3 toSharedAlbum:(id)a4 withAssetsSharingInfos:(id)a5 customExportsInfo:(id)a6 trimmedVideoPathInfo:(id)a7 isNewAlbum:(BOOL)a8 batchCommentText:(id)a9
++ (void)publishBatchOfOriginalAssetUUIDs:(id)ds toSharedAlbum:(id)album withAssetsSharingInfos:(id)infos customExportsInfo:(id)info trimmedVideoPathInfo:(id)pathInfo isNewAlbum:(BOOL)newAlbum batchCommentText:(id)text
 {
-  if (a4)
+  if (album)
   {
-    v9 = a8;
-    v15 = a9;
-    v16 = a7;
-    v17 = a6;
-    v18 = a5;
-    v19 = a4;
-    v20 = a3;
+    newAlbumCopy = newAlbum;
+    textCopy = text;
+    pathInfoCopy = pathInfo;
+    infoCopy = info;
+    infosCopy = infos;
+    albumCopy = album;
+    dsCopy = ds;
     v21 = objc_alloc_init(objc_opt_class());
-    [v21 setOriginalAssetUUIDs:v20];
+    [v21 setOriginalAssetUUIDs:dsCopy];
 
-    v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v18, "count")}];
+    v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(infosCopy, "count")}];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __170__PLPublishCloudSharedAssetsJob_publishBatchOfOriginalAssetUUIDs_toSharedAlbum_withAssetsSharingInfos_customExportsInfo_trimmedVideoPathInfo_isNewAlbum_batchCommentText___block_invoke;
     v25[3] = &unk_1E75718E0;
     v26 = v22;
     v23 = v22;
-    [v18 enumerateKeysAndObjectsUsingBlock:v25];
+    [infosCopy enumerateKeysAndObjectsUsingBlock:v25];
 
     [v21 setStillImageOnlyAssetUUIDs:v23];
-    v24 = [v19 cloudGUID];
+    cloudGUID = [albumCopy cloudGUID];
 
-    [v21 setPublishAlbumCloudGUID:v24];
-    [v21 setIsNewAlbum:v9];
-    [v21 setBatchCommentText:v15];
+    [v21 setPublishAlbumCloudGUID:cloudGUID];
+    [v21 setIsNewAlbum:newAlbumCopy];
+    [v21 setBatchCommentText:textCopy];
 
-    [v21 setCustomExportsInfo:v17];
-    [v21 setTrimmedVideoPathInfo:v16];
+    [v21 setCustomExportsInfo:infoCopy];
+    [v21 setTrimmedVideoPathInfo:pathInfoCopy];
 
     [v21 run];
   }

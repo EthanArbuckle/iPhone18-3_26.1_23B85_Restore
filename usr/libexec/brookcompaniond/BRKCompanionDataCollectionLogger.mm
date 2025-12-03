@@ -1,13 +1,13 @@
 @interface BRKCompanionDataCollectionLogger
-- (BRKCompanionDataCollectionLogger)initWithIDSService:(id)a3;
-- (void)service:(id)a3 didReceiveResourceURL:(id)a4;
+- (BRKCompanionDataCollectionLogger)initWithIDSService:(id)service;
+- (void)service:(id)service didReceiveResourceURL:(id)l;
 @end
 
 @implementation BRKCompanionDataCollectionLogger
 
-- (BRKCompanionDataCollectionLogger)initWithIDSService:(id)a3
+- (BRKCompanionDataCollectionLogger)initWithIDSService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = BRKCompanionDataCollectionLogger;
   v6 = [(BRKCompanionDataCollectionLogger *)&v15 init];
@@ -19,29 +19,29 @@
     storageDirectory = v6->_storageDirectory;
     v6->_storageDirectory = v9;
 
-    v11 = [(NSURL *)v6->_storageDirectory path];
+    path = [(NSURL *)v6->_storageDirectory path];
     BRKCreateDirectory();
 
     v12 = BRKCreateDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v12;
 
-    objc_storeStrong(&v6->_service, a3);
-    [v5 setDataCollectionDelegate:v6];
+    objc_storeStrong(&v6->_service, service);
+    [serviceCopy setDataCollectionDelegate:v6];
   }
 
   return v6;
 }
 
-- (void)service:(id)a3 didReceiveResourceURL:(id)a4
+- (void)service:(id)service didReceiveResourceURL:(id)l
 {
   storageDirectory = self->_storageDirectory;
-  v6 = a4;
-  v7 = [v6 lastPathComponent];
-  v8 = [(NSURL *)storageDirectory URLByAppendingPathComponent:v7];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  v8 = [(NSURL *)storageDirectory URLByAppendingPathComponent:lastPathComponent];
 
   v9 = +[NSFileManager defaultManager];
-  [v9 moveItemAtURL:v6 toURL:v8 error:0];
+  [v9 moveItemAtURL:lCopy toURL:v8 error:0];
 
   BRKMarkFilePurgeable();
   queue = self->_queue;

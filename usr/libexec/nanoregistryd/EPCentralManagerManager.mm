@@ -1,12 +1,12 @@
 @interface EPCentralManagerManager
-+ (id)stringForCBPeripheralState:(int64_t)a3;
++ (id)stringForCBPeripheralState:(int64_t)state;
 - (EPCentralManagerManager)init;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)createResource;
 - (void)destroyResource;
 @end
@@ -29,15 +29,15 @@
   v12.super_class = EPCentralManagerManager;
   [(EPResourceManager *)&v12 createResource];
   v3 = [CBCentralManager alloc];
-  v4 = [(EPResourceManager *)self queue];
-  v5 = [v3 initWithDelegate:self queue:v4];
+  queue = [(EPResourceManager *)self queue];
+  v5 = [v3 initWithDelegate:self queue:queue];
   manager = self->_manager;
   self->_manager = v5;
 
   v7 = sub_1000A98C0();
-  LODWORD(v4) = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
+  LODWORD(queue) = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
-  if (v4)
+  if (queue)
   {
     v8 = sub_1000A98C0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -46,13 +46,13 @@
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       *buf = 134218754;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
       v16 = v9;
       v17 = 2112;
       v18 = v11;
       v19 = 2048;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "EPCentralManagerManager[%p]: Init CBCentralManager %p with delgate %@[%p]", buf, 0x2Au);
     }
   }
@@ -73,7 +73,7 @@
     {
       manager = self->_manager;
       *buf = 134218240;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = manager;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "EPCentralManagerManager[%p]: Nilling CBCentralManager %p", buf, 0x16u);
@@ -84,14 +84,14 @@
   self->_manager = 0;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 state];
+  stateCopy = state;
+  state = [stateCopy state];
   v6 = 0;
-  if (v5 <= 3)
+  if (state <= 3)
   {
-    if (v5 == 2)
+    if (state == 2)
     {
       v16 = NSLocalizedDescriptionKey;
       v17 = @"Bluetooth is not supported";
@@ -102,7 +102,7 @@
     else
     {
       v7 = 0;
-      if (v5 != 3)
+      if (state != 3)
       {
         goto LABEL_12;
       }
@@ -119,7 +119,7 @@
     goto LABEL_12;
   }
 
-  if (v5 == 4)
+  if (state == 4)
   {
     v18 = NSLocalizedDescriptionKey;
     v19 = @"Bluetooth is powered off";
@@ -128,7 +128,7 @@
     v7 = [NSError errorWithDomain:@"com.apple.extensiblepair.corebluetooth.centralmanager" code:2 userInfo:v10];
   }
 
-  else if (v5 == 10 || (v7 = 0, v5 == 5))
+  else if (state == 10 || (v7 = 0, state == 5))
   {
     v7 = 0;
     v6 = 1;
@@ -140,15 +140,15 @@ LABEL_12:
   v12[1] = 3221225472;
   v12[2] = sub_10008DBD8;
   v12[3] = &unk_1001785C0;
-  v13 = v4;
-  v11 = v4;
+  v13 = stateCopy;
+  v11 = stateCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v12];
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   v8 = sub_1000A98C0();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -157,12 +157,12 @@ LABEL_12:
     v10 = sub_1000A98C0();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 identifier];
-      v12 = [v11 UUIDString];
+      identifier = [peripheralCopy identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 134218242;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v12;
+      v21 = uUIDString;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "EPCentralManagerManager[%p]: received centralManager:didConnectPeripheral: from CoreBluetooth for peripheral %@", buf, 0x16u);
     }
   }
@@ -171,18 +171,18 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = sub_10008DD78;
   v15[3] = &unk_100175998;
-  v16 = v6;
-  v17 = v7;
-  v13 = v7;
-  v14 = v6;
+  v16 = managerCopy;
+  v17 = peripheralCopy;
+  v13 = peripheralCopy;
+  v14 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v15];
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v11 = sub_1000A98C0();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -191,12 +191,12 @@ LABEL_12:
     v13 = sub_1000A98C0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 identifier];
-      v15 = [v14 UUIDString];
+      identifier = [peripheralCopy identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 134218242;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = v15;
+      v26 = uUIDString;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "EPCentralManagerManager[%p]: received centralManager:didDisconnectPeripheral: from CoreBluetooth for peripheral %@", buf, 0x16u);
     }
   }
@@ -205,32 +205,32 @@ LABEL_12:
   v19[1] = 3221225472;
   v19[2] = sub_10008DF44;
   v19[3] = &unk_1001759C0;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
+  v20 = managerCopy;
+  v21 = peripheralCopy;
+  v22 = errorCopy;
+  v16 = errorCopy;
+  v17 = peripheralCopy;
+  v18 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v19];
 }
 
-+ (id)stringForCBPeripheralState:(int64_t)a3
++ (id)stringForCBPeripheralState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_100178698[a3];
+    return off_100178698[state];
   }
 }
 
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  stateCopy = state;
   v8 = sub_1000A98C0();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -239,13 +239,13 @@ LABEL_12:
     v10 = sub_1000A98C0();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 identifier];
-      v12 = [v11 UUIDString];
-      v13 = [objc_opt_class() stringForCBPeripheralState:{objc_msgSend(v7, "state")}];
+      identifier = [stateCopy identifier];
+      uUIDString = [identifier UUIDString];
+      v13 = [objc_opt_class() stringForCBPeripheralState:{objc_msgSend(stateCopy, "state")}];
       *buf = 134218498;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
-      v22 = v12;
+      v22 = uUIDString;
       v23 = 2112;
       v24 = v13;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "EPCentralManagerManager[%p]: received centralManager:didUpdatePeripheralConnectionState: from CoreBluetooth for peripheral %@ to connectivity state %@", buf, 0x20u);
@@ -256,42 +256,42 @@ LABEL_12:
   v16[1] = 3221225472;
   v16[2] = sub_10008E144;
   v16[3] = &unk_100175998;
-  v17 = v6;
-  v18 = v7;
-  v14 = v7;
-  v15 = v6;
+  v17 = managerCopy;
+  v18 = stateCopy;
+  v14 = stateCopy;
+  v15 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v16];
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10008E230;
   v11[3] = &unk_1001759C0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = peripheralCopy;
+  v10 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v11];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10008E348;
   v14[3] = &unk_100178678;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
-  v13 = v15;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  dataCopy = data;
+  iCopy = i;
+  v10 = iCopy;
+  v11 = dataCopy;
+  v12 = peripheralCopy;
+  v13 = managerCopy;
   [(EPResourceManager *)self enumerateResourcesWithBlock:v14];
 }
 

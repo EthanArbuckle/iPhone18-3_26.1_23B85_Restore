@@ -1,13 +1,13 @@
 @interface PKPaymentOfferInstallmentMerchantDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferInstallmentMerchantDetails)initWithCoder:(id)a3;
-- (PKPaymentOfferInstallmentMerchantDetails)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferInstallmentMerchantDetails)initWithCoder:(id)coder;
+- (PKPaymentOfferInstallmentMerchantDetails)initWithDictionary:(id)dictionary;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferInstallmentMerchantDetails
@@ -19,20 +19,20 @@
   return [(PKPaymentOfferInstallmentMerchantDetails *)&v3 init];
 }
 
-- (PKPaymentOfferInstallmentMerchantDetails)initWithDictionary:(id)a3
+- (PKPaymentOfferInstallmentMerchantDetails)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PKPaymentOfferInstallmentMerchantDetails;
   v5 = [(PKPaymentOfferInstallmentMerchantDetails *)&v13 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"merchantName"];
+    v6 = [dictionaryCopy PKStringForKey:@"merchantName"];
     merchantName = v5->_merchantName;
     v5->_merchantName = v6;
 
     v8 = [PKPaymentOfferDynamicContentIcon alloc];
-    v9 = [v4 PKDictionaryForKey:@"icon"];
+    v9 = [dictionaryCopy PKDictionaryForKey:@"icon"];
     v10 = [(PKPaymentOfferDynamicContentIcon *)v8 initWithDictionary:v9];
     icon = v5->_icon;
     v5->_icon = v10;
@@ -45,26 +45,26 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_merchantName forKeyedSubscript:@"merchantName"];
-  v4 = [(PKPaymentOfferDynamicContentIcon *)self->_icon dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"icon"];
+  dictionaryRepresentation = [(PKPaymentOfferDynamicContentIcon *)self->_icon dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"icon"];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -143,19 +143,19 @@ LABEL_19:
   return v3;
 }
 
-- (PKPaymentOfferInstallmentMerchantDetails)initWithCoder:(id)a3
+- (PKPaymentOfferInstallmentMerchantDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferInstallmentMerchantDetails;
   v5 = [(PKPaymentOfferInstallmentMerchantDetails *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantName"];
     merchantName = v5->_merchantName;
     v5->_merchantName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v8;
   }
@@ -163,22 +163,22 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   merchantName = self->_merchantName;
-  v5 = a3;
-  [v5 encodeObject:merchantName forKey:@"merchantName"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
+  coderCopy = coder;
+  [coderCopy encodeObject:merchantName forKey:@"merchantName"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferInstallmentMerchantDetails allocWithZone:](PKPaymentOfferInstallmentMerchantDetails init];
-  v6 = [(NSString *)self->_merchantName copyWithZone:a3];
+  v6 = [(NSString *)self->_merchantName copyWithZone:zone];
   merchantName = v5->_merchantName;
   v5->_merchantName = v6;
 
-  v8 = [(PKPaymentOfferDynamicContentIcon *)self->_icon copyWithZone:a3];
+  v8 = [(PKPaymentOfferDynamicContentIcon *)self->_icon copyWithZone:zone];
   icon = v5->_icon;
   v5->_icon = v8;
 

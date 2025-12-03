@@ -3,9 +3,9 @@
 - (__n128)_currentFrustumInfo;
 - (__n128)_currentTransforms;
 - (unint64_t)_currentFrameHash;
-- (void)configureStageInputOutputDescriptor:(id)a3 withDeformerFunction:(id)a4;
+- (void)configureStageInputOutputDescriptor:(id)descriptor withDeformerFunction:(id)function;
 - (void)dealloc;
-- (void)setStageInputOutputBuffersToComputeEncoder:(id)a3;
+- (void)setStageInputOutputBuffersToComputeEncoder:(id)encoder;
 - (void)setStageInputOutputBuffersToCurrentComputeEncoder;
 @end
 
@@ -18,14 +18,14 @@
   [(VFXModelDeformerInstanceWrapper *)&v3 dealloc];
 }
 
-- (void)configureStageInputOutputDescriptor:(id)a3 withDeformerFunction:(id)a4
+- (void)configureStageInputOutputDescriptor:(id)descriptor withDeformerFunction:(id)function
 {
   v41 = *MEMORY[0x1E69E9840];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = objc_msgSend_stageInputAttributes(a4, a2, a3, a4);
+  v6 = objc_msgSend_stageInputAttributes(function, a2, descriptor, function);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v36, v40, 16);
   if (v8)
   {
@@ -48,7 +48,7 @@
             v20 = *&self->_stageInputOutputDescriptors.dstPositions.bufferAttributeOffset;
             v34 = *&self->_stageInputOutputDescriptors.dstPositions.isActive;
             v35 = v20;
-            v21 = a3;
+            descriptorCopy6 = descriptor;
             v22 = 3;
           }
 
@@ -57,7 +57,7 @@
             v26 = *&self->_stageInputOutputDescriptors.srcNormals.bufferAttributeOffset;
             v34 = *&self->_stageInputOutputDescriptors.srcNormals.isActive;
             v35 = v26;
-            v21 = a3;
+            descriptorCopy6 = descriptor;
             v22 = 1;
           }
 
@@ -66,7 +66,7 @@
             v29 = *&self->_stageInputOutputDescriptors.dstNormals.bufferAttributeOffset;
             v34 = *&self->_stageInputOutputDescriptors.dstNormals.isActive;
             v35 = v29;
-            v21 = a3;
+            descriptorCopy6 = descriptor;
             v22 = 4;
           }
 
@@ -75,7 +75,7 @@
             v32 = *&self->_stageInputOutputDescriptors.srcTangents.bufferAttributeOffset;
             v34 = *&self->_stageInputOutputDescriptors.srcTangents.isActive;
             v35 = v32;
-            v21 = a3;
+            descriptorCopy6 = descriptor;
             v22 = 2;
           }
 
@@ -89,7 +89,7 @@
             v33 = *&self->_stageInputOutputDescriptors.dstTangents.bufferAttributeOffset;
             v34 = *&self->_stageInputOutputDescriptors.dstTangents.isActive;
             v35 = v33;
-            v21 = a3;
+            descriptorCopy6 = descriptor;
             v22 = 5;
           }
         }
@@ -99,11 +99,11 @@
           v23 = *&self->_stageInputOutputDescriptors.srcPositions.bufferAttributeOffset;
           v34 = *&self->_stageInputOutputDescriptors.srcPositions.isActive;
           v35 = v23;
-          v21 = a3;
+          descriptorCopy6 = descriptor;
           v22 = 0;
         }
 
-        sub_1AF1E7700(v21, v22, &v34, v11);
+        sub_1AF1E7700(descriptorCopy6, v22, &v34, v11);
       }
 
       v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v9, &v36, v40, 16);
@@ -126,7 +126,7 @@
 
 - (__n128)_currentTransforms
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = *(v2 + 560);
   *(a2 + 128) = *(v2 + 544);
   *(a2 + 144) = v3;
@@ -151,7 +151,7 @@
 
 - (__n128)_currentFrustumInfo
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = *(v2 + 688);
   *(a2 + 64) = *(v2 + 672);
   *(a2 + 80) = v3;
@@ -165,38 +165,38 @@
   return result;
 }
 
-- (void)setStageInputOutputBuffersToComputeEncoder:(id)a3
+- (void)setStageInputOutputBuffersToComputeEncoder:(id)encoder
 {
   if (self->_stageInputOutputDescriptors.srcPositions.isActive)
   {
-    objc_msgSend_setBuffer_offset_atIndex_(a3, a2, self->_currentUpdateBuffers.srcPositions, 0, 10);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, a2, self->_currentUpdateBuffers.srcPositions, 0, 10);
   }
 
   if (self->_stageInputOutputDescriptors.dstPositions.isActive)
   {
-    objc_msgSend_setBuffer_offset_atIndex_(a3, a2, self->_currentUpdateBuffers.dstPositions, 0, 13);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, a2, self->_currentUpdateBuffers.dstPositions, 0, 13);
   }
 
   if (self->_stageInputOutputDescriptors.srcNormals.isActive)
   {
-    objc_msgSend_setBuffer_offset_atIndex_(a3, a2, self->_currentUpdateBuffers.srcNormals, 0, 11);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, a2, self->_currentUpdateBuffers.srcNormals, 0, 11);
   }
 
   if (self->_stageInputOutputDescriptors.dstNormals.isActive)
   {
-    objc_msgSend_setBuffer_offset_atIndex_(a3, a2, self->_currentUpdateBuffers.dstNormals, 0, 14);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, a2, self->_currentUpdateBuffers.dstNormals, 0, 14);
   }
 
   if (self->_stageInputOutputDescriptors.srcTangents.isActive)
   {
-    objc_msgSend_setBuffer_offset_atIndex_(a3, a2, self->_currentUpdateBuffers.srcTangents, 0, 12);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, a2, self->_currentUpdateBuffers.srcTangents, 0, 12);
   }
 
   if (self->_stageInputOutputDescriptors.dstTangents.isActive)
   {
     dstTangents = self->_currentUpdateBuffers.dstTangents;
 
-    objc_msgSend_setBuffer_offset_atIndex_(a3, a2, dstTangents, 0, 15);
+    objc_msgSend_setBuffer_offset_atIndex_(encoder, a2, dstTangents, 0, 15);
   }
 }
 

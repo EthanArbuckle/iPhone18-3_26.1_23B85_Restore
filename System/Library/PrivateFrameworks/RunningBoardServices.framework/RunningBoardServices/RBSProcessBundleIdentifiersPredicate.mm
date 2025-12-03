@@ -1,74 +1,74 @@
 @interface RBSProcessBundleIdentifiersPredicate
-- (BOOL)matchesProcess:(id)a3;
-- (RBSProcessBundleIdentifiersPredicate)initWithIdentifiers:(id)a3;
-- (RBSProcessBundleIdentifiersPredicate)initWithRBSXPCCoder:(id)a3;
+- (BOOL)matchesProcess:(id)process;
+- (RBSProcessBundleIdentifiersPredicate)initWithIdentifiers:(id)identifiers;
+- (RBSProcessBundleIdentifiersPredicate)initWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessBundleIdentifiersPredicate
 
-- (RBSProcessBundleIdentifiersPredicate)initWithIdentifiers:(id)a3
+- (RBSProcessBundleIdentifiersPredicate)initWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  if (!v5)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
     [(RBSProcessBundleIdentifiersPredicate *)a2 initWithIdentifiers:?];
   }
 
   v8.receiver = self;
   v8.super_class = RBSProcessBundleIdentifiersPredicate;
-  v6 = [(RBSProcessCollectionPredicateImpl *)&v8 initWithIdentifiers:v5];
+  v6 = [(RBSProcessCollectionPredicateImpl *)&v8 initWithIdentifiers:identifiersCopy];
 
   return v6;
 }
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [v5 embeddedApplicationIdentifier];
-  if (v6)
+  processCopy = process;
+  identity = [processCopy identity];
+  embeddedApplicationIdentifier = [identity embeddedApplicationIdentifier];
+  if (embeddedApplicationIdentifier)
   {
-    v7 = v6;
+    identifier = embeddedApplicationIdentifier;
   }
 
   else
   {
-    v8 = [v4 bundle];
-    v7 = [v8 identifier];
+    bundle = [processCopy bundle];
+    identifier = [bundle identifier];
 
-    if (!v7)
+    if (!identifier)
     {
       v9 = 0;
       goto LABEL_5;
     }
   }
 
-  v9 = [(NSSet *)self->super._identifiers containsObject:v7];
+  v9 = [(NSSet *)self->super._identifiers containsObject:identifier];
 
 LABEL_5:
   return v9;
 }
 
-- (RBSProcessBundleIdentifiersPredicate)initWithRBSXPCCoder:(id)a3
+- (RBSProcessBundleIdentifiersPredicate)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeCollectionOfClass:v5 containingClass:objc_opt_class() forKey:@"_identifiers"];
+  v6 = [coderCopy decodeCollectionOfClass:v5 containingClass:objc_opt_class() forKey:@"_identifiers"];
 
   if (v6)
   {
     v9.receiver = self;
     v9.super_class = RBSProcessBundleIdentifiersPredicate;
     self = [(RBSProcessCollectionPredicateImpl *)&v9 initWithIdentifiers:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)initWithIdentifiers:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

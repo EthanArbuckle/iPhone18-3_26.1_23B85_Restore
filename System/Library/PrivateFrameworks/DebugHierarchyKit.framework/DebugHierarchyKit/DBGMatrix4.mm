@@ -1,52 +1,52 @@
 @interface DBGMatrix4
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withMatrix4:(_OWORD *)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withMatrix4:(_OWORD *)matrix4;
 - (NSString)debugDescription;
 - (NSString)description;
-- (__n128)initWithMatrix4:(uint64_t)a3;
+- (__n128)initWithMatrix4:(uint64_t)matrix4;
 - (id)JSONCompatibleRepresentation;
 @end
 
 @implementation DBGMatrix4
 
-+ (id)withMatrix4:(_OWORD *)a3
++ (id)withMatrix4:(_OWORD *)matrix4
 {
-  v4 = [a1 alloc];
-  v5 = a3[5];
-  v11[4] = a3[4];
+  v4 = [self alloc];
+  v5 = matrix4[5];
+  v11[4] = matrix4[4];
   v11[5] = v5;
-  v6 = a3[7];
-  v11[6] = a3[6];
+  v6 = matrix4[7];
+  v11[6] = matrix4[6];
   v11[7] = v6;
-  v7 = a3[1];
-  v11[0] = *a3;
+  v7 = matrix4[1];
+  v11[0] = *matrix4;
   v11[1] = v7;
-  v8 = a3[3];
-  v11[2] = a3[2];
+  v8 = matrix4[3];
+  v11[2] = matrix4[2];
   v11[3] = v8;
   v9 = [v4 initWithMatrix4:v11];
 
   return v9;
 }
 
-- (__n128)initWithMatrix4:(uint64_t)a3
+- (__n128)initWithMatrix4:(uint64_t)matrix4
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = DBGMatrix4;
   v4 = [(DBGMatrix4 *)&v11 init];
   if (v4)
   {
-    v6 = *a3;
-    v7 = *(a3 + 16);
-    v8 = *(a3 + 48);
-    v4[3] = *(a3 + 32);
+    v6 = *matrix4;
+    v7 = *(matrix4 + 16);
+    v8 = *(matrix4 + 48);
+    v4[3] = *(matrix4 + 32);
     v4[4] = v8;
     v4[1] = v6;
     v4[2] = v7;
-    result = *(a3 + 64);
-    v9 = *(a3 + 80);
-    v10 = *(a3 + 112);
-    v4[7] = *(a3 + 96);
+    result = *(matrix4 + 64);
+    v9 = *(matrix4 + 80);
+    v10 = *(matrix4 + 112);
+    v4[7] = *(matrix4 + 96);
     v4[8] = v10;
     v4[5] = result;
     v4[6] = v9;
@@ -57,8 +57,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGMatrix4 *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGMatrix4 *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -73,7 +73,7 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v86 = 0;
   v7 = DBGDecodeValueFromJSONCompatibleValue();
@@ -89,7 +89,7 @@
     v15 = *&matrix_identity_double4x4.columns[2].f64[2];
     v16 = *matrix_identity_double4x4.columns[3].f64;
     v17 = *&matrix_identity_double4x4.columns[3].f64[2];
-    if (a5)
+    if (error)
     {
       v79 = *&matrix_identity_double4x4.columns[0].f64[2];
       v82 = *matrix_identity_double4x4.columns[0].f64;
@@ -108,7 +108,7 @@
       v12 = v75;
       v11 = v79;
       v10 = v82;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -216,7 +216,7 @@
   v85[5] = v15;
   v85[6] = v16;
   v85[7] = v17;
-  v55 = [a1 withMatrix4:{v85, v57}];
+  v55 = [self withMatrix4:{v85, v57}];
 
   return v55;
 }

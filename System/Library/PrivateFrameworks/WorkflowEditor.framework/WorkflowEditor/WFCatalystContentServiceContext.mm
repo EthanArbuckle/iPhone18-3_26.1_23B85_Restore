@@ -6,10 +6,10 @@
 
 - (WFCatalystContentHost)hostProxy
 {
-  v2 = [(WFCatalystContentServiceContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxy];
+  _auxiliaryConnection = [(WFCatalystContentServiceContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 @end

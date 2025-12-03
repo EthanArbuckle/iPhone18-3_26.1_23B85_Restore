@@ -1,22 +1,22 @@
 @interface PencilHandwritingEducationElementViewController
 - (BOOL)isPlayerHidden;
-- (PencilHandwritingEducationElementViewController)initWithElementData:(id)a3;
+- (PencilHandwritingEducationElementViewController)initWithElementData:(id)data;
 - (PencilHandwritingEducationElementViewControllerDelegate)delegate;
-- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)a3;
-- (id)createElementButtonWithTitle:(id)a3 image:(id)a4;
+- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)width;
+- (id)createElementButtonWithTitle:(id)title image:(id)image;
 - (int64_t)type;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationWillResignActive:(id)active;
 - (void)beginAnimation;
 - (void)cancelAnimation;
-- (void)canvasView:(id)a3 didRefineStrokes:(id)a4 withNewStrokes:(id)a5;
-- (void)canvasViewDidBeginUsingTool:(id)a3;
-- (void)canvasViewDrawingDidChange:(id)a3;
-- (void)clearButtonPressed:(id)a3;
+- (void)canvasView:(id)view didRefineStrokes:(id)strokes withNewStrokes:(id)newStrokes;
+- (void)canvasViewDidBeginUsingTool:(id)tool;
+- (void)canvasViewDrawingDidChange:(id)change;
+- (void)clearButtonPressed:(id)pressed;
 - (void)clearCanvas;
 - (void)clearTrackedStrokes;
 - (void)dealloc;
-- (void)hidePlayer:(BOOL)a3;
+- (void)hidePlayer:(BOOL)player;
 - (void)initCanvasMaskLayer;
 - (void)initCanvasView;
 - (void)initClearButton;
@@ -27,39 +27,39 @@
 - (void)initStackView;
 - (void)initTextLine;
 - (void)initTitleLabel;
-- (void)notNowPressed:(id)a3;
-- (void)playerItemDidFinish:(id)a3;
-- (void)processVideoRequest:(id)a3;
+- (void)notNowPressed:(id)pressed;
+- (void)playerItemDidFinish:(id)finish;
+- (void)processVideoRequest:(id)request;
 - (void)reloadStrings;
-- (void)replayButtonPressed:(id)a3;
-- (void)seeOriginalButtonPressed:(id)a3;
-- (void)seeRefinedButtonPressed:(id)a3;
-- (void)setButton:(id)a3 hidden:(BOOL)a4 animated:(BOOL)a5;
-- (void)showPlayer:(BOOL)a3;
+- (void)replayButtonPressed:(id)pressed;
+- (void)seeOriginalButtonPressed:(id)pressed;
+- (void)seeRefinedButtonPressed:(id)pressed;
+- (void)setButton:(id)button hidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)showPlayer:(BOOL)player;
 - (void)startObservingNotifications;
 - (void)stopPlayer;
-- (void)turnOnPressed:(id)a3;
-- (void)updateButtonTray:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)turnOnPressed:(id)pressed;
+- (void)updateButtonTray:(id)tray;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PencilHandwritingEducationElementViewController
 
-- (PencilHandwritingEducationElementViewController)initWithElementData:(id)a3
+- (PencilHandwritingEducationElementViewController)initWithElementData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = PencilHandwritingEducationElementViewController;
   v6 = [(PencilHandwritingEducationElementViewController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elementData, a3);
+    objc_storeStrong(&v6->_elementData, data);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     nonRefinableStrokes = v7->_nonRefinableStrokes;
     v7->_nonRefinableStrokes = v8;
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PencilHandwritingEducationElementViewController;
@@ -103,8 +103,8 @@
   [v7 setTextAlignment:1];
   v3 = MEMORY[0x277D74300];
   v4 = *MEMORY[0x277D76918];
-  v5 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
-  v6 = [v3 preferredFontForTextStyle:v4 compatibleWithTraitCollection:v5];
+  traitCollection = [(PencilHandwritingEducationElementViewController *)self traitCollection];
+  v6 = [v3 preferredFontForTextStyle:v4 compatibleWithTraitCollection:traitCollection];
 
   [v7 setFont:v6];
   [(PencilHandwritingEducationElementViewController *)self setTitleLabel:v7];
@@ -113,11 +113,11 @@
 - (void)initCanvasView
 {
   v5 = objc_alloc_init(MEMORY[0x277CD95F0]);
-  v3 = [v5 _tiledView];
-  [v3 setIsAutoRefineEnabled:1];
+  _tiledView = [v5 _tiledView];
+  [_tiledView setIsAutoRefineEnabled:1];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v5 setBackgroundColor:clearColor];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 setDelegate:self];
@@ -129,8 +129,8 @@
   v4 = objc_alloc_init(TextLineLayer);
   [(TextLineLayer *)v4 setLineWidth:1.0];
   [(TextLineLayer *)v4 setCenterOffset:12.5];
-  v3 = [MEMORY[0x277D75348] systemGrayColor];
-  [(TextLineLayer *)v4 setLineColor:v3];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(TextLineLayer *)v4 setLineColor:systemGrayColor];
 
   [(TextLineLayer *)v4 setZPosition:-1.0];
   [(TextLineLayer *)v4 setInsets:0.0, 24.0, 0.0, 24.0];
@@ -144,34 +144,34 @@
 
   v5 = [MEMORY[0x277CE65B0] playerItemWithURL:v4];
   v6 = [MEMORY[0x277CE6598] playerWithPlayerItem:v5];
-  v7 = [MEMORY[0x277CB83F8] auxiliarySession];
-  [v7 setParticipatesInNowPlayingAppPolicy:0 error:0];
-  [v7 setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
-  [v6 setAudioSession:v7];
+  auxiliarySession = [MEMORY[0x277CB83F8] auxiliarySession];
+  [auxiliarySession setParticipatesInNowPlayingAppPolicy:0 error:0];
+  [auxiliarySession setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
+  [v6 setAudioSession:auxiliarySession];
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277CE6658];
-  v9 = [v6 currentItem];
-  v10 = [v9 asset];
+  currentItem = [v6 currentItem];
+  asset = [currentItem asset];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __61__PencilHandwritingEducationElementViewController_initPlayer__block_invoke;
   v21 = &unk_279A0A768;
   objc_copyWeak(&v22, &location);
-  v11 = [v8 videoCompositionWithAsset:v10 applyingCIFiltersWithHandler:&v18];
+  v11 = [v8 videoCompositionWithAsset:asset applyingCIFiltersWithHandler:&v18];
 
-  v12 = [v6 currentItem];
-  [v12 setVideoComposition:v11];
+  currentItem2 = [v6 currentItem];
+  [currentItem2 setVideoComposition:v11];
 
   [(PencilHandwritingEducationElementViewController *)self setPlayer:v6];
   v13 = [MEMORY[0x277CE65D8] playerLayerWithPlayer:v6];
   [v13 setVideoGravity:*MEMORY[0x277CE5DD0]];
-  v14 = [MEMORY[0x277D75348] clearColor];
-  [v13 setBackgroundColor:{objc_msgSend(v14, "CGColor")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v13 setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  v15 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
-  v16 = [v15 userInterfaceStyle];
+  traitCollection = [(PencilHandwritingEducationElementViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v16 == 2)
+  if (userInterfaceStyle == 2)
   {
     v17 = @"screenBlendMode";
   }
@@ -238,38 +238,38 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   [(PencilHandwritingEducationElementViewController *)self setSeeOriginalButton:v5];
 }
 
-- (id)createElementButtonWithTitle:(id)a3 image:(id)a4
+- (id)createElementButtonWithTitle:(id)title image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v8 = objc_alloc_init(MEMORY[0x277D75220]);
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(PencilHandwritingEducationElementViewController *)self view];
-  v10 = [v9 tintColor];
+  view = [(PencilHandwritingEducationElementViewController *)self view];
+  tintColor = [view tintColor];
 
-  v11 = [v8 imageView];
-  [v11 setTintColor:v10];
+  imageView = [v8 imageView];
+  [imageView setTintColor:tintColor];
 
-  [v8 setTitleColor:v10 forState:0];
-  if (v6)
+  [v8 setTitleColor:tintColor forState:0];
+  if (titleCopy)
   {
-    [v8 setTitle:v6 forState:0];
+    [v8 setTitle:titleCopy forState:0];
   }
 
-  if (v7)
+  if (imageCopy)
   {
-    [v8 setImage:v7 forState:0];
+    [v8 setImage:imageCopy forState:0];
   }
 
   v12 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76918] variant:1024];
-  v13 = [v8 titleLabel];
-  [v13 setFont:v12];
+  titleLabel = [v8 titleLabel];
+  [titleLabel setFont:v12];
 
-  if (v7)
+  if (imageCopy)
   {
     v14 = [MEMORY[0x277D755D0] configurationWithFont:v12 scale:-1];
-    v15 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
-    if ([v15 layoutDirection] == 1)
+    traitCollection = [(PencilHandwritingEducationElementViewController *)self traitCollection];
+    if ([traitCollection layoutDirection] == 1)
     {
       v16 = 7.0;
     }
@@ -293,14 +293,14 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   [v8 setImage:v3 forState:0];
 
   [v8 setHidden:1];
-  v4 = [v8 imageView];
-  v5 = [MEMORY[0x277D75348] systemGrayColor];
-  [v4 setTintColor:v5];
+  imageView = [v8 imageView];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [imageView setTintColor:systemGrayColor];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v8 addTarget:self action:sel_clearButtonPressed_ forControlEvents:64];
-  v6 = [v8 widthAnchor];
-  v7 = [v6 constraintEqualToConstant:24.0];
+  widthAnchor = [v8 widthAnchor];
+  v7 = [widthAnchor constraintEqualToConstant:24.0];
   [v7 setActive:1];
 
   [(PencilHandwritingEducationElementViewController *)self setClearButton:v8];
@@ -308,14 +308,14 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
 
 - (void)startObservingNotifications
 {
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v3 = *MEMORY[0x277CE60C0];
-  v4 = [(PencilHandwritingEducationElementViewController *)self player];
-  v5 = [v4 currentItem];
-  [v6 addObserver:self selector:sel_playerItemDidFinish_ name:v3 object:v5];
+  player = [(PencilHandwritingEducationElementViewController *)self player];
+  currentItem = [player currentItem];
+  [defaultCenter addObserver:self selector:sel_playerItemDidFinish_ name:v3 object:currentItem];
 
-  [v6 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
-  [v6 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+  [defaultCenter addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
+  [defaultCenter addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 }
 
 - (void)viewDidLoad
@@ -336,116 +336,116 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   [(PencilHandwritingEducationElementViewController *)self initClearButton];
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [v3 heightAnchor];
-  v5 = [v4 constraintEqualToConstant:5.0];
+  heightAnchor = [v3 heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:5.0];
   [v5 setActive:1];
 
   v6 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v6 heightAnchor];
-  v8 = [v7 constraintGreaterThanOrEqualToConstant:20.0];
+  heightAnchor2 = [v6 heightAnchor];
+  v8 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:20.0];
   [v8 setActive:1];
 
-  v9 = [(PencilHandwritingEducationElementViewController *)self stackView];
-  v10 = [(PencilHandwritingEducationElementViewController *)self titleLabel];
-  v11 = [(PencilHandwritingEducationElementViewController *)self canvasView];
-  [v9 addArrangedSubview:v3];
-  v82 = v10;
-  [v9 addArrangedSubview:v10];
-  [v9 addArrangedSubview:v11];
-  [v9 addArrangedSubview:v6];
-  v12 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v12 addSubview:v9];
+  stackView = [(PencilHandwritingEducationElementViewController *)self stackView];
+  titleLabel = [(PencilHandwritingEducationElementViewController *)self titleLabel];
+  canvasView = [(PencilHandwritingEducationElementViewController *)self canvasView];
+  [stackView addArrangedSubview:v3];
+  v82 = titleLabel;
+  [stackView addArrangedSubview:titleLabel];
+  [stackView addArrangedSubview:canvasView];
+  [stackView addArrangedSubview:v6];
+  view = [(PencilHandwritingEducationElementViewController *)self view];
+  [view addSubview:stackView];
 
-  v13 = [v9 leadingAnchor];
-  v14 = [(PencilHandwritingEducationElementViewController *)self view];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  leadingAnchor = [stackView leadingAnchor];
+  view2 = [(PencilHandwritingEducationElementViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v16 setActive:1];
 
-  v17 = [v9 trailingAnchor];
-  v18 = [(PencilHandwritingEducationElementViewController *)self view];
-  v19 = [v18 trailingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  trailingAnchor = [stackView trailingAnchor];
+  view3 = [(PencilHandwritingEducationElementViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v20 setActive:1];
 
-  v21 = [v9 topAnchor];
-  v22 = [(PencilHandwritingEducationElementViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  topAnchor = [stackView topAnchor];
+  view4 = [(PencilHandwritingEducationElementViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v24 setActive:1];
 
-  v25 = [v9 bottomAnchor];
-  v26 = [(PencilHandwritingEducationElementViewController *)self view];
-  v27 = [v26 bottomAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  bottomAnchor = [stackView bottomAnchor];
+  view5 = [(PencilHandwritingEducationElementViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v28 setActive:1];
 
   LODWORD(v29) = 1148846080;
-  [v9 setContentCompressionResistancePriority:1 forAxis:v29];
+  [stackView setContentCompressionResistancePriority:1 forAxis:v29];
   v84 = v3;
-  v30 = [v3 widthAnchor];
-  v31 = [v9 widthAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31 multiplier:1.0];
+  widthAnchor = [v3 widthAnchor];
+  widthAnchor2 = [stackView widthAnchor];
+  v32 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
   [v32 setActive:1];
 
   v83 = v6;
-  v33 = [v6 widthAnchor];
-  v34 = [v9 widthAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34 multiplier:1.0];
+  widthAnchor3 = [v6 widthAnchor];
+  widthAnchor4 = [stackView widthAnchor];
+  v35 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:1.0];
   [v35 setActive:1];
 
-  v36 = [v11 heightAnchor];
-  v37 = [v36 constraintEqualToConstant:250.0];
+  heightAnchor3 = [canvasView heightAnchor];
+  v37 = [heightAnchor3 constraintEqualToConstant:250.0];
   [v37 setActive:1];
 
-  v38 = [v11 widthAnchor];
-  v85 = v9;
-  v39 = [v9 widthAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  widthAnchor5 = [canvasView widthAnchor];
+  v85 = stackView;
+  widthAnchor6 = [stackView widthAnchor];
+  v40 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
   [v40 setActive:1];
 
   LODWORD(v41) = 1148846080;
-  [v11 setContentHuggingPriority:1 forAxis:v41];
+  [canvasView setContentHuggingPriority:1 forAxis:v41];
   LODWORD(v42) = 1148846080;
-  [v11 setContentCompressionResistancePriority:1 forAxis:v42];
-  v43 = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
-  v44 = [v11 layer];
-  [v44 bounds];
-  [v43 setFrame:?];
+  [canvasView setContentCompressionResistancePriority:1 forAxis:v42];
+  textLineLayer = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
+  layer = [canvasView layer];
+  [layer bounds];
+  [textLineLayer setFrame:?];
 
-  v45 = [(PencilHandwritingEducationElementViewController *)self view];
-  v46 = [v45 layer];
-  [v46 insertSublayer:v43 atIndex:0];
+  view6 = [(PencilHandwritingEducationElementViewController *)self view];
+  layer2 = [view6 layer];
+  [layer2 insertSublayer:textLineLayer atIndex:0];
 
-  v47 = [(PencilHandwritingEducationElementViewController *)self playerLayer];
-  v48 = [(PencilHandwritingEducationElementViewController *)self view];
-  v49 = [v48 layer];
-  v80 = v47;
-  v81 = v43;
-  [v49 insertSublayer:v47 above:v43];
+  playerLayer = [(PencilHandwritingEducationElementViewController *)self playerLayer];
+  view7 = [(PencilHandwritingEducationElementViewController *)self view];
+  layer3 = [view7 layer];
+  v80 = playerLayer;
+  v81 = textLineLayer;
+  [layer3 insertSublayer:playerLayer above:textLineLayer];
 
-  v50 = [(PencilHandwritingEducationElementViewController *)self canvasMaskLayer];
-  v51 = [v11 layer];
-  [v51 bounds];
-  [v50 setFrame:?];
+  canvasMaskLayer = [(PencilHandwritingEducationElementViewController *)self canvasMaskLayer];
+  layer4 = [canvasView layer];
+  [layer4 bounds];
+  [canvasMaskLayer setFrame:?];
 
-  v52 = v11;
-  v53 = [v11 layer];
-  v79 = v50;
-  [v53 setMask:v50];
+  v52 = canvasView;
+  layer5 = [canvasView layer];
+  v79 = canvasMaskLayer;
+  [layer5 setMask:canvasMaskLayer];
 
   v88 = 0u;
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v54 = [(PencilHandwritingEducationElementViewController *)self replayButton];
-  v91[0] = v54;
-  v55 = [(PencilHandwritingEducationElementViewController *)self seeOriginalButton];
-  v91[1] = v55;
-  v56 = self;
-  v57 = [(PencilHandwritingEducationElementViewController *)self seeRefinedButton];
-  v91[2] = v57;
+  replayButton = [(PencilHandwritingEducationElementViewController *)self replayButton];
+  v91[0] = replayButton;
+  seeOriginalButton = [(PencilHandwritingEducationElementViewController *)self seeOriginalButton];
+  v91[1] = seeOriginalButton;
+  selfCopy = self;
+  seeRefinedButton = [(PencilHandwritingEducationElementViewController *)self seeRefinedButton];
+  v91[2] = seeRefinedButton;
   v58 = [MEMORY[0x277CBEA60] arrayWithObjects:v91 count:3];
 
   v59 = [v58 countByEnumeratingWithState:&v86 objects:v92 count:16];
@@ -464,17 +464,17 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
         }
 
         v63 = *(*(&v86 + 1) + 8 * v62);
-        v64 = [(PencilHandwritingEducationElementViewController *)v56 view];
-        [v64 addSubview:v63];
+        view8 = [(PencilHandwritingEducationElementViewController *)selfCopy view];
+        [view8 addSubview:v63];
 
-        v65 = [v63 topAnchor];
-        v66 = [v52 centerYAnchor];
-        v67 = [v65 constraintEqualToAnchor:v66 constant:31.5];
+        topAnchor3 = [v63 topAnchor];
+        centerYAnchor = [v52 centerYAnchor];
+        v67 = [topAnchor3 constraintEqualToAnchor:centerYAnchor constant:31.5];
         [v67 setActive:1];
 
-        v68 = [v63 centerXAnchor];
-        v69 = [v85 centerXAnchor];
-        v70 = [v68 constraintEqualToAnchor:v69];
+        centerXAnchor = [v63 centerXAnchor];
+        centerXAnchor2 = [v85 centerXAnchor];
+        v70 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         [v70 setActive:1];
 
         ++v62;
@@ -487,29 +487,29 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
     while (v60);
   }
 
-  v71 = [(PencilHandwritingEducationElementViewController *)v56 clearButton];
-  v72 = [(PencilHandwritingEducationElementViewController *)v56 view];
-  [v72 addSubview:v71];
+  clearButton = [(PencilHandwritingEducationElementViewController *)selfCopy clearButton];
+  view9 = [(PencilHandwritingEducationElementViewController *)selfCopy view];
+  [view9 addSubview:clearButton];
 
-  v73 = [v71 rightAnchor];
-  v74 = [v52 rightAnchor];
-  v75 = [v73 constraintEqualToAnchor:v74 constant:-24.0];
+  rightAnchor = [clearButton rightAnchor];
+  rightAnchor2 = [v52 rightAnchor];
+  v75 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-24.0];
   [v75 setActive:1];
 
-  v76 = [v71 centerYAnchor];
-  v77 = [v52 centerYAnchor];
-  v78 = [v76 constraintEqualToAnchor:v77 constant:-11.5];
+  centerYAnchor2 = [clearButton centerYAnchor];
+  centerYAnchor3 = [v52 centerYAnchor];
+  v78 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor3 constant:-11.5];
   [v78 setActive:1];
 
-  [(PencilHandwritingEducationElementViewController *)v56 reloadStrings];
-  [(PencilHandwritingEducationElementViewController *)v56 startObservingNotifications];
+  [(PencilHandwritingEducationElementViewController *)selfCopy reloadStrings];
+  [(PencilHandwritingEducationElementViewController *)selfCopy startObservingNotifications];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PencilHandwritingEducationElementViewController;
-  [(PencilHandwritingEducationElementViewController *)&v4 viewWillAppear:a3];
+  [(PencilHandwritingEducationElementViewController *)&v4 viewWillAppear:appear];
   if (![(PencilHandwritingEducationElementViewController *)self didRunInitialAppearActions]|| [(PencilHandwritingEducationElementViewController *)self didDisappear])
   {
     [(PencilHandwritingEducationElementViewController *)self setDidRunInitialAppearActions:1];
@@ -518,55 +518,55 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PencilHandwritingEducationElementViewController;
-  [(PencilHandwritingEducationElementViewController *)&v8 viewDidAppear:a3];
-  v4 = [(PencilHandwritingEducationElementViewController *)self delegate];
-  [v4 elementControllerDidAppear:self];
+  [(PencilHandwritingEducationElementViewController *)&v8 viewDidAppear:appear];
+  delegate = [(PencilHandwritingEducationElementViewController *)self delegate];
+  [delegate elementControllerDidAppear:self];
 
   if (![(PencilHandwritingEducationElementViewController *)self isPlayerHidden])
   {
-    v5 = [(PencilHandwritingEducationElementViewController *)self player];
-    [v5 play];
+    player = [(PencilHandwritingEducationElementViewController *)self player];
+    [player play];
   }
 
   v6 = objc_alloc_init(MEMORY[0x277D75820]);
-  v7 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v7 addInteraction:v6];
+  view = [(PencilHandwritingEducationElementViewController *)self view];
+  [view addInteraction:v6];
 
   [v6 setDelegate:self];
   [(PencilHandwritingEducationElementViewController *)self setPencilInteraction:v6];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PencilHandwritingEducationElementViewController;
   [(PencilHandwritingEducationElementViewController *)&v5 viewWillDisappear:0];
   if (![(PencilHandwritingEducationElementViewController *)self isPlayerHidden])
   {
-    v4 = [(PencilHandwritingEducationElementViewController *)self player];
-    [v4 pause];
+    player = [(PencilHandwritingEducationElementViewController *)self player];
+    [player pause];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PencilHandwritingEducationElementViewController;
-  [(PencilHandwritingEducationElementViewController *)&v7 viewDidDisappear:a3];
+  [(PencilHandwritingEducationElementViewController *)&v7 viewDidDisappear:disappear];
   if (![(PencilHandwritingEducationElementViewController *)self isPlayerHidden])
   {
-    v4 = [(PencilHandwritingEducationElementViewController *)self player];
-    [v4 pause];
+    player = [(PencilHandwritingEducationElementViewController *)self player];
+    [player pause];
   }
 
   [(PencilHandwritingEducationElementViewController *)self setDidDisappear:1];
-  v5 = [(PencilHandwritingEducationElementViewController *)self view];
-  v6 = [(PencilHandwritingEducationElementViewController *)self pencilInteraction];
-  [v5 removeInteraction:v6];
+  view = [(PencilHandwritingEducationElementViewController *)self view];
+  pencilInteraction = [(PencilHandwritingEducationElementViewController *)self pencilInteraction];
+  [view removeInteraction:pencilInteraction];
 }
 
 - (void)viewDidLayoutSubviews
@@ -574,82 +574,82 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   v22.receiver = self;
   v22.super_class = PencilHandwritingEducationElementViewController;
   [(PencilHandwritingEducationElementViewController *)&v22 viewDidLayoutSubviews];
-  v3 = [(PencilHandwritingEducationElementViewController *)self playerLayer];
-  v4 = [(PencilHandwritingEducationElementViewController *)self canvasView];
-  [v4 bounds];
-  [v4 setContentSize:{v5, v6}];
-  v7 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v4 bounds];
-  [v7 convertRect:v4 fromView:?];
-  [v3 setFrame:?];
+  playerLayer = [(PencilHandwritingEducationElementViewController *)self playerLayer];
+  canvasView = [(PencilHandwritingEducationElementViewController *)self canvasView];
+  [canvasView bounds];
+  [canvasView setContentSize:{v5, v6}];
+  view = [(PencilHandwritingEducationElementViewController *)self view];
+  [canvasView bounds];
+  [view convertRect:canvasView fromView:?];
+  [playerLayer setFrame:?];
 
-  [v3 setNeedsDisplay];
-  v8 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v4 bounds];
-  [v8 convertRect:v4 fromView:?];
+  [playerLayer setNeedsDisplay];
+  view2 = [(PencilHandwritingEducationElementViewController *)self view];
+  [canvasView bounds];
+  [view2 convertRect:canvasView fromView:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  textLineLayer = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
+  [textLineLayer setFrame:{v10, v12, v14, v16}];
 
-  v18 = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
-  [v18 setNeedsDisplay];
+  textLineLayer2 = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
+  [textLineLayer2 setNeedsDisplay];
 
-  v19 = [(PencilHandwritingEducationElementViewController *)self canvasMaskLayer];
-  v20 = [v4 layer];
-  [v20 bounds];
-  [v19 setFrame:?];
+  canvasMaskLayer = [(PencilHandwritingEducationElementViewController *)self canvasMaskLayer];
+  layer = [canvasView layer];
+  [layer bounds];
+  [canvasMaskLayer setFrame:?];
 
-  v21 = [(PencilHandwritingEducationElementViewController *)self canvasMaskLayer];
-  [v21 setNeedsDisplay];
+  canvasMaskLayer2 = [(PencilHandwritingEducationElementViewController *)self canvasMaskLayer];
+  [canvasMaskLayer2 setNeedsDisplay];
 }
 
-- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)a3
+- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)width
 {
-  v5 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v5 frame];
+  view = [(PencilHandwritingEducationElementViewController *)self view];
+  [view frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v14 setFrame:{v7, v9, a3, v13}];
+  view2 = [(PencilHandwritingEducationElementViewController *)self view];
+  [view2 setFrame:{v7, v9, width, v13}];
 
-  v15 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v15 layoutIfNeeded];
+  view3 = [(PencilHandwritingEducationElementViewController *)self view];
+  [view3 layoutIfNeeded];
 
-  v16 = [(PencilHandwritingEducationElementViewController *)self stackView];
-  [v16 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  stackView = [(PencilHandwritingEducationElementViewController *)self stackView];
+  [stackView systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v18 = v17;
 
-  v19 = [(PencilHandwritingEducationElementViewController *)self view];
-  [v19 setFrame:{v7, v9, v11, v13}];
+  view4 = [(PencilHandwritingEducationElementViewController *)self view];
+  [view4 setFrame:{v7, v9, v11, v13}];
 
   return v18;
 }
 
-- (void)processVideoRequest:(id)a3
+- (void)processVideoRequest:(id)request
 {
-  v4 = a3;
-  v22 = [v4 sourceImage];
-  v5 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  requestCopy = request;
+  sourceImage = [requestCopy sourceImage];
+  traitCollection = [(PencilHandwritingEducationElementViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v7 = MEMORY[0x277CBFAF0];
-  if (v6 == 2)
+  if (userInterfaceStyle == 2)
   {
-    v8 = [MEMORY[0x277CBF750] colorInvertFilter];
-    [v8 setValue:v22 forKey:*v7];
-    v9 = [v8 outputImage];
+    colorInvertFilter = [MEMORY[0x277CBF750] colorInvertFilter];
+    [colorInvertFilter setValue:sourceImage forKey:*v7];
+    outputImage = [colorInvertFilter outputImage];
 
-    v22 = v9;
+    sourceImage = outputImage;
   }
 
-  v10 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
-  if ([v10 userInterfaceStyle] == 2)
+  traitCollection2 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
+  if ([traitCollection2 userInterfaceStyle] == 2)
   {
     [MEMORY[0x277CBF750] lightenBlendModeFilter];
   }
@@ -660,8 +660,8 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   }
   v11 = ;
 
-  v12 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
-  if ([v12 userInterfaceStyle] == 2)
+  traitCollection3 = [(PencilHandwritingEducationElementViewController *)self traitCollection];
+  if ([traitCollection3 userInterfaceStyle] == 2)
   {
     [MEMORY[0x277D75348] secondarySystemBackgroundColor];
   }
@@ -672,7 +672,7 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   }
   v13 = ;
 
-  [v22 extent];
+  [sourceImage extent];
   v15 = v14;
   v17 = v16;
   v24.width = v14;
@@ -689,26 +689,26 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   v20 = [v18 imageWithCGImage:{objc_msgSend(v19, "CGImage")}];
 
   UIGraphicsEndImageContext();
-  [v11 setValue:v22 forKey:*v7];
+  [v11 setValue:sourceImage forKey:*v7];
   [v11 setValue:v20 forKey:*MEMORY[0x277CBFAB8]];
-  v21 = [v11 outputImage];
-  [v4 finishWithImage:v21 context:0];
+  outputImage2 = [v11 outputImage];
+  [requestCopy finishWithImage:outputImage2 context:0];
 }
 
-- (void)replayButtonPressed:(id)a3
+- (void)replayButtonPressed:(id)pressed
 {
   [(PencilHandwritingEducationElementViewController *)self reloadStrings];
   [(PencilHandwritingEducationElementViewController *)self clearCanvas];
   [(PencilHandwritingEducationElementViewController *)self setButton:self->_replayButton hidden:1 animated:1];
-  v4 = [(PencilHandwritingEducationElementViewController *)self player];
+  player = [(PencilHandwritingEducationElementViewController *)self player];
   v5 = *MEMORY[0x277CC08F0];
   v6 = *(MEMORY[0x277CC08F0] + 16);
-  [v4 seekToTime:&v5];
+  [player seekToTime:&v5];
   [(PencilHandwritingEducationElementViewController *)self showPlayer:0];
-  [v4 play];
+  [player play];
 }
 
-- (void)seeRefinedButtonPressed:(id)a3
+- (void)seeRefinedButtonPressed:(id)pressed
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CD95F8]);
@@ -778,7 +778,7 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   [(PencilHandwritingEducationElementViewController *)self setButton:self->_seeOriginalButton hidden:0 animated:1];
 }
 
-- (void)seeOriginalButtonPressed:(id)a3
+- (void)seeOriginalButtonPressed:(id)pressed
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CD95F8]);
@@ -848,7 +848,7 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   [(PencilHandwritingEducationElementViewController *)self setButton:self->_seeRefinedButton hidden:0 animated:1];
 }
 
-- (void)clearButtonPressed:(id)a3
+- (void)clearButtonPressed:(id)pressed
 {
   [(PencilHandwritingEducationElementViewController *)self clearCanvas];
   [(PencilHandwritingEducationElementViewController *)self clearTrackedStrokes];
@@ -874,99 +874,99 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   [(NSMutableSet *)nonRefinableStrokes removeAllObjects];
 }
 
-- (void)updateButtonTray:(id)a3
+- (void)updateButtonTray:(id)tray
 {
-  v12 = a3;
-  [v12 setHidden:1];
-  [v12 removeAllButtons];
-  v4 = [(PencilHandwritingEducationElementViewController *)self elementData];
-  v5 = [v4 type];
+  trayCopy = tray;
+  [trayCopy setHidden:1];
+  [trayCopy removeAllButtons];
+  elementData = [(PencilHandwritingEducationElementViewController *)self elementData];
+  type = [elementData type];
 
-  if (!v5)
+  if (!type)
   {
-    v6 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"AUTO_REFINE_TURN_ON_BUTTON_TITLE" value:&stru_286FDFDB8 table:@"PencilSettings"];
-    [v6 setTitle:v8 forState:0];
+    [boldButton setTitle:v8 forState:0];
 
-    [v6 addTarget:self action:sel_turnOnPressed_ forControlEvents:64];
-    [v12 addButton:v6];
-    v9 = [MEMORY[0x277D37650] linkButton];
+    [boldButton addTarget:self action:sel_turnOnPressed_ forControlEvents:64];
+    [trayCopy addButton:boldButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"AUTO_REFINE_NOT_NOW_BUTTON_TITLE" value:&stru_286FDFDB8 table:@"PencilSettings"];
-    [v9 setTitle:v11 forState:0];
+    [linkButton setTitle:v11 forState:0];
 
-    [v9 addTarget:self action:sel_notNowPressed_ forControlEvents:64];
-    [v12 addButton:v9];
-    [v12 setHidden:0];
+    [linkButton addTarget:self action:sel_notNowPressed_ forControlEvents:64];
+    [trayCopy addButton:linkButton];
+    [trayCopy setHidden:0];
   }
 }
 
-- (void)turnOnPressed:(id)a3
+- (void)turnOnPressed:(id)pressed
 {
-  v4 = [(PencilHandwritingEducationElementViewController *)self elementData];
-  v5 = [v4 type];
+  elementData = [(PencilHandwritingEducationElementViewController *)self elementData];
+  type = [elementData type];
 
-  if (!v5)
+  if (!type)
   {
     v6 = +[PencilSettings sharedPencilSettings];
     [v6 setAutoRefineEnabled:1];
 
     [(PencilHandwritingEducationElementViewController *)self setDidEnableAutoRefine:1];
-    v7 = [(PencilHandwritingEducationElementViewController *)self delegate];
-    [v7 elementControllerShouldDismiss:self];
+    delegate = [(PencilHandwritingEducationElementViewController *)self delegate];
+    [delegate elementControllerShouldDismiss:self];
   }
 }
 
-- (void)notNowPressed:(id)a3
+- (void)notNowPressed:(id)pressed
 {
-  v4 = [(PencilHandwritingEducationElementViewController *)self elementData];
-  v5 = [v4 type];
+  elementData = [(PencilHandwritingEducationElementViewController *)self elementData];
+  type = [elementData type];
 
-  if (!v5)
+  if (!type)
   {
     v6 = +[PencilSettings sharedPencilSettings];
     [v6 setAutoRefineEnabled:0];
 
-    v7 = [(PencilHandwritingEducationElementViewController *)self delegate];
-    [v7 elementControllerShouldDismiss:self];
+    delegate = [(PencilHandwritingEducationElementViewController *)self delegate];
+    [delegate elementControllerShouldDismiss:self];
   }
 }
 
 - (void)reloadStrings
 {
-  v5 = [(PencilHandwritingEducationElementViewController *)self elementData];
-  v3 = [v5 title];
-  v4 = [(PencilHandwritingEducationElementViewController *)self titleLabel];
-  [v4 setAttributedText:v3];
+  elementData = [(PencilHandwritingEducationElementViewController *)self elementData];
+  title = [elementData title];
+  titleLabel = [(PencilHandwritingEducationElementViewController *)self titleLabel];
+  [titleLabel setAttributedText:title];
 }
 
 - (void)clearCanvas
 {
-  v3 = [(PencilHandwritingEducationElementViewController *)self canvasView];
+  canvasView = [(PencilHandwritingEducationElementViewController *)self canvasView];
   v2 = objc_opt_new();
-  [v3 setDrawing:v2];
+  [canvasView setDrawing:v2];
 
-  [v3 setNeedsDisplay];
+  [canvasView setNeedsDisplay];
 }
 
 - (int64_t)type
 {
-  v2 = [(PencilHandwritingEducationElementViewController *)self elementData];
-  v3 = [v2 type];
+  elementData = [(PencilHandwritingEducationElementViewController *)self elementData];
+  type = [elementData type];
 
-  return v3;
+  return type;
 }
 
 - (void)cancelAnimation
 {
   if (![(PencilHandwritingEducationElementViewController *)self isPlayerHidden])
   {
-    v3 = [(PencilHandwritingEducationElementViewController *)self player];
-    [v3 pause];
+    player = [(PencilHandwritingEducationElementViewController *)self player];
+    [player pause];
 
-    v4 = [(PencilHandwritingEducationElementViewController *)self playerLayer];
-    [v4 setHidden:1];
+    playerLayer = [(PencilHandwritingEducationElementViewController *)self playerLayer];
+    [playerLayer setHidden:1];
   }
 }
 
@@ -974,18 +974,18 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
 {
   if (![(PencilHandwritingEducationElementViewController *)self isPlayerHidden])
   {
-    v3 = [(PencilHandwritingEducationElementViewController *)self player];
-    [v3 play];
+    player = [(PencilHandwritingEducationElementViewController *)self player];
+    [player play];
   }
 }
 
 - (BOOL)isPlayerHidden
 {
-  v2 = [(PencilHandwritingEducationElementViewController *)self playerLayer];
-  v3 = [v2 superlayer];
-  if (v3)
+  playerLayer = [(PencilHandwritingEducationElementViewController *)self playerLayer];
+  superlayer = [playerLayer superlayer];
+  if (superlayer)
   {
-    [v2 opacity];
+    [playerLayer opacity];
     v5 = v4 != 1.0;
   }
 
@@ -999,22 +999,22 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
 
 - (void)stopPlayer
 {
-  v2 = [(PencilHandwritingEducationElementViewController *)self player];
-  [v2 pause];
+  player = [(PencilHandwritingEducationElementViewController *)self player];
+  [player pause];
   v3 = *MEMORY[0x277CC08F0];
   v4 = *(MEMORY[0x277CC08F0] + 16);
-  [v2 seekToTime:&v3];
+  [player seekToTime:&v3];
 }
 
-- (void)hidePlayer:(BOOL)a3
+- (void)hidePlayer:(BOOL)player
 {
-  v3 = [(PencilHandwritingEducationElementViewController *)self playerLayer];
+  playerLayer = [(PencilHandwritingEducationElementViewController *)self playerLayer];
   v4 = MEMORY[0x277D75D18];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__PencilHandwritingEducationElementViewController_hidePlayer___block_invoke;
   v8[3] = &unk_279A0A060;
-  v9 = v3;
+  v9 = playerLayer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__PencilHandwritingEducationElementViewController_hidePlayer___block_invoke_2;
@@ -1024,17 +1024,17 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   [v4 animateWithDuration:v8 animations:v6 completion:0.25];
 }
 
-- (void)showPlayer:(BOOL)a3
+- (void)showPlayer:(BOOL)player
 {
-  v4 = [(PencilHandwritingEducationElementViewController *)self playerLayer];
-  v5 = [v4 superlayer];
+  playerLayer = [(PencilHandwritingEducationElementViewController *)self playerLayer];
+  superlayer = [playerLayer superlayer];
 
-  if (!v5)
+  if (!superlayer)
   {
-    v6 = [(PencilHandwritingEducationElementViewController *)self view];
-    v7 = [v6 layer];
-    v8 = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
-    [v7 insertSublayer:v4 above:v8];
+    view = [(PencilHandwritingEducationElementViewController *)self view];
+    layer = [view layer];
+    textLineLayer = [(PencilHandwritingEducationElementViewController *)self textLineLayer];
+    [layer insertSublayer:playerLayer above:textLineLayer];
   }
 
   v9 = MEMORY[0x277D75D18];
@@ -1042,25 +1042,25 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
   v11[1] = 3221225472;
   v11[2] = __62__PencilHandwritingEducationElementViewController_showPlayer___block_invoke;
   v11[3] = &unk_279A0A060;
-  v12 = v4;
-  v10 = v4;
+  v12 = playerLayer;
+  v10 = playerLayer;
   [v9 animateWithDuration:v11 animations:0.25];
 }
 
-- (void)setButton:(id)a3 hidden:(BOOL)a4 animated:(BOOL)a5
+- (void)setButton:(id)button hidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if ([v7 isHidden] != v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  buttonCopy = button;
+  if ([buttonCopy isHidden] != hiddenCopy)
   {
-    if ([v7 isHidden])
+    if ([buttonCopy isHidden])
     {
-      [v7 setAlpha:0.0];
-      [v7 setHidden:0];
+      [buttonCopy setAlpha:0.0];
+      [buttonCopy setHidden:0];
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       v8 = 0.25;
     }
@@ -1075,19 +1075,19 @@ void __61__PencilHandwritingEducationElementViewController_initPlayer__block_inv
     v13[1] = 3221225472;
     v13[2] = __77__PencilHandwritingEducationElementViewController_setButton_hidden_animated___block_invoke;
     v13[3] = &unk_279A0A100;
-    v14 = v7;
-    v15 = v6;
+    v14 = buttonCopy;
+    v15 = hiddenCopy;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __77__PencilHandwritingEducationElementViewController_setButton_hidden_animated___block_invoke_2;
     v10[3] = &unk_279A0A7B8;
     v11 = v14;
-    v12 = v6;
+    v12 = hiddenCopy;
     [v9 animateWithDuration:v13 animations:v10 completion:v8];
   }
 }
 
-- (void)playerItemDidFinish:(id)a3
+- (void)playerItemDidFinish:(id)finish
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1107,25 +1107,25 @@ void __71__PencilHandwritingEducationElementViewController_playerItemDidFinish__
   [v4 setHidden:0];
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   if (![(PencilHandwritingEducationElementViewController *)self isPlayerHidden])
   {
-    v4 = [(PencilHandwritingEducationElementViewController *)self player];
-    [v4 pause];
+    player = [(PencilHandwritingEducationElementViewController *)self player];
+    [player pause];
   }
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   if (![(PencilHandwritingEducationElementViewController *)self isPlayerHidden])
   {
-    v4 = [(PencilHandwritingEducationElementViewController *)self player];
-    [v4 play];
+    player = [(PencilHandwritingEducationElementViewController *)self player];
+    [player play];
   }
 }
 
-- (void)canvasViewDidBeginUsingTool:(id)a3
+- (void)canvasViewDidBeginUsingTool:(id)tool
 {
   [(PencilHandwritingEducationElementViewController *)self setButton:self->_replayButton hidden:1 animated:0];
   [(PencilHandwritingEducationElementViewController *)self setButton:self->_seeRefinedButton hidden:1 animated:0];
@@ -1138,7 +1138,7 @@ void __71__PencilHandwritingEducationElementViewController_playerItemDidFinish__
   }
 }
 
-- (void)canvasViewDrawingDidChange:(id)a3
+- (void)canvasViewDrawingDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1158,23 +1158,23 @@ void __78__PencilHandwritingEducationElementViewController_canvasViewDrawingDidC
   [v5 setHidden:v4];
 }
 
-- (void)canvasView:(id)a3 didRefineStrokes:(id)a4 withNewStrokes:(id)a5
+- (void)canvasView:(id)view didRefineStrokes:(id)strokes withNewStrokes:(id)newStrokes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  strokesCopy = strokes;
+  newStrokesCopy = newStrokes;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__PencilHandwritingEducationElementViewController_canvasView_didRefineStrokes_withNewStrokes___block_invoke;
   block[3] = &unk_279A0A7E0;
   objc_copyWeak(&v18, &location);
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
-  v11 = v8;
-  v12 = v10;
-  v13 = v9;
+  v15 = strokesCopy;
+  v16 = newStrokesCopy;
+  v17 = viewCopy;
+  v11 = viewCopy;
+  v12 = newStrokesCopy;
+  v13 = strokesCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v18);

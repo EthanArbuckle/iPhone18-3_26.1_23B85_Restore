@@ -1,20 +1,20 @@
 @interface ATXSuggestedPagesGlobalModeAffinityAppDataSource
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4;
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesGlobalModeAffinityAppDataSource
 
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment
 {
-  v4 = [ATXSuggestedPagesUtils modeForSuggestedPageType:a3, a4];
+  environment = [ATXSuggestedPagesUtils modeForSuggestedPageType:type, environment];
   v5 = +[ATXGlobalAppModeAffinityModel supportedModeTypes];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:environment];
   v7 = [v5 containsObject:v6];
 
   if (v7)
   {
     v8 = +[ATXModeEntityScorerServer sharedInstance];
-    v9 = [v8 rankedAppsForMode:v4];
+    v9 = [v8 rankedAppsForMode:environment];
     v10 = [v9 _pas_mappedArrayWithTransform:&__block_literal_global_119];
   }
 

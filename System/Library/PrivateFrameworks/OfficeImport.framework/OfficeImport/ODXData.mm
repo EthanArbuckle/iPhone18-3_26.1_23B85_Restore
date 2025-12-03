@@ -1,23 +1,23 @@
 @interface ODXData
-+ (id)readModelIdentifierFromNode:(_xmlNode *)a3 attributeName:(const char *)a4;
-+ (id)readPointFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5;
-+ (id)readPointListFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5;
-+ (int)readConnectionTypeFromNode:(_xmlNode *)a3;
-+ (int)readPointTypeFromNode:(_xmlNode *)a3;
-+ (void)associatePresentationsInIdMap:(id)a3;
-+ (void)readConnectionFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5;
-+ (void)readConnectionListFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5;
-+ (void)readNode:(_xmlNode *)a3 toDiagram:(id)a4 state:(id)a5;
++ (id)readModelIdentifierFromNode:(_xmlNode *)node attributeName:(const char *)name;
++ (id)readPointFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state;
++ (id)readPointListFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state;
++ (int)readConnectionTypeFromNode:(_xmlNode *)node;
++ (int)readPointTypeFromNode:(_xmlNode *)node;
++ (void)associatePresentationsInIdMap:(id)map;
++ (void)readConnectionFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state;
++ (void)readConnectionListFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state;
++ (void)readNode:(_xmlNode *)node toDiagram:(id)diagram state:(id)state;
 @end
 
 @implementation ODXData
 
-+ (void)readNode:(_xmlNode *)a3 toDiagram:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node toDiagram:(id)diagram state:(id)state
 {
-  v18 = a4;
-  v8 = a5;
-  v9 = [v8 ODXDiagramNamespace];
-  HasName = CXNodeHasName(a3, v9, "dataModel");
+  diagramCopy = diagram;
+  stateCopy = state;
+  oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+  HasName = CXNodeHasName(node, oDXDiagramNamespace, "dataModel");
 
   if (!HasName)
   {
@@ -25,26 +25,26 @@
   }
 
   v11 = objc_alloc_init(OITSUNoCopyDictionary);
-  v12 = [v8 ODXDiagramNamespace];
-  v13 = OCXFirstChild(a3, v12, "ptLst");
+  oDXDiagramNamespace2 = [stateCopy ODXDiagramNamespace];
+  v13 = OCXFirstChild(node, oDXDiagramNamespace2, "ptLst");
 
-  v14 = [a1 readPointListFromNode:v13 pointIdMap:v11 state:v8];
-  [v18 setDocumentPoint:v14];
+  v14 = [self readPointListFromNode:v13 pointIdMap:v11 state:stateCopy];
+  [diagramCopy setDocumentPoint:v14];
   v15 = OCXNextSibling(v13);
-  v16 = [v8 ODXDiagramNamespace];
-  v17 = CXNodeHasName(v15, v16, "cxnLst");
+  oDXDiagramNamespace3 = [stateCopy ODXDiagramNamespace];
+  v17 = CXNodeHasName(v15, oDXDiagramNamespace3, "cxnLst");
 
   if (v17)
   {
-    [a1 readConnectionListFromNode:v15 pointIdMap:v11 state:v8];
+    [self readConnectionListFromNode:v15 pointIdMap:v11 state:stateCopy];
   }
 
-  [a1 associatePresentationsInIdMap:v11];
+  [self associatePresentationsInIdMap:v11];
 }
 
-+ (id)readModelIdentifierFromNode:(_xmlNode *)a3 attributeName:(const char *)a4
++ (id)readModelIdentifierFromNode:(_xmlNode *)node attributeName:(const char *)name
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initFromXmlNode:a3 ns:0 attributeName:a4];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initFromXmlNode:node ns:0 attributeName:name];
   v5 = v4;
   if (v4)
   {
@@ -83,29 +83,29 @@
   return v7;
 }
 
-+ (id)readPointListFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5
++ (id)readPointListFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = OCXFirstChild(a3);
+  mapCopy = map;
+  stateCopy = state;
+  v10 = OCXFirstChild(node);
   v11 = 0;
   while (v10)
   {
     if (v10->type == XML_ELEMENT_NODE)
     {
-      v12 = [v9 ODXDiagramNamespace];
-      HasName = CXNodeHasName(v10, v12, "pt");
+      oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+      HasName = CXNodeHasName(v10, oDXDiagramNamespace, "pt");
 
       if (HasName)
       {
         if (v11)
         {
-          v14 = [a1 readPointFromNode:v10 pointIdMap:v8 state:v9];
+          v14 = [self readPointFromNode:v10 pointIdMap:mapCopy state:stateCopy];
         }
 
         else
         {
-          v11 = [a1 readPointFromNode:v10 pointIdMap:v8 state:v9];
+          v11 = [self readPointFromNode:v10 pointIdMap:mapCopy state:stateCopy];
         }
       }
 
@@ -126,11 +126,11 @@
   return v11;
 }
 
-+ (id)readPointFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5
++ (id)readPointFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state
 {
-  v35 = a4;
-  v8 = a5;
-  v9 = [a1 readPointTypeFromNode:a3];
+  mapCopy = map;
+  stateCopy = state;
+  v9 = [self readPointTypeFromNode:node];
   v10 = v9;
   if (v9 > 2)
   {
@@ -181,38 +181,38 @@ LABEL_14:
   v13 = v14;
 LABEL_15:
   [(ODDNodePoint *)v13 setType:v10];
-  v15 = [v8 officeArtState];
-  v33 = [(ODDPoint *)v13 shapeProperties];
-  v16 = OCXFirstChild(a3);
-  v17 = [v8 ODXDiagramNamespace];
-  HasName = CXNodeHasName(v16, v17, "prSet");
+  officeArtState = [stateCopy officeArtState];
+  shapeProperties = [(ODDPoint *)v13 shapeProperties];
+  v16 = OCXFirstChild(node);
+  oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+  HasName = CXNodeHasName(v16, oDXDiagramNamespace, "prSet");
 
   if (HasName)
   {
-    v19 = [(ODDPoint *)v13 propertySet];
-    [ODXPointPropertySet readNode:v16 toSet:v19];
+    propertySet = [(ODDPoint *)v13 propertySet];
+    [ODXPointPropertySet readNode:v16 toSet:propertySet];
 
     v16 = OCXNextSibling(v16);
   }
 
-  v20 = [v8 ODXDiagramNamespace];
-  v21 = CXNodeHasName(v16, v20, "spPr");
+  oDXDiagramNamespace2 = [stateCopy ODXDiagramNamespace];
+  v21 = CXNodeHasName(v16, oDXDiagramNamespace2, "spPr");
 
   if (v21)
   {
-    [OAXGraphic readPropertiesFromXmlNode:v16 graphicProperties:v34 drawingState:v15];
+    [OAXGraphic readPropertiesFromXmlNode:v16 graphicProperties:v34 drawingState:officeArtState];
     v16 = OCXNextSibling(v16);
   }
 
-  v22 = [v8 ODXDiagramNamespace];
-  v23 = CXNodeHasName(v16, v22, "style");
+  oDXDiagramNamespace3 = [stateCopy ODXDiagramNamespace];
+  v23 = CXNodeHasName(v16, oDXDiagramNamespace3, "style");
 
   if (v23)
   {
     v24 = objc_alloc_init(OADShapeStyle);
-    [OAXShapeStyle readFromNode:v16 shapeStyle:v24 drawingState:v15];
-    v25 = [v15 styleMatrix];
-    [(OADShapeStyle *)v24 applyToGraphicProperties:v34 styleMatrix:v25];
+    [OAXShapeStyle readFromNode:v16 shapeStyle:v24 drawingState:officeArtState];
+    styleMatrix = [officeArtState styleMatrix];
+    [(OADShapeStyle *)v24 applyToGraphicProperties:v34 styleMatrix:styleMatrix];
 
     v16 = OCXNextSibling(v16);
     v26 = v24;
@@ -223,41 +223,41 @@ LABEL_15:
     v26 = 0;
   }
 
-  v27 = [v8 ODXDiagramNamespace];
-  v28 = CXNodeHasName(v16, v27, "t");
+  oDXDiagramNamespace4 = [stateCopy ODXDiagramNamespace];
+  v28 = CXNodeHasName(v16, oDXDiagramNamespace4, "t");
 
   if (v28)
   {
     v29 = objc_alloc_init(OADTextBody);
     [(ODDPoint *)v13 setText:v29];
-    [OAXTextBody readTextBodyFromXmlNode:v16 textBody:v29 drawingState:v15];
+    [OAXTextBody readTextBodyFromXmlNode:v16 textBody:v29 drawingState:officeArtState];
     if (v26)
     {
       [(OADShapeStyle *)v26 applyToTextBody:v29];
     }
   }
 
-  v30 = [a1 readModelIdentifierFromNode:a3 attributeName:"modelId"];
+  v30 = [self readModelIdentifierFromNode:node attributeName:"modelId"];
   if (!v30)
   {
     [MEMORY[0x277CBEAD8] raise:@"ODXException" format:@"Didn't find required model identifier"];
   }
 
-  v31 = [v35 objectForKey:v30];
+  v31 = [mapCopy objectForKey:v30];
 
   if (v31)
   {
     [MEMORY[0x277CBEAD8] raise:@"ODXException" format:@"Already a point for the identifier"];
   }
 
-  [v35 setObject:v13 forUncopiedKey:v30];
+  [mapCopy setObject:v13 forUncopiedKey:v30];
 
   return v12;
 }
 
-+ (int)readPointTypeFromNode:(_xmlNode *)a3
++ (int)readPointTypeFromNode:(_xmlNode *)node
 {
-  NoNsProp = xmlGetNoNsProp(a3, "type");
+  NoNsProp = xmlGetNoNsProp(node, "type");
   if (!NoNsProp)
   {
     return 2;
@@ -308,20 +308,20 @@ LABEL_15:
   return v5;
 }
 
-+ (void)readConnectionListFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5
++ (void)readConnectionListFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state
 {
-  v12 = a4;
-  v8 = a5;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  mapCopy = map;
+  stateCopy = state;
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE)
     {
-      v10 = [v8 ODXDiagramNamespace];
-      HasName = CXNodeHasName(i, v10, "cxn");
+      oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+      HasName = CXNodeHasName(i, oDXDiagramNamespace, "cxn");
 
       if (HasName)
       {
-        [a1 readConnectionFromNode:i pointIdMap:v12 state:v8];
+        [self readConnectionFromNode:i pointIdMap:mapCopy state:stateCopy];
       }
 
       else
@@ -332,26 +332,26 @@ LABEL_15:
   }
 }
 
-+ (void)readConnectionFromNode:(_xmlNode *)a3 pointIdMap:(id)a4 state:(id)a5
++ (void)readConnectionFromNode:(_xmlNode *)node pointIdMap:(id)map state:(id)state
 {
-  v18 = a4;
-  v7 = [a1 readModelIdentifierFromNode:a3 attributeName:"srcId"];
-  v8 = [v18 objectForKey:v7];
+  mapCopy = map;
+  v7 = [self readModelIdentifierFromNode:node attributeName:"srcId"];
+  v8 = [mapCopy objectForKey:v7];
   if (!v8)
   {
     [MEMORY[0x277CBEAD8] raise:@"ODXException" format:@"Missing connection source"];
   }
 
-  v9 = [a1 readModelIdentifierFromNode:a3 attributeName:"destId"];
-  v10 = [v18 objectForKey:v9];
+  v9 = [self readModelIdentifierFromNode:node attributeName:"destId"];
+  v10 = [mapCopy objectForKey:v9];
   if (!v10)
   {
     [MEMORY[0x277CBEAD8] raise:@"ODXException" format:@"Missing connection destination"];
   }
 
-  v11 = CXRequiredUnsignedLongAttribute(a3, CXNoNamespace, "srcOrd");
-  CXRequiredUnsignedLongAttribute(a3, CXNoNamespace, "destOrd");
-  v12 = [a1 readConnectionTypeFromNode:a3];
+  v11 = CXRequiredUnsignedLongAttribute(node, CXNoNamespace, "srcOrd");
+  CXRequiredUnsignedLongAttribute(node, CXNoNamespace, "destOrd");
+  v12 = [self readConnectionTypeFromNode:node];
   if (v12)
   {
     if (v12 == 1)
@@ -387,10 +387,10 @@ LABEL_15:
 
     v13 = v10;
     [v8 addChild:v13 order:v11];
-    v14 = [a1 readModelIdentifierFromNode:a3 attributeName:"parTransId"];
+    v14 = [self readModelIdentifierFromNode:node attributeName:"parTransId"];
     if (v14)
     {
-      v15 = [v18 objectForKey:v14];
+      v15 = [mapCopy objectForKey:v14];
       if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         [v13 setParentTransition:v15];
@@ -402,10 +402,10 @@ LABEL_15:
       }
     }
 
-    v16 = [a1 readModelIdentifierFromNode:a3 attributeName:"sibTransId"];
+    v16 = [self readModelIdentifierFromNode:node attributeName:"sibTransId"];
     if (v16)
     {
-      v17 = [v18 objectForKey:v16];
+      v17 = [mapCopy objectForKey:v16];
       if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         [v13 setSiblingTransition:v17];
@@ -419,9 +419,9 @@ LABEL_15:
   }
 }
 
-+ (int)readConnectionTypeFromNode:(_xmlNode *)a3
++ (int)readConnectionTypeFromNode:(_xmlNode *)node
 {
-  NoNsProp = xmlGetNoNsProp(a3, "type");
+  NoNsProp = xmlGetNoNsProp(node, "type");
   if (NoNsProp)
   {
     v4 = NoNsProp;
@@ -451,27 +451,27 @@ LABEL_9:
   return 0;
 }
 
-+ (void)associatePresentationsInIdMap:(id)a3
++ (void)associatePresentationsInIdMap:(id)map
 {
-  v10 = a3;
-  v3 = [v10 objectEnumerator];
+  mapCopy = map;
+  objectEnumerator = [mapCopy objectEnumerator];
   while (1)
   {
-    v4 = [v3 nextObject];
-    v5 = v4;
-    if (!v4)
+    nextObject = [objectEnumerator nextObject];
+    v5 = nextObject;
+    if (!nextObject)
     {
       break;
     }
 
-    if ([v4 type] == 4)
+    if ([nextObject type] == 4)
     {
-      v6 = [v5 propertySet];
-      v7 = [v6 presentationAssociatedId];
+      propertySet = [v5 propertySet];
+      presentationAssociatedId = [propertySet presentationAssociatedId];
 
-      if (v7)
+      if (presentationAssociatedId)
       {
-        v8 = [v10 objectForKey:v7];
+        v8 = [mapCopy objectForKey:presentationAssociatedId];
         if (v8)
         {
           objc_opt_class();

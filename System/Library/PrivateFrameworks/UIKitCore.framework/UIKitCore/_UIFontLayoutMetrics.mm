@@ -1,14 +1,14 @@
 @interface _UIFontLayoutMetrics
-- (double)readableWidthForFont:(id)a3;
+- (double)readableWidthForFont:(id)font;
 @end
 
 @implementation _UIFontLayoutMetrics
 
-- (double)readableWidthForFont:(id)a3
+- (double)readableWidthForFont:(id)font
 {
-  if (a3)
+  if (font)
   {
-    [a3 readableWidth];
+    [font readableWidth];
   }
 
   else

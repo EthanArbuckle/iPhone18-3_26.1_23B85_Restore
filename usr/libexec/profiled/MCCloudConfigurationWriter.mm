@@ -1,20 +1,20 @@
 @interface MCCloudConfigurationWriter
 + (id)sharedInstance;
-+ (void)setAMFISupervisionFromCloudConfiguration:(id)a3;
++ (void)setAMFISupervisionFromCloudConfiguration:(id)configuration;
 - (BOOL)_isCloudConfigurationAvailableInDEP;
-- (BOOL)_saveCloudConfigDetails:(id)a3 outError:(id *)a4;
-- (BOOL)_savePendingCloudConfigDetails:(id)a3 outError:(id *)a4;
-- (BOOL)_unpairFromDevicesIfNeededWithDetails:(id)a3 outError:(id *)a4;
-- (BOOL)_validateCloudConfigDetails:(id)a3 outError:(id *)a4;
-- (BOOL)_validateDetails:(id)a3 outReasonWhyInvalid:(id *)a4;
-- (BOOL)_verifyActivationState:(id *)a3;
-- (BOOL)_verifyCloudConfigSourceWithDetails:(id)a3 outError:(id *)a4;
-- (BOOL)finalizeCloudConfigurationOutError:(id *)a3;
-- (BOOL)saveCloudConfigurationDetails:(id)a3 outError:(id *)a4;
-- (BOOL)saveCloudConfigurationDetailsForPendingMigration:(id)a3 outError:(id *)a4;
-- (id)_applyEnforcedCloudConfigRules:(id)a3;
-- (id)_updateCloudConfigDetails:(id)a3;
-- (void)_saveSetAsideDetails:(id)a3;
+- (BOOL)_saveCloudConfigDetails:(id)details outError:(id *)error;
+- (BOOL)_savePendingCloudConfigDetails:(id)details outError:(id *)error;
+- (BOOL)_unpairFromDevicesIfNeededWithDetails:(id)details outError:(id *)error;
+- (BOOL)_validateCloudConfigDetails:(id)details outError:(id *)error;
+- (BOOL)_validateDetails:(id)details outReasonWhyInvalid:(id *)invalid;
+- (BOOL)_verifyActivationState:(id *)state;
+- (BOOL)_verifyCloudConfigSourceWithDetails:(id)details outError:(id *)error;
+- (BOOL)finalizeCloudConfigurationOutError:(id *)error;
+- (BOOL)saveCloudConfigurationDetails:(id)details outError:(id *)error;
+- (BOOL)saveCloudConfigurationDetailsForPendingMigration:(id)migration outError:(id *)error;
+- (id)_applyEnforcedCloudConfigRules:(id)rules;
+- (id)_updateCloudConfigDetails:(id)details;
+- (void)_saveSetAsideDetails:(id)details;
 - (void)faceTimeSignInAttemptDidFinish;
 @end
 
@@ -35,21 +35,21 @@
 - (void)faceTimeSignInAttemptDidFinish
 {
   v3 = +[MDMCloudConfiguration sharedConfiguration];
-  v4 = [v3 details];
-  v5 = [v4 mutableCopy];
+  details = [v3 details];
+  v5 = [details mutableCopy];
 
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:kCCAttemptedFaceTimeSignInKey];
   [(MCCloudConfigurationWriter *)self saveCloudConfigurationDetails:v5 outError:0];
 }
 
-- (BOOL)saveCloudConfigurationDetails:(id)a3 outError:(id *)a4
+- (BOOL)saveCloudConfigurationDetails:(id)details outError:(id *)error
 {
-  v6 = a3;
-  if ([(MCCloudConfigurationWriter *)self _verifyActivationState:a4]&& [(MCCloudConfigurationWriter *)self _validateCloudConfigDetails:v6 outError:a4]&& [(MCCloudConfigurationWriter *)self _verifyCloudConfigSourceWithDetails:v6 outError:a4])
+  detailsCopy = details;
+  if ([(MCCloudConfigurationWriter *)self _verifyActivationState:error]&& [(MCCloudConfigurationWriter *)self _validateCloudConfigDetails:detailsCopy outError:error]&& [(MCCloudConfigurationWriter *)self _verifyCloudConfigSourceWithDetails:detailsCopy outError:error])
   {
-    v7 = [(MCCloudConfigurationWriter *)self _applyEnforcedCloudConfigRules:v6];
+    v7 = [(MCCloudConfigurationWriter *)self _applyEnforcedCloudConfigRules:detailsCopy];
 
-    if ([(MCCloudConfigurationWriter *)self _unpairFromDevicesIfNeededWithDetails:v7 outError:a4])
+    if ([(MCCloudConfigurationWriter *)self _unpairFromDevicesIfNeededWithDetails:v7 outError:error])
     {
       if (![v7 count])
       {
@@ -70,7 +70,7 @@
 
         v14 = +[NSFileManager defaultManager];
         v15 = MCCloudConfigurationDetailsFilePath();
-        v9 = [v14 removeItemAtPath:v15 error:a4];
+        v9 = [v14 removeItemAtPath:v15 error:error];
 
         if (v9)
         {
@@ -82,16 +82,16 @@ LABEL_18:
           if (v17)
           {
             v18 = [v7 objectForKeyedSubscript:v16];
-            v19 = [v18 BOOLValue];
+            bOOLValue = [v18 BOOLValue];
           }
 
           else
           {
-            v19 = 1;
+            bOOLValue = 1;
           }
 
           v20 = +[MCRestrictionManagerWriter sharedManager];
-          [v20 setBoolValue:v19 forSetting:MCFeatureHostPairingAllowed sender:@"MCCloudConfigurationWriter.SaveCloudConfiguration"];
+          [v20 setBoolValue:bOOLValue forSetting:MCFeatureHostPairingAllowed sender:@"MCCloudConfigurationWriter.SaveCloudConfiguration"];
 
           v21 = [v7 objectForKeyedSubscript:kCCSkipSetupKey];
           v22 = [v21 containsObject:kMCCCSkipSetupDiagnostics];
@@ -107,9 +107,9 @@ LABEL_18:
           }
 
           v25 = [v7 objectForKeyedSubscript:kCCIsSupervisedKey];
-          v26 = [v25 BOOLValue];
+          bOOLValue2 = [v25 BOOLValue];
 
-          if (v26)
+          if (bOOLValue2)
           {
             v27 = +[MCCrypto createAndStoreNewActivationLockBypassCodeAndHashIfNeeded];
             [MCCloudConfigurationWriter setAMFISupervisionFromCloudConfiguration:v7];
@@ -119,12 +119,12 @@ LABEL_18:
         }
 
 LABEL_28:
-        v6 = v7;
+        detailsCopy = v7;
         goto LABEL_9;
       }
 
       v8 = [(MCCloudConfigurationWriter *)self _updateCloudConfigDetails:v7];
-      if ([(MCCloudConfigurationWriter *)self _saveCloudConfigDetails:v8 outError:a4])
+      if ([(MCCloudConfigurationWriter *)self _saveCloudConfigDetails:v8 outError:error])
       {
         [(MCCloudConfigurationWriter *)self _saveSetAsideDetails:v8];
 
@@ -142,15 +142,15 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)saveCloudConfigurationDetailsForPendingMigration:(id)a3 outError:(id *)a4
+- (BOOL)saveCloudConfigurationDetailsForPendingMigration:(id)migration outError:(id *)error
 {
-  v6 = a3;
-  if (![(MCCloudConfigurationWriter *)self _verifyActivationState:a4]|| ![(MCCloudConfigurationWriter *)self _validateCloudConfigDetails:v6 outError:a4]|| ![(MCCloudConfigurationWriter *)self _verifyCloudConfigSourceWithDetails:v6 outError:a4])
+  migrationCopy = migration;
+  if (![(MCCloudConfigurationWriter *)self _verifyActivationState:error]|| ![(MCCloudConfigurationWriter *)self _validateCloudConfigDetails:migrationCopy outError:error]|| ![(MCCloudConfigurationWriter *)self _verifyCloudConfigSourceWithDetails:migrationCopy outError:error])
   {
     goto LABEL_6;
   }
 
-  if (![v6 count])
+  if (![migrationCopy count])
   {
     v11 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -173,8 +173,8 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v7 = [(MCCloudConfigurationWriter *)self _updateCloudConfigDetails:v6];
-  v8 = [(MCCloudConfigurationWriter *)self _savePendingCloudConfigDetails:v7 outError:a4];
+  v7 = [(MCCloudConfigurationWriter *)self _updateCloudConfigDetails:migrationCopy];
+  v8 = [(MCCloudConfigurationWriter *)self _savePendingCloudConfigDetails:v7 outError:error];
 
   if (v8)
   {
@@ -191,7 +191,7 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)finalizeCloudConfigurationOutError:(id *)a3
+- (BOOL)finalizeCloudConfigurationOutError:(id *)error
 {
   v4 = +[NSFileManager defaultManager];
   v5 = MCCloudConfigurationSetAsideDetailsFilePath();
@@ -223,11 +223,11 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to remove set aside cloud configuration. Error: %{public}@", buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
     v11 = v9;
     v12 = 0;
-    *a3 = v9;
+    *error = v9;
   }
 
   else
@@ -240,12 +240,12 @@ LABEL_9:
   return v12;
 }
 
-+ (void)setAMFISupervisionFromCloudConfiguration:(id)a3
++ (void)setAMFISupervisionFromCloudConfiguration:(id)configuration
 {
-  v3 = [a3 objectForKeyedSubscript:kCCConfigurationSourceKey];
-  v4 = [v3 intValue];
+  v3 = [configuration objectForKeyedSubscript:kCCConfigurationSourceKey];
+  intValue = [v3 intValue];
 
-  switch(v4)
+  switch(intValue)
   {
     case 5u:
       v5 = _MCLogObjects[0];
@@ -270,7 +270,7 @@ LABEL_9:
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
       {
         v7[0] = 67240192;
-        v7[1] = v4;
+        v7[1] = intValue;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "AMFI/SEP ignoring supervision source: %{public}d", v7, 8u);
       }
 
@@ -312,10 +312,10 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_verifyActivationState:(id *)a3
+- (BOOL)_verifyActivationState:(id *)state
 {
-  v4 = [(MCCloudConfigurationWriter *)self _isActivated];
-  if (!v4)
+  _isActivated = [(MCCloudConfigurationWriter *)self _isActivated];
+  if (!_isActivated)
   {
     v5 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -328,20 +328,20 @@ LABEL_9:
     v7 = MCErrorArray();
     v8 = [NSError MCErrorWithDomain:v6 code:33003 descriptionArray:v7 errorType:MCErrorTypeFatal, 0];
 
-    if (a3)
+    if (state)
     {
       v9 = v8;
-      *a3 = v8;
+      *state = v8;
     }
   }
 
-  return v4;
+  return _isActivated;
 }
 
-- (BOOL)_validateCloudConfigDetails:(id)a3 outError:(id *)a4
+- (BOOL)_validateCloudConfigDetails:(id)details outError:(id *)error
 {
   v13 = 0;
-  v5 = [(MCCloudConfigurationWriter *)self _validateDetails:a3 outReasonWhyInvalid:&v13];
+  v5 = [(MCCloudConfigurationWriter *)self _validateDetails:details outReasonWhyInvalid:&v13];
   v6 = v13;
   if (!v5)
   {
@@ -357,26 +357,26 @@ LABEL_9:
     v9 = MCErrorArray();
     v10 = [NSError MCErrorWithDomain:v8 code:33002 descriptionArray:v9 errorType:MCErrorTypeFatal, 0];
 
-    if (a4)
+    if (error)
     {
       v11 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   return v5;
 }
 
-- (BOOL)_validateDetails:(id)a3 outReasonWhyInvalid:(id *)a4
+- (BOOL)_validateDetails:(id)details outReasonWhyInvalid:(id *)invalid
 {
-  v5 = a3;
+  detailsCopy = details;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = sub_10008146C;
   v41 = sub_10008147C;
   v42 = 0;
-  if (v5)
+  if (detailsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -385,7 +385,7 @@ LABEL_9:
       v34[1] = 3221225472;
       v34[2] = sub_100081484;
       v34[3] = &unk_10011CCF8;
-      v6 = v5;
+      v6 = detailsCopy;
       v35 = v6;
       v36 = &v37;
       v32[0] = _NSConcreteStackBlock;
@@ -445,10 +445,10 @@ LABEL_9:
   }
 
   v18 = v38[5];
-  if (a4 && v18)
+  if (invalid && v18)
   {
     v18 = v18;
-    *a4 = v18;
+    *invalid = v18;
   }
 
   v19 = v18 == 0;
@@ -457,20 +457,20 @@ LABEL_9:
   return v19;
 }
 
-- (BOOL)_verifyCloudConfigSourceWithDetails:(id)a3 outError:(id *)a4
+- (BOOL)_verifyCloudConfigSourceWithDetails:(id)details outError:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && ([v6 objectForKeyedSubscript:kCCConfigurationSourceKey], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "intValue"), v8, v9 != 1) && -[MCCloudConfigurationWriter _activationRecordIndicatesCloudConfigurationIsAvailable](self, "_activationRecordIndicatesCloudConfigurationIsAvailable") && -[MCCloudConfigurationWriter _isCloudConfigurationAvailableInDEP](self, "_isCloudConfigurationAvailableInDEP"))
+  detailsCopy = details;
+  v7 = detailsCopy;
+  if (detailsCopy && ([detailsCopy objectForKeyedSubscript:kCCConfigurationSourceKey], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "intValue"), v8, v9 != 1) && -[MCCloudConfigurationWriter _activationRecordIndicatesCloudConfigurationIsAvailable](self, "_activationRecordIndicatesCloudConfigurationIsAvailable") && -[MCCloudConfigurationWriter _isCloudConfigurationAvailableInDEP](self, "_isCloudConfigurationAvailableInDEP"))
   {
     v10 = MCCloudConfigErrorDomain;
     v11 = MCErrorArray();
     v12 = [NSError MCErrorWithDomain:v10 code:33004 descriptionArray:v11 errorType:MCErrorTypeFatal, 0];
 
-    if (a4)
+    if (error)
     {
       v13 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     v14 = 0;
@@ -484,12 +484,12 @@ LABEL_9:
   return v14;
 }
 
-- (BOOL)_unpairFromDevicesIfNeededWithDetails:(id)a3 outError:(id *)a4
+- (BOOL)_unpairFromDevicesIfNeededWithDetails:(id)details outError:(id *)error
 {
-  v5 = a3;
+  detailsCopy = details;
   v6 = kCCAllowPairingKey;
-  v7 = [v5 objectForKeyedSubscript:kCCAllowPairingKey];
-  if (!v7 || (v8 = v7, [v5 objectForKeyedSubscript:v6], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, (v10 & 1) != 0) || (MCLockdownDeletePairingRecords() & 1) != 0)
+  v7 = [detailsCopy objectForKeyedSubscript:kCCAllowPairingKey];
+  if (!v7 || (v8 = v7, [detailsCopy objectForKeyedSubscript:v6], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "BOOLValue"), v9, v8, (v10 & 1) != 0) || (MCLockdownDeletePairingRecords() & 1) != 0)
   {
     v11 = 1;
   }
@@ -500,10 +500,10 @@ LABEL_9:
     v14 = MCErrorArray();
     v15 = [NSError MCErrorWithDomain:v13 code:33015 descriptionArray:v14 errorType:MCErrorTypeFatal, 0];
 
-    if (a4)
+    if (error)
     {
       v16 = v15;
-      *a4 = v15;
+      *error = v15;
     }
 
     v11 = 0;
@@ -512,17 +512,17 @@ LABEL_9:
   return v11;
 }
 
-- (id)_updateCloudConfigDetails:(id)a3
+- (id)_updateCloudConfigDetails:(id)details
 {
-  v3 = [a3 mutableCopy];
+  v3 = [details mutableCopy];
   v4 = kCCIsMDMUnremovable;
   v5 = [v3 objectForKeyedSubscript:kCCIsMDMUnremovable];
   if ([v5 BOOLValue])
   {
     v6 = [v3 objectForKeyedSubscript:kCCIsSupervisedKey];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    if ((v7 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       [v3 setObject:&__kCFBooleanFalse forKeyedSubscript:v4];
     }
@@ -537,9 +537,9 @@ LABEL_9:
   if ([v9 BOOLValue])
   {
     v10 = [v3 objectForKeyedSubscript:kCCIsSupervisedKey];
-    v11 = [v10 BOOLValue];
+    bOOLValue2 = [v10 BOOLValue];
 
-    if ((v11 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       [v3 setObject:&__kCFBooleanFalse forKeyedSubscript:v8];
     }
@@ -550,9 +550,9 @@ LABEL_9:
   }
 
   v12 = [v3 objectForKeyedSubscript:kCCIsRapidReturnToServiceKey];
-  v13 = [v12 BOOLValue];
+  bOOLValue3 = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue3)
   {
     [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:v8];
   }
@@ -564,9 +564,9 @@ LABEL_9:
     if (MCGestaltSupportsMultiUser())
     {
       v16 = [v3 objectForKeyedSubscript:kCCIsSupervisedKey];
-      v17 = [v16 BOOLValue];
+      bOOLValue4 = [v16 BOOLValue];
 
-      if (v17)
+      if (bOOLValue4)
       {
         goto LABEL_18;
       }
@@ -585,15 +585,15 @@ LABEL_9:
 
 LABEL_18:
   v18 = +[MCActivationUtilities sharedInstance];
-  v19 = [v18 isHRNMode];
+  isHRNMode = [v18 isHRNMode];
 
-  if ((v19 | 2) == 2)
+  if ((isHRNMode | 2) == 2)
   {
     v20 = kMCCCIsMultiUserKey;
     v21 = [v3 objectForKeyedSubscript:kMCCCIsMultiUserKey];
-    v22 = [v21 BOOLValue];
+    bOOLValue5 = [v21 BOOLValue];
 
-    if (v22)
+    if (bOOLValue5)
     {
       v23 = _MCLogObjects[0];
       if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
@@ -611,13 +611,13 @@ LABEL_18:
   return v24;
 }
 
-- (id)_applyEnforcedCloudConfigRules:(id)a3
+- (id)_applyEnforcedCloudConfigRules:(id)rules
 {
-  v3 = [a3 mutableCopy];
+  v3 = [rules mutableCopy];
   v4 = [v3 objectForKeyedSubscript:kCCIsRapidReturnToServiceKey];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:kCCAwaitDeviceConfiguredKey];
   }
@@ -627,22 +627,22 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)_saveCloudConfigDetails:(id)a3 outError:(id *)a4
+- (BOOL)_saveCloudConfigDetails:(id)details outError:(id *)error
 {
-  v6 = a3;
+  detailsCopy = details;
   v7 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
     v8 = kCCIsSupervisedKey;
     v9 = v7;
-    v10 = [v6 objectForKeyedSubscript:v8];
+    v10 = [detailsCopy objectForKeyedSubscript:v8];
     *buf = 138543362;
     v20 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Storing cloud configuration. (supervised: %{public}@)", buf, 0xCu);
   }
 
   v11 = MCCloudConfigurationDetailsFilePath();
-  v12 = [(MCCloudConfigurationWriter *)self _writeDetails:v6 toFile:v11];
+  v12 = [(MCCloudConfigurationWriter *)self _writeDetails:detailsCopy toFile:v11];
 
   if (!v12)
   {
@@ -657,19 +657,19 @@ LABEL_18:
     v15 = MCErrorArray();
     v16 = [NSError MCErrorWithDomain:v14 code:33023 descriptionArray:v15 errorType:MCErrorTypeFatal, 0];
 
-    if (a4)
+    if (error)
     {
       v17 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
   return v12;
 }
 
-- (void)_saveSetAsideDetails:(id)a3
+- (void)_saveSetAsideDetails:(id)details
 {
-  v4 = [a3 mutableCopy];
+  v4 = [details mutableCopy];
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -707,9 +707,9 @@ LABEL_18:
   }
 }
 
-- (BOOL)_savePendingCloudConfigDetails:(id)a3 outError:(id *)a4
+- (BOOL)_savePendingCloudConfigDetails:(id)details outError:(id *)error
 {
-  v6 = a3;
+  detailsCopy = details;
   v7 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -718,7 +718,7 @@ LABEL_18:
   }
 
   v8 = MDMCloudConfigurationPendingMigrationDetailsFilePath();
-  v9 = [(MCCloudConfigurationWriter *)self _writeDetails:v6 toFile:v8];
+  v9 = [(MCCloudConfigurationWriter *)self _writeDetails:detailsCopy toFile:v8];
 
   if (v9)
   {
@@ -749,10 +749,10 @@ LABEL_18:
     v15 = MCErrorArray();
     v16 = [NSError MCErrorWithDomain:v14 code:33023 descriptionArray:v15 errorType:MCErrorTypeFatal, 0];
 
-    if (a4)
+    if (error)
     {
       v17 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 

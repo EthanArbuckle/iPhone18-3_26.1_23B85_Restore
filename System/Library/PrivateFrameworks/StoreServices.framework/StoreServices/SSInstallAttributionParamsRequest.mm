@@ -1,64 +1,64 @@
 @interface SSInstallAttributionParamsRequest
-- (SSInstallAttributionParamsRequest)initWithAppAdamId:(id)a3 adNetworkId:(id)a4 campaignId:(id)a5 impressionId:(id)a6 timestamp:(id)a7 attributionSignature:(id)a8 originatingBundleId:(id)a9 overrideCampaignLimit:(BOOL)a10;
-- (SSInstallAttributionParamsRequest)initWithXPCEncoding:(id)a3;
+- (SSInstallAttributionParamsRequest)initWithAppAdamId:(id)id adNetworkId:(id)networkId campaignId:(id)campaignId impressionId:(id)impressionId timestamp:(id)timestamp attributionSignature:(id)signature originatingBundleId:(id)bundleId overrideCampaignLimit:(BOOL)self0;
+- (SSInstallAttributionParamsRequest)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
-- (void)startWithCompletionBlock:(id)a3;
+- (void)startWithCompletionBlock:(id)block;
 @end
 
 @implementation SSInstallAttributionParamsRequest
 
-- (SSInstallAttributionParamsRequest)initWithAppAdamId:(id)a3 adNetworkId:(id)a4 campaignId:(id)a5 impressionId:(id)a6 timestamp:(id)a7 attributionSignature:(id)a8 originatingBundleId:(id)a9 overrideCampaignLimit:(BOOL)a10
+- (SSInstallAttributionParamsRequest)initWithAppAdamId:(id)id adNetworkId:(id)networkId campaignId:(id)campaignId impressionId:(id)impressionId timestamp:(id)timestamp attributionSignature:(id)signature originatingBundleId:(id)bundleId overrideCampaignLimit:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  idCopy = id;
+  networkIdCopy = networkId;
+  campaignIdCopy = campaignId;
+  impressionIdCopy = impressionId;
+  timestampCopy = timestamp;
+  signatureCopy = signature;
+  bundleIdCopy = bundleId;
   v39.receiver = self;
   v39.super_class = SSInstallAttributionParamsRequest;
   v23 = [(SSRequest *)&v39 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [idCopy copy];
     appAdamId = v23->_appAdamId;
     v23->_appAdamId = v24;
 
-    v26 = [v17 copy];
+    v26 = [networkIdCopy copy];
     adNetworkId = v23->_adNetworkId;
     v23->_adNetworkId = v26;
 
-    v28 = [v18 copy];
+    v28 = [campaignIdCopy copy];
     campaignId = v23->_campaignId;
     v23->_campaignId = v28;
 
-    v30 = [v19 copy];
+    v30 = [impressionIdCopy copy];
     impressionId = v23->_impressionId;
     v23->_impressionId = v30;
 
-    v32 = [v20 copy];
+    v32 = [timestampCopy copy];
     timestamp = v23->_timestamp;
     v23->_timestamp = v32;
 
-    v34 = [v21 copy];
+    v34 = [signatureCopy copy];
     attributionSignature = v23->_attributionSignature;
     v23->_attributionSignature = v34;
 
-    v36 = [v22 copy];
+    v36 = [bundleIdCopy copy];
     originatingBundleId = v23->_originatingBundleId;
     v23->_originatingBundleId = v36;
 
-    v23->_overrideCampaignLimit = a10;
+    v23->_overrideCampaignLimit = limit;
   }
 
   return v23;
 }
 
-- (void)startWithCompletionBlock:(id)a3
+- (void)startWithCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -67,19 +67,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -103,9 +103,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -117,8 +117,8 @@ LABEL_16:
   v19[2] = __62__SSInstallAttributionParamsRequest_startWithCompletionBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:200 messageBlock:v19];
 }
 
@@ -165,7 +165,7 @@ void __62__SSInstallAttributionParamsRequest_startWithCompletionBlock___block_in
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 
@@ -187,12 +187,12 @@ void __52__SSInstallAttributionParamsRequest_copyXPCEncoding__block_invoke(uint6
   xpc_dictionary_set_BOOL(v2, "overrideCampaignLimit", v3);
 }
 
-- (SSInstallAttributionParamsRequest)initWithXPCEncoding:(id)a3
+- (SSInstallAttributionParamsRequest)initWithXPCEncoding:(id)encoding
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || MEMORY[0x1DA6E0380](v4) != MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (!encodingCopy || MEMORY[0x1DA6E0380](encodingCopy) != MEMORY[0x1E69E9E80])
   {
     goto LABEL_22;
   }
@@ -246,19 +246,19 @@ void __52__SSInstallAttributionParamsRequest_copyXPCEncoding__block_invoke(uint6
         v27 = +[SSLogConfig sharedConfig];
       }
 
-      v28 = [v27 shouldLog];
+      shouldLog = [v27 shouldLog];
       if ([v27 shouldLogToDisk])
       {
-        v29 = v28 | 2;
+        v29 = shouldLog | 2;
       }
 
       else
       {
-        v29 = v28;
+        v29 = shouldLog;
       }
 
-      v30 = [v27 OSLogObject];
-      if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v27 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v29 &= 2u;
       }
@@ -281,9 +281,9 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v30 = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v43, v41}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v43, v41}];
         free(v33);
-        SSFileLog(v27, @"%@", v34, v35, v36, v37, v38, v39, v30);
+        SSFileLog(v27, @"%@", v34, v35, v36, v37, v38, v39, oSLogObject);
       }
 
       goto LABEL_21;

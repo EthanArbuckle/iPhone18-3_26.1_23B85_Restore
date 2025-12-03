@@ -1,33 +1,33 @@
 @interface WFStringParameterState
-+ (id)parameterStateFromModelOutput:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (WFStringParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFStringParameterState)initWithString:(id)a3;
++ (id)parameterStateFromModelOutput:(id)output;
+- (BOOL)isEqual:(id)equal;
+- (WFStringParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFStringParameterState)initWithString:(id)string;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFStringParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v7 = a5;
-  v8 = [(WFStringParameterState *)self string];
-  (*(a5 + 2))(v7, v8, 0);
+  valueHandlerCopy = valueHandler;
+  string = [(WFStringParameterState *)self string];
+  (*(valueHandler + 2))(valueHandlerCopy, string, 0);
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFStringParameterState *)self string];
-  v3 = [v2 hash];
+  string = [(WFStringParameterState *)self string];
+  v3 = [string hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -37,9 +37,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFStringParameterState *)v4 string];
-      v6 = [(WFStringParameterState *)self string];
-      v7 = [v5 isEqualToString:v6];
+      string = [(WFStringParameterState *)equalCopy string];
+      string2 = [(WFStringParameterState *)self string];
+      v7 = [string isEqualToString:string2];
     }
 
     else
@@ -51,31 +51,31 @@
   return v7;
 }
 
-- (WFStringParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFStringParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v6 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(WFStringParameterState *)self initWithString:v6];
-    v7 = self;
+    self = [(WFStringParameterState *)self initWithString:representationCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (WFStringParameterState)initWithString:(id)a3
+- (WFStringParameterState)initWithString:(id)string
 {
-  v5 = a3;
-  if (!v5)
+  stringCopy = string;
+  if (!stringCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFStringParameterState.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"string"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStringParameterState.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"string"}];
   }
 
   v12.receiver = self;
@@ -83,7 +83,7 @@
   v6 = [(WFStringParameterState *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [stringCopy copy];
     string = v6->_string;
     v6->_string = v7;
 
@@ -93,10 +93,10 @@
   return v6;
 }
 
-+ (id)parameterStateFromModelOutput:(id)a3
++ (id)parameterStateFromModelOutput:(id)output
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithString:v4];
+  outputCopy = output;
+  v5 = [[self alloc] initWithString:outputCopy];
 
   return v5;
 }

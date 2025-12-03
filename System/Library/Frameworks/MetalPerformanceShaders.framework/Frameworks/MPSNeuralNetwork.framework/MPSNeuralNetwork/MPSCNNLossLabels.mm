@@ -616,23 +616,23 @@ LABEL_27:
       explicit = atomic_load_explicit((v5 + 152), memory_order_acquire);
       if (!explicit)
       {
-        v8 = self;
+        selfCopy = self;
         MPSAutoTexture::AllocateTexture((v5 + 152), 0);
-        self = v8;
+        self = selfCopy;
         explicit = atomic_load_explicit(v6, memory_order_acquire);
       }
 
-      v9 = self;
+      selfCopy3 = self;
     }
 
     else
     {
-      v9 = self;
+      selfCopy3 = self;
       explicit = 0;
     }
 
     v10 = objc_alloc(MEMORY[0x277CD7218]);
-    v3 = objc_msgSend_initWithTexture_featureChannels_(v10, v11, explicit, v9->_numFeatureChannels_labels, v12, v13, v14, v15);
+    v3 = objc_msgSend_initWithTexture_featureChannels_(v10, v11, explicit, selfCopy3->_numFeatureChannels_labels, v12, v13, v14, v15);
 
     return v3;
   }

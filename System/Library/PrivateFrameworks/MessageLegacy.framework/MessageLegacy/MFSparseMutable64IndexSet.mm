@@ -1,24 +1,24 @@
 @interface MFSparseMutable64IndexSet
 + (id)indexSet;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (unint64_t)_insertionPositionOfIndex:(unint64_t)a3;
-- (unint64_t)_positionOfIndex:(unint64_t)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (unint64_t)_insertionPositionOfIndex:(unint64_t)index;
+- (unint64_t)_positionOfIndex:(unint64_t)index;
 - (unint64_t)firstIndex;
-- (unint64_t)indexGreaterThanIndex:(unint64_t)a3;
-- (void)_incrementStorageIfNecessaryForCount:(unint64_t)a3;
-- (void)addIndex:(unint64_t)a3;
-- (void)addIndexes:(id)a3;
+- (unint64_t)indexGreaterThanIndex:(unint64_t)index;
+- (void)_incrementStorageIfNecessaryForCount:(unint64_t)count;
+- (void)addIndex:(unint64_t)index;
+- (void)addIndexes:(id)indexes;
 - (void)dealloc;
-- (void)enumerateIndexesWithBlock:(id)a3;
-- (void)removeIndex:(unint64_t)a3;
+- (void)enumerateIndexesWithBlock:(id)block;
+- (void)removeIndex:(unint64_t)index;
 @end
 
 @implementation MFSparseMutable64IndexSet
 
 + (id)indexSet
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -36,7 +36,7 @@
   [(MFSparseMutable64IndexSet *)&v4 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MFSparseMutable64IndexSet);
   v4->_count = self->_count;
@@ -48,10 +48,10 @@
   return v4;
 }
 
-- (void)_incrementStorageIfNecessaryForCount:(unint64_t)a3
+- (void)_incrementStorageIfNecessaryForCount:(unint64_t)count
 {
   self->_cursor = 0;
-  if (a3)
+  if (count)
   {
     storageSize = self->_storageSize;
     v5 = 10;
@@ -62,7 +62,7 @@
       v5 -= 10;
     }
 
-    while (self->_count + a3 > v6);
+    while (self->_count + count > v6);
     if (v5)
     {
       if (self->_storage)
@@ -91,9 +91,9 @@ LABEL_7:
   }
 }
 
-- (unint64_t)_positionOfIndex:(unint64_t)a3
+- (unint64_t)_positionOfIndex:(unint64_t)index
 {
-  __key = a3;
+  __key = index;
   v4 = bsearch_b(&__key, self->_storage, self->_count, 8uLL, &__block_literal_global_17);
   if (v4)
   {
@@ -119,9 +119,9 @@ uint64_t __46__MFSparseMutable64IndexSet__positionOfIndex___block_invoke(uint64_
   }
 }
 
-- (unint64_t)_insertionPositionOfIndex:(unint64_t)a3
+- (unint64_t)_insertionPositionOfIndex:(unint64_t)index
 {
-  __key = a3;
+  __key = index;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -182,7 +182,7 @@ uint64_t __55__MFSparseMutable64IndexSet__insertionPositionOfIndex___block_invok
   }
 }
 
-- (void)addIndex:(unint64_t)a3
+- (void)addIndex:(unint64_t)index
 {
   v5 = [(MFSparseMutable64IndexSet *)self _insertionPositionOfIndex:?];
   if (v5 != -1)
@@ -190,20 +190,20 @@ uint64_t __55__MFSparseMutable64IndexSet__insertionPositionOfIndex___block_invok
     v6 = v5;
     [(MFSparseMutable64IndexSet *)self _incrementStorageIfNecessaryForCount:1];
     memmove(&self->_storage[v6 + 1], &self->_storage[v6], 8 * (self->_count - v6));
-    self->_storage[v6] = a3;
+    self->_storage[v6] = index;
     ++self->_count;
   }
 }
 
-- (void)addIndexes:(id)a3
+- (void)addIndexes:(id)indexes
 {
-  if ([a3 count])
+  if ([indexes count])
   {
-    -[MFSparseMutable64IndexSet _incrementStorageIfNecessaryForCount:](self, "_incrementStorageIfNecessaryForCount:", [a3 count]);
-    v5 = [a3 firstIndex];
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    -[MFSparseMutable64IndexSet _incrementStorageIfNecessaryForCount:](self, "_incrementStorageIfNecessaryForCount:", [indexes count]);
+    firstIndex = [indexes firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexGreaterThanIndex:i])
+      for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indexes indexGreaterThanIndex:i])
       {
         [(MFSparseMutable64IndexSet *)self addIndex:i];
       }
@@ -211,9 +211,9 @@ uint64_t __55__MFSparseMutable64IndexSet__insertionPositionOfIndex___block_invok
   }
 }
 
-- (void)removeIndex:(unint64_t)a3
+- (void)removeIndex:(unint64_t)index
 {
-  v4 = [(MFSparseMutable64IndexSet *)self _positionOfIndex:a3];
+  v4 = [(MFSparseMutable64IndexSet *)self _positionOfIndex:index];
   if (v4 != -1)
   {
     count = self->_count;
@@ -244,7 +244,7 @@ uint64_t __55__MFSparseMutable64IndexSet__insertionPositionOfIndex___block_invok
   }
 }
 
-- (unint64_t)indexGreaterThanIndex:(unint64_t)a3
+- (unint64_t)indexGreaterThanIndex:(unint64_t)index
 {
   cursor = self->_cursor;
   count = self->_count;
@@ -263,7 +263,7 @@ uint64_t __55__MFSparseMutable64IndexSet__insertionPositionOfIndex___block_invok
     v6 = 0;
   }
 
-  else if (self->_storage[cursor] < a3)
+  else if (self->_storage[cursor] < index)
   {
     v6 = cursor + 1;
   }
@@ -282,7 +282,7 @@ uint64_t __55__MFSparseMutable64IndexSet__insertionPositionOfIndex___block_invok
   while (1)
   {
     v8 = self->_storage[v7];
-    if (v8 > a3)
+    if (v8 > index)
     {
       break;
     }
@@ -297,15 +297,15 @@ uint64_t __55__MFSparseMutable64IndexSet__insertionPositionOfIndex___block_invok
   return v8;
 }
 
-- (void)enumerateIndexesWithBlock:(id)a3
+- (void)enumerateIndexesWithBlock:(id)block
 {
   v7 = 0;
-  v5 = [(MFSparseMutable64IndexSet *)self firstIndex];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [(MFSparseMutable64IndexSet *)self firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [(MFSparseMutable64IndexSet *)self indexGreaterThanIndex:i])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(MFSparseMutable64IndexSet *)self indexGreaterThanIndex:i])
     {
-      (*(a3 + 2))(a3, i, &v7);
+      (*(block + 2))(block, i, &v7);
       if (v7)
       {
         break;

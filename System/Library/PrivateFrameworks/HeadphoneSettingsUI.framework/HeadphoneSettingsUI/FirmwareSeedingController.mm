@@ -1,13 +1,13 @@
 @interface FirmwareSeedingController
-- (_TtC19HeadphoneSettingsUI25FirmwareSeedingController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19HeadphoneSettingsUI25FirmwareSeedingController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)getFWSeedingBetaUpdate;
 - (id)getFirmwareLoggingEnabled;
 - (id)specifiers;
 - (void)agreePrivacyConsent;
 - (void)doneWithLegalConsent;
 - (void)notNowToPrivacyConsent;
-- (void)setFWSeedingBetaUpdateWithEnabled:(id)a3;
-- (void)setFirmwareLoggingEnabledWithEnabled:(id)a3;
+- (void)setFWSeedingBetaUpdateWithEnabled:(id)enabled;
+- (void)setFirmwareLoggingEnabledWithEnabled:(id)enabled;
 - (void)showLegalConsent;
 - (void)showPrivacyConsent;
 @end
@@ -43,13 +43,13 @@
   return v4;
 }
 
-- (void)setFWSeedingBetaUpdateWithEnabled:(id)a3
+- (void)setFWSeedingBetaUpdateWithEnabled:(id)enabled
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](enabled);
   MEMORY[0x1E69E5928](self);
-  sub_1AC2EA02C(a3);
+  sub_1AC2EA02C(enabled);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](enabled);
 }
 
 - (id)getFirmwareLoggingEnabled
@@ -61,13 +61,13 @@
   return v4;
 }
 
-- (void)setFirmwareLoggingEnabledWithEnabled:(id)a3
+- (void)setFirmwareLoggingEnabledWithEnabled:(id)enabled
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](enabled);
   MEMORY[0x1E69E5928](self);
-  sub_1AC2EAA38(a3);
+  sub_1AC2EAA38(enabled);
   MEMORY[0x1E69E5920](self);
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](enabled);
 }
 
 - (void)showLegalConsent
@@ -105,15 +105,15 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (_TtC19HeadphoneSettingsUI25FirmwareSeedingController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19HeadphoneSettingsUI25FirmwareSeedingController)initWithNibName:(id)name bundle:(id)bundle
 {
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  if (a3)
+  MEMORY[0x1E69E5928](name);
+  MEMORY[0x1E69E5928](bundle);
+  if (name)
   {
     v6 = sub_1AC30A92C();
     v7 = v4;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](name);
     v8 = v6;
     v9 = v7;
   }
@@ -124,7 +124,7 @@
     v9 = 0;
   }
 
-  return FirmwareSeedingController.init(nibName:bundle:)(v8, v9, a4);
+  return FirmwareSeedingController.init(nibName:bundle:)(v8, v9, bundle);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface QoSObservationServiceClient
-- (BOOL)subscribeToActivityQoSMatchingPredicate:(id)a3 error:(id *)a4;
+- (BOOL)subscribeToActivityQoSMatchingPredicate:(id)predicate error:(id *)error;
 - (_TtC11SessionCore27QoSObservationServiceClient)init;
 @end
 
@@ -12,15 +12,15 @@
   return result;
 }
 
-- (BOOL)subscribeToActivityQoSMatchingPredicate:(id)a3 error:(id *)a4
+- (BOOL)subscribeToActivityQoSMatchingPredicate:(id)predicate error:(id *)error
 {
   v6 = sub_22D0147AC();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x28223BE20](v6, v9);
   v11 = &v19 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = a3;
-  v13 = self;
+  predicateCopy = predicate;
+  selfCopy = self;
   v14 = sub_22D0141EC();
   v16 = v15;
 

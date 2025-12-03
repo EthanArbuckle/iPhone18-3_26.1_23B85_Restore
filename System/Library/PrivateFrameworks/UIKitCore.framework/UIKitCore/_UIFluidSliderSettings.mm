@@ -10,17 +10,17 @@
   v7.receiver = self;
   v7.super_class = _UIFluidSliderSettings;
   [(PTSettings *)&v7 setDefaultValues];
-  v3 = [(_UIFluidSliderSettings *)self programmaticUpdate];
-  [v3 setDampingRatio:0.8];
+  programmaticUpdate = [(_UIFluidSliderSettings *)self programmaticUpdate];
+  [programmaticUpdate setDampingRatio:0.8];
 
-  v4 = [(_UIFluidSliderSettings *)self programmaticUpdate];
-  [v4 setResponse:0.4];
+  programmaticUpdate2 = [(_UIFluidSliderSettings *)self programmaticUpdate];
+  [programmaticUpdate2 setResponse:0.4];
 
-  v5 = [(_UIFluidSliderSettings *)self pressScale];
-  [v5 setDampingRatio:0.9];
+  pressScale = [(_UIFluidSliderSettings *)self pressScale];
+  [pressScale setDampingRatio:0.9];
 
-  v6 = [(_UIFluidSliderSettings *)self pressScale];
-  [v6 setResponse:0.8];
+  pressScale2 = [(_UIFluidSliderSettings *)self pressScale];
+  [pressScale2 setResponse:0.8];
 
   [(_UIFluidSliderSettings *)self setSliderDriftFactor:0.27];
   [(_UIFluidSliderSettings *)self setSliderStepCount:16.0];
@@ -75,8 +75,8 @@
   v44[2] = v9;
   v10 = MEMORY[0x1E69C6638];
   v11 = MEMORY[0x1E69C65E8];
-  v12 = [MEMORY[0x1E69C6640] action];
-  v13 = [v11 rowWithTitle:@"Restore Defaults" action:v12];
+  action = [MEMORY[0x1E69C6640] action];
+  v13 = [v11 rowWithTitle:@"Restore Defaults" action:action];
   v40 = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
   v15 = [v10 sectionWithRows:v14];

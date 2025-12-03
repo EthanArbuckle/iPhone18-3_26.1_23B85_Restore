@@ -2,17 +2,17 @@
 - (WebBookmarksServerReadingListHandler)init;
 - (id)_collection;
 - (id)_readingListQueueBackupPath;
-- (void)_addItemsToReadingList:(id)a3;
-- (void)_addReadingListItemWithAddress:(id)a3 title:(id)a4 previewText:(id)a5 clientBundle:(id)a6 bookmarksCollection:(id)a7;
+- (void)_addItemsToReadingList:(id)list;
+- (void)_addReadingListItemWithAddress:(id)address title:(id)title previewText:(id)text clientBundle:(id)bundle bookmarksCollection:(id)collection;
 - (void)_clearReadingListQueueTimer;
 - (void)_commitReadingListQueue;
 - (void)_finishRestoreReadingListQueueActivityIfNeeded;
-- (void)_queueReadingListItems:(id)a3;
-- (void)_readingListQueueTimerDidFire:(id)a3;
+- (void)_queueReadingListItems:(id)items;
+- (void)_readingListQueueTimerDidFire:(id)fire;
 - (void)_restoreReadingListQueueIfNeeded;
 - (void)_scheduleRestoreReadingListQueueActivity;
 - (void)dealloc;
-- (void)handleAddToReadingListWithMessage:(id)a3 forConnection:(id)a4;
+- (void)handleAddToReadingListWithMessage:(id)message forConnection:(id)connection;
 @end
 
 @implementation WebBookmarksServerReadingListHandler
@@ -80,13 +80,13 @@
   xpc_activity_register("com.apple.webbookmarksd.restoreReadingListQueueActivityIdentifier", v3, handler);
 }
 
-- (void)_addReadingListItemWithAddress:(id)a3 title:(id)a4 previewText:(id)a5 clientBundle:(id)a6 bookmarksCollection:(id)a7
+- (void)_addReadingListItemWithAddress:(id)address title:(id)title previewText:(id)text clientBundle:(id)bundle bookmarksCollection:(id)collection
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [a3 safari_bestURLStringForUserTypedString];
+  titleCopy = title;
+  textCopy = text;
+  bundleCopy = bundle;
+  collectionCopy = collection;
+  safari_bestURLStringForUserTypedString = [address safari_bestURLStringForUserTypedString];
   if (qword_10002E9D8 != -1)
   {
     sub_100017BD0();
@@ -96,7 +96,7 @@
   if (os_log_type_enabled(qword_10002E9D0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v37 = v14;
+    v37 = bundleCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "#Server: Adding item to Reading List from client '%{public}@'", buf, 0xCu);
   }
 
@@ -108,15 +108,15 @@
   v18 = qword_10002E9D0;
   if (os_log_type_enabled(qword_10002E9D0, OS_LOG_TYPE_DEBUG))
   {
-    sub_100017C90(v12, v16, v18);
+    sub_100017C90(titleCopy, safari_bestURLStringForUserTypedString, v18);
   }
 
-  v19 = [NSURL URLWithString:v16];
+  v19 = [NSURL URLWithString:safari_bestURLStringForUserTypedString];
   v20 = [SSReadingList supportsURL:v19];
 
   if (v20)
   {
-    v21 = [v15 firstReadingListBookmarkWithURLMatchingString:v16 prefixMatch:0];
+    v21 = [collectionCopy firstReadingListBookmarkWithURLMatchingString:safari_bestURLStringForUserTypedString prefixMatch:0];
     if (v21)
     {
       if (qword_10002E9D8 != -1)
@@ -135,19 +135,19 @@
       [v21 setDateAdded:v23];
 
       [v21 setReadingListDateLastViewed:0];
-      [v15 saveBookmark:v21 startReadingListFetcher:0];
+      [collectionCopy saveBookmark:v21 startReadingListFetcher:0];
       v24 = [(WebBookmarkCollection *)self->_collection readingListWithUnreadOnly:0];
-      [v15 reorderBookmark:v21 toIndex:{objc_msgSend(v24, "bookmarkCount") - 1}];
+      [collectionCopy reorderBookmark:v21 toIndex:{objc_msgSend(v24, "bookmarkCount") - 1}];
     }
 
     else
     {
-      v35 = self;
-      v25 = [WebBookmark _trimmedTitle:v12];
+      selfCopy = self;
+      v25 = [WebBookmark _trimmedTitle:titleCopy];
 
-      v26 = [WebBookmark _trimmedPreviewText:v13];
+      v26 = [WebBookmark _trimmedPreviewText:textCopy];
 
-      v24 = [[WebBookmark alloc] initReadingListBookmarkWithTitle:v25 address:v16 previewText:v26];
+      v24 = [[WebBookmark alloc] initReadingListBookmarkWithTitle:v25 address:safari_bestURLStringForUserTypedString previewText:v26];
       v27 = +[NSDate date];
       [v24 setDateAdded:v27];
 
@@ -164,18 +164,18 @@
         [v24 UUID];
         v34 = v26;
         v30 = v25;
-        v32 = v31 = v14;
+        v32 = v31 = bundleCopy;
         *buf = 138543362;
         v37 = v32;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Saving Reading List item as WebBookmark with UUID %{public}@", buf, 0xCu);
 
-        v14 = v31;
+        bundleCopy = v31;
         v25 = v30;
         v26 = v34;
       }
 
-      [v15 moveBookmark:v24 toFolderWithID:{-[WebBookmarkCollection readingListFolderBookmarkID](v35->_collection, "readingListFolderBookmarkID", v34)}];
-      if (([v15 saveBookmark:v24 startReadingListFetcher:0] & 1) == 0)
+      [collectionCopy moveBookmark:v24 toFolderWithID:{-[WebBookmarkCollection readingListFolderBookmarkID](selfCopy->_collection, "readingListFolderBookmarkID", v34)}];
+      if (([collectionCopy saveBookmark:v24 startReadingListFetcher:0] & 1) == 0)
       {
         if (qword_10002E9D8 != -1)
         {
@@ -189,8 +189,8 @@
         }
       }
 
-      v13 = v26;
-      v12 = v25;
+      textCopy = v26;
+      titleCopy = v25;
     }
   }
 
@@ -208,16 +208,16 @@
   }
 }
 
-- (void)_addItemsToReadingList:(id)a3
+- (void)_addItemsToReadingList:(id)list
 {
   applier[0] = _NSConcreteStackBlock;
   applier[1] = 3221225472;
   applier[2] = sub_1000153D8;
   applier[3] = &unk_100029DC0;
   applier[4] = self;
-  xpc_array_apply(a3, applier);
-  v4 = [(WebBookmarksServerReadingListHandler *)self _collection];
-  [v4 postBookmarksDidReloadNotification];
+  xpc_array_apply(list, applier);
+  _collection = [(WebBookmarksServerReadingListHandler *)self _collection];
+  [_collection postBookmarksDidReloadNotification];
 }
 
 - (id)_readingListQueueBackupPath
@@ -254,8 +254,8 @@
   else
   {
     self->_didRestoreReadingListQueue = 1;
-    v3 = [(WebBookmarksServerReadingListHandler *)self _readingListQueueBackupPath];
-    v6 = [NSData dataWithContentsOfFile:v3];
+    _readingListQueueBackupPath = [(WebBookmarksServerReadingListHandler *)self _readingListQueueBackupPath];
+    v6 = [NSData dataWithContentsOfFile:_readingListQueueBackupPath];
 
     if ([v6 length])
     {
@@ -273,18 +273,18 @@
   }
 }
 
-- (void)_queueReadingListItems:(id)a3
+- (void)_queueReadingListItems:(id)items
 {
   applier[0] = _NSConcreteStackBlock;
   applier[1] = 3221225472;
   applier[2] = sub_10001585C;
   applier[3] = &unk_100029DC0;
   applier[4] = self;
-  xpc_array_apply(a3, applier);
+  xpc_array_apply(items, applier);
   readingListQueue = self->_readingListQueue;
   v5 = _CFXPCCreateCFObjectFromXPCObject();
-  v6 = [(WebBookmarksServerReadingListHandler *)self _readingListQueueBackupPath];
-  if (([v5 writeToFile:v6 atomically:1] & 1) == 0)
+  _readingListQueueBackupPath = [(WebBookmarksServerReadingListHandler *)self _readingListQueueBackupPath];
+  if (([v5 writeToFile:_readingListQueueBackupPath atomically:1] & 1) == 0)
   {
     if (qword_10002E9D8 != -1)
     {
@@ -294,7 +294,7 @@
     v7 = qword_10002E9D0;
     if (os_log_type_enabled(qword_10002E9D0, OS_LOG_TYPE_ERROR))
     {
-      sub_100017DF4(v6, v7);
+      sub_100017DF4(_readingListQueueBackupPath, v7);
     }
   }
 
@@ -308,7 +308,7 @@
   }
 }
 
-- (void)_readingListQueueTimerDidFire:(id)a3
+- (void)_readingListQueueTimerDidFire:(id)fire
 {
   ++self->_readingListQueueRetryCount;
   if ((+[WebBookmarkCollection lockSync]& 1) != 0)
@@ -372,17 +372,17 @@
     self->_readingListQueue = v3;
 
     v5 = +[NSFileManager defaultManager];
-    v6 = [(WebBookmarksServerReadingListHandler *)self _readingListQueueBackupPath];
-    [v5 _web_removeFileOnlyAtPath:v6];
+    _readingListQueueBackupPath = [(WebBookmarksServerReadingListHandler *)self _readingListQueueBackupPath];
+    [v5 _web_removeFileOnlyAtPath:_readingListQueueBackupPath];
   }
 
   [(WebBookmarksServerReadingListHandler *)self _clearReadingListQueueTimer];
 }
 
-- (void)handleAddToReadingListWithMessage:(id)a3 forConnection:(id)a4
+- (void)handleAddToReadingListWithMessage:(id)message forConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
+  connectionCopy = connection;
+  messageCopy = message;
   [(WebBookmarksServerReadingListHandler *)self _restoreReadingListQueueIfNeeded];
   if (qword_10002E9D8 != -1)
   {
@@ -396,7 +396,7 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Handling AddToReadingList request", buf, 2u);
   }
 
-  v9 = xpc_dictionary_get_value(v7, kWebBookmarksItemKey);
+  v9 = xpc_dictionary_get_value(messageCopy, kWebBookmarksItemKey);
 
   if (xpc_get_type(v9) == &_xpc_type_dictionary)
   {
@@ -411,8 +411,8 @@
     }
 
     v25 = v12;
-    v14 = [v6 connection];
-    xpc_connection_get_pid(v14);
+    connection = [connectionCopy connection];
+    xpc_connection_get_pid(connection);
 
     v15 = SBSCopyBundleInfoValueForKeyAndProcessID();
     if ([v15 length])
@@ -440,9 +440,9 @@
       v28[2] = sub_100015F40;
       v28[3] = &unk_100029150;
       v29 = v9;
-      v30 = self;
+      selfCopy = self;
       v16 = objc_retainBlock(v28);
-      if (([v6 hasBoolEntitlement:@"platform-application"] & 1) != 0 || objc_msgSend(v6, "hasBoolEntitlement:", @"com.apple.private.safari.add-to-reading-list-without-prompt"))
+      if (([connectionCopy hasBoolEntitlement:@"platform-application"] & 1) != 0 || objc_msgSend(connectionCopy, "hasBoolEntitlement:", @"com.apple.private.safari.add-to-reading-list-without-prompt"))
       {
         if (qword_10002E9D8 != -1)
         {

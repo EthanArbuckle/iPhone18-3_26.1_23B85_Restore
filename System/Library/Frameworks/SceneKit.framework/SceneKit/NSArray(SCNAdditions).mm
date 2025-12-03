@@ -9,11 +9,11 @@
 {
   v13[16] = *MEMORY[0x277D85DE8];
   v13[0] = [MEMORY[0x277CCABB0] numberWithFloat:?];
-  HIDWORD(v4) = a1.n128_u32[1];
-  LODWORD(v4) = a1.n128_u32[1];
+  HIDWORD(v4) = self.n128_u32[1];
+  LODWORD(v4) = self.n128_u32[1];
   v13[1] = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  v13[2] = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[2]))}];
-  v13[3] = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a1.n128_u32[1], a1.n128_u32[3]))}];
+  v13[2] = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[2]))}];
+  v13[3] = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(self.n128_u32[1], self.n128_u32[3]))}];
   v13[4] = [MEMORY[0x277CCABB0] numberWithFloat:a2.n128_f64[0]];
   HIDWORD(v5) = a2.n128_u32[1];
   LODWORD(v5) = a2.n128_u32[1];
@@ -37,30 +37,30 @@
 
 - (__n128)SCN_simdMatrix4Value
 {
-  if ([a1 count] > 0xF)
+  if ([self count] > 0xF)
   {
-    [objc_msgSend(a1 objectAtIndexedSubscript:{0), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{0), "floatValue"}];
     v10 = v3;
-    [objc_msgSend(a1 objectAtIndexedSubscript:{1), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{1), "floatValue"}];
     v9 = v4;
-    [objc_msgSend(a1 objectAtIndexedSubscript:{2), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{2), "floatValue"}];
     v8 = v5;
-    [objc_msgSend(a1 objectAtIndexedSubscript:{3), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{3), "floatValue"}];
     *&v6 = __PAIR64__(v9, v10);
     *(&v6 + 1) = __PAIR64__(v7, v8);
     v11 = v6;
-    [objc_msgSend(a1 objectAtIndexedSubscript:{4), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{5), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{6), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{7), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{8), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{9), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{10), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{11), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{12), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{13), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{14), "floatValue"}];
-    [objc_msgSend(a1 objectAtIndexedSubscript:{15), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{4), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{5), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{6), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{7), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{8), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{9), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{10), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{11), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{12), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{13), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{14), "floatValue"}];
+    [objc_msgSend(self objectAtIndexedSubscript:{15), "floatValue"}];
     return v11;
   }
 

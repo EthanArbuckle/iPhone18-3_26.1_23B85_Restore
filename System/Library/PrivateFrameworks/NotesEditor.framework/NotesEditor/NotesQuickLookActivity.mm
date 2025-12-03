@@ -1,12 +1,12 @@
 @interface NotesQuickLookActivity
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5;
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view;
 - (id)activityTitle;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (id)previewController:(id)a3 transitionImageForPreviewItem:(id)a4 contentRect:(CGRect *)a5;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (id)previewController:(id)controller transitionImageForPreviewItem:(id)item contentRect:(CGRect *)rect;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
 - (void)_cleanup;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 - (void)presentPreviewController;
 @end
 
@@ -14,21 +14,21 @@
 
 - (id)activityTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"QUICK_LOOK" value:@"Quick Look" table:@"Localizable"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"QUICK_LOOK" value:@"Quick Look" table:@"Localizable"];
 
   return v3;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v20 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  itemsCopy = items;
+  v5 = [itemsCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -40,7 +40,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -67,7 +67,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -83,9 +83,9 @@ LABEL_15:
     v7 = 0;
   }
 
-  v11 = [(NotesQuickLookActivity *)self item];
+  item = [(NotesQuickLookActivity *)self item];
 
-  if (!v11 && v7)
+  if (!item && v7)
   {
     v12 = objc_alloc_init(NotesQuickLookActivityItem);
     v18 = v7;
@@ -110,57 +110,57 @@ LABEL_15:
   [object setDataSource:self];
   [object setDelegate:self];
   [object setIsContentManaged:{-[NotesQuickLookActivity sourceIsManaged](self, "sourceIsManaged")}];
-  v3 = [(NotesQuickLookActivity *)self item];
-  v4 = [v3 firstItemIndex];
+  item = [(NotesQuickLookActivity *)self item];
+  firstItemIndex = [item firstItemIndex];
 
-  [object setCurrentPreviewItemIndex:v4];
+  [object setCurrentPreviewItemIndex:firstItemIndex];
   v5 = MEMORY[0x277D76620];
-  v6 = [*MEMORY[0x277D76620] keyWindow];
-  v7 = [v6 ic_viewControllerManager];
-  v8 = [v7 window];
-  v9 = [v8 ic_topmostPresentedViewController];
-  v10 = v9;
-  if (v9)
+  keyWindow = [*MEMORY[0x277D76620] keyWindow];
+  ic_viewControllerManager = [keyWindow ic_viewControllerManager];
+  window = [ic_viewControllerManager window];
+  ic_topmostPresentedViewController = [window ic_topmostPresentedViewController];
+  v10 = ic_topmostPresentedViewController;
+  if (ic_topmostPresentedViewController)
   {
-    v11 = v9;
+    rootViewController = ic_topmostPresentedViewController;
   }
 
   else
   {
-    v12 = [*v5 keyWindow];
-    v11 = [v12 rootViewController];
+    keyWindow2 = [*v5 keyWindow];
+    rootViewController = [keyWindow2 rootViewController];
   }
 
-  [v11 presentViewController:object animated:1 completion:0];
+  [rootViewController presentViewController:object animated:1 completion:0];
   objc_setAssociatedObject(object, &NotesQuickLookActivityLifeLine, self, 1);
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(NotesQuickLookActivity *)self item];
-  v4 = [v3 previewItems];
-  v5 = [v4 count];
+  item = [(NotesQuickLookActivity *)self item];
+  previewItems = [item previewItems];
+  v5 = [previewItems count];
 
   return v5;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v5 = [(NotesQuickLookActivity *)self item];
-  v6 = [v5 previewItems];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  item = [(NotesQuickLookActivity *)self item];
+  previewItems = [item previewItems];
+  v7 = [previewItems objectAtIndexedSubscript:index];
 
   return v7;
 }
 
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(NotesQuickLookActivity *)self item];
-  v11 = [v10 delegate];
-  v12 = [(NotesQuickLookActivity *)self item];
-  [v11 notesQuickLookActivityItem:v12 rectForPreviewItem:v8 inView:a5 previewController:v9];
+  itemCopy = item;
+  controllerCopy = controller;
+  item = [(NotesQuickLookActivity *)self item];
+  delegate = [item delegate];
+  item2 = [(NotesQuickLookActivity *)self item];
+  [delegate notesQuickLookActivityItem:item2 rectForPreviewItem:itemCopy inView:view previewController:controllerCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -177,20 +177,20 @@ LABEL_15:
   return result;
 }
 
-- (id)previewController:(id)a3 transitionImageForPreviewItem:(id)a4 contentRect:(CGRect *)a5
+- (id)previewController:(id)controller transitionImageForPreviewItem:(id)item contentRect:(CGRect *)rect
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NotesQuickLookActivity *)self item];
-  v10 = [v9 delegate];
+  controllerCopy = controller;
+  itemCopy = item;
+  item = [(NotesQuickLookActivity *)self item];
+  delegate = [item delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(NotesQuickLookActivity *)self item];
-    v13 = [v12 delegate];
-    v14 = [(NotesQuickLookActivity *)self item];
-    v15 = [v13 notesQuickLookActivityItem:v14 transitionImageForPreviewItem:v8 previewController:v7];
+    item2 = [(NotesQuickLookActivity *)self item];
+    delegate2 = [item2 delegate];
+    item3 = [(NotesQuickLookActivity *)self item];
+    v15 = [delegate2 notesQuickLookActivityItem:item3 transitionImageForPreviewItem:itemCopy previewController:controllerCopy];
   }
 
   else
@@ -201,20 +201,20 @@ LABEL_15:
   return v15;
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NotesQuickLookActivity *)self item];
-  v9 = [v8 delegate];
+  controllerCopy = controller;
+  itemCopy = item;
+  item = [(NotesQuickLookActivity *)self item];
+  delegate = [item delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(NotesQuickLookActivity *)self item];
-    v12 = [v11 delegate];
-    v13 = [(NotesQuickLookActivity *)self item];
-    v14 = [v12 notesQuickLookActivityItem:v13 transitionViewForPreviewItem:v7 previewController:v6];
+    item2 = [(NotesQuickLookActivity *)self item];
+    delegate2 = [item2 delegate];
+    item3 = [(NotesQuickLookActivity *)self item];
+    v14 = [delegate2 notesQuickLookActivityItem:item3 transitionViewForPreviewItem:itemCopy previewController:controllerCopy];
   }
 
   else

@@ -1,99 +1,99 @@
 @interface MDMMCInterface
-+ (BOOL)clearPasscodeWithEscrowKeybagData:(id)a3 secret:(id)a4 outError:(id *)a5;
-+ (BOOL)installProvisioningProfileData:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5;
++ (BOOL)clearPasscodeWithEscrowKeybagData:(id)data secret:(id)secret outError:(id *)error;
++ (BOOL)installProvisioningProfileData:(id)data managingProfileIdentifier:(id)identifier outError:(id *)error;
 + (BOOL)isAutomaticDateAndTimeForced;
 + (BOOL)isAwaitingDeviceConfigured;
 + (BOOL)isDiagnosticsSubmissionRestricted;
 + (BOOL)isEnterpriseBookBackupAllowed;
 + (BOOL)isLimitedAppsMode;
 + (BOOL)isPasscodeSet;
-+ (BOOL)isProfileWithIdentifier:(id)a3 managedByProfileWithIdentifier:(id)a4;
-+ (BOOL)isProvisioningProfileWithUUID:(id)a3 managedByProfileWithIdentifier:(id)a4;
-+ (BOOL)removeProvisioningProfileWithUUID:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5;
++ (BOOL)isProfileWithIdentifier:(id)identifier managedByProfileWithIdentifier:(id)withIdentifier;
++ (BOOL)isProvisioningProfileWithUUID:(id)d managedByProfileWithIdentifier:(id)identifier;
++ (BOOL)removeProvisioningProfileWithUUID:(id)d managingProfileIdentifier:(id)identifier outError:(id *)error;
 + (id)cloudConfigurationDetails;
-+ (id)filterMDMRestrictions:(id)a3 acceptingKeysFromDictionary:(id)a4;
++ (id)filterMDMRestrictions:(id)restrictions acceptingKeysFromDictionary:(id)dictionary;
 + (id)ipcuProfileList;
-+ (id)ipcuRemoveProfileWithIdentifier:(id)a3;
++ (id)ipcuRemoveProfileWithIdentifier:(id)identifier;
 + (id)managedAppIDs;
 + (id)mdmProfileIdentifier;
 + (id)mdmQueryableRestrictions;
-+ (int)_mcFilterFlagsForMDMFlags:(int)a3;
-+ (void)enrollProvisionallyWithNonce:(id)a3 completion:(id)a4;
++ (int)_mcFilterFlagsForMDMFlags:(int)flags;
++ (void)enrollProvisionallyWithNonce:(id)nonce completion:(id)completion;
 + (void)flush;
-+ (void)installStoredProfileDataWithCompletion:(id)a3;
++ (void)installStoredProfileDataWithCompletion:(id)completion;
 + (void)profiledCheckIn;
-+ (void)retrieveCloudConfigurationDetailsCompletion:(id)a3;
-+ (void)retrieveCloudConfigurationFromURL:(id)a3 username:(id)a4 password:(id)a5 anchorCertificates:(id)a6 completion:(id)a7;
-+ (void)storeCertificateData:(id)a3 forHostIdentifier:(id)a4;
-+ (void)storeCloudConfigurationDetails:(id)a3 completion:(id)a4;
-+ (void)storeProfileData:(id)a3 completion:(id)a4;
-+ (void)storedProfileDataWithCompletion:(id)a3;
++ (void)retrieveCloudConfigurationDetailsCompletion:(id)completion;
++ (void)retrieveCloudConfigurationFromURL:(id)l username:(id)username password:(id)password anchorCertificates:(id)certificates completion:(id)completion;
++ (void)storeCertificateData:(id)data forHostIdentifier:(id)identifier;
++ (void)storeCloudConfigurationDetails:(id)details completion:(id)completion;
++ (void)storeProfileData:(id)data completion:(id)completion;
++ (void)storedProfileDataWithCompletion:(id)completion;
 @end
 
 @implementation MDMMCInterface
 
 + (BOOL)isPasscodeSet
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 + (BOOL)isLimitedAppsMode
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isEffectivelyInAppAllowListMode];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isEffectivelyInAppAllowListMode = [mEMORY[0x277D262A0] isEffectivelyInAppAllowListMode];
 
-  return v3;
+  return isEffectivelyInAppAllowListMode;
 }
 
 + (BOOL)isAwaitingDeviceConfigured
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isAwaitingDeviceConfigured];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isAwaitingDeviceConfigured = [mEMORY[0x277D262A0] isAwaitingDeviceConfigured];
 
-  return v3;
+  return isAwaitingDeviceConfigured;
 }
 
 + (id)managedAppIDs
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 managedAppIDs];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  managedAppIDs = [mEMORY[0x277D262A0] managedAppIDs];
 
-  return v3;
+  return managedAppIDs;
 }
 
 + (void)profiledCheckIn
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  [v2 checkIn];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] checkIn];
 }
 
 + (void)flush
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  [v2 flush];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] flush];
 }
 
-+ (BOOL)clearPasscodeWithEscrowKeybagData:(id)a3 secret:(id)a4 outError:(id *)a5
++ (BOOL)clearPasscodeWithEscrowKeybagData:(id)data secret:(id)secret outError:(id *)error
 {
   v7 = MEMORY[0x277D262A0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedConnection];
-  LOBYTE(a5) = [v10 clearPasscodeWithEscrowKeybagData:v9 secret:v8 outError:a5];
+  secretCopy = secret;
+  dataCopy = data;
+  sharedConnection = [v7 sharedConnection];
+  LOBYTE(error) = [sharedConnection clearPasscodeWithEscrowKeybagData:dataCopy secret:secretCopy outError:error];
 
-  return a5;
+  return error;
 }
 
-+ (void)storeCertificateData:(id)a3 forHostIdentifier:(id)a4
++ (void)storeCertificateData:(id)data forHostIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedConnection];
-  [v8 storeCertificateData:v7 forHostIdentifier:v6];
+  identifierCopy = identifier;
+  dataCopy = data;
+  sharedConnection = [v5 sharedConnection];
+  [sharedConnection storeCertificateData:dataCopy forHostIdentifier:identifierCopy];
 }
 
 + (id)mdmQueryableRestrictions
@@ -106,9 +106,9 @@
   return v4;
 }
 
-+ (id)filterMDMRestrictions:(id)a3 acceptingKeysFromDictionary:(id)a4
++ (id)filterMDMRestrictions:(id)restrictions acceptingKeysFromDictionary:(id)dictionary
 {
-  v4 = [MEMORY[0x277D262C0] filterRestrictionDictionary:a3 acceptedKeysDict:a4];
+  v4 = [MEMORY[0x277D262C0] filterRestrictionDictionary:restrictions acceptedKeysDict:dictionary];
   v5 = [v4 mutableCopy];
 
   [v5 MCFixUpRestrictionsDictionaryForMDMReporting];
@@ -118,85 +118,85 @@
 
 + (BOOL)isAutomaticDateAndTimeForced
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D88]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D88]];
 
   return v3;
 }
 
 + (BOOL)isDiagnosticsSubmissionRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E58]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25E58]];
 
   return v3;
 }
 
 + (BOOL)isEnterpriseBookBackupAllowed
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isEnterpriseBookBackupAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isEnterpriseBookBackupAllowed = [mEMORY[0x277D262A0] isEnterpriseBookBackupAllowed];
 
-  return v3;
+  return isEnterpriseBookBackupAllowed;
 }
 
 + (id)mdmProfileIdentifier
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 installedMDMProfileIdentifier];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  installedMDMProfileIdentifier = [mEMORY[0x277D262A0] installedMDMProfileIdentifier];
 
-  return v3;
+  return installedMDMProfileIdentifier;
 }
 
-+ (BOOL)isProfileWithIdentifier:(id)a3 managedByProfileWithIdentifier:(id)a4
++ (BOOL)isProfileWithIdentifier:(id)identifier managedByProfileWithIdentifier:(id)withIdentifier
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedConnection];
-  v9 = [v8 isProfileWithIdentifier:v7 managedByProfileWithIdentifier:v6];
+  withIdentifierCopy = withIdentifier;
+  identifierCopy = identifier;
+  sharedConnection = [v5 sharedConnection];
+  v9 = [sharedConnection isProfileWithIdentifier:identifierCopy managedByProfileWithIdentifier:withIdentifierCopy];
 
   return v9;
 }
 
-+ (BOOL)isProvisioningProfileWithUUID:(id)a3 managedByProfileWithIdentifier:(id)a4
++ (BOOL)isProvisioningProfileWithUUID:(id)d managedByProfileWithIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedConnection];
-  v9 = [v8 isProvisioningProfilesWithUUID:v7 managedByProfileWithIdentifier:v6];
+  identifierCopy = identifier;
+  dCopy = d;
+  sharedConnection = [v5 sharedConnection];
+  v9 = [sharedConnection isProvisioningProfilesWithUUID:dCopy managedByProfileWithIdentifier:identifierCopy];
 
   return v9;
 }
 
-+ (BOOL)installProvisioningProfileData:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5
++ (BOOL)installProvisioningProfileData:(id)data managingProfileIdentifier:(id)identifier outError:(id *)error
 {
   v7 = MEMORY[0x277D262A0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedConnection];
-  LOBYTE(a5) = [v10 installProvisioningProfileData:v9 managingProfileIdentifier:v8 outError:a5];
+  identifierCopy = identifier;
+  dataCopy = data;
+  sharedConnection = [v7 sharedConnection];
+  LOBYTE(error) = [sharedConnection installProvisioningProfileData:dataCopy managingProfileIdentifier:identifierCopy outError:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)removeProvisioningProfileWithUUID:(id)a3 managingProfileIdentifier:(id)a4 outError:(id *)a5
++ (BOOL)removeProvisioningProfileWithUUID:(id)d managingProfileIdentifier:(id)identifier outError:(id *)error
 {
   v7 = MEMORY[0x277D262A0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedConnection];
-  LOBYTE(a5) = [v10 removeProvisioningProfileWithUUID:v9 managingProfileIdentifier:v8 outError:a5];
+  identifierCopy = identifier;
+  dCopy = d;
+  sharedConnection = [v7 sharedConnection];
+  LOBYTE(error) = [sharedConnection removeProvisioningProfileWithUUID:dCopy managingProfileIdentifier:identifierCopy outError:error];
 
-  return a5;
+  return error;
 }
 
 + (id)ipcuProfileList
 {
   v43 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 installedProfilesWithFilterFlags:69];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] installedProfilesWithFilterFlags:69];
 
   v35 = objc_opt_new();
   v34 = objc_opt_new();
@@ -229,24 +229,24 @@
         }
 
         v9 = *(*(&v36 + 1) + 8 * i);
-        v10 = [v9 identifier];
+        identifier = [v9 identifier];
         v11 = objc_opt_new();
         v12 = objc_opt_new();
         [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v31];
-        v13 = [v9 displayName];
-        [v11 setObject:v13 forKeyedSubscript:v30];
+        displayName = [v9 displayName];
+        [v11 setObject:displayName forKeyedSubscript:v30];
 
-        v14 = [v9 UUID];
-        [v12 setObject:v14 forKeyedSubscript:v29];
+        uUID = [v9 UUID];
+        [v12 setObject:uUID forKeyedSubscript:v29];
 
-        v15 = [v9 displayName];
-        [v12 setObject:v15 forKeyedSubscript:v28];
+        displayName2 = [v9 displayName];
+        [v12 setObject:displayName2 forKeyedSubscript:v28];
 
-        v16 = [v9 organization];
-        [v12 setObject:v16 forKeyedSubscript:v27];
+        organization = [v9 organization];
+        [v12 setObject:organization forKeyedSubscript:v27];
 
-        v17 = [v9 profileDescription];
-        [v12 setObject:v17 forKeyedSubscript:v26];
+        profileDescription = [v9 profileDescription];
+        [v12 setObject:profileDescription forKeyedSubscript:v26];
 
         v18 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "version")}];
         [v12 setObject:v18 forKeyedSubscript:v6];
@@ -254,9 +254,9 @@
         v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "isLocked")}];
         [v12 setObject:v19 forKeyedSubscript:v7];
 
-        [v35 setObject:v11 forKeyedSubscript:v10];
-        [v33 setObject:v12 forKeyedSubscript:v10];
-        [v34 addObject:v10];
+        [v35 setObject:v11 forKeyedSubscript:identifier];
+        [v33 setObject:v12 forKeyedSubscript:identifier];
+        [v34 addObject:identifier];
       }
 
       v5 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -282,18 +282,18 @@
   return v22;
 }
 
-+ (id)ipcuRemoveProfileWithIdentifier:(id)a3
++ (id)ipcuRemoveProfileWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   cf2 = 0;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v23 = 0;
-    v5 = [MDMMCInterface profileIdentifierForProfileData:v3 allowEmptyPayload:1 outIsSupervisionProfile:0 outProfileSigner:&cf2 outMayInstallCloudProfile:0 outError:&v23];
-    v6 = v23;
-    if (v6)
+    v5 = [MDMMCInterface profileIdentifierForProfileData:identifierCopy allowEmptyPayload:1 outIsSupervisionProfile:0 outProfileSigner:&cf2 outMayInstallCloudProfile:0 outError:&v23];
+    dMCCopyAsPrimaryError = v23;
+    if (dMCCopyAsPrimaryError)
     {
       goto LABEL_18;
     }
@@ -307,38 +307,38 @@
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277D033C0];
       v15 = DMCErrorArray();
-      v6 = [v13 DMCErrorWithDomain:v14 code:4000 descriptionArray:v15 errorType:{*MEMORY[0x277D032F8], 0}];
+      dMCCopyAsPrimaryError = [v13 DMCErrorWithDomain:v14 code:4000 descriptionArray:v15 errorType:{*MEMORY[0x277D032F8], 0}];
 
       v5 = 0;
       goto LABEL_18;
     }
 
-    v5 = v3;
+    v5 = identifierCopy;
   }
 
-  v7 = [v4 installedProfileIdentifiersWithFilterFlags:69];
+  v7 = [mEMORY[0x277D262A0] installedProfileIdentifiersWithFilterFlags:69];
   if ([v7 containsObject:v5])
   {
-    v8 = [v4 installedProfileWithIdentifier:v5];
+    v8 = [mEMORY[0x277D262A0] installedProfileWithIdentifier:v5];
     if ([v8 isLocked] && objc_msgSend(v8, "isSigned") && (!cf2 || (v9 = objc_msgSend(v8, "signerCertificate"), !CFEqual(v9, cf2))))
     {
       v18 = MEMORY[0x277CCA9B8];
       v19 = *MEMORY[0x277D033C0];
-      v10 = [v8 friendlyName];
-      v11 = DMCErrorArray();
-      v20 = [v18 DMCErrorWithDomain:v19 code:4008 descriptionArray:v11 errorType:{*MEMORY[0x277D032F8], v10, 0}];
-      v6 = [v20 DMCCopyAsPrimaryError];
+      friendlyName = [v8 friendlyName];
+      systemConnection = DMCErrorArray();
+      v20 = [v18 DMCErrorWithDomain:v19 code:4008 descriptionArray:systemConnection errorType:{*MEMORY[0x277D032F8], friendlyName, 0}];
+      dMCCopyAsPrimaryError = [v20 DMCCopyAsPrimaryError];
     }
 
     else
     {
-      v10 = objc_opt_new();
-      [v10 setType:0];
-      [v10 setProfileIdentifier:v5];
-      v11 = [MEMORY[0x277D04BF8] systemConnection];
+      friendlyName = objc_opt_new();
+      [friendlyName setType:0];
+      [friendlyName setProfileIdentifier:v5];
+      systemConnection = [MEMORY[0x277D04BF8] systemConnection];
       v21 = 0;
-      v12 = [v11 performRequest:v10 error:&v21];
-      v6 = v21;
+      v12 = [systemConnection performRequest:friendlyName error:&v21];
+      dMCCopyAsPrimaryError = v21;
     }
   }
 
@@ -351,7 +351,7 @@
       _os_log_impl(&dword_2561F5000, v16, OS_LOG_TYPE_ERROR, "iPCU tried to uninstall a profile that was not found", buf, 2u);
     }
 
-    v6 = 0;
+    dMCCopyAsPrimaryError = 0;
   }
 
 LABEL_18:
@@ -360,86 +360,86 @@ LABEL_18:
     CFRelease(cf2);
   }
 
-  return v6;
+  return dMCCopyAsPrimaryError;
 }
 
-+ (void)storeProfileData:(id)a3 completion:(id)a4
++ (void)storeProfileData:(id)data completion:(id)completion
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedConnection];
-  [v8 storeProfileData:v7 completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  sharedConnection = [v5 sharedConnection];
+  [sharedConnection storeProfileData:dataCopy completion:completionCopy];
 }
 
-+ (void)storedProfileDataWithCompletion:(id)a3
++ (void)storedProfileDataWithCompletion:(id)completion
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  [v5 storedProfileDataWithCompletion:v4];
+  completionCopy = completion;
+  sharedConnection = [v3 sharedConnection];
+  [sharedConnection storedProfileDataWithCompletion:completionCopy];
 }
 
-+ (void)installStoredProfileDataWithCompletion:(id)a3
++ (void)installStoredProfileDataWithCompletion:(id)completion
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  [v5 installStoredProfileDataWithCompletion:v4];
+  completionCopy = completion;
+  sharedConnection = [v3 sharedConnection];
+  [sharedConnection installStoredProfileDataWithCompletion:completionCopy];
 }
 
 + (id)cloudConfigurationDetails
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 cloudConfigurationDetails];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  cloudConfigurationDetails = [mEMORY[0x277D262A0] cloudConfigurationDetails];
 
-  return v3;
+  return cloudConfigurationDetails;
 }
 
-+ (void)retrieveCloudConfigurationDetailsCompletion:(id)a3
++ (void)retrieveCloudConfigurationDetailsCompletion:(id)completion
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  [v5 retrieveCloudConfigurationDetailsCompletionBlock:v4];
+  completionCopy = completion;
+  sharedConnection = [v3 sharedConnection];
+  [sharedConnection retrieveCloudConfigurationDetailsCompletionBlock:completionCopy];
 }
 
-+ (void)retrieveCloudConfigurationFromURL:(id)a3 username:(id)a4 password:(id)a5 anchorCertificates:(id)a6 completion:(id)a7
++ (void)retrieveCloudConfigurationFromURL:(id)l username:(id)username password:(id)password anchorCertificates:(id)certificates completion:(id)completion
 {
   v11 = MEMORY[0x277D262A0];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v11 sharedConnection];
-  [v17 retrieveCloudConfigurationFromURL:v16 username:v15 password:v14 anchorCertificates:v13 completionBlock:v12];
+  completionCopy = completion;
+  certificatesCopy = certificates;
+  passwordCopy = password;
+  usernameCopy = username;
+  lCopy = l;
+  sharedConnection = [v11 sharedConnection];
+  [sharedConnection retrieveCloudConfigurationFromURL:lCopy username:usernameCopy password:passwordCopy anchorCertificates:certificatesCopy completionBlock:completionCopy];
 }
 
-+ (void)storeCloudConfigurationDetails:(id)a3 completion:(id)a4
++ (void)storeCloudConfigurationDetails:(id)details completion:(id)completion
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedConnection];
-  [v8 storeCloudConfigurationDetails:v7 completion:v6];
+  completionCopy = completion;
+  detailsCopy = details;
+  sharedConnection = [v5 sharedConnection];
+  [sharedConnection storeCloudConfigurationDetails:detailsCopy completion:completionCopy];
 }
 
-+ (void)enrollProvisionallyWithNonce:(id)a3 completion:(id)a4
++ (void)enrollProvisionallyWithNonce:(id)nonce completion:(id)completion
 {
   v5 = MEMORY[0x277D262A0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedConnection];
-  [v8 enrollProvisionallyWithNonce:v7 completionBlock:v6];
+  completionCopy = completion;
+  nonceCopy = nonce;
+  sharedConnection = [v5 sharedConnection];
+  [sharedConnection enrollProvisionallyWithNonce:nonceCopy completionBlock:completionCopy];
 }
 
-+ (int)_mcFilterFlagsForMDMFlags:(int)a3
++ (int)_mcFilterFlagsForMDMFlags:(int)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3 & 0xFFFFFF80;
-  if ((a3 & 0xFFFFFF80) != 0)
+  v4 = flags & 0xFFFFFF80;
+  if ((flags & 0xFFFFFF80) != 0)
   {
     v5 = *DMCLogObjects();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -451,7 +451,7 @@ LABEL_18:
   }
 
   v6 = *MEMORY[0x277D85DE8];
-  return v3 & 0x7F;
+  return flagsCopy & 0x7F;
 }
 
 @end

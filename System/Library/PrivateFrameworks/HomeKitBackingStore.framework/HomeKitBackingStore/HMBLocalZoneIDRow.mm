@@ -1,54 +1,54 @@
 @interface HMBLocalZoneIDRow
-- (BOOL)isEqual:(id)a3;
-- (HMBLocalZoneIDRow)initWithCoder:(id)a3;
-- (HMBLocalZoneIDRow)initWithName:(id)a3 token:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMBLocalZoneIDRow)initWithCoder:(id)coder;
+- (HMBLocalZoneIDRow)initWithName:(id)name token:(id)token;
 - (NSArray)attributeDescriptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)labels;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMBLocalZoneIDRow
 
-- (HMBLocalZoneIDRow)initWithCoder:(id)a3
+- (HMBLocalZoneIDRow)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBLZR.name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMBLZR.token"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBLZR.name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMBLZR.token"];
 
   v7 = [(HMBLocalZoneIDRow *)self initWithName:v5 token:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMBLocalZoneIDRow *)self name];
-  [v4 encodeObject:v5 forKey:@"HMBLZR.name"];
+  coderCopy = coder;
+  name = [(HMBLocalZoneIDRow *)self name];
+  [coderCopy encodeObject:name forKey:@"HMBLZR.name"];
 
-  v6 = [(HMBLocalZoneIDRow *)self token];
-  [v4 encodeObject:v6 forKey:@"HMBLZR.token"];
+  token = [(HMBLocalZoneIDRow *)self token];
+  [coderCopy encodeObject:token forKey:@"HMBLZR.token"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMBLocalZoneIDRow *)self token];
-  v3 = [v2 hash];
+  token = [(HMBLocalZoneIDRow *)self token];
+  v3 = [token hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 conformsToProtocol:&unk_283EBFBA0];
+  equalCopy = equal;
+  v5 = [equalCopy conformsToProtocol:&unk_283EBFBA0];
   v6 = 0;
-  if (v4 && v5)
+  if (equalCopy && v5)
   {
-    v7 = [v4 token];
-    v8 = [(HMBLocalZoneIDRow *)self token];
-    v6 = [v7 isEqual:v8];
+    token = [equalCopy token];
+    token2 = [(HMBLocalZoneIDRow *)self token];
+    v6 = [token isEqual:token2];
   }
 
   return v6;
@@ -58,8 +58,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBLocalZoneIDRow *)self name];
-  v5 = [v3 initWithName:@"Name" value:v4];
+  name = [(HMBLocalZoneIDRow *)self name];
+  v5 = [v3 initWithName:@"Name" value:name];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -68,12 +68,12 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HMBLocalZoneIDRow *)self name];
-  v6 = [(HMBLocalZoneIDRow *)self token];
-  v7 = [v4 initWithName:v5 token:v6];
+  name = [(HMBLocalZoneIDRow *)self name];
+  token = [(HMBLocalZoneIDRow *)self token];
+  v7 = [v4 initWithName:name token:token];
 
   return v7;
 }
@@ -81,10 +81,10 @@
 - (id)labels
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMBLocalZoneIDRow *)self name];
-  v9[0] = v3;
-  v4 = [(HMBLocalZoneIDRow *)self token];
-  v5 = [v4 base64EncodedStringWithOptions:0];
+  name = [(HMBLocalZoneIDRow *)self name];
+  v9[0] = name;
+  token = [(HMBLocalZoneIDRow *)self token];
+  v5 = [token base64EncodedStringWithOptions:0];
   v9[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
 
@@ -93,18 +93,18 @@
   return v6;
 }
 
-- (HMBLocalZoneIDRow)initWithName:(id)a3 token:(id)a4
+- (HMBLocalZoneIDRow)initWithName:(id)name token:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  tokenCopy = token;
   v12.receiver = self;
   v12.super_class = HMBLocalZoneIDRow;
   v9 = [(HMBLocalZoneIDRow *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_token, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v10->_token, token);
   }
 
   return v10;

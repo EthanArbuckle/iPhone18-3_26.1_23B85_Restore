@@ -1,20 +1,20 @@
 @interface REActivityRelevanceProviderManager
 + (id)_features;
-- (REActivityRelevanceProviderManager)initWithQueue:(id)a3;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (REActivityRelevanceProviderManager)initWithQueue:(id)queue;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 - (void)_prepareForUpdate;
 - (void)pause;
-- (void)predictorDidUpdate:(id)a3;
+- (void)predictorDidUpdate:(id)update;
 - (void)resume;
 @end
 
 @implementation REActivityRelevanceProviderManager
 
-- (REActivityRelevanceProviderManager)initWithQueue:(id)a3
+- (REActivityRelevanceProviderManager)initWithQueue:(id)queue
 {
   v4.receiver = self;
   v4.super_class = REActivityRelevanceProviderManager;
-  result = [(RERelevanceProviderManager *)&v4 initWithQueue:a3];
+  result = [(RERelevanceProviderManager *)&v4 initWithQueue:queue];
   if (result)
   {
     result->_activeEnergy = 0.0;
@@ -37,20 +37,20 @@
   return v3;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v5 = a3;
+  providerCopy = provider;
   activeEnergy = self->_activeEnergy;
   exerciseTime = self->_exerciseTime;
   standHour = self->_standHour;
-  if (activeEnergy < 1.0 == [v5 closedActiveEngergy] || exerciseTime < 1.0 == objc_msgSend(v5, "closedExerciseTime"))
+  if (activeEnergy < 1.0 == [providerCopy closedActiveEngergy] || exerciseTime < 1.0 == objc_msgSend(providerCopy, "closedExerciseTime"))
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = (standHour < 1.0) ^ [v5 closedStandHour];
+    v9 = (standHour < 1.0) ^ [providerCopy closedStandHour];
   }
 
   v10 = [REFeatureValue featureValueWithBool:v9];
@@ -85,7 +85,7 @@
   self->_standHour = v7;
 }
 
-- (void)predictorDidUpdate:(id)a3
+- (void)predictorDidUpdate:(id)update
 {
   v4 = +[RERelevanceProviderManagerUpdate immediateUpdateForAllProviders];
   [(RERelevanceProviderManager *)self _scheduleUpdate:v4];

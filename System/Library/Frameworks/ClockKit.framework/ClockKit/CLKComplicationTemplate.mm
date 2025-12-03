@@ -1,44 +1,44 @@
 @interface CLKComplicationTemplate
-+ (BOOL)_arrayIsCompatibleWithJSONSerialization:(id)a3;
-+ (BOOL)dictionaryIsCompatibleWithJSONSerialization:(id)a3;
-+ (CLKComplicationTemplate)complicationTemplateWithJSONObjectRepresentation:(id)a3 bundle:(id)a4 purpose:(unint64_t)a5;
++ (BOOL)_arrayIsCompatibleWithJSONSerialization:(id)serialization;
++ (BOOL)dictionaryIsCompatibleWithJSONSerialization:(id)serialization;
++ (CLKComplicationTemplate)complicationTemplateWithJSONObjectRepresentation:(id)representation bundle:(id)bundle purpose:(unint64_t)purpose;
 + (CLKComplicationTemplate)new;
-+ (Class)_superClassFromCompatibleJSONSerializationClass:(Class)a3;
-+ (id)_createJSONRepresentationFromArray:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5;
-+ (id)_jsonObjectRepresentationFromObject:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5;
-+ (id)_jsonRepresentationFromValue:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5;
-+ (id)_secureCodingRepresentationOfEmbeddedObjectsArray:(id)a3 bundlePath:(id)a4;
-+ (id)_secureCodingRepresentationOfEmbeddedObjectsDictionary:(id)a3 bundlePath:(id)a4;
-+ (id)_secureCodingRepresentationOfValue:(id)a3 bundlePath:(id)a4;
++ (Class)_superClassFromCompatibleJSONSerializationClass:(Class)class;
++ (id)_createJSONRepresentationFromArray:(id)array bundlePath:(id)path purpose:(unint64_t)purpose;
++ (id)_jsonObjectRepresentationFromObject:(id)object bundlePath:(id)path purpose:(unint64_t)purpose;
++ (id)_jsonRepresentationFromValue:(id)value bundlePath:(id)path purpose:(unint64_t)purpose;
++ (id)_secureCodingRepresentationOfEmbeddedObjectsArray:(id)array bundlePath:(id)path;
++ (id)_secureCodingRepresentationOfEmbeddedObjectsDictionary:(id)dictionary bundlePath:(id)path;
++ (id)_secureCodingRepresentationOfValue:(id)value bundlePath:(id)path;
 + (id)classesCompatibleWithJSONSerialization;
-+ (id)createJSONRepresentationFromDictionary:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5;
-+ (id)objectFromJSON:(id)a3 bundle:(id)a4;
++ (id)createJSONRepresentationFromDictionary:(id)dictionary bundlePath:(id)path purpose:(unint64_t)purpose;
++ (id)objectFromJSON:(id)n bundle:(id)bundle;
 - (BOOL)hasSubMinuteUpdateRate;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithError:(id *)a3;
-- (CLKComplicationTemplate)initWithCoder:(id)a3;
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3 purpose:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithError:(id *)error;
+- (CLKComplicationTemplate)initWithCoder:(id)coder;
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path purpose:(unint64_t)purpose;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)finalizedCopy;
 - (id)initPrivate;
 - (int64_t)compatibleFamily;
 - (int64_t)timeTravelUpdateFrequency;
 - (unint64_t)hash;
-- (void)_enumerateAllBasicKeysWithBlock:(id)a3;
-- (void)_enumerateScalarKeysWithBlock:(id)a3;
-- (void)_setProvidersPaused:(BOOL)a3;
-- (void)beginUpdatesForClient:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endUpdatesForClient:(id)a3;
-- (void)enumerateEmbeddedTemplateKeysWithBlock:(id)a3;
-- (void)enumerateImageProviderKeysWithBlock:(id)a3;
-- (void)enumerateProgressProviderKeysWithBlock:(id)a3;
-- (void)enumerateSwiftUIViewDataKeysWithBlock:(id)a3;
-- (void)enumerateTextProviderKeysWithBlock:(id)a3;
+- (void)_enumerateAllBasicKeysWithBlock:(id)block;
+- (void)_enumerateScalarKeysWithBlock:(id)block;
+- (void)_setProvidersPaused:(BOOL)paused;
+- (void)beginUpdatesForClient:(id)client;
+- (void)encodeWithCoder:(id)coder;
+- (void)endUpdatesForClient:(id)client;
+- (void)enumerateEmbeddedTemplateKeysWithBlock:(id)block;
+- (void)enumerateImageProviderKeysWithBlock:(id)block;
+- (void)enumerateProgressProviderKeysWithBlock:(id)block;
+- (void)enumerateSwiftUIViewDataKeysWithBlock:(id)block;
+- (void)enumerateTextProviderKeysWithBlock:(id)block;
 - (void)finalize;
-- (void)maxSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forImageProviderKey:(id)a5;
-- (void)setSDKVersionFromLS:(id)a3;
-- (void)setSdkVersion:(int64_t)a3;
+- (void)maxSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forImageProviderKey:(id)key;
+- (void)setSDKVersionFromLS:(id)s;
+- (void)setSdkVersion:(int64_t)version;
 @end
 
 @implementation CLKComplicationTemplate
@@ -50,9 +50,9 @@
   v2 = [(CLKComplicationTemplate *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v2->_creationDate;
-    v2->_creationDate = v3;
+    v2->_creationDate = date;
   }
 
   return v2;
@@ -60,33 +60,33 @@
 
 + (CLKComplicationTemplate)new
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___CLKComplicationTemplate;
   return objc_msgSendSuper2(&v3, "new");
 }
 
-- (void)beginUpdatesForClient:(id)a3
+- (void)beginUpdatesForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   activeClients = self->_activeClients;
-  v8 = v4;
+  v8 = clientCopy;
   if (!activeClients)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_activeClients;
-    self->_activeClients = v6;
+    self->_activeClients = weakObjectsHashTable;
 
-    v4 = v8;
+    clientCopy = v8;
     activeClients = self->_activeClients;
   }
 
-  [(NSHashTable *)activeClients addObject:v4];
+  [(NSHashTable *)activeClients addObject:clientCopy];
   [(CLKComplicationTemplate *)self _setProvidersPaused:0];
 }
 
-- (void)endUpdatesForClient:(id)a3
+- (void)endUpdatesForClient:(id)client
 {
-  [(NSHashTable *)self->_activeClients removeObject:a3];
+  [(NSHashTable *)self->_activeClients removeObject:client];
   if (![(NSHashTable *)self->_activeClients count])
   {
 
@@ -162,27 +162,27 @@ void __49__CLKComplicationTemplate_hasSubMinuteUpdateRate__block_invoke_4(uint64
   }
 }
 
-- (void)setSDKVersionFromLS:(id)a3
+- (void)setSDKVersionFromLS:(id)s
 {
-  if (a3)
+  if (s)
   {
-    [a3 compare:@"15.0" options:64];
+    [s compare:@"15.0" options:64];
   }
 
   [(CLKComplicationTemplate *)self setSdkVersion:?];
 }
 
-- (void)setSdkVersion:(int64_t)a3
+- (void)setSdkVersion:(int64_t)version
 {
   if (!self->_finalized)
   {
-    self->_sdkVersion = a3;
+    self->_sdkVersion = version;
     v3[0] = MEMORY[0x277D85DD0];
     v3[1] = 3221225472;
     v3[2] = __41__CLKComplicationTemplate_setSdkVersion___block_invoke;
     v3[3] = &unk_278A1E860;
     v3[4] = self;
-    v3[5] = a3;
+    v3[5] = version;
     [(CLKComplicationTemplate *)self _enumerateEmbeddedTemplateKeysWithBlock:v3];
   }
 }
@@ -279,7 +279,7 @@ void __52__CLKComplicationTemplate_timeTravelUpdateFrequency__block_invoke_3(uin
   *(*(*(a1 + 40) + 8) + 24) = v5;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v27 = 0;
@@ -305,7 +305,7 @@ void __52__CLKComplicationTemplate_timeTravelUpdateFrequency__block_invoke_3(uin
   v19[6] = &v20;
   v19[7] = &v27;
   [(CLKComplicationTemplate *)self _enumerateTextProviderKeysWithBlock:v19];
-  if (*(v28 + 24) != 1 || (v18[0] = MEMORY[0x277D85DD0], v18[1] = 3221225472, v18[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_2, v18[3] = &unk_278A1E8B0, v18[4] = self, v18[5] = &v24, v18[6] = &v20, v18[7] = &v27, [(CLKComplicationTemplate *)self _enumerateImageProviderKeysWithBlock:v18], (v28[3] & 1) == 0) || (v17[0] = MEMORY[0x277D85DD0], v17[1] = 3221225472, v17[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_3, v17[3] = &unk_278A1E888, v17[4] = self, v17[5] = &v24, v17[6] = &v20, v17[7] = &v27, [(CLKComplicationTemplate *)self _enumerateProgressProviderKeysWithBlock:v17], (v28[3] & 1) == 0) || (v16[0] = MEMORY[0x277D85DD0], v16[1] = 3221225472, v16[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_4, v16[3] = &unk_278A1E8D8, v16[4] = self, v16[5] = &v24, v16[6] = &v20, v16[7] = &v27, [(CLKComplicationTemplate *)self _enumerateIntegerKeysWithBlock:v16], (v28[3] & 1) == 0) || (v15[0] = MEMORY[0x277D85DD0], v15[1] = 3221225472, v15[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_5, v15[3] = &unk_278A1E900, v15[4] = self, v15[5] = &v24, v15[6] = &v20, v15[7] = &v27, [(CLKComplicationTemplate *)self _enumerateFloatKeysWithBlock:v15], (v28[3] & 1) == 0) || (v14[0] = MEMORY[0x277D85DD0], v14[1] = 3221225472, v14[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_6, v14[3] = &unk_278A1E888, v14[4] = self, v14[5] = &v24, v14[6] = &v20, v14[7] = &v27, [(CLKComplicationTemplate *)self _enumerateGaugeProviderKeysWithBlock:v14], (v28[3] & 1) == 0) || (v13[0] = MEMORY[0x277D85DD0], v13[1] = 3221225472, v13[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_7, v13[3] = &unk_278A1E928, v13[4] = self, v13[5] = &v24, v13[6] = &v20, v13[7] = &v27, [(CLKComplicationTemplate *)self _enumerateFullColorImageProviderKeysWithBlock:v13], (v28[3] & 1) == 0) || (v12[0] = MEMORY[0x277D85DD0], v12[1] = 3221225472, v12[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_8, v12[3] = &unk_278A1E950, v12[4] = self, v12[5] = &v24, v12[6] = &v20, v12[7] = &v27, v12[8] = a3, [(CLKComplicationTemplate *)self _enumerateEmbeddedTemplateKeysWithBlock:v12], (v28[3] & 1) == 0) || (v11[0] = MEMORY[0x277D85DD0], v11[1] = 3221225472, v11[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_9, v11[3] = &unk_278A1E9A0, v11[4] = self, v11[5] = &v27, v11[6] = &v24, v11[7] = &v20, v11[8] = a3, [(CLKComplicationTemplate *)self _enumerateSwiftUIViewKeysWithBlock:v11], (v28[3] & 1) == 0))
+  if (*(v28 + 24) != 1 || (v18[0] = MEMORY[0x277D85DD0], v18[1] = 3221225472, v18[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_2, v18[3] = &unk_278A1E8B0, v18[4] = self, v18[5] = &v24, v18[6] = &v20, v18[7] = &v27, [(CLKComplicationTemplate *)self _enumerateImageProviderKeysWithBlock:v18], (v28[3] & 1) == 0) || (v17[0] = MEMORY[0x277D85DD0], v17[1] = 3221225472, v17[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_3, v17[3] = &unk_278A1E888, v17[4] = self, v17[5] = &v24, v17[6] = &v20, v17[7] = &v27, [(CLKComplicationTemplate *)self _enumerateProgressProviderKeysWithBlock:v17], (v28[3] & 1) == 0) || (v16[0] = MEMORY[0x277D85DD0], v16[1] = 3221225472, v16[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_4, v16[3] = &unk_278A1E8D8, v16[4] = self, v16[5] = &v24, v16[6] = &v20, v16[7] = &v27, [(CLKComplicationTemplate *)self _enumerateIntegerKeysWithBlock:v16], (v28[3] & 1) == 0) || (v15[0] = MEMORY[0x277D85DD0], v15[1] = 3221225472, v15[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_5, v15[3] = &unk_278A1E900, v15[4] = self, v15[5] = &v24, v15[6] = &v20, v15[7] = &v27, [(CLKComplicationTemplate *)self _enumerateFloatKeysWithBlock:v15], (v28[3] & 1) == 0) || (v14[0] = MEMORY[0x277D85DD0], v14[1] = 3221225472, v14[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_6, v14[3] = &unk_278A1E888, v14[4] = self, v14[5] = &v24, v14[6] = &v20, v14[7] = &v27, [(CLKComplicationTemplate *)self _enumerateGaugeProviderKeysWithBlock:v14], (v28[3] & 1) == 0) || (v13[0] = MEMORY[0x277D85DD0], v13[1] = 3221225472, v13[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_7, v13[3] = &unk_278A1E928, v13[4] = self, v13[5] = &v24, v13[6] = &v20, v13[7] = &v27, [(CLKComplicationTemplate *)self _enumerateFullColorImageProviderKeysWithBlock:v13], (v28[3] & 1) == 0) || (v12[0] = MEMORY[0x277D85DD0], v12[1] = 3221225472, v12[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_8, v12[3] = &unk_278A1E950, v12[4] = self, v12[5] = &v24, v12[6] = &v20, v12[7] = &v27, v12[8] = error, [(CLKComplicationTemplate *)self _enumerateEmbeddedTemplateKeysWithBlock:v12], (v28[3] & 1) == 0) || (v11[0] = MEMORY[0x277D85DD0], v11[1] = 3221225472, v11[2] = __45__CLKComplicationTemplate_validateWithError___block_invoke_9, v11[3] = &unk_278A1E9A0, v11[4] = self, v11[5] = &v27, v11[6] = &v24, v11[7] = &v20, v11[8] = error, [(CLKComplicationTemplate *)self _enumerateSwiftUIViewKeysWithBlock:v11], (v28[3] & 1) == 0))
   {
     if (*(v25[0] + 40))
     {
@@ -318,14 +318,14 @@ void __52__CLKComplicationTemplate_timeTravelUpdateFrequency__block_invoke_3(uin
         }
       }
 
-      if (a3 && !*a3)
+      if (error && !*error)
       {
         v6 = MEMORY[0x277CCA9B8];
         v7 = *(v25[0] + 40);
         v31 = *MEMORY[0x277CCA450];
         v32[0] = v7;
         v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-        *a3 = [v6 errorWithDomain:@"CLKComplicationTimelineErrorDomain" code:2 userInfo:v8];
+        *error = [v6 errorWithDomain:@"CLKComplicationTimelineErrorDomain" code:2 userInfo:v8];
       }
     }
   }
@@ -718,18 +718,18 @@ uint64_t __45__CLKComplicationTemplate_validateWithError___block_invoke_10(uint6
 {
   if (self->_finalized)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
     self->_finalizing = 1;
-    v3 = [(CLKComplicationTemplate *)self copy];
-    [(CLKComplicationTemplate *)v3 finalize];
+    selfCopy = [(CLKComplicationTemplate *)self copy];
+    [(CLKComplicationTemplate *)selfCopy finalize];
     self->_finalizing = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)finalize
@@ -858,9 +858,9 @@ void __35__CLKComplicationTemplate_finalize__block_invoke_6(uint64_t a1, void *a
   }
 }
 
-- (void)maxSDKSize:(CGSize *)a3 deviceSize:(CGSize *)a4 forImageProviderKey:(id)a5
+- (void)maxSDKSize:(CGSize *)size deviceSize:(CGSize *)deviceSize forImageProviderKey:(id)key
 {
-  v8 = a5;
+  keyCopy = key;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -870,10 +870,10 @@ void __35__CLKComplicationTemplate_finalize__block_invoke_6(uint64_t a1, void *a
   v19[2] = __69__CLKComplicationTemplate_maxSDKSize_deviceSize_forImageProviderKey___block_invoke;
   v19[3] = &unk_278A1EA68;
   v21 = &v24;
-  v9 = v8;
+  v9 = keyCopy;
   v20 = v9;
-  v22 = a3;
-  v23 = a4;
+  sizeCopy = size;
+  deviceSizeCopy = deviceSize;
   [(CLKComplicationTemplate *)self _enumerateImageProviderKeysWithBlock:v19];
   if ((v25[3] & 1) == 0)
   {
@@ -884,8 +884,8 @@ void __35__CLKComplicationTemplate_finalize__block_invoke_6(uint64_t a1, void *a
     v16 = &v24;
     v10 = v9;
     v15 = v10;
-    v17 = a3;
-    v18 = a4;
+    sizeCopy2 = size;
+    deviceSizeCopy2 = deviceSize;
     [(CLKComplicationTemplate *)self _enumerateFullColorImageProviderKeysWithBlock:&v11];
 
     if ((v25[3] & 1) == 0)
@@ -947,70 +947,70 @@ void __69__CLKComplicationTemplate_maxSDKSize_deviceSize_forImageProviderKey___b
   }
 }
 
-- (void)enumerateTextProviderKeysWithBlock:(id)a3
+- (void)enumerateTextProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__CLKComplicationTemplate_enumerateTextProviderKeysWithBlock___block_invoke;
   v6[3] = &unk_278A1EAB8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CLKComplicationTemplate *)self _enumerateTextProviderKeysWithBlock:v6];
 }
 
-- (void)enumerateImageProviderKeysWithBlock:(id)a3
+- (void)enumerateImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__CLKComplicationTemplate_enumerateImageProviderKeysWithBlock___block_invoke;
   v6[3] = &unk_278A1EAE0;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CLKComplicationTemplate *)self _enumerateImageProviderKeysWithBlock:v6];
 }
 
-- (void)enumerateProgressProviderKeysWithBlock:(id)a3
+- (void)enumerateProgressProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__CLKComplicationTemplate_enumerateProgressProviderKeysWithBlock___block_invoke;
   v6[3] = &unk_278A1EAB8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CLKComplicationTemplate *)self _enumerateProgressProviderKeysWithBlock:v6];
 }
 
-- (void)enumerateEmbeddedTemplateKeysWithBlock:(id)a3
+- (void)enumerateEmbeddedTemplateKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__CLKComplicationTemplate_enumerateEmbeddedTemplateKeysWithBlock___block_invoke;
   v6[3] = &unk_278A1EAB8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CLKComplicationTemplate *)self _enumerateEmbeddedTemplateKeysWithBlock:v6];
 }
 
-- (void)enumerateSwiftUIViewDataKeysWithBlock:(id)a3
+- (void)enumerateSwiftUIViewDataKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__CLKComplicationTemplate_enumerateSwiftUIViewDataKeysWithBlock___block_invoke;
   v6[3] = &unk_278A1EAB8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(CLKComplicationTemplate *)self _enumerateSwiftUIViewDataKeysWithBlock:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (v5 = objc_msgSend(v4, "uiSensitivity"), v5 == -[CLKComplicationTemplate uiSensitivity](self, "uiSensitivity")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (v5 = objc_msgSend(equalCopy, "uiSensitivity"), v5 == -[CLKComplicationTemplate uiSensitivity](self, "uiSensitivity")))
   {
     v95 = 0;
     v96 = &v95;
@@ -1021,7 +1021,7 @@ void __69__CLKComplicationTemplate_maxSDKSize_deviceSize_forImageProviderKey___b
     v92[2] = __35__CLKComplicationTemplate_isEqual___block_invoke;
     v92[3] = &unk_278A1EB08;
     v92[4] = self;
-    v6 = v4;
+    v6 = equalCopy;
     v93 = v6;
     v94 = &v95;
     [(CLKComplicationTemplate *)self _enumerateTextProviderKeysWithBlock:v92];
@@ -1473,8 +1473,8 @@ void __35__CLKComplicationTemplate_isEqual___block_invoke_11(uint64_t a1, void *
   v6 = v5;
   v17 = v6;
   [(CLKComplicationTemplate *)self _enumerateSwiftUIViewDataKeysWithBlock:v16];
-  v7 = [(CLKComplicationTemplate *)self tintColor];
-  v8 = [v7 hash];
+  tintColor = [(CLKComplicationTemplate *)self tintColor];
+  v8 = [tintColor hash];
   v9 = [@"tintColor" hash];
   v24[3] += v9 * v8;
 
@@ -1511,7 +1511,7 @@ void __31__CLKComplicationTemplate_hash__block_invoke(uint64_t a1, void *a2)
   *(*(*(a1 + 40) + 8) + 24) += v6 * v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_finalized)
   {
@@ -1530,14 +1530,14 @@ void __31__CLKComplicationTemplate_hash__block_invoke(uint64_t a1, void *a2)
       v9 = objc_opt_class();
     }
 
-    v10 = [[(objc_class *)v9 allocWithZone:a3] init];
+    v10 = [[(objc_class *)v9 allocWithZone:zone] init];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __40__CLKComplicationTemplate_copyWithZone___block_invoke;
     v21[3] = &unk_278A1EC48;
     v11 = v10;
     v22 = v11;
-    v23 = self;
+    selfCopy = self;
     [(CLKComplicationTemplate *)self _enumerateAllBasicKeysWithBlock:v21];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -1545,10 +1545,10 @@ void __31__CLKComplicationTemplate_hash__block_invoke(uint64_t a1, void *a2)
     v18[3] = &unk_278A1EC70;
     v12 = v11;
     v19 = v12;
-    v20 = self;
+    selfCopy2 = self;
     [(CLKComplicationTemplate *)self _enumerateEmbeddedTemplateKeysWithBlock:v18];
-    v13 = [(CLKComplicationTemplate *)self tintColor];
-    [v12 setTintColor:v13];
+    tintColor = [(CLKComplicationTemplate *)self tintColor];
+    [v12 setTintColor:tintColor];
 
     v14 = [(NSDictionary *)self->_metadata mutableCopy];
     v15 = v12[1];
@@ -1585,16 +1585,16 @@ void __40__CLKComplicationTemplate_copyWithZone___block_invoke_2(uint64_t a1, vo
   [v2 setValue:v5 forKey:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __43__CLKComplicationTemplate_encodeWithCoder___block_invoke;
   v48[3] = &unk_278A1EC70;
   v48[4] = self;
-  v6 = v4;
+  v6 = coderCopy;
   v49 = v6;
   [(CLKComplicationTemplate *)self _enumerateTextProviderKeysWithBlock:v48];
 
@@ -1653,8 +1653,8 @@ void __40__CLKComplicationTemplate_copyWithZone___block_invoke_2(uint64_t a1, vo
   v14 = v13;
   v37 = v14;
   [(CLKComplicationTemplate *)self _enumerateDateKeysWithBlock:v36];
-  v15 = [(CLKComplicationTemplate *)self tintColor];
-  [v14 encodeObject:v15 forKey:@"tintColor"];
+  tintColor = [(CLKComplicationTemplate *)self tintColor];
+  [v14 encodeObject:tintColor forKey:@"tintColor"];
 
   v16 = objc_autoreleasePoolPush();
   v34[0] = MEMORY[0x277D85DD0];
@@ -1694,13 +1694,13 @@ void __40__CLKComplicationTemplate_copyWithZone___block_invoke_2(uint64_t a1, vo
   v25 = 3221225472;
   v26 = __43__CLKComplicationTemplate_encodeWithCoder___block_invoke_114;
   v27 = &unk_278A1EC70;
-  v28 = self;
+  selfCopy = self;
   v23 = v21;
   v29 = v23;
   [(CLKComplicationTemplate *)self _enumerateSwiftUIViewDataKeysWithBlock:&v24];
 
   objc_autoreleasePoolPop(v22);
-  [v23 encodeObject:self->_metadata forKey:{@"metadata", v24, v25, v26, v27, v28}];
+  [v23 encodeObject:self->_metadata forKey:{@"metadata", v24, v25, v26, v27, selfCopy}];
   [v23 encodeBool:self->_linkedOnOrAfterGrace forKey:@"linkedOnOrAfterGrace"];
   [v23 encodeInteger:self->_sdkVersion forKey:@"sdkVersion"];
   [v23 encodeObject:self->_creationDate forKey:@"creationDate"];
@@ -1821,20 +1821,20 @@ void __43__CLKComplicationTemplate_encodeWithCoder___block_invoke_114(uint64_t a
   [*(a1 + 40) encodeObject:v5 forKey:v4];
 }
 
-- (CLKComplicationTemplate)initWithCoder:(id)a3
+- (CLKComplicationTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CLKComplicationTemplate *)self initPrivate];
-  if (v5)
+  coderCopy = coder;
+  initPrivate = [(CLKComplicationTemplate *)self initPrivate];
+  if (initPrivate)
   {
     v6 = objc_autoreleasePoolPush();
     v87[0] = MEMORY[0x277D85DD0];
     v87[1] = 3221225472;
     v87[2] = __41__CLKComplicationTemplate_initWithCoder___block_invoke;
     v87[3] = &unk_278A1EC70;
-    v7 = v4;
+    v7 = coderCopy;
     v88 = v7;
-    v8 = v5;
+    v8 = initPrivate;
     v89 = v8;
     [(CLKComplicationTemplate *)v8 _enumerateTextProviderKeysWithBlock:v87];
 
@@ -1939,8 +1939,8 @@ void __43__CLKComplicationTemplate_encodeWithCoder___block_invoke_114(uint64_t a
 
     objc_autoreleasePoolPop(v30);
     v33 = objc_autoreleasePoolPush();
-    v34 = [objc_opt_class() classesCompatibleWithJSONSerialization];
-    v35 = [v31 decodeObjectOfClasses:v34 forKey:@"metadata"];
+    classesCompatibleWithJSONSerialization = [objc_opt_class() classesCompatibleWithJSONSerialization];
+    v35 = [v31 decodeObjectOfClasses:classesCompatibleWithJSONSerialization forKey:@"metadata"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1981,22 +1981,22 @@ void __43__CLKComplicationTemplate_encodeWithCoder___block_invoke_114(uint64_t a
     v50 = v49;
     if (v49)
     {
-      v51 = v49;
+      date = v49;
     }
 
     else
     {
-      v51 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     v52 = v40[7];
-    v40[7] = v51;
+    v40[7] = date;
 
     *(v40 + 24) = [v39 decodeBoolForKey:@"finalized"];
     v40[6] = [v39 decodeIntegerForKey:@"sensitivity"];
   }
 
-  return v5;
+  return initPrivate;
 }
 
 void __41__CLKComplicationTemplate_initWithCoder___block_invoke(uint64_t a1, void *a2)
@@ -2111,18 +2111,18 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
   [*(a1 + 40) setValue:v5 forKey:v4];
 }
 
-+ (CLKComplicationTemplate)complicationTemplateWithJSONObjectRepresentation:(id)a3 bundle:(id)a4 purpose:(unint64_t)a5
++ (CLKComplicationTemplate)complicationTemplateWithJSONObjectRepresentation:(id)representation bundle:(id)bundle purpose:(unint64_t)purpose
 {
   v95 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v56 = a4;
+  representationCopy = representation;
+  bundleCopy = bundle;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"top level object must be a dictionary. Invalid value: %@", v8}];
+    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"top level object must be a dictionary. Invalid value: %@", representationCopy}];
   }
 
-  v9 = [v8 objectForKeyedSubscript:@"class"];
+  v9 = [representationCopy objectForKeyedSubscript:@"class"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2132,14 +2132,14 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
       [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"class: %@ must be a CLKComplicationTemplate class", v9}];
     }
 
-    v57 = [[v10 alloc] initPrivateWithJSONObjectRepresentation:v8 bundle:v56];
+    v57 = [[v10 alloc] initPrivateWithJSONObjectRepresentation:representationCopy bundle:bundleCopy];
     if (v57)
     {
       v92[0] = MEMORY[0x277D85DD0];
       v92[1] = 3221225472;
       v92[2] = __91__CLKComplicationTemplate_complicationTemplateWithJSONObjectRepresentation_bundle_purpose___block_invoke;
       v92[3] = &unk_278A1EC70;
-      v11 = v8;
+      v11 = representationCopy;
       v93 = v11;
       v12 = v57;
       v94 = v12;
@@ -2150,7 +2150,7 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
       v88[3] = &unk_278A1ED60;
       v13 = v11;
       v89 = v13;
-      v14 = v56;
+      v14 = bundleCopy;
       v90 = v14;
       v15 = v12;
       v91 = v15;
@@ -2191,8 +2191,8 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
       v23 = v21;
       v78 = v23;
       [v23 _enumerateDateKeysWithBlock:v76];
-      v53 = a1;
-      v54 = a5;
+      selfCopy = self;
+      purposeCopy = purpose;
       v55 = [v22 objectForKeyedSubscript:@"tintColor"];
       if (v55)
       {
@@ -2228,10 +2228,10 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
       v62[3] = &unk_278A1EDD8;
       v31 = v28;
       v63 = v31;
-      v66 = v53;
+      v66 = selfCopy;
       v32 = v29;
       v64 = v32;
-      v67 = v54;
+      v67 = purposeCopy;
       v33 = v30;
       v65 = v33;
       [v33 _enumerateEmbeddedTemplateKeysWithBlock:v62];
@@ -2250,16 +2250,16 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
       v38 = [v34 objectForKeyedSubscript:@"creationDate"];
       if (v38 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v39 = v38;
+        date = v38;
       }
 
       else
       {
-        v39 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
       }
 
       v40 = *(v36 + 7);
-      *(v36 + 7) = v39;
+      *(v36 + 7) = date;
 
       v41 = [v34 objectForKeyedSubscript:@"sdkVersion"];
       objc_opt_class();
@@ -2270,7 +2270,7 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
 
       v42 = [v34 objectForKeyedSubscript:@"metadata"];
       v43 = v42;
-      if (v54)
+      if (purposeCopy)
       {
         if (v42)
         {
@@ -2283,8 +2283,8 @@ void __41__CLKComplicationTemplate_initWithCoder___block_invoke_121(uint64_t a1,
 
         v44 = objc_alloc_init(MEMORY[0x277CBEAC0]);
         v45 = objc_opt_class();
-        v46 = [v35 bundlePath];
-        v47 = [v45 _secureCodingRepresentationOfEmbeddedObjectsDictionary:v43 bundlePath:v46];
+        bundlePath = [v35 bundlePath];
+        v47 = [v45 _secureCodingRepresentationOfEmbeddedObjectsDictionary:v43 bundlePath:bundlePath];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2567,17 +2567,17 @@ uint64_t __91__CLKComplicationTemplate_complicationTemplateWithJSONObjectReprese
   return MEMORY[0x2821F96F8](v7, v8);
 }
 
-- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)a3 purpose:(unint64_t)a4
+- (id)JSONObjectRepresentationWritingResourcesToBundlePath:(id)path purpose:(unint64_t)purpose
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_opt_new();
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   [v7 setObject:v9 forKeyedSubscript:@"class"];
 
   [v7 setObject:&unk_284A340F8 forKeyedSubscript:@"version"];
-  v10 = [(UIColor *)self->_tintColor JSONObjectRepresentation];
-  [v7 setObject:v10 forKeyedSubscript:@"tintColor"];
+  jSONObjectRepresentation = [(UIColor *)self->_tintColor JSONObjectRepresentation];
+  [v7 setObject:jSONObjectRepresentation forKeyedSubscript:@"tintColor"];
 
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
@@ -2592,7 +2592,7 @@ uint64_t __91__CLKComplicationTemplate_complicationTemplateWithJSONObjectReprese
   v62[2] = __88__CLKComplicationTemplate_JSONObjectRepresentationWritingResourcesToBundlePath_purpose___block_invoke_2;
   v62[3] = &unk_278A1EDB0;
   v62[4] = self;
-  v12 = v6;
+  v12 = pathCopy;
   v63 = v12;
   v13 = v11;
   v64 = v13;
@@ -2604,7 +2604,7 @@ uint64_t __91__CLKComplicationTemplate_complicationTemplateWithJSONObjectReprese
   v58[4] = self;
   v14 = v12;
   v59 = v14;
-  v61 = a4;
+  purposeCopy = purpose;
   v15 = v13;
   v60 = v15;
   [(CLKComplicationTemplate *)self _enumerateEmbeddedTemplateKeysWithBlock:v58];
@@ -2616,7 +2616,7 @@ uint64_t __91__CLKComplicationTemplate_complicationTemplateWithJSONObjectReprese
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:self->_sdkVersion];
   [v15 setObject:v18 forKeyedSubscript:@"sdkVersion"];
 
-  if (!a4)
+  if (!purpose)
   {
     v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_linkedOnOrAfterGrace];
     [v15 setObject:v20 forKeyedSubscript:@"linkedOnOrAfterGrace"];
@@ -2667,7 +2667,7 @@ LABEL_5:
   v48[3] = &unk_278A1ED10;
   v26 = v25;
   v49 = v26;
-  v50 = self;
+  selfCopy = self;
   [(CLKComplicationTemplate *)self _enumerateBOOLKeysWithBlock:v48];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -2675,7 +2675,7 @@ LABEL_5:
   v45[3] = &unk_278A1ECE8;
   v27 = v26;
   v46 = v27;
-  v47 = self;
+  selfCopy2 = self;
   [(CLKComplicationTemplate *)self _enumerateFloatKeysWithBlock:v45];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -2683,7 +2683,7 @@ LABEL_5:
   v42[3] = &unk_278A1ECC0;
   v28 = v27;
   v43 = v28;
-  v44 = self;
+  selfCopy3 = self;
   [(CLKComplicationTemplate *)self _enumerateIntegerKeysWithBlock:v42];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -2703,7 +2703,7 @@ LABEL_5:
   v31 = v29;
   v39 = v31;
   [(CLKComplicationTemplate *)self _enumerateSwiftUIViewDataKeysWithBlock:v37];
-  if (a4 == 1)
+  if (purpose == 1)
   {
     v32 = [objc_opt_class() createJSONRepresentationFromDictionary:v31 bundlePath:v30 purpose:1];
     v33 = [v32 mutableCopy];
@@ -2850,21 +2850,21 @@ void __88__CLKComplicationTemplate_JSONObjectRepresentationWritingResourcesToBun
   }
 }
 
-+ (id)_secureCodingRepresentationOfEmbeddedObjectsDictionary:(id)a3 bundlePath:(id)a4
++ (id)_secureCodingRepresentationOfEmbeddedObjectsDictionary:(id)dictionary bundlePath:(id)path
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v9 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:v7];
+  v9 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:pathCopy];
   if (v9)
   {
-    v10 = [v6 allKeys];
-    v11 = [v10 containsObject:@"class"];
+    allKeys = [dictionaryCopy allKeys];
+    v11 = [allKeys containsObject:@"class"];
 
     if (v11)
     {
-      v12 = [objc_opt_class() objectFromJSON:v6 bundle:v9];
+      v12 = [objc_opt_class() objectFromJSON:dictionaryCopy bundle:v9];
     }
 
     else
@@ -2874,7 +2874,7 @@ void __88__CLKComplicationTemplate_JSONObjectRepresentationWritingResourcesToBun
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      obj = [v6 allKeys];
+      obj = [dictionaryCopy allKeys];
       v14 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v14)
       {
@@ -2890,8 +2890,8 @@ void __88__CLKComplicationTemplate_JSONObjectRepresentationWritingResourcesToBun
             }
 
             v18 = *(*(&v25 + 1) + 8 * i);
-            v19 = [v6 objectForKeyedSubscript:v18];
-            v20 = [a1 _secureCodingRepresentationOfValue:v19 bundlePath:v7];
+            v19 = [dictionaryCopy objectForKeyedSubscript:v18];
+            v20 = [self _secureCodingRepresentationOfValue:v19 bundlePath:pathCopy];
             if (!v20)
             {
 
@@ -2933,12 +2933,12 @@ LABEL_17:
   return v12;
 }
 
-+ (id)_secureCodingRepresentationOfEmbeddedObjectsArray:(id)a3 bundlePath:(id)a4
++ (id)_secureCodingRepresentationOfEmbeddedObjectsArray:(id)array bundlePath:(id)path
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:v7];
+  arrayCopy = array;
+  pathCopy = path;
+  v8 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:pathCopy];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2946,7 +2946,7 @@ LABEL_17:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = v6;
+    v10 = arrayCopy;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
@@ -2961,7 +2961,7 @@ LABEL_17:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [a1 _secureCodingRepresentationOfValue:*(*(&v19 + 1) + 8 * i) bundlePath:{v7, v19}];
+          v15 = [self _secureCodingRepresentationOfValue:*(*(&v19 + 1) + 8 * i) bundlePath:{pathCopy, v19}];
           if (!v15)
           {
 
@@ -3001,14 +3001,14 @@ LABEL_14:
   return v17;
 }
 
-+ (id)_secureCodingRepresentationOfValue:(id)a3 bundlePath:(id)a4
++ (id)_secureCodingRepresentationOfValue:(id)value bundlePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v8 = objc_opt_class();
   if ([v8 isSubclassOfClass:objc_opt_class()])
   {
-    v9 = [objc_opt_class() _secureCodingRepresentationOfEmbeddedObjectsDictionary:v6 bundlePath:v7];
+    v9 = [objc_opt_class() _secureCodingRepresentationOfEmbeddedObjectsDictionary:valueCopy bundlePath:pathCopy];
 LABEL_7:
     v10 = v9;
     goto LABEL_8;
@@ -3016,13 +3016,13 @@ LABEL_7:
 
   if ([v8 isSubclassOfClass:objc_opt_class()])
   {
-    v9 = [a1 _secureCodingRepresentationOfEmbeddedObjectsArray:v6 bundlePath:v7];
+    v9 = [self _secureCodingRepresentationOfEmbeddedObjectsArray:valueCopy bundlePath:pathCopy];
     goto LABEL_7;
   }
 
   if ([objc_opt_class() classIsCompatibleWithJSONSerialization:v8])
   {
-    v9 = v6;
+    v9 = valueCopy;
     goto LABEL_7;
   }
 
@@ -3038,35 +3038,35 @@ LABEL_8:
   return v10;
 }
 
-- (void)_setProvidersPaused:(BOOL)a3
+- (void)_setProvidersPaused:(BOOL)paused
 {
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__CLKComplicationTemplate__setProvidersPaused___block_invoke;
   v11[3] = &unk_278A1EE28;
   v11[4] = self;
-  v12 = a3;
+  pausedCopy = paused;
   [(CLKComplicationTemplate *)self _enumerateTextProviderKeysWithBlock:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__CLKComplicationTemplate__setProvidersPaused___block_invoke_2;
   v9[3] = &unk_278A1EE28;
   v9[4] = self;
-  v10 = a3;
+  pausedCopy2 = paused;
   [(CLKComplicationTemplate *)self _enumerateProgressProviderKeysWithBlock:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__CLKComplicationTemplate__setProvidersPaused___block_invoke_3;
   v7[3] = &unk_278A1EE28;
   v7[4] = self;
-  v8 = a3;
+  pausedCopy3 = paused;
   [(CLKComplicationTemplate *)self _enumerateGaugeProviderKeysWithBlock:v7];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__CLKComplicationTemplate__setProvidersPaused___block_invoke_4;
   v5[3] = &unk_278A1EE28;
   v5[4] = self;
-  v6 = a3;
+  pausedCopy4 = paused;
   [(CLKComplicationTemplate *)self _enumerateEmbeddedTemplateKeysWithBlock:v5];
 }
 
@@ -3094,14 +3094,14 @@ void __47__CLKComplicationTemplate__setProvidersPaused___block_invoke_4(uint64_t
   [v3 _setProvidersPaused:*(a1 + 40)];
 }
 
-- (void)_enumerateScalarKeysWithBlock:(id)a3
+- (void)_enumerateScalarKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__CLKComplicationTemplate__enumerateScalarKeysWithBlock___block_invoke;
   v12[3] = &unk_278A1EE50;
-  v5 = v4;
+  v5 = blockCopy;
   v13 = v5;
   [(CLKComplicationTemplate *)self _enumerateIntegerKeysWithBlock:v12];
   v10[0] = MEMORY[0x277D85DD0];
@@ -3120,14 +3120,14 @@ void __47__CLKComplicationTemplate__setProvidersPaused___block_invoke_4(uint64_t
   [(CLKComplicationTemplate *)self _enumerateBOOLKeysWithBlock:v8];
 }
 
-- (void)_enumerateAllBasicKeysWithBlock:(id)a3
+- (void)_enumerateAllBasicKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __59__CLKComplicationTemplate__enumerateAllBasicKeysWithBlock___block_invoke;
   v24[3] = &unk_278A1EAB8;
-  v5 = v4;
+  v5 = blockCopy;
   v25 = v5;
   [(CLKComplicationTemplate *)self _enumerateTextProviderKeysWithBlock:v24];
   v22[0] = MEMORY[0x277D85DD0];
@@ -3207,18 +3207,18 @@ uint64_t __84__CLKComplicationTemplate_JSONSerialization__classesCompatibleWithJ
   return MEMORY[0x2821F96F8](v10, v11);
 }
 
-+ (id)createJSONRepresentationFromDictionary:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5
++ (id)createJSONRepresentationFromDictionary:(id)dictionary bundlePath:(id)path purpose:(unint64_t)purpose
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v23 = a4;
+  dictionaryCopy = dictionary;
+  pathCopy = path;
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v8;
-  obj = [v8 allKeys];
+  v10 = dictionaryCopy;
+  obj = [dictionaryCopy allKeys];
   v11 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -3235,7 +3235,7 @@ uint64_t __84__CLKComplicationTemplate_JSONSerialization__classesCompatibleWithJ
 
         v15 = *(*(&v24 + 1) + 8 * i);
         v16 = [v10 objectForKeyedSubscript:v15];
-        v17 = [a1 _jsonRepresentationFromValue:v16 bundlePath:v23 purpose:a5];
+        v17 = [self _jsonRepresentationFromValue:v16 bundlePath:pathCopy purpose:purpose];
         if (!v17)
         {
           v20 = CLKLoggingObjectForDomain(0);
@@ -3268,19 +3268,19 @@ LABEL_13:
   return v19;
 }
 
-+ (id)objectFromJSON:(id)a3 bundle:(id)a4
++ (id)objectFromJSON:(id)n bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 allKeys];
-  v8 = [v7 containsObject:@"class"];
+  nCopy = n;
+  bundleCopy = bundle;
+  allKeys = [nCopy allKeys];
+  v8 = [allKeys containsObject:@"class"];
 
   if (!v8)
   {
     goto LABEL_12;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"class"];
+  v9 = [nCopy objectForKeyedSubscript:@"class"];
   v10 = NSClassFromString(v9);
 
   if (!v10)
@@ -3309,26 +3309,26 @@ LABEL_13:
   {
     if (objc_opt_respondsToSelector())
     {
-      v14 = [[v10 alloc] initWithJSONObjectRepresentation:v5 bundle:v6];
+      v14 = [[v10 alloc] initWithJSONObjectRepresentation:nCopy bundle:bundleCopy];
       goto LABEL_19;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v13 providerWithJSONObjectRepresentation:v5];
+      v14 = [v13 providerWithJSONObjectRepresentation:nCopy];
       goto LABEL_19;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v13 providerWithJSONObjectRepresentation:v5 bundle:v6];
+      v14 = [v13 providerWithJSONObjectRepresentation:nCopy bundle:bundleCopy];
       goto LABEL_19;
     }
 
     v18 = CLKLoggingObjectForDomain(0);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [CLKComplicationTemplate(JSONSerialization) objectFromJSON:v5 bundle:@"class"];
+      [CLKComplicationTemplate(JSONSerialization) objectFromJSON:nCopy bundle:@"class"];
     }
 
 LABEL_12:
@@ -3336,7 +3336,7 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  v14 = [[v10 alloc] initWithJSONObjectRepresentation:v5];
+  v14 = [[v10 alloc] initWithJSONObjectRepresentation:nCopy];
 LABEL_19:
   v16 = v14;
 LABEL_20:
@@ -3344,25 +3344,25 @@ LABEL_20:
   return v16;
 }
 
-+ (BOOL)dictionaryIsCompatibleWithJSONSerialization:(id)a3
++ (BOOL)dictionaryIsCompatibleWithJSONSerialization:(id)serialization
 {
-  v3 = a3;
+  serializationCopy = serialization;
   v4 = objc_opt_class();
-  v5 = [v3 allValues];
+  allValues = [serializationCopy allValues];
 
-  LOBYTE(v4) = [v4 _arrayIsCompatibleWithJSONSerialization:v5];
+  LOBYTE(v4) = [v4 _arrayIsCompatibleWithJSONSerialization:allValues];
   return v4;
 }
 
-+ (BOOL)_arrayIsCompatibleWithJSONSerialization:(id)a3
++ (BOOL)_arrayIsCompatibleWithJSONSerialization:(id)serialization
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  serializationCopy = serialization;
+  v5 = [serializationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3373,14 +3373,14 @@ LABEL_20:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(serializationCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = objc_opt_class();
         if ([v10 isSubclassOfClass:{objc_opt_class(), v13}])
         {
-          if (([a1 dictionaryIsCompatibleWithJSONSerialization:v9] & 1) == 0)
+          if (([self dictionaryIsCompatibleWithJSONSerialization:v9] & 1) == 0)
           {
             goto LABEL_16;
           }
@@ -3388,13 +3388,13 @@ LABEL_20:
 
         else if ([v10 isSubclassOfClass:objc_opt_class()])
         {
-          if (([a1 _arrayIsCompatibleWithJSONSerialization:v9] & 1) == 0)
+          if (([self _arrayIsCompatibleWithJSONSerialization:v9] & 1) == 0)
           {
             goto LABEL_16;
           }
         }
 
-        else if (![a1 classIsCompatibleWithJSONSerialization:v10])
+        else if (![self classIsCompatibleWithJSONSerialization:v10])
         {
 LABEL_16:
           v11 = 0;
@@ -3402,7 +3402,7 @@ LABEL_16:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [serializationCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -3418,17 +3418,17 @@ LABEL_17:
   return v11;
 }
 
-+ (id)_createJSONRepresentationFromArray:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5
++ (id)_createJSONRepresentationFromArray:(id)array bundlePath:(id)path purpose:(unint64_t)purpose
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  arrayCopy = array;
+  pathCopy = path;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v8;
+  v11 = arrayCopy;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -3444,7 +3444,7 @@ LABEL_17:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [a1 _jsonRepresentationFromValue:v16 bundlePath:v9 purpose:{a5, v22}];
+        v17 = [self _jsonRepresentationFromValue:v16 bundlePath:pathCopy purpose:{purpose, v22}];
         if (!v17)
         {
           v20 = CLKLoggingObjectForDomain(0);
@@ -3477,36 +3477,36 @@ LABEL_13:
   return v19;
 }
 
-+ (id)_jsonObjectRepresentationFromObject:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5
++ (id)_jsonObjectRepresentationFromObject:(id)object bundlePath:(id)path purpose:(unint64_t)purpose
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  objectCopy = object;
+  pathCopy = path;
+  if (pathCopy)
   {
     v9 = objc_opt_class();
     if ([v9 classIsCompatibleWithJSONSerialization:objc_opt_class()])
     {
       if (objc_opt_respondsToSelector())
       {
-        v10 = [v7 JSONObjectRepresentation];
+        jSONObjectRepresentation = [objectCopy JSONObjectRepresentation];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        v10 = [v7 JSONObjectRepresentationWritingResourcesToBundlePath:v8];
+        jSONObjectRepresentation = [objectCopy JSONObjectRepresentationWritingResourcesToBundlePath:pathCopy];
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        v10 = [v7 JSONObjectRepresentationWritingResourcesToBundlePath:v8 purpose:a5];
+        jSONObjectRepresentation = [objectCopy JSONObjectRepresentationWritingResourcesToBundlePath:pathCopy purpose:purpose];
       }
 
       else
       {
-        v10 = v7;
+        jSONObjectRepresentation = objectCopy;
       }
 
-      v12 = v10;
+      v12 = jSONObjectRepresentation;
       goto LABEL_15;
     }
 
@@ -3523,14 +3523,14 @@ LABEL_15:
   return v12;
 }
 
-+ (id)_jsonRepresentationFromValue:(id)a3 bundlePath:(id)a4 purpose:(unint64_t)a5
++ (id)_jsonRepresentationFromValue:(id)value bundlePath:(id)path purpose:(unint64_t)purpose
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [a1 createJSONRepresentationFromDictionary:v8 bundlePath:v9 purpose:a5];
+    v10 = [self createJSONRepresentationFromDictionary:valueCopy bundlePath:pathCopy purpose:purpose];
   }
 
   else
@@ -3538,12 +3538,12 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 _createJSONRepresentationFromArray:v8 bundlePath:v9 purpose:a5];
+      [self _createJSONRepresentationFromArray:valueCopy bundlePath:pathCopy purpose:purpose];
     }
 
     else
     {
-      [a1 _jsonObjectRepresentationFromObject:v8 bundlePath:v9 purpose:a5];
+      [self _jsonObjectRepresentationFromObject:valueCopy bundlePath:pathCopy purpose:purpose];
     }
     v10 = ;
   }
@@ -3553,18 +3553,18 @@ LABEL_15:
   return v11;
 }
 
-+ (Class)_superClassFromCompatibleJSONSerializationClass:(Class)a3
++ (Class)_superClassFromCompatibleJSONSerializationClass:(Class)class
 {
-  v3 = a3;
+  classCopy = class;
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (class)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [a1 classesCompatibleWithJSONSerialization];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    classesCompatibleWithJSONSerialization = [self classesCompatibleWithJSONSerialization];
+    v5 = [classesCompatibleWithJSONSerialization countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3575,18 +3575,18 @@ LABEL_15:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(classesCompatibleWithJSONSerialization);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if (([(objc_class *)v3 isSubclassOfClass:v9]& 1) != 0)
+          if (([(objc_class *)classCopy isSubclassOfClass:v9]& 1) != 0)
           {
-            v3 = v9;
+            classCopy = v9;
             goto LABEL_12;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [classesCompatibleWithJSONSerialization countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -3596,11 +3596,11 @@ LABEL_15:
       }
     }
 
-    v3 = 0;
+    classCopy = 0;
 LABEL_12:
   }
 
-  return v3;
+  return classCopy;
 }
 
 - (int64_t)compatibleFamily

@@ -3,8 +3,8 @@
 - (CGSize)expandedPillSize;
 - (CGSize)pillSize;
 - (CGSize)smallPillSize;
-- (double)condensedPointSizeForCellularType:(int64_t)a3 defaultPointSize:(double)a4 baselineOffset:(double *)a5;
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4;
+- (double)condensedPointSizeForCellularType:(int64_t)type defaultPointSize:(double)size baselineOffset:(double *)offset;
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed;
 @end
 
 @implementation STUIStatusBarVisualProvider_Split828
@@ -45,20 +45,20 @@
   return result;
 }
 
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed
 {
   v4 = @"􀛵";
-  if (a3 != 9)
+  if (type != 9)
   {
     v4 = 0;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v4 = @"􀛴";
   }
 
-  if (a4)
+  if (condensed)
   {
     return v4;
   }
@@ -69,32 +69,32 @@
   }
 }
 
-- (double)condensedPointSizeForCellularType:(int64_t)a3 defaultPointSize:(double)a4 baselineOffset:(double *)a5
+- (double)condensedPointSizeForCellularType:(int64_t)type defaultPointSize:(double)size baselineOffset:(double *)offset
 {
-  if ((a3 - 8) < 2)
+  if ((type - 8) < 2)
   {
-    *a5 = 1.5;
+    *offset = 1.5;
     v9 = objc_opt_class();
 
     [v9 LTEAPlusFontSize];
   }
 
-  else if ((a3 - 2) > 1)
+  else if ((type - 2) > 1)
   {
-    *a5 = 1.0;
-    return a4 + -2.0;
+    *offset = 1.0;
+    return size + -2.0;
   }
 
   else
   {
-    v6 = [objc_opt_class() shrinksSingleCharacterTypes];
+    shrinksSingleCharacterTypes = [objc_opt_class() shrinksSingleCharacterTypes];
     v7 = 0.0;
-    if (v6)
+    if (shrinksSingleCharacterTypes)
     {
       v7 = 1.0;
     }
 
-    return a4 - v7;
+    return size - v7;
   }
 
   return result;

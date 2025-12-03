@@ -1,14 +1,14 @@
 @interface NSMutableDictionary
-- (void)_addProperty:(id)a3 fromSupplementalContext:(id)a4;
+- (void)_addProperty:(id)property fromSupplementalContext:(id)context;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)_addProperty:(id)a3 fromSupplementalContext:(id)a4
+- (void)_addProperty:(id)property fromSupplementalContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 componentsSeparatedByString:@"."];
+  propertyCopy = property;
+  contextCopy = context;
+  v8 = [propertyCopy componentsSeparatedByString:@"."];
   v9 = [v8 mutableCopy];
 
   if ([v9 count] > 1)
@@ -16,9 +16,9 @@
     [v9 removeObjectAtIndex:0];
     if ([v9 count] == 1)
     {
-      v11 = [v7 objectForKey:v6];
-      v12 = [v9 lastObject];
-      [(NSMutableDictionary *)self setObject:v11 forKey:v12];
+      v11 = [contextCopy objectForKey:propertyCopy];
+      lastObject = [v9 lastObject];
+      [(NSMutableDictionary *)self setObject:v11 forKey:lastObject];
     }
 
     else
@@ -46,8 +46,8 @@
       }
 
       v11 = [v9 componentsJoinedByString:@"."];
-      v12 = [v7 objectForKey:v6];
-      [(NSMutableDictionary *)self setValue:v12 forKeyPath:v11];
+      lastObject = [contextCopy objectForKey:propertyCopy];
+      [(NSMutableDictionary *)self setValue:lastObject forKeyPath:v11];
     }
   }
 
@@ -57,7 +57,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v18 = 138543362;
-      v19 = v6;
+      v19 = propertyCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "We don't have a properly namespaced key: %{public}@", &v18, 0xCu);
     }
   }

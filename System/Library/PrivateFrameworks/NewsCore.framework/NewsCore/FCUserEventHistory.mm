@@ -1,13 +1,13 @@
 @interface FCUserEventHistory
 + (id)backingRecordZoneIDs;
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4;
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory;
 + (id)recordZoneID;
-- (FCUserEventHistory)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5 sessionStorage:(id)a6;
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3;
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4;
+- (FCUserEventHistory)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory sessionStorage:(id)storage;
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d;
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names;
 - (void)loadLocalCachesFromStore;
-- (void)storage:(id)a3 didClearAllSessions:(id)a4;
-- (void)storage:(id)a3 didStoreData:(id)a4 forSessionID:(id)a5;
+- (void)storage:(id)storage didClearAllSessions:(id)sessions;
+- (void)storage:(id)storage didStoreData:(id)data forSessionID:(id)d;
 @end
 
 @implementation FCUserEventHistory
@@ -22,16 +22,16 @@
   [FCTaskScheduler scheduleLowPriorityBlockForMainThread:v2];
 }
 
-- (FCUserEventHistory)initWithContext:(id)a3 pushNotificationCenter:(id)a4 storeDirectory:(id)a5 sessionStorage:(id)a6
+- (FCUserEventHistory)initWithContext:(id)context pushNotificationCenter:(id)center storeDirectory:(id)directory sessionStorage:(id)storage
 {
-  v11 = a6;
+  storageCopy = storage;
   v15.receiver = self;
   v15.super_class = FCUserEventHistory;
-  v12 = [(FCPrivateDataController *)&v15 initWithContext:a3 pushNotificationCenter:a4 storeDirectory:a5];
+  v12 = [(FCPrivateDataController *)&v15 initWithContext:context pushNotificationCenter:center storeDirectory:directory];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_privateStorage, a6);
+    objc_storeStrong(&v12->_privateStorage, storage);
     [(FCUserEventHistoryStorage *)v13->_privateStorage addObserver:v13];
   }
 
@@ -41,8 +41,8 @@
 + (id)backingRecordZoneIDs
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 recordZoneID];
-  v6[0] = v2;
+  recordZoneID = [self recordZoneID];
+  v6[0] = recordZoneID;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -114,13 +114,13 @@ void __46__FCUserEventHistory_loadLocalCachesFromStore__block_invoke(uint64_t a1
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)commandsToMergeLocalDataToCloud:(id)a3 privateDataDirectory:(id)a4
++ (id)commandsToMergeLocalDataToCloud:(id)cloud privateDataDirectory:(id)directory
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DFF8];
-  v6 = a4;
-  v7 = [objc_opt_class() storageDirectoryName];
-  v8 = [v6 stringByAppendingPathComponent:v7];
+  directoryCopy = directory;
+  storageDirectoryName = [objc_opt_class() storageDirectoryName];
+  v8 = [directoryCopy stringByAppendingPathComponent:storageDirectoryName];
 
   v9 = [v5 fileURLWithPath:v8];
 
@@ -132,23 +132,23 @@ void __46__FCUserEventHistory_loadLocalCachesFromStore__block_invoke(uint64_t a1
   }
 
   v11 = [[FCUserEventHistoryStorage alloc] initWithRootDirectory:v9];
-  v12 = [(FCUserEventHistoryStorage *)v11 sessions];
+  sessions = [(FCUserEventHistoryStorage *)v11 sessions];
   v13 = FCUserEventsLog;
   v14 = os_log_type_enabled(FCUserEventsLog, OS_LOG_TYPE_DEFAULT);
-  if (v12)
+  if (sessions)
   {
     if (v14)
     {
       v15 = v13;
-      v16 = [v12 count];
+      v16 = [sessions count];
       *buf = 134217984;
       v26 = v16;
       _os_log_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEFAULT, "Returning command to sync %lu sessions", buf, 0xCu);
     }
 
     v17 = [FCModifyUserEventHistoryCommand alloc];
-    v18 = [a1 recordZoneID];
-    v19 = [(FCModifyUserEventHistoryCommand *)v17 initWithSessions:v12 recordZoneID:v18];
+    recordZoneID = [self recordZoneID];
+    v19 = [(FCModifyUserEventHistoryCommand *)v17 initWithSessions:sessions recordZoneID:recordZoneID];
     v24 = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
   }
@@ -170,19 +170,19 @@ void __46__FCUserEventHistory_loadLocalCachesFromStore__block_invoke(uint64_t a1
   return v20;
 }
 
-- (void)handleSyncWithChangedRecords:(id)a3 deletedRecordNames:(id)a4
+- (void)handleSyncWithChangedRecords:(id)records deletedRecordNames:(id)names
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  namesCopy = names;
   v8 = FCUserEventsLog;
   if (os_log_type_enabled(FCUserEventsLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     *buf = 134218240;
-    v16 = [v6 count];
+    v16 = [recordsCopy count];
     v17 = 2048;
-    v18 = [v7 count];
+    v18 = [namesCopy count];
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "User event history handling sync with %lu changed records, %lu deleted records", buf, 0x16u);
   }
 
@@ -191,12 +191,12 @@ void __46__FCUserEventHistory_loadLocalCachesFromStore__block_invoke(uint64_t a1
   v14[2] = __70__FCUserEventHistory_handleSyncWithChangedRecords_deletedRecordNames___block_invoke;
   v14[3] = &unk_1E7C433D8;
   v14[4] = self;
-  [v6 enumerateObjectsUsingBlock:v14];
-  v10 = [(FCUserEventHistory *)self privateStorage];
-  v11 = v10;
-  if (v7)
+  [recordsCopy enumerateObjectsUsingBlock:v14];
+  privateStorage = [(FCUserEventHistory *)self privateStorage];
+  v11 = privateStorage;
+  if (namesCopy)
   {
-    v12 = v7;
+    v12 = namesCopy;
   }
 
   else
@@ -204,7 +204,7 @@ void __46__FCUserEventHistory_loadLocalCachesFromStore__block_invoke(uint64_t a1
     v12 = MEMORY[0x1E695E0F0];
   }
 
-  [v10 clearSessionsWithIDs:v12];
+  [privateStorage clearSessionsWithIDs:v12];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -252,15 +252,15 @@ void __70__FCUserEventHistory_handleSyncWithChangedRecords_deletedRecordNames___
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)a3
+- (id)allKnownRecordNamesWithinRecordZoneWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCUserEventHistory *)self storage];
-  v6 = [v5 sessionIDs];
+  dCopy = d;
+  storage = [(FCUserEventHistory *)self storage];
+  sessionIDs = [storage sessionIDs];
 
-  if (v6)
+  if (sessionIDs)
   {
-    v7 = v6;
+    v7 = sessionIDs;
   }
 
   else
@@ -269,7 +269,7 @@ void __70__FCUserEventHistory_handleSyncWithChangedRecords_deletedRecordNames___
     v9[1] = 3221225472;
     v9[2] = __64__FCUserEventHistory_allKnownRecordNamesWithinRecordZoneWithID___block_invoke;
     v9[3] = &unk_1E7C3B578;
-    v10 = v4;
+    v10 = dCopy;
     v7 = __64__FCUserEventHistory_allKnownRecordNamesWithinRecordZoneWithID___block_invoke(v9);
   }
 
@@ -292,27 +292,27 @@ uint64_t __64__FCUserEventHistory_allKnownRecordNamesWithinRecordZoneWithID___bl
   return MEMORY[0x1E695E0F0];
 }
 
-- (void)storage:(id)a3 didStoreData:(id)a4 forSessionID:(id)a5
+- (void)storage:(id)storage didStoreData:(id)data forSessionID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  dataCopy = data;
+  dCopy = d;
   v9 = FCUserEventsLog;
   if (os_log_type_enabled(FCUserEventsLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = MEMORY[0x1E696AAF0];
     v11 = v9;
-    v12 = [v10 stringFromByteCount:objc_msgSend(v7 countStyle:{"length"), 0}];
+    v12 = [v10 stringFromByteCount:objc_msgSend(dataCopy countStyle:{"length"), 0}];
     *buf = 138543618;
-    v21 = v8;
+    v21 = dCopy;
     v22 = 2114;
     v23 = v12;
     _os_log_impl(&dword_1B63EF000, v11, OS_LOG_TYPE_DEFAULT, "Observed session stored with ID %{public}@, size %{public}@. Queueing command to sync session.", buf, 0x16u);
   }
 
   v13 = [FCModifyUserEventHistoryCommand alloc];
-  v14 = [objc_opt_class() recordZoneID];
-  v15 = [(FCModifyUserEventHistoryCommand *)v13 initWithSessionID:v8 data:v7 recordZoneID:v14];
+  recordZoneID = [objc_opt_class() recordZoneID];
+  v15 = [(FCModifyUserEventHistoryCommand *)v13 initWithSessionID:dCopy data:dataCopy recordZoneID:recordZoneID];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -326,22 +326,22 @@ uint64_t __64__FCUserEventHistory_allKnownRecordNamesWithinRecordZoneWithID___bl
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storage:(id)a3 didClearAllSessions:(id)a4
+- (void)storage:(id)storage didClearAllSessions:(id)sessions
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  sessionsCopy = sessions;
   v6 = FCUserEventsLog;
   if (os_log_type_enabled(FCUserEventsLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
     v12 = 134217984;
-    v13 = [v5 count];
+    v13 = [sessionsCopy count];
     _os_log_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_DEFAULT, "Observed session storage cleared all session IDs. Queueing command to remove %lu session records.", &v12, 0xCu);
   }
 
   v8 = [FCRemoveUserEventHistoryCommand alloc];
-  v9 = [objc_opt_class() recordZoneID];
-  v10 = [(FCRemoveUserEventHistoryCommand *)v8 initWithSessionIDs:v5 recordZoneID:v9];
+  recordZoneID = [objc_opt_class() recordZoneID];
+  v10 = [(FCRemoveUserEventHistoryCommand *)v8 initWithSessionIDs:sessionsCopy recordZoneID:recordZoneID];
 
   [(FCPrivateDataController *)self addCommandToCommandQueue:v10];
   v11 = *MEMORY[0x1E69E9840];

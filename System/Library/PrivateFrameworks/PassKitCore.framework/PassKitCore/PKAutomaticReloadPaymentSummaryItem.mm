@@ -1,51 +1,51 @@
 @interface PKAutomaticReloadPaymentSummaryItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAutomaticReloadPaymentSummaryItem:(id)a3;
-- (PKAutomaticReloadPaymentSummaryItem)initWithCoder:(id)a3;
-- (PKAutomaticReloadPaymentSummaryItem)initWithDictionary:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAutomaticReloadPaymentSummaryItem:(id)item;
+- (PKAutomaticReloadPaymentSummaryItem)initWithCoder:(id)coder;
+- (PKAutomaticReloadPaymentSummaryItem)initWithDictionary:(id)dictionary error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAutomaticReloadPaymentSummaryItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = PKAutomaticReloadPaymentSummaryItem;
   v5 = [(PKPaymentSummaryItem *)&v9 copyWithZone:?];
-  v6 = [(NSDecimalNumber *)self->_thresholdAmount copyWithZone:a3];
+  v6 = [(NSDecimalNumber *)self->_thresholdAmount copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
   return v5;
 }
 
-- (PKAutomaticReloadPaymentSummaryItem)initWithCoder:(id)a3
+- (PKAutomaticReloadPaymentSummaryItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKAutomaticReloadPaymentSummaryItem;
-  v5 = [(PKPaymentSummaryItem *)&v8 initWithCoder:v4];
+  v5 = [(PKPaymentSummaryItem *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thresholdAmount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thresholdAmount"];
     [(PKAutomaticReloadPaymentSummaryItem *)v5 setThresholdAmount:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKAutomaticReloadPaymentSummaryItem;
-  v4 = a3;
-  [(PKPaymentSummaryItem *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKPaymentSummaryItem *)&v6 encodeWithCoder:coderCopy];
   v5 = [(PKAutomaticReloadPaymentSummaryItem *)self thresholdAmount:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"thresholdAmount"];
+  [coderCopy encodeObject:v5 forKey:@"thresholdAmount"];
 }
 
 - (unint64_t)hash
@@ -60,30 +60,30 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAutomaticReloadPaymentSummaryItem *)self isEqualToAutomaticReloadPaymentSummaryItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAutomaticReloadPaymentSummaryItem *)self isEqualToAutomaticReloadPaymentSummaryItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAutomaticReloadPaymentSummaryItem:(id)a3
+- (BOOL)isEqualToAutomaticReloadPaymentSummaryItem:(id)item
 {
-  v4 = a3;
-  if ([(PKPaymentSummaryItem *)self isEqualToPaymentSummaryItem:v4])
+  itemCopy = item;
+  if ([(PKPaymentSummaryItem *)self isEqualToPaymentSummaryItem:itemCopy])
   {
     thresholdAmount = self->_thresholdAmount;
-    v6 = v4[7];
+    v6 = itemCopy[7];
     if (thresholdAmount)
     {
       v7 = v6 == 0;
@@ -113,15 +113,15 @@
   return v8;
 }
 
-- (PKAutomaticReloadPaymentSummaryItem)initWithDictionary:(id)a3 error:(id *)a4
+- (PKAutomaticReloadPaymentSummaryItem)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PKAutomaticReloadPaymentSummaryItem;
-  v7 = [(PKPaymentSummaryItem *)&v10 initWithDictionary:v6 error:a4];
+  v7 = [(PKPaymentSummaryItem *)&v10 initWithDictionary:dictionaryCopy error:error];
   if (v7)
   {
-    v8 = [v6 PKDecimalNumberFromStringForKey:@"thresholdAmount"];
+    v8 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"thresholdAmount"];
     if (v8)
     {
       objc_storeStrong(&v7->_thresholdAmount, v8);
@@ -135,14 +135,14 @@
 {
   v9.receiver = self;
   v9.super_class = PKAutomaticReloadPaymentSummaryItem;
-  v3 = [(PKPaymentSummaryItem *)&v9 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(PKPaymentSummaryItem *)&v9 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   thresholdAmount = self->_thresholdAmount;
   if (thresholdAmount)
   {
-    v6 = [(NSDecimalNumber *)thresholdAmount stringValue];
-    [v4 setObject:v6 forKeyedSubscript:@"thresholdAmount"];
+    stringValue = [(NSDecimalNumber *)thresholdAmount stringValue];
+    [v4 setObject:stringValue forKeyedSubscript:@"thresholdAmount"];
   }
 
   v7 = [v4 copy];

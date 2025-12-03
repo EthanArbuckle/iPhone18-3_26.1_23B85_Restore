@@ -1,25 +1,25 @@
 @interface OKActionTransition
-+ (id)transitionWithState:(unint64_t)a3 target:(unint64_t)a4 progress:(float)a5 velocity:(float)a6 context:(id)a7;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)transitionWithState:(unint64_t)state target:(unint64_t)target progress:(float)progress velocity:(float)velocity context:(id)context;
++ (void)setupJavascriptContext:(id)context;
 - (OKActionTransition)init;
-- (OKActionTransition)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OKActionTransition)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionTransition
 
-+ (id)transitionWithState:(unint64_t)a3 target:(unint64_t)a4 progress:(float)a5 velocity:(float)a6 context:(id)a7
++ (id)transitionWithState:(unint64_t)state target:(unint64_t)target progress:(float)progress velocity:(float)velocity context:(id)context
 {
   v12 = [OKActionTransition alloc];
-  if (!a7)
+  if (!context)
   {
-    a7 = [MEMORY[0x277CBEB38] dictionary];
+    context = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v13 = [(OKAction *)v12 initWithState:a3 location:0 touchCount:a7 context:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-  *(v13 + 96) = a4;
-  *(v13 + 88) = a5;
-  *(v13 + 92) = a6;
+  v13 = [(OKAction *)v12 initWithState:state location:0 touchCount:context context:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  *(v13 + 96) = target;
+  *(v13 + 88) = progress;
+  *(v13 + 92) = velocity;
 
   return v13;
 }
@@ -41,45 +41,45 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = OKActionTransition;
   [(OKAction *)&v7 encodeWithCoder:?];
   if (self->_progress != 0.0)
   {
-    [a3 encodeInteger:self->_target forKey:@"target"];
+    [coder encodeInteger:self->_target forKey:@"target"];
     *&v5 = self->_progress;
-    [a3 encodeFloat:@"progress" forKey:v5];
+    [coder encodeFloat:@"progress" forKey:v5];
     *&v6 = self->_velocity;
-    [a3 encodeFloat:@"velocity" forKey:v6];
+    [coder encodeFloat:@"velocity" forKey:v6];
   }
 }
 
-- (OKActionTransition)initWithCoder:(id)a3
+- (OKActionTransition)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = OKActionTransition;
   v4 = [(OKAction *)&v8 initWithCoder:?];
   if (v4)
   {
-    v4->_target = [a3 decodeIntegerForKey:@"target"];
-    [a3 decodeFloatForKey:@"progress"];
+    v4->_target = [coder decodeIntegerForKey:@"target"];
+    [coder decodeFloatForKey:@"progress"];
     v4->_progress = v5;
-    [a3 decodeFloatForKey:@"velocity"];
+    [coder decodeFloatForKey:@"velocity"];
     v4->_velocity = v6;
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKActionTransition"];
-  [a3 setObject:&unk_287AF1328 forKeyedSubscript:@"OKActionTransitionTargetUnknown"];
-  [a3 setObject:&unk_287AF1340 forKeyedSubscript:@"OKActionTransitionTargetSource"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKActionTransition"];
+  [context setObject:&unk_287AF1328 forKeyedSubscript:@"OKActionTransitionTargetUnknown"];
+  [context setObject:&unk_287AF1340 forKeyedSubscript:@"OKActionTransitionTargetSource"];
 
-  [a3 setObject:&unk_287AF1358 forKeyedSubscript:@"OKActionTransitionTargetDestination"];
+  [context setObject:&unk_287AF1358 forKeyedSubscript:@"OKActionTransitionTargetDestination"];
 }
 
 @end

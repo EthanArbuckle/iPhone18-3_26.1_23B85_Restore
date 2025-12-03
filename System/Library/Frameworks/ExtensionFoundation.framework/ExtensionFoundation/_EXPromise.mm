@@ -1,19 +1,19 @@
 @interface _EXPromise
-- (_EXPromise)initWithCoder:(id)a3;
-- (_EXPromise)initWithPromiseBlock:(id)a3;
-- (id)resolveObjectOfClass:(Class)a3 error:(id *)a4;
-- (id)resolveObjectOfClasses:(id)a3 error:(id *)a4;
+- (_EXPromise)initWithCoder:(id)coder;
+- (_EXPromise)initWithPromiseBlock:(id)block;
+- (id)resolveObjectOfClass:(Class)class error:(id *)error;
+- (id)resolveObjectOfClasses:(id)classes error:(id *)error;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)resolveObjectOfClass:(Class)a3 completion:(id)a4;
-- (void)resolveObjectOfClasses:(id)a3 completion:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)resolveObjectOfClass:(Class)class completion:(id)completion;
+- (void)resolveObjectOfClasses:(id)classes completion:(id)completion;
 @end
 
 @implementation _EXPromise
 
-- (_EXPromise)initWithPromiseBlock:(id)a3
+- (_EXPromise)initWithPromiseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = _EXPromise;
   v5 = [(_EXPromise *)&v13 init];
@@ -27,7 +27,7 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __35___EXPromise_initWithPromiseBlock___block_invoke;
     aBlock[3] = &unk_1E6E4E280;
-    v12 = v4;
+    v12 = blockCopy;
     v8 = _Block_copy(aBlock);
     promiseBlock = v5->_promiseBlock;
     v5->_promiseBlock = v8;
@@ -56,12 +56,12 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   p_identifier = &self->_identifier;
-  [v4 encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -75,13 +75,13 @@
     objc_exception_throw([v20 initWithName:@"EXPromiseCoderException" reason:@"This class may only be encoded by an NSXPCCoder" userInfo:MEMORY[0x1E695E0F8]]);
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   v7 = _EXDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 connection];
+    connection = [v6 connection];
     v21 = 138543362;
-    v22 = v8;
+    v22 = connection;
     _os_log_impl(&dword_1847D1000, v7, OS_LOG_TYPE_DEFAULT, "Registering promise to send over XPC connection: %{public}@", &v21, 0xCu);
   }
 
@@ -89,22 +89,22 @@
   [v9 registerPromise:self];
 
   v10 = +[_EXPromiseManager sharedInstance];
-  v11 = [v10 endpoint];
-  [v6 encodeObject:v11 forKey:@"endpoint"];
+  endpoint = [v10 endpoint];
+  [v6 encodeObject:endpoint forKey:@"endpoint"];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (_EXPromise)initWithCoder:(id)a3
+- (_EXPromise)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = _EXPromise;
   v5 = [(_EXPromise *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpoint"];
     if (v6)
     {
       v8 = v7 == 0;
@@ -138,23 +138,23 @@
   return v5;
 }
 
-- (id)resolveObjectOfClass:(Class)a3 error:(id *)a4
+- (id)resolveObjectOfClass:(Class)class error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:a3];
-  v7 = [(_EXPromise *)self resolveObjectOfClasses:v6 error:a4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:class];
+  v7 = [(_EXPromise *)self resolveObjectOfClasses:v6 error:error];
 
   return v7;
 }
 
-- (void)resolveObjectOfClass:(Class)a3 completion:(id)a4
+- (void)resolveObjectOfClass:(Class)class completion:(id)completion
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(_EXPromise *)self resolveObjectOfClasses:v8 completion:v7];
+  completionCopy = completion;
+  v8 = [v6 setWithObject:class];
+  [(_EXPromise *)self resolveObjectOfClasses:v8 completion:completionCopy];
 }
 
-- (id)resolveObjectOfClasses:(id)a3 error:(id *)a4
+- (id)resolveObjectOfClasses:(id)classes error:(id *)error
 {
   v6 = (*(self->_promiseBlock + 2))();
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -167,17 +167,17 @@
   promiseBlock = self->_promiseBlock;
   self->_promiseBlock = v8;
 
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.extensionKit.errorDomain" code:9 userInfo:MEMORY[0x1E695E0F8]];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.extensionKit.errorDomain" code:9 userInfo:MEMORY[0x1E695E0F8]];
   }
 
   return v7;
 }
 
-- (void)resolveObjectOfClasses:(id)a3 completion:(id)a4
+- (void)resolveObjectOfClasses:(id)classes completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   promiseBlock = self->_promiseBlock;
   v17 = 0;
   v7 = promiseBlock[2]();
@@ -194,7 +194,7 @@
 
   if (v9)
   {
-    v5[2](v5, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
   }
 
   else
@@ -204,7 +204,7 @@
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.extensionKit.errorDomain" code:9 userInfo:{MEMORY[0x1E695E0F8], v12, v13, v14, v15}];
     }
 
-    (v5)[2](v5, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 }
 

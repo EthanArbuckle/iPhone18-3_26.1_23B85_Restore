@@ -1,44 +1,44 @@
 @interface AXEventData
-+ (AXEventData)dataWithBytes:(char *)a3 length:(int64_t)a4;
-+ (AXEventData)dataWithSender:(int64_t)a3;
-+ (AXEventData)dataWithSender:(int64_t)a3 page:(int64_t)a4 usage:(int64_t)a5 modifierFlags:(int64_t)a6 eventValue1:(float)a7 eventValue2:(float)a8;
++ (AXEventData)dataWithBytes:(char *)bytes length:(int64_t)length;
++ (AXEventData)dataWithSender:(int64_t)sender;
++ (AXEventData)dataWithSender:(int64_t)sender page:(int64_t)page usage:(int64_t)usage modifierFlags:(int64_t)flags eventValue1:(float)value1 eventValue2:(float)value2;
 - (AXEventData)init;
 - (id)description;
 @end
 
 @implementation AXEventData
 
-+ (AXEventData)dataWithSender:(int64_t)a3
++ (AXEventData)dataWithSender:(int64_t)sender
 {
   v4 = objc_alloc_init(AXEventData);
-  v4->_storage.eventSenderIdentifier = a3;
+  v4->_storage.eventSenderIdentifier = sender;
 
   return v4;
 }
 
-+ (AXEventData)dataWithSender:(int64_t)a3 page:(int64_t)a4 usage:(int64_t)a5 modifierFlags:(int64_t)a6 eventValue1:(float)a7 eventValue2:(float)a8
++ (AXEventData)dataWithSender:(int64_t)sender page:(int64_t)page usage:(int64_t)usage modifierFlags:(int64_t)flags eventValue1:(float)value1 eventValue2:(float)value2
 {
   v14 = objc_alloc_init(AXEventData);
-  v14->_storage.eventSenderIdentifier = a3;
-  v14->_storage.page = a4;
-  v14->_storage.usage = a5;
-  v14->_storage.modifierFlags = a6;
-  v14->_storage.eventValue1 = a7;
-  v14->_storage.eventValue2 = a8;
+  v14->_storage.eventSenderIdentifier = sender;
+  v14->_storage.page = page;
+  v14->_storage.usage = usage;
+  v14->_storage.modifierFlags = flags;
+  v14->_storage.eventValue1 = value1;
+  v14->_storage.eventValue2 = value2;
 
   return v14;
 }
 
-+ (AXEventData)dataWithBytes:(char *)a3 length:(int64_t)a4
++ (AXEventData)dataWithBytes:(char *)bytes length:(int64_t)length
 {
-  if (a4 == 40)
+  if (length == 40)
   {
-    if (a3)
+    if (bytes)
     {
       v5 = objc_alloc_init(AXEventData);
-      v6 = *(a3 + 4);
-      v7 = *(a3 + 1);
-      *&v5->_storage.eventSenderIdentifier = *a3;
+      v6 = *(bytes + 4);
+      v7 = *(bytes + 1);
+      *&v5->_storage.eventSenderIdentifier = *bytes;
       *&v5->_storage.usage = v7;
       *&v5->_storage.eventValue1 = v6;
       goto LABEL_8;
@@ -50,7 +50,7 @@
     v9 = AXLogEventTap();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [AXEventData dataWithBytes:a4 length:v9];
+      [AXEventData dataWithBytes:length length:v9];
     }
   }
 
@@ -75,15 +75,15 @@ LABEL_8:
 
 - (id)description
 {
-  v2 = [(AXEventData *)self eventSenderIdentifier];
-  if (v2 > 8)
+  eventSenderIdentifier = [(AXEventData *)self eventSenderIdentifier];
+  if (eventSenderIdentifier > 8)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_1E71EC9A0[v2];
+    v3 = off_1E71EC9A0[eventSenderIdentifier];
   }
 
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"AXEventData. Sender:%@", v3];

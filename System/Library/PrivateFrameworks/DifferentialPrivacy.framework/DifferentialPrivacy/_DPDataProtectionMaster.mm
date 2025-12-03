@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (BOOL)deviceIsLocked;
 - (BOOL)deviceIsPasswordConfigured;
-- (BOOL)isDataAvailableFor:(id)a3;
+- (BOOL)isDataAvailableFor:(id)for;
 - (BOOL)isDataAvailableForClassA;
 - (BOOL)isDataAvailableForClassC;
 - (_DPDataProtectionMaster)init;
-- (id)registerStateChangeHandler:(id)a3;
+- (id)registerStateChangeHandler:(id)handler;
 - (void)dealloc;
-- (void)deregisterStateChangeHandler:(id)a3;
+- (void)deregisterStateChangeHandler:(id)handler;
 - (void)handleKeyBagLockNotification;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __41___DPDataProtectionMaster_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -279,10 +279,10 @@
   }
 }
 
-- (BOOL)isDataAvailableFor:(id)a3
+- (BOOL)isDataAvailableFor:(id)for
 {
-  v4 = a3;
-  v5 = v4;
+  forCopy = for;
+  v5 = forCopy;
   if (self->_deviceFormatedForContentProtection)
   {
     v12 = 0;
@@ -295,7 +295,7 @@
     block[2] = __46___DPDataProtectionMaster_isDataAvailableFor___block_invoke;
     block[3] = &unk_27858B408;
     block[4] = self;
-    v10 = v4;
+    v10 = forCopy;
     v11 = &v12;
     dispatch_sync(stateQueue, block);
     v7 = *(v13 + 24);
@@ -311,21 +311,21 @@
   return v7 & 1;
 }
 
-- (id)registerStateChangeHandler:(id)a3
+- (id)registerStateChangeHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     stateQueue = self->_stateQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54___DPDataProtectionMaster_registerStateChangeHandler___block_invoke;
     block[3] = &unk_27858B430;
     block[4] = self;
-    v7 = v5;
+    v7 = uUID;
     v12 = v7;
-    v13 = v4;
+    v13 = handlerCopy;
     dispatch_sync(stateQueue, block);
     v8 = v13;
     v9 = v7;
@@ -339,17 +339,17 @@
   return v9;
 }
 
-- (void)deregisterStateChangeHandler:(id)a3
+- (void)deregisterStateChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56___DPDataProtectionMaster_deregisterStateChangeHandler___block_invoke;
   v7[3] = &unk_27858AD90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(stateQueue, v7);
 }
 

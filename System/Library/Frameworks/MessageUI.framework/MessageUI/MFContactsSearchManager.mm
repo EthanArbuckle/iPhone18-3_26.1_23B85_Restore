@@ -1,31 +1,31 @@
 @interface MFContactsSearchManager
-- (MFContactsSearchManager)initWithAutocompleteSearchType:(unint64_t)a3;
-- (MFContactsSearchManager)initWithAutocompleteStore:(id)a3 searchType:(unint64_t)a4;
-- (id)searchForCorecipientsWithAutocompleteFetchContext:(id)a3 consumer:(id)a4;
-- (id)searchForText:(id)a3 consumer:(id)a4;
-- (id)searchForText:(id)a3 withAutocompleteFetchContext:(id)a4 consumer:(id)a5;
-- (void)_handleContactsAutocompleteSearch:(id)a3 returnedResults:(id)a4 taskID:(id)a5;
-- (void)_handleContactsAutocompleteSearchFinished:(id)a3 taskID:(id)a4;
-- (void)_handleTaskFinished:(id)a3 context:(id)a4;
-- (void)cancelTaskWithID:(id)a3;
+- (MFContactsSearchManager)initWithAutocompleteSearchType:(unint64_t)type;
+- (MFContactsSearchManager)initWithAutocompleteStore:(id)store searchType:(unint64_t)type;
+- (id)searchForCorecipientsWithAutocompleteFetchContext:(id)context consumer:(id)consumer;
+- (id)searchForText:(id)text consumer:(id)consumer;
+- (id)searchForText:(id)text withAutocompleteFetchContext:(id)context consumer:(id)consumer;
+- (void)_handleContactsAutocompleteSearch:(id)search returnedResults:(id)results taskID:(id)d;
+- (void)_handleContactsAutocompleteSearchFinished:(id)finished taskID:(id)d;
+- (void)_handleTaskFinished:(id)finished context:(id)context;
+- (void)cancelTaskWithID:(id)d;
 - (void)dealloc;
-- (void)didSelectRecipient:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeRecipientResult:(id)a3;
+- (void)didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)removeRecipientResult:(id)result;
 @end
 
 @implementation MFContactsSearchManager
 
-- (MFContactsSearchManager)initWithAutocompleteSearchType:(unint64_t)a3
+- (MFContactsSearchManager)initWithAutocompleteSearchType:(unint64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E6996378]);
-  v6 = [(MFContactsSearchManager *)self initWithAutocompleteStore:v5 searchType:a3];
+  v6 = [(MFContactsSearchManager *)self initWithAutocompleteStore:v5 searchType:type];
 
   return v6;
 }
 
-- (MFContactsSearchManager)initWithAutocompleteStore:(id)a3 searchType:(unint64_t)a4
+- (MFContactsSearchManager)initWithAutocompleteStore:(id)store searchType:(unint64_t)type
 {
-  v7 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = MFContactsSearchManager;
   v8 = [(MFContactsSearchManager *)&v19 init];
@@ -33,14 +33,14 @@
   if (v8)
   {
     v8->_searchTypes = 31;
-    v10 = [MEMORY[0x1E696AAE8] mainBundle];
-    v11 = [v10 bundleIdentifier];
-    v12 = [v11 copy];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v12 = [bundleIdentifier copy];
     recentsBundleIdentifier = v9->_recentsBundleIdentifier;
     v9->_recentsBundleIdentifier = v12;
 
-    v9->_autocompleteSearchType = a4;
-    objc_storeStrong(&v9->_autocompleteStore, a3);
+    v9->_autocompleteSearchType = type;
+    objc_storeStrong(&v9->_autocompleteStore, store);
     if (!v9->_queue)
     {
       v14 = objc_alloc_init(MEMORY[0x1E696ADC8]);
@@ -62,28 +62,28 @@
   return v9;
 }
 
-- (void)didSelectRecipient:(id)a3 atIndex:(unint64_t)a4
+- (void)didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
   autocompleteStore = self->_autocompleteStore;
-  v5 = [a3 autocompleteResult];
+  autocompleteResult = [recipient autocompleteResult];
   [CNAutocompleteStore userSelectedResult:"userSelectedResult:atSortedIndex:" atSortedIndex:?];
 }
 
-- (void)removeRecipientResult:(id)a3
+- (void)removeRecipientResult:(id)result
 {
-  v4 = a3;
-  if ([v4 isRemovableFromSearchResults])
+  resultCopy = result;
+  if ([resultCopy isRemovableFromSearchResults])
   {
-    v5 = [v4 autocompleteResult];
-    if (v5)
+    autocompleteResult = [resultCopy autocompleteResult];
+    if (autocompleteResult)
     {
       autocompleteStore = self->_autocompleteStore;
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __49__MFContactsSearchManager_removeRecipientResult___block_invoke;
       v7[3] = &unk_1E806DCE8;
-      v8 = v4;
-      [(CNAutocompleteStore *)autocompleteStore ignoreResult:v5 completionHandler:v7];
+      v8 = resultCopy;
+      [(CNAutocompleteStore *)autocompleteStore ignoreResult:autocompleteResult completionHandler:v7];
     }
   }
 }
@@ -107,19 +107,19 @@ void __49__MFContactsSearchManager_removeRecipientResult___block_invoke(uint64_t
   }
 }
 
-- (id)searchForText:(id)a3 withAutocompleteFetchContext:(id)a4 consumer:(id)a5
+- (id)searchForText:(id)text withAutocompleteFetchContext:(id)context consumer:(id)consumer
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MFContactsSearchManager *)self _nextTaskID];
-  v12 = [MFContactsAutocompleteSearchOperation operationWithOwner:self text:v8 taskID:v11 autocompleteStore:self->_autocompleteStore];
+  textCopy = text;
+  contextCopy = context;
+  consumerCopy = consumer;
+  _nextTaskID = [(MFContactsSearchManager *)self _nextTaskID];
+  v12 = [MFContactsAutocompleteSearchOperation operationWithOwner:self text:textCopy taskID:_nextTaskID autocompleteStore:self->_autocompleteStore];
 
   if (v12)
   {
     [v12 configureForSearchTypes:self->_searchTypes];
-    [v12 setFetchContext:v9];
+    [v12 setFetchContext:contextCopy];
     [v12 setSimulateResults:{-[MFContactsSearchManager isSimulatedResultsEnabled](self, "isSimulatedResultsEnabled")}];
     queue = self->_queue;
     v21[0] = v12;
@@ -127,36 +127,36 @@ void __49__MFContactsSearchManager_removeRecipientResult___block_invoke(uint64_t
     [(NSOperationQueue *)queue addOperations:v14 waitUntilFinished:0];
 
     v15 = [MEMORY[0x1E695DFA8] setWithObject:v12];
-    v16 = [MFContactsSearchTaskContext contextWithConsumer:v10 text:v8 operations:v15 searchQueries:0];
+    v16 = [MFContactsSearchTaskContext contextWithConsumer:consumerCopy text:textCopy operations:v15 searchQueries:0];
 
     if (v16)
     {
       taskContextsByTaskID = self->_taskContextsByTaskID;
-      v18 = [v12 taskID];
-      [(NSMutableDictionary *)taskContextsByTaskID setObject:v16 forKey:v18];
+      taskID = [v12 taskID];
+      [(NSMutableDictionary *)taskContextsByTaskID setObject:v16 forKey:taskID];
     }
   }
 
-  v19 = [v12 taskID];
+  taskID2 = [v12 taskID];
 
-  return v19;
+  return taskID2;
 }
 
-- (id)searchForText:(id)a3 consumer:(id)a4
+- (id)searchForText:(id)text consumer:(id)consumer
 {
-  v4 = [(MFContactsSearchManager *)self searchForText:a3 withAutocompleteFetchContext:0 consumer:a4];
+  v4 = [(MFContactsSearchManager *)self searchForText:text withAutocompleteFetchContext:0 consumer:consumer];
 
   return v4;
 }
 
-- (id)searchForCorecipientsWithAutocompleteFetchContext:(id)a3 consumer:(id)a4
+- (id)searchForCorecipientsWithAutocompleteFetchContext:(id)context consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFContactsSearchManager *)self _nextTaskID];
-  v9 = [MFContactsAutocompleteSearchOperation operationWithOwner:self text:0 taskID:v8 autocompleteStore:self->_autocompleteStore];
+  contextCopy = context;
+  consumerCopy = consumer;
+  _nextTaskID = [(MFContactsSearchManager *)self _nextTaskID];
+  v9 = [MFContactsAutocompleteSearchOperation operationWithOwner:self text:0 taskID:_nextTaskID autocompleteStore:self->_autocompleteStore];
   [v9 configureForSearchTypes:self->_searchTypes];
-  [v9 setFetchContext:v6];
+  [v9 setFetchContext:contextCopy];
   [v9 setSimulateResults:{-[MFContactsSearchManager isSimulatedResultsEnabled](self, "isSimulatedResultsEnabled")}];
   corecipientSearchTaskIDs = self->_corecipientSearchTaskIDs;
   if (!corecipientSearchTaskIDs)
@@ -168,82 +168,82 @@ void __49__MFContactsSearchManager_removeRecipientResult___block_invoke(uint64_t
     corecipientSearchTaskIDs = self->_corecipientSearchTaskIDs;
   }
 
-  [(NSMutableArray *)corecipientSearchTaskIDs addObject:v8];
+  [(NSMutableArray *)corecipientSearchTaskIDs addObject:_nextTaskID];
   [(NSOperationQueue *)self->_queue addOperation:v9];
   v13 = [MEMORY[0x1E695DFA8] setWithObject:v9];
-  v14 = [v6 otherAddressesAlreadyChosen];
-  v15 = [v14 componentsJoinedByString:{@", "}];
-  v16 = [MFContactsSearchTaskContext contextWithConsumer:v7 text:v15 operations:v13 searchQueries:0];
+  otherAddressesAlreadyChosen = [contextCopy otherAddressesAlreadyChosen];
+  v15 = [otherAddressesAlreadyChosen componentsJoinedByString:{@", "}];
+  v16 = [MFContactsSearchTaskContext contextWithConsumer:consumerCopy text:v15 operations:v13 searchQueries:0];
 
   if (v16)
   {
-    [(NSMutableDictionary *)self->_taskContextsByTaskID setObject:v16 forKey:v8];
+    [(NSMutableDictionary *)self->_taskContextsByTaskID setObject:v16 forKey:_nextTaskID];
   }
 
-  return v8;
+  return _nextTaskID;
 }
 
-- (void)_handleTaskFinished:(id)a3 context:(id)a4
+- (void)_handleTaskFinished:(id)finished context:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v6 consumer];
+  finishedCopy = finished;
+  contextCopy = context;
+  consumer = [contextCopy consumer];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [v6 consumer];
-    [v9 finishedTaskWithID:v10];
+    consumer2 = [contextCopy consumer];
+    [consumer2 finishedTaskWithID:finishedCopy];
   }
 
-  [(NSMutableDictionary *)self->_taskContextsByTaskID removeObjectForKey:v10];
+  [(NSMutableDictionary *)self->_taskContextsByTaskID removeObjectForKey:finishedCopy];
 }
 
-- (void)_handleContactsAutocompleteSearchFinished:(id)a3 taskID:(id)a4
+- (void)_handleContactsAutocompleteSearchFinished:(id)finished taskID:(id)d
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_taskContextsByTaskID objectForKey:v6];
-  if ([(NSMutableArray *)self->_corecipientSearchTaskIDs containsObject:v6])
+  finishedCopy = finished;
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)self->_taskContextsByTaskID objectForKey:dCopy];
+  if ([(NSMutableArray *)self->_corecipientSearchTaskIDs containsObject:dCopy])
   {
     if ([v7 consumerRespondsToCallbacks])
     {
-      v8 = [v7 consumer];
-      [v8 finishedSearchingForCorecipients];
+      consumer = [v7 consumer];
+      [consumer finishedSearchingForCorecipients];
     }
 
-    [(NSMutableArray *)self->_corecipientSearchTaskIDs removeObject:v6];
+    [(NSMutableArray *)self->_corecipientSearchTaskIDs removeObject:dCopy];
   }
 
   else if ([v7 consumerRespondsToCallbacks])
   {
-    v9 = [v7 consumer];
-    [v9 finishedSearchingForAutocompleteResults];
+    consumer2 = [v7 consumer];
+    [consumer2 finishedSearchingForAutocompleteResults];
   }
 
-  v10 = [v7 operations];
-  [v10 removeObject:v11];
+  operations = [v7 operations];
+  [operations removeObject:finishedCopy];
 
   if ([v7 done])
   {
-    [(MFContactsSearchManager *)self _handleTaskFinished:v6 context:v7];
+    [(MFContactsSearchManager *)self _handleTaskFinished:dCopy context:v7];
   }
 }
 
-- (void)_handleContactsAutocompleteSearch:(id)a3 returnedResults:(id)a4 taskID:(id)a5
+- (void)_handleContactsAutocompleteSearch:(id)search returnedResults:(id)results taskID:(id)d
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(NSMutableDictionary *)self->_taskContextsByTaskID objectForKey:v7];
-  if ([(NSMutableArray *)self->_corecipientSearchTaskIDs containsObject:v7])
+  resultsCopy = results;
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)self->_taskContextsByTaskID objectForKey:dCopy];
+  if ([(NSMutableArray *)self->_corecipientSearchTaskIDs containsObject:dCopy])
   {
     if (![v8 consumerRespondsToCallbacks])
     {
       goto LABEL_7;
     }
 
-    v9 = [v8 consumer];
-    [v9 consumeCorecipientSearchResults:v10 taskID:v7];
+    consumer = [v8 consumer];
+    [consumer consumeCorecipientSearchResults:resultsCopy taskID:dCopy];
   }
 
   else
@@ -253,21 +253,21 @@ void __49__MFContactsSearchManager_removeRecipientResult___block_invoke(uint64_t
       goto LABEL_7;
     }
 
-    v9 = [v8 consumer];
-    [v9 consumeAutocompleteSearchResults:v10 taskID:v7];
+    consumer = [v8 consumer];
+    [consumer consumeAutocompleteSearchResults:resultsCopy taskID:dCopy];
   }
 
 LABEL_7:
 }
 
-- (void)cancelTaskWithID:(id)a3
+- (void)cancelTaskWithID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   v4 = [(NSMutableDictionary *)self->_taskContextsByTaskID objectForKey:?];
-  v5 = [v4 operations];
-  [v5 makeObjectsPerformSelector:sel_cancel];
+  operations = [v4 operations];
+  [operations makeObjectsPerformSelector:sel_cancel];
 
-  [(NSMutableDictionary *)self->_taskContextsByTaskID removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_taskContextsByTaskID removeObjectForKey:dCopy];
 }
 
 - (void)dealloc

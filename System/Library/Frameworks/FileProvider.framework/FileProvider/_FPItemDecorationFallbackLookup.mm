@@ -1,29 +1,29 @@
 @interface _FPItemDecorationFallbackLookup
-- (_FPItemDecorationFallbackLookup)initWithItems:(id)a3;
-- (id)fp_valueForKeyPath:(id)a3;
+- (_FPItemDecorationFallbackLookup)initWithItems:(id)items;
+- (id)fp_valueForKeyPath:(id)path;
 @end
 
 @implementation _FPItemDecorationFallbackLookup
 
-- (_FPItemDecorationFallbackLookup)initWithItems:(id)a3
+- (_FPItemDecorationFallbackLookup)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = _FPItemDecorationFallbackLookup;
   v6 = [(_FPItemDecorationFallbackLookup *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
+    objc_storeStrong(&v6->_items, items);
   }
 
   return v7;
 }
 
-- (id)fp_valueForKeyPath:(id)a3
+- (id)fp_valueForKeyPath:(id)path
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -42,7 +42,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) fp_valueForKeyPath:{v4, v12}];
+        v9 = [*(*(&v12 + 1) + 8 * i) fp_valueForKeyPath:{pathCopy, v12}];
         if (v9)
         {
 

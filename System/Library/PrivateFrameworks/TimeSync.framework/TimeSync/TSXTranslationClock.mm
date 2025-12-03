@@ -1,20 +1,20 @@
 @interface TSXTranslationClock
-- (BOOL)convertFromDomainTime:(unint64_t *)a3 toMachAbsoluteTime:(unint64_t *)a4 withCount:(unsigned int)a5;
-- (BOOL)convertFromDomainTime:(unint64_t *)a3 toTimeSyncTime:(unint64_t *)a4 withCount:(unsigned int)a5;
-- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)a3 toDomainTime:(unint64_t *)a4 withCount:(unsigned int)a5;
-- (BOOL)convertFromTimeSyncTime:(unint64_t *)a3 toDomainTime:(unint64_t *)a4 withCount:(unsigned int)a5;
-- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 machAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7;
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7;
+- (BOOL)convertFromDomainTime:(unint64_t *)time toMachAbsoluteTime:(unint64_t *)absoluteTime withCount:(unsigned int)count;
+- (BOOL)convertFromDomainTime:(unint64_t *)time toTimeSyncTime:(unint64_t *)syncTime withCount:(unsigned int)count;
+- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)time toDomainTime:(unint64_t *)domainTime withCount:(unsigned int)count;
+- (BOOL)convertFromTimeSyncTime:(unint64_t *)time toDomainTime:(unint64_t *)domainTime withCount:(unsigned int)count;
+- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator machAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error;
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error;
 - (TSXTranslationClock)init;
-- (TSXTranslationClock)initWithClockIdentifier:(unint64_t)a3;
-- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)a3;
-- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)a3;
-- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)a3;
-- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)a3;
-- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)a3;
-- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)a3;
+- (TSXTranslationClock)initWithClockIdentifier:(unint64_t)identifier;
+- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)interval;
+- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)time;
+- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)interval;
+- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)time;
+- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)ticks;
+- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)nanoseconds;
 - (void)_changedClockMaster;
-- (void)_updateTimeSyncTime:(unint64_t)a3 timeSyncInterval:(unint64_t)a4 domainTime:(unint64_t)a5 domainInterval:(unint64_t)a6;
+- (void)_updateTimeSyncTime:(unint64_t)time timeSyncInterval:(unint64_t)interval domainTime:(unint64_t)domainTime domainInterval:(unint64_t)domainInterval;
 @end
 
 @implementation TSXTranslationClock
@@ -28,7 +28,7 @@
   return 0;
 }
 
-- (TSXTranslationClock)initWithClockIdentifier:(unint64_t)a3
+- (TSXTranslationClock)initWithClockIdentifier:(unint64_t)identifier
 {
   v9.receiver = self;
   v9.super_class = TSXTranslationClock;
@@ -36,7 +36,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_clockIdentifier = a3;
+    v4->_clockIdentifier = identifier;
     v4->_validIndex = -1;
     mach_timebase_info(&v4->_timebaseInfo);
     v5->_updateLock._os_unfair_lock_opaque = 0;
@@ -48,59 +48,59 @@
   return v5;
 }
 
-- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)a3
+- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)nanoseconds
 {
   numer = self->_timebaseInfo.numer;
   if (numer != self->_timebaseInfo.denom)
   {
     v10[4] = v3;
     v10[5] = v4;
-    *&v9 = IOTS_uint64mul(a3, numer);
+    *&v9 = IOTS_uint64mul(nanoseconds, numer);
     *(&v9 + 1) = v7;
     v10[0] = self->_timebaseInfo.denom;
     v10[1] = 0;
     return IOTS_U128::operator/(&v9, v10);
   }
 
-  return a3;
+  return nanoseconds;
 }
 
-- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)a3
+- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)ticks
 {
   denom = self->_timebaseInfo.denom;
   if (self->_timebaseInfo.numer != denom)
   {
     v10[4] = v3;
     v10[5] = v4;
-    *&v9 = IOTS_uint64mul(a3, denom);
+    *&v9 = IOTS_uint64mul(ticks, denom);
     *(&v9 + 1) = v7;
     v10[0] = self->_timebaseInfo.numer;
     v10[1] = 0;
     return IOTS_U128::operator/(&v9, v10);
   }
 
-  return a3;
+  return ticks;
 }
 
-- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)a3 toDomainTime:(unint64_t *)a4 withCount:(unsigned int)a5
+- (BOOL)convertFromMachAbsoluteTime:(unint64_t *)time toDomainTime:(unint64_t *)domainTime withCount:(unsigned int)count
 {
-  if (a3)
+  if (time)
   {
-    v5 = a4;
-    if (a4)
+    domainTimeCopy = domainTime;
+    if (domainTime)
     {
-      if (a5)
+      if (count)
       {
-        v6 = a3;
-        v8 = a5;
+        timeCopy = time;
+        countCopy = count;
         do
         {
-          v9 = *v6++;
-          *v5++ = [(TSXTranslationClock *)self machAbsoluteTicksToNanoseconds:v9];
-          --v8;
+          v9 = *timeCopy++;
+          *domainTimeCopy++ = [(TSXTranslationClock *)self machAbsoluteTicksToNanoseconds:v9];
+          --countCopy;
         }
 
-        while (v8);
+        while (countCopy);
       }
 
       return 1;
@@ -120,25 +120,25 @@
   }
 }
 
-- (BOOL)convertFromDomainTime:(unint64_t *)a3 toMachAbsoluteTime:(unint64_t *)a4 withCount:(unsigned int)a5
+- (BOOL)convertFromDomainTime:(unint64_t *)time toMachAbsoluteTime:(unint64_t *)absoluteTime withCount:(unsigned int)count
 {
-  if (a4)
+  if (absoluteTime)
   {
-    v5 = a3;
-    if (a3)
+    timeCopy = time;
+    if (time)
     {
-      if (a5)
+      if (count)
       {
-        v6 = a4;
-        v8 = a5;
+        absoluteTimeCopy = absoluteTime;
+        countCopy = count;
         do
         {
-          v9 = *v5++;
-          *v6++ = [(TSXTranslationClock *)self machAbsoluteNanosecondsToTicks:v9];
-          --v8;
+          v9 = *timeCopy++;
+          *absoluteTimeCopy++ = [(TSXTranslationClock *)self machAbsoluteNanosecondsToTicks:v9];
+          --countCopy;
         }
 
-        while (v8);
+        while (countCopy);
       }
 
       return 1;
@@ -158,34 +158,34 @@
   }
 }
 
-- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 machAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7
+- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator machAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error
 {
-  if (a5)
+  if (anchor)
   {
-    *a5 = 0;
+    *anchor = 0;
   }
 
-  if (a6)
+  if (domainAnchor)
   {
-    *a6 = 0;
+    *domainAnchor = 0;
   }
 
-  if (a3)
+  if (numerator)
   {
-    *a3 = self->_timebaseInfo.numer;
+    *numerator = self->_timebaseInfo.numer;
   }
 
-  if (a4)
+  if (denominator)
   {
-    *a4 = self->_timebaseInfo.denom;
+    *denominator = self->_timebaseInfo.denom;
   }
 
   return 1;
 }
 
-- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)a3
+- (unint64_t)convertFromTimeSyncToDomainTime:(unint64_t)time
 {
-  if (a3 == -1)
+  if (time == -1)
   {
     [TSXTranslationClock convertFromTimeSyncToDomainTime:];
     return v11;
@@ -204,12 +204,12 @@
   v7 = v4[4];
   v9 = v4[3];
 
-  return TSTimeXtoTimeY(a3, v5, v9, v6, v7);
+  return TSTimeXtoTimeY(time, v5, v9, v6, v7);
 }
 
-- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)a3
+- (unint64_t)convertFromDomainToTimeSyncTime:(unint64_t)time
 {
-  if (a3 == -1)
+  if (time == -1)
   {
     [TSXTranslationClock convertFromDomainToTimeSyncTime:];
     return v11;
@@ -228,28 +228,28 @@
   v7 = v4[3];
   v9 = v4[4];
 
-  return TSTimeXtoTimeY(a3, v5, v9, v6, v7);
+  return TSTimeXtoTimeY(time, v5, v9, v6, v7);
 }
 
-- (BOOL)convertFromTimeSyncTime:(unint64_t *)a3 toDomainTime:(unint64_t *)a4 withCount:(unsigned int)a5
+- (BOOL)convertFromTimeSyncTime:(unint64_t *)time toDomainTime:(unint64_t *)domainTime withCount:(unsigned int)count
 {
-  if (a3)
+  if (time)
   {
-    v5 = a4;
-    if (a4)
+    domainTimeCopy = domainTime;
+    if (domainTime)
     {
-      if (a5)
+      if (count)
       {
-        v6 = a3;
-        v8 = a5;
+        timeCopy = time;
+        countCopy = count;
         do
         {
-          v9 = *v6++;
-          *v5++ = [(TSXTranslationClock *)self convertFromTimeSyncToDomainTime:v9];
-          --v8;
+          v9 = *timeCopy++;
+          *domainTimeCopy++ = [(TSXTranslationClock *)self convertFromTimeSyncToDomainTime:v9];
+          --countCopy;
         }
 
-        while (v8);
+        while (countCopy);
       }
 
       return 1;
@@ -269,25 +269,25 @@
   }
 }
 
-- (BOOL)convertFromDomainTime:(unint64_t *)a3 toTimeSyncTime:(unint64_t *)a4 withCount:(unsigned int)a5
+- (BOOL)convertFromDomainTime:(unint64_t *)time toTimeSyncTime:(unint64_t *)syncTime withCount:(unsigned int)count
 {
-  if (a4)
+  if (syncTime)
   {
-    v5 = a3;
-    if (a3)
+    timeCopy = time;
+    if (time)
     {
-      if (a5)
+      if (count)
       {
-        v6 = a4;
-        v8 = a5;
+        syncTimeCopy = syncTime;
+        countCopy = count;
         do
         {
-          v9 = *v5++;
-          *v6++ = [(TSXTranslationClock *)self convertFromDomainToTimeSyncTime:v9];
-          --v8;
+          v9 = *timeCopy++;
+          *syncTimeCopy++ = [(TSXTranslationClock *)self convertFromDomainToTimeSyncTime:v9];
+          --countCopy;
         }
 
-        while (v8);
+        while (countCopy);
       }
 
       return 1;
@@ -307,9 +307,9 @@
   }
 }
 
-- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)a3
+- (unint64_t)convertFromTimeSyncTimeIntervalToDomainInterval:(unint64_t)interval
 {
-  if (a3 == -1)
+  if (interval == -1)
   {
     [TSXTranslationClock convertFromTimeSyncTimeIntervalToDomainInterval:];
     return v9;
@@ -326,12 +326,12 @@
   v5 = *(v4 + 3);
   v7 = *(v4 + 4);
 
-  return TSIntervalXtoIntervalY(a3, v5, v7);
+  return TSIntervalXtoIntervalY(interval, v5, v7);
 }
 
-- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)a3
+- (unint64_t)convertFromDomainIntervalToTimeSyncTimeInterval:(unint64_t)interval
 {
-  if (a3 == -1)
+  if (interval == -1)
   {
     [TSXTranslationClock convertFromDomainIntervalToTimeSyncTimeInterval:];
     return v9;
@@ -347,10 +347,10 @@
   domainTimeInterval = self->_timeInfo[validIndex].domainTimeInterval;
   timeSyncTimeInterval = self->_timeInfo[validIndex].timeSyncTimeInterval;
 
-  return TSIntervalXtoIntervalY(a3, domainTimeInterval, timeSyncTimeInterval);
+  return TSIntervalXtoIntervalY(interval, domainTimeInterval, timeSyncTimeInterval);
 }
 
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 withError:(id *)a7
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor withError:(id *)error
 {
   validIndex = self->_validIndex;
   if (validIndex >= 8)
@@ -360,25 +360,25 @@
 
   else
   {
-    if (a3)
+    if (numerator)
     {
-      *a3 = self->_timeInfo[validIndex].timeSyncTimeInterval;
+      *numerator = self->_timeInfo[validIndex].timeSyncTimeInterval;
     }
 
     v8 = (self + 32 * validIndex);
-    if (a4)
+    if (denominator)
     {
-      *a4 = v8[4];
+      *denominator = v8[4];
     }
 
-    if (a5)
+    if (anchor)
     {
-      *a5 = v8[1];
+      *anchor = v8[1];
     }
 
-    if (a6)
+    if (domainAnchor)
     {
-      *a6 = v8[2];
+      *domainAnchor = v8[2];
     }
   }
 
@@ -393,15 +393,15 @@ void __40__TSXTranslationClock__updateLockState___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_updateTimeSyncTime:(unint64_t)a3 timeSyncInterval:(unint64_t)a4 domainTime:(unint64_t)a5 domainInterval:(unint64_t)a6
+- (void)_updateTimeSyncTime:(unint64_t)time timeSyncInterval:(unint64_t)interval domainTime:(unint64_t)domainTime domainInterval:(unint64_t)domainInterval
 {
   os_unfair_lock_lock(&self->_updateLock);
   v11 = (self->_validIndex + 1) & 7;
   v12 = &self->super.isa + 4 * v11;
-  v12[1] = a3;
-  v12[2] = a5;
-  v12[3] = a4;
-  v12[4] = a6;
+  v12[1] = time;
+  v12[2] = domainTime;
+  v12[3] = interval;
+  v12[4] = domainInterval;
   self->_validIndex = v11;
 
   os_unfair_lock_unlock(&self->_updateLock);
@@ -413,7 +413,7 @@ void __40__TSXTranslationClock__updateLockState___block_invoke(uint64_t a1)
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = [(TSXTranslationClock *)self clockIdentifier];
+    clockIdentifier = [(TSXTranslationClock *)self clockIdentifier];
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSXTranslationClock(0x%016llx) changedClockMaster", &v4, 0xCu);
   }
 

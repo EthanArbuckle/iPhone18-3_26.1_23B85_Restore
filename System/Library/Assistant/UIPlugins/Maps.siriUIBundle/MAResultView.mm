@@ -1,9 +1,9 @@
 @interface MAResultView
-+ (double)preferredHeightForMapItem:(id)a3;
-+ (void)_configureLabel:(id)a3 withFont:(id)a4 textColor:(id)a5;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (double)preferredHeightForMapItem:(id)item;
++ (void)_configureLabel:(id)label withFont:(id)font textColor:(id)color;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (MAResultView)initWithFrame:(CGRect)a3;
+- (MAResultView)initWithFrame:(CGRect)frame;
 - (double)preferredHeight;
 - (id)_distanceString;
 - (void)_buttonTapped;
@@ -12,23 +12,23 @@
 - (void)_updateImage;
 - (void)_updateImageViewVisibility;
 - (void)_updateSubviews;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setDisplayFormat:(int)a3;
-- (void)setHideBottomKeyline:(BOOL)a3;
-- (void)setLocationDetailPreferred:(BOOL)a3;
-- (void)setMapItem:(id)a3;
-- (void)setReferenceLocation:(id)a3;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setDisplayFormat:(int)format;
+- (void)setHideBottomKeyline:(BOOL)keyline;
+- (void)setLocationDetailPreferred:(BOOL)preferred;
+- (void)setMapItem:(id)item;
+- (void)setReferenceLocation:(id)location;
 @end
 
 @implementation MAResultView
 
-- (MAResultView)initWithFrame:(CGRect)a3
+- (MAResultView)initWithFrame:(CGRect)frame
 {
   v150.receiver = self;
   v150.super_class = MAResultView;
-  v3 = [(MAResultView *)&v150 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MAResultView *)&v150 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[MAResultView primaryColor];
@@ -73,8 +73,8 @@
     imageView = v3->_imageView;
     v3->_imageView = v20;
 
-    v22 = [(UIImageView *)v3->_imageView layer];
-    [v22 setCornerRadius:8.0];
+    layer = [(UIImageView *)v3->_imageView layer];
+    [layer setCornerRadius:8.0];
 
     [(UIImageView *)v3->_imageView setClipsToBounds:1];
     [(UIImageView *)v3->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -86,17 +86,17 @@
 
     [(UIButton *)v3->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v3->_button setHidden:1];
-    v26 = [(UIButton *)v3->_button layer];
-    [v26 setCornerRadius:7.5];
+    layer2 = [(UIButton *)v3->_button layer];
+    [layer2 setCornerRadius:7.5];
 
-    v27 = [(UIButton *)v3->_button layer];
-    [v27 setBorderWidth:1.0];
+    layer3 = [(UIButton *)v3->_button layer];
+    [layer3 setBorderWidth:1.0];
 
     v28 = v4;
     v146 = v4;
-    v29 = [v4 CGColor];
-    v30 = [(UIButton *)v3->_button layer];
-    [v30 setBorderColor:v29];
+    cGColor = [v4 CGColor];
+    layer4 = [(UIButton *)v3->_button layer];
+    [layer4 setBorderColor:cGColor];
 
     v31 = v3->_button;
     v32 = +[UIColor clearColor];
@@ -131,55 +131,55 @@
     [(MAResultView *)v3 addSubview:v3->_button];
     [(MAResultView *)v3 addSubview:v3->_bottomKeyline];
     v39 = objc_opt_new();
-    v40 = [(_MKUILabel *)v3->_nameLabel leadingAnchor];
-    v41 = [(MAResultView *)v3 leadingAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41 constant:15.0];
+    leadingAnchor = [(_MKUILabel *)v3->_nameLabel leadingAnchor];
+    leadingAnchor2 = [(MAResultView *)v3 leadingAnchor];
+    v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
     [v39 addObject:v42];
 
-    v43 = [(UIImageView *)v3->_imageView leadingAnchor];
-    v44 = [(_MKUILabel *)v3->_nameLabel trailingAnchor];
-    v45 = [v43 constraintGreaterThanOrEqualToAnchor:v44 constant:15.0];
+    leadingAnchor3 = [(UIImageView *)v3->_imageView leadingAnchor];
+    trailingAnchor = [(_MKUILabel *)v3->_nameLabel trailingAnchor];
+    v45 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor constant:15.0];
     [v39 addObject:v45];
 
-    v46 = [(MAResultView *)v3 trailingAnchor];
-    v47 = [(UIImageView *)v3->_imageView trailingAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47 constant:15.0];
+    trailingAnchor2 = [(MAResultView *)v3 trailingAnchor];
+    trailingAnchor3 = [(UIImageView *)v3->_imageView trailingAnchor];
+    v48 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:15.0];
     [v39 addObject:v48];
 
-    v49 = [(_MKUILabel *)v3->_detailLine1aLabel leadingAnchor];
-    v50 = [(MAResultView *)v3 leadingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:15.0];
+    leadingAnchor4 = [(_MKUILabel *)v3->_detailLine1aLabel leadingAnchor];
+    leadingAnchor5 = [(MAResultView *)v3 leadingAnchor];
+    v51 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:15.0];
     [v39 addObject:v51];
 
-    v52 = [(_MKUILabel *)v3->_detailLine1bLabel leadingAnchor];
-    v53 = [(_MKUILabel *)v3->_detailLine1aLabel trailingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:0.0];
+    leadingAnchor6 = [(_MKUILabel *)v3->_detailLine1bLabel leadingAnchor];
+    trailingAnchor4 = [(_MKUILabel *)v3->_detailLine1aLabel trailingAnchor];
+    v54 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4 constant:0.0];
     [v39 addObject:v54];
 
-    v55 = [(UIImageView *)v3->_imageView leadingAnchor];
-    v56 = [(_MKUILabel *)v3->_detailLine1bLabel trailingAnchor];
-    v57 = [v55 constraintGreaterThanOrEqualToAnchor:v56 constant:15.0];
+    leadingAnchor7 = [(UIImageView *)v3->_imageView leadingAnchor];
+    trailingAnchor5 = [(_MKUILabel *)v3->_detailLine1bLabel trailingAnchor];
+    v57 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:trailingAnchor5 constant:15.0];
     v58 = v39;
     [v39 addObject:v57];
 
-    v59 = [(MKTransitInfoLabelView *)v3->_detailLine2Label leadingAnchor];
-    v60 = [(MAResultView *)v3 leadingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60 constant:15.0];
+    leadingAnchor8 = [(MKTransitInfoLabelView *)v3->_detailLine2Label leadingAnchor];
+    leadingAnchor9 = [(MAResultView *)v3 leadingAnchor];
+    v61 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:15.0];
     [v39 addObject:v61];
 
-    v62 = [(UIImageView *)v3->_imageView leadingAnchor];
-    v63 = [(MKTransitInfoLabelView *)v3->_detailLine2Label trailingAnchor];
-    v64 = [v62 constraintGreaterThanOrEqualToAnchor:v63 constant:15.0];
+    leadingAnchor10 = [(UIImageView *)v3->_imageView leadingAnchor];
+    trailingAnchor6 = [(MKTransitInfoLabelView *)v3->_detailLine2Label trailingAnchor];
+    v64 = [leadingAnchor10 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:15.0];
     [v39 addObject:v64];
 
-    v65 = [(SiriUIKeyline *)v3->_bottomKeyline leadingAnchor];
-    v66 = [(MAResultView *)v3 leadingAnchor];
-    v67 = [v65 constraintEqualToAnchor:v66 constant:15.0];
+    leadingAnchor11 = [(SiriUIKeyline *)v3->_bottomKeyline leadingAnchor];
+    leadingAnchor12 = [(MAResultView *)v3 leadingAnchor];
+    v67 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:15.0];
     [v39 addObject:v67];
 
-    v68 = [(MAResultView *)v3 trailingAnchor];
-    v69 = [(SiriUIKeyline *)v3->_bottomKeyline trailingAnchor];
-    v70 = [v68 constraintEqualToAnchor:v69 constant:15.0];
+    trailingAnchor7 = [(MAResultView *)v3 trailingAnchor];
+    trailingAnchor8 = [(SiriUIKeyline *)v3->_bottomKeyline trailingAnchor];
+    v70 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:15.0];
     [v39 addObject:v70];
 
     [v149 _mapkit_scaledValueForValue:21.0];
@@ -190,105 +190,105 @@
     v76 = v75;
     [v148 _mapkit_scaledValueForValue:21.0];
     v78 = v77;
-    v79 = [(_MKUILabel *)v3->_nameLabel firstBaselineAnchor];
-    v80 = [(MAResultView *)v3 topAnchor];
-    v81 = [v79 constraintEqualToAnchor:v80 constant:v72];
+    firstBaselineAnchor = [(_MKUILabel *)v3->_nameLabel firstBaselineAnchor];
+    topAnchor = [(MAResultView *)v3 topAnchor];
+    v81 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:v72];
     [v39 addObject:v81];
 
-    v82 = [(_MKUILabel *)v3->_detailLine1aLabel firstBaselineAnchor];
-    v83 = [(_MKUILabel *)v3->_nameLabel lastBaselineAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83 constant:v74];
+    firstBaselineAnchor2 = [(_MKUILabel *)v3->_detailLine1aLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(_MKUILabel *)v3->_nameLabel lastBaselineAnchor];
+    v84 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:v74];
     v153[0] = v84;
-    v85 = [(_MKUILabel *)v3->_detailLine1bLabel firstBaselineAnchor];
-    v86 = [(_MKUILabel *)v3->_nameLabel lastBaselineAnchor];
-    v87 = [v85 constraintEqualToAnchor:v86 constant:v74];
+    firstBaselineAnchor3 = [(_MKUILabel *)v3->_detailLine1bLabel firstBaselineAnchor];
+    lastBaselineAnchor2 = [(_MKUILabel *)v3->_nameLabel lastBaselineAnchor];
+    v87 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor2 constant:v74];
     v153[1] = v87;
     v88 = [NSArray arrayWithObjects:v153 count:2];
     baselineConstraintsDetailLine1ToName = v3->_baselineConstraintsDetailLine1ToName;
     v3->_baselineConstraintsDetailLine1ToName = v88;
 
-    v90 = [(MKTransitInfoLabelView *)v3->_detailLine2Label firstBaselineAnchor];
-    v91 = [(_MKUILabel *)v3->_detailLine1aLabel lastBaselineAnchor];
-    v92 = [v90 constraintEqualToAnchor:v91 constant:v76];
+    firstBaselineAnchor4 = [(MKTransitInfoLabelView *)v3->_detailLine2Label firstBaselineAnchor];
+    lastBaselineAnchor3 = [(_MKUILabel *)v3->_detailLine1aLabel lastBaselineAnchor];
+    v92 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor3 constant:v76];
     v152[0] = v92;
-    v93 = [(MKTransitInfoLabelView *)v3->_detailLine2Label firstBaselineAnchor];
-    v94 = [(_MKUILabel *)v3->_detailLine1bLabel lastBaselineAnchor];
-    v95 = [v93 constraintEqualToAnchor:v94 constant:v76];
+    firstBaselineAnchor5 = [(MKTransitInfoLabelView *)v3->_detailLine2Label firstBaselineAnchor];
+    lastBaselineAnchor4 = [(_MKUILabel *)v3->_detailLine1bLabel lastBaselineAnchor];
+    v95 = [firstBaselineAnchor5 constraintEqualToAnchor:lastBaselineAnchor4 constant:v76];
     v152[1] = v95;
     v96 = [NSArray arrayWithObjects:v152 count:2];
     baselineConstraintsDetailLine2ToLine1 = v3->_baselineConstraintsDetailLine2ToLine1;
     v3->_baselineConstraintsDetailLine2ToLine1 = v96;
 
-    v98 = [(MAResultView *)v3 bottomAnchor];
-    v99 = [(MKTransitInfoLabelView *)v3->_detailLine2Label lastBaselineAnchor];
-    v100 = [v98 constraintEqualToAnchor:v99 constant:v78];
+    bottomAnchor = [(MAResultView *)v3 bottomAnchor];
+    lastBaselineAnchor5 = [(MKTransitInfoLabelView *)v3->_detailLine2Label lastBaselineAnchor];
+    v100 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor5 constant:v78];
 
     LODWORD(v101) = 1148829696;
     [v100 setPriority:v101];
     [v39 addObject:v100];
-    v102 = [(SiriUIKeyline *)v3->_bottomKeyline bottomAnchor];
-    v103 = [(MAResultView *)v3 bottomAnchor];
-    v104 = [v102 constraintEqualToAnchor:v103 constant:0.0];
+    bottomAnchor2 = [(SiriUIKeyline *)v3->_bottomKeyline bottomAnchor];
+    bottomAnchor3 = [(MAResultView *)v3 bottomAnchor];
+    v104 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:0.0];
     [v39 addObject:v104];
 
-    v105 = [(UIImageView *)v3->_imageView centerYAnchor];
-    v106 = [(MAResultView *)v3 centerYAnchor];
-    v107 = [v105 constraintEqualToAnchor:v106];
+    centerYAnchor = [(UIImageView *)v3->_imageView centerYAnchor];
+    centerYAnchor2 = [(MAResultView *)v3 centerYAnchor];
+    v107 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v39 addObject:v107];
 
-    v108 = [(UIImageView *)v3->_imageView widthAnchor];
-    v109 = [v108 constraintEqualToConstant:64.0];
+    widthAnchor = [(UIImageView *)v3->_imageView widthAnchor];
+    v109 = [widthAnchor constraintEqualToConstant:64.0];
     [v39 addObject:v109];
 
-    v110 = [(UIImageView *)v3->_imageView heightAnchor];
-    v111 = [(UIImageView *)v3->_imageView widthAnchor];
-    v112 = [v110 constraintEqualToAnchor:v111];
+    heightAnchor = [(UIImageView *)v3->_imageView heightAnchor];
+    widthAnchor2 = [(UIImageView *)v3->_imageView widthAnchor];
+    v112 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     [v39 addObject:v112];
 
-    v113 = [(UIButton *)v3->_button widthAnchor];
-    v114 = [(UIImageView *)v3->_imageView widthAnchor];
-    v115 = [v113 constraintEqualToAnchor:v114];
+    widthAnchor3 = [(UIButton *)v3->_button widthAnchor];
+    widthAnchor4 = [(UIImageView *)v3->_imageView widthAnchor];
+    v115 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     [v39 addObject:v115];
 
-    v116 = [(UIButton *)v3->_button heightAnchor];
-    v117 = [(UIButton *)v3->_button widthAnchor];
-    v118 = [v116 constraintEqualToAnchor:v117];
+    heightAnchor2 = [(UIButton *)v3->_button heightAnchor];
+    widthAnchor5 = [(UIButton *)v3->_button widthAnchor];
+    v118 = [heightAnchor2 constraintEqualToAnchor:widthAnchor5];
     [v39 addObject:v118];
 
-    v119 = [(UIButton *)v3->_button centerXAnchor];
-    v120 = [(UIImageView *)v3->_imageView centerXAnchor];
-    v121 = [v119 constraintEqualToAnchor:v120];
+    centerXAnchor = [(UIButton *)v3->_button centerXAnchor];
+    centerXAnchor2 = [(UIImageView *)v3->_imageView centerXAnchor];
+    v121 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v39 addObject:v121];
 
-    v122 = [(UIButton *)v3->_button centerYAnchor];
-    v123 = [(UIImageView *)v3->_imageView centerYAnchor];
-    v124 = [v122 constraintEqualToAnchor:v123];
+    centerYAnchor3 = [(UIButton *)v3->_button centerYAnchor];
+    centerYAnchor4 = [(UIImageView *)v3->_imageView centerYAnchor];
+    v124 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v39 addObject:v124];
 
-    v125 = [(MKVibrantLabel *)v3->_vibrantLabel leadingAnchor];
-    v126 = [(MAResultView *)v3 leadingAnchor];
-    v127 = [v125 constraintEqualToAnchor:v126 constant:15.0];
+    leadingAnchor13 = [(MKVibrantLabel *)v3->_vibrantLabel leadingAnchor];
+    leadingAnchor14 = [(MAResultView *)v3 leadingAnchor];
+    v127 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:15.0];
     [v39 addObject:v127];
 
-    v128 = [(UIImageView *)v3->_imageView leadingAnchor];
-    v129 = [(MKVibrantLabel *)v3->_vibrantLabel trailingAnchor];
-    v130 = [v128 constraintGreaterThanOrEqualToAnchor:v129 constant:15.0];
+    leadingAnchor15 = [(UIImageView *)v3->_imageView leadingAnchor];
+    trailingAnchor9 = [(MKVibrantLabel *)v3->_vibrantLabel trailingAnchor];
+    v130 = [leadingAnchor15 constraintGreaterThanOrEqualToAnchor:trailingAnchor9 constant:15.0];
     [v39 addObject:v130];
 
-    v131 = [(MAResultView *)v3 bottomAnchor];
-    v132 = [(MKVibrantLabel *)v3->_vibrantLabel lastBaselineAnchor];
-    v133 = [v131 constraintEqualToAnchor:v132 constant:v78];
+    bottomAnchor4 = [(MAResultView *)v3 bottomAnchor];
+    lastBaselineAnchor6 = [(MKVibrantLabel *)v3->_vibrantLabel lastBaselineAnchor];
+    v133 = [bottomAnchor4 constraintEqualToAnchor:lastBaselineAnchor6 constant:v78];
 
     LODWORD(v134) = 1148829696;
     [v133 setPriority:v134];
     [v39 addObject:v133];
-    v135 = [(MKVibrantLabel *)v3->_vibrantLabel firstBaselineAnchor];
-    v136 = [(_MKUILabel *)v3->_detailLine1aLabel lastBaselineAnchor];
-    v137 = [v135 constraintEqualToAnchor:v136 constant:v76];
+    firstBaselineAnchor6 = [(MKVibrantLabel *)v3->_vibrantLabel firstBaselineAnchor];
+    lastBaselineAnchor7 = [(_MKUILabel *)v3->_detailLine1aLabel lastBaselineAnchor];
+    v137 = [firstBaselineAnchor6 constraintEqualToAnchor:lastBaselineAnchor7 constant:v76];
     v151[0] = v137;
-    v138 = [(MKVibrantLabel *)v3->_vibrantLabel firstBaselineAnchor];
-    v139 = [(_MKUILabel *)v3->_detailLine1bLabel lastBaselineAnchor];
-    v140 = [v138 constraintEqualToAnchor:v139 constant:v76];
+    firstBaselineAnchor7 = [(MKVibrantLabel *)v3->_vibrantLabel firstBaselineAnchor];
+    lastBaselineAnchor8 = [(_MKUILabel *)v3->_detailLine1bLabel lastBaselineAnchor];
+    v140 = [firstBaselineAnchor7 constraintEqualToAnchor:lastBaselineAnchor8 constant:v76];
     v151[1] = v140;
     v141 = [NSArray arrayWithObjects:v151 count:2];
     baselineConstraintsVibrantToLine1 = v3->_baselineConstraintsVibrantToLine1;
@@ -335,64 +335,64 @@
   [(_MKUILabel *)v3 _mapkit_setContentCompressionResistancePriority:0 forAxis:v5];
 }
 
-+ (void)_configureLabel:(id)a3 withFont:(id)a4 textColor:(id)a5
++ (void)_configureLabel:(id)label withFont:(id)font textColor:(id)color
 {
-  v7 = a5;
-  v10 = a3;
-  [v10 setFont:a4];
-  [v10 setTextColor:v7];
+  colorCopy = color;
+  labelCopy = label;
+  [labelCopy setFont:font];
+  [labelCopy setTextColor:colorCopy];
 
   v8 = +[UIColor clearColor];
-  [v10 setBackgroundColor:v8];
+  [labelCopy setBackgroundColor:v8];
 
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v10 setTextAlignment:4];
+  [labelCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [labelCopy setTextAlignment:4];
   LODWORD(v9) = 1148829696;
-  [v10 _mapkit_setContentHuggingPriority:1 forAxis:v9];
+  [labelCopy _mapkit_setContentHuggingPriority:1 forAxis:v9];
 }
 
 - (void)_buttonTapped
 {
   if ([(MAResultView *)self isDisplayForSAR])
   {
-    v3 = [(MAResultView *)self blockOnButtonTappedForSARResult];
+    blockOnButtonTappedForSARResult = [(MAResultView *)self blockOnButtonTappedForSARResult];
 
-    if (v3)
+    if (blockOnButtonTappedForSARResult)
     {
-      v5 = [(MAResultView *)self blockOnButtonTappedForSARResult];
-      v4 = [(MAResultView *)self mapItem];
-      v5[2](v5, v4);
+      blockOnButtonTappedForSARResult2 = [(MAResultView *)self blockOnButtonTappedForSARResult];
+      mapItem = [(MAResultView *)self mapItem];
+      blockOnButtonTappedForSARResult2[2](blockOnButtonTappedForSARResult2, mapItem);
     }
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = [UIColor siriui_highlightColor:a3];
+  v5 = [UIColor siriui_highlightColor:touch];
   [(MAResultView *)self setBackgroundColor:v5];
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = MAResultView;
-  [(MAResultView *)&v6 endTrackingWithTouch:a3 withEvent:a4];
+  [(MAResultView *)&v6 endTrackingWithTouch:touch withEvent:event];
   v5 = +[UIColor clearColor];
   [(MAResultView *)self setBackgroundColor:v5];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MAResultView;
-  [(MAResultView *)&v5 cancelTrackingWithEvent:a3];
+  [(MAResultView *)&v5 cancelTrackingWithEvent:event];
   v4 = +[UIColor clearColor];
   [(MAResultView *)self setBackgroundColor:v4];
 }
 
-+ (double)preferredHeightForMapItem:(id)a3
++ (double)preferredHeightForMapItem:(id)item
 {
   v3 = +[MAResultView _majorFont];
   v4 = +[MAResultView _minorFont];
@@ -419,10 +419,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(MAResultView *)self superview];
+  superview = [(MAResultView *)self superview];
 
   v4 = UIViewNoIntrinsicMetric;
-  if (v3)
+  if (superview)
   {
     [(MAResultView *)self preferredHeight];
     v4 = v5;
@@ -436,11 +436,11 @@
 
 - (void)_updateSubviews
 {
-  v3 = [(SALocalSearchMapItem *)self->_mapItem label];
-  [(_MKUILabel *)self->_nameLabel setText:v3];
+  label = [(SALocalSearchMapItem *)self->_mapItem label];
+  [(_MKUILabel *)self->_nameLabel setText:label];
 
-  v4 = [(SALocalSearchMapItem *)self->_mapItem needsAttribution];
-  if (v4)
+  needsAttribution = [(SALocalSearchMapItem *)self->_mapItem needsAttribution];
+  if (needsAttribution)
   {
     v5 = 0;
   }
@@ -450,7 +450,7 @@
     v5 = [(MKMapItem *)self->_placeDataMapItem _hasUserRatingScore]^ 1;
   }
 
-  [(MAResultView *)self _updateDetailLine2HidingReviews:v4 ^ 1 hidingRating:v5];
+  [(MAResultView *)self _updateDetailLine2HidingReviews:needsAttribution ^ 1 hidingRating:v5];
   [(MAResultView *)self _updateDetailLine1];
   [(MAResultView *)self _updateHorizontalCompressionResistanceForLabels];
   [(MAResultView *)self _updateImage];
@@ -508,37 +508,37 @@
 
 - (void)_updateDetailLine1
 {
-  v3 = [(MAResultView *)self isDisplayForSAR];
+  isDisplayForSAR = [(MAResultView *)self isDisplayForSAR];
   [(_MKUILabel *)self->_detailLine1aLabel setText:0];
   [(_MKUILabel *)self->_detailLine1bLabel setText:0];
-  v4 = 0;
-  if (v3)
+  _ma_detourText = 0;
+  if (isDisplayForSAR)
   {
-    v4 = [(MKMapItem *)self->_placeDataMapItem _ma_detourText];
+    _ma_detourText = [(MKMapItem *)self->_placeDataMapItem _ma_detourText];
   }
 
   if (-[MAResultView isLocationDetailPreferred](self, "isLocationDetailPreferred") || (-[MAResultView mapItem](self, "mapItem"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isBusinessLocation], v5, (v6 & 1) == 0))
   {
-    v7 = [(MKMapItem *)self->_placeDataMapItem _addressFormattedAsShortenedAddress];
-    if (![v7 length])
+    _addressFormattedAsShortenedAddress = [(MKMapItem *)self->_placeDataMapItem _addressFormattedAsShortenedAddress];
+    if (![_addressFormattedAsShortenedAddress length])
     {
-      v8 = [(SALocalSearchMapItem *)self->_mapItem locationDetailLabel];
+      locationDetailLabel = [(SALocalSearchMapItem *)self->_mapItem locationDetailLabel];
 
-      v7 = v8;
+      _addressFormattedAsShortenedAddress = locationDetailLabel;
     }
   }
 
   else if ([(MKMapItem *)self->_placeDataMapItem _hasLocalizedCategoryNamesForType:0])
   {
-    v7 = [(MKMapItem *)self->_placeDataMapItem _firstLocalizedCategoryName];
+    _addressFormattedAsShortenedAddress = [(MKMapItem *)self->_placeDataMapItem _firstLocalizedCategoryName];
   }
 
   else
   {
-    v7 = 0;
+    _addressFormattedAsShortenedAddress = 0;
   }
 
-  v9 = [(MAResultView *)self _distanceString];
+  _distanceString = [(MAResultView *)self _distanceString];
   if (!self->_localizedHoursBuilder)
   {
     v10 = [[_MKLocalizedHoursBuilder alloc] initWithMapItem:self->_placeDataMapItem localizedHoursStringOptions:1];
@@ -546,24 +546,24 @@
     self->_localizedHoursBuilder = v10;
   }
 
-  v41 = v7;
-  if (v3)
+  v41 = _addressFormattedAsShortenedAddress;
+  if (isDisplayForSAR)
   {
     v12 = objc_opt_new();
-    if ([v4 length])
+    if ([_ma_detourText length])
     {
-      [v12 addObject:v4];
+      [v12 addObject:_ma_detourText];
     }
 
-    if ([v9 length])
+    if ([_distanceString length])
     {
-      [v12 addObject:v9];
+      [v12 addObject:_distanceString];
     }
 
     if ([v12 count])
     {
       v13 = [v12 componentsJoinedByString:@" · "];
-      if ([v7 length])
+      if ([_addressFormattedAsShortenedAddress length])
       {
         v14 = [NSString stringWithFormat:@"%@%@", v13, @" · "];
         [(_MKUILabel *)self->_detailLine1aLabel setText:v14];
@@ -576,7 +576,7 @@
     }
 
     v40 = v12;
-    [(_MKUILabel *)self->_detailLine1bLabel setText:v7];
+    [(_MKUILabel *)self->_detailLine1bLabel setText:_addressFormattedAsShortenedAddress];
     v39 = 0;
   }
 
@@ -584,30 +584,30 @@
   {
     if ([(MAResultView *)self _showOpenStateLabel])
     {
-      v15 = [(_MKLocalizedHoursBuilder *)self->_localizedHoursBuilder localizedOperatingHours];
+      localizedOperatingHours = [(_MKLocalizedHoursBuilder *)self->_localizedHoursBuilder localizedOperatingHours];
     }
 
     else
     {
-      v15 = 0;
+      localizedOperatingHours = 0;
     }
 
     v16 = objc_opt_new();
-    [(_MKUILabel *)self->_detailLine1aLabel setText:v7];
-    if ([v9 length])
+    [(_MKUILabel *)self->_detailLine1aLabel setText:_addressFormattedAsShortenedAddress];
+    if ([_distanceString length])
     {
-      [v16 addObject:v9];
+      [v16 addObject:_distanceString];
     }
 
-    if ([v15 length])
+    if ([localizedOperatingHours length])
     {
-      [v16 addObject:v15];
+      [v16 addObject:localizedOperatingHours];
     }
 
     if ([v16 count])
     {
       v17 = [v16 componentsJoinedByString:@" · "];
-      if ([v7 length])
+      if ([_addressFormattedAsShortenedAddress length])
       {
         v18 = [NSString stringWithFormat:@"%@%@", @" · ", v17];
         [(_MKUILabel *)self->_detailLine1bLabel setText:v18];
@@ -619,22 +619,22 @@
       }
     }
 
-    v39 = v15;
+    v39 = localizedOperatingHours;
     v40 = v16;
-    if ([v15 length])
+    if ([localizedOperatingHours length])
     {
-      v19 = [(_MKUILabel *)self->_detailLine1bLabel text];
-      v20 = [v19 rangeOfString:v15];
+      text = [(_MKUILabel *)self->_detailLine1bLabel text];
+      v20 = [text rangeOfString:localizedOperatingHours];
       v22 = v21;
 
       if (v20 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v23 = [(_MKUILabel *)self->_detailLine1bLabel attributedText];
-        v24 = [v23 mutableCopy];
+        attributedText = [(_MKUILabel *)self->_detailLine1bLabel attributedText];
+        v24 = [attributedText mutableCopy];
 
-        v25 = [(_MKLocalizedHoursBuilder *)self->_localizedHoursBuilder hoursStateLabelColor];
+        hoursStateLabelColor = [(_MKLocalizedHoursBuilder *)self->_localizedHoursBuilder hoursStateLabelColor];
         v49 = NSForegroundColorAttributeName;
-        v50 = v25;
+        v50 = hoursStateLabelColor;
         v26 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
         [v24 addAttributes:v26 range:{v20, v22}];
 
@@ -666,8 +666,8 @@
         }
 
         v32 = *(*(&v43 + 1) + 8 * i);
-        v33 = [(_MKUILabel *)v32 text];
-        v34 = [v33 length] != 0;
+        text2 = [(_MKUILabel *)v32 text];
+        v34 = [text2 length] != 0;
 
         v35 = v32 != self->_detailLine1aLabel;
         v36 = [(NSArray *)self->_baselineConstraintsDetailLine1ToName objectAtIndexedSubscript:v35];
@@ -706,9 +706,9 @@
     [v4 screenScale];
     v6 = v5;
 
-    v7 = [(MKMapItem *)self->_placeDataMapItem _geoMapItem];
-    v8 = [v7 _photos];
-    v9 = [v8 _geo_firstPhotoOfAtLeastSize:{v6 * 64.0, v6 * 64.0}];
+    _geoMapItem = [(MKMapItem *)self->_placeDataMapItem _geoMapItem];
+    _photos = [_geoMapItem _photos];
+    v9 = [_photos _geo_firstPhotoOfAtLeastSize:{v6 * 64.0, v6 * 64.0}];
 
     if (v9)
     {
@@ -738,54 +738,54 @@
 
 - (void)_updateImageViewVisibility
 {
-  v3 = [(UIImageView *)self->_imageView image];
-  if (v3)
+  image = [(UIImageView *)self->_imageView image];
+  if (image)
   {
-    v4 = v3;
-    v5 = [(MAResultView *)self isDisplayForSAR];
+    v4 = image;
+    isDisplayForSAR = [(MAResultView *)self isDisplayForSAR];
   }
 
   else
   {
-    v5 = 1;
+    isDisplayForSAR = 1;
   }
 
-  [(UIImageView *)self->_imageView setHidden:v5];
+  [(UIImageView *)self->_imageView setHidden:isDisplayForSAR];
 
   [(MAResultView *)self _mapkit_setNeedsLayout];
 }
 
 - (id)_distanceString
 {
-  v3 = [(MAResultView *)self mapItem];
-  v4 = [v3 isCurrentLocation];
+  mapItem = [(MAResultView *)self mapItem];
+  isCurrentLocation = [mapItem isCurrentLocation];
 
-  if (v4)
+  if (isCurrentLocation)
   {
     v5 = 0;
     goto LABEL_12;
   }
 
-  v6 = [(MAResultView *)self mapItem];
-  v7 = [v6 distance];
+  mapItem2 = [(MAResultView *)self mapItem];
+  distance = [mapItem2 distance];
 
-  if (v7)
+  if (distance)
   {
-    v8 = [v7 localizedDistanceString];
+    localizedDistanceString = [distance localizedDistanceString];
   }
 
   else
   {
-    v9 = [(MAResultView *)self referenceLocation];
+    referenceLocation = [(MAResultView *)self referenceLocation];
 
-    if (v9)
+    if (referenceLocation)
     {
-      v10 = [(MAResultView *)self mapItem];
-      v11 = [v10 location];
-      v12 = [v11 clRepresentation];
+      mapItem3 = [(MAResultView *)self mapItem];
+      location = [mapItem3 location];
+      clRepresentation = [location clRepresentation];
 
-      v13 = [(MAResultView *)self referenceLocation];
-      [v12 distanceFromLocation:v13];
+      referenceLocation2 = [(MAResultView *)self referenceLocation];
+      [clRepresentation distanceFromLocation:referenceLocation2];
       v15 = v14;
 
       v5 = [SADistance localizedStringForDistanceInMeters:0 forCity:v15];
@@ -801,10 +801,10 @@
     }
 
     [(MAResultView *)self fallbackDistance];
-    v8 = [SADistance localizedStringForDistanceInMeters:0 forCity:?];
+    localizedDistanceString = [SADistance localizedStringForDistanceInMeters:0 forCity:?];
   }
 
-  v5 = v8;
+  v5 = localizedDistanceString;
 LABEL_11:
 
 LABEL_12:
@@ -812,20 +812,20 @@ LABEL_12:
   return v5;
 }
 
-- (void)setHideBottomKeyline:(BOOL)a3
+- (void)setHideBottomKeyline:(BOOL)keyline
 {
-  if (self->_hideBottomKeyline != a3)
+  if (self->_hideBottomKeyline != keyline)
   {
-    self->_hideBottomKeyline = a3;
+    self->_hideBottomKeyline = keyline;
     [(SiriUIKeyline *)self->_bottomKeyline setHidden:?];
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   mapItem = self->_mapItem;
-  if (mapItem != v5 && ([(SALocalSearchMapItem *)mapItem isEqual:v5]& 1) == 0)
+  if (mapItem != itemCopy && ([(SALocalSearchMapItem *)mapItem isEqual:itemCopy]& 1) == 0)
   {
     if (self->_notificationHandler)
     {
@@ -836,7 +836,7 @@ LABEL_12:
       self->_notificationHandler = 0;
     }
 
-    objc_storeStrong(&self->_mapItem, a3);
+    objc_storeStrong(&self->_mapItem, item);
     v9 = [MKMapItem mapItemWithLocalSearchMapItem:self->_mapItem];
     placeDataMapItem = self->_placeDataMapItem;
     self->_placeDataMapItem = v9;
@@ -865,33 +865,33 @@ LABEL_12:
   }
 }
 
-- (void)setReferenceLocation:(id)a3
+- (void)setReferenceLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   referenceLocation = self->_referenceLocation;
-  if (referenceLocation != v5 && ([(CLLocation *)referenceLocation isEqual:v5]& 1) == 0)
+  if (referenceLocation != locationCopy && ([(CLLocation *)referenceLocation isEqual:locationCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_referenceLocation, a3);
+    objc_storeStrong(&self->_referenceLocation, location);
     [(MAResultView *)self _updateSubviews];
   }
 
   _objc_release_x1();
 }
 
-- (void)setLocationDetailPreferred:(BOOL)a3
+- (void)setLocationDetailPreferred:(BOOL)preferred
 {
-  if (self->_locationDetailPreferred != a3)
+  if (self->_locationDetailPreferred != preferred)
   {
-    self->_locationDetailPreferred = a3;
+    self->_locationDetailPreferred = preferred;
     [(MAResultView *)self _updateSubviews];
   }
 }
 
-- (void)setDisplayFormat:(int)a3
+- (void)setDisplayFormat:(int)format
 {
-  if (self->_displayFormat != a3)
+  if (self->_displayFormat != format)
   {
-    self->_displayFormat = a3;
+    self->_displayFormat = format;
     [(MAResultView *)self _updateSubviews];
   }
 }

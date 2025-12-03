@@ -1,19 +1,19 @@
 @interface VFXMTLBufferAllocatorSubBuffer
-- (VFXMTLBufferAllocatorSubBuffer)initWithPage:(id)a3 allocator:(id)a4;
+- (VFXMTLBufferAllocatorSubBuffer)initWithPage:(id)page allocator:(id)allocator;
 - (void)dealloc;
 @end
 
 @implementation VFXMTLBufferAllocatorSubBuffer
 
-- (VFXMTLBufferAllocatorSubBuffer)initWithPage:(id)a3 allocator:(id)a4
+- (VFXMTLBufferAllocatorSubBuffer)initWithPage:(id)page allocator:(id)allocator
 {
   v8.receiver = self;
   v8.super_class = VFXMTLBufferAllocatorSubBuffer;
   v6 = [(VFXMTLBufferAllocatorSubBuffer *)&v8 init];
   if (v6)
   {
-    v6->_parentPage = a3;
-    v6->_allocator = a4;
+    v6->_parentPage = page;
+    v6->_allocator = allocator;
   }
 
   return v6;

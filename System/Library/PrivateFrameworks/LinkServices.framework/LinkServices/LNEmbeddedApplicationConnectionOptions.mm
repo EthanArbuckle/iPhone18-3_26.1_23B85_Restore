@@ -1,9 +1,9 @@
 @interface LNEmbeddedApplicationConnectionOptions
 - (BOOL)activateSuspended;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LNEmbeddedApplicationConnectionOptions)init;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newConnectionAction;
 - (unint64_t)hash;
 @end
@@ -34,43 +34,43 @@
   v28 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v29 = NSStringFromClass(v3);
-  v4 = [(LNConnectionOptions *)self authenticationPolicy];
+  authenticationPolicy = [(LNConnectionOptions *)self authenticationPolicy];
   v5 = @"Force Unlock";
-  if (!v4)
+  if (!authenticationPolicy)
   {
     v5 = @"Default";
   }
 
   v6 = v5;
-  v7 = [(LNEmbeddedApplicationConnectionOptions *)self sceneless];
-  v8 = [(LNEmbeddedApplicationConnectionOptions *)self activateSuspended];
-  v9 = [(LNEmbeddedApplicationConnectionOptions *)self openApplicationPriority];
-  if ((v9 - 1) > 3)
+  sceneless = [(LNEmbeddedApplicationConnectionOptions *)self sceneless];
+  activateSuspended = [(LNEmbeddedApplicationConnectionOptions *)self activateSuspended];
+  openApplicationPriority = [(LNEmbeddedApplicationConnectionOptions *)self openApplicationPriority];
+  if ((openApplicationPriority - 1) > 3)
   {
     v10 = @"None";
   }
 
   else
   {
-    v10 = off_1E74B09E8[v9 - 1];
+    v10 = off_1E74B09E8[openApplicationPriority - 1];
   }
 
   v11 = v10;
-  v12 = [(LNEmbeddedApplicationConnectionOptions *)self allowsForegroundAppLaunchWhileInCarPlay];
-  v13 = [(LNConnectionOptions *)self initiatesAudioSession];
-  v14 = [(LNEmbeddedApplicationConnectionOptions *)self isCameraCaptureAction];
-  v15 = [(LNEmbeddedApplicationConnectionOptions *)self actionSource];
-  if (v15 > 0xA)
+  allowsForegroundAppLaunchWhileInCarPlay = [(LNEmbeddedApplicationConnectionOptions *)self allowsForegroundAppLaunchWhileInCarPlay];
+  initiatesAudioSession = [(LNConnectionOptions *)self initiatesAudioSession];
+  isCameraCaptureAction = [(LNEmbeddedApplicationConnectionOptions *)self isCameraCaptureAction];
+  actionSource = [(LNEmbeddedApplicationConnectionOptions *)self actionSource];
+  if (actionSource > 0xA)
   {
     v16 = @"app";
   }
 
   else
   {
-    v16 = off_1E74B0848[v15];
+    v16 = off_1E74B0848[actionSource];
   }
 
-  if (v14)
+  if (isCameraCaptureAction)
   {
     v17 = @"YES";
   }
@@ -80,7 +80,7 @@
     v17 = @"NO";
   }
 
-  if (v13)
+  if (initiatesAudioSession)
   {
     v18 = @"YES";
   }
@@ -90,7 +90,7 @@
     v18 = @"NO";
   }
 
-  if (v12)
+  if (allowsForegroundAppLaunchWhileInCarPlay)
   {
     v19 = @"YES";
   }
@@ -100,7 +100,7 @@
     v19 = @"NO";
   }
 
-  if (v8)
+  if (activateSuspended)
   {
     v20 = @"YES";
   }
@@ -110,7 +110,7 @@
     v20 = @"NO";
   }
 
-  if (v7)
+  if (sceneless)
   {
     v21 = @"YES";
   }
@@ -121,14 +121,14 @@
   }
 
   v22 = v16;
-  v23 = [(LNEmbeddedApplicationConnectionOptions *)self assistantDismissalPolicy];
+  assistantDismissalPolicy = [(LNEmbeddedApplicationConnectionOptions *)self assistantDismissalPolicy];
   v24 = @"unknown";
-  if (v23 == 1)
+  if (assistantDismissalPolicy == 1)
   {
     v24 = @"retainAssistant";
   }
 
-  if (v23 == 2)
+  if (assistantDismissalPolicy == 2)
   {
     v24 = @"dismissAssistant";
   }
@@ -141,9 +141,9 @@
 
 - (BOOL)activateSuspended
 {
-  v3 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
+  oneShotActionForSpringBoardOnly = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
 
-  if (v3)
+  if (oneShotActionForSpringBoardOnly)
   {
     return [(LNEmbeddedApplicationConnectionOptions *)self openApplicationPriority]!= 2;
   }
@@ -156,15 +156,15 @@
 
 - (id)newConnectionAction
 {
-  v3 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
+  oneShotActionForSpringBoardOnly = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
 
-  if (v3)
+  if (oneShotActionForSpringBoardOnly)
   {
     v4 = [LNOneShotConnectionAction alloc];
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
-    v7 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionExecutorOptionsForSpringBoardOnly];
-    v8 = [(LNOneShotConnectionAction *)v4 initWithIdentifier:v5 action:v6 executorOptions:v7];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    oneShotActionForSpringBoardOnly2 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
+    oneShotActionExecutorOptionsForSpringBoardOnly = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionExecutorOptionsForSpringBoardOnly];
+    v8 = [(LNOneShotConnectionAction *)v4 initWithIdentifier:uUID action:oneShotActionForSpringBoardOnly2 executorOptions:oneShotActionExecutorOptionsForSpringBoardOnly];
 
     return v8;
   }
@@ -177,45 +177,45 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v18 = 1;
     goto LABEL_19;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v20.receiver = self;
     v20.super_class = LNEmbeddedApplicationConnectionOptions;
     if ([(LNConnectionOptions *)&v20 isEqual:v6])
     {
-      v7 = [(LNEmbeddedApplicationConnectionOptions *)self sceneless];
-      if (v7 == [(LNEmbeddedApplicationConnectionOptions *)v6 sceneless])
+      sceneless = [(LNEmbeddedApplicationConnectionOptions *)self sceneless];
+      if (sceneless == [(LNEmbeddedApplicationConnectionOptions *)v6 sceneless])
       {
-        v8 = [(LNEmbeddedApplicationConnectionOptions *)self openApplicationPriority];
-        if (v8 == [(LNEmbeddedApplicationConnectionOptions *)v6 openApplicationPriority])
+        openApplicationPriority = [(LNEmbeddedApplicationConnectionOptions *)self openApplicationPriority];
+        if (openApplicationPriority == [(LNEmbeddedApplicationConnectionOptions *)v6 openApplicationPriority])
         {
-          v9 = [(LNEmbeddedApplicationConnectionOptions *)self allowsForegroundAppLaunchWhileInCarPlay];
-          if (v9 == [(LNEmbeddedApplicationConnectionOptions *)v6 allowsForegroundAppLaunchWhileInCarPlay])
+          allowsForegroundAppLaunchWhileInCarPlay = [(LNEmbeddedApplicationConnectionOptions *)self allowsForegroundAppLaunchWhileInCarPlay];
+          if (allowsForegroundAppLaunchWhileInCarPlay == [(LNEmbeddedApplicationConnectionOptions *)v6 allowsForegroundAppLaunchWhileInCarPlay])
           {
-            v10 = [(LNEmbeddedApplicationConnectionOptions *)self actionSource];
-            if (v10 == [(LNEmbeddedApplicationConnectionOptions *)v6 actionSource])
+            actionSource = [(LNEmbeddedApplicationConnectionOptions *)self actionSource];
+            if (actionSource == [(LNEmbeddedApplicationConnectionOptions *)v6 actionSource])
             {
-              v11 = [(LNEmbeddedApplicationConnectionOptions *)self isCameraCaptureAction];
-              if (v11 == [(LNEmbeddedApplicationConnectionOptions *)v6 isCameraCaptureAction])
+              isCameraCaptureAction = [(LNEmbeddedApplicationConnectionOptions *)self isCameraCaptureAction];
+              if (isCameraCaptureAction == [(LNEmbeddedApplicationConnectionOptions *)v6 isCameraCaptureAction])
               {
-                v12 = [(LNEmbeddedApplicationConnectionOptions *)self assistantDismissalPolicy];
-                if (v12 == [(LNEmbeddedApplicationConnectionOptions *)v6 assistantDismissalPolicy])
+                assistantDismissalPolicy = [(LNEmbeddedApplicationConnectionOptions *)self assistantDismissalPolicy];
+                if (assistantDismissalPolicy == [(LNEmbeddedApplicationConnectionOptions *)v6 assistantDismissalPolicy])
                 {
-                  v13 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
-                  v14 = [(LNEmbeddedApplicationConnectionOptions *)v6 oneShotActionForSpringBoardOnly];
-                  v15 = v13;
-                  v16 = v14;
+                  oneShotActionForSpringBoardOnly = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
+                  oneShotActionForSpringBoardOnly2 = [(LNEmbeddedApplicationConnectionOptions *)v6 oneShotActionForSpringBoardOnly];
+                  v15 = oneShotActionForSpringBoardOnly;
+                  v16 = oneShotActionForSpringBoardOnly2;
                   v17 = v16;
                   if (v15 == v16)
                   {
@@ -256,34 +256,34 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(LNEmbeddedApplicationConnectionOptions *)self sceneless];
-  v4 = [(LNEmbeddedApplicationConnectionOptions *)self openApplicationPriority]^ v3;
-  v5 = [(LNEmbeddedApplicationConnectionOptions *)self allowsForegroundAppLaunchWhileInCarPlay];
-  v6 = v4 ^ v5 ^ [(LNEmbeddedApplicationConnectionOptions *)self actionSource];
-  v7 = [(LNEmbeddedApplicationConnectionOptions *)self isCameraCaptureAction];
-  v8 = v7 ^ [(LNEmbeddedApplicationConnectionOptions *)self assistantDismissalPolicy];
-  v9 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
-  v10 = v8 ^ [v9 hash];
+  sceneless = [(LNEmbeddedApplicationConnectionOptions *)self sceneless];
+  v4 = [(LNEmbeddedApplicationConnectionOptions *)self openApplicationPriority]^ sceneless;
+  allowsForegroundAppLaunchWhileInCarPlay = [(LNEmbeddedApplicationConnectionOptions *)self allowsForegroundAppLaunchWhileInCarPlay];
+  v6 = v4 ^ allowsForegroundAppLaunchWhileInCarPlay ^ [(LNEmbeddedApplicationConnectionOptions *)self actionSource];
+  isCameraCaptureAction = [(LNEmbeddedApplicationConnectionOptions *)self isCameraCaptureAction];
+  v8 = isCameraCaptureAction ^ [(LNEmbeddedApplicationConnectionOptions *)self assistantDismissalPolicy];
+  oneShotActionForSpringBoardOnly = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
+  v10 = v8 ^ [oneShotActionForSpringBoardOnly hash];
 
   return v6 ^ v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = LNEmbeddedApplicationConnectionOptions;
-  v4 = [(LNConnectionOptions *)&v8 copyWithZone:a3];
+  v4 = [(LNConnectionOptions *)&v8 copyWithZone:zone];
   [v4 setSceneless:{-[LNEmbeddedApplicationConnectionOptions sceneless](self, "sceneless")}];
   [v4 setOpenApplicationPriority:{-[LNEmbeddedApplicationConnectionOptions openApplicationPriority](self, "openApplicationPriority")}];
   [v4 setAllowsForegroundAppLaunchWhileInCarPlay:{-[LNEmbeddedApplicationConnectionOptions allowsForegroundAppLaunchWhileInCarPlay](self, "allowsForegroundAppLaunchWhileInCarPlay")}];
   [v4 setActionSource:{-[LNEmbeddedApplicationConnectionOptions actionSource](self, "actionSource")}];
   [v4 setIsCameraCaptureAction:{-[LNEmbeddedApplicationConnectionOptions isCameraCaptureAction](self, "isCameraCaptureAction")}];
   [v4 setAssistantDismissalPolicy:{-[LNEmbeddedApplicationConnectionOptions assistantDismissalPolicy](self, "assistantDismissalPolicy")}];
-  v5 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
-  [v4 setOneShotActionForSpringBoardOnly:v5];
+  oneShotActionForSpringBoardOnly = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionForSpringBoardOnly];
+  [v4 setOneShotActionForSpringBoardOnly:oneShotActionForSpringBoardOnly];
 
-  v6 = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionExecutorOptionsForSpringBoardOnly];
-  [v4 setOneShotActionExecutorOptionsForSpringBoardOnly:v6];
+  oneShotActionExecutorOptionsForSpringBoardOnly = [(LNEmbeddedApplicationConnectionOptions *)self oneShotActionExecutorOptionsForSpringBoardOnly];
+  [v4 setOneShotActionExecutorOptionsForSpringBoardOnly:oneShotActionExecutorOptionsForSpringBoardOnly];
 
   return v4;
 }

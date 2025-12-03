@@ -1,13 +1,13 @@
 @interface RouteTableViewCellButtonConstraintsController
 - (NSArray)constraintsWhenButtonHidden;
 - (NSArray)constraintsWhenButtonShown;
-- (RouteTableViewCellButtonConstraintsController)initWithLeadingAnchor:(id)a3 trailingAnchor:(id)a4 firstBaselineAnchor:(id)a5 leadingDistance:(double)a6 firstBaselineDistance:(double)a7;
+- (RouteTableViewCellButtonConstraintsController)initWithLeadingAnchor:(id)anchor trailingAnchor:(id)trailingAnchor firstBaselineAnchor:(id)baselineAnchor leadingDistance:(double)distance firstBaselineDistance:(double)baselineDistance;
 - (UIButton)button;
 - (void)_invalidateButtonConstraints;
-- (void)_updateActiveConstraintsToSetButtonVisible:(BOOL)a3;
-- (void)setButton:(id)a3;
-- (void)setButtonVisible:(BOOL)a3;
-- (void)setFirstBaselineDistance:(double)a3;
+- (void)_updateActiveConstraintsToSetButtonVisible:(BOOL)visible;
+- (void)setButton:(id)button;
+- (void)setButtonVisible:(BOOL)visible;
+- (void)setFirstBaselineDistance:(double)distance;
 @end
 
 @implementation RouteTableViewCellButtonConstraintsController
@@ -33,17 +33,17 @@
   self->_firstBaselineConstraintShown = 0;
 }
 
-- (void)_updateActiveConstraintsToSetButtonVisible:(BOOL)a3
+- (void)_updateActiveConstraintsToSetButtonVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
-    v5 = [(RouteTableViewCellButtonConstraintsController *)self constraintsWhenButtonShown];
+    constraintsWhenButtonShown = [(RouteTableViewCellButtonConstraintsController *)self constraintsWhenButtonShown];
     [(RouteTableViewCellButtonConstraintsController *)self constraintsWhenButtonHidden];
   }
 
   else
   {
-    v5 = [(RouteTableViewCellButtonConstraintsController *)self constraintsWhenButtonHidden];
+    constraintsWhenButtonShown = [(RouteTableViewCellButtonConstraintsController *)self constraintsWhenButtonHidden];
     [(RouteTableViewCellButtonConstraintsController *)self constraintsWhenButtonShown];
   }
   v4 = ;
@@ -52,9 +52,9 @@
     [NSLayoutConstraint deactivateConstraints:v4];
   }
 
-  if ([v5 count])
+  if ([constraintsWhenButtonShown count])
   {
-    [NSLayoutConstraint activateConstraints:v5];
+    [NSLayoutConstraint activateConstraints:constraintsWhenButtonShown];
   }
 }
 
@@ -64,21 +64,21 @@
   {
     if (![(NSArray *)self->_constraintsWhenButtonShown count])
     {
-      v3 = [(RouteTableViewCellButtonConstraintsController *)self button];
+      button = [(RouteTableViewCellButtonConstraintsController *)self button];
 
-      if (v3)
+      if (button)
       {
-        v4 = [(RouteTableViewCellButtonConstraintsController *)self button];
-        v5 = [v4 leadingAnchor];
-        v6 = [v5 constraintEqualToAnchor:self->_leadingAnchor constant:self->_leadingDistance];
+        button2 = [(RouteTableViewCellButtonConstraintsController *)self button];
+        leadingAnchor = [button2 leadingAnchor];
+        v6 = [leadingAnchor constraintEqualToAnchor:self->_leadingAnchor constant:self->_leadingDistance];
 
-        v7 = [(RouteTableViewCellButtonConstraintsController *)self button];
-        v8 = [v7 trailingAnchor];
-        v9 = [v8 constraintEqualToAnchor:self->_trailingAnchor];
+        button3 = [(RouteTableViewCellButtonConstraintsController *)self button];
+        trailingAnchor = [button3 trailingAnchor];
+        v9 = [trailingAnchor constraintEqualToAnchor:self->_trailingAnchor];
 
-        v10 = [(RouteTableViewCellButtonConstraintsController *)self button];
-        v11 = [v10 firstBaselineAnchor];
-        v12 = [v11 constraintEqualToAnchor:self->_firstBaselineAnchor constant:self->_firstBaselineDistance];
+        button4 = [(RouteTableViewCellButtonConstraintsController *)self button];
+        firstBaselineAnchor = [button4 firstBaselineAnchor];
+        v12 = [firstBaselineAnchor constraintEqualToAnchor:self->_firstBaselineAnchor constant:self->_firstBaselineDistance];
         firstBaselineConstraintShown = self->_firstBaselineConstraintShown;
         self->_firstBaselineConstraintShown = v12;
 
@@ -128,27 +128,27 @@
   return v6;
 }
 
-- (void)setFirstBaselineDistance:(double)a3
+- (void)setFirstBaselineDistance:(double)distance
 {
-  if (self->_firstBaselineDistance != a3)
+  if (self->_firstBaselineDistance != distance)
   {
-    self->_firstBaselineDistance = a3;
+    self->_firstBaselineDistance = distance;
     [(NSLayoutConstraint *)self->_firstBaselineConstraintShown setConstant:?];
   }
 }
 
-- (void)setButtonVisible:(BOOL)a3
+- (void)setButtonVisible:(BOOL)visible
 {
-  if (self->_buttonVisible != a3)
+  if (self->_buttonVisible != visible)
   {
-    self->_buttonVisible = a3;
+    self->_buttonVisible = visible;
     [(RouteTableViewCellButtonConstraintsController *)self _updateActiveConstraintsToSetButtonVisible:?];
   }
 }
 
-- (void)setButton:(id)a3
+- (void)setButton:(id)button
 {
-  obj = a3;
+  obj = button;
   WeakRetained = objc_loadWeakRetained(&self->_button);
 
   if (WeakRetained != obj)
@@ -169,23 +169,23 @@
   }
 }
 
-- (RouteTableViewCellButtonConstraintsController)initWithLeadingAnchor:(id)a3 trailingAnchor:(id)a4 firstBaselineAnchor:(id)a5 leadingDistance:(double)a6 firstBaselineDistance:(double)a7
+- (RouteTableViewCellButtonConstraintsController)initWithLeadingAnchor:(id)anchor trailingAnchor:(id)trailingAnchor firstBaselineAnchor:(id)baselineAnchor leadingDistance:(double)distance firstBaselineDistance:(double)baselineDistance
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  anchorCopy = anchor;
+  trailingAnchorCopy = trailingAnchor;
+  baselineAnchorCopy = baselineAnchor;
   v20.receiver = self;
   v20.super_class = RouteTableViewCellButtonConstraintsController;
   v16 = [(RouteTableViewCellButtonConstraintsController *)&v20 init];
   v17 = v16;
   v18 = 0;
-  if (v16 && v13 && v14 && v15)
+  if (v16 && anchorCopy && trailingAnchorCopy && baselineAnchorCopy)
   {
-    objc_storeStrong(&v16->_leadingAnchor, a3);
-    objc_storeStrong(&v17->_trailingAnchor, a4);
-    objc_storeStrong(&v17->_firstBaselineAnchor, a5);
-    v17->_leadingDistance = a6;
-    v17->_firstBaselineDistance = a7;
+    objc_storeStrong(&v16->_leadingAnchor, anchor);
+    objc_storeStrong(&v17->_trailingAnchor, trailingAnchor);
+    objc_storeStrong(&v17->_firstBaselineAnchor, baselineAnchor);
+    v17->_leadingDistance = distance;
+    v17->_firstBaselineDistance = baselineDistance;
     v18 = v17;
   }
 

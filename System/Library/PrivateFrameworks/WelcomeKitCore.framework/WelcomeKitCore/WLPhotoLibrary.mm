@@ -1,10 +1,10 @@
 @interface WLPhotoLibrary
-- (BOOL)copy:(id)a3 filename:(id)a4 error:(id *)a5;
+- (BOOL)copy:(id)copy filename:(id)filename error:(id *)error;
 - (WLPhotoLibrary)init;
-- (WLPhotoLibrary)initWithContentType:(unint64_t)a3;
-- (id)assetCollectionChangeRequest:(id)a3;
-- (void)addAsset:(id)a3 collection:(id)a4;
-- (void)addAsset:(id)a3 filename:(id)a4 size:(unint64_t)a5 collection:(id)a6 completion:(id)a7;
+- (WLPhotoLibrary)initWithContentType:(unint64_t)type;
+- (id)assetCollectionChangeRequest:(id)request;
+- (void)addAsset:(id)asset collection:(id)collection;
+- (void)addAsset:(id)asset filename:(id)filename size:(unint64_t)size collection:(id)collection completion:(id)completion;
 @end
 
 @implementation WLPhotoLibrary
@@ -19,23 +19,23 @@
   {
     [(WLPhotoLibrary *)v2 setContentType:0];
     v4 = objc_alloc_init(WLFileProvider);
-    v5 = [(WLFileProvider *)v4 fetchRootPath];
+    fetchRootPath = [(WLFileProvider *)v4 fetchRootPath];
 
-    if (v5)
+    if (fetchRootPath)
     {
       v6 = WLLocalizedString();
-      v7 = [v5 stringByAppendingPathComponent:v6];
+      v7 = [fetchRootPath stringByAppendingPathComponent:v6];
       [(WLPhotoLibrary *)v3 setRootPath:v7];
 
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
-      LOBYTE(v7) = [v8 fileExistsAtPath:v3->_rootPath];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      LOBYTE(v7) = [defaultManager fileExistsAtPath:v3->_rootPath];
 
       if ((v7 & 1) == 0)
       {
-        v9 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         rootPath = v3->_rootPath;
         v14 = 0;
-        [v9 createDirectoryAtPath:rootPath withIntermediateDirectories:0 attributes:0 error:&v14];
+        [defaultManager2 createDirectoryAtPath:rootPath withIntermediateDirectories:0 attributes:0 error:&v14];
         v11 = v14;
 
         if (v11)
@@ -55,49 +55,49 @@
   return v3;
 }
 
-- (WLPhotoLibrary)initWithContentType:(unint64_t)a3
+- (WLPhotoLibrary)initWithContentType:(unint64_t)type
 {
   v4 = [(WLPhotoLibrary *)self init];
   v5 = v4;
   if (v4)
   {
-    [(WLPhotoLibrary *)v4 setContentType:a3];
+    [(WLPhotoLibrary *)v4 setContentType:type];
   }
 
   return v5;
 }
 
-- (void)addAsset:(id)a3 filename:(id)a4 size:(unint64_t)a5 collection:(id)a6 completion:(id)a7
+- (void)addAsset:(id)asset filename:(id)filename size:(unint64_t)size collection:(id)collection completion:(id)completion
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v12 && v13)
+  assetCopy = asset;
+  filenameCopy = filename;
+  collectionCopy = collection;
+  completionCopy = completion;
+  if (assetCopy && filenameCopy)
   {
-    if (a5)
+    if (size)
     {
       _WLLog();
       objc_initWeak(&location, self);
-      v16 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+      mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __63__WLPhotoLibrary_addAsset_filename_size_collection_completion___block_invoke;
       v27[3] = &unk_279EB56E8;
       objc_copyWeak(&v30, &location);
-      v17 = v12;
+      v17 = assetCopy;
       v28 = v17;
-      v29 = v14;
+      v29 = collectionCopy;
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __63__WLPhotoLibrary_addAsset_filename_size_collection_completion___block_invoke_2;
       v22[3] = &unk_279EB5710;
       objc_copyWeak(&v26, &location);
       v23 = v17;
-      v24 = v13;
-      v25 = v15;
-      [v16 performChanges:v27 completionHandler:v22];
+      v24 = filenameCopy;
+      v25 = completionCopy;
+      [mEMORY[0x277CD9948] performChanges:v27 completionHandler:v22];
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(&v30);
@@ -107,9 +107,9 @@
     else
     {
       _WLLog();
-      if (v15)
+      if (completionCopy)
       {
-        (*(v15 + 2))(v15, 1, 0);
+        (*(completionCopy + 2))(completionCopy, 1, 0);
       }
     }
   }
@@ -117,7 +117,7 @@
   else
   {
     _WLLog();
-    if (v15)
+    if (completionCopy)
     {
       v18 = MEMORY[0x277CCA9B8];
       v32 = *MEMORY[0x277CCA450];
@@ -125,7 +125,7 @@
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
       v20 = [v18 errorWithDomain:*MEMORY[0x277D7B8F8] code:1 userInfo:v19];
 
-      (*(v15 + 2))(v15, 0, v20);
+      (*(completionCopy + 2))(completionCopy, 0, v20);
     }
   }
 
@@ -155,13 +155,13 @@ void __63__WLPhotoLibrary_addAsset_filename_size_collection_completion___block_i
   }
 }
 
-- (void)addAsset:(id)a3 collection:(id)a4
+- (void)addAsset:(id)asset collection:(id)collection
 {
-  v18 = a3;
-  v6 = a4;
-  if (v6)
+  assetCopy = asset;
+  collectionCopy = collection;
+  if (collectionCopy)
   {
-    v7 = [(WLPhotoLibrary *)self assetCollectionChangeRequest:v6];
+    v7 = [(WLPhotoLibrary *)self assetCollectionChangeRequest:collectionCopy];
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
     _WLLog();
   }
@@ -176,7 +176,7 @@ void __63__WLPhotoLibrary_addAsset_filename_size_collection_completion___block_i
   if (contentType == 1)
   {
     v13 = MEMORY[0x277CD97B0];
-    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v18];
+    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:assetCopy];
     v12 = [v13 creationRequestForAssetFromVideoAtFileURL:v11];
     goto LABEL_8;
   }
@@ -184,7 +184,7 @@ void __63__WLPhotoLibrary_addAsset_filename_size_collection_completion___block_i
   if (!contentType)
   {
     v10 = MEMORY[0x277CD97B0];
-    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v18];
+    v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:assetCopy];
     v12 = [v10 creationRequestForAssetFromImageAtFileURL:v11];
 LABEL_8:
     v14 = v12;
@@ -196,52 +196,52 @@ LABEL_8:
   _WLLog();
   v14 = 0;
 LABEL_10:
-  v15 = [v14 placeholderForCreatedAsset];
-  [v8 addObject:v15];
+  placeholderForCreatedAsset = [v14 placeholderForCreatedAsset];
+  [v8 addObject:placeholderForCreatedAsset];
 
-  v17 = [v14 placeholderForCreatedAsset];
+  placeholderForCreatedAsset2 = [v14 placeholderForCreatedAsset];
   _WLLog();
 
   if (v8)
   {
-    [v7 addAssets:{v8, v14, v17, v18}];
+    [v7 addAssets:{v8, v14, placeholderForCreatedAsset2, assetCopy}];
     _WLLog();
   }
 }
 
-- (BOOL)copy:(id)a3 filename:(id)a4 error:(id *)a5
+- (BOOL)copy:(id)copy filename:(id)filename error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  copyCopy = copy;
+  filenameCopy = filename;
   rootPath = self->_rootPath;
   if (rootPath)
   {
-    v11 = [(NSString *)rootPath stringByAppendingPathComponent:v9];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v12 fileExistsAtPath:v11])
+    v11 = [(NSString *)rootPath stringByAppendingPathComponent:filenameCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:v11])
     {
-      v25 = a5;
-      v26 = v12;
-      v28 = v8;
-      v13 = [v9 stringByDeletingPathExtension];
-      v27 = v9;
-      v14 = [v9 pathExtension];
+      errorCopy = error;
+      v26 = defaultManager;
+      v28 = copyCopy;
+      stringByDeletingPathExtension = [filenameCopy stringByDeletingPathExtension];
+      v27 = filenameCopy;
+      pathExtension = [filenameCopy pathExtension];
       v15 = 2;
       v16 = 2147483645;
       while (1)
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %ld", v13, v15];
-        if ([v14 length])
+        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %ld", stringByDeletingPathExtension, v15];
+        if ([pathExtension length])
         {
-          v18 = [v17 stringByAppendingFormat:@".%@", v14];
+          v18 = [v17 stringByAppendingFormat:@".%@", pathExtension];
 
           v17 = v18;
         }
 
         v19 = [(NSString *)self->_rootPath stringByAppendingPathComponent:v17];
 
-        v20 = [MEMORY[0x277CCAA00] defaultManager];
-        v21 = [v20 fileExistsAtPath:v19];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+        v21 = [defaultManager2 fileExistsAtPath:v19];
 
         if ((v21 & 1) == 0)
         {
@@ -254,16 +254,16 @@ LABEL_10:
         {
 
           LOBYTE(v22) = 0;
-          v9 = v27;
-          v8 = v28;
+          filenameCopy = v27;
+          copyCopy = v28;
           goto LABEL_15;
         }
       }
 
-      v9 = v27;
-      v8 = v28;
-      a5 = v25;
-      v12 = v26;
+      filenameCopy = v27;
+      copyCopy = v28;
+      error = errorCopy;
+      defaultManager = v26;
     }
 
     else
@@ -271,12 +271,12 @@ LABEL_10:
       v19 = v11;
     }
 
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
-    v22 = [v23 moveItemAtPath:v8 toPath:v19 error:a5];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    v22 = [defaultManager3 moveItemAtPath:copyCopy toPath:v19 error:error];
 
-    if (a5 && v22)
+    if (error && v22)
     {
-      *a5 = 0;
+      *error = 0;
       LOBYTE(v22) = 1;
     }
   }
@@ -291,24 +291,24 @@ LABEL_15:
   return v22;
 }
 
-- (id)assetCollectionChangeRequest:(id)a3
+- (id)assetCollectionChangeRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localizedTitle = %@", v3];
-  [v4 setPredicate:v5];
+  requestCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"localizedTitle = %@", requestCopy];
+  [v4 setPredicate:requestCopy];
 
   v6 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:1 subtype:2 options:v4];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    [MEMORY[0x277CD97C0] changeRequestForAssetCollection:v7];
+    [MEMORY[0x277CD97C0] changeRequestForAssetCollection:firstObject];
   }
 
   else
   {
-    [MEMORY[0x277CD97C0] creationRequestForAssetCollectionWithTitle:v3];
+    [MEMORY[0x277CD97C0] creationRequestForAssetCollectionWithTitle:requestCopy];
   }
   v8 = ;
 

@@ -1,31 +1,31 @@
 @interface QLLoadingItemViewController
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation QLLoadingItemViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v9 = a5;
-  v6 = [MEMORY[0x277D75390] loadingConfiguration];
+  handlerCopy = handler;
+  loadingConfiguration = [MEMORY[0x277D75390] loadingConfiguration];
   loadingConfig = self->_loadingConfig;
-  self->_loadingConfig = v6;
+  self->_loadingConfig = loadingConfiguration;
 
   [(QLLoadingItemViewController *)self setContentUnavailableConfiguration:self->_loadingConfig];
-  v8 = v9;
-  if (v9)
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0);
-    v8 = v9;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v8 = handlerCopy;
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = QLLoadingItemViewController;
-  [(QLItemViewController *)&v3 setDelegate:a3];
+  [(QLItemViewController *)&v3 setDelegate:delegate];
 }
 
 @end

@@ -3,14 +3,14 @@
 - (UIEdgeInsets)padding;
 - (VUITextLayout)init;
 - (id)_defaultParagraphStyle;
-- (id)attributedStringWithAttributedString:(id)a3 textColor:(id)a4;
-- (id)attributedStringWithAttributedString:(id)a3 view:(id)a4 updateTextColor:(BOOL)a5;
-- (id)attributedStringWithString:(id)a3 isHighlighted:(BOOL)a4 isDisabled:(BOOL)a5;
-- (id)attributedStringWithString:(id)a3 view:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)defaultAttributesForLabel:(id)a3;
-- (unint64_t)numberOfLinesForTraitCollection:(id)a3;
-- (void)setColorWithOpacityType:(int64_t)a3;
+- (id)attributedStringWithAttributedString:(id)string textColor:(id)color;
+- (id)attributedStringWithAttributedString:(id)string view:(id)view updateTextColor:(BOOL)color;
+- (id)attributedStringWithString:(id)string isHighlighted:(BOOL)highlighted isDisabled:(BOOL)disabled;
+- (id)attributedStringWithString:(id)string view:(id)view;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)defaultAttributesForLabel:(id)label;
+- (unint64_t)numberOfLinesForTraitCollection:(id)collection;
+- (void)setColorWithOpacityType:(int64_t)type;
 @end
 
 @implementation VUITextLayout
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VUITextLayout allocWithZone:?]];
   [(VUITextLayout *)v4 setTextStyle:self->_textStyle];
@@ -105,18 +105,18 @@
   return v4;
 }
 
-- (id)defaultAttributesForLabel:(id)a3
+- (id)defaultAttributesForLabel:(id)label
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  labelCopy = label;
   v6 = objc_alloc_init(v4);
   v7 = [MEMORY[0x1E69DB878] vui_fontFromTextLayout:self];
   [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  v8 = [MEMORY[0x1E69DC888] blackColor];
-  v9 = [v5 traitCollection];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  traitCollection = [labelCopy traitCollection];
 
-  if ([v9 userInterfaceStyle] != 2)
+  if ([traitCollection userInterfaceStyle] != 2)
   {
 
 LABEL_5:
@@ -140,65 +140,65 @@ LABEL_5:
 LABEL_6:
   v12 = color;
 
-  v8 = v12;
+  blackColor = v12;
 LABEL_7:
-  [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  [v6 setObject:blackColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
   if (!self->_appliesShadowToContainer)
   {
     [v6 setObject:self->_shadow forKeyedSubscript:*MEMORY[0x1E69DB6A8]];
   }
 
-  v13 = [(VUITextLayout *)self _defaultParagraphStyle];
-  [v6 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69DB688]];
+  _defaultParagraphStyle = [(VUITextLayout *)self _defaultParagraphStyle];
+  [v6 setObject:_defaultParagraphStyle forKeyedSubscript:*MEMORY[0x1E69DB688]];
 
   v14 = [v6 copy];
 
   return v14;
 }
 
-- (void)setColorWithOpacityType:(int64_t)a3
+- (void)setColorWithOpacityType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E69DC888] vui_opacityColorWithType:a3 userInterfaceStyle:1];
+  v5 = [MEMORY[0x1E69DC888] vui_opacityColorWithType:type userInterfaceStyle:1];
   [(VUITextLayout *)self setColor:v5];
 
-  v6 = [MEMORY[0x1E69DC888] vui_opacityColorWithType:a3 userInterfaceStyle:2];
+  v6 = [MEMORY[0x1E69DC888] vui_opacityColorWithType:type userInterfaceStyle:2];
   [(VUITextLayout *)self setDarkColor:v6];
 }
 
-- (unint64_t)numberOfLinesForTraitCollection:(id)a3
+- (unint64_t)numberOfLinesForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(VUITextLayout *)self numberOfLines];
-  if (v4)
+  collectionCopy = collection;
+  numberOfLines = [(VUITextLayout *)self numberOfLines];
+  if (collectionCopy)
   {
-    if ([v4 isAXSmallEnabled])
+    if ([collectionCopy isAXSmallEnabled])
     {
-      v6 = [(VUITextLayout *)self numberOfLinesAXSmall];
+      numberOfLinesAXSmall = [(VUITextLayout *)self numberOfLinesAXSmall];
 LABEL_6:
-      v5 = v6;
+      numberOfLines = numberOfLinesAXSmall;
       goto LABEL_7;
     }
 
-    if ([v4 isAXLargeEnabled])
+    if ([collectionCopy isAXLargeEnabled])
     {
-      v6 = [(VUITextLayout *)self numberOfLinesAXLarge];
+      numberOfLinesAXSmall = [(VUITextLayout *)self numberOfLinesAXLarge];
       goto LABEL_6;
     }
   }
 
 LABEL_7:
 
-  return v5;
+  return numberOfLines;
 }
 
-- (id)attributedStringWithString:(id)a3 view:(id)a4
+- (id)attributedStringWithString:(id)string view:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6]) != 0)
+  stringCopy = string;
+  viewCopy = view;
+  if (stringCopy && (v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy]) != 0)
   {
     v9 = v8;
-    v10 = [(VUITextLayout *)self attributedStringWithAttributedString:v8 view:v7 updateTextColor:1];
+    v10 = [(VUITextLayout *)self attributedStringWithAttributedString:v8 view:viewCopy updateTextColor:1];
   }
 
   else
@@ -209,14 +209,14 @@ LABEL_7:
   return v10;
 }
 
-- (id)attributedStringWithAttributedString:(id)a3 view:(id)a4 updateTextColor:(BOOL)a5
+- (id)attributedStringWithAttributedString:(id)string view:(id)view updateTextColor:(BOOL)color
 {
-  v8 = a3;
-  v9 = a4;
-  self->_shouldUpdateTextColor = a5;
+  stringCopy = string;
+  viewCopy = view;
+  self->_shouldUpdateTextColor = color;
   v10 = self->_color;
   v11 = UIAccessibilityDarkerSystemColorsEnabled();
-  if (v9 && v11)
+  if (viewCopy && v11)
   {
     highContrastTintColor = self->_highContrastTintColor;
     if (highContrastTintColor)
@@ -226,7 +226,7 @@ LABEL_7:
 
     else
     {
-      v13 = [v9 _accessibilityHigherContrastTintColorForColor:v10];
+      v13 = [viewCopy _accessibilityHigherContrastTintColorForColor:v10];
     }
 
     v14 = v13;
@@ -236,14 +236,14 @@ LABEL_7:
 
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v15 = [(UIColor *)v10 colorByRemovingTransparency];
+    colorByRemovingTransparency = [(UIColor *)v10 colorByRemovingTransparency];
 
-    v10 = v15;
+    v10 = colorByRemovingTransparency;
   }
 
-  if (v9 && self->_darkColor)
+  if (viewCopy && self->_darkColor)
   {
-    if ([v9 vuiUserInterfaceStyle] == 2)
+    if ([viewCopy vuiUserInterfaceStyle] == 2)
     {
       v16 = self->_darkColor;
 
@@ -251,12 +251,12 @@ LABEL_7:
     }
   }
 
-  else if (!v9)
+  else if (!viewCopy)
   {
     goto LABEL_29;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v9 isEnabled] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([viewCopy isEnabled] & 1) == 0)
   {
     disabledColor = self->_disabledColor;
     if (!disabledColor)
@@ -267,7 +267,7 @@ LABEL_7:
 
   else
   {
-    if (((objc_opt_respondsToSelector() & 1) == 0 || ([v9 isHighlighted] & 1) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(v9, "isSelected")))
+    if (((objc_opt_respondsToSelector() & 1) == 0 || ([viewCopy isHighlighted] & 1) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(viewCopy, "isSelected")))
     {
       goto LABEL_27;
     }
@@ -280,7 +280,7 @@ LABEL_7:
       v10 = v18;
     }
 
-    if (!self->_darkHighlightOrSelectedColor || [v9 vuiUserInterfaceStyle] != 2)
+    if (!self->_darkHighlightOrSelectedColor || [viewCopy vuiUserInterfaceStyle] != 2)
     {
       goto LABEL_27;
     }
@@ -294,25 +294,25 @@ LABEL_7:
 LABEL_27:
   if (v10)
   {
-    v21 = [v9 _accessibilityHigherContrastTintColorForColor:v10];
+    v21 = [viewCopy _accessibilityHigherContrastTintColorForColor:v10];
 
     v10 = v21;
   }
 
 LABEL_29:
-  v22 = [(VUITextLayout *)self attributedStringWithAttributedString:v8 textColor:v10];
+  v22 = [(VUITextLayout *)self attributedStringWithAttributedString:stringCopy textColor:v10];
 
   return v22;
 }
 
-- (id)attributedStringWithString:(id)a3 isHighlighted:(BOOL)a4 isDisabled:(BOOL)a5
+- (id)attributedStringWithString:(id)string isHighlighted:(BOOL)highlighted isDisabled:(BOOL)disabled
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  disabledCopy = disabled;
+  highlightedCopy = highlighted;
+  stringCopy = string;
+  if (stringCopy)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8];
+    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
   }
 
   else
@@ -321,7 +321,7 @@ LABEL_29:
   }
 
   v10 = self->_color;
-  if (v5 && (disabledColor = self->_disabledColor) != 0 || v6 && (disabledColor = self->_highlightOrSelectedColor) != 0)
+  if (disabledCopy && (disabledColor = self->_disabledColor) != 0 || highlightedCopy && (disabledColor = self->_highlightOrSelectedColor) != 0)
   {
     v12 = disabledColor;
 
@@ -333,45 +333,45 @@ LABEL_29:
   return v13;
 }
 
-- (id)attributedStringWithAttributedString:(id)a3 textColor:(id)a4
+- (id)attributedStringWithAttributedString:(id)string textColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  stringCopy = string;
+  colorCopy = color;
+  if (![stringCopy length])
   {
     goto LABEL_11;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v6];
-  v9 = [v6 length];
-  v10 = [v6 string];
-  v11 = v10;
+  v8 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:stringCopy];
+  v9 = [stringCopy length];
+  string = [stringCopy string];
+  v11 = string;
   textTransform = self->_textTransform;
   switch(textTransform)
   {
     case 3:
-      v13 = [v10 localizedCapitalizedString];
+      localizedCapitalizedString = [string localizedCapitalizedString];
       break;
     case 2:
-      v13 = [v10 localizedUppercaseString];
+      localizedCapitalizedString = [string localizedUppercaseString];
       break;
     case 1:
-      v13 = [v10 localizedLowercaseString];
+      localizedCapitalizedString = [string localizedLowercaseString];
       break;
     default:
       goto LABEL_9;
   }
 
-  v14 = v13;
+  v14 = localizedCapitalizedString;
 
-  v15 = [v8 mutableString];
-  [v15 setString:v14];
+  mutableString = [v8 mutableString];
+  [mutableString setString:v14];
 
   v11 = v14;
 LABEL_9:
   v16 = [MEMORY[0x1E69DB878] vui_fontFromTextLayout:self];
-  v17 = [(VUITextLayout *)self _defaultParagraphStyle];
-  v18 = [v17 mutableCopy];
+  _defaultParagraphStyle = [(VUITextLayout *)self _defaultParagraphStyle];
+  v18 = [_defaultParagraphStyle mutableCopy];
 
   objc_initWeak(&location, self);
   [v8 beginEditing];
@@ -384,7 +384,7 @@ LABEL_9:
   v28 = v19;
   v20 = v18;
   v29 = v20;
-  v30 = v7;
+  v30 = colorCopy;
   v21 = v16;
   v31 = v21;
   [v19 enumerateAttributesInRange:0 options:v9 usingBlock:{0, &v24}];
@@ -401,7 +401,7 @@ LABEL_9:
   }
 
 LABEL_11:
-  v22 = v6;
+  v22 = stringCopy;
 LABEL_12:
 
   return v22;
@@ -493,8 +493,8 @@ void __64__VUITextLayout_attributedStringWithAttributedString_textColor___block_
 
 - (id)_defaultParagraphStyle
 {
-  v3 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v4 = [v3 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v4 = [defaultParagraphStyle mutableCopy];
 
   [v4 setAlignment:self->_alignment];
   if (self->_fadesOutTextTruncation)

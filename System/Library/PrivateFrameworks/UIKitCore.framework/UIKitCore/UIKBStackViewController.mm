@@ -1,7 +1,7 @@
 @interface UIKBStackViewController
-- (void)addChildViewController:(id)a3;
+- (void)addChildViewController:(id)controller;
 - (void)loadView;
-- (void)removeChildViewController:(id)a3;
+- (void)removeChildViewController:(id)controller;
 @end
 
 @implementation UIKBStackViewController
@@ -13,30 +13,30 @@
   [(UIViewController *)self setView:v4];
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = UIKBStackViewController;
-  v4 = a3;
-  [(UIViewController *)&v7 addChildViewController:v4];
+  controllerCopy = controller;
+  [(UIViewController *)&v7 addChildViewController:controllerCopy];
   v5 = [(UIKBStackViewController *)self stackView:v7.receiver];
-  v6 = [v4 view];
-  [v5 addArrangedSubview:v6];
+  view = [controllerCopy view];
+  [v5 addArrangedSubview:view];
 
-  [v4 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)removeChildViewController:(id)a3
+- (void)removeChildViewController:(id)controller
 {
-  v4 = a3;
-  [v4 willMoveToParentViewController:0];
-  v5 = [(UIKBStackViewController *)self stackView];
-  v6 = [v4 view];
-  [v5 removeArrangedSubview:v6];
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:0];
+  stackView = [(UIKBStackViewController *)self stackView];
+  view = [controllerCopy view];
+  [stackView removeArrangedSubview:view];
 
   v7.receiver = self;
   v7.super_class = UIKBStackViewController;
-  [(UIViewController *)&v7 removeChildViewController:v4];
+  [(UIViewController *)&v7 removeChildViewController:controllerCopy];
 }
 
 @end

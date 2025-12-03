@@ -1,41 +1,41 @@
 @interface _UITabCustomizationStore
-+ (_UITabCustomizationStore)customizationStoreWithPersistenceIdentifier:(id)a3;
-+ (id)_dataForKey:(id)a3 persistenceIdentifier:(id)a4;
-+ (void)_saveData:(id)a3 forKey:(id)a4 persistenceIdentifier:(id)a5;
-- (BOOL)favoriteOrderContainsTab:(id)a3;
++ (_UITabCustomizationStore)customizationStoreWithPersistenceIdentifier:(id)identifier;
++ (id)_dataForKey:(id)key persistenceIdentifier:(id)identifier;
++ (void)_saveData:(id)data forKey:(id)key persistenceIdentifier:(id)identifier;
+- (BOOL)favoriteOrderContainsTab:(id)tab;
 - (BOOL)hasModelCustomizations;
-- (BOOL)isHiddenForTabIdentifier:(id)a3 isCustomized:(BOOL *)a4;
-- (id)_initWithPersistenceIdentifier:(id)a3;
-- (id)favoriteOrderForDefaultIdentifiers:(id)a3;
-- (unint64_t)_indexOfObserver:(id)a3;
+- (BOOL)isHiddenForTabIdentifier:(id)identifier isCustomized:(BOOL *)customized;
+- (id)_initWithPersistenceIdentifier:(id)identifier;
+- (id)favoriteOrderForDefaultIdentifiers:(id)identifiers;
+- (unint64_t)_indexOfObserver:(id)observer;
 - (void)_notifyForContentReset;
 - (void)_notifyForFavoriteOrderChange;
 - (void)_saveCustomization;
-- (void)_saveCustomizationForTab:(id)a3 recursive:(BOOL)a4;
+- (void)_saveCustomizationForTab:(id)tab recursive:(BOOL)recursive;
 - (void)_saveSidebarState;
-- (void)addObserver:(id)a3;
-- (void)performWithoutSavingCustomization:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)performWithoutSavingCustomization:(id)customization;
+- (void)removeObserver:(id)observer;
 - (void)reset;
-- (void)saveCustomizationForTabs:(id)a3;
-- (void)saveFavoriteOrderCustomization:(id)a3 defaultIdentifiers:(id)a4 excludedIdentifiers:(id)a5;
-- (void)setCollapsedGroupIdentifiers:(id)a3 availableIdentifiers:(id)a4;
-- (void)setPreferredSidebarVisibility:(int64_t)a3;
-- (void)setPreferredSidebarWidth:(double)a3;
-- (void)updateCustomizationForTab:(id)a3;
+- (void)saveCustomizationForTabs:(id)tabs;
+- (void)saveFavoriteOrderCustomization:(id)customization defaultIdentifiers:(id)identifiers excludedIdentifiers:(id)excludedIdentifiers;
+- (void)setCollapsedGroupIdentifiers:(id)identifiers availableIdentifiers:(id)availableIdentifiers;
+- (void)setPreferredSidebarVisibility:(int64_t)visibility;
+- (void)setPreferredSidebarWidth:(double)width;
+- (void)updateCustomizationForTab:(id)tab;
 @end
 
 @implementation _UITabCustomizationStore
 
-+ (_UITabCustomizationStore)customizationStoreWithPersistenceIdentifier:(id)a3
++ (_UITabCustomizationStore)customizationStoreWithPersistenceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (qword_1ED49F160 != -1)
   {
     dispatch_once(&qword_1ED49F160, &__block_literal_global_359);
   }
 
-  v4 = [v3 copy];
+  v4 = [identifierCopy copy];
   v5 = v4;
   v6 = @"com.apple.UIKit.UITabCustomization.DefaultIdentifier";
   if (v4)
@@ -55,17 +55,17 @@
   return v8;
 }
 
-- (id)_initWithPersistenceIdentifier:(id)a3
+- (id)_initWithPersistenceIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v72.receiver = self;
   v72.super_class = _UITabCustomizationStore;
   v6 = [(_UITabCustomizationStore *)&v72 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistenceIdentifier, a3);
-    v8 = [objc_opt_class() _dataForKey:@"com.apple.UIKit.UITabCustomization" persistenceIdentifier:v5];
+    objc_storeStrong(&v6->_persistenceIdentifier, identifier);
+    v8 = [objc_opt_class() _dataForKey:@"com.apple.UIKit.UITabCustomization" persistenceIdentifier:identifierCopy];
     v9 = [v8 objectForKey:@"version"];
     v10 = v9;
     if (v9 == &unk_1EFE311F8 || v9 && (v11 = [v9 isEqual:&unk_1EFE311F8], v10, v11))
@@ -161,9 +161,9 @@
 
     else
     {
-      v42 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
       v43 = v7->_includedItems;
-      v7->_includedItems = v42;
+      v7->_includedItems = orderedSet;
 
       v44 = [MEMORY[0x1E695DFA8] set];
       v45 = v7->_excludedItems;
@@ -177,12 +177,12 @@
       v49 = v7->_visibleItems;
       v7->_visibleItems = v48;
 
-      v50 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v16 = v7->_displayOrdersByIdentifier;
-      v7->_displayOrdersByIdentifier = v50;
+      v7->_displayOrdersByIdentifier = dictionary;
     }
 
-    v51 = [objc_opt_class() _dataForKey:@"com.apple.UIKit.UITabSidebar" persistenceIdentifier:v5];
+    v51 = [objc_opt_class() _dataForKey:@"com.apple.UIKit.UITabSidebar" persistenceIdentifier:identifierCopy];
 
     v52 = [v51 objectForKey:@"version"];
 
@@ -236,10 +236,10 @@
   return v7;
 }
 
-- (id)favoriteOrderForDefaultIdentifiers:(id)a3
+- (id)favoriteOrderForDefaultIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if ([(_UITabCustomizationStore *)self hasFavoriteOrderCustomization])
   {
     v5 = [(NSMutableOrderedSet *)self->_includedItems mutableCopy];
@@ -247,7 +247,7 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = identifiersCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -284,27 +284,27 @@
   return v5;
 }
 
-- (void)performWithoutSavingCustomization:(id)a3
+- (void)performWithoutSavingCustomization:(id)customization
 {
   self->_ignoringUpdates = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(customization + 2))(customization, a2);
   self->_ignoringUpdates = 0;
 }
 
-- (void)updateCustomizationForTab:(id)a3
+- (void)updateCustomizationForTab:(id)tab
 {
   if (!self->_ignoringUpdates)
   {
-    [(_UITabCustomizationStore *)self _saveCustomizationForTab:a3 recursive:0];
+    [(_UITabCustomizationStore *)self _saveCustomizationForTab:tab recursive:0];
 
     [(_UITabCustomizationStore *)self _saveCustomization];
   }
 }
 
-- (void)saveCustomizationForTabs:(id)a3
+- (void)saveCustomizationForTabs:(id)tabs
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tabsCopy = tabs;
   [(NSMutableSet *)self->_visibleItems removeAllObjects];
   [(NSMutableSet *)self->_hiddenItems removeAllObjects];
   [(NSMutableDictionary *)self->_displayOrdersByIdentifier removeAllObjects];
@@ -312,7 +312,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v4;
+  v5 = tabsCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -341,35 +341,35 @@
   [(_UITabCustomizationStore *)self _saveCustomization];
 }
 
-- (BOOL)favoriteOrderContainsTab:(id)a3
+- (BOOL)favoriteOrderContainsTab:(id)tab
 {
-  v4 = a3;
-  v5 = [v4 _tabPlacement];
-  if (v5 == 3)
+  tabCopy = tab;
+  _tabPlacement = [tabCopy _tabPlacement];
+  if (_tabPlacement == 3)
   {
     LOBYTE(includedItems) = 1;
   }
 
   else
   {
-    if (v5 == 2)
+    if (_tabPlacement == 2)
     {
       includedItems = self->_includedItems;
-      v6 = [v4 identifier];
-      LOBYTE(includedItems) = [includedItems containsObject:v6];
+      identifier = [tabCopy identifier];
+      LOBYTE(includedItems) = [includedItems containsObject:identifier];
     }
 
     else
     {
-      if (v5 != 1)
+      if (_tabPlacement != 1)
       {
         LOBYTE(includedItems) = 0;
         goto LABEL_9;
       }
 
       includedItems = self->_excludedItems;
-      v6 = [v4 identifier];
-      LODWORD(includedItems) = [includedItems containsObject:v6] ^ 1;
+      identifier = [tabCopy identifier];
+      LODWORD(includedItems) = [includedItems containsObject:identifier] ^ 1;
     }
   }
 
@@ -378,19 +378,19 @@ LABEL_9:
   return includedItems;
 }
 
-- (void)saveFavoriteOrderCustomization:(id)a3 defaultIdentifiers:(id)a4 excludedIdentifiers:(id)a5
+- (void)saveFavoriteOrderCustomization:(id)customization defaultIdentifiers:(id)identifiers excludedIdentifiers:(id)excludedIdentifiers
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  customizationCopy = customization;
+  identifiersCopy = identifiers;
+  excludedIdentifiersCopy = excludedIdentifiers;
   [(NSMutableOrderedSet *)self->_includedItems removeAllObjects];
   [(NSMutableSet *)self->_excludedItems removeAllObjects];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = v10;
+  v11 = excludedIdentifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v12)
   {
@@ -406,7 +406,7 @@ LABEL_9:
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        if ([v9 containsObject:v16])
+        if ([identifiersCopy containsObject:v16])
         {
           [(NSMutableSet *)self->_excludedItems addObject:v16];
         }
@@ -418,13 +418,13 @@ LABEL_9:
     while (v13);
   }
 
-  if (![v9 isEqual:v8] || -[NSMutableSet count](self->_excludedItems, "count"))
+  if (![identifiersCopy isEqual:customizationCopy] || -[NSMutableSet count](self->_excludedItems, "count"))
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v17 = v8;
+    v17 = customizationCopy;
     v18 = [v17 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v18)
     {
@@ -455,16 +455,16 @@ LABEL_9:
   [(_UITabCustomizationStore *)self _saveCustomization];
 }
 
-- (void)setCollapsedGroupIdentifiers:(id)a3 availableIdentifiers:(id)a4
+- (void)setCollapsedGroupIdentifiers:(id)identifiers availableIdentifiers:(id)availableIdentifiers
 {
-  v9 = a4;
-  v7 = [a3 mutableCopy];
-  [v7 intersectSet:v9];
+  availableIdentifiersCopy = availableIdentifiers;
+  v7 = [identifiers mutableCopy];
+  [v7 intersectSet:availableIdentifiersCopy];
   if (([(NSMutableSet *)self->_collapsedGroupIdentifiers isEqual:v7]& 1) == 0)
   {
     objc_storeStrong(&self->_collapsedGroupIdentifiers, v7);
     p_allGroupIdentifiers = &self->_allGroupIdentifiers;
-    if (([(NSSet *)self->_allGroupIdentifiers isEqual:v9]& 1) != 0)
+    if (([(NSSet *)self->_allGroupIdentifiers isEqual:availableIdentifiersCopy]& 1) != 0)
     {
 LABEL_6:
       [(_UITabCustomizationStore *)self _saveSidebarState];
@@ -472,12 +472,12 @@ LABEL_6:
     }
 
 LABEL_5:
-    objc_storeStrong(p_allGroupIdentifiers, a4);
+    objc_storeStrong(p_allGroupIdentifiers, availableIdentifiers);
     goto LABEL_6;
   }
 
   p_allGroupIdentifiers = &self->_allGroupIdentifiers;
-  if (([(NSSet *)self->_allGroupIdentifiers isEqual:v9]& 1) == 0)
+  if (([(NSSet *)self->_allGroupIdentifiers isEqual:availableIdentifiersCopy]& 1) == 0)
   {
     goto LABEL_5;
   }
@@ -485,20 +485,20 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)setPreferredSidebarWidth:(double)a3
+- (void)setPreferredSidebarWidth:(double)width
 {
-  if (self->_preferredSidebarWidth != a3)
+  if (self->_preferredSidebarWidth != width)
   {
-    self->_preferredSidebarWidth = a3;
+    self->_preferredSidebarWidth = width;
     [(_UITabCustomizationStore *)self _saveSidebarState];
   }
 }
 
-- (void)setPreferredSidebarVisibility:(int64_t)a3
+- (void)setPreferredSidebarVisibility:(int64_t)visibility
 {
-  if (self->_preferredSidebarVisibility != a3)
+  if (self->_preferredSidebarVisibility != visibility)
   {
-    self->_preferredSidebarVisibility = a3;
+    self->_preferredSidebarVisibility = visibility;
     [(_UITabCustomizationStore *)self _saveSidebarState];
   }
 }
@@ -506,8 +506,8 @@ LABEL_7:
 - (void)reset
 {
   v3 = objc_opt_class();
-  v4 = [(_UITabCustomizationStore *)self persistenceIdentifier];
-  [v3 _saveData:0 forKey:@"com.apple.UIKit.UITabCustomization" persistenceIdentifier:v4];
+  persistenceIdentifier = [(_UITabCustomizationStore *)self persistenceIdentifier];
+  [v3 _saveData:0 forKey:@"com.apple.UIKit.UITabCustomization" persistenceIdentifier:persistenceIdentifier];
 
   [(NSMutableOrderedSet *)self->_includedItems removeAllObjects];
   [(NSMutableSet *)self->_excludedItems removeAllObjects];
@@ -518,10 +518,10 @@ LABEL_7:
   [(_UITabCustomizationStore *)self _notifyForContentReset];
 }
 
-- (BOOL)isHiddenForTabIdentifier:(id)a3 isCustomized:(BOOL *)a4
+- (BOOL)isHiddenForTabIdentifier:(id)identifier isCustomized:(BOOL *)customized
 {
-  v6 = a3;
-  v7 = [(NSMutableSet *)self->_hiddenItems containsObject:v6];
+  identifierCopy = identifier;
+  v7 = [(NSMutableSet *)self->_hiddenItems containsObject:identifierCopy];
   if (v7)
   {
     v8 = 1;
@@ -529,29 +529,29 @@ LABEL_7:
 
   else
   {
-    v8 = [(NSMutableSet *)self->_visibleItems containsObject:v6];
+    v8 = [(NSMutableSet *)self->_visibleItems containsObject:identifierCopy];
   }
 
-  *a4 = v8;
+  *customized = v8;
 
   return v7;
 }
 
-- (void)_saveCustomizationForTab:(id)a3 recursive:(BOOL)a4
+- (void)_saveCustomizationForTab:(id)tab recursive:(BOOL)recursive
 {
-  v4 = a4;
+  recursiveCopy = recursive;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 identifier];
-  if (![v6 allowsHiding] || (v8 = objc_msgSend(v6, "isHidden"), v8 == objc_msgSend(v6, "isHiddenByDefault")))
+  tabCopy = tab;
+  identifier = [tabCopy identifier];
+  if (![tabCopy allowsHiding] || (v8 = objc_msgSend(tabCopy, "isHidden"), v8 == objc_msgSend(tabCopy, "isHiddenByDefault")))
   {
-    [(NSMutableSet *)self->_hiddenItems removeObject:v7];
-    [(NSMutableSet *)self->_visibleItems removeObject:v7];
+    [(NSMutableSet *)self->_hiddenItems removeObject:identifier];
+    [(NSMutableSet *)self->_visibleItems removeObject:identifier];
   }
 
   else
   {
-    if ([v6 isHidden])
+    if ([tabCopy isHidden])
     {
       hiddenItems = self->_hiddenItems;
     }
@@ -561,17 +561,17 @@ LABEL_7:
       hiddenItems = self->_visibleItems;
     }
 
-    [(NSMutableSet *)hiddenItems addObject:v7];
+    [(NSMutableSet *)hiddenItems addObject:identifier];
   }
 
-  if ([v6 _isGroup])
+  if ([tabCopy _isGroup])
   {
-    v10 = v6;
-    v11 = [v10 _filteredDisplayOrderIdentifiers];
-    v12 = [v10 children];
-    v13 = [v12 bs_map:&__block_literal_global_45_2];
+    v10 = tabCopy;
+    _filteredDisplayOrderIdentifiers = [v10 _filteredDisplayOrderIdentifiers];
+    children = [v10 children];
+    v13 = [children bs_map:&__block_literal_global_45_2];
 
-    v14 = v11;
+    v14 = _filteredDisplayOrderIdentifiers;
     v15 = v13;
     v16 = v15;
     if (v14 == v15)
@@ -591,8 +591,8 @@ LABEL_7:
       if ((v17 & 1) == 0)
       {
 LABEL_18:
-        [(NSMutableDictionary *)self->_displayOrdersByIdentifier setValue:v14 forKey:v7];
-        if (v4)
+        [(NSMutableDictionary *)self->_displayOrdersByIdentifier setValue:v14 forKey:identifier];
+        if (recursiveCopy)
         {
           goto LABEL_19;
         }
@@ -601,16 +601,16 @@ LABEL_18:
       }
     }
 
-    [(NSMutableDictionary *)self->_displayOrdersByIdentifier removeObjectForKey:v7];
-    if (v4)
+    [(NSMutableDictionary *)self->_displayOrdersByIdentifier removeObjectForKey:identifier];
+    if (recursiveCopy)
     {
 LABEL_19:
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v18 = [v10 children];
-      v19 = [v18 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      children2 = [v10 children];
+      v19 = [children2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v19)
       {
         v20 = v19;
@@ -621,13 +621,13 @@ LABEL_19:
           {
             if (*v24 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(children2);
             }
 
             [(_UITabCustomizationStore *)self _saveCustomizationForTab:*(*(&v23 + 1) + 8 * i) recursive:1];
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v20 = [children2 countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v20);
@@ -638,9 +638,9 @@ LABEL_27:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   if (!observers)
   {
@@ -652,17 +652,17 @@ LABEL_27:
   }
 
   [(NSPointerArray *)observers compact];
-  if ([(_UITabCustomizationStore *)self _indexOfObserver:v7]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(_UITabCustomizationStore *)self _indexOfObserver:observerCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSPointerArray *)self->_observers addPointer:v7];
+    [(NSPointerArray *)self->_observers addPointer:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   if (self->_observers)
   {
-    v4 = [(_UITabCustomizationStore *)self _indexOfObserver:a3];
+    v4 = [(_UITabCustomizationStore *)self _indexOfObserver:observer];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSPointerArray *)self->_observers removePointerAtIndex:v4];
@@ -674,13 +674,13 @@ LABEL_27:
   }
 }
 
-- (unint64_t)_indexOfObserver:(id)a3
+- (unint64_t)_indexOfObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(NSPointerArray *)self->_observers count])
   {
     v5 = 0;
-    while ([(NSPointerArray *)self->_observers pointerAtIndex:v5]!= v4)
+    while ([(NSPointerArray *)self->_observers pointerAtIndex:v5]!= observerCopy)
     {
       if (++v5 >= [(NSPointerArray *)self->_observers count])
       {
@@ -698,17 +698,17 @@ LABEL_5:
   return v5;
 }
 
-+ (id)_dataForKey:(id)a3 persistenceIdentifier:(id)a4
++ (id)_dataForKey:(id)key persistenceIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = MEMORY[0x1E695E000];
-  v7 = a3;
-  v8 = [v6 standardUserDefaults];
-  v9 = [v8 objectForKey:v7];
+  keyCopy = key;
+  standardUserDefaults = [v6 standardUserDefaults];
+  v9 = [standardUserDefaults objectForKey:keyCopy];
 
   if (v9)
   {
-    v10 = [v9 objectForKey:v5];
+    v10 = [v9 objectForKey:identifierCopy];
   }
 
   else
@@ -719,35 +719,35 @@ LABEL_5:
   return v10;
 }
 
-+ (void)_saveData:(id)a3 forKey:(id)a4 persistenceIdentifier:(id)a5
++ (void)_saveData:(id)data forKey:(id)key persistenceIdentifier:(id)identifier
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v10 = [v9 objectForKey:v7];
+  dataCopy = data;
+  keyCopy = key;
+  identifierCopy = identifier;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v10 = [standardUserDefaults objectForKey:keyCopy];
   v11 = [v10 mutableCopy];
 
-  v12 = v15;
-  if (v15 && !v11)
+  v12 = dataCopy;
+  if (dataCopy && !v11)
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    v12 = v15;
-    v11 = v13;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v12 = dataCopy;
+    v11 = dictionary;
 LABEL_5:
-    [v11 setObject:v12 forKey:v8];
+    [v11 setObject:v12 forKey:identifierCopy];
     goto LABEL_6;
   }
 
-  if (v15)
+  if (dataCopy)
   {
     goto LABEL_5;
   }
 
-  [v11 removeObjectForKey:v8];
+  [v11 removeObjectForKey:identifierCopy];
 LABEL_6:
-  v14 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v14 setObject:v11 forKey:v7];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 setObject:v11 forKey:keyCopy];
 }
 
 - (BOOL)hasModelCustomizations
@@ -765,18 +765,18 @@ LABEL_6:
     v13[0] = &unk_1EFE311F8;
     v12[0] = @"version";
     v12[1] = @"includedItems";
-    v3 = [(NSMutableOrderedSet *)self->_includedItems array];
-    v4 = [v3 copy];
+    array = [(NSMutableOrderedSet *)self->_includedItems array];
+    v4 = [array copy];
     v13[1] = v4;
     v12[2] = @"excludedItems";
-    v5 = [(NSMutableSet *)self->_excludedItems allObjects];
-    v13[2] = v5;
+    allObjects = [(NSMutableSet *)self->_excludedItems allObjects];
+    v13[2] = allObjects;
     v12[3] = @"visibleItems";
-    v6 = [(NSMutableSet *)self->_visibleItems allObjects];
-    v13[3] = v6;
+    allObjects2 = [(NSMutableSet *)self->_visibleItems allObjects];
+    v13[3] = allObjects2;
     v12[4] = @"hiddenItems";
-    v7 = [(NSMutableSet *)self->_hiddenItems allObjects];
-    v13[4] = v7;
+    allObjects3 = [(NSMutableSet *)self->_hiddenItems allObjects];
+    v13[4] = allObjects3;
     v12[5] = @"displayOrder";
     v8 = [(NSMutableDictionary *)self->_displayOrdersByIdentifier copy];
     v13[5] = v8;
@@ -789,8 +789,8 @@ LABEL_6:
   }
 
   v10 = objc_opt_class();
-  v11 = [(_UITabCustomizationStore *)self persistenceIdentifier];
-  [v10 _saveData:v9 forKey:@"com.apple.UIKit.UITabCustomization" persistenceIdentifier:v11];
+  persistenceIdentifier = [(_UITabCustomizationStore *)self persistenceIdentifier];
+  [v10 _saveData:v9 forKey:@"com.apple.UIKit.UITabCustomization" persistenceIdentifier:persistenceIdentifier];
 }
 
 - (void)_saveSidebarState
@@ -807,11 +807,11 @@ LABEL_6:
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_preferredSidebarVisibility];
     v11[2] = v4;
     v10[3] = @"allSections";
-    v5 = [(NSSet *)self->_allGroupIdentifiers allObjects];
-    v11[3] = v5;
+    allObjects = [(NSSet *)self->_allGroupIdentifiers allObjects];
+    v11[3] = allObjects;
     v10[4] = @"collapsedSections";
-    v6 = [(NSMutableSet *)self->_collapsedGroupIdentifiers allObjects];
-    v11[4] = v6;
+    allObjects2 = [(NSMutableSet *)self->_collapsedGroupIdentifiers allObjects];
+    v11[4] = allObjects2;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:5];
   }
 
@@ -821,8 +821,8 @@ LABEL_6:
   }
 
   v8 = objc_opt_class();
-  v9 = [(_UITabCustomizationStore *)self persistenceIdentifier];
-  [v8 _saveData:v7 forKey:@"com.apple.UIKit.UITabSidebar" persistenceIdentifier:v9];
+  persistenceIdentifier = [(_UITabCustomizationStore *)self persistenceIdentifier];
+  [v8 _saveData:v7 forKey:@"com.apple.UIKit.UITabSidebar" persistenceIdentifier:persistenceIdentifier];
 }
 
 - (void)_notifyForFavoriteOrderChange

@@ -1,34 +1,34 @@
 @interface CRKStudentdXPCProfileConfigurationSource
 - (BOOL)isStudentdInstalled;
 - (BOOL)shouldUsePlaceholderFile;
-- (CRKStudentdXPCProfileConfigurationSource)initWithCallbackQueue:(id)a3;
-- (void)fetchConfiguration:(id)a3;
-- (void)setConfiguration:(id)a3 completion:(id)a4;
+- (CRKStudentdXPCProfileConfigurationSource)initWithCallbackQueue:(id)queue;
+- (void)fetchConfiguration:(id)configuration;
+- (void)setConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation CRKStudentdXPCProfileConfigurationSource
 
-- (CRKStudentdXPCProfileConfigurationSource)initWithCallbackQueue:(id)a3
+- (CRKStudentdXPCProfileConfigurationSource)initWithCallbackQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = CRKStudentdXPCProfileConfigurationSource;
   v6 = [(CRKStudentdXPCProfileConfigurationSource *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mCallbackQueue, a3);
+    objc_storeStrong(&v6->mCallbackQueue, queue);
     if ([(CRKStudentdXPCProfileConfigurationSource *)v7 shouldUsePlaceholderFile])
     {
-      v8 = [MEMORY[0x277CBEBC0] crk_iOSPlaceholderProfileURL];
-      v9 = [v8 URLByDeletingLastPathComponent];
-      v10 = [v8 lastPathComponent];
-      v11 = [[CRKDirectoryBackedConfigurationSource alloc] initWithDirectoryURL:v9 fileName:v10 callbackQueue:v5];
+      crk_iOSPlaceholderProfileURL = [MEMORY[0x277CBEBC0] crk_iOSPlaceholderProfileURL];
+      uRLByDeletingLastPathComponent = [crk_iOSPlaceholderProfileURL URLByDeletingLastPathComponent];
+      lastPathComponent = [crk_iOSPlaceholderProfileURL lastPathComponent];
+      v11 = [[CRKDirectoryBackedConfigurationSource alloc] initWithDirectoryURL:uRLByDeletingLastPathComponent fileName:lastPathComponent callbackQueue:queueCopy];
       mPlaceholderFileConfigurationSource = v7->mPlaceholderFileConfigurationSource;
       v7->mPlaceholderFileConfigurationSource = v11;
     }
 
-    v13 = [[CRKNonCatalystStudentDaemonProxy alloc] initWithCallbackQueue:v5];
+    v13 = [[CRKNonCatalystStudentDaemonProxy alloc] initWithCallbackQueue:queueCopy];
     studentDaemonProxy = v7->_studentDaemonProxy;
     v7->_studentDaemonProxy = v13;
   }
@@ -38,10 +38,10 @@
 
 - (BOOL)isStudentdInstalled
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 crk_isStudentdInstalled];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  crk_isStudentdInstalled = [defaultManager crk_isStudentdInstalled];
 
-  return v3;
+  return crk_isStudentdInstalled;
 }
 
 - (BOOL)shouldUsePlaceholderFile
@@ -55,28 +55,28 @@
   return v3;
 }
 
-- (void)fetchConfiguration:(id)a3
+- (void)fetchConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if ([(CRKStudentdXPCProfileConfigurationSource *)self shouldUsePlaceholderFile])
   {
-    [(CRKConfigurationSource *)self->mPlaceholderFileConfigurationSource fetchConfiguration:v5];
+    [(CRKConfigurationSource *)self->mPlaceholderFileConfigurationSource fetchConfiguration:configurationCopy];
   }
 
   else
   {
-    v4 = [(CRKStudentdXPCProfileConfigurationSource *)self studentDaemonProxy];
-    [v4 fetchConfiguration:v5];
+    studentDaemonProxy = [(CRKStudentdXPCProfileConfigurationSource *)self studentDaemonProxy];
+    [studentDaemonProxy fetchConfiguration:configurationCopy];
   }
 }
 
-- (void)setConfiguration:(id)a3 completion:(id)a4
+- (void)setConfiguration:(id)configuration completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if ([(CRKStudentdXPCProfileConfigurationSource *)self shouldUsePlaceholderFile])
   {
-    if (v9)
+    if (configurationCopy)
     {
       v7 = MEMORY[0x277CBEC10];
     }
@@ -86,13 +86,13 @@
       v7 = 0;
     }
 
-    [(CRKConfigurationSource *)self->mPlaceholderFileConfigurationSource setConfiguration:v7 completion:v6];
+    [(CRKConfigurationSource *)self->mPlaceholderFileConfigurationSource setConfiguration:v7 completion:completionCopy];
   }
 
   else
   {
-    v8 = [(CRKStudentdXPCProfileConfigurationSource *)self studentDaemonProxy];
-    [v8 setConfiguration:v9 completion:v6];
+    studentDaemonProxy = [(CRKStudentdXPCProfileConfigurationSource *)self studentDaemonProxy];
+    [studentDaemonProxy setConfiguration:configurationCopy completion:completionCopy];
   }
 }
 

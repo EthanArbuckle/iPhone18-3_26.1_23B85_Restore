@@ -2,20 +2,20 @@
 - (NotesBackgroundView)backgroundView;
 - (UIScrollView)keyboardResizerScrollView;
 - (UIScrollView)scrollView;
-- (double)consumedBottomAreaForResizer:(id)a3;
-- (double)topInsetForResizer:(id)a3;
+- (double)consumedBottomAreaForResizer:(id)resizer;
+- (double)topInsetForResizer:(id)resizer;
 - (void)setupScrollViewKeyboardResizer;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ICScrollViewDelegateViewController
 
 - (void)setupScrollViewKeyboardResizer
 {
-  v3 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
+  scrollViewResizer = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
 
-  if (!v3)
+  if (!scrollViewResizer)
   {
     v4 = [objc_alloc(MEMORY[0x277D368C0]) initWithDelegate:self];
     [(ICScrollViewDelegateViewController *)self setScrollViewResizer:v4];
@@ -27,15 +27,15 @@
   v24.receiver = self;
   v24.super_class = ICScrollViewDelegateViewController;
   [(ICScrollViewDelegateViewController *)&v24 viewDidLayoutSubviews];
-  v3 = [(ICScrollViewDelegateViewController *)self scrollView];
-  if (v3)
+  scrollView = [(ICScrollViewDelegateViewController *)self scrollView];
+  if (scrollView)
   {
-    v4 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
-    if (v4)
+    scrollViewResizer = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
+    if (scrollViewResizer)
     {
-      v5 = v4;
-      v6 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
-      if ([v6 isAutoResizing])
+      scrollViewResizer3 = scrollViewResizer;
+      scrollViewResizer2 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
+      if ([scrollViewResizer2 isAutoResizing])
       {
 
 LABEL_9:
@@ -46,14 +46,14 @@ LABEL_9:
       {
 
 LABEL_8:
-        v5 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
-        [v5 startAutoResizing];
+        scrollViewResizer3 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
+        [scrollViewResizer3 startAutoResizing];
         goto LABEL_9;
       }
 
-      v7 = [(ICScrollViewDelegateViewController *)self _appearState];
+      _appearState = [(ICScrollViewDelegateViewController *)self _appearState];
 
-      if (v7 == 1)
+      if (_appearState == 1)
       {
         goto LABEL_8;
       }
@@ -61,25 +61,25 @@ LABEL_8:
   }
 
 LABEL_10:
-  if ([v3 contentInsetAdjustmentBehavior] == 2)
+  if ([scrollView contentInsetAdjustmentBehavior] == 2)
   {
-    v8 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
-    [(ICScrollViewDelegateViewController *)self topInsetForResizer:v8];
+    scrollViewResizer4 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
+    [(ICScrollViewDelegateViewController *)self topInsetForResizer:scrollViewResizer4];
     v10 = v9;
 
-    [v3 contentInset];
+    [scrollView contentInset];
     if (vabdd_f64(v10, v11) >= 0.00999999978)
     {
-      [v3 contentInset];
+      [scrollView contentInset];
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      [v3 verticalScrollIndicatorInsets];
+      [scrollView verticalScrollIndicatorInsets];
       v19 = v18;
       v21 = v20;
       v23 = v22;
-      [v3 setContentInset:{v10, v13, v15, v17}];
-      [v3 setVerticalScrollIndicatorInsets:{v10, v19, v21, v23}];
+      [scrollView setContentInset:{v10, v13, v15, v17}];
+      [scrollView setVerticalScrollIndicatorInsets:{v10, v19, v21, v23}];
     }
   }
 }
@@ -87,27 +87,27 @@ LABEL_10:
 - (UIScrollView)keyboardResizerScrollView
 {
   objc_opt_class();
-  v3 = [(ICScrollViewDelegateViewController *)self scrollView];
+  scrollView = [(ICScrollViewDelegateViewController *)self scrollView];
   v4 = ICCheckedDynamicCast();
 
   return v4;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
-  [v5 stopAutoResizing];
+  disappearCopy = disappear;
+  scrollViewResizer = [(ICScrollViewDelegateViewController *)self scrollViewResizer];
+  [scrollViewResizer stopAutoResizing];
 
   v6.receiver = self;
   v6.super_class = ICScrollViewDelegateViewController;
-  [(ICScrollViewDelegateViewController *)&v6 viewWillDisappear:v3];
+  [(ICScrollViewDelegateViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 - (NotesBackgroundView)backgroundView
 {
   objc_opt_class();
-  v3 = [(ICScrollViewDelegateViewController *)self view];
+  view = [(ICScrollViewDelegateViewController *)self view];
   v4 = ICCheckedDynamicCast();
 
   return v4;
@@ -117,13 +117,13 @@ LABEL_10:
 {
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
   objc_opt_class();
-  v4 = [(ICScrollViewDelegateViewController *)self backgroundView];
-  v5 = [v4 contentView];
-  v6 = v5;
+  backgroundView = [(ICScrollViewDelegateViewController *)self backgroundView];
+  contentView = [backgroundView contentView];
+  v6 = contentView;
   if (IsTextKit2Enabled)
   {
-    v7 = [v5 subviews];
-    v8 = [v7 firstObject];
+    subviews = [contentView subviews];
+    firstObject = [subviews firstObject];
     v9 = ICDynamicCast();
   }
 
@@ -135,11 +135,11 @@ LABEL_10:
   return v9;
 }
 
-- (double)consumedBottomAreaForResizer:(id)a3
+- (double)consumedBottomAreaForResizer:(id)resizer
 {
-  v4 = [(ICScrollViewDelegateViewController *)self scrollView];
+  scrollView = [(ICScrollViewDelegateViewController *)self scrollView];
   v5 = 0.0;
-  if ([v4 contentInsetAdjustmentBehavior] == 2)
+  if ([scrollView contentInsetAdjustmentBehavior] == 2)
   {
     [(ICScrollViewDelegateViewController *)self ic_safeAreaDistanceFromBottom];
     v5 = v6;
@@ -148,11 +148,11 @@ LABEL_10:
   return v5;
 }
 
-- (double)topInsetForResizer:(id)a3
+- (double)topInsetForResizer:(id)resizer
 {
-  v4 = [(ICScrollViewDelegateViewController *)self scrollView];
+  scrollView = [(ICScrollViewDelegateViewController *)self scrollView];
   v5 = 0.0;
-  if ([v4 contentInsetAdjustmentBehavior] == 2)
+  if ([scrollView contentInsetAdjustmentBehavior] == 2)
   {
     [(ICScrollViewDelegateViewController *)self ic_safeAreaDistanceFromTop];
     v5 = v6;

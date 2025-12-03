@@ -1,52 +1,52 @@
 @interface NTKUIAutomationAXID
-+ (id)generateAppGroupCellAXID:(id)a3;
-+ (id)generateComplicationListCellAXID:(id)a3;
-+ (id)generateFeaturedWidgetAXID:(id)a3 name:(id)a4 appBundleIdentifier:(id)a5;
-+ (id)getAppBundleIdentifierFromFeaturedWidgetAXID:(id)a3;
-+ (id)getHeaderFromFeaturedWidgetAXID:(id)a3;
-+ (id)getNameFromFeaturedWidgetAXID:(id)a3;
-+ (id)typeIDForUIElement:(int64_t)a3;
++ (id)generateAppGroupCellAXID:(id)d;
++ (id)generateComplicationListCellAXID:(id)d;
++ (id)generateFeaturedWidgetAXID:(id)d name:(id)name appBundleIdentifier:(id)identifier;
++ (id)getAppBundleIdentifierFromFeaturedWidgetAXID:(id)d;
++ (id)getHeaderFromFeaturedWidgetAXID:(id)d;
++ (id)getNameFromFeaturedWidgetAXID:(id)d;
++ (id)typeIDForUIElement:(int64_t)element;
 @end
 
 @implementation NTKUIAutomationAXID
 
-+ (id)typeIDForUIElement:(int64_t)a3
++ (id)typeIDForUIElement:(int64_t)element
 {
-  if ((a3 - 1) > 2)
+  if ((element - 1) > 2)
   {
     return @"ComplicationPickerDetailView";
   }
 
   else
   {
-    return off_2787846A8[a3 - 1];
+    return off_2787846A8[element - 1];
   }
 }
 
-+ (id)generateFeaturedWidgetAXID:(id)a3 name:(id)a4 appBundleIdentifier:(id)a5
++ (id)generateFeaturedWidgetAXID:(id)d name:(id)name appBundleIdentifier:(id)identifier
 {
   v16[4] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 typeIDForUIElement:1];
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
+  v11 = [self typeIDForUIElement:1];
   v16[0] = v11;
-  v16[1] = v10;
-  v16[2] = v9;
-  v16[3] = v8;
+  v16[1] = dCopy;
+  v16[2] = nameCopy;
+  v16[3] = identifierCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:4];
 
-  v13 = [a1 infix];
-  v14 = [v12 componentsJoinedByString:v13];
+  infix = [self infix];
+  v14 = [v12 componentsJoinedByString:infix];
 
   return v14;
 }
 
-+ (id)getHeaderFromFeaturedWidgetAXID:(id)a3
++ (id)getHeaderFromFeaturedWidgetAXID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 infix];
-  v6 = [v4 componentsSeparatedByString:v5];
+  dCopy = d;
+  infix = [self infix];
+  v6 = [dCopy componentsSeparatedByString:infix];
 
   if ([v6 count] >= 2)
   {
@@ -61,11 +61,11 @@
   return v7;
 }
 
-+ (id)getNameFromFeaturedWidgetAXID:(id)a3
++ (id)getNameFromFeaturedWidgetAXID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 infix];
-  v6 = [v4 componentsSeparatedByString:v5];
+  dCopy = d;
+  infix = [self infix];
+  v6 = [dCopy componentsSeparatedByString:infix];
 
   if ([v6 count] >= 3)
   {
@@ -80,11 +80,11 @@
   return v7;
 }
 
-+ (id)getAppBundleIdentifierFromFeaturedWidgetAXID:(id)a3
++ (id)getAppBundleIdentifierFromFeaturedWidgetAXID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 infix];
-  v6 = [v4 componentsSeparatedByString:v5];
+  dCopy = d;
+  infix = [self infix];
+  v6 = [dCopy componentsSeparatedByString:infix];
 
   if ([v6 count] >= 4)
   {
@@ -99,32 +99,32 @@
   return v7;
 }
 
-+ (id)generateAppGroupCellAXID:(id)a3
++ (id)generateAppGroupCellAXID:(id)d
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 typeIDForUIElement:2];
+  dCopy = d;
+  v5 = [self typeIDForUIElement:2];
   v10[0] = v5;
-  v10[1] = v4;
+  v10[1] = dCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
-  v7 = [a1 infix];
-  v8 = [v6 componentsJoinedByString:v7];
+  infix = [self infix];
+  v8 = [v6 componentsJoinedByString:infix];
 
   return v8;
 }
 
-+ (id)generateComplicationListCellAXID:(id)a3
++ (id)generateComplicationListCellAXID:(id)d
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 typeIDForUIElement:3];
+  dCopy = d;
+  v5 = [self typeIDForUIElement:3];
   v10[0] = v5;
-  v10[1] = v4;
+  v10[1] = dCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
-  v7 = [a1 infix];
-  v8 = [v6 componentsJoinedByString:v7];
+  infix = [self infix];
+  v8 = [v6 componentsJoinedByString:infix];
 
   return v8;
 }

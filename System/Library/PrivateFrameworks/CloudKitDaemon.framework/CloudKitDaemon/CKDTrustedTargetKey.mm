@@ -1,7 +1,7 @@
 @interface CKDTrustedTargetKey
 - (CKDTrustedTargetKey)init;
-- (id)decrypt:(id)a3;
-- (id)encrypt:(id)a3;
+- (id)decrypt:(id)decrypt;
+- (id)encrypt:(id)encrypt;
 @end
 
 @implementation CKDTrustedTargetKey
@@ -68,11 +68,11 @@
   return v2;
 }
 
-- (id)encrypt:(id)a3
+- (id)encrypt:(id)encrypt
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!objc_msgSend_length(v4, v5, v6))
+  encryptCopy = encrypt;
+  if (!objc_msgSend_length(encryptCopy, v5, v6))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -89,8 +89,8 @@
     goto LABEL_21;
   }
 
-  v9 = objc_msgSend_length(v4, v7, v8);
-  v10 = v4;
+  v9 = objc_msgSend_length(encryptCopy, v7, v8);
+  v10 = encryptCopy;
   objc_msgSend_bytes(v10, v11, v12);
   v13 = malloc_type_malloc(v9 + 32, 0xA5FDB254uLL);
   if (!v13)
@@ -184,11 +184,11 @@ LABEL_22:
   return v25;
 }
 
-- (id)decrypt:(id)a3
+- (id)decrypt:(id)decrypt
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6) <= 0x1F)
+  decryptCopy = decrypt;
+  if (objc_msgSend_length(decryptCopy, v5, v6) <= 0x1F)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -207,8 +207,8 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v10 = objc_msgSend_length(v4, v7, v8);
-  v11 = v4;
+  v10 = objc_msgSend_length(decryptCopy, v7, v8);
+  v11 = decryptCopy;
   objc_msgSend_bytes(v11, v12, v13);
   v14 = v10 - 32;
   v15 = malloc_type_malloc(v10 - 32, 0xD7E745F8uLL);

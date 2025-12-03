@@ -1,18 +1,18 @@
 @interface WBSReaderConfigurationManager
 - (NSDictionary)configurationToSave;
 - (NSDictionary)configurationToSendToWebPage;
-- (WBSReaderConfigurationManager)initWithPersistedSettingsAsDictionaryRepresentation:(id)a3 fontManager:(id)a4 prefersLargerDefaultFontSize:(BOOL)a5;
-- (id)fontForLanguageTag:(id)a3;
+- (WBSReaderConfigurationManager)initWithPersistedSettingsAsDictionaryRepresentation:(id)representation fontManager:(id)manager prefersLargerDefaultFontSize:(BOOL)size;
+- (id)fontForLanguageTag:(id)tag;
 - (int64_t)_defaultTextZoomIndex;
-- (int64_t)defaultThemeForAppearance:(int64_t)a3;
+- (int64_t)defaultThemeForAppearance:(int64_t)appearance;
 - (int64_t)effectiveTextZoomIndex;
-- (int64_t)themeForAppearance:(int64_t)a3;
+- (int64_t)themeForAppearance:(int64_t)appearance;
 - (void)_migrateToVersion5IfNecessary;
 - (void)makeTextBigger;
 - (void)makeTextSmaller;
 - (void)resetTextSize;
-- (void)setFont:(id)a3 forLanguageTag:(id)a4;
-- (void)setTheme:(int64_t)a3 forAppearance:(int64_t)a4;
+- (void)setFont:(id)font forLanguageTag:(id)tag;
+- (void)setTheme:(int64_t)theme forAppearance:(int64_t)appearance;
 @end
 
 @implementation WBSReaderConfigurationManager
@@ -95,11 +95,11 @@ LABEL_12:
   }
 }
 
-- (WBSReaderConfigurationManager)initWithPersistedSettingsAsDictionaryRepresentation:(id)a3 fontManager:(id)a4 prefersLargerDefaultFontSize:(BOOL)a5
+- (WBSReaderConfigurationManager)initWithPersistedSettingsAsDictionaryRepresentation:(id)representation fontManager:(id)manager prefersLargerDefaultFontSize:(BOOL)size
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v37 = a4;
+  representationCopy = representation;
+  managerCopy = manager;
   v42.receiver = self;
   v42.super_class = WBSReaderConfigurationManager;
   v9 = [(WBSReaderConfigurationManager *)&v42 init];
@@ -109,16 +109,16 @@ LABEL_12:
     goto LABEL_36;
   }
 
-  objc_storeStrong(&v9->_fontManager, a4);
-  v10->_prefersLargerDefaultFontSize = a5;
+  objc_storeStrong(&v9->_fontManager, manager);
+  v10->_prefersLargerDefaultFontSize = size;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v8 = MEMORY[0x1E695E0F8];
+    representationCopy = MEMORY[0x1E695E0F8];
   }
 
-  v11 = [v8 safari_dictionaryForKey:@"fontSizeIndexForSizeClass"];
+  v11 = [representationCopy safari_dictionaryForKey:@"fontSizeIndexForSizeClass"];
   v12 = v11;
   if (v11)
   {
@@ -132,7 +132,7 @@ LABEL_12:
     }
   }
 
-  v15 = [v8 safari_numberForKey:@"fontSizeIndex"];
+  v15 = [representationCopy safari_numberForKey:@"fontSizeIndex"];
   v12 = v15;
   if (!v15)
   {
@@ -150,7 +150,7 @@ LABEL_10:
   }
 
 LABEL_12:
-  v16 = [v8 safari_dictionaryForKey:@"fontFamilyNameForLanguageTag"];
+  v16 = [representationCopy safari_dictionaryForKey:@"fontFamilyNameForLanguageTag"];
   v17 = v16;
   if (v16)
   {
@@ -211,7 +211,7 @@ LABEL_24:
   fontFamilyNameForLanguageTag = v10->_fontFamilyNameForLanguageTag;
   v10->_fontFamilyNameForLanguageTag = v25;
 
-  v27 = [v8 safari_stringForKey:@"themeName"];
+  v27 = [representationCopy safari_stringForKey:@"themeName"];
   v28 = v27;
   if (!v27 || (v29 = WBSThemeForNSString(v27), v29 == -1))
   {
@@ -224,7 +224,7 @@ LABEL_24:
     v10->_theme = v29;
   }
 
-  v30 = [v8 safari_stringForKey:@"darkModeThemeName"];
+  v30 = [representationCopy safari_stringForKey:@"darkModeThemeName"];
   v31 = v30;
   if (!v30 || (v32 = WBSThemeForNSString(v30), v32 == -1))
   {
@@ -237,10 +237,10 @@ LABEL_24:
     v10->_darkModeTheme = v32;
   }
 
-  v33 = [v8 safari_numberForKey:@"version"];
-  v34 = [v33 unsignedIntegerValue];
+  v33 = [representationCopy safari_numberForKey:@"version"];
+  unsignedIntegerValue = [v33 unsignedIntegerValue];
 
-  if (v34 <= 4)
+  if (unsignedIntegerValue <= 4)
   {
     [(WBSReaderConfigurationManager *)v10 _migrateToVersion5IfNecessary];
   }
@@ -431,8 +431,8 @@ id __61__WBSReaderConfigurationManager_configurationToSendToWebPage__block_invok
   if ([(WBSReaderConfigurationManager *)self canMakeTextBigger])
   {
     self->_textZoomIndex = [(WBSReaderConfigurationManager *)self effectiveTextZoomIndex]+ 1;
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"WBSWebsiteZoomDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSWebsiteZoomDidChangeNotification" object:0];
   }
 }
 
@@ -441,35 +441,35 @@ id __61__WBSReaderConfigurationManager_configurationToSendToWebPage__block_invok
   if ([(WBSReaderConfigurationManager *)self canMakeTextSmaller])
   {
     self->_textZoomIndex = [(WBSReaderConfigurationManager *)self effectiveTextZoomIndex]- 1;
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"WBSWebsiteZoomDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSWebsiteZoomDidChangeNotification" object:0];
   }
 }
 
 - (void)resetTextSize
 {
   self->_textZoomIndex = [(WBSReaderConfigurationManager *)self _defaultTextZoomIndex];
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"WBSWebsiteZoomDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSWebsiteZoomDidChangeNotification" object:0];
 }
 
-- (void)setFont:(id)a3 forLanguageTag:(id)a4
+- (void)setFont:(id)font forLanguageTag:(id)tag
 {
-  v7 = a4;
-  v6 = [a3 familyName];
-  [(NSMutableDictionary *)self->_fontFamilyNameForLanguageTag setObject:v6 forKeyedSubscript:v7];
+  tagCopy = tag;
+  familyName = [font familyName];
+  [(NSMutableDictionary *)self->_fontFamilyNameForLanguageTag setObject:familyName forKeyedSubscript:tagCopy];
 }
 
-- (id)fontForLanguageTag:(id)a3
+- (id)fontForLanguageTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   fontManager = self->_fontManager;
-  v6 = [(NSMutableDictionary *)self->_fontFamilyNameForLanguageTag objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_fontFamilyNameForLanguageTag objectForKeyedSubscript:tagCopy];
   v7 = [(WBSReaderFontManager *)fontManager fontWithFontFamilyName:v6];
 
   if (!v7 || ([v7 isInstalled] & 1) == 0)
   {
-    v8 = [(WBSReaderFontManager *)self->_fontManager defaultFontForLanguageTag:v4];
+    v8 = [(WBSReaderFontManager *)self->_fontManager defaultFontForLanguageTag:tagCopy];
 
     v7 = v8;
   }
@@ -477,11 +477,11 @@ id __61__WBSReaderConfigurationManager_configurationToSendToWebPage__block_invok
   return v7;
 }
 
-- (void)setTheme:(int64_t)a3 forAppearance:(int64_t)a4
+- (void)setTheme:(int64_t)theme forAppearance:(int64_t)appearance
 {
-  if (a4)
+  if (appearance)
   {
-    if (a4 != 1)
+    if (appearance != 1)
     {
       return;
     }
@@ -494,19 +494,19 @@ id __61__WBSReaderConfigurationManager_configurationToSendToWebPage__block_invok
     v4 = 8;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = theme;
 }
 
-- (int64_t)themeForAppearance:(int64_t)a3
+- (int64_t)themeForAppearance:(int64_t)appearance
 {
-  if (a3 == 1)
+  if (appearance == 1)
   {
     darkModeTheme = self->_darkModeTheme;
   }
 
   else
   {
-    if (a3)
+    if (appearance)
     {
       return darkModeTheme;
     }
@@ -522,9 +522,9 @@ id __61__WBSReaderConfigurationManager_configurationToSendToWebPage__block_invok
   return [(WBSReaderConfigurationManager *)self defaultThemeForAppearance:?];
 }
 
-- (int64_t)defaultThemeForAppearance:(int64_t)a3
+- (int64_t)defaultThemeForAppearance:(int64_t)appearance
 {
-  if (a3 == 1)
+  if (appearance == 1)
   {
     return 3;
   }

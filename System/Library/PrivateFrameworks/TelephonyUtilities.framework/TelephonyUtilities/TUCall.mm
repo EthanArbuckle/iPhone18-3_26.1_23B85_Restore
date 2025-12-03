@@ -1,15 +1,15 @@
 @interface TUCall
-+ (id)_supplementalDialTelephonyCallStringForLocString:(id)a3 destination:(id)a4 isPhoneNumber:(BOOL)a5 includeFaceTimeAudio:(BOOL)a6;
-+ (id)stringForReceptionistState:(int)a3;
-- (BOOL)_isEligibleForManualScreening:(BOOL)a3 languageIdentifier:(id)a4;
++ (id)_supplementalDialTelephonyCallStringForLocString:(id)string destination:(id)destination isPhoneNumber:(BOOL)number includeFaceTimeAudio:(BOOL)audio;
++ (id)stringForReceptionistState:(int)state;
+- (BOOL)_isEligibleForManualScreening:(BOOL)screening languageIdentifier:(id)identifier;
 - (BOOL)hasSentInvitation;
 - (BOOL)isCaptioningAvailable;
 - (BOOL)isConferenced;
 - (BOOL)isConnected;
 - (BOOL)isConnecting;
-- (BOOL)isDialRequestVideoUpgrade:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCall:(id)a3;
+- (BOOL)isDialRequestVideoUpgrade:(id)upgrade;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCall:(id)call;
 - (BOOL)isFromSiri;
 - (BOOL)isJunk;
 - (BOOL)isOnHold;
@@ -18,7 +18,7 @@
 - (BOOL)isRecording;
 - (BOOL)isRecordingPodcast;
 - (BOOL)isTTY;
-- (BOOL)isVideoUpgradeFromCall:(id)a3;
+- (BOOL)isVideoUpgradeFromCall:(id)call;
 - (BOOL)isWiFiCall;
 - (BOOL)supportsDTMFTones;
 - (BOOL)supportsRecents;
@@ -46,10 +46,10 @@
 - (NSURL)imageURL;
 - (NSUUID)uniqueProxyIdentifierUUID;
 - (TUCall)init;
-- (TUCall)initWithCall:(id)a3;
-- (TUCall)initWithCoder:(id)a3;
-- (TUCall)initWithNotificationCenter:(id)a3;
-- (TUCall)initWithUniqueProxyIdentifier:(id)a3 endpointOnCurrentDevice:(BOOL)a4 notificationCenter:(id)a5;
+- (TUCall)initWithCall:(id)call;
+- (TUCall)initWithCoder:(id)coder;
+- (TUCall)initWithNotificationCenter:(id)center;
+- (TUCall)initWithUniqueProxyIdentifier:(id)identifier endpointOnCurrentDevice:(BOOL)device notificationCenter:(id)center;
 - (TUCallCenter)callCenter;
 - (TUCallProvider)provider;
 - (TUCallServicesInterface)callServicesInterface;
@@ -73,40 +73,40 @@
 - (int64_t)faceTimeTransportType;
 - (unint64_t)hash;
 - (void)_handleStatusChange;
-- (void)answerWithRequest:(id)a3;
+- (void)answerWithRequest:(id)request;
 - (void)dealloc;
 - (void)dialRequestForRedial;
-- (void)disconnectWithReason:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIsOnHold:(BOOL)a3;
+- (void)disconnectWithReason:(int)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIsOnHold:(BOOL)hold;
 - (void)suppressRingtoneDueToRemoteSuppression;
 - (void)updateComparativeCall;
-- (void)updateWithCall:(id)a3;
+- (void)updateWithCall:(id)call;
 @end
 
 @implementation TUCall
 
 - (BOOL)isOnHold
 {
-  v3 = [(TUCall *)self provisionalHoldStatus];
-  if (v3 != 1)
+  provisionalHoldStatus = [(TUCall *)self provisionalHoldStatus];
+  if (provisionalHoldStatus != 1)
   {
-    LOBYTE(v3) = [(TUCall *)self provisionalHoldStatus]!= 2 && [(TUCall *)self status]== 2;
+    LOBYTE(provisionalHoldStatus) = [(TUCall *)self provisionalHoldStatus]!= 2 && [(TUCall *)self status]== 2;
   }
 
-  return v3;
+  return provisionalHoldStatus;
 }
 
 - (int)status
 {
-  v3 = [(TUCall *)self callStatus];
-  v4 = [(TUCall *)self transitionStatus];
-  if (![(TUCall *)self isPTT]&& (v3 <= 4 && v4 == 5 || v3 == 4 && v4 == 1))
+  callStatus = [(TUCall *)self callStatus];
+  transitionStatus = [(TUCall *)self transitionStatus];
+  if (![(TUCall *)self isPTT]&& (callStatus <= 4 && transitionStatus == 5 || callStatus == 4 && transitionStatus == 1))
   {
-    return v4;
+    return transitionStatus;
   }
 
-  return v3;
+  return callStatus;
 }
 
 - (NSString)callDurationString
@@ -146,23 +146,23 @@ LABEL_10:
 
 - (double)callDuration
 {
-  v3 = [(TUCall *)self dateScreeningEnded];
-  if (!v3)
+  dateScreeningEnded = [(TUCall *)self dateScreeningEnded];
+  if (!dateScreeningEnded)
   {
-    v3 = [(TUCall *)self dateConnected];
-    if (!v3)
+    dateScreeningEnded = [(TUCall *)self dateConnected];
+    if (!dateScreeningEnded)
     {
       return 0.0;
     }
   }
 
-  v4 = v3;
-  v5 = [(TUCall *)self dateEnded];
+  v4 = dateScreeningEnded;
+  dateEnded = [(TUCall *)self dateEnded];
 
-  if (v5)
+  if (dateEnded)
   {
-    v6 = [(TUCall *)self dateEnded];
-    [v6 timeIntervalSinceDate:v4];
+    dateEnded2 = [(TUCall *)self dateEnded];
+    [dateEnded2 timeIntervalSinceDate:v4];
     v8 = v7;
   }
 
@@ -177,28 +177,28 @@ LABEL_10:
 
 - (TUCall)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [(TUCall *)self initWithUniqueProxyIdentifier:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [(TUCall *)self initWithUniqueProxyIdentifier:uUIDString];
 
   return v5;
 }
 
 - (TUCallProvider)provider
 {
-  v2 = [(TUCall *)self callCenter];
-  v3 = [v2 providerManager];
-  v4 = [v3 defaultProvider];
+  callCenter = [(TUCall *)self callCenter];
+  providerManager = [callCenter providerManager];
+  defaultProvider = [providerManager defaultProvider];
 
-  return v4;
+  return defaultProvider;
 }
 
 - (TUCallCenter)callCenter
 {
-  v2 = [(TUCall *)self callServicesInterface];
-  v3 = [v2 callCenter];
+  callServicesInterface = [(TUCall *)self callServicesInterface];
+  callCenter = [callServicesInterface callCenter];
 
-  return v3;
+  return callCenter;
 }
 
 - (TUCallServicesInterface)callServicesInterface
@@ -211,39 +211,39 @@ LABEL_10:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUCall *)self provider];
-  v5 = [v4 identifier];
-  [v3 appendFormat:@" p=%@", v5];
+  provider = [(TUCall *)self provider];
+  identifier = [provider identifier];
+  [v3 appendFormat:@" p=%@", identifier];
 
-  v6 = [(TUCall *)self announceProviderIdentifier];
-  [v3 appendFormat:@" aPI=%@", v6];
+  announceProviderIdentifier = [(TUCall *)self announceProviderIdentifier];
+  [v3 appendFormat:@" aPI=%@", announceProviderIdentifier];
 
-  v7 = [(TUCall *)self initiator];
-  [v3 appendFormat:@" initr=%@", v7];
+  initiator = [(TUCall *)self initiator];
+  [v3 appendFormat:@" initr=%@", initiator];
 
-  v8 = [(TUCall *)self currentRecordingSession];
-  [v3 appendFormat:@" crs=%@", v8];
+  currentRecordingSession = [(TUCall *)self currentRecordingSession];
+  [v3 appendFormat:@" crs=%@", currentRecordingSession];
 
-  v9 = [(TUCall *)self recordingSession];
-  [v3 appendFormat:@" rs=%@", v9];
+  recordingSession = [(TUCall *)self recordingSession];
+  [v3 appendFormat:@" rs=%@", recordingSession];
 
-  v10 = [(TUCall *)self podcastRecordingSession];
-  [v3 appendFormat:@" prs=%@", v10];
+  podcastRecordingSession = [(TUCall *)self podcastRecordingSession];
+  [v3 appendFormat:@" prs=%@", podcastRecordingSession];
 
-  v11 = [(TUCall *)self translationSession];
-  [v3 appendFormat:@" ctrans=%@", v11];
+  translationSession = [(TUCall *)self translationSession];
+  [v3 appendFormat:@" ctrans=%@", translationSession];
 
   v12 = TUStringForCallService([(TUCall *)self service]);
   [v3 appendFormat:@" svc=%@", v12];
 
-  v13 = [(TUCall *)self handle];
-  [v3 appendFormat:@" hdl=%@", v13];
+  handle = [(TUCall *)self handle];
+  [v3 appendFormat:@" hdl=%@", handle];
 
-  v14 = [(TUCall *)self remoteParticipantHandles];
-  [v3 appendFormat:@" hdls=%@", v14];
+  remoteParticipantHandles = [(TUCall *)self remoteParticipantHandles];
+  [v3 appendFormat:@" hdls=%@", remoteParticipantHandles];
 
-  v15 = [(TUCall *)self isoCountryCode];
-  [v3 appendFormat:@" isoCC=%@", v15];
+  isoCountryCode = [(TUCall *)self isoCountryCode];
+  [v3 appendFormat:@" isoCC=%@", isoCountryCode];
 
   v16 = TUStringForCallStatus([(TUCall *)self status]);
   [v3 appendFormat:@" stat=%@", v16];
@@ -252,34 +252,34 @@ LABEL_10:
   [v3 appendFormat:@" dR=%d", -[TUCall disconnectedReason](self, "disconnectedReason")];
   [v3 appendFormat:@" fR=%d", -[TUCall filteredOutReason](self, "filteredOutReason")];
   [v3 appendFormat:@" supportsR=%d", -[TUCall supportsRecents](self, "supportsRecents")];
-  v17 = [(TUCall *)self uniqueProxyIdentifier];
-  [v3 appendFormat:@" uPI=%@", v17];
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  [v3 appendFormat:@" uPI=%@", uniqueProxyIdentifier];
 
-  v18 = [(TUCall *)self callGroupUUID];
-  [v3 appendFormat:@" grp=%@", v18];
+  callGroupUUID = [(TUCall *)self callGroupUUID];
+  [v3 appendFormat:@" grp=%@", callGroupUUID];
 
-  v19 = [(TUCall *)self localSenderIdentityUUID];
-  [v3 appendFormat:@" lSIUUID=%@", v19];
+  localSenderIdentityUUID = [(TUCall *)self localSenderIdentityUUID];
+  [v3 appendFormat:@" lSIUUID=%@", localSenderIdentityUUID];
 
-  v20 = [(TUCall *)self localSenderIdentityAccountUUID];
-  [v3 appendFormat:@" lSIAccountUUID=%@", v20];
+  localSenderIdentityAccountUUID = [(TUCall *)self localSenderIdentityAccountUUID];
+  [v3 appendFormat:@" lSIAccountUUID=%@", localSenderIdentityAccountUUID];
 
-  v21 = [(TUCall *)self upgradedFromCallUUID];
-  [v3 appendFormat:@" upgradedFromCallUUID=%@", v21];
+  upgradedFromCallUUID = [(TUCall *)self upgradedFromCallUUID];
+  [v3 appendFormat:@" upgradedFromCallUUID=%@", upgradedFromCallUUID];
 
   [v3 appendFormat:@" hosted=%d", -[TUCall isHostedOnCurrentDevice](self, "isHostedOnCurrentDevice")];
   [v3 appendFormat:@" endpt=%d", -[TUCall isEndpointOnCurrentDevice](self, "isEndpointOnCurrentDevice")];
-  v22 = [(TUCall *)self callerNameFromNetwork];
-  [v3 appendFormat:@" callerNFN=%@", v22];
+  callerNameFromNetwork = [(TUCall *)self callerNameFromNetwork];
+  [v3 appendFormat:@" callerNFN=%@", callerNameFromNetwork];
 
-  v23 = [(TUCall *)self sourceIdentifier];
-  [v3 appendFormat:@" srcID=%@", v23];
+  sourceIdentifier = [(TUCall *)self sourceIdentifier];
+  [v3 appendFormat:@" srcID=%@", sourceIdentifier];
 
-  v24 = [(TUCall *)self audioCategory];
-  [v3 appendFormat:@" aC=%@", v24];
+  audioCategory = [(TUCall *)self audioCategory];
+  [v3 appendFormat:@" aC=%@", audioCategory];
 
-  v25 = [(TUCall *)self audioMode];
-  [v3 appendFormat:@" aM=%@", v25];
+  audioMode = [(TUCall *)self audioMode];
+  [v3 appendFormat:@" aM=%@", audioMode];
 
   [v3 appendFormat:@" iUB=%d", -[TUCall isUsingBaseband](self, "isUsingBaseband")];
   [v3 appendFormat:@" vm=%d", -[TUCall isVoicemail](self, "isVoicemail")];
@@ -294,37 +294,37 @@ LABEL_10:
   [v3 appendFormat:@" vST=%ld", -[TUCall videoStreamToken](self, "videoStreamToken")];
   [v3 appendFormat:@" iapST=%ld", -[TUCall inputAudioPowerSpectrumToken](self, "inputAudioPowerSpectrumToken")];
   [v3 appendFormat:@" oapST=%ld", -[TUCall outputAudioPowerSpectrumToken](self, "outputAudioPowerSpectrumToken")];
-  v26 = [(TUCall *)self tokens];
+  tokens = [(TUCall *)self tokens];
 
-  if (v26)
+  if (tokens)
   {
-    v27 = [(TUCall *)self tokens];
-    [v3 appendFormat:@" tokens=%@", v27];
+    tokens2 = [(TUCall *)self tokens];
+    [v3 appendFormat:@" tokens=%@", tokens2];
   }
 
-  v28 = [(TUCall *)self localMemberHandleValue];
+  localMemberHandleValue = [(TUCall *)self localMemberHandleValue];
 
-  if (v28)
+  if (localMemberHandleValue)
   {
-    v29 = [(TUCall *)self localMemberHandleValue];
-    [v3 appendFormat:@" localMemberHandleValue=%@", v29];
+    localMemberHandleValue2 = [(TUCall *)self localMemberHandleValue];
+    [v3 appendFormat:@" localMemberHandleValue=%@", localMemberHandleValue2];
   }
 
-  v30 = [(TUCall *)self videoCallAttributes];
-  [v3 appendFormat:@" vCA=%@", v30];
+  videoCallAttributes = [(TUCall *)self videoCallAttributes];
+  [v3 appendFormat:@" vCA=%@", videoCallAttributes];
 
-  v31 = [(TUCall *)self screenShareAttributes];
-  [v3 appendFormat:@" ssA=%@", v31];
+  screenShareAttributes = [(TUCall *)self screenShareAttributes];
+  [v3 appendFormat:@" ssA=%@", screenShareAttributes];
 
   [v3 appendFormat:@" ssI=%ld", -[TUCall screenSharingIntention](self, "screenSharingIntention")];
-  v32 = [(TUCall *)self model];
-  [v3 appendFormat:@" model=%@", v32];
+  model = [(TUCall *)self model];
+  [v3 appendFormat:@" model=%@", model];
 
   [v3 appendFormat:@" dtmfU=%d", -[TUCall supportsDTMFUpdates](self, "supportsDTMFUpdates")];
   [v3 appendFormat:@" em=%d", -[TUCall isEmergency](self, "isEmergency")];
   [v3 appendFormat:@" emvs=%d", -[TUCall hasEmergencyVideoStream](self, "hasEmergencyVideoStream")];
-  v33 = [(TUCall *)self emergencyMediaItems];
-  [v3 appendFormat:@" emmi=%@", v33];
+  emergencyMediaItems = [(TUCall *)self emergencyMediaItems];
+  [v3 appendFormat:@" emmi=%@", emergencyMediaItems];
 
   [v3 appendFormat:@" iFE=%d", -[TUCall isFailureExpected](self, "isFailureExpected")];
   [v3 appendFormat:@" sos=%d", -[TUCall isSOS](self, "isSOS")];
@@ -351,8 +351,8 @@ LABEL_10:
   [v3 appendFormat:@" sEF=%d", -[TUCall supportsEmergencyFallback](self, "supportsEmergencyFallback")];
   [v3 appendFormat:@" cs=%d", -[TUCall isScreening](self, "isScreening")];
   [v3 appendFormat:@" rs=%d", -[TUCall receptionistState](self, "receptionistState")];
-  v34 = [(TUCall *)self lastReceptionistMessage];
-  v35 = [v34 copy];
+  lastReceptionistMessage = [(TUCall *)self lastReceptionistMessage];
+  v35 = [lastReceptionistMessage copy];
 
   if (v35 && ([v35 length] > 9 || objc_msgSend(v35, "length")))
   {
@@ -361,15 +361,15 @@ LABEL_10:
   }
 
   [v3 appendFormat:@" rC=%d", -[TUCall isReceptionistCapable](self, "isReceptionistCapable")];
-  v37 = [(TUCall *)self receptionistSession];
-  [v3 appendFormat:@" receptionistSession=%@", v37];
+  receptionistSession = [(TUCall *)self receptionistSession];
+  [v3 appendFormat:@" receptionistSession=%@", receptionistSession];
 
   [v3 appendFormat:@" csUI=%d", -[TUCall isScreeningDueToUserInteraction](self, "isScreeningDueToUserInteraction")];
   [v3 appendFormat:@" ss=%d", -[TUCall supportsScreening](self, "supportsScreening")];
   [v3 appendFormat:@" ae=%d", -[TUCall screeningAnnouncementHasFinished](self, "screeningAnnouncementHasFinished")];
   [v3 appendFormat:@" hBR=%d", -[TUCall hasBeenRedirected](self, "hasBeenRedirected")];
-  v38 = [(TUCall *)self providerContext];
-  [v3 appendFormat:@" pCtx=%@", v38];
+  providerContext = [(TUCall *)self providerContext];
+  [v3 appendFormat:@" pCtx=%@", providerContext];
 
   [v3 appendFormat:@" amst=%ld", -[TUCall answeringMachineStreamToken](self, "answeringMachineStreamToken")];
   [v3 appendFormat:@" lUHC=%d", -[TUCall isLocalUserInHomeCountry](self, "isLocalUserInHomeCountry")];
@@ -379,17 +379,17 @@ LABEL_10:
   [v3 appendFormat:@" screenSharingType=%ld", -[TUCall screenSharingType](self, "screenSharingType")];
   [v3 appendFormat:@" spC=%d", -[TUCall isSharePlayCapable](self, "isSharePlayCapable")];
   [v3 appendFormat:@" arSRSS=%d", -[TUCall anyRemoteSupportsRequestToScreenShare](self, "anyRemoteSupportsRequestToScreenShare")];
-  v39 = [(TUCall *)self conversationGroupUUID];
-  [v3 appendFormat:@" cGrp=%@", v39];
+  conversationGroupUUID = [(TUCall *)self conversationGroupUUID];
+  [v3 appendFormat:@" cGrp=%@", conversationGroupUUID];
 
   [v3 appendFormat:@" nearbyMode=%ld", -[TUCall nearbyMode](self, "nearbyMode")];
-  v40 = [(TUCall *)self smartHoldingSession];
-  [v3 appendFormat:@" smartHoldingSession=%@", v40];
+  smartHoldingSession = [(TUCall *)self smartHoldingSession];
+  [v3 appendFormat:@" smartHoldingSession=%@", smartHoldingSession];
 
   [v3 appendFormat:@" cTS=%d", -[TUCall commTrustScore](self, "commTrustScore")];
   [v3 appendFormat:@" sUK=%d", -[TUCall specialUnknown](self, "specialUnknown")];
-  v41 = [(TUCall *)self reminderUUID];
-  [v3 appendFormat:@" rUUID=%@", v41];
+  reminderUUID = [(TUCall *)self reminderUUID];
+  [v3 appendFormat:@" rUUID=%@", reminderUUID];
 
   [v3 appendString:@">"];
 
@@ -398,11 +398,11 @@ LABEL_10:
 
 - (int)service
 {
-  v2 = self;
-  v3 = [(TUCall *)self provider];
-  LODWORD(v2) = [TUCallProviderManager serviceForProvider:v3 video:[(TUCall *)v2 isVideo]];
+  selfCopy = self;
+  provider = [(TUCall *)self provider];
+  LODWORD(selfCopy) = [TUCallProviderManager serviceForProvider:provider video:[(TUCall *)selfCopy isVideo]];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)supportsRecents
@@ -412,32 +412,32 @@ LABEL_10:
     return 0;
   }
 
-  v2 = [(TUCall *)self provider];
-  v3 = [v2 supportsRecents];
+  provider = [(TUCall *)self provider];
+  supportsRecents = [provider supportsRecents];
 
-  return v3;
+  return supportsRecents;
 }
 
 - (BOOL)isConnecting
 {
-  v2 = [(TUCall *)self dateStartedConnecting];
-  v3 = v2 != 0;
+  dateStartedConnecting = [(TUCall *)self dateStartedConnecting];
+  v3 = dateStartedConnecting != 0;
 
   return v3;
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(TUCall *)self dateConnected];
-  v3 = v2 != 0;
+  dateConnected = [(TUCall *)self dateConnected];
+  v3 = dateConnected != 0;
 
   return v3;
 }
 
 - (BOOL)hasSentInvitation
 {
-  v2 = [(TUCall *)self dateSentInvitation];
-  v3 = v2 != 0;
+  dateSentInvitation = [(TUCall *)self dateSentInvitation];
+  v3 = dateSentInvitation != 0;
 
   return v3;
 }
@@ -446,30 +446,30 @@ LABEL_10:
 {
   if ([(TUCall *)self isPTT])
   {
-    v3 = [(TUCall *)self channelImageURL];
+    channelImageURL = [(TUCall *)self channelImageURL];
   }
 
   else
   {
-    v4 = [(TUCall *)self displayContext];
-    v3 = [v4 companyLogoURL];
+    displayContext = [(TUCall *)self displayContext];
+    channelImageURL = [displayContext companyLogoURL];
   }
 
-  return v3;
+  return channelImageURL;
 }
 
 - (void)updateComparativeCall
 {
-  v3 = [(TUCall *)self comparativeCall];
-  [v3 updateWithCall:self];
+  comparativeCall = [(TUCall *)self comparativeCall];
+  [comparativeCall updateWithCall:self];
 }
 
 - (NSString)callDirectoryIdentityExtension
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 callDirectoryLocalizedExtensionContainingAppName];
+  displayContext = [(TUCall *)self displayContext];
+  callDirectoryLocalizedExtensionContainingAppName = [displayContext callDirectoryLocalizedExtensionContainingAppName];
 
-  return v3;
+  return callDirectoryLocalizedExtensionContainingAppName;
 }
 
 - (void)_handleStatusChange
@@ -485,20 +485,20 @@ LABEL_10:
 - (NSUUID)uniqueProxyIdentifierUUID
 {
   v3 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v4 = [(TUCall *)self uniqueProxyIdentifier];
-  v5 = [v3 initWithUUIDString:v4];
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  v5 = [v3 initWithUUIDString:uniqueProxyIdentifier];
 
   return v5;
 }
 
 - (NSSet)remoteParticipantHandles
 {
-  v3 = [(TUCall *)self handle];
+  handle = [(TUCall *)self handle];
   v4 = MEMORY[0x1E695DFD8];
-  if (v3)
+  if (handle)
   {
-    v5 = [(TUCall *)self handle];
-    v6 = [v4 setWithObject:v5];
+    handle2 = [(TUCall *)self handle];
+    v6 = [v4 setWithObject:handle2];
   }
 
   else
@@ -511,44 +511,44 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(TUCall *)self uniqueProxyIdentifier];
-  v3 = [v2 hash];
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  v3 = [uniqueProxyIdentifier hash];
 
   return v3;
 }
 
 - (BOOL)isConferenced
 {
-  v3 = [(TUCall *)self callGroupUUID];
-  if (v3)
+  callGroupUUID = [(TUCall *)self callGroupUUID];
+  if (callGroupUUID)
   {
-    v4 = [(TUCall *)self provider];
-    v5 = [v4 isTelephonyProvider];
+    provider = [(TUCall *)self provider];
+    isTelephonyProvider = [provider isTelephonyProvider];
   }
 
   else
   {
-    v5 = 0;
+    isTelephonyProvider = 0;
   }
 
-  return v5;
+  return isTelephonyProvider;
 }
 
 - (NSString)contactIdentifier
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 contactIdentifiers];
-  v4 = [v3 firstObject];
+  displayContext = [(TUCall *)self displayContext];
+  contactIdentifiers = [displayContext contactIdentifiers];
+  firstObject = [contactIdentifiers firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (NSArray)contactIdentifiers
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 contactIdentifiers];
+  displayContext = [(TUCall *)self displayContext];
+  contactIdentifiers = [displayContext contactIdentifiers];
 
-  return v3;
+  return contactIdentifiers;
 }
 
 - (BOOL)isRTT
@@ -576,44 +576,44 @@ LABEL_10:
 
 - (BOOL)isRecording
 {
-  v3 = [(TUCall *)self recordingSession];
+  recordingSession = [(TUCall *)self recordingSession];
 
-  if (!v3)
+  if (!recordingSession)
   {
     return 0;
   }
 
-  v4 = [(TUCall *)self recordingSession];
-  v5 = [v4 recordingState] == 3 && -[TUCall status](self, "status") != 6;
+  recordingSession2 = [(TUCall *)self recordingSession];
+  v5 = [recordingSession2 recordingState] == 3 && -[TUCall status](self, "status") != 6;
 
   return v5;
 }
 
 - (NSString)displayName
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 name];
+  displayContext = [(TUCall *)self displayContext];
+  name = [displayContext name];
 
-  if ([v3 length])
+  if ([name length])
   {
     qmemcpy(v9, ", * ", sizeof(v9));
     v4 = MEMORY[0x1E696AEC0];
     v5 = [MEMORY[0x1E696AEC0] stringWithCharacters:&v9[1] length:1];
     v6 = [MEMORY[0x1E696AEC0] stringWithCharacters:v9 length:1];
-    v7 = [v4 stringWithFormat:@"%@%@%@", v5, v3, v6];
+    v7 = [v4 stringWithFormat:@"%@%@%@", v5, name, v6];
 
-    v3 = v7;
+    name = v7;
   }
 
-  return v3;
+  return name;
 }
 
 - (NSString)localizedLabel
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 label];
+  displayContext = [(TUCall *)self displayContext];
+  label = [displayContext label];
 
-  return v3;
+  return label;
 }
 
 - (id)supplementalInCallString
@@ -625,10 +625,10 @@ LABEL_10:
 
   else
   {
-    v4 = [(TUCall *)self isOutgoing];
+    isOutgoing = [(TUCall *)self isOutgoing];
     v5 = TUBundle();
     v6 = v5;
-    if (v4)
+    if (isOutgoing)
     {
       v7 = @"IN_CALL_OUTGOING_RELAY";
     }
@@ -646,8 +646,8 @@ LABEL_10:
 
 - (void)dealloc
 {
-  v3 = [(TUCall *)self notificationCenter];
-  [v3 removeObserver:self];
+  notificationCenter = [(TUCall *)self notificationCenter];
+  [notificationCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TUCall;
@@ -656,19 +656,19 @@ LABEL_10:
 
 - (NSNotificationCenter)notificationCenter
 {
-  v2 = [(TUCall *)self callNotificationManager];
-  v3 = [v2 notificationCenter];
+  callNotificationManager = [(TUCall *)self callNotificationManager];
+  notificationCenter = [callNotificationManager notificationCenter];
 
-  return v3;
+  return notificationCenter;
 }
 
 - (TUSenderIdentity)localSenderIdentity
 {
-  v3 = [(TUCall *)self localSenderIdentityAccountUUID];
-  if (v3)
+  localSenderIdentityAccountUUID = [(TUCall *)self localSenderIdentityAccountUUID];
+  if (localSenderIdentityAccountUUID)
   {
-    v4 = [(TUCall *)self provider];
-    v5 = [v4 senderIdentityForAccountUUID:v3];
+    provider = [(TUCall *)self provider];
+    v5 = [provider senderIdentityForAccountUUID:localSenderIdentityAccountUUID];
   }
 
   else
@@ -682,31 +682,31 @@ LABEL_10:
 - (int)smartHoldingAvailability
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v28 = [v3 localeIdentifier];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v4 = [(TUCall *)self remoteParticipantHandles];
-  v26 = [v4 count];
+  remoteParticipantHandles = [(TUCall *)self remoteParticipantHandles];
+  v26 = [remoteParticipantHandles count];
 
-  v5 = [(TUCall *)self isConferenced];
-  v6 = [(TUCall *)self provider];
-  v7 = [v6 isSystemProvider];
+  isConferenced = [(TUCall *)self isConferenced];
+  provider = [(TUCall *)self provider];
+  isSystemProvider = [provider isSystemProvider];
 
-  v8 = [(TUCall *)self isEmergency];
-  v24 = [(TUCall *)self status];
-  v9 = [(TUCall *)self isEndpointOnCurrentDevice];
-  v10 = [(TUCall *)self isVideo];
+  isEmergency = [(TUCall *)self isEmergency];
+  status = [(TUCall *)self status];
+  isEndpointOnCurrentDevice = [(TUCall *)self isEndpointOnCurrentDevice];
+  isVideo = [(TUCall *)self isVideo];
   v11 = TUCurrentLocaleIdentifier();
   v12 = [&unk_1F09C64F0 containsObject:v11];
 
-  v13 = [(TUCall *)self isCaptioningAvailable];
-  v14 = [(TUCall *)self isSmartHoldingGASRAvailable];
-  v15 = v14;
-  v25 = v7;
-  v16 = v7 ^ 1;
-  v17 = v5;
-  v18 = (v26 != 1) | v5 | v16 | (v8 || v24 != 1) | ~v9 | v10 | ~v12;
-  if (v13 && v14)
+  isCaptioningAvailable = [(TUCall *)self isCaptioningAvailable];
+  isSmartHoldingGASRAvailable = [(TUCall *)self isSmartHoldingGASRAvailable];
+  v15 = isSmartHoldingGASRAvailable;
+  v25 = isSystemProvider;
+  v16 = isSystemProvider ^ 1;
+  v17 = isConferenced;
+  v18 = (v26 != 1) | isConferenced | v16 | (isEmergency || status != 1) | ~isEndpointOnCurrentDevice | isVideo | ~v12;
+  if (isCaptioningAvailable && isSmartHoldingGASRAvailable)
   {
     v19 = 1;
   }
@@ -739,21 +739,21 @@ LABEL_10:
     v35 = 1024;
     v36 = v25 & 1;
     v37 = 1024;
-    v38 = !v8;
+    v38 = !isEmergency;
     v39 = 1024;
-    v40 = v24 == 1;
+    v40 = status == 1;
     v41 = 1024;
-    v42 = [(TUCall *)self callStatus];
+    callStatus = [(TUCall *)self callStatus];
     v43 = 1024;
-    v44 = v9 & 1;
+    v44 = isEndpointOnCurrentDevice & 1;
     v45 = 1024;
-    v46 = !v10;
+    v46 = !isVideo;
     v47 = 1024;
     v48 = v12 & 1;
     v49 = 2112;
-    v50 = v28;
+    v50 = localeIdentifier;
     v51 = 1024;
-    v52 = v13;
+    v52 = isCaptioningAvailable;
     v53 = 1024;
     v54 = v15;
     _os_log_impl(&dword_1956FD000, v21, OS_LOG_TYPE_DEFAULT, "smartHoldingAvailability=%i, validRemoteParticipantCount=%i validNotConferenced=%i, validSystemProvider=%i, validNotEmergencyCall=%i, validCallStatus=%i(%i), validEndpointOnCurrentDevice=%i, validIsNotVideo=%i, validLocale=%i(%@), validCaptioningAvailable=%i, isGASRAvailable=%i", buf, 0x54u);
@@ -765,8 +765,8 @@ LABEL_10:
 
 - (NSString)hardPauseDigitsDisplayString
 {
-  v2 = [(TUCall *)self hardPauseDigits];
-  v3 = TUHardPauseDigitsDisplayString(v2);
+  hardPauseDigits = [(TUCall *)self hardPauseDigits];
+  v3 = TUHardPauseDigitsDisplayString(hardPauseDigits);
 
   return v3;
 }
@@ -784,46 +784,46 @@ LABEL_10:
   }
 }
 
-- (TUCall)initWithNotificationCenter:(id)a3
+- (TUCall)initWithNotificationCenter:(id)center
 {
-  v4 = a3;
+  centerCopy = center;
   v5 = objc_opt_new();
-  v6 = [v5 UUIDString];
-  v7 = [(TUCall *)self initWithUniqueProxyIdentifier:v6 endpointOnCurrentDevice:1 notificationCenter:v4];
+  uUIDString = [v5 UUIDString];
+  v7 = [(TUCall *)self initWithUniqueProxyIdentifier:uUIDString endpointOnCurrentDevice:1 notificationCenter:centerCopy];
 
   return v7;
 }
 
-- (TUCall)initWithCall:(id)a3
+- (TUCall)initWithCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
-  v6 = [(TUCall *)self initWithUniqueProxyIdentifier:v5];
+  callCopy = call;
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  v6 = [(TUCall *)self initWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   if (v6)
   {
-    [(TUCall *)v6 updateWithCall:v4];
+    [(TUCall *)v6 updateWithCall:callCopy];
   }
 
   return v6;
 }
 
-- (TUCall)initWithUniqueProxyIdentifier:(id)a3 endpointOnCurrentDevice:(BOOL)a4 notificationCenter:(id)a5
+- (TUCall)initWithUniqueProxyIdentifier:(id)identifier endpointOnCurrentDevice:(BOOL)device notificationCenter:(id)center
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  centerCopy = center;
   v36.receiver = self;
   v36.super_class = TUCall;
   v11 = [(TUCall *)&v36 init];
   if (v11)
   {
-    [v10 addObserver:v11 selector:sel__handleStatusChange name:@"TUCallCenterCallStatusChangedInternalNotification" object:v11];
+    [centerCopy addObserver:v11 selector:sel__handleStatusChange name:@"TUCallCenterCallStatusChangedInternalNotification" object:v11];
     v12 = objc_alloc_init(TUFeatureFlags);
     featureFlags = v11->_featureFlags;
     v11->_featureFlags = v12;
 
     v11->_lockdownModeEnabled = TULockdownModeEnabled();
-    v14 = [[TUCallNotificationManager alloc] initWithNotificationCenter:v10];
+    v14 = [[TUCallNotificationManager alloc] initWithNotificationCenter:centerCopy];
     callNotificationManager = v11->_callNotificationManager;
     v11->_callNotificationManager = v14;
 
@@ -833,12 +833,12 @@ LABEL_10:
 
     *&v11->_hasEverUnsuppressedRingtone = 256;
     v11->_supportsRecents = 1;
-    v18 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     dateCreated = v11->_dateCreated;
-    v11->_dateCreated = v18;
+    v11->_dateCreated = date;
 
-    objc_storeStrong(&v11->_uniqueProxyIdentifier, a3);
-    v11->_endpointOnCurrentDevice = a4;
+    objc_storeStrong(&v11->_uniqueProxyIdentifier, identifier);
+    v11->_endpointOnCurrentDevice = device;
     v20 = objc_alloc_init(TUVideoCallAttributes);
     videoCallAttributes = v11->_videoCallAttributes;
     v11->_videoCallAttributes = v20;
@@ -920,31 +920,31 @@ uint64_t __83__TUCall_initWithUniqueProxyIdentifier_endpointOnCurrentDevice_noti
   return [v2 isCaptioningSupported];
 }
 
-+ (id)stringForReceptionistState:(int)a3
++ (id)stringForReceptionistState:(int)state
 {
-  if (a3 > 7)
+  if (state > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E74276E8 + a3);
+    return *(&off_1E74276E8 + state);
   }
 }
 
-- (void)answerWithRequest:(id)a3
+- (void)answerWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(TUCall *)self callNotificationManager];
+  requestCopy = request;
+  callNotificationManager = [(TUCall *)self callNotificationManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__TUCall_answerWithRequest___block_invoke;
   v7[3] = &unk_1E7424898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 deferNotificationsUntilAfterPerformingBlock:v7];
+  v8 = requestCopy;
+  v6 = requestCopy;
+  [callNotificationManager deferNotificationsUntilAfterPerformingBlock:v7];
 }
 
 uint64_t __28__TUCall_answerWithRequest___block_invoke(uint64_t a1)
@@ -1008,32 +1008,32 @@ LABEL_11:
   return result;
 }
 
-- (void)setIsOnHold:(BOOL)a3
+- (void)setIsOnHold:(BOOL)hold
 {
-  v3 = a3;
-  v5 = [(TUCall *)self callCenter];
-  v6 = v5;
-  if (v3)
+  holdCopy = hold;
+  callCenter = [(TUCall *)self callCenter];
+  v6 = callCenter;
+  if (holdCopy)
   {
-    [v5 holdCall:self];
+    [callCenter holdCall:self];
   }
 
   else
   {
-    [v5 unholdCall:self];
+    [callCenter unholdCall:self];
   }
 }
 
-- (void)disconnectWithReason:(int)a3
+- (void)disconnectWithReason:(int)reason
 {
-  v5 = [(TUCall *)self callNotificationManager];
+  callNotificationManager = [(TUCall *)self callNotificationManager];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__TUCall_disconnectWithReason___block_invoke;
   v6[3] = &unk_1E74256D0;
   v6[4] = self;
-  v7 = a3;
-  [v5 deferNotificationsUntilAfterPerformingBlock:v6];
+  reasonCopy = reason;
+  [callNotificationManager deferNotificationsUntilAfterPerformingBlock:v6];
 }
 
 uint64_t __31__TUCall_disconnectWithReason___block_invoke(uint64_t a1)
@@ -1053,8 +1053,8 @@ uint64_t __31__TUCall_disconnectWithReason___block_invoke(uint64_t a1)
 
 - (double)startTime
 {
-  v2 = [(TUCall *)self dateConnected];
-  [v2 timeIntervalSinceReferenceDate];
+  dateConnected = [(TUCall *)self dateConnected];
+  [dateConnected timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;
@@ -1082,45 +1082,45 @@ uint64_t __31__TUCall_disconnectWithReason___block_invoke(uint64_t a1)
 
 - (BOOL)isRecordingPodcast
 {
-  v3 = [(TUCall *)self podcastRecordingSession];
+  podcastRecordingSession = [(TUCall *)self podcastRecordingSession];
 
-  if (!v3)
+  if (!podcastRecordingSession)
   {
     return 0;
   }
 
-  v4 = [(TUCall *)self podcastRecordingSession];
-  v5 = [v4 recordingState] == 3;
+  podcastRecordingSession2 = [(TUCall *)self podcastRecordingSession];
+  v5 = [podcastRecordingSession2 recordingState] == 3;
 
   return v5;
 }
 
 - (int64_t)faceTimeTransportType
 {
-  v3 = [(TUCall *)self providerContext];
-  v4 = [v3 objectForKeyedSubscript:@"TUCallFaceTimeTransportTypeKey"];
+  providerContext = [(TUCall *)self providerContext];
+  v4 = [providerContext objectForKeyedSubscript:@"TUCallFaceTimeTransportTypeKey"];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(TUCall *)self providerContext];
-  v6 = [v5 objectForKeyedSubscript:@"TUCallFaceTimeTransportTypeKey"];
-  v7 = [v6 integerValue];
+  providerContext2 = [(TUCall *)self providerContext];
+  v6 = [providerContext2 objectForKeyedSubscript:@"TUCallFaceTimeTransportTypeKey"];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (NSString)localizedHandoffRecipientDeviceCategory
 {
-  v3 = [(TUCall *)self providerContext];
-  v4 = [v3 objectForKeyedSubscript:@"TUCallFaceTimeLocalizedHandoffRecipientDeviceCategoryKey"];
+  providerContext = [(TUCall *)self providerContext];
+  v4 = [providerContext objectForKeyedSubscript:@"TUCallFaceTimeLocalizedHandoffRecipientDeviceCategoryKey"];
 
   if (v4)
   {
-    v5 = [(TUCall *)self providerContext];
-    v6 = [v5 objectForKeyedSubscript:@"TUCallFaceTimeLocalizedHandoffRecipientDeviceCategoryKey"];
+    providerContext2 = [(TUCall *)self providerContext];
+    v6 = [providerContext2 objectForKeyedSubscript:@"TUCallFaceTimeLocalizedHandoffRecipientDeviceCategoryKey"];
     v7 = [v6 copy];
   }
 
@@ -1134,13 +1134,13 @@ uint64_t __31__TUCall_disconnectWithReason___block_invoke(uint64_t a1)
 
 - (NSNumber)handoffRecipientParticipant
 {
-  v3 = [(TUCall *)self providerContext];
-  v4 = [v3 objectForKeyedSubscript:@"TUCallFaceTimeHandoffRecipientParticipantKey"];
+  providerContext = [(TUCall *)self providerContext];
+  v4 = [providerContext objectForKeyedSubscript:@"TUCallFaceTimeHandoffRecipientParticipantKey"];
 
   if (v4)
   {
-    v5 = [(TUCall *)self providerContext];
-    v6 = [v5 objectForKeyedSubscript:@"TUCallFaceTimeHandoffRecipientParticipantKey"];
+    providerContext2 = [(TUCall *)self providerContext];
+    v6 = [providerContext2 objectForKeyedSubscript:@"TUCallFaceTimeHandoffRecipientParticipantKey"];
     v7 = [v6 copy];
   }
 
@@ -1155,8 +1155,8 @@ uint64_t __31__TUCall_disconnectWithReason___block_invoke(uint64_t a1)
 - (TUDialRequest)dialRequestForRedial
 {
   v3 = [TUDialRequest alloc];
-  v4 = [(TUCall *)self provider];
-  v5 = [(TUDialRequest *)v3 initWithProvider:v4];
+  provider = [(TUCall *)self provider];
+  v5 = [(TUDialRequest *)v3 initWithProvider:provider];
 
   if ([(TUDialRequest *)v5 service]!= 1)
   {
@@ -1180,36 +1180,36 @@ uint64_t __31__TUCall_disconnectWithReason___block_invoke(uint64_t a1)
 
   [(TUDialRequest *)v5 setDialType:v6];
 LABEL_7:
-  v7 = [(TUCall *)self handle];
-  [(TUDialRequest *)v5 setHandle:v7];
+  handle = [(TUCall *)self handle];
+  [(TUDialRequest *)v5 setHandle:handle];
 
-  v8 = [(TUCall *)self contactIdentifiers];
-  v9 = [v8 firstObject];
-  [(TUDialRequest *)v5 setContactIdentifier:v9];
+  contactIdentifiers = [(TUCall *)self contactIdentifiers];
+  firstObject = [contactIdentifiers firstObject];
+  [(TUDialRequest *)v5 setContactIdentifier:firstObject];
 
-  v10 = [(TUCall *)self isVideo]|| [(TUCall *)self isThirdPartyVideo];
-  [(TUDialRequest *)v5 setVideo:v10];
+  isThirdPartyVideo = [(TUCall *)self isVideo]|| [(TUCall *)self isThirdPartyVideo];
+  [(TUDialRequest *)v5 setVideo:isThirdPartyVideo];
   [(TUDialRequest *)v5 setSOS:[(TUCall *)self isSOS]];
   [(TUDialRequest *)v5 setRedial:1];
-  v11 = [(TUCall *)self sourceIdentifier];
-  [(TUDialRequest *)v5 setAudioSourceIdentifier:v11];
+  sourceIdentifier = [(TUCall *)self sourceIdentifier];
+  [(TUDialRequest *)v5 setAudioSourceIdentifier:sourceIdentifier];
 
   [(TUDialRequest *)v5 setOriginatingUIType:25];
   [(TUDialRequest *)v5 setPerformDialAssist:0];
   [(TUDialRequest *)v5 setPerformLocalDialAssist:0];
   [(TUDialRequest *)v5 setDialAssisted:[(TUCall *)self wasDialAssisted]];
   [(TUDialRequest *)v5 setTtyType:TUDialRequestTTYTypeForTUCallTTYType([(TUCall *)self ttyType])];
-  v12 = [(TUCall *)self localSenderIdentityUUID];
-  [(TUDialRequest *)v5 setLocalSenderIdentityUUID:v12];
+  localSenderIdentityUUID = [(TUCall *)self localSenderIdentityUUID];
+  [(TUDialRequest *)v5 setLocalSenderIdentityUUID:localSenderIdentityUUID];
 
-  v13 = [(TUCall *)self localSenderIdentityAccountUUID];
-  [(TUDialRequest *)v5 setLocalSenderIdentityAccountUUID:v13];
+  localSenderIdentityAccountUUID = [(TUCall *)self localSenderIdentityAccountUUID];
+  [(TUDialRequest *)v5 setLocalSenderIdentityAccountUUID:localSenderIdentityAccountUUID];
 
   if ([(TUDialRequest *)v5 dialType]== 1)
   {
-    v14 = [(TUDialRequest *)v5 validityErrorForEmergencyCall];
+    validityErrorForEmergencyCall = [(TUDialRequest *)v5 validityErrorForEmergencyCall];
 
-    if (v14)
+    if (validityErrorForEmergencyCall)
     {
       v15 = TUDefaultLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1226,27 +1226,27 @@ LABEL_7:
 
 - (NSString)destinationID
 {
-  v2 = [(TUCall *)self handle];
-  v3 = [v2 value];
+  handle = [(TUCall *)self handle];
+  value = [handle value];
 
-  return v3;
+  return value;
 }
 
-- (BOOL)isEqualToCall:(id)a3
+- (BOOL)isEqualToCall:(id)call
 {
-  v4 = a3;
-  v5 = [(TUCall *)self uniqueProxyIdentifier];
-  v6 = [v4 uniqueProxyIdentifier];
+  callCopy = call;
+  uniqueProxyIdentifier = [(TUCall *)self uniqueProxyIdentifier];
+  uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(callCopy) = [uniqueProxyIdentifier isEqualToString:uniqueProxyIdentifier2];
+  return callCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCall *)self isEqualToCall:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCall *)self isEqualToCall:equalCopy];
 
   return v5;
 }
@@ -1262,10 +1262,10 @@ LABEL_7:
 
   else
   {
-    v6 = [(TUCall *)self service];
+    service = [(TUCall *)self service];
     v3 = TUBundle();
     v4 = v3;
-    if (v6 == 1)
+    if (service == 1)
     {
       v5 = @"TELEPHONY_REMINDER";
     }
@@ -1283,11 +1283,11 @@ LABEL_7:
 
 - (int)resolvedStatus
 {
-  v3 = [(TUCall *)self featureFlags];
-  v4 = [v3 receptionistEnabled];
+  featureFlags = [(TUCall *)self featureFlags];
+  receptionistEnabled = [featureFlags receptionistEnabled];
 
   result = [(TUCall *)self status];
-  if (v4)
+  if (receptionistEnabled)
   {
     if (result == 1 && [(TUCall *)self receptionistState]== 3 && [(TUCall *)self isScreening])
     {
@@ -1306,19 +1306,19 @@ LABEL_7:
 
 - (BOOL)isFromSiri
 {
-  v2 = [(TUCall *)self sourceIdentifier];
-  v3 = [v2 isEqual:@"TUCallSourceIdentifierHeySiri"];
+  sourceIdentifier = [(TUCall *)self sourceIdentifier];
+  v3 = [sourceIdentifier isEqual:@"TUCallSourceIdentifierHeySiri"];
 
   return v3;
 }
 
 - (BOOL)supportsSimultaneousVoiceAndData
 {
-  v3 = [(TUCall *)self provider];
-  if ([v3 isTelephonyProvider])
+  provider = [(TUCall *)self provider];
+  if ([provider isTelephonyProvider])
   {
-    v4 = [(TUCall *)self localSenderIdentityUUID];
-    v5 = [TUCallCapabilities isSimultaneousVoiceAndDataSupportedForSIMWithUUID:v4];
+    localSenderIdentityUUID = [(TUCall *)self localSenderIdentityUUID];
+    v5 = [TUCallCapabilities isSimultaneousVoiceAndDataSupportedForSIMWithUUID:localSenderIdentityUUID];
   }
 
   else
@@ -1331,62 +1331,62 @@ LABEL_7:
 
 - (BOOL)supportsDTMFTones
 {
-  v2 = [(TUCall *)self model];
-  v3 = [v2 supportsDTMF];
+  model = [(TUCall *)self model];
+  supportsDTMF = [model supportsDTMF];
 
-  return v3;
+  return supportsDTMF;
 }
 
 - (NSString)displayFirstName
 {
-  v3 = [(TUCall *)self displayContext];
-  v4 = [v3 personNameComponents];
-  v5 = [v4 givenName];
-  v6 = v5;
-  if (v5)
+  displayContext = [(TUCall *)self displayContext];
+  personNameComponents = [displayContext personNameComponents];
+  givenName = [personNameComponents givenName];
+  v6 = givenName;
+  if (givenName)
   {
-    v7 = v5;
+    name = givenName;
   }
 
   else
   {
-    v8 = [(TUCall *)self displayContext];
-    v7 = [v8 name];
+    displayContext2 = [(TUCall *)self displayContext];
+    name = [displayContext2 name];
   }
 
-  return v7;
+  return name;
 }
 
 - (NSString)suggestedDisplayName
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 suggestedName];
+  displayContext = [(TUCall *)self displayContext];
+  suggestedName = [displayContext suggestedName];
 
-  return v3;
+  return suggestedName;
 }
 
 - (NSString)callDirectoryName
 {
-  v3 = [(TUCall *)self displayContext];
-  v4 = [v3 callDirectoryLocalizedExtensionContainingAppName];
-  if (!v4)
+  displayContext = [(TUCall *)self displayContext];
+  callDirectoryLocalizedExtensionContainingAppName = [displayContext callDirectoryLocalizedExtensionContainingAppName];
+  if (!callDirectoryLocalizedExtensionContainingAppName)
   {
     v12 = 0;
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [(TUCall *)self displayContext];
-  v7 = [v6 callDirectoryLabel];
+  v5 = callDirectoryLocalizedExtensionContainingAppName;
+  displayContext2 = [(TUCall *)self displayContext];
+  callDirectoryLabel = [displayContext2 callDirectoryLabel];
 
-  if (v7)
+  if (callDirectoryLabel)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v3 = [(TUCall *)self displayContext];
-    v9 = [v3 callDirectoryLocalizedExtensionContainingAppName];
-    v10 = [(TUCall *)self displayContext];
-    v11 = [v10 callDirectoryLabel];
-    v12 = [v8 stringWithFormat:@"%@: %@", v9, v11];
+    displayContext = [(TUCall *)self displayContext];
+    callDirectoryLocalizedExtensionContainingAppName2 = [displayContext callDirectoryLocalizedExtensionContainingAppName];
+    displayContext3 = [(TUCall *)self displayContext];
+    callDirectoryLabel2 = [displayContext3 callDirectoryLabel];
+    v12 = [v8 stringWithFormat:@"%@: %@", callDirectoryLocalizedExtensionContainingAppName2, callDirectoryLabel2];
 
 LABEL_5:
     goto LABEL_7;
@@ -1400,53 +1400,53 @@ LABEL_7:
 
 - (int64_t)callDirectoryIdentityType
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 callDirectoryIdentityType];
+  displayContext = [(TUCall *)self displayContext];
+  callDirectoryIdentityType = [displayContext callDirectoryIdentityType];
 
-  return v3;
+  return callDirectoryIdentityType;
 }
 
 - (NSString)companyName
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 companyName];
+  displayContext = [(TUCall *)self displayContext];
+  companyName = [displayContext companyName];
 
-  return v3;
+  return companyName;
 }
 
 - (NSString)companyDepartment
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 companyDepartment];
+  displayContext = [(TUCall *)self displayContext];
+  companyDepartment = [displayContext companyDepartment];
 
-  return v3;
+  return companyDepartment;
 }
 
 - (int)abUID
 {
-  v2 = [(TUCall *)self displayContext];
-  v3 = [v2 legacyAddressBookIdentifier];
+  displayContext = [(TUCall *)self displayContext];
+  legacyAddressBookIdentifier = [displayContext legacyAddressBookIdentifier];
 
-  return v3;
+  return legacyAddressBookIdentifier;
 }
 
-+ (id)_supplementalDialTelephonyCallStringForLocString:(id)a3 destination:(id)a4 isPhoneNumber:(BOOL)a5 includeFaceTimeAudio:(BOOL)a6
++ (id)_supplementalDialTelephonyCallStringForLocString:(id)string destination:(id)destination isPhoneNumber:(BOOL)number includeFaceTimeAudio:(BOOL)audio
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
+  audioCopy = audio;
+  numberCopy = number;
+  stringCopy = string;
+  destinationCopy = destination;
   if (!+[TUCallCapabilities supportsTelephonyCalls](TUCallCapabilities, "supportsTelephonyCalls") || +[TUCallCapabilities supportsPrimaryCalling])
   {
     v11 = 0;
     goto LABEL_23;
   }
 
-  v12 = [MEMORY[0x1E696AD60] stringWithString:v9];
-  v13 = [MEMORY[0x1E695DF70] array];
-  if (v10)
+  v12 = [MEMORY[0x1E696AD60] stringWithString:stringCopy];
+  array = [MEMORY[0x1E695DF70] array];
+  if (destinationCopy)
   {
-    if (v7)
+    if (numberCopy)
     {
       v14 = @"_TO_NUMBER_%@";
     }
@@ -1457,7 +1457,7 @@ LABEL_7:
     }
 
     [v12 appendString:v14];
-    [v13 addObject:v10];
+    [array addObject:destinationCopy];
   }
 
   if (+[TUCallCapabilities isDirectTelephonyCallingCurrentlyAvailable])
@@ -1477,25 +1477,25 @@ LABEL_7:
 
   [v12 appendString:v15];
 LABEL_14:
-  if (v6)
+  if (audioCopy)
   {
     [v12 appendString:@"_FTA"];
   }
 
-  if ([v13 count] == 1)
+  if ([array count] == 1)
   {
     v16 = MEMORY[0x1E696AEC0];
     v17 = TUBundle();
     v18 = TUStringKeyForPlatform(v12);
     v19 = [v17 localizedStringForKey:v18 value:&stru_1F098C218 table:@"TelephonyUtilities"];
-    v20 = [v13 objectAtIndex:0];
+    v20 = [array objectAtIndex:0];
     v11 = [v16 stringWithFormat:v19, v20];
 
 LABEL_21:
     goto LABEL_22;
   }
 
-  if (![v13 count])
+  if (![array count])
   {
     v17 = TUBundle();
     v18 = TUStringKeyForPlatform(v12);
@@ -1513,10 +1513,10 @@ LABEL_23:
 
 - (id)serviceDisplayString
 {
-  v3 = [(TUCall *)self provider];
-  v4 = [v3 isFaceTimeProvider];
+  provider = [(TUCall *)self provider];
+  isFaceTimeProvider = [provider isFaceTimeProvider];
 
-  if (!v4)
+  if (!isFaceTimeProvider)
   {
     v9 = 0;
     goto LABEL_14;
@@ -1527,33 +1527,33 @@ LABEL_23:
   {
     if ([(TUCall *)self isConversation])
     {
-      v6 = [(TUCall *)self callCenter];
-      v7 = [v6 activeConversationForCall:self];
+      callCenter = [(TUCall *)self callCenter];
+      v7 = [callCenter activeConversationForCall:self];
 
       if (v7 && [v7 resolvedAudioVideoMode] != 2)
       {
-        v8 = [v5 faceTimeAudioServiceName];
+        faceTimeAudioServiceName = [v5 faceTimeAudioServiceName];
       }
 
       else
       {
-        v8 = [v5 faceTimeVideoServiceName];
+        faceTimeAudioServiceName = [v5 faceTimeVideoServiceName];
       }
 
-      v9 = v8;
+      v9 = faceTimeAudioServiceName;
 
       goto LABEL_13;
     }
 
-    v10 = [v5 faceTimeVideoServiceName];
+    faceTimeVideoServiceName = [v5 faceTimeVideoServiceName];
   }
 
   else
   {
-    v10 = [v5 faceTimeAudioServiceName];
+    faceTimeVideoServiceName = [v5 faceTimeAudioServiceName];
   }
 
-  v9 = v10;
+  v9 = faceTimeVideoServiceName;
 LABEL_13:
 
 LABEL_14:
@@ -1567,25 +1567,25 @@ LABEL_14:
   switch([(TUCall *)self disconnectedReason])
   {
     case 8:
-      v4 = TUBundle();
+      dateConnected = TUBundle();
       v5 = @"ALERT_RELAY_FAILED_CONFERENCE_FAILED_TITLE";
       goto LABEL_25;
     case 9:
     case 0xC:
-      v4 = TUBundle();
+      dateConnected = TUBundle();
       v5 = @"ALERT_RELAY_FAILED_RELAY_DEVICE_UNAVAILABLE_TITLE";
       goto LABEL_25;
     case 0xA:
-      v4 = TUBundle();
+      dateConnected = TUBundle();
       v5 = @"ALERT_HOST_DEVICE_BUSY_TITLE";
       goto LABEL_25;
     case 0xB:
     case 0x2E:
-      v4 = TUBundle();
+      dateConnected = TUBundle();
       goto LABEL_5;
     case 0xD:
       v15 = +[TUCallCapabilities isThumperCallingEnabled];
-      v4 = TUBundle();
+      dateConnected = TUBundle();
       if (v15)
       {
 LABEL_5:
@@ -1602,7 +1602,7 @@ LABEL_5:
       if ([(TUCall *)self isVideo]&& [(TUCall *)self isIncoming])
       {
         v13 = TUBundle();
-        v4 = v13;
+        dateConnected = v13;
         v14 = @"ALERT_GENERIC_FAILURE_TITLE_IOS";
 LABEL_29:
         v3 = [(__CFString *)v13 localizedStringForKey:v14 value:&stru_1F098C218 table:@"TelephonyUtilities"];
@@ -1618,47 +1618,47 @@ LABEL_31:
 
       return v3;
     case 0x10:
-      v4 = TUBundle();
+      dateConnected = TUBundle();
       v5 = @"ALERT_CLIENT_DEVICE_BUSY_TITLE";
 LABEL_25:
       v11 = TUStringKeyForPlatform(v5);
-      v10 = v4;
+      v10 = dateConnected;
       v12 = v11;
       goto LABEL_26;
     case 0x1A:
       v13 = TUBundle();
-      v4 = v13;
+      dateConnected = v13;
       v14 = @"ALERT_KICKED_OUT_TITLE";
       goto LABEL_29;
     case 0x1B:
       v13 = TUBundle();
-      v4 = v13;
+      dateConnected = v13;
       v14 = @"ALERT_REJECTED_TITLE";
       goto LABEL_29;
     case 0x1D:
       v13 = TUBundle();
-      v4 = v13;
+      dateConnected = v13;
       v14 = @"ALERT_LINKS_DISABLED_TITLE";
       goto LABEL_29;
     case 0x1E:
     case 0x31:
       v6 = MEMORY[0x1E696AEC0];
-      v4 = TUBundle();
-      v7 = [(__CFString *)v4 localizedStringForKey:@"NO_DESTINATIONS_AVAILABLE_TITLE_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-      v8 = [(TUCall *)self displayName];
-      v3 = [v6 stringWithFormat:v7, v8];
+      dateConnected = TUBundle();
+      v7 = [(__CFString *)dateConnected localizedStringForKey:@"NO_DESTINATIONS_AVAILABLE_TITLE_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
+      displayName = [(TUCall *)self displayName];
+      v3 = [v6 stringWithFormat:v7, displayName];
 
       goto LABEL_30;
     case 0x23:
       v13 = TUBundle();
-      v4 = v13;
+      dateConnected = v13;
       v14 = @"ALERT_OFFRAMPED_TITLE";
       goto LABEL_29;
     case 0x26:
-      v4 = [(TUCall *)self dateConnected];
+      dateConnected = [(TUCall *)self dateConnected];
       v10 = TUBundle();
       v11 = v10;
-      if (v4)
+      if (dateConnected)
       {
         v12 = @"ALERT_BLOCKED_REMOTE_PARTICIPANT_REMOTE_JOINING_TITLE";
       }
@@ -1671,20 +1671,20 @@ LABEL_25:
       goto LABEL_26;
     case 0x2A:
       v13 = TUBundle();
-      v4 = v13;
+      dateConnected = v13;
       v14 = @"TRAVEL_MODE_TITLE";
       goto LABEL_29;
     case 0x2B:
       v13 = TUBundle();
-      v4 = v13;
+      dateConnected = v13;
       v14 = @"GUEST_MODE_TITLE";
       goto LABEL_29;
     case 0x2C:
-      v4 = [(TUCall *)self featureFlags];
-      v9 = [(__CFString *)v4 appleAccountRebrandEnabled];
+      dateConnected = [(TUCall *)self featureFlags];
+      appleAccountRebrandEnabled = [(__CFString *)dateConnected appleAccountRebrandEnabled];
       v10 = TUBundle();
       v11 = v10;
-      if (v9)
+      if (appleAccountRebrandEnabled)
       {
         v12 = @"NOT_SIGNED_IN_TITLE_APPLEACCOUNT";
       }
@@ -1700,7 +1700,7 @@ LABEL_26:
       goto LABEL_30;
     case 0x2D:
       v13 = TUBundle();
-      v4 = v13;
+      dateConnected = v13;
       v14 = @"APP_NOT_INSTALLED_TITLE";
       goto LABEL_29;
     default:
@@ -1714,14 +1714,14 @@ LABEL_26:
   switch([(TUCall *)self disconnectedReason])
   {
     case 8:
-      v5 = TUBundle();
+      featureFlags = TUBundle();
       v19 = @"ALERT_RELAY_FAILED_LEARN_MORE_GUIDANCE_MESSAGE";
       goto LABEL_29;
     case 9:
-      v5 = [(TUCall *)self featureFlags];
-      v15 = [v5 appleAccountRebrandEnabled];
+      featureFlags = [(TUCall *)self featureFlags];
+      appleAccountRebrandEnabled = [featureFlags appleAccountRebrandEnabled];
       v12 = TUBundle();
-      if (v15)
+      if (appleAccountRebrandEnabled)
       {
         v16 = @"ALERT_RELAY_FAILED_RELAY_DEVICE_UNAVAILABLE_ACCOUNTS_MESSAGE_APPLEACCOUNT";
       }
@@ -1734,20 +1734,20 @@ LABEL_26:
       v14 = TUStringKeyForProduct(v16);
       goto LABEL_14;
     case 0xA:
-      v5 = TUBundle();
+      featureFlags = TUBundle();
       v18 = @"ALERT_HOST_DEVICE_BUSY_MESSAGE";
       goto LABEL_19;
     case 0xC:
-      v5 = TUBundle();
+      featureFlags = TUBundle();
       v18 = @"ALERT_RELAY_FAILED_RELAY_DEVICE_UNAVAILABLE_ENABLE_MESSAGE";
       goto LABEL_19;
     case 0xD:
       if (+[TUCallCapabilities isThumperCallingEnabled])
       {
-        v5 = [CUTWeakLinkClass() sharedInstance];
-        v11 = [v5 wiFiActiveAndReachable];
+        featureFlags = [CUTWeakLinkClass() sharedInstance];
+        wiFiActiveAndReachable = [featureFlags wiFiActiveAndReachable];
         v12 = TUBundle();
-        if (v11)
+        if (wiFiActiveAndReachable)
         {
           v13 = @"ALERT_THUMPER_FAILED_CALLING_NOT_AVAILABLE_MESSAGE";
         }
@@ -1765,75 +1765,75 @@ LABEL_14:
 
       else
       {
-        v5 = TUBundle();
+        featureFlags = TUBundle();
         v19 = @"ALERT_RELAY_FAILED_NO_REMOTE_NETWORK_MESSAGE";
 LABEL_29:
         v20 = TUStringKeyForNetworkAndProduct(v19);
 LABEL_30:
         v12 = v20;
-        v3 = [v5 localizedStringForKey:v20 value:&stru_1F098C218 table:@"TelephonyUtilities"];
+        v3 = [featureFlags localizedStringForKey:v20 value:&stru_1F098C218 table:@"TelephonyUtilities"];
       }
 
       goto LABEL_32;
     case 0x10:
-      v5 = TUBundle();
+      featureFlags = TUBundle();
       v18 = @"ALERT_CLIENT_DEVICE_BUSY_MESSAGE";
 LABEL_19:
       v20 = TUStringKeyForProduct(v18);
       goto LABEL_30;
     case 0x1A:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"ALERT_KICKED_OUT_MESSAGE";
       goto LABEL_27;
     case 0x1B:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"ALERT_REJECTED_MESSAGE";
       goto LABEL_27;
     case 0x1C:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"ALERT_INVALID_LINK_MESSAGE";
       goto LABEL_27;
     case 0x1D:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"ALERT_LINKS_DISABLED_MESSAGE";
       goto LABEL_27;
     case 0x1E:
     case 0x31:
       v4 = MEMORY[0x1E696AEC0];
-      v5 = TUBundle();
-      v6 = [v5 localizedStringForKey:@"NO_DESTINATIONS_AVAILABLE_MESSAGE_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
-      v7 = [(TUCall *)self handle];
-      v8 = [v7 value];
-      v3 = [v4 stringWithFormat:v6, v8];
+      featureFlags = TUBundle();
+      v6 = [featureFlags localizedStringForKey:@"NO_DESTINATIONS_AVAILABLE_MESSAGE_%@" value:&stru_1F098C218 table:@"TelephonyUtilities"];
+      handle = [(TUCall *)self handle];
+      value = [handle value];
+      v3 = [v4 stringWithFormat:v6, value];
 
       goto LABEL_32;
     case 0x23:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"ALERT_OFFRAMPED_MESSAGE";
       goto LABEL_27;
     case 0x2A:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"TRAVEL_MODE_MESSAGE";
       goto LABEL_27;
     case 0x2B:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"GUEST_MODE_MESSAGE";
       goto LABEL_27;
     case 0x2C:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"NOT_SIGNED_IN_MESSAGE";
       goto LABEL_27;
     case 0x2D:
       v9 = TUBundle();
-      v5 = v9;
+      featureFlags = v9;
       v10 = @"APP_NOT_INSTALLED_MESSAGE";
 LABEL_27:
       v3 = [v9 localizedStringForKey:v10 value:&stru_1F098C218 table:@"TelephonyUtilities"];
@@ -1847,324 +1847,324 @@ LABEL_32:
   return v3;
 }
 
-- (void)updateWithCall:(id)a3
+- (void)updateWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   [(TUCall *)self resetProvisionalState];
-  self->_disconnectedReason = [v4 disconnectedReason];
-  self->_filteredOutReason = [v4 filteredOutReason];
-  self->_supportsRecents = [v4 supportsRecents];
-  v5 = [v4 dateAnsweredOrDialed];
+  self->_disconnectedReason = [callCopy disconnectedReason];
+  self->_filteredOutReason = [callCopy filteredOutReason];
+  self->_supportsRecents = [callCopy supportsRecents];
+  dateAnsweredOrDialed = [callCopy dateAnsweredOrDialed];
   dateAnsweredOrDialed = self->_dateAnsweredOrDialed;
-  self->_dateAnsweredOrDialed = v5;
+  self->_dateAnsweredOrDialed = dateAnsweredOrDialed;
 
-  v7 = [v4 dateCreated];
+  dateCreated = [callCopy dateCreated];
   dateCreated = self->_dateCreated;
-  self->_dateCreated = v7;
+  self->_dateCreated = dateCreated;
 
-  v9 = [v4 dateSentInvitation];
+  dateSentInvitation = [callCopy dateSentInvitation];
   dateSentInvitation = self->_dateSentInvitation;
-  self->_dateSentInvitation = v9;
+  self->_dateSentInvitation = dateSentInvitation;
 
-  v11 = [v4 dateStartedConnecting];
+  dateStartedConnecting = [callCopy dateStartedConnecting];
   dateStartedConnecting = self->_dateStartedConnecting;
-  self->_dateStartedConnecting = v11;
+  self->_dateStartedConnecting = dateStartedConnecting;
 
-  v13 = [v4 dateConnected];
+  dateConnected = [callCopy dateConnected];
   dateConnected = self->_dateConnected;
-  self->_dateConnected = v13;
+  self->_dateConnected = dateConnected;
 
-  v15 = [v4 dateScreeningEnded];
+  dateScreeningEnded = [callCopy dateScreeningEnded];
   dateScreeningEnded = self->_dateScreeningEnded;
-  self->_dateScreeningEnded = v15;
+  self->_dateScreeningEnded = dateScreeningEnded;
 
-  v17 = [v4 dateEnded];
+  dateEnded = [callCopy dateEnded];
   dateEnded = self->_dateEnded;
-  self->_dateEnded = v17;
+  self->_dateEnded = dateEnded;
 
-  self->_wantsHoldMusic = [v4 wantsHoldMusic];
-  self->_endpointOnCurrentDevice = [v4 isEndpointOnCurrentDevice];
-  self->_localUserInHomeCountry = [v4 isLocalUserInHomeCountry];
-  self->_answeringMachineAvailable = [v4 isAnsweringMachineAvailable];
-  self->_nondisclosedGreeting = [v4 hasNondisclosedGreeting];
-  self->_identifiedSpamInCallerName = [v4 hasIdentifiedSpamInCallerName];
-  self->_screening = [v4 isScreening];
-  self->_screeningDueToUserInteraction = [v4 isScreeningDueToUserInteraction];
-  self->_wasScreened = [v4 wasScreened];
-  self->_receptionistState = [v4 receptionistState];
-  v19 = [v4 lastReceptionistMessage];
-  v20 = [v19 copy];
+  self->_wantsHoldMusic = [callCopy wantsHoldMusic];
+  self->_endpointOnCurrentDevice = [callCopy isEndpointOnCurrentDevice];
+  self->_localUserInHomeCountry = [callCopy isLocalUserInHomeCountry];
+  self->_answeringMachineAvailable = [callCopy isAnsweringMachineAvailable];
+  self->_nondisclosedGreeting = [callCopy hasNondisclosedGreeting];
+  self->_identifiedSpamInCallerName = [callCopy hasIdentifiedSpamInCallerName];
+  self->_screening = [callCopy isScreening];
+  self->_screeningDueToUserInteraction = [callCopy isScreeningDueToUserInteraction];
+  self->_wasScreened = [callCopy wasScreened];
+  self->_receptionistState = [callCopy receptionistState];
+  lastReceptionistMessage = [callCopy lastReceptionistMessage];
+  v20 = [lastReceptionistMessage copy];
   lastReceptionistMessage = self->_lastReceptionistMessage;
   self->_lastReceptionistMessage = v20;
 
-  v22 = [v4 receptionistSession];
-  v23 = [v22 copy];
+  receptionistSession = [callCopy receptionistSession];
+  v23 = [receptionistSession copy];
   receptionistSession = self->_receptionistSession;
   self->_receptionistSession = v23;
 
-  self->_screeningAnnouncementHasFinished = [v4 screeningAnnouncementHasFinished];
-  self->_shouldSuppressRingtone = [v4 shouldSuppressRingtone];
-  self->_hasEverUnsuppressedRingtone = [v4 hasEverUnsuppressedRingtone];
-  v25 = [v4 sourceIdentifier];
-  v26 = [v25 copy];
+  self->_screeningAnnouncementHasFinished = [callCopy screeningAnnouncementHasFinished];
+  self->_shouldSuppressRingtone = [callCopy shouldSuppressRingtone];
+  self->_hasEverUnsuppressedRingtone = [callCopy hasEverUnsuppressedRingtone];
+  sourceIdentifier = [callCopy sourceIdentifier];
+  v26 = [sourceIdentifier copy];
   sourceIdentifier = self->_sourceIdentifier;
   self->_sourceIdentifier = v26;
 
-  self->_wasDialAssisted = [v4 wasDialAssisted];
-  self->_faceTimeIDStatus = [v4 faceTimeIDStatus];
-  self->_hardPauseDigitsState = [v4 hardPauseDigitsState];
-  v28 = [v4 hardPauseDigits];
-  v29 = [v28 copy];
+  self->_wasDialAssisted = [callCopy wasDialAssisted];
+  self->_faceTimeIDStatus = [callCopy faceTimeIDStatus];
+  self->_hardPauseDigitsState = [callCopy hardPauseDigitsState];
+  hardPauseDigits = [callCopy hardPauseDigits];
+  v29 = [hardPauseDigits copy];
   hardPauseDigits = self->_hardPauseDigits;
   self->_hardPauseDigits = v29;
 
-  self->_wasPulledToCurrentDevice = [v4 wasPulledToCurrentDevice];
-  self->_soundRegion = [v4 soundRegion];
-  v31 = [v4 model];
-  v32 = [v31 copy];
+  self->_wasPulledToCurrentDevice = [callCopy wasPulledToCurrentDevice];
+  self->_soundRegion = [callCopy soundRegion];
+  model = [callCopy model];
+  v32 = [model copy];
   model = self->_model;
   self->_model = v32;
 
-  self->_supportsDTMFUpdates = [v4 supportsDTMFUpdates];
-  self->_video = [v4 isVideo];
-  self->_launchInBackground = [v4 launchInBackground];
-  self->_verificationStatus = [v4 verificationStatus];
-  self->_priority = [v4 priority];
-  self->_originatingUIType = [v4 originatingUIType];
-  self->_liveVoicemailUnavailableReason = [v4 liveVoicemailUnavailableReason];
-  self->_junkConfidence = [v4 junkConfidence];
-  self->_identificationCategory = [v4 identificationCategory];
-  self->_isKnownCaller = [v4 isKnownCaller];
-  self->_joinedFromLink = [v4 joinedFromLink];
-  self->_callSubType = [v4 callSubType];
-  self->_hasEmergencyVideoStream = [v4 hasEmergencyVideoStream];
-  v34 = [v4 emergencyMediaItems];
-  v35 = [v34 copy];
+  self->_supportsDTMFUpdates = [callCopy supportsDTMFUpdates];
+  self->_video = [callCopy isVideo];
+  self->_launchInBackground = [callCopy launchInBackground];
+  self->_verificationStatus = [callCopy verificationStatus];
+  self->_priority = [callCopy priority];
+  self->_originatingUIType = [callCopy originatingUIType];
+  self->_liveVoicemailUnavailableReason = [callCopy liveVoicemailUnavailableReason];
+  self->_junkConfidence = [callCopy junkConfidence];
+  self->_identificationCategory = [callCopy identificationCategory];
+  self->_isKnownCaller = [callCopy isKnownCaller];
+  self->_joinedFromLink = [callCopy joinedFromLink];
+  self->_callSubType = [callCopy callSubType];
+  self->_hasEmergencyVideoStream = [callCopy hasEmergencyVideoStream];
+  emergencyMediaItems = [callCopy emergencyMediaItems];
+  v35 = [emergencyMediaItems copy];
   emergencyMediaItems = self->_emergencyMediaItems;
   self->_emergencyMediaItems = v35;
 
-  v37 = [v4 recordingSession];
-  v38 = [v37 copy];
+  recordingSession = [callCopy recordingSession];
+  v38 = [recordingSession copy];
   recordingSession = self->_recordingSession;
   self->_recordingSession = v38;
 
-  v40 = [v4 currentRecordingSession];
-  v41 = [v40 copy];
+  currentRecordingSession = [callCopy currentRecordingSession];
+  v41 = [currentRecordingSession copy];
   currentRecordingSession = self->_currentRecordingSession;
   self->_currentRecordingSession = v41;
 
-  v43 = [v4 podcastRecordingSession];
-  v44 = [v43 copy];
+  podcastRecordingSession = [callCopy podcastRecordingSession];
+  v44 = [podcastRecordingSession copy];
   podcastRecordingSession = self->_podcastRecordingSession;
   self->_podcastRecordingSession = v44;
 
-  v46 = [v4 translationSession];
-  v47 = [v46 copy];
+  translationSession = [callCopy translationSession];
+  v47 = [translationSession copy];
   translationSession = self->_translationSession;
   self->_translationSession = v47;
 
-  v49 = [v4 smartHoldingSession];
-  v50 = [v49 copy];
+  smartHoldingSession = [callCopy smartHoldingSession];
+  v50 = [smartHoldingSession copy];
   smartHoldingSession = self->_smartHoldingSession;
   self->_smartHoldingSession = v50;
 
-  v52 = [v4 blockedByExtension];
-  v53 = [v52 copy];
+  blockedByExtension = [callCopy blockedByExtension];
+  v53 = [blockedByExtension copy];
   blockedByExtension = self->_blockedByExtension;
   self->_blockedByExtension = v53;
 
-  v55 = [v4 callDirectoryIdentityExtension];
-  v56 = [v55 copy];
+  callDirectoryIdentityExtension = [callCopy callDirectoryIdentityExtension];
+  v56 = [callDirectoryIdentityExtension copy];
   callDirectoryIdentityExtension = self->_callDirectoryIdentityExtension;
   self->_callDirectoryIdentityExtension = v56;
 
-  self->_screenSharingIntention = [v4 screenSharingIntention];
-  self->_commTrustScore = [v4 commTrustScore];
-  self->_specialUnknown = [v4 specialUnknown];
-  v58 = [v4 upgradedFromCallUUID];
-  v59 = [v58 copy];
+  self->_screenSharingIntention = [callCopy screenSharingIntention];
+  self->_commTrustScore = [callCopy commTrustScore];
+  self->_specialUnknown = [callCopy specialUnknown];
+  upgradedFromCallUUID = [callCopy upgradedFromCallUUID];
+  v59 = [upgradedFromCallUUID copy];
   upgradedFromCallUUID = self->_upgradedFromCallUUID;
   self->_upgradedFromCallUUID = v59;
 
-  self->_isReceptionistCapable = [v4 isReceptionistCapable];
-  [v4 hostCreationTime];
+  self->_isReceptionistCapable = [callCopy isReceptionistCapable];
+  [callCopy hostCreationTime];
   self->_hostCreationTime = v61;
-  [v4 hostMessageSendTime];
+  [callCopy hostMessageSendTime];
   self->_hostMessageSendTime = v62;
-  [v4 clientMessageReceiveTime];
+  [callCopy clientMessageReceiveTime];
   self->_clientMessageReceiveTime = v63;
-  self->_answeringMachineStreamToken = [v4 answeringMachineStreamToken];
-  self->_providerErrorCode = [v4 providerErrorCode];
-  self->_providerEndedReason = [v4 providerEndedReason];
-  self->_screenSharingType = [v4 screenSharingType];
-  self->_isSharePlayCapable = [v4 isSharePlayCapable];
-  self->_anyRemoteSupportsRequestToScreenShare = [v4 anyRemoteSupportsRequestToScreenShare];
-  v64 = [v4 reminderUUID];
+  self->_answeringMachineStreamToken = [callCopy answeringMachineStreamToken];
+  self->_providerErrorCode = [callCopy providerErrorCode];
+  self->_providerEndedReason = [callCopy providerEndedReason];
+  self->_screenSharingType = [callCopy screenSharingType];
+  self->_isSharePlayCapable = [callCopy isSharePlayCapable];
+  self->_anyRemoteSupportsRequestToScreenShare = [callCopy anyRemoteSupportsRequestToScreenShare];
+  reminderUUID = [callCopy reminderUUID];
   reminderUUID = self->_reminderUUID;
-  self->_reminderUUID = v64;
+  self->_reminderUUID = reminderUUID;
 
-  v66 = [v4 conversationGroupUUID];
+  conversationGroupUUID = [callCopy conversationGroupUUID];
 
   conversationGroupUUID = self->_conversationGroupUUID;
-  self->_conversationGroupUUID = v66;
+  self->_conversationGroupUUID = conversationGroupUUID;
 }
 
-- (TUCall)initWithCoder:(id)a3
+- (TUCall)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueProxyIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueProxyIdentifier"];
   v6 = [(TUCall *)self initWithUniqueProxyIdentifier:v5];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
     v8 = [v7 copy];
     sourceIdentifier = v6->_sourceIdentifier;
     v6->_sourceIdentifier = v8;
 
-    v6->_disconnectedReason = [v4 decodeInt32ForKey:@"disconnectedReason"];
-    v6->_filteredOutReason = [v4 decodeInt32ForKey:@"filteredOutReason"];
-    v6->_supportsRecents = [v4 decodeBoolForKey:@"supportsRecents"];
-    v6->_faceTimeIDStatus = [v4 decodeInt32ForKey:@"faceTimeIDStatus"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
+    v6->_disconnectedReason = [coderCopy decodeInt32ForKey:@"disconnectedReason"];
+    v6->_filteredOutReason = [coderCopy decodeInt32ForKey:@"filteredOutReason"];
+    v6->_supportsRecents = [coderCopy decodeBoolForKey:@"supportsRecents"];
+    v6->_faceTimeIDStatus = [coderCopy decodeInt32ForKey:@"faceTimeIDStatus"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateCreated"];
     dateCreated = v6->_dateCreated;
     v6->_dateCreated = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateAnsweredOrDialed"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateAnsweredOrDialed"];
     dateAnsweredOrDialed = v6->_dateAnsweredOrDialed;
     v6->_dateAnsweredOrDialed = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateSentInvitation"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateSentInvitation"];
     dateSentInvitation = v6->_dateSentInvitation;
     v6->_dateSentInvitation = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateStartedConnecting"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateStartedConnecting"];
     dateStartedConnecting = v6->_dateStartedConnecting;
     v6->_dateStartedConnecting = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateConnected"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateConnected"];
     dateConnected = v6->_dateConnected;
     v6->_dateConnected = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateScreeningEnded"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateScreeningEnded"];
     dateScreeningEnded = v6->_dateScreeningEnded;
     v6->_dateScreeningEnded = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateEnded"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateEnded"];
     dateEnded = v6->_dateEnded;
     v6->_dateEnded = v22;
 
-    v6->_wasDialAssisted = [v4 decodeBoolForKey:@"wasDialAssisted"];
-    v6->_wantsHoldMusic = [v4 decodeBoolForKey:@"wantsHoldMusic"];
-    v6->_endpointOnCurrentDevice = [v4 decodeBoolForKey:@"endpointOnCurrentDevice"];
-    v6->_localUserInHomeCountry = [v4 decodeBoolForKey:@"localUserInHomeCountry"];
-    v6->_answeringMachineAvailable = [v4 decodeBoolForKey:@"answeringMachineAvailable"];
-    v6->_nondisclosedGreeting = [v4 decodeBoolForKey:@"nondisclosedGreeting"];
-    v6->_identifiedSpamInCallerName = [v4 decodeBoolForKey:@"identifiedSpamInCallerName"];
-    v6->_screening = [v4 decodeBoolForKey:@"screening"];
-    v6->_screeningDueToUserInteraction = [v4 decodeBoolForKey:@"screeningDueToUserInteraction"];
-    v6->_wasScreened = [v4 decodeBoolForKey:@"wasScreened"];
-    v6->_receptionistState = [v4 decodeInt32ForKey:@"receptionistState"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastReceptionistMessage"];
+    v6->_wasDialAssisted = [coderCopy decodeBoolForKey:@"wasDialAssisted"];
+    v6->_wantsHoldMusic = [coderCopy decodeBoolForKey:@"wantsHoldMusic"];
+    v6->_endpointOnCurrentDevice = [coderCopy decodeBoolForKey:@"endpointOnCurrentDevice"];
+    v6->_localUserInHomeCountry = [coderCopy decodeBoolForKey:@"localUserInHomeCountry"];
+    v6->_answeringMachineAvailable = [coderCopy decodeBoolForKey:@"answeringMachineAvailable"];
+    v6->_nondisclosedGreeting = [coderCopy decodeBoolForKey:@"nondisclosedGreeting"];
+    v6->_identifiedSpamInCallerName = [coderCopy decodeBoolForKey:@"identifiedSpamInCallerName"];
+    v6->_screening = [coderCopy decodeBoolForKey:@"screening"];
+    v6->_screeningDueToUserInteraction = [coderCopy decodeBoolForKey:@"screeningDueToUserInteraction"];
+    v6->_wasScreened = [coderCopy decodeBoolForKey:@"wasScreened"];
+    v6->_receptionistState = [coderCopy decodeInt32ForKey:@"receptionistState"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastReceptionistMessage"];
     lastReceptionistMessage = v6->_lastReceptionistMessage;
     v6->_lastReceptionistMessage = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receptionistSession"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receptionistSession"];
     receptionistSession = v6->_receptionistSession;
     v6->_receptionistSession = v26;
 
-    v6->_screeningAnnouncementHasFinished = [v4 decodeBoolForKey:@"screeningAnnouncementHasFinished"];
-    v6->_shouldSuppressRingtone = [v4 decodeBoolForKey:@"shouldSuppressRingtone"];
-    v6->_hasEverUnsuppressedRingtone = [v4 decodeBoolForKey:@"hasEverUnsuppressedRingtone"];
-    v6->_hardPauseDigitsState = [v4 decodeInt32ForKey:@"hardPauseDigitsState"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hardPauseDigits"];
+    v6->_screeningAnnouncementHasFinished = [coderCopy decodeBoolForKey:@"screeningAnnouncementHasFinished"];
+    v6->_shouldSuppressRingtone = [coderCopy decodeBoolForKey:@"shouldSuppressRingtone"];
+    v6->_hasEverUnsuppressedRingtone = [coderCopy decodeBoolForKey:@"hasEverUnsuppressedRingtone"];
+    v6->_hardPauseDigitsState = [coderCopy decodeInt32ForKey:@"hardPauseDigitsState"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardPauseDigits"];
     hardPauseDigits = v6->_hardPauseDigits;
     v6->_hardPauseDigits = v28;
 
-    v6->_wasPulledToCurrentDevice = [v4 decodeBoolForKey:@"wasPulledToCurrentDevice"];
-    v6->_soundRegion = [v4 decodeIntegerForKey:@"soundRegion"];
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v6->_wasPulledToCurrentDevice = [coderCopy decodeBoolForKey:@"wasPulledToCurrentDevice"];
+    v6->_soundRegion = [coderCopy decodeIntegerForKey:@"soundRegion"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     model = v6->_model;
     v6->_model = v30;
 
-    v6->_supportsDTMFUpdates = [v4 decodeBoolForKey:@"supportsDTMFUpdates"];
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"videoCallAttributes"];
+    v6->_supportsDTMFUpdates = [coderCopy decodeBoolForKey:@"supportsDTMFUpdates"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"videoCallAttributes"];
     videoCallAttributes = v6->_videoCallAttributes;
     v6->_videoCallAttributes = v32;
 
-    v6->_launchInBackground = [v4 decodeBoolForKey:@"launchInBackground"];
-    v6->_verificationStatus = [v4 decodeInt32ForKey:@"verificationStatus"];
-    v6->_priority = [v4 decodeInt32ForKey:@"priority"];
-    v6->_originatingUIType = [v4 decodeInt32ForKey:@"originatingUIType"];
-    v6->_liveVoicemailUnavailableReason = [v4 decodeInt32ForKey:@"liveVoicemailUnavailableReason"];
-    v6->_junkConfidence = [v4 decodeInt32ForKey:@"junkConfidence"];
-    v6->_identificationCategory = [v4 decodeInt32ForKey:@"identificationCategory"];
-    v6->_isKnownCaller = [v4 decodeBoolForKey:@"isKnownCaller"];
-    v6->_joinedFromLink = [v4 decodeBoolForKey:@"joinedFromLink"];
-    v6->_answeringMachineStreamToken = [v4 decodeIntForKey:@"answeringMachineStreamToken"];
-    v6->_callSubType = [v4 decodeIntForKey:@"callSubType"];
-    v6->_screenSharingIntention = [v4 decodeIntForKey:@"screenSharingIntention"];
-    v6->_hasEmergencyVideoStream = [v4 decodeBoolForKey:@"hasEmergencyVideoStream"];
+    v6->_launchInBackground = [coderCopy decodeBoolForKey:@"launchInBackground"];
+    v6->_verificationStatus = [coderCopy decodeInt32ForKey:@"verificationStatus"];
+    v6->_priority = [coderCopy decodeInt32ForKey:@"priority"];
+    v6->_originatingUIType = [coderCopy decodeInt32ForKey:@"originatingUIType"];
+    v6->_liveVoicemailUnavailableReason = [coderCopy decodeInt32ForKey:@"liveVoicemailUnavailableReason"];
+    v6->_junkConfidence = [coderCopy decodeInt32ForKey:@"junkConfidence"];
+    v6->_identificationCategory = [coderCopy decodeInt32ForKey:@"identificationCategory"];
+    v6->_isKnownCaller = [coderCopy decodeBoolForKey:@"isKnownCaller"];
+    v6->_joinedFromLink = [coderCopy decodeBoolForKey:@"joinedFromLink"];
+    v6->_answeringMachineStreamToken = [coderCopy decodeIntForKey:@"answeringMachineStreamToken"];
+    v6->_callSubType = [coderCopy decodeIntForKey:@"callSubType"];
+    v6->_screenSharingIntention = [coderCopy decodeIntForKey:@"screenSharingIntention"];
+    v6->_hasEmergencyVideoStream = [coderCopy decodeBoolForKey:@"hasEmergencyVideoStream"];
     v34 = MEMORY[0x1E695DFD8];
     v35 = objc_opt_class();
     v36 = [v34 setWithObjects:{v35, objc_opt_class(), 0}];
-    v37 = [v4 decodeObjectOfClasses:v36 forKey:@"emergencyMediaItems"];
+    v37 = [coderCopy decodeObjectOfClasses:v36 forKey:@"emergencyMediaItems"];
     emergencyMediaItems = v6->_emergencyMediaItems;
     v6->_emergencyMediaItems = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blockedByExtension"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blockedByExtension"];
     v40 = [v39 copy];
     blockedByExtension = v6->_blockedByExtension;
     v6->_blockedByExtension = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callDirectoryIdentityExtension"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callDirectoryIdentityExtension"];
     v43 = [v42 copy];
     callDirectoryIdentityExtension = v6->_callDirectoryIdentityExtension;
     v6->_callDirectoryIdentityExtension = v43;
 
-    v6->_commTrustScore = [v4 decodeInt32ForKey:@"commTrustScore"];
-    v6->_specialUnknown = [v4 decodeBoolForKey:@"specialUnknown"];
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"upgradedFromCallUUID"];
+    v6->_commTrustScore = [coderCopy decodeInt32ForKey:@"commTrustScore"];
+    v6->_specialUnknown = [coderCopy decodeBoolForKey:@"specialUnknown"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"upgradedFromCallUUID"];
     upgradedFromCallUUID = v6->_upgradedFromCallUUID;
     v6->_upgradedFromCallUUID = v45;
 
-    v6->_isReceptionistCapable = [v4 decodeBoolForKey:@"receptionistCapable"];
-    [v4 decodeDoubleForKey:@"hostCreationTime"];
+    v6->_isReceptionistCapable = [coderCopy decodeBoolForKey:@"receptionistCapable"];
+    [coderCopy decodeDoubleForKey:@"hostCreationTime"];
     v6->_hostCreationTime = v47;
-    [v4 decodeDoubleForKey:@"hostMessageSendTime"];
+    [coderCopy decodeDoubleForKey:@"hostMessageSendTime"];
     v6->_hostMessageSendTime = v48;
-    [v4 decodeDoubleForKey:@"clientMessageReceiveTime"];
+    [coderCopy decodeDoubleForKey:@"clientMessageReceiveTime"];
     v6->_clientMessageReceiveTime = v49;
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordingSession"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordingSession"];
     recordingSession = v6->_recordingSession;
     v6->_recordingSession = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentRecordingSession"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentRecordingSession"];
     currentRecordingSession = v6->_currentRecordingSession;
     v6->_currentRecordingSession = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"podcastRecordingSession"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"podcastRecordingSession"];
     podcastRecordingSession = v6->_podcastRecordingSession;
     v6->_podcastRecordingSession = v54;
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"translationSession"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"translationSession"];
     translationSession = v6->_translationSession;
     v6->_translationSession = v56;
 
-    v6->_providerErrorCode = [v4 decodeIntForKey:@"providerErrorCode"];
-    v6->_providerEndedReason = [v4 decodeIntForKey:@"providerEndedReason"];
-    v6->_screenSharingType = [v4 decodeIntegerForKey:@"screenSharingType"];
-    v6->_isSharePlayCapable = [v4 decodeBoolForKey:@"isSharePlayCapable"];
-    v6->_anyRemoteSupportsRequestToScreenShare = [v4 decodeBoolForKey:@"anyRemoteSupportsRequestToScreenShare"];
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"smartHoldingSession"];
+    v6->_providerErrorCode = [coderCopy decodeIntForKey:@"providerErrorCode"];
+    v6->_providerEndedReason = [coderCopy decodeIntForKey:@"providerEndedReason"];
+    v6->_screenSharingType = [coderCopy decodeIntegerForKey:@"screenSharingType"];
+    v6->_isSharePlayCapable = [coderCopy decodeBoolForKey:@"isSharePlayCapable"];
+    v6->_anyRemoteSupportsRequestToScreenShare = [coderCopy decodeBoolForKey:@"anyRemoteSupportsRequestToScreenShare"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smartHoldingSession"];
     smartHoldingSession = v6->_smartHoldingSession;
     v6->_smartHoldingSession = v58;
 
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reminderUUID"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reminderUUID"];
     reminderUUID = v6->_reminderUUID;
     v6->_reminderUUID = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"conversationGroupUUID"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"conversationGroupUUID"];
     conversationGroupUUID = v6->_conversationGroupUUID;
     v6->_conversationGroupUUID = v62;
   }
@@ -2172,82 +2172,82 @@ LABEL_32:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueProxyIdentifier = self->_uniqueProxyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uniqueProxyIdentifier forKey:@"uniqueProxyIdentifier"];
-  [v5 encodeObject:self->_sourceIdentifier forKey:@"sourceIdentifier"];
-  [v5 encodeInt32:self->_disconnectedReason forKey:@"disconnectedReason"];
-  [v5 encodeInt32:self->_filteredOutReason forKey:@"filteredOutReason"];
-  [v5 encodeBool:self->_supportsRecents forKey:@"supportsRecents"];
-  [v5 encodeInt32:self->_faceTimeIDStatus forKey:@"faceTimeIDStatus"];
-  [v5 encodeObject:self->_dateCreated forKey:@"dateCreated"];
-  [v5 encodeObject:self->_dateAnsweredOrDialed forKey:@"dateAnsweredOrDialed"];
-  [v5 encodeObject:self->_dateSentInvitation forKey:@"dateSentInvitation"];
-  [v5 encodeObject:self->_dateStartedConnecting forKey:@"dateStartedConnecting"];
-  [v5 encodeObject:self->_dateConnected forKey:@"dateConnected"];
-  [v5 encodeObject:self->_dateScreeningEnded forKey:@"dateScreeningEnded"];
-  [v5 encodeObject:self->_dateEnded forKey:@"dateEnded"];
-  [v5 encodeBool:self->_wasDialAssisted forKey:@"wasDialAssisted"];
-  [v5 encodeInt32:self->_transitionStatus forKey:@"transitionStatus"];
-  [v5 encodeBool:self->_wantsHoldMusic forKey:@"wantsHoldMusic"];
-  [v5 encodeBool:self->_endpointOnCurrentDevice forKey:@"endpointOnCurrentDevice"];
-  [v5 encodeBool:self->_localUserInHomeCountry forKey:@"localUserInHomeCountry"];
-  [v5 encodeBool:self->_answeringMachineAvailable forKey:@"answeringMachineAvailable"];
-  [v5 encodeBool:self->_nondisclosedGreeting forKey:@"nondisclosedGreeting"];
-  [v5 encodeBool:self->_identifiedSpamInCallerName forKey:@"identifiedSpamInCallerName"];
-  [v5 encodeBool:self->_screening forKey:@"screening"];
-  [v5 encodeBool:self->_screeningDueToUserInteraction forKey:@"screeningDueToUserInteraction"];
-  [v5 encodeBool:self->_wasScreened forKey:@"wasScreened"];
-  [v5 encodeInt32:self->_receptionistState forKey:@"receptionistState"];
-  [v5 encodeObject:self->_lastReceptionistMessage forKey:@"lastReceptionistMessage"];
-  [v5 encodeObject:self->_receptionistSession forKey:@"receptionistSession"];
-  [v5 encodeBool:self->_screeningAnnouncementHasFinished forKey:@"screeningAnnouncementHasFinished"];
-  [v5 encodeBool:self->_shouldSuppressRingtone forKey:@"shouldSuppressRingtone"];
-  [v5 encodeBool:self->_hasEverUnsuppressedRingtone forKey:@"hasEverUnsuppressedRingtone"];
-  [v5 encodeInt32:self->_hardPauseDigitsState forKey:@"hardPauseDigitsState"];
-  [v5 encodeObject:self->_hardPauseDigits forKey:@"hardPauseDigits"];
-  [v5 encodeBool:self->_wasPulledToCurrentDevice forKey:@"wasPulledToCurrentDevice"];
-  [v5 encodeInteger:self->_soundRegion forKey:@"soundRegion"];
-  [v5 encodeInteger:self->_screenSharingIntention forKey:@"screenSharingIntention"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeBool:self->_supportsDTMFUpdates forKey:@"supportsDTMFUpdates"];
-  [v5 encodeObject:self->_videoCallAttributes forKey:@"videoCallAttributes"];
-  [v5 encodeBool:self->_launchInBackground forKey:@"launchInBackground"];
-  [v5 encodeInteger:self->_verificationStatus forKey:@"verificationStatus"];
-  [v5 encodeInteger:self->_priority forKey:@"priority"];
-  [v5 encodeInt32:self->_originatingUIType forKey:@"originatingUIType"];
-  [v5 encodeInteger:self->_liveVoicemailUnavailableReason forKey:@"liveVoicemailUnavailableReason"];
-  [v5 encodeInteger:self->_junkConfidence forKey:@"junkConfidence"];
-  [v5 encodeInteger:self->_identificationCategory forKey:@"identificationCategory"];
-  [v5 encodeBool:self->_isKnownCaller forKey:@"isKnownCaller"];
-  [v5 encodeBool:self->_joinedFromLink forKey:@"joinedFromLink"];
-  [v5 encodeInt:self->_callSubType forKey:@"callSubType"];
-  [v5 encodeBool:self->_hasEmergencyVideoStream forKey:@"hasEmergencyVideoStream"];
-  [v5 encodeObject:self->_emergencyMediaItems forKey:@"emergencyMediaItems"];
-  [v5 encodeObject:self->_upgradedFromCallUUID forKey:@"upgradedFromCallUUID"];
-  [v5 encodeObject:self->_recordingSession forKey:@"recordingSession"];
-  [v5 encodeObject:self->_currentRecordingSession forKey:@"currentRecordingSession"];
-  [v5 encodeObject:self->_podcastRecordingSession forKey:@"podcastRecordingSession"];
-  [v5 encodeObject:self->_translationSession forKey:@"translationSession"];
-  [v5 encodeObject:self->_blockedByExtension forKey:@"blockedByExtension"];
-  [v5 encodeObject:self->_callDirectoryIdentityExtension forKey:@"callDirectoryIdentityExtension"];
-  [v5 encodeBool:self->_isSharePlayCapable forKey:@"isSharePlayCapable"];
-  [v5 encodeBool:self->_anyRemoteSupportsRequestToScreenShare forKey:@"anyRemoteSupportsRequestToScreenShare"];
-  [v5 encodeDouble:@"hostCreationTime" forKey:self->_hostCreationTime];
-  [v5 encodeDouble:@"hostMessageSendTime" forKey:self->_hostMessageSendTime];
-  [v5 encodeDouble:@"clientMessageReceiveTime" forKey:self->_clientMessageReceiveTime];
-  [v5 encodeInteger:self->_answeringMachineStreamToken forKey:@"answeringMachineStreamToken"];
-  [v5 encodeInteger:self->_providerErrorCode forKey:@"providerErrorCode"];
-  [v5 encodeInteger:self->_providerEndedReason forKey:@"providerEndedReason"];
-  [v5 encodeInteger:self->_screenSharingType forKey:@"screenSharingType"];
-  [v5 encodeInt32:self->_commTrustScore forKey:@"commTrustScore"];
-  [v5 encodeBool:self->_specialUnknown forKey:@"specialUnknown"];
-  [v5 encodeBool:self->_isReceptionistCapable forKey:@"receptionistCapable"];
-  [v5 encodeObject:self->_smartHoldingSession forKey:@"smartHoldingSession"];
-  [v5 encodeObject:self->_reminderUUID forKey:@"reminderUUID"];
-  [v5 encodeObject:self->_conversationGroupUUID forKey:@"conversationGroupUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueProxyIdentifier forKey:@"uniqueProxyIdentifier"];
+  [coderCopy encodeObject:self->_sourceIdentifier forKey:@"sourceIdentifier"];
+  [coderCopy encodeInt32:self->_disconnectedReason forKey:@"disconnectedReason"];
+  [coderCopy encodeInt32:self->_filteredOutReason forKey:@"filteredOutReason"];
+  [coderCopy encodeBool:self->_supportsRecents forKey:@"supportsRecents"];
+  [coderCopy encodeInt32:self->_faceTimeIDStatus forKey:@"faceTimeIDStatus"];
+  [coderCopy encodeObject:self->_dateCreated forKey:@"dateCreated"];
+  [coderCopy encodeObject:self->_dateAnsweredOrDialed forKey:@"dateAnsweredOrDialed"];
+  [coderCopy encodeObject:self->_dateSentInvitation forKey:@"dateSentInvitation"];
+  [coderCopy encodeObject:self->_dateStartedConnecting forKey:@"dateStartedConnecting"];
+  [coderCopy encodeObject:self->_dateConnected forKey:@"dateConnected"];
+  [coderCopy encodeObject:self->_dateScreeningEnded forKey:@"dateScreeningEnded"];
+  [coderCopy encodeObject:self->_dateEnded forKey:@"dateEnded"];
+  [coderCopy encodeBool:self->_wasDialAssisted forKey:@"wasDialAssisted"];
+  [coderCopy encodeInt32:self->_transitionStatus forKey:@"transitionStatus"];
+  [coderCopy encodeBool:self->_wantsHoldMusic forKey:@"wantsHoldMusic"];
+  [coderCopy encodeBool:self->_endpointOnCurrentDevice forKey:@"endpointOnCurrentDevice"];
+  [coderCopy encodeBool:self->_localUserInHomeCountry forKey:@"localUserInHomeCountry"];
+  [coderCopy encodeBool:self->_answeringMachineAvailable forKey:@"answeringMachineAvailable"];
+  [coderCopy encodeBool:self->_nondisclosedGreeting forKey:@"nondisclosedGreeting"];
+  [coderCopy encodeBool:self->_identifiedSpamInCallerName forKey:@"identifiedSpamInCallerName"];
+  [coderCopy encodeBool:self->_screening forKey:@"screening"];
+  [coderCopy encodeBool:self->_screeningDueToUserInteraction forKey:@"screeningDueToUserInteraction"];
+  [coderCopy encodeBool:self->_wasScreened forKey:@"wasScreened"];
+  [coderCopy encodeInt32:self->_receptionistState forKey:@"receptionistState"];
+  [coderCopy encodeObject:self->_lastReceptionistMessage forKey:@"lastReceptionistMessage"];
+  [coderCopy encodeObject:self->_receptionistSession forKey:@"receptionistSession"];
+  [coderCopy encodeBool:self->_screeningAnnouncementHasFinished forKey:@"screeningAnnouncementHasFinished"];
+  [coderCopy encodeBool:self->_shouldSuppressRingtone forKey:@"shouldSuppressRingtone"];
+  [coderCopy encodeBool:self->_hasEverUnsuppressedRingtone forKey:@"hasEverUnsuppressedRingtone"];
+  [coderCopy encodeInt32:self->_hardPauseDigitsState forKey:@"hardPauseDigitsState"];
+  [coderCopy encodeObject:self->_hardPauseDigits forKey:@"hardPauseDigits"];
+  [coderCopy encodeBool:self->_wasPulledToCurrentDevice forKey:@"wasPulledToCurrentDevice"];
+  [coderCopy encodeInteger:self->_soundRegion forKey:@"soundRegion"];
+  [coderCopy encodeInteger:self->_screenSharingIntention forKey:@"screenSharingIntention"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeBool:self->_supportsDTMFUpdates forKey:@"supportsDTMFUpdates"];
+  [coderCopy encodeObject:self->_videoCallAttributes forKey:@"videoCallAttributes"];
+  [coderCopy encodeBool:self->_launchInBackground forKey:@"launchInBackground"];
+  [coderCopy encodeInteger:self->_verificationStatus forKey:@"verificationStatus"];
+  [coderCopy encodeInteger:self->_priority forKey:@"priority"];
+  [coderCopy encodeInt32:self->_originatingUIType forKey:@"originatingUIType"];
+  [coderCopy encodeInteger:self->_liveVoicemailUnavailableReason forKey:@"liveVoicemailUnavailableReason"];
+  [coderCopy encodeInteger:self->_junkConfidence forKey:@"junkConfidence"];
+  [coderCopy encodeInteger:self->_identificationCategory forKey:@"identificationCategory"];
+  [coderCopy encodeBool:self->_isKnownCaller forKey:@"isKnownCaller"];
+  [coderCopy encodeBool:self->_joinedFromLink forKey:@"joinedFromLink"];
+  [coderCopy encodeInt:self->_callSubType forKey:@"callSubType"];
+  [coderCopy encodeBool:self->_hasEmergencyVideoStream forKey:@"hasEmergencyVideoStream"];
+  [coderCopy encodeObject:self->_emergencyMediaItems forKey:@"emergencyMediaItems"];
+  [coderCopy encodeObject:self->_upgradedFromCallUUID forKey:@"upgradedFromCallUUID"];
+  [coderCopy encodeObject:self->_recordingSession forKey:@"recordingSession"];
+  [coderCopy encodeObject:self->_currentRecordingSession forKey:@"currentRecordingSession"];
+  [coderCopy encodeObject:self->_podcastRecordingSession forKey:@"podcastRecordingSession"];
+  [coderCopy encodeObject:self->_translationSession forKey:@"translationSession"];
+  [coderCopy encodeObject:self->_blockedByExtension forKey:@"blockedByExtension"];
+  [coderCopy encodeObject:self->_callDirectoryIdentityExtension forKey:@"callDirectoryIdentityExtension"];
+  [coderCopy encodeBool:self->_isSharePlayCapable forKey:@"isSharePlayCapable"];
+  [coderCopy encodeBool:self->_anyRemoteSupportsRequestToScreenShare forKey:@"anyRemoteSupportsRequestToScreenShare"];
+  [coderCopy encodeDouble:@"hostCreationTime" forKey:self->_hostCreationTime];
+  [coderCopy encodeDouble:@"hostMessageSendTime" forKey:self->_hostMessageSendTime];
+  [coderCopy encodeDouble:@"clientMessageReceiveTime" forKey:self->_clientMessageReceiveTime];
+  [coderCopy encodeInteger:self->_answeringMachineStreamToken forKey:@"answeringMachineStreamToken"];
+  [coderCopy encodeInteger:self->_providerErrorCode forKey:@"providerErrorCode"];
+  [coderCopy encodeInteger:self->_providerEndedReason forKey:@"providerEndedReason"];
+  [coderCopy encodeInteger:self->_screenSharingType forKey:@"screenSharingType"];
+  [coderCopy encodeInt32:self->_commTrustScore forKey:@"commTrustScore"];
+  [coderCopy encodeBool:self->_specialUnknown forKey:@"specialUnknown"];
+  [coderCopy encodeBool:self->_isReceptionistCapable forKey:@"receptionistCapable"];
+  [coderCopy encodeObject:self->_smartHoldingSession forKey:@"smartHoldingSession"];
+  [coderCopy encodeObject:self->_reminderUUID forKey:@"reminderUUID"];
+  [coderCopy encodeObject:self->_conversationGroupUUID forKey:@"conversationGroupUUID"];
 }
 
 - (CGRect)remoteVideoContentRect
@@ -2268,13 +2268,13 @@ LABEL_32:
   return result;
 }
 
-- (BOOL)isVideoUpgradeFromCall:(id)a3
+- (BOOL)isVideoUpgradeFromCall:(id)call
 {
-  v4 = a3;
-  if (-[TUCall isVideo](self, "isVideo") && ([v4 isVideo] & 1) == 0 && (-[TUCall handle](self, "handle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "handle"), v6 = objc_claimAutoreleasedReturnValue(), v7 = TUHandlesAreCanonicallyEqual(v5, v6), v6, v5, v7))
+  callCopy = call;
+  if (-[TUCall isVideo](self, "isVideo") && ([callCopy isVideo] & 1) == 0 && (-[TUCall handle](self, "handle"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(callCopy, "handle"), v6 = objc_claimAutoreleasedReturnValue(), v7 = TUHandlesAreCanonicallyEqual(v5, v6), v6, v5, v7))
   {
-    v8 = [v4 provider];
-    v9 = [v8 isTinCanProvider] ^ 1;
+    provider = [callCopy provider];
+    v9 = [provider isTinCanProvider] ^ 1;
   }
 
   else
@@ -2285,48 +2285,48 @@ LABEL_32:
   return v9;
 }
 
-- (BOOL)isDialRequestVideoUpgrade:(id)a3
+- (BOOL)isDialRequestVideoUpgrade:(id)upgrade
 {
-  v4 = a3;
-  v5 = [(TUCall *)self featureFlags];
-  v6 = [v5 uplevelFTAEnabled];
+  upgradeCopy = upgrade;
+  featureFlags = [(TUCall *)self featureFlags];
+  uplevelFTAEnabled = [featureFlags uplevelFTAEnabled];
 
-  if (v6)
+  if (uplevelFTAEnabled)
   {
-    v7 = [(TUCall *)self upgradedFromCallUUID];
-    v8 = v7 != 0;
+    upgradedFromCallUUID = [(TUCall *)self upgradedFromCallUUID];
+    v8 = upgradedFromCallUUID != 0;
   }
 
   else
   {
-    if (![v4 isVideo] || -[TUCall isVideo](self, "isVideo"))
+    if (![upgradeCopy isVideo] || -[TUCall isVideo](self, "isVideo"))
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(TUCall *)self handle];
-    v10 = [v4 handle];
-    v8 = TUHandlesAreCanonicallyEqual(v7, v10);
+    upgradedFromCallUUID = [(TUCall *)self handle];
+    handle = [upgradeCopy handle];
+    v8 = TUHandlesAreCanonicallyEqual(upgradedFromCallUUID, handle);
   }
 
 LABEL_7:
   return v8;
 }
 
-- (BOOL)_isEligibleForManualScreening:(BOOL)a3 languageIdentifier:(id)a4
+- (BOOL)_isEligibleForManualScreening:(BOOL)screening languageIdentifier:(id)identifier
 {
-  v4 = a3;
+  screeningCopy = screening;
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (v4)
+  identifierCopy = identifier;
+  if (screeningCopy)
   {
-    v7 = [(TUCall *)self featureFlags];
-    if ([v7 LVMEverywhere] && -[TUCall supportsScreening](self, "supportsScreening"))
+    featureFlags = [(TUCall *)self featureFlags];
+    if ([featureFlags LVMEverywhere] && -[TUCall supportsScreening](self, "supportsScreening"))
     {
-      v8 = [(TUCall *)self isHostedOnCurrentDevice];
+      isHostedOnCurrentDevice = [(TUCall *)self isHostedOnCurrentDevice];
 
-      if (!v8)
+      if (!isHostedOnCurrentDevice)
       {
         v9 = TUDefaultLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2345,13 +2345,13 @@ LABEL_7:
     }
   }
 
-  v11 = [(TUCall *)self featureFlags];
-  v10 = TUCallScreeningEnabled(v11, 0, v6);
+  featureFlags2 = [(TUCall *)self featureFlags];
+  v10 = TUCallScreeningEnabled(featureFlags2, 0, identifierCopy);
 
   if (v10)
   {
-    v12 = [(TUCall *)self clarityEnabledBlock];
-    v13 = v12[2]();
+    clarityEnabledBlock = [(TUCall *)self clarityEnabledBlock];
+    v13 = clarityEnabledBlock[2]();
 
     if (v13)
     {
@@ -2368,10 +2368,10 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    if (!v4)
+    if (!screeningCopy)
     {
-      v15 = [(TUCall *)self lowPowerModeEnabledBlock];
-      v16 = v15[2]();
+      lowPowerModeEnabledBlock = [(TUCall *)self lowPowerModeEnabledBlock];
+      v16 = lowPowerModeEnabledBlock[2]();
 
       if (v16)
       {
@@ -2405,22 +2405,22 @@ LABEL_24:
     if ([(TUCall *)self priority]== 2)
     {
       [(TUCall *)self setLiveVoicemailUnavailableReason:7];
-      v17 = TUDefaultLog();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      remoteParticipantHandles = TUDefaultLog();
+      if (os_log_type_enabled(remoteParticipantHandles, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v32) = 0;
-        _os_log_impl(&dword_1956FD000, v17, OS_LOG_TYPE_DEFAULT, "isEligibleForScreening: High Priority call, not screenable", &v32, 2u);
+        _os_log_impl(&dword_1956FD000, remoteParticipantHandles, OS_LOG_TYPE_DEFAULT, "isEligibleForScreening: High Priority call, not screenable", &v32, 2u);
       }
 
       goto LABEL_37;
     }
 
-    v18 = [(TUCall *)self provider];
-    v19 = [v18 isTelephonyProvider];
+    provider = [(TUCall *)self provider];
+    isTelephonyProvider = [provider isTelephonyProvider];
 
-    if (!v19 || v4)
+    if (!isTelephonyProvider || screeningCopy)
     {
-      if (v19)
+      if (isTelephonyProvider)
       {
         goto LABEL_32;
       }
@@ -2431,10 +2431,10 @@ LABEL_24:
       goto LABEL_32;
     }
 
-    v20 = [(TUCall *)self provider];
-    v21 = [v20 isFaceTimeProvider];
+    provider2 = [(TUCall *)self provider];
+    isFaceTimeProvider = [provider2 isFaceTimeProvider];
 
-    if (!v21)
+    if (!isFaceTimeProvider)
     {
 LABEL_38:
       v22 = TUDefaultLog();
@@ -2453,17 +2453,17 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    v17 = [(TUCall *)self remoteParticipantHandles];
-    if ([v17 count]> 1 || [(TUCall *)self isVideo])
+    remoteParticipantHandles = [(TUCall *)self remoteParticipantHandles];
+    if ([remoteParticipantHandles count]> 1 || [(TUCall *)self isVideo])
     {
 LABEL_37:
 
       goto LABEL_38;
     }
 
-    v28 = [(TUCall *)self isConversation];
-    v29 = v28;
-    if (!v28 || v4)
+    isConversation = [(TUCall *)self isConversation];
+    v29 = isConversation;
+    if (!isConversation || screeningCopy)
     {
 
       if (!v29)
@@ -2474,8 +2474,8 @@ LABEL_37:
 
     else
     {
-      v30 = [(TUCall *)self contactIdentifiers];
-      v31 = [v30 count];
+      contactIdentifiers = [(TUCall *)self contactIdentifiers];
+      v31 = [contactIdentifiers count];
 
       if (!v31)
       {
@@ -2519,14 +2519,14 @@ LABEL_42:
     v32 = 138412802;
     v33 = v25;
     v34 = 2112;
-    if (v4)
+    if (screeningCopy)
     {
       v24 = @"YES";
     }
 
     v35 = v24;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1956FD000, v9, OS_LOG_TYPE_DEFAULT, "isEligibleForScreening: %@ manualScreening: %@ for call: %@", &v32, 0x20u);
   }
 
@@ -2538,17 +2538,17 @@ LABEL_49:
 
 - (BOOL)isPodcastRecordingAllowed
 {
-  v2 = [(TUCall *)self featureFlags];
-  v3 = [v2 enhancedCallRecordingEnabled];
+  featureFlags = [(TUCall *)self featureFlags];
+  enhancedCallRecordingEnabled = [featureFlags enhancedCallRecordingEnabled];
 
-  return v3;
+  return enhancedCallRecordingEnabled;
 }
 
 - (int)smartHoldingHoldDetectionAvailability
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(TUCall *)self displayContext];
-  v4 = [v3 contactName];
+  displayContext = [(TUCall *)self displayContext];
+  contactName = [displayContext contactName];
 
   if ([(TUCall *)self smartHoldingAvailability]!= 1)
   {
@@ -2556,11 +2556,11 @@ LABEL_49:
     goto LABEL_19;
   }
 
-  v5 = [(TUCall *)self configurationProvider];
-  if ([v5 isHoldAssistDetectionEnabled])
+  configurationProvider = [(TUCall *)self configurationProvider];
+  if ([configurationProvider isHoldAssistDetectionEnabled])
   {
-    v6 = [(TUCall *)self provider];
-    if (![v6 isTelephonyProvider])
+    provider = [(TUCall *)self provider];
+    if (![provider isTelephonyProvider])
     {
       v20 = 2;
 LABEL_17:
@@ -2568,8 +2568,8 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v7 = [(TUCall *)self lowPowerModeEnabledBlock];
-    if (v7[2]())
+    lowPowerModeEnabledBlock = [(TUCall *)self lowPowerModeEnabledBlock];
+    if (lowPowerModeEnabledBlock[2]())
     {
       v8 = 2;
     }
@@ -2584,8 +2584,8 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v9 = [(TUCall *)self isEmergency];
-      if (v4)
+      isEmergency = [(TUCall *)self isEmergency];
+      if (contactName)
       {
         v8 = 2;
       }
@@ -2595,7 +2595,7 @@ LABEL_16:
         v8 = 1;
       }
 
-      if (v9)
+      if (isEmergency)
       {
         v8 = 2;
       }
@@ -2612,27 +2612,27 @@ LABEL_19:
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = v4 == 0;
-    v11 = [(TUCall *)self configurationProvider];
-    v12 = [v11 isHoldAssistDetectionEnabled];
-    v13 = [(TUCall *)self provider];
-    v14 = [v13 isTelephonyProvider];
-    v15 = [(TUCall *)self lowPowerModeEnabledBlock];
-    v16 = v15[2]();
+    v19 = contactName == 0;
+    configurationProvider2 = [(TUCall *)self configurationProvider];
+    isHoldAssistDetectionEnabled = [configurationProvider2 isHoldAssistDetectionEnabled];
+    provider2 = [(TUCall *)self provider];
+    isTelephonyProvider = [provider2 isTelephonyProvider];
+    lowPowerModeEnabledBlock2 = [(TUCall *)self lowPowerModeEnabledBlock];
+    v16 = lowPowerModeEnabledBlock2[2]();
     *buf = 67110912;
     v22 = v20;
     v23 = 1024;
-    v24 = v12;
+    v24 = isHoldAssistDetectionEnabled;
     v25 = 1024;
-    v26 = v14;
+    v26 = isTelephonyProvider;
     v27 = 1024;
     v28 = v16;
     v29 = 1024;
-    v30 = [(TUCall *)self smartHoldingAvailability];
+    smartHoldingAvailability = [(TUCall *)self smartHoldingAvailability];
     v31 = 1024;
-    v32 = [(TUCall *)self isOutgoing];
+    isOutgoing = [(TUCall *)self isOutgoing];
     v33 = 1024;
-    v34 = [(TUCall *)self isEmergency];
+    isEmergency2 = [(TUCall *)self isEmergency];
     v35 = 1024;
     v36 = v19;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "smartHoldingHoldDetectionAvailability=%i, isHoldAssistDetectionEnabled=%i, isTelephonyProvider=%i, lowPowerModeEnabledBlock=%i, smartHoldingAvailability=%i, isOutgoing=%i, isEmergency=%i, isUnknownContact=%i", buf, 0x32u);
@@ -2661,9 +2661,9 @@ LABEL_19:
 - (void)dialRequestForRedial
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 handle];
+  handle = [self handle];
   v5 = 138412290;
-  v6 = v3;
+  v6 = handle;
   _os_log_error_impl(&dword_1956FD000, a2, OS_LOG_TYPE_ERROR, "Call was emergency, but handle %@ is not considered to be an emergency handle. Setting redial dialType to normal.", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];

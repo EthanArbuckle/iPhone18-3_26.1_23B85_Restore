@@ -1,54 +1,54 @@
 @interface NPKProtoAddISO18013BlobsRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCardType:(id)a3;
+- (int)StringAsCardType:(id)type;
 - (int)cardType;
 - (unint64_t)hash;
-- (void)addIsoblobs:(id)a3;
-- (void)addSubcredentialData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIsoblobs:(id)isoblobs;
+- (void)addSubcredentialData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoAddISO18013BlobsRequest
 
-- (void)addSubcredentialData:(id)a3
+- (void)addSubcredentialData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   subcredentialDatas = self->_subcredentialDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!subcredentialDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_subcredentialDatas;
     self->_subcredentialDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     subcredentialDatas = self->_subcredentialDatas;
   }
 
-  [(NSMutableArray *)subcredentialDatas addObject:v4];
+  [(NSMutableArray *)subcredentialDatas addObject:dataCopy];
 }
 
-- (void)addIsoblobs:(id)a3
+- (void)addIsoblobs:(id)isoblobs
 {
-  v4 = a3;
+  isoblobsCopy = isoblobs;
   isoblobs = self->_isoblobs;
-  v8 = v4;
+  v8 = isoblobsCopy;
   if (!isoblobs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_isoblobs;
     self->_isoblobs = v6;
 
-    v4 = v8;
+    isoblobsCopy = v8;
     isoblobs = self->_isoblobs;
   }
 
-  [(NSMutableArray *)isoblobs addObject:v4];
+  [(NSMutableArray *)isoblobs addObject:isoblobsCopy];
 }
 
 - (int)cardType
@@ -64,30 +64,30 @@
   }
 }
 
-- (int)StringAsCardType:(id)a3
+- (int)StringAsCardType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Payment"])
+  else if ([typeCopy isEqualToString:@"Payment"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Transit"])
+  else if ([typeCopy isEqualToString:@"Transit"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Access"])
+  else if ([typeCopy isEqualToString:@"Access"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Identity"])
+  else if ([typeCopy isEqualToString:@"Identity"])
   {
     v4 = 4;
   }
@@ -106,20 +106,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoAddISO18013BlobsRequest;
   v4 = [(NPKProtoAddISO18013BlobsRequest *)&v8 description];
-  v5 = [(NPKProtoAddISO18013BlobsRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoAddISO18013BlobsRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   subcredentialDatas = self->_subcredentialDatas;
   if (subcredentialDatas)
   {
-    [v3 setObject:subcredentialDatas forKey:@"subcredentialData"];
+    [dictionary setObject:subcredentialDatas forKey:@"subcredentialData"];
   }
 
   isoblobs = self->_isoblobs;
@@ -147,10 +147,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -224,50 +224,50 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(NPKProtoAddISO18013BlobsRequest *)self subcredentialDatasCount])
   {
-    [v12 clearSubcredentialDatas];
-    v4 = [(NPKProtoAddISO18013BlobsRequest *)self subcredentialDatasCount];
-    if (v4)
+    [toCopy clearSubcredentialDatas];
+    subcredentialDatasCount = [(NPKProtoAddISO18013BlobsRequest *)self subcredentialDatasCount];
+    if (subcredentialDatasCount)
     {
-      v5 = v4;
+      v5 = subcredentialDatasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoAddISO18013BlobsRequest *)self subcredentialDataAtIndex:i];
-        [v12 addSubcredentialData:v7];
+        [toCopy addSubcredentialData:v7];
       }
     }
   }
 
   if ([(NPKProtoAddISO18013BlobsRequest *)self isoblobsCount])
   {
-    [v12 clearIsoblobs];
-    v8 = [(NPKProtoAddISO18013BlobsRequest *)self isoblobsCount];
-    if (v8)
+    [toCopy clearIsoblobs];
+    isoblobsCount = [(NPKProtoAddISO18013BlobsRequest *)self isoblobsCount];
+    if (isoblobsCount)
     {
-      v9 = v8;
+      v9 = isoblobsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoAddISO18013BlobsRequest *)self isoblobsAtIndex:j];
-        [v12 addIsoblobs:v11];
+        [toCopy addIsoblobs:v11];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v12 + 2) = self->_cardType;
-    *(v12 + 32) |= 1u;
+    *(toCopy + 2) = self->_cardType;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -288,7 +288,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addSubcredentialData:v11];
 
         ++v10;
@@ -321,7 +321,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addIsoblobs:v17];
 
         ++v16;
@@ -344,16 +344,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   subcredentialDatas = self->_subcredentialDatas;
-  if (subcredentialDatas | *(v4 + 3))
+  if (subcredentialDatas | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)subcredentialDatas isEqual:?])
     {
@@ -362,7 +362,7 @@
   }
 
   isoblobs = self->_isoblobs;
-  if (isoblobs | *(v4 + 2))
+  if (isoblobs | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)isoblobs isEqual:?])
     {
@@ -370,10 +370,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_cardType == *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_cardType == *(equalCopy + 2))
     {
       v7 = 1;
       goto LABEL_11;
@@ -405,15 +405,15 @@ LABEL_11:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -443,7 +443,7 @@ LABEL_11:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {
@@ -469,9 +469,9 @@ LABEL_11:
     while (v12);
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_cardType = *(v4 + 2);
+    self->_cardType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

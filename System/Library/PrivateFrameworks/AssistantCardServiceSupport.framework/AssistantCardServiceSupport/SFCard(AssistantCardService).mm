@@ -9,9 +9,9 @@
 + (id)acs_uniquelyIdentifiedCard
 {
   v0 = objc_alloc_init(objc_opt_class());
-  v1 = [MEMORY[0x277CCAD78] UUID];
-  v2 = [v1 UUIDString];
-  [v0 setCardId:v2];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v0 setCardId:uUIDString];
 
   return v0;
 }
@@ -19,58 +19,58 @@
 - (void)acs_setInteraction:()AssistantCardService
 {
   v22 = a3;
-  v4 = [v22 intent];
+  intent = [v22 intent];
 
-  if (v4)
+  if (intent)
   {
-    v5 = [v22 intent];
-    v6 = [v5 backingStore];
-    v7 = [v6 data];
+    intent2 = [v22 intent];
+    backingStore = [intent2 backingStore];
+    data = [backingStore data];
 
     v8 = objc_alloc_init(MEMORY[0x277D4C4B8]);
-    [v8 setProtobufMessageData:v7];
-    v9 = [v5 _intentInstanceDescription];
-    v10 = [v9 type];
-    [v8 setProtobufMessageName:v10];
+    [v8 setProtobufMessageData:data];
+    _intentInstanceDescription = [intent2 _intentInstanceDescription];
+    type = [_intentInstanceDescription type];
+    [v8 setProtobufMessageName:type];
 
-    v11 = [v8 protobufMessageData];
-    [a1 setIntentMessageData:v11];
+    protobufMessageData = [v8 protobufMessageData];
+    [self setIntentMessageData:protobufMessageData];
 
-    v12 = [v8 protobufMessageName];
-    [a1 setIntentMessageName:v12];
+    protobufMessageName = [v8 protobufMessageName];
+    [self setIntentMessageName:protobufMessageName];
   }
 
-  v13 = [v22 intentResponse];
+  intentResponse = [v22 intentResponse];
 
-  if (v13)
+  if (intentResponse)
   {
-    v14 = [v22 intentResponse];
-    v15 = [v14 backingStore];
-    v16 = [v15 data];
+    intentResponse2 = [v22 intentResponse];
+    backingStore2 = [intentResponse2 backingStore];
+    data2 = [backingStore2 data];
 
     v17 = objc_alloc_init(MEMORY[0x277D4C4B8]);
-    [v17 setProtobufMessageData:v16];
+    [v17 setProtobufMessageData:data2];
     objc_opt_class();
     v18 = INIntentSchemaGetIntentResponseDescriptionWithFacadeClass();
-    v19 = [v18 type];
-    [v17 setProtobufMessageName:v19];
+    type2 = [v18 type];
+    [v17 setProtobufMessageName:type2];
 
-    v20 = [v17 protobufMessageData];
-    [a1 setIntentResponseMessageData:v20];
+    protobufMessageData2 = [v17 protobufMessageData];
+    [self setIntentResponseMessageData:protobufMessageData2];
 
-    v21 = [v17 protobufMessageName];
-    [a1 setIntentResponseMessageName:v21];
+    protobufMessageName2 = [v17 protobufMessageName];
+    [self setIntentResponseMessageName:protobufMessageName2];
   }
 }
 
 - (id)acs_interaction
 {
-  v2 = [a1 intentMessageName];
-  v3 = [a1 intentMessageData];
+  intentMessageName = [self intentMessageName];
+  intentMessageData = [self intentMessageData];
   v4 = INIntentCreate();
 
-  v5 = [a1 intentResponseMessageName];
-  v6 = [a1 intentResponseMessageData];
+  intentResponseMessageName = [self intentResponseMessageName];
+  intentResponseMessageData = [self intentResponseMessageData];
   v7 = INIntentResponseCreate();
 
   v8 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:v4 response:v7];

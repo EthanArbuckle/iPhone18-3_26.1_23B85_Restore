@@ -1,48 +1,48 @@
 @interface RTConnectionsLocation
-- (RTConnectionsLocation)initWithLocation:(id)a3 name:(id)a4 originatingBundleID:(id)a5 fullFormattedAddress:(id)a6 mapItemURL:(id)a7 createdAt:(id)a8;
-- (id)_addProactiveExpertSourceTo:(id)a3;
-- (id)_mapItemFromForwardGeocode:(id)a3 options:(id)a4;
-- (id)_mapItemFromLocalSearch:(id)a3 options:(id)a4;
+- (RTConnectionsLocation)initWithLocation:(id)location name:(id)name originatingBundleID:(id)d fullFormattedAddress:(id)address mapItemURL:(id)l createdAt:(id)at;
+- (id)_addProactiveExpertSourceTo:(id)to;
+- (id)_mapItemFromForwardGeocode:(id)geocode options:(id)options;
+- (id)_mapItemFromLocalSearch:(id)search options:(id)options;
 - (id)description;
-- (id)mapItemUsingMapServiceManager:(id)a3 options:(id)a4;
+- (id)mapItemUsingMapServiceManager:(id)manager options:(id)options;
 @end
 
 @implementation RTConnectionsLocation
 
-- (RTConnectionsLocation)initWithLocation:(id)a3 name:(id)a4 originatingBundleID:(id)a5 fullFormattedAddress:(id)a6 mapItemURL:(id)a7 createdAt:(id)a8
+- (RTConnectionsLocation)initWithLocation:(id)location name:(id)name originatingBundleID:(id)d fullFormattedAddress:(id)address mapItemURL:(id)l createdAt:(id)at
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  locationCopy = location;
+  nameCopy = name;
+  dCopy = d;
+  addressCopy = address;
+  lCopy = l;
+  atCopy = at;
   v34.receiver = self;
   v34.super_class = RTConnectionsLocation;
   v20 = [(RTConnectionsLocation *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [locationCopy copy];
     location = v20->_location;
     v20->_location = v21;
 
-    v23 = [v15 copy];
+    v23 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v23;
 
-    v25 = [v16 copy];
+    v25 = [dCopy copy];
     originatingBundleID = v20->_originatingBundleID;
     v20->_originatingBundleID = v25;
 
-    v27 = [v17 copy];
+    v27 = [addressCopy copy];
     fullFormattedAddress = v20->_fullFormattedAddress;
     v20->_fullFormattedAddress = v27;
 
-    v29 = [v18 copy];
+    v29 = [lCopy copy];
     mapItemURL = v20->_mapItemURL;
     v20->_mapItemURL = v29;
 
-    v31 = [v19 copy];
+    v31 = [atCopy copy];
     createdAt = v20->_createdAt;
     v20->_createdAt = v31;
   }
@@ -53,22 +53,22 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTConnectionsLocation *)self location];
-  v5 = [(RTConnectionsLocation *)self name];
-  v6 = [(RTConnectionsLocation *)self originatingBundleID];
-  v7 = [(RTConnectionsLocation *)self fullFormattedAddress];
-  v8 = [(RTConnectionsLocation *)self mapItemURL];
-  v9 = [(RTConnectionsLocation *)self createdAt];
-  v10 = [v3 stringWithFormat:@"location, %@, name, %@, originatingBundleID, %@, fullFormattedAddress, %@, mapItemURL, %@, createdAt, %@", v4, v5, v6, v7, v8, v9];
+  location = [(RTConnectionsLocation *)self location];
+  name = [(RTConnectionsLocation *)self name];
+  originatingBundleID = [(RTConnectionsLocation *)self originatingBundleID];
+  fullFormattedAddress = [(RTConnectionsLocation *)self fullFormattedAddress];
+  mapItemURL = [(RTConnectionsLocation *)self mapItemURL];
+  createdAt = [(RTConnectionsLocation *)self createdAt];
+  v10 = [v3 stringWithFormat:@"location, %@, name, %@, originatingBundleID, %@, fullFormattedAddress, %@, mapItemURL, %@, createdAt, %@", location, name, originatingBundleID, fullFormattedAddress, mapItemURL, createdAt];
 
   return v10;
 }
 
-- (id)mapItemUsingMapServiceManager:(id)a3 options:(id)a4
+- (id)mapItemUsingMapServiceManager:(id)manager options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTConnectionsLocation *)self _mapItemFromLocalSearch:v6 options:v7];
+  managerCopy = manager;
+  optionsCopy = options;
+  v8 = [(RTConnectionsLocation *)self _mapItemFromLocalSearch:managerCopy options:optionsCopy];
   v9 = v8;
   if (v8)
   {
@@ -77,7 +77,7 @@
 
   else
   {
-    v10 = [(RTConnectionsLocation *)self _mapItemFromForwardGeocode:v6 options:v7];
+    v10 = [(RTConnectionsLocation *)self _mapItemFromForwardGeocode:managerCopy options:optionsCopy];
   }
 
   v11 = v10;
@@ -85,22 +85,22 @@
   return v11;
 }
 
-- (id)_mapItemFromLocalSearch:(id)a3 options:(id)a4
+- (id)_mapItemFromLocalSearch:(id)search options:(id)options
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  searchCopy = search;
+  optionsCopy = options;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__116;
   v40 = __Block_byref_object_dispose__116;
   v41 = 0;
-  v8 = [(RTConnectionsLocation *)self name];
-  if ([v8 length])
+  name = [(RTConnectionsLocation *)self name];
+  if ([name length])
   {
-    v9 = [(RTConnectionsLocation *)self location];
-    v10 = v9 == 0;
+    location = [(RTConnectionsLocation *)self location];
+    v10 = location == 0;
 
     if (v10)
     {
@@ -109,8 +109,8 @@
     }
 
     v11 = dispatch_semaphore_create(0);
-    v12 = [(RTConnectionsLocation *)self name];
-    v13 = [(RTConnectionsLocation *)self location];
+    name2 = [(RTConnectionsLocation *)self name];
+    location2 = [(RTConnectionsLocation *)self location];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __68__RTConnectionsLocation_RTMapItem___mapItemFromLocalSearch_options___block_invoke;
@@ -118,7 +118,7 @@
     v35 = &v36;
     v14 = v11;
     v34 = v14;
-    [v6 fetchMapItemsFromNaturalLanguageQuery:v12 location:v13 options:v7 handler:v33];
+    [searchCopy fetchMapItemsFromNaturalLanguageQuery:name2 location:location2 options:optionsCopy handler:v33];
 
     v15 = v14;
     v16 = [MEMORY[0x277CBEAA8] now];
@@ -130,11 +130,11 @@
       v19 = v18;
       v20 = objc_opt_new();
       v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_97];
-      v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v23 = [v22 filteredArrayUsingPredicate:v21];
-      v24 = [v23 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+      firstObject = [v23 firstObject];
 
-      [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+      [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
       v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
@@ -159,7 +159,7 @@
       v28 = 0;
     }
 
-    v8 = v28;
+    name = v28;
     v30 = [(RTConnectionsLocation *)self _addProactiveExpertSourceTo:v37[5]];
   }
 
@@ -198,19 +198,19 @@ void __68__RTConnectionsLocation_RTMapItem___mapItemFromLocalSearch_options___bl
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_mapItemFromForwardGeocode:(id)a3 options:(id)a4
+- (id)_mapItemFromForwardGeocode:(id)geocode options:(id)options
 {
   v43 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v6 = a4;
+  geocodeCopy = geocode;
+  optionsCopy = options;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__116;
   v39 = __Block_byref_object_dispose__116;
   v40 = 0;
-  v7 = [(RTConnectionsLocation *)self fullFormattedAddress];
-  v8 = [v7 length] == 0;
+  fullFormattedAddress = [(RTConnectionsLocation *)self fullFormattedAddress];
+  v8 = [fullFormattedAddress length] == 0;
 
   if (v8)
   {
@@ -220,7 +220,7 @@ void __68__RTConnectionsLocation_RTMapItem___mapItemFromLocalSearch_options___bl
   else
   {
     v9 = dispatch_semaphore_create(0);
-    v10 = [(RTConnectionsLocation *)self fullFormattedAddress];
+    fullFormattedAddress2 = [(RTConnectionsLocation *)self fullFormattedAddress];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __71__RTConnectionsLocation_RTMapItem___mapItemFromForwardGeocode_options___block_invoke;
@@ -229,7 +229,7 @@ void __68__RTConnectionsLocation_RTMapItem___mapItemFromLocalSearch_options___bl
     v34 = &v35;
     v11 = v9;
     v33 = v11;
-    [v31 fetchMapItemsFromAddressString:v10 options:v6 handler:v32];
+    [geocodeCopy fetchMapItemsFromAddressString:fullFormattedAddress2 options:optionsCopy handler:v32];
 
     v12 = v11;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -241,11 +241,11 @@ void __68__RTConnectionsLocation_RTMapItem___mapItemFromLocalSearch_options___bl
       v17 = v16;
       v18 = objc_opt_new();
       v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_97];
-      v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v21 = [v20 filteredArrayUsingPredicate:v19];
-      v22 = [v21 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+      firstObject = [v21 firstObject];
 
-      [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+      [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
       v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
       {
@@ -306,14 +306,14 @@ void __71__RTConnectionsLocation_RTMapItem___mapItemFromForwardGeocode_options__
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)_addProactiveExpertSourceTo:(id)a3
+- (id)_addProactiveExpertSourceTo:(id)to
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  toCopy = to;
+  v4 = toCopy;
+  if (toCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(toCopy, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -321,7 +321,7 @@ void __71__RTConnectionsLocation_RTMapItem___mapItemFromForwardGeocode_options__
     v24 = v4;
     v6 = v4;
     v7 = [v6 countByEnumeratingWithState:&v27 objects:v35 count:16];
-    v8 = self;
+    selfCopy3 = self;
     if (!v7)
     {
       goto LABEL_19;
@@ -341,43 +341,43 @@ void __71__RTConnectionsLocation_RTMapItem___mapItemFromForwardGeocode_options__
         v12 = [*(*(&v27 + 1) + 8 * i) appendSource:2048];
         if (v12)
         {
-          v13 = [(RTConnectionsLocation *)v8 name];
-          if (![v13 length])
+          name = [(RTConnectionsLocation *)selfCopy3 name];
+          if (![name length])
           {
             goto LABEL_15;
           }
 
-          v14 = [v12 name];
-          if ([v14 length])
+          name2 = [v12 name];
+          if ([name2 length])
           {
-            v15 = [(RTConnectionsLocation *)v8 name];
+            name3 = [(RTConnectionsLocation *)selfCopy3 name];
             [v12 name];
             v16 = v9;
             v17 = v10;
             v18 = v6;
             v20 = v19 = v5;
-            v26 = [v15 isEqualToString:v20];
+            v26 = [name3 isEqualToString:v20];
 
             v5 = v19;
             v6 = v18;
             v10 = v17;
             v9 = v16;
 
-            v8 = self;
+            selfCopy3 = self;
             if ((v26 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
             {
-              v13 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
-              if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+              name = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
+              if (os_log_type_enabled(name, OS_LOG_TYPE_DEBUG))
               {
-                v21 = [(RTConnectionsLocation *)self name];
-                v22 = [v12 name];
+                name4 = [(RTConnectionsLocation *)self name];
+                name5 = [v12 name];
                 *buf = 138412546;
-                v32 = v21;
+                v32 = name4;
                 v33 = 2112;
-                v34 = v22;
-                _os_log_debug_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEBUG, "Proactive expert location name (%@) doesn't match resolved name (%@)", buf, 0x16u);
+                v34 = name5;
+                _os_log_debug_impl(&dword_2304B3000, name, OS_LOG_TYPE_DEBUG, "Proactive expert location name (%@) doesn't match resolved name (%@)", buf, 0x16u);
 
-                v8 = self;
+                selfCopy3 = self;
               }
 
 LABEL_15:

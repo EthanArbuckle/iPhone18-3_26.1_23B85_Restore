@@ -1,14 +1,14 @@
 @interface NTKAVFaceBaseView
 - (CLKVideoPlayerView)videoPlayerView;
-- (NTKAVFaceBaseView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKAVFaceBaseView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (id)_selectedContentView;
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_createVideoPlayerViewIfNeeded;
 - (void)_loadSnapshotContentViews;
-- (void)_mediaServicesWereReset:(id)a3;
+- (void)_mediaServicesWereReset:(id)reset;
 - (void)_prepareForEditing;
 - (void)_reset;
-- (void)_transitionToPosterView:(id)a3;
+- (void)_transitionToPosterView:(id)view;
 - (void)_unloadSnapshotContentViews;
 - (void)dealloc;
 - (void)layoutSubviews;
@@ -19,23 +19,23 @@
 - (void)dealloc
 {
   [(NTKAVFaceBaseView *)self setVideoPlayerView:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKAVFaceBaseView;
   [(NTKFaceView *)&v4 dealloc];
 }
 
-- (NTKAVFaceBaseView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKAVFaceBaseView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = NTKAVFaceBaseView;
-  v5 = [(NTKFaceView *)&v8 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKFaceView *)&v8 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v5 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__mediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
   }
 
   return v5;
@@ -48,16 +48,16 @@
   [(NTKBackgroundImageFaceView *)&v8 _loadSnapshotContentViews];
   if (!self->_posterImageView)
   {
-    v3 = [(NTKAVFaceBaseView *)self _posterImageView];
+    _posterImageView = [(NTKAVFaceBaseView *)self _posterImageView];
     posterImageView = self->_posterImageView;
-    self->_posterImageView = v3;
-    v5 = v3;
+    self->_posterImageView = _posterImageView;
+    v5 = _posterImageView;
 
-    v6 = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
-    [v6 addSubview:self->_posterImageView];
+    backgroundContainerView = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
+    [backgroundContainerView addSubview:self->_posterImageView];
 
-    v7 = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
-    [v7 sendSubviewToBack:self->_posterImageView];
+    backgroundContainerView2 = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
+    [backgroundContainerView2 sendSubviewToBack:self->_posterImageView];
   }
 }
 
@@ -77,19 +77,19 @@
   return posterImageView;
 }
 
-- (void)_transitionToPosterView:(id)a3
+- (void)_transitionToPosterView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
+  viewCopy = view;
+  v5 = viewCopy;
   if (self->_posterImageView)
   {
-    posterImageView = [v4 image];
+    posterImageView = [viewCopy image];
     [(UIImageView *)self->_posterImageView setImage:posterImageView];
   }
 
   else
   {
-    v7 = v4;
+    v7 = viewCopy;
     posterImageView = self->_posterImageView;
     self->_posterImageView = v7;
   }
@@ -97,12 +97,12 @@
   v8 = objc_alloc(MEMORY[0x277D75D18]);
   [(CLKVideoPlayerView *)self->_videoPlayerView bounds];
   v9 = [v8 initWithFrame:?];
-  v10 = [MEMORY[0x277D75348] blackColor];
-  [v9 setBackgroundColor:v10];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v9 setBackgroundColor:blackColor];
 
   [v9 setAlpha:0.0];
-  v11 = [(NTKFaceView *)self contentView];
-  [v11 insertSubview:v9 aboveSubview:self->_videoPlayerView];
+  contentView = [(NTKFaceView *)self contentView];
+  [contentView insertSubview:v9 aboveSubview:self->_videoPlayerView];
 
   v12 = MEMORY[0x277D75D18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -163,23 +163,23 @@ uint64_t __45__NTKAVFaceBaseView__transitionToPosterView___block_invoke_3(uint64
   v4.receiver = self;
   v4.super_class = NTKAVFaceBaseView;
   [(NTKBackgroundImageFaceView *)&v4 _prepareForEditing];
-  v3 = [(NTKAVFaceBaseView *)self _posterImageView];
-  [(NTKAVFaceBaseView *)self _transitionToPosterView:v3];
+  _posterImageView = [(NTKAVFaceBaseView *)self _posterImageView];
+  [(NTKAVFaceBaseView *)self _transitionToPosterView:_posterImageView];
 }
 
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKAVFaceBaseView;
-  [(NTKBackgroundImageFaceView *)&v8 _cleanupAfterTransitionToOption:a3 forCustomEditMode:a4 slot:a5];
-  v6 = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
-  [v6 addSubview:self->_posterImageView];
+  [(NTKBackgroundImageFaceView *)&v8 _cleanupAfterTransitionToOption:option forCustomEditMode:mode slot:slot];
+  backgroundContainerView = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
+  [backgroundContainerView addSubview:self->_posterImageView];
 
-  v7 = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
-  [v7 sendSubviewToBack:self->_posterImageView];
+  backgroundContainerView2 = [(NTKBackgroundImageFaceView *)self backgroundContainerView];
+  [backgroundContainerView2 sendSubviewToBack:self->_posterImageView];
 }
 
-- (void)_mediaServicesWereReset:(id)a3
+- (void)_mediaServicesWereReset:(id)reset
 {
   kdebug_trace();
   block[0] = MEMORY[0x277D85DD0];

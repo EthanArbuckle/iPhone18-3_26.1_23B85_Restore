@@ -1,18 +1,18 @@
 @interface VSTVAppDeveloperSettingsUtilities
-+ (id)stringFromDate:(id)a3;
++ (id)stringFromDate:(id)date;
 @end
 
 @implementation VSTVAppDeveloperSettingsUtilities
 
-+ (id)stringFromDate:(id)a3
++ (id)stringFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_alloc_init(NSDateFormatter);
   v5 = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setLocale:v5];
 
   [v4 setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
-  v6 = [v4 stringFromDate:v3];
+  v6 = [v4 stringFromDate:dateCopy];
 
   if (v6)
   {

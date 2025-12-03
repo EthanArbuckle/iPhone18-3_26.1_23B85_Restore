@@ -1,30 +1,30 @@
 @interface OABShapeGeometry
-+ (EshComputedValue)computedValueWithAdjustCoord:(OADAdjustCoord)a3;
-+ (int)actualPathCommandForPathCommand:(int)a3 index:(unsigned __int16)a4;
-+ (void)appendAdjustPoint:(OADAdjustPoint)a3 toPathParams:(void *)a4;
-+ (void)readAdjustValuesFromShapeProperties:(const EshShapeProperties *)a3 toGeometry:(id)a4;
-+ (void)readFromFormulas:(const void *)a3 toGeometry:(id)a4;
-+ (void)readFromPathCommands:(const void *)a3 pathParams:(const void *)a4 toGeometry:(id)a5;
-+ (void)readFromShape:(void *)a3 toShape:(id)a4;
-+ (void)readFromTextBoxRects:(const void *)a3 toGeometry:(id)a4;
-+ (void)readGeometryCoordSpaceFromShapeProperties:(const EshShapeProperties *)a3 toGeometry:(id)a4;
-+ (void)readLimoFromPath:(const EshPath *)a3 toGeometry:(id)a4;
-+ (void)readPathCommandsAndParamsFromPath:(const EshPath *)a3 toGeometry:(id)a4;
-+ (void)writeAdjustValuesFromGeometry:(id)a3 toShapeProperties:(EshShapeProperties *)a4;
-+ (void)writeCoordSpaceFromGeometry:(id)a3 toShape:(void *)a4;
-+ (void)writeFormulasFromGeometry:(id)a3 toPath:(EshPath *)a4;
-+ (void)writeFromShape:(id)a3 toShape:(void *)a4;
-+ (void)writeLimoFromGeometry:(id)a3 toPath:(EshPath *)a4;
-+ (void)writePathCommandsAndParamsFromGeometry:(id)a3 toPath:(EshPath *)a4;
-+ (void)writeTextBodyRectsFromGeometry:(id)a3 toPath:(EshPath *)a4;
++ (EshComputedValue)computedValueWithAdjustCoord:(OADAdjustCoord)coord;
++ (int)actualPathCommandForPathCommand:(int)command index:(unsigned __int16)index;
++ (void)appendAdjustPoint:(OADAdjustPoint)point toPathParams:(void *)params;
++ (void)readAdjustValuesFromShapeProperties:(const EshShapeProperties *)properties toGeometry:(id)geometry;
++ (void)readFromFormulas:(const void *)formulas toGeometry:(id)geometry;
++ (void)readFromPathCommands:(const void *)commands pathParams:(const void *)params toGeometry:(id)geometry;
++ (void)readFromShape:(void *)shape toShape:(id)toShape;
++ (void)readFromTextBoxRects:(const void *)rects toGeometry:(id)geometry;
++ (void)readGeometryCoordSpaceFromShapeProperties:(const EshShapeProperties *)properties toGeometry:(id)geometry;
++ (void)readLimoFromPath:(const EshPath *)path toGeometry:(id)geometry;
++ (void)readPathCommandsAndParamsFromPath:(const EshPath *)path toGeometry:(id)geometry;
++ (void)writeAdjustValuesFromGeometry:(id)geometry toShapeProperties:(EshShapeProperties *)properties;
++ (void)writeCoordSpaceFromGeometry:(id)geometry toShape:(void *)shape;
++ (void)writeFormulasFromGeometry:(id)geometry toPath:(EshPath *)path;
++ (void)writeFromShape:(id)shape toShape:(void *)toShape;
++ (void)writeLimoFromGeometry:(id)geometry toPath:(EshPath *)path;
++ (void)writePathCommandsAndParamsFromGeometry:(id)geometry toPath:(EshPath *)path;
++ (void)writeTextBodyRectsFromGeometry:(id)geometry toPath:(EshPath *)path;
 @end
 
 @implementation OABShapeGeometry
 
-+ (void)readFromShape:(void *)a3 toShape:(id)a4
++ (void)readFromShape:(void *)shape toShape:(id)toShape
 {
-  v6 = a4;
-  ShapeType = EshShapeProperties::getShapeType((a3 + 424));
+  toShapeCopy = toShape;
+  ShapeType = EshShapeProperties::getShapeType((shape + 424));
   if (ShapeType == 100)
   {
     v8 = 99;
@@ -35,7 +35,7 @@
     v8 = ShapeType;
   }
 
-  if (EshPath::isParamsSet(a3 + 22) & 1) != 0 || (EshPath::isCommandsSet(a3 + 22) & 1) != 0 || ((isPathTypeSet = EshPath::isPathTypeSet(a3 + 22), v8 != 20) ? (v10 = isPathTypeSet) : (v10 = 0), (v10 & 1) != 0 || (EshPath::isFormulasSet(a3 + 22) & 1) != 0 || (EshPath::isTextBoxRectsSet(a3 + 22) & 1) != 0 || (EshPath::isLimoXSet(a3 + 22) & 1) != 0 || (EshPath::isLimoYSet(a3 + 22) & 1) != 0 || (EshShapeProperties::isCoordLeftSet((a3 + 424)) & 1) != 0 || (EshShapeProperties::isCoordTopSet((a3 + 424)) & 1) != 0 || (EshShapeProperties::isCoordRightSet((a3 + 424))))
+  if (EshPath::isParamsSet(shape + 22) & 1) != 0 || (EshPath::isCommandsSet(shape + 22) & 1) != 0 || ((isPathTypeSet = EshPath::isPathTypeSet(shape + 22), v8 != 20) ? (v10 = isPathTypeSet) : (v10 = 0), (v10 & 1) != 0 || (EshPath::isFormulasSet(shape + 22) & 1) != 0 || (EshPath::isTextBoxRectsSet(shape + 22) & 1) != 0 || (EshPath::isLimoXSet(shape + 22) & 1) != 0 || (EshPath::isLimoYSet(shape + 22) & 1) != 0 || (EshShapeProperties::isCoordLeftSet((shape + 424)) & 1) != 0 || (EshShapeProperties::isCoordTopSet((shape + 424)) & 1) != 0 || (EshShapeProperties::isCoordRightSet((shape + 424))))
   {
     isCoordBottomSet = 1;
     if (!v8)
@@ -46,7 +46,7 @@
 
   else
   {
-    isCoordBottomSet = EshShapeProperties::isCoordBottomSet((a3 + 424));
+    isCoordBottomSet = EshShapeProperties::isCoordBottomSet((shape + 424));
     if (!v8)
     {
       goto LABEL_51;
@@ -59,73 +59,73 @@
     if (EshShapeLib::cloneShapeProperties(v8, v29, v12))
     {
       EshGeometryProperties::addImpliedSegments(v29);
-      if ((EshPath::isParamsSet(a3 + 22) & 1) == 0)
+      if ((EshPath::isParamsSet(shape + 22) & 1) == 0)
       {
         Vertices = EshGeometryProperties::getVertices(v29);
         v14 = (*(*Vertices + 16))(Vertices);
-        EshPath::takeParams(a3 + 22, v14);
+        EshPath::takeParams(shape + 22, v14);
       }
 
-      if ((EshPath::isCommandsSet(a3 + 22) & 1) == 0 && (!EshPath::isPathTypeSet(a3 + 22) || EshPath::getPathType(a3 + 22) == 4) && EshGeometryProperties::getSegments(v29))
+      if ((EshPath::isCommandsSet(shape + 22) & 1) == 0 && (!EshPath::isPathTypeSet(shape + 22) || EshPath::getPathType(shape + 22) == 4) && EshGeometryProperties::getSegments(v29))
       {
         Segments = EshGeometryProperties::getSegments(v29);
         v16 = (*(*Segments + 16))(Segments);
-        EshPath::takeCommands(a3 + 528, v16);
+        EshPath::takeCommands(shape + 528, v16);
       }
 
-      if ((EshPath::isFormulasSet(a3 + 22) & 1) == 0)
+      if ((EshPath::isFormulasSet(shape + 22) & 1) == 0)
       {
         Formulas = EshGeometryProperties::getFormulas(v29);
         v18 = (*(*Formulas + 16))(Formulas);
-        EshPath::takeFormulas(a3 + 528, v18);
+        EshPath::takeFormulas(shape + 528, v18);
       }
 
-      if ((EshPath::isTextBoxRectsSet(a3 + 22) & 1) == 0 && EshGeometryProperties::isInscribesSet(v29))
+      if ((EshPath::isTextBoxRectsSet(shape + 22) & 1) == 0 && EshGeometryProperties::isInscribesSet(v29))
       {
         Inscribes = EshGeometryProperties::getInscribes(v29);
         v20 = (*(*Inscribes + 16))(Inscribes);
-        EshPath::takeTextBoxRects(a3 + 528, v20);
+        EshPath::takeTextBoxRects(shape + 528, v20);
       }
 
-      if ((EshPath::isLimoXSet(a3 + 22) & 1) == 0 && v35 != 0x7FFFFFFF)
+      if ((EshPath::isLimoXSet(shape + 22) & 1) == 0 && v35 != 0x7FFFFFFF)
       {
-        EshPath::setLimoX(a3 + 22, v35);
+        EshPath::setLimoX(shape + 22, v35);
       }
 
-      if ((EshPath::isLimoYSet(a3 + 22) & 1) == 0 && v36 != 0x7FFFFFFF)
+      if ((EshPath::isLimoYSet(shape + 22) & 1) == 0 && v36 != 0x7FFFFFFF)
       {
-        EshPath::setLimoY(a3 + 22, v36);
+        EshPath::setLimoY(shape + 22, v36);
       }
 
       v22 = v30;
       v21 = v31;
       v24 = v32;
       v23 = v33;
-      if ((EshShapeProperties::isCoordLeftSet((a3 + 424)) & 1) == 0)
+      if ((EshShapeProperties::isCoordLeftSet((shape + 424)) & 1) == 0)
       {
-        EshShapeProperties::setCoordLeft((a3 + 424), v22);
+        EshShapeProperties::setCoordLeft((shape + 424), v22);
       }
 
-      if ((EshShapeProperties::isCoordTopSet((a3 + 424)) & 1) == 0)
+      if ((EshShapeProperties::isCoordTopSet((shape + 424)) & 1) == 0)
       {
-        EshShapeProperties::setCoordTop((a3 + 424), v21);
+        EshShapeProperties::setCoordTop((shape + 424), v21);
       }
 
-      if ((EshShapeProperties::isCoordRightSet((a3 + 424)) & 1) == 0)
+      if ((EshShapeProperties::isCoordRightSet((shape + 424)) & 1) == 0)
       {
-        EshShapeProperties::setCoordRight((a3 + 424), v24);
+        EshShapeProperties::setCoordRight((shape + 424), v24);
       }
 
-      if ((EshShapeProperties::isCoordBottomSet((a3 + 424)) & 1) == 0)
+      if ((EshShapeProperties::isCoordBottomSet((shape + 424)) & 1) == 0)
       {
-        EshShapeProperties::setCoordBottom((a3 + 424), v23);
+        EshShapeProperties::setCoordBottom((shape + 424), v23);
       }
 
       for (i = 0; i != 10; ++i)
       {
-        if ((EshShapeProperties::isAdjSet((a3 + 424), i) & 1) == 0)
+        if ((EshShapeProperties::isAdjSet((shape + 424), i) & 1) == 0)
         {
-          EshShapeProperties::setAdj((a3 + 424), i, v34[i]);
+          EshShapeProperties::setAdj((shape + 424), i, v34[i]);
         }
       }
     }
@@ -138,44 +138,44 @@ LABEL_51:
   {
     v26 = objc_alloc_init(OADCustomShapeGeometry);
     [(OADShapeGeometry *)v26 setIsEscher:1];
-    [v6 setGeometry:v26];
-    [a1 readAdjustValuesFromShapeProperties:a3 + 424 toGeometry:v26];
-    [a1 readGeometryCoordSpaceFromShapeProperties:a3 + 424 toGeometry:v26];
-    [a1 readLimoFromPath:a3 + 528 toGeometry:v26];
-    if (EshPath::isFormulasSet(a3 + 22))
+    [toShapeCopy setGeometry:v26];
+    [self readAdjustValuesFromShapeProperties:shape + 424 toGeometry:v26];
+    [self readGeometryCoordSpaceFromShapeProperties:shape + 424 toGeometry:v26];
+    [self readLimoFromPath:shape + 528 toGeometry:v26];
+    if (EshPath::isFormulasSet(shape + 22))
     {
-      v27 = EshPath::getFormulas(a3 + 22);
+      v27 = EshPath::getFormulas(shape + 22);
       if (v27)
       {
-        [a1 readFromFormulas:v27 toGeometry:v26];
+        [self readFromFormulas:v27 toGeometry:v26];
       }
     }
 
-    if (EshPath::isTextBoxRectsSet(a3 + 22))
+    if (EshPath::isTextBoxRectsSet(shape + 22))
     {
-      TextBoxRects = EshPath::getTextBoxRects(a3 + 22);
+      TextBoxRects = EshPath::getTextBoxRects(shape + 22);
       if (TextBoxRects)
       {
-        [a1 readFromTextBoxRects:TextBoxRects toGeometry:v26];
+        [self readFromTextBoxRects:TextBoxRects toGeometry:v26];
       }
     }
 
-    [a1 readPathCommandsAndParamsFromPath:a3 + 528 toGeometry:v26];
+    [self readPathCommandsAndParamsFromPath:shape + 528 toGeometry:v26];
   }
 
   else
   {
     v26 = objc_alloc_init(OADPresetShapeGeometry);
     [(OADShapeGeometry *)v26 setIsEscher:1];
-    [v6 setGeometry:v26];
+    [toShapeCopy setGeometry:v26];
     [(OADCustomShapeGeometry *)v26 setType:v8];
-    [a1 readAdjustValuesFromShapeProperties:a3 + 424 toGeometry:v26];
+    [self readAdjustValuesFromShapeProperties:shape + 424 toGeometry:v26];
   }
 }
 
-+ (void)readFromPathCommands:(const void *)a3 pathParams:(const void *)a4 toGeometry:(id)a5
++ (void)readFromPathCommands:(const void *)commands pathParams:(const void *)params toGeometry:(id)geometry
 {
-  v43 = a5;
+  geometryCopy = geometry;
   v53[0] = 0;
   v53[1] = v53;
   v53[2] = 0x2020000000;
@@ -185,21 +185,21 @@ LABEL_51:
   aBlock[2] = __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___block_invoke;
   aBlock[3] = &unk_2799C7C60;
   aBlock[4] = v53;
-  aBlock[5] = a4;
-  v49 = a1;
-  aBlock[6] = a1;
+  aBlock[5] = params;
+  selfCopy = self;
+  aBlock[6] = self;
   v8 = _Block_copy(aBlock);
   v9 = objc_alloc_init(OADPath);
-  if (((*(a3 + 2) - *(a3 + 1)) & 0x7FFFFFFF8) != 0)
+  if (((*(commands + 2) - *(commands + 1)) & 0x7FFFFFFF8) != 0)
   {
     v10 = 0;
-    v44 = a3;
+    commandsCopy = commands;
     v48 = 0;
     v46 = v8;
     do
     {
       v45 = v10;
-      v11 = EshBasicTablePropVal<EshComputedValue>::operator[](a3, v10);
+      v11 = EshBasicTablePropVal<EshComputedValue>::operator[](commands, v10);
       v51 = v9;
       if (*v11)
       {
@@ -208,7 +208,7 @@ LABEL_51:
         v50 = v11;
         while (1)
         {
-          v14 = [v49 actualPathCommandForPathCommand:*(v12 + 1) index:v13];
+          v14 = [selfCopy actualPathCommandForPathCommand:*(v12 + 1) index:v13];
           switch(v14)
           {
             case 0:
@@ -244,7 +244,7 @@ LABEL_51:
 
               if ([(OADPath *)v51 elementCount])
               {
-                [v43 addPath:v51];
+                [geometryCopy addPath:v51];
                 v48 = v51;
               }
 
@@ -303,9 +303,9 @@ LABEL_51:
             case 33:
             case 34:
             case 35:
-              v15 = [(OADPath *)v51 elementCount];
+              elementCount = [(OADPath *)v51 elementCount];
               v16 = v48;
-              if (v15)
+              if (elementCount)
               {
                 v16 = v51;
               }
@@ -384,11 +384,11 @@ LABEL_34:
 
 LABEL_39:
       v10 = v45 + 1;
-      a3 = v44;
+      commands = commandsCopy;
       v9 = v51;
     }
 
-    while (v45 + 1 < ((v44[2] - v44[1]) >> 3));
+    while (v45 + 1 < ((commandsCopy[2] - commandsCopy[1]) >> 3));
   }
 
   else
@@ -398,7 +398,7 @@ LABEL_39:
 
   if ([(OADPath *)v9 elementCount])
   {
-    [v43 addPath:v9];
+    [geometryCopy addPath:v9];
   }
 
   _Block_object_dispose(v53, 8);
@@ -423,16 +423,16 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
   return result;
 }
 
-+ (void)readFromFormulas:(const void *)a3 toGeometry:(id)a4
++ (void)readFromFormulas:(const void *)formulas toGeometry:(id)geometry
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (-1227133513 * ((*(a3 + 2) - *(a3 + 1)) >> 2))
+  geometryCopy = geometry;
+  if (-1227133513 * ((*(formulas + 2) - *(formulas + 1)) >> 2))
   {
     v6 = 0;
     do
     {
-      v7 = EshBasicTablePropVal<EshFormula>::operator[](a3, v6);
+      v7 = EshBasicTablePropVal<EshFormula>::operator[](formulas, v6);
       for (i = 0; i != 6; i += 2)
       {
         v9 = &v14[i];
@@ -452,24 +452,24 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
       while (v10 != 6);
       v12 = [OADFormula alloc];
       v13 = [(OADFormula *)v12 initWithType:v11 arg0:v15[0] arg1:v15[1] arg2:v15[2]];
-      [v5 addFormula:v13];
+      [geometryCopy addFormula:v13];
 
       ++v6;
     }
 
-    while (v6 < -1227133513 * ((*(a3 + 2) - *(a3 + 1)) >> 2));
+    while (v6 < -1227133513 * ((*(formulas + 2) - *(formulas + 1)) >> 2));
   }
 }
 
-+ (void)readFromTextBoxRects:(const void *)a3 toGeometry:(id)a4
++ (void)readFromTextBoxRects:(const void *)rects toGeometry:(id)geometry
 {
-  v6 = a4;
-  if (((*(a3 + 2) - *(a3 + 1)) & 0x1FFFFFFFE0) != 0)
+  geometryCopy = geometry;
+  if (((*(rects + 2) - *(rects + 1)) & 0x1FFFFFFFE0) != 0)
   {
     v7 = 0;
     do
     {
-      v8 = EshBasicTablePropVal<EshComputedRect>::operator[](a3, v7);
+      v8 = EshBasicTablePropVal<EshComputedRect>::operator[](rects, v7);
       for (i = 0; i != 32; i += 8)
       {
         v10 = &v20 + i;
@@ -481,38 +481,38 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
       v20 = *v8;
       v21 = v11;
       v19 = v20;
-      v12 = [a1 adjustCoordWithComputedValue:&v19];
+      v12 = [self adjustCoordWithComputedValue:&v19];
       v18 = *(&v20 + 1);
-      v13 = [a1 adjustCoordWithComputedValue:&v18];
+      v13 = [self adjustCoordWithComputedValue:&v18];
       v17 = v21;
-      v14 = [a1 adjustCoordWithComputedValue:&v17];
+      v14 = [self adjustCoordWithComputedValue:&v17];
       v16 = *(&v21 + 1);
-      v15 = -[OADAdjustRect initWithLeft:top:right:bottom:]([OADAdjustRect alloc], "initWithLeft:top:right:bottom:", v12, v13, v14, [a1 adjustCoordWithComputedValue:&v16]);
-      [v6 addTextBodyRect:v15];
+      v15 = -[OADAdjustRect initWithLeft:top:right:bottom:]([OADAdjustRect alloc], "initWithLeft:top:right:bottom:", v12, v13, v14, [self adjustCoordWithComputedValue:&v16]);
+      [geometryCopy addTextBodyRect:v15];
 
       ++v7;
     }
 
-    while (v7 < ((*(a3 + 2) - *(a3 + 1)) >> 5));
+    while (v7 < ((*(rects + 2) - *(rects + 1)) >> 5));
   }
 }
 
-+ (EshComputedValue)computedValueWithAdjustCoord:(OADAdjustCoord)a3
++ (EshComputedValue)computedValueWithAdjustCoord:(OADAdjustCoord)coord
 {
-  *v3 = a3.isFormulaResult;
-  *(v3 + 4) = a3.value;
-  return a1;
+  *v3 = coord.isFormulaResult;
+  *(v3 + 4) = coord.value;
+  return self;
 }
 
-+ (void)writeAdjustValuesFromGeometry:(id)a3 toShapeProperties:(EshShapeProperties *)a4
++ (void)writeAdjustValuesFromGeometry:(id)geometry toShapeProperties:(EshShapeProperties *)properties
 {
-  v6 = a3;
+  geometryCopy = geometry;
   v5 = 0;
   do
   {
-    if ([v6 hasAdjustValueAtIndex:v5])
+    if ([geometryCopy hasAdjustValueAtIndex:v5])
     {
-      EshShapeProperties::setAdj(a4, v5, [v6 adjustValueAtIndex:v5]);
+      EshShapeProperties::setAdj(properties, v5, [geometryCopy adjustValueAtIndex:v5]);
     }
 
     v5 = (v5 + 1);
@@ -521,15 +521,15 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
   while (v5 != 10);
 }
 
-+ (void)writeCoordSpaceFromGeometry:(id)a3 toShape:(void *)a4
++ (void)writeCoordSpaceFromGeometry:(id)geometry toShape:(void *)shape
 {
-  v5 = a3;
-  v6 = [v5 isEscher];
-  if (v6)
+  geometryCopy = geometry;
+  isEscher = [geometryCopy isEscher];
+  if (isEscher)
   {
-    if (v5)
+    if (geometryCopy)
     {
-      v6 = [v5 geometryCoordSpace];
+      isEscher = [geometryCopy geometryCoordSpace];
       v7 = v14[0];
     }
 
@@ -540,45 +540,45 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
       *v15 = 0;
     }
 
-    DefaultPositionHorizontal = EshContentProperties::getDefaultPositionHorizontal(v6);
+    DefaultPositionHorizontal = EshContentProperties::getDefaultPositionHorizontal(isEscher);
     if (v7 != DefaultPositionHorizontal)
     {
-      EshShapeProperties::setCoordLeft((a4 + 424), v14[0]);
+      EshShapeProperties::setCoordLeft((shape + 424), v14[0]);
     }
 
     v9 = v14[1];
     v10 = EshContentProperties::getDefaultPositionHorizontal(DefaultPositionHorizontal);
     if (v9 != v10)
     {
-      EshShapeProperties::setCoordTop((a4 + 424), v14[1]);
+      EshShapeProperties::setCoordTop((shape + 424), v14[1]);
     }
 
     v11 = v15[0];
     DefaultCoordRight = EshShapeProperties::getDefaultCoordRight(v10);
     if (v11 != DefaultCoordRight)
     {
-      EshShapeProperties::setCoordRight((a4 + 424), v15[0]);
+      EshShapeProperties::setCoordRight((shape + 424), v15[0]);
     }
 
     v13 = v15[1];
     if (v13 != EshShapeProperties::getDefaultCoordRight(DefaultCoordRight))
     {
-      EshShapeProperties::setCoordBottom((a4 + 424), v15[1]);
+      EshShapeProperties::setCoordBottom((shape + 424), v15[1]);
     }
 
     operator new();
   }
 }
 
-+ (void)writeLimoFromGeometry:(id)a3 toPath:(EshPath *)a4
++ (void)writeLimoFromGeometry:(id)geometry toPath:(EshPath *)path
 {
-  v5 = a3;
-  v6 = [v5 isEscher];
-  if (v6)
+  geometryCopy = geometry;
+  isEscher = [geometryCopy isEscher];
+  if (isEscher)
   {
-    if (v5)
+    if (geometryCopy)
     {
-      v6 = [v5 limo];
+      isEscher = [geometryCopy limo];
       v7 = v17[0];
     }
 
@@ -588,40 +588,40 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
       *v17 = 0;
     }
 
-    DefaultLimoX = EshPath::getDefaultLimoX(v6);
+    DefaultLimoX = EshPath::getDefaultLimoX(isEscher);
     if (v7 != DefaultLimoX)
     {
-      EshPath::setLimoX(a4, v17[0]);
+      EshPath::setLimoX(path, v17[0]);
     }
 
     v16 = v17[1];
     if (v16 != EshPath::getDefaultLimoX(DefaultLimoX))
     {
-      EshPath::setLimoY(a4, v17[1]);
+      EshPath::setLimoY(path, v17[1]);
     }
   }
 
   else
   {
-    DefaultCoordRight = EshShapeProperties::getDefaultCoordRight(v6);
+    DefaultCoordRight = EshShapeProperties::getDefaultCoordRight(isEscher);
     v9 = DefaultCoordRight;
     DefaultPositionHorizontal = EshContentProperties::getDefaultPositionHorizontal(DefaultCoordRight);
-    EshPath::setLimoX(a4, (v9 - DefaultPositionHorizontal) / 2);
+    EshPath::setLimoX(path, (v9 - DefaultPositionHorizontal) / 2);
     v12 = EshShapeProperties::getDefaultCoordRight(v11);
     v13 = v12;
     v14 = EshContentProperties::getDefaultPositionHorizontal(v12);
-    EshPath::setLimoY(a4, (v13 - v14) / 2);
+    EshPath::setLimoY(path, (v13 - v14) / 2);
   }
 }
 
-+ (void)appendAdjustPoint:(OADAdjustPoint)a3 toPathParams:(void *)a4
++ (void)appendAdjustPoint:(OADAdjustPoint)point toPathParams:(void *)params
 {
-  y = a3.y;
-  [a1 computedValueWithAdjustCoord:*&a3.x];
-  v7 = *(a4 + 2);
-  if (v7 >= *(a4 + 3))
+  y = point.y;
+  [self computedValueWithAdjustCoord:*&point.x];
+  v7 = *(params + 2);
+  if (v7 >= *(params + 3))
   {
-    v8 = std::vector<EshComputedValue,ChAllocator<EshComputedValue>>::__emplace_back_slow_path<EshComputedValue const&>(a4 + 1, &v12);
+    v8 = std::vector<EshComputedValue,ChAllocator<EshComputedValue>>::__emplace_back_slow_path<EshComputedValue const&>(params + 1, &v12);
   }
 
   else
@@ -630,12 +630,12 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
     v8 = (v7 + 1);
   }
 
-  *(a4 + 2) = v8;
-  [a1 computedValueWithAdjustCoord:y];
-  v9 = *(a4 + 2);
-  if (v9 >= *(a4 + 3))
+  *(params + 2) = v8;
+  [self computedValueWithAdjustCoord:y];
+  v9 = *(params + 2);
+  if (v9 >= *(params + 3))
   {
-    v10 = std::vector<EshComputedValue,ChAllocator<EshComputedValue>>::__emplace_back_slow_path<EshComputedValue const&>(a4 + 1, &v11);
+    v10 = std::vector<EshComputedValue,ChAllocator<EshComputedValue>>::__emplace_back_slow_path<EshComputedValue const&>(params + 1, &v11);
   }
 
   else
@@ -644,53 +644,53 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
     v10 = (v9 + 1);
   }
 
-  *(a4 + 2) = v10;
+  *(params + 2) = v10;
 }
 
-+ (void)writePathCommandsAndParamsFromGeometry:(id)a3 toPath:(EshPath *)a4
++ (void)writePathCommandsAndParamsFromGeometry:(id)geometry toPath:(EshPath *)path
 {
-  v5 = a3;
-  if ([v5 pathCount])
+  geometryCopy = geometry;
+  if ([geometryCopy pathCount])
   {
     operator new();
   }
 
-  EshPath::takeCommands(a4, 0);
-  EshPath::takeParams(a4, 0);
+  EshPath::takeCommands(path, 0);
+  EshPath::takeParams(path, 0);
 }
 
-+ (void)writeFormulasFromGeometry:(id)a3 toPath:(EshPath *)a4
++ (void)writeFormulasFromGeometry:(id)geometry toPath:(EshPath *)path
 {
   v6 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 formulaCount])
+  geometryCopy = geometry;
+  if ([geometryCopy formulaCount])
   {
     operator new();
   }
 
-  EshPath::takeFormulas(a4, 0);
+  EshPath::takeFormulas(path, 0);
 }
 
-+ (void)writeTextBodyRectsFromGeometry:(id)a3 toPath:(EshPath *)a4
++ (void)writeTextBodyRectsFromGeometry:(id)geometry toPath:(EshPath *)path
 {
-  v5 = a3;
-  if ([v5 textBodyRectCount])
+  geometryCopy = geometry;
+  if ([geometryCopy textBodyRectCount])
   {
     operator new();
   }
 
-  EshPath::takeTextBoxRects(a4, 0);
+  EshPath::takeTextBoxRects(path, 0);
 }
 
-+ (void)writeFromShape:(id)a3 toShape:(void *)a4
++ (void)writeFromShape:(id)shape toShape:(void *)toShape
 {
-  v11 = a3;
-  v6 = [v11 geometry];
-  v7 = [v11 type];
-  v8 = v7;
-  if (v7 < 203)
+  shapeCopy = shape;
+  geometry = [shapeCopy geometry];
+  type = [shapeCopy type];
+  v8 = type;
+  if (type < 203)
   {
-    if (v7)
+    if (type)
     {
       goto LABEL_5;
     }
@@ -698,41 +698,41 @@ uint64_t __63__OABShapeGeometry_readFromPathCommands_pathParams_toGeometry___blo
 
   else
   {
-    v9 = [v6 equivalentCustomGeometry];
+    equivalentCustomGeometry = [geometry equivalentCustomGeometry];
 
-    v6 = v9;
+    geometry = equivalentCustomGeometry;
   }
 
   v8 = 100;
 LABEL_5:
-  EshShapeProperties::setShapeType(a4 + 424, v8);
-  EshShapeProperties::setHasShapeType((a4 + 424), 1);
-  [a1 writeAdjustValuesFromGeometry:v6 toShapeProperties:a4 + 424];
+  EshShapeProperties::setShapeType(toShape + 424, v8);
+  EshShapeProperties::setHasShapeType((toShape + 424), 1);
+  [self writeAdjustValuesFromGeometry:geometry toShapeProperties:toShape + 424];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
-    EshPath::takeConnectAngles(a4 + 528, 0);
-    EshPath::takeHandles(a4 + 528, 0);
-    [a1 writeCoordSpaceFromGeometry:v10 toShape:a4];
-    [a1 writeLimoFromGeometry:v10 toPath:a4 + 528];
-    [a1 writePathCommandsAndParamsFromGeometry:v10 toPath:a4 + 528];
-    [a1 writeFormulasFromGeometry:v10 toPath:a4 + 528];
-    [a1 writeTextBodyRectsFromGeometry:v10 toPath:a4 + 528];
+    v10 = geometry;
+    EshPath::takeConnectAngles(toShape + 528, 0);
+    EshPath::takeHandles(toShape + 528, 0);
+    [self writeCoordSpaceFromGeometry:v10 toShape:toShape];
+    [self writeLimoFromGeometry:v10 toPath:toShape + 528];
+    [self writePathCommandsAndParamsFromGeometry:v10 toPath:toShape + 528];
+    [self writeFormulasFromGeometry:v10 toPath:toShape + 528];
+    [self writeTextBodyRectsFromGeometry:v10 toPath:toShape + 528];
   }
 
-  EshShapeProperties::setHidden((a4 + 424), [v11 hidden]);
+  EshShapeProperties::setHidden((toShape + 424), [shapeCopy hidden]);
 }
 
-+ (void)readAdjustValuesFromShapeProperties:(const EshShapeProperties *)a3 toGeometry:(id)a4
++ (void)readAdjustValuesFromShapeProperties:(const EshShapeProperties *)properties toGeometry:(id)geometry
 {
-  v6 = a4;
+  geometryCopy = geometry;
   v5 = 0;
   do
   {
-    if (EshShapeProperties::isAdjSet(a3, v5))
+    if (EshShapeProperties::isAdjSet(properties, v5))
     {
-      [v6 setAdjustValue:EshShapeProperties::getAdj(a3 atIndex:{v5), v5}];
+      [geometryCopy setAdjustValue:EshShapeProperties::getAdj(properties atIndex:{v5), v5}];
     }
 
     v5 = (v5 + 1);
@@ -741,13 +741,13 @@ LABEL_5:
   while (v5 != 10);
 }
 
-+ (void)readGeometryCoordSpaceFromShapeProperties:(const EshShapeProperties *)a3 toGeometry:(id)a4
++ (void)readGeometryCoordSpaceFromShapeProperties:(const EshShapeProperties *)properties toGeometry:(id)geometry
 {
-  v5 = a4;
-  isCoordLeftSet = EshShapeProperties::isCoordLeftSet(a3);
+  geometryCopy = geometry;
+  isCoordLeftSet = EshShapeProperties::isCoordLeftSet(properties);
   if (isCoordLeftSet)
   {
-    CoordLeft = EshShapeProperties::getCoordLeft(a3);
+    CoordLeft = EshShapeProperties::getCoordLeft(properties);
   }
 
   else
@@ -756,10 +756,10 @@ LABEL_5:
   }
 
   v8 = CoordLeft;
-  isCoordTopSet = EshShapeProperties::isCoordTopSet(a3);
+  isCoordTopSet = EshShapeProperties::isCoordTopSet(properties);
   if (isCoordTopSet)
   {
-    CoordTop = EshShapeProperties::getCoordTop(a3);
+    CoordTop = EshShapeProperties::getCoordTop(properties);
   }
 
   else
@@ -768,10 +768,10 @@ LABEL_5:
   }
 
   v11 = CoordTop;
-  isCoordRightSet = EshShapeProperties::isCoordRightSet(a3);
+  isCoordRightSet = EshShapeProperties::isCoordRightSet(properties);
   if (isCoordRightSet)
   {
-    CoordRight = EshShapeProperties::getCoordRight(a3);
+    CoordRight = EshShapeProperties::getCoordRight(properties);
   }
 
   else
@@ -780,10 +780,10 @@ LABEL_5:
   }
 
   v14 = CoordRight;
-  isCoordBottomSet = EshShapeProperties::isCoordBottomSet(a3);
+  isCoordBottomSet = EshShapeProperties::isCoordBottomSet(properties);
   if (isCoordBottomSet)
   {
-    CoordBottom = EshShapeProperties::getCoordBottom(a3);
+    CoordBottom = EshShapeProperties::getCoordBottom(properties);
   }
 
   else
@@ -795,38 +795,38 @@ LABEL_5:
   v17[1] = v11;
   v17[2] = v14;
   v17[3] = CoordBottom;
-  [v5 setGeometryCoordSpace:v17];
+  [geometryCopy setGeometryCoordSpace:v17];
 }
 
-+ (void)readPathCommandsAndParamsFromPath:(const EshPath *)a3 toGeometry:(id)a4
++ (void)readPathCommandsAndParamsFromPath:(const EshPath *)path toGeometry:(id)geometry
 {
-  v9 = a4;
-  if (EshPath::isParamsSet(a3))
+  geometryCopy = geometry;
+  if (EshPath::isParamsSet(path))
   {
-    Params = EshPath::getParams(a3);
+    Params = EshPath::getParams(path);
     v7 = Params;
     if (Params)
     {
       if (((*(Params + 16) - *(Params + 8)) & 0x7FFFFFFF8) != 0)
       {
-        if (!EshPath::isCommandsSet(a3) || (Commands = EshPath::getCommands(a3)) == 0)
+        if (!EshPath::isCommandsSet(path) || (Commands = EshPath::getCommands(path)) == 0)
         {
           operator new();
         }
 
-        [a1 readFromPathCommands:Commands pathParams:v7 toGeometry:v9];
+        [self readFromPathCommands:Commands pathParams:v7 toGeometry:geometryCopy];
       }
     }
   }
 }
 
-+ (void)readLimoFromPath:(const EshPath *)a3 toGeometry:(id)a4
++ (void)readLimoFromPath:(const EshPath *)path toGeometry:(id)geometry
 {
-  v6 = a4;
-  isLimoXSet = EshPath::isLimoXSet(a3);
+  geometryCopy = geometry;
+  isLimoXSet = EshPath::isLimoXSet(path);
   if (isLimoXSet)
   {
-    LimoX = EshPath::getLimoX(a3);
+    LimoX = EshPath::getLimoX(path);
   }
 
   else
@@ -835,10 +835,10 @@ LABEL_5:
   }
 
   v9 = LimoX;
-  isLimoYSet = EshPath::isLimoYSet(a3);
+  isLimoYSet = EshPath::isLimoYSet(path);
   if (isLimoYSet)
   {
-    LimoY = EshPath::getLimoY(a3);
+    LimoY = EshPath::getLimoY(path);
   }
 
   else
@@ -848,45 +848,45 @@ LABEL_5:
 
   v12[0] = v9;
   v12[1] = LimoY;
-  [a1 readFromLimo:v12 toGeometry:v6];
+  [self readFromLimo:v12 toGeometry:geometryCopy];
 }
 
-+ (int)actualPathCommandForPathCommand:(int)a3 index:(unsigned __int16)a4
++ (int)actualPathCommandForPathCommand:(int)command index:(unsigned __int16)index
 {
-  result = a3;
-  if (a3 <= 10)
+  result = command;
+  if (command <= 10)
   {
-    if (a3 == 7)
+    if (command == 7)
     {
-      if (a4)
+      if (index)
       {
         return 6;
       }
     }
 
-    else if (a3 == 9 && a4)
+    else if (command == 9 && index)
     {
       return 8;
     }
   }
 
-  else if (a3 == 11)
+  else if (command == 11)
   {
-    if (a4)
+    if (index)
     {
       return 10;
     }
   }
 
-  else if (a3 == 12)
+  else if (command == 12)
   {
-    if (a4)
+    if (index)
     {
       return 13;
     }
   }
 
-  else if (a3 == 13 && (a4 & 1) != 0)
+  else if (command == 13 && (index & 1) != 0)
   {
     return 12;
   }

@@ -1,7 +1,7 @@
 @interface MSSetupCompleteEvent
 - (MSSetupCompleteEvent)init;
 - (id)encoded;
-- (void)addHome:(id)a3;
+- (void)addHome:(id)home;
 @end
 
 @implementation MSSetupCompleteEvent
@@ -26,13 +26,13 @@
   return v3;
 }
 
-- (void)addHome:(id)a3
+- (void)addHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   [(MSSetupCompleteEvent *)self setNumberOfHomeAdded:[(MSSetupCompleteEvent *)self numberOfHomeAdded]+ 1];
   v5 = MEMORY[0x277CCABB0];
-  v8 = [v4 currentUser];
-  v6 = [v8 ms_voiceRecognitionEnabledInHome:v4];
+  currentUser = [homeCopy currentUser];
+  v6 = [currentUser ms_voiceRecognitionEnabledInHome:homeCopy];
 
   v7 = [v5 numberWithBool:v6];
   -[MSSetupCompleteEvent setNumberOfHomesWithVR:](self, "setNumberOfHomesWithVR:", -[MSSetupCompleteEvent numberOfHomesWithVR](self, "numberOfHomesWithVR") + [v7 intValue]);

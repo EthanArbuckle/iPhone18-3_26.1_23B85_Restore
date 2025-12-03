@@ -1,30 +1,30 @@
 @interface PasswordSharingStartViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC18SharingViewService34PasswordSharingStartViewController)initWithContentView:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC18SharingViewService34PasswordSharingStartViewController)initWithContentView:(id)view;
 - (void)configureUIElementsDefault;
 - (void)configureUIElementsForHotspot;
-- (void)handleAllowButtonPressed:(id)a3;
-- (void)handleDismissButtonPressed:(id)a3;
-- (void)handleTapOutsideView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleAllowButtonPressed:(id)pressed;
+- (void)handleDismissButtonPressed:(id)pressed;
+- (void)handleTapOutsideView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PasswordSharingStartViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006B68C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PasswordSharingStartViewController;
-  [(SVSBaseViewController *)&v4 viewDidAppear:a3];
+  [(SVSBaseViewController *)&v4 viewDidAppear:appear];
   if ([self->super._mainController autoGrant])
   {
     if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
@@ -36,9 +36,9 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -46,7 +46,7 @@
 
   v7.receiver = self;
   v7.super_class = PasswordSharingStartViewController;
-  [(PasswordSharingStartViewController *)&v7 viewDidDisappear:v3];
+  [(PasswordSharingStartViewController *)&v7 viewDidDisappear:disappearCopy];
   mainController = self->super._mainController;
   self->super._mainController = 0;
 
@@ -54,7 +54,7 @@
   *(&self->_peerDisplayName + 1) = 0;
 }
 
-- (_TtC18SharingViewService34PasswordSharingStartViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService34PasswordSharingStartViewController)initWithContentView:(id)view
 {
   *&self->presenter[OBJC_IVAR____TtC18SharingViewService34PasswordSharingStartViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -64,12 +64,12 @@
   *(v5 + 1) = 0xE000000000000000;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PasswordSharingStartViewController();
-  return [(PasswordSharingStartViewController *)&v7 initWithContentView:a3];
+  return [(PasswordSharingStartViewController *)&v7 initWithContentView:view];
 }
 
-- (void)handleTapOutsideView:(id)a3
+- (void)handleTapOutsideView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -78,9 +78,9 @@
   [self->super._mainController dismiss:1];
 }
 
-- (void)handleDismissButtonPressed:(id)a3
+- (void)handleDismissButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -89,16 +89,16 @@
   [self->super._mainController dismiss:5];
 }
 
-- (void)handleAllowButtonPressed:(id)a3
+- (void)handleAllowButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v5 = [(SVSBaseViewController *)self containerView];
-  [v5 setSwipeDismissible:0];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:0];
 
   if (![self->super._mainController touchDelayActive] || (objc_msgSend(self->super._mainController, "autoGrant") & 1) != 0)
   {
@@ -106,17 +106,17 @@
     [*(&self->_acceptButton + 1) startAnimating];
     [*(&self->_imageView + 1) setHidden:0];
     [*(&self->super._didReactivateContainerViewAfterLayingOut + 1) setHidden:1];
-    v6 = [self->super._mainController testMode];
-    if (v6 <= 5)
+    testMode = [self->super._mainController testMode];
+    if (testMode <= 5)
     {
-      if (((1 << v6) & 0x16) != 0)
+      if (((1 << testMode) & 0x16) != 0)
       {
         v8[0] = _NSConcreteStackBlock;
         v8[1] = 3221225472;
         v8[2] = sub_1000FE934;
         v8[3] = &unk_100195A70;
         v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-        v10 = self;
+        selfCopy = self;
         v7 = v9;
         dispatch_source_set_event_handler(v7, v8);
         SFDispatchTimerSet();
@@ -125,7 +125,7 @@
         goto LABEL_17;
       }
 
-      if (((1 << v6) & 0x28) != 0)
+      if (((1 << testMode) & 0x28) != 0)
       {
         [self->super._mainController showDoneUI:4294960596];
         goto LABEL_17;
@@ -144,13 +144,13 @@
 LABEL_17:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a3;
-  v6 = [a4 view];
-  v7 = [v5 view];
+  recognizerCopy = recognizer;
+  view = [touch view];
+  view2 = [recognizerCopy view];
 
-  return v6 == v7;
+  return view == view2;
 }
 
 - (void)configureUIElementsForHotspot
@@ -295,13 +295,13 @@ LABEL_16:
   [v22 setTitle:v24 forState:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PasswordSharingStartViewController;
-  [(SVSBaseViewController *)&v8 viewWillAppear:a3];
-  v4 = [self->super._mainController _remoteViewControllerProxy];
-  [v4 setStatusBarHidden:1 withDuration:0.0];
+  [(SVSBaseViewController *)&v8 viewWillAppear:appear];
+  _remoteViewControllerProxy = [self->super._mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   if ([self->super._mainController hotspot])
   {
@@ -317,11 +317,11 @@ LABEL_16:
   [v5 setDelegate:self];
   [v5 setNumberOfTapsRequired:1];
   [v5 setCancelsTouchesInView:0];
-  v6 = [(PasswordSharingStartViewController *)self view];
-  [v6 addGestureRecognizer:v5];
+  view = [(PasswordSharingStartViewController *)self view];
+  [view addGestureRecognizer:v5];
 
-  v7 = [(SVSBaseViewController *)self containerView];
-  [v7 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

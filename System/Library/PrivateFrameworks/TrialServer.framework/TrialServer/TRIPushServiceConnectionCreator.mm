@@ -1,15 +1,15 @@
 @interface TRIPushServiceConnectionCreator
-- (id)connectionWithDelegate:(id)a3 environment:(unsigned __int8)a4;
+- (id)connectionWithDelegate:(id)delegate environment:(unsigned __int8)environment;
 @end
 
 @implementation TRIPushServiceConnectionCreator
 
-- (id)connectionWithDelegate:(id)a3 environment:(unsigned __int8)a4
+- (id)connectionWithDelegate:(id)delegate environment:(unsigned __int8)environment
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"com.apple.triald.aps.sandbox-environment"];
+  delegateCopy = delegate;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"com.apple.triald.aps.sandbox-environment"];
 
   v7 = TRILogCategory_Server();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -26,7 +26,7 @@
 
   else
   {
-    v8 = [[TRIPushServiceConnection alloc] initWithDelegate:v4];
+    v8 = [[TRIPushServiceConnection alloc] initWithDelegate:delegateCopy];
   }
 
   v9 = v8;

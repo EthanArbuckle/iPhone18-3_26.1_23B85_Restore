@@ -1,33 +1,33 @@
 @interface ASDStereoPanControl
-- (ASDStereoPanControl)initWithPlugin:(id)a3;
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
+- (ASDStereoPanControl)initWithPlugin:(id)plugin;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
 - (float)value;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
 - (unsigned)leftPanChannel;
 - (unsigned)rightPanChannel;
-- (void)setPanChannel:(unsigned int)a3 isLeft:(BOOL)a4;
-- (void)setValue:(float)a3;
+- (void)setPanChannel:(unsigned int)channel isLeft:(BOOL)left;
+- (void)setValue:(float)value;
 @end
 
 @implementation ASDStereoPanControl
 
-- (ASDStereoPanControl)initWithPlugin:(id)a3
+- (ASDStereoPanControl)initWithPlugin:(id)plugin
 {
   LODWORD(v5) = 1936744814;
   LODWORD(v3) = 0.5;
-  return [(ASDStereoPanControl *)self initWithValue:1 leftPanChannel:2 rightPanChannel:0 isSettable:0 forElement:1735159650 inScope:a3 withPlugin:v3 andObjectClassID:v5];
+  return [(ASDStereoPanControl *)self initWithValue:1 leftPanChannel:2 rightPanChannel:0 isSettable:0 forElement:1735159650 inScope:plugin withPlugin:v3 andObjectClassID:v5];
 }
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1936745315 || a3->mSelector == 1936745334)
+  if (property->mSelector == 1936745315 || property->mSelector == 1936745334)
   {
     return 1;
   }
@@ -39,19 +39,19 @@
   return [(ASDControl *)&v7 hasProperty:?];
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1936745334)
+  if (property->mSelector == 1936745334)
   {
     return 4;
   }
 
-  if (a3->mSelector == 1936745315)
+  if (property->mSelector == 1936745315)
   {
     return 8;
   }
@@ -63,17 +63,17 @@
   return [ASDControl dataSizeForProperty:sel_dataSizeForProperty_withQualifierSize_andQualifierData_ withQualifierSize:? andQualifierData:?];
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
   result = 0;
-  if (a3 && a6 && a7)
+  if (property && dataSize && andData)
   {
-    if (a3->mSelector == 1936745315)
+    if (property->mSelector == 1936745315)
     {
-      if (*a6 >= 8)
+      if (*dataSize >= 8)
       {
-        *a7 = [(ASDStereoPanControl *)self leftPanChannel];
-        *(a7 + 1) = [(ASDStereoPanControl *)self rightPanChannel];
+        *andData = [(ASDStereoPanControl *)self leftPanChannel];
+        *(andData + 1) = [(ASDStereoPanControl *)self rightPanChannel];
         v13 = 8;
         goto LABEL_10;
       }
@@ -81,15 +81,15 @@
       return 0;
     }
 
-    if (a3->mSelector == 1936745334)
+    if (property->mSelector == 1936745334)
     {
-      if (*a6 >= 4)
+      if (*dataSize >= 4)
       {
         [(ASDStereoPanControl *)self value];
-        *a7 = v12;
+        *andData = v12;
         v13 = 4;
 LABEL_10:
-        *a6 = v13;
+        *dataSize = v13;
         return 1;
       }
 
@@ -104,14 +104,14 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
-  if (!a3 || a3->mSelector == 1936745315)
+  if (!settable || settable->mSelector == 1936745315)
   {
     return 0;
   }
 
-  if (a3->mSelector == 1936745334)
+  if (settable->mSelector == 1936745334)
   {
 
     return [(ASDStereoPanControl *)self isSettable];
@@ -127,7 +127,7 @@ LABEL_10:
   }
 }
 
-- (void)setValue:(float)a3
+- (void)setValue:(float)value
 {
   v10 = 0;
   v11 = &v10;
@@ -138,7 +138,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __32__ASDStereoPanControl_setValue___block_invoke;
   block[3] = &unk_278CE4230;
-  v9 = a3;
+  valueCopy = value;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(valueQueue, block);
@@ -146,8 +146,8 @@ LABEL_10:
   {
     v7 = 0;
     v6 = 0x676C6F6273706376;
-    v5 = [(ASDObject *)self propertyChangedDelegate];
-    [v5 changedProperty:&v6 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v6 forObject:self];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -248,7 +248,7 @@ float __28__ASDStereoPanControl_value__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setPanChannel:(unsigned int)a3 isLeft:(BOOL)a4
+- (void)setPanChannel:(unsigned int)channel isLeft:(BOOL)left
 {
   v12 = 0;
   v13 = &v12;
@@ -259,8 +259,8 @@ float __28__ASDStereoPanControl_value__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__ASDStereoPanControl_setPanChannel_isLeft___block_invoke;
   block[3] = &unk_278CE4380;
-  v11 = a4;
-  v10 = a3;
+  leftCopy = left;
+  channelCopy = channel;
   block[4] = self;
   block[5] = &v12;
   dispatch_sync(valueQueue, block);
@@ -268,8 +268,8 @@ float __28__ASDStereoPanControl_value__block_invoke(uint64_t a1)
   {
     v8 = 0;
     v7 = 0x676C6F6273706363;
-    v6 = [(ASDObject *)self propertyChangedDelegate];
-    [v6 changedProperty:&v7 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v7 forObject:self];
   }
 
   _Block_object_dispose(&v12, 8);

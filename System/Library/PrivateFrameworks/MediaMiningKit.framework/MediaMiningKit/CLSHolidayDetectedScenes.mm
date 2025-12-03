@@ -1,15 +1,15 @@
 @interface CLSHolidayDetectedScenes
 - (CLSHolidayDetectedScenes)init;
-- (void)recordDetectedSceneImportance:(unint64_t)a3;
+- (void)recordDetectedSceneImportance:(unint64_t)importance;
 @end
 
 @implementation CLSHolidayDetectedScenes
 
-- (void)recordDetectedSceneImportance:(unint64_t)a3
+- (void)recordDetectedSceneImportance:(unint64_t)importance
 {
-  if (a3 - 1 <= 3)
+  if (importance - 1 <= 3)
   {
-    ++*(&self->super.isa + a3);
+    ++*(&self->super.isa + importance);
   }
 }
 

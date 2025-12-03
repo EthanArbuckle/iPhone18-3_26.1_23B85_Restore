@@ -1,23 +1,23 @@
 @interface SBHStackConfigurationBackgroundDimmingView
 - (SBIconListView)iconListView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation SBHStackConfigurationBackgroundDimmingView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBHStackConfigurationBackgroundDimmingView;
-  v8 = [(SBHStackConfigurationBackgroundDimmingView *)&v11 hitTest:v7 withEvent:x, y];
-  if (v8 == self && [v7 type] == 9)
+  v8 = [(SBHStackConfigurationBackgroundDimmingView *)&v11 hitTest:eventCopy withEvent:x, y];
+  if (v8 == self && [eventCopy type] == 9)
   {
-    v9 = [(SBHStackConfigurationBackgroundDimmingView *)self iconListView];
+    iconListView = [(SBHStackConfigurationBackgroundDimmingView *)self iconListView];
 
-    v8 = v9;
+    v8 = iconListView;
   }
 
   return v8;

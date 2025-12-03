@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (CSAdBlockerAssetMetaUpdateMonitor)init;
 - (void)_didReceiveNewAdBlockerAssetMetaData;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSAdBlockerAssetMetaUpdateMonitor
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSAdBlockerAssetMetaUpdateMonitor *)self notifyObserver:v4];
-  [v4 CSAdBlockerMetaUpdateMonitor:self didReceiveNewAdBlockerAssetMetaData:1];
+  observerCopy = observer;
+  [(CSAdBlockerAssetMetaUpdateMonitor *)self notifyObserver:observerCopy];
+  [observerCopy CSAdBlockerMetaUpdateMonitor:self didReceiveNewAdBlockerAssetMetaData:1];
 }
 
 - (void)_didReceiveNewAdBlockerAssetMetaData
@@ -51,17 +51,17 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (self->_notifyToken == -1)
   {
-    v4 = a3;
+    queueCopy = queue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10015F550;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch([(CSAdBlockerAssetMetaUpdateMonitor *)self _asssetMetaUpdatedKey], &self->_notifyToken, v4, handler);
+    notify_register_dispatch([(CSAdBlockerAssetMetaUpdateMonitor *)self _asssetMetaUpdatedKey], &self->_notifyToken, queueCopy, handler);
 
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))

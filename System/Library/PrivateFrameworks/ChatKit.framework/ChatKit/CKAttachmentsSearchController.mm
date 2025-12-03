@@ -1,17 +1,17 @@
 @interface CKAttachmentsSearchController
-+ (BOOL)supportsQuicklookForResult:(id)a3;
++ (BOOL)supportsQuicklookForResult:(id)result;
 + (id)indexingString;
 + (id)sectionTitle;
-- (BOOL)handleSelectionForResult:(id)a3;
+- (BOOL)handleSelectionForResult:(id)result;
 - (CKAttachmentsSearchController)init;
 - (double)interGroupSpacing;
-- (id)_activityItemProviderForResult:(id)a3;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5;
-- (id)chatGUIDForSearchableItem:(id)a3;
-- (id)layoutGroupWithEnvironment:(id)a3;
-- (id)previewViewControllerForResult:(id)a3;
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5;
+- (id)_activityItemProviderForResult:(id)result;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind;
+- (id)chatGUIDForSearchableItem:(id)item;
+- (id)layoutGroupWithEnvironment:(id)environment;
+- (id)previewViewControllerForResult:(id)result;
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth;
 @end
 
 @implementation CKAttachmentsSearchController
@@ -24,13 +24,13 @@
   return v4;
 }
 
-- (void)fractionalWidth:(double *)a3 count:(unint64_t *)a4 forLayoutWidth:(unint64_t)a5
+- (void)fractionalWidth:(double *)width count:(unint64_t *)count forLayoutWidth:(unint64_t)layoutWidth
 {
-  if (!a5)
+  if (!layoutWidth)
   {
     v7 = 0.5;
     v9 = 2;
-    if (!a3)
+    if (!width)
     {
       goto LABEL_12;
     }
@@ -38,17 +38,17 @@
     goto LABEL_11;
   }
 
-  if (a5 != 2)
+  if (layoutWidth != 2)
   {
     v9 = 3;
     v7 = 0.33;
-    if (!a3)
+    if (!width)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    *a3 = v7;
+    *width = v7;
     goto LABEL_12;
   }
 
@@ -69,28 +69,28 @@ LABEL_11:
     v9 = 4;
   }
 
-  if (a3)
+  if (width)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
-  if (a4)
+  if (count)
   {
-    *a4 = v9;
+    *count = v9;
   }
 }
 
-+ (BOOL)supportsQuicklookForResult:(id)a3
++ (BOOL)supportsQuicklookForResult:(id)result
 {
-  v3 = [a3 item];
-  v4 = [v3 attributeSet];
-  v5 = [v4 __ck_spotlightItemSnippet];
+  item = [result item];
+  attributeSet = [item attributeSet];
+  __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
 
   v6 = IMUTITypeForFilename();
-  LOBYTE(v4) = IMUTTypeWantsQuicklook();
+  LOBYTE(attributeSet) = IMUTTypeWantsQuicklook();
 
-  return v4;
+  return attributeSet;
 }
 
 + (id)sectionTitle
@@ -101,12 +101,12 @@ LABEL_12:
   return v3;
 }
 
-- (id)chatGUIDForSearchableItem:(id)a3
+- (id)chatGUIDForSearchableItem:(id)item
 {
-  v3 = [a3 attributeSet];
-  v4 = [v3 accountIdentifier];
+  attributeSet = [item attributeSet];
+  accountIdentifier = [attributeSet accountIdentifier];
 
-  return v4;
+  return accountIdentifier;
 }
 
 + (id)indexingString
@@ -126,7 +126,7 @@ LABEL_12:
   return v4;
 }
 
-- (id)layoutGroupWithEnvironment:(id)a3
+- (id)layoutGroupWithEnvironment:(id)environment
 {
   v15 = 0;
   v16 = 0.0;
@@ -149,39 +149,39 @@ LABEL_12:
   return v10;
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CKAttachmentsSearchController;
-  v6 = [(CKSearchController *)&v8 cellForItemInCollectionView:a3 atIndexPath:a4 withIdentifier:a5];
+  v6 = [(CKSearchController *)&v8 cellForItemInCollectionView:view atIndexPath:path withIdentifier:identifier];
   [v6 setSuppressAvatars:{-[CKSearchController suppressAvatars](self, "suppressAvatars")}];
 
   return v6;
 }
 
-- (id)cellForSupplementaryItemInCollectionView:(id)a3 atIndexPath:(id)a4 supplementaryViewKind:(id)a5
+- (id)cellForSupplementaryItemInCollectionView:(id)view atIndexPath:(id)path supplementaryViewKind:(id)kind
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  kindCopy = kind;
   v10 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
-  v11 = [v9 isEqualToString:v10];
+  v11 = [kindCopy isEqualToString:v10];
 
   if (v11)
   {
     v12 = +[CKDetailsSearchResultsFooterCell supplementaryViewType];
     v13 = +[CKDetailsSearchResultsFooterCell reuseIdentifier];
-    v14 = [v7 dequeueReusableSupplementaryViewOfKind:v12 withReuseIdentifier:v13 forIndexPath:v8];
+    v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:v12 withReuseIdentifier:v13 forIndexPath:pathCopy];
 
     v15 = MEMORY[0x1E696AEC0];
     v16 = CKFrameworkBundle();
     v17 = [v16 localizedStringForKey:@"SEE_ALL_ATTACHMENTS_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v18 = [v15 stringWithFormat:v17];
 
-    v19 = [MEMORY[0x1E69DC668] sharedApplication];
-    v20 = [v19 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v20 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v21 = @"\u200F";
     }
@@ -194,8 +194,8 @@ LABEL_12:
     v22 = [(__CFString *)v21 stringByAppendingString:v18];
 
     [v14 setTitle:v22];
-    v23 = [objc_opt_class() sectionIdentifier];
-    [v14 setSectionIdentifier:v23];
+    sectionIdentifier = [objc_opt_class() sectionIdentifier];
+    [v14 setSectionIdentifier:sectionIdentifier];
   }
 
   else
@@ -206,65 +206,65 @@ LABEL_12:
   return v14;
 }
 
-- (id)previewViewControllerForResult:(id)a3
+- (id)previewViewControllerForResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (CKIsRunningInMacCatalyst())
   {
-    v5 = [MEMORY[0x1E697A0D0] requestPreviewMockSceneActivation];
+    requestPreviewMockSceneActivation = [MEMORY[0x1E697A0D0] requestPreviewMockSceneActivation];
 LABEL_5:
-    [(QLPreviewController *)v5 setDelegate:self];
+    [(QLPreviewController *)requestPreviewMockSceneActivation setDelegate:self];
     v10 = objc_alloc_init(CKQLPreviewControllerDataSource);
     [(CKSearchController *)self setQlPreviewDataSource:v10];
 
-    v11 = [(CKSearchController *)self qlPreviewDataSource];
-    [(QLPreviewController *)v5 setDataSource:v11];
+    qlPreviewDataSource = [(CKSearchController *)self qlPreviewDataSource];
+    [(QLPreviewController *)requestPreviewMockSceneActivation setDataSource:qlPreviewDataSource];
 
-    v12 = [(CKSearchController *)self qlPreviewDataSource];
-    v13 = [(CKSearchController *)self results];
-    [v12 setPreviewItems:v13];
+    qlPreviewDataSource2 = [(CKSearchController *)self qlPreviewDataSource];
+    results = [(CKSearchController *)self results];
+    [qlPreviewDataSource2 setPreviewItems:results];
 
-    [(QLPreviewController *)v5 reloadData];
-    v14 = [(CKSearchController *)self results];
-    -[QLPreviewController setCurrentPreviewItemIndex:](v5, "setCurrentPreviewItemIndex:", [v14 indexOfObject:v4]);
+    [(QLPreviewController *)requestPreviewMockSceneActivation reloadData];
+    results2 = [(CKSearchController *)self results];
+    -[QLPreviewController setCurrentPreviewItemIndex:](requestPreviewMockSceneActivation, "setCurrentPreviewItemIndex:", [results2 indexOfObject:resultCopy]);
 
-    [(QLPreviewController *)v5 refreshCurrentPreviewItem];
+    [(QLPreviewController *)requestPreviewMockSceneActivation refreshCurrentPreviewItem];
     goto LABEL_6;
   }
 
-  v6 = [v4 item];
-  v7 = [v6 attributeSet];
-  v8 = [v7 __ck_spotlightItemSnippet];
+  item = [resultCopy item];
+  attributeSet = [item attributeSet];
+  __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
 
   v9 = IMUTITypeForFilename();
   if (IMUTTypeWantsQuicklook())
   {
-    v5 = objc_alloc_init(CKQLPreviewController);
+    requestPreviewMockSceneActivation = objc_alloc_init(CKQLPreviewController);
 
     goto LABEL_5;
   }
 
-  v5 = 0;
+  requestPreviewMockSceneActivation = 0;
 LABEL_6:
 
-  return v5;
+  return requestPreviewMockSceneActivation;
 }
 
-- (id)_activityItemProviderForResult:(id)a3
+- (id)_activityItemProviderForResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[CKSearchThumbnailPreviewGenerator sharedInstance];
-  v5 = [v4 cachedPreviewForQueryResult:v3];
+  v5 = [v4 cachedPreviewForQueryResult:resultCopy];
 
   if (v5)
   {
-    v6 = [v3 item];
-    v7 = [v6 attributeSet];
+    item = [resultCopy item];
+    attributeSet = [item attributeSet];
 
-    v8 = [v7 contentURL];
-    v9 = [v7 __ck_spotlightItemSnippet];
+    contentURL = [attributeSet contentURL];
+    __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
     v10 = objc_alloc_init(MEMORY[0x1E696EC58]);
-    [v10 setName:v9];
+    [v10 setName:__ck_spotlightItemSnippet];
     v11 = IMUTITypeForFilename();
     [v10 setType:v11];
 
@@ -272,7 +272,7 @@ LABEL_6:
     [v10 setThumbnail:v12];
     v13 = objc_alloc_init(MEMORY[0x1E696ECA0]);
     [v13 setSpecialization:v10];
-    v14 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:v8 metadata:v13];
+    v14 = [[CKSearchActivityItemProvider alloc] initWithPlaceholderItem:contentURL metadata:v13];
   }
 
   else
@@ -283,18 +283,18 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)handleSelectionForResult:(id)a3
+- (BOOL)handleSelectionForResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [v5 attributeSet];
+  resultCopy = result;
+  item = [resultCopy item];
+  attributeSet = [item attributeSet];
 
-  v7 = [v6 __ck_spotlightItemSnippet];
+  __ck_spotlightItemSnippet = [attributeSet __ck_spotlightItemSnippet];
   v8 = IMUTITypeForFilename();
-  v9 = [v6 contentURL];
+  contentURL = [attributeSet contentURL];
   if (IMUTTypeIsWatchface())
   {
-    v10 = v9 == 0;
+    v10 = contentURL == 0;
   }
 
   else
@@ -306,12 +306,12 @@ LABEL_6:
   {
     v13.receiver = self;
     v13.super_class = CKAttachmentsSearchController;
-    v11 = [(CKSearchController *)&v13 handleSelectionForResult:v4];
+    v11 = [(CKSearchController *)&v13 handleSelectionForResult:resultCopy];
   }
 
   else
   {
-    [CKWatchfaceUtilities addWatchFaceAtURL:v9 completionHandler:&__block_literal_global_164];
+    [CKWatchfaceUtilities addWatchFaceAtURL:contentURL completionHandler:&__block_literal_global_164];
     v11 = 1;
   }
 

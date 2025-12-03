@@ -1,9 +1,9 @@
 @interface _CPStartSearchFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPStartSearchFeedback)init;
-- (_CPStartSearchFeedback)initWithFacade:(id)a3;
+- (_CPStartSearchFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPStartSearchFeedback
@@ -15,34 +15,34 @@
   return v4 ^ [(NSString *)self->_uuid hash]^ v3 ^ (2654435761 * self->_triggerEvent) ^ (2654435761u * self->_queryId) ^ (2654435761 * self->_searchType);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_13;
   }
 
-  v6 = [(_CPStartSearchFeedback *)self input];
-  v7 = [v4 input];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartSearchFeedback *)self input];
+  input2 = [equalCopy input];
+  if ((input != 0) == (input2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(_CPStartSearchFeedback *)self input];
-  if (v8)
+  input3 = [(_CPStartSearchFeedback *)self input];
+  if (input3)
   {
-    v9 = v8;
-    v10 = [(_CPStartSearchFeedback *)self input];
-    v11 = [v4 input];
-    v12 = [v10 isEqual:v11];
+    v9 = input3;
+    input4 = [(_CPStartSearchFeedback *)self input];
+    input5 = [equalCopy input];
+    v12 = [input4 isEqual:input5];
 
     if (!v12)
     {
@@ -54,22 +54,22 @@
   {
   }
 
-  v6 = [(_CPStartSearchFeedback *)self uuid];
-  v7 = [v4 uuid];
-  if ((v6 != 0) == (v7 == 0))
+  input = [(_CPStartSearchFeedback *)self uuid];
+  input2 = [equalCopy uuid];
+  if ((input != 0) == (input2 == 0))
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v13 = [(_CPStartSearchFeedback *)self uuid];
-  if (v13)
+  uuid = [(_CPStartSearchFeedback *)self uuid];
+  if (uuid)
   {
-    v14 = v13;
-    v15 = [(_CPStartSearchFeedback *)self uuid];
-    v16 = [v4 uuid];
-    v17 = [v15 isEqual:v16];
+    v14 = uuid;
+    uuid2 = [(_CPStartSearchFeedback *)self uuid];
+    uuid3 = [equalCopy uuid];
+    v17 = [uuid2 isEqual:uuid3];
 
     if (!v17)
     {
@@ -82,13 +82,13 @@ LABEL_12:
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent == [v4 triggerEvent])
+  if (triggerEvent == [equalCopy triggerEvent])
   {
     queryId = self->_queryId;
-    if (queryId == [v4 queryId])
+    if (queryId == [equalCopy queryId])
     {
       searchType = self->_searchType;
-      v18 = searchType == [v4 searchType];
+      v18 = searchType == [equalCopy searchType];
       goto LABEL_14;
     }
   }
@@ -100,26 +100,26 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPStartSearchFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPStartSearchFeedback *)self input];
+  input = [(_CPStartSearchFeedback *)self input];
 
-  if (v5)
+  if (input)
   {
     input = self->_input;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_CPStartSearchFeedback *)self uuid];
+  uuid = [(_CPStartSearchFeedback *)self uuid];
 
-  if (v7)
+  if (uuid)
   {
     uuid = self->_uuid;
     PBDataWriterWriteStringField();
@@ -160,34 +160,34 @@ LABEL_14:
   return v2;
 }
 
-- (_CPStartSearchFeedback)initWithFacade:(id)a3
+- (_CPStartSearchFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPStartSearchFeedback;
   v5 = [(_CPStartSearchFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPStartSearchFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 input];
+    -[_CPStartSearchFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    input = [facadeCopy input];
 
-    if (v6)
+    if (input)
     {
-      v7 = [v4 input];
-      [(_CPStartSearchFeedback *)v5 setInput:v7];
+      input2 = [facadeCopy input];
+      [(_CPStartSearchFeedback *)v5 setInput:input2];
     }
 
-    v8 = [v4 uuid];
+    uuid = [facadeCopy uuid];
 
-    if (v8)
+    if (uuid)
     {
-      v9 = [v4 uuid];
-      [(_CPStartSearchFeedback *)v5 setUuid:v9];
+      uuid2 = [facadeCopy uuid];
+      [(_CPStartSearchFeedback *)v5 setUuid:uuid2];
     }
 
-    -[_CPStartSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    -[_CPStartSearchFeedback setQueryId:](v5, "setQueryId:", [v4 queryId]);
-    -[_CPStartSearchFeedback setSearchType:](v5, "setSearchType:", [v4 searchType]);
+    -[_CPStartSearchFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    -[_CPStartSearchFeedback setQueryId:](v5, "setQueryId:", [facadeCopy queryId]);
+    -[_CPStartSearchFeedback setSearchType:](v5, "setSearchType:", [facadeCopy searchType]);
     v10 = v5;
   }
 

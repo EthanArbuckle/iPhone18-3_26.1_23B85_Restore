@@ -1,35 +1,35 @@
 @interface MKOverlayView
 - ($9433BFB5400FDC760880D1BFD6845728)_boundingMapRect;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_originMapPoint;
-- (BOOL)_canPossiblyDrawMapRect:(id)a3 zoomScale:(double)a4;
+- (BOOL)_canPossiblyDrawMapRect:(id)rect zoomScale:(double)scale;
 - (BOOL)_mayExtendOutsideBounds;
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
-- (BOOL)overlay:(id)a3 canDrawKey:(id *)a4;
-- (BOOL)overlay:(id)a3 canPossiblyDrawKey:(id *)a4;
+- (BOOL)overlay:(id)overlay canDrawKey:(id *)key;
+- (BOOL)overlay:(id)overlay canPossiblyDrawKey:(id *)key;
 - (CGPoint)pointForMapPoint:(MKMapPoint)mapPoint;
 - (CGRect)rectForMapRect:(MKMapRect)mapRect;
 - (MKMapPoint)mapPointForPoint:(CGPoint)point;
 - (MKMapRect)mapRectForRect:(CGRect)rect;
-- (MKOverlayView)initWithFrame:(CGRect)a3;
+- (MKOverlayView)initWithFrame:(CGRect)frame;
 - (MKOverlayView)initWithOverlay:(id)overlay;
 - (id)_mapView;
-- (void)_forEachMapRectForKey:(id *)a3 withContext:(CGContext *)a4 performBlock:(id)a5;
-- (void)_setMapView:(id)a3;
+- (void)_forEachMapRectForKey:(id *)key withContext:(CGContext *)context performBlock:(id)block;
+- (void)_setMapView:(id)view;
 - (void)dealloc;
-- (void)overlay:(id)a3 drawKey:(id *)a4 inContext:(CGContext *)a5;
+- (void)overlay:(id)overlay drawKey:(id *)key inContext:(CGContext *)context;
 - (void)setNeedsDisplayInMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 @end
 
 @implementation MKOverlayView
 
-- (BOOL)_canPossiblyDrawMapRect:(id)a3 zoomScale:(double)a4
+- (BOOL)_canPossiblyDrawMapRect:(id)rect zoomScale:(double)scale
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v6 = a3.var0.var1;
-  v7 = a3.var0.var0;
-  [(MKOverlayView *)self _boundingMapRect:a3.var0.var0];
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v6 = rect.var0.var1;
+  v7 = rect.var0.var0;
+  [(MKOverlayView *)self _boundingMapRect:rect.var0.var0];
   v12 = v7;
   v13 = v6;
   v14 = var0;
@@ -55,7 +55,7 @@
   return v9;
 }
 
-- (void)overlay:(id)a3 drawKey:(id *)a4 inContext:(CGContext *)a5
+- (void)overlay:(id)overlay drawKey:(id *)key inContext:(CGContext *)context
 {
   v17 = 0u;
   v15 = 0u;
@@ -68,15 +68,15 @@
   v11[2] = __43__MKOverlayView_overlay_drawKey_inContext___block_invoke;
   v11[3] = &unk_1E76CCE90;
   v11[4] = self;
-  v11[5] = a4;
-  v11[6] = a5;
+  v11[5] = key;
+  v11[6] = context;
   v14 = 0u;
   v8 = MEMORY[0x1A58E9F30](v11);
-  v9 = [(MKOverlayView *)self _mapView];
-  v10 = v9;
-  if (v9)
+  _mapView = [(MKOverlayView *)self _mapView];
+  v10 = _mapView;
+  if (_mapView)
   {
-    [v9 _withEffectiveTraitCollection:v8];
+    [_mapView _withEffectiveTraitCollection:v8];
   }
 
   else
@@ -133,14 +133,14 @@ void __43__MKOverlayView_overlay_drawKey_inContext___block_invoke_2(uint64_t a1,
   CGContextRestoreGState(*(a1 + 40));
 }
 
-- (BOOL)overlay:(id)a3 canDrawKey:(id *)a4
+- (BOOL)overlay:(id)overlay canDrawKey:(id *)key
 {
-  v6 = a3;
+  overlayCopy = overlay;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = exp2((21 - (a4->var3 + a4->var2)));
+  v7 = exp2((21 - (key->var3 + key->var2)));
   objc_opt_class();
   v8 = 1.0 / v7;
   if ((objc_opt_isKindOfClass() & 1) == 0 || ([(MKOverlayView *)self lineWidth], v10 = v9 / v8, v10 == 0.0))
@@ -167,8 +167,8 @@ void __43__MKOverlayView_overlay_drawKey_inContext___block_invoke_2(uint64_t a1,
   *&v15[7] = v8;
   v15[4] = self;
   v15[5] = &v16;
-  v15[8] = a4;
-  [(MKOverlayView *)self _forEachMapRectForKey:a4 withContext:0 performBlock:v15];
+  v15[8] = key;
+  [(MKOverlayView *)self _forEachMapRectForKey:key withContext:0 performBlock:v15];
   v13 = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
 
@@ -235,9 +235,9 @@ uint64_t __36__MKOverlayView_overlay_canDrawKey___block_invoke(uint64_t a1, doub
   return result;
 }
 
-- (BOOL)overlay:(id)a3 canPossiblyDrawKey:(id *)a4
+- (BOOL)overlay:(id)overlay canPossiblyDrawKey:(id *)key
 {
-  v6 = a3;
+  overlayCopy = overlay;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -247,13 +247,13 @@ uint64_t __36__MKOverlayView_overlay_canDrawKey___block_invoke(uint64_t a1, doub
   v8[2] = __44__MKOverlayView_overlay_canPossiblyDrawKey___block_invoke;
   v8[3] = &unk_1E76CCE18;
   v8[5] = &v9;
-  v8[6] = a4;
+  v8[6] = key;
   v8[4] = self;
-  [(MKOverlayView *)self _forEachMapRectForKey:a4 withContext:0 performBlock:v8];
-  LOBYTE(a4) = *(v10 + 24);
+  [(MKOverlayView *)self _forEachMapRectForKey:key withContext:0 performBlock:v8];
+  LOBYTE(key) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return a4;
+  return key;
 }
 
 uint64_t __44__MKOverlayView_overlay_canPossiblyDrawKey___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5)
@@ -279,9 +279,9 @@ uint64_t __44__MKOverlayView_overlay_canPossiblyDrawKey___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_forEachMapRectForKey:(id *)a3 withContext:(CGContext *)a4 performBlock:(id)a5
+- (void)_forEachMapRectForKey:(id *)key withContext:(CGContext *)context performBlock:(id)block
 {
-  v7 = a5;
+  blockCopy = block;
   [(MKOverlayView *)self _boundingMapRect];
   v9 = v8;
   v11 = v10;
@@ -289,15 +289,15 @@ uint64_t __44__MKOverlayView_overlay_canPossiblyDrawKey___block_invoke(uint64_t 
   v16[1] = 3221225472;
   v17 = __64__MKOverlayView__forEachMapRectForKey_withContext_performBlock___block_invoke;
   v18 = &unk_1E76CCDF0;
-  v20 = a3;
-  v21 = a4;
-  v12 = v7;
+  keyCopy = key;
+  contextCopy = context;
+  v12 = blockCopy;
   v19 = v12;
-  LODWORD(a3) = vcvtmd_s64_f64(v9 * 0.0000000037252903);
+  LODWORD(key) = vcvtmd_s64_f64(v9 * 0.0000000037252903);
   v14 = vcvtpd_s64_f64((v9 + v11) * 0.0000000037252903);
-  if (a3 + 1 > v14)
+  if (key + 1 > v14)
   {
-    v15 = a3 + 1;
+    v15 = key + 1;
   }
 
   else
@@ -307,11 +307,11 @@ uint64_t __44__MKOverlayView_overlay_canPossiblyDrawKey___block_invoke(uint64_t 
 
   do
   {
-    v17(v16, a3);
-    a3 = (a3 + 1);
+    v17(v16, key);
+    key = (key + 1);
   }
 
-  while (v15 != a3);
+  while (v15 != key);
 }
 
 void __64__MKOverlayView__forEachMapRectForKey_withContext_performBlock___block_invoke(uint64_t a1, int a2)
@@ -517,17 +517,17 @@ BOOL __40__MKOverlayView__mayExtendOutsideBounds__block_invoke()
   return result;
 }
 
-- (void)_setMapView:(id)a3
+- (void)_setMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   isolationQueue = self->_isolationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__MKOverlayView__setMapView___block_invoke;
   v7[3] = &unk_1E76CD810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = viewCopy;
+  v6 = viewCopy;
   dispatch_sync(isolationQueue, v7);
 }
 
@@ -563,13 +563,13 @@ void __25__MKOverlayView__mapView__block_invoke(uint64_t a1)
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_originMapPoint
 {
-  v3 = [(MKOverlayView *)self layer];
-  [v3 position];
+  layer = [(MKOverlayView *)self layer];
+  [layer position];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(MKOverlayView *)self layer];
-  [v8 bounds];
+  layer2 = [(MKOverlayView *)self layer];
+  [layer2 bounds];
   v10 = v9;
   v12 = v11;
 
@@ -580,9 +580,9 @@ void __25__MKOverlayView__mapView__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  [(MKOverlayView *)self mapRectForRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MKOverlayView *)self mapRectForRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(MKOverlayView *)self setNeedsDisplayInMapRect:?];
 }
@@ -612,12 +612,12 @@ void __25__MKOverlayView__mapView__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (MKOverlayView)initWithFrame:(CGRect)a3
+- (MKOverlayView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(MKOverlayView *)self init];
   v8 = v7;
   if (v7)

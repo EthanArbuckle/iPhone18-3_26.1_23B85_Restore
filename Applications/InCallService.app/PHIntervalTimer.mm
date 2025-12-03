@@ -1,15 +1,15 @@
 @interface PHIntervalTimer
 + (id)oneSecondTimer;
 - (PHIntervalTimer)init;
-- (PHIntervalTimer)initWithInterval:(double)a3;
+- (PHIntervalTimer)initWithInterval:(double)interval;
 - (void)_createTimerIfNecessary;
 - (void)_invalidateTimerIfNecessary;
 - (void)_postNotification;
-- (void)addObserver:(id)a3 selector:(SEL)a4;
+- (void)addObserver:(id)observer selector:(SEL)selector;
 - (void)dealloc;
 - (void)fire;
 - (void)pause;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resume;
 @end
 
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = sub_100140FFC;
   block[3] = &unk_1003567B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003B1028 != -1)
   {
     dispatch_once(&qword_1003B1028, block);
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (PHIntervalTimer)initWithInterval:(double)a3
+- (PHIntervalTimer)initWithInterval:(double)interval
 {
   v9.receiver = self;
   v9.super_class = PHIntervalTimer;
@@ -46,7 +46,7 @@
   v5 = v4;
   if (v4)
   {
-    [(PHIntervalTimer *)v4 setInterval:a3];
+    [(PHIntervalTimer *)v4 setInterval:interval];
     v6 = +[NSMutableSet set];
     [(PHIntervalTimer *)v5 setObservers:v6];
 
@@ -69,92 +69,92 @@
 
 - (void)dealloc
 {
-  v3 = [(PHIntervalTimer *)self timer];
-  [v3 invalidate];
+  timer = [(PHIntervalTimer *)self timer];
+  [timer invalidate];
 
   v4.receiver = self;
   v4.super_class = PHIntervalTimer;
   [(PHIntervalTimer *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4
+- (void)addObserver:(id)observer selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [(PHIntervalTimer *)self queue];
+  observerCopy = observer;
+  queue = [(PHIntervalTimer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10014128C;
   block[3] = &unk_100357AB0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = observerCopy;
+  selectorCopy = selector;
+  v8 = observerCopy;
+  dispatch_sync(queue, block);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PHIntervalTimer *)self queue];
+  observerCopy = observer;
+  queue = [(PHIntervalTimer *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001413BC;
   v7[3] = &unk_100357110;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(queue, v7);
 }
 
 - (void)fire
 {
-  v3 = [(PHIntervalTimer *)self queue];
+  queue = [(PHIntervalTimer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001414BC;
   block[3] = &unk_100356988;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)pause
 {
-  v3 = [(PHIntervalTimer *)self queue];
+  queue = [(PHIntervalTimer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100141588;
   block[3] = &unk_100356988;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)resume
 {
-  v3 = [(PHIntervalTimer *)self queue];
+  queue = [(PHIntervalTimer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100141694;
   block[3] = &unk_100356988;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)_createTimerIfNecessary
 {
-  v3 = [(PHIntervalTimer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PHIntervalTimer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(PHIntervalTimer *)self observers];
-  if ([v10 count])
+  observers = [(PHIntervalTimer *)self observers];
+  if ([observers count])
   {
-    v4 = [(PHIntervalTimer *)self timer];
-    if (v4)
+    timer = [(PHIntervalTimer *)self timer];
+    if (timer)
     {
-      v5 = v4;
-      v6 = [(PHIntervalTimer *)self timer];
-      v7 = [v6 isValid];
+      v5 = timer;
+      timer2 = [(PHIntervalTimer *)self timer];
+      isValid = [timer2 isValid];
 
-      if (v7)
+      if (isValid)
       {
         return;
       }
@@ -183,22 +183,22 @@
 
 - (void)_invalidateTimerIfNecessary
 {
-  v3 = [(PHIntervalTimer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(PHIntervalTimer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(PHIntervalTimer *)self observers];
-  if ([v6 count])
+  observers = [(PHIntervalTimer *)self observers];
+  if ([observers count])
   {
   }
 
   else
   {
-    v4 = [(PHIntervalTimer *)self timer];
+    timer = [(PHIntervalTimer *)self timer];
 
-    if (v4)
+    if (timer)
     {
-      v5 = [(PHIntervalTimer *)self timer];
-      [v5 invalidate];
+      timer2 = [(PHIntervalTimer *)self timer];
+      [timer2 invalidate];
 
       [(PHIntervalTimer *)self setTimer:0];
     }

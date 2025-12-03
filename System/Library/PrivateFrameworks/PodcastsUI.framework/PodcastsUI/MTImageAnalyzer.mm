@@ -1,8 +1,8 @@
 @interface MTImageAnalyzer
 - (MTImageAnalyzer)init;
-- (id)addImage:(id)a3 forKey:(id)a4;
-- (id)colorThemeForArtwork:(id)a3;
-- (id)colorThemeForPodcastUuid:(id)a3;
+- (id)addImage:(id)image forKey:(id)key;
+- (id)colorThemeForArtwork:(id)artwork;
+- (id)colorThemeForPodcastUuid:(id)uuid;
 @end
 
 @implementation MTImageAnalyzer
@@ -22,12 +22,12 @@
   return v2;
 }
 
-- (id)colorThemeForPodcastUuid:(id)a3
+- (id)colorThemeForPodcastUuid:(id)uuid
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:*MEMORY[0x277D3DDA8]];
+  uuidCopy = uuid;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D3DDA8]];
 
   if (v6)
   {
@@ -36,7 +36,7 @@
     v24 = 0x3032000000;
     v25 = __Block_byref_object_copy__7;
     v26 = __Block_byref_object_dispose__7;
-    v27 = [(NSCache *)self->_memoryCache objectForKey:v4];
+    v27 = [(NSCache *)self->_memoryCache objectForKey:uuidCopy];
     v7 = v23[5];
     if (v7)
     {
@@ -45,17 +45,17 @@
 
     else
     {
-      v9 = [MEMORY[0x277D3DAE8] sharedInstance];
-      v10 = [v9 mainOrPrivateContext];
+      mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+      mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __44__MTImageAnalyzer_colorThemeForPodcastUuid___block_invoke;
       v18[3] = &unk_2782BE6A8;
       v21 = &v22;
-      v11 = v10;
+      v11 = mainOrPrivateContext;
       v19 = v11;
-      v12 = v4;
+      v12 = uuidCopy;
       v20 = v12;
       [v11 performBlockAndWait:v18];
       v13 = v23[5];
@@ -103,31 +103,31 @@ uint64_t __44__MTImageAnalyzer_colorThemeForPodcastUuid___block_invoke(uint64_t 
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)addImage:(id)a3 forKey:(id)a4
+- (id)addImage:(id)image forKey:(id)key
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  imageCopy = image;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (imageCopy)
   {
-    if ([v7 length])
+    if ([keyCopy length])
     {
-      v9 = [v6 squareImage];
+      squareImage = [imageCopy squareImage];
 
-      [v9 scale];
+      [squareImage scale];
       v11 = v10;
-      [v9 size];
+      [squareImage size];
       v13 = v12;
       v15 = v14;
       v16 = v11 * v14;
       if (v11 * v12 <= 3000.0 && v16 <= 3000.0)
       {
-        v18 = [(MTImageAnalyzer *)self colorThemeForArtwork:v9];
+        v18 = [(MTImageAnalyzer *)self colorThemeForArtwork:squareImage];
         if (v18)
         {
-          v20 = [MEMORY[0x277D3DAE8] sharedInstance];
-          v21 = [v20 privateQueueContext];
+          mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+          privateQueueContext = [mEMORY[0x277D3DAE8] privateQueueContext];
 
           v26[0] = MEMORY[0x277D85DD0];
           v26[1] = 3221225472;
@@ -137,8 +137,8 @@ uint64_t __44__MTImageAnalyzer_colorThemeForPodcastUuid___block_invoke(uint64_t 
           v27 = v22;
           v23 = v8;
           v28 = v23;
-          v29 = v21;
-          v24 = v21;
+          v29 = privateQueueContext;
+          v24 = privateQueueContext;
           [v24 performBlock:v26];
           [(NSCache *)self->_memoryCache setObject:v22 forKey:v23];
           v18 = v22;
@@ -170,13 +170,13 @@ uint64_t __44__MTImageAnalyzer_colorThemeForPodcastUuid___block_invoke(uint64_t 
     else
     {
       v19 = 0;
-      v9 = v6;
+      squareImage = imageCopy;
     }
   }
 
   else
   {
-    v9 = 0;
+    squareImage = 0;
     v19 = 0;
   }
 
@@ -196,28 +196,28 @@ uint64_t __35__MTImageAnalyzer_addImage_forKey___block_invoke(void *a1)
   return result;
 }
 
-- (id)colorThemeForArtwork:(id)a3
+- (id)colorThemeForArtwork:(id)artwork
 {
-  if (a3)
+  if (artwork)
   {
     v3 = MEMORY[0x277CD5D58];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithImage:v4 algorithm:1];
+    artworkCopy = artwork;
+    v5 = [[v3 alloc] initWithImage:artworkCopy algorithm:1];
 
-    v6 = [v5 analyze];
-    if (v6)
+    analyze = [v5 analyze];
+    if (analyze)
     {
       v7 = objc_opt_new();
-      v8 = [v6 backgroundColor];
-      [v7 setBackgroundColor:v8];
+      backgroundColor = [analyze backgroundColor];
+      [v7 setBackgroundColor:backgroundColor];
 
-      v9 = [v6 primaryTextColor];
-      [v7 setPrimaryTextColor:v9];
+      primaryTextColor = [analyze primaryTextColor];
+      [v7 setPrimaryTextColor:primaryTextColor];
 
-      v10 = [v6 secondaryTextColor];
-      [v7 setSecondaryTextColor:v10];
+      secondaryTextColor = [analyze secondaryTextColor];
+      [v7 setSecondaryTextColor:secondaryTextColor];
 
-      [v7 setIsBackgroundLight:{objc_msgSend(v6, "isBackgroundColorLight")}];
+      [v7 setIsBackgroundLight:{objc_msgSend(analyze, "isBackgroundColorLight")}];
     }
 
     else

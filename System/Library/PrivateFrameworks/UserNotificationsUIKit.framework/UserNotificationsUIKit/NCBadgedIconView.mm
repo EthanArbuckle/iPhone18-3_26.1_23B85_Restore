@@ -1,21 +1,21 @@
 @interface NCBadgedIconView
 - (BOOL)_wantsCustomBadgeBackgroundColor;
 - (BOOL)isFeaturingSymbol;
-- (NCBadgedIconView)initWithBadgedIconDescription:(id)a3 pointSize:(double)a4;
+- (NCBadgedIconView)initWithBadgedIconDescription:(id)description pointSize:(double)size;
 - (NSArray)requiredVisualStyleCategories;
 - (UIColor)dominantColor;
 - (double)_subordinateIconDimension;
 - (id)_prominentImageView;
-- (void)_prominentIconForCurrentInterfaceStyleWithCompletionOnMain:(id)a3;
-- (void)_subordinateIconForCurrentInterfaceStyleWithCompletionOnMain:(id)a3;
+- (void)_prominentIconForCurrentInterfaceStyleWithCompletionOnMain:(id)main;
+- (void)_subordinateIconForCurrentInterfaceStyleWithCompletionOnMain:(id)main;
 - (void)_updateVisibleIcons;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
 - (void)layoutSubviews;
-- (void)setBadgedIconDescription:(id)a3;
-- (void)setPointSize:(double)a3;
-- (void)setShadowEnabled:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)updateVisualStylingOfProminentImageViewIfSymbolImageWithStyle:(int64_t)a3 visualStylingProvider:(id)a4 outgoingProvider:(id)a5;
+- (void)setBadgedIconDescription:(id)description;
+- (void)setPointSize:(double)size;
+- (void)setShadowEnabled:(BOOL)enabled;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)updateVisualStylingOfProminentImageViewIfSymbolImageWithStyle:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
 @end
 
 @implementation NCBadgedIconView
@@ -45,11 +45,11 @@
 
 - (BOOL)isFeaturingSymbol
 {
-  v2 = [(NCBadgedIconView *)self _prominentImageView];
-  v3 = [v2 image];
-  v4 = [v3 isSymbolImage];
+  _prominentImageView = [(NCBadgedIconView *)self _prominentImageView];
+  image = [_prominentImageView image];
+  isSymbolImage = [image isSymbolImage];
 
-  return v4;
+  return isSymbolImage;
 }
 
 - (void)layoutSubviews
@@ -72,27 +72,27 @@
 
 - (void)_updateVisibleIcons
 {
-  v3 = [(NCBadgedIconView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(NCBadgedIconView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v5 = [(NCBadgedIconView *)self traitCollection];
-  v6 = [v5 sbh_iconImageStyleConfiguration];
+  traitCollection2 = [(NCBadgedIconView *)self traitCollection];
+  sbh_iconImageStyleConfiguration = [traitCollection2 sbh_iconImageStyleConfiguration];
 
-  if ([v6 variant] == 1)
+  if ([sbh_iconImageStyleConfiguration variant] == 1)
   {
-    v4 = 2;
+    userInterfaceStyle = 2;
   }
 
-  else if (![v6 variant] || objc_msgSend(v6, "variant") == 3)
+  else if (![sbh_iconImageStyleConfiguration variant] || objc_msgSend(sbh_iconImageStyleConfiguration, "variant") == 3)
   {
-    v4 = 1;
+    userInterfaceStyle = 1;
   }
 
-  objc_storeStrong(&self->_iconImageStyleConfiguration, v6);
+  objc_storeStrong(&self->_iconImageStyleConfiguration, sbh_iconImageStyleConfiguration);
   userInterfaceStyle = self->_userInterfaceStyle;
-  if (userInterfaceStyle != v4)
+  if (userInterfaceStyle != userInterfaceStyle)
   {
-    self->_userInterfaceStyle = v4;
+    self->_userInterfaceStyle = userInterfaceStyle;
   }
 
   iconView = self->_iconView;
@@ -118,24 +118,24 @@
 
   v12 = v11;
 
-  if (userInterfaceStyle == v4 || v12 == 0)
+  if (userInterfaceStyle == userInterfaceStyle || v12 == 0)
   {
     if (!v12)
     {
       goto LABEL_23;
     }
 
-    v14 = 0;
+    _shouldUpdateProminentIconWhenInterfaceStyleChanges = 0;
   }
 
   else
   {
-    v14 = [(NCBadgedIconView *)self _shouldUpdateProminentIconWhenInterfaceStyleChanges];
+    _shouldUpdateProminentIconWhenInterfaceStyleChanges = [(NCBadgedIconView *)self _shouldUpdateProminentIconWhenInterfaceStyleChanges];
   }
 
-  v15 = [(UIView *)v12 image];
+  image = [(UIView *)v12 image];
 
-  if (v14 || !v15)
+  if (_shouldUpdateProminentIconWhenInterfaceStyleChanges || !image)
   {
     objc_initWeak(&location, self);
     v26[0] = MEMORY[0x277D85DD0];
@@ -149,12 +149,12 @@
   }
 
 LABEL_23:
-  v16 = userInterfaceStyle != v4 && self->_subordinateIconView && [(NCBadgedIconView *)self _shouldUpdateSubordinateIconWhenInterfaceStyleChanges];
+  v16 = userInterfaceStyle != userInterfaceStyle && self->_subordinateIconView && [(NCBadgedIconView *)self _shouldUpdateSubordinateIconWhenInterfaceStyleChanges];
   subordinateIconView = self->_subordinateIconView;
   if (subordinateIconView)
   {
-    v18 = [(UIImageView *)subordinateIconView image];
-    v19 = v18 == 0;
+    image2 = [(UIImageView *)subordinateIconView image];
+    v19 = image2 == 0;
   }
 
   else
@@ -177,11 +177,11 @@ LABEL_23:
 
   if (self->_badgeTextView && [(NCBadgedIconView *)self _wantsCustomBadgeBackgroundColor])
   {
-    v20 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v21 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:v4];
-    v22 = [v20 resolvedColorWithTraitCollection:v21];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v21 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:userInterfaceStyle];
+    v22 = [systemBackgroundColor resolvedColorWithTraitCollection:v21];
 
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
       [MEMORY[0x277D661C8] darkAppearance];
     }
@@ -401,29 +401,29 @@ uint64_t __34__NCBadgedIconView_layoutSubviews__block_invoke(uint64_t a1)
   return [v38 setCenter:?];
 }
 
-- (NCBadgedIconView)initWithBadgedIconDescription:(id)a3 pointSize:(double)a4
+- (NCBadgedIconView)initWithBadgedIconDescription:(id)description pointSize:(double)size
 {
-  v6 = a3;
+  descriptionCopy = description;
   v10.receiver = self;
   v10.super_class = NCBadgedIconView;
   v7 = [(NCBadgedIconView *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_pointSize = a4;
-    [(NCBadgedIconView *)v7 setBadgedIconDescription:v6];
+    v7->_pointSize = size;
+    [(NCBadgedIconView *)v7 setBadgedIconDescription:descriptionCopy];
   }
 
   return v8;
 }
 
-- (void)setBadgedIconDescription:(id)a3
+- (void)setBadgedIconDescription:(id)description
 {
-  v17 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v5 = [(NCBadgedIconDescription *)self->_badgedIconDescription prominentIconDescription];
-    v6 = [v17 prominentIconDescription];
+    prominentIconDescription = [(NCBadgedIconDescription *)self->_badgedIconDescription prominentIconDescription];
+    prominentIconDescription2 = [descriptionCopy prominentIconDescription];
     v7 = BSEqualObjects();
 
     if ((v7 & 1) == 0)
@@ -433,8 +433,8 @@ uint64_t __34__NCBadgedIconView_layoutSubviews__block_invoke(uint64_t a1)
       self->_iconView = 0;
     }
 
-    v9 = [(NCBadgedIconDescription *)self->_badgedIconDescription subordinateIconRecipe];
-    v10 = [v17 subordinateIconRecipe];
+    subordinateIconRecipe = [(NCBadgedIconDescription *)self->_badgedIconDescription subordinateIconRecipe];
+    subordinateIconRecipe2 = [descriptionCopy subordinateIconRecipe];
     v11 = BSEqualObjects();
 
     if ((v11 & 1) == 0)
@@ -444,8 +444,8 @@ uint64_t __34__NCBadgedIconView_layoutSubviews__block_invoke(uint64_t a1)
       self->_subordinateIconView = 0;
     }
 
-    v13 = [(NCBadgedIconDescription *)self->_badgedIconDescription badgeText];
-    v14 = [v17 badgeText];
+    badgeText = [(NCBadgedIconDescription *)self->_badgedIconDescription badgeText];
+    badgeText2 = [descriptionCopy badgeText];
     v15 = BSEqualObjects();
 
     if ((v15 & 1) == 0)
@@ -455,38 +455,38 @@ uint64_t __34__NCBadgedIconView_layoutSubviews__block_invoke(uint64_t a1)
       self->_badgeTextView = 0;
     }
 
-    objc_storeStrong(&self->_badgedIconDescription, a3);
+    objc_storeStrong(&self->_badgedIconDescription, description);
     [(NCBadgedIconView *)self setNeedsLayout];
   }
 }
 
-- (void)setShadowEnabled:(BOOL)a3
+- (void)setShadowEnabled:(BOOL)enabled
 {
-  if (self->_shadowEnabled != a3)
+  if (self->_shadowEnabled != enabled)
   {
-    self->_shadowEnabled = a3;
-    v10 = [(NCBadgedIconView *)self _prominentImageView];
-    v5 = [v10 image];
-    v6 = [v5 isSymbolImage];
+    self->_shadowEnabled = enabled;
+    _prominentImageView = [(NCBadgedIconView *)self _prominentImageView];
+    image = [_prominentImageView image];
+    isSymbolImage = [image isSymbolImage];
 
-    if ((v6 & 1) == 0)
+    if ((isSymbolImage & 1) == 0)
     {
-      v7 = [v10 image];
-      v8 = [(NCBadgedIconView *)self traitCollection];
-      v9 = [v7 mt_imageWithDefaultShadowAttributesForUserInterfaceStyle:{objc_msgSend(v8, "userInterfaceStyle")}];
-      [v10 setImage:v9];
+      image2 = [_prominentImageView image];
+      traitCollection = [(NCBadgedIconView *)self traitCollection];
+      v9 = [image2 mt_imageWithDefaultShadowAttributesForUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
+      [_prominentImageView setImage:v9];
     }
   }
 }
 
 - (UIColor)dominantColor
 {
-  v2 = [(NCBadgedIconView *)self _prominentImageView];
-  v3 = [v2 image];
+  _prominentImageView = [(NCBadgedIconView *)self _prominentImageView];
+  image = [_prominentImageView image];
 
-  if (v3)
+  if (image)
   {
-    v4 = _NCDominantColorForImage(v3);
+    v4 = _NCDominantColorForImage(image);
   }
 
   else
@@ -497,16 +497,16 @@ uint64_t __34__NCBadgedIconView_layoutSubviews__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)updateVisualStylingOfProminentImageViewIfSymbolImageWithStyle:(int64_t)a3 visualStylingProvider:(id)a4 outgoingProvider:(id)a5
+- (void)updateVisualStylingOfProminentImageViewIfSymbolImageWithStyle:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = [(NCBadgedIconView *)self _prominentImageView];
-  if (v9)
+  providerCopy = provider;
+  outgoingProviderCopy = outgoingProvider;
+  _prominentImageView = [(NCBadgedIconView *)self _prominentImageView];
+  if (_prominentImageView)
   {
     if ([(NCBadgedIconView *)self isFeaturingSymbol])
     {
-      v10 = v12;
+      v10 = providerCopy;
     }
 
     else
@@ -514,32 +514,32 @@ uint64_t __34__NCBadgedIconView_layoutSubviews__block_invoke(uint64_t a1)
       v10 = 0;
     }
 
-    [(NCBadgedIconView *)self _updateVisualStylingOfView:v9 style:a3 visualStylingProvider:v10 outgoingProvider:v8];
+    [(NCBadgedIconView *)self _updateVisualStylingOfView:_prominentImageView style:style visualStylingProvider:v10 outgoingProvider:outgoingProviderCopy];
   }
 
-  if (!v12)
+  if (!providerCopy)
   {
-    v11 = [MEMORY[0x277D75348] labelColor];
-    [v9 setTintColor:v11];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [_prominentImageView setTintColor:labelColor];
   }
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 
-- (void)setPointSize:(double)a3
+- (void)setPointSize:(double)size
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_pointSize = a3;
+    self->_pointSize = size;
 
     [(NCBadgedIconView *)self setNeedsLayout];
   }
@@ -550,39 +550,39 @@ uint64_t __34__NCBadgedIconView_layoutSubviews__block_invoke(uint64_t a1)
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UIImageView *)self->_subordinateIconView requiredVisualStyleCategories];
-    [v3 addObjectsFromArray:v4];
+    requiredVisualStyleCategories = [(UIImageView *)self->_subordinateIconView requiredVisualStyleCategories];
+    [v3 addObjectsFromArray:requiredVisualStyleCategories];
   }
 
-  v5 = [(NCBadgedIconView *)self _prominentImageView];
+  _prominentImageView = [(NCBadgedIconView *)self _prominentImageView];
 
-  if (v5)
+  if (_prominentImageView)
   {
     [v3 addObject:&unk_2830155A8];
   }
 
-  v6 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v11 = a3;
-  v6 = [(NCBadgedIconView *)self requiredVisualStyleCategories];
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v8 = [v6 containsObject:v7];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(NCBadgedIconView *)self requiredVisualStyleCategories];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v8 = [requiredVisualStyleCategories containsObject:v7];
 
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(UIImageView *)self->_subordinateIconView setVisualStylingProvider:v11 forCategory:a4];
+    [(UIImageView *)self->_subordinateIconView setVisualStylingProvider:providerCopy forCategory:category];
   }
 
-  v9 = [(NCBadgedIconView *)self _prominentImageView];
-  v10 = v9;
-  if (a4 == 1 && v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  _prominentImageView = [(NCBadgedIconView *)self _prominentImageView];
+  v10 = _prominentImageView;
+  if (category == 1 && _prominentImageView && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 setVisualStylingProvider:v11 forCategory:1];
+    [v10 setVisualStylingProvider:providerCopy forCategory:1];
   }
 }
 
@@ -609,12 +609,12 @@ void __39__NCBadgedIconView__updateVisibleIcons__block_invoke_2(uint64_t a1, voi
   return result;
 }
 
-- (void)_prominentIconForCurrentInterfaceStyleWithCompletionOnMain:(id)a3
+- (void)_prominentIconForCurrentInterfaceStyleWithCompletionOnMain:(id)main
 {
-  v4 = a3;
-  v5 = [(NCBadgedIconDescription *)self->_badgedIconDescription prominentIconDescription];
+  mainCopy = main;
+  prominentIconDescription = [(NCBadgedIconDescription *)self->_badgedIconDescription prominentIconDescription];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = prominentIconDescription;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -648,7 +648,7 @@ void __39__NCBadgedIconView__updateVisibleIcons__block_invoke_2(uint64_t a1, voi
     v13 = v9;
     v15[1] = *&pointSize;
     v15[2] = userInterfaceStyle;
-    v14 = v4;
+    v14 = mainCopy;
     [v13 imageForPointSize:userInterfaceStyle interfaceStyle:v12 completionOnMain:pointSize];
 
     objc_destroyWeak(v15);
@@ -693,11 +693,11 @@ void __79__NCBadgedIconView__prominentIconForCurrentInterfaceStyleWithCompletion
   }
 }
 
-- (void)_subordinateIconForCurrentInterfaceStyleWithCompletionOnMain:(id)a3
+- (void)_subordinateIconForCurrentInterfaceStyleWithCompletionOnMain:(id)main
 {
-  v4 = a3;
-  v5 = [(NCBadgedIconDescription *)self->_badgedIconDescription subordinateIconRecipe];
-  if (v5)
+  mainCopy = main;
+  subordinateIconRecipe = [(NCBadgedIconDescription *)self->_badgedIconDescription subordinateIconRecipe];
+  if (subordinateIconRecipe)
   {
     [(NCBadgedIconView *)self _subordinateIconDimension];
     v7 = v6;
@@ -708,10 +708,10 @@ void __79__NCBadgedIconView__prominentIconForCurrentInterfaceStyleWithCompletion
     v9[2] = __81__NCBadgedIconView__subordinateIconForCurrentInterfaceStyleWithCompletionOnMain___block_invoke;
     v9[3] = &unk_278371E00;
     objc_copyWeak(v12, &location);
-    v10 = v5;
+    v10 = subordinateIconRecipe;
     v12[1] = v7;
     v12[2] = userInterfaceStyle;
-    v11 = v4;
+    v11 = mainCopy;
     [v10 imageForPointSize:userInterfaceStyle interfaceStyle:v9 completionOnMain:*&v7];
 
     objc_destroyWeak(v12);

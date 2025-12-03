@@ -1,27 +1,27 @@
 @interface PMLMutableDenseVector
-- (PMLMutableDenseVector)initWithMutableData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)processValuesInPlaceWithBlock:(id)a3;
-- (void)scaleInPlaceWithFactor:(float)a3;
-- (void)scaleInPlaceWithInversedFactor:(float)a3;
-- (void)sumInPlaceWithVector:(id)a3;
+- (PMLMutableDenseVector)initWithMutableData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)processValuesInPlaceWithBlock:(id)block;
+- (void)scaleInPlaceWithFactor:(float)factor;
+- (void)scaleInPlaceWithInversedFactor:(float)factor;
+- (void)sumInPlaceWithVector:(id)vector;
 @end
 
 @implementation PMLMutableDenseVector
 
-- (void)sumInPlaceWithVector:(id)a3
+- (void)sumInPlaceWithVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   [(PMLDenseVector *)self count];
-  [v4 ptr];
+  [vectorCopy ptr];
 
   [(PMLMutableDenseVector *)self mutablePtr];
 
   cblas_saxpy_NEWLAPACK();
 }
 
-- (void)scaleInPlaceWithFactor:(float)a3
+- (void)scaleInPlaceWithFactor:(float)factor
 {
   [(PMLDenseVector *)self count];
   [(PMLMutableDenseVector *)self mutablePtr];
@@ -29,9 +29,9 @@
   cblas_sscal_NEWLAPACK();
 }
 
-- (void)scaleInPlaceWithInversedFactor:(float)a3
+- (void)scaleInPlaceWithInversedFactor:(float)factor
 {
-  if (a3 > 0.0)
+  if (factor > 0.0)
   {
     [(PMLDenseVector *)self count];
     [(PMLMutableDenseVector *)self mutablePtr];
@@ -40,47 +40,47 @@
   }
 }
 
-- (void)processValuesInPlaceWithBlock:(id)a3
+- (void)processValuesInPlaceWithBlock:(id)block
 {
-  v8 = a3;
-  v4 = [(PMLMutableDenseVector *)self mutablePtr];
+  blockCopy = block;
+  mutablePtr = [(PMLMutableDenseVector *)self mutablePtr];
   v5 = [(PMLDenseVector *)self count];
   if (v5)
   {
     v6 = v5;
     for (i = 0; i != v6; ++i)
     {
-      v4[i] = v8[2](v8, i, v4[i]);
+      mutablePtr[i] = blockCopy[2](blockCopy, i, mutablePtr[i]);
     }
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PMLMutableDenseVector allocWithZone:a3];
+  v4 = [PMLMutableDenseVector allocWithZone:zone];
   data = self->super._data;
 
   return [(PMLDenseVector *)v4 initWithData:data];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PMLDenseVector allocWithZone:a3];
+  v4 = [PMLDenseVector allocWithZone:zone];
   data = self->super._data;
 
   return [(PMLDenseVector *)v4 initWithData:data];
 }
 
-- (PMLMutableDenseVector)initWithMutableData:(id)a3
+- (PMLMutableDenseVector)initWithMutableData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = PMLMutableDenseVector;
   v6 = [(PMLDenseVector *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->super._data, a3);
+    objc_storeStrong(&v6->super._data, data);
   }
 
   return v7;

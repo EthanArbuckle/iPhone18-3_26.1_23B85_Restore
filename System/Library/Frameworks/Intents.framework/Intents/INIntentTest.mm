@@ -1,43 +1,43 @@
 @interface INIntentTest
-+ (id)executeIntent:(id)a3 withHandler:(id)a4;
++ (id)executeIntent:(id)intent withHandler:(id)handler;
 @end
 
 @implementation INIntentTest
 
-+ (id)executeIntent:(id)a3 withHandler:(id)a4
++ (id)executeIntent:(id)intent withHandler:(id)handler
 {
   v113 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v45 = a4;
-  v47 = v5;
-  NSLog(@"Testing intent:%@ on handler: %@", v5, v45);
-  v6 = [[DummyHandlerProvider alloc] initWithHandler:v45];
+  intentCopy = intent;
+  handlerCopy = handler;
+  v47 = intentCopy;
+  NSLog(@"Testing intent:%@ on handler: %@", intentCopy, handlerCopy);
+  v6 = [[DummyHandlerProvider alloc] initWithHandler:handlerCopy];
   v7 = [_INExtensionContext alloc];
   v43 = v6;
   v46 = [(_INExtensionContext *)v7 initWithInputItems:MEMORY[0x1E695E0F0] privateIntentHandlerProvider:v6];
   v8 = dispatch_semaphore_create(0);
-  v9 = [v47 identifier];
+  identifier = [v47 identifier];
   v110[0] = MEMORY[0x1E69E9820];
   v110[1] = 3221225472;
   v110[2] = __42__INIntentTest_executeIntent_withHandler___block_invoke;
   v110[3] = &unk_1E72882F8;
   v10 = v8;
   v111 = v10;
-  [(_INExtensionContext *)v46 beginTransactionWithIntentIdentifier:v9 completion:v110];
+  [(_INExtensionContext *)v46 beginTransactionWithIntentIdentifier:identifier completion:v110];
 
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  v44 = [v47 _intentInstanceDescription];
+  _intentInstanceDescription = [v47 _intentInstanceDescription];
   LOBYTE(v6) = [v47 _type] == 2;
-  v11 = [v44 slotDescriptions];
-  v12 = v11;
+  slotDescriptions = [_intentInstanceDescription slotDescriptions];
+  v12 = slotDescriptions;
   if ((v6 & 1) == 0)
   {
-    v13 = [v11 sortedArrayUsingComparator:&__block_literal_global_20853];
+    v13 = [slotDescriptions sortedArrayUsingComparator:&__block_literal_global_20853];
 
     v12 = v13;
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v108 = 0u;
   v109 = 0u;
   v106 = 0u;
@@ -71,8 +71,8 @@
         if (INIsInternalInstall_isInternal == 1)
         {
 LABEL_12:
-          v20 = [v19 name];
-          [v14 addObject:v20];
+          name = [v19 name];
+          [array addObject:name];
         }
 
         ++v18;
@@ -85,7 +85,7 @@ LABEL_12:
     while (v16);
   }
 
-  NSLog(@"    Resolving parameters: %@", v14);
+  NSLog(@"    Resolving parameters: %@", array);
   NSLog(@"    Executing slot resolution...");
   v102 = 0;
   v103 = &v102;
@@ -115,7 +115,7 @@ LABEL_12:
   v89 = &v90;
   v23 = v21;
   v86 = v23;
-  [(_INExtensionContext *)v46 resolveIntentSlots:v14 forIntent:v22 completionBlock:v85];
+  [(_INExtensionContext *)v46 resolveIntentSlots:array forIntent:v22 completionBlock:v85];
 
   dispatch_semaphore_wait(v23, 0xFFFFFFFFFFFFFFFFLL);
   NSLog(@"    Updated intent:%@", v97[5]);
@@ -221,14 +221,14 @@ LABEL_12:
 
   v36 = dispatch_semaphore_create(0);
 
-  v37 = [v47 identifier];
+  identifier2 = [v47 identifier];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __42__INIntentTest_executeIntent_withHandler___block_invoke_6;
   v48[3] = &unk_1E72882F8;
   v38 = v36;
   v49 = v38;
-  [(_INExtensionContext *)v46 completeTransactionWithIntentIdentifier:v37 completion:v48];
+  [(_INExtensionContext *)v46 completeTransactionWithIntentIdentifier:identifier2 completion:v48];
 
   dispatch_semaphore_wait(v38, 0xFFFFFFFFFFFFFFFFLL);
   v39 = [INIntentTestResult alloc];

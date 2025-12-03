@@ -1,19 +1,19 @@
 @interface CKMenuBarManager
 + (id)sharedInstance;
 - (NSArray)filterCommands;
-- (id)_keyCommandForInboxCellData:(id)a3 input:(id)a4 shouldShowIcon:(BOOL)a5;
+- (id)_keyCommandForInboxCellData:(id)data input:(id)input shouldShowIcon:(BOOL)icon;
 - (id)allKeyboardShortcutKeyCommands;
-- (id)generateFilterMenuHideSettings:(BOOL)a3;
-- (id)keyForInboxCellDataFilterMode:(unint64_t)a3;
+- (id)generateFilterMenuHideSettings:(BOOL)settings;
+- (id)keyForInboxCellDataFilterMode:(unint64_t)mode;
 - (id)menuPhoneCall;
-- (void)_buildConversationMenuWithBuilder:(id)a3;
-- (void)_buildDebugMenuWithBuilder:(id)a3;
-- (void)_buildEditMenuWithBuilder:(id)a3;
-- (void)_buildFileMenuWithBuilder:(id)a3;
-- (void)_buildFormatMenuWithBuilder:(id)a3;
-- (void)_buildViewMenuWithBuilder:(id)a3;
-- (void)_buildWindowMenuWithBuilder:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)_buildConversationMenuWithBuilder:(id)builder;
+- (void)_buildDebugMenuWithBuilder:(id)builder;
+- (void)_buildEditMenuWithBuilder:(id)builder;
+- (void)_buildFileMenuWithBuilder:(id)builder;
+- (void)_buildFormatMenuWithBuilder:(id)builder;
+- (void)_buildViewMenuWithBuilder:(id)builder;
+- (void)_buildWindowMenuWithBuilder:(id)builder;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)deferredImageSetupForFilterCommands;
 - (void)deferredSetupForTextStyleCommands;
 @end
@@ -41,35 +41,35 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
 
 - (id)allKeyboardShortcutKeyCommands
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:*MEMORY[0x1E69DDEA0] modifierFlags:0 action:NSSelectorFromString(&cfstr_Escbuttonpress.isa)];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"]" modifierFlags:0x100000 action:NSSelectorFromString(&cfstr_Keycommandnext.isa)];
-  [v3 addObject:v5];
+  [array addObject:v5];
 
   v6 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"[" modifierFlags:0x100000 action:NSSelectorFromString(&cfstr_Keycommandprev.isa)];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
   v7 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"}" modifierFlags:0x100000 action:NSSelectorFromString(&cfstr_Keycommandnext.isa)];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
   v8 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"{" modifierFlags:0x100000 action:NSSelectorFromString(&cfstr_Keycommandprev.isa)];
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 maximumNumberOfPinnedConversations];
+  maximumNumberOfPinnedConversations = [v9 maximumNumberOfPinnedConversations];
 
-  if (v10)
+  if (maximumNumberOfPinnedConversations)
   {
-    if (v10 >= 9)
+    if (maximumNumberOfPinnedConversations >= 9)
     {
       v11 = 9;
     }
 
     else
     {
-      v11 = v10;
+      v11 = maximumNumberOfPinnedConversations;
     }
 
     v12 = 1;
@@ -77,9 +77,9 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
     {
       v13 = MEMORY[0x1E69DCBA0];
       v14 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
-      v15 = [v14 stringValue];
-      v16 = [v13 keyCommandWithInput:v15 modifierFlags:0x100000 action:NSSelectorFromString(&cfstr_Keycommandsele.isa)];
-      [v3 addObject:v16];
+      stringValue = [v14 stringValue];
+      v16 = [v13 keyCommandWithInput:stringValue modifierFlags:0x100000 action:NSSelectorFromString(&cfstr_Keycommandsele.isa)];
+      [array addObject:v16];
 
       ++v12;
       --v11;
@@ -89,29 +89,29 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
   }
 
   v17 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"1" modifierFlags:1179648 action:NSSelectorFromString(&cfstr_Keycommandsele_0.isa)];
-  [v3 addObject:v17];
+  [array addObject:v17];
 
-  v18 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v19 = [v18 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v19)
+  if (isInternalInstall)
   {
     v20 = [MEMORY[0x1E69DCBA0] ck_debugMenuWithAction:NSSelectorFromString(&cfstr_Showdebugmenu.isa)];
     if (v20)
     {
-      [v3 addObject:v20];
+      [array addObject:v20];
     }
   }
 
   if ((_CKUIEnhancedMainMenuEnabled() & 1) == 0)
   {
-    v21 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v22 = [v21 isModernFilteringEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-    if ((v22 & 1) == 0)
+    if ((isModernFilteringEnabled & 1) == 0)
     {
-      v23 = [(CKMenuBarManager *)self filterCommands];
-      [v3 addObjectsFromArray:v23];
+      filterCommands = [(CKMenuBarManager *)self filterCommands];
+      [array addObjectsFromArray:filterCommands];
     }
 
     v24 = MEMORY[0x1E69DCBA0];
@@ -119,10 +119,10 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
     v26 = CKFrameworkBundle();
     v27 = [v26 localizedStringForKey:@"NEW_MESSAGE" value:&stru_1F04268F8 table:@"ChatKit"];
     v28 = [v24 keyCommandWithInput:@"N" modifierFlags:0x100000 action:v25 upAction:0 discoverabilityTitle:v27];
-    [v3 addObject:v28];
+    [array addObject:v28];
 
-    v29 = [MEMORY[0x1E69A8070] sharedInstance];
-    LODWORD(v25) = [v29 isExpressiveTextEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedInstance];
+    LODWORD(v25) = [mEMORY[0x1E69A8070]2 isExpressiveTextEnabled];
 
     if (v25)
     {
@@ -139,14 +139,14 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
     v33 = CKFrameworkBundle();
     v34 = [v33 localizedStringForKey:@"SHOW_DETAILS" value:&stru_1F04268F8 table:@"ChatKit"];
     v35 = [v31 keyCommandWithInput:@"I" modifierFlags:v30 action:v32 upAction:0 discoverabilityTitle:v34];
-    [v3 addObject:v35];
+    [array addObject:v35];
 
     v36 = MEMORY[0x1E69DCBA0];
     v37 = NSSelectorFromString(&cfstr_Keycommandfind.isa);
     v38 = CKFrameworkBundle();
     v39 = [v38 localizedStringForKey:@"FIND_ELLIPSIS" value:&stru_1F04268F8 table:@"ChatKit"];
     v40 = [v36 keyCommandWithInput:@"F" modifierFlags:0x100000 action:v37 upAction:0 discoverabilityTitle:v39];
-    [v3 addObject:v40];
+    [array addObject:v40];
 
     v41 = MEMORY[0x1E69DCBA0];
     v42 = NSSelectorFromString(&cfstr_Keycommandnext.isa);
@@ -155,7 +155,7 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
     v45 = [v41 keyCommandWithInput:@"\t" modifierFlags:0x40000 action:v42 upAction:0 discoverabilityTitle:v44];
 
     [v45 setWantsPriorityOverSystemBehavior:1];
-    [v3 addObject:v45];
+    [array addObject:v45];
     v46 = MEMORY[0x1E69DCBA0];
     v47 = NSSelectorFromString(&cfstr_Keycommandprev.isa);
     v48 = CKFrameworkBundle();
@@ -163,115 +163,115 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
     v50 = [v46 keyCommandWithInput:@"\t" modifierFlags:393216 action:v47 upAction:0 discoverabilityTitle:v49];
 
     [v50 setWantsPriorityOverSystemBehavior:1];
-    [v3 addObject:v50];
-    v51 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v46) = [v51 isExpressiveTextEnabled];
+    [array addObject:v50];
+    mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(v46) = [mEMORY[0x1E69A8070]3 isExpressiveTextEnabled];
 
     if (v46)
     {
       v52 = [CKTextEffectsMenuFactory effectKeyCommandsWithAction:NSSelectorFromString(&cfstr_Keycommandappl.isa)];
-      [v3 addObjectsFromArray:v52];
+      [array addObjectsFromArray:v52];
       v53 = [CKTextEffectsMenuFactory textStyleKeyCommandsWithAction:NSSelectorFromString(&cfstr_Keycommandappl_0.isa) configureImages:0 configureAttributedTitles:0 activeTextStyles:0 selectedText:&stru_1F04268F8];
-      [v3 addObjectsFromArray:v53];
+      [array addObjectsFromArray:v53];
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (void)deferredImageSetupForFilterCommands
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernFilteringEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernFilteringEnabled = [mEMORY[0x1E69A8070] isModernFilteringEnabled];
 
-  if (v4)
+  if (isModernFilteringEnabled)
   {
     [(CKMenuBarManager *)self setShouldGenerateFilters:1];
-    v31 = [MEMORY[0x1E69DCC88] mainSystem];
-    [v31 setNeedsRebuild];
+    mainSystem = [MEMORY[0x1E69DCC88] mainSystem];
+    [mainSystem setNeedsRebuild];
   }
 
   else
   {
-    v5 = [(CKMenuBarManager *)self filterImagesByFilterMode];
+    filterImagesByFilterMode = [(CKMenuBarManager *)self filterImagesByFilterMode];
 
-    if (v5)
+    if (filterImagesByFilterMode)
     {
       return;
     }
 
-    v31 = objc_opt_new();
+    mainSystem = objc_opt_new();
     v6 = +[CKInboxCellData allMessagesCellData];
     v7 = -[CKMenuBarManager keyForInboxCellDataFilterMode:](self, "keyForInboxCellDataFilterMode:", [v6 filterMode]);
 
     v8 = +[CKInboxCellData allMessagesCellData];
-    v9 = [v8 image];
-    [v31 setObject:v9 forKey:v7];
+    image = [v8 image];
+    [mainSystem setObject:image forKey:v7];
 
     v10 = +[CKInboxCellData knownSendersCellData];
     v11 = -[CKMenuBarManager keyForInboxCellDataFilterMode:](self, "keyForInboxCellDataFilterMode:", [v10 filterMode]);
 
     v12 = +[CKInboxCellData knownSendersCellData];
-    v13 = [v12 image];
-    [v31 setObject:v13 forKey:v11];
+    image2 = [v12 image];
+    [mainSystem setObject:image2 forKey:v11];
 
     v14 = +[CKInboxCellData unknownSendersCellData];
     v15 = -[CKMenuBarManager keyForInboxCellDataFilterMode:](self, "keyForInboxCellDataFilterMode:", [v14 filterMode]);
 
     v16 = +[CKInboxCellData unknownSendersCellData];
-    v17 = [v16 image];
-    [v31 setObject:v17 forKey:v15];
+    image3 = [v16 image];
+    [mainSystem setObject:image3 forKey:v15];
 
     v18 = +[CKInboxCellData unreadMessagesCellData];
     v19 = -[CKMenuBarManager keyForInboxCellDataFilterMode:](self, "keyForInboxCellDataFilterMode:", [v18 filterMode]);
 
     v20 = +[CKInboxCellData unreadMessagesCellData];
-    v21 = [v20 image];
-    [v31 setObject:v21 forKey:v19];
+    image4 = [v20 image];
+    [mainSystem setObject:image4 forKey:v19];
 
     v22 = +[CKInboxCellData oscarCellData];
     v23 = -[CKMenuBarManager keyForInboxCellDataFilterMode:](self, "keyForInboxCellDataFilterMode:", [v22 filterMode]);
 
     v24 = +[CKInboxCellData oscarCellData];
-    v25 = [v24 image];
-    [v31 setObject:v25 forKey:v23];
+    image5 = [v24 image];
+    [mainSystem setObject:image5 forKey:v23];
 
     v26 = +[CKInboxCellData recentlyDeletedCellData];
     v27 = -[CKMenuBarManager keyForInboxCellDataFilterMode:](self, "keyForInboxCellDataFilterMode:", [v26 filterMode]);
 
     v28 = +[CKInboxCellData recentlyDeletedCellData];
-    v29 = [v28 image];
-    [v31 setObject:v29 forKey:v27];
+    image6 = [v28 image];
+    [mainSystem setObject:image6 forKey:v27];
 
-    [(CKMenuBarManager *)self setFilterImagesByFilterMode:v31];
+    [(CKMenuBarManager *)self setFilterImagesByFilterMode:mainSystem];
     self->_shouldForceFilterImageReload = 1;
-    v30 = [MEMORY[0x1E69DCC88] mainSystem];
-    [v30 setNeedsRebuild];
+    mainSystem2 = [MEMORY[0x1E69DCC88] mainSystem];
+    [mainSystem2 setNeedsRebuild];
   }
 }
 
 - (void)deferredSetupForTextStyleCommands
 {
   self->_shouldConfigureAttributedTextStyleTitles = 1;
-  v2 = [MEMORY[0x1E69DCC88] mainSystem];
-  [v2 setNeedsRebuild];
+  mainSystem = [MEMORY[0x1E69DCC88] mainSystem];
+  [mainSystem setNeedsRebuild];
 }
 
-- (void)_buildFileMenuWithBuilder:(id)a3
+- (void)_buildFileMenuWithBuilder:(id)builder
 {
-  v4 = a3;
-  [v4 removeMenuForIdentifier:*MEMORY[0x1E69DE158]];
-  [v4 removeMenuForIdentifier:*MEMORY[0x1E69DE178]];
-  [v4 removeMenuForIdentifier:*MEMORY[0x1E69DE0F0]];
-  [v4 removeMenuForIdentifier:*MEMORY[0x1E69DE160]];
-  [v4 removeMenuForIdentifier:*MEMORY[0x1E69DE168]];
+  builderCopy = builder;
+  [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE158]];
+  [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE178]];
+  [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE0F0]];
+  [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE160]];
+  [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE168]];
   v5 = *MEMORY[0x1E69DE0D8];
-  v6 = [v4 menuForIdentifier:*MEMORY[0x1E69DE0D8]];
+  v6 = [builderCopy menuForIdentifier:*MEMORY[0x1E69DE0D8]];
   if (v6)
   {
     v7 = v6;
-    v8 = [v6 children];
-    v9 = [v8 mutableCopy];
+    children = [v6 children];
+    v9 = [children mutableCopy];
 
     v10 = MEMORY[0x1E69DC8B0];
     v11 = CKFrameworkBundle();
@@ -282,7 +282,7 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
 
     v15 = [v7 menuByReplacingChildren:v9];
 
-    [v4 replaceMenuForIdentifier:v5 withMenu:v15];
+    [builderCopy replaceMenuForIdentifier:v5 withMenu:v15];
   }
 
   v16 = *MEMORY[0x1E69DE100];
@@ -291,7 +291,7 @@ void __34__CKMenuBarManager_sharedInstance__block_invoke()
   v17[2] = __46__CKMenuBarManager__buildFileMenuWithBuilder___block_invoke;
   v17[3] = &unk_1E72ECD60;
   v17[4] = self;
-  [v4 replaceChildrenOfMenuForIdentifier:v16 fromChildrenBlock:v17];
+  [builderCopy replaceChildrenOfMenuForIdentifier:v16 fromChildrenBlock:v17];
 }
 
 id __46__CKMenuBarManager__buildFileMenuWithBuilder___block_invoke(uint64_t a1, void *a2)
@@ -319,19 +319,19 @@ id __46__CKMenuBarManager__buildFileMenuWithBuilder___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (void)_buildEditMenuWithBuilder:(id)a3
+- (void)_buildEditMenuWithBuilder:(id)builder
 {
   v4 = *MEMORY[0x1E69DE220];
-  v5 = a3;
-  [v5 removeMenuForIdentifier:v4];
-  [v5 replaceChildrenOfMenuForIdentifier:*MEMORY[0x1E69DE108] fromChildrenBlock:&__block_literal_global_324_0];
+  builderCopy = builder;
+  [builderCopy removeMenuForIdentifier:v4];
+  [builderCopy replaceChildrenOfMenuForIdentifier:*MEMORY[0x1E69DE108] fromChildrenBlock:&__block_literal_global_324_0];
   v6 = *MEMORY[0x1E69DE0F8];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__CKMenuBarManager__buildEditMenuWithBuilder___block_invoke_2;
   v7[3] = &unk_1E72ECD60;
   v7[4] = self;
-  [v5 replaceChildrenOfMenuForIdentifier:v6 fromChildrenBlock:v7];
+  [builderCopy replaceChildrenOfMenuForIdentifier:v6 fromChildrenBlock:v7];
 }
 
 id __46__CKMenuBarManager__buildEditMenuWithBuilder___block_invoke()
@@ -405,7 +405,7 @@ id __46__CKMenuBarManager__buildEditMenuWithBuilder___block_invoke_2(uint64_t a1
   return v32;
 }
 
-- (void)_buildWindowMenuWithBuilder:(id)a3
+- (void)_buildWindowMenuWithBuilder:(id)builder
 {
   v4 = *MEMORY[0x1E69DE238];
   v5[0] = MEMORY[0x1E69E9820];
@@ -413,7 +413,7 @@ id __46__CKMenuBarManager__buildEditMenuWithBuilder___block_invoke_2(uint64_t a1
   v5[2] = __48__CKMenuBarManager__buildWindowMenuWithBuilder___block_invoke;
   v5[3] = &unk_1E72ECD60;
   v5[4] = self;
-  [a3 replaceChildrenOfMenuForIdentifier:v4 fromChildrenBlock:v5];
+  [builder replaceChildrenOfMenuForIdentifier:v4 fromChildrenBlock:v5];
 }
 
 id __48__CKMenuBarManager__buildWindowMenuWithBuilder___block_invoke(uint64_t a1, void *a2)
@@ -455,19 +455,19 @@ id __48__CKMenuBarManager__buildWindowMenuWithBuilder___block_invoke(uint64_t a1
   return v25;
 }
 
-- (void)_buildViewMenuWithBuilder:(id)a3
+- (void)_buildViewMenuWithBuilder:(id)builder
 {
   v4 = *MEMORY[0x1E69DE218];
-  v5 = a3;
-  [v5 removeMenuForIdentifier:v4];
-  [v5 removeMenuForIdentifier:*MEMORY[0x1E69DE1A8]];
+  builderCopy = builder;
+  [builderCopy removeMenuForIdentifier:v4];
+  [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE1A8]];
   v6 = *MEMORY[0x1E69DE230];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__CKMenuBarManager__buildViewMenuWithBuilder___block_invoke;
   v7[3] = &unk_1E72ECD60;
   v7[4] = self;
-  [v5 replaceChildrenOfMenuForIdentifier:v6 fromChildrenBlock:v7];
+  [builderCopy replaceChildrenOfMenuForIdentifier:v6 fromChildrenBlock:v7];
 }
 
 id __46__CKMenuBarManager__buildViewMenuWithBuilder___block_invoke(uint64_t a1, void *a2)
@@ -511,8 +511,8 @@ id __46__CKMenuBarManager__buildViewMenuWithBuilder___block_invoke(uint64_t a1, 
   v24[4] = *MEMORY[0x1E69E9840];
   if (self->_shouldForceFilterImageReload || (v3 = self->_filterCommands) == 0)
   {
-    v4 = [(CKMenuBarManager *)self filterImagesByFilterMode];
-    v5 = [v4 count];
+    filterImagesByFilterMode = [(CKMenuBarManager *)self filterImagesByFilterMode];
+    v5 = [filterImagesByFilterMode count];
     v6 = v5 != 0;
 
     v7 = +[CKInboxCellData allMessagesCellData];
@@ -562,19 +562,19 @@ id __46__CKMenuBarManager__buildViewMenuWithBuilder___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (id)_keyCommandForInboxCellData:(id)a3 input:(id)a4 shouldShowIcon:(BOOL)a5
+- (id)_keyCommandForInboxCellData:(id)data input:(id)input shouldShowIcon:(BOOL)icon
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  iconCopy = icon;
+  dataCopy = data;
+  inputCopy = input;
+  if (iconCopy)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "filterMode")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "filterMode")}];
     v12 = [v10 stringWithFormat:@"%@", v11];
 
-    v13 = [(CKMenuBarManager *)self filterImagesByFilterMode];
-    v14 = [v13 objectForKey:v12];
+    filterImagesByFilterMode = [(CKMenuBarManager *)self filterImagesByFilterMode];
+    v14 = [filterImagesByFilterMode objectForKey:v12];
   }
 
   else
@@ -583,37 +583,37 @@ id __46__CKMenuBarManager__buildViewMenuWithBuilder___block_invoke(uint64_t a1, 
   }
 
   v15 = MEMORY[0x1E69DCBA0];
-  v16 = [v8 title];
+  title = [dataCopy title];
   v17 = NSSelectorFromString(&cfstr_Legacydidselec.isa);
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "filterMode")}];
-  v19 = [v15 commandWithTitle:v16 image:v14 action:v17 input:v9 modifierFlags:1310720 propertyList:v18];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "filterMode")}];
+  v19 = [v15 commandWithTitle:title image:v14 action:v17 input:inputCopy modifierFlags:1310720 propertyList:v18];
 
   return v19;
 }
 
-- (id)keyForInboxCellDataFilterMode:(unint64_t)a3
+- (id)keyForInboxCellDataFilterMode:(unint64_t)mode
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
   v5 = [v3 stringWithFormat:@"%@", v4];
 
   return v5;
 }
 
-- (void)_buildDebugMenuWithBuilder:(id)a3
+- (void)_buildDebugMenuWithBuilder:(id)builder
 {
   v25[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if (([v4 isInternalInstall] & 1) == 0)
+  builderCopy = builder;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if (([mEMORY[0x1E69A60F0] isInternalInstall] & 1) == 0)
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"showDebugMenu"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"showDebugMenu"];
 
   if (v6)
   {
@@ -626,7 +626,7 @@ LABEL_6:
 
     v9 = MEMORY[0x1E69DC8B0];
     v10 = v8;
-    v4 = [v9 commandWithTitle:v10 image:0 action:NSSelectorFromString(&cfstr_Togglesensitiv.isa) propertyList:0];
+    mEMORY[0x1E69A60F0] = [v9 commandWithTitle:v10 image:0 action:NSSelectorFromString(&cfstr_Togglesensitiv.isa) propertyList:0];
 
     v11 = MEMORY[0x1E69DCBA0];
     v12 = CKFrameworkBundle();
@@ -640,7 +640,7 @@ LABEL_6:
     v25[1] = v18;
     v19 = [MEMORY[0x1E69DCBA0] ck_debugMenuWithAction:NSSelectorFromString(&cfstr_Showdebugmenu.isa)];
     v25[2] = v19;
-    v25[3] = v4;
+    v25[3] = mEMORY[0x1E69A60F0];
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
 
     v21 = MEMORY[0x1E69DCC60];
@@ -648,22 +648,22 @@ LABEL_6:
     v23 = [v22 localizedStringForKey:@"Debug" value:&stru_1F04268F8 table:@"ChatKit"];
     v24 = [v21 menuWithTitle:v23 children:v20];
 
-    [v3 insertSiblingMenu:v24 afterMenuForIdentifier:*MEMORY[0x1E69DE128]];
+    [builderCopy insertSiblingMenu:v24 afterMenuForIdentifier:*MEMORY[0x1E69DE128]];
     goto LABEL_6;
   }
 
 LABEL_7:
 }
 
-- (void)_buildConversationMenuWithBuilder:(id)a3
+- (void)_buildConversationMenuWithBuilder:(id)builder
 {
   v94[5] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69A8070];
-  v85 = a3;
-  v5 = [v4 sharedInstance];
-  v6 = [v5 isExpressiveTextEnabled];
+  builderCopy = builder;
+  sharedInstance = [v4 sharedInstance];
+  isExpressiveTextEnabled = [sharedInstance isExpressiveTextEnabled];
 
-  if (v6)
+  if (isExpressiveTextEnabled)
   {
     v7 = 1572864;
   }
@@ -745,7 +745,7 @@ LABEL_7:
   v24 = [v21 commandWithTitle:v23 image:0 action:NSSelectorFromString(&cfstr_Asktosharescre.isa) propertyList:0];
   v89[1] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:2];
-  v87 = self;
+  selfCopy = self;
   v26 = [(CKMenuBarManager *)self _inlineMenuWithChildren:v25];
   v94[4] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:5];
@@ -766,15 +766,15 @@ LABEL_7:
     v37 = [v33 commandWithTitle:v35 image:v36 action:NSSelectorFromString(&cfstr_Facetimeaudiof.isa) propertyList:0];
     v88[1] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v88 count:2];
-    v39 = [(CKMenuBarManager *)v87 _inlineMenuWithChildren:v38];
+    v39 = [(CKMenuBarManager *)selfCopy _inlineMenuWithChildren:v38];
 
     [v86 addObject:v39];
   }
 
-  v40 = [(CKMenuBarManager *)v87 menuPhoneCall];
-  if (v40)
+  menuPhoneCall = [(CKMenuBarManager *)selfCopy menuPhoneCall];
+  if (menuPhoneCall)
   {
-    [v86 addObject:v40];
+    [v86 addObject:menuPhoneCall];
   }
 
   v41 = MEMORY[0x1E69DCC60];
@@ -782,17 +782,17 @@ LABEL_7:
   v43 = [v42 localizedStringForKey:@"CONVERSATIONS_MENU" value:&stru_1F04268F8 table:@"ChatKit"];
   v44 = [v41 menuWithTitle:v43 image:0 identifier:@"com.messages.conversationsmenu" options:0 children:v86];
 
-  [v85 insertSiblingMenu:v44 afterMenuForIdentifier:*MEMORY[0x1E69DE230]];
+  [builderCopy insertSiblingMenu:v44 afterMenuForIdentifier:*MEMORY[0x1E69DE230]];
 }
 
-- (void)_buildFormatMenuWithBuilder:(id)a3
+- (void)_buildFormatMenuWithBuilder:(id)builder
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isExpressiveTextEnabled];
+  builderCopy = builder;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v6)
+  if (isExpressiveTextEnabled)
   {
     v7 = [CKTextEffectsMenuFactory effectMenuCommandsWithAction:NSSelectorFromString(&cfstr_Keycommandappl.isa)];
     v8 = +[CKUIBehavior sharedBehaviors];
@@ -809,32 +809,32 @@ LABEL_7:
     v16 = [v15 localizedStringForKey:@"FORMAT_MENU" value:&stru_1F04268F8 table:@"ChatKit"];
     v17 = [v14 menuWithTitle:v16 image:0 identifier:@"com.messages.formatmenu" options:0 children:v13];
 
-    [v4 insertSiblingMenu:v17 afterMenuForIdentifier:@"com.messages.conversationsmenu"];
+    [builderCopy insertSiblingMenu:v17 afterMenuForIdentifier:@"com.messages.conversationsmenu"];
   }
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   if (CKIsRunningInMacCatalyst() || _CKUIEnhancedMainMenuEnabled())
   {
-    [v4 removeMenuForIdentifier:*MEMORY[0x1E69DE118]];
-    [(CKMenuBarManager *)self _buildAppMenuWithBuilder:v4];
-    [(CKMenuBarManager *)self _buildFileMenuWithBuilder:v4];
-    [(CKMenuBarManager *)self _buildEditMenuWithBuilder:v4];
-    [(CKMenuBarManager *)self _buildViewMenuWithBuilder:v4];
-    [(CKMenuBarManager *)self _buildConversationMenuWithBuilder:v4];
-    [(CKMenuBarManager *)self _buildFormatMenuWithBuilder:v4];
-    [(CKMenuBarManager *)self _buildWindowMenuWithBuilder:v4];
-    [(CKMenuBarManager *)self _buildDebugMenuWithBuilder:v4];
+    [builderCopy removeMenuForIdentifier:*MEMORY[0x1E69DE118]];
+    [(CKMenuBarManager *)self _buildAppMenuWithBuilder:builderCopy];
+    [(CKMenuBarManager *)self _buildFileMenuWithBuilder:builderCopy];
+    [(CKMenuBarManager *)self _buildEditMenuWithBuilder:builderCopy];
+    [(CKMenuBarManager *)self _buildViewMenuWithBuilder:builderCopy];
+    [(CKMenuBarManager *)self _buildConversationMenuWithBuilder:builderCopy];
+    [(CKMenuBarManager *)self _buildFormatMenuWithBuilder:builderCopy];
+    [(CKMenuBarManager *)self _buildWindowMenuWithBuilder:builderCopy];
+    [(CKMenuBarManager *)self _buildDebugMenuWithBuilder:builderCopy];
   }
 }
 
 - (id)menuPhoneCall
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMenuBarManager *)self labelByPhoneNumber];
-  v4 = [v3 count];
+  labelByPhoneNumber = [(CKMenuBarManager *)self labelByPhoneNumber];
+  v4 = [labelByPhoneNumber count];
 
   if (v4)
   {
@@ -843,11 +843,11 @@ LABEL_7:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [(CKMenuBarManager *)self labelByPhoneNumber];
-    v7 = [v6 allKeys];
+    labelByPhoneNumber2 = [(CKMenuBarManager *)self labelByPhoneNumber];
+    allKeys = [labelByPhoneNumber2 allKeys];
 
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    obj = allKeys;
+    v8 = [allKeys countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
@@ -874,12 +874,12 @@ LABEL_7:
           }
 
           v15 = MEMORY[0x1E69D8A40];
-          v16 = [v13 formatForDisplayIfPhoneNumber];
-          v17 = [v15 supplementalDialTelephonyCallStringForDestination:v16 isPhoneNumber:1];
+          formatForDisplayIfPhoneNumber = [v13 formatForDisplayIfPhoneNumber];
+          v17 = [v15 supplementalDialTelephonyCallStringForDestination:formatForDisplayIfPhoneNumber isPhoneNumber:1];
 
           v18 = [MEMORY[0x1E69DC8B0] commandWithTitle:v17 image:v14 action:NSSelectorFromString(&cfstr_Relayphonecall.isa) propertyList:v13];
-          v19 = [(CKMenuBarManager *)self labelByPhoneNumber];
-          v20 = [v19 objectForKeyedSubscript:v13];
+          labelByPhoneNumber3 = [(CKMenuBarManager *)self labelByPhoneNumber];
+          v20 = [labelByPhoneNumber3 objectForKeyedSubscript:v13];
 
           if ([v20 length])
           {
@@ -909,10 +909,10 @@ LABEL_7:
   return v21;
 }
 
-- (id)generateFilterMenuHideSettings:(BOOL)a3
+- (id)generateFilterMenuHideSettings:(BOOL)settings
 {
-  v4 = self;
-  CKMenuBarManager.generateFilterMenu(hideSettings:)(v5, a3);
+  selfCopy = self;
+  CKMenuBarManager.generateFilterMenu(hideSettings:)(v5, settings);
   v7 = v6;
 
   return v7;

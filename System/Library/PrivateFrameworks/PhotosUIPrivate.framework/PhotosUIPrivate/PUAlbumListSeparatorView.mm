@@ -1,16 +1,16 @@
 @interface PUAlbumListSeparatorView
-- (PUAlbumListSeparatorView)initWithFrame:(CGRect)a3;
+- (PUAlbumListSeparatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setLineColor:(id)a3;
+- (void)setLineColor:(id)color;
 @end
 
 @implementation PUAlbumListSeparatorView
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
-  if (self->_lineColor != a3)
+  if (self->_lineColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     lineColor = self->_lineColor;
     self->_lineColor = v4;
 
@@ -33,11 +33,11 @@
   [(UIView *)separatorLine setFrame:v4, v6, v8, 1.0 / v9];
 }
 
-- (PUAlbumListSeparatorView)initWithFrame:(CGRect)a3
+- (PUAlbumListSeparatorView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PUAlbumListSeparatorView;
-  v3 = [(PUAlbumListSeparatorView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUAlbumListSeparatorView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);

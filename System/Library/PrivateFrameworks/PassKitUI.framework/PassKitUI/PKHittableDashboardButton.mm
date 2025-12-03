@@ -1,34 +1,34 @@
 @interface PKHittableDashboardButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PKHittableDashboardButton
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(PKHittableDashboardButton *)self hitRect];
   v10.x = x;
   v10.y = y;
   if (CGRectContainsPoint(v11, v10))
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(PKHittableDashboardButton *)self hitRect];
   v10 = x;
   v11 = y;

@@ -14,13 +14,13 @@
   if (a4 == 2)
   {
     v8 = v6;
-    [a1 _shakeWithBlock:v6];
+    [self _shakeWithBlock:v6];
   }
 
   else if (a4 == 1)
   {
     v8 = v6;
-    [a1 _popWithBlock:v6];
+    [self _popWithBlock:v6];
   }
 
   else
@@ -76,21 +76,21 @@ LABEL_8:
     v37 = v38;
     v34 = __66__UIView_SBSystemActionPreviewPresentable___setInflated_deflated___block_invoke;
     v35 = &unk_2783AF078;
-    v36 = a1;
+    selfCopy = self;
     v23 = &v32;
   }
 
   else
   {
-    v12 = [a1 layer];
-    v13 = [v12 presentationLayer];
-    v14 = [v13 valueForKeyPath:@"transform.scale.x"];
+    layer = [self layer];
+    presentationLayer = [layer presentationLayer];
+    v14 = [presentationLayer valueForKeyPath:@"transform.scale.x"];
     [v14 doubleValue];
     v16 = v15;
 
-    v17 = [a1 layer];
-    v18 = [v17 presentationLayer];
-    v19 = [v18 valueForKeyPath:@"transform.scale.y"];
+    layer2 = [self layer];
+    presentationLayer2 = [layer2 presentationLayer];
+    v19 = [presentationLayer2 valueForKeyPath:@"transform.scale.y"];
     [v19 doubleValue];
     v21 = v20;
 
@@ -99,13 +99,13 @@ LABEL_8:
     v26 = 3221225472;
     v27 = __66__UIView_SBSystemActionPreviewPresentable___setInflated_deflated___block_invoke_2;
     v28 = &unk_2783A8C40;
-    v29 = a1;
+    selfCopy2 = self;
     v30 = v16;
     v31 = v21;
     v23 = &v25;
   }
 
-  [v22 sb_animateWithSettings:v9 mode:3 animations:v23 completion:{0, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, *&v37.a, *&v37.c, *&v37.tx}];
+  [v22 sb_animateWithSettings:v9 mode:3 animations:v23 completion:{0, v25, v26, v27, v28, selfCopy2, v30, v31, v32, v33, v34, v35, selfCopy, *&v37.a, *&v37.c, *&v37.tx}];
 }
 
 - (void)_popWithBlock:()SBSystemActionPreviewPresentable
@@ -126,7 +126,7 @@ LABEL_8:
   v13[2] = __58__UIView_SBSystemActionPreviewPresentable___popWithBlock___block_invoke;
   v13[3] = &unk_2783AB990;
   v15 = v7;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v4;
   v10 = v4;
   [v8 sb_animateWithSettings:v9 mode:3 animations:v13 completion:0];
@@ -136,7 +136,7 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = __58__UIView_SBSystemActionPreviewPresentable___popWithBlock___block_invoke_2;
   v12[3] = &unk_2783A8C18;
-  v12[4] = a1;
+  v12[4] = self;
   dispatch_after(v11, MEMORY[0x277D85CD0], v12);
 }
 
@@ -154,7 +154,7 @@ LABEL_8:
   v10[1] = 3221225472;
   v10[2] = __60__UIView_SBSystemActionPreviewPresentable___shakeWithBlock___block_invoke;
   v10[3] = &unk_2783A98A0;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v4;
   v7 = v4;
   [v5 sb_animateWithSettings:v6 mode:3 animations:v10 completion:0];
@@ -164,7 +164,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __60__UIView_SBSystemActionPreviewPresentable___shakeWithBlock___block_invoke_2;
   block[3] = &unk_2783A8C18;
-  block[4] = a1;
+  block[4] = self;
   dispatch_after(v8, MEMORY[0x277D85CD0], block);
 }
 

@@ -1,22 +1,22 @@
 @interface AMSDCookieService
 + (AMSDCookieService)sharedService;
-+ (BOOL)isConnectionEntitled:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
 - (AMSDCookieService)init;
 - (id)_alliTunesAccountIdentifiers;
-- (id)_cachedCookieDatabaseForPath:(id)a3;
-- (id)_cachedCookiePropertiesForIdentifier:(id)a3;
-- (id)_cookieDatabaseForAccount:(id)a3 error:(id *)a4;
-- (id)_uniqueIdentifiersForAccount:(id)a3 error:(id *)a4;
+- (id)_cachedCookieDatabaseForPath:(id)path;
+- (id)_cachedCookiePropertiesForIdentifier:(id)identifier;
+- (id)_cookieDatabaseForAccount:(id)account error:(id *)error;
+- (id)_uniqueIdentifiersForAccount:(id)account error:(id *)error;
 - (id)clearDanglingCookieDatabases;
-- (id)getCookiePropertiesForAccount:(id)a3 cookieDatabaseOnly:(BOOL)a4 error:(id *)a5;
-- (void)_cacheCookieDatabase:(id)a3 withPath:(id)a4;
-- (void)_cacheCookieProperties:(id)a3 forIdentifier:(id)a4;
+- (id)getCookiePropertiesForAccount:(id)account cookieDatabaseOnly:(BOOL)only error:(id *)error;
+- (void)_cacheCookieDatabase:(id)database withPath:(id)path;
+- (void)_cacheCookieProperties:(id)properties forIdentifier:(id)identifier;
 - (void)_clearAllCachedCookieProperties;
 - (void)clearAllCachedCookieProperties;
-- (void)clearDanglingCookieDatabasesWithCompletion:(id)a3;
-- (void)getCookieDatabasePathForAccount:(id)a3 withCompletion:(id)a4;
-- (void)getCookiePropertiesForAccount:(id)a3 cookieDatabaseOnly:(BOOL)a4 withCompletion:(id)a5;
-- (void)updateCookiesWithCookiePropertiesToAdd:(id)a3 cookiePropertiesToRemove:(id)a4 forAccount:(id)a5 withCompletion:(id)a6;
+- (void)clearDanglingCookieDatabasesWithCompletion:(id)completion;
+- (void)getCookieDatabasePathForAccount:(id)account withCompletion:(id)completion;
+- (void)getCookiePropertiesForAccount:(id)account cookieDatabaseOnly:(BOOL)only withCompletion:(id)completion;
+- (void)updateCookiesWithCookiePropertiesToAdd:(id)add cookiePropertiesToRemove:(id)remove forAccount:(id)account withCompletion:(id)completion;
 @end
 
 @implementation AMSDCookieService
@@ -36,10 +36,10 @@
 - (id)_alliTunesAccountIdentifiers
 {
   v3 = +[ACAccountStore ams_sharedAccountStore];
-  v4 = [v3 ams_fetchiTunesAccounts];
-  v5 = [v3 ams_fetchiTunesSandboxAccounts];
-  v11[0] = v4;
-  v11[1] = v5;
+  ams_fetchiTunesAccounts = [v3 ams_fetchiTunesAccounts];
+  ams_fetchiTunesSandboxAccounts = [v3 ams_fetchiTunesSandboxAccounts];
+  v11[0] = ams_fetchiTunesAccounts;
+  v11[1] = ams_fetchiTunesSandboxAccounts;
   v6 = [NSArray arrayWithObjects:v11 count:2];
   v7 = [AMSPromise promiseWithAll:v6];
   v10[0] = _NSConcreteStackBlock;
@@ -52,12 +52,12 @@
   return v8;
 }
 
-- (void)_cacheCookieProperties:(id)a3 forIdentifier:(id)a4
+- (void)_cacheCookieProperties:(id)properties forIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(AMSDCookieService *)self queue];
-  dispatch_assert_queue_V2(v9);
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  queue = [(AMSDCookieService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v10)
@@ -65,8 +65,8 @@
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v12 = AMSLogKey();
     v13 = objc_opt_class();
@@ -90,7 +90,7 @@
     v22 = v16;
     v23 = 2114;
     v24 = v17;
-    _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%{public}@Caching cookies. cookies = %{public}@ | accountIdentifier = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Caching cookies. cookies = %{public}@ | accountIdentifier = %{public}@", buf, 0x20u);
     if (v12)
     {
 
@@ -98,15 +98,15 @@
     }
   }
 
-  v18 = [(AMSDCookieService *)self cookiePropertyCache];
-  [v18 setObject:v7 forKey:v8];
+  cookiePropertyCache = [(AMSDCookieService *)self cookiePropertyCache];
+  [cookiePropertyCache setObject:propertiesCopy forKey:identifierCopy];
 }
 
-- (id)_cachedCookiePropertiesForIdentifier:(id)a3
+- (id)_cachedCookiePropertiesForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSDCookieService *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(AMSDCookieService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v6)
@@ -114,8 +114,8 @@
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -126,19 +126,19 @@
     v17 = v9;
     v18 = 2114;
     v19 = v10;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Retrieving cached cookies. accountIdentifier = %{public}@", &v14, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Retrieving cached cookies. accountIdentifier = %{public}@", &v14, 0x20u);
   }
 
-  v11 = [(AMSDCookieService *)self cookiePropertyCache];
-  v12 = [v11 objectForKey:v4];
+  cookiePropertyCache = [(AMSDCookieService *)self cookiePropertyCache];
+  v12 = [cookiePropertyCache objectForKey:identifierCopy];
 
   return v12;
 }
 
 - (void)_clearAllCachedCookieProperties
 {
-  v3 = [(AMSDCookieService *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(AMSDCookieService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v4)
@@ -146,8 +146,8 @@
     v4 = +[AMSLogConfig sharedConfig];
   }
 
-  v5 = [v4 OSLogObject];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v6 = objc_opt_class();
     v7 = AMSLogKey();
@@ -155,19 +155,19 @@
     v10 = v6;
     v11 = 2114;
     v12 = v7;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Clearing all cached cookies.", &v9, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Clearing all cached cookies.", &v9, 0x16u);
   }
 
-  v8 = [(AMSDCookieService *)self cookiePropertyCache];
-  [v8 removeAllObjects];
+  cookiePropertyCache = [(AMSDCookieService *)self cookiePropertyCache];
+  [cookiePropertyCache removeAllObjects];
 }
 
-- (void)_cacheCookieDatabase:(id)a3 withPath:(id)a4
+- (void)_cacheCookieDatabase:(id)database withPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSDCookieService *)self queue];
-  dispatch_assert_queue_V2(v8);
+  databaseCopy = database;
+  pathCopy = path;
+  queue = [(AMSDCookieService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v9)
@@ -175,8 +175,8 @@
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v11 = objc_opt_class();
     v12 = AMSLogKey();
@@ -190,18 +190,18 @@
     v21 = v13;
     v22 = 2114;
     v23 = v14;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Caching cookie database. database = %{public}@ | dbPath = %{public}@", &v16, 0x2Au);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Caching cookie database. database = %{public}@ | dbPath = %{public}@", &v16, 0x2Au);
   }
 
-  v15 = [(AMSDCookieService *)self cookieDatabaseCache];
-  [v15 setObject:v6 forKey:v7];
+  cookieDatabaseCache = [(AMSDCookieService *)self cookieDatabaseCache];
+  [cookieDatabaseCache setObject:databaseCopy forKey:pathCopy];
 }
 
-- (id)_cachedCookieDatabaseForPath:(id)a3
+- (id)_cachedCookieDatabaseForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AMSDCookieService *)self queue];
-  dispatch_assert_queue_V2(v5);
+  pathCopy = path;
+  queue = [(AMSDCookieService *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v6)
@@ -209,8 +209,8 @@
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
@@ -221,26 +221,26 @@
     v17 = v9;
     v18 = 2114;
     v19 = v10;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Retrieving cached cookie database. dbPath = %{public}@", &v14, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Retrieving cached cookie database. dbPath = %{public}@", &v14, 0x20u);
   }
 
-  v11 = [(AMSDCookieService *)self cookieDatabaseCache];
-  v12 = [v11 objectForKey:v4];
+  cookieDatabaseCache = [(AMSDCookieService *)self cookieDatabaseCache];
+  v12 = [cookieDatabaseCache objectForKey:pathCopy];
 
   return v12;
 }
 
-- (id)_cookieDatabaseForAccount:(id)a3 error:(id *)a4
+- (id)_cookieDatabaseForAccount:(id)account error:(id *)error
 {
-  v5 = self;
-  v6 = [(AMSDCookieService *)self _uniqueIdentifiersForAccount:a3 error:?];
+  selfCopy = self;
+  v6 = [(AMSDCookieService *)self _uniqueIdentifiersForAccount:account error:?];
   v7 = v6;
   if (v6 && [v6 count])
   {
-    v8 = [AMSCookieDatabase databasePathForIdentifiers:v7 error:a4];
+    v8 = [AMSCookieDatabase databasePathForIdentifiers:v7 error:error];
     if (v8)
     {
-      v9 = [v5 _cachedCookieDatabaseForPath:v8];
+      v9 = [selfCopy _cachedCookieDatabaseForPath:v8];
       if (v9)
       {
         v10 = v9;
@@ -250,16 +250,16 @@
           v11 = +[AMSLogConfig sharedConfig];
         }
 
-        v12 = [v11 OSLogObject];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+        oSLogObject = [v11 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
           v13 = AMSLogKey();
           v14 = objc_opt_class();
           v15 = v14;
           if (v13)
           {
-            v5 = AMSLogKey();
-            [NSString stringWithFormat:@"%@: [%@] ", v15, v5];
+            selfCopy = AMSLogKey();
+            [NSString stringWithFormat:@"%@: [%@] ", v15, selfCopy];
           }
 
           else
@@ -272,21 +272,21 @@
           v20 = v16;
           v21 = 2114;
           v22 = v17;
-          _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@Found cached cookie database. %{public}@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@Found cached cookie database. %{public}@", buf, 0x16u);
           if (v13)
           {
 
-            v16 = v5;
+            v16 = selfCopy;
           }
         }
       }
 
       else
       {
-        v10 = [AMSCookieDatabase cookieDatabaseForIdentifiers:v7 error:a4];
+        v10 = [AMSCookieDatabase cookieDatabaseForIdentifiers:v7 error:error];
         if (v10)
         {
-          [v5 _cacheCookieDatabase:v10 withPath:v8];
+          [selfCopy _cacheCookieDatabase:v10 withPath:v8];
         }
       }
     }
@@ -305,9 +305,9 @@
   return v10;
 }
 
-- (id)_uniqueIdentifiersForAccount:(id)a3 error:(id *)a4
+- (id)_uniqueIdentifiersForAccount:(id)account error:(id *)error
 {
-  v7 = a3;
+  accountCopy = account;
   v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
   v9 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v9)
@@ -315,8 +315,8 @@
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v11 = AMSLogKey();
     v12 = objc_opt_class();
@@ -338,7 +338,7 @@
     v147 = v14;
     v148 = 2114;
     v149 = v15;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@Determining identifier(s) for account: %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@Determining identifier(s) for account: %{public}@", buf, 0x16u);
     if (v11)
     {
 
@@ -348,28 +348,28 @@
     v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
   }
 
-  v129 = a4;
+  errorCopy = error;
 
   v16 = [NSMutableArray arrayWithCapacity:3];
   v17 = [NSMutableArray arrayWithCapacity:3];
-  v18 = [v7 ams_DSID];
-  v19 = v18;
-  v140 = v18;
+  ams_DSID = [accountCopy ams_DSID];
+  v19 = ams_DSID;
+  v140 = ams_DSID;
   v141 = v17;
-  v139 = self;
-  v142 = v7;
-  if (v18)
+  selfCopy = self;
+  v142 = accountCopy;
+  if (ams_DSID)
   {
-    v20 = [v18 stringValue];
-    if ([v7 ams_isSandboxAccount])
+    stringValue = [ams_DSID stringValue];
+    if ([accountCopy ams_isSandboxAccount])
     {
-      v21 = [v20 stringByAppendingString:@".sandbox"];
+      v21 = [stringValue stringByAppendingString:@".sandbox"];
 
-      v20 = v21;
+      stringValue = v21;
     }
 
-    v22 = [(AMSDCookieService *)self dsidHashCache];
-    v23 = [v22 objectForKey:v20];
+    dsidHashCache = [(AMSDCookieService *)self dsidHashCache];
+    v23 = [dsidHashCache objectForKey:stringValue];
 
     if (v23)
     {
@@ -379,10 +379,10 @@
     else
     {
       v145 = 0;
-      v23 = [v20 ams_sha512HashStringUsingEncoding:4 error:&v145];
+      v23 = [stringValue ams_sha512HashStringUsingEncoding:4 error:&v145];
       v32 = v145;
-      v33 = [(AMSDCookieService *)self dsidHashCache];
-      [v33 setObject:v23 forKey:v19];
+      dsidHashCache2 = [(AMSDCookieService *)self dsidHashCache];
+      [dsidHashCache2 setObject:v23 forKey:v19];
 
       if (!v23)
       {
@@ -398,8 +398,8 @@
           v41 = +[AMSLogConfig sharedConfig];
         }
 
-        v42 = [v41 OSLogObject];
-        if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [v41 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v131 = v24;
           v43 = AMSLogKey();
@@ -427,7 +427,7 @@
           v149 = v123;
           v150 = 2114;
           v151 = v124;
-          _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "%{public}@Could not hash DSID: %{public}@ | error: %{public}@", buf, 0x20u);
+          _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Could not hash DSID: %{public}@ | error: %{public}@", buf, 0x20u);
           if (v43)
           {
 
@@ -443,7 +443,7 @@
 LABEL_32:
 
 LABEL_33:
-        v7 = v142;
+        accountCopy = v142;
         goto LABEL_45;
       }
 
@@ -456,8 +456,8 @@ LABEL_33:
       v34 = +[AMSLogConfig sharedConfig];
     }
 
-    v35 = [v34 OSLogObject];
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
+    oSLogObject3 = [v34 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
       v130 = v24;
       v36 = v16;
@@ -480,7 +480,7 @@ LABEL_33:
       v147 = v40;
       v148 = 2114;
       v149 = v23;
-      _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "%{public}@Adding identifier for DSID: %{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_DEBUG, "%{public}@Adding identifier for DSID: %{public}@", buf, 0x16u);
       v24 = v130;
       if (v37)
       {
@@ -492,7 +492,7 @@ LABEL_33:
       v19 = v140;
       v17 = v141;
       v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
-      self = v139;
+      self = selfCopy;
     }
 
     [v16 addObject:v23];
@@ -505,8 +505,8 @@ LABEL_33:
     v25 = +[AMSLogConfig sharedConfig];
   }
 
-  v26 = [v25 OSLogObject];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+  oSLogObject4 = [v25 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEBUG))
   {
     v27 = v16;
     v28 = AMSLogKey();
@@ -526,7 +526,7 @@ LABEL_33:
     v31 = ;
     *buf = 138543362;
     v147 = v31;
-    _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "%{public}@Skipping DSID as the account doesn’t have one.", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_DEBUG, "%{public}@Skipping DSID as the account doesn’t have one.", buf, 0xCu);
     if (v28)
     {
 
@@ -539,28 +539,28 @@ LABEL_33:
     v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
   }
 
-  v20 = AMSError();
-  [v17 addObject:v20];
+  stringValue = AMSError();
+  [v17 addObject:stringValue];
 LABEL_45:
 
-  v47 = [v7 ams_altDSID];
-  if ([v7 ams_isSandboxAccount])
+  ams_altDSID = [accountCopy ams_altDSID];
+  if ([accountCopy ams_isSandboxAccount])
   {
-    v48 = [v47 stringByAppendingString:@".sandbox"];
+    v48 = [ams_altDSID stringByAppendingString:@".sandbox"];
 
-    v47 = v48;
+    ams_altDSID = v48;
   }
 
-  if (!v47)
+  if (!ams_altDSID)
   {
-    v52 = [v8[95] sharedAccountsCookiesConfig];
-    if (!v52)
+    sharedAccountsCookiesConfig = [v8[95] sharedAccountsCookiesConfig];
+    if (!sharedAccountsCookiesConfig)
     {
-      v52 = [v8[95] sharedConfig];
+      sharedAccountsCookiesConfig = [v8[95] sharedConfig];
     }
 
-    v53 = [v52 OSLogObject];
-    if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
+    oSLogObject5 = [sharedAccountsCookiesConfig OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEBUG))
     {
       v54 = v16;
       v55 = AMSLogKey();
@@ -580,7 +580,7 @@ LABEL_45:
       v58 = ;
       *buf = 138543362;
       v147 = v58;
-      _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "%{public}@Skipping AltDSID as the account doesn’t have one.", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, oSLogObject5, OS_LOG_TYPE_DEBUG, "%{public}@Skipping AltDSID as the account doesn’t have one.", buf, 0xCu);
       if (v55)
       {
 
@@ -591,7 +591,7 @@ LABEL_45:
       v19 = v140;
       v17 = v141;
       v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
-      v47 = 0;
+      ams_altDSID = 0;
     }
 
     v51 = AMSError();
@@ -599,8 +599,8 @@ LABEL_45:
     goto LABEL_78;
   }
 
-  v49 = [(AMSDCookieService *)self altDSIDHashCache];
-  v50 = [v49 objectForKey:v47];
+  altDSIDHashCache = [(AMSDCookieService *)self altDSIDHashCache];
+  v50 = [altDSIDHashCache objectForKey:ams_altDSID];
 
   if (v50)
   {
@@ -609,29 +609,29 @@ LABEL_45:
 
   else
   {
-    v59 = self;
+    selfCopy2 = self;
     v144 = 0;
-    v50 = [v47 ams_sha512HashStringUsingEncoding:4 error:&v144];
+    v50 = [ams_altDSID ams_sha512HashStringUsingEncoding:4 error:&v144];
     v51 = v144;
-    v60 = [(AMSDCookieService *)v59 altDSIDHashCache];
-    [v60 setObject:v50 forKey:v47];
+    altDSIDHashCache2 = [(AMSDCookieService *)selfCopy2 altDSIDHashCache];
+    [altDSIDHashCache2 setObject:v50 forKey:ams_altDSID];
 
     if (!v50)
     {
-      v7 = v142;
+      accountCopy = v142;
       if (!v51)
       {
         goto LABEL_79;
       }
 
-      v68 = [v8[95] sharedAccountsCookiesConfig];
-      if (!v68)
+      sharedAccountsCookiesConfig2 = [v8[95] sharedAccountsCookiesConfig];
+      if (!sharedAccountsCookiesConfig2)
       {
-        v68 = [v8[95] sharedConfig];
+        sharedAccountsCookiesConfig2 = [v8[95] sharedConfig];
       }
 
-      v69 = [v68 OSLogObject];
-      if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+      oSLogObject6 = [sharedAccountsCookiesConfig2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
       {
         v70 = AMSLogKey();
         v71 = objc_opt_class();
@@ -657,7 +657,7 @@ LABEL_45:
         v149 = v125;
         v150 = 2114;
         v151 = v126;
-        _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "%{public}@Could not hash AltDSID: %{public}@ | error: %{public}@", buf, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject6, OS_LOG_TYPE_ERROR, "%{public}@Could not hash AltDSID: %{public}@ | error: %{public}@", buf, 0x20u);
         if (v70)
         {
 
@@ -674,16 +674,16 @@ LABEL_45:
     }
   }
 
-  v61 = [v8[95] sharedAccountsCookiesConfig];
-  if (!v61)
+  sharedAccountsCookiesConfig3 = [v8[95] sharedAccountsCookiesConfig];
+  if (!sharedAccountsCookiesConfig3)
   {
-    v61 = [v8[95] sharedConfig];
+    sharedAccountsCookiesConfig3 = [v8[95] sharedConfig];
   }
 
-  v62 = [v61 OSLogObject];
-  if (os_log_type_enabled(v62, OS_LOG_TYPE_DEBUG))
+  oSLogObject7 = [sharedAccountsCookiesConfig3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEBUG))
   {
-    v132 = v47;
+    v132 = ams_altDSID;
     v63 = v16;
     v64 = AMSLogKey();
     v65 = objc_opt_class();
@@ -704,7 +704,7 @@ LABEL_45:
     v147 = v67;
     v148 = 2114;
     v149 = v50;
-    _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEBUG, "%{public}@Adding identifier for AltDSID: %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject7, OS_LOG_TYPE_DEBUG, "%{public}@Adding identifier for AltDSID: %{public}@", buf, 0x16u);
     if (v64)
     {
 
@@ -715,35 +715,35 @@ LABEL_45:
     v19 = v140;
     v17 = v141;
     v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
-    v47 = v132;
+    ams_altDSID = v132;
   }
 
   [v16 addObject:v50];
 LABEL_66:
-  v7 = v142;
+  accountCopy = v142;
 LABEL_78:
 
 LABEL_79:
-  v74 = [v7 identifier];
-  v75 = v74;
-  if (!v74)
+  identifier = [accountCopy identifier];
+  v75 = identifier;
+  if (!identifier)
   {
     if (os_variant_has_internal_content())
     {
       v85 = +[AMSUnitTests isRunningUnitTests];
-      v86 = [v8[95] sharedAccountsCookiesConfig];
-      v87 = v86;
+      sharedAccountsCookiesConfig4 = [v8[95] sharedAccountsCookiesConfig];
+      sharedConfig = sharedAccountsCookiesConfig4;
       if (v85)
       {
-        if (!v86)
+        if (!sharedAccountsCookiesConfig4)
         {
-          v87 = [v8[95] sharedConfig];
+          sharedConfig = [v8[95] sharedConfig];
         }
 
-        v88 = [v87 OSLogObject];
-        if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
+        oSLogObject8 = [sharedConfig OSLogObject];
+        if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
         {
-          v135 = v47;
+          v135 = ams_altDSID;
           v89 = AMSLogKey();
           v90 = objc_opt_class();
           v91 = v90;
@@ -764,7 +764,7 @@ LABEL_79:
           v147 = v93;
           v148 = 2114;
           v149 = v115;
-          _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_ERROR, "%{public}@Empty identifier for account: %{public}@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, oSLogObject8, OS_LOG_TYPE_ERROR, "%{public}@Empty identifier for account: %{public}@", buf, 0x16u);
           if (v89)
           {
 
@@ -775,25 +775,25 @@ LABEL_79:
           v19 = v140;
           v17 = v141;
           v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
-          v47 = v135;
+          ams_altDSID = v135;
         }
 
-        v87 = +[NSNotificationCenter defaultCenter];
-        v100 = [v8[95] sharedAccountsCookiesConfig];
-        [v87 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v100 userInfo:0];
+        sharedConfig = +[NSNotificationCenter defaultCenter];
+        sharedAccountsCookiesConfig5 = [v8[95] sharedAccountsCookiesConfig];
+        [sharedConfig postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:sharedAccountsCookiesConfig5 userInfo:0];
       }
 
       else
       {
-        if (!v86)
+        if (!sharedAccountsCookiesConfig4)
         {
-          v87 = [v8[95] sharedConfig];
+          sharedConfig = [v8[95] sharedConfig];
         }
 
-        v100 = [v87 OSLogObject];
-        if (os_log_type_enabled(v100, OS_LOG_TYPE_FAULT))
+        sharedAccountsCookiesConfig5 = [sharedConfig OSLogObject];
+        if (os_log_type_enabled(sharedAccountsCookiesConfig5, OS_LOG_TYPE_FAULT))
         {
-          v137 = v47;
+          v137 = ams_altDSID;
           v101 = AMSLogKey();
           v102 = objc_opt_class();
           v103 = v102;
@@ -814,7 +814,7 @@ LABEL_79:
           v147 = v105;
           v148 = 2114;
           v149 = v116;
-          _os_log_impl(&_mh_execute_header, v100, OS_LOG_TYPE_FAULT, "%{public}@Empty identifier for account: %{public}@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, sharedAccountsCookiesConfig5, OS_LOG_TYPE_FAULT, "%{public}@Empty identifier for account: %{public}@", buf, 0x16u);
           if (v101)
           {
 
@@ -824,7 +824,7 @@ LABEL_79:
           v16 = v104;
           v19 = v140;
           v17 = v141;
-          v47 = v137;
+          ams_altDSID = v137;
         }
       }
     }
@@ -832,24 +832,24 @@ LABEL_79:
     goto LABEL_133;
   }
 
-  if (([v74 containsString:@"/"] & 1) != 0 || (objc_msgSend(v75, "containsString:", @".") & 1) != 0 || objc_msgSend(v75, "containsString:", @"~"))
+  if (([identifier containsString:@"/"] & 1) != 0 || (objc_msgSend(v75, "containsString:", @".") & 1) != 0 || objc_msgSend(v75, "containsString:", @"~"))
   {
     if (os_variant_has_internal_content())
     {
       v76 = +[AMSUnitTests isRunningUnitTests];
-      v77 = [v8[95] sharedAccountsCookiesConfig];
-      v78 = v77;
+      sharedAccountsCookiesConfig6 = [v8[95] sharedAccountsCookiesConfig];
+      sharedConfig2 = sharedAccountsCookiesConfig6;
       if (v76)
       {
-        if (!v77)
+        if (!sharedAccountsCookiesConfig6)
         {
-          v78 = [v8[95] sharedConfig];
+          sharedConfig2 = [v8[95] sharedConfig];
         }
 
-        v79 = [v78 OSLogObject];
-        if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
+        oSLogObject9 = [sharedConfig2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_ERROR))
         {
-          v134 = v47;
+          v134 = ams_altDSID;
           v80 = AMSLogKey();
           v81 = objc_opt_class();
           v82 = v81;
@@ -870,7 +870,7 @@ LABEL_79:
           v147 = v84;
           v148 = 2114;
           v149 = v113;
-          _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_ERROR, "%{public}@Invalid identifier for account: %{public}@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, oSLogObject9, OS_LOG_TYPE_ERROR, "%{public}@Invalid identifier for account: %{public}@", buf, 0x16u);
           if (v80)
           {
 
@@ -881,25 +881,25 @@ LABEL_79:
           v19 = v140;
           v17 = v141;
           v8 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
-          v47 = v134;
+          ams_altDSID = v134;
         }
 
-        v78 = +[NSNotificationCenter defaultCenter];
-        v94 = [v8[95] sharedAccountsCookiesConfig];
-        [v78 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v94 userInfo:0];
+        sharedConfig2 = +[NSNotificationCenter defaultCenter];
+        sharedAccountsCookiesConfig7 = [v8[95] sharedAccountsCookiesConfig];
+        [sharedConfig2 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:sharedAccountsCookiesConfig7 userInfo:0];
       }
 
       else
       {
-        if (!v77)
+        if (!sharedAccountsCookiesConfig6)
         {
-          v78 = [v8[95] sharedConfig];
+          sharedConfig2 = [v8[95] sharedConfig];
         }
 
-        v94 = [v78 OSLogObject];
-        if (os_log_type_enabled(v94, OS_LOG_TYPE_FAULT))
+        sharedAccountsCookiesConfig7 = [sharedConfig2 OSLogObject];
+        if (os_log_type_enabled(sharedAccountsCookiesConfig7, OS_LOG_TYPE_FAULT))
         {
-          v136 = v47;
+          v136 = ams_altDSID;
           v95 = AMSLogKey();
           v96 = objc_opt_class();
           v97 = v96;
@@ -920,7 +920,7 @@ LABEL_79:
           v147 = v99;
           v148 = 2114;
           v149 = v114;
-          _os_log_impl(&_mh_execute_header, v94, OS_LOG_TYPE_FAULT, "%{public}@Invalid identifier for account: %{public}@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, sharedAccountsCookiesConfig7, OS_LOG_TYPE_FAULT, "%{public}@Invalid identifier for account: %{public}@", buf, 0x16u);
           if (v95)
           {
 
@@ -930,27 +930,27 @@ LABEL_79:
           v16 = v98;
           v19 = v140;
           v17 = v141;
-          v47 = v136;
+          ams_altDSID = v136;
         }
       }
     }
 
 LABEL_133:
-    v117 = AMSError();
+    identifier2 = AMSError();
     v118 = v17;
     goto LABEL_134;
   }
 
-  v106 = [v8[95] sharedAccountsCookiesConfig];
-  if (!v106)
+  sharedAccountsCookiesConfig8 = [v8[95] sharedAccountsCookiesConfig];
+  if (!sharedAccountsCookiesConfig8)
   {
-    v106 = [v8[95] sharedConfig];
+    sharedAccountsCookiesConfig8 = [v8[95] sharedConfig];
   }
 
-  v107 = [v106 OSLogObject];
-  if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
+  oSLogObject10 = [sharedAccountsCookiesConfig8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject10, OS_LOG_TYPE_DEBUG))
   {
-    v138 = v47;
+    v138 = ams_altDSID;
     v108 = v16;
     v109 = AMSLogKey();
     v110 = objc_opt_class();
@@ -971,7 +971,7 @@ LABEL_133:
     v147 = v112;
     v148 = 2114;
     v149 = v75;
-    _os_log_impl(&_mh_execute_header, v107, OS_LOG_TYPE_DEBUG, "%{public}@Adding account identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject10, OS_LOG_TYPE_DEBUG, "%{public}@Adding account identifier: %{public}@", buf, 0x16u);
     if (v109)
     {
 
@@ -981,13 +981,13 @@ LABEL_133:
     v16 = v108;
     v19 = v140;
     v17 = v141;
-    v47 = v138;
+    ams_altDSID = v138;
   }
 
-  v117 = [v7 identifier];
+  identifier2 = [accountCopy identifier];
   v118 = v16;
 LABEL_134:
-  [v118 addObject:v117];
+  [v118 addObject:identifier2];
 
   if ([v16 count])
   {
@@ -997,17 +997,17 @@ LABEL_134:
 
   if ([v17 count] < 2)
   {
-    v120 = v129;
+    v120 = errorCopy;
     if ([v17 count] == 1)
     {
-      if (v129)
+      if (errorCopy)
       {
         v121 = [v17 objectAtIndexedSubscript:0];
         goto LABEL_144;
       }
     }
 
-    else if (v129)
+    else if (errorCopy)
     {
       v121 = AMSError();
       goto LABEL_144;
@@ -1016,8 +1016,8 @@ LABEL_134:
 
   else
   {
-    v120 = v129;
-    if (v129)
+    v120 = errorCopy;
+    if (errorCopy)
     {
       v121 = AMSErrorWithMultipleUnderlyingErrors();
 LABEL_144:
@@ -1073,8 +1073,8 @@ LABEL_146:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v7 = AMSLogKey();
     v8 = objc_opt_class();
@@ -1095,7 +1095,7 @@ LABEL_146:
     v15 = v10;
     v16 = 2114;
     v17 = v11;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%{public}@%{public}@ - taking keepalive transaction", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@%{public}@ - taking keepalive transaction", buf, 0x16u);
     if (v7)
     {
 
@@ -1103,14 +1103,14 @@ LABEL_146:
     }
   }
 
-  v12 = [(AMSDCookieService *)self queue];
+  queue = [(AMSDCookieService *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10004EF78;
   v13[3] = &unk_1002B0358;
   v13[4] = self;
   v13[5] = a2;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.clearAllCachedCookies" withQueue:v12 whilePerformingBlock:v13];
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.clearAllCachedCookies" withQueue:queue whilePerformingBlock:v13];
 }
 
 - (id)clearDanglingCookieDatabases
@@ -1118,7 +1118,7 @@ LABEL_146:
   v3 = AMSLogKey();
   [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.clearDanglingCookieDatabases"];
   v4 = objc_alloc_init(AMSMutableBinaryPromise);
-  v5 = [(AMSDCookieService *)self _alliTunesAccountIdentifiers];
+  _alliTunesAccountIdentifiers = [(AMSDCookieService *)self _alliTunesAccountIdentifiers];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10004F358;
@@ -1127,56 +1127,56 @@ LABEL_146:
   v11 = v3;
   v12 = @"com.apple.amsaccountsd.AMSDCookieService.clearDanglingCookieDatabases";
   v6 = v3;
-  v7 = [v5 thenWithBlock:v10];
-  v8 = [v7 binaryPromiseAdapter];
-  [v4 finishWithPromise:v8];
+  v7 = [_alliTunesAccountIdentifiers thenWithBlock:v10];
+  binaryPromiseAdapter = [v7 binaryPromiseAdapter];
+  [v4 finishWithPromise:binaryPromiseAdapter];
 
   return v4;
 }
 
-- (void)clearDanglingCookieDatabasesWithCompletion:(id)a3
+- (void)clearDanglingCookieDatabasesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AMSDCookieService *)self clearDanglingCookieDatabases];
+  completionCopy = completion;
+  clearDanglingCookieDatabases = [(AMSDCookieService *)self clearDanglingCookieDatabases];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004F698;
   v7[3] = &unk_1002B03D0;
-  v8 = v4;
-  v6 = v4;
-  [v5 addFinishBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [clearDanglingCookieDatabases addFinishBlock:v7];
 }
 
-- (void)getCookieDatabasePathForAccount:(id)a3 withCompletion:(id)a4
+- (void)getCookieDatabasePathForAccount:(id)account withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSDCookieService *)self queue];
+  accountCopy = account;
+  completionCopy = completion;
+  queue = [(AMSDCookieService *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10004F7F4;
   v11[3] = &unk_1002B03F8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.getCookieDatabasePath" withQueue:v8 whilePerformingSyncBlock:v11];
+  v12 = accountCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = accountCopy;
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.getCookieDatabasePath" withQueue:queue whilePerformingSyncBlock:v11];
 }
 
-- (void)getCookiePropertiesForAccount:(id)a3 cookieDatabaseOnly:(BOOL)a4 withCompletion:(id)a5
+- (void)getCookiePropertiesForAccount:(id)account cookieDatabaseOnly:(BOOL)only withCompletion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  onlyCopy = only;
+  accountCopy = account;
+  completionCopy = completion;
   v11 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v11)
   {
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v13 = objc_opt_class();
     v14 = AMSLogKey();
@@ -1186,7 +1186,7 @@ LABEL_146:
     *buf = 138544130;
     v27 = v13;
     v28 = 2114;
-    if (v6)
+    if (onlyCopy)
     {
       v17 = @"true";
     }
@@ -1196,49 +1196,49 @@ LABEL_146:
     v31 = v15;
     v32 = 2114;
     v33 = v17;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Getting cookies. account = %{public}@ | cookieDatabaseOnly = %{public}@", buf, 0x2Au);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Getting cookies. account = %{public}@ | cookieDatabaseOnly = %{public}@", buf, 0x2Au);
   }
 
-  v18 = [(AMSDCookieService *)self queue];
+  queue = [(AMSDCookieService *)self queue];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10004FACC;
   v21[3] = &unk_1002B0420;
   v21[4] = self;
-  v22 = v9;
-  v25 = v6;
-  v23 = v10;
+  v22 = accountCopy;
+  v25 = onlyCopy;
+  v23 = completionCopy;
   v24 = a2;
-  v19 = v10;
-  v20 = v9;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.getCookies" withQueue:v18 whilePerformingSyncBlock:v21];
+  v19 = completionCopy;
+  v20 = accountCopy;
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.getCookies" withQueue:queue whilePerformingSyncBlock:v21];
 }
 
-- (id)getCookiePropertiesForAccount:(id)a3 cookieDatabaseOnly:(BOOL)a4 error:(id *)a5
+- (id)getCookiePropertiesForAccount:(id)account cookieDatabaseOnly:(BOOL)only error:(id *)error
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  accountCopy = account;
+  v9 = accountCopy;
+  if (only)
   {
     goto LABEL_9;
   }
 
-  v10 = [v8 identifier];
+  identifier = [accountCopy identifier];
 
-  if (!v10 || ([v9 identifier], v11 = objc_claimAutoreleasedReturnValue(), -[AMSDCookieService _cachedCookiePropertiesForIdentifier:](self, "_cachedCookiePropertiesForIdentifier:", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
+  if (!identifier || ([v9 identifier], v11 = objc_claimAutoreleasedReturnValue(), -[AMSDCookieService _cachedCookiePropertiesForIdentifier:](self, "_cachedCookiePropertiesForIdentifier:", v11), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
   {
 LABEL_9:
-    v19 = [(AMSDCookieService *)self _cookieDatabaseForAccount:v9 error:a5];
+    v19 = [(AMSDCookieService *)self _cookieDatabaseForAccount:v9 error:error];
     v13 = v19;
     if (v19)
     {
-      v20 = [v19 cookiePropertiesWithError:a5];
+      v20 = [v19 cookiePropertiesWithError:error];
       if (v20)
       {
         v21 = v20;
-        if (a4)
+        if (only)
         {
-          v22 = 0;
+          oSLogObject4 = 0;
           goto LABEL_37;
         }
 
@@ -1251,8 +1251,8 @@ LABEL_9:
             v31 = +[AMSLogConfig sharedConfig];
           }
 
-          v32 = [v31 OSLogObject];
-          if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
+          oSLogObject = [v31 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
           {
             v33 = objc_opt_class();
             v34 = AMSLogKey();
@@ -1260,19 +1260,19 @@ LABEL_9:
             v57 = v33;
             v58 = 2114;
             v59 = v34;
-            _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Account has unexpected cookies in Accounts database. Cookies should be in coookie database instead. These cookies will migrated on next account save.", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Account has unexpected cookies in Accounts database. Cookies should be in coookie database instead. These cookies will migrated on next account save.", buf, 0x16u);
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v22 = v30;
+            oSLogObject4 = v30;
 LABEL_36:
 
 LABEL_37:
-            if ([v22 count])
+            if ([oSLogObject4 count])
             {
-              v39 = [NSHTTPCookie ams_cookiesByMergingProperties:v22 intoProperties:v21];
+              v39 = [NSHTTPCookie ams_cookiesByMergingProperties:oSLogObject4 intoProperties:v21];
               v40 = [NSHTTPCookie ams_propertiesForCookies:v39];
 
               v41 = +[AMSLogConfig sharedAccountsCookiesConfig];
@@ -1281,14 +1281,14 @@ LABEL_37:
                 v41 = +[AMSLogConfig sharedConfig];
               }
 
-              v42 = [v41 OSLogObject];
-              if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+              oSLogObject2 = [v41 OSLogObject];
+              if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
               {
                 v53 = objc_opt_class();
                 AMSLogKey();
                 v43 = v55 = self;
                 v52 = [v40 count];
-                v44 = [v22 count];
+                v44 = [oSLogObject4 count];
                 v45 = [v39 count];
                 *buf = 138544386;
                 v57 = v53;
@@ -1300,12 +1300,12 @@ LABEL_37:
                 v63 = v44;
                 v64 = 2048;
                 v65 = v45;
-                _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loaded %lu cookie property dictionaries from database, %lu from Accounts. Parsed and merged into %lu total cookies.", buf, 0x34u);
+                _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loaded %lu cookie property dictionaries from database, %lu from Accounts. Parsed and merged into %lu total cookies.", buf, 0x34u);
 
                 self = v55;
               }
 
-              if (a4)
+              if (only)
               {
                 goto LABEL_47;
               }
@@ -1314,21 +1314,21 @@ LABEL_37:
             else
             {
               v40 = v21;
-              if (a4)
+              if (only)
               {
 LABEL_47:
-                v14 = v40;
-                v12 = v14;
+                oSLogObject5 = v40;
+                v12 = oSLogObject5;
                 goto LABEL_48;
               }
             }
 
-            v46 = [v9 identifier];
+            identifier2 = [v9 identifier];
 
-            if (v46)
+            if (identifier2)
             {
-              v47 = [v9 identifier];
-              [(AMSDCookieService *)self _cacheCookieProperties:v40 forIdentifier:v47];
+              identifier3 = [v9 identifier];
+              [(AMSDCookieService *)self _cacheCookieProperties:v40 forIdentifier:identifier3];
             }
 
             goto LABEL_47;
@@ -1340,8 +1340,8 @@ LABEL_47:
             v35 = +[AMSLogConfig sharedConfig];
           }
 
-          v36 = [v35 OSLogObject];
-          if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+          oSLogObject3 = [v35 OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
           {
             v54 = objc_opt_class();
             v37 = AMSLogKey();
@@ -1352,22 +1352,22 @@ LABEL_47:
             v59 = v37;
             v60 = 2114;
             v61 = v38;
-            _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unexpected value in Accounts database for cookies: %{public}@", buf, 0x20u);
+            _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unexpected value in Accounts database for cookies: %{public}@", buf, 0x20u);
           }
         }
 
-        v22 = 0;
+        oSLogObject4 = 0;
         goto LABEL_36;
       }
 
-      v14 = +[AMSLogConfig sharedAccountsCookiesConfig];
-      if (!v14)
+      oSLogObject5 = +[AMSLogConfig sharedAccountsCookiesConfig];
+      if (!oSLogObject5)
       {
-        v14 = +[AMSLogConfig sharedConfig];
+        oSLogObject5 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [oSLogObject5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
 LABEL_22:
         v12 = 0;
@@ -1378,7 +1378,7 @@ LABEL_48:
 
       v28 = objc_opt_class();
       v24 = AMSLogKey();
-      v29 = *a5;
+      v29 = *error;
       v26 = AMSLogableError();
       *buf = 138543874;
       v57 = v28;
@@ -1391,21 +1391,21 @@ LABEL_48:
 
     else
     {
-      v14 = +[AMSLogConfig sharedAccountsCookiesConfig];
-      if (!v14)
+      oSLogObject5 = +[AMSLogConfig sharedAccountsCookiesConfig];
+      if (!oSLogObject5)
       {
-        v14 = +[AMSLogConfig sharedConfig];
+        oSLogObject5 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v14 OSLogObject];
-      if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [oSLogObject5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_22;
       }
 
       v23 = objc_opt_class();
       v24 = AMSLogKey();
-      v25 = *a5;
+      v25 = *error;
       v26 = AMSLogableError();
       *buf = 138543874;
       v57 = v23;
@@ -1416,7 +1416,7 @@ LABEL_48:
       v27 = "%{public}@: [%{public}@] Error getting cookie database: %{public}@";
     }
 
-    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, v27, buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject4, OS_LOG_TYPE_ERROR, v27, buf, 0x20u);
 
     goto LABEL_22;
   }
@@ -1427,8 +1427,8 @@ LABEL_48:
     v13 = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v13 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+  oSLogObject5 = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEBUG))
   {
     v15 = AMSLogKey();
     v16 = objc_opt_class();
@@ -1443,22 +1443,22 @@ LABEL_48:
     {
       [NSString stringWithFormat:@"%@: ", v16];
     }
-    v18 = ;
+    selfCopy = ;
     v49 = AMSHashIfNeeded();
-    v50 = [v9 identifier];
+    identifier4 = [v9 identifier];
     v51 = AMSHashIfNeeded();
     *buf = 138543874;
-    v57 = v18;
+    v57 = selfCopy;
     v58 = 2114;
     v59 = v49;
     v60 = 2114;
     v61 = v51;
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%{public}@Found cached cookie properties. cookieProperties = %{public}@ | identifier = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject5, OS_LOG_TYPE_DEBUG, "%{public}@Found cached cookie properties. cookieProperties = %{public}@ | identifier = %{public}@", buf, 0x20u);
 
     if (v15)
     {
 
-      v18 = self;
+      selfCopy = self;
     }
   }
 
@@ -1467,25 +1467,25 @@ LABEL_49:
   return v12;
 }
 
-- (void)updateCookiesWithCookiePropertiesToAdd:(id)a3 cookiePropertiesToRemove:(id)a4 forAccount:(id)a5 withCompletion:(id)a6
+- (void)updateCookiesWithCookiePropertiesToAdd:(id)add cookiePropertiesToRemove:(id)remove forAccount:(id)account withCompletion:(id)completion
 {
-  v26 = a3;
-  v27 = a4;
-  v10 = a5;
-  v11 = a6;
+  addCopy = add;
+  removeCopy = remove;
+  accountCopy = account;
+  completionCopy = completion;
   v12 = +[AMSLogConfig sharedAccountsCookiesConfig];
   if (!v12)
   {
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v14 = objc_opt_class();
     v15 = AMSLogKey();
-    v16 = [v26 count];
-    v17 = [v27 count];
+    v16 = [addCopy count];
+    v17 = [removeCopy count];
     v18 = AMSHashIfNeeded();
     *buf = 138544386;
     *&buf[4] = v14;
@@ -1497,7 +1497,7 @@ LABEL_49:
     *&v43[2] = v17;
     *&v43[10] = 2114;
     *&v43[12] = v18;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Updating cookies with %lu to add and %lu to remove. account = %{public}@", buf, 0x34u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Updating cookies with %lu to add and %lu to remove. account = %{public}@", buf, 0x34u);
   }
 
   v39[0] = 0;
@@ -1510,7 +1510,7 @@ LABEL_49:
   v42 = sub_1000509A8;
   *v43 = sub_1000509B8;
   *&v43[8] = 0;
-  v19 = [(AMSDCookieService *)self queue];
+  queue = [(AMSDCookieService *)self queue];
   v20 = dispatch_get_global_queue(21, 0);
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -1518,11 +1518,11 @@ LABEL_49:
   v32[3] = &unk_1002B0448;
   v32[4] = self;
   v38 = a2;
-  v21 = v10;
+  v21 = accountCopy;
   v33 = v21;
-  v22 = v26;
+  v22 = addCopy;
   v34 = v22;
-  v23 = v27;
+  v23 = removeCopy;
   v35 = v23;
   v36 = v39;
   v37 = buf;
@@ -1530,20 +1530,20 @@ LABEL_49:
   v28[1] = 3221225472;
   v28[2] = sub_100050E50;
   v28[3] = &unk_1002B0470;
-  v24 = v11;
+  v24 = completionCopy;
   v29 = v24;
   v30 = v39;
   v31 = buf;
-  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.updateCookies" withQueue:v19 postActionQueue:v20 whilePerformingBlockOnQueue:v32 postAction:v28];
+  [AMSDTransactionStore takeKeepAliveTransaction:@"com.apple.amsaccountsd.AMSDCookieService.updateCookies" withQueue:queue postActionQueue:v20 whilePerformingBlockOnQueue:v32 postAction:v28];
 
   _Block_object_dispose(buf, 8);
   _Block_object_dispose(v39, 8);
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  entitledCopy = entitled;
+  v4 = [entitledCopy valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1557,12 +1557,12 @@ LABEL_49:
 
   if ([v5 BOOLValue])
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v7 = [v3 valueForEntitlement:@"com.apple.itunesstored.private"];
+    v7 = [entitledCopy valueForEntitlement:@"com.apple.itunesstored.private"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1574,10 +1574,10 @@ LABEL_49:
       v8 = 0;
     }
 
-    v6 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

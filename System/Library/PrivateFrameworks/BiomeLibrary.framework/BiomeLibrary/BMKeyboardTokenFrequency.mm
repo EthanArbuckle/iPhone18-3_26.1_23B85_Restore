@@ -1,16 +1,16 @@
 @interface BMKeyboardTokenFrequency
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMKeyboardTokenFrequency)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMKeyboardTokenFrequency)initWithTokenFrequencies:(id)a3 locale:(id)a4 tokenType:(int)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMKeyboardTokenFrequency)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMKeyboardTokenFrequency)initWithTokenFrequencies:(id)frequencies locale:(id)locale tokenType:(int)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_tokenFrequenciesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMKeyboardTokenFrequency
@@ -31,25 +31,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
-    v7 = [v5 tokenFrequencies];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    tokenFrequencies = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
+    tokenFrequencies2 = [v5 tokenFrequencies];
+    v8 = tokenFrequencies2;
+    if (tokenFrequencies == tokenFrequencies2)
     {
     }
 
     else
     {
-      v9 = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
-      v10 = [v5 tokenFrequencies];
-      v11 = [v9 isEqual:v10];
+      tokenFrequencies3 = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
+      tokenFrequencies4 = [v5 tokenFrequencies];
+      v11 = [tokenFrequencies3 isEqual:tokenFrequencies4];
 
       if (!v11)
       {
@@ -57,18 +57,18 @@
       }
     }
 
-    v13 = [(BMKeyboardTokenFrequency *)self locale];
-    v14 = [v5 locale];
-    v15 = v14;
-    if (v13 == v14)
+    locale = [(BMKeyboardTokenFrequency *)self locale];
+    locale2 = [v5 locale];
+    v15 = locale2;
+    if (locale == locale2)
     {
     }
 
     else
     {
-      v16 = [(BMKeyboardTokenFrequency *)self locale];
-      v17 = [v5 locale];
-      v18 = [v16 isEqual:v17];
+      locale3 = [(BMKeyboardTokenFrequency *)self locale];
+      locale4 = [v5 locale];
+      v18 = [locale3 isEqual:locale4];
 
       if (!v18)
       {
@@ -80,8 +80,8 @@ LABEL_12:
       }
     }
 
-    v19 = [(BMKeyboardTokenFrequency *)self tokenType];
-    v12 = v19 == [v5 tokenType];
+    tokenType = [(BMKeyboardTokenFrequency *)self tokenType];
+    v12 = tokenType == [v5 tokenType];
     goto LABEL_12;
   }
 
@@ -94,44 +94,44 @@ LABEL_13:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMKeyboardTokenFrequency *)self _tokenFrequenciesJSONArray];
-  v4 = [(BMKeyboardTokenFrequency *)self locale];
+  _tokenFrequenciesJSONArray = [(BMKeyboardTokenFrequency *)self _tokenFrequenciesJSONArray];
+  locale = [(BMKeyboardTokenFrequency *)self locale];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMKeyboardTokenFrequency tokenType](self, "tokenType")}];
   v12[0] = @"tokenFrequencies";
-  v6 = v3;
-  if (!v3)
+  null = _tokenFrequenciesJSONArray;
+  if (!_tokenFrequenciesJSONArray)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"locale";
-  v7 = v4;
-  if (!v4)
+  null2 = locale;
+  if (!locale)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"tokenType";
-  v8 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (v5)
   {
-    if (v4)
+    if (locale)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
 
-    if (v3)
+    if (_tokenFrequenciesJSONArray)
     {
       goto LABEL_10;
     }
@@ -139,13 +139,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!locale)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v3)
+  if (_tokenFrequenciesJSONArray)
   {
     goto LABEL_10;
   }
@@ -166,8 +166,8 @@ LABEL_10:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tokenFrequencies = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
+  v5 = [tokenFrequencies countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -178,14 +178,14 @@ LABEL_10:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(tokenFrequencies);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [tokenFrequencies countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -196,19 +196,19 @@ LABEL_10:
   return v3;
 }
 
-- (BMKeyboardTokenFrequency)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMKeyboardTokenFrequency)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"tokenFrequencies"];
-  v8 = [MEMORY[0x1E695DFB0] null];
-  v9 = [v7 isEqual:v8];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"tokenFrequencies"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v9 = [v7 isEqual:null];
 
   if (v9)
   {
-    v47 = a4;
-    v48 = v6;
-    v49 = self;
+    errorCopy2 = error;
+    v48 = dictionaryCopy;
+    selfCopy2 = self;
 
     v7 = 0;
   }
@@ -220,7 +220,7 @@ LABEL_10:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v31 = objc_alloc(MEMORY[0x1E696ABC0]);
           v32 = *MEMORY[0x1E698F240];
@@ -228,20 +228,20 @@ LABEL_10:
           v51 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"tokenFrequencies"];
           v67[0] = v51;
           [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:&v66 count:1];
-          v19 = v33 = a4;
-          v29 = 0;
+          v19 = v33 = error;
+          selfCopy3 = 0;
           *v33 = [v31 initWithDomain:v32 code:2 userInfo:v19];
           goto LABEL_48;
         }
 
-        v29 = 0;
+        selfCopy3 = 0;
         goto LABEL_49;
       }
     }
 
-    v47 = a4;
-    v48 = v6;
-    v49 = self;
+    errorCopy2 = error;
+    v48 = dictionaryCopy;
+    selfCopy2 = self;
   }
 
   v51 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
@@ -271,8 +271,8 @@ LABEL_10:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = v47;
-        if (v47)
+        v22 = errorCopy2;
+        if (errorCopy2)
         {
           v23 = objc_alloc(MEMORY[0x1E696ABC0]);
           v24 = *MEMORY[0x1E698F240];
@@ -285,28 +285,28 @@ LABEL_10:
 LABEL_26:
           v21 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:1];
           v28 = [v23 initWithDomain:v24 code:2 userInfo:v21];
-          v29 = 0;
+          selfCopy3 = 0;
           *v22 = v28;
 LABEL_30:
           v19 = v7;
-          v6 = v48;
-          self = v49;
+          dictionaryCopy = v48;
+          self = selfCopy2;
           goto LABEL_46;
         }
 
 LABEL_33:
-        v29 = 0;
+        selfCopy3 = 0;
         v19 = v7;
-        v6 = v48;
-        self = v49;
+        dictionaryCopy = v48;
+        self = selfCopy2;
         goto LABEL_48;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v22 = v47;
-        if (v47)
+        v22 = errorCopy2;
+        if (errorCopy2)
         {
           v23 = objc_alloc(MEMORY[0x1E696ABC0]);
           v24 = *MEMORY[0x1E698F240];
@@ -330,13 +330,13 @@ LABEL_33:
       if (v18)
       {
         v21 = v18;
-        if (v47)
+        if (errorCopy2)
         {
           v30 = v18;
-          *v47 = v21;
+          *errorCopy2 = v21;
         }
 
-        v29 = 0;
+        selfCopy3 = 0;
         goto LABEL_30;
       }
 
@@ -354,7 +354,7 @@ LABEL_33:
 
 LABEL_16:
 
-  v6 = v48;
+  dictionaryCopy = v48;
   v15 = [v48 objectForKeyedSubscript:@"locale"];
   if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -365,7 +365,7 @@ LABEL_16:
       goto LABEL_19;
     }
 
-    if (v47)
+    if (errorCopy2)
     {
       v36 = objc_alloc(MEMORY[0x1E696ABC0]);
       v37 = *MEMORY[0x1E698F240];
@@ -375,15 +375,15 @@ LABEL_16:
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
       v38 = [v36 initWithDomain:v37 code:2 userInfo:v20];
       v19 = 0;
-      v29 = 0;
-      *v47 = v38;
-      self = v49;
+      selfCopy3 = 0;
+      *errorCopy2 = v38;
+      self = selfCopy2;
       goto LABEL_45;
     }
 
     v19 = 0;
-    v29 = 0;
-    self = v49;
+    selfCopy3 = 0;
+    self = selfCopy2;
   }
 
   else
@@ -397,7 +397,7 @@ LABEL_19:
       goto LABEL_44;
     }
 
-    v34 = v49;
+    v34 = selfCopy2;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -405,8 +405,8 @@ LABEL_19:
 LABEL_43:
       v21 = v35;
 LABEL_44:
-      self = -[BMKeyboardTokenFrequency initWithTokenFrequencies:locale:tokenType:](v49, "initWithTokenFrequencies:locale:tokenType:", v51, v19, [v21 intValue]);
-      v29 = self;
+      self = -[BMKeyboardTokenFrequency initWithTokenFrequencies:locale:tokenType:](selfCopy2, "initWithTokenFrequencies:locale:tokenType:", v51, v19, [v21 intValue]);
+      selfCopy3 = self;
     }
 
     else
@@ -417,12 +417,12 @@ LABEL_44:
         v39 = MEMORY[0x1E696AD98];
         v40 = BMKeyboardTokenFrequencyTokenTypeFromString(v20);
         v41 = v39;
-        v6 = v48;
+        dictionaryCopy = v48;
         v35 = [v41 numberWithInt:v40];
         goto LABEL_43;
       }
 
-      if (v47)
+      if (errorCopy2)
       {
         v50 = objc_alloc(MEMORY[0x1E696ABC0]);
         v46 = *MEMORY[0x1E698F240];
@@ -430,11 +430,11 @@ LABEL_44:
         v44 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"tokenType"];
         v58 = v44;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-        *v47 = [v50 initWithDomain:v46 code:2 userInfo:v45];
+        *errorCopy2 = [v50 initWithDomain:v46 code:2 userInfo:v45];
       }
 
       v21 = 0;
-      v29 = 0;
+      selfCopy3 = 0;
       self = v34;
     }
 
@@ -447,22 +447,22 @@ LABEL_48:
 LABEL_49:
 
   v42 = *MEMORY[0x1E69E9840];
-  return v29;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMKeyboardTokenFrequency *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -484,7 +484,7 @@ LABEL_49:
 
         v10 = *(*(&v13 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -505,9 +505,9 @@ LABEL_49:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v34.receiver = self;
   v34.super_class = BMKeyboardTokenFrequency;
   v5 = [(BMEventBase *)&v34 init];
@@ -517,12 +517,12 @@ LABEL_49:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -533,18 +533,18 @@ LABEL_49:
       while (1)
       {
         LOBYTE(v35[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v35[0] & 0x7F) << v8;
@@ -561,9 +561,9 @@ LABEL_49:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -573,7 +573,7 @@ LABEL_16:
       {
         v35[0] = 0;
         v35[1] = 0;
-        if (!PBReaderPlaceMark() || (v26 = [[BMKeyboardTokenFrequencyTokenFrequency alloc] initByReadFrom:v4]) == 0)
+        if (!PBReaderPlaceMark() || (v26 = [[BMKeyboardTokenFrequencyTokenFrequency alloc] initByReadFrom:fromCopy]) == 0)
         {
 LABEL_45:
 
@@ -600,18 +600,18 @@ LABEL_45:
         while (1)
         {
           LOBYTE(v35[0]) = 0;
-          v20 = [v4 position] + 1;
-          if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+          v20 = [fromCopy position] + 1;
+          if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
           {
-            v22 = [v4 data];
-            [v22 getBytes:v35 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (v35[0] & 0x7F) << v17;
@@ -627,7 +627,7 @@ LABEL_45:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v19 > 4)
+        if (([fromCopy hasError] & 1) != 0 || v19 > 4)
         {
 LABEL_38:
           LODWORD(v19) = 0;
@@ -641,18 +641,18 @@ LABEL_38:
         goto LABEL_45;
       }
 
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v29 = [v6 copy];
   tokenFrequencies = v5->_tokenFrequencies;
   v5->_tokenFrequencies = v29;
 
-  v31 = [v4 hasError];
-  if (v31)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_42:
     v32 = 0;
@@ -670,27 +670,27 @@ LABEL_43:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
-  v5 = [(BMKeyboardTokenFrequency *)self locale];
+  tokenFrequencies = [(BMKeyboardTokenFrequency *)self tokenFrequencies];
+  locale = [(BMKeyboardTokenFrequency *)self locale];
   v6 = BMKeyboardTokenFrequencyTokenTypeAsString([(BMKeyboardTokenFrequency *)self tokenType]);
-  v7 = [v3 initWithFormat:@"BMKeyboardTokenFrequency with tokenFrequencies: %@, locale: %@, tokenType: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMKeyboardTokenFrequency with tokenFrequencies: %@, locale: %@, tokenType: %@", tokenFrequencies, locale, v6];
 
   return v7;
 }
 
-- (BMKeyboardTokenFrequency)initWithTokenFrequencies:(id)a3 locale:(id)a4 tokenType:(int)a5
+- (BMKeyboardTokenFrequency)initWithTokenFrequencies:(id)frequencies locale:(id)locale tokenType:(int)type
 {
-  v9 = a3;
-  v10 = a4;
+  frequenciesCopy = frequencies;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = BMKeyboardTokenFrequency;
   v11 = [(BMEventBase *)&v13 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v11->_tokenFrequencies, a3);
-    objc_storeStrong(&v11->_locale, a4);
-    v11->_tokenType = a5;
+    objc_storeStrong(&v11->_tokenFrequencies, frequencies);
+    objc_storeStrong(&v11->_locale, locale);
+    v11->_tokenType = type;
   }
 
   return v11;
@@ -720,9 +720,9 @@ id __35__BMKeyboardTokenFrequency_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -730,8 +730,8 @@ id __35__BMKeyboardTokenFrequency_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMKeyboardTokenFrequency alloc] initByReadFrom:v7];
     v4 = v8;

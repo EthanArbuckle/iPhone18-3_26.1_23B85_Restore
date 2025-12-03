@@ -1,8 +1,8 @@
 @interface CKInternalAudioPlayer
-- (BOOL)_playAtTime:(double)a3;
+- (BOOL)_playAtTime:(double)time;
 - (BOOL)isPlaying;
-- (BOOL)playAtTime:(double)a3;
-- (CKInternalAudioPlayer)initWithContentsOfURL:(id)a3 playerType:(int64_t)a4;
+- (BOOL)playAtTime:(double)time;
+- (CKInternalAudioPlayer)initWithContentsOfURL:(id)l playerType:(int64_t)type;
 - (CKInternalAudioPlayerDelegate)delegate;
 - (double)currentTime;
 - (double)deviceCurrentTime;
@@ -10,35 +10,35 @@
 - (double)playbackSpeed;
 - (float)volume;
 - (void)_handleAVPlayerItemStateChange;
-- (void)_notifyPlayerDidFinishSuccessfully:(BOOL)a3;
-- (void)_notifyPlayerDidPrepareAudioFileSuccessfully:(BOOL)a3;
-- (void)_playerItemDidEndNotification:(id)a3;
+- (void)_notifyPlayerDidFinishSuccessfully:(BOOL)successfully;
+- (void)_notifyPlayerDidPrepareAudioFileSuccessfully:(BOOL)successfully;
+- (void)_playerItemDidEndNotification:(id)notification;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)prepareToPlay;
 - (void)resetCurrentTime;
-- (void)setCurrentTime:(double)a3;
-- (void)setPlaybackSpeed:(double)a3;
-- (void)setVolume:(float)a3;
+- (void)setCurrentTime:(double)time;
+- (void)setPlaybackSpeed:(double)speed;
+- (void)setVolume:(float)volume;
 - (void)stop;
 @end
 
 @implementation CKInternalAudioPlayer
 
-- (CKInternalAudioPlayer)initWithContentsOfURL:(id)a3 playerType:(int64_t)a4
+- (CKInternalAudioPlayer)initWithContentsOfURL:(id)l playerType:(int64_t)type
 {
-  v6 = a3;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = CKInternalAudioPlayer;
   v7 = [(CKInternalAudioPlayer *)&v20 init];
   v8 = v7;
   if (v7)
   {
-    v7->_playerType = a4;
-    if (a4 == 1)
+    v7->_playerType = type;
+    if (type == 1)
     {
-      v9 = CKAVURLAssetForURL(v6);
+      v9 = CKAVURLAssetForURL(lCopy);
       v10 = [MEMORY[0x1E69880B0] playerItemWithAsset:v9];
       playerItem = v8->_playerItem;
       v8->_playerItem = v10;
@@ -49,16 +49,16 @@
       v8->_avPlayer = v12;
 
       [(AVPlayerItem *)v8->_playerItem addObserver:v8 forKeyPath:@"status" options:3 context:CKInternalAudioPlayerAVPlayerItemKVOContext];
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 addObserver:v8 selector:sel__playerItemDidEndNotification_ name:*MEMORY[0x1E6987A10] object:v8->_playerItem];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel__playerItemDidEndNotification_ name:*MEMORY[0x1E6987A10] object:v8->_playerItem];
 
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 addObserver:v8 selector:sel__playerItemDidEndNotification_ name:*MEMORY[0x1E6987A20] object:v8->_playerItem];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v8 selector:sel__playerItemDidEndNotification_ name:*MEMORY[0x1E6987A20] object:v8->_playerItem];
     }
 
     else
     {
-      v16 = [objc_alloc(MEMORY[0x1E6958448]) initWithContentsOfURL:v6 error:0];
+      v16 = [objc_alloc(MEMORY[0x1E6958448]) initWithContentsOfURL:lCopy error:0];
       avAudioPlayer = v8->_avAudioPlayer;
       v8->_avAudioPlayer = v16;
 
@@ -71,15 +71,15 @@
   return v8;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (CKInternalAudioPlayerAVPlayerItemKVOContext == a6)
+  changeCopy = change;
+  if (CKInternalAudioPlayerAVPlayerItemKVOContext == context)
   {
-    if ([a3 isEqualToString:@"status"])
+    if ([path isEqualToString:@"status"])
     {
-      v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-      v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+      v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -101,11 +101,11 @@
   {
     v14.receiver = self;
     v14.super_class = CKInternalAudioPlayer;
-    [(CKInternalAudioPlayer *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    [(CKInternalAudioPlayer *)&v14 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 
-- (BOOL)playAtTime:(double)a3
+- (BOOL)playAtTime:(double)time
 {
   if (self->_playerType == 1 && [(AVPlayerItem *)self->_playerItem status]== AVPlayerItemStatusUnknown)
   {
@@ -116,11 +116,11 @@
   else
   {
 
-    return [(CKInternalAudioPlayer *)self _playAtTime:a3];
+    return [(CKInternalAudioPlayer *)self _playAtTime:time];
   }
 }
 
-- (BOOL)_playAtTime:(double)a3
+- (BOOL)_playAtTime:(double)time
 {
   v5 = MEMORY[0x193AF5ED0]("kCMTimeZero", @"CoreMedia");
   v11 = *v5;
@@ -145,7 +145,7 @@
   {
     avAudioPlayer = self->_avAudioPlayer;
 
-    return [(AVAudioPlayer *)avAudioPlayer playAtTime:a3];
+    return [(AVAudioPlayer *)avAudioPlayer playAtTime:time];
   }
 }
 
@@ -208,7 +208,7 @@
   return result;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v3 = 8;
   if (self->_playerType == 1)
@@ -232,14 +232,14 @@
   }
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
   if (self->_playerType == 1)
   {
     v8 = v3;
     v9 = v4;
     avPlayer = self->_avPlayer;
-    CMTimeMake(&v7, a3, 1);
+    CMTimeMake(&v7, time, 1);
     [(AVPlayer *)avPlayer seekToTime:&v7];
   }
 
@@ -247,19 +247,19 @@
   {
     avAudioPlayer = self->_avAudioPlayer;
 
-    [(AVAudioPlayer *)avAudioPlayer setCurrentTime:a3];
+    [(AVAudioPlayer *)avAudioPlayer setCurrentTime:time];
   }
 }
 
-- (void)setPlaybackSpeed:(double)a3
+- (void)setPlaybackSpeed:(double)speed
 {
-  v3 = a3;
+  speedCopy = speed;
   if (self->_playerType == 1)
   {
     avPlayer = self->_avPlayer;
-    *&a3 = a3;
+    *&speed = speed;
 
-    [(AVPlayer *)avPlayer setRate:a3];
+    [(AVPlayer *)avPlayer setRate:speed];
   }
 
   else
@@ -269,7 +269,7 @@
       [(AVAudioPlayer *)self->_avAudioPlayer setEnableRate:1];
     }
 
-    *&v6 = v3;
+    *&v6 = speedCopy;
     [(AVAudioPlayer *)self->_avAudioPlayer setRate:v6];
     avAudioPlayer = self->_avAudioPlayer;
     [(AVAudioPlayer *)avAudioPlayer currentTime];
@@ -358,11 +358,11 @@ void *__36__CKInternalAudioPlayer_currentTime__block_invoke()
   {
     v12 = 0uLL;
     v13 = 0;
-    v4 = [(AVPlayer *)self->_avPlayer currentItem];
-    v5 = v4;
-    if (v4)
+    currentItem = [(AVPlayer *)self->_avPlayer currentItem];
+    v5 = currentItem;
+    if (currentItem)
     {
-      [v4 duration];
+      [currentItem duration];
     }
 
     else
@@ -416,30 +416,30 @@ void *__33__CKInternalAudioPlayer_duration__block_invoke_2()
 {
   if (self->_playerType != 1)
   {
-    v4 = [(AVAudioPlayer *)self->_avAudioPlayer prepareToPlay];
+    prepareToPlay = [(AVAudioPlayer *)self->_avAudioPlayer prepareToPlay];
 LABEL_7:
-    v3 = self;
+    selfCopy2 = self;
     goto LABEL_8;
   }
 
   if (![(CKInternalAudioPlayer *)self isPlaying])
   {
-    v5 = [(AVPlayerItem *)self->_playerItem status];
-    if (v5 == AVPlayerItemStatusUnknown)
+    status = [(AVPlayerItem *)self->_playerItem status];
+    if (status == AVPlayerItemStatusUnknown)
     {
       self->_avPlayerPrepareRequested = 1;
       return;
     }
 
-    v4 = v5 == AVPlayerItemStatusReadyToPlay;
+    prepareToPlay = status == AVPlayerItemStatusReadyToPlay;
     goto LABEL_7;
   }
 
-  v3 = self;
-  v4 = 1;
+  selfCopy2 = self;
+  prepareToPlay = 1;
 LABEL_8:
 
-  [(CKInternalAudioPlayer *)v3 _notifyPlayerDidPrepareAudioFileSuccessfully:v4];
+  [(CKInternalAudioPlayer *)selfCopy2 _notifyPlayerDidPrepareAudioFileSuccessfully:prepareToPlay];
 }
 
 - (void)resetCurrentTime
@@ -465,11 +465,11 @@ LABEL_8:
 - (void)dealloc
 {
   [(AVPlayerItem *)self->_playerItem removeObserver:self forKeyPath:@"status"];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6987A10] object:self->_playerItem];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6987A10] object:self->_playerItem];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E6987A20] object:self->_playerItem];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E6987A20] object:self->_playerItem];
 
   [(AVAudioPlayer *)self->_avAudioPlayer setDelegate:0];
   v5.receiver = self;
@@ -477,16 +477,16 @@ LABEL_8:
   [(CKInternalAudioPlayer *)&v5 dealloc];
 }
 
-- (void)_playerItemDidEndNotification:(id)a3
+- (void)_playerItemDidEndNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__CKInternalAudioPlayer__playerItemDidEndNotification___block_invoke;
   v6[3] = &unk_1E72EB8D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = notificationCopy;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -503,12 +503,12 @@ uint64_t __55__CKInternalAudioPlayer__playerItemDidEndNotification___block_invok
 
 - (void)_handleAVPlayerItemStateChange
 {
-  v3 = [(AVPlayerItem *)self->_playerItem status];
-  v4 = v3;
+  status = [(AVPlayerItem *)self->_playerItem status];
+  v4 = status;
   if (self->_avPlayerPrepareRequested)
   {
     self->_avPlayerPrepareRequested = 0;
-    [(CKInternalAudioPlayer *)self _notifyPlayerDidPrepareAudioFileSuccessfully:v3 == AVPlayerItemStatusReadyToPlay];
+    [(CKInternalAudioPlayer *)self _notifyPlayerDidPrepareAudioFileSuccessfully:status == AVPlayerItemStatusReadyToPlay];
   }
 
   if (self->_avPlayerPlayRequested && v4 != AVPlayerItemStatusUnknown)
@@ -519,23 +519,23 @@ uint64_t __55__CKInternalAudioPlayer__playerItemDidEndNotification___block_invok
   }
 }
 
-- (void)_notifyPlayerDidFinishSuccessfully:(BOOL)a3
+- (void)_notifyPlayerDidFinishSuccessfully:(BOOL)successfully
 {
-  v3 = a3;
-  v5 = [(CKInternalAudioPlayer *)self delegate];
+  successfullyCopy = successfully;
+  delegate = [(CKInternalAudioPlayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 internalAudioPlayerDidFinishPlaying:self successfully:v3];
+    [delegate internalAudioPlayerDidFinishPlaying:self successfully:successfullyCopy];
   }
 }
 
-- (void)_notifyPlayerDidPrepareAudioFileSuccessfully:(BOOL)a3
+- (void)_notifyPlayerDidPrepareAudioFileSuccessfully:(BOOL)successfully
 {
-  v3 = a3;
-  v5 = [(CKInternalAudioPlayer *)self delegate];
+  successfullyCopy = successfully;
+  delegate = [(CKInternalAudioPlayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 internalAudioPlayerDidPrepareAudioForPlaying:self successfully:v3];
+    [delegate internalAudioPlayerDidPrepareAudioForPlaying:self successfully:successfullyCopy];
   }
 }
 

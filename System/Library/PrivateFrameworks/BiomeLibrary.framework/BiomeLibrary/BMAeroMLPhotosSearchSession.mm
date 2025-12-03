@@ -1,17 +1,17 @@
 @interface BMAeroMLPhotosSearchSession
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAeroMLPhotosSearchSession)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMAeroMLPhotosSearchSession)initWithQueryRaw:(id)a3 queryEmbedding:(id)a4 presentedAssets:(id)a5 language:(id)a6 region:(id)a7 version:(id)a8 libraryProcessingProgress:(id)a9 librarySizeBucket:(int)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMAeroMLPhotosSearchSession)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMAeroMLPhotosSearchSession)initWithQueryRaw:(id)raw queryEmbedding:(id)embedding presentedAssets:(id)assets language:(id)language region:(id)region version:(id)version libraryProcessingProgress:(id)progress librarySizeBucket:(int)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_presentedAssetsJSONArray;
 - (id)_queryEmbeddingJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAeroMLPhotosSearchSession
@@ -42,25 +42,25 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAeroMLPhotosSearchSession *)self queryRaw];
-    v7 = [v5 queryRaw];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    queryRaw = [(BMAeroMLPhotosSearchSession *)self queryRaw];
+    queryRaw2 = [v5 queryRaw];
+    v8 = queryRaw2;
+    if (queryRaw == queryRaw2)
     {
     }
 
     else
     {
-      v9 = [(BMAeroMLPhotosSearchSession *)self queryRaw];
-      v10 = [v5 queryRaw];
-      v11 = [v9 isEqual:v10];
+      queryRaw3 = [(BMAeroMLPhotosSearchSession *)self queryRaw];
+      queryRaw4 = [v5 queryRaw];
+      v11 = [queryRaw3 isEqual:queryRaw4];
 
       if (!v11)
       {
@@ -68,18 +68,18 @@
       }
     }
 
-    v13 = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
-    v14 = [v5 queryEmbedding];
-    v15 = v14;
-    if (v13 == v14)
+    queryEmbedding = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
+    queryEmbedding2 = [v5 queryEmbedding];
+    v15 = queryEmbedding2;
+    if (queryEmbedding == queryEmbedding2)
     {
     }
 
     else
     {
-      v16 = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
-      v17 = [v5 queryEmbedding];
-      v18 = [v16 isEqual:v17];
+      queryEmbedding3 = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
+      queryEmbedding4 = [v5 queryEmbedding];
+      v18 = [queryEmbedding3 isEqual:queryEmbedding4];
 
       if (!v18)
       {
@@ -87,18 +87,18 @@
       }
     }
 
-    v19 = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
-    v20 = [v5 presentedAssets];
-    v21 = v20;
-    if (v19 == v20)
+    presentedAssets = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
+    presentedAssets2 = [v5 presentedAssets];
+    v21 = presentedAssets2;
+    if (presentedAssets == presentedAssets2)
     {
     }
 
     else
     {
-      v22 = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
-      v23 = [v5 presentedAssets];
-      v24 = [v22 isEqual:v23];
+      presentedAssets3 = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
+      presentedAssets4 = [v5 presentedAssets];
+      v24 = [presentedAssets3 isEqual:presentedAssets4];
 
       if (!v24)
       {
@@ -106,18 +106,18 @@
       }
     }
 
-    v25 = [(BMAeroMLPhotosSearchSession *)self language];
-    v26 = [v5 language];
-    v27 = v26;
-    if (v25 == v26)
+    language = [(BMAeroMLPhotosSearchSession *)self language];
+    language2 = [v5 language];
+    v27 = language2;
+    if (language == language2)
     {
     }
 
     else
     {
-      v28 = [(BMAeroMLPhotosSearchSession *)self language];
-      v29 = [v5 language];
-      v30 = [v28 isEqual:v29];
+      language3 = [(BMAeroMLPhotosSearchSession *)self language];
+      language4 = [v5 language];
+      v30 = [language3 isEqual:language4];
 
       if (!v30)
       {
@@ -125,18 +125,18 @@
       }
     }
 
-    v31 = [(BMAeroMLPhotosSearchSession *)self region];
-    v32 = [v5 region];
-    v33 = v32;
-    if (v31 == v32)
+    region = [(BMAeroMLPhotosSearchSession *)self region];
+    region2 = [v5 region];
+    v33 = region2;
+    if (region == region2)
     {
     }
 
     else
     {
-      v34 = [(BMAeroMLPhotosSearchSession *)self region];
-      v35 = [v5 region];
-      v36 = [v34 isEqual:v35];
+      region3 = [(BMAeroMLPhotosSearchSession *)self region];
+      region4 = [v5 region];
+      v36 = [region3 isEqual:region4];
 
       if (!v36)
       {
@@ -144,18 +144,18 @@
       }
     }
 
-    v37 = [(BMAeroMLPhotosSearchSession *)self version];
-    v38 = [v5 version];
-    v39 = v38;
-    if (v37 == v38)
+    version = [(BMAeroMLPhotosSearchSession *)self version];
+    version2 = [v5 version];
+    v39 = version2;
+    if (version == version2)
     {
     }
 
     else
     {
-      v40 = [(BMAeroMLPhotosSearchSession *)self version];
-      v41 = [v5 version];
-      v42 = [v40 isEqual:v41];
+      version3 = [(BMAeroMLPhotosSearchSession *)self version];
+      version4 = [v5 version];
+      v42 = [version3 isEqual:version4];
 
       if (!v42)
       {
@@ -165,8 +165,8 @@
 
     if (!-[BMAeroMLPhotosSearchSession hasLibraryProcessingProgress](self, "hasLibraryProcessingProgress") && ![v5 hasLibraryProcessingProgress] || -[BMAeroMLPhotosSearchSession hasLibraryProcessingProgress](self, "hasLibraryProcessingProgress") && objc_msgSend(v5, "hasLibraryProcessingProgress") && (v43 = -[BMAeroMLPhotosSearchSession libraryProcessingProgress](self, "libraryProcessingProgress"), v43 == objc_msgSend(v5, "libraryProcessingProgress")))
     {
-      v44 = [(BMAeroMLPhotosSearchSession *)self librarySizeBucket];
-      v12 = v44 == [v5 librarySizeBucket];
+      librarySizeBucket = [(BMAeroMLPhotosSearchSession *)self librarySizeBucket];
+      v12 = librarySizeBucket == [v5 librarySizeBucket];
 LABEL_34:
 
       goto LABEL_35;
@@ -186,12 +186,12 @@ LABEL_35:
 - (id)jsonDictionary
 {
   v27[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAeroMLPhotosSearchSession *)self queryRaw];
-  v4 = [(BMAeroMLPhotosSearchSession *)self _queryEmbeddingJSONArray];
-  v5 = [(BMAeroMLPhotosSearchSession *)self _presentedAssetsJSONArray];
-  v25 = [(BMAeroMLPhotosSearchSession *)self language];
-  v24 = [(BMAeroMLPhotosSearchSession *)self region];
-  v23 = [(BMAeroMLPhotosSearchSession *)self version];
+  queryRaw = [(BMAeroMLPhotosSearchSession *)self queryRaw];
+  _queryEmbeddingJSONArray = [(BMAeroMLPhotosSearchSession *)self _queryEmbeddingJSONArray];
+  _presentedAssetsJSONArray = [(BMAeroMLPhotosSearchSession *)self _presentedAssetsJSONArray];
+  language = [(BMAeroMLPhotosSearchSession *)self language];
+  region = [(BMAeroMLPhotosSearchSession *)self region];
+  version = [(BMAeroMLPhotosSearchSession *)self version];
   if ([(BMAeroMLPhotosSearchSession *)self hasLibraryProcessingProgress])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMAeroMLPhotosSearchSession libraryProcessingProgress](self, "libraryProcessingProgress")}];
@@ -204,73 +204,73 @@ LABEL_35:
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMAeroMLPhotosSearchSession librarySizeBucket](self, "librarySizeBucket")}];
   v26[0] = @"queryRaw";
-  v8 = v3;
-  if (!v3)
+  null = queryRaw;
+  if (!queryRaw)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v8;
-  v27[0] = v8;
+  v21 = null;
+  v27[0] = null;
   v26[1] = @"queryEmbedding";
-  v9 = v4;
-  if (!v4)
+  null2 = _queryEmbeddingJSONArray;
+  if (!_queryEmbeddingJSONArray)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v27[1] = v9;
+  v20 = null2;
+  v27[1] = null2;
   v26[2] = @"presentedAssets";
-  v10 = v5;
-  if (!v5)
+  null3 = _presentedAssetsJSONArray;
+  if (!_presentedAssetsJSONArray)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19 = v10;
-  v27[2] = v10;
+  v19 = null3;
+  v27[2] = null3;
   v26[3] = @"language";
-  v11 = v25;
-  if (!v25)
+  null4 = language;
+  if (!language)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v3;
-  v27[3] = v11;
+  v22 = queryRaw;
+  v27[3] = null4;
   v26[4] = @"region";
-  v12 = v24;
-  if (!v24)
+  null5 = region;
+  if (!region)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[4] = v12;
+  v27[4] = null5;
   v26[5] = @"version";
-  v13 = v23;
-  if (!v23)
+  null6 = version;
+  if (!version)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[5] = v13;
+  v27[5] = null6;
   v26[6] = @"libraryProcessingProgress";
-  v14 = v6;
+  null7 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[6] = v14;
+  v27[6] = null7;
   v26[7] = @"librarySizeBucket";
-  v15 = v7;
+  null8 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27[7] = v15;
+  v27[7] = null8;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:8];
   if (v7)
   {
@@ -290,17 +290,17 @@ LABEL_35:
   }
 
 LABEL_22:
-  if (!v23)
+  if (!version)
   {
   }
 
-  if (!v24)
+  if (!region)
   {
   }
 
-  if (v25)
+  if (language)
   {
-    if (v5)
+    if (_presentedAssetsJSONArray)
     {
       goto LABEL_28;
     }
@@ -309,10 +309,10 @@ LABEL_22:
   else
   {
 
-    if (v5)
+    if (_presentedAssetsJSONArray)
     {
 LABEL_28:
-      if (v4)
+      if (_queryEmbeddingJSONArray)
       {
         goto LABEL_29;
       }
@@ -328,7 +328,7 @@ LABEL_37:
     }
   }
 
-  if (!v4)
+  if (!_queryEmbeddingJSONArray)
   {
     goto LABEL_37;
   }
@@ -355,8 +355,8 @@ LABEL_30:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  presentedAssets = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
+  v5 = [presentedAssets countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -367,14 +367,14 @@ LABEL_30:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(presentedAssets);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [presentedAssets countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -393,8 +393,8 @@ LABEL_30:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  queryEmbedding = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
+  v5 = [queryEmbedding countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -405,15 +405,15 @@ LABEL_30:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(queryEmbedding);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         [v9 doubleValue];
         if (fabs(v10) == INFINITY)
         {
-          v11 = [MEMORY[0x1E695DFB0] null];
-          [v3 addObject:v11];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v3 addObject:null];
         }
 
         else
@@ -423,7 +423,7 @@ LABEL_30:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [queryEmbedding countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -434,18 +434,18 @@ LABEL_30:
   return v3;
 }
 
-- (BMAeroMLPhotosSearchSession)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAeroMLPhotosSearchSession)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v144[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"queryRaw"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"queryRaw"];
   v105 = v6;
   if (v6 && (v7 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
@@ -454,14 +454,14 @@ LABEL_30:
         v144[0] = v9;
         v109 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v144 forKeys:&v143 count:1];
         v8 = 0;
-        v30 = 0;
-        *a4 = [v31 initWithDomain:v32 code:2 userInfo:?];
+        selfCopy2 = 0;
+        *error = [v31 initWithDomain:v32 code:2 userInfo:?];
 
         goto LABEL_105;
       }
 
       v8 = 0;
-      v30 = 0;
+      selfCopy2 = 0;
       goto LABEL_106;
     }
 
@@ -473,11 +473,11 @@ LABEL_30:
     v8 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"queryEmbedding"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"queryEmbedding"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
-  v100 = self;
+  selfCopy = self;
   if (v11)
   {
     v98 = v8;
@@ -492,7 +492,7 @@ LABEL_30:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v43 = objc_alloc(MEMORY[0x1E696ABC0]);
           v44 = *MEMORY[0x1E698F240];
@@ -500,12 +500,12 @@ LABEL_30:
           v108 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"queryEmbedding"];
           v142 = v108;
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
-          v30 = 0;
-          *a4 = [v43 initWithDomain:v44 code:2 userInfo:v18];
+          selfCopy2 = 0;
+          *error = [v43 initWithDomain:v44 code:2 userInfo:v18];
           goto LABEL_104;
         }
 
-        v30 = 0;
+        selfCopy2 = 0;
         goto LABEL_105;
       }
     }
@@ -526,7 +526,7 @@ LABEL_30:
     v14 = *v116;
     do
     {
-      v15 = v5;
+      v15 = dictionaryCopy;
       for (i = 0; i != v13; ++i)
       {
         if (*v116 != v14)
@@ -538,8 +538,8 @@ LABEL_30:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = a4;
-          if (a4)
+          errorCopy2 = error;
+          if (error)
           {
             v22 = objc_alloc(MEMORY[0x1E696ABC0]);
             v23 = *MEMORY[0x1E698F240];
@@ -553,9 +553,9 @@ LABEL_30:
           }
 
 LABEL_28:
-          v30 = 0;
+          selfCopy2 = 0;
           v18 = v9;
-          v5 = v15;
+          dictionaryCopy = v15;
           v8 = v98;
           goto LABEL_104;
         }
@@ -563,7 +563,7 @@ LABEL_28:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             goto LABEL_28;
           }
@@ -574,7 +574,7 @@ LABEL_28:
           v27 = objc_alloc(MEMORY[0x1E696AEC0]);
           v85 = objc_opt_class();
           v28 = v27;
-          v21 = a4;
+          errorCopy2 = error;
           v107 = [v28 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", v85, @"queryEmbedding"];
           v137 = v107;
           v24 = MEMORY[0x1E695DF20];
@@ -582,9 +582,9 @@ LABEL_28:
           v26 = &v136;
 LABEL_26:
           v29 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:1];
-          v5 = v15;
-          v30 = 0;
-          *v21 = [v22 initWithDomain:v23 code:2 userInfo:?];
+          dictionaryCopy = v15;
+          selfCopy2 = 0;
+          *errorCopy2 = [v22 initWithDomain:v23 code:2 userInfo:?];
           v18 = v9;
 LABEL_27:
           v8 = v98;
@@ -595,19 +595,19 @@ LABEL_27:
       }
 
       v13 = [v9 countByEnumeratingWithState:&v115 objects:v140 count:16];
-      v5 = v15;
+      dictionaryCopy = v15;
     }
 
     while (v13);
   }
 
-  v18 = [v5 objectForKeyedSubscript:@"presentedAssets"];
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v20 = [v18 isEqual:v19];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"presentedAssets"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v20 = [v18 isEqual:null2];
 
   if (v20)
   {
-    v97 = v5;
+    v97 = dictionaryCopy;
 
     v18 = 0;
   }
@@ -619,9 +619,9 @@ LABEL_27:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v30 = 0;
+          selfCopy2 = 0;
           v8 = v98;
           goto LABEL_104;
         }
@@ -633,13 +633,13 @@ LABEL_27:
         v135 = v107;
         v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v135 forKeys:&v134 count:1];
         v56 = [v54 initWithDomain:v55 code:2 userInfo:v29];
-        v30 = 0;
-        *a4 = v56;
+        selfCopy2 = 0;
+        *error = v56;
         goto LABEL_27;
       }
     }
 
-    v97 = v5;
+    v97 = dictionaryCopy;
   }
 
   v107 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count")}];
@@ -670,8 +670,8 @@ LABEL_27:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v45 = a4;
-        if (a4)
+        errorCopy4 = error;
+        if (error)
         {
           v46 = objc_alloc(MEMORY[0x1E696ABC0]);
           v47 = *MEMORY[0x1E698F240];
@@ -683,31 +683,31 @@ LABEL_27:
           v50 = &v132;
           v51 = &v131;
 LABEL_58:
-          v42 = [v49 dictionaryWithObjects:v50 forKeys:v51 count:1];
-          v52 = [v46 initWithDomain:v47 code:2 userInfo:v42];
-          v30 = 0;
-          *v45 = v52;
+          errorCopy5 = [v49 dictionaryWithObjects:v50 forKeys:v51 count:1];
+          v52 = [v46 initWithDomain:v47 code:2 userInfo:errorCopy5];
+          selfCopy2 = 0;
+          *errorCopy4 = v52;
           v29 = v48;
 LABEL_62:
-          v5 = v97;
+          dictionaryCopy = v97;
           v8 = v98;
-          self = v100;
+          self = selfCopy;
           goto LABEL_101;
         }
 
 LABEL_65:
-        v30 = 0;
+        selfCopy2 = 0;
         v29 = v18;
-        v5 = v97;
-        self = v100;
+        dictionaryCopy = v97;
+        self = selfCopy;
         goto LABEL_27;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v45 = a4;
-        if (a4)
+        errorCopy4 = error;
+        if (error)
         {
           v46 = objc_alloc(MEMORY[0x1E696ABC0]);
           v47 = *MEMORY[0x1E698F240];
@@ -731,14 +731,14 @@ LABEL_65:
       v41 = v110;
       if (v41)
       {
-        v42 = v41;
-        if (a4)
+        errorCopy5 = v41;
+        if (error)
         {
           v53 = v41;
-          *a4 = v42;
+          *error = errorCopy5;
         }
 
-        v30 = 0;
+        selfCopy2 = 0;
         v29 = v104;
         goto LABEL_62;
       }
@@ -749,7 +749,7 @@ LABEL_65:
     }
 
     v34 = [v104 countByEnumeratingWithState:&v111 objects:v133 count:16];
-    self = v100;
+    self = selfCopy;
     if (v34)
     {
       continue;
@@ -760,7 +760,7 @@ LABEL_65:
 
 LABEL_44:
 
-  v5 = v97;
+  dictionaryCopy = v97;
   v38 = [v97 objectForKeyedSubscript:@"language"];
   if (!v38 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -773,27 +773,27 @@ LABEL_44:
   {
     v29 = v38;
 LABEL_47:
-    v42 = [v97 objectForKeyedSubscript:@"region"];
+    errorCopy5 = [v97 objectForKeyedSubscript:@"region"];
     v8 = v98;
-    v94 = v42;
-    if (v42)
+    v94 = errorCopy5;
+    if (errorCopy5)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v42 = 0;
+        errorCopy5 = 0;
         goto LABEL_70;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v42 = v42;
+        errorCopy5 = errorCopy5;
         goto LABEL_70;
       }
 
-      v42 = a4;
-      if (a4)
+      errorCopy5 = error;
+      if (error)
       {
         v101 = objc_alloc(MEMORY[0x1E696ABC0]);
         v66 = *MEMORY[0x1E698F240];
@@ -803,13 +803,13 @@ LABEL_47:
         v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
         v68 = v66;
         v69 = v67;
-        v42 = 0;
-        v30 = 0;
-        *a4 = [v101 initWithDomain:v68 code:2 userInfo:v67];
+        errorCopy5 = 0;
+        selfCopy2 = 0;
+        *error = [v101 initWithDomain:v68 code:2 userInfo:v67];
         goto LABEL_99;
       }
 
-      v30 = 0;
+      selfCopy2 = 0;
 LABEL_100:
 
 LABEL_101:
@@ -829,7 +829,7 @@ LABEL_70:
       }
 
       v69 = v57;
-      if (a4)
+      if (error)
       {
         v70 = objc_alloc(MEMORY[0x1E696ABC0]);
         v102 = *MEMORY[0x1E698F240];
@@ -844,14 +844,14 @@ LABEL_70:
         v92 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
         v74 = [v70 initWithDomain:v102 code:2 userInfo:?];
         v96 = 0;
-        v30 = 0;
-        *a4 = v74;
+        selfCopy2 = 0;
+        *error = v74;
         v8 = v98;
         goto LABEL_98;
       }
 
       v96 = 0;
-      v30 = 0;
+      selfCopy2 = 0;
     }
 
     else
@@ -870,7 +870,7 @@ LABEL_73:
           goto LABEL_76;
         }
 
-        if (a4)
+        if (error)
         {
           v75 = objc_alloc(MEMORY[0x1E696ABC0]);
           v103 = *MEMORY[0x1E698F240];
@@ -885,13 +885,13 @@ LABEL_73:
           v99 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
           v79 = [v75 initWithDomain:v103 code:2 userInfo:?];
           v93 = 0;
-          v30 = 0;
-          *a4 = v79;
+          selfCopy2 = 0;
+          *error = v79;
           goto LABEL_97;
         }
 
         v93 = 0;
-        v30 = 0;
+        selfCopy2 = 0;
         v69 = v91;
       }
 
@@ -918,16 +918,16 @@ LABEL_76:
         if (objc_opt_isKindOfClass())
         {
           v62 = [MEMORY[0x1E696AD98] numberWithInt:BMAeroMLPhotosSearchSessionPhotosLibrarySizeBucketFromString(v61)];
-          self = v100;
+          self = selfCopy;
 LABEL_96:
           LODWORD(v88) = [v62 intValue];
-          self = [(BMAeroMLPhotosSearchSession *)self initWithQueryRaw:v8 queryEmbedding:v108 presentedAssets:v107 language:v29 region:v42 version:v96 libraryProcessingProgress:v93 librarySizeBucket:v88];
-          v30 = self;
+          self = [(BMAeroMLPhotosSearchSession *)self initWithQueryRaw:v8 queryEmbedding:v108 presentedAssets:v107 language:v29 region:errorCopy5 version:v96 libraryProcessingProgress:v93 librarySizeBucket:v88];
+          selfCopy2 = self;
         }
 
         else
         {
-          if (a4)
+          if (error)
           {
             v90 = objc_alloc(MEMORY[0x1E696ABC0]);
             v89 = *MEMORY[0x1E698F240];
@@ -936,14 +936,14 @@ LABEL_96:
             v83 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"librarySizeBucket"];
             v120 = v83;
             v84 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
-            *a4 = [v90 initWithDomain:v89 code:2 userInfo:v84];
+            *error = [v90 initWithDomain:v89 code:2 userInfo:v84];
 
             v29 = v82;
           }
 
           v62 = 0;
-          v30 = 0;
-          self = v100;
+          selfCopy2 = 0;
+          self = selfCopy;
         }
 
 LABEL_97:
@@ -958,25 +958,25 @@ LABEL_99:
     goto LABEL_100;
   }
 
-  if (a4)
+  if (error)
   {
     v63 = objc_alloc(MEMORY[0x1E696ABC0]);
     v64 = *MEMORY[0x1E698F240];
     v127 = *MEMORY[0x1E696A578];
-    v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"language"];
-    v128 = v42;
+    errorCopy5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"language"];
+    v128 = errorCopy5;
     v95 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v128 forKeys:&v127 count:1];
     v65 = [v63 initWithDomain:v64 code:2 userInfo:?];
     v29 = 0;
-    v30 = 0;
-    *a4 = v65;
+    selfCopy2 = 0;
+    *error = v65;
     v8 = v98;
 
     goto LABEL_101;
   }
 
   v29 = 0;
-  v30 = 0;
+  selfCopy2 = 0;
   v8 = v98;
 LABEL_102:
 
@@ -990,22 +990,22 @@ LABEL_105:
 LABEL_106:
 
   v80 = *MEMORY[0x1E69E9840];
-  return v30;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMAeroMLPhotosSearchSession *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_queryRaw)
   {
     PBDataWriterWriteStringField();
@@ -1061,7 +1061,7 @@ LABEL_106:
 
         v15 = *(*(&v19 + 1) + 8 * j);
         PBDataWriterPlaceMark();
-        [v15 writeTo:v4];
+        [v15 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -1098,9 +1098,9 @@ LABEL_106:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v50.receiver = self;
   v50.super_class = BMAeroMLPhotosSearchSession;
   v5 = [(BMEventBase *)&v50 init];
@@ -1111,12 +1111,12 @@ LABEL_106:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1127,18 +1127,18 @@ LABEL_106:
       while (1)
       {
         LOBYTE(v51[0]) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:v51 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (LOBYTE(v51[0]) & 0x7F) << v9;
@@ -1156,9 +1156,9 @@ LABEL_106:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -1177,18 +1177,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v51[0]) = 0;
-              v36 = [v4 position] + 1;
-              if (v36 >= [v4 position] && (v37 = objc_msgSend(v4, "position") + 1, v37 <= objc_msgSend(v4, "length")))
+              v36 = [fromCopy position] + 1;
+              if (v36 >= [fromCopy position] && (v37 = objc_msgSend(fromCopy, "position") + 1, v37 <= objc_msgSend(fromCopy, "length")))
               {
-                v38 = [v4 data];
-                [v38 getBytes:v51 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v35 |= (LOBYTE(v51[0]) & 0x7F) << v33;
@@ -1206,7 +1206,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v39 = 0;
             }
@@ -1229,18 +1229,18 @@ LABEL_63:
             while (1)
             {
               LOBYTE(v51[0]) = 0;
-              v26 = [v4 position] + 1;
-              if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+              v26 = [fromCopy position] + 1;
+              if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
               {
-                v28 = [v4 data];
-                [v28 getBytes:v51 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:v51 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v25 |= (LOBYTE(v51[0]) & 0x7F) << v23;
@@ -1256,7 +1256,7 @@ LABEL_63:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v25 > 0xA)
+            if (([fromCopy hasError] & 1) != 0 || v25 > 0xA)
             {
 LABEL_66:
               LODWORD(v25) = 0;
@@ -1300,7 +1300,7 @@ LABEL_45:
             goto LABEL_77;
           }
 
-          v31 = [[BMAeroMLPhotosSearchSessionAsset alloc] initByReadFrom:v4];
+          v31 = [[BMAeroMLPhotosSearchSessionAsset alloc] initByReadFrom:fromCopy];
           if (!v31)
           {
             goto LABEL_77;
@@ -1335,18 +1335,18 @@ LABEL_71:
         {
           v18 = MEMORY[0x1E696AD98];
           v51[0] = 0.0;
-          v19 = [v4 position] + 8;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 8, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 8;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 8, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v40 = [v4 data];
-            [v40 getBytes:v51 range:{objc_msgSend(v4, "position"), 8}];
+            data4 = [fromCopy data];
+            [data4 getBytes:v51 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v41 = [v18 numberWithDouble:v51[0]];
@@ -1369,10 +1369,10 @@ LABEL_77:
       }
 
 LABEL_72:
-      v42 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v42 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v43 = [v6 copy];
@@ -1383,8 +1383,8 @@ LABEL_72:
   presentedAssets = v5->_presentedAssets;
   v5->_presentedAssets = v45;
 
-  v47 = [v4 hasError];
-  if (v47)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_74:
     v48 = 0;
@@ -1402,54 +1402,54 @@ LABEL_75:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAeroMLPhotosSearchSession *)self queryRaw];
-  v5 = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
-  v6 = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
-  v7 = [(BMAeroMLPhotosSearchSession *)self language];
-  v8 = [(BMAeroMLPhotosSearchSession *)self region];
-  v9 = [(BMAeroMLPhotosSearchSession *)self version];
+  queryRaw = [(BMAeroMLPhotosSearchSession *)self queryRaw];
+  queryEmbedding = [(BMAeroMLPhotosSearchSession *)self queryEmbedding];
+  presentedAssets = [(BMAeroMLPhotosSearchSession *)self presentedAssets];
+  language = [(BMAeroMLPhotosSearchSession *)self language];
+  region = [(BMAeroMLPhotosSearchSession *)self region];
+  version = [(BMAeroMLPhotosSearchSession *)self version];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMAeroMLPhotosSearchSession libraryProcessingProgress](self, "libraryProcessingProgress")}];
   v11 = BMAeroMLPhotosSearchSessionPhotosLibrarySizeBucketAsString([(BMAeroMLPhotosSearchSession *)self librarySizeBucket]);
-  v12 = [v3 initWithFormat:@"BMAeroMLPhotosSearchSession with queryRaw: %@, queryEmbedding: %@, presentedAssets: %@, language: %@, region: %@, version: %@, libraryProcessingProgress: %@, librarySizeBucket: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 initWithFormat:@"BMAeroMLPhotosSearchSession with queryRaw: %@, queryEmbedding: %@, presentedAssets: %@, language: %@, region: %@, version: %@, libraryProcessingProgress: %@, librarySizeBucket: %@", queryRaw, queryEmbedding, presentedAssets, language, region, version, v10, v11];
 
   return v12;
 }
 
-- (BMAeroMLPhotosSearchSession)initWithQueryRaw:(id)a3 queryEmbedding:(id)a4 presentedAssets:(id)a5 language:(id)a6 region:(id)a7 version:(id)a8 libraryProcessingProgress:(id)a9 librarySizeBucket:(int)a10
+- (BMAeroMLPhotosSearchSession)initWithQueryRaw:(id)raw queryEmbedding:(id)embedding presentedAssets:(id)assets language:(id)language region:(id)region version:(id)version libraryProcessingProgress:(id)progress librarySizeBucket:(int)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  rawCopy = raw;
+  embeddingCopy = embedding;
+  assetsCopy = assets;
+  languageCopy = language;
+  regionCopy = region;
+  versionCopy = version;
+  progressCopy = progress;
   v27.receiver = self;
   v27.super_class = BMAeroMLPhotosSearchSession;
   v20 = [(BMEventBase *)&v27 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_queryRaw, a3);
-    objc_storeStrong(&v20->_queryEmbedding, a4);
-    objc_storeStrong(&v20->_presentedAssets, a5);
-    objc_storeStrong(&v20->_language, a6);
-    objc_storeStrong(&v20->_region, a7);
-    objc_storeStrong(&v20->_version, a8);
-    if (v19)
+    objc_storeStrong(&v20->_queryRaw, raw);
+    objc_storeStrong(&v20->_queryEmbedding, embedding);
+    objc_storeStrong(&v20->_presentedAssets, assets);
+    objc_storeStrong(&v20->_language, language);
+    objc_storeStrong(&v20->_region, region);
+    objc_storeStrong(&v20->_version, version);
+    if (progressCopy)
     {
       v20->_hasLibraryProcessingProgress = 1;
-      v21 = [v19 unsignedIntValue];
+      unsignedIntValue = [progressCopy unsignedIntValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedIntValue = 0;
       v20->_hasLibraryProcessingProgress = 0;
     }
 
-    v20->_libraryProcessingProgress = v21;
-    v20->_librarySizeBucket = a10;
+    v20->_libraryProcessingProgress = unsignedIntValue;
+    v20->_librarySizeBucket = bucket;
   }
 
   return v20;
@@ -1499,9 +1499,9 @@ id __38__BMAeroMLPhotosSearchSession_columns__block_invoke(uint64_t a1, void *a2
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1509,8 +1509,8 @@ id __38__BMAeroMLPhotosSearchSession_columns__block_invoke(uint64_t a1, void *a2
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMAeroMLPhotosSearchSession alloc] initByReadFrom:v7];
     v4 = v8;

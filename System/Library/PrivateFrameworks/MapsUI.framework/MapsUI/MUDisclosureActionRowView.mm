@@ -1,40 +1,40 @@
 @interface MUDisclosureActionRowView
-- (MUDisclosureActionRowView)initWithFrame:(CGRect)a3;
+- (MUDisclosureActionRowView)initWithFrame:(CGRect)frame;
 - (double)_imageWidth;
 - (void)_buttonCellTapped;
 - (void)_contentSizeDidChange;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
-- (void)setViewModel:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setViewModel:(id)model;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation MUDisclosureActionRowView
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUDisclosureActionRowView;
-  [(MUPlaceSectionRowView *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(MUPlaceSectionRowView *)&v5 touchesCancelled:cancelled withEvent:event];
   [(MUPlaceSectionRowView *)self setSelected:0];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUDisclosureActionRowView;
-  [(MUPlaceSectionRowView *)&v5 touchesEnded:a3 withEvent:a4];
+  [(MUPlaceSectionRowView *)&v5 touchesEnded:ended withEvent:event];
   [(MUPlaceSectionRowView *)self setSelected:0];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MUDisclosureActionRowView;
-  [(MUPlaceSectionRowView *)&v5 touchesBegan:a3 withEvent:a4];
+  [(MUPlaceSectionRowView *)&v5 touchesBegan:began withEvent:event];
   [(MUPlaceSectionRowView *)self setSelected:1];
 }
 
@@ -51,36 +51,36 @@
 
 - (void)_buttonCellTapped
 {
-  v3 = [(MUDisclosureActionViewModelProviding *)self->_viewModel actionBlock];
+  actionBlock = [(MUDisclosureActionViewModelProviding *)self->_viewModel actionBlock];
 
-  if (v3)
+  if (actionBlock)
   {
-    v4 = [(MUDisclosureActionViewModelProviding *)self->_viewModel actionBlock];
-    v4[2](v4, self);
+    actionBlock2 = [(MUDisclosureActionViewModelProviding *)self->_viewModel actionBlock];
+    actionBlock2[2](actionBlock2, self);
   }
 }
 
 - (void)_updateAppearance
 {
-  v3 = [(MUDisclosureActionViewModelProviding *)self->_viewModel titleString];
-  [(UILabel *)self->_titleLabel set_mapsui_text:v3];
+  titleString = [(MUDisclosureActionViewModelProviding *)self->_viewModel titleString];
+  [(UILabel *)self->_titleLabel set_mapsui_text:titleString];
 
-  v4 = [(MUDisclosureActionViewModelProviding *)self->_viewModel image];
-  [(UIImageView *)self->_imageView setImage:v4];
+  image = [(MUDisclosureActionViewModelProviding *)self->_viewModel image];
+  [(UIImageView *)self->_imageView setImage:image];
 
-  v5 = [(MUDisclosureActionViewModelProviding *)self->_viewModel imageTintColor];
-  [(UIImageView *)self->_imageView setTintColor:v5];
+  imageTintColor = [(MUDisclosureActionViewModelProviding *)self->_viewModel imageTintColor];
+  [(UIImageView *)self->_imageView setTintColor:imageTintColor];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(MUDisclosureActionRowView *)self _updateAppearance];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
@@ -96,65 +96,65 @@
 - (void)_setupConstraints
 {
   v48[14] = *MEMORY[0x1E69E9840];
-  v3 = [(UIImageView *)self->_imageView widthAnchor];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
   [(MUDisclosureActionRowView *)self _imageWidth];
-  v4 = [v3 constraintEqualToConstant:?];
+  v4 = [widthAnchor constraintEqualToConstant:?];
   imageWidthConstraint = self->_imageWidthConstraint;
   self->_imageWidthConstraint = v4;
 
   v33 = MEMORY[0x1E696ACD8];
   v48[0] = self->_imageWidthConstraint;
-  v47 = [(UIImageView *)self->_imageView heightAnchor];
-  v46 = [(UIImageView *)self->_imageView widthAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  widthAnchor2 = [(UIImageView *)self->_imageView widthAnchor];
+  v45 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v48[1] = v45;
-  v44 = [(UIImageView *)self->_imageView leadingAnchor];
-  v43 = [(MUDisclosureActionRowView *)self leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43 constant:16.0];
+  leadingAnchor = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor2 = [(MUDisclosureActionRowView *)self leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v48[2] = v42;
-  v41 = [(UIImageView *)self->_imageView centerYAnchor];
-  v40 = [(UILayoutGuide *)self->_titleValueLayoutGuide centerYAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [(UILayoutGuide *)self->_titleValueLayoutGuide centerYAnchor];
+  v39 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v48[3] = v39;
-  v38 = [(UILayoutGuide *)self->_titleValueLayoutGuide leadingAnchor];
-  v37 = [(UIImageView *)self->_imageView trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:10.0];
+  leadingAnchor3 = [(UILayoutGuide *)self->_titleValueLayoutGuide leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_imageView trailingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
   v48[4] = v36;
-  v35 = [(UILayoutGuide *)self->_titleValueLayoutGuide topAnchor];
-  v34 = [(MUDisclosureActionRowView *)self topAnchor];
-  v32 = [v35 constraintEqualToAnchor:v34 constant:16.0];
+  topAnchor = [(UILayoutGuide *)self->_titleValueLayoutGuide topAnchor];
+  topAnchor2 = [(MUDisclosureActionRowView *)self topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v48[5] = v32;
-  v31 = [(UILayoutGuide *)self->_titleValueLayoutGuide bottomAnchor];
-  v30 = [(MUDisclosureActionRowView *)self bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:-16.0];
+  bottomAnchor = [(UILayoutGuide *)self->_titleValueLayoutGuide bottomAnchor];
+  bottomAnchor2 = [(MUDisclosureActionRowView *)self bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   v48[6] = v29;
-  v28 = [(UIImageView *)self->_disclosureView leadingAnchor];
-  v27 = [(UILayoutGuide *)self->_titleValueLayoutGuide trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27 constant:8.0];
+  leadingAnchor4 = [(UIImageView *)self->_disclosureView leadingAnchor];
+  trailingAnchor2 = [(UILayoutGuide *)self->_titleValueLayoutGuide trailingAnchor];
+  v26 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:8.0];
   v48[7] = v26;
-  v25 = [(UIImageView *)self->_disclosureView trailingAnchor];
-  v24 = [(MUDisclosureActionRowView *)self trailingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:-16.0];
+  trailingAnchor3 = [(UIImageView *)self->_disclosureView trailingAnchor];
+  trailingAnchor4 = [(MUDisclosureActionRowView *)self trailingAnchor];
+  v23 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v48[8] = v23;
-  v22 = [(UIImageView *)self->_disclosureView centerYAnchor];
-  v21 = [(UILayoutGuide *)self->_titleValueLayoutGuide centerYAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  centerYAnchor3 = [(UIImageView *)self->_disclosureView centerYAnchor];
+  centerYAnchor4 = [(UILayoutGuide *)self->_titleValueLayoutGuide centerYAnchor];
+  v20 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v48[9] = v20;
-  v19 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v18 = [(UILayoutGuide *)self->_titleValueLayoutGuide leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor5 = [(UILabel *)self->_titleLabel leadingAnchor];
+  leadingAnchor6 = [(UILayoutGuide *)self->_titleValueLayoutGuide leadingAnchor];
+  v17 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v48[10] = v17;
-  v6 = [(UILabel *)self->_titleLabel topAnchor];
-  v7 = [(UILayoutGuide *)self->_titleValueLayoutGuide topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor3 = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor4 = [(UILayoutGuide *)self->_titleValueLayoutGuide topAnchor];
+  v8 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v48[11] = v8;
-  v9 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v10 = [(UILayoutGuide *)self->_titleValueLayoutGuide trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor5 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor6 = [(UILayoutGuide *)self->_titleValueLayoutGuide trailingAnchor];
+  v11 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v48[12] = v11;
-  v12 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v13 = [(UILayoutGuide *)self->_titleValueLayoutGuide bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor3 = [(UILabel *)self->_titleLabel bottomAnchor];
+  bottomAnchor4 = [(UILayoutGuide *)self->_titleValueLayoutGuide bottomAnchor];
+  v14 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v48[13] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:14];
   [v33 activateConstraints:v15];
@@ -170,9 +170,9 @@
   self->_titleValueLayoutGuide = v3;
 
   [(MUDisclosureActionRowView *)self addLayoutGuide:self->_titleValueLayoutGuide];
-  v5 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   titleLabel = self->_titleLabel;
-  self->_titleLabel = v5;
+  self->_titleLabel = _mapsui_defaultLabel;
 
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:@"TitleLabel"];
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -191,8 +191,8 @@
   self->_imageView = v11;
 
   [(UIImageView *)self->_imageView setAccessibilityIdentifier:@"ImageView"];
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIImageView *)self->_imageView setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIImageView *)self->_imageView setBackgroundColor:clearColor];
 
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUDisclosureActionRowView *)self addSubview:self->_imageView];
@@ -205,8 +205,8 @@
 
   [(UIImageView *)self->_disclosureView setAccessibilityIdentifier:@"DisclosureView"];
   [(UIImageView *)self->_disclosureView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v19 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIImageView *)self->_disclosureView setTintColor:v19];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIImageView *)self->_disclosureView setTintColor:tertiaryLabelColor];
 
   LODWORD(v20) = 1148846080;
   [(UIImageView *)self->_disclosureView setContentHuggingPriority:0 forAxis:v20];
@@ -233,18 +233,18 @@
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (MUDisclosureActionRowView)initWithFrame:(CGRect)a3
+- (MUDisclosureActionRowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MUDisclosureActionRowView;
-  v3 = [(MUPlaceSectionRowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceSectionRowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MUDisclosureActionRowView *)v3 _setupSubviews];
     [(MUDisclosureActionRowView *)v4 _setupConstraints];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v4;

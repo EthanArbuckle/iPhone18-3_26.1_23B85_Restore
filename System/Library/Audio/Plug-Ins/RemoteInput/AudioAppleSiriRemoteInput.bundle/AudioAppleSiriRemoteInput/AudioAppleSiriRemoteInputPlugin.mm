@@ -1,29 +1,29 @@
 @interface AudioAppleSiriRemoteInputPlugin
 - (AVAudioRemoteInputPluginDelegate)delegate;
-- (AudioAppleSiriRemoteInputPlugin)initWithPluginDelegate:(id)a3;
+- (AudioAppleSiriRemoteInputPlugin)initWithPluginDelegate:(id)delegate;
 - (NSArray)devices;
-- (id)_inputDeviceForArgs:(id)a3;
-- (id)sendSyncMsg:(id)a3 args:(id)a4;
+- (id)_inputDeviceForArgs:(id)args;
+- (id)sendSyncMsg:(id)msg args:(id)args;
 - (void)_RequestSiriAudioConnection;
 - (void)_checkIn;
-- (void)_handleAudioFrameMsg:(id)a3;
-- (void)_handleError:(id)a3;
-- (void)_handleEvent:(id)a3;
-- (void)_handleMsg:(id)a3;
-- (void)_handlePublishMsg:(id)a3;
-- (void)_handleStreamDidCancelMsg:(id)a3;
-- (void)_handleTransportDidStartMsg:(id)a3;
-- (void)_handleTransportDidStopMsg:(id)a3;
-- (void)_handleUnpublishMsg:(id)a3;
+- (void)_handleAudioFrameMsg:(id)msg;
+- (void)_handleError:(id)error;
+- (void)_handleEvent:(id)event;
+- (void)_handleMsg:(id)msg;
+- (void)_handlePublishMsg:(id)msg;
+- (void)_handleStreamDidCancelMsg:(id)msg;
+- (void)_handleTransportDidStartMsg:(id)msg;
+- (void)_handleTransportDidStopMsg:(id)msg;
+- (void)_handleUnpublishMsg:(id)msg;
 - (void)invalidate;
-- (void)sendMsg:(id)a3 args:(id)a4;
+- (void)sendMsg:(id)msg args:(id)args;
 @end
 
 @implementation AudioAppleSiriRemoteInputPlugin
 
-- (AudioAppleSiriRemoteInputPlugin)initWithPluginDelegate:(id)a3
+- (AudioAppleSiriRemoteInputPlugin)initWithPluginDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = AudioAppleSiriRemoteInputPlugin;
   v5 = [(AudioAppleSiriRemoteInputPlugin *)&v11 init];
@@ -37,7 +37,7 @@
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Initializing siri remote plugin", v10, 2u);
     }
 
-    [(AudioAppleSiriRemoteInputPlugin *)v5 setDelegate:v4];
+    [(AudioAppleSiriRemoteInputPlugin *)v5 setDelegate:delegateCopy];
     v7 = objc_alloc_init(NSMutableSet);
     inputDevices = v5->_inputDevices;
     v5->_inputDevices = v7;
@@ -48,34 +48,34 @@
 
 - (NSArray)devices
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(AudioAppleSiriRemoteInputPlugin *)v2 xpcConnection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpcConnection = [(AudioAppleSiriRemoteInputPlugin *)selfCopy xpcConnection];
 
-  if (!v3)
+  if (!xpcConnection)
   {
-    [(AudioAppleSiriRemoteInputPlugin *)v2 _RequestSiriAudioConnection];
+    [(AudioAppleSiriRemoteInputPlugin *)selfCopy _RequestSiriAudioConnection];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v4 = [(AudioAppleSiriRemoteInputPlugin *)v2 inputDevices];
-  objc_sync_enter(v4);
+  inputDevices = [(AudioAppleSiriRemoteInputPlugin *)selfCopy inputDevices];
+  objc_sync_enter(inputDevices);
   v5 = qword_D118;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(AudioAppleSiriRemoteInputPlugin *)v2 inputDevices];
+    inputDevices2 = [(AudioAppleSiriRemoteInputPlugin *)selfCopy inputDevices];
     v10 = 138412290;
-    v11 = v6;
+    v11 = inputDevices2;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "AudioAppleSiriRemoteInputPlugin Get devices %@", &v10, 0xCu);
   }
 
-  v7 = [(AudioAppleSiriRemoteInputPlugin *)v2 inputDevices];
-  v8 = [v7 allObjects];
+  inputDevices3 = [(AudioAppleSiriRemoteInputPlugin *)selfCopy inputDevices];
+  allObjects = [inputDevices3 allObjects];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(inputDevices);
 
-  return v8;
+  return allObjects;
 }
 
 - (void)invalidate
@@ -101,14 +101,14 @@
   os_unfair_lock_unlock(&stru_D120);
 }
 
-- (void)sendMsg:(id)a3 args:(id)a4
+- (void)sendMsg:(id)msg args:(id)args
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  argsCopy = args;
   *keys = *off_82B8;
-  v12 = xpc_string_create([v6 UTF8String]);
+  v12 = xpc_string_create([msgCopy UTF8String]);
   v13 = _CFXPCCreateXPCObjectFromCFObject();
-  if (v7)
+  if (argsCopy)
   {
     v8 = 2;
   }
@@ -138,14 +138,14 @@
   }
 }
 
-- (id)sendSyncMsg:(id)a3 args:(id)a4
+- (id)sendSyncMsg:(id)msg args:(id)args
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  argsCopy = args;
   *keys = *off_82B8;
-  v15 = xpc_string_create([v6 UTF8String]);
+  v15 = xpc_string_create([msgCopy UTF8String]);
   v16 = _CFXPCCreateXPCObjectFromCFObject();
-  if (v7)
+  if (argsCopy)
   {
     v8 = 2;
   }
@@ -265,115 +265,115 @@
   }
 }
 
-- (void)_handlePublishMsg:(id)a3
+- (void)_handlePublishMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [[AudioAppleSiriRemoteInputDevice alloc] initWithInfo:v4];
+  msgCopy = msg;
+  v5 = [[AudioAppleSiriRemoteInputDevice alloc] initWithInfo:msgCopy];
   if (v5)
   {
     v6 = qword_D118;
     if (os_log_type_enabled(qword_D118, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(AudioAppleSiriRemoteInputDevice *)v5 identifier];
+      identifier = [(AudioAppleSiriRemoteInputDevice *)v5 identifier];
       v12 = 138412290;
-      v13 = v8;
+      v13 = identifier;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Publishing remote %@", &v12, 0xCu);
     }
 
     [(AudioAppleSiriRemoteInputDevice *)v5 setPlugin:self];
-    v9 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-    objc_sync_enter(v9);
-    v10 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-    [v10 addObject:v5];
+    inputDevices = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+    objc_sync_enter(inputDevices);
+    inputDevices2 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+    [inputDevices2 addObject:v5];
 
-    objc_sync_exit(v9);
-    v11 = [(AudioAppleSiriRemoteInputPlugin *)self delegate];
-    [v11 inputPlugin:self didPublishDevice:v5];
+    objc_sync_exit(inputDevices);
+    delegate = [(AudioAppleSiriRemoteInputPlugin *)self delegate];
+    [delegate inputPlugin:self didPublishDevice:v5];
   }
 }
 
-- (void)_handleUnpublishMsg:(id)a3
+- (void)_handleUnpublishMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:v4];
+  msgCopy = msg;
+  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:msgCopy];
   v6 = qword_D118;
   if (os_log_type_enabled(qword_D118, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 identifier];
+    identifier = [v5 identifier];
     v12 = 138412290;
-    v13 = v8;
+    v13 = identifier;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Unpublishing remote %@", &v12, 0xCu);
   }
 
   [v5 invalidate];
-  v9 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-  objc_sync_enter(v9);
-  v10 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-  [v10 removeObject:v5];
+  inputDevices = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+  objc_sync_enter(inputDevices);
+  inputDevices2 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+  [inputDevices2 removeObject:v5];
 
-  objc_sync_exit(v9);
-  v11 = [(AudioAppleSiriRemoteInputPlugin *)self delegate];
-  [v11 inputPlugin:self didUnpublishDevice:v5];
+  objc_sync_exit(inputDevices);
+  delegate = [(AudioAppleSiriRemoteInputPlugin *)self delegate];
+  [delegate inputPlugin:self didUnpublishDevice:v5];
 }
 
-- (void)_handleTransportDidStartMsg:(id)a3
+- (void)_handleTransportDidStartMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:v4];
+  msgCopy = msg;
+  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:msgCopy];
   v6 = qword_D118;
   if (os_log_type_enabled(qword_D118, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 identifier];
+    identifier = [v5 identifier];
     v9 = 138412290;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Transport did start to remote %@", &v9, 0xCu);
   }
 
-  [v5 handleTransportDidStartMsg:v4];
+  [v5 handleTransportDidStartMsg:msgCopy];
 }
 
-- (void)_handleTransportDidStopMsg:(id)a3
+- (void)_handleTransportDidStopMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:v4];
+  msgCopy = msg;
+  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:msgCopy];
   v6 = qword_D118;
   if (os_log_type_enabled(qword_D118, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 identifier];
+    identifier = [v5 identifier];
     v9 = 138412290;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Transport did stop to remote %@", &v9, 0xCu);
   }
 
-  [v5 handleTransportDidStopMsg:v4];
+  [v5 handleTransportDidStopMsg:msgCopy];
 }
 
-- (void)_handleAudioFrameMsg:(id)a3
+- (void)_handleAudioFrameMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:v4];
-  [v5 handleAudioFrameMsg:v4];
+  msgCopy = msg;
+  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:msgCopy];
+  [v5 handleAudioFrameMsg:msgCopy];
 }
 
-- (void)_handleStreamDidCancelMsg:(id)a3
+- (void)_handleStreamDidCancelMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:v4];
+  msgCopy = msg;
+  v5 = [(AudioAppleSiriRemoteInputPlugin *)self _inputDeviceForArgs:msgCopy];
   v6 = qword_D118;
   if (os_log_type_enabled(qword_D118, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 identifier];
+    identifier = [v5 identifier];
     v9 = 138412290;
-    v10 = v8;
+    v10 = identifier;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Stream did cancel to remote %@", &v9, 0xCu);
   }
 
-  [v5 handleStreamDidCancelMsg:v4];
+  [v5 handleStreamDidCancelMsg:msgCopy];
 }
 
 - (void)_RequestSiriAudioConnection
@@ -404,18 +404,18 @@
   [(AudioAppleSiriRemoteInputPlugin *)self _checkIn];
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_dictionary)
   {
-    [(AudioAppleSiriRemoteInputPlugin *)self _handleMsg:v4];
+    [(AudioAppleSiriRemoteInputPlugin *)self _handleMsg:eventCopy];
   }
 
   else if (type == &_xpc_type_error)
   {
-    [(AudioAppleSiriRemoteInputPlugin *)self _handleError:v4];
+    [(AudioAppleSiriRemoteInputPlugin *)self _handleError:eventCopy];
   }
 
   else if (os_log_type_enabled(qword_D118, OS_LOG_TYPE_ERROR))
@@ -424,30 +424,30 @@
   }
 }
 
-- (void)_handleMsg:(id)a3
+- (void)_handleMsg:(id)msg
 {
-  v4 = a3;
-  string = xpc_dictionary_get_string(v4, "kMsgId");
-  v9 = xpc_dictionary_get_value(v4, "kMsgArgs");
+  msgCopy = msg;
+  string = xpc_dictionary_get_string(msgCopy, "kMsgId");
+  v9 = xpc_dictionary_get_value(msgCopy, "kMsgArgs");
 
   v6 = _CFXPCCreateCFObjectFromXPCObject();
-  v7 = [NSString stringWithFormat:@"_handle%sMsg:", string];
-  v8 = NSSelectorFromString(v7);
+  string = [NSString stringWithFormat:@"_handle%sMsg:", string];
+  v8 = NSSelectorFromString(string);
 
   [self v8];
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v4 = a3;
-  v5 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-  objc_sync_enter(v5);
+  errorCopy = error;
+  inputDevices = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+  objc_sync_enter(inputDevices);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  inputDevices2 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+  v7 = [inputDevices2 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v7)
   {
     v8 = *v19;
@@ -457,32 +457,32 @@
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inputDevices2);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
         [v10 invalidate];
-        v11 = [(AudioAppleSiriRemoteInputPlugin *)self delegate];
-        [v11 inputPlugin:self didUnpublishDevice:v10];
+        delegate = [(AudioAppleSiriRemoteInputPlugin *)self delegate];
+        [delegate inputPlugin:self didUnpublishDevice:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v7 = [inputDevices2 countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-  [v12 removeAllObjects];
+  inputDevices3 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+  [inputDevices3 removeAllObjects];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(inputDevices);
   os_unfair_lock_lock(&stru_D120);
   if (os_log_type_enabled(qword_D118, OS_LOG_TYPE_ERROR))
   {
-    sub_3F2C(v4, self);
+    sub_3F2C(errorCopy, self);
   }
 
-  if (v4 == &_xpc_error_connection_interrupted || v4 == &_xpc_error_connection_invalid)
+  if (errorCopy == &_xpc_error_connection_interrupted || errorCopy == &_xpc_error_connection_invalid)
   {
     if (self->_xpcConnection)
     {
@@ -511,18 +511,18 @@
   os_unfair_lock_unlock(&stru_D120);
 }
 
-- (id)_inputDeviceForArgs:(id)a3
+- (id)_inputDeviceForArgs:(id)args
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kMsgArgIdentifier"];
-  v6 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-  objc_sync_enter(v6);
+  argsCopy = args;
+  v5 = [argsCopy objectForKeyedSubscript:@"kMsgArgIdentifier"];
+  inputDevices = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+  objc_sync_enter(inputDevices);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  inputDevices2 = [(AudioAppleSiriRemoteInputPlugin *)self inputDevices];
+  v8 = [inputDevices2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -532,12 +532,12 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(inputDevices2);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 isEqual:v5];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqual:v5];
 
         if (v13)
         {
@@ -546,7 +546,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [inputDevices2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -558,7 +558,7 @@
 
 LABEL_11:
 
-  objc_sync_exit(v6);
+  objc_sync_exit(inputDevices);
 
   return v8;
 }

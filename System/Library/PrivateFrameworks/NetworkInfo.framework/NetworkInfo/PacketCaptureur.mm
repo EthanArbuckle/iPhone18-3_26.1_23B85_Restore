@@ -1,39 +1,39 @@
 @interface PacketCaptureur
-- (PacketCaptureur)initWithQueue:(id)a3 service:(id)a4;
-- (id)_connectionForServiceNamed:(const char *)a3 queue:(id)a4 connectionInvalidHandler:(id)a5;
+- (PacketCaptureur)initWithQueue:(id)queue service:(id)service;
+- (id)_connectionForServiceNamed:(const char *)named queue:(id)queue connectionInvalidHandler:(id)handler;
 - (id)createNotificationListener;
 - (void)connectToXPCService;
 - (void)createNotificationListener;
 - (void)invalidateConnections;
 - (void)sendNotificationListener;
-- (void)startTask:(id)a3 destination:(id)a4 withCompletion:(id)a5;
-- (void)stopTask:(id)a3 withCompletion:(id)a4;
+- (void)startTask:(id)task destination:(id)destination withCompletion:(id)completion;
+- (void)stopTask:(id)task withCompletion:(id)completion;
 @end
 
 @implementation PacketCaptureur
 
-- (PacketCaptureur)initWithQueue:(id)a3 service:(id)a4
+- (PacketCaptureur)initWithQueue:(id)queue service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = PacketCaptureur;
   v9 = [(PacketCaptureur *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->netDiagConnQueue, a3);
-    objc_storeStrong(&v10->netDiagMsgQueue, a3);
-    objc_storeStrong(&v10->xpcServiceName, a4);
+    objc_storeStrong(&v9->netDiagConnQueue, queue);
+    objc_storeStrong(&v10->netDiagMsgQueue, queue);
+    objc_storeStrong(&v10->xpcServiceName, service);
   }
 
   return v10;
 }
 
-- (id)_connectionForServiceNamed:(const char *)a3 queue:(id)a4 connectionInvalidHandler:(id)a5
+- (id)_connectionForServiceNamed:(const char *)named queue:(id)queue connectionInvalidHandler:(id)handler
 {
-  v8 = a5;
-  mach_service = xpc_connection_create_mach_service(a3, a4, 2uLL);
+  handlerCopy = handler;
+  mach_service = xpc_connection_create_mach_service(named, queue, 2uLL);
   netqual_log_init();
   if (mach_service)
   {
@@ -47,8 +47,8 @@
     handler[2] = __77__PacketCaptureur__connectionForServiceNamed_queue_connectionInvalidHandler___block_invoke;
     handler[3] = &unk_279968440;
     handler[4] = self;
-    v14 = a3;
-    v13 = v8;
+    namedCopy = named;
+    v13 = handlerCopy;
     xpc_connection_set_event_handler(mach_service, handler);
     xpc_connection_resume(mach_service);
     v10 = mach_service;
@@ -449,23 +449,23 @@ void __38__PacketCaptureur_connectToXPCService__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTask:(id)a3 destination:(id)a4 withCompletion:(id)a5
+- (void)startTask:(id)task destination:(id)destination withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  taskCopy = task;
+  completionCopy = completion;
+  destinationCopy = destination;
   v11 = xpc_dictionary_create(0, 0, 0);
   if (!v11)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   xpc_dictionary_set_string(v11, kPcapdCommand, kPcapdCmdTaskRun);
-  xpc_dictionary_set_string(v11, kPcapdKey, [v8 UTF8String]);
+  xpc_dictionary_set_string(v11, kPcapdKey, [taskCopy UTF8String]);
   v12 = kPcapdTaskFilePath;
-  v13 = [v10 UTF8String];
+  uTF8String = [destinationCopy UTF8String];
 
-  xpc_dictionary_set_string(v11, v12, v13);
+  xpc_dictionary_set_string(v11, v12, uTF8String);
   xpc_dictionary_set_uint64(v11, "pcapcompress", 1uLL);
   xpc_dictionary_set_BOOL(v11, "purgeable", 1);
   netDiagMsgQueue = self->netDiagMsgQueue;
@@ -481,10 +481,10 @@ void __38__PacketCaptureur_connectToXPCService__block_invoke(uint64_t a1)
   handler[1] = 3221225472;
   handler[2] = __56__PacketCaptureur_startTask_destination_withCompletion___block_invoke_2;
   handler[3] = &unk_2799684D0;
-  v20 = v8;
-  v21 = v9;
-  v17 = v9;
-  v18 = v8;
+  v20 = taskCopy;
+  v21 = completionCopy;
+  v17 = completionCopy;
+  v18 = taskCopy;
   xpc_connection_send_message_with_reply(netDiagServiceConnection, v11, v16, handler);
 }
 
@@ -530,18 +530,18 @@ void __56__PacketCaptureur_startTask_destination_withCompletion___block_invoke_2
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopTask:(id)a3 withCompletion:(id)a4
+- (void)stopTask:(id)task withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  completionCopy = completion;
   v8 = xpc_dictionary_create(0, 0, 0);
   if (!v8)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   xpc_dictionary_set_string(v8, kPcapdCommand, kPcapdCmdTaskStop);
-  xpc_dictionary_set_string(v8, kPcapdKey, [v6 UTF8String]);
+  xpc_dictionary_set_string(v8, kPcapdKey, [taskCopy UTF8String]);
   netDiagMsgQueue = self->netDiagMsgQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -555,10 +555,10 @@ void __56__PacketCaptureur_startTask_destination_withCompletion___block_invoke_2
   handler[1] = 3221225472;
   handler[2] = __43__PacketCaptureur_stopTask_withCompletion___block_invoke_2;
   handler[3] = &unk_2799684D0;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = taskCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = taskCopy;
   xpc_connection_send_message_with_reply(netDiagServiceConnection, v8, v11, handler);
 }
 

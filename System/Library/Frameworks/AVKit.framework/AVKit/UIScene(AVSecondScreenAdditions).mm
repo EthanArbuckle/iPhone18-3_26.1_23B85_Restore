@@ -19,13 +19,13 @@
 
 + (id)avkit_secondScreenScenes
 {
-  v0 = [MEMORY[0x1E69DC668] sharedApplication];
-  v1 = [v0 connectedScenes];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
   v2 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_29221];
-  v3 = [v1 filteredSetUsingPredicate:v2];
-  v4 = [v3 allObjects];
+  v3 = [connectedScenes filteredSetUsingPredicate:v2];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 @end

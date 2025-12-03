@@ -1,14 +1,14 @@
 @interface ManagedPlaybackVoucher
-- (ManagedPlaybackVoucher)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedPlaybackVoucher)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedPlaybackVoucher
 
-- (ManagedPlaybackVoucher)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedPlaybackVoucher)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedPlaybackVoucher();
-  return [(ManagedPlaybackVoucher *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedPlaybackVoucher *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

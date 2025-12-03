@@ -1,28 +1,28 @@
 @interface TIKeyboardInputManagerLiveConversion_ja_Romaji
-- (TIKeyboardInputManagerLiveConversion_ja_Romaji)initWithConfig:(id)a3 keyboardState:(id)a4;
-- (id)deleteFromInput:(unint64_t *)a3;
+- (TIKeyboardInputManagerLiveConversion_ja_Romaji)initWithConfig:(id)config keyboardState:(id)state;
+- (id)deleteFromInput:(unint64_t *)input;
 - (id)displayStringForSearch;
 - (id)inputString;
-- (id)rawInputStringFrom:(id)a3;
+- (id)rawInputStringFrom:(id)from;
 - (id)searchStringForMarkedText;
-- (id)segmentAdjustInputManager:(unint64_t)a3;
-- (id)transliterate:(id)a3;
-- (void)_addInput:(id)a3 point:(CGPoint)a4;
-- (void)addInput:(id)a3 withContext:(id)a4;
+- (id)segmentAdjustInputManager:(unint64_t)manager;
+- (id)transliterate:(id)transliterate;
+- (void)_addInput:(id)input point:(CGPoint)point;
+- (void)addInput:(id)input withContext:(id)context;
 - (void)clearInput;
 - (void)dealloc;
 - (void)inputLocationChanged;
-- (void)setInput:(id)a3;
+- (void)setInput:(id)input;
 - (void)updateState;
 @end
 
 @implementation TIKeyboardInputManagerLiveConversion_ja_Romaji
 
-- (TIKeyboardInputManagerLiveConversion_ja_Romaji)initWithConfig:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInputManagerLiveConversion_ja_Romaji)initWithConfig:(id)config keyboardState:(id)state
 {
   v11.receiver = self;
   v11.super_class = TIKeyboardInputManagerLiveConversion_ja_Romaji;
-  v4 = [(TIKeyboardInputManagerLiveConversion_ja *)&v11 initWithConfig:a3 keyboardState:a4];
+  v4 = [(TIKeyboardInputManagerLiveConversion_ja *)&v11 initWithConfig:config keyboardState:state];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x29EDB8DE8]) initWithCapacity:10];
@@ -54,20 +54,20 @@
   [(TIKeyboardInputManagerMecabra *)&v3 dealloc];
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
   v52 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 string];
-  v9 = v8;
-  if (v8 && [v8 length])
+  inputCopy = input;
+  contextCopy = context;
+  string = [inputCopy string];
+  v9 = string;
+  if (string && [string length])
   {
     if ([(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self shouldSkipCandidateSelection])
     {
       v50.receiver = self;
       v50.super_class = TIKeyboardInputManagerLiveConversion_ja_Romaji;
-      [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)&v50 addInput:v6 withContext:v7];
+      [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)&v50 addInput:inputCopy withContext:contextCopy];
     }
 
     else
@@ -78,8 +78,8 @@
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v10 = [(TIKeyboardInputManagerLiveConversion_ja *)self committedSegments];
-        v11 = [v10 countByEnumeratingWithState:&v46 objects:v51 count:16];
+        committedSegments = [(TIKeyboardInputManagerLiveConversion_ja *)self committedSegments];
+        v11 = [committedSegments countByEnumeratingWithState:&v46 objects:v51 count:16];
         if (v11)
         {
           v12 = v11;
@@ -90,56 +90,56 @@
             {
               if (*v47 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(committedSegments);
               }
 
               v15 = *(*(&v46 + 1) + 8 * i);
-              v16 = [v15 surface];
+              surface = [v15 surface];
 
-              if (v16)
+              if (surface)
               {
-                v17 = [v7 output];
-                v18 = [v15 surface];
-                [v17 insertText:v18];
+                output = [contextCopy output];
+                surface2 = [v15 surface];
+                [output insertText:surface2];
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v46 objects:v51 count:16];
+            v12 = [committedSegments countByEnumeratingWithState:&v46 objects:v51 count:16];
           }
 
           while (v12);
         }
 
-        v19 = [MEMORY[0x29EDB8D80] array];
-        [(TIKeyboardInputManagerLiveConversion_ja *)self setCommittedSegments:v19];
+        array = [MEMORY[0x29EDB8D80] array];
+        [(TIKeyboardInputManagerLiveConversion_ja *)self setCommittedSegments:array];
 
-        v20 = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
-        v21 = [v20 firstObject];
-        v22 = [v21 surface];
+        segments = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
+        firstObject = [segments firstObject];
+        surface3 = [firstObject surface];
 
-        if (v22)
+        if (surface3)
         {
-          v23 = [v7 output];
-          [v23 insertText:v22];
+          output2 = [contextCopy output];
+          [output2 insertText:surface3];
         }
 
         v24 = objc_alloc_init(MEMORY[0x29EDBA050]);
-        v25 = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
-        v26 = [v25 count];
+        segments2 = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
+        v26 = [segments2 count];
 
         if (v26 >= 2)
         {
           v27 = 1;
           do
           {
-            v28 = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
-            v29 = [v28 objectAtIndexedSubscript:v27];
-            v30 = [v29 reading];
-            [v24 appendString:v30];
+            segments3 = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
+            v29 = [segments3 objectAtIndexedSubscript:v27];
+            reading = [v29 reading];
+            [v24 appendString:reading];
 
             ++v27;
-            v31 = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
-            v32 = [v31 count];
+            segments4 = [(TIKeyboardInputManagerLiveConversion_ja *)self segments];
+            v32 = [segments4 count];
           }
 
           while (v27 < v32);
@@ -157,8 +157,8 @@
 
         v9 = [(TIKeyboardInputManagerLiveConversion_ja *)self stringByConvertingPunctuationForInput:v35 isLockedInput:0];
 
-        v36 = [v6 touchEvent];
-        [v36 location];
+        touchEvent = [inputCopy touchEvent];
+        [touchEvent location];
         [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self _addInput:v9 point:?];
       }
 
@@ -169,8 +169,8 @@
         {
           v38 = [v9 substringWithRange:{v37, 1}];
           v39 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self transliterate:v38];
-          v40 = [v6 touchEvent];
-          [v40 location];
+          touchEvent2 = [inputCopy touchEvent];
+          [touchEvent2 location];
           [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self _addInput:v39 point:?];
 
           ++v37;
@@ -179,11 +179,11 @@
         while ([v9 length] > v37);
       }
 
-      [(TIKeyboardInputManagerMecabra *)self saveGeometryForInput:v6 atIndex:[(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self internalIndexToExternal:(*(&self->super.super.super.super.super.super.isa + *v34))[24]]];
+      [(TIKeyboardInputManagerMecabra *)self saveGeometryForInput:inputCopy atIndex:[(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self internalIndexToExternal:(*(&self->super.super.super.super.super.super.isa + *v34))[24]]];
       [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self updateState];
       mathSymbolPunctuationController = self->_mathSymbolPunctuationController;
-      v42 = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
-      v43 = [(TIMathSymbolPunctuationController *)mathSymbolPunctuationController mathSymbolPunctuationedStringForInputString:v42];
+      rawInputString = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
+      v43 = [(TIMathSymbolPunctuationController *)mathSymbolPunctuationController mathSymbolPunctuationedStringForInputString:rawInputString];
 
       if (v43)
       {
@@ -191,26 +191,26 @@
         [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self updateState];
       }
 
-      v44 = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
-      [(TIKeyboardInputManagerLiveConversion_ja *)self makeCandidatesWithWordSearch:v44];
+      rawInputString2 = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
+      [(TIKeyboardInputManagerLiveConversion_ja *)self makeCandidatesWithWordSearch:rawInputString2];
     }
   }
 
   v45 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_addInput:(id)a3 point:(CGPoint)a4
+- (void)_addInput:(id)input point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  inputCopy = input;
   [(TIKeyboardInputManagerLiveConversion_ja *)self _cancelCandidatesThread];
-  if (v7)
+  if (inputCopy)
   {
     v9.receiver = self;
     v9.super_class = TIKeyboardInputManagerLiveConversion_ja_Romaji;
     v10 = 0;
-    v8 = [(TIKeyboardInputManagerMecabra *)&v9 addInput:v7 flags:0 point:&v10 firstDelete:x, y];
+    v8 = [(TIKeyboardInputManagerMecabra *)&v9 addInput:inputCopy flags:0 point:&v10 firstDelete:x, y];
   }
 }
 
@@ -218,27 +218,27 @@
 {
   v28 = *MEMORY[0x29EDCA608];
   [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalString:0];
-  v3 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
-  [v3 removeAllObjects];
+  externalIndexToInternalIndexMappingArray = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+  [externalIndexToInternalIndexMappingArray removeAllObjects];
 
   [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalInputIndex:0];
-  v4 = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
-  v5 = [v4 length];
-  if (v4)
+  rawInputString = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
+  v5 = [rawInputString length];
+  if (rawInputString)
   {
     v6 = v5;
-    if ([v4 length])
+    if ([rawInputString length])
     {
       v7 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:10];
-      v22 = v4;
-      v8 = [v4 lowercaseString];
-      v9 = [Romakana hiraganaString:v8 mappingArray:v7];
+      v22 = rawInputString;
+      lowercaseString = [rawInputString lowercaseString];
+      v9 = [Romakana hiraganaString:lowercaseString mappingArray:v7];
       [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalString:v9];
 
       [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalInputIndex:0x7FFFFFFFFFFFFFFFLL];
-      v10 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+      externalIndexToInternalIndexMappingArray2 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
       v11 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:0];
-      [v10 addObject:v11];
+      [externalIndexToInternalIndexMappingArray2 addObject:v11];
 
       if (!v6)
       {
@@ -268,9 +268,9 @@
             }
 
             v16 += [*(*(&v23 + 1) + 8 * v18) intValue];
-            v19 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+            externalIndexToInternalIndexMappingArray3 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
             v20 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v16];
-            [v19 addObject:v20];
+            [externalIndexToInternalIndexMappingArray3 addObject:v20];
 
             ++v15;
             if (v16 == v6)
@@ -288,35 +288,35 @@
         while (v14);
       }
 
-      v4 = v22;
+      rawInputString = v22;
     }
   }
 
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (id)deleteFromInput:(unint64_t *)a3
+- (id)deleteFromInput:(unint64_t *)input
 {
   [(TIMathSymbolPunctuationController *)self->_mathSymbolPunctuationController reset];
-  v5 = [(TIKeyboardInputManagerLiveConversion_ja *)self inputIndex];
-  if (v5)
+  inputIndex = [(TIKeyboardInputManagerLiveConversion_ja *)self inputIndex];
+  if (inputIndex)
   {
-    v6 = v5;
-    if ([(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray count]> v5)
+    v6 = inputIndex;
+    if ([(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray count]> inputIndex)
     {
-      if (a3)
+      if (input)
       {
-        *a3 = 1;
+        *input = 1;
       }
 
       v7 = [(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray objectAtIndexedSubscript:v6 - 1];
-      v8 = [v7 unsignedIntValue];
+      unsignedIntValue = [v7 unsignedIntValue];
 
-      v9 = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
-      v10 = [v9 length];
+      rawInputString = [(TIKeyboardInputManagerLiveConversion_ja *)self rawInputString];
+      v10 = [rawInputString length];
 
-      v11 = v10 - v8;
-      if (v10 != v8)
+      v11 = v10 - unsignedIntValue;
+      if (v10 != unsignedIntValue)
       {
         v12 = MEMORY[0x29EDC7290];
         do
@@ -336,9 +336,9 @@
   return 0;
 }
 
-- (id)transliterate:(id)a3
+- (id)transliterate:(id)transliterate
 {
-  v3 = a3;
+  transliterateCopy = transliterate;
   v4 = _romanAlphabetCharacterSet;
   if (!_romanAlphabetCharacterSet)
   {
@@ -346,44 +346,44 @@
     _romanAlphabetCharacterSet = v4;
   }
 
-  if (!CFCharacterSetIsCharacterMember(v4, [v3 characterAtIndex:0]))
+  if (!CFCharacterSetIsCharacterMember(v4, [transliterateCopy characterAtIndex:0]))
   {
-    v5 = [Romakana kanaSymbol:v3];
+    v5 = [Romakana kanaSymbol:transliterateCopy];
 
-    v3 = v5;
+    transliterateCopy = v5;
   }
 
-  return v3;
+  return transliterateCopy;
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardInputManagerLiveConversion_ja_Romaji;
-  v4 = a3;
-  [(TIKeyboardInputManagerLiveConversion_ja *)&v5 setInput:v4];
-  [(TIMathSymbolPunctuationController *)self->_mathSymbolPunctuationController setInputString:v4, v5.receiver, v5.super_class];
+  inputCopy = input;
+  [(TIKeyboardInputManagerLiveConversion_ja *)&v5 setInput:inputCopy];
+  [(TIMathSymbolPunctuationController *)self->_mathSymbolPunctuationController setInputString:inputCopy, v5.receiver, v5.super_class];
 }
 
 - (id)inputString
 {
   v10.receiver = self;
   v10.super_class = TIKeyboardInputManagerLiveConversion_ja_Romaji;
-  v3 = [(TIKeyboardInputManagerLiveConversion_ja *)&v10 inputString];
-  v4 = v3;
-  if (v3)
+  inputString = [(TIKeyboardInputManagerLiveConversion_ja *)&v10 inputString];
+  v4 = inputString;
+  if (inputString)
   {
-    v5 = v3;
+    v5 = inputString;
   }
 
   else
   {
-    v6 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalString];
-    v7 = v6;
+    externalString = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalString];
+    v7 = externalString;
     v8 = &stru_2A2525CC0;
-    if (v6)
+    if (externalString)
     {
-      v8 = v6;
+      v8 = externalString;
     }
 
     v5 = v8;
@@ -394,25 +394,25 @@
 
 - (id)searchStringForMarkedText
 {
-  v3 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self inputString];
-  if (v3)
+  inputString = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self inputString];
+  if (inputString)
   {
-    v4 = v3;
-    if ([v3 length])
+    v4 = inputString;
+    if ([inputString length])
     {
-      v5 = [(TIKeyboardInputManagerLiveConversion_ja *)self inputIndex];
-      if (v5)
+      inputIndex = [(TIKeyboardInputManagerLiveConversion_ja *)self inputIndex];
+      if (inputIndex)
       {
-        v6 = v5;
+        v6 = inputIndex;
         while (1)
         {
-          v7 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self inputString];
+          inputString2 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self inputString];
           if (!_romanAlphabetCharacterSet)
           {
             _romanAlphabetCharacterSet = CFCharacterSetCreateWithCharactersInString(0, @"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
           }
 
-          v8 = [v7 rangeOfCharacterFromSet:? options:? range:?];
+          v8 = [inputString2 rangeOfCharacterFromSet:? options:? range:?];
           v10 = v9;
 
           if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -446,17 +446,17 @@ LABEL_12:
 
 - (id)displayStringForSearch
 {
-  v3 = [(TIKeyboardInputManagerLiveConversion_ja *)self committedSurface];
-  v4 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalString];
-  v5 = v4;
-  if (v3 && v4)
+  committedSurface = [(TIKeyboardInputManagerLiveConversion_ja *)self committedSurface];
+  externalString = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalString];
+  v5 = externalString;
+  if (committedSurface && externalString)
   {
-    v6 = [v3 stringByAppendingString:v4];
+    v6 = [committedSurface stringByAppendingString:externalString];
   }
 
   else
   {
-    v6 = v4;
+    v6 = externalString;
   }
 
   v7 = v6;
@@ -467,8 +467,8 @@ LABEL_12:
 - (void)clearInput
 {
   [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalString:0];
-  v3 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
-  [v3 removeAllObjects];
+  externalIndexToInternalIndexMappingArray = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+  [externalIndexToInternalIndexMappingArray removeAllObjects];
 
   [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalInputIndex:0];
   [(TIMathSymbolPunctuationController *)self->_mathSymbolPunctuationController reset];
@@ -480,8 +480,8 @@ LABEL_12:
 - (void)inputLocationChanged
 {
   [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalString:0];
-  v3 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
-  [v3 removeAllObjects];
+  externalIndexToInternalIndexMappingArray = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+  [externalIndexToInternalIndexMappingArray removeAllObjects];
 
   [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self setExternalInputIndex:0];
   [(TIMathSymbolPunctuationController *)self->_mathSymbolPunctuationController reset];
@@ -490,23 +490,23 @@ LABEL_12:
   [(TIKeyboardInputManagerLiveConversion_ja *)&v4 inputLocationChanged];
 }
 
-- (id)segmentAdjustInputManager:(unint64_t)a3
+- (id)segmentAdjustInputManager:(unint64_t)manager
 {
   v5 = [TIKeyboardInputManager_ja_SegmentAdjust alloc];
-  v6 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self config];
-  v7 = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self keyboardState];
-  v8 = [(TIKeyboardInputManagerLiveConversion_ja *)self segmentsForPicker];
-  v9 = [(TIKeyboardInputManagerLiveConversion_ja *)self wordSearch];
-  v10 = [(TIKeyboardInputManager_ja_SegmentAdjust *)v5 initWithConfig:v6 keyboardState:v7 segments:v8 at:a3 romajiEnabled:1 wordSearch:v9];
+  config = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self config];
+  keyboardState = [(TIKeyboardInputManagerLiveConversion_ja_Romaji *)self keyboardState];
+  segmentsForPicker = [(TIKeyboardInputManagerLiveConversion_ja *)self segmentsForPicker];
+  wordSearch = [(TIKeyboardInputManagerLiveConversion_ja *)self wordSearch];
+  v10 = [(TIKeyboardInputManager_ja_SegmentAdjust *)v5 initWithConfig:config keyboardState:keyboardState segments:segmentsForPicker at:manager romajiEnabled:1 wordSearch:wordSearch];
 
   return v10;
 }
 
-- (id)rawInputStringFrom:(id)a3
+- (id)rawInputStringFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
-  v6 = [v5 mecabraCandidateRefFromCandidate:v4];
+  fromCopy = from;
+  composingKeyboardInputManager = [(TIKeyboardInputManagerMecabra *)self composingKeyboardInputManager];
+  v6 = [composingKeyboardInputManager mecabraCandidateRefFromCandidate:fromCopy];
 
   if (v6)
   {

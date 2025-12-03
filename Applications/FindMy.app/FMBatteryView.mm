@@ -1,6 +1,6 @@
 @interface FMBatteryView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000485DC();
 }
 
@@ -22,9 +22,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(FMBatteryView *)self bounds:a3.width];
+  [(FMBatteryView *)self bounds:fits.width];
   v4 = v3;
   v6 = v5;
   result.height = v6;

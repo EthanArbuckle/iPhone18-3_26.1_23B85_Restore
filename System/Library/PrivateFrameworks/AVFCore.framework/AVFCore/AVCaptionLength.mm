@@ -1,10 +1,10 @@
 @interface AVCaptionLength
 - (AVCaptionLength)init;
-- (AVCaptionLength)initWithCellCount:(int64_t)a3;
-- (AVCaptionLength)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVCaptionLength)initWithCellCount:(int64_t)count;
+- (AVCaptionLength)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCaptionLength
@@ -18,7 +18,7 @@
   objc_exception_throw(v12);
 }
 
-- (AVCaptionLength)initWithCellCount:(int64_t)a3
+- (AVCaptionLength)initWithCellCount:(int64_t)count
 {
   v7.receiver = self;
   v7.super_class = AVCaptionLength;
@@ -29,7 +29,7 @@
     v4->_internal = v5;
     if (v5)
     {
-      v5->cellCount = a3;
+      v5->cellCount = count;
     }
 
     else
@@ -42,11 +42,11 @@
   return v4;
 }
 
-- (AVCaptionLength)initWithCoder:(id)a3
+- (AVCaptionLength)initWithCoder:(id)coder
 {
-  if ([a3 containsValueForKey:@"AVCaptionLengthArchiveKeyCellCount"])
+  if ([coder containsValueForKey:@"AVCaptionLengthArchiveKeyCellCount"])
   {
-    v5 = [a3 decodeIntegerForKey:@"AVCaptionLengthArchiveKeyCellCount"];
+    v5 = [coder decodeIntegerForKey:@"AVCaptionLengthArchiveKeyCellCount"];
 
     return [(AVCaptionLength *)self initWithCellCount:v5];
   }
@@ -58,12 +58,12 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:1 forKey:@"AVCaptionLengthArchiveKeyVersion"];
-  v5 = [(AVCaptionLength *)self numberOfCells];
+  [coder encodeInteger:1 forKey:@"AVCaptionLengthArchiveKeyVersion"];
+  numberOfCells = [(AVCaptionLength *)self numberOfCells];
 
-  [a3 encodeInteger:v5 forKey:@"AVCaptionLengthArchiveKeyCellCount"];
+  [coder encodeInteger:numberOfCells forKey:@"AVCaptionLengthArchiveKeyCellCount"];
 }
 
 - (void)dealloc
@@ -73,9 +73,9 @@
   [(AVCaptionLength *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -86,8 +86,8 @@
     return 0;
   }
 
-  v5 = [(AVCaptionLength *)self numberOfCells];
-  return v5 == [a3 numberOfCells];
+  numberOfCells = [(AVCaptionLength *)self numberOfCells];
+  return numberOfCells == [equal numberOfCells];
 }
 
 @end

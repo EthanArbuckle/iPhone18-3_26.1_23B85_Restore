@@ -1,35 +1,35 @@
 @interface CCUIAnimation
-+ (id)animationWithParameters:(id)a3 delay:(double)a4 speed:(double)a5 animations:(id)a6;
-- (id)_initWithParameters:(id)a3 delay:(double)a4 speed:(double)a5 animations:(id)a6;
++ (id)animationWithParameters:(id)parameters delay:(double)delay speed:(double)speed animations:(id)animations;
+- (id)_initWithParameters:(id)parameters delay:(double)delay speed:(double)speed animations:(id)animations;
 @end
 
 @implementation CCUIAnimation
 
-+ (id)animationWithParameters:(id)a3 delay:(double)a4 speed:(double)a5 animations:(id)a6
++ (id)animationWithParameters:(id)parameters delay:(double)delay speed:(double)speed animations:(id)animations
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [[a1 alloc] _initWithParameters:v11 delay:v10 speed:a4 animations:a5];
+  animationsCopy = animations;
+  parametersCopy = parameters;
+  v12 = [[self alloc] _initWithParameters:parametersCopy delay:animationsCopy speed:delay animations:speed];
 
   return v12;
 }
 
-- (id)_initWithParameters:(id)a3 delay:(double)a4 speed:(double)a5 animations:(id)a6
+- (id)_initWithParameters:(id)parameters delay:(double)delay speed:(double)speed animations:(id)animations
 {
-  v10 = a3;
-  v11 = a6;
+  parametersCopy = parameters;
+  animationsCopy = animations;
   v18.receiver = self;
   v18.super_class = CCUIAnimation;
   v12 = [(CCUIAnimation *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copyWithZone:0];
+    v13 = [parametersCopy copyWithZone:0];
     parameters = v12->_parameters;
     v12->_parameters = v13;
 
-    v12->_delay = a4;
-    v12->_speed = a5;
-    v15 = [v11 copy];
+    v12->_delay = delay;
+    v12->_speed = speed;
+    v15 = [animationsCopy copy];
     animations = v12->_animations;
     v12->_animations = v15;
   }

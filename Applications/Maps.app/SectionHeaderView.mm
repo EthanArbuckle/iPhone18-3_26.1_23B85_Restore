@@ -1,51 +1,51 @@
 @interface SectionHeaderView
-+ (BOOL)shouldStackWithTitle:(id)a3 actionTitle:(id)a4 availableWidth:(double)a5 traitCollection:(id)a6;
++ (BOOL)shouldStackWithTitle:(id)title actionTitle:(id)actionTitle availableWidth:(double)width traitCollection:(id)collection;
 + (NSString)reuseIdentifier;
 + (double)_titleBottomMargin;
-+ (double)_topMarginWhenFirstNonEmptySection:(BOOL)a3 traitCollection:(id)a4;
-+ (double)heightWhenFirstNonEmptySection:(BOOL)a3 title:(id)a4 actionTitle:(id)a5 availableWidth:(double)a6 traitCollection:(id)a7;
-+ (id)_actionFontWithTraitCollection:(id)a3;
-+ (id)_effectiveTraitCollectionWithTraitCollection:(id)a3;
-+ (id)_titleFontWithTraitCollection:(id)a3;
-- (BOOL)updateConstraintsWithAvailableWidthWithoutMargins:(double)a3;
++ (double)_topMarginWhenFirstNonEmptySection:(BOOL)section traitCollection:(id)collection;
++ (double)heightWhenFirstNonEmptySection:(BOOL)section title:(id)title actionTitle:(id)actionTitle availableWidth:(double)width traitCollection:(id)collection;
++ (id)_actionFontWithTraitCollection:(id)collection;
++ (id)_effectiveTraitCollectionWithTraitCollection:(id)collection;
++ (id)_titleFontWithTraitCollection:(id)collection;
+- (BOOL)updateConstraintsWithAvailableWidthWithoutMargins:(double)margins;
 - (SectionHeaderView)init;
-- (SectionHeaderView)initWithTitle:(id)a3 isFirstNonEmptySection:(BOOL)a4;
-- (void)_contentSizeChanged:(id)a3;
+- (SectionHeaderView)initWithTitle:(id)title isFirstNonEmptySection:(BOOL)section;
+- (void)_contentSizeChanged:(id)changed;
 - (void)_didTapActionButton;
-- (void)_setConstraintsByStacking:(BOOL)a3;
+- (void)_setConstraintsByStacking:(BOOL)stacking;
 - (void)_updateFonts;
 - (void)_updateTopConstraint;
 - (void)clearContents;
 - (void)layoutSubviews;
-- (void)setAccessibilityIdentifiersWithBaseString:(id)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setActionTitle:(id)a3 completionHandler:(id)a4;
-- (void)setFirstNonEmptySection:(BOOL)a3;
-- (void)setFirstNonEmptySection:(BOOL)a3 topMargin:(double)a4;
-- (void)setShowsBottomHairline:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessibilityIdentifiersWithBaseString:(id)string;
+- (void)setActionTitle:(id)title;
+- (void)setActionTitle:(id)title completionHandler:(id)handler;
+- (void)setFirstNonEmptySection:(BOOL)section;
+- (void)setFirstNonEmptySection:(BOOL)section topMargin:(double)margin;
+- (void)setShowsBottomHairline:(BOOL)hairline;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SectionHeaderView
 
-- (void)setActionTitle:(id)a3 completionHandler:(id)a4
+- (void)setActionTitle:(id)title completionHandler:(id)handler
 {
-  v6 = a4;
-  [(SectionHeaderView *)self setActionTitle:a3];
-  [(SectionHeaderView *)self setActionHandler:v6];
+  handlerCopy = handler;
+  [(SectionHeaderView *)self setActionTitle:title];
+  [(SectionHeaderView *)self setActionHandler:handlerCopy];
 }
 
-- (SectionHeaderView)initWithTitle:(id)a3 isFirstNonEmptySection:(BOOL)a4
+- (SectionHeaderView)initWithTitle:(id)title isFirstNonEmptySection:(BOOL)section
 {
-  v4 = a4;
-  v6 = a3;
+  sectionCopy = section;
+  titleCopy = title;
   v7 = [(SectionHeaderView *)self init];
   v8 = v7;
   if (v7)
   {
-    [(SectionHeaderView *)v7 setTitle:v6];
-    [(SectionHeaderView *)v8 setFirstNonEmptySection:v4];
+    [(SectionHeaderView *)v7 setTitle:titleCopy];
+    [(SectionHeaderView *)v8 setFirstNonEmptySection:sectionCopy];
   }
 
   return v8;
@@ -53,85 +53,85 @@
 
 - (void)_didTapActionButton
 {
-  v3 = [(SectionHeaderView *)self actionHandler];
+  actionHandler = [(SectionHeaderView *)self actionHandler];
 
-  if (v3)
+  if (actionHandler)
   {
-    v4 = [(SectionHeaderView *)self actionHandler];
-    v4[2]();
+    actionHandler2 = [(SectionHeaderView *)self actionHandler];
+    actionHandler2[2]();
   }
 }
 
-- (void)setShowsBottomHairline:(BOOL)a3
+- (void)setShowsBottomHairline:(BOOL)hairline
 {
-  if (self->_showsBottomHairline != a3)
+  if (self->_showsBottomHairline != hairline)
   {
-    v4 = a3;
-    self->_showsBottomHairline = a3;
-    v5 = [(SectionHeaderView *)self bottomHairlineView];
-    [v5 setHidden:!v4];
+    hairlineCopy = hairline;
+    self->_showsBottomHairline = hairline;
+    bottomHairlineView = [(SectionHeaderView *)self bottomHairlineView];
+    [bottomHairlineView setHidden:!hairlineCopy];
   }
 }
 
-- (void)setFirstNonEmptySection:(BOOL)a3 topMargin:(double)a4
+- (void)setFirstNonEmptySection:(BOOL)section topMargin:(double)margin
 {
-  if (self->_firstNonEmptySection != a3)
+  if (self->_firstNonEmptySection != section)
   {
-    self->_firstNonEmptySection = a3;
+    self->_firstNonEmptySection = section;
   }
 
-  if (self->_firstNonEmptySectionTopMargin != a4)
+  if (self->_firstNonEmptySectionTopMargin != margin)
   {
-    self->_firstNonEmptySectionTopMargin = a4;
+    self->_firstNonEmptySectionTopMargin = margin;
     [(SectionHeaderView *)self _updateTopConstraint];
   }
 }
 
-- (void)setFirstNonEmptySection:(BOOL)a3
+- (void)setFirstNonEmptySection:(BOOL)section
 {
-  if (self->_firstNonEmptySection != a3)
+  if (self->_firstNonEmptySection != section)
   {
-    self->_firstNonEmptySection = a3;
+    self->_firstNonEmptySection = section;
     [(SectionHeaderView *)self _updateTopConstraint];
   }
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  v12 = v4;
-  if (self->_actionTitle != v4 || (v6 = [(NSString *)v4 isEqualToString:?], v5 = v12, (v6 & 1) == 0))
+  titleCopy = title;
+  v5 = titleCopy;
+  v12 = titleCopy;
+  if (self->_actionTitle != titleCopy || (v6 = [(NSString *)titleCopy isEqualToString:?], v5 = v12, (v6 & 1) == 0))
   {
     v7 = [(NSString *)v5 copy];
     actionTitle = self->_actionTitle;
     self->_actionTitle = v7;
 
-    v9 = [(SectionHeaderView *)self actionButton];
-    [v9 setTitle:self->_actionTitle forState:0];
+    actionButton = [(SectionHeaderView *)self actionButton];
+    [actionButton setTitle:self->_actionTitle forState:0];
 
     v10 = self->_actionTitle == 0;
-    v11 = [(SectionHeaderView *)self actionButton];
-    [v11 setHidden:v10];
+    actionButton2 = [(SectionHeaderView *)self actionButton];
+    [actionButton2 setHidden:v10];
 
     v5 = v12;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  v11 = v4;
-  if (self->_title != v4 || (v6 = [(NSString *)v4 isEqualToString:?], v5 = v11, (v6 & 1) == 0))
+  titleCopy = title;
+  v5 = titleCopy;
+  v11 = titleCopy;
+  if (self->_title != titleCopy || (v6 = [(NSString *)titleCopy isEqualToString:?], v5 = v11, (v6 & 1) == 0))
   {
     v7 = [(NSString *)v5 copy];
     title = self->_title;
     self->_title = v7;
 
     v9 = self->_title;
-    v10 = [(SectionHeaderView *)self label];
-    [v10 setText:v9];
+    label = [(SectionHeaderView *)self label];
+    [label setText:v9];
 
     v5 = v11;
   }
@@ -142,8 +142,8 @@
   v6.receiver = self;
   v6.super_class = SectionHeaderView;
   [(SectionHeaderView *)&v6 layoutSubviews];
-  v3 = [(SectionHeaderView *)self layoutMarginsGuide];
-  [v3 layoutFrame];
+  layoutMarginsGuide = [(SectionHeaderView *)self layoutMarginsGuide];
+  [layoutMarginsGuide layoutFrame];
   v4 = [(SectionHeaderView *)self updateConstraintsWithAvailableWidthWithoutMargins:CGRectGetWidth(v7)];
 
   if (v4)
@@ -154,29 +154,29 @@
   }
 }
 
-- (void)_contentSizeChanged:(id)a3
+- (void)_contentSizeChanged:(id)changed
 {
   [(SectionHeaderView *)self invalidateIntrinsicContentSize];
 
   [(SectionHeaderView *)self setNeedsLayout];
 }
 
-- (BOOL)updateConstraintsWithAvailableWidthWithoutMargins:(double)a3
+- (BOOL)updateConstraintsWithAvailableWidthWithoutMargins:(double)margins
 {
-  if (a3 > 0.0)
+  if (margins > 0.0)
   {
-    v5 = [(SectionHeaderView *)self title];
-    if ([v5 length])
+    title = [(SectionHeaderView *)self title];
+    if ([title length])
     {
-      v6 = [(SectionHeaderView *)self actionTitle];
-      v7 = [v6 length];
+      actionTitle = [(SectionHeaderView *)self actionTitle];
+      v7 = [actionTitle length];
 
       if (v7)
       {
         [(MKVibrantLabel *)self->_label intrinsicContentSize];
         v9 = v8 + 8.0;
         [(MapsThemeButton *)self->_actionButton intrinsicContentSize];
-        v11 = v9 + v10 > a3;
+        v11 = v9 + v10 > margins;
         goto LABEL_7;
       }
     }
@@ -197,58 +197,58 @@ LABEL_7:
   return stacking != v11;
 }
 
-- (void)_setConstraintsByStacking:(BOOL)a3
+- (void)_setConstraintsByStacking:(BOOL)stacking
 {
-  v3 = a3;
+  stackingCopy = stacking;
   if (self->_constraints)
   {
     [NSLayoutConstraint deactivateConstraints:?];
   }
 
-  self->_stacking = v3;
+  self->_stacking = stackingCopy;
   [(SectionHeaderView *)self topAnchor];
-  v5 = v79 = v3;
-  v6 = [(MKVibrantLabel *)self->_label topAnchor];
+  v5 = v79 = stackingCopy;
+  topAnchor = [(MKVibrantLabel *)self->_label topAnchor];
   LODWORD(v7) = 1132068864;
-  v8 = [v5 constraintEqualToAnchor:v6 constant:0.0 priority:v7];
+  v8 = [v5 constraintEqualToAnchor:topAnchor constant:0.0 priority:v7];
   topConstraint = self->_topConstraint;
   self->_topConstraint = v8;
 
   [(SectionHeaderView *)self _updateTopConstraint];
   v83[0] = self->_topConstraint;
-  v75 = [(MKVibrantLabel *)self->_label leadingAnchor];
-  v77 = [(SectionHeaderView *)self layoutMarginsGuide];
-  v73 = [v77 leadingAnchor];
-  v71 = [v75 constraintEqualToAnchor:v73];
+  leadingAnchor = [(MKVibrantLabel *)self->_label leadingAnchor];
+  layoutMarginsGuide = [(SectionHeaderView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v71 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v83[1] = v71;
-  v67 = [self->_bottomHairlineView leadingAnchor];
-  v69 = [(SectionHeaderView *)self layoutMarginsGuide];
-  v65 = [v69 leadingAnchor];
-  v63 = [v67 constraintEqualToAnchor:v65];
+  leadingAnchor3 = [self->_bottomHairlineView leadingAnchor];
+  layoutMarginsGuide2 = [(SectionHeaderView *)self layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide2 leadingAnchor];
+  v63 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v83[2] = v63;
-  v61 = [self->_bottomHairlineView trailingAnchor];
-  v59 = [(SectionHeaderView *)self trailingAnchor];
-  v56 = [v61 constraintEqualToAnchor:v59];
+  trailingAnchor = [self->_bottomHairlineView trailingAnchor];
+  trailingAnchor2 = [(SectionHeaderView *)self trailingAnchor];
+  v56 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v83[3] = v56;
-  v54 = [self->_bottomHairlineView bottomAnchor];
-  v53 = [(SectionHeaderView *)self bottomAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53];
+  bottomAnchor = [self->_bottomHairlineView bottomAnchor];
+  bottomAnchor2 = [(SectionHeaderView *)self bottomAnchor];
+  v52 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v83[4] = v52;
-  v51 = [(UIFocusGuide *)self->_focusGuide topAnchor];
-  v50 = [(MapsThemeButton *)self->_actionButton topAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:-1.0];
+  topAnchor2 = [(UIFocusGuide *)self->_focusGuide topAnchor];
+  topAnchor3 = [(MapsThemeButton *)self->_actionButton topAnchor];
+  v49 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:-1.0];
   v83[5] = v49;
-  v48 = [(UIFocusGuide *)self->_focusGuide bottomAnchor];
-  v10 = [(MapsThemeButton *)self->_actionButton bottomAnchor];
-  v11 = [v48 constraintEqualToAnchor:v10 constant:1.0];
+  bottomAnchor3 = [(UIFocusGuide *)self->_focusGuide bottomAnchor];
+  bottomAnchor4 = [(MapsThemeButton *)self->_actionButton bottomAnchor];
+  v11 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:1.0];
   v83[6] = v11;
-  v12 = [(UIFocusGuide *)self->_focusGuide leadingAnchor];
-  v13 = [(SectionHeaderView *)self leadingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  leadingAnchor5 = [(UIFocusGuide *)self->_focusGuide leadingAnchor];
+  leadingAnchor6 = [(SectionHeaderView *)self leadingAnchor];
+  v14 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v83[7] = v14;
-  v15 = [(UIFocusGuide *)self->_focusGuide trailingAnchor];
-  v16 = [(SectionHeaderView *)self trailingAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  trailingAnchor3 = [(UIFocusGuide *)self->_focusGuide trailingAnchor];
+  trailingAnchor4 = [(SectionHeaderView *)self trailingAnchor];
+  v17 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v83[8] = v17;
   v18 = [NSArray arrayWithObjects:v83 count:9];
   v19 = [NSMutableArray arrayWithArray:v18];
@@ -258,109 +258,109 @@ LABEL_7:
   if (v79)
   {
     v21 = objc_opt_class();
-    v22 = [(SectionHeaderView *)self traitCollection];
-    v57 = [v21 _effectiveTraitCollectionWithTraitCollection:v22];
+    traitCollection = [(SectionHeaderView *)self traitCollection];
+    v57 = [v21 _effectiveTraitCollectionWithTraitCollection:traitCollection];
 
     v23 = [objc_opt_class() _actionFontWithTraitCollection:v57];
-    v24 = [(SectionHeaderView *)self traitCollection];
-    [v24 displayScale];
+    traitCollection2 = [(SectionHeaderView *)self traitCollection];
+    [traitCollection2 displayScale];
     v80 = v23;
     [UILabel _maps_maximumHeightWithFont:v23 numberOfLines:1 displayScale:?];
     v26 = v25 + 8.0;
 
     v55 = self->_constraints;
-    v27 = [(MKVibrantLabel *)self->_label bottomAnchor];
-    v28 = [(SectionHeaderView *)self bottomAnchor];
+    bottomAnchor5 = [(MKVibrantLabel *)self->_label bottomAnchor];
+    bottomAnchor6 = [(SectionHeaderView *)self bottomAnchor];
     [objc_opt_class() _titleBottomMargin];
-    v76 = v28;
-    v78 = v27;
-    v74 = [v27 constraintEqualToAnchor:v28 constant:-(v29 + v26)];
-    v82[0] = v74;
-    v30 = [(MKVibrantLabel *)self->_label trailingAnchor];
-    v70 = [(SectionHeaderView *)self layoutMarginsGuide];
-    [v70 trailingAnchor];
-    v68 = v72 = v30;
-    v66 = [v30 constraintLessThanOrEqualToAnchor:?];
+    v76 = bottomAnchor6;
+    v78 = bottomAnchor5;
+    trailingAnchor8 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-(v29 + v26)];
+    v82[0] = trailingAnchor8;
+    trailingAnchor5 = [(MKVibrantLabel *)self->_label trailingAnchor];
+    layoutMarginsGuide3 = [(SectionHeaderView *)self layoutMarginsGuide];
+    [layoutMarginsGuide3 trailingAnchor];
+    layoutMarginsGuide6 = v72 = trailingAnchor5;
+    v66 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:?];
     v82[1] = v66;
-    v31 = [(MapsThemeButton *)self->_actionButton lastBaselineAnchor];
-    v62 = [(MKVibrantLabel *)self->_label lastBaselineAnchor];
-    v64 = v31;
-    v60 = [v31 constraintEqualToAnchor:v26 constant:?];
-    v82[2] = v60;
-    v32 = [(MapsThemeButton *)self->_actionButton leadingAnchor];
-    v33 = [(SectionHeaderView *)self layoutMarginsGuide];
-    v34 = [v33 leadingAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    lastBaselineAnchor = [(MapsThemeButton *)self->_actionButton lastBaselineAnchor];
+    lastBaselineAnchor2 = [(MKVibrantLabel *)self->_label lastBaselineAnchor];
+    v64 = lastBaselineAnchor;
+    lastBaselineAnchor4 = [lastBaselineAnchor constraintEqualToAnchor:v26 constant:?];
+    v82[2] = lastBaselineAnchor4;
+    leadingAnchor7 = [(MapsThemeButton *)self->_actionButton leadingAnchor];
+    layoutMarginsGuide4 = [(SectionHeaderView *)self layoutMarginsGuide];
+    leadingAnchor8 = [layoutMarginsGuide4 leadingAnchor];
+    v35 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v82[3] = v35;
-    v36 = [(MapsThemeButton *)self->_actionButton trailingAnchor];
-    v37 = [(SectionHeaderView *)self layoutMarginsGuide];
-    v38 = [v37 trailingAnchor];
-    v39 = [v36 constraintLessThanOrEqualToAnchor:v38];
+    trailingAnchor6 = [(MapsThemeButton *)self->_actionButton trailingAnchor];
+    layoutMarginsGuide5 = [(SectionHeaderView *)self layoutMarginsGuide];
+    trailingAnchor7 = [layoutMarginsGuide5 trailingAnchor];
+    v39 = [trailingAnchor6 constraintLessThanOrEqualToAnchor:trailingAnchor7];
     v82[4] = v39;
     v40 = [NSArray arrayWithObjects:v82 count:5];
     [(NSMutableArray *)v55 addObjectsFromArray:v40];
 
-    v41 = v57;
+    bottomAnchor7 = v57;
   }
 
   else
   {
     v58 = self->_constraints;
-    v41 = [(MKVibrantLabel *)self->_label bottomAnchor];
-    v42 = [(SectionHeaderView *)self bottomAnchor];
+    bottomAnchor7 = [(MKVibrantLabel *)self->_label bottomAnchor];
+    bottomAnchor8 = [(SectionHeaderView *)self bottomAnchor];
     [objc_opt_class() _titleBottomMargin];
-    v80 = v42;
-    v78 = [v41 constraintEqualToAnchor:v42 constant:-v43];
+    v80 = bottomAnchor8;
+    v78 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-v43];
     v81[0] = v78;
-    v44 = [(MapsThemeButton *)self->_actionButton leadingAnchor];
-    v74 = [(MKVibrantLabel *)self->_label trailingAnchor];
-    v76 = v44;
-    v72 = [v44 constraintGreaterThanOrEqualToAnchor:8.0 constant:?];
+    leadingAnchor9 = [(MapsThemeButton *)self->_actionButton leadingAnchor];
+    trailingAnchor8 = [(MKVibrantLabel *)self->_label trailingAnchor];
+    v76 = leadingAnchor9;
+    v72 = [leadingAnchor9 constraintGreaterThanOrEqualToAnchor:8.0 constant:?];
     v81[1] = v72;
-    v45 = [(MapsThemeButton *)self->_actionButton trailingAnchor];
-    v68 = [(SectionHeaderView *)self layoutMarginsGuide];
-    [v68 trailingAnchor];
-    v66 = v70 = v45;
-    v64 = [v45 constraintEqualToAnchor:?];
+    trailingAnchor9 = [(MapsThemeButton *)self->_actionButton trailingAnchor];
+    layoutMarginsGuide6 = [(SectionHeaderView *)self layoutMarginsGuide];
+    [layoutMarginsGuide6 trailingAnchor];
+    v66 = layoutMarginsGuide3 = trailingAnchor9;
+    v64 = [trailingAnchor9 constraintEqualToAnchor:?];
     v81[2] = v64;
-    v46 = [(MapsThemeButton *)self->_actionButton lastBaselineAnchor];
-    v60 = [(MKVibrantLabel *)self->_label lastBaselineAnchor];
-    v62 = v46;
-    v32 = [v46 constraintEqualToAnchor:?];
-    v81[3] = v32;
-    v33 = [(MapsThemeButton *)self->_actionButton bottomAnchor];
-    v34 = [(MKVibrantLabel *)self->_label bottomAnchor];
+    lastBaselineAnchor3 = [(MapsThemeButton *)self->_actionButton lastBaselineAnchor];
+    lastBaselineAnchor4 = [(MKVibrantLabel *)self->_label lastBaselineAnchor];
+    lastBaselineAnchor2 = lastBaselineAnchor3;
+    leadingAnchor7 = [lastBaselineAnchor3 constraintEqualToAnchor:?];
+    v81[3] = leadingAnchor7;
+    layoutMarginsGuide4 = [(MapsThemeButton *)self->_actionButton bottomAnchor];
+    leadingAnchor8 = [(MKVibrantLabel *)self->_label bottomAnchor];
     LODWORD(v47) = 1132068864;
-    v35 = [v33 constraintEqualToAnchor:v34 constant:0.0 priority:v47];
+    v35 = [layoutMarginsGuide4 constraintEqualToAnchor:leadingAnchor8 constant:0.0 priority:v47];
     v81[4] = v35;
-    v36 = [NSArray arrayWithObjects:v81 count:5];
-    [(NSMutableArray *)v58 addObjectsFromArray:v36];
+    trailingAnchor6 = [NSArray arrayWithObjects:v81 count:5];
+    [(NSMutableArray *)v58 addObjectsFromArray:trailingAnchor6];
   }
 
   [NSLayoutConstraint activateConstraints:self->_constraints];
 }
 
-- (void)setAccessibilityIdentifiersWithBaseString:(id)a3
+- (void)setAccessibilityIdentifiersWithBaseString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingString:@"Section"];
+  stringCopy = string;
+  v5 = [stringCopy stringByAppendingString:@"Section"];
   [(SectionHeaderView *)self setAccessibilityIdentifier:v5];
 
-  v6 = [v4 stringByAppendingString:@"Action"];
-  v7 = [(SectionHeaderView *)self actionButton];
-  [v7 setAccessibilityIdentifier:v6];
+  v6 = [stringCopy stringByAppendingString:@"Action"];
+  actionButton = [(SectionHeaderView *)self actionButton];
+  [actionButton setAccessibilityIdentifier:v6];
 
-  v9 = [v4 stringByAppendingString:@"Title"];
+  v9 = [stringCopy stringByAppendingString:@"Title"];
 
-  v8 = [(SectionHeaderView *)self label];
-  [v8 setAccessibilityIdentifier:v9];
+  label = [(SectionHeaderView *)self label];
+  [label setAccessibilityIdentifier:v9];
 }
 
 - (void)_updateTopConstraint
 {
   v3 = objc_opt_class();
-  v4 = [(SectionHeaderView *)self traitCollection];
-  v8 = [v3 _effectiveTraitCollectionWithTraitCollection:v4];
+  traitCollection = [(SectionHeaderView *)self traitCollection];
+  v8 = [v3 _effectiveTraitCollectionWithTraitCollection:traitCollection];
 
   [objc_opt_class() _topMarginWhenFirstNonEmptySection:-[SectionHeaderView firstNonEmptySection](self traitCollection:{"firstNonEmptySection"), v8}];
   v6 = v5;
@@ -376,29 +376,29 @@ LABEL_7:
 - (void)_updateFonts
 {
   v3 = objc_opt_class();
-  v4 = [(SectionHeaderView *)self traitCollection];
-  v10 = [v3 _effectiveTraitCollectionWithTraitCollection:v4];
+  traitCollection = [(SectionHeaderView *)self traitCollection];
+  v10 = [v3 _effectiveTraitCollectionWithTraitCollection:traitCollection];
 
   v5 = [objc_opt_class() _titleFontWithTraitCollection:v10];
-  v6 = [(SectionHeaderView *)self label];
-  [v6 setFont:v5];
+  label = [(SectionHeaderView *)self label];
+  [label setFont:v5];
 
   v7 = [objc_opt_class() _actionFontWithTraitCollection:v10];
-  v8 = [(SectionHeaderView *)self actionButton];
-  v9 = [v8 titleLabel];
-  [v9 setFont:v7];
+  actionButton = [(SectionHeaderView *)self actionButton];
+  titleLabel = [actionButton titleLabel];
+  [titleLabel setFont:v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = SectionHeaderView;
-  [(MapsThemeView *)&v13 traitCollectionDidChange:v4];
-  v5 = [(SectionHeaderView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  if (sub_10008FB5C(v6, v7))
+  [(MapsThemeView *)&v13 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SectionHeaderView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  if (sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2))
   {
 
 LABEL_4:
@@ -407,10 +407,10 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [(SectionHeaderView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection2 = [(SectionHeaderView *)self traitCollection];
+  [traitCollection2 displayScale];
   v10 = v9;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v12 = v11;
 
   if (v10 != v12)
@@ -428,9 +428,9 @@ LABEL_5:
   [(SectionHeaderView *)self setActionHandler:0];
   [(SectionHeaderView *)self setFirstNonEmptySection:0];
   [(SectionHeaderView *)self setFirstNonEmptySectionTopMargin:0.0];
-  v3 = [(SectionHeaderView *)self _defaultShouldShowBottomHairline];
+  _defaultShouldShowBottomHairline = [(SectionHeaderView *)self _defaultShouldShowBottomHairline];
 
-  [(SectionHeaderView *)self setShowsBottomHairline:v3];
+  [(SectionHeaderView *)self setShowsBottomHairline:_defaultShouldShowBottomHairline];
 }
 
 - (SectionHeaderView)init
@@ -464,8 +464,8 @@ LABEL_5:
     [(MapsThemeButton *)v2->_actionButton setContentCompressionResistancePriority:0 forAxis:v10];
     [(MapsThemeButton *)v2->_actionButton setTitleColorProvider:&stru_10162A408];
     [(MapsThemeButton *)v2->_actionButton _setTouchInsets:-7.0, -7.0, -7.0, -7.0];
-    v11 = [(SectionHeaderView *)v2 actionButton];
-    [v11 addTarget:v2 action:"_didTapActionButton" forControlEvents:0x2000];
+    actionButton = [(SectionHeaderView *)v2 actionButton];
+    [actionButton addTarget:v2 action:"_didTapActionButton" forControlEvents:0x2000];
 
     [(SectionHeaderView *)v2 addSubview:v2->_actionButton];
     [(MapsThemeButton *)v2->_actionButton setHidden:1];
@@ -475,9 +475,9 @@ LABEL_5:
 
     [v2->_bottomHairlineView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SectionHeaderView *)v2 addSubview:v2->_bottomHairlineView];
-    v14 = [(SectionHeaderView *)v2 _defaultShouldShowBottomHairline];
-    v2->_showsBottomHairline = v14;
-    [v2->_bottomHairlineView setHidden:v14 ^ 1];
+    _defaultShouldShowBottomHairline = [(SectionHeaderView *)v2 _defaultShouldShowBottomHairline];
+    v2->_showsBottomHairline = _defaultShouldShowBottomHairline;
+    [v2->_bottomHairlineView setHidden:_defaultShouldShowBottomHairline ^ 1];
     v15 = objc_alloc_init(UIFocusGuide);
     focusGuide = v2->_focusGuide;
     v2->_focusGuide = v15;
@@ -496,31 +496,31 @@ LABEL_5:
   return v2;
 }
 
-+ (BOOL)shouldStackWithTitle:(id)a3 actionTitle:(id)a4 availableWidth:(double)a5 traitCollection:(id)a6
++ (BOOL)shouldStackWithTitle:(id)title actionTitle:(id)actionTitle availableWidth:(double)width traitCollection:(id)collection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5 > 0.0 && [v10 length] && objc_msgSend(v11, "length"))
+  titleCopy = title;
+  actionTitleCopy = actionTitle;
+  collectionCopy = collection;
+  if (width > 0.0 && [titleCopy length] && objc_msgSend(actionTitleCopy, "length"))
   {
-    v13 = [a1 _effectiveTraitCollectionWithTraitCollection:v12];
+    v13 = [self _effectiveTraitCollectionWithTraitCollection:collectionCopy];
 
-    v14 = [a1 _titleFontWithTraitCollection:v13];
-    v15 = [a1 _actionFontWithTraitCollection:v13];
+    v14 = [self _titleFontWithTraitCollection:v13];
+    v15 = [self _actionFontWithTraitCollection:v13];
     v26 = NSFontAttributeName;
     v27 = v14;
     v16 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-    [v10 sizeWithAttributes:v16];
+    [titleCopy sizeWithAttributes:v16];
     v18 = v17;
 
     v24 = NSFontAttributeName;
     v25 = v15;
     v19 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v11 sizeWithAttributes:v19];
+    [actionTitleCopy sizeWithAttributes:v19];
     v21 = v20;
 
-    v22 = a5 + -32.0 < v18 + 8.0 + v21;
-    v12 = v13;
+    v22 = width + -32.0 < v18 + 8.0 + v21;
+    collectionCopy = v13;
   }
 
   else
@@ -531,45 +531,45 @@ LABEL_5:
   return v22;
 }
 
-+ (id)_actionFontWithTraitCollection:(id)a3
++ (id)_actionFontWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 userInterfaceIdiom] == 5)
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] == 5)
   {
     +[UIFont system17Tall];
   }
 
   else
   {
-    [UIFont system15CompatibleWithTraitCollection:v3];
+    [UIFont system15CompatibleWithTraitCollection:collectionCopy];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)_titleFontWithTraitCollection:(id)a3
++ (id)_titleFontWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 userInterfaceIdiom] == 5)
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] == 5)
   {
     +[UIFont system17Tall];
   }
 
   else
   {
-    [UIFont system15SemiboldCompatibleWithTraitCollection:v3];
+    [UIFont system15SemiboldCompatibleWithTraitCollection:collectionCopy];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)_effectiveTraitCollectionWithTraitCollection:(id)a3
++ (id)_effectiveTraitCollectionWithTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [a1 _maximumContentSizeCategory];
-  v6 = [v4 _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:v5];
+  collectionCopy = collection;
+  _maximumContentSizeCategory = [self _maximumContentSizeCategory];
+  v6 = [collectionCopy _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:_maximumContentSizeCategory];
 
   return v6;
 }
@@ -577,10 +577,10 @@ LABEL_5:
 + (double)_titleBottomMargin
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
   result = 10.0;
-  if (v3 == 5)
+  if (userInterfaceIdiom == 5)
   {
     return 4.0;
   }
@@ -588,11 +588,11 @@ LABEL_5:
   return result;
 }
 
-+ (double)_topMarginWhenFirstNonEmptySection:(BOOL)a3 traitCollection:(id)a4
++ (double)_topMarginWhenFirstNonEmptySection:(BOOL)section traitCollection:(id)collection
 {
-  if (a3)
+  if (section)
   {
-    v4 = [UIScreen mainScreen:a3];
+    v4 = [UIScreen mainScreen:section];
     if (sub_10000FA08(v4) == 1)
     {
       v5 = 3.0;
@@ -606,10 +606,10 @@ LABEL_5:
 
   else
   {
-    v6 = [UIDevice currentDevice:a3];
-    v7 = [v6 userInterfaceIdiom];
+    v6 = [UIDevice currentDevice:section];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    if (v7 == 5)
+    if (userInterfaceIdiom == 5)
     {
       return 24.0;
     }
@@ -623,24 +623,24 @@ LABEL_5:
   return v5;
 }
 
-+ (double)heightWhenFirstNonEmptySection:(BOOL)a3 title:(id)a4 actionTitle:(id)a5 availableWidth:(double)a6 traitCollection:(id)a7
++ (double)heightWhenFirstNonEmptySection:(BOOL)section title:(id)title actionTitle:(id)actionTitle availableWidth:(double)width traitCollection:(id)collection
 {
-  v10 = a3;
-  v12 = a5;
-  v13 = a4;
-  v14 = [a1 _effectiveTraitCollectionWithTraitCollection:a7];
-  v15 = [a1 _titleFontWithTraitCollection:v14];
+  sectionCopy = section;
+  actionTitleCopy = actionTitle;
+  titleCopy = title;
+  v14 = [self _effectiveTraitCollectionWithTraitCollection:collection];
+  v15 = [self _titleFontWithTraitCollection:v14];
   [v14 _maps_displayScaleOrMainScreenScale];
   [UILabel _maps_maximumHeightWithFont:v15 numberOfLines:1 displayScale:?];
   v17 = v16;
-  v18 = [a1 shouldStackWithTitle:v13 actionTitle:v12 availableWidth:v14 traitCollection:a6];
+  v18 = [self shouldStackWithTitle:titleCopy actionTitle:actionTitleCopy availableWidth:v14 traitCollection:width];
 
   if (v18)
   {
     v17 = v17 * 2.0 + 8.0;
   }
 
-  [a1 _topMarginWhenFirstNonEmptySection:v10 traitCollection:v14];
+  [self _topMarginWhenFirstNonEmptySection:sectionCopy traitCollection:v14];
   v20 = v19;
   [objc_opt_class() _titleBottomMargin];
   v22 = v17 + v20 + v21;

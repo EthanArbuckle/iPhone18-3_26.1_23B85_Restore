@@ -1,7 +1,7 @@
 @interface NWSAlgosScoreFaceTimeDataCSV
 + (id)facetimeDataCSV;
-- (BOOL)matchesMethod:(id)a3 code:(int64_t)a4;
-- (BOOL)validMethod:(int64_t)a3;
+- (BOOL)matchesMethod:(id)method code:(int64_t)code;
+- (BOOL)validMethod:(int64_t)method;
 - (NWSAlgosScoreFaceTimeDataCSV)init;
 - (id)setUpMethods;
 - (int)transformer;
@@ -18,42 +18,42 @@
 
 - (id)setUpMethods
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_286D2F6E8, 0}];
-  [v2 setObject:v3 forKeyedSubscript:@"RealTimeStats"];
+  [dictionary setObject:v3 forKeyedSubscript:@"RealTimeStats"];
 
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_286D2F700, 0}];
-  [v2 setObject:v4 forKeyedSubscript:@"CallSegmentReport"];
+  [dictionary setObject:v4 forKeyedSubscript:@"CallSegmentReport"];
 
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_286D2F718, 0}];
-  [v2 setObject:v5 forKeyedSubscript:@"CallEnd"];
+  [dictionary setObject:v5 forKeyedSubscript:@"CallEnd"];
 
-  return v2;
+  return dictionary;
 }
 
-- (BOOL)matchesMethod:(id)a3 code:(int64_t)a4
+- (BOOL)matchesMethod:(id)method code:(int64_t)code
 {
-  v6 = a3;
-  v7 = [(NWSAlgosScoreFaceTimeDataCSV *)self methods];
-  v8 = [v7 objectForKey:v6];
+  methodCopy = method;
+  methods = [(NWSAlgosScoreFaceTimeDataCSV *)self methods];
+  v8 = [methods objectForKey:methodCopy];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithLongLong:a4];
-  LOBYTE(a4) = [v8 containsObject:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithLongLong:code];
+  LOBYTE(code) = [v8 containsObject:v9];
 
-  return a4;
+  return code;
 }
 
-- (BOOL)validMethod:(int64_t)a3
+- (BOOL)validMethod:(int64_t)method
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(NWSAlgosScoreFaceTimeDataCSV *)self methods];
-  v5 = [v4 allValues];
+  methods = [(NWSAlgosScoreFaceTimeDataCSV *)self methods];
+  allValues = [methods allValues];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -68,7 +68,7 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{a3, v15}];
+        v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{method, v15}];
         LOBYTE(v10) = [v10 containsObject:v11];
 
         if (v10)
@@ -103,8 +103,8 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [(NWSAlgosScoreFaceTimeDataCSV *)v2 setUpMethods];
-    [(NWSAlgosScoreFaceTimeDataCSV *)v3 setMethods:v4];
+    setUpMethods = [(NWSAlgosScoreFaceTimeDataCSV *)v2 setUpMethods];
+    [(NWSAlgosScoreFaceTimeDataCSV *)v3 setMethods:setUpMethods];
   }
 
   return v3;
@@ -113,15 +113,15 @@ LABEL_11:
 - (int)transformer
 {
   v106 = *MEMORY[0x277D85DE8];
-  v2 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-  [v2 sortOnColumn:@"eventTime" ascending:1];
+  rawStreamData = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+  [rawStreamData sortOnColumn:@"eventTime" ascending:1];
 
   [(NWSAlgosScoreDataCSV *)self clearStreamingData];
-  v3 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-  v4 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-  v5 = [v4 rows];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  [v3 doubleAtRow:v6 col:@"eventTime" defaultValue:0.0];
+  rawStreamData2 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+  rawStreamData3 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+  rows = [rawStreamData3 rows];
+  v6 = [rows objectAtIndexedSubscript:0];
+  [rawStreamData2 doubleAtRow:v6 col:@"eventTime" defaultValue:0.0];
   v91 = v7;
 
   csvData = self->super.csvData;
@@ -129,11 +129,11 @@ LABEL_11:
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v8 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-  v9 = [v8 rows];
+  rawStreamData4 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+  rows2 = [rawStreamData4 rows];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v99 objects:v105 count:16];
+  obj = rows2;
+  v10 = [rows2 countByEnumeratingWithState:&v99 objects:v105 count:16];
   if (!v10)
   {
 
@@ -166,12 +166,12 @@ LABEL_11:
       }
 
       v18 = *(*(&v99 + 1) + 8 * v93);
-      v19 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-      [v19 doubleAtRow:v18 col:@"eventTime" defaultValue:0.0];
+      rawStreamData5 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+      [rawStreamData5 doubleAtRow:v18 col:@"eventTime" defaultValue:0.0];
       v21 = v20;
 
-      v22 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-      v94 = [v22 intAtRow:v18 col:@"TTxR" defaultValue:v16];
+      rawStreamData6 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+      v94 = [rawStreamData6 intAtRow:v18 col:@"TTxR" defaultValue:v16];
 
       if (v94)
       {
@@ -183,25 +183,25 @@ LABEL_11:
         v23 = 0.0;
       }
 
-      v24 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-      v25 = [v24 intAtRow:v18 col:@"_method" defaultValue:0];
+      rawStreamData7 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+      v25 = [rawStreamData7 intAtRow:v18 col:@"_method" defaultValue:0];
 
-      v26 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-      v27 = [v26 intAtRow:v18 col:@"DERR" defaultValue:0];
+      rawStreamData8 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+      v27 = [rawStreamData8 intAtRow:v18 col:@"DERR" defaultValue:0];
 
-      v28 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-      [v28 doubleAtRow:v18 col:@"VST" defaultValue:v14];
+      rawStreamData9 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+      [rawStreamData9 doubleAtRow:v18 col:@"VST" defaultValue:v14];
       v30 = v29;
 
       v31 = v30;
-      v32 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-      [v32 doubleAtRow:v18 col:@"APT" defaultValue:v13];
+      rawStreamData10 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+      [rawStreamData10 doubleAtRow:v18 col:@"APT" defaultValue:v13];
       v34 = v33;
 
       v35 = v34;
-      v36 = [MEMORY[0x277CBEB18] array];
-      v37 = [MEMORY[0x277CBEB18] array];
-      v38 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
+      array3 = [MEMORY[0x277CBEB18] array];
       v15 = v21 - v91;
       v39 = (v15 - v17) * 1000.0;
       if (v92)
@@ -237,8 +237,8 @@ LABEL_10:
 
       if ([(NWSAlgosScoreFaceTimeDataCSV *)self matchesMethod:@"CallEnd" code:v25])
       {
-        v41 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-        [v41 doubleAtRow:v18 col:@"AEAP" defaultValue:0.0];
+        rawStreamData11 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+        [rawStreamData11 doubleAtRow:v18 col:@"AEAP" defaultValue:0.0];
         v42 = 0;
         v35 = 0.0;
         v43 = @"end";
@@ -252,17 +252,17 @@ LABEL_66:
 
       if ([(NWSAlgosScoreFaceTimeDataCSV *)self matchesMethod:@"CallSegmentReport" code:v25])
       {
-        v45 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
-        v41 = [v45 atRow:v18 col:@"CONFIG"];
+        rawStreamData12 = [(NWSAlgosScoreDataCSV *)self rawStreamData];
+        rawStreamData11 = [rawStreamData12 atRow:v18 col:@"CONFIG"];
 
-        if ([v41 isEqualToString:&stru_286D2DF20])
+        if ([rawStreamData11 isEqualToString:&stru_286D2DF20])
         {
           v42 = 0;
         }
 
         else
         {
-          v51 = [v41 componentsSeparatedByString:@":"];
+          v51 = [rawStreamData11 componentsSeparatedByString:@":"];
           if ([v51 count] <= 3)
           {
             v83 = [MEMORY[0x277CBEAD8] exceptionWithName:@"Not enough components for CONFIG" reason:0 userInfo:0];
@@ -377,7 +377,7 @@ LABEL_65:
       {
         if (v31 != v14)
         {
-          [v36 addObject:@"stall-end-1"];
+          [array addObject:@"stall-end-1"];
           v46 = (v31 - v14) * 1000.0;
           if (v46 < 500.0)
           {
@@ -385,15 +385,15 @@ LABEL_65:
           }
 
           v47 = [MEMORY[0x277CCABB0] numberWithDouble:v46];
-          [v37 addObject:v47];
+          [array2 addObject:v47];
 
           v48 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
-          [v38 addObject:v48];
+          [array3 addObject:v48];
         }
 
         if (v35 != v13)
         {
-          [v36 addObject:@"stall-end-2"];
+          [array addObject:@"stall-end-2"];
           v49 = (v35 - v13) * 1000.0;
           if (v49 < 500.0)
           {
@@ -401,10 +401,10 @@ LABEL_65:
           }
 
           v50 = [MEMORY[0x277CCABB0] numberWithDouble:v49];
-          [v37 addObject:v50];
+          [array2 addObject:v50];
 
-          v41 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
-          [v38 addObject:v41];
+          rawStreamData11 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
+          [array3 addObject:rawStreamData11];
           v42 = 0;
           goto LABEL_65;
         }
@@ -420,32 +420,32 @@ LABEL_67:
         v94 = v16;
       }
 
-      else if (-[__CFString isEqualToString:](v43, "isEqualToString:", &stru_286D2DF20) && ![v36 count])
+      else if (-[__CFString isEqualToString:](v43, "isEqualToString:", &stru_286D2DF20) && ![array count])
       {
         v88 = v40;
       }
 
       else
       {
-        if (![v36 count])
+        if (![array count])
         {
-          [v36 addObject:v43];
+          [array addObject:v43];
           v64 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
-          [v37 addObject:v64];
+          [array2 addObject:v64];
 
           v65 = [MEMORY[0x277CCABB0] numberWithDouble:1.0];
-          [v38 addObject:v65];
+          [array3 addObject:v65];
         }
 
-        [v36 addObject:@"rate"];
+        [array addObject:@"rate"];
         v66 = [MEMORY[0x277CCABB0] numberWithDouble:(v40 - v88) * 1000.0];
-        [v37 addObject:v66];
+        [array2 addObject:v66];
 
-        [v38 addObject:&unk_286D2F838];
+        [array3 addObject:&unk_286D2F838];
         v88 = v40;
       }
 
-      v67 = [v36 count];
+      v67 = [array count];
       v68 = v40 * 1000.0;
       if (v67)
       {
@@ -453,13 +453,13 @@ LABEL_67:
         v70 = v27 != 0;
         do
         {
-          v71 = [v36 objectAtIndexedSubscript:v69];
+          v71 = [array objectAtIndexedSubscript:v69];
           v72 = v71;
           std::string::basic_string[abi:ne200100]<0>(v97, [v71 cStringUsingEncoding:4]);
-          v73 = [v37 objectAtIndexedSubscript:v69];
+          v73 = [array2 objectAtIndexedSubscript:v69];
           [v73 doubleValue];
           v75 = v74;
-          v76 = [v38 objectAtIndexedSubscript:v69];
+          v76 = [array3 objectAtIndexedSubscript:v69];
           [v76 doubleValue];
           AlgosScoreStreamCSVFrameRow::AlgosScoreStreamCSVFrameRow(__p, v97, v42, v70, v39, v75, v68, v77, v23);
           std::vector<AlgosScoreStreamCSVFrameRow>::push_back[abi:ne200100](csvData, __p);
@@ -528,8 +528,8 @@ LABEL_67:
   v78 = v86;
 LABEL_98:
   v79 = [MEMORY[0x277CCABB0] numberWithDouble:v78];
-  v80 = [(NWSAlgosScoreDataCSV *)self statsDict];
-  [v80 setObject:v79 forKeyedSubscript:@"audio-erasure"];
+  statsDict = [(NWSAlgosScoreDataCSV *)self statsDict];
+  [statsDict setObject:v79 forKeyedSubscript:@"audio-erasure"];
 
   v81 = *MEMORY[0x277D85DE8];
   return 0;

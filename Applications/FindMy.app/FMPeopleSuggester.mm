@@ -16,11 +16,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:CNContactStoreDidChangeNotification object:0];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:CNContactStoreDidChangeNotification object:0];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for FMPeopleSuggester();
   [(FMPeopleSuggester *)&v6 dealloc];
 }

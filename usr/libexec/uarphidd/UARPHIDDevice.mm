@@ -1,31 +1,31 @@
 @interface UARPHIDDevice
-- (BOOL)hidDeviceCreate:(unsigned int)a3;
-- (BOOL)hidDeviceReport:(int)a3 reportID:(unsigned int)a4 report:(char *)a5 reportLength:(unint64_t)a6;
+- (BOOL)hidDeviceCreate:(unsigned int)create;
+- (BOOL)hidDeviceReport:(int)report reportID:(unsigned int)d report:(char *)a5 reportLength:(unint64_t)length;
 - (BOOL)startHIDDevice;
-- (UARPHIDDevice)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4;
+- (UARPHIDDevice)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD;
 - (id)description;
 - (void)dealloc;
-- (void)deviceSendUarpMessageToTransport:(id)a3 uarpMessage:(id)a4;
-- (void)deviceTransportNotNeeded:(id)a3;
-- (void)deviceTransportSetupRequested:(id)a3;
-- (void)deviceTransportTeardown:(id)a3;
-- (void)deviceUnresponsive:(id)a3;
+- (void)deviceSendUarpMessageToTransport:(id)transport uarpMessage:(id)message;
+- (void)deviceTransportNotNeeded:(id)needed;
+- (void)deviceTransportSetupRequested:(id)requested;
+- (void)deviceTransportTeardown:(id)teardown;
+- (void)deviceUnresponsive:(id)unresponsive;
 - (void)hidDeviceDisconnect;
 - (void)setSupportsChargingChimeDebounce;
-- (void)uarpMessageSendToTransport:(id)a3;
+- (void)uarpMessageSendToTransport:(id)transport;
 @end
 
 @implementation UARPHIDDevice
 
-- (UARPHIDDevice)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4
+- (UARPHIDDevice)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD
 {
   v7.receiver = self;
   v7.super_class = UARPHIDDevice;
   result = [(UARPHIDDevice *)&v7 init];
   if (result)
   {
-    result->_vendorID = a3;
-    result->_productID = a4;
+    result->_vendorID = d;
+    result->_productID = iD;
   }
 
   return result;
@@ -44,18 +44,18 @@
 - (id)description
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [v3 appendFormat:@"UUID = <%@>", v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [v3 appendFormat:@"UUID = <%@>", uUIDString];
 
   v5 = [NSString stringWithString:v3];
 
   return v5;
 }
 
-- (BOOL)hidDeviceCreate:(unsigned int)a3
+- (BOOL)hidDeviceCreate:(unsigned int)create
 {
   properties = 0;
-  IORegistryEntryCreateCFProperties(a3, &properties, kCFAllocatorDefault, 0);
+  IORegistryEntryCreateCFProperties(create, &properties, kCFAllocatorDefault, 0);
   v28 = CFDictionaryGetValue(properties, @"SerialNumber");
   v5 = [v28 copy];
   serialNumber = self->_serialNumber;
@@ -97,19 +97,19 @@
   [(UARPHIDDevice *)v20 appendFormat:@"Product ID = <0x%04x>, ", self->_productID];
   [(UARPHIDDevice *)v20 appendFormat:@"Location = <%d>, ", self->_locationID];
   [(UARPHIDDevice *)v20 appendFormat:@"Transport = <%@>, ", self->_transport];
-  v21 = [(NSUUID *)self->_uuid UUIDString];
-  [(UARPHIDDevice *)v20 appendFormat:@"UUID = <%@>, ", v21];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(UARPHIDDevice *)v20 appendFormat:@"UUID = <%@>, ", uUIDString];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v31 = v20;
+    selfCopy = v20;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "New UARP HID Device %@", buf, 0xCu);
   }
 
   [(UARPHIDDevice *)self setSupportsChargingChimeDebounce];
-  v23 = IOHIDDeviceCreate(kCFAllocatorDefault, a3);
+  v23 = IOHIDDeviceCreate(kCFAllocatorDefault, create);
   self->_hidDeviceRef = v23;
   if (!v23)
   {
@@ -117,7 +117,7 @@
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v31 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[%@] Could not create hid device", buf, 0xCu);
     }
   }
@@ -154,13 +154,13 @@
     uarpDevice = self->_uarpDevice;
     self->_uarpDevice = v6;
 
-    v8 = [(UARPHIDManager *)self->_hidManager listener];
+    listener = [(UARPHIDManager *)self->_hidManager listener];
 
-    if (v8)
+    if (listener)
     {
       v9 = self->_uarpDevice;
-      v10 = [(UARPHIDManager *)self->_hidManager listener];
-      [(UARPDevice *)v9 setAnonymousListener:v10];
+      listener2 = [(UARPHIDManager *)self->_hidManager listener];
+      [(UARPDevice *)v9 setAnonymousListener:listener2];
     }
 
     internalQueue = self->_internalQueue;
@@ -175,29 +175,29 @@
   return v3 == 0;
 }
 
-- (void)uarpMessageSendToTransport:(id)a3
+- (void)uarpMessageSendToTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   internalQueue = self->_internalQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001690;
   v7[3] = &unk_10000C368;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transportCopy;
+  v6 = transportCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (BOOL)hidDeviceReport:(int)a3 reportID:(unsigned int)a4 report:(char *)a5 reportLength:(unint64_t)a6
+- (BOOL)hidDeviceReport:(int)report reportID:(unsigned int)d report:(char *)a5 reportLength:(unint64_t)length
 {
-  v6 = a6;
+  lengthCopy = length;
   if (self->_debugTransfer && os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
   {
     sub_1000046B8();
   }
 
-  v9 = [[NSData alloc] initWithBytes:a5 + 7 length:(v6 - 7)];
+  v9 = [[NSData alloc] initWithBytes:a5 + 7 length:(lengthCopy - 7)];
   internalQueue = self->_internalQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -219,7 +219,7 @@
     *buf = 136315394;
     v7 = "[UARPHIDDevice hidDeviceDisconnect]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Remove UARP HID Device %@", buf, 0x16u);
   }
 
@@ -232,11 +232,11 @@
   dispatch_async(internalQueue, block);
 }
 
-- (void)deviceTransportSetupRequested:(id)a3
+- (void)deviceTransportSetupRequested:(id)requested
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(UARPHIDDevice *)self isMatchingUUID:v5];
+  requestedCopy = requested;
+  uuid = [requestedCopy uuid];
+  v6 = [(UARPHIDDevice *)self isMatchingUUID:uuid];
 
   log = self->_log;
   if (v6)
@@ -245,12 +245,12 @@
     {
       serialNumber = self->_serialNumber;
       v9 = log;
-      v10 = [(NSString *)serialNumber UTF8String];
-      v11 = [(NSUUID *)self->_uuid UUIDString];
+      uTF8String = [(NSString *)serialNumber UTF8String];
+      uUIDString = [(NSUUID *)self->_uuid UUIDString];
       *buf = 136315394;
-      v15 = v10;
+      v15 = uTF8String;
       v16 = 2080;
-      v17 = [v11 UTF8String];
+      uTF8String2 = [uUIDString UTF8String];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Device Transport Setup Requested for Serial Number = <%s>, UUID = <%s>\n", buf, 0x16u);
     }
 
@@ -269,11 +269,11 @@
   }
 }
 
-- (void)deviceTransportTeardown:(id)a3
+- (void)deviceTransportTeardown:(id)teardown
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(UARPHIDDevice *)self isMatchingUUID:v5];
+  teardownCopy = teardown;
+  uuid = [teardownCopy uuid];
+  v6 = [(UARPHIDDevice *)self isMatchingUUID:uuid];
 
   log = self->_log;
   if (v6)
@@ -282,21 +282,21 @@
     {
       serialNumber = self->_serialNumber;
       v9 = log;
-      v10 = [(NSString *)serialNumber UTF8String];
-      v11 = [(NSUUID *)self->_uuid UUIDString];
-      v12 = [v11 UTF8String];
-      v13 = [v4 activeFirmwareVersion];
-      v14 = [v4 stagedFirmwareVersion];
+      uTF8String = [(NSString *)serialNumber UTF8String];
+      uUIDString = [(NSUUID *)self->_uuid UUIDString];
+      uTF8String2 = [uUIDString UTF8String];
+      activeFirmwareVersion = [teardownCopy activeFirmwareVersion];
+      stagedFirmwareVersion = [teardownCopy stagedFirmwareVersion];
       *buf = 136316162;
       v18 = "[UARPHIDDevice deviceTransportTeardown:]";
       v19 = 2080;
-      v20 = v10;
+      v20 = uTF8String;
       v21 = 2080;
-      v22 = v12;
+      v22 = uTF8String2;
       v23 = 2112;
-      v24 = v13;
+      v24 = activeFirmwareVersion;
       v25 = 2112;
-      v26 = v14;
+      v26 = stagedFirmwareVersion;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s: Serial Number = <%s>, UUID = <%s>, Active Firmware <%@>, Staged Firmware <%@>", buf, 0x34u);
     }
 
@@ -315,11 +315,11 @@
   }
 }
 
-- (void)deviceTransportNotNeeded:(id)a3
+- (void)deviceTransportNotNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(UARPHIDDevice *)self isMatchingUUID:v5];
+  neededCopy = needed;
+  uuid = [neededCopy uuid];
+  v6 = [(UARPHIDDevice *)self isMatchingUUID:uuid];
 
   log = self->_log;
   if (v6)
@@ -328,21 +328,21 @@
     {
       serialNumber = self->_serialNumber;
       v9 = log;
-      v10 = [(NSString *)serialNumber UTF8String];
-      v11 = [(NSUUID *)self->_uuid UUIDString];
-      v12 = [v11 UTF8String];
-      v13 = [v4 activeFirmwareVersion];
-      v14 = [v4 stagedFirmwareVersion];
+      uTF8String = [(NSString *)serialNumber UTF8String];
+      uUIDString = [(NSUUID *)self->_uuid UUIDString];
+      uTF8String2 = [uUIDString UTF8String];
+      activeFirmwareVersion = [neededCopy activeFirmwareVersion];
+      stagedFirmwareVersion = [neededCopy stagedFirmwareVersion];
       v15 = 136316162;
       v16 = "[UARPHIDDevice deviceTransportNotNeeded:]";
       v17 = 2080;
-      v18 = v10;
+      v18 = uTF8String;
       v19 = 2080;
-      v20 = v12;
+      v20 = uTF8String2;
       v21 = 2112;
-      v22 = v13;
+      v22 = activeFirmwareVersion;
       v23 = 2112;
-      v24 = v14;
+      v24 = stagedFirmwareVersion;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s: Serial Number = <%s>, UUID = <%s>, Active Firmware <%@>, Staged Firmware <%@>", &v15, 0x34u);
     }
   }
@@ -353,11 +353,11 @@
   }
 }
 
-- (void)deviceUnresponsive:(id)a3
+- (void)deviceUnresponsive:(id)unresponsive
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(UARPHIDDevice *)self isMatchingUUID:v5];
+  unresponsiveCopy = unresponsive;
+  uuid = [unresponsiveCopy uuid];
+  v6 = [(UARPHIDDevice *)self isMatchingUUID:uuid];
 
   log = self->_log;
   if (v6)
@@ -367,7 +367,7 @@
       v8 = 136315394;
       v9 = "[UARPHIDDevice deviceUnresponsive:]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: %@", &v8, 0x16u);
     }
   }
@@ -378,12 +378,12 @@
   }
 }
 
-- (void)deviceSendUarpMessageToTransport:(id)a3 uarpMessage:(id)a4
+- (void)deviceSendUarpMessageToTransport:(id)transport uarpMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  v9 = [(UARPHIDDevice *)self isMatchingUUID:v8];
+  transportCopy = transport;
+  messageCopy = message;
+  uuid = [transportCopy uuid];
+  v9 = [(UARPHIDDevice *)self isMatchingUUID:uuid];
 
   if (v9)
   {
@@ -398,7 +398,7 @@
     v11[2] = sub_1000021B0;
     v11[3] = &unk_10000C368;
     v11[4] = self;
-    v12 = v7;
+    v12 = messageCopy;
     dispatch_async(internalQueue, v11);
   }
 

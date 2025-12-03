@@ -1,7 +1,7 @@
 @interface JavaUtilIdentityHashMap_KeySet
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (JavaUtilIdentityHashMap_KeySet)initWithJavaUtilIdentityHashMap:(id)a3;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)removeWithId:(id)id;
+- (JavaUtilIdentityHashMap_KeySet)initWithJavaUtilIdentityHashMap:(id)map;
 - (id)iterator;
 - (int)size;
 - (void)__javaClone;
@@ -10,11 +10,11 @@
 
 @implementation JavaUtilIdentityHashMap_KeySet
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak containsKeyWithId:a3];
+  return [Weak containsKeyWithId:id];
 }
 
 - (int)size
@@ -31,12 +31,12 @@
   [Weak clear];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
-  v5 = [objc_loadWeak(&self->this$0_) containsKeyWithId:a3];
+  v5 = [objc_loadWeak(&self->this$0_) containsKeyWithId:id];
   if (v5)
   {
-    [objc_loadWeak(&self->this$0_) removeWithId:a3];
+    [objc_loadWeak(&self->this$0_) removeWithId:id];
   }
 
   return v5;
@@ -52,9 +52,9 @@
   return v5;
 }
 
-- (JavaUtilIdentityHashMap_KeySet)initWithJavaUtilIdentityHashMap:(id)a3
+- (JavaUtilIdentityHashMap_KeySet)initWithJavaUtilIdentityHashMap:(id)map
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, map);
   JavaUtilAbstractSet_init(self, v4);
   return self;
 }

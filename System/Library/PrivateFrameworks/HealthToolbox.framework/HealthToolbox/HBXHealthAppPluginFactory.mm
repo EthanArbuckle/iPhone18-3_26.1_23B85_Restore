@@ -1,27 +1,27 @@
 @interface HBXHealthAppPluginFactory
-+ (id)_createPluginAddDataViewControllerProvidingFromPluginBundle:(id)a3;
-+ (id)_createPluginAppDelegateFromPluginBundle:(id)a3;
-+ (id)_createPluginDataListDataProviderProvidingFromPluginBundle:(id)a3;
-+ (id)_loadBundleForPluginPath:(id)a3;
-+ (id)_loadPluginBundleForDisplayType:(id)a3;
-+ (id)_makeDataListViewControllerProvidingForDisplayType:(id)a3;
-+ (id)_pluginPathForDisplayType:(id)a3;
++ (id)_createPluginAddDataViewControllerProvidingFromPluginBundle:(id)bundle;
++ (id)_createPluginAppDelegateFromPluginBundle:(id)bundle;
++ (id)_createPluginDataListDataProviderProvidingFromPluginBundle:(id)bundle;
++ (id)_loadBundleForPluginPath:(id)path;
++ (id)_loadPluginBundleForDisplayType:(id)type;
++ (id)_makeDataListViewControllerProvidingForDisplayType:(id)type;
++ (id)_pluginPathForDisplayType:(id)type;
 + (id)_pluginsDirectoryPath;
-+ (id)makeDataListViewControllerForHealthStore:(id)a3 displayType:(id)a4 predicate:(id)a5;
++ (id)makeDataListViewControllerForHealthStore:(id)store displayType:(id)type predicate:(id)predicate;
 @end
 
 @implementation HBXHealthAppPluginFactory
 
-+ (id)makeDataListViewControllerForHealthStore:(id)a3 displayType:(id)a4 predicate:(id)a5
++ (id)makeDataListViewControllerForHealthStore:(id)store displayType:(id)type predicate:(id)predicate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [HBXHealthAppPluginFactory _makeDataListViewControllerProvidingForDisplayType:v8];
+  storeCopy = store;
+  typeCopy = type;
+  predicateCopy = predicate;
+  v10 = [HBXHealthAppPluginFactory _makeDataListViewControllerProvidingForDisplayType:typeCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 makeDataListViewControllerForHealthStore:v7 displayType:v8 predicate:v9];
+    v12 = [v10 makeDataListViewControllerForHealthStore:storeCopy displayType:typeCopy predicate:predicateCopy];
   }
 
   else
@@ -32,9 +32,9 @@
   return v12;
 }
 
-+ (id)_makeDataListViewControllerProvidingForDisplayType:(id)a3
++ (id)_makeDataListViewControllerProvidingForDisplayType:(id)type
 {
-  v3 = [a1 _loadPluginBundleForDisplayType:a3];
+  v3 = [self _loadPluginBundleForDisplayType:type];
   if (v3)
   {
     v4 = [HBXHealthAppPluginFactory _createPluginAddDataViewControllerProvidingFromPluginBundle:v3];
@@ -48,9 +48,9 @@
   return v4;
 }
 
-+ (id)_loadPluginBundleForDisplayType:(id)a3
++ (id)_loadPluginBundleForDisplayType:(id)type
 {
-  v3 = [a1 _pluginPathForDisplayType:a3];
+  v3 = [self _pluginPathForDisplayType:type];
   if (v3)
   {
     v4 = [HBXHealthAppPluginFactory _loadBundleForPluginPath:v3];
@@ -64,21 +64,21 @@
   return v4;
 }
 
-+ (id)_pluginPathForDisplayType:(id)a3
++ (id)_pluginPathForDisplayType:(id)type
 {
-  v4 = [a3 displayTypeIdentifier];
-  if (v4 == 257)
+  displayTypeIdentifier = [type displayTypeIdentifier];
+  if (displayTypeIdentifier == 257)
   {
     v5 = @"VisionHealthAppPlugin.healthplugin";
     goto LABEL_5;
   }
 
-  if (v4 == 273)
+  if (displayTypeIdentifier == 273)
   {
     v5 = @"MedicationsHealthAppPlugin.healthplugin";
 LABEL_5:
-    v6 = [a1 _pluginsDirectoryPath];
-    v7 = [v6 stringByAppendingPathComponent:v5];
+    _pluginsDirectoryPath = [self _pluginsDirectoryPath];
+    v7 = [_pluginsDirectoryPath stringByAppendingPathComponent:v5];
 
     goto LABEL_7;
   }
@@ -92,16 +92,16 @@ LABEL_7:
 + (id)_pluginsDirectoryPath
 {
   v2 = +[HBXHealthAppPluginUtilities defaultUtilities];
-  v3 = [v2 feedItemPluginsPath];
+  feedItemPluginsPath = [v2 feedItemPluginsPath];
 
-  return v3;
+  return feedItemPluginsPath;
 }
 
-+ (id)_loadBundleForPluginPath:(id)a3
++ (id)_loadBundleForPluginPath:(id)path
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] bundleWithPath:v3];
+  pathCopy = path;
+  v4 = [MEMORY[0x277CCA8D8] bundleWithPath:pathCopy];
   v5 = v4;
   if (v4)
   {
@@ -122,7 +122,7 @@ LABEL_7:
       *buf = 138543874;
       v16 = v12;
       v17 = 2114;
-      v18 = v3;
+      v18 = pathCopy;
       v19 = 2114;
       v20 = v7;
       v13 = v12;
@@ -148,11 +148,11 @@ LABEL_10:
   return v8;
 }
 
-+ (id)_createPluginAddDataViewControllerProvidingFromPluginBundle:(id)a3
++ (id)_createPluginAddDataViewControllerProvidingFromPluginBundle:(id)bundle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [HBXHealthAppPluginFactory _createPluginAppDelegateFromPluginBundle:v3];
+  bundleCopy = bundle;
+  v4 = [HBXHealthAppPluginFactory _createPluginAppDelegateFromPluginBundle:bundleCopy];
   v5 = &unk_28646C340;
   if ([v4 conformsToProtocol:v5])
   {
@@ -168,13 +168,13 @@ LABEL_10:
       v10 = objc_opt_class();
       v11 = v10;
       v12 = NSStringFromProtocol(v5);
-      v13 = [v3 bundleIdentifier];
+      bundleIdentifier = [bundleCopy bundleIdentifier];
       v14 = 138543874;
       v15 = v10;
       v16 = 2114;
       v17 = v12;
       v18 = 2114;
-      v19 = v13;
+      v19 = bundleIdentifier;
       _os_log_error_impl(&dword_251E85000, v7, OS_LOG_TYPE_ERROR, "%{public}@: Plugin app delegate does not conform to %{public}@: %{public}@", &v14, 0x20u);
     }
 
@@ -186,11 +186,11 @@ LABEL_10:
   return v6;
 }
 
-+ (id)_createPluginAppDelegateFromPluginBundle:(id)a3
++ (id)_createPluginAppDelegateFromPluginBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 infoDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"PluginAppDelegateClass"];
+  bundleCopy = bundle;
+  infoDictionary = [bundleCopy infoDictionary];
+  v6 = [infoDictionary objectForKeyedSubscript:@"PluginAppDelegateClass"];
 
   if (v6)
   {
@@ -203,7 +203,7 @@ LABEL_10:
     v8 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(HBXHealthAppPluginFactory *)a1 _createPluginAppDelegateFromPluginBundle:v4];
+      [(HBXHealthAppPluginFactory *)self _createPluginAppDelegateFromPluginBundle:bundleCopy];
     }
 
     v7 = 0;
@@ -212,11 +212,11 @@ LABEL_10:
   return v7;
 }
 
-+ (id)_createPluginDataListDataProviderProvidingFromPluginBundle:(id)a3
++ (id)_createPluginDataListDataProviderProvidingFromPluginBundle:(id)bundle
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [HBXHealthAppPluginFactory _createPluginAppDelegateFromPluginBundle:v3];
+  bundleCopy = bundle;
+  v4 = [HBXHealthAppPluginFactory _createPluginAppDelegateFromPluginBundle:bundleCopy];
   v5 = &unk_28646C3F0;
   if ([v4 conformsToProtocol:v5])
   {
@@ -232,13 +232,13 @@ LABEL_10:
       v10 = objc_opt_class();
       v11 = v10;
       v12 = NSStringFromProtocol(v5);
-      v13 = [v3 bundleIdentifier];
+      bundleIdentifier = [bundleCopy bundleIdentifier];
       v14 = 138543874;
       v15 = v10;
       v16 = 2114;
       v17 = v12;
       v18 = 2114;
-      v19 = v13;
+      v19 = bundleIdentifier;
       _os_log_error_impl(&dword_251E85000, v7, OS_LOG_TYPE_ERROR, "%{public}@: Plugin app delegate does not conform to %{public}@: %{public}@", &v14, 0x20u);
     }
 

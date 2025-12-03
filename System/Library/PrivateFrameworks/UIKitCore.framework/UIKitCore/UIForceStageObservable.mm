@@ -1,20 +1,20 @@
 @interface UIForceStageObservable
-- (void)receiveObservedValue:(id)a3;
+- (void)receiveObservedValue:(id)value;
 @end
 
 @implementation UIForceStageObservable
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __47__UIForceStageObservable_receiveObservedValue___block_invoke;
     v9[3] = &unk_1E711CC10;
-    v10 = v4;
+    v10 = valueCopy;
     v6 = [_UIForceMessage observe:v9];
     v8.receiver = self;
     v8.super_class = UIForceStageObservable;

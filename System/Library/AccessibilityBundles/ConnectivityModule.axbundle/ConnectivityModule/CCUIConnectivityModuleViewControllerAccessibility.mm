@@ -1,33 +1,33 @@
 @interface CCUIConnectivityModuleViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axButtonViewWithControllerClass:(Class)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axButtonViewWithControllerClass:(Class)class;
 - (id)_axCreateMockElement;
 - (id)_axElements;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setGridSizeClass:(int64_t)a3;
+- (void)setGridSizeClass:(int64_t)class;
 @end
 
 @implementation CCUIConnectivityModuleViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIConnectivityModuleViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"orderedButtonViewControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"_isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUIConnectivityButtonViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUILabeledRoundButton"];
-  [v3 validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"setResizing:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"setGridSizeClass:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"CCUICellularDataModuleViewController" hasInstanceMethod:@"buttonViewForCollapsedConnectivityModule" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIConnectivityModuleViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"orderedButtonViewControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"_isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUIConnectivityButtonViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUILabeledRoundButton"];
+  [validationsCopy validateClass:@"CCUILabeledRoundButton" hasInstanceMethod:@"buttonView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"setResizing:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CCUIConnectivityModuleViewController" hasInstanceMethod:@"setGridSizeClass:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"CCUICellularDataModuleViewController" hasInstanceMethod:@"buttonViewForCollapsedConnectivityModule" withFullSignature:{"@", 0}];
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
   v4.receiver = self;
   v4.super_class = CCUIConnectivityModuleViewControllerAccessibility;
-  [(CCUIConnectivityModuleViewControllerAccessibility *)&v4 setGridSizeClass:a3];
+  [(CCUIConnectivityModuleViewControllerAccessibility *)&v4 setGridSizeClass:class];
   [(CCUIConnectivityModuleViewControllerAccessibility *)self _setAXMockElement:0];
 }
 
@@ -66,7 +66,7 @@ id __95__CCUIConnectivityModuleViewControllerAccessibility__accessibilityLoadAcc
 
 - (id)_axElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(CCUIConnectivityModuleViewControllerAccessibility *)self safeArrayForKey:@"orderedButtonViewControllers"];
   if ([v4 count] < 5)
   {
@@ -74,7 +74,7 @@ id __95__CCUIConnectivityModuleViewControllerAccessibility__accessibilityLoadAcc
     goto LABEL_16;
   }
 
-  v16 = self;
+  selfCopy = self;
   for (i = 0; i != 3; ++i)
   {
     v6 = [v4 objectAtIndexedSubscript:i];
@@ -99,21 +99,21 @@ LABEL_8:
 
     v10 = 0;
 LABEL_9:
-    [v3 axSafelyAddObject:v10];
+    [array axSafelyAddObject:v10];
   }
 
-  v12 = [(CCUIConnectivityModuleViewControllerAccessibility *)v16 _axMockElement];
+  _axMockElement = [(CCUIConnectivityModuleViewControllerAccessibility *)selfCopy _axMockElement];
 
-  if (!v12)
+  if (!_axMockElement)
   {
-    v13 = [(CCUIConnectivityModuleViewControllerAccessibility *)v16 _axCreateMockElement];
-    [(CCUIConnectivityModuleViewControllerAccessibility *)v16 _setAXMockElement:v13];
+    _axCreateMockElement = [(CCUIConnectivityModuleViewControllerAccessibility *)selfCopy _axCreateMockElement];
+    [(CCUIConnectivityModuleViewControllerAccessibility *)selfCopy _setAXMockElement:_axCreateMockElement];
   }
 
-  v14 = [(CCUIConnectivityModuleViewControllerAccessibility *)v16 _axMockElement];
-  [v3 addObject:v14];
+  _axMockElement2 = [(CCUIConnectivityModuleViewControllerAccessibility *)selfCopy _axMockElement];
+  [array addObject:_axMockElement2];
 
-  v11 = v3;
+  v11 = array;
 LABEL_16:
 
   return v11;
@@ -202,7 +202,7 @@ double __73__CCUIConnectivityModuleViewControllerAccessibility__axCreateMockElem
   return v5;
 }
 
-- (id)_axButtonViewWithControllerClass:(Class)a3
+- (id)_axButtonViewWithControllerClass:(Class)class
 {
   v17 = *MEMORY[0x29EDCA608];
   [(CCUIConnectivityModuleViewControllerAccessibility *)self safeArrayForKey:@"orderedButtonViewControllers"];

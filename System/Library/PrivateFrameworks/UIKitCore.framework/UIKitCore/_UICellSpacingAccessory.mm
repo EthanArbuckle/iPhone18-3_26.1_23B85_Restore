@@ -1,34 +1,34 @@
 @interface _UICellSpacingAccessory
-+ (id)accessoryWithIdentifier:(id)a3 size:(CGSize)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)accessoryWithIdentifier:(id)identifier size:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)view;
 @end
 
 @implementation _UICellSpacingAccessory
 
-+ (id)accessoryWithIdentifier:(id)a3 size:(CGSize)a4
++ (id)accessoryWithIdentifier:(id)identifier size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8.receiver = a1;
+  height = size.height;
+  width = size.width;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS____UICellSpacingAccessory;
-  v6 = objc_msgSendSuper2(&v8, sel_accessoryWithIdentifier_, a3);
+  v6 = objc_msgSendSuper2(&v8, sel_accessoryWithIdentifier_, identifier);
   v6[5] = width;
   v6[6] = height;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UICellSpacingAccessory;
-  if ([(_UICellAccessory *)&v7 isEqual:v4])
+  if ([(_UICellAccessory *)&v7 isEqual:equalCopy])
   {
-    v5 = v4[6] == self->_size.height && v4[5] == self->_size.width;
+    v5 = equalCopy[6] == self->_size.height && equalCopy[5] == self->_size.width;
   }
 
   else
@@ -39,7 +39,7 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   width = self->_size.width;
   height = self->_size.height;

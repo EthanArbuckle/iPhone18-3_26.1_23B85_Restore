@@ -1,22 +1,22 @@
 @interface AXDragEndpointVendor
-- (AXDragEndpointVendor)initWithXPCListener:(id)a3;
+- (AXDragEndpointVendor)initWithXPCListener:(id)listener;
 - (AXDragEndpointVendorDelegate)delegate;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)endpointForConnection:(id)a3 forEndpointRequestSatisfier:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)endpointForConnection:(id)connection forEndpointRequestSatisfier:(id)satisfier;
 @end
 
 @implementation AXDragEndpointVendor
 
-- (AXDragEndpointVendor)initWithXPCListener:(id)a3
+- (AXDragEndpointVendor)initWithXPCListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v11.receiver = self;
   v11.super_class = AXDragEndpointVendor;
   v6 = [(AXDragEndpointVendor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listener, a3);
+    objc_storeStrong(&v6->_listener, listener);
     [(NSXPCListener *)v7->_listener setDelegate:v7];
     v8 = [MEMORY[0x1E695DFA8] set];
     activeConnections = v7->_activeConnections;
@@ -26,10 +26,10 @@
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [[AXDragEndpointRequestSatisfier alloc] initWithConnection:v5];
+  connectionCopy = connection;
+  v6 = [[AXDragEndpointRequestSatisfier alloc] initWithConnection:connectionCopy];
 
   [(AXDragEndpointRequestSatisfier *)v6 setDelegate:self];
   [(NSMutableSet *)self->_activeConnections addObject:v6];
@@ -37,11 +37,11 @@
   return 1;
 }
 
-- (id)endpointForConnection:(id)a3 forEndpointRequestSatisfier:(id)a4
+- (id)endpointForConnection:(id)connection forEndpointRequestSatisfier:(id)satisfier
 {
-  v5 = a3;
-  v6 = [(AXDragEndpointVendor *)self delegate];
-  v7 = [v6 endpointForRequestingConnection:v5 fromEndpointVendor:self];
+  connectionCopy = connection;
+  delegate = [(AXDragEndpointVendor *)self delegate];
+  v7 = [delegate endpointForRequestingConnection:connectionCopy fromEndpointVendor:self];
 
   return v7;
 }

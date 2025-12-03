@@ -2,14 +2,14 @@
 - (id)allKeys;
 - (id)copy;
 - (id)description;
-- (id)objectAtIndex:(int64_t)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)_setupFrom:(id)a3;
-- (void)applyBlock:(id)a3;
-- (void)applyFunction:(void *)a3 withContext:(void *)a4;
+- (id)objectAtIndex:(int64_t)index;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)_setupFrom:(id)from;
+- (void)applyBlock:(id)block;
+- (void)applyFunction:(void *)function withContext:(void *)context;
 - (void)dealloc;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation VFXOrderedDictionary
@@ -21,12 +21,12 @@
   [(VFXOrderedDictionary *)&v3 dealloc];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v6 = a3;
-    objc_msgSend_removeObjectForKey_(self, v7, a4, v8);
+    objectCopy = object;
+    objc_msgSend_removeObjectForKey_(self, v7, key, v8);
     keys = self->_keys;
     if (!keys)
     {
@@ -35,28 +35,28 @@
       keys = self->_keys;
     }
 
-    objc_msgSend_addObject_(keys, v9, a4, v10);
-    objc_msgSend_setObject_forKeyedSubscript_(self->_keyValues, v12, a3, a4);
+    objc_msgSend_addObject_(keys, v9, key, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(self->_keyValues, v12, object, key);
   }
 
   else
   {
 
-    objc_msgSend_removeObjectForKey_(self, a2, a4, a4);
+    objc_msgSend_removeObjectForKey_(self, a2, key, key);
   }
 }
 
-- (id)objectAtIndex:(int64_t)a3
+- (id)objectAtIndex:(int64_t)index
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_keys, a2, a3, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(self->_keys, a2, index, v3);
   keyValues = self->_keyValues;
 
   return objc_msgSend_objectForKeyedSubscript_(keyValues, v5, v6, v7);
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  if (objc_msgSend_objectForKey_(self->_keyValues, a2, a3, v3))
+  if (objc_msgSend_objectForKey_(self->_keyValues, a2, key, v3))
   {
     if (objc_msgSend_count(self->_keys, v6, v7, v8) == 1)
     {
@@ -66,10 +66,10 @@
 
     else
     {
-      objc_msgSend_removeObject_(self->_keys, v9, a3, v11);
+      objc_msgSend_removeObject_(self->_keys, v9, key, v11);
       keyValues = self->_keyValues;
 
-      objc_msgSend_removeObjectForKey_(keyValues, v12, a3, v13);
+      objc_msgSend_removeObjectForKey_(keyValues, v12, key, v13);
     }
   }
 }
@@ -81,7 +81,7 @@
   return v4;
 }
 
-- (void)applyFunction:(void *)a3 withContext:(void *)a4
+- (void)applyFunction:(void *)function withContext:(void *)context
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
@@ -105,7 +105,7 @@
 
         v14 = *(*(&v16 + 1) + 8 * i);
         v15 = objc_msgSend_objectForKeyedSubscript_(self->_keyValues, v9, v14, v10);
-        (a3)(v14, v15, a4);
+        (function)(v14, v15, context);
       }
 
       v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(keys, v9, &v16, v20, 16);
@@ -115,7 +115,7 @@
   }
 }
 
-- (void)applyBlock:(id)a3
+- (void)applyBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -139,7 +139,7 @@
 
         v12 = *(*(&v14 + 1) + 8 * i);
         v13 = objc_msgSend_objectForKeyedSubscript_(self->_keyValues, v7, v12, v8);
-        (*(a3 + 2))(a3, v12, v13);
+        (*(block + 2))(block, v12, v13);
       }
 
       v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(keys, v7, &v14, v18, 16);
@@ -149,42 +149,42 @@
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
-  v10 = objc_msgSend_count(self->_keys, a2, a3, a4);
-  if (v10 - var0 < a5)
+  var0 = state->var0;
+  v10 = objc_msgSend_count(self->_keys, a2, state, objects);
+  if (v10 - var0 < count)
   {
-    a5 = v10 - var0;
+    count = v10 - var0;
   }
 
-  if (a5)
+  if (count)
   {
     v13 = var0;
-    v14 = a4;
-    v15 = a5;
+    objectsCopy = objects;
+    countCopy = count;
     do
     {
       v16 = objc_msgSend_objectAtIndexedSubscript_(self->_keys, v11, v13, v12);
-      *v14++ = objc_msgSend_objectForKeyedSubscript_(self->_keyValues, v17, v16, v18);
+      *objectsCopy++ = objc_msgSend_objectForKeyedSubscript_(self->_keyValues, v17, v16, v18);
       ++v13;
-      --v15;
+      --countCopy;
     }
 
-    while (v15);
+    while (countCopy);
   }
 
-  a3->var0 = a5 + var0;
-  a3->var1 = a4;
-  a3->var2 = &a3->var2;
-  return a5;
+  state->var0 = count + var0;
+  state->var1 = objects;
+  state->var2 = &state->var2;
+  return count;
 }
 
-- (void)_setupFrom:(id)a3
+- (void)_setupFrom:(id)from
 {
-  v6 = objc_msgSend_dictionary(a3, a2, a3, v3);
+  v6 = objc_msgSend_dictionary(from, a2, from, v3);
   self->_keyValues = objc_msgSend_mutableCopy(v6, v7, v8, v9);
-  v13 = objc_msgSend_keys(a3, v10, v11, v12);
+  v13 = objc_msgSend_keys(from, v10, v11, v12);
   self->_keys = objc_msgSend_mutableCopy(v13, v14, v15, v16);
 }
 

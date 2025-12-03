@@ -3,9 +3,9 @@
 - (id).cxx_construct;
 - (id)elementsBoundsPositions;
 - (id)selectionKnobPositions;
-- (tvec2<float>)bottomTopAtPosition:(float)a3;
+- (tvec2<float>)bottomTopAtPosition:(float)position;
 - (void)generateArrays;
-- (void)setTopLine:(const void *)a3 bottomLine:(const void *)a4 zeroValue:(float)a5;
+- (void)setTopLine:(const void *)line bottomLine:(const void *)bottomLine zeroValue:(float)value;
 @end
 
 @implementation TSCH3DAreaGeometry
@@ -24,32 +24,32 @@
   return v2;
 }
 
-- (void)setTopLine:(const void *)a3 bottomLine:(const void *)a4 zeroValue:(float)a5
+- (void)setTopLine:(const void *)line bottomLine:(const void *)bottomLine zeroValue:(float)value
 {
-  if (*(a3 + 1) - *a3 != *(a4 + 1) - *a4)
+  if (*(line + 1) - *line != *(bottomLine + 1) - *bottomLine)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&a5, v5, v6, "[TSCH3DAreaGeometry setTopLine:bottomLine:zeroValue:]");
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&value, v5, v6, "[TSCH3DAreaGeometry setTopLine:bottomLine:zeroValue:]");
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DAreaGeometry.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v18, v19, v20, v21, v12, v17, 156, 0, "top and bottom line size mismatch %zu, %zu", 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 2), 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 2));
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v18, v19, v20, v21, v12, v17, 156, 0, "top and bottom line size mismatch %zu, %zu", 0xAAAAAAAAAAAAAAABLL * ((*(line + 1) - *line) >> 2), 0xAAAAAAAAAAAAAAABLL * ((*(bottomLine + 1) - *bottomLine) >> 2));
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
   }
 
-  if (&self->_topLine != a3)
+  if (&self->_topLine != line)
   {
-    sub_2761ED280(&self->_topLine, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 2));
+    sub_2761ED280(&self->_topLine, *line, *(line + 1), 0xAAAAAAAAAAAAAAABLL * ((*(line + 1) - *line) >> 2));
   }
 
-  if (&self->_bottomLine != a4)
+  if (&self->_bottomLine != bottomLine)
   {
-    sub_2761ED280(&self->_bottomLine, *a4, *(a4 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 2));
+    sub_2761ED280(&self->_bottomLine, *bottomLine, *(bottomLine + 1), 0xAAAAAAAAAAAAAAABLL * ((*(bottomLine + 1) - *bottomLine) >> 2));
   }
 
-  self->_zeroValue = a5;
+  self->_zeroValue = value;
 }
 
-- (tvec2<float>)bottomTopAtPosition:(float)a3
+- (tvec2<float>)bottomTopAtPosition:(float)position
 {
   v7 = v3;
   p_topLine = &self->_topLine;
@@ -59,7 +59,7 @@
   if (v9 != self->_bottomLine.__end_ - begin)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&a3, v4, v5, "[TSCH3DAreaGeometry bottomTopAtPosition:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, *&position, v4, v5, "[TSCH3DAreaGeometry bottomTopAtPosition:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DAreaGeometry.mm");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 190, 0, "_bottomLine.size() != _topLine.size()");
 
@@ -82,7 +82,7 @@
     v31 = *v30;
     v30 += 3;
     v32 = v31;
-    if (v31 >= a3)
+    if (v31 >= position)
     {
       v29 = v27 - 1;
       v28 = v27;
@@ -97,7 +97,7 @@ LABEL_10:
   v35 = 0.0;
   if (v34 > 0.0)
   {
-    v35 = (a3 - *v33) / v34;
+    v35 = (position - *v33) / v34;
   }
 
   v36 = *(p_topLine->__begin_ + 3 * v29 + 1);
@@ -111,7 +111,7 @@ LABEL_10:
 
 - (void)generateArrays
 {
-  v5 = self;
+  selfCopy = self;
   v185 = *MEMORY[0x277D85DE8];
   p_topLine = &self->_topLine;
   v7 = self->_topLine.__end_ - self->_topLine.__begin_;
@@ -134,7 +134,7 @@ LABEL_10:
 
   v24 = 0xAAAAAAAAAAAAAAABLL * (v7 >> 2);
   v25 = v24 - 1;
-  *&v2 = v5->_zeroValue;
+  *&v2 = selfCopy->_zeroValue;
   v26 = 6;
   if (*&v2 == 0.0)
   {
@@ -142,9 +142,9 @@ LABEL_10:
   }
 
   v171 = (v26 | (24 * v24)) - 6;
-  objc_msgSend_allocateArrays_(v5, a2, *&v2, v3, *v4.i64);
-  v31 = objc_msgSend_vertexArrayPointer(v5, v27, v28, v29, v30);
-  v36 = objc_msgSend_normalArrayPointer(v5, v32, v33, v34, v35);
+  objc_msgSend_allocateArrays_(selfCopy, a2, *&v2, v3, *v4.i64);
+  v31 = objc_msgSend_vertexArrayPointer(selfCopy, v27, v28, v29, v30);
+  v36 = objc_msgSend_normalArrayPointer(selfCopy, v32, v33, v34, v35);
   v37 = 0;
   v175 = 0;
   v180 = 0u;
@@ -183,10 +183,10 @@ LABEL_10:
     v3 = COERCE_DOUBLE(__PAIR64__(v45, DWORD1(v176)));
     v47 = HIDWORD(v45);
     v48 = DWORD2(v178);
-    p_minZ = &v5->_minZ;
+    p_minZ = &selfCopy->_minZ;
     v4 = vld1q_dup_f32(p_minZ);
     vst3q_f32(&v179, *&v2);
-    DWORD2(v176) = LODWORD(v5->_maxZ);
+    DWORD2(v176) = LODWORD(selfCopy->_maxZ);
     DWORD1(v177) = DWORD2(v176);
     LODWORD(v178) = DWORD2(v176);
     HIDWORD(v178) = DWORD2(v176);
@@ -511,8 +511,8 @@ LABEL_51:
       v182 = xmmword_2764D6280;
       v183 = xmmword_2764D63B0;
       sub_2761F8A3C(&v175, v31, v36, &v176, 1, 7, 3, &v182);
-      v5->_capOffset = v175;
-      zeroValue = v5->_zeroValue;
+      selfCopy->_capOffset = v175;
+      zeroValue = selfCopy->_zeroValue;
       if (zeroValue != 0.0)
       {
         LODWORD(v177) = 0;
@@ -527,7 +527,7 @@ LABEL_51:
         v182 = xmmword_2764D6280;
         v183 = xmmword_2764D63B0;
         sub_2761F8A3C(&v175, v31, v36, &v176, 1, 7, 3, &v182);
-        zeroValue = v5->_zeroValue;
+        zeroValue = selfCopy->_zeroValue;
       }
 
       *&v177 = zeroValue;
@@ -542,7 +542,7 @@ LABEL_51:
       v182 = xmmword_2764D6280;
       v183 = xmmword_2764D63B0;
       *&v2 = sub_2761F8A3C(&v175, v31, v36, &v176, 1, 7, 3, &v182);
-      v5->_capCount = v175 - v5->_capOffset;
+      selfCopy->_capCount = v175 - selfCopy->_capOffset;
       v38 = v172;
       v42 = xmmword_2764D6280;
       v41 = xmmword_2764D63B0;
@@ -566,7 +566,7 @@ LABEL_51:
 
   if (v171 > v155)
   {
-    self = v5;
+    self = selfCopy;
     v8 = v155;
 LABEL_60:
 

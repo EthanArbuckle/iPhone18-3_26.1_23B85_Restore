@@ -1,18 +1,18 @@
 @interface BMMediaRendered
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMediaRendered)initWithAbsoluteTimestamp:(double)a3 mediaAttributes:(id)a4 isOnScreen:(BOOL)a5 isFirstView:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMediaRendered)initWithAbsoluteTimestamp:(double)timestamp mediaAttributes:(id)attributes isOnScreen:(BOOL)screen isFirstView:(BOOL)view;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaRendered
 
-- (BMMediaRendered)initWithAbsoluteTimestamp:(double)a3 mediaAttributes:(id)a4 isOnScreen:(BOOL)a5 isFirstView:(BOOL)a6
+- (BMMediaRendered)initWithAbsoluteTimestamp:(double)timestamp mediaAttributes:(id)attributes isOnScreen:(BOOL)screen isFirstView:(BOOL)view
 {
-  v11 = a4;
+  attributesCopy = attributes;
   v15.receiver = self;
   v15.super_class = BMMediaRendered;
   v12 = [(BMEventBase *)&v15 init];
@@ -20,12 +20,12 @@
   if (v12)
   {
     v12->_hasAbsoluteTimestamp = 1;
-    v12->_absoluteTimestamp = a3;
-    objc_storeStrong(&v12->_mediaAttributes, a4);
+    v12->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v12->_mediaAttributes, attributes);
     v13->_hasIsOnScreen = 1;
-    v13->_isOnScreen = a5;
+    v13->_isOnScreen = screen;
     v13->_hasIsFirstView = 1;
-    v13->_isFirstView = a6;
+    v13->_isFirstView = view;
   }
 
   return v13;
@@ -37,17 +37,17 @@
   v4 = MEMORY[0x1E696AD98];
   [(BMMediaRendered *)self absoluteTimestamp];
   v5 = [v4 numberWithDouble:?];
-  v6 = [(BMMediaRendered *)self mediaAttributes];
+  mediaAttributes = [(BMMediaRendered *)self mediaAttributes];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaRendered isOnScreen](self, "isOnScreen")}];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMediaRendered isFirstView](self, "isFirstView")}];
-  v9 = [v3 initWithFormat:@"BMMediaRendered with absoluteTimestamp: %@, mediaAttributes: %@, isOnScreen: %@, isFirstView: %@", v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMMediaRendered with absoluteTimestamp: %@, mediaAttributes: %@, isOnScreen: %@, isFirstView: %@", v5, mediaAttributes, v7, v8];
 
   return v9;
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v42.receiver = self;
   v42.super_class = BMMediaRendered;
   v5 = [(BMEventBase *)&v42 init];
@@ -57,12 +57,12 @@
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_57;
       }
@@ -73,18 +73,18 @@
       while (1)
       {
         LOBYTE(v43[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v43 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v43[0] & 0x7F) << v8;
@@ -102,9 +102,9 @@
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_57;
       }
@@ -119,18 +119,18 @@ LABEL_16:
       {
         v5->_hasAbsoluteTimestamp = 1;
         v43[0] = 0;
-        v26 = [v4 position] + 8;
-        if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 8, v27 <= objc_msgSend(v4, "length")))
+        v26 = [fromCopy position] + 8;
+        if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 8, v27 <= objc_msgSend(fromCopy, "length")))
         {
-          v35 = [v4 data];
-          [v35 getBytes:v43 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:v43 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         *&v5->_absoluteTimestamp = v43[0];
@@ -144,7 +144,7 @@ LABEL_16:
 
       v43[0] = 0;
       v43[1] = 0;
-      if (!PBReaderPlaceMark() || (v17 = [[BMMediaRenderedMediaAttributes alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v17 = [[BMMediaRenderedMediaAttributes alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_61:
 
@@ -156,8 +156,8 @@ LABEL_61:
       PBReaderRecallMark();
 
 LABEL_56:
-      v36 = [v4 position];
-      if (v36 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_57;
       }
@@ -172,18 +172,18 @@ LABEL_56:
       while (1)
       {
         LOBYTE(v43[0]) = 0;
-        v31 = [v4 position] + 1;
-        if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+        v31 = [fromCopy position] + 1;
+        if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
         {
-          v33 = [v4 data];
-          [v33 getBytes:v43 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v30 |= (v43[0] & 0x7F) << v28;
@@ -201,7 +201,7 @@ LABEL_56:
         }
       }
 
-      v25 = (v30 != 0) & ~[v4 hasError];
+      v25 = (v30 != 0) & ~[fromCopy hasError];
 LABEL_52:
       v34 = 18;
       goto LABEL_53;
@@ -216,18 +216,18 @@ LABEL_52:
       while (1)
       {
         LOBYTE(v43[0]) = 0;
-        v22 = [v4 position] + 1;
-        if (v22 >= [v4 position] && (v23 = objc_msgSend(v4, "position") + 1, v23 <= objc_msgSend(v4, "length")))
+        v22 = [fromCopy position] + 1;
+        if (v22 >= [fromCopy position] && (v23 = objc_msgSend(fromCopy, "position") + 1, v23 <= objc_msgSend(fromCopy, "length")))
         {
-          v24 = [v4 data];
-          [v24 getBytes:v43 range:{objc_msgSend(v4, "position"), 1}];
+          data4 = [fromCopy data];
+          [data4 getBytes:v43 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v21 |= (v43[0] & 0x7F) << v19;
@@ -245,7 +245,7 @@ LABEL_52:
         }
       }
 
-      v25 = (v21 != 0) & ~[v4 hasError];
+      v25 = (v21 != 0) & ~[fromCopy hasError];
 LABEL_50:
       v34 = 20;
 LABEL_53:
@@ -267,8 +267,8 @@ LABEL_57:
   mediaAttributes = v5->_mediaAttributes;
   v5->_mediaAttributes = v37;
 
-  v39 = [v4 hasError];
-  if (v39)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_58:
     v40 = 0;
@@ -283,10 +283,10 @@ LABEL_59:
   return v40;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_hasAbsoluteTimestamp)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
@@ -314,7 +314,7 @@ LABEL_59:
 
         v11 = *(*(&v15 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -339,9 +339,9 @@ LABEL_59:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -349,8 +349,8 @@ LABEL_59:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v4 = [[BMMediaRendered alloc] initByReadFrom:v7];
   }
@@ -362,18 +362,18 @@ LABEL_59:
 {
   v3 = objc_opt_new();
   [(BMMediaRendered *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMMediaRendered hasAbsoluteTimestamp](self, "hasAbsoluteTimestamp") || [v5 hasAbsoluteTimestamp])
     {
       if (-[BMMediaRendered hasAbsoluteTimestamp](self, "hasAbsoluteTimestamp") && [v5 hasAbsoluteTimestamp])
@@ -395,26 +395,26 @@ LABEL_59:
       v9 = 1;
     }
 
-    v11 = [(BMMediaRendered *)self mediaAttributes];
-    v12 = [v5 mediaAttributes];
-    if (v11 == v12)
+    mediaAttributes = [(BMMediaRendered *)self mediaAttributes];
+    mediaAttributes2 = [v5 mediaAttributes];
+    if (mediaAttributes == mediaAttributes2)
     {
       v15 = 1;
     }
 
     else
     {
-      v13 = [(BMMediaRendered *)self mediaAttributes];
-      v14 = [v5 mediaAttributes];
-      v15 = [v13 isEqual:v14];
+      mediaAttributes3 = [(BMMediaRendered *)self mediaAttributes];
+      mediaAttributes4 = [v5 mediaAttributes];
+      v15 = [mediaAttributes3 isEqual:mediaAttributes4];
     }
 
     if (-[BMMediaRendered hasIsOnScreen](self, "hasIsOnScreen") || [v5 hasIsOnScreen])
     {
       if (-[BMMediaRendered hasIsOnScreen](self, "hasIsOnScreen") && [v5 hasIsOnScreen])
       {
-        v16 = [(BMMediaRendered *)self isOnScreen];
-        v17 = v16 ^ [v5 isOnScreen] ^ 1;
+        isOnScreen = [(BMMediaRendered *)self isOnScreen];
+        v17 = isOnScreen ^ [v5 isOnScreen] ^ 1;
       }
 
       else
@@ -432,8 +432,8 @@ LABEL_59:
     {
       if (-[BMMediaRendered hasIsFirstView](self, "hasIsFirstView") && [v5 hasIsFirstView])
       {
-        v18 = [(BMMediaRendered *)self isFirstView];
-        v19 = v18 ^ [v5 isFirstView] ^ 1;
+        isFirstView = [(BMMediaRendered *)self isFirstView];
+        v19 = isFirstView ^ [v5 isFirstView] ^ 1;
       }
 
       else

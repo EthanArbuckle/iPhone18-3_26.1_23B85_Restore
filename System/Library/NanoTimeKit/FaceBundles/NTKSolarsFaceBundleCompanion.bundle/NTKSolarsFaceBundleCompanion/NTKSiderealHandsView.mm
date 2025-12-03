@@ -1,6 +1,6 @@
 @interface NTKSiderealHandsView
 - (id)hourHandConfiguration;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
 - (void)layoutSubviews;
@@ -8,11 +8,11 @@
 
 @implementation NTKSiderealHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKSiderealHandsView;
-  v3 = [(NTKSiderealHandsView *)&v6 initForDevice:a3];
+  v3 = [(NTKSiderealHandsView *)&v6 initForDevice:device];
   v4 = v3;
   if (v3)
   {
@@ -30,11 +30,11 @@
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = [(NTKSiderealHandsView *)self device];
-  sub_1637C(v3, &v7);
+  device = [(NTKSiderealHandsView *)self device];
+  sub_1637C(device, &v7);
 
-  v4 = [(NTKSiderealHandsView *)self device];
-  v5 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:v4];
+  device2 = [(NTKSiderealHandsView *)self device];
+  v5 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:device2];
 
   [v5 setHandWidth:*&v7];
   [v5 setArmWidth:*(&v7 + 1)];
@@ -55,11 +55,11 @@
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = [(NTKSiderealHandsView *)self device];
-  sub_1637C(v3, &v7);
+  device = [(NTKSiderealHandsView *)self device];
+  sub_1637C(device, &v7);
 
-  v4 = [(NTKSiderealHandsView *)self device];
-  v5 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:v4];
+  device2 = [(NTKSiderealHandsView *)self device];
+  v5 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:device2];
 
   [v5 setHandWidth:*&v7];
   [v5 setArmWidth:*(&v7 + 1)];
@@ -80,8 +80,8 @@
   v3 = [(NTKSiderealHandsView *)self device:0];
   sub_1637C(v3, &v7);
 
-  v4 = [(NTKSiderealHandsView *)self device];
-  v5 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:v4];
+  device = [(NTKSiderealHandsView *)self device];
+  v5 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:device];
 
   [v5 setHandWidth:*(&v8 + 1)];
   [v5 setHandLength:*&v9];
@@ -99,14 +99,14 @@
   v4 = v3 * 0.5;
   [(NTKSiderealHandsView *)self bounds];
   v6 = v5 * 0.5;
-  v7 = [(NTKSiderealHandsView *)self minuteHandView];
-  [v7 setCenter:{v4, v6}];
+  minuteHandView = [(NTKSiderealHandsView *)self minuteHandView];
+  [minuteHandView setCenter:{v4, v6}];
 
-  v8 = [(NTKSiderealHandsView *)self hourHandView];
-  [v8 setCenter:{v4, v6}];
+  hourHandView = [(NTKSiderealHandsView *)self hourHandView];
+  [hourHandView setCenter:{v4, v6}];
 
-  v9 = [(NTKSiderealHandsView *)self secondHandView];
-  [v9 setCenter:{v4, v6}];
+  secondHandView = [(NTKSiderealHandsView *)self secondHandView];
+  [secondHandView setCenter:{v4, v6}];
 }
 
 @end

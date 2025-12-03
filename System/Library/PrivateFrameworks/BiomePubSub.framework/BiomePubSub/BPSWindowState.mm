@@ -1,27 +1,27 @@
 @interface BPSWindowState
-- (BOOL)isEqual:(id)a3;
-- (BPSWindowState)initWithCoder:(id)a3;
-- (BPSWindowState)initWithIdentifier:(id)a3 aggregate:(id)a4 completed:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (BPSWindowState)initWithCoder:(id)coder;
+- (BPSWindowState)initWithIdentifier:(id)identifier aggregate:(id)aggregate completed:(BOOL)completed;
 - (id)metadata;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BPSWindowState
 
-- (BPSWindowState)initWithIdentifier:(id)a3 aggregate:(id)a4 completed:(BOOL)a5
+- (BPSWindowState)initWithIdentifier:(id)identifier aggregate:(id)aggregate completed:(BOOL)completed
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  aggregateCopy = aggregate;
   v14.receiver = self;
   v14.super_class = BPSWindowState;
   v11 = [(BPSWindowState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_aggregate, a4);
-    v12->_completed = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_aggregate, aggregate);
+    v12->_completed = completed;
   }
 
   return v12;
@@ -37,15 +37,15 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [(BPSWindowState *)self identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [equalCopy identifier];
+    identifier2 = [(BPSWindowState *)self identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -58,51 +58,51 @@
 
 - (unint64_t)hash
 {
-  v2 = [(BPSWindowState *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(BPSWindowState *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(BPSWindowState *)self identifier];
-  [v6 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(BPSWindowState *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(BPSWindowState *)self aggregate];
-  [v6 encodeObject:v5 forKey:@"aggregate"];
+  aggregate = [(BPSWindowState *)self aggregate];
+  [coderCopy encodeObject:aggregate forKey:@"aggregate"];
 
-  [v6 encodeBool:-[BPSWindowState completed](self forKey:{"completed"), @"completed"}];
+  [coderCopy encodeBool:-[BPSWindowState completed](self forKey:{"completed"), @"completed"}];
 }
 
-- (BPSWindowState)initWithCoder:(id)a3
+- (BPSWindowState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AB10] bm_allowedClassesForSecureCodingBMBookmark];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"aggregate"];
+    bm_allowedClassesForSecureCodingBMBookmark = [MEMORY[0x1E696AB10] bm_allowedClassesForSecureCodingBMBookmark];
+    v7 = [coderCopy decodeObjectOfClasses:bm_allowedClassesForSecureCodingBMBookmark forKey:@"aggregate"];
 
     if (v7)
     {
-      self = -[BPSWindowState initWithIdentifier:aggregate:completed:](self, "initWithIdentifier:aggregate:completed:", v5, v7, [v4 decodeBoolForKey:@"completed"]);
-      v8 = self;
+      self = -[BPSWindowState initWithIdentifier:aggregate:completed:](self, "initWithIdentifier:aggregate:completed:", v5, v7, [coderCopy decodeBoolForKey:@"completed"]);
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

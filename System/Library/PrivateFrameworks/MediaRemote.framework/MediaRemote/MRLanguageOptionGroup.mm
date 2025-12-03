@@ -1,77 +1,77 @@
 @interface MRLanguageOptionGroup
-- (BOOL)isEqual:(id)a3;
-- (MRLanguageOptionGroup)initWithCoder:(id)a3;
-- (MRLanguageOptionGroup)initWithData:(id)a3;
-- (MRLanguageOptionGroup)initWithLanguageOptions:(id)a3 defaultLanguageOption:(id)a4 allowsEmptySelection:(BOOL)a5;
-- (MRLanguageOptionGroup)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRLanguageOptionGroup)initWithCoder:(id)coder;
+- (MRLanguageOptionGroup)initWithData:(id)data;
+- (MRLanguageOptionGroup)initWithLanguageOptions:(id)options defaultLanguageOption:(id)option allowsEmptySelection:(BOOL)selection;
+- (MRLanguageOptionGroup)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (NSDictionary)dictionaryRepresentation;
 - (_MRLanguageOptionGroupProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRLanguageOptionGroup
 
-- (MRLanguageOptionGroup)initWithLanguageOptions:(id)a3 defaultLanguageOption:(id)a4 allowsEmptySelection:(BOOL)a5
+- (MRLanguageOptionGroup)initWithLanguageOptions:(id)options defaultLanguageOption:(id)option allowsEmptySelection:(BOOL)selection
 {
-  v8 = a3;
-  v9 = a4;
+  optionsCopy = options;
+  optionCopy = option;
   v14.receiver = self;
   v14.super_class = MRLanguageOptionGroup;
   v10 = [(MRLanguageOptionGroup *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [optionsCopy copy];
     languageOptions = v10->_languageOptions;
     v10->_languageOptions = v11;
 
-    objc_storeStrong(&v10->_defaultLanguageOption, a4);
-    v10->_allowsEmptySelection = a5;
+    objc_storeStrong(&v10->_defaultLanguageOption, option);
+    v10->_allowsEmptySelection = selection;
     v10->_hasAllowsEmptySelection = 1;
   }
 
   return v10;
 }
 
-- (MRLanguageOptionGroup)initWithProtobuf:(id)a3
+- (MRLanguageOptionGroup)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v15.receiver = self;
     v15.super_class = MRLanguageOptionGroup;
     v5 = [(MRLanguageOptionGroup *)&v15 init];
     if (v5)
     {
-      v5->_allowsEmptySelection = [v4 allowEmptySelection];
-      v5->_hasAllowsEmptySelection = [v4 hasAllowEmptySelection];
-      if ([v4 hasDefaultLanguageOption])
+      v5->_allowsEmptySelection = [protobufCopy allowEmptySelection];
+      v5->_hasAllowsEmptySelection = [protobufCopy hasAllowEmptySelection];
+      if ([protobufCopy hasDefaultLanguageOption])
       {
         v6 = [MRLanguageOption alloc];
-        v7 = [v4 defaultLanguageOption];
-        v8 = [(MRLanguageOption *)v6 initWithProtobuf:v7];
+        defaultLanguageOption = [protobufCopy defaultLanguageOption];
+        v8 = [(MRLanguageOption *)v6 initWithProtobuf:defaultLanguageOption];
         defaultLanguageOption = v5->_defaultLanguageOption;
         v5->_defaultLanguageOption = v8;
       }
 
-      v10 = [v4 languageOptions];
-      v11 = [v10 mr_map:&__block_literal_global_101];
+      languageOptions = [protobufCopy languageOptions];
+      v11 = [languageOptions mr_map:&__block_literal_global_101];
       languageOptions = v5->_languageOptions;
       v5->_languageOptions = v11;
     }
 
     self = v5;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 MRLanguageOption *__42__MRLanguageOptionGroup_initWithProtobuf___block_invoke(uint64_t a1, void *a2)
@@ -82,39 +82,39 @@ MRLanguageOption *__42__MRLanguageOptionGroup_initWithProtobuf___block_invoke(ui
   return v3;
 }
 
-- (MRLanguageOptionGroup)initWithData:(id)a3
+- (MRLanguageOptionGroup)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRLanguageOptionGroupProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRLanguageOptionGroupProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRLanguageOptionGroup *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (_MRLanguageOptionGroupProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRLanguageOptionGroupProtobuf);
-  v4 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
-  v5 = [v4 protobuf];
-  [(_MRLanguageOptionGroupProtobuf *)v3 setDefaultLanguageOption:v5];
+  defaultLanguageOption = [(MRLanguageOptionGroup *)self defaultLanguageOption];
+  protobuf = [defaultLanguageOption protobuf];
+  [(_MRLanguageOptionGroupProtobuf *)v3 setDefaultLanguageOption:protobuf];
 
-  v6 = [(MRLanguageOptionGroup *)self languageOptions];
-  v7 = [v6 count];
+  languageOptions = [(MRLanguageOptionGroup *)self languageOptions];
+  v7 = [languageOptions count];
 
   if (v7)
   {
-    v8 = [(MRLanguageOptionGroup *)self languageOptions];
-    v9 = [v8 mr_map:&__block_literal_global_11_2];
+    languageOptions2 = [(MRLanguageOptionGroup *)self languageOptions];
+    v9 = [languageOptions2 mr_map:&__block_literal_global_11_2];
     v10 = [v9 mutableCopy];
     [(_MRLanguageOptionGroupProtobuf *)v3 setLanguageOptions:v10];
   }
@@ -127,10 +127,10 @@ MRLanguageOption *__42__MRLanguageOptionGroup_initWithProtobuf___block_invoke(ui
 
 - (NSData)data
 {
-  v2 = [(MRLanguageOptionGroup *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRLanguageOptionGroup *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -142,21 +142,21 @@ MRLanguageOption *__42__MRLanguageOptionGroup_initWithProtobuf___block_invoke(ui
     [v3 setObject:v4 forKeyedSubscript:@"allowsEmptySelection"];
   }
 
-  v5 = [(MRLanguageOptionGroup *)self languageOptions];
-  v6 = [v5 mr_map:&__block_literal_global_18_1];
+  languageOptions = [(MRLanguageOptionGroup *)self languageOptions];
+  v6 = [languageOptions mr_map:&__block_literal_global_18_1];
   [v3 setObject:v6 forKeyedSubscript:@"languageOptions"];
 
-  v7 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
-  v8 = [v7 dictionaryRepresentation];
-  [v3 setObject:v8 forKeyedSubscript:@"defaultLanguageOption"];
+  defaultLanguageOption = [(MRLanguageOptionGroup *)self defaultLanguageOption];
+  dictionaryRepresentation = [defaultLanguageOption dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"defaultLanguageOption"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
     goto LABEL_16;
@@ -168,36 +168,36 @@ MRLanguageOption *__42__MRLanguageOptionGroup_initWithProtobuf___block_invoke(ui
     goto LABEL_9;
   }
 
-  v5 = [(MRLanguageOptionGroup *)v4 hasAllowsEmptySelection];
-  if (v5 != [(MRLanguageOptionGroup *)self hasAllowsEmptySelection])
+  hasAllowsEmptySelection = [(MRLanguageOptionGroup *)equalCopy hasAllowsEmptySelection];
+  if (hasAllowsEmptySelection != [(MRLanguageOptionGroup *)self hasAllowsEmptySelection])
   {
     goto LABEL_9;
   }
 
-  if ([(MRLanguageOptionGroup *)v4 hasAllowsEmptySelection])
+  if ([(MRLanguageOptionGroup *)equalCopy hasAllowsEmptySelection])
   {
     if ([(MRLanguageOptionGroup *)self hasAllowsEmptySelection])
     {
-      v6 = [(MRLanguageOptionGroup *)v4 allowsEmptySelection];
-      if (v6 != [(MRLanguageOptionGroup *)self allowsEmptySelection])
+      allowsEmptySelection = [(MRLanguageOptionGroup *)equalCopy allowsEmptySelection];
+      if (allowsEmptySelection != [(MRLanguageOptionGroup *)self allowsEmptySelection])
       {
         goto LABEL_9;
       }
     }
   }
 
-  v7 = [(MRLanguageOptionGroup *)v4 languageOptions];
-  v8 = [(MRLanguageOptionGroup *)self languageOptions];
-  v9 = v8;
-  if (v7 == v8)
+  languageOptions = [(MRLanguageOptionGroup *)equalCopy languageOptions];
+  languageOptions2 = [(MRLanguageOptionGroup *)self languageOptions];
+  v9 = languageOptions2;
+  if (languageOptions == languageOptions2)
   {
   }
 
   else
   {
-    v10 = [(MRLanguageOptionGroup *)v4 languageOptions];
-    v11 = [(MRLanguageOptionGroup *)self languageOptions];
-    v12 = [v10 isEqual:v11];
+    languageOptions3 = [(MRLanguageOptionGroup *)equalCopy languageOptions];
+    languageOptions4 = [(MRLanguageOptionGroup *)self languageOptions];
+    v12 = [languageOptions3 isEqual:languageOptions4];
 
     if (!v12)
     {
@@ -207,18 +207,18 @@ LABEL_9:
     }
   }
 
-  v14 = [(MRLanguageOptionGroup *)v4 defaultLanguageOption];
-  v15 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
-  if (v14 == v15)
+  defaultLanguageOption = [(MRLanguageOptionGroup *)equalCopy defaultLanguageOption];
+  defaultLanguageOption2 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
+  if (defaultLanguageOption == defaultLanguageOption2)
   {
     v13 = 1;
   }
 
   else
   {
-    v16 = [(MRLanguageOptionGroup *)v4 defaultLanguageOption];
-    v17 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
-    v13 = [v16 isEqual:v17];
+    defaultLanguageOption3 = [(MRLanguageOptionGroup *)equalCopy defaultLanguageOption];
+    defaultLanguageOption4 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
+    v13 = [defaultLanguageOption3 isEqual:defaultLanguageOption4];
   }
 
 LABEL_16:
@@ -229,31 +229,31 @@ LABEL_16:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRLanguageOptionGroup *)self dictionaryRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRLanguageOptionGroup *)self dictionaryRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(MRLanguageOptionGroup *)self hasAllowsEmptySelection])
   {
     [v5 setAllowsEmptySelection:{-[MRLanguageOptionGroup allowsEmptySelection](self, "allowsEmptySelection")}];
   }
 
-  v6 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
-  v7 = [v6 copyWithZone:a3];
+  defaultLanguageOption = [(MRLanguageOptionGroup *)self defaultLanguageOption];
+  v7 = [defaultLanguageOption copyWithZone:zone];
   [v5 setDefaultLanguageOption:v7];
 
-  v8 = [(MRLanguageOptionGroup *)self languageOptions];
+  languageOptions = [(MRLanguageOptionGroup *)self languageOptions];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __38__MRLanguageOptionGroup_copyWithZone___block_invoke;
   v11[3] = &__block_descriptor_40_e26__16__0__MRLanguageOption_8l;
-  v11[4] = a3;
-  v9 = [v8 mr_map:v11];
+  v11[4] = zone;
+  v9 = [languageOptions mr_map:v11];
   [v5 setLanguageOptions:v9];
 
   return v5;
@@ -266,22 +266,22 @@ id __38__MRLanguageOptionGroup_copyWithZone___block_invoke(uint64_t a1, void *a2
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  if ([v9 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
-    [v9 encodeBool:-[MRLanguageOptionGroup allowsEmptySelection](self forKey:{"allowsEmptySelection"), @"kMRLanguageOptionAllowEmptySelection"}];
-    v4 = [(MRLanguageOptionGroup *)self defaultLanguageOption];
-    v5 = [v4 protobuf];
-    [v9 encodeObject:v5 forKey:@"kMRLanguageOptionDefaultSelection"];
+    [coderCopy encodeBool:-[MRLanguageOptionGroup allowsEmptySelection](self forKey:{"allowsEmptySelection"), @"kMRLanguageOptionAllowEmptySelection"}];
+    defaultLanguageOption = [(MRLanguageOptionGroup *)self defaultLanguageOption];
+    protobuf = [defaultLanguageOption protobuf];
+    [coderCopy encodeObject:protobuf forKey:@"kMRLanguageOptionDefaultSelection"];
 
-    v6 = [(MRLanguageOptionGroup *)self languageOptions];
-    v7 = [v6 mr_map:&__block_literal_global_30];
-    [v9 encodeObject:v7 forKey:@"kMRLanguageOptions"];
+    languageOptions = [(MRLanguageOptionGroup *)self languageOptions];
+    v7 = [languageOptions mr_map:&__block_literal_global_30];
+    [coderCopy encodeObject:v7 forKey:@"kMRLanguageOptions"];
 
-    v8 = [(MRLanguageOptionGroup *)self protobuf];
-    [v9 encodeObject:v8 forKey:@"protobuf"];
+    protobuf2 = [(MRLanguageOptionGroup *)self protobuf];
+    [coderCopy encodeObject:protobuf2 forKey:@"protobuf"];
   }
 
   else
@@ -290,9 +290,9 @@ id __38__MRLanguageOptionGroup_copyWithZone___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (MRLanguageOptionGroup)initWithCoder:(id)a3
+- (MRLanguageOptionGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MRLanguageOptionGroup;
   v5 = [(MRLanguageOptionGroup *)&v16 init];
@@ -301,10 +301,10 @@ id __38__MRLanguageOptionGroup_copyWithZone___block_invoke(uint64_t a1, void *a2
     goto LABEL_10;
   }
 
-  if (![v4 allowsKeyedCoding])
+  if (![coderCopy allowsKeyedCoding])
   {
     v6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:38];
-    [v4 failWithError:v6];
+    [coderCopy failWithError:v6];
 LABEL_9:
 
 LABEL_10:
@@ -312,14 +312,14 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      -[MRLanguageOptionGroup setAllowsEmptySelection:](v5, "setAllowsEmptySelection:", [v4 decodeBoolForKey:@"kMRLanguageOptionAllowEmptySelection"]);
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionDefaultSelection"];
+      -[MRLanguageOptionGroup setAllowsEmptySelection:](v5, "setAllowsEmptySelection:", [coderCopy decodeBoolForKey:@"kMRLanguageOptionAllowEmptySelection"]);
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMRLanguageOptionDefaultSelection"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -332,7 +332,7 @@ LABEL_10:
 
       v9 = MSVPropertyListDataClasses();
       v10 = [v9 setByAddingObject:objc_opt_class()];
-      v11 = [v4 decodeObjectOfClasses:v10 forKey:@"kMRLanguageOptions"];
+      v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"kMRLanguageOptions"];
       v12 = [v11 mr_map:&__block_literal_global_40_0];
       [(MRLanguageOptionGroup *)v5 setLanguageOptions:v12];
 

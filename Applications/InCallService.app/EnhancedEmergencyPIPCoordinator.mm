@@ -1,31 +1,31 @@
 @interface EnhancedEmergencyPIPCoordinator
-- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)a3;
-- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)a3;
-- (void)pictureInPictureProxy:(id)a3 willStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5;
+- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)animation;
+- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)animation;
+- (void)pictureInPictureProxy:(id)proxy willStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason;
 @end
 
 @implementation EnhancedEmergencyPIPCoordinator
 
-- (void)pictureInPictureProxy:(id)a3 willStopPictureInPictureWithAnimationType:(int64_t)a4 reason:(int64_t)a5
+- (void)pictureInPictureProxy:(id)proxy willStopPictureInPictureWithAnimationType:(int64_t)type reason:(int64_t)reason
 {
-  v7 = a3;
-  v9 = self;
-  sub_10017B05C(v9, v8, a5);
+  proxyCopy = proxy;
+  selfCopy = self;
+  sub_10017B05C(selfCopy, v8, reason);
 }
 
-- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)a3
+- (id)pictureInPictureProxyViewControllerWindowForTransitionAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   v6 = sub_10017B12C();
 
   return v6;
 }
 
-- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)a3
+- (CGRect)pictureInPictureProxyViewFrameForTransitionAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   v6 = sub_10017B438();
   v8 = v7;
   v10 = v9;

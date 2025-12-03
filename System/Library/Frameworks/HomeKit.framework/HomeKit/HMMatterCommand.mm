@@ -1,19 +1,19 @@
 @interface HMMatterCommand
-+ (id)commandWithProtoBuf:(id)a3 home:(id)a4;
++ (id)commandWithProtoBuf:(id)buf home:(id)home;
 + (id)new;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfAllowedCommandFieldsClass:(id)a3;
-- (BOOL)isKindOfAllowedExpectedValuesClass:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfAllowedCommandFieldsClass:(id)class;
+- (BOOL)isKindOfAllowedExpectedValuesClass:(id)class;
 - (HMMatterCommand)init;
-- (HMMatterCommand)initWithCoder:(id)a3;
-- (HMMatterCommand)initWithCommandID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6 commandFields:(id)a7 expectedValues:(id)a8;
-- (HMMatterCommand)initWithDictionary:(id)a3 home:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HMMatterCommand)initWithCoder:(id)coder;
+- (HMMatterCommand)initWithCommandID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory commandFields:(id)fields expectedValues:(id)values;
+- (HMMatterCommand)initWithDictionary:(id)dictionary home:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)encodeAsProtoBuf;
 - (id)serializeForAdd;
-- (void)_configureWithContext:(id)a3 home:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_configureWithContext:(id)context home:(id)home;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMMatterCommand
@@ -21,37 +21,37 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(HMMatterCommand *)self commandID];
-  v5 = [(HMMatterCommand *)self clusterID];
-  v6 = [(HMMatterCommand *)self endpointID];
-  v7 = [(HMMatterCommand *)self accessory];
-  v8 = [(HMMatterCommand *)self commandFields];
-  v9 = [(HMMatterCommand *)self expectedValues];
-  v10 = [v3 stringWithFormat:@"commandID: %@, clusterID: %@, endpointID: %@, accessory: %@, commandFields: %@, expectedValues: %@", v4, v5, v6, v7, v8, v9];
+  commandID = [(HMMatterCommand *)self commandID];
+  clusterID = [(HMMatterCommand *)self clusterID];
+  endpointID = [(HMMatterCommand *)self endpointID];
+  accessory = [(HMMatterCommand *)self accessory];
+  commandFields = [(HMMatterCommand *)self commandFields];
+  expectedValues = [(HMMatterCommand *)self expectedValues];
+  v10 = [v3 stringWithFormat:@"commandID: %@, clusterID: %@, endpointID: %@, accessory: %@, commandFields: %@, expectedValues: %@", commandID, clusterID, endpointID, accessory, commandFields, expectedValues];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
-  v5 = [HMMatterCommand allocWithZone:a3];
-  v6 = [(HMMatterCommand *)self commandID];
-  v7 = [(HMMatterCommand *)self endpointID];
-  v8 = [(HMMatterCommand *)self clusterID];
-  v9 = [(HMMatterCommand *)self accessory];
-  v10 = [(HMMatterCommand *)self commandFields];
-  v11 = [(HMMatterCommand *)self expectedValues];
-  v12 = [(HMMatterCommand *)v5 initWithCommandID:v6 endpointID:v7 clusterID:v8 accessory:v9 commandFields:v10 expectedValues:v11];
+  v5 = [HMMatterCommand allocWithZone:zone];
+  commandID = [(HMMatterCommand *)self commandID];
+  endpointID = [(HMMatterCommand *)self endpointID];
+  clusterID = [(HMMatterCommand *)self clusterID];
+  accessory = [(HMMatterCommand *)self accessory];
+  commandFields = [(HMMatterCommand *)self commandFields];
+  expectedValues = [(HMMatterCommand *)self expectedValues];
+  v12 = [(HMMatterCommand *)v5 initWithCommandID:commandID endpointID:endpointID clusterID:clusterID accessory:accessory commandFields:commandFields expectedValues:expectedValues];
 
   os_unfair_lock_unlock(&self->_lock);
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -61,7 +61,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -72,30 +72,30 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMMatterCommand *)self commandID];
-      v8 = [(HMMatterCommand *)v6 commandID];
+      commandID = [(HMMatterCommand *)self commandID];
+      commandID2 = [(HMMatterCommand *)v6 commandID];
       if (HMFEqualObjects())
       {
-        v9 = [(HMMatterCommand *)self clusterID];
-        v10 = [(HMMatterCommand *)v6 clusterID];
+        clusterID = [(HMMatterCommand *)self clusterID];
+        clusterID2 = [(HMMatterCommand *)v6 clusterID];
         if (HMFEqualObjects())
         {
-          v11 = [(HMMatterCommand *)self endpointID];
-          v12 = [(HMMatterCommand *)v6 endpointID];
+          endpointID = [(HMMatterCommand *)self endpointID];
+          endpointID2 = [(HMMatterCommand *)v6 endpointID];
           if (HMFEqualObjects())
           {
-            v13 = [(HMMatterCommand *)self accessory];
-            v21 = [(HMMatterCommand *)v6 accessory];
-            v22 = v13;
+            accessory = [(HMMatterCommand *)self accessory];
+            accessory2 = [(HMMatterCommand *)v6 accessory];
+            v22 = accessory;
             if (HMFEqualObjects())
             {
-              v14 = [(HMMatterCommand *)self commandFields];
+              commandFields = [(HMMatterCommand *)self commandFields];
               [(HMMatterCommand *)v6 commandFields];
-              v15 = v20 = v14;
+              v15 = v20 = commandFields;
               if (HMFEqualObjects())
               {
-                v19 = [(HMMatterCommand *)self expectedValues];
-                v18 = [(HMMatterCommand *)v6 expectedValues];
+                expectedValues = [(HMMatterCommand *)self expectedValues];
+                expectedValues2 = [(HMMatterCommand *)v6 expectedValues];
                 v16 = HMFEqualObjects();
               }
 
@@ -138,9 +138,9 @@
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -152,10 +152,10 @@
   objc_exception_throw(v10);
 }
 
-- (HMMatterCommand)initWithCoder:(id)a3
+- (HMMatterCommand)initWithCoder:(id)coder
 {
   v38[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = HMMatterCommand;
   v5 = [(HMMatterCommand *)&v32 init];
@@ -164,19 +164,19 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMClusterIDCodingKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMClusterIDCodingKey"];
   clusterID = v5->_clusterID;
   v5->_clusterID = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMEndpointIDCodingKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMEndpointIDCodingKey"];
   endpointID = v5->_endpointID;
   v5->_endpointID = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCommandKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCommandKey"];
   commandID = v5->_commandID;
   v5->_commandID = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessory"];
   accessory = v5->_accessory;
   v5->_accessory = v12;
 
@@ -188,7 +188,7 @@
   v38[4] = objc_opt_class();
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:5];
   v16 = [v14 setWithArray:v15];
-  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"HMCommandFieldsCodingKey"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"HMCommandFieldsCodingKey"];
   commandFields = v5->_commandFields;
   v5->_commandFields = v17;
 
@@ -200,7 +200,7 @@
   v37[4] = objc_opt_class();
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:5];
   v21 = [v19 setWithArray:v20];
-  v22 = [v4 decodeObjectOfClasses:v21 forKey:@"HMCommandExpectedValuesCodingKey"];
+  v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"HMCommandExpectedValuesCodingKey"];
   expectedValues = v5->_expectedValues;
   v5->_expectedValues = v22;
 
@@ -243,44 +243,44 @@ LABEL_7:
 - (id)encodeAsProtoBuf
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [(HMMatterCommand *)self accessory];
-  if (v3)
+  accessory = [(HMMatterCommand *)self accessory];
+  if (accessory)
   {
     v4 = objc_alloc_init(HMPBCommandContainer);
     v5 = MEMORY[0x1E696ACC8];
-    v6 = [(HMMatterCommand *)self commandID];
-    v7 = [v5 archivedDataWithRootObject:v6];
+    commandID = [(HMMatterCommand *)self commandID];
+    v7 = [v5 archivedDataWithRootObject:commandID];
     [(HMPBCommandContainer *)v4 setCommandID:v7];
 
     v8 = MEMORY[0x1E696ACC8];
-    v9 = [(HMMatterCommand *)self clusterID];
-    v10 = [v8 archivedDataWithRootObject:v9];
+    clusterID = [(HMMatterCommand *)self clusterID];
+    v10 = [v8 archivedDataWithRootObject:clusterID];
     [(HMPBCommandContainer *)v4 setClusterID:v10];
 
     v11 = MEMORY[0x1E696ACC8];
-    v12 = [(HMMatterCommand *)self endpointID];
-    v13 = [v11 archivedDataWithRootObject:v12];
+    endpointID = [(HMMatterCommand *)self endpointID];
+    v13 = [v11 archivedDataWithRootObject:endpointID];
     [(HMPBCommandContainer *)v4 setEndpointID:v13];
 
-    v14 = [HMPBAccessoryReference accessoryReferenceWithAccessory:v3];
+    v14 = [HMPBAccessoryReference accessoryReferenceWithAccessory:accessory];
     [(HMPBCommandContainer *)v4 setAccessoryReference:v14];
 
-    v15 = [(HMMatterCommand *)self commandFields];
+    commandFields = [(HMMatterCommand *)self commandFields];
 
-    if (v15)
+    if (commandFields)
     {
-      v16 = [(HMMatterCommand *)self commandFields];
-      v17 = [(HMMatterCommand *)self isKindOfAllowedCommandFieldsClass:v16];
+      commandFields2 = [(HMMatterCommand *)self commandFields];
+      v17 = [(HMMatterCommand *)self isKindOfAllowedCommandFieldsClass:commandFields2];
 
       if (!v17)
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = self;
+        selfCopy4 = self;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
           v38 = HMFGetLogIdentifier();
-          v39 = [(HMMatterCommand *)v36 commandFields];
+          commandFields3 = [(HMMatterCommand *)selfCopy4 commandFields];
           *buf = 138543618;
           v52 = v38;
           v53 = 2112;
@@ -300,18 +300,18 @@ LABEL_26:
       }
 
       v18 = MEMORY[0x1E696ACC8];
-      v19 = [(HMMatterCommand *)self commandFields];
+      commandFields4 = [(HMMatterCommand *)self commandFields];
       v50 = 0;
-      v20 = [v18 archivedDataWithRootObject:v19 requiringSecureCoding:1 error:&v50];
+      v20 = [v18 archivedDataWithRootObject:commandFields4 requiringSecureCoding:1 error:&v50];
       v21 = v50;
       [(HMPBCommandContainer *)v4 setCommandFields:v20];
 
-      v22 = [(HMPBCommandContainer *)v4 commandFields];
+      commandFields5 = [(HMPBCommandContainer *)v4 commandFields];
 
-      if (!v22)
+      if (!commandFields5)
       {
         v43 = objc_autoreleasePoolPush();
-        v44 = self;
+        selfCopy3 = self;
         v45 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
@@ -333,9 +333,9 @@ LABEL_24:
       }
     }
 
-    v23 = [(HMMatterCommand *)self expectedValues];
+    expectedValues = [(HMMatterCommand *)self expectedValues];
 
-    if (!v23)
+    if (!expectedValues)
     {
 LABEL_10:
       v30 = v4;
@@ -344,28 +344,28 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v24 = [(HMMatterCommand *)self expectedValues];
-    v25 = [(HMMatterCommand *)self isKindOfAllowedExpectedValuesClass:v24];
+    expectedValues2 = [(HMMatterCommand *)self expectedValues];
+    v25 = [(HMMatterCommand *)self isKindOfAllowedExpectedValuesClass:expectedValues2];
 
     if (v25)
     {
       v26 = MEMORY[0x1E696ACC8];
-      v27 = [(HMMatterCommand *)self expectedValues];
+      expectedValues3 = [(HMMatterCommand *)self expectedValues];
       v49 = 0;
-      v28 = [v26 archivedDataWithRootObject:v27 requiringSecureCoding:1 error:&v49];
+      v28 = [v26 archivedDataWithRootObject:expectedValues3 requiringSecureCoding:1 error:&v49];
       v21 = v49;
       [(HMPBCommandContainer *)v4 setExpectedValues:v28];
 
-      v29 = [(HMPBCommandContainer *)v4 expectedValues];
+      expectedValues4 = [(HMPBCommandContainer *)v4 expectedValues];
 
-      if (v29)
+      if (expectedValues4)
       {
 
         goto LABEL_10;
       }
 
       v43 = objc_autoreleasePoolPush();
-      v44 = self;
+      selfCopy3 = self;
       v45 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
@@ -381,12 +381,12 @@ LABEL_27:
     }
 
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy4 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       v38 = HMFGetLogIdentifier();
-      v39 = [(HMMatterCommand *)v36 expectedValues];
+      commandFields3 = [(HMMatterCommand *)selfCopy4 expectedValues];
       v42 = objc_opt_class();
       *buf = 138543618;
       v52 = v38;
@@ -401,7 +401,7 @@ LABEL_27:
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = self;
+  selfCopy5 = self;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
@@ -409,7 +409,7 @@ LABEL_27:
     *buf = 138543874;
     v52 = v34;
     v53 = 2112;
-    v54 = v32;
+    v54 = selfCopy5;
     v55 = 2112;
     v56 = 0;
     _os_log_impl(&dword_19BB39000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed encode action as protobuf, accessory is invalid %@:%@", buf, 0x20u);
@@ -424,10 +424,10 @@ LABEL_28:
   return v30;
 }
 
-- (BOOL)isKindOfAllowedCommandFieldsClass:(id)a3
+- (BOOL)isKindOfAllowedCommandFieldsClass:(id)class
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  classCopy = class;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -470,10 +470,10 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isKindOfAllowedExpectedValuesClass:(id)a3
+- (BOOL)isKindOfAllowedExpectedValuesClass:(id)class
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  classCopy = class;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -519,61 +519,61 @@ LABEL_11:
 - (id)serializeForAdd
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(HMMatterCommand *)self commandFields];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  commandFields = [(HMMatterCommand *)self commandFields];
 
-  if (v4)
+  if (commandFields)
   {
-    v5 = [(HMMatterCommand *)self commandFields];
-    v6 = encodeRootObject(v5);
-    [v3 setObject:v6 forKeyedSubscript:@"HMCommandFieldsKey"];
+    commandFields2 = [(HMMatterCommand *)self commandFields];
+    v6 = encodeRootObject(commandFields2);
+    [dictionary setObject:v6 forKeyedSubscript:@"HMCommandFieldsKey"];
   }
 
-  v7 = [(HMMatterCommand *)self expectedValues];
+  expectedValues = [(HMMatterCommand *)self expectedValues];
 
-  if (v7)
+  if (expectedValues)
   {
-    v8 = [(HMMatterCommand *)self expectedValues];
-    v9 = encodeRootObject(v8);
-    [v3 setObject:v9 forKeyedSubscript:@"HMCommandExpectedValuesKey"];
+    expectedValues2 = [(HMMatterCommand *)self expectedValues];
+    v9 = encodeRootObject(expectedValues2);
+    [dictionary setObject:v9 forKeyedSubscript:@"HMCommandExpectedValuesKey"];
   }
 
   v20[0] = @"kAccessoryUUID";
-  v10 = [(HMMatterCommand *)self accessory];
-  v11 = [v10 uuid];
-  v12 = [v11 UUIDString];
-  v21[0] = v12;
+  accessory = [(HMMatterCommand *)self accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
+  v21[0] = uUIDString;
   v20[1] = @"HMEndpointIDKey";
-  v13 = [(HMMatterCommand *)self endpointID];
-  v21[1] = v13;
+  endpointID = [(HMMatterCommand *)self endpointID];
+  v21[1] = endpointID;
   v20[2] = @"HMCommandIDKey";
-  v14 = [(HMMatterCommand *)self commandID];
-  v21[2] = v14;
+  commandID = [(HMMatterCommand *)self commandID];
+  v21[2] = commandID;
   v20[3] = @"HMClusterIDKey";
-  v15 = [(HMMatterCommand *)self clusterID];
-  v21[3] = v15;
+  clusterID = [(HMMatterCommand *)self clusterID];
+  v21[3] = clusterID;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:4];
-  [v3 addEntriesFromDictionary:v16];
+  [dictionary addEntriesFromDictionary:v16];
 
-  v17 = [v3 copy];
+  v17 = [dictionary copy];
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (void)_configureWithContext:(id)a3 home:(id)a4
+- (void)_configureWithContext:(id)context home:(id)home
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMMatterCommand *)self accessory];
-  [v8 __configureWithContext:v7 home:v6];
+  homeCopy = home;
+  contextCopy = context;
+  accessory = [(HMMatterCommand *)self accessory];
+  [accessory __configureWithContext:contextCopy home:homeCopy];
 }
 
-- (HMMatterCommand)initWithDictionary:(id)a3 home:(id)a4
+- (HMMatterCommand)initWithDictionary:(id)dictionary home:(id)home
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  homeCopy = home;
   v47.receiver = self;
   v47.super_class = HMMatterCommand;
   v8 = [(HMMatterCommand *)&v47 init];
@@ -582,10 +582,10 @@ LABEL_11:
     goto LABEL_28;
   }
 
-  v9 = [v6 hmf_UUIDForKey:@"kAccessoryUUID"];
-  v10 = [v6 hmf_numberForKey:@"HMEndpointIDKey"];
-  v11 = [v6 hmf_numberForKey:@"HMClusterIDKey"];
-  v12 = [v6 hmf_numberForKey:@"HMCommandIDKey"];
+  v9 = [dictionaryCopy hmf_UUIDForKey:@"kAccessoryUUID"];
+  v10 = [dictionaryCopy hmf_numberForKey:@"HMEndpointIDKey"];
+  v11 = [dictionaryCopy hmf_numberForKey:@"HMClusterIDKey"];
+  v12 = [dictionaryCopy hmf_numberForKey:@"HMCommandIDKey"];
   v13 = v12;
   v14 = v9;
   v45 = v10;
@@ -600,56 +600,56 @@ LABEL_11:
   v46 = v18;
   if (v18)
   {
-    v43 = v7;
+    v43 = homeCopy;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
       v23 = HMFGetLogIdentifier();
       *buf = 138543618;
       v49 = v23;
       v50 = 2112;
-      v51 = v6;
+      v51 = dictionaryCopy;
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_DEBUG, "%{public}@Creating a matter command with dictionary: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
-    v24 = [v6 hmf_dataForKey:@"HMCommandFieldsKey"];
+    v24 = [dictionaryCopy hmf_dataForKey:@"HMCommandFieldsKey"];
 
     v25 = v14;
     if (v24)
     {
       v26 = HMAllowedClassesForMatterCommand();
-      v27 = [v6 hmf_unarchivedObjectForKey:@"HMCommandFieldsKey" ofClasses:v26];
+      v27 = [dictionaryCopy hmf_unarchivedObjectForKey:@"HMCommandFieldsKey" ofClasses:v26];
       commandFields = v20->_commandFields;
       v20->_commandFields = v27;
     }
 
     else
     {
-      v32 = [v6 hmf_dictionaryForKey:@"HMCommandFieldsKey"];
+      v32 = [dictionaryCopy hmf_dictionaryForKey:@"HMCommandFieldsKey"];
       v26 = v20->_commandFields;
       v20->_commandFields = v32;
     }
 
     v31 = v45;
 
-    v33 = [v6 hmf_dataForKey:@"HMCommandExpectedValuesKey"];
+    v33 = [dictionaryCopy hmf_dataForKey:@"HMCommandExpectedValuesKey"];
 
     if (v33)
     {
       v34 = HMAllowedClassesForMatterCommand();
-      v35 = [v6 hmf_unarchivedObjectForKey:@"HMCommandExpectedValuesKey" ofClasses:v34];
+      v35 = [dictionaryCopy hmf_unarchivedObjectForKey:@"HMCommandExpectedValuesKey" ofClasses:v34];
       expectedValues = v20->_expectedValues;
       v20->_expectedValues = v35;
     }
 
     else
     {
-      v37 = [v6 hmf_arrayForKey:@"HMCommandExpectedValuesKey"];
+      v37 = [dictionaryCopy hmf_arrayForKey:@"HMCommandExpectedValuesKey"];
       v34 = v20->_expectedValues;
       v20->_expectedValues = v37;
     }
 
-    v7 = v43;
+    homeCopy = v43;
     v38 = [v43 accessoryWithUUID:v25];
     accessory = v20->_accessory;
     v20->_accessory = v38;
@@ -664,7 +664,7 @@ LABEL_11:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v29 = v44 = v7;
+      v29 = v44 = homeCopy;
       v30 = objc_opt_class();
       *buf = 138543618;
       v49 = v29;
@@ -672,7 +672,7 @@ LABEL_11:
       v51 = v30;
       _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@Unable to decode %@, missing accessory/endpoint/cluster/command ids", buf, 0x16u);
 
-      v7 = v44;
+      homeCopy = v44;
     }
 
     objc_autoreleasePoolPop(v19);
@@ -695,26 +695,26 @@ LABEL_28:
   return v40;
 }
 
-- (HMMatterCommand)initWithCommandID:(id)a3 endpointID:(id)a4 clusterID:(id)a5 accessory:(id)a6 commandFields:(id)a7 expectedValues:(id)a8
+- (HMMatterCommand)initWithCommandID:(id)d endpointID:(id)iD clusterID:(id)clusterID accessory:(id)accessory commandFields:(id)fields expectedValues:(id)values
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  clusterIDCopy = clusterID;
+  accessoryCopy = accessory;
+  fieldsCopy = fields;
+  valuesCopy = values;
   v24.receiver = self;
   v24.super_class = HMMatterCommand;
   v18 = [(HMMatterCommand *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_commandID, a3);
-    objc_storeStrong(&v19->_endpointID, a4);
-    objc_storeStrong(&v19->_clusterID, a5);
-    objc_storeStrong(&v19->_accessory, a6);
-    objc_storeStrong(&v19->_commandFields, a7);
-    objc_storeStrong(&v19->_expectedValues, a8);
+    objc_storeStrong(&v18->_commandID, d);
+    objc_storeStrong(&v19->_endpointID, iD);
+    objc_storeStrong(&v19->_clusterID, clusterID);
+    objc_storeStrong(&v19->_accessory, accessory);
+    objc_storeStrong(&v19->_commandFields, fields);
+    objc_storeStrong(&v19->_expectedValues, values);
   }
 
   return v19;
@@ -733,27 +733,27 @@ LABEL_28:
   objc_exception_throw(v7);
 }
 
-+ (id)commandWithProtoBuf:(id)a3 home:(id)a4
++ (id)commandWithProtoBuf:(id)buf home:(id)home
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  bufCopy = buf;
+  homeCopy = home;
   v7 = MEMORY[0x1E696ACD0];
-  v8 = [v5 commandID];
-  v9 = [v7 unarchiveObjectWithData:v8];
+  commandID = [bufCopy commandID];
+  v9 = [v7 unarchiveObjectWithData:commandID];
 
   v10 = MEMORY[0x1E696ACD0];
-  v11 = [v5 clusterID];
-  v12 = [v10 unarchiveObjectWithData:v11];
+  clusterID = [bufCopy clusterID];
+  v12 = [v10 unarchiveObjectWithData:clusterID];
 
   v13 = MEMORY[0x1E696ACD0];
-  v14 = [v5 endpointID];
-  v15 = [v13 unarchiveObjectWithData:v14];
+  endpointID = [bufCopy endpointID];
+  v15 = [v13 unarchiveObjectWithData:endpointID];
 
   if (v9 && v12 && v15)
   {
-    v16 = [v5 accessoryReference];
-    v17 = [HMAccessory accessoryWithAccessoryReference:v16 home:v6];
+    accessoryReference = [bufCopy accessoryReference];
+    v17 = [HMAccessory accessoryWithAccessoryReference:accessoryReference home:homeCopy];
     if (v17)
     {
       v18 = MEMORY[0x1E696ACD0];
@@ -761,27 +761,27 @@ LABEL_28:
       HMAllowedClassesForMatterCommand();
       v20 = v41 = v17;
       v21 = [v19 setWithArray:v20];
-      [v5 commandFields];
-      v22 = v42 = v16;
+      [bufCopy commandFields];
+      v22 = v42 = accessoryReference;
       v45 = 0;
       v40 = [v18 unarchivedObjectOfClasses:v21 fromData:v22 error:&v45];
-      v43 = v6;
+      v43 = homeCopy;
       v23 = v45;
 
       v24 = MEMORY[0x1E696ACD0];
       v25 = MEMORY[0x1E695DFD8];
       v26 = HMAllowedClassesForMatterCommand();
       v27 = [v25 setWithArray:v26];
-      v28 = [v5 expectedValues];
+      expectedValues = [bufCopy expectedValues];
       v44 = v23;
-      v29 = [v24 unarchivedObjectOfClasses:v27 fromData:v28 error:&v44];
+      v29 = [v24 unarchivedObjectOfClasses:v27 fromData:expectedValues error:&v44];
       v30 = v44;
 
-      v6 = v43;
+      homeCopy = v43;
       v17 = v41;
       v31 = [[HMMatterCommand alloc] initWithCommandID:v9 endpointID:v15 clusterID:v12 accessory:v41 commandFields:v40 expectedValues:v29];
 
-      v16 = v42;
+      accessoryReference = v42;
     }
 
     else
@@ -794,7 +794,7 @@ LABEL_28:
         *buf = 138543618;
         v47 = v37;
         v48 = 2112;
-        v49 = v5;
+        v49 = bufCopy;
         _os_log_impl(&dword_19BB39000, v36, OS_LOG_TYPE_ERROR, "%{public}@Failed to create command from protobuf, accessory does not exist %@", buf, 0x16u);
 
         v17 = 0;

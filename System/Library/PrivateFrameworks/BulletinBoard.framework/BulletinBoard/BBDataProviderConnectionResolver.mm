@@ -1,23 +1,23 @@
 @interface BBDataProviderConnectionResolver
-+ (id)resolverForConnection:(id)a3;
++ (id)resolverForConnection:(id)connection;
 + (id)xpcInterface;
 - (BBDataProviderConnection)dataProviderConnection;
-- (BBDataProviderConnectionResolver)initWithConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BBDataProviderConnectionResolver)initWithConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)_invalidate;
-- (void)_queue_registerWithServer:(id)a3;
+- (void)_queue_registerWithServer:(id)server;
 - (void)_registerForPublicationNotification;
 - (void)dealloc;
 - (void)invalidate;
-- (void)ping:(id)a3;
+- (void)ping:(id)ping;
 @end
 
 @implementation BBDataProviderConnectionResolver
 
-- (BBDataProviderConnectionResolver)initWithConnection:(id)a3
+- (BBDataProviderConnectionResolver)initWithConnection:(id)connection
 {
-  v5 = a3;
-  if (!v5)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [(BBDataProviderConnectionResolver *)a2 initWithConnection:?];
   }
@@ -28,15 +28,15 @@
   v7 = v6;
   if (v6)
   {
-    [(BBDataProviderConnectionResolver *)v6 setDataProviderConnection:v5];
+    [(BBDataProviderConnectionResolver *)v6 setDataProviderConnection:connectionCopy];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.bulletinboard.BBDataProviderConnectionResolver", v8);
     queue = v7->_queue;
     v7->_queue = v9;
 
     v11 = objc_alloc(MEMORY[0x277CCAE98]);
-    v12 = [v5 serviceName];
-    v13 = [v11 initWithMachServiceName:v12];
+    serviceName = [connectionCopy serviceName];
+    v13 = [v11 initWithMachServiceName:serviceName];
     wakeupListener = v7->_wakeupListener;
     v7->_wakeupListener = v13;
 
@@ -65,10 +65,10 @@ void __55__BBDataProviderConnectionResolver_initWithConnection___block_invoke(ui
   [v3 _queue_registerWithServer:v2];
 }
 
-+ (id)resolverForConnection:(id)a3
++ (id)resolverForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[BBDataProviderConnectionResolver alloc] initWithConnection:v3];
+  connectionCopy = connection;
+  v4 = [[BBDataProviderConnectionResolver alloc] initWithConnection:connectionCopy];
 
   return v4;
 }
@@ -148,14 +148,14 @@ uint64_t __71__BBDataProviderConnectionResolver__registerForPublicationNotificat
   return result;
 }
 
-- (void)_queue_registerWithServer:(id)a3
+- (void)_queue_registerWithServer:(id)server
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  serverCopy = server;
   if (self->_connectionToServer)
   {
-    v6 = [(BBDataProviderConnectionResolver *)self dataProviderConnection];
-    [v6 setServerProxy:0];
+    dataProviderConnection = [(BBDataProviderConnectionResolver *)self dataProviderConnection];
+    [dataProviderConnection setServerProxy:0];
 
     [(NSXPCConnection *)self->_connectionToServer invalidate];
     connectionToServer = self->_connectionToServer;
@@ -186,30 +186,30 @@ uint64_t __71__BBDataProviderConnectionResolver__registerForPublicationNotificat
   v28[2] = __62__BBDataProviderConnectionResolver__queue_registerWithServer___block_invoke_18;
   v28[3] = &unk_278D2B6D8;
   v28[4] = self;
-  v14 = v5;
+  v14 = serverCopy;
   v29 = v14;
   v15 = [(NSXPCConnection *)v13 remoteObjectProxyWithErrorHandler:v28];
   if (v15)
   {
-    v16 = [(BBDataProviderConnectionResolver *)self dataProviderConnection];
-    v17 = [v16 serviceName];
-    if (!v16)
+    dataProviderConnection2 = [(BBDataProviderConnectionResolver *)self dataProviderConnection];
+    serviceName = [dataProviderConnection2 serviceName];
+    if (!dataProviderConnection2)
     {
-      v22 = [MEMORY[0x277CCA890] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"BBDataProviderConnectionResolver.m" lineNumber:131 description:@"dataProviderConnection is nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"BBDataProviderConnectionResolver.m" lineNumber:131 description:@"dataProviderConnection is nil"];
     }
 
-    if (!v17)
+    if (!serviceName)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"BBDataProviderConnectionResolver.m" lineNumber:132 description:@"Must register a non-nil service name with BBDataProviderConnectionCheckinServer"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"BBDataProviderConnectionResolver.m" lineNumber:132 description:@"Must register a non-nil service name with BBDataProviderConnectionCheckinServer"];
     }
 
     v18 = BBLogConnection;
     if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v17;
+      *(&buf + 4) = serviceName;
       _os_log_impl(&dword_241EFF000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ is registering with BulletinBoard", &buf, 0xCu);
     }
 
@@ -219,17 +219,17 @@ uint64_t __71__BBDataProviderConnectionResolver__registerForPublicationNotificat
     v35 = __Block_byref_object_copy__8;
     v36 = __Block_byref_object_dispose__8;
     v37 = self->_connectionToServer;
-    v19 = [v16 bundleID];
+    bundleID = [dataProviderConnection2 bundleID];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __62__BBDataProviderConnectionResolver__queue_registerWithServer___block_invoke_26;
     v24[3] = &unk_278D2B700;
     p_buf = &buf;
     v24[4] = self;
-    v20 = v16;
+    v20 = dataProviderConnection2;
     v25 = v20;
     v26 = v14;
-    [v15 registerServiceName:v17 appBundleID:v19 completion:v24];
+    [v15 registerServiceName:serviceName appBundleID:bundleID completion:v24];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -315,40 +315,40 @@ uint64_t __48__BBDataProviderConnectionResolver_xpcInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BBDataProviderConnectionResolver *)self dataProviderConnection];
-  v9 = [v8 serviceName];
+  connectionCopy = connection;
+  listenerCopy = listener;
+  dataProviderConnection = [(BBDataProviderConnectionResolver *)self dataProviderConnection];
+  serviceName = [dataProviderConnection serviceName];
 
   v10 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543618;
-    v20 = v9;
+    v20 = serviceName;
     v21 = 2112;
-    v22 = v6;
+    v22 = connectionCopy;
     _os_log_impl(&dword_241EFF000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ received a connection request: %@", &v19, 0x16u);
   }
 
   wakeupListener = self->_wakeupListener;
 
-  if (wakeupListener != v7)
+  if (wakeupListener != listenerCopy)
   {
     goto LABEL_8;
   }
 
-  v12 = [v6 valueForEntitlement:@"com.apple.bulletinboard"];
-  v13 = [v12 BOOLValue];
+  v12 = [connectionCopy valueForEntitlement:@"com.apple.bulletinboard"];
+  bOOLValue = [v12 BOOLValue];
 
-  if (!v13)
+  if (!bOOLValue)
   {
     v16 = BBLogConnection;
     if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_ERROR))
     {
-      [BBDataProviderConnectionResolver listener:v9 shouldAcceptNewConnection:v16];
+      [BBDataProviderConnectionResolver listener:serviceName shouldAcceptNewConnection:v16];
     }
 
 LABEL_8:
@@ -356,11 +356,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [objc_opt_class() xpcInterface];
-  [v6 setExportedInterface:v14];
+  xpcInterface = [objc_opt_class() xpcInterface];
+  [connectionCopy setExportedInterface:xpcInterface];
 
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
   v15 = 1;
 LABEL_9:
 
@@ -368,11 +368,11 @@ LABEL_9:
   return v15;
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  (*(a3 + 2))(a3, a2);
-  v3 = [MEMORY[0x277CCAE80] currentConnection];
-  [v3 invalidate];
+  (*(ping + 2))(ping, a2);
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  [currentConnection invalidate];
 }
 
 - (BBDataProviderConnection)dataProviderConnection

@@ -1,19 +1,19 @@
 @interface RTNavigationRouteSummary
-- (BOOL)isEqual:(id)a3;
-- (RTNavigationRouteSummary)initWithCoder:(id)a3;
-- (RTNavigationRouteSummary)initWithOriginMapItem:(id)a3 destinationMapItem:(id)a4 travelTime:(double)a5;
+- (BOOL)isEqual:(id)equal;
+- (RTNavigationRouteSummary)initWithCoder:(id)coder;
+- (RTNavigationRouteSummary)initWithOriginMapItem:(id)item destinationMapItem:(id)mapItem travelTime:(double)time;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTNavigationRouteSummary
 
-- (RTNavigationRouteSummary)initWithOriginMapItem:(id)a3 destinationMapItem:(id)a4 travelTime:(double)a5
+- (RTNavigationRouteSummary)initWithOriginMapItem:(id)item destinationMapItem:(id)mapItem travelTime:(double)time
 {
-  v9 = a3;
-  v10 = a4;
-  if (v10)
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  if (mapItemCopy)
   {
     v16.receiver = self;
     v16.super_class = RTNavigationRouteSummary;
@@ -21,13 +21,13 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_originMapItem, a3);
-      objc_storeStrong(&v12->_destinationMapItem, a4);
-      v12->_travelTime = a5;
+      objc_storeStrong(&v11->_originMapItem, item);
+      objc_storeStrong(&v12->_destinationMapItem, mapItem);
+      v12->_travelTime = time;
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -39,50 +39,50 @@
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: destinationMapItem", buf, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTNavigationRouteSummary *)self originMapItem];
-  v5 = [(RTNavigationRouteSummary *)self destinationMapItem];
+  originMapItem = [(RTNavigationRouteSummary *)self originMapItem];
+  destinationMapItem = [(RTNavigationRouteSummary *)self destinationMapItem];
   [(RTNavigationRouteSummary *)self travelTime];
-  v7 = [v3 stringWithFormat:@"origin map item, %@, destination map item, %@, travelTime, %.2f", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"origin map item, %@, destination map item, %@, travelTime, %.2f", originMapItem, destinationMapItem, v6];
 
   return v7;
 }
 
-- (RTNavigationRouteSummary)initWithCoder:(id)a3
+- (RTNavigationRouteSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"OriginMapItem"];
-  v6 = [v4 decodeObjectForKey:@"DestinationMapItem"];
-  [v4 decodeDoubleForKey:@"TravelTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"OriginMapItem"];
+  v6 = [coderCopy decodeObjectForKey:@"DestinationMapItem"];
+  [coderCopy decodeDoubleForKey:@"TravelTime"];
   v8 = v7;
 
   v9 = [(RTNavigationRouteSummary *)self initWithOriginMapItem:v5 destinationMapItem:v6 travelTime:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originMapItem = self->_originMapItem;
-  v5 = a3;
-  [v5 encodeObject:originMapItem forKey:@"OriginMapItem"];
-  [v5 encodeObject:self->_destinationMapItem forKey:@"DestinationMapItem"];
-  [v5 encodeDouble:@"TravelTime" forKey:self->_travelTime];
+  coderCopy = coder;
+  [coderCopy encodeObject:originMapItem forKey:@"OriginMapItem"];
+  [coderCopy encodeObject:self->_destinationMapItem forKey:@"DestinationMapItem"];
+  [coderCopy encodeDouble:@"TravelTime" forKey:self->_travelTime];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(RTNavigationRouteSummary *)self originMapItem];
-  v4 = [v3 hash];
-  v5 = [(RTNavigationRouteSummary *)self destinationMapItem];
-  v6 = [v5 hash] ^ v4;
+  originMapItem = [(RTNavigationRouteSummary *)self originMapItem];
+  v4 = [originMapItem hash];
+  destinationMapItem = [(RTNavigationRouteSummary *)self destinationMapItem];
+  v6 = [destinationMapItem hash] ^ v4;
   v7 = MEMORY[0x277CCABB0];
   [(RTNavigationRouteSummary *)self travelTime];
   v8 = [v7 numberWithDouble:?];
@@ -91,10 +91,10 @@
   return v6 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -104,14 +104,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTNavigationRouteSummary *)self originMapItem];
-      v7 = [(RTNavigationRouteSummary *)v5 originMapItem];
-      if ([v6 isEqualToMapItem:v7])
+      v5 = equalCopy;
+      originMapItem = [(RTNavigationRouteSummary *)self originMapItem];
+      originMapItem2 = [(RTNavigationRouteSummary *)v5 originMapItem];
+      if ([originMapItem isEqualToMapItem:originMapItem2])
       {
-        v8 = [(RTNavigationRouteSummary *)self destinationMapItem];
-        v9 = [(RTNavigationRouteSummary *)v5 destinationMapItem];
-        if ([v8 isEqualToMapItem:v9])
+        destinationMapItem = [(RTNavigationRouteSummary *)self destinationMapItem];
+        destinationMapItem2 = [(RTNavigationRouteSummary *)v5 destinationMapItem];
+        if ([destinationMapItem isEqualToMapItem:destinationMapItem2])
         {
           [(RTNavigationRouteSummary *)self travelTime];
           v11 = v10;

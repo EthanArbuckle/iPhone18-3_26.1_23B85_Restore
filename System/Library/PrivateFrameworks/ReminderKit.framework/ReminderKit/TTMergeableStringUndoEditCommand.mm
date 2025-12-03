@@ -1,12 +1,12 @@
 @interface TTMergeableStringUndoEditCommand
-- (BOOL)addToGroup:(id)a3;
+- (BOOL)addToGroup:(id)group;
 - (BOOL)hasTopoIDsThatCanChange;
 - (NSString)description;
 - (TTMergeableStringUndoEditCommand)init;
-- (void)applyToString:(id)a3;
+- (void)applyToString:(id)string;
 - (void)dealloc;
-- (void)updateInsertTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4;
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4;
+- (void)updateInsertTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d;
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d;
 @end
 
 @implementation TTMergeableStringUndoEditCommand
@@ -46,7 +46,7 @@
   [(TTMergeableStringUndoEditCommand *)&v5 dealloc];
 }
 
-- (void)updateTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4
+- (void)updateTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d
 {
   v18 = 0;
   v19 = 0;
@@ -58,7 +58,7 @@
   {
     do
     {
-      updateTopoIDRange(v8++, a3, a4, &v18);
+      updateTopoIDRange(v8++, range, d, &v18);
     }
 
     while (v8 != v9);
@@ -70,13 +70,13 @@
     std::vector<TopoIDRange>::__assign_with_size[abi:ne200100]<TopoIDRange*,TopoIDRange*>(deleteRanges, v18, v19, 0xAAAAAAAAAAAAAAABLL * ((v19 - v18) >> 3));
   }
 
-  v15 = a3->var0.var0;
-  var1 = a3->var1;
-  v16 = a3->var0.var1;
+  v15 = range->var0.var0;
+  var1 = range->var1;
+  v16 = range->var0.var1;
   v17 = var1;
-  v12 = a4->var0.var0;
-  v11 = a4->var1;
-  v13 = a4->var0.var1;
+  v12 = d->var0.var0;
+  v11 = d->var1;
+  v13 = d->var0.var1;
   v14 = v11;
   [(TTMergeableStringUndoEditCommand *)self updateInsertTopoIDRange:&v15 toNewRangeID:&v12];
   v21 = &v18;
@@ -138,29 +138,29 @@ LABEL_4:
   return result;
 }
 
-- (void)updateInsertTopoIDRange:(TopoIDRange *)a3 toNewRangeID:(TopoIDRange *)a4
+- (void)updateInsertTopoIDRange:(TopoIDRange *)range toNewRangeID:(TopoIDRange *)d
 {
   insertStrings = self->_insertStrings;
   v7 = *insertStrings;
   v8 = insertStrings[1];
   while (v7 != v8)
   {
-    if ([*v7 isEqual:a3->var0.var0])
+    if ([*v7 isEqual:range->var0.var0])
     {
       v9 = *(v7 + 8);
-      var1 = a3->var0.var1;
-      if (v9 >= var1 && (v9 != var1 || [*v7 TTCompare:a3->var0.var0] != -1))
+      var1 = range->var0.var1;
+      if (v9 >= var1 && (v9 != var1 || [*v7 TTCompare:range->var0.var0] != -1))
       {
-        v11 = a3->var0.var0;
-        v12 = a3->var1 + a3->var0.var1;
+        v11 = range->var0.var0;
+        v12 = range->var1 + range->var0.var1;
         v14 = v11;
         v15 = v12;
         v13 = TopoID::operator>=(v7, &v14);
 
         if (!v13)
         {
-          objc_storeStrong(v7, a4->var0.var0);
-          *(v7 + 8) = *(v7 + 8) + a4->var0.var1 - a3->var0.var1;
+          objc_storeStrong(v7, d->var0.var0);
+          *(v7 + 8) = *(v7 + 8) + d->var0.var1 - range->var0.var1;
         }
       }
     }
@@ -169,9 +169,9 @@ LABEL_4:
   }
 }
 
-- (void)applyToString:(id)a3
+- (void)applyToString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   deleteRanges = self->_deleteRanges;
   v6 = *deleteRanges;
   v7 = deleteRanges[1];
@@ -191,9 +191,9 @@ LABEL_4:
       v17 = v12;
       v18 = v10;
       v19 = v11;
-      if (v4)
+      if (stringCopy)
       {
-        [v4 getSubstrings:&v20 forTopoIDRange:&v17];
+        [stringCopy getSubstrings:&v20 forTopoIDRange:&v17];
       }
 
       else
@@ -207,8 +207,8 @@ LABEL_4:
     __p = 0;
     v15 = 0;
     v16 = 0;
-    [v4 getCharacterRanges:&__p forSubstrings:&v20];
-    [v4 deleteSubstrings:&v20 withCharacterRanges:&__p];
+    [stringCopy getCharacterRanges:&__p forSubstrings:&v20];
+    [stringCopy deleteSubstrings:&v20 withCharacterRanges:&__p];
     if (__p)
     {
       v15 = __p;
@@ -224,16 +224,16 @@ LABEL_4:
 
   if (*(self->_insertStrings + 1) != *self->_insertStrings)
   {
-    [v4 undeleteSubstrings:?];
+    [stringCopy undeleteSubstrings:?];
   }
 }
 
-- (BOOL)addToGroup:(id)a3
+- (BOOL)addToGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(TTMergeableStringUndoEditCommand *)self deleteRanges];
-  v6 = *v5;
-  v7 = v5[1];
+  groupCopy = group;
+  deleteRanges = [(TTMergeableStringUndoEditCommand *)self deleteRanges];
+  v6 = *deleteRanges;
+  v7 = deleteRanges[1];
   while (v6 != v7)
   {
     v8 = *v6;
@@ -241,9 +241,9 @@ LABEL_4:
     v9 = *(v6 + 16);
     v12 = *(v6 + 8);
     v13 = v9;
-    if (v4)
+    if (groupCopy)
     {
-      [v4 addSeenRange:&v11];
+      [groupCopy addSeenRange:&v11];
     }
 
     else
@@ -267,8 +267,8 @@ LABEL_4:
   {
     do
     {
-      v7 = [*v5 TTShortDescription];
-      [v3 appendFormat:@"%@:%d-%u, ", v7, *(v5 + 8), (*(v5 + 8) + *(v5 + 16) - 1)];
+      tTShortDescription = [*v5 TTShortDescription];
+      [v3 appendFormat:@"%@:%d-%u, ", tTShortDescription, *(v5 + 8), (*(v5 + 8) + *(v5 + 16) - 1)];
 
       v5 += 24;
     }
@@ -284,8 +284,8 @@ LABEL_4:
   {
     do
     {
-      v11 = [*v9 TTShortDescription];
-      [v3 appendFormat:@"%@:%d-%u=>'%@', ", v11, *(v9 + 8), (*(v9 + 8) + *(v9 + 16) - 1), *(v9 + 24)];
+      tTShortDescription2 = [*v9 TTShortDescription];
+      [v3 appendFormat:@"%@:%d-%u=>'%@', ", tTShortDescription2, *(v9 + 8), (*(v9 + 8) + *(v9 + 16) - 1), *(v9 + 24)];
 
       v9 += 32;
     }

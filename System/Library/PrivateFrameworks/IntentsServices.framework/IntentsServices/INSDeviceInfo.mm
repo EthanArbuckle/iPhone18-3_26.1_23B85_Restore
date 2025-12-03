@@ -1,45 +1,45 @@
 @interface INSDeviceInfo
-+ (id)newWithBuilder:(id)a3;
-- (INSDeviceInfo)initWithAceVersion:(id)a3;
-- (void)setAceVersion:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (INSDeviceInfo)initWithAceVersion:(id)version;
+- (void)setAceVersion:(id)version;
 @end
 
 @implementation INSDeviceInfo
 
-- (void)setAceVersion:(id)a3
+- (void)setAceVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   mutableAceVersion = self->_mutableAceVersion;
   self->_mutableAceVersion = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (INSDeviceInfo)initWithAceVersion:(id)a3
+- (INSDeviceInfo)initWithAceVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v9.receiver = self;
   v9.super_class = INSDeviceInfo;
   v6 = [(INSDeviceInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_aceVersion, a3);
+    objc_storeStrong(&v6->_aceVersion, version);
   }
 
   return v7;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = objc_alloc_init(INSDeviceInfo);
-  if (v4)
+  if (builderCopy)
   {
-    v4[2](v4, v5);
-    v6 = [a1 alloc];
-    v7 = [(INSDeviceInfo *)v5 mutableAceVersion];
-    v8 = [v6 initWithAceVersion:v7];
+    builderCopy[2](builderCopy, v5);
+    v6 = [self alloc];
+    mutableAceVersion = [(INSDeviceInfo *)v5 mutableAceVersion];
+    v8 = [v6 initWithAceVersion:mutableAceVersion];
   }
 
   else

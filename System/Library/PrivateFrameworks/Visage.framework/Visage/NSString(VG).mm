@@ -21,7 +21,7 @@
   v6[2] = BYTE1(v3);
   v6[3] = v3;
   v6[4] = 0;
-  v4 = [a1 stringWithCString:v6 encoding:1];
+  v4 = [self stringWithCString:v6 encoding:1];
 
   return v4;
 }

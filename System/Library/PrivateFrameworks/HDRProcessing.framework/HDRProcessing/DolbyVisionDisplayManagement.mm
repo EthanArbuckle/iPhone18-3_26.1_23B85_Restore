@@ -1,39 +1,39 @@
 @interface DolbyVisionDisplayManagement
-- (DolbyVisionDisplayManagement)initWithDevice:(id)a3;
-- (DolbyVisionDisplayManagement)initWithTmLutSize:(int)a3;
-- (float)dovi84_getScalingFactorForPT:(float)a3 tableSize:(unint64_t)a4 config:(id *)a5 tmParam:(const _DoViTMParam *)a6 edrAdaptationParam:(const _EdrAdaptationParam *)a7 ambAdaptationParam:(const _AmbAdaptationParam *)a8 hlgOOTFCombined:(BOOL)a9;
-- (id)getComputePipeLineStateForShader:(id)a3;
-- (id)initTmEngine:(int)a3 device:(id)a4;
-- (void)dovi84_setupTmParams:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 applyPostRGBtoRGBMatrixScaler:(BOOL *)a6 sMinPq:(float)a7 sMaxPq:(float)a8 tMinPq:(float)a9 tMaxPq:(float)a10 nominalPQ:(float)a11 targetingDoviLLOrSDR:(BOOL)a12 dm40:(id)a13;
-- (void)dovi_setSat2FactorTable:(float *)a3 tableSize:(unint64_t)a4 config:(id *)a5 llDovi:(BOOL)a6 applyDoVi84SatAdjustment:(BOOL)a7;
-- (void)dovi_setScalingFactorTable:(float *)a3 lutInput:(const float *)a4 tableSize:(unint64_t)a5 config:(id *)a6 hdrCtrl:(id *)a7 tmParam:(const _DoViTMParam *)a8 edrAdaptationParam:(const _EdrAdaptationParam *)a9 ambAdaptationParam:(const _AmbAdaptationParam *)a10 hlgOOTFCombined:(BOOL)a11 hlgOOTFOnly:(BOOL)a12 isDoVi84:(BOOL)a13 tcCtrl:(ToneCurve_Control *)a14;
-- (void)encodeToCommandBuffer:(id)a3 Input:(__IOSurface *)a4 Output:(__IOSurface *)a5 MetaData:(id *)a6;
-- (void)encodeToCommandBuffer:(id)a3 Input:(__IOSurface *)a4 Output:(__IOSurface *)a5 MetaData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8;
-- (void)getSat2Parameters:(id *)a3;
-- (void)getToneCurves:(id *)a3 tcCtrl:(ToneCurve_Control *)a4 tmData:(_TMData *)a5;
-- (void)getToneCurvesDM31:(id *)a3;
-- (void)hlg_setupTmParams:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 dm40:(id)a6 applyPostRGBtoRGBMatrixScaler:(BOOL *)a7 pHistBasedToneMapping:(id)a8;
+- (DolbyVisionDisplayManagement)initWithDevice:(id)device;
+- (DolbyVisionDisplayManagement)initWithTmLutSize:(int)size;
+- (float)dovi84_getScalingFactorForPT:(float)t tableSize:(unint64_t)size config:(id *)config tmParam:(const _DoViTMParam *)param edrAdaptationParam:(const _EdrAdaptationParam *)adaptationParam ambAdaptationParam:(const _AmbAdaptationParam *)ambAdaptationParam hlgOOTFCombined:(BOOL)combined;
+- (id)getComputePipeLineStateForShader:(id)shader;
+- (id)initTmEngine:(int)engine device:(id)device;
+- (void)dovi84_setupTmParams:(id *)params hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl applyPostRGBtoRGBMatrixScaler:(BOOL *)scaler sMinPq:(float)pq sMaxPq:(float)maxPq tMinPq:(float)minPq tMaxPq:(float)self0 nominalPQ:(float)self1 targetingDoviLLOrSDR:(BOOL)self2 dm40:(id)self3;
+- (void)dovi_setSat2FactorTable:(float *)table tableSize:(unint64_t)size config:(id *)config llDovi:(BOOL)dovi applyDoVi84SatAdjustment:(BOOL)adjustment;
+- (void)dovi_setScalingFactorTable:(float *)table lutInput:(const float *)input tableSize:(unint64_t)size config:(id *)config hdrCtrl:(id *)ctrl tmParam:(const _DoViTMParam *)param edrAdaptationParam:(const _EdrAdaptationParam *)adaptationParam ambAdaptationParam:(const _AmbAdaptationParam *)self0 hlgOOTFCombined:(BOOL)self1 hlgOOTFOnly:(BOOL)self2 isDoVi84:(BOOL)self3 tcCtrl:(ToneCurve_Control *)self4;
+- (void)encodeToCommandBuffer:(id)buffer Input:(__IOSurface *)input Output:(__IOSurface *)output MetaData:(id *)data;
+- (void)encodeToCommandBuffer:(id)buffer Input:(__IOSurface *)input Output:(__IOSurface *)output MetaData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl;
+- (void)getSat2Parameters:(id *)parameters;
+- (void)getToneCurves:(id *)curves tcCtrl:(ToneCurve_Control *)ctrl tmData:(_TMData *)data;
+- (void)getToneCurvesDM31:(id *)m31;
+- (void)hlg_setupTmParams:(id *)params hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl dm40:(id)dm40 applyPostRGBtoRGBMatrixScaler:(BOOL *)scaler pHistBasedToneMapping:(id)mapping;
 - (void)releaseResources;
-- (void)setConvertConfig:(id *)a3 tcCtrl:(ToneCurve_Control *)a4 hdrCtrl:(id *)a5 auxData:(_AuxData *)a6 tmData:(_TMData *)a7;
-- (void)setDisplayManagementConfigFromDictionary:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 infoFrame:(id *)a6;
-- (void)setDisplayManagementConfigFromMetaData:(id *)a3 config:(id *)a4 hdrCtrl:(id *)a5 tcCtrl:(ToneCurve_Control *)a6;
-- (void)setDisplayManagementToneMappingConfigFromDictionary:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 infoFrame:(id *)a6;
-- (void)setDisplayManagementToneMappingConfigFromMetaData:(id *)a3 config:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 hdrCtrl:(id *)a6 auxData:(_AuxData *)a7 dpcParam:(_DpcParam *)a8;
-- (void)setupDoViDmVersion:(id *)a3 tmData:(_TMData *)a4 hdrCtrl:(id *)a5 tcCtrl:(ToneCurve_Control *)a6;
+- (void)setConvertConfig:(id *)config tcCtrl:(ToneCurve_Control *)ctrl hdrCtrl:(id *)hdrCtrl auxData:(_AuxData *)data tmData:(_TMData *)tmData;
+- (void)setDisplayManagementConfigFromDictionary:(id *)dictionary hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl infoFrame:(id *)frame;
+- (void)setDisplayManagementConfigFromMetaData:(id *)data config:(id *)config hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl;
+- (void)setDisplayManagementToneMappingConfigFromDictionary:(id *)dictionary hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl infoFrame:(id *)frame;
+- (void)setDisplayManagementToneMappingConfigFromMetaData:(id *)data config:(id *)config tcCtrl:(ToneCurve_Control *)ctrl hdrCtrl:(id *)hdrCtrl auxData:(_AuxData *)auxData dpcParam:(_DpcParam *)param;
+- (void)setupDoViDmVersion:(id *)version tmData:(_TMData *)data hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl;
 - (void)setupMetal;
-- (void)setupTexturesWithInput:(__IOSurface *)a3 Output:(__IOSurface *)a4;
+- (void)setupTexturesWithInput:(__IOSurface *)input Output:(__IOSurface *)output;
 @end
 
 @implementation DolbyVisionDisplayManagement
 
-- (float)dovi84_getScalingFactorForPT:(float)a3 tableSize:(unint64_t)a4 config:(id *)a5 tmParam:(const _DoViTMParam *)a6 edrAdaptationParam:(const _EdrAdaptationParam *)a7 ambAdaptationParam:(const _AmbAdaptationParam *)a8 hlgOOTFCombined:(BOOL)a9
+- (float)dovi84_getScalingFactorForPT:(float)t tableSize:(unint64_t)size config:(id *)config tmParam:(const _DoViTMParam *)param edrAdaptationParam:(const _EdrAdaptationParam *)adaptationParam ambAdaptationParam:(const _AmbAdaptationParam *)ambAdaptationParam hlgOOTFCombined:(BOOL)combined
 {
-  SDRTmax_nits = a6->SDRTmax_nits;
-  OOTFMixingFactor = a6->OOTFMixingFactor;
-  tm_Smax_C = a6->tm_Smax_C;
-  tm_Smin_C = a6->tm_Smin_C;
+  SDRTmax_nits = param->SDRTmax_nits;
+  OOTFMixingFactor = param->OOTFMixingFactor;
+  tm_Smax_C = param->tm_Smax_C;
+  tm_Smin_C = param->tm_Smin_C;
   v19 = tm_Smax_C == tm_Smin_C;
-  v20 = fmax(((a3 - tm_Smin_C) / (tm_Smax_C - tm_Smin_C)), 0.0);
+  v20 = fmax(((t - tm_Smin_C) / (tm_Smax_C - tm_Smin_C)), 0.0);
   *&v20 = v20;
   *&v20 = fminf(*&v20, 1.0);
   if (v19)
@@ -46,52 +46,52 @@
     v21 = *&v20;
   }
 
-  v22 = a3;
-  if (a9)
+  tCopy = t;
+  if (combined)
   {
-    v23 = -(a3 + -0.0000014619);
-    if (a3 >= 0.00000073096)
+    tCopy2 = -(t + -0.0000014619);
+    if (t >= 0.00000073096)
     {
-      v23 = a3;
+      tCopy2 = t;
     }
 
-    v24 = flt_2508CD850[a3 < 0.00000073096];
-    v25 = powf(v23, 0.012683);
+    v24 = flt_2508CD850[t < 0.00000073096];
+    v25 = powf(tCopy2, 0.012683);
     v26 = fmax(((v25 + -0.83594) / ((v25 * -18.688) + 18.852)), 0.0);
     v27 = powf(v26, 6.2774);
-    v28 = a6->Smin_nits + (powf((v24 * v27) / 1000.0, a5->var67 + 1.0) * (1000.0 - a6->Smin_nits));
+    v28 = param->Smin_nits + (powf((v24 * v27) / 1000.0, config->var67 + 1.0) * (1000.0 - param->Smin_nits));
     if (v28 >= 0.0)
     {
       v30 = powf(v28 * 0.0001, 0.1593);
-      v22 = powf(((v30 * 18.852) + 0.83594) / ((v30 * 18.688) + 1.0), 78.844);
+      tCopy = powf(((v30 * 18.852) + 0.83594) / ((v30 * 18.688) + 1.0), 78.844);
     }
 
     else
     {
       v29 = powf(v28 * -0.0001, 0.1593);
-      v22 = 0.0000014619 - powf(((v29 * 18.852) + 0.83594) / ((v29 * 18.688) + 1.0), 78.844);
+      tCopy = 0.0000014619 - powf(((v29 * 18.852) + 0.83594) / ((v29 * 18.688) + 1.0), 78.844);
     }
   }
 
-  v31 = v22;
-  if (a6->on)
+  v31 = tCopy;
+  if (param->on)
   {
-    if (LODWORD(a5[1].var46) == 4)
+    if (LODWORD(config[1].var46) == 4)
     {
-      *&v20 = v22;
-      [(DolbyVisionDM4 *)self->_dm40 toneMapI:a4, v20];
+      *&v20 = tCopy;
+      [(DolbyVisionDM4 *)self->_dm40 toneMapI:size, v20];
       LODWORD(v33) = v32;
-      *&v34 = v22;
+      *&v34 = tCopy;
       [(DolbyVisionDM4 *)self->_dm40 satMapI:v34 Adm:v33];
       goto LABEL_33;
     }
 
-    v35 = powf(v22, a5->var36);
-    v36 = fmax(((a5->var37 + (a5->var38 * v35)) / ((a5->var39 * v35) + 1.0)), 0.0);
+    v35 = powf(tCopy, config->var36);
+    v36 = fmax(((config->var37 + (config->var38 * v35)) / ((config->var39 * v35) + 1.0)), 0.0);
     v37 = powf(v36, 0.33333);
-    if (BYTE1(a5[1].var49) == 1)
+    if (BYTE1(config[1].var49) == 1)
     {
-      v38 = applyLinearStretchInPQ(v37, a6->linearScaler, a6->linearOffset);
+      v38 = applyLinearStretchInPQ(v37, param->linearScaler, param->linearOffset);
     }
 
     else
@@ -105,7 +105,7 @@
       v40 = flt_2508CD850[v39];
       v41 = powf(v37, 0.012683);
       v42 = fmax(((v41 + -0.83594) / ((v41 * -18.688) + 18.852)), 0.0);
-      v43 = (v40 * powf(v42, 6.2774)) * a6->linearScaler;
+      v43 = (v40 * powf(v42, 6.2774)) * param->linearScaler;
       if (v43 < 0.0)
       {
         v44 = powf(v43 * -0.0001, 0.1593);
@@ -119,23 +119,23 @@
 
     v45 = v38;
 LABEL_21:
-    if (hasTrim(&a5->var0))
+    if (hasTrim(&config->var0))
     {
-      v47 = fmax((a5->var55.gcpcGamma + (v45 * *&a5->var55.on)), 0.0);
-      v31 = powf(v47, *&a5->var55.gcpcStage);
+      v47 = fmax((config->var55.gcpcGamma + (v45 * *&config->var55.on)), 0.0);
+      v31 = powf(v47, *&config->var55.gcpcStage);
     }
 
     else
     {
-      rangeMax = a5->var55.rangeMax;
-      v48 = -(a3 + -0.0000014619);
-      if (a3 >= 0.00000073096)
+      rangeMax = config->var55.rangeMax;
+      tCopy3 = -(t + -0.0000014619);
+      if (t >= 0.00000073096)
       {
-        v48 = a3;
+        tCopy3 = t;
       }
 
-      v49 = flt_2508CD850[a3 < 0.00000073096];
-      v50 = powf(v48, 0.012683);
+      v49 = flt_2508CD850[t < 0.00000073096];
+      v50 = powf(tCopy3, 0.012683);
       v51 = fmax(((v50 + -0.83594) / ((v50 * -18.688) + 18.852)), 0.0);
       v52 = (v49 * powf(v51, 6.2774)) / 1000.0;
       v53 = (SDRTmax_nits / 1000.0);
@@ -169,22 +169,22 @@ LABEL_21:
   }
 
 LABEL_33:
-  v61 = applyEdrAdaptationCurveS(a7, v31);
-  v62 = applyAmbAdaptationCurveS_C(a8, v61);
-  if (SLODWORD(a5[1].var46) <= 3 && a5->var55.gcpcGamma > 0.0)
+  v61 = applyEdrAdaptationCurveS(adaptationParam, v31);
+  v62 = applyAmbAdaptationCurveS_C(ambAdaptationParam, v61);
+  if (SLODWORD(config[1].var46) <= 3 && config->var55.gcpcGamma > 0.0)
   {
-    v63 = v62 / v22;
-    if (v22 == 0.0)
+    v63 = v62 / tCopy;
+    if (tCopy == 0.0)
     {
       v63 = 1.0;
     }
 
     v64 = fmin(v63, 2.0);
-    v62 = v22 * v64;
+    v62 = tCopy * v64;
   }
 
-  v65 = v62 / a3;
-  if (a3 == 0.0)
+  v65 = v62 / t;
+  if (t == 0.0)
   {
     v66 = 1.0;
   }
@@ -194,20 +194,20 @@ LABEL_33:
     v66 = v65;
   }
 
-  if (BYTE1(a5[1].var42) == 1 && LODWORD(a5[1].var44) == 1)
+  if (BYTE1(config[1].var42) == 1 && LODWORD(config[1].var44) == 1)
   {
-    v67 = *&a5[1].var45;
-    v68 = v66 * a3;
-    if ((v66 * a3) < 0.00000073096)
+    v67 = *&config[1].var45;
+    v68 = v66 * t;
+    if ((v66 * t) < 0.00000073096)
     {
       v68 = -(v68 + -0.0000014619);
     }
 
-    v69 = flt_2508CD850[(v66 * a3) < 0.00000073096];
+    v69 = flt_2508CD850[(v66 * t) < 0.00000073096];
     v70 = powf(v68, 0.012683);
     v71 = fmax(((v70 + -0.83594) / ((v70 * -18.688) + 18.852)), 0.0);
     v72 = powf(v71, 6.2774);
-    v73 = pow(((v69 * v72) / v67), 1.0 / a5[1].var43);
+    v73 = pow(((v69 * v72) / v67), 1.0 / config[1].var43);
     v74 = v67 * v73;
     if (v74 >= 0.0)
     {
@@ -221,8 +221,8 @@ LABEL_33:
       v76 = 0.0000014619 - powf(((v75 * 18.852) + 0.83594) / ((v75 * 18.688) + 1.0), 78.844);
     }
 
-    v78 = v76 / a3;
-    if (a3 == 0.0)
+    v78 = v76 / t;
+    if (t == 0.0)
     {
       v66 = 1.0;
     }
@@ -233,96 +233,96 @@ LABEL_33:
     }
   }
 
-  return (v21 * (1.0 - (a3 - (v66 * a3)))) + ((1.0 - v21) * powf(v66, 0.7));
+  return (v21 * (1.0 - (t - (v66 * t)))) + ((1.0 - v21) * powf(v66, 0.7));
 }
 
-- (void)dovi_setScalingFactorTable:(float *)a3 lutInput:(const float *)a4 tableSize:(unint64_t)a5 config:(id *)a6 hdrCtrl:(id *)a7 tmParam:(const _DoViTMParam *)a8 edrAdaptationParam:(const _EdrAdaptationParam *)a9 ambAdaptationParam:(const _AmbAdaptationParam *)a10 hlgOOTFCombined:(BOOL)a11 hlgOOTFOnly:(BOOL)a12 isDoVi84:(BOOL)a13 tcCtrl:(ToneCurve_Control *)a14
+- (void)dovi_setScalingFactorTable:(float *)table lutInput:(const float *)input tableSize:(unint64_t)size config:(id *)config hdrCtrl:(id *)ctrl tmParam:(const _DoViTMParam *)param edrAdaptationParam:(const _EdrAdaptationParam *)adaptationParam ambAdaptationParam:(const _AmbAdaptationParam *)self0 hlgOOTFCombined:(BOOL)self1 hlgOOTFOnly:(BOOL)self2 isDoVi84:(BOOL)self3 tcCtrl:(ToneCurve_Control *)self4
 {
-  if (!a13)
+  if (!vi84)
   {
     dm40 = self->_dm40;
-    v27 = a3;
-    v28 = a5;
-    v29 = a6;
-    v30 = a8;
+    tableCopy3 = table;
+    sizeCopy3 = size;
+    configCopy3 = config;
+    paramCopy3 = param;
 LABEL_9:
-    dovi_setScalingFactorTableS_C(v27, a4, v28, v29, v30, a9, a10, dm40);
+    dovi_setScalingFactorTableS_C(tableCopy3, input, sizeCopy3, configCopy3, paramCopy3, adaptationParam, ambAdaptationParam, dm40);
     return;
   }
 
-  v20 = a11;
-  if (BYTE1(a6[1].var51) == 1 && (!a7->var30 || a7->var2))
+  combinedCopy = combined;
+  if (BYTE1(config[1].var51) == 1 && (!ctrl->var30 || ctrl->var2))
   {
     v21 = self->_dm40;
-    if (a11)
+    if (combined)
     {
       v33 = self->_dm40;
       v32 = 0;
-      v22 = a3;
-      v23 = a5;
-      v24 = a6;
-      v25 = a8;
-      v20 = 1;
+      tableCopy4 = table;
+      sizeCopy4 = size;
+      configCopy4 = config;
+      paramCopy4 = param;
+      combinedCopy = 1;
 LABEL_7:
-      dovi84_setScalingFactorTableS_L(v22, a4, v23, v24, v25, a9, a10, v20, v32, v33);
+      dovi84_setScalingFactorTableS_L(tableCopy4, input, sizeCopy4, configCopy4, paramCopy4, adaptationParam, ambAdaptationParam, combinedCopy, v32, v33);
       return;
     }
 
-    v27 = a3;
-    v28 = a5;
-    v29 = a6;
-    v30 = a8;
+    tableCopy3 = table;
+    sizeCopy3 = size;
+    configCopy3 = config;
+    paramCopy3 = param;
     dm40 = v21;
     goto LABEL_9;
   }
 
   v31 = self->_dm40;
-  if (a12)
+  if (only)
   {
     v33 = self->_dm40;
     v32 = 1;
-    v22 = a3;
-    v23 = a5;
-    v24 = a6;
-    v25 = a8;
+    tableCopy4 = table;
+    sizeCopy4 = size;
+    configCopy4 = config;
+    paramCopy4 = param;
     goto LABEL_7;
   }
 
-  dovi84_setScalingFactorTableS_C(a3, a4, a5, a6, a8, a9, a10, a11, self->_dm40, a14);
+  dovi84_setScalingFactorTableS_C(table, input, size, config, param, adaptationParam, ambAdaptationParam, combined, self->_dm40, tcCtrl);
 }
 
-- (void)dovi_setSat2FactorTable:(float *)a3 tableSize:(unint64_t)a4 config:(id *)a5 llDovi:(BOOL)a6 applyDoVi84SatAdjustment:(BOOL)a7
+- (void)dovi_setSat2FactorTable:(float *)table tableSize:(unint64_t)size config:(id *)config llDovi:(BOOL)dovi applyDoVi84SatAdjustment:(BOOL)adjustment
 {
   v28 = 0;
-  if (a4)
+  if (size)
   {
-    v7 = a7;
-    v8 = a6;
-    v13 = a4;
-    v14 = a4;
+    adjustmentCopy = adjustment;
+    doviCopy = dovi;
+    sizeCopy = size;
+    sizeCopy2 = size;
     v15 = 1;
     v16 = 1;
     do
     {
       v17 = v16 - 1;
-      if (LODWORD(a5[1].var46) == 4)
+      if (LODWORD(config[1].var46) == 4)
       {
-        v18 = (v17 + v17) / v13;
+        v18 = (v17 + v17) / sizeCopy;
         v19 = v18;
         *&v18 = v19;
         [(DolbyVisionDM4 *)self->_dm40 toneMapS:v18];
-        a3[v15 - 1] = v20;
+        table[v15 - 1] = v20;
         *&v21 = v19;
         [(DolbyVisionDM4 *)self->_dm40 satMapS:v21];
       }
 
       else
       {
-        if (v8)
+        if (doviCopy)
         {
-          a3[v15 - 1] = 1.0 - ((*&a5->var56 * v17) / v14);
-          v23 = (*&a5->var56 * v17) / v14;
-          if (v7)
+          table[v15 - 1] = 1.0 - ((*&config->var56 * v17) / sizeCopy2);
+          v23 = (*&config->var56 * v17) / sizeCopy2;
+          if (adjustmentCopy)
           {
             v24 = v23 + 1.0;
           }
@@ -332,13 +332,13 @@ LABEL_7:
             v24 = 1.0 - v23;
           }
 
-          a3[v15] = v24;
+          table[v15] = v24;
           goto LABEL_16;
         }
 
-        getSat2FactorForI(v16 - 1, a4, &a5->var0, &v28);
-        a3[v15 - 1] = v25;
-        v26 = (v17 + v17) / v13;
+        getSat2FactorForI(v16 - 1, size, &config->var0, &v28);
+        table[v15 - 1] = v25;
+        v26 = (v17 + v17) / sizeCopy;
         if (v28)
         {
           v22 = v26 / -6.0 + 1.04;
@@ -346,7 +346,7 @@ LABEL_7:
 
         else
         {
-          v22 = 1.0 - (*&a5->var56 * v26);
+          v22 = 1.0 - (*&config->var56 * v26);
         }
 
         if (v22 < 0.6)
@@ -355,26 +355,26 @@ LABEL_7:
         }
       }
 
-      a3[v15] = v22;
+      table[v15] = v22;
 LABEL_16:
       v27 = v16++;
       v15 += 2;
     }
 
-    while (v27 < a4);
+    while (v27 < size);
   }
 }
 
-- (void)hlg_setupTmParams:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 dm40:(id)a6 applyPostRGBtoRGBMatrixScaler:(BOOL *)a7 pHistBasedToneMapping:(id)a8
+- (void)hlg_setupTmParams:(id *)params hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl dm40:(id)dm40 applyPostRGBtoRGBMatrixScaler:(BOOL *)scaler pHistBasedToneMapping:(id)mapping
 {
-  v205 = a6;
-  v204 = a8;
-  targetColorPrimaries = a5->targetColorPrimaries;
+  dm40Copy = dm40;
+  mappingCopy = mapping;
+  targetColorPrimaries = tcCtrl->targetColorPrimaries;
   v16 = targetColorPrimaries != *MEMORY[0x277CC4C20] && targetColorPrimaries == *MEMORY[0x277CC4C18];
-  targetDisplayContrastRatio = a5->auxData.targetDisplayContrastRatio;
-  targetMaxLinear = a5->targetMaxLinear;
-  v19 = a5->targetMaxLinear * targetDisplayContrastRatio;
-  var21 = a4->var21;
+  targetDisplayContrastRatio = tcCtrl->auxData.targetDisplayContrastRatio;
+  targetMaxLinear = tcCtrl->targetMaxLinear;
+  v19 = tcCtrl->targetMaxLinear * targetDisplayContrastRatio;
+  var21 = ctrl->var21;
   if (var21 >= 0x3E8)
   {
     v21 = 1000;
@@ -382,7 +382,7 @@ LABEL_16:
 
   else
   {
-    v21 = a4->var21;
+    v21 = ctrl->var21;
   }
 
   var12 = 1000.0;
@@ -391,30 +391,30 @@ LABEL_16:
     var12 = v21;
   }
 
-  if (BYTE1(a3[1].var49) == 1)
+  if (BYTE1(params[1].var49) == 1)
   {
     v23 = targetMaxLinear;
-    v24 = fminf(*&a3->var66, 4000.0);
+    v24 = fminf(*&params->var66, 4000.0);
   }
 
   else
   {
-    v24 = fminf(*&a3->var66, 4000.0);
+    v24 = fminf(*&params->var66, 4000.0);
     v23 = v24;
   }
 
-  var15 = a4->var15;
+  var15 = ctrl->var15;
   v26 = fmax(v19, 0.0);
   v27 = 0.0;
-  if (targetDisplayContrastRatio > 0.0001 && a5->tmData.gradingAmbientEnvironmentType == 1)
+  if (targetDisplayContrastRatio > 0.0001 && tcCtrl->tmData.gradingAmbientEnvironmentType == 1)
   {
     v27 = targetMaxLinear * 0.0000249999994;
   }
 
   v28 = v26;
-  hlgTmMode = a5->tmData.hlgTmMode;
+  hlgTmMode = tcCtrl->tmData.hlgTmMode;
   v196 = *MEMORY[0x277CC4C20];
-  v197 = a5->targetColorPrimaries;
+  v197 = tcCtrl->targetColorPrimaries;
   v195 = *MEMORY[0x277CC4C18];
   v194 = v16;
   if (hlgTmMode <= 3)
@@ -423,16 +423,16 @@ LABEL_16:
     {
       case 1:
         v30 = 0;
-        a5->tmData.Smin_nits = 0.0;
+        tcCtrl->tmData.Smin_nits = 0.0;
         goto LABEL_37;
       case 2:
         v30 = 0;
-        a5->tmData.Smin_nits = 0.0;
+        tcCtrl->tmData.Smin_nits = 0.0;
         var12 = v23;
         goto LABEL_37;
       case 3:
         v30 = 0;
-        a5->tmData.Smin_nits = 0.0;
+        tcCtrl->tmData.Smin_nits = 0.0;
         var12 = 1000.0;
         goto LABEL_37;
     }
@@ -445,7 +445,7 @@ LABEL_16:
     if (hlgTmMode == 6)
     {
       v30 = 0;
-      a5->tmData.Smin_nits = 0.0;
+      tcCtrl->tmData.Smin_nits = 0.0;
       v28 = 0.0;
       var12 = 1000.0;
       goto LABEL_35;
@@ -454,15 +454,15 @@ LABEL_16:
     if (hlgTmMode == 7)
     {
       v30 = 0;
-      var12 = a4->var12;
-      a5->tmData.Smin_nits = 0.0;
+      var12 = ctrl->var12;
+      tcCtrl->tmData.Smin_nits = 0.0;
 LABEL_35:
       v23 = var12;
       goto LABEL_37;
     }
 
 LABEL_30:
-    a5->tmData.Smin_nits = 0.0;
+    tcCtrl->tmData.Smin_nits = 0.0;
     v30 = 1;
     v28 = 0.0;
     var12 = 10000.0;
@@ -472,13 +472,13 @@ LABEL_30:
   if (hlgTmMode != 4)
   {
     v30 = 0;
-    a5->tmData.Smin_nits = 0.0;
+    tcCtrl->tmData.Smin_nits = 0.0;
     v31 = 12;
     goto LABEL_38;
   }
 
   v30 = 0;
-  a5->tmData.Smin_nits = 0.0;
+  tcCtrl->tmData.Smin_nits = 0.0;
   if (v23 < var12)
   {
     var12 = v23;
@@ -488,21 +488,21 @@ LABEL_37:
   v31 = var15;
 LABEL_38:
   v198 = var15;
-  a5->tmData.Smax_nits = var12;
-  a5->tmData.Tmin_nits = v28;
-  a5->tmData.Tmax_nits = v23;
-  *a7 = v30;
-  a5->tmData.tm_Tmin_nits = 0.0;
-  a5->tmData.tm_Tmax_nits = v24;
-  a5->tmData.edrAdaptationGain = 0.9;
-  diffuseInNits = a5->diffuseInNits;
-  a5->tmData.edrFactor = 1.0 / a5->maxEDRValue;
-  a5->tmData.diffuseInNits = diffuseInNits;
-  a5->tmData.Cmin_nits = 0.0;
-  a5->tmData.Cmax_nits = var12;
-  a5->tmData.Cend_nits = var12;
-  a5->tmData.Capl_nits = 10.0;
-  AmbientInNits = a5->AmbientInNits;
+  tcCtrl->tmData.Smax_nits = var12;
+  tcCtrl->tmData.Tmin_nits = v28;
+  tcCtrl->tmData.Tmax_nits = v23;
+  *scaler = v30;
+  tcCtrl->tmData.tm_Tmin_nits = 0.0;
+  tcCtrl->tmData.tm_Tmax_nits = v24;
+  tcCtrl->tmData.edrAdaptationGain = 0.9;
+  diffuseInNits = tcCtrl->diffuseInNits;
+  tcCtrl->tmData.edrFactor = 1.0 / tcCtrl->maxEDRValue;
+  tcCtrl->tmData.diffuseInNits = diffuseInNits;
+  tcCtrl->tmData.Cmin_nits = 0.0;
+  tcCtrl->tmData.Cmax_nits = var12;
+  tcCtrl->tmData.Cend_nits = var12;
+  tcCtrl->tmData.Capl_nits = 10.0;
+  AmbientInNits = tcCtrl->AmbientInNits;
   if (AmbientInNits >= 0.0)
   {
     v36 = powf(AmbientInNits * 0.0001, 0.1593);
@@ -515,7 +515,7 @@ LABEL_38:
     v35 = 0.0000014619 - powf(((v34 * 18.852) + 0.83594) / ((v34 * 18.688) + 1.0), 78.844);
   }
 
-  a5->tmData.ambientPQ = v35;
+  tcCtrl->tmData.ambientPQ = v35;
   v37 = powf(diffuseInNits / 10000.0, 0.1593);
   v38 = (v37 * 18.8515625 + 0.8359375) / (v37 * 18.6875 + 1.0);
   v39 = powf(v38, 78.844);
@@ -532,10 +532,10 @@ LABEL_38:
     v42 = v40;
   }
 
-  a5->tmData.nominalPQ = v42;
+  tcCtrl->tmData.nominalPQ = v42;
   v43 = v19;
-  a5->tmData.disp_Tmin_nits = v43;
-  gradingAmbientEnvironmentType = a5->tmData.gradingAmbientEnvironmentType;
+  tcCtrl->tmData.disp_Tmin_nits = v43;
+  gradingAmbientEnvironmentType = tcCtrl->tmData.gradingAmbientEnvironmentType;
   if (gradingAmbientEnvironmentType != 1)
   {
     if (overrideEdrAdaptationMode == -1 && GetConfig() && (v48 = GetConfig(), *HDRConfig::GetConfigEntryValue(v48, 0xE2u, 0) == 1))
@@ -605,16 +605,16 @@ LABEL_38:
   if (*v190)
   {
 LABEL_233:
-    a5->auxData.ambNitsCap = 1591.6;
+    tcCtrl->auxData.ambNitsCap = 1591.6;
   }
 
 LABEL_60:
-  setupHistogramBasedToneMapping(a3, a5, &a5->tmData, v204, v46, 0, gradingAmbientEnvironmentType != 1, v45, 5);
-  ambNitsCap = a5->auxData.ambNitsCap;
-  v51 = a5->AmbientInNits + -5.093;
+  setupHistogramBasedToneMapping(params, tcCtrl, &tcCtrl->tmData, mappingCopy, v46, 0, gradingAmbientEnvironmentType != 1, v45, 5);
+  ambNitsCap = tcCtrl->auxData.ambNitsCap;
+  v51 = tcCtrl->AmbientInNits + -5.093;
   if (v51 <= ambNitsCap)
   {
-    ambNitsCap = a5->AmbientInNits + -5.093;
+    ambNitsCap = tcCtrl->AmbientInNits + -5.093;
   }
 
   v41 = v51 < 0.0;
@@ -624,37 +624,37 @@ LABEL_60:
     v52 = ambNitsCap;
   }
 
-  a5->tmData.ambReflected_nits = a5->auxData.targetDisplayReflectionRatio * (a5->auxData.ambAdaptationRatio * v52);
+  tcCtrl->tmData.ambReflected_nits = tcCtrl->auxData.targetDisplayReflectionRatio * (tcCtrl->auxData.ambAdaptationRatio * v52);
   Cmin_nits = *&overrideCminNits;
   if (*&overrideCminNits < 0.0)
   {
-    Cmin_nits = a5->tmData.Cmin_nits;
+    Cmin_nits = tcCtrl->tmData.Cmin_nits;
   }
 
-  a5->tmData.Cmin_nits = Cmin_nits;
+  tcCtrl->tmData.Cmin_nits = Cmin_nits;
   Cmax_nits = *&overrideCmaxNits;
   if (*&overrideCmaxNits < 0.0)
   {
-    Cmax_nits = a5->tmData.Cmax_nits;
+    Cmax_nits = tcCtrl->tmData.Cmax_nits;
   }
 
-  a5->tmData.Cmax_nits = Cmax_nits;
+  tcCtrl->tmData.Cmax_nits = Cmax_nits;
   Capl_nits = *&overrideCmidNits;
   if (*&overrideCmidNits < 0.0)
   {
-    Capl_nits = a5->tmData.Capl_nits;
+    Capl_nits = tcCtrl->tmData.Capl_nits;
   }
 
-  a5->tmData.Capl_nits = Capl_nits;
-  a5->tmData.adaptiveSdiv_nits = calculateAdaptiveSdiv(Capl_nits, a5->tmData.Sdiv_nits);
-  v56 = a5->tmData.hdr10TmMode - 7;
+  tcCtrl->tmData.Capl_nits = Capl_nits;
+  tcCtrl->tmData.adaptiveSdiv_nits = calculateAdaptiveSdiv(Capl_nits, tcCtrl->tmData.Sdiv_nits);
+  v56 = tcCtrl->tmData.hdr10TmMode - 7;
   if (v56 < 6 && ((0x33u >> v56) & 1) != 0)
   {
-    a5->tmData.doviTmMode = dword_2508D0848[v56];
+    tcCtrl->tmData.doviTmMode = dword_2508D0848[v56];
   }
 
-  var10 = a4->var10;
-  if (a4->var2 != 1)
+  var10 = ctrl->var10;
+  if (ctrl->var2 != 1)
   {
     if (var10 >= 3)
     {
@@ -667,20 +667,20 @@ LABEL_60:
   if (var10 == 1)
   {
 LABEL_77:
-    *a7 = 1;
+    *scaler = 1;
   }
 
 LABEL_78:
-  if (LOBYTE(a3[1].var53) != 1)
+  if (LOBYTE(params[1].var53) != 1)
   {
-    a5->hlgTmParam.sceneLuxAdaptationParam.sceneLuxAdaptationMode = 0;
+    tcCtrl->hlgTmParam.sceneLuxAdaptationParam.sceneLuxAdaptationMode = 0;
     goto LABEL_120;
   }
 
-  hlg_generateSceneLuxAdaptationDataS(a5, &a5->tmData.hdr10TmMode, &a5->hlgTmParam.sceneLuxAdaptationParam);
-  calculateSceneLuxAdaptationParamS(&a5->hlgTmParam.sceneLuxAdaptationParam, self->_dmSceneLuxB2D_IPTModel);
-  a5->hlgTmParam.sceneLuxAdaptationParam.mixFactor = calcSceneLuxAdaptationMixFactor(a5->diffuseInNits);
-  if (a5->enableHybridCanonicalRendering)
+  hlg_generateSceneLuxAdaptationDataS(tcCtrl, &tcCtrl->tmData.hdr10TmMode, &tcCtrl->hlgTmParam.sceneLuxAdaptationParam);
+  calculateSceneLuxAdaptationParamS(&tcCtrl->hlgTmParam.sceneLuxAdaptationParam, self->_dmSceneLuxB2D_IPTModel);
+  tcCtrl->hlgTmParam.sceneLuxAdaptationParam.mixFactor = calcSceneLuxAdaptationMixFactor(tcCtrl->diffuseInNits);
+  if (tcCtrl->enableHybridCanonicalRendering)
   {
     if (!GetConfig() || (v58 = GetConfig(), *HDRConfig::GetConfigEntryValue(v58, 0xFEu, 0) >= 0.0))
     {
@@ -695,11 +695,11 @@ LABEL_78:
         v60 = 0.0;
       }
 
-      a5->hlgTmParam.sceneLuxAdaptationParam.mixFactor = v60;
+      tcCtrl->hlgTmParam.sceneLuxAdaptationParam.mixFactor = v60;
     }
   }
 
-  v63 = a5->tmData.Cmin_nits;
+  v63 = tcCtrl->tmData.Cmin_nits;
   if (v63 >= 0.0)
   {
     v66 = powf(v63 * 0.0001, 0.1593);
@@ -712,8 +712,8 @@ LABEL_78:
     v65 = 0.0000014619 - powf(((v64 * 18.852) + 0.83594) / ((v64 * 18.688) + 1.0), 78.844);
   }
 
-  v199 = applySceneLuxAdaptationS_C(&a5->hlgTmParam.sceneLuxAdaptationParam, v65);
-  v67 = a5->tmData.Capl_nits;
+  v199 = applySceneLuxAdaptationS_C(&tcCtrl->hlgTmParam.sceneLuxAdaptationParam, v65);
+  v67 = tcCtrl->tmData.Capl_nits;
   if (v67 >= 0.0)
   {
     v70 = powf(v67 * 0.0001, 0.1593);
@@ -726,8 +726,8 @@ LABEL_78:
     v69 = 0.0000014619 - powf(((v68 * 18.852) + 0.83594) / ((v68 * 18.688) + 1.0), 78.844);
   }
 
-  v71 = applySceneLuxAdaptationS_C(&a5->hlgTmParam.sceneLuxAdaptationParam, v69);
-  v72 = a5->tmData.Cmax_nits;
+  v71 = applySceneLuxAdaptationS_C(&tcCtrl->hlgTmParam.sceneLuxAdaptationParam, v69);
+  v72 = tcCtrl->tmData.Cmax_nits;
   if (v72 >= 0.0)
   {
     v75 = powf(v72 * 0.0001, 0.1593);
@@ -740,7 +740,7 @@ LABEL_78:
     v74 = 0.0000014619 - powf(((v73 * 18.852) + 0.83594) / ((v73 * 18.688) + 1.0), 78.844);
   }
 
-  v191 = applySceneLuxAdaptationS_C(&a5->hlgTmParam.sceneLuxAdaptationParam, v74);
+  v191 = applySceneLuxAdaptationS_C(&tcCtrl->hlgTmParam.sceneLuxAdaptationParam, v74);
   v76 = GetConfig();
   v77 = __PAIR64__(LODWORD(v191), LODWORD(v199));
   if (v76)
@@ -778,7 +778,7 @@ LABEL_78:
 
   v85 = powf(v83, 0.012683);
   v86 = fmax(((v85 + -0.83594) / ((v85 * -18.688) + 18.852)), 0.0);
-  a5->tmData.Capl_nits = v84 * powf(v86, 6.2774);
+  tcCtrl->tmData.Capl_nits = v84 * powf(v86, 6.2774);
   v87 = vbsl_s8(v81, v201, vneg_f32(v82));
   v192 = *v87.i32;
   v202 = powf(*&v87.i32[1], 0.012683);
@@ -789,12 +789,12 @@ LABEL_78:
   v203 = powf(v89.f32[1], 6.2774);
   v90.f32[0] = powf(v193, 6.2774);
   v90.f32[1] = v203;
-  *&a5->tmData.Cmin_nits = vmul_f32(vbsl_s8(v81, vdup_n_s32(0x461C4000u), vdup_n_s32(0xC61C4000)), v90);
-  a5->tmData.edrAdaptationMode = 18;
+  *&tcCtrl->tmData.Cmin_nits = vmul_f32(vbsl_s8(v81, vdup_n_s32(0x461C4000u), vdup_n_s32(0xC61C4000)), v90);
+  tcCtrl->tmData.edrAdaptationMode = 18;
   v91 = overrideEdrAdaptationMode;
   if (overrideEdrAdaptationMode == -1)
   {
-    v92 = a5->tmData.gradingAmbientEnvironmentType;
+    v92 = tcCtrl->tmData.gradingAmbientEnvironmentType;
     if (v92)
     {
 LABEL_109:
@@ -827,7 +827,7 @@ LABEL_115:
     v91 = overrideEdrAdaptationMode;
     if (overrideEdrAdaptationMode == -1)
     {
-      v92 = a5->tmData.gradingAmbientEnvironmentType;
+      v92 = tcCtrl->tmData.gradingAmbientEnvironmentType;
       goto LABEL_109;
     }
   }
@@ -835,35 +835,35 @@ LABEL_115:
 LABEL_118:
   if (v91 <= 0x1B)
   {
-    a5->tmData.edrAdaptationMode = v91;
+    tcCtrl->tmData.edrAdaptationMode = v91;
   }
 
 LABEL_120:
-  if (a5->enableHybridCanonicalRendering)
+  if (tcCtrl->enableHybridCanonicalRendering)
   {
-    a5->tmData.edrAdaptationMode = 0;
-    a5->tmData.ambAdaptationMode = 0;
+    tcCtrl->tmData.edrAdaptationMode = 0;
+    tcCtrl->tmData.ambAdaptationMode = 0;
   }
 
-  if (a5->hdrCanonicalScreenCapture)
+  if (tcCtrl->hdrCanonicalScreenCapture)
   {
-    a5->tmData.edrAdaptationMode = 0;
-    a5->tmData.ambAdaptationMode = 0;
+    tcCtrl->tmData.edrAdaptationMode = 0;
+    tcCtrl->tmData.ambAdaptationMode = 0;
   }
 
-  a5->tmData.enableRangeAdjustment = a5->tmData.gradingAmbientEnvironmentType != 1;
-  a5->tmData.enableRangeAdjustmentAndHighClip = 0;
-  hlg_calculateTonemapCurveParamS(&a5->tmData, a3, v205, &a5->hlgTmParam);
-  if (a5->tmData.enableAUWDMv20)
+  tcCtrl->tmData.enableRangeAdjustment = tcCtrl->tmData.gradingAmbientEnvironmentType != 1;
+  tcCtrl->tmData.enableRangeAdjustmentAndHighClip = 0;
+  hlg_calculateTonemapCurveParamS(&tcCtrl->tmData, params, dm40Copy, &tcCtrl->hlgTmParam);
+  if (tcCtrl->tmData.enableAUWDMv20)
   {
     v96 = malloc_type_malloc(0x168uLL, 0x10000405E9D2EE3uLL);
     v97 = malloc_type_malloc(0x63CuLL, 0x10000403E037C05uLL);
     v98 = v97;
     if (v96 && v97)
     {
-      memcpy(v96, &a5->tmData, 0x168uLL);
-      memcpy(v98, &a5->hlgTmParam, 0x63CuLL);
-      if ((a5->tmData.hdr10TmMode - 11) <= 1)
+      memcpy(v96, &tcCtrl->tmData, 0x168uLL);
+      memcpy(v98, &tcCtrl->hlgTmParam, 0x63CuLL);
+      if ((tcCtrl->tmData.hdr10TmMode - 11) <= 1)
       {
         *v96 = 5;
       }
@@ -871,7 +871,7 @@ LABEL_120:
       v99 = v96[24];
       v96[15] = v99;
       v96[31] = v99;
-      hlg_calculateTonemapCurveParamS(v96, a3, v205, v98);
+      hlg_calculateTonemapCurveParamS(v96, params, dm40Copy, v98);
     }
   }
 
@@ -881,44 +881,44 @@ LABEL_120:
     v98 = 0;
   }
 
-  hlg_generateEdrAdaptationDataS(&a5->tmData, &a5->hlgTmParam, a3, v205, v98, &a5->edrAdaptationData);
-  calculateEdrAdaptationParamS(&a5->edrAdaptationData.mode, &a3[1].var38, &a5->edrAdaptationParam);
-  hlg_generateAmbAdaptationDataS(&a5->tmData, &a5->hlgTmParam, &a5->edrAdaptationData, &a5->edrAdaptationParam, a3, &a5->ambAdaptationData, v27);
-  calculateAmbAdaptationParamS(&a5->ambAdaptationData, &a5->ambAdaptationParam);
-  p_var22 = &a3[1].var22;
-  p_var10 = &a3[1].var10;
-  a5->auxData.tm_Send_nits = a5->hlgTmParam.artisticOOTFParam.tm_Send_nits;
-  a3->var67 = a5->hlgTmParam.systemGamma + -1.0;
-  if ((BYTE1(a3[1].var49) & 1) == 0)
+  hlg_generateEdrAdaptationDataS(&tcCtrl->tmData, &tcCtrl->hlgTmParam, params, dm40Copy, v98, &tcCtrl->edrAdaptationData);
+  calculateEdrAdaptationParamS(&tcCtrl->edrAdaptationData.mode, &params[1].var38, &tcCtrl->edrAdaptationParam);
+  hlg_generateAmbAdaptationDataS(&tcCtrl->tmData, &tcCtrl->hlgTmParam, &tcCtrl->edrAdaptationData, &tcCtrl->edrAdaptationParam, params, &tcCtrl->ambAdaptationData, v27);
+  calculateAmbAdaptationParamS(&tcCtrl->ambAdaptationData, &tcCtrl->ambAdaptationParam);
+  p_var22 = &params[1].var22;
+  p_var10 = &params[1].var10;
+  tcCtrl->auxData.tm_Send_nits = tcCtrl->hlgTmParam.artisticOOTFParam.tm_Send_nits;
+  params->var67 = tcCtrl->hlgTmParam.systemGamma + -1.0;
+  if ((BYTE1(params[1].var49) & 1) == 0)
   {
-    *&a3->var66 = a5->tmData.Tmax_nits;
+    *&params->var66 = tcCtrl->tmData.Tmax_nits;
   }
 
   v103 = *p_var10;
-  v102 = *&a3[1].var14;
+  v102 = *&params[1].var14;
   v104 = -3;
   v105 = &dword_2508CFA98;
-  v106 = *&a3[1].var18;
+  v106 = *&params[1].var18;
   do
   {
     v107 = *(v105 - 3);
     v251 = v103;
     *(&v251 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v104 - 1) & 3))) = v107;
     v103 = v251;
-    a3[1].var12 = DWORD2(v251);
+    params[1].var12 = DWORD2(v251);
     *p_var10 = v103;
     v108 = *v105;
     v250 = v102;
     *(&v250 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v104 - 1) & 3))) = v108;
     v102 = v250;
-    a3[1].var16 = *(&v250 + 2);
-    *&a3[1].var14 = v102;
+    params[1].var16 = *(&v250 + 2);
+    *&params[1].var14 = v102;
     v109 = v105[3];
     v249 = v106;
     *(&v249 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v104 - 1) & 3))) = v109;
     v106 = v249;
-    a3[1].var20 = *(&v249 + 2);
-    *&a3[1].var18 = v106;
+    params[1].var20 = *(&v249 + 2);
+    *&params[1].var18 = v106;
     ++v105;
     v110 = __CFADD__(v104++, 1);
   }
@@ -937,20 +937,20 @@ LABEL_120:
           v233 = v103;
           *(&v233 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v131 - 1) & 3))) = v133;
           v103 = v233;
-          a3[1].var12 = DWORD2(v233);
+          params[1].var12 = DWORD2(v233);
           *p_var10 = v103;
           v134 = *v132;
           v232 = v102;
           *(&v232 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v131 - 1) & 3))) = v134;
           v102 = v232;
-          a3[1].var16 = *(&v232 + 2);
-          *&a3[1].var14 = v102;
+          params[1].var16 = *(&v232 + 2);
+          *&params[1].var14 = v102;
           v135 = v132[3];
           v231 = v106;
           *(&v231 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v131 - 1) & 3))) = v135;
           v106 = v231;
-          a3[1].var20 = *(&v231 + 2);
-          *&a3[1].var18 = v106;
+          params[1].var20 = *(&v231 + 2);
+          *&params[1].var18 = v106;
           ++v132;
           v110 = __CFADD__(v131++, 1);
         }
@@ -968,20 +968,20 @@ LABEL_120:
           v236 = v103;
           *(&v236 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v121 - 1) & 3))) = v123;
           v103 = v236;
-          a3[1].var12 = DWORD2(v236);
+          params[1].var12 = DWORD2(v236);
           *p_var10 = v103;
           v124 = *v122;
           v235 = v102;
           *(&v235 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v121 - 1) & 3))) = v124;
           v102 = v235;
-          a3[1].var16 = *(&v235 + 2);
-          *&a3[1].var14 = v102;
+          params[1].var16 = *(&v235 + 2);
+          *&params[1].var14 = v102;
           v125 = v122[3];
           v234 = v106;
           *(&v234 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v121 - 1) & 3))) = v125;
           v106 = v234;
-          a3[1].var20 = *(&v234 + 2);
-          *&a3[1].var18 = v106;
+          params[1].var20 = *(&v234 + 2);
+          *&params[1].var18 = v106;
           ++v122;
           v110 = __CFADD__(v121++, 1);
         }
@@ -1001,20 +1001,20 @@ LABEL_120:
           v245 = v103;
           *(&v245 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v126 - 1) & 3))) = v128;
           v103 = v245;
-          a3[1].var12 = DWORD2(v245);
+          params[1].var12 = DWORD2(v245);
           *p_var10 = v103;
           v129 = *v127;
           v244 = v102;
           *(&v244 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v126 - 1) & 3))) = v129;
           v102 = v244;
-          a3[1].var16 = *(&v244 + 2);
-          *&a3[1].var14 = v102;
+          params[1].var16 = *(&v244 + 2);
+          *&params[1].var14 = v102;
           v130 = v127[3];
           v243 = v106;
           *(&v243 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v126 - 1) & 3))) = v130;
           v106 = v243;
-          a3[1].var20 = *(&v243 + 2);
-          *&a3[1].var18 = v106;
+          params[1].var20 = *(&v243 + 2);
+          *&params[1].var18 = v106;
           ++v127;
           v110 = __CFADD__(v126++, 1);
         }
@@ -1032,20 +1032,20 @@ LABEL_120:
           v248 = v103;
           *(&v248 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v116 - 1) & 3))) = v118;
           v103 = v248;
-          a3[1].var12 = DWORD2(v248);
+          params[1].var12 = DWORD2(v248);
           *p_var10 = v103;
           v119 = *v117;
           v247 = v102;
           *(&v247 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v116 - 1) & 3))) = v119;
           v102 = v247;
-          a3[1].var16 = *(&v247 + 2);
-          *&a3[1].var14 = v102;
+          params[1].var16 = *(&v247 + 2);
+          *&params[1].var14 = v102;
           v120 = v117[3];
           v246 = v106;
           *(&v246 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v116 - 1) & 3))) = v120;
           v106 = v246;
-          a3[1].var20 = *(&v246 + 2);
-          *&a3[1].var18 = v106;
+          params[1].var20 = *(&v246 + 2);
+          *&params[1].var18 = v106;
           ++v117;
           v110 = __CFADD__(v116++, 1);
         }
@@ -1065,20 +1065,20 @@ LABEL_120:
           v239 = v103;
           *(&v239 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v136 - 1) & 3))) = v138;
           v103 = v239;
-          a3[1].var12 = DWORD2(v239);
+          params[1].var12 = DWORD2(v239);
           *p_var10 = v103;
           v139 = *v137;
           v238 = v102;
           *(&v238 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v136 - 1) & 3))) = v139;
           v102 = v238;
-          a3[1].var16 = *(&v238 + 2);
-          *&a3[1].var14 = v102;
+          params[1].var16 = *(&v238 + 2);
+          *&params[1].var14 = v102;
           v140 = v137[3];
           v237 = v106;
           *(&v237 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v136 - 1) & 3))) = v140;
           v106 = v237;
-          a3[1].var20 = *(&v237 + 2);
-          *&a3[1].var18 = v106;
+          params[1].var20 = *(&v237 + 2);
+          *&params[1].var18 = v106;
           ++v137;
           v110 = __CFADD__(v136++, 1);
         }
@@ -1096,20 +1096,20 @@ LABEL_120:
           v242 = v103;
           *(&v242 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v111 - 1) & 3))) = v113;
           v103 = v242;
-          a3[1].var12 = DWORD2(v242);
+          params[1].var12 = DWORD2(v242);
           *p_var10 = v103;
           v114 = *v112;
           v241 = v102;
           *(&v241 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v111 - 1) & 3))) = v114;
           v102 = v241;
-          a3[1].var16 = *(&v241 + 2);
-          *&a3[1].var14 = v102;
+          params[1].var16 = *(&v241 + 2);
+          *&params[1].var14 = v102;
           v115 = v112[3];
           v240 = v106;
           *(&v240 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v111 - 1) & 3))) = v115;
           v106 = v240;
-          a3[1].var20 = *(&v240 + 2);
-          *&a3[1].var18 = v106;
+          params[1].var20 = *(&v240 + 2);
+          *&params[1].var18 = v106;
           ++v112;
           v110 = __CFADD__(v111++, 1);
         }
@@ -1131,7 +1131,7 @@ LABEL_120:
   }
 
   while (v141 != 3);
-  a3[1].var24 = *(&v230 + 2);
+  params[1].var24 = *(&v230 + 2);
   *p_var22 = v142;
   switch(v31)
   {
@@ -1142,7 +1142,7 @@ LABEL_120:
         v227 = v142;
         *(&v227 & 0xFFFFFFFFFFFFFFF3 | (4 * (i & 3))) = v144;
         v142 = v227;
-        a3[1].var24 = *(&v227 + 2);
+        params[1].var24 = *(&v227 + 2);
         *p_var22 = v142;
       }
 
@@ -1154,7 +1154,7 @@ LABEL_120:
         v228 = v142;
         *(&v228 & 0xFFFFFFFFFFFFFFF3 | (4 * (j & 3))) = v148;
         v142 = v228;
-        a3[1].var24 = *(&v228 + 2);
+        params[1].var24 = *(&v228 + 2);
         *p_var22 = v142;
       }
 
@@ -1166,38 +1166,38 @@ LABEL_120:
         v229 = v142;
         *(&v229 & 0xFFFFFFFFFFFFFFF3 | (4 * (k & 3))) = v146;
         v142 = v229;
-        a3[1].var24 = *(&v229 + 2);
+        params[1].var24 = *(&v229 + 2);
         *p_var22 = v142;
       }
 
       break;
   }
 
-  v150 = *&a3[1].var26;
-  v149 = *&a3[1].var30;
+  v150 = *&params[1].var26;
+  v149 = *&params[1].var30;
   v151 = -3;
   v152 = &dword_2508CFA98;
-  v153 = *&a3[1].var34;
+  v153 = *&params[1].var34;
   do
   {
     v154 = *(v152 - 3);
     v226 = v150;
     *(&v226 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v151 - 1) & 3))) = v154;
     v150 = v226;
-    a3[1].var28 = *(&v226 + 2);
-    *&a3[1].var26 = v150;
+    params[1].var28 = *(&v226 + 2);
+    *&params[1].var26 = v150;
     v155 = *v152;
     v225 = v149;
     *(&v225 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v151 - 1) & 3))) = v155;
     v149 = v225;
-    a3[1].var32 = *(&v225 + 2);
-    *&a3[1].var30 = v149;
+    params[1].var32 = *(&v225 + 2);
+    *&params[1].var30 = v149;
     v156 = v152[3];
     v224 = v153;
     *(&v224 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v151 - 1) & 3))) = v156;
     v153 = v224;
-    a3[1].var36 = *(&v224 + 2);
-    *&a3[1].var34 = v153;
+    params[1].var36 = *(&v224 + 2);
+    *&params[1].var34 = v153;
     ++v152;
     v110 = __CFADD__(v151++, 1);
   }
@@ -1218,20 +1218,20 @@ LABEL_120:
             v208 = v150;
             *(&v208 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v167 - 1) & 3))) = v169;
             v150 = v208;
-            a3[1].var28 = *(&v208 + 2);
-            *&a3[1].var26 = v150;
+            params[1].var28 = *(&v208 + 2);
+            *&params[1].var26 = v150;
             v170 = *v168;
             v207 = v149;
             *(&v207 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v167 - 1) & 3))) = v170;
             v149 = v207;
-            a3[1].var32 = *(&v207 + 2);
-            *&a3[1].var30 = v149;
+            params[1].var32 = *(&v207 + 2);
+            *&params[1].var30 = v149;
             v171 = v168[3];
             v206 = v153;
             *(&v206 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v167 - 1) & 3))) = v171;
             v153 = v206;
-            a3[1].var36 = *(&v206 + 2);
-            *&a3[1].var34 = v153;
+            params[1].var36 = *(&v206 + 2);
+            *&params[1].var34 = v153;
             ++v168;
             v110 = __CFADD__(v167++, 1);
           }
@@ -1250,20 +1250,20 @@ LABEL_120:
           v211 = v150;
           *(&v211 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v157 - 1) & 3))) = v159;
           v150 = v211;
-          a3[1].var28 = *(&v211 + 2);
-          *&a3[1].var26 = v150;
+          params[1].var28 = *(&v211 + 2);
+          *&params[1].var26 = v150;
           v160 = *v158;
           v210 = v149;
           *(&v210 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v157 - 1) & 3))) = v160;
           v149 = v210;
-          a3[1].var32 = *(&v210 + 2);
-          *&a3[1].var30 = v149;
+          params[1].var32 = *(&v210 + 2);
+          *&params[1].var30 = v149;
           v161 = v158[3];
           v209 = v153;
           *(&v209 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v157 - 1) & 3))) = v161;
           v153 = v209;
-          a3[1].var36 = *(&v209 + 2);
-          *&a3[1].var34 = v153;
+          params[1].var36 = *(&v209 + 2);
+          *&params[1].var34 = v153;
           ++v158;
           v110 = __CFADD__(v157++, 1);
         }
@@ -1283,20 +1283,20 @@ LABEL_120:
           v223 = v150;
           *(&v223 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v182 - 1) & 3))) = v184;
           v150 = v223;
-          a3[1].var28 = *(&v223 + 2);
-          *&a3[1].var26 = v150;
+          params[1].var28 = *(&v223 + 2);
+          *&params[1].var26 = v150;
           v185 = *v183;
           v222 = v149;
           *(&v222 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v182 - 1) & 3))) = v185;
           v149 = v222;
-          a3[1].var32 = *(&v222 + 2);
-          *&a3[1].var30 = v149;
+          params[1].var32 = *(&v222 + 2);
+          *&params[1].var30 = v149;
           v186 = v183[3];
           v221 = v153;
           *(&v221 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v182 - 1) & 3))) = v186;
           v153 = v221;
-          a3[1].var36 = *(&v221 + 2);
-          *&a3[1].var34 = v153;
+          params[1].var36 = *(&v221 + 2);
+          *&params[1].var34 = v153;
           ++v183;
           v110 = __CFADD__(v182++, 1);
         }
@@ -1314,20 +1314,20 @@ LABEL_120:
           v220 = v150;
           *(&v220 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v172 - 1) & 3))) = v174;
           v150 = v220;
-          a3[1].var28 = *(&v220 + 2);
-          *&a3[1].var26 = v150;
+          params[1].var28 = *(&v220 + 2);
+          *&params[1].var26 = v150;
           v175 = *v173;
           v219 = v149;
           *(&v219 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v172 - 1) & 3))) = v175;
           v149 = v219;
-          a3[1].var32 = *(&v219 + 2);
-          *&a3[1].var30 = v149;
+          params[1].var32 = *(&v219 + 2);
+          *&params[1].var30 = v149;
           v176 = v173[3];
           v218 = v153;
           *(&v218 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v172 - 1) & 3))) = v176;
           v153 = v218;
-          a3[1].var36 = *(&v218 + 2);
-          *&a3[1].var34 = v153;
+          params[1].var36 = *(&v218 + 2);
+          *&params[1].var34 = v153;
           ++v173;
           v110 = __CFADD__(v172++, 1);
         }
@@ -1347,20 +1347,20 @@ LABEL_120:
           v217 = v150;
           *(&v217 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v177 - 1) & 3))) = v179;
           v150 = v217;
-          a3[1].var28 = *(&v217 + 2);
-          *&a3[1].var26 = v150;
+          params[1].var28 = *(&v217 + 2);
+          *&params[1].var26 = v150;
           v180 = *v178;
           v216 = v149;
           *(&v216 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v177 - 1) & 3))) = v180;
           v149 = v216;
-          a3[1].var32 = *(&v216 + 2);
-          *&a3[1].var30 = v149;
+          params[1].var32 = *(&v216 + 2);
+          *&params[1].var30 = v149;
           v181 = v178[3];
           v215 = v153;
           *(&v215 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v177 - 1) & 3))) = v181;
           v153 = v215;
-          a3[1].var36 = *(&v215 + 2);
-          *&a3[1].var34 = v153;
+          params[1].var36 = *(&v215 + 2);
+          *&params[1].var34 = v153;
           ++v178;
           v110 = __CFADD__(v177++, 1);
         }
@@ -1378,20 +1378,20 @@ LABEL_120:
           v214 = v150;
           *(&v214 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v162 - 1) & 3))) = v164;
           v150 = v214;
-          a3[1].var28 = *(&v214 + 2);
-          *&a3[1].var26 = v150;
+          params[1].var28 = *(&v214 + 2);
+          *&params[1].var26 = v150;
           v165 = *v163;
           v213 = v149;
           *(&v213 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v162 - 1) & 3))) = v165;
           v149 = v213;
-          a3[1].var32 = *(&v213 + 2);
-          *&a3[1].var30 = v149;
+          params[1].var32 = *(&v213 + 2);
+          *&params[1].var30 = v149;
           v166 = v163[3];
           v212 = v153;
           *(&v212 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v162 - 1) & 3))) = v166;
           v153 = v212;
-          a3[1].var36 = *(&v212 + 2);
-          *&a3[1].var34 = v153;
+          params[1].var36 = *(&v212 + 2);
+          *&params[1].var34 = v153;
           ++v163;
           v110 = __CFADD__(v162++, 1);
         }
@@ -1413,31 +1413,31 @@ LABEL_120:
   }
 }
 
-- (void)dovi84_setupTmParams:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 applyPostRGBtoRGBMatrixScaler:(BOOL *)a6 sMinPq:(float)a7 sMaxPq:(float)a8 tMinPq:(float)a9 tMaxPq:(float)a10 nominalPQ:(float)a11 targetingDoviLLOrSDR:(BOOL)a12 dm40:(id)a13
+- (void)dovi84_setupTmParams:(id *)params hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl applyPostRGBtoRGBMatrixScaler:(BOOL *)scaler sMinPq:(float)pq sMaxPq:(float)maxPq tMinPq:(float)minPq tMaxPq:(float)self0 nominalPQ:(float)self1 targetingDoviLLOrSDR:(BOOL)self2 dm40:(id)self3
 {
-  v13 = a12;
-  v106 = a13;
-  var10 = a4->var10;
+  rCopy = r;
+  dm40Copy = dm40;
+  var10 = ctrl->var10;
   if (var10 > 7 || ((1 << var10) & 0xB8) == 0)
   {
-    if (v13 && LODWORD(a3[1].var46) == 3)
+    if (rCopy && LODWORD(params[1].var46) == 3)
     {
-      a5->tmData.doviTmMode = 3;
+      tcCtrl->tmData.doviTmMode = 3;
     }
 
-    a5->tmData.edrAdaptationMode = 0;
-    a5->tmData.ambAdaptationMode = 0;
+    tcCtrl->tmData.edrAdaptationMode = 0;
+    tcCtrl->tmData.ambAdaptationMode = 0;
   }
 
-  a5->tmData.edrAdaptationGain = a5->auxData.edrAdaptationGain;
-  diffuseInNits = a5->diffuseInNits;
-  v20 = 1.0 / a5->maxEDRValue;
-  *&a5->tmData.hdr10TmMode = -1;
-  a5->tmData.edrFactor = v20;
-  a5->tmData.diffuseInNits = diffuseInNits;
-  a5->tmData.Smin_nits = 0.0;
-  v21 = vcge_f32(__PAIR64__(LODWORD(a9), LODWORD(a8)), vdup_n_s32(0x354436E8u));
-  v22 = vbsl_s8(v21, __PAIR64__(LODWORD(a9), LODWORD(a8)), vneg_f32(vadd_f32(__PAIR64__(LODWORD(a9), LODWORD(a8)), vdup_n_s32(0xB5C436E8))));
+  tcCtrl->tmData.edrAdaptationGain = tcCtrl->auxData.edrAdaptationGain;
+  diffuseInNits = tcCtrl->diffuseInNits;
+  v20 = 1.0 / tcCtrl->maxEDRValue;
+  *&tcCtrl->tmData.hdr10TmMode = -1;
+  tcCtrl->tmData.edrFactor = v20;
+  tcCtrl->tmData.diffuseInNits = diffuseInNits;
+  tcCtrl->tmData.Smin_nits = 0.0;
+  v21 = vcge_f32(__PAIR64__(LODWORD(minPq), LODWORD(maxPq)), vdup_n_s32(0x354436E8u));
+  v22 = vbsl_s8(v21, __PAIR64__(LODWORD(minPq), LODWORD(maxPq)), vneg_f32(vadd_f32(__PAIR64__(LODWORD(minPq), LODWORD(maxPq)), vdup_n_s32(0xB5C436E8))));
   v87 = *v22.i32;
   v23 = vbsl_s8(v21, vdup_n_s32(0x461C4000u), vdup_n_s32(0xC61C4000));
   v94 = powf(*&v22.i32[1], 0.012683);
@@ -1449,32 +1449,32 @@ LABEL_120:
   v26.f32[0] = powf(v88, 6.2774);
   v26.f32[1] = v95;
   v27 = vmul_f32(v23, v26);
-  LODWORD(a5->tmData.Tmin_nits) = v27.i32[1];
-  *&a5->tmData.Smax_nits = v27;
-  if (BYTE1(a3[1].var49) == 1)
+  LODWORD(tcCtrl->tmData.Tmin_nits) = v27.i32[1];
+  *&tcCtrl->tmData.Smax_nits = v27;
+  if (BYTE1(params[1].var49) == 1)
   {
-    targetMaxLinear = a5->targetMaxLinear;
-    v29 = *&a3->var66;
+    targetMaxLinear = tcCtrl->targetMaxLinear;
+    v29 = *&params->var66;
   }
 
   else
   {
-    v30 = -(a10 + -0.0000014619);
-    if (a10 >= 0.00000073096)
+    tMaxPqCopy = -(tMaxPq + -0.0000014619);
+    if (tMaxPq >= 0.00000073096)
     {
-      v30 = a10;
+      tMaxPqCopy = tMaxPq;
     }
 
-    v31 = flt_2508CD850[a10 < 0.00000073096];
-    v32 = powf(v30, 0.012683);
+    v31 = flt_2508CD850[tMaxPq < 0.00000073096];
+    v32 = powf(tMaxPqCopy, 0.012683);
     v33 = fmax(((v32 + -0.83594) / ((v32 * -18.688) + 18.852)), 0.0);
     targetMaxLinear = v31 * powf(v33, 6.2774);
     v29 = targetMaxLinear;
   }
 
-  a5->tmData.Tmax_nits = targetMaxLinear;
-  a5->tmData.tm_Tmax_nits = v29;
-  v34 = *&a5->crush;
+  tcCtrl->tmData.Tmax_nits = targetMaxLinear;
+  tcCtrl->tmData.tm_Tmax_nits = v29;
+  v34 = *&tcCtrl->crush;
   v35 = vcge_f32(v34, vdup_n_s32(0x354436E8u));
   v36 = vbsl_s8(v35, v34, vneg_f32(vadd_f32(v34, vdup_n_s32(0xB5C436E8))));
   v89 = *v36.i32;
@@ -1487,9 +1487,9 @@ LABEL_120:
   v97 = powf(v39.f32[1], 6.2774);
   v40.f32[0] = powf(v90, 6.2774);
   v40.f32[1] = v97;
-  *&a5->tmData.Cmin_nits = vmul_f32(v37, v40);
-  a5->tmData.Cend_nits = 10000.0;
-  mid = a5->mid;
+  *&tcCtrl->tmData.Cmin_nits = vmul_f32(v37, v40);
+  tcCtrl->tmData.Cend_nits = 10000.0;
+  mid = tcCtrl->mid;
   if (mid >= 0.00000073096)
   {
     v42 = 10000.0;
@@ -1503,8 +1503,8 @@ LABEL_120:
 
   v43 = powf(mid, 0.012683);
   v44 = fmax(((v43 + -0.83594) / ((v43 * -18.688) + 18.852)), 0.0);
-  a5->tmData.Capl_nits = v42 * powf(v44, 6.2774);
-  AmbientInNits = a5->AmbientInNits;
+  tcCtrl->tmData.Capl_nits = v42 * powf(v44, 6.2774);
+  AmbientInNits = tcCtrl->AmbientInNits;
   if (AmbientInNits >= 0.0)
   {
     v48 = powf(AmbientInNits * 0.0001, 0.1593);
@@ -1517,19 +1517,19 @@ LABEL_120:
     v47 = 0.0000014619 - powf(((v46 * 18.852) + 0.83594) / ((v46 * 18.688) + 1.0), 78.844);
   }
 
-  a5->tmData.ambientPQ = v47;
-  a5->tmData.nominalPQ = a11;
-  if (var10 > 7 || ((1 << var10) & 0xB8) == 0 || a5->tmData.gradingAmbientEnvironmentType != 1 || a5->tmData.processingType != 4 || *&a3[1].var54 < 0.0 || !GetConfig() || (Config = GetConfig(), *HDRConfig::GetConfigEntryValue(Config, 0xB8u, 0) != 1))
+  tcCtrl->tmData.ambientPQ = v47;
+  tcCtrl->tmData.nominalPQ = q;
+  if (var10 > 7 || ((1 << var10) & 0xB8) == 0 || tcCtrl->tmData.gradingAmbientEnvironmentType != 1 || tcCtrl->tmData.processingType != 4 || *&params[1].var54 < 0.0 || !GetConfig() || (Config = GetConfig(), *HDRConfig::GetConfigEntryValue(Config, 0xB8u, 0) != 1))
   {
-    a5->doviTmParam.sceneLuxAdaptationParam.sceneLuxAdaptationMode = 0;
+    tcCtrl->doviTmParam.sceneLuxAdaptationParam.sceneLuxAdaptationMode = 0;
     goto LABEL_27;
   }
 
-  LOBYTE(a3[1].var53) = 1;
-  dovi84_generateSceneLuxAdaptationDataS(a5, &a5->doviTmParam.sceneLuxAdaptationParam);
-  calculateSceneLuxAdaptationParamS(&a5->doviTmParam.sceneLuxAdaptationParam, self->_dmSceneLuxB2D_IPTModel);
-  a5->doviTmParam.sceneLuxAdaptationParam.mixFactor = calcSceneLuxAdaptationMixFactor(a5->diffuseInNits);
-  if (a5->enableHybridCanonicalRendering)
+  LOBYTE(params[1].var53) = 1;
+  dovi84_generateSceneLuxAdaptationDataS(tcCtrl, &tcCtrl->doviTmParam.sceneLuxAdaptationParam);
+  calculateSceneLuxAdaptationParamS(&tcCtrl->doviTmParam.sceneLuxAdaptationParam, self->_dmSceneLuxB2D_IPTModel);
+  tcCtrl->doviTmParam.sceneLuxAdaptationParam.mixFactor = calcSceneLuxAdaptationMixFactor(tcCtrl->diffuseInNits);
+  if (tcCtrl->enableHybridCanonicalRendering)
   {
     if (!GetConfig() || (v50 = GetConfig(), *HDRConfig::GetConfigEntryValue(v50, 0xFEu, 0) >= 0.0))
     {
@@ -1544,13 +1544,13 @@ LABEL_120:
         v52 = 0.0;
       }
 
-      a5->doviTmParam.sceneLuxAdaptationParam.mixFactor = v52;
+      tcCtrl->doviTmParam.sceneLuxAdaptationParam.mixFactor = v52;
     }
   }
 
-  v101 = applySceneLuxAdaptationS_C(&a5->doviTmParam.sceneLuxAdaptationParam, a5->crush);
-  v64 = applySceneLuxAdaptationS_C(&a5->doviTmParam.sceneLuxAdaptationParam, a5->mid);
-  v91 = applySceneLuxAdaptationS_C(&a5->doviTmParam.sceneLuxAdaptationParam, a5->clip);
+  v101 = applySceneLuxAdaptationS_C(&tcCtrl->doviTmParam.sceneLuxAdaptationParam, tcCtrl->crush);
+  v64 = applySceneLuxAdaptationS_C(&tcCtrl->doviTmParam.sceneLuxAdaptationParam, tcCtrl->mid);
+  v91 = applySceneLuxAdaptationS_C(&tcCtrl->doviTmParam.sceneLuxAdaptationParam, tcCtrl->clip);
   v65 = GetConfig();
   v66 = __PAIR64__(LODWORD(v91), LODWORD(v101));
   if (!v65)
@@ -1590,7 +1590,7 @@ LABEL_64:
 
   v74 = powf(v72, 0.012683);
   v75 = fmax(((v74 + -0.83594) / ((v74 * -18.688) + 18.852)), 0.0);
-  a5->tmData.Capl_nits = v73 * powf(v75, 6.2774);
+  tcCtrl->tmData.Capl_nits = v73 * powf(v75, 6.2774);
   v76 = vbsl_s8(v71, v103, vneg_f32(v92));
   v98 = *v76.i32;
   v104 = powf(*&v76.i32[1], 0.012683);
@@ -1601,17 +1601,17 @@ LABEL_64:
   v105 = powf(v78.f32[1], 6.2774);
   v79.f32[0] = powf(v99, 6.2774);
   v79.f32[1] = v105;
-  *&a5->tmData.Cmin_nits = vmul_f32(vbsl_s8(v71, vdup_n_s32(0x461C4000u), vdup_n_s32(0xC61C4000)), v79);
-  a5->tmData.edrAdaptationMode = 18;
-  if (a5->enableHybridCanonicalRendering && a4->var0 == 1 && a4->var17 == 18 && a4->var27 == 1)
+  *&tcCtrl->tmData.Cmin_nits = vmul_f32(vbsl_s8(v71, vdup_n_s32(0x461C4000u), vdup_n_s32(0xC61C4000)), v79);
+  tcCtrl->tmData.edrAdaptationMode = 18;
+  if (tcCtrl->enableHybridCanonicalRendering && ctrl->var0 == 1 && ctrl->var17 == 18 && ctrl->var27 == 1)
   {
-    a5->tmData.edrAdaptationMode = 0;
+    tcCtrl->tmData.edrAdaptationMode = 0;
   }
 
   v80 = overrideEdrAdaptationMode;
   if (overrideEdrAdaptationMode == -1)
   {
-    if (a5->tmData.gradingAmbientEnvironmentType != 1)
+    if (tcCtrl->tmData.gradingAmbientEnvironmentType != 1)
     {
       goto LABEL_27;
     }
@@ -1632,13 +1632,13 @@ LABEL_64:
           v83 = 0;
         }
 
-        a5->tmData.edrAdaptationMode = v83;
+        tcCtrl->tmData.edrAdaptationMode = v83;
         if (GetConfig())
         {
           v84 = GetConfig();
           if (*HDRConfig::GetConfigEntryValue(v84, 0xE6u, 0) == 1)
           {
-            a5->auxData.ambNitsCap = 1591.6;
+            tcCtrl->auxData.ambNitsCap = 1591.6;
           }
         }
       }
@@ -1649,11 +1649,11 @@ LABEL_64:
 
   if (v80 <= 0x1B)
   {
-    a5->tmData.edrAdaptationMode = v80;
+    tcCtrl->tmData.edrAdaptationMode = v80;
   }
 
 LABEL_27:
-  if (a5->tmData.processingType == 4 && !a5->tmData.gradingAmbientEnvironmentType)
+  if (tcCtrl->tmData.processingType == 4 && !tcCtrl->tmData.gradingAmbientEnvironmentType)
   {
     if (GetConfig())
     {
@@ -1665,18 +1665,18 @@ LABEL_27:
           v63 = GetConfig();
           if (*HDRConfig::GetConfigEntryValue(v63, 0xE6u, 0) == 1)
           {
-            a5->auxData.ambNitsCap = 1591.6;
+            tcCtrl->auxData.ambNitsCap = 1591.6;
           }
         }
       }
     }
   }
 
-  ambNitsCap = a5->auxData.ambNitsCap;
-  v54 = a5->AmbientInNits + -5.093;
+  ambNitsCap = tcCtrl->auxData.ambNitsCap;
+  v54 = tcCtrl->AmbientInNits + -5.093;
   if (v54 <= ambNitsCap)
   {
-    ambNitsCap = a5->AmbientInNits + -5.093;
+    ambNitsCap = tcCtrl->AmbientInNits + -5.093;
   }
 
   v55 = v54 < 0.0;
@@ -1686,10 +1686,10 @@ LABEL_27:
     v56 = ambNitsCap;
   }
 
-  a5->tmData.ambReflected_nits = a5->auxData.targetDisplayReflectionRatio * (a5->auxData.ambAdaptationRatio * v56);
-  *&a5->tmData.enableRangeAdjustment = 0;
-  dovi_calculateTonemapCurveParamS(&a5->tmData, a3, &a5->doviTmParam);
-  if (a5->tmData.enableAUWDMv20)
+  tcCtrl->tmData.ambReflected_nits = tcCtrl->auxData.targetDisplayReflectionRatio * (tcCtrl->auxData.ambAdaptationRatio * v56);
+  *&tcCtrl->tmData.enableRangeAdjustment = 0;
+  dovi_calculateTonemapCurveParamS(&tcCtrl->tmData, params, &tcCtrl->doviTmParam);
+  if (tcCtrl->tmData.enableAUWDMv20)
   {
     v57 = malloc_type_malloc(0x168uLL, 0x10000405E9D2EE3uLL);
     v58 = malloc_type_malloc(0x210uLL, 0x1000040BC767FD4uLL);
@@ -1697,9 +1697,9 @@ LABEL_27:
     v60 = v59;
     if (v57 && v58 && v59)
     {
-      memcpy(v58, a3, 0x210uLL);
-      memcpy(v57, &a5->tmData, 0x168uLL);
-      memcpy(v60, &a5->doviTmParam, 0x124uLL);
+      memcpy(v58, params, 0x210uLL);
+      memcpy(v57, &tcCtrl->tmData, 0x168uLL);
+      memcpy(v60, &tcCtrl->doviTmParam, 0x124uLL);
       *(v58 + 120) = 3;
       v57[3] = 3;
       *(v58 + 236) = xmmword_2508CF760;
@@ -1717,11 +1717,11 @@ LABEL_27:
     v60 = 0;
   }
 
-  dovi84_generateEdrAdaptationDataS(&a5->tmData, &a5->doviTmParam, a3, v60, v58, &a5->edrAdaptationData, v106);
-  calculateEdrAdaptationParamS(&a5->edrAdaptationData.mode, &a3[1].var38, &a5->edrAdaptationParam);
-  dovi84_generateAmbAdaptationDataS(&a5->tmData, &a5->doviTmParam, &a5->edrAdaptationData, &a5->edrAdaptationParam, a3, &a5->ambAdaptationData);
-  calculateAmbAdaptationParamS(&a5->ambAdaptationData, &a5->ambAdaptationParam);
-  a5->auxData.tm_Send_nits = a5->doviTmParam.tm_Send_nits;
+  dovi84_generateEdrAdaptationDataS(&tcCtrl->tmData, &tcCtrl->doviTmParam, params, v60, v58, &tcCtrl->edrAdaptationData, dm40Copy);
+  calculateEdrAdaptationParamS(&tcCtrl->edrAdaptationData.mode, &params[1].var38, &tcCtrl->edrAdaptationParam);
+  dovi84_generateAmbAdaptationDataS(&tcCtrl->tmData, &tcCtrl->doviTmParam, &tcCtrl->edrAdaptationData, &tcCtrl->edrAdaptationParam, params, &tcCtrl->ambAdaptationData);
+  calculateAmbAdaptationParamS(&tcCtrl->ambAdaptationData, &tcCtrl->ambAdaptationParam);
+  tcCtrl->auxData.tm_Send_nits = tcCtrl->doviTmParam.tm_Send_nits;
   if (v57)
   {
     free(v57);
@@ -1738,7 +1738,7 @@ LABEL_27:
   }
 }
 
-- (DolbyVisionDisplayManagement)initWithTmLutSize:(int)a3
+- (DolbyVisionDisplayManagement)initWithTmLutSize:(int)size
 {
   v13.receiver = self;
   v13.super_class = DolbyVisionDisplayManagement;
@@ -1748,7 +1748,7 @@ LABEL_27:
     goto LABEL_5;
   }
 
-  v5 = [[DolbyVisionDM4 alloc] init:a3];
+  v5 = [[DolbyVisionDM4 alloc] init:size];
   dm40 = v4->_dm40;
   v4->_dm40 = v5;
 
@@ -1785,9 +1785,9 @@ LABEL_6:
   return v11;
 }
 
-- (DolbyVisionDisplayManagement)initWithDevice:(id)a3
+- (DolbyVisionDisplayManagement)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = DolbyVisionDisplayManagement;
   v6 = [(DolbyVisionDisplayManagement *)&v17 init];
@@ -1797,7 +1797,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v6->_device, a3);
+  objc_storeStrong(&v6->_device, device);
   [(DolbyVisionDisplayManagement *)v7 setupMetal];
   v8 = [[DolbyVisionDM4 alloc] init:1024];
   dm40 = v7->_dm40;
@@ -1826,9 +1826,9 @@ LABEL_6:
   return v15;
 }
 
-- (id)initTmEngine:(int)a3 device:(id)a4
+- (id)initTmEngine:(int)engine device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = DolbyVisionDisplayManagement;
   v8 = [(DolbyVisionDisplayManagement *)&v18 init];
@@ -1838,9 +1838,9 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v8->_device, a4);
+  objc_storeStrong(&v8->_device, device);
   [(DolbyVisionDisplayManagement *)v9 setupMetal];
-  v10 = [[DolbyVisionDM4 alloc] init:a3];
+  v10 = [[DolbyVisionDM4 alloc] init:engine];
   dm40 = v9->_dm40;
   v9->_dm40 = v10;
 
@@ -1892,9 +1892,9 @@ LABEL_6:
   self->_dmSceneLuxB2D_IPTModel = 0;
 }
 
-- (id)getComputePipeLineStateForShader:(id)a3
+- (id)getComputePipeLineStateForShader:(id)shader
 {
-  v3 = [a3 getComputePipeLineStateForDevice:self->_device Library:self->_defaultLibrary];
+  v3 = [shader getComputePipeLineStateForDevice:self->_device Library:self->_defaultLibrary];
 
   return v3;
 }
@@ -1906,26 +1906,26 @@ LABEL_6:
   device = self->_device;
   if (v3)
   {
-    v5 = [(MTLDeviceSPI *)device newLibraryWithFile:v3 error:0];
+    newDefaultLibrary = [(MTLDeviceSPI *)device newLibraryWithFile:v3 error:0];
   }
 
   else
   {
-    v5 = [(MTLDeviceSPI *)device newDefaultLibrary];
+    newDefaultLibrary = [(MTLDeviceSPI *)device newDefaultLibrary];
   }
 
   defaultLibrary = self->_defaultLibrary;
-  self->_defaultLibrary = v5;
+  self->_defaultLibrary = newDefaultLibrary;
 
   v7 = [DMShader createShaderWithName:@"display_management"];
   displayManagementKernel = self->_displayManagementKernel;
   self->_displayManagementKernel = v7;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 Input:(__IOSurface *)a4 Output:(__IOSurface *)a5 MetaData:(id *)a6
+- (void)encodeToCommandBuffer:(id)buffer Input:(__IOSurface *)input Output:(__IOSurface *)output MetaData:(id *)data
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bufferCopy = buffer;
   if (enableLogInstance)
   {
     if (logInstanceID)
@@ -1957,34 +1957,34 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 Input:(__IOSurface *)a4 Output:(__IOSurface *)a5 MetaData:(id *)a6 tcControl:(ToneCurve_Control *)a7 hdrControl:(id *)a8
+- (void)encodeToCommandBuffer:(id)buffer Input:(__IOSurface *)input Output:(__IOSurface *)output MetaData:(id *)data tcControl:(ToneCurve_Control *)control hdrControl:(id *)hdrControl
 {
   v27 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  bufferCopy = buffer;
   v15 = [(MTLDeviceSPI *)self->_device newBufferWithLength:528 options:0];
   config = self->_config;
   self->_config = v15;
 
-  [(DolbyVisionDisplayManagement *)self setDisplayManagementConfigFromMetaData:a6 config:[(MTLBuffer *)self->_config contents] hdrCtrl:a8 tcCtrl:a7];
-  [(DolbyVisionDisplayManagement *)self setupTexturesWithInput:a4 Output:a5];
-  v17 = [v14 computeCommandEncoder];
-  v18 = [(MTLTexture *)self->_outputTexture width];
-  v19 = [(MTLTexture *)self->_outputTexture height];
+  [(DolbyVisionDisplayManagement *)self setDisplayManagementConfigFromMetaData:data config:[(MTLBuffer *)self->_config contents] hdrCtrl:hdrControl tcCtrl:control];
+  [(DolbyVisionDisplayManagement *)self setupTexturesWithInput:input Output:output];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  width = [(MTLTexture *)self->_outputTexture width];
+  height = [(MTLTexture *)self->_outputTexture height];
   v20 = [(DolbyVisionDisplayManagement *)self getComputePipeLineStateForShader:self->_displayManagementKernel];
   if (v20)
   {
-    [v17 setComputePipelineState:v20];
-    [v17 setTexture:self->_inputYTexture atIndex:0];
-    [v17 setTexture:self->_inputUVTexture atIndex:1];
-    [v17 setTexture:self->_outputTexture atIndex:2];
-    [v17 setBuffer:self->_config offset:0 atIndex:0];
-    *&buf = (v18 + 15) >> 4;
-    *(&buf + 1) = (v19 + 15) >> 4;
+    [computeCommandEncoder setComputePipelineState:v20];
+    [computeCommandEncoder setTexture:self->_inputYTexture atIndex:0];
+    [computeCommandEncoder setTexture:self->_inputUVTexture atIndex:1];
+    [computeCommandEncoder setTexture:self->_outputTexture atIndex:2];
+    [computeCommandEncoder setBuffer:self->_config offset:0 atIndex:0];
+    *&buf = (width + 15) >> 4;
+    *(&buf + 1) = (height + 15) >> 4;
     v26 = 1;
     v23 = vdupq_n_s64(0x10uLL);
     v24 = 1;
-    [v17 dispatchThreadgroups:&buf threadsPerThreadgroup:&v23];
-    [v17 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:&buf threadsPerThreadgroup:&v23];
+    [computeCommandEncoder endEncoding];
   }
 
   else
@@ -2017,16 +2017,16 @@ LABEL_6:
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] Assertion: 0 warned in /Library/Caches/com.apple.xbs/Sources/HDRProcessing/Metal/DisplayManagement/DolbyVisionDisplayManagement.mm at line 5751\n", &buf, 2u);
     }
 
-    [v17 endEncoding];
+    [computeCommandEncoder endEncoding];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupTexturesWithInput:(__IOSurface *)a3 Output:(__IOSurface *)a4
+- (void)setupTexturesWithInput:(__IOSurface *)input Output:(__IOSurface *)output
 {
-  Width = IOSurfaceGetWidth(a3);
-  Height = IOSurfaceGetHeight(a3);
+  Width = IOSurfaceGetWidth(input);
+  Height = IOSurfaceGetHeight(input);
   self->_inputProtectionOptions = IOSurfaceGetProtectionOptions();
   self->_outputProtectionOptions = IOSurfaceGetProtectionOptions();
   v22 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:23 width:Width height:Height mipmapped:0];
@@ -2034,13 +2034,13 @@ LABEL_6:
   inputYTexture = self->_inputYTexture;
   self->_inputYTexture = v9;
 
-  WidthOfPlane = IOSurfaceGetWidthOfPlane(a3, 1uLL);
-  v12 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:63 width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(a3 mipmapped:1uLL), 0];
-  v13 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v12 iosurface:a3 plane:1];
+  WidthOfPlane = IOSurfaceGetWidthOfPlane(input, 1uLL);
+  v12 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:63 width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(input mipmapped:1uLL), 0];
+  v13 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v12 iosurface:input plane:1];
   inputUVTexture = self->_inputUVTexture;
   self->_inputUVTexture = v13;
 
-  PixelFormat = IOSurfaceGetPixelFormat(a4);
+  PixelFormat = IOSurfaceGetPixelFormat(output);
   FourCCforType = getFourCCforType(PixelFormat);
   v17 = 115;
   if (FourCCforType == 2021078128)
@@ -2060,16 +2060,16 @@ LABEL_6:
 
   v19 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v18 width:Width height:Height mipmapped:0];
   setTextureDescriptorOptions(v19, self->_outputProtectionOptions);
-  v20 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v19 iosurface:a4 plane:0];
+  v20 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v19 iosurface:output plane:0];
   outputTexture = self->_outputTexture;
   self->_outputTexture = v20;
 }
 
-- (void)setConvertConfig:(id *)a3 tcCtrl:(ToneCurve_Control *)a4 hdrCtrl:(id *)a5 auxData:(_AuxData *)a6 tmData:(_TMData *)a7
+- (void)setConvertConfig:(id *)config tcCtrl:(ToneCurve_Control *)ctrl hdrCtrl:(id *)hdrCtrl auxData:(_AuxData *)data tmData:(_TMData *)tmData
 {
   v88 = *MEMORY[0x277D85DE8];
-  p_var10 = &a3[1].var10;
-  if ((a5->var18 | 2) != 2)
+  p_var10 = &config[1].var10;
+  if ((hdrCtrl->var18 | 2) != 2)
   {
     v87 = 1065353216;
     v85 = RGBtoRGBIdentity_coeff;
@@ -2080,10 +2080,10 @@ LABEL_6:
     goto LABEL_23;
   }
 
-  BitDepthFromSurfaceFormat = getBitDepthFromSurfaceFormat(a5->var8);
-  if (a5->var14)
+  BitDepthFromSurfaceFormat = getBitDepthFromSurfaceFormat(hdrCtrl->var8);
+  if (hdrCtrl->var14)
   {
-    v14 = *&a3->var0;
+    v14 = *&config->var0;
     LODWORD(v14) = 0;
     v15 = BitDepthFromSurfaceFormat - 6;
   }
@@ -2092,13 +2092,13 @@ LABEL_6:
   {
     v15 = BitDepthFromSurfaceFormat - 6;
     *&v14 = (16 << (BitDepthFromSurfaceFormat - 6));
-    v16 = *&a3->var0;
+    v16 = *&config->var0;
   }
 
   *(&v14 + 1) = (128 << v15);
-  a3->var2 = DWORD1(v14);
-  *&a3->var0 = v14;
-  var18 = a5->var18;
+  config->var2 = DWORD1(v14);
+  *&config->var0 = v14;
+  var18 = hdrCtrl->var18;
   v87 = 1065353216;
   v85 = RGBtoRGBIdentity_coeff;
   v86 = unk_2508CFA9C;
@@ -2107,7 +2107,7 @@ LABEL_6:
   v83 = unk_2508CFA9C;
   if (var18 == 2)
   {
-    if (a5->var15 == 9)
+    if (hdrCtrl->var15 == 9)
     {
       goto LABEL_8;
     }
@@ -2140,7 +2140,7 @@ LABEL_6:
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] Assertion: hdrCtrl->colourPrimaries == kIOSurfaceTagColorPrimaries_ITU_R_2020 warned in /Library/Caches/com.apple.xbs/Sources/HDRProcessing/Metal/DisplayManagement/DolbyVisionDisplayManagement.mm at line 5868\n", buf, 2u);
     }
 
-    var15 = a5->var15;
+    var15 = hdrCtrl->var15;
     if (var15 == 1)
     {
       v18 = &LMStoRGB_coeff_709;
@@ -2163,11 +2163,11 @@ LABEL_22:
   }
 
 LABEL_23:
-  RGBtoRGBMatrixForUITargetColorPrimary = getRGBtoRGBMatrixForUITargetColorPrimary(a5, a4);
+  RGBtoRGBMatrixForUITargetColorPrimary = getRGBtoRGBMatrixForUITargetColorPrimary(hdrCtrl, ctrl);
   Matrix3x3_multmatrix(&v82, RGBtoRGBMatrixForUITargetColorPrimary);
-  if (a4->targetColorSpace == 2)
+  if (ctrl->targetColorSpace == 2)
   {
-    targetColorPrimaries = a4->targetColorPrimaries;
+    targetColorPrimaries = ctrl->targetColorPrimaries;
     if (targetColorPrimaries == *MEMORY[0x277CC4C20])
     {
       v23 = &R709_Rgb2LMS;
@@ -2251,11 +2251,11 @@ LABEL_23:
   *(p_var10 + 12) = v36;
   __asm { FMOV            V0.2S, #1.0 }
 
-  *&a4->maxEDRValue = _D0;
-  if (!a5->var18 && a5->var17 == 18 && a4->targetTransferFunction != 18)
+  *&ctrl->maxEDRValue = _D0;
+  if (!hdrCtrl->var18 && hdrCtrl->var17 == 18 && ctrl->targetTransferFunction != 18)
   {
     v45 = 0;
-    v46 = a5->var15;
+    v46 = hdrCtrl->var15;
     v47 = RGB2020toHLGY_coeff;
     if (v46 == 12)
     {
@@ -2285,17 +2285,17 @@ LABEL_23:
     }
 
     while (v45 != 3);
-    var21 = a5->var21;
-    *&a3->var66 = var21;
-    a4->tmData.edrAdaptationMode = 0;
-    a4->tmData.ambAdaptationMode = 0;
-    *&a4->tmData.hdr10TmMode = 0x100000000;
-    a4->tmData.edrAdaptationGain = a6->edrAdaptationGain;
-    diffuseInNits = a4->diffuseInNits;
-    a4->tmData.edrFactor = 1.0 / a4->maxEDRValue;
-    a4->tmData.diffuseInNits = diffuseInNits;
-    AmbientInNits = a4->AmbientInNits;
-    ambNitsCap = a6->ambNitsCap;
+    var21 = hdrCtrl->var21;
+    *&config->var66 = var21;
+    ctrl->tmData.edrAdaptationMode = 0;
+    ctrl->tmData.ambAdaptationMode = 0;
+    *&ctrl->tmData.hdr10TmMode = 0x100000000;
+    ctrl->tmData.edrAdaptationGain = data->edrAdaptationGain;
+    diffuseInNits = ctrl->diffuseInNits;
+    ctrl->tmData.edrFactor = 1.0 / ctrl->maxEDRValue;
+    ctrl->tmData.diffuseInNits = diffuseInNits;
+    AmbientInNits = ctrl->AmbientInNits;
+    ambNitsCap = data->ambNitsCap;
     if ((AmbientInNits + -5.093) <= ambNitsCap)
     {
       ambNitsCap = AmbientInNits + -5.093;
@@ -2306,28 +2306,28 @@ LABEL_23:
       ambNitsCap = 0.0;
     }
 
-    a4->tmData.ambReflected_nits = a6->targetDisplayReflectionRatio * (a6->ambAdaptationRatio * ambNitsCap);
-    a4->tmData.Smin_nits = 0.0;
-    a4->tmData.Smax_nits = var21;
-    a4->tmData.Tmin_nits = 0.0;
-    a4->tmData.tm_Tmin_nits = 0.0;
-    a4->tmData.Tmax_nits = var21;
-    a4->tmData.tm_Tmax_nits = var21;
+    ctrl->tmData.ambReflected_nits = data->targetDisplayReflectionRatio * (data->ambAdaptationRatio * ambNitsCap);
+    ctrl->tmData.Smin_nits = 0.0;
+    ctrl->tmData.Smax_nits = var21;
+    ctrl->tmData.Tmin_nits = 0.0;
+    ctrl->tmData.tm_Tmin_nits = 0.0;
+    ctrl->tmData.Tmax_nits = var21;
+    ctrl->tmData.tm_Tmax_nits = var21;
     v55 = *&overrideCminNits;
     if (*&overrideCminNits < 0.0)
     {
       v55 = 0.0;
     }
 
-    a4->tmData.Cmin_nits = v55;
+    ctrl->tmData.Cmin_nits = v55;
     v56 = *&overrideCmaxNits;
     if (*&overrideCmaxNits < 0.0)
     {
       v56 = var21;
     }
 
-    a4->tmData.Cmax_nits = v56;
-    a4->tmData.Cend_nits = var21;
+    ctrl->tmData.Cmax_nits = v56;
+    ctrl->tmData.Cend_nits = var21;
     if (*&overrideCmidNits < 0.0)
     {
       v57 = 10.0;
@@ -2338,7 +2338,7 @@ LABEL_23:
       v57 = *&overrideCmidNits;
     }
 
-    a4->tmData.Capl_nits = v57;
+    ctrl->tmData.Capl_nits = v57;
     if (AmbientInNits >= 0.0)
     {
       v60 = powf(AmbientInNits * 0.0001, 0.1593);
@@ -2351,7 +2351,7 @@ LABEL_23:
       v59 = 0.0000014619 - powf(((v58 * 18.852) + 0.83594) / ((v58 * 18.688) + 1.0), 78.844);
     }
 
-    a4->tmData.ambientPQ = v59;
+    ctrl->tmData.ambientPQ = v59;
     v61 = powf(diffuseInNits / 10000.0, 0.1593);
     v62 = (v61 * 18.8515625 + 0.8359375) / (v61 * 18.6875 + 1.0);
     v63 = powf(v62, 78.844);
@@ -2368,9 +2368,9 @@ LABEL_23:
       v65 = v64;
     }
 
-    a4->tmData.nominalPQ = v65;
-    a4->tmData.adaptiveSdiv_nits = calculateAdaptiveSdiv(v57, a4->tmData.Sdiv_nits);
-    hdr10TmMode = a4->tmData.hdr10TmMode;
+    ctrl->tmData.nominalPQ = v65;
+    ctrl->tmData.adaptiveSdiv_nits = calculateAdaptiveSdiv(v57, ctrl->tmData.Sdiv_nits);
+    hdr10TmMode = ctrl->tmData.hdr10TmMode;
     if (hdr10TmMode == 7)
     {
       v67 = 2;
@@ -2381,22 +2381,22 @@ LABEL_23:
       if (hdr10TmMode != 8)
       {
 LABEL_68:
-        a4->tmData.enableRangeAdjustment = a4->tmData.gradingAmbientEnvironmentType != 1;
-        a4->tmData.enableRangeAdjustmentAndHighClip = 0;
-        hlg_calculateTonemapCurveParamS(&a4->tmData, a3, self->_dm40, &a4->hlgTmParam);
-        if (a4->tmData.enableAUWDMv20)
+        ctrl->tmData.enableRangeAdjustment = ctrl->tmData.gradingAmbientEnvironmentType != 1;
+        ctrl->tmData.enableRangeAdjustmentAndHighClip = 0;
+        hlg_calculateTonemapCurveParamS(&ctrl->tmData, config, self->_dm40, &ctrl->hlgTmParam);
+        if (ctrl->tmData.enableAUWDMv20)
         {
           v68 = malloc_type_malloc(0x168uLL, 0x10000405E9D2EE3uLL);
           v69 = malloc_type_malloc(0x63CuLL, 0x10000403E037C05uLL);
           v70 = v69;
           if (v68 && v69)
           {
-            memcpy(v68, &a4->tmData, 0x168uLL);
-            memcpy(v70, &a4->hlgTmParam, 0x63CuLL);
+            memcpy(v68, &ctrl->tmData, 0x168uLL);
+            memcpy(v70, &ctrl->hlgTmParam, 0x63CuLL);
             v71 = v68[24];
             v68[15] = v71;
             v68[31] = v71;
-            hlg_calculateTonemapCurveParamS(v68, a3, self->_dm40, v70);
+            hlg_calculateTonemapCurveParamS(v68, config, self->_dm40, v70);
           }
         }
 
@@ -2406,12 +2406,12 @@ LABEL_68:
           v70 = 0;
         }
 
-        hlg_generateEdrAdaptationDataS(&a4->tmData, &a4->hlgTmParam, a3, self->_dm40, v70, &a4->edrAdaptationData);
-        calculateEdrAdaptationParamS(&a4->edrAdaptationData.mode, &a3[1].var38, &a4->edrAdaptationParam);
-        hlg_generateAmbAdaptationDataS(&a4->tmData, &a4->hlgTmParam, &a4->edrAdaptationData, &a4->edrAdaptationParam, a3, &a4->ambAdaptationData, 0.0);
-        calculateAmbAdaptationParamS(&a4->ambAdaptationData, &a4->ambAdaptationParam);
-        a6->tm_Send_nits = a4->hlgTmParam.artisticOOTFParam.tm_Send_nits;
-        a3->var67 = a4->hlgTmParam.systemGamma + -1.0;
+        hlg_generateEdrAdaptationDataS(&ctrl->tmData, &ctrl->hlgTmParam, config, self->_dm40, v70, &ctrl->edrAdaptationData);
+        calculateEdrAdaptationParamS(&ctrl->edrAdaptationData.mode, &config[1].var38, &ctrl->edrAdaptationParam);
+        hlg_generateAmbAdaptationDataS(&ctrl->tmData, &ctrl->hlgTmParam, &ctrl->edrAdaptationData, &ctrl->edrAdaptationParam, config, &ctrl->ambAdaptationData, 0.0);
+        calculateAmbAdaptationParamS(&ctrl->ambAdaptationData, &ctrl->ambAdaptationParam);
+        data->tm_Send_nits = ctrl->hlgTmParam.artisticOOTFParam.tm_Send_nits;
+        config->var67 = ctrl->hlgTmParam.systemGamma + -1.0;
         if (v68)
         {
           free(v68);
@@ -2428,20 +2428,20 @@ LABEL_68:
       v67 = 3;
     }
 
-    a4->tmData.doviTmMode = v67;
+    ctrl->tmData.doviTmMode = v67;
     goto LABEL_68;
   }
 
 LABEL_77:
-  setupOutputScale(a3, a4, a5);
+  setupOutputScale(config, ctrl, hdrCtrl);
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupDoViDmVersion:(id *)a3 tmData:(_TMData *)a4 hdrCtrl:(id *)a5 tcCtrl:(ToneCurve_Control *)a6
+- (void)setupDoViDmVersion:(id *)version tmData:(_TMData *)data hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl
 {
-  LODWORD(a3[1].var46) = 3;
-  LOWORD(a3[1].var47) = 0;
-  if (a4->useDM4TmForDM3DoVi84Bright)
+  LODWORD(version[1].var46) = 3;
+  LOWORD(version[1].var47) = 0;
+  if (data->useDM4TmForDM3DoVi84Bright)
   {
     goto LABEL_2;
   }
@@ -2450,7 +2450,7 @@ LABEL_77:
   {
     Config = GetConfig();
     v11 = *HDRConfig::GetConfigEntryValue(Config, 7u, 0);
-    if (a4->processingType == 4)
+    if (data->processingType == 4)
     {
       if ((v11 & 1) == 0)
       {
@@ -2460,13 +2460,13 @@ LABEL_77:
       goto LABEL_2;
     }
 
-    var35_low = LODWORD(a3->var35);
+    var35_low = LODWORD(version->var35);
     if (v11)
     {
-      if (a5->var2 == 1)
+      if (ctrl->var2 == 1)
       {
 LABEL_2:
-        LODWORD(a3[1].var46) = 4;
+        LODWORD(version[1].var46) = 4;
       }
     }
   }
@@ -2483,14 +2483,14 @@ LABEL_10:
     v14 = *HDRConfig::GetConfigEntryValue(v13, 0x1Au, 0);
   }
 
-  if (a5->var2 == 1 || ((a5->var29 | v14)) && BYTE1(a3[1].var49) == 1 && LODWORD(a3[1].var46) != 4 && (*(a6 + 152) & 2) == 0)
+  if (ctrl->var2 == 1 || ((ctrl->var29 | v14)) && BYTE1(version[1].var49) == 1 && LODWORD(version[1].var46) != 4 && (*(tcCtrl + 152) & 2) == 0)
   {
-    if (a4->enableAUWDMv20)
+    if (data->enableAUWDMv20)
     {
       v15 = 2;
     }
 
-    else if (a6->enableHybridCanonicalRendering)
+    else if (tcCtrl->enableHybridCanonicalRendering)
     {
       v15 = 2;
     }
@@ -2506,7 +2506,7 @@ LABEL_10:
     v15 = 0;
   }
 
-  *&a3[1].var50 = v15;
+  *&version[1].var50 = v15;
   if (GetConfig())
   {
     v16 = GetConfig();
@@ -2525,15 +2525,15 @@ LABEL_10:
           v18 = 0;
         }
 
-        *&a3[1].var50 = v18;
+        *&version[1].var50 = v18;
       }
     }
   }
 }
 
-- (void)setDisplayManagementToneMappingConfigFromMetaData:(id *)a3 config:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 hdrCtrl:(id *)a6 auxData:(_AuxData *)a7 dpcParam:(_DpcParam *)a8
+- (void)setDisplayManagementToneMappingConfigFromMetaData:(id *)data config:(id *)config tcCtrl:(ToneCurve_Control *)ctrl hdrCtrl:(id *)hdrCtrl auxData:(_AuxData *)auxData dpcParam:(_DpcParam *)param
 {
-  v8 = MEMORY[0x28223BE20](self, a2, a3, a4, a5, a6, a7, a8);
+  v8 = MEMORY[0x28223BE20](self, a2, data, config, ctrl, hdrCtrl, auxData, param);
   v440 = v9;
   v11 = v10;
   v13 = v12;
@@ -3273,15 +3273,15 @@ LABEL_167:
   v497 = 0.0;
   if (GetConfig() && (v140 = GetConfig(), *HDRConfig::GetConfigEntryValue(v140, 0x1Fu, 0) == 1))
   {
-    v141 = [v449 getHistBasedToneMapping];
+    getHistBasedToneMapping = [v449 getHistBasedToneMapping];
   }
 
   else
   {
-    v141 = 0;
+    getHistBasedToneMapping = 0;
   }
 
-  adjustPeakWhiteBasedOnContent(v17, v15, v13, *(v15 + 380), (v17 + 280), &v497, (v17 + 324), (v15 + 388), *(v13 + 148), (v15 + 392), v141, *(v15 + 372));
+  adjustPeakWhiteBasedOnContent(v17, v15, v13, *(v15 + 380), (v17 + 280), &v497, (v17 + 324), (v15 + 388), *(v13 + 148), (v15 + 392), getHistBasedToneMapping, *(v15 + 372));
   v142 = *v15;
   *(v17 + 228) = v142;
   v143 = *(v15 + 16);
@@ -3380,7 +3380,7 @@ LABEL_213:
   v154 = *(v15 + 24);
   *(v15 + 292) = 1.0 / *(v15 + 28);
   *(v15 + 296) = v154;
-  v418 = v141;
+  v418 = getHistBasedToneMapping;
   v417 = v153;
   if (!v152 || !v151 && (*(v13 + 181)) && [v449 enableMSRandIOSTuning:v13] && *(v15 + 380) == 4)
   {
@@ -4599,28 +4599,28 @@ LABEL_390:
   v375 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDisplayManagementConfigFromMetaData:(id *)a3 config:(id *)a4 hdrCtrl:(id *)a5 tcCtrl:(ToneCurve_Control *)a6
+- (void)setDisplayManagementConfigFromMetaData:(id *)data config:(id *)config hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl
 {
-  a6->tmData.processingType = getProcessingType(a5, a6);
-  a6->auxData.isDoViL2TrimAvailable = a3->var22[0].var0 != 0;
-  overrideDefaults(a4, a5, a6, 1);
-  if (a6->tmData.processingType == 5)
+  tcCtrl->tmData.processingType = getProcessingType(ctrl, tcCtrl);
+  tcCtrl->auxData.isDoViL2TrimAvailable = data->var22[0].var0 != 0;
+  overrideDefaults(config, ctrl, tcCtrl, 1);
+  if (tcCtrl->tmData.processingType == 5)
   {
 
-    [(DolbyVisionDisplayManagement *)self setConvertConfig:a4 tcCtrl:a6 hdrCtrl:a5 auxData:&a6->auxData tmData:&a6->tmData];
+    [(DolbyVisionDisplayManagement *)self setConvertConfig:config tcCtrl:tcCtrl hdrCtrl:ctrl auxData:&tcCtrl->auxData tmData:&tcCtrl->tmData];
   }
 
   else
   {
 
-    [(DolbyVisionDisplayManagement *)self setDisplayManagementToneMappingConfigFromMetaData:a3 config:a4 tcCtrl:a6 hdrCtrl:a5 auxData:&a6->auxData dpcParam:&a4[1].var38];
+    [(DolbyVisionDisplayManagement *)self setDisplayManagementToneMappingConfigFromMetaData:data config:config tcCtrl:tcCtrl hdrCtrl:ctrl auxData:&tcCtrl->auxData dpcParam:&config[1].var38];
   }
 }
 
-- (void)setDisplayManagementToneMappingConfigFromDictionary:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 infoFrame:(id *)a6
+- (void)setDisplayManagementToneMappingConfigFromDictionary:(id *)dictionary hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl infoFrame:(id *)frame
 {
   v200 = *MEMORY[0x277D85DE8];
-  gradingAmbientEnvironmentType = a5->tmData.gradingAmbientEnvironmentType;
+  gradingAmbientEnvironmentType = tcCtrl->tmData.gradingAmbientEnvironmentType;
   if (gradingAmbientEnvironmentType)
   {
 LABEL_5:
@@ -4645,7 +4645,7 @@ LABEL_5:
 
   if (!GetConfig() || (v10 = GetConfig(), (*HDRConfig::GetConfigEntryValue(v10, 0xE2u, 0) & 1) == 0))
   {
-    gradingAmbientEnvironmentType = a5->tmData.gradingAmbientEnvironmentType;
+    gradingAmbientEnvironmentType = tcCtrl->tmData.gradingAmbientEnvironmentType;
     goto LABEL_5;
   }
 
@@ -4666,59 +4666,59 @@ LABEL_8:
 LABEL_15:
   v14 = 0;
 LABEL_16:
-  a5->tmData.enableAUWDMv20 = !a5->enableHybridCanonicalRendering && v14;
-  processingType = a5->tmData.processingType;
+  tcCtrl->tmData.enableAUWDMv20 = !tcCtrl->enableHybridCanonicalRendering && v14;
+  processingType = tcCtrl->tmData.processingType;
   if (processingType == 2)
   {
-    hlg_setupTmConfig(a5->auxData.hlgTmPreset, a5, &a5->tmData, &a5->edrAdaptationData);
+    hlg_setupTmConfig(tcCtrl->auxData.hlgTmPreset, tcCtrl, &tcCtrl->tmData, &tcCtrl->edrAdaptationData);
   }
 
   else if (processingType == 1)
   {
-    hdr10_setupTmConfig(a5->auxData.hdr10TmPreset, a5, &a5->tmData.hdr10TmMode, &a5->edrAdaptationData);
+    hdr10_setupTmConfig(tcCtrl->auxData.hdr10TmPreset, tcCtrl, &tcCtrl->tmData.hdr10TmMode, &tcCtrl->edrAdaptationData);
   }
 
-  if ((BYTE1(a3[1].var49) & 1) == 0)
+  if ((BYTE1(dictionary[1].var49) & 1) == 0)
   {
-    v17 = a5->tmData.processingType;
+    v17 = tcCtrl->tmData.processingType;
     if (v17 == 4 || v17 == 2)
     {
-      a5->targetMaxLinear = a5->Tmax_nits;
+      tcCtrl->targetMaxLinear = tcCtrl->Tmax_nits;
     }
   }
 
-  p_var26 = &a3[1].var26;
-  p_var10 = &a3[1].var10;
-  a3->var28 = 0.0002442;
-  a3->var54 = a4->var21;
+  p_var26 = &dictionary[1].var26;
+  p_var10 = &dictionary[1].var10;
+  dictionary->var28 = 0.0002442;
+  dictionary->var54 = ctrl->var21;
   v20 = 256.0;
-  if (a4->var14)
+  if (ctrl->var14)
   {
     v20 = 0.0;
   }
 
-  a3->var2 = 1157627904;
-  *&a3->var0 = LODWORD(v20) | 0x4500000000000000;
-  BitDepthFromSurfaceFormat = getBitDepthFromSurfaceFormat(a4->var8);
+  dictionary->var2 = 1157627904;
+  *&dictionary->var0 = LODWORD(v20) | 0x4500000000000000;
+  BitDepthFromSurfaceFormat = getBitDepthFromSurfaceFormat(ctrl->var8);
   v23 = ~(-1 << BitDepthFromSurfaceFormat) >> (BitDepthFromSurfaceFormat - 12);
   if (BitDepthFromSurfaceFormat <= 0xB)
   {
     v23 = (1 << (12 - BitDepthFromSurfaceFormat) << BitDepthFromSurfaceFormat) - (1 << (12 - BitDepthFromSurfaceFormat));
   }
 
-  *&a3[1].var52 = v23 / 4095.0;
-  if (a4->var17 == 16)
+  *&dictionary[1].var52 = v23 / 4095.0;
+  if (ctrl->var17 == 16)
   {
-    LODWORD(a3->var30) = 0xFFFF;
+    LODWORD(dictionary->var30) = 0xFFFF;
   }
 
   v24 = 0;
-  var20 = a4->var20;
-  *&v22 = *&a3->var22;
+  var20 = ctrl->var20;
+  *&v22 = *&dictionary->var22;
   v163 = v22;
-  *&v22 = *&a3->var24;
+  *&v22 = *&dictionary->var24;
   v166 = v22;
-  *&v22 = *&a3->var26;
+  *&v22 = *&dictionary->var26;
   do
   {
     v161 = v22;
@@ -4727,32 +4727,32 @@ LABEL_16:
     v193 = v163;
     *(&v193 & 0xFFFFFFFFFFFFFFF9 | (2 * (v24 & 3))) = v26;
     *&v27 = v193;
-    LOWORD(a3->var23) = WORD2(v193);
+    LOWORD(dictionary->var23) = WORD2(v193);
     v163 = v27;
-    LODWORD(a3->var22) = v27;
+    LODWORD(dictionary->var22) = v27;
     v28 = ATFMTLfloat2half_rtz(var20[3]);
     *(&v29 + 1) = *(&v166 + 1);
     v194 = v166;
     *(&v194 & 0xFFFFFFFFFFFFFFF9 | (2 * (v24 & 3))) = v28;
     *&v29 = v194;
-    LOWORD(a3->var25) = WORD2(v194);
+    LOWORD(dictionary->var25) = WORD2(v194);
     v166 = v29;
-    LODWORD(a3->var24) = v29;
+    LODWORD(dictionary->var24) = v29;
     v30 = ATFMTLfloat2half_rtz(var20[6]);
     *(&v22 + 1) = *(&v161 + 1);
     v195 = v161;
     *(&v195 & 0xFFFFFFFFFFFFFFF9 | (2 * (v24 & 3))) = v30;
     *&v22 = v195;
-    LOWORD(a3->var27) = WORD2(v195);
-    a3->var26 = v22;
+    LOWORD(dictionary->var27) = WORD2(v195);
+    dictionary->var26 = v22;
     ++v24;
     ++var20;
   }
 
   while (v24 != 3);
-  *&a3->var55.on = xmmword_2508CF760;
-  var22 = a4->var22;
-  v31 = powf(a4->var21 / 10000.0, 0.1593);
+  *&dictionary->var55.on = xmmword_2508CF760;
+  var22 = ctrl->var22;
+  v31 = powf(ctrl->var21 / 10000.0, 0.1593);
   v32 = (v31 * 18.8515625 + 0.8359375) / (v31 * 18.6875 + 1.0);
   v33 = powf(v32, 78.844);
   if (v33 <= 1.0)
@@ -4796,15 +4796,15 @@ LABEL_16:
     v41 = 0.0;
   }
 
-  var10 = a4->var10;
-  if ((var10 <= 7 && ((1 << var10) & 0xB8) != 0 || a4->var29) && a5->tmData.gradingAmbientEnvironmentType == 1 && a5->tmData.processingType == 2 && *&a3[1].var54 >= 0.0)
+  var10 = ctrl->var10;
+  if ((var10 <= 7 && ((1 << var10) & 0xB8) != 0 || ctrl->var29) && tcCtrl->tmData.gradingAmbientEnvironmentType == 1 && tcCtrl->tmData.processingType == 2 && *&dictionary[1].var54 >= 0.0)
   {
     if (GetConfig())
     {
       v43 = GetConfig();
       if (*HDRConfig::GetConfigEntryValue(v43, 0xB8u, 0) == 1)
       {
-        LOBYTE(a3[1].var53) = 1;
+        LOBYTE(dictionary[1].var53) = 1;
       }
     }
   }
@@ -4812,19 +4812,19 @@ LABEL_16:
   v197 = 0.0;
   if (GetConfig() && (v44 = GetConfig(), *HDRConfig::GetConfigEntryValue(v44, 0x1Fu, 0) == 1))
   {
-    v45 = [(DolbyVisionDisplayManagement *)self getHistBasedToneMapping];
+    getHistBasedToneMapping = [(DolbyVisionDisplayManagement *)self getHistBasedToneMapping];
   }
 
   else
   {
-    v45 = 0;
+    getHistBasedToneMapping = 0;
   }
 
-  adjustPeakWhiteBasedOnContent(a3, a5, a4, a5->tmData.processingType, &a3->var66, &v197, &a3[1].var7, &a5->tmData.adjMaxEDRValue, a4->var21, &a5->tmData.adjTmax_nits, v45, a5->tmData.enableAUWDMv20);
-  v46 = a5->targetMaxLinear * a5->auxData.targetDisplayContrastRatio;
+  adjustPeakWhiteBasedOnContent(dictionary, tcCtrl, ctrl, tcCtrl->tmData.processingType, &dictionary->var66, &v197, &dictionary[1].var7, &tcCtrl->tmData.adjMaxEDRValue, ctrl->var21, &tcCtrl->tmData.adjTmax_nits, getHistBasedToneMapping, tcCtrl->tmData.enableAUWDMv20);
+  v46 = tcCtrl->targetMaxLinear * tcCtrl->auxData.targetDisplayContrastRatio;
   if (v46 <= 0.005)
   {
-    v47 = a5->targetMaxLinear * a5->auxData.targetDisplayContrastRatio;
+    v47 = tcCtrl->targetMaxLinear * tcCtrl->auxData.targetDisplayContrastRatio;
   }
 
   else
@@ -4835,7 +4835,7 @@ LABEL_16:
   v48 = (var10 < 9) & (0x142u >> var10);
   if (v48)
   {
-    targetMinLinear = a5->targetMinLinear;
+    targetMinLinear = tcCtrl->targetMinLinear;
     v50 = targetMinLinear <= 0.00005;
     v51 = targetMinLinear;
     if (v50)
@@ -4854,40 +4854,40 @@ LABEL_16:
   v54 = (v53 * 18.8515625 + 0.8359375) / (v53 * 18.6875 + 1.0);
   v159 = powf(v54, 78.844);
   v55 = 0.0;
-  if ((*(a5 + 152) & 2) == 0)
+  if ((*(tcCtrl + 152) & 2) == 0)
   {
     v55 = v47;
   }
 
-  a5->tmData.disp_Tmin_nits = v55;
-  v56 = powf(a5->diffuseInNits / 10000.0, 0.1593);
+  tcCtrl->tmData.disp_Tmin_nits = v55;
+  v56 = powf(tcCtrl->diffuseInNits / 10000.0, 0.1593);
   v57 = (v56 * 18.8515625 + 0.8359375) / (v56 * 18.6875 + 1.0);
   v58 = powf(v57, 78.844);
   v59 = 0;
-  var19 = a4->var19;
-  v62 = *&a3->var4;
-  v61 = *&a3->var8;
-  v63 = *&a3->var12;
+  var19 = ctrl->var19;
+  v62 = *&dictionary->var4;
+  v61 = *&dictionary->var8;
+  v63 = *&dictionary->var12;
   do
   {
     v64 = *var19 / 4095.0;
     v190 = v62;
     *(&v190 & 0xFFFFFFFFFFFFFFF3 | (4 * (v59 & 3))) = v64;
     v62 = v190;
-    a3->var6 = *(&v190 + 2);
-    *&a3->var4 = v62;
+    dictionary->var6 = *(&v190 + 2);
+    *&dictionary->var4 = v62;
     v65 = var19[3] / 4095.0;
     v191 = v61;
     *(&v191 & 0xFFFFFFFFFFFFFFF3 | (4 * (v59 & 3))) = v65;
     v61 = v191;
-    a3->var10 = *(&v191 + 2);
-    *&a3->var8 = v61;
+    dictionary->var10 = *(&v191 + 2);
+    *&dictionary->var8 = v61;
     v66 = var19[6] / 4095.0;
     v192 = v63;
     *(&v192 & 0xFFFFFFFFFFFFFFF3 | (4 * (v59 & 3))) = v66;
     v63 = v192;
-    a3->var14 = *(&v192 + 2);
-    *&a3->var12 = v63;
+    dictionary->var14 = *(&v192 + 2);
+    *&dictionary->var12 = v63;
     ++v59;
     ++var19;
   }
@@ -4934,10 +4934,10 @@ LABEL_16:
   }
 
   v71 = v197;
-  a5->forwardDM_tMaxPq = v197;
-  a5->forwardDM_tMinPq = v69;
-  a5->crush = v41;
-  a5->clip = v164;
+  tcCtrl->forwardDM_tMaxPq = v197;
+  tcCtrl->forwardDM_tMinPq = v69;
+  tcCtrl->crush = v41;
+  tcCtrl->clip = v164;
   v72 = v164 + v41;
   v73 = (v164 + v41) * 0.5;
   if (v52 < 3)
@@ -4945,29 +4945,29 @@ LABEL_16:
     v73 = 0.3;
   }
 
-  a5->mid = v73;
-  a5->dpcData.mode = a5->auxData.dpcMode;
-  a5->dpcData.edrFactor = 1.0 / a5->maxEDRValue;
-  a5->dpcData.rangeMax = 1.0;
-  if (a5->targetTransferFunction == 16)
+  tcCtrl->mid = v73;
+  tcCtrl->dpcData.mode = tcCtrl->auxData.dpcMode;
+  tcCtrl->dpcData.edrFactor = 1.0 / tcCtrl->maxEDRValue;
+  tcCtrl->dpcData.rangeMax = 1.0;
+  if (tcCtrl->targetTransferFunction == 16)
   {
-    v74 = a5->targetMaxLinear / 10000.0;
-    a5->dpcData.rangeMax = v74;
-    if (a5->enableHybridCanonicalRendering)
+    v74 = tcCtrl->targetMaxLinear / 10000.0;
+    tcCtrl->dpcData.rangeMax = v74;
+    if (tcCtrl->enableHybridCanonicalRendering)
     {
-      a5->dpcData.rangeMax = a5->outputScaler * v74;
+      tcCtrl->dpcData.rangeMax = tcCtrl->outputScaler * v74;
     }
   }
 
-  a5->dpcData.gain = a5->auxData.dpcGain;
-  a5->dpcData.enableGcpc = a5->gcpcData.on;
-  a5->dpcData.gcpGammaValue = a5->gcpcData.gamma;
-  a5->dpcData.gcpcRefWhiteNits = a5->diffuseInNits;
-  v75 = v45;
-  *&v76 = calculateDpcParamS(&a5->dpcData.mode, &a3[1].var38);
-  a3->var67 = -10.0;
+  tcCtrl->dpcData.gain = tcCtrl->auxData.dpcGain;
+  tcCtrl->dpcData.enableGcpc = tcCtrl->gcpcData.on;
+  tcCtrl->dpcData.gcpGammaValue = tcCtrl->gcpcData.gamma;
+  tcCtrl->dpcData.gcpcRefWhiteNits = tcCtrl->diffuseInNits;
+  v75 = getHistBasedToneMapping;
+  *&v76 = calculateDpcParamS(&tcCtrl->dpcData.mode, &dictionary[1].var38);
+  dictionary->var67 = -10.0;
   v196 = 0;
-  v77 = a5->tmData.processingType;
+  v77 = tcCtrl->tmData.processingType;
   if (v77 <= 2)
   {
     if (v77 == 1)
@@ -4975,25 +4975,25 @@ LABEL_16:
       if (GetConfig())
       {
         v86 = GetConfig();
-        v87 = self;
+        selfCopy2 = self;
         if (*HDRConfig::GetConfigEntryValue(v86, 0x1Fu, 0) == 1)
         {
-          v88 = [(DolbyVisionDisplayManagement *)self getHistBasedToneMapping];
+          getHistBasedToneMapping2 = [(DolbyVisionDisplayManagement *)self getHistBasedToneMapping];
         }
 
         else
         {
-          v88 = 0;
+          getHistBasedToneMapping2 = 0;
         }
       }
 
       else
       {
-        v88 = 0;
-        v87 = self;
+        getHistBasedToneMapping2 = 0;
+        selfCopy2 = self;
       }
 
-      hdr10_setupTmParams(a3, a4, a5, v87->_dm40, v85, v88);
+      hdr10_setupTmParams(dictionary, ctrl, tcCtrl, selfCopy2->_dm40, v85, getHistBasedToneMapping2);
 
       goto LABEL_108;
     }
@@ -5003,25 +5003,25 @@ LABEL_16:
       if (GetConfig())
       {
         v78 = GetConfig();
-        v79 = self;
+        selfCopy4 = self;
         if (*HDRConfig::GetConfigEntryValue(v78, 0x1Fu, 0) == 1)
         {
-          v80 = [(DolbyVisionDisplayManagement *)self getHistBasedToneMapping];
+          getHistBasedToneMapping3 = [(DolbyVisionDisplayManagement *)self getHistBasedToneMapping];
         }
 
         else
         {
-          v80 = 0;
+          getHistBasedToneMapping3 = 0;
         }
       }
 
       else
       {
-        v80 = 0;
-        v79 = self;
+        getHistBasedToneMapping3 = 0;
+        selfCopy4 = self;
       }
 
-      [(DolbyVisionDisplayManagement *)v79 hlg_setupTmParams:a3 hdrCtrl:a4 tcCtrl:a5 dm40:v79->_dm40 applyPostRGBtoRGBMatrixScaler:&v196 pHistBasedToneMapping:v80];
+      [(DolbyVisionDisplayManagement *)selfCopy4 hlg_setupTmParams:dictionary hdrCtrl:ctrl tcCtrl:tcCtrl dm40:selfCopy4->_dm40 applyPostRGBtoRGBMatrixScaler:&v196 pHistBasedToneMapping:getHistBasedToneMapping3];
 
       goto LABEL_108;
     }
@@ -5031,31 +5031,31 @@ LABEL_16:
 
   if (v77 == 4)
   {
-    [(DolbyVisionDisplayManagement *)self setupDoViDmVersion:a3 tmData:&a5->tmData hdrCtrl:a4 tcCtrl:a5, v76];
+    [(DolbyVisionDisplayManagement *)self setupDoViDmVersion:dictionary tmData:&tcCtrl->tmData hdrCtrl:ctrl tcCtrl:tcCtrl, v76];
     *&v89 = v41;
     *&v90 = v164;
     *&v91 = v69;
     *&v92 = v71;
     *&v93 = v70;
-    [(DolbyVisionDisplayManagement *)self dovi84_setupTmParams:a3 hdrCtrl:a4 tcCtrl:a5 applyPostRGBtoRGBMatrixScaler:&v196 sMinPq:v48 sMaxPq:self->_dm40 tMinPq:v89 tMaxPq:v90 nominalPQ:v91 targetingDoviLLOrSDR:v92 dm40:v93];
+    [(DolbyVisionDisplayManagement *)self dovi84_setupTmParams:dictionary hdrCtrl:ctrl tcCtrl:tcCtrl applyPostRGBtoRGBMatrixScaler:&v196 sMinPq:v48 sMaxPq:self->_dm40 tMinPq:v89 tMaxPq:v90 nominalPQ:v91 targetingDoviLLOrSDR:v92 dm40:v93];
     goto LABEL_100;
   }
 
   if (v77 != 3)
   {
 LABEL_95:
-    [(DolbyVisionDisplayManagement *)self setupDoViDmVersion:a3 tmData:&a5->tmData hdrCtrl:a4 tcCtrl:a5, v76];
-    dovi_setupTmParams(a3, a4, a5, v41, v164, v69, v71, v70, v84, v48, self->_dm40);
+    [(DolbyVisionDisplayManagement *)self setupDoViDmVersion:dictionary tmData:&tcCtrl->tmData hdrCtrl:ctrl tcCtrl:tcCtrl, v76];
+    dovi_setupTmParams(dictionary, ctrl, tcCtrl, v41, v164, v69, v71, v70, v84, v48, self->_dm40);
 LABEL_100:
-    v94 = *&a5->doviTmParam.sl;
-    brightAdjBySat2 = a5->doviTmParam.brightAdjBySat2;
+    v94 = *&tcCtrl->doviTmParam.sl;
+    brightAdjBySat2 = tcCtrl->doviTmParam.brightAdjBySat2;
     goto LABEL_110;
   }
 
-  if (a4->var0 == 3)
+  if (ctrl->var0 == 3)
   {
-    var21 = a4->var21;
-    *&a3->var66 = var21;
+    var21 = ctrl->var21;
+    *&dictionary->var66 = var21;
     v82 = (var21 / 1000.0);
     if (var21 - 401 > 0x63E)
     {
@@ -5069,44 +5069,44 @@ LABEL_100:
     }
 
     v118 = v83;
-    a3->var67 = v118;
-    var15 = a4->var15;
+    dictionary->var67 = v118;
+    var15 = ctrl->var15;
     if (var15 != 1)
     {
       if (var15 == 12)
       {
         v130 = 0;
         v131 = *p_var10;
-        v132 = *&a3[1].var14;
+        v132 = *&dictionary[1].var14;
         v133 = &dword_2508CFB28;
-        v134 = *&a3[1].var18;
-        v135 = *&a3[1].var22;
+        v134 = *&dictionary[1].var18;
+        v135 = *&dictionary[1].var22;
         do
         {
           v136 = RGBP3toHLGY_coeff[v130];
           v185 = v135;
           *(&v185 & 0xFFFFFFFFFFFFFFF3 | (4 * (v130 & 3))) = v136;
           v135 = v185;
-          a3[1].var24 = *(&v185 + 2);
-          *&a3[1].var22 = v135;
+          dictionary[1].var24 = *(&v185 + 2);
+          *&dictionary[1].var22 = v135;
           v137 = *(v133 - 3);
           v184 = v131;
           *(&v184 & 0xFFFFFFFFFFFFFFF3 | (4 * (v130 & 3))) = v137;
           v131 = v184;
-          a3[1].var12 = DWORD2(v184);
+          dictionary[1].var12 = DWORD2(v184);
           *p_var10 = v131;
           v138 = *v133;
           v182 = v132;
           *(&v182 & 0xFFFFFFFFFFFFFFF3 | (4 * (v130 & 3))) = v138;
           v132 = v182;
-          a3[1].var16 = *(&v182 + 2);
-          *&a3[1].var14 = v132;
+          dictionary[1].var16 = *(&v182 + 2);
+          *&dictionary[1].var14 = v132;
           v139 = v133[3];
           v183 = v134;
           *(&v183 & 0xFFFFFFFFFFFFFFF3 | (4 * (v130 & 3))) = v139;
           v134 = v183;
-          a3[1].var20 = *(&v183 + 2);
-          *&a3[1].var18 = v134;
+          dictionary[1].var20 = *(&v183 + 2);
+          *&dictionary[1].var18 = v134;
           ++v130;
           ++v133;
         }
@@ -5119,45 +5119,45 @@ LABEL_100:
       {
         v120 = 0;
         v121 = *p_var10;
-        v122 = *&a3[1].var14;
+        v122 = *&dictionary[1].var14;
         v123 = &dword_2508CFA98;
-        v124 = *&a3[1].var18;
-        v125 = *&a3[1].var22;
+        v124 = *&dictionary[1].var18;
+        v125 = *&dictionary[1].var22;
         do
         {
           v126 = RGB2020toHLGY_coeff[v120];
           v189 = v125;
           *(&v189 & 0xFFFFFFFFFFFFFFF3 | (4 * (v120 & 3))) = v126;
           v125 = v189;
-          a3[1].var24 = *(&v189 + 2);
-          *&a3[1].var22 = v125;
+          dictionary[1].var24 = *(&v189 + 2);
+          *&dictionary[1].var22 = v125;
           v127 = *(v123 - 3);
           v188 = v121;
           *(&v188 & 0xFFFFFFFFFFFFFFF3 | (4 * (v120 & 3))) = v127;
           v121 = v188;
-          a3[1].var12 = DWORD2(v188);
+          dictionary[1].var12 = DWORD2(v188);
           *p_var10 = v121;
           v128 = *v123;
           v186 = v122;
           *(&v186 & 0xFFFFFFFFFFFFFFF3 | (4 * (v120 & 3))) = v128;
           v122 = v186;
-          a3[1].var16 = *(&v186 + 2);
-          *&a3[1].var14 = v122;
+          dictionary[1].var16 = *(&v186 + 2);
+          *&dictionary[1].var14 = v122;
           v129 = v123[3];
           v187 = v124;
           *(&v187 & 0xFFFFFFFFFFFFFFF3 | (4 * (v120 & 3))) = v129;
           v124 = v187;
-          a3[1].var20 = *(&v187 + 2);
-          *&a3[1].var18 = v124;
+          dictionary[1].var20 = *(&v187 + 2);
+          *&dictionary[1].var18 = v124;
           ++v120;
           ++v123;
         }
 
         while (v120 != 3);
 LABEL_156:
-        v152 = *&a3[1].var26;
-        v151 = *&a3[1].var30;
-        v153 = *&a3[1].var34;
+        v152 = *&dictionary[1].var26;
+        v151 = *&dictionary[1].var30;
+        v153 = *&dictionary[1].var34;
         v154 = -3;
         v155 = &dword_2508CFA74;
         v94 = xmmword_2508CF7C0;
@@ -5167,20 +5167,20 @@ LABEL_156:
           v177 = v152;
           *(&v177 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v154 - 1) & 3))) = v156;
           v152 = v177;
-          a3[1].var28 = *(&v177 + 2);
-          *&a3[1].var26 = v152;
+          dictionary[1].var28 = *(&v177 + 2);
+          *&dictionary[1].var26 = v152;
           v157 = *v155;
           v176 = v151;
           *(&v176 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v154 - 1) & 3))) = v157;
           v151 = v176;
-          a3[1].var32 = *(&v176 + 2);
-          *&a3[1].var30 = v151;
+          dictionary[1].var32 = *(&v176 + 2);
+          *&dictionary[1].var30 = v151;
           v158 = v155[3];
           v175 = v153;
           *(&v175 & 0xFFFFFFFFFFFFFFF3 | (4 * ((v154 - 1) & 3))) = v158;
           v153 = v175;
-          a3[1].var36 = *(&v175 + 2);
-          *&a3[1].var34 = v153;
+          dictionary[1].var36 = *(&v175 + 2);
+          *&dictionary[1].var34 = v153;
           ++v155;
           v109 = __CFADD__(v154++, 1);
         }
@@ -5220,36 +5220,36 @@ LABEL_156:
 
     v141 = 0;
     v142 = *p_var10;
-    v143 = *&a3[1].var14;
+    v143 = *&dictionary[1].var14;
     v144 = &dword_2508CFAE0;
-    v145 = *&a3[1].var18;
-    v146 = *&a3[1].var22;
+    v145 = *&dictionary[1].var18;
+    v146 = *&dictionary[1].var22;
     do
     {
       v147 = RGB709toHLGY_coeff[v141];
       v181 = v146;
       *(&v181 & 0xFFFFFFFFFFFFFFF3 | (4 * (v141 & 3))) = v147;
       v146 = v181;
-      a3[1].var24 = *(&v181 + 2);
-      *&a3[1].var22 = v146;
+      dictionary[1].var24 = *(&v181 + 2);
+      *&dictionary[1].var22 = v146;
       v148 = *(v144 - 3);
       v180 = v142;
       *(&v180 & 0xFFFFFFFFFFFFFFF3 | (4 * (v141 & 3))) = v148;
       v142 = v180;
-      a3[1].var12 = DWORD2(v180);
+      dictionary[1].var12 = DWORD2(v180);
       *p_var10 = v142;
       v149 = *v144;
       v178 = v143;
       *(&v178 & 0xFFFFFFFFFFFFFFF3 | (4 * (v141 & 3))) = v149;
       v143 = v178;
-      a3[1].var16 = *(&v178 + 2);
-      *&a3[1].var14 = v143;
+      dictionary[1].var16 = *(&v178 + 2);
+      *&dictionary[1].var14 = v143;
       v150 = v144[3];
       v179 = v145;
       *(&v179 & 0xFFFFFFFFFFFFFFF3 | (4 * (v141 & 3))) = v150;
       v145 = v179;
-      a3[1].var20 = *(&v179 + 2);
-      *&a3[1].var18 = v145;
+      dictionary[1].var20 = *(&v179 + 2);
+      *&dictionary[1].var18 = v145;
       ++v141;
       ++v144;
     }
@@ -5258,24 +5258,24 @@ LABEL_156:
     goto LABEL_156;
   }
 
-  a3->var67 = 0.0;
+  dictionary->var67 = 0.0;
 LABEL_108:
   v94 = xmmword_2508CF7C0;
 LABEL_109:
   brightAdjBySat2 = 0.0;
 LABEL_110:
-  *&a3->var36 = v94;
-  a3->var65 = brightAdjBySat2;
-  *&a3->var50 = vcvt_f32_f64(vdivq_f64(xmmword_2508CF7D0, vdupq_lane_s64(COERCE__INT64(v164 * 876.0), 0)));
-  a3->var53 = a5->maxEDRValue;
-  a3->var55.gain = v71;
-  *&a3->var68 = a5->AmbientInNits;
-  setupOutputScale(a3, a5, a4);
+  *&dictionary->var36 = v94;
+  dictionary->var65 = brightAdjBySat2;
+  *&dictionary->var50 = vcvt_f32_f64(vdivq_f64(xmmword_2508CF7D0, vdupq_lane_s64(COERCE__INT64(v164 * 876.0), 0)));
+  dictionary->var53 = tcCtrl->maxEDRValue;
+  dictionary->var55.gain = v71;
+  *&dictionary->var68 = tcCtrl->AmbientInNits;
+  setupOutputScale(dictionary, tcCtrl, ctrl);
   LODWORD(v96) = 0;
-  if ((*(a5 + 152) & 2) == 0)
+  if ((*(tcCtrl + 152) & 2) == 0)
   {
-    v97 = a4->var10;
-    if ((v97 == 6 || v97 == 1) && LODWORD(a3[1].var46) == 3)
+    v97 = ctrl->var10;
+    if ((v97 == 6 || v97 == 1) && LODWORD(dictionary[1].var46) == 3)
     {
       v98 = (v72 - (v69 + v71)) * *&ChromaVectorWeightDM31;
     }
@@ -5288,8 +5288,8 @@ LABEL_110:
     *&v96 = v98 * 0.5;
   }
 
-  a3->var56 = v96;
-  targetColorPrimaries = a5->targetColorPrimaries;
+  dictionary->var56 = v96;
+  targetColorPrimaries = tcCtrl->targetColorPrimaries;
   if (targetColorPrimaries == *MEMORY[0x277CC4C20])
   {
     v100 = &LMStoRGB_coeff_709;
@@ -5304,14 +5304,14 @@ LABEL_110:
     }
   }
 
-  var49 = a3->var49;
-  *&v96 = *&a3->var16;
+  var49 = dictionary->var49;
+  *&v96 = *&dictionary->var16;
   v165 = v96;
-  *&v96 = *&a3->var18;
+  *&v96 = *&dictionary->var18;
   v168 = v96;
   v102 = v100 + 3;
   v103 = -3;
-  *&v96 = *&a3->var20;
+  *&v96 = *&dictionary->var20;
   do
   {
     v162 = v96;
@@ -5320,43 +5320,43 @@ LABEL_110:
     v172 = v165;
     *(&v172 & 0xFFFFFFFFFFFFFFF9 | (2 * ((v103 - 1) & 3))) = v104;
     *&v105 = v172;
-    LOWORD(a3->var17) = WORD2(v172);
+    LOWORD(dictionary->var17) = WORD2(v172);
     v165 = v105;
-    LODWORD(a3->var16) = v105;
+    LODWORD(dictionary->var16) = v105;
     v106 = ATFMTLfloat2half_rtz(var49 * *v102);
     *(&v107 + 1) = *(&v168 + 1);
     v173 = v168;
     *(&v173 & 0xFFFFFFFFFFFFFFF9 | (2 * ((v103 - 1) & 3))) = v106;
     *&v107 = v173;
-    LOWORD(a3->var19) = WORD2(v173);
+    LOWORD(dictionary->var19) = WORD2(v173);
     v168 = v107;
-    LODWORD(a3->var18) = v107;
+    LODWORD(dictionary->var18) = v107;
     v108 = ATFMTLfloat2half_rtz(var49 * v102[3]);
     *(&v96 + 1) = *(&v162 + 1);
     v174 = v162;
     *(&v174 & 0xFFFFFFFFFFFFFFF9 | (2 * ((v103 - 1) & 3))) = v108;
     *&v96 = v174;
-    LOWORD(a3->var21) = WORD2(v174);
-    LODWORD(a3->var20) = v96;
+    LOWORD(dictionary->var21) = WORD2(v174);
+    LODWORD(dictionary->var20) = v96;
     ++v102;
     v109 = __CFADD__(v103++, 1);
   }
 
   while (!v109);
-  a3->var40 = 0.0;
+  dictionary->var40 = 0.0;
   if (v196)
   {
-    targetMaxLinear = a5->targetMaxLinear;
-    if (a5->atmEnable && a5->targetMaxLinearOutput > a5->diffuseInNits && a4->var0 == 3)
+    targetMaxLinear = tcCtrl->targetMaxLinear;
+    if (tcCtrl->atmEnable && tcCtrl->targetMaxLinearOutput > tcCtrl->diffuseInNits && ctrl->var0 == 3)
     {
-      targetMaxLinear = a5->targetMaxLinearOutput;
+      targetMaxLinear = tcCtrl->targetMaxLinearOutput;
     }
 
     v111 = 0;
     v112 = targetMaxLinear * var49;
     v114 = *p_var26;
-    v113 = *&a3[1].var30;
-    v115 = *&a3[1].var34;
+    v113 = *&dictionary[1].var30;
+    v115 = *&dictionary[1].var34;
     do
     {
       v171 = v114;
@@ -5372,48 +5372,48 @@ LABEL_110:
     }
 
     while (v111 != 3);
-    a3[1].var28 = *(&v114 + 2);
-    a3[1].var32 = *(&v113 + 2);
+    dictionary[1].var28 = *(&v114 + 2);
+    dictionary[1].var32 = *(&v113 + 2);
     *p_var26 = v114;
-    *&a3[1].var30 = v113;
-    a3[1].var36 = *(&v115 + 2);
-    *&a3[1].var34 = v115;
+    *&dictionary[1].var30 = v113;
+    dictionary[1].var36 = *(&v115 + 2);
+    *&dictionary[1].var34 = v115;
   }
 
   v116 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDisplayManagementConfigFromDictionary:(id *)a3 hdrCtrl:(id *)a4 tcCtrl:(ToneCurve_Control *)a5 infoFrame:(id *)a6
+- (void)setDisplayManagementConfigFromDictionary:(id *)dictionary hdrCtrl:(id *)ctrl tcCtrl:(ToneCurve_Control *)tcCtrl infoFrame:(id *)frame
 {
-  a5->tmData.processingType = getProcessingType(a4, a5);
-  a5->auxData.isDoViL2TrimAvailable = 0;
-  overrideDefaults(a3, a4, a5, 1);
-  if (a5->tmData.processingType == 5)
+  tcCtrl->tmData.processingType = getProcessingType(ctrl, tcCtrl);
+  tcCtrl->auxData.isDoViL2TrimAvailable = 0;
+  overrideDefaults(dictionary, ctrl, tcCtrl, 1);
+  if (tcCtrl->tmData.processingType == 5)
   {
 
-    [(DolbyVisionDisplayManagement *)self setConvertConfig:a3 tcCtrl:a5 hdrCtrl:a4 auxData:&a5->auxData tmData:&a5->tmData];
+    [(DolbyVisionDisplayManagement *)self setConvertConfig:dictionary tcCtrl:tcCtrl hdrCtrl:ctrl auxData:&tcCtrl->auxData tmData:&tcCtrl->tmData];
   }
 
   else
   {
 
-    [(DolbyVisionDisplayManagement *)self setDisplayManagementToneMappingConfigFromDictionary:a3 hdrCtrl:a4 tcCtrl:a5 infoFrame:a6];
+    [(DolbyVisionDisplayManagement *)self setDisplayManagementToneMappingConfigFromDictionary:dictionary hdrCtrl:ctrl tcCtrl:tcCtrl infoFrame:frame];
   }
 }
 
-- (void)getToneCurves:(id *)a3 tcCtrl:(ToneCurve_Control *)a4 tmData:(_TMData *)a5
+- (void)getToneCurves:(id *)curves tcCtrl:(ToneCurve_Control *)ctrl tmData:(_TMData *)data
 {
-  if (!a3->var19)
+  if (!curves->var19)
   {
-    var3 = a3->var3;
-    var1 = a3->var1;
+    var3 = curves->var3;
+    var1 = curves->var1;
     if (var3 >= var1)
     {
-      a3->var3 = var1;
+      curves->var3 = var1;
       var3 = var1;
     }
 
-    v10 = sqrtf((var3 - a3->var2) / (var1 - a3->var0));
+    v10 = sqrtf((var3 - curves->var2) / (var1 - curves->var0));
     if (v10 <= 1.0)
     {
       v11 = v10;
@@ -5424,23 +5424,23 @@ LABEL_110:
       v11 = 1.0;
     }
 
-    v12 = log2f(a3->var8);
-    v13 = sqrtf(v12 / log2f(a3->var7));
-    var9 = a3->var9;
+    v12 = log2f(curves->var8);
+    v13 = sqrtf(v12 / log2f(curves->var7));
+    var9 = curves->var9;
     *var9 = (v13 * sqrtf(1.0 / v11)) / 0.33333;
-    var5 = a3->var5;
-    var6 = a3->var6;
-    var4 = a3->var4;
+    var5 = curves->var5;
+    var6 = curves->var6;
+    var4 = curves->var4;
     v18 = var5 + (var6 - var5) * 0.85;
     v19 = v13 * (1.0 - v11);
     v20 = v18;
     if (var4 > v20)
     {
-      a3->var4 = v20;
+      curves->var4 = v20;
       var4 = v18;
     }
 
-    var14 = a3->var14;
+    var14 = curves->var14;
     v22 = powf(var14 / 10000.0, 0.1593);
     v23 = (v22 * 18.8515625 + 0.8359375) / (v22 * 18.6875 + 1.0);
     v24 = powf(v23, 78.844);
@@ -5464,20 +5464,20 @@ LABEL_110:
       v26 = 0.0;
     }
 
-    v27 = v19 * (var4 * (((var4 - a3->var0) + (var4 - a3->var0)) / (a3->var1 - a3->var0)));
-    if ((var5 - v27) >= a3->var2)
+    v27 = v19 * (var4 * (((var4 - curves->var0) + (var4 - curves->var0)) / (curves->var1 - curves->var0)));
+    if ((var5 - v27) >= curves->var2)
     {
       var2 = var5 - v27;
     }
 
     else
     {
-      var2 = a3->var2;
+      var2 = curves->var2;
     }
 
-    if ((var6 - v27) >= a3->var3)
+    if ((var6 - v27) >= curves->var3)
     {
-      v29 = a3->var3;
+      v29 = curves->var3;
     }
 
     else
@@ -5486,9 +5486,9 @@ LABEL_110:
     }
 
     v30 = var4 - v27;
-    if ((a5->edrAdaptationMode == 1 || a5->ambAdaptationMode == 1) && a3->var13 >= 0.0 && var14 >= 0.0 && !a3->var18)
+    if ((data->edrAdaptationMode == 1 || data->ambAdaptationMode == 1) && curves->var13 >= 0.0 && var14 >= 0.0 && !curves->var18)
     {
-      if (GetConfig() && (Config = GetConfig(), (*HDRConfig::GetConfigEntryValue(Config, 0x4Fu, 0) & 1) != 0) || a4->tmData.processingType != 4)
+      if (GetConfig() && (Config = GetConfig(), (*HDRConfig::GetConfigEntryValue(Config, 0x4Fu, 0) & 1) != 0) || ctrl->tmData.processingType != 4)
       {
         v30 = fminf(v30, 0.5);
         v33 = &middata_3LED;
@@ -5499,11 +5499,11 @@ LABEL_110:
         v33 = &middata_3LED_84;
       }
 
-      var15 = a3->var15;
+      var15 = curves->var15;
       v36 = adjustMidTone(v26, var15, AB_3LED, BR_3LED, 8, 9, v33) + 0.0;
       v31 = adjustMidTone(v26, var15, AB_3LED, BR_3LED, 8, 9, sat_3LED);
       v37 = v30 + v36;
-      v38 = a3->var6;
+      v38 = curves->var6;
       if (v38 <= 0.001)
       {
         v39 = 0.949999988;
@@ -5511,7 +5511,7 @@ LABEL_110:
 
       else
       {
-        v39 = (a3->var4 / v38);
+        v39 = (curves->var4 / v38);
       }
 
       v40 = v39 * 1.875 + -0.7937;
@@ -5542,7 +5542,7 @@ LABEL_110:
         v30 = var2;
       }
 
-      var9 = a3->var9;
+      var9 = curves->var9;
     }
 
     else
@@ -5563,55 +5563,55 @@ LABEL_110:
       }
     }
 
-    *a3->var20 = v31;
+    *curves->var20 = v31;
     v43 = *var9;
-    v44 = powf(a3->var5, *var9);
-    v45 = powf(a3->var4, v43);
-    v46 = powf(a3->var6, v43);
+    v44 = powf(curves->var5, *var9);
+    v45 = powf(curves->var4, v43);
+    v46 = powf(curves->var6, v43);
     v47 = powf(var2, 3.0);
     v48 = powf(v30, 3.0);
     v49 = powf(v29, 3.0);
     v50 = (((v48 * v45) * (v46 - v44)) + ((v49 * v46) * (v44 - v45))) + ((v47 * v44) * (v45 - v46));
-    var11 = a3->var11;
-    *a3->var10 = (((v48 * ((v49 - v47) * (v44 * v46))) + (((v48 - v49) * (v45 * v46)) * v47)) + (((v47 - v48) * (v44 * v45)) * v49)) / v50;
+    var11 = curves->var11;
+    *curves->var10 = (((v48 * ((v49 - v47) * (v44 * v46))) + (((v48 - v49) * (v45 * v46)) * v47)) + (((v47 - v48) * (v44 * v45)) * v49)) / v50;
     *var11 = (((v48 * -((v49 * v46) - (v44 * v47))) + (-((v48 * v45) - (v46 * v49)) * v47)) + (-((v47 * v44) - (v45 * v48)) * v49)) / v50;
-    *a3->var12 = ((((v46 - v45) * v47) - ((v46 - v44) * v48)) + ((v45 - v44) * v49)) / v50;
+    *curves->var12 = ((((v46 - v45) * v47) - ((v46 - v44) * v48)) + ((v45 - v44) * v49)) / v50;
   }
 }
 
-- (void)getToneCurvesDM31:(id *)a3
+- (void)getToneCurvesDM31:(id *)m31
 {
-  var3 = a3->var3;
-  var1 = a3->var1;
+  var3 = m31->var3;
+  var1 = m31->var1;
   if (var3 >= var1)
   {
-    a3->var3 = var1;
+    m31->var3 = var1;
     var3 = var1;
   }
 
-  v6 = (var1 + a3->var0) * 0.5;
-  v7 = v6 - ((var3 + a3->var2) * 0.5);
-  v8 = log2f(a3->var8);
-  v9 = sqrtf(v8 / log2f(a3->var7));
-  var9 = a3->var9;
+  v6 = (var1 + m31->var0) * 0.5;
+  v7 = v6 - ((var3 + m31->var2) * 0.5);
+  v8 = log2f(m31->var8);
+  v9 = sqrtf(v8 / log2f(m31->var7));
+  var9 = m31->var9;
   *var9 = ((v7 + 1.0) * v9) / 0.33333;
-  var4 = a3->var4;
-  var5 = a3->var5;
+  var4 = m31->var4;
+  var5 = m31->var5;
   v13 = ((v9 * (v7 * (((var4 - v6) * 3.0) + 1.0))) * 0.5) + 0.0;
-  if ((var5 - v13) >= a3->var2)
+  if ((var5 - v13) >= m31->var2)
   {
     var2 = var5 - v13;
   }
 
   else
   {
-    var2 = a3->var2;
+    var2 = m31->var2;
   }
 
-  var6 = a3->var6;
-  if ((var6 - v13) >= a3->var3)
+  var6 = m31->var6;
+  if ((var6 - v13) >= m31->var3)
   {
-    v16 = a3->var3;
+    v16 = m31->var3;
   }
 
   else
@@ -5637,7 +5637,7 @@ LABEL_110:
     v20 = var4;
   }
 
-  a3->var4 = v20;
+  m31->var4 = v20;
   v21 = (v16 - var2);
   v22 = var2 + v21 * 0.85;
   v23 = var2 + v21 * 0.15;
@@ -5670,16 +5670,16 @@ LABEL_110:
   v32 = powf(v26, 3.0);
   v33 = powf(v16, 3.0);
   v34 = (((v30 - v28) * (v29 * v32)) + ((v30 * v33) * (v28 - v29))) + ((v28 * v31) * (v29 - v30));
-  var11 = a3->var11;
-  *a3->var10 = (((((v28 * v30) * (v33 - v31)) * v32) + (((v30 * v29) * (v32 - v33)) * v31)) + (((v28 * v29) * (v31 - v32)) * v33)) / v34;
+  var11 = m31->var11;
+  *m31->var10 = (((((v28 * v30) * (v33 - v31)) * v32) + (((v30 * v29) * (v32 - v33)) * v31)) + (((v28 * v29) * (v31 - v32)) * v33)) / v34;
   *var11 = (((-((v30 * v33) - (v28 * v31)) * v32) + (-((v29 * v32) - (v30 * v33)) * v31)) + (-((v28 * v31) - (v29 * v32)) * v33)) / v34;
-  *a3->var12 = ((((v30 - v29) * v31) - ((v30 - v28) * v32)) + ((v29 - v28) * v33)) / v34;
+  *m31->var12 = ((((v30 - v29) * v31) - ((v30 - v28) * v32)) + ((v29 - v28) * v33)) / v34;
 }
 
-- (void)getSat2Parameters:(id *)a3
+- (void)getSat2Parameters:(id *)parameters
 {
   v3 = 0;
-  v4 = *&a3->var66;
+  v4 = *&parameters->var66;
   v5 = [DolbyVisionDisplayManagement getSat2Parameters:]::sss;
   while (v4 >= *v5)
   {
@@ -5695,8 +5695,8 @@ LABEL_110:
   v6 = &[DolbyVisionDisplayManagement getSat2Parameters:]::sss[6 * v3];
   v7 = &[DolbyVisionDisplayManagement getSat2Parameters:]::sss[6 * v3];
   v8 = (*v6 - v4) / (*v6 - *(v7 - 6));
-  *&a3->var57 = vmlaq_n_f32(vmulq_n_f32(*(v7 - 5), v8), *(v6 + 1), 1.0 - v8);
-  *&a3->var63 = (v8 * *(v7 - 1)) + (*(v6 + 5) * (1.0 - v8));
+  *&parameters->var57 = vmlaq_n_f32(vmulq_n_f32(*(v7 - 5), v8), *(v6 + 1), 1.0 - v8);
+  *&parameters->var63 = (v8 * *(v7 - 1)) + (*(v6 + 5) * (1.0 - v8));
 }
 
 @end

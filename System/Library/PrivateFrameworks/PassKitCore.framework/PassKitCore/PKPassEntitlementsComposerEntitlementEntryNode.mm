@@ -1,9 +1,9 @@
 @interface PKPassEntitlementsComposerEntitlementEntryNode
-- (PKPassEntitlementsComposerEntitlementEntryNode)initWithDisplayableEntitlement:(id)a3 sharedEntitlement:(id)a4 parentEntitlementComposer:(id)a5;
+- (PKPassEntitlementsComposerEntitlementEntryNode)initWithDisplayableEntitlement:(id)entitlement sharedEntitlement:(id)sharedEntitlement parentEntitlementComposer:(id)composer;
 - (id)allPossibleManageability;
 - (id)allPossibleShareability;
 - (id)allPossibleVisibility;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)possibleTimeConfiguration;
 - (unint64_t)possibleManageability;
 - (unint64_t)possibleShareability;
@@ -12,20 +12,20 @@
 
 @implementation PKPassEntitlementsComposerEntitlementEntryNode
 
-- (PKPassEntitlementsComposerEntitlementEntryNode)initWithDisplayableEntitlement:(id)a3 sharedEntitlement:(id)a4 parentEntitlementComposer:(id)a5
+- (PKPassEntitlementsComposerEntitlementEntryNode)initWithDisplayableEntitlement:(id)entitlement sharedEntitlement:(id)sharedEntitlement parentEntitlementComposer:(id)composer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 entitlementIdentifier];
+  entitlementCopy = entitlement;
+  sharedEntitlementCopy = sharedEntitlement;
+  composerCopy = composer;
+  entitlementIdentifier = [entitlementCopy entitlementIdentifier];
   v15.receiver = self;
   v15.super_class = PKPassEntitlementsComposerEntitlementEntryNode;
-  v13 = [(PKPassEntitlementsComposerEntryNode *)&v15 initWithIdentifier:v12 parentEntitlementComposer:v11];
+  v13 = [(PKPassEntitlementsComposerEntryNode *)&v15 initWithIdentifier:entitlementIdentifier parentEntitlementComposer:composerCopy];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_displayableEntitlement, a3);
-    objc_storeStrong(&v13->_sharedEntitlement, a4);
+    objc_storeStrong(&v13->_displayableEntitlement, entitlement);
+    objc_storeStrong(&v13->_sharedEntitlement, sharedEntitlement);
   }
 
   return v13;
@@ -34,19 +34,19 @@
 - (unint64_t)possibleShareability
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
-  v3 = [v2 shareability];
+  entitlement = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
+  shareability = [entitlement shareability];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = shareability;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    unsignedIntegerValue = 0;
     v8 = *v13;
     do
     {
@@ -58,9 +58,9 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v7 <= [v10 unsignedIntegerValue])
+        if (unsignedIntegerValue <= [v10 unsignedIntegerValue])
         {
-          v7 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
         }
       }
 
@@ -72,28 +72,28 @@
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)possibleVisibility
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
-  v3 = [v2 visibility];
+  entitlement = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
+  visibility = [entitlement visibility];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = visibility;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    unsignedIntegerValue = 0;
     v8 = *v13;
     do
     {
@@ -105,9 +105,9 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v7 <= [v10 unsignedIntegerValue])
+        if (unsignedIntegerValue <= [v10 unsignedIntegerValue])
         {
-          v7 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
         }
       }
 
@@ -119,28 +119,28 @@
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)possibleManageability
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
-  v3 = [v2 manageability];
+  entitlement = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
+  manageability = [entitlement manageability];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = v3;
+  v4 = manageability;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    unsignedIntegerValue = 0;
     v8 = *v13;
     do
     {
@@ -152,9 +152,9 @@
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        if (v7 <= [v10 unsignedIntegerValue])
+        if (unsignedIntegerValue <= [v10 unsignedIntegerValue])
         {
-          v7 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
         }
       }
 
@@ -166,49 +166,49 @@
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (id)allPossibleShareability
 {
-  v2 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
-  v3 = [v2 shareability];
+  entitlement = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
+  shareability = [entitlement shareability];
 
-  return v3;
+  return shareability;
 }
 
 - (id)allPossibleVisibility
 {
-  v2 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
-  v3 = [v2 visibility];
+  entitlement = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
+  visibility = [entitlement visibility];
 
-  return v3;
+  return visibility;
 }
 
 - (id)allPossibleManageability
 {
-  v2 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
-  v3 = [v2 manageability];
+  entitlement = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
+  manageability = [entitlement manageability];
 
-  return v3;
+  return manageability;
 }
 
 - (id)possibleTimeConfiguration
 {
-  v2 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
-  v3 = [v2 timeConfiguration];
+  entitlement = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement entitlement];
+  timeConfiguration = [entitlement timeConfiguration];
 
-  return v3;
+  return timeConfiguration;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = PKPassEntitlementsComposerEntitlementEntryNode;
-  v4 = [(PKPassEntitlementsComposerEntryNode *)&v10 copyWithZone:a3];
+  v4 = [(PKPassEntitlementsComposerEntryNode *)&v10 copyWithZone:zone];
   v5 = [(PKDisplayablePassEntitlement *)self->_displayableEntitlement copy];
   v6 = v4[7];
   v4[7] = v5;

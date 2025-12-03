@@ -1,5 +1,5 @@
 @interface PFParallaxLayerStack
-- (BOOL)_layerIncludesHeadroom:(id)a3;
+- (BOOL)_layerIncludesHeadroom:(id)headroom;
 - (BOOL)hasAnySpatialLayer;
 - (BOOL)hasBackfillLayers;
 - (BOOL)hasDebugLayers;
@@ -8,58 +8,58 @@
 - (BOOL)spatialPhotoBackfillIncludesHeadroom;
 - (BOOL)spatialPhotoIncludesHeadroom;
 - (CGSize)size;
-- (PFParallaxLayerStack)initWithLayers:(id)a3 layout:(id)a4 depthEnabled:(BOOL)a5 parallaxDisabled:(BOOL)a6 clockAreaLuminance:(double)a7 settlingEffectEnabled:(BOOL)a8 spatialPhotoEnabled:(BOOL)a9 userAdjustedVisibleFrame:(BOOL)a10;
-- (id)_resizeLayers:(id)a3 oldImageSize:(CGSize)a4 newImageSize:(CGSize)a5;
+- (PFParallaxLayerStack)initWithLayers:(id)layers layout:(id)layout depthEnabled:(BOOL)enabled parallaxDisabled:(BOOL)disabled clockAreaLuminance:(double)luminance settlingEffectEnabled:(BOOL)effectEnabled spatialPhotoEnabled:(BOOL)photoEnabled userAdjustedVisibleFrame:(BOOL)self0;
+- (id)_resizeLayers:(id)layers oldImageSize:(CGSize)size newImageSize:(CGSize)imageSize;
 - (id)description;
-- (id)layerStackByRemovingLayersWithIdentifiers:(id)a3;
-- (id)layerStackByRemovingLayersWithOptions:(unint64_t)a3;
-- (id)layerStackByUpdatingClockAreaLuminance:(double)a3;
-- (id)layerStackByUpdatingClockLayerOrder:(id)a3;
-- (id)layerStackByUpdatingDepthEnabled:(BOOL)a3;
-- (id)layerStackByUpdatingInactiveFrame:(CGRect)a3;
-- (id)layerStackByUpdatingLayers:(id)a3 imageSize:(CGSize)a4;
-- (id)layerStackByUpdatingLayout:(id)a3;
-- (id)layerStackByUpdatingParallaxDisabled:(BOOL)a3;
-- (id)layerStackByUpdatingSettlingEffectEnabled:(BOOL)a3;
-- (id)layerStackByUpdatingSpatialPhotoEnabled:(BOOL)a3;
-- (id)layerStackByUpdatingUserAdjustedVisibleFrame:(BOOL)a3;
-- (id)layerStackByUpdatingVisibleFrame:(CGRect)a3;
+- (id)layerStackByRemovingLayersWithIdentifiers:(id)identifiers;
+- (id)layerStackByRemovingLayersWithOptions:(unint64_t)options;
+- (id)layerStackByUpdatingClockAreaLuminance:(double)luminance;
+- (id)layerStackByUpdatingClockLayerOrder:(id)order;
+- (id)layerStackByUpdatingDepthEnabled:(BOOL)enabled;
+- (id)layerStackByUpdatingInactiveFrame:(CGRect)frame;
+- (id)layerStackByUpdatingLayers:(id)layers imageSize:(CGSize)size;
+- (id)layerStackByUpdatingLayout:(id)layout;
+- (id)layerStackByUpdatingParallaxDisabled:(BOOL)disabled;
+- (id)layerStackByUpdatingSettlingEffectEnabled:(BOOL)enabled;
+- (id)layerStackByUpdatingSpatialPhotoEnabled:(BOOL)enabled;
+- (id)layerStackByUpdatingUserAdjustedVisibleFrame:(BOOL)frame;
+- (id)layerStackByUpdatingVisibleFrame:(CGRect)frame;
 @end
 
 @implementation PFParallaxLayerStack
 
-- (BOOL)_layerIncludesHeadroom:(id)a3
+- (BOOL)_layerIncludesHeadroom:(id)headroom
 {
-  if (!a3)
+  if (!headroom)
   {
     return 0;
   }
 
-  [a3 frame];
+  [headroom frame];
   return v3 < 0.0;
 }
 
 - (BOOL)spatialPhotoIncludesHeadroom
 {
-  v2 = self;
-  v3 = [(PFParallaxLayerStack *)self spatialPhotoBackgroundLayer];
-  LOBYTE(v2) = [(PFParallaxLayerStack *)v2 _layerIncludesHeadroom:v3];
+  selfCopy = self;
+  spatialPhotoBackgroundLayer = [(PFParallaxLayerStack *)self spatialPhotoBackgroundLayer];
+  LOBYTE(selfCopy) = [(PFParallaxLayerStack *)selfCopy _layerIncludesHeadroom:spatialPhotoBackgroundLayer];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)spatialPhotoBackfillIncludesHeadroom
 {
-  v2 = self;
-  v3 = [(PFParallaxLayerStack *)self spatialPhotoBackgroundBackfillLayer];
-  LOBYTE(v2) = [(PFParallaxLayerStack *)v2 _layerIncludesHeadroom:v3];
+  selfCopy = self;
+  spatialPhotoBackgroundBackfillLayer = [(PFParallaxLayerStack *)self spatialPhotoBackgroundBackfillLayer];
+  LOBYTE(selfCopy) = [(PFParallaxLayerStack *)selfCopy _layerIncludesHeadroom:spatialPhotoBackgroundBackfillLayer];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)hasDebugLayers
 {
-  v2 = [(PFParallaxLayerStack *)self layers];
+  layers = [(PFParallaxLayerStack *)self layers];
   v3 = PFExists();
 
   return v3;
@@ -75,7 +75,7 @@ uint64_t __38__PFParallaxLayerStack_hasDebugLayers__block_invoke(uint64_t a1, vo
 
 - (BOOL)hasAnySpatialLayer
 {
-  v2 = [(PFParallaxLayerStack *)self layers];
+  layers = [(PFParallaxLayerStack *)self layers];
   v3 = PFExists();
 
   return v3;
@@ -91,7 +91,7 @@ uint64_t __42__PFParallaxLayerStack_hasAnySpatialLayer__block_invoke(uint64_t a1
 
 - (BOOL)hasBackfillLayers
 {
-  v2 = [(PFParallaxLayerStack *)self layers];
+  layers = [(PFParallaxLayerStack *)self layers];
   v3 = PFExists();
 
   return v3;
@@ -107,7 +107,7 @@ uint64_t __41__PFParallaxLayerStack_hasBackfillLayers__block_invoke(uint64_t a1,
 
 - (BOOL)hasInactiveLayers
 {
-  v2 = [(PFParallaxLayerStack *)self layers];
+  layers = [(PFParallaxLayerStack *)self layers];
   v3 = PFExists();
 
   return v3;
@@ -123,7 +123,7 @@ uint64_t __41__PFParallaxLayerStack_hasInactiveLayers__block_invoke(uint64_t a1,
 
 - (BOOL)hasMainLayers
 {
-  v2 = [(PFParallaxLayerStack *)self layers];
+  layers = [(PFParallaxLayerStack *)self layers];
   v3 = PFExists();
 
   return v3;
@@ -147,8 +147,8 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
 
 - (CGSize)size
 {
-  v2 = [(PFParallaxLayerStack *)self layout];
-  [v2 imageSize];
+  layout = [(PFParallaxLayerStack *)self layout];
+  [layout imageSize];
   v4 = v3;
   v6 = v5;
 
@@ -167,32 +167,32 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
   v6 = v5;
   [(PFParallaxLayerStack *)self size];
   v8 = v7;
-  v9 = [(PFParallaxLayerStack *)self depthEnabled];
+  depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
   v10 = [(PFParallaxLayerStack *)self parallaxDisabled]^ 1;
-  v11 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-  v12 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
-  v13 = [(PFParallaxLayerStack *)self layers];
-  v14 = [(PFParallaxLayerStack *)self layout];
-  v15 = [v3 stringWithFormat:@"<%@:%p %0.0fx%0.0f depth:%d parallax:%d settling:%d spatial:%d layers:%@ layout:%@>", v4, self, v6, v8, v9, v10, v11, v12, v13, v14];
+  settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+  spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+  layers = [(PFParallaxLayerStack *)self layers];
+  layout = [(PFParallaxLayerStack *)self layout];
+  v15 = [v3 stringWithFormat:@"<%@:%p %0.0fx%0.0f depth:%d parallax:%d settling:%d spatial:%d layers:%@ layout:%@>", v4, self, v6, v8, depthEnabled, v10, settlingEffectEnabled, spatialPhotoEnabled, layers, layout];
 
   return v15;
 }
 
-- (PFParallaxLayerStack)initWithLayers:(id)a3 layout:(id)a4 depthEnabled:(BOOL)a5 parallaxDisabled:(BOOL)a6 clockAreaLuminance:(double)a7 settlingEffectEnabled:(BOOL)a8 spatialPhotoEnabled:(BOOL)a9 userAdjustedVisibleFrame:(BOOL)a10
+- (PFParallaxLayerStack)initWithLayers:(id)layers layout:(id)layout depthEnabled:(BOOL)enabled parallaxDisabled:(BOOL)disabled clockAreaLuminance:(double)luminance settlingEffectEnabled:(BOOL)effectEnabled spatialPhotoEnabled:(BOOL)photoEnabled userAdjustedVisibleFrame:(BOOL)self0
 {
   v45 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  if (!v17)
+  layersCopy = layers;
+  layoutCopy = layout;
+  if (!layersCopy)
   {
     _PFAssertFailHandler();
   }
 
-  v19 = v18;
-  v35 = a5;
-  v36 = a6;
-  v37 = a8;
-  if (!v18 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
+  v19 = layoutCopy;
+  enabledCopy = enabled;
+  disabledCopy = disabled;
+  effectEnabledCopy = effectEnabled;
+  if (!layoutCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
   {
     *buf = 0;
     _os_log_fault_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "A layer stack requires a layout", buf, 2u);
@@ -201,7 +201,7 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
   v42.receiver = self;
   v42.super_class = PFParallaxLayerStack;
   v20 = [(PFParallaxLayerStack *)&v42 init];
-  v21 = [v17 copy];
+  v21 = [layersCopy copy];
   layers = v20->_layers;
   v20->_layers = v21;
 
@@ -210,7 +210,7 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v24 = v17;
+  v24 = layersCopy;
   v25 = [v24 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v25)
   {
@@ -226,8 +226,8 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
         }
 
         v29 = *(*(&v38 + 1) + 8 * i);
-        v30 = [v29 identifier];
-        [v23 setObject:v29 forKeyedSubscript:v30];
+        identifier = [v29 identifier];
+        [v23 setObject:v29 forKeyedSubscript:identifier];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -243,28 +243,28 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
   layout = v20->_layout;
   v20->_layout = v19;
 
-  v20->_depthEnabled = v35;
-  v20->_spatialPhotoEnabled = a9;
-  v20->_parallaxDisabled = v36;
-  v20->_clockAreaLuminance = a7;
-  v20->_settlingEffectEnabled = v37;
-  v20->_userAdjustedVisibleFrame = a10;
+  v20->_depthEnabled = enabledCopy;
+  v20->_spatialPhotoEnabled = photoEnabled;
+  v20->_parallaxDisabled = disabledCopy;
+  v20->_clockAreaLuminance = luminance;
+  v20->_settlingEffectEnabled = effectEnabledCopy;
+  v20->_userAdjustedVisibleFrame = frame;
 
   return v20;
 }
 
-- (id)layerStackByRemovingLayersWithIdentifiers:(id)a3
+- (id)layerStackByRemovingLayersWithIdentifiers:(id)identifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v5 = [(NSDictionary *)self->_layerMap mutableCopy];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = v4;
+    v6 = identifiersCopy;
     v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v7)
     {
@@ -291,47 +291,47 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
     v11 = [v5 count];
     if (v11 == [(NSDictionary *)self->_layerMap count])
     {
-      v12 = self;
+      selfCopy2 = self;
     }
 
     else
     {
       v13 = [PFParallaxLayerStack alloc];
-      v14 = [v5 allValues];
-      v15 = [(PFParallaxLayerStack *)self layout];
-      v16 = [(PFParallaxLayerStack *)self depthEnabled];
-      v17 = [(PFParallaxLayerStack *)self parallaxDisabled];
+      allValues = [v5 allValues];
+      layout = [(PFParallaxLayerStack *)self layout];
+      depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+      parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
       [(PFParallaxLayerStack *)self clockAreaLuminance];
       v19 = v18;
-      v20 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-      v21 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+      settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+      spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
       LOBYTE(v23) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-      v12 = [(PFParallaxLayerStack *)v13 initWithLayers:v14 layout:v15 depthEnabled:v16 parallaxDisabled:v17 clockAreaLuminance:v20 settlingEffectEnabled:v21 spatialPhotoEnabled:v19 userAdjustedVisibleFrame:v23];
+      selfCopy2 = [(PFParallaxLayerStack *)v13 initWithLayers:allValues layout:layout depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v19 userAdjustedVisibleFrame:v23];
     }
   }
 
   else
   {
-    v12 = self;
+    selfCopy2 = self;
   }
 
-  return v12;
+  return selfCopy2;
 }
 
-- (id)layerStackByRemovingLayersWithOptions:(unint64_t)a3
+- (id)layerStackByRemovingLayersWithOptions:(unint64_t)options
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (options)
   {
-    v4 = a3;
+    optionsCopy = options;
     v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v29 = self;
-    v6 = [(PFParallaxLayerStack *)self layers];
-    v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    selfCopy = self;
+    layers = [(PFParallaxLayerStack *)self layers];
+    v7 = [layers countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (!v7)
     {
       goto LABEL_33;
@@ -345,80 +345,80 @@ uint64_t __37__PFParallaxLayerStack_hasMainLayers__block_invoke(uint64_t a1, voi
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(layers);
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
         if (([v11 isForeground] & 1) == 0)
         {
-          v12 = [v11 isBackground];
-          if ((v4 & 1) == 0 || (v12 & 1) == 0)
+          isBackground = [v11 isBackground];
+          if ((optionsCopy & 1) == 0 || (isBackground & 1) == 0)
           {
             goto LABEL_13;
           }
 
 LABEL_12:
-          v13 = [v11 identifier];
-          [v5 addObject:v13];
+          identifier = [v11 identifier];
+          [v5 addObject:identifier];
 
           goto LABEL_13;
         }
 
-        if (v4)
+        if (optionsCopy)
         {
           goto LABEL_12;
         }
 
 LABEL_13:
-        v14 = [v11 isBackfill];
-        if ((v4 & 2) != 0 && v14)
+        isBackfill = [v11 isBackfill];
+        if ((optionsCopy & 2) != 0 && isBackfill)
         {
-          v15 = [v11 identifier];
-          [v5 addObject:v15];
+          identifier2 = [v11 identifier];
+          [v5 addObject:identifier2];
         }
 
-        v16 = [v11 isDebug];
-        if ((v4 & 0x10) != 0 && v16)
+        isDebug = [v11 isDebug];
+        if ((optionsCopy & 0x10) != 0 && isDebug)
         {
-          v17 = [v11 identifier];
-          [v5 addObject:v17];
+          identifier3 = [v11 identifier];
+          [v5 addObject:identifier3];
         }
 
-        v18 = [v11 isInactive];
-        if ((v4 & 4) != 0 && v18)
+        isInactive = [v11 isInactive];
+        if ((optionsCopy & 4) != 0 && isInactive)
         {
-          v19 = [v11 identifier];
-          [v5 addObject:v19];
+          identifier4 = [v11 identifier];
+          [v5 addObject:identifier4];
         }
 
-        v20 = [v11 isSettlingEffect];
-        if ((v4 & 0x40) != 0 && v20)
+        isSettlingEffect = [v11 isSettlingEffect];
+        if ((optionsCopy & 0x40) != 0 && isSettlingEffect)
         {
-          v21 = [v11 identifier];
-          [v5 addObject:v21];
+          identifier5 = [v11 identifier];
+          [v5 addObject:identifier5];
         }
 
-        v22 = [v11 identifier];
-        v23 = PFParallaxLayerIDIsAnySpatialPhoto(v22);
+        identifier6 = [v11 identifier];
+        v23 = PFParallaxLayerIDIsAnySpatialPhoto(identifier6);
 
         if (v23)
         {
-          v24 = [v11 identifier];
-          v25 = v24;
-          if ((v4 & 0x100) != 0)
+          identifier7 = [v11 identifier];
+          identifier8 = identifier7;
+          if ((optionsCopy & 0x100) != 0)
           {
             goto LABEL_30;
           }
 
-          v26 = [v24 hasSuffix:@"backfill"];
+          v26 = [identifier7 hasSuffix:@"backfill"];
 
-          if ((v4 & 0x400) != 0)
+          if ((optionsCopy & 0x400) != 0)
           {
             if (v26)
             {
-              v25 = [v11 identifier];
+              identifier8 = [v11 identifier];
 LABEL_30:
-              [v5 addObject:v25];
+              [v5 addObject:identifier8];
 
               continue;
             }
@@ -426,41 +426,41 @@ LABEL_30:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v8 = [layers countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (!v8)
       {
 LABEL_33:
 
-        v27 = [(PFParallaxLayerStack *)v29 layerStackByRemovingLayersWithIdentifiers:v5];
+        selfCopy2 = [(PFParallaxLayerStack *)selfCopy layerStackByRemovingLayersWithIdentifiers:v5];
 
         goto LABEL_35;
       }
     }
   }
 
-  v27 = self;
+  selfCopy2 = self;
 LABEL_35:
 
-  return v27;
+  return selfCopy2;
 }
 
-- (id)layerStackByUpdatingLayers:(id)a3 imageSize:(CGSize)a4
+- (id)layerStackByUpdatingLayers:(id)layers imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if ([v7 count])
+  height = size.height;
+  width = size.width;
+  layersCopy = layers;
+  if ([layersCopy count])
   {
-    v8 = PFMap(v7, &__block_literal_global_133_13295);
-    v9 = [(PFParallaxLayerStack *)self layerMap];
-    v10 = [v9 mutableCopy];
+    v8 = PFMap(layersCopy, &__block_literal_global_133_13295);
+    layerMap = [(PFParallaxLayerStack *)self layerMap];
+    v10 = [layerMap mutableCopy];
 
     v36 = v8;
     [v10 removeObjectsForKeys:v8];
     v35 = v10;
-    v11 = [v10 allValues];
-    v12 = [(PFParallaxLayerStack *)self layout];
-    [v12 imageSize];
+    allValues = [v10 allValues];
+    layout = [(PFParallaxLayerStack *)self layout];
+    [layout imageSize];
     if (v13 <= width)
     {
       v16 = width;
@@ -469,54 +469,54 @@ LABEL_35:
 
     else
     {
-      v14 = [(PFParallaxLayerStack *)self layout];
-      [v14 imageSize];
+      layout2 = [(PFParallaxLayerStack *)self layout];
+      [layout2 imageSize];
       v16 = v15;
       v18 = v17;
     }
 
-    v20 = [(PFParallaxLayerStack *)self layout];
-    [v20 imageSize];
-    v21 = [PFParallaxLayerStack _resizeLayers:"_resizeLayers:oldImageSize:newImageSize:" oldImageSize:v11 newImageSize:?];
+    layout3 = [(PFParallaxLayerStack *)self layout];
+    [layout3 imageSize];
+    v21 = [PFParallaxLayerStack _resizeLayers:"_resizeLayers:oldImageSize:newImageSize:" oldImageSize:allValues newImageSize:?];
 
-    v22 = [(PFParallaxLayerStack *)self _resizeLayers:v7 oldImageSize:width newImageSize:height, v16, v18];
+    v22 = [(PFParallaxLayerStack *)self _resizeLayers:layersCopy oldImageSize:width newImageSize:height, v16, v18];
 
-    v23 = [(PFParallaxLayerStack *)self layout];
-    v24 = [v23 layoutByUpdatingImageSize:{v16, v18}];
+    layout4 = [(PFParallaxLayerStack *)self layout];
+    v24 = [layout4 layoutByUpdatingImageSize:{v16, v18}];
 
     v25 = [v21 arrayByAddingObjectsFromArray:v22];
     v26 = [PFParallaxLayerStack alloc];
-    v27 = [(PFParallaxLayerStack *)self depthEnabled];
-    v28 = [(PFParallaxLayerStack *)self parallaxDisabled];
+    depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+    parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
     [(PFParallaxLayerStack *)self clockAreaLuminance];
     v30 = v29;
-    v31 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-    v32 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+    settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+    spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
     LOBYTE(v34) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-    v19 = [(PFParallaxLayerStack *)v26 initWithLayers:v25 layout:v24 depthEnabled:v27 parallaxDisabled:v28 clockAreaLuminance:v31 settlingEffectEnabled:v32 spatialPhotoEnabled:v30 userAdjustedVisibleFrame:v34];
+    selfCopy = [(PFParallaxLayerStack *)v26 initWithLayers:v25 layout:v24 depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v30 userAdjustedVisibleFrame:v34];
 
-    v7 = v22;
+    layersCopy = v22;
   }
 
   else
   {
-    v19 = self;
+    selfCopy = self;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (id)_resizeLayers:(id)a3 oldImageSize:(CGSize)a4 newImageSize:(CGSize)a5
+- (id)_resizeLayers:(id)layers oldImageSize:(CGSize)size newImageSize:(CGSize)imageSize
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v9 = a3;
-  v10 = v9;
+  height = imageSize.height;
+  width = imageSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  layersCopy = layers;
+  v10 = layersCopy;
   if (v8 == width && v7 == height)
   {
-    v12 = v9;
+    v12 = layersCopy;
   }
 
   else
@@ -531,7 +531,7 @@ LABEL_35:
     v18 = v7;
     v20 = width;
     v21 = height;
-    v12 = PFMap(v9, v15);
+    v12 = PFMap(layersCopy, v15);
   }
 
   v13 = v12;
@@ -566,245 +566,245 @@ id __74__PFParallaxLayerStack_Updating___resizeLayers_oldImageSize_newImageSize_
   return v14;
 }
 
-- (id)layerStackByUpdatingLayout:(id)a3
+- (id)layerStackByUpdatingLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(PFParallaxLayerStack *)self layers];
-  v6 = [(PFParallaxLayerStack *)self layout];
-  [v6 imageSize];
+  layoutCopy = layout;
+  layers = [(PFParallaxLayerStack *)self layers];
+  layout = [(PFParallaxLayerStack *)self layout];
+  [layout imageSize];
   v8 = v7;
   v10 = v9;
-  [v4 imageSize];
+  [layoutCopy imageSize];
   v12 = v11;
   v14 = v13;
 
   if (v8 != v12 || v10 != v14)
   {
-    [v4 imageSize];
+    [layoutCopy imageSize];
     v17 = v16;
-    v18 = [(PFParallaxLayerStack *)self layout];
-    [v18 imageSize];
+    layout2 = [(PFParallaxLayerStack *)self layout];
+    [layout2 imageSize];
     v20 = v19;
 
     if (v17 >= v20)
     {
-      v21 = [(PFParallaxLayerStack *)self layers];
-      v22 = [(PFParallaxLayerStack *)self layout];
-      [v22 imageSize];
+      layers2 = [(PFParallaxLayerStack *)self layers];
+      layout3 = [(PFParallaxLayerStack *)self layout];
+      [layout3 imageSize];
       v24 = v23;
       v26 = v25;
-      [v4 imageSize];
-      v29 = [(PFParallaxLayerStack *)self _resizeLayers:v21 oldImageSize:v24 newImageSize:v26, v27, v28];
+      [layoutCopy imageSize];
+      v29 = [(PFParallaxLayerStack *)self _resizeLayers:layers2 oldImageSize:v24 newImageSize:v26, v27, v28];
 
-      v5 = v29;
+      layers = v29;
     }
 
     else
     {
-      v21 = [(PFParallaxLayerStack *)self layout];
-      [v21 imageSize];
-      [v4 layoutByUpdatingImageSize:?];
-      v4 = v22 = v4;
+      layers2 = [(PFParallaxLayerStack *)self layout];
+      [layers2 imageSize];
+      [layoutCopy layoutByUpdatingImageSize:?];
+      layoutCopy = layout3 = layoutCopy;
     }
   }
 
   v30 = [PFParallaxLayerStack alloc];
-  v31 = [(PFParallaxLayerStack *)self depthEnabled];
-  v32 = [(PFParallaxLayerStack *)self parallaxDisabled];
+  depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+  parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
   [(PFParallaxLayerStack *)self clockAreaLuminance];
   v34 = v33;
-  v35 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-  v36 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+  settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+  spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
   LOBYTE(v39) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-  v37 = [(PFParallaxLayerStack *)v30 initWithLayers:v5 layout:v4 depthEnabled:v31 parallaxDisabled:v32 clockAreaLuminance:v35 settlingEffectEnabled:v36 spatialPhotoEnabled:v34 userAdjustedVisibleFrame:v39];
+  v37 = [(PFParallaxLayerStack *)v30 initWithLayers:layers layout:layoutCopy depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v34 userAdjustedVisibleFrame:v39];
 
   return v37;
 }
 
-- (id)layerStackByUpdatingClockAreaLuminance:(double)a3
+- (id)layerStackByUpdatingClockAreaLuminance:(double)luminance
 {
   v5 = [PFParallaxLayerStack alloc];
-  v6 = [(PFParallaxLayerStack *)self layers];
-  v7 = [(PFParallaxLayerStack *)self layout];
-  v8 = [(PFParallaxLayerStack *)self depthEnabled];
-  v9 = [(PFParallaxLayerStack *)self parallaxDisabled];
-  v10 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-  v11 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+  layers = [(PFParallaxLayerStack *)self layers];
+  layout = [(PFParallaxLayerStack *)self layout];
+  depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+  parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
+  settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+  spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
   LOBYTE(v14) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-  v12 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v7 depthEnabled:v8 parallaxDisabled:v9 clockAreaLuminance:v10 settlingEffectEnabled:v11 spatialPhotoEnabled:a3 userAdjustedVisibleFrame:v14];
+  v12 = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:layout depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:luminance userAdjustedVisibleFrame:v14];
 
   return v12;
 }
 
-- (id)layerStackByUpdatingParallaxDisabled:(BOOL)a3
+- (id)layerStackByUpdatingParallaxDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  if ([(PFParallaxLayerStack *)self parallaxDisabled]== a3)
+  disabledCopy = disabled;
+  if ([(PFParallaxLayerStack *)self parallaxDisabled]== disabled)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [PFParallaxLayerStack alloc];
-    v6 = [(PFParallaxLayerStack *)self layers];
-    v7 = [(PFParallaxLayerStack *)self layout];
-    v8 = [(PFParallaxLayerStack *)self depthEnabled];
+    layers = [(PFParallaxLayerStack *)self layers];
+    layout = [(PFParallaxLayerStack *)self layout];
+    depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
     [(PFParallaxLayerStack *)self clockAreaLuminance];
     v10 = v9;
-    v11 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-    v12 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+    settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+    spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
     LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-    v13 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v7 depthEnabled:v8 parallaxDisabled:v3 clockAreaLuminance:v11 settlingEffectEnabled:v12 spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
+    selfCopy = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:layout depthEnabled:depthEnabled parallaxDisabled:disabledCopy clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)layerStackByUpdatingUserAdjustedVisibleFrame:(BOOL)a3
+- (id)layerStackByUpdatingUserAdjustedVisibleFrame:(BOOL)frame
 {
-  if ([(PFParallaxLayerStack *)self userAdjustedVisibleFrame]== a3)
+  if ([(PFParallaxLayerStack *)self userAdjustedVisibleFrame]== frame)
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [PFParallaxLayerStack alloc];
-    v6 = [(PFParallaxLayerStack *)self layers];
-    v7 = [(PFParallaxLayerStack *)self layout];
-    v8 = [(PFParallaxLayerStack *)self depthEnabled];
-    v9 = [(PFParallaxLayerStack *)self parallaxDisabled];
+    layers = [(PFParallaxLayerStack *)self layers];
+    layout = [(PFParallaxLayerStack *)self layout];
+    depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+    parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
     [(PFParallaxLayerStack *)self clockAreaLuminance];
-    LOBYTE(v13) = a3;
-    v11 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v7 depthEnabled:v8 parallaxDisabled:v9 clockAreaLuminance:[(PFParallaxLayerStack *)self settlingEffectEnabled] settlingEffectEnabled:[(PFParallaxLayerStack *)self spatialPhotoEnabled] spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v13];
+    LOBYTE(v13) = frame;
+    selfCopy = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:layout depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:[(PFParallaxLayerStack *)self settlingEffectEnabled] settlingEffectEnabled:[(PFParallaxLayerStack *)self spatialPhotoEnabled] spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v13];
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)layerStackByUpdatingSpatialPhotoEnabled:(BOOL)a3
+- (id)layerStackByUpdatingSpatialPhotoEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PFParallaxLayerStack *)self spatialPhotoEnabled]== a3)
+  enabledCopy = enabled;
+  if ([(PFParallaxLayerStack *)self spatialPhotoEnabled]== enabled)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [PFParallaxLayerStack alloc];
-    v6 = [(PFParallaxLayerStack *)self layers];
-    v7 = [(PFParallaxLayerStack *)self layout];
-    v8 = [(PFParallaxLayerStack *)self depthEnabled];
-    v9 = [(PFParallaxLayerStack *)self parallaxDisabled];
-    [(PFParallaxLayerStack *)self clockAreaLuminance];
-    v11 = v10;
-    v12 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-    LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-    v13 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v7 depthEnabled:v8 parallaxDisabled:v9 clockAreaLuminance:v12 settlingEffectEnabled:v3 spatialPhotoEnabled:v11 userAdjustedVisibleFrame:v15];
-  }
-
-  return v13;
-}
-
-- (id)layerStackByUpdatingSettlingEffectEnabled:(BOOL)a3
-{
-  v3 = a3;
-  if ([(PFParallaxLayerStack *)self settlingEffectEnabled]== a3)
-  {
-    v13 = self;
-  }
-
-  else
-  {
-    v5 = [PFParallaxLayerStack alloc];
-    v6 = [(PFParallaxLayerStack *)self layers];
-    v7 = [(PFParallaxLayerStack *)self layout];
-    v8 = [(PFParallaxLayerStack *)self depthEnabled];
-    v9 = [(PFParallaxLayerStack *)self parallaxDisabled];
+    layers = [(PFParallaxLayerStack *)self layers];
+    layout = [(PFParallaxLayerStack *)self layout];
+    depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+    parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
     [(PFParallaxLayerStack *)self clockAreaLuminance];
     v11 = v10;
-    v12 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+    settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
     LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-    v13 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v7 depthEnabled:v8 parallaxDisabled:v9 clockAreaLuminance:v3 settlingEffectEnabled:v12 spatialPhotoEnabled:v11 userAdjustedVisibleFrame:v15];
+    selfCopy = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:layout depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:enabledCopy spatialPhotoEnabled:v11 userAdjustedVisibleFrame:v15];
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)layerStackByUpdatingDepthEnabled:(BOOL)a3
+- (id)layerStackByUpdatingSettlingEffectEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PFParallaxLayerStack *)self depthEnabled]== a3)
+  enabledCopy = enabled;
+  if ([(PFParallaxLayerStack *)self settlingEffectEnabled]== enabled)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [PFParallaxLayerStack alloc];
-    v6 = [(PFParallaxLayerStack *)self layers];
-    v7 = [(PFParallaxLayerStack *)self layout];
-    v8 = [(PFParallaxLayerStack *)self parallaxDisabled];
+    layers = [(PFParallaxLayerStack *)self layers];
+    layout = [(PFParallaxLayerStack *)self layout];
+    depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+    parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
+    [(PFParallaxLayerStack *)self clockAreaLuminance];
+    v11 = v10;
+    spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+    LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
+    selfCopy = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:layout depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:enabledCopy settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v11 userAdjustedVisibleFrame:v15];
+  }
+
+  return selfCopy;
+}
+
+- (id)layerStackByUpdatingDepthEnabled:(BOOL)enabled
+{
+  enabledCopy = enabled;
+  if ([(PFParallaxLayerStack *)self depthEnabled]== enabled)
+  {
+    selfCopy = self;
+  }
+
+  else
+  {
+    v5 = [PFParallaxLayerStack alloc];
+    layers = [(PFParallaxLayerStack *)self layers];
+    layout = [(PFParallaxLayerStack *)self layout];
+    parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
     [(PFParallaxLayerStack *)self clockAreaLuminance];
     v10 = v9;
-    v11 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-    v12 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+    settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+    spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
     LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-    v13 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v7 depthEnabled:v3 parallaxDisabled:v8 clockAreaLuminance:v11 settlingEffectEnabled:v12 spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
+    selfCopy = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:layout depthEnabled:enabledCopy parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)layerStackByUpdatingClockLayerOrder:(id)a3
+- (id)layerStackByUpdatingClockLayerOrder:(id)order
 {
-  v4 = [(PFPosterOrientedLayout *)self->_layout layoutByUpdatingClockLayerOrder:a3];
+  v4 = [(PFPosterOrientedLayout *)self->_layout layoutByUpdatingClockLayerOrder:order];
   v5 = [PFParallaxLayerStack alloc];
-  v6 = [(PFParallaxLayerStack *)self layers];
-  v7 = [(PFParallaxLayerStack *)self depthEnabled];
-  v8 = [(PFParallaxLayerStack *)self parallaxDisabled];
+  layers = [(PFParallaxLayerStack *)self layers];
+  depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+  parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
   [(PFParallaxLayerStack *)self clockAreaLuminance];
   v10 = v9;
-  v11 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-  v12 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+  settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+  spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
   LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-  v13 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v4 depthEnabled:v7 parallaxDisabled:v8 clockAreaLuminance:v11 settlingEffectEnabled:v12 spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
-
-  return v13;
-}
-
-- (id)layerStackByUpdatingInactiveFrame:(CGRect)a3
-{
-  v4 = [(PFPosterOrientedLayout *)self->_layout layoutByUpdatingInactiveFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v5 = [PFParallaxLayerStack alloc];
-  v6 = [(PFParallaxLayerStack *)self layers];
-  v7 = [(PFParallaxLayerStack *)self depthEnabled];
-  v8 = [(PFParallaxLayerStack *)self parallaxDisabled];
-  [(PFParallaxLayerStack *)self clockAreaLuminance];
-  v10 = v9;
-  v11 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-  v12 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
-  LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-  v13 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v4 depthEnabled:v7 parallaxDisabled:v8 clockAreaLuminance:v11 settlingEffectEnabled:v12 spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
+  v13 = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:v4 depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
 
   return v13;
 }
 
-- (id)layerStackByUpdatingVisibleFrame:(CGRect)a3
+- (id)layerStackByUpdatingInactiveFrame:(CGRect)frame
 {
-  v4 = [(PFPosterOrientedLayout *)self->_layout layoutByUpdatingVisibleFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PFPosterOrientedLayout *)self->_layout layoutByUpdatingInactiveFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = [PFParallaxLayerStack alloc];
-  v6 = [(PFParallaxLayerStack *)self layers];
-  v7 = [(PFParallaxLayerStack *)self depthEnabled];
-  v8 = [(PFParallaxLayerStack *)self parallaxDisabled];
+  layers = [(PFParallaxLayerStack *)self layers];
+  depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+  parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
   [(PFParallaxLayerStack *)self clockAreaLuminance];
   v10 = v9;
-  v11 = [(PFParallaxLayerStack *)self settlingEffectEnabled];
-  v12 = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+  settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+  spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
   LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
-  v13 = [(PFParallaxLayerStack *)v5 initWithLayers:v6 layout:v4 depthEnabled:v7 parallaxDisabled:v8 clockAreaLuminance:v11 settlingEffectEnabled:v12 spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
+  v13 = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:v4 depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
+
+  return v13;
+}
+
+- (id)layerStackByUpdatingVisibleFrame:(CGRect)frame
+{
+  v4 = [(PFPosterOrientedLayout *)self->_layout layoutByUpdatingVisibleFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  v5 = [PFParallaxLayerStack alloc];
+  layers = [(PFParallaxLayerStack *)self layers];
+  depthEnabled = [(PFParallaxLayerStack *)self depthEnabled];
+  parallaxDisabled = [(PFParallaxLayerStack *)self parallaxDisabled];
+  [(PFParallaxLayerStack *)self clockAreaLuminance];
+  v10 = v9;
+  settlingEffectEnabled = [(PFParallaxLayerStack *)self settlingEffectEnabled];
+  spatialPhotoEnabled = [(PFParallaxLayerStack *)self spatialPhotoEnabled];
+  LOBYTE(v15) = [(PFParallaxLayerStack *)self userAdjustedVisibleFrame];
+  v13 = [(PFParallaxLayerStack *)v5 initWithLayers:layers layout:v4 depthEnabled:depthEnabled parallaxDisabled:parallaxDisabled clockAreaLuminance:settlingEffectEnabled settlingEffectEnabled:spatialPhotoEnabled spatialPhotoEnabled:v10 userAdjustedVisibleFrame:v15];
 
   return v13;
 }

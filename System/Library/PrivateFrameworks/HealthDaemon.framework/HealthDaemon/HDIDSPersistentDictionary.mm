@@ -1,23 +1,23 @@
 @interface HDIDSPersistentDictionary
 - (BOOL)_reallyOpenDB;
-- (HDIDSPersistentDictionary)initWithURL:(id)a3 objectClass:(Class)a4;
-- (id)_objectFromData:(uint64_t)a1;
-- (id)objectForKey:(id)a3;
+- (HDIDSPersistentDictionary)initWithURL:(id)l objectClass:(Class)class;
+- (id)_objectFromData:(uint64_t)data;
+- (id)objectForKey:(id)key;
 - (uint64_t)_openDB;
-- (void)_handleError:(void *)a3 format:(uint64_t)a4;
-- (void)_obliterateWithReason:(uint64_t)a3 preserveCopy:(int)a4 generateStackshot:;
-- (void)_recordMappingOfRequest:(void *)a3 toResponse:;
-- (void)_recordMessage:(void *)a3 deviceID:(int)a4 type:(int)a5 outgoing:(int)a6 request:(uint64_t)a7 length:;
+- (void)_handleError:(void *)error format:(uint64_t)format;
+- (void)_obliterateWithReason:(uint64_t)reason preserveCopy:(int)copy generateStackshot:;
+- (void)_recordMappingOfRequest:(void *)request toResponse:;
+- (void)_recordMessage:(void *)message deviceID:(int)d type:(int)type outgoing:(int)outgoing request:(uint64_t)request length:;
 - (void)dealloc;
-- (void)didCancel:(id)a3;
-- (void)didFinishSending:(id)a3;
-- (void)didReceiveError:(id)a3 forMessageID:(id)a4;
-- (void)didReceiveResponse:(id)a3 toRequest:(id)a4 deviceID:(id)a5 type:(int)a6 length:(int64_t)a7;
-- (void)didSendResponse:(id)a3 toRequest:(id)a4 deviceID:(id)a5 type:(int)a6 length:(int64_t)a7;
-- (void)enumerateObjectsSortedByExpirationDate:(id)a3;
+- (void)didCancel:(id)cancel;
+- (void)didFinishSending:(id)sending;
+- (void)didReceiveError:(id)error forMessageID:(id)d;
+- (void)didReceiveResponse:(id)response toRequest:(id)request deviceID:(id)d type:(int)type length:(int64_t)length;
+- (void)didSendResponse:(id)response toRequest:(id)request deviceID:(id)d type:(int)type length:(int64_t)length;
+- (void)enumerateObjectsSortedByExpirationDate:(id)date;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4 expires:(double)a5;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key expires:(double)expires;
 @end
 
 @implementation HDIDSPersistentDictionary
@@ -26,9 +26,9 @@
 {
   v39 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CCAA00]);
-  v3 = [*(a1 + 16) URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [*(self + 16) URLByDeletingLastPathComponent];
   v29 = 0;
-  v4 = [v2 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:&v29];
+  v4 = [v2 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v29];
   v5 = v29;
   if ((v4 & 1) == 0)
   {
@@ -37,21 +37,21 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       v24 = v6;
-      v25 = [v3 absoluteString];
+      absoluteString = [uRLByDeletingLastPathComponent absoluteString];
       *buf = 138543618;
-      v36 = v25;
+      v36 = absoluteString;
       v37 = 2114;
       v38 = v5;
       _os_log_error_impl(&dword_228986000, v24, OS_LOG_TYPE_ERROR, "failed to create directory '%{public}@': %{public}@", buf, 0x16u);
     }
   }
 
-  if (![(HDIDSPersistentDictionary *)a1 _reallyOpenDB])
+  if (![(HDIDSPersistentDictionary *)self _reallyOpenDB])
   {
     goto LABEL_31;
   }
 
-  v7 = *(a1 + 24);
+  v7 = *(self + 24);
   v28 = v5;
   v8 = [v7 userVersionWithDatabaseName:0 error:&v28];
   v9 = v28;
@@ -75,14 +75,14 @@
 
     else
     {
-      [*(a1 + 24) close];
-      v10 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      [*(self + 24) close];
+      v10 = *(self + 24);
+      *(self + 24) = 0;
 
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Re-creating IDS persistent database with version %ld", v8];
-      [(HDIDSPersistentDictionary *)a1 _obliterateWithReason:v11 preserveCopy:0 generateStackshot:0];
+      [(HDIDSPersistentDictionary *)self _obliterateWithReason:v11 preserveCopy:0 generateStackshot:0];
 
-      if (![(HDIDSPersistentDictionary *)a1 _reallyOpenDB])
+      if (![(HDIDSPersistentDictionary *)self _reallyOpenDB])
       {
         v30 = 0;
         goto LABEL_7;
@@ -109,7 +109,7 @@
             objc_enumerationMutation(&unk_283CAEA70);
           }
 
-          if (![*(a1 + 24) executeUncachedSQL:*(*(&v31 + 1) + 8 * v16) error:&v27 bindingHandler:0 enumerationHandler:0])
+          if (![*(self + 24) executeUncachedSQL:*(*(&v31 + 1) + 8 * v16) error:&v27 bindingHandler:0 enumerationHandler:0])
           {
             v17 = 0;
             goto LABEL_24;
@@ -135,7 +135,7 @@ LABEL_24:
 
     if (v17)
     {
-      v18 = *(a1 + 24);
+      v18 = *(self + 24);
       v26 = v5;
       v19 = [v18 setUserVersion:3 withDatabaseName:0 error:&v26];
       v9 = v26;
@@ -164,7 +164,7 @@ LABEL_24:
       _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "failed to create schema: %{public}@", buf, 0xCu);
     }
 
-    [*(a1 + 24) close];
+    [*(self + 24) close];
 LABEL_31:
     v30 = 0;
     goto LABEL_32;
@@ -184,23 +184,23 @@ LABEL_32:
 - (BOOL)_reallyOpenDB
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (*(a1 + 24))
+  if (*(self + 24))
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:sel__reallyOpenDB object:a1 file:@"HDIDSPersistentDictionary.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"_database == nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__reallyOpenDB object:self file:@"HDIDSPersistentDictionary.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"_database == nil"}];
   }
 
-  v2 = [objc_alloc(MEMORY[0x277D10B30]) initWithDatabaseURL:*(a1 + 16)];
-  v3 = *(a1 + 24);
-  *(a1 + 24) = v2;
+  v2 = [objc_alloc(MEMORY[0x277D10B30]) initWithDatabaseURL:*(self + 16)];
+  v3 = *(self + 24);
+  *(self + 24) = v2;
 
-  v4 = *(a1 + 24);
+  v4 = *(self + 24);
   v11 = 0;
   v5 = [v4 openWithError:&v11];
   v6 = v11;
   if (v5)
   {
-    [*(a1 + 24) close];
+    [*(self + 24) close];
     _HKInitializeLogging();
     v7 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
@@ -217,20 +217,20 @@ LABEL_32:
   return v5 == 0;
 }
 
-- (HDIDSPersistentDictionary)initWithURL:(id)a3 objectClass:(Class)a4
+- (HDIDSPersistentDictionary)initWithURL:(id)l objectClass:(Class)class
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (!v8)
+  lCopy = l;
+  if (!lCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"databaseURL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"databaseURL"}];
   }
 
-  if (([(objc_class *)a4 supportsSecureCoding]& 1) == 0)
+  if (([(objc_class *)class supportsSecureCoding]& 1) == 0)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"[objectClass supportsSecureCoding]"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"[objectClass supportsSecureCoding]"}];
   }
 
   v27.receiver = self;
@@ -239,8 +239,8 @@ LABEL_32:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_databaseURL, a3);
-    v10->_objectClass = a4;
+    objc_storeStrong(&v9->_databaseURL, l);
+    v10->_objectClass = class;
     if (([(HDIDSPersistentDictionary *)v10 _openDB]& 1) == 0)
     {
       database = v10->_database;
@@ -299,11 +299,11 @@ LABEL_32:
   return v10;
 }
 
-- (void)_obliterateWithReason:(uint64_t)a3 preserveCopy:(int)a4 generateStackshot:
+- (void)_obliterateWithReason:(uint64_t)reason preserveCopy:(int)copy generateStackshot:
 {
   v25 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_15;
   }
@@ -319,7 +319,7 @@ LABEL_32:
 
   else
   {
-    v11 = a4 == 0;
+    v11 = copy == 0;
   }
 
   if (v11)
@@ -329,11 +329,11 @@ LABEL_32:
       goto LABEL_11;
     }
 
-    v12 = *(a1 + 16);
+    v12 = *(self + 16);
     v13 = v9;
-    v14 = [v12 absoluteString];
+    absoluteString = [v12 absoluteString];
     *buf = 138543618;
-    v22 = v14;
+    v22 = absoluteString;
     v23 = 2114;
     v24 = v7;
     _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "Obliterating NanoSync persistent dictionary at %{public}@: %{public}@", buf, 0x16u);
@@ -346,26 +346,26 @@ LABEL_32:
       goto LABEL_11;
     }
 
-    v19 = *(a1 + 16);
+    v19 = *(self + 16);
     v13 = v9;
-    v14 = [v19 absoluteString];
+    absoluteString = [v19 absoluteString];
     *buf = 138543618;
-    v22 = v14;
+    v22 = absoluteString;
     v23 = 2114;
     v24 = v7;
     _os_log_fault_impl(&dword_228986000, v13, OS_LOG_TYPE_FAULT, "Obliterating NanoSync persistent dictionary at %{public}@: %{public}@", buf, 0x16u);
   }
 
 LABEL_11:
-  v16 = *(a1 + 24);
+  v16 = *(self + 24);
   if (v16 && [v16 isOpen])
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:sel__obliterateWithReason_preserveCopy_generateStackshot_ object:a1 file:@"HDIDSPersistentDictionary.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"(_database == nil) || ([_database isOpen] == NO)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel__obliterateWithReason_preserveCopy_generateStackshot_ object:self file:@"HDIDSPersistentDictionary.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"(_database == nil) || ([_database isOpen] == NO)"}];
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
-  [v17 hd_removeSQLiteDatabaseAtURL:*(a1 + 16) preserveCopy:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager hd_removeSQLiteDatabaseAtURL:*(self + 16) preserveCopy:reason];
 
 LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
@@ -397,16 +397,16 @@ void __53__HDIDSPersistentDictionary_initWithURL_objectClass___block_invoke(uint
   [(HDIDSPersistentDictionary *)&v3 dealloc];
 }
 
-- (void)_handleError:(void *)a3 format:(uint64_t)a4
+- (void)_handleError:(void *)error format:(uint64_t)format
 {
   v25 = *MEMORY[0x277D85DE8];
   v11 = a2;
   v12 = v11;
-  if (a1 && v11)
+  if (self && v11)
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = a3;
-    v15 = [[v13 alloc] initWithFormat:v14 arguments:&a9];
+    errorCopy = error;
+    v15 = [[v13 alloc] initWithFormat:errorCopy arguments:&a9];
 
     _HKInitializeLogging();
     v16 = MEMORY[0x277CCC328];
@@ -422,12 +422,12 @@ void __53__HDIDSPersistentDictionary_initWithURL_objectClass___block_invoke(uint
 
     if ([v12 hd_isDatabaseCorruptionError])
     {
-      [*(a1 + 24) close];
-      v18 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      [*(self + 24) close];
+      v18 = *(self + 24);
+      *(self + 24) = 0;
 
-      [(HDIDSPersistentDictionary *)a1 _obliterateWithReason:0 preserveCopy:1 generateStackshot:?];
-      if (([(HDIDSPersistentDictionary *)a1 _openDB]& 1) == 0)
+      [(HDIDSPersistentDictionary *)self _obliterateWithReason:0 preserveCopy:1 generateStackshot:?];
+      if (([(HDIDSPersistentDictionary *)self _openDB]& 1) == 0)
       {
         _HKInitializeLogging();
         v19 = *v16;
@@ -443,14 +443,14 @@ void __53__HDIDSPersistentDictionary_initWithURL_objectClass___block_invoke(uint
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 expires:(double)a5
+- (void)setObject:(id)object forKey:(id)key expires:(double)expires
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  objectCopy = object;
+  keyCopy = key;
+  v11 = keyCopy;
+  if (objectCopy)
   {
-    if (v10)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -458,8 +458,8 @@ void __53__HDIDSPersistentDictionary_initWithURL_objectClass___block_invoke(uint
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"object"}];
 
     if (v11)
     {
@@ -467,8 +467,8 @@ void __53__HDIDSPersistentDictionary_initWithURL_objectClass___block_invoke(uint
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:194 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
 LABEL_3:
   database = self->_database;
@@ -478,10 +478,10 @@ LABEL_3:
   v24[2] = __54__HDIDSPersistentDictionary_setObject_forKey_expires___block_invoke;
   v24[3] = &unk_2786144E0;
   v13 = v11;
-  v28 = a5;
+  expiresCopy = expires;
   v25 = v13;
-  v26 = self;
-  v14 = v9;
+  selfCopy = self;
+  v14 = objectCopy;
   v27 = v14;
   v15 = [(HDSQLiteDatabase *)database executeSQL:@"INSERT OR REPLACE INTO key_value_store (key error:expiration bindingHandler:value) VALUES (? enumerationHandler:?, ?)", &v29, v24, 0];
   v21 = v29;
@@ -515,13 +515,13 @@ void __54__HDIDSPersistentDictionary_setObject_forKey_expires___block_invoke(uin
   HDSQLiteBindFoundationValueToStatement();
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:211 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   v22 = 0;
@@ -536,7 +536,7 @@ void __54__HDIDSPersistentDictionary_setObject_forKey_expires___block_invoke(uin
   v19[1] = 3221225472;
   v19[2] = __42__HDIDSPersistentDictionary_objectForKey___block_invoke;
   v19[3] = &unk_278614860;
-  v7 = v5;
+  v7 = keyCopy;
   v20 = v7;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -567,29 +567,29 @@ uint64_t __42__HDIDSPersistentDictionary_objectForKey___block_invoke_2(uint64_t 
   return 0;
 }
 
-- (id)_objectFromData:(uint64_t)a1
+- (id)_objectFromData:(uint64_t)data
 {
   v2 = 0;
-  if (a1 && a2)
+  if (data && a2)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = a2;
     v6 = [[v4 alloc] initForReadingFromData:v5 error:0];
 
-    v2 = [objc_alloc(*(a1 + 8)) initWithCoder:v6];
+    v2 = [objc_alloc(*(data + 8)) initWithCoder:v6];
     [v6 finishDecoding];
   }
 
   return v2;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v5 = a3;
-  if (!v5)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"key"}];
   }
 
   database = self->_database;
@@ -598,7 +598,7 @@ uint64_t __42__HDIDSPersistentDictionary_objectForKey___block_invoke_2(uint64_t 
   v16[1] = 3221225472;
   v16[2] = __48__HDIDSPersistentDictionary_removeObjectForKey___block_invoke;
   v16[3] = &unk_278614860;
-  v7 = v5;
+  v7 = keyCopy;
   v17 = v7;
   v8 = [(HDSQLiteDatabase *)database executeSQL:@"DELETE FROM key_value_store WHERE key = ?" error:&v18 bindingHandler:v16 enumerationHandler:0];
   v14 = v18;
@@ -620,14 +620,14 @@ uint64_t __42__HDIDSPersistentDictionary_objectForKey___block_invoke_2(uint64_t 
   }
 }
 
-- (void)enumerateObjectsSortedByExpirationDate:(id)a3
+- (void)enumerateObjectsSortedByExpirationDate:(id)date
 {
-  v5 = a3;
-  if (!v5)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v16 = @"iterator";
-    [v15 handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:256 description:@"Invalid parameter not satisfying: %@"];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDIDSPersistentDictionary.m" lineNumber:256 description:@"Invalid parameter not satisfying: %@"];
   }
 
   database = self->_database;
@@ -636,7 +636,7 @@ uint64_t __42__HDIDSPersistentDictionary_objectForKey___block_invoke_2(uint64_t 
   v17[1] = 3221225472;
   v17[2] = __68__HDIDSPersistentDictionary_enumerateObjectsSortedByExpirationDate___block_invoke;
   v17[3] = &unk_27861B8D8;
-  v7 = v5;
+  v7 = dateCopy;
   v17[4] = self;
   v18 = v7;
   v8 = [(HDSQLiteDatabase *)database executeSQL:@"SELECT key error:value bindingHandler:expiration FROM key_value_store ORDER BY expiration ASC" enumerationHandler:&v19, 0, v17];
@@ -661,12 +661,12 @@ BOOL __68__HDIDSPersistentDictionary_enumerateObjectsSortedByExpirationDate___bl
   return (v7 & 1) == 0;
 }
 
-- (void)_recordMessage:(void *)a3 deviceID:(int)a4 type:(int)a5 outgoing:(int)a6 request:(uint64_t)a7 length:
+- (void)_recordMessage:(void *)message deviceID:(int)d type:(int)type outgoing:(int)outgoing request:(uint64_t)request length:
 {
   v59 = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a3;
-  if (a1)
+  messageCopy = message;
+  if (self)
   {
     Current = CFAbsoluteTimeGetCurrent();
     _HKInitializeLogging();
@@ -678,39 +678,39 @@ BOOL __68__HDIDSPersistentDictionary_enumerateObjectsSortedByExpirationDate___bl
       v47 = 2112;
       v48 = v13;
       v49 = 2112;
-      v50 = v14;
+      v50 = messageCopy;
       v51 = 1024;
-      v52 = a4;
+      dCopy = d;
       v53 = 1024;
-      v54 = a5;
+      typeCopy = type;
       v55 = 1024;
-      v56 = a6;
+      outgoingCopy = outgoing;
       v57 = 2048;
-      v58 = a7;
+      requestCopy = request;
       _os_log_debug_impl(&dword_228986000, v16, OS_LOG_TYPE_DEBUG, "#IDSMessage (%lf) message='%@' deviceID:'%@' type=%d outgoing=%d request=%d length=%lld", buf, 0x3Cu);
     }
 
-    v17 = *(a1 + 24);
+    v17 = *(self + 24);
     v44 = 0;
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __82__HDIDSPersistentDictionary__recordMessage_deviceID_type_outgoing_request_length___block_invoke;
     v36[3] = &unk_27861B900;
     v37 = v13;
-    v41 = a4;
+    dCopy2 = d;
     v39 = Current;
-    v42 = a5;
-    v43 = a6;
-    v40 = a7;
-    v38 = v14;
+    typeCopy2 = type;
+    outgoingCopy2 = outgoing;
+    requestCopy2 = request;
+    v38 = messageCopy;
     v18 = [v17 executeSQL:@"INSERT OR IGNORE INTO message_records (uuid error:type bindingHandler:timestamp enumerationHandler:{outgoing, is_request, length, device_id) VALUES (?, ?, ?, ?, ?, ?, ?)", &v44, v36, 0}];
     v24 = v44;
     if ((v18 & 1) == 0)
     {
-      [(HDIDSPersistentDictionary *)a1 _handleError:v24 format:@"failed to record message event", v19, v20, v21, v22, v23, v34[0]];
+      [(HDIDSPersistentDictionary *)self _handleError:v24 format:@"failed to record message event", v19, v20, v21, v22, v23, v34[0]];
     }
 
-    v25 = *(a1 + 24);
+    v25 = *(self + 24);
     v35 = v24;
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
@@ -722,7 +722,7 @@ BOOL __68__HDIDSPersistentDictionary_enumerateObjectsSortedByExpirationDate___bl
 
     if ((v26 & 1) == 0)
     {
-      [(HDIDSPersistentDictionary *)a1 _handleError:v27 format:@"failed to prune message event database", v28, v29, v30, v31, v32, v34[0]];
+      [(HDIDSPersistentDictionary *)self _handleError:v27 format:@"failed to prune message event database", v28, v29, v30, v31, v32, v34[0]];
     }
   }
 
@@ -743,12 +743,12 @@ uint64_t __82__HDIDSPersistentDictionary__recordMessage_deviceID_type_outgoing_r
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-- (void)_recordMappingOfRequest:(void *)a3 toResponse:
+- (void)_recordMappingOfRequest:(void *)request toResponse:
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
     Current = CFAbsoluteTimeGetCurrent();
     _HKInitializeLogging();
@@ -760,23 +760,23 @@ uint64_t __82__HDIDSPersistentDictionary__recordMessage_deviceID_type_outgoing_r
       v25 = 2112;
       v26 = v5;
       v27 = 2112;
-      v28 = v6;
+      v28 = requestCopy;
       _os_log_debug_impl(&dword_228986000, v8, OS_LOG_TYPE_DEBUG, "#IDSMessage (%lf) request='%@' response='%@'", buf, 0x20u);
     }
 
-    v9 = *(a1 + 24);
+    v9 = *(self + 24);
     v22 = 0;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __64__HDIDSPersistentDictionary__recordMappingOfRequest_toResponse___block_invoke;
     v19[3] = &unk_278613038;
     v20 = v5;
-    v21 = v6;
+    v21 = requestCopy;
     v10 = [v9 executeSQL:@"INSERT INTO request_response_mappings (request error:response) VALUES (? bindingHandler:?)" enumerationHandler:{&v22, v19, 0}];
     v16 = v22;
     if ((v10 & 1) == 0)
     {
-      [(HDIDSPersistentDictionary *)a1 _handleError:v16 format:@"failed to record message response mapping", v11, v12, v13, v14, v15, v18];
+      [(HDIDSPersistentDictionary *)self _handleError:v16 format:@"failed to record message response mapping", v11, v12, v13, v14, v15, v18];
     }
   }
 
@@ -792,26 +792,26 @@ uint64_t __64__HDIDSPersistentDictionary__recordMappingOfRequest_toResponse___bl
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-- (void)didSendResponse:(id)a3 toRequest:(id)a4 deviceID:(id)a5 type:(int)a6 length:(int64_t)a7
+- (void)didSendResponse:(id)response toRequest:(id)request deviceID:(id)d type:(int)type length:(int64_t)length
 {
-  v12 = a4;
-  v13 = a3;
-  [(HDIDSPersistentDictionary *)self _recordMessage:v13 deviceID:a5 type:a6 outgoing:1 request:0 length:a7];
-  [(HDIDSPersistentDictionary *)self _recordMappingOfRequest:v12 toResponse:v13];
+  requestCopy = request;
+  responseCopy = response;
+  [(HDIDSPersistentDictionary *)self _recordMessage:responseCopy deviceID:d type:type outgoing:1 request:0 length:length];
+  [(HDIDSPersistentDictionary *)self _recordMappingOfRequest:requestCopy toResponse:responseCopy];
 }
 
-- (void)didReceiveResponse:(id)a3 toRequest:(id)a4 deviceID:(id)a5 type:(int)a6 length:(int64_t)a7
+- (void)didReceiveResponse:(id)response toRequest:(id)request deviceID:(id)d type:(int)type length:(int64_t)length
 {
-  v12 = a4;
-  v13 = a3;
-  [(HDIDSPersistentDictionary *)self _recordMessage:v13 deviceID:a5 type:a6 outgoing:0 request:0 length:a7];
-  [(HDIDSPersistentDictionary *)self _recordMappingOfRequest:v12 toResponse:v13];
+  requestCopy = request;
+  responseCopy = response;
+  [(HDIDSPersistentDictionary *)self _recordMessage:responseCopy deviceID:d type:type outgoing:0 request:0 length:length];
+  [(HDIDSPersistentDictionary *)self _recordMappingOfRequest:requestCopy toResponse:responseCopy];
 }
 
-- (void)didFinishSending:(id)a3
+- (void)didFinishSending:(id)sending
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sendingCopy = sending;
   Current = CFAbsoluteTimeGetCurrent();
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC328];
@@ -820,7 +820,7 @@ uint64_t __64__HDIDSPersistentDictionary__recordMappingOfRequest_toResponse___bl
     *buf = 134218242;
     v23 = Current;
     v24 = 2112;
-    v25 = v4;
+    v25 = sendingCopy;
     _os_log_debug_impl(&dword_228986000, v6, OS_LOG_TYPE_DEBUG, "#IDSMessage (%lf) sent message='%@'", buf, 0x16u);
   }
 
@@ -831,7 +831,7 @@ uint64_t __64__HDIDSPersistentDictionary__recordMappingOfRequest_toResponse___bl
   v18[2] = __46__HDIDSPersistentDictionary_didFinishSending___block_invoke;
   v18[3] = &unk_278613B58;
   v20 = Current;
-  v8 = v4;
+  v8 = sendingCopy;
   v19 = v8;
   v9 = [(HDSQLiteDatabase *)database executeSQL:@"UPDATE message_records SET send_timestamp=? WHERE uuid=?" error:&v21 bindingHandler:v18 enumerationHandler:0];
   v15 = v21;
@@ -851,26 +851,26 @@ uint64_t __46__HDIDSPersistentDictionary_didFinishSending___block_invoke(uint64_
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-- (void)didReceiveError:(id)a3 forMessageID:(id)a4
+- (void)didReceiveError:(id)error forMessageID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  dCopy = d;
   Current = CFAbsoluteTimeGetCurrent();
   _HKInitializeLogging();
   v9 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEBUG))
   {
     v21 = v9;
-    v22 = [v6 domain];
+    domain = [errorCopy domain];
     *buf = 134218754;
     v29 = Current;
     v30 = 2112;
-    v31 = v7;
+    v31 = dCopy;
     v32 = 2112;
-    v33 = v22;
+    v33 = domain;
     v34 = 2048;
-    v35 = [v6 code];
+    code = [errorCopy code];
     _os_log_debug_impl(&dword_228986000, v21, OS_LOG_TYPE_DEBUG, "#IDSMessage (%lf) message='%@' error domain='%@' code=%ld", buf, 0x2Au);
   }
 
@@ -880,10 +880,10 @@ uint64_t __46__HDIDSPersistentDictionary_didFinishSending___block_invoke(uint64_
   v23[1] = 3221225472;
   v23[2] = __58__HDIDSPersistentDictionary_didReceiveError_forMessageID___block_invoke;
   v23[3] = &unk_2786199F8;
-  v11 = v6;
+  v11 = errorCopy;
   v24 = v11;
   v26 = Current;
-  v12 = v7;
+  v12 = dCopy;
   v25 = v12;
   v13 = [(HDSQLiteDatabase *)database executeSQL:@"UPDATE message_records SET error_domain=? error:error_code=? bindingHandler:error_timestamp=? WHERE uuid=?" enumerationHandler:&v27, v23, 0];
   v19 = v27;
@@ -907,10 +907,10 @@ uint64_t __58__HDIDSPersistentDictionary_didReceiveError_forMessageID___block_in
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-- (void)didCancel:(id)a3
+- (void)didCancel:(id)cancel
 {
-  v4 = a3;
-  if ([v4 count])
+  cancelCopy = cancel;
+  if ([cancelCopy count])
   {
     Current = CFAbsoluteTimeGetCurrent();
     database = self->_database;
@@ -919,7 +919,7 @@ uint64_t __58__HDIDSPersistentDictionary_didReceiveError_forMessageID___block_in
     v15[1] = 3221225472;
     v15[2] = __39__HDIDSPersistentDictionary_didCancel___block_invoke;
     v15[3] = &unk_27861B928;
-    v16 = v4;
+    v16 = cancelCopy;
     v17 = Current;
     v7 = [(HDSQLiteDatabase *)database performTransactionWithType:1 error:&v18 usingBlock:v15];
     v13 = v18;

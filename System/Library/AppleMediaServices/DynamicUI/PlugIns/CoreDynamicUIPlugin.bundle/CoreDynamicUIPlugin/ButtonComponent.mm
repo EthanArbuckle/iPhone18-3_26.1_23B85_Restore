@@ -1,18 +1,18 @@
 @interface ButtonComponent
 - (BOOL)isHighlighted;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation ButtonComponent
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_18640();
   v4 = v3;
 
@@ -29,46 +29,46 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_8F5F4();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_18714();
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18750();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_187DC(a3);
+  selfCopy = self;
+  sub_187DC(highlighted);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_18870();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1890C();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  v5 = self;
+  selfCopy = self;
   sub_18A0C();
   v7 = v6;
   v9 = v8;

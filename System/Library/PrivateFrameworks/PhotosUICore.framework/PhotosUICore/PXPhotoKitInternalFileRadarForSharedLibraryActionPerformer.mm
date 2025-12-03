@@ -1,47 +1,47 @@
 @interface PXPhotoKitInternalFileRadarForSharedLibraryActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitInternalFileRadarForSharedLibraryActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  collectionCopy = collection;
   v9 = +[PXRootSettings sharedInstance];
-  v10 = [v9 canShowInternalUI];
+  canShowInternalUI = [v9 canShowInternalUI];
 
-  if (v10)
+  if (canShowInternalUI)
   {
-    v11 = [v7 photoLibrary];
-    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v11];
+    photoLibrary = [assetCopy photoLibrary];
+    v12 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
     if ([v12 hasSharedLibraryOrPreview])
     {
-      v13 = [v8 assetCollectionSubtype];
-      LOBYTE(v10) = v13 == 1000000205 || v13 == 1000000301;
+      assetCollectionSubtype = [collectionCopy assetCollectionSubtype];
+      LOBYTE(canShowInternalUI) = assetCollectionSubtype == 1000000205 || assetCollectionSubtype == 1000000301;
     }
 
     else
     {
-      LOBYTE(v10) = 0;
+      LOBYTE(canShowInternalUI) = 0;
     }
   }
 
-  return v10;
+  return canShowInternalUI;
 }
 
 - (void)performUserInteractionTask
 {
   objc_initWeak(&location, self);
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v5 = MEMORY[0x1E69E9820];
   v6 = 3221225472;
   v7 = __88__PXPhotoKitInternalFileRadarForSharedLibraryActionPerformer_performUserInteractionTask__block_invoke;
   v8 = &unk_1E7747EB0;
   objc_copyWeak(&v9, &location);
-  v4 = PXFileRadarViewControllerForSharedLibraryAssets(v3, &v5);
+  v4 = PXFileRadarViewControllerForSharedLibraryAssets(assets, &v5);
 
   [(PXActionPerformer *)self presentViewController:v4, v5, v6, v7, v8];
   objc_destroyWeak(&v9);

@@ -1,27 +1,27 @@
 @interface ASRSchemaASRJitLanguageModelEnrollmentEndedTier1
-- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithDictionary:(id)a3;
-- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addDialogContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDialogContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRJitLanguageModelEnrollmentEndedTier1
 
-- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithDictionary:(id)a3
+- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = ASRSchemaASRJitLanguageModelEnrollmentEndedTier1;
   v5 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dialogContext"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dialogContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:{@"linkId", v18}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"linkId", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithJSON:(id)a3
+- (ASRSchemaASRJitLanguageModelEnrollmentEndedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -114,57 +114,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dialogContexts)
   {
-    v4 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"dialogContext"];
+    dialogContexts = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
+    v5 = [dialogContexts copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"dialogContext"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
-  v6 = [v4 dialogContexts];
-  if ((v5 != 0) == (v6 == 0))
+  dialogContexts = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
+  dialogContexts2 = [equalCopy dialogContexts];
+  if ((dialogContexts != 0) == (dialogContexts2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
-  if (v7)
+  dialogContexts3 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
+  if (dialogContexts3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
-    v10 = [v4 dialogContexts];
-    v11 = [v9 isEqual:v10];
+    v8 = dialogContexts3;
+    dialogContexts4 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self dialogContexts];
+    dialogContexts5 = [equalCopy dialogContexts];
+    v11 = [dialogContexts4 isEqual:dialogContexts5];
 
     if (!v11)
     {
@@ -176,12 +176,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) != (v6 == 0))
+  dialogContexts = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
+  dialogContexts2 = [equalCopy linkId];
+  if ((dialogContexts != 0) != (dialogContexts2 == 0))
   {
-    v12 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
-    if (!v12)
+    linkId = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
+    if (!linkId)
     {
 
 LABEL_15:
@@ -189,10 +189,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
-    v15 = [v4 linkId];
-    v16 = [v14 isEqual:v15];
+    v13 = linkId;
+    linkId2 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v16 = [linkId2 isEqual:linkId3];
 
     if (v16)
     {
@@ -212,10 +212,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -247,69 +247,69 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
+  linkId = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
 
-  if (v10)
+  if (linkId)
   {
-    v11 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
+    linkId2 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addDialogContext:(id)a3
+- (void)addDialogContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   dialogContexts = self->_dialogContexts;
-  v8 = v4;
+  v8 = contextCopy;
   if (!dialogContexts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dialogContexts;
-    self->_dialogContexts = v6;
+    self->_dialogContexts = array;
 
-    v4 = v8;
+    contextCopy = v8;
     dialogContexts = self->_dialogContexts;
   }
 
-  [(NSArray *)dialogContexts addObject:v4];
+  [(NSArray *)dialogContexts addObject:contextCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = ASRSchemaASRJitLanguageModelEnrollmentEndedTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self deleteDialogContext];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self deleteDialogContext];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self deleteDialogContext];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self deleteDialogContext];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self deleteDialogContext];
   }
 
-  v6 = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1 *)self deleteLinkId];
   }

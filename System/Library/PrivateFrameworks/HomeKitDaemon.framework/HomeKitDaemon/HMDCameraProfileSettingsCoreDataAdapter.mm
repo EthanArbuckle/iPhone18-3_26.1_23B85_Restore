@@ -1,42 +1,42 @@
 @interface HMDCameraProfileSettingsCoreDataAdapter
 + (id)logCategory;
-- (HMDCameraProfileSettingsCoreDataAdapter)initWithHAPAccessoryUUID:(id)a3 homeUUID:(id)a4 cameraProfileSettingsModelID:(id)a5 derivedPropertiesModelID:(id)a6;
-- (id)fetchCameraProfileSettingsModelWithError:(id *)a3;
-- (id)fetchDerivedPropertiesModelWithError:(id *)a3;
+- (HMDCameraProfileSettingsCoreDataAdapter)initWithHAPAccessoryUUID:(id)d homeUUID:(id)iD cameraProfileSettingsModelID:(id)modelID derivedPropertiesModelID:(id)propertiesModelID;
+- (id)fetchCameraProfileSettingsModelWithError:(id *)error;
+- (id)fetchDerivedPropertiesModelWithError:(id *)error;
 - (id)logIdentifier;
-- (void)updateCameraProfileSettingsModel:(id)a3 completion:(id)a4;
-- (void)updateDerivedPropertiesModel:(id)a3 completion:(id)a4;
+- (void)updateCameraProfileSettingsModel:(id)model completion:(id)completion;
+- (void)updateDerivedPropertiesModel:(id)model completion:(id)completion;
 @end
 
 @implementation HMDCameraProfileSettingsCoreDataAdapter
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraProfileSettingsCoreDataAdapter *)self hapAccessoryUUID];
-  v3 = [v2 UUIDString];
+  hapAccessoryUUID = [(HMDCameraProfileSettingsCoreDataAdapter *)self hapAccessoryUUID];
+  uUIDString = [hapAccessoryUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)updateDerivedPropertiesModel:(id)a3 completion:(id)a4
+- (void)updateDerivedPropertiesModel:(id)model completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v8 = +[HMDCoreData sharedInstance];
-  v9 = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
-  v10 = [v8 contextWithHomeUUID:v9];
+  homeUUID = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
+  v10 = [v8 contextWithHomeUUID:homeUUID];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __83__HMDCameraProfileSettingsCoreDataAdapter_updateDerivedPropertiesModel_completion___block_invoke;
   v14[3] = &unk_278689AB8;
   v14[4] = self;
-  v15 = v6;
+  v15 = modelCopy;
   v16 = v10;
-  v17 = v7;
+  v17 = completionCopy;
   v11 = v10;
-  v12 = v6;
-  v13 = v7;
+  v12 = modelCopy;
+  v13 = completionCopy;
   [v11 performBlock:v14];
 }
 
@@ -174,25 +174,25 @@ LABEL_22:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCameraProfileSettingsModel:(id)a3 completion:(id)a4
+- (void)updateCameraProfileSettingsModel:(id)model completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v8 = +[HMDCoreData sharedInstance];
-  v9 = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
-  v10 = [v8 contextWithHomeUUID:v9];
+  homeUUID = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
+  v10 = [v8 contextWithHomeUUID:homeUUID];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__HMDCameraProfileSettingsCoreDataAdapter_updateCameraProfileSettingsModel_completion___block_invoke;
   v14[3] = &unk_278689AB8;
   v14[4] = self;
-  v15 = v6;
+  v15 = modelCopy;
   v16 = v10;
-  v17 = v7;
+  v17 = completionCopy;
   v11 = v10;
-  v12 = v6;
-  v13 = v7;
+  v12 = modelCopy;
+  v13 = completionCopy;
   [v11 performBlock:v14];
 }
 
@@ -344,7 +344,7 @@ LABEL_26:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchDerivedPropertiesModelWithError:(id *)a3
+- (id)fetchDerivedPropertiesModelWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -359,8 +359,8 @@ LABEL_26:
   v16 = __Block_byref_object_dispose__230647;
   v17 = 0;
   v5 = +[HMDCoreData sharedInstance];
-  v6 = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
-  v7 = [v5 contextWithHomeUUID:v6];
+  homeUUID = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
+  v7 = [v5 contextWithHomeUUID:homeUUID];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -370,12 +370,12 @@ LABEL_26:
   v11[5] = &v12;
   v11[6] = &v18;
   [v7 unsafeSynchronousBlock:v11];
-  if (a3)
+  if (error)
   {
     v8 = v13[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -469,7 +469,7 @@ LABEL_9:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchCameraProfileSettingsModelWithError:(id *)a3
+- (id)fetchCameraProfileSettingsModelWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -484,8 +484,8 @@ LABEL_9:
   v16 = __Block_byref_object_dispose__230647;
   v17 = 0;
   v5 = +[HMDCoreData sharedInstance];
-  v6 = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
-  v7 = [v5 contextWithHomeUUID:v6];
+  homeUUID = [(HMDCameraProfileSettingsCoreDataAdapter *)self homeUUID];
+  v7 = [v5 contextWithHomeUUID:homeUUID];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -495,12 +495,12 @@ LABEL_9:
   v11[5] = &v12;
   v11[6] = &v18;
   [v7 unsafeSynchronousBlock:v11];
-  if (a3)
+  if (error)
   {
     v8 = v13[5];
     if (v8)
     {
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -610,34 +610,34 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraProfileSettingsCoreDataAdapter)initWithHAPAccessoryUUID:(id)a3 homeUUID:(id)a4 cameraProfileSettingsModelID:(id)a5 derivedPropertiesModelID:(id)a6
+- (HMDCameraProfileSettingsCoreDataAdapter)initWithHAPAccessoryUUID:(id)d homeUUID:(id)iD cameraProfileSettingsModelID:(id)modelID derivedPropertiesModelID:(id)propertiesModelID
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  dCopy = d;
+  iDCopy = iD;
+  modelIDCopy = modelID;
+  propertiesModelIDCopy = propertiesModelID;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!modelIDCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = propertiesModelIDCopy;
+  if (!propertiesModelIDCopy)
   {
 LABEL_11:
     v19 = _HMFPreconditionFailure();
@@ -650,10 +650,10 @@ LABEL_11:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_hapAccessoryUUID, a3);
-    objc_storeStrong(&v17->_homeUUID, a4);
-    objc_storeStrong(&v17->_cameraProfileSettingsModelID, a5);
-    objc_storeStrong(&v17->_derivedPropertiesModelID, a6);
+    objc_storeStrong(&v16->_hapAccessoryUUID, d);
+    objc_storeStrong(&v17->_homeUUID, iD);
+    objc_storeStrong(&v17->_cameraProfileSettingsModelID, modelID);
+    objc_storeStrong(&v17->_derivedPropertiesModelID, propertiesModelID);
   }
 
   return v17;

@@ -1,23 +1,23 @@
 @interface SBAwayViewPluginController
-+ (void)disableBundleNamed:(id)a3 deactivationContext:(id)a4;
-+ (void)enableBundleNamed:(id)a3 activationContext:(id)a4;
-- (BOOL)pluginAnimatesAppearanceTransition:(BOOL)a3;
-- (BOOL)pluginHandleEvent:(int64_t)a3;
++ (void)disableBundleNamed:(id)named deactivationContext:(id)context;
++ (void)enableBundleNamed:(id)named activationContext:(id)context;
+- (BOOL)pluginAnimatesAppearanceTransition:(BOOL)transition;
+- (BOOL)pluginHandleEvent:(int64_t)event;
 - (SBAwayViewPluginController)init;
 - (SBLockScreenPluginAction)pluginUnlockAction;
 - (SBLockScreenPluginAgent)pluginAgent;
 - (SBLockScreenPluginAppearance)pluginAppearance;
 - (id)_legibilitySettings;
-- (id)pluginAnimateAppearanceTransition:(BOOL)a3 withCompletion:(id)a4;
+- (id)pluginAnimateAppearanceTransition:(BOOL)transition withCompletion:(id)completion;
 - (int64_t)notificationBehavior;
 - (int64_t)orientation;
 - (int64_t)presentationStyle;
-- (void)_updateAppearanceAndNotify:(BOOL)a3;
+- (void)_updateAppearanceAndNotify:(BOOL)notify;
 - (void)disable;
-- (void)pluginDidDeactivateWithContext:(id)a3;
-- (void)pluginWillActivateWithContext:(id)a3;
+- (void)pluginDidDeactivateWithContext:(id)context;
+- (void)pluginWillActivateWithContext:(id)context;
 - (void)purgeView;
-- (void)setViewCanBeDisplayed:(BOOL)a3;
+- (void)setViewCanBeDisplayed:(BOOL)displayed;
 @end
 
 @implementation SBAwayViewPluginController
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (void)_updateAppearanceAndNotify:(BOOL)a3
+- (void)_updateAppearanceAndNotify:(BOOL)notify
 {
   appearance = self->_appearance;
   if (!appearance)
@@ -43,37 +43,37 @@
     return;
   }
 
-  v4 = a3;
+  notifyCopy = notify;
   [(SBLockScreenPluginAppearanceContext *)appearance setHidden:[(SBAwayViewPluginController *)self viewCanBeDisplayed]^ 1];
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (![(SBAwayViewPluginController *)self showStatusBar])
   {
     v6 = [SBLockScreenElementOverride overrideForHiddenElement:1];
-    [v18 addObject:v6];
+    [array addObject:v6];
   }
 
   if (![(SBAwayViewPluginController *)self showDateView])
   {
     v7 = [SBLockScreenElementOverride overrideForHiddenElement:2];
-    [v18 addObject:v7];
+    [array addObject:v7];
   }
 
   if ([(SBAwayViewPluginController *)self hasCustomSubtitle])
   {
     v8 = [SBLockScreenElementOverride overrideForElement:3];
-    v9 = [(SBAwayViewPluginController *)self customSubtitleText];
-    [v8 setText:v9];
+    customSubtitleText = [(SBAwayViewPluginController *)self customSubtitleText];
+    [v8 setText:customSubtitleText];
 
 LABEL_11:
-    [v18 addObject:v8];
+    [array addObject:v8];
 
-    v11 = v18;
+    v11 = array;
     goto LABEL_12;
   }
 
-  v10 = [(SBAwayViewPluginController *)self showDate];
-  v11 = v18;
-  if (!v10)
+  showDate = [(SBAwayViewPluginController *)self showDate];
+  v11 = array;
+  if (!showDate)
   {
     v8 = [SBLockScreenElementOverride overrideForHiddenElement:3];
     [v8 setText:&stru_282FD6FB8];
@@ -133,19 +133,19 @@ LABEL_12:
   }
 
   [(SBLockScreenPluginAppearanceContext *)self->_appearance setRestrictedCapabilities:v13];
-  v14 = [(SBAwayViewPluginController *)self overlayStyle];
-  if (v14 <= 3)
+  overlayStyle = [(SBAwayViewPluginController *)self overlayStyle];
+  if (overlayStyle <= 3)
   {
-    [(SBLockScreenPluginAppearanceContext *)self->_appearance setBackgroundStyle:v14];
+    [(SBLockScreenPluginAppearanceContext *)self->_appearance setBackgroundStyle:overlayStyle];
   }
 
   [(SBLockScreenPluginAppearanceContext *)self->_appearance setPresentationStyle:[(SBAwayViewPluginController *)self presentationStyle]];
   [(SBLockScreenPluginAppearanceContext *)self->_appearance setNotificationBehavior:[(SBAwayViewPluginController *)self notificationBehavior]];
   v15 = self->_appearance;
-  v16 = [(SBAwayViewPluginController *)self _legibilitySettings];
-  [(SBLockScreenPluginAppearanceContext *)v15 setLegibilitySettings:v16];
+  _legibilitySettings = [(SBAwayViewPluginController *)self _legibilitySettings];
+  [(SBLockScreenPluginAppearanceContext *)v15 setLegibilitySettings:_legibilitySettings];
 
-  if (v4)
+  if (notifyCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_agent);
     [WeakRetained pluginController:self updateAppearance:self->_appearance];
@@ -154,10 +154,10 @@ LABEL_12:
 
 - (id)_legibilitySettings
 {
-  v3 = [(SBAwayViewPluginController *)self legibilitySettings];
-  if (v3)
+  legibilitySettings = [(SBAwayViewPluginController *)self legibilitySettings];
+  if (legibilitySettings)
   {
-    v4 = v3;
+    v4 = legibilitySettings;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -167,17 +167,17 @@ LABEL_12:
     else
     {
       v6 = [SBLockScreenLegibilitySettings alloc];
-      v7 = [(SBLockScreenLegibilitySettings *)v4 style];
-      v8 = [(SBLockScreenLegibilitySettings *)v4 primaryColor];
-      v9 = [(SBLockScreenLegibilitySettings *)v4 secondaryColor];
-      v10 = [(SBLockScreenLegibilitySettings *)v4 shadowColor];
-      v5 = [(SBLockScreenLegibilitySettings *)v6 initWithStyle:v7 primaryColor:v8 secondaryColor:v9 shadowColor:v10];
+      style = [(SBLockScreenLegibilitySettings *)v4 style];
+      primaryColor = [(SBLockScreenLegibilitySettings *)v4 primaryColor];
+      secondaryColor = [(SBLockScreenLegibilitySettings *)v4 secondaryColor];
+      shadowColor = [(SBLockScreenLegibilitySettings *)v4 shadowColor];
+      v5 = [(SBLockScreenLegibilitySettings *)v6 initWithStyle:style primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
 
       [(SBLockScreenLegibilitySettings *)v5 setVibrancyDisabled:[(SBAwayViewPluginController *)self legibilitySettingsOverridesVibrancy]];
       if ([(SBAwayViewPluginController *)self isContentViewWhiteUnderSlideToUnlockText])
       {
-        v11 = [MEMORY[0x277D75348] whiteColor];
-        [(SBLockScreenLegibilitySettings *)v5 setBackgroundColorHint:v11];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        [(SBLockScreenLegibilitySettings *)v5 setBackgroundColorHint:whiteColor];
       }
     }
   }
@@ -206,16 +206,16 @@ LABEL_12:
   return appearance;
 }
 
-- (void)pluginWillActivateWithContext:(id)a3
+- (void)pluginWillActivateWithContext:(id)context
 {
-  v4 = [a3 userInfo];
-  [(SBAwayViewPluginController *)self setActivationContext:v4];
+  userInfo = [context userInfo];
+  [(SBAwayViewPluginController *)self setActivationContext:userInfo];
 }
 
-- (void)pluginDidDeactivateWithContext:(id)a3
+- (void)pluginDidDeactivateWithContext:(id)context
 {
-  v4 = [a3 userInfo];
-  [(SBAwayViewPluginController *)self setDeactivationContext:v4];
+  userInfo = [context userInfo];
+  [(SBAwayViewPluginController *)self setDeactivationContext:userInfo];
 
   [(SBAwayViewPluginController *)self purgeView];
 
@@ -224,13 +224,13 @@ LABEL_12:
 
 - (SBLockScreenPluginAction)pluginUnlockAction
 {
-  v3 = [(SBAwayViewPluginController *)self slideToUnlockText];
-  v4 = [(SBAwayViewPluginController *)self bundleIDForUnlock];
-  if (v3 | v4)
+  slideToUnlockText = [(SBAwayViewPluginController *)self slideToUnlockText];
+  bundleIDForUnlock = [(SBAwayViewPluginController *)self bundleIDForUnlock];
+  if (slideToUnlockText | bundleIDForUnlock)
   {
-    v5 = [SBLockScreenPluginApplicationAction actionWithBundleID:v4];
-    [v5 setLabel:v3];
-    [v5 setTransitionStyle:{-[SBAwayViewPluginController unlockAnimationStyleForDestinationApp:](self, "unlockAnimationStyleForDestinationApp:", v4)}];
+    v5 = [SBLockScreenPluginApplicationAction actionWithBundleID:bundleIDForUnlock];
+    [v5 setLabel:slideToUnlockText];
+    [v5 setTransitionStyle:{-[SBAwayViewPluginController unlockAnimationStyleForDestinationApp:](self, "unlockAnimationStyleForDestinationApp:", bundleIDForUnlock)}];
   }
 
   else
@@ -241,54 +241,54 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)pluginHandleEvent:(int64_t)a3
+- (BOOL)pluginHandleEvent:(int64_t)event
 {
-  v3 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (a3 > 4)
+  if (event > 4)
   {
-    if (a3 > 6)
+    if (event > 6)
     {
-      if (a3 == 7)
+      if (event == 7)
       {
-        v4 = v3;
+        v4 = selfCopy;
         v5 = 0;
       }
 
       else
       {
-        if (a3 != 8)
+        if (event != 8)
         {
           return self;
         }
 
-        v4 = v3;
+        v4 = selfCopy;
         v5 = 1;
       }
 
       LOBYTE(self) = [(SBAwayViewPluginController *)v4 handleHeadsetButtonPressed:v5];
     }
 
-    else if (a3 == 5)
+    else if (event == 5)
     {
 
-      LOBYTE(self) = [(SBAwayViewPluginController *)v3 handleVolumeUpButtonPressed];
+      LOBYTE(self) = [(SBAwayViewPluginController *)selfCopy handleVolumeUpButtonPressed];
     }
 
     else
     {
 
-      LOBYTE(self) = [(SBAwayViewPluginController *)v3 handleVolumeDownButtonPressed];
+      LOBYTE(self) = [(SBAwayViewPluginController *)selfCopy handleVolumeDownButtonPressed];
     }
   }
 
   else
   {
-    if (a3 <= 2)
+    if (event <= 2)
     {
-      if (a3 == 1)
+      if (event == 1)
       {
-        LODWORD(self) = [(SBAwayViewPluginController *)v3 shouldDisableOnUnlock];
+        LODWORD(self) = [(SBAwayViewPluginController *)selfCopy shouldDisableOnUnlock];
         if (!self)
         {
           return self;
@@ -297,62 +297,62 @@ LABEL_12:
 
       else
       {
-        if (a3 != 2)
+        if (event != 2)
         {
           return self;
         }
 
-        LODWORD(self) = [(SBAwayViewPluginController *)v3 shouldDisableOnRelock];
+        LODWORD(self) = [(SBAwayViewPluginController *)selfCopy shouldDisableOnRelock];
         if (!self)
         {
           return self;
         }
       }
 
-      [(SBAwayViewPluginController *)v3 disable];
+      [(SBAwayViewPluginController *)selfCopy disable];
       LOBYTE(self) = 1;
       return self;
     }
 
-    if (a3 == 3)
+    if (event == 3)
     {
 
-      LOBYTE(self) = [(SBAwayViewPluginController *)v3 handleMenuButtonTap];
+      LOBYTE(self) = [(SBAwayViewPluginController *)selfCopy handleMenuButtonTap];
     }
 
     else
     {
 
-      LOBYTE(self) = [(SBAwayViewPluginController *)v3 handleLockButtonPressed];
+      LOBYTE(self) = [(SBAwayViewPluginController *)selfCopy handleLockButtonPressed];
     }
   }
 
   return self;
 }
 
-- (BOOL)pluginAnimatesAppearanceTransition:(BOOL)a3
+- (BOOL)pluginAnimatesAppearanceTransition:(BOOL)transition
 {
-  if (!a3)
+  if (!transition)
   {
     return 0;
   }
 
-  v3 = [(SBAwayViewPluginController *)self enableTransitionBlock];
-  v4 = v3 != 0;
+  enableTransitionBlock = [(SBAwayViewPluginController *)self enableTransitionBlock];
+  v4 = enableTransitionBlock != 0;
 
   return v4;
 }
 
-- (id)pluginAnimateAppearanceTransition:(BOOL)a3 withCompletion:(id)a4
+- (id)pluginAnimateAppearanceTransition:(BOOL)transition withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v4)
+  transitionCopy = transition;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (transitionCopy)
   {
-    v8 = [(SBAwayViewPluginController *)self enableTransitionBlock];
-    v9 = v8 == 0;
-    if (v8)
+    enableTransitionBlock = [(SBAwayViewPluginController *)self enableTransitionBlock];
+    v9 = enableTransitionBlock == 0;
+    if (enableTransitionBlock)
     {
       v10 = MEMORY[0x277CF0BA0];
       v11 = MEMORY[0x277CCACA8];
@@ -368,7 +368,7 @@ LABEL_12:
       v16 = v15;
       v20 = v16;
       v21 = v7;
-      if ((v8)[2](v8, v19) <= 0.0)
+      if ((enableTransitionBlock)[2](enableTransitionBlock, v19) <= 0.0)
       {
         v17 = 0;
       }
@@ -394,7 +394,7 @@ LABEL_12:
   {
     v17 = 0;
     v9 = 1;
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -426,32 +426,32 @@ uint64_t __79__SBAwayViewPluginController_pluginAnimateAppearanceTransition_with
 
 - (void)purgeView
 {
-  v3 = [(SBAwayViewPluginController *)self viewIfLoaded];
+  viewIfLoaded = [(SBAwayViewPluginController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
-    v4 = [(SBAwayViewPluginController *)self viewIfLoaded];
-    [v4 removeFromSuperview];
+    viewIfLoaded2 = [(SBAwayViewPluginController *)self viewIfLoaded];
+    [viewIfLoaded2 removeFromSuperview];
 
     [(SBAwayViewPluginController *)self setView:0];
   }
 }
 
-- (void)setViewCanBeDisplayed:(BOOL)a3
+- (void)setViewCanBeDisplayed:(BOOL)displayed
 {
-  if (self->_viewCanBeDisplayed != a3)
+  if (self->_viewCanBeDisplayed != displayed)
   {
-    self->_viewCanBeDisplayed = a3;
+    self->_viewCanBeDisplayed = displayed;
     [(SBAwayViewPluginController *)self _updateAppearanceAndNotify:1];
   }
 }
 
 - (int64_t)orientation
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 statusBarOrientation];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
 
-  return v3;
+  return statusBarOrientation;
 }
 
 - (void)disable
@@ -488,22 +488,22 @@ uint64_t __79__SBAwayViewPluginController_pluginAnimateAppearanceTransition_with
   return 0;
 }
 
-+ (void)enableBundleNamed:(id)a3 activationContext:(id)a4
++ (void)enableBundleNamed:(id)named activationContext:(id)context
 {
   v5 = MEMORY[0x277D66B20];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  namedCopy = named;
   v8 = objc_alloc_init(v5);
-  [v8 enableLockScreenBundle:v7 withContext:v6];
+  [v8 enableLockScreenBundle:namedCopy withContext:contextCopy];
 }
 
-+ (void)disableBundleNamed:(id)a3 deactivationContext:(id)a4
++ (void)disableBundleNamed:(id)named deactivationContext:(id)context
 {
   v5 = MEMORY[0x277D66B20];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  namedCopy = named;
   v8 = objc_alloc_init(v5);
-  [v8 disableLockScreenBundle:v7 withContext:v6];
+  [v8 disableLockScreenBundle:namedCopy withContext:contextCopy];
 }
 
 - (SBLockScreenPluginAgent)pluginAgent

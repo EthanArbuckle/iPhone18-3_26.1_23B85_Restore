@@ -1,16 +1,16 @@
 @interface _SFSignedData
-- (_SFSignedData)initWithCoder:(id)a3;
-- (_SFSignedData)initWithData:(id)a3 signature:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_SFSignedData)initWithCoder:(id)coder;
+- (_SFSignedData)initWithData:(id)data signature:(id)signature;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SFSignedData
 
-- (_SFSignedData)initWithData:(id)a3 signature:(id)a4
+- (_SFSignedData)initWithData:(id)data signature:(id)signature
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  signatureCopy = signature;
   v18.receiver = self;
   v18.super_class = _SFSignedData;
   v8 = [(_SFSignedData *)&v18 init];
@@ -20,12 +20,12 @@
     signedDataInternal = v8->_signedDataInternal;
     v8->_signedDataInternal = v9;
 
-    v11 = [v6 copy];
+    v11 = [dataCopy copy];
     v12 = v8->_signedDataInternal;
     v13 = v12[1];
     v12[1] = v11;
 
-    v14 = [v7 copy];
+    v14 = [signatureCopy copy];
     v15 = v8->_signedDataInternal;
     v16 = v15[2];
     v15[2] = v14;
@@ -34,10 +34,10 @@
   return v8;
 }
 
-- (_SFSignedData)initWithCoder:(id)a3
+- (_SFSignedData)initWithCoder:(id)coder
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _SFSignedData;
   v5 = [(_SFSignedData *)&v22 init];
@@ -47,12 +47,12 @@
     signedDataInternal = v5->_signedDataInternal;
     v5->_signedDataInternal = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
     v9 = v5->_signedDataInternal;
     v10 = v9[1];
     v9[1] = v8;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_signature"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_signature"];
     v12 = v5->_signedDataInternal;
     v13 = v12[2];
     v12[2] = v11;
@@ -68,7 +68,7 @@
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v19 = [v15 errorWithDomain:v16 code:4865 userInfo:v18];
 
-      [v4 failWithError:v19];
+      [coderCopy failWithError:v19];
     }
   }
 
@@ -76,15 +76,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(self->_signedDataInternal + 1);
-  v5 = a3;
-  [v5 encodeObject:v4 forKey:@"_data"];
-  [v5 encodeObject:*(self->_signedDataInternal + 2) forKey:@"_signature"];
+  coderCopy = coder;
+  [coderCopy encodeObject:v4 forKey:@"_data"];
+  [coderCopy encodeObject:*(self->_signedDataInternal + 2) forKey:@"_signature"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   signedDataInternal = self->_signedDataInternal;

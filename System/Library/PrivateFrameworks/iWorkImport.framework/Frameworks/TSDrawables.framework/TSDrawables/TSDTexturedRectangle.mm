@@ -1,25 +1,25 @@
 @interface TSDTexturedRectangle
-+ (CGRect)boundingRectForTextures:(id)a3;
-+ (CGRect)boundingRectOnCanvasForTextures:(id)a3;
-- (BOOL)canReuseMetalTextureWith:(id)a3;
++ (CGRect)boundingRectForTextures:(id)textures;
++ (CGRect)boundingRectOnCanvasForTextures:(id)textures;
+- (BOOL)canReuseMetalTextureWith:(id)with;
 - (BOOL)isBackgroundTexture;
 - (BOOL)isMetalTextureSetup;
 - (BOOL)isRenderable;
 - (BOOL)p_shouldUseFloatTextures;
 - (CALayer)parentLayer;
-- (CGAffineTransform)p_transformWithAngle:(SEL)a3 scale:(double)a4 offset:(double)a5;
+- (CGAffineTransform)p_transformWithAngle:(SEL)angle scale:(double)scale offset:(double)offset;
 - (CGColorSpace)p_colorSpace;
 - (CGImage)image;
 - (CGPoint)offset;
 - (CGPoint)originalPosition;
 - (CGRect)contentRect;
-- (CGRect)convertToCanvasCoordinates:(CGRect)a3;
+- (CGRect)convertToCanvasCoordinates:(CGRect)coordinates;
 - (CGRect)frame;
 - (CGRect)frameOnCanvas;
 - (CGRect)leadingCaretRect;
 - (CGRect)originalFrame;
 - (CGRect)trailingCaretRect;
-- (CGSize)p_textureSizeWithMaxSize:(CGSize)a3;
+- (CGSize)p_textureSizeWithMaxSize:(CGSize)size;
 - (CGSize)size;
 - (MTLTexture)metalTexture;
 - (NSOperation)renderingOperation;
@@ -27,11 +27,11 @@
 - (NSString)description;
 - (TSDBitmapRenderingQualityInfo)bitmapRenderingQualityInfo;
 - (TSDTextureSet)parent;
-- (TSDTexturedRectangle)initWithCGImage:(CGImage *)a3;
-- (TSDTexturedRectangle)initWithLayer:(id)a3;
-- (TSDTexturedRectangle)initWithLayer:(id)a3 forMetalTexture:(id)a4;
-- (TSDTexturedRectangle)initWithMetalTexture:(id)a3 frame:(CGRect)a4;
-- (TSDTexturedRectangle)initWithSize:(CGSize)a3 offset:(CGPoint)a4 renderBlock:(id)a5;
+- (TSDTexturedRectangle)initWithCGImage:(CGImage *)image;
+- (TSDTexturedRectangle)initWithLayer:(id)layer;
+- (TSDTexturedRectangle)initWithLayer:(id)layer forMetalTexture:(id)texture;
+- (TSDTexturedRectangle)initWithMetalTexture:(id)texture frame:(CGRect)frame;
+- (TSDTexturedRectangle)initWithSize:(CGSize)size offset:(CGPoint)offset renderBlock:(id)block;
 - (TSDTexturedRectangle)liveTexturedRectangleSourceProxy;
 - (TSUBezierPath)shapePath;
 - (TSUColor)textBorderColor;
@@ -39,45 +39,45 @@
 - (_NSRange)textRange;
 - (double)hdrHeadroom;
 - (double)singleTextureOpacity;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)metalTextureWithContext:(id)a3;
-- (id)p_newImageAndBufferWithTransform:(CGAffineTransform *)a3;
-- (id)p_rasterizationBlockWithBitmapSize:(CGSize)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)metalTextureWithContext:(id)context;
+- (id)p_newImageAndBufferWithTransform:(CGAffineTransform *)transform;
+- (id)p_rasterizationBlockWithBitmapSize:(CGSize)size;
 - (id)shortDescription;
-- (id)viewLayerAtEventIndex:(unint64_t)a3;
+- (id)viewLayerAtEventIndex:(unint64_t)index;
 - (unint64_t)p_metalPixelFormat;
-- (unint64_t)p_textureDataSizeWithBitmapSize:(CGSize)a3;
+- (unint64_t)p_textureDataSizeWithBitmapSize:(CGSize)size;
 - (unint64_t)sizeInBytes;
-- (void)adjustAnchorRelativeToCenterOfRotation:(CGPoint)a3 atEventIndex:(unint64_t)a4;
-- (void)bakeLayerWithAngle:(double)a3 scale:(double)a4 layer:(id)a5;
+- (void)adjustAnchorRelativeToCenterOfRotation:(CGPoint)rotation atEventIndex:(unint64_t)index;
+- (void)bakeLayerWithAngle:(double)angle scale:(double)scale layer:(id)layer;
 - (void)dealloc;
 - (void)evictRenderedResources;
-- (void)p_bakeLayerWithAngle:(double)a3 scale:(double)a4 layer:(id)a5;
+- (void)p_bakeLayerWithAngle:(double)angle scale:(double)scale layer:(id)layer;
 - (void)p_initialize;
-- (void)p_renderIntoContext:(CGContext *)a3 viewLayer:(id)a4 shouldApplyAlpha:(BOOL)a5 shouldIgnoreLayerVisibility:(BOOL)a6 shouldClipToBounds:(BOOL)a7;
+- (void)p_renderIntoContext:(CGContext *)context viewLayer:(id)layer shouldApplyAlpha:(BOOL)alpha shouldIgnoreLayerVisibility:(BOOL)visibility shouldClipToBounds:(BOOL)bounds;
 - (void)p_updateFrame;
 - (void)releaseMetalTexture;
-- (void)renderIntoContext:(CGContext *)a3 eventIndex:(unint64_t)a4 shouldApplyAlpha:(BOOL)a5 shouldClipToBounds:(BOOL)a6;
+- (void)renderIntoContext:(CGContext *)context eventIndex:(unint64_t)index shouldApplyAlpha:(BOOL)alpha shouldClipToBounds:(BOOL)bounds;
 - (void)renderLayerContentsIfNeeded;
-- (void)resetAnchorPointAtEventIndex:(unint64_t)a3;
-- (void)resetToSourceImageAtEventIndex:(unint64_t)a3;
-- (void)setHdrHeadroom:(double)a3;
-- (void)setLeadingCaretRect:(CGRect)a3;
-- (void)setMetalTextureProxy:(id)a3;
-- (void)setTextureOpacity:(double)a3;
-- (void)setTextureType:(int64_t)a3;
-- (void)setTrailingCaretRect:(CGRect)a3;
-- (void)setupMetalTextureForContext:(id)a3;
+- (void)resetAnchorPointAtEventIndex:(unint64_t)index;
+- (void)resetToSourceImageAtEventIndex:(unint64_t)index;
+- (void)setHdrHeadroom:(double)headroom;
+- (void)setLeadingCaretRect:(CGRect)rect;
+- (void)setMetalTextureProxy:(id)proxy;
+- (void)setTextureOpacity:(double)opacity;
+- (void)setTextureType:(int64_t)type;
+- (void)setTrailingCaretRect:(CGRect)rect;
+- (void)setupMetalTextureForContext:(id)context;
 - (void)teardown;
-- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)a3;
+- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)cancel;
 @end
 
 @implementation TSDTexturedRectangle
 
-+ (CGRect)boundingRectForTextures:(id)a3
++ (CGRect)boundingRectForTextures:(id)textures
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  texturesCopy = textures;
   x = *MEMORY[0x277CBF3A0];
   y = *(MEMORY[0x277CBF3A0] + 8);
   width = *(MEMORY[0x277CBF3A0] + 16);
@@ -86,7 +86,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v8, &v23, v27, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(texturesCopy, v8, &v23, v27, 16);
   if (v9)
   {
     v12 = v9;
@@ -98,7 +98,7 @@
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(texturesCopy);
         }
 
         objc_msgSend_frame(*(*(&v23 + 1) + 8 * v14), v10, v11);
@@ -119,7 +119,7 @@
       }
 
       while (v12 != v14);
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v10, &v23, v27, 16);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(texturesCopy, v10, &v23, v27, 16);
     }
 
     while (v12);
@@ -136,10 +136,10 @@
   return result;
 }
 
-+ (CGRect)boundingRectOnCanvasForTextures:(id)a3
++ (CGRect)boundingRectOnCanvasForTextures:(id)textures
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  texturesCopy = textures;
   x = *MEMORY[0x277CBF398];
   y = *(MEMORY[0x277CBF398] + 8);
   width = *(MEMORY[0x277CBF398] + 16);
@@ -148,7 +148,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v8, &v23, v27, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(texturesCopy, v8, &v23, v27, 16);
   if (v9)
   {
     v12 = v9;
@@ -160,7 +160,7 @@
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(texturesCopy);
         }
 
         objc_msgSend_frameOnCanvas(*(*(&v23 + 1) + 8 * v14), v10, v11);
@@ -181,7 +181,7 @@
       }
 
       while (v12 != v14);
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v10, &v23, v27, 16);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(texturesCopy, v10, &v23, v27, 16);
     }
 
     while (v12);
@@ -198,13 +198,13 @@
   return result;
 }
 
-- (TSDTexturedRectangle)initWithSize:(CGSize)a3 offset:(CGPoint)a4 renderBlock:(id)a5
+- (TSDTexturedRectangle)initWithSize:(CGSize)size offset:(CGPoint)offset renderBlock:(id)block
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
+  y = offset.y;
+  x = offset.x;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v37.receiver = self;
   v37.super_class = TSDTexturedRectangle;
   v13 = [(TSDTexturedRectangle *)&v37 init];
@@ -213,7 +213,7 @@
     v14 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v11, v12);
     objc_msgSend_setUuid_(v13, v15, v14);
 
-    v18 = objc_msgSend_copy(v10, v16, v17);
+    v18 = objc_msgSend_copy(blockCopy, v16, v17);
     renderBlock = v13->_renderBlock;
     v13->_renderBlock = v18;
 
@@ -250,9 +250,9 @@
   return v13;
 }
 
-- (TSDTexturedRectangle)initWithLayer:(id)a3
+- (TSDTexturedRectangle)initWithLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v47.receiver = self;
   v47.super_class = TSDTexturedRectangle;
   v8 = [(TSDTexturedRectangle *)&v47 init];
@@ -266,16 +266,16 @@
     renderBlock = v8->_renderBlock;
     v8->_renderBlock = 0;
 
-    objc_msgSend_frame(v5, v17, v18);
+    objc_msgSend_frame(layerCopy, v17, v18);
     v8->_size.width = v19;
     v8->_size.height = v20;
-    objc_msgSend_frame(v5, v21, v22);
+    objc_msgSend_frame(layerCopy, v21, v22);
     v8->_offset.x = v23;
     v8->_offset.y = v24;
-    objc_msgSend_position(v5, v25, v26);
+    objc_msgSend_position(layerCopy, v25, v26);
     v8->_originalPosition.x = v27;
     v8->_originalPosition.y = v28;
-    objc_msgSend_frame(v5, v29, v30);
+    objc_msgSend_frame(layerCopy, v29, v30);
     v8->_originalFrame.origin.x = v31;
     v8->_originalFrame.origin.y = v32;
     v8->_originalFrame.size.width = v33;
@@ -288,7 +288,7 @@
     v8->_hdrHeadroom = 1.0;
     v8->_shouldOverrideHeadroom = 0;
     v8->_shouldUseFloatingPointTextures = 1;
-    objc_storeStrong(&v8->_layer, a3);
+    objc_storeStrong(&v8->_layer, layer);
     v8->_didInitFromLayer = 1;
     layer = v8->_layer;
     v37 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v36, 1);
@@ -305,7 +305,7 @@
   return v8;
 }
 
-- (TSDTexturedRectangle)initWithCGImage:(CGImage *)a3
+- (TSDTexturedRectangle)initWithCGImage:(CGImage *)image
 {
   v64.receiver = self;
   v64.super_class = TSDTexturedRectangle;
@@ -314,7 +314,7 @@
   {
     v7 = objc_msgSend_callStackSymbols(MEMORY[0x277CCACC8], v4, v5);
     objc_msgSend_count(v7, v8, v9);
-    *(v6 + 39) = CGImageRetain(a3);
+    *(v6 + 39) = CGImageRetain(image);
     v12 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v10, v11);
     objc_msgSend_setUuid_(v6, v13, v12);
 
@@ -323,8 +323,8 @@
     *(v6 + 33) = 0x3FF0000000000000;
     *(v6 + 208) = 0;
     *(v6 + 212) = 1;
-    *(v6 + 54) = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    *(v6 + 54) = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     *(v6 + 55) = Height;
     *(v6 + 25) = *MEMORY[0x277CBF348];
     v15 = *(v6 + 54);
@@ -341,9 +341,9 @@
     v25 = *(v6 + 34);
     *(v6 + 34) = v24;
 
-    objc_msgSend_setContents_(*(v6 + 34), v26, a3);
-    Width = CGImageGetWidth(a3);
-    v28 = CGImageGetHeight(a3);
+    objc_msgSend_setContents_(*(v6 + 34), v26, image);
+    Width = CGImageGetWidth(image);
+    v28 = CGImageGetHeight(image);
     objc_msgSend_setBounds_(*(v6 + 34), v29, v30, 0.0, 0.0, Width, v28);
     __asm { FMOV            V1.2D, #0.5 }
 
@@ -374,18 +374,18 @@
   return v6;
 }
 
-- (TSDTexturedRectangle)initWithMetalTexture:(id)a3 frame:(CGRect)a4
+- (TSDTexturedRectangle)initWithMetalTexture:(id)texture frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  textureCopy = texture;
   v12 = objc_msgSend_initWithSize_offset_renderBlock_(self, v11, 0, width, height, x, y);
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong((v12 + 384), a3);
+    objc_storeStrong((v12 + 384), texture);
     v13->_didInitFromGPUTexture = 1;
     objc_msgSend_p_initialize(v13, v14, v15);
   }
@@ -393,13 +393,13 @@
   return v13;
 }
 
-- (TSDTexturedRectangle)initWithLayer:(id)a3 forMetalTexture:(id)a4
+- (TSDTexturedRectangle)initWithLayer:(id)layer forMetalTexture:(id)texture
 {
-  v6 = a4;
-  v10 = objc_msgSend_initWithLayer_(self, v7, a3);
+  textureCopy = texture;
+  v10 = objc_msgSend_initWithLayer_(self, v7, layer);
   if (v10)
   {
-    if (!v6 || (objc_msgSend_isMetalTextureSetup(v6, v8, v9) & 1) == 0)
+    if (!textureCopy || (objc_msgSend_isMetalTextureSetup(textureCopy, v8, v9) & 1) == 0)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDTexturedRectangle initWithLayer:forMetalTexture:]");
@@ -409,7 +409,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
     }
 
-    v19 = objc_msgSend_metalTexture(v6, v8, v11);
+    v19 = objc_msgSend_metalTexture(textureCopy, v8, v11);
     metalTexture = v10->_metalTexture;
     v10->_metalTexture = v19;
 
@@ -511,7 +511,7 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_didInitFromGPUTexture)
   {
@@ -525,7 +525,7 @@
 
   if (self->_renderBlock)
   {
-    v12 = objc_msgSend_allocWithZone_(TSDTexturedRectangle, a2, a3);
+    v12 = objc_msgSend_allocWithZone_(TSDTexturedRectangle, a2, zone);
     v14 = objc_msgSend_initWithSize_offset_renderBlock_(v12, v13, self->_renderBlock, self->_originalFrame.size.width, self->_originalFrame.size.height, self->_originalFrame.origin.x, self->_originalFrame.origin.y);
   }
 
@@ -543,7 +543,7 @@
       goto LABEL_8;
     }
 
-    v17 = objc_msgSend_allocWithZone_(TSDTexturedRectangle, a2, a3);
+    v17 = objc_msgSend_allocWithZone_(TSDTexturedRectangle, a2, zone);
     v14 = objc_msgSend_initWithCGImage_(v17, v18, self->_sourceImage);
   }
 
@@ -617,9 +617,9 @@ LABEL_8:
   self->_originalFrame.size.height = v13;
 }
 
-- (void)setLeadingCaretRect:(CGRect)a3
+- (void)setLeadingCaretRect:(CGRect)rect
 {
-  self->_leadingCaretRect = a3;
+  self->_leadingCaretRect = rect;
   if (self->_originalLeadingCaretRect.size.width == *MEMORY[0x277CBF3A8] && self->_originalLeadingCaretRect.size.height == *(MEMORY[0x277CBF3A8] + 8))
   {
     size = self->_leadingCaretRect.size;
@@ -628,9 +628,9 @@ LABEL_8:
   }
 }
 
-- (void)setTrailingCaretRect:(CGRect)a3
+- (void)setTrailingCaretRect:(CGRect)rect
 {
-  self->_trailingCaretRect = a3;
+  self->_trailingCaretRect = rect;
   if (self->_originalTrailingCaretRect.size.width == *MEMORY[0x277CBF3A8] && self->_originalTrailingCaretRect.size.height == *(MEMORY[0x277CBF3A8] + 8))
   {
     size = self->_trailingCaretRect.size;
@@ -667,10 +667,10 @@ LABEL_8:
   return bakedShapePath;
 }
 
-- (void)adjustAnchorRelativeToCenterOfRotation:(CGPoint)a3 atEventIndex:(unint64_t)a4
+- (void)adjustAnchorRelativeToCenterOfRotation:(CGPoint)rotation atEventIndex:(unint64_t)index
 {
-  y = a3.y;
-  x = a3.x;
+  y = rotation.y;
+  x = rotation.x;
   if (self->_didInitFromGPUTexture)
   {
     v6 = MEMORY[0x277D81150];
@@ -681,7 +681,7 @@ LABEL_8:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v11, v12);
   }
 
-  v13 = objc_msgSend_viewLayerAtEventIndex_(self, a2, a4);
+  v13 = objc_msgSend_viewLayerAtEventIndex_(self, a2, index);
   if (objc_msgSend_textureType(self, v14, v15) == 2)
   {
     objc_msgSend_frame(v13, v16, v17);
@@ -757,9 +757,9 @@ LABEL_8:
   }
 }
 
-- (void)resetAnchorPointAtEventIndex:(unint64_t)a3
+- (void)resetAnchorPointAtEventIndex:(unint64_t)index
 {
-  v21 = objc_msgSend_viewLayerAtEventIndex_(self, a2, a3);
+  v21 = objc_msgSend_viewLayerAtEventIndex_(self, a2, index);
   objc_msgSend_setAnchorPoint_(v21, v4, v5, 0.5, 0.5);
   objc_msgSend_bounds(v21, v6, v7);
   v9 = self->_offset.x + v8 * 0.5;
@@ -782,22 +782,22 @@ LABEL_8:
   }
 }
 
-- (void)setTextureType:(int64_t)a3
+- (void)setTextureType:(int64_t)type
 {
-  if (self->_textureType != a3)
+  if (self->_textureType != type)
   {
-    self->_textureType = a3;
-    v5 = objc_msgSend_textureType(self, a2, a3);
+    self->_textureType = type;
+    v5 = objc_msgSend_textureType(self, a2, type);
     v8 = sub_2766A57EC(v5, v6);
     objc_msgSend_setName_(self->_layer, v7, v8);
   }
 }
 
-- (void)setTextureOpacity:(double)a3
+- (void)setTextureOpacity:(double)opacity
 {
-  self->_textureOpacity = a3;
-  *&a3 = a3;
-  objc_msgSend_setOpacity_(self->_layer, a2, v3, a3);
+  self->_textureOpacity = opacity;
+  *&opacity = opacity;
+  objc_msgSend_setOpacity_(self->_layer, a2, v3, opacity);
 }
 
 - (TSUColor)textColor
@@ -887,13 +887,13 @@ LABEL_8:
   return shouldUseFloatingPointTextures;
 }
 
-- (CGAffineTransform)p_transformWithAngle:(SEL)a3 scale:(double)a4 offset:(double)a5
+- (CGAffineTransform)p_transformWithAngle:(SEL)angle scale:(double)scale offset:(double)offset
 {
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
   result = CGAffineTransformMakeTranslation(retstr, a6.x, a6.y);
-  if (a4 != 0.0 || a5 != 1.0)
+  if (scale != 0.0 || offset != 1.0)
   {
     objc_msgSend_frame(self->_layer, v11, v12);
     v15 = -v14;
@@ -923,7 +923,7 @@ LABEL_8:
     *&v42.a = *&retstr->a;
     *&v42.c = v30;
     *&v42.tx = *&retstr->tx;
-    CGAffineTransformScale(&v43, &v42, a5, a5);
+    CGAffineTransformScale(&v43, &v42, offset, offset);
     v31 = *&v43.c;
     *&retstr->a = *&v43.a;
     *&retstr->c = v31;
@@ -932,7 +932,7 @@ LABEL_8:
     *&v42.a = *&retstr->a;
     *&v42.c = v32;
     *&v42.tx = *&retstr->tx;
-    CGAffineTransformRotate(&v43, &v42, a4);
+    CGAffineTransformRotate(&v43, &v42, scale);
     v33 = *&v43.c;
     *&retstr->a = *&v43.a;
     *&retstr->c = v33;
@@ -954,9 +954,9 @@ LABEL_8:
   return result;
 }
 
-- (id)p_newImageAndBufferWithTransform:(CGAffineTransform *)a3
+- (id)p_newImageAndBufferWithTransform:(CGAffineTransform *)transform
 {
-  v5 = objc_msgSend_currentCapabilities(TSDCapabilities, a2, a3);
+  v5 = objc_msgSend_currentCapabilities(TSDCapabilities, a2, transform);
   objc_msgSend_maximumImageSize(v5, v6, v7);
 
   TSUShrinkSizeToFitInSize();
@@ -1041,10 +1041,10 @@ LABEL_16:
     CGContextRestoreGState(v21);
   }
 
-  v42 = *&a3->c;
-  *&transform.a = *&a3->a;
+  v42 = *&transform->c;
+  *&transform.a = *&transform->a;
   *&transform.c = v42;
-  *&transform.tx = *&a3->tx;
+  *&transform.tx = *&transform->tx;
   CGContextConcatCTM(v21, &transform);
   renderBlock = self->_renderBlock;
   if (renderBlock)
@@ -1122,7 +1122,7 @@ LABEL_28:
   return Image;
 }
 
-- (void)resetToSourceImageAtEventIndex:(unint64_t)a3
+- (void)resetToSourceImageAtEventIndex:(unint64_t)index
 {
   if (self->_didInitFromGPUTexture)
   {
@@ -1136,7 +1136,7 @@ LABEL_28:
 
   CGImageRelease(self->_bakedImage);
   self->_bakedImage = 0;
-  v20 = objc_msgSend_viewLayerAtEventIndex_(self, v12, a3);
+  v20 = objc_msgSend_viewLayerAtEventIndex_(self, v12, index);
   objc_msgSend_setFrame_(v20, v13, v14, self->_originalFrame.origin.x, self->_originalFrame.origin.y, self->_originalFrame.size.width, self->_originalFrame.size.height);
   objc_msgSend_setContents_(v20, v15, self->_sourceImage);
   self->_size = self->_originalFrame.size;
@@ -1196,47 +1196,47 @@ LABEL_28:
 
 - (void)renderLayerContentsIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_didInitFromGPUTexture)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_didInitFromGPUTexture)
   {
-    v5 = objc_msgSend_contents(v2->_layer, v3, v4);
+    v5 = objc_msgSend_contents(selfCopy->_layer, v3, v4);
 
     if (!v5)
     {
-      if ((objc_msgSend_isRenderable(v2, v6, v7) & 1) == 0)
+      if ((objc_msgSend_isRenderable(selfCopy, v6, v7) & 1) == 0)
       {
         v9 = MEMORY[0x277D81150];
         v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDTexturedRectangle renderLayerContentsIfNeeded]");
         v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDTexturedRectangle.m");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 904, 0, "%p - Nothing to render from", v2);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 904, 0, "%p - Nothing to render from", selfCopy);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
       }
 
-      sourceImage = v2->_sourceImage;
+      sourceImage = selfCopy->_sourceImage;
       if (sourceImage)
       {
         CGImageRelease(sourceImage);
-        v2->_sourceImage = 0;
+        selfCopy->_sourceImage = 0;
       }
 
       v17 = *(MEMORY[0x277CBF2C0] + 16);
       v23[0] = *MEMORY[0x277CBF2C0];
       v23[1] = v17;
       v23[2] = *(MEMORY[0x277CBF2C0] + 32);
-      v18 = objc_msgSend_p_newImageAndBufferWithTransform_(v2, v8, v23);
-      v2->_sourceImage = v18;
-      objc_msgSend_setContents_(v2->_layer, v19, v18);
-      if (v2->_size.height != CGImageGetHeight(v2->_sourceImage))
+      v18 = objc_msgSend_p_newImageAndBufferWithTransform_(selfCopy, v8, v23);
+      selfCopy->_sourceImage = v18;
+      objc_msgSend_setContents_(selfCopy->_layer, v19, v18);
+      if (selfCopy->_size.height != CGImageGetHeight(selfCopy->_sourceImage))
       {
-        Height = CGImageGetHeight(v2->_sourceImage);
-        objc_msgSend_setContentsScale_(v2->_layer, v21, v22, Height / v2->_size.height);
+        Height = CGImageGetHeight(selfCopy->_sourceImage);
+        objc_msgSend_setContentsScale_(selfCopy->_layer, v21, v22, Height / selfCopy->_size.height);
       }
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (unint64_t)sizeInBytes
@@ -1256,10 +1256,10 @@ LABEL_28:
   return (self->_size.height * v6);
 }
 
-- (unint64_t)p_textureDataSizeWithBitmapSize:(CGSize)a3
+- (unint64_t)p_textureDataSizeWithBitmapSize:(CGSize)size
 {
-  width = a3.width;
-  height = a3.height;
+  width = size.width;
+  height = size.height;
   v6 = objc_msgSend_p_colorSpace(self, a2, v3);
   v7 = TSUP3ColorSpace();
   v9 = 2;
@@ -1282,10 +1282,10 @@ LABEL_28:
   return v10;
 }
 
-- (id)p_rasterizationBlockWithBitmapSize:(CGSize)a3
+- (id)p_rasterizationBlockWithBitmapSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   bakedImage = self->_bakedImage;
   if (!bakedImage)
   {
@@ -1394,14 +1394,14 @@ LABEL_28:
   return result;
 }
 
-- (void)setHdrHeadroom:(double)a3
+- (void)setHdrHeadroom:(double)headroom
 {
-  if (a3 < 1.0)
+  if (headroom < 1.0)
   {
-    a3 = 1.0;
+    headroom = 1.0;
   }
 
-  self->_hdrHeadroom = a3;
+  self->_hdrHeadroom = headroom;
 }
 
 - (double)singleTextureOpacity
@@ -1505,18 +1505,18 @@ LABEL_5:
   return result;
 }
 
-- (void)bakeLayerWithAngle:(double)a3 scale:(double)a4 layer:(id)a5
+- (void)bakeLayerWithAngle:(double)angle scale:(double)scale layer:(id)layer
 {
-  v10 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
-  objc_msgSend_p_bakeLayerWithAngle_scale_layer_(v8, v9, v10, a3, a4);
-  objc_sync_exit(v8);
+  layerCopy = layer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_p_bakeLayerWithAngle_scale_layer_(selfCopy, v9, layerCopy, angle, scale);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_bakeLayerWithAngle:(double)a3 scale:(double)a4 layer:(id)a5
+- (void)p_bakeLayerWithAngle:(double)angle scale:(double)scale layer:(id)layer
 {
-  v9 = a5;
+  layerCopy = layer;
   if (self->_didInitFromGPUTexture)
   {
     v10 = MEMORY[0x277D81150];
@@ -1527,27 +1527,27 @@ LABEL_5:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
 
-  if (v9)
+  if (layerCopy)
   {
-    objc_msgSend_setContents_(v9, v8, 0);
-    objc_msgSend_anchorPoint(v9, v17, v18);
-    objc_msgSend_frame(v9, v19, v20);
+    objc_msgSend_setContents_(layerCopy, v8, 0);
+    objc_msgSend_anchorPoint(layerCopy, v17, v18);
+    objc_msgSend_frame(layerCopy, v19, v20);
     TSUPointFromNormalizedRect();
     v22 = *MEMORY[0x277CBF348];
     v21 = *(MEMORY[0x277CBF348] + 8);
     TSURectWithOriginAndSize();
-    objc_msgSend_setBounds_(v9, v23, v24);
-    v27 = objc_msgSend_superlayer(v9, v25, v26);
+    objc_msgSend_setBounds_(layerCopy, v23, v24);
+    v27 = objc_msgSend_superlayer(layerCopy, v25, v26);
     objc_msgSend_frame(v27, v28, v29);
-    objc_msgSend_frame(v9, v30, v31);
+    objc_msgSend_frame(layerCopy, v30, v31);
     TSUAddPoints();
 
-    objc_msgSend_frame(v9, v32, v33);
+    objc_msgSend_frame(layerCopy, v32, v33);
     TSURectWithOriginAndSize();
     v105 = CGRectIntegral(v104);
     self->_size.width = fmax(v105.size.width, 1.0);
     self->_size.height = fmax(v105.size.height, 1.0);
-    v36 = objc_msgSend_superlayer(v9, v34, v35);
+    v36 = objc_msgSend_superlayer(layerCopy, v34, v35);
     objc_msgSend_frame(v36, v37, v38);
     TSUSubtractPoints();
     self->_offset.x = v39;
@@ -1558,27 +1558,27 @@ LABEL_5:
     {
       CGImageRelease(bakedImage);
       self->_bakedImage = 0;
-      objc_msgSend_setContents_(v9, v42, 0);
+      objc_msgSend_setContents_(layerCopy, v42, 0);
     }
 
     v102 = 0u;
     v103 = 0u;
     v101 = 0u;
     TSUSubtractPoints();
-    objc_msgSend_p_transformWithAngle_scale_offset_(self, v43, v44, a3, a4, v45, v46);
+    objc_msgSend_p_transformWithAngle_scale_offset_(self, v43, v44, angle, scale, v45, v46);
     v49 = objc_msgSend_willRenderWithLiveTexturedRectangleSource(self, v47, v48);
-    if (a4 != 0.0 && (v49 & 1) == 0)
+    if (scale != 0.0 && (v49 & 1) == 0)
     {
       v93 = v101;
       v94 = v102;
       v95 = v103;
       v52 = objc_msgSend_p_newImageAndBufferWithTransform_(self, v50, &v93);
       self->_bakedImage = v52;
-      objc_msgSend_setContents_(v9, v53, v52);
+      objc_msgSend_setContents_(layerCopy, v53, v52);
       if (self->_size.height != CGImageGetHeight(self->_bakedImage))
       {
         Height = CGImageGetHeight(self->_bakedImage);
-        objc_msgSend_setContentsScale_(v9, v55, v56, Height / self->_size.height);
+        objc_msgSend_setContentsScale_(layerCopy, v55, v56, Height / self->_size.height);
       }
     }
 
@@ -1604,21 +1604,21 @@ LABEL_5:
       self->_trailingCaretRect.size.height = v66;
     }
 
-    if (a3 != 0.0)
+    if (angle != 0.0)
     {
-      objc_msgSend_setValue_forKeyPath_(v9, v50, &unk_28859C298, @"transform.rotation.z");
+      objc_msgSend_setValue_forKeyPath_(layerCopy, v50, &unk_28859C298, @"transform.rotation.z");
     }
 
-    if (a4 != 1.0)
+    if (scale != 1.0)
     {
-      objc_msgSend_setValue_forKeyPath_(v9, v50, &unk_28859C2A8, @"transform.scale.xy");
+      objc_msgSend_setValue_forKeyPath_(layerCopy, v50, &unk_28859C2A8, @"transform.scale.xy");
     }
 
-    v67 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v50, v51, a4);
-    objc_msgSend_setValue_forKey_(v9, v68, v67, @"kTSDTextureLayerKeyBakedScale");
+    v67 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v50, v51, scale);
+    objc_msgSend_setValue_forKey_(layerCopy, v68, v67, @"kTSDTextureLayerKeyBakedScale");
 
-    self->_bakedScale = a4;
-    self->_bakedRotation = a3;
+    self->_bakedScale = scale;
+    self->_bakedRotation = angle;
     v69 = *(MEMORY[0x277CD9DE8] + 80);
     v97 = *(MEMORY[0x277CD9DE8] + 64);
     v98 = v69;
@@ -1631,22 +1631,22 @@ LABEL_5:
     v72 = *(MEMORY[0x277CD9DE8] + 48);
     v95 = *(MEMORY[0x277CD9DE8] + 32);
     v96 = v72;
-    objc_msgSend_setTransform_(v9, v73, &v93);
+    objc_msgSend_setTransform_(layerCopy, v73, &v93);
     TSURectWithOriginAndSize();
-    objc_msgSend_setFrame_(v9, v74, v75);
-    if (a4 != 0.0 && fabs(a4) >= 0.0001)
+    objc_msgSend_setFrame_(layerCopy, v74, v75);
+    if (scale != 0.0 && fabs(scale) >= 0.0001)
     {
-      objc_msgSend_anchorPoint(v9, v76, v77);
-      objc_msgSend_frame(v9, v78, v79);
+      objc_msgSend_anchorPoint(layerCopy, v76, v77);
+      objc_msgSend_frame(layerCopy, v78, v79);
       TSUPointFromNormalizedRect();
       TSUSubtractPoints();
       if (v81 != v22 || v80 != v21)
       {
-        objc_msgSend_anchorPoint(v9, v76, v77);
+        objc_msgSend_anchorPoint(layerCopy, v76, v77);
         TSUAddPoints();
-        objc_msgSend_setAnchorPoint_(v9, v82, v83);
+        objc_msgSend_setAnchorPoint_(layerCopy, v82, v83);
         TSURectWithOriginAndSize();
-        objc_msgSend_setFrame_(v9, v84, v85);
+        objc_msgSend_setFrame_(layerCopy, v84, v85);
       }
     }
 
@@ -1665,37 +1665,37 @@ LABEL_5:
   }
 }
 
-- (void)renderIntoContext:(CGContext *)a3 eventIndex:(unint64_t)a4 shouldApplyAlpha:(BOOL)a5 shouldClipToBounds:(BOOL)a6
+- (void)renderIntoContext:(CGContext *)context eventIndex:(unint64_t)index shouldApplyAlpha:(BOOL)alpha shouldClipToBounds:(BOOL)bounds
 {
-  v6 = a6;
-  v7 = a5;
-  v11 = objc_msgSend_viewLayerAtEventIndex_(self, a2, a4);
-  objc_msgSend_p_renderIntoContext_viewLayer_shouldApplyAlpha_shouldIgnoreLayerVisibility_shouldClipToBounds_(self, v10, a3, v11, v7, 0, v6);
+  boundsCopy = bounds;
+  alphaCopy = alpha;
+  v11 = objc_msgSend_viewLayerAtEventIndex_(self, a2, index);
+  objc_msgSend_p_renderIntoContext_viewLayer_shouldApplyAlpha_shouldIgnoreLayerVisibility_shouldClipToBounds_(self, v10, context, v11, alphaCopy, 0, boundsCopy);
 }
 
-- (void)p_renderIntoContext:(CGContext *)a3 viewLayer:(id)a4 shouldApplyAlpha:(BOOL)a5 shouldIgnoreLayerVisibility:(BOOL)a6 shouldClipToBounds:(BOOL)a7
+- (void)p_renderIntoContext:(CGContext *)context viewLayer:(id)layer shouldApplyAlpha:(BOOL)alpha shouldIgnoreLayerVisibility:(BOOL)visibility shouldClipToBounds:(BOOL)bounds
 {
-  v7 = a7;
-  v9 = a5;
-  v12 = a4;
-  v13 = self;
-  objc_sync_enter(v13);
-  if (a6 || (objc_msgSend_isHidden(v12, v14, v15) & 1) == 0)
+  boundsCopy = bounds;
+  alphaCopy = alpha;
+  layerCopy = layer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (visibility || (objc_msgSend_isHidden(layerCopy, v14, v15) & 1) == 0)
   {
-    CGContextSaveGState(a3);
-    if (v7)
+    CGContextSaveGState(context);
+    if (boundsCopy)
     {
-      objc_msgSend_frame(v12, v16, v17);
+      objc_msgSend_frame(layerCopy, v16, v17);
       CGContextClipToRectSafe();
     }
 
-    objc_msgSend_position(v12, v16, v17);
+    objc_msgSend_position(layerCopy, v16, v17);
     v19 = v18;
-    objc_msgSend_position(v12, v20, v21);
-    CGContextTranslateCTM(a3, v19, v22);
-    if (v12)
+    objc_msgSend_position(layerCopy, v20, v21);
+    CGContextTranslateCTM(context, v19, v22);
+    if (layerCopy)
     {
-      objc_msgSend_transform(v12, v23, v24);
+      objc_msgSend_transform(layerCopy, v23, v24);
     }
 
     else
@@ -1705,9 +1705,9 @@ LABEL_5:
 
     if (!CATransform3DIsIdentity(&v73))
     {
-      if (v12)
+      if (layerCopy)
       {
-        objc_msgSend_affineTransform(v12, v25, v26);
+        objc_msgSend_affineTransform(layerCopy, v25, v26);
       }
 
       else
@@ -1715,55 +1715,55 @@ LABEL_5:
         memset(&v73, 0, 48);
       }
 
-      CGContextConcatCTM(a3, &v73);
+      CGContextConcatCTM(context, &v73);
     }
 
-    objc_msgSend_bounds(v12, v25, v26);
+    objc_msgSend_bounds(layerCopy, v25, v26);
     v28 = v27;
-    objc_msgSend_anchorPoint(v12, v29, v30);
+    objc_msgSend_anchorPoint(layerCopy, v29, v30);
     v32 = v31;
-    objc_msgSend_bounds(v12, v33, v34);
+    objc_msgSend_bounds(layerCopy, v33, v34);
     v36 = v35;
-    objc_msgSend_anchorPoint(v12, v37, v38);
-    CGContextTranslateCTM(a3, -(v28 * v32), -(v36 * v39));
-    bakedScale = v13->_bakedScale;
+    objc_msgSend_anchorPoint(layerCopy, v37, v38);
+    CGContextTranslateCTM(context, -(v28 * v32), -(v36 * v39));
+    bakedScale = selfCopy->_bakedScale;
     if (bakedScale != 1.0)
     {
-      CGContextScaleCTM(a3, bakedScale, v13->_bakedScale);
+      CGContextScaleCTM(context, bakedScale, selfCopy->_bakedScale);
     }
 
-    objc_msgSend_opacity(v12, v40, v41);
-    if (v45 != 1.0 && v9)
+    objc_msgSend_opacity(layerCopy, v40, v41);
+    if (v45 != 1.0 && alphaCopy)
     {
-      objc_msgSend_opacity(v12, v43, v44);
-      CGContextSetAlpha(a3, v46);
-      CGContextBeginTransparencyLayer(a3, 0);
+      objc_msgSend_opacity(layerCopy, v43, v44);
+      CGContextSetAlpha(context, v46);
+      CGContextBeginTransparencyLayer(context, 0);
     }
 
-    v49 = objc_msgSend_backgroundColor(v13, v43, v44);
+    v49 = objc_msgSend_backgroundColor(selfCopy, v43, v44);
     if (v49)
     {
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       v52 = objc_msgSend_CGColor(v49, v50, v51);
-      CGContextSetFillColorWithColor(a3, v52);
-      objc_msgSend_bounds(v12, v53, v54);
-      CGContextFillRect(a3, v74);
-      CGContextRestoreGState(a3);
+      CGContextSetFillColorWithColor(context, v52);
+      objc_msgSend_bounds(layerCopy, v53, v54);
+      CGContextFillRect(context, v74);
+      CGContextRestoreGState(context);
     }
 
-    renderBlock = v13->_renderBlock;
+    renderBlock = selfCopy->_renderBlock;
     if (renderBlock)
     {
-      renderBlock[2](renderBlock, a3);
+      renderBlock[2](renderBlock, context);
     }
 
-    else if (v13->_sourceImage)
+    else if (selfCopy->_sourceImage)
     {
-      objc_msgSend_bounds(v12, v47, v48);
-      CGContextTranslateCTM(a3, 0.0, v58);
-      CGContextScaleCTM(a3, 1.0, -1.0);
-      objc_msgSend_bounds(v12, v59, v60);
-      TSDCGContextDrawImageRecordingMaxHeadroom(a3, v13->_sourceImage, v61, v62, v63, v64);
+      objc_msgSend_bounds(layerCopy, v47, v48);
+      CGContextTranslateCTM(context, 0.0, v58);
+      CGContextScaleCTM(context, 1.0, -1.0);
+      objc_msgSend_bounds(layerCopy, v59, v60);
+      TSDCGContextDrawImageRecordingMaxHeadroom(context, selfCopy->_sourceImage, v61, v62, v63, v64);
     }
 
     else
@@ -1771,21 +1771,21 @@ LABEL_5:
       v65 = MEMORY[0x277D81150];
       v66 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v47, "[TSDTexturedRectangle p_renderIntoContext:viewLayer:shouldApplyAlpha:shouldIgnoreLayerVisibility:shouldClipToBounds:]");
       v68 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v67, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDTexturedRectangle.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v65, v69, v66, v68, 1264, 0, "%p - Nothing to render from", v13);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v65, v69, v66, v68, 1264, 0, "%p - Nothing to render from", selfCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v70, v71);
     }
 
-    objc_msgSend_opacity(v12, v56, v57);
-    if (v72 != 1.0 && v9)
+    objc_msgSend_opacity(layerCopy, v56, v57);
+    if (v72 != 1.0 && alphaCopy)
     {
-      CGContextEndTransparencyLayer(a3);
+      CGContextEndTransparencyLayer(context);
     }
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isBackgroundTexture
@@ -1856,12 +1856,12 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)convertToCanvasCoordinates:(CGRect)a3
+- (CGRect)convertToCanvasCoordinates:(CGRect)coordinates
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = coordinates.size.height;
+  width = coordinates.size.width;
+  y = coordinates.origin.y;
+  x = coordinates.origin.x;
   v9 = objc_msgSend_parent(self, a2, v3);
 
   if (v9)
@@ -1894,9 +1894,9 @@ LABEL_5:
   return result;
 }
 
-- (id)viewLayerAtEventIndex:(unint64_t)a3
+- (id)viewLayerAtEventIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFF || (objc_msgSend_currentThread(MEMORY[0x277CCACC8], a2, a3), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend_threadDictionary(v5, v6, v7), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v8, v9, @"kTSDTexturePreCachingOperation"), v10 = objc_claimAutoreleasedReturnValue(), v10, v8, v5, !v10))
+  if (index == 0x7FFFFFFF || (objc_msgSend_currentThread(MEMORY[0x277CCACC8], a2, index), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend_threadDictionary(v5, v6, v7), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend_objectForKeyedSubscript_(v8, v9, @"kTSDTexturePreCachingOperation"), v10 = objc_claimAutoreleasedReturnValue(), v10, v8, v5, !v10))
   {
     v16 = self->_layer;
   }
@@ -1906,7 +1906,7 @@ LABEL_5:
     v11 = self->_eventIndexToViewLayerMap;
     objc_sync_enter(v11);
     eventIndexToViewLayerMap = self->_eventIndexToViewLayerMap;
-    v14 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v13, a3);
+    v14 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v13, index);
     v16 = objc_msgSend_objectForKey_(eventIndexToViewLayerMap, v15, v14);
 
     if (!v16)
@@ -1951,7 +1951,7 @@ LABEL_5:
       objc_msgSend_setValue_forKey_(v16, v41, v40, @"kTSDTextureLayerKeyOriginalPosition");
 
       v42 = self->_eventIndexToViewLayerMap;
-      v44 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v43, a3);
+      v44 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v43, index);
       objc_msgSend_setObject_forKey_(v42, v45, v16, v44);
     }
 
@@ -1961,23 +1961,23 @@ LABEL_5:
   return v16;
 }
 
-- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)a3
+- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   os_unfair_lock_lock(&self->_stateLock);
   metalTextureProxy = self->_metalTextureProxy;
   os_unfair_lock_unlock(&self->_stateLock);
   if (metalTextureProxy)
   {
     os_unfair_lock_lock(&self->_stateLock);
-    objc_msgSend_waitUntilAsyncRenderingIsCompleteShouldCancel_(self->_metalTextureProxy, v8, v3);
+    objc_msgSend_waitUntilAsyncRenderingIsCompleteShouldCancel_(self->_metalTextureProxy, v8, cancelCopy);
 
     os_unfair_lock_unlock(&self->_stateLock);
   }
 
   else
   {
-    if (v3)
+    if (cancelCopy)
     {
       v9 = objc_msgSend_renderingOperation(self, v6, v7);
       objc_msgSend_cancel(v9, v10, v11);
@@ -2007,15 +2007,15 @@ LABEL_5:
   }
 }
 
-- (BOOL)canReuseMetalTextureWith:(id)a3
+- (BOOL)canReuseMetalTextureWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   bakedRotation = self->_bakedRotation;
-  objc_msgSend_bakedRotation(v4, v6, v7);
+  objc_msgSend_bakedRotation(withCopy, v6, v7);
   if (bakedRotation == v10 || vabdd_f64(bakedRotation, v10) < 0.00999999978)
   {
     bakedScale = self->_bakedScale;
-    objc_msgSend_bakedScale(v4, v8, v9);
+    objc_msgSend_bakedScale(withCopy, v8, v9);
     v11 = vabdd_f64(bakedScale, v13) >= 0.00999999978 && bakedScale != v13;
   }
 
@@ -2026,7 +2026,7 @@ LABEL_5:
 
   if (self->_shouldGenerateMipmap)
   {
-    v14 = objc_msgSend_shouldGenerateMipmap(v4, v8, v9) ^ 1;
+    v14 = objc_msgSend_shouldGenerateMipmap(withCopy, v8, v9) ^ 1;
   }
 
   else
@@ -2040,7 +2040,7 @@ LABEL_5:
   }
 
   uuid = self->_uuid;
-  v17 = objc_msgSend_uuid(v4, v8, v9);
+  v17 = objc_msgSend_uuid(withCopy, v8, v9);
   LOBYTE(uuid) = objc_msgSend_isEqual_(uuid, v18, v17);
 
   if (uuid)
@@ -2056,7 +2056,7 @@ LABEL_5:
   }
 
   v19 = objc_loadWeakRetained(&self->_parent);
-  v22 = objc_msgSend_parent(v4, v20, v21);
+  v22 = objc_msgSend_parent(withCopy, v20, v21);
   canReuseMetalTexturesWith = objc_msgSend_canReuseMetalTexturesWith_(v19, v23, v22);
 
   if (!canReuseMetalTexturesWith)
@@ -2065,28 +2065,28 @@ LABEL_5:
   }
 
   textureType = self->_textureType;
-  v28 = objc_msgSend_textureType(v4, v25, v26);
+  v28 = objc_msgSend_textureType(withCopy, v25, v26);
   if (self->_isFlattenedRepresentation)
   {
     goto LABEL_11;
   }
 
   v31 = v28;
-  isFlattenedRepresentation = objc_msgSend_isFlattenedRepresentation(v4, v29, v30);
+  isFlattenedRepresentation = objc_msgSend_isFlattenedRepresentation(withCopy, v29, v30);
   LOBYTE(WeakRetained) = 0;
   if (textureType == v31 && (isFlattenedRepresentation & 1) == 0)
   {
     v33 = objc_loadWeakRetained(&self->_parent);
     if (objc_msgSend_containsContentBuildTextures(v33, v34, v35))
     {
-      v38 = objc_msgSend_parent(v4, v36, v37);
+      v38 = objc_msgSend_parent(withCopy, v36, v37);
       v41 = objc_msgSend_containsContentBuildTextures(v38, v39, v40);
 
       if (v41)
       {
         if ((objc_msgSend_isIncomingContent(self, v42, v43) & 1) == 0)
         {
-          LOBYTE(WeakRetained) = objc_msgSend_isIncomingContent(v4, v44, v45);
+          LOBYTE(WeakRetained) = objc_msgSend_isIncomingContent(withCopy, v44, v45);
           goto LABEL_35;
         }
 
@@ -2098,14 +2098,14 @@ LABEL_5:
     {
     }
 
-    objc_msgSend_size(v4, v42, v43);
+    objc_msgSend_size(withCopy, v42, v43);
     v46 = TSUNearlyEqualSizes();
     v49 = self->_textureType;
     if (v49 <= 0x10 && ((1 << v49) & 0x18040) != 0)
     {
       if (v46)
       {
-        LOBYTE(WeakRetained) = self->_textRange.location == objc_msgSend_textRange(v4, v47, v48) && self->_textRange.length == v50;
+        LOBYTE(WeakRetained) = self->_textRange.location == objc_msgSend_textRange(withCopy, v47, v48) && self->_textRange.length == v50;
         goto LABEL_35;
       }
     }
@@ -2115,9 +2115,9 @@ LABEL_5:
       v52 = objc_loadWeakRetained(&self->_parent);
       v55 = objc_msgSend_allTextures(v52, v53, v54);
       v57 = objc_msgSend_indexOfObject_(v55, v56, self);
-      v60 = objc_msgSend_parent(v4, v58, v59);
+      v60 = objc_msgSend_parent(withCopy, v58, v59);
       v63 = objc_msgSend_allTextures(v60, v61, v62);
-      LOBYTE(WeakRetained) = v57 == objc_msgSend_indexOfObject_(v63, v64, v4);
+      LOBYTE(WeakRetained) = v57 == objc_msgSend_indexOfObject_(v63, v64, withCopy);
 
       goto LABEL_35;
     }
@@ -2180,11 +2180,11 @@ LABEL_35:
   return v7;
 }
 
-- (void)setMetalTextureProxy:(id)a3
+- (void)setMetalTextureProxy:(id)proxy
 {
-  v7 = a3;
+  proxyCopy = proxy;
   os_unfair_lock_lock(&self->_stateLock);
-  objc_storeStrong(&self->_metalTextureProxy, a3);
+  objc_storeStrong(&self->_metalTextureProxy, proxy);
   if (self->_metalTextureProxy)
   {
     bakedImage = self->_bakedImage;
@@ -2202,7 +2202,7 @@ LABEL_35:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (CGSize)p_textureSizeWithMaxSize:(CGSize)a3
+- (CGSize)p_textureSizeWithMaxSize:(CGSize)size
 {
   objc_msgSend_contentsRect(self->_layer, a2, v3);
   if (v7 != 0.0)
@@ -2232,15 +2232,15 @@ LABEL_35:
   return result;
 }
 
-- (void)setupMetalTextureForContext:(id)a3
+- (void)setupMetalTextureForContext:(id)context
 {
-  v5 = objc_msgSend_device(a3, a2, a3);
+  v5 = objc_msgSend_device(context, a2, context);
   objc_msgSend_setupMetalTextureForDevice_(self, v4, v5);
 }
 
-- (id)metalTextureWithContext:(id)a3
+- (id)metalTextureWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDTexturedRectangle metalTextureWithContext:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/animation/TSDTexturedRectangle.m");

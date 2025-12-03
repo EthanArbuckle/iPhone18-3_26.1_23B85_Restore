@@ -1,34 +1,34 @@
 @interface CRSInCallAssertionService
 + (id)sharedInstance;
 - (id)_init;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)addObserver:(id)a3 notifyIfNeeded:(BOOL)a4;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)addObserver:(id)observer notifyIfNeeded:(BOOL)needed;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 - (void)presentInCallService;
-- (void)removeObserver:(id)a3;
-- (void)setAllowsBanners:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setAllowsBanners:(id)banners;
 @end
 
 @implementation CRSInCallAssertionService
 
 - (void)presentInCallService
 {
-  v3 = [(CRSInCallAssertionService *)self connectionQueue];
+  connectionQueue = [(CRSInCallAssertionService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v4 = [(CRSInCallAssertionService *)self connections];
-  v5 = [MEMORY[0x277CF3280] currentContext];
-  v6 = [v5 instance];
-  v7 = [v4 objectForKey:v6];
+  connections = [(CRSInCallAssertionService *)self connections];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v7 = [connections objectForKey:instance];
 
-  v8 = [(CRSInCallAssertionService *)self activatedConnections];
-  [v8 addObject:v7];
+  activatedConnections = [(CRSInCallAssertionService *)self activatedConnections];
+  [activatedConnections addObject:v7];
 
-  v9 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
-  v10 = [v9 count];
-  v11 = [(CRSInCallAssertionService *)self connections];
-  v12 = [v11 count];
+  bannersAllowedConnections = [(CRSInCallAssertionService *)self bannersAllowedConnections];
+  v10 = [bannersAllowedConnections count];
+  connections2 = [(CRSInCallAssertionService *)self connections];
+  v12 = [connections2 count];
 
   v13 = CRSLogForCategory(2uLL);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -82,7 +82,7 @@ uint64_t __43__CRSInCallAssertionService_sharedInstance__block_invoke()
   v2 = [(CRSInCallAssertionService *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v4 = BSDispatchQueueCreate();
     connectionQueue = v2->_connectionQueue;
     v2->_connectionQueue = v4;
@@ -136,11 +136,11 @@ void __34__CRSInCallAssertionService__init__block_invoke(uint64_t a1, void *a2)
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)addObserver:(id)a3 notifyIfNeeded:(BOOL)a4
+- (void)addObserver:(id)observer notifyIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  neededCopy = needed;
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
     if (!observers)
@@ -152,13 +152,13 @@ void __34__CRSInCallAssertionService__init__block_invoke(uint64_t a1, void *a2)
       observers = self->_observers;
     }
 
-    [(CARObserverHashTable *)observers addObserver:v6];
+    [(CARObserverHashTable *)observers addObserver:observerCopy];
   }
 
-  if (v4)
+  if (neededCopy)
   {
-    v10 = [(CRSInCallAssertionService *)self activatedConnections];
-    v11 = [v10 count];
+    activatedConnections = [(CRSInCallAssertionService *)self activatedConnections];
+    v11 = [activatedConnections count];
 
     if (v11)
     {
@@ -169,31 +169,31 @@ void __34__CRSInCallAssertionService__init__block_invoke(uint64_t a1, void *a2)
         _os_log_impl(&dword_242FB5000, v12, OS_LOG_TYPE_INFO, "Notifying new observer of activation request!", v13, 2u);
       }
 
-      [v6 inCallAssertionServiceDidPresent:self];
+      [observerCopy inCallAssertionServiceDidPresent:self];
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(CARObserverHashTable *)self->_observers removeObserver:?];
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = CRSLogForCategory(2uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 instance];
+    instance = [connectionCopy instance];
     *buf = 138412546;
-    v17 = v6;
+    v17 = connectionCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = instance;
     _os_log_impl(&dword_242FB5000, v7, OS_LOG_TYPE_INFO, "Received connection! %@, reason: %@", buf, 0x16u);
   }
 
@@ -202,24 +202,24 @@ void __34__CRSInCallAssertionService__init__block_invoke(uint64_t a1, void *a2)
   v15[2] = __71__CRSInCallAssertionService_listener_didReceiveConnection_withContext___block_invoke;
   v15[3] = &unk_278D8E1A8;
   v15[4] = self;
-  [v6 configureConnection:v15];
+  [connectionCopy configureConnection:v15];
   v9 = CRSLogForCategory(2uLL);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = connectionCopy;
     _os_log_impl(&dword_242FB5000, v9, OS_LOG_TYPE_INFO, "Activating connection... %@", buf, 0xCu);
   }
 
-  v10 = [(CRSInCallAssertionService *)self connectionQueue];
+  connectionQueue = [(CRSInCallAssertionService *)self connectionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__CRSInCallAssertionService_listener_didReceiveConnection_withContext___block_invoke_83;
   block[3] = &unk_278D8E3D0;
   block[4] = self;
-  v14 = v6;
-  v11 = v6;
-  dispatch_async(v10, block);
+  v14 = connectionCopy;
+  v11 = connectionCopy;
+  dispatch_async(connectionQueue, block);
 
   [v11 activate];
   v12 = *MEMORY[0x277D85DE8];
@@ -261,51 +261,51 @@ void __71__CRSInCallAssertionService_listener_didReceiveConnection_withContext__
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAllowsBanners:(id)a3
+- (void)setAllowsBanners:(id)banners
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRSInCallAssertionService *)self connectionQueue];
+  bannersCopy = banners;
+  connectionQueue = [(CRSInCallAssertionService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v6 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
-  v7 = [v6 count];
-  v8 = [(CRSInCallAssertionService *)self connections];
-  v9 = [v8 count];
+  bannersAllowedConnections = [(CRSInCallAssertionService *)self bannersAllowedConnections];
+  v7 = [bannersAllowedConnections count];
+  connections = [(CRSInCallAssertionService *)self connections];
+  v9 = [connections count];
 
-  v10 = [(CRSInCallAssertionService *)self connections];
-  v11 = [MEMORY[0x277CF3280] currentContext];
-  v12 = [v11 instance];
-  v13 = [v10 objectForKey:v12];
+  connections2 = [(CRSInCallAssertionService *)self connections];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  instance = [currentContext instance];
+  v13 = [connections2 objectForKey:instance];
 
-  LODWORD(v10) = [v4 BOOLValue];
-  v14 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
-  v15 = v14;
-  if (v10)
+  LODWORD(connections2) = [bannersCopy BOOLValue];
+  bannersAllowedConnections2 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
+  v15 = bannersAllowedConnections2;
+  if (connections2)
   {
-    [v14 addObject:v13];
+    [bannersAllowedConnections2 addObject:v13];
   }
 
   else
   {
-    [v14 removeObject:v13];
+    [bannersAllowedConnections2 removeObject:v13];
   }
 
   v16 = CRSLogForCategory(2uLL);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CRSInCallAssertionService *)self connections];
-    v18 = [v17 count];
-    v19 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
+    connections3 = [(CRSInCallAssertionService *)self connections];
+    v18 = [connections3 count];
+    bannersAllowedConnections3 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
     *buf = 134217984;
-    v28 = v18 - [v19 count];
+    v28 = v18 - [bannersAllowedConnections3 count];
     _os_log_impl(&dword_242FB5000, v16, OS_LOG_TYPE_DEFAULT, "Number of assertions preventing banners: %ld", buf, 0xCu);
   }
 
-  v20 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
-  v21 = [v20 count];
-  v22 = [(CRSInCallAssertionService *)self connections];
-  v23 = [v22 count];
+  bannersAllowedConnections4 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
+  v21 = [bannersAllowedConnections4 count];
+  connections4 = [(CRSInCallAssertionService *)self connections];
+  v23 = [connections4 count];
 
   if ((v7 != v9) == (v21 == v23))
   {
@@ -327,69 +327,69 @@ void __46__CRSInCallAssertionService_setAllowsBanners___block_invoke(uint64_t a1
   [v2 inCallAssertionService:*(a1 + 32) didSetBannersEnabled:*(a1 + 40)];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRSInCallAssertionService *)self connectionQueue];
+  connectionCopy = connection;
+  connectionQueue = [(CRSInCallAssertionService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v6 = [(CRSInCallAssertionService *)self connections];
-  v7 = [v4 instance];
-  [v6 setObject:v4 forKey:v7];
+  connections = [(CRSInCallAssertionService *)self connections];
+  instance = [connectionCopy instance];
+  [connections setObject:connectionCopy forKey:instance];
 
   v8 = CRSLogForCategory(2uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(CRSInCallAssertionService *)self connections];
+    connections2 = [(CRSInCallAssertionService *)self connections];
     v11 = 134217984;
-    v12 = [v9 count];
+    v12 = [connections2 count];
     _os_log_impl(&dword_242FB5000, v8, OS_LOG_TYPE_INFO, "Connection count: %ld", &v11, 0xCu);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CRSInCallAssertionService *)self connectionQueue];
+  connectionCopy = connection;
+  connectionQueue = [(CRSInCallAssertionService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v6 = [(CRSInCallAssertionService *)self activatedConnections];
-  v7 = [v6 containsObject:v4];
+  activatedConnections = [(CRSInCallAssertionService *)self activatedConnections];
+  v7 = [activatedConnections containsObject:connectionCopy];
 
   if (v7)
   {
-    v8 = [(CRSInCallAssertionService *)self activatedConnections];
-    [v8 removeObject:v4];
+    activatedConnections2 = [(CRSInCallAssertionService *)self activatedConnections];
+    [activatedConnections2 removeObject:connectionCopy];
   }
 
-  v9 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
-  v10 = [v9 containsObject:v4];
+  bannersAllowedConnections = [(CRSInCallAssertionService *)self bannersAllowedConnections];
+  v10 = [bannersAllowedConnections containsObject:connectionCopy];
 
   if (v10)
   {
-    v11 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
-    [v11 removeObject:v4];
+    bannersAllowedConnections2 = [(CRSInCallAssertionService *)self bannersAllowedConnections];
+    [bannersAllowedConnections2 removeObject:connectionCopy];
   }
 
-  v12 = [(CRSInCallAssertionService *)self connections];
-  v13 = [v4 instance];
-  [v12 removeObjectForKey:v13];
+  connections = [(CRSInCallAssertionService *)self connections];
+  instance = [connectionCopy instance];
+  [connections removeObjectForKey:instance];
 
   v14 = CRSLogForCategory(2uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [(CRSInCallAssertionService *)self connections];
+    connections2 = [(CRSInCallAssertionService *)self connections];
     *buf = 134217984;
-    v22 = [v15 count];
+    v22 = [connections2 count];
     _os_log_impl(&dword_242FB5000, v14, OS_LOG_TYPE_INFO, "Connection count: %ld", buf, 0xCu);
   }
 
-  v16 = [(CRSInCallAssertionService *)self connections];
-  v17 = [v16 count];
+  connections3 = [(CRSInCallAssertionService *)self connections];
+  v17 = [connections3 count];
 
   if (!v17)
   {

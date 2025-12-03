@@ -3,26 +3,26 @@
 - (BOOL)_canShowLess;
 - (BOOL)_hasUnlaidOutFragments;
 - (MUExpandingLabel)init;
-- (MUExpandingLabel)initWithCoder:(id)a3;
-- (MUExpandingLabel)initWithFrame:(CGRect)a3;
+- (MUExpandingLabel)initWithCoder:(id)coder;
+- (MUExpandingLabel)initWithFrame:(CGRect)frame;
 - (NSString)showMoreText;
 - (UIColor)showLessTextColor;
 - (UIColor)showMoreTextColor;
 - (UIFont)showMoreFont;
 - (double)_bottomBaselineConstant;
 - (void)_mkExpandingLabelComonInit;
-- (void)_setExpansionMode:(unint64_t)a3;
+- (void)_setExpansionMode:(unint64_t)mode;
 - (void)_setTextExclusionPath;
 - (void)infoCardThemeChanged;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3;
-- (void)setNumberOfLinesWhenCollapsed:(unint64_t)a3;
-- (void)setShowLessFont:(id)a3;
-- (void)setShowLessText:(id)a3;
-- (void)setShowLessTextColor:(id)a3;
-- (void)setShowMoreFont:(id)a3;
-- (void)setShowMoreText:(id)a3;
-- (void)setShowMoreTextColor:(id)a3;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setNumberOfLinesWhenCollapsed:(unint64_t)collapsed;
+- (void)setShowLessFont:(id)font;
+- (void)setShowLessText:(id)text;
+- (void)setShowLessTextColor:(id)color;
+- (void)setShowMoreFont:(id)font;
+- (void)setShowMoreText:(id)text;
+- (void)setShowMoreTextColor:(id)color;
 @end
 
 @implementation MUExpandingLabel
@@ -40,27 +40,27 @@
   v3 = *(MEMORY[0x1E695F058] + 16);
   v22 = *MEMORY[0x1E695F058];
   v23 = v3;
-  v4 = [(UITextView *)self->_textView _mk_layoutFragments];
-  v5 = [v4 lastObject];
+  _mk_layoutFragments = [(UITextView *)self->_textView _mk_layoutFragments];
+  lastObject = [_mk_layoutFragments lastObject];
 
   textLayoutManager = self->_textLayoutManager;
-  v7 = [v5 rangeInElement];
+  rangeInElement = [lastObject rangeInElement];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __43__MUExpandingLabel__bottomBaselineConstant__block_invoke;
   v17[3] = &unk_1E8219048;
   v17[4] = &v18;
   v17[5] = &v24;
-  [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:v7 type:0 options:0 usingBlock:v17];
+  [(NSTextLayoutManager *)textLayoutManager enumerateTextSegmentsInRange:rangeInElement type:0 options:0 usingBlock:v17];
 
   v8 = v25[3];
-  v9 = [(MUExpandingLabel *)self traitCollection];
-  [v9 displayScale];
+  traitCollection = [(MUExpandingLabel *)self traitCollection];
+  [traitCollection displayScale];
   v11 = v10;
 
   v12 = v19[7];
-  v13 = [(UIButton *)self->_showMoreButton titleLabel];
-  [v13 _baselineOffsetFromBottom];
+  titleLabel = [(UIButton *)self->_showMoreButton titleLabel];
+  [titleLabel _baselineOffsetFromBottom];
   v15 = v14;
   if (v11 >= 1.0)
   {
@@ -86,18 +86,18 @@ uint64_t __43__MUExpandingLabel__bottomBaselineConstant__block_invoke(uint64_t a
 - (BOOL)_hasUnlaidOutFragments
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(NSTextLayoutManager *)self->_textLayoutManager _mk_lastLineSegment];
+  _mk_lastLineSegment = [(NSTextLayoutManager *)self->_textLayoutManager _mk_lastLineSegment];
   v4 = objc_alloc(MEMORY[0x1E69DB848]);
-  v5 = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
-  v6 = [v5 location];
-  v7 = [v4 initWithLocation:v6];
+  documentRange = [(NSTextLayoutManager *)self->_textLayoutManager documentRange];
+  location = [documentRange location];
+  v7 = [v4 initWithLocation:location];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(NSTextLayoutManager *)self->_textLayoutManager _mk_layoutFragments];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  _mk_layoutFragments = [(NSTextLayoutManager *)self->_textLayoutManager _mk_layoutFragments];
+  v9 = [_mk_layoutFragments countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -110,25 +110,25 @@ uint64_t __43__MUExpandingLabel__bottomBaselineConstant__block_invoke(uint64_t a
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_mk_layoutFragments);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * v12) rangeInElement];
-        v7 = [v13 textRangeByFormingUnionWithTextRange:v14];
+        rangeInElement = [*(*(&v19 + 1) + 8 * v12) rangeInElement];
+        v7 = [v13 textRangeByFormingUnionWithTextRange:rangeInElement];
 
         ++v12;
         v13 = v7;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [_mk_layoutFragments countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
   }
 
-  v15 = [v3 rangeInElement];
-  v16 = [v7 containsRange:v15];
+  rangeInElement2 = [_mk_lastLineSegment rangeInElement];
+  v16 = [v7 containsRange:rangeInElement2];
 
   v17 = *MEMORY[0x1E69E9840];
   return v16 ^ 1;
@@ -136,12 +136,12 @@ uint64_t __43__MUExpandingLabel__bottomBaselineConstant__block_invoke(uint64_t a
 
 - (BOOL)_canShowAllText
 {
-  v3 = [(NSTextLayoutManager *)self->_textLayoutManager _mk_layoutFragments];
-  v4 = [v3 count];
+  _mk_layoutFragments = [(NSTextLayoutManager *)self->_textLayoutManager _mk_layoutFragments];
+  v4 = [_mk_layoutFragments count];
   if (v4 <= [(MUExpandingLabel *)self numberOfLinesWhenCollapsed])
   {
-    v6 = [(NSTextLayoutManager *)self->_textLayoutManager _mk_truncatedRanges];
-    if ([v6 count])
+    _mk_truncatedRanges = [(NSTextLayoutManager *)self->_textLayoutManager _mk_truncatedRanges];
+    if ([_mk_truncatedRanges count])
     {
       LOBYTE(v5) = 0;
     }
@@ -162,55 +162,55 @@ uint64_t __43__MUExpandingLabel__bottomBaselineConstant__block_invoke(uint64_t a
 
 - (BOOL)_canShowLess
 {
-  v3 = [(MUExpandingLabel *)self _isShowingUserExpanded];
-  if (v3)
+  _isShowingUserExpanded = [(MUExpandingLabel *)self _isShowingUserExpanded];
+  if (_isShowingUserExpanded)
   {
 
-    LOBYTE(v3) = [(MUExpandingLabel *)self allowLessText];
+    LOBYTE(_isShowingUserExpanded) = [(MUExpandingLabel *)self allowLessText];
   }
 
-  return v3;
+  return _isShowingUserExpanded;
 }
 
-- (void)_setExpansionMode:(unint64_t)a3
+- (void)_setExpansionMode:(unint64_t)mode
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  if (self->_expansionMode == a3)
+  if (self->_expansionMode == mode)
   {
     goto LABEL_15;
   }
 
-  v5 = [(MUExpandingLabel *)self isShowingExpanded];
-  self->_expansionMode = a3;
-  v6 = [(MUExpandingLabel *)self isShowingExpanded];
-  if (v5 == v6)
+  isShowingExpanded = [(MUExpandingLabel *)self isShowingExpanded];
+  self->_expansionMode = mode;
+  isShowingExpanded2 = [(MUExpandingLabel *)self isShowingExpanded];
+  if (isShowingExpanded == isShowingExpanded2)
   {
     goto LABEL_15;
   }
 
-  v7 = v6;
-  [(UIButton *)self->_showMoreButton setHidden:v6];
+  v7 = isShowingExpanded2;
+  [(UIButton *)self->_showMoreButton setHidden:isShowingExpanded2];
   if (v7 && [(MUExpandingLabel *)self _canShowLess])
   {
     v33[0] = *MEMORY[0x1E69DB648];
-    v8 = [(MUExpandingLabel *)self showLessFont];
-    v34[0] = v8;
+    showLessFont = [(MUExpandingLabel *)self showLessFont];
+    v34[0] = showLessFont;
     v33[1] = *MEMORY[0x1E69DB650];
-    v9 = [(MUExpandingLabel *)self showLessTextColor];
-    v34[1] = v9;
+    showLessTextColor = [(MUExpandingLabel *)self showLessTextColor];
+    v34[1] = showLessTextColor;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
 
-    v11 = [(MUExpandingLabel *)self attributedText];
-    v12 = [v11 mutableCopy];
+    attributedText = [(MUExpandingLabel *)self attributedText];
+    v12 = [attributedText mutableCopy];
 
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v14 = [(MUExpandingLabel *)self _showLessTextSeparator];
-    v15 = [v13 initWithString:v14];
+    _showLessTextSeparator = [(MUExpandingLabel *)self _showLessTextSeparator];
+    v15 = [v13 initWithString:_showLessTextSeparator];
     [v12 appendAttributedString:v15];
 
     v16 = objc_alloc(MEMORY[0x1E696AD40]);
-    v17 = [(MUExpandingLabel *)self showLessText];
-    v18 = [v16 initWithString:v17 attributes:v10];
+    showLessText = [(MUExpandingLabel *)self showLessText];
+    v18 = [v16 initWithString:showLessText attributes:v10];
 
     v19 = *MEMORY[0x1E69DB670];
     v20 = objc_opt_new();
@@ -223,19 +223,19 @@ uint64_t __43__MUExpandingLabel__bottomBaselineConstant__block_invoke(uint64_t a
 
   else
   {
-    if (v5 && [(MUExpandingLabel *)self allowLessText])
+    if (isShowingExpanded && [(MUExpandingLabel *)self allowLessText])
     {
-      v21 = [(MUExpandingLabel *)self attributedText];
-      v22 = [v21 mutableCopy];
+      attributedText2 = [(MUExpandingLabel *)self attributedText];
+      v22 = [attributedText2 mutableCopy];
 
-      v23 = [(MUExpandingLabel *)self _showLessTextSeparator];
-      v24 = [v23 length];
-      v25 = [(MUExpandingLabel *)self showLessText];
-      v26 = [v25 length] + v24;
+      _showLessTextSeparator2 = [(MUExpandingLabel *)self _showLessTextSeparator];
+      v24 = [_showLessTextSeparator2 length];
+      showLessText2 = [(MUExpandingLabel *)self showLessText];
+      v26 = [showLessText2 length] + v24;
 
-      v27 = [(MUExpandingLabel *)self attributedText];
-      v28 = [v27 string];
-      v29 = [v28 length] - v26;
+      attributedText3 = [(MUExpandingLabel *)self attributedText];
+      string = [attributedText3 string];
+      v29 = [string length] - v26;
 
       [v22 deleteCharactersInRange:{v29, v26}];
       [(MUExpandingLabel *)self setAttributedText:v22];
@@ -265,9 +265,9 @@ LABEL_15:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (a3)
+  if (expanded)
   {
     v3 = 2;
   }
@@ -290,8 +290,8 @@ LABEL_15:
 
   else
   {
-    v3 = [(UIButton *)self->_showMoreButton titleLabel];
-    [v3 frame];
+    titleLabel = [(UIButton *)self->_showMoreButton titleLabel];
+    [titleLabel frame];
     [(MUExpandingLabel *)self convertRect:self->_showMoreButton fromView:?];
     v5 = v4;
     v7 = v6;
@@ -311,8 +311,8 @@ LABEL_15:
     [(NSTextContainer *)self->_textContainer setExclusionPaths:v14];
   }
 
-  v15 = [(NSTextLayoutManager *)self->_textLayoutManager textViewportLayoutController];
-  [v15 setNeedsLayout];
+  textViewportLayoutController = [(NSTextLayoutManager *)self->_textLayoutManager textViewportLayoutController];
+  [textViewportLayoutController setNeedsLayout];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -341,17 +341,17 @@ LABEL_15:
   }
 }
 
-- (void)setShowLessFont:(id)a3
+- (void)setShowLessFont:(id)font
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  fontCopy = font;
+  v7 = fontCopy;
+  if (!fontCopy)
   {
-    v3 = [MEMORY[0x1E696F200] sharedManager];
-    v5 = [v3 subtitleFont];
+    mEMORY[0x1E696F200] = [MEMORY[0x1E696F200] sharedManager];
+    fontCopy = [mEMORY[0x1E696F200] subtitleFont];
   }
 
-  objc_storeStrong(&self->_showLessFont, v5);
+  objc_storeStrong(&self->_showLessFont, fontCopy);
   v6 = v7;
   if (!v7)
   {
@@ -360,16 +360,16 @@ LABEL_15:
   }
 }
 
-- (void)setShowLessText:(id)a3
+- (void)setShowLessText:(id)text
 {
-  v4 = a3;
-  v6 = v4;
-  if (!v4)
+  textCopy = text;
+  v6 = textCopy;
+  if (!textCopy)
   {
-    v4 = _MULocalizedStringFromThisBundle(@"Less [Expanding Label]");
+    textCopy = _MULocalizedStringFromThisBundle(@"Less [Expanding Label]");
   }
 
-  objc_storeStrong(&self->_showLessText, v4);
+  objc_storeStrong(&self->_showLessText, textCopy);
   v5 = v6;
   if (!v6)
   {
@@ -383,26 +383,26 @@ LABEL_15:
   showLessTextColor = self->_showLessTextColor;
   if (showLessTextColor)
   {
-    v3 = showLessTextColor;
+    lightTextColor = showLessTextColor;
   }
 
   else
   {
-    v4 = [(MUExpandingLabel *)self mk_theme];
-    v3 = [v4 lightTextColor];
+    mk_theme = [(MUExpandingLabel *)self mk_theme];
+    lightTextColor = [mk_theme lightTextColor];
   }
 
-  return v3;
+  return lightTextColor;
 }
 
-- (void)setShowLessTextColor:(id)a3
+- (void)setShowLessTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_showLessTextColor != v5)
+  colorCopy = color;
+  if (self->_showLessTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_showLessTextColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_showLessTextColor, color);
+    colorCopy = v6;
   }
 }
 
@@ -411,26 +411,26 @@ LABEL_15:
   showMoreTextColor = self->_showMoreTextColor;
   if (showMoreTextColor)
   {
-    v3 = showMoreTextColor;
+    labelColor = showMoreTextColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return labelColor;
 }
 
-- (void)setShowMoreTextColor:(id)a3
+- (void)setShowMoreTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_showMoreTextColor != v5)
+  colorCopy = color;
+  if (self->_showMoreTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_showMoreTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_showMoreTextColor, color);
     [(UIButton *)self->_showMoreButton setNeedsUpdateConfiguration];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -439,28 +439,28 @@ LABEL_15:
   showMoreFont = self->_showMoreFont;
   if (showMoreFont)
   {
-    v3 = showMoreFont;
+    subtitleFont = showMoreFont;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696F200] sharedManager];
-    v3 = [v4 subtitleFont];
+    mEMORY[0x1E696F200] = [MEMORY[0x1E696F200] sharedManager];
+    subtitleFont = [mEMORY[0x1E696F200] subtitleFont];
   }
 
-  return v3;
+  return subtitleFont;
 }
 
-- (void)setShowMoreFont:(id)a3
+- (void)setShowMoreFont:(id)font
 {
-  v5 = a3;
-  if (self->_showMoreFont != v5)
+  fontCopy = font;
+  if (self->_showMoreFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_showMoreFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_showMoreFont, font);
     [(UIButton *)self->_showMoreButton setNeedsUpdateConfiguration];
     [(MUExpandingLabel *)self setNeedsLayout];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
@@ -480,29 +480,29 @@ LABEL_15:
   return v3;
 }
 
-- (void)setShowMoreText:(id)a3
+- (void)setShowMoreText:(id)text
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_showMoreText != v5 || ![(NSString *)v5 isEqualToString:?])
+  textCopy = text;
+  v6 = textCopy;
+  if (self->_showMoreText != textCopy || ![(NSString *)textCopy isEqualToString:?])
   {
-    objc_storeStrong(&self->_showMoreText, a3);
+    objc_storeStrong(&self->_showMoreText, text);
     [(UIButton *)self->_showMoreButton setNeedsUpdateConfiguration];
     [(MUExpandingLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setNumberOfLinesWhenCollapsed:(unint64_t)a3
+- (void)setNumberOfLinesWhenCollapsed:(unint64_t)collapsed
 {
-  if (self->_numberOfLinesWhenCollapsed != a3)
+  if (self->_numberOfLinesWhenCollapsed != collapsed)
   {
-    v4 = 10;
-    if (a3)
+    collapsedCopy = 10;
+    if (collapsed)
     {
-      v4 = a3;
+      collapsedCopy = collapsed;
     }
 
-    self->_numberOfLinesWhenCollapsed = v4;
+    self->_numberOfLinesWhenCollapsed = collapsedCopy;
     if ([(MUExpandingLabel *)self isShowingExpanded])
     {
       numberOfLinesWhenCollapsed = 0;
@@ -530,11 +530,11 @@ LABEL_15:
   }
 }
 
-- (MUExpandingLabel)initWithFrame:(CGRect)a3
+- (MUExpandingLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUExpandingLabel;
-  v3 = [(MUExpandingLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUExpandingLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -544,11 +544,11 @@ LABEL_15:
   return v4;
 }
 
-- (MUExpandingLabel)initWithCoder:(id)a3
+- (MUExpandingLabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MUExpandingLabel;
-  v3 = [(MUExpandingLabel *)&v6 initWithCoder:a3];
+  v3 = [(MUExpandingLabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -609,14 +609,14 @@ LABEL_15:
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITextView *)self->_textView setEditable:0];
   [(UITextView *)self->_textView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITextView *)self->_textView setBackgroundColor:v17];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UITextView *)self->_textView setBackgroundColor:clearColor];
 
   [(UITextView *)self->_textView setShowsVerticalScrollIndicator:0];
   [(UITextView *)self->_textView setShowsHorizontalScrollIndicator:0];
-  v18 = [MEMORY[0x1E696F200] sharedManager];
-  v19 = [v18 subtitleFont];
-  [(UITextView *)self->_textView setFont:v19];
+  mEMORY[0x1E696F200] = [MEMORY[0x1E696F200] sharedManager];
+  subtitleFont = [mEMORY[0x1E696F200] subtitleFont];
+  [(UITextView *)self->_textView setFont:subtitleFont];
 
   [(UITextView *)self->_textView setTextAlignment:4];
   [(UITextView *)self->_textView setDelegate:self];
@@ -637,8 +637,8 @@ LABEL_15:
   [(UIButton *)self->_showMoreButton setConfigurationUpdateHandler:&v36];
   [(UIButton *)self->_showMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_showMoreButton setAccessibilityIdentifier:@"ExpandingLabelMoreButton"];
-  v22 = [(UIButton *)self->_showMoreButton titleLabel];
-  [v22 setAdjustsFontForContentSizeCategory:1];
+  titleLabel = [(UIButton *)self->_showMoreButton titleLabel];
+  [titleLabel setAdjustsFontForContentSizeCategory:1];
 
   [(MUExpandingLabel *)self setShowMoreText:0];
   [(MUExpandingLabel *)self setShowMoreFont:0];
@@ -654,19 +654,19 @@ LABEL_15:
   v26 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-0-[_textView]-0-|" options:0 metrics:0 views:v24];
   [v23 addObjectsFromArray:v26];
 
-  v27 = [(UIButton *)self->_showMoreButton titleLabel];
-  v28 = [v27 bottomAnchor];
-  v29 = [(UITextView *)self->_textView bottomAnchor];
+  titleLabel2 = [(UIButton *)self->_showMoreButton titleLabel];
+  bottomAnchor = [titleLabel2 bottomAnchor];
+  bottomAnchor2 = [(UITextView *)self->_textView bottomAnchor];
   [(MUExpandingLabel *)self _bottomBaselineConstant];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:?];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:?];
   showMoreBottomConstraint = self->_showMoreBottomConstraint;
   self->_showMoreBottomConstraint = v30;
 
   [v23 addObject:self->_showMoreBottomConstraint];
-  v32 = [(UIButton *)self->_showMoreButton titleLabel];
-  v33 = [v32 trailingAnchor];
-  v34 = [(MUExpandingLabel *)self trailingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  titleLabel3 = [(UIButton *)self->_showMoreButton titleLabel];
+  trailingAnchor = [titleLabel3 trailingAnchor];
+  trailingAnchor2 = [(MUExpandingLabel *)self trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v23 addObject:v35];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v23];

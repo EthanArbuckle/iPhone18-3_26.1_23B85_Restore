@@ -1,40 +1,40 @@
 @interface BYODGetDomainResult
 - (BOOL)hasEmails;
-- (BOOL)hasEmailsForDsid:(id)a3;
+- (BOOL)hasEmailsForDsid:(id)dsid;
 - (BOOL)hasUnverifiedEmail;
 - (BOOL)isDNSVerfied;
 - (BOOL)isDomainInProgress;
-- (BOOL)isOwner:(id)a3;
-- (BYODGetDomainResult)initWithDictionary:(id)a3;
+- (BOOL)isOwner:(id)owner;
+- (BYODGetDomainResult)initWithDictionary:(id)dictionary;
 - (NSString)ef_publicDescription;
 - (id)getDomainOwnerMember;
-- (id)getMemberFromDSID:(id)a3;
-- (id)getMemberFromIdentifier:(id)a3;
+- (id)getMemberFromDSID:(id)d;
+- (id)getMemberFromIdentifier:(id)identifier;
 @end
 
 @implementation BYODGetDomainResult
 
-- (BYODGetDomainResult)initWithDictionary:(id)a3
+- (BYODGetDomainResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = BYODGetDomainResult;
   v5 = [(BYODGetDomainResult *)&v27 init];
   if (v5)
   {
     v6 = [BYODDomain alloc];
-    v7 = [v4 objectForKeyedSubscript:@"domain"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
     v8 = [(BYODDomain *)v6 initWithDictionary:v7];
     domain = v5->_domain;
     v5->_domain = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"maxEmailsPerUser"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"maxEmailsPerUser"];
     v5->_maxEmailsPerUser = [v10 integerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"maxMembersPerDomain"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"maxMembersPerDomain"];
     v5->_maxMembersPerDomain = [v11 integerValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"members"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"members"];
     v13 = objc_alloc_init(NSMutableArray);
     v25 = 0u;
     v26 = 0u;
@@ -102,8 +102,8 @@
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v6 = [v5 emails];
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        emails = [v5 emails];
+        v7 = [emails countByEnumeratingWithState:&v15 objects:v23 count:16];
         if (v7)
         {
           v8 = *v16;
@@ -113,11 +113,11 @@
             {
               if (*v16 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(emails);
               }
 
-              v10 = [*(*(&v15 + 1) + 8 * j) status];
-              v11 = [v10 isEqualToString:@"PENDING"];
+              status = [*(*(&v15 + 1) + 8 * j) status];
+              v11 = [status isEqualToString:@"PENDING"];
 
               if (v11)
               {
@@ -127,7 +127,7 @@
               }
             }
 
-            v7 = [v6 countByEnumeratingWithState:&v15 objects:v23 count:16];
+            v7 = [emails countByEnumeratingWithState:&v15 objects:v23 count:16];
             if (v7)
             {
               continue;
@@ -175,8 +175,8 @@ LABEL_19:
           objc_enumerationMutation(v2);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) emails];
-        v7 = [v6 count] == 0;
+        emails = [*(*(&v9 + 1) + 8 * i) emails];
+        v7 = [emails count] == 0;
 
         if (!v7)
         {
@@ -200,9 +200,9 @@ LABEL_11:
   return v3;
 }
 
-- (id)getMemberFromDSID:(id)a3
+- (id)getMemberFromDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -222,8 +222,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 dsid];
-        v11 = [v4 isEqualToString:v10];
+        dsid = [v9 dsid];
+        v11 = [dCopy isEqualToString:dsid];
 
         if (v11)
         {
@@ -268,11 +268,11 @@ LABEL_11:
         }
 
         v6 = *(*(&v15 + 1) + 8 * i);
-        v7 = [(BYODGetDomainResult *)self domain];
-        v8 = [v7 owner];
-        v9 = [v8 dsid];
-        v10 = [v6 dsid];
-        v11 = [v9 isEqualToString:v10];
+        domain = [(BYODGetDomainResult *)self domain];
+        owner = [domain owner];
+        dsid = [owner dsid];
+        dsid2 = [v6 dsid];
+        v11 = [dsid isEqualToString:dsid2];
 
         if (v11)
         {
@@ -297,9 +297,9 @@ LABEL_11:
   return v12;
 }
 
-- (id)getMemberFromIdentifier:(id)a3
+- (id)getMemberFromIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -319,8 +319,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 memberIdentifier];
-        v11 = [v4 isEqualToString:v10];
+        memberIdentifier = [v9 memberIdentifier];
+        v11 = [identifierCopy isEqualToString:memberIdentifier];
 
         if (v11)
         {
@@ -344,31 +344,31 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isOwner:(id)a3
+- (BOOL)isOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(BYODDomain *)self->_domain owner];
-  v6 = [v5 dsid];
-  v7 = [v4 isEqualToString:v6];
+  ownerCopy = owner;
+  owner = [(BYODDomain *)self->_domain owner];
+  dsid = [owner dsid];
+  v7 = [ownerCopy isEqualToString:dsid];
 
   return v7;
 }
 
 - (BOOL)isDNSVerfied
 {
-  v2 = [(BYODDomain *)self->_domain status];
-  v3 = [v2 isEqualToString:@"COMPLETE"];
+  status = [(BYODDomain *)self->_domain status];
+  v3 = [status isEqualToString:@"COMPLETE"];
 
   return v3;
 }
 
 - (BOOL)isDomainInProgress
 {
-  v3 = [(BYODDomain *)self->_domain verificationStatus];
-  if ([v3 isEqualToString:@"NOT_STARTED"])
+  verificationStatus = [(BYODDomain *)self->_domain verificationStatus];
+  if ([verificationStatus isEqualToString:@"NOT_STARTED"])
   {
-    v4 = [(BYODDomain *)self->_domain status];
-    v5 = [v4 isEqualToString:@"IN_PROGRESS"];
+    status = [(BYODDomain *)self->_domain status];
+    v5 = [status isEqualToString:@"IN_PROGRESS"];
 
     v6 = v5 ^ 1;
   }
@@ -381,21 +381,21 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasEmailsForDsid:(id)a3
+- (BOOL)hasEmailsForDsid:(id)dsid
 {
-  v3 = [(BYODGetDomainResult *)self getMemberFromDSID:a3];
-  v4 = [v3 emails];
-  v5 = [v4 count] != 0;
+  v3 = [(BYODGetDomainResult *)self getMemberFromDSID:dsid];
+  emails = [v3 emails];
+  v5 = [emails count] != 0;
 
   return v5;
 }
 
 - (NSString)ef_publicDescription
 {
-  v3 = [(BYODGetDomainResult *)self isDNSVerfied];
-  v4 = [(BYODGetDomainResult *)self hasEmails];
-  v5 = [(BYODDomain *)self->_domain ef_publicDescription];
-  v6 = [NSString stringWithFormat:@"GetDomainResult: isDNSVerified %d, hasEmails %d, domain: %@ ", v3, v4, v5];
+  isDNSVerfied = [(BYODGetDomainResult *)self isDNSVerfied];
+  hasEmails = [(BYODGetDomainResult *)self hasEmails];
+  ef_publicDescription = [(BYODDomain *)self->_domain ef_publicDescription];
+  v6 = [NSString stringWithFormat:@"GetDomainResult: isDNSVerified %d, hasEmails %d, domain: %@ ", isDNSVerfied, hasEmails, ef_publicDescription];
 
   return v6;
 }

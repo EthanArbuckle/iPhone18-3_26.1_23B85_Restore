@@ -33,22 +33,22 @@
   v11.receiver = self;
   v11.super_class = TSTravelEducationExistingPlanViewController;
   [(TSOBWelcomeController *)&v11 viewDidLoad];
-  v3 = [MEMORY[0x277D37618] boldButton];
-  [v3 addTarget:self action:sel__doneButtonTapped forControlEvents:64];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton addTarget:self action:sel__doneButtonTapped forControlEvents:64];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
-  [v3 setTitle:v5 forState:0];
+  [boldButton setTitle:v5 forState:0];
 
-  v6 = [(TSTravelEducationExistingPlanViewController *)self buttonTray];
-  [v6 addButton:v3];
+  buttonTray = [(TSTravelEducationExistingPlanViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
   v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
-  v8 = [(OBBaseWelcomeController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 
-  v9 = [(TSTravelEducationExistingPlanViewController *)self navigationController];
-  v10 = [v9 navigationItem];
-  [v10 setHidesBackButton:0];
+  navigationController = [(TSTravelEducationExistingPlanViewController *)self navigationController];
+  navigationItem2 = [navigationController navigationItem];
+  [navigationItem2 setHidesBackButton:0];
 }
 
 - (void)_cancelButtonTapped

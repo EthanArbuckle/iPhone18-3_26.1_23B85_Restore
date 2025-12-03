@@ -13,13 +13,13 @@
 - (objc_class)wf_objectClass
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_282F9B388;
   v2 = objc_msgSendSuper2(&v14, sel_wf_objectClass);
   v3 = NSStringFromClass(v2);
   v15[0] = v3;
-  v4 = [a1 identifier];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"." withString:@"_"];
+  identifier = [self identifier];
+  v5 = [identifier stringByReplacingOccurrencesOfString:@"." withString:@"_"];
   v15[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
 
@@ -57,18 +57,18 @@
 + (id)wf_personNameComponentsObjectClass
 {
   v1 = MEMORY[0x277D237B0];
-  v2 = [a1 wf_personNameComponentsIdentifier];
-  v3 = [v1 codableValueTypeWithIdentifier:v2];
-  v4 = [v3 wf_objectClass];
+  wf_personNameComponentsIdentifier = [self wf_personNameComponentsIdentifier];
+  v3 = [v1 codableValueTypeWithIdentifier:wf_personNameComponentsIdentifier];
+  wf_objectClass = [v3 wf_objectClass];
 
-  return v4;
+  return wf_objectClass;
 }
 
 + (id)wf_personNameComponentsEntityIdentifier
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 wf_personNameComponentsIdentifier];
-  v3 = [v1 stringWithFormat:@"%@Entity", v2];
+  wf_personNameComponentsIdentifier = [self wf_personNameComponentsIdentifier];
+  v3 = [v1 stringWithFormat:@"%@Entity", wf_personNameComponentsIdentifier];
 
   return v3;
 }
@@ -76,18 +76,18 @@
 + (id)wf_durationObjectClass
 {
   v1 = MEMORY[0x277D237B0];
-  v2 = [a1 wf_durationIdentifier];
-  v3 = [v1 codableValueTypeWithIdentifier:v2];
-  v4 = [v3 wf_objectClass];
+  wf_durationIdentifier = [self wf_durationIdentifier];
+  v3 = [v1 codableValueTypeWithIdentifier:wf_durationIdentifier];
+  wf_objectClass = [v3 wf_objectClass];
 
-  return v4;
+  return wf_objectClass;
 }
 
 + (id)wf_durationEntityIdentifier
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 wf_durationIdentifier];
-  v3 = [v1 stringWithFormat:@"%@Entity", v2];
+  wf_durationIdentifier = [self wf_durationIdentifier];
+  v3 = [v1 stringWithFormat:@"%@Entity", wf_durationIdentifier];
 
   return v3;
 }
@@ -95,18 +95,18 @@
 + (id)wf_dateIntervalObjectClass
 {
   v1 = MEMORY[0x277D237B0];
-  v2 = [a1 wf_dateIntervalIdentifier];
-  v3 = [v1 codableValueTypeWithIdentifier:v2];
-  v4 = [v3 wf_objectClass];
+  wf_dateIntervalIdentifier = [self wf_dateIntervalIdentifier];
+  v3 = [v1 codableValueTypeWithIdentifier:wf_dateIntervalIdentifier];
+  wf_objectClass = [v3 wf_objectClass];
 
-  return v4;
+  return wf_objectClass;
 }
 
 + (id)wf_dateIntervalEntityIdentifier
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 wf_dateIntervalIdentifier];
-  v3 = [v1 stringWithFormat:@"%@Entity", v2];
+  wf_dateIntervalIdentifier = [self wf_dateIntervalIdentifier];
+  v3 = [v1 stringWithFormat:@"%@Entity", wf_dateIntervalIdentifier];
 
   return v3;
 }

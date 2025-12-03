@@ -1,13 +1,13 @@
 @interface SFUZipFreeSpaceEntry
-- (int64_t)compareByOffset:(id)a3;
+- (int64_t)compareByOffset:(id)offset;
 @end
 
 @implementation SFUZipFreeSpaceEntry
 
-- (int64_t)compareByOffset:(id)a3
+- (int64_t)compareByOffset:(id)offset
 {
   offset = self->offset;
-  v4 = *(a3 + 1);
+  v4 = *(offset + 1);
   v5 = offset >= v4;
   v6 = offset > v4;
   if (v5)

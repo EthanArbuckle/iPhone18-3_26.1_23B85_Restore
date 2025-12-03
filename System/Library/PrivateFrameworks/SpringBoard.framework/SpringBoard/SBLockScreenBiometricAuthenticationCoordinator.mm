@@ -1,42 +1,42 @@
 @interface SBLockScreenBiometricAuthenticationCoordinator
 - (BOOL)_isWalletPreArmAllowed;
-- (BOOL)_stateWantsMatching:(unint64_t)a3 outMatchMode:(unint64_t *)a4;
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsFeedback:(id)a4;
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsUnlock:(id)a4 withFeedback:(id)a5;
+- (BOOL)_stateWantsMatching:(unint64_t)matching outMatchMode:(unint64_t *)mode;
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsFeedback:(id)feedback;
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsUnlock:(id)unlock withFeedback:(id)feedback;
 - (BOOL)isUnlockingDisabled;
-- (SBLockScreenBiometricAuthenticationCoordinator)initWithBiometricResource:(id)a3 walletPreArmController:(id)a4;
+- (SBLockScreenBiometricAuthenticationCoordinator)initWithBiometricResource:(id)resource walletPreArmController:(id)controller;
 - (SBLockScreenBiometricAuthenticationCoordinatorDelegate)delegate;
-- (id)acquireDisableAutoUnlockAssertionForReason:(id)a3;
-- (id)acquireDisableCoordinatorAssertionForReason:(id)a3;
-- (id)acquireDisableUnlockAssertionForReason:(id)a3;
-- (id)acquireMatchingAssertionWithMode:(unint64_t)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)acquireDisableAutoUnlockAssertionForReason:(id)reason;
+- (id)acquireDisableCoordinatorAssertionForReason:(id)reason;
+- (id)acquireDisableUnlockAssertionForReason:(id)reason;
+- (id)acquireMatchingAssertionWithMode:(unint64_t)mode reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_addPasscodeMatchingAssertion:(id)a3;
+- (void)_addPasscodeMatchingAssertion:(id)assertion;
 - (void)_clearFingerDetectAssertion;
 - (void)_clearPendingUnlockRequest;
 - (void)_createFingerDetectAssertion;
-- (void)_handleIdentityMatchSuccess:(BOOL)a3;
-- (void)_handlePassKitDismissalIfNecessaryWithReason:(id)a3;
+- (void)_handleIdentityMatchSuccess:(BOOL)success;
+- (void)_handlePassKitDismissalIfNecessaryWithReason:(id)reason;
 - (void)_invalidateWalletPreArmRecognizer;
 - (void)_noteMenuButtonDoublePress;
 - (void)_noteMenuButtonSinglePress;
-- (void)_pendUnlockRequest:(id)a3;
-- (void)_removePasscodeMatchingAssertion:(id)a3;
-- (void)_resetStateForReason:(id)a3;
-- (void)_setPassLibrary:(id)a3;
-- (void)_setState:(unint64_t)a3 forReason:(id)a4;
-- (void)_setupPreArmRecognizerIfPossibleForReason:(id)a3;
-- (void)_stateChangedFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (void)_toggleAutoUnlockBehaviorEnabled:(BOOL)a3;
-- (void)_updateMatchingForState:(unint64_t)a3 forReason:(id)a4;
-- (void)_walletPreArmDisabledDidChange:(id)a3;
-- (void)biometricResource:(id)a3 matchingAllowedDidChange:(BOOL)a4;
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)walletPrearmRecognizer:(id)a3 didFailToRecognizeForReason:(unint64_t)a4;
-- (void)walletPrearmRecognizerDidRecognize:(id)a3;
+- (void)_pendUnlockRequest:(id)request;
+- (void)_removePasscodeMatchingAssertion:(id)assertion;
+- (void)_resetStateForReason:(id)reason;
+- (void)_setPassLibrary:(id)library;
+- (void)_setState:(unint64_t)state forReason:(id)reason;
+- (void)_setupPreArmRecognizerIfPossibleForReason:(id)reason;
+- (void)_stateChangedFrom:(unint64_t)from to:(unint64_t)to;
+- (void)_toggleAutoUnlockBehaviorEnabled:(BOOL)enabled;
+- (void)_updateMatchingForState:(unint64_t)state forReason:(id)reason;
+- (void)_walletPreArmDisabledDidChange:(id)change;
+- (void)biometricResource:(id)resource matchingAllowedDidChange:(BOOL)change;
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)walletPrearmRecognizer:(id)recognizer didFailToRecognizeForReason:(unint64_t)reason;
+- (void)walletPrearmRecognizerDidRecognize:(id)recognize;
 @end
 
 @implementation SBLockScreenBiometricAuthenticationCoordinator
@@ -69,16 +69,16 @@
 
 - (BOOL)_isWalletPreArmAllowed
 {
-  v3 = [(SBWalletPreArmController *)self->_walletPreArmController isPreArmSuppressed];
-  v4 = [(SBWalletPreArmController *)self->_walletPreArmController isPreArmTriggeredByHomeButtonDoublePress];
-  return [(SBWalletPreArmController *)self->_walletPreArmController isPreArmAvailable]&& v4 && !v3;
+  isPreArmSuppressed = [(SBWalletPreArmController *)self->_walletPreArmController isPreArmSuppressed];
+  isPreArmTriggeredByHomeButtonDoublePress = [(SBWalletPreArmController *)self->_walletPreArmController isPreArmTriggeredByHomeButtonDoublePress];
+  return [(SBWalletPreArmController *)self->_walletPreArmController isPreArmAvailable]&& isPreArmTriggeredByHomeButtonDoublePress && !isPreArmSuppressed;
 }
 
-- (SBLockScreenBiometricAuthenticationCoordinator)initWithBiometricResource:(id)a3 walletPreArmController:(id)a4
+- (SBLockScreenBiometricAuthenticationCoordinator)initWithBiometricResource:(id)resource walletPreArmController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  resourceCopy = resource;
+  controllerCopy = controller;
+  if (!resourceCopy)
   {
     [SBLockScreenBiometricAuthenticationCoordinator initWithBiometricResource:walletPreArmController:];
   }
@@ -90,22 +90,22 @@
   if (v9)
   {
     v9->_state = 0;
-    objc_storeStrong(&v9->_walletPreArmController, a4);
+    objc_storeStrong(&v9->_walletPreArmController, controller);
     v11 = objc_alloc_init(MEMORY[0x277CBEB40]);
     activePasscodeMatchAssertions = v10->_activePasscodeMatchAssertions;
     v10->_activePasscodeMatchAssertions = v11;
 
-    v13 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     disabledUnlockAssertions = v10->_disabledUnlockAssertions;
-    v10->_disabledUnlockAssertions = v13;
+    v10->_disabledUnlockAssertions = weakObjectsHashTable;
 
-    v15 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     disabledAutoUnlockAssertions = v10->_disabledAutoUnlockAssertions;
-    v10->_disabledAutoUnlockAssertions = v15;
+    v10->_disabledAutoUnlockAssertions = weakObjectsHashTable2;
 
-    v17 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     disabledAssertions = v10->_disabledAssertions;
-    v10->_disabledAssertions = v17;
+    v10->_disabledAssertions = weakObjectsHashTable3;
 
     v19 = objc_alloc_init(MEMORY[0x277D37FC0]);
     [(SBLockScreenBiometricAuthenticationCoordinator *)v10 _setPassLibrary:v19];
@@ -113,25 +113,25 @@
     v20 = objc_alloc_init(MEMORY[0x277D2C8A8]);
     [(SBLockScreenBiometricAuthenticationCoordinator *)v10 _setWalletPresentation:v20];
 
-    objc_storeStrong(&v10->_biometricResource, a3);
+    objc_storeStrong(&v10->_biometricResource, resource);
     biometricResource = v10->_biometricResource;
     v22 = objc_alloc_init(MEMORY[0x277D65E30]);
     [(SBUIBiometricResource *)biometricResource setUnlockCredentialSet:v22];
 
     [(SBUIBiometricResource *)v10->_biometricResource addObserver:v10];
     v23 = +[SBBiometricEventLogger sharedInstance];
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v10 selector:sel__walletPreArmDisabledDidChange_ name:@"SBWalletPreArmControllerPreArmSuppressionDidChange" object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__walletPreArmDisabledDidChange_ name:@"SBWalletPreArmControllerPreArmSuppressionDidChange" object:controllerCopy];
   }
 
   return v10;
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  if (self->_isAuthenticated != a3)
+  if (self->_isAuthenticated != authenticated)
   {
-    self->_isAuthenticated = a3;
+    self->_isAuthenticated = authenticated;
     [(SBUIBiometricResource *)self->_biometricResource _setAuthenticated:?];
     state = self->_state;
     v6 = MEMORY[0x277CCACA8];
@@ -141,10 +141,10 @@
   }
 }
 
-- (id)acquireDisableCoordinatorAssertionForReason:(id)a3
+- (id)acquireDisableCoordinatorAssertionForReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CF0CE8]);
   v6 = MEMORY[0x277D85CD0];
@@ -153,7 +153,7 @@
   v14 = __94__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableCoordinatorAssertionForReason___block_invoke;
   v15 = &unk_2783AEA48;
   objc_copyWeak(&v17, &location);
-  v7 = v4;
+  v7 = reasonCopy;
   v16 = v7;
   v8 = [v5 initWithIdentifier:@"DisableCoordinator" forReason:v7 queue:MEMORY[0x277D85CD0] invalidationBlock:&v12];
 
@@ -203,10 +203,10 @@ void __94__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableCoordina
   }
 }
 
-- (id)acquireDisableUnlockAssertionForReason:(id)a3
+- (id)acquireDisableUnlockAssertionForReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CF0CE8]);
   v6 = MEMORY[0x277D85CD0];
@@ -215,7 +215,7 @@ void __94__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableCoordina
   v14 = __89__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableUnlockAssertionForReason___block_invoke;
   v15 = &unk_2783AEA48;
   objc_copyWeak(&v17, &location);
-  v7 = v4;
+  v7 = reasonCopy;
   v16 = v7;
   v8 = [v5 initWithIdentifier:@"DisableUnlockAssertion" forReason:v7 queue:MEMORY[0x277D85CD0] invalidationBlock:&v12];
 
@@ -265,10 +265,10 @@ void __89__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableUnlockAs
   }
 }
 
-- (id)acquireDisableAutoUnlockAssertionForReason:(id)a3
+- (id)acquireDisableAutoUnlockAssertionForReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CF0CE8]);
   v6 = MEMORY[0x277D85CD0];
@@ -277,7 +277,7 @@ void __89__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableUnlockAs
   v14 = __93__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableAutoUnlockAssertionForReason___block_invoke;
   v15 = &unk_2783AEA48;
   objc_copyWeak(&v17, &location);
-  v7 = v4;
+  v7 = reasonCopy;
   v16 = v7;
   v8 = [v5 initWithIdentifier:@"DisableAutoUnlockAssertion" forReason:v7 queue:MEMORY[0x277D85CD0] invalidationBlock:&v12];
 
@@ -340,31 +340,31 @@ void __93__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableAutoUnlo
   [(SBWalletPrearmRecognizer *)self->_walletPrearmRecognizer menuButtonSinglePress];
 }
 
-- (void)_setPassLibrary:(id)a3
+- (void)_setPassLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   passLibrary = self->_passLibrary;
-  if (passLibrary != v5)
+  if (passLibrary != libraryCopy)
   {
-    v7 = v5;
+    v7 = libraryCopy;
     [(PKPassLibrary *)passLibrary removeDelegate:self];
-    objc_storeStrong(&self->_passLibrary, a3);
+    objc_storeStrong(&self->_passLibrary, library);
     [(PKPassLibrary *)self->_passLibrary addDelegate:self];
-    v5 = v7;
+    libraryCopy = v7;
   }
 }
 
-- (void)_resetStateForReason:(id)a3
+- (void)_resetStateForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Reset because %@", v4];
-  v6 = [(SBLockScreenBiometricAuthenticationCoordinator *)self isUnlockingDisabled];
+  reasonCopy = reason;
+  reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Reset because %@", reasonCopy];
+  isUnlockingDisabled = [(SBLockScreenBiometricAuthenticationCoordinator *)self isUnlockingDisabled];
   if (![(SBLockScreenBiometricAuthenticationCoordinator *)self isEnabled])
   {
     goto LABEL_11;
   }
 
-  if (!v6 && [(SBLockScreenBiometricAuthenticationCoordinator *)self _hasActivePasscodeViews])
+  if (!isUnlockingDisabled && [(SBLockScreenBiometricAuthenticationCoordinator *)self _hasActivePasscodeViews])
   {
     v7 = 4;
     goto LABEL_12;
@@ -378,7 +378,7 @@ void __93__SBLockScreenBiometricAuthenticationCoordinator_acquireDisableAutoUnlo
 
   if ([(SBUIBiometricResource *)self->_biometricResource hasEnrolledIdentities])
   {
-    if (v6 || [(SBLockScreenBiometricAuthenticationCoordinator *)self isAutoUnlockingDisabled])
+    if (isUnlockingDisabled || [(SBLockScreenBiometricAuthenticationCoordinator *)self isAutoUnlockingDisabled])
     {
       v7 = 1;
     }
@@ -396,37 +396,37 @@ LABEL_11:
   }
 
 LABEL_12:
-  [(SBLockScreenBiometricAuthenticationCoordinator *)self _setState:v7 forReason:v5];
+  [(SBLockScreenBiometricAuthenticationCoordinator *)self _setState:v7 forReason:reasonCopy];
   if (self->_state != v7)
   {
     v8 = SBLogLockScreenBiometricCoordinator();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(SBLockScreenBiometricAuthenticationCoordinator *)v4 _resetStateForReason:v8];
+      [(SBLockScreenBiometricAuthenticationCoordinator *)reasonCopy _resetStateForReason:v8];
     }
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBLockScreenBiometricAuthenticationCoordinator *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLockScreenBiometricAuthenticationCoordinator *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLockScreenBiometricAuthenticationCoordinator *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLockScreenBiometricAuthenticationCoordinator *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBLockScreenBiometricAuthenticationCoordinator *)self succinctDescriptionBuilder];
-  v5 = v4;
+  succinctDescriptionBuilder = [(SBLockScreenBiometricAuthenticationCoordinator *)self succinctDescriptionBuilder];
+  v5 = succinctDescriptionBuilder;
   v6 = self->_state - 1;
   if (v6 > 3)
   {
@@ -438,19 +438,19 @@ LABEL_12:
     v7 = off_2783B7F80[v6];
   }
 
-  [v4 appendString:v7 withName:@"matchingState"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"matchingState"];
   v8 = [v5 appendObject:self->_walletPrearmRecognizer withName:@"walletPrearmRecognizer"];
   v9 = [v5 appendBool:self->_presentingWalletInterface withName:@"isPresentingWalletInterface"];
   v10 = [v5 appendObject:self->_pendingUnlockRequest withName:@"pendingUnlockRequest"];
-  v11 = [v5 activeMultilinePrefix];
+  activeMultilinePrefix = [v5 activeMultilinePrefix];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __88__SBLockScreenBiometricAuthenticationCoordinator_descriptionBuilderWithMultilinePrefix___block_invoke;
   v15[3] = &unk_2783A92D8;
   v12 = v5;
   v16 = v12;
-  v17 = self;
-  [v12 appendBodySectionWithName:@"assertions" multilinePrefix:v11 block:v15];
+  selfCopy = self;
+  [v12 appendBodySectionWithName:@"assertions" multilinePrefix:activeMultilinePrefix block:v15];
 
   v13 = v12;
   return v12;
@@ -475,14 +475,14 @@ void __88__SBLockScreenBiometricAuthenticationCoordinator_descriptionBuilderWith
   [v8 appendArraySection:v9 withName:@"passcodeMatchAssertions" skipIfEmpty:1];
 }
 
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (a4 > 2)
+  resourceCopy = resource;
+  if (event > 2)
   {
-    if (a4 != 3)
+    if (event != 3)
     {
-      if (a4 == 4)
+      if (event == 4)
       {
         v11 = SBLogLockScreenBiometricCoordinator();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -492,16 +492,16 @@ void __88__SBLockScreenBiometricAuthenticationCoordinator_descriptionBuilderWith
         }
 
         self->_bioAuthenticatedWhileMenuButtonDown = 1;
-        v12 = [SBApp homeHardwareButton];
+        homeHardwareButton = [SBApp homeHardwareButton];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __81__SBLockScreenBiometricAuthenticationCoordinator_biometricResource_observeEvent___block_invoke;
         v21[3] = &unk_2783A8C18;
         v21[4] = self;
-        [v12 performWhenMenuButtonIsUpUsingBlock:v21];
+        [homeHardwareButton performWhenMenuButtonIsUpUsingBlock:v21];
 
-        v8 = [MEMORY[0x277CCAB98] defaultCenter];
-        v9 = v8;
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        v9 = defaultCenter;
         v10 = &SBBiometricEventTimestampNotificationKeybagUnlock;
         goto LABEL_12;
       }
@@ -554,12 +554,12 @@ LABEL_29:
     }
 
 LABEL_31:
-    v13 = self;
+    selfCopy2 = self;
     v14 = 1;
     goto LABEL_32;
   }
 
-  if (!a4)
+  if (!event)
   {
     v9 = SBLogLockScreenBiometricCoordinator();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -571,18 +571,18 @@ LABEL_31:
     goto LABEL_13;
   }
 
-  if (a4 != 1)
+  if (event != 1)
   {
 LABEL_14:
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 0xA)
+    if ((event & 0xFFFFFFFFFFFFFFFELL) != 0xA)
     {
       goto LABEL_33;
     }
 
-    v13 = self;
+    selfCopy2 = self;
     v14 = 0;
 LABEL_32:
-    [(SBLockScreenBiometricAuthenticationCoordinator *)v13 _handleIdentityMatchSuccess:v14];
+    [(SBLockScreenBiometricAuthenticationCoordinator *)selfCopy2 _handleIdentityMatchSuccess:v14];
     goto LABEL_33;
   }
 
@@ -594,26 +594,26 @@ LABEL_32:
   }
 
   [(SBLockScreenBiometricAuthenticationCoordinator *)self _setupPreArmRecognizerIfPossibleForReason:@"Finger On"];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  v9 = v8;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v9 = defaultCenter;
   v10 = &SBBiometricEventTimestampNotificationFingerOn;
 LABEL_12:
-  [v8 postNotificationName:*v10 object:0];
+  [defaultCenter postNotificationName:*v10 object:0];
 LABEL_13:
 
 LABEL_33:
-  [(SBBiometricUnlockBehavior *)self->_autoUnlockBehavior handleBiometricEvent:a4];
+  [(SBBiometricUnlockBehavior *)self->_autoUnlockBehavior handleBiometricEvent:event];
 }
 
-- (void)biometricResource:(id)a3 matchingAllowedDidChange:(BOOL)a4
+- (void)biometricResource:(id)resource matchingAllowedDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   v10 = *MEMORY[0x277D85DE8];
   v6 = SBLogLockScreenBiometricCoordinator();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = @"NotAllowed";
-    if (v4)
+    if (changeCopy)
     {
       v7 = @"Allowed";
     }
@@ -623,22 +623,22 @@ LABEL_33:
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "Biometric resource matching allowed did change to %{public}@", &v8, 0xCu);
   }
 
-  if (v4 && self->_state <= 1)
+  if (changeCopy && self->_state <= 1)
   {
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _resetStateForReason:@"Biometric event monitor matching is now allowed."];
     [(SBUIBiometricResource *)self->_biometricResource refreshMatchMode];
   }
 }
 
-- (void)walletPrearmRecognizerDidRecognize:(id)a3
+- (void)walletPrearmRecognizerDidRecognize:(id)recognize
 {
-  v4 = a3;
-  if (!v4)
+  recognizeCopy = recognize;
+  if (!recognizeCopy)
   {
     [SBLockScreenBiometricAuthenticationCoordinator walletPrearmRecognizerDidRecognize:];
   }
 
-  if (self->_walletPrearmRecognizer == v4)
+  if (self->_walletPrearmRecognizer == recognizeCopy)
   {
     if (self->_presentingWalletInterface)
     {
@@ -663,18 +663,18 @@ LABEL_33:
   }
 }
 
-- (void)walletPrearmRecognizer:(id)a3 didFailToRecognizeForReason:(unint64_t)a4
+- (void)walletPrearmRecognizer:(id)recognizer didFailToRecognizeForReason:(unint64_t)reason
 {
-  v6 = a3;
-  if (!v6)
+  recognizerCopy = recognizer;
+  if (!recognizerCopy)
   {
     [SBLockScreenBiometricAuthenticationCoordinator walletPrearmRecognizer:didFailToRecognizeForReason:];
-    v6 = 0;
+    recognizerCopy = 0;
   }
 
-  if (self->_walletPrearmRecognizer == v6)
+  if (self->_walletPrearmRecognizer == recognizerCopy)
   {
-    v9 = v6;
+    v9 = recognizerCopy;
     if (self->_presentingWalletInterface)
     {
       [SBLockScreenBiometricAuthenticationCoordinator walletPrearmRecognizer:didFailToRecognizeForReason:];
@@ -685,7 +685,7 @@ LABEL_33:
       [SBLockScreenBiometricAuthenticationCoordinator walletPrearmRecognizer:didFailToRecognizeForReason:];
     }
 
-    v7 = NSStringFromWalletPrearmFailureRecognitionReason(a4);
+    v7 = NSStringFromWalletPrearmFailureRecognitionReason(reason);
     if (![(SBLockScreenBiometricAuthenticationCoordinator *)self isAutoUnlockingDisabled]&& (self->_didMatchBeforeWalletPrearmRecognizerTimeout || [(SBUIBiometricResource *)self->_biometricResource isFingerOn]))
     {
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Wallet pre-arm failed to recognize for reason %@ but we matched before it failed to recognize or the finger is still on the sensor", v7];
@@ -699,19 +699,19 @@ LABEL_33:
     }
 
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _invalidateWalletPreArmRecognizer];
-    v6 = v9;
+    recognizerCopy = v9;
   }
 }
 
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsFeedback:(id)a4
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsFeedback:(id)feedback
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  behaviorCopy = behavior;
+  feedbackCopy = feedback;
+  v8 = feedbackCopy;
+  if (behaviorCopy)
   {
-    if (v7)
+    if (feedbackCopy)
     {
       goto LABEL_3;
     }
@@ -731,9 +731,9 @@ LABEL_3:
   v9 = SBLogLockScreenBiometricCoordinator();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v6 succinctDescription];
+    succinctDescription = [behaviorCopy succinctDescription];
     v17 = 138543618;
-    v18 = v10;
+    v18 = succinctDescription;
     v19 = 2114;
     v20 = v8;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "Unlock behavior (%{public}@) requests feedback: %{public}@", &v17, 0x16u);
@@ -765,15 +765,15 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)biometricUnlockBehavior:(id)a3 requestsUnlock:(id)a4 withFeedback:(id)a5
+- (BOOL)biometricUnlockBehavior:(id)behavior requestsUnlock:(id)unlock withFeedback:(id)feedback
 {
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  behaviorCopy = behavior;
+  unlockCopy = unlock;
+  feedbackCopy = feedback;
+  if (behaviorCopy)
   {
-    if (v10)
+    if (unlockCopy)
     {
       goto LABEL_3;
     }
@@ -782,7 +782,7 @@ LABEL_10:
   else
   {
     [SBLockScreenBiometricAuthenticationCoordinator biometricUnlockBehavior:requestsUnlock:withFeedback:];
-    if (v10)
+    if (unlockCopy)
     {
       goto LABEL_3;
     }
@@ -792,8 +792,8 @@ LABEL_10:
 LABEL_3:
   if (![(SBLockScreenBiometricAuthenticationCoordinator *)self _isMatchingEffectivelyDisabled])
   {
-    v25 = [v10 intent];
-    if ((v25 & 0xFFFFFFFE) == 2)
+    intent = [unlockCopy intent];
+    if ((intent & 0xFFFFFFFE) == 2)
     {
       state = self->_state;
       if (state == 2)
@@ -801,13 +801,13 @@ LABEL_3:
         v27 = SBLogLockScreenBiometricCoordinator();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
-          v28 = [v9 succinctDescription];
+          succinctDescription = [behaviorCopy succinctDescription];
           *buf = 138543362;
-          v46 = v28;
+          selfCopy = succinctDescription;
           _os_log_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_INFO, "Unlock behavior (%{public}@) requests unlock attempt but we can't handle it right now because we're matching for PreArm.", buf, 0xCu);
         }
 
-        v29 = [[_SBPendingMesaUnlockBehaviorUnlockRequest alloc] initWithBehavior:v9 request:v10 feedback:v11];
+        v29 = [[_SBPendingMesaUnlockBehaviorUnlockRequest alloc] initWithBehavior:behaviorCopy request:unlockCopy feedback:feedbackCopy];
         [(SBLockScreenBiometricAuthenticationCoordinator *)self _pendUnlockRequest:v29];
       }
 
@@ -821,25 +821,25 @@ LABEL_3:
         v34 = SBLogLockScreenBiometricCoordinator();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
         {
-          v35 = [v9 succinctDescription];
+          succinctDescription2 = [behaviorCopy succinctDescription];
           *buf = 138543618;
-          v46 = v35;
+          selfCopy = succinctDescription2;
           v47 = 2112;
-          v48 = v10;
+          v48 = unlockCopy;
           _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_INFO, "Unlock behavior (%{public}@) requests unlock attempt: %@", buf, 0x16u);
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v37 = [WeakRetained biometricAuthenticationCoordinator:self requestsUnlockWithIntent:v25];
+        v37 = [WeakRetained biometricAuthenticationCoordinator:self requestsUnlockWithIntent:intent];
 
-        v21 = SBLogLockScreenBiometricCoordinator();
-        v38 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
+        currentHandler = SBLogLockScreenBiometricCoordinator();
+        v38 = os_log_type_enabled(currentHandler, OS_LOG_TYPE_INFO);
         if (!v37)
         {
           if (v38)
           {
             *buf = 0;
-            _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_INFO, "Unlock request failed.", buf, 2u);
+            _os_log_impl(&dword_21ED4E000, currentHandler, OS_LOG_TYPE_INFO, "Unlock request failed.", buf, 2u);
           }
 
           goto LABEL_15;
@@ -848,12 +848,12 @@ LABEL_3:
         if (v38)
         {
           *buf = 0;
-          _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_INFO, "Unlock request succeeded.", buf, 2u);
+          _os_log_impl(&dword_21ED4E000, currentHandler, OS_LOG_TYPE_INFO, "Unlock request succeeded.", buf, 2u);
         }
 
-        if (v11)
+        if (feedbackCopy)
         {
-          [(SBLockScreenBiometricAuthenticationCoordinator *)self biometricUnlockBehavior:v9 requestsFeedback:v11];
+          [(SBLockScreenBiometricAuthenticationCoordinator *)self biometricUnlockBehavior:behaviorCopy requestsFeedback:feedbackCopy];
         }
       }
     }
@@ -863,11 +863,11 @@ LABEL_3:
       v31 = SBLogLockScreenBiometricCoordinator();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
-        v32 = [v9 succinctDescription];
+        succinctDescription3 = [behaviorCopy succinctDescription];
         *buf = 138543618;
-        v46 = v32;
+        selfCopy = succinctDescription3;
         v47 = 1024;
-        LODWORD(v48) = v25;
+        LODWORD(v48) = intent;
         _os_log_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_INFO, "Denied unlock request from behavior (%{public}@) because it specifies unhandled intent: %d", buf, 0x12u);
       }
     }
@@ -878,8 +878,8 @@ LABEL_3:
 
   if ((-[SBUIBiometricResource hasPearlSupport](self->_biometricResource, "hasPearlSupport") & 1) != 0 || (+[SBPlatformController sharedInstance](SBPlatformController, "sharedInstance"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 isInternalInstall], v12, !v13))
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"SBLockScreenBiometricAuthenticationCoordinator.m" lineNumber:558 description:@"We shouldn't be getting unlock requests when matching is effectively disabled."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBLockScreenBiometricAuthenticationCoordinator.m" lineNumber:558 description:@"We shouldn't be getting unlock requests when matching is effectively disabled."];
   }
 
   else
@@ -888,24 +888,24 @@ LABEL_3:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v46 = self;
+      selfCopy = self;
       v47 = 2114;
-      v48 = v9;
+      v48 = behaviorCopy;
       v49 = 2114;
-      v50 = v10;
+      v50 = unlockCopy;
       v51 = 2114;
-      v52 = v11;
+      v52 = feedbackCopy;
       _os_log_error_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_ERROR, "We saw an unlock request when matching is effectively disabled, requesting diagnostics.\nself: %{public}@, behavior: %{public}@, request: %{public}@, feedback: %{public}@", buf, 0x2Au);
     }
 
     v15 = [(SBLockScreenBiometricAuthenticationCoordinator *)self acquireDisableUnlockAssertionForReason:@"Disagnostic reporting"];
     v16 = objc_alloc_init(SBDiagnosticRequestAlertItem);
-    v17 = [MEMORY[0x277CCA8D8] mainBundle];
-    v18 = [v17 localizedStringForKey:@"RADAR_REQUEST_MESSAGE_BODY_HOME_BUTTON" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v18 = [mainBundle localizedStringForKey:@"RADAR_REQUEST_MESSAGE_BODY_HOME_BUTTON" value:&stru_283094718 table:@"SpringBoard"];
     [(SBDiagnosticRequestAlertItem *)v16 setMessage:v18];
 
-    v19 = [MEMORY[0x277CCA8D8] mainBundle];
-    v20 = [v19 localizedStringForKey:@"RADAR_REQUEST_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v20 = [mainBundle2 localizedStringForKey:@"RADAR_REQUEST_TITLE" value:&stru_283094718 table:@"SpringBoard"];
     [(SBDiagnosticRequestAlertItem *)v16 setTitle:v20];
 
     v41[0] = MEMORY[0x277D85DD0];
@@ -913,7 +913,7 @@ LABEL_3:
     v41[2] = __102__SBLockScreenBiometricAuthenticationCoordinator_biometricUnlockBehavior_requestsUnlock_withFeedback___block_invoke;
     v41[3] = &unk_2783A8C18;
     v42 = v15;
-    v21 = v15;
+    currentHandler = v15;
     [(SBDiagnosticRequestAlertItem *)v16 setCompletionBlock:v41];
     v22 = +[SBLockScreenManager sharedInstance];
     v43 = @"SBUILockOptionsUseScreenOffModeKey";
@@ -946,9 +946,9 @@ uint64_t __102__SBLockScreenBiometricAuthenticationCoordinator_biometricUnlockBe
   return result;
 }
 
-- (id)acquireMatchingAssertionWithMode:(unint64_t)a3 reason:(id)a4
+- (id)acquireMatchingAssertionWithMode:(unint64_t)mode reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = objc_alloc(MEMORY[0x277D67E80]);
   v10 = MEMORY[0x277D85DD0];
@@ -956,7 +956,7 @@ uint64_t __102__SBLockScreenBiometricAuthenticationCoordinator_biometricUnlockBe
   v12 = __90__SBLockScreenBiometricAuthenticationCoordinator_acquireMatchingAssertionWithMode_reason___block_invoke;
   v13 = &unk_2783A9070;
   objc_copyWeak(&v14, &location);
-  v8 = [v7 initWithMatchMode:a3 reason:v6 invalidationBlock:&v10];
+  v8 = [v7 initWithMatchMode:mode reason:reasonCopy invalidationBlock:&v10];
   if (v8)
   {
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _addPasscodeMatchingAssertion:v8, v10, v11, v12, v13];
@@ -1004,26 +1004,26 @@ void __91__SBLockScreenBiometricAuthenticationCoordinator_contactlessInterfaceDi
   [v1 _handlePassKitDismissalIfNecessaryWithReason:v2];
 }
 
-- (void)_handleIdentityMatchSuccess:(BOOL)a3
+- (void)_handleIdentityMatchSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   self->_matchedWithResult = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained biometricAuthenticationCoordinator:self handleIdentityMatchSuccess:v3];
+  [WeakRetained biometricAuthenticationCoordinator:self handleIdentityMatchSuccess:successCopy];
 
   [(NSTimer *)self->_matchingAssertionInvalidationTimer fire];
   matchingAssertionInvalidationTimer = self->_matchingAssertionInvalidationTimer;
   self->_matchingAssertionInvalidationTimer = 0;
 }
 
-- (void)_setState:(unint64_t)a3 forReason:(id)a4
+- (void)_setState:(unint64_t)state forReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   state = self->_state;
-  if (state != a3)
+  if (state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     v8 = SBLogLockScreenBiometricCoordinator();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -1041,19 +1041,19 @@ void __91__SBLockScreenBiometricAuthenticationCoordinator_contactlessInterfaceDi
       v11 = 138543618;
       v12 = v10;
       v13 = 2114;
-      v14 = v6;
+      v14 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "Mesa state changed to [%{public}@] for reason: %{public}@", &v11, 0x16u);
     }
 
-    [(SBLockScreenBiometricAuthenticationCoordinator *)self _updateMatchingForState:self->_state forReason:v6];
+    [(SBLockScreenBiometricAuthenticationCoordinator *)self _updateMatchingForState:self->_state forReason:reasonCopy];
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _stateChangedFrom:state to:self->_state];
   }
 }
 
-- (void)_updateMatchingForState:(unint64_t)a3 forReason:(id)a4
+- (void)_updateMatchingForState:(unint64_t)state forReason:(id)reason
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  reasonCopy = reason;
   v22 = 0;
   [(SBLockScreenBiometricAuthenticationCoordinator *)self _stateWantsMatching:self->_state outMatchMode:&v22];
   v6 = SBLogLockScreenBiometricCoordinator();
@@ -1063,7 +1063,7 @@ void __91__SBLockScreenBiometricAuthenticationCoordinator_contactlessInterfaceDi
     *buf = 138543618;
     v24 = v7;
     v25 = 2114;
-    v26 = v5;
+    v26 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "Mesa matching mode changed to [%{public}@] for reason: %{public}@", buf, 0x16u);
   }
 
@@ -1183,17 +1183,17 @@ uint64_t __84__SBLockScreenBiometricAuthenticationCoordinator__updateMatchingFor
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_stateChangedFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)_stateChangedFrom:(unint64_t)from to:(unint64_t)to
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 - 3 < 2)
+  if (from - 3 < 2)
   {
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _clearPendingUnlockRequest];
   }
 
-  else if (a3)
+  else if (from)
   {
-    if (a3 == 2)
+    if (from == 2)
     {
       [(SBLockScreenBiometricAuthenticationCoordinator *)self _invalidateWalletPreArmRecognizer];
       [(SBLockScreenBiometricAuthenticationCoordinator *)self _handlePassKitDismissalIfNecessaryWithReason:@"Cleanup making sure the UI is actually dismissed."];
@@ -1205,13 +1205,13 @@ uint64_t __84__SBLockScreenBiometricAuthenticationCoordinator__updateMatchingFor
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _createFingerDetectAssertion];
   }
 
-  if (a4 <= 2)
+  if (to <= 2)
   {
-    if (a4 < 2)
+    if (to < 2)
     {
       [(SBLockScreenBiometricAuthenticationCoordinator *)self _clearPendingUnlockRequest];
       [(SBLockScreenBiometricAuthenticationCoordinator *)self _toggleAutoUnlockBehaviorEnabled:0];
-      if (!a4)
+      if (!to)
       {
 
         [(SBLockScreenBiometricAuthenticationCoordinator *)self _clearFingerDetectAssertion];
@@ -1220,28 +1220,28 @@ uint64_t __84__SBLockScreenBiometricAuthenticationCoordinator__updateMatchingFor
       return;
     }
 
-    if (a4 != 2)
+    if (to != 2)
     {
       return;
     }
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
     goto LABEL_18;
   }
 
-  if (a4 != 3)
+  if (to != 3)
   {
-    if (a4 != 4)
+    if (to != 4)
     {
       return;
     }
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
 LABEL_18:
 
-    [(SBLockScreenBiometricAuthenticationCoordinator *)v6 _toggleAutoUnlockBehaviorEnabled:v7];
+    [(SBLockScreenBiometricAuthenticationCoordinator *)selfCopy2 _toggleAutoUnlockBehaviorEnabled:v7];
     return;
   }
 
@@ -1259,21 +1259,21 @@ LABEL_18:
 
     v10 = self->_pendingUnlockRequest;
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _clearPendingUnlockRequest];
-    v11 = [(_SBPendingMesaUnlockBehaviorUnlockRequest *)v10 behavior];
-    v12 = [(_SBPendingMesaUnlockBehaviorUnlockRequest *)v10 request];
-    v13 = [(_SBPendingMesaUnlockBehaviorUnlockRequest *)v10 feedback];
-    [(SBLockScreenBiometricAuthenticationCoordinator *)self biometricUnlockBehavior:v11 requestsUnlock:v12 withFeedback:v13];
+    behavior = [(_SBPendingMesaUnlockBehaviorUnlockRequest *)v10 behavior];
+    request = [(_SBPendingMesaUnlockBehaviorUnlockRequest *)v10 request];
+    feedback = [(_SBPendingMesaUnlockBehaviorUnlockRequest *)v10 feedback];
+    [(SBLockScreenBiometricAuthenticationCoordinator *)self biometricUnlockBehavior:behavior requestsUnlock:request withFeedback:feedback];
   }
 }
 
-- (void)_setupPreArmRecognizerIfPossibleForReason:(id)a3
+- (void)_setupPreArmRecognizerIfPossibleForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = self->_state & 0xFFFFFFFFFFFFFFFELL;
   if ([(SBLockScreenBiometricAuthenticationCoordinator *)self _isWalletPreArmAllowed]&& v5 == 2)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - starting recognition for wallet pre-arm", v4];
-    [(SBLockScreenBiometricAuthenticationCoordinator *)self _setState:2 forReason:v6];
+    reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - starting recognition for wallet pre-arm", reasonCopy];
+    [(SBLockScreenBiometricAuthenticationCoordinator *)self _setState:2 forReason:reasonCopy];
 
     if (!self->_walletPrearmRecognizer && !self->_presentingWalletInterface)
     {
@@ -1295,23 +1295,23 @@ LABEL_18:
   }
 }
 
-- (void)_pendUnlockRequest:(id)a3
+- (void)_pendUnlockRequest:(id)request
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   if (self->_state != 2)
   {
     [SBLockScreenBiometricAuthenticationCoordinator _pendUnlockRequest:?];
   }
 
-  if (self->_pendingUnlockRequest != v5)
+  if (self->_pendingUnlockRequest != requestCopy)
   {
-    objc_storeStrong(&self->_pendingUnlockRequest, a3);
+    objc_storeStrong(&self->_pendingUnlockRequest, request);
     v6 = SBLogLockScreenBiometricCoordinator();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v11 = v5;
+      v11 = requestCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "Pended unlock request: %@", buf, 0xCu);
     }
 
@@ -1321,7 +1321,7 @@ LABEL_18:
     v8[2] = __69__SBLockScreenBiometricAuthenticationCoordinator__pendUnlockRequest___block_invoke;
     v8[3] = &unk_2783A92D8;
     v8[4] = self;
-    v9 = v5;
+    v9 = requestCopy;
     dispatch_after(v7, MEMORY[0x277D85CD0], v8);
   }
 }
@@ -1347,13 +1347,13 @@ uint64_t __69__SBLockScreenBiometricAuthenticationCoordinator__pendUnlockRequest
   return result;
 }
 
-- (void)_toggleAutoUnlockBehaviorEnabled:(BOOL)a3
+- (void)_toggleAutoUnlockBehaviorEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SBBiometricUnlockBehavior *)self->_autoUnlockBehavior biometricUnlockBehaviorDelegate];
-  v6 = v5;
-  v7 = !v3;
-  if (v3 && !v5)
+  enabledCopy = enabled;
+  biometricUnlockBehaviorDelegate = [(SBBiometricUnlockBehavior *)self->_autoUnlockBehavior biometricUnlockBehaviorDelegate];
+  v6 = biometricUnlockBehaviorDelegate;
+  v7 = !enabledCopy;
+  if (enabledCopy && !biometricUnlockBehaviorDelegate)
   {
     v8 = SBLogLockScreenBiometricCoordinator();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1363,13 +1363,13 @@ uint64_t __69__SBLockScreenBiometricAuthenticationCoordinator__pendUnlockRequest
     }
 
     autoUnlockBehavior = self->_autoUnlockBehavior;
-    v10 = self;
+    selfCopy = self;
 LABEL_12:
-    [(SBBiometricUnlockBehavior *)autoUnlockBehavior setBiometricUnlockBehaviorDelegate:v10];
+    [(SBBiometricUnlockBehavior *)autoUnlockBehavior setBiometricUnlockBehaviorDelegate:selfCopy];
     goto LABEL_13;
   }
 
-  if (!v5)
+  if (!biometricUnlockBehaviorDelegate)
   {
     v7 = 0;
   }
@@ -1384,7 +1384,7 @@ LABEL_12:
     }
 
     autoUnlockBehavior = self->_autoUnlockBehavior;
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -1405,102 +1405,102 @@ LABEL_13:
   self->_walletPrearmRecognizer = 0;
 }
 
-- (BOOL)_stateWantsMatching:(unint64_t)a3 outMatchMode:(unint64_t *)a4
+- (BOOL)_stateWantsMatching:(unint64_t)matching outMatchMode:(unint64_t *)mode
 {
-  if (a3 == 4)
+  if (matching == 4)
   {
     if (self->_isAuthenticated)
     {
-      v7 = 0;
+      matchMode = 0;
     }
 
     else
     {
-      v8 = [(NSMutableOrderedSet *)self->_activePasscodeMatchAssertions lastObject];
-      v7 = [v8 matchMode];
+      lastObject = [(NSMutableOrderedSet *)self->_activePasscodeMatchAssertions lastObject];
+      matchMode = [lastObject matchMode];
     }
 
 LABEL_18:
-    LOBYTE(v6) = 1;
-    if (!a4)
+    LOBYTE(hasEnrolledIdentities) = 1;
+    if (!mode)
     {
-      return v6;
+      return hasEnrolledIdentities;
     }
 
     goto LABEL_19;
   }
 
-  if (a3 == 3)
+  if (matching == 3)
   {
     if (self->_isAuthenticated)
     {
-      v7 = 0;
+      matchMode = 0;
     }
 
     else
     {
-      v7 = 3;
+      matchMode = 3;
     }
 
     goto LABEL_18;
   }
 
-  if (a3 != 2)
+  if (matching != 2)
   {
-    v7 = 0;
-    LOBYTE(v6) = 0;
-    if (!a4)
+    matchMode = 0;
+    LOBYTE(hasEnrolledIdentities) = 0;
+    if (!mode)
     {
-      return v6;
+      return hasEnrolledIdentities;
     }
 
     goto LABEL_19;
   }
 
-  v6 = [(SBUIBiometricResource *)self->_biometricResource hasEnrolledIdentities];
-  if (!v6)
+  hasEnrolledIdentities = [(SBUIBiometricResource *)self->_biometricResource hasEnrolledIdentities];
+  if (!hasEnrolledIdentities)
   {
-    v7 = 0;
-    if (!a4)
+    matchMode = 0;
+    if (!mode)
     {
-      return v6;
+      return hasEnrolledIdentities;
     }
 
 LABEL_19:
-    *a4 = v7;
-    return v6;
+    *mode = matchMode;
+    return hasEnrolledIdentities;
   }
 
-  LOBYTE(v6) = 1;
+  LOBYTE(hasEnrolledIdentities) = 1;
   if (self->_isAuthenticated)
   {
-    v7 = 2;
+    matchMode = 2;
   }
 
   else
   {
-    v7 = 1;
+    matchMode = 1;
   }
 
-  if (a4)
+  if (mode)
   {
     goto LABEL_19;
   }
 
-  return v6;
+  return hasEnrolledIdentities;
 }
 
-- (void)_addPasscodeMatchingAssertion:(id)a3
+- (void)_addPasscodeMatchingAssertion:(id)assertion
 {
-  v4 = a3;
-  v6 = v4;
-  if (!v4)
+  assertionCopy = assertion;
+  v6 = assertionCopy;
+  if (!assertionCopy)
   {
     [SBLockScreenBiometricAuthenticationCoordinator _addPasscodeMatchingAssertion:];
-    v4 = 0;
+    assertionCopy = 0;
   }
 
-  [(NSMutableOrderedSet *)self->_activePasscodeMatchAssertions addObject:v4];
+  [(NSMutableOrderedSet *)self->_activePasscodeMatchAssertions addObject:assertionCopy];
   if (![(SBLockScreenBiometricAuthenticationCoordinator *)self isUnlockingDisabled])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"Passcode view is active and wants matching: %@", v6];
@@ -1511,45 +1511,45 @@ LABEL_19:
   [(SBUIBiometricResource *)self->_biometricResource resumeMatchingForAssertion:self->_matchingWantedAssertion advisory:0];
 }
 
-- (void)_removePasscodeMatchingAssertion:(id)a3
+- (void)_removePasscodeMatchingAssertion:(id)assertion
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  assertionCopy = assertion;
+  v7 = assertionCopy;
+  if (!assertionCopy)
   {
     [SBLockScreenBiometricAuthenticationCoordinator _removePasscodeMatchingAssertion:];
-    v4 = 0;
+    assertionCopy = 0;
   }
 
-  [(NSMutableOrderedSet *)self->_activePasscodeMatchAssertions removeObject:v4];
+  [(NSMutableOrderedSet *)self->_activePasscodeMatchAssertions removeObject:assertionCopy];
   if (![(SBLockScreenBiometricAuthenticationCoordinator *)self _hasActivePasscodeViews]&& self->_state == 4)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"last passcode view matching wanted assertion relinquished: %@", v7];
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _resetStateForReason:v5];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"SBBiometricEventTimestampNotificationPasscodeCancelled" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBBiometricEventTimestampNotificationPasscodeCancelled" object:self];
   }
 
   [(SBLockScreenBiometricAuthenticationCoordinator *)self _updateMatchingForState:self->_state forReason:@"Passcode frontmost removed."];
 }
 
-- (void)_handlePassKitDismissalIfNecessaryWithReason:(id)a3
+- (void)_handlePassKitDismissalIfNecessaryWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_presentingWalletInterface)
   {
     self->_presentingWalletInterface = 0;
-    v6 = v4;
+    v6 = reasonCopy;
     [(SBLockScreenBiometricAuthenticationCoordinator *)self _invalidateWalletPreArmRecognizer];
-    v4 = v6;
+    reasonCopy = v6;
     if (self->_state == 2)
     {
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"wallet UI dismissed with reason: %@", v6];
       [(SBLockScreenBiometricAuthenticationCoordinator *)self _resetStateForReason:v5];
       [(SBUIBiometricResource *)self->_biometricResource refreshMatchMode];
 
-      v4 = v6;
+      reasonCopy = v6;
     }
   }
 }
@@ -1575,7 +1575,7 @@ LABEL_19:
   }
 }
 
-- (void)_walletPreArmDisabledDidChange:(id)a3
+- (void)_walletPreArmDisabledDidChange:(id)change
 {
   if ([(SBWalletPreArmController *)self->_walletPreArmController isPreArmSuppressed])
   {

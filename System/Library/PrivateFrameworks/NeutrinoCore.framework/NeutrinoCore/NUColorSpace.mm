@@ -1,11 +1,11 @@
 @interface NUColorSpace
-+ (BOOL)shouldTagAsDisplayP3:(__CVBuffer *)a3;
++ (BOOL)shouldTagAsDisplayP3:(__CVBuffer *)p3;
 + (NUColorSpace)displayP3_HLG;
 + (NUColorSpace)displayP3_PQ;
-+ (id)_loadICCProfileDataWithIdentifier:(id)a3;
++ (id)_loadICCProfileDataWithIdentifier:(id)identifier;
 + (id)adobeRGBColorSpace;
-+ (id)colorSpaceFromColorPrimaries:(id)a3 transferFunction:(id)a4 yccMatrix:(id)a5;
-+ (id)colorSpaceFromVideoColorProperties:(id)a3;
++ (id)colorSpaceFromColorPrimaries:(id)primaries transferFunction:(id)function yccMatrix:(id)matrix;
++ (id)colorSpaceFromVideoColorProperties:(id)properties;
 + (id)displayP3ColorSpace;
 + (id)displayP3LinearColorSpace;
 + (id)extendedLinearGrayColorSpace;
@@ -21,22 +21,22 @@
 + (id)rec709ColorSpace;
 + (id)sRGBColorSpace;
 + (id)sRGBLinearColorSpace;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExtended;
 - (BOOL)isHDR;
 - (BOOL)isWideGamut;
 - (NSDictionary)cvPixelBufferAttachments;
 - (NSString)name;
 - (NUColorSpace)init;
-- (NUColorSpace)initWithCGColorSpace:(CGColorSpace *)a3 descriptionName:(id)a4;
-- (NUColorSpace)initWithColorSpaceName:(id)a3;
-- (NUColorSpace)initWithICCProfileData:(id)a3 descriptionName:(id)a4;
+- (NUColorSpace)initWithCGColorSpace:(CGColorSpace *)space descriptionName:(id)name;
+- (NUColorSpace)initWithColorSpaceName:(id)name;
+- (NUColorSpace)initWithICCProfileData:(id)data descriptionName:(id)name;
 - (id)description;
 - (id)extended;
 - (id)linearized;
-- (void)applyAttachmentsToCVPixelBuffer:(__CVBuffer *)a3;
+- (void)applyAttachmentsToCVPixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
-- (void)nu_updateDigest:(id)a3;
+- (void)nu_updateDigest:(id)digest;
 @end
 
 @implementation NUColorSpace
@@ -45,7 +45,7 @@
 {
   if ([(NUColorSpace *)self isExtended])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
@@ -54,17 +54,17 @@
     if (Extended)
     {
       v5 = Extended;
-      v3 = [[NUColorSpace alloc] initWithCGColorSpace:Extended];
+      selfCopy = [[NUColorSpace alloc] initWithCGColorSpace:Extended];
       CFRelease(v5);
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)linearized
@@ -86,7 +86,7 @@
     {
       v5 = 0;
 LABEL_4:
-      v6 = v5;
+      cGColorSpace = v5;
       if (v5)
       {
         goto LABEL_10;
@@ -102,10 +102,10 @@ LABEL_3:
   }
 
 LABEL_9:
-  v6 = [(NUColorSpace *)self CGColorSpace];
+  cGColorSpace = [(NUColorSpace *)self CGColorSpace];
   v5 = 0;
 LABEL_10:
-  Linearized = CGColorSpaceCreateLinearized(v6);
+  Linearized = CGColorSpaceCreateLinearized(cGColorSpace);
   if (Linearized)
   {
     v8 = Linearized;
@@ -136,21 +136,21 @@ LABEL_10:
   return v9;
 }
 
-- (void)applyAttachmentsToCVPixelBuffer:(__CVBuffer *)a3
+- (void)applyAttachmentsToCVPixelBuffer:(__CVBuffer *)buffer
 {
   v18 = *MEMORY[0x1E69E9840];
-  CVBufferRemoveAttachment(a3, *MEMORY[0x1E6965CE8]);
-  CVBufferRemoveAttachment(a3, *MEMORY[0x1E6965F98]);
-  CVBufferRemoveAttachment(a3, *MEMORY[0x1E6965F30]);
-  CVBufferRemoveAttachment(a3, *MEMORY[0x1E6965D88]);
-  CVBufferRemoveAttachment(a3, *MEMORY[0x1E6965E80]);
-  v5 = [(NUColorSpace *)self cvPixelBufferAttachments];
+  CVBufferRemoveAttachment(buffer, *MEMORY[0x1E6965CE8]);
+  CVBufferRemoveAttachment(buffer, *MEMORY[0x1E6965F98]);
+  CVBufferRemoveAttachment(buffer, *MEMORY[0x1E6965F30]);
+  CVBufferRemoveAttachment(buffer, *MEMORY[0x1E6965D88]);
+  CVBufferRemoveAttachment(buffer, *MEMORY[0x1E6965E80]);
+  cvPixelBufferAttachments = [(NUColorSpace *)self cvPixelBufferAttachments];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [cvPixelBufferAttachments keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -161,15 +161,15 @@ LABEL_10:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:v11];
-        CVBufferSetAttachment(a3, v11, v12, kCVAttachmentMode_ShouldPropagate);
+        v12 = [cvPixelBufferAttachments objectForKeyedSubscript:v11];
+        CVBufferSetAttachment(buffer, v11, v12, kCVAttachmentMode_ShouldPropagate);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -242,9 +242,9 @@ LABEL_7:
   }
 
   v24 = *MEMORY[0x1E6965CE8];
-  v25 = [(NUColorSpace *)self CGColorSpace];
+  cGColorSpace = [(NUColorSpace *)self CGColorSpace];
   v8 = MEMORY[0x1E695DF20];
-  v9 = &v25;
+  v9 = &cGColorSpace;
   v10 = &v24;
   v21 = 1;
 LABEL_8:
@@ -253,19 +253,19 @@ LABEL_8:
   return v22;
 }
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   MD5Digest = CGColorSpaceGetMD5Digest();
-  [v4 addString:@"NUColorSpace<"];
-  [v4 addBytes:MD5Digest length:16];
-  [v4 addString:@">"];
+  [digestCopy addString:@"NUColorSpace<"];
+  [digestCopy addBytes:MD5Digest length:16];
+  [digestCopy addString:@">"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -275,7 +275,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (CGColorSpaceEqualToColorSpace())
       {
         v6 = 1;
@@ -320,11 +320,11 @@ LABEL_8:
 
 - (id)description
 {
-  v3 = [(NUColorSpace *)self descriptionName];
-  if (v3)
+  descriptionName = [(NUColorSpace *)self descriptionName];
+  if (descriptionName)
   {
-    v4 = [(NUColorSpace *)self descriptionName];
-    v5 = [v4 stringByAppendingString:@": "];
+    descriptionName2 = [(NUColorSpace *)self descriptionName];
+    v5 = [descriptionName2 stringByAppendingString:@": "];
   }
 
   else
@@ -348,31 +348,31 @@ LABEL_8:
 
 - (BOOL)isWideGamut
 {
-  v2 = [(NUColorSpace *)self CGColorSpace];
+  cGColorSpace = [(NUColorSpace *)self CGColorSpace];
 
-  return CGColorSpaceIsWideGamutRGB(v2);
+  return CGColorSpaceIsWideGamutRGB(cGColorSpace);
 }
 
 - (BOOL)isExtended
 {
-  v2 = [(NUColorSpace *)self CGColorSpace];
+  cGColorSpace = [(NUColorSpace *)self CGColorSpace];
 
-  return CGColorSpaceUsesExtendedRange(v2);
+  return CGColorSpaceUsesExtendedRange(cGColorSpace);
 }
 
 - (BOOL)isHDR
 {
-  v2 = [(NUColorSpace *)self CGColorSpace];
+  cGColorSpace = [(NUColorSpace *)self CGColorSpace];
 
-  return CGColorSpaceUsesITUR_2100TF(v2);
+  return CGColorSpaceUsesITUR_2100TF(cGColorSpace);
 }
 
-- (NUColorSpace)initWithICCProfileData:(id)a3 descriptionName:(id)a4
+- (NUColorSpace)initWithICCProfileData:(id)data descriptionName:(id)name
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (v8 = v7, ![v6 length]))
+  dataCopy = data;
+  nameCopy = name;
+  if (!dataCopy || (v8 = nameCopy, ![dataCopy length]))
   {
     v12 = NUAssertLogger_4789();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -393,8 +393,8 @@ LABEL_8:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v19;
         v30 = 2114;
@@ -405,8 +405,8 @@ LABEL_8:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -415,18 +415,18 @@ LABEL_8:
     _NUAssertFailHandler("[NUColorSpace initWithICCProfileData:descriptionName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 105, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "data != nil && data.length > 0");
   }
 
-  v9 = CGColorSpaceCreateWithICCData(v6);
+  v9 = CGColorSpaceCreateWithICCData(dataCopy);
   v10 = [(NUColorSpace *)self initWithCGColorSpace:v9 descriptionName:v8];
   CGColorSpaceRelease(v9);
 
   return v10;
 }
 
-- (NUColorSpace)initWithCGColorSpace:(CGColorSpace *)a3 descriptionName:(id)a4
+- (NUColorSpace)initWithCGColorSpace:(CGColorSpace *)space descriptionName:(id)name
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  nameCopy = name;
+  if (!space)
   {
     v11 = NUAssertLogger_4789();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -447,8 +447,8 @@ LABEL_8:
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v18;
         v30 = 2114;
@@ -459,8 +459,8 @@ LABEL_8:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -469,24 +469,24 @@ LABEL_8:
     _NUAssertFailHandler("[NUColorSpace initWithCGColorSpace:descriptionName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 92, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "colorSpace != NULL");
   }
 
-  v8 = v7;
+  v8 = nameCopy;
   v27.receiver = self;
   v27.super_class = NUColorSpace;
   v9 = [(NUColorSpace *)&v27 init];
   if (v9)
   {
-    v9->_CGColorSpace = CGColorSpaceRetain(a3);
-    objc_storeStrong(&v9->_descriptionName, a4);
+    v9->_CGColorSpace = CGColorSpaceRetain(space);
+    objc_storeStrong(&v9->_descriptionName, name);
   }
 
   return v9;
 }
 
-- (NUColorSpace)initWithColorSpaceName:(id)a3
+- (NUColorSpace)initWithColorSpaceName:(id)name
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v9 = NUAssertLogger_4789();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -507,8 +507,8 @@ LABEL_8:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -519,8 +519,8 @@ LABEL_8:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -529,17 +529,17 @@ LABEL_8:
     _NUAssertFailHandler("[NUColorSpace initWithColorSpaceName:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 75, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "name != nil");
   }
 
-  v5 = v4;
-  v6 = CGColorSpaceCreateWithName(v4);
-  if (v6)
+  v5 = nameCopy;
+  selfCopy = CGColorSpaceCreateWithName(nameCopy);
+  if (selfCopy)
   {
-    v7 = [(NUColorSpace *)self initWithCGColorSpace:v6];
-    CFRelease(v6);
+    v7 = [(NUColorSpace *)self initWithCGColorSpace:selfCopy];
+    CFRelease(selfCopy);
     self = v7;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (NUColorSpace)init
@@ -588,8 +588,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -605,8 +605,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -622,22 +622,22 @@ LABEL_14:
   _NUAssertFailHandler("[NUColorSpace init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 71, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (BOOL)shouldTagAsDisplayP3:(__CVBuffer *)a3
++ (BOOL)shouldTagAsDisplayP3:(__CVBuffer *)p3
 {
-  v4 = CVBufferCopyAttachment(a3, *MEMORY[0x1E6965D88], 0);
-  v5 = CVBufferCopyAttachment(a3, *MEMORY[0x1E6965F30], 0);
+  v4 = CVBufferCopyAttachment(p3, *MEMORY[0x1E6965D88], 0);
+  v5 = CVBufferCopyAttachment(p3, *MEMORY[0x1E6965F30], 0);
   v6 = [v4 isEqualToString:*MEMORY[0x1E6965DD0]] && (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E6965F50]) & 1) != 0;
 
   return v6;
 }
 
-+ (id)colorSpaceFromColorPrimaries:(id)a3 transferFunction:(id)a4 yccMatrix:(id)a5
++ (id)colorSpaceFromColorPrimaries:(id)primaries transferFunction:(id)function yccMatrix:(id)matrix
 {
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  primariesCopy = primaries;
+  functionCopy = function;
+  matrixCopy = matrix;
+  if (!primariesCopy)
   {
     v18 = NUAssertLogger_4789();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -658,8 +658,8 @@ LABEL_14:
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v39;
         v70 = 2114;
@@ -670,8 +670,8 @@ LABEL_14:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v69 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -680,7 +680,7 @@ LABEL_14:
     _NUAssertFailHandler("+[NUColorSpace colorSpaceFromColorPrimaries:transferFunction:yccMatrix:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 444, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "colorPrimaries != nil");
   }
 
-  if (!v9)
+  if (!functionCopy)
   {
     v25 = NUAssertLogger_4789();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -701,8 +701,8 @@ LABEL_14:
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v49 callStackSymbols];
+        v52 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v48;
         v70 = 2114;
@@ -713,8 +713,8 @@ LABEL_14:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v69 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -723,8 +723,8 @@ LABEL_14:
     _NUAssertFailHandler("+[NUColorSpace colorSpaceFromColorPrimaries:transferFunction:yccMatrix:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 445, @"Invalid parameter not satisfying: %s", v53, v54, v55, v56, "transferFunction != nil");
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = matrixCopy;
+  if (!matrixCopy)
   {
     v32 = NUAssertLogger_4789();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -745,8 +745,8 @@ LABEL_14:
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v58 = MEMORY[0x1E696AF00];
         v59 = v57;
-        v60 = [v58 callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v58 callStackSymbols];
+        v61 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v69 = v57;
         v70 = 2114;
@@ -757,8 +757,8 @@ LABEL_14:
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v69 = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -770,16 +770,16 @@ LABEL_14:
   v12 = *MEMORY[0x1E6965F30];
   v66[0] = *MEMORY[0x1E6965D88];
   v66[1] = v12;
-  v67[0] = v8;
-  v67[1] = v9;
+  v67[0] = primariesCopy;
+  v67[1] = functionCopy;
   v66[2] = *MEMORY[0x1E6965F98];
-  v67[2] = v10;
+  v67[2] = matrixCopy;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v67 forKeys:v66 count:3];
   ColorSpaceFromAttachments = CVImageBufferCreateColorSpaceFromAttachments(v13);
   if (ColorSpaceFromAttachments)
   {
     v15 = ColorSpaceFromAttachments;
-    v16 = [[a1 alloc] initWithCGColorSpace:ColorSpaceFromAttachments descriptionName:@"custom"];
+    v16 = [[self alloc] initWithCGColorSpace:ColorSpaceFromAttachments descriptionName:@"custom"];
     CFRelease(v15);
   }
 
@@ -791,11 +791,11 @@ LABEL_14:
   return v16;
 }
 
-+ (id)colorSpaceFromVideoColorProperties:(id)a3
++ (id)colorSpaceFromVideoColorProperties:(id)properties
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
     v14 = NUAssertLogger_4789();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -816,8 +816,8 @@ LABEL_14:
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v31 = v21;
         v32 = 2114;
@@ -828,8 +828,8 @@ LABEL_14:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -838,8 +838,8 @@ LABEL_14:
     _NUAssertFailHandler("+[NUColorSpace colorSpaceFromVideoColorProperties:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 429, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "colorProperties != nil");
   }
 
-  v5 = v4;
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6987D08]];
+  v5 = propertiesCopy;
+  v6 = [propertiesCopy objectForKeyedSubscript:*MEMORY[0x1E6987D08]];
   v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6987DE8]];
   v8 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6987E10]];
   v9 = v8;
@@ -860,7 +860,7 @@ LABEL_14:
 
   else
   {
-    v12 = [a1 colorSpaceFromColorPrimaries:v6 transferFunction:v7 yccMatrix:v8];
+    v12 = [self colorSpaceFromColorPrimaries:v6 transferFunction:v7 yccMatrix:v8];
   }
 
   return v12;
@@ -872,7 +872,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __29__NUColorSpace_displayP3_HLG__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (displayP3_HLG_onceToken != -1)
   {
     dispatch_once(&displayP3_HLG_onceToken, block);
@@ -944,7 +944,7 @@ void __29__NUColorSpace_displayP3_HLG__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __28__NUColorSpace_displayP3_PQ__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (displayP3_PQ_onceToken != -1)
   {
     dispatch_once(&displayP3_PQ_onceToken, block);
@@ -1016,7 +1016,7 @@ void __28__NUColorSpace_displayP3_PQ__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__NUColorSpace_rec709ColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (rec709ColorSpace_onceToken != -1)
   {
     dispatch_once(&rec709ColorSpace_onceToken, block);
@@ -1084,7 +1084,7 @@ void __32__NUColorSpace_rec709ColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__NUColorSpace_displayP3LinearColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (displayP3LinearColorSpace_onceToken != -1)
   {
     dispatch_once(&displayP3LinearColorSpace_onceToken, block);
@@ -1156,7 +1156,7 @@ void __41__NUColorSpace_displayP3LinearColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__NUColorSpace_displayP3ColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (displayP3ColorSpace_onceToken != -1)
   {
     dispatch_once(&displayP3ColorSpace_onceToken, block);
@@ -1228,7 +1228,7 @@ void __35__NUColorSpace_displayP3ColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__NUColorSpace_genericGrayColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (genericGrayColorSpace_onceToken != -1)
   {
     dispatch_once(&genericGrayColorSpace_onceToken, block);
@@ -1300,7 +1300,7 @@ void __37__NUColorSpace_genericGrayColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__NUColorSpace_genericRGBLinearColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (genericRGBLinearColorSpace_onceToken != -1)
   {
     dispatch_once(&genericRGBLinearColorSpace_onceToken, block);
@@ -1372,7 +1372,7 @@ void __42__NUColorSpace_genericRGBLinearColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__NUColorSpace_genericRGBColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (genericRGBColorSpace_onceToken != -1)
   {
     dispatch_once(&genericRGBColorSpace_onceToken, block);
@@ -1444,7 +1444,7 @@ void __36__NUColorSpace_genericRGBColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__NUColorSpace_adobeRGBColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (adobeRGBColorSpace_onceToken != -1)
   {
     dispatch_once(&adobeRGBColorSpace_onceToken, block);
@@ -1516,7 +1516,7 @@ void __34__NUColorSpace_adobeRGBColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__NUColorSpace_extendedSRGBLinearColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (extendedSRGBLinearColorSpace_onceToken != -1)
   {
     dispatch_once(&extendedSRGBLinearColorSpace_onceToken, block);
@@ -1588,7 +1588,7 @@ void __44__NUColorSpace_extendedSRGBLinearColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__NUColorSpace_sRGBLinearColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sRGBLinearColorSpace_onceToken != -1)
   {
     dispatch_once(&sRGBLinearColorSpace_onceToken, block);
@@ -1660,7 +1660,7 @@ void __36__NUColorSpace_sRGBLinearColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__NUColorSpace_extendedSRGBColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (extendedSRGBColorSpace_onceToken != -1)
   {
     dispatch_once(&extendedSRGBColorSpace_onceToken, block);
@@ -1732,7 +1732,7 @@ void __38__NUColorSpace_extendedSRGBColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__NUColorSpace_itur2100PQColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (itur2100PQColorSpace_onceToken != -1)
   {
     dispatch_once(&itur2100PQColorSpace_onceToken, block);
@@ -1804,7 +1804,7 @@ void __36__NUColorSpace_itur2100PQColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__NUColorSpace_itur2100HLGColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (itur2100HLGColorSpace_onceToken != -1)
   {
     dispatch_once(&itur2100HLGColorSpace_onceToken, block);
@@ -1876,7 +1876,7 @@ void __37__NUColorSpace_itur2100HLGColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __44__NUColorSpace_extendedLinearGrayColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (extendedLinearGrayColorSpace_onceToken != -1)
   {
     dispatch_once(&extendedLinearGrayColorSpace_onceToken, block);
@@ -1948,7 +1948,7 @@ void __44__NUColorSpace_extendedLinearGrayColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__NUColorSpace_linearGrayColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (linearGrayColorSpace_onceToken != -1)
   {
     dispatch_once(&linearGrayColorSpace_onceToken, block);
@@ -2020,7 +2020,7 @@ void __36__NUColorSpace_linearGrayColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__NUColorSpace_genericGrayGamma2_2ColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (genericGrayGamma2_2ColorSpace_onceToken != -1)
   {
     dispatch_once(&genericGrayGamma2_2ColorSpace_onceToken, block);
@@ -2092,7 +2092,7 @@ void __45__NUColorSpace_genericGrayGamma2_2ColorSpace__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __30__NUColorSpace_sRGBColorSpace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sRGBColorSpace_onceToken != -1)
   {
     dispatch_once(&sRGBColorSpace_onceToken, block);
@@ -2158,21 +2158,21 @@ void __30__NUColorSpace_sRGBColorSpace__block_invoke(uint64_t a1)
   CGColorSpaceRelease(v3);
 }
 
-+ (id)_loadICCProfileDataWithIdentifier:(id)a3
++ (id)_loadICCProfileDataWithIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [v4 pathForResource:v3 ofType:@"icc"];
+  v5 = [v4 pathForResource:identifierCopy ofType:@"icc"];
   v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v5];
   if (!v6 || (v7 = v6, ![v6 length]))
   {
     v9 = NUAssertLogger_4789();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load %@", v3];
+      identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load %@", identifierCopy];
       *buf = 138543362;
-      v26 = v10;
+      v26 = identifierCopy;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -2186,8 +2186,8 @@ void __30__NUColorSpace_sRGBColorSpace__block_invoke(uint64_t a1)
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v16;
         v27 = 2114;
@@ -2198,14 +2198,14 @@ void __30__NUColorSpace_sRGBColorSpace__block_invoke(uint64_t a1)
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    _NUAssertFailHandler("+[NUColorSpace _loadICCProfileDataWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 65, @"Failed to load %@", v21, v22, v23, v24, v3);
+    _NUAssertFailHandler("+[NUColorSpace _loadICCProfileDataWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Util/NUColorSpace.m", 65, @"Failed to load %@", v21, v22, v23, v24, identifierCopy);
   }
 
   return v7;

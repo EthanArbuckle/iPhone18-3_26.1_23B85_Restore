@@ -1,10 +1,10 @@
 @interface PKPaymentApplicationUsageSummary
-- (PKPaymentApplicationUsageSummary)initWithCoder:(id)a3;
-- (PKPaymentApplicationUsageSummary)initWithPassUniqueIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 lastUsed:(id)a5 lastUsedTransaction:(id)a6;
+- (PKPaymentApplicationUsageSummary)initWithCoder:(id)coder;
+- (PKPaymentApplicationUsageSummary)initWithPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier lastUsed:(id)used lastUsedTransaction:(id)transaction;
 - (id)_databaseInit;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithSummary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithSummary:(id)summary;
 @end
 
 @implementation PKPaymentApplicationUsageSummary
@@ -18,94 +18,94 @@
   return v2;
 }
 
-- (PKPaymentApplicationUsageSummary)initWithPassUniqueIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 lastUsed:(id)a5 lastUsedTransaction:(id)a6
+- (PKPaymentApplicationUsageSummary)initWithPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier lastUsed:(id)used lastUsedTransaction:(id)transaction
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  usedCopy = used;
+  transactionCopy = transaction;
   v18.receiver = self;
   v18.super_class = PKPaymentApplicationUsageSummary;
   v15 = [(PKPaymentApplicationUsageSummary *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_passUniqueIdentifier, a3);
-    objc_storeStrong(&v16->_paymentApplicationIdentifier, a4);
-    objc_storeStrong(&v16->_lastUsed, a5);
-    objc_storeStrong(&v16->_lastUsedTransaction, a6);
+    objc_storeStrong(&v15->_passUniqueIdentifier, identifier);
+    objc_storeStrong(&v16->_paymentApplicationIdentifier, applicationIdentifier);
+    objc_storeStrong(&v16->_lastUsed, used);
+    objc_storeStrong(&v16->_lastUsedTransaction, transaction);
   }
 
   return v16;
 }
 
-- (void)updateWithSummary:(id)a3
+- (void)updateWithSummary:(id)summary
 {
-  v10 = a3;
-  v4 = [v10 lastUsed];
-  if (v4)
+  summaryCopy = summary;
+  lastUsed = [summaryCopy lastUsed];
+  if (lastUsed)
   {
     lastUsed = self->_lastUsed;
     if (lastUsed)
     {
-      v6 = [(NSDate *)lastUsed laterDate:v4];
+      v6 = [(NSDate *)lastUsed laterDate:lastUsed];
       [(PKPaymentApplicationUsageSummary *)self setLastUsed:v6];
     }
 
     else
     {
-      [(PKPaymentApplicationUsageSummary *)self setLastUsed:v4];
+      [(PKPaymentApplicationUsageSummary *)self setLastUsed:lastUsed];
     }
   }
 
-  v7 = [v10 lastUsedTransaction];
-  if (v7)
+  lastUsedTransaction = [summaryCopy lastUsedTransaction];
+  if (lastUsedTransaction)
   {
     lastUsedTransaction = self->_lastUsedTransaction;
     if (lastUsedTransaction)
     {
-      v9 = [(NSDate *)lastUsedTransaction laterDate:v7];
+      v9 = [(NSDate *)lastUsedTransaction laterDate:lastUsedTransaction];
       [(PKPaymentApplicationUsageSummary *)self setLastUsedTransaction:v9];
     }
 
     else
     {
-      [(PKPaymentApplicationUsageSummary *)self setLastUsedTransaction:v7];
+      [(PKPaymentApplicationUsageSummary *)self setLastUsedTransaction:lastUsedTransaction];
     }
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
-  [v5 encodeObject:self->_paymentApplicationIdentifier forKey:@"paymentApplicationIdentifier"];
-  [v5 encodeObject:self->_lastUsed forKey:@"lastUsed"];
-  [v5 encodeObject:self->_lastUsedTransaction forKey:@"lastUsedTransaction"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeObject:self->_paymentApplicationIdentifier forKey:@"paymentApplicationIdentifier"];
+  [coderCopy encodeObject:self->_lastUsed forKey:@"lastUsed"];
+  [coderCopy encodeObject:self->_lastUsedTransaction forKey:@"lastUsedTransaction"];
 }
 
-- (PKPaymentApplicationUsageSummary)initWithCoder:(id)a3
+- (PKPaymentApplicationUsageSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKPaymentApplicationUsageSummary;
   v5 = [(PKPaymentApplicationUsageSummary *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentApplicationIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentApplicationIdentifier"];
     paymentApplicationIdentifier = v5->_paymentApplicationIdentifier;
     v5->_paymentApplicationIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
     lastUsed = v5->_lastUsed;
     v5->_lastUsed = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedTransaction"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedTransaction"];
     lastUsedTransaction = v5->_lastUsedTransaction;
     v5->_lastUsedTransaction = v12;
   }

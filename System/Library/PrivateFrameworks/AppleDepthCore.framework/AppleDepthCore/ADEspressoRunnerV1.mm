@@ -1,16 +1,16 @@
 @interface ADEspressoRunnerV1
-- (ADEspressoRunnerV1)initWithPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5;
-- (BOOL)isCVPixelBufferBindingSupportedForFormat:(unsigned int)a3;
-- (BOOL)isDirectBindingSupportedForFormat:(unsigned int)a3;
-- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)a3;
+- (ADEspressoRunnerV1)initWithPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name;
+- (BOOL)isCVPixelBufferBindingSupportedForFormat:(unsigned int)format;
+- (BOOL)isDirectBindingSupportedForFormat:(unsigned int)format;
+- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)descriptor;
 - (id).cxx_construct;
 - (id)networkVersionString;
-- (id)registerDescriptor:(id)a3;
-- (int)bindPixelBufferAsVImage:(__CVBuffer *)a3 toBlob:(const char *)a4;
+- (id)registerDescriptor:(id)descriptor;
+- (int)bindPixelBufferAsVImage:(__CVBuffer *)image toBlob:(const char *)blob;
 - (int64_t)execute;
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forDescriptor:(id)a4;
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4;
-- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)a3 inputDescriptor:(id)a4 outputBuffer:(__CVBuffer *)a5 outputDescriptor:(id)a6;
+- (int64_t)registerIOSurface:(__IOSurface *)surface forDescriptor:(id)descriptor;
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor;
+- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)buffer inputDescriptor:(id)descriptor outputBuffer:(__CVBuffer *)outputBuffer outputDescriptor:(id)outputDescriptor;
 - (void)dealloc;
 - (void)unlockAllVImageBindBuffers;
 @end
@@ -49,14 +49,14 @@
 - (int64_t)execute
 {
   v72 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v62 = 335678456;
   v63 = 0u;
   v64 = 0u;
   kdebug_trace();
   kdebug_trace();
-  p_first_node = &v2->_pixelBuffersToBindDirect.__table_.__first_node_;
+  p_first_node = &selfCopy->_pixelBuffersToBindDirect.__table_.__first_node_;
   v4 = MEMORY[0x277D86220];
   *&v5 = 136315138;
   v61 = v5;
@@ -105,7 +105,7 @@
     }
   }
 
-  v11 = &v2->_pixelBuffersToBindIndirect.__table_.__first_node_;
+  v11 = &selfCopy->_pixelBuffersToBindIndirect.__table_.__first_node_;
   v12 = MEMORY[0x277D86220];
   while (1)
   {
@@ -152,14 +152,14 @@
     }
   }
 
-  v16 = &v2->_pixelBuffersToBindAsVImage.__table_.__first_node_;
+  v16 = &selfCopy->_pixelBuffersToBindAsVImage.__table_.__first_node_;
   v17 = MEMORY[0x277D86220];
   do
   {
     v16 = v16->__next_;
     if (!v16)
     {
-      v24 = v2->_pixelBuffersToBindAsEspressoBufferInput.__table_.__first_node_.__next_;
+      v24 = selfCopy->_pixelBuffersToBindAsEspressoBufferInput.__table_.__first_node_.__next_;
       if (v24)
       {
         while (1)
@@ -169,7 +169,7 @@
           v27 = espresso_network_bind_buffer();
           if (v27)
           {
-            [(ADEspressoRunnerV1 *)v2 unlockAllVImageBindBuffers];
+            [(ADEspressoRunnerV1 *)selfCopy unlockAllVImageBindBuffers];
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               goto LABEL_60;
@@ -207,7 +207,7 @@
           }
         }
 
-        [(ADEspressoRunnerV1 *)v2 unlockAllVImageBindBuffers];
+        [(ADEspressoRunnerV1 *)selfCopy unlockAllVImageBindBuffers];
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           goto LABEL_60;
@@ -232,8 +232,8 @@ LABEL_71:
 LABEL_45:
       memset(v68, 0, sizeof(v68));
       v69 = 1065353216;
-      v35 = &v2->_pixelBuffersToBindAsEspressoBufferOutput.__table_.__first_node_;
-      v34 = v2->_pixelBuffersToBindAsEspressoBufferOutput.__table_.__first_node_.__next_;
+      v35 = &selfCopy->_pixelBuffersToBindAsEspressoBufferOutput.__table_.__first_node_;
+      v34 = selfCopy->_pixelBuffersToBindAsEspressoBufferOutput.__table_.__first_node_.__next_;
       if (v34)
       {
         while (1)
@@ -273,7 +273,7 @@ LABEL_45:
           }
         }
 
-        [(ADEspressoRunnerV1 *)v2 unlockAllVImageBindBuffers];
+        [(ADEspressoRunnerV1 *)selfCopy unlockAllVImageBindBuffers];
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           goto LABEL_66;
@@ -307,7 +307,7 @@ LABEL_48:
           if (!v35)
           {
             kdebug_trace();
-            [(ADEspressoRunnerV1 *)v2 unlockAllVImageBindBuffers];
+            [(ADEspressoRunnerV1 *)selfCopy unlockAllVImageBindBuffers];
             if (v47)
             {
               v59 = -22968;
@@ -334,7 +334,7 @@ LABEL_48:
         }
 
         while (!v49);
-        [(ADEspressoRunnerV1 *)v2 unlockAllVImageBindBuffers];
+        [(ADEspressoRunnerV1 *)selfCopy unlockAllVImageBindBuffers];
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           goto LABEL_66;
@@ -384,11 +384,11 @@ LABEL_67:
       v21 = v19->__next_;
     }
 
-    v22 = [(ADEspressoRunnerV1 *)v2 bindPixelBufferAsVImage:v18 toBlob:v21, v61];
+    v22 = [(ADEspressoRunnerV1 *)selfCopy bindPixelBufferAsVImage:v18 toBlob:v21, v61];
   }
 
   while (!v22);
-  [(ADEspressoRunnerV1 *)v2 unlockAllVImageBindBuffers];
+  [(ADEspressoRunnerV1 *)selfCopy unlockAllVImageBindBuffers];
   if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     goto LABEL_60;
@@ -413,7 +413,7 @@ LABEL_60:
   v59 = -22971;
 LABEL_61:
   InstrumentsTraceGuard::~InstrumentsTraceGuard(&v62);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v59;
 }
@@ -426,24 +426,24 @@ LABEL_61:
   }
 }
 
-- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)a3 inputDescriptor:(id)a4 outputBuffer:(__CVBuffer *)a5 outputDescriptor:(id)a6
+- (int64_t)updateFeedbackLoopInputBuffer:(__CVBuffer *)buffer inputDescriptor:(id)descriptor outputBuffer:(__CVBuffer *)outputBuffer outputDescriptor:(id)outputDescriptor
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  Width = CVPixelBufferGetWidth(*a3);
-  if (Width != CVPixelBufferGetWidth(*a5) || (v13 = CVPixelBufferGetHeight(*a3), v13 != CVPixelBufferGetHeight(*a5)))
+  descriptorCopy = descriptor;
+  outputDescriptorCopy = outputDescriptor;
+  Width = CVPixelBufferGetWidth(*buffer);
+  if (Width != CVPixelBufferGetWidth(*outputBuffer) || (v13 = CVPixelBufferGetHeight(*buffer), v13 != CVPixelBufferGetHeight(*outputBuffer)))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v25 = CVPixelBufferGetWidth(*a3);
-      Height = CVPixelBufferGetHeight(*a3);
-      v27 = CVPixelBufferGetWidth(*a5);
-      v28 = CVPixelBufferGetHeight(*a5);
+      v25 = CVPixelBufferGetWidth(*buffer);
+      Height = CVPixelBufferGetHeight(*buffer);
+      v27 = CVPixelBufferGetWidth(*outputBuffer);
+      v28 = CVPixelBufferGetHeight(*outputBuffer);
       *buf = 134218752;
       *&buf[4] = v25;
       v40 = 2048;
-      v41 = Height;
+      uTF8String2 = Height;
       v42 = 2048;
       v43 = v27;
       v44 = 2048;
@@ -454,12 +454,12 @@ LABEL_61:
     goto LABEL_10;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(*a3);
-  if (PixelFormatType != CVPixelBufferGetPixelFormatType(*a5))
+  PixelFormatType = CVPixelBufferGetPixelFormatType(*buffer);
+  if (PixelFormatType != CVPixelBufferGetPixelFormatType(*outputBuffer))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v21 = CVPixelBufferGetPixelFormatType(*a3);
+      v21 = CVPixelBufferGetPixelFormatType(*buffer);
       v22 = buf;
       PixelBufferUtils::pixelFormatAsString(v21, buf);
       if (v42 < 0)
@@ -467,7 +467,7 @@ LABEL_61:
         v22 = *buf;
       }
 
-      v23 = CVPixelBufferGetPixelFormatType(*a5);
+      v23 = CVPixelBufferGetPixelFormatType(*outputBuffer);
       PixelBufferUtils::pixelFormatAsString(v23, __p);
       if (v34 >= 0)
       {
@@ -500,33 +500,33 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v15 = [(ADEspressoRunnerV1 *)self isDirectBindingSupportedForFormat:CVPixelBufferGetPixelFormatType(*a3)];
-  v16 = *a3;
-  v17 = *a5;
+  v15 = [(ADEspressoRunnerV1 *)self isDirectBindingSupportedForFormat:CVPixelBufferGetPixelFormatType(*buffer)];
+  v16 = *buffer;
+  v17 = *outputBuffer;
   if (v15)
   {
-    *a3 = v17;
-    *a5 = v16;
-    v18 = [(ADEspressoRunnerV1 *)self registerPixelBuffer:*a3 forDescriptor:v10];
+    *buffer = v17;
+    *outputBuffer = v16;
+    v18 = [(ADEspressoRunnerV1 *)self registerPixelBuffer:*buffer forDescriptor:descriptorCopy];
     if (v18)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v19 = [v10 name];
+        name = [descriptorCopy name];
         *buf = 136315138;
-        *&buf[4] = [v19 UTF8String];
+        *&buf[4] = [name UTF8String];
         _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to re-register %s", buf, 0xCu);
       }
     }
 
     else
     {
-      v18 = [(ADEspressoRunnerV1 *)self registerPixelBuffer:*a5 forDescriptor:v11];
+      v18 = [(ADEspressoRunnerV1 *)self registerPixelBuffer:*outputBuffer forDescriptor:outputDescriptorCopy];
       if (v18 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v29 = [v11 name];
+        name2 = [outputDescriptorCopy name];
         *buf = 136315138;
-        *&buf[4] = [v29 UTF8String];
+        *&buf[4] = [name2 UTF8String];
         _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed to re-register %s", buf, 0xCu);
       }
     }
@@ -536,13 +536,13 @@ LABEL_10:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v30 = [v11 name];
-      v31 = [v30 UTF8String];
-      v32 = [v10 name];
+      name3 = [outputDescriptorCopy name];
+      uTF8String = [name3 UTF8String];
+      name4 = [descriptorCopy name];
       *buf = 136315394;
-      *&buf[4] = v31;
+      *&buf[4] = uTF8String;
       v40 = 2080;
-      v41 = [v32 UTF8String];
+      uTF8String2 = [name4 UTF8String];
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed copying %s to %s", buf, 0x16u);
     }
 
@@ -559,38 +559,38 @@ LABEL_11:
   return v18;
 }
 
-- (int64_t)registerPixelBufferPtr:(__CVBuffer *)a3 forDescriptor:(id)a4
+- (int64_t)registerPixelBufferPtr:(__CVBuffer *)ptr forDescriptor:(id)descriptor
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  descriptorCopy = descriptor;
   LODWORD(v34) = 335679308;
   v35 = 0u;
   v36 = 0u;
   kdebug_trace();
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v6)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (descriptorCopy)
   {
-    v8 = *a3;
-    v9 = [v6 imageDescriptor];
-    v10 = [v9 pixelFormat];
+    v8 = *ptr;
+    imageDescriptor = [descriptorCopy imageDescriptor];
+    pixelFormat = [imageDescriptor pixelFormat];
 
-    [v6 isInput];
-    v11 = [v6 name];
-    v12 = [v11 UTF8String];
+    [descriptorCopy isInput];
+    name = [descriptorCopy name];
+    uTF8String = [name UTF8String];
 
     if (espresso_network_query_blob_dimensions())
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
 LABEL_4:
-        objc_sync_exit(v7);
+        objc_sync_exit(selfCopy);
         v13 = -22971;
         goto LABEL_21;
       }
 
       *buf = 136315138;
-      *&buf[4] = v12;
+      *&buf[4] = uTF8String;
       v23 = MEMORY[0x277D86220];
       v24 = "failed to get dimensions for %s";
 LABEL_37:
@@ -600,14 +600,14 @@ LABEL_37:
 
     v14 = v42;
     v15 = v43;
-    if (PixelBufferUtils::componentsPerPixelForPixelFormat(v10, 0) == 1 && !PixelBufferUtils::planeCountForPixelFormat(v10))
+    if (PixelBufferUtils::componentsPerPixelForPixelFormat(pixelFormat, 0) == 1 && !PixelBufferUtils::planeCountForPixelFormat(pixelFormat))
     {
       v15 = v44 * v43 * v45;
     }
 
     if (v8)
     {
-      if (*a3)
+      if (*ptr)
       {
         goto LABEL_13;
       }
@@ -617,66 +617,66 @@ LABEL_37:
     {
       *buf = 0;
       BufferAttributes = getBufferAttributes();
-      v21 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], v42, v15, v10, BufferAttributes, buf);
+      v21 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], v42, v15, pixelFormat, BufferAttributes, buf);
       v22 = *buf;
       if (v21)
       {
         v22 = 0;
       }
 
-      *a3 = v22;
+      *ptr = v22;
       if (v22)
       {
 LABEL_13:
-        if ([(ADEspressoRunnerV1 *)v7 isDirectBindingSupportedForFormat:v10])
+        if ([(ADEspressoRunnerV1 *)selfCopy isDirectBindingSupportedForFormat:pixelFormat])
         {
           if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136315138;
-            *&buf[4] = v12;
+            *&buf[4] = uTF8String;
             _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "saving %s to bind as pixel buffer directly", buf, 0xCu);
           }
 
-          v16 = *a3;
-          std::string::basic_string[abi:ne200100]<0>(buf, v12);
+          v16 = *ptr;
+          std::string::basic_string[abi:ne200100]<0>(buf, uTF8String);
           v37 = buf;
-          v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&v7->_pixelBuffersToBindDirect.__table_.__bucket_list_.__ptr_, buf);
+          v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&selfCopy->_pixelBuffersToBindDirect.__table_.__bucket_list_.__ptr_, buf);
           CVPixelBufferRelease(v17[6]);
           v18 = CVPixelBufferRetain(v16);
           goto LABEL_18;
         }
 
-        if ([(ADEspressoRunnerV1 *)v7 isCVPixelBufferBindingSupportedForFormat:v10])
+        if ([(ADEspressoRunnerV1 *)selfCopy isCVPixelBufferBindingSupportedForFormat:pixelFormat])
         {
-          if (!v7->_CPUBindWA)
+          if (!selfCopy->_CPUBindWA)
           {
             if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
               *buf = 136315138;
-              *&buf[4] = v12;
+              *&buf[4] = uTF8String;
               _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "saving %s to bind as CVPixelBuffer", buf, 0xCu);
             }
 
-            v28 = *a3;
-            std::string::basic_string[abi:ne200100]<0>(buf, v12);
+            v28 = *ptr;
+            std::string::basic_string[abi:ne200100]<0>(buf, uTF8String);
             v37 = buf;
-            v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&v7->_pixelBuffersToBindIndirect.__table_.__bucket_list_.__ptr_, buf);
+            v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&selfCopy->_pixelBuffersToBindIndirect.__table_.__bucket_list_.__ptr_, buf);
             CVPixelBufferRelease(v17[6]);
             v18 = CVPixelBufferRetain(v28);
             goto LABEL_18;
           }
 
-          if (([v6 isInput] & 1) == 0)
+          if (([descriptorCopy isInput] & 1) == 0)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               *buf = 136315138;
-              *&buf[4] = v12;
+              *&buf[4] = uTF8String;
               _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "cannot bind output %s buffer on CPU engine in this platform with provided pixel format", buf, 0xCu);
             }
 
-            std::string::basic_string[abi:ne200100]<0>(buf, v12);
-            std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__erase_unique<std::string>(&v7->_pixelBuffersToBindAsVImage, buf);
+            std::string::basic_string[abi:ne200100]<0>(buf, uTF8String);
+            std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__erase_unique<std::string>(&selfCopy->_pixelBuffersToBindAsVImage, buf);
             if (v41 < 0)
             {
               operator delete(*buf);
@@ -686,7 +686,7 @@ LABEL_13:
             goto LABEL_70;
           }
 
-          if ([(ADEspressoRunnerV1 *)v7 isVImageBindingSupportedForFormat:v10])
+          if ([(ADEspressoRunnerV1 *)selfCopy isVImageBindingSupportedForFormat:pixelFormat])
           {
             v25 = 0;
           }
@@ -696,12 +696,12 @@ LABEL_13:
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
               *buf = 136315138;
-              *&buf[4] = v12;
+              *&buf[4] = uTF8String;
               _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "cannot bind input %s buffer on CPU engine in this platform with provided pixel format", buf, 0xCu);
             }
 
-            std::string::basic_string[abi:ne200100]<0>(buf, v12);
-            std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__erase_unique<std::string>(&v7->_pixelBuffersToBindAsVImage, buf);
+            std::string::basic_string[abi:ne200100]<0>(buf, uTF8String);
+            std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__erase_unique<std::string>(&selfCopy->_pixelBuffersToBindAsVImage, buf);
             if (v41 < 0)
             {
               operator delete(*buf);
@@ -713,14 +713,14 @@ LABEL_13:
           if (ADDebugUtilsADVerboseLogsEnabled == 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136315138;
-            *&buf[4] = v12;
+            *&buf[4] = uTF8String;
             _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "saving %s to bind as vImage", buf, 0xCu);
           }
 
-          v32 = *a3;
-          std::string::basic_string[abi:ne200100]<0>(buf, v12);
+          v32 = *ptr;
+          std::string::basic_string[abi:ne200100]<0>(buf, uTF8String);
           v37 = buf;
-          v33 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&v7->_pixelBuffersToBindAsVImage.__table_.__bucket_list_.__ptr_, buf);
+          v33 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&selfCopy->_pixelBuffersToBindAsVImage.__table_.__bucket_list_.__ptr_, buf);
           CVPixelBufferRelease(v33[6]);
           v33[6] = CVPixelBufferRetain(v32);
           if (v41 < 0)
@@ -732,7 +732,7 @@ LABEL_69:
           if (!v25)
           {
 LABEL_20:
-            objc_sync_exit(v7);
+            objc_sync_exit(selfCopy);
             v13 = 0;
             goto LABEL_21;
           }
@@ -741,7 +741,7 @@ LABEL_70:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             *buf = 136315394;
-            *&buf[4] = v12;
+            *&buf[4] = uTF8String;
             v39 = 1024;
             v40 = v25;
             _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed binding espresso buffer %s, status: %d", buf, 0x12u);
@@ -754,11 +754,11 @@ LABEL_70:
           else if (v8)
           {
 LABEL_73:
-            *a3 = 0;
+            *ptr = 0;
             goto LABEL_4;
           }
 
-          CVPixelBufferRelease(*a3);
+          CVPixelBufferRelease(*ptr);
           goto LABEL_73;
         }
 
@@ -767,15 +767,15 @@ LABEL_73:
           if (ADDebugUtilsADVerboseLogsEnabled && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136315138;
-            *&buf[4] = v12;
+            *&buf[4] = uTF8String;
             _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "binding %s buffer to espresso-managed pointer", buf, 0xCu);
           }
 
-          CVPixelBufferRelease(*a3);
+          CVPixelBufferRelease(*ptr);
           v25 = espresso_network_bind_buffer();
           if (!v25)
           {
-            *a3 = PixelBufferUtils::asPixelBuffer(v14, v15, v10, *buf, v29);
+            *ptr = PixelBufferUtils::asPixelBuffer(v14, v15, pixelFormat, *buf, v29);
           }
 
           goto LABEL_69;
@@ -786,7 +786,7 @@ LABEL_73:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136315138;
-            *&buf[4] = v12;
+            *&buf[4] = uTF8String;
             v26 = MEMORY[0x277D86220];
             v27 = OS_LOG_TYPE_DEFAULT;
 LABEL_49:
@@ -797,26 +797,26 @@ LABEL_49:
         else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 136315138;
-          *&buf[4] = v12;
+          *&buf[4] = uTF8String;
           v26 = MEMORY[0x277D86220];
           v27 = OS_LOG_TYPE_INFO;
           goto LABEL_49;
         }
 
-        v30 = [v6 isInput];
-        v31 = *a3;
-        if (v30)
+        isInput = [descriptorCopy isInput];
+        v31 = *ptr;
+        if (isInput)
         {
-          std::string::basic_string[abi:ne200100]<0>(buf, v12);
+          std::string::basic_string[abi:ne200100]<0>(buf, uTF8String);
           v37 = buf;
-          v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&v7->_pixelBuffersToBindAsEspressoBufferInput.__table_.__bucket_list_.__ptr_, buf);
+          v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&selfCopy->_pixelBuffersToBindAsEspressoBufferInput.__table_.__bucket_list_.__ptr_, buf);
         }
 
         else
         {
-          std::string::basic_string[abi:ne200100]<0>(buf, v12);
+          std::string::basic_string[abi:ne200100]<0>(buf, uTF8String);
           v37 = buf;
-          v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&v7->_pixelBuffersToBindAsEspressoBufferOutput.__table_.__bucket_list_.__ptr_, buf);
+          v17 = std::__hash_table<std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PixelBufferSharedPtr>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PixelBufferSharedPtr>>>::__emplace_unique_key_args<std::string,std::piecewise_construct_t const&,std::tuple<std::string&&>,std::tuple<>>(&selfCopy->_pixelBuffersToBindAsEspressoBufferOutput.__table_.__bucket_list_.__ptr_, buf);
         }
 
         CVPixelBufferRelease(v17[6]);
@@ -838,7 +838,7 @@ LABEL_18:
     }
 
     *buf = 136315138;
-    *&buf[4] = v12;
+    *&buf[4] = uTF8String;
     v23 = MEMORY[0x277D86220];
     v24 = "failed allocating CVPixelBuffer for %s";
     goto LABEL_37;
@@ -850,7 +850,7 @@ LABEL_18:
     _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "cannot register buffer for nil descriptor", buf, 2u);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v13 = -22953;
 LABEL_21:
 
@@ -858,21 +858,21 @@ LABEL_21:
   return v13;
 }
 
-- (int64_t)registerIOSurface:(__IOSurface *)a3 forDescriptor:(id)a4
+- (int64_t)registerIOSurface:(__IOSurface *)surface forDescriptor:(id)descriptor
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  descriptorCopy = descriptor;
   pixelBufferOut = 0;
   v14 = *MEMORY[0x277CC4DE8];
   v15[0] = MEMORY[0x277CBEC10];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-  if (CVPixelBufferCreateWithIOSurface(0, a3, v7, &pixelBufferOut))
+  if (CVPixelBufferCreateWithIOSurface(0, surface, v7, &pixelBufferOut))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v10 = [v6 name];
+      name = [descriptorCopy name];
       *buf = 138412290;
-      v13 = v10;
+      v13 = name;
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed allocating pixel buffer for binding %@ as a surface", buf, 0xCu);
     }
 
@@ -881,38 +881,38 @@ LABEL_21:
 
   else
   {
-    v8 = [(ADEspressoRunnerV1 *)self registerPixelBuffer:pixelBufferOut forDescriptor:v6];
+    v8 = [(ADEspressoRunnerV1 *)self registerPixelBuffer:pixelBufferOut forDescriptor:descriptorCopy];
     CVPixelBufferRelease(pixelBufferOut);
   }
 
   return v8;
 }
 
-- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)a3
+- (__CVBuffer)createAndRegisterPixelBufferForDescriptor:(id)descriptor
 {
   v4 = 0;
-  [(ADEspressoRunnerV1 *)self registerPixelBufferPtr:&v4 forDescriptor:a3];
+  [(ADEspressoRunnerV1 *)self registerPixelBufferPtr:&v4 forDescriptor:descriptor];
   return v4;
 }
 
-- (id)registerDescriptor:(id)a3
+- (id)registerDescriptor:(id)descriptor
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 isInput];
-  v6 = [v4 name];
-  [v6 UTF8String];
+  descriptorCopy = descriptor;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [descriptorCopy isInput];
+  name = [descriptorCopy name];
+  [name UTF8String];
   v7 = espresso_network_bind_buffer();
 
   if (v7)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v12 = [v4 name];
+      name2 = [descriptorCopy name];
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = name2;
       *&buf[12] = 1024;
       *&buf[14] = v7;
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed binding espresso buffer %@, status: %d", buf, 0x12u);
@@ -924,7 +924,7 @@ LABEL_21:
   else
   {
     v9 = [ADEspressoBufferHandle alloc];
-    v10 = [v4 name];
+    name3 = [descriptorCopy name];
     v31 = v21;
     v32 = v22;
     v33 = v23;
@@ -936,15 +936,15 @@ LABEL_21:
     *&buf[16] = v14;
     v25 = v15;
     v26 = v16;
-    v8 = [(ADEspressoBufferHandle *)v9 initWithName:v10 buffer:buf];
+    v8 = [(ADEspressoBufferHandle *)v9 initWithName:name3 buffer:buf];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)isDirectBindingSupportedForFormat:(unsigned int)a3
+- (BOOL)isDirectBindingSupportedForFormat:(unsigned int)format
 {
   if (self->_engineType >> 1 != 5003)
   {
@@ -957,9 +957,9 @@ LABEL_21:
   }
 
   result = 1;
-  if (a3 <= 1380411456)
+  if (format <= 1380411456)
   {
-    if (a3 == 843264104)
+    if (format == 843264104)
     {
       return result;
     }
@@ -968,11 +968,11 @@ LABEL_21:
     goto LABEL_11;
   }
 
-  if (a3 != 1380411457 && a3 != 1751410032)
+  if (format != 1380411457 && format != 1751410032)
   {
     v5 = 1751411059;
 LABEL_11:
-    if (a3 != v5)
+    if (format != v5)
     {
       return 0;
     }
@@ -981,10 +981,10 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isCVPixelBufferBindingSupportedForFormat:(unsigned int)a3
+- (BOOL)isCVPixelBufferBindingSupportedForFormat:(unsigned int)format
 {
-  v3 = *&a3;
-  if (PixelBufferUtils::planeCountForPixelFormat(*&a3))
+  v3 = *&format;
+  if (PixelBufferUtils::planeCountForPixelFormat(*&format))
   {
     return 0;
   }
@@ -993,16 +993,16 @@ LABEL_11:
   return v5 == PixelBufferUtils::componentsPerPixelForPixelFormat(v3, 0);
 }
 
-- (int)bindPixelBufferAsVImage:(__CVBuffer *)a3 toBlob:(const char *)a4
+- (int)bindPixelBufferAsVImage:(__CVBuffer *)image toBlob:(const char *)blob
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(image);
   v6 = PixelFormatType;
   v7 = PixelBufferUtils::planeCountForPixelFormat(PixelFormatType);
   if (v7)
   {
     v8 = v7;
     v9 = MEMORY[0x277CBF3A0];
-    PixelBufferUtils::asVImageBuffer(a3, 0, *MEMORY[0x277CBF3A0], &v20);
+    PixelBufferUtils::asVImageBuffer(image, 0, *MEMORY[0x277CBF3A0], &v20);
     data = v20.data;
     v11 = *&v20.height;
     rowBytes = v20.rowBytes;
@@ -1016,7 +1016,7 @@ LABEL_11:
       while (1)
       {
         memset(&v20, 0, sizeof(v20));
-        PixelBufferUtils::asVImageBuffer(a3, v14, *v9, &v20);
+        PixelBufferUtils::asVImageBuffer(image, v14, *v9, &v20);
         if (!v20.data)
         {
           return -6;
@@ -1048,7 +1048,7 @@ LABEL_11:
 
   else
   {
-    PixelBufferUtils::asVImageBuffer(a3, *MEMORY[0x277CBF3A0], &v20);
+    PixelBufferUtils::asVImageBuffer(image, *MEMORY[0x277CBF3A0], &v20);
     data = v20.data;
     v11 = *&v20.height;
     rowBytes = v20.rowBytes;
@@ -1108,11 +1108,11 @@ LABEL_11:
   return v2;
 }
 
-- (ADEspressoRunnerV1)initWithPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5
+- (ADEspressoRunnerV1)initWithPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  nameCopy = name;
   v37 = 335679304;
   v38 = 0u;
   v39 = 0u;
@@ -1131,13 +1131,13 @@ LABEL_11:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = pathCopy;
     _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "loading network from: %@", buf, 0xCu);
   }
 
-  if (a4 > 1)
+  if (engine > 1)
   {
-    switch(a4)
+    switch(engine)
     {
       case 2uLL:
         v12 = 5;
@@ -1155,9 +1155,9 @@ LABEL_14:
     goto LABEL_33;
   }
 
-  if (a4)
+  if (engine)
   {
-    if (a4 == 1)
+    if (engine == 1)
     {
       v12 = 2;
       goto LABEL_14;
@@ -1166,7 +1166,7 @@ LABEL_14:
 LABEL_33:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      ADCommonUtils::espressoEngineAsString(a4, buf);
+      ADCommonUtils::espressoEngineAsString(engine, buf);
       v30 = v41 >= 0 ? buf : *buf;
       *v42 = 136315138;
       v43 = v30;
@@ -1206,25 +1206,25 @@ LABEL_15:
   }
 
   v11->_plan = espresso_create_plan();
-  v14 = v8;
-  [v8 UTF8String];
+  v14 = pathCopy;
+  [pathCopy UTF8String];
   v15 = espresso_plan_add_network();
   if (!v15)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(ADEspressoRunnerV1 *)v11 networkVersionString];
-      v20 = v19;
-      v21 = [v19 UTF8String];
+      networkVersionString = [(ADEspressoRunnerV1 *)v11 networkVersionString];
+      v20 = networkVersionString;
+      uTF8String = [networkVersionString UTF8String];
       *buf = 136315138;
-      *&buf[4] = v21;
+      *&buf[4] = uTF8String;
       _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "network version: %s", buf, 0xCu);
     }
 
-    if (v9)
+    if (nameCopy)
     {
-      v22 = v9;
-      [v9 UTF8String];
+      v22 = nameCopy;
+      [nameCopy UTF8String];
       v23 = espresso_network_select_configuration();
       if (v23)
       {
@@ -1242,10 +1242,10 @@ LABEL_15:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v31 = v9;
-        v32 = [v9 UTF8String];
+        v31 = nameCopy;
+        uTF8String2 = [nameCopy UTF8String];
         *buf = 136315138;
-        *&buf[4] = v32;
+        *&buf[4] = uTF8String2;
         _os_log_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "network configuration: %s", buf, 0xCu);
       }
     }

@@ -1,38 +1,38 @@
 @interface BMSafariBrowsingAssistant
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariBrowsingAssistant)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSafariBrowsingAssistant)initWithWebpageViewStarted:(id)a3 dimensionContext:(id)a4 bloomFilterPassed:(id)a5 eligible:(id)a6 webpageUrlSent:(id)a7 serverRequestContext:(id)a8 visualComponentPresentationContext:(id)a9 userInteractionDetected:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariBrowsingAssistant)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSafariBrowsingAssistant)initWithWebpageViewStarted:(id)started dimensionContext:(id)context bloomFilterPassed:(id)passed eligible:(id)eligible webpageUrlSent:(id)sent serverRequestContext:(id)requestContext visualComponentPresentationContext:(id)presentationContext userInteractionDetected:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSafariBrowsingAssistant
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
-    v7 = [v5 webpageViewStarted];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    webpageViewStarted = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
+    webpageViewStarted2 = [v5 webpageViewStarted];
+    v8 = webpageViewStarted2;
+    if (webpageViewStarted == webpageViewStarted2)
     {
     }
 
     else
     {
-      v9 = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
-      v10 = [v5 webpageViewStarted];
-      v11 = [v9 isEqual:v10];
+      webpageViewStarted3 = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
+      webpageViewStarted4 = [v5 webpageViewStarted];
+      v11 = [webpageViewStarted3 isEqual:webpageViewStarted4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSafariBrowsingAssistant *)self dimensionContext];
-    v14 = [v5 dimensionContext];
-    v15 = v14;
-    if (v13 == v14)
+    dimensionContext = [(BMSafariBrowsingAssistant *)self dimensionContext];
+    dimensionContext2 = [v5 dimensionContext];
+    v15 = dimensionContext2;
+    if (dimensionContext == dimensionContext2)
     {
     }
 
     else
     {
-      v16 = [(BMSafariBrowsingAssistant *)self dimensionContext];
-      v17 = [v5 dimensionContext];
-      v18 = [v16 isEqual:v17];
+      dimensionContext3 = [(BMSafariBrowsingAssistant *)self dimensionContext];
+      dimensionContext4 = [v5 dimensionContext];
+      v18 = [dimensionContext3 isEqual:dimensionContext4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
-    v20 = [v5 bloomFilterPassed];
-    v21 = v20;
-    if (v19 == v20)
+    bloomFilterPassed = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
+    bloomFilterPassed2 = [v5 bloomFilterPassed];
+    v21 = bloomFilterPassed2;
+    if (bloomFilterPassed == bloomFilterPassed2)
     {
     }
 
     else
     {
-      v22 = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
-      v23 = [v5 bloomFilterPassed];
-      v24 = [v22 isEqual:v23];
+      bloomFilterPassed3 = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
+      bloomFilterPassed4 = [v5 bloomFilterPassed];
+      v24 = [bloomFilterPassed3 isEqual:bloomFilterPassed4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMSafariBrowsingAssistant *)self eligible];
-    v26 = [v5 eligible];
-    v27 = v26;
-    if (v25 == v26)
+    eligible = [(BMSafariBrowsingAssistant *)self eligible];
+    eligible2 = [v5 eligible];
+    v27 = eligible2;
+    if (eligible == eligible2)
     {
     }
 
     else
     {
-      v28 = [(BMSafariBrowsingAssistant *)self eligible];
-      v29 = [v5 eligible];
-      v30 = [v28 isEqual:v29];
+      eligible3 = [(BMSafariBrowsingAssistant *)self eligible];
+      eligible4 = [v5 eligible];
+      v30 = [eligible3 isEqual:eligible4];
 
       if (!v30)
       {
@@ -97,18 +97,18 @@
       }
     }
 
-    v31 = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
-    v32 = [v5 webpageUrlSent];
-    v33 = v32;
-    if (v31 == v32)
+    webpageUrlSent = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
+    webpageUrlSent2 = [v5 webpageUrlSent];
+    v33 = webpageUrlSent2;
+    if (webpageUrlSent == webpageUrlSent2)
     {
     }
 
     else
     {
-      v34 = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
-      v35 = [v5 webpageUrlSent];
-      v36 = [v34 isEqual:v35];
+      webpageUrlSent3 = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
+      webpageUrlSent4 = [v5 webpageUrlSent];
+      v36 = [webpageUrlSent3 isEqual:webpageUrlSent4];
 
       if (!v36)
       {
@@ -116,18 +116,18 @@
       }
     }
 
-    v37 = [(BMSafariBrowsingAssistant *)self serverRequestContext];
-    v38 = [v5 serverRequestContext];
-    v39 = v38;
-    if (v37 == v38)
+    serverRequestContext = [(BMSafariBrowsingAssistant *)self serverRequestContext];
+    serverRequestContext2 = [v5 serverRequestContext];
+    v39 = serverRequestContext2;
+    if (serverRequestContext == serverRequestContext2)
     {
     }
 
     else
     {
-      v40 = [(BMSafariBrowsingAssistant *)self serverRequestContext];
-      v41 = [v5 serverRequestContext];
-      v42 = [v40 isEqual:v41];
+      serverRequestContext3 = [(BMSafariBrowsingAssistant *)self serverRequestContext];
+      serverRequestContext4 = [v5 serverRequestContext];
+      v42 = [serverRequestContext3 isEqual:serverRequestContext4];
 
       if (!v42)
       {
@@ -135,18 +135,18 @@
       }
     }
 
-    v43 = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
-    v44 = [v5 visualComponentPresentationContext];
-    v45 = v44;
-    if (v43 == v44)
+    visualComponentPresentationContext = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
+    visualComponentPresentationContext2 = [v5 visualComponentPresentationContext];
+    v45 = visualComponentPresentationContext2;
+    if (visualComponentPresentationContext == visualComponentPresentationContext2)
     {
     }
 
     else
     {
-      v46 = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
-      v47 = [v5 visualComponentPresentationContext];
-      v48 = [v46 isEqual:v47];
+      visualComponentPresentationContext3 = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
+      visualComponentPresentationContext4 = [v5 visualComponentPresentationContext];
+      v48 = [visualComponentPresentationContext3 isEqual:visualComponentPresentationContext4];
 
       if (!v48)
       {
@@ -158,18 +158,18 @@ LABEL_30:
       }
     }
 
-    v50 = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
-    v51 = [v5 userInteractionDetected];
-    if (v50 == v51)
+    userInteractionDetected = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
+    userInteractionDetected2 = [v5 userInteractionDetected];
+    if (userInteractionDetected == userInteractionDetected2)
     {
       v12 = 1;
     }
 
     else
     {
-      v52 = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
-      v53 = [v5 userInteractionDetected];
-      v12 = [v52 isEqual:v53];
+      userInteractionDetected3 = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
+      userInteractionDetected4 = [v5 userInteractionDetected];
+      v12 = [userInteractionDetected3 isEqual:userInteractionDetected4];
     }
 
     goto LABEL_30;
@@ -184,105 +184,105 @@ LABEL_31:
 - (id)jsonDictionary
 {
   v38[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
-  v4 = [v3 jsonDictionary];
+  webpageViewStarted = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
+  jsonDictionary = [webpageViewStarted jsonDictionary];
 
-  v5 = [(BMSafariBrowsingAssistant *)self dimensionContext];
-  v6 = [v5 jsonDictionary];
+  dimensionContext = [(BMSafariBrowsingAssistant *)self dimensionContext];
+  jsonDictionary2 = [dimensionContext jsonDictionary];
 
-  v7 = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
-  v8 = [v7 jsonDictionary];
+  bloomFilterPassed = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
+  jsonDictionary3 = [bloomFilterPassed jsonDictionary];
 
-  v9 = [(BMSafariBrowsingAssistant *)self eligible];
-  v10 = [v9 jsonDictionary];
+  eligible = [(BMSafariBrowsingAssistant *)self eligible];
+  jsonDictionary4 = [eligible jsonDictionary];
 
-  v11 = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
-  v12 = [v11 jsonDictionary];
+  webpageUrlSent = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
+  jsonDictionary5 = [webpageUrlSent jsonDictionary];
 
-  v13 = [(BMSafariBrowsingAssistant *)self serverRequestContext];
-  v14 = [v13 jsonDictionary];
+  serverRequestContext = [(BMSafariBrowsingAssistant *)self serverRequestContext];
+  jsonDictionary6 = [serverRequestContext jsonDictionary];
 
-  v15 = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
-  v16 = [v15 jsonDictionary];
+  visualComponentPresentationContext = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
+  jsonDictionary7 = [visualComponentPresentationContext jsonDictionary];
 
-  v17 = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
-  v18 = [v17 jsonDictionary];
+  userInteractionDetected = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
+  jsonDictionary8 = [userInteractionDetected jsonDictionary];
 
   v37[0] = @"webpageViewStarted";
-  v19 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v19;
-  v38[0] = v19;
+  v32 = null;
+  v38[0] = null;
   v37[1] = @"dimensionContext";
-  v20 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v4;
-  v31 = v20;
-  v38[1] = v20;
+  v36 = jsonDictionary;
+  v31 = null2;
+  v38[1] = null2;
   v37[2] = @"bloomFilterPassed";
-  v21 = v8;
-  if (!v8)
+  null3 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35 = v6;
-  v30 = v21;
-  v38[2] = v21;
+  v35 = jsonDictionary2;
+  v30 = null3;
+  v38[2] = null3;
   v37[3] = @"eligible";
-  v22 = v10;
-  if (!v10)
+  null4 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v8;
-  v38[3] = v22;
+  v34 = jsonDictionary3;
+  v38[3] = null4;
   v37[4] = @"webpageUrlSent";
-  v23 = v12;
-  if (!v12)
+  null5 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v10;
-  v38[4] = v23;
+  v33 = jsonDictionary4;
+  v38[4] = null5;
   v37[5] = @"serverRequestContext";
-  v24 = v14;
-  if (!v14)
+  null6 = jsonDictionary6;
+  if (!jsonDictionary6)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[5] = v24;
+  v38[5] = null6;
   v37[6] = @"visualComponentPresentationContext";
-  v25 = v16;
-  if (!v16)
+  null7 = jsonDictionary7;
+  if (!jsonDictionary7)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[6] = v25;
+  v38[6] = null7;
   v37[7] = @"userInteractionDetected";
-  v26 = v18;
-  if (!v18)
+  null8 = jsonDictionary8;
+  if (!jsonDictionary8)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[7] = v26;
+  v38[7] = null8;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:8];
-  if (v18)
+  if (jsonDictionary8)
   {
-    if (v16)
+    if (jsonDictionary7)
     {
       goto LABEL_19;
     }
@@ -291,18 +291,18 @@ LABEL_31:
   else
   {
 
-    if (v16)
+    if (jsonDictionary7)
     {
       goto LABEL_19;
     }
   }
 
 LABEL_19:
-  if (!v14)
+  if (!jsonDictionary6)
   {
   }
 
-  if (!v12)
+  if (!jsonDictionary5)
   {
   }
 
@@ -337,16 +337,16 @@ LABEL_29:
   return v27;
 }
 
-- (BMSafariBrowsingAssistant)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSafariBrowsingAssistant)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v133[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"webpageViewStarted"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"webpageViewStarted"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"dimensionContext"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"dimensionContext"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
@@ -365,13 +365,13 @@ LABEL_4:
 
 LABEL_7:
         v107 = v10;
-        v11 = [v6 objectForKeyedSubscript:@"bloomFilterPassed"];
-        v108 = a4;
+        v11 = [dictionaryCopy objectForKeyedSubscript:@"bloomFilterPassed"];
+        errorCopy = error;
         if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v106 = 0;
 LABEL_10:
-          v12 = [v6 objectForKeyedSubscript:@"eligible"];
+          v12 = [dictionaryCopy objectForKeyedSubscript:@"eligible"];
           if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v100 = v9;
@@ -391,10 +391,10 @@ LABEL_10:
             {
               v103 = v35;
               v27 = v106;
-              if (v108)
+              if (errorCopy)
               {
                 v36 = v36;
-                *v108 = v36;
+                *errorCopy = v36;
               }
 
               v24 = 0;
@@ -406,14 +406,14 @@ LABEL_10:
             v13 = v12;
 
 LABEL_13:
-            v14 = [v6 objectForKeyedSubscript:@"webpageUrlSent"];
+            v14 = [dictionaryCopy objectForKeyedSubscript:@"webpageUrlSent"];
             v103 = v14;
             if (!v14 || (v15 = v14, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
               v101 = 0;
 LABEL_16:
               v12 = v13;
-              v16 = [v6 objectForKeyedSubscript:@"serverRequestContext"];
+              v16 = [dictionaryCopy objectForKeyedSubscript:@"serverRequestContext"];
               v9 = v100;
               v98 = v16;
               if (v16 && (v17 = v16, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -421,7 +421,7 @@ LABEL_16:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (!v108)
+                  if (!errorCopy)
                   {
                     v24 = 0;
                     v27 = v106;
@@ -433,11 +433,11 @@ LABEL_16:
                   v95 = *MEMORY[0x1E698F240];
                   v122 = *MEMORY[0x1E696A578];
                   v69 = v8;
-                  v70 = self;
+                  selfCopy = self;
                   v71 = objc_alloc(MEMORY[0x1E696AEC0]);
                   v87 = objc_opt_class();
                   v72 = v71;
-                  self = v70;
+                  self = selfCopy;
                   v8 = v69;
                   v23 = v107;
                   v96 = [v72 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v87, @"serverRequestContext"];
@@ -447,7 +447,7 @@ LABEL_16:
                   v94 = v73;
                   v75 = [v68 initWithDomain:v74 code:2 userInfo:?];
                   v24 = 0;
-                  *v108 = v75;
+                  *errorCopy = v75;
                   goto LABEL_95;
                 }
 
@@ -459,10 +459,10 @@ LABEL_16:
                 {
                   v94 = v51;
                   v27 = v106;
-                  if (v108)
+                  if (errorCopy)
                   {
                     v52 = v52;
-                    *v108 = v52;
+                    *errorCopy = v52;
                   }
 
                   v24 = 0;
@@ -476,14 +476,14 @@ LABEL_16:
                 v96 = 0;
               }
 
-              v18 = [v6 objectForKeyedSubscript:@"visualComponentPresentationContext"];
+              v18 = [dictionaryCopy objectForKeyedSubscript:@"visualComponentPresentationContext"];
               v94 = v18;
               if (v18 && (v19 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (!v108)
+                  if (!errorCopy)
                   {
                     v24 = 0;
                     v23 = v107;
@@ -494,11 +494,11 @@ LABEL_16:
                   v90 = *MEMORY[0x1E698F240];
                   v120 = *MEMORY[0x1E696A578];
                   v77 = v8;
-                  v78 = self;
+                  selfCopy2 = self;
                   v79 = objc_alloc(MEMORY[0x1E696AEC0]);
                   v88 = objc_opt_class();
                   v80 = v79;
-                  self = v78;
+                  self = selfCopy2;
                   v8 = v77;
                   v23 = v107;
                   v93 = [v80 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v88, @"visualComponentPresentationContext"];
@@ -506,7 +506,7 @@ LABEL_16:
                   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v121 forKeys:&v120 count:1];
                   v81 = [v76 initWithDomain:v90 code:2 userInfo:v21];
                   v24 = 0;
-                  *v108 = v81;
+                  *errorCopy = v81;
 LABEL_94:
 
 LABEL_95:
@@ -522,10 +522,10 @@ LABEL_96:
                 v60 = v111;
                 if (v60)
                 {
-                  if (v108)
+                  if (errorCopy)
                   {
                     v60 = v60;
-                    *v108 = v60;
+                    *errorCopy = v60;
                   }
 
                   v24 = 0;
@@ -533,27 +533,27 @@ LABEL_96:
                 }
 
                 v92 = v8;
-                v20 = self;
+                selfCopy4 = self;
               }
 
               else
               {
                 v92 = v8;
                 v93 = 0;
-                v20 = self;
+                selfCopy4 = self;
               }
 
-              v21 = [v6 objectForKeyedSubscript:@"userInteractionDetected"];
+              v21 = [dictionaryCopy objectForKeyedSubscript:@"userInteractionDetected"];
               if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v22 = 0;
 LABEL_25:
                 v23 = v107;
-                v24 = [(BMSafariBrowsingAssistant *)v20 initWithWebpageViewStarted:v92 dimensionContext:v107 bloomFilterPassed:v106 eligible:v105 webpageUrlSent:v101 serverRequestContext:v96 visualComponentPresentationContext:v93 userInteractionDetected:v22];
-                v20 = v24;
+                v24 = [(BMSafariBrowsingAssistant *)selfCopy4 initWithWebpageViewStarted:v92 dimensionContext:v107 bloomFilterPassed:v106 eligible:v105 webpageUrlSent:v101 serverRequestContext:v96 visualComponentPresentationContext:v93 userInteractionDetected:v22];
+                selfCopy4 = v24;
 LABEL_93:
 
-                self = v20;
+                self = selfCopy4;
                 v8 = v92;
                 goto LABEL_94;
               }
@@ -571,10 +571,10 @@ LABEL_93:
                   goto LABEL_25;
                 }
 
-                if (v108)
+                if (errorCopy)
                 {
                   v67 = v67;
-                  *v108 = v67;
+                  *errorCopy = v67;
                 }
 
 LABEL_92:
@@ -583,7 +583,7 @@ LABEL_92:
                 goto LABEL_93;
               }
 
-              if (v108)
+              if (errorCopy)
               {
                 v91 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v89 = *MEMORY[0x1E698F240];
@@ -591,12 +591,12 @@ LABEL_92:
                 v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"userInteractionDetected"];
                 v119 = v22;
                 v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v119 forKeys:&v118 count:1];
-                *v108 = [v91 initWithDomain:v89 code:2 userInfo:v66];
+                *errorCopy = [v91 initWithDomain:v89 code:2 userInfo:v66];
                 goto LABEL_92;
               }
 
               v24 = 0;
-              self = v20;
+              self = selfCopy4;
               v8 = v92;
 LABEL_111:
               v23 = v107;
@@ -619,10 +619,10 @@ LABEL_111:
               v98 = v42;
               v27 = v106;
               v12 = v13;
-              if (v108)
+              if (errorCopy)
               {
                 v43 = v43;
-                *v108 = v43;
+                *errorCopy = v43;
               }
 
               v24 = 0;
@@ -631,7 +631,7 @@ LABEL_111:
 
             else
             {
-              if (!v108)
+              if (!errorCopy)
               {
                 v24 = 0;
                 v27 = v106;
@@ -644,11 +644,11 @@ LABEL_111:
               v99 = objc_alloc(MEMORY[0x1E696ABC0]);
               v97 = *MEMORY[0x1E698F240];
               v124 = *MEMORY[0x1E696A578];
-              v61 = self;
+              selfCopy5 = self;
               v62 = objc_alloc(MEMORY[0x1E696AEC0]);
               v86 = objc_opt_class();
               v63 = v62;
-              self = v61;
+              self = selfCopy5;
               v23 = v107;
               v101 = [v63 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", v86, @"webpageUrlSent"];
               v125 = v101;
@@ -656,7 +656,7 @@ LABEL_111:
               v65 = v99;
               v98 = v64;
               v24 = 0;
-              *v108 = [v65 initWithDomain:v97 code:2 userInfo:?];
+              *errorCopy = [v65 initWithDomain:v97 code:2 userInfo:?];
               v27 = v106;
               v12 = v13;
             }
@@ -667,7 +667,7 @@ LABEL_97:
             goto LABEL_98;
           }
 
-          if (v108)
+          if (errorCopy)
           {
             v53 = objc_alloc(MEMORY[0x1E696ABC0]);
             v104 = *MEMORY[0x1E698F240];
@@ -685,7 +685,7 @@ LABEL_97:
             v103 = v57;
             v59 = [v53 initWithDomain:v58 code:2 userInfo:?];
             v24 = 0;
-            *v108 = v59;
+            *errorCopy = v59;
             v27 = v106;
 LABEL_98:
 
@@ -709,10 +709,10 @@ LABEL_99:
           v28 = v115;
           if (v28)
           {
-            if (v108)
+            if (errorCopy)
             {
               v28 = v28;
-              *v108 = v28;
+              *errorCopy = v28;
             }
 
             v24 = 0;
@@ -725,9 +725,9 @@ LABEL_99:
           goto LABEL_10;
         }
 
-        if (a4)
+        if (error)
         {
-          v102 = self;
+          selfCopy6 = self;
           v44 = objc_alloc(MEMORY[0x1E696ABC0]);
           v45 = *MEMORY[0x1E698F240];
           v128 = *MEMORY[0x1E696A578];
@@ -741,10 +741,10 @@ LABEL_99:
           v129 = v27;
           v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v129 forKeys:&v128 count:1];
           v49 = v44;
-          self = v102;
+          self = selfCopy6;
           v50 = [v49 initWithDomain:v45 code:2 userInfo:v12];
           v24 = 0;
-          *v108 = v50;
+          *errorCopy = v50;
           goto LABEL_99;
         }
 
@@ -755,10 +755,10 @@ LABEL_100:
         goto LABEL_101;
       }
 
-      if (a4)
+      if (error)
       {
         v26 = v26;
-        *a4 = v26;
+        *error = v26;
       }
 
       v24 = 0;
@@ -767,10 +767,10 @@ LABEL_50:
       goto LABEL_100;
     }
 
-    if (a4)
+    if (error)
     {
-      v109 = a4;
-      v37 = self;
+      errorCopy2 = error;
+      selfCopy7 = self;
       v38 = objc_alloc(MEMORY[0x1E696ABC0]);
       v39 = *MEMORY[0x1E698F240];
       v130 = *MEMORY[0x1E696A578];
@@ -778,10 +778,10 @@ LABEL_50:
       v131 = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v131 forKeys:&v130 count:1];
       v40 = v38;
-      self = v37;
+      self = selfCopy7;
       v41 = [v40 initWithDomain:v39 code:2 userInfo:v11];
       v24 = 0;
-      *v109 = v41;
+      *errorCopy2 = v41;
       goto LABEL_50;
     }
 
@@ -800,10 +800,10 @@ LABEL_101:
     v25 = v117;
     if (v25)
     {
-      if (a4)
+      if (error)
       {
         v25 = v25;
-        *a4 = v25;
+        *error = v25;
       }
 
       v24 = 0;
@@ -813,9 +813,9 @@ LABEL_101:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
-    v29 = self;
+    selfCopy8 = self;
     v30 = objc_alloc(MEMORY[0x1E696ABC0]);
     v31 = *MEMORY[0x1E698F240];
     v132 = *MEMORY[0x1E696A578];
@@ -823,11 +823,11 @@ LABEL_101:
     v133[0] = v32;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v133 forKeys:&v132 count:1];
     v33 = v30;
-    self = v29;
+    self = selfCopy8;
     v8 = v32;
     v34 = [v33 initWithDomain:v31 code:2 userInfo:v9];
     v24 = 0;
-    *a4 = v34;
+    *error = v34;
     goto LABEL_101;
   }
 
@@ -842,74 +842,74 @@ LABEL_102:
 {
   v3 = objc_opt_new();
   [(BMSafariBrowsingAssistant *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_webpageViewStarted)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantWebpageViewStarted *)self->_webpageViewStarted writeTo:v4];
+    [(BMSafariBrowsingAssistantWebpageViewStarted *)self->_webpageViewStarted writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_dimensionContext)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantDimensionContext *)self->_dimensionContext writeTo:v4];
+    [(BMSafariBrowsingAssistantDimensionContext *)self->_dimensionContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_bloomFilterPassed)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantBloomFilterPassed *)self->_bloomFilterPassed writeTo:v4];
+    [(BMSafariBrowsingAssistantBloomFilterPassed *)self->_bloomFilterPassed writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_eligible)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantEligible *)self->_eligible writeTo:v4];
+    [(BMSafariBrowsingAssistantEligible *)self->_eligible writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_webpageUrlSent)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantWebpageUrlSent *)self->_webpageUrlSent writeTo:v4];
+    [(BMSafariBrowsingAssistantWebpageUrlSent *)self->_webpageUrlSent writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_serverRequestContext)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantServerRequestContext *)self->_serverRequestContext writeTo:v4];
+    [(BMSafariBrowsingAssistantServerRequestContext *)self->_serverRequestContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_visualComponentPresentationContext)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantVisualComponentPresentationContext *)self->_visualComponentPresentationContext writeTo:v4];
+    [(BMSafariBrowsingAssistantVisualComponentPresentationContext *)self->_visualComponentPresentationContext writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_userInteractionDetected)
   {
     PBDataWriterPlaceMark();
-    [(BMSafariBrowsingAssistantUserInteractionDetected *)self->_userInteractionDetected writeTo:v4];
+    [(BMSafariBrowsingAssistantUserInteractionDetected *)self->_userInteractionDetected writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v22.receiver = self;
   v22.super_class = BMSafariBrowsingAssistant;
   v5 = [(BMEventBase *)&v22 init];
@@ -918,12 +918,12 @@ LABEL_102:
     goto LABEL_60;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -934,18 +934,18 @@ LABEL_102:
       while (1)
       {
         LOBYTE(v23) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v23 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v23 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v23 & 0x7F) << v7;
@@ -962,9 +962,9 @@ LABEL_102:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -983,7 +983,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMSafariBrowsingAssistantVisualComponentPresentationContext alloc] initByReadFrom:v4];
+            v16 = [[BMSafariBrowsingAssistantVisualComponentPresentationContext alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1002,7 +1002,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMSafariBrowsingAssistantUserInteractionDetected alloc] initByReadFrom:v4];
+            v16 = [[BMSafariBrowsingAssistantUserInteractionDetected alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1024,7 +1024,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMSafariBrowsingAssistantWebpageUrlSent alloc] initByReadFrom:v4];
+            v16 = [[BMSafariBrowsingAssistantWebpageUrlSent alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1043,7 +1043,7 @@ LABEL_16:
               goto LABEL_59;
             }
 
-            v16 = [[BMSafariBrowsingAssistantServerRequestContext alloc] initByReadFrom:v4];
+            v16 = [[BMSafariBrowsingAssistantServerRequestContext alloc] initByReadFrom:fromCopy];
             if (!v16)
             {
               goto LABEL_59;
@@ -1066,7 +1066,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMSafariBrowsingAssistantBloomFilterPassed alloc] initByReadFrom:v4];
+          v16 = [[BMSafariBrowsingAssistantBloomFilterPassed alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1085,7 +1085,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMSafariBrowsingAssistantEligible alloc] initByReadFrom:v4];
+          v16 = [[BMSafariBrowsingAssistantEligible alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1107,7 +1107,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMSafariBrowsingAssistantWebpageViewStarted alloc] initByReadFrom:v4];
+          v16 = [[BMSafariBrowsingAssistantWebpageViewStarted alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1126,7 +1126,7 @@ LABEL_16:
             goto LABEL_59;
           }
 
-          v16 = [[BMSafariBrowsingAssistantDimensionContext alloc] initByReadFrom:v4];
+          v16 = [[BMSafariBrowsingAssistantDimensionContext alloc] initByReadFrom:fromCopy];
           if (!v16)
           {
             goto LABEL_59;
@@ -1148,13 +1148,13 @@ LABEL_53:
       }
 
 LABEL_54:
-      v19 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v19 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_59:
     v20 = 0;
@@ -1172,43 +1172,43 @@ LABEL_60:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
-  v5 = [(BMSafariBrowsingAssistant *)self dimensionContext];
-  v6 = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
-  v7 = [(BMSafariBrowsingAssistant *)self eligible];
-  v8 = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
-  v9 = [(BMSafariBrowsingAssistant *)self serverRequestContext];
-  v10 = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
-  v11 = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
-  v12 = [v3 initWithFormat:@"BMSafariBrowsingAssistant with webpageViewStarted: %@, dimensionContext: %@, bloomFilterPassed: %@, eligible: %@, webpageUrlSent: %@, serverRequestContext: %@, visualComponentPresentationContext: %@, userInteractionDetected: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  webpageViewStarted = [(BMSafariBrowsingAssistant *)self webpageViewStarted];
+  dimensionContext = [(BMSafariBrowsingAssistant *)self dimensionContext];
+  bloomFilterPassed = [(BMSafariBrowsingAssistant *)self bloomFilterPassed];
+  eligible = [(BMSafariBrowsingAssistant *)self eligible];
+  webpageUrlSent = [(BMSafariBrowsingAssistant *)self webpageUrlSent];
+  serverRequestContext = [(BMSafariBrowsingAssistant *)self serverRequestContext];
+  visualComponentPresentationContext = [(BMSafariBrowsingAssistant *)self visualComponentPresentationContext];
+  userInteractionDetected = [(BMSafariBrowsingAssistant *)self userInteractionDetected];
+  v12 = [v3 initWithFormat:@"BMSafariBrowsingAssistant with webpageViewStarted: %@, dimensionContext: %@, bloomFilterPassed: %@, eligible: %@, webpageUrlSent: %@, serverRequestContext: %@, visualComponentPresentationContext: %@, userInteractionDetected: %@", webpageViewStarted, dimensionContext, bloomFilterPassed, eligible, webpageUrlSent, serverRequestContext, visualComponentPresentationContext, userInteractionDetected];
 
   return v12;
 }
 
-- (BMSafariBrowsingAssistant)initWithWebpageViewStarted:(id)a3 dimensionContext:(id)a4 bloomFilterPassed:(id)a5 eligible:(id)a6 webpageUrlSent:(id)a7 serverRequestContext:(id)a8 visualComponentPresentationContext:(id)a9 userInteractionDetected:(id)a10
+- (BMSafariBrowsingAssistant)initWithWebpageViewStarted:(id)started dimensionContext:(id)context bloomFilterPassed:(id)passed eligible:(id)eligible webpageUrlSent:(id)sent serverRequestContext:(id)requestContext visualComponentPresentationContext:(id)presentationContext userInteractionDetected:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
-  v20 = a9;
-  v17 = a10;
+  startedCopy = started;
+  contextCopy = context;
+  passedCopy = passed;
+  eligibleCopy = eligible;
+  sentCopy = sent;
+  requestContextCopy = requestContext;
+  presentationContextCopy = presentationContext;
+  detectedCopy = detected;
   v27.receiver = self;
   v27.super_class = BMSafariBrowsingAssistant;
   v18 = [(BMEventBase *)&v27 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_webpageViewStarted, a3);
-    objc_storeStrong(&v18->_dimensionContext, a4);
-    objc_storeStrong(&v18->_bloomFilterPassed, a5);
-    objc_storeStrong(&v18->_eligible, a6);
-    objc_storeStrong(&v18->_webpageUrlSent, a7);
-    objc_storeStrong(&v18->_serverRequestContext, a8);
-    objc_storeStrong(&v18->_visualComponentPresentationContext, a9);
-    objc_storeStrong(&v18->_userInteractionDetected, a10);
+    objc_storeStrong(&v18->_webpageViewStarted, started);
+    objc_storeStrong(&v18->_dimensionContext, context);
+    objc_storeStrong(&v18->_bloomFilterPassed, passed);
+    objc_storeStrong(&v18->_eligible, eligible);
+    objc_storeStrong(&v18->_webpageUrlSent, sent);
+    objc_storeStrong(&v18->_serverRequestContext, requestContext);
+    objc_storeStrong(&v18->_visualComponentPresentationContext, presentationContext);
+    objc_storeStrong(&v18->_userInteractionDetected, detected);
   }
 
   return v18;
@@ -1346,9 +1346,9 @@ id __36__BMSafariBrowsingAssistant_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1356,8 +1356,8 @@ id __36__BMSafariBrowsingAssistant_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariBrowsingAssistant alloc] initByReadFrom:v7];
     v4 = v8;

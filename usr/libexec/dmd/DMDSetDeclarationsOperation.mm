@@ -1,7 +1,7 @@
 @interface DMDSetDeclarationsOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,21 +21,21 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDTaskOperation *)self configurationEngine];
+  requestCopy = request;
+  configurationEngine = [(DMDTaskOperation *)self configurationEngine];
 
-  if (v5)
+  if (configurationEngine)
   {
     objc_initWeak(&location, self);
-    v6 = [(DMDTaskOperation *)self configurationEngine];
+    configurationEngine2 = [(DMDTaskOperation *)self configurationEngine];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10006D16C;
     v8[3] = &unk_1000CFE28;
     objc_copyWeak(&v9, &location);
-    [v6 handleSetDeclarationsRequest:v4 completionHandler:v8];
+    [configurationEngine2 handleSetDeclarationsRequest:requestCopy completionHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -48,21 +48,21 @@
   }
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v13.receiver = a1;
+  requestCopy = request;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___DMDSetDeclarationsOperation;
-  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v13, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 organizationIdentifier];
+  organizationIdentifier = [requestCopy organizationIdentifier];
 
-  if (!v7)
+  if (!organizationIdentifier)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -74,11 +74,11 @@
     goto LABEL_9;
   }
 
-  v8 = [v6 syncToken];
+  syncToken = [requestCopy syncToken];
 
-  if (!v8)
+  if (!syncToken)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -89,17 +89,17 @@
     v10 = &v14;
 LABEL_9:
     v11 = [NSDictionary dictionaryWithObjects:v9 forKeys:v10 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_10:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
 @end

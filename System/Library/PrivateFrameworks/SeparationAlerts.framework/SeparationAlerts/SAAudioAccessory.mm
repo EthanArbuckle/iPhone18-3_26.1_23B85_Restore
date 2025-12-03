@@ -1,26 +1,26 @@
 @interface SAAudioAccessory
-- (SAAudioAccessory)initWithQueue:(id)a3;
-- (int64_t)convertToSAInEarStatus:(int)a3;
+- (SAAudioAccessory)initWithQueue:(id)queue;
+- (int64_t)convertToSAInEarStatus:(int)status;
 - (int64_t)getPrimaryBudSide;
 - (void)attachBTSession;
-- (void)getInEarStatus:(int64_t *)a3 secondary:(int64_t *)a4;
+- (void)getInEarStatus:(int64_t *)status secondary:(int64_t *)secondary;
 - (void)refreshBTDevice;
 - (void)reset;
-- (void)setBTAddress:(id)a3;
+- (void)setBTAddress:(id)address;
 @end
 
 @implementation SAAudioAccessory
 
-- (SAAudioAccessory)initWithQueue:(id)a3
+- (SAAudioAccessory)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8.receiver = self;
   v8.super_class = SAAudioAccessory;
   v5 = [(SAAudioAccessory *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SAAudioAccessory *)v5 setQueue:v4];
+    [(SAAudioAccessory *)v5 setQueue:queueCopy];
     [(SAAudioAccessory *)v6 setFBTAddress:&stru_287709218];
     [(SAAudioAccessory *)v6 attachBTSession];
   }
@@ -31,7 +31,7 @@
 - (void)attachBTSession
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(SAAudioAccessory *)self queue];
+  queue = [(SAAudioAccessory *)self queue];
   v3 = BTSessionAttachWithQueue();
 
   if (v3)
@@ -50,23 +50,23 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBTAddress:(id)a3
+- (void)setBTAddress:(id)address
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (address)
   {
     [(SAAudioAccessory *)self setFBTAddress:?];
     v4 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(SAAudioAccessory *)self fBTAddress];
+      fBTAddress = [(SAAudioAccessory *)self fBTAddress];
       v9 = 68289283;
       v10 = 0;
       v11 = 2082;
       v12 = "";
       v13 = 2113;
-      v14 = v6;
+      v14 = fBTAddress;
       _os_log_impl(&dword_2656EA000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:SAAudioAccessory set BT address of the current device, address:%{private}@}", &v9, 0x1Cu);
     }
 
@@ -111,13 +111,13 @@
     goto LABEL_8;
   }
 
-  v3 = [(SAAudioAccessory *)self fBTAddress];
-  v4 = [v3 length];
+  fBTAddress = [(SAAudioAccessory *)self fBTAddress];
+  v4 = [fBTAddress length];
 
   if (v4 == 17)
   {
-    v5 = [(SAAudioAccessory *)self fBTAddress];
-    [v5 UTF8String];
+    fBTAddress2 = [(SAAudioAccessory *)self fBTAddress];
+    [fBTAddress2 UTF8String];
     v6 = BTDeviceAddressFromString();
 
     if (v6)
@@ -126,13 +126,13 @@
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
       {
         v8 = v7;
-        v9 = [(SAAudioAccessory *)self fBTAddress];
+        fBTAddress3 = [(SAAudioAccessory *)self fBTAddress];
         *buf = 68289283;
         v17 = 0;
         v18 = 2082;
         v19 = "";
         v20 = 2113;
-        v21 = v9;
+        v21 = fBTAddress3;
         v10 = "{msg%{public}.0s:SAAudioAccessory refresh device failed - failed to convert address into a valid BT address, address:%{private}@}";
 LABEL_11:
         _os_log_impl(&dword_2656EA000, v8, OS_LOG_TYPE_ERROR, v10, buf, 0x1Cu);
@@ -154,13 +154,13 @@ LABEL_11:
       }
 
       v8 = v15;
-      v9 = [(SAAudioAccessory *)self fBTAddress];
+      fBTAddress3 = [(SAAudioAccessory *)self fBTAddress];
       *buf = 68289283;
       v17 = 0;
       v18 = 2082;
       v19 = "";
       v20 = 2113;
-      v21 = v9;
+      v21 = fBTAddress3;
       v10 = "{msg%{public}.0s:SAAudioAccessory refresh device failed - Failed to get the device handle with BT address, address:%{private}@}";
       goto LABEL_11;
     }
@@ -192,13 +192,13 @@ LABEL_8:
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
   {
     v8 = v13;
-    v9 = [(SAAudioAccessory *)self fBTAddress];
+    fBTAddress3 = [(SAAudioAccessory *)self fBTAddress];
     *buf = 68289283;
     v17 = 0;
     v18 = 2082;
     v19 = "";
     v20 = 2113;
-    v21 = v9;
+    v21 = fBTAddress3;
     v10 = "{msg%{public}.0s:SAAudioAccessory refresh device failed - invalid BT address, address:%{private}@}";
     goto LABEL_11;
   }
@@ -215,28 +215,28 @@ LABEL_12:
   [(SAAudioAccessory *)self setFBTAddress:&stru_287709218];
 }
 
-- (int64_t)convertToSAInEarStatus:(int)a3
+- (int64_t)convertToSAInEarStatus:(int)status
 {
-  if (a3 >= 3)
+  if (status >= 3)
   {
     return 3;
   }
 
   else
   {
-    return a3;
+    return status;
   }
 }
 
-- (void)getInEarStatus:(int64_t *)a3 secondary:(int64_t *)a4
+- (void)getInEarStatus:(int64_t *)status secondary:(int64_t *)secondary
 {
   v28 = *MEMORY[0x277D85DE8];
-  *a3 = 3;
-  *a4 = 3;
+  *status = 3;
+  *secondary = 3;
   if ([(SAAudioAccessory *)self fBTDevice])
   {
-    v7 = [(SAAudioAccessory *)self fBTAddress];
-    v8 = [v7 length];
+    fBTAddress = [(SAAudioAccessory *)self fBTAddress];
+    v8 = [fBTAddress length];
 
     if (v8 == 17)
     {
@@ -259,18 +259,18 @@ LABEL_12:
           }
 
           v15 = 3;
-          *a3 = 3;
+          *status = 3;
         }
 
         else
         {
-          *a3 = [(SAAudioAccessory *)self convertToSAInEarStatus:0];
-          *a4 = [(SAAudioAccessory *)self convertToSAInEarStatus:0];
+          *status = [(SAAudioAccessory *)self convertToSAInEarStatus:0];
+          *secondary = [(SAAudioAccessory *)self convertToSAInEarStatus:0];
           v16 = TASALog;
           if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = *a3;
-            v18 = *a4;
+            v17 = *status;
+            v18 = *secondary;
             *buf = 68289539;
             v21 = 0;
             v22 = 2082;
@@ -282,7 +282,7 @@ LABEL_12:
             _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:SAAudioAccessory received in ear status, Primary:%{private}ld, Secondary:%{private}ld}", buf, 0x26u);
           }
 
-          if (*a3 || [(SAAudioAccessory *)self fProductID]!= 8202)
+          if (*status || [(SAAudioAccessory *)self fProductID]!= 8202)
           {
             goto LABEL_21;
           }
@@ -290,7 +290,7 @@ LABEL_12:
           v15 = 0;
         }
 
-        *a4 = v15;
+        *secondary = v15;
         goto LABEL_21;
       }
 
@@ -313,13 +313,13 @@ LABEL_8:
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
       {
         v12 = v11;
-        v13 = [(SAAudioAccessory *)self fBTAddress];
+        fBTAddress2 = [(SAAudioAccessory *)self fBTAddress];
         *buf = 68289283;
         v21 = 0;
         v22 = 2082;
         v23 = "";
         v24 = 2113;
-        v25 = v13;
+        v25 = fBTAddress2;
         _os_log_impl(&dword_2656EA000, v12, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:SAAudioAccessory in ear status - invalid BT address, address:%{private}@}", buf, 0x1Cu);
       }
     }
@@ -348,8 +348,8 @@ LABEL_21:
   v13 = *MEMORY[0x277D85DE8];
   if ([(SAAudioAccessory *)self fBTDevice])
   {
-    v3 = [(SAAudioAccessory *)self fBTAddress];
-    v4 = [v3 length];
+    fBTAddress = [(SAAudioAccessory *)self fBTAddress];
+    v4 = [fBTAddress length];
 
     if (v4 == 17)
     {

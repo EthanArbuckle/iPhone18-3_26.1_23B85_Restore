@@ -1,8 +1,8 @@
 @interface CKDRecordFetchInfo
-- (CKDRecordFetchInfo)initWithAggregator:(id)a3;
+- (CKDRecordFetchInfo)initWithAggregator:(id)aggregator;
 - (id)CKPropertiesDescription;
 - (void)performCallback;
-- (void)setState:(unint64_t)a3;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation CKDRecordFetchInfo
@@ -148,15 +148,15 @@ LABEL_4:
   return v54;
 }
 
-- (CKDRecordFetchInfo)initWithAggregator:(id)a3
+- (CKDRecordFetchInfo)initWithAggregator:(id)aggregator
 {
-  v4 = a3;
+  aggregatorCopy = aggregator;
   v14.receiver = self;
   v14.super_class = CKDRecordFetchInfo;
   v7 = [(CKDRecordFetchInfo *)&v14 init];
   if (v7)
   {
-    v8 = objc_msgSend_recordReadySource(v4, v5, v6);
+    v8 = objc_msgSend_recordReadySource(aggregatorCopy, v5, v6);
     recordReadySource = v7->_recordReadySource;
     v7->_recordReadySource = v8;
 
@@ -167,12 +167,12 @@ LABEL_4:
   return v7;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  self->_state = a3;
-  if (a3 == 3)
+  self->_state = state;
+  if (state == 3)
   {
-    v4 = objc_msgSend_recordReadySource(self, a2, a3);
+    v4 = objc_msgSend_recordReadySource(self, a2, state);
     dispatch_source_merge_data(v4, 1uLL);
   }
 }

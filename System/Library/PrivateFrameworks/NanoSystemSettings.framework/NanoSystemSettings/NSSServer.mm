@@ -1,54 +1,54 @@
 @interface NSSServer
 + (double)mirrorAirplaneSendTimeout;
 + (id)getActivePairedDeviceIDFromNanoRegistry;
-+ (void)associateProtobufHandlers:(id)a3;
-+ (void)setLaunchNotification:(id)a3 enabled:(BOOL)a4;
++ (void)associateProtobufHandlers:(id)handlers;
++ (void)setLaunchNotification:(id)notification enabled:(BOOL)enabled;
 - (BOOL)activeDeviceIsAltAccount;
 - (BOOL)isDefaultPairedDeviceNearby;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)messageIdentifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)messageIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
 - (BOOL)mirroringAirplaneMode;
-- (BOOL)scheduleTimerForIdentifier:(id)a3 requests:(id)a4 timeout:(double)a5 timeoutHandler:(id)a6 timers:(id)a7 utilityName:(id)a8;
+- (BOOL)scheduleTimerForIdentifier:(id)identifier requests:(id)requests timeout:(double)timeout timeoutHandler:(id)handler timers:(id)timers utilityName:(id)name;
 - (IDSService)idsFileTransferService;
 - (IDSService)idsService;
 - (NSSServer)init;
 - (id)getActivePairedDevice;
 - (id)initTestInstance;
-- (id)linkFileForViewing:(id)a3 metadata:(id)a4 withError:(id *)a5;
-- (id)sendLogFileAtUrl:(id)a3 toDevice:(id)a4 withOptions:(id)a5;
-- (id)sendProtobuf:(id)a3 options:(id)a4 identifier:(id *)a5;
+- (id)linkFileForViewing:(id)viewing metadata:(id)metadata withError:(id *)error;
+- (id)sendLogFileAtUrl:(id)url toDevice:(id)device withOptions:(id)options;
+- (id)sendProtobuf:(id)protobuf options:(id)options identifier:(id *)identifier;
 - (id)systemBuildVersion;
 - (void)_resetIfTheActivePairedDeviceChanges;
-- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)a3;
-- (void)cancelOrphanedFileTransfer:(id)a3;
-- (void)cancelTimerForIdentifier:(id)a3 timers:(id)a4 utilityName:(id)a5;
-- (void)connectionHandlerLostConnection:(id)a3;
+- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)handler;
+- (void)cancelOrphanedFileTransfer:(id)transfer;
+- (void)cancelTimerForIdentifier:(id)identifier timers:(id)timers utilityName:(id)name;
+- (void)connectionHandlerLostConnection:(id)connection;
 - (void)dealloc;
 - (void)earlyIvarInitialzation;
-- (void)enableAirplaneMode:(BOOL)a3 completionHandler:(id)a4;
-- (void)handleAirplaneModeMsg:(id)a3;
+- (void)enableAirplaneMode:(BOOL)mode completionHandler:(id)handler;
+- (void)handleAirplaneModeMsg:(id)msg;
 - (void)handleMemoryPressureEvent;
-- (void)handleNotifyRemoteDeviceOfUsageAfterSetupRequestMsg:(id)a3;
-- (void)handleRemotePasscodeLockRequestMsg:(id)a3;
+- (void)handleNotifyRemoteDeviceOfUsageAfterSetupRequestMsg:(id)msg;
+- (void)handleRemotePasscodeLockRequestMsg:(id)msg;
 - (void)listenToNanoRegistryAndResetIfTheActivePairedDeviceChanges;
-- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)a3;
+- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)setup;
 - (void)resetIfTheActivePairedDeviceChanges;
-- (void)sendFileTransfer:(id)a3 progress:(unint64_t)a4;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 sentBytes:(int64_t)a6 totalBytes:(int64_t)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
+- (void)sendFileTransfer:(id)transfer progress:(unint64_t)progress;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account identifier:(id)identifier sentBytes:(int64_t)bytes totalBytes:(int64_t)totalBytes;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
 @end
 
 @implementation NSSServer
 
-+ (void)setLaunchNotification:(id)a3 enabled:(BOOL)a4
++ (void)setLaunchNotification:(id)notification enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  enabledCopy = enabled;
+  notificationCopy = notification;
+  if (enabledCopy)
   {
     v6 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_string(v6, "Notification", [v5 UTF8String]);
+    xpc_dictionary_set_string(v6, "Notification", [notificationCopy UTF8String]);
   }
 
   else
@@ -60,7 +60,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"disabling";
-    if (v4)
+    if (enabledCopy)
     {
       v8 = @"enabling";
     }
@@ -68,11 +68,11 @@
     v9 = 138412546;
     v10 = v8;
     v11 = 2112;
-    v12 = v5;
+    v12 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "setLaunchNotification: %@ launch notification %@", &v9, 0x16u);
   }
 
-  [v5 UTF8String];
+  [notificationCopy UTF8String];
   xpc_set_event();
 }
 
@@ -81,9 +81,9 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:NRDevicePropertyPairingID];
+  v6 = [firstObject valueForProperty:NRDevicePropertyPairingID];
 
   return v6;
 }
@@ -93,9 +93,9 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  v6 = [v5 valueForProperty:NRDevicePropertyIsAltAccount];
+  v6 = [firstObject valueForProperty:NRDevicePropertyIsAltAccount];
   LOBYTE(v3) = [v6 BOOLValue];
 
   return v3;
@@ -109,9 +109,9 @@
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"resetIfTheActivePairedDeviceChanges" name:NRPairedDeviceRegistryDeviceDidBecomeInactive object:0];
 
-  v5 = [objc_opt_class() getActivePairedDeviceIDFromNanoRegistry];
+  getActivePairedDeviceIDFromNanoRegistry = [objc_opt_class() getActivePairedDeviceIDFromNanoRegistry];
   activeDeviceID = self->_activeDeviceID;
-  self->_activeDeviceID = v5;
+  self->_activeDeviceID = getActivePairedDeviceIDFromNanoRegistry;
 
   _objc_release_x1();
 }
@@ -129,8 +129,8 @@
 
 - (void)_resetIfTheActivePairedDeviceChanges
 {
-  v3 = [objc_opt_class() getActivePairedDeviceIDFromNanoRegistry];
-  if (self->_activeDeviceID != v3)
+  getActivePairedDeviceIDFromNanoRegistry = [objc_opt_class() getActivePairedDeviceIDFromNanoRegistry];
+  if (self->_activeDeviceID != getActivePairedDeviceIDFromNanoRegistry)
   {
     v4 = NSSLogForType();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -139,11 +139,11 @@
       v6 = 138543618;
       v7 = activeDeviceID;
       v8 = 2114;
-      v9 = v3;
+      v9 = getActivePairedDeviceIDFromNanoRegistry;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Resetting because the active paired device changed from %{public}@ to %{public}@", &v6, 0x16u);
     }
 
-    objc_storeStrong(&self->_activeDeviceID, v3);
+    objc_storeStrong(&self->_activeDeviceID, getActivePairedDeviceIDFromNanoRegistry);
     [(NSSServer *)self resetBecauseTheActivePairedDeviceChanged];
   }
 }
@@ -264,12 +264,12 @@
   return v3;
 }
 
-+ (void)associateProtobufHandlers:(id)a3
++ (void)associateProtobufHandlers:(id)handlers
 {
-  v3 = a3;
-  [v3 setProtobufAction:"handleAirplaneModeMsg:" forIncomingRequestsOfType:0];
-  [v3 setProtobufAction:"handleRemotePasscodeLockRequestMsg:" forIncomingRequestsOfType:41];
-  [v3 setProtobufAction:"handleNotifyRemoteDeviceOfUsageAfterSetupRequestMsg:" forIncomingRequestsOfType:42];
+  handlersCopy = handlers;
+  [handlersCopy setProtobufAction:"handleAirplaneModeMsg:" forIncomingRequestsOfType:0];
+  [handlersCopy setProtobufAction:"handleRemotePasscodeLockRequestMsg:" forIncomingRequestsOfType:41];
+  [handlersCopy setProtobufAction:"handleNotifyRemoteDeviceOfUsageAfterSetupRequestMsg:" forIncomingRequestsOfType:42];
 }
 
 - (IDSService)idsService
@@ -316,10 +316,10 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSSServer *)self idsService];
-  v3 = [v2 devices];
+  idsService = [(NSSServer *)self idsService];
+  devices = [idsService devices];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  v4 = [devices countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -329,7 +329,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -340,7 +340,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v4 = [devices countByEnumeratingWithState:&v10 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -363,22 +363,22 @@ LABEL_11:
   return v4;
 }
 
-- (id)linkFileForViewing:(id)a3 metadata:(id)a4 withError:(id *)a5
+- (id)linkFileForViewing:(id)viewing metadata:(id)metadata withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  viewingCopy = viewing;
+  metadataCopy = metadata;
   v9 = +[NSFileManager defaultManager];
-  v48 = v7;
-  v10 = [(__CFString *)v7 relativePath];
-  v46 = [v10 lastPathComponent];
-  v47 = v10;
-  v11 = [v10 stringByReplacingOccurrencesOfString:? withString:?];
+  v48 = viewingCopy;
+  relativePath = [(__CFString *)viewingCopy relativePath];
+  lastPathComponent = [relativePath lastPathComponent];
+  v47 = relativePath;
+  v11 = [relativePath stringByReplacingOccurrencesOfString:? withString:?];
   v52 = 0;
   v12 = [v9 contentsOfDirectoryAtPath:v11 error:&v52];
   v13 = v52;
-  v14 = [v12 firstObject];
+  firstObject = [v12 firstObject];
   v45 = v11;
-  v15 = [v11 stringByAppendingPathComponent:v14];
+  v15 = [v11 stringByAppendingPathComponent:firstObject];
 
   if (v13)
   {
@@ -391,8 +391,8 @@ LABEL_11:
     }
   }
 
-  v17 = [(NSSServer *)self getActivePairedDevice];
-  v18 = [v17 valueForProperty:NRDevicePropertyPairingID];
+  getActivePairedDevice = [(NSSServer *)self getActivePairedDevice];
+  v18 = [getActivePairedDevice valueForProperty:NRDevicePropertyPairingID];
 
   v19 = NSSLogForType();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -402,8 +402,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "pairing id: %@", buf, 0xCu);
   }
 
-  v20 = [(__CFString *)v18 UUIDString];
-  v21 = [@"/var/mobile/tmp/BridgeDiagnosticLogs/" stringByAppendingPathComponent:v20];
+  uUIDString = [(__CFString *)v18 UUIDString];
+  v21 = [@"/var/mobile/tmp/BridgeDiagnosticLogs/" stringByAppendingPathComponent:uUIDString];
 
   if (([v9 fileExistsAtPath:@"/var/mobile/tmp/BridgeDiagnosticLogs/"] & 1) == 0)
   {
@@ -445,10 +445,10 @@ LABEL_11:
     }
   }
 
-  v28 = [v8 objectForKey:@"originalFilePath"];
-  v29 = [v28 lastPathComponent];
+  v28 = [metadataCopy objectForKey:@"originalFilePath"];
+  lastPathComponent2 = [v28 lastPathComponent];
 
-  v30 = [(__CFString *)v21 stringByAppendingPathComponent:v29];
+  v30 = [(__CFString *)v21 stringByAppendingPathComponent:lastPathComponent2];
   v31 = v30;
   v32 = v15;
   if (!v15 || !v30)
@@ -464,12 +464,12 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Can't copy file; transferred file path and/or destination path is nil\nTransferred File: %@\nNew Path: %@", buf, 0x16u);
     }
 
-    v34 = v8;
+    v34 = metadataCopy;
 
-    if (a5)
+    if (error)
     {
       [NSError errorWithDomain:@"NSSErrorDomain" code:12 userInfo:0];
-      *a5 = v37 = 0;
+      *error = v37 = 0;
       goto LABEL_33;
     }
 
@@ -477,17 +477,17 @@ LABEL_11:
   }
 
   v33 = v13;
-  v34 = v8;
+  v34 = metadataCopy;
   v49 = 0;
   v35 = [v9 moveItemAtPath:v32 toPath:v30 error:&v49];
   v36 = v49;
   v37 = v36;
   if (!v35)
   {
-    if (a5)
+    if (error)
     {
       v40 = v36;
-      *a5 = v37;
+      *error = v37;
     }
 
     v41 = NSSLogForType();
@@ -528,19 +528,19 @@ LABEL_33:
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)sendProtobuf:(id)a3 options:(id)a4 identifier:(id *)a5
+- (id)sendProtobuf:(id)protobuf options:(id)options identifier:(id *)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  protobufCopy = protobuf;
+  optionsCopy = options;
   [(NSSServer *)self _resetIfTheActivePairedDeviceChanges];
-  v9 = [[NSMutableDictionary alloc] initWithDictionary:v8];
+  v9 = [[NSMutableDictionary alloc] initWithDictionary:optionsCopy];
   v10 = IDSSendMessageOptionTimeoutKey;
-  v11 = [v8 objectForKeyedSubscript:IDSSendMessageOptionTimeoutKey];
+  v11 = [optionsCopy objectForKeyedSubscript:IDSSendMessageOptionTimeoutKey];
   v12 = v11;
   if (!v11 || ([v11 doubleValue], v13 == 0.0))
   {
@@ -548,7 +548,7 @@ LABEL_33:
     [v9 setObject:v14 forKeyedSubscript:v10];
   }
 
-  v15 = [v8 objectForKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
+  v15 = [optionsCopy objectForKeyedSubscript:IDSSendMessageOptionPeerResponseIdentifierKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -937,13 +937,13 @@ LABEL_33:
   }
 
   v17 = v15 != 0;
-  v18 = [v7 data];
-  v19 = [[IDSProtobuf alloc] initWithProtobufData:v18 type:v16 isResponse:v17];
-  v20 = [(NSSServer *)self idsService];
+  data = [protobufCopy data];
+  v19 = [[IDSProtobuf alloc] initWithProtobufData:data type:v16 isResponse:v17];
+  idsService = [(NSSServer *)self idsService];
   v21 = [NSSet setWithObject:IDSDefaultPairedDevice];
   v33 = 0;
   v34 = 0;
-  [v20 sendProtobuf:v19 toDestinations:v21 priority:300 options:v8 identifier:&v34 error:&v33];
+  [idsService sendProtobuf:v19 toDestinations:v21 priority:300 options:optionsCopy identifier:&v34 error:&v33];
   v22 = v34;
   v23 = v33;
 
@@ -956,7 +956,7 @@ LABEL_33:
       goto LABEL_96;
     }
 
-    v26 = [v18 length];
+    v26 = [data length];
     *buf = 134218242;
     v36 = v26;
     v37 = 2112;
@@ -971,7 +971,7 @@ LABEL_33:
       goto LABEL_96;
     }
 
-    v28 = [v18 length];
+    v28 = [data length];
     *buf = 138412546;
     v36 = v22;
     v37 = 2048;
@@ -982,10 +982,10 @@ LABEL_33:
   _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, v27, buf, 0x16u);
 LABEL_96:
 
-  if (a5)
+  if (identifier)
   {
     v29 = v22;
-    *a5 = v22;
+    *identifier = v22;
   }
 
   v30 = v23;
@@ -993,23 +993,23 @@ LABEL_96:
   return v23;
 }
 
-- (id)sendLogFileAtUrl:(id)a3 toDevice:(id)a4 withOptions:(id)a5
+- (id)sendLogFileAtUrl:(id)url toDevice:(id)device withOptions:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  urlCopy = url;
+  deviceCopy = device;
+  optionsCopy = options;
   if (!self->_fileTransferInProgress)
   {
     [(NSSServer *)self setFileTransferInProgress:1];
   }
 
-  v11 = [(NSSServer *)self idsFileTransferService];
-  v12 = [v8 relativePath];
-  v13 = [NSDictionary dictionaryWithObject:v12 forKey:@"originalFilePath"];
+  idsFileTransferService = [(NSSServer *)self idsFileTransferService];
+  relativePath = [urlCopy relativePath];
+  v13 = [NSDictionary dictionaryWithObject:relativePath forKey:@"originalFilePath"];
 
   v23 = 0;
   v24 = 0;
-  v14 = [v11 sendResourceAtURL:v8 metadata:v13 toDestinations:v9 priority:300 options:v10 identifier:&v24 error:&v23];
+  v14 = [idsFileTransferService sendResourceAtURL:urlCopy metadata:v13 toDestinations:deviceCopy priority:300 options:optionsCopy identifier:&v24 error:&v23];
   v15 = v24;
   v16 = v23;
   v17 = NSSLogForType();
@@ -1024,7 +1024,7 @@ LABEL_96:
 
     v26 = v18;
     v27 = 2112;
-    v28 = v8;
+    v28 = urlCopy;
     v29 = 2112;
     v30 = v15;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "result: %@ for file %@ with id: %@", buf, 0x20u);
@@ -1032,36 +1032,36 @@ LABEL_96:
 
   if (v16)
   {
-    v19 = NSSLogForType();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    logTranferIdentifiers = NSSLogForType();
+    if (os_log_type_enabled(logTranferIdentifiers, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v26 = v16;
-      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "error while sending resource error: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logTranferIdentifiers, OS_LOG_TYPE_DEFAULT, "error while sending resource error: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v19 = [(NSSServer *)self logTranferIdentifiers];
-    v20 = [v8 lastPathComponent];
-    [v19 setObject:v20 forKey:v15];
+    logTranferIdentifiers = [(NSSServer *)self logTranferIdentifiers];
+    lastPathComponent = [urlCopy lastPathComponent];
+    [logTranferIdentifiers setObject:lastPathComponent forKey:v15];
   }
 
   v21 = v15;
   return v15;
 }
 
-- (BOOL)scheduleTimerForIdentifier:(id)a3 requests:(id)a4 timeout:(double)a5 timeoutHandler:(id)a6 timers:(id)a7 utilityName:(id)a8
+- (BOOL)scheduleTimerForIdentifier:(id)identifier requests:(id)requests timeout:(double)timeout timeoutHandler:(id)handler timers:(id)timers utilityName:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v29 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (v15)
+  identifierCopy = identifier;
+  requestsCopy = requests;
+  handlerCopy = handler;
+  timersCopy = timers;
+  nameCopy = name;
+  if (requestsCopy)
   {
-    v18 = [v15 objectForKey:v14];
+    v18 = [requestsCopy objectForKey:identifierCopy];
     if (!v18)
     {
       v27 = 0;
@@ -1072,9 +1072,9 @@ LABEL_96:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      *&buf[4] = v14;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v17;
+      *&buf[14] = nameCopy;
       *&buf[22] = 2048;
       v40 = v18;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Found replyBlock for identifier (%@) in container (%@): (%p)", buf, 0x20u);
@@ -1087,21 +1087,21 @@ LABEL_96:
   }
 
   v20 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_idsQueue);
-  v21 = dispatch_time(0, (a5 * 1000000000.0));
+  v21 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v20, v21, 0xFFFFFFFFFFFFFFFFLL, 0);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10001A288;
   handler[3] = &unk_100035100;
-  v22 = v14;
+  v22 = identifierCopy;
   v32 = v22;
-  v33 = v17;
+  v33 = nameCopy;
   v23 = v20;
   v34 = v23;
-  v35 = v15;
-  v24 = v16;
+  v35 = requestsCopy;
+  v24 = timersCopy;
   v36 = v24;
-  v38 = v29;
+  v38 = handlerCopy;
   v25 = v18;
   v37 = v25;
   dispatch_source_set_event_handler(v23, handler);
@@ -1129,95 +1129,95 @@ LABEL_9:
   return v27;
 }
 
-- (void)cancelTimerForIdentifier:(id)a3 timers:(id)a4 utilityName:(id)a5
+- (void)cancelTimerForIdentifier:(id)identifier timers:(id)timers utilityName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && v8)
+  identifierCopy = identifier;
+  timersCopy = timers;
+  nameCopy = name;
+  if (identifierCopy && timersCopy)
   {
-    v10 = [v8 objectForKey:v7];
+    v10 = [timersCopy objectForKey:identifierCopy];
     if (v10)
     {
       v11 = NSSLogForType();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412802;
-        v13 = v7;
+        v13 = identifierCopy;
         v14 = 2112;
-        v15 = v9;
+        v15 = nameCopy;
         v16 = 2048;
         v17 = v10;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Found timerSource for identifier (%@) in container (%@): (%p)", &v12, 0x20u);
       }
 
       dispatch_source_cancel(v10);
-      [v8 removeObjectForKey:v7];
+      [timersCopy removeObjectForKey:identifierCopy];
     }
   }
 }
 
-- (void)cancelOrphanedFileTransfer:(id)a3
+- (void)cancelOrphanedFileTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = [(NSSServer *)self idsFileTransferService];
+  transferCopy = transfer;
+  idsFileTransferService = [(NSSServer *)self idsFileTransferService];
   v8 = 0;
-  [v5 cancelIdentifier:v4 error:&v8];
+  [idsFileTransferService cancelIdentifier:transferCopy error:&v8];
   v6 = v8;
   v7 = NSSLogForType();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v4;
+    v10 = transferCopy;
     v11 = 2112;
     v12 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "IDS service is tranferring a file, but it was not ordered, cancelled identifier %@ with error: %@", buf, 0x16u);
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 sentBytes:(int64_t)a6 totalBytes:(int64_t)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier sentBytes:(int64_t)bytes totalBytes:(int64_t)totalBytes
 {
-  v10 = a5;
+  identifierCopy = identifier;
   v11 = NSSLogForType();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(NSSServer *)self fileTransferInProgress];
+    fileTransferInProgress = [(NSSServer *)self fileTransferInProgress];
     v13 = @"NO";
     *v20 = 138413058;
-    *&v20[4] = v10;
+    *&v20[4] = identifierCopy;
     *&v20[12] = 2048;
-    if (v12)
+    if (fileTransferInProgress)
     {
       v13 = @"YES";
     }
 
-    *&v20[14] = a6;
+    *&v20[14] = bytes;
     v21 = 2048;
-    v22 = a7;
+    totalBytesCopy = totalBytes;
     v23 = 2112;
     v24 = v13;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Delegate called for progress message %@ with sentBytes %ld and totalBytes %ld with file transfer in progress: %@", v20, 0x2Au);
   }
 
-  v14 = [(NSSServer *)self logTranferIdentifiers];
-  v15 = [v14 objectForKey:v10];
+  logTranferIdentifiers = [(NSSServer *)self logTranferIdentifiers];
+  v15 = [logTranferIdentifiers objectForKey:identifierCopy];
 
   if (v15)
   {
-    v16 = [(NSSServer *)self logTranferIdentifiers];
-    v17 = [v16 objectForKey:v10];
+    logTranferIdentifiers2 = [(NSSServer *)self logTranferIdentifiers];
+    v17 = [logTranferIdentifiers2 objectForKey:identifierCopy];
 
-    if (a6 == a7)
+    if (bytes == totalBytes)
     {
-      v18 = [(NSSServer *)self logTranferIdentifiers];
-      [v18 removeObjectForKey:v10];
+      logTranferIdentifiers3 = [(NSSServer *)self logTranferIdentifiers];
+      [logTranferIdentifiers3 removeObjectForKey:identifierCopy];
 
       v19 = 100;
     }
 
     else
     {
-      v19 = vcvtas_u32_f32((a6 / a7) * 100.0);
+      v19 = vcvtas_u32_f32((bytes / totalBytes) * 100.0);
     }
 
     [(NSSServer *)self sendFileTransfer:v17 progress:v19, *v20];
@@ -1225,31 +1225,31 @@ LABEL_9:
 
   else
   {
-    [(NSSServer *)self cancelOrphanedFileTransfer:v10];
+    [(NSSServer *)self cancelOrphanedFileTransfer:identifierCopy];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a8;
-  v15 = a6;
+  serviceCopy = service;
+  lCopy = l;
+  contextCopy = context;
+  metadataCopy = metadata;
   v16 = NSSLogForType();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v14 incomingResponseIdentifier];
+    incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
     *buf = 138412802;
-    v24 = v13;
+    v24 = lCopy;
     v25 = 2112;
-    v26 = v12;
+    v26 = serviceCopy;
     v27 = 2112;
-    v28 = v17;
+    v28 = incomingResponseIdentifier;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Delegate called for incoming resource at URL file downloaded to: %@ on service: %@ with identifier: %@", buf, 0x20u);
   }
 
   v22 = 0;
-  v18 = [(NSSServer *)self linkFileForViewing:v13 metadata:v15 withError:&v22];
+  v18 = [(NSSServer *)self linkFileForViewing:lCopy metadata:metadataCopy withError:&v22];
 
   v19 = v22;
   if (v19)
@@ -1258,77 +1258,77 @@ LABEL_9:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v13;
+      v24 = lCopy;
       v25 = 2112;
       v26 = v19;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Error when linking file %@ with error: %@", buf, 0x16u);
     }
   }
 
-  v21 = [v14 incomingResponseIdentifier];
-  [(NSSServer *)self handleIncomingDiagnosticLogFile:v18 withContext:v21];
+  incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+  [(NSSServer *)self handleIncomingDiagnosticLogFile:v18 withContext:incomingResponseIdentifier2];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
   v14 = NSSLogForType();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138413058;
-    v16 = v10;
+    v16 = serviceCopy;
     v17 = 2112;
-    v18 = v11;
+    v18 = accountCopy;
     v19 = 2112;
-    v20 = v12;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = v13;
+    v22 = contextCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "service: (%@), account: (%@), identifier: (%@), context: (%@)", &v15, 0x2Au);
   }
 
-  [(NSSServer *)self messageIdentifier:v12 hasBeenDeliveredWithContext:v13];
+  [(NSSServer *)self messageIdentifier:identifierCopy hasBeenDeliveredWithContext:contextCopy];
 }
 
-- (BOOL)messageIdentifier:(id)a3 didSendWithSuccess:(BOOL)a4 error:(id)a5
+- (BOOL)messageIdentifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_airplaneModeDeliveryTimers objectForKey:v8];
+  identifierCopy = identifier;
+  errorCopy = error;
+  v10 = [(NSMutableDictionary *)self->_airplaneModeDeliveryTimers objectForKey:identifierCopy];
 
   if (!v10)
   {
     goto LABEL_12;
   }
 
-  [(NSSServer *)self cancelTimerForIdentifier:v8 timers:self->_airplaneModeDeliveryTimers utilityName:@"airplane"];
-  v11 = [(NSMutableDictionary *)self->_airplaneModeEnabledTracking objectForKey:v8];
+  [(NSSServer *)self cancelTimerForIdentifier:identifierCopy timers:self->_airplaneModeDeliveryTimers utilityName:@"airplane"];
+  v11 = [(NSMutableDictionary *)self->_airplaneModeEnabledTracking objectForKey:identifierCopy];
 
   if (v11)
   {
-    v12 = [(NSMutableDictionary *)self->_airplaneModeEnabledTracking objectForKey:v8];
+    v12 = [(NSMutableDictionary *)self->_airplaneModeEnabledTracking objectForKey:identifierCopy];
     LOBYTE(v11) = [v12 BOOLValue];
 
-    [(NSMutableDictionary *)self->_airplaneModeEnabledTracking removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_airplaneModeEnabledTracking removeObjectForKey:identifierCopy];
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
     goto LABEL_11;
   }
 
-  v13 = [v9 domain];
-  if (([v13 isEqualToString:IDSErrorDomain] & 1) == 0)
+  domain = [errorCopy domain];
+  if (([domain isEqualToString:IDSErrorDomain] & 1) == 0)
   {
 
     goto LABEL_11;
   }
 
-  v14 = [v9 code];
+  code = [errorCopy code];
 
-  if (v14 != 24)
+  if (code != 24)
   {
 LABEL_11:
     *&buf = 0;
@@ -1344,11 +1344,11 @@ LABEL_11:
     block[1] = 3221225472;
     block[2] = sub_10001AEBC;
     block[3] = &unk_100035150;
-    v23 = a4;
+    successCopy = success;
     block[4] = self;
     v24 = v11;
-    v20 = v8;
-    v21 = v9;
+    v20 = identifierCopy;
+    v21 = errorCopy;
     p_buf = &buf;
     dispatch_async(airplaneModeQueue, block);
 
@@ -1360,7 +1360,7 @@ LABEL_11:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Skipping handling of Airplane mode IDS mesasge as it got replaced (%@)", &buf, 0xCu);
   }
 
@@ -1368,20 +1368,20 @@ LABEL_12:
   return v10 != 0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = NSSLogForType();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v14 = v5;
+    v14 = connectionCopy;
     v15 = 1024;
-    v16 = [v5 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "New connection (%p) received from process: (%d)", buf, 0x12u);
   }
 
-  v7 = [(NSSServer *)self acceptConnection:v5];
+  v7 = [(NSSServer *)self acceptConnection:connectionCopy];
   connectionHandlersQueue = self->_connectionHandlersQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1395,15 +1395,15 @@ LABEL_12:
   return 1;
 }
 
-- (void)connectionHandlerLostConnection:(id)a3
+- (void)connectionHandlerLostConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 connection];
+    connection = [connectionCopy connection];
     *buf = 134217984;
-    v12 = v6;
+    v12 = connection;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Connection invalidated: (%p)", buf, 0xCu);
   }
 
@@ -1413,29 +1413,29 @@ LABEL_12:
   v9[2] = sub_10001B2A0;
   v9[3] = &unk_100035178;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = connectionCopy;
+  v8 = connectionCopy;
   dispatch_barrier_sync(connectionHandlersQueue, v9);
 }
 
-- (void)enableAirplaneMode:(BOOL)a3 completionHandler:(id)a4
+- (void)enableAirplaneMode:(BOOL)mode completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  modeCopy = mode;
+  handlerCopy = handler;
   v7 = NSSLogForType();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = objc_retainBlock(v6);
+    v8 = objc_retainBlock(handlerCopy);
     *buf = 67109376;
-    *&buf[4] = v4;
+    *&buf[4] = modeCopy;
     LOWORD(v16) = 2048;
     *(&v16 + 2) = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Enabling Airplane Mode: (%d), completionHandler: (%p)", buf, 0x12u);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   v9 = objc_opt_new();
@@ -1455,16 +1455,16 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_10001B4B4;
   block[3] = &unk_1000351A0;
-  v14 = v4;
+  v14 = modeCopy;
   block[4] = self;
   block[5] = buf;
   dispatch_async(airplaneModeQueue, block);
   _Block_object_dispose(buf, 8);
 }
 
-- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)a3
+- (void)askRemoteDeviceToPasscodeLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_opt_new();
   v9 = 0;
   v6 = [(NSSServer *)self sendMessage:v5 identifier:&v9 sendTimeout:0 wantsAcknowledgement:@"remote-passcode-lock" queueOneIdentifier:0 overBluetoothOnly:10.0];
@@ -1480,10 +1480,10 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Asked remote device to passcode lock with send identifier: %@ and error: %@", buf, 0x16u);
   }
 
-  v4[2](v4, v6 == 0, v6);
+  handlerCopy[2](handlerCopy, v6 == 0, v6);
 }
 
-- (void)handleRemotePasscodeLockRequestMsg:(id)a3
+- (void)handleRemotePasscodeLockRequestMsg:(id)msg
 {
   v3 = +[MCProfileConnection sharedConnection];
   [v3 lockDeviceImmediately:1];
@@ -1496,9 +1496,9 @@ LABEL_12:
   }
 }
 
-- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)a3
+- (void)notifyRemoteDeviceOfUsageAfterSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   v5 = objc_opt_new();
   v9 = 0;
   v6 = [(NSSServer *)self sendMessage:v5 identifier:&v9 sendTimeout:0 wantsAcknowledgement:@"device-in-use" queueOneIdentifier:0 overBluetoothOnly:10.0];
@@ -1514,12 +1514,12 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Asked remote device to notify of use: %@ and error: %@", buf, 0x16u);
   }
 
-  v4[2](v4, v6 == 0, v6);
+  setupCopy[2](setupCopy, v6 == 0, v6);
 }
 
-- (void)handleNotifyRemoteDeviceOfUsageAfterSetupRequestMsg:(id)a3
+- (void)handleNotifyRemoteDeviceOfUsageAfterSetupRequestMsg:(id)msg
 {
-  v4 = a3;
+  msgCopy = msg;
   v5 = NSSLogForType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1527,20 +1527,20 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handle notify remote device of usage after setup request!", buf, 2u);
   }
 
-  v6 = [(NSSServer *)self endBridgeLiveActivity];
+  endBridgeLiveActivity = [(NSSServer *)self endBridgeLiveActivity];
   v7 = NSSLogForType();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v18 = v6;
+    v18 = endBridgeLiveActivity;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Did end Bridge Live Activity? %{BOOL}d", buf, 8u);
   }
 
-  v8 = [v4 context];
+  context = [msgCopy context];
 
-  v9 = [v8 fromID];
+  fromID = [context fromID];
   v15[1] = @"date";
-  v16[0] = v9;
+  v16[0] = fromID;
   v10 = +[NSDate date];
   [v10 timeIntervalSince1970];
   v11 = [NSNumber numberWithDouble:?];
@@ -1557,7 +1557,7 @@ LABEL_12:
 - (BOOL)mirroringAirplaneMode
 {
   v2 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nano"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v7 = 0;
   v4 = [v2 BOOLForKey:@"mirror-airplane" keyExistsAndHasValidFormat:&v7];
   v5 = v7 & v4;
@@ -1565,19 +1565,19 @@ LABEL_12:
   return v5 & 1;
 }
 
-- (void)handleAirplaneModeMsg:(id)a3
+- (void)handleAirplaneModeMsg:(id)msg
 {
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 outgoingResponseIdentifier];
+  msgCopy = msg;
+  context = [msgCopy context];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
 
   v7 = NSSLogForType();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = v4;
+    *&buf[4] = msgCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = outgoingResponseIdentifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "idsProtobuf: (%p); outgoingResponseIdentifier: (%@)", buf, 0x16u);
   }
 
@@ -1585,8 +1585,8 @@ LABEL_12:
   {
     v8 = objc_opt_new();
     v9 = [PBDataReader alloc];
-    v10 = [v4 data];
-    v11 = [v9 initWithData:v10];
+    data = [msgCopy data];
+    v11 = [v9 initWithData:data];
 
     v12 = NSSAirplaneModeMsgReadFrom();
     v13 = NSSLogForType();
@@ -1595,9 +1595,9 @@ LABEL_12:
     {
       if (v14)
       {
-        v15 = [v8 enabled];
+        enabled = [v8 enabled];
         *buf = 67109120;
-        *&buf[4] = v15;
+        *&buf[4] = enabled;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received Airplane Mode request (%d)", buf, 8u);
       }
 
@@ -1659,12 +1659,12 @@ LABEL_12:
   return result;
 }
 
-- (void)sendFileTransfer:(id)a3 progress:(unint64_t)a4
+- (void)sendFileTransfer:(id)transfer progress:(unint64_t)progress
 {
-  v6 = a3;
+  transferCopy = transfer;
   v7 = objc_opt_new();
-  [v7 setPath:v6];
-  [v7 setProgress:a4];
+  [v7 setPath:transferCopy];
+  [v7 setProgress:progress];
   v11 = 0;
   v8 = [(NSSServer *)self sendProtobuf:v7 options:0 identifier:&v11];
   v9 = v11;
@@ -1672,9 +1672,9 @@ LABEL_12:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v13 = v6;
+    v13 = transferCopy;
     v14 = 2048;
-    v15 = a4;
+    progressCopy = progress;
     v16 = 2112;
     v17 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Sent file transfer progress message for file: %@ with progress: %lu with id: %@", buf, 0x20u);

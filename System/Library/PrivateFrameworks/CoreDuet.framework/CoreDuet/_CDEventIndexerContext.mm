@@ -14,9 +14,9 @@
   v2 = [(_CDEventIndexerContext *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     indexDate = v2->_indexDate;
-    v2->_indexDate = v3;
+    v2->_indexDate = date;
 
     v5 = os_transaction_create();
     transaction = v2->_transaction;
@@ -28,18 +28,18 @@
 
 - (uint64_t)isBookmarkValid
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     if (v3)
     {
       v3 = *(v3 + 32);
     }
 
-    if (*(a1 + 16) == v3)
+    if (*(self + 16) == v3)
     {
-      v4 = *(a1 + 8);
+      v4 = *(self + 8);
       v5 = v4;
       if (v4)
       {
@@ -52,15 +52,15 @@
       }
 
       v7 = v6;
-      v8 = *(v2 + 40);
+      v8 = *(selfCopy + 40);
       if ([OUTLINED_FUNCTION_4_17() compare:?] == 1)
       {
-        v2 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        v9 = *(v2 + 8);
+        v9 = *(selfCopy + 8);
         if (v9)
         {
           v10 = v9[2];
@@ -71,10 +71,10 @@
           v10 = 0;
         }
 
-        v11 = *(v2 + 40);
+        v11 = *(selfCopy + 40);
         v12 = v10;
         v13 = v9;
-        v2 = [v12 compare:v11] != 1;
+        selfCopy = [v12 compare:v11] != 1;
       }
     }
 
@@ -84,23 +84,23 @@
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)isBookmarkValidInRecoverableThreshold
 {
-  v2 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v3 = *(a1 + 8);
+    v3 = *(self + 8);
     if (v3)
     {
       v3 = *(v3 + 32);
     }
 
-    if (*(a1 + 16) == v3)
+    if (*(self + 16) == v3)
     {
-      v4 = *(a1 + 8);
+      v4 = *(self + 8);
       v5 = v4;
       if (v4)
       {
@@ -113,16 +113,16 @@
       }
 
       v7 = v6;
-      v8 = *(v2 + 40);
+      v8 = *(selfCopy + 40);
       [OUTLINED_FUNCTION_4_17() timeIntervalSinceDate:?];
       if (v9 >= 86400.0)
       {
-        v2 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        v10 = *(v2 + 8);
+        v10 = *(selfCopy + 8);
         if (v10)
         {
           v11 = v10[2];
@@ -133,11 +133,11 @@
           v11 = 0;
         }
 
-        v12 = *(v2 + 40);
+        v12 = *(selfCopy + 40);
         v13 = v11;
         v14 = v10;
         [v13 timeIntervalSinceDate:v12];
-        v2 = v15 < 86400.0;
+        selfCopy = v15 < 86400.0;
       }
     }
 
@@ -147,7 +147,7 @@
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)description

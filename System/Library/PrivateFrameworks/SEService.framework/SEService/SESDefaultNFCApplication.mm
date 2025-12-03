@@ -1,23 +1,23 @@
 @interface SESDefaultNFCApplication
-- (SESDefaultNFCApplication)initWithBundleId:(id)a3 displayName:(id)a4 rawDomain:(id)a5;
+- (SESDefaultNFCApplication)initWithBundleId:(id)id displayName:(id)name rawDomain:(id)domain;
 @end
 
 @implementation SESDefaultNFCApplication
 
-- (SESDefaultNFCApplication)initWithBundleId:(id)a3 displayName:(id)a4 rawDomain:(id)a5
+- (SESDefaultNFCApplication)initWithBundleId:(id)id displayName:(id)name rawDomain:(id)domain
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  nameCopy = name;
+  domainCopy = domain;
   v15.receiver = self;
   v15.super_class = SESDefaultNFCApplication;
   v12 = [(SESDefaultNFCApplication *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bundleId, a3);
-    objc_storeStrong(&v13->_localizedDisplayName, a4);
-    objc_storeStrong(&v13->_domain, a5);
+    objc_storeStrong(&v12->_bundleId, id);
+    objc_storeStrong(&v13->_localizedDisplayName, name);
+    objc_storeStrong(&v13->_domain, domain);
   }
 
   return v13;

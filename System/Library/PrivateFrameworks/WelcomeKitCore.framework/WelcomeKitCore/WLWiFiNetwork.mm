@@ -1,12 +1,12 @@
 @interface WLWiFiNetwork
 - (NSString)ssid;
-- (WLWiFiNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)a3;
+- (WLWiFiNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)ref;
 - (void)dealloc;
 @end
 
 @implementation WLWiFiNetwork
 
-- (WLWiFiNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)a3
+- (WLWiFiNetwork)initWithWiFiNetworkRef:(__WiFiNetwork *)ref
 {
   v7.receiver = self;
   v7.super_class = WLWiFiNetwork;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    [(WLWiFiNetwork *)v4 setRef:a3];
+    [(WLWiFiNetwork *)v4 setRef:ref];
     CFRetain([(WLWiFiNetwork *)v5 ref]);
     -[WLWiFiNetwork setChannel:](v5, "setChannel:", [WiFiNetworkGetChannel() integerValue]);
   }

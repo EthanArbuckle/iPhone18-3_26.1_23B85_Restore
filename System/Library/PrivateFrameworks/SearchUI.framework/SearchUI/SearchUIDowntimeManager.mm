@@ -1,23 +1,23 @@
 @interface SearchUIDowntimeManager
-+ (BOOL)screenTimeIsEnabledForContact:(id)a3;
-+ (id)familyMemberForContact:(id)a3 isMe:(BOOL)a4;
-+ (id)screenTimeUserIDForContact:(id)a3;
++ (BOOL)screenTimeIsEnabledForContact:(id)contact;
++ (id)familyMemberForContact:(id)contact isMe:(BOOL)me;
++ (id)screenTimeUserIDForContact:(id)contact;
 + (id)sharedManager;
 - (SearchUIDowntimeManager)init;
-- (id)addObserverForDowntimeStatuses:(id)a3;
-- (int)statusForSTUserID:(id)a3 forceRecheck:(BOOL)a4;
+- (id)addObserverForDowntimeStatuses:(id)statuses;
+- (int)statusForSTUserID:(id)d forceRecheck:(BOOL)recheck;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)setupSink;
-- (void)updateWithChildState:(id)a3;
+- (void)updateWithChildState:(id)state;
 @end
 
 @implementation SearchUIDowntimeManager
 
-+ (id)screenTimeUserIDForContact:(id)a3
++ (id)screenTimeUserIDForContact:(id)contact
 {
-  v4 = a3;
-  v5 = v4;
+  contactCopy = contact;
+  v5 = contactCopy;
   if (screenTimeUserIDForContact__onceToken != -1)
   {
     +[SearchUIDowntimeManager screenTimeUserIDForContact:];
@@ -31,15 +31,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v4)
+  if (!contactCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_3:
   v6 = screenTimeUserIDForContact__screenTimeUserIDForContactCache;
-  v7 = [v5 identifier];
-  v8 = [v6 objectForKey:v7];
+  identifier = [v5 identifier];
+  v8 = [v6 objectForKey:identifier];
 
   if (v8)
   {
@@ -48,16 +48,16 @@ LABEL_3:
 
   else
   {
-    v10 = [a1 familyMemberForContact:v5 isMe:0];
-    if (v10 && [a1 isChildOrTeenFamilyMember:v10])
+    v10 = [self familyMemberForContact:v5 isMe:0];
+    if (v10 && [self isChildOrTeenFamilyMember:v10])
     {
       v11 = objc_alloc(MEMORY[0x1E69C9DE0]);
-      v12 = [v10 dsid];
-      v13 = [v11 initWithDSID:v12];
+      dsid = [v10 dsid];
+      v13 = [v11 initWithDSID:dsid];
 
       v14 = screenTimeUserIDForContact__screenTimeUserIDForContactCache;
-      v15 = [v5 identifier];
-      [v14 setObject:v13 forKey:v15];
+      identifier2 = [v5 identifier];
+      [v14 setObject:v13 forKey:identifier2];
     }
 
     else
@@ -80,21 +80,21 @@ uint64_t __54__SearchUIDowntimeManager_screenTimeUserIDForContact___block_invoke
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)familyMemberForContact:(id)a3 isMe:(BOOL)a4
++ (id)familyMemberForContact:(id)contact isMe:(BOOL)me
 {
-  v4 = a4;
+  meCopy = me;
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  contactCopy = contact;
   v5 = objc_opt_new();
   v27 = 0;
   v6 = [v5 fetchFamilyCircleWithError:&v27];
   v7 = v27;
   if (v7)
   {
-    v8 = SearchUIGeneralLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    members = SearchUIGeneralLog();
+    if (os_log_type_enabled(members, OS_LOG_TYPE_ERROR))
     {
-      [SearchUIDowntimeManager familyMemberForContact:v7 isMe:v8];
+      [SearchUIDowntimeManager familyMemberForContact:v7 isMe:members];
     }
 
     v9 = 0;
@@ -106,22 +106,22 @@ uint64_t __54__SearchUIDowntimeManager_screenTimeUserIDForContact___block_invoke
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [v6 members];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    members = [v6 members];
+    v9 = [members countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v9)
     {
       v19 = v6;
       v20 = 0;
       v21 = v5;
       v10 = *v24;
-      if (v22)
+      if (contactCopy)
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = v4;
+        v11 = meCopy;
       }
 
       while (2)
@@ -130,14 +130,14 @@ uint64_t __54__SearchUIDowntimeManager_screenTimeUserIDForContact___block_invoke
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(members);
           }
 
           v13 = *(*(&v23 + 1) + 8 * i);
-          v14 = [v13 contact];
-          v15 = [v14 identifier];
-          v16 = [v22 identifier];
-          if ([v15 isEqualToString:v16])
+          contact = [v13 contact];
+          identifier = [contact identifier];
+          identifier2 = [contactCopy identifier];
+          if ([identifier isEqualToString:identifier2])
           {
 
 LABEL_21:
@@ -147,9 +147,9 @@ LABEL_21:
 
           if (v11)
           {
-            v17 = [v13 isMe];
+            isMe = [v13 isMe];
 
-            if (v17)
+            if (isMe)
             {
               goto LABEL_21;
             }
@@ -160,7 +160,7 @@ LABEL_21:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v9 = [members countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (v9)
         {
           continue;
@@ -179,9 +179,9 @@ LABEL_22:
   return v9;
 }
 
-+ (BOOL)screenTimeIsEnabledForContact:(id)a3
++ (BOOL)screenTimeIsEnabledForContact:(id)contact
 {
-  v3 = [a1 screenTimeUserIDForContact:a3];
+  v3 = [self screenTimeUserIDForContact:contact];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -256,11 +256,11 @@ uint64_t __40__SearchUIDowntimeManager_sharedManager__block_invoke()
   v5 = [objc_alloc(MEMORY[0x1E698F258]) initWithIdentifier:@"com.apple.SearchUI.SearchUIScreenTimeUtilities.scheduler" targetQueue:v4 waking:0];
   objc_initWeak(&location, self);
   v6 = BiomeLibrary();
-  v7 = [v6 Family];
-  v8 = [v7 ScreenTime];
-  v9 = [v8 ChildState];
-  v10 = [v9 DSLPublisher];
-  v11 = [v10 subscribeOn:v5];
+  family = [v6 Family];
+  screenTime = [family ScreenTime];
+  childState = [screenTime ChildState];
+  dSLPublisher = [childState DSLPublisher];
+  v11 = [dSLPublisher subscribeOn:v5];
 
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -283,38 +283,38 @@ void __36__SearchUIDowntimeManager_setupSink__block_invoke_2(uint64_t a1, void *
   [WeakRetained updateWithChildState:v4];
 }
 
-- (int)statusForSTUserID:(id)a3 forceRecheck:(BOOL)a4
+- (int)statusForSTUserID:(id)d forceRecheck:(BOOL)recheck
 {
-  v6 = a3;
-  v7 = [v6 dsid];
-  v8 = [v7 stringValue];
+  dCopy = d;
+  dsid = [dCopy dsid];
+  stringValue = [dsid stringValue];
 
-  if (v8)
+  if (stringValue)
   {
-    v9 = [(SearchUIDowntimeManager *)self downtimeStatuses];
-    v10 = [v9 objectForKey:v8];
+    downtimeStatuses = [(SearchUIDowntimeManager *)self downtimeStatuses];
+    v10 = [downtimeStatuses objectForKey:stringValue];
 
-    if (a4 || !v10)
+    if (recheck || !v10)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __58__SearchUIDowntimeManager_statusForSTUserID_forceRecheck___block_invoke;
       v13[3] = &unk_1E85B26A8;
-      v14 = v6;
-      v15 = self;
-      v16 = v8;
+      v14 = dCopy;
+      selfCopy = self;
+      v16 = stringValue;
       [SearchUIUtilities dispatchAsyncIfNecessary:v13];
     }
 
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
   }
 
   else
   {
-    v11 = 0;
+    intValue = 0;
   }
 
-  return v11;
+  return intValue;
 }
 
 void __58__SearchUIDowntimeManager_statusForSTUserID_forceRecheck___block_invoke(uint64_t a1)
@@ -338,16 +338,16 @@ void __58__SearchUIDowntimeManager_statusForSTUserID_forceRecheck___block_invoke
   [v6 postNotificationName:@"downtimeStatusDidChangeNotification" object:0 userInfo:v9];
 }
 
-- (id)addObserverForDowntimeStatuses:(id)a3
+- (id)addObserverForDowntimeStatuses:(id)statuses
 {
-  v4 = a3;
+  statusesCopy = statuses;
   notificationCenter = self->_notificationCenter;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SearchUIDowntimeManager_addObserverForDowntimeStatuses___block_invoke;
   v9[3] = &unk_1E85B2A78;
-  v10 = v4;
-  v6 = v4;
+  v10 = statusesCopy;
+  v6 = statusesCopy;
   v7 = [(NSNotificationCenter *)notificationCenter addObserverForName:@"downtimeStatusDidChangeNotification" object:0 queue:0 usingBlock:v9];
 
   return v7;
@@ -365,23 +365,23 @@ void __58__SearchUIDowntimeManager_addObserverForDowntimeStatuses___block_invoke
   (*(v2 + 16))(v2, v4, [v6 intValue]);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSNotificationCenter *)self->_notificationCenter removeObserver:?];
   }
 }
 
-- (void)updateWithChildState:(id)a3
+- (void)updateWithChildState:(id)state
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SearchUIDowntimeManager *)self downtimeStatuses];
-  v6 = [v4 starting];
-  if (v6)
+  stateCopy = state;
+  downtimeStatuses = [(SearchUIDowntimeManager *)self downtimeStatuses];
+  starting = [stateCopy starting];
+  if (starting)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "state")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(stateCopy, "state")}];
   }
 
   else
@@ -389,19 +389,19 @@ void __58__SearchUIDowntimeManager_addObserverForDowntimeStatuses___block_invoke
     v7 = &unk_1F55DD430;
   }
 
-  v8 = [v4 userDSID];
-  [v5 setObject:v7 forKey:v8];
+  userDSID = [stateCopy userDSID];
+  [downtimeStatuses setObject:v7 forKey:userDSID];
 
-  if (v6)
+  if (starting)
   {
   }
 
   notificationCenter = self->_notificationCenter;
   v13[0] = @"userDSIDKey";
-  v10 = [v4 userDSID];
+  userDSID2 = [stateCopy userDSID];
   v13[1] = @"statusKey";
-  v14[0] = v10;
-  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "state")}];
+  v14[0] = userDSID2;
+  v11 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(stateCopy, "state")}];
   v14[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   [(NSNotificationCenter *)notificationCenter postNotificationName:@"downtimeStatusDidChangeNotification" object:0 userInfo:v12];
@@ -409,8 +409,8 @@ void __58__SearchUIDowntimeManager_addObserverForDowntimeStatuses___block_invoke
 
 - (void)dealloc
 {
-  v3 = [(SearchUIDowntimeManager *)self biomeSink];
-  [v3 cancel];
+  biomeSink = [(SearchUIDowntimeManager *)self biomeSink];
+  [biomeSink cancel];
 
   v4.receiver = self;
   v4.super_class = SearchUIDowntimeManager;

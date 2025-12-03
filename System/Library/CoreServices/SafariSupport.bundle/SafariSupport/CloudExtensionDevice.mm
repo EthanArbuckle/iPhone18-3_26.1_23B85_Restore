@@ -1,32 +1,32 @@
 @interface CloudExtensionDevice
-+ (CloudExtensionDevice)cloudExtensionDeviceWithCKRecord:(id)a3;
-+ (CloudExtensionDevice)cloudExtensionDeviceWithDictionaryRepresentation:(id)a3 extensionSettingsDictionaryForDevice:(id)a4 cloudExtensionsRecordZoneID:(id)a5;
++ (CloudExtensionDevice)cloudExtensionDeviceWithCKRecord:(id)record;
++ (CloudExtensionDevice)cloudExtensionDeviceWithDictionaryRepresentation:(id)representation extensionSettingsDictionaryForDevice:(id)device cloudExtensionsRecordZoneID:(id)d;
 + (id)_valueTransformerForDeviceName;
 - (BOOL)wasNewTabPageSetByUserGesture;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)composedIdentifierForNewTabPage;
 - (NSString)deviceName;
-- (id)_initWithCKRecord:(id)a3;
-- (id)_initWithDeviceUUIDString:(id)a3 deviceName:(id)a4 lastModifiedDate:(id)a5 newTabPageComposedIdentifier:(id)a6 newTabPageSetByUserGesture:(BOOL)a7 newTabPageLastModifiedDate:(id)a8 encodedSystemFieldsData:(id)a9 cloudExtensionsRecordZoneID:(id)a10;
-- (id)_updateCloudExtensionStatesFromStates:(id)a3;
+- (id)_initWithCKRecord:(id)record;
+- (id)_initWithDeviceUUIDString:(id)string deviceName:(id)name lastModifiedDate:(id)date newTabPageComposedIdentifier:(id)identifier newTabPageSetByUserGesture:(BOOL)gesture newTabPageLastModifiedDate:(id)modifiedDate encodedSystemFieldsData:(id)data cloudExtensionsRecordZoneID:(id)self0;
+- (id)_updateCloudExtensionStatesFromStates:(id)states;
 - (id)description;
-- (id)updateFromCloudExtensionDevice:(id)a3;
-- (void)_setCloudExtensionStatesFromDictionaryRepresentation:(id)a3 cloudExtensionsRecordZoneID:(id)a4;
-- (void)_updateDevicePropertiesFromCloudExtensionDevice:(id)a3;
+- (id)updateFromCloudExtensionDevice:(id)device;
+- (void)_setCloudExtensionStatesFromDictionaryRepresentation:(id)representation cloudExtensionsRecordZoneID:(id)d;
+- (void)_updateDevicePropertiesFromCloudExtensionDevice:(id)device;
 @end
 
 @implementation CloudExtensionDevice
 
-+ (CloudExtensionDevice)cloudExtensionDeviceWithDictionaryRepresentation:(id)a3 extensionSettingsDictionaryForDevice:(id)a4 cloudExtensionsRecordZoneID:(id)a5
++ (CloudExtensionDevice)cloudExtensionDeviceWithDictionaryRepresentation:(id)representation extensionSettingsDictionaryForDevice:(id)device cloudExtensionsRecordZoneID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
+  deviceCopy = device;
+  dCopy = d;
   v9 = WBSSafariExtensionStateDeviceUUIDString;
-  v10 = a3;
-  v11 = [v10 safari_stringForKey:v9];
-  v12 = [v10 safari_stringForKey:WBSSafariExtensionStateDeviceName];
+  representationCopy = representation;
+  v11 = [representationCopy safari_stringForKey:v9];
+  v12 = [representationCopy safari_stringForKey:WBSSafariExtensionStateDeviceName];
   v13 = +[NSDate date];
-  v14 = [v10 safari_stringForKey:WBSSafariExtensionStateDeviceNewTabPageComposedIdentifier];
+  v14 = [representationCopy safari_stringForKey:WBSSafariExtensionStateDeviceNewTabPageComposedIdentifier];
   v15 = v14;
   v16 = &stru_100137BA8;
   if (v14)
@@ -36,8 +36,8 @@
 
   v17 = v16;
 
-  v18 = [v10 safari_BOOLForKey:WBSSafariExtensionStateDeviceNewTabPageSetByUserGesture];
-  v19 = [v10 safari_dateForKey:WBSSafariExtensionStateDeviceNewTabPageLastModified];
+  v18 = [representationCopy safari_BOOLForKey:WBSSafariExtensionStateDeviceNewTabPageSetByUserGesture];
+  v19 = [representationCopy safari_dateForKey:WBSSafariExtensionStateDeviceNewTabPageLastModified];
 
   if (v19)
   {
@@ -51,12 +51,12 @@
 
   v21 = v20;
 
-  v22 = [[CloudExtensionDevice alloc] _initWithDeviceUUIDString:v11 deviceName:v12 lastModifiedDate:v13 newTabPageComposedIdentifier:v17 newTabPageSetByUserGesture:v18 newTabPageLastModifiedDate:v21 encodedSystemFieldsData:0 cloudExtensionsRecordZoneID:v8];
+  v22 = [[CloudExtensionDevice alloc] _initWithDeviceUUIDString:v11 deviceName:v12 lastModifiedDate:v13 newTabPageComposedIdentifier:v17 newTabPageSetByUserGesture:v18 newTabPageLastModifiedDate:v21 encodedSystemFieldsData:0 cloudExtensionsRecordZoneID:dCopy];
   if (v22)
   {
-    if ([v7 count])
+    if ([deviceCopy count])
     {
-      [v22 _setCloudExtensionStatesFromDictionaryRepresentation:v7 cloudExtensionsRecordZoneID:v8];
+      [v22 _setCloudExtensionStatesFromDictionaryRepresentation:deviceCopy cloudExtensionsRecordZoneID:dCopy];
     }
 
     v23 = v22;
@@ -65,12 +65,12 @@
   return v22;
 }
 
-+ (CloudExtensionDevice)cloudExtensionDeviceWithCKRecord:(id)a3
++ (CloudExtensionDevice)cloudExtensionDeviceWithCKRecord:(id)record
 {
-  v3 = a3;
-  if ([v3 safari_isCloudExtensionDeviceRecord])
+  recordCopy = record;
+  if ([recordCopy safari_isCloudExtensionDeviceRecord])
   {
-    v4 = [[CloudExtensionDevice alloc] _initWithCKRecord:v3];
+    v4 = [[CloudExtensionDevice alloc] _initWithCKRecord:recordCopy];
   }
 
   else
@@ -81,31 +81,31 @@
   return v4;
 }
 
-- (id)_initWithDeviceUUIDString:(id)a3 deviceName:(id)a4 lastModifiedDate:(id)a5 newTabPageComposedIdentifier:(id)a6 newTabPageSetByUserGesture:(BOOL)a7 newTabPageLastModifiedDate:(id)a8 encodedSystemFieldsData:(id)a9 cloudExtensionsRecordZoneID:(id)a10
+- (id)_initWithDeviceUUIDString:(id)string deviceName:(id)name lastModifiedDate:(id)date newTabPageComposedIdentifier:(id)identifier newTabPageSetByUserGesture:(BOOL)gesture newTabPageLastModifiedDate:(id)modifiedDate encodedSystemFieldsData:(id)data cloudExtensionsRecordZoneID:(id)self0
 {
-  v11 = a7;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  gestureCopy = gesture;
+  stringCopy = string;
+  nameCopy = name;
+  dateCopy = date;
+  identifierCopy = identifier;
+  modifiedDateCopy = modifiedDate;
+  dataCopy = data;
+  dCopy = d;
   v44.receiver = self;
   v44.super_class = CloudExtensionDevice;
   v23 = [(CloudExtensionDevice *)&v44 init];
   if (v23)
   {
-    v43 = v22;
-    v42 = v11;
-    v24 = [v21 length];
+    v43 = dCopy;
+    v42 = gestureCopy;
+    v24 = [dataCopy length];
     v25 = [CKRecord alloc];
     v26 = v25;
-    v27 = v16;
+    v27 = stringCopy;
     v41 = v24;
     if (v24)
     {
-      v28 = [v25 safari_initWithEncodedRecordData:v21];
+      v28 = [v25 safari_initWithEncodedRecordData:dataCopy];
       record = v23->_record;
       v23->_record = v28;
 
@@ -114,33 +114,33 @@
 
     else
     {
-      v30 = [[CKRecordID alloc] initWithRecordName:v16 zoneID:v43];
+      v30 = [[CKRecordID alloc] initWithRecordName:stringCopy zoneID:v43];
       v31 = [v26 initWithRecordType:@"CloudExtensionDevice" recordID:v30];
       v32 = v23->_record;
       v23->_record = v31;
 
-      v16 = v27;
+      stringCopy = v27;
     }
 
-    if ([v17 length])
+    if ([nameCopy length])
     {
-      v33 = [objc_opt_class() _valueTransformerForDeviceName];
-      v34 = [v33 transformedValue:v17];
-      v35 = [(CKRecord *)v23->_record safari_encryptedValues];
-      [v35 setObject:v34 forKeyedSubscript:@"DeviceName"];
+      _valueTransformerForDeviceName = [objc_opt_class() _valueTransformerForDeviceName];
+      v34 = [_valueTransformerForDeviceName transformedValue:nameCopy];
+      safari_encryptedValues = [(CKRecord *)v23->_record safari_encryptedValues];
+      [safari_encryptedValues setObject:v34 forKeyedSubscript:@"DeviceName"];
 
-      v16 = v27;
+      stringCopy = v27;
     }
 
-    [(CKRecord *)v23->_record setObject:v18 forKeyedSubscript:@"LastModified"];
-    if ([v19 length])
+    [(CKRecord *)v23->_record setObject:dateCopy forKeyedSubscript:@"LastModified"];
+    if ([identifierCopy length])
     {
-      v36 = [objc_opt_class() _valueTransformerForDeviceName];
-      v37 = [v36 transformedValue:v19];
-      v38 = [(CKRecord *)v23->_record safari_encryptedValues];
-      [v38 setObject:v37 forKeyedSubscript:@"NewTabPageComposedIdentifier"];
+      _valueTransformerForDeviceName2 = [objc_opt_class() _valueTransformerForDeviceName];
+      v37 = [_valueTransformerForDeviceName2 transformedValue:identifierCopy];
+      safari_encryptedValues2 = [(CKRecord *)v23->_record safari_encryptedValues];
+      [safari_encryptedValues2 setObject:v37 forKeyedSubscript:@"NewTabPageComposedIdentifier"];
 
-      v16 = v27;
+      stringCopy = v27;
     }
 
     if (v42)
@@ -148,8 +148,8 @@
       [(CKRecord *)v23->_record setObject:&__kCFBooleanTrue forKeyedSubscript:@"NewTabPageSetByUserGesture"];
     }
 
-    [(CKRecord *)v23->_record setObject:v20 forKeyedSubscript:@"NewTabPageLastModified"];
-    v22 = v43;
+    [(CKRecord *)v23->_record setObject:modifiedDateCopy forKeyedSubscript:@"NewTabPageLastModified"];
+    dCopy = v43;
     if (v41)
     {
       [(CKRecord *)v23->_record setTrackChanges:1];
@@ -161,15 +161,15 @@
   return v23;
 }
 
-- (id)_initWithCKRecord:(id)a3
+- (id)_initWithCKRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v10.receiver = self;
   v10.super_class = CloudExtensionDevice;
   v5 = [(CloudExtensionDevice *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [recordCopy copy];
     record = v5->_record;
     v5->_record = v6;
 
@@ -179,13 +179,13 @@
   return v5;
 }
 
-- (id)updateFromCloudExtensionDevice:(id)a3
+- (id)updateFromCloudExtensionDevice:(id)device
 {
-  v4 = a3;
-  [(CloudExtensionDevice *)self _updateDevicePropertiesFromCloudExtensionDevice:v4];
-  v5 = [v4 cloudExtensionStates];
+  deviceCopy = device;
+  [(CloudExtensionDevice *)self _updateDevicePropertiesFromCloudExtensionDevice:deviceCopy];
+  cloudExtensionStates = [deviceCopy cloudExtensionStates];
 
-  v6 = [(CloudExtensionDevice *)self _updateCloudExtensionStatesFromStates:v5];
+  v6 = [(CloudExtensionDevice *)self _updateCloudExtensionStatesFromStates:cloudExtensionStates];
 
   return v6;
 }
@@ -194,10 +194,10 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CloudExtensionDevice *)self deviceName];
-  v6 = [(CloudExtensionDevice *)self deviceUUIDString];
-  v7 = [(CloudExtensionDevice *)self lastModifiedDate];
-  v8 = [(CloudExtensionDevice *)self composedIdentifierForNewTabPage];
+  deviceName = [(CloudExtensionDevice *)self deviceName];
+  deviceUUIDString = [(CloudExtensionDevice *)self deviceUUIDString];
+  lastModifiedDate = [(CloudExtensionDevice *)self lastModifiedDate];
+  composedIdentifierForNewTabPage = [(CloudExtensionDevice *)self composedIdentifierForNewTabPage];
   if ([(CloudExtensionDevice *)self wasNewTabPageSetByUserGesture])
   {
     v9 = @"YES";
@@ -208,30 +208,30 @@
     v9 = @"NO";
   }
 
-  v10 = [(CloudExtensionDevice *)self lastModifiedDateForNewTabPage];
-  v11 = [(CloudExtensionDevice *)self cloudExtensionStates];
-  v12 = [v11 componentsJoinedByString:{@", \r    "}];
-  v13 = [NSString stringWithFormat:@"<%@: %p name = %@; uuid = %@; lastModified = %@; composedIdentifierForNewTabPage = %@; newTabPageSetByUserGesture = %@; lastModifiedDateForNewTabPage = %@;  cloudExtensionStates = (\r    %@\r)>", v4, self, v5, v6, v7, v8, v9, v10, v12];;
+  lastModifiedDateForNewTabPage = [(CloudExtensionDevice *)self lastModifiedDateForNewTabPage];
+  cloudExtensionStates = [(CloudExtensionDevice *)self cloudExtensionStates];
+  v12 = [cloudExtensionStates componentsJoinedByString:{@", \r    "}];
+  v13 = [NSString stringWithFormat:@"<%@: %p name = %@; uuid = %@; lastModified = %@; composedIdentifierForNewTabPage = %@; newTabPageSetByUserGesture = %@; lastModifiedDateForNewTabPage = %@;  cloudExtensionStates = (\r    %@\r)>", v4, self, deviceName, deviceUUIDString, lastModifiedDate, composedIdentifierForNewTabPage, v9, lastModifiedDateForNewTabPage, v12];;
 
   return v13;
 }
 
 - (NSString)deviceName
 {
-  v3 = [objc_opt_class() _valueTransformerForDeviceName];
-  v4 = [(CKRecord *)self->_record safari_encryptedValues];
-  v5 = [v4 objectForKeyedSubscript:@"DeviceName"];
-  v6 = [v3 reverseTransformedValue:v5];
+  _valueTransformerForDeviceName = [objc_opt_class() _valueTransformerForDeviceName];
+  safari_encryptedValues = [(CKRecord *)self->_record safari_encryptedValues];
+  v5 = [safari_encryptedValues objectForKeyedSubscript:@"DeviceName"];
+  v6 = [_valueTransformerForDeviceName reverseTransformedValue:v5];
 
   return v6;
 }
 
 - (NSString)composedIdentifierForNewTabPage
 {
-  v3 = [objc_opt_class() _valueTransformerForDeviceName];
-  v4 = [(CKRecord *)self->_record safari_encryptedValues];
-  v5 = [v4 objectForKeyedSubscript:@"NewTabPageComposedIdentifier"];
-  v6 = [v3 reverseTransformedValue:v5];
+  _valueTransformerForDeviceName = [objc_opt_class() _valueTransformerForDeviceName];
+  safari_encryptedValues = [(CKRecord *)self->_record safari_encryptedValues];
+  v5 = [safari_encryptedValues objectForKeyedSubscript:@"NewTabPageComposedIdentifier"];
+  v6 = [_valueTransformerForDeviceName reverseTransformedValue:v5];
 
   return v6;
 }
@@ -239,22 +239,22 @@
 - (BOOL)wasNewTabPageSetByUserGesture
 {
   v2 = [(CKRecord *)self->_record objectForKeyedSubscript:@"NewTabPageSetByUserGesture"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v15[0] = WBSSafariExtensionStateDeviceUUIDString;
-  v3 = [(CloudExtensionDevice *)self deviceUUIDString];
-  v16[0] = v3;
+  deviceUUIDString = [(CloudExtensionDevice *)self deviceUUIDString];
+  v16[0] = deviceUUIDString;
   v15[1] = WBSSafariExtensionStateDeviceName;
-  v4 = [(CloudExtensionDevice *)self deviceName];
-  v5 = v4;
-  if (v4)
+  deviceName = [(CloudExtensionDevice *)self deviceName];
+  v5 = deviceName;
+  if (deviceName)
   {
-    v6 = v4;
+    v6 = deviceName;
   }
 
   else
@@ -264,14 +264,14 @@
 
   v16[1] = v6;
   v15[2] = WBSSafariExtensionStateDeviceLastModifiedDate;
-  v7 = [(CloudExtensionDevice *)self lastModifiedDate];
-  v16[2] = v7;
+  lastModifiedDate = [(CloudExtensionDevice *)self lastModifiedDate];
+  v16[2] = lastModifiedDate;
   v15[3] = WBSSafariExtensionStateDeviceNewTabPageComposedIdentifier;
-  v8 = [(CloudExtensionDevice *)self composedIdentifierForNewTabPage];
-  v9 = v8;
-  if (v8)
+  composedIdentifierForNewTabPage = [(CloudExtensionDevice *)self composedIdentifierForNewTabPage];
+  v9 = composedIdentifierForNewTabPage;
+  if (composedIdentifierForNewTabPage)
   {
-    v10 = v8;
+    v10 = composedIdentifierForNewTabPage;
   }
 
   else
@@ -284,8 +284,8 @@
   v11 = [NSNumber numberWithBool:[(CloudExtensionDevice *)self wasNewTabPageSetByUserGesture]];
   v16[4] = v11;
   v15[5] = WBSSafariExtensionStateDeviceNewTabPageLastModified;
-  v12 = [(CloudExtensionDevice *)self lastModifiedDateForNewTabPage];
-  v16[5] = v12;
+  lastModifiedDateForNewTabPage = [(CloudExtensionDevice *)self lastModifiedDateForNewTabPage];
+  v16[5] = lastModifiedDateForNewTabPage;
   v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:6];
 
   return v13;
@@ -303,24 +303,24 @@
   return v3;
 }
 
-- (void)_setCloudExtensionStatesFromDictionaryRepresentation:(id)a3 cloudExtensionsRecordZoneID:(id)a4
+- (void)_setCloudExtensionStatesFromDictionaryRepresentation:(id)representation cloudExtensionsRecordZoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  representationCopy = representation;
+  dCopy = d;
+  if ([representationCopy count])
   {
-    v8 = [(CloudExtensionDevice *)self deviceUUIDString];
+    deviceUUIDString = [(CloudExtensionDevice *)self deviceUUIDString];
     v9 = +[NSMutableArray array];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10008EF08;
     v15[3] = &unk_1001348F8;
-    v16 = v8;
-    v17 = v7;
+    v16 = deviceUUIDString;
+    v17 = dCopy;
     v18 = v9;
     v10 = v9;
-    v11 = v8;
-    [v6 enumerateKeysAndObjectsUsingBlock:v15];
+    v11 = deviceUUIDString;
+    [representationCopy enumerateKeysAndObjectsUsingBlock:v15];
     v12 = [v10 copy];
     cloudExtensionStates = self->_cloudExtensionStates;
     self->_cloudExtensionStates = v12;
@@ -333,54 +333,54 @@
   }
 }
 
-- (void)_updateDevicePropertiesFromCloudExtensionDevice:(id)a3
+- (void)_updateDevicePropertiesFromCloudExtensionDevice:(id)device
 {
-  v20 = a3;
-  v4 = [v20 deviceName];
-  v5 = [(CloudExtensionDevice *)self deviceName];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  deviceCopy = device;
+  deviceName = [deviceCopy deviceName];
+  deviceName2 = [(CloudExtensionDevice *)self deviceName];
+  if (deviceName != deviceName2 && ([deviceName isEqualToString:deviceName2] & 1) == 0)
   {
-    v6 = [objc_opt_class() _valueTransformerForDeviceName];
-    v7 = [v6 transformedValue:v4];
-    v8 = [(CKRecord *)self->_record safari_encryptedValues];
-    [v8 setObject:v7 forKeyedSubscript:@"DeviceName"];
+    _valueTransformerForDeviceName = [objc_opt_class() _valueTransformerForDeviceName];
+    v7 = [_valueTransformerForDeviceName transformedValue:deviceName];
+    safari_encryptedValues = [(CKRecord *)self->_record safari_encryptedValues];
+    [safari_encryptedValues setObject:v7 forKeyedSubscript:@"DeviceName"];
   }
 
-  v9 = [v20 lastModifiedDate];
-  v10 = [(CloudExtensionDevice *)self lastModifiedDate];
-  if (v9 != v10 && ([v9 isEqual:v10] & 1) == 0)
+  lastModifiedDate = [deviceCopy lastModifiedDate];
+  lastModifiedDate2 = [(CloudExtensionDevice *)self lastModifiedDate];
+  if (lastModifiedDate != lastModifiedDate2 && ([lastModifiedDate isEqual:lastModifiedDate2] & 1) == 0)
   {
-    [(CKRecord *)self->_record setObject:v9 forKeyedSubscript:@"LastModified"];
+    [(CKRecord *)self->_record setObject:lastModifiedDate forKeyedSubscript:@"LastModified"];
   }
 
-  v11 = [v20 composedIdentifierForNewTabPage];
-  v12 = [(CloudExtensionDevice *)self composedIdentifierForNewTabPage];
-  if (v11 != v12 && ([v11 isEqualToString:v12] & 1) == 0)
+  composedIdentifierForNewTabPage = [deviceCopy composedIdentifierForNewTabPage];
+  composedIdentifierForNewTabPage2 = [(CloudExtensionDevice *)self composedIdentifierForNewTabPage];
+  if (composedIdentifierForNewTabPage != composedIdentifierForNewTabPage2 && ([composedIdentifierForNewTabPage isEqualToString:composedIdentifierForNewTabPage2] & 1) == 0)
   {
-    v13 = [objc_opt_class() _valueTransformerForDeviceName];
-    v14 = [v13 transformedValue:v11];
-    v15 = [(CKRecord *)self->_record safari_encryptedValues];
-    [v15 setObject:v14 forKeyedSubscript:@"NewTabPageComposedIdentifier"];
+    _valueTransformerForDeviceName2 = [objc_opt_class() _valueTransformerForDeviceName];
+    v14 = [_valueTransformerForDeviceName2 transformedValue:composedIdentifierForNewTabPage];
+    safari_encryptedValues2 = [(CKRecord *)self->_record safari_encryptedValues];
+    [safari_encryptedValues2 setObject:v14 forKeyedSubscript:@"NewTabPageComposedIdentifier"];
   }
 
-  v16 = [v20 wasNewTabPageSetByUserGesture];
-  if (v16 != [(CloudExtensionDevice *)self wasNewTabPageSetByUserGesture])
+  wasNewTabPageSetByUserGesture = [deviceCopy wasNewTabPageSetByUserGesture];
+  if (wasNewTabPageSetByUserGesture != [(CloudExtensionDevice *)self wasNewTabPageSetByUserGesture])
   {
-    v17 = [NSNumber numberWithBool:v16];
+    v17 = [NSNumber numberWithBool:wasNewTabPageSetByUserGesture];
     [(CKRecord *)self->_record setObject:v17 forKeyedSubscript:@"NewTabPageSetByUserGesture"];
   }
 
-  v18 = [v20 lastModifiedDateForNewTabPage];
-  v19 = [(CloudExtensionDevice *)self lastModifiedDateForNewTabPage];
-  if (v18 != v19 && ([v18 isEqual:v19] & 1) == 0)
+  lastModifiedDateForNewTabPage = [deviceCopy lastModifiedDateForNewTabPage];
+  lastModifiedDateForNewTabPage2 = [(CloudExtensionDevice *)self lastModifiedDateForNewTabPage];
+  if (lastModifiedDateForNewTabPage != lastModifiedDateForNewTabPage2 && ([lastModifiedDateForNewTabPage isEqual:lastModifiedDateForNewTabPage2] & 1) == 0)
   {
-    [(CKRecord *)self->_record setObject:v18 forKeyedSubscript:@"NewTabPageLastModified"];
+    [(CKRecord *)self->_record setObject:lastModifiedDateForNewTabPage forKeyedSubscript:@"NewTabPageLastModified"];
   }
 }
 
-- (id)_updateCloudExtensionStatesFromStates:(id)a3
+- (id)_updateCloudExtensionStatesFromStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   location = &self->_cloudExtensionStates;
   v5 = [(NSArray *)self->_cloudExtensionStates mutableCopy];
   v30 = +[NSMutableArray array];
@@ -388,7 +388,7 @@
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v4;
+  obj = statesCopy;
   v6 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v6)
   {
@@ -404,15 +404,15 @@
         }
 
         v10 = *(*(&v38 + 1) + 8 * i);
-        v11 = [v10 composedIdentifier];
-        v12 = [v10 profileIdentifier];
+        composedIdentifier = [v10 composedIdentifier];
+        profileIdentifier = [v10 profileIdentifier];
         v35[0] = _NSConcreteStackBlock;
         v35[1] = 3221225472;
         v35[2] = sub_10008F520;
         v35[3] = &unk_100135530;
-        v13 = v11;
+        v13 = composedIdentifier;
         v36 = v13;
-        v14 = v12;
+        v14 = profileIdentifier;
         v37 = v14;
         v15 = [v5 indexOfObjectPassingTest:v35];
         if (v15 == 0x7FFFFFFFFFFFFFFFLL)
@@ -458,9 +458,9 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v31 + 1) + 8 * j) record];
-        v25 = [v24 safari_recordName];
-        [v18 addObject:v25];
+        record = [*(*(&v31 + 1) + 8 * j) record];
+        safari_recordName = [record safari_recordName];
+        [v18 addObject:safari_recordName];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v31 objects:v42 count:16];

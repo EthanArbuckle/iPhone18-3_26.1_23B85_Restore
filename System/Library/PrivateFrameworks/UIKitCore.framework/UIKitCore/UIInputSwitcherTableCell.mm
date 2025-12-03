@@ -1,26 +1,26 @@
 @interface UIInputSwitcherTableCell
 - (UIEdgeInsets)interactiveInsets;
-- (UIInputSwitcherTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (UIInputSwitcherTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateRoundedCorners;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setUsesDarkTheme:(BOOL)a3;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setUsesDarkTheme:(BOOL)theme;
 @end
 
 @implementation UIInputSwitcherTableCell
 
-- (UIInputSwitcherTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (UIInputSwitcherTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = UIInputSwitcherTableCell;
-  v4 = [(UITableViewCell *)&v8 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(UITableViewCell *)&v8 initWithStyle:3 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(UIInputSwitcherTableCellBackgroundView);
     [(UIView *)v5 setOpaque:0];
     [(UITableViewCell *)v4 setBackgroundView:v5];
-    v6 = [(UITableViewCell *)v4 textLabel];
-    [v6 setAllowsDefaultTighteningForTruncation:1];
+    textLabel = [(UITableViewCell *)v4 textLabel];
+    [textLabel setAllowsDefaultTighteningForTruncation:1];
   }
 
   return v4;
@@ -31,7 +31,7 @@
   v42.receiver = self;
   v42.super_class = UIInputSwitcherTableCell;
   [(UITableViewCell *)&v42 layoutSubviews];
-  v4 = [(UITableViewCell *)self accessoryView];
+  accessoryView = [(UITableViewCell *)self accessoryView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -39,22 +39,22 @@
   {
     v6 = [(UITableViewCell *)self _textLabel:0];
     v7 = [(UITableViewCell *)self _detailTextLabel:0];
-    v8 = [(UIView *)self _inheritedRenderConfig];
-    v9 = [v8 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v9)
+    if (colorAdaptiveBackground)
     {
-      v10 = [(UITableViewCell *)self backgroundView];
-      [v10 frame];
+      backgroundView = [(UITableViewCell *)self backgroundView];
+      [backgroundView frame];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [v7 text];
-      if (v19)
+      text = [v7 text];
+      if (text)
       {
-        v2 = [v7 text];
-        if ([v2 length])
+        text2 = [v7 text];
+        if ([text2 length])
         {
           v20 = -18.0;
         }
@@ -71,12 +71,12 @@
       }
 
       [v6 setFrame:{v12 + 26.0, v14 + v20, v16 + -52.0, v18 - v20}];
-      if (v19)
+      if (text)
       {
       }
 
-      v37 = [(UITableViewCell *)self backgroundView];
-      [v37 frame];
+      backgroundView2 = [(UITableViewCell *)self backgroundView];
+      [backgroundView2 frame];
       [v7 setFrame:{v38 + 26.0, v40 + 22.0, v39 + -52.0, v41 + -22.0}];
     }
 
@@ -98,17 +98,17 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = UIInputSwitcherTableCell;
-  [(UITableViewCell *)&v8 setSelected:a3 animated:a4];
-  v6 = [(UITableViewCell *)self backgroundView];
-  [v6 setSelected:v4];
+  [(UITableViewCell *)&v8 setSelected:selected animated:animated];
+  backgroundView = [(UITableViewCell *)self backgroundView];
+  [backgroundView setSelected:selectedCopy];
 
-  v7 = [(UITableViewCell *)self backgroundView];
-  [v7 setNeedsDisplay];
+  backgroundView2 = [(UITableViewCell *)self backgroundView];
+  [backgroundView2 setNeedsDisplay];
 }
 
 - (void)_updateRoundedCorners
@@ -144,11 +144,11 @@
     v5 = 0;
   }
 
-  v6 = [(UIView *)self _inheritedRenderConfig];
-  v7 = [v6 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  v8 = [(UIView *)self _inheritedRenderConfig];
-  if ([v8 colorAdaptiveBackground])
+  _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+  if ([_inheritedRenderConfig2 colorAdaptiveBackground])
   {
     v9 = 0;
   }
@@ -158,7 +158,7 @@
     v9 = [(UIInputSwitcherTableCell *)self isFirst]^ 1;
   }
 
-  if (v7)
+  if (colorAdaptiveBackground)
   {
     v10 = -1;
   }
@@ -168,25 +168,25 @@
     v10 = v5;
   }
 
-  v11 = [(UITableViewCell *)self backgroundView];
-  [v11 setDrawsBorder:v9];
+  backgroundView = [(UITableViewCell *)self backgroundView];
+  [backgroundView setDrawsBorder:v9];
 
-  v12 = [(UITableViewCell *)self backgroundView];
-  [v12 setRoundedCorners:v10];
+  backgroundView2 = [(UITableViewCell *)self backgroundView];
+  [backgroundView2 setRoundedCorners:v10];
 
-  v13 = [(UITableViewCell *)self backgroundView];
-  [v13 setNeedsDisplay];
+  backgroundView3 = [(UITableViewCell *)self backgroundView];
+  [backgroundView3 setNeedsDisplay];
 }
 
-- (void)setUsesDarkTheme:(BOOL)a3
+- (void)setUsesDarkTheme:(BOOL)theme
 {
-  v3 = a3;
-  self->_usesDarkTheme = a3;
-  v5 = [(UITableViewCell *)self backgroundView];
-  [v5 setUsesDarkTheme:v3];
+  themeCopy = theme;
+  self->_usesDarkTheme = theme;
+  backgroundView = [(UITableViewCell *)self backgroundView];
+  [backgroundView setUsesDarkTheme:themeCopy];
 
-  v6 = [(UITableViewCell *)self backgroundView];
-  [v6 setNeedsDisplay];
+  backgroundView2 = [(UITableViewCell *)self backgroundView];
+  [backgroundView2 setNeedsDisplay];
 }
 
 - (UIEdgeInsets)interactiveInsets

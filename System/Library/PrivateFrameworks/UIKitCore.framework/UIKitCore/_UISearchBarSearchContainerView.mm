@@ -1,8 +1,8 @@
 @interface _UISearchBarSearchContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)description;
 - (void)layoutSubviews;
-- (void)setFrozenLayout:(BOOL)a3;
+- (void)setFrozenLayout:(BOOL)layout;
 - (void)setNeedsLayout;
 @end
 
@@ -66,12 +66,12 @@
   [(_UISearchBarSearchContainerLayout *)self->_layout sendWillLayoutSubviewsForSearchFieldContainerView:self];
   [(_UISearchBarSearchContainerLayout *)self->_layout applyLayout];
   v7 = os_variant_has_internal_diagnostics();
-  v8 = [(_UISearchBarSearchContainerLayout *)self->_layout delegate];
-  v9 = [v8 isProspective];
+  delegate = [(_UISearchBarSearchContainerLayout *)self->_layout delegate];
+  isProspective = [delegate isProspective];
 
   if (v7)
   {
-    if (v9)
+    if (isProspective)
     {
       v11 = __UIFaultDebugAssertLog();
       if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -81,9 +81,9 @@ LABEL_20:
         return;
       }
 
-      v12 = [(UIView *)self recursiveDescription];
+      recursiveDescription = [(UIView *)self recursiveDescription];
       v15 = 138412290;
-      v16 = v12;
+      v16 = recursiveDescription;
       _os_log_fault_impl(&dword_188A29000, v11, OS_LOG_TYPE_FAULT, "Live layout with a prospective search layout. Search Field container layout (e.g., search field and cancel button size and positioning) may be incorrect. Please send to UIKit for investigation, and include the following recursive description.\n%@", &v15, 0xCu);
 LABEL_19:
 
@@ -91,22 +91,22 @@ LABEL_19:
     }
   }
 
-  else if (v9)
+  else if (isProspective)
   {
     v14 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED499190) + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v11 = v14;
-      v12 = [(UIView *)self recursiveDescription];
+      recursiveDescription = [(UIView *)self recursiveDescription];
       v15 = 138412290;
-      v16 = v12;
+      v16 = recursiveDescription;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "Live layout with a prospective search layout. Search Field container layout (e.g., search field and cancel button size and positioning) may be incorrect. Please send to UIKit for investigation, and include the following recursive description.\n%@", &v15, 0xCu);
       goto LABEL_19;
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   layout = self->_layout;
@@ -143,11 +143,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setFrozenLayout:(BOOL)a3
+- (void)setFrozenLayout:(BOOL)layout
 {
   frozenLayout = self->_frozenLayout;
-  self->_frozenLayout = a3;
-  if (!a3 && frozenLayout && self->_needsLayoutWhenThawed)
+  self->_frozenLayout = layout;
+  if (!layout && frozenLayout && self->_needsLayoutWhenThawed)
   {
     [(_UISearchBarSearchContainerView *)self setNeedsLayout];
     self->_needsLayoutWhenThawed = 0;

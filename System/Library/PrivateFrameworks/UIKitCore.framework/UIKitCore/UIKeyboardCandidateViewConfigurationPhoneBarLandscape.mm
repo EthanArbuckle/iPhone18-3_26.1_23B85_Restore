@@ -10,53 +10,53 @@
 {
   v12.receiver = self;
   v12.super_class = UIKeyboardCandidateViewConfigurationPhoneBarLandscape;
-  v3 = [(UIKeyboardCandidateViewConfigurationPhoneBar *)&v12 initialState];
-  [v3 setBorders:0];
-  v4 = [v3 style];
-  [v4 setCornerRadius:4.0];
+  initialState = [(UIKeyboardCandidateViewConfigurationPhoneBar *)&v12 initialState];
+  [initialState setBorders:0];
+  style = [initialState style];
+  [style setCornerRadius:4.0];
 
-  v5 = [v3 style];
-  [v5 setGridMaskedCorners:15];
+  style2 = [initialState style];
+  [style2 setGridMaskedCorners:15];
 
-  v6 = [v3 style];
-  [v6 setExtraCellPadding:{2.0, 0.0, 0.0, 0.0}];
+  style3 = [initialState style];
+  [style3 setExtraCellPadding:{2.0, 0.0, 0.0, 0.0}];
 
   v7 = +[UIKeyboardCandidateViewImageRenderer sharedImageRenderer];
-  v8 = [(UIKeyboardCandidateViewConfiguration *)self highlightedBackgroundColor];
-  v9 = [v7 highlightedBarCellBackgroundImageWithColor:v8 insets:{2.0, 2.0, 0.0, 2.0}];
-  v10 = [v3 style];
-  [v10 setHighlightedCellBackgroundImage:v9];
+  highlightedBackgroundColor = [(UIKeyboardCandidateViewConfiguration *)self highlightedBackgroundColor];
+  v9 = [v7 highlightedBarCellBackgroundImageWithColor:highlightedBackgroundColor insets:{2.0, 2.0, 0.0, 2.0}];
+  style4 = [initialState style];
+  [style4 setHighlightedCellBackgroundImage:v9];
 
-  return v3;
+  return initialState;
 }
 
 - (id)extendedState
 {
   v7.receiver = self;
   v7.super_class = UIKeyboardCandidateViewConfigurationPhoneBarLandscape;
-  v2 = [(UIKeyboardCandidateViewConfigurationPhoneBar *)&v7 extendedState];
-  [v2 setSortControlPosition:3];
-  v3 = [v2 style];
-  [v3 setColumnsCount:10];
+  extendedState = [(UIKeyboardCandidateViewConfigurationPhoneBar *)&v7 extendedState];
+  [extendedState setSortControlPosition:3];
+  style = [extendedState style];
+  [style setColumnsCount:10];
 
-  v4 = [v2 style];
-  [v4 setSortControlPadding:{0.0, 0.0, 6.0, 0.0}];
+  style2 = [extendedState style];
+  [style2 setSortControlPadding:{0.0, 0.0, 6.0, 0.0}];
 
   v5 = +[UIKeyboardImpl sharedInstance];
-  [v2 setHasBackdrop:{objc_msgSend(v5, "_isBackdropVisible")}];
+  [extendedState setHasBackdrop:{objc_msgSend(v5, "_isBackdropVisible")}];
 
-  return v2;
+  return extendedState;
 }
 
 - (id)extendedScrolledState
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardCandidateViewConfigurationPhoneBarLandscape;
-  v2 = [(UIKeyboardCandidateViewConfigurationPhoneBar *)&v5 extendedScrolledState];
-  v3 = [v2 style];
-  [v3 setShowsIndex:0];
+  extendedScrolledState = [(UIKeyboardCandidateViewConfigurationPhoneBar *)&v5 extendedScrolledState];
+  style = [extendedScrolledState style];
+  [style setShowsIndex:0];
 
-  return v2;
+  return extendedScrolledState;
 }
 
 @end

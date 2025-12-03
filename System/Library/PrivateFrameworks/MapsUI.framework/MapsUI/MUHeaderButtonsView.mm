@@ -1,21 +1,21 @@
 @interface MUHeaderButtonsView
 - (BOOL)shouldStackForButtons;
-- (MUHeaderButtonsView)initWithConfiguration:(id)a3;
+- (MUHeaderButtonsView)initWithConfiguration:(id)configuration;
 - (MUHeaderButtonsViewDelegate)delegate;
-- (void)ETAProviderUpdated:(id)a3;
-- (void)_activateNewConstraints:(id)a3;
+- (void)ETAProviderUpdated:(id)updated;
+- (void)_activateNewConstraints:(id)constraints;
 - (void)_createLayout;
 - (void)_didTapAlternatePrimaryAction;
 - (void)_didTapMoreButton;
 - (void)_didTapPrimaryAction;
 - (void)_didTapSecondaryAction;
-- (void)_loadPrimaryButtonWithPrimaryType:(unint64_t)a3;
-- (void)_loadSecondaryButtonWithSecondaryActionController:(id)a3;
+- (void)_loadPrimaryButtonWithPrimaryType:(unint64_t)type;
+- (void)_loadSecondaryButtonWithSecondaryActionController:(id)controller;
 - (void)_setupSubviews;
 - (void)_updateConstraintsIfNeeded;
 - (void)layoutSubviews;
-- (void)setPrimaryButtonType:(unint64_t)a3;
-- (void)setSecondaryButtonController:(id)a3;
+- (void)setPrimaryButtonType:(unint64_t)type;
+- (void)setSecondaryButtonController:(id)controller;
 @end
 
 @implementation MUHeaderButtonsView
@@ -108,15 +108,15 @@ LABEL_15:
   [(MUHeaderButtonsView *)&v3 layoutSubviews];
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(MUPlaceHeaderButton *)self->_primaryButton configuration];
+  updatedCopy = updated;
+  configuration = [(MUPlaceHeaderButton *)self->_primaryButton configuration];
   WeakRetained = objc_loadWeakRetained(&self->_etaProvider);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != updatedCopy)
   {
-    objc_storeWeak(&self->_etaProvider, v4);
+    objc_storeWeak(&self->_etaProvider, updatedCopy);
   }
 
   primaryButtonType = self->_primaryButtonType;
@@ -129,9 +129,9 @@ LABEL_15:
 
   if (primaryButtonType == 1)
   {
-    v8 = [v4 etaTransportType];
-    [v4 etaTravelTime];
-    v9 = [_MUETAConfiguration configurationForEtaStringFor:v8 travelTime:self->_secondaryButtonController != 0 hasSecondaryController:self->_isStackingButtons isStackingButtons:?];
+    etaTransportType = [updatedCopy etaTransportType];
+    [updatedCopy etaTravelTime];
+    v9 = [_MUETAConfiguration configurationForEtaStringFor:etaTransportType travelTime:self->_secondaryButtonController != 0 hasSecondaryController:self->_isStackingButtons isStackingButtons:?];
 LABEL_7:
     v10 = v9;
     goto LABEL_9;
@@ -139,22 +139,22 @@ LABEL_7:
 
   v10 = 0;
 LABEL_9:
-  v11 = [v10 symbolName];
-  v12 = [v11 length];
+  symbolName = [v10 symbolName];
+  v12 = [symbolName length];
 
   if (v12)
   {
     v13 = MEMORY[0x1E69DCAB8];
-    v14 = [v10 symbolName];
-    v15 = [v13 _mapsui_systemImageNamed:v14];
-    [v5 setImage:v15];
+    symbolName2 = [v10 symbolName];
+    v15 = [v13 _mapsui_systemImageNamed:symbolName2];
+    [configuration setImage:v15];
   }
 
-  v16 = [v10 etaString];
-  [v5 setTitle:v16];
+  etaString = [v10 etaString];
+  [configuration setTitle:etaString];
 
-  v17 = [v5 title];
-  v18 = [v17 length];
+  title = [configuration title];
+  v18 = [title length];
 
   if (v18)
   {
@@ -166,7 +166,7 @@ LABEL_9:
     v21[2] = __42__MUHeaderButtonsView_ETAProviderUpdated___block_invoke;
     v21[3] = &unk_1E8219F48;
     objc_copyWeak(&v23, &location);
-    v22 = v5;
+    v22 = configuration;
     [v19 transitionWithView:primaryButton duration:5242880 options:v21 animations:0 completion:0.300000012];
 
     objc_destroyWeak(&v23);
@@ -185,15 +185,15 @@ void __42__MUHeaderButtonsView_ETAProviderUpdated___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_activateNewConstraints:(id)a3
+- (void)_activateNewConstraints:(id)constraints
 {
-  v6 = a3;
+  constraintsCopy = constraints;
   if ([(NSArray *)self->_constraints count])
   {
     [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
   }
 
-  v4 = [v6 copy];
+  v4 = [constraintsCopy copy];
   constraints = self->_constraints;
   self->_constraints = v4;
 
@@ -207,120 +207,120 @@ void __42__MUHeaderButtonsView_ETAProviderUpdated___block_invoke(uint64_t a1)
 {
   v151 = *MEMORY[0x1E69E9840];
   self->_isStackingButtons = [(MUHeaderButtonsView *)self shouldStackForButtons];
-  v3 = self;
+  selfCopy = self;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  p_primaryButton = &v3->_primaryButton;
-  alternatePrimaryButton = v3->_alternatePrimaryButton;
-  if (v3->_primaryButton)
+  p_primaryButton = &selfCopy->_primaryButton;
+  alternatePrimaryButton = selfCopy->_alternatePrimaryButton;
+  if (selfCopy->_primaryButton)
   {
     if (alternatePrimaryButton)
     {
-      v7 = [(MUPlaceHeaderButton *)v3->_primaryButton widthAnchor];
-      v8 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton widthAnchor];
-      v9 = [v7 constraintEqualToAnchor:v8];
+      widthAnchor = [(MUPlaceHeaderButton *)selfCopy->_primaryButton widthAnchor];
+      widthAnchor2 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton widthAnchor];
+      v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v4 addObject:v9];
 
-      v10 = [*p_primaryButton heightAnchor];
-      v11 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton heightAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      heightAnchor = [*p_primaryButton heightAnchor];
+      heightAnchor2 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton heightAnchor];
+      v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
       [v4 addObject:v12];
 
-      v13 = [*p_primaryButton leadingAnchor];
-      v14 = [(MUHeaderButtonsView *)v3 leadingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      leadingAnchor = [*p_primaryButton leadingAnchor];
+      leadingAnchor2 = [(MUHeaderButtonsView *)selfCopy leadingAnchor];
+      v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v4 addObject:v15];
 
-      v16 = [*p_primaryButton topAnchor];
-      v17 = [(MUHeaderButtonsView *)v3 topAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      topAnchor = [*p_primaryButton topAnchor];
+      topAnchor2 = [(MUHeaderButtonsView *)selfCopy topAnchor];
+      v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [v4 addObject:v18];
 
-      v19 = [*p_primaryButton trailingAnchor];
-      v20 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton leadingAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20 constant:-8.0];
+      trailingAnchor = [*p_primaryButton trailingAnchor];
+      leadingAnchor3 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton leadingAnchor];
+      v21 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-8.0];
       [v4 addObject:v21];
 
-      v22 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton topAnchor];
-      v23 = [*p_primaryButton topAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      topAnchor3 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton topAnchor];
+      topAnchor4 = [*p_primaryButton topAnchor];
+      v24 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       [v4 addObject:v24];
 
-      v25 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton trailingAnchor];
-      v26 = [(MUHeaderButtonsView *)v3 trailingAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      trailingAnchor2 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton trailingAnchor];
+      trailingAnchor3 = [(MUHeaderButtonsView *)selfCopy trailingAnchor];
+      v27 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
       [v4 addObject:v27];
 
-      secondaryButton = v3->_secondaryButton;
+      secondaryButton = selfCopy->_secondaryButton;
       if (secondaryButton)
       {
-        v29 = [(MUPlaceHeaderButton *)secondaryButton leadingAnchor];
-        v30 = [(MUHeaderButtonsView *)v3 leadingAnchor];
-        v31 = [v29 constraintEqualToAnchor:v30];
+        leadingAnchor4 = [(MUPlaceHeaderButton *)secondaryButton leadingAnchor];
+        leadingAnchor5 = [(MUHeaderButtonsView *)selfCopy leadingAnchor];
+        v31 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
         [v4 addObject:v31];
 
-        v32 = [(MUPlaceHeaderButton *)v3->_secondaryButton trailingAnchor];
-        v33 = [(MUHeaderButtonsView *)v3 trailingAnchor];
-        v34 = [v32 constraintEqualToAnchor:v33];
-        p_primaryButton = &v3->_secondaryButton;
+        trailingAnchor4 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton trailingAnchor];
+        trailingAnchor5 = [(MUHeaderButtonsView *)selfCopy trailingAnchor];
+        v34 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
+        p_primaryButton = &selfCopy->_secondaryButton;
       }
 
       else
       {
-        v32 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton bottomAnchor];
-        v33 = [*p_primaryButton bottomAnchor];
-        v34 = [v32 constraintEqualToAnchor:v33];
+        trailingAnchor4 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton bottomAnchor];
+        trailingAnchor5 = [*p_primaryButton bottomAnchor];
+        v34 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
       }
 
       [v4 addObject:v34];
 
-      v131 = [*p_primaryButton bottomAnchor];
-      v132 = [(MUHeaderButtonsView *)v3 bottomAnchor];
-      v133 = [v131 constraintEqualToAnchor:v132];
+      bottomAnchor = [*p_primaryButton bottomAnchor];
+      bottomAnchor2 = [(MUHeaderButtonsView *)selfCopy bottomAnchor];
+      v133 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v4 addObject:v133];
 
       v134 = [v4 copy];
-      [(MUHeaderButtonsView *)v3 _activateNewConstraints:v134];
+      [(MUHeaderButtonsView *)selfCopy _activateNewConstraints:v134];
 
       v53 = v4;
       goto LABEL_41;
     }
   }
 
-  else if (alternatePrimaryButton && v3->_secondaryButton)
+  else if (alternatePrimaryButton && selfCopy->_secondaryButton)
   {
-    v35 = [(MUPlaceHeaderButton *)alternatePrimaryButton widthAnchor];
-    v36 = [(MUPlaceHeaderButton *)v3->_secondaryButton widthAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    widthAnchor3 = [(MUPlaceHeaderButton *)alternatePrimaryButton widthAnchor];
+    widthAnchor4 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton widthAnchor];
+    v37 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     [v4 addObject:v37];
 
-    v38 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton leadingAnchor];
-    v39 = [(MUHeaderButtonsView *)v3 leadingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    leadingAnchor6 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton leadingAnchor];
+    leadingAnchor7 = [(MUHeaderButtonsView *)selfCopy leadingAnchor];
+    v40 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     [v4 addObject:v40];
 
-    v41 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton trailingAnchor];
-    v42 = [(MUPlaceHeaderButton *)v3->_secondaryButton leadingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:-8.0];
+    trailingAnchor6 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton trailingAnchor];
+    leadingAnchor8 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton leadingAnchor];
+    v43 = [trailingAnchor6 constraintEqualToAnchor:leadingAnchor8 constant:-8.0];
     [v4 addObject:v43];
 
-    v44 = [(MUPlaceHeaderButton *)v3->_secondaryButton trailingAnchor];
-    v45 = [(MUHeaderButtonsView *)v3 trailingAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    trailingAnchor7 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton trailingAnchor];
+    trailingAnchor8 = [(MUHeaderButtonsView *)selfCopy trailingAnchor];
+    v46 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     [v4 addObject:v46];
 
-    v47 = [(MUPlaceHeaderButton *)v3->_alternatePrimaryButton bottomAnchor];
-    v48 = [(MUHeaderButtonsView *)v3 bottomAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    bottomAnchor3 = [(MUPlaceHeaderButton *)selfCopy->_alternatePrimaryButton bottomAnchor];
+    bottomAnchor4 = [(MUHeaderButtonsView *)selfCopy bottomAnchor];
+    v49 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v4 addObject:v49];
 
-    v50 = [(MUPlaceHeaderButton *)v3->_secondaryButton bottomAnchor];
-    v51 = [(MUHeaderButtonsView *)v3 bottomAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    bottomAnchor5 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton bottomAnchor];
+    bottomAnchor6 = [(MUHeaderButtonsView *)selfCopy bottomAnchor];
+    v52 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     [v4 addObject:v52];
 
     v53 = v4;
     v54 = [v4 copy];
-    [(MUHeaderButtonsView *)v3 _activateNewConstraints:v54];
+    [(MUHeaderButtonsView *)selfCopy _activateNewConstraints:v54];
 
     goto LABEL_41;
   }
@@ -332,102 +332,102 @@ void __42__MUHeaderButtonsView_ETAProviderUpdated___block_invoke(uint64_t a1)
     [v55 addObject:?];
   }
 
-  if (v3->_secondaryButton)
+  if (selfCopy->_secondaryButton)
   {
     [v56 addObject:?];
   }
 
-  if (v3->_moreButton)
+  if (selfCopy->_moreButton)
   {
     [v56 addObject:?];
   }
 
-  if (self->_isStackingButtons && v3->_secondaryButton && *p_primaryButton)
+  if (self->_isStackingButtons && selfCopy->_secondaryButton && *p_primaryButton)
   {
-    v57 = [*p_primaryButton leadingAnchor];
-    v58 = [(MUHeaderButtonsView *)v3 leadingAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58];
+    leadingAnchor9 = [*p_primaryButton leadingAnchor];
+    leadingAnchor10 = [(MUHeaderButtonsView *)selfCopy leadingAnchor];
+    v59 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v60 = v4;
     [v4 addObject:v59];
 
-    v61 = [*p_primaryButton topAnchor];
-    v62 = [(MUHeaderButtonsView *)v3 topAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    topAnchor5 = [*p_primaryButton topAnchor];
+    topAnchor6 = [(MUHeaderButtonsView *)selfCopy topAnchor];
+    v63 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     [v60 addObject:v63];
 
-    v64 = [*p_primaryButton trailingAnchor];
-    v65 = [(MUHeaderButtonsView *)v3 trailingAnchor];
-    v66 = [v64 constraintEqualToAnchor:v65];
+    trailingAnchor9 = [*p_primaryButton trailingAnchor];
+    trailingAnchor10 = [(MUHeaderButtonsView *)selfCopy trailingAnchor];
+    v66 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     [v60 addObject:v66];
 
-    v67 = [*p_primaryButton heightAnchor];
-    v68 = [(MUPlaceHeaderButton *)v3->_secondaryButton heightAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
+    heightAnchor3 = [*p_primaryButton heightAnchor];
+    heightAnchor4 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton heightAnchor];
+    v69 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     [v60 addObject:v69];
 
-    v70 = [(MUPlaceHeaderButton *)v3->_secondaryButton leadingAnchor];
-    v71 = [(MUHeaderButtonsView *)v3 leadingAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    leadingAnchor11 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton leadingAnchor];
+    leadingAnchor12 = [(MUHeaderButtonsView *)selfCopy leadingAnchor];
+    v72 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     [v60 addObject:v72];
 
-    v73 = [(MUPlaceHeaderButton *)v3->_secondaryButton topAnchor];
-    v74 = [*p_primaryButton bottomAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74 constant:8.0];
+    topAnchor7 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton topAnchor];
+    bottomAnchor7 = [*p_primaryButton bottomAnchor];
+    v75 = [topAnchor7 constraintEqualToAnchor:bottomAnchor7 constant:8.0];
     [v60 addObject:v75];
 
-    v76 = [(MUPlaceHeaderButton *)v3->_secondaryButton bottomAnchor];
-    v77 = [(MUHeaderButtonsView *)v3 bottomAnchor];
-    v78 = [v76 constraintEqualToAnchor:v77];
+    bottomAnchor8 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton bottomAnchor];
+    bottomAnchor9 = [(MUHeaderButtonsView *)selfCopy bottomAnchor];
+    v78 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9];
     [v60 addObject:v78];
 
-    moreButton = v3->_moreButton;
-    v80 = [(MUPlaceHeaderButton *)v3->_secondaryButton trailingAnchor];
+    moreButton = selfCopy->_moreButton;
+    trailingAnchor11 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton trailingAnchor];
     if (moreButton)
     {
-      v81 = [(MUPlaceHeaderButton *)v3->_moreButton leadingAnchor];
-      v82 = [v80 constraintEqualToAnchor:v81 constant:-8.0];
+      leadingAnchor13 = [(MUPlaceHeaderButton *)selfCopy->_moreButton leadingAnchor];
+      v82 = [trailingAnchor11 constraintEqualToAnchor:leadingAnchor13 constant:-8.0];
       [v60 addObject:v82];
 
-      v83 = [(MUPlaceHeaderButton *)v3->_secondaryButton heightAnchor];
-      v84 = [(MUPlaceHeaderButton *)v3->_moreButton heightAnchor];
-      v85 = [v83 constraintEqualToAnchor:v84];
+      heightAnchor5 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton heightAnchor];
+      heightAnchor6 = [(MUPlaceHeaderButton *)selfCopy->_moreButton heightAnchor];
+      v85 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6];
       [v60 addObject:v85];
 
-      v86 = [(MUPlaceHeaderButton *)v3->_moreButton topAnchor];
-      v87 = [(MUPlaceHeaderButton *)v3->_secondaryButton topAnchor];
-      v88 = [v86 constraintEqualToAnchor:v87];
+      topAnchor8 = [(MUPlaceHeaderButton *)selfCopy->_moreButton topAnchor];
+      topAnchor9 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton topAnchor];
+      v88 = [topAnchor8 constraintEqualToAnchor:topAnchor9];
       [v60 addObject:v88];
 
-      v89 = [(MUPlaceHeaderButton *)v3->_moreButton trailingAnchor];
-      v90 = [(MUHeaderButtonsView *)v3 trailingAnchor];
-      v91 = [v89 constraintEqualToAnchor:v90];
+      trailingAnchor12 = [(MUPlaceHeaderButton *)selfCopy->_moreButton trailingAnchor];
+      trailingAnchor13 = [(MUHeaderButtonsView *)selfCopy trailingAnchor];
+      v91 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13];
       [v60 addObject:v91];
 
-      v92 = [(MUPlaceHeaderButton *)v3->_moreButton bottomAnchor];
-      v93 = [(MUPlaceHeaderButton *)v3->_secondaryButton bottomAnchor];
-      v94 = [v92 constraintEqualToAnchor:v93];
+      bottomAnchor10 = [(MUPlaceHeaderButton *)selfCopy->_moreButton bottomAnchor];
+      bottomAnchor11 = [(MUPlaceHeaderButton *)selfCopy->_secondaryButton bottomAnchor];
+      v94 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11];
       [v60 addObject:v94];
 
-      v95 = v3->_moreButton;
+      v95 = selfCopy->_moreButton;
     }
 
     else
     {
-      v136 = [(MUHeaderButtonsView *)v3 trailingAnchor];
-      v137 = [v80 constraintEqualToAnchor:v136 constant:-8.0];
+      trailingAnchor14 = [(MUHeaderButtonsView *)selfCopy trailingAnchor];
+      v137 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor14 constant:-8.0];
       [v60 addObject:v137];
 
-      v95 = v3->_secondaryButton;
+      v95 = selfCopy->_secondaryButton;
     }
 
-    v138 = [(MUPlaceHeaderButton *)v95 heightAnchor];
+    heightAnchor7 = [(MUPlaceHeaderButton *)v95 heightAnchor];
     v139 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
     [v139 _scaledValueForValue:48.0];
-    v140 = [v138 constraintEqualToConstant:?];
+    v140 = [heightAnchor7 constraintEqualToConstant:?];
     [v60 addObject:v140];
 
     v141 = [v60 copy];
-    [(MUHeaderButtonsView *)v3 _activateNewConstraints:v141];
+    [(MUHeaderButtonsView *)selfCopy _activateNewConstraints:v141];
 
     v53 = v60;
   }
@@ -444,7 +444,7 @@ void __42__MUHeaderButtonsView_ETAProviderUpdated___block_invoke(uint64_t a1)
     if (v145)
     {
       v142 = v56;
-      v97 = v3;
+      v97 = selfCopy;
       v98 = 0;
       v144 = *v147;
       v143 = *MEMORY[0x1E69DDD40];
@@ -460,69 +460,69 @@ void __42__MUHeaderButtonsView_ETAProviderUpdated___block_invoke(uint64_t a1)
           }
 
           v101 = *(*(&v146 + 1) + 8 * v99);
-          v102 = [v96 firstObject];
+          firstObject = [v96 firstObject];
 
-          if (v101 == v102)
+          if (v101 == firstObject)
           {
-            v103 = [(MUPlaceHeaderButton *)v101 leadingAnchor];
-            v104 = [(MUHeaderButtonsView *)v97 leadingAnchor];
-            v105 = [v103 constraintEqualToAnchor:v104];
+            leadingAnchor14 = [(MUPlaceHeaderButton *)v101 leadingAnchor];
+            leadingAnchor15 = [(MUHeaderButtonsView *)v97 leadingAnchor];
+            v105 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15];
             [v53 addObject:v105];
           }
 
           if (v101 != v97->_moreButton)
           {
-            v106 = [v96 firstObject];
+            firstObject2 = [v96 firstObject];
 
-            if (v101 != v106)
+            if (v101 != firstObject2)
             {
-              v107 = [(MUPlaceHeaderButton *)v101 widthAnchor];
-              v108 = [(MUPlaceHeaderButton *)v100 widthAnchor];
-              v109 = [v107 constraintEqualToAnchor:v108];
+              widthAnchor5 = [(MUPlaceHeaderButton *)v101 widthAnchor];
+              widthAnchor6 = [(MUPlaceHeaderButton *)v100 widthAnchor];
+              v109 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
               [v53 addObject:v109];
             }
           }
 
-          v110 = [v96 firstObject];
+          firstObject3 = [v96 firstObject];
 
-          if (v100 && v101 != v110)
+          if (v100 && v101 != firstObject3)
           {
-            v111 = [(MUPlaceHeaderButton *)v100 trailingAnchor];
-            v112 = [(MUPlaceHeaderButton *)v101 leadingAnchor];
-            v113 = [v111 constraintEqualToAnchor:v112 constant:-8.0];
+            trailingAnchor15 = [(MUPlaceHeaderButton *)v100 trailingAnchor];
+            leadingAnchor16 = [(MUPlaceHeaderButton *)v101 leadingAnchor];
+            v113 = [trailingAnchor15 constraintEqualToAnchor:leadingAnchor16 constant:-8.0];
             [v53 addObject:v113];
 
-            v114 = [(MUPlaceHeaderButton *)v100 heightAnchor];
-            v115 = [(MUPlaceHeaderButton *)v101 heightAnchor];
-            v116 = [v114 constraintEqualToAnchor:v115];
+            heightAnchor8 = [(MUPlaceHeaderButton *)v100 heightAnchor];
+            heightAnchor9 = [(MUPlaceHeaderButton *)v101 heightAnchor];
+            v116 = [heightAnchor8 constraintEqualToAnchor:heightAnchor9];
             [v53 addObject:v116];
           }
 
-          v117 = [v96 lastObject];
+          lastObject = [v96 lastObject];
 
-          if (v101 == v117)
+          if (v101 == lastObject)
           {
-            v118 = [(MUPlaceHeaderButton *)v101 trailingAnchor];
-            v119 = [(MUHeaderButtonsView *)v97 trailingAnchor];
-            v120 = [v118 constraintEqualToAnchor:v119];
+            trailingAnchor16 = [(MUPlaceHeaderButton *)v101 trailingAnchor];
+            trailingAnchor17 = [(MUHeaderButtonsView *)v97 trailingAnchor];
+            v120 = [trailingAnchor16 constraintEqualToAnchor:trailingAnchor17];
             [v53 addObject:v120];
 
-            v121 = [(MUPlaceHeaderButton *)v101 heightAnchor];
+            heightAnchor10 = [(MUPlaceHeaderButton *)v101 heightAnchor];
             v122 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v143];
             [v122 _scaledValueForValue:48.0];
-            v123 = [v121 constraintEqualToConstant:?];
+            v123 = [heightAnchor10 constraintEqualToConstant:?];
             [v53 addObject:v123];
           }
 
-          v124 = [(MUPlaceHeaderButton *)v101 topAnchor];
-          v125 = [(MUHeaderButtonsView *)v97 topAnchor];
-          v126 = [v124 constraintEqualToAnchor:v125];
+          topAnchor10 = [(MUPlaceHeaderButton *)v101 topAnchor];
+          topAnchor11 = [(MUHeaderButtonsView *)v97 topAnchor];
+          v126 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
           [v4 addObject:v126];
 
-          v127 = [(MUPlaceHeaderButton *)v101 bottomAnchor];
+          bottomAnchor12 = [(MUPlaceHeaderButton *)v101 bottomAnchor];
           v53 = v4;
-          v128 = [(MUHeaderButtonsView *)v97 bottomAnchor];
-          v129 = [v127 constraintEqualToAnchor:v128];
+          bottomAnchor13 = [(MUHeaderButtonsView *)v97 bottomAnchor];
+          v129 = [bottomAnchor12 constraintEqualToAnchor:bottomAnchor13];
           [v4 addObject:v129];
 
           v98 = v101;
@@ -536,21 +536,21 @@ void __42__MUHeaderButtonsView_ETAProviderUpdated___block_invoke(uint64_t a1)
 
       while (v145);
 
-      v3 = v97;
+      selfCopy = v97;
       v56 = v142;
     }
 
     v130 = [v53 copy];
-    [(MUHeaderButtonsView *)v3 _activateNewConstraints:v130];
+    [(MUHeaderButtonsView *)selfCopy _activateNewConstraints:v130];
   }
 
 LABEL_41:
   v135 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSecondaryButtonController:(id)a3
+- (void)setSecondaryButtonController:(id)controller
 {
-  if (self->_secondaryButtonController != a3)
+  if (self->_secondaryButtonController != controller)
   {
     [(MUHeaderButtonsView *)self _loadSecondaryButtonWithSecondaryActionController:?];
 
@@ -558,9 +558,9 @@ LABEL_41:
   }
 }
 
-- (void)setPrimaryButtonType:(unint64_t)a3
+- (void)setPrimaryButtonType:(unint64_t)type
 {
-  if (self->_primaryButtonType != a3)
+  if (self->_primaryButtonType != type)
   {
     [(MUHeaderButtonsView *)self _loadPrimaryButtonWithPrimaryType:?];
 
@@ -568,23 +568,23 @@ LABEL_41:
   }
 }
 
-- (void)_loadPrimaryButtonWithPrimaryType:(unint64_t)a3
+- (void)_loadPrimaryButtonWithPrimaryType:(unint64_t)type
 {
-  if (self->_primaryButtonType == a3)
+  if (self->_primaryButtonType == type)
   {
     return;
   }
 
-  self->_primaryButtonType = a3;
+  self->_primaryButtonType = type;
   primaryButton = self->_primaryButton;
-  if (a3)
+  if (type)
   {
     if (primaryButton)
     {
 LABEL_22:
-      v19 = [(MUPlaceHeaderButton *)primaryButton superview];
+      superview = [(MUPlaceHeaderButton *)primaryButton superview];
 
-      if (v19 != self)
+      if (superview != self)
       {
         v20 = self->_primaryButton;
 
@@ -607,14 +607,14 @@ LABEL_22:
       if (primaryButtonType == 3)
       {
         [(MUPlaceHeaderButton *)self->_primaryButton setAccessibilityIdentifier:@"PrimaryButtonTypeShareCurrentLocation"];
-        v17 = [MEMORY[0x1E69DC740] _mapsui_secondaryHeaderActionConfiguration];
+        _mapsui_secondaryHeaderActionConfiguration = [MEMORY[0x1E69DC740] _mapsui_secondaryHeaderActionConfiguration];
 
         v18 = [MEMORY[0x1E69DCAB8] _mapsui_systemImageNamed:@"square.and.arrow.up"];
-        [v17 setImage:v18];
+        [_mapsui_secondaryHeaderActionConfiguration setImage:v18];
 
         v10 = _MULocalizedStringFromThisBundle(@"Share [Placecard]");
-        [v17 setTitle:v10];
-        v7 = v17;
+        [_mapsui_secondaryHeaderActionConfiguration setTitle:v10];
+        v7 = _mapsui_secondaryHeaderActionConfiguration;
         goto LABEL_19;
       }
 
@@ -641,8 +641,8 @@ LABEL_22:
           v9 = [_MUETAConfiguration rerouteConfigurationETAStringForTravelTime:?];
           v10 = v9;
 LABEL_17:
-          v16 = [v9 etaString];
-          [v7 setTitle:v16];
+          etaString = [v9 etaString];
+          [v7 setTitle:etaString];
 
 LABEL_19:
         }
@@ -662,8 +662,8 @@ LABEL_20:
       [(MUPlaceHeaderButton *)self->_primaryButton setAccessibilityIdentifier:@"PrimaryButtonTypeDirections"];
       v10 = [_MUETAConfiguration configurationForEtaStringFor:0xFFFFFFFLL travelTime:self->_secondaryButtonController != 0 hasSecondaryController:self->_isStackingButtons isStackingButtons:0.0];
       v13 = MEMORY[0x1E69DCAB8];
-      v14 = [v10 symbolName];
-      v15 = [v13 _mapsui_systemImageNamed:v14];
+      symbolName = [v10 symbolName];
+      v15 = [v13 _mapsui_systemImageNamed:symbolName];
       [v7 setImage:v15];
     }
 
@@ -676,13 +676,13 @@ LABEL_20:
   self->_primaryButton = 0;
 }
 
-- (void)_loadSecondaryButtonWithSecondaryActionController:(id)a3
+- (void)_loadSecondaryButtonWithSecondaryActionController:(id)controller
 {
-  v5 = a3;
-  if (self->_secondaryButtonController != v5)
+  controllerCopy = controller;
+  if (self->_secondaryButtonController != controllerCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->_secondaryButtonController, a3);
+    v16 = controllerCopy;
+    objc_storeStrong(&self->_secondaryButtonController, controller);
     if (!self->_secondaryButtonController)
     {
       [(MUPlaceHeaderButton *)self->_secondaryButton removeFromSuperview];
@@ -700,19 +700,19 @@ LABEL_20:
       [(MUPlaceHeaderButton *)self->_secondaryButton addTarget:self action:sel__didTapSecondaryAction forControlEvents:0x2000];
     }
 
-    v9 = [MEMORY[0x1E69DC740] _mapsui_secondaryHeaderActionConfiguration];
-    v10 = [(_MKPlaceActionButtonController *)self->_secondaryButtonController buttonTitle];
-    [v9 setTitle:v10];
+    _mapsui_secondaryHeaderActionConfiguration = [MEMORY[0x1E69DC740] _mapsui_secondaryHeaderActionConfiguration];
+    buttonTitle = [(_MKPlaceActionButtonController *)self->_secondaryButtonController buttonTitle];
+    [_mapsui_secondaryHeaderActionConfiguration setTitle:buttonTitle];
 
     v11 = MEMORY[0x1E69DCAB8];
-    v12 = [(_MKPlaceActionButtonController *)self->_secondaryButtonController symbolName];
-    v13 = [v11 _mapsui_systemImageNamed:v12];
-    [v9 setImage:v13];
+    symbolName = [(_MKPlaceActionButtonController *)self->_secondaryButtonController symbolName];
+    v13 = [v11 _mapsui_systemImageNamed:symbolName];
+    [_mapsui_secondaryHeaderActionConfiguration setImage:v13];
 
-    [(MUPlaceHeaderButton *)self->_secondaryButton setConfiguration:v9];
-    v14 = [(MUPlaceHeaderButton *)self->_secondaryButton superview];
+    [(MUPlaceHeaderButton *)self->_secondaryButton setConfiguration:_mapsui_secondaryHeaderActionConfiguration];
+    superview = [(MUPlaceHeaderButton *)self->_secondaryButton superview];
 
-    if (v14 != self)
+    if (superview != self)
     {
       [(MUPlaceHeaderButton *)self->_secondaryButton setAccessibilityIdentifier:@"SecondaryButton"];
       [(MUHeaderButtonsView *)self addSubview:self->_secondaryButton];
@@ -721,7 +721,7 @@ LABEL_20:
     WeakRetained = objc_loadWeakRetained(&self->_etaProvider);
     [(MUHeaderButtonsView *)self ETAProviderUpdated:WeakRetained];
 
-    v5 = v16;
+    controllerCopy = v16;
   }
 }
 
@@ -753,12 +753,12 @@ LABEL_20:
     v21 = &unk_1E8218DF8;
     objc_copyWeak(&v22, &location);
     [(MUPlaceHeaderButton *)v9 _setMenuProvider:&v18];
-    v10 = [MEMORY[0x1E69DC740] _mapsui_secondaryHeaderActionConfiguration];
+    _mapsui_secondaryHeaderActionConfiguration = [MEMORY[0x1E69DC740] _mapsui_secondaryHeaderActionConfiguration];
     v11 = [MEMORY[0x1E69DCAB8] _mapsui_systemImageNamed:@"ellipsis"];
-    [v10 setImage:v11];
+    [_mapsui_secondaryHeaderActionConfiguration setImage:v11];
 
-    [v10 setContentInsets:{0.0, 11.0, 0.0, 11.0}];
-    [(MUPlaceHeaderButton *)self->_moreButton setConfiguration:v10];
+    [_mapsui_secondaryHeaderActionConfiguration setContentInsets:{0.0, 11.0, 0.0, 11.0}];
+    [(MUPlaceHeaderButton *)self->_moreButton setConfiguration:_mapsui_secondaryHeaderActionConfiguration];
     [(MUPlaceHeaderButton *)self->_moreButton addTarget:self action:sel__didTapMoreButton forControlEvents:0x4000];
     [(MUHeaderButtonsView *)self addSubview:self->_moreButton];
     v12 = objc_opt_self();
@@ -800,35 +800,35 @@ id __37__MUHeaderButtonsView__setupSubviews__block_invoke(uint64_t a1)
 
 - (void)_didTapMoreButton
 {
-  v3 = [(MUHeaderButtonsView *)self delegate];
+  delegate = [(MUHeaderButtonsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MUHeaderButtonsView *)self delegate];
-    [v5 headerButtonsViewWillPresentMenu:self];
+    delegate2 = [(MUHeaderButtonsView *)self delegate];
+    [delegate2 headerButtonsViewWillPresentMenu:self];
   }
 }
 
 - (void)_didTapSecondaryAction
 {
-  v3 = [(_MKPlaceActionButtonController *)self->_secondaryButtonController buttonSelectedBlock];
+  buttonSelectedBlock = [(_MKPlaceActionButtonController *)self->_secondaryButtonController buttonSelectedBlock];
 
-  if (v3)
+  if (buttonSelectedBlock)
   {
-    v4 = [(_MKPlaceActionButtonController *)self->_secondaryButtonController buttonSelectedBlock];
-    v4[2](v4, self->_secondaryButton);
+    buttonSelectedBlock2 = [(_MKPlaceActionButtonController *)self->_secondaryButtonController buttonSelectedBlock];
+    buttonSelectedBlock2[2](buttonSelectedBlock2, self->_secondaryButton);
   }
 }
 
 - (void)_didTapAlternatePrimaryAction
 {
-  v3 = [(_MKPlaceActionButtonController *)self->_alternatePrimaryButtonController buttonSelectedBlock];
+  buttonSelectedBlock = [(_MKPlaceActionButtonController *)self->_alternatePrimaryButtonController buttonSelectedBlock];
 
-  if (v3)
+  if (buttonSelectedBlock)
   {
-    v4 = [(_MKPlaceActionButtonController *)self->_alternatePrimaryButtonController buttonSelectedBlock];
-    v4[2](v4, self->_secondaryButton);
+    buttonSelectedBlock2 = [(_MKPlaceActionButtonController *)self->_alternatePrimaryButtonController buttonSelectedBlock];
+    buttonSelectedBlock2[2](buttonSelectedBlock2, self->_secondaryButton);
   }
 }
 
@@ -838,20 +838,20 @@ id __37__MUHeaderButtonsView__setupSubviews__block_invoke(uint64_t a1)
   [(MUPresentationOptions *)v4 setSourceView:self->_primaryButton];
   [(MUPlaceHeaderButton *)self->_primaryButton frame];
   [(MUPresentationOptions *)v4 setSourceRect:?];
-  v3 = [(MUHeaderButtonsView *)self delegate];
-  [v3 headerButtonsView:self didSelectPrimaryType:self->_primaryButtonType withPresentationOptions:v4];
+  delegate = [(MUHeaderButtonsView *)self delegate];
+  [delegate headerButtonsView:self didSelectPrimaryType:self->_primaryButtonType withPresentationOptions:v4];
 }
 
-- (MUHeaderButtonsView)initWithConfiguration:(id)a3
+- (MUHeaderButtonsView)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MUHeaderButtonsView;
   v6 = [(MUHeaderButtonsView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     [(MUHeaderButtonsView *)v7 setAccessibilityIdentifier:@"HeaderButtons"];
     [(MUHeaderButtonsView *)v7 _setupSubviews];
   }

@@ -1,7 +1,7 @@
 @interface COSSoftwareUpdateAutomaticUpdateContoller
 - (id)automaticUpdateStatus;
 - (id)specifiers;
-- (void)armedAutoUpdateForAutomaticUpdatesToggled:(id)a3 forSpecifier:(id)a4;
+- (void)armedAutoUpdateForAutomaticUpdatesToggled:(id)toggled forSpecifier:(id)specifier;
 @end
 
 @implementation COSSoftwareUpdateAutomaticUpdateContoller
@@ -21,8 +21,8 @@
     [(COSSoftwareUpdateAutomaticUpdateContoller *)self setAutomaticUpdateGroup:v6];
 
     v7 = [NSMutableArray alloc];
-    v8 = [(COSSoftwareUpdateAutomaticUpdateContoller *)self automaticUpdateGroup];
-    v9 = [v7 initWithObjects:{v8, 0}];
+    automaticUpdateGroup = [(COSSoftwareUpdateAutomaticUpdateContoller *)self automaticUpdateGroup];
+    v9 = [v7 initWithObjects:{automaticUpdateGroup, 0}];
 
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"AUTOMATIC_UPDATES" value:&stru_10026E598 table:@"Software Update"];
@@ -33,11 +33,11 @@
     v14 = SFLocalizableWAPIStringKeyForKey();
     v15 = [v13 localizedStringForKey:v14 value:&stru_10026E598 table:@"Software Update"];
 
-    v16 = [(COSSoftwareUpdateAutomaticUpdateContoller *)self automaticUpdateGroup];
-    [v16 setProperty:v15 forKey:PSFooterTextGroupKey];
+    automaticUpdateGroup2 = [(COSSoftwareUpdateAutomaticUpdateContoller *)self automaticUpdateGroup];
+    [automaticUpdateGroup2 setProperty:v15 forKey:PSFooterTextGroupKey];
 
-    v17 = [(COSSoftwareUpdateAutomaticUpdateContoller *)self automaticUpdateSwitchSpecifier];
-    [v9 addObject:v17];
+    automaticUpdateSwitchSpecifier = [(COSSoftwareUpdateAutomaticUpdateContoller *)self automaticUpdateSwitchSpecifier];
+    [v9 addObject:automaticUpdateSwitchSpecifier];
 
     v18 = *&self->BPSListController_opaque[v2];
     *&self->BPSListController_opaque[v2] = v9;
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (void)armedAutoUpdateForAutomaticUpdatesToggled:(id)a3 forSpecifier:(id)a4
+- (void)armedAutoUpdateForAutomaticUpdatesToggled:(id)toggled forSpecifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [toggled BOOLValue];
 
-  sub_10002DDC4(v4);
+  sub_10002DDC4(bOOLValue);
 }
 
 - (id)automaticUpdateStatus

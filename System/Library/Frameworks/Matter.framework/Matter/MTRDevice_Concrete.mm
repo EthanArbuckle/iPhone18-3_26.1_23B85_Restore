@@ -1,148 +1,148 @@
 @interface MTRDevice_Concrete
-+ (id)deviceWithNodeID:(unint64_t)a3 deviceController:(id)a4;
-- (BOOL)_attributeAffectsDeviceConfiguration:(id)a3;
-- (BOOL)_attributePathAffectsDescriptionData:(id)a3;
++ (id)deviceWithNodeID:(unint64_t)d deviceController:(id)controller;
+- (BOOL)_attributeAffectsDeviceConfiguration:(id)configuration;
+- (BOOL)_attributePathAffectsDescriptionData:(id)data;
 - (BOOL)_deviceHasActiveSubscription;
 - (BOOL)_deviceIsReportingExcessively;
 - (BOOL)_deviceUsesThread;
 - (BOOL)_doPersistClusterData;
 - (BOOL)_haveClusterDataToPersist;
-- (BOOL)_interestedPaths:(id)a3 includesAttributePath:(id)a4;
-- (BOOL)_interestedPaths:(id)a3 includesEventPath:(id)a4;
-- (BOOL)_invokeResponse:(id)a3 matchesRequiredResponse:(id)a4;
-- (BOOL)_reattemptSubscriptionNowIfNeededWithReason:(id)a3;
+- (BOOL)_interestedPaths:(id)paths includesAttributePath:(id)path;
+- (BOOL)_interestedPaths:(id)paths includesEventPath:(id)path;
+- (BOOL)_invokeResponse:(id)response matchesRequiredResponse:(id)requiredResponse;
+- (BOOL)_reattemptSubscriptionNowIfNeededWithReason:(id)reason;
 - (BOOL)_subscriptionAbleToReport;
 - (BOOL)_subscriptionsAllowed;
 - (BOOL)deviceCachePrimed;
 - (BOOL)deviceUsesThread;
 - (BOOL)shouldDetectTimeSynchronizationLoss;
-- (MTRDevice_Concrete)initWithNodeID:(id)a3 controller:(id)a4;
+- (MTRDevice_Concrete)initWithNodeID:(id)d controller:(id)controller;
 - (id).cxx_construct;
-- (id)_attributeListForEndpointID:(id)a3 clusterID:(id)a4;
-- (id)_attributeValueDictionaryForAttributePath:(id)a3;
-- (id)_cachedAttributeValueForPath:(id)a3;
-- (id)_cachedListOfNumbersValueForEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5;
-- (id)_clusterDataForPath:(id)a3;
+- (id)_attributeListForEndpointID:(id)d clusterID:(id)iD;
+- (id)_attributeValueDictionaryForAttributePath:(id)path;
+- (id)_cachedAttributeValueForPath:(id)path;
+- (id)_cachedListOfNumbersValueForEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID;
+- (id)_clusterDataForPath:(id)path;
 - (id)_clusterDataToPersistSnapshot;
-- (id)_dataValueWithoutDataVersion:(id)a3;
+- (id)_dataValueWithoutDataVersion:(id)version;
 - (id)_endpointList;
 - (id)_endpointsWithTimeSyncClusterServer;
-- (id)_filteredAttributes:(id)a3 forInterestedPaths:(id)a4;
-- (id)_filteredEvents:(id)a3 forInterestedPaths:(id)a4;
-- (id)_getAttributesToReportWithNewExpectedValues:(id)a3 expirationTime:(id)a4 expectedValueID:(unint64_t *)a5;
-- (id)_getAttributesToReportWithReportedValues:(id)a3 fromSubscription:(BOOL)a4;
+- (id)_filteredAttributes:(id)attributes forInterestedPaths:(id)paths;
+- (id)_filteredEvents:(id)events forInterestedPaths:(id)paths;
+- (id)_getAttributesToReportWithNewExpectedValues:(id)values expirationTime:(id)time expectedValueID:(unint64_t *)d;
+- (id)_getAttributesToReportWithReportedValues:(id)values fromSubscription:(BOOL)subscription;
 - (id)_getCachedDataVersions;
-- (id)_informationalNumberAtAttributePath:(id)a3;
+- (id)_informationalNumberAtAttributePath:(id)path;
 - (id)_informationalProductID;
 - (id)_informationalVendorID;
 - (id)_internalProperties;
 - (id)_knownClusters;
-- (id)_lockedAttributeValueDictionaryForAttributePath:(id)a3;
+- (id)_lockedAttributeValueDictionaryForAttributePath:(id)path;
 - (id)_networkFeatures;
-- (id)_serverListForEndpointID:(id)a3;
-- (id)arrayOfNumbersFromAttributeValue:(id)a3;
+- (id)_serverListForEndpointID:(id)d;
+- (id)arrayOfNumbersFromAttributeValue:(id)value;
 - (id)description;
 - (id)getAllAttributesReport;
 - (id)newBaseDevice;
 - (id)productID;
-- (id)readAttributePaths:(id)a3;
-- (id)readAttributeWithEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5 params:(id)a6;
+- (id)readAttributePaths:(id)paths;
+- (id)readAttributeWithEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID params:(id)params;
 - (id)vendorID;
 - (optional<chip::Inet::IPAddress>)lastSubscriptionIPAddress;
 - (unsigned)networkCommissioningFeatures;
 - (void)_addInformationalAttributesToCurrentMetricScope;
 - (void)_callDelegateDeviceCachePrimed;
 - (void)_cancelTimeUpdateTimer;
-- (void)_changeInternalState:(unint64_t)a3;
-- (void)_changeState:(unint64_t)a3;
+- (void)_changeInternalState:(unint64_t)state;
+- (void)_changeState:(unint64_t)state;
 - (void)_checkExpiredExpectedValues;
-- (void)_clearSubscriptionPoolWorkWithProvidedDelegate:(id)a3;
+- (void)_clearSubscriptionPoolWorkWithProvidedDelegate:(id)delegate;
 - (void)_commitPendingDataVersions;
-- (void)_commitPendingDataVersionsForClusterPath:(id)a3;
-- (void)_createDataVersionFilterListFromDictionary:(id)a3 dataVersionFilterList:(DataVersionFilter *)a4 count:(unint64_t *)a5;
-- (void)_delegateAdded:(id)a3;
+- (void)_commitPendingDataVersionsForClusterPath:(id)path;
+- (void)_createDataVersionFilterListFromDictionary:(id)dictionary dataVersionFilterList:(DataVersionFilter *)list count:(unint64_t *)count;
+- (void)_delegateAdded:(id)added;
 - (void)_deviceMayBeReachable;
-- (void)_doHandleSubscriptionError:(id)a3;
-- (void)_doHandleSubscriptionReset:(id)a3;
-- (void)_doSetPersistedClusterData:(id)a3;
-- (void)_ensureSubscriptionForExistingDelegates:(id)a3;
-- (void)_handleCASESessionEstablished:(const void *)a3;
-- (void)_handleEventReport:(id)a3;
+- (void)_doHandleSubscriptionError:(id)error;
+- (void)_doHandleSubscriptionReset:(id)reset;
+- (void)_doSetPersistedClusterData:(id)data;
+- (void)_ensureSubscriptionForExistingDelegates:(id)delegates;
+- (void)_handleCASESessionEstablished:(const void *)established;
+- (void)_handleEventReport:(id)report;
 - (void)_handleReportBegin;
 - (void)_handleReportEnd;
-- (void)_handleResubscriptionNeededWithDelay:(id)a3;
-- (void)_handleResubscriptionNeededWithDelayOnDeviceQueue:(id)a3;
-- (void)_handleSubscriptionError:(id)a3;
+- (void)_handleResubscriptionNeededWithDelay:(id)delay;
+- (void)_handleResubscriptionNeededWithDelayOnDeviceQueue:(id)queue;
+- (void)_handleSubscriptionError:(id)error;
 - (void)_handleSubscriptionEstablished;
-- (void)_handleSubscriptionReset:(id)a3;
+- (void)_handleSubscriptionReset:(id)reset;
 - (void)_handleUnsolicitedMessageFromPublisher;
-- (void)_injectAttributeReport:(id)a3 fromSubscription:(BOOL)a4;
-- (void)_injectEventReport:(id)a3;
-- (void)_injectPossiblyInvalidEventReport:(id)a3;
-- (void)_invokeCommandWithEndpointID:(id)a3 clusterID:(id)a4 commandID:(id)a5 commandFields:(id)a6 expectedValues:(id)a7 expectedValueInterval:(id)a8 timedInvokeTimeout:(id)a9 serverSideProcessingTimeout:(id)a10 queue:(id)a11 completion:(id)a12;
+- (void)_injectAttributeReport:(id)report fromSubscription:(BOOL)subscription;
+- (void)_injectEventReport:(id)report;
+- (void)_injectPossiblyInvalidEventReport:(id)report;
+- (void)_invokeCommandWithEndpointID:(id)d clusterID:(id)iD commandID:(id)commandID commandFields:(id)fields expectedValues:(id)values expectedValueInterval:(id)interval timedInvokeTimeout:(id)timeout serverSideProcessingTimeout:(id)self0 queue:(id)self1 completion:(id)self2;
 - (void)_markDeviceAsUnreachableIfNeverSubscribed;
-- (void)_noteDataVersion:(id)a3 forClusterPath:(id)a4;
+- (void)_noteDataVersion:(id)version forClusterPath:(id)path;
 - (void)_notifyDelegateOfPrivateInternalPropertiesChanges;
 - (void)_performScheduledExpirationCheck;
 - (void)_performScheduledTimeUpdate;
 - (void)_persistClusterDataAsNeeded;
-- (void)_pruneAttributesIn:(id)a3 missingFrom:(id)a4 forCluster:(id)a5;
-- (void)_pruneClustersIn:(id)a3 missingFrom:(id)a4 forEndpoint:(id)a5;
-- (void)_pruneEndpointsIn:(id)a3 missingFrom:(id)a4;
-- (void)_pruneStoredDataForPath:(id)a3 missingFrom:(id)a4;
+- (void)_pruneAttributesIn:(id)in missingFrom:(id)from forCluster:(id)cluster;
+- (void)_pruneClustersIn:(id)in missingFrom:(id)from forEndpoint:(id)endpoint;
+- (void)_pruneEndpointsIn:(id)in missingFrom:(id)from;
+- (void)_pruneStoredDataForPath:(id)path missingFrom:(id)from;
 - (void)_readThroughSkipped;
 - (void)_reconcilePersistedClustersWithStorage;
-- (void)_removeAttributes:(id)a3 fromCluster:(id)a4;
-- (void)_removeCachedAttribute:(id)a3 fromCluster:(id)a4;
-- (void)_removeClusters:(id)a3 doRemoveFromDataStore:(BOOL)a4;
-- (void)_removeExpectedValueForAttributePath:(id)a3 expectedValueID:(unint64_t)a4;
-- (void)_reportAttributes:(id)a3;
+- (void)_removeAttributes:(id)attributes fromCluster:(id)cluster;
+- (void)_removeCachedAttribute:(id)attribute fromCluster:(id)cluster;
+- (void)_removeClusters:(id)clusters doRemoveFromDataStore:(BOOL)store;
+- (void)_removeExpectedValueForAttributePath:(id)path expectedValueID:(unint64_t)d;
+- (void)_reportAttributes:(id)attributes;
 - (void)_resetStorageBehaviorState;
 - (void)_resetSubscription;
-- (void)_resetSubscriptionWithReasonString:(id)a3;
+- (void)_resetSubscriptionWithReasonString:(id)string;
 - (void)_scheduleClusterDataPersistence;
-- (void)_scheduleNextUpdate:(unint64_t)a3;
-- (void)_scheduleSubscriptionPoolWork:(id)a3 inNanoseconds:(int64_t)a4 description:(id)a5;
-- (void)_setCachedAttributeValue:(id)a3 forPath:(id)a4 fromSubscription:(BOOL)a5;
-- (void)_setDSTOffsets:(id)a3 forEndpoint:(id)a4;
-- (void)_setExpectedValue:(id)a3 attributePath:(id)a4 expirationTime:(id)a5 shouldReportValue:(BOOL *)a6 attributeValueToReport:(id *)a7 expectedValueID:(unint64_t)a8 previousValue:(id *)a9;
-- (void)_setLastInitialSubscribeLatency:(id)a3;
-- (void)_setLastSubscriptionAttemptWait:(unsigned int)a3;
+- (void)_scheduleNextUpdate:(unint64_t)update;
+- (void)_scheduleSubscriptionPoolWork:(id)work inNanoseconds:(int64_t)nanoseconds description:(id)description;
+- (void)_setCachedAttributeValue:(id)value forPath:(id)path fromSubscription:(BOOL)subscription;
+- (void)_setDSTOffsets:(id)offsets forEndpoint:(id)endpoint;
+- (void)_setExpectedValue:(id)value attributePath:(id)path expirationTime:(id)time shouldReportValue:(BOOL *)reportValue attributeValueToReport:(id *)report expectedValueID:(unint64_t)d previousValue:(id *)previousValue;
+- (void)_setLastInitialSubscribeLatency:(id)latency;
+- (void)_setLastSubscriptionAttemptWait:(unsigned int)wait;
 - (void)_setTimeOnDevice;
-- (void)_setupSubscriptionWithReason:(id)a3;
+- (void)_setupSubscriptionWithReason:(id)reason;
 - (void)_stopConnectivityMonitoring;
 - (void)_storePersistedDeviceData;
-- (void)_triggerResubscribeWithReason:(id)a3 nodeLikelyReachable:(BOOL)a4;
+- (void)_triggerResubscribeWithReason:(id)reason nodeLikelyReachable:(BOOL)reachable;
 - (void)_updateAttributeDependentDescriptionData;
 - (void)_updateDeviceTimeAndScheduleNextUpdate;
 - (void)controllerResumed;
 - (void)controllerSuspended;
 - (void)dealloc;
-- (void)downloadLogOfType:(int64_t)a3 timeout:(double)a4 queue:(id)a5 completion:(id)a6;
+- (void)downloadLogOfType:(int64_t)type timeout:(double)timeout queue:(id)queue completion:(id)completion;
 - (void)invalidate;
-- (void)invokeCommands:(id)a3 queue:(id)a4 completion:(id)a5;
+- (void)invokeCommands:(id)commands queue:(id)queue completion:(id)completion;
 - (void)nodeMayBeAdvertisingOperational;
-- (void)openCommissioningWindowWithDiscriminator:(id)a3 duration:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)openCommissioningWindowWithSetupPasscode:(id)a3 discriminator:(id)a4 duration:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)removeExpectedValueForAttributePath:(id)a3 expectedValueID:(unint64_t)a4;
-- (void)removeExpectedValuesForAttributePaths:(id)a3 expectedValueID:(unint64_t)a4;
-- (void)setExpectedValues:(id)a3 expectedValueInterval:(id)a4 expectedValueID:(unint64_t *)a5;
-- (void)setPersistedClusterData:(id)a3;
-- (void)setPersistedDeviceData:(id)a3;
-- (void)setStorageBehaviorConfiguration:(id)a3;
-- (void)writeAttributeWithEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5 value:(id)a6 expectedValueInterval:(id)a7 timedWriteTimeout:(id)a8;
+- (void)openCommissioningWindowWithDiscriminator:(id)discriminator duration:(id)duration queue:(id)queue completion:(id)completion;
+- (void)openCommissioningWindowWithSetupPasscode:(id)passcode discriminator:(id)discriminator duration:(id)duration queue:(id)queue completion:(id)completion;
+- (void)removeExpectedValueForAttributePath:(id)path expectedValueID:(unint64_t)d;
+- (void)removeExpectedValuesForAttributePaths:(id)paths expectedValueID:(unint64_t)d;
+- (void)setExpectedValues:(id)values expectedValueInterval:(id)interval expectedValueID:(unint64_t *)d;
+- (void)setPersistedClusterData:(id)data;
+- (void)setPersistedDeviceData:(id)data;
+- (void)setStorageBehaviorConfiguration:(id)configuration;
+- (void)writeAttributeWithEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID value:(id)value expectedValueInterval:(id)interval timedWriteTimeout:(id)timeout;
 @end
 
 @implementation MTRDevice_Concrete
 
-- (MTRDevice_Concrete)initWithNodeID:(id)a3 controller:(id)a4
+- (MTRDevice_Concrete)initWithNodeID:(id)d controller:(id)controller
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  controllerCopy = controller;
   v35.receiver = self;
   v35.super_class = MTRDevice_Concrete;
-  v8 = [(MTRDevice *)&v35 initForSubclassesWithNodeID:v6 controller:v7];
+  v8 = [(MTRDevice *)&v35 initForSubclassesWithNodeID:dCopy controller:controllerCopy];
   v9 = v8;
   if (v8)
   {
@@ -153,9 +153,9 @@
     queue = v9->_queue;
     v9->_queue = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     expectedValueCache = v9->_expectedValueCache;
-    v9->_expectedValueCache = v13;
+    v9->_expectedValueCache = dictionary;
 
     v15 = [[MTRAsyncWorkQueue alloc] initWithContext:v9];
     asyncWorkQueue = v9->_asyncWorkQueue;
@@ -165,8 +165,8 @@
     v9->_internalDeviceState = 0;
     v9->_internalDeviceStateForDescription = 0;
     v9->_doingCASEAttemptForDeviceMayBeReachable = 0;
-    v17 = [v7 controllerDataStore];
-    LOBYTE(v10) = v17 == 0;
+    controllerDataStore = [controllerCopy controllerDataStore];
+    LOBYTE(v10) = controllerDataStore == 0;
 
     if (v10)
     {
@@ -200,13 +200,13 @@
     if (v9->_persistedClusterData)
     {
       objc_initWeak(location, v9);
-      v26 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = sub_23938CAF8;
       v33[3] = &unk_278A75648;
       objc_copyWeak(&v34, location);
-      v27 = [v26 addObserverForName:*MEMORY[0x277CBE778] object:0 queue:0 usingBlock:v33];
+      v27 = [defaultCenter addObserverForName:*MEMORY[0x277CBE778] object:0 queue:0 usingBlock:v33];
       systemTimeChangeObserverToken = v9->_systemTimeChangeObserverToken;
       v9->_systemTimeChangeObserverToken = v27;
 
@@ -214,15 +214,15 @@
       objc_destroyWeak(location);
     }
 
-    -[MTRDevice_Concrete setSuspended:](v9, "setSuspended:", [v7 isSuspended]);
+    -[MTRDevice_Concrete setSuspended:](v9, "setSuspended:", [controllerCopy isSuspended]);
     v29 = sub_2393D9044(0);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [(NSNumber *)v9->super._nodeID unsignedLongLongValue];
+      unsignedLongLongValue = [(NSNumber *)v9->super._nodeID unsignedLongLongValue];
       *location = 138412546;
       *&location[4] = v9;
       v37 = 2048;
-      v38 = v30;
+      v38 = unsignedLongLongValue;
       _os_log_impl(&dword_238DAE000, v29, OS_LOG_TYPE_INFO, "%@ init with hex nodeID 0x%016llX", location, 0x16u);
     }
 
@@ -244,29 +244,29 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "MTRDevice dealloc: %p", buf, 0xCu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v9 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self->_systemTimeChangeObserverToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_systemTimeChangeObserverToken];
 
   [(MTRDelegateManager *)self->super._delegateManager removeAllDelegates];
-  v5 = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
-  v6 = [(MTRDevice_Concrete *)self _concreteController];
+  matterCPPObjectsHolder = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
+  _concreteController = [(MTRDevice_Concrete *)self _concreteController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_23938CE48;
   v11[3] = &unk_278A72320;
-  v7 = v5;
+  v7 = matterCPPObjectsHolder;
   v12 = v7;
-  [v6 asyncDispatchToMatterQueue:v11 errorHandler:0];
+  [_concreteController asyncDispatchToMatterQueue:v11 errorHandler:0];
 
   os_unfair_lock_lock(&self->super._lock);
   [(MTRDevice_Concrete *)self _clearSubscriptionPoolWorkWithProvidedDelegate:0];
@@ -370,10 +370,10 @@
   v22 = objc_opt_class();
   NSStringFromClass(v22);
   v33 = v31 = v21;
-  v32 = [(MTRDeviceController *)self->super._deviceController compressedFabricID];
-  v29 = [v32 unsignedLongLongValue];
-  v30 = [(NSNumber *)self->super._nodeID unsignedLongLongValue];
-  v23 = [(NSNumber *)self->super._nodeID unsignedLongLongValue];
+  compressedFabricID = [(MTRDeviceController *)self->super._deviceController compressedFabricID];
+  unsignedLongLongValue = [compressedFabricID unsignedLongLongValue];
+  unsignedLongLongValue2 = [(NSNumber *)self->super._nodeID unsignedLongLongValue];
+  unsignedLongLongValue3 = [(NSNumber *)self->super._nodeID unsignedLongLongValue];
   if (internalDeviceStateForDescription > 4)
   {
     v24 = @"Unknown";
@@ -384,39 +384,39 @@
     v24 = off_278A75B58[internalDeviceStateForDescription];
   }
 
-  v25 = [(MTRAsyncWorkQueue *)self->_asyncWorkQueue itemCount];
-  v26 = [(MTRDeviceController *)self->super._deviceController uniqueIdentifier];
-  v27 = [v31 stringWithFormat:@"<%@: %p, node: %016llX-%016llX (%llu), VID: %@, PID: %@, WiFi: %@, Thread: %@, state: %@, last subscription attempt wait: %lus, queued work: %lu, last report: %@%@, last subscription failure: %@%@, controller: %@>", v33, self, v29, v30, v23, v37, v36, v14, v12, v24, lastSubscriptionAttemptWaitForDescription, v25, v8, v34, v9, v38, v26];
+  itemCount = [(MTRAsyncWorkQueue *)self->_asyncWorkQueue itemCount];
+  uniqueIdentifier = [(MTRDeviceController *)self->super._deviceController uniqueIdentifier];
+  v27 = [v31 stringWithFormat:@"<%@: %p, node: %016llX-%016llX (%llu), VID: %@, PID: %@, WiFi: %@, Thread: %@, state: %@, last subscription attempt wait: %lus, queued work: %lu, last report: %@%@, last subscription failure: %@%@, controller: %@>", v33, self, unsignedLongLongValue, unsignedLongLongValue2, unsignedLongLongValue3, v37, v36, v14, v12, v24, lastSubscriptionAttemptWaitForDescription, itemCount, v8, v34, v9, v38, uniqueIdentifier];
 
   return v27;
 }
 
 - (id)_internalProperties
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   os_unfair_lock_lock(&self->_descriptionLock);
   v4 = self->_vid;
   if (v4)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalStateKeyVendorID", v4);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalStateKeyVendorID", v4);
   }
 
   v5 = self->_pid;
   if (v5)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalStateKeyProductID", v5);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalStateKeyProductID", v5);
   }
 
   v6 = self->_allNetworkFeatures;
   if (v6)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyNetworkFeatures", v6);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyNetworkFeatures", v6);
   }
 
   v7 = self->_mostRecentReportTimeForDescription;
   if (v7)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyMostRecentReportTime", v7);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyMostRecentReportTime", v7);
   }
 
   os_unfair_lock_unlock(&self->_descriptionLock);
@@ -424,54 +424,54 @@
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_internalDeviceState];
   if (v8)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyDeviceInternalState", v8);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyDeviceInternalState", v8);
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lastSubscriptionAttemptWait];
   if (v9)
   {
-    CFDictionarySetValue(v3, @"kMTRDeviceInternalPropertyLastSubscriptionAttemptWait", v9);
+    CFDictionarySetValue(dictionary, @"kMTRDeviceInternalPropertyLastSubscriptionAttemptWait", v9);
   }
 
   v10 = self->_lastSubscriptionFailureTime;
   if (v10)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyLastSubscriptionFailureTime", v10);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyLastSubscriptionFailureTime", v10);
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_state];
   if (v11)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyDeviceState", v11);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyDeviceState", v11);
   }
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_deviceCachePrimed];
   if (v12)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyDeviceCachePrimed", v12);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyDeviceCachePrimed", v12);
   }
 
   v13 = self->_estimatedStartTime;
   if (v13)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyEstimatedStartTime", v13);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyEstimatedStartTime", v13);
   }
 
   v14 = self->_estimatedSubscriptionLatency;
   if (v14)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyEstimatedSubscriptionLatency", v14);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyEstimatedSubscriptionLatency", v14);
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_diagnosticLogTransferInProgress];
   if (v15)
   {
-    CFDictionarySetValue(v3, @"MTRDeviceInternalPropertyDiagnosticLogTransferInProgress", v15);
+    CFDictionarySetValue(dictionary, @"MTRDeviceInternalPropertyDiagnosticLogTransferInProgress", v15);
   }
 
   os_unfair_lock_unlock(&self->super._lock);
 
-  return v3;
+  return dictionary;
 }
 
 - (id)vendorID
@@ -495,9 +495,9 @@
 - (unsigned)networkCommissioningFeatures
 {
   os_unfair_lock_lock(&self->_descriptionLock);
-  v3 = [(NSNumber *)self->_allNetworkFeatures unsignedIntValue];
+  unsignedIntValue = [(NSNumber *)self->_allNetworkFeatures unsignedIntValue];
   os_unfair_lock_unlock(&self->_descriptionLock);
-  return v3;
+  return unsignedIntValue;
 }
 
 - (void)_notifyDelegateOfPrivateInternalPropertiesChanges
@@ -528,12 +528,12 @@
 {
   v40 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_timeSyncLock);
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v25 = v3;
-  if (v3)
+  date = [MEMORY[0x277CBEAA8] date];
+  v25 = date;
+  if (date)
   {
     v32 = 0;
-    if (sub_239221564(v3, &v32))
+    if (sub_239221564(date, &v32))
     {
       [(MTRDevice_Concrete *)self _endpointsWithTimeSyncClusterServer];
       v30 = 0u;
@@ -558,7 +558,7 @@
             if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
             {
               *buf = 138412546;
-              v37 = self;
+              selfCopy12 = self;
               v38 = 2112;
               v39 = v6;
               _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_INFO, "%@ Setting Time on Endpoint %@", buf, 0x16u);
@@ -566,17 +566,17 @@
 
             if (sub_2393D5398(3u))
             {
-              v23 = self;
+              selfCopy10 = self;
               v24 = v6;
               sub_2393D5320(0, 3);
             }
 
-            [(MTRDevice_Concrete *)self _setUTCTime:v32 withGranularity:4 forEndpoint:v6, v23, v24];
+            [(MTRDevice_Concrete *)self _setUTCTime:v32 withGranularity:4 forEndpoint:v6, selfCopy10, v24];
             v8 = [MTRAttributePath attributePathWithEndpointID:v6 clusterID:&unk_284C43A18 attributeID:&unk_284C43A30];
-            v9 = [v8 endpoint];
-            v10 = [v8 cluster];
-            v11 = [v8 attribute];
-            v12 = [(MTRDevice_Concrete *)self readAttributeWithEndpointID:v9 clusterID:v10 attributeID:v11 params:0];
+            endpoint = [v8 endpoint];
+            cluster = [v8 cluster];
+            attribute = [v8 attribute];
+            v12 = [(MTRDevice_Concrete *)self readAttributeWithEndpointID:endpoint clusterID:cluster attributeID:attribute params:0];
 
             if (v12)
             {
@@ -590,29 +590,29 @@
 
               if (v15)
               {
-                v16 = [(MTRAttributeReport *)v15 value];
-                v17 = [v16 unsignedCharValue];
-                if (!v17)
+                value = [(MTRAttributeReport *)v15 value];
+                unsignedCharValue = [value unsignedCharValue];
+                if (!unsignedCharValue)
                 {
                   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412546;
-                    v37 = self;
+                    selfCopy12 = self;
                     v38 = 2112;
                     v39 = v6;
                     _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_ERROR, "%@ DSTOffsetListMaxSize value on endpoint %@ is 0, which is not allowed. Defaulting to 1.", buf, 0x16u);
                   }
 
-                  v17 = 1;
+                  unsignedCharValue = 1;
                   if (sub_2393D5398(1u))
                   {
-                    v23 = self;
+                    selfCopy10 = self;
                     v24 = v6;
                     sub_2393D5320(0, 1);
                   }
                 }
 
-                v18 = v17;
+                v18 = unsignedCharValue;
               }
 
               else
@@ -620,7 +620,7 @@
                 if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412546;
-                  v37 = self;
+                  selfCopy12 = self;
                   v38 = 2112;
                   v39 = v6;
                   _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_ERROR, "%@ DSTOffsetListMaxSize value on endpoint %@ is invalid. Defaulting to 1.", buf, 0x16u);
@@ -628,7 +628,7 @@
 
                 if (sub_2393D5398(1u))
                 {
-                  v23 = self;
+                  selfCopy10 = self;
                   v24 = v6;
                   sub_2393D5320(0, 1);
                 }
@@ -647,7 +647,7 @@
                 if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412546;
-                  v37 = self;
+                  selfCopy12 = self;
                   v38 = 2112;
                   v39 = v6;
                   _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_ERROR, "%@ Could not retrieve DST offset information. Unable to setDSTOffset on endpoint %@.", buf, 0x16u);
@@ -655,7 +655,7 @@
 
                 if (sub_2393D5398(1u))
                 {
-                  v23 = self;
+                  selfCopy10 = self;
                   v24 = v6;
                   sub_2393D5320(0, 1);
                 }
@@ -667,7 +667,7 @@
               if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v37 = self;
+                selfCopy12 = self;
                 v38 = 2112;
                 v39 = v6;
                 _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "%@ Unable to SetDSTOffset on endpoint %@, since it does not support the TZ feature", buf, 0x16u);
@@ -675,7 +675,7 @@
 
               if (sub_2393D5398(2u))
               {
-                v23 = self;
+                selfCopy10 = self;
                 v24 = v6;
                 sub_2393D5320(0, 2);
               }
@@ -695,7 +695,7 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v37 = self;
+        selfCopy12 = self;
         v38 = 2112;
         v39 = v25;
         _os_log_impl(&dword_238DAE000, v21, OS_LOG_TYPE_ERROR, "%@ Could not convert NSDate (%@) to Matter Epoch Time. Unable to setUTCTime on endpoints.", buf, 0x16u);
@@ -714,7 +714,7 @@
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v37 = self;
+      selfCopy12 = self;
       _os_log_impl(&dword_238DAE000, v20, OS_LOG_TYPE_ERROR, "%@ Could not retrieve current date. Unable to setUTCTime on endpoints.", buf, 0xCu);
     }
 
@@ -727,15 +727,15 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleNextUpdate:(unint64_t)a3
+- (void)_scheduleNextUpdate:(unint64_t)update
 {
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_timeSyncLock);
-  v5 = [(MTRDevice_Concrete *)self queue];
-  v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v5);
+  queue = [(MTRDevice_Concrete *)self queue];
+  v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
 
-  self->_lastTimeUpdateScheduledDelayInSeconds = a3;
-  v7 = dispatch_time(0, 1000000000 * a3);
+  self->_lastTimeUpdateScheduledDelayInSeconds = update;
+  v7 = dispatch_time(0, 1000000000 * update);
   dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0xB2D05E00uLL);
   objc_initWeak(&location, self);
   handler[0] = MEMORY[0x277D85DD0];
@@ -751,9 +751,9 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = a3;
+    updateCopy = update;
     _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_INFO, "%@ Timer Scheduled for next Device Time Update, in %llu seconds", buf, 0x16u);
   }
 
@@ -773,15 +773,15 @@
 {
   v9 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_timeSyncLock);
-  v3 = [(MTRDevice_Concrete *)self timeUpdateTimer];
+  timeUpdateTimer = [(MTRDevice_Concrete *)self timeUpdateTimer];
 
-  if (v3)
+  if (timeUpdateTimer)
   {
     v4 = sub_2393D9044(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_238DAE000, v4, OS_LOG_TYPE_INFO, "%@ Device Time Update already scheduled", buf, 0xCu);
     }
 
@@ -811,9 +811,9 @@
   os_unfair_lock_lock(&self->_timeSyncLock);
   if (state == 1)
   {
-    v4 = [(MTRDevice_Concrete *)self timeUpdateTimer];
+    timeUpdateTimer = [(MTRDevice_Concrete *)self timeUpdateTimer];
 
-    if (v4)
+    if (timeUpdateTimer)
     {
       [(MTRDevice_Concrete *)self setTimeUpdateTimer:0];
       [(MTRDevice_Concrete *)self _updateDeviceTimeAndScheduleNextUpdate];
@@ -824,7 +824,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_INFO, "%@ Device Time Update is no longer scheduled, MTRDevice may have been invalidated.", buf, 0xCu);
     }
 
@@ -841,7 +841,7 @@ LABEL_11:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_INFO, "%@ Device is not reachable, canceling Device Time Updates.", buf, 0xCu);
     }
 
@@ -859,12 +859,12 @@ LABEL_12:
 - (void)_cancelTimeUpdateTimer
 {
   os_unfair_lock_lock(&self->_timeSyncLock);
-  v3 = [(MTRDevice_Concrete *)self timeUpdateTimer];
+  timeUpdateTimer = [(MTRDevice_Concrete *)self timeUpdateTimer];
 
-  if (v3)
+  if (timeUpdateTimer)
   {
-    v4 = [(MTRDevice_Concrete *)self timeUpdateTimer];
-    dispatch_source_cancel(v4);
+    timeUpdateTimer2 = [(MTRDevice_Concrete *)self timeUpdateTimer];
+    dispatch_source_cancel(timeUpdateTimer2);
 
     [(MTRDevice_Concrete *)self setTimeUpdateTimer:0];
   }
@@ -876,14 +876,14 @@ LABEL_12:
 {
   v25 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->super._lock);
-  v3 = [(MTRDevice_Concrete *)self _endpointList];
+  _endpointList = [(MTRDevice_Concrete *)self _endpointList];
   os_unfair_lock_unlock(&self->super._lock);
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = v3;
+  obj = _endpointList;
   v4 = [obj countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v4)
   {
@@ -917,7 +917,7 @@ LABEL_12:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v14;
     _os_log_impl(&dword_238DAE000, v11, OS_LOG_TYPE_INFO, "%@ Device has following endpoints with Time Sync Cluster Server: %@", buf, 0x16u);
@@ -933,20 +933,20 @@ LABEL_12:
   return v14;
 }
 
-- (void)_setDSTOffsets:(id)a3 forEndpoint:(id)a4
+- (void)_setDSTOffsets:(id)offsets forEndpoint:(id)endpoint
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  offsetsCopy = offsets;
+  endpointCopy = endpoint;
   v8 = sub_2393D9044(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v6;
+    v26 = offsetsCopy;
     v27 = 2112;
-    v28 = v7;
+    v28 = endpointCopy;
     _os_log_impl(&dword_238DAE000, v8, OS_LOG_TYPE_INFO, "%@ _setDSTOffsets with offsets: %@, endpoint %@", buf, 0x20u);
   }
 
@@ -956,21 +956,21 @@ LABEL_12:
   }
 
   v9 = objc_alloc_init(MTRTimeSynchronizationClusterSetDSTOffsetParams);
-  [(MTRTimeSynchronizationClusterSetDSTOffsetParams *)v9 setDstOffset:v6];
+  [(MTRTimeSynchronizationClusterSetDSTOffsetParams *)v9 setDstOffset:offsetsCopy];
   objc_initWeak(buf, self);
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = sub_23938F068;
   v19 = &unk_278A75670;
   objc_copyWeak(&v22, buf);
-  v10 = v7;
+  v10 = endpointCopy;
   v20 = v10;
   v11 = v9;
   v21 = v11;
   v12 = MEMORY[0x23EE78590](&v16);
-  v13 = [(MTRTimeSynchronizationClusterSetDSTOffsetParams *)v11 serverSideProcessingTimeout];
-  v14 = [(MTRDevice_Concrete *)self queue];
-  [(MTRDevice *)self _invokeKnownCommandWithEndpointID:v10 clusterID:&unk_284C43A18 commandID:&unk_284C43A90 commandPayload:v11 expectedValues:0 expectedValueInterval:0 timedInvokeTimeout:0 serverSideProcessingTimeout:v13 responseClass:0 queue:v14 completion:v12, v16, v17, v18, v19];
+  serverSideProcessingTimeout = [(MTRTimeSynchronizationClusterSetDSTOffsetParams *)v11 serverSideProcessingTimeout];
+  queue = [(MTRDevice_Concrete *)self queue];
+  [(MTRDevice *)self _invokeKnownCommandWithEndpointID:v10 clusterID:&unk_284C43A18 commandID:&unk_284C43A90 commandPayload:v11 expectedValues:0 expectedValueInterval:0 timedInvokeTimeout:0 serverSideProcessingTimeout:serverSideProcessingTimeout responseClass:0 queue:queue completion:v12, v16, v17, v18, v19];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -978,16 +978,16 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)arrayOfNumbersFromAttributeValue:(id)a3
+- (id)arrayOfNumbersFromAttributeValue:(id)value
 {
   v30 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v3 = [v24 objectForKeyedSubscript:@"type"];
+  valueCopy = value;
+  v3 = [valueCopy objectForKeyedSubscript:@"type"];
   v4 = [@"Array" isEqual:v3];
 
   if (v4)
   {
-    v5 = [v24 objectForKeyedSubscript:@"value"];
+    v5 = [valueCopy objectForKeyedSubscript:@"value"];
     v21 = v5;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1095,20 +1095,20 @@ LABEL_20:
   return v3 & 1;
 }
 
-- (void)_delegateAdded:(id)a3
+- (void)_delegateAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   os_unfair_lock_assert_owner(&self->super._lock);
   v5.receiver = self;
   v5.super_class = MTRDevice_Concrete;
-  [(MTRDevice *)&v5 _delegateAdded:v4];
+  [(MTRDevice *)&v5 _delegateAdded:addedCopy];
   [(MTRDevice_Concrete *)self _ensureSubscriptionForExistingDelegates:@"delegate is set"];
 }
 
-- (void)_ensureSubscriptionForExistingDelegates:(id)a3
+- (void)_ensureSubscriptionForExistingDelegates:(id)delegates
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegatesCopy = delegates;
   os_unfair_lock_assert_owner(&self->super._lock);
   if ([(MTRDevice_Concrete *)self _subscriptionsAllowed])
   {
@@ -1116,7 +1116,7 @@ LABEL_20:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_DEFAULT, "%@ - starting subscription setup", buf, 0xCu);
     }
 
@@ -1138,7 +1138,7 @@ LABEL_20:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_DEFAULT, " => %@ - device is a thread device, scheduling in pool", buf, 0xCu);
       }
 
@@ -1153,7 +1153,7 @@ LABEL_20:
       v14[2] = sub_23938F980;
       v14[3] = &unk_278A75698;
       objc_copyWeak(&v16, &location);
-      v15 = v4;
+      v15 = delegatesCopy;
       [(MTRDevice_Concrete *)self _scheduleSubscriptionPoolWork:v14 inNanoseconds:0 description:v8];
 
       objc_destroyWeak(&v16);
@@ -1167,7 +1167,7 @@ LABEL_20:
       v11[2] = sub_23938FE08;
       v11[3] = &unk_278A75698;
       objc_copyWeak(&v13, &location);
-      v12 = v4;
+      v12 = delegatesCopy;
       [(MTRDeviceController *)deviceController asyncDispatchToMatterQueue:v11 errorHandler:0];
 
       objc_destroyWeak(&v13);
@@ -1186,13 +1186,13 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ invalidate", buf, 0xCu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v6 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
@@ -1229,38 +1229,38 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ saw new operational advertisement", buf, 0xCu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v5 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
-  [(MTRDevice_Concrete *)self _triggerResubscribeWithReason:@"operational advertisement seen" nodeLikelyReachable:1, v5];
+  [(MTRDevice_Concrete *)self _triggerResubscribeWithReason:@"operational advertisement seen" nodeLikelyReachable:1, selfCopy2];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_triggerResubscribeWithReason:(id)a3 nodeLikelyReachable:(BOOL)a4
+- (void)_triggerResubscribeWithReason:(id)reason nodeLikelyReachable:(BOOL)reachable
 {
-  v4 = a4;
+  reachableCopy = reachable;
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   v7 = sub_2393D9044(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
     *buf = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    if (v4)
+    if (reachableCopy)
     {
       v8 = @"YES";
     }
 
-    v22 = v6;
+    v22 = reasonCopy;
     v23 = 2112;
     v24 = v8;
     _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "%@ _triggerResubscribeWithReason called with reason %@, nodeLikelyReachable: %@", buf, 0x20u);
@@ -1273,30 +1273,30 @@ LABEL_20:
 
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1215);
   os_unfair_lock_lock(&self->super._lock);
-  v9 = [(MTRDevice_Concrete *)self reattemptingSubscription];
-  if (v9)
+  reattemptingSubscription = [(MTRDevice_Concrete *)self reattemptingSubscription];
+  if (reattemptingSubscription)
   {
     os_unfair_lock_unlock(&self->super._lock);
   }
 
   else
   {
-    v10 = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
-    v11 = [v10 readClient];
+    matterCPPObjectsHolder = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
+    readClient = [matterCPPObjectsHolder readClient];
 
-    v12 = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
-    v13 = [v12 subscriptionCallback];
+    matterCPPObjectsHolder2 = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
+    subscriptionCallback = [matterCPPObjectsHolder2 subscriptionCallback];
 
     os_unfair_lock_unlock(&self->super._lock);
-    if (v11)
+    if (readClient)
     {
-      if (v4)
+      if (reachableCopy)
       {
-        *(v13 + 200) = 0;
+        *(subscriptionCallback + 200) = 0;
       }
 
-      v14 = v6;
-      if ((sub_2394D8E90(v11, [v6 UTF8String]) & 1) == 0)
+      v14 = reasonCopy;
+      if ((sub_2394D8E90(readClient, [reasonCopy UTF8String]) & 1) == 0)
       {
         os_unfair_lock_lock(&self->super._lock);
         [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork];
@@ -1311,24 +1311,24 @@ LABEL_22:
 
   if (self->_internalDeviceState == 1)
   {
-    if ((![(MTRDevice_Concrete *)self doingCASEAttemptForDeviceMayBeReachable]|| v9) && v4)
+    if ((![(MTRDevice_Concrete *)self doingCASEAttemptForDeviceMayBeReachable]|| reattemptingSubscription) && reachableCopy)
     {
 LABEL_17:
       os_unfair_lock_lock(&self->super._lock);
       [(MTRDevice_Concrete *)self _setLastSubscriptionAttemptWait:0];
       os_unfair_lock_unlock(&self->super._lock);
       objc_initWeak(buf, self);
-      v15 = [(MTRDevice_Concrete *)self _concreteController];
+      _concreteController = [(MTRDevice_Concrete *)self _concreteController];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = sub_239390700;
       v17[3] = &unk_278A756E8;
       objc_copyWeak(&v18, buf);
-      [v15 asyncGetCommissionerOnMatterQueue:v17 errorHandler:0];
+      [_concreteController asyncGetCommissionerOnMatterQueue:v17 errorHandler:0];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(buf);
-      if (!v9)
+      if (!reattemptingSubscription)
       {
         goto LABEL_23;
       }
@@ -1337,16 +1337,16 @@ LABEL_17:
     }
   }
 
-  else if (v9 && v4)
+  else if (reattemptingSubscription && reachableCopy)
   {
     goto LABEL_17;
   }
 
-  if (v9)
+  if (reattemptingSubscription)
   {
 LABEL_21:
     os_unfair_lock_lock(&self->super._lock);
-    [(MTRDevice_Concrete *)self _reattemptSubscriptionNowIfNeededWithReason:v6];
+    [(MTRDevice_Concrete *)self _reattemptSubscriptionNowIfNeededWithReason:reasonCopy];
     goto LABEL_22;
   }
 
@@ -1358,9 +1358,9 @@ LABEL_23:
 - (BOOL)_subscriptionAbleToReport
 {
   os_unfair_lock_lock(&self->super._lock);
-  v3 = [(MTRDevice *)self _delegateExists]&& [(MTRDevice_Concrete *)self _subscriptionsAllowed];
+  _subscriptionsAllowed = [(MTRDevice *)self _delegateExists]&& [(MTRDevice_Concrete *)self _subscriptionsAllowed];
   os_unfair_lock_unlock(&self->super._lock);
-  return v3;
+  return _subscriptionsAllowed;
 }
 
 - (void)_readThroughSkipped
@@ -1394,7 +1394,7 @@ LABEL_23:
       {
         lastSubscriptionFailureTime = self->_lastSubscriptionFailureTime;
         *buf = 138412546;
-        v14 = self;
+        selfCopy = self;
         v15 = 2112;
         v16 = lastSubscriptionFailureTime;
         _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_INFO, "%@ skipping resubscribe from skipped read-through: not enough time has passed since %@", buf, 0x16u);
@@ -1424,24 +1424,24 @@ LABEL_23:
   [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
 }
 
-- (void)_changeState:(unint64_t)a3
+- (void)_changeState:(unint64_t)state
 {
   v22 = *MEMORY[0x277D85DE8];
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1379);
   os_unfair_lock_assert_owner(&self->super._lock);
   state = self->_state;
-  self->_state = a3;
-  if (state == a3)
+  self->_state = state;
+  if (state == state)
   {
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v17 = self;
+      selfCopy4 = self;
       v18 = 2048;
-      v19 = a3;
+      stateCopy5 = state;
       v20 = 2048;
-      v21 = a3;
+      stateCopy6 = state;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_DEFAULT, "%@ Not reporting reachability state change, since no change in state %lu => %lu", buf, 0x20u);
     }
 
@@ -1455,24 +1455,24 @@ LABEL_23:
   {
     v7 = sub_2393D9044(0);
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (a3 == 1)
+    if (state == 1)
     {
       if (v8)
       {
         *buf = 138412802;
-        v17 = self;
+        selfCopy4 = self;
         v18 = 2048;
-        v19 = state;
+        stateCopy5 = state;
         v20 = 2048;
-        v21 = 1;
+        stateCopy6 = 1;
         _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "%@ reachability state change %lu => %lu", buf, 0x20u);
       }
 
       if (sub_2393D5398(2u))
       {
-        v13 = state;
-        v14 = 1;
-        v12 = self;
+        stateCopy7 = state;
+        stateCopy8 = 1;
+        selfCopy5 = self;
         sub_2393D5320(0, 2);
       }
     }
@@ -1482,19 +1482,19 @@ LABEL_23:
       if (v8)
       {
         *buf = 138412802;
-        v17 = self;
+        selfCopy4 = self;
         v18 = 2048;
-        v19 = state;
+        stateCopy5 = state;
         v20 = 2048;
-        v21 = a3;
+        stateCopy6 = state;
         _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "%@ reachability state change %lu => %lu, set estimated start time to nil", buf, 0x20u);
       }
 
       if (sub_2393D5398(2u))
       {
-        v13 = state;
-        v14 = a3;
-        v12 = self;
+        stateCopy7 = state;
+        stateCopy8 = state;
+        selfCopy5 = self;
         sub_2393D5320(0, 2);
       }
 
@@ -1510,43 +1510,43 @@ LABEL_23:
     v15[2] = sub_239391028;
     v15[3] = &unk_278A744F0;
     v15[4] = self;
-    v15[5] = a3;
-    [(MTRDevice *)self _callDelegatesWithBlock:v15, v12, v13, v14];
+    v15[5] = state;
+    [(MTRDevice *)self _callDelegatesWithBlock:v15, selfCopy5, stateCopy7, stateCopy8];
     [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_changeInternalState:(unint64_t)a3
+- (void)_changeInternalState:(unint64_t)state
 {
   v18 = *MEMORY[0x277D85DE8];
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1413);
   os_unfair_lock_assert_owner(&self->super._lock);
   internalDeviceState = self->_internalDeviceState;
-  self->_internalDeviceState = a3;
+  self->_internalDeviceState = state;
   os_unfair_lock_lock(&self->_descriptionLock);
   self->_internalDeviceStateForDescription = self->_internalDeviceState;
   os_unfair_lock_unlock(&self->_descriptionLock);
-  if (internalDeviceState != a3)
+  if (internalDeviceState != state)
   {
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
       v15 = internalDeviceState;
       v16 = 2048;
-      v17 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_DEFAULT, "%@ internal state change %lu => %lu", buf, 0x20u);
     }
 
     if (sub_2393D5398(2u))
     {
       v9 = internalDeviceState;
-      v10 = a3;
-      v8 = self;
+      stateCopy2 = state;
+      selfCopy2 = self;
       sub_2393D5320(0, 2);
     }
 
@@ -1555,7 +1555,7 @@ LABEL_23:
     v11[2] = sub_2393911F0;
     v11[3] = &unk_278A75710;
     v11[4] = self;
-    [(MTRDevice *)self _callDelegatesWithBlock:v11, v8, v9, v10];
+    [(MTRDevice *)self _callDelegatesWithBlock:v11, selfCopy2, v9, stateCopy2];
     [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
   }
 
@@ -1598,14 +1598,14 @@ LABEL_23:
       [(MTRDevice_Concrete *)self _storePersistedDeviceData];
     }
 
-    v15 = [(MTRDevice_Concrete *)self timeUpdateShortDelayInSeconds];
+    timeUpdateShortDelayInSeconds = [(MTRDevice_Concrete *)self timeUpdateShortDelayInSeconds];
     os_unfair_lock_unlock(&self->super._lock);
     os_unfair_lock_lock(&self->_timeSyncLock);
-    v16 = [(MTRDevice_Concrete *)self timeUpdateTimer];
+    timeUpdateTimer = [(MTRDevice_Concrete *)self timeUpdateTimer];
 
-    if (!v16)
+    if (!timeUpdateTimer)
     {
-      [(MTRDevice_Concrete *)self _scheduleNextUpdate:v15];
+      [(MTRDevice_Concrete *)self _scheduleNextUpdate:timeUpdateShortDelayInSeconds];
     }
 
     os_unfair_lock_unlock(&self->_timeSyncLock);
@@ -1618,7 +1618,7 @@ LABEL_23:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2048;
       v23 = internalDeviceState;
       _os_log_impl(&dword_238DAE000, v11, OS_LOG_TYPE_DEFAULT, "%@ _handleSubscriptionEstablished run with internal state %lu - skipping subscription establishment logic", buf, 0x16u);
@@ -1635,16 +1635,16 @@ LABEL_23:
   }
 }
 
-- (void)_handleSubscriptionError:(id)a3
+- (void)_handleSubscriptionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1498);
   os_unfair_lock_lock(&self->super._lock);
-  [(MTRDevice_Concrete *)self _doHandleSubscriptionError:v4];
+  [(MTRDevice_Concrete *)self _doHandleSubscriptionError:errorCopy];
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)_doHandleSubscriptionError:(id)a3
+- (void)_doHandleSubscriptionError:(id)error
 {
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1506);
   os_unfair_lock_assert_owner(&self->super._lock);
@@ -1658,9 +1658,9 @@ LABEL_23:
 - (BOOL)deviceUsesThread
 {
   os_unfair_lock_lock(&self->super._lock);
-  v3 = [(MTRDevice_Concrete *)self _deviceUsesThread];
+  _deviceUsesThread = [(MTRDevice_Concrete *)self _deviceUsesThread];
   os_unfair_lock_unlock(&self->super._lock);
-  return v3;
+  return _deviceUsesThread;
 }
 
 - (BOOL)_deviceUsesThread
@@ -1669,8 +1669,8 @@ LABEL_23:
   os_unfair_lock_assert_owner(&self->super._lock);
   v3 = [MTRClusterPath clusterPathWithEndpointID:&unk_284C43AA8 clusterID:&unk_284C43AC0];
   v4 = [(MTRDevice_Concrete *)self _clusterDataForPath:v3];
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKeyedSubscript:&unk_284C43AD8];
+  attributes = [v4 attributes];
+  v6 = [attributes objectForKeyedSubscript:&unk_284C43AD8];
   v7 = [v6 objectForKeyedSubscript:@"value"];
 
   if (!v7)
@@ -1687,7 +1687,7 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v7;
       _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_ERROR, "%@ Unexpected NetworkCommissioning FeatureMap value %@", buf, 0x16u);
@@ -1708,7 +1708,7 @@ LABEL_9:
   return v8;
 }
 
-- (void)_clearSubscriptionPoolWorkWithProvidedDelegate:(id)a3
+- (void)_clearSubscriptionPoolWorkWithProvidedDelegate:(id)delegate
 {
   os_unfair_lock_assert_owner(&self->super._lock);
   v5 = MEMORY[0x23EE78590](self->_subscriptionPoolWorkCompletionBlock);
@@ -1721,11 +1721,11 @@ LABEL_9:
   }
 }
 
-- (void)_scheduleSubscriptionPoolWork:(id)a3 inNanoseconds:(int64_t)a4 description:(id)a5
+- (void)_scheduleSubscriptionPoolWork:(id)work inNanoseconds:(int64_t)nanoseconds description:(id)description
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  workCopy = work;
+  descriptionCopy = description;
   os_unfair_lock_assert_owner(&self->super._lock);
   if (self->_subscriptionPoolWorkCompletionBlock)
   {
@@ -1733,9 +1733,9 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = v9;
+      v23 = descriptionCopy;
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_DEFAULT, "%@ already scheduled in subscription pool for this device - ignoring: %@", buf, 0x16u);
     }
 
@@ -1753,20 +1753,20 @@ LABEL_9:
     v16[2] = sub_239391B7C;
     v16[3] = &unk_278A75760;
     objc_copyWeak(&v19, buf);
-    v17 = v9;
-    v18 = v8;
+    v17 = descriptionCopy;
+    v18 = workCopy;
     v11 = MEMORY[0x23EE78590](v16);
     v12 = v11;
-    if (a4 < 1)
+    if (nanoseconds < 1)
     {
       (*(v11 + 16))(v11);
     }
 
     else
     {
-      v13 = dispatch_time(0, a4);
-      v14 = [(MTRDevice_Concrete *)self queue];
-      dispatch_after(v13, v14, v12);
+      v13 = dispatch_time(0, nanoseconds);
+      queue = [(MTRDevice_Concrete *)self queue];
+      dispatch_after(v13, queue, v12);
     }
 
     objc_destroyWeak(&v19);
@@ -1776,9 +1776,9 @@ LABEL_9:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResubscriptionNeededWithDelay:(id)a3
+- (void)_handleResubscriptionNeededWithDelay:(id)delay
 {
-  v4 = a3;
+  delayCopy = delay;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1657);
   os_unfair_lock_lock(&self->super._lock);
   [(MTRDevice_Concrete *)self _changeState:0];
@@ -1788,24 +1788,24 @@ LABEL_9:
   }
 
   objc_initWeak(&location, self);
-  v5 = [(MTRDevice_Concrete *)self queue];
+  queue = [(MTRDevice_Concrete *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2393921E0;
   block[3] = &unk_278A75698;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = delayCopy;
+  v6 = delayCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)_handleResubscriptionNeededWithDelayOnDeviceQueue:(id)a3
+- (void)_handleResubscriptionNeededWithDelayOnDeviceQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->super._lock);
   v5 = [MEMORY[0x277CBEAA8] now];
   lastSubscriptionFailureTime = self->_lastSubscriptionFailureTime;
@@ -1814,7 +1814,7 @@ LABEL_9:
   os_unfair_lock_lock(&self->_descriptionLock);
   objc_storeStrong(&self->_lastSubscriptionFailureTimeForDescription, self->_lastSubscriptionFailureTime);
   os_unfair_lock_unlock(&self->_descriptionLock);
-  v7 = [(MTRDevice_Concrete *)self _deviceUsesThread];
+  _deviceUsesThread = [(MTRDevice_Concrete *)self _deviceUsesThread];
   [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork];
   os_unfair_lock_unlock(&self->super._lock);
   objc_initWeak(&location, self);
@@ -1824,8 +1824,8 @@ LABEL_9:
   v13[3] = &unk_278A72CD0;
   objc_copyWeak(&v14, &location);
   v8 = MEMORY[0x23EE78590](v13);
-  v9 = 1000000 * [v4 unsignedIntValue];
-  if (v7)
+  v9 = 1000000 * [queueCopy unsignedIntValue];
+  if (_deviceUsesThread)
   {
     os_unfair_lock_lock(&self->super._lock);
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"ReadClient resubscription (%p)", self];
@@ -1837,8 +1837,8 @@ LABEL_9:
   else
   {
     v11 = dispatch_time(0, v9);
-    v12 = [(MTRDevice_Concrete *)self queue];
-    dispatch_after(v11, v12, v8);
+    queue = [(MTRDevice_Concrete *)self queue];
+    dispatch_after(v11, queue, v8);
   }
 
   [(MTRDevice_Concrete *)self _setupConnectivityMonitoring];
@@ -1847,30 +1847,30 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleSubscriptionReset:(id)a3
+- (void)_handleSubscriptionReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1741);
   os_unfair_lock_lock(&self->super._lock);
-  [(MTRDevice_Concrete *)self _doHandleSubscriptionReset:v4];
+  [(MTRDevice_Concrete *)self _doHandleSubscriptionReset:resetCopy];
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)_setLastSubscriptionAttemptWait:(unsigned int)a3
+- (void)_setLastSubscriptionAttemptWait:(unsigned int)wait
 {
   os_unfair_lock_assert_owner(&self->super._lock);
-  self->_lastSubscriptionAttemptWait = a3;
+  self->_lastSubscriptionAttemptWait = wait;
   os_unfair_lock_lock(&self->_descriptionLock);
-  self->_lastSubscriptionAttemptWaitForDescription = a3;
+  self->_lastSubscriptionAttemptWaitForDescription = wait;
   os_unfair_lock_unlock(&self->_descriptionLock);
 
   [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
 }
 
-- (void)_doHandleSubscriptionReset:(id)a3
+- (void)_doHandleSubscriptionReset:(id)reset
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resetCopy = reset;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1762);
   os_unfair_lock_assert_owner(&self->super._lock);
   if ([(MTRDevice_Concrete *)self suspended])
@@ -1879,13 +1879,13 @@ LABEL_9:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_DEFAULT, "%@ ignoring expected subscription reset on controller suspend", buf, 0xCu);
     }
 
     if (sub_2393D5398(2u))
     {
-      v18 = self;
+      selfCopy6 = self;
       sub_2393D5320(0, 2);
     }
 
@@ -1909,16 +1909,16 @@ LABEL_9:
         lastSubscriptionAttemptWait = self->_lastSubscriptionAttemptWait;
         if (lastSubscriptionAttemptWait)
         {
-          if (v4)
+          if (resetCopy)
           {
             [(MTRDevice_Concrete *)self _setLastSubscriptionAttemptWait:0];
-            [v4 doubleValue];
+            [resetCopy doubleValue];
             v10 = v9;
             v11 = sub_2393D9044(0);
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v23 = self;
+              selfCopy5 = self;
               v24 = 2048;
               v25 = v10;
               _os_log_impl(&dword_238DAE000, v11, OS_LOG_TYPE_DEFAULT, "%@ resetting resubscribe attempt counter, and delaying by the server-provided delay: %f", buf, 0x16u);
@@ -1927,7 +1927,7 @@ LABEL_9:
             if (sub_2393D5398(2u))
             {
               v19 = v10;
-              v18 = self;
+              selfCopy6 = self;
               sub_2393D5320(0, 2);
             }
           }
@@ -1959,7 +1959,7 @@ LABEL_9:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v23 = self;
+          selfCopy5 = self;
           v24 = 2048;
           v25 = v10;
           _os_log_impl(&dword_238DAE000, v13, OS_LOG_TYPE_DEFAULT, "%@ scheduling to reattempt subscription in %f seconds", buf, 0x16u);
@@ -1968,11 +1968,11 @@ LABEL_9:
         if (sub_2393D5398(2u))
         {
           v19 = v10;
-          v18 = self;
+          selfCopy6 = self;
           sub_2393D5320(0, 2);
         }
 
-        [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork:v18];
+        [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork:selfCopy6];
         objc_initWeak(buf, self);
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -1982,15 +1982,15 @@ LABEL_9:
         v14 = MEMORY[0x23EE78590](v20);
         if ([(MTRDevice_Concrete *)self _deviceUsesThread])
         {
-          v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"MTRDevice resubscription (%p)", self];
-          [(MTRDevice_Concrete *)self _scheduleSubscriptionPoolWork:v14 inNanoseconds:(v10 * 1000000000.0) description:v15];
+          queue = [MEMORY[0x277CCACA8] stringWithFormat:@"MTRDevice resubscription (%p)", self];
+          [(MTRDevice_Concrete *)self _scheduleSubscriptionPoolWork:v14 inNanoseconds:(v10 * 1000000000.0) description:queue];
         }
 
         else
         {
           v16 = dispatch_time(0, (v10 * 1000000000.0));
-          v15 = [(MTRDevice_Concrete *)self queue];
-          dispatch_after(v16, v15, v14);
+          queue = [(MTRDevice_Concrete *)self queue];
+          dispatch_after(v16, queue, v14);
         }
 
         [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
@@ -2008,33 +2008,33 @@ LABEL_9:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_reattemptSubscriptionNowIfNeededWithReason:(id)a3
+- (BOOL)_reattemptSubscriptionNowIfNeededWithReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1863);
   os_unfair_lock_assert_owner(&self->super._lock);
-  v5 = [(MTRDevice_Concrete *)self reattemptingSubscription];
-  if (v5)
+  reattemptingSubscription = [(MTRDevice_Concrete *)self reattemptingSubscription];
+  if (reattemptingSubscription)
   {
     v6 = sub_2393D9044(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v4;
+      v14 = reasonCopy;
       _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_DEFAULT, "%@ reattempting subscription with reason %@", buf, 0x16u);
     }
 
     if (sub_2393D5398(2u))
     {
-      v9 = self;
-      v10 = v4;
+      selfCopy2 = self;
+      v10 = reasonCopy;
       sub_2393D5320(0, 2);
     }
 
-    [(MTRDevice_Concrete *)self _setupSubscriptionWithReason:v4, v9, v10];
+    [(MTRDevice_Concrete *)self _setupSubscriptionWithReason:reasonCopy, selfCopy2, v10];
   }
 
   else
@@ -2043,7 +2043,7 @@ LABEL_9:
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return reattemptingSubscription;
 }
 
 - (void)_handleUnsolicitedMessageFromPublisher
@@ -2052,20 +2052,20 @@ LABEL_9:
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 1879);
   os_unfair_lock_lock(&self->super._lock);
   [(MTRDevice_Concrete *)self _changeState:1];
-  v3 = [(MTRDevice_Concrete *)self lastDeviceBecameActiveCallbackTime];
+  lastDeviceBecameActiveCallbackTime = [(MTRDevice_Concrete *)self lastDeviceBecameActiveCallbackTime];
 
-  if (v3 && (-[MTRDevice_Concrete lastDeviceBecameActiveCallbackTime](self, "lastDeviceBecameActiveCallbackTime"), v4 = objc_claimAutoreleasedReturnValue(), [v4 timeIntervalSinceNow], v6 = v5, v4, v6 >= -60.0))
+  if (lastDeviceBecameActiveCallbackTime && (-[MTRDevice_Concrete lastDeviceBecameActiveCallbackTime](self, "lastDeviceBecameActiveCallbackTime"), v4 = objc_claimAutoreleasedReturnValue(), [v4 timeIntervalSinceNow], v6 = v5, v4, v6 >= -60.0))
   {
     if (![(MTRDevice_Concrete *)self throttlingDeviceBecameActiveCallbacks])
     {
       v9 = sub_2393D9044(0);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(MTRDevice_Concrete *)self lastDeviceBecameActiveCallbackTime];
+        lastDeviceBecameActiveCallbackTime2 = [(MTRDevice_Concrete *)self lastDeviceBecameActiveCallbackTime];
         *buf = 138412546;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
-        v17 = v10;
+        v17 = lastDeviceBecameActiveCallbackTime2;
         _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_DEFAULT, "%@ throttling deviceBecameActive callbacks because report came in too soon after %@", buf, 0x16u);
       }
 
@@ -2135,7 +2135,7 @@ LABEL_9:
 {
   v18 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->super._lock);
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -2157,7 +2157,7 @@ LABEL_9:
         v8 = *(*(&v13 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_clusterDataToPersist objectForKeyedSubscript:v8, v13];
         v10 = [v9 copy];
-        [v3 setObject:v10 forKeyedSubscript:v8];
+        [dictionary setObject:v10 forKeyedSubscript:v8];
       }
 
       v5 = [(NSMutableDictionary *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2168,7 +2168,7 @@ LABEL_9:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (BOOL)_haveClusterDataToPersist
@@ -2201,7 +2201,7 @@ LABEL_9:
       {
         v5 = [(NSMutableDictionary *)self->_clusterDataToPersist count];
         *buf = 138412546;
-        v28 = self;
+        selfCopy3 = self;
         v29 = 2048;
         v30 = v5;
         _os_log_impl(&dword_238DAE000, v4, OS_LOG_TYPE_DEFAULT, "%@ Storing cluster information (data version and attributes) count: %lu", buf, 0x16u);
@@ -2209,15 +2209,15 @@ LABEL_9:
 
       if (sub_2393D5398(2u))
       {
-        v18 = self;
+        selfCopy2 = self;
         v19 = [(NSMutableDictionary *)self->_clusterDataToPersist count];
         sub_2393D5320(0, 2);
       }
 
-      v20 = [(MTRDevice_Concrete *)self _clusterDataToPersistSnapshot:v18];
-      v6 = [(MTRDevice_Concrete *)self _concreteController];
-      v7 = [v6 controllerDataStore];
-      [v7 storeClusterData:v20 forNodeID:self->super._nodeID];
+      v20 = [(MTRDevice_Concrete *)self _clusterDataToPersistSnapshot:selfCopy2];
+      _concreteController = [(MTRDevice_Concrete *)self _concreteController];
+      controllerDataStore = [_concreteController controllerDataStore];
+      [controllerDataStore storeClusterData:v20 forNodeID:self->super._nodeID];
 
       v24 = 0u;
       v25 = 0u;
@@ -2264,7 +2264,7 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v28 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_238DAE000, v15, OS_LOG_TYPE_ERROR, "%@ storage behavior: no data store in _persistClusterData!", buf, 0xCu);
     }
 
@@ -2297,7 +2297,7 @@ LABEL_9:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v11 = self;
+        selfCopy = self;
         v12 = 2048;
         v13 = v5;
         _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "%@ storage behavior: device has been reporting excessively for %.3lf seconds", buf, 0x16u);
@@ -2322,8 +2322,8 @@ LABEL_9:
   os_unfair_lock_lock(&self->super._lock);
   if ([(MTRDevice_Concrete *)self _haveClusterDataToPersist]&& ![(MTRDevice_Concrete *)self _deviceIsReportingExcessively]&& !self->_receivingReport)
   {
-    v3 = [(NSMutableArray *)self->_mostRecentReportTimes lastObject];
-    [v3 timeIntervalSinceNow];
+    lastObject = [(NSMutableArray *)self->_mostRecentReportTimes lastObject];
+    [lastObject timeIntervalSinceNow];
     v5 = v4;
     [(MTRDevice_Concrete *)self _reportToPersistenceDelayTimeAfterMutiplier];
     v6 = -v5;
@@ -2339,7 +2339,7 @@ LABEL_9:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_238DAE000, v15, OS_LOG_TYPE_ERROR, "%@ storage behavior: expects _clusterDataPersistenceFirstScheduledTime if _clusterDataToPersist exists", buf, 0xCu);
       }
 
@@ -2361,7 +2361,7 @@ LABEL_9:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2048;
         v20 = v6;
         v21 = 2048;
@@ -2400,7 +2400,7 @@ LABEL_8:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v50 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_238DAE000, v32, OS_LOG_TYPE_INFO, "%@ storage behavior: no data store", buf, 0xCu);
     }
 
@@ -2422,7 +2422,7 @@ LABEL_35:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v50 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_238DAE000, v33, OS_LOG_TYPE_INFO, "%@ storage behavior: nothing to persist", buf, 0xCu);
     }
 
@@ -2449,9 +2449,9 @@ LABEL_35:
   {
     if (!self->_mostRecentReportTimes)
     {
-      v6 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       mostRecentReportTimes = self->_mostRecentReportTimes;
-      self->_mostRecentReportTimes = v6;
+      self->_mostRecentReportTimes = array;
     }
 
     if (!self->_clusterDataPersistenceFirstScheduledTime)
@@ -2477,9 +2477,9 @@ LABEL_35:
     [(NSMutableArray *)v11 addObject:v12];
 
     os_unfair_lock_lock(&self->_descriptionLock);
-    v13 = [(NSMutableArray *)self->_mostRecentReportTimes lastObject];
+    lastObject = [(NSMutableArray *)self->_mostRecentReportTimes lastObject];
     mostRecentReportTimeForDescription = self->_mostRecentReportTimeForDescription;
-    self->_mostRecentReportTimeForDescription = v13;
+    self->_mostRecentReportTimeForDescription = lastObject;
 
     os_unfair_lock_unlock(&self->_descriptionLock);
     if ([(NSMutableArray *)self->_mostRecentReportTimes count]>= 3)
@@ -2536,7 +2536,7 @@ LABEL_35:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v50 = self;
+          selfCopy5 = self;
           v51 = 2048;
           v52 = v30;
           _os_log_impl(&dword_238DAE000, v31, OS_LOG_TYPE_DEFAULT, "%@ storage behavior: device reporting frequently - setting delay multiplier to %lf", buf, 0x16u);
@@ -2545,12 +2545,12 @@ LABEL_35:
         if (sub_2393D5398(2u))
         {
           reportToPersistenceDelayCurrentMultiplier = self->_reportToPersistenceDelayCurrentMultiplier;
-          v45 = self;
+          selfCopy6 = self;
           sub_2393D5320(0, 2);
         }
       }
 
-      [(MTRDeviceStorageBehaviorConfiguration *)self->_storageBehaviorConfiguration timeBetweenReportsTooShortMinThreshold:v45];
+      [(MTRDeviceStorageBehaviorConfiguration *)self->_storageBehaviorConfiguration timeBetweenReportsTooShortMinThreshold:selfCopy6];
       deviceReportingExcessivelyStartTime = self->_deviceReportingExcessivelyStartTime;
       if (v20 >= v37)
       {
@@ -2568,7 +2568,7 @@ LABEL_35:
         {
           v41 = self->_deviceReportingExcessivelyStartTime;
           *buf = 138412546;
-          v50 = self;
+          selfCopy5 = self;
           v51 = 2112;
           v52 = *&v41;
           _os_log_impl(&dword_238DAE000, v40, OS_LOG_TYPE_INFO, "%@ storage behavior: device is reporting excessively @%@", buf, 0x16u);
@@ -2576,25 +2576,25 @@ LABEL_35:
 
         if (sub_2393D5398(3u))
         {
-          v45 = self;
+          selfCopy6 = self;
           reportToPersistenceDelayCurrentMultiplier = *&self->_deviceReportingExcessivelyStartTime;
           sub_2393D5320(0, 3);
         }
       }
     }
 
-    if (![(MTRDevice_Concrete *)self _deviceIsReportingExcessively:v45])
+    if (![(MTRDevice_Concrete *)self _deviceIsReportingExcessively:selfCopy6])
     {
       objc_initWeak(buf, self);
       [(MTRDevice_Concrete *)self _reportToPersistenceDelayTimeAfterMutiplier];
       v43 = dispatch_time(0, (v42 * 1000000000.0));
-      v44 = [(MTRDevice_Concrete *)self queue];
+      queue = [(MTRDevice_Concrete *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_239394A34;
       block[3] = &unk_278A72CD0;
       objc_copyWeak(&v48, buf);
-      dispatch_after(v43, v44, block);
+      dispatch_after(v43, queue, block);
 
       objc_destroyWeak(&v48);
       objc_destroyWeak(buf);
@@ -2634,17 +2634,17 @@ LABEL_35:
   [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
 }
 
-- (void)setStorageBehaviorConfiguration:(id)a3
+- (void)setStorageBehaviorConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = sub_2393D9044(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = configurationCopy;
     _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_DEFAULT, "%@ storage behavior: setStorageBehaviorConfiguration %@", buf, 0x16u);
   }
 
@@ -2654,7 +2654,7 @@ LABEL_35:
   }
 
   os_unfair_lock_lock(&self->super._lock);
-  objc_storeStrong(&self->_storageBehaviorConfiguration, a3);
+  objc_storeStrong(&self->_storageBehaviorConfiguration, configuration);
   [(MTRDeviceStorageBehaviorConfiguration *)self->_storageBehaviorConfiguration checkValuesAndResetToDefaultIfNecessary];
   [(MTRDevice_Concrete *)self _resetStorageBehaviorState];
   os_unfair_lock_unlock(&self->super._lock);
@@ -2669,13 +2669,13 @@ LABEL_35:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ handling report end", buf, 0xCu);
   }
 
   if (sub_2393D5398(2u))
   {
-    v11 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
@@ -2706,12 +2706,12 @@ LABEL_35:
     [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
   }
 
-  v5 = [(MTRDevice_Concrete *)self timeUpdateShortDelayInSeconds];
+  timeUpdateShortDelayInSeconds = [(MTRDevice_Concrete *)self timeUpdateShortDelayInSeconds];
   timeSynchronizationLossDetected = self->_timeSynchronizationLossDetected;
   os_unfair_lock_unlock(&self->super._lock);
   os_unfair_lock_lock(&self->_timeSyncLock);
-  v7 = [(MTRDevice_Concrete *)self timeUpdateTimer];
-  if (v7)
+  timeUpdateTimer = [(MTRDevice_Concrete *)self timeUpdateTimer];
+  if (timeUpdateTimer)
   {
     v8 = self->_lastTimeUpdateScheduledDelayInSeconds == 86400;
 
@@ -2720,21 +2720,21 @@ LABEL_35:
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v15 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ Trying to correct time synchronization loss, reschedule time update", buf, 0xCu);
       }
 
       if (sub_2393D5398(2u))
       {
-        v12 = self;
+        selfCopy4 = self;
         sub_2393D5320(0, 2);
       }
 
-      v9 = [(MTRDevice_Concrete *)self timeUpdateTimer];
-      dispatch_source_cancel(v9);
+      timeUpdateTimer2 = [(MTRDevice_Concrete *)self timeUpdateTimer];
+      dispatch_source_cancel(timeUpdateTimer2);
 
       [(MTRDevice_Concrete *)self setTimeUpdateTimer:0];
-      [(MTRDevice_Concrete *)self _scheduleNextUpdate:v5];
+      [(MTRDevice_Concrete *)self _scheduleNextUpdate:timeUpdateShortDelayInSeconds];
     }
   }
 
@@ -2742,13 +2742,13 @@ LABEL_35:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCASESessionEstablished:(const void *)a3
+- (void)_handleCASESessionEstablished:(const void *)established
 {
   v21 = *MEMORY[0x277D85DE8];
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 2363);
-  if ((*(**a3 + 16))() == 2)
+  if ((*(**established + 16))() == 2)
   {
-    v5 = sub_239495304(*a3);
+    v5 = sub_239495304(*established);
     v6 = *(v5 + 112);
     if ((v6 | 2) == 3)
     {
@@ -2758,7 +2758,7 @@ LABEL_35:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v14 = self;
+        selfCopy = self;
         v15 = 2080;
         v16 = v17;
         _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "%@ Using CASE session to IP %s for subscription", buf, 0x16u);
@@ -2785,7 +2785,7 @@ LABEL_35:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *v17 = 138412546;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 1024;
       v20 = v6;
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_ERROR, "%@ CASE session with unexpected transport type %d", v17, 0x12u);
@@ -2804,7 +2804,7 @@ LABEL_17:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *v17 = 138412290;
-      v18 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_ERROR, "%@ CASE session is not a secure session?", v17, 0xCu);
     }
 
@@ -2818,16 +2818,16 @@ LABEL_18:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_interestedPaths:(id)a3 includesAttributePath:(id)a4
+- (BOOL)_interestedPaths:(id)paths includesAttributePath:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pathsCopy = paths;
+  pathCopy = path;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = pathsCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -2847,8 +2847,8 @@ LABEL_18:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v6 endpoint];
-          v13 = [v11 isEqualToNumber:v12];
+          endpoint = [pathCopy endpoint];
+          v13 = [v11 isEqualToNumber:endpoint];
 
           goto LABEL_10;
         }
@@ -2857,9 +2857,9 @@ LABEL_18:
         if (objc_opt_isKindOfClass())
         {
           v14 = v10;
-          v15 = [v14 cluster];
-          v16 = [v6 cluster];
-          v13 = [v15 isEqualToNumber:v16];
+          cluster = [v14 cluster];
+          cluster2 = [pathCopy cluster];
+          v13 = [cluster isEqualToNumber:cluster2];
 
 LABEL_10:
           if (v13)
@@ -2874,13 +2874,13 @@ LABEL_10:
         if (objc_opt_isKindOfClass())
         {
           v17 = v10;
-          v18 = [v17 cluster];
-          v19 = [v6 cluster];
-          if ([v18 isEqualToNumber:v19])
+          cluster3 = [v17 cluster];
+          cluster4 = [pathCopy cluster];
+          if ([cluster3 isEqualToNumber:cluster4])
           {
-            v20 = [v17 attribute];
-            v21 = [v6 attribute];
-            v22 = [v20 isEqualToNumber:v21];
+            attribute = [v17 attribute];
+            attribute2 = [pathCopy attribute];
+            v22 = [attribute isEqualToNumber:attribute2];
 
             if (v22)
             {
@@ -2913,23 +2913,23 @@ LABEL_21:
   return v7;
 }
 
-- (id)_filteredAttributes:(id)a3 forInterestedPaths:(id)a4
+- (id)_filteredAttributes:(id)attributes forInterestedPaths:(id)paths
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v22 = v6;
-  if (v7)
+  attributesCopy = attributes;
+  pathsCopy = paths;
+  v8 = pathsCopy;
+  v22 = attributesCopy;
+  if (pathsCopy)
   {
-    if ([v7 count])
+    if ([pathsCopy count])
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v9 = v6;
-      v10 = 0;
+      v9 = attributesCopy;
+      array = 0;
       v11 = [v9 countByEnumeratingWithState:&v23 objects:v33 count:16];
       if (v11)
       {
@@ -2947,12 +2947,12 @@ LABEL_21:
             v15 = [v14 objectForKeyedSubscript:@"attributePath"];
             if ([(MTRDevice_Concrete *)self _interestedPaths:v8 includesAttributePath:v15])
             {
-              if (!v10)
+              if (!array)
               {
-                v10 = [MEMORY[0x277CBEB18] array];
+                array = [MEMORY[0x277CBEB18] array];
               }
 
-              [v10 addObject:v14];
+              [array addObject:v14];
             }
           }
 
@@ -2962,18 +2962,18 @@ LABEL_21:
         while (v11);
       }
 
-      if ([v10 count])
+      if ([array count])
       {
-        v16 = [v10 count];
+        v16 = [array count];
         if (v16 != [v9 count])
         {
           v17 = sub_2393D9044(0);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             v18 = [v9 count];
-            v19 = [v10 count];
+            v19 = [array count];
             *buf = 138412802;
-            v28 = self;
+            selfCopy = self;
             v29 = 2048;
             v30 = v18;
             v31 = 2048;
@@ -2984,7 +2984,7 @@ LABEL_21:
           if (sub_2393D5398(2u))
           {
             [v9 count];
-            [v10 count];
+            [array count];
             sub_2393D5320(0, 2);
           }
         }
@@ -2993,41 +2993,41 @@ LABEL_21:
 
     else
     {
-      v10 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v10 = v6;
+    array = attributesCopy;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return array;
 }
 
-- (void)_reportAttributes:(id)a3
+- (void)_reportAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   os_unfair_lock_assert_owner(&self->super._lock);
-  if ([v4 count])
+  if ([attributesCopy count])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = sub_2393959F8;
     v5[3] = &unk_278A75788;
     v5[4] = self;
-    v6 = v4;
+    v6 = attributesCopy;
     [(MTRDevice *)self _iterateDelegatesWithBlock:v5];
   }
 }
 
-- (void)_injectAttributeReport:(id)a3 fromSubscription:(BOOL)a4
+- (void)_injectAttributeReport:(id)report fromSubscription:(BOOL)subscription
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (sub_23938A994(v6))
+  reportCopy = report;
+  if (sub_23938A994(reportCopy))
   {
     objc_initWeak(location, self);
     deviceController = self->super._deviceController;
@@ -3036,8 +3036,8 @@ LABEL_21:
     v10[2] = sub_239395E98;
     v10[3] = &unk_278A757B0;
     objc_copyWeak(&v12, location);
-    v11 = v6;
-    v13 = a4;
+    v11 = reportCopy;
+    subscriptionCopy = subscription;
     [(MTRDeviceController *)deviceController asyncDispatchToMatterQueue:v10 errorHandler:0];
 
     objc_destroyWeak(&v12);
@@ -3052,7 +3052,7 @@ LABEL_21:
       *location = 138412546;
       *&location[4] = self;
       v15 = 2112;
-      v16 = v6;
+      v16 = reportCopy;
       _os_log_impl(&dword_238DAE000, v8, OS_LOG_TYPE_ERROR, "%@ injected attribute report is not well-formed: %@", location, 0x16u);
     }
 
@@ -3065,13 +3065,13 @@ LABEL_21:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_injectEventReport:(id)a3
+- (void)_injectEventReport:(id)report
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (sub_23938B148(v4))
+  reportCopy = report;
+  if (sub_23938B148(reportCopy))
   {
-    [(MTRDevice_Concrete *)self _injectPossiblyInvalidEventReport:v4];
+    [(MTRDevice_Concrete *)self _injectPossiblyInvalidEventReport:reportCopy];
   }
 
   else
@@ -3080,9 +3080,9 @@ LABEL_21:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v4;
+      v10 = reportCopy;
       _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_ERROR, "%@ injected event report is not well-formed: %@", buf, 0x16u);
     }
 
@@ -3095,34 +3095,34 @@ LABEL_21:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_injectPossiblyInvalidEventReport:(id)a3
+- (void)_injectPossiblyInvalidEventReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   objc_initWeak(&location, self);
-  v5 = [(MTRDevice_Concrete *)self queue];
+  queue = [(MTRDevice_Concrete *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_239396374;
   block[3] = &unk_278A75698;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = reportCopy;
+  v6 = reportCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_interestedPaths:(id)a3 includesEventPath:(id)a4
+- (BOOL)_interestedPaths:(id)paths includesEventPath:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pathsCopy = paths;
+  pathCopy = path;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = pathsCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -3142,8 +3142,8 @@ LABEL_21:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v6 endpoint];
-          v13 = [v11 isEqualToNumber:v12];
+          endpoint = [pathCopy endpoint];
+          v13 = [v11 isEqualToNumber:endpoint];
 
           goto LABEL_10;
         }
@@ -3152,9 +3152,9 @@ LABEL_21:
         if (objc_opt_isKindOfClass())
         {
           v14 = v10;
-          v15 = [v14 cluster];
-          v16 = [v6 cluster];
-          v13 = [v15 isEqualToNumber:v16];
+          cluster = [v14 cluster];
+          cluster2 = [pathCopy cluster];
+          v13 = [cluster isEqualToNumber:cluster2];
 
 LABEL_10:
           if (v13)
@@ -3169,13 +3169,13 @@ LABEL_10:
         if (objc_opt_isKindOfClass())
         {
           v17 = v10;
-          v18 = [v17 cluster];
-          v19 = [v6 cluster];
-          if ([v18 isEqualToNumber:v19])
+          cluster3 = [v17 cluster];
+          cluster4 = [pathCopy cluster];
+          if ([cluster3 isEqualToNumber:cluster4])
           {
-            v20 = [v17 event];
-            v21 = [v6 event];
-            v22 = [v20 isEqualToNumber:v21];
+            event = [v17 event];
+            event2 = [pathCopy event];
+            v22 = [event isEqualToNumber:event2];
 
             if (v22)
             {
@@ -3208,23 +3208,23 @@ LABEL_21:
   return v7;
 }
 
-- (id)_filteredEvents:(id)a3 forInterestedPaths:(id)a4
+- (id)_filteredEvents:(id)events forInterestedPaths:(id)paths
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v22 = v6;
-  if (v7)
+  eventsCopy = events;
+  pathsCopy = paths;
+  v8 = pathsCopy;
+  v22 = eventsCopy;
+  if (pathsCopy)
   {
-    if ([v7 count])
+    if ([pathsCopy count])
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v9 = v6;
-      v10 = 0;
+      v9 = eventsCopy;
+      array = 0;
       v11 = [v9 countByEnumeratingWithState:&v23 objects:v33 count:16];
       if (v11)
       {
@@ -3242,12 +3242,12 @@ LABEL_21:
             v15 = [v14 objectForKeyedSubscript:@"eventPath"];
             if ([(MTRDevice_Concrete *)self _interestedPaths:v8 includesEventPath:v15])
             {
-              if (!v10)
+              if (!array)
               {
-                v10 = [MEMORY[0x277CBEB18] array];
+                array = [MEMORY[0x277CBEB18] array];
               }
 
-              [v10 addObject:v14];
+              [array addObject:v14];
             }
           }
 
@@ -3257,18 +3257,18 @@ LABEL_21:
         while (v11);
       }
 
-      if ([v10 count])
+      if ([array count])
       {
-        v16 = [v10 count];
+        v16 = [array count];
         if (v16 != [v9 count])
         {
           v17 = sub_2393D9044(0);
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             v18 = [v9 count];
-            v19 = [v10 count];
+            v19 = [array count];
             *buf = 138412802;
-            v28 = self;
+            selfCopy = self;
             v29 = 2048;
             v30 = v18;
             v31 = 2048;
@@ -3279,7 +3279,7 @@ LABEL_21:
           if (sub_2393D5398(2u))
           {
             [v9 count];
-            [v10 count];
+            [array count];
             sub_2393D5320(0, 2);
           }
         }
@@ -3288,43 +3288,43 @@ LABEL_21:
 
     else
     {
-      v10 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v10 = v6;
+    array = eventsCopy;
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return array;
 }
 
-- (void)_handleEventReport:(id)a3
+- (void)_handleEventReport:(id)report
 {
   v62 = *MEMORY[0x277D85DE8];
-  v46 = a3;
+  reportCopy = report;
   os_unfair_lock_lock(&self->super._lock);
   v47 = self->_estimatedStartTime;
   unreportedEvents = self->_unreportedEvents;
   if (unreportedEvents)
   {
-    v5 = unreportedEvents;
+    array = unreportedEvents;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v48 = v5;
+  v48 = array;
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v46;
+  obj = reportCopy;
   v6 = [obj countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v6)
   {
@@ -3340,12 +3340,12 @@ LABEL_21:
         }
 
         v8 = *(*(&v55 + 1) + 8 * v7);
-        v9 = [(NSDate *)v8 objectForKeyedSubscript:@"eventPath", v42];
-        estimatedStartTime = [v9 cluster];
+        selfCopy4 = [(NSDate *)v8 objectForKeyedSubscript:@"eventPath", selfCopy4];
+        estimatedStartTime = [selfCopy4 cluster];
         if ([estimatedStartTime unsignedLongValue] == 40)
         {
-          v11 = [v9 event];
-          v12 = [v11 unsignedLongValue] == 0;
+          event = [selfCopy4 event];
+          v12 = [event unsignedLongValue] == 0;
 
           if (!v12)
           {
@@ -3368,7 +3368,7 @@ LABEL_21:
 
             if (sub_2393D5398(2u))
             {
-              v43 = self;
+              selfCopy2 = self;
               v44 = self->_estimatedStartTimeFromGeneralDiagnosticsUpTime;
               sub_2393D5320(0, 2);
             }
@@ -3387,7 +3387,7 @@ LABEL_21:
 
             if (sub_2393D5398(2u))
             {
-              v43 = self;
+              selfCopy2 = self;
               sub_2393D5320(0, 2);
             }
 
@@ -3399,7 +3399,7 @@ LABEL_21:
         }
 
 LABEL_24:
-        v17 = [(NSDate *)v8 objectForKeyedSubscript:@"eventTimeType", v43, v44];
+        v17 = [(NSDate *)v8 objectForKeyedSubscript:@"eventTimeType", selfCopy2, v44];
         v18 = v17;
         if (v17)
         {
@@ -3429,8 +3429,8 @@ LABEL_31:
 
               if (v25)
               {
-                v26 = [(MTRDevice_Concrete *)self highestObservedEventNumber];
-                if (!v26 || (-[MTRDevice_Concrete highestObservedEventNumber](self, "highestObservedEventNumber"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 compare:v25] == -1, v27, v26, v28))
+                highestObservedEventNumber = [(MTRDevice_Concrete *)self highestObservedEventNumber];
+                if (!highestObservedEventNumber || (-[MTRDevice_Concrete highestObservedEventNumber](self, "highestObservedEventNumber"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 compare:v25] == -1, v27, highestObservedEventNumber, v28))
                 {
                   [(MTRDevice_Concrete *)self setHighestObservedEventNumber:v25];
                   [(MTRDevice_Concrete *)self setHighestObservedEventNumberNeedsPersisting:1];
@@ -3484,7 +3484,7 @@ LABEL_53:
             v25 = 0;
             if (sub_2393D5398(1u))
             {
-              v42 = self;
+              selfCopy4 = self;
               v44 = v8;
               sub_2393D5320(0, 1);
             }
@@ -3523,7 +3523,7 @@ LABEL_53:
           if (sub_2393D5398(1u))
           {
 LABEL_40:
-            v42 = self;
+            selfCopy4 = self;
             v44 = v8;
             sub_2393D5320(0, 1);
           }
@@ -3618,12 +3618,12 @@ LABEL_54:
         }
 
         v6 = *(*(&v22 + 1) + 8 * i);
-        v7 = [(MTRDevice_Concrete *)self _concreteController];
-        v8 = [v7 controllerDataStore];
+        _concreteController = [(MTRDevice_Concrete *)self _concreteController];
+        controllerDataStore = [_concreteController controllerDataStore];
         nodeID = self->super._nodeID;
-        v10 = [v6 endpoint];
-        v11 = [v6 cluster];
-        v12 = [v8 getStoredClusterDataForNodeID:nodeID endpointID:v10 clusterID:v11];
+        endpoint = [v6 endpoint];
+        cluster = [v6 cluster];
+        v12 = [controllerDataStore getStoredClusterDataForNodeID:nodeID endpointID:endpoint clusterID:cluster];
 
         if (!v12)
         {
@@ -3643,7 +3643,7 @@ LABEL_54:
     v14 = [v20 count];
     v15 = [(NSMutableSet *)self->_persistedClusters count];
     *buf = 138412802;
-    v27 = self;
+    selfCopy = self;
     v28 = 2048;
     v29 = v14;
     v30 = 2048;
@@ -3655,47 +3655,47 @@ LABEL_54:
   {
     v18 = [v20 count];
     v19 = [(NSMutableSet *)self->_persistedClusters count];
-    v17 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 1);
   }
 
-  [(NSMutableSet *)self->_persistedClusters minusSet:v20, v17, v18, v19];
+  [(NSMutableSet *)self->_persistedClusters minusSet:v20, selfCopy2, v18, v19];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_clusterDataForPath:(id)a3
+- (id)_clusterDataForPath:(id)path
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_assert_owner(&self->super._lock);
   clusterDataToPersist = self->_clusterDataToPersist;
-  if (!clusterDataToPersist || ([(NSMutableDictionary *)clusterDataToPersist objectForKeyedSubscript:v4], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!clusterDataToPersist || ([(NSMutableDictionary *)clusterDataToPersist objectForKeyedSubscript:pathCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (![(MTRDevice_Concrete *)self _dataStoreExists]|| ([(NSCache *)self->_persistedClusterData objectForKey:v4], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![(MTRDevice_Concrete *)self _dataStoreExists]|| ([(NSCache *)self->_persistedClusterData objectForKey:pathCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if ([(NSMutableSet *)self->_persistedClusters containsObject:v4])
+      if ([(NSMutableSet *)self->_persistedClusters containsObject:pathCopy])
       {
-        v7 = [(MTRDevice_Concrete *)self _concreteController];
-        v8 = [v7 controllerDataStore];
+        _concreteController = [(MTRDevice_Concrete *)self _concreteController];
+        controllerDataStore = [_concreteController controllerDataStore];
         nodeID = self->super._nodeID;
-        v10 = [v4 endpoint];
-        v11 = [v4 cluster];
-        v6 = [v8 getStoredClusterDataForNodeID:nodeID endpointID:v10 clusterID:v11];
+        endpoint = [pathCopy endpoint];
+        cluster = [pathCopy cluster];
+        v6 = [controllerDataStore getStoredClusterDataForNodeID:nodeID endpointID:endpoint clusterID:cluster];
 
         v12 = sub_2393D9044(0);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v13 = @"YES";
           *buf = 138412802;
-          v18 = self;
+          selfCopy = self;
           v19 = 2112;
           if (!v6)
           {
             v13 = @"NO";
           }
 
-          v20 = v4;
+          v20 = pathCopy;
           v21 = 2112;
           v22 = v13;
           _os_log_impl(&dword_238DAE000, v12, OS_LOG_TYPE_DEFAULT, "%@ cluster path %@ cache miss - load from storage success %@", buf, 0x20u);
@@ -3708,14 +3708,14 @@ LABEL_54:
 
         if (v6)
         {
-          [(NSCache *)self->_persistedClusterData setObject:v6 forKey:v4];
+          [(NSCache *)self->_persistedClusterData setObject:v6 forKey:pathCopy];
         }
 
         else
         {
           [(MTRDevice_Concrete *)self _reconcilePersistedClustersWithStorage];
-          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Data store has no data for cluster %@", v4];
-          [(MTRDevice_Concrete *)self _resetSubscriptionWithReasonString:v14];
+          pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Data store has no data for cluster %@", pathCopy];
+          [(MTRDevice_Concrete *)self _resetSubscriptionWithReasonString:pathCopy];
         }
       }
 
@@ -3739,8 +3739,8 @@ LABEL_54:
   if (clusterDataToPersist)
   {
     v5 = MEMORY[0x277CBEB98];
-    v6 = [(NSMutableDictionary *)clusterDataToPersist allKeys];
-    v7 = [v5 setWithArray:v6];
+    allKeys = [(NSMutableDictionary *)clusterDataToPersist allKeys];
+    v7 = [v5 setWithArray:allKeys];
     [v3 unionSet:v7];
   }
 
@@ -3750,14 +3750,14 @@ LABEL_54:
 - (id)_getCachedDataVersions
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   os_unfair_lock_lock(&self->super._lock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(MTRDevice_Concrete *)self _knownClusters];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  _knownClusters = [(MTRDevice_Concrete *)self _knownClusters];
+  v5 = [_knownClusters countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -3767,16 +3767,16 @@ LABEL_54:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_knownClusters);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = [(MTRDevice_Concrete *)self _clusterDataForPath:v8];
-        v10 = [v9 dataVersion];
-        [v3 setObject:v10 forKeyedSubscript:v8];
+        dataVersion = [v9 dataVersion];
+        [dictionary setObject:dataVersion forKeyedSubscript:v8];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v5 = [_knownClusters countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v5);
@@ -3785,9 +3785,9 @@ LABEL_54:
   v11 = sub_2393D9044(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v3 count];
+    v12 = [dictionary count];
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
     v22 = v12;
     _os_log_impl(&dword_238DAE000, v11, OS_LOG_TYPE_INFO, "%@ _getCachedDataVersions dataVersions count: %lu", buf, 0x16u);
@@ -3795,27 +3795,27 @@ LABEL_54:
 
   if (sub_2393D5398(3u))
   {
-    [v3 count];
+    [dictionary count];
     sub_2393D5320(0, 3);
   }
 
   os_unfair_lock_unlock(&self->super._lock);
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_commitPendingDataVersionsForClusterPath:(id)a3
+- (void)_commitPendingDataVersionsForClusterPath:(id)path
 {
-  v7 = a3;
+  pathCopy = path;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v4 = [(NSMutableDictionary *)self->_clusterDataToPersist objectForKeyedSubscript:v7];
-  v5 = [v4 pendingDataVersion];
+  v4 = [(NSMutableDictionary *)self->_clusterDataToPersist objectForKeyedSubscript:pathCopy];
+  pendingDataVersion = [v4 pendingDataVersion];
 
-  if (v5)
+  if (pendingDataVersion)
   {
-    v6 = [v4 pendingDataVersion];
-    [v4 setDataVersion:v6];
+    pendingDataVersion2 = [v4 pendingDataVersion];
+    [v4 setDataVersion:pendingDataVersion2];
 
     [v4 setPendingDataVersion:0];
   }
@@ -3861,21 +3861,21 @@ LABEL_54:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cachedAttributeValueForPath:(id)a3
+- (id)_cachedAttributeValueForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v5 = [v4 endpoint];
-  v6 = [v4 cluster];
-  v7 = [MTRClusterPath clusterPathWithEndpointID:v5 clusterID:v6];
+  endpoint = [pathCopy endpoint];
+  cluster = [pathCopy cluster];
+  v7 = [MTRClusterPath clusterPathWithEndpointID:endpoint clusterID:cluster];
 
   v8 = [(MTRDevice_Concrete *)self _clusterDataForPath:v7];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 attributes];
-    v11 = [v4 attribute];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    attributes = [v8 attributes];
+    attribute = [pathCopy attribute];
+    v12 = [attributes objectForKeyedSubscript:attribute];
   }
 
   else
@@ -3886,20 +3886,20 @@ LABEL_54:
   return v12;
 }
 
-- (void)_setCachedAttributeValue:(id)a3 forPath:(id)a4 fromSubscription:(BOOL)a5
+- (void)_setCachedAttributeValue:(id)value forPath:(id)path fromSubscription:(BOOL)subscription
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  subscriptionCopy = subscription;
+  valueCopy = value;
+  pathCopy = path;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v10 = [v9 endpoint];
-  v11 = [v9 cluster];
-  v12 = [MTRClusterPath clusterPathWithEndpointID:v10 clusterID:v11];
+  endpoint = [pathCopy endpoint];
+  cluster = [pathCopy cluster];
+  v12 = [MTRClusterPath clusterPathWithEndpointID:endpoint clusterID:cluster];
 
   v13 = [(MTRDevice_Concrete *)self _clusterDataForPath:v12];
   if (!v13)
   {
-    if (!v8)
+    if (!valueCopy)
     {
       v13 = 0;
       goto LABEL_14;
@@ -3908,15 +3908,15 @@ LABEL_54:
     v13 = objc_alloc_init(MTRDeviceClusterData);
   }
 
-  v14 = [v9 attribute];
-  [(MTRDeviceClusterData *)v13 storeValue:v8 forAttribute:v14];
+  attribute = [pathCopy attribute];
+  [(MTRDeviceClusterData *)v13 storeValue:valueCopy forAttribute:attribute];
 
-  if ([(MTRDevice_Concrete *)self _attributePathAffectsDescriptionData:v9])
+  if ([(MTRDevice_Concrete *)self _attributePathAffectsDescriptionData:pathCopy])
   {
     [(MTRDevice_Concrete *)self _updateAttributeDependentDescriptionData];
   }
 
-  if (v8 && v5 && !self->_receivingPrimingReport && sub_2393983AC(v9))
+  if (valueCopy && subscriptionCopy && !self->_receivingPrimingReport && sub_2393983AC(pathCopy))
   {
     v18 = 0;
     v19 = "dwnpm_bad_c_attr_update";
@@ -3934,9 +3934,9 @@ LABEL_54:
     clusterDataToPersist = self->_clusterDataToPersist;
     if (!clusterDataToPersist)
     {
-      v16 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v17 = self->_clusterDataToPersist;
-      self->_clusterDataToPersist = v16;
+      self->_clusterDataToPersist = dictionary;
 
       clusterDataToPersist = self->_clusterDataToPersist;
     }
@@ -3947,30 +3947,30 @@ LABEL_54:
 LABEL_14:
 }
 
-- (void)_removeCachedAttribute:(id)a3 fromCluster:(id)a4
+- (void)_removeCachedAttribute:(id)attribute fromCluster:(id)cluster
 {
-  v9 = a3;
-  v6 = a4;
+  attributeCopy = attribute;
+  clusterCopy = cluster;
   os_unfair_lock_assert_owner(&self->super._lock);
   clusterDataToPersist = self->_clusterDataToPersist;
   if (clusterDataToPersist)
   {
-    v8 = [(NSMutableDictionary *)clusterDataToPersist objectForKeyedSubscript:v6];
-    [v8 removeValueForAttribute:v9];
+    v8 = [(NSMutableDictionary *)clusterDataToPersist objectForKeyedSubscript:clusterCopy];
+    [v8 removeValueForAttribute:attributeCopy];
   }
 }
 
-- (void)_createDataVersionFilterListFromDictionary:(id)a3 dataVersionFilterList:(DataVersionFilter *)a4 count:(unint64_t *)a5
+- (void)_createDataVersionFilterListFromDictionary:(id)dictionary dataVersionFilterList:(DataVersionFilter *)list count:(unint64_t *)count
 {
   v9 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  dictionaryCopy = dictionary;
+  if ([dictionaryCopy count])
   {
     operator new[]();
   }
 
-  *a5 = 0;
-  *a4 = 0;
+  *count = 0;
+  *list = 0;
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -3987,18 +3987,18 @@ LABEL_14:
   }
 }
 
-- (void)_resetSubscriptionWithReasonString:(id)a3
+- (void)_resetSubscriptionWithReasonString:(id)string
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_assert_owner(&self->super._lock);
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v4;
+    v13 = stringCopy;
     _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_ERROR, "%@ %@ - resetting subscription", buf, 0x16u);
   }
 
@@ -4025,16 +4025,16 @@ LABEL_14:
 {
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 3006);
   os_unfair_lock_assert_owner(&self->super._lock);
-  v3 = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
-  [v3 clearReadClientAndDeleteSubscriptionCallback];
+  matterCPPObjectsHolder = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
+  [matterCPPObjectsHolder clearReadClientAndDeleteSubscriptionCallback];
 
   [(MTRDevice_Concrete *)self _doHandleSubscriptionError:0];
 }
 
-- (void)_setupSubscriptionWithReason:(id)a3
+- (void)_setupSubscriptionWithReason:(id)reason
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   sub_23947632C("/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDevice_Concrete.mm", 3033);
   os_unfair_lock_assert_owner(&self->super._lock);
   [(MTRDevice_Concrete *)self setReattemptingSubscription:0];
@@ -4061,7 +4061,7 @@ LABEL_14:
         *&v28[8] = 2112;
         *&v28[10] = v7;
         v29 = 2112;
-        v30 = v4;
+        v30 = reasonCopy;
         _os_log_impl(&dword_238DAE000, v6, OS_LOG_TYPE_DEFAULT, "%@ setupSubscription: No need to subscribe due to internal state %@ (reason: %@)", buf, 0x20u);
       }
 
@@ -4079,12 +4079,12 @@ LABEL_14:
         }
 
         v20 = v17;
-        v21 = v4;
-        v19 = self;
+        v21 = reasonCopy;
+        selfCopy3 = self;
         sub_2393D5320(0, 2);
       }
 
-      [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork:v19];
+      [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork:selfCopy3];
     }
 
     else
@@ -4096,31 +4096,31 @@ LABEL_14:
         *buf = 138412546;
         *v28 = self;
         *&v28[8] = 2112;
-        *&v28[10] = v4;
+        *&v28[10] = reasonCopy;
         _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_DEFAULT, "%@ setting up subscription with reason: %@", buf, 0x16u);
       }
 
       if (sub_2393D5398(2u))
       {
-        v19 = self;
-        v20 = v4;
+        selfCopy3 = self;
+        v20 = reasonCopy;
         sub_2393D5320(0, 2);
       }
 
-      if ([(__CFString *)v4 hasPrefix:@"SPI client indicated the device may now be reachable", v19, v20])
+      if ([(__CFString *)reasonCopy hasPrefix:@"SPI client indicated the device may now be reachable", selfCopy3, v20])
       {
         [(MTRDevice_Concrete *)self setDoingCASEAttemptForDeviceMayBeReachable:1];
       }
 
       objc_initWeak(buf, self);
       v10 = dispatch_time(0, 10000000000);
-      v11 = [(MTRDevice_Concrete *)self queue];
+      queue = [(MTRDevice_Concrete *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_239399220;
       block[3] = &unk_278A72CD0;
       objc_copyWeak(&v26, buf);
-      dispatch_after(v10, v11, block);
+      dispatch_after(v10, queue, block);
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(buf);
@@ -4128,18 +4128,18 @@ LABEL_14:
       *&v28[4] = "dwnpm_dev_initial_subscription_setup";
       v28[16] = 0;
       sub_23948BD20(buf);
-      v12 = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
+      matterCPPObjectsHolder = [(MTRDevice_Concrete *)self matterCPPObjectsHolder];
       objc_initWeak(buf, self);
-      v13 = [(MTRDevice_Concrete *)self _concreteController];
-      v14 = [(NSNumber *)self->super._nodeID unsignedLongLongValue];
+      _concreteController = [(MTRDevice_Concrete *)self _concreteController];
+      unsignedLongLongValue = [(NSNumber *)self->super._nodeID unsignedLongLongValue];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = sub_2393992E8;
       v22[3] = &unk_278A758A0;
       objc_copyWeak(&v24, buf);
-      v15 = v12;
+      v15 = matterCPPObjectsHolder;
       v23 = v15;
-      [v13 directlyGetSessionForNode:v14 completion:v22];
+      [_concreteController directlyGetSessionForNode:unsignedLongLongValue completion:v22];
 
       [(MTRDevice_Concrete *)self _setupConnectivityMonitoring];
       objc_destroyWeak(&v24);
@@ -4155,40 +4155,40 @@ LABEL_14:
       *buf = 138412546;
       *v28 = self;
       *&v28[8] = 2112;
-      *&v28[10] = v4;
+      *&v28[10] = reasonCopy;
       _os_log_impl(&dword_238DAE000, v8, OS_LOG_TYPE_DEFAULT, "%@ _setupSubscription: Subscriptions not allowed. Do not set up subscription (reason: %@)", buf, 0x16u);
     }
 
     if (sub_2393D5398(2u))
     {
-      v19 = self;
-      v20 = v4;
+      selfCopy3 = self;
+      v20 = reasonCopy;
       sub_2393D5320(0, 2);
     }
 
-    [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork:v19];
+    [(MTRDevice_Concrete *)self _clearSubscriptionPoolWork:selfCopy3];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributeWithEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5 params:(id)a6
+- (id)readAttributeWithEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID params:(id)params
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v49 = v10;
-  v50 = a6;
-  v51 = [MTRAttributePath attributePathWithEndpointID:v10 clusterID:v11 attributeID:v12];
-  if (sub_238EA55DC([v11 unsignedIntValue], objc_msgSend(v12, "unsignedIntValue")))
+  dCopy = d;
+  iDCopy = iD;
+  attributeIDCopy = attributeID;
+  v49 = dCopy;
+  paramsCopy = params;
+  v51 = [MTRAttributePath attributePathWithEndpointID:dCopy clusterID:iDCopy attributeID:attributeIDCopy];
+  if (sub_238EA55DC([iDCopy unsignedIntValue], objc_msgSend(attributeIDCopy, "unsignedIntValue")))
   {
     LOBYTE(v13) = sub_2393983AC(v51);
   }
 
-  else if (v50)
+  else if (paramsCopy)
   {
-    v13 = [v50 shouldAssumeUnknownAttributesReportable] ^ 1;
+    v13 = [paramsCopy shouldAssumeUnknownAttributesReportable] ^ 1;
   }
 
   else
@@ -4198,26 +4198,26 @@ LABEL_14:
 
   v48 = [(MTRDevice_Concrete *)self _attributeValueDictionaryForAttributePath:v51];
   os_unfair_lock_lock(&self->super._lock);
-  v14 = [(MTRDevice_Concrete *)self suspended];
+  suspended = [(MTRDevice_Concrete *)self suspended];
   os_unfair_lock_unlock(&self->super._lock);
-  if (v14 || !(v13 & 1 | ![(MTRDevice_Concrete *)self _subscriptionAbleToReport]))
+  if (suspended || !(v13 & 1 | ![(MTRDevice_Concrete *)self _subscriptionAbleToReport]))
   {
     [(MTRDevice_Concrete *)self _readThroughSkipped];
   }
 
   else
   {
-    v46 = [MTRAttributeRequestPath requestPathWithEndpointID:v49 clusterID:v11 attributeID:v12];
+    v46 = [MTRAttributeRequestPath requestPathWithEndpointID:v49 clusterID:iDCopy attributeID:attributeIDCopy];
     v72[0] = v46;
-    v15 = v50;
-    if (!v50)
+    null = paramsCopy;
+    if (!paramsCopy)
     {
-      v15 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v72[1] = v15;
+    v72[1] = null;
     v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:2];
-    if (!v50)
+    if (!paramsCopy)
     {
     }
 
@@ -4225,23 +4225,23 @@ LABEL_14:
     {
       v16 = [MEMORY[0x277CBEB18] arrayWithObject:v47];
       v17 = [MTRAsyncWorkItem alloc];
-      v18 = [(MTRDevice_Concrete *)self queue];
-      v19 = [(MTRAsyncWorkItem *)v17 initWithQueue:v18];
+      queue = [(MTRDevice_Concrete *)self queue];
+      v19 = [(MTRAsyncWorkItem *)v17 initWithQueue:queue];
 
-      v20 = [(MTRAsyncWorkItem *)v19 uniqueID];
-      v21 = [(MTRDevice *)self nodeID];
+      uniqueID = [(MTRAsyncWorkItem *)v19 uniqueID];
+      nodeID = [(MTRDevice *)self nodeID];
       v66[0] = MEMORY[0x277D85DD0];
       v66[1] = 3221225472;
       v66[2] = sub_23939BDDC;
       v66[3] = &unk_278A758C8;
-      v71 = v20;
-      v22 = v21;
+      v71 = uniqueID;
+      v22 = nodeID;
       v67 = v22;
       v23 = v49;
       v68 = v23;
-      v24 = v11;
+      v24 = iDCopy;
       v69 = v24;
-      v25 = v12;
+      v25 = attributeIDCopy;
       v70 = v25;
       [(MTRAsyncWorkItem *)v19 setBatchingID:1 data:v16 handler:v66];
       v59[0] = MEMORY[0x277D85DD0];
@@ -4250,7 +4250,7 @@ LABEL_14:
       v59[3] = &unk_278A758F0;
       v26 = v16;
       v60 = v26;
-      v65 = v20;
+      v65 = uniqueID;
       v27 = v22;
       v61 = v27;
       v28 = v23;
@@ -4258,7 +4258,7 @@ LABEL_14:
       v29 = v24;
       v63 = v29;
       v30 = v25;
-      v31 = v20;
+      v31 = uniqueID;
       v32 = v30;
       v64 = v30;
       v45 = v19;
@@ -4280,11 +4280,11 @@ LABEL_14:
       v57 = v35;
       [(MTRAsyncWorkItem *)v19 setReadyHandler:v52];
       asyncWorkQueue = self->_asyncWorkQueue;
-      v37 = [v34 unsignedLongLongValue];
+      unsignedLongLongValue = [v34 unsignedLongLongValue];
       v38 = MTRClusterNameForID([v34 unsignedLongLongValue]);
-      v39 = [v35 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v35 unsignedLongLongValue];
       v40 = MTRAttributeNameForID([v34 unsignedLongLongValue], objc_msgSend(v35, "unsignedLongLongValue"));
-      [(MTRAsyncWorkQueue *)asyncWorkQueue enqueueWorkItem:v45 descriptionWithFormat:@"read %@ 0x%llx (%@) 0x%llx (%@)", v33, v37, v38, v39, v40];
+      [(MTRAsyncWorkQueue *)asyncWorkQueue enqueueWorkItem:v45 descriptionWithFormat:@"read %@ 0x%llx (%@) 0x%llx (%@)", v33, unsignedLongLongValue, v38, unsignedLongLongValue2, v40];
     }
   }
 
@@ -4293,29 +4293,29 @@ LABEL_14:
   return v48;
 }
 
-- (void)writeAttributeWithEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5 value:(id)a6 expectedValueInterval:(id)a7 timedWriteTimeout:(id)a8
+- (void)writeAttributeWithEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID value:(id)value expectedValueInterval:(id)interval timedWriteTimeout:(id)timeout
 {
   v60[2] = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v45 = a4;
-  v44 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v17 = [v14 copy];
+  dCopy = d;
+  iDCopy = iD;
+  attributeIDCopy = attributeID;
+  valueCopy = value;
+  intervalCopy = interval;
+  timeoutCopy = timeout;
+  v17 = [valueCopy copy];
 
-  if (v16)
+  if (timeoutCopy)
   {
-    v18 = sub_238DB3374(v16, &unk_284C43AF0, &unk_284C43B08);
+    v18 = sub_238DB3374(timeoutCopy, &unk_284C43AF0, &unk_284C43B08);
 
-    v16 = v18;
+    timeoutCopy = v18;
   }
 
-  v41 = sub_238DB3374(v15, &unk_284C43AF0, &unk_284C43B20);
+  v41 = sub_238DB3374(intervalCopy, &unk_284C43AF0, &unk_284C43B20);
 
   v40 = v17;
-  v43 = v16;
-  v19 = [MTRAttributePath attributePathWithEndpointID:v42 clusterID:v45 attributeID:v44];
+  v43 = timeoutCopy;
+  v19 = [MTRAttributePath attributePathWithEndpointID:dCopy clusterID:iDCopy attributeID:attributeIDCopy];
   v55[0] = 0;
   v55[1] = v55;
   v55[2] = 0x2020000000;
@@ -4331,25 +4331,25 @@ LABEL_14:
   [(MTRDevice_Concrete *)self setExpectedValues:v21 expectedValueInterval:v41 expectedValueID:&v54];
 
   v22 = [MTRAsyncWorkItem alloc];
-  v23 = [(MTRDevice_Concrete *)self queue];
-  v24 = [(MTRAsyncWorkItem *)v22 initWithQueue:v23];
+  queue = [(MTRDevice_Concrete *)self queue];
+  v24 = [(MTRAsyncWorkItem *)v22 initWithQueue:queue];
 
-  v25 = [(MTRAsyncWorkItem *)v24 uniqueID];
+  uniqueID = [(MTRAsyncWorkItem *)v24 uniqueID];
   v38 = self->super._nodeID;
   v57[0] = v19;
   v57[1] = v17;
-  v26 = v16;
-  if (!v16)
+  null = timeoutCopy;
+  if (!timeoutCopy)
   {
-    v26 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v57[2] = v26;
+  v57[2] = null;
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v54];
   v57[3] = v27;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:4];
 
-  if (!v16)
+  if (!timeoutCopy)
   {
   }
 
@@ -4358,7 +4358,7 @@ LABEL_14:
   v51[1] = 3221225472;
   v51[2] = sub_23939D3BC;
   v51[3] = &unk_278A75968;
-  v53 = v25;
+  v53 = uniqueID;
   v29 = v38;
   v52 = v29;
   [(MTRAsyncWorkItem *)v24 setBatchingID:2 data:v28 handler:v51];
@@ -4370,34 +4370,34 @@ LABEL_14:
   v30 = v28;
   v47 = v30;
   v49 = v55;
-  v50 = v25;
+  v50 = uniqueID;
   v31 = v19;
   v48 = v31;
   [(MTRAsyncWorkItem *)v24 setReadyHandler:v46];
   asyncWorkQueue = self->_asyncWorkQueue;
-  v33 = [v45 unsignedLongLongValue];
-  v34 = MTRClusterNameForID([v45 unsignedLongLongValue]);
-  v35 = [v44 unsignedLongLongValue];
-  v36 = MTRAttributeNameForID([v45 unsignedLongLongValue], objc_msgSend(v44, "unsignedLongLongValue"));
-  [(MTRAsyncWorkQueue *)asyncWorkQueue enqueueWorkItem:v24 descriptionWithFormat:@"write %@ 0x%llx (%@) 0x%llx (%@): %@", v42, v33, v34, v35, v36, v40];
+  unsignedLongLongValue = [iDCopy unsignedLongLongValue];
+  v34 = MTRClusterNameForID([iDCopy unsignedLongLongValue]);
+  unsignedLongLongValue2 = [attributeIDCopy unsignedLongLongValue];
+  v36 = MTRAttributeNameForID([iDCopy unsignedLongLongValue], objc_msgSend(attributeIDCopy, "unsignedLongLongValue"));
+  [(MTRAsyncWorkQueue *)asyncWorkQueue enqueueWorkItem:v24 descriptionWithFormat:@"write %@ 0x%llx (%@) 0x%llx (%@): %@", dCopy, unsignedLongLongValue, v34, unsignedLongLongValue2, v36, v40];
 
   _Block_object_dispose(v55, 8);
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAttributePaths:(id)a3
+- (id)readAttributePaths:(id)paths
 {
   v79 = *MEMORY[0x277D85DE8];
-  v43 = a3;
+  pathsCopy = paths;
   v56 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v49 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->super._lock);
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v43;
-  v44 = [obj countByEnumeratingWithState:&v69 objects:v78 count:{16, v43}];
+  obj = pathsCopy;
+  v44 = [obj countByEnumeratingWithState:&v69 objects:v78 count:{16, pathsCopy}];
   if (v44)
   {
     v45 = *v70;
@@ -4415,8 +4415,8 @@ LABEL_14:
         v66 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v48 = [(MTRDevice_Concrete *)v49 _knownClusters];
-        v4 = [v48 countByEnumeratingWithState:&v65 objects:v77 count:16];
+        _knownClusters = [(MTRDevice_Concrete *)selfCopy _knownClusters];
+        v4 = [_knownClusters countByEnumeratingWithState:&v65 objects:v77 count:16];
         if (v4)
         {
           v50 = *v66;
@@ -4428,39 +4428,39 @@ LABEL_14:
             {
               if (*v66 != v50)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(_knownClusters);
               }
 
               v5 = *(*(&v65 + 1) + 8 * v53);
-              v6 = [v55 endpoint];
-              if (!v6)
+              endpoint = [v55 endpoint];
+              if (!endpoint)
               {
                 goto LABEL_45;
               }
 
-              v7 = [v55 endpoint];
-              v8 = [v5 endpoint];
-              v9 = [v7 isEqual:v8];
+              endpoint2 = [v55 endpoint];
+              endpoint3 = [v5 endpoint];
+              v9 = [endpoint2 isEqual:endpoint3];
 
               if (v9)
               {
 LABEL_45:
-                v10 = [v55 cluster];
-                if (!v10)
+                cluster = [v55 cluster];
+                if (!cluster)
                 {
                   goto LABEL_15;
                 }
 
-                v11 = [v55 cluster];
-                v12 = [v5 cluster];
-                v13 = [v11 isEqual:v12];
+                cluster2 = [v55 cluster];
+                cluster3 = [v5 cluster];
+                v13 = [cluster2 isEqual:cluster3];
 
                 if (v13)
                 {
 LABEL_15:
-                  v52 = [(MTRDevice_Concrete *)v49 _clusterDataForPath:v5];
-                  v14 = [v55 attribute];
-                  v15 = v14 == 0;
+                  v52 = [(MTRDevice_Concrete *)selfCopy _clusterDataForPath:v5];
+                  attribute = [v55 attribute];
+                  v15 = attribute == 0;
 
                   if (v15)
                   {
@@ -4468,8 +4468,8 @@ LABEL_15:
                     v64 = 0u;
                     v61 = 0u;
                     v62 = 0u;
-                    v20 = [v52 attributes];
-                    v24 = [v20 countByEnumeratingWithState:&v61 objects:v76 count:16];
+                    attributes = [v52 attributes];
+                    v24 = [attributes countByEnumeratingWithState:&v61 objects:v76 count:16];
                     if (v24)
                     {
                       v25 = *v62;
@@ -4479,17 +4479,17 @@ LABEL_15:
                         {
                           if (*v62 != v25)
                           {
-                            objc_enumerationMutation(v20);
+                            objc_enumerationMutation(attributes);
                           }
 
                           v27 = *(*(&v61 + 1) + 8 * j);
-                          v28 = [v5 endpoint];
-                          v29 = [v5 cluster];
-                          v30 = [MTRAttributePath attributePathWithEndpointID:v28 clusterID:v29 attributeID:v27];
+                          endpoint4 = [v5 endpoint];
+                          cluster4 = [v5 cluster];
+                          v30 = [MTRAttributePath attributePathWithEndpointID:endpoint4 clusterID:cluster4 attributeID:v27];
                           [v56 addObject:v30];
                         }
 
-                        v24 = [v20 countByEnumeratingWithState:&v61 objects:v76 count:16];
+                        v24 = [attributes countByEnumeratingWithState:&v61 objects:v76 count:16];
                       }
 
                       while (v24);
@@ -4500,17 +4500,17 @@ LABEL_25:
 
                   else
                   {
-                    v16 = [v52 attributes];
-                    v17 = [v55 attribute];
-                    v18 = [v16 objectForKey:v17];
+                    attributes2 = [v52 attributes];
+                    attribute2 = [v55 attribute];
+                    v18 = [attributes2 objectForKey:attribute2];
                     v19 = v18 == 0;
 
                     if (!v19)
                     {
-                      v20 = [v5 endpoint];
-                      v21 = [v5 cluster];
-                      v22 = [v55 attribute];
-                      v23 = [MTRAttributePath attributePathWithEndpointID:v20 clusterID:v21 attributeID:v22];
+                      attributes = [v5 endpoint];
+                      cluster5 = [v5 cluster];
+                      attribute3 = [v55 attribute];
+                      v23 = [MTRAttributePath attributePathWithEndpointID:attributes clusterID:cluster5 attributeID:attribute3];
                       [v56 addObject:v23];
 
                       goto LABEL_25;
@@ -4523,7 +4523,7 @@ LABEL_25:
             }
 
             while (v53 != v51);
-            v4 = [v48 countByEnumeratingWithState:&v65 objects:v77 count:16];
+            v4 = [_knownClusters countByEnumeratingWithState:&v65 objects:v77 count:16];
           }
 
           while (v4);
@@ -4536,7 +4536,7 @@ LABEL_25:
     while (v44);
   }
 
-  os_unfair_lock_unlock(&v49->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v31 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v56, "count")}];
   v59 = 0u;
   v60 = 0u;
@@ -4557,10 +4557,10 @@ LABEL_25:
         }
 
         v35 = *(*(&v57 + 1) + 8 * k);
-        v36 = [v35 endpoint];
-        v37 = [v35 cluster];
-        v38 = [v35 attribute];
-        v39 = [(MTRDevice_Concrete *)v49 readAttributeWithEndpointID:v36 clusterID:v37 attributeID:v38 params:0];
+        endpoint5 = [v35 endpoint];
+        cluster6 = [v35 cluster];
+        attribute4 = [v35 attribute];
+        v39 = [(MTRDevice_Concrete *)selfCopy readAttributeWithEndpointID:endpoint5 clusterID:cluster6 attributeID:attribute4 params:0];
 
         if (v39)
         {
@@ -4584,42 +4584,42 @@ LABEL_25:
   return v31;
 }
 
-- (void)_invokeCommandWithEndpointID:(id)a3 clusterID:(id)a4 commandID:(id)a5 commandFields:(id)a6 expectedValues:(id)a7 expectedValueInterval:(id)a8 timedInvokeTimeout:(id)a9 serverSideProcessingTimeout:(id)a10 queue:(id)a11 completion:(id)a12
+- (void)_invokeCommandWithEndpointID:(id)d clusterID:(id)iD commandID:(id)commandID commandFields:(id)fields expectedValues:(id)values expectedValueInterval:(id)interval timedInvokeTimeout:(id)timeout serverSideProcessingTimeout:(id)self0 queue:(id)self1 completion:(id)self2
 {
   v86 = *MEMORY[0x277D85DE8];
-  v58 = a3;
-  v63 = a4;
-  v64 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v61 = a12;
-  if (!v20 || (v24 = v19, [v20 compare:&unk_284C43B38] == -1))
+  dCopy = d;
+  iDCopy = iD;
+  commandIDCopy = commandID;
+  fieldsCopy = fields;
+  valuesCopy = values;
+  intervalCopy = interval;
+  timeoutCopy = timeout;
+  processingTimeoutCopy = processingTimeout;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!intervalCopy || (v24 = valuesCopy, [intervalCopy compare:&unk_284C43B38] == -1))
   {
     v24 = 0;
   }
 
   else
   {
-    sub_238DB3374(v20, &unk_284C43AF0, &unk_284C43B20);
-    v20 = v19 = v20;
+    sub_238DB3374(intervalCopy, &unk_284C43AF0, &unk_284C43B20);
+    intervalCopy = valuesCopy = intervalCopy;
   }
 
-  v25 = [v22 copy];
-  v26 = [v21 copy];
+  v25 = [processingTimeoutCopy copy];
+  v26 = [timeoutCopy copy];
 
-  v65 = [v18 copy];
-  v57 = v20;
+  v65 = [fieldsCopy copy];
+  v57 = intervalCopy;
   v60 = v25;
   if (v26)
   {
     goto LABEL_8;
   }
 
-  if (sub_2392DEB5C(v63, v64))
+  if (sub_2392DEB5C(iDCopy, commandIDCopy))
   {
     v26 = &unk_284C43B50;
 LABEL_8:
@@ -4636,8 +4636,8 @@ LABEL_9:
   v84 = 0;
   if (v24)
   {
-    [(MTRDevice_Concrete *)self setExpectedValues:v24 expectedValueInterval:v20 expectedValueID:&v84];
-    v29 = [MEMORY[0x277CBEB18] array];
+    [(MTRDevice_Concrete *)self setExpectedValues:v24 expectedValueInterval:intervalCopy expectedValueID:&v84];
+    array = [MEMORY[0x277CBEB18] array];
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
@@ -4658,7 +4658,7 @@ LABEL_9:
           }
 
           v34 = [*(*(&v80 + 1) + 8 * v33) objectForKeyedSubscript:@"attributePath"];
-          [v29 addObject:v34];
+          [array addObject:v34];
 
           ++v33;
         }
@@ -4673,39 +4673,39 @@ LABEL_9:
 
   else
   {
-    v29 = 0;
+    array = 0;
   }
 
   v35 = [MTRAsyncWorkItem alloc];
-  v36 = [(MTRDevice_Concrete *)self queue];
-  v37 = [(MTRAsyncWorkItem *)v35 initWithQueue:v36];
+  queue = [(MTRDevice_Concrete *)self queue];
+  v37 = [(MTRAsyncWorkItem *)v35 initWithQueue:queue];
 
   v56 = v37;
-  v38 = [(MTRAsyncWorkItem *)v37 uniqueID];
+  uniqueID = [(MTRAsyncWorkItem *)v37 uniqueID];
   [(MTRAsyncWorkItem *)v37 setDuplicateTypeID:1 handler:&unk_284BB75D0];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = sub_23939EB9C;
   v66[3] = &unk_278A75A50;
-  v52 = v23;
+  v52 = queueCopy;
   v67 = v52;
-  v53 = v61;
+  v53 = completionCopy;
   v77 = v53;
   v49 = v24;
   v68 = v49;
-  v55 = v29;
+  v55 = array;
   v69 = v55;
   v78 = v84;
   v50 = v59;
   v70 = v50;
   v54 = v62;
   v71 = v54;
-  v79 = v38;
-  v39 = v58;
+  v79 = uniqueID;
+  v39 = dCopy;
   v72 = v39;
-  v40 = v63;
+  v40 = iDCopy;
   v73 = v40;
-  v41 = v64;
+  v41 = commandIDCopy;
   v74 = v41;
   v42 = v65;
   v75 = v42;
@@ -4713,26 +4713,26 @@ LABEL_9:
   v76 = v51;
   [(MTRAsyncWorkItem *)v37 setReadyHandler:v66];
   asyncWorkQueue = self->_asyncWorkQueue;
-  v44 = [v40 unsignedLongLongValue];
+  unsignedLongLongValue = [v40 unsignedLongLongValue];
   v45 = MTRClusterNameForID([v40 unsignedLongLongValue]);
-  v46 = [v41 unsignedLongLongValue];
+  unsignedLongLongValue2 = [v41 unsignedLongLongValue];
   v47 = MTRRequestCommandNameForID([v40 unsignedLongLongValue], objc_msgSend(v41, "unsignedLongLongValue"));
-  [(MTRAsyncWorkQueue *)asyncWorkQueue enqueueWorkItem:v56 descriptionWithFormat:@"invoke %@ 0x%llx (%@) 0x%llx (%@): %@", v39, v44, v45, v46, v47, v42];
+  [(MTRAsyncWorkQueue *)asyncWorkQueue enqueueWorkItem:v56 descriptionWithFormat:@"invoke %@ 0x%llx (%@) 0x%llx (%@): %@", v39, unsignedLongLongValue, v45, unsignedLongLongValue2, v47, v42];
 
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_invokeResponse:(id)a3 matchesRequiredResponse:(id)a4
+- (BOOL)_invokeResponse:(id)response matchesRequiredResponse:(id)requiredResponse
 {
   v63 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v39 = a4;
-  v42 = v6;
-  v7 = [v6 objectForKeyedSubscript:?];
+  responseCopy = response;
+  requiredResponseCopy = requiredResponse;
+  v42 = responseCopy;
+  v7 = [responseCopy objectForKeyedSubscript:?];
 
   if (v7)
   {
-    v38 = [v6 objectForKeyedSubscript:@"data"];
+    v38 = [responseCopy objectForKeyedSubscript:@"data"];
     v8 = [v38 objectForKeyedSubscript:@"type"];
     v9 = [@"Structure" isEqual:v8];
 
@@ -4743,11 +4743,11 @@ LABEL_9:
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      obj = v39;
+      obj = requiredResponseCopy;
       v10 = [obj countByEnumeratingWithState:&v47 objects:v62 count:16];
       if (v10)
       {
-        v35 = self;
+        selfCopy = self;
         v37 = *v48;
         while (1)
         {
@@ -4817,7 +4817,7 @@ LABEL_10:
             {
               v30 = [v42 objectForKeyedSubscript:@"commandPath"];
               *buf = 138413314;
-              v52 = v35;
+              selfCopy3 = selfCopy;
               v53 = 2112;
               v54 = v30;
               v55 = 2112;
@@ -4859,7 +4859,7 @@ LABEL_34:
         {
           v28 = [v42 objectForKeyedSubscript:@"commandPath"];
           *buf = 138412802;
-          v52 = v35;
+          selfCopy3 = selfCopy;
           v53 = 2112;
           v54 = v28;
           v55 = 2112;
@@ -4892,7 +4892,7 @@ LABEL_45:
     {
       v26 = [v42 objectForKeyedSubscript:@"commandPath"];
       *buf = 138412802;
-      v52 = self;
+      selfCopy3 = self;
       v53 = 2112;
       v54 = v38;
       v55 = 2112;
@@ -4920,7 +4920,7 @@ LABEL_30:
   {
     v24 = [v42 objectForKeyedSubscript:@"commandPath"];
     *buf = 138412546;
-    v52 = self;
+    selfCopy3 = self;
     v53 = 2112;
     v54 = v24;
     _os_log_impl(&dword_238DAE000, v23, OS_LOG_TYPE_ERROR, "%@ invokeCommands expects a data response for %@ but got no data", buf, 0x16u);
@@ -4940,28 +4940,28 @@ LABEL_47:
   return v22;
 }
 
-- (void)invokeCommands:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)invokeCommands:(id)commands queue:(id)queue completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v7 = a4;
-  v8 = a5;
+  commandsCopy = commands;
+  queueCopy = queue;
+  completionCopy = completion;
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = sub_23939FEE0;
   v46[3] = &unk_278A75A78;
-  v24 = v7;
+  v24 = queueCopy;
   v47 = v24;
-  v25 = v8;
+  v25 = completionCopy;
   v48 = v25;
   v9 = MEMORY[0x23EE78590](v46);
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = [v21 reverseObjectEnumerator];
-  obj = v10;
-  v11 = [v10 countByEnumeratingWithState:&v42 objects:v50 count:16];
+  reverseObjectEnumerator = [commandsCopy reverseObjectEnumerator];
+  obj = reverseObjectEnumerator;
+  v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v11)
   {
     v23 = *v43;
@@ -4981,8 +4981,8 @@ LABEL_47:
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v13 = [v28 reverseObjectEnumerator];
-        v14 = [v13 countByEnumeratingWithState:&v37 objects:v49 count:16];
+        reverseObjectEnumerator2 = [v28 reverseObjectEnumerator];
+        v14 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v37 objects:v49 count:16];
         if (v14)
         {
           v15 = *v38;
@@ -4992,7 +4992,7 @@ LABEL_47:
             {
               if (*v38 != v15)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(reverseObjectEnumerator2);
               }
 
               v17 = *(*(&v37 + 1) + 8 * j);
@@ -5009,7 +5009,7 @@ LABEL_47:
               objc_destroyWeak(&v36);
             }
 
-            v14 = [v13 countByEnumeratingWithState:&v37 objects:v49 count:16];
+            v14 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v37 objects:v49 count:16];
           }
 
           while (v14);
@@ -5031,7 +5031,7 @@ LABEL_47:
         objc_destroyWeak(&location);
       }
 
-      v10 = obj;
+      reverseObjectEnumerator = obj;
       v11 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
     }
 
@@ -5042,53 +5042,53 @@ LABEL_47:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openCommissioningWindowWithSetupPasscode:(id)a3 discriminator:(id)a4 duration:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)openCommissioningWindowWithSetupPasscode:(id)passcode discriminator:(id)discriminator duration:(id)duration queue:(id)queue completion:(id)completion
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(MTRDevice_Concrete *)self newBaseDevice];
-  [v16 openCommissioningWindowWithSetupPasscode:v17 discriminator:v12 duration:v13 queue:v14 completion:v15];
+  passcodeCopy = passcode;
+  discriminatorCopy = discriminator;
+  durationCopy = duration;
+  queueCopy = queue;
+  completionCopy = completion;
+  newBaseDevice = [(MTRDevice_Concrete *)self newBaseDevice];
+  [newBaseDevice openCommissioningWindowWithSetupPasscode:passcodeCopy discriminator:discriminatorCopy duration:durationCopy queue:queueCopy completion:completionCopy];
 }
 
-- (void)openCommissioningWindowWithDiscriminator:(id)a3 duration:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)openCommissioningWindowWithDiscriminator:(id)discriminator duration:(id)duration queue:(id)queue completion:(id)completion
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MTRDevice_Concrete *)self newBaseDevice];
-  [v13 openCommissioningWindowWithDiscriminator:v14 duration:v10 queue:v11 completion:v12];
+  discriminatorCopy = discriminator;
+  durationCopy = duration;
+  queueCopy = queue;
+  completionCopy = completion;
+  newBaseDevice = [(MTRDevice_Concrete *)self newBaseDevice];
+  [newBaseDevice openCommissioningWindowWithDiscriminator:discriminatorCopy duration:durationCopy queue:queueCopy completion:completionCopy];
 }
 
-- (void)downloadLogOfType:(int64_t)a3 timeout:(double)a4 queue:(id)a5 completion:(id)a6
+- (void)downloadLogOfType:(int64_t)type timeout:(double)timeout queue:(id)queue completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  queueCopy = queue;
+  completionCopy = completion;
   v12 = sub_2393D9044(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
-    v25 = a3;
+    typeCopy = type;
     v26 = 2048;
-    v27 = a4;
+    timeoutCopy = timeout;
     _os_log_impl(&dword_238DAE000, v12, OS_LOG_TYPE_DEFAULT, "%@ downloadLogOfType: %lu, timeout: %f", buf, 0x20u);
   }
 
   if (sub_2393D5398(2u))
   {
-    v18 = a4;
-    v16 = self;
-    v17 = a3;
+    timeoutCopy2 = timeout;
+    selfCopy2 = self;
+    typeCopy2 = type;
     sub_2393D5320(0, 2);
   }
 
-  v13 = [(MTRDevice_Concrete *)self newBaseDevice:v16];
+  v13 = [(MTRDevice_Concrete *)self newBaseDevice:selfCopy2];
   os_unfair_lock_lock(&self->super._lock);
   [(MTRDevice_Concrete *)self setDiagnosticLogTransferInProgress:1];
   [(MTRDevice_Concrete *)self _notifyDelegateOfPrivateInternalPropertiesChanges];
@@ -5099,10 +5099,10 @@ LABEL_47:
   v19[2] = sub_2393A0CEC;
   v19[3] = &unk_278A75B18;
   objc_copyWeak(v21, buf);
-  v21[1] = a3;
-  v14 = v11;
+  v21[1] = type;
+  v14 = completionCopy;
   v20 = v14;
-  [v13 downloadLogOfType:a3 timeout:v10 queue:v19 completion:a4];
+  [v13 downloadLogOfType:type timeout:queueCopy queue:v19 completion:timeout];
 
   objc_destroyWeak(v21);
   objc_destroyWeak(buf);
@@ -5114,7 +5114,7 @@ LABEL_47:
 {
   v53 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->super._lock);
-  v32 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v30 = [MEMORY[0x277CBEB58] set];
   v42 = 0u;
   v43 = 0u;
@@ -5144,7 +5144,7 @@ LABEL_47:
       v9 = [v8 objectAtIndexedSubscript:0];
       if (v8)
       {
-        if ([v32 compare:v9] == 1)
+        if ([date compare:v9] == 1)
         {
           v51[0] = v7;
           v10 = [v8 objectAtIndexedSubscript:1];
@@ -5173,8 +5173,8 @@ LABEL_13:
   while (v4);
 LABEL_17:
 
-  v28 = [MEMORY[0x277CBEB18] array];
-  v29 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -5206,9 +5206,9 @@ LABEL_17:
           v48[2] = @"previousData";
           v49[2] = v17;
           v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:3];
-          [v28 addObject:v19];
+          [array addObject:v19];
 
-          [v29 addObject:v16];
+          [array2 addObject:v16];
         }
 
         [(NSMutableDictionary *)self->_expectedValueCache setObject:0 forKeyedSubscript:v16];
@@ -5224,23 +5224,23 @@ LABEL_17:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v45 = self;
+    selfCopy = self;
     v46 = 2112;
-    v47 = v29;
+    v47 = array2;
     _os_log_impl(&dword_238DAE000, v20, OS_LOG_TYPE_DEFAULT, "%@ report from expired expected values %@", buf, 0x16u);
   }
 
   if (sub_2393D5398(2u))
   {
-    v26 = self;
-    v27 = v29;
+    selfCopy2 = self;
+    v27 = array2;
     sub_2393D5320(0, 2);
   }
 
-  [(MTRDevice_Concrete *)self _reportAttributes:v28, v26, v27];
+  [(MTRDevice_Concrete *)self _reportAttributes:array, selfCopy2, v27];
   if (v33 && [(NSMutableDictionary *)self->_expectedValueCache count]&& ![(MTRDevice_Concrete *)self expirationCheckScheduled])
   {
-    [v33 timeIntervalSinceDate:v32];
+    [v33 timeIntervalSinceDate:date];
     if (v21 >= 0.1)
     {
       v22 = v21;
@@ -5253,13 +5253,13 @@ LABEL_17:
 
     objc_initWeak(buf, self);
     v23 = dispatch_time(0, (v22 * 1000000000.0));
-    v24 = [(MTRDevice_Concrete *)self queue];
+    queue = [(MTRDevice_Concrete *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_2393A14D8;
     block[3] = &unk_278A72CD0;
     objc_copyWeak(&v35, buf);
-    dispatch_after(v23, v24, block);
+    dispatch_after(v23, queue, block);
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(buf);
@@ -5277,27 +5277,27 @@ LABEL_17:
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (id)_attributeValueDictionaryForAttributePath:(id)a3
+- (id)_attributeValueDictionaryForAttributePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->super._lock);
-  v5 = [(MTRDevice_Concrete *)self _lockedAttributeValueDictionaryForAttributePath:v4];
+  v5 = [(MTRDevice_Concrete *)self _lockedAttributeValueDictionaryForAttributePath:pathCopy];
   os_unfair_lock_unlock(&self->super._lock);
 
   return v5;
 }
 
-- (id)_lockedAttributeValueDictionaryForAttributePath:(id)a3
+- (id)_lockedAttributeValueDictionaryForAttributePath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v5 = [(NSMutableDictionary *)self->_expectedValueCache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_expectedValueCache objectForKeyedSubscript:pathCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v7 = [v5 objectAtIndexedSubscript:0];
-    v8 = [v6 compare:v7];
+    v8 = [date compare:v7];
 
     if (v8 != 1)
     {
@@ -5306,10 +5306,10 @@ LABEL_17:
       goto LABEL_12;
     }
 
-    [(NSMutableDictionary *)self->_expectedValueCache setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_expectedValueCache setObject:0 forKeyedSubscript:pathCopy];
   }
 
-  v9 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v4];
+  v9 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:pathCopy];
   v10 = v9;
   if (v9)
   {
@@ -5322,9 +5322,9 @@ LABEL_17:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v4;
+      v18 = pathCopy;
       _os_log_impl(&dword_238DAE000, v12, OS_LOG_TYPE_DEFAULT, "%@ _attributeValueDictionaryForAttributePath: could not find cached attribute values for attribute %@", buf, 0x16u);
     }
 
@@ -5340,12 +5340,12 @@ LABEL_12:
   return v10;
 }
 
-- (id)_dataValueWithoutDataVersion:(id)a3
+- (id)_dataValueWithoutDataVersion:(id)version
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 objectForKeyedSubscript:@"type"], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  versionCopy = version;
+  v4 = versionCopy;
+  if (versionCopy && ([versionCopy objectForKeyedSubscript:@"type"], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = [v4 objectForKeyedSubscript:@"value"];
 
@@ -5379,20 +5379,20 @@ LABEL_12:
   return v9;
 }
 
-- (void)_noteDataVersion:(id)a3 forClusterPath:(id)a4
+- (void)_noteDataVersion:(id)version forClusterPath:(id)path
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  pathCopy = path;
   os_unfair_lock_assert_owner(&self->super._lock);
-  if (v6 && v7)
+  if (versionCopy && pathCopy)
   {
-    v8 = [(MTRDevice_Concrete *)self _clusterDataForPath:v7];
+    v8 = [(MTRDevice_Concrete *)self _clusterDataForPath:pathCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [(MTRDeviceClusterData *)v8 dataVersion];
-      v11 = [v10 isEqualToNumber:v6];
+      dataVersion = [(MTRDeviceClusterData *)v8 dataVersion];
+      v11 = [dataVersion isEqualToNumber:versionCopy];
 
       if (v11)
       {
@@ -5401,35 +5401,35 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      [(MTRDeviceClusterData *)v9 setPendingDataVersion:v6];
+      [(MTRDeviceClusterData *)v9 setPendingDataVersion:versionCopy];
     }
 
     else
     {
       v9 = objc_alloc_init(MTRDeviceClusterData);
-      [(MTRDeviceClusterData *)v9 setPendingDataVersion:v6];
+      [(MTRDeviceClusterData *)v9 setPendingDataVersion:versionCopy];
     }
 
     clusterDataToPersist = self->_clusterDataToPersist;
     if (!clusterDataToPersist)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v15 = self->_clusterDataToPersist;
-      self->_clusterDataToPersist = v14;
+      self->_clusterDataToPersist = dictionary;
 
       clusterDataToPersist = self->_clusterDataToPersist;
     }
 
-    [(NSMutableDictionary *)clusterDataToPersist setObject:v9 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)clusterDataToPersist setObject:v9 forKeyedSubscript:pathCopy];
     v16 = sub_2393D9044(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = v7;
+      v21 = pathCopy;
       v22 = 2112;
-      v23 = v6;
+      v23 = versionCopy;
       _os_log_impl(&dword_238DAE000, v16, OS_LOG_TYPE_DEFAULT, "%@ updated DataVersion for %@ to %@", buf, 0x20u);
     }
 
@@ -5445,11 +5445,11 @@ LABEL_17:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
-    v21 = v7;
+    v21 = pathCopy;
     v22 = 2112;
-    v23 = v6;
+    v23 = versionCopy;
     _os_log_impl(&dword_238DAE000, v12, OS_LOG_TYPE_ERROR, "%@ Attempted to update data version with a nil value. clusterPath: %@, dataVersion: %@", buf, 0x20u);
   }
 
@@ -5463,25 +5463,25 @@ LABEL_18:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_attributeAffectsDeviceConfiguration:(id)a3
+- (BOOL)_attributeAffectsDeviceConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 cluster];
-  v5 = [v4 unsignedLongValue];
+  configurationCopy = configuration;
+  cluster = [configurationCopy cluster];
+  unsignedLongValue = [cluster unsignedLongValue];
 
-  if (v5 != 29 || ([v3 attribute], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "unsignedLongValue"), v6, v7 > 3) || v7 == 2)
+  if (unsignedLongValue != 29 || ([configurationCopy attribute], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "unsignedLongValue"), v6, v7 > 3) || v7 == 2)
   {
-    v9 = [v3 attribute];
-    v10 = [v9 unsignedLongValue];
+    attribute = [configurationCopy attribute];
+    unsignedLongValue2 = [attribute unsignedLongValue];
 
-    if ((v10 - 65529) >= 5)
+    if ((unsignedLongValue2 - 65529) >= 5)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = 0x1Du >> (v10 + 7);
+      v8 = 0x1Du >> (unsignedLongValue2 + 7);
     }
   }
 
@@ -5493,18 +5493,18 @@ LABEL_18:
   return v8 & 1;
 }
 
-- (void)_removeClusters:(id)a3 doRemoveFromDataStore:(BOOL)a4
+- (void)_removeClusters:(id)clusters doRemoveFromDataStore:(BOOL)store
 {
-  v4 = a4;
+  storeCopy = store;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  clustersCopy = clusters;
   os_unfair_lock_assert_owner(&self->super._lock);
-  [(NSMutableSet *)self->_persistedClusters minusSet:v6, v6];
+  [(NSMutableSet *)self->_persistedClusters minusSet:clustersCopy, clustersCopy];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v6;
+  obj = clustersCopy;
   v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -5521,14 +5521,14 @@ LABEL_18:
         v10 = *(*(&v18 + 1) + 8 * i);
         [(NSCache *)self->_persistedClusterData removeObjectForKey:v10];
         [(NSMutableDictionary *)self->_clusterDataToPersist removeObjectForKey:v10];
-        if (v4)
+        if (storeCopy)
         {
-          v11 = [(MTRDevice_Concrete *)self _concreteController];
-          v12 = [v11 controllerDataStore];
-          v13 = [(MTRDevice *)self nodeID];
-          v14 = [v10 endpoint];
-          v15 = [v10 cluster];
-          [v12 clearStoredClusterDataForNodeID:v13 endpointID:v14 clusterID:v15];
+          _concreteController = [(MTRDevice_Concrete *)self _concreteController];
+          controllerDataStore = [_concreteController controllerDataStore];
+          nodeID = [(MTRDevice *)self nodeID];
+          endpoint = [v10 endpoint];
+          cluster = [v10 cluster];
+          [controllerDataStore clearStoredClusterDataForNodeID:nodeID endpointID:endpoint clusterID:cluster];
         }
       }
 
@@ -5541,17 +5541,17 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeAttributes:(id)a3 fromCluster:(id)a4
+- (void)_removeAttributes:(id)attributes fromCluster:(id)cluster
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  clusterCopy = cluster;
   os_unfair_lock_assert_owner(&self->super._lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = attributesCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -5566,7 +5566,7 @@ LABEL_18:
           objc_enumerationMutation(v8);
         }
 
-        [(MTRDevice_Concrete *)self _removeCachedAttribute:*(*(&v16 + 1) + 8 * v11++) fromCluster:v7, v16];
+        [(MTRDevice_Concrete *)self _removeCachedAttribute:*(*(&v16 + 1) + 8 * v11++) fromCluster:clusterCopy, v16];
       }
 
       while (v9 != v11);
@@ -5576,25 +5576,25 @@ LABEL_18:
     while (v9);
   }
 
-  [(NSCache *)self->_persistedClusterData removeObjectForKey:v7];
-  v12 = [(MTRDevice_Concrete *)self _concreteController];
-  v13 = [v12 controllerDataStore];
-  v14 = [(MTRDevice *)self nodeID];
-  [v13 removeAttributes:v8 fromCluster:v7 forNodeID:v14];
+  [(NSCache *)self->_persistedClusterData removeObjectForKey:clusterCopy];
+  _concreteController = [(MTRDevice_Concrete *)self _concreteController];
+  controllerDataStore = [_concreteController controllerDataStore];
+  nodeID = [(MTRDevice *)self nodeID];
+  [controllerDataStore removeAttributes:v8 fromCluster:clusterCopy forNodeID:nodeID];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pruneEndpointsIn:(id)a3 missingFrom:(id)a4
+- (void)_pruneEndpointsIn:(id)in missingFrom:(id)from
 {
   v47 = *MEMORY[0x277D85DE8];
-  v29 = a4;
+  fromCopy = from;
   v6 = MEMORY[0x277CBEB58];
-  v7 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:a3];
+  v7 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:in];
   v28 = [v6 setWithArray:v7];
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:v29];
+  v9 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:fromCopy];
   v10 = [v8 setWithArray:v9];
 
   v27 = v10;
@@ -5640,8 +5640,8 @@ LABEL_18:
               }
 
               v19 = *(*(&v37 + 1) + 8 * j);
-              v20 = [v19 endpoint];
-              v21 = [v20 isEqualToNumber:v13];
+              endpoint = [v19 endpoint];
+              v21 = [endpoint isEqualToNumber:v13];
 
               if (v21)
               {
@@ -5656,10 +5656,10 @@ LABEL_18:
         }
 
         [(MTRDevice_Concrete *)val _removeClusters:v14 doRemoveFromDataStore:0];
-        v22 = [(MTRDevice_Concrete *)val _concreteController];
-        v23 = [v22 controllerDataStore];
-        v24 = [(MTRDevice *)val nodeID];
-        [v23 clearStoredClusterDataForNodeID:v24 endpointID:v13];
+        _concreteController = [(MTRDevice_Concrete *)val _concreteController];
+        controllerDataStore = [_concreteController controllerDataStore];
+        nodeID = [(MTRDevice *)val nodeID];
+        [controllerDataStore clearStoredClusterDataForNodeID:nodeID endpointID:v13];
 
         objc_initWeak(&location, val);
         deviceController = val->super._deviceController;
@@ -5683,20 +5683,20 @@ LABEL_18:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pruneClustersIn:(id)a3 missingFrom:(id)a4 forEndpoint:(id)a5
+- (void)_pruneClustersIn:(id)in missingFrom:(id)from forEndpoint:(id)endpoint
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v30 = a4;
-  v9 = a5;
+  inCopy = in;
+  fromCopy = from;
+  endpointCopy = endpoint;
   v10 = MEMORY[0x277CBEB58];
-  v31 = self;
-  v28 = v8;
-  v11 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:v8];
+  selfCopy = self;
+  v28 = inCopy;
+  v11 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:inCopy];
   v12 = [v10 setWithArray:v11];
 
   v13 = MEMORY[0x277CBEB98];
-  v14 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:v30];
+  v14 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:fromCopy];
   v15 = [v13 setWithArray:v14];
 
   v29 = v15;
@@ -5721,11 +5721,11 @@ LABEL_18:
         }
 
         v20 = *(*(&v38 + 1) + 8 * i);
-        v21 = [v20 endpoint];
-        if ([v21 isEqualToNumber:v9])
+        endpoint = [v20 endpoint];
+        if ([endpoint isEqualToNumber:endpointCopy])
         {
-          v22 = [v20 cluster];
-          v23 = [v12 containsObject:v22];
+          cluster = [v20 cluster];
+          v23 = [v12 containsObject:cluster];
 
           if (v23)
           {
@@ -5744,9 +5744,9 @@ LABEL_18:
     while (v17);
   }
 
-  [(MTRDevice_Concrete *)v31 _removeClusters:v32 doRemoveFromDataStore:1];
-  objc_initWeak(&location, v31);
-  deviceController = v31->super._deviceController;
+  [(MTRDevice_Concrete *)selfCopy _removeClusters:v32 doRemoveFromDataStore:1];
+  objc_initWeak(&location, selfCopy);
+  deviceController = selfCopy->super._deviceController;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = sub_2393A2AC4;
@@ -5754,7 +5754,7 @@ LABEL_18:
   objc_copyWeak(&v36, &location);
   v25 = v12;
   v34 = v25;
-  v26 = v9;
+  v26 = endpointCopy;
   v35 = v26;
   [(MTRDeviceController *)deviceController asyncDispatchToMatterQueue:v33 errorHandler:0];
 
@@ -5764,21 +5764,21 @@ LABEL_18:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pruneAttributesIn:(id)a3 missingFrom:(id)a4 forCluster:(id)a5
+- (void)_pruneAttributesIn:(id)in missingFrom:(id)from forCluster:(id)cluster
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  inCopy = in;
+  fromCopy = from;
+  clusterCopy = cluster;
   v11 = MEMORY[0x277CBEB58];
-  v12 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:v8];
+  v12 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:inCopy];
   v13 = [v11 setWithArray:v12];
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:v9];
+  v15 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:fromCopy];
   v16 = [v14 setWithArray:v15];
 
   [v13 minusSet:v16];
-  [(MTRDevice_Concrete *)self _removeAttributes:v13 fromCluster:v10];
+  [(MTRDevice_Concrete *)self _removeAttributes:v13 fromCluster:clusterCopy];
   objc_initWeak(&location, self);
   deviceController = self->super._deviceController;
   v20[0] = MEMORY[0x277D85DD0];
@@ -5788,7 +5788,7 @@ LABEL_18:
   objc_copyWeak(&v23, &location);
   v18 = v13;
   v21 = v18;
-  v19 = v10;
+  v19 = clusterCopy;
   v22 = v19;
   [(MTRDeviceController *)deviceController asyncDispatchToMatterQueue:v20 errorHandler:0];
 
@@ -5796,29 +5796,29 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)_pruneStoredDataForPath:(id)a3 missingFrom:(id)a4
+- (void)_pruneStoredDataForPath:(id)path missingFrom:(id)from
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  fromCopy = from;
   os_unfair_lock_assert_owner(&self->super._lock);
   if ([(MTRDevice_Concrete *)self _dataStoreExists]|| [(NSMutableDictionary *)self->_clusterDataToPersist count])
   {
-    v8 = [v6 cluster];
-    v9 = [v8 unsignedLongValue];
+    cluster = [pathCopy cluster];
+    unsignedLongValue = [cluster unsignedLongValue];
 
-    if (v9 == 29)
+    if (unsignedLongValue == 29)
     {
-      v10 = [v6 attribute];
-      if ([v10 unsignedLongValue] == 3)
+      attribute = [pathCopy attribute];
+      if ([attribute unsignedLongValue] == 3)
       {
-        v11 = [v6 endpoint];
-        v12 = [v11 isEqualToNumber:&unk_284C43AA8];
+        endpoint = [pathCopy endpoint];
+        v12 = [endpoint isEqualToNumber:&unk_284C43AA8];
 
         if (v12)
         {
-          v13 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v6];
-          [(MTRDevice_Concrete *)self _pruneEndpointsIn:v13 missingFrom:v7];
+          v13 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:pathCopy];
+          [(MTRDevice_Concrete *)self _pruneEndpointsIn:v13 missingFrom:fromCopy];
 LABEL_13:
 
           goto LABEL_14;
@@ -5829,30 +5829,30 @@ LABEL_13:
       {
       }
 
-      v14 = [v6 attribute];
-      v15 = [v14 unsignedLongValue];
+      attribute2 = [pathCopy attribute];
+      unsignedLongValue2 = [attribute2 unsignedLongValue];
 
-      if (v15 == 1)
+      if (unsignedLongValue2 == 1)
       {
-        v13 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v6];
-        v16 = [v6 endpoint];
-        [(MTRDevice_Concrete *)self _pruneClustersIn:v13 missingFrom:v7 forEndpoint:v16];
+        v13 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:pathCopy];
+        endpoint2 = [pathCopy endpoint];
+        [(MTRDevice_Concrete *)self _pruneClustersIn:v13 missingFrom:fromCopy forEndpoint:endpoint2];
 LABEL_12:
 
         goto LABEL_13;
       }
     }
 
-    v17 = [v6 attribute];
-    v18 = [v17 unsignedLongValue];
+    attribute3 = [pathCopy attribute];
+    unsignedLongValue3 = [attribute3 unsignedLongValue];
 
-    if (v18 == 65531)
+    if (unsignedLongValue3 == 65531)
     {
-      v13 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v6];
-      v16 = [v6 endpoint];
-      v19 = [v6 cluster];
-      v20 = [MTRClusterPath clusterPathWithEndpointID:v16 clusterID:v19];
-      [(MTRDevice_Concrete *)self _pruneAttributesIn:v13 missingFrom:v7 forCluster:v20];
+      v13 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:pathCopy];
+      endpoint2 = [pathCopy endpoint];
+      cluster2 = [pathCopy cluster];
+      v20 = [MTRClusterPath clusterPathWithEndpointID:endpoint2 clusterID:cluster2];
+      [(MTRDevice_Concrete *)self _pruneAttributesIn:v13 missingFrom:fromCopy forCluster:v20];
 
       goto LABEL_12;
     }
@@ -5864,7 +5864,7 @@ LABEL_12:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_238DAE000, v22, OS_LOG_TYPE_INFO, "%@ No data store to prune from", buf, 0xCu);
     }
 
@@ -5879,21 +5879,21 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getAttributesToReportWithReportedValues:(id)a3 fromSubscription:(BOOL)a4
+- (id)_getAttributesToReportWithReportedValues:(id)values fromSubscription:(BOOL)subscription
 {
-  v64 = a4;
+  subscriptionCopy = subscription;
   v93 = *MEMORY[0x277D85DE8];
-  v60 = a3;
+  valuesCopy = values;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v65 = [MEMORY[0x277CBEB18] array];
-  v66 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v60;
+  obj = valuesCopy;
   v5 = [obj countByEnumeratingWithState:&v77 objects:v92 count:16];
-  v72 = self;
+  selfCopy = self;
   if (v5)
   {
     v70 = *v78;
@@ -5917,13 +5917,13 @@ LABEL_14:
         {
           if (v10)
           {
-            v12 = [(MTRDevice_Concrete *)v72 _cachedAttributeValueForPath:*&v8];
+            v12 = [(MTRDevice_Concrete *)selfCopy _cachedAttributeValueForPath:*&v8];
             v13 = sub_2393D9044(0);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
-              v14 = [(NSMutableDictionary *)v72->_expectedValueCache objectForKeyedSubscript:*&v8];
+              v14 = [(NSMutableDictionary *)selfCopy->_expectedValueCache objectForKeyedSubscript:*&v8];
               *buf = 138413314;
-              v83 = v72;
+              v83 = selfCopy;
               v84 = 2112;
               v85 = v8;
               v86 = 2112;
@@ -5937,63 +5937,63 @@ LABEL_14:
 
             if (sub_2393D5398(1u))
             {
-              v58 = [(NSMutableDictionary *)v72->_expectedValueCache objectForKeyedSubscript:*&v8];
+              v58 = [(NSMutableDictionary *)selfCopy->_expectedValueCache objectForKeyedSubscript:*&v8];
               v59 = v12;
               v56 = v8;
               v57 = v11;
-              v55 = v72;
+              v55 = selfCopy;
               sub_2393D5320(0, 1);
             }
 
-            [(NSMutableDictionary *)v72->_expectedValueCache setObject:0 forKeyedSubscript:*&v8, v55, *&v56, v57, v58, v59];
-            [(MTRDevice_Concrete *)v72 _setCachedAttributeValue:0 forPath:*&v8 fromSubscription:v64];
+            [(NSMutableDictionary *)selfCopy->_expectedValueCache setObject:0 forKeyedSubscript:*&v8, v55, *&v56, v57, v58, v59];
+            [(MTRDevice_Concrete *)selfCopy _setCachedAttributeValue:0 forPath:*&v8 fromSubscription:subscriptionCopy];
             v15 = v12;
 LABEL_57:
             if (v15)
             {
               v39 = [(NSDate *)v7 mutableCopy];
               [v39 setObject:v15 forKeyedSubscript:@"previousData"];
-              [v65 addObject:v39];
+              [array addObject:v39];
             }
 
             else
             {
-              [v65 addObject:v7];
+              [array addObject:v7];
             }
 
-            [v66 addObject:{*&v8, v55}];
+            [array2 addObject:{*&v8, v55}];
             goto LABEL_61;
           }
 
           v69 = [v9 objectForKeyedSubscript:@"dataVersion"];
-          v17 = [*&v8 endpoint];
-          v18 = [*&v8 cluster];
-          v67 = [MTRClusterPath clusterPathWithEndpointID:v17 clusterID:v18];
+          endpoint = [*&v8 endpoint];
+          cluster = [*&v8 cluster];
+          v67 = [MTRClusterPath clusterPathWithEndpointID:endpoint clusterID:cluster];
 
           if (v69)
           {
-            [(MTRDevice_Concrete *)v72 _noteDataVersion:v69 forClusterPath:v67];
-            v19 = [(MTRDevice_Concrete *)v72 _dataValueWithoutDataVersion:v9];
+            [(MTRDevice_Concrete *)selfCopy _noteDataVersion:v69 forClusterPath:v67];
+            v19 = [(MTRDevice_Concrete *)selfCopy _dataValueWithoutDataVersion:v9];
 
             v9 = v19;
           }
 
-          v15 = [(MTRDevice_Concrete *)v72 _cachedAttributeValueForPath:*&v8];
-          v20 = [(MTRDevice *)v72 _attributeDataValue:v9 isEqualToDataValue:v15];
+          v15 = [(MTRDevice_Concrete *)selfCopy _cachedAttributeValueForPath:*&v8];
+          v20 = [(MTRDevice *)selfCopy _attributeDataValue:v9 isEqualToDataValue:v15];
           if ((v20 & 1) == 0)
           {
-            [(MTRDevice_Concrete *)v72 _pruneStoredDataForPath:*&v8 missingFrom:v9];
-            if (!v72->_deviceConfigurationChanged)
+            [(MTRDevice_Concrete *)selfCopy _pruneStoredDataForPath:*&v8 missingFrom:v9];
+            if (!selfCopy->_deviceConfigurationChanged)
             {
-              v21 = [(MTRDevice_Concrete *)v72 _attributeAffectsDeviceConfiguration:*&v8];
-              v72->_deviceConfigurationChanged = v21;
+              v21 = [(MTRDevice_Concrete *)selfCopy _attributeAffectsDeviceConfiguration:*&v8];
+              selfCopy->_deviceConfigurationChanged = v21;
               if (v21)
               {
                 v22 = sub_2393D9044(0);
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v83 = v72;
+                  v83 = selfCopy;
                   v84 = 2112;
                   v85 = v8;
                   _os_log_impl(&dword_238DAE000, v22, OS_LOG_TYPE_DEFAULT, "%@ device configuration changed due to changes in attribute %@", buf, 0x16u);
@@ -6001,38 +6001,38 @@ LABEL_57:
 
                 if (sub_2393D5398(2u))
                 {
-                  v55 = v72;
+                  v55 = selfCopy;
                   v56 = v8;
                   sub_2393D5320(0, 2);
                 }
               }
             }
 
-            [(MTRDevice_Concrete *)v72 _setCachedAttributeValue:v9 forPath:*&v8 fromSubscription:v64, v55];
-            [(MTRDevice *)v72 _attributeValue:v9 reportedForPath:*&v8];
-            v23 = [*&v8 cluster];
-            if ([v23 unsignedLongValue] != 56)
+            [(MTRDevice_Concrete *)selfCopy _setCachedAttributeValue:v9 forPath:*&v8 fromSubscription:subscriptionCopy, v55];
+            [(MTRDevice *)selfCopy _attributeValue:v9 reportedForPath:*&v8];
+            cluster2 = [*&v8 cluster];
+            if ([cluster2 unsignedLongValue] != 56)
             {
               goto LABEL_30;
             }
 
-            v24 = [*&v8 attribute];
-            if ([v24 unsignedLongValue])
+            attribute = [*&v8 attribute];
+            if ([attribute unsignedLongValue])
             {
               goto LABEL_29;
             }
 
-            v40 = [(MTRDevice_Concrete *)v72 shouldDetectTimeSynchronizationLoss];
+            shouldDetectTimeSynchronizationLoss = [(MTRDevice_Concrete *)selfCopy shouldDetectTimeSynchronizationLoss];
 
-            if (v40)
+            if (shouldDetectTimeSynchronizationLoss)
             {
               v41 = [[MTRAttributeReport alloc] initWithResponseValue:v7 error:0];
-              v23 = v41;
+              cluster2 = v41;
               if (v41)
               {
-                v24 = [(MTRAttributeReport *)v41 value];
-                v42 = [v24 unsignedLongLongValue];
-                v43 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(v42 + 946684800000000) / 1000000.0];
+                attribute = [(MTRAttributeReport *)v41 value];
+                unsignedLongLongValue = [attribute unsignedLongLongValue];
+                v43 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(unsignedLongLongValue + 946684800000000) / 1000000.0];
                 [v43 timeIntervalSinceNow];
                 if (fabs(v44) > 300.0)
                 {
@@ -6040,20 +6040,20 @@ LABEL_57:
                   if (os_log_type_enabled(loga, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412290;
-                    v83 = v72;
+                    v83 = selfCopy;
                     _os_log_impl(&dword_238DAE000, loga, OS_LOG_TYPE_DEFAULT, "%@ Time synchronization loss detected", buf, 0xCu);
                   }
 
                   if (sub_2393D5398(2u))
                   {
-                    v55 = v72;
+                    v55 = selfCopy;
                     sub_2393D5320(0, 2);
                   }
 
-                  v72->_timeSynchronizationLossDetected = 1;
+                  selfCopy->_timeSynchronizationLossDetected = 1;
                   v45 = [MEMORY[0x277CBEAA8] now];
-                  timeSynchronizationLossDetectedTime = v72->_timeSynchronizationLossDetectedTime;
-                  v72->_timeSynchronizationLossDetectedTime = v45;
+                  timeSynchronizationLossDetectedTime = selfCopy->_timeSynchronizationLossDetectedTime;
+                  selfCopy->_timeSynchronizationLossDetectedTime = v45;
                 }
 
 LABEL_29:
@@ -6063,7 +6063,7 @@ LABEL_30:
             }
           }
 
-          v25 = [(NSMutableDictionary *)v72->_expectedValueCache objectForKeyedSubscript:*&v8];
+          v25 = [(NSMutableDictionary *)selfCopy->_expectedValueCache objectForKeyedSubscript:*&v8];
           if (v25)
           {
             v26 = 1;
@@ -6084,7 +6084,7 @@ LABEL_30:
               if (v28)
               {
                 *buf = 138412802;
-                v83 = v72;
+                v83 = selfCopy;
                 v84 = 2112;
                 v85 = v8;
                 v86 = 2112;
@@ -6103,7 +6103,7 @@ LABEL_30:
               if (v28)
               {
                 *buf = 138412802;
-                v83 = v72;
+                v83 = selfCopy;
                 v84 = 2112;
                 v85 = v8;
                 v86 = 2112;
@@ -6116,17 +6116,17 @@ LABEL_30:
 LABEL_43:
                 v56 = v8;
                 v57 = v9;
-                v55 = v72;
+                v55 = selfCopy;
                 sub_2393D5320(0, 2);
               }
             }
           }
 
-          v29 = [*&v8 cluster];
-          if ([v29 unsignedLongValue] == 51)
+          cluster3 = [*&v8 cluster];
+          if ([cluster3 unsignedLongValue] == 51)
           {
-            v30 = [*&v8 attribute];
-            v31 = [v30 unsignedLongValue] == 2;
+            attribute2 = [*&v8 attribute];
+            v31 = [attribute2 unsignedLongValue] == 2;
 
             if (v31)
             {
@@ -6135,19 +6135,19 @@ LABEL_43:
 
               if (v33)
               {
-                v29 = [v9 objectForKeyedSubscript:@"value"];
-                v34 = [v29 unsignedLongLongValue];
-                v35 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-v34];
-                v61 = v72->_estimatedStartTime;
-                if (!v72->_estimatedStartTime || [(NSDate *)v35 compare:?]== NSOrderedAscending)
+                cluster3 = [v9 objectForKeyedSubscript:@"value"];
+                unsignedLongLongValue2 = [cluster3 unsignedLongLongValue];
+                v35 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-unsignedLongLongValue2];
+                v61 = selfCopy->_estimatedStartTime;
+                if (!selfCopy->_estimatedStartTime || [(NSDate *)v35 compare:?]== NSOrderedAscending)
                 {
                   v36 = sub_2393D9044(0);
                   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138413058;
-                    v83 = v72;
+                    v83 = selfCopy;
                     v84 = 2048;
-                    v85 = v34;
+                    v85 = unsignedLongLongValue2;
                     v86 = 2112;
                     v87 = v61;
                     v88 = 2112;
@@ -6159,16 +6159,16 @@ LABEL_43:
                   {
                     v57 = v61;
                     v58 = v35;
-                    v56 = v34;
-                    v55 = v72;
+                    v56 = unsignedLongLongValue2;
+                    v55 = selfCopy;
                     sub_2393D5320(0, 2);
                   }
 
-                  objc_storeStrong(&v72->_estimatedStartTime, v35);
+                  objc_storeStrong(&selfCopy->_estimatedStartTime, v35);
                 }
 
-                estimatedStartTimeFromGeneralDiagnosticsUpTime = v72->_estimatedStartTimeFromGeneralDiagnosticsUpTime;
-                v72->_estimatedStartTimeFromGeneralDiagnosticsUpTime = v35;
+                estimatedStartTimeFromGeneralDiagnosticsUpTime = selfCopy->_estimatedStartTimeFromGeneralDiagnosticsUpTime;
+                selfCopy->_estimatedStartTimeFromGeneralDiagnosticsUpTime = v35;
                 v38 = v35;
 
                 goto LABEL_55;
@@ -6193,7 +6193,7 @@ LABEL_55:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v83 = v72;
+          v83 = selfCopy;
           v84 = 2112;
           v85 = v8;
           v86 = 2112;
@@ -6205,7 +6205,7 @@ LABEL_55:
         {
           v56 = v8;
           v57 = v7;
-          v55 = v72;
+          v55 = selfCopy;
           sub_2393D5320(0, 2);
         }
 
@@ -6224,7 +6224,7 @@ LABEL_61:
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v47 = v66;
+  v47 = array2;
   v48 = [v47 countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v48)
   {
@@ -6243,7 +6243,7 @@ LABEL_61:
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v83 = v72;
+          v83 = selfCopy;
           v84 = 2112;
           v85 = v51;
           _os_log_impl(&dword_238DAE000, v52, OS_LOG_TYPE_DEFAULT, "%@ report from reported values %@", buf, 0x16u);
@@ -6263,21 +6263,21 @@ LABEL_61:
 
   v53 = *MEMORY[0x277D85DE8];
 
-  return v65;
+  return array;
 }
 
 - (id)getAllAttributesReport
 {
-  v2 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->super._lock);
-  v23 = v2;
-  v22 = [MEMORY[0x277CBEB18] array];
+  v23 = selfCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [(MTRDevice_Concrete *)v2 _knownClusters];
+  obj = [(MTRDevice_Concrete *)selfCopy _knownClusters];
   v18 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v18)
   {
@@ -6292,14 +6292,14 @@ LABEL_61:
         }
 
         v3 = *(*(&v28 + 1) + 8 * i);
-        v4 = [(MTRDevice_Concrete *)v2 _clusterDataForPath:v3];
+        v4 = [(MTRDevice_Concrete *)selfCopy _clusterDataForPath:v3];
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
         v19 = v4;
-        v21 = [v4 attributes];
-        v5 = [v21 countByEnumeratingWithState:&v24 objects:v34 count:16];
+        attributes = [v4 attributes];
+        v5 = [attributes countByEnumeratingWithState:&v24 objects:v34 count:16];
         if (v5)
         {
           v6 = *v25;
@@ -6309,13 +6309,13 @@ LABEL_61:
             {
               if (*v25 != v6)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(attributes);
               }
 
               v8 = *(*(&v24 + 1) + 8 * j);
-              v9 = [v3 endpoint];
-              v10 = [v3 cluster];
-              v11 = [MTRAttributePath attributePathWithEndpointID:v9 clusterID:v10 attributeID:v8];
+              endpoint = [v3 endpoint];
+              cluster = [v3 cluster];
+              v11 = [MTRAttributePath attributePathWithEndpointID:endpoint clusterID:cluster attributeID:v8];
 
               v32[1] = @"data";
               v33[0] = v11;
@@ -6323,16 +6323,16 @@ LABEL_61:
               v12 = [(os_unfair_lock_s *)v23 _lockedAttributeValueDictionaryForAttributePath:v11];
               v33[1] = v12;
               v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
-              [v22 addObject:v13];
+              [array addObject:v13];
             }
 
-            v5 = [v21 countByEnumeratingWithState:&v24 objects:v34 count:16];
+            v5 = [attributes countByEnumeratingWithState:&v24 objects:v34 count:16];
           }
 
           while (v5);
         }
 
-        v2 = v23;
+        selfCopy = v23;
       }
 
       v18 = [obj countByEnumeratingWithState:&v28 objects:v35 count:16];
@@ -6344,45 +6344,45 @@ LABEL_61:
   os_unfair_lock_unlock(v23 + 2);
   v14 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return array;
 }
 
-- (void)setPersistedClusterData:(id)a3
+- (void)setPersistedClusterData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(MTRDevice_Concrete *)self _doSetPersistedClusterData:v4];
+  dataCopy = data;
+  [(MTRDevice_Concrete *)self _doSetPersistedClusterData:dataCopy];
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = [v4 count];
+    v10 = [dataCopy count];
     _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_DEFAULT, "%@ setPersistedClusterData count: %lu", buf, 0x16u);
   }
 
   if (sub_2393D5398(2u))
   {
-    [v4 count];
+    [dataCopy count];
     sub_2393D5320(0, 2);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_doSetPersistedClusterData:(id)a3
+- (void)_doSetPersistedClusterData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  if ([v20 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
     os_unfair_lock_lock(&self->super._lock);
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = v20;
+    v4 = dataCopy;
     v5 = [v4 countByEnumeratingWithState:&v21 objects:v31 count:16];
     if (v5)
     {
@@ -6420,10 +6420,10 @@ LABEL_61:
       v14 = sub_2393D9044(0);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v13 attributes];
-        v16 = [v15 objectForKeyedSubscript:&unk_284C43AD8];
+        attributes = [v13 attributes];
+        v16 = [attributes objectForKeyedSubscript:&unk_284C43AD8];
         *buf = 138412802;
-        v26 = self;
+        selfCopy = self;
         v27 = 2112;
         v28 = v11;
         v29 = 2112;
@@ -6433,8 +6433,8 @@ LABEL_61:
 
       if (sub_2393D5398(2u))
       {
-        v17 = [v13 attributes];
-        v19 = [v17 objectForKeyedSubscript:&unk_284C43AD8];
+        attributes2 = [v13 attributes];
+        v19 = [attributes2 objectForKeyedSubscript:&unk_284C43AD8];
         sub_2393D5320(0, 2);
       }
     }
@@ -6447,46 +6447,46 @@ LABEL_61:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setLastInitialSubscribeLatency:(id)a3
+- (void)_setLastInitialSubscribeLatency:(id)latency
 {
-  v5 = a3;
+  latencyCopy = latency;
   os_unfair_lock_assert_owner(&self->super._lock);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    objc_storeStrong(&self->_estimatedSubscriptionLatency, a3);
+    objc_storeStrong(&self->_estimatedSubscriptionLatency, latency);
   }
 }
 
-- (void)setPersistedDeviceData:(id)a3
+- (void)setPersistedDeviceData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = dataCopy;
     _os_log_impl(&dword_238DAE000, v5, OS_LOG_TYPE_INFO, "%@ setPersistedDeviceData: %@", buf, 0x16u);
   }
 
   if (sub_2393D5398(3u))
   {
-    v9 = self;
-    v10 = v4;
+    selfCopy2 = self;
+    v10 = dataCopy;
     sub_2393D5320(0, 3);
   }
 
   os_unfair_lock_lock(&self->super._lock);
-  v6 = [v4 objectForKeyedSubscript:@"lastInitialSubscribeLatency"];
+  v6 = [dataCopy objectForKeyedSubscript:@"lastInitialSubscribeLatency"];
   if (v6)
   {
     [(MTRDevice_Concrete *)self _setLastInitialSubscribeLatency:v6];
   }
 
-  v7 = [v4 objectForKeyedSubscript:{@"highestObservedEventNumber", v9, v10}];
+  v7 = [dataCopy objectForKeyedSubscript:{@"highestObservedEventNumber", selfCopy2, v10}];
   if (v7)
   {
     objc_opt_class();
@@ -6504,25 +6504,25 @@ LABEL_61:
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->super._lock);
-  v3 = [(MTRDevice_Concrete *)self _concreteController];
-  v4 = [v3 controllerDataStore];
+  _concreteController = [(MTRDevice_Concrete *)self _concreteController];
+  controllerDataStore = [_concreteController controllerDataStore];
 
-  if (v4)
+  if (controllerDataStore)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = v5;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v6 = dictionary;
     estimatedSubscriptionLatency = self->_estimatedSubscriptionLatency;
     if (estimatedSubscriptionLatency)
     {
-      [v5 setObject:estimatedSubscriptionLatency forKeyedSubscript:@"lastInitialSubscribeLatency"];
+      [dictionary setObject:estimatedSubscriptionLatency forKeyedSubscript:@"lastInitialSubscribeLatency"];
     }
 
-    v8 = [(MTRDevice_Concrete *)self highestObservedEventNumber];
+    highestObservedEventNumber = [(MTRDevice_Concrete *)self highestObservedEventNumber];
 
-    if (v8)
+    if (highestObservedEventNumber)
     {
-      v9 = [(MTRDevice_Concrete *)self highestObservedEventNumber];
-      [v6 setObject:v9 forKeyedSubscript:@"highestObservedEventNumber"];
+      highestObservedEventNumber2 = [(MTRDevice_Concrete *)self highestObservedEventNumber];
+      [v6 setObject:highestObservedEventNumber2 forKeyedSubscript:@"highestObservedEventNumber"];
 
       [(MTRDevice_Concrete *)self setHighestObservedEventNumberNeedsPersisting:0];
     }
@@ -6531,7 +6531,7 @@ LABEL_61:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v6;
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_INFO, "%@ _storePersistedDeviceData: %@", buf, 0x16u);
@@ -6539,14 +6539,14 @@ LABEL_61:
 
     if (sub_2393D5398(3u))
     {
-      v14 = self;
+      selfCopy2 = self;
       v15 = v6;
       sub_2393D5320(0, 3);
     }
 
     v11 = [v6 copy];
-    v12 = [(MTRDevice *)self nodeID];
-    [v4 storeDeviceData:v11 forNodeID:v12];
+    nodeID = [(MTRDevice *)self nodeID];
+    [controllerDataStore storeDeviceData:v11 forNodeID:nodeID];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -6560,106 +6560,106 @@ LABEL_61:
   return deviceCachePrimed;
 }
 
-- (void)_setExpectedValue:(id)a3 attributePath:(id)a4 expirationTime:(id)a5 shouldReportValue:(BOOL *)a6 attributeValueToReport:(id *)a7 expectedValueID:(unint64_t)a8 previousValue:(id *)a9
+- (void)_setExpectedValue:(id)value attributePath:(id)path expirationTime:(id)time shouldReportValue:(BOOL *)reportValue attributeValueToReport:(id *)report expectedValueID:(unint64_t)d previousValue:(id *)previousValue
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v32 = a5;
+  valueCopy = value;
+  pathCopy = path;
+  timeCopy = time;
   os_unfair_lock_assert_owner(&self->super._lock);
-  *a6 = 0;
-  v16 = [(NSMutableDictionary *)self->_expectedValueCache objectForKeyedSubscript:v15];
+  *reportValue = 0;
+  v16 = [(NSMutableDictionary *)self->_expectedValueCache objectForKeyedSubscript:pathCopy];
   v17 = v16;
   if (v16)
   {
-    if (v14)
+    if (valueCopy)
     {
       v18 = [v16 objectAtIndexedSubscript:1];
-      v19 = [(MTRDevice *)self _attributeDataValue:v14 isEqualToDataValue:v18];
+      v19 = [(MTRDevice *)self _attributeDataValue:valueCopy isEqualToDataValue:v18];
 
       if (!v19)
       {
-        *a6 = 1;
-        v20 = v14;
-        *a7 = v14;
-        *a9 = [v17 objectAtIndexedSubscript:1];
+        *reportValue = 1;
+        v20 = valueCopy;
+        *report = valueCopy;
+        *previousValue = [v17 objectAtIndexedSubscript:1];
       }
 
 LABEL_16:
-      v33[0] = v32;
-      v33[1] = v14;
-      v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a8];
+      v33[0] = timeCopy;
+      v33[1] = valueCopy;
+      v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
       v33[2] = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:3];
-      [(NSMutableDictionary *)self->_expectedValueCache setObject:v28 forKeyedSubscript:v15];
+      [(NSMutableDictionary *)self->_expectedValueCache setObject:v28 forKeyedSubscript:pathCopy];
 
       goto LABEL_17;
     }
 
     v21 = [v16 objectAtIndexedSubscript:2];
-    if ([v21 unsignedLongLongValue] == a8)
+    if ([v21 unsignedLongLongValue] == d)
     {
-      v30 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v15];
+      v30 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:pathCopy];
       v23 = [v17 objectAtIndexedSubscript:1];
       v24 = [(MTRDevice *)self _attributeDataValue:v23 isEqualToDataValue:v30];
 
       if (!v24)
       {
-        *a6 = 1;
-        *a7 = v30;
-        *a9 = [v17 objectAtIndexedSubscript:1];
-        [(NSMutableDictionary *)self->_expectedValueCache setObject:0 forKeyedSubscript:v15];
+        *reportValue = 1;
+        *report = v30;
+        *previousValue = [v17 objectAtIndexedSubscript:1];
+        [(NSMutableDictionary *)self->_expectedValueCache setObject:0 forKeyedSubscript:pathCopy];
       }
     }
   }
 
   else
   {
-    v21 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v15];
-    if (v14)
+    v21 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:pathCopy];
+    if (valueCopy)
     {
-      if ([(MTRDevice *)self _attributeDataValue:v14 isEqualToDataValue:v21])
+      if ([(MTRDevice *)self _attributeDataValue:valueCopy isEqualToDataValue:v21])
       {
         v22 = 0;
       }
 
       else
       {
-        *a6 = 1;
-        v25 = v14;
-        *a7 = v14;
+        *reportValue = 1;
+        v25 = valueCopy;
+        *report = valueCopy;
         v26 = v21;
         v22 = v21;
       }
 
-      *a9 = v22;
+      *previousValue = v22;
 
       goto LABEL_16;
     }
 
-    *a9 = 0;
+    *previousValue = 0;
   }
 
 LABEL_17:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getAttributesToReportWithNewExpectedValues:(id)a3 expirationTime:(id)a4 expectedValueID:(unint64_t *)a5
+- (id)_getAttributesToReportWithNewExpectedValues:(id)values expirationTime:(id)time expectedValueID:(unint64_t *)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v27 = a4;
+  valuesCopy = values;
+  timeCopy = time;
   os_unfair_lock_assert_owner(&self->super._lock);
   expectedValueNextID = self->_expectedValueNextID;
-  v26 = self;
+  selfCopy = self;
   self->_expectedValueNextID = expectedValueNextID + 1;
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v7;
+  obj = valuesCopy;
   v8 = [obj countByEnumeratingWithState:&v30 objects:v42 count:16];
   if (v8)
   {
@@ -6679,7 +6679,7 @@ LABEL_17:
         buf[0] = 0;
         v28 = 0;
         v29 = 0;
-        [(MTRDevice_Concrete *)v26 _setExpectedValue:v12 attributePath:v11 expirationTime:v27 shouldReportValue:buf attributeValueToReport:&v29 expectedValueID:expectedValueNextID previousValue:&v28];
+        [(MTRDevice_Concrete *)selfCopy _setExpectedValue:v12 attributePath:v11 expirationTime:timeCopy shouldReportValue:buf attributeValueToReport:&v29 expectedValueID:expectedValueNextID previousValue:&v28];
         v13 = v29;
         v14 = v28;
         v15 = v14;
@@ -6705,9 +6705,9 @@ LABEL_17:
             [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
           }
           v16 = ;
-          [v21 addObject:v16];
+          [array addObject:v16];
 
-          [v22 addObject:v11];
+          [array2 addObject:v11];
         }
       }
 
@@ -6717,18 +6717,18 @@ LABEL_17:
     while (v8);
   }
 
-  if (a5)
+  if (d)
   {
-    *a5 = expectedValueNextID;
+    *d = expectedValueNextID;
   }
 
   v17 = sub_2393D9044(0);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v26;
+    v35 = selfCopy;
     v36 = 2112;
-    v37 = v22;
+    v37 = array2;
     _os_log_impl(&dword_238DAE000, v17, OS_LOG_TYPE_DEFAULT, "%@ report from new expected values %@", buf, 0x16u);
   }
 
@@ -6739,25 +6739,25 @@ LABEL_17:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return array;
 }
 
-- (void)setExpectedValues:(id)a3 expectedValueInterval:(id)a4 expectedValueID:(unint64_t *)a5
+- (void)setExpectedValues:(id)values expectedValueInterval:(id)interval expectedValueID:(unint64_t *)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  valuesCopy = values;
+  intervalCopy = interval;
   v10 = MEMORY[0x277CBEAA8];
-  [v9 doubleValue];
+  [intervalCopy doubleValue];
   v12 = [v10 dateWithTimeIntervalSinceNow:v11 / 1000.0];
   v13 = sub_2393D9044(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     [v12 timeIntervalSinceNow];
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v8;
+    v20 = valuesCopy;
     v21 = 2048;
     v22 = v14;
     _os_log_impl(&dword_238DAE000, v13, OS_LOG_TYPE_DEFAULT, "%@ Setting expected values %@ with expiration time %f seconds from now", buf, 0x20u);
@@ -6770,7 +6770,7 @@ LABEL_17:
   }
 
   os_unfair_lock_lock(&self->super._lock);
-  v15 = [(MTRDevice_Concrete *)self _getAttributesToReportWithNewExpectedValues:v8 expirationTime:v12 expectedValueID:a5];
+  v15 = [(MTRDevice_Concrete *)self _getAttributesToReportWithNewExpectedValues:valuesCopy expirationTime:v12 expectedValueID:d];
   [(MTRDevice_Concrete *)self _reportAttributes:v15];
   [(MTRDevice_Concrete *)self _checkExpiredExpectedValues];
 
@@ -6778,16 +6778,16 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeExpectedValuesForAttributePaths:(id)a3 expectedValueID:(unint64_t)a4
+- (void)removeExpectedValuesForAttributePaths:(id)paths expectedValueID:(unint64_t)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathsCopy = paths;
   os_unfair_lock_lock(&self->super._lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = pathsCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -6802,7 +6802,7 @@ LABEL_17:
           objc_enumerationMutation(v7);
         }
 
-        [(MTRDevice_Concrete *)self _removeExpectedValueForAttributePath:*(*(&v12 + 1) + 8 * v10++) expectedValueID:a4, v12];
+        [(MTRDevice_Concrete *)self _removeExpectedValueForAttributePath:*(*(&v12 + 1) + 8 * v10++) expectedValueID:d, v12];
       }
 
       while (v8 != v10);
@@ -6816,24 +6816,24 @@ LABEL_17:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeExpectedValueForAttributePath:(id)a3 expectedValueID:(unint64_t)a4
+- (void)removeExpectedValueForAttributePath:(id)path expectedValueID:(unint64_t)d
 {
-  v6 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->super._lock);
-  [(MTRDevice_Concrete *)self _removeExpectedValueForAttributePath:v6 expectedValueID:a4];
+  [(MTRDevice_Concrete *)self _removeExpectedValueForAttributePath:pathCopy expectedValueID:d];
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)_removeExpectedValueForAttributePath:(id)a3 expectedValueID:(unint64_t)a4
+- (void)_removeExpectedValueForAttributePath:(id)path expectedValueID:(unint64_t)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   os_unfair_lock_assert_owner(&self->super._lock);
   v21 = 0;
   v19 = 0;
   v20 = 0;
-  [(MTRDevice_Concrete *)self _setExpectedValue:0 attributePath:v6 expirationTime:0 shouldReportValue:&v21 attributeValueToReport:&v20 expectedValueID:a4 previousValue:&v19];
+  [(MTRDevice_Concrete *)self _setExpectedValue:0 attributePath:pathCopy expirationTime:0 shouldReportValue:&v21 attributeValueToReport:&v20 expectedValueID:d previousValue:&v19];
   v7 = v20;
   v8 = v19;
   v9 = sub_2393D9044(0);
@@ -6850,9 +6850,9 @@ LABEL_17:
       v10 = @"NO";
     }
 
-    v24 = self;
+    selfCopy = self;
     v25 = 2112;
-    v26 = v6;
+    v26 = pathCopy;
     v27 = 2112;
     v28 = v10;
     _os_log_impl(&dword_238DAE000, v9, OS_LOG_TYPE_DEFAULT, "%@ remove expected value for path %@ should report %@", buf, 0x20u);
@@ -6870,15 +6870,15 @@ LABEL_17:
       v11 = @"NO";
     }
 
-    v17 = v6;
+    v17 = pathCopy;
     v18 = v11;
-    v16 = self;
+    selfCopy2 = self;
     sub_2393D5320(0, 2);
   }
 
   if (v21 == 1)
   {
-    v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:v6 forKey:@"attributePath"];
+    v12 = [MEMORY[0x277CBEB38] dictionaryWithObject:pathCopy forKey:@"attributePath"];
     v13 = v12;
     if (v7)
     {
@@ -6891,7 +6891,7 @@ LABEL_17:
     }
 
     v22 = v13;
-    v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:{1, v16, v17, v18}];
+    v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:{1, selfCopy2, v17, v18}];
     [(MTRDevice_Concrete *)self _reportAttributes:v14];
   }
 
@@ -6900,39 +6900,39 @@ LABEL_17:
 
 - (id)newBaseDevice
 {
-  v3 = [(MTRDevice *)self nodeID];
-  v4 = [(MTRDevice *)self deviceController];
-  v5 = [MTRBaseDevice deviceWithNodeID:v3 controller:v4];
+  nodeID = [(MTRDevice *)self nodeID];
+  deviceController = [(MTRDevice *)self deviceController];
+  v5 = [MTRBaseDevice deviceWithNodeID:nodeID controller:deviceController];
 
   return v5;
 }
 
-- (id)_informationalNumberAtAttributePath:(id)a3
+- (id)_informationalNumberAtAttributePath:(id)path
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v4];
+  pathCopy = path;
+  v5 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:pathCopy];
   if (v5)
   {
     v6 = [MTRAttributeReport alloc];
     v12[0] = @"attributePath";
     v12[1] = @"data";
-    v13[0] = v4;
+    v13[0] = pathCopy;
     v13[1] = v5;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
     v8 = [(MTRAttributeReport *)v6 initWithResponseValue:v7 error:0];
 
-    v9 = [(MTRAttributeReport *)v8 value];
+    value = [(MTRAttributeReport *)v8 value];
   }
 
   else
   {
-    v9 = 0;
+    value = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return value;
 }
 
 - (id)_informationalVendorID
@@ -6954,48 +6954,48 @@ LABEL_17:
 - (void)_addInformationalAttributesToCurrentMetricScope
 {
   os_unfair_lock_assert_owner(&self->super._lock);
-  v3 = [(MTRDevice_Concrete *)self _informationalVendorID];
+  _informationalVendorID = [(MTRDevice_Concrete *)self _informationalVendorID];
   v7 = 2;
   v8 = "dwnfw_device_vendor_id";
-  v9 = [v3 unsignedShortValue];
+  unsignedShortValue = [_informationalVendorID unsignedShortValue];
   v10 = 2;
 
   sub_23948BD20(&v7);
-  v4 = [(MTRDevice_Concrete *)self _informationalProductID];
-  v5 = [v4 unsignedShortValue];
+  _informationalProductID = [(MTRDevice_Concrete *)self _informationalProductID];
+  unsignedShortValue2 = [_informationalProductID unsignedShortValue];
   v7 = 2;
   v8 = "dwnfw_device_product_id";
-  v9 = v5;
+  unsignedShortValue = unsignedShortValue2;
   v10 = 2;
 
   sub_23948BD20(&v7);
-  v6 = [(MTRDevice_Concrete *)self _deviceUsesThread];
+  _deviceUsesThread = [(MTRDevice_Concrete *)self _deviceUsesThread];
   v7 = 2;
   v8 = "dwnfw_device_uses_thread_BOOL";
-  v9 = v6;
+  unsignedShortValue = _deviceUsesThread;
   v10 = 1;
   sub_23948BD20(&v7);
 }
 
-- (BOOL)_attributePathAffectsDescriptionData:(id)a3
+- (BOOL)_attributePathAffectsDescriptionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v5 = [v4 cluster];
-  v6 = [v5 unsignedLongLongValue];
+  cluster = [dataCopy cluster];
+  unsignedLongLongValue = [cluster unsignedLongLongValue];
 
-  if (v6 == 40)
+  if (unsignedLongLongValue == 40)
   {
-    v9 = [v4 attribute];
-    v10 = [v9 unsignedLongLongValue];
+    attribute = [dataCopy attribute];
+    unsignedLongLongValue2 = [attribute unsignedLongLongValue];
 
-    v8 = ((v10 - 2) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    v8 = ((unsignedLongLongValue2 - 2) & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
-  else if (v6 == 49)
+  else if (unsignedLongLongValue == 49)
   {
-    v7 = [v4 attribute];
-    v8 = [v7 unsignedLongLongValue] == 65532;
+    attribute2 = [dataCopy attribute];
+    v8 = [attribute2 unsignedLongLongValue] == 65532;
   }
 
   else
@@ -7009,20 +7009,20 @@ LABEL_17:
 - (void)_updateAttributeDependentDescriptionData
 {
   os_unfair_lock_assert_owner(&self->super._lock);
-  v3 = [(MTRDevice_Concrete *)self _informationalVendorID];
-  v4 = [(MTRDevice_Concrete *)self _informationalProductID];
-  v5 = [(MTRDevice_Concrete *)self _networkFeatures];
+  _informationalVendorID = [(MTRDevice_Concrete *)self _informationalVendorID];
+  _informationalProductID = [(MTRDevice_Concrete *)self _informationalProductID];
+  _networkFeatures = [(MTRDevice_Concrete *)self _networkFeatures];
   os_unfair_lock_lock(&self->_descriptionLock);
   vid = self->_vid;
-  self->_vid = v3;
-  v7 = v3;
+  self->_vid = _informationalVendorID;
+  v7 = _informationalVendorID;
 
   pid = self->_pid;
-  self->_pid = v4;
-  v9 = v4;
+  self->_pid = _informationalProductID;
+  v9 = _informationalProductID;
 
   allNetworkFeatures = self->_allNetworkFeatures;
-  self->_allNetworkFeatures = v5;
+  self->_allNetworkFeatures = _networkFeatures;
 
   os_unfair_lock_unlock(&self->_descriptionLock);
 }
@@ -7037,46 +7037,46 @@ LABEL_17:
   return v4;
 }
 
-- (id)_cachedListOfNumbersValueForEndpointID:(id)a3 clusterID:(id)a4 attributeID:(id)a5
+- (id)_cachedListOfNumbersValueForEndpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  attributeIDCopy = attributeID;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v11 = [MTRAttributePath attributePathWithEndpointID:v8 clusterID:v9 attributeID:v10];
+  v11 = [MTRAttributePath attributePathWithEndpointID:dCopy clusterID:iDCopy attributeID:attributeIDCopy];
   v12 = [(MTRDevice_Concrete *)self _cachedAttributeValueForPath:v11];
   v13 = [(MTRDevice_Concrete *)self arrayOfNumbersFromAttributeValue:v12];
   v14 = v13;
   if (v13)
   {
-    v15 = v13;
+    array = v13;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v16 = v15;
+  v16 = array;
 
   return v16;
 }
 
-- (id)_serverListForEndpointID:(id)a3
+- (id)_serverListForEndpointID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v5 = [(MTRDevice_Concrete *)self _cachedListOfNumbersValueForEndpointID:v4 clusterID:&unk_284C43A48 attributeID:&unk_284C43A60];
+  v5 = [(MTRDevice_Concrete *)self _cachedListOfNumbersValueForEndpointID:dCopy clusterID:&unk_284C43A48 attributeID:&unk_284C43A60];
 
   return v5;
 }
 
-- (id)_attributeListForEndpointID:(id)a3 clusterID:(id)a4
+- (id)_attributeListForEndpointID:(id)d clusterID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   os_unfair_lock_assert_owner(&self->super._lock);
-  v8 = [(MTRDevice_Concrete *)self _cachedListOfNumbersValueForEndpointID:v6 clusterID:v7 attributeID:&unk_284C43BB0];
+  v8 = [(MTRDevice_Concrete *)self _cachedListOfNumbersValueForEndpointID:dCopy clusterID:iDCopy attributeID:&unk_284C43BB0];
 
   return v8;
 }
@@ -7165,7 +7165,7 @@ LABEL_17:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_238DAE000, v3, OS_LOG_TYPE_DEFAULT, "%@ ignoring controller resume: no delegates", buf, 0xCu);
     }
 
@@ -7208,16 +7208,16 @@ LABEL_17:
 {
   v18 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->super._lock);
-  v3 = [(MTRDevice_Concrete *)self lastSubscriptionActiveTime];
+  lastSubscriptionActiveTime = [(MTRDevice_Concrete *)self lastSubscriptionActiveTime];
 
-  if (v3 && (-[MTRDevice_Concrete lastSubscriptionActiveTime](self, "lastSubscriptionActiveTime"), v4 = objc_claimAutoreleasedReturnValue(), [v4 timeIntervalSinceNow], v6 = v5, v4, v6 > -1.5))
+  if (lastSubscriptionActiveTime && (-[MTRDevice_Concrete lastSubscriptionActiveTime](self, "lastSubscriptionActiveTime"), v4 = objc_claimAutoreleasedReturnValue(), [v4 timeIntervalSinceNow], v6 = v5, v4, v6 > -1.5))
   {
     v9 = -v6;
     v10 = sub_2393D9044(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
       v17 = v9;
       _os_log_impl(&dword_238DAE000, v10, OS_LOG_TYPE_DEFAULT, "%@ _deviceMayBeReachable called and ignored, because last received communication from device %.6lf seconds ago", buf, 0x16u);
@@ -7238,7 +7238,7 @@ LABEL_17:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_238DAE000, v7, OS_LOG_TYPE_DEFAULT, "%@ _deviceMayBeReachable called, resetting subscription", buf, 0xCu);
     }
 
@@ -7248,13 +7248,13 @@ LABEL_17:
     }
 
     objc_initWeak(buf, self);
-    v8 = [(MTRDevice_Concrete *)self _concreteController];
+    _concreteController = [(MTRDevice_Concrete *)self _concreteController];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2393A7378;
     v12[3] = &unk_278A756E8;
     objc_copyWeak(&v13, buf);
-    [v8 asyncGetCommissionerOnMatterQueue:v12 errorHandler:0];
+    [_concreteController asyncGetCommissionerOnMatterQueue:v12 errorHandler:0];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -7263,11 +7263,11 @@ LABEL_17:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)deviceWithNodeID:(unint64_t)a3 deviceController:(id)a4
++ (id)deviceWithNodeID:(unint64_t)d deviceController:(id)controller
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  v8 = [a1 deviceWithNodeID:v7 controller:v6];
+  controllerCopy = controller;
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:d];
+  v8 = [self deviceWithNodeID:v7 controller:controllerCopy];
 
   return v8;
 }

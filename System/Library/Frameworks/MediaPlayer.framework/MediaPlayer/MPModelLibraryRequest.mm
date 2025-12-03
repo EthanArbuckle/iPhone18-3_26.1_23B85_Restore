@@ -1,17 +1,17 @@
 @interface MPModelLibraryRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPMediaLibrary)mediaLibrary;
-- (MPModelLibraryRequest)initWithCoder:(id)a3;
+- (MPModelLibraryRequest)initWithCoder:(id)coder;
 - (NSString)description;
 - (_NSRange)contentRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)itemTranslationContext;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)newOperationWithResponseHandler:(id)handler;
 - (id)personalizationTranslationContext;
 - (id)sectionTranslationContext;
-- (void)encodeWithCoder:(id)a3;
-- (void)performWithResponseHandler:(id)a3;
-- (void)setLegacyMediaQuery:(id)a3 forTransport:(BOOL)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)performWithResponseHandler:(id)handler;
+- (void)setLegacyMediaQuery:(id)query forTransport:(BOOL)transport;
 @end
 
 @implementation MPModelLibraryRequest
@@ -26,8 +26,8 @@
 
   else
   {
-    v4 = [MEMORY[0x1E69E4680] activeAccount];
-    v3 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v4];
+    activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+    v3 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:activeAccount];
   }
 
   return v3;
@@ -100,10 +100,10 @@
 
 - (id)personalizationTranslationContext
 {
-  v2 = [(MPModelLibraryRequest *)self itemTranslationContext];
-  [v2 setIdentifierSourcePrefix:@"PersonalizedRequest-"];
+  itemTranslationContext = [(MPModelLibraryRequest *)self itemTranslationContext];
+  [itemTranslationContext setIdentifierSourcePrefix:@"PersonalizedRequest-"];
 
-  return v2;
+  return itemTranslationContext;
 }
 
 - (_NSRange)contentRange
@@ -119,12 +119,12 @@
 - (id)sectionTranslationContext
 {
   v3 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
-  v4 = [(MPModelLibraryRequest *)self allowedSectionIdentifiers];
-  v5 = v4;
+  allowedSectionIdentifiers = [(MPModelLibraryRequest *)self allowedSectionIdentifiers];
+  v5 = allowedSectionIdentifiers;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (allowedSectionIdentifiers)
   {
-    v7 = v4;
+    v7 = allowedSectionIdentifiers;
   }
 
   else
@@ -134,35 +134,35 @@
 
   [(MPMediaLibraryEntityTranslationContext *)v3 setAllowedEntityIdentifiers:v7];
 
-  v8 = [(MPModelLibraryRequest *)self sectionFilterText];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setFilterText:v8];
+  sectionFilterText = [(MPModelLibraryRequest *)self sectionFilterText];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setFilterText:sectionFilterText];
 
   [(MPMediaLibraryEntityTranslationContext *)v3 setFilteringOptions:[(MPModelLibraryRequest *)self filteringOptions]];
-  v9 = [(MPModelLibraryRequest *)self mediaLibrary];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setMediaLibrary:v9];
+  mediaLibrary = [(MPModelLibraryRequest *)self mediaLibrary];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setMediaLibrary:mediaLibrary];
 
-  v10 = [(MPModelRequest *)self sectionKind];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setModelKind:v10];
+  sectionKind = [(MPModelRequest *)self sectionKind];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setModelKind:sectionKind];
 
-  v11 = [(MPModelRequest *)self sectionKind];
-  -[MPMediaLibraryEntityTranslationContext setMultiQuery:](v3, "setMultiQuery:", [v11 modelClass] == objc_opt_class());
+  sectionKind2 = [(MPModelRequest *)self sectionKind];
+  -[MPMediaLibraryEntityTranslationContext setMultiQuery:](v3, "setMultiQuery:", [sectionKind2 modelClass] == objc_opt_class());
 
   if ([MEMORY[0x1E69E4688] canAccessAccountStore])
   {
-    v12 = [(MPModelLibraryRequest *)self mediaLibrary];
-    v13 = [v12 userIdentity];
-    v14 = [v13 accountDSID];
-    [(MPMediaLibraryEntityTranslationContext *)v3 setPersonID:v14];
+    mediaLibrary2 = [(MPModelLibraryRequest *)self mediaLibrary];
+    userIdentity = [mediaLibrary2 userIdentity];
+    accountDSID = [userIdentity accountDSID];
+    [(MPMediaLibraryEntityTranslationContext *)v3 setPersonID:accountDSID];
   }
 
-  v15 = [(MPModelLibraryRequest *)self sectionPropertyFilters];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setPropertyFilters:v15];
+  sectionPropertyFilters = [(MPModelLibraryRequest *)self sectionPropertyFilters];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setPropertyFilters:sectionPropertyFilters];
 
-  v16 = [(MPModelLibraryRequest *)self scopedContainers];
-  v17 = v16;
-  if (v16)
+  scopedContainers = [(MPModelLibraryRequest *)self scopedContainers];
+  v17 = scopedContainers;
+  if (scopedContainers)
   {
-    v18 = v16;
+    v18 = scopedContainers;
   }
 
   else
@@ -178,12 +178,12 @@
 - (id)itemTranslationContext
 {
   v3 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
-  v4 = [(MPModelLibraryRequest *)self allowedItemIdentifiers];
-  v5 = v4;
+  allowedItemIdentifiers = [(MPModelLibraryRequest *)self allowedItemIdentifiers];
+  v5 = allowedItemIdentifiers;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (allowedItemIdentifiers)
   {
-    v7 = v4;
+    v7 = allowedItemIdentifiers;
   }
 
   else
@@ -193,35 +193,35 @@
 
   [(MPMediaLibraryEntityTranslationContext *)v3 setAllowedEntityIdentifiers:v7];
 
-  v8 = [(MPModelLibraryRequest *)self filterText];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setFilterText:v8];
+  filterText = [(MPModelLibraryRequest *)self filterText];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setFilterText:filterText];
 
   [(MPMediaLibraryEntityTranslationContext *)v3 setFilteringOptions:[(MPModelLibraryRequest *)self filteringOptions]];
-  v9 = [(MPModelLibraryRequest *)self mediaLibrary];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setMediaLibrary:v9];
+  mediaLibrary = [(MPModelLibraryRequest *)self mediaLibrary];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setMediaLibrary:mediaLibrary];
 
-  v10 = [(MPModelRequest *)self itemKind];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setModelKind:v10];
+  itemKind = [(MPModelRequest *)self itemKind];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setModelKind:itemKind];
 
-  v11 = [(MPModelRequest *)self itemKind];
-  -[MPMediaLibraryEntityTranslationContext setMultiQuery:](v3, "setMultiQuery:", [v11 modelClass] == objc_opt_class());
+  itemKind2 = [(MPModelRequest *)self itemKind];
+  -[MPMediaLibraryEntityTranslationContext setMultiQuery:](v3, "setMultiQuery:", [itemKind2 modelClass] == objc_opt_class());
 
   if ([MEMORY[0x1E69E4688] canAccessAccountStore])
   {
-    v12 = [(MPModelLibraryRequest *)self mediaLibrary];
-    v13 = [v12 userIdentity];
-    v14 = [v13 accountDSID];
-    [(MPMediaLibraryEntityTranslationContext *)v3 setPersonID:v14];
+    mediaLibrary2 = [(MPModelLibraryRequest *)self mediaLibrary];
+    userIdentity = [mediaLibrary2 userIdentity];
+    accountDSID = [userIdentity accountDSID];
+    [(MPMediaLibraryEntityTranslationContext *)v3 setPersonID:accountDSID];
   }
 
-  v15 = [(MPModelLibraryRequest *)self itemPropertyFilters];
-  [(MPMediaLibraryEntityTranslationContext *)v3 setPropertyFilters:v15];
+  itemPropertyFilters = [(MPModelLibraryRequest *)self itemPropertyFilters];
+  [(MPMediaLibraryEntityTranslationContext *)v3 setPropertyFilters:itemPropertyFilters];
 
-  v16 = [(MPModelLibraryRequest *)self scopedContainers];
-  v17 = v16;
-  if (v16)
+  scopedContainers = [(MPModelLibraryRequest *)self scopedContainers];
+  v17 = scopedContainers;
+  if (scopedContainers)
   {
-    v18 = v16;
+    v18 = scopedContainers;
   }
 
   else
@@ -234,38 +234,38 @@
   return v3;
 }
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
   v3.receiver = self;
   v3.super_class = MPModelLibraryRequest;
-  [(MPModelRequest *)&v3 performWithResponseHandler:a3];
+  [(MPModelRequest *)&v3 performWithResponseHandler:handler];
 }
 
-- (void)setLegacyMediaQuery:(id)a3 forTransport:(BOOL)a4
+- (void)setLegacyMediaQuery:(id)query forTransport:(BOOL)transport
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (self->_legacyMediaQuery != v6)
+  queryCopy = query;
+  v7 = queryCopy;
+  if (self->_legacyMediaQuery != queryCopy)
   {
-    v8 = [(MPMediaQuery *)v6 copy];
+    v8 = [(MPMediaQuery *)queryCopy copy];
     legacyMediaQuery = self->_legacyMediaQuery;
     self->_legacyMediaQuery = v8;
 
     v10 = self->_legacyMediaQuery;
     if (v10)
     {
-      v11 = [(MPMediaQuery *)v10 mediaLibrary];
+      mediaLibrary = [(MPMediaQuery *)v10 mediaLibrary];
       mediaLibrary = self->_mediaLibrary;
-      self->_mediaLibrary = v11;
+      self->_mediaLibrary = mediaLibrary;
 
-      if (!a4)
+      if (!transport)
       {
-        v13 = [(MPMediaQuery *)self->_legacyMediaQuery _representativeCollection];
+        _representativeCollection = [(MPMediaQuery *)self->_legacyMediaQuery _representativeCollection];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (([v13 playlistAttributes] & 2) != 0)
+          if (([_representativeCollection playlistAttributes] & 2) != 0)
           {
             self->_isUpgradedSmartPlaylistLegacyMediaQuery = 1;
             v14 = self->_legacyMediaQuery;
@@ -278,11 +278,11 @@
             v28 = 3221225472;
             v29 = __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke;
             v30 = &unk_1E767EE00;
-            v31 = self;
-            v32 = v13;
+            selfCopy = self;
+            v32 = _representativeCollection;
             v18 = [(MPIdentifierSet *)v16 initWithSource:@"LibraryRequest" modelKind:v17 block:&v27];
-            v19 = [(MPModelObject *)v15 initWithIdentifiers:v18, v27, v28, v29, v30, v31];
-            v33[0] = v19;
+            selfCopy = [(MPModelObject *)v15 initWithIdentifiers:v18, v27, v28, v29, v30, selfCopy];
+            v33[0] = selfCopy;
             v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
             scopedContainers = self->_scopedContainers;
             self->_scopedContainers = v20;
@@ -297,18 +297,18 @@
 
         else
         {
-          v24 = [v13 groupingType] - 1;
+          v24 = [_representativeCollection groupingType] - 1;
           if (v24 >= 5)
           {
-            v25 = 0;
+            identityKind = 0;
           }
 
           else
           {
-            v25 = [(__objc2_class *)*off_1E767C0F0[v24] identityKind];
+            identityKind = [(__objc2_class *)*off_1E767C0F0[v24] identityKind];
           }
 
-          [(MPModelRequest *)self setSectionKind:v25];
+          [(MPModelRequest *)self setSectionKind:identityKind];
           v26 = +[MPModelSongKind identityKind];
           [(MPModelRequest *)self setItemKind:v26];
         }
@@ -335,18 +335,18 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
   [v3 setPersistentID:{objc_msgSend(*(a1 + 32), "persistentID")}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (([v4 isMemberOfClass:objc_opt_class()] & 1) == 0)
+  equalCopy = equal;
+  if (([equalCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
   {
     goto LABEL_56;
   }
 
-  v5 = [(MPModelRequest *)self itemKind];
-  v6 = [v4 itemKind];
-  v7 = v5;
-  v8 = v6;
+  itemKind = [(MPModelRequest *)self itemKind];
+  itemKind2 = [equalCopy itemKind];
+  v7 = itemKind;
+  v8 = itemKind2;
   v9 = v8;
   if (v7 == v8)
   {
@@ -362,10 +362,10 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v11 = [(MPModelRequest *)self sectionKind];
-  v12 = [v4 sectionKind];
-  v13 = v11;
-  v14 = v12;
+  sectionKind = [(MPModelRequest *)self sectionKind];
+  sectionKind2 = [equalCopy sectionKind];
+  v13 = sectionKind;
+  v14 = sectionKind2;
   v15 = v14;
   if (v13 == v14)
   {
@@ -381,10 +381,10 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v17 = [(MPModelRequest *)self itemSortDescriptors];
-  v18 = [v4 itemSortDescriptors];
-  v19 = v17;
-  v20 = v18;
+  itemSortDescriptors = [(MPModelRequest *)self itemSortDescriptors];
+  itemSortDescriptors2 = [equalCopy itemSortDescriptors];
+  v19 = itemSortDescriptors;
+  v20 = itemSortDescriptors2;
   v21 = v20;
   if (v19 == v20)
   {
@@ -400,10 +400,10 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v23 = [(MPModelRequest *)self sectionSortDescriptors];
-  v24 = [v4 sectionSortDescriptors];
-  v25 = v23;
-  v26 = v24;
+  sectionSortDescriptors = [(MPModelRequest *)self sectionSortDescriptors];
+  sectionSortDescriptors2 = [equalCopy sectionSortDescriptors];
+  v25 = sectionSortDescriptors;
+  v26 = sectionSortDescriptors2;
   v27 = v26;
   if (v25 == v26)
   {
@@ -419,10 +419,10 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v29 = [(MPModelLibraryRequest *)self allowedItemIdentifiers];
-  v30 = [v4 allowedItemIdentifiers];
-  v31 = v29;
-  v32 = v30;
+  allowedItemIdentifiers = [(MPModelLibraryRequest *)self allowedItemIdentifiers];
+  allowedItemIdentifiers2 = [equalCopy allowedItemIdentifiers];
+  v31 = allowedItemIdentifiers;
+  v32 = allowedItemIdentifiers2;
   v33 = v32;
   if (v31 == v32)
   {
@@ -438,10 +438,10 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v35 = [(MPModelLibraryRequest *)self allowedSectionIdentifiers];
-  v36 = [v4 allowedSectionIdentifiers];
-  v37 = v35;
-  v38 = v36;
+  allowedSectionIdentifiers = [(MPModelLibraryRequest *)self allowedSectionIdentifiers];
+  allowedSectionIdentifiers2 = [equalCopy allowedSectionIdentifiers];
+  v37 = allowedSectionIdentifiers;
+  v38 = allowedSectionIdentifiers2;
   v39 = v38;
   if (v37 == v38)
   {
@@ -457,10 +457,10 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v41 = [(MPModelLibraryRequest *)self scopedContainers];
-  v42 = [v4 scopedContainers];
-  v43 = v41;
-  v44 = v42;
+  scopedContainers = [(MPModelLibraryRequest *)self scopedContainers];
+  scopedContainers2 = [equalCopy scopedContainers];
+  v43 = scopedContainers;
+  v44 = scopedContainers2;
   v45 = v44;
   if (v43 == v44)
   {
@@ -476,24 +476,24 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v47 = [(MPModelLibraryRequest *)self contentRange];
-  if (v47 != [v4 contentRange])
+  contentRange = [(MPModelLibraryRequest *)self contentRange];
+  if (contentRange != [equalCopy contentRange])
   {
     goto LABEL_56;
   }
 
   [(MPModelLibraryRequest *)self contentRange];
   v49 = v48;
-  [v4 contentRange];
+  [equalCopy contentRange];
   if (v49 != v50)
   {
     goto LABEL_56;
   }
 
-  v51 = [(MPModelLibraryRequest *)self filterText];
-  v52 = [v4 filterText];
-  v53 = v51;
-  v54 = v52;
+  filterText = [(MPModelLibraryRequest *)self filterText];
+  filterText2 = [equalCopy filterText];
+  v53 = filterText;
+  v54 = filterText2;
   v55 = v54;
   if (v53 == v54)
   {
@@ -509,10 +509,10 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v57 = [(MPModelLibraryRequest *)self sectionFilterText];
-  v58 = [v4 sectionFilterText];
-  v59 = v57;
-  v60 = v58;
+  sectionFilterText = [(MPModelLibraryRequest *)self sectionFilterText];
+  sectionFilterText2 = [equalCopy sectionFilterText];
+  v59 = sectionFilterText;
+  v60 = sectionFilterText2;
   v61 = v60;
   if (v59 == v60)
   {
@@ -528,16 +528,16 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v63 = [(MPModelLibraryRequest *)self sortUsingAllowedItemIdentifiers];
-  if (v63 != [v4 sortUsingAllowedItemIdentifiers])
+  sortUsingAllowedItemIdentifiers = [(MPModelLibraryRequest *)self sortUsingAllowedItemIdentifiers];
+  if (sortUsingAllowedItemIdentifiers != [equalCopy sortUsingAllowedItemIdentifiers])
   {
     goto LABEL_56;
   }
 
-  v64 = [(MPModelLibraryRequest *)self mediaLibrary];
-  v65 = [v4 mediaLibrary];
-  v66 = v64;
-  v67 = v65;
+  mediaLibrary = [(MPModelLibraryRequest *)self mediaLibrary];
+  mediaLibrary2 = [equalCopy mediaLibrary];
+  v66 = mediaLibrary;
+  v67 = mediaLibrary2;
   v68 = v67;
   if (v66 == v67)
   {
@@ -553,18 +553,18 @@ void __58__MPModelLibraryRequest_setLegacyMediaQuery_forTransport___block_invoke
     }
   }
 
-  v70 = [(MPModelLibraryRequest *)self filteringOptions];
-  if (v70 != [v4 filteringOptions])
+  filteringOptions = [(MPModelLibraryRequest *)self filteringOptions];
+  if (filteringOptions != [equalCopy filteringOptions])
   {
 LABEL_56:
     v89 = 0;
     goto LABEL_57;
   }
 
-  v71 = [(MPModelLibraryRequest *)self itemPropertyFilters];
-  v72 = [v4 itemPropertyFilters];
-  v73 = v71;
-  v74 = v72;
+  itemPropertyFilters = [(MPModelLibraryRequest *)self itemPropertyFilters];
+  itemPropertyFilters2 = [equalCopy itemPropertyFilters];
+  v73 = itemPropertyFilters;
+  v74 = itemPropertyFilters2;
   v75 = v74;
   if (v73 == v74)
   {
@@ -580,10 +580,10 @@ LABEL_56:
     }
   }
 
-  v77 = [(MPModelLibraryRequest *)self sectionPropertyFilters];
-  v78 = [v4 sectionPropertyFilters];
-  v79 = v77;
-  v80 = v78;
+  sectionPropertyFilters = [(MPModelLibraryRequest *)self sectionPropertyFilters];
+  sectionPropertyFilters2 = [equalCopy sectionPropertyFilters];
+  v79 = sectionPropertyFilters;
+  v80 = sectionPropertyFilters2;
   v81 = v80;
   if (v79 == v80)
   {
@@ -599,10 +599,10 @@ LABEL_56:
     }
   }
 
-  v83 = [(MPModelLibraryRequest *)self scopedContainersPropertySet];
-  v84 = [v4 scopedContainersPropertySet];
-  v85 = v83;
-  v86 = v84;
+  scopedContainersPropertySet = [(MPModelLibraryRequest *)self scopedContainersPropertySet];
+  scopedContainersPropertySet2 = [equalCopy scopedContainersPropertySet];
+  v85 = scopedContainersPropertySet;
+  v86 = scopedContainersPropertySet2;
   v87 = v86;
   if (v85 == v86)
   {
@@ -618,10 +618,10 @@ LABEL_56:
     }
   }
 
-  v91 = [(MPModelLibraryRequest *)self legacyMediaQuery];
-  v92 = [v4 legacyMediaQuery];
-  v93 = v91;
-  v94 = v92;
+  legacyMediaQuery = [(MPModelLibraryRequest *)self legacyMediaQuery];
+  legacyMediaQuery2 = [equalCopy legacyMediaQuery];
+  v93 = legacyMediaQuery;
+  v94 = legacyMediaQuery2;
   if (v93 == v94)
   {
     v89 = 1;
@@ -636,11 +636,11 @@ LABEL_57:
   return v89;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = MPModelLibraryRequest;
-  v4 = [(MPModelRequest *)&v9 copyWithZone:a3];
+  v4 = [(MPModelRequest *)&v9 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -668,81 +668,81 @@ LABEL_57:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MPModelLibraryRequest;
-  [(MPModelRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_wantsDetailedKeepLocalRequestableResponse forKey:@"MPModelLibraryRequestWantsDetailedKeepLocalRequestableResponse"];
-  [v4 encodeBool:self->_sortUsingAllowedItemIdentifiers forKey:@"_MPModelLibraryRequestCodingKeySortUsingAllowedItemIdentifiers"];
-  [v4 encodeBool:self->_disableImplicitSectioning forKey:@"MPModelLibraryRequestDisableImplicitSectioning"];
-  [v4 encodeObject:self->_allowedItemIdentifiers forKey:@"MPModelLibraryRequestAllowedItemIdentifiers"];
-  [v4 encodeObject:self->_allowedSectionIdentifiers forKey:@"MPModelLibraryRequestAllowedSectionIdentifiers"];
-  [v4 encodeObject:self->_scopedContainers forKey:&stru_1F149ECA8];
-  [v4 encodeInteger:self->_contentRange.location forKey:@"MPModelLibraryRequestContentRangeLocation"];
-  [v4 encodeInteger:self->_contentRange.length forKey:@"MPModelLibraryRequestContentRangeLength"];
-  [v4 encodeInt64:self->_filteringOptions forKey:@"MPModelLibraryRequestFilteringOptions"];
-  [v4 encodeObject:self->_filterText forKey:@"MPModelLibraryRequestFilterText"];
-  [v4 encodeObject:self->_sectionFilterText forKey:@"MPModelLibraryRequestSectionFilterText"];
-  [v4 encodeObject:self->_mediaLibrary forKey:@"MPModelLibraryRequestMediaLibrary"];
-  [v4 encodeObject:self->_legacyMediaQuery forKey:@"MPModelLibraryRequestLegacyMediaQuery"];
-  [v4 encodeBool:self->_isUpgradedSmartPlaylistLegacyMediaQuery forKey:@"MPModelLibraryRequestCodingKeyIsUpgradedSmartPlaylistLegacyMediaQuery"];
-  [v4 encodeObject:self->_itemPropertyFilters forKey:@"_MPModelLibraryRequestPropertyFilter"];
-  [v4 encodeObject:self->_sectionPropertyFilters forKey:@"MPModelLibraryRequestSectionPropertyFilters"];
+  [(MPModelRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_wantsDetailedKeepLocalRequestableResponse forKey:@"MPModelLibraryRequestWantsDetailedKeepLocalRequestableResponse"];
+  [coderCopy encodeBool:self->_sortUsingAllowedItemIdentifiers forKey:@"_MPModelLibraryRequestCodingKeySortUsingAllowedItemIdentifiers"];
+  [coderCopy encodeBool:self->_disableImplicitSectioning forKey:@"MPModelLibraryRequestDisableImplicitSectioning"];
+  [coderCopy encodeObject:self->_allowedItemIdentifiers forKey:@"MPModelLibraryRequestAllowedItemIdentifiers"];
+  [coderCopy encodeObject:self->_allowedSectionIdentifiers forKey:@"MPModelLibraryRequestAllowedSectionIdentifiers"];
+  [coderCopy encodeObject:self->_scopedContainers forKey:&stru_1F149ECA8];
+  [coderCopy encodeInteger:self->_contentRange.location forKey:@"MPModelLibraryRequestContentRangeLocation"];
+  [coderCopy encodeInteger:self->_contentRange.length forKey:@"MPModelLibraryRequestContentRangeLength"];
+  [coderCopy encodeInt64:self->_filteringOptions forKey:@"MPModelLibraryRequestFilteringOptions"];
+  [coderCopy encodeObject:self->_filterText forKey:@"MPModelLibraryRequestFilterText"];
+  [coderCopy encodeObject:self->_sectionFilterText forKey:@"MPModelLibraryRequestSectionFilterText"];
+  [coderCopy encodeObject:self->_mediaLibrary forKey:@"MPModelLibraryRequestMediaLibrary"];
+  [coderCopy encodeObject:self->_legacyMediaQuery forKey:@"MPModelLibraryRequestLegacyMediaQuery"];
+  [coderCopy encodeBool:self->_isUpgradedSmartPlaylistLegacyMediaQuery forKey:@"MPModelLibraryRequestCodingKeyIsUpgradedSmartPlaylistLegacyMediaQuery"];
+  [coderCopy encodeObject:self->_itemPropertyFilters forKey:@"_MPModelLibraryRequestPropertyFilter"];
+  [coderCopy encodeObject:self->_sectionPropertyFilters forKey:@"MPModelLibraryRequestSectionPropertyFilters"];
 }
 
-- (MPModelLibraryRequest)initWithCoder:(id)a3
+- (MPModelLibraryRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = MPModelLibraryRequest;
-  v5 = [(MPModelRequest *)&v41 initWithCoder:v4];
+  v5 = [(MPModelRequest *)&v41 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_wantsDetailedKeepLocalRequestableResponse = [v4 decodeBoolForKey:@"MPModelLibraryRequestWantsDetailedKeepLocalRequestableResponse"];
-    v5->_sortUsingAllowedItemIdentifiers = [v4 decodeBoolForKey:@"_MPModelLibraryRequestCodingKeySortUsingAllowedItemIdentifiers"];
-    v5->_disableImplicitSectioning = [v4 decodeBoolForKey:@"MPModelLibraryRequestDisableImplicitSectioning"];
+    v5->_wantsDetailedKeepLocalRequestableResponse = [coderCopy decodeBoolForKey:@"MPModelLibraryRequestWantsDetailedKeepLocalRequestableResponse"];
+    v5->_sortUsingAllowedItemIdentifiers = [coderCopy decodeBoolForKey:@"_MPModelLibraryRequestCodingKeySortUsingAllowedItemIdentifiers"];
+    v5->_disableImplicitSectioning = [coderCopy decodeBoolForKey:@"MPModelLibraryRequestDisableImplicitSectioning"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:&stru_1F149ECA8];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:&stru_1F149ECA8];
     scopedContainers = v5->_scopedContainers;
     v5->_scopedContainers = v9;
 
-    v11 = [v4 decodeIntegerForKey:@"MPModelLibraryRequestContentRangeLocation"];
-    v12 = [v4 decodeIntegerForKey:@"MPModelLibraryRequestContentRangeLength"];
+    v11 = [coderCopy decodeIntegerForKey:@"MPModelLibraryRequestContentRangeLocation"];
+    v12 = [coderCopy decodeIntegerForKey:@"MPModelLibraryRequestContentRangeLength"];
     v5->_contentRange.location = v11;
     v5->_contentRange.length = v12;
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"MPModelLibraryRequestAllowedItemIdentifiers"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"MPModelLibraryRequestAllowedItemIdentifiers"];
     allowedItemIdentifiers = v5->_allowedItemIdentifiers;
     v5->_allowedItemIdentifiers = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"MPModelLibraryRequestAllowedSectionIdentifiers"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"MPModelLibraryRequestAllowedSectionIdentifiers"];
     allowedSectionIdentifiers = v5->_allowedSectionIdentifiers;
     v5->_allowedSectionIdentifiers = v21;
 
-    v5->_filteringOptions = [v4 decodeIntegerForKey:@"MPModelLibraryRequestFilteringOptions"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestFilterText"];
+    v5->_filteringOptions = [coderCopy decodeIntegerForKey:@"MPModelLibraryRequestFilteringOptions"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestFilterText"];
     filterText = v5->_filterText;
     v5->_filterText = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestSectionFilterText"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestSectionFilterText"];
     sectionFilterText = v5->_sectionFilterText;
     v5->_sectionFilterText = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestMediaLibrary"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestMediaLibrary"];
     mediaLibrary = v5->_mediaLibrary;
     v5->_mediaLibrary = v27;
 
-    v5->_isUpgradedSmartPlaylistLegacyMediaQuery = [v4 decodeBoolForKey:@"MPModelLibraryRequestCodingKeyIsUpgradedSmartPlaylistLegacyMediaQuery"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestLegacyMediaQuery"];
+    v5->_isUpgradedSmartPlaylistLegacyMediaQuery = [coderCopy decodeBoolForKey:@"MPModelLibraryRequestCodingKeyIsUpgradedSmartPlaylistLegacyMediaQuery"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestLegacyMediaQuery"];
     if (v29)
     {
       [(MPModelLibraryRequest *)v5 setLegacyMediaQuery:v29];
@@ -751,14 +751,14 @@ LABEL_57:
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"_MPModelLibraryRequestPropertyFilter"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"_MPModelLibraryRequestPropertyFilter"];
     itemPropertyFilters = v5->_itemPropertyFilters;
     v5->_itemPropertyFilters = v33;
 
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"MPModelLibraryRequestSectionPropertyFilters"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"MPModelLibraryRequestSectionPropertyFilters"];
     sectionPropertyFilters = v5->_sectionPropertyFilters;
     v5->_sectionPropertyFilters = v38;
   }
@@ -766,11 +766,11 @@ LABEL_57:
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MPModelLibraryRequestOperation);
-  [(MPModelLibraryRequestOperation *)v5 setResponseHandler:v4];
+  [(MPModelLibraryRequestOperation *)v5 setResponseHandler:handlerCopy];
   [(MPModelLibraryRequestOperation *)v5 setRequest:self];
 
   return v5;

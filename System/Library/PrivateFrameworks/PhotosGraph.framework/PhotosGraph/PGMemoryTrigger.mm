@@ -1,35 +1,35 @@
 @interface PGMemoryTrigger
-+ (id)dateNodesInGraph:(id)a3 startDayOffset:(int64_t)a4 endDayOffset:(int64_t)a5 fromLocalDate:(id)a6 inTimeZone:(id)a7;
-+ (id)localDateIntervalFromLocalDate:(id)a3 startDayOffset:(int64_t)a4 endDayOffset:(int64_t)a5 inTimeZone:(id)a6;
-+ (id)memoryTriggerResultsForMemoryNodes:(id)a3 withValidityInterval:(id)a4;
-+ (id)memoryTriggerResultsForMemoryNodesArray:(id)a3 withValidityInterval:(id)a4;
-+ (id)monthDayCalendarUnitValuesForLocalDateInterval:(id)a3;
-+ (id)monthDayNodesInGraph:(id)a3 startDayOffset:(int64_t)a4 endDayOffset:(int64_t)a5 fromLocalDate:(id)a6 inTimeZone:(id)a7;
-+ (id)singleDayValidityIntervalWithContext:(id)a3;
-+ (id)stringFromTriggerType:(unint64_t)a3;
-+ (id)validityIntervalForLocalStartDate:(id)a3 localEndDate:(id)a4 timeZone:(id)a5;
-+ (unint64_t)triggerTypeFromString:(id)a3;
++ (id)dateNodesInGraph:(id)graph startDayOffset:(int64_t)offset endDayOffset:(int64_t)dayOffset fromLocalDate:(id)date inTimeZone:(id)zone;
++ (id)localDateIntervalFromLocalDate:(id)date startDayOffset:(int64_t)offset endDayOffset:(int64_t)dayOffset inTimeZone:(id)zone;
++ (id)memoryTriggerResultsForMemoryNodes:(id)nodes withValidityInterval:(id)interval;
++ (id)memoryTriggerResultsForMemoryNodesArray:(id)array withValidityInterval:(id)interval;
++ (id)monthDayCalendarUnitValuesForLocalDateInterval:(id)interval;
++ (id)monthDayNodesInGraph:(id)graph startDayOffset:(int64_t)offset endDayOffset:(int64_t)dayOffset fromLocalDate:(id)date inTimeZone:(id)zone;
++ (id)singleDayValidityIntervalWithContext:(id)context;
++ (id)stringFromTriggerType:(unint64_t)type;
++ (id)validityIntervalForLocalStartDate:(id)date localEndDate:(id)endDate timeZone:(id)zone;
++ (unint64_t)triggerTypeFromString:(id)string;
 - (PGMemoryTrigger)init;
-- (PGMemoryTrigger)initWithLoggingConnection:(id)a3;
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (PGMemoryTrigger)initWithLoggingConnection:(id)connection;
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 - (unint64_t)triggerType;
 @end
 
 @implementation PGMemoryTrigger
 
-- (id)relevantFeatureNodesInFeatureNodes:(id)a3
+- (id)relevantFeatureNodesInFeatureNodes:(id)nodes
 {
-  v5 = a3;
+  nodesCopy = nodes;
   v6 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v6);
 }
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v12 = PGAbstractMethodException(self, a2);
   objc_exception_throw(v12);
 }
@@ -40,16 +40,16 @@
   objc_exception_throw(v2);
 }
 
-- (PGMemoryTrigger)initWithLoggingConnection:(id)a3
+- (PGMemoryTrigger)initWithLoggingConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = PGMemoryTrigger;
   v6 = [(PGMemoryTrigger *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_loggingConnection, a3);
+    objc_storeStrong(&v6->_loggingConnection, connection);
   }
 
   return v7;
@@ -58,32 +58,32 @@
 - (PGMemoryTrigger)init
 {
   v3 = +[PGLogging sharedLogging];
-  v4 = [v3 loggingConnection];
-  v5 = [(PGMemoryTrigger *)self initWithLoggingConnection:v4];
+  loggingConnection = [v3 loggingConnection];
+  v5 = [(PGMemoryTrigger *)self initWithLoggingConnection:loggingConnection];
 
   return v5;
 }
 
-+ (id)monthDayNodesInGraph:(id)a3 startDayOffset:(int64_t)a4 endDayOffset:(int64_t)a5 fromLocalDate:(id)a6 inTimeZone:(id)a7
++ (id)monthDayNodesInGraph:(id)graph startDayOffset:(int64_t)offset endDayOffset:(int64_t)dayOffset fromLocalDate:(id)date inTimeZone:(id)zone
 {
-  v12 = a3;
-  v13 = [a1 localDateIntervalFromLocalDate:a6 startDayOffset:a4 endDayOffset:a5 inTimeZone:a7];
-  v14 = [a1 monthDayCalendarUnitValuesForLocalDateInterval:v13];
-  v15 = [(PGGraphCalendarUnitNodeCollection *)PGGraphMonthDayNodeCollection calendarUnitNodesForUnitValues:v14 inGraph:v12];
+  graphCopy = graph;
+  v13 = [self localDateIntervalFromLocalDate:date startDayOffset:offset endDayOffset:dayOffset inTimeZone:zone];
+  v14 = [self monthDayCalendarUnitValuesForLocalDateInterval:v13];
+  v15 = [(PGGraphCalendarUnitNodeCollection *)PGGraphMonthDayNodeCollection calendarUnitNodesForUnitValues:v14 inGraph:graphCopy];
 
   return v15;
 }
 
-+ (id)monthDayCalendarUnitValuesForLocalDateInterval:(id)a3
++ (id)monthDayCalendarUnitValuesForLocalDateInterval:(id)interval
 {
-  v3 = a3;
+  intervalCopy = interval;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v3 startDate];
-  [v5 timeIntervalSince1970];
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSince1970];
   v7 = v6;
 
-  v8 = [v3 endDate];
-  [v8 timeIntervalSince1970];
+  endDate = [intervalCopy endDate];
+  [endDate timeIntervalSince1970];
   v10 = v9;
 
   while (v7 <= v10)
@@ -100,177 +100,177 @@
   return v4;
 }
 
-+ (id)dateNodesInGraph:(id)a3 startDayOffset:(int64_t)a4 endDayOffset:(int64_t)a5 fromLocalDate:(id)a6 inTimeZone:(id)a7
++ (id)dateNodesInGraph:(id)graph startDayOffset:(int64_t)offset endDayOffset:(int64_t)dayOffset fromLocalDate:(id)date inTimeZone:(id)zone
 {
-  v12 = a3;
-  v13 = [a1 localDateIntervalFromLocalDate:a6 startDayOffset:a4 endDayOffset:a5 inTimeZone:a7];
-  v14 = [v12 dateNodesForLocalDateInterval:v13];
+  graphCopy = graph;
+  v13 = [self localDateIntervalFromLocalDate:date startDayOffset:offset endDayOffset:dayOffset inTimeZone:zone];
+  v14 = [graphCopy dateNodesForLocalDateInterval:v13];
 
   return v14;
 }
 
-+ (id)localDateIntervalFromLocalDate:(id)a3 startDayOffset:(int64_t)a4 endDayOffset:(int64_t)a5 inTimeZone:(id)a6
++ (id)localDateIntervalFromLocalDate:(id)date startDayOffset:(int64_t)offset endDayOffset:(int64_t)dayOffset inTimeZone:(id)zone
 {
   v9 = MEMORY[0x277D27690];
-  v10 = a6;
-  v11 = [v9 universalDateFromLocalDate:a3 inTimeZone:v10];
-  v12 = [MEMORY[0x277D27690] dateByAddingDays:a4 toDate:v11];
-  v13 = [MEMORY[0x277D27690] dateByAddingDays:a5 toDate:v11];
-  v14 = [MEMORY[0x277D27690] localDateFromUniversalDate:v12 inTimeZone:v10];
-  v15 = [MEMORY[0x277D27690] localDateFromUniversalDate:v13 inTimeZone:v10];
+  zoneCopy = zone;
+  v11 = [v9 universalDateFromLocalDate:date inTimeZone:zoneCopy];
+  v12 = [MEMORY[0x277D27690] dateByAddingDays:offset toDate:v11];
+  v13 = [MEMORY[0x277D27690] dateByAddingDays:dayOffset toDate:v11];
+  v14 = [MEMORY[0x277D27690] localDateFromUniversalDate:v12 inTimeZone:zoneCopy];
+  v15 = [MEMORY[0x277D27690] localDateFromUniversalDate:v13 inTimeZone:zoneCopy];
 
   v16 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v14 endDate:v15];
 
   return v16;
 }
 
-+ (id)stringFromTriggerType:(unint64_t)a3
++ (id)stringFromTriggerType:(unint64_t)type
 {
-  if (a3 - 1 > 0x1A)
+  if (type - 1 > 0x1A)
   {
     return @"PGMemoryTriggerTypeUnknown";
   }
 
   else
   {
-    return off_27887EC60[a3 - 1];
+    return off_27887EC60[type - 1];
   }
 }
 
-+ (unint64_t)triggerTypeFromString:(id)a3
++ (unint64_t)triggerTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PGMemoryTriggerTypeHoliday"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeHoliday"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypePersonBirthday"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypePersonBirthday"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeFeatureCentricHoliday"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeFeatureCentricHoliday"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeSameDayInHistory"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeSameDayInHistory"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeEndOfYear"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeEndOfYear"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeBeginningOfMonth"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeBeginningOfMonth"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeSameWeekInHistory"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeSameWeekInHistory"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeBeginningOfSeason"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeBeginningOfSeason"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeSeasonInHistory"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeSeasonInHistory"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentMomentWithPerson"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentMomentWithPerson"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeThrowbackWeekInHistory"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeThrowbackWeekInHistory"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentHolidayCelebration"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentHolidayCelebration"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentMomentWithSocialGroup"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentMomentWithSocialGroup"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentTrip"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentTrip"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypePersonAnniversary"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypePersonAnniversary"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentHighlights"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentHighlights"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentSyndicatedAssets"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentSyndicatedAssets"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeUpcomingHoliday"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeUpcomingHoliday"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentMeaningfulEvent"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentMeaningfulEvent"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeUpcomingCalendarEvent"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeUpcomingCalendarEvent"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeLastWeekend"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeLastWeekend"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeLastWeek"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeLastWeek"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentBreakoutOfRoutine"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentBreakoutOfRoutine"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeUpcomingPersonCentricHoliday"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeUpcomingPersonCentricHoliday"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeUpcomingBirthday"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeUpcomingBirthday"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeUpcomingAnniversary"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeUpcomingAnniversary"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"PGMemoryTriggerTypeRecentTrendsMoment"])
+  else if ([stringCopy isEqualToString:@"PGMemoryTriggerTypeRecentTrendsMoment"])
   {
     v4 = 27;
   }
@@ -283,17 +283,17 @@
   return v4;
 }
 
-+ (id)memoryTriggerResultsForMemoryNodesArray:(id)a3 withValidityInterval:(id)a4
++ (id)memoryTriggerResultsForMemoryNodesArray:(id)array withValidityInterval:(id)interval
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  intervalCopy = interval;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = arrayCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -310,7 +310,7 @@
 
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [PGMemoryTriggerResult alloc];
-        v15 = [(PGMemoryTriggerResult *)v14 initWithMemoryNode:v13 validityInterval:v6, v18];
+        v15 = [(PGMemoryTriggerResult *)v14 initWithMemoryNode:v13 validityInterval:intervalCopy, v18];
         [v7 addObject:v15];
       }
 
@@ -325,40 +325,40 @@
   return v7;
 }
 
-+ (id)memoryTriggerResultsForMemoryNodes:(id)a3 withValidityInterval:(id)a4
++ (id)memoryTriggerResultsForMemoryNodes:(id)nodes withValidityInterval:(id)interval
 {
-  v6 = a4;
-  v7 = [a3 array];
-  v8 = [a1 memoryTriggerResultsForMemoryNodesArray:v7 withValidityInterval:v6];
+  intervalCopy = interval;
+  array = [nodes array];
+  v8 = [self memoryTriggerResultsForMemoryNodesArray:array withValidityInterval:intervalCopy];
 
   return v8;
 }
 
-+ (id)singleDayValidityIntervalWithContext:(id)a3
++ (id)singleDayValidityIntervalWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 localDate];
-  v6 = [MEMORY[0x277D27690] startOfDayForDate:v5];
-  v7 = [MEMORY[0x277D27690] endOfDayForDate:v5];
-  v8 = [v4 timeZone];
+  contextCopy = context;
+  localDate = [contextCopy localDate];
+  v6 = [MEMORY[0x277D27690] startOfDayForDate:localDate];
+  v7 = [MEMORY[0x277D27690] endOfDayForDate:localDate];
+  timeZone = [contextCopy timeZone];
 
-  v9 = [a1 validityIntervalForLocalStartDate:v6 localEndDate:v7 timeZone:v8];
+  v9 = [self validityIntervalForLocalStartDate:v6 localEndDate:v7 timeZone:timeZone];
 
   return v9;
 }
 
-+ (id)validityIntervalForLocalStartDate:(id)a3 localEndDate:(id)a4 timeZone:(id)a5
++ (id)validityIntervalForLocalStartDate:(id)date localEndDate:(id)endDate timeZone:(id)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PGMemoryDate alloc] initWithLocalDate:v9];
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  dateCopy = date;
+  v10 = [[PGMemoryDate alloc] initWithLocalDate:dateCopy];
 
-  v11 = [(PGMemoryDate *)v10 universalDateInTimeZone:v7];
-  v12 = [[PGMemoryDate alloc] initWithLocalDate:v8];
+  v11 = [(PGMemoryDate *)v10 universalDateInTimeZone:zoneCopy];
+  v12 = [[PGMemoryDate alloc] initWithLocalDate:endDateCopy];
 
-  v13 = [(PGMemoryDate *)v12 universalDateInTimeZone:v7];
+  v13 = [(PGMemoryDate *)v12 universalDateInTimeZone:zoneCopy];
 
   v14 = [v13 laterDate:v11];
   v15 = [v14 isEqualToDate:v11];

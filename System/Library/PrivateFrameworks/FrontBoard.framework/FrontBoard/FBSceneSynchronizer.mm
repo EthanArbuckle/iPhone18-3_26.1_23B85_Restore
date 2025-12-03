@@ -1,70 +1,70 @@
 @interface FBSceneSynchronizer
-+ (id)detachedSynchronizerWithIdentifier:(id)a3;
-+ (id)synchronizerForViewServiceWithProcessIdentifier:(id)a3;
++ (id)detachedSynchronizerWithIdentifier:(id)identifier;
++ (id)synchronizerForViewServiceWithProcessIdentifier:(id)identifier;
 - (RBSProcessHandle)processHandle;
 - (id)_dispatcher;
-- (id)_initWithIdentifier:(void *)a3 workspaceQueue:(void *)a4 dispatcher:;
+- (id)_initWithIdentifier:(void *)identifier workspaceQueue:(void *)queue dispatcher:;
 - (id)_workspaceQueue;
 - (id)description;
-- (void)_setProcessHandle:(uint64_t)a1;
+- (void)_setProcessHandle:(uint64_t)handle;
 - (void)_setWaitingForConnect;
-- (void)performAsyncOnSendingQueue:(id)a3;
+- (void)performAsyncOnSendingQueue:(id)queue;
 @end
 
 @implementation FBSceneSynchronizer
 
 - (id)_dispatcher
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[4];
+    self = self[4];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_setWaitingForConnect
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 48));
-    if ((*(a1 + 52) & 1) == 0)
+    os_unfair_lock_lock((self + 48));
+    if ((*(self + 52) & 1) == 0)
     {
-      *(a1 + 52) = 1;
-      v2 = *(a1 + 40);
+      *(self + 52) = 1;
+      v2 = *(self + 40);
       if (v2)
       {
         v3 = [v2 pid];
         if (v3 == getpid())
         {
-          v4 = [(FBWorkspaceEventDispatcher *)*(a1 + 32) domain];
-          [(FBWorkspaceDomain *)v4 injectEndpointToFBSWorkspace];
+          domain = [(FBWorkspaceEventDispatcher *)*(self + 32) domain];
+          [(FBWorkspaceDomain *)domain injectEndpointToFBSWorkspace];
         }
       }
     }
 
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_unlock((self + 48));
   }
 }
 
 - (id)_workspaceQueue
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[2];
+    self = self[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_initWithIdentifier:(void *)a3 workspaceQueue:(void *)a4 dispatcher:
+- (id)_initWithIdentifier:(void *)identifier workspaceQueue:(void *)queue dispatcher:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  identifierCopy = identifier;
+  queueCopy = queue;
+  if (self)
   {
     v10 = v7;
     v11 = MEMORY[0x1E696AEC0];
@@ -90,7 +90,7 @@
       [FBSceneSynchronizer _initWithIdentifier:v10 workspaceQueue:sel__initWithIdentifier_workspaceQueue_dispatcher_ dispatcher:?];
     }
 
-    v13 = v8;
+    v13 = identifierCopy;
     if (!v13)
     {
       [FBSceneSynchronizer _initWithIdentifier:? workspaceQueue:? dispatcher:?];
@@ -103,7 +103,7 @@
       [FBSceneSynchronizer _initWithIdentifier:v14 workspaceQueue:sel__initWithIdentifier_workspaceQueue_dispatcher_ dispatcher:?];
     }
 
-    v15 = v9;
+    v15 = queueCopy;
     if (v15)
     {
       objc_opt_class();
@@ -113,39 +113,39 @@
       }
     }
 
-    v27.receiver = a1;
+    v27.receiver = self;
     v27.super_class = FBSceneSynchronizer;
-    a1 = objc_msgSendSuper2(&v27, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v27, sel_init);
+    if (self)
     {
       v16 = [v10 copy];
-      v17 = a1[1];
-      a1[1] = v16;
+      v17 = self[1];
+      self[1] = v16;
 
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, identifier);
       v18 = MEMORY[0x1E698F480];
-      v19 = a1[2];
+      v19 = self[2];
       v20 = +[FBWorkspaceEventDispatcher callOutQueue];
       v21 = [v18 queueWithDispatchQueue:v19 targetQueue:v20];
-      v22 = a1[3];
-      a1[3] = v21;
+      v22 = self[3];
+      self[3] = v21;
 
-      objc_storeStrong(a1 + 4, a4);
-      v23 = a1[5];
-      a1[5] = 0;
+      objc_storeStrong(self + 4, queue);
+      v23 = self[5];
+      self[5] = 0;
 
-      *(a1 + 12) = 0;
-      *(a1 + 52) = 0;
+      *(self + 12) = 0;
+      *(self + 52) = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_setProcessHandle:(uint64_t)a1
+- (void)_setProcessHandle:(uint64_t)handle
 {
   v4 = a2;
-  if (!a1)
+  if (!handle)
   {
 LABEL_11:
 
@@ -166,32 +166,32 @@ LABEL_11:
     [(FBSceneSynchronizer *)v6 _setProcessHandle:?];
   }
 
-  os_unfair_lock_lock((a1 + 48));
-  v7 = *(a1 + 40);
+  os_unfair_lock_lock((handle + 48));
+  v7 = *(handle + 40);
   v8 = v7;
   if (!v7)
   {
 LABEL_7:
-    objc_storeStrong((a1 + 40), a2);
-    if (*(a1 + 52) == 1)
+    objc_storeStrong((handle + 40), a2);
+    if (*(handle + 52) == 1)
     {
       v13 = [v6 pid];
       if (v13 == getpid())
       {
-        v14 = [(FBWorkspaceEventDispatcher *)*(a1 + 32) domain];
-        [(FBWorkspaceDomain *)v14 injectEndpointToFBSWorkspace];
+        domain = [(FBWorkspaceEventDispatcher *)*(handle + 32) domain];
+        [(FBWorkspaceDomain *)domain injectEndpointToFBSWorkspace];
       }
     }
 
-    os_unfair_lock_unlock((a1 + 48));
+    os_unfair_lock_unlock((handle + 48));
 
     v4 = v16;
     goto LABEL_11;
   }
 
-  v9 = [v7 identity];
-  v10 = [v6 identity];
-  if ([v9 isEqual:v10])
+  identity = [v7 identity];
+  identity2 = [v6 identity];
+  if ([identity isEqual:identity2])
   {
     v11 = [v8 pid];
     v12 = [v6 pid];
@@ -206,7 +206,7 @@ LABEL_7:
   {
   }
 
-  os_unfair_lock_unlock((a1 + 48));
+  os_unfair_lock_unlock((handle + 48));
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"new processHandle=%@ mismatches previous=%@", v6, v8];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -227,24 +227,24 @@ LABEL_7:
   return v3;
 }
 
-- (void)performAsyncOnSendingQueue:(id)a3
+- (void)performAsyncOnSendingQueue:(id)queue
 {
-  if (a3)
+  if (queue)
   {
     [(BSServiceDispatchQueue *)self->_workspaceQueue performAsync:?];
   }
 }
 
-+ (id)synchronizerForViewServiceWithProcessIdentifier:(id)a3
++ (id)synchronizerForViewServiceWithProcessIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    [(FBSceneSynchronizer *)a2 synchronizerForViewServiceWithProcessIdentifier:a1];
+    [(FBSceneSynchronizer *)a2 synchronizerForViewServiceWithProcessIdentifier:self];
   }
 
-  v6 = v5;
+  v6 = identifierCopy;
   objc_opt_class();
   v7 = objc_opt_respondsToSelector();
   v8 = MEMORY[0x1E69C75D0];
@@ -265,8 +265,8 @@ LABEL_4:
       v15 = v14;
       if (v13)
       {
-        v16 = [v13 workspace];
-        v17 = [v16 synchronizer];
+        workspace = [v13 workspace];
+        synchronizer = [workspace synchronizer];
 
 LABEL_16:
         goto LABEL_17;
@@ -286,7 +286,7 @@ LABEL_16:
       }
 
 LABEL_15:
-      v17 = 0;
+      synchronizer = 0;
       goto LABEL_16;
     }
   }
@@ -307,9 +307,9 @@ LABEL_15:
     v12 = FBLogProcessWorkspace();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v6 rbs_pid];
+      rbs_pid = [v6 rbs_pid];
       *buf = 67109378;
-      *v26 = v18;
+      *v26 = rbs_pid;
       *&v26[4] = 2114;
       *&v26[6] = v11;
       _os_log_impl(&dword_1A89DD000, v12, OS_LOG_TYPE_DEFAULT, "failed to lookup viewService process with pid=%i : error=%{public}@", buf, 0x12u);
@@ -318,20 +318,20 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v17 = 0;
+  synchronizer = 0;
 LABEL_17:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return synchronizer;
 }
 
-+ (id)detachedSynchronizerWithIdentifier:(id)a3
++ (id)detachedSynchronizerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  if (!v4)
+  if (!identifierCopy)
   {
     v13 = NSStringFromClass(v6);
     v14 = [v5 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"identifier", v13];
@@ -349,15 +349,15 @@ LABEL_17:
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(FBSceneSynchronizer *)v4 detachedSynchronizerWithIdentifier:a2];
+    [(FBSceneSynchronizer *)identifierCopy detachedSynchronizerWithIdentifier:a2];
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.frontboard.detached-scene-synchronizer<%@>", v4];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.frontboard.detached-scene-synchronizer<%@>", identifierCopy];
   v8 = MEMORY[0x1E698F4D0];
   v9 = [MEMORY[0x1E698F500] serviceWithClass:33];
-  v10 = [v8 queueWithName:v7 serviceQuality:v9];
+  v10 = [v8 queueWithName:identifierCopy serviceQuality:v9];
 
-  v11 = [[FBSceneSynchronizer alloc] _initWithIdentifier:v4 workspaceQueue:v10 dispatcher:0];
+  v11 = [[FBSceneSynchronizer alloc] _initWithIdentifier:identifierCopy workspaceQueue:v10 dispatcher:0];
 
   return v11;
 }

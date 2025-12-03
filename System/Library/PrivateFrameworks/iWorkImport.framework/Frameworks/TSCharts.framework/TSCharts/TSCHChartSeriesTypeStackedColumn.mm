@@ -4,9 +4,9 @@
 - (id)g_genericToSpecificPropertyMapStackedColumn;
 - (id)genericToSpecificPropertyMap;
 - (id)userInterfaceName;
-- (id)userInterfaceNameForLabelPosition:(id)a3;
-- (unint64_t)numberOfSeriesForCalculatingBarWidth:(id)a3;
-- (unsigned)filterChartLabelPosition:(unsigned int)a3;
+- (id)userInterfaceNameForLabelPosition:(id)position;
+- (unint64_t)numberOfSeriesForCalculatingBarWidth:(id)width;
+- (unsigned)filterChartLabelPosition:(unsigned int)position;
 @end
 
 @implementation TSCHChartSeriesTypeStackedColumn
@@ -31,10 +31,10 @@
   return v2;
 }
 
-- (id)userInterfaceNameForLabelPosition:(id)a3
+- (id)userInterfaceNameForLabelPosition:(id)position
 {
-  v4 = a3;
-  v9 = objc_msgSend_intValue(v4, v5, v6, v7, v8);
+  positionCopy = position;
+  v9 = objc_msgSend_intValue(positionCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_filterChartLabelPosition_(self, v10, v11, v12, v13, v9);
   if (v14 == objc_msgSend_filterChartLabelPosition_(self, v15, v16, v17, v18, 5))
   {
@@ -66,11 +66,11 @@ LABEL_8:
   return v44;
 }
 
-- (unsigned)filterChartLabelPosition:(unsigned int)a3
+- (unsigned)filterChartLabelPosition:(unsigned int)position
 {
-  if ((a3 & 0xFFFFFF8C) != 0)
+  if ((position & 0xFFFFFF8C) != 0)
   {
-    return (a3 & 0xFFFFFF8C) + 1;
+    return (position & 0xFFFFFF8C) + 1;
   }
 
   else
@@ -94,11 +94,11 @@ LABEL_8:
   return qword_280A46E10;
 }
 
-- (unint64_t)numberOfSeriesForCalculatingBarWidth:(id)a3
+- (unint64_t)numberOfSeriesForCalculatingBarWidth:(id)width
 {
   v4.receiver = self;
   v4.super_class = TSCHChartSeriesTypeStackedColumn;
-  return [(TSCHChartSeriesType *)&v4 numberOfSeriesForCalculatingBarWidth:a3]!= 0;
+  return [(TSCHChartSeriesType *)&v4 numberOfSeriesForCalculatingBarWidth:width]!= 0;
 }
 
 - (id)elementBuilder

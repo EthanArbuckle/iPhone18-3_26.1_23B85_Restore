@@ -1,8 +1,8 @@
 @interface PFScheduledOperationScheduler
 + (PFScheduledOperationScheduler)weeklyScheduler;
 - (PFScheduledOperationScheduler)init;
-- (PFScheduledOperationScheduler)initWithSchedule:(id)a3 scheduleStorage:(id)a4;
-- (void)evaluateOperationWithIdentifier:(id)a3 evaluationHandler:(id)a4;
+- (PFScheduledOperationScheduler)initWithSchedule:(id)schedule scheduleStorage:(id)storage;
+- (void)evaluateOperationWithIdentifier:(id)identifier evaluationHandler:(id)handler;
 @end
 
 @implementation PFScheduledOperationScheduler
@@ -19,24 +19,24 @@
   return v3;
 }
 
-- (PFScheduledOperationScheduler)initWithSchedule:(id)a3 scheduleStorage:(id)a4
+- (PFScheduledOperationScheduler)initWithSchedule:(id)schedule scheduleStorage:(id)storage
 {
   swift_getObjectType();
   swift_getObjectType();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
 
-  return sub_1D9154438(a3, a4, self);
+  return sub_1D9154438(schedule, storage, self);
 }
 
-- (void)evaluateOperationWithIdentifier:(id)a3 evaluationHandler:(id)a4
+- (void)evaluateOperationWithIdentifier:(id)identifier evaluationHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_1D917820C();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_1D9154538(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_1D9154538(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

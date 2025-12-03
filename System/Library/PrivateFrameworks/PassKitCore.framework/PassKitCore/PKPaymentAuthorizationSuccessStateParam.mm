@@ -1,16 +1,16 @@
 @interface PKPaymentAuthorizationSuccessStateParam
-+ (id)paramWithPeerPaymentTransactionMetadata:(id)a3;
++ (id)paramWithPeerPaymentTransactionMetadata:(id)metadata;
 @end
 
 @implementation PKPaymentAuthorizationSuccessStateParam
 
-+ (id)paramWithPeerPaymentTransactionMetadata:(id)a3
++ (id)paramWithPeerPaymentTransactionMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [a1 param];
-  [v5 setPeerPaymentTransactionMetadata:v4];
+  metadataCopy = metadata;
+  param = [self param];
+  [param setPeerPaymentTransactionMetadata:metadataCopy];
 
-  return v5;
+  return param;
 }
 
 @end

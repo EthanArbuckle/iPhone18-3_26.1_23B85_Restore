@@ -1,28 +1,28 @@
 @interface SBScaleIconZoomAnimator
-+ (BOOL)validateAnimationContainer:(id)a3 targetIcon:(id)a4;
++ (BOOL)validateAnimationContainer:(id)container targetIcon:(id)icon;
 - (CGPoint)_referenceIconImageCenter;
-- (CGPoint)_targetIconScaleForZoomFraction:(double)a3;
+- (CGPoint)_targetIconScaleForZoomFraction:(double)fraction;
 - (CGPoint)_zoomedIconCenter;
 - (CGPoint)targetIconCenter;
 - (CGPoint)zoomScaleDimension;
 - (CGPoint)zoomedTargetIconCenter;
 - (CGRect)_zoomedFrame;
 - (SBIconView)targetIconView;
-- (SBScaleIconZoomAnimator)initWithAnimationContainer:(id)a3 targetIcon:(id)a4;
+- (SBScaleIconZoomAnimator)initWithAnimationContainer:(id)container targetIcon:(id)icon;
 - (UIView)targetIconContainerView;
-- (double)_homeScreenScaleForZoomFraction:(double)a3;
+- (double)_homeScreenScaleForZoomFraction:(double)fraction;
 - (double)zoomScale;
 - (unint64_t)_numberOfSignificantAnimations;
-- (void)_applyIconGridFadeFraction:(double)a3;
-- (void)_applyVisualAltitudeFraction:(double)a3;
-- (void)_applyZoomFraction:(double)a3;
+- (void)_applyIconGridFadeFraction:(double)fraction;
+- (void)_applyVisualAltitudeFraction:(double)fraction;
+- (void)_applyZoomFraction:(double)fraction;
 - (void)_cleanupAnimation;
-- (void)_configureTargetIconPositioningView:(id)a3;
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7;
+- (void)_configureTargetIconPositioningView:(id)view;
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion;
 - (void)_prepareAnimation;
-- (void)_setAnimationFraction:(double)a3;
-- (void)_setIconAlpha:(double)a3;
-- (void)_setZoomScale:(CGPoint)a3;
+- (void)_setAnimationFraction:(double)fraction;
+- (void)_setIconAlpha:(double)alpha;
+- (void)_setZoomScale:(CGPoint)scale;
 @end
 
 @implementation SBScaleIconZoomAnimator
@@ -32,8 +32,8 @@
   targetIconView = self->_targetIconView;
   if (!targetIconView)
   {
-    v4 = [(SBScaleIconZoomAnimator *)self referenceIconView];
-    v5 = [v4 matchingIconViewByAddingConfigurationOptions:12 removingConfigurationOptions:0];
+    referenceIconView = [(SBScaleIconZoomAnimator *)self referenceIconView];
+    v5 = [referenceIconView matchingIconViewByAddingConfigurationOptions:12 removingConfigurationOptions:0];
     v6 = self->_targetIconView;
     self->_targetIconView = v5;
 
@@ -45,7 +45,7 @@
 
 - (void)_prepareAnimation
 {
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   OUTLINED_FUNCTION_0_10();
@@ -56,8 +56,8 @@
 
 - (CGPoint)_referenceIconImageCenter
 {
-  v2 = [(SBScaleIconZoomAnimator *)self referenceIconView];
-  [v2 iconImageCenter];
+  referenceIconView = [(SBScaleIconZoomAnimator *)self referenceIconView];
+  [referenceIconView iconImageCenter];
   v4 = v3;
   v6 = v5;
 
@@ -70,13 +70,13 @@
 
 - (UIView)targetIconContainerView
 {
-  v3 = [(SBIconAnimator *)self animationContainer];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 targetIconContainerView], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  animationContainer = [(SBIconAnimator *)self animationContainer];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([animationContainer targetIconContainerView], (defaultTargetIconContainerView = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v4 = [(SBScaleIconZoomAnimator *)self defaultTargetIconContainerView];
+    defaultTargetIconContainerView = [(SBScaleIconZoomAnimator *)self defaultTargetIconContainerView];
   }
 
-  return v4;
+  return defaultTargetIconContainerView;
 }
 
 - (CGPoint)_zoomedIconCenter
@@ -92,11 +92,11 @@
 - (void)_cleanupAnimation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self->_scalingView layer];
-  [v3 setAnchorPoint:{0.5, 0.5}];
+  layer = [(UIView *)self->_scalingView layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  v4 = [(SBIconAnimator *)self animationContainer];
-  [v4 returnScalingView];
+  animationContainer = [(SBIconAnimator *)self animationContainer];
+  [animationContainer returnScalingView];
 
   scalingView = self->_scalingView;
   self->_scalingView = 0;
@@ -108,13 +108,13 @@
   targetIconView = self->_targetIconView;
   self->_targetIconView = 0;
 
-  v8 = [(SBScaleIconZoomAnimator *)self animationCompletions];
-  v9 = [v8 copy];
+  animationCompletions = [(SBScaleIconZoomAnimator *)self animationCompletions];
+  v9 = [animationCompletions copy];
 
   if ([v9 count])
   {
-    v10 = [(SBScaleIconZoomAnimator *)self animationCompletions];
-    [v10 removeAllObjects];
+    animationCompletions2 = [(SBScaleIconZoomAnimator *)self animationCompletions];
+    [animationCompletions2 removeAllObjects];
 
     v19 = 0u;
     v20 = 0u;
@@ -163,26 +163,26 @@
   [(SBIconZoomAnimator *)&v16 _cleanupAnimation];
 }
 
-+ (BOOL)validateAnimationContainer:(id)a3 targetIcon:(id)a4
++ (BOOL)validateAnimationContainer:(id)container targetIcon:(id)icon
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  containerCopy = container;
+  iconCopy = icon;
+  v7 = iconCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (containerCopy && iconCopy)
   {
-    v9 = [v5 currentIconListView];
-    v10 = [v9 displayedIconViewForIcon:v7];
+    currentIconListView = [containerCopy currentIconListView];
+    v10 = [currentIconListView displayedIconViewForIcon:v7];
     if (v10)
     {
-      v11 = v10;
+      dockIconListView = v10;
       v8 = 1;
     }
 
     else
     {
-      v11 = [v5 dockIconListView];
-      v12 = [v11 displayedIconViewForIcon:v7];
+      dockIconListView = [containerCopy dockIconListView];
+      v12 = [dockIconListView displayedIconViewForIcon:v7];
       v8 = v12 != 0;
     }
   }
@@ -190,20 +190,20 @@
   return v8;
 }
 
-- (SBScaleIconZoomAnimator)initWithAnimationContainer:(id)a3 targetIcon:(id)a4
+- (SBScaleIconZoomAnimator)initWithAnimationContainer:(id)container targetIcon:(id)icon
 {
-  v7 = a4;
+  iconCopy = icon;
   v15.receiver = self;
   v15.super_class = SBScaleIconZoomAnimator;
-  v8 = [(SBIconZoomAnimator *)&v15 initWithAnimationContainer:a3];
+  v8 = [(SBIconZoomAnimator *)&v15 initWithAnimationContainer:container];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_targetIcon, a4);
-    v10 = [(SBIcon *)v9->_targetIcon nodeIdentifier];
-    if (v10)
+    objc_storeStrong(&v8->_targetIcon, icon);
+    nodeIdentifier = [(SBIcon *)v9->_targetIcon nodeIdentifier];
+    if (nodeIdentifier)
     {
-      v11 = [MEMORY[0x1E695DFD8] setWithObject:v10];
+      v11 = [MEMORY[0x1E695DFD8] setWithObject:nodeIdentifier];
       [(SBIconZoomAnimator *)v9 setCriticalIconNodeIdentifiers:v11];
     }
 
@@ -226,11 +226,11 @@
   return result;
 }
 
-- (void)_setZoomScale:(CGPoint)a3
+- (void)_setZoomScale:(CGPoint)scale
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBScaleIconZoomAnimator *)self _forceSquareZoomDimension];
+  y = scale.y;
+  x = scale.x;
+  _forceSquareZoomDimension = [(SBScaleIconZoomAnimator *)self _forceSquareZoomDimension];
   if (x >= y)
   {
     v7 = y;
@@ -241,7 +241,7 @@
     v7 = x;
   }
 
-  if (v6)
+  if (_forceSquareZoomDimension)
   {
     v8 = v7;
   }
@@ -251,7 +251,7 @@
     v8 = x;
   }
 
-  if (!v6)
+  if (!_forceSquareZoomDimension)
   {
     v7 = y;
   }
@@ -260,24 +260,24 @@
   self->_zoomScaleDimension.y = v7;
 }
 
-- (void)_configureTargetIconPositioningView:(id)a3
+- (void)_configureTargetIconPositioningView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
-  [v5 bounds];
-  [v4 setFrame:?];
+  viewCopy = view;
+  targetIconContainerView = [(SBScaleIconZoomAnimator *)self targetIconContainerView];
+  [targetIconContainerView bounds];
+  [viewCopy setFrame:?];
 
-  [v5 addSubview:self->_targetIconPositioningView];
+  [targetIconContainerView addSubview:self->_targetIconPositioningView];
 }
 
-- (void)_setAnimationFraction:(double)a3
+- (void)_setAnimationFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = SBScaleIconZoomAnimator;
   [(SBIconZoomAnimator *)&v5 _setAnimationFraction:?];
-  [(SBScaleIconZoomAnimator *)self _applyZoomFraction:a3];
-  [(SBScaleIconZoomAnimator *)self _applyVisualAltitudeFraction:a3];
-  [(SBScaleIconZoomAnimator *)self _applyIconGridFadeFraction:a3];
+  [(SBScaleIconZoomAnimator *)self _applyZoomFraction:fraction];
+  [(SBScaleIconZoomAnimator *)self _applyVisualAltitudeFraction:fraction];
+  [(SBScaleIconZoomAnimator *)self _applyIconGridFadeFraction:fraction];
 }
 
 - (unint64_t)_numberOfSignificantAnimations
@@ -287,16 +287,16 @@
   return [(SBIconZoomAnimator *)&v3 _numberOfSignificantAnimations]+ 3;
 }
 
-- (void)_performAnimationToFraction:(double)a3 withCentralAnimationSettings:(id)a4 delay:(double)a5 alreadyAnimating:(BOOL)a6 sharedCompletion:(id)a7
+- (void)_performAnimationToFraction:(double)fraction withCentralAnimationSettings:(id)settings delay:(double)delay alreadyAnimating:(BOOL)animating sharedCompletion:(id)completion
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a7;
+  animatingCopy = animating;
+  settingsCopy = settings;
+  completionCopy = completion;
   v64.receiver = self;
   v64.super_class = SBScaleIconZoomAnimator;
-  [(SBIconZoomAnimator *)&v64 _performAnimationToFraction:v12 withCentralAnimationSettings:v8 delay:v13 alreadyAnimating:a3 sharedCompletion:a5];
-  v53 = v8;
-  if (v8)
+  [(SBIconZoomAnimator *)&v64 _performAnimationToFraction:settingsCopy withCentralAnimationSettings:animatingCopy delay:completionCopy alreadyAnimating:fraction sharedCompletion:delay];
+  v53 = animatingCopy;
+  if (animatingCopy)
   {
     v14 = 6;
   }
@@ -306,69 +306,69 @@
     v14 = 2;
   }
 
-  if (v8)
+  if (animatingCopy)
   {
-    a5 = 0.0;
+    delay = 0.0;
   }
 
-  v55 = v12;
-  v15 = [v12 BSAnimationSettings];
-  v16 = [v15 mutableCopy];
+  v55 = settingsCopy;
+  bSAnimationSettings = [settingsCopy BSAnimationSettings];
+  v16 = [bSAnimationSettings mutableCopy];
   [v16 delay];
-  [v16 setDelay:a5 + v17];
-  if (v13)
+  [v16 setDelay:delay + v17];
+  if (completionCopy)
   {
-    v18 = [(SBScaleIconZoomAnimator *)self animationCompletions];
-    v19 = [v13 copy];
+    animationCompletions = [(SBScaleIconZoomAnimator *)self animationCompletions];
+    v19 = [completionCopy copy];
     v20 = _Block_copy(v19);
-    [v18 addObject:v20];
+    [animationCompletions addObject:v20];
   }
 
-  v21 = [(SBScaleIconZoomAnimator *)self homeScreenScaleAnimator];
+  homeScreenScaleAnimator = [(SBScaleIconZoomAnimator *)self homeScreenScaleAnimator];
 
   v22 = &OBJC_INSTANCE_METHODS_SBWidgetIconResizeGestureHandlerDelegate;
   v54 = v16;
-  if (v21)
+  if (homeScreenScaleAnimator)
   {
-    v23 = [(SBScaleIconZoomAnimator *)self homeScreenScaleAnimator];
-    [v23 reverse];
+    homeScreenScaleAnimator2 = [(SBScaleIconZoomAnimator *)self homeScreenScaleAnimator];
+    [homeScreenScaleAnimator2 reverse];
 
-    v24 = [(SBScaleIconZoomAnimator *)self targetIconScaleXAnimator];
-    [v24 reverse];
+    targetIconScaleXAnimator = [(SBScaleIconZoomAnimator *)self targetIconScaleXAnimator];
+    [targetIconScaleXAnimator reverse];
 
-    v25 = [(SBScaleIconZoomAnimator *)self targetIconScaleYAnimator];
-    [v25 reverse];
+    targetIconScaleYAnimator = [(SBScaleIconZoomAnimator *)self targetIconScaleYAnimator];
+    [targetIconScaleYAnimator reverse];
   }
 
   else
   {
     v51 = v14;
-    v52 = v13;
+    v52 = completionCopy;
     v26 = dispatch_group_create();
     dispatch_group_enter(v26);
-    [(SBScaleIconZoomAnimator *)self _homeScreenScaleForZoomFraction:a3];
-    v27 = [(UIView *)self->_scalingView _outermostLayer];
+    [(SBScaleIconZoomAnimator *)self _homeScreenScaleForZoomFraction:fraction];
+    _outermostLayer = [(UIView *)self->_scalingView _outermostLayer];
     v28 = [SBReversibleLayerPropertyAnimator alloc];
-    v29 = [v27 valueForKeyPath:@"transform.scale.xy"];
+    v29 = [_outermostLayer valueForKeyPath:@"transform.scale.xy"];
     [v29 doubleValue];
-    v50 = v27;
-    v30 = [SBReversibleLayerPropertyAnimator initWithLayer:v28 keyPath:"initWithLayer:keyPath:initialValue:targetValue:" initialValue:v27 targetValue:@"transform.scale.xy"];
+    v50 = _outermostLayer;
+    v30 = [SBReversibleLayerPropertyAnimator initWithLayer:v28 keyPath:"initWithLayer:keyPath:initialValue:targetValue:" initialValue:_outermostLayer targetValue:@"transform.scale.xy"];
 
     [(SBScaleIconZoomAnimator *)self setHomeScreenScaleAnimator:v30];
     dispatch_group_enter(v26);
-    [(SBScaleIconZoomAnimator *)self _targetIconScaleForZoomFraction:a3];
-    v31 = [(UIView *)self->_targetIconPositioningView _outermostLayer];
+    [(SBScaleIconZoomAnimator *)self _targetIconScaleForZoomFraction:fraction];
+    _outermostLayer2 = [(UIView *)self->_targetIconPositioningView _outermostLayer];
     v32 = [SBReversibleLayerPropertyAnimator alloc];
-    v33 = [v31 valueForKeyPath:@"transform.scale.x"];
+    v33 = [_outermostLayer2 valueForKeyPath:@"transform.scale.x"];
     [v33 doubleValue];
-    v34 = [SBReversibleLayerPropertyAnimator initWithLayer:v32 keyPath:"initWithLayer:keyPath:initialValue:targetValue:" initialValue:v31 targetValue:@"transform.scale.x"];
+    v34 = [SBReversibleLayerPropertyAnimator initWithLayer:v32 keyPath:"initWithLayer:keyPath:initialValue:targetValue:" initialValue:_outermostLayer2 targetValue:@"transform.scale.x"];
 
     [(SBScaleIconZoomAnimator *)self setTargetIconScaleXAnimator:v34];
     dispatch_group_enter(v26);
     v35 = [SBReversibleLayerPropertyAnimator alloc];
-    v36 = [v31 valueForKeyPath:@"transform.scale.y"];
+    v36 = [_outermostLayer2 valueForKeyPath:@"transform.scale.y"];
     [v36 doubleValue];
-    v37 = [SBReversibleLayerPropertyAnimator initWithLayer:v35 keyPath:"initWithLayer:keyPath:initialValue:targetValue:" initialValue:v31 targetValue:@"transform.scale.y"];
+    v37 = [SBReversibleLayerPropertyAnimator initWithLayer:v35 keyPath:"initWithLayer:keyPath:initialValue:targetValue:" initialValue:_outermostLayer2 targetValue:@"transform.scale.y"];
 
     [(SBScaleIconZoomAnimator *)self setTargetIconScaleYAnimator:v37];
     objc_initWeak(&location, self);
@@ -385,8 +385,8 @@
     v58[1] = 3221225472;
     v58[2] = __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_2;
     v58[3] = &unk_1E8088F40;
-    v25 = v26;
-    v59 = v25;
+    targetIconScaleYAnimator = v26;
+    v59 = targetIconScaleYAnimator;
     v40 = _Block_copy(v58);
     [(SBReversibleLayerPropertyAnimator *)v38 animateWithSettings:v16 completion:v40];
     [(SBReversibleLayerPropertyAnimator *)v34 animateWithSettings:v16 completion:v40];
@@ -396,11 +396,11 @@
     objc_destroyWeak(&location);
 
     v14 = v51;
-    v13 = v52;
+    completionCopy = v52;
     v22 = &OBJC_INSTANCE_METHODS_SBWidgetIconResizeGestureHandlerDelegate;
   }
 
-  v41 = [MEMORY[0x1E698E7D0] factoryWithSettings:v15];
+  v41 = [MEMORY[0x1E698E7D0] factoryWithSettings:bSAnimationSettings];
   [v41 setAllowsAdditiveAnimations:1];
   v57[0] = MEMORY[0x1E69E9820];
   v42 = v22[128];
@@ -408,14 +408,14 @@
   v57[2] = __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_3;
   v57[3] = &unk_1E8088CB8;
   v57[4] = self;
-  *&v57[5] = a3;
+  *&v57[5] = fraction;
   v43 = v14;
-  v44 = v13;
-  [MEMORY[0x1E698E7D0] animateWithFactory:v41 additionalDelay:v14 options:v57 actions:v13 completion:a5];
-  v45 = [(SBIconAnimator *)self settings];
-  v46 = [v45 iconGridFadeSettings];
-  v47 = [v46 BSAnimationSettings];
-  v48 = [v47 mutableCopy];
+  v44 = completionCopy;
+  [MEMORY[0x1E698E7D0] animateWithFactory:v41 additionalDelay:v14 options:v57 actions:completionCopy completion:delay];
+  settings = [(SBIconAnimator *)self settings];
+  iconGridFadeSettings = [settings iconGridFadeSettings];
+  bSAnimationSettings2 = [iconGridFadeSettings BSAnimationSettings];
+  v48 = [bSAnimationSettings2 mutableCopy];
 
   if (v53)
   {
@@ -433,8 +433,8 @@
   v56[2] = __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke_4;
   v56[3] = &unk_1E8088CB8;
   v56[4] = self;
-  *&v56[5] = a3;
-  [MEMORY[0x1E698E7D0] animateWithFactory:v49 additionalDelay:v43 options:v56 actions:v44 completion:a5];
+  *&v56[5] = fraction;
+  [MEMORY[0x1E698E7D0] animateWithFactory:v49 additionalDelay:v43 options:v56 actions:v44 completion:delay];
 }
 
 void __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnimationSettings_delay_alreadyAnimating_sharedCompletion___block_invoke(uint64_t a1)
@@ -494,8 +494,8 @@ void __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnima
 
 - (CGRect)_zoomedFrame
 {
-  v2 = [(SBIconAnimator *)self referenceView];
-  [v2 bounds];
+  referenceView = [(SBIconAnimator *)self referenceView];
+  [referenceView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -512,16 +512,16 @@ void __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnima
   return result;
 }
 
-- (void)_setIconAlpha:(double)a3
+- (void)_setIconAlpha:(double)alpha
 {
-  v4 = [(SBIconAnimator *)self animationContainer];
+  animationContainer = [(SBIconAnimator *)self animationContainer];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setContentAlpha:a3];
+    [animationContainer setContentAlpha:alpha];
   }
 }
 
-- (void)_applyZoomFraction:(double)a3
+- (void)_applyZoomFraction:(double)fraction
 {
   [(SBScaleIconZoomAnimator *)self _homeScreenScaleForZoomFraction:?];
   v6 = v5;
@@ -532,18 +532,18 @@ void __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnima
     [(UIView *)scalingView setTransform:&v11];
   }
 
-  [(SBScaleIconZoomAnimator *)self _targetIconScaleForZoomFraction:a3];
+  [(SBScaleIconZoomAnimator *)self _targetIconScaleForZoomFraction:fraction];
   targetIconPositioningView = self->_targetIconPositioningView;
   CGAffineTransformMakeScale(&v11, v9, v10);
   [(UIView *)targetIconPositioningView setTransform:&v11];
 }
 
-- (double)_homeScreenScaleForZoomFraction:(double)a3
+- (double)_homeScreenScaleForZoomFraction:(double)fraction
 {
   [(SBScaleIconZoomAnimator *)self maxHomeScreenZoomScale];
   v5 = v4;
   v6 = BSFloatGreaterThanFloat();
-  result = 1.0 - (1.0 - v5) * a3;
+  result = 1.0 - (1.0 - v5) * fraction;
   if (!v6)
   {
     return 1.0;
@@ -552,31 +552,31 @@ void __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnima
   return result;
 }
 
-- (CGPoint)_targetIconScaleForZoomFraction:(double)a3
+- (CGPoint)_targetIconScaleForZoomFraction:(double)fraction
 {
   __asm { FMOV            V2.2D, #1.0 }
 
-  v8 = vsubq_f64(_Q2, vmulq_n_f64(vsubq_f64(_Q2, self->_zoomScaleDimension), a3));
+  v8 = vsubq_f64(_Q2, vmulq_n_f64(vsubq_f64(_Q2, self->_zoomScaleDimension), fraction));
   v9 = v8.f64[1];
   result.x = v8.f64[0];
   result.y = v9;
   return result;
 }
 
-- (void)_applyVisualAltitudeFraction:(double)a3
+- (void)_applyVisualAltitudeFraction:(double)fraction
 {
-  v5 = [(SBScaleIconZoomAnimator *)self targetIconView];
-  v6 = [v5 superview];
+  targetIconView = [(SBScaleIconZoomAnimator *)self targetIconView];
+  superview = [targetIconView superview];
   [(SBScaleIconZoomAnimator *)self _zoomedVisualAltitude];
   v8 = v7;
-  v9 = [v5 window];
-  [v6 _convertVisualAltitude:v9 fromView:v8];
+  window = [targetIconView window];
+  [superview _convertVisualAltitude:window fromView:v8];
   v11 = v10;
 
-  [v5 _setVisualAltitude:self->_naturalVisualAltitude + (v11 - self->_naturalVisualAltitude) * a3];
-  if (v5)
+  [targetIconView _setVisualAltitude:self->_naturalVisualAltitude + (v11 - self->_naturalVisualAltitude) * fraction];
+  if (targetIconView)
   {
-    [v5 transform];
+    [targetIconView transform];
   }
 
   else
@@ -590,21 +590,21 @@ void __124__SBScaleIconZoomAnimator__performAnimationToFraction_withCentralAnima
     *&v13.a = *MEMORY[0x1E695EFD0];
     *&v13.c = v12;
     *&v13.tx = *(MEMORY[0x1E695EFD0] + 32);
-    [v5 setTransform:&v13];
+    [targetIconView setTransform:&v13];
   }
 }
 
-- (void)_applyIconGridFadeFraction:(double)a3
+- (void)_applyIconGridFadeFraction:(double)fraction
 {
   if ((BSFloatIsOne() & 1) != 0 || BSFloatIsZero())
   {
-    v5 = [(SBIconAnimator *)self settings];
-    v6 = [v5 fadesIconGrid];
+    settings = [(SBIconAnimator *)self settings];
+    fadesIconGrid = [settings fadesIconGrid];
 
-    if (v6)
+    if (fadesIconGrid)
     {
 
-      [(SBScaleIconZoomAnimator *)self _setIconAlpha:1.0 - a3];
+      [(SBScaleIconZoomAnimator *)self _setIconAlpha:1.0 - fraction];
     }
   }
 }

@@ -1,13 +1,13 @@
 @interface CSClientCheckinRequest
-+ (id)responseMessageFromDictionary:(id)a3;
++ (id)responseMessageFromDictionary:(id)dictionary;
 @end
 
 @implementation CSClientCheckinRequest
 
-+ (id)responseMessageFromDictionary:(id)a3
++ (id)responseMessageFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[CSClientCheckinResponse alloc] initWithMessage:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[CSClientCheckinResponse alloc] initWithMessage:dictionaryCopy];
 
   return v4;
 }

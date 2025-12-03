@@ -24,14 +24,14 @@
 - (void)setItk_backgroundColor:()ITKUtilities
 {
   v4 = [a3 copy];
-  [a1 setBackgroundColor:v4];
+  [self setBackgroundColor:v4];
 }
 
 - (double)itk_backingScaleFactor
 {
-  v1 = [a1 window];
-  v2 = [v1 screen];
-  [v2 scale];
+  window = [self window];
+  screen = [window screen];
+  [screen scale];
   v4 = v3;
 
   return v4;
@@ -43,18 +43,18 @@
   v5[0] = *a3;
   v5[1] = v3;
   v5[2] = a3[2];
-  return [a1 setTransform:v5];
+  return [self setTransform:v5];
 }
 
 - (double)itk_safeAreaBounds
 {
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
-  [a1 safeAreaInsets];
+  [self safeAreaInsets];
   v5 = v4;
   if (itk_isiOS())
   {
-    [a1 itk_viewPointRatioFromWindow];
+    [self itk_viewPointRatioFromWindow];
     if (v6 != 1.0 && fabs(v6 + -1.0) >= 0.000000999999997)
     {
       v5 = 0.0;
@@ -62,7 +62,7 @@
   }
 
   v7 = v3 + v5;
-  if (([a1 itk_isFlipped] & 1) == 0)
+  if (([self itk_isFlipped] & 1) == 0)
   {
     ITKFlipRect();
     return v8;
@@ -73,22 +73,22 @@
 
 - (uint64_t)itk_setHidden:()ITKUtilities animated:
 {
-  result = [a1 isHidden];
+  result = [self isHidden];
   if (result != a3)
   {
     if (a4)
     {
-      v8 = [a1 isHidden];
+      isHidden = [self isHidden];
       v9 = 1.0;
-      if (v8)
+      if (isHidden)
       {
         v9 = 0.0;
       }
 
-      [a1 setItk_alpha:v9];
+      [self setItk_alpha:v9];
       if ((a3 & 1) == 0)
       {
-        [a1 setHidden:0];
+        [self setHidden:0];
       }
 
       v10 = MEMORY[0x277D75D18];
@@ -97,13 +97,13 @@
       v13[1] = 3221225472;
       v13[2] = __47__UIView_ITKUtilities__itk_setHidden_animated___block_invoke;
       v13[3] = &unk_2797B0388;
-      v13[4] = a1;
+      v13[4] = self;
       v14 = a3;
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __47__UIView_ITKUtilities__itk_setHidden_animated___block_invoke_2;
       v11[3] = &unk_2797B03B0;
-      v11[4] = a1;
+      v11[4] = self;
       v12 = a3;
       return [v10 animateWithDuration:v13 animations:v11 completion:?];
     }
@@ -111,7 +111,7 @@
     else
     {
 
-      return [a1 setHidden:a3];
+      return [self setHidden:a3];
     }
   }
 
@@ -120,54 +120,54 @@
 
 - (BOOL)itk_configureToFillSuperView
 {
-  v2 = [a1 superview];
+  superview = [self superview];
 
-  if (v2)
+  if (superview)
   {
-    [a1 setTranslatesAutoresizingMaskIntoConstraints:1];
-    [a1 setAutoresizingMask:18];
-    v3 = [a1 superview];
-    [v3 bounds];
-    [a1 setFrame:?];
+    [self setTranslatesAutoresizingMaskIntoConstraints:1];
+    [self setAutoresizingMask:18];
+    superview2 = [self superview];
+    [superview2 bounds];
+    [self setFrame:?];
   }
 
-  return v2 != 0;
+  return superview != 0;
 }
 
 - (double)itk_viewLengthFromWindowLength:()ITKUtilities
 {
   ITKRectWithSize();
-  [a1 convertRect:0 fromView:?];
+  [self convertRect:0 fromView:?];
   return v2;
 }
 
 - (double)itk_windowLengthFromViewLength:()ITKUtilities
 {
   ITKRectWithSize();
-  [a1 convertRect:0 toView:?];
+  [self convertRect:0 toView:?];
   return v2;
 }
 
 - (id)itk_autoFadeOutShapeRectLayer
 {
-  v1 = [a1 layer];
-  v2 = [v1 itk_autoFadeOutShapeRectLayer];
+  layer = [self layer];
+  itk_autoFadeOutShapeRectLayer = [layer itk_autoFadeOutShapeRectLayer];
 
-  return v2;
+  return itk_autoFadeOutShapeRectLayer;
 }
 
 - (id)itk_autoFadeOutShapePointLayer
 {
-  v1 = [a1 layer];
-  v2 = [v1 itk_autoFadeOutShapePointLayer];
+  layer = [self layer];
+  itk_autoFadeOutShapePointLayer = [layer itk_autoFadeOutShapePointLayer];
 
-  return v2;
+  return itk_autoFadeOutShapePointLayer;
 }
 
 - (id)itk_autoFadeOutLayerWithQuad:()ITKUtilities fadeOutDelay:
 {
-  v6 = [a4 path];
-  v7 = [a1 itk_autoFadeOutLayerWithPath:v6 fadeOutDelay:a2];
+  path = [a4 path];
+  v7 = [self itk_autoFadeOutLayerWithPath:path fadeOutDelay:a2];
 
   return v7;
 }
@@ -177,21 +177,21 @@
   v4 = MEMORY[0x277CD9F90];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  [a1 bounds];
+  [self bounds];
   [v6 setFrame:?];
-  v7 = [v5 itk_CGPath];
+  itk_CGPath = [v5 itk_CGPath];
 
-  [v6 setPath:v7];
-  v8 = [MEMORY[0x277D75348] itk_randomColor];
-  [v6 setStrokeColor:{objc_msgSend(v8, "CGColor")}];
+  [v6 setPath:itk_CGPath];
+  itk_randomColor = [MEMORY[0x277D75348] itk_randomColor];
+  [v6 setStrokeColor:{objc_msgSend(itk_randomColor, "CGColor")}];
 
   [v6 setFillColor:0];
   [v6 setLineWidth:2.0];
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v6 setBackgroundColor:{objc_msgSend(v9, "CGColor")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v6 setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  v10 = [a1 layer];
-  [v10 addSublayer:v6];
+  layer = [self layer];
+  [layer addSublayer:v6];
 
   v12 = v6;
   itk_dispatchMainAfterDelay();
@@ -203,29 +203,29 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = a1;
+  selfCopy = self;
   v7 = v4;
   if (v7)
   {
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v6 leadingAnchor];
-    v9 = [v7 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    [selfCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingAnchor = [selfCopy leadingAnchor];
+    leadingAnchor2 = [v7 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v5 addObject:v10];
 
-    v11 = [v6 trailingAnchor];
-    v12 = [v7 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [selfCopy trailingAnchor];
+    trailingAnchor2 = [v7 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v5 addObject:v13];
 
-    v14 = [v6 topAnchor];
-    v15 = [v7 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor = [selfCopy topAnchor];
+    topAnchor2 = [v7 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v5 addObject:v16];
 
-    v17 = [v6 bottomAnchor];
-    v18 = [v7 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [selfCopy bottomAnchor];
+    bottomAnchor2 = [v7 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v5 addObject:v19];
   }
 
@@ -241,13 +241,13 @@
 
 - (id)itk_renderImageFromViewBackingStoreWithSubrect:()ITKUtilities
 {
-  v10 = [MEMORY[0x277D75568] defaultFormat];
-  v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v10 format:{a4, a5}];
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+  v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:defaultFormat format:{a4, a5}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__UIView_ITKUtilities__itk_renderImageFromViewBackingStoreWithSubrect___block_invoke;
   v14[3] = &unk_2797B0400;
-  v14[4] = a1;
+  v14[4] = self;
   *&v14[5] = a2;
   *&v14[6] = a3;
   *&v14[7] = a4;
@@ -259,38 +259,38 @@
 
 - (uint64_t)itk_renderImageFromViewBackingStore
 {
-  [a1 bounds];
+  [self bounds];
 
-  return [a1 itk_renderImageFromViewBackingStoreWithSubrect:?];
+  return [self itk_renderImageFromViewBackingStoreWithSubrect:?];
 }
 
 - (id)itk_constraintsToFillLayoutGuide:()ITKUtilities
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = a1;
-  v7 = v6;
+  selfCopy = self;
+  v7 = selfCopy;
   if (v4)
   {
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v7 leadingAnchor];
-    v9 = [v4 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    [selfCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    leadingAnchor = [v7 leadingAnchor];
+    leadingAnchor2 = [v4 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v5 addObject:v10];
 
-    v11 = [v7 trailingAnchor];
-    v12 = [v4 trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    trailingAnchor = [v7 trailingAnchor];
+    trailingAnchor2 = [v4 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v5 addObject:v13];
 
-    v14 = [v7 topAnchor];
-    v15 = [v4 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor = [v7 topAnchor];
+    topAnchor2 = [v4 topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v5 addObject:v16];
 
-    v17 = [v7 bottomAnchor];
-    v18 = [v4 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [v7 bottomAnchor];
+    bottomAnchor2 = [v4 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v5 addObject:v19];
   }
 
@@ -306,15 +306,15 @@
 
 - (double)itk_roundRectToViewScale:()ITKUtilities
 {
-  v3 = [a1 traitCollection];
-  [v3 displayScale];
+  traitCollection = [self traitCollection];
+  [traitCollection displayScale];
 
   return a2;
 }
 
 - (NSString)summaryDescription
 {
-  [a1 frame];
+  [self frame];
 
   return NSStringFromCGRect(*&v1);
 }

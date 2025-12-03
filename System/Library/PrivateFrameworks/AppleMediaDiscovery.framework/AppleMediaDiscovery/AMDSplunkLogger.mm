@@ -1,31 +1,31 @@
 @interface AMDSplunkLogger
-+ (BOOL)checkSchemaValidity:(id)a3;
-+ (id)logEvents:(id)a3 toTopic:(id)a4 withSchema:(id)a5;
-+ (id)logPayload:(id)a3 error:(id *)a4;
-+ (void)flushEvents:(id)a3;
++ (BOOL)checkSchemaValidity:(id)validity;
++ (id)logEvents:(id)events toTopic:(id)topic withSchema:(id)schema;
++ (id)logPayload:(id)payload error:(id *)error;
++ (void)flushEvents:(id)events;
 @end
 
 @implementation AMDSplunkLogger
 
-+ (void)flushEvents:(id)a3
++ (void)flushEvents:(id)events
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, events);
   v3 = [objc_alloc(MEMORY[0x277CEE598]) initWithContainerID:@"com.apple.AppleMediaServices" bag:0];
   [v3 enqueueEvents:location[0]];
   objc_storeStrong(&v3, 0);
   objc_storeStrong(location, 0);
 }
 
-+ (BOOL)checkSchemaValidity:(id)a3
++ (BOOL)checkSchemaValidity:(id)validity
 {
   v17 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validity);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
   v9 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
@@ -91,17 +91,17 @@ LABEL_14:
   return v15 & 1;
 }
 
-+ (id)logEvents:(id)a3 toTopic:(id)a4 withSchema:(id)a5
++ (id)logEvents:(id)events toTopic:(id)topic withSchema:(id)schema
 {
   v64 = *MEMORY[0x277D85DE8];
-  v58 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, events);
   v56 = 0;
-  objc_storeStrong(&v56, a4);
+  objc_storeStrong(&v56, topic);
   v55 = 0;
-  objc_storeStrong(&v55, a5);
+  objc_storeStrong(&v55, schema);
   v54 = [location[0] count];
   v53 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v52 = 0;
@@ -297,7 +297,7 @@ LABEL_29:
   MEMORY[0x277D82BD8](v37);
   if ([v53 count])
   {
-    [v58 flushEvents:v53];
+    [selfCopy flushEvents:v53];
   }
 
   v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -325,14 +325,14 @@ LABEL_29:
   return v13;
 }
 
-+ (id)logPayload:(id)a3 error:(id *)a4
++ (id)logPayload:(id)payload error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v34 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
+  objc_storeStrong(location, payload);
+  errorCopy = error;
   v31 = [location[0] objectForKey:@"topic"];
   if (v31)
   {
@@ -342,9 +342,9 @@ LABEL_29:
       v22 = [location[0] objectForKey:@"schema"];
       if (v22)
       {
-        if ([v34 checkSchemaValidity:v22])
+        if ([selfCopy checkSchemaValidity:v22])
         {
-          v15 = [v34 logEvents:v26 toTopic:v31 withSchema:v22];
+          v15 = [selfCopy logEvents:v26 toTopic:v31 withSchema:v22];
           [AMDFrameworkMetrics log:v15 withKey:@"AMDSplunkLoggerSummary" atVerbosity:0];
           v35 = MEMORY[0x277D82BE0](v15);
           v27 = 1;
@@ -365,7 +365,7 @@ LABEL_29:
           objc_storeStrong(&oslog, 0);
           v10 = [AMDError allocError:15 withMessage:v18];
           v7 = v10;
-          *v32 = v10;
+          *errorCopy = v10;
           [AMDFrameworkMetrics log:v18 withKey:@"AMDSplunkLoggerError" atVerbosity:0];
           v35 = 0;
           v27 = 1;
@@ -387,7 +387,7 @@ LABEL_29:
         objc_storeStrong(&v20, 0);
         v11 = [AMDError allocError:15 withMessage:v21];
         v6 = v11;
-        *v32 = v11;
+        *errorCopy = v11;
         [AMDFrameworkMetrics log:v21 withKey:@"AMDSplunkLoggerError" atVerbosity:0];
         v35 = 0;
         v27 = 1;
@@ -411,7 +411,7 @@ LABEL_29:
       objc_storeStrong(&v24, 0);
       v12 = [AMDError allocError:15 withMessage:v25];
       v5 = v12;
-      *v32 = v12;
+      *errorCopy = v12;
       [AMDFrameworkMetrics log:v25 withKey:@"AMDSplunkLoggerError" atVerbosity:0];
       v35 = 0;
       v27 = 1;
@@ -435,7 +435,7 @@ LABEL_29:
     objc_storeStrong(&v29, 0);
     v13 = [AMDError allocError:15 withMessage:v30];
     v4 = v13;
-    *v32 = v13;
+    *errorCopy = v13;
     [AMDFrameworkMetrics log:v30 withKey:@"AMDSplunkLoggerError" atVerbosity:0];
     v35 = 0;
     v27 = 1;

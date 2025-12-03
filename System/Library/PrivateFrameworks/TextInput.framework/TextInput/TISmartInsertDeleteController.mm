@@ -1,64 +1,64 @@
 @interface TISmartInsertDeleteController
-- (TISmartInsertDeleteController)initWithTextInputTraits:(id)a3;
-- (unint64_t)_numberOfCharactersInSet:(id)a3 atBeginningOfString:(id)a4;
-- (unint64_t)_numberOfCharactersInSet:(id)a3 atEndOfString:(id)a4;
-- (void)smartDeleteForDocumentState:(id)a3 outBeforeLength:(unint64_t *)a4 outAfterLength:(unint64_t *)a5;
-- (void)smartInsertForDocumentState:(id)a3 stringToInsert:(id)a4 outBeforeString:(id *)a5 outAfterString:(id *)a6;
+- (TISmartInsertDeleteController)initWithTextInputTraits:(id)traits;
+- (unint64_t)_numberOfCharactersInSet:(id)set atBeginningOfString:(id)string;
+- (unint64_t)_numberOfCharactersInSet:(id)set atEndOfString:(id)string;
+- (void)smartDeleteForDocumentState:(id)state outBeforeLength:(unint64_t *)length outAfterLength:(unint64_t *)afterLength;
+- (void)smartInsertForDocumentState:(id)state stringToInsert:(id)insert outBeforeString:(id *)string outAfterString:(id *)afterString;
 @end
 
 @implementation TISmartInsertDeleteController
 
-- (void)smartInsertForDocumentState:(id)a3 stringToInsert:(id)a4 outBeforeString:(id *)a5 outAfterString:(id *)a6
+- (void)smartInsertForDocumentState:(id)state stringToInsert:(id)insert outBeforeString:(id *)string outAfterString:(id *)afterString
 {
-  v66 = a3;
-  v10 = a4;
-  if (a5)
+  stateCopy = state;
+  insertCopy = insert;
+  if (string)
   {
-    *a5 = 0;
+    *string = 0;
   }
 
-  if (a6)
+  if (afterString)
   {
-    *a6 = 0;
+    *afterString = 0;
   }
 
   if ([(TISmartInsertDeleteController *)self isEnabled])
   {
-    v11 = [(TISmartInsertDeleteController *)self textInputTraits];
-    if (![v11 smartInsertDeleteEnabled])
+    textInputTraits = [(TISmartInsertDeleteController *)self textInputTraits];
+    if (![textInputTraits smartInsertDeleteEnabled])
     {
 LABEL_91:
 
       goto LABEL_92;
     }
 
-    v12 = [(TISmartInsertDeleteController *)self textInputTraits];
-    v13 = [v12 smartInsertDeleteType];
+    textInputTraits2 = [(TISmartInsertDeleteController *)self textInputTraits];
+    smartInsertDeleteType = [textInputTraits2 smartInsertDeleteType];
 
-    if (v13 != 1 && v66 && v10)
+    if (smartInsertDeleteType != 1 && stateCopy && insertCopy)
     {
-      v11 = v10;
+      textInputTraits = insertCopy;
       v14 = _getPreSmartSet();
       v15 = _getPostSmartSet();
-      v63 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v65 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v16 = [v11 length];
-      v17 = [v66 contextBeforeInput];
-      v18 = [v17 length];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v16 = [textInputTraits length];
+      contextBeforeInput = [stateCopy contextBeforeInput];
+      v18 = [contextBeforeInput length];
 
-      v19 = [v66 contextAfterInput];
-      v64 = [v19 length];
+      contextAfterInput = [stateCopy contextAfterInput];
+      v64 = [contextAfterInput length];
 
       v61 = v18;
       if (v18)
       {
-        v20 = [v66 contextBeforeInput];
-        v21 = [v20 _lastLongCharacter];
+        contextBeforeInput2 = [stateCopy contextBeforeInput];
+        _lastLongCharacter = [contextBeforeInput2 _lastLongCharacter];
 
-        if ([v14 characterIsMember:v21])
+        if ([v14 characterIsMember:_lastLongCharacter])
         {
-          v22 = [v66 contextBeforeInput];
-          v60 = [(TISmartInsertDeleteController *)self _numberOfCharactersInSet:v65 atEndOfString:v22];
+          contextBeforeInput3 = [stateCopy contextBeforeInput];
+          v60 = [(TISmartInsertDeleteController *)self _numberOfCharactersInSet:newlineCharacterSet atEndOfString:contextBeforeInput3];
 
           v55 = 0;
           v59 = 1;
@@ -69,11 +69,11 @@ LABEL_91:
           v59 = 0;
           v60 = 0;
           v55 = 1;
-          if ((v21 & 0xFF00) != 0xE00 && (v21 - 4096) >= 0xA0u)
+          if ((_lastLongCharacter & 0xFF00) != 0xE00 && (_lastLongCharacter - 4096) >= 0xA0u)
           {
             v60 = 0;
             v59 = 0;
-            v55 = v21 >> 7 == 47;
+            v55 = _lastLongCharacter >> 7 == 47;
           }
         }
       }
@@ -88,13 +88,13 @@ LABEL_91:
       v58 = v14;
       if (v64)
       {
-        v23 = [v66 contextAfterInput];
-        v24 = [v23 _firstLongCharacter];
+        contextAfterInput2 = [stateCopy contextAfterInput];
+        _firstLongCharacter = [contextAfterInput2 _firstLongCharacter];
 
-        if ([v15 characterIsMember:v24])
+        if ([v15 characterIsMember:_firstLongCharacter])
         {
-          v25 = [v66 contextAfterInput];
-          v26 = [(TISmartInsertDeleteController *)self _numberOfCharactersInSet:v65 atBeginningOfString:v25];
+          contextAfterInput3 = [stateCopy contextAfterInput];
+          v26 = [(TISmartInsertDeleteController *)self _numberOfCharactersInSet:newlineCharacterSet atBeginningOfString:contextAfterInput3];
 
           v27 = 0;
           v28 = 1;
@@ -105,11 +105,11 @@ LABEL_91:
           v28 = 0;
           v26 = 0;
           v27 = 1;
-          if ((v24 & 0xFF00) != 0xE00 && (v24 - 4096) >= 0xA0u)
+          if ((_firstLongCharacter & 0xFF00) != 0xE00 && (_firstLongCharacter - 4096) >= 0xA0u)
           {
             v26 = 0;
             v28 = 0;
-            v27 = v24 >> 7 == 47;
+            v27 = _firstLongCharacter >> 7 == 47;
           }
         }
       }
@@ -127,12 +127,12 @@ LABEL_91:
       {
         v54 = v28;
         v29 = v27;
-        v30 = [v11 characterAtIndex:0];
-        v31 = [v11 characterAtIndex:v16 - 1];
-        v32 = [v63 characterIsMember:v30];
-        v33 = [v63 characterIsMember:v31];
-        v56 = [v65 characterIsMember:v30];
-        LODWORD(v16) = [v65 characterIsMember:v31];
+        v30 = [textInputTraits characterAtIndex:0];
+        v31 = [textInputTraits characterAtIndex:v16 - 1];
+        v32 = [whitespaceAndNewlineCharacterSet characterIsMember:v30];
+        v33 = [whitespaceAndNewlineCharacterSet characterIsMember:v31];
+        v56 = [newlineCharacterSet characterIsMember:v30];
+        LODWORD(v16) = [newlineCharacterSet characterIsMember:v31];
         v34 = 0;
         if ((v30 & 0xFF00) != 0xE00 && (v30 - 4096) >= 0xA0u)
         {
@@ -161,7 +161,7 @@ LABEL_91:
       {
         if (v55)
         {
-          if (!a5)
+          if (!string)
           {
             v34 = 0;
           }
@@ -172,12 +172,12 @@ LABEL_91:
           }
         }
 
-        else if (!a5)
+        else if (!string)
         {
           goto LABEL_41;
         }
 
-        *a5 = @" ";
+        *string = @" ";
       }
 
 LABEL_41:
@@ -191,7 +191,7 @@ LABEL_41:
 
       if (v27)
       {
-        if (a6)
+        if (afterString)
         {
           v39 = v35;
         }
@@ -226,19 +226,19 @@ LABEL_51:
               goto LABEL_90;
             }
 
-            if (a5)
+            if (string)
             {
-              *a5 = @"\n";
+              *string = @"\n";
             }
 
             goto LABEL_88;
           }
 
-          v42 = [v66 contextBeforeInput];
-          v43 = [v42 length];
+          contextBeforeInput4 = [stateCopy contextBeforeInput];
+          v43 = [contextBeforeInput4 length];
 
-          v44 = [v66 contextAfterInput];
-          v45 = [v44 length];
+          contextAfterInput4 = [stateCopy contextAfterInput];
+          v45 = [contextAfterInput4 length];
 
           if ((v56 & 1) != 0 || v60 != 1 || v43 == 1 || !v57)
           {
@@ -258,18 +258,18 @@ LABEL_51:
               v48 = 0;
             }
 
-            if (!a5 || (v48 & ~v16 & (v56 ^ 1)) == 0 || *a5)
+            if (!string || (v48 & ~v16 & (v56 ^ 1)) == 0 || *string)
             {
               goto LABEL_81;
             }
           }
 
-          else if (!a5)
+          else if (!string)
           {
             goto LABEL_81;
           }
 
-          *a5 = @"\n";
+          *string = @"\n";
 LABEL_81:
           if (v60)
           {
@@ -296,7 +296,7 @@ LABEL_81:
 
             v38 = v62;
             v53 = v51 || v61 != 0;
-            if (!a6 || ((v16 | v56 | v53) & 1) != 0 || *a6)
+            if (!afterString || ((v16 | v56 | v53) & 1) != 0 || *afterString)
             {
               goto LABEL_90;
             }
@@ -306,7 +306,7 @@ LABEL_81:
 
           v38 = v62;
 LABEL_88:
-          if (!a6)
+          if (!afterString)
           {
 LABEL_90:
 
@@ -314,17 +314,17 @@ LABEL_90:
           }
 
 LABEL_89:
-          *a6 = @"\n";
+          *afterString = @"\n";
           goto LABEL_90;
         }
       }
 
-      else if (!a6)
+      else if (!afterString)
       {
         goto LABEL_51;
       }
 
-      *a6 = @" ";
+      *afterString = @" ";
       goto LABEL_51;
     }
   }
@@ -332,23 +332,23 @@ LABEL_89:
 LABEL_92:
 }
 
-- (unint64_t)_numberOfCharactersInSet:(id)a3 atEndOfString:(id)a4
+- (unint64_t)_numberOfCharactersInSet:(id)set atEndOfString:(id)string
 {
-  v5 = a3;
+  setCopy = set;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v6 = a4;
-  v7 = [v6 length];
+  stringCopy = string;
+  v7 = [stringCopy length];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__TISmartInsertDeleteController__numberOfCharactersInSet_atEndOfString___block_invoke;
   v11[3] = &unk_1E6F4D798;
-  v12 = v5;
+  v12 = setCopy;
   v13 = &v14;
-  v8 = v5;
-  [v6 _reverseEnumerateLongCharactersInRange:0 usingBlock:{v7, v11}];
+  v8 = setCopy;
+  [stringCopy _reverseEnumerateLongCharactersInRange:0 usingBlock:{v7, v11}];
 
   v9 = v15[3];
   _Block_object_dispose(&v14, 8);
@@ -371,23 +371,23 @@ uint64_t __72__TISmartInsertDeleteController__numberOfCharactersInSet_atEndOfStr
   return result;
 }
 
-- (unint64_t)_numberOfCharactersInSet:(id)a3 atBeginningOfString:(id)a4
+- (unint64_t)_numberOfCharactersInSet:(id)set atBeginningOfString:(id)string
 {
-  v5 = a3;
+  setCopy = set;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v6 = a4;
-  v7 = [v6 length];
+  stringCopy = string;
+  v7 = [stringCopy length];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__TISmartInsertDeleteController__numberOfCharactersInSet_atBeginningOfString___block_invoke;
   v11[3] = &unk_1E6F4D798;
-  v12 = v5;
+  v12 = setCopy;
   v13 = &v14;
-  v8 = v5;
-  [v6 _enumerateLongCharactersInRange:0 usingBlock:{v7, v11}];
+  v8 = setCopy;
+  [stringCopy _enumerateLongCharactersInRange:0 usingBlock:{v7, v11}];
 
   v9 = v15[3];
   _Block_object_dispose(&v14, 8);
@@ -410,66 +410,66 @@ uint64_t __78__TISmartInsertDeleteController__numberOfCharactersInSet_atBeginnin
   return result;
 }
 
-- (void)smartDeleteForDocumentState:(id)a3 outBeforeLength:(unint64_t *)a4 outAfterLength:(unint64_t *)a5
+- (void)smartDeleteForDocumentState:(id)state outBeforeLength:(unint64_t *)length outAfterLength:(unint64_t *)afterLength
 {
-  v8 = a3;
-  if (a4)
+  stateCopy = state;
+  if (length)
   {
-    *a4 = 0;
+    *length = 0;
   }
 
-  v55 = v8;
-  if (a5)
+  v55 = stateCopy;
+  if (afterLength)
   {
-    *a5 = 0;
+    *afterLength = 0;
   }
 
   if ([(TISmartInsertDeleteController *)self isEnabled])
   {
-    v9 = [(TISmartInsertDeleteController *)self textInputTraits];
-    if (![v9 smartInsertDeleteEnabled])
+    textInputTraits = [(TISmartInsertDeleteController *)self textInputTraits];
+    if (![textInputTraits smartInsertDeleteEnabled])
     {
 LABEL_62:
 
       goto LABEL_63;
     }
 
-    v10 = [(TISmartInsertDeleteController *)self textInputTraits];
-    v11 = [v10 smartInsertDeleteType];
+    textInputTraits2 = [(TISmartInsertDeleteController *)self textInputTraits];
+    smartInsertDeleteType = [textInputTraits2 smartInsertDeleteType];
 
     if (v55)
     {
-      if (v11 != 1)
+      if (smartInsertDeleteType != 1)
       {
         if (_getRegularWhiteSet_onceToken != -1)
         {
           dispatch_once(&_getRegularWhiteSet_onceToken, &__block_literal_global_12502);
         }
 
-        v9 = _getRegularWhiteSet__regularWhiteSet;
-        v12 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-        v13 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-        v14 = [v55 contextBeforeInput];
-        v15 = [v14 length];
+        textInputTraits = _getRegularWhiteSet__regularWhiteSet;
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+        newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+        contextBeforeInput = [v55 contextBeforeInput];
+        v15 = [contextBeforeInput length];
 
-        v16 = [v55 contextAfterInput];
-        v17 = [v16 length];
+        contextAfterInput = [v55 contextAfterInput];
+        v17 = [contextAfterInput length];
 
         if (v15)
         {
-          v18 = [v55 contextBeforeInput];
-          v19 = [v18 _lastLongCharacter];
+          contextBeforeInput2 = [v55 contextBeforeInput];
+          _lastLongCharacter = [contextBeforeInput2 _lastLongCharacter];
 
-          if ([v12 characterIsMember:v19])
+          if ([whitespaceAndNewlineCharacterSet characterIsMember:_lastLongCharacter])
           {
-            v53 = [v9 characterIsMember:v19];
-            v20 = [v55 contextBeforeInput];
-            v21 = [v20 length];
+            v53 = [textInputTraits characterIsMember:_lastLongCharacter];
+            contextBeforeInput3 = [v55 contextBeforeInput];
+            v21 = [contextBeforeInput3 length];
 
-            if ([v13 characterIsMember:v19])
+            if ([newlineCharacterSet characterIsMember:_lastLongCharacter])
             {
               v48 = v15;
-              v22 = v12;
+              v22 = whitespaceAndNewlineCharacterSet;
               v23 = 0;
               v54 = v21;
               v24 = v21 - 2;
@@ -482,11 +482,11 @@ LABEL_62:
                 }
 
                 ++v23;
-                v26 = [v55 contextBeforeInput];
-                v27 = [v26 characterAtIndex:v24];
+                contextBeforeInput4 = [v55 contextBeforeInput];
+                v27 = [contextBeforeInput4 characterAtIndex:v24];
 
                 --v24;
-                if (([v13 characterIsMember:v27] & 1) == 0)
+                if (([newlineCharacterSet characterIsMember:v27] & 1) == 0)
                 {
                   v50 = 0;
                   v28 = 1;
@@ -499,7 +499,7 @@ LABEL_62:
               v50 = 0;
               v28 = 1;
 LABEL_34:
-              v12 = v22;
+              whitespaceAndNewlineCharacterSet = v22;
               v15 = v48;
               if (!v17)
               {
@@ -526,27 +526,27 @@ LABEL_35:
 
 LABEL_22:
             v51 = v28;
-            v30 = [v25 contextAfterInput];
-            v31 = [v30 _firstLongCharacter];
+            contextAfterInput2 = [v25 contextAfterInput];
+            _firstLongCharacter = [contextAfterInput2 _firstLongCharacter];
 
-            v52 = v12;
-            if ([v12 characterIsMember:v31])
+            v52 = whitespaceAndNewlineCharacterSet;
+            if ([whitespaceAndNewlineCharacterSet characterIsMember:_firstLongCharacter])
             {
-              v32 = [v9 characterIsMember:v31];
-              v33 = [v55 contextAfterInput];
-              v34 = [v33 length];
+              v32 = [textInputTraits characterIsMember:_firstLongCharacter];
+              contextAfterInput3 = [v55 contextAfterInput];
+              v34 = [contextAfterInput3 length];
 
-              if ([v13 characterIsMember:v31])
+              if ([newlineCharacterSet characterIsMember:_firstLongCharacter])
               {
                 v49 = v15;
                 v35 = 1;
                 while (v34 != v35)
                 {
-                  v36 = [v55 contextAfterInput];
-                  v37 = [v36 characterAtIndex:v35];
+                  contextAfterInput4 = [v55 contextAfterInput];
+                  v37 = [contextAfterInput4 characterAtIndex:v35];
 
                   ++v35;
-                  if (([v13 characterIsMember:v37] & 1) == 0)
+                  if (([newlineCharacterSet characterIsMember:v37] & 1) == 0)
                   {
                     LODWORD(v34) = v35 - 1;
                     break;
@@ -555,7 +555,7 @@ LABEL_22:
 
                 v38 = v54;
                 v28 = v51;
-                v12 = v52;
+                whitespaceAndNewlineCharacterSet = v52;
                 v15 = v49;
                 v39 = v53;
 LABEL_36:
@@ -576,7 +576,7 @@ LABEL_36:
                 {
 LABEL_41:
                   v45 = 1;
-                  if (!a4)
+                  if (!length)
                   {
                     goto LABEL_59;
                   }
@@ -600,7 +600,7 @@ LABEL_43:
 LABEL_48:
                   v45 = 0;
                   v43 = 1;
-                  if (!a4)
+                  if (!length)
                   {
                     goto LABEL_59;
                   }
@@ -614,7 +614,7 @@ LABEL_48:
                   {
                     v45 = v39;
                     v43 = v39 ^ 1;
-                    if (!a4)
+                    if (!length)
                     {
                       goto LABEL_59;
                     }
@@ -635,7 +635,7 @@ LABEL_48:
 
                     v43 = v34 == 2 && v42;
                     v45 = v43;
-                    if (!a4)
+                    if (!length)
                     {
                       goto LABEL_59;
                     }
@@ -655,18 +655,18 @@ LABEL_48:
                   }
 
                   v43 = v50 & v32;
-                  if (!a4)
+                  if (!length)
                   {
                     goto LABEL_59;
                   }
                 }
 
 LABEL_58:
-                *a4 = v45;
+                *length = v45;
 LABEL_59:
-                if (a5)
+                if (afterLength)
                 {
-                  *a5 = v43;
+                  *afterLength = v43;
                 }
 
                 goto LABEL_62;
@@ -682,7 +682,7 @@ LABEL_59:
             else
             {
               v34 = _getPostSmartSet();
-              v40 = [v34 characterIsMember:v31];
+              v40 = [v34 characterIsMember:_firstLongCharacter];
 
               LODWORD(v34) = 0;
               v32 = 0;
@@ -692,14 +692,14 @@ LABEL_59:
               v43 = v40;
             }
 
-            v12 = v52;
+            whitespaceAndNewlineCharacterSet = v52;
             v39 = v53;
             v28 = v51;
             goto LABEL_43;
           }
 
           v29 = _getPreSmartSet();
-          v50 = [v29 characterIsMember:v19];
+          v50 = [v29 characterIsMember:_lastLongCharacter];
 
           v28 = 0;
           v53 = 0;
@@ -721,9 +721,9 @@ LABEL_59:
 LABEL_63:
 }
 
-- (TISmartInsertDeleteController)initWithTextInputTraits:(id)a3
+- (TISmartInsertDeleteController)initWithTextInputTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   v9.receiver = self;
   v9.super_class = TISmartInsertDeleteController;
   v6 = [(TISmartInsertDeleteController *)&v9 init];
@@ -731,7 +731,7 @@ LABEL_63:
   if (v6)
   {
     v6->_enabled = 1;
-    objc_storeStrong(&v6->_textInputTraits, a3);
+    objc_storeStrong(&v6->_textInputTraits, traits);
   }
 
   return v7;

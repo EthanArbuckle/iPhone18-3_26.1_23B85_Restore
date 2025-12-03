@@ -1,16 +1,16 @@
 @interface SUUIProductPageInAppPurchaseTableCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SUUIProductPageInAppPurchaseTableCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIProductPageInAppPurchaseTableCell" hasInstanceMethod:@"indexString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIProductPageInAppPurchaseTableCell" hasInstanceMethod:@"productName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIProductPageInAppPurchaseTableCell" hasInstanceMethod:@"priceString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIProductPageInAppPurchaseTableCell" hasInstanceMethod:@"indexString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageInAppPurchaseTableCell" hasInstanceMethod:@"productName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIProductPageInAppPurchaseTableCell" hasInstanceMethod:@"priceString" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

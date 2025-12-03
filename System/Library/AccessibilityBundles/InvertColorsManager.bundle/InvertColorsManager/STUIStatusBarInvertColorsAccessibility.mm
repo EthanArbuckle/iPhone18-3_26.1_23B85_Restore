@@ -7,26 +7,26 @@
 
 - (BOOL)accessibilityIgnoresInvertColors
 {
-  v2 = [(STUIStatusBarInvertColorsAccessibility *)self window];
-  if ([v2 _accessibilityInvertColorsIsDarkWindow])
+  window = [(STUIStatusBarInvertColorsAccessibility *)self window];
+  if ([window _accessibilityInvertColorsIsDarkWindow])
   {
-    v3 = 1;
+    _accessibilityInvertColorsSupportsDarkWindowInvert = 1;
   }
 
   else
   {
-    v3 = [v2 _accessibilityInvertColorsSupportsDarkWindowInvert];
+    _accessibilityInvertColorsSupportsDarkWindowInvert = [window _accessibilityInvertColorsSupportsDarkWindowInvert];
   }
 
-  return v3;
+  return _accessibilityInvertColorsSupportsDarkWindowInvert;
 }
 
 - (BOOL)_accessibilityAppliesInvertColorsInDarkUI
 {
-  v2 = [(STUIStatusBarInvertColorsAccessibility *)self window];
-  v3 = [v2 _accessibilityInvertColorsSupportsDarkWindowInvert];
+  window = [(STUIStatusBarInvertColorsAccessibility *)self window];
+  _accessibilityInvertColorsSupportsDarkWindowInvert = [window _accessibilityInvertColorsSupportsDarkWindowInvert];
 
-  return v3 ^ 1;
+  return _accessibilityInvertColorsSupportsDarkWindowInvert ^ 1;
 }
 
 @end

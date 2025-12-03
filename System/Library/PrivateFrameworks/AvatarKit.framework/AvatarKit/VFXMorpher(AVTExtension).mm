@@ -8,23 +8,23 @@
 {
   v173 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 correctiveDriverCounts];
+  correctiveDriverCounts = [self correctiveDriverCounts];
 
-  if (!v5)
+  if (!correctiveDriverCounts)
   {
-    v6 = [a1 targets];
-    v7 = [a1 targetsAndInBetween];
-    v8 = [a1 inBetweenCounts];
-    v157 = a1;
-    v9 = [a1 inBetweenWeights];
+    targets = [self targets];
+    targetsAndInBetween = [self targetsAndInBetween];
+    inBetweenCounts = [self inBetweenCounts];
+    selfCopy = self;
+    inBetweenWeights = [self inBetweenWeights];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v142 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v147 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [v6 count];
-    v144 = v6;
-    v136 = v9;
-    v137 = v7;
-    v146 = v8;
+    v11 = [targets count];
+    v144 = targets;
+    v136 = inBetweenWeights;
+    v137 = targetsAndInBetween;
+    v146 = inBetweenCounts;
     v155 = v10;
     if (v11)
     {
@@ -44,17 +44,17 @@
       while (1)
       {
         v152 = v14;
-        v16 = [v6 objectAtIndexedSubscript:v15];
-        v17 = [v16 name];
-        v18 = [v17 containsString:@"__"];
+        v16 = [targets objectAtIndexedSubscript:v15];
+        name = [v16 name];
+        v18 = [name containsString:@"__"];
 
         if (!v18)
         {
           v150 = v15;
-          v23 = [v8 objectAtIndexedSubscript:v15];
-          v24 = [v23 unsignedIntegerValue];
+          v23 = [inBetweenCounts objectAtIndexedSubscript:v15];
+          unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-          if (v24 < 2)
+          if (unsignedIntegerValue < 2)
           {
             v14 = v152;
             v35 = v155;
@@ -95,10 +95,10 @@
               v14 = v152;
             }
 
-            v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v24];
+            v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue];
             [v148 addObject:v27];
 
-            v28 = v24 - 1;
+            v28 = unsignedIntegerValue - 1;
             v29 = v149;
             do
             {
@@ -116,16 +116,16 @@
 
             while (v28);
             v149 = v29;
-            v6 = v144;
+            targets = v144;
             v12 = v145;
             v34 = v150;
-            v8 = v146;
+            inBetweenCounts = v146;
             v35 = v155;
           }
 
           [v147 addObject:v16];
           ++v149;
-          [v157 weightForTargetAtIndex:v34];
+          [selfCopy weightForTargetAtIndex:v34];
           v64 = [MEMORY[0x1E696AD98] numberWithFloat:?];
           [v142 addObject:v64];
 
@@ -134,8 +134,8 @@
           goto LABEL_61;
         }
 
-        v19 = [v16 name];
-        v20 = [v19 componentsSeparatedByString:@"__"];
+        name2 = [v16 name];
+        v20 = [name2 componentsSeparatedByString:@"__"];
 
         v21 = [v20 count];
         if (v21 == 1)
@@ -172,10 +172,10 @@ LABEL_37:
             }
 
             v51 = [v146 objectAtIndexedSubscript:v151];
-            v52 = [v51 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v51 unsignedIntegerValue];
 
             v53 = v152;
-            if (v52 < 2)
+            if (unsignedIntegerValue2 < 2)
             {
               if (v143)
               {
@@ -214,10 +214,10 @@ LABEL_37:
                 v53 = v152;
               }
 
-              v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v52];
+              v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue2];
               [v143 addObject:v56];
 
-              v57 = v52 - 1;
+              v57 = unsignedIntegerValue2 - 1;
               v58 = v149;
               do
               {
@@ -258,8 +258,8 @@ LABEL_37:
             [v50 addObjectsFromArray:v37];
             v13 = v154;
             v15 = v151;
-            v6 = v144;
-            v8 = v63;
+            targets = v144;
+            inBetweenCounts = v63;
             v20 = v141;
             goto LABEL_60;
           }
@@ -267,7 +267,7 @@ LABEL_37:
           v39 = v38;
           v40 = *v164;
           v41 = 1;
-          v42 = v157;
+          v42 = selfCopy;
           do
           {
             for (i = 0; i != v39; ++i)
@@ -283,22 +283,22 @@ LABEL_37:
                 v45 = avt_default_log();
                 if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
                 {
-                  v47 = [v16 name];
+                  name3 = [v16 name];
                   *buf = 138412546;
                   v169 = v44;
                   v170 = 2112;
-                  v171 = v47;
+                  v171 = name3;
                   _os_log_error_impl(&dword_1BB472000, v45, OS_LOG_TYPE_ERROR, "Error: Failed to find index of driving target %@ for corrective %@", buf, 0x16u);
                 }
 
                 if (v4)
                 {
-                  v46 = [v16 name];
-                  (v4)[2](v4, v46, v44, v36);
+                  name4 = [v16 name];
+                  (v4)[2](v4, name4, v44, v36);
                 }
 
                 v41 = 0;
-                v42 = v157;
+                v42 = selfCopy;
               }
             }
 
@@ -307,27 +307,27 @@ LABEL_37:
 
           while (v39);
 
-          v6 = v144;
+          targets = v144;
           v20 = v141;
           if (v41)
           {
             goto LABEL_37;
           }
 
-          v8 = v146;
+          inBetweenCounts = v146;
           if (v146)
           {
             v48 = [v146 objectAtIndexedSubscript:v151];
-            v49 = [v48 unsignedIntegerValue];
+            unsignedIntegerValue3 = [v48 unsignedIntegerValue];
           }
 
           else
           {
-            v49 = 1;
+            unsignedIntegerValue3 = 1;
           }
 
           v15 = v151;
-          v135 += v49;
+          v135 += unsignedIntegerValue3;
           v13 = v154;
         }
 
@@ -476,7 +476,7 @@ LABEL_64:
 
     if (v138)
     {
-      [v157 setTargetsAndInBetweens:v147 inBetweenCounts:v148 inBetweenWeights:v140 correctives:v153 driverCounts:v138 driverIndices:v68 inBetweenCounts:v143 inBetweenWeights:v13];
+      [selfCopy setTargetsAndInBetweens:v147 inBetweenCounts:v148 inBetweenWeights:v140 correctives:v153 driverCounts:v138 driverIndices:v68 inBetweenCounts:v143 inBetweenWeights:v13];
     }
   }
 

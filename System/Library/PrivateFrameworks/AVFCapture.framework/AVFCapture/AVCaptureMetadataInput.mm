@@ -49,22 +49,22 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = AVCaptureMetadataInput;
-  v10 = [(AVCaptureInput *)&v15 initSubclass];
-  if (!v10)
+  initSubclass = [(AVCaptureInput *)&v15 initSubclass];
+  if (!initSubclass)
   {
-    return v10;
+    return initSubclass;
   }
 
   v12 = objc_alloc_init(AVCaptureMetadataInputInternal);
-  v10->_internal = v12;
+  initSubclass->_internal = v12;
   if (v12)
   {
     v13 = objc_alloc(MEMORY[0x1E696AEC0]);
     v14 = objc_opt_class();
-    v10->_internal->sourceID = [v13 initWithFormat:@"<%@ %p>", NSStringFromClass(v14), v10];
-    v10->_internal->desc = CFRetain(desc);
-    v10->_internal->clock = CFRetain(clock);
-    return v10;
+    initSubclass->_internal->sourceID = [v13 initWithFormat:@"<%@ %p>", NSStringFromClass(v14), initSubclass];
+    initSubclass->_internal->desc = CFRetain(desc);
+    initSubclass->_internal->clock = CFRetain(clock);
+    return initSubclass;
   }
 
   return 0;
@@ -153,9 +153,9 @@ LABEL_6:
     goto LABEL_41;
   }
 
-  v9 = [(AVTimedMetadataGroup *)v6 items];
-  v10 = v9;
-  if (!v9 || ![(NSArray *)v9 count])
+  items = [(AVTimedMetadataGroup *)v6 items];
+  v10 = items;
+  if (!items || ![(NSArray *)items count])
   {
     internal = self->_internal;
     emptyBoxedMetadata = internal->emptyBoxedMetadata;
@@ -252,11 +252,11 @@ LABEL_43:
         [v15 locale];
         if (FigMetadataFormatDescriptionGetLocalIDForMetadataIdentifyingFactors())
         {
-          v16 = [v15 value];
+          value = [v15 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            BoxedMetadataFromFaceObjectAndFormatDescription = AVMetadataObjectCreateBoxedMetadataFromFaceObjectAndFormatDescription(v16, self->_internal->desc, 0);
+            BoxedMetadataFromFaceObjectAndFormatDescription = AVMetadataObjectCreateBoxedMetadataFromFaceObjectAndFormatDescription(value, self->_internal->desc, 0);
             if (BoxedMetadataFromFaceObjectAndFormatDescription)
             {
               *(v43 + 6) = FigBoxedMetadataAppendCFTypedValue();

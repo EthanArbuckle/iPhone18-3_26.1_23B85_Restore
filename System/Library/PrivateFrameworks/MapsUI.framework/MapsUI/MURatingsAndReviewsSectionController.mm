@@ -1,16 +1,16 @@
 @interface MURatingsAndReviewsSectionController
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
-- (MURatingsAndReviewsSectionController)initWithMapItem:(id)a3;
+- (MURatingsAndReviewsSectionController)initWithMapItem:(id)item;
 - (MURatingsAndReviewsSectionControllerDelegate)actionDelegate;
 - (id)infoCardChildPossibleActions;
-- (void)_addAppleRatingsCategoryTileIfNeeded:(id)a3;
-- (void)_addHorizontalTileToContentStackView:(id)a3 items:(id)a4;
-- (void)_addPlaceCollectionPullQuotesIfNeeded:(id)a3;
-- (void)_addRatingSnippets:(id)a3 withCellItems:(id)a4;
-- (void)_addUserReviewCategoryTilesIfNeeded:(id)a3;
+- (void)_addAppleRatingsCategoryTileIfNeeded:(id)needed;
+- (void)_addHorizontalTileToContentStackView:(id)view items:(id)items;
+- (void)_addPlaceCollectionPullQuotesIfNeeded:(id)needed;
+- (void)_addRatingSnippets:(id)snippets withCellItems:(id)items;
+- (void)_addUserReviewCategoryTilesIfNeeded:(id)needed;
 - (void)_sectionHeaderAccessoryTapped;
 - (void)_setupRatingRows;
-- (void)pullQuoteViewDidTapMore:(id)a3;
+- (void)pullQuoteViewDidTapMore:(id)more;
 @end
 
 @implementation MURatingsAndReviewsSectionController
@@ -24,56 +24,56 @@
 
 - (id)infoCardChildPossibleActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MUPlaceSectionController *)self mapItem];
-  v5 = [v4 _reviews];
-  v6 = [v5 count];
+  array = [MEMORY[0x1E695DF70] array];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _reviews = [mapItem _reviews];
+  v6 = [_reviews count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      [v3 addObject:&unk_1F450D928];
+      [array addObject:&unk_1F450D928];
       ++v7;
-      v8 = [(MUPlaceSectionController *)self mapItem];
-      v9 = [v8 _reviews];
-      v10 = [v9 count];
+      mapItem2 = [(MUPlaceSectionController *)self mapItem];
+      _reviews2 = [mapItem2 _reviews];
+      v10 = [_reviews2 count];
     }
 
     while (v7 < v10);
   }
 
-  [v3 addObject:&unk_1F450D940];
-  v11 = [v3 copy];
+  [array addObject:&unk_1F450D940];
+  v11 = [array copy];
 
   return v11;
 }
 
-- (void)pullQuoteViewDidTapMore:(id)a3
+- (void)pullQuoteViewDidTapMore:(id)more
 {
-  v8 = a3;
-  v4 = [v8 viewModel];
+  moreCopy = more;
+  viewModel = [moreCopy viewModel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(MURatingsAndReviewsSectionController *)self actionDelegate];
-    v7 = [v8 viewModel];
-    [v6 ratingsAndReviewsSectionController:self didSelectPlaceCollection:v7];
+    actionDelegate = [(MURatingsAndReviewsSectionController *)self actionDelegate];
+    viewModel2 = [moreCopy viewModel];
+    [actionDelegate ratingsAndReviewsSectionController:self didSelectPlaceCollection:viewModel2];
   }
 }
 
 - (void)_sectionHeaderAccessoryTapped
 {
-  v3 = [(MUPlaceSectionController *)self mapItem];
-  v4 = [v3 _reviewsAttribution];
-  v5 = [v4 providerID];
-  [(MUPlaceSectionController *)self captureInfoCardAction:6020 eventValue:0 feedbackType:175 actionRichProviderId:v5 classification:0];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _reviewsAttribution = [mapItem _reviewsAttribution];
+  providerID = [_reviewsAttribution providerID];
+  [(MUPlaceSectionController *)self captureInfoCardAction:6020 eventValue:0 feedbackType:175 actionRichProviderId:providerID classification:0];
 
-  v6 = [(MURatingsAndReviewsSectionController *)self actionDelegate];
-  [v6 ratingsAndReviewsSectionControllerDidSelectViewAllReviews:self];
+  actionDelegate = [(MURatingsAndReviewsSectionController *)self actionDelegate];
+  [actionDelegate ratingsAndReviewsSectionControllerDidSelectViewAllReviews:self];
 }
 
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel
@@ -81,10 +81,10 @@
   sectionHeaderViewModel = self->_sectionHeaderViewModel;
   if (!sectionHeaderViewModel)
   {
-    v4 = [(MUPlaceRatingReviewTitleBuilder *)self->_titleBuilder buildTitleString];
-    v5 = [(MUPlaceSectionController *)self mapItem];
-    v6 = [v5 _reviewsAttribution];
-    v7 = [MUPlaceSectionHeaderViewModel viewModelForTitle:v4 attribution:v6 target:self action:sel__sectionHeaderAccessoryTapped];
+    buildTitleString = [(MUPlaceRatingReviewTitleBuilder *)self->_titleBuilder buildTitleString];
+    mapItem = [(MUPlaceSectionController *)self mapItem];
+    _reviewsAttribution = [mapItem _reviewsAttribution];
+    v7 = [MUPlaceSectionHeaderViewModel viewModelForTitle:buildTitleString attribution:_reviewsAttribution target:self action:sel__sectionHeaderAccessoryTapped];
     v8 = self->_sectionHeaderViewModel;
     self->_sectionHeaderViewModel = v7;
 
@@ -94,38 +94,38 @@
   return sectionHeaderViewModel;
 }
 
-- (void)_addHorizontalTileToContentStackView:(id)a3 items:(id)a4
+- (void)_addHorizontalTileToContentStackView:(id)view items:(id)items
 {
-  v5 = a4;
-  v6 = a3;
+  itemsCopy = items;
+  viewCopy = view;
   v8 = objc_alloc_init(_MURatingCellItem);
   [(_MURatingCellItem *)v8 setShouldApplyWidthConstraint:1];
   [(_MURatingCellItem *)v8 setPreferredWidth:307.0];
-  v7 = [[MUPlatterView alloc] initWithContentView:v6];
+  v7 = [[MUPlatterView alloc] initWithContentView:viewCopy];
 
   [(_MURatingCellItem *)v8 setRatingView:v7];
-  [v5 addObject:v8];
+  [itemsCopy addObject:v8];
 }
 
-- (void)_addPlaceCollectionPullQuotesIfNeeded:(id)a3
+- (void)_addPlaceCollectionPullQuotesIfNeeded:(id)needed
 {
   v33 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v4 = [(MUPlaceSectionController *)self mapItem];
-  v5 = [v4 _geoMapItem];
-  v6 = [v5 _hasPlaceCollectionPullQuotes];
+  neededCopy = needed;
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  _hasPlaceCollectionPullQuotes = [_geoMapItem _hasPlaceCollectionPullQuotes];
 
-  if (v6)
+  if (_hasPlaceCollectionPullQuotes)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = [(MUPlaceSectionController *)self mapItem];
-    v8 = [v7 _geoMapItem];
-    v9 = [v8 _placeCollections];
+    mapItem2 = [(MUPlaceSectionController *)self mapItem];
+    _geoMapItem2 = [mapItem2 _geoMapItem];
+    _placeCollections = [_geoMapItem2 _placeCollections];
 
-    v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v10 = [_placeCollections countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -141,26 +141,26 @@
         {
           if (*v28 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(_placeCollections);
           }
 
           v19 = *(*(&v27 + 1) + 8 * i);
-          v20 = [v19 publisherBlockQuote];
-          v21 = [v20 plainTextDescription];
-          v22 = [v21 length];
+          publisherBlockQuote = [v19 publisherBlockQuote];
+          plainTextDescription = [publisherBlockQuote plainTextDescription];
+          v22 = [plainTextDescription length];
 
           if (v22)
           {
             v23 = [[MUPlaceCollectionPullQuotePlatterView alloc] initWithFrame:v14, v15, v16, v17];
             [(MUPlaceCollectionPullQuotePlatterView *)v23 setDelegate:self];
             [(MUPlaceCollectionPullQuotePlatterView *)v23 setViewModel:v19];
-            [(MURatingsAndReviewsSectionController *)self _addHorizontalTileToContentStackView:v23 items:v26];
+            [(MURatingsAndReviewsSectionController *)self _addHorizontalTileToContentStackView:v23 items:neededCopy];
 
             v12 = 1;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v11 = [_placeCollections countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v11);
@@ -187,12 +187,12 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addRatingSnippets:(id)a3 withCellItems:(id)a4
+- (void)_addRatingSnippets:(id)snippets withCellItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v20 = a4;
-  if ([v6 count])
+  snippetsCopy = snippets;
+  itemsCopy = items;
+  if ([snippetsCopy count])
   {
     [(MUPlaceRatingReviewTitleBuilder *)self->_titleBuilder setSupportsReviews:1];
   }
@@ -201,7 +201,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v6;
+  v7 = snippetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -234,7 +234,7 @@
         v22 = v18;
         v23 = v15;
         [(MUPlaceReviewPlatterView *)v17 setActionHandler:v21];
-        [(MURatingsAndReviewsSectionController *)self _addHorizontalTileToContentStackView:v17 items:v20];
+        [(MURatingsAndReviewsSectionController *)self _addHorizontalTileToContentStackView:v17 items:itemsCopy];
 
         objc_destroyWeak(&v24);
         objc_destroyWeak(&location);
@@ -272,59 +272,59 @@ void __73__MURatingsAndReviewsSectionController__addRatingSnippets_withCellItems
   }
 }
 
-- (void)_addUserReviewCategoryTilesIfNeeded:(id)a3
+- (void)_addUserReviewCategoryTilesIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(MUPlaceSectionController *)self mapItem];
-  if ([(MUOverallRatingPlatterView *)v5 _hasUserRatingScore])
+  neededCopy = needed;
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  if ([(MUOverallRatingPlatterView *)mapItem _hasUserRatingScore])
   {
-    v6 = [(MUPlaceSectionController *)self mapItem];
-    v7 = [v6 _geoMapItem];
-    v8 = [v7 _hasAppleRatings];
+    mapItem2 = [(MUPlaceSectionController *)self mapItem];
+    _geoMapItem = [mapItem2 _geoMapItem];
+    _hasAppleRatings = [_geoMapItem _hasAppleRatings];
 
-    if (v8)
+    if (_hasAppleRatings)
     {
       goto LABEL_5;
     }
 
     v9 = [MUOverallRatingPlatterView alloc];
-    v5 = [(MUOverallRatingPlatterView *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v10 = [(MUPlaceSectionController *)self mapItem];
-    [(MUOverallRatingPlatterView *)v5 setViewModel:v10];
+    mapItem = [(MUOverallRatingPlatterView *)v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    mapItem3 = [(MUPlaceSectionController *)self mapItem];
+    [(MUOverallRatingPlatterView *)mapItem setViewModel:mapItem3];
 
-    [(MUOverallRatingPlatterView *)v5 addSelectionGestureWithTarget:self action:sel__sectionHeaderAccessoryTapped];
-    v11 = [[MUPlatterView alloc] initWithContentView:v5];
+    [(MUOverallRatingPlatterView *)mapItem addSelectionGestureWithTarget:self action:sel__sectionHeaderAccessoryTapped];
+    v11 = [[MUPlatterView alloc] initWithContentView:mapItem];
     v12 = objc_alloc_init(_MURatingCellItem);
     [(_MURatingCellItem *)v12 setRatingView:v11];
     [(_MURatingCellItem *)v12 setShouldApplyWidthConstraint:0];
-    [v4 addObject:v12];
+    [neededCopy addObject:v12];
     [(MUPlaceRatingReviewTitleBuilder *)self->_titleBuilder setSupportsRatings:1];
   }
 
 LABEL_5:
-  v13 = [(MUPlaceSectionController *)self mapItem];
-  v14 = [v13 _reviews];
-  v15 = [v14 count];
+  mapItem4 = [(MUPlaceSectionController *)self mapItem];
+  _reviews = [mapItem4 _reviews];
+  v15 = [_reviews count];
 
-  v16 = [(MUPlaceSectionController *)self mapItem];
-  v17 = v16;
+  mapItem5 = [(MUPlaceSectionController *)self mapItem];
+  mapItem6 = mapItem5;
   if (v15)
   {
-    v18 = [v16 _reviews];
+    _reviews2 = [mapItem5 _reviews];
 LABEL_9:
-    v21 = v18;
-    [(MURatingsAndReviewsSectionController *)self _addRatingSnippets:v18 withCellItems:v4];
+    v21 = _reviews2;
+    [(MURatingsAndReviewsSectionController *)self _addRatingSnippets:_reviews2 withCellItems:neededCopy];
 
     goto LABEL_10;
   }
 
-  v19 = [v16 _tips];
-  v20 = [v19 count];
+  _tips = [mapItem5 _tips];
+  v20 = [_tips count];
 
   if (v20)
   {
-    v17 = [(MUPlaceSectionController *)self mapItem];
-    v18 = [v17 _tips];
+    mapItem6 = [(MUPlaceSectionController *)self mapItem];
+    _reviews2 = [mapItem6 _tips];
     goto LABEL_9;
   }
 
@@ -338,26 +338,26 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_addAppleRatingsCategoryTileIfNeeded:(id)a3
+- (void)_addAppleRatingsCategoryTileIfNeeded:(id)needed
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MUPlaceSectionController *)self mapItem];
-  v6 = [v5 _geoMapItem];
-  v7 = [v6 _hasAppleRatings];
+  neededCopy = needed;
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  _hasAppleRatings = [_geoMapItem _hasAppleRatings];
 
-  if (v7)
+  if (_hasAppleRatings)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [(MUPlaceSectionController *)self mapItem];
-    v10 = [v9 _geoMapItem];
-    v11 = [v10 _appleRatings];
+    mapItem2 = [(MUPlaceSectionController *)self mapItem];
+    _geoMapItem2 = [mapItem2 _geoMapItem];
+    _appleRatings = [_geoMapItem2 _appleRatings];
 
-    v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v12 = [_appleRatings countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -369,14 +369,14 @@ LABEL_10:
         {
           if (*v21 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(_appleRatings);
           }
 
           [v8 addObject:*(*(&v20 + 1) + 8 * v15++)];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v13 = [_appleRatings countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v13);
@@ -390,7 +390,7 @@ LABEL_10:
       v18 = [v8 copy];
       [v17 setViewModels:v18];
 
-      [(MURatingsAndReviewsSectionController *)self _addHorizontalTileToContentStackView:v17 items:v4];
+      [(MURatingsAndReviewsSectionController *)self _addHorizontalTileToContentStackView:v17 items:neededCopy];
     }
 
     else
@@ -449,17 +449,17 @@ LABEL_10:
     v39 = v11;
     if ([v11 count] == 1)
     {
-      v14 = [v11 firstObject];
-      v15 = [v14 ratingView];
-      v16 = [(MURatingsAndReviewsSectionController *)self sectionHeaderViewModel];
-      v17 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v15 sectionHeaderViewModel:v16 sectionFooterViewModel:0];
+      firstObject = [v11 firstObject];
+      ratingView = [firstObject ratingView];
+      sectionHeaderViewModel = [(MURatingsAndReviewsSectionController *)self sectionHeaderViewModel];
+      v17 = [MUPlaceSectionView insetPlatterSectionViewForContentView:ratingView sectionHeaderViewModel:sectionHeaderViewModel sectionFooterViewModel:0];
       sectionView = self->_sectionView;
       self->_sectionView = v17;
 
       v19 = self->_sectionView;
-      v20 = [v11 firstObject];
-      v21 = [v20 ratingView];
-      [(MUPlaceSectionView *)v19 attachViewToContentView:v21];
+      firstObject2 = [v11 firstObject];
+      ratingView2 = [firstObject2 ratingView];
+      [(MUPlaceSectionView *)v19 attachViewToContentView:ratingView2];
     }
 
     else
@@ -487,16 +487,16 @@ LABEL_10:
             v27 = *(*(&v40 + 1) + 8 * i);
             if ([v27 shouldApplyWidthConstraint])
             {
-              v28 = [v27 ratingView];
-              v29 = [v28 widthAnchor];
+              ratingView3 = [v27 ratingView];
+              widthAnchor = [ratingView3 widthAnchor];
               [v27 preferredWidth];
-              v30 = [v29 constraintEqualToConstant:?];
+              v30 = [widthAnchor constraintEqualToConstant:?];
               [v30 setActive:1];
             }
 
             v31 = self->_contentStackView;
-            v32 = [v27 ratingView];
-            [(MUScrollableStackView *)v31 addArrangedSubview:v32];
+            ratingView4 = [v27 ratingView];
+            [(MUScrollableStackView *)v31 addArrangedSubview:ratingView4];
           }
 
           v24 = [v22 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -506,8 +506,8 @@ LABEL_10:
       }
 
       v33 = [MUPlaceSectionView alloc];
-      v34 = [(MURatingsAndReviewsSectionController *)self sectionHeaderViewModel];
-      v35 = [(MUPlaceSectionView *)v33 initWithStyle:0 sectionHeaderViewModel:v34];
+      sectionHeaderViewModel2 = [(MURatingsAndReviewsSectionController *)self sectionHeaderViewModel];
+      v35 = [(MUPlaceSectionView *)v33 initWithStyle:0 sectionHeaderViewModel:sectionHeaderViewModel2];
       v36 = self->_sectionView;
       self->_sectionView = v35;
 
@@ -522,11 +522,11 @@ LABEL_10:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (MURatingsAndReviewsSectionController)initWithMapItem:(id)a3
+- (MURatingsAndReviewsSectionController)initWithMapItem:(id)item
 {
   v8.receiver = self;
   v8.super_class = MURatingsAndReviewsSectionController;
-  v3 = [(MUPlaceSectionController *)&v8 initWithMapItem:a3];
+  v3 = [(MUPlaceSectionController *)&v8 initWithMapItem:item];
   if (v3)
   {
     v4 = MUGetPlaceCardLog();

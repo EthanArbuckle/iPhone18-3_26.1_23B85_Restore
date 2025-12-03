@@ -1,65 +1,65 @@
 @interface RTVehicleEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RTVehicleEvent)init;
-- (RTVehicleEvent)initWithCoder:(id)a3;
-- (RTVehicleEvent)initWithDate:(id)a3;
-- (RTVehicleEvent)initWithDate:(id)a3 location:(id)a4 vehicleIdentifier:(id)a5 userSetLocation:(BOOL)a6 notes:(id)a7 identifier:(id)a8 photo:(id)a9 mapItem:(id)a10 confirmed:(BOOL)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTVehicleEvent)initWithCoder:(id)coder;
+- (RTVehicleEvent)initWithDate:(id)date;
+- (RTVehicleEvent)initWithDate:(id)date location:(id)location vehicleIdentifier:(id)identifier userSetLocation:(BOOL)setLocation notes:(id)notes identifier:(id)a8 photo:(id)photo mapItem:(id)self0 confirmed:(BOOL)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTVehicleEvent
 
 - (RTVehicleEvent)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   LOBYTE(v6) = 0;
-  v4 = [(RTVehicleEvent *)self initWithDate:0 location:0 vehicleIdentifier:0 userSetLocation:0 notes:0 identifier:v3 photo:0 mapItem:0 confirmed:v6];
+  v4 = [(RTVehicleEvent *)self initWithDate:0 location:0 vehicleIdentifier:0 userSetLocation:0 notes:0 identifier:uUID photo:0 mapItem:0 confirmed:v6];
 
   return v4;
 }
 
-- (RTVehicleEvent)initWithDate:(id)a3
+- (RTVehicleEvent)initWithDate:(id)date
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
+  dateCopy = date;
+  uUID = [v4 UUID];
   LOBYTE(v9) = 0;
-  v7 = [(RTVehicleEvent *)self initWithDate:v5 location:0 vehicleIdentifier:0 userSetLocation:0 notes:0 identifier:v6 photo:0 mapItem:0 confirmed:v9];
+  v7 = [(RTVehicleEvent *)self initWithDate:dateCopy location:0 vehicleIdentifier:0 userSetLocation:0 notes:0 identifier:uUID photo:0 mapItem:0 confirmed:v9];
 
   return v7;
 }
 
-- (RTVehicleEvent)initWithDate:(id)a3 location:(id)a4 vehicleIdentifier:(id)a5 userSetLocation:(BOOL)a6 notes:(id)a7 identifier:(id)a8 photo:(id)a9 mapItem:(id)a10 confirmed:(BOOL)a11
+- (RTVehicleEvent)initWithDate:(id)date location:(id)location vehicleIdentifier:(id)identifier userSetLocation:(BOOL)setLocation notes:(id)notes identifier:(id)a8 photo:(id)photo mapItem:(id)self0 confirmed:(BOOL)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
+  dateCopy = date;
+  locationCopy = location;
+  identifierCopy = identifier;
+  notesCopy = notes;
   v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  photoCopy = photo;
+  itemCopy = item;
   v36.receiver = self;
   v36.super_class = RTVehicleEvent;
   v23 = [(RTVehicleEvent *)&v36 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [dateCopy copy];
     date = v23->_date;
     v23->_date = v24;
 
-    v26 = [v17 copy];
+    v26 = [locationCopy copy];
     location = v23->_location;
     v23->_location = v26;
 
-    v28 = [v18 copy];
+    v28 = [identifierCopy copy];
     vehicleIdentifier = v23->_vehicleIdentifier;
     v23->_vehicleIdentifier = v28;
 
-    v23->_userSetLocation = a6;
-    v30 = [v19 copy];
+    v23->_userSetLocation = setLocation;
+    v30 = [notesCopy copy];
     notes = v23->_notes;
     v23->_notes = v30;
 
@@ -67,9 +67,9 @@
     identifier = v23->_identifier;
     v23->_identifier = v32;
 
-    objc_storeStrong(&v23->_photo, a9);
-    objc_storeStrong(&v23->_mapItem, a10);
-    *&v23->_confirmed = a11;
+    objc_storeStrong(&v23->_photo, photo);
+    objc_storeStrong(&v23->_mapItem, item);
+    *&v23->_confirmed = confirmed;
   }
 
   return v23;
@@ -78,67 +78,67 @@
 - (id)description
 {
   v18 = MEMORY[0x1E696AEC0];
-  v19 = [(RTVehicleEvent *)self date];
-  v17 = [v19 stringFromDate];
-  v16 = [(RTVehicleEvent *)self location];
-  v3 = [(RTVehicleEvent *)self vehicleIdentifier];
-  v15 = [(RTVehicleEvent *)self userSetLocation];
-  v4 = [(RTVehicleEvent *)self notes];
-  v5 = [(RTVehicleEvent *)self identifier];
-  v6 = [(RTVehicleEvent *)self mapItem];
-  v7 = [v6 address];
-  v8 = [(RTVehicleEvent *)self locationQuality];
-  v9 = [(RTVehicleEvent *)self usualLocation];
-  v10 = [(RTVehicleEvent *)self confirmed];
-  v11 = [(RTVehicleEvent *)self locationFinalized];
-  v12 = [(RTVehicleEvent *)self nearbyLocationOfInterest];
-  v13 = [v18 stringWithFormat:@"date, %@, location, %@, vehicleIdentifier, %@, userSetLocation, %d, notes, %@, identifier, %@, address, <%@>, quality, %lu, usualLocation, %d, confirmed, %d, locationFinalized, %d, nearbyLocationOfInterest, %@", v17, v16, v3, v15, v4, v5, v7, v8, v9, v10, v11, v12];
+  date = [(RTVehicleEvent *)self date];
+  stringFromDate = [date stringFromDate];
+  location = [(RTVehicleEvent *)self location];
+  vehicleIdentifier = [(RTVehicleEvent *)self vehicleIdentifier];
+  userSetLocation = [(RTVehicleEvent *)self userSetLocation];
+  notes = [(RTVehicleEvent *)self notes];
+  identifier = [(RTVehicleEvent *)self identifier];
+  mapItem = [(RTVehicleEvent *)self mapItem];
+  address = [mapItem address];
+  locationQuality = [(RTVehicleEvent *)self locationQuality];
+  usualLocation = [(RTVehicleEvent *)self usualLocation];
+  confirmed = [(RTVehicleEvent *)self confirmed];
+  locationFinalized = [(RTVehicleEvent *)self locationFinalized];
+  nearbyLocationOfInterest = [(RTVehicleEvent *)self nearbyLocationOfInterest];
+  v13 = [v18 stringWithFormat:@"date, %@, location, %@, vehicleIdentifier, %@, userSetLocation, %d, notes, %@, identifier, %@, address, <%@>, quality, %lu, usualLocation, %d, confirmed, %d, locationFinalized, %d, nearbyLocationOfInterest, %@", stringFromDate, location, vehicleIdentifier, userSetLocation, notes, identifier, address, locationQuality, usualLocation, confirmed, locationFinalized, nearbyLocationOfInterest];
 
   return v13;
 }
 
-- (RTVehicleEvent)initWithCoder:(id)a3
+- (RTVehicleEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = RTVehicleEvent;
   v5 = [(RTVehicleEvent *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleIdentifier"];
     vehicleIdentifier = v5->_vehicleIdentifier;
     v5->_vehicleIdentifier = v10;
 
-    v5->_userSetLocation = [v4 decodeBoolForKey:@"userSetLocation"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notes"];
+    v5->_userSetLocation = [coderCopy decodeBoolForKey:@"userSetLocation"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notes"];
     notes = v5->_notes;
     v5->_notes = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"photo"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"photo"];
     photo = v5->_photo;
     v5->_photo = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapItem"];
     mapItem = v5->_mapItem;
     v5->_mapItem = v18;
 
-    v5->_locationQuality = [v4 decodeIntegerForKey:@"locationQuality"];
-    v5->_usualLocation = [v4 decodeBoolForKey:@"usualLocation"];
-    v5->_confirmed = [v4 decodeBoolForKey:@"confirmed"];
-    v5->_locationFinalized = [v4 decodeBoolForKey:@"locationFinalized"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nearbyLocationOfInterest"];
+    v5->_locationQuality = [coderCopy decodeIntegerForKey:@"locationQuality"];
+    v5->_usualLocation = [coderCopy decodeBoolForKey:@"usualLocation"];
+    v5->_confirmed = [coderCopy decodeBoolForKey:@"confirmed"];
+    v5->_locationFinalized = [coderCopy decodeBoolForKey:@"locationFinalized"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nearbyLocationOfInterest"];
     nearbyLocationOfInterest = v5->_nearbyLocationOfInterest;
     v5->_nearbyLocationOfInterest = v20;
   }
@@ -146,26 +146,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
-  [v5 encodeObject:self->_location forKey:@"location"];
-  [v5 encodeObject:self->_vehicleIdentifier forKey:@"vehicleIdentifier"];
-  [v5 encodeBool:self->_userSetLocation forKey:@"userSetLocation"];
-  [v5 encodeObject:self->_notes forKey:@"notes"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_photo forKey:@"photo"];
-  [v5 encodeObject:self->_mapItem forKey:@"mapItem"];
-  [v5 encodeInteger:self->_locationQuality forKey:@"locationQuality"];
-  [v5 encodeBool:self->_usualLocation forKey:@"usualLocation"];
-  [v5 encodeBool:self->_confirmed forKey:@"confirmed"];
-  [v5 encodeBool:self->_locationFinalized forKey:@"locationFinalized"];
-  [v5 encodeObject:self->_nearbyLocationOfInterest forKey:@"nearbyLocationOfInterest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeObject:self->_vehicleIdentifier forKey:@"vehicleIdentifier"];
+  [coderCopy encodeBool:self->_userSetLocation forKey:@"userSetLocation"];
+  [coderCopy encodeObject:self->_notes forKey:@"notes"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_photo forKey:@"photo"];
+  [coderCopy encodeObject:self->_mapItem forKey:@"mapItem"];
+  [coderCopy encodeInteger:self->_locationQuality forKey:@"locationQuality"];
+  [coderCopy encodeBool:self->_usualLocation forKey:@"usualLocation"];
+  [coderCopy encodeBool:self->_confirmed forKey:@"confirmed"];
+  [coderCopy encodeBool:self->_locationFinalized forKey:@"locationFinalized"];
+  [coderCopy encodeObject:self->_nearbyLocationOfInterest forKey:@"nearbyLocationOfInterest"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTVehicleEvent alloc];
   photo = self->_photo;
@@ -181,31 +181,31 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(RTVehicleEvent *)self identifier];
-        if (v8 || ([(RTVehicleEvent *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        identifier = [(RTVehicleEvent *)self identifier];
+        if (identifier || ([(RTVehicleEvent *)v7 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(RTVehicleEvent *)self identifier];
-          v10 = [(RTVehicleEvent *)v7 identifier];
-          v11 = [v9 isEqual:v10];
+          identifier2 = [(RTVehicleEvent *)self identifier];
+          identifier3 = [(RTVehicleEvent *)v7 identifier];
+          v11 = [identifier2 isEqual:identifier3];
 
-          if (v8)
+          if (identifier)
           {
 LABEL_12:
 
@@ -232,8 +232,8 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(RTVehicleEvent *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(RTVehicleEvent *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

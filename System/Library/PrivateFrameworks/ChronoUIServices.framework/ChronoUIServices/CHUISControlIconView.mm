@@ -1,11 +1,11 @@
 @interface CHUISControlIconView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CHUISControlIconView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CHUISControlIconView)initWithCoder:(id)coder;
 - (UIFont)font;
 - (unint64_t)style;
 - (void)layoutSubviews;
-- (void)setFont:(id)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setFont:(id)font;
+- (void)setStyle:(unint64_t)style;
 @end
 
 @implementation CHUISControlIconView
@@ -17,11 +17,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  v6 = self;
-  CHUISControlIconView.font.setter(a3);
+  fontCopy = font;
+  selfCopy = self;
+  CHUISControlIconView.font.setter(font);
 }
 
 - (unint64_t)style
@@ -39,7 +39,7 @@
   return v8;
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
   v5 = type metadata accessor for ControlIconView(0);
   v6 = *(*(v5 - 8) + 64);
@@ -48,13 +48,13 @@
   v9 = OBJC_IVAR___CHUISControlIconView__controlIconView;
   swift_beginAccess();
   sub_1D92936FC(self + v9, v12);
-  v10 = self;
+  selfCopy = self;
   swift_dynamicCast();
-  *&v8[*(v5 + 20)] = a3;
+  *&v8[*(v5 + 20)] = style;
   sub_1D92D2694(v8);
 }
 
-- (CHUISControlIconView)initWithCoder:(id)a3
+- (CHUISControlIconView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___CHUISControlIconView_font) = 0;
   result = sub_1D9328534();
@@ -66,14 +66,14 @@
 {
   v4.receiver = self;
   v4.super_class = CHUISControlIconView;
-  v2 = self;
+  selfCopy = self;
   [(CHUISControlIconView *)&v4 layoutSubviews];
-  v3 = *(&v2->super.super.super.isa + OBJC_IVAR___CHUISControlIconView__hostingView);
-  [(CHUISControlIconView *)v2 bounds:v4.receiver];
+  v3 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___CHUISControlIconView__hostingView);
+  [(CHUISControlIconView *)selfCopy bounds:v4.receiver];
   [v3 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   [*(&self->super.super.super.isa + OBJC_IVAR___CHUISControlIconView__hostingView) sizeThatFits_];
   result.height = v4;

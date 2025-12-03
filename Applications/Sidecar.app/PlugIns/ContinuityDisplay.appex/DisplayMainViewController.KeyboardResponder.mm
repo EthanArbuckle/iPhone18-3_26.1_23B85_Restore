@@ -1,7 +1,7 @@
 @interface DisplayMainViewController.KeyboardResponder
 - (UIEdgeInsets)floatingKeyboardEdgeInsets;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 - (void)loadView;
 @end
 
@@ -9,7 +9,7 @@
 
 - (UIEdgeInsets)floatingKeyboardEdgeInsets
 {
-  v2 = self;
+  selfCopy = self;
   sub_100036E98();
   v4 = v3;
   v6 = v5;
@@ -29,21 +29,21 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100037010();
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = sub_100057A50();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1000370C0(v4, v6);
 }
 
 - (void)deleteBackward
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000372B4();
 }
 

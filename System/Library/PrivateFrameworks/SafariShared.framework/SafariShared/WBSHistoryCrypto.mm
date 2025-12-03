@@ -1,29 +1,29 @@
 @interface WBSHistoryCrypto
 - (NSData)cryptographicKey;
-- (WBSHistoryCrypto)initWithCryptographicKey:(id)a3 salt:(id)a4;
+- (WBSHistoryCrypto)initWithCryptographicKey:(id)key salt:(id)salt;
 - (id)_createCryptographicKey;
 - (id)_createOrLoadCryptographicKey;
-- (id)decryptDictionary:(id)a3;
-- (id)encryptDictionary:(id)a3;
+- (id)decryptDictionary:(id)dictionary;
+- (id)encryptDictionary:(id)dictionary;
 @end
 
 @implementation WBSHistoryCrypto
 
-- (WBSHistoryCrypto)initWithCryptographicKey:(id)a3 salt:(id)a4
+- (WBSHistoryCrypto)initWithCryptographicKey:(id)key salt:(id)salt
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  saltCopy = salt;
   v15.receiver = self;
   v15.super_class = WBSHistoryCrypto;
   v9 = [(WBSHistoryCrypto *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cachedCryptographicKey, a3);
-    if (v8)
+    objc_storeStrong(&v9->_cachedCryptographicKey, key);
+    if (saltCopy)
     {
-      objc_storeStrong(&v10->_salt, a4);
+      objc_storeStrong(&v10->_salt, salt);
     }
 
     else
@@ -57,7 +57,7 @@
   if (!v3)
   {
     v11 = v4;
-    v8 = v11;
+    _createCryptographicKey = v11;
     goto LABEL_9;
   }
 
@@ -65,13 +65,13 @@
   v7 = 0;
   if (v6)
   {
-    v8 = [(WBSHistoryCrypto *)self _createCryptographicKey];
+    _createCryptographicKey = [(WBSHistoryCrypto *)self _createCryptographicKey];
 
     v9 = _WBSLocalizedString();
     v10 = WBSSetKeychainData();
 
     v11 = 0;
-    v5 = v8;
+    v5 = _createCryptographicKey;
     if (!v10)
     {
       goto LABEL_8;
@@ -83,11 +83,11 @@
     v12 = _WBSLocalizedString();
     WBSSetKeychainData();
 
-    v8 = v7;
+    _createCryptographicKey = v7;
   }
 
-  v11 = v8;
-  v8 = v5;
+  v11 = _createCryptographicKey;
+  _createCryptographicKey = v5;
 LABEL_8:
 
 LABEL_9:
@@ -100,9 +100,9 @@ LABEL_9:
   cachedCryptographicKey = self->_cachedCryptographicKey;
   if (!cachedCryptographicKey)
   {
-    v4 = [(WBSHistoryCrypto *)self _createOrLoadCryptographicKey];
+    _createOrLoadCryptographicKey = [(WBSHistoryCrypto *)self _createOrLoadCryptographicKey];
     v5 = self->_cachedCryptographicKey;
-    self->_cachedCryptographicKey = v4;
+    self->_cachedCryptographicKey = _createOrLoadCryptographicKey;
 
     cachedCryptographicKey = self->_cachedCryptographicKey;
   }
@@ -112,10 +112,10 @@ LABEL_9:
   return v6;
 }
 
-- (id)encryptDictionary:(id)a3
+- (id)encryptDictionary:(id)dictionary
 {
   v17 = 0;
-  v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:200 options:0 error:&v17];
+  v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:200 options:0 error:&v17];
   v5 = v17;
   if (!v4)
   {
@@ -131,10 +131,10 @@ LABEL_9:
   v16 = 0;
   dataOutAvailable = [v4 length] + 32;
   dataOut = malloc_type_malloc(dataOutAvailable, 0xC313BF5DuLL);
-  v8 = [(WBSHistoryCrypto *)self cryptographicKey];
-  v9 = [v8 bytes];
-  v10 = [(WBSHistoryCrypto *)self cryptographicKey];
-  v11 = CCCrypt(0, 0, 1u, v9, [v10 length], 0, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"), dataOut, dataOutAvailable, &v16);
+  cryptographicKey = [(WBSHistoryCrypto *)self cryptographicKey];
+  bytes = [cryptographicKey bytes];
+  cryptographicKey2 = [(WBSHistoryCrypto *)self cryptographicKey];
+  v11 = CCCrypt(0, 0, 1u, bytes, [cryptographicKey2 length], 0, objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"), dataOut, dataOutAvailable, &v16);
 
   if (v11)
   {
@@ -156,20 +156,20 @@ LABEL_10:
   return v14;
 }
 
-- (id)decryptDictionary:(id)a3
+- (id)decryptDictionary:(id)dictionary
 {
   v22 = 0;
-  v4 = a3;
-  dataOutAvailable = [v4 length] + 16;
+  dictionaryCopy = dictionary;
+  dataOutAvailable = [dictionaryCopy length] + 16;
   dataOut = malloc_type_malloc(dataOutAvailable, 0x9D265BDEuLL);
-  v7 = [(WBSHistoryCrypto *)self cryptographicKey];
-  v8 = [v7 bytes];
-  v9 = [(WBSHistoryCrypto *)self cryptographicKey];
-  v10 = [v9 length];
-  v11 = [v4 bytes];
-  v12 = [v4 length];
+  cryptographicKey = [(WBSHistoryCrypto *)self cryptographicKey];
+  bytes = [cryptographicKey bytes];
+  cryptographicKey2 = [(WBSHistoryCrypto *)self cryptographicKey];
+  v10 = [cryptographicKey2 length];
+  bytes2 = [dictionaryCopy bytes];
+  v12 = [dictionaryCopy length];
 
-  v13 = CCCrypt(1u, 0, 1u, v8, v10, 0, v11, v12, dataOut, dataOutAvailable, &v22);
+  v13 = CCCrypt(1u, 0, 1u, bytes, v10, 0, bytes2, v12, dataOut, dataOutAvailable, &v22);
   if (!v13)
   {
     v16 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:dataOut length:v22];

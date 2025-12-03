@@ -1,21 +1,21 @@
 @interface ADSpeechCompressor
-- (ADSpeechCompressor)initWithQueue:(id)a3 speechController:(id)a4 audioSessionController:(id)a5 audioPlaybackService:(id)a6 experimentContext:(id)a7;
-- (void)addAudioSampleData:(id)a3;
-- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)a3;
+- (ADSpeechCompressor)initWithQueue:(id)queue speechController:(id)controller audioSessionController:(id)sessionController audioPlaybackService:(id)service experimentContext:(id)context;
+- (void)addAudioSampleData:(id)data;
+- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)alert;
 - (void)dealloc;
-- (void)getLastStartpointTimestampAndCurrentTime:(id)a3;
+- (void)getLastStartpointTimestampAndCurrentTime:(id)time;
 - (void)reset;
-- (void)setDelegate:(id)a3;
-- (void)startCompressionNarrowband:(BOOL)a3;
-- (void)stopSpeechCaptureForEvent:(int64_t)a3 suppressAlert:(BOOL)a4 hostTime:(unint64_t)a5;
-- (void)updateEndpointHintForRC:(id)a3 forceAccept:(BOOL)a4 completion:(id)a5;
+- (void)setDelegate:(id)delegate;
+- (void)startCompressionNarrowband:(BOOL)narrowband;
+- (void)stopSpeechCaptureForEvent:(int64_t)event suppressAlert:(BOOL)alert hostTime:(unint64_t)time;
+- (void)updateEndpointHintForRC:(id)c forceAccept:(BOOL)accept completion:(id)completion;
 @end
 
 @implementation ADSpeechCompressor
 
-- (void)addAudioSampleData:(id)a3
+- (void)addAudioSampleData:(id)data
 {
-  v3 = __chkstk_darwin(self, a2, a3);
+  v3 = __chkstk_darwin(self, a2, data);
   v25 = v4;
   v5 = v3;
   v7 = v6;
@@ -120,9 +120,9 @@
   dispatch_async(v21, v26);
 }
 
-- (void)startCompressionNarrowband:(BOOL)a3
+- (void)startCompressionNarrowband:(BOOL)narrowband
 {
-  v3 = a3;
+  narrowbandCopy = narrowband;
   p_audioConverter = &self->_audioConverter;
   if (self->_audioConverter)
   {
@@ -131,13 +131,13 @@
   }
 
   v7 = &SASCodecOPUS_Mono_8000HzValue;
-  if (!v3)
+  if (!narrowbandCopy)
   {
     v7 = &SASCodecOPUS_Mono_16000HzValue;
   }
 
   v8 = *v7;
-  if (v3)
+  if (narrowbandCopy)
   {
     v9 = 8000.0;
   }
@@ -147,7 +147,7 @@
     v9 = 16000.0;
   }
 
-  if (v3)
+  if (narrowbandCopy)
   {
     v10 = 160;
   }
@@ -214,23 +214,23 @@
   self->_bytesConsumed = 0;
 }
 
-- (void)updateEndpointHintForRC:(id)a3 forceAccept:(BOOL)a4 completion:(id)a5
+- (void)updateEndpointHintForRC:(id)c forceAccept:(BOOL)accept completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5, 0, 0, 0);
+    (*(completion + 2))(completion, 0, 0, 0);
   }
 }
 
-- (void)getLastStartpointTimestampAndCurrentTime:(id)a3
+- (void)getLastStartpointTimestampAndCurrentTime:(id)time
 {
-  if (a3)
+  if (time)
   {
-    (*(a3 + 2))(a3, 0.0, 0.0);
+    (*(time + 2))(time, 0.0, 0.0);
   }
 }
 
-- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)a3
+- (void)cancelSpeechCaptureSuppressingAlert:(BOOL)alert
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -241,7 +241,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)stopSpeechCaptureForEvent:(int64_t)a3 suppressAlert:(BOOL)a4 hostTime:(unint64_t)a5
+- (void)stopSpeechCaptureForEvent:(int64_t)event suppressAlert:(BOOL)alert hostTime:(unint64_t)time
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -252,17 +252,17 @@
   dispatch_async(queue, block);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DE750;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -274,16 +274,16 @@
   [(ADSpeechCompressor *)&v3 dealloc];
 }
 
-- (ADSpeechCompressor)initWithQueue:(id)a3 speechController:(id)a4 audioSessionController:(id)a5 audioPlaybackService:(id)a6 experimentContext:(id)a7
+- (ADSpeechCompressor)initWithQueue:(id)queue speechController:(id)controller audioSessionController:(id)sessionController audioPlaybackService:(id)service experimentContext:(id)context
 {
-  v9 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = ADSpeechCompressor;
   v10 = [(ADSpeechCompressor *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a3);
+    objc_storeStrong(&v10->_queue, queue);
   }
 
   return v11;

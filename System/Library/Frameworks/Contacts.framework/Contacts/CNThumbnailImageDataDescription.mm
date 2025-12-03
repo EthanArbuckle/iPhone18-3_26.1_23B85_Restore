@@ -1,22 +1,22 @@
 @interface CNThumbnailImageDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (BOOL)setCNValue:(id)a3 onABPerson:(void *)a4 withDependentPropertiesContext:(id)a5 error:(id *)a6;
-- (void)ABValueForABPerson:(void *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (BOOL)setCNValue:(id)value onABPerson:(void *)person withDependentPropertiesContext:(id)context error:(id *)error;
+- (void)ABValueForABPerson:(void *)person;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNThumbnailImageDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 thumbnailImageData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  thumbnailImageData = [contactCopy thumbnailImageData];
+  if (!thumbnailImageData)
   {
-    v4 = [v7 thumbnailImageData];
-    if (!v4)
+    thumbnailImageData2 = [otherCopy thumbnailImageData];
+    if (!thumbnailImageData2)
     {
       v11 = 1;
 LABEL_6:
@@ -25,11 +25,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 thumbnailImageData];
-  v10 = [v7 thumbnailImageData];
-  v11 = [v9 isEqual:v10];
+  thumbnailImageData3 = [contactCopy thumbnailImageData];
+  thumbnailImageData4 = [otherCopy thumbnailImageData];
+  v11 = [thumbnailImageData3 isEqual:thumbnailImageData4];
 
-  if (!v8)
+  if (!thumbnailImageData)
   {
     goto LABEL_6;
   }
@@ -39,30 +39,30 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_thumbnailImageData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_thumbnailImageData"];
 
   v7 = [v9 copy];
-  v8 = v5[37];
-  v5[37] = v7;
+  v8 = contactCopy[37];
+  contactCopy[37] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A190];
+    *d = *MEMORY[0x1E698A190];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (void)ABValueForABPerson:(void *)a3
+- (void)ABValueForABPerson:(void *)person
 {
-  result = ABPersonCopyImageDataWithFormat(a3, kABPersonImageFormatThumbnail);
+  result = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
   if (result)
   {
 
@@ -72,12 +72,12 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)setCNValue:(id)a3 onABPerson:(void *)a4 withDependentPropertiesContext:(id)a5 error:(id *)a6
+- (BOOL)setCNValue:(id)value onABPerson:(void *)person withDependentPropertiesContext:(id)context error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  valueCopy = value;
+  contextCopy = context;
+  v9 = valueCopy;
   v10 = v9;
   if (v9)
   {
@@ -91,8 +91,8 @@ LABEL_7:
       v15 = v12;
       if (v13 < v23 || (v11 = v10, v12 < v22))
       {
-        v16 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218752;
           v25 = v23;
@@ -102,7 +102,7 @@ LABEL_7:
           v29 = v14;
           v30 = 2048;
           v31 = v15;
-          _os_log_impl(&dword_1954A0000, v16, OS_LOG_TYPE_DEFAULT, "Unexpected dimensions for a thumbnail: (%ld x %ld). Max is (%f x %f). Attempting to resize", buf, 0x2Au);
+          _os_log_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_DEFAULT, "Unexpected dimensions for a thumbnail: (%ld x %ld). Max is (%f x %f). Attempting to resize", buf, 0x2Au);
         }
 
         v21 = 0x3FF0000000000000;
@@ -111,13 +111,13 @@ LABEL_7:
         if (v17)
         {
           v11 = v17;
-          v19 = v10;
+          os_log2 = v10;
         }
 
         else
         {
-          v19 = [objc_opt_class() os_log];
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+          os_log2 = [objc_opt_class() os_log];
+          if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218752;
             v25 = v23;
@@ -127,7 +127,7 @@ LABEL_7:
             v29 = v14;
             v30 = 2048;
             v31 = v15;
-            _os_log_error_impl(&dword_1954A0000, v19, OS_LOG_TYPE_ERROR, "Failed to resize thumbnailImageData with original dimensions: (%ld x %ld) to (%f x %f).", buf, 0x2Au);
+            _os_log_error_impl(&dword_1954A0000, os_log2, OS_LOG_TYPE_ERROR, "Failed to resize thumbnailImageData with original dimensions: (%ld x %ld) to (%f x %f).", buf, 0x2Au);
           }
 
           v11 = v10;
@@ -141,7 +141,7 @@ LABEL_7:
     v11 = 0;
   }
 
-  [v8 setPendingThumbnailImageData:v11];
+  [contextCopy setPendingThumbnailImageData:v11];
 
   return 1;
 }

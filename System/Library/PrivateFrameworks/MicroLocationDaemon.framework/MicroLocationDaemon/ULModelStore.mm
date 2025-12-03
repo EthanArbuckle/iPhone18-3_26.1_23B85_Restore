@@ -1,23 +1,23 @@
 @interface ULModelStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)deleteModelsForService:(uuid)a3;
+- (BOOL)deleteModelsForService:(uuid)service;
 - (BOOL)deleteOrphanRecords;
-- (BOOL)deleteUnneededModelsWithNumNonLslsModeltoKeep:(unsigned int)a3 numLSLModelsToKeep:(unsigned int)a4;
-- (BOOL)insertDataObjects:(const void *)a3 forServiceUUID:(const void *)a4 atLoiUUID:(const void *)a5;
-- (BOOL)updateHomeSlamModelForModelUUID:(const uuid *)a3 modelAsNSData:(id)a4;
+- (BOOL)deleteUnneededModelsWithNumNonLslsModeltoKeep:(unsigned int)keep numLSLModelsToKeep:(unsigned int)toKeep;
+- (BOOL)insertDataObjects:(const void *)objects forServiceUUID:(const void *)d atLoiUUID:(const void *)iD;
+- (BOOL)updateHomeSlamModelForModelUUID:(const uuid *)d modelAsNSData:(id)data;
 - (__n128)insertDataObjects:forServiceUUID:atLoiUUID:;
-- (id)fetchModelManagedObjectWithUUID:(const uuid *)a3 withManagedObjectContext:(id)a4;
-- (id)fetchVMKModelFor:(id)a3;
+- (id)fetchModelManagedObjectWithUUID:(const uuid *)d withManagedObjectContext:(id)context;
+- (id)fetchVMKModelFor:(id)for;
 - (id)insertDataObjects:forServiceUUID:atLoiUUID:;
-- (optional<ULModelDO>)fetchMostRecentMagicalMomentsModelAtLoiGroupId:(uuid)a3;
-- (optional<ULModelDO>)fetchMostRecentModelForServiceUuid:(uuid)a3 atLoiGroupId:;
-- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForClient:(ULModelStore *)self atLoiGroupId:(uuid)a3;
-- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForService:(ULModelStore *)self atLoiGroupId:(uuid)a3;
-- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(uuid)a3 atLoiGroupId:;
+- (optional<ULModelDO>)fetchMostRecentMagicalMomentsModelAtLoiGroupId:(uuid)id;
+- (optional<ULModelDO>)fetchMostRecentModelForServiceUuid:(uuid)uuid atLoiGroupId:;
+- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForClient:(ULModelStore *)self atLoiGroupId:(uuid)id;
+- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForService:(ULModelStore *)self atLoiGroupId:(uuid)id;
+- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(uuid)type atLoiGroupId:;
 - (uint64_t)insertDataObjects:forServiceUUID:atLoiUUID:;
-- (vector<ULModelDO,)fetchModelsAtLoiGroupId:(ULModelStore *)self andLimit:(SEL)a3;
+- (vector<ULModelDO,)fetchModelsAtLoiGroupId:(ULModelStore *)self andLimit:(SEL)limit;
 - (vector<ULModelDO,)fetchMostRecentModels;
-- (void)insertVMKModel:(id)a3 for:(id)a4;
+- (void)insertVMKModel:(id)model for:(id)for;
 @end
 
 @implementation ULModelStore
@@ -25,43 +25,43 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULModelTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71A90 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71A90 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3 forServiceUUID:(const void *)a4 atLoiUUID:(const void *)a5
+- (BOOL)insertDataObjects:(const void *)objects forServiceUUID:(const void *)d atLoiUUID:(const void *)iD
 {
   v24 = *MEMORY[0x277D85DE8];
-  v22 = self;
-  if (*a3 != *(a3 + 1))
+  selfCopy = self;
+  if (*objects != *(objects + 1))
   {
     v21 = 0;
-    if (*(a4 + 16) == 1)
+    if (*(d + 16) == 1)
     {
-      v8 = [(ULStore *)self dbStore];
-      v9 = (*(v8->var0 + 13))(v8);
-      if ((*(a4 + 16) & 1) == 0)
+      dbStore = [(ULStore *)self dbStore];
+      v9 = (*(dbStore->var0 + 13))(dbStore);
+      if ((*(d + 16) & 1) == 0)
       {
         std::__throw_bad_optional_access[abi:ne200100]();
       }
 
-      v10 = [(ULStore *)self managedObjectContext];
-      v21 = [v9 fetchServiceManagedObjectWithUUID:a4 withManagedObjectContext:v10];
+      managedObjectContext = [(ULStore *)self managedObjectContext];
+      v21 = [v9 fetchServiceManagedObjectWithUUID:d withManagedObjectContext:managedObjectContext];
 
       if (!v21)
       {
@@ -73,7 +73,7 @@
         v11 = logObject_MicroLocation_Default;
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          if (*(a4 + 16))
+          if (*(d + 16))
           {
             operator new();
           }
@@ -89,7 +89,7 @@
         v12 = logObject_MicroLocation_Default;
         if (os_signpost_enabled(v12))
         {
-          if (*(a4 + 16))
+          if (*(d + 16))
           {
             operator new();
           }
@@ -100,17 +100,17 @@
     }
 
     v20 = 0;
-    if (*(a5 + 16) == 1)
+    if (*(iD + 16) == 1)
     {
-      v13 = [(ULStore *)self dbStore];
-      v14 = (*(v13->var0 + 8))(v13);
-      if ((*(a5 + 16) & 1) == 0)
+      dbStore2 = [(ULStore *)self dbStore];
+      v14 = (*(dbStore2->var0 + 8))(dbStore2);
+      if ((*(iD + 16) & 1) == 0)
       {
         std::__throw_bad_optional_access[abi:ne200100]();
       }
 
-      v15 = [(ULStore *)self managedObjectContext];
-      v20 = [v14 fetchLoiManagedObjectWithUUID:a5 withManagedObjectContext:v15];
+      managedObjectContext2 = [(ULStore *)self managedObjectContext];
+      v20 = [v14 fetchLoiManagedObjectWithUUID:iD withManagedObjectContext:managedObjectContext2];
 
       if (!v20)
       {
@@ -122,7 +122,7 @@
         v16 = logObject_MicroLocation_Default;
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          if (*(a5 + 16))
+          if (*(iD + 16))
           {
             operator new();
           }
@@ -138,7 +138,7 @@
         v17 = logObject_MicroLocation_Default;
         if (os_signpost_enabled(v17))
         {
-          if (*(a5 + 16))
+          if (*(iD + 16))
           {
             operator new();
           }
@@ -156,7 +156,7 @@
   return 1;
 }
 
-- (BOOL)deleteUnneededModelsWithNumNonLslsModeltoKeep:(unsigned int)a3 numLSLModelsToKeep:(unsigned int)a4
+- (BOOL)deleteUnneededModelsWithNumNonLslsModeltoKeep:(unsigned int)keep numLSLModelsToKeep:(unsigned int)toKeep
 {
   v31 = *MEMORY[0x277D85DE8];
   if (onceToken_MicroLocation_Default != -1)
@@ -168,9 +168,9 @@
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67240448;
-    v28 = a4;
+    toKeepCopy = toKeep;
     v29 = 1026;
-    v30 = a3;
+    keepCopy = keep;
     _os_log_impl(&dword_258FE9000, v6, OS_LOG_TYPE_DEBUG, "Keeping %{public}d models for LSL models, %{public}d models per other types", buf, 0xEu);
   }
 
@@ -182,31 +182,31 @@
   {
     if (v8 == 2)
     {
-      v10 = a4;
+      keepCopy2 = toKeep;
     }
 
     else
     {
-      v10 = a3;
+      keepCopy2 = keep;
     }
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%d", @"modelType", v8];
-    [v11 addObject:v12];
+    [array addObject:v12];
 
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
     v26 = v7;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-    v16 = [(ULStore *)self countManagedObjectsWithEntityName:v14 byAndPredicates:v11 sortDescriptors:v15 andLimit:0];
+    v16 = [(ULStore *)self countManagedObjectsWithEntityName:v14 byAndPredicates:array sortDescriptors:v15 andLimit:0];
 
-    if ([v16 unsignedIntValue] > v10)
+    if ([v16 unsignedIntValue] > keepCopy2)
     {
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v25 = v7;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-      v20 = -[ULStore batchDeleteObjectsWithEntityName:byAndPredicates:sortDescriptors:andLimit:](self, "batchDeleteObjectsWithEntityName:byAndPredicates:sortDescriptors:andLimit:", v18, v11, v19, [v16 unsignedIntValue] - v10);
+      v20 = -[ULStore batchDeleteObjectsWithEntityName:byAndPredicates:sortDescriptors:andLimit:](self, "batchDeleteObjectsWithEntityName:byAndPredicates:sortDescriptors:andLimit:", v18, array, v19, [v16 unsignedIntValue] - keepCopy2);
 
       v9 &= v20;
     }
@@ -223,49 +223,49 @@
 
 - (BOOL)deleteOrphanRecords
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = NIL", @"loi"];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:v3 sortDescriptors:0 andLimit:0];
+  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v6 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   return self;
 }
 
-- (BOOL)deleteModelsForService:(uuid)a3
+- (BOOL)deleteModelsForService:(uuid)service
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v12];
-  v6 = [v5 UUIDString];
+  serviceCopy = service;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&serviceCopy];
+  uUIDString = [v5 UUIDString];
 
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"service", @"serviceUUID", v6];
-  [v4 addObject:v7];
+  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"service", @"serviceUUID", uUIDString];
+  [array addObject:v7];
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v9 byAndPredicates:v4 sortDescriptors:0 andLimit:0];
+  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v9 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   v10 = *MEMORY[0x277D85DE8];
   return self;
 }
 
-- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForClient:(ULModelStore *)self atLoiGroupId:(uuid)a3
+- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForClient:(ULModelStore *)self atLoiGroupId:(uuid)id
 {
   v5 = v4;
   v6 = v3;
-  v7 = *&a3.data[8];
+  v7 = *&id.data[8];
   v30[1] = *MEMORY[0x277D85DE8];
   v27 = 0uLL;
   v28 = 0;
   std::vector<ULModelDO>::reserve(&v27, 1uLL);
   v10 = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%d", @"modelType", v7];
-  [v11 addObject:v12];
+  [array addObject:v12];
 
   if (v7)
   {
@@ -287,13 +287,13 @@
 
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:v14];
     v16 = [v13 predicateWithFormat:@"%K.%K=%@", @"service", @"clientId", v15];
-    [v11 addObject:v16];
+    [array addObject:v16];
   }
 
   else
   {
     v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=NIL", @"service"];
-    [v11 addObject:v15];
+    [array addObject:v15];
   }
 
 LABEL_9:
@@ -306,16 +306,16 @@ LABEL_9:
     }
 
     v18 = [v17 initWithUUIDBytes:v5];
-    v19 = [v18 UUIDString];
+    uUIDString = [v18 UUIDString];
 
-    v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", v19];
-    [v11 addObject:v20];
+    v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", uUIDString];
+    [array addObject:v20];
   }
 
   v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
   v30[0] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-  [(ULModelStore *)self _fetchModelsByAndPredicates:v11 sortDescriptors:v22 andLimit:1];
+  [(ULModelStore *)self _fetchModelsByAndPredicates:array sortDescriptors:v22 andLimit:1];
   std::vector<ULModelDO>::__vdeallocate(&v27);
   v27 = v25;
   v28 = v26;
@@ -342,19 +342,19 @@ LABEL_9:
   return result;
 }
 
-- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForService:(ULModelStore *)self atLoiGroupId:(uuid)a3
+- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(optional<ULModelDO> *__return_ptr)retstr ForService:(ULModelStore *)self atLoiGroupId:(uuid)id
 {
   v5 = v4;
   v6 = v3;
-  v7 = *&a3.data[8];
+  v7 = *&id.data[8];
   v30[1] = *MEMORY[0x277D85DE8];
   v27 = 0uLL;
   v28 = 0;
   std::vector<ULModelDO>::reserve(&v27, 1uLL);
   v10 = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%d", @"modelType", v7];
-  [v11 addObject:v12];
+  [array addObject:v12];
 
   if (*(v6 + 16) == 1)
   {
@@ -365,10 +365,10 @@ LABEL_9:
     }
 
     v14 = [v13 initWithUUIDBytes:v6];
-    v15 = [v14 UUIDString];
+    uUIDString = [v14 UUIDString];
 
-    v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"service", @"serviceUUID", v15];
-    [v11 addObject:v16];
+    v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"service", @"serviceUUID", uUIDString];
+    [array addObject:v16];
   }
 
   if (*(v5 + 16) == 1)
@@ -380,16 +380,16 @@ LABEL_9:
     }
 
     v18 = [v17 initWithUUIDBytes:v5];
-    v19 = [v18 UUIDString];
+    uUIDString2 = [v18 UUIDString];
 
-    v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", v19];
-    [v11 addObject:v20];
+    v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", uUIDString2];
+    [array addObject:v20];
   }
 
   v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
   v30[0] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
-  [(ULModelStore *)self _fetchModelsByAndPredicates:v11 sortDescriptors:v22 andLimit:1];
+  [(ULModelStore *)self _fetchModelsByAndPredicates:array sortDescriptors:v22 andLimit:1];
   std::vector<ULModelDO>::__vdeallocate(&v27);
   v27 = v25;
   v28 = v26;
@@ -416,7 +416,7 @@ LABEL_9:
   return result;
 }
 
-- (vector<ULModelDO,)fetchModelsAtLoiGroupId:(ULModelStore *)self andLimit:(SEL)a3
+- (vector<ULModelDO,)fetchModelsAtLoiGroupId:(ULModelStore *)self andLimit:(SEL)limit
 {
   v21 = *MEMORY[0x277D85DE8];
   v20 = a4;
@@ -424,17 +424,17 @@ LABEL_9:
   retstr->var2 = 0;
   retstr->var0 = 0;
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v20];
-  v11 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", v11];
-  [v9 addObject:v12];
+  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", uUIDString];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
   v19 = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
-  [(ULModelStore *)self _fetchModelsByAndPredicates:v9 sortDescriptors:v14 andLimit:a5];
+  [(ULModelStore *)self _fetchModelsByAndPredicates:array sortDescriptors:v14 andLimit:a5];
   std::vector<ULModelDO>::__vdeallocate(&retstr->var0);
   *retstr = v17;
   memset(&v17, 0, sizeof(v17));
@@ -446,24 +446,24 @@ LABEL_9:
   return result;
 }
 
-- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(uuid)a3 atLoiGroupId:
+- (optional<ULModelDO>)fetchMostRecentModelOfModelType:(uuid)type atLoiGroupId:
 {
   v9 = *MEMORY[0x277D85DE8];
   v8[0] = 0;
   v8[16] = 0;
   v6 = *v3;
   v7 = *(v3 + 16);
-  result = [(ULModelStore *)self fetchMostRecentModelOfModelType:*&a3.data[8] ForService:v8 atLoiGroupId:&v6];
+  result = [(ULModelStore *)self fetchMostRecentModelOfModelType:*&type.data[8] ForService:v8 atLoiGroupId:&v6];
   v5 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (optional<ULModelDO>)fetchMostRecentMagicalMomentsModelAtLoiGroupId:(uuid)a3
+- (optional<ULModelDO>)fetchMostRecentMagicalMomentsModelAtLoiGroupId:(uuid)id
 {
   v12 = *MEMORY[0x277D85DE8];
   LOBYTE(__p) = 0;
   v8 = 0;
-  v9 = *&a3.data[8];
+  v9 = *&id.data[8];
   v10 = v3;
   v11 = 1;
   result = [(ULModelStore *)self fetchMostRecentModelOfModelType:0 ForClient:&__p atLoiGroupId:&v9];
@@ -476,10 +476,10 @@ LABEL_9:
   return result;
 }
 
-- (optional<ULModelDO>)fetchMostRecentModelForServiceUuid:(uuid)a3 atLoiGroupId:
+- (optional<ULModelDO>)fetchMostRecentModelForServiceUuid:(uuid)uuid atLoiGroupId:
 {
   v30 = *MEMORY[0x277D85DE8];
-  v28 = *&a3.data[8];
+  v28 = *&uuid.data[8];
   v29 = v3;
   v26 = v4;
   v27 = v5;
@@ -487,23 +487,23 @@ LABEL_9:
   v23 = 0;
   std::vector<ULModelDO>::reserve(&v22, 1uLL);
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v28];
-  v11 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"service", @"serviceUUID", v11];
-  [v9 addObject:v12];
+  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"service", @"serviceUUID", uUIDString];
+  [array addObject:v12];
 
   v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v26];
-  v14 = [v13 UUIDString];
+  uUIDString2 = [v13 UUIDString];
 
-  v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", v14];
-  [v9 addObject:v15];
+  v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.%K=%@", @"loi", @"loiGroupId", uUIDString2];
+  [array addObject:v15];
 
   v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
   v25 = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-  [(ULModelStore *)self _fetchModelsByAndPredicates:v9 sortDescriptors:v17 andLimit:1];
+  [(ULModelStore *)self _fetchModelsByAndPredicates:array sortDescriptors:v17 andLimit:1];
   std::vector<ULModelDO>::__vdeallocate(&v22);
   v22 = v20;
   v23 = v21;
@@ -565,15 +565,15 @@ LABEL_9:
   return result;
 }
 
-- (id)fetchModelManagedObjectWithUUID:(const uuid *)a3 withManagedObjectContext:(id)a4
+- (id)fetchModelManagedObjectWithUUID:(const uuid *)d withManagedObjectContext:(id)context
 {
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v8 = [v7 UUIDString];
+  contextCopy = context;
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:d];
+  uUIDString = [v7 UUIDString];
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"modelUUID", v8];
-  [v9 addObject:v10];
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"modelUUID", uUIDString];
+  [array addObject:v10];
 
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"generationTimestamp" ascending:0];
   v22 = 0;
@@ -587,10 +587,10 @@ LABEL_9:
   v17[2] = __73__ULModelStore_fetchModelManagedObjectWithUUID_withManagedObjectContext___block_invoke;
   v17[3] = &unk_2798D4840;
   v17[4] = self;
-  v12 = v9;
+  v12 = array;
   v18 = v12;
   v19 = v11;
-  v13 = v6;
+  v13 = contextCopy;
   v20 = v13;
   v21 = &v22;
   v14 = v11;
@@ -621,19 +621,19 @@ void __73__ULModelStore_fetchModelManagedObjectWithUUID_withManagedObjectContext
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateHomeSlamModelForModelUUID:(const uuid *)a3 modelAsNSData:(id)a4
+- (BOOL)updateHomeSlamModelForModelUUID:(const uuid *)d modelAsNSData:(id)data
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  if (dataCopy)
   {
     v7 = MEMORY[0x277CCAC30];
-    v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-    v9 = [v8 UUIDString];
-    v10 = [v7 predicateWithFormat:@"%K = %@ AND %K = %@", @"modelUUID", v9, @"modelType", &unk_286A71A78];
+    v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:d];
+    uUIDString = [v8 UUIDString];
+    v10 = [v7 predicateWithFormat:@"%K = %@ AND %K = %@", @"modelUUID", uUIDString, @"modelType", &unk_286A71A78];
 
     v17 = @"model";
-    v18[0] = v6;
+    v18[0] = dataCopy;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
@@ -652,18 +652,18 @@ void __73__ULModelStore_fetchModelManagedObjectWithUUID_withManagedObjectContext
 - (__n128)insertDataObjects:forServiceUUID:atLoiUUID:
 {
   *a2 = &unk_286A56800;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
 - (id)insertDataObjects:forServiceUUID:atLoiUUID:
 {
-  v3 = **(a1 + 8);
-  v4 = **(a1 + 16);
-  v5 = [**(a1 + 24) managedObjectContext];
-  v6 = [ULModelMO createFromDO:a2 withServiceMO:v3 loiMO:v4 inManagedObjectContext:v5];
+  v3 = **(self + 8);
+  v4 = **(self + 16);
+  managedObjectContext = [**(self + 24) managedObjectContext];
+  v6 = [ULModelMO createFromDO:a2 withServiceMO:v3 loiMO:v4 inManagedObjectContext:managedObjectContext];
 
   return v6;
 }
@@ -671,7 +671,7 @@ void __73__ULModelStore_fetchModelManagedObjectWithUUID_withManagedObjectContext
 - (uint64_t)insertDataObjects:forServiceUUID:atLoiUUID:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -680,11 +680,11 @@ void __73__ULModelStore_fetchModelManagedObjectWithUUID_withManagedObjectContext
   }
 }
 
-- (id)fetchVMKModelFor:(id)a3
+- (id)fetchVMKModelFor:(id)for
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v4, &v17);
+  forCopy = for;
+  CLMicroLocationProtobufHelper::boostUuidFromNSUUID(forCopy, &v17);
   if ((v18 & 1) == 0)
   {
     std::__throw_bad_optional_access[abi:ne200100]();
@@ -707,14 +707,14 @@ void __73__ULModelStore_fetchModelManagedObjectWithUUID_withManagedObjectContext
     }
 
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = forCopy;
     v7 = "There is not vmk model for locationID: %@, returning an empty model";
     v8 = v6;
     v9 = OS_LOG_TYPE_DEFAULT;
 LABEL_18:
     _os_log_impl(&dword_258FE9000, v8, v9, v7, buf, 0xCu);
 LABEL_19:
-    v11 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     goto LABEL_20;
   }
 
@@ -732,7 +732,7 @@ LABEL_19:
     }
 
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = forCopy;
     v7 = "There is no valid vmk model for locationID: %@, this is a serious error, returning empty model";
     v8 = v10;
     v9 = OS_LOG_TYPE_ERROR;
@@ -750,7 +750,7 @@ LABEL_19:
     if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = forCopy;
       _os_log_impl(&dword_258FE9000, v5, OS_LOG_TYPE_ERROR, "There is an empty vmk model for locationID: %@", buf, 0xCu);
     }
 
@@ -765,9 +765,9 @@ LABEL_19:
     v16 = v22[1];
   }
 
-  v11 = [MEMORY[0x277CBEA90] dataWithBytes:v15 length:v16];
+  data = [MEMORY[0x277CBEA90] dataWithBytes:v15 length:v16];
 LABEL_20:
-  v12 = v11;
+  v12 = data;
   if (v28 == 1)
   {
     if (v27 == 1 && v26 < 0)
@@ -783,25 +783,25 @@ LABEL_20:
   return v12;
 }
 
-- (void)insertVMKModel:(id)a3 for:(id)a4
+- (void)insertVMKModel:(id)model for:(id)for
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  modelCopy = model;
+  forCopy = for;
+  if ([modelCopy length])
   {
     CLMicroLocationProto::VMKModel::VMKModel(&v23);
-    v8 = v6;
-    v9 = [v6 bytes];
-    v10 = [v6 length];
+    v8 = modelCopy;
+    bytes = [modelCopy bytes];
+    v10 = [modelCopy length];
     v25 |= 1u;
     if (v24 == MEMORY[0x277D82C30])
     {
       operator new();
     }
 
-    std::string::__assign_external(v24, v9, v10);
-    CLMicroLocationProtobufHelper::boostUuidFromNSUUID(v7, &buf);
+    std::string::__assign_external(v24, bytes, v10);
+    CLMicroLocationProtobufHelper::boostUuidFromNSUUID(forCopy, &buf);
     if ((v36 & 1) == 0)
     {
       std::__throw_bad_optional_access[abi:ne200100]();

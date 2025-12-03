@@ -1,15 +1,15 @@
 @interface ServiceComposeReviewViewController
-- (BOOL)composeReviewViewController:(id)a3 shouldSubmitReview:(id)a4;
-- (void)_dismissWithError:(id)a3;
-- (void)_presentAlertForDialog:(id)a3;
+- (BOOL)composeReviewViewController:(id)controller shouldSubmitReview:(id)review;
+- (void)_dismissWithError:(id)error;
+- (void)_presentAlertForDialog:(id)dialog;
 - (void)_willAppearInRemoteViewController;
-- (void)alertController:(id)a3 alertDidFinishWithButton:(id)a4;
-- (void)clientKeyboardFrameChanged:(CGRect)a3;
-- (void)composeReviewViewController:(id)a3 didFailWithDialog:(id)a4;
-- (void)composeReviewViewControllerDidSubmit:(id)a3;
+- (void)alertController:(id)controller alertDidFinishWithButton:(id)button;
+- (void)clientKeyboardFrameChanged:(CGRect)changed;
+- (void)composeReviewViewController:(id)controller didFailWithDialog:(id)dialog;
+- (void)composeReviewViewControllerDidSubmit:(id)submit;
 - (void)dealloc;
-- (void)finishStarRatingPromptWithRating:(id)a3;
-- (void)loadReviewWithURL:(id)a3;
+- (void)finishStarRatingPromptWithRating:(id)rating;
+- (void)loadReviewWithURL:(id)l;
 - (void)loadView;
 @end
 
@@ -42,11 +42,11 @@
     underlyingViewController = self->_underlyingViewController;
   }
 
-  v7 = [(SKUIComposeReviewViewController *)underlyingViewController view];
-  [v7 setAutoresizingMask:18];
+  view = [(SKUIComposeReviewViewController *)underlyingViewController view];
+  [view setAutoresizingMask:18];
   [v8 bounds];
-  [v7 setFrame:?];
-  [v8 addSubview:v7];
+  [view setFrame:?];
+  [v8 addSubview:view];
   [(ServiceComposeReviewViewController *)self setView:v8];
 }
 
@@ -69,26 +69,26 @@
     v4 = 0;
   }
 
-  v5 = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
+  _clientViewControllerProxy = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
   v6 = [NSNumber numberWithBool:v4];
-  [v5 didPrepareWithResult:v6 error:v3];
+  [_clientViewControllerProxy didPrepareWithResult:v6 error:v3];
 }
 
-- (void)alertController:(id)a3 alertDidFinishWithButton:(id)a4
+- (void)alertController:(id)controller alertDidFinishWithButton:(id)button
 {
   if (self->_dismissAfterDialog)
   {
     self->_dismissAfterDialog = 0;
-    [(ServiceComposeReviewViewController *)self _dismissWithError:0, a4];
+    [(ServiceComposeReviewViewController *)self _dismissWithError:0, button];
   }
 }
 
-- (void)composeReviewViewController:(id)a3 didFailWithDialog:(id)a4
+- (void)composeReviewViewController:(id)controller didFailWithDialog:(id)dialog
 {
-  if (a4)
+  if (dialog)
   {
     self->_dismissAfterDialog = 1;
-    [(ServiceComposeReviewViewController *)self _presentAlertForDialog:a4];
+    [(ServiceComposeReviewViewController *)self _presentAlertForDialog:dialog];
   }
 
   else
@@ -97,32 +97,32 @@
   }
 }
 
-- (BOOL)composeReviewViewController:(id)a3 shouldSubmitReview:(id)a4
+- (BOOL)composeReviewViewController:(id)controller shouldSubmitReview:(id)review
 {
-  [a4 rating];
+  [review rating];
   v6 = v5;
   if (v5 < 0.00000011921)
   {
-    v7 = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
-    [v7 promptForStarRating];
+    _clientViewControllerProxy = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
+    [_clientViewControllerProxy promptForStarRating];
   }
 
   return v6 >= 0.00000011921;
 }
 
-- (void)composeReviewViewControllerDidSubmit:(id)a3
+- (void)composeReviewViewControllerDidSubmit:(id)submit
 {
-  v4 = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
+  _clientViewControllerProxy = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
   v3 = [NSNumber numberWithBool:1];
-  [v4 didFinishWithResult:v3 error:0];
+  [_clientViewControllerProxy didFinishWithResult:v3 error:0];
 }
 
-- (void)finishStarRatingPromptWithRating:(id)a3
+- (void)finishStarRatingPromptWithRating:(id)rating
 {
-  if (a3)
+  if (rating)
   {
     underlyingViewController = self->_underlyingViewController;
-    [a3 floatValue];
+    [rating floatValue];
     [(SKUIComposeReviewViewController *)underlyingViewController setRating:?];
     v5 = self->_underlyingViewController;
 
@@ -130,9 +130,9 @@
   }
 }
 
-- (void)loadReviewWithURL:(id)a3
+- (void)loadReviewWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [SSWeakReference weakReferenceWithObject:self];
   underlyingViewController = self->_underlyingViewController;
   v8[0] = _NSConcreteStackBlock;
@@ -141,12 +141,12 @@
   v8[3] = &unk_100051E30;
   v9 = v5;
   v7 = v5;
-  [(SKUIComposeReviewViewController *)underlyingViewController loadReviewWithURL:v4 completionBlock:v8];
+  [(SKUIComposeReviewViewController *)underlyingViewController loadReviewWithURL:lCopy completionBlock:v8];
 }
 
-- (void)clientKeyboardFrameChanged:(CGRect)a3
+- (void)clientKeyboardFrameChanged:(CGRect)changed
 {
-  v3 = [NSValue valueWithRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [NSValue valueWithRect:changed.origin.x, changed.origin.y, changed.size.width, changed.size.height];
   if (v3)
   {
     v4 = +[NSNotificationCenter defaultCenter];
@@ -158,33 +158,33 @@
   }
 }
 
-- (void)_dismissWithError:(id)a3
+- (void)_dismissWithError:(id)error
 {
-  v4 = a3;
-  v6 = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
+  errorCopy = error;
+  _clientViewControllerProxy = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
   v5 = [NSNumber numberWithBool:0];
-  [v6 didFinishWithResult:v5 error:v4];
+  [_clientViewControllerProxy didFinishWithResult:v5 error:errorCopy];
 }
 
-- (void)_presentAlertForDialog:(id)a3
+- (void)_presentAlertForDialog:(id)dialog
 {
-  v4 = a3;
+  dialogCopy = dialog;
   alertController = self->_alertController;
-  v10 = v4;
+  v10 = dialogCopy;
   if (!alertController)
   {
     v6 = [ServiceAlertController alloc];
-    v7 = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
-    v8 = [(ServiceAlertController *)v6 initWithRemoteViewControllerProxy:v7];
+    _clientViewControllerProxy = [(ServiceComposeReviewViewController *)self _clientViewControllerProxy];
+    v8 = [(ServiceAlertController *)v6 initWithRemoteViewControllerProxy:_clientViewControllerProxy];
     v9 = self->_alertController;
     self->_alertController = v8;
 
     [(ServiceAlertController *)self->_alertController setDelegate:self];
-    v4 = v10;
+    dialogCopy = v10;
     alertController = self->_alertController;
   }
 
-  [(ServiceAlertController *)alertController presentAlertForDialog:v4];
+  [(ServiceAlertController *)alertController presentAlertForDialog:dialogCopy];
 }
 
 @end

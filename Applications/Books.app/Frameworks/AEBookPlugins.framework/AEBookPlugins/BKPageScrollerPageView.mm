@@ -1,41 +1,41 @@
 @interface BKPageScrollerPageView
 - (BKImageResizerDelegate)imageResizerDelegate;
 - (BKPageNavigationDelegate)navigationDelegate;
-- (BKPageScrollerPageView)initWithFrame:(CGRect)a3 pageNumber:(unint64_t)a4 navigationDelegate:(id)a5 thumbnailingDelegate:(id)a6 imageResizerDelegate:(id)a7;
+- (BKPageScrollerPageView)initWithFrame:(CGRect)frame pageNumber:(unint64_t)number navigationDelegate:(id)delegate thumbnailingDelegate:(id)thumbnailingDelegate imageResizerDelegate:(id)resizerDelegate;
 - (BKPageScrollerThumbnailingDelegate)thumbnailingDelegate;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)snapshot;
-- (void)_contentIsReady:(id)a3;
+- (void)_contentIsReady:(id)ready;
 - (void)_exposeContentView;
 - (void)_teardownContentView;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setScrollState:(int)a3;
+- (void)setScrollState:(int)state;
 - (void)teardown;
 @end
 
 @implementation BKPageScrollerPageView
 
-- (BKPageScrollerPageView)initWithFrame:(CGRect)a3 pageNumber:(unint64_t)a4 navigationDelegate:(id)a5 thumbnailingDelegate:(id)a6 imageResizerDelegate:(id)a7
+- (BKPageScrollerPageView)initWithFrame:(CGRect)frame pageNumber:(unint64_t)number navigationDelegate:(id)delegate thumbnailingDelegate:(id)thumbnailingDelegate imageResizerDelegate:(id)resizerDelegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  delegateCopy = delegate;
+  thumbnailingDelegateCopy = thumbnailingDelegate;
+  resizerDelegateCopy = resizerDelegate;
   v39.receiver = self;
   v39.super_class = BKPageScrollerPageView;
-  v18 = [(BKPageScrollerPageView *)&v39 initWithFrame:x, y, width, height];
-  v19 = v18;
-  if (v18)
+  height = [(BKPageScrollerPageView *)&v39 initWithFrame:x, y, width, height];
+  v19 = height;
+  if (height)
   {
-    v18->_pageNumber = a4;
-    objc_storeWeak(&v18->_navigationDelegate, v15);
-    objc_storeWeak(&v19->_thumbnailingDelegate, v16);
-    objc_storeWeak(&v19->_imageResizerDelegate, v17);
+    height->_pageNumber = number;
+    objc_storeWeak(&height->_navigationDelegate, delegateCopy);
+    objc_storeWeak(&v19->_thumbnailingDelegate, thumbnailingDelegateCopy);
+    objc_storeWeak(&v19->_imageResizerDelegate, resizerDelegateCopy);
     WeakRetained = objc_loadWeakRetained(&v19->_thumbnailingDelegate);
 
     if (WeakRetained)
@@ -63,7 +63,7 @@
       objc_copyWeak(v36, &from);
       v36[1] = v25;
       v36[2] = v27;
-      [v28 thumbnailingGenerateImageForPageNumber:a4 size:v34 callbackBlock:{*&v25, *&v27}];
+      [v28 thumbnailingGenerateImageForPageNumber:number size:v34 callbackBlock:{*&v25, *&v27}];
 
       objc_destroyWeak(v36);
       objc_destroyWeak(&v35);
@@ -78,8 +78,8 @@
       contentViewController = v19->_contentViewController;
       v19->_contentViewController = v30;
 
-      v32 = [(BKContentViewController *)v19->_contentViewController view];
-      [(BKPageScrollerPageView *)v19 addSubview:v32];
+      view = [(BKContentViewController *)v19->_contentViewController view];
+      [(BKPageScrollerPageView *)v19 addSubview:view];
     }
   }
 
@@ -98,12 +98,12 @@
 
 - (void)teardown
 {
-  v3 = [(BKPageScrollerPageView *)self _resizeOperation];
-  [v3 cancel];
+  _resizeOperation = [(BKPageScrollerPageView *)self _resizeOperation];
+  [_resizeOperation cancel];
 
   [(BKPageScrollerPageView *)self set_resizeOperation:0];
-  v4 = [(BKPageScrollerPageView *)self _thumbnailingOperation];
-  [v4 cancel];
+  _thumbnailingOperation = [(BKPageScrollerPageView *)self _thumbnailingOperation];
+  [_thumbnailingOperation cancel];
 
   [(BKPageScrollerPageView *)self set_thumbnailingOperation:0];
   objc_storeWeak(&self->_navigationDelegate, 0);
@@ -116,18 +116,18 @@
   v4.receiver = self;
   v4.super_class = BKPageScrollerPageView;
   [(BKPageScrollerPageView *)&v4 didMoveToSuperview];
-  v3 = [(BKPageScrollerPageView *)self superview];
+  superview = [(BKPageScrollerPageView *)self superview];
 
-  if (!v3)
+  if (!superview)
   {
     [(BKPageScrollerPageView *)self _teardownContentView];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   WeakRetained = objc_loadWeakRetained(&self->_thumbnailingDelegate);
 
   if (WeakRetained)
@@ -140,15 +140,15 @@
   contentViewController = self->_contentViewController;
   if (contentViewController)
   {
-    v11 = [(BKContentViewController *)contentViewController view];
-    v7 = v11;
-    if (!v11)
+    view = [(BKContentViewController *)contentViewController view];
+    v7 = view;
+    if (!view)
     {
       sub_138408();
       goto LABEL_7;
     }
 
-    [v11 sizeThatFits:{width, height}];
+    [view sizeThatFits:{width, height}];
 LABEL_6:
     width = v8;
     height = v9;
@@ -176,15 +176,15 @@ LABEL_7:
   y = v12.origin.y;
   width = v12.size.width;
   height = v12.size.height;
-  v7 = [(BKContentViewController *)self->_contentViewController view];
-  [v7 setFrame:{x, y, width, height}];
+  view = [(BKContentViewController *)self->_contentViewController view];
+  [view setFrame:{x, y, width, height}];
 }
 
 - (id)snapshot
 {
-  v3 = [(UIImageView *)self->_thumbnailView image];
+  image = [(UIImageView *)self->_thumbnailView image];
 
-  if (v3)
+  if (image)
   {
     [(UIImageView *)self->_thumbnailView image];
   }
@@ -198,20 +198,20 @@ LABEL_7:
   return v4;
 }
 
-- (void)setScrollState:(int)a3
+- (void)setScrollState:(int)state
 {
-  if (self->_scrollState != a3)
+  if (self->_scrollState != state)
   {
     WeakRetained = objc_loadWeakRetained(&self->_thumbnailingDelegate);
 
     if (WeakRetained)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         [(BKPageScrollerPageView *)self _teardownContentView];
       }
 
-      else if (a3 == 2)
+      else if (state == 2)
       {
         contentViewController = self->_contentViewController;
         if (contentViewController)
@@ -229,13 +229,13 @@ LABEL_7:
           v9 = self->_contentViewController;
           self->_contentViewController = v8;
 
-          v10 = [(BKContentViewController *)self->_contentViewController view];
-          [(BKPageScrollerPageView *)self addSubview:v10];
+          view = [(BKContentViewController *)self->_contentViewController view];
+          [(BKPageScrollerPageView *)self addSubview:view];
 
           if ([(BKContentViewController *)self->_contentViewController isLoading])
           {
-            v11 = [(BKContentViewController *)self->_contentViewController view];
-            [v11 setAlpha:0.0];
+            view2 = [(BKContentViewController *)self->_contentViewController view];
+            [view2 setAlpha:0.0];
 
             v12 = +[NSNotificationCenter defaultCenter];
             [v12 addObserver:self selector:"_contentIsReady:" name:BKContentReadyNotification object:self->_contentViewController];
@@ -251,11 +251,11 @@ LABEL_7:
       }
     }
 
-    self->_scrollState = a3;
+    self->_scrollState = state;
   }
 }
 
-- (void)_contentIsReady:(id)a3
+- (void)_contentIsReady:(id)ready
 {
   if (self->_scrollState == 2)
   {
@@ -279,8 +279,8 @@ LABEL_7:
   contentViewController = self->_contentViewController;
   if (contentViewController)
   {
-    v4 = [(BKContentViewController *)contentViewController view];
-    [v4 setAlpha:1.0];
+    view = [(BKContentViewController *)contentViewController view];
+    [view setAlpha:1.0];
 
     [(UIImageView *)self->_thumbnailView setAlpha:1.0];
     v5 = +[NSNotificationCenter defaultCenter];
@@ -288,13 +288,13 @@ LABEL_7:
 
     if ([(BKContentViewController *)self->_contentViewController isViewLoaded])
     {
-      v6 = [(BKContentViewController *)self->_contentViewController view];
-      v7 = [v6 superview];
+      view2 = [(BKContentViewController *)self->_contentViewController view];
+      superview = [view2 superview];
 
-      if (v7 == self)
+      if (superview == self)
       {
-        v8 = [(BKContentViewController *)self->_contentViewController view];
-        [v8 removeFromSuperview];
+        view3 = [(BKContentViewController *)self->_contentViewController view];
+        [view3 removeFromSuperview];
       }
     }
 

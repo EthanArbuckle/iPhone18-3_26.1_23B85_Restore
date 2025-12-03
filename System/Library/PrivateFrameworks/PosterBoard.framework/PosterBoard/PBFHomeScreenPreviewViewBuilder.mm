@@ -29,13 +29,13 @@
   BSFloatRoundForScale();
   v6 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, v4, v5}];
   [v6 setAutoresizingMask:18];
-  v7 = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration selectedAppearanceType];
-  v8 = v7;
-  if (v7 <= 1)
+  selectedAppearanceType = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration selectedAppearanceType];
+  v8 = selectedAppearanceType;
+  if (selectedAppearanceType <= 1)
   {
-    if (v7)
+    if (selectedAppearanceType)
     {
-      if (v7 != 1)
+      if (selectedAppearanceType != 1)
       {
         goto LABEL_16;
       }
@@ -43,10 +43,10 @@
       v9 = objc_alloc(MEMORY[0x277D75D18]);
       [v6 bounds];
       v10 = [v9 initWithFrame:?];
-      v11 = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration solidColorAppearance];
-      v12 = [v11 effectiveColor];
-      v13 = [v12 color];
-      [v10 setBackgroundColor:v13];
+      solidColorAppearance = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration solidColorAppearance];
+      effectiveColor = [solidColorAppearance effectiveColor];
+      color = [effectiveColor color];
+      [v10 setBackgroundColor:color];
 
       goto LABEL_12;
     }
@@ -61,10 +61,10 @@ LABEL_7:
     [v6 addSubview:v10];
     if (v8 == 3)
     {
-      v18 = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration homePosterAppearance];
-      v19 = [v18 isLegibilityBlurEnabled];
+      homePosterAppearance = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration homePosterAppearance];
+      isLegibilityBlurEnabled = [homePosterAppearance isLegibilityBlurEnabled];
 
-      if (!v19)
+      if (!isLegibilityBlurEnabled)
       {
         goto LABEL_15;
       }
@@ -77,29 +77,29 @@ LABEL_7:
         goto LABEL_15;
       }
 
-      v15 = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration lockPosterAppearance];
-      v16 = [v15 isLegibilityBlurEnabled];
+      lockPosterAppearance = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration lockPosterAppearance];
+      isLegibilityBlurEnabled2 = [lockPosterAppearance isLegibilityBlurEnabled];
 
-      if ((v16 & 1) == 0)
+      if ((isLegibilityBlurEnabled2 & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    v20 = [MEMORY[0x277D26718] pui_homeScreenLegibilityMaterialView];
-    [v20 pbf_scaleBlurRadiusByAmount:self->_viewScreenSizeScale];
+    pui_homeScreenLegibilityMaterialView = [MEMORY[0x277D26718] pui_homeScreenLegibilityMaterialView];
+    [pui_homeScreenLegibilityMaterialView pbf_scaleBlurRadiusByAmount:self->_viewScreenSizeScale];
     [v6 bounds];
-    [v20 setFrame:?];
-    [v20 setAutoresizingMask:18];
-    [v20 setGroupNameBase:@"HomeScreenPreviewView"];
-    [v6 addSubview:v20];
+    [pui_homeScreenLegibilityMaterialView setFrame:?];
+    [pui_homeScreenLegibilityMaterialView setAutoresizingMask:18];
+    [pui_homeScreenLegibilityMaterialView setGroupNameBase:@"HomeScreenPreviewView"];
+    [v6 addSubview:pui_homeScreenLegibilityMaterialView];
 
     goto LABEL_15;
   }
 
-  if (v7 != 2)
+  if (selectedAppearanceType != 2)
   {
-    if (v7 != 3)
+    if (selectedAppearanceType != 3)
     {
       goto LABEL_16;
     }
@@ -110,9 +110,9 @@ LABEL_7:
   v17 = objc_alloc(MEMORY[0x277D3EF50]);
   [v6 bounds];
   v10 = [v17 initWithFrame:?];
-  v11 = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration gradientAppearance];
-  v12 = [v11 gradientColors];
-  [v10 setColors:v12];
+  solidColorAppearance = [(PRPosterHomeScreenConfiguration *)self->_homeScreenConfiguration gradientAppearance];
+  effectiveColor = [solidColorAppearance gradientColors];
+  [v10 setColors:effectiveColor];
 LABEL_12:
 
   [v10 setAutoresizingMask:18];
@@ -135,13 +135,13 @@ LABEL_16:
 
   else
   {
-    v23 = [(PBFHomeScreenPreviewViewBuilder *)self excludesHomeScreenDock];
+    excludesHomeScreenDock = [(PBFHomeScreenPreviewViewBuilder *)self excludesHomeScreenDock];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFHomeScreenPreviewViewBuilder buildView]"];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __44__PBFHomeScreenPreviewViewBuilder_buildView__block_invoke_2;
     v26[3] = &unk_2782C6560;
-    v28 = v23;
+    v28 = excludesHomeScreenDock;
     v26[4] = self;
     v22 = &v27;
     v27 = v6;

@@ -1,6 +1,6 @@
 @interface WKContentRuleList
-+ (BOOL)_supportsRegularExpression:(id)a3;
-+ (id)_parseRuleList:(id)a3;
++ (BOOL)_supportsRegularExpression:(id)expression;
++ (id)_parseRuleList:(id)list;
 - (NSString)identifier;
 - (void)dealloc;
 @end
@@ -57,9 +57,9 @@
   return v6;
 }
 
-+ (BOOL)_supportsRegularExpression:(id)a3
++ (BOOL)_supportsRegularExpression:(id)expression
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, expression);
   v5 = API::ContentRuleList::supportsRegularExpression(&v8, v3);
   v6 = v8;
   v8 = 0;
@@ -71,10 +71,10 @@
   return v5;
 }
 
-+ (id)_parseRuleList:(id)a3
++ (id)_parseRuleList:(id)list
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  MEMORY[0x19EB02040](&v15, a3);
+  MEMORY[0x19EB02040](&v15, list);
   v3 = API::ContentRuleList::parseRuleList();
   v5 = v3;
   *&v16.__val_ = v3;

@@ -1,19 +1,19 @@
 @interface CLKSimpleTextProvider
 + (CLKSimpleTextProvider)textProviderWithText:(NSString *)text shortText:(NSString *)shortText accessibilityLabel:(NSString *)accessibilityLabel;
-+ (id)finalizedTextProviderWithText:(id)a3 monospaceNumbers:(BOOL)a4;
++ (id)finalizedTextProviderWithText:(id)text monospaceNumbers:(BOOL)numbers;
 - (BOOL)_validate;
-- (BOOL)isEqual:(id)a3;
-- (CLKSimpleTextProvider)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLKSimpleTextProvider)initWithCoder:(id)coder;
 - (CLKSimpleTextProvider)initWithText:(NSString *)text shortText:(NSString *)shortText accessibilityLabel:(NSString *)accessibilityLabel;
 - (id)JSONObjectRepresentation;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style;
 - (id)attributedString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)_validate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKSimpleTextProvider
@@ -25,11 +25,11 @@
   v10 = accessibilityLabel;
   v14.receiver = self;
   v14.super_class = CLKSimpleTextProvider;
-  v11 = [(CLKTextProvider *)&v14 initPrivate];
-  v12 = v11;
-  if (v11)
+  initPrivate = [(CLKTextProvider *)&v14 initPrivate];
+  v12 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKSimpleTextProvider *)v11 setText:v8];
+    [(CLKSimpleTextProvider *)initPrivate setText:v8];
     [(CLKSimpleTextProvider *)v12 setShortText:v9];
     [(CLKTextProvider *)v12 setAccessibilityLabel:v10];
   }
@@ -42,26 +42,26 @@
   v8 = accessibilityLabel;
   v9 = shortText;
   v10 = text;
-  v11 = [[a1 alloc] initWithText:v10 shortText:v9 accessibilityLabel:v8];
+  v11 = [[self alloc] initWithText:v10 shortText:v9 accessibilityLabel:v8];
 
   return v11;
 }
 
-+ (id)finalizedTextProviderWithText:(id)a3 monospaceNumbers:(BOOL)a4
++ (id)finalizedTextProviderWithText:(id)text monospaceNumbers:(BOOL)numbers
 {
-  v4 = [a1 textProviderWithText:{a3, a4}];
+  v4 = [self textProviderWithText:{text, numbers}];
   [v4 finalize];
 
   return v4;
 }
 
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style
 {
   v80[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  styleCopy = style;
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
       v8 = 0;
       goto LABEL_7;
@@ -78,7 +78,7 @@
   v8 = *(&self->super.super.isa + *v7);
 LABEL_7:
   v9 = v8;
-  if ([v6 uppercase] && !-[CLKTextProvider ignoreUppercaseStyle](self, "ignoreUppercaseStyle"))
+  if ([styleCopy uppercase] && !-[CLKTextProvider ignoreUppercaseStyle](self, "ignoreUppercaseStyle"))
   {
     v10 = ![(CLKSimpleTextProvider *)self useLowercaseSmallCaps];
   }
@@ -92,8 +92,8 @@ LABEL_7:
   v12 = self->_useLowercaseSmallCaps && CLKSmallCapsAllowed() && !self->_useNoContentDashFormatting;
   if ((v10 | v11))
   {
-    v13 = [MEMORY[0x277CBEAF8] currentLocale];
-    v14 = [v9 uppercaseStringWithLocale:v13];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v14 = [v9 uppercaseStringWithLocale:currentLocale];
 
     v9 = v14;
   }
@@ -104,12 +104,12 @@ LABEL_7:
     goto LABEL_51;
   }
 
-  v15 = [v6 font];
-  v16 = v15;
+  font = [styleCopy font];
+  v16 = font;
   if (v11)
   {
-    v17 = [v6 smallCapsBaseFont];
-    v18 = [v17 CLKFontWithLocalizedSmallCaps];
+    smallCapsBaseFont = [styleCopy smallCapsBaseFont];
+    cLKFontWithLocalizedSmallCaps = [smallCapsBaseFont CLKFontWithLocalizedSmallCaps];
   }
 
   else
@@ -117,21 +117,21 @@ LABEL_7:
     if (!v12)
     {
       v25 = 0;
-      v20 = v15;
+      v20 = font;
       goto LABEL_38;
     }
 
-    v17 = [v6 smallCapsBaseFont];
-    v18 = [v17 CLKFontWithLocalizedLowerCaseSmallCaps];
+    smallCapsBaseFont = [styleCopy smallCapsBaseFont];
+    cLKFontWithLocalizedSmallCaps = [smallCapsBaseFont CLKFontWithLocalizedLowerCaseSmallCaps];
   }
 
-  v20 = v18;
+  v20 = cLKFontWithLocalizedSmallCaps;
 
   if (CLKUsesFauxSmallCaps())
   {
-    v21 = [v6 smallCapsBaseFont];
-    v22 = [v6 font];
-    v23 = [v21 isEqual:v22];
+    smallCapsBaseFont2 = [styleCopy smallCapsBaseFont];
+    font2 = [styleCopy font];
+    v23 = [smallCapsBaseFont2 isEqual:font2];
 
     if (v23)
     {
@@ -141,7 +141,7 @@ LABEL_7:
 
     else
     {
-      [v6 smallCapsBaseFont];
+      [styleCopy smallCapsBaseFont];
     }
     v26 = ;
     v27 = *MEMORY[0x277D740A8];
@@ -191,26 +191,26 @@ LABEL_36:
   v72 = v20;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
 LABEL_38:
-  v33 = [(CLKTextProvider *)self fontFeatures];
+  fontFeatures = [(CLKTextProvider *)self fontFeatures];
 
-  if (v33)
+  if (fontFeatures)
   {
-    v34 = [(CLKTextProvider *)self fontFeatures];
-    v35 = [v20 CLKFontByApplyingFeatureSettings:v34];
+    fontFeatures2 = [(CLKTextProvider *)self fontFeatures];
+    v35 = [v20 CLKFontByApplyingFeatureSettings:fontFeatures2];
 
     if (v25)
     {
       v36 = [v25 mutableCopy];
       v37 = *MEMORY[0x277D740A8];
       v38 = [v36 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
-      v39 = [(CLKTextProvider *)self fontFeatures];
-      [v38 CLKFontByApplyingFeatureSettings:v39];
-      v40 = v6;
+      fontFeatures3 = [(CLKTextProvider *)self fontFeatures];
+      [v38 CLKFontByApplyingFeatureSettings:fontFeatures3];
+      v40 = styleCopy;
       v42 = v41 = v9;
       [v36 setObject:v42 forKeyedSubscript:v37];
 
       v9 = v41;
-      v6 = v40;
+      styleCopy = v40;
 
       v25 = v36;
     }
@@ -223,13 +223,13 @@ LABEL_38:
 
   if (self->_useNoContentDashFormatting)
   {
-    v68 = [v35 fontDescriptor];
+    fontDescriptor = [v35 fontDescriptor];
     v43 = _AlternatePunctuationAttributes();
-    v67 = [v68 fontDescriptorByAddingAttributes:v43];
+    v67 = [fontDescriptor fontDescriptorByAddingAttributes:v43];
 
     v44 = [MEMORY[0x277D74300] fontWithDescriptor:v67 size:0.0];
     v45 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v9];
-    v46 = v6;
+    v46 = styleCopy;
     v47 = v9;
     v48 = [v9 length];
     v49 = 305.0 / CTFontGetUnitsPerEm(v35);
@@ -245,7 +245,7 @@ LABEL_38:
 
     v56 = v48;
     v9 = v47;
-    v6 = v46;
+    styleCopy = v46;
     [v45 addAttribute:*MEMORY[0x277D740A8] value:v44 range:{0, v56}];
   }
 
@@ -267,16 +267,16 @@ LABEL_38:
     }
   }
 
-  v19 = [v45 _attributedStringWithOtherAttributesFromStyle:{v6, v67}];
+  v19 = [v45 _attributedStringWithOtherAttributesFromStyle:{styleCopy, v67}];
 
-  if ([v6 shouldEmbedTintColors])
+  if ([styleCopy shouldEmbedTintColors])
   {
-    v60 = [(CLKTextProvider *)self tintColor];
+    tintColor = [(CLKTextProvider *)self tintColor];
 
-    if (v60)
+    if (tintColor)
     {
-      v61 = [(CLKTextProvider *)self tintColor];
-      v62 = [v19 _attributedStringWithForegroundColor:v61];
+      tintColor2 = [(CLKTextProvider *)self tintColor];
+      v62 = [v19 _attributedStringWithForegroundColor:tintColor2];
 
       v19 = v62;
     }
@@ -311,11 +311,11 @@ LABEL_51:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CLKSimpleTextProvider;
-  v4 = [(CLKTextProvider *)&v7 copyWithZone:a3];
+  v4 = [(CLKTextProvider *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4 != self)
   {
@@ -329,12 +329,12 @@ LABEL_51:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKSimpleTextProvider;
-  v5 = [(CLKTextProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_text, v4[17]) && CLKEqualObjects(self->_shortText, v4[18]) && self->_useNoContentDashFormatting == *(v4 + 128) && self->_useAllSmallCaps == *(v4 + 129) && self->_useLowercaseSmallCaps == *(v4 + 130);
+  v5 = [(CLKTextProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_text, equalCopy[17]) && CLKEqualObjects(self->_shortText, equalCopy[18]) && self->_useNoContentDashFormatting == *(equalCopy + 128) && self->_useAllSmallCaps == *(equalCopy + 129) && self->_useLowercaseSmallCaps == *(equalCopy + 130);
 
   return v5;
 }
@@ -348,38 +348,38 @@ LABEL_51:
   return v4 + 4 * [(NSString *)self->_shortText hash]+ 32 * self->_useNoContentDashFormatting + (self->_useAllSmallCaps << 6) + (self->_useLowercaseSmallCaps << 7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKSimpleTextProvider;
-  v4 = a3;
-  [(CLKTextProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_text forKey:{@"_text", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_shortText forKey:@"_shortText"];
-  [v4 encodeBool:self->_useNoContentDashFormatting forKey:@"useNoContentDashFormatting"];
-  [v4 encodeBool:self->_useAllSmallCaps forKey:@"useAllSmallCaps"];
-  [v4 encodeBool:self->_useLowercaseSmallCaps forKey:@"useLowercaseSmallCaps"];
+  coderCopy = coder;
+  [(CLKTextProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_text forKey:{@"_text", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_shortText forKey:@"_shortText"];
+  [coderCopy encodeBool:self->_useNoContentDashFormatting forKey:@"useNoContentDashFormatting"];
+  [coderCopy encodeBool:self->_useAllSmallCaps forKey:@"useAllSmallCaps"];
+  [coderCopy encodeBool:self->_useLowercaseSmallCaps forKey:@"useLowercaseSmallCaps"];
 }
 
-- (CLKSimpleTextProvider)initWithCoder:(id)a3
+- (CLKSimpleTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLKSimpleTextProvider;
-  v5 = [(CLKTextProvider *)&v11 initWithCoder:v4];
+  v5 = [(CLKTextProvider *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shortText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shortText"];
     shortText = v5->_shortText;
     v5->_shortText = v8;
 
-    v5->_useNoContentDashFormatting = [v4 decodeBoolForKey:@"useNoContentDashFormatting"];
-    v5->_useAllSmallCaps = [v4 decodeBoolForKey:@"useAllSmallCaps"];
-    v5->_useLowercaseSmallCaps = [v4 decodeBoolForKey:@"useLowercaseSmallCaps"];
+    v5->_useNoContentDashFormatting = [coderCopy decodeBoolForKey:@"useNoContentDashFormatting"];
+    v5->_useAllSmallCaps = [coderCopy decodeBoolForKey:@"useAllSmallCaps"];
+    v5->_useLowercaseSmallCaps = [coderCopy decodeBoolForKey:@"useLowercaseSmallCaps"];
   }
 
   return v5;
@@ -403,15 +403,15 @@ LABEL_51:
   return v5;
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = CLKSimpleTextProvider;
-  v5 = [(CLKTextProvider *)&v10 _initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKTextProvider *)&v10 _initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [representationCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -419,7 +419,7 @@ LABEL_51:
     }
 
     objc_storeStrong(v5 + 17, v6);
-    v7 = [v4 objectForKeyedSubscript:@"shortText"];
+    v7 = [representationCopy objectForKeyedSubscript:@"shortText"];
     if (v7)
     {
       objc_opt_class();
@@ -431,7 +431,7 @@ LABEL_51:
       objc_storeStrong(v5 + 18, v7);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"smallCaps"];
+    v8 = [representationCopy objectForKeyedSubscript:@"smallCaps"];
     if (v8)
     {
       objc_opt_class();
@@ -451,15 +451,15 @@ LABEL_51:
 {
   v5.receiver = self;
   v5.super_class = CLKSimpleTextProvider;
-  v3 = [(CLKTextProvider *)&v5 JSONObjectRepresentation];
-  [v3 setObject:self->_text forKeyedSubscript:@"text"];
-  [v3 setObject:self->_shortText forKeyedSubscript:@"shortText"];
+  jSONObjectRepresentation = [(CLKTextProvider *)&v5 JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:self->_text forKeyedSubscript:@"text"];
+  [jSONObjectRepresentation setObject:self->_shortText forKeyedSubscript:@"shortText"];
   if (self->_useLowercaseSmallCaps)
   {
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"smallCaps"];
+    [jSONObjectRepresentation setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"smallCaps"];
   }
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 - (void)_validate

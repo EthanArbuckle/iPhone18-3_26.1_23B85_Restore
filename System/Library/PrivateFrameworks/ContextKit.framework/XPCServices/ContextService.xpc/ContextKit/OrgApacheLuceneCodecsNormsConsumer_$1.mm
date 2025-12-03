@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneCodecsNormsConsumer_$1
-- (OrgApacheLuceneCodecsNormsConsumer_$1)initWithJavaUtilList:(id)a3 withOrgApacheLuceneIndexMergeState:(id)a4;
+- (OrgApacheLuceneCodecsNormsConsumer_$1)initWithJavaUtilList:(id)list withOrgApacheLuceneIndexMergeState:(id)state;
 - (id)iterator;
 - (void)dealloc;
 @end
@@ -15,10 +15,10 @@
   return v3;
 }
 
-- (OrgApacheLuceneCodecsNormsConsumer_$1)initWithJavaUtilList:(id)a3 withOrgApacheLuceneIndexMergeState:(id)a4
+- (OrgApacheLuceneCodecsNormsConsumer_$1)initWithJavaUtilList:(id)list withOrgApacheLuceneIndexMergeState:(id)state
 {
-  JreStrongAssign(&self->val$toMerge_, a3);
-  JreStrongAssign(&self->val$mergeState_, a4);
+  JreStrongAssign(&self->val$toMerge_, list);
+  JreStrongAssign(&self->val$mergeState_, state);
   return self;
 }
 

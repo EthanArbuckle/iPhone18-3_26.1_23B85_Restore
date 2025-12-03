@@ -1,6 +1,6 @@
 @interface _UIGenieAnimator.DebugView
-- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithCoder:(id)a3;
-- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithFrame:(CGRect)a3;
+- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithCoder:(id)coder;
+- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_189083DC0();
 }
 
-- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithCoder:(id)a3
+- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E69E7CC0];
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView_dots) = MEMORY[0x1E69E7CC0];
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithFrame:(CGRect)a3
+- (_TtCC5UIKit16_UIGenieAnimatorP33_A4B2A5C8E093A80E4BC9006C0C2789519DebugView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

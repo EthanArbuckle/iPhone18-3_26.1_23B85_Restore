@@ -1,7 +1,7 @@
 @interface PKChangeHistoryEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PKChangeHistoryEvent)init;
-- (PKChangeHistoryEvent)initWithType:(int64_t)a3 recordType:(int64_t)a4 recordUniqueID:(id)a5 timestamp:(id)a6;
+- (PKChangeHistoryEvent)initWithType:(int64_t)type recordType:(int64_t)recordType recordUniqueID:(id)d timestamp:(id)timestamp;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,50 +15,50 @@
   v2 = [(PKChangeHistoryEvent *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
 }
 
-- (PKChangeHistoryEvent)initWithType:(int64_t)a3 recordType:(int64_t)a4 recordUniqueID:(id)a5 timestamp:(id)a6
+- (PKChangeHistoryEvent)initWithType:(int64_t)type recordType:(int64_t)recordType recordUniqueID:(id)d timestamp:(id)timestamp
 {
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  timestampCopy = timestamp;
   v18.receiver = self;
   v18.super_class = PKChangeHistoryEvent;
   v13 = [(PKChangeHistoryEvent *)&v18 init];
   if (v13)
   {
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v13->_identifier;
-    v13->_identifier = v15;
+    v13->_identifier = uUIDString;
 
-    v13->_type = a3;
-    v13->_recordType = a4;
-    objc_storeStrong(&v13->_recordUniqueID, a5);
-    objc_storeStrong(&v13->_timestamp, a6);
+    v13->_type = type;
+    v13->_recordType = recordType;
+    objc_storeStrong(&v13->_recordUniqueID, d);
+    objc_storeStrong(&v13->_timestamp, timestamp);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())

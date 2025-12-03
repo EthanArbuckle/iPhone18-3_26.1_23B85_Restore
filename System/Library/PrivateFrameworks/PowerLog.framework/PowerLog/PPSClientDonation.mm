@@ -1,12 +1,12 @@
 @interface PPSClientDonation
-+ (BOOL)isRegisteredSubsystem:(const char *)a3 category:(const char *)a4;
-+ (PPSTelemetryIdentifier)createIdentifierForSubsystem:(const char *)a3 category:(const char *)a4;
-+ (void)sendEventWithIdentifier:(const PPSTelemetryIdentifier *)a3 payload:(__CFDictionary *)a4;
++ (BOOL)isRegisteredSubsystem:(const char *)subsystem category:(const char *)category;
++ (PPSTelemetryIdentifier)createIdentifierForSubsystem:(const char *)subsystem category:(const char *)category;
++ (void)sendEventWithIdentifier:(const PPSTelemetryIdentifier *)identifier payload:(__CFDictionary *)payload;
 @end
 
 @implementation PPSClientDonation
 
-+ (PPSTelemetryIdentifier)createIdentifierForSubsystem:(const char *)a3 category:(const char *)a4
++ (PPSTelemetryIdentifier)createIdentifierForSubsystem:(const char *)subsystem category:(const char *)category
 {
   if (![PPSClientDonation isRegisteredSubsystem:"isRegisteredSubsystem:category:" category:?])
   {
@@ -31,12 +31,12 @@
   return v5;
 }
 
-+ (void)sendEventWithIdentifier:(const PPSTelemetryIdentifier *)a3 payload:(__CFDictionary *)a4
++ (void)sendEventWithIdentifier:(const PPSTelemetryIdentifier *)identifier payload:(__CFDictionary *)payload
 {
-  if (a3 && a4)
+  if (identifier && payload)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s::%s", a3, a3->var1];
-    PLLogRegisteredEvent(110, v6, a4);
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s::%s", identifier, identifier->var1];
+    PLLogRegisteredEvent(110, v6, payload);
   }
 
   else
@@ -44,18 +44,18 @@
     v5 = logHandle_0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [PPSClientDonation sendEventWithIdentifier:a4 payload:v5];
+      [PPSClientDonation sendEventWithIdentifier:payload payload:v5];
     }
   }
 }
 
-+ (BOOL)isRegisteredSubsystem:(const char *)a3 category:(const char *)a4
++ (BOOL)isRegisteredSubsystem:(const char *)subsystem category:(const char *)category
 {
-  if (a3 && a4 && *a3 && *a4)
+  if (subsystem && category && *subsystem && *category)
   {
     v6 = objc_opt_new();
-    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
-    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a4];
+    v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:subsystem];
+    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:category];
     v9 = [v6 permissionsForSubsystem:v7 category:v8];
 
     if ((v9 & 1) == 0)

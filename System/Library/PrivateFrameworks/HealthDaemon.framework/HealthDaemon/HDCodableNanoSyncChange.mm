@@ -1,34 +1,34 @@
 @interface HDCodableNanoSyncChange
-+ (id)changeWithNanoSyncEntityClass:(Class)a3 version:(id)a4;
++ (id)changeWithNanoSyncEntityClass:(Class)class version:(id)version;
 - ($2825F4736939C4A6D3AD43837233062D)versionRange;
 - (BOOL)done;
-- (BOOL)isEqual:(id)a3;
-- (Class)syncEntityClassForProfile:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (Class)syncEntityClassForProfile:(id)profile;
 - (HDSyncAnchorRange)syncAnchorRange;
 - (NSNumber)sequenceNumber;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decodedObjectsForProfile:(id)a3 error:(id *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decodedObjectsForProfile:(id)profile error:(id *)error;
 - (id)dictionaryRepresentation;
 - (id)nanoSyncDescription;
-- (id)requiredAnchorMapWithProfile:(id)a3 error:(id *)a4;
+- (id)requiredAnchorMapWithProfile:(id)profile error:(id *)error;
 - (id)speculativeCopy;
 - (id)syncEntityIdentifier;
-- (int)StringAsObjectType:(id)a3;
+- (int)StringAsObjectType:(id)type;
 - (int)objectType;
 - (unint64_t)hash;
-- (void)addObjectData:(id)a3;
-- (void)addRequiredAnchors:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasComplete:(BOOL)a3;
-- (void)setHasObjectType:(BOOL)a3;
-- (void)setHasSequence:(BOOL)a3;
-- (void)setHasSpeculative:(BOOL)a3;
-- (void)setHasStartAnchor:(BOOL)a3;
-- (void)setObjects:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 requiredAnchorMap:(id)a5;
-- (void)setVersionRange:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addObjectData:(id)data;
+- (void)addRequiredAnchors:(id)anchors;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasComplete:(BOOL)complete;
+- (void)setHasObjectType:(BOOL)type;
+- (void)setHasSequence:(BOOL)sequence;
+- (void)setHasSpeculative:(BOOL)speculative;
+- (void)setHasStartAnchor:(BOOL)anchor;
+- (void)setObjects:(id)objects syncAnchorRange:(HDSyncAnchorRange)range requiredAnchorMap:(id)map;
+- (void)setVersionRange:(id)range;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableNanoSyncChange
@@ -36,8 +36,8 @@
 - (id)nanoSyncDescription
 {
   v3 = [HDSyncEntityIdentifier alloc];
-  v4 = [(HDCodableNanoSyncChange *)self entityIdentifier];
-  v5 = [(HDSyncEntityIdentifier *)v3 initWithCodableEntityIdentifier:v4];
+  entityIdentifier = [(HDCodableNanoSyncChange *)self entityIdentifier];
+  v5 = [(HDSyncEntityIdentifier *)v3 initWithCodableEntityIdentifier:entityIdentifier];
 
   if (self->_speculative)
   {
@@ -110,9 +110,9 @@
   }
 }
 
-- (void)setHasObjectType:(BOOL)a3
+- (void)setHasObjectType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -125,225 +125,225 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsObjectType:(id)a3
+- (int)StringAsObjectType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CategorySamples"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"CategorySamples"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"QuantitySamples"])
+  else if ([typeCopy isEqualToString:@"QuantitySamples"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Workouts"])
+  else if ([typeCopy isEqualToString:@"Workouts"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ActivityCaches"])
+  else if ([typeCopy isEqualToString:@"ActivityCaches"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LegacyAchievements"])
+  else if ([typeCopy isEqualToString:@"LegacyAchievements"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"UserCharacteristics"])
+  else if ([typeCopy isEqualToString:@"UserCharacteristics"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Deprecated7"])
+  else if ([typeCopy isEqualToString:@"Deprecated7"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ObjectAssociations"])
+  else if ([typeCopy isEqualToString:@"ObjectAssociations"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"UnitPreferences"])
+  else if ([typeCopy isEqualToString:@"UnitPreferences"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Sources"])
+  else if ([typeCopy isEqualToString:@"Sources"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Authorizations"])
+  else if ([typeCopy isEqualToString:@"Authorizations"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Devices"])
+  else if ([typeCopy isEqualToString:@"Devices"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Correlations"])
+  else if ([typeCopy isEqualToString:@"Correlations"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"DataTypeSourceOrder"])
+  else if ([typeCopy isEqualToString:@"DataTypeSourceOrder"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"MedicalID"])
+  else if ([typeCopy isEqualToString:@"MedicalID"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"NanoUserDefaults"])
+  else if ([typeCopy isEqualToString:@"NanoUserDefaults"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"ProtectedNanoUserDefaults"])
+  else if ([typeCopy isEqualToString:@"ProtectedNanoUserDefaults"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"LocationSeriesSamples"])
+  else if ([typeCopy isEqualToString:@"LocationSeriesSamples"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"DeletedSamples"])
+  else if ([typeCopy isEqualToString:@"DeletedSamples"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"LegacyAchievementKeyValue"])
+  else if ([typeCopy isEqualToString:@"LegacyAchievementKeyValue"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"ActivityAchievementsKeyValue"])
+  else if ([typeCopy isEqualToString:@"ActivityAchievementsKeyValue"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"BinarySamples"])
+  else if ([typeCopy isEqualToString:@"BinarySamples"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"CDADocumentSamples"])
+  else if ([typeCopy isEqualToString:@"CDADocumentSamples"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"FHIRResources"])
+  else if ([typeCopy isEqualToString:@"FHIRResources"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"ClinicalGateways"])
+  else if ([typeCopy isEqualToString:@"ClinicalGateways"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"MedicationOrders"])
+  else if ([typeCopy isEqualToString:@"MedicationOrders"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"MedicationDispenseRecords"])
+  else if ([typeCopy isEqualToString:@"MedicationDispenseRecords"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"MedicationRecords"])
+  else if ([typeCopy isEqualToString:@"MedicationRecords"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"DiagnosticTestResults"])
+  else if ([typeCopy isEqualToString:@"DiagnosticTestResults"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"DiagnosticTestReports"])
+  else if ([typeCopy isEqualToString:@"DiagnosticTestReports"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"VaccinationRecords"])
+  else if ([typeCopy isEqualToString:@"VaccinationRecords"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"ConditionRecords"])
+  else if ([typeCopy isEqualToString:@"ConditionRecords"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"AllergyRecords"])
+  else if ([typeCopy isEqualToString:@"AllergyRecords"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"ProcedureRecords"])
+  else if ([typeCopy isEqualToString:@"ProcedureRecords"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"ClinicalAccounts"])
+  else if ([typeCopy isEqualToString:@"ClinicalAccounts"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"UserDefaults"])
+  else if ([typeCopy isEqualToString:@"UserDefaults"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"ClinicalDeletedAccounts"])
+  else if ([typeCopy isEqualToString:@"ClinicalDeletedAccounts"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"AccountOwners"])
+  else if ([typeCopy isEqualToString:@"AccountOwners"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"UnknownRecords"])
+  else if ([typeCopy isEqualToString:@"UnknownRecords"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"OnboardingCompletions"])
+  else if ([typeCopy isEqualToString:@"OnboardingCompletions"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"ECGSamples"])
+  else if ([typeCopy isEqualToString:@"ECGSamples"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"SleepSchedules"])
+  else if ([typeCopy isEqualToString:@"SleepSchedules"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"QuantityDerivedCategorySamples"])
+  else if ([typeCopy isEqualToString:@"QuantityDerivedCategorySamples"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"TypedObjectAssociations"])
+  else if ([typeCopy isEqualToString:@"TypedObjectAssociations"])
   {
     v4 = 50;
   }
@@ -356,9 +356,9 @@
   return v4;
 }
 
-- (void)setHasStartAnchor:(BOOL)a3
+- (void)setHasStartAnchor:(BOOL)anchor
 {
-  if (a3)
+  if (anchor)
   {
     v3 = 4;
   }
@@ -371,45 +371,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addObjectData:(id)a3
+- (void)addObjectData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objectDatas = self->_objectDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!objectDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_objectDatas;
     self->_objectDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     objectDatas = self->_objectDatas;
   }
 
-  [(NSMutableArray *)objectDatas addObject:v4];
+  [(NSMutableArray *)objectDatas addObject:dataCopy];
 }
 
-- (void)addRequiredAnchors:(id)a3
+- (void)addRequiredAnchors:(id)anchors
 {
-  v4 = a3;
+  anchorsCopy = anchors;
   requiredAnchors = self->_requiredAnchors;
-  v8 = v4;
+  v8 = anchorsCopy;
   if (!requiredAnchors)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_requiredAnchors;
     self->_requiredAnchors = v6;
 
-    v4 = v8;
+    anchorsCopy = v8;
     requiredAnchors = self->_requiredAnchors;
   }
 
-  [(NSMutableArray *)requiredAnchors addObject:v4];
+  [(NSMutableArray *)requiredAnchors addObject:anchorsCopy];
 }
 
-- (void)setHasSpeculative:(BOOL)a3
+- (void)setHasSpeculative:(BOOL)speculative
 {
-  if (a3)
+  if (speculative)
   {
     v3 = 32;
   }
@@ -422,9 +422,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSequence:(BOOL)a3
+- (void)setHasSequence:(BOOL)sequence
 {
-  if (a3)
+  if (sequence)
   {
     v3 = 2;
   }
@@ -437,9 +437,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasComplete:(BOOL)a3
+- (void)setHasComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 16;
   }
@@ -458,8 +458,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableNanoSyncChange;
   v4 = [(HDCodableNanoSyncChange *)&v8 description];
-  v5 = [(HDCodableNanoSyncChange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableNanoSyncChange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -467,7 +467,7 @@
 - (id)dictionaryRepresentation
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -482,7 +482,7 @@
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_objectType];
     }
 
-    [v3 setObject:v6 forKey:@"objectType"];
+    [dictionary setObject:v6 forKey:@"objectType"];
 
     has = self->_has;
   }
@@ -490,7 +490,7 @@
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_startAnchor];
-    [v3 setObject:v7 forKey:@"startAnchor"];
+    [dictionary setObject:v7 forKey:@"startAnchor"];
 
     has = self->_has;
   }
@@ -498,13 +498,13 @@
   if (has)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_endAnchor];
-    [v3 setObject:v8 forKey:@"endAnchor"];
+    [dictionary setObject:v8 forKey:@"endAnchor"];
   }
 
   objectDatas = self->_objectDatas;
   if (objectDatas)
   {
-    [v3 setObject:objectDatas forKey:@"objectData"];
+    [dictionary setObject:objectDatas forKey:@"objectData"];
   }
 
   if ([(NSMutableArray *)self->_requiredAnchors count])
@@ -529,8 +529,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -539,14 +539,14 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"requiredAnchors"];
+    [dictionary setObject:v10 forKey:@"requiredAnchors"];
   }
 
   v17 = self->_has;
   if ((v17 & 0x20) != 0)
   {
     v25 = [MEMORY[0x277CCABB0] numberWithBool:self->_speculative];
-    [v3 setObject:v25 forKey:@"speculative"];
+    [dictionary setObject:v25 forKey:@"speculative"];
 
     v17 = self->_has;
     if ((v17 & 2) == 0)
@@ -567,39 +567,39 @@ LABEL_24:
   }
 
   v26 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sequence];
-  [v3 setObject:v26 forKey:@"sequence"];
+  [dictionary setObject:v26 forKey:@"sequence"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_25:
     v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_complete];
-    [v3 setObject:v18 forKey:@"complete"];
+    [dictionary setObject:v18 forKey:@"complete"];
   }
 
 LABEL_26:
   entityIdentifier = self->_entityIdentifier;
   if (entityIdentifier)
   {
-    v20 = [(HDCodableEntityIdentifier *)entityIdentifier dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"entityIdentifier"];
+    dictionaryRepresentation2 = [(HDCodableEntityIdentifier *)entityIdentifier dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"entityIdentifier"];
   }
 
   version = self->_version;
   if (version)
   {
-    v22 = [(HDCodableSyncVersionRange *)version dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"version"];
+    dictionaryRepresentation3 = [(HDCodableSyncVersionRange *)version dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"version"];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -737,9 +737,9 @@ LABEL_23:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -749,8 +749,8 @@ LABEL_23:
     }
 
 LABEL_25:
-    v4[3] = self->_startAnchor;
-    *(v4 + 76) |= 4u;
+    toCopy[3] = self->_startAnchor;
+    *(toCopy + 76) |= 4u;
     if ((*&self->_has & 1) == 0)
     {
       goto LABEL_5;
@@ -759,8 +759,8 @@ LABEL_25:
     goto LABEL_4;
   }
 
-  *(v4 + 12) = self->_objectType;
-  *(v4 + 76) |= 8u;
+  *(toCopy + 12) = self->_objectType;
+  *(toCopy + 76) |= 8u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -771,19 +771,19 @@ LABEL_3:
   if (has)
   {
 LABEL_4:
-    v4[1] = self->_endAnchor;
-    *(v4 + 76) |= 1u;
+    toCopy[1] = self->_endAnchor;
+    *(toCopy + 76) |= 1u;
   }
 
 LABEL_5:
-  v16 = v4;
+  v16 = toCopy;
   if ([(HDCodableNanoSyncChange *)self objectDatasCount])
   {
     [v16 clearObjectDatas];
-    v6 = [(HDCodableNanoSyncChange *)self objectDatasCount];
-    if (v6)
+    objectDatasCount = [(HDCodableNanoSyncChange *)self objectDatasCount];
+    if (objectDatasCount)
     {
-      v7 = v6;
+      v7 = objectDatasCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HDCodableNanoSyncChange *)self objectDataAtIndex:i];
@@ -795,10 +795,10 @@ LABEL_5:
   if ([(HDCodableNanoSyncChange *)self requiredAnchorsCount])
   {
     [v16 clearRequiredAnchors];
-    v10 = [(HDCodableNanoSyncChange *)self requiredAnchorsCount];
-    if (v10)
+    requiredAnchorsCount = [(HDCodableNanoSyncChange *)self requiredAnchorsCount];
+    if (requiredAnchorsCount)
     {
-      v11 = v10;
+      v11 = requiredAnchorsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(HDCodableNanoSyncChange *)self requiredAnchorsAtIndex:j];
@@ -854,10 +854,10 @@ LABEL_17:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -911,7 +911,7 @@ LABEL_5:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v31 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v31 + 1) + 8 * i) copyWithZone:zone];
         [v6 addObjectData:v13];
       }
 
@@ -940,7 +940,7 @@ LABEL_5:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{a3, v27}];
+        v19 = [*(*(&v27 + 1) + 8 * j) copyWithZone:{zone, v27}];
         [v6 addRequiredAnchors:v19];
       }
 
@@ -986,11 +986,11 @@ LABEL_22:
   }
 
 LABEL_23:
-  v21 = [(HDCodableEntityIdentifier *)self->_entityIdentifier copyWithZone:a3, v27];
+  v21 = [(HDCodableEntityIdentifier *)self->_entityIdentifier copyWithZone:zone, v27];
   v22 = *(v6 + 32);
   *(v6 + 32) = v21;
 
-  v23 = [(HDCodableSyncVersionRange *)self->_version copyWithZone:a3];
+  v23 = [(HDCodableSyncVersionRange *)self->_version copyWithZone:zone];
   v24 = *(v6 + 64);
   *(v6 + 64) = v23;
 
@@ -998,62 +998,62 @@ LABEL_23:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(equalCopy + 76);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0 || self->_objectType != *(v4 + 12))
+    if ((*(equalCopy + 76) & 8) == 0 || self->_objectType != *(equalCopy + 12))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 76) & 8) != 0)
+  else if ((*(equalCopy + 76) & 8) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_startAnchor != *(v4 + 3))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_startAnchor != *(equalCopy + 3))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_41;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_endAnchor != *(v4 + 1))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_endAnchor != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_41;
   }
 
   objectDatas = self->_objectDatas;
-  if (objectDatas | *(v4 + 5) && ![(NSMutableArray *)objectDatas isEqual:?])
+  if (objectDatas | *(equalCopy + 5) && ![(NSMutableArray *)objectDatas isEqual:?])
   {
     goto LABEL_41;
   }
 
   requiredAnchors = self->_requiredAnchors;
-  if (requiredAnchors | *(v4 + 7))
+  if (requiredAnchors | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)requiredAnchors isEqual:?])
     {
@@ -1061,50 +1061,50 @@ LABEL_23:
     }
   }
 
-  v8 = *(v4 + 76);
+  v8 = *(equalCopy + 76);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 76) & 0x20) == 0)
+    if ((*(equalCopy + 76) & 0x20) == 0)
     {
       goto LABEL_41;
     }
 
-    v9 = *(v4 + 73);
+    v9 = *(equalCopy + 73);
     if (self->_speculative)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_41;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 76) & 0x20) != 0)
+  else if ((*(equalCopy + 76) & 0x20) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_sequence != *(v4 + 2))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_sequence != *(equalCopy + 2))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 76) & 0x10) == 0)
+    if ((*(equalCopy + 76) & 0x10) == 0)
     {
       goto LABEL_34;
     }
@@ -1114,34 +1114,34 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if ((*(v4 + 76) & 0x10) == 0)
+  if ((*(equalCopy + 76) & 0x10) == 0)
   {
     goto LABEL_41;
   }
 
-  v14 = *(v4 + 72);
+  v14 = *(equalCopy + 72);
   if (self->_complete)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_41;
   }
 
 LABEL_34:
   entityIdentifier = self->_entityIdentifier;
-  if (entityIdentifier | *(v4 + 4) && ![(HDCodableEntityIdentifier *)entityIdentifier isEqual:?])
+  if (entityIdentifier | *(equalCopy + 4) && ![(HDCodableEntityIdentifier *)entityIdentifier isEqual:?])
   {
     goto LABEL_41;
   }
 
   version = self->_version;
-  if (version | *(v4 + 8))
+  if (version | *(equalCopy + 8))
   {
     v12 = [(HDCodableSyncVersionRange *)version isEqual:?];
   }
@@ -1237,17 +1237,17 @@ LABEL_15:
   return v11 ^ v12 ^ [(HDCodableSyncVersionRange *)self->_version hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 76);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 76);
   if ((v6 & 8) != 0)
   {
-    self->_objectType = *(v4 + 12);
+    self->_objectType = *(fromCopy + 12);
     *&self->_has |= 8u;
-    v6 = *(v4 + 76);
+    v6 = *(fromCopy + 76);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -1260,17 +1260,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 76) & 4) == 0)
+  else if ((*(fromCopy + 76) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_startAnchor = *(v4 + 3);
+  self->_startAnchor = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if (*(v4 + 76))
+  if (*(fromCopy + 76))
   {
 LABEL_4:
-    self->_endAnchor = *(v4 + 1);
+    self->_endAnchor = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -1279,7 +1279,7 @@ LABEL_5:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v8)
   {
@@ -1399,25 +1399,25 @@ LABEL_23:
 
 - ($2825F4736939C4A6D3AD43837233062D)versionRange
 {
-  v2 = [(HDCodableNanoSyncChange *)self version];
-  v3 = [v2 syncVersionRange];
+  version = [(HDCodableNanoSyncChange *)self version];
+  syncVersionRange = [version syncVersionRange];
 
-  return v3;
+  return syncVersionRange;
 }
 
-+ (id)changeWithNanoSyncEntityClass:(Class)a3 version:(id)a4
++ (id)changeWithNanoSyncEntityClass:(Class)class version:(id)version
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   if (objc_opt_respondsToSelector())
   {
-    [v6 setObjectType:{-[objc_class nanoSyncObjectType](a3, "nanoSyncObjectType")}];
+    [v6 setObjectType:{-[objc_class nanoSyncObjectType](class, "nanoSyncObjectType")}];
   }
 
-  v7 = [(objc_class *)a3 syncEntityIdentifier];
-  v8 = [v7 codableEntityIdentifier];
-  [v6 setEntityIdentifier:v8];
+  syncEntityIdentifier = [(objc_class *)class syncEntityIdentifier];
+  codableEntityIdentifier = [syncEntityIdentifier codableEntityIdentifier];
+  [v6 setEntityIdentifier:codableEntityIdentifier];
 
-  v9 = [HDCodableSyncVersionRange versionRangeWithSyncVersionRange:a4];
+  v9 = [HDCodableSyncVersionRange versionRangeWithSyncVersionRange:version];
   [v6 setVersion:v9];
 
   return v6;
@@ -1427,31 +1427,31 @@ LABEL_23:
 {
   if (self->_entityIdentifier)
   {
-    v2 = [[HDSyncEntityIdentifier alloc] initWithCodableEntityIdentifier:self->_entityIdentifier];
+    syncEntityIdentifier = [[HDSyncEntityIdentifier alloc] initWithCodableEntityIdentifier:self->_entityIdentifier];
   }
 
   else if ((*&self->_has & 8) != 0)
   {
-    v2 = [HDNanoSyncEntityClassForObjectType(self->_objectType) syncEntityIdentifier];
+    syncEntityIdentifier = [HDNanoSyncEntityClassForObjectType(self->_objectType) syncEntityIdentifier];
   }
 
   else
   {
-    v2 = 0;
+    syncEntityIdentifier = 0;
   }
 
-  return v2;
+  return syncEntityIdentifier;
 }
 
-- (Class)syncEntityClassForProfile:(id)a3
+- (Class)syncEntityClassForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   if (self->_entityIdentifier)
   {
     v5 = [[HDSyncEntityIdentifier alloc] initWithCodableEntityIdentifier:self->_entityIdentifier];
-    v6 = [v4 syncEngine];
-    v7 = [v6 allSyncEntitiesByIdentifier];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    syncEngine = [profileCopy syncEngine];
+    allSyncEntitiesByIdentifier = [syncEngine allSyncEntitiesByIdentifier];
+    v8 = [allSyncEntitiesByIdentifier objectForKeyedSubscript:v5];
   }
 
   else if ((*&self->_has & 8) != 0)
@@ -1479,19 +1479,19 @@ LABEL_23:
   return v3;
 }
 
-- (void)setObjects:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 requiredAnchorMap:(id)a5
+- (void)setObjects:(id)objects syncAnchorRange:(HDSyncAnchorRange)range requiredAnchorMap:(id)map
 {
-  end = a4.end;
-  start = a4.start;
+  end = range.end;
+  start = range.start;
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  objectsCopy = objects;
+  mapCopy = map;
   [(HDCodableNanoSyncChange *)self clearObjectDatas];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v9;
+  v11 = objectsCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -1509,10 +1509,10 @@ LABEL_23:
 
         v16 = *(*(&v21 + 1) + 8 * v15);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 data];
-        if (v18)
+        data = [v16 data];
+        if (data)
         {
-          [(HDCodableNanoSyncChange *)self addObjectData:v18];
+          [(HDCodableNanoSyncChange *)self addObjectData:data];
         }
 
         objc_autoreleasePoolPop(v17);
@@ -1533,7 +1533,7 @@ LABEL_23:
   v20[2] = __89__HDCodableNanoSyncChange_NanoSyncSupport__setObjects_syncAnchorRange_requiredAnchorMap___block_invoke;
   v20[3] = &unk_278615EC0;
   v20[4] = self;
-  [v10 enumerateAnchorsAndEntityIdentifiersWithBlock:v20];
+  [mapCopy enumerateAnchorsAndEntityIdentifiersWithBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1564,20 +1564,20 @@ void __89__HDCodableNanoSyncChange_NanoSyncSupport__setObjects_syncAnchorRange_r
   [*(a1 + 32) addRequiredAnchors:v5];
 }
 
-- (void)setVersionRange:(id)a3
+- (void)setVersionRange:(id)range
 {
-  var1 = a3.var1;
-  v6 = [(HDCodableNanoSyncChange *)self version];
-  [v6 setMinimum:a3];
+  var1 = range.var1;
+  version = [(HDCodableNanoSyncChange *)self version];
+  [version setMinimum:range];
 
-  v7 = [(HDCodableNanoSyncChange *)self version];
-  [v7 setCurrent:var1];
+  version2 = [(HDCodableNanoSyncChange *)self version];
+  [version2 setCurrent:var1];
 }
 
-- (id)requiredAnchorMapWithProfile:(id)a3 error:(id *)a4
+- (id)requiredAnchorMapWithProfile:(id)profile error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v23 = a3;
+  profileCopy = profile;
   v6 = objc_alloc_init(HDSyncAnchorMap);
   v24 = 0u;
   v25 = 0u;
@@ -1588,7 +1588,7 @@ void __89__HDCodableNanoSyncChange_NanoSyncSupport__setObjects_syncAnchorRange_r
   if (v7)
   {
     v8 = v7;
-    v21 = a4;
+    errorCopy = error;
     v9 = *v25;
     while (2)
     {
@@ -1600,21 +1600,21 @@ void __89__HDCodableNanoSyncChange_NanoSyncSupport__setObjects_syncAnchorRange_r
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 anchor];
-        v13 = [v11 entityIdentifier];
+        anchor = [v11 anchor];
+        entityIdentifier = [v11 entityIdentifier];
 
-        if (!v13)
+        if (!entityIdentifier)
         {
           goto LABEL_8;
         }
 
         v14 = [HDSyncEntityIdentifier alloc];
-        v15 = [v11 entityIdentifier];
-        v13 = [(HDSyncEntityIdentifier *)v14 initWithCodableEntityIdentifier:v15];
+        entityIdentifier2 = [v11 entityIdentifier];
+        entityIdentifier = [(HDSyncEntityIdentifier *)v14 initWithCodableEntityIdentifier:entityIdentifier2];
 
-        v16 = [v23 syncEngine];
-        v17 = [v16 allSyncEntitiesByIdentifier];
-        v18 = [v17 objectForKeyedSubscript:v13];
+        syncEngine = [profileCopy syncEngine];
+        allSyncEntitiesByIdentifier = [syncEngine allSyncEntitiesByIdentifier];
+        v18 = [allSyncEntitiesByIdentifier objectForKeyedSubscript:entityIdentifier];
 
         if (!v18)
         {
@@ -1622,10 +1622,10 @@ LABEL_8:
           v18 = HDNanoSyncEntityClassForObjectType([v11 objectType]);
         }
 
-        if (![v11 hasAnchor] || v12 < 0 || !v18)
+        if (![v11 hasAnchor] || anchor < 0 || !v18)
         {
 
-          [MEMORY[0x277CCA9B8] hk_assignError:v21 code:3 format:{@"invalid required anchor %@", v11}];
+          [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:3 format:{@"invalid required anchor %@", v11}];
           v6 = 0;
           goto LABEL_16;
         }
@@ -1650,13 +1650,13 @@ LABEL_16:
   return v6;
 }
 
-- (id)decodedObjectsForProfile:(id)a3 error:(id *)a4
+- (id)decodedObjectsForProfile:(id)profile error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [(HDCodableNanoSyncChange *)self syncEntityClassForProfile:a3];
+  v6 = [(HDCodableNanoSyncChange *)self syncEntityClassForProfile:profile];
   if (!v6)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:{@"No sync entity found for %@", self}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"No sync entity found for %@", self}];
     goto LABEL_14;
   }
 
@@ -1664,11 +1664,11 @@ LABEL_16:
   if (![(NSMutableArray *)self->_objectDatas count])
   {
 LABEL_14:
-    v8 = 0;
+    array = 0;
     goto LABEL_15;
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1691,7 +1691,7 @@ LABEL_14:
         v14 = [(objc_class *)v7 decodeSyncObjectWithData:*(*(&v17 + 1) + 8 * i)];
         if (v14)
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -1704,7 +1704,7 @@ LABEL_14:
 LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface BWSphereModeSelector
 + (void)initialize;
-- (BWSphereModeSelector)initWithPortType:(id)a3 stillActivePreviewSupported:(BOOL)a4 sphereVideoSupported:(BOOL)a5 sphereVideoMaxFrameRate:(float)a6 spherePanoSupported:(BOOL)a7 trueVideoUsesSphereModeVideoHighRange:(BOOL)a8;
+- (BWSphereModeSelector)initWithPortType:(id)type stillActivePreviewSupported:(BOOL)supported sphereVideoSupported:(BOOL)videoSupported sphereVideoMaxFrameRate:(float)rate spherePanoSupported:(BOOL)panoSupported trueVideoUsesSphereModeVideoHighRange:(BOOL)range;
 - (uint64_t)_updateSphereMode;
 - (void)dealloc;
 @end
@@ -170,7 +170,7 @@ LABEL_34:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _MergedGlobals_9 = *off_1E798C490;
     *algn_1ED844F98 = _MergedGlobals_9;
@@ -235,23 +235,23 @@ LABEL_34:
   }
 }
 
-- (BWSphereModeSelector)initWithPortType:(id)a3 stillActivePreviewSupported:(BOOL)a4 sphereVideoSupported:(BOOL)a5 sphereVideoMaxFrameRate:(float)a6 spherePanoSupported:(BOOL)a7 trueVideoUsesSphereModeVideoHighRange:(BOOL)a8
+- (BWSphereModeSelector)initWithPortType:(id)type stillActivePreviewSupported:(BOOL)supported sphereVideoSupported:(BOOL)videoSupported sphereVideoMaxFrameRate:(float)rate spherePanoSupported:(BOOL)panoSupported trueVideoUsesSphereModeVideoHighRange:(BOOL)range
 {
   v18.receiver = self;
   v18.super_class = BWSphereModeSelector;
   v14 = [(BWSphereModeSelector *)&v18 init];
   if (v14)
   {
-    v15 = a3;
+    typeCopy = type;
     v16 = *off_1E798C498;
-    v14->_portType = v15;
+    v14->_portType = typeCopy;
     v14->_currentSphereMode = v16;
     v14->_currentNonLowPowerSphereMode = v16;
-    v14->_stillPreviewActiveSupported = a4;
-    v14->_sphereVideoSupported = a5;
-    v14->_maximumFrameRateSupported = fmaxf(a6, 120.0);
-    v14->_spherePanoSupported = a7;
-    v14->_trueVideoUsesSphereModeVideoHighRange = a8;
+    v14->_stillPreviewActiveSupported = supported;
+    v14->_sphereVideoSupported = videoSupported;
+    v14->_maximumFrameRateSupported = fmaxf(rate, 120.0);
+    v14->_spherePanoSupported = panoSupported;
+    v14->_trueVideoUsesSphereModeVideoHighRange = range;
   }
 
   return v14;

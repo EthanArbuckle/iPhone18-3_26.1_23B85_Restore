@@ -9,7 +9,7 @@
 
 - (BOOL)_isSuperviewOfSearchControllerView
 {
-  v2 = [(UITransitionViewAccessibility__Podcasts__UIKit *)self subviews];
+  subviews = [(UITransitionViewAccessibility__Podcasts__UIKit *)self subviews];
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -19,7 +19,7 @@
   v5[2] = __84__UITransitionViewAccessibility__Podcasts__UIKit__isSuperviewOfSearchControllerView__block_invoke;
   v5[3] = &unk_29F2EA320;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [subviews enumerateObjectsUsingBlock:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
 
@@ -29,9 +29,9 @@
 - (BOOL)_foundSearchControllerDimmingView
 {
   v2 = [(UITransitionViewAccessibility__Podcasts__UIKit *)self _accessibilityFindDescendant:&__block_literal_global_4];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 - (BOOL)accessibilityElementsHidden

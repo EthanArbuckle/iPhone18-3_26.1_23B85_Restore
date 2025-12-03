@@ -1,10 +1,10 @@
 @interface TipsManager
 + (_TtC9MobileCal11TipsManager)shared;
 - (_TtC9MobileCal11TipsManager)init;
-- (void)addTipObserversFor:(id)a3 todayButton:(id)a4;
-- (void)dismissTipIfPresentedWithCompletionBlock:(id)a3;
+- (void)addTipObserversFor:(id)for todayButton:(id)button;
+- (void)dismissTipIfPresentedWithCompletionBlock:(id)block;
 - (void)jumpToTodayActionPerformed;
-- (void)updatePresentedController:(id)a3;
+- (void)updatePresentedController:(id)controller;
 @end
 
 @implementation TipsManager
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (void)addTipObserversFor:(id)a3 todayButton:(id)a4
+- (void)addTipObserversFor:(id)for todayButton:(id)button
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  TipsManager.addTipObservers(for:todayButton:)(v6, v7);
+  forCopy = for;
+  buttonCopy = button;
+  selfCopy = self;
+  TipsManager.addTipObservers(for:todayButton:)(forCopy, buttonCopy);
 }
 
-- (void)updatePresentedController:(id)a3
+- (void)updatePresentedController:(id)controller
 {
   if (byte_100251380 == 1)
   {
@@ -46,12 +46,12 @@
   }
 }
 
-- (void)dismissTipIfPresentedWithCompletionBlock:(id)a3
+- (void)dismissTipIfPresentedWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_10016A790(v5, v4);
+  selfCopy = self;
+  sub_10016A790(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

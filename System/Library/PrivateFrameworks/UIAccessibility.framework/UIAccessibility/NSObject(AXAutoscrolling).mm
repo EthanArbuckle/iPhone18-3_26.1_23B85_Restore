@@ -22,9 +22,9 @@
 {
   v10 = a3;
   v4 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  v5 = [v4 scrollDirection];
+  scrollDirection = [v4 scrollDirection];
 
-  v6 = [v10 _accessibilityScrollAncestorForSelector:{objc_msgSend(a1, "_scrollPageSelectorForAutoscrollDirection:", v5)}];
+  v6 = [v10 _accessibilityScrollAncestorForSelector:{objc_msgSend(self, "_scrollPageSelectorForAutoscrollDirection:", scrollDirection)}];
   if (!v6)
   {
     v6 = v10;
@@ -98,40 +98,40 @@ LABEL_10:
 - (id)_accessibilityAutoscrollTarget
 {
   v0 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  v1 = [v0 scrollView];
+  scrollView = [v0 scrollView];
 
-  return v1;
+  return scrollView;
 }
 
 - (uint64_t)_accessibilityAvailableAutoscrollDirections
 {
   v0 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  v1 = [v0 availableAutoscrollDirections];
+  availableAutoscrollDirections = [v0 availableAutoscrollDirections];
 
-  return v1;
+  return availableAutoscrollDirections;
 }
 
 - (uint64_t)_accessibilityIsAutoscrolling
 {
   v0 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  v1 = [v0 isAutoscrolling];
+  isAutoscrolling = [v0 isAutoscrolling];
 
-  return v1;
+  return isAutoscrolling;
 }
 
 - (uint64_t)_accessibilityAutoscrollInDirection:()AXAutoscrolling
 {
   v5 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  v6 = [v5 scrollDirection];
+  scrollDirection = [v5 scrollDirection];
 
-  if (v6 != a3)
+  if (scrollDirection != a3)
   {
     v7 = +[UIAccessibilityAutoscrollManager sharedInstance];
     [v7 setScrollDirection:a3];
 
     v8 = +[UIAccessibilityAutoscrollManager sharedInstance];
-    v9 = [v8 targetToScroll];
-    [a1 _accessibilitySetAutoscrollTarget:v9];
+    targetToScroll = [v8 targetToScroll];
+    [self _accessibilitySetAutoscrollTarget:targetToScroll];
   }
 
   v10 = +[UIAccessibilityAutoscrollManager sharedInstance];
@@ -149,14 +149,14 @@ LABEL_10:
   v24 = __Block_byref_object_dispose__2;
   v25 = 0;
   v13 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  v14 = [v13 targetToScroll];
+  targetToScroll2 = [v13 targetToScroll];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __65__NSObject_AXAutoscrolling___accessibilityAutoscrollInDirection___block_invoke;
   v19[3] = &unk_1E78AAE38;
-  v19[4] = a1;
+  v19[4] = self;
   v19[5] = &v20;
-  [v14 _accessibilityIterateScrollParentsUsingBlock:v19];
+  [targetToScroll2 _accessibilityIterateScrollParentsUsingBlock:v19];
 
   v15 = v21[5];
   if (v15)
@@ -199,36 +199,36 @@ LABEL_10:
 - (void)_accessibilitySetAutoscrollSpeed:()AXAutoscrolling
 {
   v2 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  [v2 setAutoscrollSpeed:a1];
+  [v2 setAutoscrollSpeed:self];
 }
 
 - (id)_accessibilityGetAllScrollViews
 {
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = +[UIAccessibilityElementTraversalOptions options];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__NSObject_AXAutoscrolling___accessibilityGetAllScrollViews__block_invoke;
   v9[3] = &unk_1E78AA760;
-  v10 = v2;
-  v4 = v2;
+  v10 = array;
+  v4 = array;
   [v3 setLeafNodePredicate:v9];
-  v5 = [a1 _accessibilityLeafDescendantsWithCount:0 options:v3];
+  v5 = [self _accessibilityLeafDescendantsWithCount:0 options:v3];
   v6 = [MEMORY[0x1E695DFD8] setWithArray:v4];
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
 - (BOOL)_accessibilityScrollToTop
 {
-  v1 = [a1 _accessibilityScrollAncestor];
+  _accessibilityScrollAncestor = [self _accessibilityScrollAncestor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v1 adjustedContentInset];
-    [v1 accessibilityApplyScrollContent:0 sendScrollStatus:0 animated:{0.0, -v2}];
-    v7 = v1;
+    [_accessibilityScrollAncestor adjustedContentInset];
+    [_accessibilityScrollAncestor accessibilityApplyScrollContent:0 sendScrollStatus:0 animated:{0.0, -v2}];
+    v7 = _accessibilityScrollAncestor;
     AXPerformBlockOnMainThreadAfterDelay();
     [v7 contentOffset];
     v5 = v4 == *(MEMORY[0x1E695EFF8] + 8) && v3 == *MEMORY[0x1E695EFF8];
@@ -244,14 +244,14 @@ LABEL_10:
 
 - (BOOL)_accessibilityScrollToBottom
 {
-  v1 = [a1 _accessibilityScrollAncestor];
+  _accessibilityScrollAncestor = [self _accessibilityScrollAncestor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v1 contentSize];
+    [_accessibilityScrollAncestor contentSize];
     v3 = v2;
     v5 = v4;
-    [v1 visibleBounds];
+    [_accessibilityScrollAncestor visibleBounds];
     if (v5 <= v7)
     {
       v8 = *(MEMORY[0x1E695EFF8] + 8);
@@ -272,8 +272,8 @@ LABEL_10:
       v9 = v3 - v6;
     }
 
-    [v1 accessibilityApplyScrollContent:0 sendScrollStatus:0 animated:{v9, v8}];
-    v14 = v1;
+    [_accessibilityScrollAncestor accessibilityApplyScrollContent:0 sendScrollStatus:0 animated:{v9, v8}];
+    v14 = _accessibilityScrollAncestor;
     AXPerformBlockOnMainThreadAfterDelay();
     [v14 contentOffset];
     v12 = v11 == v8 && v10 == v9;
@@ -290,9 +290,9 @@ LABEL_10:
 - (void)_accessibilityAutoscrollScrollToTop
 {
   v0 = +[UIAccessibilityAutoscrollManager sharedInstance];
-  v1 = [v0 scrollView];
+  scrollView = [v0 scrollView];
 
-  if (v1)
+  if (scrollView)
   {
     v2 = +[UIAccessibilityAutoscrollManager sharedInstance];
     [v2 scrollToTop];

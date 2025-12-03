@@ -1,14 +1,14 @@
 @interface AAAutoAccountVerifier
 - (AAAutoAccountVerifier)init;
-- (AAAutoAccountVerifier)initWithAccount:(id)a3;
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
-- (void)_resendVerificationEmailForAccount:(id)a3 completion:(id)a4;
-- (void)_validateToken:(id)a3;
+- (AAAutoAccountVerifier)initWithAccount:(id)account;
+- (BOOL)search:(id)search didFindResults:(id)results;
+- (void)_resendVerificationEmailForAccount:(id)account completion:(id)completion;
+- (void)_validateToken:(id)token;
 - (void)_verify;
 - (void)cancel;
-- (void)search:(id)a3 didFinishWithError:(id)a4;
+- (void)search:(id)search didFinishWithError:(id)error;
 - (void)sendVerificationEmail;
-- (void)verifyWithHandler:(id)a3;
+- (void)verifyWithHandler:(id)handler;
 @end
 
 @implementation AAAutoAccountVerifier
@@ -31,14 +31,14 @@
   return v2;
 }
 
-- (AAAutoAccountVerifier)initWithAccount:(id)a3
+- (AAAutoAccountVerifier)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = [(AAAutoAccountVerifier *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -79,11 +79,11 @@ void __46__AAAutoAccountVerifier_sendVerificationEmail__block_invoke(uint64_t a1
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)verifyWithHandler:(id)a3
+- (void)verifyWithHandler:(id)handler
 {
-  if (self->_handler != a3)
+  if (self->_handler != handler)
   {
-    v4 = [a3 copy];
+    v4 = [handler copy];
     handler = self->_handler;
     self->_handler = v4;
   }
@@ -121,16 +121,16 @@ void __46__AAAutoAccountVerifier_sendVerificationEmail__block_invoke(uint64_t a1
 
 - (void)_verify
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMSCriterionTypeSender(void)"];
-  [v0 handleFailureInFunction:v1 file:@"AAAutoAccountVerifier.m" lineNumber:26 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AAAutoAccountVerifier.m" lineNumber:26 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
-- (void)_validateToken:(id)a3
+- (void)_validateToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -138,7 +138,7 @@ void __46__AAAutoAccountVerifier_sendVerificationEmail__block_invoke(uint64_t a1
     _os_log_impl(&dword_1B6F6A000, v5, OS_LOG_TYPE_DEFAULT, "Validating token", buf, 2u);
   }
 
-  v6 = [[AACompleteEmailVettingRequest alloc] initWithAccount:self->_account token:v4];
+  v6 = [[AACompleteEmailVettingRequest alloc] initWithAccount:self->_account token:tokenCopy];
   v7 = [AARequester alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -197,18 +197,18 @@ void __40__AAAutoAccountVerifier__validateToken___block_invoke(uint64_t a1, void
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_resendVerificationEmailForAccount:(id)a3 completion:(id)a4
+- (void)_resendVerificationEmailForAccount:(id)account completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(AAEmailVettingRequest *)[AAInitiateEmailVettingRequest alloc] initWithAccount:v6];
+  completionCopy = completion;
+  accountCopy = account;
+  v7 = [(AAEmailVettingRequest *)[AAInitiateEmailVettingRequest alloc] initWithAccount:accountCopy];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion___block_invoke;
   v9[3] = &unk_1E7C9BDB8;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(AARequest *)v7 performRequestWithHandler:v9];
 }
 
@@ -229,10 +229,10 @@ void __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion__
   }
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  resultsCopy = results;
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -240,25 +240,25 @@ void __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion__
     _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "search founds results", buf, 2u);
   }
 
-  if ([v5 count])
+  if ([resultsCopy count])
   {
-    v31 = self;
+    selfCopy = self;
     v7 = _AALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v40 = v5;
+      v40 = resultsCopy;
       _os_log_impl(&dword_1B6F6A000, v7, OS_LOG_TYPE_DEFAULT, "Email search found results: %@", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
-    v9 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v33 = v5;
-    v10 = v5;
+    v33 = resultsCopy;
+    v10 = resultsCopy;
     v11 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v11)
     {
@@ -278,17 +278,17 @@ void __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion__
           v17 = [v15 objectForKey:v16];
 
           v18 = [v15 objectForKey:_AAVettingToken];
-          v19 = [v18 lastObject];
+          lastObject = [v18 lastObject];
 
-          if (v19)
+          if (lastObject)
           {
-            [v8 setValue:v19 forKey:v17];
-            [v9 addObject:v19];
+            [dictionary setValue:lastObject forKey:v17];
+            [array addObject:lastObject];
             v20 = _AALogSystem();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138739971;
-              v40 = v19;
+              v40 = lastObject;
               _os_log_impl(&dword_1B6F6A000, v20, OS_LOG_TYPE_DEFAULT, "Found token: %{sensitive}@", buf, 0xCu);
             }
           }
@@ -300,19 +300,19 @@ void __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion__
       while (v12);
     }
 
-    v21 = [v9 count];
+    v21 = [array count];
     v22 = v21 == 0;
     if (v21)
     {
-      v23 = [v8 allKeys];
-      v24 = v23;
-      if ([v23 count] >= 2)
+      allKeys = [dictionary allKeys];
+      v24 = allKeys;
+      if ([allKeys count] >= 2)
       {
-        v24 = [v23 sortedArrayUsingSelector:sel_compare_];
+        v24 = [allKeys sortedArrayUsingSelector:sel_compare_];
       }
 
-      v25 = [v24 lastObject];
-      v26 = [v8 objectForKey:v25];
+      lastObject2 = [v24 lastObject];
+      v26 = [dictionary objectForKey:lastObject2];
 
       v27 = _AALogSystem();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -328,7 +328,7 @@ void __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion__
       v32[1] = 0;
     }
 
-    v5 = v33;
+    resultsCopy = v33;
   }
 
   else
@@ -340,15 +340,15 @@ void __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion__
   return v22;
 }
 
-- (void)search:(id)a3 didFinishWithError:(id)a4
+- (void)search:(id)search didFinishWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = _AALogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v5;
+    v15 = errorCopy;
     _os_log_impl(&dword_1B6F6A000, v6, OS_LOG_TYPE_DEFAULT, "Email search finished with error: %@", buf, 0xCu);
   }
 
@@ -359,14 +359,14 @@ void __71__AAAutoAccountVerifier__resendVerificationEmailForAccount_completion__
     v8 = self->_search;
     self->_search = 0;
 
-    if (v5 && [v5 code] != 1501)
+    if (errorCopy && [errorCopy code] != 1501)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __51__AAAutoAccountVerifier_search_didFinishWithError___block_invoke;
       v12[3] = &unk_1E7C9ADE8;
       v12[4] = self;
-      v13 = v5;
+      v13 = errorCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v12);
     }
 

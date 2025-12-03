@@ -1,10 +1,10 @@
 @interface RSFloorPlanGeneratorBase
 - (RSFloorPlanGeneratorBase)init;
 - (void)clear;
-- (void)setChairBeautificationEnable:(BOOL)a3;
-- (void)setObjectBeautificationEnable:(BOOL)a3;
-- (void)setStandardizationEnable:(BOOL)a3;
-- (void)setUniformHeightPolygonEnable:(BOOL)a3;
+- (void)setChairBeautificationEnable:(BOOL)enable;
+- (void)setObjectBeautificationEnable:(BOOL)enable;
+- (void)setStandardizationEnable:(BOOL)enable;
+- (void)setUniformHeightPolygonEnable:(BOOL)enable;
 @end
 
 @implementation RSFloorPlanGeneratorBase
@@ -20,39 +20,39 @@
   }
 }
 
-- (void)setUniformHeightPolygonEnable:(BOOL)a3
+- (void)setUniformHeightPolygonEnable:(BOOL)enable
 {
   render = self->_render;
   if (render)
   {
-    render->_isUniformHeightPolygonEnabled = a3;
+    render->_isUniformHeightPolygonEnabled = enable;
   }
 }
 
-- (void)setStandardizationEnable:(BOOL)a3
+- (void)setStandardizationEnable:(BOOL)enable
 {
   render = self->_render;
   if (render)
   {
-    render->_isStandardizationEnabled = a3;
+    render->_isStandardizationEnabled = enable;
   }
 }
 
-- (void)setChairBeautificationEnable:(BOOL)a3
+- (void)setChairBeautificationEnable:(BOOL)enable
 {
   render = self->_render;
   if (render)
   {
-    render->_isChairBeautificationEnabled = a3;
+    render->_isChairBeautificationEnabled = enable;
   }
 }
 
-- (void)setObjectBeautificationEnable:(BOOL)a3
+- (void)setObjectBeautificationEnable:(BOOL)enable
 {
   render = self->_render;
   if (render)
   {
-    render->_isObjectBeautificationEnabled = a3;
+    render->_isObjectBeautificationEnabled = enable;
   }
 }
 

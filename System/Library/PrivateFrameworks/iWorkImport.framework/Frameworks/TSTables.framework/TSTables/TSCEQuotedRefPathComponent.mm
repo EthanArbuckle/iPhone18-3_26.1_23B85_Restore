@@ -1,16 +1,16 @@
 @interface TSCEQuotedRefPathComponent
-- (id)trimmedStringStartingAtWord:(unint64_t)a3 withPreserveFlags:(BOOL)a4;
-- (id)wordAtIndex:(unint64_t)a3;
-- (void)addRefPathWord:(id)a3;
-- (void)removeRefPathWordAtIndex:(unint64_t)a3;
+- (id)trimmedStringStartingAtWord:(unint64_t)word withPreserveFlags:(BOOL)flags;
+- (id)wordAtIndex:(unint64_t)index;
+- (void)addRefPathWord:(id)word;
+- (void)removeRefPathWordAtIndex:(unint64_t)index;
 @end
 
 @implementation TSCEQuotedRefPathComponent
 
-- (void)addRefPathWord:(id)a3
+- (void)addRefPathWord:(id)word
 {
-  v10 = a3;
-  if (v10)
+  wordCopy = word;
+  if (wordCopy)
   {
     refPathWords = self->_refPathWords;
     if (!refPathWords)
@@ -22,40 +22,40 @@
       refPathWords = self->_refPathWords;
     }
 
-    objc_msgSend_addObject_(refPathWords, v4, v10, v5, v6);
+    objc_msgSend_addObject_(refPathWords, v4, wordCopy, v5, v6);
   }
 }
 
-- (void)removeRefPathWordAtIndex:(unint64_t)a3
+- (void)removeRefPathWordAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_refPathWords, a2, a3, v3, v4) > a3)
+  if (objc_msgSend_count(self->_refPathWords, a2, index, v3, v4) > index)
   {
     refPathWords = self->_refPathWords;
 
-    objc_msgSend_removeObjectAtIndex_(refPathWords, v7, a3, v8, v9);
+    objc_msgSend_removeObjectAtIndex_(refPathWords, v7, index, v8, v9);
   }
 }
 
-- (id)wordAtIndex:(unint64_t)a3
+- (id)wordAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_refPathWords, a2, a3, v3, v4) <= a3)
+  if (objc_msgSend_count(self->_refPathWords, a2, index, v3, v4) <= index)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_objectAtIndex_(self->_refPathWords, v7, a3, v8, v9);
+    v10 = objc_msgSend_objectAtIndex_(self->_refPathWords, v7, index, v8, v9);
   }
 
   return v10;
 }
 
-- (id)trimmedStringStartingAtWord:(unint64_t)a3 withPreserveFlags:(BOOL)a4
+- (id)trimmedStringStartingAtWord:(unint64_t)word withPreserveFlags:(BOOL)flags
 {
-  v5 = a4;
+  flagsCopy = flags;
   v34 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_count(self->_refPathWords, a2, a3, a4, v4) <= a3)
+  if (objc_msgSend_count(self->_refPathWords, a2, word, flags, v4) <= word)
   {
     v8 = 0;
   }
@@ -84,7 +84,7 @@
             objc_enumerationMutation(v9);
           }
 
-          if (v16 >= a3)
+          if (v16 >= word)
           {
             v19 = *(*(&v29 + 1) + 8 * v18);
             if (objc_msgSend_length(v8, v11, v12, v13, v14))
@@ -92,7 +92,7 @@
               objc_msgSend_appendString_(v8, v20, @" ", v21, v22);
             }
 
-            v23 = objc_msgSend_trimmedStringWithPreserveFlag_(v19, v20, v5, v21, v22);
+            v23 = objc_msgSend_trimmedStringWithPreserveFlag_(v19, v20, flagsCopy, v21, v22);
             objc_msgSend_appendString_(v8, v24, v23, v25, v26);
           }
 

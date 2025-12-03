@@ -1,14 +1,14 @@
 @interface RoutePlanningContext
 - (BOOL)chromeDidClearMapSelection;
-- (BOOL)chromeDidSelectETAMarkerForRoute:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3;
-- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)a3;
+- (BOOL)chromeDidSelectETAMarkerForRoute:(id)route;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation;
+- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)marker;
 - (BOOL)isRoutePlanningPresented;
 - (ChromeViewController)chromeViewController;
-- (RoutePlanningContext)initWithDirectionItem:(id)a3 userInfo:(id)a4;
+- (RoutePlanningContext)initWithDirectionItem:(id)item userInfo:(id)info;
 - (id)_autosharingViewController;
-- (id)_filteredFeaturesFromTransitSystems:(id)a3 allFeatures:(id)a4;
+- (id)_filteredFeaturesFromTransitSystems:(id)systems allFeatures:(id)features;
 - (id)_incidentsViewController;
 - (id)_optionsViewControllerForCurrentRoute;
 - (id)_routeAnnotationViewController;
@@ -19,52 +19,52 @@
 - (id)desiredCards;
 - (id)mapCameraController;
 - (id)mapSelectionManager;
-- (id)personalizedItemManagerForRouteSearchViewController:(id)a3;
+- (id)personalizedItemManagerForRouteSearchViewController:(id)controller;
 - (id)personalizedItemSources;
-- (id)traitsForRouteSearchViewController:(id)a3;
-- (id)userLocationSearchResultForRouteSearchViewController:(id)a3;
-- (void)_carPlayWantsToDisplayEVOnboarding:(id)a3;
+- (id)traitsForRouteSearchViewController:(id)controller;
+- (id)userLocationSearchResultForRouteSearchViewController:(id)controller;
+- (void)_carPlayWantsToDisplayEVOnboarding:(id)onboarding;
 - (void)_performInitialLoadIfNeeded;
-- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)a3 index:(unint64_t)a4;
-- (void)_presentPlaceCardWithItem:(id)a3;
-- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)a3 userInfo:(id)a4;
-- (void)_promptForEditRequired:(unint64_t)a3 forWaypointAtIndex:(unint64_t)a4 inDirectionItem:(id)a5 userInfo:(id)a6;
-- (void)addStopForSearchFieldItem:(id)a3 withUserInfo:(id)a4;
-- (void)autosharingController:(id)a3 wantsToSearchWithExistingContacts:(id)a4 selectionHandler:(id)a5;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)chromeViewController:(id)a3 didUpdateViewMode:(int64_t)a4;
-- (void)closeRoutePlanningViewController:(id)a3 withSender:(id)a4;
-- (void)containeeViewControllerDidDismissExternally:(id)a3;
-- (void)continueRideBookingSessionWithApplicationIdentifier:(id)a3;
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4 postAlertSearchType:(unsigned int)a5;
-- (void)displayStoreViewControllerForAppWithiTunesIdentifier:(id)a3 clientIdentifier:(id)a4;
+- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)required index:(unint64_t)index;
+- (void)_presentPlaceCardWithItem:(id)item;
+- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)item userInfo:(id)info;
+- (void)_promptForEditRequired:(unint64_t)required forWaypointAtIndex:(unint64_t)index inDirectionItem:(id)item userInfo:(id)info;
+- (void)addStopForSearchFieldItem:(id)item withUserInfo:(id)info;
+- (void)autosharingController:(id)controller wantsToSearchWithExistingContacts:(id)contacts selectionHandler:(id)handler;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)chromeViewController:(id)controller didUpdateViewMode:(int64_t)mode;
+- (void)closeRoutePlanningViewController:(id)controller withSender:(id)sender;
+- (void)containeeViewControllerDidDismissExternally:(id)externally;
+- (void)continueRideBookingSessionWithApplicationIdentifier:(id)identifier;
+- (void)displayAlertWithTitle:(id)title message:(id)message postAlertSearchType:(unsigned int)type;
+- (void)displayStoreViewControllerForAppWithiTunesIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier;
 - (void)ensureRoutePlanningContentIsVisible;
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)exitRoutePlanningIfNeededAnimated:(BOOL)a3;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)macDismissRouteSearchSuggestionsController:(id)a3;
-- (void)macPresentRouteSearchSuggestionsController:(id)a3;
-- (void)prepareToEnterStackInChromeViewController:(id)a3;
-- (void)presentEducationScreenWithAssetURLs:(id)a3 titleText:(id)a4 bodyText:(id)a5;
-- (void)presentRoutePlanningViewType:(int64_t)a3;
-- (void)presentScheduleForStep:(id)a3;
-- (void)presentVehicleOnboardingWithVehicles:(id)a3 completion:(id)a4;
-- (void)presentWalletDCIViewControllerWithTransitSystems:(id)a3 callbackDelegate:(id)a4;
-- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)a3 callbackDelegate:(id)a4;
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)exitRoutePlanningIfNeededAnimated:(BOOL)animated;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)macDismissRouteSearchSuggestionsController:(id)controller;
+- (void)macPresentRouteSearchSuggestionsController:(id)controller;
+- (void)prepareToEnterStackInChromeViewController:(id)controller;
+- (void)presentEducationScreenWithAssetURLs:(id)ls titleText:(id)text bodyText:(id)bodyText;
+- (void)presentRoutePlanningViewType:(int64_t)type;
+- (void)presentScheduleForStep:(id)step;
+- (void)presentVehicleOnboardingWithVehicles:(id)vehicles completion:(id)completion;
+- (void)presentWalletDCIViewControllerWithTransitSystems:(id)systems callbackDelegate:(id)delegate;
+- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)identifier callbackDelegate:(id)delegate;
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result;
 - (void)refreshRoutePlanningTimingIfNeeded;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)routePlanningDataCoordinator:(id)a3 isEnabled:(BOOL)a4;
-- (void)routePlanningUpdatedWaypoints:(id)a3;
-- (void)routeSearchViewControllerDidDismiss:(id)a3 shouldExitRoutePlanning:(BOOL)a4;
-- (void)routeStepsViewController:(id)a3 wantsToDisplayAdvisory:(id)a4;
-- (void)routeStepsViewController:(id)a3 wantsToShareItem:(id)a4 fromView:(id)a5;
-- (void)selectWaypointSearchFieldIndex:(unint64_t)a3 exitPlanningIfCancelTapped:(BOOL)a4 beginEditing:(BOOL)a5;
-- (void)setDirectionItem:(id)a3 allowToPromptEditing:(BOOL)a4 userInfo:(id)a5;
-- (void)setRoutePlanningAdvisoriesInfo:(id)a3;
-- (void)setRoutePlanningAdvisory:(id)a3;
-- (void)startNavigationWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4;
-- (void)startRideBookingSessionWithRideOption:(id)a3;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)routePlanningDataCoordinator:(id)coordinator isEnabled:(BOOL)enabled;
+- (void)routePlanningUpdatedWaypoints:(id)waypoints;
+- (void)routeSearchViewControllerDidDismiss:(id)dismiss shouldExitRoutePlanning:(BOOL)planning;
+- (void)routeStepsViewController:(id)controller wantsToDisplayAdvisory:(id)advisory;
+- (void)routeStepsViewController:(id)controller wantsToShareItem:(id)item fromView:(id)view;
+- (void)selectWaypointSearchFieldIndex:(unint64_t)index exitPlanningIfCancelTapped:(BOOL)tapped beginEditing:(BOOL)editing;
+- (void)setDirectionItem:(id)item allowToPromptEditing:(BOOL)editing userInfo:(id)info;
+- (void)setRoutePlanningAdvisoriesInfo:(id)info;
+- (void)setRoutePlanningAdvisory:(id)advisory;
+- (void)startNavigationWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options;
+- (void)startRideBookingSessionWithRideOption:(id)option;
 @end
 
 @implementation RoutePlanningContext
@@ -78,11 +78,11 @@
 
 - (BOOL)isRoutePlanningPresented
 {
-  v2 = self;
-  v3 = [(RoutePlanningContext *)self chromeViewController];
-  LOBYTE(v2) = [v3 isTopContext:v2];
+  selfCopy = self;
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  LOBYTE(selfCopy) = [chromeViewController isTopContext:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)ensureRoutePlanningContentIsVisible
@@ -95,17 +95,17 @@
   }
 }
 
-- (void)displayStoreViewControllerForAppWithiTunesIdentifier:(id)a3 clientIdentifier:(id)a4
+- (void)displayStoreViewControllerForAppWithiTunesIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier
 {
-  if (a3)
+  if (identifier)
   {
-    v6 = a4;
-    v7 = a3;
+    clientIdentifierCopy = clientIdentifier;
+    identifierCopy = identifier;
     v8 = objc_alloc_init(SKStoreProductViewController);
     [v8 setDelegate:self];
-    if (v6)
+    if (clientIdentifierCopy)
     {
-      v9 = v6;
+      v9 = clientIdentifierCopy;
     }
 
     else
@@ -116,70 +116,70 @@
     [v8 setClientIdentifier:v9];
 
     v12 = SKStoreProductParameterITunesItemIdentifier;
-    v13 = v7;
+    v13 = identifierCopy;
     v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
 
     [v8 loadProductWithParameters:v10 completionBlock:&stru_1016275C8];
-    v11 = [(RoutePlanningContext *)self chromeViewController];
-    [v11 _maps_topMostPresentViewController:v8 animated:1 completion:0];
+    chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:v8 animated:1 completion:0];
   }
 }
 
-- (void)continueRideBookingSessionWithApplicationIdentifier:(id)a3
+- (void)continueRideBookingSessionWithApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = [(RoutePlanningContext *)self iosChromeViewController];
-  v5 = [v6 appCoordinator];
-  [v5 continueRideBookingSessionWithApplicationIdentifier:v4];
+  identifierCopy = identifier;
+  iosChromeViewController = [(RoutePlanningContext *)self iosChromeViewController];
+  appCoordinator = [iosChromeViewController appCoordinator];
+  [appCoordinator continueRideBookingSessionWithApplicationIdentifier:identifierCopy];
 }
 
-- (void)startRideBookingSessionWithRideOption:(id)a3
+- (void)startRideBookingSessionWithRideOption:(id)option
 {
-  v4 = a3;
-  v6 = [(RoutePlanningContext *)self iosChromeViewController];
-  v5 = [v6 appCoordinator];
-  [v5 startRideBookingSessionWithRideBookingRideOption:v4];
+  optionCopy = option;
+  iosChromeViewController = [(RoutePlanningContext *)self iosChromeViewController];
+  appCoordinator = [iosChromeViewController appCoordinator];
+  [appCoordinator startRideBookingSessionWithRideBookingRideOption:optionCopy];
 }
 
-- (void)startNavigationWithRouteCollection:(id)a3 navigationDetailsOptions:(NavigationDetailsOptions *)a4
+- (void)startNavigationWithRouteCollection:(id)collection navigationDetailsOptions:(NavigationDetailsOptions *)options
 {
-  v6 = a3;
-  v7 = [(RoutePlanningContext *)self iosChromeViewController];
-  v8 = [v7 appCoordinator];
-  v9 = *&a4->guidanceType;
-  v10[0] = *&a4->shouldSimulateLocations;
+  collectionCopy = collection;
+  iosChromeViewController = [(RoutePlanningContext *)self iosChromeViewController];
+  appCoordinator = [iosChromeViewController appCoordinator];
+  v9 = *&options->guidanceType;
+  v10[0] = *&options->shouldSimulateLocations;
   v10[1] = v9;
-  v10[2] = *&a4->isReconnecting;
-  navigationModeContext = a4->navigationModeContext;
-  [v8 startNavigationWithRouteCollection:v6 navigationDetailsOptions:v10];
+  v10[2] = *&options->isReconnecting;
+  navigationModeContext = options->navigationModeContext;
+  [appCoordinator startNavigationWithRouteCollection:collectionCopy navigationDetailsOptions:v10];
 }
 
-- (void)autosharingController:(id)a3 wantsToSearchWithExistingContacts:(id)a4 selectionHandler:(id)a5
+- (void)autosharingController:(id)controller wantsToSearchWithExistingContacts:(id)contacts selectionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  contactsCopy = contacts;
   v11 = [ContactSearchViewController alloc];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10070C064;
   v18[3] = &unk_1016275A8;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = [(ContactSearchViewController *)v11 initWithInitialContacts:v10 selectionHandler:v18];
+  v19 = controllerCopy;
+  v20 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = controllerCopy;
+  v14 = [(ContactSearchViewController *)v11 initWithInitialContacts:contactsCopy selectionHandler:v18];
 
-  v15 = [(ContaineeViewController *)v14 cardPresentationController];
-  [v15 setPresentedModally:1];
+  cardPresentationController = [(ContaineeViewController *)v14 cardPresentationController];
+  [cardPresentationController setPresentedModally:1];
 
   [(ContaineeViewController *)v14 setContaineeDelegate:self];
   currentCard = self->_currentCard;
   self->_currentCard = v14;
 
-  v17 = [(RoutePlanningContext *)self iosBasedChromeViewController];
-  [v17 setNeedsUpdateComponent:@"cards" animated:1];
+  iosBasedChromeViewController = [(RoutePlanningContext *)self iosBasedChromeViewController];
+  [iosBasedChromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
 - (id)_autosharingViewController
@@ -199,119 +199,119 @@
   return autosharingViewController;
 }
 
-- (void)presentScheduleForStep:(id)a3
+- (void)presentScheduleForStep:(id)step
 {
-  v4 = a3;
-  v6 = [[_TtC4Maps23TransitSchedulesContext alloc] initWithRouteStep:v4];
+  stepCopy = step;
+  v6 = [[_TtC4Maps23TransitSchedulesContext alloc] initWithRouteStep:stepCopy];
 
-  v5 = [(RoutePlanningContext *)self chromeViewController];
-  [v5 pushContext:v6 animated:1 completion:0];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [chromeViewController pushContext:v6 animated:1 completion:0];
 }
 
-- (void)setRoutePlanningAdvisory:(id)a3
+- (void)setRoutePlanningAdvisory:(id)advisory
 {
-  v4 = a3;
-  v5 = [(RoutePlanningContext *)self _incidentsViewController];
-  [v5 setAdvisory:v4];
+  advisoryCopy = advisory;
+  _incidentsViewController = [(RoutePlanningContext *)self _incidentsViewController];
+  [_incidentsViewController setAdvisory:advisoryCopy];
 }
 
-- (void)setRoutePlanningAdvisoriesInfo:(id)a3
+- (void)setRoutePlanningAdvisoriesInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(RoutePlanningContext *)self _incidentsViewController];
-  [v5 setAdvisoriesInfo:v4];
+  infoCopy = info;
+  _incidentsViewController = [(RoutePlanningContext *)self _incidentsViewController];
+  [_incidentsViewController setAdvisoriesInfo:infoCopy];
 }
 
-- (void)presentVehicleOnboardingWithVehicles:(id)a3 completion:(id)a4
+- (void)presentVehicleOnboardingWithVehicles:(id)vehicles completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[EVOnboardingController alloc] initWithUnpairedVehicles:v7];
+  completionCopy = completion;
+  vehiclesCopy = vehicles;
+  v8 = [[EVOnboardingController alloc] initWithUnpairedVehicles:vehiclesCopy];
 
   vehicleOnboardingController = self->_vehicleOnboardingController;
   self->_vehicleOnboardingController = v8;
 
   v10 = self->_vehicleOnboardingController;
-  v11 = [(RoutePlanningContext *)self chromeViewController];
-  [(EVOnboardingController *)v10 presentInViewController:v11 animated:1 completion:v6];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [(EVOnboardingController *)v10 presentInViewController:chromeViewController animated:1 completion:completionCopy];
 }
 
-- (id)userLocationSearchResultForRouteSearchViewController:(id)a3
+- (id)userLocationSearchResultForRouteSearchViewController:(id)controller
 {
-  v3 = [(RoutePlanningContext *)self chromeViewController];
-  v4 = [v3 mapView];
-  v5 = [v4 userLocation];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  userLocation = [mapView userLocation];
 
-  v6 = [v5 annotation];
+  annotation = [userLocation annotation];
 
-  return v6;
+  return annotation;
 }
 
-- (id)traitsForRouteSearchViewController:(id)a3
+- (id)traitsForRouteSearchViewController:(id)controller
 {
-  v3 = [(RoutePlanningContext *)self chromeViewController];
-  v4 = [v3 currentTraits];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
 
-  return v4;
+  return currentTraits;
 }
 
-- (id)personalizedItemManagerForRouteSearchViewController:(id)a3
+- (id)personalizedItemManagerForRouteSearchViewController:(id)controller
 {
-  v3 = [(RoutePlanningContext *)self iosChromeViewController];
-  v4 = [v3 personalizedItemManager];
+  iosChromeViewController = [(RoutePlanningContext *)self iosChromeViewController];
+  personalizedItemManager = [iosChromeViewController personalizedItemManager];
 
-  return v4;
+  return personalizedItemManager;
 }
 
-- (void)routeSearchViewControllerDidDismiss:(id)a3 shouldExitRoutePlanning:(BOOL)a4
+- (void)routeSearchViewControllerDidDismiss:(id)dismiss shouldExitRoutePlanning:(BOOL)planning
 {
-  if (a4)
+  if (planning)
   {
-    v5 = [(RoutePlanningContext *)self chromeViewController];
-    [v5 popContext:self animated:1 completion:0];
+    chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+    [chromeViewController popContext:self animated:1 completion:0];
   }
 
   else
   {
 
-    [(RoutePlanningContext *)self containeeViewControllerGoToPreviousState:a3 withSender:0];
+    [(RoutePlanningContext *)self containeeViewControllerGoToPreviousState:dismiss withSender:0];
   }
 }
 
-- (void)routePlanningUpdatedWaypoints:(id)a3
+- (void)routePlanningUpdatedWaypoints:(id)waypoints
 {
-  v4 = a3;
-  if (v4)
+  waypointsCopy = waypoints;
+  if (waypointsCopy)
   {
-    v13 = v4;
+    v13 = waypointsCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v4 = v13;
+    waypointsCopy = v13;
     if (isKindOfClass)
     {
       v6 = self->_currentCard;
-      v7 = [v13 origin];
-      v8 = [v7 geoMapItem];
-      v9 = [v8 timezone];
-      [(ContaineeProtocol *)v6 setOriginTimeZone:v9];
+      origin = [v13 origin];
+      geoMapItem = [origin geoMapItem];
+      timezone = [geoMapItem timezone];
+      [(ContaineeProtocol *)v6 setOriginTimeZone:timezone];
 
-      v10 = [v13 destination];
-      v11 = [v10 geoMapItem];
-      v12 = [v11 timezone];
-      [(ContaineeProtocol *)v6 setDestinationTimeZone:v12];
+      destination = [v13 destination];
+      geoMapItem2 = [destination geoMapItem];
+      timezone2 = [geoMapItem2 timezone];
+      [(ContaineeProtocol *)v6 setDestinationTimeZone:timezone2];
 
-      v4 = v13;
+      waypointsCopy = v13;
     }
   }
 }
 
-- (void)selectWaypointSearchFieldIndex:(unint64_t)a3 exitPlanningIfCancelTapped:(BOOL)a4 beginEditing:(BOOL)a5
+- (void)selectWaypointSearchFieldIndex:(unint64_t)index exitPlanningIfCancelTapped:(BOOL)tapped beginEditing:(BOOL)editing
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(RoutePlanningContext *)self _routeSearchViewController];
-  [v8 setExitRoutePlanningOnCancel:v6];
-  [v8 selectFieldIndex:a3 beginEditing:v5];
+  editingCopy = editing;
+  tappedCopy = tapped;
+  _routeSearchViewController = [(RoutePlanningContext *)self _routeSearchViewController];
+  [_routeSearchViewController setExitRoutePlanningOnCancel:tappedCopy];
+  [_routeSearchViewController selectFieldIndex:index beginEditing:editingCopy];
 }
 
 - (id)_routeSearchViewController
@@ -320,20 +320,20 @@
   if (!routeSearchViewController || ([(RouteSearchViewController *)routeSearchViewController dataCoordinator], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     [(RoutePlanningOverviewViewController *)self->_overviewViewController loadViewIfNeeded];
-    v5 = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeSearchViewController];
+    routeSearchViewController = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeSearchViewController];
 
-    if (v5)
+    if (routeSearchViewController)
     {
-      v6 = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeSearchViewController];
+      routeSearchViewController2 = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeSearchViewController];
     }
 
     else
     {
-      v6 = [[RouteSearchViewController alloc] initWithDelegate:self dataCoordinator:self->_dataCoordinator];
+      routeSearchViewController2 = [[RouteSearchViewController alloc] initWithDelegate:self dataCoordinator:self->_dataCoordinator];
     }
 
     v7 = self->_routeSearchViewController;
-    self->_routeSearchViewController = v6;
+    self->_routeSearchViewController = routeSearchViewController2;
   }
 
   v8 = self->_routeSearchViewController;
@@ -394,29 +394,29 @@
     v7 = WeakRetained;
     if (WeakRetained)
     {
-      v8 = WeakRetained;
+      view = WeakRetained;
     }
 
     else
     {
-      v8 = [(RoutePlanningOverviewViewController *)self->_overviewViewController view];
+      view = [(RoutePlanningOverviewViewController *)self->_overviewViewController view];
     }
 
-    v9 = v8;
+    v9 = view;
 
-    v10 = [(RouteIncidentsViewController *)self->_incidentsViewController popoverPresentationController];
-    [v10 setSourceView:v9];
+    popoverPresentationController = [(RouteIncidentsViewController *)self->_incidentsViewController popoverPresentationController];
+    [popoverPresentationController setSourceView:v9];
 
     [v9 bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(RouteIncidentsViewController *)self->_incidentsViewController popoverPresentationController];
-    [v19 setSourceRect:{v12, v14, v16, v18}];
+    popoverPresentationController2 = [(RouteIncidentsViewController *)self->_incidentsViewController popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{v12, v14, v16, v18}];
 
-    v20 = [(RouteIncidentsViewController *)self->_incidentsViewController popoverPresentationController];
-    [v20 setPermittedArrowDirections:12];
+    popoverPresentationController3 = [(RouteIncidentsViewController *)self->_incidentsViewController popoverPresentationController];
+    [popoverPresentationController3 setPermittedArrowDirections:12];
   }
 
   v21 = self->_incidentsViewController;
@@ -434,26 +434,26 @@
   v21[3] = &unk_10162E5D0;
   v21[4] = self;
   v5 = [(RoutePlanningOptionsViewController *)v3 initWithDataCoordinator:dataCoordinator automaticallySaveChanges:0 completionHandler:v21];
-  v6 = [(RoutePlanningOptionsViewController *)v5 traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [(RoutePlanningOptionsViewController *)v5 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v8 = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeOptionsPopoverSourceView];
+    routeOptionsPopoverSourceView = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeOptionsPopoverSourceView];
     [(RoutePlanningOptionsViewController *)v5 setModalPresentationStyle:7];
-    v9 = [(RoutePlanningOptionsViewController *)v5 popoverPresentationController];
-    [v9 setSourceView:v8];
+    popoverPresentationController = [(RoutePlanningOptionsViewController *)v5 popoverPresentationController];
+    [popoverPresentationController setSourceView:routeOptionsPopoverSourceView];
 
-    [v8 bounds];
+    [routeOptionsPopoverSourceView bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [(RoutePlanningOptionsViewController *)v5 popoverPresentationController];
-    [v18 setSourceRect:{v11, v13, v15, v17}];
+    popoverPresentationController2 = [(RoutePlanningOptionsViewController *)v5 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{v11, v13, v15, v17}];
 
-    v19 = [(RoutePlanningOptionsViewController *)v5 popoverPresentationController];
-    [v19 setPermittedArrowDirections:12];
+    popoverPresentationController3 = [(RoutePlanningOptionsViewController *)v5 popoverPresentationController];
+    [popoverPresentationController3 setPermittedArrowDirections:12];
   }
 
   return v5;
@@ -465,51 +465,51 @@
   if (objc_opt_isKindOfClass())
   {
     v6 = self->_currentCard;
-    v3 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator routeCollection];
-    v4 = [v3 currentRoute];
+    routeCollection = [(RoutePlanningDataCoordinator *)self->_dataCoordinator routeCollection];
+    currentRoute = [routeCollection currentRoute];
 
-    if (v4)
+    if (currentRoute)
     {
-      v5 = [v4 shouldShowSchedule];
+      shouldShowSchedule = [currentRoute shouldShowSchedule];
     }
 
     else
     {
-      v5 = 0;
+      shouldShowSchedule = 0;
     }
 
-    [(ContaineeProtocol *)v6 setShowArriveBy:v5 animated:1];
+    [(ContaineeProtocol *)v6 setShowArriveBy:shouldShowSchedule animated:1];
   }
 }
 
 - (id)_timingViewControllerForCurrentRoute
 {
-  v3 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator routeCollection];
-  v4 = [v3 currentRoute];
+  routeCollection = [(RoutePlanningDataCoordinator *)self->_dataCoordinator routeCollection];
+  currentRoute = [routeCollection currentRoute];
 
   v5 = [RoutePlanningTimingViewController alloc];
-  v6 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator timing];
-  v7 = -[RoutePlanningTimingViewController initWithCurrentTiming:shouldShowArriveBy:pickerDelegate:](v5, "initWithCurrentTiming:shouldShowArriveBy:pickerDelegate:", v6, [v4 shouldShowSchedule], self);
+  timing = [(RoutePlanningDataCoordinator *)self->_dataCoordinator timing];
+  v7 = -[RoutePlanningTimingViewController initWithCurrentTiming:shouldShowArriveBy:pickerDelegate:](v5, "initWithCurrentTiming:shouldShowArriveBy:pickerDelegate:", timing, [currentRoute shouldShowSchedule], self);
 
   [(ContaineeViewController *)v7 setContaineeDelegate:self];
 
   return v7;
 }
 
-- (void)routeStepsViewController:(id)a3 wantsToDisplayAdvisory:(id)a4
+- (void)routeStepsViewController:(id)controller wantsToDisplayAdvisory:(id)advisory
 {
-  [(RoutePlanningContext *)self setRoutePlanningAdvisory:a4];
+  [(RoutePlanningContext *)self setRoutePlanningAdvisory:advisory];
 
   [(RoutePlanningContext *)self presentRoutePlanningViewType:5];
 }
 
-- (void)routeStepsViewController:(id)a3 wantsToShareItem:(id)a4 fromView:(id)a5
+- (void)routeStepsViewController:(id)controller wantsToShareItem:(id)item fromView:(id)view
 {
-  v7 = a4;
-  v10 = [MUPresentationOptions optionsWithSender:a5];
-  v8 = [(RoutePlanningContext *)self iosChromeViewController];
-  v9 = [v8 appCoordinator];
-  [v9 shareItem:v7 presentationOptions:v10 completion:0];
+  itemCopy = item;
+  v10 = [MUPresentationOptions optionsWithSender:view];
+  iosChromeViewController = [(RoutePlanningContext *)self iosChromeViewController];
+  appCoordinator = [iosChromeViewController appCoordinator];
+  [appCoordinator shareItem:itemCopy presentationOptions:v10 completion:0];
 }
 
 - (id)_stepsViewController
@@ -530,38 +530,38 @@
   return routeStepsViewController;
 }
 
-- (void)chromeViewController:(id)a3 didUpdateViewMode:(int64_t)a4
+- (void)chromeViewController:(id)controller didUpdateViewMode:(int64_t)mode
 {
-  v6 = a3;
-  if (![v6 isTopContext:self])
+  controllerCopy = controller;
+  if (![controllerCopy isTopContext:self])
   {
     goto LABEL_43;
   }
 
   v7 = self->_dataCoordinator;
-  v8 = [(RoutePlanningDataCoordinator *)v7 transportType];
-  if (!v8)
+  transportType = [(RoutePlanningDataCoordinator *)v7 transportType];
+  if (!transportType)
   {
     goto LABEL_40;
   }
 
-  v9 = v8;
-  if (a4 > 7)
+  v9 = transportType;
+  if (mode > 7)
   {
     goto LABEL_13;
   }
 
-  if (((1 << a4) & 0x67) == 0)
+  if (((1 << mode) & 0x67) == 0)
   {
-    if (a4 == 3)
+    if (mode == 3)
     {
-      if (v8 == 3)
+      if (transportType == 3)
       {
         goto LABEL_40;
       }
 
 LABEL_19:
-      if (a4 == 3)
+      if (mode == 3)
       {
         v12 = 3;
       }
@@ -571,7 +571,7 @@ LABEL_19:
         v12 = 1;
       }
 
-      if (a4 == -1)
+      if (mode == -1)
       {
         v13 = 0;
       }
@@ -584,17 +584,17 @@ LABEL_19:
       v14 = sub_100798408();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        if ((0x1DFu >> (a4 + 1)))
+        if ((0x1DFu >> (mode + 1)))
         {
-          v15 = *(&off_101627628 + a4 + 1);
+          mode = *(&off_101627628 + mode + 1);
         }
 
         else
         {
-          v15 = [NSString stringWithFormat:@"<Unknown: %ld>", a4];
+          mode = [NSString stringWithFormat:@"<Unknown: %ld>", mode];
         }
 
-        v17 = v15;
+        v17 = mode;
         v18 = v17;
         if ((v9 - 2) > 3)
         {
@@ -621,9 +621,9 @@ LABEL_19:
       goto LABEL_40;
     }
 
-    if (a4 == 7)
+    if (mode == 7)
     {
-      if (v8 == 1 || v8 == 4)
+      if (transportType == 1 || transportType == 4)
       {
         goto LABEL_40;
       }
@@ -632,7 +632,7 @@ LABEL_19:
     }
 
 LABEL_13:
-    if (a4 != -1)
+    if (mode != -1)
     {
       goto LABEL_14;
     }
@@ -640,9 +640,9 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  if (v8 == 3)
+  if (transportType == 3)
   {
-    if (a4 == 3)
+    if (mode == 3)
     {
       goto LABEL_19;
     }
@@ -651,14 +651,14 @@ LABEL_14:
     v10 = sub_100798408();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      if (a4 < 8 && ((0xEFu >> a4) & 1) != 0)
+      if (mode < 8 && ((0xEFu >> mode) & 1) != 0)
       {
-        v11 = *(&off_1016275E8 + a4);
+        mode2 = *(&off_1016275E8 + mode);
       }
 
       else
       {
-        v11 = [NSString stringWithFormat:@"<Unknown: %ld>", a4];
+        mode2 = [NSString stringWithFormat:@"<Unknown: %ld>", mode];
       }
 
       if ((v9 - 2) > 3)
@@ -672,13 +672,13 @@ LABEL_14:
       }
 
       *buf = 138543618;
-      v29 = v11;
+      v29 = mode2;
       v30 = 2114;
       v31 = v16;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "view mode %{public}@ isn't supported by transport type %{public}@; will attempt to replace the transport type", buf, 0x16u);
     }
 
-    v21 = [v6 defaultTransportTypeFinder];
+    defaultTransportTypeFinder = [controllerCopy defaultTransportTypeFinder];
     objc_initWeak(buf, self);
     directionItem = self->_directionItem;
     v25[0] = _NSConcreteStackBlock;
@@ -686,118 +686,118 @@ LABEL_14:
     v25[2] = sub_10070D2A0;
     v25[3] = &unk_10162EB60;
     objc_copyWeak(v27, buf);
-    v27[1] = a4;
+    v27[1] = mode;
     v26 = v7;
-    [v21 transportTypeForDirectionItem:directionItem ignoreMapType:0 completion:v25];
+    [defaultTransportTypeFinder transportTypeForDirectionItem:directionItem ignoreMapType:0 completion:v25];
 
     objc_destroyWeak(v27);
     objc_destroyWeak(buf);
   }
 
 LABEL_40:
-  v23 = [v6 settingsController];
-  v24 = [v23 userRequestingViewModeChange];
+  settingsController = [controllerCopy settingsController];
+  userRequestingViewModeChange = [settingsController userRequestingViewModeChange];
 
-  if (v24)
+  if (userRequestingViewModeChange)
   {
-    [(RoutePlanningMapController *)self->_mapController saveOriginalMapViewModeAs:a4];
+    [(RoutePlanningMapController *)self->_mapController saveOriginalMapViewModeAs:mode];
   }
 
 LABEL_43:
 }
 
-- (void)macDismissRouteSearchSuggestionsController:(id)a3
+- (void)macDismissRouteSearchSuggestionsController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_routeSearchSuggestionsController);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == controllerCopy)
   {
     objc_storeWeak(&self->_routeSearchSuggestionsController, 0);
-    v6 = [(RoutePlanningContext *)self chromeViewController];
-    [v6 setNeedsUpdateComponent:@"cards" animated:1];
+    chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+    [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
   }
 }
 
-- (void)macPresentRouteSearchSuggestionsController:(id)a3
+- (void)macPresentRouteSearchSuggestionsController:(id)controller
 {
-  v4 = a3;
-  objc_storeWeak(&self->_routeSearchSuggestionsController, v4);
-  [v4 setContaineeDelegate:self];
+  controllerCopy = controller;
+  objc_storeWeak(&self->_routeSearchSuggestionsController, controllerCopy);
+  [controllerCopy setContaineeDelegate:self];
 
-  v5 = [(RoutePlanningContext *)self chromeViewController];
-  [v5 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
-- (void)exitRoutePlanningIfNeededAnimated:(BOOL)a3
+- (void)exitRoutePlanningIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(RoutePlanningContext *)self chromeViewController];
-  [v5 popContext:self animated:v3 completion:0];
+  animatedCopy = animated;
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [chromeViewController popContext:self animated:animatedCopy completion:0];
 }
 
-- (void)closeRoutePlanningViewController:(id)a3 withSender:(id)a4
+- (void)closeRoutePlanningViewController:(id)controller withSender:(id)sender
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  controllerCopy = controller;
+  senderCopy = sender;
+  if (controllerCopy)
   {
-    if (sub_10000FA08(v11) == 5 && [(RoutePlanningOverviewViewController *)v11 modalPresentationStyle]== 7)
+    if (sub_10000FA08(controllerCopy) == 5 && [(RoutePlanningOverviewViewController *)controllerCopy modalPresentationStyle]== 7)
     {
-      [(RoutePlanningOverviewViewController *)v11 dismissViewControllerAnimated:1 completion:0];
+      [(RoutePlanningOverviewViewController *)controllerCopy dismissViewControllerAnimated:1 completion:0];
     }
 
-    else if (self->_overviewViewController == v11)
+    else if (self->_overviewViewController == controllerCopy)
     {
-      v10 = [(RoutePlanningContext *)self chromeViewController];
-      [v10 popContext:self animated:1 completion:0];
+      chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+      [chromeViewController popContext:self animated:1 completion:0];
     }
 
     else
     {
       currentCard = self->_currentCard;
-      if (currentCard == v11)
+      if (currentCard == controllerCopy)
       {
         self->_currentCard = 0;
 
         routeSearchViewController = self->_routeSearchViewController;
-        if (routeSearchViewController == v11)
+        if (routeSearchViewController == controllerCopy)
         {
           self->_routeSearchViewController = 0;
         }
 
-        v9 = [(RoutePlanningContext *)self chromeViewController];
-        [v9 setNeedsUpdateComponent:@"cards" animated:1];
+        chromeViewController2 = [(RoutePlanningContext *)self chromeViewController];
+        [chromeViewController2 setNeedsUpdateComponent:@"cards" animated:1];
       }
     }
   }
 }
 
-- (void)presentRoutePlanningViewType:(int64_t)a3
+- (void)presentRoutePlanningViewType:(int64_t)type
 {
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
-        v4 = [(RoutePlanningContext *)self _routeSearchViewController];
+        _routeSearchViewController = [(RoutePlanningContext *)self _routeSearchViewController];
       }
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
           return;
         }
 
-        v4 = [(RoutePlanningContext *)self _stepsViewController];
+        _routeSearchViewController = [(RoutePlanningContext *)self _stepsViewController];
       }
 
       goto LABEL_18;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       [(RoutePlanningContext *)self _timingViewControllerForCurrentRoute];
     }
@@ -807,13 +807,13 @@ LABEL_43:
       [(RoutePlanningContext *)self _optionsViewControllerForCurrentRoute];
     }
 
-    v4 = LABEL_9:;
+    _routeSearchViewController = LABEL_9:;
     goto LABEL_18;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       [(RoutePlanningContext *)self _incidentsViewController];
     }
@@ -826,9 +826,9 @@ LABEL_43:
     goto LABEL_9;
   }
 
-  if (a3 != 7)
+  if (type != 7)
   {
-    if (a3 != 8)
+    if (type != 8)
     {
       return;
     }
@@ -840,10 +840,10 @@ LABEL_43:
     v17[2] = sub_10070D97C;
     v17[3] = &unk_10162E5D0;
     v17[4] = self;
-    v4 = [(RoutePlanningOptionsViewController *)v5 initWithDataCoordinator:dataCoordinator automaticallySaveChanges:0 completionHandler:v17];
+    _routeSearchViewController = [(RoutePlanningOptionsViewController *)v5 initWithDataCoordinator:dataCoordinator automaticallySaveChanges:0 completionHandler:v17];
 LABEL_18:
-    v7 = v4;
-    if (!v4)
+    _autosharingViewController = _routeSearchViewController;
+    if (!_routeSearchViewController)
     {
       return;
     }
@@ -851,14 +851,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = [(RoutePlanningContext *)self _autosharingViewController];
+  _autosharingViewController = [(RoutePlanningContext *)self _autosharingViewController];
   WeakRetained = objc_loadWeakRetained(&self->_platformController);
-  v12 = [WeakRetained currentSession];
+  currentSession = [WeakRetained currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v12;
+    v13 = currentSession;
   }
 
   else
@@ -868,11 +868,11 @@ LABEL_18:
 
   v14 = v13;
 
-  v15 = [v14 automaticSharingContacts];
+  automaticSharingContacts = [v14 automaticSharingContacts];
 
-  if (v15)
+  if (automaticSharingContacts)
   {
-    v16 = v15;
+    v16 = automaticSharingContacts;
   }
 
   else
@@ -880,36 +880,36 @@ LABEL_18:
     v16 = &__NSArray0__struct;
   }
 
-  [v7 setContacts:v16];
+  [_autosharingViewController setContacts:v16];
 
-  if (v7)
+  if (_autosharingViewController)
   {
 LABEL_19:
-    if ([v7 modalPresentationStyle] == 7)
+    if ([_autosharingViewController modalPresentationStyle] == 7)
     {
-      v8 = [(RoutePlanningContext *)self chromeViewController];
-      [v8 presentViewController:v7 animated:1 completion:0];
+      chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+      [chromeViewController presentViewController:_autosharingViewController animated:1 completion:0];
     }
 
     else
     {
       currentCard = self->_currentCard;
-      self->_currentCard = v7;
-      v10 = v7;
+      self->_currentCard = _autosharingViewController;
+      v10 = _autosharingViewController;
 
-      v8 = [(RoutePlanningContext *)self chromeViewController];
-      [v8 setNeedsUpdateComponent:@"cards" animated:1];
+      chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
     }
   }
 }
 
-- (void)_carPlayWantsToDisplayEVOnboarding:(id)a3
+- (void)_carPlayWantsToDisplayEVOnboarding:(id)onboarding
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"EVOnboardingCarPlayVehicleKey"];
+  userInfo = [onboarding userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"EVOnboardingCarPlayVehicleKey"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 objectForKeyedSubscript:@"EVOnboardingCarPlayDictionaryKey"];
+    v6 = [userInfo objectForKeyedSubscript:@"EVOnboardingCarPlayDictionaryKey"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = sub_100798370();
@@ -938,7 +938,7 @@ LABEL_19:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v14 = v4;
+        v14 = userInfo;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "_carPlayWantsToDisplayEVOnboarding: Received invalid dictionaryKey object through notification: %@", buf, 0xCu);
       }
     }
@@ -950,16 +950,16 @@ LABEL_19:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = userInfo;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_FAULT, "_carPlayWantsToDisplayEVOnboarding: Received invalid vehicle object through notification: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)a3 callbackDelegate:(id)a4
+- (void)presentWalletTopUpViewControllerWithTransitIdentifier:(id)identifier callbackDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v8 = sub_10003D020();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -967,20 +967,20 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Showing Wallet Top-Up View Controller", v11, 2u);
   }
 
-  v9 = [[PKPerformActionSetupViewController alloc] initWithPassIdentifier:v7];
-  [v9 setDelegate:v6];
+  v9 = [[PKPerformActionSetupViewController alloc] initWithPassIdentifier:identifierCopy];
+  [v9 setDelegate:delegateCopy];
 
-  v10 = [(RoutePlanningContext *)self chromeViewController];
-  [v10 _maps_topMostPresentViewController:v9 animated:1 completion:0];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v9 animated:1 completion:0];
 }
 
-- (void)presentWalletDCIViewControllerWithTransitSystems:(id)a3 callbackDelegate:(id)a4
+- (void)presentWalletDCIViewControllerWithTransitSystems:(id)systems callbackDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  systemsCopy = systems;
+  delegateCopy = delegate;
+  if (systemsCopy)
   {
-    if ([v7 count])
+    if ([systemsCopy count])
     {
       v9 = objc_alloc_init(PKPaymentSetupConfiguration);
       [v9 setReferrerIdentifier:@"maps"];
@@ -989,9 +989,9 @@ LABEL_19:
       v14[2] = sub_10070E040;
       v14[3] = &unk_10162EC68;
       v14[4] = self;
-      v15 = v7;
+      v15 = systemsCopy;
       v16 = v9;
-      v17 = v8;
+      v17 = delegateCopy;
       v18 = a2;
       v10 = v9;
       [PKPaymentSetupViewController paymentSetupFeaturesForConfiguration:v10 completion:v14];
@@ -1065,17 +1065,17 @@ LABEL_12:
 LABEL_13:
 }
 
-- (id)_filteredFeaturesFromTransitSystems:(id)a3 allFeatures:(id)a4
+- (id)_filteredFeaturesFromTransitSystems:(id)systems allFeatures:(id)features
 {
-  v5 = a3;
-  v6 = a4;
-  v24 = v5;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  systemsCopy = systems;
+  featuresCopy = features;
+  v24 = systemsCopy;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(systemsCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
+  obj = featuresCopy;
   v25 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v25)
   {
@@ -1110,9 +1110,9 @@ LABEL_13:
               }
 
               v15 = *(*(&v26 + 1) + 8 * j);
-              v16 = [v9 identifiers];
-              v17 = [v15 identifier];
-              v18 = [v16 containsObject:v17];
+              identifiers = [v9 identifiers];
+              identifier = [v15 identifier];
+              v18 = [identifiers containsObject:identifier];
 
               if (v18)
               {
@@ -1139,39 +1139,39 @@ LABEL_13:
   return v20;
 }
 
-- (void)presentEducationScreenWithAssetURLs:(id)a3 titleText:(id)a4 bodyText:(id)a5
+- (void)presentEducationScreenWithAssetURLs:(id)ls titleText:(id)text bodyText:(id)bodyText
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v13 = [[TransitPayEducationScreenViewController alloc] initWithAssetURLs:v10 titleText:v9 bodyText:v8];
+  bodyTextCopy = bodyText;
+  textCopy = text;
+  lsCopy = ls;
+  v13 = [[TransitPayEducationScreenViewController alloc] initWithAssetURLs:lsCopy titleText:textCopy bodyText:bodyTextCopy];
 
   v11 = [[UINavigationController alloc] initWithRootViewController:v13];
-  v12 = [(RoutePlanningContext *)self chromeViewController];
-  [v12 _maps_topMostPresentViewController:v11 animated:1 completion:0];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v11 animated:1 completion:0];
 }
 
-- (void)productViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)productViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
-  [v6 dismissViewControllerAnimated:1 completion:0];
-  v7 = [v6 clientIdentifier];
+  controllerCopy = controller;
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  clientIdentifier = [controllerCopy clientIdentifier];
 
-  v8 = [v7 isEqualToString:@"RidesharingStoreProductClientIdentifier"];
-  if (a4 == 4 && v8)
+  v8 = [clientIdentifier isEqualToString:@"RidesharingStoreProductClientIdentifier"];
+  if (result == 4 && v8)
   {
-    v10 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator rideOptionStateObserver];
-    v9 = [v10 analyticsBookingSession];
-    [v9 setInstalledApp:1];
+    rideOptionStateObserver = [(RoutePlanningDataCoordinator *)self->_dataCoordinator rideOptionStateObserver];
+    analyticsBookingSession = [rideOptionStateObserver analyticsBookingSession];
+    [analyticsBookingSession setInstalledApp:1];
   }
 }
 
-- (void)containeeViewControllerDidDismissExternally:(id)a3
+- (void)containeeViewControllerDidDismissExternally:(id)externally
 {
-  v4 = a3;
+  externallyCopy = externally;
   currentCard = self->_currentCard;
-  v9 = v4;
-  if (currentCard == v4)
+  v9 = externallyCopy;
+  if (currentCard == externallyCopy)
   {
     self->_currentCard = 0;
   }
@@ -1189,61 +1189,61 @@ LABEL_13:
     objc_storeWeak(&self->_routeSearchSuggestionsController, 0);
   }
 
-  v8 = [(RoutePlanningContext *)self chromeViewController];
-  [v8 setNeedsUpdateComponent:@"cards" animated:0];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:0];
 
   v7 = v9;
 LABEL_6:
 }
 
-- (void)routePlanningDataCoordinator:(id)a3 isEnabled:(BOOL)a4
+- (void)routePlanningDataCoordinator:(id)coordinator isEnabled:(BOOL)enabled
 {
-  if (!a4)
+  if (!enabled)
   {
-    v6 = [(RoutePlanningContext *)self chromeViewController];
-    [v6 popContext:self animated:1 completion:0];
+    chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+    [chromeViewController popContext:self animated:1 completion:0];
   }
 }
 
 - (BOOL)chromeDidClearMapSelection
 {
-  v3 = [(RoutePlanningContext *)self chromeViewController];
-  v4 = [v3 isTopContext:self];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  v4 = [chromeViewController isTopContext:self];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [(RoutePlanningContext *)self chromeViewController];
-    [v5 popToContext:self animated:1 completion:0];
+    chromeViewController2 = [(RoutePlanningContext *)self chromeViewController];
+    [chromeViewController2 popToContext:self animated:1 completion:0];
   }
 
   return v4 ^ 1;
 }
 
-- (void)_presentPlaceCardWithItem:(id)a3
+- (void)_presentPlaceCardWithItem:(id)item
 {
   dataCoordinator = self->_dataCoordinator;
-  v5 = a3;
+  itemCopy = item;
   if ([(RoutePlanningDataCoordinator *)dataCoordinator isEnabled])
   {
-    v6 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator isEnabled];
-    v7 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator transportType];
-    v8 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator waypointRequests];
-    v9 = [v8 count];
+    isEnabled = [(RoutePlanningDataCoordinator *)self->_dataCoordinator isEnabled];
+    transportType = [(RoutePlanningDataCoordinator *)self->_dataCoordinator transportType];
+    waypointRequests = [(RoutePlanningDataCoordinator *)self->_dataCoordinator waypointRequests];
+    numberOfUserRequestedWaypoints = [waypointRequests count];
   }
 
   else
   {
-    v6 = [(DirectionItem *)self->_directionItem canAddStop];
-    v7 = [(DirectionItem *)self->_directionItem transportType];
-    v9 = [(DirectionItem *)self->_directionItem numberOfUserRequestedWaypoints];
+    isEnabled = [(DirectionItem *)self->_directionItem canAddStop];
+    transportType = [(DirectionItem *)self->_directionItem transportType];
+    numberOfUserRequestedWaypoints = [(DirectionItem *)self->_directionItem numberOfUserRequestedWaypoints];
   }
 
   IsEnabled_DrivingMultiWaypointRoutes = 0;
-  if (v7 <= 1)
+  if (transportType <= 1)
   {
-    if (v7)
+    if (transportType)
     {
-      if (v7 == 1)
+      if (transportType == 1)
       {
         IsEnabled_DrivingMultiWaypointRoutes = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
       }
@@ -1262,18 +1262,18 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v7 == 2)
+  if (transportType == 2)
   {
     goto LABEL_14;
   }
 
-  if (v7 == 5)
+  if (transportType == 5)
   {
     IsEnabled_DrivingMultiWaypointRoutes = MapsFeature_IsEnabled_Maps420();
   }
 
 LABEL_15:
-  if (v9)
+  if (numberOfUserRequestedWaypoints)
   {
     v11 = IsEnabled_DrivingMultiWaypointRoutes;
   }
@@ -1283,44 +1283,44 @@ LABEL_15:
     v11 = 0;
   }
 
-  v12 = [[_TtC4Maps29PlaceCardContextConfiguration alloc] initWithPlaceCardItem:v5 shouldInsertInHistory:0 excludedContent:22 buildingMultistopRoute:v11 & v6];
+  v12 = [[_TtC4Maps29PlaceCardContextConfiguration alloc] initWithPlaceCardItem:itemCopy shouldInsertInHistory:0 excludedContent:22 buildingMultistopRoute:v11 & isEnabled];
 
-  v13 = [(RoutePlanningContext *)self chromeViewController];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10070EA24;
   v15[3] = &unk_10165FB98;
   v16 = v12;
   v14 = v12;
-  [v13 scheduleCoordinatedContextChange:v15 completionHandler:&stru_101627558];
+  [chromeViewController scheduleCoordinatedContextChange:v15 completionHandler:&stru_101627558];
 }
 
-- (BOOL)chromeDidSelectUserLocationAnnotation:(id)a3
+- (BOOL)chromeDidSelectUserLocationAnnotation:(id)annotation
 {
-  v4 = [a3 annotation];
-  v5 = [[PlaceCardItem alloc] initWithSearchResult:v4];
+  annotation = [annotation annotation];
+  v5 = [[PlaceCardItem alloc] initWithSearchResult:annotation];
   [(RoutePlanningContext *)self _presentPlaceCardWithItem:v5];
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [[PlaceCardItem alloc] initWithMapItem:v4];
+  itemCopy = item;
+  v5 = [[PlaceCardItem alloc] initWithMapItem:itemCopy];
 
   [(RoutePlanningContext *)self _presentPlaceCardWithItem:v5];
   return 1;
 }
 
-- (BOOL)chromeDidSelectETAMarkerForRoute:(id)a3
+- (BOOL)chromeDidSelectETAMarkerForRoute:(id)route
 {
-  v4 = a3;
-  v5 = [v4 uniqueRouteID];
-  v6 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator currentRoute];
-  v7 = [v6 uniqueRouteID];
-  v8 = v5;
-  v9 = v7;
+  routeCopy = route;
+  uniqueRouteID = [routeCopy uniqueRouteID];
+  currentRoute = [(RoutePlanningDataCoordinator *)self->_dataCoordinator currentRoute];
+  uniqueRouteID2 = [currentRoute uniqueRouteID];
+  v8 = uniqueRouteID;
+  v9 = uniqueRouteID2;
   if (!(v8 | v9))
   {
     goto LABEL_4;
@@ -1331,34 +1331,34 @@ LABEL_15:
 
   if ((v11 & 1) == 0)
   {
-    [(RoutePlanningDataCoordinator *)self->_dataCoordinator updateCurrentRoute:v4];
+    [(RoutePlanningDataCoordinator *)self->_dataCoordinator updateCurrentRoute:routeCopy];
     v12 = +[MKMapService sharedService];
-    v13 = [(RoutePlanningContext *)self iosBasedChromeViewController];
-    [v12 captureUserAction:3015 onTarget:objc_msgSend(v13 eventValue:"currentMapViewTargetForAnalytics") routeIndex:{0, objc_msgSend(v4, "_maps_routeIndex")}];
+    iosBasedChromeViewController = [(RoutePlanningContext *)self iosBasedChromeViewController];
+    [v12 captureUserAction:3015 onTarget:objc_msgSend(iosBasedChromeViewController eventValue:"currentMapViewTargetForAnalytics") routeIndex:{0, objc_msgSend(routeCopy, "_maps_routeIndex")}];
 
     currentCard = self->_currentCard;
     self->_currentCard = 0;
 
-    v6 = [(RoutePlanningContext *)self chromeViewController];
-    [v6 setNeedsUpdateComponent:@"cards" animated:1];
+    currentRoute = [(RoutePlanningContext *)self chromeViewController];
+    [currentRoute setNeedsUpdateComponent:@"cards" animated:1];
 LABEL_4:
   }
 
   return 1;
 }
 
-- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)a3
+- (BOOL)chromeShouldAllowSelectingLabelMarker:(id)marker
 {
-  v3 = a3;
-  if ([v3 isTransitLine])
+  markerCopy = marker;
+  if ([markerCopy isTransitLine])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 waypointInfo];
-    v6 = [v5 waypoint];
+    waypointInfo = [markerCopy waypointInfo];
+    waypoint = [waypointInfo waypoint];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1390,71 +1390,71 @@ LABEL_4:
   return v6;
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a4;
-  [a3 mapView];
+  animationCopy = animation;
+  [controller mapView];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10070EF64;
   v10 = v9[3] = &unk_101660CE8;
-  v11 = self;
-  v12 = [v6 isAnimated];
+  selfCopy = self;
+  isAnimated = [animationCopy isAnimated];
   v7 = v10;
-  [v6 addAnimations:v9];
+  [animationCopy addAnimations:v9];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10070EFBC;
   v8[3] = &unk_101661738;
   v8[4] = self;
-  [v6 addCompletion:v8];
+  [animationCopy addCompletion:v8];
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10070F0FC;
   v7[3] = &unk_101661B18;
   v7[4] = self;
-  v5 = a4;
-  [v5 addPreparation:v7];
+  animationCopy = animation;
+  [animationCopy addPreparation:v7];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10070F10C;
   v6[3] = &unk_101661738;
   v6[4] = self;
-  [v5 addCompletion:v6];
+  [animationCopy addCompletion:v6];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 mapView];
-  v9 = [v7 mapSelectionManager];
+  animationCopy = animation;
+  controllerCopy = controller;
+  mapView = [controllerCopy mapView];
+  mapSelectionManager = [controllerCopy mapSelectionManager];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10070F2F8;
   v16[3] = &unk_101661B18;
   v16[4] = self;
-  [v6 addPreparation:v16];
+  [animationCopy addPreparation:v16];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10070F308;
   v13[3] = &unk_101661A90;
-  v14 = v9;
-  v15 = v8;
-  v10 = v8;
-  v11 = v9;
-  [v6 addAnimations:v13];
+  v14 = mapSelectionManager;
+  v15 = mapView;
+  v10 = mapView;
+  v11 = mapSelectionManager;
+  [animationCopy addAnimations:v13];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10070F364;
   v12[3] = &unk_101661738;
   v12[4] = self;
-  [v6 addCompletion:v12];
+  [animationCopy addCompletion:v12];
 }
 
 - (void)_performInitialLoadIfNeeded
@@ -1476,22 +1476,22 @@ LABEL_4:
   }
 }
 
-- (void)enterStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)enterStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10070F4E0;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
-- (void)prepareToEnterStackInChromeViewController:(id)a3
+- (void)prepareToEnterStackInChromeViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 appCoordinator];
-  v6 = [v5 platformController];
-  objc_storeWeak(&self->_platformController, v6);
+  controllerCopy = controller;
+  appCoordinator = [controllerCopy appCoordinator];
+  platformController = [appCoordinator platformController];
+  objc_storeWeak(&self->_platformController, platformController);
 
   WeakRetained = objc_loadWeakRetained(&self->_platformController);
   if (!WeakRetained)
@@ -1565,73 +1565,73 @@ LABEL_4:
 
   [(ContaineeViewController *)self->_overviewViewController setContaineeDelegate:self];
   [(RoutePlanningOverviewViewController *)self->_overviewViewController setRoutePlanningDelegate:self];
-  if (sub_10000FA08(v4) == 5)
+  if (sub_10000FA08(controllerCopy) == 5)
   {
     [(RoutePlanningOverviewViewController *)self->_overviewViewController loadViewIfNeeded];
   }
 
-  v14 = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeSearchViewController];
-  [v14 setDelegate:self];
+  routeSearchViewController = [(RoutePlanningOverviewViewController *)self->_overviewViewController routeSearchViewController];
+  [routeSearchViewController setDelegate:self];
 
-  v15 = [[RoutePlanningMapController alloc] initWithChromeViewController:v4];
+  v15 = [[RoutePlanningMapController alloc] initWithChromeViewController:controllerCopy];
   mapController = self->_mapController;
   self->_mapController = v15;
 
   [(RoutePlanningMapController *)self->_mapController setDataCoordinator:self->_dataCoordinator];
-  -[RoutePlanningMapController saveOriginalMapViewModeAs:](self->_mapController, "saveOriginalMapViewModeAs:", [v4 displayedViewMode]);
-  v17 = [v4 personalizedItemManager];
-  [(RoutePlanningMapController *)self->_mapController setPersonalizedItemManager:v17];
+  -[RoutePlanningMapController saveOriginalMapViewModeAs:](self->_mapController, "saveOriginalMapViewModeAs:", [controllerCopy displayedViewMode]);
+  personalizedItemManager = [controllerCopy personalizedItemManager];
+  [(RoutePlanningMapController *)self->_mapController setPersonalizedItemManager:personalizedItemManager];
 
-  v18 = [v4 searchPinsManager];
-  [(RoutePlanningMapController *)self->_mapController setSearchPinsManager:v18];
+  searchPinsManager = [controllerCopy searchPinsManager];
+  [(RoutePlanningMapController *)self->_mapController setSearchPinsManager:searchPinsManager];
 
-  v19 = [v4 mapCameraController];
-  [(RoutePlanningMapController *)self->_mapController setMapCameraController:v19];
+  mapCameraController = [controllerCopy mapCameraController];
+  [(RoutePlanningMapController *)self->_mapController setMapCameraController:mapCameraController];
 
-  v20 = [v4 routeAnnotationsController];
-  [(RoutePlanningMapController *)self->_mapController setRouteAnnotationsController:v20];
+  routeAnnotationsController = [controllerCopy routeAnnotationsController];
+  [(RoutePlanningMapController *)self->_mapController setRouteAnnotationsController:routeAnnotationsController];
 
-  [(RoutePlanningMapController *)self->_mapController setViewModeController:v4];
+  [(RoutePlanningMapController *)self->_mapController setViewModeController:controllerCopy];
 }
 
 - (id)mapCameraController
 {
-  v2 = [(RoutePlanningContext *)self chromeViewController];
-  v3 = [v2 mapCameraController];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  mapCameraController = [chromeViewController mapCameraController];
 
-  return v3;
+  return mapCameraController;
 }
 
 - (id)mapSelectionManager
 {
-  v2 = [(RoutePlanningContext *)self chromeViewController];
-  v3 = [v2 mapSelectionManager];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  mapSelectionManager = [chromeViewController mapSelectionManager];
 
-  return v3;
+  return mapSelectionManager;
 }
 
 - (id)personalizedItemSources
 {
-  v2 = [(RoutePlanningContext *)self chromeViewController];
-  v3 = [v2 searchPinsManager];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v3)
+  if (searchPinsManager)
   {
     v4 = [NSMutableArray alloc];
-    v5 = [v3 searchResultsItemSource];
-    v6 = [v3 singleSearchResultItemSource];
-    v7 = [v3 searchResultsItemSource];
-    v8 = [v3 droppedPinsItemSource];
-    v9 = [v3 collectionPinsItemSource];
-    v10 = [v3 routeStartEndItemSource];
-    v11 = [v3 placeCardLinkedPlacesItemSource];
-    v12 = [v3 searchDotPlacesItemSource];
-    v13 = [v4 initWithObjects:{v5, v6, v7, v8, v9, v10, v11, v12, 0}];
+    searchResultsItemSource = [searchPinsManager searchResultsItemSource];
+    singleSearchResultItemSource = [searchPinsManager singleSearchResultItemSource];
+    searchResultsItemSource2 = [searchPinsManager searchResultsItemSource];
+    droppedPinsItemSource = [searchPinsManager droppedPinsItemSource];
+    collectionPinsItemSource = [searchPinsManager collectionPinsItemSource];
+    routeStartEndItemSource = [searchPinsManager routeStartEndItemSource];
+    placeCardLinkedPlacesItemSource = [searchPinsManager placeCardLinkedPlacesItemSource];
+    searchDotPlacesItemSource = [searchPinsManager searchDotPlacesItemSource];
+    v13 = [v4 initWithObjects:{searchResultsItemSource, singleSearchResultItemSource, searchResultsItemSource2, droppedPinsItemSource, collectionPinsItemSource, routeStartEndItemSource, placeCardLinkedPlacesItemSource, searchDotPlacesItemSource, 0}];
 
     v14 = +[TrafficIncidentLayoutManager sharedInstance];
-    LODWORD(v6) = [v14 isIncidentReportingEnabled];
+    LODWORD(singleSearchResultItemSource) = [v14 isIncidentReportingEnabled];
 
-    if (v6)
+    if (singleSearchResultItemSource)
     {
       v15 = objc_alloc_init(TrafficIncidentItemSource);
       [v13 addObject:v15];
@@ -1648,57 +1648,57 @@ LABEL_4:
   return v16;
 }
 
-- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)a3 index:(unint64_t)a4
+- (void)_presentMacRouteEditingWithEditRequired:(unint64_t)required index:(unint64_t)index
 {
   [(RoutePlanningContext *)self presentRoutePlanningViewType:1];
-  if (a3)
+  if (required)
   {
-    v9 = [(DirectionItem *)self->_directionItem items];
-    v7 = [(RoutePlanningContext *)self _routeSearchViewController];
-    [v7 updateWithItems:v9];
+    items = [(DirectionItem *)self->_directionItem items];
+    _routeSearchViewController = [(RoutePlanningContext *)self _routeSearchViewController];
+    [_routeSearchViewController updateWithItems:items];
 
-    if ([v9 count] > a4)
+    if ([items count] > index)
     {
-      v8 = [(RoutePlanningContext *)self _routeSearchViewController];
-      [v8 selectFieldIndex:a4 beginEditing:1];
+      _routeSearchViewController2 = [(RoutePlanningContext *)self _routeSearchViewController];
+      [_routeSearchViewController2 selectFieldIndex:index beginEditing:1];
     }
   }
 }
 
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4 postAlertSearchType:(unsigned int)a5
+- (void)displayAlertWithTitle:(id)title message:(id)message postAlertSearchType:(unsigned int)type
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
-  v11 = [(RoutePlanningContext *)self iosBasedChromeViewController];
-  v10 = [v11 interruptionManager];
-  [v10 displayAlertWithTitle:v9 message:v8 postAlertSearchType:v5];
+  v5 = *&type;
+  messageCopy = message;
+  titleCopy = title;
+  iosBasedChromeViewController = [(RoutePlanningContext *)self iosBasedChromeViewController];
+  interruptionManager = [iosBasedChromeViewController interruptionManager];
+  [interruptionManager displayAlertWithTitle:titleCopy message:messageCopy postAlertSearchType:v5];
 }
 
-- (void)_promptForEditRequired:(unint64_t)a3 forWaypointAtIndex:(unint64_t)a4 inDirectionItem:(id)a5 userInfo:(id)a6
+- (void)_promptForEditRequired:(unint64_t)required forWaypointAtIndex:(unint64_t)index inDirectionItem:(id)item userInfo:(id)info
 {
-  v10 = a5;
-  v11 = a6;
-  if (!a3)
+  itemCopy = item;
+  infoCopy = info;
+  if (!required)
   {
     goto LABEL_19;
   }
 
-  v12 = [(RoutePlanningContext *)self chromeViewController];
-  v13 = sub_10000FA08(v12);
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  v13 = sub_10000FA08(chromeViewController);
 
   if (v13 == 5)
   {
-    [(RoutePlanningContext *)self _presentMacRouteEditingWithEditRequired:a3 index:a4];
+    [(RoutePlanningContext *)self _presentMacRouteEditingWithEditRequired:required index:index];
     goto LABEL_19;
   }
 
-  if (a3 - 2 < 2)
+  if (required - 2 < 2)
   {
-    v17 = [v10 hasCurrentLocationOnlyAsOriginWaypoint];
+    hasCurrentLocationOnlyAsOriginWaypoint = [itemCopy hasCurrentLocationOnlyAsOriginWaypoint];
     v14 = +[NSBundle mainBundle];
     v15 = v14;
-    if (v17)
+    if (hasCurrentLocationOnlyAsOriginWaypoint)
     {
       v16 = @"Choose Start";
     }
@@ -1709,7 +1709,7 @@ LABEL_4:
     }
   }
 
-  else if (a3 == 4)
+  else if (required == 4)
   {
     v14 = +[NSBundle mainBundle];
     v15 = v14;
@@ -1718,7 +1718,7 @@ LABEL_4:
 
   else
   {
-    if (a3 != 1)
+    if (required != 1)
     {
       v18 = 0;
       goto LABEL_13;
@@ -1739,18 +1739,18 @@ LABEL_13:
   v40 = sub_100710124;
   v41 = 0;
   v19 = [RouteSearchViewController alloc];
-  v20 = [v10 items];
+  items = [itemCopy items];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_10071012C;
   v30[3] = &unk_10162EA10;
   v30[4] = self;
   v33 = &v36;
-  v31 = v10;
-  v34 = a3;
-  v35 = a4;
-  v32 = v11;
-  v21 = [(RouteSearchViewController *)v19 initWithDelegate:self items:v20 waypointIndex:a4 selectionHandler:v30];
+  v31 = itemCopy;
+  requiredCopy = required;
+  indexCopy = index;
+  v32 = infoCopy;
+  v21 = [(RouteSearchViewController *)v19 initWithDelegate:self items:items waypointIndex:index selectionHandler:v30];
   v22 = v37[5];
   v37[5] = v21;
 
@@ -1758,43 +1758,43 @@ LABEL_13:
   objc_storeStrong(&self->_routeSearchViewController, v37[5]);
   if ([v37[5] modalPresentationStyle] == 7)
   {
-    v23 = [v37[5] popoverPresentationController];
-    v24 = [v23 delegate];
+    popoverPresentationController = [v37[5] popoverPresentationController];
+    delegate = [popoverPresentationController delegate];
 
-    if (!v24)
+    if (!delegate)
     {
-      v25 = [v37[5] popoverPresentationController];
-      [v25 setDelegate:self];
+      popoverPresentationController2 = [v37[5] popoverPresentationController];
+      [popoverPresentationController2 setDelegate:self];
     }
 
-    v26 = [(RoutePlanningContext *)self chromeViewController];
-    [v26 _maps_topMostPresentViewController:v37[5] animated:1 completion:0];
+    chromeViewController2 = [(RoutePlanningContext *)self chromeViewController];
+    [chromeViewController2 _maps_topMostPresentViewController:v37[5] animated:1 completion:0];
   }
 
   else
   {
-    v27 = [(RoutePlanningContext *)self iosBasedChromeViewController];
-    [v27 setNeedsUpdateComponent:@"cards" animated:1];
+    iosBasedChromeViewController = [(RoutePlanningContext *)self iosBasedChromeViewController];
+    [iosBasedChromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 
-    v26 = [(RoutePlanningContext *)self chromeViewController];
+    chromeViewController2 = [(RoutePlanningContext *)self chromeViewController];
     v28 = v37[5];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1007102E0;
     v29[3] = &unk_101659998;
     v29[4] = &v36;
-    v29[5] = a4;
-    [v26 presentController:v28 animated:1 completion:v29];
+    v29[5] = index;
+    [chromeViewController2 presentController:v28 animated:1 completion:v29];
   }
 
   _Block_object_dispose(&v36, 8);
 LABEL_19:
 }
 
-- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)a3 userInfo:(id)a4
+- (void)_promptForCurrentLocationConfirmationWithDirectionItem:(id)item userInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  infoCopy = info;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Get Directions from Approximate Location" value:@"localized string not found" table:0];
   v9 = +[NSBundle mainBundle];
@@ -1807,10 +1807,10 @@ LABEL_19:
   v31[1] = 3221225472;
   v31[2] = sub_1007106A8;
   v31[3] = &unk_101630B88;
-  v14 = v6;
+  v14 = infoCopy;
   v32 = v14;
-  v33 = self;
-  v15 = v5;
+  selfCopy = self;
+  v15 = itemCopy;
   v34 = v15;
   v16 = [UIAlertAction actionWithTitle:v13 style:0 handler:v31];
 
@@ -1822,7 +1822,7 @@ LABEL_19:
   v27[2] = sub_100710734;
   v27[3] = &unk_101630B88;
   v28 = v14;
-  v29 = self;
+  selfCopy2 = self;
   v30 = v15;
   v19 = v15;
   v20 = v14;
@@ -1834,45 +1834,45 @@ LABEL_19:
   v24 = [UIAlertAction actionWithTitle:v23 style:1 handler:0];
 
   [v11 addAction:v24];
-  v25 = [(RoutePlanningContext *)self chromeViewController];
-  [v25 _maps_topMostPresentViewController:v11 animated:1 completion:0];
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:v11 animated:1 completion:0];
 }
 
-- (void)addStopForSearchFieldItem:(id)a3 withUserInfo:(id)a4
+- (void)addStopForSearchFieldItem:(id)item withUserInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  infoCopy = info;
   if ([(RoutePlanningContext *)self isRoutePlanningPresented]|| ([(RouteSearchViewController *)self->_routeSearchViewController presentingViewController], (v8 = objc_claimAutoreleasedReturnValue()) == 0) || (v9 = v8, [(RouteSearchViewController *)self->_routeSearchViewController dataCoordinator], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
-    v11 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator directionItemForCurrentSession];
-    v12 = [v11 items];
-    v13 = [NSMutableArray arrayWithArray:v12];
+    directionItemForCurrentSession = [(RoutePlanningDataCoordinator *)self->_dataCoordinator directionItemForCurrentSession];
+    items = [directionItemForCurrentSession items];
+    v13 = [NSMutableArray arrayWithArray:items];
 
-    v14 = [(RouteSearchViewController *)self->_routeSearchViewController presentingViewController];
-    if (v14)
+    presentingViewController = [(RouteSearchViewController *)self->_routeSearchViewController presentingViewController];
+    if (presentingViewController)
     {
-      v15 = v14;
-      v16 = [(RouteSearchViewController *)self->_routeSearchViewController _currentlySelectedIndexForAddStop];
+      v15 = presentingViewController;
+      _currentlySelectedIndexForAddStop = [(RouteSearchViewController *)self->_routeSearchViewController _currentlySelectedIndexForAddStop];
 
-      if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+      if (_currentlySelectedIndexForAddStop != 0x7FFFFFFFFFFFFFFFLL)
       {
         v18 = sub_100798A3C();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
           v29 = 134217984;
-          v30 = v16;
+          v30 = _currentlySelectedIndexForAddStop;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Performing fresh directions with replaced stop at index %lu", &v29, 0xCu);
         }
 
-        [v13 replaceObjectAtIndex:v16 withObject:v6];
+        [v13 replaceObjectAtIndex:_currentlySelectedIndexForAddStop withObject:itemCopy];
         goto LABEL_31;
       }
     }
 
-    v17 = [v11 transportType];
-    if (v17 > 1)
+    transportType = [directionItemForCurrentSession transportType];
+    if (transportType > 1)
     {
-      if (v17 == 2)
+      if (transportType == 2)
       {
         if (MapsFeature_IsEnabled_Maps182())
         {
@@ -1884,14 +1884,14 @@ LABEL_28:
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Performing fresh directions with added stop", &v29, 2u);
           }
 
-          [v13 addObject:v6];
+          [v13 addObject:itemCopy];
 LABEL_31:
-          v24 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator transportType];
+          transportType2 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator transportType];
           v25 = [DirectionItem alloc];
           v26 = [v13 copy];
-          v19 = [(DirectionItem *)v25 initWithItems:v26 transportType:v24];
+          v19 = [(DirectionItem *)v25 initWithItems:v26 transportType:transportType2];
 
-          v27 = [v7 mutableCopy];
+          v27 = [infoCopy mutableCopy];
           [v27 setObject:0 forKeyedSubscript:@"DirectionsAppendContentsOfItem"];
           v28 = [v27 copy];
           [(RoutePlanningContext *)self setDirectionItem:v19 allowToPromptEditing:1 userInfo:v28];
@@ -1900,15 +1900,15 @@ LABEL_31:
         }
       }
 
-      else if (v17 == 5 && (MapsFeature_IsEnabled_Maps420() & 1) != 0)
+      else if (transportType == 5 && (MapsFeature_IsEnabled_Maps420() & 1) != 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (v17)
+    else if (transportType)
     {
-      if (v17 == 1 && (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes() & 1) != 0)
+      if (transportType == 1 && (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes() & 1) != 0)
       {
         goto LABEL_28;
       }
@@ -1928,11 +1928,11 @@ LABEL_44:
     }
 
     v20 = [v13 count];
-    v21 = [v11 transportType];
+    transportType3 = [directionItemForCurrentSession transportType];
     v22 = @"NO";
-    if (v21 > 1)
+    if (transportType3 > 1)
     {
-      if (v21 == 2)
+      if (transportType3 == 2)
       {
         if (MapsFeature_IsEnabled_Maps182())
         {
@@ -1944,7 +1944,7 @@ LABEL_42:
         goto LABEL_40;
       }
 
-      if (v21 != 5)
+      if (transportType3 != 5)
       {
         goto LABEL_43;
       }
@@ -1957,9 +1957,9 @@ LABEL_42:
 
     else
     {
-      if (v21)
+      if (transportType3)
       {
-        if (v21 == 1)
+        if (transportType3 == 1)
         {
           if (MapsFeature_IsEnabled_DrivingMultiWaypointRoutes())
           {
@@ -1991,29 +1991,29 @@ LABEL_40:
     goto LABEL_43;
   }
 
-  [(RouteSearchViewController *)self->_routeSearchViewController replaceSelectedFieldWithItem:v6];
+  [(RouteSearchViewController *)self->_routeSearchViewController replaceSelectedFieldWithItem:itemCopy];
 LABEL_45:
 }
 
-- (void)setDirectionItem:(id)a3 allowToPromptEditing:(BOOL)a4 userInfo:(id)a5
+- (void)setDirectionItem:(id)item allowToPromptEditing:(BOOL)editing userInfo:(id)info
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(RoutePlanningContext *)self chromeViewController];
+  editingCopy = editing;
+  itemCopy = item;
+  infoCopy = info;
+  chromeViewController = [(RoutePlanningContext *)self chromeViewController];
 
-  if (v11)
+  if (chromeViewController)
   {
     currentCard = self->_currentCard;
     if (currentCard)
     {
       self->_currentCard = 0;
 
-      v13 = [(RoutePlanningContext *)self iosChromeViewController];
-      [v13 setNeedsUpdateComponent:@"cards" animated:1 completion:0];
+      iosChromeViewController = [(RoutePlanningContext *)self iosChromeViewController];
+      [iosChromeViewController setNeedsUpdateComponent:@"cards" animated:1 completion:0];
     }
 
-    if (!v9)
+    if (!itemCopy)
     {
       v14 = [DirectionItem alloc];
       v15 = objc_opt_new();
@@ -2021,66 +2021,66 @@ LABEL_45:
       v16 = objc_opt_new();
       v71[1] = v16;
       v17 = [NSArray arrayWithObjects:v71 count:2];
-      v9 = [(DirectionItem *)v14 initWithItems:v17 transportType:0];
+      itemCopy = [(DirectionItem *)v14 initWithItems:v17 transportType:0];
     }
 
-    objc_storeStrong(&self->_directionItem, v9);
-    objc_storeStrong(&self->_userInfo, a5);
+    objc_storeStrong(&self->_directionItem, itemCopy);
+    objc_storeStrong(&self->_userInfo, info);
     self->_allowErrorEditingPrompts = 1;
-    v18 = [(RoutePlanningContext *)self chromeViewController];
-    v19 = v18 == 0;
+    chromeViewController2 = [(RoutePlanningContext *)self chromeViewController];
+    v19 = chromeViewController2 == 0;
 
     if (!v19)
     {
-      v20 = [(DirectionItem *)v9 items];
+      items = [(DirectionItem *)itemCopy items];
       if ([(RoutePlanningContext *)self isRoutePlanningPresented])
       {
-        v21 = [(RoutePlanningDataCoordinator *)self->_dataCoordinator directionItemForCurrentSession];
+        directionItemForCurrentSession = [(RoutePlanningDataCoordinator *)self->_dataCoordinator directionItemForCurrentSession];
       }
 
       else
       {
-        v21 = self->_directionItem;
+        directionItemForCurrentSession = self->_directionItem;
       }
 
-      v22 = v21;
-      if (v21)
+      v22 = directionItemForCurrentSession;
+      if (directionItemForCurrentSession)
       {
-        v23 = [v10 objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
-        v24 = [v23 BOOLValue];
+        v23 = [infoCopy objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
+        bOOLValue = [v23 BOOLValue];
 
-        if (v24)
+        if (bOOLValue)
         {
-          v25 = [(DirectionItem *)v9 items];
-          v26 = [v25 firstObject];
+          items2 = [(DirectionItem *)itemCopy items];
+          firstObject = [items2 firstObject];
 
-          [(RoutePlanningContext *)self addStopForSearchFieldItem:v26 withUserInfo:v10];
+          [(RoutePlanningContext *)self addStopForSearchFieldItem:firstObject withUserInfo:infoCopy];
 LABEL_57:
 
           goto LABEL_58;
         }
       }
 
-      if (![(DirectionItem *)v9 isEquivalentAsWaypointToDirectionItem:v22])
+      if (![(DirectionItem *)itemCopy isEquivalentAsWaypointToDirectionItem:v22])
       {
-        v27 = [(DirectionItem *)v9 copy];
+        v27 = [(DirectionItem *)itemCopy copy];
         directionItem = self->_directionItem;
         self->_directionItem = v27;
       }
 
-      if ([v20 count] == 1)
+      if ([items count] == 1)
       {
-        v29 = [v10 objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
-        v30 = [v29 BOOLValue];
+        v29 = [infoCopy objectForKeyedSubscript:@"DirectionsAppendContentsOfItem"];
+        bOOLValue2 = [v29 BOOLValue];
 
-        if ((v30 & 1) == 0)
+        if ((bOOLValue2 & 1) == 0)
         {
           v31 = sub_100798A3C();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
-            v32 = [v20 firstObject];
+            firstObject2 = [items firstObject];
             LODWORD(buf) = 138412290;
-            *(&buf + 4) = v32;
+            *(&buf + 4) = firstObject2;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "DirectionItem unexpectedly had only 1 waypoint: %@", &buf, 0xCu);
           }
         }
@@ -2089,12 +2089,12 @@ LABEL_57:
       *&buf = 0;
       *(&buf + 1) = &buf;
       v69 = 0x2020000000;
-      v70 = [v20 count] > 1;
+      v70 = [items count] > 1;
       v63[0] = _NSConcreteStackBlock;
       v63[1] = 3221225472;
       v63[2] = sub_1007113A8;
       v63[3] = &unk_10162E978;
-      v64 = v20;
+      v64 = items;
       p_buf = &buf;
       [v64 enumerateObjectsUsingBlock:v63];
       if (*(*(&buf + 1) + 24) == 1)
@@ -2110,36 +2110,36 @@ LABEL_56:
         goto LABEL_57;
       }
 
-      v37 = [v10 objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
-      [(DirectionItem *)v9 setAllowApproximateUserLocation:v37];
+      v37 = [infoCopy objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
+      [(DirectionItem *)itemCopy setAllowApproximateUserLocation:v37];
 
       v62 = 0x7FFFFFFFFFFFFFFFLL;
-      v38 = [(DirectionItem *)v9 editRequired:&v62];
+      v38 = [(DirectionItem *)itemCopy editRequired:&v62];
       v39 = v38;
-      if (!v6 || !v38)
+      if (!editingCopy || !v38)
       {
         if (v38)
         {
           v41 = +[NSBundle mainBundle];
-          v42 = [v41 localizedStringForKey:@"Cannot Provide Directions" value:@"localized string not found" table:0];
+          currentTraits = [v41 localizedStringForKey:@"Cannot Provide Directions" value:@"localized string not found" table:0];
 
-          [(RoutePlanningContext *)self displayAlertWithTitle:v42 message:0 postAlertSearchType:2];
+          [(RoutePlanningContext *)self displayAlertWithTitle:currentTraits message:0 postAlertSearchType:2];
         }
 
         else
         {
-          v43 = [(DirectionItem *)self->_directionItem transportType];
+          transportType = [(DirectionItem *)self->_directionItem transportType];
           v44 = sub_100798A3C();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
           {
-            if ((v43 - 1) > 4)
+            if ((transportType - 1) > 4)
             {
               v45 = @"Undefined";
             }
 
             else
             {
-              v45 = *(&off_1016276B0 + v43 - 1);
+              v45 = *(&off_1016276B0 + transportType - 1);
             }
 
             *v66 = 138412290;
@@ -2147,13 +2147,13 @@ LABEL_56:
             _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Initial transport type from direction item: %@", v66, 0xCu);
           }
 
-          if (v43)
+          if (transportType)
           {
-            if (v43 == 4)
+            if (transportType == 4)
             {
               if (sub_100016C50())
               {
-                v43 = 4;
+                transportType = 4;
               }
 
               else
@@ -2165,49 +2165,49 @@ LABEL_56:
                   _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "Detected rideshare transport type when ride booking is not enabled; changing to driving", v66, 2u);
                 }
 
-                v43 = 1;
+                transportType = 1;
               }
             }
 
             v51 = +[MapsSuggestionsPredictor sharedPredictor];
             v52 = v51;
-            if ((v43 - 1) > 4)
+            if ((transportType - 1) > 4)
             {
               v53 = 4;
             }
 
             else
             {
-              v53 = dword_101216100[v43 - 1];
+              v53 = dword_101216100[transportType - 1];
             }
 
             [v51 capturePredictedTransportationMode:v53];
           }
 
-          [(DirectionItem *)self->_directionItem setTransportType:v43];
-          v42 = [v10 objectForKeyedSubscript:@"SearchSessionTraits"];
-          if (!v42)
+          [(DirectionItem *)self->_directionItem setTransportType:transportType];
+          currentTraits = [infoCopy objectForKeyedSubscript:@"SearchSessionTraits"];
+          if (!currentTraits)
           {
-            v54 = [(RoutePlanningContext *)self chromeViewController];
-            v42 = [v54 currentTraits];
+            chromeViewController3 = [(RoutePlanningContext *)self chromeViewController];
+            currentTraits = [chromeViewController3 currentTraits];
           }
 
-          v55 = [v10 objectForKeyedSubscript:@"SearchSessionTraitsSource"];
+          v55 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraitsSource"];
 
           if (v55)
           {
-            v56 = [v10 objectForKeyedSubscript:@"SearchSessionTraitsSource"];
-            [v42 setSource:{objc_msgSend(v56, "integerValue")}];
+            v56 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraitsSource"];
+            [currentTraits setSource:{objc_msgSend(v56, "integerValue")}];
           }
 
-          v57 = [v10 mutableCopy];
+          v57 = [infoCopy mutableCopy];
           v58 = [NSNumber numberWithInt:self->_currentCard == self->_routeSearchViewController];
           [v57 setObject:v58 forKeyedSubscript:@"DisableNotReachableErrorInRoutePlanning"];
 
           dataCoordinator = self->_dataCoordinator;
           v60 = self->_directionItem;
           v61 = [v57 copy];
-          [(RoutePlanningDataCoordinator *)dataCoordinator startWithDirectionItem:v60 traits:v42 userInfo:v61];
+          [(RoutePlanningDataCoordinator *)dataCoordinator startWithDirectionItem:v60 traits:currentTraits userInfo:v61];
         }
 
         goto LABEL_56;
@@ -2215,58 +2215,58 @@ LABEL_56:
 
       if (v38 == 3)
       {
-        v40 = [v10 objectForKeyedSubscript:@"SearchSessionTraitsSource"];
+        v40 = [infoCopy objectForKeyedSubscript:@"SearchSessionTraitsSource"];
         if ([v40 integerValue] == 1)
         {
 
           goto LABEL_34;
         }
 
-        v46 = [v10 objectForKeyedSubscript:@"DirectionsSourceKey"];
+        v46 = [infoCopy objectForKeyedSubscript:@"DirectionsSourceKey"];
         v47 = [v46 integerValue] == 2;
 
         if (v47)
         {
 LABEL_34:
-          v48 = [v10 objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
+          v48 = [infoCopy objectForKeyedSubscript:@"DirectionsAllowApproximateCurrentLocation"];
           v49 = v48 == 0;
 
           if (v49)
           {
-            [(RoutePlanningContext *)self _promptForCurrentLocationConfirmationWithDirectionItem:v9 userInfo:v10];
+            [(RoutePlanningContext *)self _promptForCurrentLocationConfirmationWithDirectionItem:itemCopy userInfo:infoCopy];
             goto LABEL_56;
           }
         }
       }
 
-      [(RoutePlanningContext *)self _promptForEditRequired:v39 forWaypointAtIndex:v62 inDirectionItem:v9 userInfo:v10];
+      [(RoutePlanningContext *)self _promptForEditRequired:v39 forWaypointAtIndex:v62 inDirectionItem:itemCopy userInfo:infoCopy];
       goto LABEL_56;
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_pendingDirectionItem, a3);
-    self->_pendingAllowErrorEditingPrompts = v6;
-    objc_storeStrong(&self->_pendingUserInfo, a5);
+    objc_storeStrong(&self->_pendingDirectionItem, item);
+    self->_pendingAllowErrorEditingPrompts = editingCopy;
+    objc_storeStrong(&self->_pendingUserInfo, info);
   }
 
 LABEL_58:
 }
 
-- (RoutePlanningContext)initWithDirectionItem:(id)a3 userInfo:(id)a4
+- (RoutePlanningContext)initWithDirectionItem:(id)item userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = RoutePlanningContext;
   v9 = [(RoutePlanningContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pendingDirectionItem, a3);
+    objc_storeStrong(&v9->_pendingDirectionItem, item);
     v10->_pendingAllowErrorEditingPrompts = 1;
-    objc_storeStrong(&v10->_pendingUserInfo, a4);
+    objc_storeStrong(&v10->_pendingUserInfo, info);
   }
 
   return v10;

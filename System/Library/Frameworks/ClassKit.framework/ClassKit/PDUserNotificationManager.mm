@@ -1,27 +1,27 @@
 @interface PDUserNotificationManager
-- (PDUserNotificationManager)initWithDatabase:(id)a3;
-- (void)_scheduleWithNotificationData:(id)a3;
+- (PDUserNotificationManager)initWithDatabase:(id)database;
+- (void)_scheduleWithNotificationData:(id)data;
 - (void)clearTriggers;
 - (void)dealloc;
 - (void)invalidate;
 - (void)registerForAccountChangedDarwinNotification;
 - (void)registerForNotifications;
 - (void)resetTriggers;
-- (void)triggerDidFire:(id)a3 notificationData:(id)a4;
+- (void)triggerDidFire:(id)fire notificationData:(id)data;
 @end
 
 @implementation PDUserNotificationManager
 
-- (PDUserNotificationManager)initWithDatabase:(id)a3
+- (PDUserNotificationManager)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v11.receiver = self;
   v11.super_class = PDUserNotificationManager;
   v6 = [(PDUserNotificationManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
     v8 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.schoolwork.ClassKitApp"];
     userNotificationCenter = v7->_userNotificationCenter;
     v7->_userNotificationCenter = v8;
@@ -56,11 +56,11 @@
 
 - (void)resetTriggers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(PDUserNotificationManager *)v2 clearTriggers];
-  v3 = [(PDUserNotificationManager *)v2 database];
-  v4 = sub_1000717E8(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PDUserNotificationManager *)selfCopy clearTriggers];
+  database = [(PDUserNotificationManager *)selfCopy database];
+  v4 = sub_1000717E8(database);
 
   CLSInitLog();
   v5 = CLSLogNotifications;
@@ -75,58 +75,58 @@
   if ((v4 & 3) == 1)
   {
     v7 = [PDHandoutAssignedNotificationTrigger alloc];
-    v8 = [(PDUserNotificationManager *)v2 database];
-    v9 = [(PDHandoutAssignedNotificationTrigger *)v7 initWithDatabase:v8];
-    [(PDUserNotificationManager *)v2 setHandoutAssignedTrigger:v9];
+    database2 = [(PDUserNotificationManager *)selfCopy database];
+    v9 = [(PDHandoutAssignedNotificationTrigger *)v7 initWithDatabase:database2];
+    [(PDUserNotificationManager *)selfCopy setHandoutAssignedTrigger:v9];
 
-    v10 = [(PDUserNotificationManager *)v2 handoutAssignedTrigger];
-    [v10 setDelegate:v2];
+    handoutAssignedTrigger = [(PDUserNotificationManager *)selfCopy handoutAssignedTrigger];
+    [handoutAssignedTrigger setDelegate:selfCopy];
 
     v11 = [PDHandoutCompletedNotificationTrigger alloc];
-    v12 = [(PDUserNotificationManager *)v2 database];
-    v13 = [(PDHandoutCompletedNotificationTrigger *)v11 initWithDatabase:v12];
-    [(PDUserNotificationManager *)v2 setHandoutCompletedTrigger:v13];
+    database3 = [(PDUserNotificationManager *)selfCopy database];
+    v13 = [(PDHandoutCompletedNotificationTrigger *)v11 initWithDatabase:database3];
+    [(PDUserNotificationManager *)selfCopy setHandoutCompletedTrigger:v13];
 
-    v14 = [(PDUserNotificationManager *)v2 handoutCompletedTrigger];
-    [v14 setDelegate:v2];
+    handoutCompletedTrigger = [(PDUserNotificationManager *)selfCopy handoutCompletedTrigger];
+    [handoutCompletedTrigger setDelegate:selfCopy];
 
     v15 = [PDAttachmentUpdatedNotificationTrigger alloc];
-    v16 = [(PDUserNotificationManager *)v2 database];
-    v17 = [(PDAttachmentUpdatedNotificationTrigger *)v15 initWithDatabase:v16];
-    [(PDUserNotificationManager *)v2 setAttachmentUpdatedTrigger:v17];
+    database4 = [(PDUserNotificationManager *)selfCopy database];
+    v17 = [(PDAttachmentUpdatedNotificationTrigger *)v15 initWithDatabase:database4];
+    [(PDUserNotificationManager *)selfCopy setAttachmentUpdatedTrigger:v17];
 
-    v18 = [(PDUserNotificationManager *)v2 attachmentUpdatedTrigger];
-    [v18 setDelegate:v2];
+    attachmentUpdatedTrigger = [(PDUserNotificationManager *)selfCopy attachmentUpdatedTrigger];
+    [attachmentUpdatedTrigger setDelegate:selfCopy];
 
     v19 = [PDHandoutDueSoonNotificationTrigger alloc];
-    v20 = [(PDUserNotificationManager *)v2 database];
-    v21 = [(PDUserNotificationTimeBasedTrigger *)v19 initWithDatabase:v20];
-    [(PDUserNotificationManager *)v2 setHandoutDueSoonTrigger:v21];
+    database5 = [(PDUserNotificationManager *)selfCopy database];
+    v21 = [(PDUserNotificationTimeBasedTrigger *)v19 initWithDatabase:database5];
+    [(PDUserNotificationManager *)selfCopy setHandoutDueSoonTrigger:v21];
 
-    v22 = [(PDUserNotificationManager *)v2 handoutDueSoonTrigger];
-    [v22 setDelegate:v2];
+    handoutDueSoonTrigger = [(PDUserNotificationManager *)selfCopy handoutDueSoonTrigger];
+    [handoutDueSoonTrigger setDelegate:selfCopy];
 
-    v23 = [(PDUserNotificationManager *)v2 handoutDueSoonTrigger];
-    [v23 checkTriggerNow];
+    handoutDueSoonTrigger2 = [(PDUserNotificationManager *)selfCopy handoutDueSoonTrigger];
+    [handoutDueSoonTrigger2 checkTriggerNow];
 
     v24 = [PDHandoutPastDueSummaryNotificationTrigger alloc];
-    v25 = [(PDUserNotificationManager *)v2 database];
-    v26 = [(PDUserNotificationTimeBasedTrigger *)v24 initWithDatabase:v25];
-    [(PDUserNotificationManager *)v2 setHandoutPastDueTrigger:v26];
+    database6 = [(PDUserNotificationManager *)selfCopy database];
+    v26 = [(PDUserNotificationTimeBasedTrigger *)v24 initWithDatabase:database6];
+    [(PDUserNotificationManager *)selfCopy setHandoutPastDueTrigger:v26];
 
-    v27 = [(PDUserNotificationManager *)v2 handoutPastDueTrigger];
-    [v27 setDelegate:v2];
+    handoutPastDueTrigger = [(PDUserNotificationManager *)selfCopy handoutPastDueTrigger];
+    [handoutPastDueTrigger setDelegate:selfCopy];
 
-    v28 = [(PDUserNotificationManager *)v2 handoutPastDueTrigger];
-    [v28 checkTriggerNow];
+    handoutPastDueTrigger2 = [(PDUserNotificationManager *)selfCopy handoutPastDueTrigger];
+    [handoutPastDueTrigger2 checkTriggerNow];
 
     v29 = [PDRevisionRequestedNotificationTrigger alloc];
-    v30 = [(PDUserNotificationManager *)v2 database];
-    v31 = [(PDRevisionRequestedNotificationTrigger *)v29 initWithDatabase:v30];
-    [(PDUserNotificationManager *)v2 setRevisionNeededTrigger:v31];
+    database7 = [(PDUserNotificationManager *)selfCopy database];
+    v31 = [(PDRevisionRequestedNotificationTrigger *)v29 initWithDatabase:database7];
+    [(PDUserNotificationManager *)selfCopy setRevisionNeededTrigger:v31];
 
-    v32 = [(PDUserNotificationManager *)v2 revisionNeededTrigger];
-    [v32 setDelegate:v2];
+    revisionNeededTrigger = [(PDUserNotificationManager *)selfCopy revisionNeededTrigger];
+    [revisionNeededTrigger setDelegate:selfCopy];
 LABEL_7:
 
     goto LABEL_8;
@@ -135,28 +135,28 @@ LABEL_7:
   if ((v4 & 2) != 0)
   {
     v33 = [PDReviewDueHandoutsNotificationTrigger alloc];
-    v34 = [(PDUserNotificationManager *)v2 database];
-    v35 = [(PDUserNotificationTimeBasedTrigger *)v33 initWithDatabase:v34];
-    [(PDUserNotificationManager *)v2 setReviewDueHandoutsTrigger:v35];
+    database8 = [(PDUserNotificationManager *)selfCopy database];
+    v35 = [(PDUserNotificationTimeBasedTrigger *)v33 initWithDatabase:database8];
+    [(PDUserNotificationManager *)selfCopy setReviewDueHandoutsTrigger:v35];
 
-    v36 = [(PDUserNotificationManager *)v2 reviewDueHandoutsTrigger];
-    [v36 setDelegate:v2];
+    reviewDueHandoutsTrigger = [(PDUserNotificationManager *)selfCopy reviewDueHandoutsTrigger];
+    [reviewDueHandoutsTrigger setDelegate:selfCopy];
 
-    v37 = [(PDUserNotificationManager *)v2 reviewDueHandoutsTrigger];
-    [v37 checkTriggerNow];
+    reviewDueHandoutsTrigger2 = [(PDUserNotificationManager *)selfCopy reviewDueHandoutsTrigger];
+    [reviewDueHandoutsTrigger2 checkTriggerNow];
 
     v38 = [PDRevisedSubmissionNotificationTrigger alloc];
-    v39 = [(PDUserNotificationManager *)v2 database];
-    v40 = [(PDRevisedSubmissionNotificationTrigger *)v38 initWithDatabase:v39];
-    [(PDUserNotificationManager *)v2 setRevisedSubmissionTrigger:v40];
+    database9 = [(PDUserNotificationManager *)selfCopy database];
+    v40 = [(PDRevisedSubmissionNotificationTrigger *)v38 initWithDatabase:database9];
+    [(PDUserNotificationManager *)selfCopy setRevisedSubmissionTrigger:v40];
 
-    v32 = [(PDUserNotificationManager *)v2 revisedSubmissionTrigger];
-    [v32 setDelegate:v2];
+    revisionNeededTrigger = [(PDUserNotificationManager *)selfCopy revisedSubmissionTrigger];
+    [revisionNeededTrigger setDelegate:selfCopy];
     goto LABEL_7;
   }
 
 LABEL_8:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)clearTriggers
@@ -171,48 +171,48 @@ LABEL_8:
 
   if (self)
   {
-    v4 = self;
-    v5 = [(PDUserNotificationManager *)v4 handoutCompletedTrigger];
-    [v5 setDelegate:0];
+    selfCopy = self;
+    handoutCompletedTrigger = [(PDUserNotificationManager *)selfCopy handoutCompletedTrigger];
+    [handoutCompletedTrigger setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setHandoutCompletedTrigger:0];
-    v6 = [(PDUserNotificationManager *)v4 handoutAssignedTrigger];
-    [v6 setDelegate:0];
+    [(PDUserNotificationManager *)selfCopy setHandoutCompletedTrigger:0];
+    handoutAssignedTrigger = [(PDUserNotificationManager *)selfCopy handoutAssignedTrigger];
+    [handoutAssignedTrigger setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setHandoutAssignedTrigger:0];
-    v7 = [(PDUserNotificationManager *)v4 attachmentUpdatedTrigger];
-    [v7 setDelegate:0];
+    [(PDUserNotificationManager *)selfCopy setHandoutAssignedTrigger:0];
+    attachmentUpdatedTrigger = [(PDUserNotificationManager *)selfCopy attachmentUpdatedTrigger];
+    [attachmentUpdatedTrigger setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setAttachmentUpdatedTrigger:0];
-    v8 = [(PDUserNotificationManager *)v4 handoutDueSoonTrigger];
-    [v8 resetTrigger];
+    [(PDUserNotificationManager *)selfCopy setAttachmentUpdatedTrigger:0];
+    handoutDueSoonTrigger = [(PDUserNotificationManager *)selfCopy handoutDueSoonTrigger];
+    [handoutDueSoonTrigger resetTrigger];
 
-    v9 = [(PDUserNotificationManager *)v4 handoutDueSoonTrigger];
-    [v9 setDelegate:0];
+    handoutDueSoonTrigger2 = [(PDUserNotificationManager *)selfCopy handoutDueSoonTrigger];
+    [handoutDueSoonTrigger2 setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setHandoutDueSoonTrigger:0];
-    v10 = [(PDUserNotificationManager *)v4 handoutPastDueTrigger];
-    [v10 resetTrigger];
+    [(PDUserNotificationManager *)selfCopy setHandoutDueSoonTrigger:0];
+    handoutPastDueTrigger = [(PDUserNotificationManager *)selfCopy handoutPastDueTrigger];
+    [handoutPastDueTrigger resetTrigger];
 
-    v11 = [(PDUserNotificationManager *)v4 handoutPastDueTrigger];
-    [v11 setDelegate:0];
+    handoutPastDueTrigger2 = [(PDUserNotificationManager *)selfCopy handoutPastDueTrigger];
+    [handoutPastDueTrigger2 setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setHandoutPastDueTrigger:0];
-    v12 = [(PDUserNotificationManager *)v4 revisionNeededTrigger];
-    [v12 setDelegate:0];
+    [(PDUserNotificationManager *)selfCopy setHandoutPastDueTrigger:0];
+    revisionNeededTrigger = [(PDUserNotificationManager *)selfCopy revisionNeededTrigger];
+    [revisionNeededTrigger setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setRevisionNeededTrigger:0];
-    v13 = [(PDUserNotificationManager *)v4 reviewDueHandoutsTrigger];
-    [v13 resetTrigger];
+    [(PDUserNotificationManager *)selfCopy setRevisionNeededTrigger:0];
+    reviewDueHandoutsTrigger = [(PDUserNotificationManager *)selfCopy reviewDueHandoutsTrigger];
+    [reviewDueHandoutsTrigger resetTrigger];
 
-    v14 = [(PDUserNotificationManager *)v4 reviewDueHandoutsTrigger];
-    [v14 setDelegate:0];
+    reviewDueHandoutsTrigger2 = [(PDUserNotificationManager *)selfCopy reviewDueHandoutsTrigger];
+    [reviewDueHandoutsTrigger2 setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setReviewDueHandoutsTrigger:0];
-    v15 = [(PDUserNotificationManager *)v4 revisedSubmissionTrigger];
-    [v15 setDelegate:0];
+    [(PDUserNotificationManager *)selfCopy setReviewDueHandoutsTrigger:0];
+    revisedSubmissionTrigger = [(PDUserNotificationManager *)selfCopy revisedSubmissionTrigger];
+    [revisedSubmissionTrigger setDelegate:0];
 
-    [(PDUserNotificationManager *)v4 setRevisedSubmissionTrigger:0];
+    [(PDUserNotificationManager *)selfCopy setRevisedSubmissionTrigger:0];
   }
 }
 
@@ -232,26 +232,26 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)_scheduleWithNotificationData:(id)a3
+- (void)_scheduleWithNotificationData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   CLSInitLog();
   v5 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v33 = v4;
+    v33 = dataCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "PDUserNotificationManager.scheduleWithNotificationData. Data: %@", buf, 0xCu);
   }
 
   v6 = objc_opt_new();
   v7 = v6;
-  if (v4)
+  if (dataCopy)
   {
-    v8 = v4[1];
+    v8 = dataCopy[1];
     [v7 setTitle:v8];
 
-    v9 = v4[2];
+    v9 = dataCopy[2];
   }
 
   else
@@ -264,9 +264,9 @@ LABEL_8:
   [v7 setBody:v10];
 
   v11 = objc_opt_new();
-  if (v4)
+  if (dataCopy)
   {
-    v12 = v4[6];
+    v12 = dataCopy[6];
   }
 
   else
@@ -274,16 +274,16 @@ LABEL_8:
     v12 = 0;
   }
 
-  v13 = v12;
+  uUIDString = v12;
 
-  if (v13)
+  if (uUIDString)
   {
-    if (v4)
+    if (dataCopy)
     {
-      v14 = v4[6];
+      v14 = dataCopy[6];
       [v11 setObject:v14 forKey:@"attachmentID"];
 
-      v15 = v4[6];
+      v15 = dataCopy[6];
     }
 
     else
@@ -292,12 +292,12 @@ LABEL_8:
       v15 = 0;
     }
 
-    v13 = v15;
+    uUIDString = v15;
   }
 
-  if (v4)
+  if (dataCopy)
   {
-    v16 = v4[3];
+    v16 = dataCopy[3];
   }
 
   else
@@ -309,15 +309,15 @@ LABEL_8:
 
   if (v17)
   {
-    v18 = v4 ? v4[3] : 0;
+    v18 = dataCopy ? dataCopy[3] : 0;
     v19 = v18;
     [v11 setObject:v19 forKey:@"handoutID"];
 
-    if (!v13)
+    if (!uUIDString)
     {
-      if (v4)
+      if (dataCopy)
       {
-        v20 = v4[3];
+        v20 = dataCopy[3];
       }
 
       else
@@ -325,13 +325,13 @@ LABEL_8:
         v20 = 0;
       }
 
-      v13 = v20;
+      uUIDString = v20;
     }
   }
 
-  if (v4)
+  if (dataCopy)
   {
-    v21 = v4[4];
+    v21 = dataCopy[4];
   }
 
   else
@@ -343,9 +343,9 @@ LABEL_8:
 
   if (v22)
   {
-    if (v4)
+    if (dataCopy)
     {
-      v23 = v4[4];
+      v23 = dataCopy[4];
     }
 
     else
@@ -356,14 +356,14 @@ LABEL_8:
     v24 = v23;
     [v11 setObject:v24 forKey:@"classID"];
 
-    if (v13)
+    if (uUIDString)
     {
       goto LABEL_31;
     }
 
-    if (v4)
+    if (dataCopy)
     {
-      v25 = v4[4];
+      v25 = dataCopy[4];
     }
 
     else
@@ -371,20 +371,20 @@ LABEL_8:
       v25 = 0;
     }
 
-    v13 = v25;
+    uUIDString = v25;
   }
 
-  if (!v13)
+  if (!uUIDString)
   {
     v26 = +[NSUUID UUID];
-    v13 = [v26 UUIDString];
+    uUIDString = [v26 UUIDString];
   }
 
 LABEL_31:
   [v7 setUserInfo:v11];
-  if (v4)
+  if (dataCopy)
   {
-    v27 = v4[5];
+    v27 = dataCopy[5];
   }
 
   else
@@ -393,17 +393,17 @@ LABEL_31:
   }
 
   v28 = [NSNumber numberWithInteger:v27];
-  v29 = [NSString stringWithFormat:@"com.apple.progressd.notification.%@-%@", v28, v13];
+  v29 = [NSString stringWithFormat:@"com.apple.progressd.notification.%@-%@", v28, uUIDString];
 
   v30 = [UNNotificationRequest requestWithIdentifier:v29 content:v7 trigger:0];
-  v31 = [(PDUserNotificationManager *)self userNotificationCenter];
-  [v31 addNotificationRequest:v30 withCompletionHandler:&stru_100205740];
+  userNotificationCenter = [(PDUserNotificationManager *)self userNotificationCenter];
+  [userNotificationCenter addNotificationRequest:v30 withCompletionHandler:&stru_100205740];
 }
 
-- (void)triggerDidFire:(id)a3 notificationData:(id)a4
+- (void)triggerDidFire:(id)fire notificationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  fireCopy = fire;
+  dataCopy = data;
   CLSInitLog();
   v8 = CLSLogNotifications;
   if (os_log_type_enabled(CLSLogNotifications, OS_LOG_TYPE_INFO))
@@ -414,11 +414,11 @@ LABEL_31:
     v12 = 138543618;
     v13 = v11;
     v14 = 2112;
-    v15 = v7;
+    v15 = dataCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "PDUserNotificationManager.triggerDidFire. Trigger: %{public}@ Data: %@", &v12, 0x16u);
   }
 
-  [(PDUserNotificationManager *)self _scheduleWithNotificationData:v7];
+  [(PDUserNotificationManager *)self _scheduleWithNotificationData:dataCopy];
 }
 
 @end

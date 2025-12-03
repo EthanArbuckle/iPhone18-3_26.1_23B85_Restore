@@ -1,16 +1,16 @@
 @interface AEReviewAssetProvider
-- (id)reviewAssetProviderRequestForDisplayAsset:(id)a3;
+- (id)reviewAssetProviderRequestForDisplayAsset:(id)asset;
 @end
 
 @implementation AEReviewAssetProvider
 
-- (id)reviewAssetProviderRequestForDisplayAsset:(id)a3
+- (id)reviewAssetProviderRequestForDisplayAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = assetCopy;
     v5 = [[AEPhotosAssetPackageGenerator alloc] initWithAsset:v4];
   }
 

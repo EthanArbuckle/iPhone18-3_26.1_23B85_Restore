@@ -1,40 +1,40 @@
 @interface HDTaskServerRegistry
-- (BOOL)loadTaskServersFromPluginAtURL:(id)a3 error:(id *)a4;
-- (BOOL)registerTaskServerClass:(Class)a3 error:(id *)a4;
-- (BOOL)registerTaskServerClasses:(id)a3 error:(id *)a4;
-- (BOOL)registerTaskServerClassesWithProvider:(id)a3 error:(id *)a4;
-- (Class)_taskServerClassForIdentifier:(id)a3;
+- (BOOL)loadTaskServersFromPluginAtURL:(id)l error:(id *)error;
+- (BOOL)registerTaskServerClass:(Class)class error:(id *)error;
+- (BOOL)registerTaskServerClasses:(id)classes error:(id *)error;
+- (BOOL)registerTaskServerClassesWithProvider:(id)provider error:(id *)error;
+- (Class)_taskServerClassForIdentifier:(id)identifier;
 - (HDDaemon)daemon;
-- (HDTaskServerRegistry)initWithDaemon:(id)a3;
-- (id)createTaskServerEndpointForIdentifier:(id)a3 taskUUID:(id)a4 instanceUUID:(id)a5 configuration:(id)a6 client:(id)a7 connectionQueue:(id)a8 error:(id *)a9;
-- (id)taskServerForTaskUUID:(id)a3;
-- (uint64_t)_lock_registerTaskServerClass:(uint64_t)a3 error:;
-- (void)addObserver:(id)a3 forTaskServerUUID:(id)a4 queue:(id)a5;
-- (void)didCreateTaskServer:(id)a3;
-- (void)removeObserver:(id)a3 forTaskServerUUID:(id)a4;
-- (void)removeTaskServerObserver:(id)a3;
-- (void)taskServerDidInvalidate:(id)a3;
+- (HDTaskServerRegistry)initWithDaemon:(id)daemon;
+- (id)createTaskServerEndpointForIdentifier:(id)identifier taskUUID:(id)d instanceUUID:(id)iD configuration:(id)configuration client:(id)client connectionQueue:(id)queue error:(id *)error;
+- (id)taskServerForTaskUUID:(id)d;
+- (uint64_t)_lock_registerTaskServerClass:(uint64_t)class error:;
+- (void)addObserver:(id)observer forTaskServerUUID:(id)d queue:(id)queue;
+- (void)didCreateTaskServer:(id)server;
+- (void)removeObserver:(id)observer forTaskServerUUID:(id)d;
+- (void)removeTaskServerObserver:(id)observer;
+- (void)taskServerDidInvalidate:(id)invalidate;
 @end
 
 @implementation HDTaskServerRegistry
 
-- (HDTaskServerRegistry)initWithDaemon:(id)a3
+- (HDTaskServerRegistry)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v16.receiver = self;
   v16.super_class = HDTaskServerRegistry;
   v5 = [(HDTaskServerRegistry *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     taskServerClassesByTaskIdentifier = v6->_taskServerClassesByTaskIdentifier;
     v6->_taskServerClassesByTaskIdentifier = v7;
 
-    v9 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     taskServersByUUID = v6->_taskServersByUUID;
-    v6->_taskServersByUUID = v9;
+    v6->_taskServersByUUID = strongToWeakObjectsMapTable;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     taskServerObserversByUUID = v6->_taskServerObserversByUUID;
@@ -50,12 +50,12 @@
   return v6;
 }
 
-- (BOOL)registerTaskServerClassesWithProvider:(id)a3 error:(id *)a4
+- (BOOL)registerTaskServerClassesWithProvider:(id)provider error:(id *)error
 {
-  v6 = [a3 taskServerClasses];
-  if ([v6 count])
+  taskServerClasses = [provider taskServerClasses];
+  if ([taskServerClasses count])
   {
-    v7 = [(HDTaskServerRegistry *)self registerTaskServerClasses:v6 error:a4];
+    v7 = [(HDTaskServerRegistry *)self registerTaskServerClasses:taskServerClasses error:error];
   }
 
   else
@@ -66,11 +66,11 @@
   return v7;
 }
 
-- (BOOL)registerTaskServerClass:(Class)a3 error:(id *)a4
+- (BOOL)registerTaskServerClass:(Class)class error:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   v12 = 0;
-  v7 = [(HDTaskServerRegistry *)self _lock_registerTaskServerClass:a3 error:&v12];
+  v7 = [(HDTaskServerRegistry *)self _lock_registerTaskServerClass:class error:&v12];
   v8 = v12;
   os_unfair_lock_unlock(&self->_lock);
   if ((v7 & 1) == 0)
@@ -78,10 +78,10 @@
     v9 = v8;
     if (v9)
     {
-      if (a4)
+      if (error)
       {
         v10 = v9;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -94,49 +94,49 @@
   return v7;
 }
 
-- (uint64_t)_lock_registerTaskServerClass:(uint64_t)a3 error:
+- (uint64_t)_lock_registerTaskServerClass:(uint64_t)class error:
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 40));
+    os_unfair_lock_assert_owner((self + 40));
     if (objc_opt_respondsToSelector())
     {
-      v6 = [a2 taskIdentifier];
-      v7 = [*(a1 + 8) objectForKeyedSubscript:v6];
+      taskIdentifier = [a2 taskIdentifier];
+      v7 = [*(self + 8) objectForKeyedSubscript:taskIdentifier];
       if (![v7 isSubclassOfClass:a2] || (objc_msgSend(a2, "isSubclassOfClass:", v7) & 1) == 0)
       {
         if (v7)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"Attempt to register class '%@' as a task server for '%@', but class '%@' is already registered for that identifier.", a2, v6, objc_msgSend(*(a1 + 8), "objectForKeyedSubscript:", v6)}];
+          [MEMORY[0x277CCA9B8] hk_assignError:class code:3 format:{@"Attempt to register class '%@' as a task server for '%@', but class '%@' is already registered for that identifier.", a2, taskIdentifier, objc_msgSend(*(self + 8), "objectForKeyedSubscript:", taskIdentifier)}];
           v8 = 0;
 LABEL_11:
 
           return v8;
         }
 
-        [*(a1 + 8) setObject:a2 forKeyedSubscript:v6];
+        [*(self + 8) setObject:a2 forKeyedSubscript:taskIdentifier];
       }
 
       v8 = 1;
       goto LABEL_11;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"%@ does not respond to taskIdentifier", a2}];
+    [MEMORY[0x277CCA9B8] hk_assignError:class code:3 format:{@"%@ does not respond to taskIdentifier", a2}];
   }
 
   return 0;
 }
 
-- (BOOL)registerTaskServerClasses:(id)a3 error:(id *)a4
+- (BOOL)registerTaskServerClasses:(id)classes error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  classesCopy = classes;
   os_unfair_lock_lock(&self->_lock);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v6;
+  v7 = classesCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -189,10 +189,10 @@ LABEL_3:
   v10 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v17 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -208,12 +208,12 @@ LABEL_16:
   return v16;
 }
 
-- (BOOL)loadTaskServersFromPluginAtURL:(id)a3 error:(id *)a4
+- (BOOL)loadTaskServersFromPluginAtURL:(id)l error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->_lock);
-  v7 = v6;
+  v7 = lCopy;
   if (!self)
   {
     goto LABEL_24;
@@ -229,16 +229,16 @@ LABEL_16:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = [(HDTaskServerRegistry *)self daemon];
-  v10 = [v9 pluginManager];
-  v11 = [v10 allowablePluginDirectoryPaths];
+  daemon = [(HDTaskServerRegistry *)self daemon];
+  pluginManager = [daemon pluginManager];
+  allowablePluginDirectoryPaths = [pluginManager allowablePluginDirectoryPaths];
 
-  v12 = [v11 countByEnumeratingWithState:&v34 objects:v41 count:16];
+  v12 = [allowablePluginDirectoryPaths countByEnumeratingWithState:&v34 objects:v41 count:16];
   if (!v12)
   {
 LABEL_12:
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Invalid plugin URL for task server registration: %@", v7}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Invalid plugin URL for task server registration: %@", v7}];
 LABEL_24:
     v8 = 0;
     goto LABEL_31;
@@ -252,12 +252,12 @@ LABEL_6:
   {
     if (*v35 != v14)
     {
-      objc_enumerationMutation(v11);
+      objc_enumerationMutation(allowablePluginDirectoryPaths);
     }
 
     v16 = *(*(&v34 + 1) + 8 * v15);
-    v17 = [v7 path];
-    LOBYTE(v16) = [v17 hasPrefix:v16];
+    path = [v7 path];
+    LOBYTE(v16) = [path hasPrefix:v16];
 
     if (v16)
     {
@@ -266,7 +266,7 @@ LABEL_6:
 
     if (v13 == ++v15)
     {
-      v13 = [v11 countByEnumeratingWithState:&v34 objects:v41 count:16];
+      v13 = [allowablePluginDirectoryPaths countByEnumeratingWithState:&v34 objects:v41 count:16];
       if (v13)
       {
         goto LABEL_6;
@@ -310,7 +310,7 @@ LABEL_6:
             objc_enumerationMutation(v23);
           }
 
-          if (![(HDTaskServerRegistry *)self _lock_registerTaskServerClass:a4 error:?])
+          if (![(HDTaskServerRegistry *)self _lock_registerTaskServerClass:error error:?])
           {
             v8 = 0;
             goto LABEL_26;
@@ -351,42 +351,42 @@ LABEL_31:
   return v8;
 }
 
-- (id)taskServerForTaskUUID:(id)a3
+- (id)taskServerForTaskUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_taskServersByUUID objectForKey:v4];
+  v5 = [(NSMapTable *)self->_taskServersByUUID objectForKey:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)addObserver:(id)a3 forTaskServerUUID:(id)a4 queue:(id)a5
+- (void)addObserver:(id)observer forTaskServerUUID:(id)d queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  observerCopy = observer;
+  dCopy = d;
+  queueCopy = queue;
+  if (!dCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HDTaskServerRegistry.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"taskUUID != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDTaskServerRegistry.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"taskUUID != nil"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(NSMutableDictionary *)self->_taskServerObserversByUUID objectForKeyedSubscript:v10];
+  v12 = [(NSMutableDictionary *)self->_taskServerObserversByUUID objectForKeyedSubscript:dCopy];
   if (!v12)
   {
     v13 = objc_alloc(MEMORY[0x277CCD738]);
-    v14 = [v10 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v15 = HKLogInfrastructure();
-    v12 = [v13 initWithName:v14 loggingCategory:v15];
+    v12 = [v13 initWithName:uUIDString loggingCategory:v15];
 
-    [(NSMutableDictionary *)self->_taskServerObserversByUUID setObject:v12 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_taskServerObserversByUUID setObject:v12 forKeyedSubscript:dCopy];
   }
 
-  [v12 registerObserver:v9 queue:v11];
-  v16 = [(NSMapTable *)self->_taskServersByUUID objectForKey:v10];
+  [v12 registerObserver:observerCopy queue:queueCopy];
+  v16 = [(NSMapTable *)self->_taskServersByUUID objectForKey:dCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (v16)
   {
@@ -395,34 +395,34 @@ LABEL_31:
     v18[2] = __60__HDTaskServerRegistry_addObserver_forTaskServerUUID_queue___block_invoke;
     v18[3] = &unk_278627958;
     v19 = v16;
-    [v12 notifyObserver:v9 handler:v18];
+    [v12 notifyObserver:observerCopy handler:v18];
   }
 }
 
-- (void)removeObserver:(id)a3 forTaskServerUUID:(id)a4
+- (void)removeObserver:(id)observer forTaskServerUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_taskServerObserversByUUID objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_taskServerObserversByUUID objectForKeyedSubscript:dCopy];
 
-  [v8 unregisterObserver:v7];
+  [v8 unregisterObserver:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeTaskServerObserver:(id)a3
+- (void)removeTaskServerObserver:(id)observer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_taskServerObserversByUUID allValues];
+  allValues = [(NSMutableDictionary *)self->_taskServerObserversByUUID allValues];
   os_unfair_lock_unlock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = allValues;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -438,7 +438,7 @@ LABEL_31:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) unregisterObserver:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) unregisterObserver:{observerCopy, v12}];
       }
 
       while (v8 != v10);
@@ -451,74 +451,74 @@ LABEL_31:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didCreateTaskServer:(id)a3
+- (void)didCreateTaskServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   os_unfair_lock_lock(&self->_lock);
   taskServersByUUID = self->_taskServersByUUID;
-  v6 = [v4 taskUUID];
-  [(NSMapTable *)taskServersByUUID setObject:v4 forKey:v6];
+  taskUUID = [serverCopy taskUUID];
+  [(NSMapTable *)taskServersByUUID setObject:serverCopy forKey:taskUUID];
 
   taskServerObserversByUUID = self->_taskServerObserversByUUID;
-  v8 = [v4 taskUUID];
-  v9 = [(NSMutableDictionary *)taskServerObserversByUUID objectForKeyedSubscript:v8];
+  taskUUID2 = [serverCopy taskUUID];
+  v9 = [(NSMutableDictionary *)taskServerObserversByUUID objectForKeyedSubscript:taskUUID2];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__HDTaskServerRegistry_didCreateTaskServer___block_invoke;
   v11[3] = &unk_278627958;
-  v12 = v4;
-  v10 = v4;
+  v12 = serverCopy;
+  v10 = serverCopy;
   [v9 notifyObservers:v11];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)taskServerDidInvalidate:(id)a3
+- (void)taskServerDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   os_unfair_lock_lock(&self->_lock);
   taskServerObserversByUUID = self->_taskServerObserversByUUID;
-  v6 = [v4 taskUUID];
-  v7 = [(NSMutableDictionary *)taskServerObserversByUUID objectForKeyedSubscript:v6];
+  taskUUID = [invalidateCopy taskUUID];
+  v7 = [(NSMutableDictionary *)taskServerObserversByUUID objectForKeyedSubscript:taskUUID];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__HDTaskServerRegistry_taskServerDidInvalidate___block_invoke;
   v11[3] = &unk_278627958;
-  v12 = v4;
-  v8 = v4;
+  v12 = invalidateCopy;
+  v8 = invalidateCopy;
   [v7 notifyObservers:v11];
 
   v9 = self->_taskServerObserversByUUID;
-  v10 = [v8 taskUUID];
-  [(NSMutableDictionary *)v9 setObject:0 forKeyedSubscript:v10];
+  taskUUID2 = [v8 taskUUID];
+  [(NSMutableDictionary *)v9 setObject:0 forKeyedSubscript:taskUUID2];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (Class)_taskServerClassForIdentifier:(id)a3
+- (Class)_taskServerClassForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_taskServerClassesByTaskIdentifier objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_taskServerClassesByTaskIdentifier objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)createTaskServerEndpointForIdentifier:(id)a3 taskUUID:(id)a4 instanceUUID:(id)a5 configuration:(id)a6 client:(id)a7 connectionQueue:(id)a8 error:(id *)a9
+- (id)createTaskServerEndpointForIdentifier:(id)identifier taskUUID:(id)d instanceUUID:(id)iD configuration:(id)configuration client:(id)client connectionQueue:(id)queue error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [(HDTaskServerRegistry *)self _taskServerClassForIdentifier:v15];
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  configurationCopy = configuration;
+  clientCopy = client;
+  queueCopy = queue;
+  v21 = [(HDTaskServerRegistry *)self _taskServerClassForIdentifier:identifierCopy];
   if (!v21)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a9 code:3 format:{@"No registered task server for identifier '%@'", v15}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"No registered task server for identifier '%@'", identifierCopy}];
     goto LABEL_19;
   }
 
@@ -526,12 +526,12 @@ LABEL_31:
   {
     v27 = MEMORY[0x277CCA9B8];
     v28 = NSStringFromClass(v21);
-    [v27 hk_assignError:a9 code:125 format:{@"Task server class %@ failed to implement requiredEntitlements", v28}];
+    [v27 hk_assignError:error code:125 format:{@"Task server class %@ failed to implement requiredEntitlements", v28}];
     goto LABEL_16;
   }
 
-  v36 = v17;
-  v38 = v16;
+  v36 = iDCopy;
+  v38 = dCopy;
   [(objc_class *)v21 requiredEntitlements];
   v40 = 0u;
   v41 = 0u;
@@ -551,12 +551,12 @@ LABEL_31:
           objc_enumerationMutation(v22);
         }
 
-        if (![v19 hasRequiredEntitlement:*(*(&v40 + 1) + 8 * i) error:a9])
+        if (![clientCopy hasRequiredEntitlement:*(*(&v40 + 1) + 8 * i) error:error])
         {
 
           v21 = 0;
-          v17 = v36;
-          v16 = v38;
+          iDCopy = v36;
+          dCopy = v38;
           goto LABEL_19;
         }
       }
@@ -573,13 +573,13 @@ LABEL_31:
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v17 = v36;
-    v16 = v38;
-    if (v18)
+    iDCopy = v36;
+    dCopy = v38;
+    if (configurationCopy)
     {
       v31 = MEMORY[0x277CCA9B8];
       v28 = NSStringFromClass(v21);
-      [v31 hk_assignError:a9 code:125 format:{@"Task server class %@ does not implement configurationClass", v28}];
+      [v31 hk_assignError:error code:125 format:{@"Task server class %@ does not implement configurationClass", v28}];
       goto LABEL_16;
     }
 
@@ -587,34 +587,34 @@ LABEL_31:
   }
 
   [(objc_class *)v21 configurationClass];
-  v17 = v36;
-  v16 = v38;
+  iDCopy = v36;
+  dCopy = v38;
   if (objc_opt_isKindOfClass())
   {
 LABEL_24:
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![(objc_class *)v21 validateClient:v19 error:a9])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![(objc_class *)v21 validateClient:clientCopy error:error])
     {
       goto LABEL_17;
     }
 
-    if (!v18)
+    if (!configurationCopy)
     {
       goto LABEL_29;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      if (([(objc_class *)v21 validateConfiguration:v18 client:v19 error:a9]& 1) == 0)
+      if (([(objc_class *)v21 validateConfiguration:configurationCopy client:clientCopy error:error]& 1) == 0)
       {
         goto LABEL_17;
       }
 
 LABEL_29:
       v39 = [HDTaskServerEndpoint alloc];
-      v37 = [v19 configuration];
-      v35 = [v19 profile];
-      v32 = [v19 databaseAccessibilityAssertions];
-      v21 = [(HDTaskServerEndpoint *)v39 initWithTaskServerClass:v21 taskConfiguration:v18 healthStoreConfiguration:v37 taskUUID:v16 instanceUUID:v17 profile:v35 databaseAccessibilityAssertions:v32 connectionQueue:v20];
+      configuration = [clientCopy configuration];
+      profile = [clientCopy profile];
+      databaseAccessibilityAssertions = [clientCopy databaseAccessibilityAssertions];
+      v21 = [(HDTaskServerEndpoint *)v39 initWithTaskServerClass:v21 taskConfiguration:configurationCopy healthStoreConfiguration:configuration taskUUID:dCopy instanceUUID:iDCopy profile:profile databaseAccessibilityAssertions:databaseAccessibilityAssertions connectionQueue:queueCopy];
 
       if (v21)
       {
@@ -623,7 +623,7 @@ LABEL_29:
 
       else
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a9 code:3 format:{@"Failed to instantiate task server endpoint for '%@'", v15}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Failed to instantiate task server endpoint for '%@'", identifierCopy}];
       }
 
       goto LABEL_19;
@@ -631,13 +631,13 @@ LABEL_29:
 
     v34 = MEMORY[0x277CCA9B8];
     v28 = NSStringFromClass(v21);
-    [v34 hk_assignError:a9 code:125 format:{@"Task server class %@ failed to implement validateConfiguration:error:", v28}];
+    [v34 hk_assignError:error code:125 format:{@"Task server class %@ failed to implement validateConfiguration:error:", v28}];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a9 code:3 format:{@"Invalid configuration class %@ (expected %@)", objc_opt_class(), -[objc_class configurationClass](v21, "configurationClass")}];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Invalid configuration class %@ (expected %@)", objc_opt_class(), -[objc_class configurationClass](v21, "configurationClass")}];
 LABEL_17:
   v21 = 0;
 LABEL_19:

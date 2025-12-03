@@ -1,18 +1,18 @@
 @interface BLCacheDeleteService
-+ (void)registerCacheDeleteInfoCallbacks:(id)a3;
++ (void)registerCacheDeleteInfoCallbacks:(id)callbacks;
 - (BLCacheDeletePurgeableProvider)purgeableProvider;
-- (BLCacheDeleteService)initWithPurgeableProvider:(id)a3;
-- (id)_periodic:(id)a3 urgency:(int)a4;
-- (id)_purge:(id)a3 urgency:(int)a4;
-- (id)_purgeable:(id)a3 urgency:(int)a4;
+- (BLCacheDeleteService)initWithPurgeableProvider:(id)provider;
+- (id)_periodic:(id)_periodic urgency:(int)urgency;
+- (id)_purge:(id)_purge urgency:(int)urgency;
+- (id)_purgeable:(id)_purgeable urgency:(int)urgency;
 - (void)_cancelPurge;
 @end
 
 @implementation BLCacheDeleteService
 
-- (BLCacheDeleteService)initWithPurgeableProvider:(id)a3
+- (BLCacheDeleteService)initWithPurgeableProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = BLCacheDeleteService;
   v5 = [(BLCacheDeleteService *)&v9 init];
@@ -22,31 +22,31 @@
     cacheDelete = v5->_cacheDelete;
     v5->_cacheDelete = v6;
 
-    objc_storeWeak(&v5->_purgeableProvider, v4);
+    objc_storeWeak(&v5->_purgeableProvider, providerCopy);
   }
 
   return v5;
 }
 
-+ (void)registerCacheDeleteInfoCallbacks:(id)a3
++ (void)registerCacheDeleteInfoCallbacks:(id)callbacks
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100095638;
   block[3] = &unk_10011D180;
-  v6 = a3;
+  callbacksCopy = callbacks;
   v3 = qword_10013EC08;
-  v4 = v6;
+  v4 = callbacksCopy;
   if (v3 != -1)
   {
     dispatch_once(&qword_10013EC08, block);
   }
 }
 
-- (id)_purgeable:(id)a3 urgency:(int)a4
+- (id)_purgeable:(id)_purgeable urgency:(int)urgency
 {
-  v4 = *&a4;
-  v6 = [a3 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v4 = *&urgency;
+  v6 = [_purgeable objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
   v7 = sub_100095C60(v4);
   v8 = BLBookCacheDeleteLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -58,8 +58,8 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Requested purgeable amount for volume %{mask.hash}@.", buf, 0x16u);
   }
 
-  v9 = [(BLCacheDeleteService *)self purgeableProvider];
-  v10 = [v9 purgeableForVolume:v6 urgency:v7];
+  purgeableProvider = [(BLCacheDeleteService *)self purgeableProvider];
+  v10 = [purgeableProvider purgeableForVolume:v6 urgency:v7];
 
   v11 = BLBookCacheDeleteLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -80,12 +80,12 @@
   return v13;
 }
 
-- (id)_purge:(id)a3 urgency:(int)a4
+- (id)_purge:(id)_purge urgency:(int)urgency
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
-  v8 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
+  v4 = *&urgency;
+  _purgeCopy = _purge;
+  v7 = [_purgeCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v8 = [_purgeCopy objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
 
   v9 = sub_100095C60(v4);
   v10 = BLBookCacheDeleteLog();
@@ -102,8 +102,8 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requested to purge %@ with urgency %ld for volume %{mask.hash}@.", buf, 0x2Au);
   }
 
-  v11 = [(BLCacheDeleteService *)self cacheDelete];
-  v12 = [v11 purgeVolume:v7 urgency:v9 requested:v8];
+  cacheDelete = [(BLCacheDeleteService *)self cacheDelete];
+  v12 = [cacheDelete purgeVolume:v7 urgency:v9 requested:v8];
 
   v13 = BLBookCacheDeleteLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -144,12 +144,12 @@
   return v19;
 }
 
-- (id)_periodic:(id)a3 urgency:(int)a4
+- (id)_periodic:(id)_periodic urgency:(int)urgency
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
-  v8 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
+  v4 = *&urgency;
+  _periodicCopy = _periodic;
+  v7 = [_periodicCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v8 = [_periodicCopy objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
 
   v9 = sub_100095C60(v4);
   v10 = BLBookCacheDeleteLog();
@@ -166,8 +166,8 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requested to periodic purge %@ with urgency %ld for volume %{mask.hash}@.", buf, 0x2Au);
   }
 
-  v11 = [(BLCacheDeleteService *)self cacheDelete];
-  v12 = [v11 periodicPurgeVolume:v7 urgency:v9 requested:v8];
+  cacheDelete = [(BLCacheDeleteService *)self cacheDelete];
+  v12 = [cacheDelete periodicPurgeVolume:v7 urgency:v9 requested:v8];
 
   v13 = BLBookCacheDeleteLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -206,8 +206,8 @@
 
 - (void)_cancelPurge
 {
-  v2 = [(BLCacheDeleteService *)self cacheDelete];
-  [v2 cancelPurge];
+  cacheDelete = [(BLCacheDeleteService *)self cacheDelete];
+  [cacheDelete cancelPurge];
 }
 
 - (BLCacheDeletePurgeableProvider)purgeableProvider

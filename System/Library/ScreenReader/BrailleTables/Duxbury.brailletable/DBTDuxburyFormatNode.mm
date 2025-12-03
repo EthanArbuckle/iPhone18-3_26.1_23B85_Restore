@@ -1,8 +1,8 @@
 @interface DBTDuxburyFormatNode
 - (DBTDuxburyFormatNode)init;
 - (id)LaTeXRepresentation;
-- (id)_debugDescriptionWithIndent:(unint64_t)a3;
-- (id)firstChildMatchingBlock:(id)a3;
+- (id)_debugDescriptionWithIndent:(unint64_t)indent;
+- (id)firstChildMatchingBlock:(id)block;
 @end
 
 @implementation DBTDuxburyFormatNode
@@ -20,25 +20,25 @@
   return v2;
 }
 
-- (id)firstChildMatchingBlock:(id)a3
+- (id)firstChildMatchingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(DBTDuxburyFormatNode *)self children];
-  v6 = [v5 mutableCopy];
+  blockCopy = block;
+  children = [(DBTDuxburyFormatNode *)self children];
+  v6 = [children mutableCopy];
 
   if ([v6 count])
   {
     while (1)
     {
-      v7 = [v6 lastObject];
+      lastObject = [v6 lastObject];
       [v6 removeLastObject];
-      if (v4[2](v4, v7))
+      if (blockCopy[2](blockCopy, lastObject))
       {
         break;
       }
 
-      v8 = [v7 children];
-      [v6 addObjectsFromArray:v8];
+      children2 = [lastObject children];
+      [v6 addObjectsFromArray:children2];
 
       if (![v6 count])
       {
@@ -50,10 +50,10 @@
   else
   {
 LABEL_4:
-    v7 = 0;
+    lastObject = 0;
   }
 
-  return v7;
+  return lastObject;
 }
 
 - (id)LaTeXRepresentation
@@ -78,8 +78,8 @@ LABEL_4:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) LaTeXRepresentation];
-        [v3 appendString:v9];
+        laTeXRepresentation = [*(*(&v11 + 1) + 8 * i) LaTeXRepresentation];
+        [v3 appendString:laTeXRepresentation];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -91,19 +91,19 @@ LABEL_4:
   return v3;
 }
 
-- (id)_debugDescriptionWithIndent:(unint64_t)a3
+- (id)_debugDescriptionWithIndent:(unint64_t)indent
 {
   v5 = +[NSMutableString string];
-  if (a3)
+  if (indent)
   {
-    v6 = a3;
+    indentCopy = indent;
     do
     {
       [v5 appendString:@" "];
-      --v6;
+      --indentCopy;
     }
 
-    while (v6);
+    while (indentCopy);
   }
 
   v7 = [(DBTDuxburyFormatNode *)self description];
@@ -132,12 +132,12 @@ LABEL_4:
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 _debugDescriptionWithIndent:{a3 + 2, v17}];
+          v14 = [v13 _debugDescriptionWithIndent:{indent + 2, v17}];
           [v5 appendString:v14];
 
-          v15 = [(NSMutableArray *)self->_children lastObject];
+          lastObject = [(NSMutableArray *)self->_children lastObject];
 
-          if (v13 != v15)
+          if (v13 != lastObject)
           {
             [v5 appendString:@"\n"];
           }

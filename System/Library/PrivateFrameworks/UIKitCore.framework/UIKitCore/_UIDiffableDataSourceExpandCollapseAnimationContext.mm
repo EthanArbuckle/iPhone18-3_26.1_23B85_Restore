@@ -1,28 +1,28 @@
 @interface _UIDiffableDataSourceExpandCollapseAnimationContext
-- (id)indexPathsForChildItemsInCollapsingParent:(id)a3;
-- (id)indexPathsForChildItemsInExpandingParent:(id)a3;
+- (id)indexPathsForChildItemsInCollapsingParent:(id)parent;
+- (id)indexPathsForChildItemsInExpandingParent:(id)parent;
 - (id)indexPathsForCollapsedParentItems;
 - (id)indexPathsForExpandedParentItems;
-- (uint64_t)_visibleIndexForIndex:(void *)a3 identifiers:(void *)a4 visibleIdentifiers:;
+- (uint64_t)_visibleIndexForIndex:(void *)index identifiers:(void *)identifiers visibleIdentifiers:;
 @end
 
 @implementation _UIDiffableDataSourceExpandCollapseAnimationContext
 
-- (uint64_t)_visibleIndexForIndex:(void *)a3 identifiers:(void *)a4 visibleIdentifiers:
+- (uint64_t)_visibleIndexForIndex:(void *)index identifiers:(void *)identifiers visibleIdentifiers:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  indexCopy = index;
+  identifiersCopy = identifiers;
+  if (self)
   {
-    if ([v7 count] <= a2)
+    if ([indexCopy count] <= a2)
     {
       v10 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v9 = [v7 objectAtIndexedSubscript:a2];
-      v10 = [v8 indexOfObject:v9];
+      v9 = [indexCopy objectAtIndexedSubscript:a2];
+      v10 = [identifiersCopy indexOfObject:v9];
     }
   }
 
@@ -82,9 +82,9 @@
   return v3;
 }
 
-- (id)indexPathsForChildItemsInExpandingParent:(id)a3
+- (id)indexPathsForChildItemsInExpandingParent:(id)parent
 {
-  v4 = -[NSOrderedSet objectAtIndex:](self->_initialVisibleIdentifiers, "objectAtIndex:", [a3 item]);
+  v4 = -[NSOrderedSet objectAtIndex:](self->_initialVisibleIdentifiers, "objectAtIndex:", [parent item]);
   v5 = [(NSDiffableDataSourceSectionSnapshot *)self->_finalSectionSnapshot _indexesOfChildrenForParent:v4 recursive:1];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
@@ -149,9 +149,9 @@
   return v3;
 }
 
-- (id)indexPathsForChildItemsInCollapsingParent:(id)a3
+- (id)indexPathsForChildItemsInCollapsingParent:(id)parent
 {
-  v4 = -[NSOrderedSet objectAtIndex:](self->_initialVisibleIdentifiers, "objectAtIndex:", [a3 item]);
+  v4 = -[NSOrderedSet objectAtIndex:](self->_initialVisibleIdentifiers, "objectAtIndex:", [parent item]);
   v5 = [(NSDiffableDataSourceSectionSnapshot *)self->_finalSectionSnapshot _indexesOfChildrenForParent:v4 recursive:1];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
   v11[0] = MEMORY[0x1E69E9820];

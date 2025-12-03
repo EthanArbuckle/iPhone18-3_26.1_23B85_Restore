@@ -1,30 +1,30 @@
 @interface CFXRemoteArgumentEncoder
-- (CFXRemoteArgumentEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)a3 encoder:(id)a4;
+- (CFXRemoteArgumentEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)builder encoder:(id)encoder;
 - (void)dealloc;
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index;
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range;
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range;
 @end
 
 @implementation CFXRemoteArgumentEncoder
 
-- (CFXRemoteArgumentEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)a3 encoder:(id)a4
+- (CFXRemoteArgumentEncoder)initWithRemoteFrameBuilder:(__CFXRemoteFrameBuilder *)builder encoder:(id)encoder
 {
   v11.receiver = self;
   v11.super_class = CFXRemoteArgumentEncoder;
@@ -33,7 +33,7 @@
   if (v6)
   {
     builder = v6->_builder;
-    if (builder != a3)
+    if (builder != builder)
     {
       if (builder)
       {
@@ -41,9 +41,9 @@
         v7->_builder = 0;
       }
 
-      if (a3)
+      if (builder)
       {
-        v9 = CFRetain(a3);
+        v9 = CFRetain(builder);
       }
 
       else
@@ -54,7 +54,7 @@
       v7->_builder = v9;
     }
 
-    v7->_encoder = a4;
+    v7->_encoder = encoder;
   }
 
   return v7;
@@ -75,7 +75,7 @@
   [(CFXRemoteArgumentEncoder *)&v4 dealloc];
 }
 
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -84,17 +84,17 @@
   }
 }
 
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v4 = a4;
-  objc_msgSend_setArgumentBuffer_offset_(self->_encoder, a2, a3, a4);
+  offsetCopy = offset;
+  objc_msgSend_setArgumentBuffer_offset_(self->_encoder, a2, buffer, offset);
   builder = self->_builder;
   v11 = objc_msgSend_encodedLength(self->_encoder, v8, v9, v10);
 
-  sub_1AF22DC08(builder, a3, v4, v11);
+  sub_1AF22DC08(builder, buffer, offsetCopy, v11);
 }
 
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element
 {
   v5 = sub_1AF0D5194();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -103,32 +103,32 @@
   }
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v6 = a4;
-  objc_msgSend_setBuffer_offset_atIndex_(self->_encoder, a2, a3, a4);
+  offsetCopy = offset;
+  objc_msgSend_setBuffer_offset_atIndex_(self->_encoder, a2, buffer, offset);
   builder = self->_builder;
 
-  sub_1AF22DC6C(builder, a3, v6, a5);
+  sub_1AF22DC6C(builder, buffer, offsetCopy, index);
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a4;
-  v8 = a3;
-  objc_msgSend_setBuffers_offsets_withRange_(self->_encoder, a2, a3, a4);
+  length = range.length;
+  location = range.location;
+  offsetsCopy = offsets;
+  buffersCopy = buffers;
+  objc_msgSend_setBuffers_offsets_withRange_(self->_encoder, a2, buffers, offsets);
   for (; length; --length)
   {
-    v11 = *v8++;
+    v11 = *buffersCopy++;
     v10 = v11;
-    v12 = *v7++;
+    v12 = *offsetsCopy++;
     sub_1AF22DC6C(self->_builder, v10, v12, location++);
   }
 }
 
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -137,7 +137,7 @@
   }
 }
 
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -146,7 +146,7 @@
   }
 }
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -155,7 +155,7 @@
   }
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -164,7 +164,7 @@
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -173,7 +173,7 @@
   }
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -182,7 +182,7 @@
   }
 }
 
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -191,7 +191,7 @@
   }
 }
 
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -200,51 +200,51 @@
   }
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
-  objc_msgSend_setSamplerState_atIndex_(self->_encoder, a2, a3, a4);
+  indexCopy = index;
+  objc_msgSend_setSamplerState_atIndex_(self->_encoder, a2, state, index);
   builder = self->_builder;
 
-  sub_1AF22DD34(builder, a3, v4, v7);
+  sub_1AF22DD34(builder, state, indexCopy, v7);
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  objc_msgSend_setSamplerStates_withRange_(self->_encoder, a2, a3, a4.location);
+  length = range.length;
+  location = range.location;
+  statesCopy = states;
+  objc_msgSend_setSamplerStates_withRange_(self->_encoder, a2, states, range.location);
   for (; length; --length)
   {
-    v9 = *v6++;
+    v9 = *statesCopy++;
     sub_1AF22DD34(self->_builder, v9, location++, v8);
   }
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
-  objc_msgSend_setTexture_atIndex_(self->_encoder, a2, a3, a4);
+  indexCopy = index;
+  objc_msgSend_setTexture_atIndex_(self->_encoder, a2, texture, index);
   builder = self->_builder;
 
-  sub_1AF22DCD8(builder, a3, v4, v7);
+  sub_1AF22DCD8(builder, texture, indexCopy, v7);
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  objc_msgSend_setTextures_withRange_(self->_encoder, a2, a3, a4.location);
+  length = range.length;
+  location = range.location;
+  texturesCopy = textures;
+  objc_msgSend_setTextures_withRange_(self->_encoder, a2, textures, range.location);
   for (; length; --length)
   {
-    v9 = *v6++;
+    v9 = *texturesCopy++;
     sub_1AF22DCD8(self->_builder, v9, location++, v8);
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -253,7 +253,7 @@
   }
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range
 {
   v4 = sub_1AF0D5194();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))

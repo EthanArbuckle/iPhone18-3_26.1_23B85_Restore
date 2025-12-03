@@ -1,35 +1,35 @@
 @interface _HKAuthorizationRecord
-+ (id)recordWithStatus:(int64_t)a3 request:(int64_t)a4 mode:(int64_t)a5 anchorLimitModifiedDate:(id)a6;
++ (id)recordWithStatus:(int64_t)status request:(int64_t)request mode:(int64_t)mode anchorLimitModifiedDate:(id)date;
 - (BOOL)deniedReading;
 - (BOOL)deniedSharing;
-- (BOOL)isCompatibleStatus:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCompatibleStatus:(int64_t)status;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)readingEnabled;
 - (BOOL)sharingEnabled;
-- (_HKAuthorizationRecord)initWithAuthorizationStatus:(int64_t)a3 authorizationRequest:(int64_t)a4 authorizationMode:(int64_t)a5 anchorLimitModifiedDate:(id)a6;
-- (_HKAuthorizationRecord)initWithCoder:(id)a3;
+- (_HKAuthorizationRecord)initWithAuthorizationStatus:(int64_t)status authorizationRequest:(int64_t)request authorizationMode:(int64_t)mode anchorLimitModifiedDate:(id)date;
+- (_HKAuthorizationRecord)initWithCoder:(id)coder;
 - (_HKAuthorizationRecord)recordWithReadingDisabled;
 - (_HKAuthorizationRecord)recordWithSharingDisabled;
 - (id)_deepCopy;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKAuthorizationRecord
 
-- (_HKAuthorizationRecord)initWithAuthorizationStatus:(int64_t)a3 authorizationRequest:(int64_t)a4 authorizationMode:(int64_t)a5 anchorLimitModifiedDate:(id)a6
+- (_HKAuthorizationRecord)initWithAuthorizationStatus:(int64_t)status authorizationRequest:(int64_t)request authorizationMode:(int64_t)mode anchorLimitModifiedDate:(id)date
 {
-  v10 = a6;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = _HKAuthorizationRecord;
   v11 = [(_HKAuthorizationRecord *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_status = a3;
-    v11->_request = a4;
-    v11->_mode = a5;
-    v13 = [v10 copy];
+    v11->_status = status;
+    v11->_request = request;
+    v11->_mode = mode;
+    v13 = [dateCopy copy];
     anchorLimitModifiedDate = v12->_anchorLimitModifiedDate;
     v12->_anchorLimitModifiedDate = v13;
   }
@@ -37,10 +37,10 @@
   return v12;
 }
 
-+ (id)recordWithStatus:(int64_t)a3 request:(int64_t)a4 mode:(int64_t)a5 anchorLimitModifiedDate:(id)a6
++ (id)recordWithStatus:(int64_t)status request:(int64_t)request mode:(int64_t)mode anchorLimitModifiedDate:(id)date
 {
-  v10 = a6;
-  v11 = [[a1 alloc] initWithAuthorizationStatus:a3 authorizationRequest:a4 authorizationMode:a5 anchorLimitModifiedDate:v10];
+  dateCopy = date;
+  v11 = [[self alloc] initWithAuthorizationStatus:status authorizationRequest:request authorizationMode:mode anchorLimitModifiedDate:dateCopy];
 
   return v11;
 }
@@ -48,22 +48,22 @@
 - (id)_deepCopy
 {
   v3 = [_HKAuthorizationRecord alloc];
-  v4 = [(_HKAuthorizationRecord *)self status];
-  v5 = [(_HKAuthorizationRecord *)self request];
-  v6 = [(_HKAuthorizationRecord *)self mode];
-  v7 = [(_HKAuthorizationRecord *)self anchorLimitModifiedDate];
-  v8 = [(_HKAuthorizationRecord *)v3 initWithAuthorizationStatus:v4 authorizationRequest:v5 authorizationMode:v6 anchorLimitModifiedDate:v7];
+  status = [(_HKAuthorizationRecord *)self status];
+  request = [(_HKAuthorizationRecord *)self request];
+  mode = [(_HKAuthorizationRecord *)self mode];
+  anchorLimitModifiedDate = [(_HKAuthorizationRecord *)self anchorLimitModifiedDate];
+  v8 = [(_HKAuthorizationRecord *)v3 initWithAuthorizationStatus:status authorizationRequest:request authorizationMode:mode anchorLimitModifiedDate:anchorLimitModifiedDate];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_status != v5[1] || self->_request != v5[2] || self->_mode != v5[3])
     {
@@ -102,78 +102,78 @@ LABEL_11:
 
 - (BOOL)deniedSharing
 {
-  v3 = [(_HKAuthorizationRecord *)self requestedSharing];
-  if (v3)
+  requestedSharing = [(_HKAuthorizationRecord *)self requestedSharing];
+  if (requestedSharing)
   {
-    LOBYTE(v3) = (self->_status - 103) < 2;
+    LOBYTE(requestedSharing) = (self->_status - 103) < 2;
   }
 
-  return v3;
+  return requestedSharing;
 }
 
 - (BOOL)deniedReading
 {
-  v3 = [(_HKAuthorizationRecord *)self requestedReading];
-  if (v3)
+  requestedReading = [(_HKAuthorizationRecord *)self requestedReading];
+  if (requestedReading)
   {
     status = self->_status;
-    LOBYTE(v3) = status == 104 || status == 102;
+    LOBYTE(requestedReading) = status == 104 || status == 102;
   }
 
-  return v3;
+  return requestedReading;
 }
 
 - (BOOL)sharingEnabled
 {
-  v3 = [(_HKAuthorizationRecord *)self requestedSharing];
-  if (v3)
+  requestedSharing = [(_HKAuthorizationRecord *)self requestedSharing];
+  if (requestedSharing)
   {
-    LOBYTE(v3) = (self->_status - 101) < 2;
+    LOBYTE(requestedSharing) = (self->_status - 101) < 2;
   }
 
-  return v3;
+  return requestedSharing;
 }
 
 - (BOOL)readingEnabled
 {
-  v3 = [(_HKAuthorizationRecord *)self requestedReading];
-  if (v3)
+  requestedReading = [(_HKAuthorizationRecord *)self requestedReading];
+  if (requestedReading)
   {
-    LOBYTE(v3) = ((self->_status - 101) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    LOBYTE(requestedReading) = ((self->_status - 101) & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
-  return v3;
+  return requestedReading;
 }
 
-- (BOOL)isCompatibleStatus:(int64_t)a3
+- (BOOL)isCompatibleStatus:(int64_t)status
 {
-  v5 = [(_HKAuthorizationRecord *)self requestedSharing];
-  v6 = [(_HKAuthorizationRecord *)self requestedReading];
+  requestedSharing = [(_HKAuthorizationRecord *)self requestedSharing];
+  requestedReading = [(_HKAuthorizationRecord *)self requestedReading];
   result = 1;
-  if (a3 <= 101)
+  if (status <= 101)
   {
-    if (a3 == 100)
+    if (status == 100)
     {
       return result;
     }
 
-    if (a3 == 101)
+    if (status == 101)
     {
-      return v5 && v6;
+      return requestedSharing && requestedReading;
     }
 
     return 0;
   }
 
-  if (a3 == 102)
+  if (status == 102)
   {
-    return v5;
+    return requestedSharing;
   }
 
-  if (a3 != 104)
+  if (status != 104)
   {
-    result = v6;
-    if (a3 != 103)
+    result = requestedReading;
+    if (status != 103)
     {
       return 0;
     }
@@ -184,54 +184,54 @@ LABEL_11:
 
 - (_HKAuthorizationRecord)recordWithReadingDisabled
 {
-  v3 = [(_HKAuthorizationRecord *)self status];
+  status = [(_HKAuthorizationRecord *)self status];
   if ([(_HKAuthorizationRecord *)self status]== 101)
   {
-    v3 = 102;
+    status = 102;
   }
 
   else if ([(_HKAuthorizationRecord *)self status]== 103)
   {
-    v3 = 104;
+    status = 104;
   }
 
-  v4 = [(_HKAuthorizationRecord *)self _deepCopy];
-  [v4 setStatus:v3];
+  _deepCopy = [(_HKAuthorizationRecord *)self _deepCopy];
+  [_deepCopy setStatus:status];
 
-  return v4;
+  return _deepCopy;
 }
 
 - (_HKAuthorizationRecord)recordWithSharingDisabled
 {
-  v3 = [(_HKAuthorizationRecord *)self status];
+  status = [(_HKAuthorizationRecord *)self status];
   if ([(_HKAuthorizationRecord *)self status]== 101)
   {
-    v3 = 103;
+    status = 103;
   }
 
   else if ([(_HKAuthorizationRecord *)self status]== 102)
   {
-    v3 = 104;
+    status = 104;
   }
 
-  v4 = [(_HKAuthorizationRecord *)self _deepCopy];
-  [v4 setStatus:v3];
+  _deepCopy = [(_HKAuthorizationRecord *)self _deepCopy];
+  [_deepCopy setStatus:status];
 
-  return v4;
+  return _deepCopy;
 }
 
-- (_HKAuthorizationRecord)initWithCoder:(id)a3
+- (_HKAuthorizationRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HKAuthorizationRecord;
   v5 = [(_HKAuthorizationRecord *)&v9 init];
   if (v5)
   {
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v5->_request = [v4 decodeIntegerForKey:@"request"];
-    v5->_mode = [v4 decodeIntegerForKey:@"mode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anchor_limit_mod_date"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_request = [coderCopy decodeIntegerForKey:@"request"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"mode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anchor_limit_mod_date"];
     anchorLimitModifiedDate = v5->_anchorLimitModifiedDate;
     v5->_anchorLimitModifiedDate = v6;
   }
@@ -239,14 +239,14 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   status = self->_status;
-  v5 = a3;
-  [v5 encodeInteger:status forKey:@"status"];
-  [v5 encodeInteger:self->_request forKey:@"request"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
-  [v5 encodeObject:self->_anchorLimitModifiedDate forKey:@"anchor_limit_mod_date"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:status forKey:@"status"];
+  [coderCopy encodeInteger:self->_request forKey:@"request"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeObject:self->_anchorLimitModifiedDate forKey:@"anchor_limit_mod_date"];
 }
 
 - (id)description
@@ -292,14 +292,14 @@ LABEL_11:
   {
     v12 = MEMORY[0x1E696AEC0];
     v13 = v9;
-    v14 = [v12 stringWithFormat:@" anchor-updated:%@", anchorLimitModifiedDate];
-    v15 = [v3 stringWithFormat:@"<%@:%p status:%@ request:%@ mode:%@%@>", v4, self, v6, v8, v13, v14, 0];
+    anchorLimitModifiedDate = [v12 stringWithFormat:@" anchor-updated:%@", anchorLimitModifiedDate];
+    v15 = [v3 stringWithFormat:@"<%@:%p status:%@ request:%@ mode:%@%@>", v4, self, v6, v8, v13, anchorLimitModifiedDate, 0];
   }
 
   else
   {
-    v14 = v9;
-    v15 = [v3 stringWithFormat:@"<%@:%p status:%@ request:%@ mode:%@%@>", v4, self, v6, v8, v14, &stru_1F05FF230, 0];
+    anchorLimitModifiedDate = v9;
+    v15 = [v3 stringWithFormat:@"<%@:%p status:%@ request:%@ mode:%@%@>", v4, self, v6, v8, anchorLimitModifiedDate, &stru_1F05FF230, 0];
   }
 
   return v15;

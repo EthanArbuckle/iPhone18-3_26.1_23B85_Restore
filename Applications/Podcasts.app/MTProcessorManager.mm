@@ -1,10 +1,10 @@
 @interface MTProcessorManager
 - (MTProcessorManager)init;
-- (void)_playbackStateChanged:(id)a3;
-- (void)_startProcessor:(unint64_t)a3;
+- (void)_playbackStateChanged:(id)changed;
+- (void)_startProcessor:(unint64_t)processor;
 - (void)dealloc;
 - (void)startAllProcessors;
-- (void)startProcessors:(unint64_t)a3;
+- (void)startProcessors:(unint64_t)processors;
 - (void)startProcessorsForCarPlay;
 - (void)startProcessorsForFeedUpdates;
 - (void)startProcessorsForPlayback;
@@ -68,22 +68,22 @@
   [(MTProcessorManager *)&v4 dealloc];
 }
 
-- (void)_playbackStateChanged:(id)a3
+- (void)_playbackStateChanged:(id)changed
 {
   v4 = +[MTPlayerController defaultInstance];
-  v5 = [v4 isPlayingLocally];
+  isPlayingLocally = [v4 isPlayingLocally];
 
-  if (v5)
+  if (isPlayingLocally)
   {
 
     [(MTProcessorManager *)self startProcessorsForPlayback];
   }
 }
 
-- (void)_startProcessor:(unint64_t)a3
+- (void)_startProcessor:(unint64_t)processor
 {
   classMap = self->_classMap;
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:processor];
   v5 = [(NSMutableDictionary *)classMap objectForKeyedSubscript:v4];
 
   v6 = _MTLogCategoryDefault();
@@ -95,8 +95,8 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Starting %{public}@ processor", &v12, 0xCu);
   }
 
-  v8 = [(objc_class *)v5 sharedInstance];
-  if ([v8 isRunning])
+  sharedInstance = [(objc_class *)v5 sharedInstance];
+  if ([sharedInstance isRunning])
   {
     v9 = _MTLogCategoryDefault();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -112,7 +112,7 @@ LABEL_8:
 
   else
   {
-    [v8 start];
+    [sharedInstance start];
     v9 = _MTLogCategoryDefault();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -125,13 +125,13 @@ LABEL_8:
   }
 }
 
-- (void)startProcessors:(unint64_t)a3
+- (void)startProcessors:(unint64_t)processors
 {
   v5 = _MTLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v18 = a3;
+    processorsCopy = processors;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting multiple processors: %{public}ld", buf, 0xCu);
   }
 
@@ -139,8 +139,8 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMutableDictionary *)self->_classMap allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_classMap allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -152,20 +152,20 @@ LABEL_8:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) unsignedIntegerValue];
-        if ((v11 & a3) != 0)
+        unsignedIntegerValue = [*(*(&v12 + 1) + 8 * v10) unsignedIntegerValue];
+        if ((unsignedIntegerValue & processors) != 0)
         {
-          [(MTProcessorManager *)self _startProcessor:v11];
+          [(MTProcessorManager *)self _startProcessor:unsignedIntegerValue];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);

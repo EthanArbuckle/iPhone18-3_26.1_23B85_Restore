@@ -1,7 +1,7 @@
 @interface SBStripDismissalAnimationModifier
-- (id)animationAttributesForItem:(id)a3;
+- (id)animationAttributesForItem:(id)item;
 - (id)topMostItems;
-- (void)timerFired:(id)a3;
+- (void)timerFired:(id)fired;
 - (void)willBegin;
 @end
 
@@ -9,27 +9,27 @@
 
 - (void)willBegin
 {
-  v3 = [(SBStripDismissalAnimationModifier *)self strip];
-  v4 = [v3 appLayoutsInStrip];
-  v5 = [v4 bs_flatten];
-  v6 = [v5 bs_set];
+  strip = [(SBStripDismissalAnimationModifier *)self strip];
+  appLayoutsInStrip = [strip appLayoutsInStrip];
+  bs_flatten = [appLayoutsInStrip bs_flatten];
+  bs_set = [bs_flatten bs_set];
   appLayoutsInStrip = self->_appLayoutsInStrip;
-  self->_appLayoutsInStrip = v6;
+  self->_appLayoutsInStrip = bs_set;
 
-  v8 = [(SBStripDismissalAnimationModifier *)self switcherSettings];
-  v9 = [v8 animationSettings];
-  v10 = [v9 layoutSettings];
-  [v10 settlingDuration];
+  switcherSettings = [(SBStripDismissalAnimationModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  layoutSettings = [animationSettings layoutSettings];
+  [layoutSettings settlingDuration];
   v12 = v11 * 0.6;
 
   v13 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:@"SBStripAnimationCompleteReason" reason:v12];
   [(SBWindowingModifier *)self appendResponse:v13];
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
-  v4 = [a3 reason];
-  v5 = [v4 isEqualToString:@"SBStripAnimationCompleteReason"];
+  reason = [fired reason];
+  v5 = [reason isEqualToString:@"SBStripAnimationCompleteReason"];
 
   if (v5)
   {
@@ -40,30 +40,30 @@
 
 - (id)topMostItems
 {
-  v3 = [(SBStripDismissalAnimationModifier *)self strip];
-  v4 = [v3 appLayoutsInStrip];
-  v5 = [v4 bs_flatten];
+  strip = [(SBStripDismissalAnimationModifier *)self strip];
+  appLayoutsInStrip = [strip appLayoutsInStrip];
+  bs_flatten = [appLayoutsInStrip bs_flatten];
   v9.receiver = self;
   v9.super_class = SBStripDismissalAnimationModifier;
-  v6 = [(SBWindowingModifier *)&v9 topMostItems];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  topMostItems = [(SBWindowingModifier *)&v9 topMostItems];
+  v7 = [bs_flatten arrayByAddingObjectsFromArray:topMostItems];
 
   return v7;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = SBStripDismissalAnimationModifier;
-  v5 = [(SBWindowingModifier *)&v10 animationAttributesForItem:v4];
+  v5 = [(SBWindowingModifier *)&v10 animationAttributesForItem:itemCopy];
   v6 = [v5 mutableCopy];
 
-  if ([v4 isAppLayout])
+  if ([itemCopy isAppLayout])
   {
     appLayoutsInStrip = self->_appLayoutsInStrip;
-    v8 = [v4 appLayout];
-    LODWORD(appLayoutsInStrip) = [(NSSet *)appLayoutsInStrip containsObject:v8];
+    appLayout = [itemCopy appLayout];
+    LODWORD(appLayoutsInStrip) = [(NSSet *)appLayoutsInStrip containsObject:appLayout];
 
     if (appLayoutsInStrip)
     {

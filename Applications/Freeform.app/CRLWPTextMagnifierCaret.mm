@@ -7,14 +7,14 @@
 - (CGPoint)offset;
 - (CGPoint)terminalPoint;
 - (CRLWPTextMagnifierCaret)init;
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6;
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context;
 - (void)remove;
-- (void)setFrame:(CGRect)a3;
-- (void)setMagnificationPoint:(CGPoint)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setMagnificationPoint:(CGPoint)point;
 - (void)setNeedsDisplay;
-- (void)setTarget:(id)a3;
-- (void)stopMagnifying:(BOOL)a3;
+- (void)setTarget:(id)target;
+- (void)stopMagnifying:(BOOL)magnifying;
 - (void)updateFrameAndOffset;
 - (void)zoomDownAnimation;
 - (void)zoomUpAnimation;
@@ -22,22 +22,22 @@
 
 @implementation CRLWPTextMagnifierCaret
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  v5 = a3;
-  if (self->_target != v5)
+  targetCopy = target;
+  if (self->_target != targetCopy)
   {
-    v10 = v5;
+    v10 = targetCopy;
     v6 = objc_opt_class();
     v7 = sub_100013F00(v6, self->_target);
     [v7 enableCaretAnimation];
 
-    objc_storeStrong(&self->_target, a3);
+    objc_storeStrong(&self->_target, target);
     v8 = objc_opt_class();
     v9 = sub_100013F00(v8, self->_target);
     [v9 disableCaretAnimation];
 
-    v5 = v10;
+    targetCopy = v10;
   }
 }
 
@@ -61,8 +61,8 @@
 
     [(CRLWPTextMagnifierRenderer *)v2->_magnifierRenderer setRendererDelegate:v2];
     [(CRLWPTextMagnifierCaret *)v2 addSubview:v2->_magnifierRenderer];
-    v8 = [(CRLWPTextMagnifierCaret *)v2 overlayImageName];
-    v9 = [UIImage imageNamed:v8];
+    overlayImageName = [(CRLWPTextMagnifierCaret *)v2 overlayImageName];
+    v9 = [UIImage imageNamed:overlayImageName];
 
     v10 = [[UIImageView alloc] initWithImage:v9];
     [(CRLWPTextMagnifierCaret *)v2 addSubview:v10];
@@ -71,11 +71,11 @@
   return v2;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CRLWPTextMagnifierCaret;
-  [(CRLWPTextMagnifierCaret *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CRLWPTextMagnifierCaret *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   magnifierRenderer = self->_magnifierRenderer;
   [(CRLWPTextMagnifierCaret *)self bounds];
   [(CRLWPTextMagnifierRenderer *)magnifierRenderer setFrame:?];
@@ -98,10 +98,10 @@
   return result;
 }
 
-- (void)setMagnificationPoint:(CGPoint)a3
+- (void)setMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint addPoint:?];
   if (x != self->_magnificationPoint.x || y != self->_magnificationPoint.y)
   {
@@ -180,15 +180,15 @@
 
 - (void)updateFrameAndOffset
 {
-  v3 = [(CRLWPTextMagnifierCaret *)self superview];
+  superview = [(CRLWPTextMagnifierCaret *)self superview];
   [(CRLWPTextMagnifierCaret *)self magnificationPoint];
   v5 = v4;
   v7 = v6;
-  v8 = [(CRLWPTextMagnifierCaret *)self target];
-  v9 = [v8 interactiveCanvasController];
-  v10 = [v9 layerHost];
-  v11 = [v10 canvasView];
-  [v3 convertPoint:v11 fromView:{v5, v7}];
+  target = [(CRLWPTextMagnifierCaret *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  canvasView = [layerHost canvasView];
+  [superview convertPoint:canvasView fromView:{v5, v7}];
   v13 = v12;
   v15 = v14;
 
@@ -217,15 +217,15 @@
   [(CRLWPTextMagnifierCaret *)self setFrame:v26.origin.x, v26.origin.y, v26.size.width, v26.size.height];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v12 = a3;
-  [(CRLWPTextMagnifierCaret *)self setTarget:v12];
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v9 = point.y;
+  v10 = point.x;
+  targetCopy = target;
+  [(CRLWPTextMagnifierCaret *)self setTarget:targetCopy];
   [(CRLWPTextMagnifierTimeWeightedPoint *)self->_weightedPoint clearHistory];
   [(CRLWPTextMagnifierCaret *)self setAutoscrollDirections:0];
   [(CRLWPTextMagnifierCaret *)self setNeedsLayout];
@@ -242,10 +242,10 @@
   [(UIWindow *)self->_hostWindow setBackgroundColor:v17];
 
   v18 = objc_opt_class();
-  v19 = [v12 interactiveCanvasController];
+  interactiveCanvasController = [targetCopy interactiveCanvasController];
 
-  v20 = [v19 delegate];
-  v22 = sub_100014370(v18, v20);
+  delegate = [interactiveCanvasController delegate];
+  v22 = sub_100014370(v18, delegate);
 
   v21 = -[CRLWPTextMagnifierCaretController initWithPreferredStatusBarStyle:]([CRLWPTextMagnifierCaretController alloc], "initWithPreferredStatusBarStyle:", [v22 preferredStatusBarStyle]);
   [(CRLWPTextMagnifierCaretController *)v21 setView:self];
@@ -256,15 +256,15 @@
   [(CRLWPTextMagnifierCaret *)self frame];
   [(CRLWPTextMagnifierCaret *)self setFrame:?];
   [(CRLWPTextMagnifierCaret *)self setOffset:x, y];
-  if (v6)
+  if (animatedCopy)
   {
     [(CRLWPTextMagnifierCaret *)self zoomUpAnimation];
   }
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
-  if (a3)
+  if (magnifying)
   {
     [(CRLWPTextMagnifierCaret *)self zoomDownAnimation];
   }
@@ -294,44 +294,44 @@
 
 - (BOOL)shouldHideCanvasLayer
 {
-  v2 = [(CRLWPTextMagnifierCaret *)self target];
-  v3 = [v2 interactiveCanvasController];
+  target = [(CRLWPTextMagnifierCaret *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
 
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v3);
+  v5 = sub_100014370(v4, interactiveCanvasController);
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v5 layerHost];
-    v8 = sub_100014370(v6, v7);
+    layerHost = [v5 layerHost];
+    v8 = sub_100014370(v6, layerHost);
   }
 
   return 1;
 }
 
-- (void)drawMagnifierClippedCanvasLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawMagnifierClippedCanvasLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = [(CRLWPTextMagnifierCaret *)self target];
-  if (v6)
+  target = [(CRLWPTextMagnifierCaret *)self target];
+  if (target)
   {
-    v7 = v6;
-    v8 = [(CRLWPTextMagnifierCaret *)self p_isMagnifierStopping];
+    v7 = target;
+    p_isMagnifierStopping = [(CRLWPTextMagnifierCaret *)self p_isMagnifierStopping];
 
-    if ((v8 & 1) == 0)
+    if ((p_isMagnifierStopping & 1) == 0)
     {
-      v9 = [(CRLWPTextMagnifierCaret *)self target];
-      v38 = [v9 interactiveCanvasController];
+      target2 = [(CRLWPTextMagnifierCaret *)self target];
+      interactiveCanvasController = [target2 interactiveCanvasController];
 
-      v10 = [v38 layerHost];
-      v11 = [v10 canvasView];
+      layerHost = [interactiveCanvasController layerHost];
+      canvasView = [layerHost canvasView];
 
       [(CRLWPTextMagnifierCaret *)self frame];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [(CRLWPTextMagnifierCaret *)self superview];
-      [v11 convertRect:v20 fromView:{v13, v15, v17, v19}];
+      superview = [(CRLWPTextMagnifierCaret *)self superview];
+      [canvasView convertRect:superview fromView:{v13, v15, v17, v19}];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -350,23 +350,23 @@
       CGContextTranslateCTM(CurrentContext, v26 * -0.100000001, v28 * -0.899999999);
       v33 = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
-      CGContextSaveGState(a4);
-      v34 = [(CRLWPTextMagnifierCaret *)self maskImageName];
-      v35 = [UIImage imageNamed:v34];
+      CGContextSaveGState(context);
+      maskImageName = [(CRLWPTextMagnifierCaret *)self maskImageName];
+      v35 = [UIImage imageNamed:maskImageName];
 
-      v36 = [v35 CGImage];
+      cGImage = [v35 CGImage];
       v41.origin.x = 0.0;
       v41.origin.y = 0.0;
       v41.size.width = v26;
       v41.size.height = v28;
-      CGContextClipToMask(a4, v41, v36);
-      v37 = [v33 CGImage];
+      CGContextClipToMask(context, v41, cGImage);
+      cGImage2 = [v33 CGImage];
       v42.origin.x = 0.0;
       v42.origin.y = 0.0;
       v42.size.width = v26;
       v42.size.height = v28;
-      CGContextDrawImage(a4, v42, v37);
-      CGContextRestoreGState(a4);
+      CGContextDrawImage(context, v42, cGImage2);
+      CGContextRestoreGState(context);
     }
   }
 }

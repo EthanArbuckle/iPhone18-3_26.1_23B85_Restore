@@ -1,7 +1,7 @@
 @interface FRPPTContext
 + (id)sharedContext;
 - (void)d_logState;
-- (void)setRunningPPT:(BOOL)a3;
+- (void)setRunningPPT:(BOOL)t;
 @end
 
 @implementation FRPPTContext
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000044D8;
   block[3] = &unk_1000C49B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6348 != -1)
   {
     dispatch_once(&qword_1000E6348, block);
@@ -25,10 +25,10 @@
 
 - (void)d_logState
 {
-  v3 = [(FRPPTContext *)self isRunningPPT];
+  isRunningPPT = [(FRPPTContext *)self isRunningPPT];
   v4 = FCPPTLog;
   v5 = os_log_type_enabled(FCPPTLog, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isRunningPPT)
   {
     if (v5)
     {
@@ -56,12 +56,12 @@
   }
 }
 
-- (void)setRunningPPT:(BOOL)a3
+- (void)setRunningPPT:(BOOL)t
 {
-  v3 = a3;
-  self->_runningPPT = a3;
+  tCopy = t;
+  self->_runningPPT = t;
   v4 = +[FCAppleAccount sharedAccount];
-  [v4 setRunningPPT:v3];
+  [v4 setRunningPPT:tCopy];
 }
 
 @end

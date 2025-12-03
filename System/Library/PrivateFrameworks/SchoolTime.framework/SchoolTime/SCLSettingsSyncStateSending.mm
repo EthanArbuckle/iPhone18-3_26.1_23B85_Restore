@@ -1,6 +1,6 @@
 @interface SCLSettingsSyncStateSending
-- (void)message:(id)a3 failedWithError:(id)a4;
-- (void)messageDidSend:(id)a3;
+- (void)message:(id)message failedWithError:(id)error;
+- (void)messageDidSend:(id)send;
 - (void)settingsDidChange;
 @end
 
@@ -11,54 +11,54 @@
   v6.receiver = self;
   v6.super_class = SCLSettingsSyncStateSending;
   [(SCLSettingsSyncState *)&v6 settingsDidChange];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  v4 = [(SCLSettingsSyncState *)self stateMachine];
-  v5 = [v4 pendingSendState];
-  [v3 transitionToState:v5];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  pendingSendState = [stateMachine2 pendingSendState];
+  [stateMachine transitionToState:pendingSendState];
 }
 
-- (void)message:(id)a3 failedWithError:(id)a4
+- (void)message:(id)message failedWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v17.receiver = self;
   v17.super_class = SCLSettingsSyncStateSending;
-  v7 = a3;
-  [(SCLSettingsSyncState *)&v17 message:v7 failedWithError:v6];
+  messageCopy = message;
+  [(SCLSettingsSyncState *)&v17 message:messageCopy failedWithError:errorCopy];
   v8 = [(SCLSettingsSyncState *)self stateMachine:v17.receiver];
-  v9 = [v8 context];
-  v10 = [v9 messageIdentifier];
-  v11 = [v7 isEqual:v10];
+  context = [v8 context];
+  messageIdentifier = [context messageIdentifier];
+  v11 = [messageCopy isEqual:messageIdentifier];
 
   if (v11)
   {
-    v12 = [(SCLSettingsSyncState *)self stateMachine];
-    v13 = [v12 context];
-    [v13 setError:v6];
+    stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+    context2 = [stateMachine context];
+    [context2 setError:errorCopy];
 
-    v14 = [(SCLSettingsSyncState *)self stateMachine];
-    v15 = [(SCLSettingsSyncState *)self stateMachine];
-    v16 = [v15 failedState];
-    [v14 transitionToState:v16];
+    stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+    stateMachine3 = [(SCLSettingsSyncState *)self stateMachine];
+    failedState = [stateMachine3 failedState];
+    [stateMachine2 transitionToState:failedState];
   }
 }
 
-- (void)messageDidSend:(id)a3
+- (void)messageDidSend:(id)send
 {
   v12.receiver = self;
   v12.super_class = SCLSettingsSyncStateSending;
-  v4 = a3;
-  [(SCLSettingsSyncState *)&v12 messageDidSend:v4];
+  sendCopy = send;
+  [(SCLSettingsSyncState *)&v12 messageDidSend:sendCopy];
   v5 = [(SCLSettingsSyncState *)self stateMachine:v12.receiver];
-  v6 = [v5 context];
-  v7 = [v6 messageIdentifier];
-  v8 = [v4 isEqual:v7];
+  context = [v5 context];
+  messageIdentifier = [context messageIdentifier];
+  v8 = [sendCopy isEqual:messageIdentifier];
 
   if (v8)
   {
-    v9 = [(SCLSettingsSyncState *)self stateMachine];
-    v10 = [(SCLSettingsSyncState *)self stateMachine];
-    v11 = [v10 sentState];
-    [v9 transitionToState:v11];
+    stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+    stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+    sentState = [stateMachine2 sentState];
+    [stateMachine transitionToState:sentState];
   }
 }
 

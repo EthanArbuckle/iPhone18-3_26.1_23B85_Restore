@@ -1,52 +1,52 @@
 @interface SPIPowerLoggerSnapshot
-- (SPIPowerLoggerSnapshot)initWithPowerLogger:(id)a3 usage:(SPIResourceUsage *)a4 captureTimestamp:(unint64_t)a5;
-- (void)buildAndEmitWithMessageBuilder:(id)a3 eventContext:(id)a4;
-- (void)logWithEventContext:(id)a3;
+- (SPIPowerLoggerSnapshot)initWithPowerLogger:(id)logger usage:(SPIResourceUsage *)usage captureTimestamp:(unint64_t)timestamp;
+- (void)buildAndEmitWithMessageBuilder:(id)builder eventContext:(id)context;
+- (void)logWithEventContext:(id)context;
 @end
 
 @implementation SPIPowerLoggerSnapshot
 
-- (SPIPowerLoggerSnapshot)initWithPowerLogger:(id)a3 usage:(SPIResourceUsage *)a4 captureTimestamp:(unint64_t)a5
+- (SPIPowerLoggerSnapshot)initWithPowerLogger:(id)logger usage:(SPIResourceUsage *)usage captureTimestamp:(unint64_t)timestamp
 {
-  v9 = a3;
+  loggerCopy = logger;
   v14.receiver = self;
   v14.super_class = SPIPowerLoggerSnapshot;
   v10 = [(SPIPowerLoggerSnapshot *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v12 = *&a4->cpuCycles;
-    *(v10 + 3) = a4->memPhysFootprint;
+    v12 = *&usage->cpuCycles;
+    *(v10 + 3) = usage->memPhysFootprint;
     *(v10 + 8) = v12;
-    objc_storeStrong(v10 + 4, a3);
-    v11->_captureTimestamp = a5;
+    objc_storeStrong(v10 + 4, logger);
+    v11->_captureTimestamp = timestamp;
   }
 
   return v11;
 }
 
-- (void)logWithEventContext:(id)a3
+- (void)logWithEventContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc_init(SPISELFMessageBuilder);
-  [(SPIPowerLoggerSnapshot *)self buildAndEmitWithMessageBuilder:v5 eventContext:v4];
+  [(SPIPowerLoggerSnapshot *)self buildAndEmitWithMessageBuilder:v5 eventContext:contextCopy];
 }
 
-- (void)buildAndEmitWithMessageBuilder:(id)a3 eventContext:(id)a4
+- (void)buildAndEmitWithMessageBuilder:(id)builder eventContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SPIPowerLoggerSnapshot *)self powerLogger];
-  [v7 addProcess:{objc_msgSend(v8, "process")}];
+  contextCopy = context;
+  builderCopy = builder;
+  powerLogger = [(SPIPowerLoggerSnapshot *)self powerLogger];
+  [builderCopy addProcess:{objc_msgSend(powerLogger, "process")}];
 
   [(SPIPowerLoggerSnapshot *)self usage];
-  [v7 addProcessUsage:v11];
-  [v7 addContext:v6];
+  [builderCopy addProcessUsage:v11];
+  [builderCopy addContext:contextCopy];
 
-  v9 = [v7 buildMessage];
+  buildMessage = [builderCopy buildMessage];
 
-  v10 = [MEMORY[0x277D552C0] sharedStream];
-  [v10 emitMessage:v9 timestamp:{-[SPIPowerLoggerSnapshot captureTimestamp](self, "captureTimestamp")}];
+  mEMORY[0x277D552C0] = [MEMORY[0x277D552C0] sharedStream];
+  [mEMORY[0x277D552C0] emitMessage:buildMessage timestamp:{-[SPIPowerLoggerSnapshot captureTimestamp](self, "captureTimestamp")}];
 }
 
 @end

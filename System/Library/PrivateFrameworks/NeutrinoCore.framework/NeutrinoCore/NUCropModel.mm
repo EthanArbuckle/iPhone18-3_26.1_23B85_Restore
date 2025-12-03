@@ -1,48 +1,48 @@
 @interface NUCropModel
 + ($0AC6E346AE4835514AAA8AC86D8F4844)freeFormAspectRatio;
-+ (CGRect)adjustCropRect:(CGRect)a3 inputExtent:(CGRect)a4 geometryTransform:(id)a5;
-+ (void)_imageTransformFromPitch:(double)a3@<D1> yaw:(double)a4@<D2> roll:(CGFloat)a5@<D3> imageRect:(CGFloat)a6@<D4>;
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_currentAspectRatio:(CGRect)a3;
++ (CGRect)adjustCropRect:(CGRect)rect inputExtent:(CGRect)extent geometryTransform:(id)transform;
++ (void)_imageTransformFromPitch:(double)pitch@<D1> yaw:(double)yaw@<D2> roll:(CGFloat)roll@<D3> imageRect:(CGFloat)rect@<D4>;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_currentAspectRatio:(CGRect)ratio;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)aspectRatio;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)originalAspectRatio;
 - (BOOL)_hasDefaultValues;
-- (BOOL)canGrowCropRect:(CGRect)a3 constrainWithAnchorPoint:(CGPoint)a4 strict:(BOOL)a5 withTol:(double)a6;
-- (BOOL)imageContainsRect:(CGRect)a3 withTol:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCropModel:(id)a3;
-- (CGRect)_anchorAlignedRectFromCandidate:(CGRect)a3 withAnchor:(CGPoint)a4;
+- (BOOL)canGrowCropRect:(CGRect)rect constrainWithAnchorPoint:(CGPoint)point strict:(BOOL)strict withTol:(double)tol;
+- (BOOL)imageContainsRect:(CGRect)rect withTol:(double)tol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCropModel:(id)model;
+- (CGRect)_anchorAlignedRectFromCandidate:(CGRect)candidate withAnchor:(CGPoint)anchor;
 - (CGRect)_defaultCropRect;
-- (CGRect)_expandedCropRectForZoom:(CGRect)a3 candidateRect:(CGRect)a4;
-- (CGRect)_integralCropRect:(CGRect)a3 straightenAngle:(double)a4 anchorPoint:(CGPoint)a5;
+- (CGRect)_expandedCropRectForZoom:(CGRect)zoom candidateRect:(CGRect)rect;
+- (CGRect)_integralCropRect:(CGRect)rect straightenAngle:(double)angle anchorPoint:(CGPoint)point;
 - (CGRect)_widestCropRect;
 - (CGRect)cropRect;
-- (CGRect)getCropRect:(CGRect)a3 newCropRect:(CGRect)a4 pitch:(double)a5 yaw:(double)a6 roll:(double)a7 constrainWithAnchorPoint:(CGPoint)a8 strict:(BOOL)a9 aspectRatioIsFreeForm:(BOOL)a10 hitVertexId:(unint64_t *)a11;
-- (CGRect)getCropRectThatCompletelyContainsMasterImageForPitch:(double)a3 yaw:(double)a4 roll:(double)a5;
-- (CGRect)integralCropRect:(CGRect)a3;
+- (CGRect)getCropRect:(CGRect)rect newCropRect:(CGRect)cropRect pitch:(double)pitch yaw:(double)yaw roll:(double)roll constrainWithAnchorPoint:(CGPoint)point strict:(BOOL)strict aspectRatioIsFreeForm:(BOOL)self0 hitVertexId:(unint64_t *)self1;
+- (CGRect)getCropRectThatCompletelyContainsMasterImageForPitch:(double)pitch yaw:(double)yaw roll:(double)roll;
+- (CGRect)integralCropRect:(CGRect)rect;
 - (CGRect)masterImageRect;
 - (CGSize)masterImageSize;
 - (NUCropModel)init;
-- (NUCropModel)initWithMasterImageRect:(CGRect)a3;
-- (NUCropModel)initWithMasterImageRect:(CGRect)a3 stitchedImageRect:(CGRect)a4;
-- (NUCropModel)initWithMasterImageSize:(CGSize)a3 stitchedImageSize:(CGSize)a4;
+- (NUCropModel)initWithMasterImageRect:(CGRect)rect;
+- (NUCropModel)initWithMasterImageRect:(CGRect)rect stitchedImageRect:(CGRect)imageRect;
+- (NUCropModel)initWithMasterImageSize:(CGSize)size stitchedImageSize:(CGSize)imageSize;
 - (double)_defaultImageCenter;
-- (double)_getBoundingQuadFromPitch:(double)a3 yaw:(double)a4 roll:(CGFloat)a5 withExpansionTol:(CGFloat)a6 imageRect:(CGFloat)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)_getBoundingQuadFromPitch:(double)pitch yaw:(double)yaw roll:(CGFloat)roll withExpansionTol:(CGFloat)tol imageRect:(CGFloat)rect;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)_getBoundingQuadFromPitch:(double)a3 yaw:(double)a4 roll:(double)a5 withExpansionTol:;
-- (unint64_t)_hitMaskFromRect:(CGRect)a3 withTol:(double)a4;
-- (unint64_t)constrainedMoveCropRectBy:(CGVector)a3 strict:(BOOL)a4 startRect:(CGRect)a5;
+- (uint64_t)_getBoundingQuadFromPitch:(double)pitch yaw:(double)yaw roll:(double)roll withExpansionTol:;
+- (unint64_t)_hitMaskFromRect:(CGRect)rect withTol:(double)tol;
+- (unint64_t)constrainedMoveCropRectBy:(CGVector)by strict:(BOOL)strict startRect:(CGRect)rect;
 - (unint64_t)hash;
-- (unint64_t)setAspectRatio:(id)a3 constrainCropRect:(CGRect)a4 withTargetArea:(double)a5;
-- (unint64_t)setCropRect:(CGRect)a3 newCropRect:(CGRect)a4 constrainWithAnchorPoint:(CGPoint)a5 strict:(BOOL)a6;
-- (unint64_t)setForZoomCropRect:(CGRect)a3 newCropRect:(CGRect)a4;
-- (unint64_t)setPitchAngle:(double)a3 constrainCropRectWithTargetArea:(double)a4 startRect:(CGRect)a5 startAngle:(double)a6;
-- (unint64_t)setRollAngle:(double)a3 constrainCropRectWithTargetArea:(double)a4 startRect:(CGRect)a5 startAngle:(double)a6;
-- (unint64_t)setYawAngle:(double)a3 constrainCropRectWithTargetArea:(double)a4 startRect:(CGRect)a5 startAngle:(double)a6;
-- (void)_debugPrintHitMask:(unint64_t)a3;
-- (void)_setCropRect:(CGRect)a3;
-- (void)_setCropRect:(CGRect)a3 anchor:(CGPoint)a4;
-- (void)_setCropRectWithConstantSize:(CGRect)a3;
+- (unint64_t)setAspectRatio:(id)ratio constrainCropRect:(CGRect)rect withTargetArea:(double)area;
+- (unint64_t)setCropRect:(CGRect)rect newCropRect:(CGRect)cropRect constrainWithAnchorPoint:(CGPoint)point strict:(BOOL)strict;
+- (unint64_t)setForZoomCropRect:(CGRect)rect newCropRect:(CGRect)cropRect;
+- (unint64_t)setPitchAngle:(double)angle constrainCropRectWithTargetArea:(double)area startRect:(CGRect)rect startAngle:(double)startAngle;
+- (unint64_t)setRollAngle:(double)angle constrainCropRectWithTargetArea:(double)area startRect:(CGRect)rect startAngle:(double)startAngle;
+- (unint64_t)setYawAngle:(double)angle constrainCropRectWithTargetArea:(double)area startRect:(CGRect)rect startAngle:(double)startAngle;
+- (void)_debugPrintHitMask:(unint64_t)mask;
+- (void)_setCropRect:(CGRect)rect;
+- (void)_setCropRect:(CGRect)rect anchor:(CGPoint)anchor;
+- (void)_setCropRectWithConstantSize:(CGRect)size;
 - (void)_setToDefaultValues;
 - (void)makeCurrentAspectRatioFreeForm;
 @end
@@ -81,11 +81,11 @@
   return result;
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_currentAspectRatio:(CGRect)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_currentAspectRatio:(CGRect)ratio
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  if ([(NUCropModel *)self aspectRatioIsFreeForm:a3.origin.x])
+  height = ratio.size.height;
+  width = ratio.size.width;
+  if ([(NUCropModel *)self aspectRatioIsFreeForm:ratio.origin.x])
   {
     v6 = width;
     v7 = height;
@@ -109,19 +109,19 @@
   self->_isAutoCrop = 0;
 }
 
-- (unint64_t)setAspectRatio:(id)a3 constrainCropRect:(CGRect)a4 withTargetArea:(double)a5
+- (unint64_t)setAspectRatio:(id)ratio constrainCropRect:(CGRect)rect withTargetArea:(double)area
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (!a3.var0 && a3.var1 || !a3.var1 && a3.var0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!ratio.var0 && ratio.var1 || !ratio.var1 && ratio.var0)
   {
-    a3.var0 = [objc_opt_class() freeFormAspectRatio];
-    a3.var1 = v11;
+    ratio.var0 = [objc_opt_class() freeFormAspectRatio];
+    ratio.var1 = v11;
   }
 
-  [(NUCropModel *)self setAspectRatio:a3.var0, a3.var1];
+  [(NUCropModel *)self setAspectRatio:ratio.var0, ratio.var1];
   if (![(NUCropModel *)self aspectRatioIsFreeForm])
   {
     v21.origin.x = x;
@@ -134,22 +134,22 @@
     v22.size.width = width;
     v22.size.height = height;
     MidY = CGRectGetMidY(v22);
-    v14 = [(NUCropModel *)self aspectRatio];
-    v16 = aspectRatioConstrainedFromRect(v14, v15, x, y, width, height, MidX, MidY, a5);
+    aspectRatio = [(NUCropModel *)self aspectRatio];
+    v16 = aspectRatioConstrainedFromRect(aspectRatio, v15, x, y, width, height, MidX, MidY, area);
     [(NUCropModel *)self setCropRect:v16 newCropRect:v17 constrainWithAnchorPoint:v18, v19, v16, v17, v18, v19, *&MidX, *&MidY];
   }
 
   return self->_hitVertexID;
 }
 
-- (unint64_t)setYawAngle:(double)a3 constrainCropRectWithTargetArea:(double)a4 startRect:(CGRect)a5 startAngle:(double)a6
+- (unint64_t)setYawAngle:(double)angle constrainCropRectWithTargetArea:(double)area startRect:(CGRect)rect startAngle:(double)startAngle
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3 - a6;
-  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:a3 roll:self->_rollRadians];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = angle - startAngle;
+  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:angle roll:self->_rollRadians];
   v43[0] = v14;
   v43[1] = v15;
   v43[2] = v16;
@@ -169,10 +169,10 @@
   v38 = *&v40 + (MidY - *(&v40 + 1)) * 0.0 + cos(v13) * (MidX - *&v40);
   v20.f64[0] = v38 - width * 0.5;
   v21 = v37 - height * 0.5;
-  if (width * height < a4)
+  if (width * height < area)
   {
     v22 = [(NUCropModel *)self _currentAspectRatio:?];
-    v20.f64[0] = _rectWithAspectRatio(v22, v23, v38 - width * 0.5, v37 - height * 0.5, width, height, a4 / (width * height));
+    v20.f64[0] = _rectWithAspectRatio(v22, v23, v38 - width * 0.5, v37 - height * 0.5, width, height, area / (width * height));
     width = v24;
     height = v25;
   }
@@ -206,18 +206,18 @@
     }
   }
 
-  [(NUCropModel *)self setYawRadians:a3];
+  [(NUCropModel *)self setYawRadians:angle];
   [(NUCropModel *)self _setCropRect:v41, v27, width, height];
   return self->_hitVertexID;
 }
 
-- (unint64_t)setPitchAngle:(double)a3 constrainCropRectWithTargetArea:(double)a4 startRect:(CGRect)a5 startAngle:(double)a6
+- (unint64_t)setPitchAngle:(double)angle constrainCropRectWithTargetArea:(double)area startRect:(CGRect)rect startAngle:(double)startAngle
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3 - a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = angle - startAngle;
   [NUCropModel _getBoundingQuadFromPitch:"_getBoundingQuadFromPitch:yaw:roll:" yaw:? roll:?];
   v47[0] = v12;
   v47[1] = v13;
@@ -241,11 +241,11 @@
   v21.f64[0] = *&v44 + v19 - width * 0.5;
   v39 = v20;
   v22 = v20 - height * 0.5;
-  if (width * height < a4)
+  if (width * height < area)
   {
     v38 = v20 - height * 0.5;
     v23 = [(NUCropModel *)self _currentAspectRatio:?];
-    v21.f64[0] = _rectWithAspectRatio(v23, v24, *&v44 + v19 - width * 0.5, v38, width, height, a4 / (width * height));
+    v21.f64[0] = _rectWithAspectRatio(v23, v24, *&v44 + v19 - width * 0.5, v38, width, height, area / (width * height));
     width = v25;
     height = v26;
   }
@@ -276,19 +276,19 @@
     height = v36;
   }
 
-  [(NUCropModel *)self setPitchRadians:a3];
+  [(NUCropModel *)self setPitchRadians:angle];
   [(NUCropModel *)self _setCropRect:v45, v28, width, height];
   return self->_hitVertexID;
 }
 
-- (unint64_t)setRollAngle:(double)a3 constrainCropRectWithTargetArea:(double)a4 startRect:(CGRect)a5 startAngle:(double)a6
+- (unint64_t)setRollAngle:(double)angle constrainCropRectWithTargetArea:(double)area startRect:(CGRect)rect startAngle:(double)startAngle
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3 - a6;
-  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:a3];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v11 = angle - startAngle;
+  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:angle];
   v65[0] = v12;
   v65[1] = v13;
   v65[2] = v14;
@@ -336,12 +336,12 @@
 
   v55 = v32;
   v38 = vmlaq_f64(v32, _Q1, v31);
-  if (width * height < a4)
+  if (width * height < area)
   {
     v39 = v38.f64[1];
     v58 = v38.f64[0];
     v40 = [(NUCropModel *)self _currentAspectRatio:*&v55];
-    v38.f64[0] = _rectWithAspectRatio(v40, v41, v58, v39, width, height, a4 / (width * height));
+    v38.f64[0] = _rectWithAspectRatio(v40, v41, v58, v39, width, height, area / (width * height));
     v38.f64[1] = v42;
   }
 
@@ -369,19 +369,19 @@
     v61 = v51;
   }
 
-  [(NUCropModel *)self setRollRadians:a3, v55.n128_u64[0]];
+  [(NUCropModel *)self setRollRadians:angle, v55.n128_u64[0]];
   [(NUCropModel *)self _setCropRect:v59, v44, v63, v61];
   return self->_hitVertexID;
 }
 
-- (unint64_t)constrainedMoveCropRectBy:(CGVector)a3 strict:(BOOL)a4 startRect:(CGRect)a5
+- (unint64_t)constrainedMoveCropRectBy:(CGVector)by strict:(BOOL)strict startRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  dy = a3.dy;
-  dx = a3.dx;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dy = by.dy;
+  dx = by.dx;
   [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:self->_rollRadians];
   v76 = v14;
   v77 = v13;
@@ -479,7 +479,7 @@
           v24 = v51;
           v37 = v50;
           v36.f64[0] = v49;
-          if (a4)
+          if (strict)
           {
             goto LABEL_10;
           }
@@ -500,7 +500,7 @@
       v17 = v48;
     }
 
-    if (a4)
+    if (strict)
     {
 LABEL_10:
       v36.f64[1] = v37;
@@ -534,10 +534,10 @@ LABEL_14:
   return self->_hitVertexID;
 }
 
-- (CGRect)getCropRectThatCompletelyContainsMasterImageForPitch:(double)a3 yaw:(double)a4 roll:(double)a5
+- (CGRect)getCropRectThatCompletelyContainsMasterImageForPitch:(double)pitch yaw:(double)yaw roll:(double)roll
 {
   [(NUCropModel *)self masterImageRect];
-  [(NUCropModel *)self _getBoundingQuadFromPitch:a3 yaw:a4 roll:a5 imageRect:v9, v10, v11, v12];
+  [(NUCropModel *)self _getBoundingQuadFromPitch:pitch yaw:yaw roll:roll imageRect:v9, v10, v11, v12];
   v66[0] = v13;
   v66[1] = v14;
   v66[2] = v15;
@@ -607,7 +607,7 @@ LABEL_13:
   v41.f64[1] = v63;
   v60 = v41;
   [(NUCropModel *)self masterImageRect];
-  [(NUCropModel *)self _getBoundingQuadFromPitch:a3 yaw:a4 roll:a5 imageRect:v42, v43, v44, v45];
+  [(NUCropModel *)self _getBoundingQuadFromPitch:pitch yaw:yaw roll:roll imageRect:v42, v43, v44, v45];
   v65[0] = v46;
   v65[1] = v47;
   v65[2] = v48;
@@ -632,7 +632,7 @@ LABEL_13:
     [(NUCropModel *)self cropRect];
     MidX = CGRectGetMidX(v70);
     [(NUCropModel *)self cropRect];
-    [(NUCropModel *)self getCropRect:1 newCropRect:[(NUCropModel *)self aspectRatioIsFreeForm] pitch:0 yaw:v51 roll:v61 constrainWithAnchorPoint:v59 strict:v58 aspectRatioIsFreeForm:v62 hitVertexId:v63, v40, v31, *&a3, *&a4, *&a5, *&MidX, CGRectGetMidY(v71)];
+    [(NUCropModel *)self getCropRect:1 newCropRect:[(NUCropModel *)self aspectRatioIsFreeForm] pitch:0 yaw:v51 roll:v61 constrainWithAnchorPoint:v59 strict:v58 aspectRatioIsFreeForm:v62 hitVertexId:v63, v40, v31, *&pitch, *&yaw, *&roll, *&MidX, CGRectGetMidY(v71)];
     goto LABEL_13;
   }
 
@@ -648,44 +648,44 @@ LABEL_14:
   return result;
 }
 
-- (CGRect)getCropRect:(CGRect)a3 newCropRect:(CGRect)a4 pitch:(double)a5 yaw:(double)a6 roll:(double)a7 constrainWithAnchorPoint:(CGPoint)a8 strict:(BOOL)a9 aspectRatioIsFreeForm:(BOOL)a10 hitVertexId:(unint64_t *)a11
+- (CGRect)getCropRect:(CGRect)rect newCropRect:(CGRect)cropRect pitch:(double)pitch yaw:(double)yaw roll:(double)roll constrainWithAnchorPoint:(CGPoint)point strict:(BOOL)strict aspectRatioIsFreeForm:(BOOL)self0 hitVertexId:(unint64_t *)self1
 {
-  v11 = a9;
-  y_low = LODWORD(a8.y);
-  x_low = LOBYTE(a8.x);
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  strictCopy = strict;
+  y_low = LODWORD(point.y);
+  x_low = LOBYTE(point.x);
+  height = cropRect.size.height;
+  width = cropRect.size.width;
+  y = cropRect.origin.y;
+  x = cropRect.origin.x;
   v197 = *MEMORY[0x1E69E9840];
-  v183.f64[0] = a3.origin.x;
-  v183.f64[1] = a3.origin.y;
-  v169 = a3.size.width;
-  v170 = a3.size.height;
-  v184 = a3.size.width;
-  v185 = a3.size.height;
+  v183.f64[0] = rect.origin.x;
+  v183.f64[1] = rect.origin.y;
+  v169 = rect.size.width;
+  v170 = rect.size.height;
+  v184 = rect.size.width;
+  v185 = rect.size.height;
   v19 = 0.0;
-  _ZF = a4.size.width == 0.0;
+  _ZF = cropRect.size.width == 0.0;
   v20 = 0.0;
   if (!_ZF)
   {
-    v20 = (v198.f64[0] - a4.origin.x) / width;
+    v20 = (v198.f64[0] - cropRect.origin.x) / width;
   }
 
-  if (a4.size.height != 0.0)
+  if (cropRect.size.height != 0.0)
   {
-    v19 = (v198.f64[1] - y) / a4.size.height;
+    v19 = (v198.f64[1] - y) / cropRect.size.height;
   }
 
   v172 = v20;
   v173 = v19;
-  v21 = a4.origin.x + v20 * (width + -2.0);
-  v22 = y + v19 * (a4.size.height + -2.0);
+  v21 = cropRect.origin.x + v20 * (width + -2.0);
+  v22 = y + v19 * (cropRect.size.height + -2.0);
   v23 = fmin(x, v21);
   v24 = fmin(y, v22);
   v25 = fmax(x + width, v21 + 2.0) - v23;
-  v26 = fmax(y + a4.size.height, v22 + 2.0) - v24;
-  [(NUCropModel *)self _getBoundingQuadFromPitch:*&a8.x yaw:*&a8.y roll:a9, a10, a11, a5, a6, a7];
+  v26 = fmax(y + cropRect.size.height, v22 + 2.0) - v24;
+  [(NUCropModel *)self _getBoundingQuadFromPitch:*&point.x yaw:*&point.y roll:strict, form, id, pitch, yaw, roll];
   v167 = v28;
   v168 = v27;
   v182[0] = v27;
@@ -891,8 +891,8 @@ LABEL_14:
           if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
           {
             v103 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-            v104 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v105 = [v104 componentsJoinedByString:@"\n"];
+            callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+            v105 = [callStackSymbols componentsJoinedByString:@"\n"];
             *v195 = 138543618;
             *&v195[4] = v103;
             *&v195[12] = 2114;
@@ -911,8 +911,8 @@ LABEL_14:
           v102 = _NUAssertLogger;
           if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
           {
-            v160 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v161 = [v160 componentsJoinedByString:@"\n"];
+            callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v161 = [callStackSymbols2 componentsJoinedByString:@"\n"];
             *v195 = 138543362;
             *&v195[4] = v161;
             _os_log_error_impl(&dword_1C0184000, v102, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v195, 0xCu);
@@ -949,8 +949,8 @@ LABEL_14:
           if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
           {
             v95 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-            v96 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v97 = [v96 componentsJoinedByString:@"\n"];
+            callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v97 = [callStackSymbols3 componentsJoinedByString:@"\n"];
             *buf = 138543618;
             *&buf[4] = v95;
             *&buf[12] = 2114;
@@ -969,8 +969,8 @@ LABEL_14:
           v94 = _NUAssertLogger;
           if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
           {
-            v156 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v157 = [v156 componentsJoinedByString:@"\n"];
+            callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v157 = [callStackSymbols4 componentsJoinedByString:@"\n"];
             *buf = 138543362;
             *&buf[4] = v157;
             _os_log_error_impl(&dword_1C0184000, v94, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1111,8 +1111,8 @@ LABEL_116:
           if (os_log_type_enabled(v116, OS_LOG_TYPE_ERROR))
           {
             v117 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-            v118 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v119 = [v118 componentsJoinedByString:@"\n"];
+            callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v119 = [callStackSymbols5 componentsJoinedByString:@"\n"];
             *v195 = 138543618;
             *&v195[4] = v117;
             *&v195[12] = 2114;
@@ -1131,8 +1131,8 @@ LABEL_116:
           v116 = _NUAssertLogger;
           if (os_log_type_enabled(v116, OS_LOG_TYPE_ERROR))
           {
-            v162 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v163 = [v162 componentsJoinedByString:@"\n"];
+            callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v163 = [callStackSymbols6 componentsJoinedByString:@"\n"];
             *v195 = 138543362;
             *&v195[4] = v163;
             _os_log_error_impl(&dword_1C0184000, v116, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v195, 0xCu);
@@ -1169,8 +1169,8 @@ LABEL_116:
           if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
           {
             v109 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-            v110 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v111 = [v110 componentsJoinedByString:@"\n"];
+            callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v111 = [callStackSymbols7 componentsJoinedByString:@"\n"];
             *buf = 138543618;
             *&buf[4] = v109;
             *&buf[12] = 2114;
@@ -1189,8 +1189,8 @@ LABEL_116:
           v108 = _NUAssertLogger;
           if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
           {
-            v158 = [MEMORY[0x1E696AF00] callStackSymbols];
-            v159 = [v158 componentsJoinedByString:@"\n"];
+            callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+            v159 = [callStackSymbols8 componentsJoinedByString:@"\n"];
             *buf = 138543362;
             *&buf[4] = v159;
             _os_log_error_impl(&dword_1C0184000, v108, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1243,9 +1243,9 @@ LABEL_119:
   }
 
   v141 = v186.origin.x;
-  if (v11)
+  if (strictCopy)
   {
-    *v11 = [(NUCropModel *)self _hitMaskFromRect:v186.origin.x, v46, v38, v39];
+    *strictCopy = [(NUCropModel *)self _hitMaskFromRect:v186.origin.x, v46, v38, v39];
   }
 
   v142 = v141 + v172 * (v38 + -2.0);
@@ -1287,17 +1287,17 @@ LABEL_119:
   return result;
 }
 
-- (CGRect)_expandedCropRectForZoom:(CGRect)a3 candidateRect:(CGRect)a4
+- (CGRect)_expandedCropRectForZoom:(CGRect)zoom candidateRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v39 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = zoom.size.height;
+  v9 = zoom.size.width;
+  v10 = zoom.origin.y;
+  v11 = zoom.origin.x;
+  zoomCopy = zoom;
   v13 = [(NUCropModel *)self _hitMaskFromRect:?];
   [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:self->_rollRadians];
   v38[0] = v14;
@@ -1306,7 +1306,7 @@ LABEL_119:
   v38[3] = v17;
   v37.x = 0.0;
   v37.y = 0.0;
-  if (canExpandWithAbsoluteAnchor(v13, v38, &v39, &v37))
+  if (canExpandWithAbsoluteAnchor(v13, v38, &zoomCopy, &v37))
   {
     v40.origin.x = x;
     v40.origin.y = y;
@@ -1370,16 +1370,16 @@ LABEL_119:
   return result;
 }
 
-- (unint64_t)setForZoomCropRect:(CGRect)a3 newCropRect:(CGRect)a4
+- (unint64_t)setForZoomCropRect:(CGRect)rect newCropRect:(CGRect)cropRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = cropRect.size.height;
+  width = cropRect.size.width;
+  y = cropRect.origin.y;
+  x = cropRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   [(NUCropModel *)self _widestCropRect];
   if (v9 >= v13)
   {
@@ -1457,23 +1457,23 @@ LABEL_119:
   return self->_hitVertexID;
 }
 
-- (unint64_t)setCropRect:(CGRect)a3 newCropRect:(CGRect)a4 constrainWithAnchorPoint:(CGPoint)a5 strict:(BOOL)a6
+- (unint64_t)setCropRect:(CGRect)rect newCropRect:(CGRect)cropRect constrainWithAnchorPoint:(CGPoint)point strict:(BOOL)strict
 {
-  [(NUCropModel *)self getCropRect:*&a5.x newCropRect:[(NUCropModel *)self aspectRatioIsFreeForm:*&a5.x] pitch:0 yaw:a3.origin.x roll:a3.origin.y constrainWithAnchorPoint:a3.size.width strict:a3.size.height aspectRatioIsFreeForm:a4.origin.x hitVertexId:a4.origin.y, a4.size.width, a4.size.height, *&self->_pitchRadians, *&self->_yawRadians, *&self->_rollRadians, v8, v9];
+  [(NUCropModel *)self getCropRect:*&point.x newCropRect:[(NUCropModel *)self aspectRatioIsFreeForm:*&point.x] pitch:0 yaw:rect.origin.x roll:rect.origin.y constrainWithAnchorPoint:rect.size.width strict:rect.size.height aspectRatioIsFreeForm:cropRect.origin.x hitVertexId:cropRect.origin.y, cropRect.size.width, cropRect.size.height, *&self->_pitchRadians, *&self->_yawRadians, *&self->_rollRadians, v8, v9];
   [NUCropModel _setCropRect:"_setCropRect:anchor:" anchor:?];
   return self->_hitVertexID;
 }
 
-- (BOOL)imageContainsRect:(CGRect)a3 withTol:(double)a4
+- (BOOL)imageContainsRect:(CGRect)rect withTol:(double)tol
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  v6.f64[0] = a3.origin.x;
-  v6.f64[1] = a3.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
+  v6.f64[0] = rect.origin.x;
+  v6.f64[1] = rect.origin.y;
   v14 = v6;
-  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:self->_rollRadians withExpansionTol:a4];
+  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:self->_rollRadians withExpansionTol:tol];
   v16[0] = v7;
   v16[1] = v8;
   v16[2] = v9;
@@ -1491,16 +1491,16 @@ LABEL_119:
   return NU::Quad2d::simpleContains(v16, v15);
 }
 
-- (BOOL)canGrowCropRect:(CGRect)a3 constrainWithAnchorPoint:(CGPoint)a4 strict:(BOOL)a5 withTol:(double)a6
+- (BOOL)canGrowCropRect:(CGRect)rect constrainWithAnchorPoint:(CGPoint)point strict:(BOOL)strict withTol:(double)tol
 {
-  [(NUCropModel *)self _anchorAlignedRectFromCandidate:a5 withAnchor:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.x, a4.y];
+  [(NUCropModel *)self _anchorAlignedRectFromCandidate:strict withAnchor:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, point.x, point.y];
   v20 = v8.f64[0];
   v21 = v9;
   v11 = v10;
   v13 = v12;
   v8.f64[1] = v9;
   v19 = v8;
-  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:self->_rollRadians withExpansionTol:a6];
+  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:self->_rollRadians withExpansionTol:tol];
   v23[0] = v14;
   v23[1] = v15;
   v23[2] = v16;
@@ -1518,33 +1518,33 @@ LABEL_119:
   return NU::Quad2d::simpleContains(v23, v22);
 }
 
-- (CGRect)_anchorAlignedRectFromCandidate:(CGRect)a3 withAnchor:(CGPoint)a4
+- (CGRect)_anchorAlignedRectFromCandidate:(CGRect)candidate withAnchor:(CGPoint)anchor
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = candidate.size.height;
+  width = candidate.size.width;
+  y = candidate.origin.y;
+  x = candidate.origin.x;
   v8 = 0;
-  v22 = a4.x;
-  v23 = a4.y;
-  v9 = a4.y;
-  v25 = a3;
-  if (a3.size.width >= a3.size.height)
+  v22 = anchor.x;
+  v23 = anchor.y;
+  v9 = anchor.y;
+  candidateCopy = candidate;
+  if (candidate.size.width >= candidate.size.height)
   {
-    v10 = a3.size.height;
+    v10 = candidate.size.height;
   }
 
   else
   {
-    v10 = a3.size.width;
+    v10 = candidate.size.width;
   }
 
   v11 = v10 * 0.1;
   while (1)
   {
-    v12.f64[0] = pointFromVertexID(&v25, v8);
+    v12.f64[0] = pointFromVertexID(&candidateCopy, v8);
     v12.f64[1] = v13;
-    v14 = vsubq_f64(a4, v12);
+    v14 = vsubq_f64(anchor, v12);
     if (sqrt(vaddvq_f64(vmulq_f64(v14, v14))) < v11)
     {
       break;
@@ -1556,7 +1556,7 @@ LABEL_119:
     }
   }
 
-  v16 = -(pointFromVertexID(&v25, v8) - v22);
+  v16 = -(pointFromVertexID(&candidateCopy, v8) - v22);
   v17 = -(v15 - v23);
   v26.origin.x = x;
   v26.origin.y = y;
@@ -1579,54 +1579,54 @@ LABEL_9:
   return result;
 }
 
-- (void)_debugPrintHitMask:(unint64_t)a3
+- (void)_debugPrintHitMask:(unint64_t)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"Current crop rect intersect the image at : "];
-  if (v3)
+  if (maskCopy)
   {
     [v4 appendFormat:@" BL"];
   }
 
-  if ((v3 & 2) != 0)
+  if ((maskCopy & 2) != 0)
   {
     [v4 appendFormat:@" BR"];
   }
 
-  if ((v3 & 4) != 0)
+  if ((maskCopy & 4) != 0)
   {
     [v4 appendFormat:@" TL"];
   }
 
-  if ((v3 & 8) != 0)
+  if ((maskCopy & 8) != 0)
   {
     [v4 appendFormat:@" TR"];
   }
 
-  if ((v3 & 0x10) != 0)
+  if ((maskCopy & 0x10) != 0)
   {
     [v4 appendFormat:@" B"];
   }
 
-  if ((v3 & 0x20) != 0)
+  if ((maskCopy & 0x20) != 0)
   {
     [v4 appendFormat:@" R"];
   }
 
-  if ((v3 & 0x40) != 0)
+  if ((maskCopy & 0x40) != 0)
   {
     [v4 appendFormat:@" L"];
   }
 
-  if (v3 < 0)
+  if (maskCopy < 0)
   {
     [v4 appendFormat:@" T"];
   }
 }
 
-- (unint64_t)_hitMaskFromRect:(CGRect)a3 withTol:(double)a4
+- (unint64_t)_hitMaskFromRect:(CGRect)rect withTol:(double)tol
 {
-  v21 = CGRectInset(a3, -a4, -a4);
+  v21 = CGRectInset(rect, -tol, -tol);
   v21.size.width = v21.origin.x + v21.size.width;
   *&v5 = v21.origin.x;
   *(&v5 + 1) = *&v21.origin.y;
@@ -1702,12 +1702,12 @@ LABEL_9:
   return result;
 }
 
-- (void)_setCropRectWithConstantSize:(CGRect)a3
+- (void)_setCropRectWithConstantSize:(CGRect)size
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.size.height;
+  width = size.size.width;
+  y = size.origin.y;
+  x = size.origin.x;
   [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:self->_rollRadians];
   v42[0] = v8;
   v42[1] = v9;
@@ -1822,11 +1822,11 @@ LABEL_8:
   self->_isAutoCrop = 0;
 }
 
-- (void)_setCropRect:(CGRect)a3 anchor:(CGPoint)a4
+- (void)_setCropRect:(CGRect)rect anchor:(CGPoint)anchor
 {
   v63 = *MEMORY[0x1E69E9840];
-  v59 = a3;
-  if (a3.size.width < 1.0)
+  rectCopy = rect;
+  if (rect.size.width < 1.0)
   {
     v24 = NUAssertLogger();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1845,8 +1845,8 @@ LABEL_8:
       if (v28)
       {
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v39 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v38;
         *&buf[12] = 2114;
@@ -1857,8 +1857,8 @@ LABEL_8:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1867,7 +1867,7 @@ LABEL_8:
     _NUAssertFailHandler("[NUCropModel _setCropRect:anchor:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Crop/NUCropModel.mm", 482, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "cropRect.size.width >= 1");
   }
 
-  if (a3.size.height < 1.0)
+  if (rect.size.height < 1.0)
   {
     v31 = NUAssertLogger();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1886,8 +1886,8 @@ LABEL_8:
       if (v35)
       {
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v47 = [v46 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v47 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v45;
         *&buf[12] = 2114;
@@ -1898,8 +1898,8 @@ LABEL_8:
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1908,10 +1908,10 @@ LABEL_8:
     _NUAssertFailHandler("[NUCropModel _setCropRect:anchor:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Crop/NUCropModel.mm", 483, @"Invalid parameter not satisfying: %s", v48, v49, v50, v51, "cropRect.size.height >= 1");
   }
 
-  x = a4.x;
-  y = a4.y;
-  width = a3.size.width;
-  rect2 = a3.size.height;
+  x = anchor.x;
+  y = anchor.y;
+  width = rect.size.width;
+  rect2 = rect.size.height;
   [(NUCropModel *)self _getBoundingQuad];
   *buf = v5;
   *&buf[16] = v6;
@@ -1919,16 +1919,16 @@ LABEL_8:
   v62 = v8;
   v5.f64[0] = width;
   v5.f64[1] = rect2;
-  origin = v59.origin;
-  v9 = vaddq_f64(v5, v59.origin);
-  v6.f64[0] = v59.origin.x;
+  origin = rectCopy.origin;
+  v9 = vaddq_f64(v5, rectCopy.origin);
+  v6.f64[0] = rectCopy.origin.x;
   v6.f64[1] = v9.f64[1];
   v58[2] = v6;
   v58[3] = v9;
-  v9.f64[1] = v59.origin.y;
-  v58[0] = v59.origin;
+  v9.f64[1] = rectCopy.origin.y;
+  v58[0] = rectCopy.origin;
   v58[1] = v9;
-  v13 = v59.origin.y;
+  v13 = rectCopy.origin.y;
   if (NU::Quad2d::simpleContains(buf, v58))
   {
     v14 = width;
@@ -1937,7 +1937,7 @@ LABEL_8:
 
   else
   {
-    v64.origin.x = NU::Quad2d::findInscribedUnscaledFitRect(buf, &v59, 1.0e-10, v10, v11, v12);
+    v64.origin.x = NU::Quad2d::findInscribedUnscaledFitRect(buf, &rectCopy, 1.0e-10, v10, v11, v12);
     v16 = v64.origin.x;
     v17 = v64.origin.y;
     v18 = v64.size.width;
@@ -1952,40 +1952,40 @@ LABEL_8:
       v20.f64[0] = x;
       v20.f64[1] = y;
       v58[0] = v20;
-      NU::Quad2d::findInscribedAxisAlignedAspectFitRectWithAnchor(buf, v58[0].f64, &v59, &v59, &v57, 0.000000953674316);
+      NU::Quad2d::findInscribedAxisAlignedAspectFitRectWithAnchor(buf, v58[0].f64, &rectCopy, &rectCopy, &v57, 0.000000953674316);
       v13 = v21;
-      v59.origin.x = v22;
-      v59.origin.y = v21;
-      v59.size.width = v14;
-      v59.size.height = v15;
+      rectCopy.origin.x = v22;
+      rectCopy.origin.y = v21;
+      rectCopy.size.width = v14;
+      rectCopy.size.height = v15;
     }
 
     else
     {
-      v59.origin.x = v16;
-      v59.origin.y = v17;
+      rectCopy.origin.x = v16;
+      rectCopy.origin.y = v17;
       v15 = height;
       v14 = v18;
       v13 = v17;
-      v59.size.width = v18;
-      v59.size.height = height;
+      rectCopy.size.width = v18;
+      rectCopy.size.height = height;
     }
   }
 
-  self->_hitVertexID = [(NUCropModel *)self _hitMaskFromRect:v59.origin.x, v13, v14, v15];
-  size = v59.size;
-  self->_cropRect.origin = v59.origin;
+  self->_hitVertexID = [(NUCropModel *)self _hitMaskFromRect:rectCopy.origin.x, v13, v14, v15];
+  size = rectCopy.size;
+  self->_cropRect.origin = rectCopy.origin;
   self->_cropRect.size = size;
   self->_isAutoCrop = 0;
 }
 
-- (void)_setCropRect:(CGRect)a3
+- (void)_setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MidX = CGRectGetMidX(rect);
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
@@ -2008,34 +2008,34 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_integralCropRect:(CGRect)a3 straightenAngle:(double)a4 anchorPoint:(CGPoint)a5
+- (CGRect)_integralCropRect:(CGRect)rect straightenAngle:(double)angle anchorPoint:(CGPoint)point
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
   v10 = 0.0;
   v11 = 0.0;
-  if (a3.size.width != 0.0)
+  if (rect.size.width != 0.0)
   {
-    v11 = (a5.x - a3.origin.x) / a3.size.width;
+    v11 = (point.x - rect.origin.x) / rect.size.width;
   }
 
-  if (a3.size.height != 0.0)
+  if (rect.size.height != 0.0)
   {
-    v10 = (a5.y - a3.origin.y) / a3.size.height;
+    v10 = (point.y - rect.origin.y) / rect.size.height;
   }
 
-  y = a3.origin.y;
+  y = rect.origin.y;
   v46.x = v11;
   v46.y = v10;
-  v38 = _bestIntegralRectPreservingAspectRatioAndAnchor(a3, v46);
+  v38 = _bestIntegralRectPreservingAspectRatioAndAnchor(rect, v46);
   v39 = v12;
   v14 = v13;
   v16 = v15;
   v17.f64[0] = v38;
   v17.f64[1] = v12;
   v40 = v17;
-  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:a4];
+  [(NUCropModel *)self _getBoundingQuadFromPitch:self->_pitchRadians yaw:self->_yawRadians roll:angle];
   v45[0] = v18;
   v45[1] = v19;
   v45[2] = v20;
@@ -2079,9 +2079,9 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)integralCropRect:(CGRect)a3
+- (CGRect)integralCropRect:(CGRect)rect
 {
-  [(NUCropModel *)self _integralCropRect:a3.origin.x straightenAngle:a3.origin.y anchorPoint:a3.size.width, a3.size.height, self->_rollRadians, a3.origin.x + a3.size.width * 0.5, a3.origin.y + a3.size.height * 0.5];
+  [(NUCropModel *)self _integralCropRect:rect.origin.x straightenAngle:rect.origin.y anchorPoint:rect.size.width, rect.size.height, self->_rollRadians, rect.origin.x + rect.size.width * 0.5, rect.origin.y + rect.size.height * 0.5];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2089,12 +2089,12 @@ LABEL_8:
   return result;
 }
 
-- (double)_getBoundingQuadFromPitch:(double)a3 yaw:(double)a4 roll:(CGFloat)a5 withExpansionTol:(CGFloat)a6 imageRect:(CGFloat)a7
+- (double)_getBoundingQuadFromPitch:(double)pitch yaw:(double)yaw roll:(CGFloat)roll withExpansionTol:(CGFloat)tol imageRect:(CGFloat)rect
 {
-  v15 = -a4;
-  v40.origin.x = a5;
-  v40.origin.y = a6;
-  v40.size.width = a7;
+  v15 = -yaw;
+  v40.origin.x = roll;
+  v40.origin.y = tol;
+  v40.size.width = rect;
   v40.size.height = a8;
   v41 = CGRectInset(v40, v15, v15);
   v41.size.width = v41.origin.x + v41.size.width;
@@ -2116,7 +2116,7 @@ LABEL_8:
   v32 = 0x3FF0000000000000;
   v35 = 0x3FF0000000000000;
   v38 = 0x3FF0000000000000;
-  [NUCropModel _imageTransformFromPitch:a1 yaw:a2 roll:a3 imageRect:a5, a6, a7, a8];
+  [NUCropModel _imageTransformFromPitch:self yaw:a2 roll:pitch imageRect:roll, tol, rect, a8];
   v20 = 0;
   memset(v26, 0, sizeof(v26));
   do
@@ -2138,11 +2138,11 @@ LABEL_8:
   return *&v39;
 }
 
-- (uint64_t)_getBoundingQuadFromPitch:(double)a3 yaw:(double)a4 roll:(double)a5 withExpansionTol:
+- (uint64_t)_getBoundingQuadFromPitch:(double)pitch yaw:(double)yaw roll:(double)roll withExpansionTol:
 {
-  [a1 masterImageRect];
+  [self masterImageRect];
 
-  return [a1 _getBoundingQuadFromPitch:a2 yaw:a3 roll:a4 withExpansionTol:a5 imageRect:{v10, v11, v12, v13}];
+  return [self _getBoundingQuadFromPitch:a2 yaw:pitch roll:yaw withExpansionTol:roll imageRect:{v10, v11, v12, v13}];
 }
 
 - (BOOL)_hasDefaultValues
@@ -2224,8 +2224,8 @@ LABEL_8:
 
 - (double)_defaultImageCenter
 {
-  MidX = CGRectGetMidX(a1[4]);
-  CGRectGetMidY(a1[4]);
+  MidX = CGRectGetMidX(self[4]);
+  CGRectGetMidY(self[4]);
   return MidX;
 }
 
@@ -2255,7 +2255,7 @@ LABEL_8:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[NUCropModel allocWithZone:?], "initWithMasterImageRect:", self->_masterImageRect.origin.x, self->_masterImageRect.origin.y, self->_masterImageRect.size.width, self->_masterImageRect.size.height];
   *(result + 7) = self->_aspectRatio;
@@ -2269,15 +2269,15 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)isEqualToCropModel:(id)a3
+- (BOOL)isEqualToCropModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   [(NUCropModel *)self masterImageRect];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 masterImageRect];
+  [modelCopy masterImageRect];
   v47.origin.x = v13;
   v47.origin.y = v14;
   v47.size.width = v15;
@@ -2296,7 +2296,7 @@ LABEL_8:
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v4 cropRect];
+  [modelCopy cropRect];
   v48.origin.x = v25;
   v48.origin.y = v26;
   v48.size.width = v27;
@@ -2310,35 +2310,35 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v29 = [(NUCropModel *)self aspectRatio];
+  aspectRatio = [(NUCropModel *)self aspectRatio];
   v31 = v30;
-  v32 = [v4 aspectRatio];
-  if (v29 | v31 && v32 | v33)
+  aspectRatio2 = [modelCopy aspectRatio];
+  if (aspectRatio | v31 && aspectRatio2 | v33)
   {
-    if (v33 * v29 != v32 * v31)
+    if (v33 * aspectRatio != aspectRatio2 * v31)
     {
       goto LABEL_11;
     }
   }
 
-  else if ((v29 | v31) != 0 || (v32 | v33) != 0)
+  else if ((aspectRatio | v31) != 0 || (aspectRatio2 | v33) != 0)
   {
     goto LABEL_11;
   }
 
   [(NUCropModel *)self pitchDegreeUI];
   v35 = v34;
-  [v4 pitchDegreeUI];
+  [modelCopy pitchDegreeUI];
   if (vabdd_f64(v35, v36) <= 0.05)
   {
     [(NUCropModel *)self yawDegreeUI];
     v38 = v37;
-    [v4 yawDegreeUI];
+    [modelCopy yawDegreeUI];
     if (vabdd_f64(v38, v39) <= 0.05)
     {
       [(NUCropModel *)self rollDegreeUI];
       v41 = v40;
-      [v4 rollDegreeUI];
+      [modelCopy rollDegreeUI];
       if (vabdd_f64(v41, v42) <= 0.05)
       {
         v43 = 1;
@@ -2354,11 +2354,11 @@ LABEL_12:
   return v43;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUCropModel *)self isEqualToCropModel:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUCropModel *)self isEqualToCropModel:equalCopy];
 
   return v5;
 }
@@ -2379,11 +2379,11 @@ LABEL_12:
   return result;
 }
 
-- (NUCropModel)initWithMasterImageRect:(CGRect)a3 stitchedImageRect:(CGRect)a4
+- (NUCropModel)initWithMasterImageRect:(CGRect)rect stitchedImageRect:(CGRect)imageRect
 {
-  x = a3.origin.x;
+  x = rect.origin.x;
   v56 = *MEMORY[0x1E69E9840];
-  if (a3.size.width < 1.0)
+  if (rect.size.width < 1.0)
   {
     v16 = NUAssertLogger();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -2402,8 +2402,8 @@ LABEL_12:
       if (v20)
       {
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v29;
         v54 = 2114;
@@ -2414,8 +2414,8 @@ LABEL_12:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v22;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2428,8 +2428,8 @@ LABEL_32:
     _NUAssertFailHandler("[NUCropModel initWithMasterImageRect:stitchedImageRect:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Crop/NUCropModel.mm", v33, @"Invalid parameter not satisfying: %s", v47, v48, v49, v50, v32);
   }
 
-  height = a3.size.height;
-  if (a3.size.height < 1.0)
+  height = rect.size.height;
+  if (rect.size.height < 1.0)
   {
     v23 = NUAssertLogger();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -2448,8 +2448,8 @@ LABEL_32:
       if (v26)
       {
         v34 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v53 = v34;
         v54 = 2114;
@@ -2460,8 +2460,8 @@ LABEL_32:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v53 = v28;
       _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2472,13 +2472,13 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v7 = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  v10 = a4.origin.x;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  if (!CGRectIsEmpty(a4))
+  v7 = imageRect.size.height;
+  width = imageRect.size.width;
+  y = imageRect.origin.y;
+  v10 = imageRect.origin.x;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  if (!CGRectIsEmpty(imageRect))
   {
     v57.origin.x = v10;
     v57.origin.y = y;
@@ -2507,8 +2507,8 @@ LABEL_32:
         if (v40)
         {
           v43 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-          v44 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v45 = [v44 componentsJoinedByString:@"\n"];
+          callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v45 = [callStackSymbols5 componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v53 = v43;
           v54 = 2114;
@@ -2520,8 +2520,8 @@ LABEL_32:
 
       else if (v40)
       {
-        v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v42 = [callStackSymbols6 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v53 = v42;
         _os_log_error_impl(&dword_1C0184000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2550,12 +2550,12 @@ LABEL_32:
   return v14;
 }
 
-- (NUCropModel)initWithMasterImageSize:(CGSize)a3 stitchedImageSize:(CGSize)a4
+- (NUCropModel)initWithMasterImageSize:(CGSize)size stitchedImageSize:(CGSize)imageSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
+  height = imageSize.height;
+  width = imageSize.width;
+  v6 = size.height;
+  v7 = size.width;
   v13.origin.x = 0.0;
   v13.origin.y = 0.0;
   v13.size.width = v7;
@@ -2570,11 +2570,11 @@ LABEL_32:
   return [(NUCropModel *)self initWithMasterImageRect:0.0 stitchedImageRect:0.0, v7, v6, MidX - width * 0.5, MidY - height * 0.5, width, height];
 }
 
-- (NUCropModel)initWithMasterImageRect:(CGRect)a3
+- (NUCropModel)initWithMasterImageRect:(CGRect)rect
 {
-  x = a3.origin.x;
+  x = rect.origin.x;
   v40 = *MEMORY[0x1E69E9840];
-  if (a3.size.width < 1.0)
+  if (rect.size.width < 1.0)
   {
     v10 = NUAssertLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2593,8 +2593,8 @@ LABEL_32:
       if (v14)
       {
         v23 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v23;
         v38 = 2114;
@@ -2605,8 +2605,8 @@ LABEL_32:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2619,8 +2619,8 @@ LABEL_22:
     _NUAssertFailHandler("[NUCropModel initWithMasterImageRect:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Crop/NUCropModel.mm", v27, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, v26);
   }
 
-  height = a3.size.height;
-  if (a3.size.height < 1.0)
+  height = rect.size.height;
+  if (rect.size.height < 1.0)
   {
     v17 = NUAssertLogger();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2639,8 +2639,8 @@ LABEL_22:
       if (v20)
       {
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-        v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v30 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v28;
         v38 = 2114;
@@ -2651,8 +2651,8 @@ LABEL_22:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v22 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v22;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2663,8 +2663,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  width = a3.size.width;
-  y = a3.origin.y;
+  width = rect.size.width;
+  y = rect.origin.y;
   v35.receiver = self;
   v35.super_class = NUCropModel;
   v7 = [(NUCropModel *)&v35 init];
@@ -2713,8 +2713,8 @@ LABEL_22:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
-      v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v12 = [v11 componentsJoinedByString:@"\n"];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+      v12 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v20 = v10;
       v21 = 2114;
@@ -2733,8 +2733,8 @@ LABEL_22:
     v7 = _NUAssertLogger;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v9 = [v8 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v9 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v20 = v9;
       _os_log_error_impl(&dword_1C0184000, v7, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2746,28 +2746,28 @@ LABEL_22:
   _NUAssertFailHandler("[NUCropModel init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Crop/NUCropModel.mm", 114, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v15, v16, v17, v18, v14);
 }
 
-+ (CGRect)adjustCropRect:(CGRect)a3 inputExtent:(CGRect)a4 geometryTransform:(id)a5
++ (CGRect)adjustCropRect:(CGRect)rect inputExtent:(CGRect)extent geometryTransform:(id)transform
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v65 = a3;
-  v59 = a3.size.width;
-  v60 = a3.size.height;
-  v9 = a5;
-  [v9 transformPoint:{x, y}];
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
+  rectCopy = rect;
+  v59 = rect.size.width;
+  v60 = rect.size.height;
+  transformCopy = transform;
+  [transformCopy transformPoint:{x, y}];
   v61 = v10;
   v53 = v11;
   v12 = x + width;
-  [v9 transformPoint:{v12, y}];
+  [transformCopy transformPoint:{v12, y}];
   v57 = v13;
   v51 = v14;
   v15 = y + height;
-  [v9 transformPoint:{x, v15}];
+  [transformCopy transformPoint:{x, v15}];
   v55 = v16;
   v49 = v17;
-  [v9 transformPoint:{v12, v15}];
+  [transformCopy transformPoint:{v12, v15}];
   v18.f64[0] = v61;
   v18.f64[1] = v53;
   v19.f64[0] = v57;
@@ -2785,16 +2785,16 @@ LABEL_22:
   v47 = v22;
   v19.f64[0] = v59;
   v19.f64[1] = v60;
-  v23 = vaddq_f64(v19, v65.origin);
+  v23 = vaddq_f64(v19, rectCopy.origin);
   v19.f64[0] = v23.f64[0];
-  v19.f64[1] = v65.origin.y;
+  v19.f64[1] = rectCopy.origin.y;
   v50 = v19;
   v52 = v23;
-  v19.f64[0] = v65.origin.x;
+  v19.f64[0] = rectCopy.origin.x;
   v19.f64[1] = v23.f64[1];
   v48 = v19;
-  origin = v65.origin;
-  v24 = NU::Quad2d::simpleContains(v64, v65.origin);
+  origin = rectCopy.origin;
+  v24 = NU::Quad2d::simpleContains(v64, rectCopy.origin);
   v25 = NU::Quad2d::simpleContains(v64, v50);
   v26 = NU::Quad2d::simpleContains(v64, v48);
   v27 = NU::Quad2d::simpleContains(v64, v52);
@@ -2813,12 +2813,12 @@ LABEL_22:
     v63 = vmulq_f64(v34, _Q1);
     if (NU::Quad2d::simpleContains(v64, v63))
     {
-      NU::Quad2d::findInscribedAxisAlignedFitRectWithAnchor(v64, &v63, &v65, &v65);
+      NU::Quad2d::findInscribedAxisAlignedFitRectWithAnchor(v64, &v63, &rectCopy, &rectCopy);
     }
 
     else
     {
-      InscribedUnscaledFitRect = NU::Quad2d::findInscribedUnscaledFitRect(v64, &v65, 0.000000953674316, v36, v37, v38);
+      InscribedUnscaledFitRect = NU::Quad2d::findInscribedUnscaledFitRect(v64, &rectCopy, 0.000000953674316, v36, v37, v38);
     }
 
     v59 = v41;
@@ -2847,22 +2847,22 @@ LABEL_22:
   return result;
 }
 
-+ (void)_imageTransformFromPitch:(double)a3@<D1> yaw:(double)a4@<D2> roll:(CGFloat)a5@<D3> imageRect:(CGFloat)a6@<D4>
++ (void)_imageTransformFromPitch:(double)pitch@<D1> yaw:(double)yaw@<D2> roll:(CGFloat)roll@<D3> imageRect:(CGFloat)rect@<D4>
 {
-  v13 = fabs(a3);
-  v14 = fabs(a4);
+  v13 = fabs(pitch);
+  v14 = fabs(yaw);
   if (fabs(a2) > 0.0000000037252903 || v13 > 0.0000000037252903 || v14 > 0.0000000037252903)
   {
     [NUCropModel defaultFocalLength:0.0000000037252903];
     v21 = v20 / hypotf(36.0, 24.0);
     v146 = hypot(a8, a7) * v21;
-    v171.origin.x = a5;
-    v171.origin.y = a6;
+    v171.origin.x = roll;
+    v171.origin.y = rect;
     v171.size.width = a7;
     v171.size.height = a8;
     MidX = CGRectGetMidX(v171);
-    v172.origin.x = a5;
-    v172.origin.y = a6;
+    v172.origin.x = roll;
+    v172.origin.y = rect;
     v172.size.width = a7;
     v172.size.height = a8;
     MidY = CGRectGetMidY(v172);
@@ -2881,13 +2881,13 @@ LABEL_22:
     *&v23.f64[0] = *&vmulq_f64(v23, 0);
     v23.f64[1] = v24.__cosval;
     v138 = v23;
-    v26 = __sincos_stret(a3 * 0.5);
+    v26 = __sincos_stret(pitch * 0.5);
     v25.f64[0] = v26.__sinval;
     *&v25.f64[0] = *&vmulq_f64(v25, 0);
     v25.f64[1] = v26.__cosval;
     v132 = v25;
     v133 = vmulq_n_f64(xmmword_1C03C2760, v26.__sinval);
-    v27 = __sincos_stret(a4 * 0.5);
+    v27 = __sincos_stret(yaw * 0.5);
     v28 = 0;
     v29 = vmulq_n_f64(0, v27.__sinval);
     v30 = vnegq_f64(v133);
@@ -2985,28 +2985,28 @@ LABEL_22:
     v66 = 0;
     v50.f64[0] = v146;
     v67 = v160;
-    a1[4] = v159;
-    a1[5] = v67;
+    self[4] = v159;
+    self[5] = v67;
     v68 = v162;
-    a1[6] = v161;
-    a1[7] = v68;
+    self[6] = v161;
+    self[7] = v68;
     v69 = v156;
-    *a1 = v155;
-    a1[1] = v69;
+    *self = v155;
+    self[1] = v69;
     v70 = v158;
-    a1[2] = v157;
-    a1[3] = v70;
-    v71 = a1[5];
-    v151 = a1[4];
+    self[2] = v157;
+    self[3] = v70;
+    v71 = self[5];
+    v151 = self[4];
     v152 = v71;
-    v72 = a1[7];
-    v153 = a1[6];
+    v72 = self[7];
+    v153 = self[6];
     v154 = v72;
-    v73 = a1[1];
-    v147 = *a1;
+    v73 = self[1];
+    v147 = *self;
     v148 = v73;
-    v74 = a1[3];
-    v149 = a1[2];
+    v74 = self[3];
+    v149 = self[2];
     v150 = v74;
     do
     {
@@ -3022,17 +3022,17 @@ LABEL_22:
     v78 = 0;
     v79.f64[0] = v135.f64[0];
     v80 = v160;
-    a1[4] = v159;
-    a1[5] = v80;
+    self[4] = v159;
+    self[5] = v80;
     v81 = v162;
-    a1[6] = v161;
-    a1[7] = v81;
+    self[6] = v161;
+    self[7] = v81;
     v82 = v156;
-    *a1 = v155;
-    a1[1] = v82;
+    *self = v155;
+    self[1] = v82;
     v83 = v158;
-    a1[2] = v157;
-    a1[3] = v83;
+    self[2] = v157;
+    self[3] = v83;
     v85 = v163;
     v84 = v164;
     v87 = v165;
@@ -3041,17 +3041,17 @@ LABEL_22:
     v88 = v168;
     v91 = v169;
     v90 = v170;
-    v92 = a1[5];
-    v151 = a1[4];
+    v92 = self[5];
+    v151 = self[4];
     v152 = v92;
-    v93 = a1[7];
-    v153 = a1[6];
+    v93 = self[7];
+    v153 = self[6];
     v154 = v93;
-    v94 = a1[1];
-    v147 = *a1;
+    v94 = self[1];
+    v147 = *self;
     v148 = v94;
-    v95 = a1[3];
-    v149 = a1[2];
+    v95 = self[3];
+    v149 = self[2];
     v150 = v95;
     do
     {
@@ -3066,28 +3066,28 @@ LABEL_22:
     while (v78 != 128);
     v99 = 0;
     v100 = v160;
-    a1[4] = v159;
-    a1[5] = v100;
+    self[4] = v159;
+    self[5] = v100;
     v101 = v162;
-    a1[6] = v161;
-    a1[7] = v101;
+    self[6] = v161;
+    self[7] = v101;
     v102 = v156;
-    *a1 = v155;
-    a1[1] = v102;
+    *self = v155;
+    self[1] = v102;
     v103 = v158;
-    a1[2] = v157;
-    a1[3] = v103;
-    v104 = a1[5];
-    v151 = a1[4];
+    self[2] = v157;
+    self[3] = v103;
+    v104 = self[5];
+    v151 = self[4];
     v152 = v104;
-    v105 = a1[7];
-    v153 = a1[6];
+    v105 = self[7];
+    v153 = self[6];
     v154 = v105;
-    v106 = a1[1];
-    v147 = *a1;
+    v106 = self[1];
+    v147 = *self;
     v148 = v106;
-    v107 = a1[3];
-    v149 = a1[2];
+    v107 = self[3];
+    v149 = self[2];
     v150 = v107;
     do
     {
@@ -3104,28 +3104,28 @@ LABEL_22:
     v111 = 0;
     v56.f64[1] = MidY;
     v112 = v160;
-    a1[4] = v159;
-    a1[5] = v112;
+    self[4] = v159;
+    self[5] = v112;
     v113 = v162;
-    a1[6] = v161;
-    a1[7] = v113;
+    self[6] = v161;
+    self[7] = v113;
     v114 = v156;
-    *a1 = v155;
-    a1[1] = v114;
+    *self = v155;
+    self[1] = v114;
     v115 = v158;
-    a1[2] = v157;
-    a1[3] = v115;
-    v116 = a1[5];
-    v151 = a1[4];
+    self[2] = v157;
+    self[3] = v115;
+    v116 = self[5];
+    v151 = self[4];
     v152 = v116;
-    v117 = a1[7];
-    v153 = a1[6];
+    v117 = self[7];
+    v153 = self[6];
     v154 = v117;
-    v118 = a1[1];
-    v147 = *a1;
+    v118 = self[1];
+    v147 = *self;
     v148 = v118;
-    v119 = a1[3];
-    v149 = a1[2];
+    v119 = self[3];
+    v149 = self[2];
     v150 = v119;
     do
     {
@@ -3139,14 +3139,14 @@ LABEL_22:
 
     while (v111 != 128);
     v123 = v160;
-    a1[4] = v159;
-    a1[5] = v123;
+    self[4] = v159;
+    self[5] = v123;
     v124 = v162;
-    a1[6] = v161;
-    a1[7] = v124;
+    self[6] = v161;
+    self[7] = v124;
     v125 = v156;
-    *a1 = v155;
-    a1[1] = v125;
+    *self = v155;
+    self[1] = v125;
     v130 = v157;
     v131 = v158;
   }
@@ -3155,20 +3155,20 @@ LABEL_22:
   {
     v126 = MEMORY[0x1E69E9B08];
     v127 = *(MEMORY[0x1E69E9B08] + 80);
-    a1[4] = *(MEMORY[0x1E69E9B08] + 64);
-    a1[5] = v127;
+    self[4] = *(MEMORY[0x1E69E9B08] + 64);
+    self[5] = v127;
     v128 = v126[7];
-    a1[6] = v126[6];
-    a1[7] = v128;
+    self[6] = v126[6];
+    self[7] = v128;
     v129 = v126[1];
-    *a1 = *v126;
-    a1[1] = v129;
+    *self = *v126;
+    self[1] = v129;
     v130 = v126[2];
     v131 = v126[3];
   }
 
-  a1[2] = v130;
-  a1[3] = v131;
+  self[2] = v130;
+  self[3] = v131;
 }
 
 @end

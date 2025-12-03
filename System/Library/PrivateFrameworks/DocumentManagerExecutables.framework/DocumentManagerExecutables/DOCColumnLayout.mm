@@ -1,17 +1,17 @@
 @interface DOCColumnLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (_TtC26DocumentManagerExecutablesP33_4B25C1241B3CB7AF52EB95B520B0CFC515DOCColumnLayout)init;
 @end
 
 @implementation DOCColumnLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = DOCColumnLayout.shouldInvalidateLayout(forBoundsChange:)(x, y, width, height);
 
   return v8 & 1;

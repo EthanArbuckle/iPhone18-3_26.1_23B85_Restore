@@ -1,6 +1,6 @@
 @interface _CATXPCTransportSendMessageOperation
 - (CATXPCTransport)transport;
-- (void)didFailWithError:(id)a3;
+- (void)didFailWithError:(id)error;
 - (void)didProcessMessage;
 - (void)main;
 @end
@@ -12,17 +12,17 @@
   v3 = CATGetCatalystQueue();
   CATAssertIsQueue(v3);
 
-  v5 = [(_CATXPCTransportSendMessageOperation *)self transport];
-  if (v5 && ![(CATOperation *)self isCanceled])
+  transport = [(_CATXPCTransportSendMessageOperation *)self transport];
+  if (transport && ![(CATOperation *)self isCanceled])
   {
-    v4 = [(_CATXPCTransportSendMessageOperation *)self message];
-    [v5 transportSendMessageOperation:self processMessage:v4];
+    message = [(_CATXPCTransportSendMessageOperation *)self message];
+    [transport transportSendMessageOperation:self processMessage:message];
   }
 
   else
   {
-    v4 = CATErrorWithCodeAndUserInfo(404, 0);
-    [(CATOperation *)self endOperationWithError:v4];
+    message = CATErrorWithCodeAndUserInfo(404, 0);
+    [(CATOperation *)self endOperationWithError:message];
   }
 }
 
@@ -35,12 +35,12 @@
   }
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(CATOperation *)self isExecuting])
   {
-    [(CATOperation *)self endOperationWithError:v4];
+    [(CATOperation *)self endOperationWithError:errorCopy];
   }
 }
 

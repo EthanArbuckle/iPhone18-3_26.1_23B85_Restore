@@ -1,5 +1,5 @@
 @interface PBADeviceBlockOverlayViewController
-- (PBADeviceBlockOverlayViewController)initWithBlockStatusProvider:(id)a3;
+- (PBADeviceBlockOverlayViewController)initWithBlockStatusProvider:(id)provider;
 - (PBADeviceBlockOverlayViewControllerDelegate)delegate;
 - (void)dealloc;
 - (void)loadView;
@@ -7,16 +7,16 @@
 
 @implementation PBADeviceBlockOverlayViewController
 
-- (PBADeviceBlockOverlayViewController)initWithBlockStatusProvider:(id)a3
+- (PBADeviceBlockOverlayViewController)initWithBlockStatusProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = PBADeviceBlockOverlayViewController;
   v5 = [(PBADeviceBlockOverlayViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PBADeviceBlockOverlayViewController *)v5 setBlockStatusProvider:v4];
+    [(PBADeviceBlockOverlayViewController *)v5 setBlockStatusProvider:providerCopy];
   }
 
   return v6;
@@ -49,9 +49,9 @@
   [v7 _referenceBounds];
   v8 = [v6 initWithFrame:4 style:?];
 
-  v9 = [v8 titleLabel];
-  v10 = [(SBFDeviceBlockTimer *)self->_blockTimer titleText];
-  [v9 setText:v10];
+  titleLabel = [v8 titleLabel];
+  titleText = [(SBFDeviceBlockTimer *)self->_blockTimer titleText];
+  [titleLabel setText:titleText];
 
   v11 = +[UIColor blackColor];
   [v8 setBackgroundColor:v11];

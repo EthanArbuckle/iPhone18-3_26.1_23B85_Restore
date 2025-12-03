@@ -1,15 +1,15 @@
 @interface SUIUtilities
-+ (BOOL)isSWKeyboardHiddenForWindow:(id)a3;
++ (BOOL)isSWKeyboardHiddenForWindow:(id)window;
 + (BOOL)isSpotlightUICLI;
 + (id)prototypeDefaults;
 + (id)spotlightCacheQueue;
 + (id)visionResourcesQueue;
-+ (unint64_t)deviceAuthenticationStateForView:(id)a3;
-+ (unint64_t)stateForSearchUIAuthenticationState:(unint64_t)a3;
-+ (void)performDeleteCommand:(id)a3;
++ (unint64_t)deviceAuthenticationStateForView:(id)view;
++ (unint64_t)stateForSearchUIAuthenticationState:(unint64_t)state;
++ (void)performDeleteCommand:(id)command;
 + (void)prewarmVisionForImageDerivedColors;
 + (void)releaseVisionCachedResources;
-+ (void)setFiltersToSimulateDelete:(id)a3;
++ (void)setFiltersToSimulateDelete:(id)delete;
 @end
 
 @implementation SUIUtilities
@@ -44,9 +44,9 @@ void __50__SUIUtilities_prewarmVisionForImageDerivedColors__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setFiltersToSimulateDelete:(id)a3
++ (void)setFiltersToSimulateDelete:(id)delete
 {
-  sSUIFiltersToSimulateDelete = [a3 copy];
+  sSUIFiltersToSimulateDelete = [delete copy];
 
   MEMORY[0x2821F96F8]();
 }
@@ -80,14 +80,14 @@ void __36__SUIUtilities_visionResourcesQueue__block_invoke()
     _os_signpost_emit_with_name_impl(&dword_26B8E8000, MEMORY[0x277D86220], OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "vision_prewarm", "", v4, 2u);
   }
 
-  v3 = [a1 visionResourcesQueue];
-  dispatch_async(v3, &__block_literal_global_223);
+  visionResourcesQueue = [self visionResourcesQueue];
+  dispatch_async(visionResourcesQueue, &__block_literal_global_223);
 }
 
 + (void)releaseVisionCachedResources
 {
-  v2 = [a1 visionResourcesQueue];
-  dispatch_async(v2, &__block_literal_global_228);
+  visionResourcesQueue = [self visionResourcesQueue];
+  dispatch_async(visionResourcesQueue, &__block_literal_global_228);
 }
 
 void __44__SUIUtilities_releaseVisionCachedResources__block_invoke()
@@ -138,22 +138,22 @@ void __32__SUIUtilities_isSpotlightUICLI__block_invoke()
   isSpotlightUICLI_isSpotlightUICLI = [v0 isEqualToString:@"com.apple.spotlightui.cli"];
 }
 
-+ (unint64_t)stateForSearchUIAuthenticationState:(unint64_t)a3
++ (unint64_t)stateForSearchUIAuthenticationState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return state == 1;
   }
 }
 
-+ (unint64_t)deviceAuthenticationStateForView:(id)a3
++ (unint64_t)deviceAuthenticationStateForView:(id)view
 {
-  v3 = [MEMORY[0x277D4C898] deviceAuthenticationStateForView:a3];
+  v3 = [MEMORY[0x277D4C898] deviceAuthenticationStateForView:view];
 
   return [SUIUtilities stateForSearchUIAuthenticationState:v3];
 }
@@ -177,37 +177,37 @@ uint64_t __35__SUIUtilities_spotlightCacheQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)performDeleteCommand:(id)a3
++ (void)performDeleteCommand:(id)command
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 itemIdentifiers];
-  v6 = [v5 count];
+  commandCopy = command;
+  itemIdentifiers = [commandCopy itemIdentifiers];
+  v6 = [itemIdentifiers count];
 
   if (v6)
   {
     v7 = SUISGeneralLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 itemIdentifiers];
-      v9 = [v8 count];
+      itemIdentifiers2 = [commandCopy itemIdentifiers];
+      v9 = [itemIdentifiers2 count];
       *buf = 134217984;
       v50 = v9;
       _os_log_impl(&dword_26B8E8000, v7, OS_LOG_TYPE_DEFAULT, "Deleting expired items (%lu)", buf, 0xCu);
     }
 
-    v10 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
-    v11 = [v4 itemIdentifiers];
-    [v10 indexSearchableItems:0 deleteSearchableItemsWithIdentifiers:v11 clientState:0 protectionClass:0 forBundleID:0 options:32 completionHandler:&__block_literal_global_250];
+    defaultSearchableIndex = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+    itemIdentifiers3 = [commandCopy itemIdentifiers];
+    [defaultSearchableIndex indexSearchableItems:0 deleteSearchableItemsWithIdentifiers:itemIdentifiers3 clientState:0 protectionClass:0 forBundleID:0 options:32 completionHandler:&__block_literal_global_250];
   }
 
-  v12 = [v4 domainIdentifiers];
-  v13 = [v12 count];
+  domainIdentifiers = [commandCopy domainIdentifiers];
+  v13 = [domainIdentifiers count];
 
   if (v13)
   {
-    v14 = [v4 itemIdentifiers];
-    v15 = [v14 count];
+    itemIdentifiers4 = [commandCopy itemIdentifiers];
+    v15 = [itemIdentifiers4 count];
 
     if (!v15)
     {
@@ -216,8 +216,8 @@ uint64_t __35__SUIUtilities_spotlightCacheQueue__block_invoke()
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v17 = [v4 domainIdentifiers];
-      v18 = [v17 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      domainIdentifiers2 = [commandCopy domainIdentifiers];
+      v18 = [domainIdentifiers2 countByEnumeratingWithState:&v43 objects:v48 count:16];
       if (v18)
       {
         v19 = v18;
@@ -228,14 +228,14 @@ uint64_t __35__SUIUtilities_spotlightCacheQueue__block_invoke()
           {
             if (*v44 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(domainIdentifiers2);
             }
 
             v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"_kMDItemDomainIdentifier != %@", *(*(&v43 + 1) + 8 * i)];
             [v16 addObject:v22];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v43 objects:v48 count:16];
+          v19 = [domainIdentifiers2 countByEnumeratingWithState:&v43 objects:v48 count:16];
         }
 
         while (v19);
@@ -248,34 +248,34 @@ uint64_t __35__SUIUtilities_spotlightCacheQueue__block_invoke()
       v27 = [v24 stringWithFormat:@"(%@) || kMDItemLastUsedDate >= %lf", v23, v26];
       v47 = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
-      [a1 setFiltersToSimulateDelete:v28];
+      [self setFiltersToSimulateDelete:v28];
     }
 
     v29 = SUISGeneralLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v4 domainIdentifiers];
-      v31 = [v30 count];
+      domainIdentifiers3 = [commandCopy domainIdentifiers];
+      v31 = [domainIdentifiers3 count];
       *buf = 134217984;
       v50 = v31;
       _os_log_impl(&dword_26B8E8000, v29, OS_LOG_TYPE_DEFAULT, "Deleting expired domains (%lu)", buf, 0xCu);
     }
 
-    v32 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
-    v33 = [v4 domainIdentifiers];
-    [v32 deleteSearchableItemsWithDomainIdentifiers:v33 protectionClass:0 forBundleID:0 options:32 completionHandler:&__block_literal_global_265];
+    defaultSearchableIndex2 = [MEMORY[0x277CC34A8] defaultSearchableIndex];
+    domainIdentifiers4 = [commandCopy domainIdentifiers];
+    [defaultSearchableIndex2 deleteSearchableItemsWithDomainIdentifiers:domainIdentifiers4 protectionClass:0 forBundleID:0 options:32 completionHandler:&__block_literal_global_265];
   }
 
-  v34 = [v4 filesToDelete];
-  v35 = [v34 count];
+  filesToDelete = [commandCopy filesToDelete];
+  v35 = [filesToDelete count];
 
   if (v35)
   {
     v36 = SUISGeneralLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [v4 filesToDelete];
-      v38 = [v37 count];
+      filesToDelete2 = [commandCopy filesToDelete];
+      v38 = [filesToDelete2 count];
       *buf = 134217984;
       v50 = v38;
       _os_log_impl(&dword_26B8E8000, v36, OS_LOG_TYPE_DEFAULT, "Deleting expired files (%lu)", buf, 0xCu);
@@ -286,7 +286,7 @@ uint64_t __35__SUIUtilities_spotlightCacheQueue__block_invoke()
     block[1] = 3221225472;
     block[2] = __37__SUIUtilities_performDeleteCommand___block_invoke_266;
     block[3] = &unk_279D10308;
-    v42 = v4;
+    v42 = commandCopy;
     dispatch_async(v39, block);
   }
 
@@ -375,24 +375,24 @@ void __37__SUIUtilities_performDeleteCommand___block_invoke_266(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isSWKeyboardHiddenForWindow:(id)a3
++ (BOOL)isSWKeyboardHiddenForWindow:(id)window
 {
-  v3 = [a3 windowScene];
-  v4 = [v3 _FBSScene];
-  v5 = [v4 settings];
-  v6 = [v5 displayConfiguration];
-  v7 = [v6 identity];
-  if ([v7 isContinuityDisplay])
+  windowScene = [window windowScene];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
+  displayConfiguration = [settings displayConfiguration];
+  identity = [displayConfiguration identity];
+  if ([identity isContinuityDisplay])
   {
-    v8 = 1;
+    isInHardwareKeyboardMode = 1;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
+    isInHardwareKeyboardMode = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
   }
 
-  return v8;
+  return isInHardwareKeyboardMode;
 }
 
 void __37__SUIUtilities_performDeleteCommand___block_invoke_cold_1(uint64_t a1, NSObject *a2)

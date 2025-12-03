@@ -1,9 +1,9 @@
 @interface HMDRemoteDeviceMessageDestination
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)a3;
-- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)a3 device:(id)a4;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)target;
+- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)target device:(id)device;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)remoteDestinationString;
 - (id)shortDescription;
 - (unint64_t)hash;
@@ -13,66 +13,66 @@
 
 - (id)remoteDestinationString
 {
-  v3 = [(HMDRemoteDeviceMessageDestination *)self device];
-  v4 = [v3 account];
-  v5 = [v4 isCurrentAccount];
+  device = [(HMDRemoteDeviceMessageDestination *)self device];
+  account = [device account];
+  isCurrentAccount = [account isCurrentAccount];
 
-  if (v5)
+  if (isCurrentAccount)
   {
-    v6 = [(HMDRemoteDeviceMessageDestination *)self device];
-    v7 = [v6 localHandles];
-    v8 = [v7 firstObject];
+    device2 = [(HMDRemoteDeviceMessageDestination *)self device];
+    localHandles = [device2 localHandles];
+    firstObject = [localHandles firstObject];
 
-    if (v8)
+    if (firstObject)
     {
-      v9 = v8;
+      preferredHandle3 = firstObject;
 LABEL_7:
-      v16 = [v9 destination];
+      destination = [preferredHandle3 destination];
       goto LABEL_9;
     }
   }
 
-  v10 = [(HMDRemoteDeviceMessageDestination *)self preferredHandle];
-  if (v10)
+  preferredHandle = [(HMDRemoteDeviceMessageDestination *)self preferredHandle];
+  if (preferredHandle)
   {
-    v11 = v10;
-    v12 = [(HMDRemoteDeviceMessageDestination *)self device];
-    v13 = [v12 handles];
-    v14 = [(HMDRemoteDeviceMessageDestination *)self preferredHandle];
-    v15 = [v13 containsObject:v14];
+    v11 = preferredHandle;
+    device3 = [(HMDRemoteDeviceMessageDestination *)self device];
+    handles = [device3 handles];
+    preferredHandle2 = [(HMDRemoteDeviceMessageDestination *)self preferredHandle];
+    v15 = [handles containsObject:preferredHandle2];
 
     if (v15)
     {
-      v9 = [(HMDRemoteDeviceMessageDestination *)self preferredHandle];
-      v8 = v9;
+      preferredHandle3 = [(HMDRemoteDeviceMessageDestination *)self preferredHandle];
+      firstObject = preferredHandle3;
       goto LABEL_7;
     }
   }
 
-  v8 = [(HMDRemoteDeviceMessageDestination *)self device];
-  v16 = [v8 remoteDestinationString];
+  firstObject = [(HMDRemoteDeviceMessageDestination *)self device];
+  destination = [firstObject remoteDestinationString];
 LABEL_9:
-  v17 = v16;
+  v17 = destination;
 
   return v17;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = shouldLogPrivateInformation();
-  v6 = [(HMDRemoteDeviceMessageDestination *)self device];
-  v7 = v6;
+  device = [(HMDRemoteDeviceMessageDestination *)self device];
+  v7 = device;
   if ((v5 & 1) == 0)
   {
-    v8 = [v6 privateDescription];
+    privateDescription = [device privateDescription];
 
-    v7 = v8;
+    v7 = privateDescription;
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [objc_opt_class() shortDescription];
-  if (v3)
+  shortDescription = [objc_opt_class() shortDescription];
+  if (pointerCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -82,11 +82,11 @@ LABEL_9:
     v11 = &stru_286509E58;
   }
 
-  v12 = [(HMFMessageDestination *)self target];
-  v13 = [v12 UUIDString];
-  v14 = [v9 stringWithFormat:@"<%@%@, Target = %@, Device %@>", v10, v11, v13, v7];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  v14 = [v9 stringWithFormat:@"<%@%@, Target = %@, Device %@>", shortDescription, v11, uUIDString, v7];
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -96,18 +96,18 @@ LABEL_9:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMFMessageDestination *)self target];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  shortDescription = [objc_opt_class() shortDescription];
+  target = [(HMFMessageDestination *)self target];
+  uUIDString = [target UUIDString];
+  v7 = [v3 stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -115,11 +115,11 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HMFMessageDestination target](self, "target"), v5 = objc_claimAutoreleasedReturnValue(), -[HMFMessageDestination target](v4, "target"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v7))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HMFMessageDestination target](self, "target"), v5 = objc_claimAutoreleasedReturnValue(), -[HMFMessageDestination target](equalCopy, "target"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, v7))
     {
-      v8 = [(HMDRemoteDeviceMessageDestination *)self device];
-      v9 = [(HMDRemoteDeviceMessageDestination *)v4 device];
-      v10 = [v8 isEqual:v9];
+      device = [(HMDRemoteDeviceMessageDestination *)self device];
+      device2 = [(HMDRemoteDeviceMessageDestination *)equalCopy device];
+      v10 = [device isEqual:device2];
     }
 
     else
@@ -133,32 +133,32 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(HMFMessageDestination *)self target];
-  v4 = [v3 hash];
-  v5 = [(HMDRemoteDeviceMessageDestination *)self device];
-  v6 = [v5 hash];
+  target = [(HMFMessageDestination *)self target];
+  v4 = [target hash];
+  device = [(HMDRemoteDeviceMessageDestination *)self device];
+  v6 = [device hash];
 
   return v6 ^ v4;
 }
 
-- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)a3 device:(id)a4
+- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)target device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = HMDRemoteDeviceMessageDestination;
-  v8 = [(HMFMessageDestination *)&v11 initWithTarget:a3];
+  v8 = [(HMFMessageDestination *)&v11 initWithTarget:target];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a4);
+    objc_storeStrong(&v8->_device, device);
   }
 
   return v9;
 }
 
-- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)a3
+- (HMDRemoteDeviceMessageDestination)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

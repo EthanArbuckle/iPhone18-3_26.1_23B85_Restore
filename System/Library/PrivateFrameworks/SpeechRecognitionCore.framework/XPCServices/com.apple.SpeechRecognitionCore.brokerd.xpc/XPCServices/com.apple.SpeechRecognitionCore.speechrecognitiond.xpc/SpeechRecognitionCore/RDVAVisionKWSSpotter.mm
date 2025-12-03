@@ -1,19 +1,19 @@
 @interface RDVAVisionKWSSpotter
-- (RDVAVisionKWSSpotter)initWithDelegate:(id)a3;
-- (void)addAudioSamples:(void *)a3 count:(int)a4;
+- (RDVAVisionKWSSpotter)initWithDelegate:(id)delegate;
+- (void)addAudioSamples:(void *)samples count:(int)count;
 @end
 
 @implementation RDVAVisionKWSSpotter
 
-- (RDVAVisionKWSSpotter)initWithDelegate:(id)a3
+- (RDVAVisionKWSSpotter)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = RDVAVisionKWSSpotter;
   v5 = [(RDVAVisionKWSSpotter *)&v9 init];
   if (v5)
   {
-    v6 = [[_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond25RDVASwiftVisionKWSSpotter alloc] initWithDelegate:v4];
+    v6 = [[_TtC50com_apple_SpeechRecognitionCore_speechrecognitiond25RDVASwiftVisionKWSSpotter alloc] initWithDelegate:delegateCopy];
     swiftVisionKWSSpotter = v5->_swiftVisionKWSSpotter;
     v5->_swiftVisionKWSSpotter = v6;
   }
@@ -21,27 +21,27 @@
   return v5;
 }
 
-- (void)addAudioSamples:(void *)a3 count:(int)a4
+- (void)addAudioSamples:(void *)samples count:(int)count
 {
-  v7 = a4;
-  v11 = [[NSMutableArray alloc] initWithCapacity:a4];
-  if (a4 >= 1)
+  countCopy = count;
+  v11 = [[NSMutableArray alloc] initWithCapacity:count];
+  if (count >= 1)
   {
-    v8 = a4;
+    countCopy2 = count;
     do
     {
-      v9 = *a3;
-      a3 = a3 + 2;
+      v9 = *samples;
+      samples = samples + 2;
       v10 = [NSNumber numberWithInt:v9];
       [v11 addObject:v10];
 
-      --v8;
+      --countCopy2;
     }
 
-    while (v8);
+    while (countCopy2);
   }
 
-  [(RDVASwiftVisionKWSSpotter *)self->_swiftVisionKWSSpotter addAudioSamplesWithAudio:v11 count:v7];
+  [(RDVASwiftVisionKWSSpotter *)self->_swiftVisionKWSSpotter addAudioSamplesWithAudio:v11 count:countCopy];
 }
 
 @end

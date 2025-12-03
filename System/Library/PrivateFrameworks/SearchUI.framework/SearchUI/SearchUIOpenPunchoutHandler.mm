@@ -1,63 +1,63 @@
 @interface SearchUIOpenPunchoutHandler
-+ (BOOL)punchoutIsOpenableInFinder:(id)a3;
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
-+ (id)queryItemValueForName:(id)a3 inURL:(id)a4;
++ (BOOL)punchoutIsOpenableInFinder:(id)finder;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
++ (id)queryItemValueForName:(id)name inURL:(id)l;
 - (BOOL)isWebPunchout;
 - (BOOL)prefersModalPresentation;
 - (BOOL)schemeSupportedForCopyAndShare;
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4;
+- (id)createViewControllerForCommand:(id)command environment:(id)environment;
 - (id)defaultSymbolName;
 - (id)defaultTitle;
 - (id)destinationPunchout;
 - (id)itemProvider;
 - (id)url;
-- (void)fetchShareableURLWithCompletionHandler:(id)a3;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)fetchShareableURLWithCompletionHandler:(id)handler;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUIOpenPunchoutHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v5 = a3;
-  v6 = [a4 selectableGridPunchoutIndex];
-  v7 = [v5 punchouts];
+  modelCopy = model;
+  selectableGridPunchoutIndex = [environment selectableGridPunchoutIndex];
+  punchouts = [modelCopy punchouts];
 
-  if (v6 < 1 || [v7 count] <= v6)
+  if (selectableGridPunchoutIndex < 1 || [punchouts count] <= selectableGridPunchoutIndex)
   {
-    v8 = [v7 firstObject];
+    firstObject = [punchouts firstObject];
   }
 
   else
   {
-    v8 = [v7 objectAtIndexedSubscript:v6];
+    firstObject = [punchouts objectAtIndexedSubscript:selectableGridPunchoutIndex];
   }
 
-  v9 = v8;
-  v10 = [v8 preferredOpenableURL];
+  v9 = firstObject;
+  preferredOpenableURL = [firstObject preferredOpenableURL];
 
-  if (v10)
+  if (preferredOpenableURL)
   {
-    v10 = objc_opt_new();
-    [v10 setPunchout:v9];
+    preferredOpenableURL = objc_opt_new();
+    [preferredOpenableURL setPunchout:v9];
   }
 
-  return v10;
+  return preferredOpenableURL;
 }
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v12 = [(SearchUIOpenPunchoutHandler *)self destinationPunchout:a3];
-  v7 = [(SearchUIOpenPunchoutHandler *)self punchoutType];
-  v8 = a4 == 7;
-  if (a4 == 22)
+  v12 = [(SearchUIOpenPunchoutHandler *)self destinationPunchout:command];
+  punchoutType = [(SearchUIOpenPunchoutHandler *)self punchoutType];
+  v8 = event == 7;
+  if (event == 22)
   {
     v8 = 2;
   }
 
-  if (v7)
+  if (punchoutType)
   {
-    v9 = v7;
+    v9 = punchoutType;
   }
 
   else
@@ -65,7 +65,7 @@
     v9 = v8;
   }
 
-  v10 = [v12 preferredOpenableURL];
+  preferredOpenableURL = [v12 preferredOpenableURL];
   v11 = [objc_opt_class() punchoutIsOpenableInFinder:v12];
   if (v9 - 1 > 1 || (v11 & 1) == 0)
   {
@@ -73,41 +73,41 @@
   }
 }
 
-+ (BOOL)punchoutIsOpenableInFinder:(id)a3
++ (BOOL)punchoutIsOpenableInFinder:(id)finder
 {
-  v3 = a3;
-  v4 = [v3 preferredOpenableURL];
-  v5 = [v3 bundleIdentifier];
+  finderCopy = finder;
+  preferredOpenableURL = [finderCopy preferredOpenableURL];
+  bundleIdentifier = [finderCopy bundleIdentifier];
 
-  LOBYTE(v3) = [v5 isEqualToString:@"com.apple.contacts"];
-  LOBYTE(v5) = [v4 isFileURL];
+  LOBYTE(finderCopy) = [bundleIdentifier isEqualToString:@"com.apple.contacts"];
+  LOBYTE(bundleIdentifier) = [preferredOpenableURL isFileURL];
 
-  return v5 & (v3 ^ 1);
+  return bundleIdentifier & (finderCopy ^ 1);
 }
 
 - (BOOL)prefersModalPresentation
 {
   v2 = [(SearchUIOpenPunchoutHandler *)self url];
-  v3 = [v2 host];
-  v4 = [v3 isEqualToString:@"events.shazam.apple.com"];
+  host = [v2 host];
+  v4 = [host isEqualToString:@"events.shazam.apple.com"];
 
   return v4;
 }
 
 - (id)destinationPunchout
 {
-  v2 = [(SearchUICommandHandler *)self command];
-  v3 = [v2 punchout];
+  command = [(SearchUICommandHandler *)self command];
+  punchout = [command punchout];
 
-  return v3;
+  return punchout;
 }
 
 - (id)url
 {
-  v2 = [(SearchUIOpenPunchoutHandler *)self destinationPunchout];
-  v3 = [v2 preferredOpenableURL];
+  destinationPunchout = [(SearchUIOpenPunchoutHandler *)self destinationPunchout];
+  preferredOpenableURL = [destinationPunchout preferredOpenableURL];
 
-  return v3;
+  return preferredOpenableURL;
 }
 
 - (BOOL)schemeSupportedForCopyAndShare
@@ -118,9 +118,9 @@
   }
 
   v4 = [(SearchUIOpenPunchoutHandler *)self url];
-  v5 = [v4 scheme];
-  v6 = [v5 lowercaseString];
-  v7 = [v6 isEqualToString:@"file"];
+  scheme = [v4 scheme];
+  lowercaseString = [scheme lowercaseString];
+  v7 = [lowercaseString isEqualToString:@"file"];
 
   return v7;
 }
@@ -128,40 +128,40 @@
 - (BOOL)isWebPunchout
 {
   v2 = [(SearchUIOpenPunchoutHandler *)self url];
-  v3 = [v2 scheme];
-  v4 = [v3 lowercaseString];
+  scheme = [v2 scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v4 isEqualToString:@"http"])
+  if ([lowercaseString isEqualToString:@"http"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"https"];
+    v5 = [lowercaseString isEqualToString:@"https"];
   }
 
   return v5;
 }
 
-- (void)fetchShareableURLWithCompletionHandler:(id)a3
+- (void)fetchShareableURLWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [(SearchUIOpenPunchoutHandler *)self url];
-  (*(a3 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
 - (id)defaultTitle
 {
-  v2 = [(SearchUIOpenPunchoutHandler *)self punchoutType];
-  if (v2 - 1 > 2)
+  punchoutType = [(SearchUIOpenPunchoutHandler *)self punchoutType];
+  if (punchoutType - 1 > 2)
   {
     v3 = @"OPEN_MENU_ITEM";
   }
 
   else
   {
-    v3 = off_1E85B3AC8[v2 - 1];
+    v3 = off_1E85B3AC8[punchoutType - 1];
   }
 
   return [SearchUIUtilities localizedStringForKey:v3];
@@ -172,9 +172,9 @@
   v3 = [(SearchUIOpenPunchoutHandler *)self punchoutType]- 1;
   if (v3 >= 3)
   {
-    v5 = [(SearchUIOpenPunchoutHandler *)self isWebPunchout];
+    isWebPunchout = [(SearchUIOpenPunchoutHandler *)self isWebPunchout];
     v6 = @"arrow.up.forward.app";
-    if (v5)
+    if (isWebPunchout)
     {
       v6 = @"safari";
     }
@@ -190,16 +190,16 @@
   return v4;
 }
 
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4
+- (id)createViewControllerForCommand:(id)command environment:(id)environment
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(SearchUIOpenPunchoutHandler *)self destinationPunchout:a3];
+  v5 = [(SearchUIOpenPunchoutHandler *)self destinationPunchout:command];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v5 urls];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  urls = [v5 urls];
+  v7 = [urls countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v7)
   {
     v17 = 0;
@@ -214,12 +214,12 @@
     {
       if (*v21 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(urls);
       }
 
       v11 = *(*(&v20 + 1) + 8 * i);
-      v12 = [v11 scheme];
-      if ([v12 isEqualToString:@"stocks"])
+      scheme = [v11 scheme];
+      if ([scheme isEqualToString:@"stocks"])
       {
         v18 = [objc_opt_class() queryItemValueForName:@"symbol" inURL:v11];
         v17 = [objc_alloc(MEMORY[0x1E69D47F8]) initWithStockTicker:v18];
@@ -228,8 +228,8 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v13 = [v11 host];
-      v14 = [v13 isEqualToString:@"weather.apple.com"];
+      host = [v11 host];
+      v14 = [host isEqualToString:@"weather.apple.com"];
 
       if (v14)
       {
@@ -248,8 +248,8 @@ LABEL_19:
       {
         if ([(SearchUIOpenPunchoutHandler *)self isWebPunchout])
         {
-          v15 = [v11 host];
-          v16 = [&unk_1F55DD4D8 containsObject:v15];
+          host2 = [v11 host];
+          v16 = [&unk_1F55DD4D8 containsObject:host2];
 
           if ((v16 & 1) == 0)
           {
@@ -261,7 +261,7 @@ LABEL_19:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v8 = [urls countByEnumeratingWithState:&v20 objects:v24 count:16];
     v17 = 0;
     if (v8)
     {
@@ -276,42 +276,42 @@ LABEL_20:
   return v17;
 }
 
-+ (id)queryItemValueForName:(id)a3 inURL:(id)a4
++ (id)queryItemValueForName:(id)name inURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AF20] componentsWithURL:a4 resolvingAgainstBaseURL:0];
+  nameCopy = name;
+  v6 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 queryItems];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v8)
+  queryItems = [v6 queryItems];
+  value = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (value)
   {
     v9 = *v16;
     while (2)
     {
-      for (i = 0; i != v8; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(queryItems);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v5];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
-          v8 = [v11 value];
+          value = [v11 value];
           goto LABEL_11;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v8)
+      value = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (value)
       {
         continue;
       }
@@ -322,7 +322,7 @@ LABEL_20:
 
 LABEL_11:
 
-  return v8;
+  return value;
 }
 
 - (id)itemProvider

@@ -46,7 +46,7 @@
   v109 = v18;
   [v3 topGradientBottomLocation];
   v20 = v19;
-  v21 = [v3 useSoftLightBlendingModeForTopGradient];
+  useSoftLightBlendingModeForTopGradient = [v3 useSoftLightBlendingModeForTopGradient];
   [(CIImage *)self->_inputImage extent];
   v23 = v22;
   v24 = self->_extendedRect.size.height - v22;
@@ -63,35 +63,35 @@
   if (self->_useBlur)
   {
     v89 = v20;
-    v94 = v21;
+    v94 = useSoftLightBlendingModeForTopGradient;
     v97 = v31;
     v98 = v28;
-    v34 = [MEMORY[0x1E69B3A10] extendedSRGBColorSpace];
-    v35 = [v34 CGColorSpace];
+    extendedSRGBColorSpace = [MEMORY[0x1E69B3A10] extendedSRGBColorSpace];
+    cGColorSpace = [extendedSRGBColorSpace CGColorSpace];
 
-    v36 = [v33 imageByColorMatchingWorkingSpaceToColorSpace:v35];
+    v36 = [v33 imageByColorMatchingWorkingSpaceToColorSpace:cGColorSpace];
 
-    v37 = [MEMORY[0x1E695F648] linearGradientFilter];
+    linearGradientFilter = [MEMORY[0x1E695F648] linearGradientFilter];
     v38 = v9 * v23;
     v39 = v23 - v9 * v23;
-    [v37 setPoint0:{0.0, v39}];
-    [v37 setPoint1:{0.0, v23 + v24 * (1.0 - v7)}];
-    v40 = [MEMORY[0x1E695F610] clearColor];
-    [v37 setColor0:v40];
+    [linearGradientFilter setPoint0:{0.0, v39}];
+    [linearGradientFilter setPoint1:{0.0, v23 + v24 * (1.0 - v7)}];
+    clearColor = [MEMORY[0x1E695F610] clearColor];
+    [linearGradientFilter setColor0:clearColor];
 
-    v41 = [MEMORY[0x1E695F610] greenColor];
-    [v37 setColor1:v41];
+    greenColor = [MEMORY[0x1E695F610] greenColor];
+    [linearGradientFilter setColor1:greenColor];
 
-    v95 = v37;
-    v42 = [v37 outputImage];
-    v112 = v35;
-    v43 = [v42 imageByColorMatchingWorkingSpaceToColorSpace:v35];
+    v95 = linearGradientFilter;
+    outputImage = [linearGradientFilter outputImage];
+    v112 = cGColorSpace;
+    v43 = [outputImage imageByColorMatchingWorkingSpaceToColorSpace:cGColorSpace];
 
     v44 = v24 + v38;
     v93 = v43;
     v45 = [v43 imageByCroppingToRect:{0.0, v39, self->_extendedRect.size.width, v24 + v38}];
     v46 = [v36 imageByCroppingToRect:{0.0, v39, self->_extendedRect.size.width, v24 + v38}];
-    v47 = [v46 imageByClampingToExtent];
+    imageByClampingToExtent = [v46 imageByClampingToExtent];
     v92 = v45;
     v119[0] = v45;
     v48 = *MEMORY[0x1E695FB10];
@@ -102,7 +102,7 @@
     v51 = [v49 numberWithDouble:(v5 + v5) * v50];
     v119[1] = v51;
     v52 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v119 forKeys:v118 count:2];
-    v53 = [v47 imageByApplyingFilter:@"CIMaskedVariableBlur" withInputParameters:v52];
+    v53 = [imageByClampingToExtent imageByApplyingFilter:@"CIMaskedVariableBlur" withInputParameters:v52];
     v91 = v46;
     [v46 extent];
     v54 = [v53 imageByCroppingToRect:?];
@@ -110,14 +110,14 @@
     v90 = v54;
     v96 = v36;
     v111 = [v54 imageByCompositingOverImage:v36];
-    v55 = [(PIHeadroomFilter *)self primaryGradientColor];
-    CopyWithAlpha = CGColorCreateCopyWithAlpha([v55 CGColor], alpha);
+    primaryGradientColor = [(PIHeadroomFilter *)self primaryGradientColor];
+    CopyWithAlpha = CGColorCreateCopyWithAlpha([primaryGradientColor CGColor], alpha);
 
     if (!CopyWithAlpha)
     {
-      v57 = [(PIHeadroomFilter *)self useHighKeyStyle];
+      useHighKeyStyle = [(PIHeadroomFilter *)self useHighKeyStyle];
       v58 = v100;
-      if (v57)
+      if (useHighKeyStyle)
       {
         v58 = v99;
       }
@@ -128,34 +128,34 @@
     v59 = CGColorCreateCopyWithAlpha(CopyWithAlpha, 0.0);
     v60 = [MEMORY[0x1E695F610] colorWithCGColor:CopyWithAlpha];
     v61 = [MEMORY[0x1E695F610] colorWithCGColor:v59];
-    v62 = [MEMORY[0x1E695F648] linearGradientFilter];
+    linearGradientFilter2 = [MEMORY[0x1E695F648] linearGradientFilter];
     v63 = v23 + v24;
-    [v62 setPoint0:{0.0, v63 + -(v103 * v44) * v11}];
-    [v62 setPoint1:{0.0, v39 + v44 * (1.0 - v11 * v105)}];
+    [linearGradientFilter2 setPoint0:{0.0, v63 + -(v103 * v44) * v11}];
+    [linearGradientFilter2 setPoint1:{0.0, v39 + v44 * (1.0 - v11 * v105)}];
     v106 = v60;
-    [v62 setColor0:v60];
+    [linearGradientFilter2 setColor0:v60];
     v104 = v61;
-    [v62 setColor1:v61];
+    [linearGradientFilter2 setColor1:v61];
     v64 = CGColorCreateCopyWithAlpha(CopyWithAlpha, v107);
     v65 = CGColorCreateCopyWithAlpha(v64, 0.0);
     v66 = [MEMORY[0x1E695F610] colorWithCGColor:v64];
     v67 = [MEMORY[0x1E695F610] colorWithCGColor:v65];
-    v68 = [MEMORY[0x1E695F648] linearGradientFilter];
-    [v68 setPoint0:{0.0, v63 + -(v109 * v44) * v11}];
-    [v68 setPoint1:{0.0, v39 + v44 * (1.0 - v11 * v89)}];
+    linearGradientFilter3 = [MEMORY[0x1E695F648] linearGradientFilter];
+    [linearGradientFilter3 setPoint0:{0.0, v63 + -(v109 * v44) * v11}];
+    [linearGradientFilter3 setPoint1:{0.0, v39 + v44 * (1.0 - v11 * v89)}];
     v110 = v66;
-    [v68 setColor0:v66];
+    [linearGradientFilter3 setColor0:v66];
     v108 = v67;
-    [v68 setColor1:v67];
+    [linearGradientFilter3 setColor1:v67];
     CGColorRelease(CopyWithAlpha);
     CGColorRelease(v59);
     CGColorRelease(v64);
     CGColorRelease(v65);
-    v69 = [v62 outputImage];
-    v70 = [v69 imageByCroppingToRect:{0.0, v39, v26, v44}];
+    outputImage2 = [linearGradientFilter2 outputImage];
+    v70 = [outputImage2 imageByCroppingToRect:{0.0, v39, v26, v44}];
 
-    v71 = [v68 outputImage];
-    v72 = [v71 imageByCroppingToRect:{0.0, v39, v26, v44}];
+    outputImage3 = [linearGradientFilter3 outputImage];
+    v72 = [outputImage3 imageByCroppingToRect:{0.0, v39, v26, v44}];
 
     v73 = [v70 imageByColorMatchingWorkingSpaceToColorSpace:v112];
 

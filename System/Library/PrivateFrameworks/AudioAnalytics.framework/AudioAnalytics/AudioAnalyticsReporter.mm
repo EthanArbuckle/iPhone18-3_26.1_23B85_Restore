@@ -1,17 +1,17 @@
 @interface AudioAnalyticsReporter
-+ (void)sendSessionlessMessage:(id)a3 category:(unsigned int)a4 type:(unsigned __int16)a5;
++ (void)sendSessionlessMessage:(id)message category:(unsigned int)category type:(unsigned __int16)type;
 - (AudioAnalyticsReporter)init;
 - (AudioAnalyticsReporter)initWithNewReporterID;
-- (AudioAnalyticsReporter)initWithReporterID:(int64_t)a3;
+- (AudioAnalyticsReporter)initWithReporterID:(int64_t)d;
 - (NSDictionary)configuration;
 - (int64_t)reporterID;
 - (unsigned)serviceType;
 - (void)dealloc;
-- (void)requestMessageForCategory:(unsigned int)a3 type:(unsigned __int16)a4 callback:(id)a5;
-- (void)sendMessage:(id)a3 category:(unsigned int)a4 type:(unsigned __int16)a5;
-- (void)setConfiguration:(id)a3;
-- (void)setReporterID:(int64_t)a3;
-- (void)setServiceType:(unsigned __int16)a3;
+- (void)requestMessageForCategory:(unsigned int)category type:(unsigned __int16)type callback:(id)callback;
+- (void)sendMessage:(id)message category:(unsigned int)category type:(unsigned __int16)type;
+- (void)setConfiguration:(id)configuration;
+- (void)setReporterID:(int64_t)d;
+- (void)setServiceType:(unsigned __int16)type;
 - (void)start;
 - (void)stop;
 @end
@@ -20,7 +20,7 @@
 
 - (void)start
 {
-  v9 = self;
+  selfCopy = self;
   if (sub_1C0BD3500(0x29287472617473, 0xE700000000000000))
   {
     if (qword_1ED6F77D8 != -1)
@@ -29,11 +29,11 @@
     }
 
     v2 = qword_1ED6F78F0;
-    v3 = [(AudioAnalyticsReporter *)v9 reporterID];
+    reporterID = [(AudioAnalyticsReporter *)selfCopy reporterID];
     v4 = *&v2[OBJC_IVAR____TtC14AudioAnalytics12ServerClient_serialQueue];
     v5 = swift_allocObject();
     *(v5 + 16) = v2;
-    *(v5 + 24) = v3;
+    *(v5 + 24) = reporterID;
     v6 = swift_allocObject();
     *(v6 + 16) = sub_1C0BD39A4;
     *(v6 + 24) = v5;
@@ -61,11 +61,11 @@
   }
 }
 
-- (void)sendMessage:(id)a3 category:(unsigned int)a4 type:(unsigned __int16)a5
+- (void)sendMessage:(id)message category:(unsigned int)category type:(unsigned __int16)type
 {
   v8 = sub_1C0BEC058();
-  v9 = self;
-  AudioAnalyticsReporter.sendMessage(_:category:type:)(v8, a4, a5);
+  selfCopy = self;
+  AudioAnalyticsReporter.sendMessage(_:category:type:)(v8, category, type);
 }
 
 - (int64_t)reporterID
@@ -77,7 +77,7 @@
 
 - (void)stop
 {
-  v9 = self;
+  selfCopy = self;
   if (sub_1C0BD3500(0x2928706F7473, 0xE600000000000000))
   {
     if (qword_1ED6F77D8 != -1)
@@ -86,11 +86,11 @@
     }
 
     v2 = qword_1ED6F78F0;
-    v3 = [(AudioAnalyticsReporter *)v9 reporterID];
+    reporterID = [(AudioAnalyticsReporter *)selfCopy reporterID];
     v4 = *&v2[OBJC_IVAR____TtC14AudioAnalytics12ServerClient_serialQueue];
     v5 = swift_allocObject();
     *(v5 + 16) = v2;
-    *(v5 + 24) = v3;
+    *(v5 + 24) = reporterID;
     v6 = swift_allocObject();
     *(v6 + 16) = sub_1C0BD3F7C;
     *(v6 + 24) = v5;
@@ -120,7 +120,7 @@
 
 - (AudioAnalyticsReporter)initWithNewReporterID
 {
-  v2 = self;
+  selfCopy = self;
   if (qword_1ED6F77D8 != -1)
   {
     self = swift_once();
@@ -131,15 +131,15 @@
   v5 = v4;
   sub_1C0BEC178();
 
-  *(&v2->super.isa + OBJC_IVAR___AudioAnalyticsReporter_reporterID) = v8;
-  v7.receiver = v2;
+  *(&selfCopy->super.isa + OBJC_IVAR___AudioAnalyticsReporter_reporterID) = v8;
+  v7.receiver = selfCopy;
   v7.super_class = AudioAnalyticsReporter;
   return [(AudioAnalyticsReporter *)&v7 init];
 }
 
-- (AudioAnalyticsReporter)initWithReporterID:(int64_t)a3
+- (AudioAnalyticsReporter)initWithReporterID:(int64_t)d
 {
-  *(&self->super.isa + OBJC_IVAR___AudioAnalyticsReporter_reporterID) = a3;
+  *(&self->super.isa + OBJC_IVAR___AudioAnalyticsReporter_reporterID) = d;
   v4.receiver = self;
   v4.super_class = AudioAnalyticsReporter;
   return [(AudioAnalyticsReporter *)&v4 init];
@@ -147,7 +147,7 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (!sub_1C0BD3500(0x74696E696564, 0xE600000000000000))
   {
     goto LABEL_5;
@@ -161,7 +161,7 @@
   v3 = qword_1ED6F78F0;
   v4 = OBJC_IVAR___AudioAnalyticsReporter_reporterID;
   swift_beginAccess();
-  v5 = *(&v2->super.isa + v4);
+  v5 = *(&selfCopy->super.isa + v4);
   v6 = *&v3[OBJC_IVAR____TtC14AudioAnalytics12ServerClient_serialQueue];
   v7 = swift_allocObject();
   *(v7 + 16) = v3;
@@ -190,32 +190,32 @@
   else
   {
 LABEL_5:
-    v12.receiver = v2;
+    v12.receiver = selfCopy;
     v12.super_class = AudioAnalyticsReporter;
     [(AudioAnalyticsReporter *)&v12 dealloc];
   }
 }
 
-- (void)setReporterID:(int64_t)a3
+- (void)setReporterID:(int64_t)d
 {
   v5 = OBJC_IVAR___AudioAnalyticsReporter_reporterID;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = d;
 }
 
 - (unsigned)serviceType
 {
   v2 = qword_1ED6F77D8;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
   v4 = qword_1ED6F78F0;
-  v5 = [(AudioAnalyticsReporter *)v3 reporterID];
+  reporterID = [(AudioAnalyticsReporter *)selfCopy reporterID];
   v6 = *&v4[OBJC_IVAR____TtC14AudioAnalytics12ServerClient_serialQueue];
-  MEMORY[0x1EEE9AC00](v5);
+  MEMORY[0x1EEE9AC00](reporterID);
   type metadata accessor for AudioServiceType(0);
   sub_1C0BEC178();
 
@@ -225,16 +225,16 @@ LABEL_5:
 - (NSDictionary)configuration
 {
   v2 = qword_1ED6F77D8;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
   v4 = qword_1ED6F78F0;
-  v5 = [(AudioAnalyticsReporter *)v3 reporterID];
+  reporterID = [(AudioAnalyticsReporter *)selfCopy reporterID];
   v6 = *&v4[OBJC_IVAR____TtC14AudioAnalytics12ServerClient_serialQueue];
-  MEMORY[0x1EEE9AC00](v5);
+  MEMORY[0x1EEE9AC00](reporterID);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBE52888, &qword_1C0BED068);
   sub_1C0BEC178();
 
@@ -243,10 +243,10 @@ LABEL_5:
   return v7;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v4 = sub_1C0BEC058();
-  v5 = self;
+  selfCopy = self;
   AudioAnalyticsReporter.configuration.setter(v4);
 }
 
@@ -257,9 +257,9 @@ LABEL_5:
   return result;
 }
 
-- (void)setServiceType:(unsigned __int16)a3
+- (void)setServiceType:(unsigned __int16)type
 {
-  v11 = self;
+  selfCopy = self;
   if (sub_1C0BD3500(0xD000000000000011, 0x80000001C0BEDAF0))
   {
     if (qword_1ED6F77D8 != -1)
@@ -268,12 +268,12 @@ LABEL_5:
     }
 
     v4 = qword_1ED6F78F0;
-    v5 = [(AudioAnalyticsReporter *)v11 reporterID];
+    reporterID = [(AudioAnalyticsReporter *)selfCopy reporterID];
     v6 = *&v4[OBJC_IVAR____TtC14AudioAnalytics12ServerClient_serialQueue];
     v7 = swift_allocObject();
     *(v7 + 16) = v4;
-    *(v7 + 24) = a3;
-    *(v7 + 32) = v5;
+    *(v7 + 24) = type;
+    *(v7 + 32) = reporterID;
     v8 = swift_allocObject();
     *(v8 + 16) = sub_1C0BDD2F0;
     *(v8 + 24) = v7;
@@ -301,19 +301,19 @@ LABEL_5:
   }
 }
 
-+ (void)sendSessionlessMessage:(id)a3 category:(unsigned int)a4 type:(unsigned __int16)a5
++ (void)sendSessionlessMessage:(id)message category:(unsigned int)category type:(unsigned __int16)type
 {
   v7 = sub_1C0BEC058();
-  _sSo22AudioAnalyticsReporterC0aB0E22sendSessionlessMessage_8category4typeySDys11AnyHashableVypG_So0A13EventCategoryVSo0aK4TypeVtFZ_0(v7, a4, a5);
+  _sSo22AudioAnalyticsReporterC0aB0E22sendSessionlessMessage_8category4typeySDys11AnyHashableVypG_So0A13EventCategoryVSo0aK4TypeVtFZ_0(v7, category, type);
 }
 
-- (void)requestMessageForCategory:(unsigned int)a3 type:(unsigned __int16)a4 callback:(id)a5
+- (void)requestMessageForCategory:(unsigned int)category type:(unsigned __int16)type callback:(id)callback
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(callback);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = self;
-  AudioAnalyticsReporter.requestMessage(for:type:callback:)(a3, a4, sub_1C0BDD278, v9);
+  selfCopy = self;
+  AudioAnalyticsReporter.requestMessage(for:type:callback:)(category, type, sub_1C0BDD278, v9);
 }
 
 @end

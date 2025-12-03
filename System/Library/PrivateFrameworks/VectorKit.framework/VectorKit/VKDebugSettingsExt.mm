@@ -1,7 +1,7 @@
 @interface VKDebugSettingsExt
 + (BOOL)getlayoutContinuously;
 + (id)sharedSettings;
-+ (void)setlayoutContinuously:(BOOL)a3;
++ (void)setlayoutContinuously:(BOOL)continuously;
 @end
 
 @implementation VKDebugSettingsExt
@@ -9,16 +9,16 @@
 + (BOOL)getlayoutContinuously
 {
   v2 = +[VKDebugSettings sharedSettings];
-  v3 = [v2 layoutContinuously];
+  layoutContinuously = [v2 layoutContinuously];
 
-  return v3;
+  return layoutContinuously;
 }
 
-+ (void)setlayoutContinuously:(BOOL)a3
++ (void)setlayoutContinuously:(BOOL)continuously
 {
-  v3 = a3;
+  continuouslyCopy = continuously;
   v4 = +[VKDebugSettings sharedSettings];
-  [v4 setLayoutContinuously:v3];
+  [v4 setLayoutContinuously:continuouslyCopy];
 }
 
 + (id)sharedSettings

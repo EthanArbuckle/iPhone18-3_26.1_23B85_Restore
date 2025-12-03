@@ -1,5 +1,5 @@
 @interface UITableViewWrapperViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityScrollingEnabled;
 - (CGRect)_accessibilityContentFrame;
 - (UIEdgeInsets)_accessibilityVisibleContentInset;
@@ -7,12 +7,12 @@
 
 @implementation UITableViewWrapperViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
@@ -31,7 +31,7 @@
 
 - (CGRect)_accessibilityContentFrame
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableViewWrapperViewAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   if (location[0])
@@ -41,7 +41,7 @@
 
   else
   {
-    v10.receiver = v12;
+    v10.receiver = selfCopy;
     v10.super_class = UITableViewWrapperViewAccessibility;
     [(UITableViewWrapperViewAccessibility *)&v10 _accessibilityContentFrame];
   }

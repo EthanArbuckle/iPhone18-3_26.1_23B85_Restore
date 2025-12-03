@@ -1,6 +1,6 @@
 @interface MDUserOverrideHeuristic
 - (MDUserOverrideHeuristic)init;
-- (MDUserOverrideHeuristic)initWithInternalDefaults:(id)a3;
+- (MDUserOverrideHeuristic)initWithInternalDefaults:(id)defaults;
 - (id)determineCurrentMode;
 - (unint64_t)internalModeOverride;
 - (void)internalModeOverride;
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (MDUserOverrideHeuristic)initWithInternalDefaults:(id)a3
+- (MDUserOverrideHeuristic)initWithInternalDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = MDUserOverrideHeuristic;
   v6 = [(MDUserOverrideHeuristic *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalDefaults, a3);
+    objc_storeStrong(&v6->_internalDefaults, defaults);
   }
 
   return v7;
@@ -34,15 +34,15 @@
 - (id)determineCurrentMode
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(MDUserOverrideHeuristic *)self internalModeOverride];
-  if (v2 == -1)
+  internalModeOverride = [(MDUserOverrideHeuristic *)self internalModeOverride];
+  if (internalModeOverride == -1)
   {
     v7 = 0;
   }
 
   else
   {
-    v3 = v2;
+    v3 = internalModeOverride;
     v4 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
@@ -71,36 +71,36 @@
   }
 
   v3 = [(NSUserDefaults *)self->_internalDefaults stringForKey:@"ModeOverride"];
-  v4 = [v3 lowercaseString];
+  lowercaseString = [v3 lowercaseString];
 
-  if ([v4 isEqualToString:@"silent"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"displayonly"))
+  if ([lowercaseString isEqualToString:@"silent"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"displayonly"))
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"mixed"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"displayforward"))
+  else if ([lowercaseString isEqualToString:@"mixed"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"displayforward"))
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"voice"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"voiceonly"))
+  else if ([lowercaseString isEqualToString:@"voice"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"voiceonly"))
   {
     v5 = 0;
   }
 
-  else if ([v4 isEqualToString:@"voiceforward"])
+  else if ([lowercaseString isEqualToString:@"voiceforward"])
   {
     v5 = 3;
   }
 
   else
   {
-    if (v4)
+    if (lowercaseString)
     {
       v7 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
       {
-        [(MDUserOverrideHeuristic *)v4 internalModeOverride];
+        [(MDUserOverrideHeuristic *)lowercaseString internalModeOverride];
       }
     }
 
@@ -116,7 +116,7 @@
   v3 = 136315394;
   v4 = "[MDUserOverrideHeuristic internalModeOverride]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26807E000, a2, OS_LOG_TYPE_ERROR, "%s #modes Invalid mode override value: %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }

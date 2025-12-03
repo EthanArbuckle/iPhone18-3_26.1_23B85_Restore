@@ -1,18 +1,18 @@
 @interface SCRCGestureStylus
-- (SCRCGestureStylus)initWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5 altitude:(double)a6 azimuth:(double)a7;
+- (SCRCGestureStylus)initWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure altitude:(double)altitude azimuth:(double)azimuth;
 @end
 
 @implementation SCRCGestureStylus
 
-- (SCRCGestureStylus)initWithIdentifier:(unint64_t)a3 location:(CGPoint)a4 pressure:(double)a5 altitude:(double)a6 azimuth:(double)a7
+- (SCRCGestureStylus)initWithIdentifier:(unint64_t)identifier location:(CGPoint)location pressure:(double)pressure altitude:(double)altitude azimuth:(double)azimuth
 {
   v10.receiver = self;
   v10.super_class = SCRCGestureStylus;
-  result = [(SCRCGestureFinger *)&v10 initWithIdentifier:a3 location:a4.x pressure:a4.y, a5];
+  result = [(SCRCGestureFinger *)&v10 initWithIdentifier:identifier location:location.x pressure:location.y, pressure];
   if (result)
   {
-    result->_altitude = a6;
-    result->_azimuth = a7;
+    result->_altitude = altitude;
+    result->_azimuth = azimuth;
   }
 
   return result;

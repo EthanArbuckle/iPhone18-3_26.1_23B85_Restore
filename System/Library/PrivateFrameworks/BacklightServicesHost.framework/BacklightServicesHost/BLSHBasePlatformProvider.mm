@@ -9,18 +9,18 @@
 - (double)backlightFadeOutDuration;
 - (float)backlightDimmedFactor;
 - (id)createInactiveEnvironmentSession;
-- (void)addObserver:(id)a3;
-- (void)notifyObserversWithBlock:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)notifyObserversWithBlock:(id)block;
 - (void)platformDidDetectSignificantUserInteraction;
-- (void)removeObserver:(id)a3;
-- (void)serviceInitializing:(id)a3;
-- (void)setAlwaysOnSettingEnabled:(BOOL)a3;
-- (void)setBacklightDimmedFactor:(float)a3;
-- (void)setBacklightDimmingDuration:(double)a3;
-- (void)setBacklightFadeInDuration:(double)a3;
-- (void)setBacklightFadeOutDuration:(double)a3;
-- (void)setFlipbookSpecification:(id)a3;
-- (void)setSessionProvider:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)serviceInitializing:(id)initializing;
+- (void)setAlwaysOnSettingEnabled:(BOOL)enabled;
+- (void)setBacklightDimmedFactor:(float)factor;
+- (void)setBacklightDimmingDuration:(double)duration;
+- (void)setBacklightFadeInDuration:(double)duration;
+- (void)setBacklightFadeOutDuration:(double)duration;
+- (void)setFlipbookSpecification:(id)specification;
+- (void)setSessionProvider:(id)provider;
 @end
 
 @implementation BLSHBasePlatformProvider
@@ -61,12 +61,12 @@
   [(BLSHBasePlatformProvider *)self notifyObserversWithBlock:v2];
 }
 
-- (void)serviceInitializing:(id)a3
+- (void)serviceInitializing:(id)initializing
 {
-  v4 = a3;
+  initializingCopy = initializing;
   os_unfair_lock_lock(&self->_lock);
   lock_service = self->_lock_service;
-  self->_lock_service = v4;
+  self->_lock_service = initializingCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -79,10 +79,10 @@
   return lock_backlightFadeInDuration;
 }
 
-- (void)setBacklightFadeInDuration:(double)a3
+- (void)setBacklightFadeInDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_backlightFadeInDuration = a3;
+  self->_lock_backlightFadeInDuration = duration;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -95,10 +95,10 @@
   return lock_backlightFadeOutDuration;
 }
 
-- (void)setBacklightFadeOutDuration:(double)a3
+- (void)setBacklightFadeOutDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_backlightFadeOutDuration = a3;
+  self->_lock_backlightFadeOutDuration = duration;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -111,10 +111,10 @@
   return lock_backlightDimmingDuration;
 }
 
-- (void)setBacklightDimmingDuration:(double)a3
+- (void)setBacklightDimmingDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_backlightDimmingDuration = a3;
+  self->_lock_backlightDimmingDuration = duration;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -127,30 +127,30 @@
   return lock_backlightDimmedFactor;
 }
 
-- (void)setBacklightDimmedFactor:(float)a3
+- (void)setBacklightDimmedFactor:(float)factor
 {
   v18 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   lock_backlightDimmedFactor = self->_lock_backlightDimmedFactor;
-  self->_lock_backlightDimmedFactor = a3;
+  self->_lock_backlightDimmedFactor = factor;
   lock_service = self->_lock_service;
   os_unfair_lock_unlock(&self->_lock);
-  if (lock_backlightDimmedFactor != a3 && lock_service != 0)
+  if (lock_backlightDimmedFactor != factor && lock_service != 0)
   {
-    v8 = [MEMORY[0x277CF0880] sharedBacklight];
-    v9 = [v8 backlightState];
+    mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+    backlightState = [mEMORY[0x277CF0880] backlightState];
 
-    if (v9 == 3)
+    if (backlightState == 3)
     {
       v10 = bls_backlight_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v12 = 134218496;
-        v13 = self;
+        selfCopy = self;
         v14 = 2048;
         v15 = lock_backlightDimmedFactor;
         v16 = 2048;
-        v17 = a3;
+        factorCopy = factor;
         _os_log_error_impl(&dword_21FD11000, v10, OS_LOG_TYPE_ERROR, "%p changed dimmed factor (%.2lf->%.2lf) while currently dimmed - change will not be reflected until next update", &v12, 0x20u);
       }
     }
@@ -162,9 +162,9 @@
 - (BOOL)isAlwaysOnEnabled
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHBasePlatformProvider *)self _lock_isAlwaysOnEnabled];
+  _lock_isAlwaysOnEnabled = [(BLSHBasePlatformProvider *)self _lock_isAlwaysOnEnabled];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_isAlwaysOnEnabled;
 }
 
 - (BOOL)isAlwaysOnSettingEnabled
@@ -175,22 +175,22 @@
   return lock_alwaysOnSettingEnabled;
 }
 
-- (void)setAlwaysOnSettingEnabled:(BOOL)a3
+- (void)setAlwaysOnSettingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BLSHService *)self->_lock_service deviceSupportsAlwaysOn];
+  deviceSupportsAlwaysOn = [(BLSHService *)self->_lock_service deviceSupportsAlwaysOn];
   lock_alwaysOnSettingEnabled = self->_lock_alwaysOnSettingEnabled;
-  self->_lock_alwaysOnSettingEnabled = v3;
+  self->_lock_alwaysOnSettingEnabled = enabledCopy;
   os_unfair_lock_unlock(&self->_lock);
-  if (v5 && lock_alwaysOnSettingEnabled != v3)
+  if (deviceSupportsAlwaysOn && lock_alwaysOnSettingEnabled != enabledCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __54__BLSHBasePlatformProvider_setAlwaysOnSettingEnabled___block_invoke;
     v8[3] = &unk_27841EA00;
     v8[4] = self;
-    v9 = v3;
+    v9 = enabledCopy;
     [(BLSHBasePlatformProvider *)self notifyObserversWithBlock:v8];
   }
 }
@@ -204,9 +204,9 @@
   return v3;
 }
 
-- (void)setFlipbookSpecification:(id)a3
+- (void)setFlipbookSpecification:(id)specification
 {
-  v5 = a3;
+  specificationCopy = specification;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_service)
   {
@@ -214,7 +214,7 @@
   }
 
   lock_flipbookSpecification = self->_lock_flipbookSpecification;
-  self->_lock_flipbookSpecification = v5;
+  self->_lock_flipbookSpecification = specificationCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -228,9 +228,9 @@
   return v3;
 }
 
-- (void)setSessionProvider:(id)a3
+- (void)setSessionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_service)
   {
@@ -238,26 +238,26 @@
   }
 
   lock_sessionProvider = self->_lock_sessionProvider;
-  self->_lock_sessionProvider = v5;
+  self->_lock_sessionProvider = providerCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v5];
-  v4 = [(BLSHBasePlatformProvider *)self _lock_isAlwaysOnEnabled];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
+  _lock_isAlwaysOnEnabled = [(BLSHBasePlatformProvider *)self _lock_isAlwaysOnEnabled];
   os_unfair_lock_unlock(&self->_lock);
-  [v5 platformProvider:self didChangeAlwaysOnSetting:v4];
+  [observerCopy platformProvider:self didChangeAlwaysOnSetting:_lock_isAlwaysOnEnabled];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -271,18 +271,18 @@
   return v4;
 }
 
-- (void)notifyObserversWithBlock:(id)a3
+- (void)notifyObserversWithBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSHashTable *)self->_lock_observers allObjects];
+  allObjects = [(NSHashTable *)self->_lock_observers allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -298,7 +298,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);

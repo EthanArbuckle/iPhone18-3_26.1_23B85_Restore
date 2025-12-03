@@ -1,49 +1,49 @@
 @interface STAllowanceDetailListController
-- (STAllowanceDetailListController)initWithCoordinator:(id)a3;
+- (STAllowanceDetailListController)initWithCoordinator:(id)coordinator;
 - (STAllowanceDetailListControllerDelegate)delegate;
-- (id)_allowanceEnabled:(id)a3;
-- (id)_askForMoreTime:(id)a3;
-- (id)_categoryDetailText:(id)a3;
+- (id)_allowanceEnabled:(id)enabled;
+- (id)_askForMoreTime:(id)time;
+- (id)_categoryDetailText:(id)text;
 - (id)atEndOfLimitFooterText;
 - (id)budgetTime;
 - (id)createBudgetedItemSpecifiers;
-- (id)datePickerForSpecifier:(id)a3;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)timeFooterText;
-- (void)_editListButtonPressed:(id)a3;
-- (void)_setAllowanceEnabled:(id)a3 specifier:(id)a4;
-- (void)_setAskForMoreTime:(id)a3 specifier:(id)a4;
-- (void)_showOrHidePickerSpecifierForSpecifier:(id)a3 highlight:(BOOL)a4;
-- (void)cancelButtonTapped:(id)a3;
-- (void)confirmDeletion:(id)a3;
+- (void)_editListButtonPressed:(id)pressed;
+- (void)_setAllowanceEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setAskForMoreTime:(id)time specifier:(id)specifier;
+- (void)_showOrHidePickerSpecifierForSpecifier:(id)specifier highlight:(BOOL)highlight;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)confirmDeletion:(id)deletion;
 - (void)createBudgetedItemSpecifiers;
-- (void)customizeDaysListController:(id)a3 didFinishEditingTimeByDay:(id)a4;
-- (void)datePickerChanged:(id)a3;
-- (void)deleteAllowance:(id)a3;
+- (void)customizeDaysListController:(id)controller didFinishEditingTimeByDay:(id)day;
+- (void)datePickerChanged:(id)changed;
+- (void)deleteAllowance:(id)allowance;
 - (void)loadView;
-- (void)saveButtonTapped:(id)a3;
-- (void)showCustomizeDaysController:(id)a3;
+- (void)saveButtonTapped:(id)tapped;
+- (void)showCustomizeDaysController:(id)controller;
 - (void)showOrHideCustomizeDaysSpecifier;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
 @implementation STAllowanceDetailListController
 
-- (STAllowanceDetailListController)initWithCoordinator:(id)a3
+- (STAllowanceDetailListController)initWithCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = STAllowanceDetailListController;
   v6 = [(STAllowanceDetailListController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coordinator, a3);
+    objc_storeStrong(&v6->_coordinator, coordinator);
   }
 
   return v7;
@@ -56,17 +56,17 @@
   [(STAllowanceDetailListController *)&v8 loadView];
   if ([(STAllowanceDetailListController *)self isSetupController])
   {
-    v3 = [(STAllowanceDetailListController *)self navigationItem];
+    navigationItem = [(STAllowanceDetailListController *)self navigationItem];
     if (![(STAllowanceDetailListController *)self useBackButton])
     {
       v4 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped_];
-      [v3 setLeftBarButtonItem:v4];
+      [navigationItem setLeftBarButtonItem:v4];
     }
 
     if (_UISolariumEnabled())
     {
       v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_saveButtonTapped_];
-      [v3 setRightBarButtonItem:v5];
+      [navigationItem setRightBarButtonItem:v5];
     }
 
     else
@@ -75,7 +75,7 @@
       v5 = [v6 localizedStringForKey:@"AllowanceAddBarButtonItemTitle" value:&stru_28766E5A8 table:0];
 
       v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v5 style:2 target:self action:sel_saveButtonTapped_];
-      [v3 setRightBarButtonItem:v7];
+      [navigationItem setRightBarButtonItem:v7];
     }
   }
 }
@@ -85,12 +85,12 @@
   v10.receiver = self;
   v10.super_class = STAllowanceDetailListController;
   [(STAllowanceDetailListController *)&v10 viewDidLoad];
-  v3 = [(STAllowanceDetailListController *)self allowance];
+  allowance = [(STAllowanceDetailListController *)self allowance];
   v4 = MEMORY[0x277D4B928];
-  v5 = [v3 categoryIdentifiers];
-  v6 = [v3 bundleIdentifiers];
-  v7 = [v3 webDomains];
-  v8 = [v4 displayNameForUsageLimitWithCategoryIdentifiers:v5 bundleIdentifiers:v6 webDomains:v7];
+  categoryIdentifiers = [allowance categoryIdentifiers];
+  bundleIdentifiers = [allowance bundleIdentifiers];
+  webDomains = [allowance webDomains];
+  v8 = [v4 displayNameForUsageLimitWithCategoryIdentifiers:categoryIdentifiers bundleIdentifiers:bundleIdentifiers webDomains:webDomains];
   [(STAllowanceDetailListController *)self setTitle:v8];
 
   [(STAllowanceDetailListController *)self showOrHideCustomizeDaysSpecifier];
@@ -101,21 +101,21 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = STAllowanceDetailListController;
-  [(STAllowanceDetailListController *)&v10 viewDidAppear:a3];
-  v4 = [(STAllowanceDetailListController *)self defaultTimeCellDetailTextColor];
+  [(STAllowanceDetailListController *)&v10 viewDidAppear:appear];
+  defaultTimeCellDetailTextColor = [(STAllowanceDetailListController *)self defaultTimeCellDetailTextColor];
 
-  if (!v4)
+  if (!defaultTimeCellDetailTextColor)
   {
-    v5 = [(STAllowanceDetailListController *)self timeSpecifier];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D40148]];
+    timeSpecifier = [(STAllowanceDetailListController *)self timeSpecifier];
+    v6 = [timeSpecifier objectForKeyedSubscript:*MEMORY[0x277D40148]];
 
-    v7 = [v6 detailTextLabel];
-    v8 = [v7 textColor];
-    [(STAllowanceDetailListController *)self setDefaultTimeCellDetailTextColor:v8];
+    detailTextLabel = [v6 detailTextLabel];
+    textColor = [detailTextLabel textColor];
+    [(STAllowanceDetailListController *)self setDefaultTimeCellDetailTextColor:textColor];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -134,22 +134,22 @@
     v60 = *MEMORY[0x277D3FC48];
     [(STAllowanceDetailListController *)self setSelectedTimeSpecifier:0];
     v4 = +[STScreenTimeSettingsUIBundle bundle];
-    v68 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    st_emptyGroupSpecifier = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
     v65 = [v4 localizedStringForKey:@"AllowanceEnableAllowanceSpecifierName" value:&stru_28766E5A8 table:0];
     v70 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
-    v5 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
-    v6 = [(STAllowanceDetailListController *)self timeFooterText];
+    st_emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    timeFooterText = [(STAllowanceDetailListController *)self timeFooterText];
     v55 = *MEMORY[0x277D3FF88];
-    [v5 setObject:v6 forKeyedSubscript:?];
+    [st_emptyGroupSpecifier2 setObject:timeFooterText forKeyedSubscript:?];
 
-    [(STAllowanceDetailListController *)self setTimeGroupSpecifier:v5];
+    [(STAllowanceDetailListController *)self setTimeGroupSpecifier:st_emptyGroupSpecifier2];
     v63 = [v4 localizedStringForKey:@"AllowanceTimeSpecifierName" value:&stru_28766E5A8 table:0];
     v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
     [(STAllowanceDetailListController *)self setTimeSpecifier:v7];
     v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_28766E5A8 target:self set:0 get:0 detail:0 cell:4 edit:0];
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
-    [v8 setIdentifier:v10];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v8 setIdentifier:uUIDString];
 
     v11 = MEMORY[0x277CCABB0];
     [MEMORY[0x277D3F9E0] preferredHeight];
@@ -168,7 +168,7 @@
     v15 = [v4 localizedStringForKey:@"CategoriesAppsWebsitesGroupSpecifierName" value:&stru_28766E5A8 table:0];
     v16 = [v14 groupSpecifierWithName:v15];
 
-    v69 = [(STAllowanceDetailListController *)self createBudgetedItemSpecifiers];
+    createBudgetedItemSpecifiers = [(STAllowanceDetailListController *)self createBudgetedItemSpecifiers];
     [(STAllowanceDetailListController *)self setBudgetedItemSpecifiers:?];
     v17 = MEMORY[0x277D3FAD8];
     v18 = [v4 localizedStringForKey:@"AllowanceDeleteSpecifierName" value:&stru_28766E5A8 table:0];
@@ -178,29 +178,29 @@
     v19 = objc_alloc(MEMORY[0x277CBEB18]);
     if (v17)
     {
-      v20 = [v19 initWithObjects:{v5, v7, 0}];
+      v20 = [v19 initWithObjects:{st_emptyGroupSpecifier2, v7, 0}];
       v21 = v70;
-      v22 = v68;
+      v22 = st_emptyGroupSpecifier;
     }
 
     else
     {
       v21 = v70;
-      v22 = v68;
-      v20 = [v19 initWithObjects:{v68, v70, v5, v7, 0}];
+      v22 = st_emptyGroupSpecifier;
+      v20 = [v19 initWithObjects:{st_emptyGroupSpecifier, v70, st_emptyGroupSpecifier2, v7, 0}];
     }
 
     v62 = v7;
-    v64 = v5;
-    v66 = [(STAllowanceDetailListController *)self coordinator];
-    if ([v66 isPasscodeEnabled])
+    v64 = st_emptyGroupSpecifier2;
+    coordinator = [(STAllowanceDetailListController *)self coordinator];
+    if ([coordinator isPasscodeEnabled])
     {
       [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
       v23 = v21;
       v24 = v22;
       v26 = v25 = v16;
-      v27 = [(STAllowanceDetailListController *)self atEndOfLimitFooterText];
-      [v26 setObject:v27 forKeyedSubscript:v55];
+      atEndOfLimitFooterText = [(STAllowanceDetailListController *)self atEndOfLimitFooterText];
+      [v26 setObject:atEndOfLimitFooterText forKeyedSubscript:v55];
 
       [v20 addObject:v26];
       v28 = [v4 localizedStringForKey:@"BlockAtEndOfLimit" value:&stru_28766E5A8 table:0];
@@ -213,8 +213,8 @@
     }
 
     [v20 addObject:v16];
-    [v20 addObjectsFromArray:v69];
-    v30 = [(STAllowanceDetailListController *)self allowance];
+    [v20 addObjectsFromArray:createBudgetedItemSpecifiers];
+    allowance = [(STAllowanceDetailListController *)self allowance];
     if (![(STAllowanceDetailListController *)self useBackButton])
     {
       v56 = v16;
@@ -222,24 +222,24 @@
       v32 = [v4 localizedStringForKey:@"EditListSpecifierName" value:&stru_28766E5A8 table:0];
       v33 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
       [v33 setButtonAction:sel__editListButtonPressed_];
-      v34 = [MEMORY[0x277D4BD98] sharedCache];
-      v35 = [v34 blankSpaceImageWithSize:{29.0, 29.0}];
+      mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+      v35 = [mEMORY[0x277D4BD98] blankSpaceImageWithSize:{29.0, 29.0}];
       [v33 setObject:v35 forKeyedSubscript:*MEMORY[0x277D3FFC0]];
 
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
       [v33 setObject:v37 forKeyedSubscript:*MEMORY[0x277D400B8]];
 
-      v38 = [v30 bundleIdentifiers];
-      [v33 setObject:v38 forKeyedSubscript:0x28766E8C8];
+      bundleIdentifiers = [allowance bundleIdentifiers];
+      [v33 setObject:bundleIdentifiers forKeyedSubscript:0x28766E8C8];
 
-      v39 = [v30 webDomains];
-      [v33 setObject:v39 forKeyedSubscript:0x28766E8E8];
+      webDomains = [allowance webDomains];
+      [v33 setObject:webDomains forKeyedSubscript:0x28766E8E8];
 
-      v40 = [v30 categoryIdentifiers];
-      [v33 setObject:v40 forKeyedSubscript:0x28766E908];
+      categoryIdentifiers = [allowance categoryIdentifiers];
+      [v33 setObject:categoryIdentifiers forKeyedSubscript:0x28766E908];
 
-      [v33 setObject:v66 forKeyedSubscript:0x287675C48];
+      [v33 setObject:coordinator forKeyedSubscript:0x287675C48];
       if ((_UISolariumEnabled() & 1) == 0)
       {
         v41 = [v4 localizedStringForKey:@"AllowanceAddBarButtonItemTitle" value:&stru_28766E5A8 table:0];
@@ -253,15 +253,15 @@
       v16 = v56;
     }
 
-    v42 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
-    [v20 addObject:v42];
+    st_emptyGroupSpecifier3 = [MEMORY[0x277D3FAD8] st_emptyGroupSpecifier];
+    [v20 addObject:st_emptyGroupSpecifier3];
 
     if (![(STAllowanceDetailListController *)self isSetupController])
     {
       [v20 addObject:v67];
     }
 
-    if (([v30 shouldAllowEditing] & 1) == 0)
+    if (([allowance shouldAllowEditing] & 1) == 0)
     {
       v43 = v16;
       v57 = v4;
@@ -296,7 +296,7 @@
       }
 
       v4 = v57;
-      v22 = v68;
+      v22 = st_emptyGroupSpecifier;
       v21 = v70;
       v16 = v43;
     }
@@ -308,8 +308,8 @@
 
   if ([(STAllowanceDetailListController *)self creatingNewAllowance])
   {
-    v52 = [(STAllowanceDetailListController *)self timeSpecifier];
-    [(STAllowanceDetailListController *)self _showOrHidePickerSpecifierForSpecifier:v52 highlight:0];
+    timeSpecifier = [(STAllowanceDetailListController *)self timeSpecifier];
+    [(STAllowanceDetailListController *)self _showOrHidePickerSpecifierForSpecifier:timeSpecifier highlight:0];
   }
 
   v53 = *(&self->super.super.super.super.super.isa + v3);
@@ -317,14 +317,14 @@
   return v53;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(STAllowanceDetailListController *)self delegate];
+  disappearCopy = disappear;
+  delegate = [(STAllowanceDetailListController *)self delegate];
   if (![(STAllowanceDetailListController *)self isSetupController]&& ![(STAllowanceDetailListController *)self didDeleteAllowance]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [(STAllowanceDetailListController *)self allowance];
-    [v5 allowanceDetailController:self didSaveAllowance:v6];
+    allowance = [(STAllowanceDetailListController *)self allowance];
+    [delegate allowanceDetailController:self didSaveAllowance:allowance];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -335,16 +335,16 @@
 
   v7.receiver = self;
   v7.super_class = STAllowanceDetailListController;
-  [(STAllowanceDetailListController *)&v7 viewWillDisappear:v3];
+  [(STAllowanceDetailListController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (void)willResignActive
 {
-  v3 = [(STAllowanceDetailListController *)self delegate];
+  delegate = [(STAllowanceDetailListController *)self delegate];
   if (![(STAllowanceDetailListController *)self isSetupController]&& ![(STAllowanceDetailListController *)self didDeleteAllowance]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [(STAllowanceDetailListController *)self allowance];
-    [v3 allowanceDetailController:self didSaveAllowance:v4];
+    allowance = [(STAllowanceDetailListController *)self allowance];
+    [delegate allowanceDetailController:self didSaveAllowance:allowance];
   }
 
   v5.receiver = self;
@@ -352,7 +352,7 @@
   [(STAllowanceDetailListController *)&v5 willResignActive];
 }
 
-- (void)saveButtonTapped:(id)a3
+- (void)saveButtonTapped:(id)tapped
 {
   v4 = +[STUILog persistence];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -361,25 +361,25 @@
     _os_log_impl(&dword_264BA2000, v4, OS_LOG_TYPE_INFO, "User saved edited allowance", v7, 2u);
   }
 
-  v5 = [(STAllowanceDetailListController *)self delegate];
+  delegate = [(STAllowanceDetailListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(STAllowanceDetailListController *)self allowance];
-    [v5 allowanceDetailController:self didSaveAllowance:v6];
+    allowance = [(STAllowanceDetailListController *)self allowance];
+    [delegate allowanceDetailController:self didSaveAllowance:allowance];
   }
 }
 
 - (void)showOrHideCustomizeDaysSpecifier
 {
-  v4 = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
-  v3 = [(STAllowanceDetailListController *)self timePickerSpecifier];
-  if (([(STAllowanceDetailListController *)self containsSpecifier:v4]& 1) == 0)
+  customizeDaysSpecifier = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
+  timePickerSpecifier = [(STAllowanceDetailListController *)self timePickerSpecifier];
+  if (([(STAllowanceDetailListController *)self containsSpecifier:customizeDaysSpecifier]& 1) == 0)
   {
-    [(STAllowanceDetailListController *)self insertSpecifier:v4 afterSpecifier:v3 animated:1];
+    [(STAllowanceDetailListController *)self insertSpecifier:customizeDaysSpecifier afterSpecifier:timePickerSpecifier animated:1];
   }
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   v4 = +[STUILog persistence];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -388,43 +388,43 @@
     _os_log_impl(&dword_264BA2000, v4, OS_LOG_TYPE_INFO, "User cancelled editing allowance", v6, 2u);
   }
 
-  v5 = [(STAllowanceDetailListController *)self delegate];
+  delegate = [(STAllowanceDetailListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 allowanceDetailControllerDidCancel:self];
+    [delegate allowanceDetailControllerDidCancel:self];
   }
 }
 
-- (void)_showOrHidePickerSpecifierForSpecifier:(id)a3 highlight:(BOOL)a4
+- (void)_showOrHidePickerSpecifierForSpecifier:(id)specifier highlight:(BOOL)highlight
 {
-  v4 = a4;
-  v28 = a3;
-  v6 = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
+  highlightCopy = highlight;
+  specifierCopy = specifier;
+  selectedTimeSpecifier = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
 
-  if (v6 == v28)
+  if (selectedTimeSpecifier == specifierCopy)
   {
-    v19 = [(STAllowanceDetailListController *)self allowance];
-    v20 = [v19 timeByDay];
+    allowance = [(STAllowanceDetailListController *)self allowance];
+    timeByDay = [allowance timeByDay];
 
-    if (!v20)
+    if (!timeByDay)
     {
-      v21 = [v28 objectForKeyedSubscript:*MEMORY[0x277D40148]];
-      v22 = [MEMORY[0x277D75348] tableCellGrayTextColor];
-      v23 = [v21 detailTextLabel];
-      [v23 setTextColor:v22];
+      v21 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D40148]];
+      tableCellGrayTextColor = [MEMORY[0x277D75348] tableCellGrayTextColor];
+      detailTextLabel = [v21 detailTextLabel];
+      [detailTextLabel setTextColor:tableCellGrayTextColor];
     }
 
-    v24 = [(STAllowanceDetailListController *)self timePickerSpecifier];
-    [(STAllowanceDetailListController *)self removeSpecifier:v24 animated:1];
+    timePickerSpecifier = [(STAllowanceDetailListController *)self timePickerSpecifier];
+    [(STAllowanceDetailListController *)self removeSpecifier:timePickerSpecifier animated:1];
 
-    v25 = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
-    [(STAllowanceDetailListController *)self removeSpecifier:v25 animated:1];
+    customizeDaysSpecifier = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
+    [(STAllowanceDetailListController *)self removeSpecifier:customizeDaysSpecifier animated:1];
 
-    if (v4)
+    if (highlightCopy)
     {
-      v26 = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
-      v27 = [v26 identifier];
-      [(STAllowanceDetailListController *)self highlightSpecifierWithID:v27];
+      selectedTimeSpecifier2 = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
+      identifier = [selectedTimeSpecifier2 identifier];
+      [(STAllowanceDetailListController *)self highlightSpecifierWithID:identifier];
     }
 
     [(STAllowanceDetailListController *)self setSelectedTimeSpecifier:0];
@@ -433,32 +433,32 @@
   else
   {
     [(STAllowanceDetailListController *)self setSelectedTimeSpecifier:?];
-    v7 = [(STAllowanceDetailListController *)self allowance];
-    v8 = [v7 timeByDay];
+    allowance2 = [(STAllowanceDetailListController *)self allowance];
+    timeByDay2 = [allowance2 timeByDay];
 
-    if (!v8)
+    if (!timeByDay2)
     {
-      v9 = [(STAllowanceDetailListController *)self timeSpecifier];
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D40148]];
+      timeSpecifier = [(STAllowanceDetailListController *)self timeSpecifier];
+      v10 = [timeSpecifier objectForKeyedSubscript:*MEMORY[0x277D40148]];
 
-      v11 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-      v12 = [v10 detailTextLabel];
-      [v12 setTextColor:v11];
+      tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+      detailTextLabel2 = [v10 detailTextLabel];
+      [detailTextLabel2 setTextColor:tableCellBlueTextColor];
     }
 
-    v13 = [(STAllowanceDetailListController *)self timePickerSpecifier];
-    v14 = [(STAllowanceDetailListController *)self timeSpecifier];
-    [(STAllowanceDetailListController *)self insertSpecifier:v13 afterSpecifier:v14 animated:1];
+    timePickerSpecifier2 = [(STAllowanceDetailListController *)self timePickerSpecifier];
+    timeSpecifier2 = [(STAllowanceDetailListController *)self timeSpecifier];
+    [(STAllowanceDetailListController *)self insertSpecifier:timePickerSpecifier2 afterSpecifier:timeSpecifier2 animated:1];
 
-    v15 = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
-    v16 = [(STAllowanceDetailListController *)self timePickerSpecifier];
-    [(STAllowanceDetailListController *)self insertSpecifier:v15 afterSpecifier:v16 animated:1];
+    customizeDaysSpecifier2 = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
+    timePickerSpecifier3 = [(STAllowanceDetailListController *)self timePickerSpecifier];
+    [(STAllowanceDetailListController *)self insertSpecifier:customizeDaysSpecifier2 afterSpecifier:timePickerSpecifier3 animated:1];
 
-    if (v4)
+    if (highlightCopy)
     {
-      v17 = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
-      v18 = [v17 identifier];
-      [(STAllowanceDetailListController *)self highlightSpecifierWithID:v18];
+      selectedTimeSpecifier3 = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
+      identifier2 = [selectedTimeSpecifier3 identifier];
+      [(STAllowanceDetailListController *)self highlightSpecifierWithID:identifier2];
     }
   }
 }
@@ -466,19 +466,19 @@
 - (id)budgetTime
 {
   v3 = +[STScreenTimeSettingsUIBundle bundle];
-  v4 = [(STAllowanceDetailListController *)self allowance];
-  v5 = [v4 timeByDay];
+  allowance = [(STAllowanceDetailListController *)self allowance];
+  timeByDay = [allowance timeByDay];
 
-  if (v5)
+  if (timeByDay)
   {
     v6 = [v3 localizedStringForKey:@"AllowanceCustomScheduleDetailText" value:&stru_28766E5A8 table:0];
   }
 
   else
   {
-    v7 = [(STAllowanceDetailListController *)self allowance];
-    v8 = [v7 time];
-    [STAllowance timeIntervalForAllowanceDateComponents:v8];
+    allowance2 = [(STAllowanceDetailListController *)self allowance];
+    time = [allowance2 time];
+    [STAllowance timeIntervalForAllowanceDateComponents:time];
     v10 = v9;
 
     v11 = objc_opt_new();
@@ -488,8 +488,8 @@
     v12 = [v11 stringFromTimeInterval:v10];
     v13 = [v3 localizedStringForKey:@"AppLimitEveryDayFormat" value:&stru_28766E5A8 table:0];
     v14 = objc_alloc(MEMORY[0x277CCACA8]);
-    v15 = [MEMORY[0x277CBEAF8] currentLocale];
-    v6 = [v14 initWithFormat:v13 locale:v15, v12];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v6 = [v14 initWithFormat:v13 locale:currentLocale, v12];
   }
 
   return v6;
@@ -497,18 +497,18 @@
 
 - (id)timeFooterText
 {
-  v3 = [(STAllowanceDetailListController *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 me];
+  coordinator = [(STAllowanceDetailListController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v5 = [viewModel me];
 
-  LODWORD(v4) = [v5 isRemoteUser];
+  LODWORD(viewModel) = [v5 isRemoteUser];
   v6 = +[STScreenTimeSettingsUIBundle bundle];
-  if (v4)
+  if (viewModel)
   {
-    v7 = [v5 givenName];
-    if (v7)
+    givenName = [v5 givenName];
+    if (givenName)
     {
-      v8 = v7;
+      v8 = givenName;
       v9 = MEMORY[0x277CCACA8];
       v10 = [v6 localizedStringForKey:@"AllowanceTimeFooterTextRemote" value:&stru_28766E5A8 table:0];
       v11 = [v9 localizedStringWithFormat:v10, v8];
@@ -519,11 +519,11 @@
 
   else
   {
-    v12 = [(STAllowanceDetailListController *)self coordinator];
-    v13 = [v12 viewModel];
-    v14 = [v13 isCloudSyncEnabled];
+    coordinator2 = [(STAllowanceDetailListController *)self coordinator];
+    viewModel2 = [coordinator2 viewModel];
+    isCloudSyncEnabled = [viewModel2 isCloudSyncEnabled];
 
-    if (!v14)
+    if (!isCloudSyncEnabled)
     {
       v15 = @"AllowanceTimeFooterTextLocal";
       goto LABEL_7;
@@ -538,54 +538,54 @@ LABEL_8:
   return v11;
 }
 
-- (void)showCustomizeDaysController:(id)a3
+- (void)showCustomizeDaysController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11 = objc_opt_new();
-  v5 = [(STAllowanceDetailListController *)self allowance];
-  v6 = [v5 timeByDay];
+  allowance = [(STAllowanceDetailListController *)self allowance];
+  timeByDay = [allowance timeByDay];
 
-  v7 = [(STAllowanceDetailListController *)self allowance];
-  v8 = v7;
-  if (v6)
+  allowance2 = [(STAllowanceDetailListController *)self allowance];
+  v8 = allowance2;
+  if (timeByDay)
   {
-    [v7 timeByDay];
+    [allowance2 timeByDay];
   }
 
   else
   {
-    [v7 defaultTimeByDay];
+    [allowance2 defaultTimeByDay];
   }
   v9 = ;
   [v11 setTimeByDay:v9];
 
   [v11 setDelegate:self];
   [v11 setParentController:self];
-  v10 = [(STAllowanceDetailListController *)self rootController];
-  [v11 setRootController:v10];
+  rootController = [(STAllowanceDetailListController *)self rootController];
+  [v11 setRootController:rootController];
 
-  [v11 setSpecifier:v4];
+  [v11 setSpecifier:controllerCopy];
   [(STAllowanceDetailListController *)self showController:v11 animate:1];
 }
 
-- (void)_editListButtonPressed:(id)a3
+- (void)_editListButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __58__STAllowanceDetailListController__editListButtonPressed___block_invoke;
   v13 = &unk_279B7C948;
-  v14 = self;
-  v15 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v15 = pressedCopy;
+  v5 = pressedCopy;
   v6 = _Block_copy(&v10);
   v7 = _Block_copy(v6);
-  [v5 setObject:v7 forKeyedSubscript:{0x28766E948, v10, v11, v12, v13, v14}];
+  [v5 setObject:v7 forKeyedSubscript:{0x28766E948, v10, v11, v12, v13, selfCopy}];
 
   v8 = objc_opt_new();
   [v8 setParentController:self];
-  v9 = [(STAllowanceDetailListController *)self rootController];
-  [v8 setRootController:v9];
+  rootController = [(STAllowanceDetailListController *)self rootController];
+  [v8 setRootController:rootController];
 
   [v8 setSpecifier:v5];
   [v8 setupController];
@@ -627,7 +627,7 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
   [v22 removePropertyForKey:0x28766E948];
 }
 
-- (void)confirmDeletion:(id)a3
+- (void)confirmDeletion:(id)deletion
 {
   v14[4] = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -639,8 +639,8 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
   v7 = [v5 localizedStringForKey:@"AllowanceDeletionPrompt" value:&stru_28766E5A8 table:0];
   v14[1] = v7;
   v13[2] = *MEMORY[0x277D3FE88];
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  if ([v8 sf_isiPad])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
     v9 = @"ConfirmationTitleDelete";
   }
@@ -664,14 +664,14 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
   [(STAllowanceDetailListController *)self showConfirmationViewForSpecifier:v4];
 }
 
-- (void)deleteAllowance:(id)a3
+- (void)deleteAllowance:(id)allowance
 {
-  v5 = [(STAllowanceDetailListController *)self delegate];
+  delegate = [(STAllowanceDetailListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     [(STAllowanceDetailListController *)self setDidDeleteAllowance:1];
-    v4 = [(STAllowanceDetailListController *)self allowance];
-    [v5 allowanceDetailController:self didDeleteAllowance:v4];
+    allowance = [(STAllowanceDetailListController *)self allowance];
+    [delegate allowanceDetailController:self didDeleteAllowance:allowance];
   }
 }
 
@@ -679,11 +679,11 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
 {
   v96 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(STAllowanceDetailListController *)self allowance];
+  allowance = [(STAllowanceDetailListController *)self allowance];
   v5 = objc_alloc(MEMORY[0x277CBEB70]);
-  v62 = v4;
-  v6 = [v4 categoryIdentifiers];
-  v7 = [v5 initWithArray:v6];
+  v62 = allowance;
+  categoryIdentifiers = [allowance categoryIdentifiers];
+  v7 = [v5 initWithArray:categoryIdentifiers];
 
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
   v9 = STAvailableCategoriesExcludingSystemCategories();
@@ -693,7 +693,7 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
   v60 = v10;
   LODWORD(v9) = [v11 isEqualToSet:v10];
 
-  v73 = self;
+  selfCopy = self;
   v74 = v3;
   v61 = v7;
   if (v9)
@@ -702,8 +702,8 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
     v13 = [v12 localizedStringForKey:@"AllAppsAndCategoriesSpecifierName" value:&stru_28766E5A8 table:0];
 
     v14 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v13 target:self set:0 get:0 detail:0 cell:3 edit:0];
-    v15 = [MEMORY[0x277D4BD98] sharedCache];
-    v16 = [v15 imageForCategoryIdentifier:*MEMORY[0x277D4BCC0]];
+    mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+    v16 = [mEMORY[0x277D4BD98] imageForCategoryIdentifier:*MEMORY[0x277D4BCC0]];
     [v14 setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FFC0]];
 
     [v3 addObject:v14];
@@ -733,10 +733,10 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
 
           v22 = *(*(&v83 + 1) + 8 * i);
           v23 = STCategoryNameWithIdentifier();
-          v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v23 target:v73 set:0 get:sel__categoryDetailText_ detail:0 cell:4 edit:0];
+          v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v23 target:selfCopy set:0 get:sel__categoryDetailText_ detail:0 cell:4 edit:0];
           [v24 setUserInfo:v22];
-          v25 = [MEMORY[0x277D4BD98] sharedCache];
-          v26 = [v25 imageForCategoryIdentifier:v22];
+          mEMORY[0x277D4BD98]2 = [MEMORY[0x277D4BD98] sharedCache];
+          v26 = [mEMORY[0x277D4BD98]2 imageForCategoryIdentifier:v22];
           [v24 setObject:v26 forKeyedSubscript:v20];
 
           [v74 addObject:v24];
@@ -748,7 +748,7 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
       while (v18);
     }
 
-    self = v73;
+    self = selfCopy;
   }
 
   v81 = 0u;
@@ -775,15 +775,15 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
         }
 
         v32 = *(*(&v79 + 1) + 8 * j);
-        v33 = [MEMORY[0x277D4B8C0] sharedCache];
-        v34 = [v33 appInfoForBundleIdentifier:v32];
+        mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+        v34 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:v32];
 
-        v35 = [v34 bundleIdentifier];
-        v36 = [v34 displayName];
-        v37 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v36 target:self set:0 get:0 detail:0 cell:3 edit:0];
-        [v37 setIdentifier:v35];
-        [v37 setUserInfo:v35];
-        if ([v34 source] == 2 && (objc_msgSend(v35, "isEqualToString:", v68) & 1) == 0)
+        bundleIdentifier = [v34 bundleIdentifier];
+        displayName = [v34 displayName];
+        v37 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:0 cell:3 edit:0];
+        [v37 setIdentifier:bundleIdentifier];
+        [v37 setUserInfo:bundleIdentifier];
+        if ([v34 source] == 2 && (objc_msgSend(bundleIdentifier, "isEqualToString:", v68) & 1) == 0)
         {
           [v37 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v66];
           v38 = v64;
@@ -795,10 +795,10 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
           v38 = @"STAppBundleID";
         }
 
-        [v37 setObject:v35 forKeyedSubscript:v38];
+        [v37 setObject:bundleIdentifier forKeyedSubscript:v38];
         [v74 addObject:v37];
 
-        self = v73;
+        self = selfCopy;
       }
 
       v28 = [obja countByEnumeratingWithState:&v79 objects:v88 count:16];
@@ -811,9 +811,9 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v63 = [v62 webDomains];
+  webDomains = [v62 webDomains];
   v39 = v74;
-  v69 = [v63 countByEnumeratingWithState:&v75 objects:v87 count:16];
+  v69 = [webDomains countByEnumeratingWithState:&v75 objects:v87 count:16];
   if (v69)
   {
     v67 = *v76;
@@ -824,39 +824,39 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
       {
         if (*v76 != v67)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(webDomains);
         }
 
         v41 = *(*(&v75 + 1) + 8 * k);
         v42 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v41 target:self set:0 get:0 detail:0 cell:3 edit:0];
         [v42 setUserInfo:v41];
-        v43 = [MEMORY[0x277D75C80] currentTraitCollection];
-        v44 = [v43 userInterfaceStyle];
+        currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+        userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
         v45 = v41;
         if ([v45 length])
         {
-          objb = v44;
+          objb = userInterfaceStyle;
           v46 = objc_opt_new();
           [v46 setScheme:@"https"];
           [v46 setHost:v45];
           v47 = [v46 URL];
-          v48 = [v47 _lp_highLevelDomain];
-          v49 = [v46 host];
+          _lp_highLevelDomain = [v47 _lp_highLevelDomain];
+          host = [v46 host];
           v50 = [v46 URL];
-          v51 = v48;
-          v52 = v49;
+          v51 = _lp_highLevelDomain;
+          v52 = host;
           v53 = v50;
           if ([v51 length])
           {
             v54 = [v51 substringToIndex:1];
-            v55 = [v54 uppercaseString];
+            uppercaseString = [v54 uppercaseString];
           }
 
           else
           {
             v56 = [v52 substringToIndex:1];
-            v55 = [v56 uppercaseString];
+            uppercaseString = [v56 uppercaseString];
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -868,9 +868,9 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
             }
           }
 
-          v44 = objb;
+          userInterfaceStyle = objb;
 
-          self = v73;
+          self = selfCopy;
           v39 = v74;
         }
 
@@ -881,17 +881,17 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
             [(STAllowanceDetailListController *)v90 createBudgetedItemSpecifiers];
           }
 
-          v55 = 0;
+          uppercaseString = 0;
         }
 
-        v57 = [MEMORY[0x277D4BD98] sharedCache];
-        v58 = [v57 monogramImageForInitial:v55 useDarkColors:v44 == 2];
+        mEMORY[0x277D4BD98]3 = [MEMORY[0x277D4BD98] sharedCache];
+        v58 = [mEMORY[0x277D4BD98]3 monogramImageForInitial:uppercaseString useDarkColors:userInterfaceStyle == 2];
         [v42 setObject:v58 forKeyedSubscript:v65];
 
         [v39 addObject:v42];
       }
 
-      v69 = [v63 countByEnumeratingWithState:&v75 objects:v87 count:16];
+      v69 = [webDomains countByEnumeratingWithState:&v75 objects:v87 count:16];
     }
 
     while (v69);
@@ -900,7 +900,7 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
   return v39;
 }
 
-- (id)_categoryDetailText:(id)a3
+- (id)_categoryDetailText:(id)text
 {
   v3 = +[STScreenTimeSettingsUIBundle bundle];
   v4 = [v3 localizedStringForKey:@"AllItemsSelectedDetailText" value:&stru_28766E5A8 table:0];
@@ -908,61 +908,61 @@ void __58__STAllowanceDetailListController__editListButtonPressed___block_invoke
   return v4;
 }
 
-- (void)_setAskForMoreTime:(id)a3 specifier:(id)a4
+- (void)_setAskForMoreTime:(id)time specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(STAllowanceDetailListController *)self allowance];
-  [v6 setBehaviorType:v5];
+  bOOLValue = [time BOOLValue];
+  allowance = [(STAllowanceDetailListController *)self allowance];
+  [allowance setBehaviorType:bOOLValue];
 }
 
-- (id)_askForMoreTime:(id)a3
+- (id)_askForMoreTime:(id)time
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STAllowanceDetailListController *)self allowance];
-  v5 = [v3 numberWithInt:{objc_msgSend(v4, "behaviorType") == 1}];
+  allowance = [(STAllowanceDetailListController *)self allowance];
+  v5 = [v3 numberWithInt:{objc_msgSend(allowance, "behaviorType") == 1}];
 
   return v5;
 }
 
-- (void)_setAllowanceEnabled:(id)a3 specifier:(id)a4
+- (void)_setAllowanceEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(STAllowanceDetailListController *)self allowance];
-  [v6 setAllowanceEnabled:v5];
+  bOOLValue = [enabled BOOLValue];
+  allowance = [(STAllowanceDetailListController *)self allowance];
+  [allowance setAllowanceEnabled:bOOLValue];
 }
 
-- (id)_allowanceEnabled:(id)a3
+- (id)_allowanceEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STAllowanceDetailListController *)self allowance];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "allowanceEnabled")}];
+  allowance = [(STAllowanceDetailListController *)self allowance];
+  v5 = [v3 numberWithBool:{objc_msgSend(allowance, "allowanceEnabled")}];
 
   return v5;
 }
 
 - (id)atEndOfLimitFooterText
 {
-  v2 = [(STAllowanceDetailListController *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 me];
+  coordinator = [(STAllowanceDetailListController *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v4 = [viewModel me];
 
   if ([v4 isRemoteUser])
   {
-    v5 = [v4 name];
+    name = [v4 name];
 
-    if (v5)
+    if (name)
     {
       v6 = objc_opt_new();
-      v7 = [v4 name];
-      v8 = [v6 personNameComponentsFromString:v7];
+      name2 = [v4 name];
+      v8 = [v6 personNameComponentsFromString:name2];
 
-      v9 = [v8 givenName];
-      if ([v9 length])
+      givenName = [v8 givenName];
+      if ([givenName length])
       {
         v10 = MEMORY[0x277CCACA8];
         v11 = +[STScreenTimeSettingsUIBundle bundle];
         v12 = [v11 localizedStringForKey:@"AtAllowanceRemoteFooterText" value:&stru_28766E5A8 table:0];
-        v13 = [v10 localizedStringWithFormat:v12, v9];
+        v13 = [v10 localizedStringWithFormat:v12, givenName];
 
         goto LABEL_9;
       }
@@ -986,13 +986,13 @@ LABEL_9:
   return v13;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = STAllowanceDetailListController;
-  v6 = a4;
-  v7 = [(STAllowanceDetailListController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(STAllowanceDetailListController *)self indexForIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(STAllowanceDetailListController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(STAllowanceDetailListController *)self indexForIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1002,8 +1002,8 @@ LABEL_9:
   else
   {
     v9 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:v8];
-    v10 = [(STAllowanceDetailListController *)self budgetedItemSpecifiers];
-    v11 = [v10 containsObject:v9];
+    budgetedItemSpecifiers = [(STAllowanceDetailListController *)self budgetedItemSpecifiers];
+    v11 = [budgetedItemSpecifiers containsObject:v9];
 
     if (v11)
     {
@@ -1014,11 +1014,11 @@ LABEL_9:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STAllowanceDetailListController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(STAllowanceDetailListController *)self indexForIndexPath:pathCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -1029,63 +1029,63 @@ LABEL_9:
     v9 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:v8];
   }
 
-  v10 = [(STAllowanceDetailListController *)self timeSpecifier];
+  timeSpecifier = [(STAllowanceDetailListController *)self timeSpecifier];
 
-  if (v9 == v10)
+  if (v9 == timeSpecifier)
   {
     [(STAllowanceDetailListController *)self _showOrHidePickerSpecifierForSpecifier:v9 highlight:1];
   }
 
   v11.receiver = self;
   v11.super_class = STAllowanceDetailListController;
-  [(STAllowanceDetailListController *)&v11 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(STAllowanceDetailListController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 calendar];
-  v6 = [v4 date];
+  changedCopy = changed;
+  calendar = [changedCopy calendar];
+  date = [changedCopy date];
 
-  v14 = [v5 components:96 fromDate:v6];
+  v14 = [calendar components:96 fromDate:date];
 
-  v7 = [(STAllowanceDetailListController *)self allowance];
-  [v7 setTime:v14];
+  allowance = [(STAllowanceDetailListController *)self allowance];
+  [allowance setTime:v14];
 
-  v8 = [(STAllowanceDetailListController *)self allowance];
-  [v8 setTimeByDay:0];
+  allowance2 = [(STAllowanceDetailListController *)self allowance];
+  [allowance2 setTimeByDay:0];
 
-  v9 = [(STAllowanceDetailListController *)self timeSpecifier];
-  [(STAllowanceDetailListController *)self reloadSpecifier:v9];
+  timeSpecifier = [(STAllowanceDetailListController *)self timeSpecifier];
+  [(STAllowanceDetailListController *)self reloadSpecifier:timeSpecifier];
 
-  v10 = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D40148]];
+  selectedTimeSpecifier = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
+  v11 = [selectedTimeSpecifier objectForKeyedSubscript:*MEMORY[0x277D40148]];
 
-  v12 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-  v13 = [v11 detailTextLabel];
-  [v13 setTextColor:v12];
+  tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+  detailTextLabel = [v11 detailTextLabel];
+  [detailTextLabel setTextColor:tableCellBlueTextColor];
 
   [(STAllowanceDetailListController *)self showOrHideCustomizeDaysSpecifier];
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
   v4 = MEMORY[0x277D753E8];
-  v5 = a3;
+  specifierCopy = specifier;
   v6 = [v4 alloc];
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [v7 setPreferredDatePickerStyle:1];
   [v7 setDatePickerMode:3];
   [v7 _setAllowsZeroCountDownDuration:1];
   v8 = objc_opt_new();
-  v9 = [(STAllowanceDetailListController *)self timePickerSpecifier];
+  timePickerSpecifier = [(STAllowanceDetailListController *)self timePickerSpecifier];
 
-  if (v9 == v5)
+  if (timePickerSpecifier == specifierCopy)
   {
-    v11 = [(STAllowanceDetailListController *)self allowance];
-    v12 = [v11 time];
+    allowance = [(STAllowanceDetailListController *)self allowance];
+    time = [allowance time];
 
-    v8 = v12;
+    v8 = time;
   }
 
   else
@@ -1097,49 +1097,49 @@ LABEL_9:
     }
   }
 
-  v13 = [v7 calendar];
-  v14 = [v13 dateFromComponents:v8];
+  calendar = [v7 calendar];
+  v14 = [calendar dateFromComponents:v8];
   [v7 setDate:v14 animated:1];
 
   return v7;
 }
 
-- (void)customizeDaysListController:(id)a3 didFinishEditingTimeByDay:(id)a4
+- (void)customizeDaysListController:(id)controller didFinishEditingTimeByDay:(id)day
 {
-  v19 = a4;
+  dayCopy = day;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v19 allValues];
-  v7 = [v5 setWithArray:v6];
+  allValues = [dayCopy allValues];
+  v7 = [v5 setWithArray:allValues];
 
-  v8 = v19;
+  v8 = dayCopy;
   if ([v7 count] == 1)
   {
-    v9 = [v7 anyObject];
-    v10 = [(STAllowanceDetailListController *)self allowance];
-    [v10 setTime:v9];
+    anyObject = [v7 anyObject];
+    allowance = [(STAllowanceDetailListController *)self allowance];
+    [allowance setTime:anyObject];
 
     v8 = 0;
   }
 
-  v11 = [(STAllowanceDetailListController *)self allowance];
-  [v11 setTimeByDay:v8];
+  allowance2 = [(STAllowanceDetailListController *)self allowance];
+  [allowance2 setTimeByDay:v8];
 
-  v12 = [(STAllowanceDetailListController *)self timePickerSpecifier];
-  [(STAllowanceDetailListController *)self removeSpecifier:v12 animated:1];
+  timePickerSpecifier = [(STAllowanceDetailListController *)self timePickerSpecifier];
+  [(STAllowanceDetailListController *)self removeSpecifier:timePickerSpecifier animated:1];
 
-  v13 = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
-  [(STAllowanceDetailListController *)self removeSpecifier:v13 animated:1];
+  customizeDaysSpecifier = [(STAllowanceDetailListController *)self customizeDaysSpecifier];
+  [(STAllowanceDetailListController *)self removeSpecifier:customizeDaysSpecifier animated:1];
 
-  v14 = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D40148]];
+  selectedTimeSpecifier = [(STAllowanceDetailListController *)self selectedTimeSpecifier];
+  v15 = [selectedTimeSpecifier objectForKeyedSubscript:*MEMORY[0x277D40148]];
 
-  v16 = [(STAllowanceDetailListController *)self defaultTimeCellDetailTextColor];
-  v17 = [v15 detailTextLabel];
-  [v17 setTextColor:v16];
+  defaultTimeCellDetailTextColor = [(STAllowanceDetailListController *)self defaultTimeCellDetailTextColor];
+  detailTextLabel = [v15 detailTextLabel];
+  [detailTextLabel setTextColor:defaultTimeCellDetailTextColor];
 
   [(STAllowanceDetailListController *)self setSelectedTimeSpecifier:0];
-  v18 = [(STAllowanceDetailListController *)self timeSpecifier];
-  [(STAllowanceDetailListController *)self reloadSpecifier:v18];
+  timeSpecifier = [(STAllowanceDetailListController *)self timeSpecifier];
+  [(STAllowanceDetailListController *)self reloadSpecifier:timeSpecifier];
 
   [(STAllowanceDetailListController *)self showOrHideCustomizeDaysSpecifier];
 }

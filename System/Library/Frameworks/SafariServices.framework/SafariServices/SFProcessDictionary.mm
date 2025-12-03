@@ -1,21 +1,21 @@
 @interface SFProcessDictionary
 - (SFProcessDictionary)init;
-- (SFProcessDictionary)initWithCacheCapacity:(unint64_t)a3;
-- (id)incrementReferenceForPID:(int)a3 additionalKey:(id)a4 valueCreationBlock:(id)a5;
-- (void)_handleProcessStateUpdate:(int)a3 state:(unsigned __int8)a4;
+- (SFProcessDictionary)initWithCacheCapacity:(unint64_t)capacity;
+- (id)incrementReferenceForPID:(int)d additionalKey:(id)key valueCreationBlock:(id)block;
+- (void)_handleProcessStateUpdate:(int)update state:(unsigned __int8)state;
 - (void)_removeUnreferencedObjectsIfNeeded;
-- (void)_removeValuesForPID:(id)a3;
+- (void)_removeValuesForPID:(id)d;
 - (void)_updateInterestedApplications;
 - (void)dealloc;
-- (void)decrementReferenceForPID:(int)a3;
+- (void)decrementReferenceForPID:(int)d;
 @end
 
 @implementation SFProcessDictionary
 
-- (SFProcessDictionary)initWithCacheCapacity:(unint64_t)a3
+- (SFProcessDictionary)initWithCacheCapacity:(unint64_t)capacity
 {
   result = [(SFProcessDictionary *)self init];
-  result->_cacheCapacity = a3;
+  result->_cacheCapacity = capacity;
   return result;
 }
 
@@ -27,9 +27,9 @@
   if (v2)
   {
     objc_initWeak(&location, v2);
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     values = v2->_values;
-    v2->_values = v3;
+    v2->_values = dictionary;
 
     v5 = [MEMORY[0x1E696AB50] set];
     references = v2->_references;
@@ -39,9 +39,9 @@
     pidsPendingTermination = v2->_pidsPendingTermination;
     v2->_pidsPendingTermination = v7;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     recentlyReferencedPIDs = v2->_recentlyReferencedPIDs;
-    v2->_recentlyReferencedPIDs = v9;
+    v2->_recentlyReferencedPIDs = array;
 
     v2->_cacheCapacity = 3;
     v11 = MEMORY[0x1E69C75F8];
@@ -117,14 +117,14 @@ void __27__SFProcessDictionary_init__block_invoke_3(uint64_t a1)
 
 - (void)_updateInterestedApplications
 {
-  v3 = [(NSMutableDictionary *)self->_values allKeys];
+  allKeys = [(NSMutableDictionary *)self->_values allKeys];
   processMonitor = self->_processMonitor;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SFProcessDictionary__updateInterestedApplications__block_invoke;
   v6[3] = &unk_1E8494570;
-  v7 = v3;
-  v5 = v3;
+  v7 = allKeys;
+  v5 = allKeys;
   [(RBSProcessMonitor *)processMonitor updateConfiguration:v6];
 }
 
@@ -140,10 +140,10 @@ void __52__SFProcessDictionary__updateInterestedApplications__block_invoke(uint6
   [v3 setPredicates:v6];
 }
 
-- (void)_handleProcessStateUpdate:(int)a3 state:(unsigned __int8)a4
+- (void)_handleProcessStateUpdate:(int)update state:(unsigned __int8)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a4 == 1)
+  if (state == 1)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:?];
     if ([(NSCountedSet *)self->_references countForObject:v6])
@@ -154,7 +154,7 @@ void __52__SFProcessDictionary__updateInterestedApplications__block_invoke(uint6
         references = self->_references;
         v12 = v7;
         v13[0] = 67109376;
-        v13[1] = a3;
+        v13[1] = update;
         v14 = 1024;
         v15 = [(NSCountedSet *)references countForObject:v6];
         _os_log_debug_impl(&dword_1D4644000, v12, OS_LOG_TYPE_DEBUG, "process %d has been terminated, but still has a refcount of %d", v13, 0xEu);
@@ -173,7 +173,7 @@ void __52__SFProcessDictionary__updateInterestedApplications__block_invoke(uint6
         v10 = WBS_LOG_CHANNEL_PREFIXProcessDictionary();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          [SFProcessDictionary _handleProcessStateUpdate:a3 state:v10];
+          [SFProcessDictionary _handleProcessStateUpdate:update state:v10];
         }
 
         [(SFProcessDictionary *)self _removeValuesForPID:v6];
@@ -182,18 +182,18 @@ void __52__SFProcessDictionary__updateInterestedApplications__block_invoke(uint6
   }
 }
 
-- (void)_removeValuesForPID:(id)a3
+- (void)_removeValuesForPID:(id)d
 {
   values = self->_values;
-  v5 = a3;
-  [(NSMutableDictionary *)values removeObjectForKey:v5];
-  [(NSMutableArray *)self->_recentlyReferencedPIDs removeObject:v5];
-  [(NSMutableSet *)self->_pidsPendingTermination removeObject:v5];
+  dCopy = d;
+  [(NSMutableDictionary *)values removeObjectForKey:dCopy];
+  [(NSMutableArray *)self->_recentlyReferencedPIDs removeObject:dCopy];
+  [(NSMutableSet *)self->_pidsPendingTermination removeObject:dCopy];
 
   [(SFProcessDictionary *)self _updateInterestedApplications];
 }
 
-- (void)decrementReferenceForPID:(int)a3
+- (void)decrementReferenceForPID:(int)d
 {
   v5 = [MEMORY[0x1E696AD98] numberWithInt:?];
   if ([(NSCountedSet *)self->_references countForObject:v5])
@@ -207,7 +207,7 @@ void __52__SFProcessDictionary__updateInterestedApplications__block_invoke(uint6
         v7 = WBS_LOG_CHANNEL_PREFIXProcessDictionary();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          [(SFProcessDictionary *)a3 decrementReferenceForPID:v7];
+          [(SFProcessDictionary *)d decrementReferenceForPID:v7];
         }
 
         [(SFProcessDictionary *)self _removeValuesForPID:v5];
@@ -225,7 +225,7 @@ void __52__SFProcessDictionary__updateInterestedApplications__block_invoke(uint6
     v8 = WBS_LOG_CHANNEL_PREFIXProcessDictionary();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(SFProcessDictionary *)a3 decrementReferenceForPID:v8];
+      [(SFProcessDictionary *)d decrementReferenceForPID:v8];
     }
   }
 }
@@ -234,7 +234,7 @@ void __52__SFProcessDictionary__updateInterestedApplications__block_invoke(uint6
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1D4644000, a2, OS_LOG_TYPE_DEBUG, "removing resources for pids %{public}@", &v2, 0xCu);
 }
 
@@ -267,16 +267,16 @@ uint64_t __57__SFProcessDictionary__removeUnreferencedObjectsIfNeeded__block_inv
   return v12;
 }
 
-- (id)incrementReferenceForPID:(int)a3 additionalKey:(id)a4 valueCreationBlock:(id)a5
+- (id)incrementReferenceForPID:(int)d additionalKey:(id)key valueCreationBlock:(id)block
 {
-  v6 = *&a3;
+  v6 = *&d;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  blockCopy = block;
   v10 = [MEMORY[0x1E696AD98] numberWithInt:v6];
-  if (v8)
+  if (keyCopy)
   {
-    v11 = [v8 copyWithZone:0];
+    v11 = [keyCopy copyWithZone:0];
   }
 
   else
@@ -302,7 +302,7 @@ uint64_t __57__SFProcessDictionary__removeUnreferencedObjectsIfNeeded__block_inv
 
   else
   {
-    v14 = v9[2](v9);
+    v14 = blockCopy[2](blockCopy);
     v16 = [(NSMutableDictionary *)self->_values objectForKeyedSubscript:v10];
     if (v16)
     {
@@ -325,7 +325,7 @@ uint64_t __57__SFProcessDictionary__removeUnreferencedObjectsIfNeeded__block_inv
       v22[0] = 67109635;
       v22[1] = v6;
       v23 = 2113;
-      v24 = v8;
+      v24 = keyCopy;
       v25 = 2113;
       v26 = v14;
       _os_log_debug_impl(&dword_1D4644000, v19, OS_LOG_TYPE_DEBUG, "created resource for pid %d, %{private}@: %{private}@", v22, 0x1Cu);

@@ -1,10 +1,10 @@
 @interface MRUCoordinatedUpdateController
 - (MRUCoordinatedUpdateController)init;
 - (MRUCoordinatedUpdateControllerDelegate)delegate;
-- (void)addUpdate:(id)a3 completion:(id)a4;
+- (void)addUpdate:(id)update completion:(id)completion;
 - (void)processQueue;
 - (void)resetTimer;
-- (void)setCadence:(double)a3;
+- (void)setCadence:(double)cadence;
 - (void)setupTimer;
 @end
 
@@ -17,29 +17,29 @@
   v2 = [(MRUCoordinatedUpdateController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     queue = v2->_queue;
-    v2->_queue = v3;
+    v2->_queue = array;
   }
 
   return v2;
 }
 
-- (void)setCadence:(double)a3
+- (void)setCadence:(double)cadence
 {
-  if (self->_cadence != a3)
+  if (self->_cadence != cadence)
   {
-    self->_cadence = a3;
+    self->_cadence = cadence;
     [(MRUCoordinatedUpdateController *)self setupTimer];
   }
 }
 
-- (void)addUpdate:(id)a3 completion:(id)a4
+- (void)addUpdate:(id)update completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MRUCoordinatedUpdate alloc] initWithUpdate:v7 completion:v6];
+  completionCopy = completion;
+  updateCopy = update;
+  v8 = [[MRUCoordinatedUpdate alloc] initWithUpdate:updateCopy completion:completionCopy];
 
   [(NSMutableArray *)self->_queue addObject:v8];
   v9 = MCLogCategoryDefault();

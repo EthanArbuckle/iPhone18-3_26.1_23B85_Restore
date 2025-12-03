@@ -1,21 +1,21 @@
 @interface _UISceneWindowingControlClientComponent
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UISceneWindowingControlClientComponent
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   if (!*(&self->super._invalid + 1))
   {
     *(&self->super._invalid + 1) = 1;
-    v5 = [(FBSSceneComponent *)self clientScene:a3];
+    v5 = [(FBSSceneComponent *)self clientScene:scene];
     v6 = [(UIScene *)UIWindowScene _sceneForFBSScene:v5];
 
-    v7 = [v6 delegate];
+    delegate = [v6 delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 preferredWindowingControlStyleForScene:v6];
+      v8 = [delegate preferredWindowingControlStyleForScene:v6];
       if (v8)
       {
         v9 = v8[1];
@@ -38,8 +38,8 @@
     v12[3] = &__block_descriptor_40_e109_v24__0__FBSMutableSceneClientSettings__UISceneWindowingControlClientSettings__8__FBSSceneTransitionContext_16l;
     v12[4] = v9;
     v10 = v12;
-    v11 = [(FBSSceneComponent *)self clientScene];
-    [v11 updateClientSettings:v10];
+    clientScene = [(FBSSceneComponent *)self clientScene];
+    [clientScene updateClientSettings:v10];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface NCNotificationRichContentView
 - (BOOL)_isAXSize;
 - (BOOL)_isDateLabelContainsUIMultiLayer;
-- (CGRect)_labelSizingBoundsForRect:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationRichContentView)initWithFrame:(CGRect)a3;
-- (double)_featuredImageHeightForBounds:(CGRect)a3;
+- (CGRect)_labelSizingBoundsForRect:(CGRect)rect;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationRichContentView)initWithFrame:(CGRect)frame;
+- (double)_featuredImageHeightForBounds:(CGRect)bounds;
 - (double)_labelLayoutHorizontalMargin;
-- (int64_t)_dateFormatStyleForDate:(id)a3;
+- (int64_t)_dateFormatStyleForDate:(id)date;
 - (unint64_t)_maximumNumberOfLinesForFooterText;
 - (unint64_t)_maximumNumberOfLinesForPrimarySubtitleText;
 - (unint64_t)_maximumNumberOfLinesForPrimaryText;
 - (unint64_t)_maximumNumberOfLinesForSecondaryText;
-- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)a3;
-- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)a3;
+- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)frame;
+- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)frame;
 - (void)_configureCrossfadingContentViewIfNecessary;
 - (void)_configureDateLabel;
 - (void)_configureDateLabelIfNecessary;
@@ -35,33 +35,33 @@
 - (void)_updateTextAttributesForPrimarySubtitleTextLabel;
 - (void)_updateTextAttributesForPrimaryTextLabel;
 - (void)_updateTextAttributesForSecondaryTextElement;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
-- (void)dateLabelDidChange:(id)a3;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
+- (void)dateLabelDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)setAttachmentImageFeatured:(BOOL)a3;
-- (void)setBadgedIconDescription:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateAlpha:(double)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setFooterText:(id)a3;
-- (void)setHideDate:(BOOL)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)a3;
-- (void)setThumbnail:(id)a3;
-- (void)setTimeZone:(id)a3;
+- (void)setAttachmentImageFeatured:(BOOL)featured;
+- (void)setBadgedIconDescription:(id)description;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateAlpha:(double)alpha;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setFooterText:(id)text;
+- (void)setHideDate:(BOOL)date;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimaryText:(id)text;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setSecondaryText:(id)text;
+- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)lines;
+- (void)setThumbnail:(id)thumbnail;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation NCNotificationRichContentView
 
-- (NCNotificationRichContentView)initWithFrame:(CGRect)a3
+- (NCNotificationRichContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NCNotificationRichContentView;
-  v3 = [(NCNotificationListBaseContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationListBaseContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -73,11 +73,11 @@
   return v4;
 }
 
-- (void)setAttachmentImageFeatured:(BOOL)a3
+- (void)setAttachmentImageFeatured:(BOOL)featured
 {
-  if (self->_attachmentImageFeatured != a3)
+  if (self->_attachmentImageFeatured != featured)
   {
-    self->_attachmentImageFeatured = a3;
+    self->_attachmentImageFeatured = featured;
     [(NCNotificationRichContentView *)self setClipsToBounds:?];
 
     [(NCNotificationRichContentView *)self setNeedsLayout];
@@ -101,11 +101,11 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  [(NCNotificationRichContentView *)self _labelSizingBoundsForRect:0.0, 0.0, a3.width, a3.height];
+  height = fits.height;
+  width = fits.width;
+  [(NCNotificationRichContentView *)self _labelSizingBoundsForRect:0.0, 0.0, fits.width, fits.height];
   v10 = v6;
   v11 = v7;
   v12 = v8;
@@ -158,17 +158,17 @@
   return result;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v13 = a3;
-  v4 = [(NCNotificationRichContentView *)self primaryText];
+  textCopy = text;
+  primaryText = [(NCNotificationRichContentView *)self primaryText];
   v5 = BSEqualStrings();
 
-  v6 = v13;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     primaryTextLabel = self->_primaryTextLabel;
-    if (v13)
+    if (textCopy)
     {
       if (!primaryTextLabel)
       {
@@ -184,7 +184,7 @@
         v11 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
         [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v10 style:-1 visualStylingProvider:v11 outgoingProvider:0];
 
-        v6 = v13;
+        v6 = textCopy;
         primaryTextLabel = self->_primaryTextLabel;
       }
 
@@ -205,17 +205,17 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v13 = a3;
-  v4 = [(NCNotificationRichContentView *)self primarySubtitleText];
+  textCopy = text;
+  primarySubtitleText = [(NCNotificationRichContentView *)self primarySubtitleText];
   v5 = BSEqualStrings();
 
-  v6 = v13;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
-    if (v13)
+    if (textCopy)
     {
       if (!primarySubtitleTextLabel)
       {
@@ -231,7 +231,7 @@
         v11 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
         [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v10 style:-1 visualStylingProvider:v11 outgoingProvider:0];
 
-        v6 = v13;
+        v6 = textCopy;
         primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
       }
 
@@ -252,16 +252,16 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v12 = a3;
-  v4 = [(NCNotificationRichContentView *)self secondaryText];
+  textCopy = text;
+  secondaryText = [(NCNotificationRichContentView *)self secondaryText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     secondaryTextLabel = self->_secondaryTextLabel;
-    if (v12)
+    if (textCopy)
     {
       if (!secondaryTextLabel)
       {
@@ -283,37 +283,37 @@
         secondaryTextLabel = self->_secondaryTextLabel;
       }
 
-      v11 = [(UILabel *)secondaryTextLabel textColor];
-      [(UILabel *)self->_secondaryTextLabel setAttributedText:v12];
-      [(UILabel *)self->_secondaryTextLabel setTextColor:v11];
+      textColor = [(UILabel *)secondaryTextLabel textColor];
+      [(UILabel *)self->_secondaryTextLabel setAttributedText:textCopy];
+      [(UILabel *)self->_secondaryTextLabel setTextColor:textColor];
       [(NCNotificationRichContentView *)self _updateTextAttributesForSecondaryTextElement];
     }
 
     else
     {
       [(UILabel *)secondaryTextLabel removeFromSuperview];
-      v11 = self->_secondaryTextLabel;
+      textColor = self->_secondaryTextLabel;
       self->_secondaryTextLabel = 0;
     }
 
     self->_hasUpdatedContent = 1;
-    v6 = [(NCNotificationRichContentView *)self setNeedsLayout];
+    setNeedsLayout = [(NCNotificationRichContentView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F96F8](v6);
+  MEMORY[0x2821F96F8](setNeedsLayout);
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v13 = a3;
-  v4 = [(NCNotificationRichContentView *)self footerText];
+  textCopy = text;
+  footerText = [(NCNotificationRichContentView *)self footerText];
   v5 = BSEqualObjects();
 
-  v6 = v13;
+  v6 = textCopy;
   if ((v5 & 1) == 0)
   {
     footerTextLabel = self->_footerTextLabel;
-    if (v13)
+    if (textCopy)
     {
       if (!footerTextLabel)
       {
@@ -328,7 +328,7 @@
         v11 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
         [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:v10 style:-1 visualStylingProvider:v11 outgoingProvider:0];
 
-        v6 = v13;
+        v6 = textCopy;
         footerTextLabel = self->_footerTextLabel;
       }
 
@@ -349,13 +349,13 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)a3
+- (void)setSecondaryTextMaximumNumberOfLines:(unint64_t)lines
 {
-  if (self->_secondaryTextMaximumNumberOfLines != a3)
+  if (self->_secondaryTextMaximumNumberOfLines != lines)
   {
-    self->_secondaryTextMaximumNumberOfLines = a3;
-    v4 = [(NCNotificationRichContentView *)self secondaryText];
-    v5 = [v4 length];
+    self->_secondaryTextMaximumNumberOfLines = lines;
+    secondaryText = [(NCNotificationRichContentView *)self secondaryText];
+    v5 = [secondaryText length];
 
     if (v5)
     {
@@ -366,26 +366,26 @@
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
 {
-  if (self->_screenCaptureProhibited != a3)
+  if (self->_screenCaptureProhibited != prohibited)
   {
-    self->_screenCaptureProhibited = a3;
+    self->_screenCaptureProhibited = prohibited;
     [(NCNotificationRichContentView *)self nc_setScreenCaptureProhibited:?];
   }
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  v19 = a3;
-  v4 = [(NCNotificationRichContentView *)self thumbnail];
+  thumbnailCopy = thumbnail;
+  thumbnail = [(NCNotificationRichContentView *)self thumbnail];
   v5 = BSEqualObjects();
 
-  v6 = v19;
+  v6 = thumbnailCopy;
   if ((v5 & 1) == 0)
   {
     thumbnailImageView = self->_thumbnailImageView;
-    if (v19)
+    if (thumbnailCopy)
     {
       if (!thumbnailImageView)
       {
@@ -395,9 +395,9 @@
 
         [(UIImageView *)self->_thumbnailImageView setContentMode:2];
         v10 = self->_thumbnailImageView;
-        v11 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+        isAttachmentImageFeatured = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
         v12 = 14.0;
-        if (v11)
+        if (isAttachmentImageFeatured)
         {
           v12 = 0.0;
         }
@@ -419,7 +419,7 @@
 
         [(UIView *)imageBoundingView addSubview:self->_thumbnailImageView];
         thumbnailImageView = self->_thumbnailImageView;
-        v6 = v19;
+        v6 = thumbnailCopy;
       }
 
       [(UIImageView *)thumbnailImageView setImage:v6];
@@ -445,19 +445,19 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setBadgedIconDescription:(id)a3
+- (void)setBadgedIconDescription:(id)description
 {
-  v9 = a3;
+  descriptionCopy = description;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_badgedIconDescription, a3);
+    objc_storeStrong(&self->_badgedIconDescription, description);
     [(NCBadgedIconView *)self->_badgedIconView removeFromSuperview];
     badgedIconView = self->_badgedIconView;
     self->_badgedIconView = 0;
 
     if (self->_badgedIconDescription)
     {
-      v6 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:v9 pointSize:38.0];
+      v6 = [[NCBadgedIconView alloc] initWithBadgedIconDescription:descriptionCopy pointSize:38.0];
       v7 = self->_badgedIconView;
       self->_badgedIconView = v6;
 
@@ -470,12 +470,12 @@
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if (!BSEqualObjects() || ![(NCNotificationRichContentView *)self _isDateLabelContainsUIMultiLayer])
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     date = self->_date;
     self->_date = v4;
 
@@ -485,11 +485,11 @@
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  if (self->_dateAllDay != a3 || ![(NCNotificationRichContentView *)self _isDateLabelContainsUIMultiLayer])
+  if (self->_dateAllDay != day || ![(NCNotificationRichContentView *)self _isDateLabelContainsUIMultiLayer])
   {
-    self->_dateAllDay = a3;
+    self->_dateAllDay = day;
     [(NCNotificationRichContentView *)self _tearDownDateLabel];
     [(NCNotificationRichContentView *)self _configureDateLabelIfNecessary];
 
@@ -497,11 +497,11 @@
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if (self->_dateFormatStyle != a3 || ![(NCNotificationRichContentView *)self _isDateLabelContainsUIMultiLayer])
+  if (self->_dateFormatStyle != style || ![(NCNotificationRichContentView *)self _isDateLabelContainsUIMultiLayer])
   {
-    self->_dateFormatStyle = a3;
+    self->_dateFormatStyle = style;
     [(NCNotificationRichContentView *)self _tearDownDateLabel];
     [(NCNotificationRichContentView *)self _configureDateLabelIfNecessary];
 
@@ -509,11 +509,11 @@
   }
 }
 
-- (void)setHideDate:(BOOL)a3
+- (void)setHideDate:(BOOL)date
 {
-  if (self->_hideDate != a3)
+  if (self->_hideDate != date)
   {
-    self->_hideDate = a3;
+    self->_hideDate = date;
     [(NCNotificationRichContentView *)self _tearDownDateLabel];
     [(NCNotificationRichContentView *)self _configureDateLabelIfNecessary];
 
@@ -521,21 +521,21 @@
   }
 }
 
-- (void)setDateAlpha:(double)a3
+- (void)setDateAlpha:(double)alpha
 {
-  if (self->_dateAlpha != a3)
+  if (self->_dateAlpha != alpha)
   {
-    self->_dateAlpha = a3;
+    self->_dateAlpha = alpha;
     [(NCNotificationRichContentView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [zoneCopy copy];
     timeZone = self->_timeZone;
     self->_timeZone = v4;
 
@@ -636,9 +636,9 @@ LABEL_12:
     v9 = v8;
     v11 = v10;
     v12 = self->_thumbnailImageView;
-    v13 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+    isAttachmentImageFeatured = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
     v14 = 14.0;
-    if (v13)
+    if (isAttachmentImageFeatured)
     {
       v14 = 0.0;
     }
@@ -935,12 +935,12 @@ LABEL_6:
     y = v39.origin.y;
     width = v39.size.width;
     height = v39.size.height;
-    v17 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+    isAttachmentImageFeatured = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
     v18 = height;
     v19 = width;
     v20 = y;
     v21 = x;
-    if (!v17)
+    if (!isAttachmentImageFeatured)
     {
       [(NCNotificationRichContentView *)self _labelSizingBoundsForRect:x, y, width, height];
     }
@@ -956,9 +956,9 @@ LABEL_6:
 
     [(UILabel *)footerTextLabel frame];
     MaxY = CGRectGetMaxY(v40);
-    v27 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+    isAttachmentImageFeatured2 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
     v28 = 1.0;
-    if (v27)
+    if (isAttachmentImageFeatured2)
     {
       v28 = 2.0;
     }
@@ -1009,7 +1009,7 @@ LABEL_6:
   }
 }
 
-- (void)dateLabelDidChange:(id)a3
+- (void)dateLabelDidChange:(id)change
 {
   [(BSUIDateLabel *)self->_dateLabel sizeToFit];
 
@@ -1018,8 +1018,8 @@ LABEL_6:
 
 - (BOOL)_isAXSize
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -1041,24 +1041,24 @@ LABEL_6:
   }
 }
 
-- (double)_featuredImageHeightForBounds:(CGRect)a3
+- (double)_featuredImageHeightForBounds:(CGRect)bounds
 {
-  CGRectGetWidth(a3);
-  v4 = [(NCNotificationRichContentView *)self traitCollection];
-  [v4 displayScale];
+  CGRectGetWidth(bounds);
+  traitCollection = [(NCNotificationRichContentView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
   v6 = v5;
 
   return v6;
 }
 
-- (CGRect)_labelSizingBoundsForRect:(CGRect)a3
+- (CGRect)_labelSizingBoundsForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect);
   if (self->_thumbnailImageView && ![(NCNotificationRichContentView *)self isAttachmentImageFeatured])
   {
     v9 = 98.0;
@@ -1090,9 +1090,9 @@ LABEL_6:
       }
     }
 
-    v13 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+    isAttachmentImageFeatured = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
     v14 = 10.0;
-    if (!v13)
+    if (!isAttachmentImageFeatured)
     {
       v14 = 12.0;
     }
@@ -1102,9 +1102,9 @@ LABEL_6:
 
   else
   {
-    v10 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+    isAttachmentImageFeatured2 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
     v11 = 14.0;
-    if (v10)
+    if (isAttachmentImageFeatured2)
     {
       v11 = 12.0;
     }
@@ -1140,9 +1140,9 @@ LABEL_6:
       v5 = 24.0;
     }
 
-    v6 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+    isAttachmentImageFeatured = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
     v7 = 20.0;
-    if (!v6)
+    if (!isAttachmentImageFeatured)
     {
       v7 = 38.0;
       if (!self->_badgedIconView)
@@ -1156,9 +1156,9 @@ LABEL_6:
 
   else
   {
-    v3 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
+    isAttachmentImageFeatured2 = [(NCNotificationRichContentView *)self isAttachmentImageFeatured];
     result = 14.0;
-    if (v3)
+    if (isAttachmentImageFeatured2)
     {
       return 12.0;
     }
@@ -1167,24 +1167,24 @@ LABEL_6:
   return result;
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
   v10.receiver = self;
   v10.super_class = NCNotificationRichContentView;
-  v8 = a5;
-  v9 = a3;
-  [(NCNotificationListBaseContentView *)&v10 _visualStylingProviderDidChange:v9 forCategory:a4 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primaryTextLabel style:-1 visualStylingProvider:v9 outgoingProvider:v8, v10.receiver, v10.super_class];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primarySubtitleTextLabel style:-1 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_secondaryTextLabel style:-1 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_footerTextLabel style:-1 visualStylingProvider:v9 outgoingProvider:v8];
-  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfImageView:self->_thumbnailImageView ifSymbolImageWithStyle:-1 visualStylingProvider:v9 outgoingProvider:v8];
+  providerCopy = provider;
+  changeCopy = change;
+  [(NCNotificationListBaseContentView *)&v10 _visualStylingProviderDidChange:changeCopy forCategory:category outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primaryTextLabel style:-1 visualStylingProvider:changeCopy outgoingProvider:providerCopy, v10.receiver, v10.super_class];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_primarySubtitleTextLabel style:-1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_secondaryTextLabel style:-1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfView:self->_footerTextLabel style:-1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+  [(NCNotificationListBaseContentView *)self _updateVisualStylingOfImageView:self->_thumbnailImageView ifSymbolImageWithStyle:-1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
 }
 
 - (unint64_t)_maximumNumberOfLinesForPrimaryText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v2))
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v3 = 0;
   }
@@ -1197,42 +1197,42 @@ LABEL_6:
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForPrimaryTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   primaryTextLabel = self->_primaryTextLabel;
-  v9 = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForPrimaryText];
+  _maximumNumberOfLinesForPrimaryText = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForPrimaryText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primaryTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primaryTextLabel maximumNumberOfLines:_maximumNumberOfLinesForPrimaryText inFrame:x, y, width, height];
 }
 
 - (unint64_t)_maximumNumberOfLinesForPrimarySubtitleText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  v3 = !UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  v3 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForPrimarySubtitleTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   primarySubtitleTextLabel = self->_primarySubtitleTextLabel;
-  v9 = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForPrimarySubtitleText];
+  _maximumNumberOfLinesForPrimarySubtitleText = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForPrimarySubtitleText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primarySubtitleTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:primarySubtitleTextLabel maximumNumberOfLines:_maximumNumberOfLinesForPrimarySubtitleText inFrame:x, y, width, height];
 }
 
 - (unint64_t)_maximumNumberOfLinesForSecondaryText
 {
-  v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v3))
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     secondaryTextMaximumNumberOfLines = 0;
   }
@@ -1245,36 +1245,36 @@ LABEL_6:
   return secondaryTextMaximumNumberOfLines;
 }
 
-- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForSecondaryTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   secondaryTextLabel = self->_secondaryTextLabel;
-  v9 = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForSecondaryText];
+  _maximumNumberOfLinesForSecondaryText = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForSecondaryText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:secondaryTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:secondaryTextLabel maximumNumberOfLines:_maximumNumberOfLinesForSecondaryText inFrame:x, y, width, height];
 }
 
 - (unint64_t)_maximumNumberOfLinesForFooterText
 {
-  v2 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-  v3 = !UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+  v3 = !UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return v3;
 }
 
-- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)a3
+- (unint64_t)_numberOfLinesForFooterTextInFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   footerTextLabel = self->_footerTextLabel;
-  v9 = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForFooterText];
+  _maximumNumberOfLinesForFooterText = [(NCNotificationRichContentView *)self _maximumNumberOfLinesForFooterText];
 
-  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:footerTextLabel maximumNumberOfLines:v9 inFrame:x, y, width, height];
+  return [(NCNotificationListBaseContentView *)self _numberOfLinesForLabel:footerTextLabel maximumNumberOfLines:_maximumNumberOfLinesForFooterText inFrame:x, y, width, height];
 }
 
 - (void)_updateTextAttributes
@@ -1293,8 +1293,8 @@ LABEL_6:
 {
   if (self->_primaryTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -1314,8 +1314,8 @@ LABEL_6:
 {
   if (self->_primarySubtitleTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -1335,8 +1335,8 @@ LABEL_6:
 {
   if (self->_secondaryTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -1356,8 +1356,8 @@ LABEL_6:
 {
   if (self->_footerTextLabel)
   {
-    v3 = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+    preferredContentSizeCategory = [(NCNotificationListBaseContentView *)self preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v5 = MEMORY[0x277D76918];
     if (!IsAccessibilityCategory)
     {
@@ -1378,8 +1378,8 @@ LABEL_6:
   dateLabel = self->_dateLabel;
   if (dateLabel)
   {
-    v4 = [(NCNotificationRichContentView *)self _dateLabelPreferredFont];
-    [(BSUIDateLabel *)dateLabel setFont:v4];
+    _dateLabelPreferredFont = [(NCNotificationRichContentView *)self _dateLabelPreferredFont];
+    [(BSUIDateLabel *)dateLabel setFont:_dateLabelPreferredFont];
 
     [(BSUIDateLabel *)self->_dateLabel setNumberOfLines:1];
     [(BSUIDateLabel *)self->_dateLabel setLineBreakMode:3];
@@ -1402,19 +1402,19 @@ LABEL_6:
 
 - (void)_configureDateLabel
 {
-  v3 = [MEMORY[0x277CF0D50] sharedInstance];
-  v4 = [v3 startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:self->_dateAllDay forStyle:self->_dateFormatStyle];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  v4 = [mEMORY[0x277CF0D50] startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:self->_dateAllDay forStyle:self->_dateFormatStyle];
   dateLabel = self->_dateLabel;
   self->_dateLabel = v4;
 
   [(BSUIDateLabel *)self->_dateLabel setDelegate:self];
   [(BSUIDateLabel *)self->_dateLabel setPreferredVibrancy:1];
-  v6 = [(BSUIDateLabel *)self->_dateLabel layer];
-  [v6 setFilters:MEMORY[0x277CBEBF8]];
+  layer = [(BSUIDateLabel *)self->_dateLabel layer];
+  [layer setFilters:MEMORY[0x277CBEBF8]];
 
   v7 = self->_dateLabel;
-  v8 = [MEMORY[0x277D75348] labelColor];
-  [(BSUIDateLabel *)v7 setTextColor:v8];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(BSUIDateLabel *)v7 setTextColor:labelColor];
 
   [(BSUIDateLabel *)self->_dateLabel setHidden:self->_hideDate];
   v9 = self->_dateLabel;
@@ -1430,8 +1430,8 @@ LABEL_6:
   v3 = [(NCNotificationListBaseContentView *)self visualStylingProviderForCategory:1];
   [v3 stopAutomaticallyUpdatingView:self->_dateLabel];
 
-  v4 = [MEMORY[0x277CF0D50] sharedInstance];
-  [v4 recycleLabel:self->_dateLabel];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  [mEMORY[0x277CF0D50] recycleLabel:self->_dateLabel];
 }
 
 - (void)_tearDownDateLabel
@@ -1457,24 +1457,24 @@ void __51__NCNotificationRichContentView__tearDownDateLabel__block_invoke(uint64
   }
 }
 
-- (int64_t)_dateFormatStyleForDate:(id)a3
+- (int64_t)_dateFormatStyleForDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 isDateInToday:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar isDateInToday:dateCopy];
 
   return v6;
 }
 
 - (BOOL)_isDateLabelContainsUIMultiLayer
 {
-  v2 = self;
-  v3 = [(BSUIDateLabel *)self->_dateLabel _outermostLayer];
-  v4 = [(BSUIDateLabel *)v2->_dateLabel layer];
-  LOBYTE(v2) = v3 != v4;
+  selfCopy = self;
+  _outermostLayer = [(BSUIDateLabel *)self->_dateLabel _outermostLayer];
+  layer = [(BSUIDateLabel *)selfCopy->_dateLabel layer];
+  LOBYTE(selfCopy) = _outermostLayer != layer;
 
-  return v2;
+  return selfCopy;
 }
 
 @end

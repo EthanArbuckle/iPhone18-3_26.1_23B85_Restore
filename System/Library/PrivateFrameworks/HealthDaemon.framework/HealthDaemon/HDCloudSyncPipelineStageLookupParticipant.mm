@@ -1,12 +1,12 @@
 @interface HDCloudSyncPipelineStageLookupParticipant
-- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)a3 cloudState:(id)a4 identityLookupInfo:(id)a5;
+- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)configuration cloudState:(id)state identityLookupInfo:(id)info;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPipelineStageLookupParticipant
 
-- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)a3 cloudState:(id)a4 identityLookupInfo:(id)a5
+- (HDCloudSyncPipelineStageLookupParticipant)initWithConfiguration:(id)configuration cloudState:(id)state identityLookupInfo:(id)info
 {
-  v9 = a5;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = HDCloudSyncPipelineStageLookupParticipant;
-  v10 = [(HDCloudSyncPipelineStage *)&v13 initWithConfiguration:a3 cloudState:a4];
+  v10 = [(HDCloudSyncPipelineStage *)&v13 initWithConfiguration:configuration cloudState:state];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identityLookupInfo, a5);
+    objc_storeStrong(&v10->_identityLookupInfo, info);
   }
 
   return v11;
@@ -34,9 +34,9 @@
 - (void)main
 {
   v3 = [HDCloudSyncLookupParticipantOperation alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncOperation *)self cloudState];
-  v6 = [(HDCloudSyncLookupParticipantOperation *)v3 initWithConfiguration:v4 cloudState:v5 identityLookupInfo:self->_identityLookupInfo];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  v6 = [(HDCloudSyncLookupParticipantOperation *)v3 initWithConfiguration:configuration cloudState:cloudState identityLookupInfo:self->_identityLookupInfo];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -50,10 +50,10 @@
   v10[3] = &unk_278613088;
   v10[4] = self;
   [(HDCloudSyncOperation *)v6 setOnError:v10];
-  v7 = [(HDCloudSyncOperation *)self progress];
-  v8 = [(HDCloudSyncOperation *)v6 progress];
-  v9 = [(HDCloudSyncOperation *)self progress];
-  [v7 addChild:v8 withPendingUnitCount:{objc_msgSend(v9, "totalUnitCount")}];
+  progress = [(HDCloudSyncOperation *)self progress];
+  progress2 = [(HDCloudSyncOperation *)v6 progress];
+  progress3 = [(HDCloudSyncOperation *)self progress];
+  [progress addChild:progress2 withPendingUnitCount:{objc_msgSend(progress3, "totalUnitCount")}];
 
   [(HDCloudSyncOperation *)v6 start];
 }

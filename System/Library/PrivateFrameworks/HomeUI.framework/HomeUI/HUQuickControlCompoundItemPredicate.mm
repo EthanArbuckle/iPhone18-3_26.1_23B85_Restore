@@ -1,30 +1,30 @@
 @interface HUQuickControlCompoundItemPredicate
-- (HUQuickControlCompoundItemPredicate)initWithRequiredSubpredicates:(id)a3 optionalSubpredicates:(id)a4 minimumNumberOfMatchedPredicates:(unint64_t)a5;
+- (HUQuickControlCompoundItemPredicate)initWithRequiredSubpredicates:(id)subpredicates optionalSubpredicates:(id)optionalSubpredicates minimumNumberOfMatchedPredicates:(unint64_t)predicates;
 - (id)allSubpredicates;
-- (id)matchingControlItemsForControlItems:(id)a3;
+- (id)matchingControlItemsForControlItems:(id)items;
 - (unint64_t)maximumNumberOfMatches;
 @end
 
 @implementation HUQuickControlCompoundItemPredicate
 
-- (HUQuickControlCompoundItemPredicate)initWithRequiredSubpredicates:(id)a3 optionalSubpredicates:(id)a4 minimumNumberOfMatchedPredicates:(unint64_t)a5
+- (HUQuickControlCompoundItemPredicate)initWithRequiredSubpredicates:(id)subpredicates optionalSubpredicates:(id)optionalSubpredicates minimumNumberOfMatchedPredicates:(unint64_t)predicates
 {
-  v8 = a3;
-  v9 = a4;
+  subpredicatesCopy = subpredicates;
+  optionalSubpredicatesCopy = optionalSubpredicates;
   v16.receiver = self;
   v16.super_class = HUQuickControlCompoundItemPredicate;
   v10 = [(HUQuickControlCompoundItemPredicate *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [subpredicatesCopy copy];
     requiredSubpredicates = v10->_requiredSubpredicates;
     v10->_requiredSubpredicates = v11;
 
-    v13 = [v9 copy];
+    v13 = [optionalSubpredicatesCopy copy];
     optionalSubpredicates = v10->_optionalSubpredicates;
     v10->_optionalSubpredicates = v13;
 
-    v10->_minimumNumberOfMatchedPredicates = a5;
+    v10->_minimumNumberOfMatchedPredicates = predicates;
   }
 
   return v10;
@@ -32,12 +32,12 @@
 
 - (id)allSubpredicates
 {
-  v3 = [(HUQuickControlCompoundItemPredicate *)self requiredSubpredicates];
-  v4 = [(HUQuickControlCompoundItemPredicate *)self optionalSubpredicates];
-  v5 = v4;
-  if (v4)
+  requiredSubpredicates = [(HUQuickControlCompoundItemPredicate *)self requiredSubpredicates];
+  optionalSubpredicates = [(HUQuickControlCompoundItemPredicate *)self optionalSubpredicates];
+  v5 = optionalSubpredicates;
+  if (optionalSubpredicates)
   {
-    v6 = v4;
+    v6 = optionalSubpredicates;
   }
 
   else
@@ -45,7 +45,7 @@
     v6 = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [v3 arrayByAddingObjectsFromArray:v6];
+  v7 = [requiredSubpredicates arrayByAddingObjectsFromArray:v6];
 
   return v7;
 }
@@ -57,8 +57,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(HUQuickControlCompoundItemPredicate *)self allSubpredicates];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allSubpredicates = [(HUQuickControlCompoundItemPredicate *)self allSubpredicates];
+  v3 = [allSubpredicates countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -70,13 +70,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allSubpredicates);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) maximumNumberOfMatches];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allSubpredicates countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -90,17 +90,17 @@
   return v5;
 }
 
-- (id)matchingControlItemsForControlItems:(id)a3
+- (id)matchingControlItemsForControlItems:(id)items
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = [a3 mutableCopy];
+  v4 = [items mutableCopy];
   v5 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(HUQuickControlCompoundItemPredicate *)self requiredSubpredicates];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  requiredSubpredicates = [(HUQuickControlCompoundItemPredicate *)self requiredSubpredicates];
+  v7 = [requiredSubpredicates countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -115,7 +115,7 @@
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requiredSubpredicates);
         }
 
         v13 = *(*(&v29 + 1) + 8 * v11);
@@ -141,7 +141,7 @@ LABEL_13:
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [requiredSubpredicates countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v8)
       {
         continue;
@@ -158,8 +158,8 @@ LABEL_13:
 
 LABEL_14:
 
-  v15 = [(HUQuickControlCompoundItemPredicate *)self requiredSubpredicates];
-  v16 = [v15 count];
+  requiredSubpredicates2 = [(HUQuickControlCompoundItemPredicate *)self requiredSubpredicates];
+  v16 = [requiredSubpredicates2 count];
 
   if (v9 >= v16)
   {
@@ -167,8 +167,8 @@ LABEL_14:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v17 = [(HUQuickControlCompoundItemPredicate *)self optionalSubpredicates];
-    v18 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    optionalSubpredicates = [(HUQuickControlCompoundItemPredicate *)self optionalSubpredicates];
+    v18 = [optionalSubpredicates countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v18)
     {
       v19 = v18;
@@ -179,7 +179,7 @@ LABEL_18:
       {
         if (*v26 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(optionalSubpredicates);
         }
 
         v22 = *(*(&v25 + 1) + 8 * v21);
@@ -198,7 +198,7 @@ LABEL_18:
 
         if (v19 == ++v21)
         {
-          v19 = [v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          v19 = [optionalSubpredicates countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v19)
           {
             goto LABEL_18;

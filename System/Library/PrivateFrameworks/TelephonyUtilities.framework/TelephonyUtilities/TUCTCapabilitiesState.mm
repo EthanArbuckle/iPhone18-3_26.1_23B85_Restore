@@ -1,17 +1,17 @@
 @interface TUCTCapabilitiesState
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCapabilitiesState:(id)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCapabilitiesState:(id)state;
 - (BOOL)isProvisioningURLInvalid;
 - (NSString)description;
-- (TUCTCapabilitiesState)initWithCapabilityInfo:(id)a3;
-- (TUCTCapabilitiesState)initWithCoder:(id)a3;
+- (TUCTCapabilitiesState)initWithCapabilityInfo:(id)info;
+- (TUCTCapabilitiesState)initWithCoder:(id)coder;
 - (TUCTCapabilityInfo)ctCapabilityInfo;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)publiclyAccessibleCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)publiclyAccessibleCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidateProvisioningURL;
 @end
 
@@ -20,17 +20,17 @@
 - (TUCTCapabilityInfo)ctCapabilityInfo
 {
   v3 = objc_alloc_init(TUCTCapabilityInfo);
-  v4 = [(TUCTCapabilitiesState *)self provisioningStatus];
-  if (v4 <= 3)
+  provisioningStatus = [(TUCTCapabilitiesState *)self provisioningStatus];
+  if (provisioningStatus <= 3)
   {
-    [(TUCTCapabilityInfo *)v3 setProvisioningStatus:v4];
+    [(TUCTCapabilityInfo *)v3 setProvisioningStatus:provisioningStatus];
   }
 
-  v5 = [(TUCTCapabilitiesState *)self provisioningURL];
-  [(TUCTCapabilityInfo *)v3 setProvisioningURL:v5];
+  provisioningURL = [(TUCTCapabilitiesState *)self provisioningURL];
+  [(TUCTCapabilityInfo *)v3 setProvisioningURL:provisioningURL];
 
-  v6 = [(TUCTCapabilitiesState *)self provisioningPostData];
-  [(TUCTCapabilityInfo *)v3 setProvisioningPostData:v6];
+  provisioningPostData = [(TUCTCapabilitiesState *)self provisioningPostData];
+  [(TUCTCapabilityInfo *)v3 setProvisioningPostData:provisioningPostData];
 
   [(TUCTCapabilityInfo *)v3 setCanEnable:[(TUCTCapabilitiesState *)self isSupported]];
   [(TUCTCapabilityInfo *)v3 setEnabled:[(TUCTCapabilitiesState *)self isEnabled]];
@@ -47,12 +47,12 @@
   [v3 appendFormat:@" %@=%d", v4, -[TUCTCapabilitiesState provisioningStatus](self, "provisioningStatus")];
 
   v5 = NSStringFromSelector(sel_provisioningURL);
-  v6 = [(TUCTCapabilitiesState *)self provisioningURL];
-  [v3 appendFormat:@" %@=%@", v5, v6];
+  provisioningURL = [(TUCTCapabilitiesState *)self provisioningURL];
+  [v3 appendFormat:@" %@=%@", v5, provisioningURL];
 
   v7 = NSStringFromSelector(sel_provisioningPostData);
-  v8 = [(TUCTCapabilitiesState *)self provisioningPostData];
-  [v3 appendFormat:@" %@=%p", v7, v8];
+  provisioningPostData = [(TUCTCapabilitiesState *)self provisioningPostData];
+  [v3 appendFormat:@" %@=%p", v7, provisioningPostData];
 
   v9 = NSStringFromSelector(sel_isSupported);
   [v3 appendFormat:@" %@=%d", v9, -[TUCTCapabilitiesState isSupported](self, "isSupported")];
@@ -80,15 +80,15 @@
   return v3;
 }
 
-- (TUCTCapabilitiesState)initWithCapabilityInfo:(id)a3
+- (TUCTCapabilitiesState)initWithCapabilityInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = TUCTCapabilitiesState;
   v5 = [(TUCTCapabilitiesState *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69652B8]];
+    v6 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69652B8]];
     if ([v6 isEqualToString:*MEMORY[0x1E69652C8]])
     {
       v7 = 0;
@@ -111,27 +111,27 @@
 LABEL_11:
         v8 = MEMORY[0x1E695DFF8];
         v9 = *MEMORY[0x1E69652E0];
-        v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69652E0]];
+        v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69652E0]];
         v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69654C8]];
         v12 = [v8 URLWithString:v11];
         provisioningURL = v5->_provisioningURL;
         v5->_provisioningURL = v12;
 
-        v14 = [v4 objectForKeyedSubscript:v9];
+        v14 = [infoCopy objectForKeyedSubscript:v9];
         v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69654C0]];
         provisioningPostData = v5->_provisioningPostData;
         v5->_provisioningPostData = v15;
 
-        v17 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6965160]];
+        v17 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6965160]];
         v5->_supported = [v17 BOOLValue];
 
-        v18 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6965168]];
+        v18 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6965168]];
         v5->_enabled = [v18 BOOLValue];
 
-        v19 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6965528]];
+        v19 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6965528]];
         v5->_roamingSupported = [v19 BOOLValue];
 
-        v20 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6965530]];
+        v20 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6965530]];
         v5->_roamingEnabled = [v20 BOOLValue];
 
         goto LABEL_12;
@@ -151,9 +151,9 @@ LABEL_12:
 
 - (BOOL)isProvisioningURLInvalid
 {
-  v2 = [(TUCTCapabilitiesState *)self provisioningURL];
+  provisioningURL = [(TUCTCapabilitiesState *)self provisioningURL];
   v3 = [MEMORY[0x1E695DFF8] URLWithString:@"__INVALID_PROVISIONING_URL__"];
-  v4 = [v2 isEqual:v3];
+  v4 = [provisioningURL isEqual:v3];
 
   return v4;
 }
@@ -164,19 +164,19 @@ LABEL_12:
   [(TUCTCapabilitiesState *)self setProvisioningURL:v3];
 }
 
-- (BOOL)isEqualToCapabilitiesState:(id)a3
+- (BOOL)isEqualToCapabilitiesState:(id)state
 {
-  v4 = a3;
-  v5 = [(TUCTCapabilitiesState *)self provisioningPostData];
-  v6 = [v4 provisioningPostData];
-  if (TUObjectsAreEqualOrNil(v5, v6) && (v7 = -[TUCTCapabilitiesState provisioningStatus](self, "provisioningStatus"), v7 == [v4 provisioningStatus]))
+  stateCopy = state;
+  provisioningPostData = [(TUCTCapabilitiesState *)self provisioningPostData];
+  provisioningPostData2 = [stateCopy provisioningPostData];
+  if (TUObjectsAreEqualOrNil(provisioningPostData, provisioningPostData2) && (v7 = -[TUCTCapabilitiesState provisioningStatus](self, "provisioningStatus"), v7 == [stateCopy provisioningStatus]))
   {
-    v8 = [(TUCTCapabilitiesState *)self provisioningURL];
-    v9 = [v4 provisioningURL];
-    if (TUObjectsAreEqualOrNil(v8, v9) && (v10 = -[TUCTCapabilitiesState isCurrentlyAvailable](self, "isCurrentlyAvailable"), v10 == [v4 isCurrentlyAvailable]) && (v11 = -[TUCTCapabilitiesState isEnabled](self, "isEnabled"), v11 == objc_msgSend(v4, "isEnabled")) && (v12 = -[TUCTCapabilitiesState isSupported](self, "isSupported"), v12 == objc_msgSend(v4, "isSupported")) && (v13 = -[TUCTCapabilitiesState isEmergencyCurrentlyAvailable](self, "isEmergencyCurrentlyAvailable"), v13 == objc_msgSend(v4, "isEmergencyCurrentlyAvailable")) && (v14 = -[TUCTCapabilitiesState isEmergencySupported](self, "isEmergencySupported"), v14 == objc_msgSend(v4, "isEmergencySupported")) && (v15 = -[TUCTCapabilitiesState isRoamingEnabled](self, "isRoamingEnabled"), v15 == objc_msgSend(v4, "isRoamingEnabled")))
+    provisioningURL = [(TUCTCapabilitiesState *)self provisioningURL];
+    provisioningURL2 = [stateCopy provisioningURL];
+    if (TUObjectsAreEqualOrNil(provisioningURL, provisioningURL2) && (v10 = -[TUCTCapabilitiesState isCurrentlyAvailable](self, "isCurrentlyAvailable"), v10 == [stateCopy isCurrentlyAvailable]) && (v11 = -[TUCTCapabilitiesState isEnabled](self, "isEnabled"), v11 == objc_msgSend(stateCopy, "isEnabled")) && (v12 = -[TUCTCapabilitiesState isSupported](self, "isSupported"), v12 == objc_msgSend(stateCopy, "isSupported")) && (v13 = -[TUCTCapabilitiesState isEmergencyCurrentlyAvailable](self, "isEmergencyCurrentlyAvailable"), v13 == objc_msgSend(stateCopy, "isEmergencyCurrentlyAvailable")) && (v14 = -[TUCTCapabilitiesState isEmergencySupported](self, "isEmergencySupported"), v14 == objc_msgSend(stateCopy, "isEmergencySupported")) && (v15 = -[TUCTCapabilitiesState isRoamingEnabled](self, "isRoamingEnabled"), v15 == objc_msgSend(stateCopy, "isRoamingEnabled")))
     {
-      v18 = [(TUCTCapabilitiesState *)self isRoamingSupported];
-      v16 = v18 ^ [v4 isRoamingSupported] ^ 1;
+      isRoamingSupported = [(TUCTCapabilitiesState *)self isRoamingSupported];
+      v16 = isRoamingSupported ^ [stateCopy isRoamingSupported] ^ 1;
     }
 
     else
@@ -193,107 +193,107 @@ LABEL_12:
   return v16;
 }
 
-- (TUCTCapabilitiesState)initWithCoder:(id)a3
+- (TUCTCapabilitiesState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUCTCapabilitiesState *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_provisioningStatus);
-    v5->_provisioningStatus = [v4 decodeInt32ForKey:v6];
+    v5->_provisioningStatus = [coderCopy decodeInt32ForKey:v6];
 
     v7 = objc_opt_class();
     v8 = NSStringFromSelector(sel_provisioningURL);
-    v9 = [v4 decodeObjectOfClass:v7 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClass:v7 forKey:v8];
     provisioningURL = v5->_provisioningURL;
     v5->_provisioningURL = v9;
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector(sel_provisioningPostData);
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
     provisioningPostData = v5->_provisioningPostData;
     v5->_provisioningPostData = v13;
 
     v15 = NSStringFromSelector(sel_isSupported);
-    v5->_supported = [v4 decodeBoolForKey:v15];
+    v5->_supported = [coderCopy decodeBoolForKey:v15];
 
     v16 = NSStringFromSelector(sel_isEnabled);
-    v5->_enabled = [v4 decodeBoolForKey:v16];
+    v5->_enabled = [coderCopy decodeBoolForKey:v16];
 
     v17 = NSStringFromSelector(sel_isCurrentlyAvailable);
-    v5->_currentlyAvailable = [v4 decodeBoolForKey:v17];
+    v5->_currentlyAvailable = [coderCopy decodeBoolForKey:v17];
 
     v18 = NSStringFromSelector(sel_isRoamingEnabled);
-    v5->_roamingEnabled = [v4 decodeBoolForKey:v18];
+    v5->_roamingEnabled = [coderCopy decodeBoolForKey:v18];
 
     v19 = NSStringFromSelector(sel_isRoamingSupported);
-    v5->_roamingSupported = [v4 decodeBoolForKey:v19];
+    v5->_roamingSupported = [coderCopy decodeBoolForKey:v19];
 
     v20 = NSStringFromSelector(sel_isEmergencySupported);
-    v5->_emergencySupported = [v4 decodeBoolForKey:v20];
+    v5->_emergencySupported = [coderCopy decodeBoolForKey:v20];
 
     v21 = NSStringFromSelector(sel_isEmergencyCurrentlyAvailable);
-    v5->_emergencyCurrentlyAvailable = [v4 decodeBoolForKey:v21];
+    v5->_emergencyCurrentlyAvailable = [coderCopy decodeBoolForKey:v21];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUCTCapabilitiesState *)self provisioningStatus];
+  coderCopy = coder;
+  provisioningStatus = [(TUCTCapabilitiesState *)self provisioningStatus];
   v6 = NSStringFromSelector(sel_provisioningStatus);
-  [v4 encodeInt32:v5 forKey:v6];
+  [coderCopy encodeInt32:provisioningStatus forKey:v6];
 
-  v7 = [(TUCTCapabilitiesState *)self provisioningURL];
+  provisioningURL = [(TUCTCapabilitiesState *)self provisioningURL];
   v8 = NSStringFromSelector(sel_provisioningURL);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:provisioningURL forKey:v8];
 
-  v9 = [(TUCTCapabilitiesState *)self provisioningPostData];
+  provisioningPostData = [(TUCTCapabilitiesState *)self provisioningPostData];
   v10 = NSStringFromSelector(sel_provisioningPostData);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:provisioningPostData forKey:v10];
 
-  v11 = [(TUCTCapabilitiesState *)self isSupported];
+  isSupported = [(TUCTCapabilitiesState *)self isSupported];
   v12 = NSStringFromSelector(sel_isSupported);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isSupported forKey:v12];
 
-  v13 = [(TUCTCapabilitiesState *)self isEnabled];
+  isEnabled = [(TUCTCapabilitiesState *)self isEnabled];
   v14 = NSStringFromSelector(sel_isEnabled);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:isEnabled forKey:v14];
 
-  v15 = [(TUCTCapabilitiesState *)self isCurrentlyAvailable];
+  isCurrentlyAvailable = [(TUCTCapabilitiesState *)self isCurrentlyAvailable];
   v16 = NSStringFromSelector(sel_isCurrentlyAvailable);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:isCurrentlyAvailable forKey:v16];
 
-  v17 = [(TUCTCapabilitiesState *)self isRoamingEnabled];
+  isRoamingEnabled = [(TUCTCapabilitiesState *)self isRoamingEnabled];
   v18 = NSStringFromSelector(sel_isRoamingEnabled);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:isRoamingEnabled forKey:v18];
 
-  v19 = [(TUCTCapabilitiesState *)self isRoamingSupported];
+  isRoamingSupported = [(TUCTCapabilitiesState *)self isRoamingSupported];
   v20 = NSStringFromSelector(sel_isRoamingSupported);
-  [v4 encodeBool:v19 forKey:v20];
+  [coderCopy encodeBool:isRoamingSupported forKey:v20];
 
-  v21 = [(TUCTCapabilitiesState *)self isEmergencySupported];
+  isEmergencySupported = [(TUCTCapabilitiesState *)self isEmergencySupported];
   v22 = NSStringFromSelector(sel_isEmergencySupported);
-  [v4 encodeBool:v21 forKey:v22];
+  [coderCopy encodeBool:isEmergencySupported forKey:v22];
 
-  v23 = [(TUCTCapabilitiesState *)self isEmergencyCurrentlyAvailable];
+  isEmergencyCurrentlyAvailable = [(TUCTCapabilitiesState *)self isEmergencyCurrentlyAvailable];
   v24 = NSStringFromSelector(sel_isEmergencyCurrentlyAvailable);
-  [v4 encodeBool:v23 forKey:v24];
+  [coderCopy encodeBool:isEmergencyCurrentlyAvailable forKey:v24];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(TUCTCapabilitiesState *)self publiclyAccessibleCopyWithZone:?];
-  v6 = [(TUCTCapabilitiesState *)self provisioningPostData];
-  v7 = [v6 copyWithZone:a3];
+  provisioningPostData = [(TUCTCapabilitiesState *)self provisioningPostData];
+  v7 = [provisioningPostData copyWithZone:zone];
   v8 = *(v5 + 32);
   *(v5 + 32) = v7;
 
   *(v5 + 16) = [(TUCTCapabilitiesState *)self provisioningStatus];
-  v9 = [(TUCTCapabilitiesState *)self provisioningURL];
-  v10 = [v9 copyWithZone:a3];
+  provisioningURL = [(TUCTCapabilitiesState *)self provisioningURL];
+  v10 = [provisioningURL copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -302,11 +302,11 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(TUCTCapabilitiesState *)self provisioningPostData];
-  v4 = [v3 hash];
+  provisioningPostData = [(TUCTCapabilitiesState *)self provisioningPostData];
+  v4 = [provisioningPostData hash];
   v5 = v4 ^ [(TUCTCapabilitiesState *)self provisioningStatus];
-  v6 = [(TUCTCapabilitiesState *)self provisioningURL];
-  v7 = v5 ^ [v6 hash];
+  provisioningURL = [(TUCTCapabilitiesState *)self provisioningURL];
+  v7 = v5 ^ [provisioningURL hash];
   if ([(TUCTCapabilitiesState *)self isCurrentlyAvailable])
   {
     v8 = 1231;
@@ -385,10 +385,10 @@ LABEL_12:
   return v15 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -396,15 +396,15 @@ LABEL_12:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCTCapabilitiesState *)self isEqualToCapabilitiesState:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUCTCapabilitiesState *)self isEqualToCapabilitiesState:equalCopy];
   }
 
   return v5;
 }
 
-- (id)publiclyAccessibleCopyWithZone:(_NSZone *)a3
+- (id)publiclyAccessibleCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSupported:{-[TUCTCapabilitiesState isSupported](self, "isSupported")}];
   [v4 setEnabled:{-[TUCTCapabilitiesState isEnabled](self, "isEnabled")}];
   [v4 setCurrentlyAvailable:{-[TUCTCapabilitiesState isCurrentlyAvailable](self, "isCurrentlyAvailable")}];
@@ -424,12 +424,12 @@ LABEL_12:
   return [v2 setWithObjects:{v3, v4, objc_opt_class(), 0}];
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x1E696ACD0];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }

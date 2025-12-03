@@ -1,37 +1,37 @@
 @interface SCROVirtualBrailleDriver
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4;
-- (SCROVirtualBrailleDriver)initWithMainSize:(int64_t)a3 delegate:(id)a4;
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length;
+- (SCROVirtualBrailleDriver)initWithMainSize:(int64_t)size delegate:(id)delegate;
 - (id)getInputEvents;
-- (void)enqueueDot:(int64_t)a3 down:(BOOL)a4;
+- (void)enqueueDot:(int64_t)dot down:(BOOL)down;
 - (void)enqueueForceTranslate;
-- (void)enqueuePan:(BOOL)a3 down:(BOOL)a4;
-- (void)enqueueRouter:(unint64_t)a3 down:(BOOL)a4;
-- (void)enqueueSpaceWithDown:(BOOL)a3;
+- (void)enqueuePan:(BOOL)pan down:(BOOL)down;
+- (void)enqueueRouter:(unint64_t)router down:(BOOL)down;
+- (void)enqueueSpaceWithDown:(BOOL)down;
 @end
 
 @implementation SCROVirtualBrailleDriver
 
-- (SCROVirtualBrailleDriver)initWithMainSize:(int64_t)a3 delegate:(id)a4
+- (SCROVirtualBrailleDriver)initWithMainSize:(int64_t)size delegate:(id)delegate
 {
-  v7 = a4;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SCROVirtualBrailleDriver;
   v8 = [(SCROVirtualBrailleDriver *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    v8->_mainSize = a3;
-    objc_storeStrong(&v8->_delegate, a4);
+    v8->_mainSize = size;
+    objc_storeStrong(&v8->_delegate, delegate);
     v10 = objc_opt_new();
-    if (a3 >= 1)
+    if (size >= 1)
     {
       do
       {
         [v10 appendString:@"⠀"];
-        --a3;
+        --size;
       }
 
-      while (a3);
+      while (size);
     }
 
     mainCells = v9->_mainCells;
@@ -56,7 +56,7 @@
   return v3;
 }
 
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length
 {
   v7 = objc_opt_new();
   if (self->_mainSize >= 1)
@@ -64,17 +64,17 @@
     v8 = 0;
     do
     {
-      if (v8 >= a4)
+      if (v8 >= length)
       {
         [v7 appendString:@"⠀"];
       }
 
       else
       {
-        v9 = [objc_alloc(MEMORY[0x277CF3310]) initWithBits:a3[v8]];
-        v10 = [v9 unicode];
+        v9 = [objc_alloc(MEMORY[0x277CF3310]) initWithBits:cells[v8]];
+        unicode = [v9 unicode];
 
-        [v7 appendString:v10];
+        [v7 appendString:unicode];
       }
 
       ++v8;
@@ -91,9 +91,9 @@
   return 1;
 }
 
-- (void)enqueuePan:(BOOL)a3 down:(BOOL)a4
+- (void)enqueuePan:(BOOL)pan down:(BOOL)down
 {
-  if (a4)
+  if (down)
   {
     v5 = 65542;
   }
@@ -103,7 +103,7 @@
     v5 = 6;
   }
 
-  if (a3)
+  if (pan)
   {
     v6 = 8608;
   }
@@ -123,15 +123,15 @@
   [(NSLock *)eventLock unlock];
 }
 
-- (void)enqueueDot:(int64_t)a3 down:(BOOL)a4
+- (void)enqueueDot:(int64_t)dot down:(BOOL)down
 {
-  if ((a3 - 9) >= 0xFFFFFFFFFFFFFFF8)
+  if ((dot - 9) >= 0xFFFFFFFFFFFFFFF8)
   {
     v16 = v7;
     v17 = v6;
     v18 = v4;
-    v11 = ((a3 << 8) - 256) & 0xFFFEFFFF;
-    if (a4)
+    v11 = ((dot << 8) - 256) & 0xFFFEFFFF;
+    if (down)
     {
       v12 = 65538;
     }
@@ -152,9 +152,9 @@
   }
 }
 
-- (void)enqueueSpaceWithDown:(BOOL)a3
+- (void)enqueueSpaceWithDown:(BOOL)down
 {
-  if (a3)
+  if (down)
   {
     v4 = 67586;
   }
@@ -174,10 +174,10 @@
   [(NSLock *)eventLock unlock];
 }
 
-- (void)enqueueRouter:(unint64_t)a3 down:(BOOL)a4
+- (void)enqueueRouter:(unint64_t)router down:(BOOL)down
 {
-  v5 = (a3 << 8) & 0xFFFEFFFF;
-  if (a4)
+  v5 = (router << 8) & 0xFFFEFFFF;
+  if (down)
   {
     v6 = 0x10000;
   }

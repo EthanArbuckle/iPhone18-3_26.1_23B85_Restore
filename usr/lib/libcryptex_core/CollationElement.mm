@@ -1,22 +1,22 @@
 @interface CollationElement
-+ (id)scopeToString:(int64_t)a3;
-- (CollationElement)initWithBundle:(id)a3 version:(id)a4 atPath:(id)a5 withScope:(int64_t)a6 withCommand:(id)a7 withCommandArgs:(id)a8 withEnv:(id)a9;
-- (CollationElement)initWithXPC:(id)a3;
++ (id)scopeToString:(int64_t)string;
+- (CollationElement)initWithBundle:(id)bundle version:(id)version atPath:(id)path withScope:(int64_t)scope withCommand:(id)command withCommandArgs:(id)args withEnv:(id)env;
+- (CollationElement)initWithXPC:(id)c;
 - (id)description;
 - (id)package;
 @end
 
 @implementation CollationElement
 
-+ (id)scopeToString:(int64_t)a3
++ (id)scopeToString:(int64_t)string
 {
   v3 = @"SCOPE_UNK";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"SCOPE_USER";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"SCOPE_SYSTEM";
   }
@@ -37,51 +37,51 @@
   return v6;
 }
 
-- (CollationElement)initWithBundle:(id)a3 version:(id)a4 atPath:(id)a5 withScope:(int64_t)a6 withCommand:(id)a7 withCommandArgs:(id)a8 withEnv:(id)a9
+- (CollationElement)initWithBundle:(id)bundle version:(id)version atPath:(id)path withScope:(int64_t)scope withCommand:(id)command withCommandArgs:(id)args withEnv:(id)env
 {
-  v24 = a3;
-  v23 = a4;
-  v22 = a5;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
+  bundleCopy = bundle;
+  versionCopy = version;
+  pathCopy = path;
+  commandCopy = command;
+  argsCopy = args;
+  envCopy = env;
   v25.receiver = self;
   v25.super_class = CollationElement;
   v18 = [(CollationElement *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    v18->_cle_scope = a6;
-    objc_storeStrong(&v18->_cle_mnt_path, a5);
-    objc_storeStrong(&v19->_cle_bundle_id, a3);
-    objc_storeStrong(&v19->_cle_bundle_version, a4);
-    objc_storeStrong(&v19->_cle_command, a7);
-    objc_storeStrong(&v19->_cle_env, a9);
-    objc_storeStrong(&v19->_cle_command_args, a8);
+    v18->_cle_scope = scope;
+    objc_storeStrong(&v18->_cle_mnt_path, path);
+    objc_storeStrong(&v19->_cle_bundle_id, bundle);
+    objc_storeStrong(&v19->_cle_bundle_version, version);
+    objc_storeStrong(&v19->_cle_command, command);
+    objc_storeStrong(&v19->_cle_env, env);
+    objc_storeStrong(&v19->_cle_command_args, args);
   }
 
   return v19;
 }
 
-- (CollationElement)initWithXPC:(id)a3
+- (CollationElement)initWithXPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v22.receiver = self;
   v22.super_class = CollationElement;
   v5 = [(CollationElement *)&v22 init];
   if (v5)
   {
-    string = xpc_dictionary_get_string(v4, "cmd");
-    v5->_cle_scope = xpc_dictionary_get_int64(v4, "scope");
-    v7 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:{xpc_dictionary_get_string(v4, "mntpath")}];
+    string = xpc_dictionary_get_string(cCopy, "cmd");
+    v5->_cle_scope = xpc_dictionary_get_int64(cCopy, "scope");
+    v7 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:{xpc_dictionary_get_string(cCopy, "mntpath")}];
     cle_mnt_path = v5->_cle_mnt_path;
     v5->_cle_mnt_path = v7;
 
-    v9 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:{xpc_dictionary_get_string(v4, "cryptex_bundleid")}];
+    v9 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:{xpc_dictionary_get_string(cCopy, "cryptex_bundleid")}];
     cle_bundle_id = v5->_cle_bundle_id;
     v5->_cle_bundle_id = v9;
 
-    v11 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:{xpc_dictionary_get_string(v4, "version")}];
+    v11 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:{xpc_dictionary_get_string(cCopy, "version")}];
     cle_bundle_version = v5->_cle_bundle_version;
     v5->_cle_bundle_version = v11;
 
@@ -92,7 +92,7 @@
       v5->_cle_command = v13;
     }
 
-    v15 = xpc_dictionary_get_dictionary(v4, "env");
+    v15 = xpc_dictionary_get_dictionary(cCopy, "env");
     if (v15)
     {
       v16 = _CFXPCCreateCFObjectFromXPCObject();
@@ -100,7 +100,7 @@
       v5->_cle_env = v16;
     }
 
-    v18 = xpc_dictionary_get_array(v4, "cmd_arg");
+    v18 = xpc_dictionary_get_array(cCopy, "cmd_arg");
 
     if (v18)
     {
@@ -120,37 +120,37 @@
   v4 = [CollationElement scopeToString:[(CollationElement *)self cle_scope]];
   xpc_dictionary_set_string(empty, "scope_string", [v4 UTF8String]);
 
-  v5 = [(CollationElement *)self cle_bundle_id];
-  xpc_dictionary_set_string(empty, "cryptex_bundleid", [v5 UTF8String]);
+  cle_bundle_id = [(CollationElement *)self cle_bundle_id];
+  xpc_dictionary_set_string(empty, "cryptex_bundleid", [cle_bundle_id UTF8String]);
 
-  v6 = [(CollationElement *)self cle_mnt_path];
-  xpc_dictionary_set_string(empty, "mntpath", [v6 UTF8String]);
+  cle_mnt_path = [(CollationElement *)self cle_mnt_path];
+  xpc_dictionary_set_string(empty, "mntpath", [cle_mnt_path UTF8String]);
 
-  v7 = [(CollationElement *)self cle_bundle_version];
-  xpc_dictionary_set_string(empty, "version", [v7 UTF8String]);
+  cle_bundle_version = [(CollationElement *)self cle_bundle_version];
+  xpc_dictionary_set_string(empty, "version", [cle_bundle_version UTF8String]);
 
-  v8 = [(CollationElement *)self cle_command];
+  cle_command = [(CollationElement *)self cle_command];
 
-  if (v8)
+  if (cle_command)
   {
-    v9 = [(CollationElement *)self cle_command];
-    xpc_dictionary_set_string(empty, "command", [v9 UTF8String]);
+    cle_command2 = [(CollationElement *)self cle_command];
+    xpc_dictionary_set_string(empty, "command", [cle_command2 UTF8String]);
   }
 
-  v10 = [(CollationElement *)self cle_env];
+  cle_env = [(CollationElement *)self cle_env];
 
-  if (v10)
+  if (cle_env)
   {
-    v11 = [(CollationElement *)self cle_env];
+    cle_env2 = [(CollationElement *)self cle_env];
     v12 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(empty, "env", v12);
   }
 
-  v13 = [(CollationElement *)self cle_command_args];
+  cle_command_args = [(CollationElement *)self cle_command_args];
 
-  if (v13)
+  if (cle_command_args)
   {
-    v14 = [(CollationElement *)self cle_command_args];
+    cle_command_args2 = [(CollationElement *)self cle_command_args];
     v15 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(empty, "cmd_arg", v15);
   }

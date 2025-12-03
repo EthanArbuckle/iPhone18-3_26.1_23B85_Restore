@@ -1,11 +1,11 @@
 @interface AXMRectangleDetectorNode
-- (AXMRectangleDetectorNode)initWithCoder:(id)a3;
+- (AXMRectangleDetectorNode)initWithCoder:(id)coder;
 - (BOOL)validateVisionKitSoftLinkSymbols;
 - (CGPoint)cameraOpticalOrigin;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 - (void)nodeInitialize;
-- (void)setMaximumNumberOfRects:(int64_t)a3;
+- (void)setMaximumNumberOfRects:(int64_t)rects;
 @end
 
 @implementation AXMRectangleDetectorNode
@@ -25,68 +25,68 @@
   [(AXMRectangleDetectorNode *)self setMaximumNumberOfRects:1];
 }
 
-- (AXMRectangleDetectorNode)initWithCoder:(id)a3
+- (AXMRectangleDetectorNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AXMRectangleDetectorNode;
-  v5 = [(AXMEvaluationNode *)&v7 initWithCoder:v4];
+  v5 = [(AXMEvaluationNode *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"cameraPixelFocalLength"];
+    [coderCopy decodeDoubleForKey:@"cameraPixelFocalLength"];
     [(AXMRectangleDetectorNode *)v5 setCameraPixelFocalLength:?];
-    [v4 axmDecodePointForKey:@"cameraOpticalOrigin"];
+    [coderCopy axmDecodePointForKey:@"cameraOpticalOrigin"];
     [(AXMRectangleDetectorNode *)v5 setCameraOpticalOrigin:?];
-    [v4 decodeDoubleForKey:@"minimumAspectRatio"];
+    [coderCopy decodeDoubleForKey:@"minimumAspectRatio"];
     [(AXMRectangleDetectorNode *)v5 setMinimumAspectRatio:?];
-    [v4 decodeDoubleForKey:@"maximumAspectRatio"];
+    [coderCopy decodeDoubleForKey:@"maximumAspectRatio"];
     [(AXMRectangleDetectorNode *)v5 setMaximumAspectRatio:?];
-    [v4 decodeDoubleForKey:@"quadratureTolerance"];
+    [coderCopy decodeDoubleForKey:@"quadratureTolerance"];
     [(AXMRectangleDetectorNode *)v5 setQuadratureTolerance:?];
-    [v4 decodeDoubleForKey:@"minimumSize"];
+    [coderCopy decodeDoubleForKey:@"minimumSize"];
     [(AXMRectangleDetectorNode *)v5 setMinimumSize:?];
-    [v4 decodeDoubleForKey:@"minimumConfidence"];
+    [coderCopy decodeDoubleForKey:@"minimumConfidence"];
     [(AXMEvaluationNode *)v5 setMinimumConfidence:?];
-    -[AXMRectangleDetectorNode setMaximumNumberOfRects:](v5, "setMaximumNumberOfRects:", [v4 decodeIntegerForKey:@"maximumNumber"]);
+    -[AXMRectangleDetectorNode setMaximumNumberOfRects:](v5, "setMaximumNumberOfRects:", [coderCopy decodeIntegerForKey:@"maximumNumber"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AXMRectangleDetectorNode;
-  v4 = a3;
-  [(AXMEvaluationNode *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AXMEvaluationNode *)&v5 encodeWithCoder:coderCopy];
   [(AXMRectangleDetectorNode *)self cameraPixelFocalLength:v5.receiver];
-  [v4 encodeDouble:@"cameraPixelFocalLength" forKey:?];
+  [coderCopy encodeDouble:@"cameraPixelFocalLength" forKey:?];
   [(AXMRectangleDetectorNode *)self cameraOpticalOrigin];
-  [v4 axmEncodePoint:@"cameraOpticalOrigin" forKey:?];
+  [coderCopy axmEncodePoint:@"cameraOpticalOrigin" forKey:?];
   [(AXMRectangleDetectorNode *)self minimumAspectRatio];
-  [v4 encodeDouble:@"minimumAspectRatio" forKey:?];
+  [coderCopy encodeDouble:@"minimumAspectRatio" forKey:?];
   [(AXMRectangleDetectorNode *)self maximumAspectRatio];
-  [v4 encodeDouble:@"maximumAspectRatio" forKey:?];
+  [coderCopy encodeDouble:@"maximumAspectRatio" forKey:?];
   [(AXMRectangleDetectorNode *)self quadratureTolerance];
-  [v4 encodeDouble:@"quadratureTolerance" forKey:?];
+  [coderCopy encodeDouble:@"quadratureTolerance" forKey:?];
   [(AXMRectangleDetectorNode *)self minimumSize];
-  [v4 encodeDouble:@"minimumSize" forKey:?];
-  [v4 encodeInteger:-[AXMRectangleDetectorNode maximumNumberOfRects](self forKey:{"maximumNumberOfRects"), @"maximumNumber"}];
+  [coderCopy encodeDouble:@"minimumSize" forKey:?];
+  [coderCopy encodeInteger:-[AXMRectangleDetectorNode maximumNumberOfRects](self forKey:{"maximumNumberOfRects"), @"maximumNumber"}];
 }
 
-- (void)setMaximumNumberOfRects:(int64_t)a3
+- (void)setMaximumNumberOfRects:(int64_t)rects
 {
-  if (a3 <= 1)
+  if (rects <= 1)
   {
-    v3 = 1;
+    rectsCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    rectsCopy = rects;
   }
 
-  self->_maximumNumberOfRects = v3;
+  self->_maximumNumberOfRects = rectsCopy;
 }
 
 - (BOOL)validateVisionKitSoftLinkSymbols
@@ -110,14 +110,14 @@
   }
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v47.receiver = self;
   v47.super_class = AXMRectangleDetectorNode;
-  [(AXMEvaluationNode *)&v47 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v47 evaluate:evaluateCopy metrics:metricsCopy];
   context = objc_autoreleasePoolPush();
   [(AXMRectangleDetectorNode *)self cameraPixelFocalLength];
   v9 = v8;
@@ -189,14 +189,14 @@
   v31 = MEMORY[0x1E695DF20];
   v32 = v58;
   v33 = [v31 dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-  [(AXMEvaluationNode *)self evaluateRequests:v27 withContext:v6 requestHandlerOptions:v33 metrics:v7 error:0];
+  [(AXMEvaluationNode *)self evaluateRequests:v27 withContext:evaluateCopy requestHandlerOptions:v33 metrics:metricsCopy error:0];
 
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v34 = [v21 results];
-  v35 = [v34 countByEnumeratingWithState:&v42 objects:v57 count:16];
+  results = [v21 results];
+  v35 = [results countByEnumeratingWithState:&v42 objects:v57 count:16];
   if (v35)
   {
     v36 = *v43;
@@ -206,16 +206,16 @@
       {
         if (*v43 != v36)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(results);
         }
 
         v38 = *(*(&v42 + 1) + 8 * i);
-        [v6 size];
+        [evaluateCopy size];
         v39 = [AXMVisionFeature featureWithVisionRequest:v21 rectangleResult:v38 canvasSize:?];
-        [v6 appendFeature:v39];
+        [evaluateCopy appendFeature:v39];
       }
 
-      v35 = [v34 countByEnumeratingWithState:&v42 objects:v57 count:16];
+      v35 = [results countByEnumeratingWithState:&v42 objects:v57 count:16];
     }
 
     while (v35);

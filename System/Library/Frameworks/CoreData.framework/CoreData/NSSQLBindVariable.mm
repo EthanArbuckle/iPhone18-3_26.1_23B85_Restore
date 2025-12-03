@@ -1,10 +1,10 @@
 @interface NSSQLBindVariable
-- (NSSQLBindVariable)initWithValue:(id)a3 sqlType:(unsigned __int8)a4 propertyDescription:(id)a5 allowCoercion:(BOOL)a6;
+- (NSSQLBindVariable)initWithValue:(id)value sqlType:(unsigned __int8)type propertyDescription:(id)description allowCoercion:(BOOL)coercion;
 - (id)value;
 - (int64_t)int64;
 - (unsigned)unsignedInt;
 - (void)dealloc;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation NSSQLBindVariable
@@ -51,43 +51,43 @@
   [(NSSQLBindVariable *)&v3 dealloc];
 }
 
-- (NSSQLBindVariable)initWithValue:(id)a3 sqlType:(unsigned __int8)a4 propertyDescription:(id)a5 allowCoercion:(BOOL)a6
+- (NSSQLBindVariable)initWithValue:(id)value sqlType:(unsigned __int8)type propertyDescription:(id)description allowCoercion:(BOOL)coercion
 {
-  v6 = a6;
-  v8 = a4;
+  coercionCopy = coercion;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = NSSQLBindVariable;
   v10 = [(NSSQLBindVariable *)&v14 init];
   if (v10)
   {
-    if ([MEMORY[0x1E695DFB0] null] == a3)
+    if ([MEMORY[0x1E695DFB0] null] == value)
     {
-      v11 = 0;
+      valueCopy = 0;
     }
 
     else
     {
-      v11 = a3;
+      valueCopy = value;
     }
 
-    if (v8 == 6 && v11)
+    if (typeCopy == 6 && valueCopy)
     {
-      if (([v11 isNSString] & 1) == 0)
+      if (([valueCopy isNSString] & 1) == 0)
       {
-        a3 = [v11 description];
+        value = [valueCopy description];
       }
     }
 
     else
     {
-      a3 = v11;
+      value = valueCopy;
     }
 
-    v12 = a3;
-    v10->_sqlType = v8;
-    v10->_value = v12;
-    v10->_propertyDescription = a5;
-    v10->_flags = v6;
+    valueCopy2 = value;
+    v10->_sqlType = typeCopy;
+    v10->_value = valueCopy2;
+    v10->_propertyDescription = description;
+    v10->_flags = coercionCopy;
   }
 
   return v10;
@@ -107,13 +107,13 @@
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   value = self->_value;
-  if (value != a3)
+  if (value != value)
   {
 
-    self->_value = a3;
+    self->_value = value;
   }
 }
 

@@ -1,93 +1,93 @@
 @interface NTKPigmentEditOption
-+ (id)fullnameWithCollectionName:(id)a3 optionName:(id)a4;
-+ (id)multitoneColorNames:(id)a3;
-+ (id)multitonePigmentAtIndex:(unint64_t)a3 forColorName:(id)a4 groupName:(id)a5;
-+ (id)pigmentNamed:(id)a3;
-+ (void)effectiveNamesFromName:(id)a3 effectiveCollectionName:(id *)a4 effectiveOptionName:(id *)a5;
-+ (void)parseFullname:(id)a3 collectionName:(id *)a4 optionName:(id *)a5 fraction:(double *)a6;
-+ (void)parserIdentifier:(id)a3 collectionName:(id *)a4 optionName:(id *)a5 colorFraction:(double *)a6 separator:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringFraction:(id)a3;
-- (BOOL)isEquivalentToOption:(id)a3;
++ (id)fullnameWithCollectionName:(id)name optionName:(id)optionName;
++ (id)multitoneColorNames:(id)names;
++ (id)multitonePigmentAtIndex:(unint64_t)index forColorName:(id)name groupName:(id)groupName;
++ (id)pigmentNamed:(id)named;
++ (void)effectiveNamesFromName:(id)name effectiveCollectionName:(id *)collectionName effectiveOptionName:(id *)optionName;
++ (void)parseFullname:(id)fullname collectionName:(id *)name optionName:(id *)optionName fraction:(double *)fraction;
++ (void)parserIdentifier:(id)identifier collectionName:(id *)name optionName:(id *)optionName colorFraction:(double *)fraction separator:(id)separator;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringFraction:(id)fraction;
+- (BOOL)isEquivalentToOption:(id)option;
 - (BOOL)isMultiColor;
 - (BOOL)isMultitoneOption;
 - (BOOL)isRainbowColor;
 - (BOOL)isVisible;
 - (BOOL)isWhiteColor;
 - (NSBundle)sourceBundle;
-- (NTKPigmentEditOption)initWithCoder:(id)a3;
-- (NTKPigmentEditOption)initWithFullname:(id)a3 fraction:(double)a4;
-- (NTKPigmentEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4;
-- (NTKPigmentEditOption)initWithOptionName:(id)a3 collectionName:(id)a4 colorFraction:(double)a5;
-- (NTKPigmentEditOption)initWithProtoBuffer:(id)a3;
-- (id)JSONObjectRepresentationForFace:(id)a3;
+- (NTKPigmentEditOption)initWithCoder:(id)coder;
+- (NTKPigmentEditOption)initWithFullname:(id)fullname fraction:(double)fraction;
+- (NTKPigmentEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device;
+- (NTKPigmentEditOption)initWithOptionName:(id)name collectionName:(id)collectionName colorFraction:(double)fraction;
+- (NTKPigmentEditOption)initWithProtoBuffer:(id)buffer;
+- (id)JSONObjectRepresentationForFace:(id)face;
 - (id)_buildFullname;
-- (id)_resolveBundleWithBundlePrincipalClassName:(id)a3;
-- (id)copyWithCollectionOverride:(id)a3;
-- (id)copyWithColorFraction:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_resolveBundleWithBundlePrincipalClassName:(id)name;
+- (id)copyWithCollectionOverride:(id)override;
+- (id)copyWithColorFraction:(double)fraction;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fullnameIncludingFraction;
 - (id)json;
-- (id)legacyJSONRepresentationForFace:(id)a3;
+- (id)legacyJSONRepresentationForFace:(id)face;
 - (id)localizationTableNames;
 - (id)localizedCollectionName;
 - (id)localizedName;
-- (id)localizedNameForKey:(id)a3;
-- (id)localizedNameForKey:(id)a3 fromTable:(id)a4 separatorString:(id)a5;
-- (id)localizedNameForKey:(id)a3 table:(id)a4;
+- (id)localizedNameForKey:(id)key;
+- (id)localizedNameForKey:(id)key fromTable:(id)table separatorString:(id)string;
+- (id)localizedNameForKey:(id)key table:(id)table;
 - (id)multitoneNamesWithoutCollection;
 - (id)protoBuffer;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)extractEffectiveCollectionName:(id *)a3 effectiveOptionName:(id *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)extractEffectiveCollectionName:(id *)name effectiveOptionName:(id *)optionName;
 - (void)loadEffectiveNames;
 @end
 
 @implementation NTKPigmentEditOption
 
-+ (id)pigmentNamed:(id)a3
++ (id)pigmentNamed:(id)named
 {
-  v3 = a3;
-  v4 = [[NTKPigmentEditOption alloc] initWithFullname:v3];
+  namedCopy = named;
+  v4 = [[NTKPigmentEditOption alloc] initWithFullname:namedCopy];
 
   return v4;
 }
 
-- (NTKPigmentEditOption)initWithFullname:(id)a3 fraction:(double)a4
+- (NTKPigmentEditOption)initWithFullname:(id)fullname fraction:(double)fraction
 {
-  v12 = a4;
-  v5 = a3;
+  fractionCopy = fraction;
+  fullnameCopy = fullname;
   v10 = 0;
   v11 = 0;
-  [objc_opt_class() parseFullname:v5 collectionName:&v11 optionName:&v10 fraction:&v12];
+  [objc_opt_class() parseFullname:fullnameCopy collectionName:&v11 optionName:&v10 fraction:&fractionCopy];
 
   v6 = v11;
   v7 = v10;
-  v8 = [(NTKPigmentEditOption *)self initWithOptionName:v7 collectionName:v6 colorFraction:v12];
+  v8 = [(NTKPigmentEditOption *)self initWithOptionName:v7 collectionName:v6 colorFraction:fractionCopy];
 
   return v8;
 }
 
-- (NTKPigmentEditOption)initWithOptionName:(id)a3 collectionName:(id)a4 colorFraction:(double)a5
+- (NTKPigmentEditOption)initWithOptionName:(id)name collectionName:(id)collectionName colorFraction:(double)fraction
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  v12 = 0;
-  if (v9 && v10)
+  nameCopy = name;
+  collectionNameCopy = collectionName;
+  v11 = collectionNameCopy;
+  selfCopy = 0;
+  if (nameCopy && collectionNameCopy)
   {
-    v13 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-    v14 = [v13 device];
+    mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+    device = [mEMORY[0x277CBBB68] device];
 
     v20.receiver = self;
     v20.super_class = NTKPigmentEditOption;
-    v15 = [(NTKEditOption *)&v20 initWithDevice:v14];
+    v15 = [(NTKEditOption *)&v20 initWithDevice:device];
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_optionName, a3);
-      objc_storeStrong(&v16->_collectionName, a4);
-      v16->_colorFraction = a5;
+      objc_storeStrong(&v15->_optionName, name);
+      objc_storeStrong(&v16->_collectionName, collectionName);
+      v16->_colorFraction = fraction;
       v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       mainBundle = v16->_mainBundle;
       v16->_mainBundle = v17;
@@ -98,25 +98,25 @@
 
     self = v16;
 
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (NTKPigmentEditOption)initWithJSONObjectRepresentation:(id)a3 forDevice:(id)a4
+- (NTKPigmentEditOption)initWithJSONObjectRepresentation:(id)representation forDevice:(id)device
 {
-  v5 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"NTKPigmentEditOption json value must be a string - invalid value: %@", v5}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"NTKPigmentEditOption json value must be a string - invalid value: %@", representationCopy}];
   }
 
   v12 = 0.5;
   v10 = 0;
   v11 = 0;
-  [objc_opt_class() parseFullname:v5 collectionName:&v11 optionName:&v10 fraction:&v12];
+  [objc_opt_class() parseFullname:representationCopy collectionName:&v11 optionName:&v10 fraction:&v12];
   v6 = v11;
   v7 = v10;
   v8 = [(NTKPigmentEditOption *)self initWithOptionName:v7 collectionName:v6 colorFraction:v12];
@@ -134,24 +134,24 @@
 
 - (BOOL)isRainbowColor
 {
-  v2 = [(NTKPigmentEditOption *)self fullname];
-  v3 = [v2 isEqualToString:@"special.rainbow"];
+  fullname = [(NTKPigmentEditOption *)self fullname];
+  v3 = [fullname isEqualToString:@"special.rainbow"];
 
   return v3;
 }
 
 - (BOOL)isMultiColor
 {
-  v2 = [(NTKPigmentEditOption *)self fullname];
-  v3 = [v2 isEqualToString:@"special.multicolor"];
+  fullname = [(NTKPigmentEditOption *)self fullname];
+  v3 = [fullname isEqualToString:@"special.multicolor"];
 
   return v3;
 }
 
 - (BOOL)isWhiteColor
 {
-  v2 = [(NTKPigmentEditOption *)self fullname];
-  v3 = [v2 isEqualToString:@"seasons.spring2015.white"];
+  fullname = [(NTKPigmentEditOption *)self fullname];
+  v3 = [fullname isEqualToString:@"seasons.spring2015.white"];
 
   return v3;
 }
@@ -161,26 +161,26 @@
   if (vabdd_f64(0.5, self->_colorFraction) >= 0.00000011920929)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(NTKPigmentEditOption *)self fullname];
-    v3 = [v4 stringWithFormat:@"%@%@%0.2f", v5, @":", *&self->_colorFraction];
+    fullname = [(NTKPigmentEditOption *)self fullname];
+    fullname2 = [v4 stringWithFormat:@"%@%@%0.2f", fullname, @":", *&self->_colorFraction];
   }
 
   else
   {
-    v3 = [(NTKPigmentEditOption *)self fullname];
+    fullname2 = [(NTKPigmentEditOption *)self fullname];
   }
 
-  return v3;
+  return fullname2;
 }
 
 - (id)_buildFullname
 {
   if ([(NTKPigmentEditOption *)self isMultitoneOption])
   {
-    v3 = [(NTKPigmentEditOption *)self collectionName];
+    collectionName = [(NTKPigmentEditOption *)self collectionName];
     v4 = objc_opt_class();
-    v5 = [(NTKPigmentEditOption *)self optionName];
-    v6 = [v4 multitoneColorNames:v5];
+    optionName = [(NTKPigmentEditOption *)self optionName];
+    v6 = [v4 multitoneColorNames:optionName];
 
     v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v15[0] = MEMORY[0x277D85DD0];
@@ -189,8 +189,8 @@
     v15[3] = &unk_27877DEA8;
     v8 = v7;
     v16 = v8;
-    v17 = v3;
-    v9 = v3;
+    v17 = collectionName;
+    v9 = collectionName;
     [v6 enumerateObjectsUsingBlock:v15];
     v10 = v17;
     v11 = v8;
@@ -198,9 +198,9 @@
 
   else
   {
-    v12 = [(NTKPigmentEditOption *)self effectiveCollectionName];
-    v13 = [(NTKPigmentEditOption *)self effectiveOptionName];
-    v11 = [NTKPigmentEditOption fullnameWithCollectionName:v12 optionName:v13];
+    effectiveCollectionName = [(NTKPigmentEditOption *)self effectiveCollectionName];
+    effectiveOptionName = [(NTKPigmentEditOption *)self effectiveOptionName];
+    v11 = [NTKPigmentEditOption fullnameWithCollectionName:effectiveCollectionName optionName:effectiveOptionName];
   }
 
   return v11;
@@ -228,22 +228,22 @@ void __38__NTKPigmentEditOption__buildFullname__block_invoke(uint64_t a1, void *
   }
 }
 
-+ (id)multitonePigmentAtIndex:(unint64_t)a3 forColorName:(id)a4 groupName:(id)a5
++ (id)multitonePigmentAtIndex:(unint64_t)index forColorName:(id)name groupName:(id)groupName
 {
-  v7 = a5;
-  v8 = [NTKPigmentEditOption multitoneColorNames:a4];
-  if ([v8 count] < 2 || objc_msgSend(v8, "count") <= a3)
+  groupNameCopy = groupName;
+  v8 = [NTKPigmentEditOption multitoneColorNames:name];
+  if ([v8 count] < 2 || objc_msgSend(v8, "count") <= index)
   {
     v13 = 0;
   }
 
   else
   {
-    v9 = [v8 objectAtIndexedSubscript:a3];
-    v16 = v7;
+    v9 = [v8 objectAtIndexedSubscript:index];
+    v16 = groupNameCopy;
     v17 = 0;
     v15 = 0;
-    v10 = v7;
+    v10 = groupNameCopy;
     [NTKPigmentEditOption parseFullname:v9 collectionName:&v16 optionName:&v15 fraction:&v17];
     v11 = v16;
 
@@ -254,36 +254,36 @@ void __38__NTKPigmentEditOption__buildFullname__block_invoke(uint64_t a1, void *
   return v13;
 }
 
-+ (void)parseFullname:(id)a3 collectionName:(id *)a4 optionName:(id *)a5 fraction:(double *)a6
++ (void)parseFullname:(id)fullname collectionName:(id *)name optionName:(id *)optionName fraction:(double *)fraction
 {
-  v9 = a3;
-  if (a6)
+  fullnameCopy = fullname;
+  if (fraction)
   {
-    *a6 = 0.5;
+    *fraction = 0.5;
   }
 
-  v10 = v9;
-  v11 = v10;
+  v10 = fullnameCopy;
+  firstObject = v10;
   if ([v10 containsString:@":"])
   {
     v12 = [v10 componentsSeparatedByString:@":"];
     v13 = [v12 mutableCopy];
 
-    v14 = [v13 lastObject];
+    lastObject = [v13 lastObject];
     v15 = objc_alloc_init(MEMORY[0x277CCABB8]);
     v16 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:@"en_US"];
     [v15 setLocale:v16];
 
-    v17 = [v15 numberFromString:v14];
-    v11 = v10;
+    v17 = [v15 numberFromString:lastObject];
+    firstObject = v10;
     if (v17)
     {
-      v11 = [v13 firstObject];
+      firstObject = [v13 firstObject];
 
-      if (a6)
+      if (fraction)
       {
         [v17 floatValue];
-        *a6 = v18;
+        *fraction = v18;
       }
     }
   }
@@ -292,23 +292,23 @@ void __38__NTKPigmentEditOption__buildFullname__block_invoke(uint64_t a1, void *
   aBlock[1] = 3221225472;
   aBlock[2] = __73__NTKPigmentEditOption_parseFullname_collectionName_optionName_fraction___block_invoke;
   aBlock[3] = &unk_278786740;
-  v19 = v11;
+  v19 = firstObject;
   v23 = v19;
   v20 = _Block_copy(aBlock);
   if ([v19 containsString:@":"])
   {
-    v20[2](v20, @":", a4, a5);
+    v20[2](v20, @":", name, optionName);
   }
 
   else if ([v19 containsString:@"."])
   {
-    v20[2](v20, @".", a4, a5);
+    v20[2](v20, @".", name, optionName);
   }
 
-  else if (a5)
+  else if (optionName)
   {
     v21 = v19;
-    *a5 = v19;
+    *optionName = v19;
   }
 }
 
@@ -348,17 +348,17 @@ void __73__NTKPigmentEditOption_parseFullname_collectionName_optionName_fraction
   self->_effectiveCollectionName = v3;
   v8 = v3;
 
-  v9 = [(NTKPigmentEditOption *)self _buildFullname];
+  _buildFullname = [(NTKPigmentEditOption *)self _buildFullname];
   fullname = self->_fullname;
-  self->_fullname = v9;
+  self->_fullname = _buildFullname;
 }
 
-+ (void)parserIdentifier:(id)a3 collectionName:(id *)a4 optionName:(id *)a5 colorFraction:(double *)a6 separator:(id)a7
++ (void)parserIdentifier:(id)identifier collectionName:(id *)name optionName:(id *)optionName colorFraction:(double *)fraction separator:(id)separator
 {
-  v10 = [a3 componentsSeparatedByString:a7];
-  if (a6)
+  v10 = [identifier componentsSeparatedByString:separator];
+  if (fraction)
   {
-    *a6 = 0.5;
+    *fraction = 0.5;
   }
 
   v21 = v10;
@@ -366,14 +366,14 @@ void __73__NTKPigmentEditOption_parseFullname_collectionName_optionName_fraction
   {
     if ([v21 count] == 2)
     {
-      if (a4)
+      if (name)
       {
-        v17 = [v21 firstObject];
-        v18 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        *a4 = [v17 stringByTrimmingCharactersInSet:v18];
+        firstObject = [v21 firstObject];
+        whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        *name = [firstObject stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       }
 
-      if (!a5)
+      if (!optionName)
       {
         goto LABEL_19;
       }
@@ -382,66 +382,66 @@ void __73__NTKPigmentEditOption_parseFullname_collectionName_optionName_fraction
     else
     {
       v19 = [v21 count];
-      if (!a5 || v19 != 1)
+      if (!optionName || v19 != 1)
       {
         goto LABEL_19;
       }
     }
 
-    v15 = [v21 lastObject];
-    v20 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    *a5 = [v15 stringByTrimmingCharactersInSet:v20];
+    lastObject = [v21 lastObject];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    *optionName = [lastObject stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
     goto LABEL_18;
   }
 
-  if (a4)
+  if (name)
   {
-    v11 = [v21 firstObject];
-    v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    *a4 = [v11 stringByTrimmingCharactersInSet:v12];
+    firstObject2 = [v21 firstObject];
+    whitespaceCharacterSet3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    *name = [firstObject2 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
   }
 
-  if (a5)
+  if (optionName)
   {
     v13 = [v21 objectAtIndexedSubscript:1];
-    v14 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    *a5 = [v13 stringByTrimmingCharactersInSet:v14];
+    whitespaceCharacterSet4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    *optionName = [v13 stringByTrimmingCharactersInSet:whitespaceCharacterSet4];
   }
 
-  if (a6)
+  if (fraction)
   {
-    v15 = [v21 lastObject];
-    [v15 floatValue];
-    *a6 = v16;
+    lastObject = [v21 lastObject];
+    [lastObject floatValue];
+    *fraction = v16;
 LABEL_18:
   }
 
 LABEL_19:
 }
 
-- (void)extractEffectiveCollectionName:(id *)a3 effectiveOptionName:(id *)a4
+- (void)extractEffectiveCollectionName:(id *)name effectiveOptionName:(id *)optionName
 {
-  v7 = [(NTKPigmentEditOption *)self collectionName];
-  v8 = [(NTKPigmentEditOption *)self optionName];
+  collectionName = [(NTKPigmentEditOption *)self collectionName];
+  optionName = [(NTKPigmentEditOption *)self optionName];
   v9 = objc_opt_class();
-  v10 = [(NTKPigmentEditOption *)self optionName];
-  v15 = v8;
-  v16 = v7;
-  [v9 effectiveNamesFromName:v10 effectiveCollectionName:&v16 effectiveOptionName:&v15];
+  optionName2 = [(NTKPigmentEditOption *)self optionName];
+  v15 = optionName;
+  v16 = collectionName;
+  [v9 effectiveNamesFromName:optionName2 effectiveCollectionName:&v16 effectiveOptionName:&v15];
   v11 = v16;
 
   v12 = v15;
-  if (a3)
+  if (name)
   {
     v13 = v11;
-    *a3 = v11;
+    *name = v11;
   }
 
-  if (a4)
+  if (optionName)
   {
     v14 = v12;
-    *a4 = v12;
+    *optionName = v12;
   }
 }
 
@@ -451,8 +451,8 @@ LABEL_19:
   if ([(NTKPigmentEditOption *)self isMultitoneOption])
   {
     v3 = objc_opt_class();
-    v4 = [(NTKPigmentEditOption *)self optionName];
-    v5 = [v3 multitoneColorNames:v4];
+    optionName = [(NTKPigmentEditOption *)self optionName];
+    v5 = [v3 multitoneColorNames:optionName];
 
     v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
     v17 = 0u;
@@ -505,109 +505,109 @@ LABEL_19:
   return v6;
 }
 
-+ (void)effectiveNamesFromName:(id)a3 effectiveCollectionName:(id *)a4 effectiveOptionName:(id *)a5
++ (void)effectiveNamesFromName:(id)name effectiveCollectionName:(id *)collectionName effectiveOptionName:(id *)optionName
 {
-  v8 = a3;
-  if ([a1 hasInlineCollectionInOptionName:v8] && (objc_msgSend(a1, "isMultitoneOptionWithOptionName:", v8) & 1) == 0)
+  nameCopy = name;
+  if ([self hasInlineCollectionInOptionName:nameCopy] && (objc_msgSend(self, "isMultitoneOptionWithOptionName:", nameCopy) & 1) == 0)
   {
-    v13 = v8;
+    v13 = nameCopy;
     v14 = 0;
-    [NTKPigmentEditOption parseFullname:v8 collectionName:&v14 optionName:&v13 fraction:0];
+    [NTKPigmentEditOption parseFullname:nameCopy collectionName:&v14 optionName:&v13 fraction:0];
     v9 = v14;
     v10 = v13;
 
-    if (a4 && v9)
+    if (collectionName && v9)
     {
       v12 = v9;
-      *a4 = v9;
+      *collectionName = v9;
     }
   }
 
   else
   {
     v9 = 0;
-    v10 = v8;
+    v10 = nameCopy;
   }
 
-  if (a5 && v10)
+  if (optionName && v10)
   {
     v11 = v10;
-    *a5 = v10;
+    *optionName = v10;
   }
 }
 
-+ (id)fullnameWithCollectionName:(id)a3 optionName:(id)a4
++ (id)fullnameWithCollectionName:(id)name optionName:(id)optionName
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  nameCopy = name;
+  optionNameCopy = optionName;
+  if ([nameCopy length])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", v5, @".", v6];
+    optionNameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", nameCopy, @".", optionNameCopy];
   }
 
   else
   {
-    v7 = v6;
+    optionNameCopy = optionNameCopy;
   }
 
-  v8 = v7;
+  v8 = optionNameCopy;
 
   return v8;
 }
 
-- (id)JSONObjectRepresentationForFace:(id)a3
+- (id)JSONObjectRepresentationForFace:(id)face
 {
-  v4 = [(NTKPigmentEditOption *)self legacyJSONRepresentationForFace:a3];
-  if (!v4)
+  json = [(NTKPigmentEditOption *)self legacyJSONRepresentationForFace:face];
+  if (!json)
   {
-    v4 = [(NTKPigmentEditOption *)self json];
+    json = [(NTKPigmentEditOption *)self json];
   }
 
-  return v4;
+  return json;
 }
 
 - (id)json
 {
-  v3 = [(NTKPigmentEditOption *)self optionName];
-  if ([v3 containsString:@"."])
+  optionName = [(NTKPigmentEditOption *)self optionName];
+  if ([optionName containsString:@"."])
   {
 
 LABEL_4:
-    v5 = [(NTKPigmentEditOption *)self identifier];
+    identifier = [(NTKPigmentEditOption *)self identifier];
     goto LABEL_6;
   }
 
-  v4 = [(NTKPigmentEditOption *)self isMultitoneOption];
+  isMultitoneOption = [(NTKPigmentEditOption *)self isMultitoneOption];
 
-  if (v4)
+  if (isMultitoneOption)
   {
     goto LABEL_4;
   }
 
-  v5 = [(NTKPigmentEditOption *)self fullnameIncludingFraction];
+  identifier = [(NTKPigmentEditOption *)self fullnameIncludingFraction];
 LABEL_6:
-  v6 = v5;
-  v7 = [v5 copy];
+  v6 = identifier;
+  v7 = [identifier copy];
 
   return v7;
 }
 
-- (NTKPigmentEditOption)initWithCoder:(id)a3
+- (NTKPigmentEditOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optionName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collectionName"];
-  [v4 decodeFloatForKey:@"colorFraction"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optionName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collectionName"];
+  [coderCopy decodeFloatForKey:@"colorFraction"];
   v8 = [(NTKPigmentEditOption *)self initWithOptionName:v5 collectionName:v6 colorFraction:v7];
   if (v8)
   {
-    v8->_isAddable = [v4 decodeBoolForKey:@"isAddable"];
-    v8->_supportsSlider = [v4 decodeBoolForKey:@"supportsSlider"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alternativeLocalizedStringTableName"];
+    v8->_isAddable = [coderCopy decodeBoolForKey:@"isAddable"];
+    v8->_supportsSlider = [coderCopy decodeBoolForKey:@"supportsSlider"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alternativeLocalizedStringTableName"];
     alternativeLocalizedStringTableName = v8->_alternativeLocalizedStringTableName;
     v8->_alternativeLocalizedStringTableName = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundlePrincipalClassName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundlePrincipalClassName"];
     bundlePrincipalClassName = v8->_bundlePrincipalClassName;
     v8->_bundlePrincipalClassName = v11;
   }
@@ -615,46 +615,46 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   optionName = self->_optionName;
-  v6 = a3;
-  [v6 encodeObject:optionName forKey:@"optionName"];
-  [v6 encodeObject:self->_collectionName forKey:@"collectionName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:optionName forKey:@"optionName"];
+  [coderCopy encodeObject:self->_collectionName forKey:@"collectionName"];
   colorFraction = self->_colorFraction;
   *&colorFraction = colorFraction;
-  [v6 encodeFloat:@"colorFraction" forKey:colorFraction];
-  [v6 encodeBool:self->_isAddable forKey:@"isAddable"];
-  [v6 encodeBool:self->_supportsSlider forKey:@"supportsSlider"];
-  [v6 encodeObject:self->_alternativeLocalizedStringTableName forKey:@"alternativeLocalizedStringTableName"];
-  [v6 encodeObject:self->_bundlePrincipalClassName forKey:@"bundlePrincipalClassName"];
+  [coderCopy encodeFloat:@"colorFraction" forKey:colorFraction];
+  [coderCopy encodeBool:self->_isAddable forKey:@"isAddable"];
+  [coderCopy encodeBool:self->_supportsSlider forKey:@"supportsSlider"];
+  [coderCopy encodeObject:self->_alternativeLocalizedStringTableName forKey:@"alternativeLocalizedStringTableName"];
+  [coderCopy encodeObject:self->_bundlePrincipalClassName forKey:@"bundlePrincipalClassName"];
 }
 
-- (NTKPigmentEditOption)initWithProtoBuffer:(id)a3
+- (NTKPigmentEditOption)initWithProtoBuffer:(id)buffer
 {
-  v4 = a3;
-  if (v4)
+  bufferCopy = buffer;
+  if (bufferCopy)
   {
     v5 = [NTKPigmentEditOption alloc];
-    v6 = [v4 optionName];
-    v7 = [v4 collectionName];
-    v8 = [(NTKPigmentEditOption *)v5 initWithOptionName:v6 collectionName:v7];
+    optionName = [bufferCopy optionName];
+    collectionName = [bufferCopy collectionName];
+    v8 = [(NTKPigmentEditOption *)v5 initWithOptionName:optionName collectionName:collectionName];
 
     if (v8)
     {
-      [v4 colorFraction];
+      [bufferCopy colorFraction];
       v8->_colorFraction = v9;
-      v8->_isAddable = [v4 isAddable];
-      v8->_supportsSlider = [v4 supportsSlider];
-      v10 = [v4 alternativeLocalizedStringTableName];
+      v8->_isAddable = [bufferCopy isAddable];
+      v8->_supportsSlider = [bufferCopy supportsSlider];
+      alternativeLocalizedStringTableName = [bufferCopy alternativeLocalizedStringTableName];
       alternativeLocalizedStringTableName = v8->_alternativeLocalizedStringTableName;
-      v8->_alternativeLocalizedStringTableName = v10;
+      v8->_alternativeLocalizedStringTableName = alternativeLocalizedStringTableName;
 
-      v12 = [v4 bundlePrincipalClassName];
+      bundlePrincipalClassName = [bufferCopy bundlePrincipalClassName];
       bundlePrincipalClassName = v8->_bundlePrincipalClassName;
-      v8->_bundlePrincipalClassName = v12;
+      v8->_bundlePrincipalClassName = bundlePrincipalClassName;
 
-      -[NTKPigmentEditOption setFromStore:](v8, "setFromStore:", [v4 fromStore]);
+      -[NTKPigmentEditOption setFromStore:](v8, "setFromStore:", [bufferCopy fromStore]);
       v14 = v8;
     }
   }
@@ -686,20 +686,20 @@ LABEL_6:
 
 - (id)localizationTableNames
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(NTKPigmentEditOption *)self alternativeLocalizedStringTableName];
+  array = [MEMORY[0x277CBEB18] array];
+  alternativeLocalizedStringTableName = [(NTKPigmentEditOption *)self alternativeLocalizedStringTableName];
 
-  if (v4)
+  if (alternativeLocalizedStringTableName)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(NTKPigmentEditOption *)self alternativeLocalizedStringTableName];
-    v7 = [v5 stringWithFormat:@"%@-%@", @"FaceColors", v6];
-    [v3 addObject:v7];
+    alternativeLocalizedStringTableName2 = [(NTKPigmentEditOption *)self alternativeLocalizedStringTableName];
+    v7 = [v5 stringWithFormat:@"%@-%@", @"FaceColors", alternativeLocalizedStringTableName2];
+    [array addObject:v7];
   }
 
-  [v3 addObject:@"FaceColors"];
+  [array addObject:@"FaceColors"];
 
-  return v3;
+  return array;
 }
 
 - (id)localizedName
@@ -712,8 +712,8 @@ LABEL_6:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(NTKPigmentEditOption *)self localizationTableNames];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    localizationTableNames = [(NTKPigmentEditOption *)self localizationTableNames];
+    v5 = [localizationTableNames countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
       v6 = v5;
@@ -724,12 +724,12 @@ LABEL_4:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(localizationTableNames);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [(NTKPigmentEditOption *)self identifier];
-        v11 = [(NTKPigmentEditOption *)self localizedNameForKey:v10 table:v9];
+        identifier = [(NTKPigmentEditOption *)self identifier];
+        v11 = [(NTKPigmentEditOption *)self localizedNameForKey:identifier table:v9];
         v12 = self->_localizedName;
         self->_localizedName = v11;
 
@@ -740,7 +740,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v6 = [localizationTableNames countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -754,8 +754,8 @@ LABEL_4:
     localizedName = self->_localizedName;
     if (!localizedName)
     {
-      v13 = [(NTKPigmentEditOption *)self fullname];
-      v14 = [(NTKPigmentEditOption *)self localizedNameForKey:v13];
+      fullname = [(NTKPigmentEditOption *)self fullname];
+      v14 = [(NTKPigmentEditOption *)self localizedNameForKey:fullname];
       v15 = self->_localizedName;
       self->_localizedName = v14;
 
@@ -766,17 +766,17 @@ LABEL_4:
   return localizedName;
 }
 
-- (id)localizedNameForKey:(id)a3
+- (id)localizedNameForKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSBundle *)self->_mainBundle localizedStringForKey:@"MULTITONE_NAMES_SEPARATOR" value:&stru_284110E98 table:@"FaceColors"];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(NTKPigmentEditOption *)self localizationTableNames];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  localizationTableNames = [(NTKPigmentEditOption *)self localizationTableNames];
+  v7 = [localizationTableNames countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -787,10 +787,10 @@ LABEL_4:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(localizationTableNames);
         }
 
-        v11 = [(NTKPigmentEditOption *)self localizedNameForKey:v4 fromTable:*(*(&v14 + 1) + 8 * i) separatorString:v5];
+        v11 = [(NTKPigmentEditOption *)self localizedNameForKey:keyCopy fromTable:*(*(&v14 + 1) + 8 * i) separatorString:v5];
         if (v11)
         {
           v12 = v11;
@@ -799,7 +799,7 @@ LABEL_4:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [localizationTableNames countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -809,7 +809,7 @@ LABEL_4:
     }
   }
 
-  v12 = v4;
+  v12 = keyCopy;
 LABEL_11:
 
   return v12;
@@ -825,8 +825,8 @@ LABEL_11:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v4 = [(NTKPigmentEditOption *)self localizationTableNames];
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    localizationTableNames = [(NTKPigmentEditOption *)self localizationTableNames];
+    v5 = [localizationTableNames countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v5)
     {
       v6 = v5;
@@ -838,14 +838,14 @@ LABEL_11:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(localizationTableNames);
           }
 
           v9 = *(*(&v17 + 1) + 8 * v8);
-          v10 = [(NTKPigmentEditOption *)self collectionName];
-          v11 = [(NTKPigmentEditOption *)self localizedNameForKey:v10 table:v9];
+          collectionName = [(NTKPigmentEditOption *)self collectionName];
+          collectionName2 = [(NTKPigmentEditOption *)self localizedNameForKey:collectionName table:v9];
 
-          if (v11 || (-[NTKPigmentEditOption collectionName](self, "collectionName"), v12 = objc_claimAutoreleasedReturnValue(), [v12 componentsSeparatedByString:@"."], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "lastObject"), v14 = objc_claimAutoreleasedReturnValue(), v13, v12, -[NTKPigmentEditOption localizedNameForKey:table:](self, "localizedNameForKey:table:", v14, v9), v11 = objc_claimAutoreleasedReturnValue(), v14, v11))
+          if (collectionName2 || (-[NTKPigmentEditOption collectionName](self, "collectionName"), v12 = objc_claimAutoreleasedReturnValue(), [v12 componentsSeparatedByString:@"."], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "lastObject"), v14 = objc_claimAutoreleasedReturnValue(), v13, v12, -[NTKPigmentEditOption localizedNameForKey:table:](self, "localizedNameForKey:table:", v14, v9), collectionName2 = objc_claimAutoreleasedReturnValue(), v14, collectionName2))
           {
 
             goto LABEL_13;
@@ -855,7 +855,7 @@ LABEL_11:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [localizationTableNames countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v6)
         {
           continue;
@@ -865,10 +865,10 @@ LABEL_11:
       }
     }
 
-    v11 = [(NTKPigmentEditOption *)self collectionName];
+    collectionName2 = [(NTKPigmentEditOption *)self collectionName];
 LABEL_13:
     v15 = self->_localizedCollectionName;
-    self->_localizedCollectionName = v11;
+    self->_localizedCollectionName = collectionName2;
 
     localizedCollectionName = self->_localizedCollectionName;
   }
@@ -876,23 +876,23 @@ LABEL_13:
   return localizedCollectionName;
 }
 
-- (id)localizedNameForKey:(id)a3 fromTable:(id)a4 separatorString:(id)a5
+- (id)localizedNameForKey:(id)key fromTable:(id)table separatorString:(id)string
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NTKPigmentEditOption *)self localizedNameForKey:v8 table:v9];
+  keyCopy = key;
+  tableCopy = table;
+  stringCopy = string;
+  v11 = [(NTKPigmentEditOption *)self localizedNameForKey:keyCopy table:tableCopy];
   if (v11)
   {
-    v12 = v11;
+    string = v11;
   }
 
-  else if (([objc_opt_class() isMultitoneOptionWithOptionName:v8] & 1) != 0 || (v26 = 0, +[NTKPigmentEditOption parseFullname:collectionName:optionName:fraction:](NTKPigmentEditOption, "parseFullname:collectionName:optionName:fraction:", v8, 0, &v26, 0), v14 = v26, -[NTKPigmentEditOption localizedNameForKey:table:](self, "localizedNameForKey:table:", v14, v9), v12 = objc_claimAutoreleasedReturnValue(), v14, !v12))
+  else if (([objc_opt_class() isMultitoneOptionWithOptionName:keyCopy] & 1) != 0 || (v26 = 0, +[NTKPigmentEditOption parseFullname:collectionName:optionName:fraction:](NTKPigmentEditOption, "parseFullname:collectionName:optionName:fraction:", keyCopy, 0, &v26, 0), v14 = v26, -[NTKPigmentEditOption localizedNameForKey:table:](self, "localizedNameForKey:table:", v14, tableCopy), string = objc_claimAutoreleasedReturnValue(), v14, !string))
   {
-    if ([objc_opt_class() isMultitoneOptionWithOptionName:v8])
+    if ([objc_opt_class() isMultitoneOptionWithOptionName:keyCopy])
     {
-      [objc_opt_class() multitoneColorNames:v8];
+      [objc_opt_class() multitoneColorNames:keyCopy];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -901,7 +901,7 @@ LABEL_13:
       if (v16)
       {
         v17 = v16;
-        v12 = 0;
+        string = 0;
         v18 = *v23;
         while (2)
         {
@@ -920,17 +920,17 @@ LABEL_13:
             }
 
             v21 = v20;
-            if (v12)
+            if (string)
             {
-              [v12 appendString:v10];
+              [string appendString:stringCopy];
             }
 
             else
             {
-              v12 = [MEMORY[0x277CCAB68] string];
+              string = [MEMORY[0x277CCAB68] string];
             }
 
-            [v12 appendString:v21];
+            [string appendString:v21];
           }
 
           v17 = [v15 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -946,31 +946,31 @@ LABEL_13:
       else
       {
 LABEL_23:
-        v12 = 0;
+        string = 0;
       }
     }
 
     else
     {
-      v12 = 0;
+      string = 0;
     }
   }
 
-  return v12;
+  return string;
 }
 
 - (BOOL)isMultitoneOption
 {
   v3 = objc_opt_class();
-  v4 = [(NTKPigmentEditOption *)self optionName];
-  LOBYTE(v3) = [v3 isMultitoneOptionWithOptionName:v4];
+  optionName = [(NTKPigmentEditOption *)self optionName];
+  LOBYTE(v3) = [v3 isMultitoneOptionWithOptionName:optionName];
 
   return v3;
 }
 
-+ (id)multitoneColorNames:(id)a3
++ (id)multitoneColorNames:(id)names
 {
-  v3 = [a3 componentsSeparatedByString:@"&"];
+  v3 = [names componentsSeparatedByString:@"&"];
   v4 = [v3 mutableCopy];
 
   if ([v4 count])
@@ -979,8 +979,8 @@ LABEL_23:
     do
     {
       v6 = [v4 objectAtIndexedSubscript:v5];
-      v7 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v8 = [v6 stringByTrimmingCharactersInSet:v7];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v8 = [v6 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
       [v4 setObject:v8 atIndexedSubscript:v5];
 
       ++v5;
@@ -992,11 +992,11 @@ LABEL_23:
   return v4;
 }
 
-- (id)localizedNameForKey:(id)a3 table:(id)a4
+- (id)localizedNameForKey:(id)key table:(id)table
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  tableCopy = table;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = v8;
   if (self->_mainBundle)
@@ -1004,12 +1004,12 @@ LABEL_23:
     [v8 addObject:?];
   }
 
-  v10 = [(NTKPigmentEditOption *)self sourceBundle];
+  sourceBundle = [(NTKPigmentEditOption *)self sourceBundle];
 
-  if (v10)
+  if (sourceBundle)
   {
-    v11 = [(NTKPigmentEditOption *)self sourceBundle];
-    [v9 addObject:v11];
+    sourceBundle2 = [(NTKPigmentEditOption *)self sourceBundle];
+    [v9 addObject:sourceBundle2];
   }
 
   v21 = 0u;
@@ -1031,8 +1031,8 @@ LABEL_23:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * i) localizedStringForKey:v6 value:0 table:{v7, v19}];
-        if ([v17 isEqualToString:v6])
+        v17 = [*(*(&v19 + 1) + 8 * i) localizedStringForKey:keyCopy value:0 table:{tableCopy, v19}];
+        if ([v17 isEqualToString:keyCopy])
         {
         }
 
@@ -1056,36 +1056,36 @@ LABEL_16:
 
 - (NSBundle)sourceBundle
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  sourceBundle = v2->_sourceBundle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sourceBundle = selfCopy->_sourceBundle;
   if (!sourceBundle)
   {
-    if (v2->_loadedBundleFromClass || !v2->_bundlePrincipalClassName)
+    if (selfCopy->_loadedBundleFromClass || !selfCopy->_bundlePrincipalClassName)
     {
       sourceBundle = 0;
     }
 
     else
     {
-      v4 = [(NTKPigmentEditOption *)v2 _resolveBundleWithBundlePrincipalClassName:?];
-      v5 = v2->_sourceBundle;
-      v2->_sourceBundle = v4;
+      v4 = [(NTKPigmentEditOption *)selfCopy _resolveBundleWithBundlePrincipalClassName:?];
+      v5 = selfCopy->_sourceBundle;
+      selfCopy->_sourceBundle = v4;
 
-      v2->_loadedBundleFromClass = 1;
-      sourceBundle = v2->_sourceBundle;
+      selfCopy->_loadedBundleFromClass = 1;
+      sourceBundle = selfCopy->_sourceBundle;
     }
   }
 
   v6 = sourceBundle;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)_resolveBundleWithBundlePrincipalClassName:(id)a3
+- (id)_resolveBundleWithBundlePrincipalClassName:(id)name
 {
-  v3 = NSClassFromString(a3);
+  v3 = NSClassFromString(name);
   if (v3)
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:v3];
@@ -1094,19 +1094,19 @@ LABEL_16:
   return v3;
 }
 
-- (BOOL)isEquivalentToOption:(id)a3
+- (BOOL)isEquivalentToOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NTKPigmentEditOption *)self effectiveCollectionName];
-    v6 = [v4 effectiveCollectionName];
-    if ([v5 isEqual:v6])
+    effectiveCollectionName = [(NTKPigmentEditOption *)self effectiveCollectionName];
+    effectiveCollectionName2 = [optionCopy effectiveCollectionName];
+    if ([effectiveCollectionName isEqual:effectiveCollectionName2])
     {
-      v7 = [(NTKPigmentEditOption *)self effectiveOptionName];
-      v8 = [v4 effectiveOptionName];
-      v9 = [v7 isEqual:v8];
+      effectiveOptionName = [(NTKPigmentEditOption *)self effectiveOptionName];
+      effectiveOptionName2 = [optionCopy effectiveOptionName];
+      v9 = [effectiveOptionName isEqual:effectiveOptionName2];
     }
 
     else
@@ -1123,19 +1123,19 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)isEqualIgnoringFraction:(id)a3
+- (BOOL)isEqualIgnoringFraction:(id)fraction
 {
-  v4 = a3;
+  fractionCopy = fraction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NTKPigmentEditOption *)self collectionName];
-    v6 = [v4 collectionName];
-    if ([v5 isEqual:v6])
+    collectionName = [(NTKPigmentEditOption *)self collectionName];
+    collectionName2 = [fractionCopy collectionName];
+    if ([collectionName isEqual:collectionName2])
     {
-      v7 = [(NTKPigmentEditOption *)self optionName];
-      v8 = [v4 optionName];
-      v9 = [v7 isEqual:v8];
+      optionName = [(NTKPigmentEditOption *)self optionName];
+      optionName2 = [fractionCopy optionName];
+      v9 = [optionName isEqual:optionName2];
     }
 
     else
@@ -1152,15 +1152,15 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NTKPigmentEditOption *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(NTKPigmentEditOption *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -1173,13 +1173,13 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v2 = [(NTKPigmentEditOption *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(NTKPigmentEditOption *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithOptionName:self->_optionName collectionName:self->_collectionName colorFraction:self->_colorFraction];
   *(v4 + 32) = self->_isSensitiveUI;
@@ -1194,27 +1194,27 @@ LABEL_16:
   return v4;
 }
 
-- (id)copyWithColorFraction:(double)a3
+- (id)copyWithColorFraction:(double)fraction
 {
   result = [(NTKPigmentEditOption *)self copy];
-  *(result + 8) = a3;
+  *(result + 8) = fraction;
   return result;
 }
 
-- (id)copyWithCollectionOverride:(id)a3
+- (id)copyWithCollectionOverride:(id)override
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  overrideCopy = override;
   v5 = [(NTKPigmentEditOption *)self copy];
-  v6 = [v5 isMultitoneOption];
+  isMultitoneOption = [v5 isMultitoneOption];
   v7 = objc_opt_class();
-  if (v6)
+  if (isMultitoneOption)
   {
     v26 = v5;
-    v8 = [v5 optionName];
-    v9 = [v7 multitoneColorNames:v8];
+    optionName = [v5 optionName];
+    v9 = [v7 multitoneColorNames:optionName];
 
-    v10 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -1236,23 +1236,23 @@ LABEL_16:
 
           v16 = MEMORY[0x277CCA900];
           v17 = *(*(&v27 + 1) + 8 * i);
-          v18 = [v16 whitespaceCharacterSet];
-          v19 = [v17 stringByTrimmingCharactersInSet:v18];
+          whitespaceCharacterSet = [v16 whitespaceCharacterSet];
+          v19 = [v17 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-          if ([v10 length])
+          if ([string length])
           {
-            [v10 appendFormat:@" %@ ", @"&"];
+            [string appendFormat:@" %@ ", @"&"];
           }
 
           if ([objc_opt_class() hasInlineCollectionInOptionName:v19])
           {
-            [v10 appendString:v19];
+            [string appendString:v19];
           }
 
           else
           {
-            v20 = [objc_opt_class() fullnameWithCollectionName:v4 optionName:v19];
-            [v10 appendString:v20];
+            v20 = [objc_opt_class() fullnameWithCollectionName:overrideCopy optionName:v19];
+            [string appendString:v20];
           }
         }
 
@@ -1264,13 +1264,13 @@ LABEL_16:
 
     v5 = v26;
     v21 = v26[6];
-    v26[6] = v10;
+    v26[6] = string;
   }
 
   else
   {
-    v22 = [(NTKPigmentEditOption *)self optionName];
-    v23 = [v7 fullnameWithCollectionName:v4 optionName:v22];
+    optionName2 = [(NTKPigmentEditOption *)self optionName];
+    v23 = [v7 fullnameWithCollectionName:overrideCopy optionName:optionName2];
     v24 = v5[6];
     v5[6] = v23;
   }
@@ -1280,32 +1280,32 @@ LABEL_16:
   return v5;
 }
 
-- (id)legacyJSONRepresentationForFace:(id)a3
+- (id)legacyJSONRepresentationForFace:(id)face
 {
-  v4 = a3;
-  if ([v4 requiresPigmentEditOption])
+  faceCopy = face;
+  if ([faceCopy requiresPigmentEditOption])
   {
-    v5 = 0;
+    jSONObjectRepresentation = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-    v7 = [v6 device];
+    mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+    device = [mEMORY[0x277CBBB68] device];
 
-    v8 = [objc_msgSend(v4 _optionClassForCustomEditMode:{10), "legacyOptionWithPigmentEditOption:forDevice:", self, v7}];
+    v8 = [objc_msgSend(faceCopy _optionClassForCustomEditMode:{10), "legacyOptionWithPigmentEditOption:forDevice:", self, device}];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v5 = [v8 JSONObjectRepresentation];
+      jSONObjectRepresentation = [v8 JSONObjectRepresentation];
     }
 
     else
     {
-      v5 = 0;
+      jSONObjectRepresentation = 0;
     }
   }
 
-  return v5;
+  return jSONObjectRepresentation;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface CRKFetchIdentitiesTaskResultObject
-- (CRKFetchIdentitiesTaskResultObject)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CRKFetchIdentitiesTaskResultObject)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKFetchIdentitiesTaskResultObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKFetchIdentitiesTaskResultObject *)self courseIdentityInfosByGroupIdentifier];
-  [v4 encodeObject:v5 forKey:@"courseIdentityInfosByGroupIdentifier"];
+  coderCopy = coder;
+  courseIdentityInfosByGroupIdentifier = [(CRKFetchIdentitiesTaskResultObject *)self courseIdentityInfosByGroupIdentifier];
+  [coderCopy encodeObject:courseIdentityInfosByGroupIdentifier forKey:@"courseIdentityInfosByGroupIdentifier"];
 }
 
-- (CRKFetchIdentitiesTaskResultObject)initWithCoder:(id)a3
+- (CRKFetchIdentitiesTaskResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CRKFetchIdentitiesTaskResultObject;
-  v5 = [(CATTaskResultObject *)&v21 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v20 = MEMORY[0x277CBEB98];
@@ -32,7 +32,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v20 setWithObjects:{v19, v18, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"courseIdentityInfosByGroupIdentifier"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"courseIdentityInfosByGroupIdentifier"];
     courseIdentityInfosByGroupIdentifier = v5->_courseIdentityInfosByGroupIdentifier;
     v5->_courseIdentityInfosByGroupIdentifier = v15;
   }

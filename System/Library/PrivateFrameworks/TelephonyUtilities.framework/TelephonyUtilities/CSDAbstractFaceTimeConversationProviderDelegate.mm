@@ -1,86 +1,86 @@
 @interface CSDAbstractFaceTimeConversationProviderDelegate
-- (BOOL)_isWaitingToJoinForConversationUUID:(id)a3;
-- (BOOL)hasCallStartedConnectingWithUUID:(id)a3;
-- (BOOL)isLocalMemberOf:(id)a3 associatedTo:(id)a4;
-- (BOOL)isManagingCallWithUUID:(id)a3;
-- (BOOL)isManagingPendingConversationForCallWithUUID:(id)a3;
-- (BOOL)isWaitingToJoinForConversationUUID:(id)a3;
-- (BOOL)shouldAutomaticallyLeaveConversation:(id)a3;
-- (CSDAbstractFaceTimeConversationProviderDelegate)initWithConversationManager:(id)a3 queue:(id)a4 invitationResolver:(id)a5;
-- (CSDAbstractFaceTimeConversationProviderDelegate)initWithQueue:(id)a3 conversationManager:(id)a4 networkSupport:(id)a5 serverBag:(id)a6 featureFlags:(id)a7 invitationResolver:(id)a8;
+- (BOOL)_isWaitingToJoinForConversationUUID:(id)d;
+- (BOOL)hasCallStartedConnectingWithUUID:(id)d;
+- (BOOL)isLocalMemberOf:(id)of associatedTo:(id)to;
+- (BOOL)isManagingCallWithUUID:(id)d;
+- (BOOL)isManagingPendingConversationForCallWithUUID:(id)d;
+- (BOOL)isWaitingToJoinForConversationUUID:(id)d;
+- (BOOL)shouldAutomaticallyLeaveConversation:(id)conversation;
+- (CSDAbstractFaceTimeConversationProviderDelegate)initWithConversationManager:(id)manager queue:(id)queue invitationResolver:(id)resolver;
+- (CSDAbstractFaceTimeConversationProviderDelegate)initWithQueue:(id)queue conversationManager:(id)manager networkSupport:(id)support serverBag:(id)bag featureFlags:(id)flags invitationResolver:(id)resolver;
 - (CSDFaceTimeProviderDelegateManagerDelegate)faceTimeDemuxerDelegate;
 - (FTDeviceSupport)deviceSupport;
 - (NSMutableDictionary)callUUIDsByConversationUUID;
 - (NSMutableDictionary)conversationUUIDsByCallUUID;
 - (NSMutableSet)conversationUUIDsWaitingToJoin;
-- (id)_findPendingConversationWithCallUUID:(id)a3;
-- (id)callUUIDForConversationUUID:(id)a3;
-- (id)conversationUUIDForCallUUID:(id)a3;
-- (id)pendingConversationUUIDForCallWithUUID:(id)a3;
-- (void)cleanUpConversationIfNecessaryForConversationUUID:(id)a3 failureContext:(id)a4;
-- (void)conversationManager:(id)a3 avModeChanged:(unint64_t)a4 toAVMode:(unint64_t)a5 forParticipantWithHandle:(id)a6 forConversation:(id)a7;
-- (void)conversationManager:(id)a3 conversation:(id)a4 removedActiveParticipant:(id)a5 withReason:(unint64_t)a6;
-- (void)conversationManager:(id)a3 reportedNewIncomingConversation:(id)a4 fromHandle:(id)a5;
+- (id)_findPendingConversationWithCallUUID:(id)d;
+- (id)callUUIDForConversationUUID:(id)d;
+- (id)conversationUUIDForCallUUID:(id)d;
+- (id)pendingConversationUUIDForCallWithUUID:(id)d;
+- (void)cleanUpConversationIfNecessaryForConversationUUID:(id)d failureContext:(id)context;
+- (void)conversationManager:(id)manager avModeChanged:(unint64_t)changed toAVMode:(unint64_t)mode forParticipantWithHandle:(id)handle forConversation:(id)conversation;
+- (void)conversationManager:(id)manager conversation:(id)conversation removedActiveParticipant:(id)participant withReason:(unint64_t)reason;
+- (void)conversationManager:(id)manager reportedNewIncomingConversation:(id)conversation fromHandle:(id)handle;
 - (void)dealloc;
-- (void)endCallWithUUIDAsAnsweredElsewhere:(id)a3;
-- (void)endCallWithUUIDAsDeclinedElsewhere:(id)a3;
-- (void)endCallWithUUIDAsLocalHangup:(id)a3;
-- (void)enqueueConversationWaitingForAudioWithConversationUUID:(id)a3;
-- (void)enqueueOrStartAudioForConversationUUID:(id)a3;
-- (void)fullfillPendingJoinActionsForCallUUIDIfNecessary:(id)a3;
-- (void)handleAudioInterruptionPropertiesChanged:(id)a3;
-- (void)leaveConversation:(id)a3 withCallUUID:(id)a4 reason:(int64_t)a5;
-- (void)leaveConversationForCallUUID:(id)a3 endedReason:(int64_t)a4;
-- (void)proceedToJoinForConversation:(id)a3 action:(id)a4;
-- (void)provider:(id)a3 didDeactivateAudioSession:(id)a4;
-- (void)provider:(id)a3 performEndCallAction:(id)a4;
-- (void)provider:(id)a3 performJoinCallAction:(id)a4;
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4;
-- (void)provider:(id)a3 timedOutPerformingAction:(id)a4;
-- (void)providerDidBegin:(id)a3;
-- (void)providerDidReset:(id)a3;
-- (void)removeActiveAudioSessionObjectForConversationWithUUID:(id)a3;
-- (void)setCallUUID:(id)a3 forConversationUUID:(id)a4;
-- (void)setConversationUUID:(id)a3 forCallUUID:(id)a4;
-- (void)setWaitingToJoin:(BOOL)a3 forConversationUUID:(id)a4;
+- (void)endCallWithUUIDAsAnsweredElsewhere:(id)elsewhere;
+- (void)endCallWithUUIDAsDeclinedElsewhere:(id)elsewhere;
+- (void)endCallWithUUIDAsLocalHangup:(id)hangup;
+- (void)enqueueConversationWaitingForAudioWithConversationUUID:(id)d;
+- (void)enqueueOrStartAudioForConversationUUID:(id)d;
+- (void)fullfillPendingJoinActionsForCallUUIDIfNecessary:(id)necessary;
+- (void)handleAudioInterruptionPropertiesChanged:(id)changed;
+- (void)leaveConversation:(id)conversation withCallUUID:(id)d reason:(int64_t)reason;
+- (void)leaveConversationForCallUUID:(id)d endedReason:(int64_t)reason;
+- (void)proceedToJoinForConversation:(id)conversation action:(id)action;
+- (void)provider:(id)provider didDeactivateAudioSession:(id)session;
+- (void)provider:(id)provider performEndCallAction:(id)action;
+- (void)provider:(id)provider performJoinCallAction:(id)action;
+- (void)provider:(id)provider performSetMutedCallAction:(id)action;
+- (void)provider:(id)provider timedOutPerformingAction:(id)action;
+- (void)providerDidBegin:(id)begin;
+- (void)providerDidReset:(id)reset;
+- (void)removeActiveAudioSessionObjectForConversationWithUUID:(id)d;
+- (void)setCallUUID:(id)d forConversationUUID:(id)iD;
+- (void)setConversationUUID:(id)d forCallUUID:(id)iD;
+- (void)setWaitingToJoin:(BOOL)join forConversationUUID:(id)d;
 - (void)startAudioForConversationsIfNecessary;
 - (void)updateNetworkCriticalStateIfNecessary;
 @end
 
 @implementation CSDAbstractFaceTimeConversationProviderDelegate
 
-- (CSDAbstractFaceTimeConversationProviderDelegate)initWithConversationManager:(id)a3 queue:(id)a4 invitationResolver:(id)a5
+- (CSDAbstractFaceTimeConversationProviderDelegate)initWithConversationManager:(id)manager queue:(id)queue invitationResolver:(id)resolver
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  resolverCopy = resolver;
+  queueCopy = queue;
+  managerCopy = manager;
   v11 = objc_alloc_init(TUFeatureFlags);
   v12 = objc_alloc_init(CSDSharedConversationServerBag);
-  v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self initWithQueue:v9 conversationManager:v10 networkSupport:0 serverBag:v12 featureFlags:v11 invitationResolver:v8];
+  v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self initWithQueue:queueCopy conversationManager:managerCopy networkSupport:0 serverBag:v12 featureFlags:v11 invitationResolver:resolverCopy];
 
   return v13;
 }
 
-- (CSDAbstractFaceTimeConversationProviderDelegate)initWithQueue:(id)a3 conversationManager:(id)a4 networkSupport:(id)a5 serverBag:(id)a6 featureFlags:(id)a7 invitationResolver:(id)a8
+- (CSDAbstractFaceTimeConversationProviderDelegate)initWithQueue:(id)queue conversationManager:(id)manager networkSupport:(id)support serverBag:(id)bag featureFlags:(id)flags invitationResolver:(id)resolver
 {
-  v36 = a3;
-  v35 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  queueCopy = queue;
+  managerCopy = manager;
+  supportCopy = support;
+  bagCopy = bag;
+  flagsCopy = flags;
+  resolverCopy = resolver;
   v37.receiver = self;
   v37.super_class = CSDAbstractFaceTimeConversationProviderDelegate;
   v19 = [(CSDAbstractFaceTimeConversationProviderDelegate *)&v37 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_queue, a3);
-    objc_storeStrong(&v20->_conversationManager, a4);
-    [(CSDConversationManager *)v20->_conversationManager addDelegate:v20 queue:v20->_queue, v35, v36];
-    if (v15)
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v20->_conversationManager, manager);
+    [(CSDConversationManager *)v20->_conversationManager addDelegate:v20 queue:v20->_queue, managerCopy, queueCopy];
+    if (supportCopy)
     {
-      v21 = v15;
+      v21 = supportCopy;
     }
 
     else
@@ -91,9 +91,9 @@
     networkSupport = v20->_networkSupport;
     v20->_networkSupport = v21;
 
-    objc_storeStrong(&v20->_serverBag, a6);
-    objc_storeStrong(&v20->_invitationResolver, a8);
-    objc_storeStrong(&v20->_featureFlags, a7);
+    objc_storeStrong(&v20->_serverBag, bag);
+    objc_storeStrong(&v20->_invitationResolver, resolver);
+    objc_storeStrong(&v20->_featureFlags, flags);
     v23 = +[NSMutableSet set];
     conversationUUIDsWaitingToJoin = v20->_conversationUUIDsWaitingToJoin;
     v20->_conversationUUIDsWaitingToJoin = v23;
@@ -133,101 +133,101 @@
 
 - (NSMutableSet)conversationUUIDsWaitingToJoin
 {
-  v3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   conversationUUIDsWaitingToJoin = self->_conversationUUIDsWaitingToJoin;
 
   return conversationUUIDsWaitingToJoin;
 }
 
-- (BOOL)isWaitingToJoinForConversationUUID:(id)a3
+- (BOOL)isWaitingToJoinForConversationUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100265758;
   block[3] = &unk_10061C678;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
-- (BOOL)_isWaitingToJoinForConversationUUID:(id)a3
+- (BOOL)_isWaitingToJoinForConversationUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsWaitingToJoin];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  conversationUUIDsWaitingToJoin = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsWaitingToJoin];
+  LOBYTE(queue) = [conversationUUIDsWaitingToJoin containsObject:dCopy];
 
-  return v5;
+  return queue;
 }
 
-- (void)setWaitingToJoin:(BOOL)a3 forConversationUUID:(id)a4
+- (void)setWaitingToJoin:(BOOL)join forConversationUUID:(id)d
 {
-  v4 = a3;
-  v9 = a4;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  joinCopy = join;
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v9)
+  if (dCopy)
   {
-    v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsWaitingToJoin];
-    v8 = v7;
-    if (v4)
+    conversationUUIDsWaitingToJoin = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsWaitingToJoin];
+    v8 = conversationUUIDsWaitingToJoin;
+    if (joinCopy)
     {
-      [v7 addObject:v9];
+      [conversationUUIDsWaitingToJoin addObject:dCopy];
     }
 
     else
     {
-      [v7 removeObject:v9];
+      [conversationUUIDsWaitingToJoin removeObject:dCopy];
     }
   }
 }
 
 - (NSMutableDictionary)callUUIDsByConversationUUID
 {
-  v3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   callUUIDsByConversationUUID = self->_callUUIDsByConversationUUID;
 
   return callUUIDsByConversationUUID;
 }
 
-- (id)callUUIDForConversationUUID:(id)a3
+- (id)callUUIDForConversationUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100028760;
   v16 = sub_10003292C;
   v17 = 0;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100265A28;
   block[3] = &unk_10061C678;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -235,35 +235,35 @@
   return v7;
 }
 
-- (void)setCallUUID:(id)a3 forConversationUUID:(id)a4
+- (void)setCallUUID:(id)d forConversationUUID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v8);
+  iDCopy = iD;
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+  [callUUIDsByConversationUUID setObject:dCopy forKeyedSubscript:iDCopy];
 }
 
-- (void)removeActiveAudioSessionObjectForConversationWithUUID:(id)a3
+- (void)removeActiveAudioSessionObjectForConversationWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
-  [v6 removeObject:v4];
+  conversationUUIDsAwaitingActiveAudioSession = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
+  [conversationUUIDsAwaitingActiveAudioSession removeObject:dCopy];
 }
 
 - (void)updateNetworkCriticalStateIfNecessary
 {
-  v3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-  v5 = [v4 allKeys];
-  v6 = [v5 count];
+  callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+  allKeys = [callUUIDsByConversationUUID allKeys];
+  v6 = [allKeys count];
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -279,39 +279,39 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting enableCriticalReliability %@", &v10, 0xCu);
   }
 
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self networkSupport];
-  [v9 setEnableCriticalReliability:v6 != 0];
+  networkSupport = [(CSDAbstractFaceTimeConversationProviderDelegate *)self networkSupport];
+  [networkSupport setEnableCriticalReliability:v6 != 0];
 }
 
 - (NSMutableDictionary)conversationUUIDsByCallUUID
 {
-  v3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   conversationUUIDsByCallUUID = self->_conversationUUIDsByCallUUID;
 
   return conversationUUIDsByCallUUID;
 }
 
-- (id)conversationUUIDForCallUUID:(id)a3
+- (id)conversationUUIDForCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100028760;
   v16 = sub_10003292C;
   v17 = 0;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100265E5C;
   block[3] = &unk_10061C678;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -319,59 +319,59 @@
   return v7;
 }
 
-- (void)setConversationUUID:(id)a3 forCallUUID:(id)a4
+- (void)setConversationUUID:(id)d forCallUUID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v8);
+  iDCopy = iD;
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  [conversationUUIDsByCallUUID setObject:dCopy forKeyedSubscript:iDCopy];
 }
 
-- (void)handleAudioInterruptionPropertiesChanged:(id)a3
+- (void)handleAudioInterruptionPropertiesChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"CSDCallAudioInterruptionProviderUserInfoKey"];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"CSDCallAudioInterruptionProviderUserInfoKey"];
   v6 = [v5 isEqualToString:@"CSDCallAudioInterruptionProviderUserInfoAVAudioClient"];
 
   if (v6)
   {
-    v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+    queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100266038;
     block[3] = &unk_100619D38;
     block[4] = self;
-    dispatch_async(v7, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)enqueueConversationWaitingForAudioWithConversationUUID:(id)a3
+- (void)enqueueConversationWaitingForAudioWithConversationUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
-  [v5 addObject:v4];
+  dCopy = d;
+  conversationUUIDsAwaitingActiveAudioSession = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
+  [conversationUUIDsAwaitingActiveAudioSession addObject:dCopy];
 
   [(CSDAbstractFaceTimeConversationProviderDelegate *)self startAudioForConversationsIfNecessary];
 }
 
-- (void)enqueueOrStartAudioForConversationUUID:(id)a3
+- (void)enqueueOrStartAudioForConversationUUID:(id)d
 {
-  v7 = a3;
-  v4 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v5 = [v4 isConversationWithUUIDRedirectingAudio:v7];
+  dCopy = d;
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  v5 = [conversationManager isConversationWithUUIDRedirectingAudio:dCopy];
 
   if (v5)
   {
-    v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    [v6 startAudioForConversationWithUUID:v7];
+    conversationManager2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    [conversationManager2 startAudioForConversationWithUUID:dCopy];
   }
 
   else
   {
-    [(CSDAbstractFaceTimeConversationProviderDelegate *)self enqueueConversationWaitingForAudioWithConversationUUID:v7];
+    [(CSDAbstractFaceTimeConversationProviderDelegate *)self enqueueConversationWaitingForAudioWithConversationUUID:dCopy];
   }
 }
 
@@ -379,8 +379,8 @@
 {
   if ([(CSDAbstractFaceTimeConversationProviderDelegate *)self usesAudioSession]&& ![(CSDAbstractFaceTimeConversationProviderDelegate *)self isAudioSessionActive])
   {
-    v11 = sub_100004778();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    conversationUUIDsAwaitingActiveAudioSession2 = sub_100004778();
+    if (os_log_type_enabled(conversationUUIDsAwaitingActiveAudioSession2, OS_LOG_TYPE_DEFAULT))
     {
       if ([(CSDAbstractFaceTimeConversationProviderDelegate *)self usesAudioSession])
       {
@@ -406,7 +406,7 @@
       v19 = v12;
       v20 = 2112;
       v21 = v13;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Not starting audio for conversation: usesAudioSession: %@, isAudioSessionActive: %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, conversationUUIDsAwaitingActiveAudioSession2, OS_LOG_TYPE_DEFAULT, "Not starting audio for conversation: usesAudioSession: %@, isAudioSessionActive: %@", buf, 0x16u);
     }
   }
 
@@ -416,8 +416,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
-    v4 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+    conversationUUIDsAwaitingActiveAudioSession = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
+    v4 = [conversationUUIDsAwaitingActiveAudioSession countByEnumeratingWithState:&v14 objects:v22 count:16];
     if (v4)
     {
       v5 = v4;
@@ -428,7 +428,7 @@
         {
           if (*v15 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(conversationUUIDsAwaitingActiveAudioSession);
           }
 
           v8 = *(*(&v14 + 1) + 8 * i);
@@ -440,54 +440,54 @@
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Starting audio for conversation with conversationUUID %@", buf, 0xCu);
           }
 
-          v10 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-          [v10 startAudioForConversationWithUUID:v8];
+          conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+          [conversationManager startAudioForConversationWithUUID:v8];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        v5 = [conversationUUIDsAwaitingActiveAudioSession countByEnumeratingWithState:&v14 objects:v22 count:16];
       }
 
       while (v5);
     }
 
-    v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
-    [v11 removeAllObjects];
+    conversationUUIDsAwaitingActiveAudioSession2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
+    [conversationUUIDsAwaitingActiveAudioSession2 removeAllObjects];
   }
 }
 
-- (id)_findPendingConversationWithCallUUID:(id)a3
+- (id)_findPendingConversationWithCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v7 = [v6 pseudonymsByCallUUID];
-    v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v9 = [v8 conversationsByUUID];
+    conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    pseudonymsByCallUUID = [conversationManager pseudonymsByCallUUID];
+    conversationManager2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    conversationsByUUID = [conversationManager2 conversationsByUUID];
     *buf = 138412546;
-    v33 = v7;
+    v33 = pseudonymsByCallUUID;
     v34 = 2112;
-    v35 = v9;
+    v35 = conversationsByUUID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "pseudonymsByCallUUID: %@, conversationsByUUID: %@", buf, 0x16u);
   }
 
-  v10 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v11 = [v10 pseudonymsByCallUUID];
-  v12 = [v11 objectForKeyedSubscript:v4];
+  conversationManager3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  pseudonymsByCallUUID2 = [conversationManager3 pseudonymsByCallUUID];
+  v12 = [pseudonymsByCallUUID2 objectForKeyedSubscript:dCopy];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v14 = [v13 conversationsByUUID];
-  v15 = [v14 allValues];
+  conversationManager4 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID2 = [conversationManager4 conversationsByUUID];
+  allValues = [conversationsByUUID2 allValues];
 
-  v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v16 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v16)
   {
-    v26 = v4;
+    v26 = dCopy;
     v17 = *v28;
     while (2)
     {
@@ -495,19 +495,19 @@
       {
         if (*v28 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allValues);
         }
 
         v19 = *(*(&v27 + 1) + 8 * i);
         if ([v19 isPendingConversation])
         {
-          v20 = [v19 link];
-          if (v20)
+          link = [v19 link];
+          if (link)
           {
-            v21 = v20;
-            v22 = [v19 link];
-            v23 = [v22 pseudonym];
-            v24 = [v23 isEqualToString:v12];
+            v21 = link;
+            link2 = [v19 link];
+            pseudonym = [link2 pseudonym];
+            v24 = [pseudonym isEqualToString:v12];
 
             if (v24)
             {
@@ -518,7 +518,7 @@
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v16 = [allValues countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v16)
       {
         continue;
@@ -528,21 +528,21 @@
     }
 
 LABEL_15:
-    v4 = v26;
+    dCopy = v26;
   }
 
   return v16;
 }
 
-- (void)conversationManager:(id)a3 reportedNewIncomingConversation:(id)a4 fromHandle:(id)a5
+- (void)conversationManager:(id)manager reportedNewIncomingConversation:(id)conversation fromHandle:(id)handle
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v9);
+  conversationCopy = conversation;
+  handleCopy = handle;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 provider];
-  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self shouldHandleProvider:v10];
+  provider = [(CSDAbstractFaceTimeConversationProviderDelegate *)conversationCopy provider];
+  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self shouldHandleProvider:provider];
 
   v12 = sub_100004778();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -551,24 +551,24 @@ LABEL_15:
     if (v13)
     {
       v18 = 138412546;
-      v19 = v7;
+      selfCopy = conversationCopy;
       v20 = 2112;
-      v21 = v8;
+      v21 = handleCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Conversation manager reported a new incoming conversation %@ from handle %@", &v18, 0x16u);
     }
 
-    v14 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-    v15 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 UUID];
-    v12 = [v14 objectForKeyedSubscript:v15];
+    callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+    uUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)conversationCopy UUID];
+    v12 = [callUUIDsByConversationUUID objectForKeyedSubscript:uUID];
 
     if (v12)
     {
       v16 = sub_100004778();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 UUID];
+        uUID2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)conversationCopy UUID];
         v18 = 138412546;
-        v19 = v17;
+        selfCopy = uUID2;
         v20 = 2112;
         v21 = v12;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Ignoring new conversation %@ since we are already tracking this with call %@", &v18, 0x16u);
@@ -577,38 +577,38 @@ LABEL_15:
 
     else
     {
-      [(CSDAbstractFaceTimeConversationProviderDelegate *)self reportNewIncomingCallForConversation:v7 fromHandle:v8 isReRing:0 invitationContext:0];
+      [(CSDAbstractFaceTimeConversationProviderDelegate *)self reportNewIncomingCallForConversation:conversationCopy fromHandle:handleCopy isReRing:0 invitationContext:0];
     }
   }
 
   else if (v13)
   {
     v18 = 138412546;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
-    v21 = v7;
+    v21 = conversationCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ should not handle conversation: %@", &v18, 0x16u);
   }
 }
 
-- (void)conversationManager:(id)a3 avModeChanged:(unint64_t)a4 toAVMode:(unint64_t)a5 forParticipantWithHandle:(id)a6 forConversation:(id)a7
+- (void)conversationManager:(id)manager avModeChanged:(unint64_t)changed toAVMode:(unint64_t)mode forParticipantWithHandle:(id)handle forConversation:(id)conversation
 {
-  v9 = a6;
-  v10 = a7;
-  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-  v12 = [v10 UUID];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  handleCopy = handle;
+  conversationCopy = conversation;
+  callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+  uUID = [conversationCopy UUID];
+  v13 = [callUUIDsByConversationUUID objectForKeyedSubscript:uUID];
 
   if (v13)
   {
     v14 = sub_100004778();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v10 UUID];
+      uUID2 = [conversationCopy UUID];
       v18 = 138412546;
       v19 = v13;
       v20 = 2112;
-      v21 = v15;
+      v21 = uUID2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Skipping to report a new call since we already have a call with UUID: %@ for conversationUUID: %@", &v18, 0x16u);
     }
   }
@@ -616,29 +616,29 @@ LABEL_15:
   else
   {
     v16 = +[NSUUID UUID];
-    v17 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
-    [v17 addObject:v16];
+    callUUIDsUpgradedForAVMode = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
+    [callUUIDsUpgradedForAVMode addObject:v16];
 
-    [(CSDAbstractFaceTimeConversationProviderDelegate *)self reportNewIncomingCallForConversation:v10 fromHandle:v9 callUUID:v16 isReRing:0 invitationContext:0];
+    [(CSDAbstractFaceTimeConversationProviderDelegate *)self reportNewIncomingCallForConversation:conversationCopy fromHandle:handleCopy callUUID:v16 isReRing:0 invitationContext:0];
   }
 }
 
-- (void)fullfillPendingJoinActionsForCallUUIDIfNecessary:(id)a3
+- (void)fullfillPendingJoinActionsForCallUUIDIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  necessaryCopy = necessary;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
-  v7 = [v6 pendingCallActionsOfClass:objc_opt_class() withCallUUID:v4];
+  provider = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+  v7 = [provider pendingCallActionsOfClass:objc_opt_class() withCallUUID:necessaryCopy];
 
-  v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self faceTimeDemuxerDelegate];
-  v9 = [v8 providerDelegate:self isExclusivelyManagingCallWithUUID:v4];
+  faceTimeDemuxerDelegate = [(CSDAbstractFaceTimeConversationProviderDelegate *)self faceTimeDemuxerDelegate];
+  v9 = [faceTimeDemuxerDelegate providerDelegate:self isExclusivelyManagingCallWithUUID:necessaryCopy];
 
   if (v9)
   {
-    v10 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
-    v11 = [v10 pendingCallActionsOfClass:objc_opt_class() withCallUUID:v4];
+    provider2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+    v11 = [provider2 pendingCallActionsOfClass:objc_opt_class() withCallUUID:necessaryCopy];
 
     if ([v11 count])
     {
@@ -690,8 +690,8 @@ LABEL_15:
     }
   }
 
-  v19 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  v20 = [v19 objectForKeyedSubscript:v4];
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  v20 = [conversationUUIDsByCallUUID objectForKeyedSubscript:necessaryCopy];
 
   if (v20)
   {
@@ -699,23 +699,23 @@ LABEL_15:
   }
 }
 
-- (BOOL)isManagingCallWithUUID:(id)a3
+- (BOOL)isManagingCallWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  v7 = [conversationUUIDsByCallUUID objectForKeyedSubscript:dCopy];
 
   if (!v7)
   {
     goto LABEL_4;
   }
 
-  v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v9 = [v8 conversationsByUUID];
-  v10 = [v9 objectForKeyedSubscript:v7];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  v10 = [conversationsByUUID objectForKeyedSubscript:v7];
 
   if (v10)
   {
@@ -725,24 +725,24 @@ LABEL_15:
   else
   {
 LABEL_4:
-    v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self isManagingPendingConversationForCallWithUUID:v4];
+    v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self isManagingPendingConversationForCallWithUUID:dCopy];
   }
 
   return v11;
 }
 
-- (BOOL)isManagingPendingConversationForCallWithUUID:(id)a3
+- (BOOL)isManagingPendingConversationForCallWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v6 = [v5 conversationsByUUID];
-  v7 = [v6 allValues];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  allValues = [conversationsByUUID allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -753,14 +753,14 @@ LABEL_4:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-        v14 = [v12 UUID];
-        v15 = [v13 objectForKeyedSubscript:v14];
-        v16 = [v15 isEqual:v4];
+        callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+        uUID = [v12 UUID];
+        v15 = [callUUIDsByConversationUUID objectForKeyedSubscript:uUID];
+        v16 = [v15 isEqual:dCopy];
 
         if (v16)
         {
@@ -769,7 +769,7 @@ LABEL_4:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -785,19 +785,19 @@ LABEL_11:
   return v17;
 }
 
-- (id)pendingConversationUUIDForCallWithUUID:(id)a3
+- (id)pendingConversationUUIDForCallWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v6 = [v5 conversationsByUUID];
-  v7 = [v6 allValues];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  allValues = [conversationsByUUID allValues];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  obj = allValues;
+  v8 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -812,14 +812,14 @@ LABEL_11:
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-        v14 = [v12 UUID];
-        v15 = [v13 objectForKeyedSubscript:v14];
-        v16 = [v15 isEqual:v4];
+        callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+        uUID = [v12 UUID];
+        v15 = [callUUIDsByConversationUUID objectForKeyedSubscript:uUID];
+        v16 = [v15 isEqual:dCopy];
 
         if (v16)
         {
-          v17 = [v12 UUID];
+          uUID2 = [v12 UUID];
           goto LABEL_11;
         }
       }
@@ -834,23 +834,23 @@ LABEL_11:
     }
   }
 
-  v17 = 0;
+  uUID2 = 0;
 LABEL_11:
 
-  return v17;
+  return uUID2;
 }
 
-- (BOOL)hasCallStartedConnectingWithUUID:(id)a3
+- (BOOL)hasCallStartedConnectingWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  v6 = [conversationUUIDsByCallUUID objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v8 = [v7 conversationsByUUID];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    conversationsByUUID = [conversationManager conversationsByUUID];
+    v9 = [conversationsByUUID objectForKeyedSubscript:v6];
 
     if (v9)
     {
@@ -871,96 +871,96 @@ LABEL_11:
   return v10;
 }
 
-- (void)endCallWithUUIDAsAnsweredElsewhere:(id)a3
+- (void)endCallWithUUIDAsAnsweredElsewhere:(id)elsewhere
 {
-  v4 = a3;
+  elsewhereCopy = elsewhere;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = elsewhereCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "endCallWithUUIDAsAnsweredElsewhere: %@", &v6, 0xCu);
   }
 
-  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:v4 endedReason:4];
+  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:elsewhereCopy endedReason:4];
 }
 
-- (void)endCallWithUUIDAsDeclinedElsewhere:(id)a3
+- (void)endCallWithUUIDAsDeclinedElsewhere:(id)elsewhere
 {
-  v4 = a3;
+  elsewhereCopy = elsewhere;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = elsewhereCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "endCallWithUUIDAsDeclinedElsewhere: %@", &v6, 0xCu);
   }
 
-  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:v4 endedReason:5];
+  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:elsewhereCopy endedReason:5];
 }
 
-- (void)endCallWithUUIDAsLocalHangup:(id)a3
+- (void)endCallWithUUIDAsLocalHangup:(id)hangup
 {
-  v4 = a3;
+  hangupCopy = hangup;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = hangupCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "endCallWithUUIDAsLocalHangup: %@", &v6, 0xCu);
   }
 
-  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:v4 endedReason:-1];
+  [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:hangupCopy endedReason:-1];
 }
 
-- (void)cleanUpConversationIfNecessaryForConversationUUID:(id)a3 failureContext:(id)a4
+- (void)cleanUpConversationIfNecessaryForConversationUUID:(id)d failureContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  contextCopy = context;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+  v10 = [callUUIDsByConversationUUID objectForKeyedSubscript:dCopy];
 
   if (v10)
   {
     v11 = sub_100004778();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10047F424(v6, v10, v11);
+      sub_10047F424(dCopy, v10, v11);
     }
 
-    v12 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
-    [v12 reportCallWithUUID:v10 failedAtDate:0 withContext:v7];
+    provider = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+    [provider reportCallWithUUID:v10 failedAtDate:0 withContext:contextCopy];
 
-    v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self faceTimeDemuxerDelegate];
+    faceTimeDemuxerDelegate = [(CSDAbstractFaceTimeConversationProviderDelegate *)self faceTimeDemuxerDelegate];
     v14 = +[NSDate now];
-    v30 = v7;
-    [v13 providerDelegate:self callWithUUID:v10 endedAtDate:v14 withReason:1 failureContext:v7];
+    v30 = contextCopy;
+    [faceTimeDemuxerDelegate providerDelegate:self callWithUUID:v10 endedAtDate:v14 withReason:1 failureContext:contextCopy];
 
-    v15 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    [v15 leaveConversationWithUUID:v6];
+    conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    [conversationManager leaveConversationWithUUID:dCopy];
 
-    v16 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
-    [v16 removeObject:v10];
+    callUUIDsUpgradedForAVMode = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
+    [callUUIDsUpgradedForAVMode removeObject:v10];
 
-    [(CSDAbstractFaceTimeConversationProviderDelegate *)self setCallUUID:0 forConversationUUID:v6];
+    [(CSDAbstractFaceTimeConversationProviderDelegate *)self setCallUUID:0 forConversationUUID:dCopy];
     [(CSDAbstractFaceTimeConversationProviderDelegate *)self setConversationUUID:0 forCallUUID:v10];
-    v17 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
-    v31 = v6;
-    [v17 removeObject:v6];
+    conversationUUIDsAwaitingActiveAudioSession = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsAwaitingActiveAudioSession];
+    v31 = dCopy;
+    [conversationUUIDsAwaitingActiveAudioSession removeObject:dCopy];
 
     [(CSDAbstractFaceTimeConversationProviderDelegate *)self updateNetworkCriticalStateIfNecessary];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v18 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
-    v19 = [v18 pendingTransactions];
+    provider2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+    pendingTransactions = [provider2 pendingTransactions];
 
-    obj = v19;
-    v34 = [v19 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    obj = pendingTransactions;
+    v34 = [pendingTransactions countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v34)
     {
       v33 = *v40;
@@ -978,8 +978,8 @@ LABEL_11:
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v22 = [v21 actions];
-          v23 = [v22 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          actions = [v21 actions];
+          v23 = [actions countByEnumeratingWithState:&v35 objects:v43 count:16];
           if (v23)
           {
             v24 = v23;
@@ -990,15 +990,15 @@ LABEL_11:
               {
                 if (*v36 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(actions);
                 }
 
                 v27 = *(*(&v35 + 1) + 8 * j);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v28 = [v27 callUUID];
-                  v29 = [v28 isEqual:v10];
+                  callUUID = [v27 callUUID];
+                  v29 = [callUUID isEqual:v10];
 
                   if (v29)
                   {
@@ -1007,7 +1007,7 @@ LABEL_11:
                 }
               }
 
-              v24 = [v22 countByEnumeratingWithState:&v35 objects:v43 count:16];
+              v24 = [actions countByEnumeratingWithState:&v35 objects:v43 count:16];
             }
 
             while (v24);
@@ -1021,19 +1021,19 @@ LABEL_11:
     }
 
     [(CSDAbstractFaceTimeConversationProviderDelegate *)self endCallWithUUIDAsLocalHangup:v10];
-    v6 = v31;
-    v7 = v30;
+    dCopy = v31;
+    contextCopy = v30;
   }
 }
 
-- (void)leaveConversationForCallUUID:(id)a3 endedReason:(int64_t)a4
+- (void)leaveConversationForCallUUID:(id)d endedReason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  dCopy = d;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
-  v8 = [v7 copy];
+  callUUIDsByConversationUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsByConversationUUID];
+  v8 = [callUUIDsByConversationUUID copy];
 
   v31 = 0u;
   v32 = 0u;
@@ -1057,7 +1057,7 @@ LABEL_11:
 
         v14 = *(*(&v29 + 1) + 8 * v13);
         v15 = [v9 objectForKeyedSubscript:v14];
-        v16 = [v15 isEqual:v5];
+        v16 = [v15 isEqual:dCopy];
 
         if (v16)
         {
@@ -1069,15 +1069,15 @@ LABEL_11:
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Found an extra conversation that needs to be cleaned up: %@", buf, 0xCu);
           }
 
-          v18 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-          v19 = [v18 conversationsByUUID];
-          v20 = [v19 objectForKeyedSubscript:v14];
+          conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+          conversationsByUUID = [conversationManager conversationsByUUID];
+          v20 = [conversationsByUUID objectForKeyedSubscript:v14];
 
           if (v20 && ([v20 provider], v21 = objc_claimAutoreleasedReturnValue(), v22 = -[CSDAbstractFaceTimeConversationProviderDelegate shouldHandleProvider:](self, "shouldHandleProvider:", v21), v21, v22))
           {
             if ([v20 avMode])
             {
-              [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversation:v20 withCallUUID:v5 reason:a4];
+              [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversation:v20 withCallUUID:dCopy reason:reason];
 LABEL_17:
 
               goto LABEL_18;
@@ -1104,7 +1104,7 @@ LABEL_15:
               *buf = 138412546;
               v34 = v14;
               v35 = 2112;
-              v36 = v5;
+              v36 = dCopy;
               v24 = v23;
               v25 = "[WARN] Asked to clean up conversation from our list but could not find it in conversation manager list: %@ callUUID: %@";
               v26 = 22;
@@ -1128,20 +1128,20 @@ LABEL_18:
   }
 }
 
-- (void)leaveConversation:(id)a3 withCallUUID:(id)a4 reason:(int64_t)a5
+- (void)leaveConversation:(id)conversation withCallUUID:(id)d reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 provider];
-  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self shouldHandleProvider:v10];
+  conversationCopy = conversation;
+  dCopy = d;
+  provider = [conversationCopy provider];
+  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self shouldHandleProvider:provider];
 
   if (v11)
   {
-    v12 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    if ([v12 avLessSharePlayEnabled] && !objc_msgSend(v8, "avMode"))
+    featureFlags = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    if ([featureFlags avLessSharePlayEnabled] && !objc_msgSend(conversationCopy, "avMode"))
     {
-      v19 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
-      v20 = [v19 containsObject:v9];
+      callUUIDsUpgradedForAVMode = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
+      v20 = [callUUIDsUpgradedForAVMode containsObject:dCopy];
 
       if (v20)
       {
@@ -1151,22 +1151,22 @@ LABEL_18:
           goto LABEL_7;
         }
 
-        v14 = [v8 UUID];
+        uUID = [conversationCopy UUID];
         v21 = 138412546;
-        v22 = v9;
+        selfCopy = dCopy;
         v23 = 2112;
-        v24 = v14;
+        v24 = uUID;
         _os_log_impl(&_mh_execute_header, &v13->super, OS_LOG_TYPE_DEFAULT, "Not leaving conversation but stopped tracking callUUID: %@ for conversationUUID: %@", &v21, 0x16u);
 LABEL_6:
 
 LABEL_7:
-        v16 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
-        [v16 removeObject:v9];
+        callUUIDsUpgradedForAVMode2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
+        [callUUIDsUpgradedForAVMode2 removeObject:dCopy];
 
-        v17 = [v8 UUID];
-        [(CSDAbstractFaceTimeConversationProviderDelegate *)self setCallUUID:0 forConversationUUID:v17];
+        uUID2 = [conversationCopy UUID];
+        [(CSDAbstractFaceTimeConversationProviderDelegate *)self setCallUUID:0 forConversationUUID:uUID2];
 
-        [(CSDAbstractFaceTimeConversationProviderDelegate *)self setConversationUUID:0 forCallUUID:v9];
+        [(CSDAbstractFaceTimeConversationProviderDelegate *)self setConversationUUID:0 forCallUUID:dCopy];
         [(CSDAbstractFaceTimeConversationProviderDelegate *)self updateNetworkCriticalStateIfNecessary];
         goto LABEL_11;
       }
@@ -1176,10 +1176,10 @@ LABEL_7:
     {
     }
 
-    v13 = [[CSDConversationLeaveContext alloc] initWithLeaveReason:a5 == 102];
-    v14 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v15 = [v8 UUID];
-    [v14 leaveConversationWithUUID:v15 withContext:v13];
+    v13 = [[CSDConversationLeaveContext alloc] initWithLeaveReason:reason == 102];
+    uUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    uUID3 = [conversationCopy UUID];
+    [uUID leaveConversationWithUUID:uUID3 withContext:v13];
 
     goto LABEL_6;
   }
@@ -1188,9 +1188,9 @@ LABEL_7:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v8;
+    v24 = conversationCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@ should not handle conversation: %@", &v21, 0x16u);
   }
 
@@ -1213,31 +1213,31 @@ LABEL_11:
   return v3;
 }
 
-- (void)proceedToJoinForConversation:(id)a3 action:(id)a4
+- (void)proceedToJoinForConversation:(id)conversation action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 provider];
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self shouldHandleProvider:v8];
+  conversationCopy = conversation;
+  actionCopy = action;
+  provider = [conversationCopy provider];
+  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self shouldHandleProvider:provider];
 
   if (v9)
   {
-    v10 = [v6 UUID];
-    v11 = [v6 localMember];
-    v12 = [v11 handle];
+    uUID = [conversationCopy UUID];
+    localMember = [conversationCopy localMember];
+    handle = [localMember handle];
 
-    if (!v12)
+    if (!handle)
     {
-      [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 fail];
+      [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy fail];
       goto LABEL_64;
     }
 
-    v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    if ([v13 avLessSharePlayEnabled])
+    featureFlags = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    if ([featureFlags avLessSharePlayEnabled])
     {
-      v14 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 avMode];
+      avMode = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy avMode];
 
-      if (!v14)
+      if (!avMode)
       {
         goto LABEL_16;
       }
@@ -1245,59 +1245,59 @@ LABEL_11:
 
     else
     {
-      v15 = [v6 isEligibleForCall];
+      isEligibleForCall = [conversationCopy isEligibleForCall];
 
-      if (!v15)
+      if (!isEligibleForCall)
       {
         goto LABEL_16;
       }
     }
 
-    v16 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 callUUID];
-    v17 = [[CXCallUpdate alloc] initWithTUConversation:v6];
-    v18 = [v17 remoteParticipantHandles];
-    v19 = [v18 anyObject];
-    [v17 setRemoteMember:v19];
+    callUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy callUUID];
+    v17 = [[CXCallUpdate alloc] initWithTUConversation:conversationCopy];
+    remoteParticipantHandles = [v17 remoteParticipantHandles];
+    anyObject = [remoteParticipantHandles anyObject];
+    [v17 setRemoteMember:anyObject];
 
-    v20 = [v17 localSenderIdentityUUID];
+    localSenderIdentityUUID = [v17 localSenderIdentityUUID];
 
-    if (!v20)
+    if (!localSenderIdentityUUID)
     {
-      if ([v6 isLocallyCreated])
+      if ([conversationCopy isLocallyCreated])
       {
-        v21 = [v6 initiator];
+        initiator = [conversationCopy initiator];
       }
 
       else
       {
-        v22 = [v6 localMember];
-        v21 = [v22 handle];
+        localMember2 = [conversationCopy localMember];
+        initiator = [localMember2 handle];
       }
 
-      v23 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-      [v23 senderIdentityUUIDForCallerIDHandle:v21];
+      conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+      [conversationManager senderIdentityUUIDForCallerIDHandle:initiator];
       v25 = v24 = self;
       [v17 setLocalSenderIdentityUUID:v25];
 
       self = v24;
     }
 
-    v26 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
-    v27 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 callUUID];
-    [v26 reportCallWithUUID:v27 updated:v17];
+    provider2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self provider];
+    callUUID2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy callUUID];
+    [provider2 reportCallWithUUID:callUUID2 updated:v17];
 
-    [(CSDAbstractFaceTimeConversationProviderDelegate *)self associateCallUUID:v16 withConversationUUID:v10 waitingToJoin:1];
+    [(CSDAbstractFaceTimeConversationProviderDelegate *)self associateCallUUID:callUUID withConversationUUID:uUID waitingToJoin:1];
 LABEL_16:
     v28 = objc_alloc_init(CSDConversationJoinContext);
-    [(CSDConversationJoinContext *)v28 setShouldSuppressInCallUI:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 shouldSuppressInCallUI]];
-    [(CSDConversationJoinContext *)v28 setWantsStagingArea:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 wantsStagingArea]];
-    if ([(CSDAbstractFaceTimeConversationProviderDelegate *)v7 isVideoEnabled])
+    [(CSDConversationJoinContext *)v28 setShouldSuppressInCallUI:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy shouldSuppressInCallUI]];
+    [(CSDConversationJoinContext *)v28 setWantsStagingArea:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy wantsStagingArea]];
+    if ([(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy isVideoEnabled])
     {
-      v29 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-      if ([v29 groupFacetimeAsAServiceEnabled])
+      featureFlags2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+      if ([featureFlags2 groupFacetimeAsAServiceEnabled])
       {
-        v30 = [v6 provider];
-        -[CSDConversationJoinContext setVideoEnabled:](v28, "setVideoEnabled:", [v30 supportsVideo]);
+        provider3 = [conversationCopy provider];
+        -[CSDConversationJoinContext setVideoEnabled:](v28, "setVideoEnabled:", [provider3 supportsVideo]);
       }
 
       else
@@ -1311,51 +1311,51 @@ LABEL_16:
       [(CSDConversationJoinContext *)v28 setVideoEnabled:0];
     }
 
-    [(CSDConversationJoinContext *)v28 setVideo:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 isVideo]];
-    [(CSDConversationJoinContext *)v28 setUpgrade:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 isUpgrade]];
-    v31 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 upgradeSessionUUID];
-    [(CSDConversationJoinContext *)v28 setUpgradeSessionUUID:v31];
+    [(CSDConversationJoinContext *)v28 setVideo:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy isVideo]];
+    [(CSDConversationJoinContext *)v28 setUpgrade:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy isUpgrade]];
+    upgradeSessionUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy upgradeSessionUUID];
+    [(CSDConversationJoinContext *)v28 setUpgradeSessionUUID:upgradeSessionUUID];
 
-    v32 = [v6 provider];
-    [(CSDConversationJoinContext *)v28 setProvider:v32];
+    provider4 = [conversationCopy provider];
+    [(CSDConversationJoinContext *)v28 setProvider:provider4];
 
-    [(CSDConversationJoinContext *)v28 setAvMode:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 avMode]];
-    [(CSDConversationJoinContext *)v28 setPresentationMode:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 presentationMode]];
-    v33 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 joinCallActivity];
-    v34 = [v33 tuActivity];
-    [(CSDConversationJoinContext *)v28 setActivity:v34];
+    [(CSDConversationJoinContext *)v28 setAvMode:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy avMode]];
+    [(CSDConversationJoinContext *)v28 setPresentationMode:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy presentationMode]];
+    joinCallActivity = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy joinCallActivity];
+    tuActivity = [joinCallActivity tuActivity];
+    [(CSDConversationJoinContext *)v28 setActivity:tuActivity];
 
-    v35 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    LODWORD(v34) = [v35 nearbyFaceTimeEnabled];
+    featureFlags3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    LODWORD(tuActivity) = [featureFlags3 nearbyFaceTimeEnabled];
 
-    if (v34)
+    if (tuActivity)
     {
-      v36 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 tuParticipantCluster];
-      [(CSDConversationJoinContext *)v28 setParticipantCluster:v36];
+      tuParticipantCluster = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy tuParticipantCluster];
+      [(CSDConversationJoinContext *)v28 setParticipantCluster:tuParticipantCluster];
     }
 
-    v37 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    v38 = [v37 uplevelFTAEnabled];
+    featureFlags4 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    uplevelFTAEnabled = [featureFlags4 uplevelFTAEnabled];
 
-    if (v38)
+    if (uplevelFTAEnabled)
     {
-      [(CSDConversationJoinContext *)v28 setUpgradeToVideo:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 isUpgradeToVideo]];
+      [(CSDConversationJoinContext *)v28 setUpgradeToVideo:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy isUpgradeToVideo]];
     }
 
-    v39 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    v40 = [v39 callScreeningEnabled];
+    featureFlags5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    callScreeningEnabled = [featureFlags5 callScreeningEnabled];
 
-    if (v40)
+    if (callScreeningEnabled)
     {
-      [(CSDConversationJoinContext *)v28 setScreening:[(CSDAbstractFaceTimeConversationProviderDelegate *)v7 isScreening]];
+      [(CSDConversationJoinContext *)v28 setScreening:[(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy isScreening]];
     }
 
-    v41 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    if ([v41 conversationHandoffEnabled])
+    featureFlags6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    if ([featureFlags6 conversationHandoffEnabled])
     {
-      v42 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 associationIdentifier];
+      associationIdentifier = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy associationIdentifier];
 
-      if (!v42)
+      if (!associationIdentifier)
       {
         goto LABEL_32;
       }
@@ -1363,41 +1363,41 @@ LABEL_16:
       v43 = objc_alloc_init(TUConversationParticipantAssociation);
       [(CSDConversationJoinContext *)v28 setParticipantAssociation:v43];
 
-      v44 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 associationIdentifier];
-      v45 = [v44 unsignedLongLongValue];
-      v46 = [(CSDConversationJoinContext *)v28 participantAssociation];
-      [v46 setIdentifier:v45];
+      associationIdentifier2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy associationIdentifier];
+      unsignedLongLongValue = [associationIdentifier2 unsignedLongLongValue];
+      participantAssociation = [(CSDConversationJoinContext *)v28 participantAssociation];
+      [participantAssociation setIdentifier:unsignedLongLongValue];
 
-      v41 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 associationAVCIdentifier];
-      v47 = [(CSDConversationJoinContext *)v28 participantAssociation];
-      [v47 setAvcIdentifier:v41];
+      featureFlags6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy associationAVCIdentifier];
+      participantAssociation2 = [(CSDConversationJoinContext *)v28 participantAssociation];
+      [participantAssociation2 setAvcIdentifier:featureFlags6];
     }
 
 LABEL_32:
-    v48 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    v49 = [v48 usesModernScreenSharingFromMessages];
+    featureFlags7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    usesModernScreenSharingFromMessages = [featureFlags7 usesModernScreenSharingFromMessages];
 
-    if (v49)
+    if (usesModernScreenSharingFromMessages)
     {
-      v50 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 tuScreenSharingRequest];
-      [(CSDConversationJoinContext *)v28 setScreenSharingRequest:v50];
+      tuScreenSharingRequest = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy tuScreenSharingRequest];
+      [(CSDConversationJoinContext *)v28 setScreenSharingRequest:tuScreenSharingRequest];
     }
 
-    v51 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 notificationStylesByHandleType];
-    v52 = [v51 count];
+    notificationStylesByHandleType = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy notificationStylesByHandleType];
+    v52 = [notificationStylesByHandleType count];
 
     if (v52)
     {
       v92 = v28;
-      v93 = self;
-      v94 = v10;
+      selfCopy = self;
+      v94 = uUID;
       v53 = +[NSMutableSet set];
       v96 = 0u;
       v97 = 0u;
       v98 = 0u;
       v99 = 0u;
-      v54 = v7;
-      obj = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 notificationStylesByHandleType];
+      v54 = actionCopy;
+      obj = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy notificationStylesByHandleType];
       v55 = [obj countByEnumeratingWithState:&v96 objects:v100 count:16];
       if (v55)
       {
@@ -1414,10 +1414,10 @@ LABEL_32:
 
             v59 = *(*(&v96 + 1) + 8 * i);
             v60 = [TUConversationInvitationPreference alloc];
-            v61 = [v59 integerValue];
-            v62 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v54 notificationStylesByHandleType];
-            v63 = [v62 objectForKeyedSubscript:v59];
-            v64 = [v60 initWithHandleType:v61 notificationStyles:{objc_msgSend(v63, "integerValue")}];
+            integerValue = [v59 integerValue];
+            notificationStylesByHandleType2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v54 notificationStylesByHandleType];
+            v63 = [notificationStylesByHandleType2 objectForKeyedSubscript:v59];
+            v64 = [v60 initWithHandleType:integerValue notificationStyles:{objc_msgSend(v63, "integerValue")}];
 
             [v53 addObject:v64];
           }
@@ -1436,56 +1436,56 @@ LABEL_32:
       v67 = sub_100004778();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
-        v68 = [(CSDConversationJoinContext *)v92 invitationPreferences];
+        invitationPreferences = [(CSDConversationJoinContext *)v92 invitationPreferences];
         *buf = 138412290;
-        v102 = v68;
+        selfCopy2 = invitationPreferences;
         _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "Invitation preferences were set on the action, using those for the join context: %@", buf, 0xCu);
       }
 
-      v10 = v94;
-      v7 = v54;
-      self = v93;
+      uUID = v94;
+      actionCopy = v54;
+      self = selfCopy;
     }
 
     else
     {
-      v88 = [v6 invitationPreferences];
+      invitationPreferences2 = [conversationCopy invitationPreferences];
 
-      if (!v88)
+      if (!invitationPreferences2)
       {
         goto LABEL_46;
       }
 
-      v89 = [v6 invitationPreferences];
-      v90 = [v89 copy];
+      invitationPreferences3 = [conversationCopy invitationPreferences];
+      v90 = [invitationPreferences3 copy];
       [(CSDConversationJoinContext *)v28 setInvitationPreferences:v90];
 
       v65 = sub_100004778();
       if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
       {
-        v91 = [(CSDConversationJoinContext *)v28 invitationPreferences];
+        invitationPreferences4 = [(CSDConversationJoinContext *)v28 invitationPreferences];
         *buf = 138412290;
-        v102 = v91;
+        selfCopy2 = invitationPreferences4;
         _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "Invitation preferences weren't set on the action but existed on the conversation, using those for the join context: %@", buf, 0xCu);
       }
     }
 
 LABEL_46:
-    v69 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 collaborationIdentifier];
+    collaborationIdentifier = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy collaborationIdentifier];
 
-    if (v69)
+    if (collaborationIdentifier)
     {
-      v70 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 collaborationIdentifier];
-      [(CSDConversationJoinContext *)v28 setCollaborationIdentifier:v70];
+      collaborationIdentifier2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy collaborationIdentifier];
+      [(CSDConversationJoinContext *)v28 setCollaborationIdentifier:collaborationIdentifier2];
     }
 
-    v71 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
-    v72 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 callUUID];
-    v73 = [v71 containsObject:v72];
+    callUUIDsUpgradedForAVMode = [(CSDAbstractFaceTimeConversationProviderDelegate *)self callUUIDsUpgradedForAVMode];
+    callUUID3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy callUUID];
+    v73 = [callUUIDsUpgradedForAVMode containsObject:callUUID3];
 
-    if (([(CSDAbstractFaceTimeConversationProviderDelegate *)v7 isUpgrade]& 1) == 0)
+    if (([(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy isUpgrade]& 1) == 0)
     {
-      v73 |= [v6 isOneToOneModeEnabled] ^ 1;
+      v73 |= [conversationCopy isOneToOneModeEnabled] ^ 1;
     }
 
     if (+[AVAudioClient hasActiveAudioSession]|| (v73 & 1) == 0)
@@ -1493,82 +1493,82 @@ LABEL_46:
       [(CSDAbstractFaceTimeConversationProviderDelegate *)self setAudioSessionActive:1];
     }
 
-    v74 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v75 = [(CSDAbstractFaceTimeConversationProviderDelegate *)v7 messagesGroupName];
-    [v74 setMessagesGroupName:v75 onConversationWithUUID:v10];
+    conversationManager2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    messagesGroupName = [(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy messagesGroupName];
+    [conversationManager2 setMessagesGroupName:messagesGroupName onConversationWithUUID:uUID];
 
-    v76 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v77 = [v6 UUID];
-    [v76 joinExistingConversationWithUUID:v77 context:v28];
+    conversationManager3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    uUID2 = [conversationCopy UUID];
+    [conversationManager3 joinExistingConversationWithUUID:uUID2 context:v28];
 
-    v78 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    [v78 setRelaying:-[CSDAbstractFaceTimeConversationProviderDelegate isRelay](v7 forConversationWithUUID:{"isRelay"), v10}];
+    conversationManager4 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    [conversationManager4 setRelaying:-[CSDAbstractFaceTimeConversationProviderDelegate isRelay](actionCopy forConversationWithUUID:{"isRelay"), uUID}];
 
-    v79 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    LODWORD(v77) = TUCallScreeningEnabled();
+    featureFlags8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    LODWORD(uUID2) = TUCallScreeningEnabled();
 
-    if (v77)
+    if (uUID2)
     {
-      v80 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-      [v80 setScreening:-[CSDAbstractFaceTimeConversationProviderDelegate isScreening](v7 forConversationWithUUID:{"isScreening"), v10}];
+      conversationManager5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+      [conversationManager5 setScreening:-[CSDAbstractFaceTimeConversationProviderDelegate isScreening](actionCopy forConversationWithUUID:{"isScreening"), uUID}];
     }
 
-    if ([(CSDAbstractFaceTimeConversationProviderDelegate *)v7 isUplinkMuted])
+    if ([(CSDAbstractFaceTimeConversationProviderDelegate *)actionCopy isUplinkMuted])
     {
       v81 = sub_100004778();
       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v102 = v7;
+        selfCopy2 = actionCopy;
         v103 = 2112;
-        v104 = v6;
+        v104 = conversationCopy;
         _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "Setting uplinkMuted for action: %@ conversation: %@", buf, 0x16u);
       }
 
-      v82 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-      v83 = [v6 UUID];
-      [v82 setUplinkMuted:1 forConversationWithUUID:v83];
+      conversationManager6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+      uUID3 = [conversationCopy UUID];
+      [conversationManager6 setUplinkMuted:1 forConversationWithUUID:uUID3];
     }
 
-    v84 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v85 = [v84 isConversationWithUUIDRedirectingAudio:v10];
+    conversationManager7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    v85 = [conversationManager7 isConversationWithUUIDRedirectingAudio:uUID];
 
     if ((v85 & 1) == 0)
     {
-      [(CSDAbstractFaceTimeConversationProviderDelegate *)self enqueueConversationWaitingForAudioWithConversationUUID:v10];
+      [(CSDAbstractFaceTimeConversationProviderDelegate *)self enqueueConversationWaitingForAudioWithConversationUUID:uUID];
     }
 
-    v86 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v87 = [v86 isConversationWithUUIDRelaying:v10];
+    conversationManager8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    v87 = [conversationManager8 isConversationWithUUIDRelaying:uUID];
 
     if (v87)
     {
-      [(CSDAbstractFaceTimeConversationProviderDelegate *)self enqueueOrStartAudioForConversationUUID:v10];
+      [(CSDAbstractFaceTimeConversationProviderDelegate *)self enqueueOrStartAudioForConversationUUID:uUID];
     }
 
     goto LABEL_64;
   }
 
-  v10 = sub_100004778();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  uUID = sub_100004778();
+  if (os_log_type_enabled(uUID, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v102 = self;
+    selfCopy2 = self;
     v103 = 2112;
-    v104 = v6;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ should not handle conversation: %@", buf, 0x16u);
+    v104 = conversationCopy;
+    _os_log_impl(&_mh_execute_header, uUID, OS_LOG_TYPE_DEFAULT, "%@ should not handle conversation: %@", buf, 0x16u);
   }
 
 LABEL_64:
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 removedActiveParticipant:(id)a5 withReason:(unint64_t)a6
+- (void)conversationManager:(id)manager conversation:(id)conversation removedActiveParticipant:(id)participant withReason:(unint64_t)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v13);
+  managerCopy = manager;
+  conversationCopy = conversation;
+  participantCopy = participant;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   objc_initWeak(&location, self);
   v23 = _NSConcreteStackBlock;
@@ -1576,15 +1576,15 @@ LABEL_64:
   v25 = sub_100269B9C;
   v26 = &unk_10061FEA8;
   objc_copyWeak(&v31, &location);
-  v14 = v11;
+  v14 = conversationCopy;
   v27 = v14;
-  v15 = v12;
+  v15 = participantCopy;
   v28 = v15;
-  v16 = v10;
+  v16 = managerCopy;
   v29 = v16;
-  v30 = self;
+  selfCopy = self;
   v17 = objc_retainBlock(&v23);
-  if (a6 == 1)
+  if (reason == 1)
   {
     v18 = sub_100004778();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1596,8 +1596,8 @@ LABEL_64:
 
     v19 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self serverBag:v23];
     v20 = dispatch_time(0, 1000000000 * [v19 handoffUPlusOneLeaveTimeout]);
-    v21 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-    dispatch_after(v20, v21, v17);
+    queue2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+    dispatch_after(v20, queue2, v17);
   }
 
   else
@@ -1616,25 +1616,25 @@ LABEL_64:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)shouldAutomaticallyLeaveConversation:(id)a3
+- (BOOL)shouldAutomaticallyLeaveConversation:(id)conversation
 {
-  v4 = a3;
-  if ([(CSDAbstractFaceTimeConversationProviderDelegate *)self isConversationJoiningOrJoined:v4])
+  conversationCopy = conversation;
+  if ([(CSDAbstractFaceTimeConversationProviderDelegate *)self isConversationJoiningOrJoined:conversationCopy])
   {
-    v5 = [v4 remoteMembers];
-    v6 = [v4 activeRemoteParticipants];
-    if ([v5 count] == 1 && !objc_msgSend(v6, "count"))
+    remoteMembers = [conversationCopy remoteMembers];
+    activeRemoteParticipants = [conversationCopy activeRemoteParticipants];
+    if ([remoteMembers count] == 1 && !objc_msgSend(activeRemoteParticipants, "count"))
     {
       goto LABEL_9;
     }
 
-    v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    if ([v7 oneToOneFaceTimeMyselfEnabled])
+    featureFlags = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    if ([featureFlags oneToOneFaceTimeMyselfEnabled])
     {
-      v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self serverBag];
-      v9 = [v8 isFaceTimeMyselfEnabled];
+      serverBag = [(CSDAbstractFaceTimeConversationProviderDelegate *)self serverBag];
+      isFaceTimeMyselfEnabled = [serverBag isFaceTimeMyselfEnabled];
 
-      if (v9 && ![v5 count] && !objc_msgSend(v6, "count") && (objc_msgSend(v4, "isOneToOneModeEnabled") & 1) != 0)
+      if (isFaceTimeMyselfEnabled && ![remoteMembers count] && !objc_msgSend(activeRemoteParticipants, "count") && (objc_msgSend(conversationCopy, "isOneToOneModeEnabled") & 1) != 0)
       {
 LABEL_9:
         v10 = 1;
@@ -1648,22 +1648,22 @@ LABEL_20:
     {
     }
 
-    v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
-    v12 = [v11 lagunaEnabled];
+    featureFlags2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self featureFlags];
+    lagunaEnabled = [featureFlags2 lagunaEnabled];
 
-    if (!v12)
+    if (!lagunaEnabled)
     {
       v10 = 0;
       goto LABEL_20;
     }
 
-    v13 = [v5 bs_filter:&stru_10061FEE8];
+    v13 = [remoteMembers bs_filter:&stru_10061FEE8];
     if ([v13 count] != 1)
     {
       goto LABEL_18;
     }
 
-    v14 = [v6 count];
+    v14 = [activeRemoteParticipants count];
     if (!v14)
     {
       v10 = 1;
@@ -1672,8 +1672,8 @@ LABEL_20:
 
     if (v14 == 1)
     {
-      v15 = [v6 anyObject];
-      v10 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self isLocalMemberOf:v4 associatedTo:v15];
+      anyObject = [activeRemoteParticipants anyObject];
+      v10 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self isLocalMemberOf:conversationCopy associatedTo:anyObject];
     }
 
     else
@@ -1693,19 +1693,19 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)isLocalMemberOf:(id)a3 associatedTo:(id)a4
+- (BOOL)isLocalMemberOf:(id)of associatedTo:(id)to
 {
-  v5 = a3;
-  v6 = [a4 handle];
-  if (v6)
+  ofCopy = of;
+  handle = [to handle];
+  if (handle)
   {
-    v7 = [v5 localMember];
-    v8 = [v7 association];
+    localMember = [ofCopy localMember];
+    association = [localMember association];
 
-    if (v8)
+    if (association)
     {
-      v9 = [v8 handle];
-      v10 = [v9 isEquivalentToHandle:v6];
+      handle2 = [association handle];
+      v10 = [handle2 isEquivalentToHandle:handle];
     }
 
     else
@@ -1722,51 +1722,51 @@ LABEL_21:
   return v10;
 }
 
-- (void)providerDidBegin:(id)a3
+- (void)providerDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  beginCopy = begin;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = beginCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "providerDidBegin: %@", &v9, 0xCu);
   }
 
-  [(CSDAbstractFaceTimeConversationProviderDelegate *)self setProvider:v4];
-  v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self providerDidBegin];
+  [(CSDAbstractFaceTimeConversationProviderDelegate *)self setProvider:beginCopy];
+  providerDidBegin = [(CSDAbstractFaceTimeConversationProviderDelegate *)self providerDidBegin];
 
-  if (v7)
+  if (providerDidBegin)
   {
-    v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self providerDidBegin];
-    v8[2]();
+    providerDidBegin2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self providerDidBegin];
+    providerDidBegin2[2]();
   }
 }
 
-- (void)providerDidReset:(id)a3
+- (void)providerDidReset:(id)reset
 {
-  v4 = a3;
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v5);
+  resetCopy = reset;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = resetCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "providerDidReset: %@", &v8, 0xCu);
   }
 
-  v7 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  [v7 leaveAllConversations];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  [conversationManager leaveAllConversations];
 }
 
-- (void)provider:(id)a3 didDeactivateAudioSession:(id)a4
+- (void)provider:(id)provider didDeactivateAudioSession:(id)session
 {
-  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue:a3];
+  v5 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue:provider];
   dispatch_assert_queue_V2(v5);
 
   v6 = sub_100004778();
@@ -1779,16 +1779,16 @@ LABEL_21:
   [(CSDAbstractFaceTimeConversationProviderDelegate *)self setAudioSessionActive:0];
 }
 
-- (void)provider:(id)a3 timedOutPerformingAction:(id)a4
+- (void)provider:(id)provider timedOutPerformingAction:(id)action
 {
-  v10 = a4;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = v10;
-    v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-    v7 = [v5 callUUID];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v5 = actionCopy;
+    conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+    callUUID = [v5 callUUID];
+    v8 = [conversationUUIDsByCallUUID objectForKeyedSubscript:callUUID];
 
     if (v8)
     {
@@ -1800,42 +1800,42 @@ LABEL_21:
   }
 }
 
-- (void)provider:(id)a3 performEndCallAction:(id)a4
+- (void)provider:(id)provider performEndCallAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v5;
+    v21 = actionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Performing end call action %@", &v20, 0xCu);
   }
 
-  v8 = [v5 callUUID];
-  v9 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  callUUID = [actionCopy callUUID];
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  v10 = [conversationUUIDsByCallUUID objectForKeyedSubscript:callUUID];
 
-  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v12 = [v11 conversationsByUUID];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  v13 = [conversationsByUUID objectForKeyedSubscript:v10];
 
   if (v13)
   {
     goto LABEL_6;
   }
 
-  v14 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self _findPendingConversationWithCallUUID:v8];
+  v14 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self _findPendingConversationWithCallUUID:callUUID];
   if (v14)
   {
     v13 = v14;
 LABEL_6:
     if ([v13 avMode])
     {
-      [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversation:v13 withCallUUID:v8 reason:-1];
-      [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:v8 endedReason:-1];
+      [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversation:v13 withCallUUID:callUUID reason:-1];
+      [(CSDAbstractFaceTimeConversationProviderDelegate *)self leaveConversationForCallUUID:callUUID endedReason:-1];
     }
 
     else
@@ -1848,7 +1848,7 @@ LABEL_6:
       }
     }
 
-    [v5 fulfill];
+    [actionCopy fulfill];
 
     goto LABEL_12;
   }
@@ -1856,83 +1856,83 @@ LABEL_6:
   v16 = sub_100004778();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-    v18 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v19 = [v18 conversationsByUUID];
+    conversationUUIDsByCallUUID2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+    conversationManager2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    conversationsByUUID2 = [conversationManager2 conversationsByUUID];
     v20 = 138412802;
-    v21 = v8;
+    v21 = callUUID;
     v22 = 2112;
-    v23 = v17;
+    v23 = conversationUUIDsByCallUUID2;
     v24 = 2112;
-    v25 = v19;
+    v25 = conversationsByUUID2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find conversation for end call action call UUID %@. self.conversationUUIDsByCallUUID: %@ self.conversationManager.conversationsByUUID: %@", &v20, 0x20u);
   }
 
-  [v5 fail];
+  [actionCopy fail];
 LABEL_12:
 }
 
-- (void)provider:(id)a3 performJoinCallAction:(id)a4
+- (void)provider:(id)provider performJoinCallAction:(id)action
 {
-  v4 = a4;
+  actionCopy = action;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = actionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "action: %@", &v6, 0xCu);
   }
 
-  [v4 fail];
+  [actionCopy fail];
 }
 
-- (void)provider:(id)a3 performSetMutedCallAction:(id)a4
+- (void)provider:(id)provider performSetMutedCallAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
-  dispatch_assert_queue_V2(v6);
+  actionCopy = action;
+  queue = [(CSDAbstractFaceTimeConversationProviderDelegate *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    v22 = v5;
+    v22 = actionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "action: %@", &v21, 0xCu);
   }
 
-  v8 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
-  v9 = [v5 callUUID];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  conversationUUIDsByCallUUID = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationUUIDsByCallUUID];
+  callUUID = [actionCopy callUUID];
+  v10 = [conversationUUIDsByCallUUID objectForKeyedSubscript:callUUID];
 
-  v11 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-  v12 = [v11 conversationsByUUID];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  conversationManager = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  v13 = [conversationsByUUID objectForKeyedSubscript:v10];
 
   if (v13)
   {
-    v14 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    [v14 setUplinkMuted:objc_msgSend(v5 forConversationWithUUID:{"isMuted"), v10}];
+    conversationManager2 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    [conversationManager2 setUplinkMuted:objc_msgSend(actionCopy forConversationWithUUID:{"isMuted"), v10}];
   }
 
   else
   {
-    v15 = [v5 callUUID];
-    v16 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self isManagingPendingConversationForCallWithUUID:v15];
+    callUUID2 = [actionCopy callUUID];
+    v16 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self isManagingPendingConversationForCallWithUUID:callUUID2];
 
     if (!v16)
     {
-      [v5 fail];
+      [actionCopy fail];
       goto LABEL_8;
     }
 
-    v17 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
-    v18 = [v5 isMuted];
-    v19 = [v5 callUUID];
-    v20 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self pendingConversationUUIDForCallWithUUID:v19];
-    [v17 setUplinkMuted:v18 forPendingConversationWithUUID:v20];
+    conversationManager3 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self conversationManager];
+    isMuted = [actionCopy isMuted];
+    callUUID3 = [actionCopy callUUID];
+    v20 = [(CSDAbstractFaceTimeConversationProviderDelegate *)self pendingConversationUUIDForCallWithUUID:callUUID3];
+    [conversationManager3 setUplinkMuted:isMuted forPendingConversationWithUUID:v20];
   }
 
-  [v5 fulfill];
+  [actionCopy fulfill];
 LABEL_8:
 }
 

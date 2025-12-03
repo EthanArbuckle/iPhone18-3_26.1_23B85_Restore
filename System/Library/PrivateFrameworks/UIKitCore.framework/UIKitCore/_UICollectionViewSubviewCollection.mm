@@ -2,36 +2,36 @@
 - (_UICollectionViewSubviewCollection)init;
 - (id)allViews;
 - (id)allViewsHashTable;
-- (id)cellAtIndexPath:(id *)a1;
+- (id)cellAtIndexPath:(id *)path;
 - (id)cells;
-- (id)decorationOfKind:(uint64_t)a3 atIndexPath:;
-- (id)decorationsOfKind:(uint64_t)a1;
+- (id)decorationOfKind:(uint64_t)kind atIndexPath:;
+- (id)decorationsOfKind:(uint64_t)kind;
 - (id)description;
 - (id)indexPathsForCells;
-- (id)indexPathsForDecorationsOfKind:(uint64_t)a1;
-- (id)indexPathsForSupplementariesOfKind:(uint64_t)a1;
-- (id)supplementariesOfKind:(uint64_t)a1;
-- (id)supplementaryOfKind:(uint64_t)a3 atIndexPath:;
-- (id)viewOfKind:(uint64_t)a3 inCategory:(uint64_t)a4 atIndexPath:;
-- (uint64_t)containsView:(uint64_t)a1;
+- (id)indexPathsForDecorationsOfKind:(uint64_t)kind;
+- (id)indexPathsForSupplementariesOfKind:(uint64_t)kind;
+- (id)supplementariesOfKind:(uint64_t)kind;
+- (id)supplementaryOfKind:(uint64_t)kind atIndexPath:;
+- (id)viewOfKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:;
+- (uint64_t)containsView:(uint64_t)view;
 - (uint64_t)enumerateCellsWithEnumerator:(uint64_t)result;
 - (uint64_t)enumerateDecorationsWithEnumerator:(uint64_t)result;
 - (uint64_t)enumerateSupplementariesWithEnumerator:(uint64_t)result;
-- (uint64_t)setCell:(uint64_t)a3 atIndexPath:;
-- (void)enumerateAllViewsWithEnumerator:(uint64_t)a1;
-- (void)enumerateAuxillariesWithEnumerator:(uint64_t)a1;
-- (void)enumerateDecorationsOfElementKind:(uint64_t)a3 enumerator:;
-- (void)enumerateSupplementariesOfElementKind:(uint64_t)a3 enumerator:;
-- (void)removeViewForDecorationOfKind:(uint64_t)a3 atIndexPath:;
-- (void)removeViewForSupplementaryOfKind:(uint64_t)a3 atIndexPath:;
-- (void)removeViewOfKind:(uint64_t)a3 inCategory:(uint64_t)a4 atIndexPath:;
-- (void)setView:(uint64_t)a3 forDecorationOfKind:(uint64_t)a4 atIndexPath:;
-- (void)setView:(uint64_t)a3 forSupplementaryOfKind:(uint64_t)a4 atIndexPath:;
-- (void)setView:(uint64_t)a3 ofKind:(uint64_t)a4 inCategory:(uint64_t)a5 atIndexPath:;
-- (void)transferAllViewsWithoutCopyingToSubviewCollection:(id *)a1;
-- (void)updateCellsUsingFilter:(uint64_t)a1;
-- (void)updateDecorationsUsingFilter:(uint64_t)a1;
-- (void)updateSupplementariesUsingFilter:(uint64_t)a1;
+- (uint64_t)setCell:(uint64_t)cell atIndexPath:;
+- (void)enumerateAllViewsWithEnumerator:(uint64_t)enumerator;
+- (void)enumerateAuxillariesWithEnumerator:(uint64_t)enumerator;
+- (void)enumerateDecorationsOfElementKind:(uint64_t)kind enumerator:;
+- (void)enumerateSupplementariesOfElementKind:(uint64_t)kind enumerator:;
+- (void)removeViewForDecorationOfKind:(uint64_t)kind atIndexPath:;
+- (void)removeViewForSupplementaryOfKind:(uint64_t)kind atIndexPath:;
+- (void)removeViewOfKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:;
+- (void)setView:(uint64_t)view forDecorationOfKind:(uint64_t)kind atIndexPath:;
+- (void)setView:(uint64_t)view forSupplementaryOfKind:(uint64_t)kind atIndexPath:;
+- (void)setView:(uint64_t)view ofKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:;
+- (void)transferAllViewsWithoutCopyingToSubviewCollection:(id *)collection;
+- (void)updateCellsUsingFilter:(uint64_t)filter;
+- (void)updateDecorationsUsingFilter:(uint64_t)filter;
+- (void)updateSupplementariesUsingFilter:(uint64_t)filter;
 @end
 
 @implementation _UICollectionViewSubviewCollection
@@ -61,16 +61,16 @@
 
 - (id)indexPathsForCells
 {
-  if (a1)
+  if (self)
   {
-    v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(a1 + 8), "count")}];
+    v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(self + 8), "count")}];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56___UICollectionViewSubviewCollection_indexPathsForCells__block_invoke;
     v5[3] = &unk_1E71050D0;
     v3 = v2;
     v6 = v3;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateCellsWithEnumerator:v5];
+    [(_UICollectionViewSubviewCollection *)self enumerateCellsWithEnumerator:v5];
   }
 
   else
@@ -83,16 +83,16 @@
 
 - (id)allViews
 {
-  if (a1)
+  if (self)
   {
-    v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1[2], "count") + objc_msgSend(a1[1], "count") + objc_msgSend(a1[3], "count")}];
+    v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self[2], "count") + objc_msgSend(self[1], "count") + objc_msgSend(self[3], "count")}];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __46___UICollectionViewSubviewCollection_allViews__block_invoke;
     v5[3] = &unk_1E70FFC98;
     v3 = v2;
     v6 = v3;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateAllViewsWithEnumerator:v5];
+    [(_UICollectionViewSubviewCollection *)self enumerateAllViewsWithEnumerator:v5];
   }
 
   else
@@ -105,16 +105,16 @@
 
 - (id)cells
 {
-  if (a1)
+  if (self)
   {
-    v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(a1 + 8), "count")}];
+    v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(*(self + 8), "count")}];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __43___UICollectionViewSubviewCollection_cells__block_invoke;
     v5[3] = &unk_1E71050D0;
     v3 = v2;
     v6 = v3;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateCellsWithEnumerator:v5];
+    [(_UICollectionViewSubviewCollection *)self enumerateCellsWithEnumerator:v5];
   }
 
   else
@@ -127,16 +127,16 @@
 
 - (id)allViewsHashTable
 {
-  if (a1)
+  if (self)
   {
-    v2 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:512 capacity:{objc_msgSend(a1[2], "count") + objc_msgSend(a1[1], "count") + objc_msgSend(a1[3], "count")}];
+    v2 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:512 capacity:{objc_msgSend(self[2], "count") + objc_msgSend(self[1], "count") + objc_msgSend(self[3], "count")}];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __55___UICollectionViewSubviewCollection_allViewsHashTable__block_invoke;
     v5[3] = &unk_1E70FFC98;
     v3 = v2;
     v6 = v3;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateAllViewsWithEnumerator:v5];
+    [(_UICollectionViewSubviewCollection *)self enumerateAllViewsWithEnumerator:v5];
   }
 
   else
@@ -147,7 +147,7 @@
   return v3;
 }
 
-- (uint64_t)setCell:(uint64_t)a3 atIndexPath:
+- (uint64_t)setCell:(uint64_t)cell atIndexPath:
 {
   if (result)
   {
@@ -177,7 +177,7 @@
 
     if (os_variant_has_internal_diagnostics())
     {
-      if (!a3)
+      if (!cell)
       {
         v7 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -188,7 +188,7 @@
       }
     }
 
-    else if (!a3)
+    else if (!cell)
     {
       v9 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49D998) + 8);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -198,15 +198,15 @@
       }
     }
 
-    return [*(v5 + 8) setObject:a2 forKeyedSubscript:a3];
+    return [*(v5 + 8) setObject:a2 forKeyedSubscript:cell];
   }
 
   return result;
 }
 
-- (void)setView:(uint64_t)a3 forSupplementaryOfKind:(uint64_t)a4 atIndexPath:
+- (void)setView:(uint64_t)view forSupplementaryOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -233,7 +233,7 @@
 
     if (os_variant_has_internal_diagnostics())
     {
-      if (!a3)
+      if (!view)
       {
         v10 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -244,7 +244,7 @@
       }
     }
 
-    else if (!a3)
+    else if (!view)
     {
       v13 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49D9A8) + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -256,7 +256,7 @@
 
     if (os_variant_has_internal_diagnostics())
     {
-      if (!a4)
+      if (!kind)
       {
         v11 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -267,7 +267,7 @@
       }
     }
 
-    else if (!a4)
+    else if (!kind)
     {
       v14 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49D9B0) + 8);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -277,20 +277,20 @@
       }
     }
 
-    v8 = [*(a1 + 16) objectForKeyedSubscript:a3];
+    v8 = [*(self + 16) objectForKeyedSubscript:view];
     if (!v8)
     {
       v8 = objc_opt_new();
-      [*(a1 + 16) setObject:v8 forKeyedSubscript:a3];
+      [*(self + 16) setObject:v8 forKeyedSubscript:view];
     }
 
-    [v8 setObject:a2 forKeyedSubscript:a4];
+    [v8 setObject:a2 forKeyedSubscript:kind];
   }
 }
 
-- (void)setView:(uint64_t)a3 forDecorationOfKind:(uint64_t)a4 atIndexPath:
+- (void)setView:(uint64_t)view forDecorationOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -317,7 +317,7 @@
 
     if (os_variant_has_internal_diagnostics())
     {
-      if (!a3)
+      if (!view)
       {
         v10 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -328,7 +328,7 @@
       }
     }
 
-    else if (!a3)
+    else if (!view)
     {
       v13 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49D9C0) + 8);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -340,7 +340,7 @@
 
     if (os_variant_has_internal_diagnostics())
     {
-      if (!a4)
+      if (!kind)
       {
         v11 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -351,7 +351,7 @@
       }
     }
 
-    else if (!a4)
+    else if (!kind)
     {
       v14 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49D9C8) + 8);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -361,115 +361,115 @@
       }
     }
 
-    v8 = [*(a1 + 24) objectForKeyedSubscript:a3];
+    v8 = [*(self + 24) objectForKeyedSubscript:view];
     if (!v8)
     {
       v8 = objc_opt_new();
-      [*(a1 + 24) setObject:v8 forKeyedSubscript:a3];
+      [*(self + 24) setObject:v8 forKeyedSubscript:view];
     }
 
-    [v8 setObject:a2 forKeyedSubscript:a4];
+    [v8 setObject:a2 forKeyedSubscript:kind];
   }
 }
 
-- (void)setView:(uint64_t)a3 ofKind:(uint64_t)a4 inCategory:(uint64_t)a5 atIndexPath:
+- (void)setView:(uint64_t)view ofKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    switch(a4)
+    switch(kind)
     {
       case 2:
-        if (!a3)
+        if (!view)
         {
-          v10 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v10 handleFailureInMethod:sel_setView_ofKind_inCategory_atIndexPath_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel_setView_ofKind_inCategory_atIndexPath_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
         }
 
-        [(_UICollectionViewSubviewCollection *)a1 setView:a2 forDecorationOfKind:a3 atIndexPath:a5];
+        [(_UICollectionViewSubviewCollection *)self setView:a2 forDecorationOfKind:view atIndexPath:category];
         break;
       case 1:
-        if (!a3)
+        if (!view)
         {
-          v9 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v9 handleFailureInMethod:sel_setView_ofKind_inCategory_atIndexPath_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:sel_setView_ofKind_inCategory_atIndexPath_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
         }
 
-        [(_UICollectionViewSubviewCollection *)a1 setView:a2 forSupplementaryOfKind:a3 atIndexPath:a5];
+        [(_UICollectionViewSubviewCollection *)self setView:a2 forSupplementaryOfKind:view atIndexPath:category];
         break;
       case 0:
 
-        [(_UICollectionViewSubviewCollection *)a1 setCell:a2 atIndexPath:a5];
+        [(_UICollectionViewSubviewCollection *)self setCell:a2 atIndexPath:category];
         break;
     }
   }
 }
 
-- (void)transferAllViewsWithoutCopyingToSubviewCollection:(id *)a1
+- (void)transferAllViewsWithoutCopyingToSubviewCollection:(id *)collection
 {
-  if (a1)
+  if (collection)
   {
-    objc_storeStrong(a2 + 1, a1[1]);
-    objc_storeStrong(a2 + 2, a1[2]);
-    objc_storeStrong(a2 + 3, a1[3]);
+    objc_storeStrong(a2 + 1, collection[1]);
+    objc_storeStrong(a2 + 2, collection[2]);
+    objc_storeStrong(a2 + 3, collection[3]);
     v4 = objc_opt_new();
-    v5 = a1[1];
-    a1[1] = v4;
+    v5 = collection[1];
+    collection[1] = v4;
 
     v6 = objc_opt_new();
-    v7 = a1[2];
-    a1[2] = v6;
+    v7 = collection[2];
+    collection[2] = v6;
 
     v8 = objc_opt_new();
-    v9 = a1[3];
-    a1[3] = v8;
+    v9 = collection[3];
+    collection[3] = v8;
   }
 }
 
-- (void)removeViewForSupplementaryOfKind:(uint64_t)a3 atIndexPath:
+- (void)removeViewForSupplementaryOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    v4 = [*(a1 + 16) objectForKeyedSubscript:a2];
-    [v4 removeObjectForKey:a3];
+    v4 = [*(self + 16) objectForKeyedSubscript:a2];
+    [v4 removeObjectForKey:kind];
   }
 }
 
-- (void)removeViewForDecorationOfKind:(uint64_t)a3 atIndexPath:
+- (void)removeViewForDecorationOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    v4 = [*(a1 + 24) objectForKeyedSubscript:a2];
-    [v4 removeObjectForKey:a3];
+    v4 = [*(self + 24) objectForKeyedSubscript:a2];
+    [v4 removeObjectForKey:kind];
   }
 }
 
-- (void)removeViewOfKind:(uint64_t)a3 inCategory:(uint64_t)a4 atIndexPath:
+- (void)removeViewOfKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (a3 == 2)
+  if (kind == 2)
   {
     if (!a2)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel_removeViewOfKind_inCategory_atIndexPath_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_removeViewOfKind_inCategory_atIndexPath_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
     }
 
-    v8 = a1[3];
+    v8 = self[3];
   }
 
   else
   {
-    if (a3 != 1)
+    if (kind != 1)
     {
-      if (!a3)
+      if (!kind)
       {
-        v7 = a1[1];
+        v7 = self[1];
 
-        [v7 removeObjectForKey:a4];
+        [v7 removeObjectForKey:category];
       }
 
       return;
@@ -477,26 +477,26 @@
 
     if (!a2)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:sel_removeViewOfKind_inCategory_atIndexPath_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel_removeViewOfKind_inCategory_atIndexPath_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
     }
 
-    v8 = a1[2];
+    v8 = self[2];
   }
 
   v11 = [v8 objectForKeyedSubscript:a2];
-  [v11 removeObjectForKey:a4];
+  [v11 removeObjectForKey:category];
 }
 
-- (id)cellAtIndexPath:(id *)a1
+- (id)cellAtIndexPath:(id *)path
 {
-  if (a1)
+  if (path)
   {
-    a1 = [a1[1] objectForKeyedSubscript:a2];
+    path = [path[1] objectForKeyedSubscript:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return path;
 }
 
 - (uint64_t)enumerateCellsWithEnumerator:(uint64_t)result
@@ -506,8 +506,8 @@
     v3 = result;
     if (!a2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel_enumerateCellsWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewCollection.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateCellsWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewCollection.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
     }
 
     v4 = *(v3 + 8);
@@ -522,12 +522,12 @@
   return result;
 }
 
-- (id)supplementaryOfKind:(uint64_t)a3 atIndexPath:
+- (id)supplementaryOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    v4 = [*(a1 + 16) objectForKeyedSubscript:a2];
-    v5 = [v4 objectForKeyedSubscript:a3];
+    v4 = [*(self + 16) objectForKeyedSubscript:a2];
+    v5 = [v4 objectForKeyedSubscript:kind];
   }
 
   else
@@ -538,12 +538,12 @@
   return v5;
 }
 
-- (id)decorationOfKind:(uint64_t)a3 atIndexPath:
+- (id)decorationOfKind:(uint64_t)kind atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    v4 = [*(a1 + 24) objectForKeyedSubscript:a2];
-    v5 = [v4 objectForKeyedSubscript:a3];
+    v4 = [*(self + 24) objectForKeyedSubscript:a2];
+    v5 = [v4 objectForKeyedSubscript:kind];
   }
 
   else
@@ -554,53 +554,53 @@
   return v5;
 }
 
-- (id)viewOfKind:(uint64_t)a3 inCategory:(uint64_t)a4 atIndexPath:
+- (id)viewOfKind:(uint64_t)kind inCategory:(uint64_t)category atIndexPath:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a1;
-    switch(a3)
+    selfCopy = self;
+    switch(kind)
     {
       case 2:
         if (!a2)
         {
-          v10 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v10 handleFailureInMethod:sel_viewOfKind_inCategory_atIndexPath_ object:v7 file:@"_UICollectionViewSubviewCollection.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel_viewOfKind_inCategory_atIndexPath_ object:selfCopy file:@"_UICollectionViewSubviewCollection.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
         }
 
-        a1 = [(_UICollectionViewSubviewCollection *)v7 decorationOfKind:a2 atIndexPath:a4];
+        self = [(_UICollectionViewSubviewCollection *)selfCopy decorationOfKind:a2 atIndexPath:category];
         break;
       case 1:
         if (!a2)
         {
-          v9 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v9 handleFailureInMethod:sel_viewOfKind_inCategory_atIndexPath_ object:v7 file:@"_UICollectionViewSubviewCollection.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler2 handleFailureInMethod:sel_viewOfKind_inCategory_atIndexPath_ object:selfCopy file:@"_UICollectionViewSubviewCollection.m" lineNumber:197 description:{@"Invalid parameter not satisfying: %@", @"kind != nil"}];
         }
 
-        a1 = [(_UICollectionViewSubviewCollection *)v7 supplementaryOfKind:a2 atIndexPath:a4];
+        self = [(_UICollectionViewSubviewCollection *)selfCopy supplementaryOfKind:a2 atIndexPath:category];
         break;
       case 0:
-        a1 = [a1[1] objectForKeyedSubscript:a4];
+        self = [self[1] objectForKeyedSubscript:category];
         break;
     }
 
     v4 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)supplementariesOfKind:(uint64_t)a1
+- (id)supplementariesOfKind:(uint64_t)kind
 {
-  if (a1)
+  if (kind)
   {
-    v2 = [*(a1 + 16) objectForKeyedSubscript:a2];
-    v3 = [v2 allValues];
-    v4 = v3;
+    v2 = [*(kind + 16) objectForKeyedSubscript:a2];
+    allValues = [v2 allValues];
+    v4 = allValues;
     v5 = MEMORY[0x1E695E0F0];
-    if (v3)
+    if (allValues)
     {
-      v5 = v3;
+      v5 = allValues;
     }
 
     v6 = v5;
@@ -614,17 +614,17 @@
   return v6;
 }
 
-- (id)decorationsOfKind:(uint64_t)a1
+- (id)decorationsOfKind:(uint64_t)kind
 {
-  if (a1)
+  if (kind)
   {
-    v2 = [*(a1 + 24) objectForKeyedSubscript:a2];
-    v3 = [v2 allValues];
-    v4 = v3;
+    v2 = [*(kind + 24) objectForKeyedSubscript:a2];
+    allValues = [v2 allValues];
+    v4 = allValues;
     v5 = MEMORY[0x1E695E0F0];
-    if (v3)
+    if (allValues)
     {
-      v5 = v3;
+      v5 = allValues;
     }
 
     v6 = v5;
@@ -638,17 +638,17 @@
   return v6;
 }
 
-- (id)indexPathsForSupplementariesOfKind:(uint64_t)a1
+- (id)indexPathsForSupplementariesOfKind:(uint64_t)kind
 {
-  if (a1)
+  if (kind)
   {
-    v2 = [*(a1 + 16) objectForKeyedSubscript:a2];
-    v3 = [v2 allKeys];
-    v4 = v3;
+    v2 = [*(kind + 16) objectForKeyedSubscript:a2];
+    allKeys = [v2 allKeys];
+    v4 = allKeys;
     v5 = MEMORY[0x1E695E0F0];
-    if (v3)
+    if (allKeys)
     {
-      v5 = v3;
+      v5 = allKeys;
     }
 
     v6 = v5;
@@ -662,17 +662,17 @@
   return v6;
 }
 
-- (id)indexPathsForDecorationsOfKind:(uint64_t)a1
+- (id)indexPathsForDecorationsOfKind:(uint64_t)kind
 {
-  if (a1)
+  if (kind)
   {
-    v2 = [*(a1 + 24) objectForKeyedSubscript:a2];
-    v3 = [v2 allKeys];
-    v4 = v3;
+    v2 = [*(kind + 24) objectForKeyedSubscript:a2];
+    allKeys = [v2 allKeys];
+    v4 = allKeys;
     v5 = MEMORY[0x1E695E0F0];
-    if (v3)
+    if (allKeys)
     {
-      v5 = v3;
+      v5 = allKeys;
     }
 
     v6 = v5;
@@ -693,8 +693,8 @@
     v3 = result;
     if (!a2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel_enumerateSupplementariesWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewCollection.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateSupplementariesWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewCollection.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
     }
 
     v4 = *(v3 + 16);
@@ -709,21 +709,21 @@
   return result;
 }
 
-- (void)enumerateSupplementariesOfElementKind:(uint64_t)a3 enumerator:
+- (void)enumerateSupplementariesOfElementKind:(uint64_t)kind enumerator:
 {
-  if (a1)
+  if (self)
   {
     if (a2)
     {
-      if (a3)
+      if (kind)
       {
 LABEL_4:
-        v6 = [*(a1 + 16) objectForKeyedSubscript:a2];
+        v6 = [*(self + 16) objectForKeyedSubscript:a2];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __87___UICollectionViewSubviewCollection_enumerateSupplementariesOfElementKind_enumerator___block_invoke;
         v9[3] = &unk_1E7104FB8;
-        v9[4] = a3;
+        v9[4] = kind;
         [v6 enumerateKeysAndObjectsUsingBlock:v9];
 
         return;
@@ -732,17 +732,17 @@ LABEL_4:
 
     else
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel_enumerateSupplementariesOfElementKind_enumerator_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"elementKind != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateSupplementariesOfElementKind_enumerator_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:249 description:{@"Invalid parameter not satisfying: %@", @"elementKind != nil"}];
 
-      if (a3)
+      if (kind)
       {
         goto LABEL_4;
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:sel_enumerateSupplementariesOfElementKind_enumerator_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_enumerateSupplementariesOfElementKind_enumerator_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
 
     goto LABEL_4;
   }
@@ -755,8 +755,8 @@ LABEL_4:
     v3 = result;
     if (!a2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel_enumerateDecorationsWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewCollection.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateDecorationsWithEnumerator_ object:v3 file:@"_UICollectionViewSubviewCollection.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
     }
 
     v4 = *(v3 + 24);
@@ -771,21 +771,21 @@ LABEL_4:
   return result;
 }
 
-- (void)enumerateDecorationsOfElementKind:(uint64_t)a3 enumerator:
+- (void)enumerateDecorationsOfElementKind:(uint64_t)kind enumerator:
 {
-  if (a1)
+  if (self)
   {
     if (a2)
     {
-      if (a3)
+      if (kind)
       {
 LABEL_4:
-        v6 = [*(a1 + 24) objectForKeyedSubscript:a2];
+        v6 = [*(self + 24) objectForKeyedSubscript:a2];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __83___UICollectionViewSubviewCollection_enumerateDecorationsOfElementKind_enumerator___block_invoke;
         v9[3] = &unk_1E7104FB8;
-        v9[4] = a3;
+        v9[4] = kind;
         [v6 enumerateKeysAndObjectsUsingBlock:v9];
 
         return;
@@ -794,30 +794,30 @@ LABEL_4:
 
     else
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel_enumerateDecorationsOfElementKind_enumerator_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"elementKind != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateDecorationsOfElementKind_enumerator_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:270 description:{@"Invalid parameter not satisfying: %@", @"elementKind != nil"}];
 
-      if (a3)
+      if (kind)
       {
         goto LABEL_4;
       }
     }
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:sel_enumerateDecorationsOfElementKind_enumerator_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel_enumerateDecorationsOfElementKind_enumerator_ object:self file:@"_UICollectionViewSubviewCollection.m" lineNumber:271 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
 
     goto LABEL_4;
   }
 }
 
-- (void)enumerateAuxillariesWithEnumerator:(uint64_t)a1
+- (void)enumerateAuxillariesWithEnumerator:(uint64_t)enumerator
 {
-  if (a1)
+  if (enumerator)
   {
     if (!a2)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel_enumerateAuxillariesWithEnumerator_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateAuxillariesWithEnumerator_ object:enumerator file:@"_UICollectionViewSubviewCollection.m" lineNumber:280 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
     }
 
     v7 = 0;
@@ -830,7 +830,7 @@ LABEL_4:
     v6[3] = &unk_1E7104FE0;
     v6[4] = a2;
     v6[5] = &v7;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateSupplementariesWithEnumerator:v6];
+    [(_UICollectionViewSubviewCollection *)enumerator enumerateSupplementariesWithEnumerator:v6];
     if ((v8[3] & 1) == 0)
     {
       v5[0] = MEMORY[0x1E69E9820];
@@ -838,21 +838,21 @@ LABEL_4:
       v5[2] = __73___UICollectionViewSubviewCollection_enumerateAuxillariesWithEnumerator___block_invoke_2;
       v5[3] = &unk_1E7105008;
       v5[4] = a2;
-      [(_UICollectionViewSubviewCollection *)a1 enumerateDecorationsWithEnumerator:v5];
+      [(_UICollectionViewSubviewCollection *)enumerator enumerateDecorationsWithEnumerator:v5];
     }
 
     _Block_object_dispose(&v7, 8);
   }
 }
 
-- (void)enumerateAllViewsWithEnumerator:(uint64_t)a1
+- (void)enumerateAllViewsWithEnumerator:(uint64_t)enumerator
 {
-  if (a1)
+  if (enumerator)
   {
     if (!a2)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel_enumerateAllViewsWithEnumerator_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_enumerateAllViewsWithEnumerator_ object:enumerator file:@"_UICollectionViewSubviewCollection.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"enumerator != nil"}];
     }
 
     v8 = 0;
@@ -865,7 +865,7 @@ LABEL_4:
     v7[3] = &unk_1E7105030;
     v7[4] = a2;
     v7[5] = &v8;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateCellsWithEnumerator:v7];
+    [(_UICollectionViewSubviewCollection *)enumerator enumerateCellsWithEnumerator:v7];
     if ((v9[3] & 1) == 0)
     {
       v6[0] = MEMORY[0x1E69E9820];
@@ -874,7 +874,7 @@ LABEL_4:
       v6[3] = &unk_1E7104FE0;
       v6[4] = a2;
       v6[5] = &v8;
-      [(_UICollectionViewSubviewCollection *)a1 enumerateSupplementariesWithEnumerator:v6];
+      [(_UICollectionViewSubviewCollection *)enumerator enumerateSupplementariesWithEnumerator:v6];
       if ((v9[3] & 1) == 0)
       {
         v5[0] = MEMORY[0x1E69E9820];
@@ -883,7 +883,7 @@ LABEL_4:
         v5[3] = &unk_1E7104FE0;
         v5[4] = a2;
         v5[5] = &v8;
-        [(_UICollectionViewSubviewCollection *)a1 enumerateDecorationsWithEnumerator:v5];
+        [(_UICollectionViewSubviewCollection *)enumerator enumerateDecorationsWithEnumerator:v5];
       }
     }
 
@@ -891,9 +891,9 @@ LABEL_4:
   }
 }
 
-- (uint64_t)containsView:(uint64_t)a1
+- (uint64_t)containsView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
     v5 = 0;
     v6 = &v5;
@@ -905,7 +905,7 @@ LABEL_4:
     v4[3] = &unk_1E7105058;
     v4[4] = a2;
     v4[5] = &v5;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateAllViewsWithEnumerator:v4];
+    [(_UICollectionViewSubviewCollection *)view enumerateAllViewsWithEnumerator:v4];
     v2 = *(v6 + 24);
     _Block_object_dispose(&v5, 8);
   }
@@ -918,17 +918,17 @@ LABEL_4:
   return v2 & 1;
 }
 
-- (void)updateCellsUsingFilter:(uint64_t)a1
+- (void)updateCellsUsingFilter:(uint64_t)filter
 {
-  if (a1)
+  if (filter)
   {
     if (!a2)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_updateCellsUsingFilter_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_updateCellsUsingFilter_ object:filter file:@"_UICollectionViewSubviewCollection.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
     }
 
-    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(a1 + 8), "count")}];
+    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(filter + 8), "count")}];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __61___UICollectionViewSubviewCollection_updateCellsUsingFilter___block_invoke;
@@ -936,24 +936,24 @@ LABEL_4:
     v11 = a2;
     v5 = v4;
     v10 = v5;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateCellsWithEnumerator:v9];
-    v6 = *(a1 + 8);
-    *(a1 + 8) = v5;
+    [(_UICollectionViewSubviewCollection *)filter enumerateCellsWithEnumerator:v9];
+    v6 = *(filter + 8);
+    *(filter + 8) = v5;
     v7 = v5;
   }
 }
 
-- (void)updateSupplementariesUsingFilter:(uint64_t)a1
+- (void)updateSupplementariesUsingFilter:(uint64_t)filter
 {
-  if (a1)
+  if (filter)
   {
     if (!a2)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_updateSupplementariesUsingFilter_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_updateSupplementariesUsingFilter_ object:filter file:@"_UICollectionViewSubviewCollection.m" lineNumber:354 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
     }
 
-    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(a1 + 16), "count")}];
+    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(filter + 16), "count")}];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __71___UICollectionViewSubviewCollection_updateSupplementariesUsingFilter___block_invoke;
@@ -961,24 +961,24 @@ LABEL_4:
     v11 = a2;
     v5 = v4;
     v10 = v5;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateSupplementariesWithEnumerator:v9];
-    v6 = *(a1 + 16);
-    *(a1 + 16) = v5;
+    [(_UICollectionViewSubviewCollection *)filter enumerateSupplementariesWithEnumerator:v9];
+    v6 = *(filter + 16);
+    *(filter + 16) = v5;
     v7 = v5;
   }
 }
 
-- (void)updateDecorationsUsingFilter:(uint64_t)a1
+- (void)updateDecorationsUsingFilter:(uint64_t)filter
 {
-  if (a1)
+  if (filter)
   {
     if (!a2)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:sel_updateDecorationsUsingFilter_ object:a1 file:@"_UICollectionViewSubviewCollection.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_updateDecorationsUsingFilter_ object:filter file:@"_UICollectionViewSubviewCollection.m" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"filterBlock != nil"}];
     }
 
-    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(a1 + 24), "count")}];
+    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(*(filter + 24), "count")}];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67___UICollectionViewSubviewCollection_updateDecorationsUsingFilter___block_invoke;
@@ -986,9 +986,9 @@ LABEL_4:
     v11 = a2;
     v5 = v4;
     v10 = v5;
-    [(_UICollectionViewSubviewCollection *)a1 enumerateDecorationsWithEnumerator:v9];
-    v6 = *(a1 + 24);
-    *(a1 + 24) = v5;
+    [(_UICollectionViewSubviewCollection *)filter enumerateDecorationsWithEnumerator:v9];
+    v6 = *(filter + 24);
+    *(filter + 24) = v5;
     v7 = v5;
   }
 }

@@ -1,31 +1,31 @@
 @interface UIStoryboardPopoverPresentationSegueTemplate
-- (UIStoryboardPopoverPresentationSegueTemplate)initWithCoder:(id)a3;
-- (id)newDefaultPerformHandlerForSegue:(id)a3;
-- (id)newDefaultPrepareHandlerForSegue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UIStoryboardPopoverPresentationSegueTemplate)initWithCoder:(id)coder;
+- (id)newDefaultPerformHandlerForSegue:(id)segue;
+- (id)newDefaultPrepareHandlerForSegue:(id)segue;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIStoryboardPopoverPresentationSegueTemplate
 
-- (UIStoryboardPopoverPresentationSegueTemplate)initWithCoder:(id)a3
+- (UIStoryboardPopoverPresentationSegueTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = UIStoryboardPopoverPresentationSegueTemplate;
-  v5 = [(UIStoryboardSegueTemplate *)&v14 initWithCoder:v4];
+  v5 = [(UIStoryboardSegueTemplate *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_permittedArrowDirections = [v4 decodeIntegerForKey:@"UIPermittedArrowDirections"];
-    v6 = [v4 decodeObjectForKey:@"UIPassthroughViews"];
+    v5->_permittedArrowDirections = [coderCopy decodeIntegerForKey:@"UIPermittedArrowDirections"];
+    v6 = [coderCopy decodeObjectForKey:@"UIPassthroughViews"];
     v7 = [v6 copy];
     passthroughViews = v5->_passthroughViews;
     v5->_passthroughViews = v7;
 
-    v9 = [v4 decodeObjectForKey:@"UIAnchorBarButtonItem"];
+    v9 = [coderCopy decodeObjectForKey:@"UIAnchorBarButtonItem"];
     anchorBarButtonItem = v5->_anchorBarButtonItem;
     v5->_anchorBarButtonItem = v9;
 
-    v11 = [v4 decodeObjectForKey:@"UIAnchorView"];
+    v11 = [coderCopy decodeObjectForKey:@"UIAnchorView"];
     anchorView = v5->_anchorView;
     v5->_anchorView = v11;
   }
@@ -33,36 +33,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIStoryboardPopoverPresentationSegueTemplate;
-  v4 = a3;
-  [(UIStoryboardSegueTemplate *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_permittedArrowDirections forKey:{@"UIPermittedArrowDirections", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_passthroughViews forKey:@"UIPassthroughViews"];
-  [v4 encodeObject:self->_anchorBarButtonItem forKey:@"UIAnchorBarButtonItem"];
-  [v4 encodeObject:self->_anchorView forKey:@"UIAnchorView"];
+  coderCopy = coder;
+  [(UIStoryboardSegueTemplate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_permittedArrowDirections forKey:{@"UIPermittedArrowDirections", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_passthroughViews forKey:@"UIPassthroughViews"];
+  [coderCopy encodeObject:self->_anchorBarButtonItem forKey:@"UIAnchorBarButtonItem"];
+  [coderCopy encodeObject:self->_anchorView forKey:@"UIAnchorView"];
 }
 
-- (id)newDefaultPrepareHandlerForSegue:(id)a3
+- (id)newDefaultPrepareHandlerForSegue:(id)segue
 {
-  v4 = a3;
-  v5 = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorView];
-  v6 = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorBarButtonItem];
-  v7 = [(UIStoryboardPopoverPresentationSegueTemplate *)self permittedArrowDirections];
-  objc_initWeak(&location, v4);
+  segueCopy = segue;
+  anchorView = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorView];
+  anchorBarButtonItem = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorBarButtonItem];
+  permittedArrowDirections = [(UIStoryboardPopoverPresentationSegueTemplate *)self permittedArrowDirections];
+  objc_initWeak(&location, segueCopy);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__UIStoryboardPopoverPresentationSegueTemplate_newDefaultPrepareHandlerForSegue___block_invoke;
   aBlock[3] = &unk_1E70F9070;
   objc_copyWeak(v15, &location);
-  v13 = v5;
-  v14 = v6;
-  v15[1] = v7;
-  v8 = v6;
-  v9 = v5;
+  v13 = anchorView;
+  v14 = anchorBarButtonItem;
+  v15[1] = permittedArrowDirections;
+  v8 = anchorBarButtonItem;
+  v9 = anchorView;
   v10 = _Block_copy(aBlock);
 
   objc_destroyWeak(v15);
@@ -85,22 +85,22 @@ void __81__UIStoryboardPopoverPresentationSegueTemplate_newDefaultPrepareHandler
   [v4 setPermittedArrowDirections:*(a1 + 56)];
 }
 
-- (id)newDefaultPerformHandlerForSegue:(id)a3
+- (id)newDefaultPerformHandlerForSegue:(id)segue
 {
-  v5 = a3;
-  v6 = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorBarButtonItem];
-  if (v6)
+  segueCopy = segue;
+  anchorBarButtonItem = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorBarButtonItem];
+  if (anchorBarButtonItem)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorView];
-    v7 = v8 != 0;
+    anchorView = [(UIStoryboardPopoverPresentationSegueTemplate *)self anchorView];
+    v7 = anchorView != 0;
   }
 
-  objc_initWeak(&location, v5);
+  objc_initWeak(&location, segueCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__UIStoryboardPopoverPresentationSegueTemplate_newDefaultPerformHandlerForSegue___block_invoke;

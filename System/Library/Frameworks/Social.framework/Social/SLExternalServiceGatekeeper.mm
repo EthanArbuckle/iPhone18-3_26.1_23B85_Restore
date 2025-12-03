@@ -1,31 +1,31 @@
 @interface SLExternalServiceGatekeeper
-- (id)initForPermissionToAccessURL:(id)a3 fromURLString:(id)a4 completion:(id)a5;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)_completeWithURLToLoad:(id)a3 error:(id)a4;
+- (id)initForPermissionToAccessURL:(id)l fromURLString:(id)string completion:(id)completion;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)_completeWithURLToLoad:(id)load error:(id)error;
 @end
 
 @implementation SLExternalServiceGatekeeper
 
-- (id)initForPermissionToAccessURL:(id)a3 fromURLString:(id)a4 completion:(id)a5
+- (id)initForPermissionToAccessURL:(id)l fromURLString:(id)string completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  stringCopy = string;
+  completionCopy = completion;
   v35.receiver = self;
   v35.super_class = SLExternalServiceGatekeeper;
   v13 = [(SLExternalServiceGatekeeper *)&v35 init];
   if (v13)
   {
-    v14 = [MEMORY[0x1E695DFF8] URLWithString:v11];
-    v15 = [v14 host];
+    v14 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
+    host = [v14 host];
     redirectHost = v13->_redirectHost;
-    v13->_redirectHost = v15;
+    v13->_redirectHost = host;
 
-    objc_storeStrong(&v13->_url, a3);
-    v17 = MEMORY[0x1C6917BF0](v12);
+    objc_storeStrong(&v13->_url, l);
+    v17 = MEMORY[0x1C6917BF0](completionCopy);
     completion = v13->_completion;
     v13->_completion = v17;
 
@@ -36,9 +36,9 @@ LABEL_12:
       v25 = [MEMORY[0x1E696AF68] requestWithURL:v19 cachePolicy:1 timeoutInterval:{30.0, v33}];
       _SLLog(v5, 7, @"SLExternalServiceGatekeeper loading modified URL: %{private}@");
       v26 = MEMORY[0x1E696AF78];
-      v27 = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
-      v28 = [MEMORY[0x1E696ADC8] mainQueue];
-      v29 = [v26 sessionWithConfiguration:v27 delegate:v13 delegateQueue:v28];
+      ephemeralSessionConfiguration = [MEMORY[0x1E696AF80] ephemeralSessionConfiguration];
+      mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+      v29 = [v26 sessionWithConfiguration:ephemeralSessionConfiguration delegate:v13 delegateQueue:mainQueue];
 
       v30 = [v29 dataTaskWithRequest:v25];
       [v30 resume];
@@ -47,24 +47,24 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v20 = [MEMORY[0x1E696AF20] componentsWithURL:v10 resolvingAgainstBaseURL:1];
-    v21 = [MEMORY[0x1E696AF20] componentsWithString:v11];
-    v22 = [v20 host];
-    v23 = [v20 path];
-    if ([v22 length] && objc_msgSend(v23, "length"))
+    v20 = [MEMORY[0x1E696AF20] componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+    v21 = [MEMORY[0x1E696AF20] componentsWithString:stringCopy];
+    host2 = [v20 host];
+    path = [v20 path];
+    if ([host2 length] && objc_msgSend(path, "length"))
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@%@", v22, v23];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@%@", host2, path];
     }
 
     else
     {
-      if (![v22 length])
+      if (![host2 length])
       {
         _SLLog(v5, 3, @"Failed to parse hostname from loginURL, this can't be good...");
         goto LABEL_11;
       }
 
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", v22, v34];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"/%@", host2, v34];
     }
     v24 = ;
     [v21 setPath:v24];
@@ -82,52 +82,52 @@ LABEL_13:
   return v13;
 }
 
-- (void)_completeWithURLToLoad:(id)a3 error:(id)a4
+- (void)_completeWithURLToLoad:(id)load error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  completion = v7->_completion;
+  loadCopy = load;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  completion = selfCopy->_completion;
   if (completion)
   {
-    completion[2](completion, v10, v6);
-    v9 = v7->_completion;
-    v7->_completion = 0;
+    completion[2](completion, loadCopy, errorCopy);
+    v9 = selfCopy->_completion;
+    selfCopy->_completion = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v12 URL];
-  v29 = [v14 host];
+  sessionCopy = session;
+  requestCopy = request;
+  handlerCopy = handler;
+  v14 = [requestCopy URL];
+  host = [v14 host];
   _SLLog(v7, 7, @"SLExternalServiceGatekeeper willSendRequest called for host: %@");
 
-  v15 = [v12 URL];
-  v16 = [v15 host];
-  v17 = [(NSURL *)self->_url host];
-  v18 = [v16 isEqualToString:v17];
+  v15 = [requestCopy URL];
+  host2 = [v15 host];
+  host3 = [(NSURL *)self->_url host];
+  v18 = [host2 isEqualToString:host3];
 
   if (v18)
   {
-    [v11 invalidateAndCancel];
+    [sessionCopy invalidateAndCancel];
     [(SLExternalServiceGatekeeper *)self _completeWithURLToLoad:self->_url error:0];
 LABEL_6:
-    v13[2](v13, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_7;
   }
 
-  v19 = [v12 URL];
-  v20 = [v19 host];
-  v21 = [v20 isEqualToString:self->_redirectHost];
+  v19 = [requestCopy URL];
+  host4 = [v19 host];
+  v21 = [host4 isEqualToString:self->_redirectHost];
 
-  v22 = [v12 URL];
+  v22 = [requestCopy URL];
   v23 = v22;
   if ((v21 & 1) == 0)
   {
@@ -146,30 +146,30 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v30 = [v22 host];
+  host5 = [v22 host];
   _SLLog(v7, 7, @"SLExternalServiceGatekeeper continuing to load original URL with host: %@");
 
-  (v13)[2](v13, v12);
+  (handlerCopy)[2](handlerCopy, requestCopy);
 LABEL_7:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a5;
+  handlerCopy = handler;
+  challengeCopy = challenge;
   _SLLog(v6, 7, @"SLExternalServiceGatekeeper received authentication challenge");
-  v10 = [v9 protectionSpace];
-  v11 = [v10 serverTrust];
+  protectionSpace = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace serverTrust];
 
-  v12 = [v9 protectionSpace];
+  protectionSpace2 = [challengeCopy protectionSpace];
 
-  v13 = [v12 authenticationMethod];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E696A968]];
+  authenticationMethod = [protectionSpace2 authenticationMethod];
+  v14 = [authenticationMethod isEqualToString:*MEMORY[0x1E696A968]];
 
   if (v14)
   {
     v20 = 0;
-    if (!MEMORY[0x1C6917600](v11, &v20) && (v20 == 4 || v20 == 1))
+    if (!MEMORY[0x1C6917600](serverTrust, &v20) && (v20 == 4 || v20 == 1))
     {
       v15 = SecTrustCopyInfo();
       if (v15)
@@ -181,8 +181,8 @@ LABEL_7:
         {
           _SLLog(v6, 7, @"SLExternalServiceGatekeeper verified this challenge is Apple's EV SSL certificate");
 
-          v19 = [MEMORY[0x1E696AF30] credentialForTrust:v11];
-          v8[2](v8, 0, v19);
+          v19 = [MEMORY[0x1E696AF30] credentialForTrust:serverTrust];
+          handlerCopy[2](handlerCopy, 0, v19);
 
           goto LABEL_4;
         }
@@ -191,27 +191,27 @@ LABEL_7:
   }
 
   _SLLog(v6, 7, @"SLExternalServiceGatekeeper failed to identify Apple's EV certificate. Cancelling.");
-  v8[2](v8, 2, 0);
+  handlerCopy[2](handlerCopy, 2, 0);
 LABEL_4:
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   if (self->_completion)
   {
-    v6 = a4;
+    errorCopy = error;
     _SLLog(v4, 7, @"SLExternalServiceGatekeeper failed with error - %@");
-    [(SLExternalServiceGatekeeper *)self _completeWithURLToLoad:0 error:v6, v6];
+    [(SLExternalServiceGatekeeper *)self _completeWithURLToLoad:0 error:errorCopy, errorCopy];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   if (self->_completion)
   {
-    v7 = a5;
+    errorCopy = error;
     _SLLog(v5, 7, @"SLExternalServiceGatekeeper completed with error - %@");
-    [(SLExternalServiceGatekeeper *)self _completeWithURLToLoad:0 error:v7, v7];
+    [(SLExternalServiceGatekeeper *)self _completeWithURLToLoad:0 error:errorCopy, errorCopy];
   }
 }
 

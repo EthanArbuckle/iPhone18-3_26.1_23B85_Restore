@@ -14,7 +14,7 @@
 {
   v12 = a3;
   v13 = a4;
-  v14 = *(a1 + *MEMORY[0x1E69C8A78]);
+  v14 = *(self + *MEMORY[0x1E69C8A78]);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __118__WBSAnalyticsLogger__SFAnalyticsLogger___sf_didBeginDownloadWithMIMEType_uti_downloadType_promptType_browserPersona___block_invoke;
@@ -33,8 +33,8 @@
 {
   v4 = a3;
   Current = CFAbsoluteTimeGetCurrent();
-  v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v6 doubleForKey:@"LastPeriodicExtensionsReportTimePreferenceKey"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults doubleForKey:@"LastPeriodicExtensionsReportTimePreferenceKey"];
   v8 = Current - v7;
 
   if (v8 > 604800.0)
@@ -44,7 +44,7 @@
     v9[2] = __105__WBSAnalyticsLogger__SFAnalyticsLogger___sf_performExtensionsReportIfNecessaryWithExtensionsController___block_invoke;
     v9[3] = &unk_1E848F548;
     v10 = v4;
-    v11 = a1;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v9);
   }
 }
@@ -57,7 +57,7 @@
   v5[3] = &__block_descriptor_41_e19___NSDictionary_8__0l;
   v5[4] = a3;
   v6 = a4;
-  return [a1 _sendEvent:@"com.apple.MobileSafari.CapsuleLayoutStyle" usingBlock:v5];
+  return [self _sendEvent:@"com.apple.MobileSafari.CapsuleLayoutStyle" usingBlock:v5];
 }
 
 - (uint64_t)_sf_reportCapsuleLayoutStyle:()_SFAnalyticsLogger previousSetting:
@@ -68,7 +68,7 @@
   v5[3] = &__block_descriptor_48_e19___NSDictionary_8__0l;
   v5[4] = a3;
   v5[5] = a4;
-  return [a1 _sendEvent:@"com.apple.MobileSafari.CapsuleLayoutStyle" usingBlock:v5];
+  return [self _sendEvent:@"com.apple.MobileSafari.CapsuleLayoutStyle" usingBlock:v5];
 }
 
 - (void)_sf_didPerformFormatMenuAction:()_SFAnalyticsLogger provenance:
@@ -89,7 +89,7 @@
         v8[3] = &unk_1E8496188;
         v9 = v7;
         v10 = a4;
-        [a1 _sendEvent:@"com.apple.MobileSafari.PerformedFormatMenuAction" usingBlock:v8];
+        [self _sendEvent:@"com.apple.MobileSafari.PerformedFormatMenuAction" usingBlock:v8];
       }
     }
   }
@@ -102,7 +102,7 @@
   v4[2] = __72__WBSAnalyticsLogger__SFAnalyticsLogger___sf_reportPrivateWindowStatus___block_invoke;
   v4[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
   v4[4] = a3;
-  return [a1 _sendEvent:@"com.apple.MobileSafari.PrivateWindowStatus" usingBlock:v4];
+  return [self _sendEvent:@"com.apple.MobileSafari.PrivateWindowStatus" usingBlock:v4];
 }
 
 - (void)_sf_reportBrowserChoice:()_SFAnalyticsLogger
@@ -114,7 +114,7 @@
   v6[3] = &unk_1E8496120;
   v7 = v4;
   v5 = v4;
-  [a1 _sendEvent:@"com.apple.SafariViewService.BrowserChoice" usingBlock:v6];
+  [self _sendEvent:@"com.apple.SafariViewService.BrowserChoice" usingBlock:v6];
 }
 
 @end

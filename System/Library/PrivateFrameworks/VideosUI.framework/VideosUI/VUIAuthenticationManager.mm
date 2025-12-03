@@ -11,7 +11,7 @@
 + (id)_userAccount;
 + (id)creditsString;
 + (id)identifier;
-+ (id)monogramAvatarForSize:(CGSize)a3 scale:(double)a4 isRTL:(BOOL)a5;
++ (id)monogramAvatarForSize:(CGSize)size scale:(double)scale isRTL:(BOOL)l;
 + (id)sharedInstance;
 + (id)storefrontId;
 + (id)userAccountName;
@@ -19,14 +19,14 @@
 + (id)userFullName;
 + (id)userLastName;
 + (id)userProfileImage;
-+ (void)_performAuthenticationTask:(id)a3 isSilent:(BOOL)a4 completionHandler:(id)a5;
-+ (void)_recordLog:(id)a3 isSignOut:(BOOL)a4 isSilent:(BOOL)a5;
-+ (void)requestAuthenticationAlwaysPrompt:(BOOL)a3 withCompletionHandler:(id)a4;
-+ (void)signInUserWithAppleID:(id)a3 password:(id)a4 completionHandler:(id)a5;
-+ (void)signOutUserWithCompletionHandler:(id)a3;
-- (BOOL)_shouldNotifyAccountChange:(id)a3 newAccount:(id)a4;
++ (void)_performAuthenticationTask:(id)task isSilent:(BOOL)silent completionHandler:(id)handler;
++ (void)_recordLog:(id)log isSignOut:(BOOL)out isSilent:(BOOL)silent;
++ (void)requestAuthenticationAlwaysPrompt:(BOOL)prompt withCompletionHandler:(id)handler;
++ (void)signInUserWithAppleID:(id)d password:(id)password completionHandler:(id)handler;
++ (void)signOutUserWithCompletionHandler:(id)handler;
+- (BOOL)_shouldNotifyAccountChange:(id)change newAccount:(id)account;
 - (VUIAuthenticationManager)init;
-- (void)_accountStoreDidChange:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
 - (void)_determineIfLibraryOnlyCountry;
 - (void)_fetchProfileImage;
 - (void)_setUpProfileImageStoreAndFetchProfileImage;
@@ -69,22 +69,22 @@ void __42__VUIAuthenticationManager_sharedInstance__block_invoke()
   v2 = [(VUIAuthenticationManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69D5920] activeAccount];
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
     activeUserAccount = v2->__activeUserAccount;
-    v2->__activeUserAccount = v3;
+    v2->__activeUserAccount = activeAccount;
 
     if (!v2->__activeUserAccount)
     {
-      v5 = [MEMORY[0x1E69D5920] localAccount];
+      localAccount = [MEMORY[0x1E69D5920] localAccount];
       localUserAccount = v2->__localUserAccount;
-      v2->__localUserAccount = v5;
+      v2->__localUserAccount = localAccount;
     }
 
     [(VUIAuthenticationManager *)v2 _setUpProfileImageStoreAndFetchProfileImage];
     if ([objc_opt_class() allowsAccountModification])
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 addObserver:v2 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E6959968] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E6959968] object:0];
 
       v8 = VUIDefaultLogObject();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -135,14 +135,14 @@ void __42__VUIAuthenticationManager_sharedInstance__block_invoke()
 - (void)_fetchProfileImage
 {
   v3 = WLKIsRegulatedSKU();
-  v4 = [MEMORY[0x1E69D5920] activeiCloudAccount];
-  v5 = [MEMORY[0x1E69D5920] activeAccount];
-  v6 = v5;
-  if (!v3 || v4)
+  activeiCloudAccount = [MEMORY[0x1E69D5920] activeiCloudAccount];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  v6 = activeAccount;
+  if (!v3 || activeiCloudAccount)
   {
-    v11 = [v5 username];
-    v12 = [v4 username];
-    v13 = [v11 isEqualToString:v12];
+    username = [activeAccount username];
+    username2 = [activeiCloudAccount username];
+    v13 = [username isEqualToString:username2];
 
     if (v13)
     {
@@ -178,36 +178,36 @@ void __42__VUIAuthenticationManager_sharedInstance__block_invoke()
       _os_log_impl(&dword_1E323F000, v9, OS_LOG_TYPE_INFO, "VUIAuthenticationManager: used fallback profile image for China region without iCloud signed in, posting VUIAuthenticationManagerProfileImageDidChangeNotification", buf, 2u);
     }
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 postNotificationName:@"VUIAuthenticationManagerProfileImageDidChangeNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VUIAuthenticationManagerProfileImageDidChangeNotification" object:self userInfo:0];
   }
 }
 
 + (BOOL)allowsAccountModification
 {
-  v2 = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
-  v3 = [v2 allowsAccountModification];
+  mEMORY[0x1E6970920] = [MEMORY[0x1E6970920] sharedRestrictionsMonitor];
+  allowsAccountModification = [mEMORY[0x1E6970920] allowsAccountModification];
 
-  return v3;
+  return allowsAccountModification;
 }
 
 + (id)DSID
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = [v2 ams_DSID];
+  _userAccount = [objc_opt_class() _userAccount];
+  ams_DSID = [_userAccount ams_DSID];
 
-  return v3;
+  return ams_DSID;
 }
 
 + (id)_userAccount
 {
-  v2 = [objc_opt_class() sharedInstance];
-  v3 = [v2 _activeUserAccount];
-  objc_sync_enter(v3);
-  v4 = [v2 _activeUserAccount];
-  objc_sync_exit(v3);
+  sharedInstance = [objc_opt_class() sharedInstance];
+  _activeUserAccount = [sharedInstance _activeUserAccount];
+  objc_sync_enter(_activeUserAccount);
+  _activeUserAccount2 = [sharedInstance _activeUserAccount];
+  objc_sync_exit(_activeUserAccount);
 
-  return v4;
+  return _activeUserAccount2;
 }
 
 + (BOOL)isLibraryOnlyCountry
@@ -219,10 +219,10 @@ void __42__VUIAuthenticationManager_sharedInstance__block_invoke()
 
 + (BOOL)_isLibraryOnlyCountry
 {
-  v2 = [objc_opt_class() sharedInstance];
-  v3 = [v2 _isLibraryOnlyCountry];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  _isLibraryOnlyCountry = [sharedInstance _isLibraryOnlyCountry];
 
-  return v3;
+  return _isLibraryOnlyCountry;
 }
 
 void __58__VUIAuthenticationManager__determineIfLibraryOnlyCountry__block_invoke_2(uint64_t a1)
@@ -253,58 +253,58 @@ void __58__VUIAuthenticationManager__determineIfLibraryOnlyCountry__block_invoke
 
 + (BOOL)_isLibraryOnlyCountryResolved
 {
-  v2 = [objc_opt_class() sharedInstance];
-  v3 = [v2 _isLibraryOnlyCountryResolved];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  _isLibraryOnlyCountryResolved = [sharedInstance _isLibraryOnlyCountryResolved];
 
-  return v3;
+  return _isLibraryOnlyCountryResolved;
 }
 
 + (BOOL)lightWeightUserHasActiveAccount
 {
-  v2 = [MEMORY[0x1E69D5920] activeAccount];
-  v3 = v2 != 0;
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  v3 = activeAccount != 0;
 
   return v3;
 }
 
 + (BOOL)userHasActiveAccount
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = v2 != 0;
+  _userAccount = [objc_opt_class() _userAccount];
+  v3 = _userAccount != 0;
 
   return v3;
 }
 
 + (id)userAccountName
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = [v2 username];
+  _userAccount = [objc_opt_class() _userAccount];
+  username = [_userAccount username];
 
-  return v3;
+  return username;
 }
 
 + (id)userFirstName
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = [v2 accountPropertyForKey:*MEMORY[0x1E6959750]];
+  _userAccount = [objc_opt_class() _userAccount];
+  v3 = [_userAccount accountPropertyForKey:*MEMORY[0x1E6959750]];
 
   return v3;
 }
 
 + (id)userLastName
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = [v2 accountPropertyForKey:*MEMORY[0x1E6959788]];
+  _userAccount = [objc_opt_class() _userAccount];
+  v3 = [_userAccount accountPropertyForKey:*MEMORY[0x1E6959788]];
 
   return v3;
 }
 
 + (id)userFullName
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = [v2 userFullName];
+  _userAccount = [objc_opt_class() _userAccount];
+  userFullName = [_userAccount userFullName];
 
-  return v3;
+  return userFullName;
 }
 
 + (id)userProfileImage
@@ -316,88 +316,88 @@ void __58__VUIAuthenticationManager__determineIfLibraryOnlyCountry__block_invoke
 
 + (id)identifier
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = [v2 identifier];
+  _userAccount = [objc_opt_class() _userAccount];
+  identifier = [_userAccount identifier];
 
-  return v3;
+  return identifier;
 }
 
 + (id)creditsString
 {
-  v2 = [objc_opt_class() _userAccount];
-  v3 = [v2 ams_creditsString];
+  _userAccount = [objc_opt_class() _userAccount];
+  ams_creditsString = [_userAccount ams_creditsString];
 
-  return v3;
+  return ams_creditsString;
 }
 
-+ (void)requestAuthenticationAlwaysPrompt:(BOOL)a3 withCompletionHandler:(id)a4
++ (void)requestAuthenticationAlwaysPrompt:(BOOL)prompt withCompletionHandler:(id)handler
 {
-  v4 = a3;
+  promptCopy = prompt;
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = VUIDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v17[0] = 67109120;
-    v17[1] = v4;
+    v17[1] = promptCopy;
     _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_INFO, "VUIAuthenticationManager: requestAuthenticationAlwaysPrompt %d", v17, 8u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E698C7B0]);
-  v9 = !v4;
+  v9 = !promptCopy;
   [v8 setAuthenticationType:v9];
   [v8 setDebugReason:@"VideosUI requesting a prompted AMSAuthenticateRequest"];
-  v10 = [a1 _userAccount];
-  v11 = [objc_alloc(MEMORY[0x1E698C7B8]) initWithAccount:v10 options:v8];
-  v12 = +[VUIApplicationRouter topMostVisibleViewController];
-  if (!v12)
+  _userAccount = [self _userAccount];
+  v11 = [objc_alloc(MEMORY[0x1E698C7B8]) initWithAccount:_userAccount options:v8];
+  rootViewController = +[VUIApplicationRouter topMostVisibleViewController];
+  if (!rootViewController)
   {
     v13 = +[VUITVAppLauncher sharedInstance];
-    v14 = [v13 appWindow];
-    v12 = [v14 rootViewController];
+    appWindow = [v13 appWindow];
+    rootViewController = [appWindow rootViewController];
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E698CC58]) initWithRequest:v11 presentingViewController:v12];
-  v16 = [MEMORY[0x1E698C7D8] vui_defaultBag];
-  [v15 setBag:v16];
-  [a1 _performAuthenticationTask:v15 isSilent:v9 completionHandler:v6];
+  v15 = [objc_alloc(MEMORY[0x1E698CC58]) initWithRequest:v11 presentingViewController:rootViewController];
+  vui_defaultBag = [MEMORY[0x1E698C7D8] vui_defaultBag];
+  [v15 setBag:vui_defaultBag];
+  [self _performAuthenticationTask:v15 isSilent:v9 completionHandler:handlerCopy];
 }
 
-+ (void)signInUserWithAppleID:(id)a3 password:(id)a4 completionHandler:(id)a5
++ (void)signInUserWithAppleID:(id)d password:(id)password completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dCopy = d;
+  handlerCopy = handler;
+  passwordCopy = password;
   v11 = VUIDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v18 = 138412290;
-    v19 = v8;
+    v19 = dCopy;
     _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_INFO, "VUIAuthenticationManager: signInUserWithAppleID %@", &v18, 0xCu);
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E698C7B0]);
   [v12 setAuthenticationType:0];
   [v12 setDebugReason:@"VideosUI requesting a AMSAuthenticateRequest with appleID and password"];
-  v13 = [objc_alloc(MEMORY[0x1E698C7B8]) initWithDSID:0 altDSID:0 username:v8 options:v12];
-  v14 = +[VUIApplicationRouter topMostVisibleViewController];
-  if (!v14)
+  v13 = [objc_alloc(MEMORY[0x1E698C7B8]) initWithDSID:0 altDSID:0 username:dCopy options:v12];
+  rootViewController = +[VUIApplicationRouter topMostVisibleViewController];
+  if (!rootViewController)
   {
     v15 = +[VUITVAppLauncher sharedInstance];
-    v16 = [v15 appWindow];
-    v14 = [v16 rootViewController];
+    appWindow = [v15 appWindow];
+    rootViewController = [appWindow rootViewController];
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E698CC58]) initWithRequest:v13 presentingViewController:v14];
-  [v17 setRawPassword:v10];
+  v17 = [objc_alloc(MEMORY[0x1E698CC58]) initWithRequest:v13 presentingViewController:rootViewController];
+  [v17 setRawPassword:passwordCopy];
 
-  [a1 _performAuthenticationTask:v17 isSilent:0 completionHandler:v9];
+  [self _performAuthenticationTask:v17 isSilent:0 completionHandler:handlerCopy];
 }
 
-+ (void)signOutUserWithCompletionHandler:(id)a3
++ (void)signOutUserWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -405,37 +405,37 @@ void __58__VUIAuthenticationManager__determineIfLibraryOnlyCountry__block_invoke
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "VUIAuthenticationManager: sign out", buf, 2u);
   }
 
-  v6 = [objc_opt_class() _userAccount];
-  v7 = v6;
-  if (v6)
+  _userAccount = [objc_opt_class() _userAccount];
+  v7 = _userAccount;
+  if (_userAccount)
   {
-    [v6 setActive:0];
-    v8 = [MEMORY[0x1E69D5920] shared];
-    v9 = [v8 ams_saveAccount:v7];
+    [_userAccount setActive:0];
+    mEMORY[0x1E69D5920] = [MEMORY[0x1E69D5920] shared];
+    v9 = [mEMORY[0x1E69D5920] ams_saveAccount:v7];
 
-    v10 = [a1 sharedInstance];
-    v11 = [v10 _signoutPromise];
+    sharedInstance = [self sharedInstance];
+    _signoutPromise = [sharedInstance _signoutPromise];
 
-    if (v11)
+    if (_signoutPromise)
     {
-      [v11 cancel];
+      [_signoutPromise cancel];
     }
 
-    v12 = [a1 sharedInstance];
-    [v12 set_signoutPromise:v9];
+    sharedInstance2 = [self sharedInstance];
+    [sharedInstance2 set_signoutPromise:v9];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __61__VUIAuthenticationManager_signOutUserWithCompletionHandler___block_invoke;
     v13[3] = &unk_1E872F690;
-    v15 = a1;
-    v14 = v4;
+    selfCopy = self;
+    v14 = handlerCopy;
     [v9 addFinishBlock:v13];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 }
 
@@ -488,37 +488,37 @@ uint64_t __61__VUIAuthenticationManager_signOutUserWithCompletionHandler___block
 
 + (id)_profileImage
 {
-  v2 = [objc_opt_class() sharedInstance];
-  v3 = [v2 _profileImage];
+  sharedInstance = [objc_opt_class() sharedInstance];
+  _profileImage = [sharedInstance _profileImage];
 
-  return v3;
+  return _profileImage;
 }
 
-+ (void)_performAuthenticationTask:(id)a3 isSilent:(BOOL)a4 completionHandler:(id)a5
++ (void)_performAuthenticationTask:(id)task isSilent:(BOOL)silent completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [a3 performAuthentication];
-  if (v9)
+  handlerCopy = handler;
+  performAuthentication = [task performAuthentication];
+  if (performAuthentication)
   {
-    v10 = [a1 sharedInstance];
-    v11 = [v10 _authPromise];
+    sharedInstance = [self sharedInstance];
+    _authPromise = [sharedInstance _authPromise];
 
-    if (v11 && ([v11 isCancelled] & 1) == 0 && (objc_msgSend(v11, "isFinished") & 1) == 0)
+    if (_authPromise && ([_authPromise isCancelled] & 1) == 0 && (objc_msgSend(_authPromise, "isFinished") & 1) == 0)
     {
-      [v11 cancel];
+      [_authPromise cancel];
     }
 
-    v12 = [a1 sharedInstance];
-    [v12 set_authPromise:v9];
+    sharedInstance2 = [self sharedInstance];
+    [sharedInstance2 set_authPromise:performAuthentication];
 
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __82__VUIAuthenticationManager__performAuthenticationTask_isSilent_completionHandler___block_invoke;
     v14[3] = &unk_1E872F6E0;
-    v16 = a1;
-    v17 = a4;
-    v15 = v8;
-    [v9 addFinishBlock:v14];
+    selfCopy = self;
+    silentCopy = silent;
+    v15 = handlerCopy;
+    [performAuthentication addFinishBlock:v14];
   }
 
   else
@@ -529,9 +529,9 @@ uint64_t __61__VUIAuthenticationManager_signOutUserWithCompletionHandler___block
       [VUIAuthenticationManager _performAuthenticationTask:v13 isSilent:? completionHandler:?];
     }
 
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -599,47 +599,47 @@ uint64_t __82__VUIAuthenticationManager__performAuthenticationTask_isSilent_comp
   return result;
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = changeCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "VUIAuthenticationManager: _accountStoreDidChange - notification %@", buf, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 vui_stringForKey:*MEMORY[0x1E69598B8]];
+  userInfo = [changeCopy userInfo];
+  v7 = [userInfo vui_stringForKey:*MEMORY[0x1E69598B8]];
   v8 = [v7 isEqualToString:*MEMORY[0x1E6959930]];
 
   if (v8)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v10 = [MEMORY[0x1E69D5920] activeAccount];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
     v11 = VUIDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v10;
+      v18 = activeAccount;
       _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_INFO, "VUIAuthenticationManager: _accountStoreDidChange - changedAccount %@", buf, 0xCu);
     }
 
-    v12 = [objc_opt_class() _userAccount];
-    objc_storeStrong(&v9->__activeUserAccount, v10);
-    if ([(VUIAuthenticationManager *)v9 _shouldNotifyAccountChange:v12 newAccount:v10])
+    _userAccount = [objc_opt_class() _userAccount];
+    objc_storeStrong(&selfCopy->__activeUserAccount, activeAccount);
+    if ([(VUIAuthenticationManager *)selfCopy _shouldNotifyAccountChange:_userAccount newAccount:activeAccount])
     {
-      [(VUIAuthenticationManager *)v9 _setUpProfileImageStoreAndFetchProfileImage];
+      [(VUIAuthenticationManager *)selfCopy _setUpProfileImageStoreAndFetchProfileImage];
 
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       v14 = __51__VUIAuthenticationManager__accountStoreDidChange___block_invoke;
       v15 = &unk_1E872D768;
-      v16 = v9;
+      v16 = selfCopy;
       if ([MEMORY[0x1E696AF00] isMainThread])
       {
         v14(block);
@@ -654,7 +654,7 @@ uint64_t __82__VUIAuthenticationManager__performAuthenticationTask_isSilent_comp
     else
     {
 
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy);
     }
   }
 }
@@ -672,12 +672,12 @@ void __51__VUIAuthenticationManager__accountStoreDidChange___block_invoke(uint64
   [v3 postNotificationName:@"VUIAuthenticationManagerAccountStoreDidChangeNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (BOOL)_shouldNotifyAccountChange:(id)a3 newAccount:(id)a4
+- (BOOL)_shouldNotifyAccountChange:(id)change newAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && !v6)
+  changeCopy = change;
+  accountCopy = account;
+  v7 = accountCopy;
+  if (changeCopy && !accountCopy)
   {
     v8 = VUIDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -693,7 +693,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v5 && v6)
+  if (!changeCopy && accountCopy)
   {
     v8 = VUIDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -711,11 +711,11 @@ LABEL_10:
   }
 
   v11 = 0;
-  if (v5 && v6)
+  if (changeCopy && accountCopy)
   {
-    v13 = [v5 identifier];
-    v14 = [v7 identifier];
-    v15 = [v13 isEqualToString:v14];
+    identifier = [changeCopy identifier];
+    identifier2 = [v7 identifier];
+    v15 = [identifier isEqualToString:identifier2];
 
     if (v15)
     {
@@ -859,11 +859,11 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
   }
 }
 
-+ (id)monogramAvatarForSize:(CGSize)a3 scale:(double)a4 isRTL:(BOOL)a5
++ (id)monogramAvatarForSize:(CGSize)size scale:(double)scale isRTL:(BOOL)l
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
   v19[1] = *MEMORY[0x1E69E9840];
   v9 = +[VUIAuthenticationManager userFirstName];
   v10 = +[VUIAuthenticationManager userLastName];
@@ -871,10 +871,10 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
   [v11 setGivenName:v9];
   [v11 setFamilyName:v10];
   v12 = objc_alloc(MEMORY[0x1E695D098]);
-  v13 = [MEMORY[0x1E695D0A8] defaultSettings];
-  v14 = [v12 initWithSettings:v13];
+  defaultSettings = [MEMORY[0x1E695D0A8] defaultSettings];
+  v14 = [v12 initWithSettings:defaultSettings];
 
-  v15 = [MEMORY[0x1E695D0B0] scopeWithPointSize:v5 scale:0 rightToLeft:width style:{height, a4}];
+  v15 = [MEMORY[0x1E695D0B0] scopeWithPointSize:lCopy scale:0 rightToLeft:width style:{height, scale}];
   v19[0] = v11;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v17 = [v14 avatarImageForContacts:v16 scope:v15];
@@ -882,10 +882,10 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
   return v17;
 }
 
-+ (void)_recordLog:(id)a3 isSignOut:(BOOL)a4 isSilent:(BOOL)a5
++ (void)_recordLog:(id)log isSignOut:(BOOL)out isSilent:(BOOL)silent
 {
   v31[4] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (silent)
   {
     v6 = VUIMetricsLogAuthTypeValueSilentSignIn;
   }
@@ -895,7 +895,7 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
     v6 = VUIMetricsLogAuthTypeValueSignIn;
   }
 
-  if (a4)
+  if (out)
   {
     v6 = VUIMetricsLogAuthTypeValueSignOut;
   }
@@ -905,8 +905,8 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
   v30[0] = @"message";
   v30[1] = @"errorCode";
   v8 = MEMORY[0x1E696AD98];
-  v9 = a3;
-  v10 = [v8 numberWithLong:{objc_msgSend(v9, "code")}];
+  logCopy = log;
+  v10 = [v8 numberWithLong:{objc_msgSend(logCopy, "code")}];
   v11 = v10;
   if (v10)
   {
@@ -920,11 +920,11 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
 
   v31[1] = v12;
   v30[2] = @"errorDomain";
-  v13 = [v9 domain];
-  v14 = v13;
-  if (v13)
+  domain = [logCopy domain];
+  v14 = domain;
+  if (domain)
   {
-    v15 = v13;
+    v15 = domain;
   }
 
   else
@@ -937,12 +937,12 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
   v31[3] = v7;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:4];
 
-  v17 = [v9 ams_underlyingError];
+  ams_underlyingError = [logCopy ams_underlyingError];
 
-  if (v17)
+  if (ams_underlyingError)
   {
     v28[0] = @"underlyingErrorCode";
-    v18 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v17, "code")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(ams_underlyingError, "code")}];
     v19 = v18;
     if (v18)
     {
@@ -956,11 +956,11 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
 
     v29[0] = v20;
     v28[1] = @"underlyingErrorDomain";
-    v21 = [v17 domain];
-    v22 = v21;
-    if (v21)
+    domain2 = [ams_underlyingError domain];
+    v22 = domain2;
+    if (domain2)
     {
-      v23 = v21;
+      v23 = domain2;
     }
 
     else
@@ -984,22 +984,22 @@ void __46__VUIAuthenticationManager__fetchProfileImage__block_invoke_2(uint64_t 
 
 + (id)storefrontId
 {
-  v3 = [objc_opt_class() _userAccount];
-  v4 = [v3 ams_storefront];
-  v5 = v4;
-  if (v4)
+  _userAccount = [objc_opt_class() _userAccount];
+  ams_storefront = [_userAccount ams_storefront];
+  v5 = ams_storefront;
+  if (ams_storefront)
   {
-    v6 = v4;
+    ams_storefront2 = ams_storefront;
   }
 
   else
   {
-    v7 = [a1 sharedInstance];
-    v8 = [v7 _localUserAccount];
-    v6 = [v8 ams_storefront];
+    sharedInstance = [self sharedInstance];
+    _localUserAccount = [sharedInstance _localUserAccount];
+    ams_storefront2 = [_localUserAccount ams_storefront];
   }
 
-  return v6;
+  return ams_storefront2;
 }
 
 void __61__VUIAuthenticationManager_signOutUserWithCompletionHandler___block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

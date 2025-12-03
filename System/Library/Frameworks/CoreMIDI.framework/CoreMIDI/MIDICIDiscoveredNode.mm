@@ -1,23 +1,23 @@
 @interface MIDICIDiscoveredNode
-- (BOOL)isEqual:(id)a3;
-- (MIDICIDiscoveredNode)initWithCoder:(id)a3;
-- (MIDICIDiscoveredNode)initWithDestination:(unsigned int)a3 deviceID:(MIDICIDeviceIdentification)a4 profilesSupported:(BOOL)a5 propertiesSupported:(BOOL)a6 maxSysExSize:(unsigned int)a7;
+- (BOOL)isEqual:(id)equal;
+- (MIDICIDiscoveredNode)initWithCoder:(id)coder;
+- (MIDICIDiscoveredNode)initWithDestination:(unsigned int)destination deviceID:(MIDICIDeviceIdentification)d profilesSupported:(BOOL)supported propertiesSupported:(BOOL)propertiesSupported maxSysExSize:(unsigned int)size;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIDICIDiscoveredNode
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 destination] == self->_destination && self->_supportsProfiles == objc_msgSend(v4, "supportsProfiles") && self->_supportsProperties == objc_msgSend(v4, "supportsProperties"))
+  equalCopy = equal;
+  if ([equalCopy destination] == self->_destination && self->_supportsProfiles == objc_msgSend(equalCopy, "supportsProfiles") && self->_supportsProperties == objc_msgSend(equalCopy, "supportsProperties"))
   {
-    v5 = [v4 deviceInfo];
-    if ([v5 isEqual:self->_deviceInfo])
+    deviceInfo = [equalCopy deviceInfo];
+    if ([deviceInfo isEqual:self->_deviceInfo])
     {
-      v6 = [v4 maximumSysExSize];
-      v7 = [v6 unsignedLongValue] == self->_maxSysExSize;
+      maximumSysExSize = [equalCopy maximumSysExSize];
+      v7 = [maximumSysExSize unsignedLongValue] == self->_maxSysExSize;
     }
 
     else
@@ -62,41 +62,41 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:self->_destination forKey:@"destination"];
-  [v4 encodeObject:self->_deviceInfo forKey:@"deviceInfo"];
-  [v4 encodeBool:self->_supportsProfiles forKey:@"supportsProfiles"];
-  [v4 encodeBool:self->_supportsProperties forKey:@"supportsProperties"];
-  [v4 encodeInt32:self->_maxSysExSize forKey:@"maxSysExSize"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_destination forKey:@"destination"];
+  [coderCopy encodeObject:self->_deviceInfo forKey:@"deviceInfo"];
+  [coderCopy encodeBool:self->_supportsProfiles forKey:@"supportsProfiles"];
+  [coderCopy encodeBool:self->_supportsProperties forKey:@"supportsProperties"];
+  [coderCopy encodeInt32:self->_maxSysExSize forKey:@"maxSysExSize"];
 }
 
-- (MIDICIDiscoveredNode)initWithCoder:(id)a3
+- (MIDICIDiscoveredNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MIDICIDiscoveredNode;
   v5 = [(MIDICIDiscoveredNode *)&v9 init];
   if (v5)
   {
-    v5->_destination = [v4 decodeInt32ForKey:@"destination"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceInfo"];
+    v5->_destination = [coderCopy decodeInt32ForKey:@"destination"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceInfo"];
     deviceInfo = v5->_deviceInfo;
     v5->_deviceInfo = v6;
 
-    v5->_supportsProfiles = [v4 decodeBoolForKey:@"supportsProfiles"];
-    v5->_supportsProperties = [v4 decodeBoolForKey:@"supportsProperties"];
-    v5->_maxSysExSize = [v4 decodeInt32ForKey:@"maxSysExSize"];
+    v5->_supportsProfiles = [coderCopy decodeBoolForKey:@"supportsProfiles"];
+    v5->_supportsProperties = [coderCopy decodeBoolForKey:@"supportsProperties"];
+    v5->_maxSysExSize = [coderCopy decodeInt32ForKey:@"maxSysExSize"];
   }
 
   return v5;
 }
 
-- (MIDICIDiscoveredNode)initWithDestination:(unsigned int)a3 deviceID:(MIDICIDeviceIdentification)a4 profilesSupported:(BOOL)a5 propertiesSupported:(BOOL)a6 maxSysExSize:(unsigned int)a7
+- (MIDICIDiscoveredNode)initWithDestination:(unsigned int)destination deviceID:(MIDICIDeviceIdentification)d profilesSupported:(BOOL)supported propertiesSupported:(BOOL)propertiesSupported maxSysExSize:(unsigned int)size
 {
-  v10 = *&a3;
-  v17 = a4;
+  v10 = *&destination;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = MIDICIDiscoveredNode;
   v11 = [(MIDICIDiscoveredNode *)&v16 init];
@@ -104,13 +104,13 @@
   if (v11)
   {
     v11->_destination = v10;
-    v13 = [[MIDICIDeviceInfo alloc] initWithDestination:v10 deviceID:&v17];
+    v13 = [[MIDICIDeviceInfo alloc] initWithDestination:v10 deviceID:&dCopy];
     deviceInfo = v12->_deviceInfo;
     v12->_deviceInfo = v13;
 
-    v12->_supportsProfiles = a5;
-    v12->_supportsProperties = a6;
-    v12->_maxSysExSize = a7;
+    v12->_supportsProfiles = supported;
+    v12->_supportsProperties = propertiesSupported;
+    v12->_maxSysExSize = size;
   }
 
   return v12;

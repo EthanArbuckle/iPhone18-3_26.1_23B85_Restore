@@ -2,16 +2,16 @@
 - (NSString)description;
 - (_TtC24FaceTimeNotificationCore22WrappedAlertIdentifier)init;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WrappedAlertIdentifier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  WrappedAlertIdentifier.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  WrappedAlertIdentifier.encode(with:)(coderCopy);
 }
 
 - (NSString)description
@@ -28,7 +28,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AlertIdentifier.hashValue.getter();
 
   return v3;

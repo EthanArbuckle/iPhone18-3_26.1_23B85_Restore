@@ -1,18 +1,18 @@
 @interface AtrialFibrillationDataTypeDetailViewController
 - (BOOL)isPinned;
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithDisplayType:(id)a3 profile:(id)a4 mode:(int64_t)a5;
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithStyle:(int64_t)a3;
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)a3;
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithDisplayType:(id)type profile:(id)profile mode:(int64_t)mode;
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithStyle:(int64_t)style;
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)styling;
 - (id)featureStatusCells;
 - (id)featureStatusFooterView;
-- (id)makeInternalSettingsControllerWithHealthStore:(id)a3;
+- (id)makeInternalSettingsControllerWithHealthStore:(id)store;
 - (void)didSelectRegulatoryRow;
-- (void)featureStatusCellTappedAtIndexPath:(id)a3;
+- (void)featureStatusCellTappedAtIndexPath:(id)path;
 - (void)recomputeTotalSampleCount;
-- (void)setPinned:(BOOL)a3;
+- (void)setPinned:(BOOL)pinned;
 - (void)showAddDataVC;
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5;
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -20,45 +20,45 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D77F640();
 }
 
 - (BOOL)isPinned
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_29D77FA40();
 
   return v3 & 1;
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  v4 = self;
-  sub_29D77FC44(a3);
+  selfCopy = self;
+  sub_29D77FC44(pinned);
 }
 
 - (void)recomputeTotalSampleCount
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D77FDF8();
 }
 
 - (void)showAddDataVC
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D780008();
 }
 
 - (void)didSelectRegulatoryRow
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D7804E4();
 }
 
 - (id)featureStatusCells
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D78112C();
 
   sub_29D69567C(0, &qword_2A17B4380, 0x29EDC7D10);
@@ -69,13 +69,13 @@
 
 - (id)featureStatusFooterView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_29D7813A8();
 
   return v3;
 }
 
-- (void)featureStatusCellTappedAtIndexPath:(id)a3
+- (void)featureStatusCellTappedAtIndexPath:(id)path
 {
   v4 = sub_29D933DB8();
   v5 = *(v4 - 8);
@@ -83,20 +83,20 @@
   MEMORY[0x2A1C7C4A8](v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29D933D58();
-  v10 = self;
+  selfCopy = self;
   sub_29D781D8C();
 
   (*(v5 + 8))(v9, v4);
 }
 
-- (id)makeInternalSettingsControllerWithHealthStore:(id)a3
+- (id)makeInternalSettingsControllerWithHealthStore:(id)store
 {
-  v3 = [objc_allocWithZone(type metadata accessor for IRNInternalSettingsViewController()) initWithHealthStore_];
+  initWithHealthStore_ = [objc_allocWithZone(type metadata accessor for IRNInternalSettingsViewController()) initWithHealthStore_];
 
-  return v3;
+  return initWithHealthStore_;
 }
 
-- (void)snapshotDidChangeWithDataSourceID:(id)a3 snapshot:(id)a4 animated:(BOOL)a5
+- (void)snapshotDidChangeWithDataSourceID:(id)d snapshot:(id)snapshot animated:(BOOL)animated
 {
   sub_29D75DD24();
   v7 = v6;
@@ -107,34 +107,34 @@
   v13 = sub_29D939D68();
   v15 = v14;
   sub_29D937BA8();
-  v16 = self;
+  selfCopy = self;
   sub_29D7831E0(v13, v15);
 
   (*(v8 + 8))(v12, v7);
 }
 
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithDisplayType:(id)a3 profile:(id)a4 mode:(int64_t)a5
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithDisplayType:(id)type profile:(id)profile mode:(int64_t)mode
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)a3
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithUsingInsetStyling:(BOOL)styling
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithStyle:(int64_t)a3
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Heart46AtrialFibrillationDataTypeDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

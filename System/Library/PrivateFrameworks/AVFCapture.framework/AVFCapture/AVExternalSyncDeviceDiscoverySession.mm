@@ -3,10 +3,10 @@
 + (BOOL)isSupported;
 - (AVExternalSyncDeviceDiscoverySession)init;
 - (NSArray)devices;
-- (void)_handleNotification:(id)a3 dict:(id)a4;
-- (void)_updateDevicesEvent:(id)a3;
+- (void)_handleNotification:(id)notification dict:(id)dict;
+- (void)_updateDevicesEvent:(id)event;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setupNotifications;
 - (void)setupSource;
 - (void)teardownNotifications;
@@ -127,19 +127,19 @@ AVExternalSyncDeviceDiscoverySession *__53__AVExternalSyncDeviceDiscoverySession
   [(AVExternalSyncDeviceDiscoverySession *)&v3 dealloc];
 }
 
-- (void)_handleNotification:(id)a3 dict:(id)a4
+- (void)_handleNotification:(id)notification dict:(id)dict
 {
-  if ([a3 isEqualToString:*MEMORY[0x1E69904E0]])
+  if ([notification isEqualToString:*MEMORY[0x1E69904E0]])
   {
 
-    [(AVExternalSyncDeviceDiscoverySession *)self _updateDevicesEvent:a4];
+    [(AVExternalSyncDeviceDiscoverySession *)self _updateDevicesEvent:dict];
   }
 }
 
 - (void)setupNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  self->_serverDiedObserver = [v3 addObserverForName:*MEMORY[0x1E69904D0] object:0 queue:0 usingBlock:&v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  self->_serverDiedObserver = [defaultCenter addObserverForName:*MEMORY[0x1E69904D0] object:0 queue:0 usingBlock:&v4];
   MEMORY[0x1AC582C50]();
 }
 
@@ -187,20 +187,20 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
 {
   if (self->_serverDiedObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_serverDiedObserver forKeyPath:*MEMORY[0x1E69904D0]];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_serverDiedObserver forKeyPath:*MEMORY[0x1E69904D0]];
     self->_serverDiedObserver = 0;
   }
 }
 
-- (void)_updateDevicesEvent:(id)a3
+- (void)_updateDevicesEvent:(id)event
 {
-  v5 = [a3 mutableCopy];
+  v5 = [event mutableCopy];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v22 = self;
+  selfCopy = self;
   devices = self->_devices;
   v7 = [(NSMutableArray *)devices countByEnumeratingWithState:&v29 objects:v28 count:16];
   if (v7)
@@ -217,7 +217,7 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        if ([a3 valueForKey:{objc_msgSend(v11, "uniqueIdentifier")}])
+        if ([event valueForKey:{objc_msgSend(v11, "uniqueIdentifier")}])
         {
           [v11 _handleUSBConnectionStateChange:1];
           [v5 removeObjectForKey:{objc_msgSend(v11, "uniqueIdentifier")}];
@@ -237,8 +237,8 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
 
   if ([v5 count])
   {
-    [(AVExternalSyncDeviceDiscoverySession *)v22 willChangeValueForKey:@"devices"];
-    os_unfair_lock_lock(&v22->_deviceLock);
+    [(AVExternalSyncDeviceDiscoverySession *)selfCopy willChangeValueForKey:@"devices"];
+    os_unfair_lock_lock(&selfCopy->_deviceLock);
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -263,8 +263,8 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
           v18 = *(*(&v24 + 1) + 8 * j);
           v19 = [v5 valueForKey:v18];
           v20 = -[AVExternalSyncDevice _initWithIdentifier:pid:vid:]([AVExternalSyncDevice alloc], "_initWithIdentifier:pid:vid:", v18, [objc_msgSend(objc_msgSend(v19 objectForKey:{v18), "objectForKey:", v15), "unsignedIntValue"}], objc_msgSend(objc_msgSend(objc_msgSend(v19, "objectForKey:", v18), "objectForKey:", v16), "unsignedIntValue"));
-          [(NSMutableArray *)v22->_devices addObject:v20];
-          [v20 addObserver:v22 forKeyPath:@"usbConnected" options:3 context:&AVExternalSyncDeviceDiscoverySessionUsbConnectedChangedContext];
+          [(NSMutableArray *)selfCopy->_devices addObject:v20];
+          [v20 addObserver:selfCopy forKeyPath:@"usbConnected" options:3 context:&AVExternalSyncDeviceDiscoverySessionUsbConnectedChangedContext];
         }
 
         v13 = [obj countByEnumeratingWithState:&v24 objects:v23 count:16];
@@ -273,17 +273,17 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
       while (v13);
     }
 
-    os_unfair_lock_unlock(&v22->_deviceLock);
-    [(AVExternalSyncDeviceDiscoverySession *)v22 didChangeValueForKey:@"devices"];
+    os_unfair_lock_unlock(&selfCopy->_deviceLock);
+    [(AVExternalSyncDeviceDiscoverySession *)selfCopy didChangeValueForKey:@"devices"];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVExternalSyncDeviceDiscoverySessionUsbConnectedChangedContext == a6)
+  if (AVExternalSyncDeviceDiscoverySessionUsbConnectedChangedContext == context)
   {
-    v8 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500], a4), "BOOLValue"}];
-    if (v8 != [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}])
+    v8 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A500], object), "BOOLValue"}];
+    if (v8 != [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}])
     {
       [(AVExternalSyncDeviceDiscoverySession *)self willChangeValueForKey:@"devices"];
 
@@ -295,13 +295,13 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
   {
     v9.receiver = self;
     v9.super_class = AVExternalSyncDeviceDiscoverySession;
-    [(AVExternalSyncDeviceDiscoverySession *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(AVExternalSyncDeviceDiscoverySession *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (NSArray)devices
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   os_unfair_lock_lock(&self->_deviceLock);
   v14 = 0u;
   v15 = 0u;
@@ -325,7 +325,7 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
         v9 = *(*(&v12 + 1) + 8 * i);
         if ([v9 isUsbConnected])
         {
-          [(NSArray *)v3 addObject:v9];
+          [(NSArray *)array addObject:v9];
         }
       }
 
@@ -336,7 +336,7 @@ void __58__AVExternalSyncDeviceDiscoverySession_setupNotifications__block_invoke
   }
 
   os_unfair_lock_unlock(&self->_deviceLock);
-  return v3;
+  return array;
 }
 
 @end

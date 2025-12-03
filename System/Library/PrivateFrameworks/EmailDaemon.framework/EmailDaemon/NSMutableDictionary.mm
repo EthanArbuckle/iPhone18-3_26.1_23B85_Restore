@@ -1,23 +1,23 @@
 @interface NSMutableDictionary
-- (void)addObject:(id)a3 toSetForKey:(id)a4;
+- (void)addObject:(id)object toSetForKey:(id)key;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)addObject:(id)a3 toSetForKey:(id)a4
+- (void)addObject:(id)object toSetForKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && v6)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy && keyCopy)
   {
-    v7 = [(NSMutableDictionary *)self objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self objectForKey:keyCopy];
     if (!v7)
     {
       v7 = [[NSMutableSet alloc] initWithCapacity:0];
-      [(NSMutableDictionary *)self setObject:v7 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self setObject:v7 forKeyedSubscript:keyCopy];
     }
 
-    [v7 addObject:v8];
+    [v7 addObject:objectCopy];
   }
 }
 

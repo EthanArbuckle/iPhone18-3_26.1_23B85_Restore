@@ -1,18 +1,18 @@
 @interface DisplayLinkManager
 - (_TtC23SetupAssistantSupportUI18DisplayLinkManager)init;
-- (void)frameWithDisplayLink:(id)a3;
+- (void)frameWithDisplayLink:(id)link;
 @end
 
 @implementation DisplayLinkManager
 
-- (void)frameWithDisplayLink:(id)a3
+- (void)frameWithDisplayLink:(id)link
 {
-  v4 = a3;
-  v11 = self;
-  [v4 targetTimestamp];
+  linkCopy = link;
+  selfCopy = self;
+  [linkCopy targetTimestamp];
   v6 = v5;
-  [v4 timestamp];
-  v8 = *(&v11->super.isa + OBJC_IVAR____TtC23SetupAssistantSupportUI18DisplayLinkManager_frameUpdateBlock);
+  [linkCopy timestamp];
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtC23SetupAssistantSupportUI18DisplayLinkManager_frameUpdateBlock);
   if (v8)
   {
     v9 = v6 - v7;

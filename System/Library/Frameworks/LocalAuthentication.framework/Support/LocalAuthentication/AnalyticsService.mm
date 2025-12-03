@@ -1,18 +1,18 @@
 @interface AnalyticsService
-- (AnalyticsService)initWithWorkQueue:(id)a3;
+- (AnalyticsService)initWithWorkQueue:(id)queue;
 @end
 
 @implementation AnalyticsService
 
-- (AnalyticsService)initWithWorkQueue:(id)a3
+- (AnalyticsService)initWithWorkQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = AnalyticsService;
   v5 = [(AnalyticsService *)&v9 init];
   if (v5)
   {
-    v6 = [[LACAnalyticsServiceXPCHost alloc] initWithWorkQueue:v4];
+    v6 = [[LACAnalyticsServiceXPCHost alloc] initWithWorkQueue:queueCopy];
     xpcController = v5->_xpcController;
     v5->_xpcController = v6;
   }

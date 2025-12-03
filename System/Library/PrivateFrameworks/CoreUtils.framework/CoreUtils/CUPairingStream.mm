@@ -1,12 +1,12 @@
 @interface CUPairingStream
-- (BOOL)decryptInputBytes:(const void *)a3 inputLength:(unint64_t)a4 inputAADBytes:(const void *)a5 inputAADLength:(unint64_t)a6 inputAuthTagPtr:(const void *)a7 inputAuthTagLength:(unint64_t)a8 outputBytes:(void *)a9 error:(id *)a10;
-- (BOOL)encryptInputBytes:(const void *)a3 inputLength:(unint64_t)a4 inputAADBytes:(const void *)a5 inputAADLength:(unint64_t)a6 outputBytes:(void *)a7 outputAuthTagBytes:(void *)a8 outputAuthTagLength:(unint64_t)a9 error:(id *)a10;
-- (BOOL)prepareWithName:(id)a3 isClient:(BOOL)a4 pskData:(id)a5 error:(id *)a6;
+- (BOOL)decryptInputBytes:(const void *)bytes inputLength:(unint64_t)length inputAADBytes:(const void *)dBytes inputAADLength:(unint64_t)dLength inputAuthTagPtr:(const void *)ptr inputAuthTagLength:(unint64_t)tagLength outputBytes:(void *)outputBytes error:(id *)self0;
+- (BOOL)encryptInputBytes:(const void *)bytes inputLength:(unint64_t)length inputAADBytes:(const void *)dBytes inputAADLength:(unint64_t)dLength outputBytes:(void *)outputBytes outputAuthTagBytes:(void *)tagBytes outputAuthTagLength:(unint64_t)tagLength error:(id *)self0;
+- (BOOL)prepareWithName:(id)name isClient:(BOOL)client pskData:(id)data error:(id *)error;
 - (CUPairingStream)init;
-- (id)decryptData:(id)a3 aadBytes:(const void *)a4 aadLength:(unint64_t)a5 error:(id *)a6;
-- (id)decryptData:(id)a3 aadData:(id)a4 error:(id *)a5;
-- (id)encryptData:(id)a3 aadBytes:(const void *)a4 aadLength:(unint64_t)a5 error:(id *)a6;
-- (id)encryptData:(id)a3 aadData:(id)a4 error:(id *)a5;
+- (id)decryptData:(id)data aadBytes:(const void *)bytes aadLength:(unint64_t)length error:(id *)error;
+- (id)decryptData:(id)data aadData:(id)aadData error:(id *)error;
+- (id)encryptData:(id)data aadBytes:(const void *)bytes aadLength:(unint64_t)length error:(id *)error;
+- (id)encryptData:(id)data aadData:(id)aadData error:(id *)error;
 - (void)_cleanup;
 - (void)dealloc;
 @end
@@ -38,13 +38,13 @@
   [(CUPairingStream *)&v3 dealloc];
 }
 
-- (BOOL)decryptInputBytes:(const void *)a3 inputLength:(unint64_t)a4 inputAADBytes:(const void *)a5 inputAADLength:(unint64_t)a6 inputAuthTagPtr:(const void *)a7 inputAuthTagLength:(unint64_t)a8 outputBytes:(void *)a9 error:(id *)a10
+- (BOOL)decryptInputBytes:(const void *)bytes inputLength:(unint64_t)length inputAADBytes:(const void *)dBytes inputAADLength:(unint64_t)dLength inputAuthTagPtr:(const void *)ptr inputAuthTagLength:(unint64_t)tagLength outputBytes:(void *)outputBytes error:(id *)self0
 {
   decryptAEAD = self->_decryptAEAD;
   if (decryptAEAD)
   {
     decryptNonce = self->_decryptNonce;
-    v22 = a7;
+    ptrCopy = ptr;
     v13 = (*(*(decryptAEAD + 2) + 24))();
     v14 = 0;
     do
@@ -79,9 +79,9 @@
     v13 = 4294960541;
   }
 
-  v18 = NSErrorWithOSStatusF(v13, v20, a3, a4, a5, a6, a7, a8, v22);
+  v18 = NSErrorWithOSStatusF(v13, v20, bytes, length, dBytes, dLength, ptr, tagLength, ptrCopy);
   v17 = v18 != 0;
-  if (a10)
+  if (error)
   {
     v21 = v18 == 0;
   }
@@ -94,7 +94,7 @@
   if (!v21)
   {
     v18 = v18;
-    *a10 = v18;
+    *error = v18;
     v17 = 1;
   }
 
@@ -103,13 +103,13 @@ LABEL_10:
   return !v17;
 }
 
-- (BOOL)encryptInputBytes:(const void *)a3 inputLength:(unint64_t)a4 inputAADBytes:(const void *)a5 inputAADLength:(unint64_t)a6 outputBytes:(void *)a7 outputAuthTagBytes:(void *)a8 outputAuthTagLength:(unint64_t)a9 error:(id *)a10
+- (BOOL)encryptInputBytes:(const void *)bytes inputLength:(unint64_t)length inputAADBytes:(const void *)dBytes inputAADLength:(unint64_t)dLength outputBytes:(void *)outputBytes outputAuthTagBytes:(void *)tagBytes outputAuthTagLength:(unint64_t)tagLength error:(id *)self0
 {
   encryptAEAD = self->_encryptAEAD;
   if (encryptAEAD)
   {
     encryptNonce = self->_encryptNonce;
-    v22 = a8;
+    tagBytesCopy = tagBytes;
     v13 = (*(*(encryptAEAD + 2) + 16))();
     v14 = 0;
     do
@@ -144,9 +144,9 @@ LABEL_10:
     v13 = 4294960541;
   }
 
-  v18 = NSErrorWithOSStatusF(v13, v20, a3, a4, a5, a6, a7, a8, v22);
+  v18 = NSErrorWithOSStatusF(v13, v20, bytes, length, dBytes, dLength, outputBytes, tagBytes, tagBytesCopy);
   v17 = v18 != 0;
-  if (a10)
+  if (error)
   {
     v21 = v18 == 0;
   }
@@ -159,7 +159,7 @@ LABEL_10:
   if (!v21)
   {
     v18 = v18;
-    *a10 = v18;
+    *error = v18;
     v17 = 1;
   }
 
@@ -168,10 +168,10 @@ LABEL_10:
   return !v17;
 }
 
-- (id)decryptData:(id)a3 aadBytes:(const void *)a4 aadLength:(unint64_t)a5 error:(id *)a6
+- (id)decryptData:(id)data aadBytes:(const void *)bytes aadLength:(unint64_t)length error:(id *)error
 {
-  v10 = a3;
-  v11 = [v10 length];
+  dataCopy = data;
+  v11 = [dataCopy length];
   v18 = v11;
   authTagLength = self->_authTagLength;
   if (v11 < authTagLength)
@@ -181,7 +181,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  v20 = [v10 bytes];
+  bytes = [dataCopy bytes];
   v21 = v18 - authTagLength;
   if (!v21)
   {
@@ -199,7 +199,7 @@ LABEL_10:
 LABEL_5:
   v29 = self->_authTagLength;
   v42 = 0;
-  v30 = [(CUPairingStream *)self decryptInputBytes:v20 inputLength:v21 inputAADBytes:a4 inputAADLength:a5 inputAuthTagPtr:v20 + v21 inputAuthTagLength:v29 outputBytes:v22 error:&v42];
+  v30 = [(CUPairingStream *)self decryptInputBytes:bytes inputLength:v21 inputAADBytes:bytes inputAADLength:length inputAuthTagPtr:bytes + v21 inputAuthTagLength:v29 outputBytes:v22 error:&v42];
   v31 = v42;
   if (v30)
   {
@@ -233,11 +233,11 @@ LABEL_16:
 
 LABEL_19:
   v38 = 0;
-  if (a6 && v31)
+  if (error && v31)
   {
     v41 = v31;
     v38 = 0;
-    *a6 = v31;
+    *error = v31;
   }
 
 LABEL_11:
@@ -245,32 +245,32 @@ LABEL_11:
   return v38;
 }
 
-- (id)decryptData:(id)a3 aadData:(id)a4 error:(id *)a5
+- (id)decryptData:(id)data aadData:(id)aadData error:(id *)error
 {
-  v9 = a4;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v10 bytes];
-  v13 = [v10 length];
+  aadDataCopy = aadData;
+  aadDataCopy2 = aadData;
+  dataCopy = data;
+  bytes = [aadDataCopy2 bytes];
+  v13 = [aadDataCopy2 length];
 
-  v14 = [(CUPairingStream *)self decryptData:v11 aadBytes:v12 aadLength:v13 error:a5];
+  v14 = [(CUPairingStream *)self decryptData:dataCopy aadBytes:bytes aadLength:v13 error:error];
 
   return v14;
 }
 
-- (id)encryptData:(id)a3 aadBytes:(const void *)a4 aadLength:(unint64_t)a5 error:(id *)a6
+- (id)encryptData:(id)data aadBytes:(const void *)bytes aadLength:(unint64_t)length error:(id *)error
 {
-  v10 = a3;
-  v11 = [v10 length];
+  dataCopy = data;
+  v11 = [dataCopy length];
   v12 = self->_authTagLength + v11;
   v13 = malloc_type_malloc(v12, 0x100004077774924uLL);
   if (v13)
   {
     v20 = v13;
-    v21 = [v10 bytes];
+    bytes = [dataCopy bytes];
     authTagLength = self->_authTagLength;
     v36 = 0;
-    v23 = [(CUPairingStream *)self encryptInputBytes:v21 inputLength:v11 inputAADBytes:a4 inputAADLength:a5 outputBytes:v20 outputAuthTagBytes:&v20[v11] outputAuthTagLength:authTagLength error:&v36];
+    v23 = [(CUPairingStream *)self encryptInputBytes:bytes inputLength:v11 inputAADBytes:bytes inputAADLength:length outputBytes:v20 outputAuthTagBytes:&v20[v11] outputAuthTagLength:authTagLength error:&v36];
     v24 = v36;
     if (v23)
     {
@@ -297,11 +297,11 @@ LABEL_11:
   }
 
   v32 = 0;
-  if (a6 && v24)
+  if (error && v24)
   {
     v35 = v24;
     v32 = 0;
-    *a6 = v24;
+    *error = v24;
   }
 
 LABEL_5:
@@ -309,32 +309,32 @@ LABEL_5:
   return v32;
 }
 
-- (id)encryptData:(id)a3 aadData:(id)a4 error:(id *)a5
+- (id)encryptData:(id)data aadData:(id)aadData error:(id *)error
 {
-  v9 = a4;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v10 bytes];
-  v13 = [v10 length];
+  aadDataCopy = aadData;
+  aadDataCopy2 = aadData;
+  dataCopy = data;
+  bytes = [aadDataCopy2 bytes];
+  v13 = [aadDataCopy2 length];
 
-  v14 = [(CUPairingStream *)self encryptData:v11 aadBytes:v12 aadLength:v13 error:a5];
+  v14 = [(CUPairingStream *)self encryptData:dataCopy aadBytes:bytes aadLength:v13 error:error];
 
   return v14;
 }
 
-- (BOOL)prepareWithName:(id)a3 isClient:(BOOL)a4 pskData:(id)a5 error:(id *)a6
+- (BOOL)prepareWithName:(id)name isClient:(BOOL)client pskData:(id)data error:(id *)error
 {
-  v8 = a4;
+  clientCopy = client;
   v43 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  [v12 bytes];
-  [v12 length];
+  nameCopy = name;
+  dataCopy = data;
+  [dataCopy bytes];
+  [dataCopy length];
   v41 = 0;
   __s = 0;
-  if (![v11 length])
+  if (![nameCopy length])
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -343,14 +343,14 @@ LABEL_5:
     v34 = 4294960552;
 LABEL_21:
     NSErrorWithOSStatusF(v34, v33, v13, v14, v15, v16, v17, v18, v38);
-    *a6 = v31 = 0;
+    *error = v31 = 0;
     goto LABEL_14;
   }
 
-  objc_storeStrong(&self->_name, a3);
-  if ([v12 length] <= 0x1F)
+  objc_storeStrong(&self->_name, name);
+  if ([dataCopy length] <= 0x1F)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -360,7 +360,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (v8)
+  if (clientCopy)
   {
     v19 = "ClientEncrypt-%@";
   }
@@ -370,11 +370,11 @@ LABEL_21:
     v19 = "ServerEncrypt-%@";
   }
 
-  ASPrintF(&__s, v19, v13, v14, v15, v16, v17, v18, v11);
+  ASPrintF(&__s, v19, v13, v14, v15, v16, v17, v18, nameCopy);
   v20 = __s;
   if (!__s)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -393,8 +393,8 @@ LABEL_21:
   self->_encryptAEAD = v21;
   if (!v21)
   {
-    v35 = a6;
-    if (a6)
+    errorCopy3 = error;
+    if (error)
     {
       if (v41)
       {
@@ -413,7 +413,7 @@ LABEL_21:
     goto LABEL_35;
   }
 
-  if (v8)
+  if (clientCopy)
   {
     v28 = "ServerEncrypt-%@";
   }
@@ -423,18 +423,18 @@ LABEL_21:
     v28 = "ClientEncrypt-%@";
   }
 
-  ASPrintF(&__s, v28, v22, v23, v24, v25, v26, v27, v11);
+  ASPrintF(&__s, v28, v22, v23, v24, v25, v26, v27, nameCopy);
   v29 = __s;
   if (!__s)
   {
-    v35 = a6;
-    if (a6)
+    errorCopy3 = error;
+    if (error)
     {
       v37 = "CreateDecryptInfoFailed";
       v36 = 4294960568;
 LABEL_34:
       NSErrorWithOSStatusF(v36, v37, v22, v23, v24, v25, v26, v27, v39);
-      *v35 = v31 = 0;
+      *errorCopy3 = v31 = 0;
       goto LABEL_14;
     }
 
@@ -452,8 +452,8 @@ LABEL_35:
   self->_decryptAEAD = v30;
   if (!v30)
   {
-    v35 = a6;
-    if (a6)
+    errorCopy3 = error;
+    if (error)
     {
       if (v41)
       {

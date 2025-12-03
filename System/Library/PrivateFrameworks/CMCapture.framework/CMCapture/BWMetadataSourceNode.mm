@@ -1,14 +1,14 @@
 @interface BWMetadataSourceNode
-- (BOOL)start:(id *)a3;
-- (BOOL)stop:(id *)a3;
-- (BWMetadataSourceNode)initWithFormatDescription:(opaqueCMFormatDescription *)a3 clock:(OpaqueCMClock *)a4;
-- (void)appendMetadataSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (BOOL)start:(id *)start;
+- (BOOL)stop:(id *)stop;
+- (BWMetadataSourceNode)initWithFormatDescription:(opaqueCMFormatDescription *)description clock:(OpaqueCMClock *)clock;
+- (void)appendMetadataSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
 @end
 
 @implementation BWMetadataSourceNode
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@ _BYTE *__30__BWMetadataSourceNode_start___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -56,9 +56,9 @@ uint64_t __29__BWMetadataSourceNode_stop___block_invoke(uint64_t result)
   return result;
 }
 
-- (BWMetadataSourceNode)initWithFormatDescription:(opaqueCMFormatDescription *)a3 clock:(OpaqueCMClock *)a4
+- (BWMetadataSourceNode)initWithFormatDescription:(opaqueCMFormatDescription *)description clock:(OpaqueCMClock *)clock
 {
-  if (!a3)
+  if (!description)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -66,7 +66,7 @@ uint64_t __29__BWMetadataSourceNode_stop___block_invoke(uint64_t result)
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!clock)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D940];
@@ -80,8 +80,8 @@ LABEL_8:
   v6 = [(BWNode *)&v12 init];
   if (v6)
   {
-    v6->_formatDescription = CFRetain(a3);
-    v6->_clock = CFRetain(a4);
+    v6->_formatDescription = CFRetain(description);
+    v6->_clock = CFRetain(clock);
     v6->_emitSamplesDispatchQueue = FigDispatchQueueCreateWithPriority();
     v7 = [[BWNodeOutput alloc] initWithMediaType:1835365473 node:v6];
     [(BWNodeOutput *)v7 setFormat:[BWMetadataFormat formatWithMetadataFormatDescription:v6->_formatDescription]];
@@ -110,20 +110,20 @@ LABEL_8:
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)appendMetadataSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)appendMetadataSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  if (a3)
+  if (buffer)
   {
     if (self->_running)
     {
-      CFRetain(a3);
+      CFRetain(buffer);
       emitSamplesDispatchQueue = self->_emitSamplesDispatchQueue;
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __51__BWMetadataSourceNode_appendMetadataSampleBuffer___block_invoke;
       v6[3] = &unk_1E7990178;
       v6[4] = self;
-      v6[5] = a3;
+      v6[5] = buffer;
       dispatch_async(emitSamplesDispatchQueue, v6);
     }
   }

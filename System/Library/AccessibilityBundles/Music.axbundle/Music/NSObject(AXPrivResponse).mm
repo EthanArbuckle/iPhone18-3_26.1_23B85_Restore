@@ -43,8 +43,8 @@
   v8 = [v5 safeArrayForKey:v7];
   if ([v8 count])
   {
-    v9 = [v8 firstObject];
-    [v9 doubleValue];
+    firstObject = [v8 firstObject];
+    [firstObject doubleValue];
     v11 = v10;
   }
 

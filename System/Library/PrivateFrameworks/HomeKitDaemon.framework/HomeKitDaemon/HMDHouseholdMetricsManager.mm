@@ -1,8 +1,8 @@
 @interface HMDHouseholdMetricsManager
 + (id)logCategory;
-- (HMDHouseholdMetricsManager)initWithCountersManager:(id)a3 dataSource:(id)a4 accessoryDetailsManager:(id)a5 metricsHomeDataChangedManager:(id)a6 dailyScheduler:(id)a7 logEventSubmitter:(id)a8 dateProvider:(id)a9 activityContributors:(id)a10 logEventFactories:(id)a11;
-- (HMDHouseholdMetricsManager)initWithCountersManager:(id)a3 dataSource:(id)a4 dailyScheduler:(id)a5 logEventSubmitter:(id)a6 dateProvider:(id)a7 requestCountProvider:(id)a8 logEventFactories:(id)a9;
-- (void)handleRequest:(id)a3;
+- (HMDHouseholdMetricsManager)initWithCountersManager:(id)manager dataSource:(id)source accessoryDetailsManager:(id)detailsManager metricsHomeDataChangedManager:(id)changedManager dailyScheduler:(id)scheduler logEventSubmitter:(id)submitter dateProvider:(id)provider activityContributors:(id)self0 logEventFactories:(id)self1;
+- (HMDHouseholdMetricsManager)initWithCountersManager:(id)manager dataSource:(id)source dailyScheduler:(id)scheduler logEventSubmitter:(id)submitter dateProvider:(id)provider requestCountProvider:(id)countProvider logEventFactories:(id)factories;
+- (void)handleRequest:(id)request;
 - (void)runDailyTask;
 - (void)runHomeutilTask;
 @end
@@ -11,82 +11,82 @@
 
 - (void)runHomeutilTask
 {
-  v3 = [(HMDHouseholdMetricsManager *)self dateProvider];
-  v5 = [v3 startOfDayByAddingDayCount:0];
+  dateProvider = [(HMDHouseholdMetricsManager *)self dateProvider];
+  v5 = [dateProvider startOfDayByAddingDayCount:0];
 
-  v4 = [(HMDHouseholdMetricsManager *)self server];
-  [v4 runHouseholdMetricsDataCollectionAssociatedToDate:v5 forceSubmit:1];
+  server = [(HMDHouseholdMetricsManager *)self server];
+  [server runHouseholdMetricsDataCollectionAssociatedToDate:v5 forceSubmit:1];
 }
 
 - (void)runDailyTask
 {
-  v3 = [(HMDHouseholdMetricsManager *)self dateProvider];
-  v6 = [v3 startOfDayByAddingDayCount:-1];
+  dateProvider = [(HMDHouseholdMetricsManager *)self dateProvider];
+  v6 = [dateProvider startOfDayByAddingDayCount:-1];
 
-  v4 = [(HMDHouseholdMetricsManager *)self server];
-  [v4 runHouseholdMetricsDataCollectionAssociatedToDate:v6 forceSubmit:0];
+  server = [(HMDHouseholdMetricsManager *)self server];
+  [server runHouseholdMetricsDataCollectionAssociatedToDate:v6 forceSubmit:0];
 
-  v5 = [(HMDHouseholdMetricsManager *)self client];
-  [v5 deleteExpiredCounters];
+  client = [(HMDHouseholdMetricsManager *)self client];
+  [client deleteExpiredCounters];
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(HMDHouseholdMetricsManager *)self client];
-  [v5 handleRequest:v4];
+  requestCopy = request;
+  client = [(HMDHouseholdMetricsManager *)self client];
+  [client handleRequest:requestCopy];
 }
 
-- (HMDHouseholdMetricsManager)initWithCountersManager:(id)a3 dataSource:(id)a4 dailyScheduler:(id)a5 logEventSubmitter:(id)a6 dateProvider:(id)a7 requestCountProvider:(id)a8 logEventFactories:(id)a9
+- (HMDHouseholdMetricsManager)initWithCountersManager:(id)manager dataSource:(id)source dailyScheduler:(id)scheduler logEventSubmitter:(id)submitter dateProvider:(id)provider requestCountProvider:(id)countProvider logEventFactories:(id)factories
 {
-  v45 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  managerCopy = manager;
+  sourceCopy = source;
+  schedulerCopy = scheduler;
+  submitterCopy = submitter;
+  providerCopy = provider;
+  countProviderCopy = countProvider;
+  factoriesCopy = factories;
   v46.receiver = self;
   v46.super_class = HMDHouseholdMetricsManager;
   v21 = [(HMDHouseholdMetricsManager *)&v46 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_dateProvider, a7);
+    objc_storeStrong(&v21->_dateProvider, provider);
     v23 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"810360B7-987E-4A25-BEC7-9CC06CDDA0F2"];
     messageTargetUUID = v22->_messageTargetUUID;
     v22->_messageTargetUUID = v23;
 
     v25 = [[HMDHouseholdMetricsMessagingProvider alloc] initWithReceiver:v22];
-    v44 = v16;
+    v44 = schedulerCopy;
     messagingProvider = v22->_messagingProvider;
     v22->_messagingProvider = v25;
 
     v27 = HMDispatchQueueNameString();
-    v28 = [v27 UTF8String];
+    uTF8String = [v27 UTF8String];
     v29 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     dispatch_queue_attr_make_with_qos_class(v29, QOS_CLASS_BACKGROUND, 0);
-    v30 = v20;
-    v31 = v19;
-    v32 = v18;
-    v33 = v17;
-    v35 = v34 = v15;
-    v36 = dispatch_queue_create(v28, v35);
+    v30 = factoriesCopy;
+    v31 = countProviderCopy;
+    v32 = providerCopy;
+    v33 = submitterCopy;
+    v35 = v34 = sourceCopy;
+    v36 = dispatch_queue_create(uTF8String, v35);
     workQueue = v22->_workQueue;
     v22->_workQueue = v36;
 
-    v15 = v34;
-    v17 = v33;
-    v18 = v32;
-    v19 = v31;
-    v20 = v30;
+    sourceCopy = v34;
+    submitterCopy = v33;
+    providerCopy = v32;
+    countProviderCopy = v31;
+    factoriesCopy = v30;
 
-    v38 = [[HMDHouseholdMetricsClient alloc] initWithCountersManager:v45 dateProvider:v18 remoteMessageDispatcher:v22->_messagingProvider requestCountProvider:v19 logEventFactories:v30];
+    v38 = [[HMDHouseholdMetricsClient alloc] initWithCountersManager:managerCopy dateProvider:providerCopy remoteMessageDispatcher:v22->_messagingProvider requestCountProvider:countProviderCopy logEventFactories:v30];
     client = v22->_client;
     v22->_client = v38;
 
-    v16 = v44;
-    v40 = [[HMDHouseholdMetricsServer alloc] initWithDataSource:v15 logEventSubmitter:v17 householdMetricsProvider:v22->_client remoteMessageDispatcher:v22->_messagingProvider logEventFactories:v20 workQueue:v22->_workQueue];
+    schedulerCopy = v44;
+    v40 = [[HMDHouseholdMetricsServer alloc] initWithDataSource:sourceCopy logEventSubmitter:submitterCopy householdMetricsProvider:v22->_client remoteMessageDispatcher:v22->_messagingProvider logEventFactories:factoriesCopy workQueue:v22->_workQueue];
     server = v22->_server;
     v22->_server = v40;
 
@@ -97,26 +97,26 @@
   return v22;
 }
 
-- (HMDHouseholdMetricsManager)initWithCountersManager:(id)a3 dataSource:(id)a4 accessoryDetailsManager:(id)a5 metricsHomeDataChangedManager:(id)a6 dailyScheduler:(id)a7 logEventSubmitter:(id)a8 dateProvider:(id)a9 activityContributors:(id)a10 logEventFactories:(id)a11
+- (HMDHouseholdMetricsManager)initWithCountersManager:(id)manager dataSource:(id)source accessoryDetailsManager:(id)detailsManager metricsHomeDataChangedManager:(id)changedManager dailyScheduler:(id)scheduler logEventSubmitter:(id)submitter dateProvider:(id)provider activityContributors:(id)self0 logEventFactories:(id)self1
 {
   v63[7] = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v60 = a6;
-  v18 = a9;
-  v19 = a11;
-  v20 = a10;
-  v57 = a8;
-  v56 = a7;
-  v21 = a5;
-  v61 = v16;
-  v59 = v18;
-  v22 = [[HMDHouseholdMetricsRequestContributor alloc] initWithCountersManager:v16 dateProvider:v18];
-  v23 = [MEMORY[0x277CBEB18] arrayWithArray:v20];
+  managerCopy = manager;
+  sourceCopy = source;
+  changedManagerCopy = changedManager;
+  providerCopy = provider;
+  factoriesCopy = factories;
+  contributorsCopy = contributors;
+  submitterCopy = submitter;
+  schedulerCopy = scheduler;
+  detailsManagerCopy = detailsManager;
+  v61 = managerCopy;
+  v59 = providerCopy;
+  v22 = [[HMDHouseholdMetricsRequestContributor alloc] initWithCountersManager:managerCopy dateProvider:providerCopy];
+  v23 = [MEMORY[0x277CBEB18] arrayWithArray:contributorsCopy];
 
   v55 = v22;
   [v23 addObject:v22];
-  v51 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v19];
+  v51 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:factoriesCopy];
 
   v62[0] = @"householdData";
   v24 = [HMDHouseholdActivityLogEventFactory alloc];
@@ -125,60 +125,60 @@
   v52 = [(HMDHouseholdActivityLogEventFactory *)v24 initWithContributors:v53];
   v63[0] = v52;
   v62[1] = @"siriEndpointEnablement";
-  v50 = [[HMDSiriEndpointEnablementLogEventFactory alloc] initWithDataSource:v17];
+  v50 = [[HMDSiriEndpointEnablementLogEventFactory alloc] initWithDataSource:sourceCopy];
   v63[1] = v50;
   v62[2] = @"networkStability";
   v25 = [HMDHouseholdNetworkStabilityLogEventFactory alloc];
-  v49 = [v17 networkObserver];
-  v26 = [(HMDHouseholdNetworkStabilityLogEventFactory *)v25 initWithNetworkObserver:v49];
+  networkObserver = [sourceCopy networkObserver];
+  v26 = [(HMDHouseholdNetworkStabilityLogEventFactory *)v25 initWithNetworkObserver:networkObserver];
   v63[2] = v26;
   v62[3] = @"threadNetworkStability";
   v27 = [HMDHouseholdThreadNetworkStabilityLogEventFactory alloc];
-  v28 = [v17 threadNetworkObserver];
-  v29 = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)v27 initWithThreadNetworkObserver:v28];
+  threadNetworkObserver = [sourceCopy threadNetworkObserver];
+  v29 = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)v27 initWithThreadNetworkObserver:threadNetworkObserver];
   v63[3] = v29;
   v62[4] = @"accessoryCategoriesKey";
-  v30 = [v21 householdMetricsLogEventFactory];
+  householdMetricsLogEventFactory = [detailsManagerCopy householdMetricsLogEventFactory];
 
-  v63[4] = v30;
+  v63[4] = householdMetricsLogEventFactory;
   v62[5] = @"matterV2KeyCount";
-  v31 = [[HMDMatterV2KeyCountLogEventFactory alloc] initWithDataSource:v17];
+  v31 = [[HMDMatterV2KeyCountLogEventFactory alloc] initWithDataSource:sourceCopy];
   v63[5] = v31;
   v62[6] = @"cameraRecordingDailySummary";
   v32 = [HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory alloc];
-  v33 = [v17 cameraRecordingEventObserver];
-  v34 = [(HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory *)v32 initWithCameraRecordingEventObserver:v33];
+  cameraRecordingEventObserver = [sourceCopy cameraRecordingEventObserver];
+  v34 = [(HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory *)v32 initWithCameraRecordingEventObserver:cameraRecordingEventObserver];
   v63[6] = v34;
   v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:7];
   [v51 addEntriesFromDictionary:v35];
 
   v36 = +[HMDFeaturesDataSource defaultDataSource];
-  LODWORD(v33) = [v36 isHomeActivityStateFeatureEnabled];
+  LODWORD(cameraRecordingEventObserver) = [v36 isHomeActivityStateFeatureEnabled];
 
-  if (v33)
+  if (cameraRecordingEventObserver)
   {
     v37 = [HMDHouseholdHomeActivityStateTransitionLogEventFactory alloc];
-    v38 = [v17 homeActivityStateLogEventAnalyzer];
-    v39 = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)v37 initWithAnalyzer:v38];
+    homeActivityStateLogEventAnalyzer = [sourceCopy homeActivityStateLogEventAnalyzer];
+    v39 = [(HMDHouseholdHomeActivityStateTransitionLogEventFactory *)v37 initWithAnalyzer:homeActivityStateLogEventAnalyzer];
     [v51 setObject:v39 forKeyedSubscript:@"HouseholdHomeActivityStateTransition"];
 
     v40 = [HMDHouseholdHomeActivityStateTransitionTypeByReasonLogEventFactory alloc];
-    v41 = [v17 homeActivityStateLogEventAnalyzer];
-    v42 = [(HMDHouseholdHomeActivityStateTransitionTypeByReasonLogEventFactory *)v40 initWithAnalyzer:v41];
+    homeActivityStateLogEventAnalyzer2 = [sourceCopy homeActivityStateLogEventAnalyzer];
+    v42 = [(HMDHouseholdHomeActivityStateTransitionTypeByReasonLogEventFactory *)v40 initWithAnalyzer:homeActivityStateLogEventAnalyzer2];
     [v51 setObject:v42 forKeyedSubscript:@"HouseholdHomeActivityStateTransitionTypeByReason"];
 
-    v43 = [[HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory alloc] initWithDataSource:v17];
+    v43 = [[HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory alloc] initWithDataSource:sourceCopy];
     [v51 setObject:v43 forKeyedSubscript:@"HouseholdMetricsMessageAdaptiveTemperatureAutomationsConfigurationKey"];
   }
 
   if (isInternalBuild())
   {
-    v44 = [v60 householdMetricsLogEventFactory];
-    [v51 setObject:v44 forKeyedSubscript:@"homeDataChangedKey"];
+    householdMetricsLogEventFactory2 = [changedManagerCopy householdMetricsLogEventFactory];
+    [v51 setObject:householdMetricsLogEventFactory2 forKeyedSubscript:@"homeDataChangedKey"];
   }
 
   v45 = [v51 copy];
-  v46 = [(HMDHouseholdMetricsManager *)self initWithCountersManager:v61 dataSource:v17 dailyScheduler:v56 logEventSubmitter:v57 dateProvider:v59 requestCountProvider:v55 logEventFactories:v45];
+  v46 = [(HMDHouseholdMetricsManager *)self initWithCountersManager:v61 dataSource:sourceCopy dailyScheduler:schedulerCopy logEventSubmitter:submitterCopy dateProvider:v59 requestCountProvider:v55 logEventFactories:v45];
 
   v47 = *MEMORY[0x277D85DE8];
   return v46;

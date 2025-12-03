@@ -1,46 +1,46 @@
 @interface CSHealthWrapEncryptor
-- (BOOL)_appendEncryptedBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_finalizeCryptorWithError:(id *)a3;
-- (BOOL)_startCryptorWithError:(id *)a3;
-- (BOOL)_updateCryptorWithData:(id)a3 error:(id *)a4;
-- (BOOL)_updateHeaderWithKey:(id)a3 iv:(id)a4 hmacKey:(id)a5 error:(id *)a6;
-- (BOOL)_writeStream:(const char *)a3 length:(unint64_t)a4 hash:(BOOL)a5 error:(id *)a6;
-- (BOOL)finalizeWithError:(id *)a3;
-- (BOOL)startWithError:(id *)a3;
-- (CSHealthWrapEncryptor)initWithOutputStream:(id)a3 certificate:(__SecCertificate *)a4 algorithm:(unsigned int)a5 options:(unsigned int)a6 keySize:(unsigned int)a7 uuid:(id)a8 studyUUID:(id)a9 compressionEnabled:(BOOL)a10;
-- (__SecKey)_copyAndVerifyPublicKeyFromCertificate:(__SecCertificate *)a3 error:(id *)a4;
-- (id)_encryptData:(id)a3 withCertificate:(__SecCertificate *)a4 error:(id *)a5;
+- (BOOL)_appendEncryptedBytes:(const char *)bytes length:(unint64_t)length error:(id *)error;
+- (BOOL)_finalizeCryptorWithError:(id *)error;
+- (BOOL)_startCryptorWithError:(id *)error;
+- (BOOL)_updateCryptorWithData:(id)data error:(id *)error;
+- (BOOL)_updateHeaderWithKey:(id)key iv:(id)iv hmacKey:(id)hmacKey error:(id *)error;
+- (BOOL)_writeStream:(const char *)stream length:(unint64_t)length hash:(BOOL)hash error:(id *)error;
+- (BOOL)finalizeWithError:(id *)error;
+- (BOOL)startWithError:(id *)error;
+- (CSHealthWrapEncryptor)initWithOutputStream:(id)stream certificate:(__SecCertificate *)certificate algorithm:(unsigned int)algorithm options:(unsigned int)options keySize:(unsigned int)size uuid:(id)uuid studyUUID:(id)d compressionEnabled:(BOOL)self0;
+- (__SecKey)_copyAndVerifyPublicKeyFromCertificate:(__SecCertificate *)certificate error:(id *)error;
+- (id)_encryptData:(id)data withCertificate:(__SecCertificate *)certificate error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CSHealthWrapEncryptor
 
-- (CSHealthWrapEncryptor)initWithOutputStream:(id)a3 certificate:(__SecCertificate *)a4 algorithm:(unsigned int)a5 options:(unsigned int)a6 keySize:(unsigned int)a7 uuid:(id)a8 studyUUID:(id)a9 compressionEnabled:(BOOL)a10
+- (CSHealthWrapEncryptor)initWithOutputStream:(id)stream certificate:(__SecCertificate *)certificate algorithm:(unsigned int)algorithm options:(unsigned int)options keySize:(unsigned int)size uuid:(id)uuid studyUUID:(id)d compressionEnabled:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
+  streamCopy = stream;
+  uuidCopy = uuid;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = CSHealthWrapEncryptor;
   v19 = [(CSHealthWrapEncryptor *)&v22 init];
   if (v19)
   {
-    if (!a4)
+    if (!certificate)
     {
       sub_100357614();
     }
 
-    objc_storeStrong(&v19->_outputStream, a3);
-    v19->_certificate = CFRetain(a4);
-    v19->_algorithm = a5;
-    v19->_options = a6;
-    v19->_keySize = a7;
+    objc_storeStrong(&v19->_outputStream, stream);
+    v19->_certificate = CFRetain(certificate);
+    v19->_algorithm = algorithm;
+    v19->_options = options;
+    v19->_keySize = size;
     v19->_cryptor = 0;
-    objc_storeStrong(&v19->_uuid, a8);
-    objc_storeStrong(&v19->_studyUUID, a9);
+    objc_storeStrong(&v19->_uuid, uuid);
+    objc_storeStrong(&v19->_studyUUID, d);
     v19->_hmacAlgorithm = 2;
     v19->_encryptedBytesCount = 0;
-    v19->_compressionEnabled = a10;
+    v19->_compressionEnabled = enabled;
   }
 
   return v19;
@@ -67,11 +67,11 @@
   [(CSHealthWrapEncryptor *)&v5 dealloc];
 }
 
-- (__SecKey)_copyAndVerifyPublicKeyFromCertificate:(__SecCertificate *)a3 error:(id *)a4
+- (__SecKey)_copyAndVerifyPublicKeyFromCertificate:(__SecCertificate *)certificate error:(id *)error
 {
-  if (a3)
+  if (certificate)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -80,7 +80,7 @@
   else
   {
     sub_100357684();
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -88,28 +88,28 @@
 
   sub_1003576F8();
 LABEL_3:
-  v6 = SecCertificateCopyKey(a3);
+  v6 = SecCertificateCopyKey(certificate);
   if (!v6)
   {
-    [CSHealthWrapErrorHelper assignError:a4 code:1 format:@"No public key found in certificate"];
+    [CSHealthWrapErrorHelper assignError:error code:1 format:@"No public key found in certificate"];
   }
 
   return v6;
 }
 
-- (id)_encryptData:(id)a3 withCertificate:(__SecCertificate *)a4 error:(id *)a5
+- (id)_encryptData:(id)data withCertificate:(__SecCertificate *)certificate error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  dataCopy = data;
+  if (dataCopy)
   {
-    if (a4)
+    if (certificate)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
     sub_1003577E0();
-    if (a5)
+    if (error)
     {
       goto LABEL_4;
     }
@@ -118,13 +118,13 @@ LABEL_14:
   }
 
   sub_10035776C();
-  if (!a4)
+  if (!certificate)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (a5)
+  if (error)
   {
     goto LABEL_4;
   }
@@ -132,16 +132,16 @@ LABEL_3:
 LABEL_15:
   sub_100357854();
 LABEL_4:
-  v9 = [(CSHealthWrapEncryptor *)self _copyAndVerifyPublicKeyFromCertificate:a4 error:a5];
+  v9 = [(CSHealthWrapEncryptor *)self _copyAndVerifyPublicKeyFromCertificate:certificate error:error];
   if (v9)
   {
     v10 = v9;
     error = 0;
-    v11 = SecKeyCreateEncryptedData(v9, kSecKeyAlgorithmRSAEncryptionOAEPSHA1, v8, &error);
+    v11 = SecKeyCreateEncryptedData(v9, kSecKeyAlgorithmRSAEncryptionOAEPSHA1, dataCopy, &error);
     v12 = v11;
-    if (a5 && !v11)
+    if (error && !v11)
     {
-      *a5 = error;
+      *error = error;
     }
 
     CFRelease(v10);
@@ -155,21 +155,21 @@ LABEL_4:
   return v12;
 }
 
-- (BOOL)_updateHeaderWithKey:(id)a3 iv:(id)a4 hmacKey:(id)a5 error:(id *)a6
+- (BOOL)_updateHeaderWithKey:(id)key iv:(id)iv hmacKey:(id)hmacKey error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  keyCopy = key;
+  ivCopy = iv;
+  hmacKeyCopy = hmacKey;
+  if (keyCopy)
   {
-    if (v11)
+    if (ivCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
     sub_10035793C();
-    if (a6)
+    if (error)
     {
       goto LABEL_4;
     }
@@ -178,13 +178,13 @@ LABEL_11:
   }
 
   sub_1003578C8();
-  if (!v11)
+  if (!ivCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (a6)
+  if (error)
   {
     goto LABEL_4;
   }
@@ -193,15 +193,15 @@ LABEL_12:
   sub_1003579B0();
 LABEL_4:
   v13 = +[(GPBMessage *)CSHWProtoMessageKey];
-  [v13 setKey:v10];
-  [v13 setIv:v11];
-  v14 = [v13 data];
-  v15 = [(CSHealthWrapEncryptor *)self _encryptData:v14 withCertificate:self->_certificate error:a6];
+  [v13 setKey:keyCopy];
+  [v13 setIv:ivCopy];
+  data = [v13 data];
+  v15 = [(CSHealthWrapEncryptor *)self _encryptData:data withCertificate:self->_certificate error:error];
 
   if (v15)
   {
     [(CSHWProtoMessageHeader *)self->_header setEncryptedMessageKey:v15];
-    v16 = [(CSHealthWrapEncryptor *)self _encryptData:v12 withCertificate:self->_certificate error:a6];
+    v16 = [(CSHealthWrapEncryptor *)self _encryptData:hmacKeyCopy withCertificate:self->_certificate error:error];
     v17 = v16 != 0;
     if (v16)
     {
@@ -217,7 +217,7 @@ LABEL_4:
   return v17;
 }
 
-- (BOOL)_startCryptorWithError:(id *)a3
+- (BOOL)_startCryptorWithError:(id *)error
 {
   self->_encryptedBytesCount = 0;
   cryptorRef = 0;
@@ -227,7 +227,7 @@ LABEL_4:
     v7 = [NSMutableData dataWithLength:self->_keySize];
     if (SecRandomCopyBytes(kSecRandomDefault, self->_keySize, [v7 mutableBytes]))
     {
-      [CSHealthWrapErrorHelper assignError:a3 code:1 format:@"Key generation: %d", *__error()];
+      [CSHealthWrapErrorHelper assignError:error code:1 format:@"Key generation: %d", *__error()];
       v6 = 0;
 LABEL_14:
 
@@ -237,17 +237,17 @@ LABEL_14:
     v8 = [NSMutableData dataWithLength:32];
     if (SecRandomCopyBytes(kSecRandomDefault, 0x20uLL, [v8 mutableBytes]))
     {
-      [CSHealthWrapErrorHelper assignError:a3 code:1 format:@"HMAC key generation: %d", *__error()];
+      [CSHealthWrapErrorHelper assignError:error code:1 format:@"HMAC key generation: %d", *__error()];
     }
 
-    else if ([(CSHealthWrapEncryptor *)self _updateHeaderWithKey:v7 iv:v5 hmacKey:v8 error:a3])
+    else if ([(CSHealthWrapEncryptor *)self _updateHeaderWithKey:v7 iv:v5 hmacKey:v8 error:error])
     {
       CCHmacInit(&self->_hmacContext, self->_hmacAlgorithm, [v8 bytes], 0x20uLL);
       CCHmacUpdate(&self->_hmacContext, [v5 bytes], objc_msgSend(v5, "length"));
-      v9 = [(CSHWProtoMessageHeader *)self->_header studyUuid];
-      if ([v9 length])
+      studyUuid = [(CSHWProtoMessageHeader *)self->_header studyUuid];
+      if ([studyUuid length])
       {
-        CCHmacUpdate(&self->_hmacContext, [v9 bytes], objc_msgSend(v9, "length"));
+        CCHmacUpdate(&self->_hmacContext, [studyUuid bytes], objc_msgSend(studyUuid, "length"));
       }
 
       data = bswap32([(CSHWProtoMessageHeader *)self->_header trailingHmaclength]);
@@ -258,7 +258,7 @@ LABEL_14:
       v6 = v10 == 0;
       if (v10)
       {
-        [CSHealthWrapErrorHelper assignError:a3 code:1 format:@"cryptor create: %d", v10];
+        [CSHealthWrapErrorHelper assignError:error code:1 format:@"cryptor create: %d", v10];
       }
 
       else
@@ -275,14 +275,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [CSHealthWrapErrorHelper assignError:a3 code:1 format:@"IV generation: %d", *__error()];
+  [CSHealthWrapErrorHelper assignError:error code:1 format:@"IV generation: %d", *__error()];
   v6 = 0;
 LABEL_15:
 
   return v6;
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
   CC_SHA256_Init(&self->_sha256Context);
   v5 = +[(GPBMessage *)CSHWProtoMessageHeader];
@@ -313,13 +313,13 @@ LABEL_15:
     if (v11)
     {
       [(CSHWProtoMessageHeader *)self->_header setEncryptionIdentity:v11];
-      if ([(CSHealthWrapEncryptor *)self _startCryptorWithError:a3])
+      if ([(CSHealthWrapEncryptor *)self _startCryptorWithError:error])
       {
-        v12 = [(GPBMessage *)self->_header data];
-        v15 = bswap32([v12 length]);
-        if ([(CSHealthWrapEncryptor *)self _writeStream:&v15 length:4 hash:1 error:a3])
+        data = [(GPBMessage *)self->_header data];
+        v15 = bswap32([data length]);
+        if ([(CSHealthWrapEncryptor *)self _writeStream:&v15 length:4 hash:1 error:error])
         {
-          v13 = -[CSHealthWrapEncryptor _writeStream:length:hash:error:](self, "_writeStream:length:hash:error:", [v12 bytes], objc_msgSend(v12, "length"), 1, a3);
+          v13 = -[CSHealthWrapEncryptor _writeStream:length:hash:error:](self, "_writeStream:length:hash:error:", [data bytes], objc_msgSend(data, "length"), 1, error);
         }
 
         else
@@ -333,7 +333,7 @@ LABEL_15:
 
     else
     {
-      [CSHealthWrapErrorHelper assignError:a3 code:1 format:@"Could not copy certificate"];
+      [CSHealthWrapErrorHelper assignError:error code:1 format:@"Could not copy certificate"];
     }
 
     v13 = 0;
@@ -342,84 +342,84 @@ LABEL_12:
     return v13;
   }
 
-  [CSHealthWrapErrorHelper assignError:a3 code:1 format:@"Could not allocate buffer or header"];
+  [CSHealthWrapErrorHelper assignError:error code:1 format:@"Could not allocate buffer or header"];
   return 0;
 }
 
-- (BOOL)_writeStream:(const char *)a3 length:(unint64_t)a4 hash:(BOOL)a5 error:(id *)a6
+- (BOOL)_writeStream:(const char *)stream length:(unint64_t)length hash:(BOOL)hash error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  if (a5)
+  lengthCopy = length;
+  streamCopy = stream;
+  if (hash)
   {
-    if (a4 >= 0xFFFFFFFF)
+    if (length >= 0xFFFFFFFF)
     {
       sub_100357A50();
     }
 
-    CC_SHA256_Update(&self->_sha256Context, a3, a4);
+    CC_SHA256_Update(&self->_sha256Context, stream, length);
   }
 
-  if (!v7)
+  if (!lengthCopy)
   {
     return 1;
   }
 
   while (1)
   {
-    v10 = [(NSOutputStream *)self->_outputStream write:v8 maxLength:v7];
+    v10 = [(NSOutputStream *)self->_outputStream write:streamCopy maxLength:lengthCopy];
     if (v10 <= 0)
     {
       break;
     }
 
-    v11 = v7 >= v10;
-    v7 -= v10;
+    v11 = lengthCopy >= v10;
+    lengthCopy -= v10;
     if (!v11)
     {
       sub_100357A24();
     }
 
-    v8 += v10;
-    if (!v7)
+    streamCopy += v10;
+    if (!lengthCopy)
     {
       return 1;
     }
   }
 
-  if (!a6)
+  if (!error)
   {
     return 0;
   }
 
-  v13 = [(NSOutputStream *)self->_outputStream streamError];
-  v14 = v13;
+  streamError = [(NSOutputStream *)self->_outputStream streamError];
+  v14 = streamError;
   result = 0;
-  *a6 = v13;
+  *error = streamError;
   return result;
 }
 
-- (BOOL)_appendEncryptedBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)_appendEncryptedBytes:(const char *)bytes length:(unint64_t)length error:(id *)error
 {
-  CCHmacUpdate(&self->_hmacContext, a3, a4);
-  self->_encryptedBytesCount += a4;
+  CCHmacUpdate(&self->_hmacContext, bytes, length);
+  self->_encryptedBytesCount += length;
 
-  return [(CSHealthWrapEncryptor *)self _writeStream:a3 length:a4 hash:1 error:a5];
+  return [(CSHealthWrapEncryptor *)self _writeStream:bytes length:length hash:1 error:error];
 }
 
-- (BOOL)_updateCryptorWithData:(id)a3 error:(id *)a4
+- (BOOL)_updateCryptorWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 length];
-  v8 = [v6 bytes];
-  if ([v6 length])
+  dataCopy = data;
+  v7 = [dataCopy length];
+  bytes = [dataCopy bytes];
+  if ([dataCopy length])
   {
     v9 = 0;
     while (1)
     {
       v10 = &v7[-v9] >= 0x1FF0 ? 8176 : &v7[-v9];
       dataOutMoved = 0;
-      v11 = CCCryptorUpdate(self->_cryptor, &v8[v9], v10, [(NSMutableData *)self->_buffer mutableBytes], 0x2000uLL, &dataOutMoved);
+      v11 = CCCryptorUpdate(self->_cryptor, &bytes[v9], v10, [(NSMutableData *)self->_buffer mutableBytes], 0x2000uLL, &dataOutMoved);
       if (v11)
       {
         break;
@@ -427,21 +427,21 @@ LABEL_12:
 
       if (dataOutMoved)
       {
-        v12 = [(NSMutableData *)self->_buffer bytes];
-        if (![(CSHealthWrapEncryptor *)self _appendEncryptedBytes:v12 length:dataOutMoved error:a4])
+        bytes2 = [(NSMutableData *)self->_buffer bytes];
+        if (![(CSHealthWrapEncryptor *)self _appendEncryptedBytes:bytes2 length:dataOutMoved error:error])
         {
           goto LABEL_12;
         }
       }
 
       v9 += v10;
-      if (v9 >= [v6 length])
+      if (v9 >= [dataCopy length])
       {
         goto LABEL_10;
       }
     }
 
-    [CSHealthWrapErrorHelper assignError:a4 code:1 format:@"crpytor update: %d", v11];
+    [CSHealthWrapErrorHelper assignError:error code:1 format:@"crpytor update: %d", v11];
 LABEL_12:
     v13 = 0;
   }
@@ -455,37 +455,37 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)_finalizeCryptorWithError:(id *)a3
+- (BOOL)_finalizeCryptorWithError:(id *)error
 {
   dataOutMoved = 0;
   v5 = CCCryptorFinal(self->_cryptor, [(NSMutableData *)self->_buffer mutableBytes], 0x2000uLL, &dataOutMoved);
   if (v5)
   {
-    [CSHealthWrapErrorHelper assignError:a3 code:1 format:@"crpytor update: %d", v5];
+    [CSHealthWrapErrorHelper assignError:error code:1 format:@"crpytor update: %d", v5];
     LOBYTE(v6) = 0;
   }
 
-  else if (!dataOutMoved || (v7 = [(NSMutableData *)self->_buffer bytes], v6 = [(CSHealthWrapEncryptor *)self _appendEncryptedBytes:v7 length:dataOutMoved error:a3]))
+  else if (!dataOutMoved || (v7 = [(NSMutableData *)self->_buffer bytes], v6 = [(CSHealthWrapEncryptor *)self _appendEncryptedBytes:v7 length:dataOutMoved error:error]))
   {
     data = bswap64(self->_encryptedBytesCount);
     CCHmacUpdate(&self->_hmacContext, &data, 8uLL);
-    LOBYTE(v6) = [(CSHealthWrapEncryptor *)self _writeStream:&data length:8 hash:1 error:a3];
+    LOBYTE(v6) = [(CSHealthWrapEncryptor *)self _writeStream:&data length:8 hash:1 error:error];
   }
 
   return v6;
 }
 
-- (BOOL)finalizeWithError:(id *)a3
+- (BOOL)finalizeWithError:(id *)error
 {
   v5 = [(CSHealthWrapEncryptor *)self _finalizeCryptorWithError:?];
   if (v5)
   {
     CCHmacFinal(&self->_hmacContext, macOut);
-    v5 = [(CSHealthWrapEncryptor *)self _writeStream:macOut length:32 hash:1 error:a3];
+    v5 = [(CSHealthWrapEncryptor *)self _writeStream:macOut length:32 hash:1 error:error];
     if (v5)
     {
       CC_SHA256_Final(md, &self->_sha256Context);
-      LOBYTE(v5) = [(CSHealthWrapEncryptor *)self _writeStream:md length:32 hash:0 error:a3];
+      LOBYTE(v5) = [(CSHealthWrapEncryptor *)self _writeStream:md length:32 hash:0 error:error];
     }
   }
 

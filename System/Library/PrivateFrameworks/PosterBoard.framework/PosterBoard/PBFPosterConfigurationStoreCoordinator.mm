@@ -1,16 +1,16 @@
 @interface PBFPosterConfigurationStoreCoordinator
-- (id)_accessQueue_buildIdentityForVersion:(unint64_t)a3 supplement:(unint64_t)a4;
+- (id)_accessQueue_buildIdentityForVersion:(unint64_t)version supplement:(unint64_t)supplement;
 @end
 
 @implementation PBFPosterConfigurationStoreCoordinator
 
-- (id)_accessQueue_buildIdentityForVersion:(unint64_t)a3 supplement:(unint64_t)a4
+- (id)_accessQueue_buildIdentityForVersion:(unint64_t)version supplement:(unint64_t)supplement
 {
-  v7 = [(PBFPosterModelStoreCoordinator *)self extensionIdentifier];
-  v8 = [(PBFPosterModelStoreCoordinator *)self posterUUID];
-  v9 = [(PBFPosterModelStoreCoordinator *)self descriptorIdentifier];
-  v10 = [(PBFPosterModelStoreCoordinator *)self role];
-  v11 = [MEMORY[0x277D3EB98] configurationIdentityWithProvider:v7 identifier:v9 role:v10 posterUUID:v8 version:a3 supplement:a4];
+  extensionIdentifier = [(PBFPosterModelStoreCoordinator *)self extensionIdentifier];
+  posterUUID = [(PBFPosterModelStoreCoordinator *)self posterUUID];
+  descriptorIdentifier = [(PBFPosterModelStoreCoordinator *)self descriptorIdentifier];
+  role = [(PBFPosterModelStoreCoordinator *)self role];
+  v11 = [MEMORY[0x277D3EB98] configurationIdentityWithProvider:extensionIdentifier identifier:descriptorIdentifier role:role posterUUID:posterUUID version:version supplement:supplement];
 
   return v11;
 }

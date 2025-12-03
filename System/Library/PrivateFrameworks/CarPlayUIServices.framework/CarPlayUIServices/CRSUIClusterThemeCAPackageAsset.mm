@@ -1,49 +1,49 @@
 @interface CRSUIClusterThemeCAPackageAsset
-- (CRSUIClusterThemeCAPackageAsset)initWithBSXPCCoder:(id)a3;
-- (CRSUIClusterThemeCAPackageAsset)initWithIdentifier:(id)a3 url:(id)a4 packageType:(id)a5;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (CRSUIClusterThemeCAPackageAsset)initWithBSXPCCoder:(id)coder;
+- (CRSUIClusterThemeCAPackageAsset)initWithIdentifier:(id)identifier url:(id)url packageType:(id)type;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CRSUIClusterThemeCAPackageAsset
 
-- (CRSUIClusterThemeCAPackageAsset)initWithIdentifier:(id)a3 url:(id)a4 packageType:(id)a5
+- (CRSUIClusterThemeCAPackageAsset)initWithIdentifier:(id)identifier url:(id)url packageType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  urlCopy = url;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = CRSUIClusterThemeCAPackageAsset;
   v12 = [(CRSUIClusterThemeCAPackageAsset *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_url, a4);
-    objc_storeStrong(&v13->_packageType, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_url, url);
+    objc_storeStrong(&v13->_packageType, type);
   }
 
   return v13;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRSUIClusterThemeCAPackageAsset *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(CRSUIClusterThemeCAPackageAsset *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
   v6 = [(CRSUIClusterThemeCAPackageAsset *)self url];
-  [v4 encodeObject:v6 forKey:@"url"];
+  [coderCopy encodeObject:v6 forKey:@"url"];
 
-  v7 = [(CRSUIClusterThemeCAPackageAsset *)self packageType];
-  [v4 encodeObject:v7 forKey:@"packageType"];
+  packageType = [(CRSUIClusterThemeCAPackageAsset *)self packageType];
+  [coderCopy encodeObject:packageType forKey:@"packageType"];
 }
 
-- (CRSUIClusterThemeCAPackageAsset)initWithBSXPCCoder:(id)a3
+- (CRSUIClusterThemeCAPackageAsset)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"packageType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"packageType"];
 
   if (v5)
   {
@@ -57,16 +57,16 @@
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CRSUIClusterThemeCAPackageAsset *)self initWithIdentifier:v5 url:v6 packageType:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface MBServiceConfiguration
-+ (id)configurationWithPropertyList:(id)a3;
-+ (id)configurationWithURL:(id)a3 error:(id *)a4;
++ (id)configurationWithPropertyList:(id)list;
++ (id)configurationWithURL:(id)l error:(id *)error;
 + (id)defaultConfiguration;
-- (MBServiceConfiguration)initWithPropertyList:(id)a3;
+- (MBServiceConfiguration)initWithPropertyList:(id)list;
 - (NSArray)bundleIDsNotToBackUp;
 - (NSSet)domainNamesNotToBackUp;
-- (unint64_t)_positiveIntegerForKey:(id)a3 defaultValue:(unint64_t)a4;
+- (unint64_t)_positiveIntegerForKey:(id)key defaultValue:(unint64_t)value;
 - (void)dealloc;
 @end
 
@@ -18,14 +18,14 @@
   return v2;
 }
 
-+ (id)configurationWithPropertyList:(id)a3
++ (id)configurationWithPropertyList:(id)list
 {
-  v3 = [[MBServiceConfiguration alloc] initWithPropertyList:a3];
+  v3 = [[MBServiceConfiguration alloc] initWithPropertyList:list];
 
   return v3;
 }
 
-+ (id)configurationWithURL:(id)a3 error:(id *)a4
++ (id)configurationWithURL:(id)l error:(id *)error
 {
   v13 = 0;
   v6 = [MBURLConnection sendSyncRequest:[MBURLRequest requestWithURL:?] properties:0 connection:0 response:0 error:&v13];
@@ -37,7 +37,7 @@
       return [MBServiceConfiguration configurationWithPropertyList:v7];
     }
 
-    if (a4)
+    if (error)
     {
       v10 = v13;
       v11 = @"Error deserializing configuration";
@@ -46,29 +46,29 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = [MBError codeForNSError:v13];
     v10 = v13;
     v11 = @"Error getting configuration";
 LABEL_8:
-    v12 = [MBError errorWithCode:v9 error:v10 URL:a3 format:v11];
+    v12 = [MBError errorWithCode:v9 error:v10 URL:l format:v11];
     result = 0;
-    *a4 = v12;
+    *error = v12;
     return result;
   }
 
   return 0;
 }
 
-- (MBServiceConfiguration)initWithPropertyList:(id)a3
+- (MBServiceConfiguration)initWithPropertyList:(id)list
 {
   v6.receiver = self;
   v6.super_class = MBServiceConfiguration;
   v4 = [(MBServiceConfiguration *)&v6 init];
   if (v4)
   {
-    v4->_plist = a3;
+    v4->_plist = list;
   }
 
   return v4;
@@ -138,8 +138,8 @@ LABEL_4:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(MBServiceConfiguration *)self bundleIDsNotToBackUp];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  bundleIDsNotToBackUp = [(MBServiceConfiguration *)self bundleIDsNotToBackUp];
+  v5 = [(NSArray *)bundleIDsNotToBackUp countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -151,7 +151,7 @@ LABEL_4:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bundleIDsNotToBackUp);
         }
 
         [(NSSet *)v3 addObject:[MBDomain nameWithAppID:*(*(&v10 + 1) + 8 * v8)]];
@@ -159,7 +159,7 @@ LABEL_4:
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSArray *)bundleIDsNotToBackUp countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -168,19 +168,19 @@ LABEL_4:
   return v3;
 }
 
-- (unint64_t)_positiveIntegerForKey:(id)a3 defaultValue:(unint64_t)a4
+- (unint64_t)_positiveIntegerForKey:(id)key defaultValue:(unint64_t)value
 {
-  v5 = [(NSDictionary *)self->_plist objectForKeyedSubscript:a3];
+  v5 = [(NSDictionary *)self->_plist objectForKeyedSubscript:key];
   if (!v5)
   {
-    return a4;
+    return value;
   }
 
   v6 = v5;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 integerValue] < 1)
   {
-    return a4;
+    return value;
   }
 
   return [v6 unsignedIntegerValue];

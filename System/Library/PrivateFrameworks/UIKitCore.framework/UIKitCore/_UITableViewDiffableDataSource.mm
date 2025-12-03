@@ -1,31 +1,31 @@
 @interface _UITableViewDiffableDataSource
 - (UITableView)tableView;
-- (_UITableViewDiffableDataSource)initWithTableView:(id)a3 cellProvider:(id)a4;
-- (_UITableViewDiffableDataSource)initWithTableView:(id)a3 reuseIdentifierProvider:(id)a4 cellConfigurationHandler:(id)a5;
+- (_UITableViewDiffableDataSource)initWithTableView:(id)view cellProvider:(id)provider;
+- (_UITableViewDiffableDataSource)initWithTableView:(id)view reuseIdentifierProvider:(id)provider cellConfigurationHandler:(id)handler;
 @end
 
 @implementation _UITableViewDiffableDataSource
 
-- (_UITableViewDiffableDataSource)initWithTableView:(id)a3 cellProvider:(id)a4
+- (_UITableViewDiffableDataSource)initWithTableView:(id)view cellProvider:(id)provider
 {
   v5.receiver = self;
   v5.super_class = _UITableViewDiffableDataSource;
-  return [(_UIDiffableDataSource *)&v5 initWithTableView:a3 cellProvider:a4];
+  return [(_UIDiffableDataSource *)&v5 initWithTableView:view cellProvider:provider];
 }
 
 - (UITableView)tableView
 {
-  v2 = [(_UIDiffableDataSource *)self dsImpl];
-  v3 = [v2 tableView];
+  dsImpl = [(_UIDiffableDataSource *)self dsImpl];
+  tableView = [dsImpl tableView];
 
-  return v3;
+  return tableView;
 }
 
-- (_UITableViewDiffableDataSource)initWithTableView:(id)a3 reuseIdentifierProvider:(id)a4 cellConfigurationHandler:(id)a5
+- (_UITableViewDiffableDataSource)initWithTableView:(id)view reuseIdentifierProvider:(id)provider cellConfigurationHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = _UITableViewDiffableDataSource;
-  return [(_UIDiffableDataSource *)&v6 initWithTableView:a3 reuseIdentifierProvider:a4 cellConfigurationHandler:a5];
+  return [(_UIDiffableDataSource *)&v6 initWithTableView:view reuseIdentifierProvider:provider cellConfigurationHandler:handler];
 }
 
 @end

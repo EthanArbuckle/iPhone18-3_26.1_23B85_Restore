@@ -1,50 +1,50 @@
 @interface SearchUISportsFollowButtonItem
-- (SearchUISportsFollowButtonItem)initWithSFButtonItem:(id)a3;
-- (id)commandForStatus:(unint64_t)a3;
-- (void)updateButtonStateIsFollowing:(BOOL)a3 didSucceed:(BOOL)a4 completionHandler:(id)a5;
-- (void)updateStateIfNeededWithCompletionHandler:(id)a3;
+- (SearchUISportsFollowButtonItem)initWithSFButtonItem:(id)item;
+- (id)commandForStatus:(unint64_t)status;
+- (void)updateButtonStateIsFollowing:(BOOL)following didSucceed:(BOOL)succeed completionHandler:(id)handler;
+- (void)updateStateIfNeededWithCompletionHandler:(id)handler;
 @end
 
 @implementation SearchUISportsFollowButtonItem
 
-- (SearchUISportsFollowButtonItem)initWithSFButtonItem:(id)a3
+- (SearchUISportsFollowButtonItem)initWithSFButtonItem:(id)item
 {
   v7.receiver = self;
   v7.super_class = SearchUISportsFollowButtonItem;
-  v3 = [(SearchUIButtonItem *)&v7 initWithSFButtonItem:a3];
+  v3 = [(SearchUIButtonItem *)&v7 initWithSFButtonItem:item];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v5 = +[_TtC8SearchUI26SearchUISportsKitUtilities sportsFollowStatusDidChangeNotificaitonName];
-    [v4 addObserver:v3 selector:sel_updateStateIfNeeded name:v5 object:0];
+    [defaultCenter addObserver:v3 selector:sel_updateStateIfNeeded name:v5 object:0];
   }
 
   return v3;
 }
 
-- (void)updateStateIfNeededWithCompletionHandler:(id)a3
+- (void)updateStateIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIButtonItem *)self sfButtonItem];
-  v6 = [v5 sportsItem];
+  handlerCopy = handler;
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  sportsItem = [sfButtonItem sportsItem];
 
-  v7 = [v6 type];
-  if ((v7 - 1) > 1)
+  type = [sportsItem type];
+  if ((type - 1) > 1)
   {
-    if (v7 != 3)
+    if (type != 3)
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_9;
     }
 
-    v9 = [v6 identifier];
+    identifier = [sportsItem identifier];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __75__SearchUISportsFollowButtonItem_updateStateIfNeededWithCompletionHandler___block_invoke_4;
     v10[3] = &unk_1E85B2E70;
     v10[4] = self;
-    v11 = v4;
-    [_TtC8SearchUI26SearchUISportsKitUtilities checkForSessionWithCanonicalId:v9 completionBlock:v10];
+    v11 = handlerCopy;
+    [_TtC8SearchUI26SearchUISportsKitUtilities checkForSessionWithCanonicalId:identifier completionBlock:v10];
 
     v8 = v11;
   }
@@ -61,8 +61,8 @@
     v12[2] = __75__SearchUISportsFollowButtonItem_updateStateIfNeededWithCompletionHandler___block_invoke_3;
     v12[3] = &unk_1E85B2E48;
     v12[4] = self;
-    v13 = v4;
-    [_TtC8SearchUI19SearchUITVUtilities fetchSportsItemIsFavoritedWithSportsItem:v6 completionHandler:v12];
+    v13 = handlerCopy;
+    [_TtC8SearchUI19SearchUITVUtilities fetchSportsItemIsFavoritedWithSportsItem:sportsItem completionHandler:v12];
     v8 = v13;
   }
 
@@ -76,18 +76,18 @@ void __75__SearchUISportsFollowButtonItem_updateStateIfNeededWithCompletionHandl
   v1 = [v2 addObserverForName:v0 object:0 queue:0 usingBlock:&__block_literal_global_14];
 }
 
-- (void)updateButtonStateIsFollowing:(BOOL)a3 didSucceed:(BOOL)a4 completionHandler:(id)a5
+- (void)updateButtonStateIsFollowing:(BOOL)following didSucceed:(BOOL)succeed completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__SearchUISportsFollowButtonItem_updateButtonStateIsFollowing_didSucceed_completionHandler___block_invoke;
   v10[3] = &unk_1E85B2B20;
-  v12 = a3;
+  followingCopy = following;
   v10[4] = self;
-  v11 = v8;
-  v13 = a4;
-  v9 = v8;
+  v11 = handlerCopy;
+  succeedCopy = succeed;
+  v9 = handlerCopy;
   [SearchUIUtilities dispatchMainIfNecessary:v10];
 }
 
@@ -108,14 +108,14 @@ uint64_t __92__SearchUISportsFollowButtonItem_updateButtonStateIsFollowing_didSu
   return result;
 }
 
-- (id)commandForStatus:(unint64_t)a3
+- (id)commandForStatus:(unint64_t)status
 {
   v5 = objc_opt_new();
-  v6 = [(SearchUIButtonItem *)self sfButtonItem];
-  v7 = [v6 sportsItem];
-  [v5 setSportsItem:v7];
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  sportsItem = [sfButtonItem sportsItem];
+  [v5 setSportsItem:sportsItem];
 
-  [v5 setFollow:a3 == 0];
+  [v5 setFollow:status == 0];
 
   return v5;
 }

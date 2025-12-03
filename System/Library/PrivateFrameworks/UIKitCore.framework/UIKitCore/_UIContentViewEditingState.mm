@@ -1,21 +1,21 @@
 @interface _UIContentViewEditingState
 - (_NSRange)proposedReplacementRange;
-- (_UIContentViewEditingState)initWithText:(id)a3 proposedReplacementText:(id)a4 proposedReplacementRange:(_NSRange)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIContentViewEditingState)initWithText:(id)text proposedReplacementText:(id)replacementText proposedReplacementRange:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UIContentViewEditingState
 
-- (_UIContentViewEditingState)initWithText:(id)a3 proposedReplacementText:(id)a4 proposedReplacementRange:(_NSRange)a5
+- (_UIContentViewEditingState)initWithText:(id)text proposedReplacementText:(id)replacementText proposedReplacementRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  replacementTextCopy = replacementText;
+  if (!textCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingConfiguration.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"text"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingConfiguration.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"text"}];
   }
 
   v19.receiver = self;
@@ -23,11 +23,11 @@
   v12 = [(_UIContentViewEditingState *)&v19 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [textCopy copy];
     text = v12->_text;
     v12->_text = v13;
 
-    v15 = [v11 copy];
+    v15 = [replacementTextCopy copy];
     proposedReplacementText = v12->_proposedReplacementText;
     v12->_proposedReplacementText = v15;
 
@@ -38,9 +38,9 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(NSString *)self->_text copy];

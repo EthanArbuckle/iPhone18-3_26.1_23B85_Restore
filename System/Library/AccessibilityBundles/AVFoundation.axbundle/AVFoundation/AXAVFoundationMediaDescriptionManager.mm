@@ -1,12 +1,12 @@
 @interface AXAVFoundationMediaDescriptionManager
 + (id)sharedManager;
 - (AXAVFoundationMediaDescriptionManager)init;
-- (BOOL)beginObservingPlayer:(id)a3;
+- (BOOL)beginObservingPlayer:(id)player;
 - (BOOL)isTappingMediaDescriptions;
 - (BOOL)isVoiceOverInTheTripleClickMenu;
-- (id)_queue_itemNodeForPlayer:(id)a3;
-- (void)endObservingPlayer:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (id)_queue_itemNodeForPlayer:(id)player;
+- (void)endObservingPlayer:(id)player;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation AXAVFoundationMediaDescriptionManager
@@ -45,29 +45,29 @@ uint64_t __54__AXAVFoundationMediaDescriptionManager_sharedManager__block_invoke
     engine = v2->_engine;
     v2->_engine = v5;
 
-    v7 = [MEMORY[0x29EDBA028] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x29EDBA028] strongToWeakObjectsMapTable];
     queue_nodeToPlayerMap = v2->_queue_nodeToPlayerMap;
-    v2->_queue_nodeToPlayerMap = v7;
+    v2->_queue_nodeToPlayerMap = strongToWeakObjectsMapTable;
   }
 
   return v2;
 }
 
-- (BOOL)beginObservingPlayer:(id)a3
+- (BOOL)beginObservingPlayer:(id)player
 {
   v22 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  if (v4)
+  playerCopy = player;
+  if (playerCopy)
   {
-    v5 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"legibility-%p", v4];
-    v6 = [objc_alloc(MEMORY[0x29EDBD710]) initWithIdentifier:v5];
+    playerCopy = [MEMORY[0x29EDBA0F8] stringWithFormat:@"legibility-%p", playerCopy];
+    v6 = [objc_alloc(MEMORY[0x29EDBD710]) initWithIdentifier:playerCopy];
     queue = self->_queue;
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __62__AXAVFoundationMediaDescriptionManager_beginObservingPlayer___block_invoke;
     block[3] = &unk_29F2989F0;
     block[4] = self;
-    v8 = v4;
+    v8 = playerCopy;
     v18 = v8;
     v9 = v6;
     v19 = v9;
@@ -94,7 +94,7 @@ uint64_t __54__AXAVFoundationMediaDescriptionManager_sharedManager__block_invoke
   }
 
   v13 = *MEMORY[0x29EDCA608];
-  return v4 != 0;
+  return playerCopy != 0;
 }
 
 void __62__AXAVFoundationMediaDescriptionManager_beginObservingPlayer___block_invoke_2(uint64_t a1, void *a2)
@@ -134,10 +134,10 @@ void __62__AXAVFoundationMediaDescriptionManager_beginObservingPlayer___block_in
   }
 }
 
-- (void)endObservingPlayer:(id)a3
+- (void)endObservingPlayer:(id)player
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  playerCopy = player;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -151,7 +151,7 @@ void __62__AXAVFoundationMediaDescriptionManager_beginObservingPlayer___block_in
   block[3] = &unk_29F298A60;
   v15 = &v16;
   block[4] = self;
-  v6 = v4;
+  v6 = playerCopy;
   v14 = v6;
   dispatch_sync(queue, block);
   if (v17[5])
@@ -261,16 +261,16 @@ LABEL_11:
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (id)_queue_itemNodeForPlayer:(id)a3
+- (id)_queue_itemNodeForPlayer:(id)player
 {
   v21 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  playerCopy = player;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NSMapTable *)self->_queue_nodeToPlayerMap keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  keyEnumerator = [(NSMapTable *)self->_queue_nodeToPlayerMap keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -281,13 +281,13 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_queue_nodeToPlayerMap objectForKey:v10];
         v12 = v11;
-        if (v11 == v4)
+        if (v11 == playerCopy)
         {
           v13 = v10;
 
@@ -295,7 +295,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -313,23 +313,23 @@ LABEL_11:
   return v13;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v39 = *MEMORY[0x29EDCA608];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (AXMediaPlayerObserverContext == a6 && [v10 isEqualToString:@"currentItem"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (AXMediaPlayerObserverContext == context && [pathCopy isEqualToString:@"currentItem"])
   {
     v13 = AXMediaLogCaptionDescriptions();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      *&buf[4] = v10;
+      *&buf[4] = pathCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v11;
+      *&buf[14] = objectCopy;
       *&buf[22] = 2112;
-      v36 = v12;
+      v36 = changeCopy;
       _os_log_impl(&dword_29BAC0000, v13, OS_LOG_TYPE_INFO, "Did observe change on. path:'%@' object:%@ change:%@", buf, 0x20u);
     }
 
@@ -346,17 +346,17 @@ LABEL_11:
     block[3] = &unk_29F298A60;
     v32 = buf;
     block[4] = self;
-    v15 = v11;
+    v15 = objectCopy;
     v31 = v15;
     dispatch_sync(queue, block);
     if (*(*&buf[8] + 40))
     {
-      v16 = [v12 objectForKeyedSubscript:*MEMORY[0x29EDB9EB0]];
-      v17 = [v16 BOOLValue];
+      v16 = [changeCopy objectForKeyedSubscript:*MEMORY[0x29EDB9EB0]];
+      bOOLValue = [v16 BOOLValue];
 
-      if (v17)
+      if (bOOLValue)
       {
-        v18 = [v12 objectForKeyedSubscript:*MEMORY[0x29EDB9EB8]];
+        v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x29EDB9EB8]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -366,7 +366,7 @@ LABEL_11:
 
       else
       {
-        v18 = [v12 objectForKeyedSubscript:*MEMORY[0x29EDB9EA8]];
+        v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x29EDB9EA8]];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -384,7 +384,7 @@ LABEL_11:
             v24 = 3221225472;
             v25 = __88__AXAVFoundationMediaDescriptionManager_observeValueForKeyPath_ofObject_change_context___block_invoke_301;
             v26 = &unk_29F298AB0;
-            v27 = self;
+            selfCopy = self;
             v29 = buf;
             v18 = v18;
             v28 = v18;
@@ -423,7 +423,7 @@ LABEL_11:
   {
     v22.receiver = self;
     v22.super_class = AXAVFoundationMediaDescriptionManager;
-    [(AXAVFoundationMediaDescriptionManager *)&v22 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(AXAVFoundationMediaDescriptionManager *)&v22 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v19 = *MEMORY[0x29EDCA608];

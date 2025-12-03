@@ -1,14 +1,14 @@
 @interface SearchIndexPersistence.Message
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 @end
 
 @implementation SearchIndexPersistence.Message
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v4 = sub_1004A5764();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10033B738(v4, v6);
 }
 

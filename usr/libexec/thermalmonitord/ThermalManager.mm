@@ -1,16 +1,16 @@
 @interface ThermalManager
-- (ThermalManager)initWithConfig:(__CFDictionary *)a3;
-- (void)checkForArcOverride:(__SCPreferences *)a3 key:(__CFString *)a4;
-- (void)checkForLifetimeServoOverride:(__SCPreferences *)a3 key:(__CFString *)a4;
-- (void)createNewProduct:(__CFRunLoop *)a3;
+- (ThermalManager)initWithConfig:(__CFDictionary *)config;
+- (void)checkForArcOverride:(__SCPreferences *)override key:(__CFString *)key;
+- (void)checkForLifetimeServoOverride:(__SCPreferences *)override key:(__CFString *)key;
+- (void)createNewProduct:(__CFRunLoop *)product;
 - (void)dealloc;
 - (void)initDataCollection;
-- (void)updatePrefs:(__SCPreferences *)a3 :(BOOL)a4;
+- (void)updatePrefs:(__SCPreferences *)prefs :(BOOL)a4;
 @end
 
 @implementation ThermalManager
 
-- (ThermalManager)initWithConfig:(__CFDictionary *)a3
+- (ThermalManager)initWithConfig:(__CFDictionary *)config
 {
   v5.receiver = self;
   v5.super_class = ThermalManager;
@@ -18,7 +18,7 @@
   if (result)
   {
     result->product = 0;
-    result->_plistConfig = a3;
+    result->_plistConfig = config;
   }
 
   return result;
@@ -31,9 +31,9 @@
   [(ThermalManager *)&v3 dealloc];
 }
 
-- (void)createNewProduct:(__CFRunLoop *)a3
+- (void)createNewProduct:(__CFRunLoop *)product
 {
-  self->localMainRunloop = a3;
+  self->localMainRunloop = product;
   productName = self->productName;
   if (productName > 14994604)
   {
@@ -1168,10 +1168,10 @@ LABEL_261:
   }
 }
 
-- (void)updatePrefs:(__SCPreferences *)a3 :(BOOL)a4
+- (void)updatePrefs:(__SCPreferences *)prefs :(BOOL)a4
 {
-  sub_10002C640(a3, self, a4);
-  Value = SCPreferencesGetValue(a3, @"overrideSensorLI");
+  sub_10002C640(prefs, self, a4);
+  Value = SCPreferencesGetValue(prefs, @"overrideSensorLI");
   byte_1000ABC39 = Value == kCFBooleanTrue;
   if (byte_1000AB2F8 != 1 || (v7 = qword_1000AB718, !os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT)))
   {
@@ -1195,7 +1195,7 @@ LABEL_261:
   if (byte_1000ABC39)
   {
 LABEL_8:
-    v9 = SCPreferencesGetValue(a3, @"setSensorLI");
+    v9 = SCPreferencesGetValue(prefs, @"setSensorLI");
     if (v9)
     {
       v10 = v9;
@@ -1222,7 +1222,7 @@ LABEL_8:
         }
 
         [(CommonProduct *)self->product updateMaxLIFor:v92];
-        SCPreferencesRemoveValue(a3, @"setSensorLI");
+        SCPreferencesRemoveValue(prefs, @"setSensorLI");
       }
     }
 
@@ -1230,28 +1230,28 @@ LABEL_8:
   }
 
 LABEL_16:
-  if (SCPreferencesGetValue(a3, @"removeOverrideSensorLI") == kCFBooleanTrue)
+  if (SCPreferencesGetValue(prefs, @"removeOverrideSensorLI") == kCFBooleanTrue)
   {
     [(CommonProduct *)self->product clearLoadingIndexOverrides];
-    SCPreferencesRemoveValue(a3, @"removeOverrideSensorLI");
-    SCPreferencesRemoveValue(a3, @"overrideSensorLI");
-    SCPreferencesCommitChanges(a3);
+    SCPreferencesRemoveValue(prefs, @"removeOverrideSensorLI");
+    SCPreferencesRemoveValue(prefs, @"overrideSensorLI");
+    SCPreferencesCommitChanges(prefs);
   }
 
-  v15 = SCPreferencesGetValue(a3, @"currentComponent");
+  v15 = SCPreferencesGetValue(prefs, @"currentComponent");
   if (v15)
   {
     *buf = 0;
     CFNumberGetValue(v15, kCFNumberIntType, buf);
-    SCPreferencesRemoveValue(a3, @"currentComponent");
+    SCPreferencesRemoveValue(prefs, @"currentComponent");
     LODWORD(v92) = [(CommonProduct *)self->product getCurrentMaxLIForComponent:*buf];
     v16 = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &v92);
-    SCPreferencesSetValue(a3, @"getCurrentLI", v16);
-    SCPreferencesCommitChanges(a3);
+    SCPreferencesSetValue(prefs, @"getCurrentLI", v16);
+    SCPreferencesCommitChanges(prefs);
     CFRelease(v16);
   }
 
-  v17 = SCPreferencesGetValue(a3, @"overrideControlEffort");
+  v17 = SCPreferencesGetValue(prefs, @"overrideControlEffort");
   byte_1000ABC3A = v17 == kCFBooleanTrue;
   if (byte_1000AB2F8 == 1)
   {
@@ -1284,7 +1284,7 @@ LABEL_33:
   }
 
 LABEL_25:
-  v20 = SCPreferencesGetValue(a3, @"setSensorControlEffort");
+  v20 = SCPreferencesGetValue(prefs, @"setSensorControlEffort");
   if (v20)
   {
     v21 = v20;
@@ -1315,7 +1315,7 @@ LABEL_25:
   }
 
 LABEL_34:
-  v26 = SCPreferencesGetValue(a3, @"hotSpotPIDTargetKey");
+  v26 = SCPreferencesGetValue(prefs, @"hotSpotPIDTargetKey");
   if (v26)
   {
     v27 = v26;
@@ -1342,22 +1342,22 @@ LABEL_34:
       }
 
       [(CommonProduct *)self->product updateHotSpotPIDTargetFor:v92];
-      if (SCPreferencesGetValue(a3, @"hotSpotPIDTargetKeyPersistentlyEnabled") != kCFBooleanTrue)
+      if (SCPreferencesGetValue(prefs, @"hotSpotPIDTargetKeyPersistentlyEnabled") != kCFBooleanTrue)
       {
-        SCPreferencesRemoveValue(a3, @"hotSpotPIDTargetKey");
-        SCPreferencesCommitChanges(a3);
+        SCPreferencesRemoveValue(prefs, @"hotSpotPIDTargetKey");
+        SCPreferencesCommitChanges(prefs);
       }
     }
   }
 
-  if (SCPreferencesGetValue(a3, @"removeHotspotTargetOverrides") == kCFBooleanTrue)
+  if (SCPreferencesGetValue(prefs, @"removeHotspotTargetOverrides") == kCFBooleanTrue)
   {
     [(CommonProduct *)self->product removeHotspotTargetOverrides];
-    SCPreferencesRemoveValue(a3, @"removeHotspotTargetOverrides");
-    SCPreferencesCommitChanges(a3);
+    SCPreferencesRemoveValue(prefs, @"removeHotspotTargetOverrides");
+    SCPreferencesCommitChanges(prefs);
   }
 
-  v32 = SCPreferencesGetValue(a3, @"trapTarget");
+  v32 = SCPreferencesGetValue(prefs, @"trapTarget");
   if (v32)
   {
     v33 = v32;
@@ -1384,15 +1384,15 @@ LABEL_34:
       }
 
       [(CommonProduct *)self->product updateTrapTargetFor:v92];
-      if (SCPreferencesGetValue(a3, @"trapTargetPersistentlyEnabled") != kCFBooleanTrue)
+      if (SCPreferencesGetValue(prefs, @"trapTargetPersistentlyEnabled") != kCFBooleanTrue)
       {
-        SCPreferencesRemoveValue(a3, @"trapTarget");
-        SCPreferencesCommitChanges(a3);
+        SCPreferencesRemoveValue(prefs, @"trapTarget");
+        SCPreferencesCommitChanges(prefs);
       }
     }
   }
 
-  v38 = SCPreferencesGetValue(a3, @"sleepTarget");
+  v38 = SCPreferencesGetValue(prefs, @"sleepTarget");
   if (v38)
   {
     v39 = v38;
@@ -1419,25 +1419,25 @@ LABEL_34:
       }
 
       [(CommonProduct *)self->product updateSleepTargetFor:v92];
-      if (SCPreferencesGetValue(a3, @"sleepTargetPersistentlyEnabled") != kCFBooleanTrue)
+      if (SCPreferencesGetValue(prefs, @"sleepTargetPersistentlyEnabled") != kCFBooleanTrue)
       {
-        SCPreferencesRemoveValue(a3, @"sleepTarget");
-        SCPreferencesCommitChanges(a3);
+        SCPreferencesRemoveValue(prefs, @"sleepTarget");
+        SCPreferencesCommitChanges(prefs);
       }
     }
   }
 
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoStateSaveIntervalMinutes"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoDieTempMaxMax"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoDieTempMaxAverage"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoIntegratorState_E"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoInstantaneousAF_E"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoIntegratorState_P"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoInstantaneousAF_P"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoIntegratorState_G"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoInstantaneousAF_G"];
-  [(ThermalManager *)self checkForLifetimeServoOverride:a3 key:@"LifetimeServoDieTempTarget"];
-  v44 = SCPreferencesGetValue(a3, @"kBatteryPercentRemainingKey");
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoStateSaveIntervalMinutes"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoDieTempMaxMax"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoDieTempMaxAverage"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoIntegratorState_E"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoInstantaneousAF_E"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoIntegratorState_P"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoInstantaneousAF_P"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoIntegratorState_G"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoInstantaneousAF_G"];
+  [(ThermalManager *)self checkForLifetimeServoOverride:prefs key:@"LifetimeServoDieTempTarget"];
+  v44 = SCPreferencesGetValue(prefs, @"kBatteryPercentRemainingKey");
   if (v44)
   {
     v45 = v44;
@@ -1459,17 +1459,17 @@ LABEL_34:
       }
     }
 
-    if (SCPreferencesGetValue(a3, @"kBatteryPercentRemainingKeyPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kBatteryPercentRemainingKeyPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kBatteryPercentRemainingKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kBatteryPercentRemainingKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  v48 = SCPreferencesGetValue(a3, @"kBatteryRawGasGaugeSOCKey");
+  v48 = SCPreferencesGetValue(prefs, @"kBatteryRawGasGaugeSOCKey");
   if (v48)
   {
     v49 = v48;
@@ -1481,17 +1481,17 @@ LABEL_34:
       sub_1000326F0(*buf);
     }
 
-    if (SCPreferencesGetValue(a3, @"kBatteryRawGasGaugeSOCKeyPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kBatteryRawGasGaugeSOCKeyPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kBatteryRawGasGaugeSOCKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kBatteryRawGasGaugeSOCKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  v51 = SCPreferencesGetValue(a3, @"kBatteryChemSOCKey");
+  v51 = SCPreferencesGetValue(prefs, @"kBatteryChemSOCKey");
   if (v51)
   {
     v52 = v51;
@@ -1503,19 +1503,19 @@ LABEL_34:
       sub_100032648(*buf);
     }
 
-    if (SCPreferencesGetValue(a3, @"kBatteryChemSOCKeyPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kBatteryChemSOCKeyPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kBatteryChemSOCKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kBatteryChemSOCKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  [(ThermalManager *)self checkForArcOverride:a3 key:@"ArcModuleThresholdKey"];
-  [(ThermalManager *)self checkForArcOverride:a3 key:@"ArcVirtualThresholdKey"];
-  v54 = SCPreferencesGetValue(a3, @"overrideCameraStrobeMaxLoad");
+  [(ThermalManager *)self checkForArcOverride:prefs key:@"ArcModuleThresholdKey"];
+  [(ThermalManager *)self checkForArcOverride:prefs key:@"ArcVirtualThresholdKey"];
+  v54 = SCPreferencesGetValue(prefs, @"overrideCameraStrobeMaxLoad");
   byte_1000ABC3B = v54 == kCFBooleanTrue;
   if (byte_1000AB2F8 != 1 || (v55 = qword_1000AB718, !os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT)))
   {
@@ -1544,7 +1544,7 @@ LABEL_90:
 
     v59 = MatchingService;
     v92 = 0;
-    v60 = SCPreferencesGetValue(a3, @"setCameraStrobeMaxLoad");
+    v60 = SCPreferencesGetValue(prefs, @"setCameraStrobeMaxLoad");
     if (v60)
     {
       v61 = v60;
@@ -1559,10 +1559,10 @@ LABEL_90:
     if (!v63)
     {
 LABEL_106:
-      if (SCPreferencesGetValue(a3, @"overrideCameraStrobeMaxLoadPersistentlyEnabled") != kCFBooleanTrue)
+      if (SCPreferencesGetValue(prefs, @"overrideCameraStrobeMaxLoadPersistentlyEnabled") != kCFBooleanTrue)
       {
-        SCPreferencesRemoveValue(a3, @"overrideCameraStrobeMaxLoad");
-        if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+        SCPreferencesRemoveValue(prefs, @"overrideCameraStrobeMaxLoad");
+        if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
         {
           sub_100051514();
         }
@@ -1623,7 +1623,7 @@ LABEL_100:
   }
 
 LABEL_110:
-  v71 = SCPreferencesGetValue(a3, @"kBatteryRaKey");
+  v71 = SCPreferencesGetValue(prefs, @"kBatteryRaKey");
   if (v71)
   {
     v72 = v71;
@@ -1635,17 +1635,17 @@ LABEL_110:
       sub_100032D78(*buf);
     }
 
-    if (SCPreferencesGetValue(a3, @"kBatteryRaKeyPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kBatteryRaKeyPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kBatteryRaKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kBatteryRaKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  v74 = SCPreferencesGetValue(a3, @"kBatteryWRaKey");
+  v74 = SCPreferencesGetValue(prefs, @"kBatteryWRaKey");
   if (v74)
   {
     v75 = v74;
@@ -1657,17 +1657,17 @@ LABEL_110:
       sub_100032E34(*buf);
     }
 
-    if (SCPreferencesGetValue(a3, @"kBatteryWRaKeyPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kBatteryWRaKeyPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kBatteryWRaKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kBatteryWRaKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  v77 = SCPreferencesGetValue(a3, @"kBatteryUPOCountKey");
+  v77 = SCPreferencesGetValue(prefs, @"kBatteryUPOCountKey");
   if (v77)
   {
     v78 = v77;
@@ -1679,17 +1679,17 @@ LABEL_110:
       sub_100033044(*buf);
     }
 
-    if (SCPreferencesGetValue(a3, @"kBatteryUPOCountKeyPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kBatteryUPOCountKeyPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kBatteryUPOCountKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kBatteryUPOCountKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  v80 = SCPreferencesGetValue(a3, @"kStepperDisabledKey");
+  v80 = SCPreferencesGetValue(prefs, @"kStepperDisabledKey");
   if (v80)
   {
     v81 = v80;
@@ -1701,14 +1701,14 @@ LABEL_110:
       sub_10003305C(*buf != 0);
     }
 
-    SCPreferencesRemoveValue(a3, @"kStepperDisabledKey");
-    if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+    SCPreferencesRemoveValue(prefs, @"kStepperDisabledKey");
+    if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
       sub_100051514();
     }
   }
 
-  v83 = SCPreferencesGetValue(a3, @"kUseNewMitigationsKey");
+  v83 = SCPreferencesGetValue(prefs, @"kUseNewMitigationsKey");
   if (v83)
   {
     v84 = v83;
@@ -1720,17 +1720,17 @@ LABEL_110:
       sub_100033068(*buf == 1);
     }
 
-    if (SCPreferencesGetValue(a3, @"kUseNewMitigationsPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kUseNewMitigationsPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kUseNewMitigationsKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kUseNewMitigationsKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  v86 = SCPreferencesGetValue(a3, @"kAgingControllerDisabledKey");
+  v86 = SCPreferencesGetValue(prefs, @"kAgingControllerDisabledKey");
   if (v86)
   {
     v87 = v86;
@@ -1742,17 +1742,17 @@ LABEL_110:
       sub_10003308C(*buf != 0);
     }
 
-    if (SCPreferencesGetValue(a3, @"kAgingControllerDisabledPersistentKey") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kAgingControllerDisabledPersistentKey") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kAgingControllerDisabledKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kAgingControllerDisabledKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
     }
   }
 
-  v89 = SCPreferencesGetValue(a3, @"kOnChargerStatusKey");
+  v89 = SCPreferencesGetValue(prefs, @"kOnChargerStatusKey");
   if (v89)
   {
     v90 = v89;
@@ -1764,10 +1764,10 @@ LABEL_110:
       sub_1000330CC(*buf);
     }
 
-    if (SCPreferencesGetValue(a3, @"kOnChargerStatusKeyPersistentlyEnabled") != kCFBooleanTrue)
+    if (SCPreferencesGetValue(prefs, @"kOnChargerStatusKeyPersistentlyEnabled") != kCFBooleanTrue)
     {
-      SCPreferencesRemoveValue(a3, @"kOnChargerStatusKey");
-      if (!SCPreferencesCommitChanges(a3) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
+      SCPreferencesRemoveValue(prefs, @"kOnChargerStatusKey");
+      if (!SCPreferencesCommitChanges(prefs) && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         sub_100051514();
       }
@@ -1775,9 +1775,9 @@ LABEL_110:
   }
 }
 
-- (void)checkForLifetimeServoOverride:(__SCPreferences *)a3 key:(__CFString *)a4
+- (void)checkForLifetimeServoOverride:(__SCPreferences *)override key:(__CFString *)key
 {
-  Value = SCPreferencesGetValue(a3, a4);
+  Value = SCPreferencesGetValue(override, key);
   v7 = 0xFFFFFFFFLL;
   valuePtr = -1;
   if (Value)
@@ -1791,12 +1791,12 @@ LABEL_110:
     }
   }
 
-  [(CommonProduct *)self->product overrideLifetimeServoParam:a4 value:v7];
+  [(CommonProduct *)self->product overrideLifetimeServoParam:key value:v7];
 }
 
-- (void)checkForArcOverride:(__SCPreferences *)a3 key:(__CFString *)a4
+- (void)checkForArcOverride:(__SCPreferences *)override key:(__CFString *)key
 {
-  Value = SCPreferencesGetValue(a3, a4);
+  Value = SCPreferencesGetValue(override, key);
   if (Value)
   {
     v7 = Value;
@@ -1805,7 +1805,7 @@ LABEL_110:
     {
       valuePtr = 0;
       CFNumberGetValue(v7, kCFNumberIntType, &valuePtr);
-      [(CommonProduct *)self->product overrideArcParam:a4 value:valuePtr];
+      [(CommonProduct *)self->product overrideArcParam:key value:valuePtr];
     }
   }
 }
@@ -1816,10 +1816,10 @@ LABEL_110:
   {
     v3 = +[TGraphSampler sharedInstance];
     product = self->product;
-    v5 = [(CommonProduct *)product listofComponentControl];
-    v6 = [(CommonProduct *)self->product listOfSupervisorControl];
+    listofComponentControl = [(CommonProduct *)product listofComponentControl];
+    listOfSupervisorControl = [(CommonProduct *)self->product listOfSupervisorControl];
 
-    [(TGraphSampler *)v3 setProduct:product withComponents:v5 andHotspotSupervisors:v6];
+    [(TGraphSampler *)v3 setProduct:product withComponents:listofComponentControl andHotspotSupervisors:listOfSupervisorControl];
   }
 }
 

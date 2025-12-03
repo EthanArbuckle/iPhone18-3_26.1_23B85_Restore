@@ -1,6 +1,6 @@
 @interface HNDJoystickDevice
 - (void)dealloc;
-- (void)handleReportCallback:(int)a3 report:(char *)a4 reportLength:(int64_t)a5;
+- (void)handleReportCallback:(int)callback report:(char *)report reportLength:(int64_t)length;
 @end
 
 @implementation HNDJoystickDevice
@@ -13,7 +13,7 @@
   [(HNDDevice *)&v3 dealloc];
 }
 
-- (void)handleReportCallback:(int)a3 report:(char *)a4 reportLength:(int64_t)a5
+- (void)handleReportCallback:(int)callback report:(char *)report reportLength:(int64_t)length
 {
   if (!self->_repeatTimer)
   {
@@ -22,8 +22,8 @@
     self->_repeatTimer = v11;
   }
 
-  LOBYTE(v5) = *a4;
-  LOBYTE(v6) = a4[1];
+  LOBYTE(v5) = *report;
+  LOBYTE(v6) = report[1];
   v13 = (self->super._maxX - self->super._minX) * 0.5;
   v14 = (v5 - v13) / v13;
   v15 = (self->super._maxY - self->super._minY) * 0.5;
@@ -32,8 +32,8 @@
   [v17 setType:3];
   [v17 setDeltaX:v14 * 15.0];
   [v17 setDeltaY:v16 * 15.0];
-  v18 = [(HNDDevice *)self delegate];
-  [v18 device:self didPostEvent:v17];
+  delegate = [(HNDDevice *)self delegate];
+  [delegate device:self didPostEvent:v17];
 
   [(AXDispatchTimer *)self->_repeatTimer cancel];
   if (fabs(v14) > 0.1 || fabs(v16) > 0.1)
@@ -41,17 +41,17 @@
     v23 = 0;
     v24 = &v23;
     v25 = 0x2020000000;
-    v26 = malloc_type_malloc(a5, 0xA52EB772uLL);
-    memcpy(v24[3], a4, a5);
+    v26 = malloc_type_malloc(length, 0xA52EB772uLL);
+    memcpy(v24[3], report, length);
     v19 = self->_repeatTimer;
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100068B34;
     v21[3] = &unk_1001D5748;
-    v22 = a3;
+    callbackCopy = callback;
     v21[4] = self;
     v21[5] = &v23;
-    v21[6] = a5;
+    v21[6] = length;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100068B88;

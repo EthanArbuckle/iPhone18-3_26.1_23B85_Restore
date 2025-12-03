@@ -1,18 +1,18 @@
 @interface WFiCloudFileLocation
-+ (BOOL)canRepresentURL:(id)a3 item:(id)a4 parentItems:(id)a5;
-+ (id)resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:(id)a3 relativeSubpath:(id)a4;
-+ (id)subpathFromURL:(id)a3;
-- (id)resolveLocationWithError:(id *)a3;
++ (BOOL)canRepresentURL:(id)l item:(id)item parentItems:(id)items;
++ (id)resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:(id)d relativeSubpath:(id)subpath;
++ (id)subpathFromURL:(id)l;
+- (id)resolveLocationWithError:(id *)error;
 @end
 
 @implementation WFiCloudFileLocation
 
-+ (id)resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:(id)a3 relativeSubpath:(id)a4
++ (id)resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:(id)d relativeSubpath:(id)subpath
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  subpathCopy = subpath;
   v7 = *MEMORY[0x1E6997100];
-  v8 = v5;
+  v8 = dCopy;
   v9 = v8;
   v10 = MEMORY[0x1E69970F8];
   if (v7 == v8)
@@ -58,7 +58,7 @@ LABEL_13:
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 URLByAppendingPathComponent:v6];
+      v18 = [v16 URLByAppendingPathComponent:subpathCopy];
       if ([v18 wf_fileExists])
       {
 LABEL_15:
@@ -108,7 +108,7 @@ LABEL_39:
     v17 = v30;
     if (v30)
     {
-      v18 = [v30 URLByAppendingPathComponent:v6];
+      v18 = [v30 URLByAppendingPathComponent:subpathCopy];
       if ([v18 wf_fileExists])
       {
         goto LABEL_15;
@@ -121,7 +121,7 @@ LABEL_18:
 
     if (v19)
     {
-      v18 = [v19 URLByAppendingPathComponent:v6];
+      v18 = [v19 URLByAppendingPathComponent:subpathCopy];
       if ([v18 wf_fileExists])
       {
         goto LABEL_22;
@@ -152,36 +152,36 @@ LABEL_23:
   return v18;
 }
 
-+ (id)subpathFromURL:(id)a3
++ (id)subpathFromURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[WFFileLocationUtilities mobileDocumentsDirectory];
-  v5 = [v3 wf_relativePathFromURL:v4];
+  v5 = [lCopy wf_relativePathFromURL:v4];
 
   return v5;
 }
 
-+ (BOOL)canRepresentURL:(id)a3 item:(id)a4 parentItems:(id)a5
++ (BOOL)canRepresentURL:(id)l item:(id)item parentItems:(id)items
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  itemCopy = item;
   v6 = getWFFilesLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 providerDomainID];
-    v8 = [v5 providerID];
+    providerDomainID = [itemCopy providerDomainID];
+    providerID = [itemCopy providerID];
     v16 = 136315650;
     v17 = "+[WFiCloudFileLocation canRepresentURL:item:parentItems:]";
     v18 = 2112;
-    v19 = v7;
+    v19 = providerDomainID;
     v20 = 2112;
-    v21 = v8;
+    v21 = providerID;
     _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s Evaluating item with provider domain id: %@ && provider id %@", &v16, 0x20u);
   }
 
   v9 = WFPossibleMobileDocumentsFileProviderDomainIDs();
-  v10 = [v5 providerDomainID];
-  if ([v9 containsObject:v10])
+  providerDomainID2 = [itemCopy providerDomainID];
+  if ([v9 containsObject:providerDomainID2])
   {
     v11 = 1;
   }
@@ -189,17 +189,17 @@ LABEL_23:
   else
   {
     v12 = WFPossibleMobileDocumentsFileProviderDomainIDs();
-    v13 = [v5 providerID];
-    v11 = [v12 containsObject:v13];
+    providerID2 = [itemCopy providerID];
+    v11 = [v12 containsObject:providerID2];
   }
 
   v14 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (id)resolveLocationWithError:(id *)a3
+- (id)resolveLocationWithError:(id *)error
 {
-  v4 = [(WFFileProviderLocation *)self resolveCrossDeviceItemIDWithError:a3];
+  v4 = [(WFFileProviderLocation *)self resolveCrossDeviceItemIDWithError:error];
   if (v4)
   {
     v5 = v4;
@@ -208,15 +208,15 @@ LABEL_23:
   else
   {
     v6 = +[WFFileLocationUtilities mobileDocumentsDirectory];
-    v7 = [(WFFileLocation *)self relativeSubpath];
-    v5 = [v6 URLByAppendingPathComponent:v7];
+    relativeSubpath = [(WFFileLocation *)self relativeSubpath];
+    v5 = [v6 URLByAppendingPathComponent:relativeSubpath];
 
     if (!v5)
     {
       v8 = objc_opt_class();
-      v9 = [(WFFileProviderLocation *)self fileProviderDomainID];
-      v10 = [(WFFileLocation *)self relativeSubpath];
-      v5 = [v8 resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:v9 relativeSubpath:v10];
+      fileProviderDomainID = [(WFFileProviderLocation *)self fileProviderDomainID];
+      relativeSubpath2 = [(WFFileLocation *)self relativeSubpath];
+      v5 = [v8 resolveLocationFromPossibleProviderDomainIDsWithSerializedProviderDomainID:fileProviderDomainID relativeSubpath:relativeSubpath2];
     }
   }
 

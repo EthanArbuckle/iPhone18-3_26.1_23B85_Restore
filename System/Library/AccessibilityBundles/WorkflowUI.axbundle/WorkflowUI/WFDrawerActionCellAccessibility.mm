@@ -1,36 +1,36 @@
 @interface WFDrawerActionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 @end
 
 @implementation WFDrawerActionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerActionCell" hasSwiftField:@"label" withSwiftType:"UILabel"];
-  [v3 validateClass:@"_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerActionCell" hasSwiftField:@"infoButton" withSwiftType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerActionCell" hasSwiftField:@"label" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"_TtC10WorkflowUIP33_E1EBF4FF771D0942E2717CF38009080818WFDrawerActionCell" hasSwiftField:@"infoButton" withSwiftType:"UIButton"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(WFDrawerActionCellAccessibility *)self safeSwiftValueForKey:@"label"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(WFDrawerActionCellAccessibility *)self safeSwiftValueForKey:@"infoButton"];
   v5 = accessibilityLocalizedString(@"more.info");
   [v4 setAccessibilityLabel:v5];
 
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
-  return v3;
+  return array;
 }
 
 @end

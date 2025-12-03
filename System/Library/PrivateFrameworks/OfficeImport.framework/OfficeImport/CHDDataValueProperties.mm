@@ -2,10 +2,10 @@
 + (id)dataValueProperties;
 - (CHDDataValueProperties)init;
 - (NSString)description;
-- (id)shallowCopyWithIndex:(unint64_t)a3;
-- (void)setDataLabel:(id)a3;
-- (void)setGraphicProperties:(id)a3;
-- (void)setMarker:(id)a3;
+- (id)shallowCopyWithIndex:(unint64_t)index;
+- (void)setDataLabel:(id)label;
+- (void)setGraphicProperties:(id)properties;
+- (void)setMarker:(id)marker;
 @end
 
 @implementation CHDDataValueProperties
@@ -30,13 +30,13 @@
   return v2;
 }
 
-- (id)shallowCopyWithIndex:(unint64_t)a3
+- (id)shallowCopyWithIndex:(unint64_t)index
 {
-  v5 = [objc_opt_class() dataValueProperties];
-  v6 = v5;
-  if (v5)
+  dataValueProperties = [objc_opt_class() dataValueProperties];
+  v6 = dataValueProperties;
+  if (dataValueProperties)
   {
-    [v5 setDataValueIndex:a3];
+    [dataValueProperties setDataValueIndex:index];
     [v6 setGraphicProperties:self->mGraphicProperties];
     [v6 setMarker:self->mMarker];
     [v6 setDataLabel:self->mDataLabel];
@@ -46,42 +46,42 @@
   return v6;
 }
 
-- (void)setDataLabel:(id)a3
+- (void)setDataLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   mDataLabel = self->mDataLabel;
   p_mDataLabel = &self->mDataLabel;
-  if (mDataLabel != v5)
+  if (mDataLabel != labelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDataLabel, a3);
-    v5 = v8;
+    v8 = labelCopy;
+    objc_storeStrong(p_mDataLabel, label);
+    labelCopy = v8;
   }
 }
 
-- (void)setGraphicProperties:(id)a3
+- (void)setGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mGraphicProperties = self->mGraphicProperties;
   p_mGraphicProperties = &self->mGraphicProperties;
-  if (mGraphicProperties != v5)
+  if (mGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)setMarker:(id)a3
+- (void)setMarker:(id)marker
 {
-  v5 = a3;
+  markerCopy = marker;
   mMarker = self->mMarker;
   p_mMarker = &self->mMarker;
-  if (mMarker != v5)
+  if (mMarker != markerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mMarker, a3);
-    v5 = v8;
+    v8 = markerCopy;
+    objc_storeStrong(p_mMarker, marker);
+    markerCopy = v8;
   }
 }
 

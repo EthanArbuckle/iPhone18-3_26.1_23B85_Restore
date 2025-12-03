@@ -2,27 +2,27 @@
 - (BOOL)_ensureXPCStarted;
 - (NSArray)discoveredPeople;
 - (RPPeopleDiscovery)init;
-- (RPPeopleDiscovery)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (RPPeopleDiscovery)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_invokeBlockActivateSafe:(id)a3;
+- (void)_invokeBlockActivateSafe:(id)safe;
 - (void)_lostAllPeople;
 - (void)_scheduleRetry;
-- (void)_updatePeopleDensity:(unint64_t)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)addAppleID:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updatePeopleDensity:(unint64_t)density;
+- (void)activateWithCompletion:(id)completion;
+- (void)addAppleID:(id)d completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)removeAppleID:(id)a3 completion:(id)a4;
-- (void)setDiscoveryFlags:(unsigned int)a3;
-- (void)setRangingPeople:(id)a3;
-- (void)setScanRate:(unsigned int)a3;
-- (void)xpcPeopleStatusChanged:(unsigned int)a3;
-- (void)xpcPersonFound:(id)a3;
-- (void)xpcPersonID:(id)a3 deviceID:(id)a4 updatedMeasurement:(id)a5;
-- (void)xpcPersonLost:(id)a3;
+- (void)removeAppleID:(id)d completion:(id)completion;
+- (void)setDiscoveryFlags:(unsigned int)flags;
+- (void)setRangingPeople:(id)people;
+- (void)setScanRate:(unsigned int)rate;
+- (void)xpcPeopleStatusChanged:(unsigned int)changed;
+- (void)xpcPersonFound:(id)found;
+- (void)xpcPersonID:(id)d deviceID:(id)iD updatedMeasurement:(id)measurement;
+- (void)xpcPersonLost:(id)lost;
 @end
 
 @implementation RPPeopleDiscovery
@@ -42,9 +42,9 @@
   return v3;
 }
 
-- (RPPeopleDiscovery)initWithCoder:(id)a3
+- (RPPeopleDiscovery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = RPPeopleDiscovery;
   v5 = [(RPPeopleDiscovery *)&v9 init];
@@ -84,47 +84,47 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   changeFlags = self->_changeFlags;
-  v10 = v4;
+  v10 = coderCopy;
   if (changeFlags)
   {
-    [v4 encodeInt64:changeFlags forKey:@"cf"];
-    v4 = v10;
+    [coderCopy encodeInt64:changeFlags forKey:@"cf"];
+    coderCopy = v10;
   }
 
   discoveryFlags = self->_discoveryFlags;
   if (discoveryFlags)
   {
     [v10 encodeInt64:discoveryFlags forKey:@"df"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   discoveryMode = self->_discoveryMode;
   if (discoveryMode)
   {
     [v10 encodeInteger:discoveryMode forKey:@"dm"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   rangingPersonIDs = self->_rangingPersonIDs;
   if (rangingPersonIDs)
   {
     [v10 encodeObject:rangingPersonIDs forKey:@"rpi"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   scanRate = self->_scanRate;
   if (scanRate)
   {
     [v10 encodeInt64:scanRate forKey:@"scr"];
-    v4 = v10;
+    coderCopy = v10;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v26 = 0;
   v27 = &v26;
@@ -171,7 +171,7 @@ LABEL_11:
   v16 = v6;
   NSAppendPrintF();
   objc_storeStrong(&v31, v25);
-  if (a3 <= 30)
+  if (level <= 30)
   {
     v7 = v27 + 5;
     obj = v27[5];
@@ -196,13 +196,13 @@ LABEL_11:
     v19 = v10;
     NSAppendPrintF();
     objc_storeStrong(v7, obj);
-    if (a3 <= 20)
+    if (level <= 20)
     {
       v11 = v27;
       v23 = v27[5];
       NSAppendPrintF();
       objc_storeStrong(v11 + 5, v23);
-      if (a3 >= 11)
+      if (level >= 11)
       {
         v12 = 50;
       }
@@ -239,22 +239,22 @@ void __42__RPPeopleDiscovery_descriptionWithLevel___block_invoke(uint64_t a1)
   objc_storeStrong((v1 + 40), obj);
 }
 
-- (void)setDiscoveryFlags:(unsigned int)a3
+- (void)setDiscoveryFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __39__RPPeopleDiscovery_setDiscoveryFlags___block_invoke;
   v3[3] = &unk_1E7C934D8;
   v3[4] = self;
-  v4 = a3;
+  flagsCopy = flags;
   [(RPPeopleDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)setRangingPeople:(id)a3
+- (void)setRangingPeople:(id)people
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 copy];
+  peopleCopy = people;
+  v5 = [peopleCopy copy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -283,8 +283,8 @@ void __42__RPPeopleDiscovery_descriptionWithLevel___block_invoke(uint64_t a1)
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * i) identifier];
-        [v6 addObject:v11];
+        identifier = [*(*(&v21 + 1) + 8 * i) identifier];
+        [v6 addObject:identifier];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -293,9 +293,9 @@ void __42__RPPeopleDiscovery_descriptionWithLevel___block_invoke(uint64_t a1)
     while (v8);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  rangingPersonIDs = v12->_rangingPersonIDs;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rangingPersonIDs = selfCopy->_rangingPersonIDs;
   v14 = v6;
   v15 = rangingPersonIDs;
   v16 = v15;
@@ -319,22 +319,22 @@ void __42__RPPeopleDiscovery_descriptionWithLevel___block_invoke(uint64_t a1)
     {
     }
 
-    objc_storeStrong(&v12->_rangingPeople, v5);
-    objc_storeStrong(&v12->_rangingPersonIDs, v6);
-    if (v12->_activateCalled)
+    objc_storeStrong(&selfCopy->_rangingPeople, v5);
+    objc_storeStrong(&selfCopy->_rangingPersonIDs, v6);
+    if (selfCopy->_activateCalled)
     {
-      dispatchQueue = v12->_dispatchQueue;
+      dispatchQueue = selfCopy->_dispatchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __38__RPPeopleDiscovery_setRangingPeople___block_invoke;
       block[3] = &unk_1E7C92CE8;
-      block[4] = v12;
+      block[4] = selfCopy;
       dispatch_async(dispatchQueue, block);
     }
   }
 
 LABEL_19:
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -345,41 +345,41 @@ void __38__RPPeopleDiscovery_setRangingPeople___block_invoke(uint64_t a1)
   [v2 xpcPeopleDiscoveryUpdate:*(a1 + 32)];
 }
 
-- (void)setScanRate:(unsigned int)a3
+- (void)setScanRate:(unsigned int)rate
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__RPPeopleDiscovery_setScanRate___block_invoke;
   v3[3] = &unk_1E7C934D8;
   v3[4] = self;
-  v4 = a3;
+  rateCopy = rate;
   [(RPPeopleDiscovery *)self _invokeBlockActivateSafe:v3];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__RPPeopleDiscovery_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E7C92E20;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  reactivateCopy = reactivate;
+  completionCopy = completion;
+  if (reactivateCopy)
   {
     if (gLogCategory_RPPeopleDiscovery <= 30 && (gLogCategory_RPPeopleDiscovery != -1 || _LogCategory_Initialize()))
     {
@@ -400,16 +400,16 @@ LABEL_14:
     v13[1] = 3221225472;
     v13[2] = __56__RPPeopleDiscovery__activateWithCompletion_reactivate___block_invoke;
     v13[3] = &unk_1E7C93500;
-    v15 = v4;
+    v15 = reactivateCopy;
     v13[4] = self;
-    v8 = v6;
+    v8 = completionCopy;
     v14 = v8;
     v9 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v13];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __56__RPPeopleDiscovery__activateWithCompletion_reactivate___block_invoke_2;
     v10[3] = &unk_1E7C94BF0;
-    v12 = v4;
+    v12 = reactivateCopy;
     v10[4] = self;
     v11 = v8;
     [v9 xpcPeopleDiscoveryActivate:self completion:v10];
@@ -418,9 +418,9 @@ LABEL_14:
   else
   {
     [(RPPeopleDiscovery *)self _scheduleRetry];
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -673,29 +673,29 @@ uint64_t __38__RPPeopleDiscovery__ensureXPCStarted__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_invokeBlockActivateSafe:(id)a3
+- (void)_invokeBlockActivateSafe:(id)safe
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  safeCopy = safe;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __46__RPPeopleDiscovery__invokeBlockActivateSafe___block_invoke;
     v7[3] = &unk_1E7C93550;
-    v7[4] = v5;
-    v8 = v4;
+    v7[4] = selfCopy;
+    v8 = safeCopy;
     dispatch_async(dispatchQueue, v7);
   }
 
   else
   {
-    v4[2](v4);
+    safeCopy[2](safeCopy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __46__RPPeopleDiscovery__invokeBlockActivateSafe___block_invoke(uint64_t a1)
@@ -870,22 +870,22 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
 
 - (NSArray)discoveredPeople
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  discoveredPeople = v2->_discoveredPeople;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredPeople = selfCopy->_discoveredPeople;
   if (discoveredPeople)
   {
-    v4 = [(NSMutableDictionary *)discoveredPeople allValues];
+    allValues = [(NSMutableDictionary *)discoveredPeople allValues];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return allValues;
 }
 
 - (void)_lostAllPeople
@@ -902,7 +902,7 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
   discoveredPeople = obj->_discoveredPeople;
   if (personLostHandler)
   {
-    v5 = [(NSMutableDictionary *)discoveredPeople allValues];
+    allValues = [(NSMutableDictionary *)discoveredPeople allValues];
     [(NSMutableDictionary *)obj->_discoveredPeople removeAllObjects];
     objc_sync_exit(obj);
 
@@ -910,7 +910,7 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = allValues;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -948,9 +948,9 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updatePeopleDensity:(unint64_t)a3
+- (void)_updatePeopleDensity:(unint64_t)density
 {
-  if (a3 >= 0x1E)
+  if (density >= 0x1E)
   {
     v3 = 90;
   }
@@ -960,7 +960,7 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
     v3 = 50;
   }
 
-  if (a3 >= 5)
+  if (density >= 5)
   {
     v4 = v3;
   }
@@ -970,7 +970,7 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
     v4 = 10;
   }
 
-  if (a3)
+  if (density)
   {
     v5 = v4;
   }
@@ -998,7 +998,7 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpcPeopleStatusChanged:(unsigned int)a3
+- (void)xpcPeopleStatusChanged:(unsigned int)changed
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_RPPeopleDiscovery <= 30 && (gLogCategory_RPPeopleDiscovery != -1 || _LogCategory_Initialize()))
@@ -1007,7 +1007,7 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
     LogPrintF();
   }
 
-  self->_statusFlags = a3;
+  self->_statusFlags = changed;
   v5 = _Block_copy(self->_statusChangedHandler);
   if (v5)
   {
@@ -1017,71 +1017,71 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
   }
 }
 
-- (void)xpcPersonFound:(id)a3
+- (void)xpcPersonFound:(id)found
 {
-  v12 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v12;
-  discoveredPeople = v4->_discoveredPeople;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = foundCopy;
+  discoveredPeople = selfCopy->_discoveredPeople;
   if (!discoveredPeople)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v8 = v4->_discoveredPeople;
-    v4->_discoveredPeople = v7;
+    v8 = selfCopy->_discoveredPeople;
+    selfCopy->_discoveredPeople = v7;
 
-    discoveredPeople = v4->_discoveredPeople;
-    v5 = v12;
+    discoveredPeople = selfCopy->_discoveredPeople;
+    v5 = foundCopy;
   }
 
-  v9 = [v5 identifier];
-  [(NSMutableDictionary *)discoveredPeople setObject:v12 forKeyedSubscript:v9];
+  identifier = [v5 identifier];
+  [(NSMutableDictionary *)discoveredPeople setObject:foundCopy forKeyedSubscript:identifier];
 
-  v10 = [(NSMutableDictionary *)v4->_discoveredPeople count];
-  objc_sync_exit(v4);
+  v10 = [(NSMutableDictionary *)selfCopy->_discoveredPeople count];
+  objc_sync_exit(selfCopy);
 
-  personFoundHandler = v4->_personFoundHandler;
+  personFoundHandler = selfCopy->_personFoundHandler;
   if (personFoundHandler)
   {
-    personFoundHandler[2](personFoundHandler, v12);
+    personFoundHandler[2](personFoundHandler, foundCopy);
   }
 
-  [(RPPeopleDiscovery *)v4 _updatePeopleDensity:v10];
+  [(RPPeopleDiscovery *)selfCopy _updatePeopleDensity:v10];
 }
 
-- (void)xpcPersonLost:(id)a3
+- (void)xpcPersonLost:(id)lost
 {
-  v9 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = self;
-  objc_sync_enter(v4);
-  discoveredPeople = v4->_discoveredPeople;
-  v6 = [v9 identifier];
-  [(NSMutableDictionary *)discoveredPeople setObject:0 forKeyedSubscript:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredPeople = selfCopy->_discoveredPeople;
+  identifier = [lostCopy identifier];
+  [(NSMutableDictionary *)discoveredPeople setObject:0 forKeyedSubscript:identifier];
 
-  v7 = [(NSMutableDictionary *)v4->_discoveredPeople count];
-  objc_sync_exit(v4);
+  v7 = [(NSMutableDictionary *)selfCopy->_discoveredPeople count];
+  objc_sync_exit(selfCopy);
 
-  personLostHandler = v4->_personLostHandler;
+  personLostHandler = selfCopy->_personLostHandler;
   if (personLostHandler)
   {
-    personLostHandler[2](personLostHandler, v9);
+    personLostHandler[2](personLostHandler, lostCopy);
   }
 
-  [(RPPeopleDiscovery *)v4 _updatePeopleDensity:v7];
+  [(RPPeopleDiscovery *)selfCopy _updatePeopleDensity:v7];
 }
 
-- (void)xpcPersonID:(id)a3 deviceID:(id)a4 updatedMeasurement:(id)a5
+- (void)xpcPersonID:(id)d deviceID:(id)iD updatedMeasurement:(id)measurement
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v24 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v23 = v8;
-  v11 = [(NSMutableDictionary *)v10->_discoveredPeople objectForKeyedSubscript:v8];
+  dCopy = d;
+  iDCopy = iD;
+  measurementCopy = measurement;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v23 = dCopy;
+  v11 = [(NSMutableDictionary *)selfCopy->_discoveredPeople objectForKeyedSubscript:dCopy];
   v12 = v11;
   if (!v11)
   {
@@ -1092,14 +1092,14 @@ _BYTE *__35__RPPeopleDiscovery__scheduleRetry__block_invoke(uint64_t a1)
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [v11 devices];
-  v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  devices = [v11 devices];
+  v14 = [devices countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v14)
   {
 LABEL_10:
 
 LABEL_11:
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     goto LABEL_12;
   }
 
@@ -1110,12 +1110,12 @@ LABEL_4:
   {
     if (*v26 != v15)
     {
-      objc_enumerationMutation(v13);
+      objc_enumerationMutation(devices);
     }
 
     v17 = *(*(&v25 + 1) + 8 * v16);
-    v18 = [v17 identifier];
-    v19 = [v18 isEqual:v9];
+    identifier = [v17 identifier];
+    v19 = [identifier isEqual:iDCopy];
 
     if (v19)
     {
@@ -1124,7 +1124,7 @@ LABEL_4:
 
     if (v14 == ++v16)
     {
-      v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v14 = [devices countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v14)
       {
         goto LABEL_4;
@@ -1134,18 +1134,18 @@ LABEL_4:
     }
   }
 
-  [v17 setRelativeLocation:v24];
+  [v17 setRelativeLocation:measurementCopy];
 
-  v21 = (v10->_changeFlags & 8) == 0;
-  objc_sync_exit(v10);
+  v21 = (selfCopy->_changeFlags & 8) == 0;
+  objc_sync_exit(selfCopy);
 
   if (v21)
   {
     goto LABEL_13;
   }
 
-  v22 = _Block_copy(v10->_personChangedHandler);
-  v10 = v22;
+  v22 = _Block_copy(selfCopy->_personChangedHandler);
+  selfCopy = v22;
   if (v22)
   {
     (v22->_discoveredPeople)(v22, v12, 8);
@@ -1157,27 +1157,27 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAppleID:(id)a3 completion:(id)a4
+- (void)addAppleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   [(RPPeopleDiscovery *)self _ensureXPCStarted];
   xpcCnx = self->_xpcCnx;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __43__RPPeopleDiscovery_addAppleID_completion___block_invoke;
   v16[3] = &unk_1E7C92DA8;
-  v9 = v7;
+  v9 = completionCopy;
   v17 = v9;
   v10 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v16];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __43__RPPeopleDiscovery_addAppleID_completion___block_invoke_2;
   v13[3] = &unk_1E7C93470;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v9;
   v11 = v9;
-  v12 = v6;
+  v12 = dCopy;
   [v10 xpcPeopleAddAppleID:v12 completion:v13];
 }
 
@@ -1248,27 +1248,27 @@ LABEL_11:
   }
 }
 
-- (void)removeAppleID:(id)a3 completion:(id)a4
+- (void)removeAppleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   [(RPPeopleDiscovery *)self _ensureXPCStarted];
   xpcCnx = self->_xpcCnx;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__RPPeopleDiscovery_removeAppleID_completion___block_invoke;
   v16[3] = &unk_1E7C92DA8;
-  v9 = v7;
+  v9 = completionCopy;
   v17 = v9;
   v10 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v16];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46__RPPeopleDiscovery_removeAppleID_completion___block_invoke_2;
   v13[3] = &unk_1E7C93470;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v9;
   v11 = v9;
-  v12 = v6;
+  v12 = dCopy;
   [v10 xpcPeopleRemoveAppleID:v12 completion:v13];
 }
 

@@ -1,7 +1,7 @@
 @interface DBGUnsignedInteger
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(unint64_t)a3;
-- (DBGUnsignedInteger)initWithUnsignedInteger:(unint64_t)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(unint64_t)value;
+- (DBGUnsignedInteger)initWithUnsignedInteger:(unint64_t)integer;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,21 +10,21 @@
 
 @implementation DBGUnsignedInteger
 
-+ (id)withValue:(unint64_t)a3
++ (id)withValue:(unint64_t)value
 {
-  v3 = [[a1 alloc] initWithUnsignedInteger:a3];
+  v3 = [[self alloc] initWithUnsignedInteger:value];
 
   return v3;
 }
 
-- (DBGUnsignedInteger)initWithUnsignedInteger:(unint64_t)a3
+- (DBGUnsignedInteger)initWithUnsignedInteger:(unint64_t)integer
 {
   v5.receiver = self;
   v5.super_class = DBGUnsignedInteger;
   result = [(DBGUnsignedInteger *)&v5 init];
   if (result)
   {
-    result->_unsignedIntegerValue = a3;
+    result->_unsignedIntegerValue = integer;
   }
 
   return result;
@@ -32,15 +32,15 @@
 
 - (id)objectValue
 {
-  v2 = [(DBGUnsignedInteger *)self unsignedIntegerValue];
+  unsignedIntegerValue = [(DBGUnsignedInteger *)self unsignedIntegerValue];
 
-  return [NSNumber numberWithUnsignedInteger:v2];
+  return [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
 }
 
 - (NSString)description
 {
-  v2 = [(DBGUnsignedInteger *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGUnsignedInteger *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -55,37 +55,37 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"uinteger"])
+  valueCopy = value;
+  if ([format isEqualToString:@"uinteger"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [valueCopy unsignedIntegerValue];
 LABEL_6:
-      v10 = v9;
+      v10 = unsignedIntegerValue;
       goto LABEL_10;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 dbgUnsignedIntegerValue];
+      unsignedIntegerValue = [valueCopy dbgUnsignedIntegerValue];
       goto LABEL_6;
     }
   }
 
   v10 = 0;
-  if (!v8 && a5)
+  if (!valueCopy && error)
   {
     v10 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_10:
-  v11 = [a1 withValue:v10];
+  v11 = [self withValue:v10];
 
   return v11;
 }

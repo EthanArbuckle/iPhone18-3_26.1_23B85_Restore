@@ -1,10 +1,10 @@
 @interface PKFelicaAppletHistoryRecord
 - (PKFelicaAppletHistoryRecord)init;
-- (PKFelicaAppletHistoryRecord)initWithCoder:(id)a3;
-- (PKFelicaAppletHistoryRecord)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKFelicaAppletHistoryRecord)initWithCoder:(id)coder;
+- (PKFelicaAppletHistoryRecord)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFelicaAppletHistoryRecord
@@ -16,39 +16,39 @@
   return [(PKTransitAppletHistoryRecord *)&v3 initWithDictionary:0];
 }
 
-- (PKFelicaAppletHistoryRecord)initWithDictionary:(id)a3
+- (PKFelicaAppletHistoryRecord)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = PKFelicaAppletHistoryRecord;
   v5 = [(PKTransitAppletHistoryRecord *)&v33 initWithDictionary:0];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"NFHistorySequenceNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"NFHistorySequenceNumber"];
     [(PKTransitAppletHistoryRecord *)v5 setHistorySequenceNumber:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"NFTransactionID"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"NFTransactionID"];
     v8 = [v7 copy];
     transactionID = v5->_transactionID;
     v5->_transactionID = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"NFTransactionType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"NFTransactionType"];
     v11 = [v10 copy];
     transactionType = v5->_transactionType;
     v5->_transactionType = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"NFSectorCombination"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"NFSectorCombination"];
     v14 = [v13 copy];
     sectorCombination = v5->_sectorCombination;
     v5->_sectorCombination = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"NFAmountType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"NFAmountType"];
     v17 = [v16 copy];
     amountType = v5->_amountType;
     v5->_amountType = v17;
 
-    v19 = [v4 objectForKeyedSubscript:@"NFAmount"];
-    v20 = [v4 objectForKeyedSubscript:@"NFBalance"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"NFAmount"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"NFBalance"];
     if ([(NSNumber *)v5->_amountType integerValue]== 2)
     {
       v21 = MEMORY[0x1E696AB90];
@@ -94,37 +94,37 @@
     v26 = v23;
     [(PKTransitAppletHistoryRecord *)v5 setBalance:v23];
 
-    v27 = [v4 objectForKeyedSubscript:@"NFStartStationData"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"NFStartStationData"];
     [(PKTransitAppletHistoryRecord *)v5 setStartStation:v27];
 
-    v28 = [v4 objectForKeyedSubscript:@"NFEndStationData"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"NFEndStationData"];
     [(PKTransitAppletHistoryRecord *)v5 setEndStation:v28];
   }
 
   return v5;
 }
 
-- (PKFelicaAppletHistoryRecord)initWithCoder:(id)a3
+- (PKFelicaAppletHistoryRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKFelicaAppletHistoryRecord;
-  v5 = [(PKTransitAppletHistoryRecord *)&v15 initWithCoder:v4];
+  v5 = [(PKTransitAppletHistoryRecord *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionID"];
     transactionID = v5->_transactionID;
     v5->_transactionID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"felicaTransactionType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"felicaTransactionType"];
     transactionType = v5->_transactionType;
     v5->_transactionType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectorCombination"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectorCombination"];
     sectorCombination = v5->_sectorCombination;
     v5->_sectorCombination = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountType"];
     amountType = v5->_amountType;
     v5->_amountType = v12;
   }
@@ -132,24 +132,24 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = PKFelicaAppletHistoryRecord;
   v5 = [(PKTransitAppletHistoryRecord *)&v15 copyWithZone:?];
-  v6 = [(NSString *)self->_transactionID copyWithZone:a3];
+  v6 = [(NSString *)self->_transactionID copyWithZone:zone];
   v7 = v5[21];
   v5[21] = v6;
 
-  v8 = [(NSNumber *)self->_transactionType copyWithZone:a3];
+  v8 = [(NSNumber *)self->_transactionType copyWithZone:zone];
   v9 = v5[18];
   v5[18] = v8;
 
-  v10 = [(NSNumber *)self->_sectorCombination copyWithZone:a3];
+  v10 = [(NSNumber *)self->_sectorCombination copyWithZone:zone];
   v11 = v5[19];
   v5[19] = v10;
 
-  v12 = [(NSNumber *)self->_amountType copyWithZone:a3];
+  v12 = [(NSNumber *)self->_amountType copyWithZone:zone];
   v13 = v5[20];
   v5[20] = v12;
 
@@ -163,16 +163,16 @@
   [(PKTransitAppletHistoryRecord *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKFelicaAppletHistoryRecord;
-  v4 = a3;
-  [(PKTransitAppletHistoryRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_transactionID forKey:{@"transactionID", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_transactionType forKey:@"felicaTransactionType"];
-  [v4 encodeObject:self->_sectorCombination forKey:@"sectorCombination"];
-  [v4 encodeObject:self->_amountType forKey:@"amountType"];
+  coderCopy = coder;
+  [(PKTransitAppletHistoryRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_transactionID forKey:{@"transactionID", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_transactionType forKey:@"felicaTransactionType"];
+  [coderCopy encodeObject:self->_sectorCombination forKey:@"sectorCombination"];
+  [coderCopy encodeObject:self->_amountType forKey:@"amountType"];
 }
 
 @end

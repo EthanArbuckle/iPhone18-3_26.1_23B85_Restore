@@ -1,21 +1,21 @@
 @interface SGTransformerInstance
-+ (id)defaultSessionDescriptorForModelId:(id)a3 featureVersion:(id)a4 language:(id)a5 windowAndNgrams:(id)a6;
++ (id)defaultSessionDescriptorForModelId:(id)id featureVersion:(id)version language:(id)language windowAndNgrams:(id)ngrams;
 + (id)defaultWindowAndNgrams;
-- (SGTransformerInstance)initWithTransformer:(id)a3 sessionDescriptor:(id)a4 modelClass:(Class)a5;
-- (id)trainingFeaturesOf:(id)a3;
+- (SGTransformerInstance)initWithTransformer:(id)transformer sessionDescriptor:(id)descriptor modelClass:(Class)class;
+- (id)trainingFeaturesOf:(id)of;
 @end
 
 @implementation SGTransformerInstance
 
-- (id)trainingFeaturesOf:(id)a3
+- (id)trainingFeaturesOf:(id)of
 {
-  v5 = a3;
-  v6 = [(SGTransformerInstance *)self sessionDescriptor];
-  v7 = [(SGTransformerInstance *)self transformer];
+  ofCopy = of;
+  sessionDescriptor = [(SGTransformerInstance *)self sessionDescriptor];
+  transformer = [(SGTransformerInstance *)self transformer];
 
-  if (v7)
+  if (transformer)
   {
-    if (v6)
+    if (sessionDescriptor)
     {
       goto LABEL_3;
     }
@@ -23,35 +23,35 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"self.transformer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"self.transformer"}];
 
-    if (v6)
+    if (sessionDescriptor)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
 
 LABEL_3:
   if (![(SGTransformerInstance *)self modelClass])
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"self.modelClass"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"self.modelClass"}];
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [objc_alloc(MEMORY[0x277D02568]) initWithSessionDescriptor:v6 modelClass:{-[SGTransformerInstance modelClass](self, "modelClass")}];
-  v10 = [(SGTransformerInstance *)self transformer];
-  v11 = [v10 transform:v5];
+  v9 = [objc_alloc(MEMORY[0x277D02568]) initWithSessionDescriptor:sessionDescriptor modelClass:{-[SGTransformerInstance modelClass](self, "modelClass")}];
+  transformer2 = [(SGTransformerInstance *)self transformer];
+  v11 = [transformer2 transform:ofCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"[vector isKindOfClass:PMLSparseVector.class]"}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:311 description:{@"Invalid parameter not satisfying: %@", @"[vector isKindOfClass:PMLSparseVector.class]"}];
   }
 
   v12 = [objc_alloc(MEMORY[0x277D02560]) initWithSource:v9 vector:v11];
@@ -61,23 +61,23 @@ LABEL_3:
   return v12;
 }
 
-- (SGTransformerInstance)initWithTransformer:(id)a3 sessionDescriptor:(id)a4 modelClass:(Class)a5
+- (SGTransformerInstance)initWithTransformer:(id)transformer sessionDescriptor:(id)descriptor modelClass:(Class)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  transformerCopy = transformer;
+  descriptorCopy = descriptor;
+  v12 = descriptorCopy;
+  if (transformerCopy)
   {
-    if (v11)
+    if (descriptorCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"sessionDescriptor"}];
 
-    if (a5)
+    if (class)
     {
       goto LABEL_4;
     }
@@ -85,8 +85,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"transformer"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"transformer"}];
 
   if (!v12)
   {
@@ -94,14 +94,14 @@ LABEL_8:
   }
 
 LABEL_3:
-  if (a5)
+  if (class)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"modelClass"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"SGModels.m" lineNumber:293 description:{@"Invalid parameter not satisfying: %@", @"modelClass"}];
 
 LABEL_4:
   v19.receiver = self;
@@ -110,39 +110,39 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_transformer, a3);
-    objc_storeStrong(&v14->_sessionDescriptor, a4);
-    objc_storeStrong(&v14->_modelClass, a5);
+    objc_storeStrong(&v13->_transformer, transformer);
+    objc_storeStrong(&v14->_sessionDescriptor, descriptor);
+    objc_storeStrong(&v14->_modelClass, class);
   }
 
   return v14;
 }
 
-+ (id)defaultSessionDescriptorForModelId:(id)a3 featureVersion:(id)a4 language:(id)a5 windowAndNgrams:(id)a6
++ (id)defaultSessionDescriptorForModelId:(id)id featureVersion:(id)version language:(id)language windowAndNgrams:(id)ngrams
 {
   v9 = MEMORY[0x277CCACA8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  ngramsCopy = ngrams;
+  languageCopy = language;
+  versionCopy = version;
+  idCopy = id;
   v14 = [v9 alloc];
-  v15 = [v10 first];
-  v16 = [v10 second];
+  first = [ngramsCopy first];
+  second = [ngramsCopy second];
 
-  v17 = [v14 initWithFormat:@"TW=%@&NG=%@&FV=%@", v15, v16, v12];
-  v18 = [MEMORY[0x277D41F68] descriptorForName:v13 version:v17 locale:v11];
+  versionCopy = [v14 initWithFormat:@"TW=%@&NG=%@&FV=%@", first, second, versionCopy];
+  v18 = [MEMORY[0x277D41F68] descriptorForName:idCopy version:versionCopy locale:languageCopy];
 
   return v18;
 }
 
 + (id)defaultWindowAndNgrams
 {
-  v2 = [MEMORY[0x277D02558] rules];
-  v3 = [v2 objectForKeyedSubscript:@"TOKEN_WINDOW"];
-  v4 = [v3 unsignedIntegerValue];
-  if (v4)
+  rules = [MEMORY[0x277D02558] rules];
+  v3 = [rules objectForKeyedSubscript:@"TOKEN_WINDOW"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  if (unsignedIntegerValue)
   {
-    v5 = v4;
+    v5 = unsignedIntegerValue;
   }
 
   else
@@ -150,11 +150,11 @@ LABEL_4:
     v5 = 12;
   }
 
-  v6 = [v2 objectForKeyedSubscript:@"NGRAMS"];
-  v7 = [v6 unsignedIntegerValue];
-  if (v7)
+  v6 = [rules objectForKeyedSubscript:@"NGRAMS"];
+  unsignedIntegerValue2 = [v6 unsignedIntegerValue];
+  if (unsignedIntegerValue2)
   {
-    v8 = v7;
+    v8 = unsignedIntegerValue2;
   }
 
   else

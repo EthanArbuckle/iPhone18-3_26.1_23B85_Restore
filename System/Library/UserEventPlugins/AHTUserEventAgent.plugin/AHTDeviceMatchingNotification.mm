@@ -1,16 +1,16 @@
 @interface AHTDeviceMatchingNotification
-- (AHTDeviceMatchingNotification)initWithMatchingDictionary:(id)a3 type:(char)a4[128];
-- (BOOL)startWithDispatchQueue:(id)a3 error:(id *)a4 action:(id)a5;
-- (BOOL)startWithRunLoop:(id)a3 error:(id *)a4 action:(id)a5;
-- (BOOL)stop:(id *)a3;
+- (AHTDeviceMatchingNotification)initWithMatchingDictionary:(id)dictionary type:(char)type[128];
+- (BOOL)startWithDispatchQueue:(id)queue error:(id *)error action:(id)action;
+- (BOOL)startWithRunLoop:(id)loop error:(id *)error action:(id)action;
+- (BOOL)stop:(id *)stop;
 - (void)dealloc;
 @end
 
 @implementation AHTDeviceMatchingNotification
 
-- (AHTDeviceMatchingNotification)initWithMatchingDictionary:(id)a3 type:(char)a4[128]
+- (AHTDeviceMatchingNotification)initWithMatchingDictionary:(id)dictionary type:(char)type[128]
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = AHTDeviceMatchingNotification;
   v7 = [(AHTDeviceMatchingNotification *)&v14 init];
@@ -20,13 +20,13 @@
   }
 
   v8 = 0;
-  if (v6 && a4)
+  if (dictionaryCopy && type)
   {
-    v9 = [NSString stringWithUTF8String:a4];
+    v9 = [NSString stringWithUTF8String:type];
     type = v7->_type;
     v7->_type = v9;
 
-    v11 = [v6 copy];
+    v11 = [dictionaryCopy copy];
     matching = v7->_matching;
     v7->_matching = v11;
 
@@ -46,15 +46,15 @@ LABEL_5:
   [(AHTDeviceMatchingNotification *)&v3 dealloc];
 }
 
-- (BOOL)startWithRunLoop:(id)a3 error:(id *)a4 action:(id)a5
+- (BOOL)startWithRunLoop:(id)loop error:(id *)error action:(id)action
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AHTDeviceMatchingNotification *)self deviceNotification];
+  loopCopy = loop;
+  actionCopy = action;
+  deviceNotification = [(AHTDeviceMatchingNotification *)self deviceNotification];
 
-  if (!v10)
+  if (!deviceNotification)
   {
-    if (!v8 || !v9)
+    if (!loopCopy || !actionCopy)
     {
       v11 = 3758097090;
       goto LABEL_10;
@@ -64,21 +64,21 @@ LABEL_5:
     v13 = v12;
     if (v12)
     {
-      if (![(AHTDeviceNotification *)v12 startWithRunLoop:v8 error:a4])
+      if (![(AHTDeviceNotification *)v12 startWithRunLoop:loopCopy error:error])
       {
         v18 = 0;
         goto LABEL_16;
       }
 
-      v14 = [(AHTDeviceMatchingNotification *)self matching];
+      matching = [(AHTDeviceMatchingNotification *)self matching];
       notification = 0;
-      v15 = [(AHTDeviceNotification *)v13 port];
-      v16 = [(AHTDeviceMatchingNotification *)self type];
-      LODWORD(v14) = IOServiceAddMatchingNotification(v15, [v16 UTF8String], v14, sub_1718, self, &notification);
+      port = [(AHTDeviceNotification *)v13 port];
+      type = [(AHTDeviceMatchingNotification *)self type];
+      LODWORD(matching) = IOServiceAddMatchingNotification(port, [type UTF8String], matching, sub_1718, self, &notification);
 
-      if (!v14)
+      if (!matching)
       {
-        [(AHTDeviceMatchingNotification *)self setAction:v9];
+        [(AHTDeviceMatchingNotification *)self setAction:actionCopy];
         [(AHTDeviceMatchingNotification *)self setIterator:notification];
         [(AHTDeviceMatchingNotification *)self setDeviceNotification:v13];
         sub_1718(self, self->_iterator);
@@ -94,7 +94,7 @@ LABEL_5:
       v17 = 3758097086;
     }
 
-    v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v17 error:a4];
+    v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v17 error:error];
 LABEL_16:
 
     goto LABEL_11;
@@ -102,21 +102,21 @@ LABEL_16:
 
   v11 = 3758097109;
 LABEL_10:
-  v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v11 error:a4];
+  v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v11 error:error];
 LABEL_11:
 
   return v18;
 }
 
-- (BOOL)startWithDispatchQueue:(id)a3 error:(id *)a4 action:(id)a5
+- (BOOL)startWithDispatchQueue:(id)queue error:(id *)error action:(id)action
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(AHTDeviceMatchingNotification *)self deviceNotification];
+  queueCopy = queue;
+  actionCopy = action;
+  deviceNotification = [(AHTDeviceMatchingNotification *)self deviceNotification];
 
-  if (!v10)
+  if (!deviceNotification)
   {
-    if (!v8 || !v9)
+    if (!queueCopy || !actionCopy)
     {
       v11 = 3758097090;
       goto LABEL_10;
@@ -126,21 +126,21 @@ LABEL_11:
     v13 = v12;
     if (v12)
     {
-      if (![(AHTDeviceNotification *)v12 startWithDispatchQueue:v8 error:a4])
+      if (![(AHTDeviceNotification *)v12 startWithDispatchQueue:queueCopy error:error])
       {
         v18 = 0;
         goto LABEL_16;
       }
 
-      v14 = [(AHTDeviceMatchingNotification *)self matching];
+      matching = [(AHTDeviceMatchingNotification *)self matching];
       notification = 0;
-      v15 = [(AHTDeviceNotification *)v13 port];
-      v16 = [(AHTDeviceMatchingNotification *)self type];
-      LODWORD(v14) = IOServiceAddMatchingNotification(v15, [v16 UTF8String], v14, sub_1718, self, &notification);
+      port = [(AHTDeviceNotification *)v13 port];
+      type = [(AHTDeviceMatchingNotification *)self type];
+      LODWORD(matching) = IOServiceAddMatchingNotification(port, [type UTF8String], matching, sub_1718, self, &notification);
 
-      if (!v14)
+      if (!matching)
       {
-        [(AHTDeviceMatchingNotification *)self setAction:v9];
+        [(AHTDeviceMatchingNotification *)self setAction:actionCopy];
         [(AHTDeviceMatchingNotification *)self setIterator:notification];
         [(AHTDeviceMatchingNotification *)self setDeviceNotification:v13];
         sub_1718(self, self->_iterator);
@@ -156,7 +156,7 @@ LABEL_11:
       v17 = 3758097086;
     }
 
-    v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v17 error:a4];
+    v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v17 error:error];
 LABEL_16:
 
     goto LABEL_11;
@@ -164,17 +164,17 @@ LABEL_16:
 
   v11 = 3758097109;
 LABEL_10:
-  v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v11 error:a4];
+  v18 = [NSError ioErrorWithDomain:@"AHTHIDSupport" code:v11 error:error];
 LABEL_11:
 
   return v18;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
-  v5 = [(AHTDeviceMatchingNotification *)self deviceNotification];
+  deviceNotification = [(AHTDeviceMatchingNotification *)self deviceNotification];
 
-  if (v5)
+  if (deviceNotification)
   {
     IOObjectRelease([(AHTDeviceMatchingNotification *)self iterator]);
     [(AHTDeviceMatchingNotification *)self setIterator:0];
@@ -186,7 +186,7 @@ LABEL_11:
   else
   {
 
-    return [NSError ioErrorWithDomain:@"AHTHIDSupport" code:3758097111 error:a3];
+    return [NSError ioErrorWithDomain:@"AHTHIDSupport" code:3758097111 error:stop];
   }
 }
 

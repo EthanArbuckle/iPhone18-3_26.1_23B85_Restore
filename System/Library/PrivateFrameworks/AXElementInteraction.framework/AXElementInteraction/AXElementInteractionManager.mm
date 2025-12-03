@@ -2,17 +2,17 @@
 + (id)sharedManager;
 - (AXElementInteractionManager)init;
 - (AXElementInteractionManagerDelegate)delegate;
-- (BOOL)_moveFocusByHitTesting:(int64_t)a3;
-- (id)_allowDelegateToDecideElement:(id)a3;
+- (BOOL)_moveFocusByHitTesting:(int64_t)testing;
+- (id)_allowDelegateToDecideElement:(id)element;
 - (id)_client;
 - (id)_clientIdentifier;
-- (int)_registerForAXNotifications:(BOOL)a3;
+- (int)_registerForAXNotifications:(BOOL)notifications;
 - (void)_handleLayoutChange;
 - (void)_handleScreenChange;
-- (void)_highlightElement:(id)a3;
+- (void)_highlightElement:(id)element;
 - (void)_initializeAXObserver;
-- (void)_moveToElement:(id)a3;
-- (void)_sendMessage:(id)a3 withIdentifier:(unint64_t)a4 errorHandler:(id)a5;
+- (void)_moveToElement:(id)element;
+- (void)_sendMessage:(id)message withIdentifier:(unint64_t)identifier errorHandler:(id)handler;
 - (void)endInteractionMode;
 - (void)initializeFocus;
 - (void)startInteractionMode;
@@ -108,24 +108,24 @@ uint64_t __44__AXElementInteractionManager_sharedManager__block_invoke()
   }
 }
 
-- (int)_registerForAXNotifications:(BOOL)a3
+- (int)_registerForAXNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CE6BB0] systemWideAXUIElement];
+  notificationsCopy = notifications;
+  systemWideAXUIElement = [MEMORY[0x277CE6BB0] systemWideAXUIElement];
   v6 = 0;
   LODWORD(v7) = 0;
   do
   {
     axEventObserver = self->_axEventObserver;
     v9 = dword_23D5EC980[v6];
-    if (v3)
+    if (notificationsCopy)
     {
-      v10 = AXObserverAddNotification(axEventObserver, v5, v9, self);
+      v10 = AXObserverAddNotification(axEventObserver, systemWideAXUIElement, v9, self);
     }
 
     else
     {
-      v10 = AXObserverRemoveNotification(axEventObserver, v5, v9);
+      v10 = AXObserverRemoveNotification(axEventObserver, systemWideAXUIElement, v9);
     }
 
     ++v6;
@@ -144,7 +144,7 @@ uint64_t __44__AXElementInteractionManager_sharedManager__block_invoke()
   if (v7)
   {
     v11 = @"unregister";
-    if (v3)
+    if (notificationsCopy)
     {
       v11 = @"register";
     }
@@ -208,34 +208,34 @@ uint64_t __50__AXElementInteractionManager__handleScreenChange__block_invoke(uin
   }
 }
 
-- (id)_allowDelegateToDecideElement:(id)a3
+- (id)_allowDelegateToDecideElement:(id)element
 {
-  v4 = a3;
-  v5 = [(AXElementInteractionManager *)self delegate];
+  elementCopy = element;
+  delegate = [(AXElementInteractionManager *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     do
     {
-      v7 = [(AXElementInteractionManager *)self delegate];
-      v8 = [v7 axElementInteraction:self shouldMoveToElement:v4];
+      delegate2 = [(AXElementInteractionManager *)self delegate];
+      v8 = [delegate2 axElementInteraction:self shouldMoveToElement:elementCopy];
 
       if (v8)
       {
         break;
       }
 
-      v9 = [v4 nextElementsWithCount:1];
-      v10 = [v9 firstObject];
+      v9 = [elementCopy nextElementsWithCount:1];
+      firstObject = [v9 firstObject];
 
-      v4 = v10;
+      elementCopy = firstObject;
     }
 
-    while (v10);
+    while (firstObject);
   }
 
-  return v4;
+  return elementCopy;
 }
 
 - (void)initializeFocus
@@ -243,21 +243,21 @@ uint64_t __50__AXElementInteractionManager__handleScreenChange__block_invoke(uin
   focusedElement = self->_focusedElement;
   self->_focusedElement = 0;
 
-  v4 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v5 = [v4 systemApplication];
-  v6 = [v5 currentApplications];
-  v7 = [v6 firstObject];
+  systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+  systemApplication = [systemWideElement systemApplication];
+  currentApplications = [systemApplication currentApplications];
+  firstObject = [currentApplications firstObject];
 
-  v8 = [v7 firstElementInApplicationForFocus];
-  v9 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v10 = [v9 systemApplication];
+  firstElementInApplicationForFocus = [firstObject firstElementInApplicationForFocus];
+  systemWideElement2 = [MEMORY[0x277CE6BA0] systemWideElement];
+  systemApplication2 = [systemWideElement2 systemApplication];
   v16 = self->_focusedElement;
   LOBYTE(v15) = 1;
   _AXLogWithFacility();
 
-  if (v8)
+  if (firstElementInApplicationForFocus)
   {
-    v11 = [(AXElementInteractionManager *)self _allowDelegateToDecideElement:v8, v15, @"Apps: %@\n %@\n %@\n", v10, v7, v16];
+    v11 = [(AXElementInteractionManager *)self _allowDelegateToDecideElement:firstElementInApplicationForFocus, v15, @"Apps: %@\n %@\n %@\n", systemApplication2, firstObject, v16];
 
     if (v11)
     {
@@ -281,15 +281,15 @@ uint64_t __50__AXElementInteractionManager__handleScreenChange__block_invoke(uin
   }
 }
 
-- (void)_highlightElement:(id)a3
+- (void)_highlightElement:(id)element
 {
   if (self->_displayCursor)
   {
-    v5 = a3;
-    [v5 path];
+    elementCopy = element;
+    [elementCopy path];
     v16 = AX_CGPathCopyDataRepresentation();
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [v5 frame];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [elementCopy frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -300,30 +300,30 @@ uint64_t __50__AXElementInteractionManager__handleScreenChange__block_invoke(uin
     v17.size.width = v12;
     v17.size.height = v14;
     v15 = NSStringFromCGRect(v17);
-    [v6 setObject:v15 forKeyedSubscript:@"frame"];
+    [dictionary setObject:v15 forKeyedSubscript:@"frame"];
 
     if (v16)
     {
-      [v6 setObject:v16 forKeyedSubscript:@"path"];
+      [dictionary setObject:v16 forKeyedSubscript:@"path"];
     }
 
-    [(AXElementInteractionManager *)self _sendMessage:v6 withIdentifier:1 errorHandler:&__block_literal_global_319];
+    [(AXElementInteractionManager *)self _sendMessage:dictionary withIdentifier:1 errorHandler:&__block_literal_global_319];
   }
 }
 
-- (void)_moveToElement:(id)a3
+- (void)_moveToElement:(id)element
 {
-  objc_storeStrong(&self->_focusedElement, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_focusedElement, element);
+  elementCopy = element;
   focusedElement = self->_focusedElement;
-  v8 = v5;
+  v8 = elementCopy;
   LOBYTE(v6) = 1;
   _AXLogWithFacility();
   [(AXElement *)self->_focusedElement scrollToVisible:v6];
   [(AXElementInteractionManager *)self _highlightElement:v8];
 }
 
-- (BOOL)_moveFocusByHitTesting:(int64_t)a3
+- (BOOL)_moveFocusByHitTesting:(int64_t)testing
 {
   [(AXElement *)self->_focusedElement frame];
   v57 = v6;
@@ -349,37 +349,37 @@ uint64_t __50__AXElementInteractionManager__handleScreenChange__block_invoke(uin
     v14 = 20.0;
   }
 
-  v16 = a3 == 3;
-  v17 = a3 == 4;
-  v18 = a3 - 1;
-  v19 = a3 == 1;
-  v20 = a3 == 2;
-  v21 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v22 = [v21 systemApplication];
-  v23 = [v22 applicationOrientation];
+  v16 = testing == 3;
+  v17 = testing == 4;
+  v18 = testing - 1;
+  v19 = testing == 1;
+  v20 = testing == 2;
+  systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+  systemApplication = [systemWideElement systemApplication];
+  applicationOrientation = [systemApplication applicationOrientation];
 
   *&v58.origin.y = MEMORY[0x277D85DD0];
   *&v58.size.width = 3221225472;
   *&v58.size.height = __54__AXElementInteractionManager__moveFocusByHitTesting___block_invoke;
   v59 = &unk_278BDA190;
-  v60 = self;
+  selfCopy = self;
   v24 = MEMORY[0x23EEE43B0](&v58.origin.y);
   v25 = MEMORY[0x23EEE41B0]();
   v56 = v26;
-  if ((v23 - 1) <= 1)
+  if ((applicationOrientation - 1) <= 1)
   {
-    if (v23 == 2)
+    if (applicationOrientation == 2)
     {
       if (v18 > 1)
       {
-        v17 = a3 != 4;
-        v16 = a3 != 3;
+        v17 = testing != 4;
+        v16 = testing != 3;
       }
 
       else
       {
-        v20 = a3 != 2;
-        v19 = a3 != 1;
+        v20 = testing != 2;
+        v19 = testing != 1;
       }
     }
 
@@ -407,7 +407,7 @@ uint64_t __50__AXElementInteractionManager__handleScreenChange__block_invoke(uin
       v32 = v15;
     }
 
-    if (v23 != 2)
+    if (applicationOrientation != 2)
     {
       v31 = v15;
       v29 = v14;
@@ -527,20 +527,20 @@ LABEL_50:
     }
   }
 
-  if ((v23 - 3) <= 1)
+  if ((applicationOrientation - 3) <= 1)
   {
-    if (v23 == 3)
+    if (applicationOrientation == 3)
     {
       if (v18 > 1)
       {
-        v17 = a3 != 4;
-        v16 = a3 != 3;
+        v17 = testing != 4;
+        v16 = testing != 3;
       }
 
       else
       {
-        v20 = a3 != 2;
-        v19 = a3 != 1;
+        v20 = testing != 2;
+        v19 = testing != 1;
       }
     }
 
@@ -568,7 +568,7 @@ LABEL_50:
       v42 = v14;
     }
 
-    if (v23 != 3)
+    if (applicationOrientation != 3)
     {
       v41 = v14;
       v39 = v15;
@@ -718,11 +718,11 @@ uint64_t __54__AXElementInteractionManager__moveFocusByHitTesting___block_invoke
 
 - (id)_clientIdentifier
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processIdentifier];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:v3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:processIdentifier];
   v6 = [v4 stringWithFormat:@"AXElementInteractionIdentifier-%@", v5];
 
   return v6;
@@ -733,8 +733,8 @@ uint64_t __54__AXElementInteractionManager__moveFocusByHitTesting___block_invoke
   client = self->_client;
   if (!client)
   {
-    v4 = [(AXElementInteractionManager *)self _clientIdentifier];
-    v5 = [objc_alloc(MEMORY[0x277CE7740]) initWithIdentifier:v4 serviceBundleName:@"AXElementInteractionUIServer"];
+    _clientIdentifier = [(AXElementInteractionManager *)self _clientIdentifier];
+    v5 = [objc_alloc(MEMORY[0x277CE7740]) initWithIdentifier:_clientIdentifier serviceBundleName:@"AXElementInteractionUIServer"];
     v6 = self->_client;
     self->_client = v5;
 
@@ -745,20 +745,20 @@ uint64_t __54__AXElementInteractionManager__moveFocusByHitTesting___block_invoke
   return client;
 }
 
-- (void)_sendMessage:(id)a3 withIdentifier:(unint64_t)a4 errorHandler:(id)a5
+- (void)_sendMessage:(id)message withIdentifier:(unint64_t)identifier errorHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(AXElementInteractionManager *)self _client];
-  v11 = [MEMORY[0x277CE6948] mainAccessQueue];
+  handlerCopy = handler;
+  messageCopy = message;
+  _client = [(AXElementInteractionManager *)self _client];
+  mainAccessQueue = [MEMORY[0x277CE6948] mainAccessQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__AXElementInteractionManager__sendMessage_withIdentifier_errorHandler___block_invoke;
   v13[3] = &unk_278BDA1B8;
-  v14 = v8;
-  v15 = a4;
-  v12 = v8;
-  [v10 sendAsynchronousMessage:v9 withIdentifier:a4 targetAccessQueue:v11 completion:v13];
+  v14 = handlerCopy;
+  identifierCopy = identifier;
+  v12 = handlerCopy;
+  [_client sendAsynchronousMessage:messageCopy withIdentifier:identifier targetAccessQueue:mainAccessQueue completion:v13];
 }
 
 void __72__AXElementInteractionManager__sendMessage_withIdentifier_errorHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)

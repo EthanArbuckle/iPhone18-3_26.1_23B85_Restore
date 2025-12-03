@@ -10,14 +10,14 @@
 
 - (BOOL)tvrui_isTVEpisode
 {
-  v2 = [a1 episodeNumber];
-  if (v2)
+  episodeNumber = [self episodeNumber];
+  if (episodeNumber)
   {
-    v3 = [a1 seasonNumber];
-    if (v3)
+    seasonNumber = [self seasonNumber];
+    if (seasonNumber)
     {
-      v4 = [a1 episodeTitle];
-      v5 = [v4 length] != 0;
+      episodeTitle = [self episodeTitle];
+      v5 = [episodeTitle length] != 0;
     }
 
     else
@@ -37,7 +37,7 @@
 - (id)tvrui_localizedTitleWithFormatString:()TVRUIAdditions
 {
   v4 = a3;
-  if ([a1 tvrui_isTVEpisode])
+  if ([self tvrui_isTVEpisode])
   {
     v5 = [v4 componentsSeparatedByString:@"%@"];
     if ([v5 count] < 4)
@@ -51,233 +51,233 @@
     }
 
     v8 = MEMORY[0x277CCACA8];
-    v9 = [a1 seasonNumber];
-    v10 = [a1 episodeNumber];
-    v11 = [a1 episodeTitle];
-    v7 = [v8 stringWithFormat:v6, v9, v10, v11];
+    seasonNumber = [self seasonNumber];
+    episodeNumber = [self episodeNumber];
+    episodeTitle = [self episodeTitle];
+    title = [v8 stringWithFormat:v6, seasonNumber, episodeNumber, episodeTitle];
   }
 
   else
   {
-    v7 = [a1 title];
+    title = [self title];
   }
 
-  return v7;
+  return title;
 }
 
 - (__CFString)tvrui_secondaryTitle
 {
-  if ([a1 tvrui_isTVEpisode])
+  if ([self tvrui_isTVEpisode])
   {
-    v2 = [a1 title];
+    title = [self title];
   }
 
   else
   {
-    v2 = &stru_287E6AEF8;
+    title = &stru_287E6AEF8;
   }
 
-  return v2;
+  return title;
 }
 
 - (id)metadataMergedFromTVRCMediaInfo:()TVRUIAdditions
 {
   v4 = a3;
-  v5 = [a1 copy];
-  v6 = [v4 kind];
-  v7 = [v4 title];
+  v5 = [self copy];
+  kind = [v4 kind];
+  title = [v4 title];
 
-  if (v6 != 1)
+  if (kind != 1)
   {
-    if (!v7)
+    if (!title)
     {
       goto LABEL_9;
     }
 
-    v10 = [v4 title];
+    title2 = [v4 title];
     goto LABEL_8;
   }
 
-  if (v7)
+  if (title)
   {
-    v8 = [v4 title];
-    [v5 setEpisodeTitle:v8];
+    title3 = [v4 title];
+    [v5 setEpisodeTitle:title3];
   }
 
-  v9 = [v4 showTitle];
+  showTitle = [v4 showTitle];
 
-  if (v9)
+  if (showTitle)
   {
-    v10 = [v4 showTitle];
+    title2 = [v4 showTitle];
 LABEL_8:
-    v11 = v10;
-    [v5 setTitle:v10];
+    v11 = title2;
+    [v5 setTitle:title2];
   }
 
 LABEL_9:
-  v12 = [v4 genre];
+  genre = [v4 genre];
 
-  if (v12)
+  if (genre)
   {
-    v13 = [v4 genre];
-    [v5 setGenre:v13];
+    genre2 = [v4 genre];
+    [v5 setGenre:genre2];
   }
 
-  v14 = [v5 duration];
-  if (!v14)
+  duration = [v5 duration];
+  if (!duration)
   {
-    v15 = [v4 duration];
+    duration2 = [v4 duration];
 
-    if (!v15)
+    if (!duration2)
     {
       goto LABEL_15;
     }
 
-    v14 = [v4 duration];
-    [v5 setDuration:v14];
+    duration = [v4 duration];
+    [v5 setDuration:duration];
   }
 
 LABEL_15:
-  v16 = [v5 showID];
-  if (!v16)
+  showID = [v5 showID];
+  if (!showID)
   {
-    v17 = [v4 showIdentifier];
+    showIdentifier = [v4 showIdentifier];
 
-    if (!v17)
+    if (!showIdentifier)
     {
       goto LABEL_19;
     }
 
-    v16 = [v4 showIdentifier];
-    [v5 setShowID:v16];
+    showID = [v4 showIdentifier];
+    [v5 setShowID:showID];
   }
 
 LABEL_19:
-  v18 = [v5 seasonNumber];
-  if (!v18)
+  seasonNumber = [v5 seasonNumber];
+  if (!seasonNumber)
   {
-    v19 = [v4 seasonNumber];
+    seasonNumber2 = [v4 seasonNumber];
 
-    if (!v19)
+    if (!seasonNumber2)
     {
       goto LABEL_23;
     }
 
-    v18 = [v4 seasonNumber];
-    [v5 setSeasonNumber:v18];
+    seasonNumber = [v4 seasonNumber];
+    [v5 setSeasonNumber:seasonNumber];
   }
 
 LABEL_23:
-  v20 = [v5 episodeNumber];
-  if (!v20)
+  episodeNumber = [v5 episodeNumber];
+  if (!episodeNumber)
   {
-    v21 = [v4 episodeNumber];
+    episodeNumber2 = [v4 episodeNumber];
 
-    if (!v21)
+    if (!episodeNumber2)
     {
       goto LABEL_27;
     }
 
-    v20 = [v4 episodeNumber];
-    [v5 setEpisodeNumber:v20];
+    episodeNumber = [v4 episodeNumber];
+    [v5 setEpisodeNumber:episodeNumber];
   }
 
 LABEL_27:
-  v22 = [v5 ratingDescription];
-  if (!v22)
+  ratingDescription = [v5 ratingDescription];
+  if (!ratingDescription)
   {
-    v23 = [v4 ratingDescription];
+    ratingDescription2 = [v4 ratingDescription];
 
-    if (!v23)
+    if (!ratingDescription2)
     {
       goto LABEL_31;
     }
 
-    v22 = [v4 ratingDescription];
-    [v5 setRatingDescription:v22];
+    ratingDescription = [v4 ratingDescription];
+    [v5 setRatingDescription:ratingDescription];
   }
 
 LABEL_31:
-  v24 = [v5 extendedDescription];
-  if (!v24)
+  extendedDescription = [v5 extendedDescription];
+  if (!extendedDescription)
   {
-    v25 = [v4 extendedDescription];
+    extendedDescription2 = [v4 extendedDescription];
 
-    if (!v25)
+    if (!extendedDescription2)
     {
       goto LABEL_35;
     }
 
-    v24 = [v4 extendedDescription];
-    [v5 setExtendedDescription:v24];
+    extendedDescription = [v4 extendedDescription];
+    [v5 setExtendedDescription:extendedDescription];
   }
 
 LABEL_35:
-  v26 = [v5 productPageURL];
-  if (!v26)
+  productPageURL = [v5 productPageURL];
+  if (!productPageURL)
   {
-    v27 = [v4 productURL];
+    productURL = [v4 productURL];
 
-    if (!v27)
+    if (!productURL)
     {
       goto LABEL_39;
     }
 
-    v26 = [v4 productURL];
-    [v5 setProductPageURL:v26];
+    productPageURL = [v4 productURL];
+    [v5 setProductPageURL:productPageURL];
   }
 
 LABEL_39:
-  v28 = [v5 showProductPageURL];
-  if (!v28)
+  showProductPageURL = [v5 showProductPageURL];
+  if (!showProductPageURL)
   {
-    v29 = [v4 showURL];
+    showURL = [v4 showURL];
 
-    if (!v29)
+    if (!showURL)
     {
       goto LABEL_43;
     }
 
-    v28 = [v4 showURL];
-    [v5 setShowProductPageURL:v28];
+    showProductPageURL = [v4 showURL];
+    [v5 setShowProductPageURL:showProductPageURL];
   }
 
 LABEL_43:
-  v30 = [v5 releaseDate];
-  if (!v30)
+  releaseDate = [v5 releaseDate];
+  if (!releaseDate)
   {
-    v31 = [v4 releaseDate];
+    releaseDate2 = [v4 releaseDate];
 
-    if (!v31)
+    if (!releaseDate2)
     {
       goto LABEL_47;
     }
 
-    v30 = [v4 releaseDate];
-    [v5 setReleaseDate:v30];
+    releaseDate = [v4 releaseDate];
+    [v5 setReleaseDate:releaseDate];
   }
 
 LABEL_47:
-  v32 = [v5 rottenTomatoesReview];
-  if (!v32)
+  rottenTomatoesReview = [v5 rottenTomatoesReview];
+  if (!rottenTomatoesReview)
   {
-    v33 = [v4 rottenTomatoesReview];
+    rottenTomatoesReview2 = [v4 rottenTomatoesReview];
 
-    if (!v33)
+    if (!rottenTomatoesReview2)
     {
       goto LABEL_51;
     }
 
-    v32 = [v4 rottenTomatoesReview];
-    v34 = [v32 copy];
+    rottenTomatoesReview = [v4 rottenTomatoesReview];
+    v34 = [rottenTomatoesReview copy];
     [v5 setRottenTomatoesReview:v34];
   }
 
 LABEL_51:
   [v5 setIsAppleOriginal:{objc_msgSend(v4, "isAppleOriginal")}];
-  [v5 setKind:{objc_msgSend(a1, "_nowPlayingKindForMediaInfoKind:", objc_msgSend(v4, "kind"))}];
-  v35 = [v4 imageURLTemplate];
-  [v5 setImageURLTemplate:v35];
+  [v5 setKind:{objc_msgSend(self, "_nowPlayingKindForMediaInfoKind:", objc_msgSend(v4, "kind"))}];
+  imageURLTemplate = [v4 imageURLTemplate];
+  [v5 setImageURLTemplate:imageURLTemplate];
 
   return v5;
 }

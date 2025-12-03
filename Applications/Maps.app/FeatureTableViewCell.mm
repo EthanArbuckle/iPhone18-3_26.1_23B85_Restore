@@ -1,21 +1,21 @@
 @interface FeatureTableViewCell
-- (FeatureTableViewCell)initWithReuseIdentifier:(id)a3;
+- (FeatureTableViewCell)initWithReuseIdentifier:(id)identifier;
 - (void)_configureFeatureCell;
-- (void)_toggleUseFeature:(id)a3;
-- (void)configureFromFeature:(id)a3;
+- (void)_toggleUseFeature:(id)feature;
+- (void)configureFromFeature:(id)feature;
 - (void)prepareForReuse;
 @end
 
 @implementation FeatureTableViewCell
 
-- (void)configureFromFeature:(id)a3
+- (void)configureFromFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [v4 name];
-  [(UILabel *)self->_titleLabel setText:v5];
+  featureCopy = feature;
+  name = [featureCopy name];
+  [(UILabel *)self->_titleLabel setText:name];
 
-  v6 = [v4 state];
-  if (v6 == 2)
+  state = [featureCopy state];
+  if (state == 2)
   {
     [(UISwitch *)self->_useFeatureSwitch setEnabled:1];
     useFeatureSwitch = self->_useFeatureSwitch;
@@ -24,14 +24,14 @@
 
   else
   {
-    if (v6 != 1)
+    if (state != 1)
     {
-      if (!v6)
+      if (!state)
       {
         [(UISwitch *)self->_useFeatureSwitch setOn:0];
         [(UISwitch *)self->_useFeatureSwitch setEnabled:0];
-        v9 = [(FeatureTableViewCell *)self textLabel];
-        [v9 setEnabled:0];
+        textLabel = [(FeatureTableViewCell *)self textLabel];
+        [textLabel setEnabled:0];
       }
 
       return;
@@ -45,7 +45,7 @@
   [(UISwitch *)useFeatureSwitch setOn:v8];
 }
 
-- (void)_toggleUseFeature:(id)a3
+- (void)_toggleUseFeature:(id)feature
 {
   toggleFeatureBlock = self->_toggleFeatureBlock;
   if (toggleFeatureBlock)
@@ -64,11 +64,11 @@
   self->_toggleFeatureBlock = 0;
 }
 
-- (FeatureTableViewCell)initWithReuseIdentifier:(id)a3
+- (FeatureTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = FeatureTableViewCell;
-  v3 = [(FeatureTableViewCell *)&v7 initWithStyle:3 reuseIdentifier:a3];
+  v3 = [(FeatureTableViewCell *)&v7 initWithStyle:3 reuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -82,8 +82,8 @@
 - (void)_configureFeatureCell
 {
   v3 = +[UIColor tertiaryLabelColor];
-  v4 = [(FeatureTableViewCell *)self detailTextLabel];
-  [v4 setTextColor:v3];
+  detailTextLabel = [(FeatureTableViewCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v3];
 
   [(FeatureTableViewCell *)self setSelectionStyle:0];
   v5 = objc_alloc_init(UILabel);
@@ -97,45 +97,45 @@
 
   [(UISwitch *)self->_useFeatureSwitch setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UISwitch *)self->_useFeatureSwitch addTarget:self action:"_toggleUseFeature:" forControlEvents:4096];
-  v9 = [(FeatureTableViewCell *)self contentView];
-  [v9 addSubview:self->_useFeatureSwitch];
+  contentView = [(FeatureTableViewCell *)self contentView];
+  [contentView addSubview:self->_useFeatureSwitch];
 
-  v10 = [(FeatureTableViewCell *)self contentView];
-  [v10 addSubview:self->_titleLabel];
+  contentView2 = [(FeatureTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_titleLabel];
 
-  v38 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v37 = [(UISwitch *)self->_useFeatureSwitch trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:8.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  trailingAnchor = [(UISwitch *)self->_useFeatureSwitch trailingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:8.0];
   v39[0] = v36;
-  v34 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v35 = [(FeatureTableViewCell *)self contentView];
-  v33 = [v35 trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:-8.0];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  contentView3 = [(FeatureTableViewCell *)self contentView];
+  trailingAnchor3 = [contentView3 trailingAnchor];
+  v32 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-8.0];
   v39[1] = v32;
-  v30 = [(UILabel *)self->_titleLabel topAnchor];
-  v31 = [(FeatureTableViewCell *)self contentView];
-  v29 = [v31 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  contentView4 = [(FeatureTableViewCell *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[2] = v28;
-  v26 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v27 = [(FeatureTableViewCell *)self contentView];
-  v25 = [v27 bottomAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  contentView5 = [(FeatureTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[3] = v24;
-  v22 = [(UISwitch *)self->_useFeatureSwitch leadingAnchor];
-  v23 = [(FeatureTableViewCell *)self contentView];
-  v21 = [v23 leadingAnchor];
-  v11 = [v22 constraintEqualToAnchor:v21 constant:8.0];
+  leadingAnchor2 = [(UISwitch *)self->_useFeatureSwitch leadingAnchor];
+  contentView6 = [(FeatureTableViewCell *)self contentView];
+  leadingAnchor3 = [contentView6 leadingAnchor];
+  v11 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:8.0];
   v39[4] = v11;
-  v12 = [(UISwitch *)self->_useFeatureSwitch topAnchor];
-  v13 = [(FeatureTableViewCell *)self contentView];
-  v14 = [v13 topAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14 constant:8.0];
+  topAnchor3 = [(UISwitch *)self->_useFeatureSwitch topAnchor];
+  contentView7 = [(FeatureTableViewCell *)self contentView];
+  topAnchor4 = [contentView7 topAnchor];
+  v15 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
   v39[5] = v15;
-  v16 = [(UISwitch *)self->_useFeatureSwitch bottomAnchor];
-  v17 = [(FeatureTableViewCell *)self contentView];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:-8.0];
+  bottomAnchor3 = [(UISwitch *)self->_useFeatureSwitch bottomAnchor];
+  contentView8 = [(FeatureTableViewCell *)self contentView];
+  bottomAnchor4 = [contentView8 bottomAnchor];
+  v19 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
   v39[6] = v19;
   v20 = [NSArray arrayWithObjects:v39 count:7];
   [NSLayoutConstraint activateConstraints:v20];

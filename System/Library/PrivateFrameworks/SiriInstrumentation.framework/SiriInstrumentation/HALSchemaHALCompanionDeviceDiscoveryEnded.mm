@@ -1,57 +1,57 @@
 @interface HALSchemaHALCompanionDeviceDiscoveryEnded
-- (BOOL)isEqual:(id)a3;
-- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithDictionary:(id)a3;
-- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithDictionary:(id)dictionary;
+- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDeviceProximity:(BOOL)a3;
-- (void)setHasHasNullPeerIdentityServicesId:(BOOL)a3;
-- (void)setHasHasOtheriOSActiveDevices:(BOOL)a3;
-- (void)setHasIsMeDevice:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDeviceProximity:(BOOL)proximity;
+- (void)setHasHasNullPeerIdentityServicesId:(BOOL)id;
+- (void)setHasHasOtheriOSActiveDevices:(BOOL)devices;
+- (void)setHasIsMeDevice:(BOOL)device;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HALSchemaHALCompanionDeviceDiscoveryEnded
 
-- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithDictionary:(id)a3
+- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = HALSchemaHALCompanionDeviceDiscoveryEnded;
   v5 = [(HALSchemaHALCompanionDeviceDiscoveryEnded *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"discoveryType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"discoveryType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HALSchemaHALCompanionDeviceDiscoveryEnded setDiscoveryType:](v5, "setDiscoveryType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isMeDevice"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isMeDevice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HALSchemaHALCompanionDeviceDiscoveryEnded setIsMeDevice:](v5, "setIsMeDevice:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hasOtheriOSActiveDevices"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hasOtheriOSActiveDevices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HALSchemaHALCompanionDeviceDiscoveryEnded setHasOtheriOSActiveDevices:](v5, "setHasOtheriOSActiveDevices:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasNullPeerIdentityServicesId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasNullPeerIdentityServicesId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[HALSchemaHALCompanionDeviceDiscoveryEnded setHasNullPeerIdentityServicesId:](v5, "setHasNullPeerIdentityServicesId:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"deviceProximity"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceProximity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithJSON:(id)a3
+- (HALSchemaHALCompanionDeviceDiscoveryEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HALSchemaHALCompanionDeviceDiscoveryEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(HALSchemaHALCompanionDeviceDiscoveryEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(HALSchemaHALCompanionDeviceDiscoveryEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,7 +100,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -115,7 +115,7 @@
       v6 = off_1E78D7A60[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"deviceProximity"];
+    [dictionary setObject:v6 forKeyedSubscript:@"deviceProximity"];
     has = self->_has;
   }
 
@@ -132,14 +132,14 @@
       v8 = off_1E78D7A80[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"discoveryType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"discoveryType"];
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[HALSchemaHALCompanionDeviceDiscoveryEnded hasNullPeerIdentityServicesId](self, "hasNullPeerIdentityServicesId")}];
-    [v3 setObject:v11 forKeyedSubscript:@"hasNullPeerIdentityServicesId"];
+    [dictionary setObject:v11 forKeyedSubscript:@"hasNullPeerIdentityServicesId"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -160,19 +160,19 @@ LABEL_13:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[HALSchemaHALCompanionDeviceDiscoveryEnded hasOtheriOSActiveDevices](self, "hasOtheriOSActiveDevices")}];
-  [v3 setObject:v12 forKeyedSubscript:@"hasOtheriOSActiveDevices"];
+  [dictionary setObject:v12 forKeyedSubscript:@"hasOtheriOSActiveDevices"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[HALSchemaHALCompanionDeviceDiscoveryEnded isMeDevice](self, "isMeDevice")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isMeDevice"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isMeDevice"];
   }
 
 LABEL_15:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -243,16 +243,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[20];
+  v6 = equalCopy[20];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -261,13 +261,13 @@ LABEL_6:
   if (*&has)
   {
     discoveryType = self->_discoveryType;
-    if (discoveryType != [v4 discoveryType])
+    if (discoveryType != [equalCopy discoveryType])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -279,13 +279,13 @@ LABEL_6:
   if (v8)
   {
     isMeDevice = self->_isMeDevice;
-    if (isMeDevice != [v4 isMeDevice])
+    if (isMeDevice != [equalCopy isMeDevice])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -297,13 +297,13 @@ LABEL_6:
   if (v10)
   {
     hasOtheriOSActiveDevices = self->_hasOtheriOSActiveDevices;
-    if (hasOtheriOSActiveDevices != [v4 hasOtheriOSActiveDevices])
+    if (hasOtheriOSActiveDevices != [equalCopy hasOtheriOSActiveDevices])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[20];
+    v6 = equalCopy[20];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -315,10 +315,10 @@ LABEL_6:
   if (v12)
   {
     hasNullPeerIdentityServicesId = self->_hasNullPeerIdentityServicesId;
-    if (hasNullPeerIdentityServicesId == [v4 hasNullPeerIdentityServicesId])
+    if (hasNullPeerIdentityServicesId == [equalCopy hasNullPeerIdentityServicesId])
     {
       has = self->_has;
-      v6 = v4[20];
+      v6 = equalCopy[20];
       goto LABEL_18;
     }
 
@@ -337,7 +337,7 @@ LABEL_18:
   if (v14)
   {
     deviceProximity = self->_deviceProximity;
-    if (deviceProximity != [v4 deviceProximity])
+    if (deviceProximity != [equalCopy deviceProximity])
     {
       goto LABEL_22;
     }
@@ -349,9 +349,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -412,9 +412,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasDeviceProximity:(BOOL)a3
+- (void)setHasDeviceProximity:(BOOL)proximity
 {
-  if (a3)
+  if (proximity)
   {
     v3 = 16;
   }
@@ -427,9 +427,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasHasNullPeerIdentityServicesId:(BOOL)a3
+- (void)setHasHasNullPeerIdentityServicesId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -442,9 +442,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasOtheriOSActiveDevices:(BOOL)a3
+- (void)setHasHasOtheriOSActiveDevices:(BOOL)devices
 {
-  if (a3)
+  if (devices)
   {
     v3 = 4;
   }
@@ -457,9 +457,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsMeDevice:(BOOL)a3
+- (void)setHasIsMeDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 2;
   }

@@ -1,31 +1,31 @@
 @interface CHRemoteDocumentLayoutAnalyzer
-- (BOOL)isEqual:(id)a3;
-- (id)analyzeDrawing:(id)a3 strokeIdentifiers:(id)a4 contextStrokeIdentifiers:(id)a5 options:(id)a6 error:(id *)a7;
+- (BOOL)isEqual:(id)equal;
+- (id)analyzeDrawing:(id)drawing strokeIdentifiers:(id)identifiers contextStrokeIdentifiers:(id)strokeIdentifiers options:(id)options error:(id *)error;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation CHRemoteDocumentLayoutAnalyzer
 
-- (id)analyzeDrawing:(id)a3 strokeIdentifiers:(id)a4 contextStrokeIdentifiers:(id)a5 options:(id)a6 error:(id *)a7
+- (id)analyzeDrawing:(id)drawing strokeIdentifiers:(id)identifiers contextStrokeIdentifiers:(id)strokeIdentifiers options:(id)options error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  drawingCopy = drawing;
+  identifiersCopy = identifiers;
+  strokeIdentifiersCopy = strokeIdentifiers;
+  optionsCopy = options;
   v16 = [CHRemoteDocumentLayoutAnalysisRequest alloc];
   v22 = objc_msgSend_priority(self, v17, v18, v19, v20, v21);
-  v24 = objc_msgSend_initWithDrawing_strokeIdentifiers_contextStrokeIdentifiers_options_priority_(v16, v23, v12, v13, v14, v15, v22);
+  v24 = objc_msgSend_initWithDrawing_strokeIdentifiers_contextStrokeIdentifiers_options_priority_(v16, v23, drawingCopy, identifiersCopy, strokeIdentifiersCopy, optionsCopy, v22);
   v25 = v24;
   if (self)
   {
-    v26 = self;
-    objc_sync_enter(v26);
-    if (v26->_connection)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_connection)
     {
-      objc_sync_exit(v26);
+      objc_sync_exit(selfCopy);
 
-      if (v26->_connection)
+      if (selfCopy->_connection)
       {
         goto LABEL_15;
       }
@@ -35,26 +35,26 @@
     {
       v31 = objc_alloc(MEMORY[0x1E696B0B8]);
       v35 = objc_msgSend_initWithMachServiceName_options_(v31, v32, @"com.apple.handwritingd.remoterecognition", 0, v33, v34);
-      connection = v26->_connection;
-      v26->_connection = v35;
+      connection = selfCopy->_connection;
+      selfCopy->_connection = v35;
 
       v41 = objc_msgSend_interfaceWithProtocol_(MEMORY[0x1E696B0D0], v37, &unk_1EF2155C0, v38, v39, v40);
-      objc_msgSend_setRemoteObjectInterface_(v26->_connection, v42, v41, v43, v44, v45);
-      objc_initWeak(&location, v26);
-      v46 = v26->_connection;
+      objc_msgSend_setRemoteObjectInterface_(selfCopy->_connection, v42, v41, v43, v44, v45);
+      objc_initWeak(&location, selfCopy);
+      v46 = selfCopy->_connection;
       *buf = MEMORY[0x1E69E9820];
       v90 = 3221225472;
       v91 = sub_1837365C4;
       v92 = &unk_1E6DDD098;
       objc_copyWeak(&v93, &location);
       objc_msgSend_setInterruptionHandler_(v46, v47, buf, v48, v49, v50);
-      objc_msgSend_setInvalidationHandler_(v26->_connection, v51, &unk_1EF1BC5D8, v52, v53, v54);
-      objc_msgSend_resume(v26->_connection, v55, v56, v57, v58, v59);
+      objc_msgSend_setInvalidationHandler_(selfCopy->_connection, v51, &unk_1EF1BC5D8, v52, v53, v54);
+      objc_msgSend_resume(selfCopy->_connection, v55, v56, v57, v58, v59);
       objc_destroyWeak(&v93);
       objc_destroyWeak(&location);
 
-      objc_sync_exit(v26);
-      if (v26->_connection)
+      objc_sync_exit(selfCopy);
+      if (selfCopy->_connection)
       {
         goto LABEL_15;
       }
@@ -72,7 +72,7 @@
       _os_log_impl(&dword_18366B000, v60, OS_LOG_TYPE_ERROR, "XPC connection must be non-nil", buf, 2u);
     }
 
-    if (v26->_connection)
+    if (selfCopy->_connection)
     {
 LABEL_15:
       *buf = 0;
@@ -94,7 +94,7 @@ LABEL_15:
       v80 = sub_18373632C;
       v81 = sub_18373633C;
       v82 = 0;
-      v62 = v26->_connection;
+      v62 = selfCopy->_connection;
       v76[0] = MEMORY[0x1E69E9820];
       v76[1] = 3221225472;
       v76[2] = sub_183736344;
@@ -122,7 +122,7 @@ LABEL_15:
 
       _Block_object_dispose(buf, 8);
       v73 = v71;
-      if (a7)
+      if (error)
       {
         goto LABEL_18;
       }
@@ -157,11 +157,11 @@ LABEL_14:
   }
 
   v73 = 0;
-  if (a7)
+  if (error)
   {
 LABEL_18:
     v73 = v73;
-    *a7 = v73;
+    *error = v73;
   }
 
 LABEL_19:
@@ -177,13 +177,13 @@ LABEL_19:
   [(CHRemoteDocumentLayoutAnalyzer *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v11 = v5;
     if (self)
     {

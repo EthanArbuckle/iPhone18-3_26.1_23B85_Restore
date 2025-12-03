@@ -1,16 +1,16 @@
 @interface CKDetonatedAttachmentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKDetonatedAttachmentView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKDetonatedAttachmentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CKDetonatedAttachmentView
 
-- (CKDetonatedAttachmentView)initWithFrame:(CGRect)a3
+- (CKDetonatedAttachmentView)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = CKDetonatedAttachmentView;
-  v3 = [(CKDetonatedAttachmentView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKDetonatedAttachmentView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -23,12 +23,12 @@
     v3->_iconImageView = v9;
 
     v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 genericDocumentIcon];
-    [(UIImageView *)v3->_iconImageView setImage:v12];
+    genericDocumentIcon = [v11 genericDocumentIcon];
+    [(UIImageView *)v3->_iconImageView setImage:genericDocumentIcon];
 
-    v13 = [(UIImageView *)v3->_iconImageView image];
+    image = [(UIImageView *)v3->_iconImageView image];
 
-    if (!v13)
+    if (!image)
     {
       v14 = IMLogHandleForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -37,10 +37,10 @@
       }
     }
 
-    v15 = [(UIImageView *)v3->_iconImageView layer];
-    [v15 setBorderColor:0];
-    [v15 setBorderWidth:0.0];
-    [v15 setCornerRadius:0.0];
+    layer = [(UIImageView *)v3->_iconImageView layer];
+    [layer setBorderColor:0];
+    [layer setBorderWidth:0.0];
+    [layer setCornerRadius:0.0];
     [(CKDetonatedAttachmentView *)v3 addSubview:v3->_iconImageView];
     v16 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v5, v6, v7, v8}];
     titleLabel = v3->_titleLabel;
@@ -50,14 +50,14 @@
     [(UILabel *)v3->_titleLabel setOpaque:0];
     v18 = v3->_titleLabel;
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 attachmentTextFont];
-    [(UILabel *)v18 setFont:v20];
+    attachmentTextFont = [v19 attachmentTextFont];
+    [(UILabel *)v18 setFont:attachmentTextFont];
 
     v21 = v3->_titleLabel;
     v22 = +[CKUIBehavior sharedBehaviors];
-    v23 = [v22 theme];
-    v24 = [v23 attachmentBalloonTitleTextColor];
-    [(UILabel *)v21 setTextColor:v24];
+    theme = [v22 theme];
+    attachmentBalloonTitleTextColor = [theme attachmentBalloonTitleTextColor];
+    [(UILabel *)v21 setTextColor:attachmentBalloonTitleTextColor];
 
     v25 = v3->_titleLabel;
     v26 = IMSharedUtilitiesFrameworkBundle();
@@ -72,9 +72,9 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [CKUIBehavior sharedBehaviors:a3.width];
+  v3 = [CKUIBehavior sharedBehaviors:fits.width];
   [v3 detonatedItemBalloonViewSize];
   v5 = v4;
   v7 = v6;

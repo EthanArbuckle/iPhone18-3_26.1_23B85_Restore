@@ -8,15 +8,15 @@
 - (void)initWithError:()KNAdditions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [a3 localizedRecoverySuggestion];
-  if (!v5)
+  localizedRecoverySuggestion = [a3 localizedRecoverySuggestion];
+  if (!localizedRecoverySuggestion)
   {
-    v5 = [a3 localizedFailureReason];
+    localizedRecoverySuggestion = [a3 localizedFailureReason];
   }
 
-  v6 = [a1 initWithTitle:objc_msgSend(a3 message:"localizedDescription") delegate:v5 cancelButtonTitle:0 otherButtonTitles:{0, 0}];
-  v7 = [a3 localizedRecoveryOptions];
-  if (v7 && (v8 = v7, [v7 count]))
+  v6 = [self initWithTitle:objc_msgSend(a3 message:"localizedDescription") delegate:localizedRecoverySuggestion cancelButtonTitle:0 otherButtonTitles:{0, 0}];
+  localizedRecoveryOptions = [a3 localizedRecoveryOptions];
+  if (localizedRecoveryOptions && (v8 = localizedRecoveryOptions, [localizedRecoveryOptions count]))
   {
     v16 = 0u;
     v17 = 0u;
@@ -63,10 +63,10 @@
   v7[3] = &unk_279D47BF0;
   v7[5] = v5;
   v7[6] = a3;
-  v7[4] = a1;
+  v7[4] = self;
   [(TSKUIAlertViewCompletionHandlerDelegate *)v5 setCompletionHandler:v7];
-  [a1 setDelegate:v5];
-  return [a1 show];
+  [self setDelegate:v5];
+  return [self show];
 }
 
 @end

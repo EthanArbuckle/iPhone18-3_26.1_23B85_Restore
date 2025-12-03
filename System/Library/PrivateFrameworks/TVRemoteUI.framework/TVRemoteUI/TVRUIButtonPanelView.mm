@@ -1,52 +1,52 @@
 @interface TVRUIButtonPanelView
-- (TVRUIButtonPanelView)initWithPrimaryButtonType:(int64_t)a3 secondaryLeftButtons:(id)a4 secondaryRightButtons:(id)a5 styleProvider:(id)a6 glassEnabled:(BOOL)a7;
+- (TVRUIButtonPanelView)initWithPrimaryButtonType:(int64_t)type secondaryLeftButtons:(id)buttons secondaryRightButtons:(id)rightButtons styleProvider:(id)provider glassEnabled:(BOOL)enabled;
 - (_TVRUIEventDelegate)buttonEventDelegate;
-- (id)_processButtons:(id)a3;
+- (id)_processButtons:(id)buttons;
 - (id)_searchButton;
-- (id)initPagedPanelWithPrimaryButtonType:(int64_t)a3 secondaryLeftButtons:(id)a4 styleProvider:(id)a5;
-- (void)_buttonPressed:(id)a3;
-- (void)_buttonReleased:(id)a3;
-- (void)_buttonTapped:(id)a3;
-- (void)_configureButton:(id)a3;
-- (void)_disableButton:(id)a3;
-- (void)_enableButton:(id)a3;
-- (void)_sendButtonPressed:(int64_t)a3;
-- (void)_sendButtonReleased:(int64_t)a3;
-- (void)_sendButtonTapped:(int64_t)a3;
+- (id)initPagedPanelWithPrimaryButtonType:(int64_t)type secondaryLeftButtons:(id)buttons styleProvider:(id)provider;
+- (void)_buttonPressed:(id)pressed;
+- (void)_buttonReleased:(id)released;
+- (void)_buttonTapped:(id)tapped;
+- (void)_configureButton:(id)button;
+- (void)_disableButton:(id)button;
+- (void)_enableButton:(id)button;
+- (void)_sendButtonPressed:(int64_t)pressed;
+- (void)_sendButtonReleased:(int64_t)released;
+- (void)_sendButtonTapped:(int64_t)tapped;
 - (void)disableButtons;
 - (void)disableSearchButton;
-- (void)enableButtonsForDevice:(id)a3;
+- (void)enableButtonsForDevice:(id)device;
 - (void)enableSearchButton;
 - (void)layoutSubviews;
-- (void)setButtonEventDelegate:(id)a3;
+- (void)setButtonEventDelegate:(id)delegate;
 @end
 
 @implementation TVRUIButtonPanelView
 
-- (TVRUIButtonPanelView)initWithPrimaryButtonType:(int64_t)a3 secondaryLeftButtons:(id)a4 secondaryRightButtons:(id)a5 styleProvider:(id)a6 glassEnabled:(BOOL)a7
+- (TVRUIButtonPanelView)initWithPrimaryButtonType:(int64_t)type secondaryLeftButtons:(id)buttons secondaryRightButtons:(id)rightButtons styleProvider:(id)provider glassEnabled:(BOOL)enabled
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  buttonsCopy = buttons;
+  rightButtonsCopy = rightButtons;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = TVRUIButtonPanelView;
   v15 = [(TVRUIButtonPanelView *)&v24 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_styleProvider, a6);
-    v16->_solariumGlassEnabled = a7;
-    v17 = [[TVRUIButton alloc] initWithType:a3 hasTapAction:0 buttonLocation:0];
+    objc_storeStrong(&v15->_styleProvider, provider);
+    v16->_solariumGlassEnabled = enabled;
+    v17 = [[TVRUIButton alloc] initWithType:type hasTapAction:0 buttonLocation:0];
     primaryButton = v16->_primaryButton;
     v16->_primaryButton = v17;
 
     [(TVRUIButtonPanelView *)v16 addSubview:v16->_primaryButton];
     [(TVRUIButtonPanelView *)v16 _configureButton:v16->_primaryButton];
-    v19 = [(TVRUIButtonPanelView *)v16 _processButtons:v12];
+    v19 = [(TVRUIButtonPanelView *)v16 _processButtons:buttonsCopy];
     leftButtons = v16->_leftButtons;
     v16->_leftButtons = v19;
 
-    v21 = [(TVRUIButtonPanelView *)v16 _processButtons:v13];
+    v21 = [(TVRUIButtonPanelView *)v16 _processButtons:rightButtonsCopy];
     rightButtons = v16->_rightButtons;
     v16->_rightButtons = v21;
   }
@@ -54,18 +54,18 @@
   return v16;
 }
 
-- (id)initPagedPanelWithPrimaryButtonType:(int64_t)a3 secondaryLeftButtons:(id)a4 styleProvider:(id)a5
+- (id)initPagedPanelWithPrimaryButtonType:(int64_t)type secondaryLeftButtons:(id)buttons styleProvider:(id)provider
 {
-  v8 = a4;
-  v9 = a5;
+  buttonsCopy = buttons;
+  providerCopy = provider;
   v26.receiver = self;
   v26.super_class = TVRUIButtonPanelView;
   v10 = [(TVRUIButtonPanelView *)&v26 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_styleProvider, a5);
-    v12 = [[TVRUIButton alloc] initWithType:a3 hasTapAction:0];
+    objc_storeStrong(&v10->_styleProvider, provider);
+    v12 = [[TVRUIButton alloc] initWithType:type hasTapAction:0];
     primaryButton = v11->_primaryButton;
     v11->_primaryButton = v12;
 
@@ -74,13 +74,13 @@
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"TVRemoteUIPageButtonText" value:&stru_287E6AEF8 table:@"Localizable"];
 
-    v16 = [(TVRUIStyleProvider *)v11->_styleProvider maxPagingTitleLength];
-    if ([v15 length] > v16)
+    maxPagingTitleLength = [(TVRUIStyleProvider *)v11->_styleProvider maxPagingTitleLength];
+    if ([v15 length] > maxPagingTitleLength)
     {
       v17 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        [TVRUIButtonPanelView initPagedPanelWithPrimaryButtonType:v15 secondaryLeftButtons:v16 styleProvider:v17];
+        [TVRUIButtonPanelView initPagedPanelWithPrimaryButtonType:v15 secondaryLeftButtons:maxPagingTitleLength styleProvider:v17];
       }
 
       v18 = [v15 substringWithRange:{0, 4}];
@@ -89,13 +89,13 @@
     }
 
     v19 = [TVRUIPagingButton alloc];
-    v20 = [(TVRUIButtonPanelView *)v11 styleProvider];
-    v21 = [(TVRUIPagingButton *)v19 initWithTitle:v15 styleProvider:v20];
+    styleProvider = [(TVRUIButtonPanelView *)v11 styleProvider];
+    v21 = [(TVRUIPagingButton *)v19 initWithTitle:v15 styleProvider:styleProvider];
     pagingButton = v11->_pagingButton;
     v11->_pagingButton = v21;
 
     [(TVRUIButtonPanelView *)v11 addSubview:v11->_pagingButton];
-    v23 = [(TVRUIButtonPanelView *)v11 _processButtons:v8];
+    v23 = [(TVRUIButtonPanelView *)v11 _processButtons:buttonsCopy];
     leftButtons = v11->_leftButtons;
     v11->_leftButtons = v23;
   }
@@ -103,16 +103,16 @@
   return v11;
 }
 
-- (id)_processButtons:(id)a3
+- (id)_processButtons:(id)buttons
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  buttonsCopy = buttons;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = buttonsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -127,11 +127,11 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) integerValue];
-        v12 = [[TVRUIButton alloc] initWithType:v11 hasTapAction:[TVRUIButton buttonLocation:"buttonTypeHasTapAction:" buttonTypeHasTapAction:v11], 0];
+        integerValue = [*(*(&v14 + 1) + 8 * i) integerValue];
+        v12 = [[TVRUIButton alloc] initWithType:integerValue hasTapAction:[TVRUIButton buttonLocation:"buttonTypeHasTapAction:" buttonTypeHasTapAction:integerValue], 0];
         [(TVRUIButtonPanelView *)self addSubview:v12];
         [(TVRUIButtonPanelView *)self _configureButton:v12];
-        [v5 addObject:v12];
+        [array addObject:v12];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -140,7 +140,7 @@
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (void)layoutSubviews
@@ -148,44 +148,44 @@
   v51.receiver = self;
   v51.super_class = TVRUIButtonPanelView;
   [(TVRUIButtonPanelView *)&v51 layoutSubviews];
-  v3 = [(TVRUIButtonPanelView *)self styleProvider];
-  [v3 primaryButtonSize];
+  styleProvider = [(TVRUIButtonPanelView *)self styleProvider];
+  [styleProvider primaryButtonSize];
   v5 = v4;
 
   [(TVRUIButtonPanelView *)self bounds];
   v6 = CGRectGetWidth(v52) * 0.5 - v5 * 0.5;
   [(TVRUIButtonPanelView *)self bounds];
   v7 = CGRectGetHeight(v53) * 0.5 - v5 * 0.5;
-  v8 = [(TVRUIButtonPanelView *)self primaryButton];
-  [v8 setFrame:{v6, v7, v5, v5}];
+  primaryButton = [(TVRUIButtonPanelView *)self primaryButton];
+  [primaryButton setFrame:{v6, v7, v5, v5}];
 
-  v9 = [(TVRUIButtonPanelView *)self styleProvider];
-  [v9 secondaryButtonSize];
+  styleProvider2 = [(TVRUIButtonPanelView *)self styleProvider];
+  [styleProvider2 secondaryButtonSize];
   v11 = v10;
 
-  v12 = [(TVRUIButtonPanelView *)self styleProvider];
-  [v12 controlPanelInsets];
+  styleProvider3 = [(TVRUIButtonPanelView *)self styleProvider];
+  [styleProvider3 controlPanelInsets];
   v14 = v13;
 
   [(TVRUIButtonPanelView *)self bounds];
   v16 = (v15 - v5) * 0.5;
-  v17 = [(TVRUIButtonPanelView *)self pagingButton];
+  pagingButton = [(TVRUIButtonPanelView *)self pagingButton];
 
-  if (v17)
+  if (pagingButton)
   {
     [(TVRUIButtonPanelView *)self bounds];
     v18 = CGRectGetWidth(v54) - v14 - v11;
-    v19 = [(TVRUIButtonPanelView *)self pagingButton];
-    [v19 setFrame:{v18, v16, v11, v5}];
+    pagingButton2 = [(TVRUIButtonPanelView *)self pagingButton];
+    [pagingButton2 setFrame:{v18, v16, v11, v5}];
   }
 
-  v20 = [(TVRUIButtonPanelView *)self rightButtons];
-  v21 = [v20 count];
+  rightButtons = [(TVRUIButtonPanelView *)self rightButtons];
+  v21 = [rightButtons count];
 
   if (v21 == 1)
   {
-    v22 = [(TVRUIButtonPanelView *)self primaryButton];
-    [v22 frame];
+    primaryButton2 = [(TVRUIButtonPanelView *)self primaryButton];
+    [primaryButton2 frame];
     v24 = v14 + v5 + v23;
     [(TVRUIButtonPanelView *)self bounds];
     v26 = (v25 - v11) * 0.5;
@@ -195,8 +195,8 @@
 
   else
   {
-    v28 = [(TVRUIButtonPanelView *)self rightButtons];
-    v29 = [v28 count];
+    rightButtons2 = [(TVRUIButtonPanelView *)self rightButtons];
+    v29 = [rightButtons2 count];
 
     if (v29 != 2)
     {
@@ -205,8 +205,8 @@
 
     [(TVRUIButtonPanelView *)self bounds];
     v30 = CGRectGetWidth(v55) - v14 - v11;
-    v31 = [(TVRUIButtonPanelView *)self rightButtons];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    rightButtons3 = [(TVRUIButtonPanelView *)self rightButtons];
+    v32 = [rightButtons3 objectAtIndexedSubscript:0];
     [v32 setFrame:{v30, v16, v11, v11}];
 
     [(TVRUIButtonPanelView *)self bounds];
@@ -216,55 +216,55 @@
     v27 = 1;
   }
 
-  v34 = [(TVRUIButtonPanelView *)self rightButtons];
-  v35 = [v34 objectAtIndexedSubscript:v27];
+  rightButtons4 = [(TVRUIButtonPanelView *)self rightButtons];
+  v35 = [rightButtons4 objectAtIndexedSubscript:v27];
   [v35 setFrame:{v24, v26, v11, v11}];
 
 LABEL_8:
-  v36 = [(TVRUIButtonPanelView *)self leftButtons];
-  v37 = [v36 count];
+  leftButtons = [(TVRUIButtonPanelView *)self leftButtons];
+  v37 = [leftButtons count];
 
   if (v37 == 1)
   {
-    v38 = [(TVRUIButtonPanelView *)self primaryButton];
-    [v38 frame];
+    primaryButton3 = [(TVRUIButtonPanelView *)self primaryButton];
+    [primaryButton3 frame];
     v14 = v39 - v14 - v11;
     [(TVRUIButtonPanelView *)self bounds];
     v41 = (v40 - v11) * 0.5;
 
-    v42 = [(TVRUIButtonPanelView *)self leftButtons];
-    v43 = v42;
+    leftButtons2 = [(TVRUIButtonPanelView *)self leftButtons];
+    v43 = leftButtons2;
     v44 = 0;
   }
 
   else
   {
-    v45 = [(TVRUIButtonPanelView *)self leftButtons];
-    v46 = [v45 count];
+    leftButtons3 = [(TVRUIButtonPanelView *)self leftButtons];
+    v46 = [leftButtons3 count];
 
     if (v46 != 2)
     {
       return;
     }
 
-    v47 = [(TVRUIButtonPanelView *)self leftButtons];
-    v48 = [v47 objectAtIndexedSubscript:0];
+    leftButtons4 = [(TVRUIButtonPanelView *)self leftButtons];
+    v48 = [leftButtons4 objectAtIndexedSubscript:0];
     [v48 setFrame:{v14, v16, v11, v11}];
 
     [(TVRUIButtonPanelView *)self bounds];
     v41 = v49 - v16 - v11;
-    v42 = [(TVRUIButtonPanelView *)self leftButtons];
-    v43 = v42;
+    leftButtons2 = [(TVRUIButtonPanelView *)self leftButtons];
+    v43 = leftButtons2;
     v44 = 1;
   }
 
-  v50 = [v42 objectAtIndexedSubscript:v44];
+  v50 = [leftButtons2 objectAtIndexedSubscript:v44];
   [v50 setFrame:{v14, v41, v11, v11}];
 }
 
-- (void)setButtonEventDelegate:(id)a3
+- (void)setButtonEventDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_buttonEventDelegate);
 
   if (WeakRetained != obj)
@@ -276,31 +276,31 @@ LABEL_8:
   }
 }
 
-- (void)_configureButton:(id)a3
+- (void)_configureButton:(id)button
 {
-  v5 = a3;
-  [v5 addTarget:self action:sel__buttonPressed_ forControlEvents:1];
-  [v5 addTarget:self action:sel__buttonReleased_ forControlEvents:448];
-  if ([v5 hasTapAction])
+  buttonCopy = button;
+  [buttonCopy addTarget:self action:sel__buttonPressed_ forControlEvents:1];
+  [buttonCopy addTarget:self action:sel__buttonReleased_ forControlEvents:448];
+  if ([buttonCopy hasTapAction])
   {
     v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__buttonTapped_];
     [v4 setCancelsTouchesInView:0];
-    [v5 addGestureRecognizer:v4];
+    [buttonCopy addGestureRecognizer:v4];
   }
 }
 
-- (void)enableButtonsForDevice:(id)a3
+- (void)enableButtonsForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = MEMORY[0x277CBEB18];
-  v6 = [(TVRUIButtonPanelView *)self primaryButton];
-  v7 = [v5 arrayWithObject:v6];
+  primaryButton = [(TVRUIButtonPanelView *)self primaryButton];
+  v7 = [v5 arrayWithObject:primaryButton];
 
-  v8 = [(TVRUIButtonPanelView *)self leftButtons];
-  [v7 addObjectsFromArray:v8];
+  leftButtons = [(TVRUIButtonPanelView *)self leftButtons];
+  [v7 addObjectsFromArray:leftButtons];
 
-  v9 = [(TVRUIButtonPanelView *)self rightButtons];
-  [v7 addObjectsFromArray:v9];
+  rightButtons = [(TVRUIButtonPanelView *)self rightButtons];
+  [v7 addObjectsFromArray:rightButtons];
 
   v10 = MEMORY[0x277D75D18];
   v15[0] = MEMORY[0x277D85DD0];
@@ -308,9 +308,9 @@ LABEL_8:
   v15[2] = __47__TVRUIButtonPanelView_enableButtonsForDevice___block_invoke;
   v15[3] = &unk_279D883D8;
   v16 = v7;
-  v17 = self;
-  v18 = v4;
-  v11 = v4;
+  selfCopy = self;
+  v18 = deviceCopy;
+  v11 = deviceCopy;
   v12 = v7;
   [v10 animateWithDuration:v15 animations:0.24];
   v13 = _TVRUIViewControllerLog();
@@ -358,26 +358,26 @@ void __47__TVRUIButtonPanelView_enableButtonsForDevice___block_invoke(id *a1)
   [v7 setEnabled:{objc_msgSend(a1[6], "supportsPaging")}];
 }
 
-- (void)_enableButton:(id)a3
+- (void)_enableButton:(id)button
 {
-  v3 = a3;
-  [v3 setEnabled:1];
-  [v3 setUserInteractionEnabled:1];
-  [v3 setAlpha:1.0];
+  buttonCopy = button;
+  [buttonCopy setEnabled:1];
+  [buttonCopy setUserInteractionEnabled:1];
+  [buttonCopy setAlpha:1.0];
 }
 
 - (void)disableButtons
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(TVRUIButtonPanelView *)self primaryButton];
-  v5 = [v3 arrayWithObject:v4];
+  primaryButton = [(TVRUIButtonPanelView *)self primaryButton];
+  v5 = [v3 arrayWithObject:primaryButton];
 
-  v6 = [(TVRUIButtonPanelView *)self leftButtons];
-  [v5 addObjectsFromArray:v6];
+  leftButtons = [(TVRUIButtonPanelView *)self leftButtons];
+  [v5 addObjectsFromArray:leftButtons];
 
-  v7 = [(TVRUIButtonPanelView *)self rightButtons];
-  [v5 addObjectsFromArray:v7];
+  rightButtons = [(TVRUIButtonPanelView *)self rightButtons];
+  [v5 addObjectsFromArray:rightButtons];
 
   [(TVRUIPagingButton *)self->_pagingButton setEnabled:0];
   v17 = 0u;
@@ -418,27 +418,27 @@ void __47__TVRUIButtonPanelView_enableButtonsForDevice___block_invoke(id *a1)
   }
 }
 
-- (void)_disableButton:(id)a3
+- (void)_disableButton:(id)button
 {
-  v7 = a3;
-  v4 = [(TVRUIButtonPanelView *)self styleProvider];
-  [v4 disabledButtonAlpha];
+  buttonCopy = button;
+  styleProvider = [(TVRUIButtonPanelView *)self styleProvider];
+  [styleProvider disabledButtonAlpha];
   v6 = v5;
 
-  [v7 setUserInteractionEnabled:0];
-  [v7 setAlpha:v6];
+  [buttonCopy setUserInteractionEnabled:0];
+  [buttonCopy setAlpha:v6];
 }
 
 - (void)disableSearchButton
 {
-  v3 = [(TVRUIButtonPanelView *)self _searchButton];
-  [(TVRUIButtonPanelView *)self _disableButton:v3];
+  _searchButton = [(TVRUIButtonPanelView *)self _searchButton];
+  [(TVRUIButtonPanelView *)self _disableButton:_searchButton];
 }
 
 - (void)enableSearchButton
 {
-  v3 = [(TVRUIButtonPanelView *)self _searchButton];
-  [(TVRUIButtonPanelView *)self _enableButton:v3];
+  _searchButton = [(TVRUIButtonPanelView *)self _searchButton];
+  [(TVRUIButtonPanelView *)self _enableButton:_searchButton];
 }
 
 - (id)_searchButton
@@ -448,8 +448,8 @@ void __47__TVRUIButtonPanelView_enableButtonsForDevice___block_invoke(id *a1)
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(TVRUIButtonPanelView *)self rightButtons];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  rightButtons = [(TVRUIButtonPanelView *)self rightButtons];
+  v3 = [rightButtons countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -459,7 +459,7 @@ void __47__TVRUIButtonPanelView_enableButtonsForDevice___block_invoke(id *a1)
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(rightButtons);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -470,7 +470,7 @@ void __47__TVRUIButtonPanelView_enableButtonsForDevice___block_invoke(id *a1)
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [rightButtons countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -485,80 +485,80 @@ LABEL_11:
   return v3;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v4 = a3;
-  if (([v4 hasTapAction] & 1) == 0)
+  pressedCopy = pressed;
+  if (([pressedCopy hasTapAction] & 1) == 0)
   {
-    -[TVRUIButtonPanelView _sendButtonPressed:](self, "_sendButtonPressed:", [v4 buttonType]);
+    -[TVRUIButtonPanelView _sendButtonPressed:](self, "_sendButtonPressed:", [pressedCopy buttonType]);
   }
 }
 
-- (void)_buttonReleased:(id)a3
+- (void)_buttonReleased:(id)released
 {
-  v4 = a3;
-  if (([v4 hasTapAction] & 1) == 0)
+  releasedCopy = released;
+  if (([releasedCopy hasTapAction] & 1) == 0)
   {
-    -[TVRUIButtonPanelView _sendButtonReleased:](self, "_sendButtonReleased:", [v4 buttonType]);
+    -[TVRUIButtonPanelView _sendButtonReleased:](self, "_sendButtonReleased:", [releasedCopy buttonType]);
   }
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = [a3 view];
-  -[TVRUIButtonPanelView _sendButtonTapped:](self, "_sendButtonTapped:", [v4 buttonType]);
+  view = [tapped view];
+  -[TVRUIButtonPanelView _sendButtonTapped:](self, "_sendButtonTapped:", [view buttonType]);
 }
 
-- (void)_sendButtonPressed:(int64_t)a3
+- (void)_sendButtonPressed:(int64_t)pressed
 {
-  v9 = [TVRUIButtonEvent createButtonEvent:1 buttonType:a3];
-  v4 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
-  if (v4)
+  v9 = [TVRUIButtonEvent createButtonEvent:1 buttonType:pressed];
+  buttonEventDelegate = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+  if (buttonEventDelegate)
   {
-    v5 = v4;
-    v6 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+    v5 = buttonEventDelegate;
+    buttonEventDelegate2 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
-      [v8 generatedButtonEvent:v9];
+      buttonEventDelegate3 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+      [buttonEventDelegate3 generatedButtonEvent:v9];
     }
   }
 }
 
-- (void)_sendButtonReleased:(int64_t)a3
+- (void)_sendButtonReleased:(int64_t)released
 {
-  v9 = [TVRUIButtonEvent createButtonEvent:2 buttonType:a3];
-  v4 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
-  if (v4)
+  v9 = [TVRUIButtonEvent createButtonEvent:2 buttonType:released];
+  buttonEventDelegate = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+  if (buttonEventDelegate)
   {
-    v5 = v4;
-    v6 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+    v5 = buttonEventDelegate;
+    buttonEventDelegate2 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
-      [v8 generatedButtonEvent:v9];
+      buttonEventDelegate3 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+      [buttonEventDelegate3 generatedButtonEvent:v9];
     }
   }
 }
 
-- (void)_sendButtonTapped:(int64_t)a3
+- (void)_sendButtonTapped:(int64_t)tapped
 {
-  v9 = [TVRUIButtonEvent createButtonEvent:0 buttonType:a3];
-  v4 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
-  if (v4)
+  v9 = [TVRUIButtonEvent createButtonEvent:0 buttonType:tapped];
+  buttonEventDelegate = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+  if (buttonEventDelegate)
   {
-    v5 = v4;
-    v6 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+    v5 = buttonEventDelegate;
+    buttonEventDelegate2 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
-      [v8 generatedButtonEvent:v9];
+      buttonEventDelegate3 = [(TVRUIButtonPanelView *)self buttonEventDelegate];
+      [buttonEventDelegate3 generatedButtonEvent:v9];
     }
   }
 }

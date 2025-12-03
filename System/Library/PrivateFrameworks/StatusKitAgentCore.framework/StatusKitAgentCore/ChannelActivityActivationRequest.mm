@@ -1,18 +1,18 @@
 @interface ChannelActivityActivationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPushPriority:(id)a3;
-- (int)StringAsRequestFlag:(id)a3;
+- (int)StringAsPushPriority:(id)priority;
+- (int)StringAsRequestFlag:(id)flag;
 - (int)pushPriority;
 - (int)requestFlag;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPushPriority:(BOOL)a3;
-- (void)setHasRequestFlag:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPushPriority:(BOOL)priority;
+- (void)setHasRequestFlag:(BOOL)flag;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ChannelActivityActivationRequest
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasRequestFlag:(BOOL)a3
+- (void)setHasRequestFlag:(BOOL)flag
 {
-  if (a3)
+  if (flag)
   {
     v3 = 4;
   }
@@ -45,20 +45,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsRequestFlag:(id)a3
+- (int)StringAsRequestFlag:(id)flag
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NEW_REQUEST"])
+  flagCopy = flag;
+  if ([flagCopy isEqualToString:@"NEW_REQUEST"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"REFRESH_REQUEST"])
+  else if ([flagCopy isEqualToString:@"REFRESH_REQUEST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"UPDATE_MISSED"])
+  else if ([flagCopy isEqualToString:@"UPDATE_MISSED"])
   {
     v4 = 2;
   }
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)setHasPushPriority:(BOOL)a3
+- (void)setHasPushPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 2;
   }
@@ -99,20 +99,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsPushPriority:(id)a3
+- (int)StringAsPushPriority:(id)priority
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOW"])
+  priorityCopy = priority;
+  if ([priorityCopy isEqualToString:@"LOW"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NORMAL"])
+  else if ([priorityCopy isEqualToString:@"NORMAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HIGH"])
+  else if ([priorityCopy isEqualToString:@"HIGH"])
   {
     v4 = 2;
   }
@@ -131,27 +131,27 @@
   v8.receiver = self;
   v8.super_class = ChannelActivityActivationRequest;
   v4 = [(ChannelActivityActivationRequest *)&v8 description];
-  v5 = [(ChannelActivityActivationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ChannelActivityActivationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   authCredential = self->_authCredential;
   if (authCredential)
   {
-    v5 = [(AuthCredential *)authCredential dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"auth_credential"];
+    dictionaryRepresentation = [(AuthCredential *)authCredential dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"auth_credential"];
   }
 
   channelIdentity = self->_channelIdentity;
   if (channelIdentity)
   {
-    v7 = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"channel_identity"];
+    dictionaryRepresentation2 = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"channel_identity"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -167,31 +167,31 @@
       v9 = off_27843DF28[requestFlag];
     }
 
-    [v3 setObject:v9 forKey:@"request_flag"];
+    [dictionary setObject:v9 forKey:@"request_flag"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_clientTimestampSeconds];
-    [v3 setObject:v11 forKey:@"client_timestamp_seconds"];
+    [dictionary setObject:v11 forKey:@"client_timestamp_seconds"];
   }
 
   encryptedParticipantPayload = self->_encryptedParticipantPayload;
   if (encryptedParticipantPayload)
   {
-    [v3 setObject:encryptedParticipantPayload forKey:@"encrypted_participant_payload"];
+    [dictionary setObject:encryptedParticipantPayload forKey:@"encrypted_participant_payload"];
   }
 
   adopter = self->_adopter;
   if (adopter)
   {
-    [v3 setObject:adopter forKey:@"adopter"];
+    [dictionary setObject:adopter forKey:@"adopter"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -207,129 +207,129 @@
       v15 = off_27843DF40[pushPriority];
     }
 
-    [v3 setObject:v15 forKey:@"push_priority"];
+    [dictionary setObject:v15 forKey:@"push_priority"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_authCredential)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_channelIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     requestFlag = self->_requestFlag;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
     clientTimestampSeconds = self->_clientTimestampSeconds;
     PBDataWriterWriteUint64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_encryptedParticipantPayload)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_adopter)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     pushPriority = self->_pushPriority;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_authCredential)
   {
-    [v4 setAuthCredential:?];
-    v4 = v5;
+    [toCopy setAuthCredential:?];
+    toCopy = v5;
   }
 
   if (self->_channelIdentity)
   {
     [v5 setChannelIdentity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 13) = self->_requestFlag;
-    *(v4 + 64) |= 4u;
+    *(toCopy + 13) = self->_requestFlag;
+    *(toCopy + 64) |= 4u;
   }
 
   if (self->_uuid)
   {
     [v5 setUuid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_clientTimestampSeconds;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = self->_clientTimestampSeconds;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_encryptedParticipantPayload)
   {
     [v5 setEncryptedParticipantPayload:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_adopter)
   {
     [v5 setAdopter:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 12) = self->_pushPriority;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 12) = self->_pushPriority;
+    *(toCopy + 64) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(AuthCredential *)self->_authCredential copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(AuthCredential *)self->_authCredential copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:a3];
+  v8 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -339,7 +339,7 @@
     *(v5 + 64) |= 4u;
   }
 
-  v10 = [(NSData *)self->_uuid copyWithZone:a3];
+  v10 = [(NSData *)self->_uuid copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
@@ -349,11 +349,11 @@
     *(v5 + 64) |= 1u;
   }
 
-  v12 = [(NSData *)self->_encryptedParticipantPayload copyWithZone:a3];
+  v12 = [(NSData *)self->_encryptedParticipantPayload copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSString *)self->_adopter copyWithZone:a3];
+  v14 = [(NSString *)self->_adopter copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
@@ -366,16 +366,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   authCredential = self->_authCredential;
-  if (authCredential | *(v4 + 3))
+  if (authCredential | *(equalCopy + 3))
   {
     if (![(AuthCredential *)authCredential isEqual:?])
     {
@@ -384,7 +384,7 @@
   }
 
   channelIdentity = self->_channelIdentity;
-  if (channelIdentity | *(v4 + 4))
+  if (channelIdentity | *(equalCopy + 4))
   {
     if (![(ChannelIdentity *)channelIdentity isEqual:?])
     {
@@ -393,22 +393,22 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 64);
+  v8 = *(equalCopy + 64);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_requestFlag != *(v4 + 13))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_requestFlag != *(equalCopy + 13))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 7))
+  if (uuid | *(equalCopy + 7))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -420,28 +420,28 @@ LABEL_27:
     has = self->_has;
   }
 
-  v10 = *(v4 + 64);
+  v10 = *(equalCopy + 64);
   if (has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_clientTimestampSeconds != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_clientTimestampSeconds != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_27;
   }
 
   encryptedParticipantPayload = self->_encryptedParticipantPayload;
-  if (encryptedParticipantPayload | *(v4 + 5) && ![(NSData *)encryptedParticipantPayload isEqual:?])
+  if (encryptedParticipantPayload | *(equalCopy + 5) && ![(NSData *)encryptedParticipantPayload isEqual:?])
   {
     goto LABEL_27;
   }
 
   adopter = self->_adopter;
-  if (adopter | *(v4 + 2))
+  if (adopter | *(equalCopy + 2))
   {
     if (![(NSString *)adopter isEqual:?])
     {
@@ -449,10 +449,10 @@ LABEL_27:
     }
   }
 
-  v13 = (*(v4 + 64) & 2) == 0;
+  v13 = (*(equalCopy + 64) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_pushPriority != *(v4 + 12))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_pushPriority != *(equalCopy + 12))
     {
       goto LABEL_27;
     }
@@ -505,12 +505,12 @@ LABEL_28:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   authCredential = self->_authCredential;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (authCredential)
   {
     if (!v6)
@@ -531,10 +531,10 @@ LABEL_28:
     [(ChannelActivityActivationRequest *)self setAuthCredential:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   channelIdentity = self->_channelIdentity;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (channelIdentity)
   {
     if (!v8)
@@ -555,41 +555,41 @@ LABEL_7:
     [(ChannelActivityActivationRequest *)self setChannelIdentity:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if ((*(v4 + 64) & 4) != 0)
+  if ((*(fromCopy + 64) & 4) != 0)
   {
-    self->_requestFlag = *(v4 + 13);
+    self->_requestFlag = *(fromCopy + 13);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ChannelActivityActivationRequest *)self setUuid:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_clientTimestampSeconds = *(v4 + 1);
+    self->_clientTimestampSeconds = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ChannelActivityActivationRequest *)self setEncryptedParticipantPayload:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ChannelActivityActivationRequest *)self setAdopter:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if ((*(v4 + 64) & 2) != 0)
+  if ((*(fromCopy + 64) & 2) != 0)
   {
-    self->_pushPriority = *(v4 + 12);
+    self->_pushPriority = *(fromCopy + 12);
     *&self->_has |= 2u;
   }
 

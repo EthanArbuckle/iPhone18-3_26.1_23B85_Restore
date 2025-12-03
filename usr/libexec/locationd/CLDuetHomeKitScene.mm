@@ -1,11 +1,11 @@
 @interface CLDuetHomeKitScene
-- (CLDuetHomeKitScene)initWithHomeUUID:(id)a3 actionSetUUID:(id)a4 actionSetName:(id)a5 actionSetType:(id)a6 clientName:(id)a7 source:(id)a8 triggerLocalizationScan:(id)a9 triggerRecordingScan:(id)a10;
+- (CLDuetHomeKitScene)initWithHomeUUID:(id)d actionSetUUID:(id)iD actionSetName:(id)name actionSetType:(id)type clientName:(id)clientName source:(id)source triggerLocalizationScan:(id)scan triggerRecordingScan:(id)self0;
 - (void)dealloc;
 @end
 
 @implementation CLDuetHomeKitScene
 
-- (CLDuetHomeKitScene)initWithHomeUUID:(id)a3 actionSetUUID:(id)a4 actionSetName:(id)a5 actionSetType:(id)a6 clientName:(id)a7 source:(id)a8 triggerLocalizationScan:(id)a9 triggerRecordingScan:(id)a10
+- (CLDuetHomeKitScene)initWithHomeUUID:(id)d actionSetUUID:(id)iD actionSetName:(id)name actionSetType:(id)type clientName:(id)clientName source:(id)source triggerLocalizationScan:(id)scan triggerRecordingScan:(id)self0
 {
   v19.receiver = self;
   v19.super_class = CLDuetHomeKitScene;
@@ -13,14 +13,14 @@
   v17 = v16;
   if (v16)
   {
-    [(CLDuetHomeKitScene *)v16 setHomeUUID:a3];
-    [(CLDuetHomeKitScene *)v17 setActionSetUUID:a4];
-    [(CLDuetHomeKitScene *)v17 setActionSetName:a5];
-    [(CLDuetHomeKitScene *)v17 setActionSetType:a6];
-    [(CLDuetHomeKitScene *)v17 setClientName:a7];
-    [(CLDuetHomeKitScene *)v17 setSource:a8];
-    [(CLDuetHomeKitScene *)v17 setTriggerLocalizationScan:a9];
-    [(CLDuetHomeKitScene *)v17 setTriggerRecordingScan:a10];
+    [(CLDuetHomeKitScene *)v16 setHomeUUID:d];
+    [(CLDuetHomeKitScene *)v17 setActionSetUUID:iD];
+    [(CLDuetHomeKitScene *)v17 setActionSetName:name];
+    [(CLDuetHomeKitScene *)v17 setActionSetType:type];
+    [(CLDuetHomeKitScene *)v17 setClientName:clientName];
+    [(CLDuetHomeKitScene *)v17 setSource:source];
+    [(CLDuetHomeKitScene *)v17 setTriggerLocalizationScan:scan];
+    [(CLDuetHomeKitScene *)v17 setTriggerRecordingScan:recordingScan];
   }
 
   return v17;

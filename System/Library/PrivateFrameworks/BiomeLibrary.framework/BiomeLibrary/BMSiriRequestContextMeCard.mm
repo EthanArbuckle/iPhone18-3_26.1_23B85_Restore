@@ -1,39 +1,39 @@
 @interface BMSiriRequestContextMeCard
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRequestContextMeCard)initWithGivenName:(id)a3 middleName:(id)a4 familyName:(id)a5 nickName:(id)a6 fullName:(id)a7 addresses:(id)a8;
-- (BMSiriRequestContextMeCard)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRequestContextMeCard)initWithGivenName:(id)name middleName:(id)middleName familyName:(id)familyName nickName:(id)nickName fullName:(id)fullName addresses:(id)addresses;
+- (BMSiriRequestContextMeCard)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_addressesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRequestContextMeCard
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRequestContextMeCard *)self givenName];
-    v7 = [v5 givenName];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    givenName = [(BMSiriRequestContextMeCard *)self givenName];
+    givenName2 = [v5 givenName];
+    v8 = givenName2;
+    if (givenName == givenName2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriRequestContextMeCard *)self givenName];
-      v10 = [v5 givenName];
-      v11 = [v9 isEqual:v10];
+      givenName3 = [(BMSiriRequestContextMeCard *)self givenName];
+      givenName4 = [v5 givenName];
+      v11 = [givenName3 isEqual:givenName4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMSiriRequestContextMeCard *)self middleName];
-    v14 = [v5 middleName];
-    v15 = v14;
-    if (v13 == v14)
+    middleName = [(BMSiriRequestContextMeCard *)self middleName];
+    middleName2 = [v5 middleName];
+    v15 = middleName2;
+    if (middleName == middleName2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriRequestContextMeCard *)self middleName];
-      v17 = [v5 middleName];
-      v18 = [v16 isEqual:v17];
+      middleName3 = [(BMSiriRequestContextMeCard *)self middleName];
+      middleName4 = [v5 middleName];
+      v18 = [middleName3 isEqual:middleName4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMSiriRequestContextMeCard *)self familyName];
-    v20 = [v5 familyName];
-    v21 = v20;
-    if (v19 == v20)
+    familyName = [(BMSiriRequestContextMeCard *)self familyName];
+    familyName2 = [v5 familyName];
+    v21 = familyName2;
+    if (familyName == familyName2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriRequestContextMeCard *)self familyName];
-      v23 = [v5 familyName];
-      v24 = [v22 isEqual:v23];
+      familyName3 = [(BMSiriRequestContextMeCard *)self familyName];
+      familyName4 = [v5 familyName];
+      v24 = [familyName3 isEqual:familyName4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMSiriRequestContextMeCard *)self nickName];
-    v26 = [v5 nickName];
-    v27 = v26;
-    if (v25 == v26)
+    nickName = [(BMSiriRequestContextMeCard *)self nickName];
+    nickName2 = [v5 nickName];
+    v27 = nickName2;
+    if (nickName == nickName2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriRequestContextMeCard *)self nickName];
-      v29 = [v5 nickName];
-      v30 = [v28 isEqual:v29];
+      nickName3 = [(BMSiriRequestContextMeCard *)self nickName];
+      nickName4 = [v5 nickName];
+      v30 = [nickName3 isEqual:nickName4];
 
       if (!v30)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v31 = [(BMSiriRequestContextMeCard *)self fullName];
-    v32 = [v5 fullName];
-    v33 = v32;
-    if (v31 == v32)
+    fullName = [(BMSiriRequestContextMeCard *)self fullName];
+    fullName2 = [v5 fullName];
+    v33 = fullName2;
+    if (fullName == fullName2)
     {
     }
 
     else
     {
-      v34 = [(BMSiriRequestContextMeCard *)self fullName];
-      v35 = [v5 fullName];
-      v36 = [v34 isEqual:v35];
+      fullName3 = [(BMSiriRequestContextMeCard *)self fullName];
+      fullName4 = [v5 fullName];
+      v36 = [fullName3 isEqual:fullName4];
 
       if (!v36)
       {
@@ -121,18 +121,18 @@ LABEL_22:
       }
     }
 
-    v38 = [(BMSiriRequestContextMeCard *)self addresses];
-    v39 = [v5 addresses];
-    if (v38 == v39)
+    addresses = [(BMSiriRequestContextMeCard *)self addresses];
+    addresses2 = [v5 addresses];
+    if (addresses == addresses2)
     {
       v12 = 1;
     }
 
     else
     {
-      v40 = [(BMSiriRequestContextMeCard *)self addresses];
-      v41 = [v5 addresses];
-      v12 = [v40 isEqual:v41];
+      addresses3 = [(BMSiriRequestContextMeCard *)self addresses];
+      addresses4 = [v5 addresses];
+      v12 = [addresses3 isEqual:addresses4];
     }
 
     goto LABEL_22;
@@ -147,74 +147,74 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v23[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriRequestContextMeCard *)self givenName];
-  v4 = [(BMSiriRequestContextMeCard *)self middleName];
-  v5 = [(BMSiriRequestContextMeCard *)self familyName];
-  v6 = [(BMSiriRequestContextMeCard *)self nickName];
-  v7 = [(BMSiriRequestContextMeCard *)self fullName];
-  v8 = [(BMSiriRequestContextMeCard *)self _addressesJSONArray];
+  givenName = [(BMSiriRequestContextMeCard *)self givenName];
+  middleName = [(BMSiriRequestContextMeCard *)self middleName];
+  familyName = [(BMSiriRequestContextMeCard *)self familyName];
+  nickName = [(BMSiriRequestContextMeCard *)self nickName];
+  fullName = [(BMSiriRequestContextMeCard *)self fullName];
+  _addressesJSONArray = [(BMSiriRequestContextMeCard *)self _addressesJSONArray];
   v22[0] = @"givenName";
-  v9 = v3;
-  if (!v3)
+  null = givenName;
+  if (!givenName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v23[0] = v9;
+  v20 = null;
+  v23[0] = null;
   v22[1] = @"middleName";
-  v10 = v4;
-  if (!v4)
+  null2 = middleName;
+  if (!middleName)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"familyName";
-  v11 = v5;
-  if (!v5)
+  null3 = familyName;
+  if (!familyName)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v3;
-  v23[2] = v11;
+  v21 = givenName;
+  v23[2] = null3;
   v22[3] = @"nickName";
-  v12 = v6;
-  if (!v6)
+  null4 = nickName;
+  if (!nickName)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"fullName";
-  v13 = v7;
-  if (!v7)
+  null5 = fullName;
+  if (!fullName)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"addresses";
-  v14 = v8;
-  if (!v8)
+  null6 = _addressesJSONArray;
+  if (!_addressesJSONArray)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
-  if (v8)
+  if (_addressesJSONArray)
   {
-    if (v7)
+    if (fullName)
     {
       goto LABEL_15;
     }
 
 LABEL_23:
 
-    if (v6)
+    if (nickName)
     {
       goto LABEL_16;
     }
@@ -222,13 +222,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!fullName)
   {
     goto LABEL_23;
   }
 
 LABEL_15:
-  if (v6)
+  if (nickName)
   {
     goto LABEL_16;
   }
@@ -236,9 +236,9 @@ LABEL_15:
 LABEL_24:
 
 LABEL_16:
-  if (v5)
+  if (familyName)
   {
-    if (v4)
+    if (middleName)
     {
       goto LABEL_18;
     }
@@ -253,7 +253,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v4)
+  if (!middleName)
   {
     goto LABEL_26;
   }
@@ -280,8 +280,8 @@ LABEL_19:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMSiriRequestContextMeCard *)self addresses];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  addresses = [(BMSiriRequestContextMeCard *)self addresses];
+  v5 = [addresses countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -292,14 +292,14 @@ LABEL_19:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(addresses);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [addresses countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -310,11 +310,11 @@ LABEL_19:
   return v3;
 }
 
-- (BMSiriRequestContextMeCard)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMSiriRequestContextMeCard)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v132[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"givenName"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"givenName"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -325,11 +325,11 @@ LABEL_19:
         v31 = objc_alloc(MEMORY[0x1E696ABC0]);
         v32 = *MEMORY[0x1E698F240];
         v131 = *MEMORY[0x1E696A578];
-        v33 = self;
+        selfCopy = self;
         v34 = objc_alloc(MEMORY[0x1E696AEC0]);
         v94 = objc_opt_class();
         v35 = v34;
-        self = v33;
+        self = selfCopy;
         v29 = [v35 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v94, @"givenName"];
         v132[0] = v29;
         v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v132 forKeys:&v131 count:1];
@@ -355,7 +355,7 @@ LABEL_19:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"middleName"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"middleName"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -400,7 +400,7 @@ LABEL_19:
     v108 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"familyName"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"familyName"];
   v110 = v10;
   if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -448,7 +448,7 @@ LABEL_19:
     v105 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"nickName"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"nickName"];
   v107 = v12;
   if (v12 && (v13 = v12, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -498,7 +498,7 @@ LABEL_19:
     v109 = 0;
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"fullName"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"fullName"];
   v102 = v7;
   v103 = v8;
   v104 = v14;
@@ -542,17 +542,17 @@ LABEL_78:
 
   v106 = v15;
 LABEL_16:
-  v16 = [v6 objectForKeyedSubscript:@"addresses"];
-  v17 = [MEMORY[0x1E695DFB0] null];
-  v18 = [v16 isEqual:v17];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"addresses"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v18 = [v16 isEqual:null];
 
   if (!v18)
   {
     if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v98 = p_isa;
-      v99 = self;
-      v100 = v6;
+      selfCopy3 = self;
+      v100 = dictionaryCopy;
       goto LABEL_27;
     }
 
@@ -581,8 +581,8 @@ LABEL_63:
   }
 
   v98 = p_isa;
-  v99 = self;
-  v100 = v6;
+  selfCopy3 = self;
+  v100 = dictionaryCopy;
 
   v16 = 0;
 LABEL_27:
@@ -613,8 +613,8 @@ LABEL_27:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        self = v99;
-        v6 = v100;
+        self = selfCopy3;
+        dictionaryCopy = v100;
         v7 = v102;
         v79 = v98;
         if (v98)
@@ -644,8 +644,8 @@ LABEL_61:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        self = v99;
-        v6 = v100;
+        self = selfCopy3;
+        dictionaryCopy = v100;
         v7 = v102;
         v79 = v98;
         if (v98)
@@ -678,8 +678,8 @@ LABEL_61:
           *v98 = v85;
         }
 
-        self = v99;
-        v6 = v100;
+        self = selfCopy3;
+        dictionaryCopy = v100;
         v7 = v102;
         goto LABEL_60;
       }
@@ -700,9 +700,9 @@ LABEL_37:
 
   v29 = v108;
   v30 = v105;
-  self = [(BMSiriRequestContextMeCard *)v99 initWithGivenName:v103 middleName:v108 familyName:v105 nickName:v109 fullName:v106 addresses:v19];
+  self = [(BMSiriRequestContextMeCard *)selfCopy3 initWithGivenName:v103 middleName:v108 familyName:v105 nickName:v109 fullName:v106 addresses:v19];
   p_isa = &self->super.super.isa;
-  v6 = v100;
+  dictionaryCopy = v100;
   v7 = v102;
 LABEL_64:
 
@@ -725,15 +725,15 @@ LABEL_70:
 {
   v3 = objc_opt_new();
   [(BMSiriRequestContextMeCard *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_givenName)
   {
     PBDataWriterWriteStringField();
@@ -780,7 +780,7 @@ LABEL_70:
 
         v10 = *(*(&v12 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v10 writeTo:v4];
+        [v10 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -793,9 +793,9 @@ LABEL_70:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v28.receiver = self;
   v28.super_class = BMSiriRequestContextMeCard;
   v5 = [(BMEventBase *)&v28 init];
@@ -805,12 +805,12 @@ LABEL_70:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_37;
       }
@@ -821,18 +821,18 @@ LABEL_70:
       while (1)
       {
         LOBYTE(v29[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v29 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v29 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v29[0] & 0x7F) << v8;
@@ -849,9 +849,9 @@ LABEL_70:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_37;
       }
@@ -883,7 +883,7 @@ LABEL_16:
 
       v29[0] = 0;
       v29[1] = 0;
-      if (!PBReaderPlaceMark() || (v19 = [[BMSiriRequestContextAddress alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v19 = [[BMSiriRequestContextAddress alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_41:
 
@@ -895,8 +895,8 @@ LABEL_41:
       PBReaderRecallMark();
 
 LABEL_36:
-      v22 = [v4 position];
-      if (v22 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_37;
       }
@@ -936,8 +936,8 @@ LABEL_37:
   addresses = v5->_addresses;
   v5->_addresses = v23;
 
-  v25 = [v4 hasError];
-  if (v25)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_38:
     v26 = 0;
@@ -955,37 +955,37 @@ LABEL_39:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriRequestContextMeCard *)self givenName];
-  v5 = [(BMSiriRequestContextMeCard *)self middleName];
-  v6 = [(BMSiriRequestContextMeCard *)self familyName];
-  v7 = [(BMSiriRequestContextMeCard *)self nickName];
-  v8 = [(BMSiriRequestContextMeCard *)self fullName];
-  v9 = [(BMSiriRequestContextMeCard *)self addresses];
-  v10 = [v3 initWithFormat:@"BMSiriRequestContextMeCard with givenName: %@, middleName: %@, familyName: %@, nickName: %@, fullName: %@, addresses: %@", v4, v5, v6, v7, v8, v9];
+  givenName = [(BMSiriRequestContextMeCard *)self givenName];
+  middleName = [(BMSiriRequestContextMeCard *)self middleName];
+  familyName = [(BMSiriRequestContextMeCard *)self familyName];
+  nickName = [(BMSiriRequestContextMeCard *)self nickName];
+  fullName = [(BMSiriRequestContextMeCard *)self fullName];
+  addresses = [(BMSiriRequestContextMeCard *)self addresses];
+  v10 = [v3 initWithFormat:@"BMSiriRequestContextMeCard with givenName: %@, middleName: %@, familyName: %@, nickName: %@, fullName: %@, addresses: %@", givenName, middleName, familyName, nickName, fullName, addresses];
 
   return v10;
 }
 
-- (BMSiriRequestContextMeCard)initWithGivenName:(id)a3 middleName:(id)a4 familyName:(id)a5 nickName:(id)a6 fullName:(id)a7 addresses:(id)a8
+- (BMSiriRequestContextMeCard)initWithGivenName:(id)name middleName:(id)middleName familyName:(id)familyName nickName:(id)nickName fullName:(id)fullName addresses:(id)addresses
 {
-  v22 = a3;
-  v21 = a4;
-  v20 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  middleNameCopy = middleName;
+  familyNameCopy = familyName;
+  nickNameCopy = nickName;
+  fullNameCopy = fullName;
+  addressesCopy = addresses;
   v23.receiver = self;
   v23.super_class = BMSiriRequestContextMeCard;
   v18 = [(BMEventBase *)&v23 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_givenName, a3);
-    objc_storeStrong(&v18->_middleName, a4);
-    objc_storeStrong(&v18->_familyName, a5);
-    objc_storeStrong(&v18->_nickName, a6);
-    objc_storeStrong(&v18->_fullName, a7);
-    objc_storeStrong(&v18->_addresses, a8);
+    objc_storeStrong(&v18->_givenName, name);
+    objc_storeStrong(&v18->_middleName, middleName);
+    objc_storeStrong(&v18->_familyName, familyName);
+    objc_storeStrong(&v18->_nickName, nickName);
+    objc_storeStrong(&v18->_fullName, fullName);
+    objc_storeStrong(&v18->_addresses, addresses);
   }
 
   return v18;
@@ -1044,9 +1044,9 @@ id __37__BMSiriRequestContextMeCard_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1054,8 +1054,8 @@ id __37__BMSiriRequestContextMeCard_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRequestContextMeCard alloc] initByReadFrom:v7];
     v4 = v8;

@@ -10,21 +10,21 @@
   v53 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v3 = +[PEAnalyticsUtility adjustmentValueBucketizerFormatter];
-  v4 = [a1 adjustment];
-  if (v4)
+  adjustment = [self adjustment];
+  if (adjustment)
   {
-    v5 = v4;
-    v6 = [a1 enabled];
+    v5 = adjustment;
+    enabled = [self enabled];
 
-    if (v6)
+    if (enabled)
     {
-      v7 = [a1 visualInputKeys];
-      v8 = [a1 analyticsKeysBlocklist];
+      visualInputKeys = [self visualInputKeys];
+      analyticsKeysBlocklist = [self analyticsKeysBlocklist];
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v9 = v7;
+      v9 = visualInputKeys;
       v10 = [v9 countByEnumeratingWithState:&v48 objects:v52 count:16];
       if (!v10)
       {
@@ -46,14 +46,14 @@
           }
 
           v14 = *(*(&v48 + 1) + 8 * v13);
-          if (([v8 containsObject:{v14, v46}] & 1) == 0)
+          if (([analyticsKeysBlocklist containsObject:{v14, v46}] & 1) == 0)
           {
-            v15 = [MEMORY[0x277D3A988] autoKey];
-            if ([v14 isEqualToString:v15])
+            autoKey = [MEMORY[0x277D3A988] autoKey];
+            if ([v14 isEqualToString:autoKey])
             {
-              v16 = [a1 isAuto];
+              isAuto = [self isAuto];
 
-              if (v16)
+              if (isAuto)
               {
                 [v2 setObject:@"1" forKeyedSubscript:@"sc_auto"];
 LABEL_29:
@@ -66,16 +66,16 @@ LABEL_29:
             {
             }
 
-            v17 = [MEMORY[0x277D3A988] offsetSaturationKey];
-            if ([v14 isEqualToString:v17])
+            offsetSaturationKey = [MEMORY[0x277D3A988] offsetSaturationKey];
+            if ([v14 isEqualToString:offsetSaturationKey])
             {
-              [a1 offsetSaturation];
+              [self offsetSaturation];
               v19 = v18;
 
               if (v19 != 0.0)
               {
                 v20 = MEMORY[0x277CCABB0];
-                [a1 inputSaturation];
+                [self inputSaturation];
                 v21 = [v20 numberWithDouble:?];
                 v22 = [v3 stringFromNumber:v21];
                 v23 = v2;
@@ -92,16 +92,16 @@ LABEL_24:
             {
             }
 
-            v26 = [MEMORY[0x277D3A988] offsetContrastKey];
-            if ([v14 isEqualToString:v26])
+            offsetContrastKey = [MEMORY[0x277D3A988] offsetContrastKey];
+            if ([v14 isEqualToString:offsetContrastKey])
             {
-              [a1 offsetContrast];
+              [self offsetContrast];
               v28 = v27;
 
               if (v28 != 0.0)
               {
                 v29 = MEMORY[0x277CCABB0];
-                [a1 inputContrast];
+                [self inputContrast];
                 v21 = [v29 numberWithDouble:?];
                 v22 = [v3 stringFromNumber:v21];
                 v23 = v2;
@@ -115,16 +115,16 @@ LABEL_24:
             {
             }
 
-            v30 = [MEMORY[0x277D3A988] inputColorKey];
-            if ([v14 isEqualToString:v30])
+            inputColorKey = [MEMORY[0x277D3A988] inputColorKey];
+            if ([v14 isEqualToString:inputColorKey])
             {
-              [a1 inputColor];
+              [self inputColor];
               v32 = v31;
 
               if (v32 != 0.0)
               {
                 v33 = MEMORY[0x277CCABB0];
-                [a1 inputColor];
+                [self inputColor];
                 v21 = [v33 numberWithDouble:?];
                 v22 = [v3 stringFromNumber:v21];
                 v23 = v2;
@@ -138,7 +138,7 @@ LABEL_24:
             {
             }
 
-            v34 = [a1 valueForKey:v14];
+            v34 = [self valueForKey:v14];
             [v34 doubleValue];
             if (v35 != 0.0)
             {
@@ -147,16 +147,16 @@ LABEL_24:
               v37 = [v36 numberWithDouble:?];
               [v3 stringFromNumber:v37];
               v38 = v9;
-              v39 = v8;
-              v40 = a1;
+              v39 = analyticsKeysBlocklist;
+              selfCopy = self;
               v41 = v3;
               v43 = v42 = v2;
               [v42 setObject:v43 forKeyedSubscript:v14];
 
               v2 = v42;
               v3 = v41;
-              a1 = v40;
-              v8 = v39;
+              self = selfCopy;
+              analyticsKeysBlocklist = v39;
               v9 = v38;
               v11 = v46;
             }
@@ -190,13 +190,13 @@ LABEL_34:
 - (id)analyticsKeysBlocklist
 {
   v0 = MEMORY[0x277CBEB98];
-  v1 = [MEMORY[0x277D3A988] statisticsKey];
-  v2 = [MEMORY[0x277D3A988] enabledKey];
-  v3 = [MEMORY[0x277D3A988] inputSaturationKey];
-  v4 = [MEMORY[0x277D3A988] inputCastKey];
-  v5 = [MEMORY[0x277D3A988] inputContrastKey];
-  v6 = [MEMORY[0x277D3A988] offsetCastKey];
-  v7 = [v0 setWithObjects:{v1, v2, v3, v4, v5, v6, 0}];
+  statisticsKey = [MEMORY[0x277D3A988] statisticsKey];
+  enabledKey = [MEMORY[0x277D3A988] enabledKey];
+  inputSaturationKey = [MEMORY[0x277D3A988] inputSaturationKey];
+  inputCastKey = [MEMORY[0x277D3A988] inputCastKey];
+  inputContrastKey = [MEMORY[0x277D3A988] inputContrastKey];
+  offsetCastKey = [MEMORY[0x277D3A988] offsetCastKey];
+  v7 = [v0 setWithObjects:{statisticsKey, enabledKey, inputSaturationKey, inputCastKey, inputContrastKey, offsetCastKey, 0}];
 
   return v7;
 }

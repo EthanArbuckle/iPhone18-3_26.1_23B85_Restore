@@ -18,7 +18,7 @@
 + (NSString)sex;
 + (NSString)veteranStatus;
 + (NSString)weight;
-+ (id)ageIsOver:(int64_t)a3;
++ (id)ageIsOver:(int64_t)over;
 - (_TtC7CoreIDV27IdentityElementRawValueKeys)init;
 @end
 
@@ -157,7 +157,7 @@
   return v2;
 }
 
-+ (id)ageIsOver:(int64_t)a3
++ (id)ageIsOver:(int64_t)over
 {
   v3 = sub_21CD84174();
   MEMORY[0x21CF175E0](v3);

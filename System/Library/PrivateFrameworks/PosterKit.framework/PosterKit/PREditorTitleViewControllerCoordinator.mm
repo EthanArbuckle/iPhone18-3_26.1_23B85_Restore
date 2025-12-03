@@ -1,23 +1,23 @@
 @interface PREditorTitleViewControllerCoordinator
-+ (Class)titleViewControllerClassForRole:(id)a3;
-- (PREditorTitleViewControllerCoordinator)initWithRole:(id)a3;
-- (id)beginInteractiveTransitionForStartingLook:(id)a3 toBaseFont:(id)a4 vibrancyConfiguration:(id)a5;
-- (id)cachingVibrancyProviderForLook:(id)a3;
-- (id)titleViewControllerForLook:(id)a3;
-- (void)enumerateTimeViewControllersUsingBlock:(id)a3;
++ (Class)titleViewControllerClassForRole:(id)role;
+- (PREditorTitleViewControllerCoordinator)initWithRole:(id)role;
+- (id)beginInteractiveTransitionForStartingLook:(id)look toBaseFont:(id)font vibrancyConfiguration:(id)configuration;
+- (id)cachingVibrancyProviderForLook:(id)look;
+- (id)titleViewControllerForLook:(id)look;
+- (void)enumerateTimeViewControllersUsingBlock:(id)block;
 - (void)invalidateInteractiveTransition;
-- (void)prepareInteractiveTransitionForStartingLook:(id)a3;
-- (void)updateLookWithIdentifier:(id)a3 withLook:(id)a4;
+- (void)prepareInteractiveTransitionForStartingLook:(id)look;
+- (void)updateLookWithIdentifier:(id)identifier withLook:(id)look;
 @end
 
 @implementation PREditorTitleViewControllerCoordinator
 
-+ (Class)titleViewControllerClassForRole:(id)a3
++ (Class)titleViewControllerClassForRole:(id)role
 {
-  v3 = a3;
-  if (([v3 isEqual:@"PRPosterRoleIncomingCall"] & 1) == 0)
+  roleCopy = role;
+  if (([roleCopy isEqual:@"PRPosterRoleIncomingCall"] & 1) == 0)
   {
-    [v3 isEqualToString:@"PRPosterRoleBackdrop"];
+    [roleCopy isEqualToString:@"PRPosterRoleBackdrop"];
   }
 
   v4 = objc_opt_class();
@@ -25,42 +25,42 @@
   return v4;
 }
 
-- (PREditorTitleViewControllerCoordinator)initWithRole:(id)a3
+- (PREditorTitleViewControllerCoordinator)initWithRole:(id)role
 {
-  v5 = a3;
+  roleCopy = role;
   v11.receiver = self;
   v11.super_class = PREditorTitleViewControllerCoordinator;
   v6 = [(PREditorTitleViewControllerCoordinator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_role, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_role, role);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     titleViewControllersForLook = v7->_titleViewControllersForLook;
-    v7->_titleViewControllersForLook = v8;
+    v7->_titleViewControllersForLook = dictionary;
   }
 
   return v7;
 }
 
-- (id)titleViewControllerForLook:(id)a3
+- (id)titleViewControllerForLook:(id)look
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_titleViewControllersForLook objectForKeyedSubscript:v4];
+  lookCopy = look;
+  v5 = [(NSMutableDictionary *)self->_titleViewControllersForLook objectForKeyedSubscript:lookCopy];
   if (!v5)
   {
     v5 = objc_alloc_init([objc_opt_class() titleViewControllerClassForRole:self->_role]);
     [v5 pr_setForcesActiveAppearance:1];
-    [(NSMutableDictionary *)self->_titleViewControllersForLook setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_titleViewControllersForLook setObject:v5 forKeyedSubscript:lookCopy];
   }
 
   return v5;
 }
 
-- (void)enumerateTimeViewControllersUsingBlock:(id)a3
+- (void)enumerateTimeViewControllersUsingBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -84,7 +84,7 @@
         v10 = [(PREditorTitleViewControllerCoordinator *)self titleViewControllerForLook:*(*(&v11 + 1) + 8 * v9), v11];
         if (v10)
         {
-          v4[2](v4, v10);
+          blockCopy[2](blockCopy, v10);
         }
 
         ++v9;
@@ -98,11 +98,11 @@
   }
 }
 
-- (void)updateLookWithIdentifier:(id)a3 withLook:(id)a4
+- (void)updateLookWithIdentifier:(id)identifier withLook:(id)look
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  lookCopy = look;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -123,8 +123,8 @@ LABEL_3:
       }
 
       v13 = *(*(&v18 + 1) + 8 * v12);
-      v14 = [v13 identifier];
-      v15 = [v14 isEqualToString:v6];
+      identifier = [v13 identifier];
+      v15 = [identifier isEqualToString:identifierCopy];
 
       if (v15)
       {
@@ -152,7 +152,7 @@ LABEL_3:
 
     v17 = [(NSMutableDictionary *)self->_titleViewControllersForLook objectForKeyedSubscript:v16];
     [(NSMutableDictionary *)self->_titleViewControllersForLook setObject:0 forKeyedSubscript:v16];
-    [(NSMutableDictionary *)self->_titleViewControllersForLook setObject:v17 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_titleViewControllersForLook setObject:v17 forKeyedSubscript:lookCopy];
 
     v8 = v16;
   }
@@ -162,13 +162,13 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)prepareInteractiveTransitionForStartingLook:(id)a3
+- (void)prepareInteractiveTransitionForStartingLook:(id)look
 {
-  v8 = a3;
+  lookCopy = look;
   v5 = [(NSMutableDictionary *)self->_titleViewControllersForLook objectForKeyedSubscript:?];
   if (v5)
   {
-    objc_storeStrong(&self->_transitionInProgressLook, a3);
+    objc_storeStrong(&self->_transitionInProgressLook, look);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -179,23 +179,23 @@ LABEL_13:
   }
 }
 
-- (id)beginInteractiveTransitionForStartingLook:(id)a3 toBaseFont:(id)a4 vibrancyConfiguration:(id)a5
+- (id)beginInteractiveTransitionForStartingLook:(id)look toBaseFont:(id)font vibrancyConfiguration:(id)configuration
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_titleViewControllersForLook objectForKeyedSubscript:a3];
+  fontCopy = font;
+  configurationCopy = configuration;
+  v10 = [(NSMutableDictionary *)self->_titleViewControllersForLook objectForKeyedSubscript:look];
   if (v10)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v10 beginInteractiveTransitionToBaseFont:v8 vibrancyConfiguration:v9 cachingVibrancyTransitionProvider:self->_cachingProvider];
+      v11 = [v10 beginInteractiveTransitionToBaseFont:fontCopy vibrancyConfiguration:configurationCopy cachingVibrancyTransitionProvider:self->_cachingProvider];
       v12 = [[PREditorTitleViewControllerCSTransitionWrapper alloc] initWithCSTransitioning:v11];
     }
 
     else
     {
-      v12 = [v10 beginInteractiveTransitionToVibrancyConfiguration:v9];
+      v12 = [v10 beginInteractiveTransitionToVibrancyConfiguration:configurationCopy];
     }
   }
 
@@ -216,9 +216,9 @@ LABEL_13:
   self->_transitionInProgressLook = 0;
 }
 
-- (id)cachingVibrancyProviderForLook:(id)a3
+- (id)cachingVibrancyProviderForLook:(id)look
 {
-  if (self->_transitionInProgressLook == a3)
+  if (self->_transitionInProgressLook == look)
   {
     v4 = self->_cachingProvider;
   }

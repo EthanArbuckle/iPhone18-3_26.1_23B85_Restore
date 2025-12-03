@@ -1,34 +1,34 @@
 @interface GKMessageInboxEntryInternal
 + (id)secureCodedPropertyKeys;
 - (NSString)senderDisplayName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation GKMessageInboxEntryInternal
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = [(GKMessageInboxEntryInternal *)self url];
   [v4 setUrl:v5];
 
-  v6 = [(GKMessageInboxEntryInternal *)self senderHandle];
-  [v4 setSenderHandle:v6];
+  senderHandle = [(GKMessageInboxEntryInternal *)self senderHandle];
+  [v4 setSenderHandle:senderHandle];
 
-  v7 = [(GKMessageInboxEntryInternal *)self senderAlias];
-  [v4 setSenderAlias:v7];
+  senderAlias = [(GKMessageInboxEntryInternal *)self senderAlias];
+  [v4 setSenderAlias:senderAlias];
 
-  v8 = [(GKMessageInboxEntryInternal *)self contactID];
-  [v4 setContactID:v8];
+  contactID = [(GKMessageInboxEntryInternal *)self contactID];
+  [v4 setContactID:contactID];
 
-  v9 = [(GKMessageInboxEntryInternal *)self contactName];
-  [v4 setContactName:v9];
+  contactName = [(GKMessageInboxEntryInternal *)self contactName];
+  [v4 setContactName:contactName];
 
-  v10 = [(GKMessageInboxEntryInternal *)self friendCode];
-  [v4 setFriendCode:v10];
+  friendCode = [(GKMessageInboxEntryInternal *)self friendCode];
+  [v4 setFriendCode:friendCode];
 
-  v11 = [(GKMessageInboxEntryInternal *)self timestamp];
-  [v4 setTimestamp:v11];
+  timestamp = [(GKMessageInboxEntryInternal *)self timestamp];
+  [v4 setTimestamp:timestamp];
 
   return v4;
 }

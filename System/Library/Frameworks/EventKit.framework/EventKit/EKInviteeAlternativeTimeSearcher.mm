@@ -1,55 +1,55 @@
 @interface EKInviteeAlternativeTimeSearcher
-+ (BOOL)_span:(id)a3 hasSameConflictedParticipantsAsSpan:(id)a4;
-+ (id)_addressesForParticipants:(id)a3;
-+ (id)_allButFirstItemInArray:(id)a3;
-+ (id)_allButLastItemInArray:(id)a3;
-+ (id)_findHighestRankedNonOptimalTimeSpans:(id)a3;
-+ (id)_findLeftoverSpans:(id)a3 usingFreeTimes:(id)a4 andNonOptimalTimes:(id)a5;
-+ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)a3;
-+ (id)stateAsString:(int64_t)a3;
-+ (int64_t)_binarySearchForIndexOfTimeSpanInArray:(id)a3 containingDate:(id)a4;
-+ (void)_insertUniqueParticipants:(id)a3 intoExistingParticipantsArray:(id)a4;
-+ (void)_validateSpans:(id)a3;
++ (BOOL)_span:(id)_span hasSameConflictedParticipantsAsSpan:(id)span;
++ (id)_addressesForParticipants:(id)participants;
++ (id)_allButFirstItemInArray:(id)array;
++ (id)_allButLastItemInArray:(id)array;
++ (id)_findHighestRankedNonOptimalTimeSpans:(id)spans;
++ (id)_findLeftoverSpans:(id)spans usingFreeTimes:(id)times andNonOptimalTimes:(id)optimalTimes;
++ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)address;
++ (id)stateAsString:(int64_t)string;
++ (int64_t)_binarySearchForIndexOfTimeSpanInArray:(id)array containingDate:(id)date;
++ (void)_insertUniqueParticipants:(id)participants intoExistingParticipantsArray:(id)array;
++ (void)_validateSpans:(id)spans;
 - (BOOL)searchingForMoreTimesWhenAllAttendeesCanAttend;
 - (BOOL)searchingForMoreTimesWhenSomeAttendeesCanAttend;
-- (EKInviteeAlternativeTimeSearcher)initWithStateChangedCallback:(id)a3;
+- (EKInviteeAlternativeTimeSearcher)initWithStateChangedCallback:(id)callback;
 - (NSArray)originalConflictedParticipants;
 - (NSArray)proposedTimes;
 - (NSArray)timesWhenAllAttendeesCanAttend;
 - (NSArray)timesWhenSomeAttendeesCanAttend;
 - (NSDate)originalEndDate;
 - (NSDate)originalStartDate;
-- (id)_filterOutUnreasonableTimeSlots:(id)a3;
-- (id)_generateNonOptimalTimesFromTimeSpans:(id)a3;
-- (id)_generateOpenFreeTimesFromTimeSpans:(id)a3;
-- (id)_generateTimeSpansForResults:(id)a3 betweenStartDate:(id)a4 endDate:(id)a5;
-- (id)_mergeAdjacentSpansWithSameConflictedParticipants:(id)a3;
-- (id)_participantforParticipantAddress:(id)a3;
-- (id)_spliceLeftTimeSpans:(id)a3 andNewTimeSpans:(id)a4;
+- (id)_filterOutUnreasonableTimeSlots:(id)slots;
+- (id)_generateNonOptimalTimesFromTimeSpans:(id)spans;
+- (id)_generateOpenFreeTimesFromTimeSpans:(id)spans;
+- (id)_generateTimeSpansForResults:(id)results betweenStartDate:(id)date endDate:(id)endDate;
+- (id)_mergeAdjacentSpansWithSameConflictedParticipants:(id)participants;
+- (id)_participantforParticipantAddress:(id)address;
+- (id)_spliceLeftTimeSpans:(id)spans andNewTimeSpans:(id)timeSpans;
 - (void)_attemptSearch;
-- (void)_haltSearchWithError:(BOOL)a3;
-- (void)_processResults:(id)a3 betweenStartDate:(id)a4 endDate:(id)a5;
+- (void)_haltSearchWithError:(BOOL)error;
+- (void)_processResults:(id)results betweenStartDate:(id)date endDate:(id)endDate;
 - (void)_resetSearchFallbackNumbers;
-- (void)_sendStateChange:(int64_t)a3;
+- (void)_sendStateChange:(int64_t)change;
 - (void)_transitionToConflictFoundStateAndSearch;
 - (void)dealloc;
-- (void)resetWithEvent:(id)a3 organizerAddressForNewlyScheduledEvent:(id)a4;
+- (void)resetWithEvent:(id)event organizerAddressForNewlyScheduledEvent:(id)scheduledEvent;
 - (void)searchForMoreTimesWhenAllAttendeesCanAttend;
 - (void)searchForMoreTimesWhenSomeAttendeesCanAttend;
 @end
 
 @implementation EKInviteeAlternativeTimeSearcher
 
-- (EKInviteeAlternativeTimeSearcher)initWithStateChangedCallback:(id)a3
+- (EKInviteeAlternativeTimeSearcher)initWithStateChangedCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v22.receiver = self;
   v22.super_class = EKInviteeAlternativeTimeSearcher;
   v5 = [(EKInviteeAlternativeTimeSearcher *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    [(EKInviteeAlternativeTimeSearcher *)v5 setStateChanged:v4];
+    [(EKInviteeAlternativeTimeSearcher *)v5 setStateChanged:callbackCopy];
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(EKInviteeAlternativeTimeSearcher *)v6 setParticipantAddressesToParticipants:v7];
 
@@ -76,16 +76,16 @@
     [(EKInviteeAlternativeTimeSearcher *)v6 setAvailabilityRequestsQueue:v13];
     objc_opt_class();
     v15 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
 
-    v17 = dispatch_queue_create(v16, 0);
+    v17 = dispatch_queue_create(uTF8String, 0);
     [(EKInviteeAlternativeTimeSearcher *)v6 setProcessingQueue:v17];
 
     objc_opt_class();
     v18 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v19 = [v18 UTF8String];
+    uTF8String2 = [v18 UTF8String];
 
-    v20 = dispatch_queue_create(v19, 0);
+    v20 = dispatch_queue_create(uTF8String2, 0);
     [(EKInviteeAlternativeTimeSearcher *)v6 setCallbackQueue:v20];
   }
 
@@ -94,8 +94,8 @@
 
 - (void)dealloc
 {
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self availabilityRequestsQueue];
-  [v3 cancelAllOperations];
+  availabilityRequestsQueue = [(EKInviteeAlternativeTimeSearcher *)self availabilityRequestsQueue];
+  [availabilityRequestsQueue cancelAllOperations];
 
   v4.receiver = self;
   v4.super_class = EKInviteeAlternativeTimeSearcher;
@@ -110,14 +110,14 @@
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__EKInviteeAlternativeTimeSearcher_originalStartDate__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(processingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -143,14 +143,14 @@ uint64_t __53__EKInviteeAlternativeTimeSearcher_originalStartDate__block_invoke(
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__EKInviteeAlternativeTimeSearcher_originalEndDate__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(processingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -176,14 +176,14 @@ uint64_t __51__EKInviteeAlternativeTimeSearcher_originalEndDate__block_invoke(ui
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__EKInviteeAlternativeTimeSearcher_originalConflictedParticipants__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(processingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -208,14 +208,14 @@ void __66__EKInviteeAlternativeTimeSearcher_originalConflictedParticipants__bloc
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__EKInviteeAlternativeTimeSearcher_timesWhenAllAttendeesCanAttend__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(processingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -240,14 +240,14 @@ void __66__EKInviteeAlternativeTimeSearcher_timesWhenAllAttendeesCanAttend__bloc
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__EKInviteeAlternativeTimeSearcher_timesWhenSomeAttendeesCanAttend__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(processingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -272,14 +272,14 @@ void __67__EKInviteeAlternativeTimeSearcher_timesWhenSomeAttendeesCanAttend__blo
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__EKInviteeAlternativeTimeSearcher_proposedTimes__block_invoke;
   v6[3] = &unk_1E77FD530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(processingQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -298,23 +298,23 @@ void __49__EKInviteeAlternativeTimeSearcher_proposedTimes__block_invoke(uint64_t
 
 - (BOOL)searchingForMoreTimesWhenAllAttendeesCanAttend
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __82__EKInviteeAlternativeTimeSearcher_searchingForMoreTimesWhenAllAttendeesCanAttend__block_invoke;
   v5[3] = &unk_1E77FD530;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(processingQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __82__EKInviteeAlternativeTimeSearcher_searchingForMoreTimesWhenAllAttendeesCanAttend__block_invoke(uint64_t a1)
@@ -326,23 +326,23 @@ uint64_t __82__EKInviteeAlternativeTimeSearcher_searchingForMoreTimesWhenAllAtte
 
 - (BOOL)searchingForMoreTimesWhenSomeAttendeesCanAttend
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __83__EKInviteeAlternativeTimeSearcher_searchingForMoreTimesWhenSomeAttendeesCanAttend__block_invoke;
   v5[3] = &unk_1E77FD530;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(processingQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __83__EKInviteeAlternativeTimeSearcher_searchingForMoreTimesWhenSomeAttendeesCanAttend__block_invoke(uint64_t a1)
@@ -384,21 +384,21 @@ uint64_t __80__EKInviteeAlternativeTimeSearcher_searchForMoreTimesWhenSomeAttend
   return [v2 _attemptSearch];
 }
 
-- (void)resetWithEvent:(id)a3 organizerAddressForNewlyScheduledEvent:(id)a4
+- (void)resetWithEvent:(id)event organizerAddressForNewlyScheduledEvent:(id)scheduledEvent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
+  eventCopy = event;
+  scheduledEventCopy = scheduledEvent;
+  processingQueue = [(EKInviteeAlternativeTimeSearcher *)self processingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __90__EKInviteeAlternativeTimeSearcher_resetWithEvent_organizerAddressForNewlyScheduledEvent___block_invoke;
   block[3] = &unk_1E77FD7C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventCopy;
+  v13 = scheduledEventCopy;
+  v9 = scheduledEventCopy;
+  v10 = eventCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __90__EKInviteeAlternativeTimeSearcher_resetWithEvent_organizerAddressForNewlyScheduledEvent___block_invoke(uint64_t a1)
@@ -1189,16 +1189,16 @@ void __90__EKInviteeAlternativeTimeSearcher_resetWithEvent_organizerAddressForNe
   }
 }
 
-+ (id)stateAsString:(int64_t)a3
++ (id)stateAsString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E77FE098[a3];
+    return off_1E77FE098[string];
   }
 }
 
@@ -1302,7 +1302,7 @@ uint64_t __50__EKInviteeAlternativeTimeSearcher__attemptSearch__block_invoke_46(
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD98];
-  v4 = a1;
+  selfCopy = self;
   v5 = [v3 numberWithUnsignedInteger:{objc_msgSend(a2, "remainingSearchAttempts")}];
   v6 = MEMORY[0x1E696AD98];
   [a2 availabilitySearchDurationMultiplier];
@@ -1314,16 +1314,16 @@ uint64_t __50__EKInviteeAlternativeTimeSearcher__attemptSearch__block_invoke_46(
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendStateChange:(int64_t)a3
+- (void)_sendStateChange:(int64_t)change
 {
-  v5 = [(EKInviteeAlternativeTimeSearcher *)self callbackQueue];
+  callbackQueue = [(EKInviteeAlternativeTimeSearcher *)self callbackQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__EKInviteeAlternativeTimeSearcher__sendStateChange___block_invoke;
   v6[3] = &unk_1E77FDDC0;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = change;
+  dispatch_async(callbackQueue, v6);
 }
 
 void __53__EKInviteeAlternativeTimeSearcher__sendStateChange___block_invoke(uint64_t a1)
@@ -1352,63 +1352,63 @@ void __53__EKInviteeAlternativeTimeSearcher__sendStateChange___block_invoke(uint
 - (void)_transitionToConflictFoundStateAndSearch
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v2 = [objc_opt_class() stateAsString:1];
   OUTLINED_FUNCTION_1();
-  _os_log_debug_impl(&dword_1A805E000, v1, OS_LOG_TYPE_DEBUG, "Transitioning to the [%@] state and attempting a search.", v4, 0xCu);
+  _os_log_debug_impl(&dword_1A805E000, selfCopy, OS_LOG_TYPE_DEBUG, "Transitioning to the [%@] state and attempting a search.", v4, 0xCu);
 
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_participantforParticipantAddress:(id)a3
+- (id)_participantforParticipantAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(EKInviteeAlternativeTimeSearcher *)self participantAddressesToParticipants];
-  v6 = [v5 objectForKey:v4];
+  addressCopy = address;
+  participantAddressesToParticipants = [(EKInviteeAlternativeTimeSearcher *)self participantAddressesToParticipants];
+  v6 = [participantAddressesToParticipants objectForKey:addressCopy];
 
   if (!v6)
   {
-    v7 = EKUtils_AdjustedAttendeeAddress(v4);
-    v8 = [(EKInviteeAlternativeTimeSearcher *)self participantAddressesToParticipants];
-    v6 = [v8 objectForKey:v7];
+    v7 = EKUtils_AdjustedAttendeeAddress(addressCopy);
+    participantAddressesToParticipants2 = [(EKInviteeAlternativeTimeSearcher *)self participantAddressesToParticipants];
+    v6 = [participantAddressesToParticipants2 objectForKey:v7];
   }
 
   return v6;
 }
 
-- (void)_processResults:(id)a3 betweenStartDate:(id)a4 endDate:(id)a5
+- (void)_processResults:(id)results betweenStartDate:(id)date endDate:(id)endDate
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultsCopy = results;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = EKUIAvailabilitySearchHandle;
   if (os_log_type_enabled(EKUIAvailabilitySearchHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v40 = v9;
+    v40 = dateCopy;
     v41 = 2112;
-    v42 = v10;
+    v42 = endDateCopy;
     v43 = 2112;
-    v44 = v8;
+    v44 = resultsCopy;
     _os_log_debug_impl(&dword_1A805E000, v11, OS_LOG_TYPE_DEBUG, "Processing results - start date: [%@] end date: [%@] results: [%@]", buf, 0x20u);
   }
 
-  v36 = v9;
-  v37 = v8;
-  v35 = v10;
-  v12 = [(EKInviteeAlternativeTimeSearcher *)self _generateTimeSpansForResults:v8 betweenStartDate:v9 endDate:v10];
-  v13 = [(EKInviteeAlternativeTimeSearcher *)self leftoverSpans];
-  v14 = [(EKInviteeAlternativeTimeSearcher *)self _spliceLeftTimeSpans:v13 andNewTimeSpans:v12];
+  v36 = dateCopy;
+  v37 = resultsCopy;
+  v35 = endDateCopy;
+  v12 = [(EKInviteeAlternativeTimeSearcher *)self _generateTimeSpansForResults:resultsCopy betweenStartDate:dateCopy endDate:endDateCopy];
+  leftoverSpans = [(EKInviteeAlternativeTimeSearcher *)self leftoverSpans];
+  v14 = [(EKInviteeAlternativeTimeSearcher *)self _spliceLeftTimeSpans:leftoverSpans andNewTimeSpans:v12];
 
   v34 = v14;
   v15 = [(EKInviteeAlternativeTimeSearcher *)self _mergeAdjacentSpansWithSameConflictedParticipants:v14];
   v16 = [(EKInviteeAlternativeTimeSearcher *)self _generateOpenFreeTimesFromTimeSpans:v15];
   v17 = [(EKInviteeAlternativeTimeSearcher *)self _generateNonOptimalTimesFromTimeSpans:v15];
   v18 = [objc_opt_class() _findLeftoverSpans:v12 usingFreeTimes:v16 andNonOptimalTimes:v17];
-  v19 = [(EKInviteeAlternativeTimeSearcher *)self leftoverSpans];
+  leftoverSpans2 = [(EKInviteeAlternativeTimeSearcher *)self leftoverSpans];
   v33 = v18;
-  [v19 setArray:v18];
+  [leftoverSpans2 setArray:v18];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1418,13 +1418,13 @@ void __53__EKInviteeAlternativeTimeSearcher__sendStateChange___block_invoke(uint
   v20 = _Block_copy(aBlock);
   v21 = [v16 indexesOfObjectsPassingTest:v20];
   v22 = [v17 indexesOfObjectsPassingTest:v20];
-  v23 = [(EKInviteeAlternativeTimeSearcher *)self internalTimesWhenAllAttendeesCanAttend];
+  internalTimesWhenAllAttendeesCanAttend = [(EKInviteeAlternativeTimeSearcher *)self internalTimesWhenAllAttendeesCanAttend];
   v24 = [v16 objectsAtIndexes:v21];
-  [v23 addObjectsFromArray:v24];
+  [internalTimesWhenAllAttendeesCanAttend addObjectsFromArray:v24];
 
-  v25 = [(EKInviteeAlternativeTimeSearcher *)self internalTimesWhenSomeAttendeesCanAttend];
+  internalTimesWhenSomeAttendeesCanAttend = [(EKInviteeAlternativeTimeSearcher *)self internalTimesWhenSomeAttendeesCanAttend];
   v26 = [v17 objectsAtIndexes:v22];
-  [v25 addObjectsFromArray:v26];
+  [internalTimesWhenSomeAttendeesCanAttend addObjectsFromArray:v26];
 
   if (-[EKInviteeAlternativeTimeSearcher internalSearchingForMoreTimesWhenAllAttendeesCanAttend](self, "internalSearchingForMoreTimesWhenAllAttendeesCanAttend") && [v16 count])
   {
@@ -1470,10 +1470,10 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v29 = [(EKInviteeAlternativeTimeSearcher *)self remainingSearchAttempts];
+  remainingSearchAttempts = [(EKInviteeAlternativeTimeSearcher *)self remainingSearchAttempts];
   v30 = EKUIAvailabilitySearchHandle;
   v31 = os_log_type_enabled(EKUIAvailabilitySearchHandle, OS_LOG_TYPE_DEBUG);
-  if (!v29)
+  if (!remainingSearchAttempts)
   {
     if (v31)
     {
@@ -1505,9 +1505,9 @@ uint64_t __77__EKInviteeAlternativeTimeSearcher__processResults_betweenStartDate
   return v5 ^ 1u;
 }
 
-- (void)_haltSearchWithError:(BOOL)a3
+- (void)_haltSearchWithError:(BOOL)error
 {
-  v3 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(EKUIAvailabilitySearchHandle, OS_LOG_TYPE_DEBUG))
   {
     [EKInviteeAlternativeTimeSearcher _haltSearchWithError:];
@@ -1515,7 +1515,7 @@ uint64_t __77__EKInviteeAlternativeTimeSearcher__processResults_betweenStartDate
 
   [(EKInviteeAlternativeTimeSearcher *)self setInternalSearchingForMoreTimesWhenAllAttendeesCanAttend:0];
   [(EKInviteeAlternativeTimeSearcher *)self setInternalSearchingForMoreTimesWhenSomeAttendeesCanAttend:0];
-  if (v3)
+  if (errorCopy)
   {
     v5 = 3;
   }
@@ -1528,44 +1528,44 @@ uint64_t __77__EKInviteeAlternativeTimeSearcher__processResults_betweenStartDate
   [(EKInviteeAlternativeTimeSearcher *)self _sendStateChange:v5];
 }
 
-+ (id)_findLeftoverSpans:(id)a3 usingFreeTimes:(id)a4 andNonOptimalTimes:(id)a5
++ (id)_findLeftoverSpans:(id)spans usingFreeTimes:(id)times andNonOptimalTimes:(id)optimalTimes
 {
-  v7 = a3;
+  spansCopy = spans;
   v8 = MEMORY[0x1E695DF70];
-  v9 = a5;
-  v10 = a4;
+  optimalTimesCopy = optimalTimes;
+  timesCopy = times;
   v11 = objc_alloc_init(v8);
-  v12 = [v10 lastObject];
+  lastObject = [timesCopy lastObject];
 
-  v13 = [v12 endDate];
-  v14 = [v9 lastObject];
+  endDate = [lastObject endDate];
+  lastObject2 = [optimalTimesCopy lastObject];
 
-  v15 = [v14 endDate];
-  v16 = v13;
+  endDate2 = [lastObject2 endDate];
+  v16 = endDate;
   v17 = v16;
   if (v16)
   {
     v18 = v16;
-    if (v15)
+    if (endDate2)
     {
       v18 = v16;
-      if (([v16 CalIsAfterDate:v15] & 1) == 0)
+      if (([v16 CalIsAfterDate:endDate2] & 1) == 0)
       {
-        v18 = v15;
+        v18 = endDate2;
       }
     }
   }
 
   else
   {
-    v18 = v15;
+    v18 = endDate2;
     if (!v18)
     {
       goto LABEL_12;
     }
   }
 
-  v19 = [objc_opt_class() _binarySearchForIndexOfTimeSpanInArray:v7 containingDate:v18];
+  v19 = [objc_opt_class() _binarySearchForIndexOfTimeSpanInArray:spansCopy containingDate:v18];
   if (v19 == [objc_opt_class() _invalidBinarySearchIndex])
   {
     if (os_log_type_enabled(EKUIAvailabilitySearchHandle, OS_LOG_TYPE_DEBUG))
@@ -1576,23 +1576,23 @@ uint64_t __77__EKInviteeAlternativeTimeSearcher__processResults_betweenStartDate
 
   else
   {
-    v20 = [v7 objectAtIndex:v19];
+    v20 = [spansCopy objectAtIndex:v19];
     v21 = [v20 copy];
     [v21 setStartDate:v18];
     [v11 addObject:v21];
-    v22 = [v7 count] + ~v19;
+    v22 = [spansCopy count] + ~v19;
     if (v22)
     {
-      v23 = [v7 subarrayWithRange:{v19 + 1, v22}];
+      v23 = [spansCopy subarrayWithRange:{v19 + 1, v22}];
       [v11 addObjectsFromArray:v23];
     }
   }
 
 LABEL_12:
   v24 = +[EKDebugPreferences shared];
-  v25 = [v24 verifyIntegrityOfAvailabilityTimeSearchTimelines];
+  verifyIntegrityOfAvailabilityTimeSearchTimelines = [v24 verifyIntegrityOfAvailabilityTimeSearchTimelines];
 
-  if (v25)
+  if (verifyIntegrityOfAvailabilityTimeSearchTimelines)
   {
     [objc_opt_class() _validateSpans:v11];
   }
@@ -1600,18 +1600,18 @@ LABEL_12:
   return v11;
 }
 
-+ (id)_addressesForParticipants:(id)a3
++ (id)_addressesForParticipants:(id)participants
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  participantsCopy = participants;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if (v3 && [v3 count])
+  if (participantsCopy && [participantsCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = participantsCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -1626,13 +1626,13 @@ LABEL_12:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v15 + 1) + 8 * i) participant];
-          v11 = [v10 URL];
-          v12 = [v11 absoluteString];
+          participant = [*(*(&v15 + 1) + 8 * i) participant];
+          v11 = [participant URL];
+          absoluteString = [v11 absoluteString];
 
-          if (v12)
+          if (absoluteString)
           {
-            [v4 addObject:v12];
+            [v4 addObject:absoluteString];
           }
         }
 
@@ -1648,19 +1648,19 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)_span:(id)a3 hasSameConflictedParticipantsAsSpan:(id)a4
++ (BOOL)_span:(id)_span hasSameConflictedParticipantsAsSpan:(id)span
 {
-  v5 = a4;
-  v6 = a3;
+  spanCopy = span;
+  _spanCopy = _span;
   v7 = objc_opt_class();
-  v8 = [v6 conflictedParticipants];
+  conflictedParticipants = [_spanCopy conflictedParticipants];
 
-  v9 = [v7 _addressesForParticipants:v8];
+  v9 = [v7 _addressesForParticipants:conflictedParticipants];
 
   v10 = objc_opt_class();
-  v11 = [v5 conflictedParticipants];
+  conflictedParticipants2 = [spanCopy conflictedParticipants];
 
-  v12 = [v10 _addressesForParticipants:v11];
+  v12 = [v10 _addressesForParticipants:conflictedParticipants2];
 
   if (v9)
   {
@@ -1716,13 +1716,13 @@ LABEL_14:
   return v13;
 }
 
-+ (id)_allButLastItemInArray:(id)a3
++ (id)_allButLastItemInArray:(id)array
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy)
   {
-    v5 = [v3 count];
+    v5 = [arrayCopy count];
     if (v5 > 1)
     {
       [v4 subarrayWithRange:{0, v5 - 1}];
@@ -1743,13 +1743,13 @@ LABEL_14:
   return v6;
 }
 
-+ (id)_allButFirstItemInArray:(id)a3
++ (id)_allButFirstItemInArray:(id)array
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  arrayCopy = array;
+  v4 = arrayCopy;
+  if (arrayCopy)
   {
-    v5 = [v3 count];
+    v5 = [arrayCopy count];
     if (v5 > 1)
     {
       [v4 subarrayWithRange:{1, v5 - 1}];
@@ -1770,56 +1770,56 @@ LABEL_14:
   return v6;
 }
 
-- (id)_spliceLeftTimeSpans:(id)a3 andNewTimeSpans:(id)a4
+- (id)_spliceLeftTimeSpans:(id)spans andNewTimeSpans:(id)timeSpans
 {
-  v5 = a3;
-  v6 = a4;
+  spansCopy = spans;
+  timeSpansCopy = timeSpans;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v5 && [v5 count])
+  if (spansCopy && [spansCopy count])
   {
-    v8 = [v5 lastObject];
-    v9 = [v6 firstObject];
-    v10 = [v8 conflictedParticipants];
-    v11 = [v10 count];
+    lastObject = [spansCopy lastObject];
+    firstObject = [timeSpansCopy firstObject];
+    conflictedParticipants = [lastObject conflictedParticipants];
+    v11 = [conflictedParticipants count];
 
-    v12 = [v9 conflictedParticipants];
-    v13 = [v12 count];
+    conflictedParticipants2 = [firstObject conflictedParticipants];
+    v13 = [conflictedParticipants2 count];
 
-    if ((v11 != 0) != (v13 == 0) && (!v11 || [objc_opt_class() _span:v8 hasSameConflictedParticipantsAsSpan:v9]))
+    if ((v11 != 0) != (v13 == 0) && (!v11 || [objc_opt_class() _span:lastObject hasSameConflictedParticipantsAsSpan:firstObject]))
     {
-      v14 = [objc_opt_class() _allButLastItemInArray:v5];
+      v14 = [objc_opt_class() _allButLastItemInArray:spansCopy];
       [v7 addObjectsFromArray:v14];
       v15 = objc_alloc_init(EKInviteeTimeSpan);
-      v16 = [v8 startDate];
-      [(EKInviteeTimeSpan *)v15 setStartDate:v16];
+      startDate = [lastObject startDate];
+      [(EKInviteeTimeSpan *)v15 setStartDate:startDate];
 
-      v17 = [v9 endDate];
-      [(EKInviteeTimeSpan *)v15 setEndDate:v17];
+      endDate = [firstObject endDate];
+      [(EKInviteeTimeSpan *)v15 setEndDate:endDate];
 
-      v18 = [v8 conflictedParticipants];
-      [(EKInviteeTimeSpan *)v15 setConflictedParticipants:v18];
+      conflictedParticipants3 = [lastObject conflictedParticipants];
+      [(EKInviteeTimeSpan *)v15 setConflictedParticipants:conflictedParticipants3];
 
       [v7 addObject:v15];
-      v19 = [objc_opt_class() _allButFirstItemInArray:v6];
+      v19 = [objc_opt_class() _allButFirstItemInArray:timeSpansCopy];
       [v7 addObjectsFromArray:v19];
     }
 
     else
     {
-      [v7 addObjectsFromArray:v5];
-      [v7 addObjectsFromArray:v6];
+      [v7 addObjectsFromArray:spansCopy];
+      [v7 addObjectsFromArray:timeSpansCopy];
     }
   }
 
   else
   {
-    [v7 addObjectsFromArray:v6];
+    [v7 addObjectsFromArray:timeSpansCopy];
   }
 
   v20 = +[EKDebugPreferences shared];
-  v21 = [v20 verifyIntegrityOfAvailabilityTimeSearchTimelines];
+  verifyIntegrityOfAvailabilityTimeSearchTimelines = [v20 verifyIntegrityOfAvailabilityTimeSearchTimelines];
 
-  if (v21)
+  if (verifyIntegrityOfAvailabilityTimeSearchTimelines)
   {
     [objc_opt_class() _validateSpans:v7];
   }
@@ -1827,18 +1827,18 @@ LABEL_14:
   return v7;
 }
 
-- (id)_mergeAdjacentSpansWithSameConflictedParticipants:(id)a3
+- (id)_mergeAdjacentSpansWithSameConflictedParticipants:(id)participants
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  participantsCopy = participants;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v3 && [v3 count])
+  if (participantsCopy && [participantsCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = participantsCopy;
     v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
@@ -1857,8 +1857,8 @@ LABEL_14:
           v11 = *(*(&v18 + 1) + 8 * i);
           if (v8 && [objc_opt_class() _span:v11 hasSameConflictedParticipantsAsSpan:{v8, v18}])
           {
-            v12 = [v11 endDate];
-            [v8 setEndDate:v12];
+            endDate = [v11 endDate];
+            [v8 setEndDate:endDate];
           }
 
           else
@@ -1883,9 +1883,9 @@ LABEL_14:
   }
 
   v14 = +[EKDebugPreferences shared];
-  v15 = [v14 verifyIntegrityOfAvailabilityTimeSearchTimelines];
+  verifyIntegrityOfAvailabilityTimeSearchTimelines = [v14 verifyIntegrityOfAvailabilityTimeSearchTimelines];
 
-  if (v15)
+  if (verifyIntegrityOfAvailabilityTimeSearchTimelines)
   {
     [objc_opt_class() _validateSpans:v4];
   }
@@ -1895,21 +1895,21 @@ LABEL_14:
   return v4;
 }
 
-- (id)_generateOpenFreeTimesFromTimeSpans:(id)a3
+- (id)_generateOpenFreeTimesFromTimeSpans:(id)spans
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  spansCopy = spans;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalEndDate];
-  v7 = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalStartDate];
-  [v6 timeIntervalSinceDate:v7];
+  internalOriginalEndDate = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalEndDate];
+  internalOriginalStartDate = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalStartDate];
+  [internalOriginalEndDate timeIntervalSinceDate:internalOriginalStartDate];
   v9 = v8;
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v4;
+  v10 = spansCopy;
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v11)
   {
@@ -1927,14 +1927,14 @@ LABEL_14:
         }
 
         v15 = *(*(&v32 + 1) + 8 * i);
-        v16 = [v15 conflictedParticipants];
-        v17 = [v16 count];
+        conflictedParticipants = [v15 conflictedParticipants];
+        v17 = [conflictedParticipants count];
 
         if (!v17)
         {
-          v18 = [v15 endDate];
-          v19 = [v15 startDate];
-          [v18 timeIntervalSinceDate:v19];
+          endDate = [v15 endDate];
+          startDate = [v15 startDate];
+          [endDate timeIntervalSinceDate:startDate];
           v21 = v20;
 
           if (v21 >= v9)
@@ -1944,8 +1944,8 @@ LABEL_14:
             {
               v24 = [j dateByAddingTimeInterval:v9];
               v25 = [EKInviteeAlternativeTime alloc];
-              v26 = [v15 conflictedParticipants];
-              v27 = [(EKInviteeAlternativeTime *)v25 initWithStartDate:j endDate:v24 conflictedParticipants:v26];
+              conflictedParticipants2 = [v15 conflictedParticipants];
+              v27 = [(EKInviteeAlternativeTime *)v25 initWithStartDate:j endDate:v24 conflictedParticipants:conflictedParticipants2];
 
               [v5 addObject:v27];
               j = v24;
@@ -1968,17 +1968,17 @@ LABEL_14:
   return v5;
 }
 
-+ (void)_insertUniqueParticipants:(id)a3 intoExistingParticipantsArray:(id)a4
++ (void)_insertUniqueParticipants:(id)participants intoExistingParticipantsArray:(id)array
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  participantsCopy = participants;
+  arrayCopy = array;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = v5;
+  v8 = participantsCopy;
   v9 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v9)
   {
@@ -1994,13 +1994,13 @@ LABEL_14:
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
-        v14 = [v13 participant];
-        v15 = [v14 URL];
-        v16 = [v15 absoluteString];
+        participant = [v13 participant];
+        v15 = [participant URL];
+        absoluteString = [v15 absoluteString];
 
-        if (v16)
+        if (absoluteString)
         {
-          [v7 setObject:v13 forKey:v16];
+          [v7 setObject:v13 forKey:absoluteString];
         }
       }
 
@@ -2014,7 +2014,7 @@ LABEL_14:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = v6;
+  v17 = arrayCopy;
   v18 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v18)
   {
@@ -2030,13 +2030,13 @@ LABEL_14:
         }
 
         v22 = *(*(&v28 + 1) + 8 * j);
-        v23 = [v22 participant];
-        v24 = [v23 URL];
-        v25 = [v24 absoluteString];
+        participant2 = [v22 participant];
+        v24 = [participant2 URL];
+        absoluteString2 = [v24 absoluteString];
 
-        if (v25)
+        if (absoluteString2)
         {
-          [v7 setObject:v22 forKey:v25];
+          [v7 setObject:v22 forKey:absoluteString2];
         }
       }
 
@@ -2046,42 +2046,42 @@ LABEL_14:
     while (v19);
   }
 
-  v26 = [v7 allValues];
-  [v17 setArray:v26];
+  allValues = [v7 allValues];
+  [v17 setArray:allValues];
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_generateNonOptimalTimesFromTimeSpans:(id)a3
+- (id)_generateNonOptimalTimesFromTimeSpans:(id)spans
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  spansCopy = spans;
   v61 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalEndDate];
-  v65 = self;
-  v6 = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalStartDate];
-  [v5 timeIntervalSinceDate:v6];
+  internalOriginalEndDate = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalEndDate];
+  selfCopy = self;
+  internalOriginalStartDate = [(EKInviteeAlternativeTimeSearcher *)self internalOriginalStartDate];
+  [internalOriginalEndDate timeIntervalSinceDate:internalOriginalStartDate];
   v8 = v7;
 
-  v9 = [v4 firstObject];
-  v10 = [v4 lastObject];
-  v59 = v9;
-  v11 = [v9 startDate];
-  v58 = v10;
-  v12 = [v10 endDate];
-  v13 = v11;
-  v67 = v4;
-  v68 = [v4 count];
+  firstObject = [spansCopy firstObject];
+  lastObject = [spansCopy lastObject];
+  v59 = firstObject;
+  startDate = [firstObject startDate];
+  v58 = lastObject;
+  endDate = [lastObject endDate];
+  v13 = startDate;
+  v67 = spansCopy;
+  v68 = [spansCopy count];
   v60 = v13;
-  v62 = v12;
-  if ([v13 CalIsBeforeDate:v12] && v68)
+  v62 = endDate;
+  if ([v13 CalIsBeforeDate:endDate] && v68)
   {
     v14 = 0;
     v15 = v13;
     while (1)
     {
       v16 = [v15 dateByAddingTimeInterval:v8];
-      if ([v16 CalIsAfterDate:v12])
+      if ([v16 CalIsAfterDate:endDate])
       {
 
         v13 = v15;
@@ -2094,12 +2094,12 @@ LABEL_14:
       [(EKInviteeTimeSpan *)v17 setEndDate:v16];
       v19 = [v67 objectAtIndex:v14];
       v20 = objc_alloc(MEMORY[0x1E695DF70]);
-      v21 = [v19 conflictedParticipants];
-      v22 = [v20 initWithArray:v21];
+      conflictedParticipants = [v19 conflictedParticipants];
+      v22 = [v20 initWithArray:conflictedParticipants];
 
-      v23 = [(EKInviteeTimeSpan *)v17 endDate];
-      v24 = [v19 endDate];
-      v25 = [v23 isEqualToDate:v24];
+      endDate2 = [(EKInviteeTimeSpan *)v17 endDate];
+      endDate3 = [v19 endDate];
+      v25 = [endDate2 isEqualToDate:endDate3];
 
       v63 = v19;
       if (v25)
@@ -2109,9 +2109,9 @@ LABEL_14:
 
       else
       {
-        v28 = [(EKInviteeTimeSpan *)v17 endDate];
-        v29 = [v19 endDate];
-        v30 = [v28 CalIsAfterDate:v29];
+        endDate4 = [(EKInviteeTimeSpan *)v17 endDate];
+        endDate5 = [v19 endDate];
+        v30 = [endDate4 CalIsAfterDate:endDate5];
 
         if (v30)
         {
@@ -2124,8 +2124,8 @@ LABEL_14:
             while (1)
             {
               v34 = [v67 objectAtIndex:v31];
-              v35 = [v34 startDate];
-              v36 = [v35 CalIsBeforeDate:v13];
+              startDate2 = [v34 startDate];
+              v36 = [startDate2 CalIsBeforeDate:v13];
 
               if (!v36)
               {
@@ -2133,20 +2133,20 @@ LABEL_14:
               }
 
               v37 = objc_opt_class();
-              v38 = [v34 conflictedParticipants];
-              [v37 _insertUniqueParticipants:v38 intoExistingParticipantsArray:v22];
+              conflictedParticipants2 = [v34 conflictedParticipants];
+              [v37 _insertUniqueParticipants:conflictedParticipants2 intoExistingParticipantsArray:v22];
 
-              v39 = [v34 endDate];
-              LODWORD(v38) = [v39 isEqualToDate:v13];
+              endDate6 = [v34 endDate];
+              LODWORD(conflictedParticipants2) = [endDate6 isEqualToDate:v13];
 
-              if (v38)
+              if (conflictedParticipants2)
               {
                 v31 = v32 + 2;
                 break;
               }
 
-              v40 = [v34 endDate];
-              v41 = [v40 CalIsAfterDate:v13];
+              endDate7 = [v34 endDate];
+              v41 = [endDate7 CalIsAfterDate:v13];
 
               v14 = v32 + 1;
               if ((v41 & 1) == 0)
@@ -2172,15 +2172,15 @@ LABEL_14:
       v13 = v18;
 LABEL_8:
       [(EKInviteeTimeSpan *)v17 setConflictedParticipants:v22];
-      v26 = [(EKInviteeTimeSpan *)v17 conflictedParticipants];
-      v27 = [v26 count];
+      conflictedParticipants3 = [(EKInviteeTimeSpan *)v17 conflictedParticipants];
+      v27 = [conflictedParticipants3 count];
 
       if (v27)
       {
         [v61 addObject:v17];
       }
 
-      v12 = v62;
+      endDate = v62;
       if ([v13 CalIsBeforeDate:v62])
       {
         v15 = v13;
@@ -2195,7 +2195,7 @@ LABEL_8:
   }
 
   v69 = v13;
-  v64 = [(EKInviteeAlternativeTimeSearcher *)v65 _filterOutUnreasonableTimeSlots:v61];
+  v64 = [(EKInviteeAlternativeTimeSearcher *)selfCopy _filterOutUnreasonableTimeSlots:v61];
   v66 = [objc_opt_class() _rankNonOptimalTimeSpans:v64];
   v43 = [objc_opt_class() _findHighestRankedNonOptimalTimeSpans:v66];
   v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2220,10 +2220,10 @@ LABEL_8:
 
         v50 = *(*(&v70 + 1) + 8 * i);
         v51 = [EKInviteeAlternativeTime alloc];
-        v52 = [v50 startDate];
-        v53 = [v50 endDate];
-        v54 = [v50 conflictedParticipants];
-        v55 = [(EKInviteeAlternativeTime *)v51 initWithStartDate:v52 endDate:v53 conflictedParticipants:v54];
+        startDate3 = [v50 startDate];
+        endDate8 = [v50 endDate];
+        conflictedParticipants4 = [v50 conflictedParticipants];
+        v55 = [(EKInviteeAlternativeTime *)v51 initWithStartDate:startDate3 endDate:endDate8 conflictedParticipants:conflictedParticipants4];
 
         [v44 addObject:v55];
       }
@@ -2239,22 +2239,22 @@ LABEL_8:
   return v44;
 }
 
-- (id)_filterOutUnreasonableTimeSlots:(id)a3
+- (id)_filterOutUnreasonableTimeSlots:(id)slots
 {
-  if (a3)
+  if (slots)
   {
-    v4 = a3;
-    v5 = [(EKInviteeAlternativeTimeSearcher *)self participantAddressesToParticipants];
-    v6 = [v5 allKeys];
-    v7 = [v6 count];
+    slotsCopy = slots;
+    participantAddressesToParticipants = [(EKInviteeAlternativeTimeSearcher *)self participantAddressesToParticipants];
+    allKeys = [participantAddressesToParticipants allKeys];
+    v7 = [allKeys count];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__EKInviteeAlternativeTimeSearcher__filterOutUnreasonableTimeSlots___block_invoke;
     v11[3] = &__block_descriptor_40_e34_B32__0__EKInviteeTimeSpan_8Q16_B24l;
     v11[4] = v7;
-    v8 = [v4 indexesOfObjectsPassingTest:v11];
-    v9 = [v4 objectsAtIndexes:v8];
+    v8 = [slotsCopy indexesOfObjectsPassingTest:v11];
+    v9 = [slotsCopy objectsAtIndexes:v8];
   }
 
   else
@@ -2324,13 +2324,13 @@ BOOL __68__EKInviteeAlternativeTimeSearcher__filterOutUnreasonableTimeSlots___bl
   return v14;
 }
 
-+ (id)_findHighestRankedNonOptimalTimeSpans:(id)a3
++ (id)_findHighestRankedNonOptimalTimeSpans:(id)spans
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] <= 0x14)
+  spansCopy = spans;
+  if ([spansCopy count] <= 0x14)
   {
-    v4 = v3;
+    v4 = spansCopy;
 LABEL_20:
     v17 = v4;
     goto LABEL_21;
@@ -2340,7 +2340,7 @@ LABEL_20:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = spansCopy;
   v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (!v6)
   {
@@ -2364,8 +2364,8 @@ LABEL_19:
       }
 
       v12 = *(*(&v26 + 1) + 8 * i);
-      v13 = [v12 conflictedParticipants];
-      v14 = [v13 count];
+      conflictedParticipants = [v12 conflictedParticipants];
+      v14 = [conflictedParticipants count];
 
       if (v8 == v14)
       {
@@ -2377,8 +2377,8 @@ LABEL_19:
         goto LABEL_13;
       }
 
-      v15 = [v12 conflictedParticipants];
-      v8 = [v15 count];
+      conflictedParticipants2 = [v12 conflictedParticipants];
+      v8 = [conflictedParticipants2 count];
     }
 
     v7 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -2475,31 +2475,31 @@ uint64_t __61__EKInviteeAlternativeTimeSearcher__rankNonOptimalTimeSpans___block
   return v12;
 }
 
-- (id)_generateTimeSpansForResults:(id)a3 betweenStartDate:(id)a4 endDate:(id)a5
+- (id)_generateTimeSpansForResults:(id)results betweenStartDate:(id)date endDate:(id)endDate
 {
   v8 = MEMORY[0x1E695DF70];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
+  resultsCopy = results;
   v12 = objc_alloc_init(v8);
   v13 = objc_alloc_init(EKInviteeTimeSpan);
-  [(EKInviteeTimeSpan *)v13 setStartDate:v10];
+  [(EKInviteeTimeSpan *)v13 setStartDate:dateCopy];
 
-  [(EKInviteeTimeSpan *)v13 setEndDate:v9];
+  [(EKInviteeTimeSpan *)v13 setEndDate:endDateCopy];
   [v12 addObject:v13];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __90__EKInviteeAlternativeTimeSearcher__generateTimeSpansForResults_betweenStartDate_endDate___block_invoke;
   v22 = &unk_1E77FD298;
-  v23 = self;
+  selfCopy = self;
   v14 = v12;
   v24 = v14;
-  [v11 enumerateKeysAndObjectsUsingBlock:&v19];
+  [resultsCopy enumerateKeysAndObjectsUsingBlock:&v19];
 
   v15 = [EKDebugPreferences shared:v19];
-  LODWORD(v9) = [v15 verifyIntegrityOfAvailabilityTimeSearchTimelines];
+  LODWORD(endDateCopy) = [v15 verifyIntegrityOfAvailabilityTimeSearchTimelines];
 
-  if (v9)
+  if (endDateCopy)
   {
     [objc_opt_class() _validateSpans:v14];
   }
@@ -2735,30 +2735,30 @@ LABEL_23:
   v63 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)_binarySearchForIndexOfTimeSpanInArray:(id)a3 containingDate:(id)a4
++ (int64_t)_binarySearchForIndexOfTimeSpanInArray:(id)array containingDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _invalidBinarySearchIndex];
-  v8 = [v5 count];
-  if (v5 && v8)
+  arrayCopy = array;
+  dateCopy = date;
+  _invalidBinarySearchIndex = [objc_opt_class() _invalidBinarySearchIndex];
+  v8 = [arrayCopy count];
+  if (arrayCopy && v8)
   {
     v9 = 0;
     v10 = v8 - 1;
     do
     {
       v11 = v9 + ((v10 - v9) >> 1);
-      v12 = [v5 objectAtIndex:v11];
-      v13 = [v12 startDate];
-      if ([v6 CalIsAfterOrSameAsDate:v13])
+      v12 = [arrayCopy objectAtIndex:v11];
+      startDate = [v12 startDate];
+      if ([dateCopy CalIsAfterOrSameAsDate:startDate])
       {
-        v14 = [v12 endDate];
-        v15 = [v6 CalIsBeforeDate:v14];
+        endDate = [v12 endDate];
+        v15 = [dateCopy CalIsBeforeDate:endDate];
 
         if (v15)
         {
 
-          v7 = v9 + ((v10 - v9) >> 1);
+          _invalidBinarySearchIndex = v9 + ((v10 - v9) >> 1);
           break;
         }
       }
@@ -2767,8 +2767,8 @@ LABEL_23:
       {
       }
 
-      v16 = [v12 startDate];
-      v17 = [v6 CalIsBeforeDate:v16];
+      startDate2 = [v12 startDate];
+      v17 = [dateCopy CalIsBeforeDate:startDate2];
 
       if (v17)
       {
@@ -2784,17 +2784,17 @@ LABEL_23:
     while (v9 <= v10);
   }
 
-  return v7;
+  return _invalidBinarySearchIndex;
 }
 
-+ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)a3
++ (id)_selfOrganizerForNewlyScheduledEventWithAddress:(id)address
 {
   v3 = MEMORY[0x1E6992F50];
-  v4 = a3;
-  v5 = [v3 defaultProvider];
-  v6 = [v5 myFullName];
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  addressCopy = address;
+  defaultProvider = [v3 defaultProvider];
+  myFullName = [defaultProvider myFullName];
+  v7 = myFullName;
+  if (!myFullName || ![myFullName length])
   {
     v8 = EKBundle();
     v9 = [v8 localizedStringForKey:@"You" value:&stru_1F1B49D68 table:0];
@@ -2802,20 +2802,20 @@ LABEL_23:
     v7 = v9;
   }
 
-  v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v4];
+  v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:addressCopy];
 
   v11 = [EKOrganizer organizerWithName:v7 emailAddress:0 phoneNumber:0 address:v10 isCurrentUser:1];
 
   return v11;
 }
 
-+ (void)_validateSpans:(id)a3
++ (void)_validateSpans:(id)spans
 {
-  v3 = a3;
+  spansCopy = spans;
   v4 = EKUIAvailabilitySearchHandle;
   if (os_log_type_enabled(EKUIAvailabilitySearchHandle, OS_LOG_TYPE_DEBUG))
   {
-    [(EKInviteeAlternativeTimeSearcher *)v4 _validateSpans:v3];
+    [(EKInviteeAlternativeTimeSearcher *)v4 _validateSpans:spansCopy];
   }
 
   v22 = 0;
@@ -2856,7 +2856,7 @@ LABEL_23:
   v5[7] = &v14;
   v5[8] = v6;
   v5[9] = &v10;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [spansCopy enumerateObjectsUsingBlock:v5];
   if (*(v23 + 24) == 1 && os_log_type_enabled(EKUIAvailabilitySearchHandle, OS_LOG_TYPE_ERROR))
   {
     +[EKInviteeAlternativeTimeSearcher _validateSpans:];

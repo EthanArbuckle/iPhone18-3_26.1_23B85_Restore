@@ -1,8 +1,8 @@
 @interface OKCollectionProxy
 - (OKCollectionProxy)init;
 - (id)keyEnumerator;
-- (id)objectAtIndexPath:(id)a3;
-- (id)objectForKey:(id)a3;
+- (id)objectAtIndexPath:(id)path;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)dealloc;
 @end
@@ -37,9 +37,9 @@
   result = [(OKCollectionProxy *)self dataSource];
   if (result)
   {
-    v4 = [(OKCollectionProxy *)self dataSource];
+    dataSource = [(OKCollectionProxy *)self dataSource];
 
-    return [(OKCollectionProxyDataSource *)v4 countOfDictionaryProxy:self];
+    return [(OKCollectionProxyDataSource *)dataSource countOfDictionaryProxy:self];
   }
 
   return result;
@@ -58,20 +58,20 @@
   return result;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   result = [(OKCollectionProxy *)self dataSource];
   if (result)
   {
-    v6 = [(OKCollectionProxy *)self dataSource];
+    dataSource = [(OKCollectionProxy *)self dataSource];
 
-    return [(OKCollectionProxyDataSource *)v6 dictionaryProxy:self objectForKey:a3];
+    return [(OKCollectionProxyDataSource *)dataSource dictionaryProxy:self objectForKey:key];
   }
 
   return result;
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
   if (![(OKCollectionProxy *)self dataSource])
   {
@@ -84,9 +84,9 @@
     return 0;
   }
 
-  v5 = [(OKCollectionProxy *)self dataSource];
+  dataSource = [(OKCollectionProxy *)self dataSource];
 
-  return [(OKCollectionProxyDataSource *)v5 dictionaryProxy:self objectAtIndexPath:a3];
+  return [(OKCollectionProxyDataSource *)dataSource dictionaryProxy:self objectAtIndexPath:path];
 }
 
 @end

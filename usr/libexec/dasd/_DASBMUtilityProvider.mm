@@ -70,15 +70,15 @@
   v5 = +[NSMutableArray array];
   v6 = objc_autoreleasePoolPush();
   v7 = BiomeLibrary();
-  v8 = [v7 Device];
-  v9 = [v8 Power];
-  v10 = [v9 PluggedIn];
+  device = [v7 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
 
   v11 = [BMPublisherOptions alloc];
   v12 = [NSDate dateWithTimeIntervalSinceNow:-1296000.0];
   v13 = [v11 initWithStartDate:v4 endDate:v12 maxEvents:0 lastN:0 reversed:1];
 
-  v14 = [v10 publisherWithUseCase:@"DASBiomeUtilityUseCase" options:v13];
+  v14 = [pluggedIn publisherWithUseCase:@"DASBiomeUtilityUseCase" options:v13];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_10000CD04;

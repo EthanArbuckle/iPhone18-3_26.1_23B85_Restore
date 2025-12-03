@@ -1,21 +1,21 @@
 @interface _MLCGPUCompare
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-- (_MLCGPUCompare)initWithDevice:(id)a3 operation:(int)a4;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (_MLCGPUCompare)initWithDevice:(id)device operation:(int)operation;
 @end
 
 @implementation _MLCGPUCompare
 
-- (_MLCGPUCompare)initWithDevice:(id)a3 operation:(int)a4
+- (_MLCGPUCompare)initWithDevice:(id)device operation:(int)operation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  deviceCopy = device;
   v23.receiver = self;
   v23.super_class = _MLCGPUCompare;
   v8 = [(_MLCGPUCompare *)&v23 init];
   if (v8)
   {
-    v9 = [v7 deviceList];
-    v10 = [v9 count];
+    deviceList = [deviceCopy deviceList];
+    v10 = [deviceList count];
 
     v11 = [MEMORY[0x277CBEBF8] mutableCopy];
     if (v10)
@@ -25,14 +25,14 @@
       v21 = v12;
       do
       {
-        if ((a4 - 6) < 6)
+        if ((operation - 6) < 6)
         {
-          v14 = [v7 gpuPipelineStatesCompareLogicalOpForward];
+          gpuPipelineStatesCompareLogicalOpForward = [deviceCopy gpuPipelineStatesCompareLogicalOpForward];
         }
 
         else
         {
-          if (a4 > 5)
+          if (operation > 5)
           {
             v16 = +[MLCLog framework];
             if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -41,7 +41,7 @@
               *buf = v21;
               v25 = v17;
               v26 = 1024;
-              v27 = a4;
+              operationCopy = operation;
               _os_log_error_impl(&dword_238C1D000, v16, OS_LOG_TYPE_ERROR, "%@: unknown comparison type = %d", buf, 0x12u);
               goto LABEL_11;
             }
@@ -51,11 +51,11 @@ LABEL_12:
             goto LABEL_13;
           }
 
-          v14 = [v7 gpuPipelineStatesCompareRelationalOpForward];
+          gpuPipelineStatesCompareLogicalOpForward = [deviceCopy gpuPipelineStatesCompareRelationalOpForward];
         }
 
-        v15 = v14;
-        v16 = [v14 objectAtIndexedSubscript:{v13, v21}];
+        v15 = gpuPipelineStatesCompareLogicalOpForward;
+        v16 = [gpuPipelineStatesCompareLogicalOpForward objectAtIndexedSubscript:{v13, v21}];
 
         if (v16)
         {
@@ -90,22 +90,22 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v67 = a3;
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  opsCopy = ops;
+  tensorsCopy = tensors;
   v10 = MEMORY[0x277CBEBF8];
   v71 = [MEMORY[0x277CBEBF8] mutableCopy];
   v69 = [v10 mutableCopy];
-  v11 = [v9 count];
-  v12 = [v9 objectAtIndexedSubscript:0];
-  v13 = [v12 descriptor];
-  v14 = [v13 shape];
-  v15 = v14;
+  v11 = [tensorsCopy count];
+  v12 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v12 descriptor];
+  shape = [descriptor shape];
+  v15 = shape;
   if (v11 != 2)
   {
-    v32 = [v14 copy];
+    v32 = [shape copy];
 LABEL_17:
 
 LABEL_18:
@@ -113,44 +113,44 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v16 = [v14 count];
+  v16 = [shape count];
 
-  v17 = [v9 objectAtIndexedSubscript:1];
-  v18 = [v17 descriptor];
-  v19 = [v18 shape];
-  v20 = [v19 count];
+  v17 = [tensorsCopy objectAtIndexedSubscript:1];
+  descriptor2 = [v17 descriptor];
+  shape2 = [descriptor2 shape];
+  v20 = [shape2 count];
 
   if (v20 > v16)
   {
-    v21 = [v9 objectAtIndexedSubscript:1];
-    v22 = [v21 descriptor];
-    v23 = [v22 shape];
-    v16 = [v23 count];
+    v21 = [tensorsCopy objectAtIndexedSubscript:1];
+    descriptor3 = [v21 descriptor];
+    shape3 = [descriptor3 shape];
+    v16 = [shape3 count];
   }
 
-  v24 = [v9 objectAtIndexedSubscript:0];
-  v25 = [v24 descriptor];
-  v26 = [v25 shape];
-  v27 = [v26 count];
+  v24 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor4 = [v24 descriptor];
+  shape4 = [descriptor4 shape];
+  v27 = [shape4 count];
 
-  v28 = [v9 objectAtIndexedSubscript:0];
-  v29 = [v28 descriptor];
-  v30 = [v29 shape];
-  v31 = v30;
+  v28 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor5 = [v28 descriptor];
+  shape5 = [descriptor5 shape];
+  v31 = shape5;
   v70 = v16;
   if (v16 == v27)
   {
-    v32 = [v30 copy];
+    v32 = [shape5 copy];
   }
 
   else
   {
-    v33 = [v30 count];
+    v33 = [shape5 count];
 
     if (v16)
     {
       v34 = v16;
-      v65 = v8;
+      v65 = opsCopy;
       v35 = 0;
       v36 = v16 - v33;
       v68 = v33 - v16;
@@ -158,21 +158,21 @@ LABEL_18:
       {
         if (v35 >= v36)
         {
-          v38 = [v9 objectAtIndexedSubscript:0];
-          v39 = [v38 descriptor];
-          v40 = [v39 shape];
-          v41 = [v40 objectAtIndexedSubscript:v68 + v35];
-          v37 = [v41 unsignedIntegerValue];
+          v38 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor6 = [v38 descriptor];
+          shape6 = [descriptor6 shape];
+          v41 = [shape6 objectAtIndexedSubscript:v68 + v35];
+          unsignedIntegerValue = [v41 unsignedIntegerValue];
 
           v34 = v70;
         }
 
         else
         {
-          v37 = 1;
+          unsignedIntegerValue = 1;
         }
 
-        v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v37, v65}];
+        v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{unsignedIntegerValue, v65}];
         [v71 setObject:v42 atIndexedSubscript:v35];
 
         ++v35;
@@ -180,7 +180,7 @@ LABEL_18:
 
       while (v34 != v35);
       v32 = v71;
-      v8 = v65;
+      opsCopy = v65;
     }
 
     else
@@ -189,42 +189,42 @@ LABEL_18:
     }
   }
 
-  v43 = [v9 objectAtIndexedSubscript:1];
-  v44 = [v43 descriptor];
-  v45 = [v44 shape];
-  v46 = [v45 count];
+  v43 = [tensorsCopy objectAtIndexedSubscript:1];
+  descriptor7 = [v43 descriptor];
+  shape7 = [descriptor7 shape];
+  v46 = [shape7 count];
 
-  v12 = [v9 objectAtIndexedSubscript:1];
-  v13 = [v12 descriptor];
-  v47 = [v13 shape];
-  v15 = v47;
+  v12 = [tensorsCopy objectAtIndexedSubscript:1];
+  descriptor = [v12 descriptor];
+  shape8 = [descriptor shape];
+  v15 = shape8;
   v48 = v70;
   if (v70 == v46)
   {
     v71 = v69;
-    v69 = [v47 copy];
+    v69 = [shape8 copy];
     goto LABEL_17;
   }
 
-  v57 = [v47 count];
+  v57 = [shape8 count];
 
   if (!v70)
   {
     goto LABEL_18;
   }
 
-  v66 = v8;
+  v66 = opsCopy;
   v58 = 0;
   v49 = v69;
   do
   {
     if (v58 >= v70 - v57)
     {
-      v60 = [v9 objectAtIndexedSubscript:1];
-      v61 = [v60 descriptor];
-      v62 = [v61 shape];
-      v63 = [v62 objectAtIndexedSubscript:v57 - v70 + v58];
-      v59 = [v63 unsignedIntegerValue];
+      v60 = [tensorsCopy objectAtIndexedSubscript:1];
+      descriptor8 = [v60 descriptor];
+      shape9 = [descriptor8 shape];
+      v63 = [shape9 objectAtIndexedSubscript:v57 - v70 + v58];
+      unsignedIntegerValue2 = [v63 unsignedIntegerValue];
 
       v48 = v70;
       v49 = v69;
@@ -232,36 +232,36 @@ LABEL_18:
 
     else
     {
-      v59 = 1;
+      unsignedIntegerValue2 = 1;
     }
 
-    v64 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v59, v66}];
+    v64 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{unsignedIntegerValue2, v66}];
     [v49 setObject:v64 atIndexedSubscript:v58];
 
     ++v58;
   }
 
   while (v48 != v58);
-  v8 = v66;
+  opsCopy = v66;
 LABEL_19:
-  v50 = [v67 deviceList];
-  v51 = [v50 count];
+  deviceList = [deviceCopy deviceList];
+  v51 = [deviceList count];
 
   if (v51)
   {
     v52 = 0;
     do
     {
-      v53 = [v8 objectAtIndexedSubscript:v52];
+      v53 = [opsCopy objectAtIndexedSubscript:v52];
       [v53 setSource0Shape:v32];
-      if ([v9 count] == 2)
+      if ([tensorsCopy count] == 2)
       {
         [v53 setSource1Shape:v49];
       }
 
       ++v52;
-      v54 = [v67 deviceList];
-      v55 = [v54 count];
+      deviceList2 = [deviceCopy deviceList];
+      v55 = [deviceList2 count];
     }
 
     while (v52 < v55);

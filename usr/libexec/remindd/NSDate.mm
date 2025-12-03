@@ -81,25 +81,25 @@
 
 - (NSString)ic_briefFormattedDate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = +[NSDate distantFuture];
-  v4 = [(NSDate *)v2 isEqual:v3];
+  v4 = [(NSDate *)selfCopy isEqual:v3];
 
   if (v4)
   {
     v5 = +[NSDate date];
 
-    v2 = v5;
+    selfCopy = v5;
   }
 
-  if ([(NSDate *)v2 ic_isToday])
+  if ([(NSDate *)selfCopy ic_isToday])
   {
     if (qword_1009529F8 != -1)
     {
       sub_10076784C();
     }
 
-    v6 = [qword_1009529F0 stringFromDate:v2];
+    v6 = [qword_1009529F0 stringFromDate:selfCopy];
   }
 
   else
@@ -111,7 +111,7 @@
     v10 = [v7 dateFromComponents:v9];
     v11 = [v7 dateByAddingUnit:16 value:-1 toDate:v10 options:0];
     v12 = [v7 dateByAddingUnit:0x2000 value:-1 toDate:v10 options:0];
-    if ([(NSDate *)v2 compare:v11]== 1 || [(NSDate *)v2 compare:v12]!= 1)
+    if ([(NSDate *)selfCopy compare:v11]== 1 || [(NSDate *)selfCopy compare:v12]!= 1)
     {
       if (qword_100952A18 != -1)
       {
@@ -131,7 +131,7 @@
       v13 = &qword_100952A00;
     }
 
-    v6 = [*v13 stringFromDate:v2];
+    v6 = [*v13 stringFromDate:selfCopy];
   }
 
   return v6;
@@ -140,13 +140,13 @@
 - (id)jsonify
 {
   v2 = qword_1009361A8;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
-  result = [qword_100974E88 stringFromDate:v3];
+  result = [qword_100974E88 stringFromDate:selfCopy];
   if (result)
   {
     v5 = result;

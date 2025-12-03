@@ -1,31 +1,31 @@
 @interface DBScreenshotManager
-- (DBScreenshotManager)initWithWindowScene:(id)a3;
-- (void)saveScreenshotsForDisplayIdentifiers:(id)a3 completion:(id)a4;
+- (DBScreenshotManager)initWithWindowScene:(id)scene;
+- (void)saveScreenshotsForDisplayIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation DBScreenshotManager
 
-- (DBScreenshotManager)initWithWindowScene:(id)a3
+- (DBScreenshotManager)initWithWindowScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   v9.receiver = self;
   v9.super_class = DBScreenshotManager;
   v6 = [(DBScreenshotManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_windowScene, a3);
+    objc_storeStrong(&v6->_windowScene, scene);
   }
 
   return v7;
 }
 
-- (void)saveScreenshotsForDisplayIdentifiers:(id)a3 completion:(id)a4
+- (void)saveScreenshotsForDisplayIdentifiers:(id)identifiers completion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v35 = a4;
-  v37 = [MEMORY[0x277CBEB38] dictionary];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
@@ -52,8 +52,8 @@
       }
 
       v6 = *(*(&v45 + 1) + 8 * i);
-      v7 = [v6 displayIdentity];
-      if ([v43 containsObject:v7])
+      displayIdentity = [v6 displayIdentity];
+      if ([identifiersCopy containsObject:displayIdentity])
       {
         v8 = v6;
         v9 = [MEMORY[0x277D75DA0] createIOSurfaceFromScreen:v8];
@@ -83,22 +83,22 @@
           if (v13)
           {
             v15 = [[DBScreenshotFlasher alloc] initWithWindowScene:self->_windowScene];
-            v16 = [MEMORY[0x277D75348] whiteColor];
-            [(DBScreenshotFlasher *)v15 flashColor:v16 withCompletion:0];
+            whiteColor = [MEMORY[0x277D75348] whiteColor];
+            [(DBScreenshotFlasher *)v15 flashColor:whiteColor withCompletion:0];
 
             v17 = v13;
             v18 = MEMORY[0x277CBEAA8];
             v14 = v17;
-            v19 = [v18 date];
-            [v19 timeIntervalSinceReferenceDate];
+            date = [v18 date];
+            [date timeIntervalSinceReferenceDate];
             v21 = v20;
 
-            v22 = [MEMORY[0x277CCAA00] defaultManager];
-            v23 = [v22 temporaryDirectory];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+            temporaryDirectory = [defaultManager temporaryDirectory];
             v24 = MEMORY[0x277CCACA8];
             v25 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
             v26 = [v24 stringWithFormat:@"carplayScreenshot.%@.png", v25];
-            v27 = [v23 URLByAppendingPathComponent:v26];
+            v27 = [temporaryDirectory URLByAppendingPathComponent:v26];
 
             v28 = UIImagePNGRepresentation(v14);
 
@@ -129,8 +129,8 @@
               v58 = 0x3032000000;
               v59 = __Block_byref_object_copy_;
               v60 = __Block_byref_object_dispose_;
-              v61 = [MEMORY[0x277CBEB18] array];
-              v31 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+              array = [MEMORY[0x277CBEB18] array];
+              mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
               v51 = MEMORY[0x277D85DD0];
               v52 = 3221225472;
               v53 = __DBSaveScreenshotToLibrary_block_invoke;
@@ -143,10 +143,10 @@
               v49[2] = __DBSaveScreenshotToLibrary_block_invoke_255;
               v49[3] = &unk_278F016E0;
               v49[4] = &buf;
-              [v31 performChanges:&v51 completionHandler:v49];
+              [mEMORY[0x277CD9948] performChanges:&v51 completionHandler:v49];
 
               _Block_object_dispose(&buf, 8);
-              [v37 setObject:v30 forKeyedSubscript:v7];
+              [dictionary setObject:v30 forKeyedSubscript:displayIdentity];
               v36 = 1;
             }
 
@@ -210,9 +210,9 @@ LABEL_30:
   }
 
 LABEL_35:
-  if (v35)
+  if (completionCopy)
   {
-    v35[2](v35, v37);
+    completionCopy[2](completionCopy, dictionary);
   }
 }
 

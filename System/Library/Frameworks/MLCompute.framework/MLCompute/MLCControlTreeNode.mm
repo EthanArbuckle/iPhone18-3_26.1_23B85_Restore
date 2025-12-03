@@ -1,20 +1,20 @@
 @interface MLCControlTreeNode
-- (MLCControlTreeNode)initWithTensor:(id)a3 needToNegate:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MLCControlTreeNode)initWithTensor:(id)tensor needToNegate:(BOOL)negate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MLCControlTreeNode
 
-- (MLCControlTreeNode)initWithTensor:(id)a3 needToNegate:(BOOL)a4
+- (MLCControlTreeNode)initWithTensor:(id)tensor needToNegate:(BOOL)negate
 {
-  v8 = a3;
+  tensorCopy = tensor;
   v28.receiver = self;
   v28.super_class = MLCControlTreeNode;
   v9 = [(MLCControlTreeNode *)&v28 init];
-  v10 = [v8 descriptor];
-  v11 = [v10 shape];
-  v12 = [v11 count];
+  descriptor = [tensorCopy descriptor];
+  shape = [descriptor shape];
+  v12 = [shape count];
 
   if (v12)
   {
@@ -22,15 +22,15 @@
     v14 = 1;
     do
     {
-      v15 = [v8 descriptor];
-      v16 = [v15 shape];
-      v17 = [v16 objectAtIndexedSubscript:v13];
+      descriptor2 = [tensorCopy descriptor];
+      shape2 = [descriptor2 shape];
+      v17 = [shape2 objectAtIndexedSubscript:v13];
       v14 *= [v17 unsignedIntegerValue];
 
       ++v13;
-      v18 = [v8 descriptor];
-      v19 = [v18 shape];
-      v20 = [v19 count];
+      descriptor3 = [tensorCopy descriptor];
+      shape3 = [descriptor3 shape];
+      v20 = [shape3 count];
     }
 
     while (v13 < v20);
@@ -46,10 +46,10 @@
     }
   }
 
-  v21 = [v8 descriptor];
-  v22 = [v21 dataType];
+  descriptor4 = [tensorCopy descriptor];
+  dataType = [descriptor4 dataType];
 
-  if (v22 != 4)
+  if (dataType != 4)
   {
     v25 = +[MLCLog framework];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -60,8 +60,8 @@
     goto LABEL_13;
   }
 
-  v23 = [v8 parentLayers];
-  v24 = [v23 count];
+  parentLayers = [tensorCopy parentLayers];
+  v24 = [parentLayers count];
 
   if (v24)
   {
@@ -79,8 +79,8 @@ LABEL_13:
 
   if (v9)
   {
-    objc_storeStrong(&v9->_predicate, a3);
-    v9->_needToNegate = a4;
+    objc_storeStrong(&v9->_predicate, tensor);
+    v9->_needToNegate = negate;
   }
 
   v26 = v9;
@@ -94,18 +94,18 @@ LABEL_14:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCControlTreeNode *)self predicate];
-  v7 = [v6 label];
-  v8 = [v3 stringWithFormat:@"%@: { predicate=%@ : needToNegate=%d }", v5, v7, -[MLCControlTreeNode needToNegate](self, "needToNegate")];
+  predicate = [(MLCControlTreeNode *)self predicate];
+  label = [predicate label];
+  v8 = [v3 stringWithFormat:@"%@: { predicate=%@ : needToNegate=%d }", v5, label, -[MLCControlTreeNode needToNegate](self, "needToNegate")];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MLCControlTreeNode *)self predicate];
-  v6 = [v4 initWithTensor:v5 needToNegate:{-[MLCControlTreeNode needToNegate](self, "needToNegate")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  predicate = [(MLCControlTreeNode *)self predicate];
+  v6 = [v4 initWithTensor:predicate needToNegate:{-[MLCControlTreeNode needToNegate](self, "needToNegate")}];
 
   return v6;
 }

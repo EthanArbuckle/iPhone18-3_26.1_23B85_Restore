@@ -5,7 +5,7 @@
 - (NSString)mf_largeTitle;
 - (NSString)mf_sfSymbolName;
 - (id)_attributedCallToActionText;
-- (id)_attributedTextForInlineTitle:(BOOL)a3 includingCallToAction:(BOOL)a4;
+- (id)_attributedTextForInlineTitle:(BOOL)title includingCallToAction:(BOOL)action;
 - (id)mf_callToAction;
 @end
 
@@ -15,77 +15,77 @@
 {
   if (sub_1000BBBD0(self))
   {
-    v3 = [(ICQInAppMessage *)self sfSymbolName];
+    sfSymbolName = [(ICQInAppMessage *)self sfSymbolName];
   }
 
   else
   {
-    v4 = [(ICQInAppMessage *)self reason];
-    if ([v4 isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull])
+    reason = [(ICQInAppMessage *)self reason];
+    if ([reason isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull])
     {
-      v3 = @"exclamationmark.icloud";
+      sfSymbolName = @"exclamationmark.icloud";
     }
 
-    else if ([v4 isEqualToString:ICQUIInAppMessageReasoniCloudFull])
+    else if ([reason isEqualToString:ICQUIInAppMessageReasoniCloudFull])
     {
-      v3 = @"icloud.slash";
+      sfSymbolName = @"icloud.slash";
     }
 
     else
     {
-      v3 = 0;
+      sfSymbolName = 0;
     }
   }
 
-  return v3;
+  return sfSymbolName;
 }
 
 - (NSString)mf_inlineTitle
 {
   if (sub_1000BBBD0(self))
   {
-    v3 = [(ICQInAppMessage *)self conciseTitle];
+    conciseTitle = [(ICQInAppMessage *)self conciseTitle];
   }
 
   else
   {
-    v4 = [(ICQInAppMessage *)self reason];
-    if (([v4 isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", ICQUIInAppMessageReasoniCloudFull))
+    reason = [(ICQInAppMessage *)self reason];
+    if (([reason isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull] & 1) != 0 || objc_msgSend(reason, "isEqualToString:", ICQUIInAppMessageReasoniCloudFull))
     {
-      v3 = _EFLocalizedString();
+      conciseTitle = _EFLocalizedString();
     }
 
     else
     {
-      v3 = 0;
+      conciseTitle = 0;
     }
   }
 
-  return v3;
+  return conciseTitle;
 }
 
 - (NSString)mf_largeTitle
 {
   if (sub_1000BBBD0(self))
   {
-    v3 = [(ICQInAppMessage *)self title];
+    title = [(ICQInAppMessage *)self title];
   }
 
   else
   {
-    v4 = [(ICQInAppMessage *)self reason];
-    if (([v4 isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", ICQUIInAppMessageReasoniCloudFull))
+    reason = [(ICQInAppMessage *)self reason];
+    if (([reason isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull] & 1) != 0 || objc_msgSend(reason, "isEqualToString:", ICQUIInAppMessageReasoniCloudFull))
     {
-      v3 = _EFLocalizedString();
+      title = _EFLocalizedString();
     }
 
     else
     {
-      v3 = 0;
+      title = 0;
     }
   }
 
-  return v3;
+  return title;
 }
 
 - (NSString)mf_callToActionString
@@ -94,23 +94,23 @@
   {
     if (sub_1000BBBD0(self))
     {
-      v3 = [(ICQInAppMessage *)self actions];
-      v4 = [v3 firstObject];
-      v5 = [v4 title];
+      actions = [(ICQInAppMessage *)self actions];
+      firstObject = [actions firstObject];
+      title = [firstObject title];
     }
 
     else
     {
-      v5 = _EFLocalizedString();
+      title = _EFLocalizedString();
     }
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
-  return v5;
+  return title;
 }
 
 - (id)mf_callToAction
@@ -127,24 +127,24 @@
 
 - (BOOL)mf_hasValidReason
 {
-  v2 = [(ICQInAppMessage *)self reason];
-  if ([v2 isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull])
+  reason = [(ICQInAppMessage *)self reason];
+  if ([reason isEqualToString:ICQUIInAppMessageReasoniCloudAlmostFull])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:ICQUIInAppMessageReasoniCloudFull];
+    v3 = [reason isEqualToString:ICQUIInAppMessageReasoniCloudFull];
   }
 
   return v3;
 }
 
-- (id)_attributedTextForInlineTitle:(BOOL)a3 includingCallToAction:(BOOL)a4
+- (id)_attributedTextForInlineTitle:(BOOL)title includingCallToAction:(BOOL)action
 {
-  v4 = a4;
-  v5 = a3;
+  actionCopy = action;
+  titleCopy = title;
   if ([(ICQInAppMessage *)self mf_hasValidReason])
   {
     v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -156,12 +156,12 @@
 
     v24 = [v26 configurationByApplyingConfiguration:v25];
     v10 = objc_alloc_init(NSTextAttachment);
-    v11 = [(ICQInAppMessage *)self mf_sfSymbolName];
-    v12 = [UIImage systemImageNamed:v11 withConfiguration:v24];
+    mf_sfSymbolName = [(ICQInAppMessage *)self mf_sfSymbolName];
+    v12 = [UIImage systemImageNamed:mf_sfSymbolName withConfiguration:v24];
     [v10 setImage:v12];
 
     v13 = [NSAttributedString attributedStringWithAttachment:v10];
-    if (v5)
+    if (titleCopy)
     {
       [(ICQInAppMessage *)self mf_inlineTitle];
     }
@@ -184,15 +184,15 @@
     v20 = objc_alloc_init(NSMutableAttributedString);
     [v20 appendAttributedString:v13];
     [v20 appendAttributedString:v19];
-    if (v4)
+    if (actionCopy)
     {
-      v21 = [(ICQInAppMessage *)self _attributedCallToActionText];
-      if ([v21 length])
+      _attributedCallToActionText = [(ICQInAppMessage *)self _attributedCallToActionText];
+      if ([_attributedCallToActionText length])
       {
         v22 = [[NSAttributedString alloc] initWithString:@" • "];
         [v20 appendAttributedString:v22];
 
-        [v20 appendAttributedString:v21];
+        [v20 appendAttributedString:_attributedCallToActionText];
       }
     }
 
@@ -209,8 +209,8 @@
 
 - (id)_attributedCallToActionText
 {
-  v3 = [(ICQInAppMessage *)self mf_callToActionString];
-  if ([v3 length] && (-[ICQInAppMessage mf_callToAction](self, "mf_callToAction"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  mf_callToActionString = [(ICQInAppMessage *)self mf_callToActionString];
+  if ([mf_callToActionString length] && (-[ICQInAppMessage mf_callToAction](self, "mf_callToAction"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     v6 = +[UIColor systemBlueColor];
@@ -220,7 +220,7 @@
     v12[0] = v6;
     v12[1] = v5;
     v8 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
-    v9 = [v7 initWithString:v3 attributes:v8];
+    v9 = [v7 initWithString:mf_callToActionString attributes:v8];
   }
 
   else

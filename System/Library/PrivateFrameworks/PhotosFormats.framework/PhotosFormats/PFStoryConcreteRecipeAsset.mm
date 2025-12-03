@@ -1,27 +1,27 @@
 @interface PFStoryConcreteRecipeAsset
-- (BOOL)isEqualToAsset:(id)a3;
+- (BOOL)isEqualToAsset:(id)asset;
 - (NSString)diagnosticDescription;
 - (PFStoryConcreteRecipeAsset)init;
-- (PFStoryConcreteRecipeAsset)initWithIdentifier:(id)a3 kind:(int64_t)a4 url:(id)a5;
+- (PFStoryConcreteRecipeAsset)initWithIdentifier:(id)identifier kind:(int64_t)kind url:(id)url;
 @end
 
 @implementation PFStoryConcreteRecipeAsset
 
-- (BOOL)isEqualToAsset:(id)a3
+- (BOOL)isEqualToAsset:(id)asset
 {
-  v4 = a3;
-  if (v4 == self)
+  assetCopy = asset;
+  if (assetCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v5 = [(PFStoryConcreteRecipeAsset *)self kind];
-    if (v5 == [(PFStoryConcreteRecipeAsset *)v4 kind])
+    kind = [(PFStoryConcreteRecipeAsset *)self kind];
+    if (kind == [(PFStoryConcreteRecipeAsset *)assetCopy kind])
     {
       v6 = [(PFStoryConcreteRecipeAsset *)self url];
-      v7 = [(PFStoryConcreteRecipeAsset *)v4 url];
+      v7 = [(PFStoryConcreteRecipeAsset *)assetCopy url];
       if (v6 == v7)
       {
         v8 = 1;
@@ -51,16 +51,16 @@
   return v5;
 }
 
-- (PFStoryConcreteRecipeAsset)initWithIdentifier:(id)a3 kind:(int64_t)a4 url:(id)a5
+- (PFStoryConcreteRecipeAsset)initWithIdentifier:(id)identifier kind:(int64_t)kind url:(id)url
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  urlCopy = url;
   v20.receiver = self;
   v20.super_class = PFStoryConcreteRecipeAsset;
   v10 = [(PFStoryConcreteRecipeAsset *)&v20 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     v12 = v11;
     if (v11)
     {
@@ -72,13 +72,13 @@
     else
     {
       identifier = [MEMORY[0x1E696AFB0] UUID];
-      v15 = [identifier UUIDString];
+      uUIDString = [identifier UUIDString];
       v16 = v10->_identifier;
-      v10->_identifier = v15;
+      v10->_identifier = uUIDString;
     }
 
-    v10->_kind = a4;
-    v17 = [v9 copy];
+    v10->_kind = kind;
+    v17 = [urlCopy copy];
     url = v10->_url;
     v10->_url = v17;
   }

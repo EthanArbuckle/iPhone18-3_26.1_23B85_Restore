@@ -9,14 +9,14 @@
 - (NSURL)fileURL;
 - (UTType)contentType;
 - (_TtC18FileProviderDaemon9LocalItem)init;
-- (void)setFileURL:(id)a3;
+- (void)setFileURL:(id)l;
 @end
 
 @implementation LocalItem
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CF009330();
 
   v3 = sub_1CF9E6888();
@@ -115,7 +115,7 @@
   }
 
   sub_1CEFD57E0(0, &qword_1EDEAED20, 0x1E696AD98);
-  v5 = self;
+  selfCopy = self;
 
   v6 = sub_1CF9E7548();
 
@@ -148,13 +148,13 @@
   return v3;
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC4BE310, qword_1CF9FCBE0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     sub_1CF9E59D8();
     v9 = sub_1CF9E5A58();
@@ -169,7 +169,7 @@
 
   v11 = OBJC_IVAR____TtC18FileProviderDaemon9LocalItem_fileURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1CEFDA9E0(v8, self + v11, &unk_1EC4BE310, qword_1CF9FCBE0);
   swift_endAccess();
 }

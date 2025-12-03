@@ -1,14 +1,14 @@
 @interface CKMessageBalloonMaskFactory
-+ (id)balloonShapeViewWithConfiguration:(id)a3;
++ (id)balloonShapeViewWithConfiguration:(id)configuration;
 - (_TtC7ChatKit27CKMessageBalloonMaskFactory)init;
 @end
 
 @implementation CKMessageBalloonMaskFactory
 
-+ (id)balloonShapeViewWithConfiguration:(id)a3
++ (id)balloonShapeViewWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = sub_190AFEF44(v3);
+  configurationCopy = configuration;
+  v4 = sub_190AFEF44(configurationCopy);
 
   return v4;
 }

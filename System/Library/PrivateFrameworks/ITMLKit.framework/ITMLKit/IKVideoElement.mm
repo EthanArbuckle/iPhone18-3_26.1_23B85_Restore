@@ -11,12 +11,12 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(IKViewElement *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  children = [(IKViewElement *)self children];
+  v3 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    array = 0;
     v6 = *v16;
     do
     {
@@ -24,25 +24,25 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 elementName];
-        v10 = [v9 isEqualToString:@"timeline"];
+        elementName = [v8 elementName];
+        v10 = [elementName isEqualToString:@"timeline"];
 
         if (v10)
         {
-          if (!v5)
+          if (!array)
           {
-            v5 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [(NSArray *)v5 addObject:v8];
+          [(NSArray *)array addObject:v8];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
@@ -50,12 +50,12 @@
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  if ([(NSArray *)v5 count])
+  if ([(NSArray *)array count])
   {
-    v11 = v5;
+    v11 = array;
   }
 
   else

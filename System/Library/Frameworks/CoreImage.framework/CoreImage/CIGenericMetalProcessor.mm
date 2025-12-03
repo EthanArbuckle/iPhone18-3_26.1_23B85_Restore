@@ -1,21 +1,21 @@
 @interface CIGenericMetalProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)applyWithExtent:(CGRect)a3 inputs:(id)a4 arguments:(id)a5 error:(id *)a6;
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 arguments:(id)a6 error:(id *)a7;
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 className:(id)a6 arguments:(id)a7 error:(id *)a8;
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 insetRects:(id)a6 arguments:(id)a7 error:(id *)a8;
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 roiMethods:(id)a6 insetRects:(id)a7 scaleFactors:(id)a8 arguments:(id)a9 error:(id *)a10;
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 scaleFactors:(id)a6 arguments:(id)a7 error:(id *)a8;
-+ (id)logDescription:(id)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)applyWithExtent:(CGRect)extent inputs:(id)inputs arguments:(id)arguments error:(id *)error;
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs arguments:(id)arguments error:(id *)error;
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs className:(id)name arguments:(id)arguments error:(id *)error;
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs insetRects:(id)rects arguments:(id)arguments error:(id *)error;
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs roiMethods:(id)methods insetRects:(id)rects scaleFactors:(id)factors arguments:(id)arguments error:(id *)self0;
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs scaleFactors:(id)factors arguments:(id)arguments error:(id *)error;
++ (id)logDescription:(id)description;
 @end
 
 @implementation CIGenericMetalProcessor
 
-+ (id)logDescription:(id)a3
++ (id)logDescription:(id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 objectForKeyedSubscript:@"_shader"];
+  v4 = [description objectForKeyedSubscript:@"_shader"];
   v5 = @"nil";
   if (v4)
   {
@@ -25,153 +25,153 @@
   return [v3 stringWithFormat:@"CIGenericMetalProcessor-%@", v5];
 }
 
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 roiMethods:(id)a6 insetRects:(id)a7 scaleFactors:(id)a8 arguments:(id)a9 error:(id *)a10
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs roiMethods:(id)methods insetRects:(id)rects scaleFactors:(id)factors arguments:(id)arguments error:(id *)self0
 {
-  if (a4)
+  if (shader)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a9];
-    [v20 setObject:a4 forKeyedSubscript:@"_shader"];
-    if (a6)
+    height = extent.size.height;
+    width = extent.size.width;
+    y = extent.origin.y;
+    x = extent.origin.x;
+    v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:arguments];
+    [v20 setObject:shader forKeyedSubscript:@"_shader"];
+    if (methods)
     {
-      [v20 setObject:a6 forKeyedSubscript:@"_roiMethods"];
+      [v20 setObject:methods forKeyedSubscript:@"_roiMethods"];
     }
 
-    if (a7)
+    if (rects)
     {
-      [v20 setObject:a7 forKeyedSubscript:@"_insetRects"];
+      [v20 setObject:rects forKeyedSubscript:@"_insetRects"];
     }
 
-    if (a8)
+    if (factors)
     {
-      [v20 setObject:a8 forKeyedSubscript:@"_scaleFactors"];
+      [v20 setObject:factors forKeyedSubscript:@"_scaleFactors"];
     }
 
     v21 = objc_opt_class();
 
-    return [v21 applyWithExtent:a5 inputs:v20 arguments:a10 error:{x, y, width, height}];
+    return [v21 applyWithExtent:inputs inputs:v20 arguments:error error:{x, y, width, height}];
   }
 
   else
   {
 
-    return [CIImage emptyImage:a3.origin.x];
+    return [CIImage emptyImage:extent.origin.x];
   }
 }
 
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 insetRects:(id)a6 arguments:(id)a7 error:(id *)a8
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs insetRects:(id)rects arguments:(id)arguments error:(id *)error
 {
-  if (a4)
+  if (shader)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a7];
-    [v17 setObject:a4 forKeyedSubscript:@"_shader"];
-    if (a6)
+    height = extent.size.height;
+    width = extent.size.width;
+    y = extent.origin.y;
+    x = extent.origin.x;
+    v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:arguments];
+    [v17 setObject:shader forKeyedSubscript:@"_shader"];
+    if (rects)
     {
-      [v17 setObject:a6 forKeyedSubscript:@"_insetRects"];
+      [v17 setObject:rects forKeyedSubscript:@"_insetRects"];
     }
 
     v18 = objc_opt_class();
 
-    return [v18 applyWithExtent:a5 inputs:v17 arguments:a8 error:{x, y, width, height}];
+    return [v18 applyWithExtent:inputs inputs:v17 arguments:error error:{x, y, width, height}];
   }
 
   else
   {
 
-    return [CIImage emptyImage:a3.origin.x];
+    return [CIImage emptyImage:extent.origin.x];
   }
 }
 
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 scaleFactors:(id)a6 arguments:(id)a7 error:(id *)a8
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs scaleFactors:(id)factors arguments:(id)arguments error:(id *)error
 {
-  if (a4)
+  if (shader)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a7];
-    [v17 setObject:a4 forKeyedSubscript:@"_shader"];
-    if (a6)
+    height = extent.size.height;
+    width = extent.size.width;
+    y = extent.origin.y;
+    x = extent.origin.x;
+    v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:arguments];
+    [v17 setObject:shader forKeyedSubscript:@"_shader"];
+    if (factors)
     {
-      [v17 setObject:a6 forKeyedSubscript:@"_scaleFactors"];
+      [v17 setObject:factors forKeyedSubscript:@"_scaleFactors"];
     }
 
     v18 = objc_opt_class();
 
-    return [v18 applyWithExtent:a5 inputs:v17 arguments:a8 error:{x, y, width, height}];
+    return [v18 applyWithExtent:inputs inputs:v17 arguments:error error:{x, y, width, height}];
   }
 
   else
   {
 
-    return [CIImage emptyImage:a3.origin.x];
+    return [CIImage emptyImage:extent.origin.x];
   }
 }
 
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 arguments:(id)a6 error:(id *)a7
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs arguments:(id)arguments error:(id *)error
 {
-  if (a4)
+  if (shader)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v15 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a6];
-    [v15 setObject:a4 forKeyedSubscript:@"_shader"];
+    height = extent.size.height;
+    width = extent.size.width;
+    y = extent.origin.y;
+    x = extent.origin.x;
+    v15 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:arguments];
+    [v15 setObject:shader forKeyedSubscript:@"_shader"];
     v16 = objc_opt_class();
 
-    return [v16 applyWithExtent:a5 inputs:v15 arguments:a7 error:{x, y, width, height}];
+    return [v16 applyWithExtent:inputs inputs:v15 arguments:error error:{x, y, width, height}];
   }
 
   else
   {
 
-    return [CIImage emptyImage:a3.origin.x];
+    return [CIImage emptyImage:extent.origin.x];
   }
 }
 
-+ (id)applyWithExtent:(CGRect)a3 shader:(id)a4 inputs:(id)a5 className:(id)a6 arguments:(id)a7 error:(id *)a8
++ (id)applyWithExtent:(CGRect)extent shader:(id)shader inputs:(id)inputs className:(id)name arguments:(id)arguments error:(id *)error
 {
-  if (a4)
+  if (shader)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a7];
-    [v17 setObject:a4 forKeyedSubscript:@"_shader"];
-    if (a6)
+    height = extent.size.height;
+    width = extent.size.width;
+    y = extent.origin.y;
+    x = extent.origin.x;
+    v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:arguments];
+    [v17 setObject:shader forKeyedSubscript:@"_shader"];
+    if (name)
     {
-      [v17 setObject:a6 forKeyedSubscript:@"_class"];
+      [v17 setObject:name forKeyedSubscript:@"_class"];
     }
 
     v18 = objc_opt_class();
 
-    return [v18 applyWithExtent:a5 inputs:v17 arguments:a8 error:{x, y, width, height}];
+    return [v18 applyWithExtent:inputs inputs:v17 arguments:error error:{x, y, width, height}];
   }
 
   else
   {
 
-    return [CIImage emptyImage:a3.origin.x];
+    return [CIImage emptyImage:extent.origin.x];
   }
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v90 = *MEMORY[0x1E69E9840];
-  v10 = [a5 metalCommandBuffer];
-  v11 = [v10 device];
-  v77 = a4;
-  v12 = [a4 objectForKeyedSubscript:@"_shader"];
+  metalCommandBuffer = [output metalCommandBuffer];
+  device = [metalCommandBuffer device];
+  argumentsCopy = arguments;
+  v12 = [arguments objectForKeyedSubscript:@"_shader"];
   if (!v12)
   {
     NSLog(&cfstr_ShaderNameNotS.isa);
@@ -192,13 +192,13 @@
   if (!v15)
   {
     v83[0] = 0;
-    if (!v11)
+    if (!device)
     {
       v15 = 0;
       goto LABEL_5;
     }
 
-    v64 = [v11 newDefaultLibraryWithBundle:objc_msgSend(MEMORY[0x1E696AAE8] error:{"bundleForClass:", objc_opt_class()), 0}];
+    v64 = [device newDefaultLibraryWithBundle:objc_msgSend(MEMORY[0x1E696AAE8] error:{"bundleForClass:", objc_opt_class()), 0}];
     v65 = [v64 newFunctionWithName:v13];
     v82[0] = 0;
     v15 = [objc_msgSend(v64 "device")];
@@ -214,8 +214,8 @@
       objc_sync_enter(processWithInputs_arguments_output_error__reflectionDict);
       if (v82[0])
       {
-        v68 = [v82[0] arguments];
-        [processWithInputs_arguments_output_error__reflectionDict setObject:v68 forKeyedSubscript:v13];
+        arguments = [v82[0] arguments];
+        [processWithInputs_arguments_output_error__reflectionDict setObject:arguments forKeyedSubscript:v13];
         obj = [v82[0] arguments];
       }
 
@@ -224,8 +224,8 @@
       goto LABEL_5;
     }
 
-    v69 = [v83[0] localizedDescription];
-    NSLog(&cfstr_FailedToInitia_0.isa, v13, v69, [v83[0] localizedFailureReason]);
+    localizedDescription = [v83[0] localizedDescription];
+    NSLog(&cfstr_FailedToInitia_0.isa, v13, localizedDescription, [v83[0] localizedFailureReason]);
     if (v15)
     {
     }
@@ -237,21 +237,21 @@ LABEL_5:
   v16 = 0;
   if (v15 && obj)
   {
-    v78 = [v10 computeCommandEncoder];
-    [v78 setComputePipelineState:v15];
+    computeCommandEncoder = [metalCommandBuffer computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:v15];
     v88 = 0;
-    v17 = [v15 maxTotalThreadsPerThreadgroup];
-    v18 = [v15 threadExecutionWidth];
-    [a5 region];
+    maxTotalThreadsPerThreadgroup = [v15 maxTotalThreadsPerThreadgroup];
+    threadExecutionWidth = [v15 threadExecutionWidth];
+    [output region];
     v20 = v19;
-    [a5 region];
-    mtlutl_ComputeThreadGroupParameters(v17, v18, &v88 + 1, &v88, v20, v21);
+    [output region];
+    mtlutl_ComputeThreadGroupParameters(maxTotalThreadsPerThreadgroup, threadExecutionWidth, &v88 + 1, &v88, v20, v21);
     v74 = HIDWORD(v88);
     v73 = v88;
-    [a5 region];
+    [output region];
     v23 = v22;
     LODWORD(v6) = HIDWORD(v88);
-    [a5 region];
+    [output region];
     v25 = v24;
     LODWORD(v7) = v88;
     v75 = malloc_type_calloc(8uLL, [obj count] + 1, 0x80040B8603338uLL);
@@ -276,14 +276,14 @@ LABEL_5:
           }
 
           v29 = *(*(&v84 + 1) + 8 * v28);
-          v30 = [v29 type];
-          if (v30 == 2)
+          type = [v29 type];
+          if (type == 2)
           {
             if ([v29 access])
             {
-              v46 = [v29 access];
-              v47 = a5;
-              if (v46 != 2)
+              access = [v29 access];
+              outputCopy = output;
+              if (access != 2)
               {
                 NSLog(&cfstr_ReadWriteTextu.isa);
 LABEL_59:
@@ -294,28 +294,28 @@ LABEL_59:
 
             else
             {
-              v47 = [a3 objectAtIndexedSubscript:v76++];
+              outputCopy = [inputs objectAtIndexedSubscript:v76++];
             }
 
-            v51 = [v47 metalTexture];
-            v52 = [v29 index];
-            if (!v51)
+            metalTexture = [outputCopy metalTexture];
+            index = [v29 index];
+            if (!metalTexture)
             {
-              NSLog(&cfstr_CouldnTFindTex.isa, v52, [v29 name]);
+              NSLog(&cfstr_CouldnTFindTex.isa, index, [v29 name]);
               goto LABEL_59;
             }
 
-            [v78 setTexture:v51 atIndex:v52];
+            [computeCommandEncoder setTexture:metalTexture atIndex:index];
           }
 
           else
           {
-            if (v30)
+            if (type)
             {
               goto LABEL_37;
             }
 
-            v31 = [v77 objectForKeyedSubscript:{objc_msgSend(v29, "name")}];
+            v31 = [argumentsCopy objectForKeyedSubscript:{objc_msgSend(v29, "name")}];
             v32 = [objc_msgSend(v29 "name")];
             if (!((v31 != 0) | v32 & 1))
             {
@@ -325,27 +325,27 @@ LABEL_59:
 
             if (v32)
             {
-              v33 = [a3 count];
+              v33 = [inputs count];
               v34 = 16 * (v33 + 1);
-              v35 = malloc_type_malloc(v34, 0x100004052888210uLL);
-              v75[v79] = v35;
-              [a5 region];
+              bytes = malloc_type_malloc(v34, 0x100004052888210uLL);
+              v75[v79] = bytes;
+              [output region];
               ++v79;
               *&v36 = v36;
               *&v37 = v37;
-              v35->i32[0] = LODWORD(v36);
-              v35->i32[1] = LODWORD(v37);
+              bytes->i32[0] = LODWORD(v36);
+              bytes->i32[1] = LODWORD(v37);
               *&v36 = v38;
               *&v37 = v39;
-              v35[1].i32[0] = LODWORD(v36);
-              v35[1].i32[1] = LODWORD(v37);
+              bytes[1].i32[0] = LODWORD(v36);
+              bytes[1].i32[1] = LODWORD(v37);
               if ((v33 + 1) >= 2)
               {
                 v40 = 0;
-                v41 = v35 + 3;
+                v41 = bytes + 3;
                 do
                 {
-                  [objc_msgSend(a3 objectAtIndexedSubscript:{v40), "region"}];
+                  [objc_msgSend(inputs objectAtIndexedSubscript:{v40), "region"}];
                   *&v42 = v42;
                   *&v43 = v43;
                   v45.f64[1] = v44;
@@ -367,7 +367,7 @@ LABEL_59:
               v50 = v49;
               if (v49)
               {
-                v35 = [v49 bytes];
+                bytes = [v49 bytes];
                 v34 = [v50 length];
               }
 
@@ -379,9 +379,9 @@ LABEL_59:
                 {
                   [v54 floatValue];
                   v56 = v55;
-                  v35 = malloc_type_malloc(4uLL, 0x23994744uLL);
-                  v35->i32[0] = v56;
-                  v75[v79++] = v35;
+                  bytes = malloc_type_malloc(4uLL, 0x23994744uLL);
+                  bytes->i32[0] = v56;
+                  v75[v79++] = bytes;
                   v34 = 4;
                 }
 
@@ -398,8 +398,8 @@ LABEL_59:
 
                   v60 = [v58 count];
                   v34 = 4 * v60;
-                  v35 = malloc_type_malloc(4 * v60, 0x189E1183uLL);
-                  v75[v79] = v35;
+                  bytes = malloc_type_malloc(4 * v60, 0x189E1183uLL);
+                  v75[v79] = bytes;
                   if (!v60)
                   {
                     ++v79;
@@ -411,15 +411,15 @@ LABEL_59:
                   {
                     [v59 valueAtIndex:i];
                     *&v62 = v62;
-                    v35->i32[i] = LODWORD(v62);
+                    bytes->i32[i] = LODWORD(v62);
                   }
                 }
               }
             }
 
-            if (v34 && v35)
+            if (v34 && bytes)
             {
-              [v78 setBytes:v35 length:v34 atIndex:{objc_msgSend(v29, "index")}];
+              [computeCommandEncoder setBytes:bytes length:v34 atIndex:{objc_msgSend(v29, "index")}];
             }
           }
 
@@ -445,8 +445,8 @@ LABEL_52:
     v82[0] = v74;
     v82[1] = v73;
     v82[2] = 1;
-    [v78 dispatchThreadgroups:v83 threadsPerThreadgroup:v82];
-    [v78 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:v83 threadsPerThreadgroup:v82];
+    [computeCommandEncoder endEncoding];
     v16 = 1;
 LABEL_60:
     if (v75)
@@ -484,20 +484,20 @@ id __68__CIGenericMetalProcessor_processWithInputs_arguments_output_error___bloc
   return result;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v6 = *&a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v6 = *&input;
   v7 = *MEMORY[0x1E695F050];
   v8 = *(MEMORY[0x1E695F050] + 8);
   v9 = *(MEMORY[0x1E695F050] + 16);
   v10 = *(MEMORY[0x1E695F050] + 24);
-  v11 = [a4 objectForKeyedSubscript:@"_roiMethods"];
-  v12 = [a4 objectForKeyedSubscript:@"_insetRects"];
-  v13 = [a4 objectForKeyedSubscript:@"_scaleFactors"];
+  v11 = [arguments objectForKeyedSubscript:@"_roiMethods"];
+  v12 = [arguments objectForKeyedSubscript:@"_insetRects"];
+  v13 = [arguments objectForKeyedSubscript:@"_scaleFactors"];
   v14 = v10;
   v15 = v9;
   v16 = v8;
@@ -615,7 +615,7 @@ LABEL_11:
     v14 = v56.size.height;
   }
 
-  v34 = [a4 objectForKeyedSubscript:@"_class"];
+  v34 = [arguments objectForKeyedSubscript:@"_class"];
   if (v34 && (v35 = objc_alloc_init(NSClassFromString(v34))) != 0)
   {
     v36 = v35;
@@ -623,7 +623,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_respondsToSelector())
     {
-      [objc_opt_class() roiForInput:v6 arguments:a4 outputRect:{x, y, width, height}];
+      [objc_opt_class() roiForInput:v6 arguments:arguments outputRect:{x, y, width, height}];
       rect = v37;
       v16 = v38;
       v15 = v39;
@@ -679,32 +679,32 @@ LABEL_11:
     v46 = v42;
   }
 
-  v47 = x;
+  rectCopy = x;
   if (!v43)
   {
-    v47 = rect;
+    rectCopy = rect;
   }
 
   result.size.height = v44;
   result.size.width = v45;
   result.origin.y = v46;
-  result.origin.x = v47;
+  result.origin.x = rectCopy;
   return result;
 }
 
-+ (id)applyWithExtent:(CGRect)a3 inputs:(id)a4 arguments:(id)a5 error:(id *)a6
++ (id)applyWithExtent:(CGRect)extent inputs:(id)inputs arguments:(id)arguments error:(id *)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v28 = *MEMORY[0x1E69E9840];
-  v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(a5, "count")}];
+  v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(arguments, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = [a5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v14 = [arguments countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v14)
   {
     v15 = v14;
@@ -715,11 +715,11 @@ LABEL_11:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(arguments);
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
-        v19 = [a5 objectForKey:v18];
+        v19 = [arguments objectForKey:v18];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -729,15 +729,15 @@ LABEL_11:
         [v13 setObject:v19 forKeyedSubscript:v18];
       }
 
-      v15 = [a5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v15 = [arguments countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v15);
   }
 
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = &OBJC_METACLASS___CIGenericMetalProcessor;
-  return objc_msgSendSuper2(&v22, sel_applyWithExtent_inputs_arguments_error_, a4, v13, a6, x, y, width, height);
+  return objc_msgSendSuper2(&v22, sel_applyWithExtent_inputs_arguments_error_, inputs, v13, error, x, y, width, height);
 }
 
 @end

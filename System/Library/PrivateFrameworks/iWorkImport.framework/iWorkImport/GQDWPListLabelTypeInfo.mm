@@ -1,14 +1,14 @@
 @interface GQDWPListLabelTypeInfo
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
 @implementation GQDWPListLabelTypeInfo
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
   self->mType = 0;
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, "type", *(qword_A35E8 + 16));
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, "type", *(qword_A35E8 + 16));
   if (AttributeNs)
   {
     v5 = AttributeNs;

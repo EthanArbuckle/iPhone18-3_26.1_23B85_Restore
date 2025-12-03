@@ -1,12 +1,12 @@
 @interface EKSerializableEvent
 + (id)classesForKey;
 + (id)serializedProperties;
-- (EKSerializableEvent)initWithEvent:(id)a3;
-- (id)createEventInEventStore:(id)a3;
-- (void)_initAlarms:(id)a3;
-- (void)_initAttachments:(id)a3;
-- (void)_initAttendees:(id)a3 selfAttendee:(id)a4;
-- (void)_initRecurrenceRule:(id)a3;
+- (EKSerializableEvent)initWithEvent:(id)event;
+- (id)createEventInEventStore:(id)store;
+- (void)_initAlarms:(id)alarms;
+- (void)_initAttachments:(id)attachments;
+- (void)_initAttendees:(id)attendees selfAttendee:(id)attendee;
+- (void)_initRecurrenceRule:(id)rule;
 @end
 
 @implementation EKSerializableEvent
@@ -113,85 +113,85 @@
   return v11;
 }
 
-- (EKSerializableEvent)initWithEvent:(id)a3
+- (EKSerializableEvent)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v28.receiver = self;
   v28.super_class = EKSerializableEvent;
   v5 = [(EKSerializableEvent *)&v28 init];
   if (v5)
   {
-    v6 = [v4 startDate];
-    [(EKSerializableEvent *)v5 setStartDate:v6];
+    startDate = [eventCopy startDate];
+    [(EKSerializableEvent *)v5 setStartDate:startDate];
 
-    v7 = [v4 endDateUnadjustedForLegacyClients];
-    [(EKSerializableEvent *)v5 setEndDate:v7];
+    endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+    [(EKSerializableEvent *)v5 setEndDate:endDateUnadjustedForLegacyClients];
 
-    -[EKSerializableEvent setIsAllDay:](v5, "setIsAllDay:", [v4 isAllDay]);
-    v8 = [v4 title];
-    [(EKSerializableEvent *)v5 setTitle:v8];
+    -[EKSerializableEvent setIsAllDay:](v5, "setIsAllDay:", [eventCopy isAllDay]);
+    title = [eventCopy title];
+    [(EKSerializableEvent *)v5 setTitle:title];
 
-    v9 = [v4 notes];
-    [(EKSerializableEvent *)v5 setNotes:v9];
+    notes = [eventCopy notes];
+    [(EKSerializableEvent *)v5 setNotes:notes];
 
-    v10 = [v4 URL];
+    v10 = [eventCopy URL];
     [(EKSerializableEvent *)v5 setUrl:v10];
 
-    [v4 travelTime];
+    [eventCopy travelTime];
     [(EKSerializableEvent *)v5 setTravelTime:?];
-    v11 = [v4 location];
-    [(EKSerializableEvent *)v5 setLocation:v11];
+    location = [eventCopy location];
+    [(EKSerializableEvent *)v5 setLocation:location];
 
-    v12 = [v4 timeZone];
-    [(EKSerializableEvent *)v5 setTimeZone:v12];
+    timeZone = [eventCopy timeZone];
+    [(EKSerializableEvent *)v5 setTimeZone:timeZone];
 
     v13 = MEMORY[0x1E696AD98];
-    v14 = [v4 objectID];
-    v15 = [v13 numberWithBool:{objc_msgSend(v14, "isTemporary")}];
+    objectID = [eventCopy objectID];
+    v15 = [v13 numberWithBool:{objc_msgSend(objectID, "isTemporary")}];
     [(EKSerializableEvent *)v5 setIsNew:v15];
 
-    v16 = [v4 structuredLocation];
+    structuredLocation = [eventCopy structuredLocation];
 
-    if (v16)
+    if (structuredLocation)
     {
       v17 = [EKSerializableStructuredLocation alloc];
-      v18 = [v4 structuredLocation];
-      v19 = [(EKSerializableStructuredLocation *)v17 initWithStructuredLocation:v18];
+      structuredLocation2 = [eventCopy structuredLocation];
+      v19 = [(EKSerializableStructuredLocation *)v17 initWithStructuredLocation:structuredLocation2];
       [(EKSerializableEvent *)v5 setStructuredLocation:v19];
     }
 
-    v20 = [v4 calendar];
-    v21 = [v20 calendarIdentifier];
-    [(EKSerializableEvent *)v5 setCalendarIdentifier:v21];
+    calendar = [eventCopy calendar];
+    calendarIdentifier = [calendar calendarIdentifier];
+    [(EKSerializableEvent *)v5 setCalendarIdentifier:calendarIdentifier];
 
-    v22 = [v4 allAlarms];
-    [(EKSerializableEvent *)v5 _initAlarms:v22];
+    allAlarms = [eventCopy allAlarms];
+    [(EKSerializableEvent *)v5 _initAlarms:allAlarms];
 
-    v23 = [v4 attachments];
-    [(EKSerializableEvent *)v5 _initAttachments:v23];
+    attachments = [eventCopy attachments];
+    [(EKSerializableEvent *)v5 _initAttachments:attachments];
 
-    v24 = [v4 attendees];
-    v25 = [v4 selfAttendee];
-    [(EKSerializableEvent *)v5 _initAttendees:v24 selfAttendee:v25];
+    attendees = [eventCopy attendees];
+    selfAttendee = [eventCopy selfAttendee];
+    [(EKSerializableEvent *)v5 _initAttendees:attendees selfAttendee:selfAttendee];
 
-    v26 = [v4 singleRecurrenceRule];
-    [(EKSerializableEvent *)v5 _initRecurrenceRule:v26];
+    singleRecurrenceRule = [eventCopy singleRecurrenceRule];
+    [(EKSerializableEvent *)v5 _initRecurrenceRule:singleRecurrenceRule];
   }
 
   return v5;
 }
 
-- (void)_initAttendees:(id)a3 selfAttendee:(id)a4
+- (void)_initAttendees:(id)attendees selfAttendee:(id)attendee
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  attendeesCopy = attendees;
+  attendeeCopy = attendee;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(attendeesCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = attendeesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -211,7 +211,7 @@
         v15 = [EKSerializableParticipant alloc];
         v16 = [(EKSerializableParticipant *)v15 initWithParticipant:v14, v19];
         [v8 addObject:v16];
-        if (v14 == v7)
+        if (v14 == attendeeCopy)
         {
           [(EKSerializableEvent *)self setSelfAttendee:v16];
         }
@@ -232,16 +232,16 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initAlarms:(id)a3
+- (void)_initAlarms:(id)alarms
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  alarmsCopy = alarms;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(alarmsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = alarmsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -278,16 +278,16 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initAttachments:(id)a3
+- (void)_initAttachments:(id)attachments
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  attachmentsCopy = attachments;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(attachmentsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = attachmentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -324,11 +324,11 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initRecurrenceRule:(id)a3
+- (void)_initRecurrenceRule:(id)rule
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[EKSerializableRecurrenceRule alloc] initWithRecurrenceRule:v4];
+  ruleCopy = rule;
+  v5 = [[EKSerializableRecurrenceRule alloc] initWithRecurrenceRule:ruleCopy];
 
   v8[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
@@ -337,42 +337,42 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)createEventInEventStore:(id)a3
+- (id)createEventInEventStore:(id)store
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [EKEvent eventWithEventStore:v4];
-  v6 = [(EKSerializableEvent *)self timeZone];
-  [v5 setTimeZone:v6];
+  storeCopy = store;
+  v5 = [EKEvent eventWithEventStore:storeCopy];
+  timeZone = [(EKSerializableEvent *)self timeZone];
+  [v5 setTimeZone:timeZone];
 
-  v7 = [(EKSerializableEvent *)self startDate];
-  [v5 setStartDate:v7];
+  startDate = [(EKSerializableEvent *)self startDate];
+  [v5 setStartDate:startDate];
 
   [v5 setAllDay:{-[EKSerializableEvent isAllDay](self, "isAllDay")}];
-  v8 = [(EKSerializableEvent *)self endDate];
-  [v5 setEndDateUnadjustedForLegacyClients:v8];
+  endDate = [(EKSerializableEvent *)self endDate];
+  [v5 setEndDateUnadjustedForLegacyClients:endDate];
 
-  v9 = [(EKSerializableEvent *)self title];
-  [v5 setTitle:v9];
+  title = [(EKSerializableEvent *)self title];
+  [v5 setTitle:title];
 
-  v10 = [(EKSerializableEvent *)self notes];
-  [v5 setNotes:v10];
+  notes = [(EKSerializableEvent *)self notes];
+  [v5 setNotes:notes];
 
   v11 = [(EKSerializableEvent *)self url];
   [v5 setURL:v11];
 
   [(EKSerializableEvent *)self travelTime];
   [v5 setTravelTime:?];
-  v12 = [(EKSerializableEvent *)self location];
-  [v5 setLocation:v12];
+  location = [(EKSerializableEvent *)self location];
+  [v5 setLocation:location];
 
-  v13 = [(EKSerializableEvent *)self structuredLocation];
-  v14 = [v13 createStructuredLocation];
-  [v5 setStructuredLocation:v14];
+  structuredLocation = [(EKSerializableEvent *)self structuredLocation];
+  createStructuredLocation = [structuredLocation createStructuredLocation];
+  [v5 setStructuredLocation:createStructuredLocation];
 
-  v15 = [(EKSerializableEvent *)self calendarIdentifier];
-  v52 = v4;
-  v16 = [v4 calendarWithIdentifier:v15];
+  calendarIdentifier = [(EKSerializableEvent *)self calendarIdentifier];
+  v52 = storeCopy;
+  v16 = [storeCopy calendarWithIdentifier:calendarIdentifier];
 
   v53 = v16;
   [v5 setCalendar:v16];
@@ -381,9 +381,9 @@
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v17 = self;
-  v18 = [(EKSerializableEvent *)self alarms];
-  v19 = [v18 countByEnumeratingWithState:&v67 objects:v75 count:16];
+  selfCopy = self;
+  alarms = [(EKSerializableEvent *)self alarms];
+  v19 = [alarms countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v19)
   {
     v20 = v19;
@@ -394,7 +394,7 @@
       {
         if (*v68 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(alarms);
         }
 
         v23 = *(*(&v67 + 1) + 8 * i);
@@ -418,7 +418,7 @@
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v67 objects:v75 count:16];
+      v20 = [alarms countByEnumeratingWithState:&v67 objects:v75 count:16];
     }
 
     while (v20);
@@ -428,8 +428,8 @@
   v63 = 0u;
   v64 = 0u;
   v62 = 0u;
-  v27 = [(EKSerializableEvent *)v17 attendees];
-  v28 = [v27 countByEnumeratingWithState:&v62 objects:v72 count:16];
+  attendees = [(EKSerializableEvent *)selfCopy attendees];
+  v28 = [attendees countByEnumeratingWithState:&v62 objects:v72 count:16];
   if (!v28)
   {
     v40 = 0;
@@ -445,7 +445,7 @@
     {
       if (*v63 != v30)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(attendees);
       }
 
       v32 = *(*(&v62 + 1) + 8 * j);
@@ -455,12 +455,12 @@
       if (v33)
       {
         [v5 addAttendee:v33];
-        v35 = [(EKSerializableEvent *)v17 selfAttendee];
+        selfAttendee = [(EKSerializableEvent *)selfCopy selfAttendee];
 
-        if (v32 == v35)
+        if (v32 == selfAttendee)
         {
-          v36 = [v53 ownerIdentityOrganizer];
-          v37 = [v33 isEqualToParticipant:v36];
+          ownerIdentityOrganizer = [v53 ownerIdentityOrganizer];
+          v37 = [v33 isEqualToParticipant:ownerIdentityOrganizer];
 
           if ((v37 & 1) == 0)
           {
@@ -485,7 +485,7 @@
       }
     }
 
-    v29 = [v27 countByEnumeratingWithState:&v62 objects:v72 count:16];
+    v29 = [attendees countByEnumeratingWithState:&v62 objects:v72 count:16];
   }
 
   while (v29);
@@ -495,8 +495,8 @@
   {
     [v5 removeAttendee:v54];
     [v5 addOrganizerAndSelfAttendeeForNewInvitation];
-    v27 = [v5 selfAttendee];
-    [v27 setParticipantStatus:{objc_msgSend(v54, "participantStatus")}];
+    attendees = [v5 selfAttendee];
+    [attendees setParticipantStatus:{objc_msgSend(v54, "participantStatus")}];
 LABEL_29:
     v55 = v40;
 
@@ -509,8 +509,8 @@ LABEL_31:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v41 = [(EKSerializableEvent *)v17 recurrenceRules];
-  v42 = [v41 countByEnumeratingWithState:&v57 objects:v71 count:16];
+  recurrenceRules = [(EKSerializableEvent *)selfCopy recurrenceRules];
+  v42 = [recurrenceRules countByEnumeratingWithState:&v57 objects:v71 count:16];
   if (v42)
   {
     v43 = v42;
@@ -521,7 +521,7 @@ LABEL_31:
       {
         if (*v58 != v44)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(recurrenceRules);
         }
 
         v46 = *(*(&v57 + 1) + 8 * k);
@@ -545,7 +545,7 @@ LABEL_31:
         }
       }
 
-      v43 = [v41 countByEnumeratingWithState:&v57 objects:v71 count:16];
+      v43 = [recurrenceRules countByEnumeratingWithState:&v57 objects:v71 count:16];
     }
 
     while (v43);

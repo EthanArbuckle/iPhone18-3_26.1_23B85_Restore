@@ -1,9 +1,9 @@
 @interface MTROperationalCredentialsClusterCertificateChainResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTROperationalCredentialsClusterCertificateChainResponseParams)init;
-- (MTROperationalCredentialsClusterCertificateChainResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTROperationalCredentialsClusterCertificateChainResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTROperationalCredentialsClusterCertificateChainResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,9 +16,9 @@
   v2 = [(MTROperationalCredentialsClusterCertificateChainResponseParams *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     certificate = v2->_certificate;
-    v2->_certificate = v3;
+    v2->_certificate = data;
 
     timedInvokeTimeoutMs = v2->_timedInvokeTimeoutMs;
     v2->_timedInvokeTimeoutMs = 0;
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterCertificateChainResponseParams);
-  v5 = [(MTROperationalCredentialsClusterCertificateChainResponseParams *)self certificate];
-  [(MTROperationalCredentialsClusterCertificateChainResponseParams *)v4 setCertificate:v5];
+  certificate = [(MTROperationalCredentialsClusterCertificateChainResponseParams *)self certificate];
+  [(MTROperationalCredentialsClusterCertificateChainResponseParams *)v4 setCertificate:certificate];
 
-  v6 = [(MTROperationalCredentialsClusterCertificateChainResponseParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterCertificateChainResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterCertificateChainResponseParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterCertificateChainResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -94,7 +94,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTROperationalCredentialsClusterCertificateChainResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTROperationalCredentialsClusterCertificateChainResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTROperationalCredentialsClusterCertificateChainResponseParams;
@@ -102,7 +102,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTROperationalCredentialsClusterCertificateChainResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTROperationalCredentialsClusterCertificateChainResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -118,9 +118,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:*a3 length:*(a3 + 1)];
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:*struct length:*(struct + 1)];
   [(MTROperationalCredentialsClusterCertificateChainResponseParams *)self setCertificate:v4];
 
   v5 = 0;

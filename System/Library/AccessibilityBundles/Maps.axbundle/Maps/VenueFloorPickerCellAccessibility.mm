@@ -1,5 +1,5 @@
 @interface VenueFloorPickerCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_axVenueFloorViewController;
 - (id)accessibilityLabel;
@@ -8,17 +8,17 @@
 
 @implementation VenueFloorPickerCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"floorName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"floorOrdinal" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"isUserLocation" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"lacksSearchResults" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"VenueFloorViewController" hasInstanceMethod:@"isOpen" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"VenueFloorViewController" hasInstanceMethod:@"venue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKVenueFeatureMarker" hasInstanceMethod:@"buildings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VKVenueBuildingFeatureMarker" hasInstanceMethod:@"floorNames" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"floorName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"floorOrdinal" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"isUserLocation" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"VenueFloorPickerCell" hasInstanceMethod:@"lacksSearchResults" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"VenueFloorViewController" hasInstanceMethod:@"isOpen" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"VenueFloorViewController" hasInstanceMethod:@"venue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKVenueFeatureMarker" hasInstanceMethod:@"buildings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VKVenueBuildingFeatureMarker" hasInstanceMethod:@"floorNames" withFullSignature:{"@", 0}];
 }
 
 - (id)_axVenueFloorViewController
@@ -27,34 +27,34 @@
   v3 = [(VenueFloorPickerCellAccessibility *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 _accessibilityViewController];
+  _accessibilityViewController = [v4 _accessibilityViewController];
 
-  return v5;
+  return _accessibilityViewController;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(VenueFloorPickerCellAccessibility *)self _axVenueFloorViewController];
+  _axVenueFloorViewController = [(VenueFloorPickerCellAccessibility *)self _axVenueFloorViewController];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  if ([v2 safeBoolForKey:@"isOpen"])
+  if ([_axVenueFloorViewController safeBoolForKey:@"isOpen"])
   {
-    v4 = 1;
+    isSelected = 1;
   }
 
   else
   {
-    v4 = [v3 isSelected];
+    isSelected = [v3 isSelected];
   }
 
-  return v4;
+  return isSelected;
 }
 
 - (id)accessibilityLabel
 {
   v32 = *MEMORY[0x29EDCA608];
-  v3 = [(VenueFloorPickerCellAccessibility *)self _axVenueFloorViewController];
-  v4 = [v3 safeValueForKey:@"venue"];
+  _axVenueFloorViewController = [(VenueFloorPickerCellAccessibility *)self _axVenueFloorViewController];
+  v4 = [_axVenueFloorViewController safeValueForKey:@"venue"];
 
   v30 = 0;
   objc_opt_class();
@@ -153,8 +153,8 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = VenueFloorPickerCellAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(VenueFloorPickerCellAccessibility *)&v8 accessibilityTraits];
-  v4 = [(VenueFloorPickerCellAccessibility *)self _axVenueFloorViewController];
-  v5 = [v4 safeBoolForKey:@"isOpen"];
+  _axVenueFloorViewController = [(VenueFloorPickerCellAccessibility *)self _axVenueFloorViewController];
+  v5 = [_axVenueFloorViewController safeBoolForKey:@"isOpen"];
 
   if (v5)
   {

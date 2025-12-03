@@ -1,12 +1,12 @@
 @interface NSDictionary
-- (id)objectForKey:(id)a3 ofClass:(Class)a4;
+- (id)objectForKey:(id)key ofClass:(Class)class;
 @end
 
 @implementation NSDictionary
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4
+- (id)objectForKey:(id)key ofClass:(Class)class
 {
-  v4 = [(NSDictionary *)self objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self objectForKeyedSubscript:key];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;

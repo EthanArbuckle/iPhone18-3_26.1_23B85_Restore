@@ -1,106 +1,106 @@
 @interface ADBinocularDepthFlow
-- (ADBinocularDepthFlow)initWithExecutor:(id)a3;
-- (void)processIfMatch:(id)a3;
-- (void)pushColor:(double)a3 pose:(double)a4 calibration:(double)a5 metadata:(double)a6 timestamp:(uint64_t)a7;
-- (void)pushSecondaryColor:(double)a3 pose:(double)a4 calibration:(double)a5 timestamp:(double)a6;
+- (ADBinocularDepthFlow)initWithExecutor:(id)executor;
+- (void)processIfMatch:(id)match;
+- (void)pushColor:(double)color pose:(double)pose calibration:(double)calibration metadata:(double)metadata timestamp:(uint64_t)timestamp;
+- (void)pushSecondaryColor:(double)color pose:(double)pose calibration:(double)calibration timestamp:(double)timestamp;
 @end
 
 @implementation ADBinocularDepthFlow
 
-- (void)processIfMatch:(id)a3
+- (void)processIfMatch:(id)match
 {
-  v4 = a3;
-  if ([(ADFlow *)self shouldProcessMatch:v4])
+  matchCopy = match;
+  if ([(ADFlow *)self shouldProcessMatch:matchCopy])
   {
     v5 = objc_opt_new();
-    v6 = [v4 matchedObjectsForStream:0];
-    v7 = [v6 firstObject];
+    v6 = [matchCopy matchedObjectsForStream:0];
+    firstObject = [v6 firstObject];
 
-    v8 = [v4 matchedObjectsForStream:1];
-    v9 = [v8 firstObject];
+    v8 = [matchCopy matchedObjectsForStream:1];
+    firstObject2 = [v8 firstObject];
 
-    v23 = v9;
-    v10 = [v7 data];
-    [v5 setColor:v10];
+    v23 = firstObject2;
+    data = [firstObject data];
+    [v5 setColor:data];
 
-    v11 = [v9 data];
-    [v5 setSecondaryColor:v11];
+    data2 = [firstObject2 data];
+    [v5 setSecondaryColor:data2];
 
-    v12 = [(ADFlowFrameOutputPool *)self->_frameOutputPool frameOutput];
-    texture = [v12 depth];
-    v24 = [v12 confidence];
+    frameOutput = [(ADFlowFrameOutputPool *)self->_frameOutputPool frameOutput];
+    texture = [frameOutput depth];
+    confidence = [frameOutput confidence];
     executor = self->_executor;
-    v14 = [v5 color];
-    v15 = [v5 secondaryColor];
-    v16 = [v7 calibration];
-    v17 = [v23 calibration];
-    v18 = [(ADBinocularDepthExecutor *)executor executeWithRefColor:v14 auxColor:v15 refCalib:v16 auxCalib:v17 auxOutputDepth:&texture auxOutputConfidence:&v24];
+    color = [v5 color];
+    secondaryColor = [v5 secondaryColor];
+    calibration = [firstObject calibration];
+    calibration2 = [v23 calibration];
+    v18 = [(ADBinocularDepthExecutor *)executor executeWithRefColor:color auxColor:secondaryColor refCalib:calibration auxCalib:calibration2 auxOutputDepth:&texture auxOutputConfidence:&confidence];
 
     if (v18)
     {
-      v19 = [(ADFlow *)self delegate];
+      delegate = [(ADFlow *)self delegate];
 
-      if (v19)
+      if (delegate)
       {
-        v20 = [(ADFlow *)self delegate];
-        [v7 timestamp];
-        [v20 didFailOnFrame:v5 input:@"failed executing binocularDepth" message:v18 error:?];
+        delegate2 = [(ADFlow *)self delegate];
+        [firstObject timestamp];
+        [delegate2 didFailOnFrame:v5 input:@"failed executing binocularDepth" message:v18 error:?];
       }
     }
 
     else
     {
-      v21 = [(ADFlow *)self delegate];
+      delegate3 = [(ADFlow *)self delegate];
 
-      if (v21)
+      if (delegate3)
       {
-        v22 = [(ADFlow *)self delegate];
-        [v7 timestamp];
-        [v22 didProcessFrame:v5 input:v12 output:?];
+        delegate4 = [(ADFlow *)self delegate];
+        [firstObject timestamp];
+        [delegate4 didProcessFrame:v5 input:frameOutput output:?];
       }
 
       CVPixelBufferRelease(texture);
-      CVPixelBufferRelease(v24);
+      CVPixelBufferRelease(confidence);
     }
   }
 }
 
-- (void)pushSecondaryColor:(double)a3 pose:(double)a4 calibration:(double)a5 timestamp:(double)a6
+- (void)pushSecondaryColor:(double)color pose:(double)pose calibration:(double)calibration timestamp:(double)timestamp
 {
-  v10 = [a1[4] pushData:a8 streamIndex:1 timestamp:a9 pose:a6 calibration:{a2, a3, a4, a5}];
-  [a1 processIfMatch:?];
+  v10 = [self[4] pushData:a8 streamIndex:1 timestamp:a9 pose:timestamp calibration:{a2, color, pose, calibration}];
+  [self processIfMatch:?];
 }
 
-- (void)pushColor:(double)a3 pose:(double)a4 calibration:(double)a5 metadata:(double)a6 timestamp:(uint64_t)a7
+- (void)pushColor:(double)color pose:(double)pose calibration:(double)calibration metadata:(double)metadata timestamp:(uint64_t)timestamp
 {
-  v10 = [a1[4] pushData:a8 streamIndex:0 timestamp:a9 pose:a6 calibration:{a2, a3, a4, a5}];
-  [a1 processIfMatch:?];
+  v10 = [self[4] pushData:a8 streamIndex:0 timestamp:a9 pose:metadata calibration:{a2, color, pose, calibration}];
+  [self processIfMatch:?];
 }
 
-- (ADBinocularDepthFlow)initWithExecutor:(id)a3
+- (ADBinocularDepthFlow)initWithExecutor:(id)executor
 {
-  v5 = a3;
+  executorCopy = executor;
   v19.receiver = self;
   v19.super_class = ADBinocularDepthFlow;
   v6 = [(ADBinocularDepthFlow *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_executor, a3);
+    objc_storeStrong(&v6->_executor, executor);
     v8 = [objc_alloc(MEMORY[0x277CED120]) initWithStreamCount:2 allowedMatchTimeInterval:0.05];
     streamSync = v7->_streamSync;
     v7->_streamSync = v8;
 
     [(ADStreamSync *)v7->_streamSync setStream:0 queueSize:1];
     [(ADStreamSync *)v7->_streamSync setStream:1 queueSize:1];
-    v10 = [(ADBinocularDepthExecutor *)v7->_executor pipeline];
-    v11 = [v10 inferenceDescriptor];
+    pipeline = [(ADBinocularDepthExecutor *)v7->_executor pipeline];
+    inferenceDescriptor = [pipeline inferenceDescriptor];
 
-    v12 = [v11 auxiliaryDisparityOutput];
-    v13 = [v12 imageDescriptor];
-    v14 = [v11 auxiliaryConfidenceOutput];
-    v15 = [v14 imageDescriptor];
-    v16 = [ADFlowFrameOutputPool poolWithDepthDescriptor:v13 confidenceDescriptor:v15];
+    auxiliaryDisparityOutput = [inferenceDescriptor auxiliaryDisparityOutput];
+    imageDescriptor = [auxiliaryDisparityOutput imageDescriptor];
+    auxiliaryConfidenceOutput = [inferenceDescriptor auxiliaryConfidenceOutput];
+    imageDescriptor2 = [auxiliaryConfidenceOutput imageDescriptor];
+    v16 = [ADFlowFrameOutputPool poolWithDepthDescriptor:imageDescriptor confidenceDescriptor:imageDescriptor2];
     frameOutputPool = v7->_frameOutputPool;
     v7->_frameOutputPool = v16;
   }

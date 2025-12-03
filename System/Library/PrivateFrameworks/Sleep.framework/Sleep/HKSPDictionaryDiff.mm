@@ -1,14 +1,14 @@
 @interface HKSPDictionaryDiff
-- (HKSPDictionaryDiff)initWithOriginalDictionary:(id)a3 updatedDictionary:(id)a4 keysToDiff:(id)a5;
+- (HKSPDictionaryDiff)initWithOriginalDictionary:(id)dictionary updatedDictionary:(id)updatedDictionary keysToDiff:(id)diff;
 @end
 
 @implementation HKSPDictionaryDiff
 
-- (HKSPDictionaryDiff)initWithOriginalDictionary:(id)a3 updatedDictionary:(id)a4 keysToDiff:(id)a5
+- (HKSPDictionaryDiff)initWithOriginalDictionary:(id)dictionary updatedDictionary:(id)updatedDictionary keysToDiff:(id)diff
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  updatedDictionaryCopy = updatedDictionary;
+  diffCopy = diff;
   v35.receiver = self;
   v35.super_class = HKSPDictionaryDiff;
   v11 = [(HKSPDictionaryDiff *)&v35 init];
@@ -20,19 +20,19 @@
     v31[1] = 3221225472;
     v31[2] = __78__HKSPDictionaryDiff_initWithOriginalDictionary_updatedDictionary_keysToDiff___block_invoke;
     v31[3] = &unk_279C759F0;
-    v14 = v10;
+    v14 = diffCopy;
     v32 = v14;
-    v15 = v8;
+    v15 = dictionaryCopy;
     v33 = v15;
     v34 = v12;
     v16 = v12;
-    [v9 na_each:v31];
+    [updatedDictionaryCopy na_each:v31];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __78__HKSPDictionaryDiff_initWithOriginalDictionary_updatedDictionary_keysToDiff___block_invoke_2;
     v27 = &unk_279C759F0;
     v28 = v14;
-    v29 = v9;
+    v29 = updatedDictionaryCopy;
     v30 = v13;
     v17 = v13;
     [v15 na_each:&v24];

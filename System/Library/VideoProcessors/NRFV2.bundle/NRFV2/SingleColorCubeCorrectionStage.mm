@@ -1,16 +1,16 @@
 @interface SingleColorCubeCorrectionStage
-+ (int)prewarmShaders:(id)a3;
-- (int)load3DTextureFromData:(const char *)a3 cubeSize:(unsigned int)a4 metal:(id)a5 outTexture:(id *)a6;
-- (int)runOnLuma:(id)a3 andChroma:(id)a4 withMask:(id)a5 outChroma:(id)a6;
++ (int)prewarmShaders:(id)shaders;
+- (int)load3DTextureFromData:(const char *)data cubeSize:(unsigned int)size metal:(id)metal outTexture:(id *)texture;
+- (int)runOnLuma:(id)luma andChroma:(id)chroma withMask:(id)mask outChroma:(id)outChroma;
 @end
 
 @implementation SingleColorCubeCorrectionStage
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v7 = objc_msgSend_sharedInstance(SingleColorCubeCorrectionStageShared, v4, v5, v6);
-  v10 = objc_msgSend_getShaders_(v7, v8, v3, v9);
+  v10 = objc_msgSend_getShaders_(v7, v8, shadersCopy, v9);
 
   if (v10)
   {
@@ -25,9 +25,9 @@
   return v11;
 }
 
-- (int)load3DTextureFromData:(const char *)a3 cubeSize:(unsigned int)a4 metal:(id)a5 outTexture:(id *)a6
+- (int)load3DTextureFromData:(const char *)data cubeSize:(unsigned int)size metal:(id)metal outTexture:(id *)texture
 {
-  v9 = a5;
+  metalCopy = metal;
   v10 = objc_alloc_init(MEMORY[0x29EDBB670]);
   v13 = v10;
   if (!v10)
@@ -39,41 +39,41 @@ LABEL_7:
   }
 
   objc_msgSend_setTextureType_(v10, v11, 7, v12);
-  objc_msgSend_setWidth_(v13, v14, a4, v15);
-  objc_msgSend_setHeight_(v13, v16, a4, v17);
-  objc_msgSend_setDepth_(v13, v18, a4, v19);
+  objc_msgSend_setWidth_(v13, v14, size, v15);
+  objc_msgSend_setHeight_(v13, v16, size, v17);
+  objc_msgSend_setDepth_(v13, v18, size, v19);
   objc_msgSend_setPixelFormat_(v13, v20, 70, v21);
   objc_msgSend_setUsage_(v13, v22, 1, v23);
-  v27 = objc_msgSend_device(v9, v24, v25, v26);
+  v27 = objc_msgSend_device(metalCopy, v24, v25, v26);
   v30 = objc_msgSend_newTextureWithDescriptor_(v27, v28, v13, v29);
-  v31 = *a6;
-  *a6 = v30;
+  v31 = *texture;
+  *texture = v30;
 
-  v33 = *a6;
-  if (!*a6)
+  v33 = *texture;
+  if (!*texture)
   {
     sub_29588B034(v36);
     goto LABEL_7;
   }
 
   memset(v36, 0, 24);
-  v36[3] = a4;
-  v36[4] = a4;
-  v36[5] = a4;
-  objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(v33, v32, v36, 0, 0, a3, 4 * a4, 4 * a4 * a4);
+  v36[3] = size;
+  v36[4] = size;
+  v36[5] = size;
+  objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(v33, v32, v36, 0, 0, data, 4 * size, 4 * size * size);
   v34 = 0;
 LABEL_4:
 
   return v34;
 }
 
-- (int)runOnLuma:(id)a3 andChroma:(id)a4 withMask:(id)a5 outChroma:(id)a6
+- (int)runOnLuma:(id)luma andChroma:(id)chroma withMask:(id)mask outChroma:(id)outChroma
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v16 = a6;
-  if (!v12 || (objc_msgSend_canApplyMaskedCube(self, v13, v14, v15) & 1) != 0)
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  maskCopy = mask;
+  outChromaCopy = outChroma;
+  if (!maskCopy || (objc_msgSend_canApplyMaskedCube(self, v13, v14, v15) & 1) != 0)
   {
     v17 = objc_msgSend_commandQueue(self->_metal, v13, v14, v15);
     v21 = objc_msgSend_commandBuffer(v17, v18, v19, v20);
@@ -85,25 +85,25 @@ LABEL_4:
       {
         v28 = v25;
         v29 = 16;
-        if (!v12)
+        if (!maskCopy)
         {
           v29 = 8;
         }
 
         objc_msgSend_setComputePipelineState_(v25, v26, *(&self->_shaders->super.isa + v29), v27);
         objc_msgSend_setImageblockWidth_height_(v28, v30, 32, 32);
-        objc_msgSend_setTexture_atIndex_(v28, v31, v10, 0);
-        objc_msgSend_setTexture_atIndex_(v28, v32, v11, 1);
-        objc_msgSend_setTexture_atIndex_(v28, v33, v16, 2);
+        objc_msgSend_setTexture_atIndex_(v28, v31, lumaCopy, 0);
+        objc_msgSend_setTexture_atIndex_(v28, v32, chromaCopy, 1);
+        objc_msgSend_setTexture_atIndex_(v28, v33, outChromaCopy, 2);
         objc_msgSend_setTexture_atIndex_(v28, v34, self->_defaultCubeTexture, 4);
-        if (v12)
+        if (maskCopy)
         {
           objc_msgSend_setTexture_atIndex_(v28, v35, self->_alternateCubeTexture, 3);
-          objc_msgSend_setTexture_atIndex_(v28, v38, v12, 5);
+          objc_msgSend_setTexture_atIndex_(v28, v38, maskCopy, 5);
         }
 
-        v53[0] = objc_msgSend_width(v16, v35, v36, v37);
-        v53[1] = objc_msgSend_height(v16, v39, v40, v41);
+        v53[0] = objc_msgSend_width(outChromaCopy, v35, v36, v37);
+        v53[1] = objc_msgSend_height(outChromaCopy, v39, v40, v41);
         v53[2] = 1;
         v51 = vdupq_n_s64(0x10uLL);
         v52 = 1;

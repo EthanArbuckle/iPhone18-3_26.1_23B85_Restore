@@ -1,11 +1,11 @@
 @interface CAMDynamicShutterControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (CGRect)_pauseResumeAccessibilityFrame;
 - (CGRect)_recordingAccessibilityFrame;
 - (CGRect)_takeStillAccessibilityFrame;
-- (id)_accessibilityElementWithViewKey:(id)a3 labelBlock:(id)a4 identifierBlock:(id)a5 traitsBlock:(id)a6 pathBlock:(id)a7 servesAsFirstElement:(BOOL)a8;
-- (id)_accessibilityPathForCenter:(id)a3 forView:(id)a4;
+- (id)_accessibilityElementWithViewKey:(id)key labelBlock:(id)block identifierBlock:(id)identifierBlock traitsBlock:(id)traitsBlock pathBlock:(id)pathBlock servesAsFirstElement:(BOOL)element;
+- (id)_accessibilityPathForCenter:(id)center forView:(id)view;
 - (id)_axElementForCenterButton;
 - (id)_axElementForPauseResumeButton;
 - (id)_axElementForTakePictureButton;
@@ -15,50 +15,50 @@
 - (id)accessibilityCustomActions;
 - (id)accessibilityElements;
 - (int64_t)incrementCounter;
-- (void)_setAccessibilityFrameBlockIfNeeded:(id)a3 frameBlock:(id)a4;
-- (void)_updateOuterAndInnerLayersAnimated:(BOOL)a3;
+- (void)_setAccessibilityFrameBlockIfNeeded:(id)needed frameBlock:(id)block;
+- (void)_updateOuterAndInnerLayersAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 @end
 
 @implementation CAMDynamicShutterControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMViewfinderViewController"];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentDevice" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"isRecording" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shutterButtonModeForCameraMode:isCapturing:" withFullSignature:{"q", "q", "B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_captureController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"dynamicShutterControlGesturesDidBegin:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_setShutterState:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_setDragHandleState:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_setInnerShapeState:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"currentCaptureMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CUCaptureController" hasInstanceMethod:@"_capturingCTMVideoRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_centerOuterView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_centerOuterImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_centerTimelapseOuterView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_lockButtonOuterView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_pauseResumeButtonOuterView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_beginCapturingBurst" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_stopCapturingBurst" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"incrementCounter" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CUCaptureController" hasInstanceMethod:@"isCapturingBurst" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_liquidRenderingMethod" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_innerShapeWidthSpring" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMSpring" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_shutterButtonCenter" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_updateOuterAndInnerLayersAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMViewfinderViewController"];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentDevice" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"isRecording" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_shutterButtonModeForCameraMode:isCapturing:" withFullSignature:{"q", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_captureController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"dynamicShutterControlGesturesDidBegin:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_setShutterState:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_setDragHandleState:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_setInnerShapeState:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"currentCaptureMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CUCaptureController" hasInstanceMethod:@"_capturingCTMVideoRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_centerOuterView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_centerOuterImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_centerTimelapseOuterView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_lockButtonOuterView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_pauseResumeButtonOuterView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_beginCapturingBurst" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_stopCapturingBurst" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"incrementCounter" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CUCaptureController" hasInstanceMethod:@"isCapturingBurst" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_liquidRenderingMethod" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_innerShapeWidthSpring" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMSpring" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_shutterButtonCenter" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CAMDynamicShutterControl" hasInstanceMethod:@"_updateOuterAndInnerLayersAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (id)_axVC
 {
   v2 = [(CAMDynamicShutterControlAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_8 startWithSelf:1];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __46__CAMDynamicShutterControlAccessibility__axVC__block_invoke(uint64_t a1, void *a2)
@@ -80,11 +80,11 @@ uint64_t __46__CAMDynamicShutterControlAccessibility__axVC__block_invoke(uint64_
   [(CAMDynamicShutterControlAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_updateOuterAndInnerLayersAnimated:(BOOL)a3
+- (void)_updateOuterAndInnerLayersAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = CAMDynamicShutterControlAccessibility;
-  [(CAMDynamicShutterControlAccessibility *)&v4 _updateOuterAndInnerLayersAnimated:a3];
+  [(CAMDynamicShutterControlAccessibility *)&v4 _updateOuterAndInnerLayersAnimated:animated];
   [(CAMDynamicShutterControlAccessibility *)self _axSetDynamicShutterControlAccessibilityElements:0];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   [(CAMDynamicShutterControlAccessibility *)self _accessibilityLoadAccessibilityInformation];
@@ -92,25 +92,25 @@ uint64_t __46__CAMDynamicShutterControlAccessibility__axVC__block_invoke(uint64_
 
 - (id)accessibilityElements
 {
-  v3 = [(CAMDynamicShutterControlAccessibility *)self _axDynamicShutterControlAccessibilityElements];
-  v4 = v3;
-  if (v3)
+  _axDynamicShutterControlAccessibilityElements = [(CAMDynamicShutterControlAccessibility *)self _axDynamicShutterControlAccessibilityElements];
+  v4 = _axDynamicShutterControlAccessibilityElements;
+  if (_axDynamicShutterControlAccessibilityElements)
   {
-    v5 = v3;
+    array = _axDynamicShutterControlAccessibilityElements;
   }
 
   else
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
-    v6 = [(CAMDynamicShutterControlAccessibility *)self _axElementForCenterButton];
-    [v5 axSafelyAddObject:v6];
+    array = [MEMORY[0x29EDB8DE8] array];
+    _axElementForCenterButton = [(CAMDynamicShutterControlAccessibility *)self _axElementForCenterButton];
+    [array axSafelyAddObject:_axElementForCenterButton];
 
-    v7 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-    v8 = [v7 safeValueForKey:@"_currentMode"];
-    v9 = [v8 integerValue];
+    _axVC = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+    v8 = [_axVC safeValueForKey:@"_currentMode"];
+    integerValue = [v8 integerValue];
 
-    v10 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-    LOBYTE(v7) = [v10 safeBoolForKey:@"isRecording"];
+    _axVC2 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+    LOBYTE(_axVC) = [_axVC2 safeBoolForKey:@"isRecording"];
 
     v23 = 0;
     v24 = &v23;
@@ -120,26 +120,26 @@ uint64_t __46__CAMDynamicShutterControlAccessibility__axVC__block_invoke(uint64_
     v16 = 3221225472;
     v17 = __62__CAMDynamicShutterControlAccessibility_accessibilityElements__block_invoke;
     v18 = &unk_29F2AD130;
-    v19 = self;
+    selfCopy = self;
     v20 = &v23;
-    v21 = v9;
-    LOBYTE(v22) = v7;
+    v21 = integerValue;
+    LOBYTE(v22) = _axVC;
     AXPerformSafeBlock();
     v11 = v24[3];
     _Block_object_dispose(&v23, 8);
-    if (((v11 == 6) & v7) == 1)
+    if (((v11 == 6) & _axVC) == 1)
     {
       v12 = [(CAMDynamicShutterControlAccessibility *)self _axElementForTakePictureButton:v15];
-      [v5 axSafelyAddObject:v12];
+      [array axSafelyAddObject:v12];
 
-      v13 = [(CAMDynamicShutterControlAccessibility *)self _axElementForPauseResumeButton];
-      [v5 axSafelyAddObject:v13];
+      _axElementForPauseResumeButton = [(CAMDynamicShutterControlAccessibility *)self _axElementForPauseResumeButton];
+      [array axSafelyAddObject:_axElementForPauseResumeButton];
     }
 
-    [(CAMDynamicShutterControlAccessibility *)self _axSetDynamicShutterControlAccessibilityElements:v5, v15, v16, v17, v18, v19, v20, v21, v22];
+    [(CAMDynamicShutterControlAccessibility *)self _axSetDynamicShutterControlAccessibilityElements:array, v15, v16, v17, v18, selfCopy, v20, v21, v22];
   }
 
-  return v5;
+  return array;
 }
 
 void __62__CAMDynamicShutterControlAccessibility_accessibilityElements__block_invoke(uint64_t a1)
@@ -148,17 +148,17 @@ void __62__CAMDynamicShutterControlAccessibility_accessibilityElements__block_in
   *(*(*(a1 + 40) + 8) + 24) = [v2 _shutterButtonModeForCameraMode:*(a1 + 48) isCapturing:*(a1 + 56)];
 }
 
-- (id)_accessibilityElementWithViewKey:(id)a3 labelBlock:(id)a4 identifierBlock:(id)a5 traitsBlock:(id)a6 pathBlock:(id)a7 servesAsFirstElement:(BOOL)a8
+- (id)_accessibilityElementWithViewKey:(id)key labelBlock:(id)block identifierBlock:(id)identifierBlock traitsBlock:(id)traitsBlock pathBlock:(id)pathBlock servesAsFirstElement:(BOOL)element
 {
-  v8 = a8;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(CAMDynamicShutterControlAccessibility *)self safeUIViewForKey:a3];
+  elementCopy = element;
+  blockCopy = block;
+  identifierBlockCopy = identifierBlock;
+  traitsBlockCopy = traitsBlock;
+  pathBlockCopy = pathBlock;
+  v18 = [(CAMDynamicShutterControlAccessibility *)self safeUIViewForKey:key];
   if (v18)
   {
-    if (!v8)
+    if (!elementCopy)
     {
       goto LABEL_4;
     }
@@ -167,7 +167,7 @@ void __62__CAMDynamicShutterControlAccessibility_accessibilityElements__block_in
   }
 
   v18 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
-  if (v8)
+  if (elementCopy)
   {
 LABEL_3:
     [v18 _setAccessibilityServesAsFirstElement:1];
@@ -178,59 +178,59 @@ LABEL_4:
   v33[1] = 3221225472;
   v33[2] = __144__CAMDynamicShutterControlAccessibility__accessibilityElementWithViewKey_labelBlock_identifierBlock_traitsBlock_pathBlock_servesAsFirstElement___block_invoke;
   v33[3] = &unk_29F2AD158;
-  v34 = v14;
-  v19 = v14;
+  v34 = blockCopy;
+  v19 = blockCopy;
   [v18 setAccessibilityLabelBlock:v33];
   v31[0] = MEMORY[0x29EDCA5F8];
   v31[1] = 3221225472;
   v31[2] = __144__CAMDynamicShutterControlAccessibility__accessibilityElementWithViewKey_labelBlock_identifierBlock_traitsBlock_pathBlock_servesAsFirstElement___block_invoke_2;
   v31[3] = &unk_29F2AD158;
-  v32 = v15;
-  v20 = v15;
+  v32 = identifierBlockCopy;
+  v20 = identifierBlockCopy;
   [v18 setAccessibilityIdentifierBlock:v31];
   v29[0] = MEMORY[0x29EDCA5F8];
   v29[1] = 3221225472;
   v29[2] = __144__CAMDynamicShutterControlAccessibility__accessibilityElementWithViewKey_labelBlock_identifierBlock_traitsBlock_pathBlock_servesAsFirstElement___block_invoke_3;
   v29[3] = &unk_29F2AD180;
-  v30 = v16;
-  v21 = v16;
+  v30 = traitsBlockCopy;
+  v21 = traitsBlockCopy;
   [v18 setAccessibilityTraitsBlock:v29];
   v24 = MEMORY[0x29EDCA5F8];
   v25 = 3221225472;
   v26 = __144__CAMDynamicShutterControlAccessibility__accessibilityElementWithViewKey_labelBlock_identifierBlock_traitsBlock_pathBlock_servesAsFirstElement___block_invoke_4;
   v27 = &unk_29F2AD1A8;
-  v28 = v17;
-  v22 = v17;
+  v28 = pathBlockCopy;
+  v22 = pathBlockCopy;
   [v18 setAccessibilityPathBlock:&v24];
   [v18 setIsAccessibilityElement:{1, v24, v25, v26, v27}];
 
   return v18;
 }
 
-- (void)_setAccessibilityFrameBlockIfNeeded:(id)a3 frameBlock:(id)a4
+- (void)_setAccessibilityFrameBlockIfNeeded:(id)needed frameBlock:(id)block
 {
-  v7 = a3;
-  v6 = a4;
+  neededCopy = needed;
+  blockCopy = block;
   if ([(CAMDynamicShutterControlAccessibility *)self safeIntegerForKey:@"_liquidRenderingMethod"]== 2)
   {
-    [v7 _setAccessibilityFrameBlock:v6];
+    [neededCopy _setAccessibilityFrameBlock:blockCopy];
   }
 }
 
 - (id)_axElementForCenterButton
 {
   objc_initWeak(&location, self);
-  v3 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  v4 = [v3 safeValueForKey:@"_currentMode"];
-  v5 = [v4 integerValue];
+  _axVC = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  v4 = [_axVC safeValueForKey:@"_currentMode"];
+  integerValue = [v4 integerValue];
 
   v6 = @"_centerOuterView";
-  if (v5 == 5)
+  if (integerValue == 5)
   {
     v6 = @"_centerTimelapseOuterView";
   }
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v7 = @"_centerOuterImageView";
   }
@@ -440,12 +440,12 @@ double __71__CAMDynamicShutterControlAccessibility__axElementForPauseResumeButto
 
 - (id)_recordingAccessibilityLabel
 {
-  v3 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  v4 = [v3 safeValueForKey:@"_currentMode"];
-  v5 = [v4 integerValue];
+  _axVC = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  v4 = [_axVC safeValueForKey:@"_currentMode"];
+  integerValue = [v4 integerValue];
 
-  v6 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  LOBYTE(v4) = [v6 safeBoolForKey:@"isRecording"];
+  _axVC2 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  LOBYTE(v4) = [_axVC2 safeBoolForKey:@"isRecording"];
 
   v17 = 0;
   v18 = &v17;
@@ -462,7 +462,7 @@ double __71__CAMDynamicShutterControlAccessibility__axElementForPauseResumeButto
     v9 = off_29F2AD2D8[v8];
   }
 
-  else if (v5 || (-[CAMDynamicShutterControlAccessibility _axVC](self, "_axVC", v15, 3221225472, __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__block_invoke, &unk_29F2AD130, self, &v17, 0, v16), v10 = objc_claimAutoreleasedReturnValue(), [v10 safeValueForKey:@"_captureController"], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "safeValueForKey:", @"_capturingCTMVideoRequest"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, !v12))
+  else if (integerValue || (-[CAMDynamicShutterControlAccessibility _axVC](self, "_axVC", v15, 3221225472, __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__block_invoke, &unk_29F2AD130, self, &v17, 0, v16), v10 = objc_claimAutoreleasedReturnValue(), [v10 safeValueForKey:@"_captureController"], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "safeValueForKey:", @"_capturingCTMVideoRequest"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, !v12))
   {
     v9 = @"camera.photo.button.text";
   }
@@ -485,53 +485,53 @@ void __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__b
 
 - (id)_recordingAccessibilityIdentifier
 {
-  v3 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  v4 = [v3 safeValueForKey:@"_currentMode"];
-  v5 = [v4 integerValue];
+  _axVC = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  v4 = [_axVC safeValueForKey:@"_currentMode"];
+  integerValue = [v4 integerValue];
 
-  if (v5 >= 0xA)
+  if (integerValue >= 0xA)
   {
     v8.receiver = self;
     v8.super_class = CAMDynamicShutterControlAccessibility;
-    v6 = [(CAMDynamicShutterControlAccessibility *)&v8 accessibilityIdentifier];
+    accessibilityIdentifier = [(CAMDynamicShutterControlAccessibility *)&v8 accessibilityIdentifier];
   }
 
   else
   {
-    v6 = off_29F2AD318[v5];
+    accessibilityIdentifier = off_29F2AD318[integerValue];
   }
 
-  return v6;
+  return accessibilityIdentifier;
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   [(CAMDynamicShutterControlAccessibility *)self _axSetDynamicShutterControlAccessibilityElements:0];
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = CAMDynamicShutterControlAccessibility;
-  LOBYTE(v2) = [(CAMDynamicShutterControlAccessibility *)&v4 accessibilityActivate];
+  LOBYTE(selfCopy) = [(CAMDynamicShutterControlAccessibility *)&v4 accessibilityActivate];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-  return v2;
+  return selfCopy;
 }
 
-- (id)_accessibilityPathForCenter:(id)a3 forView:(id)a4
+- (id)_accessibilityPathForCenter:(id)center forView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  viewCopy = view;
   if ([(CAMDynamicShutterControlAccessibility *)self safeIntegerForKey:@"_liquidRenderingMethod"]== 2)
   {
     v8 = [(CAMDynamicShutterControlAccessibility *)self safeValueForKey:@"_innerShapeWidthSpring"];
     [v8 safeDoubleForKey:@"value"];
 
-    [(CAMDynamicShutterControlAccessibility *)self safeCGPointForKey:v6];
+    [(CAMDynamicShutterControlAccessibility *)self safeCGPointForKey:centerCopy];
     v9 = [MEMORY[0x29EDC7948] bezierPathWithArcCenter:1 radius:? startAngle:? endAngle:? clockwise:?];
     UIAccessibilityConvertPathToScreenCoordinates(v9, self);
   }
 
   else
   {
-    v9 = [(CAMDynamicShutterControlAccessibility *)self safeUIViewForKey:v7];
+    v9 = [(CAMDynamicShutterControlAccessibility *)self safeUIViewForKey:viewCopy];
     [(UIBezierPath *)v9 accessibilityFrame];
     [MEMORY[0x29EDC7948] bezierPathWithRoundedRect:? cornerRadius:?];
   }
@@ -542,8 +542,8 @@ void __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__b
 
 - (CGRect)_recordingAccessibilityFrame
 {
-  v2 = [(CAMDynamicShutterControlAccessibility *)self _recordingAccessibilityPath];
-  [v2 bounds];
+  _recordingAccessibilityPath = [(CAMDynamicShutterControlAccessibility *)self _recordingAccessibilityPath];
+  [_recordingAccessibilityPath bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -562,8 +562,8 @@ void __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__b
 
 - (CGRect)_takeStillAccessibilityFrame
 {
-  v2 = [(CAMDynamicShutterControlAccessibility *)self _takeStillAccessibilityPath];
-  [v2 bounds];
+  _takeStillAccessibilityPath = [(CAMDynamicShutterControlAccessibility *)self _takeStillAccessibilityPath];
+  [_takeStillAccessibilityPath bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -582,8 +582,8 @@ void __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__b
 
 - (CGRect)_pauseResumeAccessibilityFrame
 {
-  v2 = [(CAMDynamicShutterControlAccessibility *)self _pauseResumeAccessibilityPath];
-  [v2 bounds];
+  _pauseResumeAccessibilityPath = [(CAMDynamicShutterControlAccessibility *)self _pauseResumeAccessibilityPath];
+  [_pauseResumeAccessibilityPath bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -621,8 +621,8 @@ void __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__b
   objc_copyWeak(&v36, location);
   v8 = [v6 initWithName:v7 actionHandler:v35];
 
-  v9 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  v10 = [v9 safeIntegerForKey:@"currentCaptureMode"];
+  _axVC = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  v10 = [_axVC safeIntegerForKey:@"currentCaptureMode"];
 
   v11 = (v10 & 0xFFFFFFFFFFFFFFFBLL) == 0 && [(CAMDynamicShutterControlAccessibility *)self safeIntegerForKey:@"_shutterState"]!= 3;
   v12 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -632,23 +632,23 @@ void __69__CAMDynamicShutterControlAccessibility__recordingAccessibilityLabel__b
   v31 = __67__CAMDynamicShutterControlAccessibility_accessibilityCustomActions__block_invoke_5;
   v32 = &unk_29F2AD2B8;
   objc_copyWeak(&v34, location);
-  v33 = self;
+  selfCopy = self;
   v14 = [v12 initWithName:v13 actionHandler:&v29];
 
-  v15 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  v16 = [v15 safeValueForKey:@"_captureController"];
+  _axVC2 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  v16 = [_axVC2 safeValueForKey:@"_captureController"];
   LODWORD(v13) = [v16 safeBoolForKey:@"isCapturingBurst"];
 
-  v17 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  v18 = [v17 safeValueForKey:@"_currentDevice"];
-  v19 = [v18 integerValue];
+  _axVC3 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  v18 = [_axVC3 safeValueForKey:@"_currentDevice"];
+  integerValue = [v18 integerValue];
 
-  v20 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
-  v21 = [v20 safeValueForKey:@"_currentMode"];
-  v22 = [v21 integerValue];
+  _axVC4 = [(CAMDynamicShutterControlAccessibility *)self _axVC];
+  v21 = [_axVC4 safeValueForKey:@"_currentMode"];
+  integerValue2 = [v21 integerValue];
 
-  v23 = [MEMORY[0x29EDC0B20] capabilities];
-  v24 = [v23 isBurstSupportedForMode:v22 device:v19];
+  capabilities = [MEMORY[0x29EDC0B20] capabilities];
+  v24 = [capabilities isBurstSupportedForMode:integerValue2 device:integerValue];
 
   if (v13)
   {
@@ -754,13 +754,13 @@ void __67__CAMDynamicShutterControlAccessibility_accessibilityCustomActions__blo
 {
   v7.receiver = self;
   v7.super_class = CAMDynamicShutterControlAccessibility;
-  v2 = [(CAMDynamicShutterControlAccessibility *)&v7 incrementCounter];
+  incrementCounter = [(CAMDynamicShutterControlAccessibility *)&v7 incrementCounter];
   v3 = MEMORY[0x29EDBA0F8];
   v4 = accessibilityCameraUILocalizedString(@"camera.photo.burst.count");
-  v5 = [v3 localizedStringWithFormat:v4, v2];
+  v5 = [v3 localizedStringWithFormat:v4, incrementCounter];
 
   UIAccessibilitySpeakIfNotSpeaking();
-  return v2;
+  return incrementCounter;
 }
 
 @end

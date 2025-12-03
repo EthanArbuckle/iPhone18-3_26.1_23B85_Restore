@@ -1,27 +1,27 @@
 @interface PKPassUpgradeExpressAutomaticSelectionCriteriaRequest
-- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithCoder:(id)a3;
-- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithDictionary:(id)a3;
-- (void)_dictionaryRepresentationInto:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithCoder:(id)coder;
+- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithDictionary:(id)dictionary;
+- (void)_dictionaryRepresentationInto:(id)into;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpgradeExpressAutomaticSelectionCriteriaRequest
 
-- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithDictionary:(id)a3
+- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKPassUpgradeExpressAutomaticSelectionCriteriaRequest;
-  v5 = [(PKPassUpgradeRequest *)&v17 initWithDictionary:v4];
+  v5 = [(PKPassUpgradeRequest *)&v17 initWithDictionary:dictionaryCopy];
   p_isa = &v5->super.super.isa;
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v7 = [(PKPassUpgradeRequest *)v5 secureElementIdentifier];
+  secureElementIdentifier = [(PKPassUpgradeRequest *)v5 secureElementIdentifier];
 
-  if (!v7)
+  if (!secureElementIdentifier)
   {
     v13 = PKLogFacilityTypeGetObject(0x27uLL);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -36,8 +36,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [p_isa paymentApplicationIdentifiers];
-  v9 = [v8 count];
+  paymentApplicationIdentifiers = [p_isa paymentApplicationIdentifiers];
+  v9 = [paymentApplicationIdentifiers count];
 
   if (!v9)
   {
@@ -52,7 +52,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v10 = [v4 PKArrayContaining:objc_opt_class() forKey:@"criteriaType"];
+  v10 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"criteriaType"];
   v11 = p_isa[6];
   p_isa[6] = v10;
 
@@ -79,30 +79,30 @@ LABEL_14:
   return v12;
 }
 
-- (void)_dictionaryRepresentationInto:(id)a3
+- (void)_dictionaryRepresentationInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   v5.receiver = self;
   v5.super_class = PKPassUpgradeExpressAutomaticSelectionCriteriaRequest;
-  [(PKPassUpgradeRequest *)&v5 _dictionaryRepresentationInto:v4];
+  [(PKPassUpgradeRequest *)&v5 _dictionaryRepresentationInto:intoCopy];
   if ([(NSArray *)self->_technologyTypes count])
   {
-    [v4 setObject:self->_technologyTypes forKeyedSubscript:@"criteriaType"];
+    [intoCopy setObject:self->_technologyTypes forKeyedSubscript:@"criteriaType"];
   }
 }
 
-- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithCoder:(id)a3
+- (PKPassUpgradeExpressAutomaticSelectionCriteriaRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKPassUpgradeExpressAutomaticSelectionCriteriaRequest;
-  v5 = [(PKPassUpgradeRequest *)&v12 initWithCoder:v4];
+  v5 = [(PKPassUpgradeRequest *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"criteriaType"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"criteriaType"];
     technologyTypes = v5->_technologyTypes;
     v5->_technologyTypes = v9;
   }
@@ -110,13 +110,13 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassUpgradeExpressAutomaticSelectionCriteriaRequest;
-  v4 = a3;
-  [(PKPassUpgradeRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_technologyTypes forKey:{@"criteriaType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPassUpgradeRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_technologyTypes forKey:{@"criteriaType", v5.receiver, v5.super_class}];
 }
 
 @end

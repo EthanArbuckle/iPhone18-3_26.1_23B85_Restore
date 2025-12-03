@@ -1,24 +1,24 @@
 @interface PKWebServiceProvisioningCardReaderNetworkConfiguration
-- (PKWebServiceProvisioningCardReaderNetworkConfiguration)initWithDictionary:(id)a3;
+- (PKWebServiceProvisioningCardReaderNetworkConfiguration)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PKWebServiceProvisioningCardReaderNetworkConfiguration
 
-- (PKWebServiceProvisioningCardReaderNetworkConfiguration)initWithDictionary:(id)a3
+- (PKWebServiceProvisioningCardReaderNetworkConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v12.receiver = self;
     v12.super_class = PKWebServiceProvisioningCardReaderNetworkConfiguration;
     v5 = [(PKWebServiceProvisioningCardReaderNetworkConfiguration *)&v12 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"network"];
+      v6 = [dictionaryCopy objectForKey:@"network"];
       v5->_network = [v6 integerValue];
 
-      v5->_blocked = [v4 PKBoolForKey:@"blocked"];
-      v7 = [v4 PKDictionaryForKey:@"versionRange"];
+      v5->_blocked = [dictionaryCopy PKBoolForKey:@"blocked"];
+      v7 = [dictionaryCopy PKDictionaryForKey:@"versionRange"];
       if (v7)
       {
         v8 = [[PKOSVersionRequirementRange alloc] initWithDictionary:v7];
@@ -28,15 +28,15 @@
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

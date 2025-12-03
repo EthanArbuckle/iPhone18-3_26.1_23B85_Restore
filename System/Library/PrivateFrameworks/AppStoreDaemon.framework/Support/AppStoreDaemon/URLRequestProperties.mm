@@ -1,6 +1,6 @@
 @interface URLRequestProperties
 - (URLRequestProperties)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation URLRequestProperties
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = 0;
   v10 = &v9;
@@ -39,7 +39,7 @@
   block[3] = &unk_100522A30;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = zone;
   dispatch_sync(dispatchQueue, block);
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);

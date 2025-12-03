@@ -1,5 +1,5 @@
 @interface AMSBiometricsSecurityService
-+ (id)isAvailableForAccount:(id)a3;
++ (id)isAvailableForAccount:(id)account;
 + (id)isIdentityMapValid;
 + (id)saveIdentityMap;
 + (id)verifyDevicePasscode;
@@ -7,9 +7,9 @@
 
 @implementation AMSBiometricsSecurityService
 
-+ (id)isAvailableForAccount:(id)a3
++ (id)isAvailableForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -21,7 +21,7 @@
   v11[1] = 3221225472;
   v11[2] = __54__AMSBiometricsSecurityService_isAvailableForAccount___block_invoke;
   v11[3] = &unk_1E73B5258;
-  v6 = v4;
+  v6 = accountCopy;
   v12 = v6;
   v13 = &v14;
   v7 = [v5 thenWithBlock:v11];
@@ -29,13 +29,13 @@
   v10[1] = 3221225472;
   v10[2] = __54__AMSBiometricsSecurityService_isAvailableForAccount___block_invoke_3;
   v10[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v10[4] = a1;
+  v10[4] = self;
   [v7 addErrorBlock:v10];
-  v8 = [v7 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v7 binaryPromiseAdapter];
 
   _Block_object_dispose(&v14, 8);
 
-  return v8;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__54__AMSBiometricsSecurityService_isAvailableForAccount___block_invoke(uint64_t a1, void *a2)
@@ -119,13 +119,13 @@ void __54__AMSBiometricsSecurityService_isAvailableForAccount___block_invoke_3(u
   v7[2] = __50__AMSBiometricsSecurityService_isIdentityMapValid__block_invoke;
   v7[3] = &unk_1E73B52C8;
   v7[4] = &v8;
-  v7[5] = a1;
+  v7[5] = self;
   v4 = [v3 thenWithBlock:v7];
-  v5 = [v4 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v4 binaryPromiseAdapter];
 
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__50__AMSBiometricsSecurityService_isIdentityMapValid__block_invoke(uint64_t a1, void *a2)
@@ -204,11 +204,11 @@ void __50__AMSBiometricsSecurityService_isIdentityMapValid__block_invoke_2(uint6
   v6[3] = &unk_1E73B5198;
   v6[4] = &v7;
   v3 = [v2 thenWithBlock:v6];
-  v4 = [v3 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v3 binaryPromiseAdapter];
 
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__47__AMSBiometricsSecurityService_saveIdentityMap__block_invoke(uint64_t a1, void *a2)
@@ -261,11 +261,11 @@ void __47__AMSBiometricsSecurityService_saveIdentityMap__block_invoke_2(uint64_t
   v6[3] = &unk_1E73B5198;
   v6[4] = &v7;
   v3 = [v2 thenWithBlock:v6];
-  v4 = [v3 binaryPromiseAdapter];
+  binaryPromiseAdapter = [v3 binaryPromiseAdapter];
 
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return binaryPromiseAdapter;
 }
 
 AMSMutablePromise *__61__AMSBiometricsSecurityService_Project__verifyDevicePasscode__block_invoke(uint64_t a1, void *a2)

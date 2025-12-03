@@ -1,33 +1,33 @@
 @interface CKDPRecordOneTimeStableUrl
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addParticipantId:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParticipantId:(id)id;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordOneTimeStableUrl
 
-- (void)addParticipantId:(id)a3
+- (void)addParticipantId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   participantIds = self->_participantIds;
-  v8 = v4;
+  v8 = idCopy;
   if (!participantIds)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_participantIds;
     self->_participantIds = v6;
 
-    v4 = v8;
+    idCopy = v8;
     participantIds = self->_participantIds;
   }
 
-  objc_msgSend_addObject_(participantIds, v4, v4);
+  objc_msgSend_addObject_(participantIds, idCopy, idCopy);
 }
 
 - (id)description
@@ -79,10 +79,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_shortTokenHash)
   {
     PBDataWriterWriteDataField();
@@ -139,30 +139,30 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   shortTokenHash = self->_shortTokenHash;
   if (shortTokenHash)
   {
-    objc_msgSend_setShortTokenHash_(v18, v4, shortTokenHash);
+    objc_msgSend_setShortTokenHash_(toCopy, v4, shortTokenHash);
   }
 
   protectedFullToken = self->_protectedFullToken;
   if (protectedFullToken)
   {
-    objc_msgSend_setProtectedFullToken_(v18, v4, protectedFullToken);
+    objc_msgSend_setProtectedFullToken_(toCopy, v4, protectedFullToken);
   }
 
   encryptedFullTokenInfo = self->_encryptedFullTokenInfo;
   if (encryptedFullTokenInfo)
   {
-    objc_msgSend_setEncryptedFullTokenInfo_(v18, v4, encryptedFullTokenInfo);
+    objc_msgSend_setEncryptedFullTokenInfo_(toCopy, v4, encryptedFullTokenInfo);
   }
 
   if (objc_msgSend_participantIdsCount(self, v4, encryptedFullTokenInfo))
   {
-    objc_msgSend_clearParticipantIds(v18, v8, v9);
+    objc_msgSend_clearParticipantIds(toCopy, v8, v9);
     v12 = objc_msgSend_participantIdsCount(self, v10, v11);
     if (v12)
     {
@@ -170,33 +170,33 @@
       for (i = 0; i != v14; ++i)
       {
         v16 = objc_msgSend_participantIdAtIndex_(self, v13, i);
-        objc_msgSend_addParticipantId_(v18, v17, v16);
+        objc_msgSend_addParticipantId_(toCopy, v17, v16);
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v18 + 1) = *&self->_createdTime;
-    *(v18 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_createdTime;
+    *(toCopy + 48) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_shortTokenHash, v11, zone);
   v13 = *(v10 + 40);
   *(v10 + 40) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_protectedFullToken, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_protectedFullToken, v14, zone);
   v16 = *(v10 + 32);
   *(v10 + 32) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_encryptedFullTokenInfo, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_encryptedFullTokenInfo, v17, zone);
   v19 = *(v10 + 16);
   *(v10 + 16) = v18;
 
@@ -220,7 +220,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, a3, v31);
+        v27 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v26), v23, zone, v31);
         objc_msgSend_addParticipantId_(v10, v28, v27);
 
         ++v26;
@@ -243,17 +243,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_14;
   }
 
   shortTokenHash = self->_shortTokenHash;
-  v9 = v4[5];
+  v9 = equalCopy[5];
   if (shortTokenHash | v9)
   {
     if (!objc_msgSend_isEqual_(shortTokenHash, v7, v9))
@@ -263,7 +263,7 @@
   }
 
   protectedFullToken = self->_protectedFullToken;
-  v11 = v4[4];
+  v11 = equalCopy[4];
   if (protectedFullToken | v11)
   {
     if (!objc_msgSend_isEqual_(protectedFullToken, v7, v11))
@@ -273,7 +273,7 @@
   }
 
   encryptedFullTokenInfo = self->_encryptedFullTokenInfo;
-  v13 = v4[2];
+  v13 = equalCopy[2];
   if (encryptedFullTokenInfo | v13)
   {
     if (!objc_msgSend_isEqual_(encryptedFullTokenInfo, v7, v13))
@@ -283,7 +283,7 @@
   }
 
   participantIds = self->_participantIds;
-  v15 = v4[3];
+  v15 = equalCopy[3];
   if (participantIds | v15)
   {
     if (!objc_msgSend_isEqual_(participantIds, v7, v15))
@@ -292,10 +292,10 @@
     }
   }
 
-  v16 = (v4[6] & 1) == 0;
+  v16 = (equalCopy[6] & 1) == 0;
   if (*&self->_has)
   {
-    if ((v4[6] & 1) != 0 && self->_createdTime == *(v4 + 1))
+    if ((equalCopy[6] & 1) != 0 && self->_createdTime == *(equalCopy + 1))
     {
       v16 = 1;
       goto LABEL_15;
@@ -352,23 +352,23 @@ LABEL_15:
   return v7 ^ v4 ^ v10 ^ v13 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 5);
+  fromCopy = from;
+  v6 = *(fromCopy + 5);
   if (v6)
   {
     objc_msgSend_setShortTokenHash_(self, v4, v6);
   }
 
-  v7 = *(v5 + 4);
+  v7 = *(fromCopy + 4);
   if (v7)
   {
     objc_msgSend_setProtectedFullToken_(self, v4, v7);
   }
 
-  v8 = *(v5 + 2);
+  v8 = *(fromCopy + 2);
   if (v8)
   {
     objc_msgSend_setEncryptedFullTokenInfo_(self, v4, v8);
@@ -378,7 +378,7 @@ LABEL_15:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = *(v5 + 3);
+  v9 = *(fromCopy + 3);
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v17, v21, 16);
   if (v11)
   {
@@ -402,9 +402,9 @@ LABEL_15:
     while (v13);
   }
 
-  if (*(v5 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_createdTime = *(v5 + 1);
+    self->_createdTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

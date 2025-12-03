@@ -1,12 +1,12 @@
 @interface ActionBarDirectionButton
 - (CGSize)intrinsicContentSize;
-- (_TtC10MapsDesign24ActionBarDirectionButton)initWithCoder:(id)a3;
-- (_TtC10MapsDesign24ActionBarDirectionButton)initWithFrame:(CGRect)a3;
+- (_TtC10MapsDesign24ActionBarDirectionButton)initWithCoder:(id)coder;
+- (_TtC10MapsDesign24ActionBarDirectionButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ActionBarDirectionButton
 
-- (_TtC10MapsDesign24ActionBarDirectionButton)initWithCoder:(id)a3
+- (_TtC10MapsDesign24ActionBarDirectionButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10MapsDesign24ActionBarDirectionButton_symbolImageView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D755E8]) init];
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (_TtC10MapsDesign24ActionBarDirectionButton)initWithFrame:(CGRect)a3
+- (_TtC10MapsDesign24ActionBarDirectionButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

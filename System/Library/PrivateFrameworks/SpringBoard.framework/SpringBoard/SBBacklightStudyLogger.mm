@@ -1,18 +1,18 @@
 @interface SBBacklightStudyLogger
-- (SBBacklightStudyLogger)initWithController:(id)a3;
-- (void)backlightController:(id)a3 didAnimateBacklightToFactor:(float)a4 source:(int64_t)a5;
+- (SBBacklightStudyLogger)initWithController:(id)controller;
+- (void)backlightController:(id)controller didAnimateBacklightToFactor:(float)factor source:(int64_t)source;
 - (void)dealloc;
 @end
 
 @implementation SBBacklightStudyLogger
 
-- (SBBacklightStudyLogger)initWithController:(id)a3
+- (SBBacklightStudyLogger)initWithController:(id)controller
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277D6A798] sharedInstance];
-  v7 = [v6 isEnabled];
+  controllerCopy = controller;
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+  isEnabled = [mEMORY[0x277D6A798] isEnabled];
 
-  if (v7)
+  if (isEnabled)
   {
     v13.receiver = self;
     v13.super_class = SBBacklightStudyLogger;
@@ -20,12 +20,12 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_controller, a3);
-      v10 = [MEMORY[0x277D6A798] sharedInstance];
+      objc_storeStrong(&v8->_controller, controller);
+      mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
       logger = v9->_logger;
-      v9->_logger = v10;
+      v9->_logger = mEMORY[0x277D6A798]2;
 
-      [v5 addObserver:v9];
+      [controllerCopy addObserver:v9];
     }
   }
 
@@ -46,14 +46,14 @@
   [(SBBacklightStudyLogger *)&v3 dealloc];
 }
 
-- (void)backlightController:(id)a3 didAnimateBacklightToFactor:(float)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller didAnimateBacklightToFactor:(float)factor source:(int64_t)source
 {
   logger = self->_logger;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __81__SBBacklightStudyLogger_backlightController_didAnimateBacklightToFactor_source___block_invoke;
   v6[3] = &__block_descriptor_36_e5__8__0l;
-  v7 = a4;
+  factorCopy = factor;
   [(SLGLog *)logger logBlock:v6 domain:@"com.apple.SpringBoard.backlight"];
 }
 

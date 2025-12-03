@@ -1,23 +1,23 @@
 @interface ANSimpleTrackPlayer
-- (void)handleInterruptionDelay:(double)a3;
-- (void)playInternalWithCompletionHandler:(id)a3;
+- (void)handleInterruptionDelay:(double)delay;
+- (void)playInternalWithCompletionHandler:(id)handler;
 @end
 
 @implementation ANSimpleTrackPlayer
 
-- (void)playInternalWithCompletionHandler:(id)a3
+- (void)playInternalWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ANTrackPlayer *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ANTrackPlayer *)self queuePlayer];
-    v7 = [v6 currentItem];
-    v8 = v7;
-    if (v7)
+    queuePlayer = [(ANTrackPlayer *)self queuePlayer];
+    currentItem = [queuePlayer currentItem];
+    v8 = currentItem;
+    if (currentItem)
     {
-      [v7 duration];
+      [currentItem duration];
     }
 
     else
@@ -33,34 +33,34 @@
     _os_log_impl(&dword_23F525000, v5, OS_LOG_TYPE_DEFAULT, "%s: Duration = %fs", &v15, 0x16u);
   }
 
-  v10 = [(ANTrackPlayer *)self queuePlayer];
-  [v10 play];
+  queuePlayer2 = [(ANTrackPlayer *)self queuePlayer];
+  [queuePlayer2 play];
 
-  v11 = [(ANTrackPlayer *)self queuePlayer];
-  v12 = [v11 error];
+  queuePlayer3 = [(ANTrackPlayer *)self queuePlayer];
+  error = [queuePlayer3 error];
 
-  if (v12)
+  if (error)
   {
     v13 = [(ANTrackPlayer *)self log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(ANSimpleTrackPlayer *)v12 playInternalWithCompletionHandler:v13];
+      [(ANSimpleTrackPlayer *)error playInternalWithCompletionHandler:v13];
     }
   }
 
-  v4[2](v4, v12);
+  handlerCopy[2](handlerCopy, error);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleInterruptionDelay:(double)a3
+- (void)handleInterruptionDelay:(double)delay
 {
   v18 = **&MEMORY[0x277CC08F0];
-  v4 = [(ANTrackPlayer *)self queuePlayer];
-  v5 = v4;
-  if (v4)
+  queuePlayer = [(ANTrackPlayer *)self queuePlayer];
+  v5 = queuePlayer;
+  if (queuePlayer)
   {
-    [v4 currentTime];
+    [queuePlayer currentTime];
   }
 
   else
@@ -75,12 +75,12 @@
   {
     [(ANTrackPlayer *)self previousSkipGoesToPreviousTrackDelta];
     v9 = Seconds - v8;
-    v10 = [(ANTrackPlayer *)self queuePlayer];
-    v11 = v10;
-    if (v10)
+    queuePlayer2 = [(ANTrackPlayer *)self queuePlayer];
+    v11 = queuePlayer2;
+    if (queuePlayer2)
     {
-      [v10 currentTime];
-      LODWORD(v10) = v15;
+      [queuePlayer2 currentTime];
+      LODWORD(queuePlayer2) = v15;
     }
 
     else
@@ -90,18 +90,18 @@
       v16 = 0;
     }
 
-    CMTimeMakeWithSeconds(&v18, v9, v10);
+    CMTimeMakeWithSeconds(&v18, v9, queuePlayer2);
   }
 
-  v12 = [(ANTrackPlayer *)self queuePlayer];
-  v13 = [v12 currentItem];
+  queuePlayer3 = [(ANTrackPlayer *)self queuePlayer];
+  currentItem = [queuePlayer3 currentItem];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__ANSimpleTrackPlayer_handleInterruptionDelay___block_invoke;
   v14[3] = &unk_278C86A38;
   v14[4] = self;
   time = v18;
-  [v13 seekToTime:&time completionHandler:v14];
+  [currentItem seekToTime:&time completionHandler:v14];
 }
 
 void __47__ANSimpleTrackPlayer_handleInterruptionDelay___block_invoke(uint64_t a1, int a2)

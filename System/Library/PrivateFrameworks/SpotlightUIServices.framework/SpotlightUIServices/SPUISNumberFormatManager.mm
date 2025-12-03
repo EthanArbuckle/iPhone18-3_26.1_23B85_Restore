@@ -1,6 +1,6 @@
 @interface SPUISNumberFormatManager
-+ (id)currencyStringWithAmount:(id)a3 currencyCode:(id)a4;
-+ (id)stringFromByteCount:(int64_t)a3;
++ (id)currencyStringWithAmount:(id)amount currencyCode:(id)code;
++ (id)stringFromByteCount:(int64_t)count;
 + (void)initialize;
 - (SPUISNumberFormatManager)init;
 @end
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sharedNumberFormatManager = objc_opt_new();
 
@@ -30,37 +30,37 @@
     v4 = objc_opt_new();
     [(SPUISNumberFormatManager *)v2 setByteCountFormatter:v4];
 
-    v5 = [(SPUISNumberFormatManager *)v2 byteCountFormatter];
-    [v5 setCountStyle:0];
+    byteCountFormatter = [(SPUISNumberFormatManager *)v2 byteCountFormatter];
+    [byteCountFormatter setCountStyle:0];
 
     v6 = objc_opt_new();
     [(SPUISNumberFormatManager *)v2 setCurrencyFormatter:v6];
 
-    v7 = [(SPUISNumberFormatManager *)v2 currencyFormatter];
-    [v7 setNumberStyle:2];
+    currencyFormatter = [(SPUISNumberFormatManager *)v2 currencyFormatter];
+    [currencyFormatter setNumberStyle:2];
   }
 
   return v2;
 }
 
-+ (id)stringFromByteCount:(int64_t)a3
++ (id)stringFromByteCount:(int64_t)count
 {
-  v4 = [sharedNumberFormatManager byteCountFormatter];
-  v5 = [v4 stringFromByteCount:a3];
+  byteCountFormatter = [sharedNumberFormatManager byteCountFormatter];
+  v5 = [byteCountFormatter stringFromByteCount:count];
 
   return v5;
 }
 
-+ (id)currencyStringWithAmount:(id)a3 currencyCode:(id)a4
++ (id)currencyStringWithAmount:(id)amount currencyCode:(id)code
 {
   v5 = sharedNumberFormatManager;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currencyFormatter];
-  [v8 setCurrencyCode:v6];
+  codeCopy = code;
+  amountCopy = amount;
+  currencyFormatter = [v5 currencyFormatter];
+  [currencyFormatter setCurrencyCode:codeCopy];
 
-  v9 = [sharedNumberFormatManager currencyFormatter];
-  v10 = [v9 stringFromNumber:v7];
+  currencyFormatter2 = [sharedNumberFormatManager currencyFormatter];
+  v10 = [currencyFormatter2 stringFromNumber:amountCopy];
 
   return v10;
 }

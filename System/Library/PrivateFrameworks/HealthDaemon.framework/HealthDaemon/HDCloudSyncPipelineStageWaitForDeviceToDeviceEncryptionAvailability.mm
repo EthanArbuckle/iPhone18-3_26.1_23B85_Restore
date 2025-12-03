@@ -1,17 +1,17 @@
 @interface HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability
-- (HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability)initWithConfiguration:(id)a3;
-- (void)_checkForDevicetoDeviceEncryptionAvailabilityAndContinueObserving:(void *)a1;
-- (void)_cloudKitIdentityUpdated:(id)a3;
+- (HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability)initWithConfiguration:(id)configuration;
+- (void)_checkForDevicetoDeviceEncryptionAvailabilityAndContinueObserving:(void *)observing;
+- (void)_cloudKitIdentityUpdated:(id)updated;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability
 
-- (HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability)initWithConfiguration:(id)a3
+- (HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability;
-  result = [(HDCloudSyncPipelineStage *)&v4 initWithConfiguration:a3 cloudState:0];
+  result = [(HDCloudSyncPipelineStage *)&v4 initWithConfiguration:configuration cloudState:0];
   if (result)
   {
     result->_expirationInterval = 60.0;
@@ -23,17 +23,17 @@
 - (void)main
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__cloudKitIdentityUpdated_ name:*MEMORY[0x277CBBF90] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__cloudKitIdentityUpdated_ name:*MEMORY[0x277CBBF90] object:0];
 
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [v4 repository];
-  v6 = [v5 primaryCKContainer];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  primaryCKContainer = [repository primaryCKContainer];
 
-  v7 = [v6 containerIdentifier];
-  LOBYTE(v5) = [v7 isEqualToString:@"com.apple.health.sync.secure"];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
+  LOBYTE(repository) = [containerIdentifier isEqualToString:@"com.apple.health.sync.secure"];
 
-  if (v5)
+  if (repository)
   {
     [(HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability *)self _checkForDevicetoDeviceEncryptionAvailabilityAndContinueObserving:?];
   }
@@ -45,11 +45,11 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v6 containerIdentifier];
+      containerIdentifier2 = [primaryCKContainer containerIdentifier];
       v12 = 138543618;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v10;
+      v15 = containerIdentifier2;
       _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Primary container %{public}@ is not secure; skipping D2DE check.", &v12, 0x16u);
     }
 
@@ -59,30 +59,30 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkForDevicetoDeviceEncryptionAvailabilityAndContinueObserving:(void *)a1
+- (void)_checkForDevicetoDeviceEncryptionAvailabilityAndContinueObserving:(void *)observing
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (observing)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = a1;
+      observingCopy = observing;
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Looking up account info to check for device-to-device encryption availability...", buf, 0xCu);
     }
 
-    v5 = [a1 configuration];
-    v6 = [v5 repository];
-    v7 = [v6 primaryCKContainer];
+    configuration = [observing configuration];
+    repository = [configuration repository];
+    primaryCKContainer = [repository primaryCKContainer];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __137__HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability__checkForDevicetoDeviceEncryptionAvailabilityAndContinueObserving___block_invoke;
     v9[3] = &unk_27861FBB8;
-    v9[4] = a1;
+    v9[4] = observing;
     v10 = a2;
-    [v7 accountInfoWithCompletionHandler:v9];
+    [primaryCKContainer accountInfoWithCompletionHandler:v9];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -194,7 +194,7 @@ LABEL_10:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cloudKitIdentityUpdated:(id)a3
+- (void)_cloudKitIdentityUpdated:(id)updated
 {
   v8 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -202,7 +202,7 @@ LABEL_10:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Received CKIdentityUpdateNotification", &v6, 0xCu);
   }
 

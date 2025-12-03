@@ -1,34 +1,34 @@
 @interface BRLTScriptString
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScriptString:(id)a3;
-- (BRLTScriptString)initWithString:(id)a3 selection:(_NSRange)a4 focus:(_NSRange)a5 token:(unint64_t)a6;
-- (_NSRange)_backwardEditingAtomForCursorLocation:(unint64_t)a3 isBreak:(BOOL *)a4;
-- (_NSRange)_backwardEditingAtomForSelection:(_NSRange)a3 isBreak:(BOOL *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScriptString:(id)string;
+- (BRLTScriptString)initWithString:(id)string selection:(_NSRange)selection focus:(_NSRange)focus token:(unint64_t)token;
+- (_NSRange)_backwardEditingAtomForCursorLocation:(unint64_t)location isBreak:(BOOL *)break;
+- (_NSRange)_backwardEditingAtomForSelection:(_NSRange)selection isBreak:(BOOL *)break;
 - (_NSRange)backwardEditingAtom;
 - (_NSRange)deleteMergeAtom;
 - (_NSRange)focus;
 - (_NSRange)forwardEditingAtom;
-- (_NSRange)forwardEditingAtomForCursorLocation:(unint64_t)a3;
+- (_NSRange)forwardEditingAtomForCursorLocation:(unint64_t)location;
 - (_NSRange)selection;
 - (_NSRange)suggestionRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addString:(id)a3 selection:(_NSRange)a4 focus:(_NSRange)a5 token:(unint64_t)a6;
+- (void)addString:(id)string selection:(_NSRange)selection focus:(_NSRange)focus token:(unint64_t)token;
 @end
 
 @implementation BRLTScriptString
 
-- (BRLTScriptString)initWithString:(id)a3 selection:(_NSRange)a4 focus:(_NSRange)a5 token:(unint64_t)a6
+- (BRLTScriptString)initWithString:(id)string selection:(_NSRange)selection focus:(_NSRange)focus token:(unint64_t)token
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4.length;
-  v10 = a4.location;
-  v12 = a3;
+  length = focus.length;
+  location = focus.location;
+  v9 = selection.length;
+  v10 = selection.location;
+  stringCopy = string;
   v22.receiver = self;
   v22.super_class = BRLTScriptString;
   v13 = [(BRLTScriptString *)&v22 init];
-  v14 = [v12 copy];
+  v14 = [stringCopy copy];
   string = v13->_string;
   v13->_string = v14;
 
@@ -36,14 +36,14 @@
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = v10;
-    if (v10 > [v12 length])
+    if (v10 > [stringCopy length])
     {
-      v16 = [v12 length];
+      v16 = [stringCopy length];
     }
 
-    if (v16 + v9 > [v12 length])
+    if (v16 + v9 > [stringCopy length])
     {
-      v9 = [v12 length] - v16;
+      v9 = [stringCopy length] - v16;
     }
   }
 
@@ -57,13 +57,13 @@
   v13->_tokenRanges = v17;
 
   v19 = v13->_tokenRanges;
-  v20 = [[BRLTTokenRange alloc] initWithRange:0 token:[(NSString *)v13->_string length], a6];
-  [(NSMutableArray *)v19 addObject:v20];
+  token = [[BRLTTokenRange alloc] initWithRange:0 token:[(NSString *)v13->_string length], token];
+  [(NSMutableArray *)v19 addObject:token];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[BRLTScriptString alloc] initWithString:&stru_2853FD1A8 selection:0x7FFFFFFFFFFFFFFFLL, 0];
   v5 = [(NSString *)self->_string copy];
@@ -84,15 +84,15 @@
   return v4;
 }
 
-- (void)addString:(id)a3 selection:(_NSRange)a4 focus:(_NSRange)a5 token:(unint64_t)a6
+- (void)addString:(id)string selection:(_NSRange)selection focus:(_NSRange)focus token:(unint64_t)token
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a4.length;
-  v10 = a4.location;
-  v16 = a3;
+  length = focus.length;
+  location = focus.location;
+  v9 = selection.length;
+  v10 = selection.location;
+  stringCopy = string;
   tokenRanges = self->_tokenRanges;
-  v13 = -[BRLTTokenRange initWithRange:token:]([BRLTTokenRange alloc], "initWithRange:token:", -[NSString length](self->_string, "length"), [v16 length], a6);
+  v13 = -[BRLTTokenRange initWithRange:token:]([BRLTTokenRange alloc], "initWithRange:token:", -[NSString length](self->_string, "length"), [stringCopy length], token);
   [(NSMutableArray *)tokenRanges addObject:v13];
 
   if (location != 0x7FFFFFFFFFFFFFFFLL && length)
@@ -101,41 +101,41 @@
     self->_focus.length = length;
   }
 
-  v14 = [(NSString *)self->_string stringByAppendingString:v16];
+  v14 = [(NSString *)self->_string stringByAppendingString:stringCopy];
   string = self->_string;
   self->_string = v14;
 
   [(BRLTScriptString *)self _addSelectionRange:v10, v9];
 }
 
-- (BOOL)isEqualToScriptString:(id)a3
+- (BOOL)isEqualToScriptString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (!stringCopy)
   {
 LABEL_18:
     LOBYTE(v13) = 1;
     goto LABEL_19;
   }
 
-  if (self->_selection.location == v4[4] && self->_selection.length == v4[5] && self->_suggestionRange.location == v4[8] && self->_suggestionRange.length == v4[9])
+  if (self->_selection.location == stringCopy[4] && self->_selection.length == stringCopy[5] && self->_suggestionRange.location == stringCopy[8] && self->_suggestionRange.length == stringCopy[9])
   {
-    v8 = [v4 string];
-    v9 = [v8 isEqualToString:self->_string];
+    string = [stringCopy string];
+    v9 = [string isEqualToString:self->_string];
 
     if (v9)
     {
-      v10 = [v5 textFormattingRanges];
-      v11 = v10;
-      if (v10 == self->_textFormattingRanges)
+      textFormattingRanges = [v5 textFormattingRanges];
+      v11 = textFormattingRanges;
+      if (textFormattingRanges == self->_textFormattingRanges)
       {
       }
 
       else
       {
-        v12 = [v5 textFormattingRanges];
-        v13 = [v12 isEqual:self->_textFormattingRanges];
+        textFormattingRanges2 = [v5 textFormattingRanges];
+        v13 = [textFormattingRanges2 isEqual:self->_textFormattingRanges];
 
         if (!v13)
         {
@@ -153,10 +153,10 @@ LABEL_19:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -164,7 +164,7 @@ LABEL_19:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTScriptString *)self isEqualToScriptString:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRLTScriptString *)self isEqualToScriptString:equalCopy];
   }
 
   return v5;
@@ -182,9 +182,9 @@ LABEL_19:
   return v6;
 }
 
-- (_NSRange)_backwardEditingAtomForSelection:(_NSRange)a3 isBreak:(BOOL *)a4
+- (_NSRange)_backwardEditingAtomForSelection:(_NSRange)selection isBreak:(BOOL *)break
 {
-  v6.location = [(BRLTScriptString *)self _backwardEditingAtomForCursorLocation:a3.location isBreak:a4];
+  v6.location = [(BRLTScriptString *)self _backwardEditingAtomForCursorLocation:selection.location isBreak:break];
   v6.length = v5;
   location = self->_selection.location;
   v8 = 0x7FFFFFFFFFFFFFFFLL;
@@ -227,26 +227,26 @@ LABEL_19:
   return result;
 }
 
-- (_NSRange)_backwardEditingAtomForCursorLocation:(unint64_t)a3 isBreak:(BOOL *)a4
+- (_NSRange)_backwardEditingAtomForCursorLocation:(unint64_t)location isBreak:(BOOL *)break
 {
-  v5 = a3;
-  if (a4)
+  locationCopy = location;
+  if (break)
   {
-    *a4 = 0;
+    *break = 0;
   }
 
   v7 = 0;
-  if (a3)
+  if (location)
   {
     v8 = 0;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    if (location != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
       v10 = [(NSString *)self->_string length];
-      v11 = [(NSString *)self->_string substringFromIndex:v5];
-      v12 = [v11 rangeOfCharacterFromSet:v9];
-      v13 = [(NSString *)self->_string substringToIndex:v5];
-      v14 = [v13 rangeOfCharacterFromSet:v9 options:4];
+      v11 = [(NSString *)self->_string substringFromIndex:locationCopy];
+      v12 = [v11 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet];
+      v13 = [(NSString *)self->_string substringToIndex:locationCopy];
+      v14 = [v13 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet options:4];
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v7 = 0;
@@ -257,10 +257,10 @@ LABEL_19:
         v7 = v14 + v15;
         if (v14 + v15 == [v13 length])
         {
-          v7 = v5 - 1;
-          if (a4)
+          v7 = locationCopy - 1;
+          if (break)
           {
-            *a4 = 1;
+            *break = 1;
           }
 
           goto LABEL_14;
@@ -269,16 +269,16 @@ LABEL_19:
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v5 = v10;
+        locationCopy = v10;
       }
 
       else
       {
-        v5 += v12;
+        locationCopy += v12;
       }
 
 LABEL_14:
-      v8 = v5 - v7;
+      v8 = locationCopy - v7;
     }
   }
 
@@ -306,16 +306,16 @@ LABEL_14:
     v17.length = v12;
     v13 = NSUnionRange(v15, v17);
     length = v13.length;
-    v9 = v13.location;
+    backwardEditingAtom = v13.location;
   }
 
   else
   {
-    v9 = [(BRLTScriptString *)self backwardEditingAtom];
+    backwardEditingAtom = [(BRLTScriptString *)self backwardEditingAtom];
   }
 
   result.length = length;
-  result.location = v9;
+  result.location = backwardEditingAtom;
   return result;
 }
 
@@ -354,17 +354,17 @@ LABEL_14:
   return result;
 }
 
-- (_NSRange)forwardEditingAtomForCursorLocation:(unint64_t)a3
+- (_NSRange)forwardEditingAtomForCursorLocation:(unint64_t)location
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = a3;
-    v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    locationCopy = location;
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
     v7 = [(NSString *)self->_string length];
-    v8 = [(NSString *)self->_string substringFromIndex:v4];
-    v9 = [v8 rangeOfCharacterFromSet:v6];
-    v10 = [(NSString *)self->_string substringToIndex:v4];
-    v11 = [v10 rangeOfCharacterFromSet:v6 options:4];
+    v8 = [(NSString *)self->_string substringFromIndex:locationCopy];
+    v9 = [v8 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet];
+    v10 = [(NSString *)self->_string substringToIndex:locationCopy];
+    v11 = [v10 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet options:4];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       if (v9)
@@ -374,38 +374,38 @@ LABEL_14:
 
       else
       {
-        v13 = v11 + v12 == v4;
+        v13 = v11 + v12 == locationCopy;
       }
 
       if (v13)
       {
-        v7 = v4;
+        v7 = locationCopy;
 LABEL_12:
-        v3 = v7 - v4;
+        v3 = v7 - locationCopy;
 
         goto LABEL_13;
       }
 
-      v7 = v9 + v4;
+      v7 = v9 + locationCopy;
     }
 
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v4 = 0;
+      locationCopy = 0;
     }
 
     else
     {
-      v4 = v11 + v12;
+      locationCopy = v11 + v12;
     }
 
     goto LABEL_12;
   }
 
   v3 = 0;
-  v4 = 0x7FFFFFFFFFFFFFFFLL;
+  locationCopy = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_13:
-  v14 = v4;
+  v14 = locationCopy;
   v15 = v3;
   result.length = v15;
   result.location = v14;

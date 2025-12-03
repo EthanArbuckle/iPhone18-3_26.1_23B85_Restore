@@ -1,15 +1,15 @@
 @interface PUPosterDebugRectsView
 - (PUParallaxLayerStackViewModel)viewModel;
-- (PUPosterDebugRectsView)initWithViewModel:(id)a3;
-- (id)_rectViewForIdentifier:(id)a3;
+- (PUPosterDebugRectsView)initWithViewModel:(id)model;
+- (id)_rectViewForIdentifier:(id)identifier;
 - (void)_layoutWithCurrentLayoutInfo;
 - (void)dealloc;
-- (void)layoutWithInfo:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)layoutWithInfo:(id)info;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)removeAllDebugRects;
-- (void)removeDebugRectForIdentifier:(id)a3;
-- (void)setCurrentLayoutInfo:(id)a3;
-- (void)setDebugRect:(CGRect)a3 forIdentifier:(id)a4 color:(id)a5 borderWidth:(double)a6;
+- (void)removeDebugRectForIdentifier:(id)identifier;
+- (void)setCurrentLayoutInfo:(id)info;
+- (void)setDebugRect:(CGRect)rect forIdentifier:(id)identifier color:(id)color borderWidth:(double)width;
 @end
 
 @implementation PUPosterDebugRectsView
@@ -21,9 +21,9 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (a5 == "ViewModelObservationContext" && (a4 & 0x200) != 0)
+  if (context == "ViewModelObservationContext" && (change & 0x200) != 0)
   {
     [(PUPosterDebugRectsView *)self _layoutWithCurrentLayoutInfo];
   }
@@ -32,24 +32,24 @@
 - (void)_layoutWithCurrentLayoutInfo
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPosterDebugRectsView *)self currentLayoutInfo];
-  if (v3)
+  currentLayoutInfo = [(PUPosterDebugRectsView *)self currentLayoutInfo];
+  if (currentLayoutInfo)
   {
     [(PUPosterDebugRectsView *)self setHidden:0];
-    [v3 containerFrame];
+    [currentLayoutInfo containerFrame];
     PXRectWithSize();
     [(PUPosterDebugRectsView *)self setBounds:?];
     PXRectGetCenter();
     [(PUPosterDebugRectsView *)self setCenter:?];
-    [v3 additionalTransform];
+    [currentLayoutInfo additionalTransform];
     v27 = v28;
     [(PUPosterDebugRectsView *)self setTransform:&v27];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
-    v5 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+    debugRectsByIdentifier = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
+    v5 = [debugRectsByIdentifier countByEnumeratingWithState:&v23 objects:v29 count:16];
     if (v5)
     {
       v6 = v5;
@@ -60,15 +60,15 @@
         {
           if (*v24 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(debugRectsByIdentifier);
           }
 
           v9 = *(*(&v23 + 1) + 8 * i);
-          v10 = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
-          v11 = [v10 objectForKeyedSubscript:v9];
+          debugRectsByIdentifier2 = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
+          v11 = [debugRectsByIdentifier2 objectForKeyedSubscript:v9];
 
-          v12 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
-          v13 = [v12 objectForKeyedSubscript:v9];
+          rectViewsByIdentifier = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
+          v13 = [rectViewsByIdentifier objectForKeyedSubscript:v9];
 
           if (v13)
           {
@@ -77,9 +77,9 @@
             v17 = v16;
             v19 = v18;
             v21 = v20;
-            v22 = [v3 deviceOrientation];
-            [v3 containerFrame];
-            PUPosterAdditionalTransformForDeviceOrientationAndContainerFrame(v22, &v27);
+            deviceOrientation = [currentLayoutInfo deviceOrientation];
+            [currentLayoutInfo containerFrame];
+            PUPosterAdditionalTransformForDeviceOrientationAndContainerFrame(deviceOrientation, &v27);
             v31.origin.x = v15;
             v31.origin.y = v17;
             v31.size.width = v19;
@@ -89,7 +89,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v23 objects:v29 count:16];
+        v6 = [debugRectsByIdentifier countByEnumeratingWithState:&v23 objects:v29 count:16];
       }
 
       while (v6);
@@ -105,17 +105,17 @@
 - (void)removeAllDebugRects
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
-  [v3 removeAllObjects];
+  debugRectsByIdentifier = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
+  [debugRectsByIdentifier removeAllObjects];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
-  v5 = [v4 allValues];
+  rectViewsByIdentifier = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
+  allValues = [rectViewsByIdentifier allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -127,84 +127,84 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v9++) removeFromSuperview];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
-  [v10 removeAllObjects];
+  rectViewsByIdentifier2 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
+  [rectViewsByIdentifier2 removeAllObjects];
 }
 
-- (void)removeDebugRectForIdentifier:(id)a3
+- (void)removeDebugRectForIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
-  [v4 removeObjectForKey:v8];
+  identifierCopy = identifier;
+  debugRectsByIdentifier = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
+  [debugRectsByIdentifier removeObjectForKey:identifierCopy];
 
-  v5 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v8];
+  rectViewsByIdentifier = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
+  v6 = [rectViewsByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
     [v6 removeFromSuperview];
-    v7 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
-    [v7 removeObjectForKey:v8];
+    rectViewsByIdentifier2 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
+    [rectViewsByIdentifier2 removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)setDebugRect:(CGRect)a3 forIdentifier:(id)a4 color:(id)a5 borderWidth:(double)a6
+- (void)setDebugRect:(CGRect)rect forIdentifier:(id)identifier color:(id)color borderWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
-  v14 = a4;
-  v17 = [[PUPosterDebugRect alloc] initWithIdentifier:v14 rect:v13 color:x borderWidth:y, width, height, a6];
-  v15 = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
-  [v15 setObject:v17 forKeyedSubscript:v14];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
+  identifierCopy = identifier;
+  width = [[PUPosterDebugRect alloc] initWithIdentifier:identifierCopy rect:colorCopy color:x borderWidth:y, width, height, width];
+  debugRectsByIdentifier = [(PUPosterDebugRectsView *)self debugRectsByIdentifier];
+  [debugRectsByIdentifier setObject:width forKeyedSubscript:identifierCopy];
 
-  v16 = [(PUPosterDebugRectsView *)self _rectViewForIdentifier:v14];
+  v16 = [(PUPosterDebugRectsView *)self _rectViewForIdentifier:identifierCopy];
 
-  [v16 setBorderColor:v13];
-  [v16 setBorderWidth:a6];
+  [v16 setBorderColor:colorCopy];
+  [v16 setBorderWidth:width];
   [(PUPosterDebugRectsView *)self _layoutWithCurrentLayoutInfo];
 }
 
-- (id)_rectViewForIdentifier:(id)a3
+- (id)_rectViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  rectViewsByIdentifier = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
+  v6 = [rectViewsByIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
     v7 = [PUPosterDebugRectView alloc];
     v6 = [(PUPosterDebugRectView *)v7 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    [(PUPosterDebugRectView *)v6 setIdentifier:v4];
+    [(PUPosterDebugRectView *)v6 setIdentifier:identifierCopy];
     [(PUPosterDebugRectsView *)self addSubview:v6];
-    v8 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
-    [v8 setObject:v6 forKeyedSubscript:v4];
+    rectViewsByIdentifier2 = [(PUPosterDebugRectsView *)self rectViewsByIdentifier];
+    [rectViewsByIdentifier2 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
   return v6;
 }
 
-- (void)setCurrentLayoutInfo:(id)a3
+- (void)setCurrentLayoutInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   v5 = self->_currentLayoutInfo;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == infoCopy)
   {
   }
 
@@ -214,19 +214,19 @@
 
     if (!v7)
     {
-      objc_storeStrong(&self->_currentLayoutInfo, a3);
+      objc_storeStrong(&self->_currentLayoutInfo, info);
       [(PUPosterDebugRectsView *)self _layoutWithCurrentLayoutInfo];
     }
   }
 }
 
-- (void)layoutWithInfo:(id)a3
+- (void)layoutWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = PUPosterDebugRectsView;
-  v4 = a3;
-  [(PUParallaxLayerView *)&v5 layoutWithInfo:v4];
-  [(PUPosterDebugRectsView *)self setCurrentLayoutInfo:v4, v5.receiver, v5.super_class];
+  infoCopy = info;
+  [(PUParallaxLayerView *)&v5 layoutWithInfo:infoCopy];
+  [(PUPosterDebugRectsView *)self setCurrentLayoutInfo:infoCopy, v5.receiver, v5.super_class];
 }
 
 - (void)dealloc
@@ -239,16 +239,16 @@
   [(PUPosterDebugRectsView *)&v4 dealloc];
 }
 
-- (PUPosterDebugRectsView)initWithViewModel:(id)a3
+- (PUPosterDebugRectsView)initWithViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PUPosterDebugRectsView;
   v5 = [(PUPosterDebugRectsView *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewModel, v4);
+    objc_storeWeak(&v5->_viewModel, modelCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     rectViewsByIdentifier = v6->_rectViewsByIdentifier;
     v6->_rectViewsByIdentifier = v7;
@@ -257,7 +257,7 @@
     debugRectsByIdentifier = v6->_debugRectsByIdentifier;
     v6->_debugRectsByIdentifier = v9;
 
-    [v4 registerChangeObserver:v6 context:"ViewModelObservationContext"];
+    [modelCopy registerChangeObserver:v6 context:"ViewModelObservationContext"];
   }
 
   return v6;

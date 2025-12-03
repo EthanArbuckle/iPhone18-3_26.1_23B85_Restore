@@ -1,35 +1,35 @@
 @interface _UIDigitizerGestureRecognizerImp
-- (BOOL)_senderOfPressesHasTouchSurface:(id)a3 withEvent:(id)a4;
-- (BOOL)_senderOfPressesIsSoftwareRemoteWithEvent:(id)a3;
+- (BOOL)_senderOfPressesHasTouchSurface:(id)surface withEvent:(id)event;
+- (BOOL)_senderOfPressesIsSoftwareRemoteWithEvent:(id)event;
 - (BOOL)_shouldReportDigitizerLocation;
 - (CGPoint)defaultDigitizerLocation;
 - (CGPoint)digitizerLocation;
 - (NSTimer)minimumPressDurationTimer;
 - (NSTimer)waitingForTouchesAfterPressTimer;
 - (_UIDigitizerGestureRecognizerImpDelegate)delegate;
-- (void)_minimumPressDurationTimerFired:(id)a3;
-- (void)_waitingForTouchesAfterPressTimerFired:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)_minimumPressDurationTimerFired:(id)fired;
+- (void)_waitingForTouchesAfterPressTimerFired:(id)fired;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _UIDigitizerGestureRecognizerImp
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   if ([(_UIDigitizerGestureRecognizerImp *)self _shouldReportDigitizerLocation])
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v8 = v7 - self->_pressEndTime;
-    [a4 _digitizerLocation];
+    [event _digitizerLocation];
     self->_digitizerLocation.x = v9;
     self->_digitizerLocation.y = v10;
-    self->_numberOfActiveTouches += [a3 count];
+    self->_numberOfActiveTouches += [began count];
     if (v8 < self->_pressEndToTouchBeginDuration && self->_lastRecognitionTime != self->_pressEndTime)
     {
       WeakRetained = objc_loadWeakRetained(&self->_waitingForTouchesAfterPressTimer);
@@ -42,47 +42,47 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   if ([(_UIDigitizerGestureRecognizerImp *)self _shouldReportDigitizerLocation])
   {
-    [a4 _digitizerLocation];
+    [event _digitizerLocation];
     self->_digitizerLocation.x = v6;
     self->_digitizerLocation.y = v7;
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ([(_UIDigitizerGestureRecognizerImp *)self _shouldReportDigitizerLocation])
   {
-    [a4 _digitizerLocation];
+    [event _digitizerLocation];
     self->_digitizerLocation.x = v7;
     self->_digitizerLocation.y = v8;
     numberOfActiveTouches = self->_numberOfActiveTouches;
-    v10 = [a3 count];
+    v10 = [ended count];
     self->_numberOfActiveTouches = (numberOfActiveTouches - v10) & ~((numberOfActiveTouches - v10) >> 63);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     self->_touchEndTime = v11;
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if ([(_UIDigitizerGestureRecognizerImp *)self _shouldReportDigitizerLocation:a3])
+  if ([(_UIDigitizerGestureRecognizerImp *)self _shouldReportDigitizerLocation:cancelled])
   {
     [(_UIDigitizerGestureRecognizerImp *)self defaultDigitizerLocation];
     self->_digitizerLocation.x = v6;
     self->_digitizerLocation.y = v7;
     numberOfActiveTouches = self->_numberOfActiveTouches;
-    v9 = [a3 count];
+    v9 = [cancelled count];
     self->_numberOfActiveTouches = (numberOfActiveTouches - v9) & ~((numberOfActiveTouches - v9) >> 63);
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     self->_touchEndTime = v10;
   }
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   self->_pressBeginTime = v5;
@@ -98,7 +98,7 @@
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v8 = v7;
@@ -125,7 +125,7 @@ LABEL_10:
 
   if (self->_numberOfActiveTouches <= 0 && v8 - touchEndTime >= self->_touchEndToPressEndDuration)
   {
-    if (![(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesHasTouchSurface:a3 withEvent:a4, v8 - touchEndTime]|| [(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesIsSoftwareRemoteWithEvent:a4])
+    if (![(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesHasTouchSurface:ended withEvent:event, v8 - touchEndTime]|| [(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesIsSoftwareRemoteWithEvent:event])
     {
       [(_UIDigitizerGestureRecognizerImp *)self defaultDigitizerLocation];
       self->_digitizerLocation.x = v14;
@@ -142,7 +142,7 @@ LABEL_22:
     goto LABEL_10;
   }
 
-  if ([(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesHasTouchSurface:a3 withEvent:a4]|| [(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesIsSoftwareRemoteWithEvent:a4])
+  if ([(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesHasTouchSurface:ended withEvent:event]|| [(_UIDigitizerGestureRecognizerImp *)self _senderOfPressesIsSoftwareRemoteWithEvent:event])
   {
     goto LABEL_22;
   }
@@ -203,13 +203,13 @@ LABEL_15:
   objc_storeWeak(&self->_waitingForTouchesAfterPressTimer, 0);
 }
 
-- (void)_minimumPressDurationTimerFired:(id)a3
+- (void)_minimumPressDurationTimerFired:(id)fired
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained pressesHeldForMinimum:self];
 }
 
-- (void)_waitingForTouchesAfterPressTimerFired:(id)a3
+- (void)_waitingForTouchesAfterPressTimerFired:(id)fired
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained pressesEndedSuccessfully:self];
@@ -224,9 +224,9 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)_senderOfPressesHasTouchSurface:(id)a3 withEvent:(id)a4
+- (BOOL)_senderOfPressesHasTouchSurface:(id)surface withEvent:(id)event
 {
-  if ([a4 _hidEvent])
+  if ([event _hidEvent])
   {
     IntegerValue = IOHIDEventGetIntegerValue();
     v8 = IOHIDEventGetIntegerValue();
@@ -247,21 +247,21 @@ LABEL_15:
     v9 = 1;
   }
 
-  v12 = [a3 anyObject];
-  if ([v12 type] != 4)
+  anyObject = [surface anyObject];
+  if ([anyObject type] != 4)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIDigitizerGestureRecognizers.m" lineNumber:322 description:&stru_1EFB14550];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDigitizerGestureRecognizers.m" lineNumber:322 description:&stru_1EFB14550];
   }
 
-  v13 = [v12 _isSynthetic] ^ 1;
+  v13 = [anyObject _isSynthetic] ^ 1;
 
   return v13 & v9;
 }
 
-- (BOOL)_senderOfPressesIsSoftwareRemoteWithEvent:(id)a3
+- (BOOL)_senderOfPressesIsSoftwareRemoteWithEvent:(id)event
 {
-  if (![a3 _hidEvent])
+  if (![event _hidEvent])
   {
     return 0;
   }

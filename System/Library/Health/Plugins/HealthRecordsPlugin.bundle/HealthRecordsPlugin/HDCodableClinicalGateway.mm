@@ -1,32 +1,32 @@
 @interface HDCodableClinicalGateway
 - (id)FHIRVersionString;
-- (id)FHIRVersionStringWithError:(id *)a3;
-- (id)_stringValueForContentKey:(id)a3 error:(id *)a4;
+- (id)FHIRVersionStringWithError:(id *)error;
+- (id)_stringValueForContentKey:(id)key error:(id *)error;
 - (id)countryCode;
-- (id)countryCodeWithError:(id *)a3;
+- (id)countryCodeWithError:(id *)error;
 @end
 
 @implementation HDCodableClinicalGateway
 
-- (id)_stringValueForContentKey:(id)a3 error:(id *)a4
+- (id)_stringValueForContentKey:(id)key error:(id *)error
 {
-  v7 = a3;
-  if (![v7 length])
+  keyCopy = key;
+  if (![keyCopy length])
   {
     sub_A3768(a2, self);
   }
 
-  v8 = [(HDCodableClinicalGateway *)self rawContent];
+  rawContent = [(HDCodableClinicalGateway *)self rawContent];
 
-  if (!v8)
+  if (!rawContent)
   {
     v14 = 0;
     goto LABEL_14;
   }
 
-  v9 = [(HDCodableClinicalGateway *)self rawContent];
+  rawContent2 = [(HDCodableClinicalGateway *)self rawContent];
   v16 = 0;
-  v10 = [NSJSONSerialization JSONObjectWithData:v9 options:0 error:&v16];
+  v10 = [NSJSONSerialization JSONObjectWithData:rawContent2 options:0 error:&v16];
   v11 = v16;
 
   if (v10)
@@ -37,7 +37,7 @@
     v11 = 0;
     if (v12)
     {
-      v13 = [v12 objectForKeyedSubscript:v7];
+      v13 = [v12 objectForKeyedSubscript:keyCopy];
       if (v13)
       {
         objc_opt_class();
@@ -50,14 +50,14 @@ LABEL_12:
 
     else
       v13 = {;
-      [NSError hk_assignError:a4 code:100 description:v13 underlyingError:v11];
+      [NSError hk_assignError:error code:100 description:v13 underlyingError:v11];
     }
 
     v14 = 0;
     goto LABEL_12;
   }
   v12 = ;
-  [NSError hk_assignError:a4 code:100 description:v12 underlyingError:v11];
+  [NSError hk_assignError:error code:100 description:v12 underlyingError:v11];
   v14 = 0;
 LABEL_13:
 
@@ -66,7 +66,7 @@ LABEL_14:
   return v14;
 }
 
-- (id)countryCodeWithError:(id *)a3
+- (id)countryCodeWithError:(id *)error
 {
   v10 = 0;
   v4 = [(HDCodableClinicalGateway *)self _stringValueForContentKey:HDClinicalGatewayContentCountryKey error:&v10];
@@ -84,10 +84,10 @@ LABEL_14:
 
   if (!v7)
   {
-    if (a3)
+    if (error)
     {
       v8 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -142,7 +142,7 @@ LABEL_14:
   return v11;
 }
 
-- (id)FHIRVersionStringWithError:(id *)a3
+- (id)FHIRVersionStringWithError:(id *)error
 {
   v10 = 0;
   v4 = [(HDCodableClinicalGateway *)self _stringValueForContentKey:HDClinicalGatewayContentFHIRVersionKey error:&v10];
@@ -160,10 +160,10 @@ LABEL_14:
 
   if (!v7)
   {
-    if (a3)
+    if (error)
     {
       v8 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else

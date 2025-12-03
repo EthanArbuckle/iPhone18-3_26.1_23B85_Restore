@@ -1,7 +1,7 @@
 @interface HeadphoneDigitalEngravingManager
 - (id)fetchEngravingDataHandler;
-- (void)deviceDidConnect:(id)a3;
-- (void)setFetchEngravingDataHandler:(id)a3;
+- (void)deviceDidConnect:(id)connect;
+- (void)setFetchEngravingDataHandler:(id)handler;
 @end
 
 @implementation HeadphoneDigitalEngravingManager
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (void)setFetchEngravingDataHandler:(id)a3
+- (void)setFetchEngravingDataHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -49,15 +49,15 @@
   v9 = *(self + OBJC_IVAR____TtC16DaemoniOSLibrary32HeadphoneDigitalEngravingManager_fetchEngravingDataHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_100015D04(v8);
 }
 
-- (void)deviceDidConnect:(id)a3
+- (void)deviceDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  sub_100425488(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  sub_100425488(connectCopy);
 }
 
 @end

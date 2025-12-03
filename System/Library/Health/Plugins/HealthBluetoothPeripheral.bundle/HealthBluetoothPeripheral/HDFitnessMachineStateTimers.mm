@@ -8,7 +8,7 @@
 - (BOOL)isTagReadTimerValid;
 - (BOOL)isUserAcceptanceTimerValid;
 - (BOOL)isWaitForMachineStartTimerValid;
-- (HDFitnessMachineStateTimers)initWithQueue:(id)a3 delegate:(id)a4;
+- (HDFitnessMachineStateTimers)initWithQueue:(id)queue delegate:(id)delegate;
 - (HDFitnessMachineStateTimersDelegate)delegate;
 - (void)beginDisconnectTimeout;
 - (void)beginFieldDetectTimeout;
@@ -34,18 +34,18 @@
 
 @implementation HDFitnessMachineStateTimers
 
-- (HDFitnessMachineStateTimers)initWithQueue:(id)a3 delegate:(id)a4
+- (HDFitnessMachineStateTimers)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = HDFitnessMachineStateTimers;
   v9 = [(HDFitnessMachineStateTimers *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
@@ -603,16 +603,16 @@ LABEL_3:
   v5 = [v4 persistentDomainForName:kHKConnectedGymPreferencesDomain];
 
   v6 = [v5 objectForKeyedSubscript:kHKConnectedGymPreferencesSpartanMFATimeoutOverride];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  if (v7 <= 0)
+  if (intValue <= 0)
   {
-    v7 = 25;
+    intValue = 25;
   }
 
   sub_1B5C4(v8, v9, v10, v11, v12, v13, v14, v15, v25, v26, v27, v28, v29, from);
   v16 = [HDFitnessMachineStateTimer alloc];
-  v17 = v7;
+  v17 = intValue;
   v18 = self ? self->_queue : 0;
   v19 = v18;
   objc_copyWeak(&v29, &from);

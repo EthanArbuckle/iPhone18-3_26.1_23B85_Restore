@@ -1,20 +1,20 @@
 @interface TSWPStorageChildEnumerator
-- (TSWPStorageChildEnumerator)initWithStorage:(id)a3;
+- (TSWPStorageChildEnumerator)initWithStorage:(id)storage;
 - (id)nextObject;
 @end
 
 @implementation TSWPStorageChildEnumerator
 
-- (TSWPStorageChildEnumerator)initWithStorage:(id)a3
+- (TSWPStorageChildEnumerator)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = TSWPStorageChildEnumerator;
   v6 = [(TSWPStorageChildEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
   }
 
   return v7;

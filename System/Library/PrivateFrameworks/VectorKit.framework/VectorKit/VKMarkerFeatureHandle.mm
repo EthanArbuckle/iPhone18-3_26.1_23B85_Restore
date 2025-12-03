@@ -1,5 +1,5 @@
 @interface VKMarkerFeatureHandle
-- (VKMarkerFeatureHandle)initWithMarkerHandle:(const void *)a3 featureType:(int)a4;
+- (VKMarkerFeatureHandle)initWithMarkerHandle:(const void *)handle featureType:(int)type;
 - (id).cxx_construct;
 @end
 
@@ -17,7 +17,7 @@
   return self;
 }
 
-- (VKMarkerFeatureHandle)initWithMarkerHandle:(const void *)a3 featureType:(int)a4
+- (VKMarkerFeatureHandle)initWithMarkerHandle:(const void *)handle featureType:(int)type
 {
   v18.receiver = self;
   v18.super_class = VKMarkerFeatureHandle;
@@ -26,15 +26,15 @@
   v8 = v6;
   if (v6)
   {
-    v9 = *a3;
-    v10 = *(a3 + 1);
-    v11 = *(a3 + 2);
-    *(v6 + 7) = *(a3 + 6);
+    v9 = *handle;
+    v10 = *(handle + 1);
+    v11 = *(handle + 2);
+    *(v6 + 7) = *(handle + 6);
     *(v6 + 40) = v11;
     *(v6 + 24) = v10;
     *(v6 + 8) = v9;
-    v13 = *(a3 + 7);
-    v12 = *(a3 + 8);
+    v13 = *(handle + 7);
+    v12 = *(handle + 8);
     if (v12)
     {
       atomic_fetch_add_explicit((v12 + 8), 1uLL, memory_order_relaxed);
@@ -52,7 +52,7 @@
     styleAttributes = v8->_styleAttributes;
     v8->_styleAttributes = v15;
 
-    v8->_featureType = a4;
+    v8->_featureType = type;
   }
 
   return v8;

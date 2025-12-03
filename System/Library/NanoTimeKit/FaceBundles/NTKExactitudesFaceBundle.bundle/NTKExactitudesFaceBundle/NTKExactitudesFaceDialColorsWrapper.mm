@@ -1,23 +1,23 @@
 @interface NTKExactitudesFaceDialColorsWrapper
 - (NTKExactitudesFaceDialColorsWrapper)init;
-- (NTKExactitudesFaceDialColorsWrapper)initWithHourColor:(id)a3 minuteColor:(id)a4 secondColor:(id)a5 foregroundColor:(id)a6;
+- (NTKExactitudesFaceDialColorsWrapper)initWithHourColor:(id)color minuteColor:(id)minuteColor secondColor:(id)secondColor foregroundColor:(id)foregroundColor;
 @end
 
 @implementation NTKExactitudesFaceDialColorsWrapper
 
-- (NTKExactitudesFaceDialColorsWrapper)initWithHourColor:(id)a3 minuteColor:(id)a4 secondColor:(id)a5 foregroundColor:(id)a6
+- (NTKExactitudesFaceDialColorsWrapper)initWithHourColor:(id)color minuteColor:(id)minuteColor secondColor:(id)secondColor foregroundColor:(id)foregroundColor
 {
   v10 = (&self->super.isa + OBJC_IVAR___NTKExactitudesFaceDialColorsWrapper_colors);
-  *v10 = a3;
-  v10[1] = a4;
-  v10[2] = a5;
-  v10[3] = a6;
+  *v10 = color;
+  v10[1] = minuteColor;
+  v10[2] = secondColor;
+  v10[3] = foregroundColor;
   v16.receiver = self;
   v16.super_class = type metadata accessor for FaceDialColorsWrapper();
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  colorCopy = color;
+  minuteColorCopy = minuteColor;
+  secondColorCopy = secondColor;
+  foregroundColorCopy = foregroundColor;
   return [(NTKExactitudesFaceDialColorsWrapper *)&v16 init];
 }
 

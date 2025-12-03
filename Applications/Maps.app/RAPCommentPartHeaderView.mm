@@ -1,5 +1,5 @@
 @interface RAPCommentPartHeaderView
-- (RAPCommentPartHeaderView)initWithQuestion:(id)a3 reuseIdentifier:(id)a4;
+- (RAPCommentPartHeaderView)initWithQuestion:(id)question reuseIdentifier:(id)identifier;
 - (id)_initialConstraints;
 - (void)_createSubviews;
 - (void)layoutSubviews;
@@ -48,67 +48,67 @@
   LODWORD(v5) = 1148846080;
   [(UILabel *)self->_remainingCharactersLabel setContentCompressionResistancePriority:0 forAxis:v5];
   [(UILabel *)self->_remainingCharactersLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(RAPCommentPartHeaderView *)self contentView];
-  [v6 addSubview:self->_remainingCharactersLabel];
+  contentView = [(RAPCommentPartHeaderView *)self contentView];
+  [contentView addSubview:self->_remainingCharactersLabel];
 }
 
 - (id)_initialConstraints
 {
   v24.receiver = self;
   v24.super_class = RAPCommentPartHeaderView;
-  v23 = [(RAPHeaderFooterView *)&v24 _initialConstraints];
-  v3 = [(UILabel *)self->_remainingCharactersLabel leadingAnchor];
-  v4 = [(RAPHeaderFooterView *)self titleLabel];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintGreaterThanOrEqualToAnchor:v5 constant:8.0];
+  _initialConstraints = [(RAPHeaderFooterView *)&v24 _initialConstraints];
+  leadingAnchor = [(UILabel *)self->_remainingCharactersLabel leadingAnchor];
+  titleLabel = [(RAPHeaderFooterView *)self titleLabel];
+  trailingAnchor = [titleLabel trailingAnchor];
+  v6 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor constant:8.0];
 
   LODWORD(v7) = 1148829696;
   v20 = v6;
   [v6 setPriority:v7];
-  v21 = [(UILabel *)self->_remainingCharactersLabel trailingAnchor];
-  v22 = [(RAPCommentPartHeaderView *)self contentView];
-  v19 = [v22 trailingAnchor];
-  v8 = [v21 constraintEqualToAnchor:v19 constant:-16.0];
+  trailingAnchor2 = [(UILabel *)self->_remainingCharactersLabel trailingAnchor];
+  contentView = [(RAPCommentPartHeaderView *)self contentView];
+  trailingAnchor3 = [contentView trailingAnchor];
+  v8 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
   v25[0] = v8;
   v25[1] = v6;
-  v9 = [(UILabel *)self->_remainingCharactersLabel lastBaselineAnchor];
-  v10 = [(RAPHeaderFooterView *)self titleLabel];
-  v11 = [v10 lastBaselineAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  lastBaselineAnchor = [(UILabel *)self->_remainingCharactersLabel lastBaselineAnchor];
+  titleLabel2 = [(RAPHeaderFooterView *)self titleLabel];
+  lastBaselineAnchor2 = [titleLabel2 lastBaselineAnchor];
+  v12 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   v25[2] = v12;
-  v13 = [(UILabel *)self->_remainingCharactersLabel firstBaselineAnchor];
-  v14 = [(RAPHeaderFooterView *)self titleLabel];
-  v15 = [v14 firstBaselineAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  firstBaselineAnchor = [(UILabel *)self->_remainingCharactersLabel firstBaselineAnchor];
+  titleLabel3 = [(RAPHeaderFooterView *)self titleLabel];
+  firstBaselineAnchor2 = [titleLabel3 firstBaselineAnchor];
+  v16 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v25[3] = v16;
   v17 = [NSArray arrayWithObjects:v25 count:4];
-  [v23 addObjectsFromArray:v17];
+  [_initialConstraints addObjectsFromArray:v17];
 
-  return v23;
+  return _initialConstraints;
 }
 
-- (RAPCommentPartHeaderView)initWithQuestion:(id)a3 reuseIdentifier:(id)a4
+- (RAPCommentPartHeaderView)initWithQuestion:(id)question reuseIdentifier:(id)identifier
 {
-  v7 = a3;
+  questionCopy = question;
   v16.receiver = self;
   v16.super_class = RAPCommentPartHeaderView;
-  v8 = [(RAPHeaderFooterView *)&v16 initWithReuseIdentifier:a4];
+  v8 = [(RAPHeaderFooterView *)&v16 initWithReuseIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_question, a3);
+    objc_storeStrong(&v8->_question, question);
     [(RAPCommentPartHeaderView *)v9 updateRemainingCharacters];
-    v10 = [(RAPCommentQuestion *)v9->_question commentsTitle];
-    [(RAPHeaderFooterView *)v9 setTitleLabelText:v10];
+    commentsTitle = [(RAPCommentQuestion *)v9->_question commentsTitle];
+    [(RAPHeaderFooterView *)v9 setTitleLabelText:commentsTitle];
 
-    v11 = [(RAPCommentPartHeaderView *)v9 traitCollection];
-    v12 = [v11 userInterfaceIdiom];
+    traitCollection = [(RAPCommentPartHeaderView *)v9 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v12 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v13 = +[UIColor systemBackgroundColor];
-      v14 = [(RAPCommentPartHeaderView *)v9 contentView];
-      [v14 setBackgroundColor:v13];
+      contentView = [(RAPCommentPartHeaderView *)v9 contentView];
+      [contentView setBackgroundColor:v13];
     }
   }
 

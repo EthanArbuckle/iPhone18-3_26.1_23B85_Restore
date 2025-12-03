@@ -1,44 +1,44 @@
 @interface EXPSiriSchemaEXPSiriPegasusResponseSummary
-- (BOOL)isEqual:(id)a3;
-- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithDictionary:(id)a3;
-- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithDictionary:(id)dictionary;
+- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCanonicalIds:(id)a3;
-- (void)setHasConfidenceScore:(BOOL)a3;
-- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)a3;
-- (void)setHasResponseStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCanonicalIds:(id)ids;
+- (void)setHasConfidenceScore:(BOOL)score;
+- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)result;
+- (void)setHasResponseStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSiriSchemaEXPSiriPegasusResponseSummary
 
-- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithDictionary:(id)a3
+- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = EXPSiriSchemaEXPSiriPegasusResponseSummary;
   v5 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"resultDomain"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"resultDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPSiriPegasusResponseSummary setResultDomain:](v5, "setResultDomain:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"responseStatus"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"responseStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPSiriPegasusResponseSummary setResponseStatus:](v5, "setResponseStatus:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"canonicalIds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"canonicalIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
       v6 = v22;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"catId"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"catId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)v5 setCatId:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"confidenceScore"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"confidenceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)v5 setConfidenceScore:?];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,30 +113,30 @@
   return v5;
 }
 
-- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithJSON:(id)a3
+- (EXPSiriSchemaEXPSiriPegasusResponseSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -149,19 +149,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_canonicalIds)
   {
-    v4 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"canonicalIds"];
+    canonicalIds = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
+    v5 = [canonicalIds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"canonicalIds"];
   }
 
   if (self->_catId)
   {
-    v6 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"catId"];
+    catId = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
+    v7 = [catId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"catId"];
   }
 
   v8 = *(&self->_isLowConfidenceKnowledgeResult + 1);
@@ -170,7 +170,7 @@
     v9 = MEMORY[0x1E696AD98];
     [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self confidenceScore];
     v10 = [v9 numberWithFloat:?];
-    [v3 setObject:v10 forKeyedSubscript:@"confidenceScore"];
+    [dictionary setObject:v10 forKeyedSubscript:@"confidenceScore"];
 
     v8 = *(&self->_isLowConfidenceKnowledgeResult + 1);
     if ((v8 & 8) == 0)
@@ -193,7 +193,7 @@ LABEL_12:
         v13 = off_1E78D4AF8[v12];
       }
 
-      [v3 setObject:v13 forKeyedSubscript:@"responseStatus"];
+      [dictionary setObject:v13 forKeyedSubscript:@"responseStatus"];
       if (!*(&self->_isLowConfidenceKnowledgeResult + 1))
       {
         goto LABEL_20;
@@ -209,7 +209,7 @@ LABEL_12:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[EXPSiriSchemaEXPSiriPegasusResponseSummary isLowConfidenceKnowledgeResult](self, "isLowConfidenceKnowledgeResult")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isLowConfidenceKnowledgeResult"];
 
   v8 = *(&self->_isLowConfidenceKnowledgeResult + 1);
   if ((v8 & 2) != 0)
@@ -232,13 +232,13 @@ LABEL_16:
       v15 = off_1E78D4B10[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"resultDomain"];
+    [dictionary setObject:v15 forKeyedSubscript:@"resultDomain"];
   }
 
 LABEL_20:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -318,16 +318,16 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   v5 = *(&self->_isLowConfidenceKnowledgeResult + 1);
-  v6 = v4[37];
+  v6 = equalCopy[37];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_19;
@@ -336,13 +336,13 @@ LABEL_6:
   if (v5)
   {
     resultDomain = self->_resultDomain;
-    if (resultDomain != [v4 resultDomain])
+    if (resultDomain != [equalCopy resultDomain])
     {
       goto LABEL_19;
     }
 
     v5 = *(&self->_isLowConfidenceKnowledgeResult + 1);
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -354,26 +354,26 @@ LABEL_6:
   if (v8)
   {
     responseStatus = self->_responseStatus;
-    if (responseStatus != [v4 responseStatus])
+    if (responseStatus != [equalCopy responseStatus])
     {
       goto LABEL_19;
     }
   }
 
-  v10 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
-  v11 = [v4 canonicalIds];
-  if ((v10 != 0) == (v11 == 0))
+  canonicalIds = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
+  canonicalIds2 = [equalCopy canonicalIds];
+  if ((canonicalIds != 0) == (canonicalIds2 == 0))
   {
     goto LABEL_18;
   }
 
-  v12 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
-  if (v12)
+  canonicalIds3 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
+  if (canonicalIds3)
   {
-    v13 = v12;
-    v14 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
-    v15 = [v4 canonicalIds];
-    v16 = [v14 isEqual:v15];
+    v13 = canonicalIds3;
+    canonicalIds4 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self canonicalIds];
+    canonicalIds5 = [equalCopy canonicalIds];
+    v16 = [canonicalIds4 isEqual:canonicalIds5];
 
     if (!v16)
     {
@@ -385,22 +385,22 @@ LABEL_6:
   {
   }
 
-  v10 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
-  v11 = [v4 catId];
-  if ((v10 != 0) == (v11 == 0))
+  canonicalIds = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
+  canonicalIds2 = [equalCopy catId];
+  if ((canonicalIds != 0) == (canonicalIds2 == 0))
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v17 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
-  if (v17)
+  catId = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
+  if (catId)
   {
-    v18 = v17;
-    v19 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
-    v20 = [v4 catId];
-    v21 = [v19 isEqual:v20];
+    v18 = catId;
+    catId2 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
+    catId3 = [equalCopy catId];
+    v21 = [catId2 isEqual:catId3];
 
     if (!v21)
     {
@@ -414,26 +414,26 @@ LABEL_18:
 
   v24 = *(&self->_isLowConfidenceKnowledgeResult + 1);
   v25 = (v24 >> 2) & 1;
-  v26 = v4[37];
+  v26 = equalCopy[37];
   if (v25 == ((v26 >> 2) & 1))
   {
     if (v25)
     {
       confidenceScore = self->_confidenceScore;
-      [v4 confidenceScore];
+      [equalCopy confidenceScore];
       if (confidenceScore != v28)
       {
         goto LABEL_19;
       }
 
       v24 = *(&self->_isLowConfidenceKnowledgeResult + 1);
-      v26 = v4[37];
+      v26 = equalCopy[37];
     }
 
     v29 = (v24 >> 3) & 1;
     if (v29 == ((v26 >> 3) & 1))
     {
-      if (!v29 || (isLowConfidenceKnowledgeResult = self->_isLowConfidenceKnowledgeResult, isLowConfidenceKnowledgeResult == [v4 isLowConfidenceKnowledgeResult]))
+      if (!v29 || (isLowConfidenceKnowledgeResult = self->_isLowConfidenceKnowledgeResult, isLowConfidenceKnowledgeResult == [equalCopy isLowConfidenceKnowledgeResult]))
       {
         v22 = 1;
         goto LABEL_20;
@@ -448,10 +448,10 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isLowConfidenceKnowledgeResult + 1);
   if (v5)
   {
@@ -492,9 +492,9 @@ LABEL_20:
     while (v8);
   }
 
-  v11 = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
+  catId = [(EXPSiriSchemaEXPSiriPegasusResponseSummary *)self catId];
 
-  if (v11)
+  if (catId)
   {
     PBDataWriterWriteStringField();
   }
@@ -512,9 +512,9 @@ LABEL_20:
   }
 }
 
-- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)a3
+- (void)setHasIsLowConfidenceKnowledgeResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 8;
   }
@@ -527,9 +527,9 @@ LABEL_20:
   *(&self->_isLowConfidenceKnowledgeResult + 1) = *(&self->_isLowConfidenceKnowledgeResult + 1) & 0xF7 | v3;
 }
 
-- (void)setHasConfidenceScore:(BOOL)a3
+- (void)setHasConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -542,27 +542,27 @@ LABEL_20:
   *(&self->_isLowConfidenceKnowledgeResult + 1) = *(&self->_isLowConfidenceKnowledgeResult + 1) & 0xFB | v3;
 }
 
-- (void)addCanonicalIds:(id)a3
+- (void)addCanonicalIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   canonicalIds = self->_canonicalIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!canonicalIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_canonicalIds;
-    self->_canonicalIds = v6;
+    self->_canonicalIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     canonicalIds = self->_canonicalIds;
   }
 
-  [(NSArray *)canonicalIds addObject:v4];
+  [(NSArray *)canonicalIds addObject:idsCopy];
 }
 
-- (void)setHasResponseStatus:(BOOL)a3
+- (void)setHasResponseStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }

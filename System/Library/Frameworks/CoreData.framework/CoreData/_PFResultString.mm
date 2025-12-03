@@ -1,7 +1,7 @@
 @interface _PFResultString
 + (unint64_t)bufferOffset;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _PFResultString
@@ -13,7 +13,7 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
 

@@ -1,15 +1,15 @@
 @interface SBCoverSheetDimmingView
-- (SBCoverSheetDimmingView)initWithFrame:(CGRect)a3;
+- (SBCoverSheetDimmingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SBCoverSheetDimmingView
 
-- (SBCoverSheetDimmingView)initWithFrame:(CGRect)a3
+- (SBCoverSheetDimmingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SBCoverSheetDimmingView;
-  v3 = [(SBCoverSheetDimmingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBCoverSheetDimmingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.4];

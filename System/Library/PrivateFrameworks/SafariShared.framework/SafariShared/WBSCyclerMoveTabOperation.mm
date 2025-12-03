@@ -1,19 +1,19 @@
 @interface WBSCyclerMoveTabOperation
-- (id)_randomTabGroupInContext:(id)a3 requireTabs:(BOOL)a4 notIntersecting:(id)a5;
-- (void)executeWithContext:(id)a3 completionHandler:(id)a4;
+- (id)_randomTabGroupInContext:(id)context requireTabs:(BOOL)tabs notIntersecting:(id)intersecting;
+- (void)executeWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation WBSCyclerMoveTabOperation
 
-- (void)executeWithContext:(id)a3 completionHandler:(id)a4
+- (void)executeWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = [MEMORY[0x1E695DFD8] set];
-  v9 = [(WBSCyclerMoveTabOperation *)self _randomTabGroupInContext:v6 requireTabs:1 notIntersecting:v8];
+  v9 = [(WBSCyclerMoveTabOperation *)self _randomTabGroupInContext:contextCopy requireTabs:1 notIntersecting:v8];
 
   v10 = [MEMORY[0x1E695DFD8] setWithObject:v9];
-  v11 = [(WBSCyclerMoveTabOperation *)self _randomTabGroupInContext:v6 requireTabs:0 notIntersecting:v10];
+  v11 = [(WBSCyclerMoveTabOperation *)self _randomTabGroupInContext:contextCopy requireTabs:0 notIntersecting:v10];
 
   if (v9)
   {
@@ -27,29 +27,29 @@
 
   if (v12)
   {
-    v13 = [v6 topLevelItem];
-    v7[2](v7, v13);
+    topLevelItem = [contextCopy topLevelItem];
+    handlerCopy[2](handlerCopy, topLevelItem);
   }
 
   else
   {
-    v14 = [v9 randomTabDescendant];
+    randomTabDescendant = [v9 randomTabDescendant];
     v15 = +[WBSCyclerRandomnessUtilities randomIntegerWithUpperBound:](WBSCyclerRandomnessUtilities, "randomIntegerWithUpperBound:", [v11 numberOfTabs] + 1);
-    v16 = [v6 testTarget];
-    v17 = [v14 uniqueIdentifier];
-    v18 = [v11 uniqueIdentifier];
+    testTarget = [contextCopy testTarget];
+    uniqueIdentifier = [randomTabDescendant uniqueIdentifier];
+    uniqueIdentifier2 = [v11 uniqueIdentifier];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __66__WBSCyclerMoveTabOperation_executeWithContext_completionHandler___block_invoke;
     v20[3] = &unk_1E7FC5120;
-    v25 = v7;
-    v21 = v6;
+    v25 = handlerCopy;
+    v21 = contextCopy;
     v22 = v9;
     v23 = v11;
-    v24 = v14;
+    v24 = randomTabDescendant;
     v26 = v15;
-    v19 = v14;
-    [v16 moveBookmarkWithIdentifier:v17 intoListWithIdentifier:v18 atIndex:v15 reply:v20];
+    v19 = randomTabDescendant;
+    [testTarget moveBookmarkWithIdentifier:uniqueIdentifier intoListWithIdentifier:uniqueIdentifier2 atIndex:v15 reply:v20];
   }
 }
 
@@ -92,21 +92,21 @@ void __66__WBSCyclerMoveTabOperation_executeWithContext_completionHandler___bloc
   }
 }
 
-- (id)_randomTabGroupInContext:(id)a3 requireTabs:(BOOL)a4 notIntersecting:(id)a5
+- (id)_randomTabGroupInContext:(id)context requireTabs:(BOOL)tabs notIntersecting:(id)intersecting
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 topLevelItem];
+  contextCopy = context;
+  intersectingCopy = intersecting;
+  topLevelItem = [contextCopy topLevelItem];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__WBSCyclerMoveTabOperation__randomTabGroupInContext_requireTabs_notIntersecting___block_invoke;
   v14[3] = &unk_1E7FC51E8;
-  v17 = a4;
-  v15 = v7;
-  v16 = v8;
-  v10 = v8;
-  v11 = v7;
-  v12 = [v11 randomDescendantOfList:v9 enforcingTitlePrefixValidity:1 passingTest:v14];
+  tabsCopy = tabs;
+  v15 = contextCopy;
+  v16 = intersectingCopy;
+  v10 = intersectingCopy;
+  v11 = contextCopy;
+  v12 = [v11 randomDescendantOfList:topLevelItem enforcingTitlePrefixValidity:1 passingTest:v14];
 
   return v12;
 }

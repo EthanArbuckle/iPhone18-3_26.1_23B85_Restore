@@ -1,24 +1,24 @@
 @interface SiriAcousticIdHeaderView
-- (SiriAcousticIdHeaderView)initWithFrame:(CGRect)a3;
+- (SiriAcousticIdHeaderView)initWithFrame:(CGRect)frame;
 - (SiriAcousticIdHeaderViewDelegate)delegate;
-- (void)openButtonTapped:(id)a3;
-- (void)playButtonTapped:(id)a3;
-- (void)setAlbumArt:(id)a3;
-- (void)setArtistString:(id)a3;
-- (void)setButtonLayout:(int64_t)a3;
-- (void)setPlayButtonState:(int64_t)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setSongTitle:(id)a3;
+- (void)openButtonTapped:(id)tapped;
+- (void)playButtonTapped:(id)tapped;
+- (void)setAlbumArt:(id)art;
+- (void)setArtistString:(id)string;
+- (void)setButtonLayout:(int64_t)layout;
+- (void)setPlayButtonState:(int64_t)state;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setSongTitle:(id)title;
 - (void)updateConstraints;
 @end
 
 @implementation SiriAcousticIdHeaderView
 
-- (SiriAcousticIdHeaderView)initWithFrame:(CGRect)a3
+- (SiriAcousticIdHeaderView)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = SiriAcousticIdHeaderView;
-  v3 = [(SiriAcousticIdHeaderView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriAcousticIdHeaderView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -100,21 +100,21 @@
   return v4;
 }
 
-- (void)setAlbumArt:(id)a3
+- (void)setAlbumArt:(id)art
 {
-  v11 = a3;
-  v5 = [(SiriAcousticIdHeaderView *)self albumArt];
-  v6 = [v5 isEqual:v11];
+  artCopy = art;
+  albumArt = [(SiriAcousticIdHeaderView *)self albumArt];
+  v6 = [albumArt isEqual:artCopy];
 
   if ((v6 & 1) == 0)
   {
     [(SiriUIDownloadableImageView *)self->_albumArtImageView removeFromSuperview];
-    objc_storeStrong(&self->_albumArt, a3);
+    objc_storeStrong(&self->_albumArt, art);
     if (self->_albumArt)
     {
       v7 = [SiriUIDownloadableImageView alloc];
       v8 = [NSBundle bundleForClass:objc_opt_class()];
-      v9 = [v7 initWithImageURL:v11 placeHolderImageName:@"album-art-placeholder" placeHolderImageBundle:v8];
+      v9 = [v7 initWithImageURL:artCopy placeHolderImageName:@"album-art-placeholder" placeHolderImageBundle:v8];
       albumArtImageView = self->_albumArtImageView;
       self->_albumArtImageView = v9;
 
@@ -127,12 +127,12 @@
   }
 }
 
-- (void)setSongTitle:(id)a3
+- (void)setSongTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_songTitle isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     songTitle = self->_songTitle;
     self->_songTitle = v4;
 
@@ -140,12 +140,12 @@
   }
 }
 
-- (void)setArtistString:(id)a3
+- (void)setArtistString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_artistString isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [stringCopy copy];
     artistString = self->_artistString;
     self->_artistString = v4;
 
@@ -153,27 +153,27 @@
   }
 }
 
-- (void)setButtonLayout:(int64_t)a3
+- (void)setButtonLayout:(int64_t)layout
 {
-  self->_buttonLayout = a3;
-  if (a3 <= 2)
+  self->_buttonLayout = layout;
+  if (layout <= 2)
   {
-    v5 = 3u >> (a3 & 7);
-    [(SKUIItemOfferButton *)self->_openButton setHidden:(a3 & 1) == 0];
+    v5 = 3u >> (layout & 7);
+    [(SKUIItemOfferButton *)self->_openButton setHidden:(layout & 1) == 0];
     playButton = self->_playButton;
 
     [(SKUIPlayButton *)playButton setHidden:v5 & 1];
   }
 }
 
-- (void)setPlayButtonState:(int64_t)a3
+- (void)setPlayButtonState:(int64_t)state
 {
-  self->_playButtonState = a3;
-  v5 = [(SKUIPlayButton *)self->_playButton superview];
+  self->_playButtonState = state;
+  superview = [(SKUIPlayButton *)self->_playButton superview];
 
-  if (v5)
+  if (superview)
   {
-    switch(a3)
+    switch(state)
     {
       case 2:
         playButton = self->_playButton;
@@ -196,7 +196,7 @@
   }
 }
 
-- (void)openButtonTapped:(id)a3
+- (void)openButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -208,7 +208,7 @@
   }
 }
 
-- (void)playButtonTapped:(id)a3
+- (void)playButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -306,14 +306,14 @@
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = SiriAcousticIdHeaderView;
-  [(SiriAcousticIdHeaderView *)&v5 setSemanticContentAttribute:a3];
-  v4 = [(SiriAcousticIdHeaderView *)self constraints];
-  [(SiriAcousticIdHeaderView *)self removeConstraints:v4];
-  [(SiriAcousticIdHeaderView *)self addConstraints:v4];
+  [(SiriAcousticIdHeaderView *)&v5 setSemanticContentAttribute:attribute];
+  constraints = [(SiriAcousticIdHeaderView *)self constraints];
+  [(SiriAcousticIdHeaderView *)self removeConstraints:constraints];
+  [(SiriAcousticIdHeaderView *)self addConstraints:constraints];
 }
 
 - (SiriAcousticIdHeaderViewDelegate)delegate

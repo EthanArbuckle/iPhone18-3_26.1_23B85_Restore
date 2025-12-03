@@ -1,26 +1,26 @@
 @interface MTSecureDownloadRenewalManager
-+ (id)inContextKeyDataFor:(int64_t)a3 ctx:(id)a4;
-- (MTSecureDownloadRenewalManager)initWithDelegate:(id)a3;
-- (void)requestSecureDeletionOf:(int64_t)a3 completionHandler:(id)a4;
-- (void)requestSecureDeletionOfOrphanedKeysWithCompletionHandler:(id)a3;
-- (void)requestSecureDeletionOfStoreTrackIds:(id)a3 completionHandler:(id)a4;
++ (id)inContextKeyDataFor:(int64_t)for ctx:(id)ctx;
+- (MTSecureDownloadRenewalManager)initWithDelegate:(id)delegate;
+- (void)requestSecureDeletionOf:(int64_t)of completionHandler:(id)handler;
+- (void)requestSecureDeletionOfOrphanedKeysWithCompletionHandler:(id)handler;
+- (void)requestSecureDeletionOfStoreTrackIds:(id)ids completionHandler:(id)handler;
 - (void)updateDRMKeysForDownloads;
-- (void)updateDRMKeysForDownloadsWithUrlProtocolDelegate:(id)a3 completionHandler:(id)a4;
+- (void)updateDRMKeysForDownloadsWithUrlProtocolDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation MTSecureDownloadRenewalManager
 
-- (MTSecureDownloadRenewalManager)initWithDelegate:(id)a3
+- (MTSecureDownloadRenewalManager)initWithDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = sub_1D8CFDE70(a3);
+  v4 = sub_1D8CFDE70(delegate);
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (void)requestSecureDeletionOfOrphanedKeysWithCompletionHandler:(id)a3
+- (void)requestSecureDeletionOfOrphanedKeysWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -35,14 +35,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1D8F15808(v7, v6);
   sub_1D8D15664(v7);
 }
 
-- (void)requestSecureDeletionOf:(int64_t)a3 completionHandler:(id)a4
+- (void)requestSecureDeletionOf:(int64_t)of completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -55,14 +55,14 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_1D8F15FFC(a3, v6, v7);
+  selfCopy = self;
+  sub_1D8F15FFC(of, v6, v7);
   sub_1D8D15664(v6);
 }
 
-- (void)requestSecureDeletionOfStoreTrackIds:(id)a3 completionHandler:(id)a4
+- (void)requestSecureDeletionOfStoreTrackIds:(id)ids completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_1D91785FC();
   if (v5)
   {
@@ -76,20 +76,20 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1D8F16720(v6, v5, v7);
   sub_1D8D15664(v5);
 }
 
 - (void)updateDRMKeysForDownloads
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8F1EC28(0, 0);
 }
 
-- (void)updateDRMKeysForDownloadsWithUrlProtocolDelegate:(id)a3 completionHandler:(id)a4
+- (void)updateDRMKeysForDownloadsWithUrlProtocolDelegate:(id)delegate completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -103,16 +103,16 @@
   }
 
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   sub_1D8F1EC28(v5, v6);
   sub_1D8D15664(v5);
   swift_unknownObjectRelease();
 }
 
-+ (id)inContextKeyDataFor:(int64_t)a3 ctx:(id)a4
++ (id)inContextKeyDataFor:(int64_t)for ctx:(id)ctx
 {
-  v5 = a4;
-  v6 = _s18PodcastsFoundation28SecureDownloadRenewalManagerC16inContextKeyData3for3ctxSo09MTOfflineiJ0CSgs5Int64V_So015NSManagedObjectH0CtFZ_0(a3, v5);
+  ctxCopy = ctx;
+  v6 = _s18PodcastsFoundation28SecureDownloadRenewalManagerC16inContextKeyData3for3ctxSo09MTOfflineiJ0CSgs5Int64V_So015NSManagedObjectH0CtFZ_0(for, ctxCopy);
 
   return v6;
 }

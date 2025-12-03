@@ -1,12 +1,12 @@
 @interface CHScoreSummaryWrapper
 - (CHScoreSummaryWrapper)init;
-- (CHScoreSummaryWrapper)initWithElapsedSeconds:(int64_t)a3 personalScore:(float)a4 communityLowerScore:(float)a5 communityLowerMiddleScore:(float)a6 communityUpperMiddleScore:(float)a7 communityUpperScore:(float)a8;
+- (CHScoreSummaryWrapper)initWithElapsedSeconds:(int64_t)seconds personalScore:(float)score communityLowerScore:(float)lowerScore communityLowerMiddleScore:(float)middleScore communityUpperMiddleScore:(float)upperMiddleScore communityUpperScore:(float)upperScore;
 - (NSString)description;
 @end
 
 @implementation CHScoreSummaryWrapper
 
-- (CHScoreSummaryWrapper)initWithElapsedSeconds:(int64_t)a3 personalScore:(float)a4 communityLowerScore:(float)a5 communityLowerMiddleScore:(float)a6 communityUpperMiddleScore:(float)a7 communityUpperScore:(float)a8
+- (CHScoreSummaryWrapper)initWithElapsedSeconds:(int64_t)seconds personalScore:(float)score communityLowerScore:(float)lowerScore communityLowerMiddleScore:(float)middleScore communityUpperMiddleScore:(float)upperMiddleScore communityUpperScore:(float)upperScore
 {
   v9 = type metadata accessor for ScoreSummary();
   v10 = *(v9 - 8);
@@ -22,7 +22,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ScoreSummary.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

@@ -1,16 +1,16 @@
 @interface CKAlarmInteractionProcessor
-- (BOOL)processInteraction:(id)a3 bundleId:(id)a4;
+- (BOOL)processInteraction:(id)interaction bundleId:(id)id;
 @end
 
 @implementation CKAlarmInteractionProcessor
 
-- (BOOL)processInteraction:(id)a3 bundleId:(id)a4
+- (BOOL)processInteraction:(id)interaction bundleId:(id)id
 {
-  v5 = a4;
-  v6 = [a3 intent];
-  v7 = [v6 verb];
-  v8 = [v6 parametersByName];
-  v9 = [v8 objectForKey:@"repeat"];
+  idCopy = id;
+  intent = [interaction intent];
+  verb = [intent verb];
+  parametersByName = [intent parametersByName];
+  v9 = [parametersByName objectForKey:@"repeat"];
   v10 = [v9 count];
 
   if (!v10)
@@ -29,7 +29,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (([v7 isEqualToString:@"Delete"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"Disable"))
+  if (([verb isEqualToString:@"Delete"] & 1) != 0 || objc_msgSend(verb, "isEqualToString:", @"Disable"))
   {
     v11 = CKLogContextDaemon;
     if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -45,11 +45,11 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  v15 = [NSString stringWithFormat:@"%@#%@%@", @"RecurringAlarm", @"RecurringAlarmApp", v7];
+  v15 = [NSString stringWithFormat:@"%@#%@%@", @"RecurringAlarm", @"RecurringAlarmApp", verb];
   v16 = +[NSDate date];
-  if (v5)
+  if (idCopy)
   {
-    v17 = v5;
+    v17 = idCopy;
   }
 
   else

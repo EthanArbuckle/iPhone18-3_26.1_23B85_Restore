@@ -1,43 +1,43 @@
 @interface SAURLSizerConfiguration
-+ (id)newWithReplyController:(id)a3 urls:(id)a4;
-- (SAURLSizerConfiguration)initWithReplayController:(id)a3 urls:(id)a4;
-- (void)callHandlerWithResults:(id)a3 error:(id)a4;
++ (id)newWithReplyController:(id)controller urls:(id)urls;
+- (SAURLSizerConfiguration)initWithReplayController:(id)controller urls:(id)urls;
+- (void)callHandlerWithResults:(id)results error:(id)error;
 @end
 
 @implementation SAURLSizerConfiguration
 
-- (SAURLSizerConfiguration)initWithReplayController:(id)a3 urls:(id)a4
+- (SAURLSizerConfiguration)initWithReplayController:(id)controller urls:(id)urls
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  urlsCopy = urls;
   v12.receiver = self;
   v12.super_class = SAURLSizerConfiguration;
   v9 = [(SAURLSizerConfiguration *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_replyController, a3);
-    objc_storeStrong(&v10->_urls, a4);
+    objc_storeStrong(&v9->_replyController, controller);
+    objc_storeStrong(&v10->_urls, urls);
   }
 
   return v10;
 }
 
-+ (id)newWithReplyController:(id)a3 urls:(id)a4
++ (id)newWithReplyController:(id)controller urls:(id)urls
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithReplayController:v7 urls:v6];
+  urlsCopy = urls;
+  controllerCopy = controller;
+  v8 = [[self alloc] initWithReplayController:controllerCopy urls:urlsCopy];
 
   return v8;
 }
 
-- (void)callHandlerWithResults:(id)a3 error:(id)a4
+- (void)callHandlerWithResults:(id)results error:(id)error
 {
-  v6 = a3;
+  resultsCopy = results;
   if (self->_replyController)
   {
-    v7 = a4;
+    errorCopy = error;
     v8 = SALog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -50,11 +50,11 @@
     v11[2] = sub_100022BCC;
     v11[3] = &unk_1000652D0;
     v11[4] = self;
-    [(SAReplyProtocol *)replyController callURLSizerHandlerWithResults:v6 error:v7 withHandlerResultsBlock:v11];
+    [(SAReplyProtocol *)replyController callURLSizerHandlerWithResults:resultsCopy error:errorCopy withHandlerResultsBlock:v11];
   }
 
   results = self->_results;
-  self->_results = v6;
+  self->_results = resultsCopy;
 }
 
 @end

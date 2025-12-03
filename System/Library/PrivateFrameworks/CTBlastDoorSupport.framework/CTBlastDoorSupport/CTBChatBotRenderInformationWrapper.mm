@@ -1,11 +1,11 @@
 @interface CTBChatBotRenderInformationWrapper
-- (CTBChatBotRenderInformationWrapper)initWithWrapped:(optional<ctb:(optional<ctb:(optional<ctb::chatbot::WebResources> *)a5 :chatbot::CategoryList> *)a4 :chatbot::RenderInformation> *)a3;
+- (CTBChatBotRenderInformationWrapper)initWithWrapped:(optional<ctb:(optional<ctb:(optional<ctb::chatbot::WebResources> *)wrapped :chatbot::CategoryList> *)a4 :chatbot::RenderInformation> *)a3;
 - (id).cxx_construct;
 @end
 
 @implementation CTBChatBotRenderInformationWrapper
 
-- (CTBChatBotRenderInformationWrapper)initWithWrapped:(optional<ctb:(optional<ctb:(optional<ctb::chatbot::WebResources> *)a5 :chatbot::CategoryList> *)a4 :chatbot::RenderInformation> *)a3
+- (CTBChatBotRenderInformationWrapper)initWithWrapped:(optional<ctb:(optional<ctb:(optional<ctb::chatbot::WebResources> *)wrapped :chatbot::CategoryList> *)a4 :chatbot::RenderInformation> *)a3
 {
   v9.receiver = self;
   v9.super_class = CTBChatBotRenderInformationWrapper;

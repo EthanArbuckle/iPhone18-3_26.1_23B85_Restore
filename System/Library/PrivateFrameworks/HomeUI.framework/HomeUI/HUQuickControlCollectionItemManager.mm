@@ -1,33 +1,33 @@
 @interface HUQuickControlCollectionItemManager
-- (BOOL)isGridItem:(id)a3;
-- (HUQuickControlCollectionItemManager)initWithDelegate:(id)a3 gridItemProviderCreator:(id)a4 supplementaryItemProviderCreator:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (BOOL)isGridItem:(id)item;
+- (HUQuickControlCollectionItemManager)initWithDelegate:(id)delegate gridItemProviderCreator:(id)creator supplementaryItemProviderCreator:(id)providerCreator;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUQuickControlCollectionItemManager
 
-- (HUQuickControlCollectionItemManager)initWithDelegate:(id)a3 gridItemProviderCreator:(id)a4 supplementaryItemProviderCreator:(id)a5
+- (HUQuickControlCollectionItemManager)initWithDelegate:(id)delegate gridItemProviderCreator:(id)creator supplementaryItemProviderCreator:(id)providerCreator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  delegateCopy = delegate;
+  creatorCopy = creator;
+  providerCreatorCopy = providerCreator;
+  if (!creatorCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HUQuickControlCollectionItemManager.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"gridItemProviderCreator"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlCollectionItemManager.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"gridItemProviderCreator"}];
   }
 
   v19.receiver = self;
   v19.super_class = HUQuickControlCollectionItemManager;
-  v12 = [(HFItemManager *)&v19 initWithDelegate:v9 sourceItem:0];
+  v12 = [(HFItemManager *)&v19 initWithDelegate:delegateCopy sourceItem:0];
   if (v12)
   {
-    v13 = _Block_copy(v10);
+    v13 = _Block_copy(creatorCopy);
     gridItemProviderCreator = v12->_gridItemProviderCreator;
     v12->_gridItemProviderCreator = v13;
 
-    v15 = _Block_copy(v11);
+    v15 = _Block_copy(providerCreatorCopy);
     supplementaryItemProviderCreator = v12->_supplementaryItemProviderCreator;
     v12->_supplementaryItemProviderCreator = v15;
   }
@@ -35,71 +35,71 @@
   return v12;
 }
 
-- (BOOL)isGridItem:(id)a3
+- (BOOL)isGridItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUQuickControlCollectionItemManager *)self gridItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  gridItemProvider = [(HUQuickControlCollectionItemManager *)self gridItemProvider];
+  items = [gridItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   return v7;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HUQuickControlCollectionItemManager *)self gridItemProviderCreator];
-  v6 = (v5)[2](v5, v4);
+  homeCopy = home;
+  gridItemProviderCreator = [(HUQuickControlCollectionItemManager *)self gridItemProviderCreator];
+  v6 = (gridItemProviderCreator)[2](gridItemProviderCreator, homeCopy);
   [(HUQuickControlCollectionItemManager *)self setGridItemProvider:v6];
 
   v7 = MEMORY[0x277CBEB18];
-  v8 = [(HUQuickControlCollectionItemManager *)self gridItemProvider];
-  v9 = [v7 arrayWithObject:v8];
+  gridItemProvider = [(HUQuickControlCollectionItemManager *)self gridItemProvider];
+  v9 = [v7 arrayWithObject:gridItemProvider];
 
-  v10 = [(HUQuickControlCollectionItemManager *)self supplementaryItemProviderCreator];
+  supplementaryItemProviderCreator = [(HUQuickControlCollectionItemManager *)self supplementaryItemProviderCreator];
 
-  if (v10)
+  if (supplementaryItemProviderCreator)
   {
-    v11 = [(HUQuickControlCollectionItemManager *)self supplementaryItemProviderCreator];
-    v12 = (v11)[2](v11, v4);
+    supplementaryItemProviderCreator2 = [(HUQuickControlCollectionItemManager *)self supplementaryItemProviderCreator];
+    v12 = (supplementaryItemProviderCreator2)[2](supplementaryItemProviderCreator2, homeCopy);
     [(HUQuickControlCollectionItemManager *)self setSupplementaryItemProvider:v12];
 
-    v13 = [(HUQuickControlCollectionItemManager *)self supplementaryItemProvider];
-    [v9 addObject:v13];
+    supplementaryItemProvider = [(HUQuickControlCollectionItemManager *)self supplementaryItemProvider];
+    [v9 addObject:supplementaryItemProvider];
   }
 
   return v9;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"grid"];
-  v7 = [(HUQuickControlCollectionItemManager *)self gridItemProvider];
-  v8 = [v7 items];
-  v9 = [v8 allObjects];
-  v10 = [MEMORY[0x277D14778] defaultItemComparator];
-  v11 = [v9 sortedArrayUsingComparator:v10];
+  gridItemProvider = [(HUQuickControlCollectionItemManager *)self gridItemProvider];
+  items = [gridItemProvider items];
+  allObjects = [items allObjects];
+  defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+  v11 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
   [v6 setItems:v11];
 
   [v5 addObject:v6];
-  v12 = [(HUQuickControlCollectionItemManager *)self supplementaryItemProvider];
+  supplementaryItemProvider = [(HUQuickControlCollectionItemManager *)self supplementaryItemProvider];
 
-  if (v12)
+  if (supplementaryItemProvider)
   {
     v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"supplementary"];
-    v14 = [(HUQuickControlCollectionItemManager *)self supplementaryItemProvider];
-    v15 = [v14 items];
-    v16 = [v15 allObjects];
-    v17 = [MEMORY[0x277D14778] defaultItemComparator];
-    v18 = [v16 sortedArrayUsingComparator:v17];
+    supplementaryItemProvider2 = [(HUQuickControlCollectionItemManager *)self supplementaryItemProvider];
+    items2 = [supplementaryItemProvider2 items];
+    allObjects2 = [items2 allObjects];
+    defaultItemComparator2 = [MEMORY[0x277D14778] defaultItemComparator];
+    v18 = [allObjects2 sortedArrayUsingComparator:defaultItemComparator2];
     [v13 setItems:v18];
 
     [v5 addObject:v13];
   }
 
-  v19 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v19 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v19;
 }

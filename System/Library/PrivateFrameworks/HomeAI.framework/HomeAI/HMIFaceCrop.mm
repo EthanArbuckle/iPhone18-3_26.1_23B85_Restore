@@ -1,41 +1,41 @@
 @interface HMIFaceCrop
-+ (id)faceCropFromPhotosFaceCropImageData:(id)a3;
-+ (id)selectBestObservation:(id)a3 faceBoundingBoxFromPhotos:(CGRect)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)faceCropFromPhotosFaceCropImageData:(id)data;
++ (id)selectBestObservation:(id)observation faceBoundingBoxFromPhotos:(CGRect)photos;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)faceBoundingBox;
-- (HMIFaceCrop)initWithCoder:(id)a3;
-- (HMIFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6;
+- (HMIFaceCrop)initWithCoder:(id)coder;
+- (HMIFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIFaceCrop
 
-- (HMIFaceCrop)initWithUUID:(id)a3 dataRepresentation:(id)a4 dateCreated:(id)a5 faceBoundingBox:(CGRect)a6
+- (HMIFaceCrop)initWithUUID:(id)d dataRepresentation:(id)representation dateCreated:(id)created faceBoundingBox:(CGRect)box
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (!v13)
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  dCopy = d;
+  representationCopy = representation;
+  createdCopy = created;
+  if (!dCopy)
   {
     [HMIPersonFaceCrop initWithUUID:dataRepresentation:dateCreated:faceBoundingBox:personUUID:source:];
     goto LABEL_8;
   }
 
-  if (!v14)
+  if (!representationCopy)
   {
 LABEL_8:
     [HMIPersonFaceCrop initWithUUID:dataRepresentation:dateCreated:faceBoundingBox:personUUID:source:];
     goto LABEL_9;
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = createdCopy;
+  if (!createdCopy)
   {
 LABEL_9:
     v25 = [HMIPersonFaceCrop initWithUUID:dataRepresentation:dateCreated:faceBoundingBox:personUUID:source:];
@@ -47,11 +47,11 @@ LABEL_9:
   v17 = [(HMIFaceCrop *)&v28 init];
   if (v17)
   {
-    v18 = [v13 copy];
+    v18 = [dCopy copy];
     UUID = v17->_UUID;
     v17->_UUID = v18;
 
-    v20 = [v14 copy];
+    v20 = [representationCopy copy];
     dataRepresentation = v17->_dataRepresentation;
     v17->_dataRepresentation = v20;
 
@@ -68,17 +68,17 @@ LABEL_9:
   return v17;
 }
 
-+ (id)faceCropFromPhotosFaceCropImageData:(id)a3
++ (id)faceCropFromPhotosFaceCropImageData:(id)data
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v47 = 0;
-  v5 = [HMIFaceDetectorVision detectFacesInImageData:v4 error:&v47];
+  v5 = [HMIFaceDetectorVision detectFacesInImageData:dataCopy error:&v47];
   v6 = v47;
   if (v5 && [v5 count] == 1)
   {
-    v7 = [v5 firstObject];
-    [v7 unalignedBoundingBox];
+    firstObject = [v5 firstObject];
+    [firstObject unalignedBoundingBox];
     HMICGRectFlipCoordinateSpaceNormalized(v8, v9, v10, v11);
     x = v12;
     y = v14;
@@ -87,14 +87,14 @@ LABEL_9:
 
 LABEL_19:
     v43 = [HMIFaceCrop alloc];
-    v44 = [MEMORY[0x277CCAD78] UUID];
-    v45 = [MEMORY[0x277CBEAA8] date];
-    v24 = [(HMIFaceCrop *)v43 initWithUUID:v44 dataRepresentation:v4 dateCreated:v45 faceBoundingBox:x, y, width, height];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    date = [MEMORY[0x277CBEAA8] date];
+    height = [(HMIFaceCrop *)v43 initWithUUID:uUID dataRepresentation:dataCopy dateCreated:date faceBoundingBox:x, y, width, height];
 
     goto LABEL_20;
   }
 
-  [HMIFaceUtilities faceBoundingBoxFromPhotosFaceCropData:v4];
+  [HMIFaceUtilities faceBoundingBoxFromPhotosFaceCropData:dataCopy];
   x = v54.origin.x;
   y = v54.origin.y;
   width = v54.size.width;
@@ -118,7 +118,7 @@ LABEL_19:
       else
       {
         v39 = objc_autoreleasePoolPush();
-        v40 = a1;
+        selfCopy = self;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
@@ -135,7 +135,7 @@ LABEL_19:
     else
     {
       v35 = objc_autoreleasePoolPush();
-      v36 = a1;
+      selfCopy2 = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
@@ -154,7 +154,7 @@ LABEL_19:
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = a1;
+  selfCopy3 = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -165,26 +165,26 @@ LABEL_19:
   }
 
   objc_autoreleasePoolPop(v20);
-  v24 = 0;
+  height = 0;
 LABEL_20:
 
-  return v24;
+  return height;
 }
 
 - (id)attributeDescriptions
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMIFaceCrop *)self UUID];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uUID = [(HMIFaceCrop *)self UUID];
+  v5 = [v3 initWithName:@"UUID" value:uUID];
   v17[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMIFaceCrop *)self dataRepresentation];
-  v8 = [v6 initWithName:@"Data Representation" value:v7];
+  dataRepresentation = [(HMIFaceCrop *)self dataRepresentation];
+  v8 = [v6 initWithName:@"Data Representation" value:dataRepresentation];
   v17[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMIFaceCrop *)self dateCreated];
-  v11 = [v9 initWithName:@"Date Created" value:v10];
+  dateCreated = [(HMIFaceCrop *)self dateCreated];
+  v11 = [v9 initWithName:@"Date Created" value:dateCreated];
   v17[2] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMIFaceCrop *)self faceBoundingBox];
@@ -196,19 +196,19 @@ LABEL_20:
   return v15;
 }
 
-+ (id)selectBestObservation:(id)a3 faceBoundingBoxFromPhotos:(CGRect)a4
++ (id)selectBestObservation:(id)observation faceBoundingBoxFromPhotos:(CGRect)photos
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = photos.size.height;
+  width = photos.size.width;
+  y = photos.origin.y;
+  x = photos.origin.x;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  observationCopy = observation;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v9 = [observationCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -221,7 +221,7 @@ LABEL_20:
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observationCopy);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
@@ -238,7 +238,7 @@ LABEL_20:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v10 = [observationCopy countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v10);
@@ -252,13 +252,13 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -269,17 +269,17 @@ LABEL_20:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMIFaceCrop *)self UUID];
-    v8 = [v6 UUID];
-    if ([v7 isEqual:v8])
+    uUID = [(HMIFaceCrop *)self UUID];
+    uUID2 = [v6 UUID];
+    if ([uUID isEqual:uUID2])
     {
-      v9 = [(HMIFaceCrop *)self dataRepresentation];
-      v10 = [v6 dataRepresentation];
-      if ([v9 isEqualToData:v10])
+      dataRepresentation = [(HMIFaceCrop *)self dataRepresentation];
+      dataRepresentation2 = [v6 dataRepresentation];
+      if ([dataRepresentation isEqualToData:dataRepresentation2])
       {
-        v11 = [(HMIFaceCrop *)self dateCreated];
-        v12 = [v6 dateCreated];
-        if ([v11 isEqualToDate:v12])
+        dateCreated = [(HMIFaceCrop *)self dateCreated];
+        dateCreated2 = [v6 dateCreated];
+        if ([dateCreated isEqualToDate:dateCreated2])
         {
           [(HMIFaceCrop *)self faceBoundingBox];
           v14 = v13;
@@ -326,36 +326,36 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v2 = [(HMIFaceCrop *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(HMIFaceCrop *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(HMIFaceCrop *)self UUID];
-  [v7 encodeObject:v4 forKey:@"HMIFC.ck.u"];
+  coderCopy = coder;
+  uUID = [(HMIFaceCrop *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"HMIFC.ck.u"];
 
-  v5 = [(HMIFaceCrop *)self dataRepresentation];
-  [v7 encodeObject:v5 forKey:@"HMIFC.ck.dr"];
+  dataRepresentation = [(HMIFaceCrop *)self dataRepresentation];
+  [coderCopy encodeObject:dataRepresentation forKey:@"HMIFC.ck.dr"];
 
-  v6 = [(HMIFaceCrop *)self dateCreated];
-  [v7 encodeObject:v6 forKey:@"HMIFC.ck.dc"];
+  dateCreated = [(HMIFaceCrop *)self dateCreated];
+  [coderCopy encodeObject:dateCreated forKey:@"HMIFC.ck.dc"];
 
   [(HMIFaceCrop *)self faceBoundingBox];
-  [v7 encodeRect:@"HMIFC.ck.fbb" forKey:?];
+  [coderCopy encodeRect:@"HMIFC.ck.fbb" forKey:?];
 }
 
-- (HMIFaceCrop)initWithCoder:(id)a3
+- (HMIFaceCrop)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIFC.ck.u"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIFC.ck.dr"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIFC.ck.dc"];
-  [v4 decodeRectForKey:@"HMIFC.ck.fbb"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIFC.ck.u"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIFC.ck.dr"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIFC.ck.dc"];
+  [coderCopy decodeRectForKey:@"HMIFC.ck.fbb"];
   if (v5)
   {
     v8 = v6 == 0;
@@ -369,7 +369,7 @@ LABEL_20:
   if (v8 || v7 == 0)
   {
     v10 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -391,8 +391,8 @@ LABEL_20:
 
   else
   {
-    v13 = [(HMIFaceCrop *)self initWithUUID:v5 dataRepresentation:v6 dateCreated:v7 faceBoundingBox:?];
-    v14 = v13;
+    selfCopy = [(HMIFaceCrop *)self initWithUUID:v5 dataRepresentation:v6 dateCreated:v7 faceBoundingBox:?];
+    v14 = selfCopy;
   }
 
   return v14;

@@ -1,58 +1,58 @@
 @interface AFBluetoothHeadGestureConfiguration
-+ (id)newWithBuilder:(id)a3;
-- (AFBluetoothHeadGestureConfiguration)initWithBuilder:(id)a3;
-- (AFBluetoothHeadGestureConfiguration)initWithCoder:(id)a3;
-- (AFBluetoothHeadGestureConfiguration)initWithIsEnabled:(BOOL)a3 isSupported:(BOOL)a4 acceptGesture:(int64_t)a5 rejectGesture:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFBluetoothHeadGestureConfiguration)initWithBuilder:(id)builder;
+- (AFBluetoothHeadGestureConfiguration)initWithCoder:(id)coder;
+- (AFBluetoothHeadGestureConfiguration)initWithIsEnabled:(BOOL)enabled isSupported:(BOOL)supported acceptGesture:(int64_t)gesture rejectGesture:(int64_t)rejectGesture;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFBluetoothHeadGestureConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   isEnabled = self->_isEnabled;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:isEnabled];
-  [v6 encodeObject:v7 forKey:@"AFBluetoothHeadGestureConfiguration::isEnabled"];
+  [coderCopy encodeObject:v7 forKey:@"AFBluetoothHeadGestureConfiguration::isEnabled"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSupported];
-  [v6 encodeObject:v8 forKey:@"AFBluetoothHeadGestureConfiguration::isSupported"];
+  [coderCopy encodeObject:v8 forKey:@"AFBluetoothHeadGestureConfiguration::isSupported"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInteger:self->_acceptGesture];
-  [v6 encodeObject:v9 forKey:@"AFBluetoothHeadGestureConfiguration::acceptGesture"];
+  [coderCopy encodeObject:v9 forKey:@"AFBluetoothHeadGestureConfiguration::acceptGesture"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:self->_rejectGesture];
-  [v6 encodeObject:v10 forKey:@"AFBluetoothHeadGestureConfiguration::rejectGesture"];
+  [coderCopy encodeObject:v10 forKey:@"AFBluetoothHeadGestureConfiguration::rejectGesture"];
 }
 
-- (AFBluetoothHeadGestureConfiguration)initWithCoder:(id)a3
+- (AFBluetoothHeadGestureConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::isEnabled"];
-  v6 = [v5 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::isEnabled"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::isSupported"];
-  v8 = [v7 BOOLValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::isSupported"];
+  bOOLValue2 = [v7 BOOLValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::acceptGesture"];
-  v10 = [v9 integerValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::acceptGesture"];
+  integerValue = [v9 integerValue];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::rejectGesture"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFBluetoothHeadGestureConfiguration::rejectGesture"];
 
-  v12 = [v11 integerValue];
+  integerValue2 = [v11 integerValue];
 
-  return [(AFBluetoothHeadGestureConfiguration *)self initWithIsEnabled:v6 isSupported:v8 acceptGesture:v10 rejectGesture:v12];
+  return [(AFBluetoothHeadGestureConfiguration *)self initWithIsEnabled:bOOLValue isSupported:bOOLValue2 acceptGesture:integerValue rejectGesture:integerValue2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isEnabled = self->_isEnabled;
       if (isEnabled == [(AFBluetoothHeadGestureConfiguration *)v5 isEnabled]&& (isSupported = self->_isSupported, isSupported == [(AFBluetoothHeadGestureConfiguration *)v5 isSupported]) && (acceptGesture = self->_acceptGesture, acceptGesture == [(AFBluetoothHeadGestureConfiguration *)v5 acceptGesture]))
       {
@@ -99,7 +99,7 @@
   return v6 ^ v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v18.receiver = self;
@@ -156,16 +156,16 @@
   return v16;
 }
 
-- (AFBluetoothHeadGestureConfiguration)initWithIsEnabled:(BOOL)a3 isSupported:(BOOL)a4 acceptGesture:(int64_t)a5 rejectGesture:(int64_t)a6
+- (AFBluetoothHeadGestureConfiguration)initWithIsEnabled:(BOOL)enabled isSupported:(BOOL)supported acceptGesture:(int64_t)gesture rejectGesture:(int64_t)rejectGesture
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __97__AFBluetoothHeadGestureConfiguration_initWithIsEnabled_isSupported_acceptGesture_rejectGesture___block_invoke;
   v7[3] = &__block_descriptor_50_e55_v16__0___AFBluetoothHeadGestureConfigurationMutating__8l;
-  v8 = a3;
-  v9 = a4;
-  v7[4] = a5;
-  v7[5] = a6;
+  enabledCopy = enabled;
+  supportedCopy = supported;
+  v7[4] = gesture;
+  v7[5] = rejectGesture;
   return [(AFBluetoothHeadGestureConfiguration *)self initWithBuilder:v7];
 }
 
@@ -179,17 +179,17 @@ void __97__AFBluetoothHeadGestureConfiguration_initWithIsEnabled_isSupported_acc
   [v4 setRejectGesture:*(a1 + 40)];
 }
 
-- (AFBluetoothHeadGestureConfiguration)initWithBuilder:(id)a3
+- (AFBluetoothHeadGestureConfiguration)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = AFBluetoothHeadGestureConfiguration;
   v5 = [(AFBluetoothHeadGestureConfiguration *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFBluetoothHeadGestureConfigurationMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFBluetoothHeadGestureConfigurationMutation *)v7 isDirty])
     {
       v6->_isEnabled = [(_AFBluetoothHeadGestureConfigurationMutation *)v7 getIsEnabled];
@@ -202,21 +202,21 @@ void __97__AFBluetoothHeadGestureConfiguration_initWithIsEnabled_isSupported_acc
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFBluetoothHeadGestureConfigurationMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFBluetoothHeadGestureConfigurationMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFBluetoothHeadGestureConfiguration);

@@ -1,7 +1,7 @@
 @interface CMIOExtensionProviderServer
 + (CMIOExtensionProviderServer)sharedServer;
 - (CMIOExtensionProviderServer)init;
-- (void)addConnection:(id)a3;
+- (void)addConnection:(id)connection;
 - (void)dealloc;
 - (void)init;
 - (void)start;
@@ -184,7 +184,7 @@ void __36__CMIOExtensionProviderServer_start__block_invoke(uint64_t a1, xpc_obje
       v13 = 2080;
       v14 = "[CMIOExtensionProviderServer stop]";
       v15 = 2112;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@: cancelling listener", &v9, 0x26u);
     }
   }
@@ -204,7 +204,7 @@ void __36__CMIOExtensionProviderServer_start__block_invoke(uint64_t a1, xpc_obje
       v13 = 2080;
       v14 = "[CMIOExtensionProviderServer stop]";
       v15 = 2112;
-      v16 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %@: finished stopping things", &v9, 0x26u);
     }
   }
@@ -212,10 +212,10 @@ void __36__CMIOExtensionProviderServer_start__block_invoke(uint64_t a1, xpc_obje
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [[CMIOExtensionProviderContext alloc] initWithConnection:a3];
+  v3 = [[CMIOExtensionProviderContext alloc] initWithConnection:connection];
   if (v3)
   {
     v4 = v3;

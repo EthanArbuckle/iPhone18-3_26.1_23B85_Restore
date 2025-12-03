@@ -1,27 +1,27 @@
 @interface PSViewController
-+ (void)registerDefaultNavigationCoordinatorClass:(Class)a3;
++ (void)registerDefaultNavigationCoordinatorClass:(Class)class;
 - (BOOL)_isUndoSupportedInCurrentEnvironment;
 - (PSViewController)init;
 - (PSViewControllerNavigationCoordinator)navigationCoordinator;
 - (id)parentController;
 - (id)rootController;
 - (void)_ensureNavigationCoordinator;
-- (void)addChildViewController:(id)a3;
-- (void)handleCanBeShownFromSuspendedState:(id)a3;
+- (void)addChildViewController:(id)controller;
+- (void)handleCanBeShownFromSuspendedState:(id)state;
 - (void)handlePendingShowControllerIfNeeded;
-- (void)handleURL:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
+- (void)handleURL:(id)l;
+- (void)handleURL:(id)l withCompletion:(id)completion;
 - (void)handleURLForPendingViewControllerContainmentIfNeeded;
 - (void)rootController;
-- (void)setNavigationCoordinator:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)showController:(id)a3 animate:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setNavigationCoordinator:(id)coordinator;
+- (void)setSpecifier:(id)specifier;
+- (void)showController:(id)controller animate:(BOOL)animate;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PSViewController
@@ -35,12 +35,12 @@
   if (v2)
   {
     [(PSViewController *)v2 _ensureNavigationCoordinator];
-    v4 = [(PSViewController *)v3 navigationItemLargeTitleDisplayMode];
-    v5 = [(PSViewController *)v3 navigationItem];
-    [v5 setLargeTitleDisplayMode:v4];
+    navigationItemLargeTitleDisplayMode = [(PSViewController *)v3 navigationItemLargeTitleDisplayMode];
+    navigationItem = [(PSViewController *)v3 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:navigationItemLargeTitleDisplayMode];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel_handleCanBeShownFromSuspendedState_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_handleCanBeShownFromSuspendedState_ name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v3;
@@ -74,11 +74,11 @@
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = NSStringFromSelector(a2);
-    v8 = [(PSViewController *)self viewIfLoaded];
-    v9 = [v8 window];
-    v10 = [(PSViewController *)self navigationController];
-    v11 = [(PSViewController *)self parentViewController];
-    v12 = [(PSViewController *)self parentController];
+    viewIfLoaded = [(PSViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    navigationController = [(PSViewController *)self navigationController];
+    parentViewController = [(PSViewController *)self parentViewController];
+    parentController = [(PSViewController *)self parentController];
     *buf = 138545666;
     v20 = v6;
     v21 = 2114;
@@ -86,19 +86,19 @@
     v23 = 2160;
     v24 = 1752392040;
     v25 = 2112;
-    v26 = v9;
+    v26 = window;
     v27 = 2160;
     v28 = 1752392040;
     v29 = 2112;
-    v30 = v10;
+    v30 = navigationController;
     v31 = 2160;
     v32 = 1752392040;
     v33 = 2112;
-    v34 = v11;
+    v34 = parentViewController;
     v35 = 2160;
     v36 = 1752392040;
     v37 = 2112;
-    v38 = v12;
+    v38 = parentController;
     _os_log_impl(&dword_18B008000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Was called with { window of viewIfLoaded: %{mask.hash}@, navigationController: %{mask.hash}@, parentViewController: %{mask.hash}@, parentPreferencesController: %{mask.hash}@ }.", buf, 0x66u);
   }
 
@@ -106,13 +106,13 @@
   if (WeakRetained)
   {
     v14 = WeakRetained;
-    v15 = [(PSViewController *)self rootController];
+    rootController = [(PSViewController *)self rootController];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(PSViewController *)self rootController];
-      [v17 logSettingsPath];
+      rootController2 = [(PSViewController *)self rootController];
+      [rootController2 logSettingsPath];
     }
   }
 }
@@ -147,9 +147,9 @@
   v2 = _os_feature_enabled_impl();
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
-    v5 = [v4 isEqualToString:@"com.apple.Preferences"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v5 = [bundleIdentifier isEqualToString:@"com.apple.Preferences"];
 
     LOBYTE(v2) = v5;
   }
@@ -161,23 +161,23 @@
 {
   if ([(PSViewController *)self isURLHandlingDeferredForViewControllerContainment])
   {
-    v3 = [(PSViewController *)self urlResourceDictionaryPendingViewControllerContainment];
+    urlResourceDictionaryPendingViewControllerContainment = [(PSViewController *)self urlResourceDictionaryPendingViewControllerContainment];
 
-    if (v3)
+    if (urlResourceDictionaryPendingViewControllerContainment)
     {
-      v7 = [(PSViewController *)self urlCompletionHandlerPendingViewControllerContainment];
+      urlCompletionHandlerPendingViewControllerContainment = [(PSViewController *)self urlCompletionHandlerPendingViewControllerContainment];
       [(PSViewController *)self setUrlCompletionHandlerPendingViewControllerContainment:0];
-      v4 = [(PSViewController *)self urlResourceDictionaryPendingViewControllerContainment];
+      urlResourceDictionaryPendingViewControllerContainment2 = [(PSViewController *)self urlResourceDictionaryPendingViewControllerContainment];
       [(PSViewController *)self setUrlResourceDictionaryPendingViewControllerContainment:0];
-      v5 = v7;
-      if (v7 || (NSClassFromString(&cfstr_Pslistcontroll_7.isa), isKindOfClass = objc_opt_isKindOfClass(), v5 = 0, (isKindOfClass & 1) != 0))
+      v5 = urlCompletionHandlerPendingViewControllerContainment;
+      if (urlCompletionHandlerPendingViewControllerContainment || (NSClassFromString(&cfstr_Pslistcontroll_7.isa), isKindOfClass = objc_opt_isKindOfClass(), v5 = 0, (isKindOfClass & 1) != 0))
       {
-        [(PSViewController *)self handleURL:v4 withCompletion:v5];
+        [(PSViewController *)self handleURL:urlResourceDictionaryPendingViewControllerContainment2 withCompletion:v5];
       }
 
       else
       {
-        [(PSViewController *)self handleURL:v4];
+        [(PSViewController *)self handleURL:urlResourceDictionaryPendingViewControllerContainment2];
       }
     }
   }
@@ -191,19 +191,19 @@
     self->_pendingShowControllerPayload = 0;
     v4 = pendingShowControllerPayload;
 
-    v6 = [(_PSPendingShowControllerPayload *)v4 viewControllerToPresent];
-    v5 = [(_PSPendingShowControllerPayload *)v4 animate];
+    viewControllerToPresent = [(_PSPendingShowControllerPayload *)v4 viewControllerToPresent];
+    animate = [(_PSPendingShowControllerPayload *)v4 animate];
 
-    [(PSViewController *)self showController:v6 animate:v5];
+    [(PSViewController *)self showController:viewControllerToPresent animate:animate];
   }
 }
 
-- (void)handleCanBeShownFromSuspendedState:(id)a3
+- (void)handleCanBeShownFromSuspendedState:(id)state
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [(PSViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 containsObject:self];
+  navigationController = [(PSViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers containsObject:self];
 
   if (v6 && ![(PSViewController *)self canBeShownFromSuspendedState])
   {
@@ -219,47 +219,47 @@
       _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@ canBeShownFromSuspendedState is NO, popping/dismissing controller.", &v14, 0x16u);
     }
 
-    v10 = [(PSViewController *)self navigationController];
-    v11 = [v10 popToViewController:self animated:0];
+    navigationController2 = [(PSViewController *)self navigationController];
+    v11 = [navigationController2 popToViewController:self animated:0];
 
-    v12 = [(PSViewController *)self navigationController];
-    v13 = [v12 popViewControllerAnimated:0];
+    navigationController3 = [(PSViewController *)self navigationController];
+    v13 = [navigationController3 popViewControllerAnimated:0];
 
     [(PSViewController *)self dismissViewControllerAnimated:0 completion:0];
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v10 = a3;
-  if (self->_specifier != v10)
+  specifierCopy = specifier;
+  if (self->_specifier != specifierCopy)
   {
-    objc_storeStrong(&self->_specifier, a3);
-    v5 = [(PSSpecifier *)v10 parentController];
-    if (v5)
+    objc_storeStrong(&self->_specifier, specifier);
+    parentController = [(PSSpecifier *)specifierCopy parentController];
+    if (parentController)
     {
-      v6 = v5;
-      v7 = [(PSSpecifier *)v10 parentController];
+      v6 = parentController;
+      parentController2 = [(PSSpecifier *)specifierCopy parentController];
       WeakRetained = objc_loadWeakRetained(&self->_parentController);
 
-      if (v7 != WeakRetained)
+      if (parentController2 != WeakRetained)
       {
-        v9 = [(PSSpecifier *)v10 parentController];
-        [(PSViewController *)self setParentController:v9];
+        parentController3 = [(PSSpecifier *)specifierCopy parentController];
+        [(PSViewController *)self setParentController:parentController3];
       }
     }
   }
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(PSViewController *)self navigationController];
-  v9 = [v8 childViewControllers];
+  controllerCopy = controller;
+  navigationController = [(PSViewController *)self navigationController];
+  childViewControllers = [navigationController childViewControllers];
 
-  if ([v9 containsObject:v7])
+  if ([childViewControllers containsObject:controllerCopy])
   {
     v10 = _PSLoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -280,11 +280,11 @@
     }
   }
 
-  v13 = [(PSViewController *)self navigationController];
+  navigationController2 = [(PSViewController *)self navigationController];
 
   v14 = PKLogForCategory(3);
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v13)
+  if (navigationController2)
   {
     if (v15)
     {
@@ -298,13 +298,13 @@
       v27 = 2160;
       v28 = 1752392040;
       v29 = 2112;
-      v30 = v7;
+      v30 = controllerCopy;
       v31 = 1024;
-      v32 = v4;
+      v32 = animateCopy;
       _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ called with %{mask.hash}@, %{BOOL}d", &v23, 0x30u);
     }
 
-    [(PSViewController *)self _showController:v7 animate:v4];
+    [(PSViewController *)self _showController:controllerCopy animate:animateCopy];
   }
 
   else
@@ -321,60 +321,60 @@
       v27 = 2160;
       v28 = 1752392040;
       v29 = 2112;
-      v30 = v7;
+      v30 = controllerCopy;
       v31 = 1024;
-      v32 = v4;
+      v32 = animateCopy;
       _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ called with %{mask.hash}@, %{BOOL}d but navigationController is nil, stashing.", &v23, 0x30u);
     }
 
-    v22 = [[_PSPendingShowControllerPayload alloc] initWithViewControllerToPresent:v7 animate:v4];
+    v22 = [[_PSPendingShowControllerPayload alloc] initWithViewControllerToPresent:controllerCopy animate:animateCopy];
     [(PSViewController *)self setPendingShowControllerPayload:v22];
   }
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if (-[PSViewController isURLHandlingDeferredForViewControllerContainment](self, "isURLHandlingDeferredForViewControllerContainment") && (-[PSViewController viewIfLoaded](self, "viewIfLoaded"), v7 = objc_claimAutoreleasedReturnValue(), [v7 window], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
-    [(PSViewController *)self setUrlResourceDictionaryPendingViewControllerContainment:v9];
-    [(PSViewController *)self setUrlCompletionHandlerPendingViewControllerContainment:v6];
+    [(PSViewController *)self setUrlResourceDictionaryPendingViewControllerContainment:lCopy];
+    [(PSViewController *)self setUrlCompletionHandlerPendingViewControllerContainment:completionCopy];
   }
 
   else
   {
     [(PSViewController *)self setCallingHandleURLFromHandleURLWithCompletion:1];
-    [(PSViewController *)self handleURL:v9];
+    [(PSViewController *)self handleURL:lCopy];
     [(PSViewController *)self setCallingHandleURLFromHandleURLWithCompletion:0];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   if (![(PSViewController *)self isCallingHandleURLFromHandleURLWithCompletion])
   {
     if ([(PSViewController *)self isURLHandlingDeferredForViewControllerContainment])
     {
-      v4 = [(PSViewController *)self viewIfLoaded];
-      v5 = [v4 window];
+      viewIfLoaded = [(PSViewController *)self viewIfLoaded];
+      window = [viewIfLoaded window];
 
-      if (!v5)
+      if (!window)
       {
-        [(PSViewController *)self setUrlResourceDictionaryPendingViewControllerContainment:v6];
+        [(PSViewController *)self setUrlResourceDictionaryPendingViewControllerContainment:lCopy];
       }
     }
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v38 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PSViewController;
@@ -385,40 +385,40 @@
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    v10 = [(PSViewController *)self viewIfLoaded];
-    v11 = [v10 window];
-    v12 = [(PSViewController *)self navigationController];
-    v13 = [(PSViewController *)self parentViewController];
-    v14 = [(PSViewController *)self parentController];
+    viewIfLoaded = [(PSViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    navigationController = [(PSViewController *)self navigationController];
+    parentViewController = [(PSViewController *)self parentViewController];
+    parentController = [(PSViewController *)self parentController];
     *buf = 138545922;
     v17 = v8;
     v18 = 2114;
     v19 = v9;
     v20 = 1024;
-    v21 = v3;
+    v21 = appearingCopy;
     v22 = 2160;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v11;
+    v25 = window;
     v26 = 2160;
     v27 = 1752392040;
     v28 = 2112;
-    v29 = v12;
+    v29 = navigationController;
     v30 = 2160;
     v31 = 1752392040;
     v32 = 2112;
-    v33 = v13;
+    v33 = parentViewController;
     v34 = 2160;
     v35 = 1752392040;
     v36 = 2112;
-    v37 = v14;
+    v37 = parentController;
     _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Was called with { animated: %{BOOL}d, window of viewIfLoaded: %{mask.hash}@, navigationController: %{mask.hash}@, parentViewController: %{mask.hash}@, parentPreferencesController: %{mask.hash}@ }.", buf, 0x6Cu);
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v38 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PSViewController;
@@ -429,40 +429,40 @@
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    v10 = [(PSViewController *)self viewIfLoaded];
-    v11 = [v10 window];
-    v12 = [(PSViewController *)self navigationController];
-    v13 = [(PSViewController *)self parentViewController];
-    v14 = [(PSViewController *)self parentController];
+    viewIfLoaded = [(PSViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    navigationController = [(PSViewController *)self navigationController];
+    parentViewController = [(PSViewController *)self parentViewController];
+    parentController = [(PSViewController *)self parentController];
     *buf = 138545922;
     v17 = v8;
     v18 = 2114;
     v19 = v9;
     v20 = 1024;
-    v21 = v3;
+    v21 = appearCopy;
     v22 = 2160;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v11;
+    v25 = window;
     v26 = 2160;
     v27 = 1752392040;
     v28 = 2112;
-    v29 = v12;
+    v29 = navigationController;
     v30 = 2160;
     v31 = 1752392040;
     v32 = 2112;
-    v33 = v13;
+    v33 = parentViewController;
     v34 = 2160;
     v35 = 1752392040;
     v36 = 2112;
-    v37 = v14;
+    v37 = parentController;
     _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Was called with { animated: %{BOOL}d, window of viewIfLoaded: %{mask.hash}@, navigationController: %{mask.hash}@, parentViewController: %{mask.hash}@, parentPreferencesController: %{mask.hash}@ }.", buf, 0x6Cu);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v39 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PSViewController;
@@ -473,33 +473,33 @@
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    v10 = [(PSViewController *)self viewIfLoaded];
-    v11 = [v10 window];
-    v12 = [(PSViewController *)self navigationController];
-    v13 = [(PSViewController *)self parentViewController];
-    v14 = [(PSViewController *)self parentController];
+    viewIfLoaded = [(PSViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    navigationController = [(PSViewController *)self navigationController];
+    parentViewController = [(PSViewController *)self parentViewController];
+    parentController = [(PSViewController *)self parentController];
     *buf = 138545922;
     v18 = v8;
     v19 = 2114;
     v20 = v9;
     v21 = 1024;
-    v22 = v3;
+    v22 = appearCopy;
     v23 = 2160;
     v24 = 1752392040;
     v25 = 2112;
-    v26 = v11;
+    v26 = window;
     v27 = 2160;
     v28 = 1752392040;
     v29 = 2112;
-    v30 = v12;
+    v30 = navigationController;
     v31 = 2160;
     v32 = 1752392040;
     v33 = 2112;
-    v34 = v13;
+    v34 = parentViewController;
     v35 = 2160;
     v36 = 1752392040;
     v37 = 2112;
-    v38 = v14;
+    v38 = parentController;
     _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Was called with { animated: %{BOOL}d, window of viewIfLoaded: %{mask.hash}@, navigationController: %{mask.hash}@, parentViewController: %{mask.hash}@, parentPreferencesController: %{mask.hash}@ }.", buf, 0x6Cu);
   }
 
@@ -524,9 +524,9 @@ uint64_t __34__PSViewController_viewDidAppear___block_invoke(uint64_t a1)
   return [v2 handlePendingShowControllerIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v38 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PSViewController;
@@ -537,33 +537,33 @@ uint64_t __34__PSViewController_viewDidAppear___block_invoke(uint64_t a1)
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    v10 = [(PSViewController *)self viewIfLoaded];
-    v11 = [v10 window];
-    v12 = [(PSViewController *)self navigationController];
-    v13 = [(PSViewController *)self parentViewController];
-    v14 = [(PSViewController *)self parentController];
+    viewIfLoaded = [(PSViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    navigationController = [(PSViewController *)self navigationController];
+    parentViewController = [(PSViewController *)self parentViewController];
+    parentController = [(PSViewController *)self parentController];
     *buf = 138545922;
     v17 = v8;
     v18 = 2114;
     v19 = v9;
     v20 = 1024;
-    v21 = v3;
+    v21 = disappearCopy;
     v22 = 2160;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v11;
+    v25 = window;
     v26 = 2160;
     v27 = 1752392040;
     v28 = 2112;
-    v29 = v12;
+    v29 = navigationController;
     v30 = 2160;
     v31 = 1752392040;
     v32 = 2112;
-    v33 = v13;
+    v33 = parentViewController;
     v34 = 2160;
     v35 = 1752392040;
     v36 = 2112;
-    v37 = v14;
+    v37 = parentController;
     _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Was called with { animated: %{BOOL}d, window of viewIfLoaded: %{mask.hash}@, navigationController: %{mask.hash}@, parentViewController: %{mask.hash}@, parentPreferencesController: %{mask.hash}@ }.", buf, 0x6Cu);
   }
 
@@ -573,9 +573,9 @@ uint64_t __34__PSViewController_viewDidAppear___block_invoke(uint64_t a1)
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v38 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PSViewController;
@@ -586,45 +586,45 @@ uint64_t __34__PSViewController_viewDidAppear___block_invoke(uint64_t a1)
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    v10 = [(PSViewController *)self viewIfLoaded];
-    v11 = [v10 window];
-    v12 = [(PSViewController *)self navigationController];
-    v13 = [(PSViewController *)self parentViewController];
-    v14 = [(PSViewController *)self parentController];
+    viewIfLoaded = [(PSViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    navigationController = [(PSViewController *)self navigationController];
+    parentViewController = [(PSViewController *)self parentViewController];
+    parentController = [(PSViewController *)self parentController];
     *buf = 138545922;
     v17 = v8;
     v18 = 2114;
     v19 = v9;
     v20 = 1024;
-    v21 = v3;
+    v21 = disappearCopy;
     v22 = 2160;
     v23 = 1752392040;
     v24 = 2112;
-    v25 = v11;
+    v25 = window;
     v26 = 2160;
     v27 = 1752392040;
     v28 = 2112;
-    v29 = v12;
+    v29 = navigationController;
     v30 = 2160;
     v31 = 1752392040;
     v32 = 2112;
-    v33 = v13;
+    v33 = parentViewController;
     v34 = 2160;
     v35 = 1752392040;
     v36 = 2112;
-    v37 = v14;
+    v37 = parentController;
     _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Was called with { animated: %{BOOL}d, window of viewIfLoaded: %{mask.hash}@, navigationController: %{mask.hash}@, parentViewController: %{mask.hash}@, parentPreferencesController: %{mask.hash}@ }.", buf, 0x6Cu);
   }
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = PSViewController;
-  [(PSViewController *)&v8 addChildViewController:v4];
+  [(PSViewController *)&v8 addChildViewController:controllerCopy];
   objc_opt_class();
-  v5 = v4;
+  v5 = controllerCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -643,26 +643,26 @@ uint64_t __34__PSViewController_viewDidAppear___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)registerDefaultNavigationCoordinatorClass:(Class)a3
++ (void)registerDefaultNavigationCoordinatorClass:(Class)class
 {
   if (ensureDefaultPSViewControllerNavigationCoordinatorRegistration_onceToken != -1)
   {
     [PSViewController _ensureNavigationCoordinator];
   }
 
-  defaultPSViewControllerNavigationCoordinatorClass = a3;
+  defaultPSViewControllerNavigationCoordinatorClass = class;
 }
 
-- (void)setNavigationCoordinator:(id)a3
+- (void)setNavigationCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   if (ensureDefaultPSViewControllerNavigationCoordinatorRegistration_onceToken != -1)
   {
     [PSViewController _ensureNavigationCoordinator];
   }
 
   navigationCoordinator = self->_navigationCoordinator;
-  self->_navigationCoordinator = v4;
+  self->_navigationCoordinator = coordinatorCopy;
 }
 
 - (PSViewControllerNavigationCoordinator)navigationCoordinator

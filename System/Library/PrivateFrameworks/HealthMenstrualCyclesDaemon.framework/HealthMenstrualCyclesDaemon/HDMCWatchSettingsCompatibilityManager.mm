@@ -1,32 +1,32 @@
 @interface HDMCWatchSettingsCompatibilityManager
-- (HDMCWatchSettingsCompatibilityManager)initWithProfile:(id)a3 userDefaults:(id)a4;
+- (HDMCWatchSettingsCompatibilityManager)initWithProfile:(id)profile userDefaults:(id)defaults;
 - (HDMCWatchSettingsCompatibilityManagerDelegate)delegate;
 - (void)_queue_computeAndApplyChangesForAllFeatures;
-- (void)_queue_computeAndApplyChangesForFeature:(id)a3;
-- (void)daemonReady:(id)a3;
-- (void)featureSettingsManager:(id)a3 didUpdateSettingsForFeatureIdentifier:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)_queue_computeAndApplyChangesForFeature:(id)feature;
+- (void)daemonReady:(id)ready;
+- (void)featureSettingsManager:(id)manager didUpdateSettingsForFeatureIdentifier:(id)identifier;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDMCWatchSettingsCompatibilityManager
 
-- (HDMCWatchSettingsCompatibilityManager)initWithProfile:(id)a3 userDefaults:(id)a4
+- (HDMCWatchSettingsCompatibilityManager)initWithProfile:(id)profile userDefaults:(id)defaults
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  defaultsCopy = defaults;
   v19.receiver = self;
   v19.super_class = HDMCWatchSettingsCompatibilityManager;
   v9 = [(HDMCWatchSettingsCompatibilityManager *)&v19 init];
   if (v9)
   {
-    if ([v7 profileType] != 1)
+    if ([profileCopy profileType] != 1)
     {
       [HDMCWatchSettingsCompatibilityManager initWithProfile:a2 userDefaults:v9];
     }
 
-    objc_storeWeak(&v9->_profile, v7);
-    objc_storeStrong(&v9->_userDefaults, a4);
+    objc_storeWeak(&v9->_profile, profileCopy);
+    objc_storeStrong(&v9->_userDefaults, defaults);
     v10 = HKCreateSerialDispatchQueue();
     queue = v9->_queue;
     v9->_queue = v10;
@@ -47,10 +47,10 @@
   return v9;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   dispatch_assert_queue_V2(self->_queue);
   v18 = 0u;
   v19 = 0u;
@@ -74,9 +74,9 @@
 
         v10 = *(*(&v16 + 1) + 8 * v9);
         WeakRetained = objc_loadWeakRetained(&self->_profile);
-        v12 = [WeakRetained featureSettingsManager];
-        v13 = [v10 featureIdentifier];
-        [v12 registerObserver:self featureIdentifier:v13 queue:self->_queue];
+        featureSettingsManager = [WeakRetained featureSettingsManager];
+        featureIdentifier = [v10 featureIdentifier];
+        [featureSettingsManager registerObserver:self featureIdentifier:featureIdentifier queue:self->_queue];
 
         ++v9;
       }
@@ -88,24 +88,24 @@
     while (v7);
   }
 
-  v14 = [v4 daemon];
-  [v14 registerDaemonReadyObserver:self queue:self->_queue];
+  daemon = [readyCopy daemon];
+  [daemon registerDaemonReadyObserver:self queue:self->_queue];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
+  database = [WeakRetained database];
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke;
   v7[3] = &unk_27865A830;
   v7[4] = self;
-  [v5 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v7];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v7];
 }
 
 void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint64_t a1)
@@ -128,10 +128,10 @@ void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint
   [v4 enqueueMaintenanceOperation:v11];
 }
 
-- (void)featureSettingsManager:(id)a3 didUpdateSettingsForFeatureIdentifier:(id)a4
+- (void)featureSettingsManager:(id)manager didUpdateSettingsForFeatureIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2E8];
@@ -141,7 +141,7 @@ void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint
     *buf = 138543618;
     v24 = objc_opt_class();
     v25 = 2114;
-    v26 = v5;
+    v26 = identifierCopy;
     v8 = v24;
     _os_log_impl(&dword_2293D1000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notified of update to settings for %{public}@", buf, 0x16u);
   }
@@ -166,8 +166,8 @@ void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 featureIdentifier];
-        v16 = [v15 isEqualToString:v5];
+        featureIdentifier = [v14 featureIdentifier];
+        v16 = [featureIdentifier isEqualToString:identifierCopy];
 
         if (v16)
         {
@@ -221,20 +221,20 @@ void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_computeAndApplyChangesForFeature:(id)a3
+- (void)_queue_computeAndApplyChangesForFeature:(id)feature
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  featureCopy = feature;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained featureSettingsManager];
-  v7 = [v4 featureIdentifier];
+  featureSettingsManager = [WeakRetained featureSettingsManager];
+  featureIdentifier = [featureCopy featureIdentifier];
   v24 = 0;
-  v8 = [v6 featureSettingsForFeatureIdentifier:v7 error:&v24];
+  v8 = [featureSettingsManager featureSettingsForFeatureIdentifier:featureIdentifier error:&v24];
   v9 = v24;
 
   if (v8)
   {
-    v10 = [v4 userDefaultsChangesFromFeatureSettings:v8 currentUserDefaults:self->_userDefaults];
+    v10 = [featureCopy userDefaultsChangesFromFeatureSettings:v8 currentUserDefaults:self->_userDefaults];
     [(NSUserDefaults *)self->_userDefaults setValuesForKeysWithDictionary:v10];
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC2E8];
@@ -243,11 +243,11 @@ void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint
       v12 = v11;
       v13 = objc_opt_class();
       v14 = v13;
-      v15 = [v4 featureIdentifier];
+      featureIdentifier2 = [featureCopy featureIdentifier];
       *buf = 138543874;
       v26 = v13;
       v27 = 2114;
-      v28 = v15;
+      v28 = featureIdentifier2;
       v29 = 2114;
       v30 = v10;
       _os_log_impl(&dword_2293D1000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Applied changes for %{public}@: %{public}@", buf, 0x20u);
@@ -255,8 +255,8 @@ void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint
 
     v16 = objc_loadWeakRetained(&self->_delegate);
     v17 = MEMORY[0x277CBEB98];
-    v18 = [v10 allKeys];
-    v19 = [v17 setWithArray:v18];
+    allKeys = [v10 allKeys];
+    v19 = [v17 setWithArray:allKeys];
     [v16 watchSettingsCompatibilityManager:self didChangeUserDefaultsKeys:v19];
   }
 
@@ -272,11 +272,11 @@ void __53__HDMCWatchSettingsCompatibilityManager_daemonReady___block_invoke(uint
     v10 = v20;
     v22 = objc_opt_class();
     v16 = v22;
-    v23 = [v4 featureIdentifier];
+    featureIdentifier3 = [featureCopy featureIdentifier];
     *buf = 138543874;
     v26 = v22;
     v27 = 2114;
-    v28 = v23;
+    v28 = featureIdentifier3;
     v29 = 2114;
     v30 = v9;
     _os_log_error_impl(&dword_2293D1000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Error retrieving %{public}@ feature settings: %{public}@", buf, 0x20u);

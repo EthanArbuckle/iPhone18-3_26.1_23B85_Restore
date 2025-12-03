@@ -1,16 +1,16 @@
 @interface PUPosterSettingsController
 - (CGSize)preferredContentSize;
-- (PUPosterSettingsController)initWithRootSettings:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (PUPosterSettingsController)initWithRootSettings:(id)settings;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PUPosterSettingsController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PUPosterSettingsController;
-  [(PUPosterSettingsController *)&v4 viewDidDisappear:a3];
+  [(PUPosterSettingsController *)&v4 viewDidDisappear:disappear];
   [(PXSettings *)self->_posterSettings save];
 }
 
@@ -23,16 +23,16 @@
   return result;
 }
 
-- (PUPosterSettingsController)initWithRootSettings:(id)a3
+- (PUPosterSettingsController)initWithRootSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = PUPosterSettingsController;
-  v6 = [(PUPosterSettingsController *)&v9 initWithRootSettings:v5];
+  v6 = [(PUPosterSettingsController *)&v9 initWithRootSettings:settingsCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_posterSettings, a3);
+    objc_storeStrong(&v6->_posterSettings, settings);
   }
 
   return v7;

@@ -1,21 +1,21 @@
 @interface CallDBMetaInfo
-- (CallDBMetaInfo)initWithURL:(id)a3;
-- (int64_t)readDatabaseVersion:(BOOL)a3;
+- (CallDBMetaInfo)initWithURL:(id)l;
+- (int64_t)readDatabaseVersion:(BOOL)version;
 - (void)reset;
-- (void)writeDatabaseVersion:(int64_t)a3 isTemp:(BOOL)a4;
+- (void)writeDatabaseVersion:(int64_t)version isTemp:(BOOL)temp;
 @end
 
 @implementation CallDBMetaInfo
 
-- (CallDBMetaInfo)initWithURL:(id)a3
+- (CallDBMetaInfo)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = CallDBMetaInfo;
   v5 = [(CallDBMetaInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathComponent:@"com.apple.callhistory.databaseInfo.plist"];
+    v6 = [lCopy URLByAppendingPathComponent:@"com.apple.callhistory.databaseInfo.plist"];
     dbInfoPrefFile = v5->_dbInfoPrefFile;
     v5->_dbInfoPrefFile = v6;
   }
@@ -23,16 +23,16 @@
   return v5;
 }
 
-- (int64_t)readDatabaseVersion:(BOOL)a3
+- (int64_t)readDatabaseVersion:(BOOL)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = MEMORY[0x1E695DF20];
-  v5 = [(CallDBMetaInfo *)self dbInfoPrefFile];
-  v6 = [v4 dictionaryWithContentsOfURL:v5];
+  dbInfoPrefFile = [(CallDBMetaInfo *)self dbInfoPrefFile];
+  v6 = [v4 dictionaryWithContentsOfURL:dbInfoPrefFile];
 
   if (v6)
   {
-    if (v3)
+    if (versionCopy)
     {
       v7 = @"DatabaseVersionTemp";
     }
@@ -45,29 +45,29 @@
     v8 = [v6 objectForKey:v7];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v9 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    integerValue = 0;
   }
 
-  return v9;
+  return integerValue;
 }
 
-- (void)writeDatabaseVersion:(int64_t)a3 isTemp:(BOOL)a4
+- (void)writeDatabaseVersion:(int64_t)version isTemp:(BOOL)temp
 {
-  v4 = a4;
+  tempCopy = temp;
   v7 = MEMORY[0x1E695DF20];
-  v8 = [(CallDBMetaInfo *)self dbInfoPrefFile];
-  v9 = [v7 dictionaryWithContentsOfURL:v8];
+  dbInfoPrefFile = [(CallDBMetaInfo *)self dbInfoPrefFile];
+  v9 = [v7 dictionaryWithContentsOfURL:dbInfoPrefFile];
   v10 = [v9 mutableCopy];
 
   if (!v10)
@@ -75,8 +75,8 @@
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  if (v4)
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:version];
+  if (tempCopy)
   {
     v12 = @"DatabaseVersionTemp";
   }
@@ -87,8 +87,8 @@
   }
 
   [v10 setObject:v11 forKey:v12];
-  v13 = [(CallDBMetaInfo *)self dbInfoPrefFile];
-  v14 = [v10 writeToURL:v13 atomically:1];
+  dbInfoPrefFile2 = [(CallDBMetaInfo *)self dbInfoPrefFile];
+  v14 = [v10 writeToURL:dbInfoPrefFile2 atomically:1];
 
   if ((v14 & 1) == 0)
   {
@@ -105,16 +105,16 @@
 - (void)reset
 {
   v3 = MEMORY[0x1E695DF20];
-  v4 = [(CallDBMetaInfo *)self dbInfoPrefFile];
-  v5 = [v3 dictionaryWithContentsOfURL:v4];
+  dbInfoPrefFile = [(CallDBMetaInfo *)self dbInfoPrefFile];
+  v5 = [v3 dictionaryWithContentsOfURL:dbInfoPrefFile];
   v6 = [v5 mutableCopy];
 
   if (v6)
   {
     [v6 removeObjectForKey:@"DatabaseVersionTemp"];
     [v6 removeObjectForKey:@"DatabaseVersionPerm"];
-    v7 = [(CallDBMetaInfo *)self dbInfoPrefFile];
-    v8 = [v6 writeToURL:v7 atomically:1];
+    dbInfoPrefFile2 = [(CallDBMetaInfo *)self dbInfoPrefFile];
+    v8 = [v6 writeToURL:dbInfoPrefFile2 atomically:1];
 
     if ((v8 & 1) == 0)
     {

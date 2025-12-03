@@ -2,8 +2,8 @@
 - (id).cxx_construct;
 - (shared_ptr<std::unordered_map<std::string,)propertiesToFetchMap;
 - (shared_ptr<std::unordered_map<std::string,)propertiesToSortMap;
-- (void)setPropertiesToFetchMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)a3 :unordered_map<std::string;
-- (void)setPropertiesToSortMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)a3 :unordered_map<std::string;
+- (void)setPropertiesToFetchMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)std :unordered_map<std::string;
+- (void)setPropertiesToSortMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)std :unordered_map<std::string;
 @end
 
 @implementation _MPMediaLibraryEntityPropertyTranslator
@@ -15,10 +15,10 @@
   return self;
 }
 
-- (void)setPropertiesToSortMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)a3 :unordered_map<std::string
+- (void)setPropertiesToSortMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)std :unordered_map<std::string
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *std.__ptr_;
+  v3 = *(std.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -48,10 +48,10 @@
   return result;
 }
 
-- (void)setPropertiesToFetchMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)a3 :unordered_map<std::string
+- (void)setPropertiesToFetchMap:()shared_ptr<std:(mlcore::ModelPropertyBase *>>)std :unordered_map<std::string
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *std.__ptr_;
+  v3 = *(std.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

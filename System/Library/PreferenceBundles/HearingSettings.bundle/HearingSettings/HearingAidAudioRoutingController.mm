@@ -1,7 +1,7 @@
 @interface HearingAidAudioRoutingController
-- (id)accessibilityPreferenceForSpecifier:(id)a3;
+- (id)accessibilityPreferenceForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4;
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -31,17 +31,17 @@
   return v4;
 }
 
-- (void)accessibilitySetPreference:(id)a3 specifier:(id)a4
+- (void)accessibilitySetPreference:(id)preference specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [a4 properties];
-  v9 = [v6 objectForKey:PSKeyNameKey];
+  preferenceCopy = preference;
+  properties = [specifier properties];
+  v9 = [properties objectForKey:PSKeyNameKey];
 
-  v7 = [v5 integerValue];
+  integerValue = [preferenceCopy integerValue];
   if ([v9 isEqualToString:@"DefaultRouteForCall"])
   {
     v8 = +[HUHearingAidSettings sharedInstance];
-    [v8 setCallAudioRoute:v7];
+    [v8 setCallAudioRoute:integerValue];
   }
 
   else
@@ -52,23 +52,23 @@
     }
 
     v8 = +[HUHearingAidSettings sharedInstance];
-    [v8 setMediaAudioRoute:v7];
+    [v8 setMediaAudioRoute:integerValue];
   }
 
 LABEL_6:
 }
 
-- (id)accessibilityPreferenceForSpecifier:(id)a3
+- (id)accessibilityPreferenceForSpecifier:(id)specifier
 {
-  v3 = [a3 properties];
-  v4 = [v3 objectForKey:PSKeyNameKey];
+  properties = [specifier properties];
+  v4 = [properties objectForKey:PSKeyNameKey];
 
   if ([v4 isEqualToString:@"DefaultRouteForCall"])
   {
     v5 = +[HUHearingAidSettings sharedInstance];
-    v6 = [v5 callAudioRoute];
+    callAudioRoute = [v5 callAudioRoute];
 LABEL_5:
-    v7 = [NSNumber numberWithInteger:v6];
+    v7 = [NSNumber numberWithInteger:callAudioRoute];
 
     goto LABEL_7;
   }
@@ -76,7 +76,7 @@ LABEL_5:
   if ([v4 isEqualToString:@"DefaultRouteForMedia"])
   {
     v5 = +[HUHearingAidSettings sharedInstance];
-    v6 = [v5 mediaAudioRoute];
+    callAudioRoute = [v5 mediaAudioRoute];
     goto LABEL_5;
   }
 

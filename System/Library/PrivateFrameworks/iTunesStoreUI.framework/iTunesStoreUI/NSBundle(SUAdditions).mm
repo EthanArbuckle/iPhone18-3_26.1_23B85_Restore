@@ -7,9 +7,9 @@
 
 - (uint64_t)newDataURLForResource:()SUAdditions ofType:withMIMEType:
 {
-  if (![a5 hasPrefix:@"image"] || (objc_msgSend(objc_msgSend(MEMORY[0x1E69DCEB0], "mainScreen"), "scale"), v9 != 2.0) || (v10 = objc_msgSend(a1, "pathForResource:ofType:", objc_msgSend(a3, "stringByAppendingString:", @"@2x"), a4)) == 0)
+  if (![a5 hasPrefix:@"image"] || (objc_msgSend(objc_msgSend(MEMORY[0x1E69DCEB0], "mainScreen"), "scale"), v9 != 2.0) || (v10 = objc_msgSend(self, "pathForResource:ofType:", objc_msgSend(a3, "stringByAppendingString:", @"@2x"), a4)) == 0)
   {
-    v10 = [a1 pathForResource:a3 ofType:a4];
+    v10 = [self pathForResource:a3 ofType:a4];
     if (!v10)
     {
       return 0;

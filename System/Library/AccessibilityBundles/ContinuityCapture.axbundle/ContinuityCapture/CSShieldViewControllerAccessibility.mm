@@ -1,19 +1,19 @@
 @interface CSShieldViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_endLoadingScreen;
 @end
 
 @implementation CSShieldViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSShieldViewController" hasInstanceMethod:@"_endLoadingScreen" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CSShieldViewController" hasInstanceVariable:@"_addSongButtonItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"CSShieldViewController" hasInstanceVariable:@"_helpButtonItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"CSShieldViewController" hasInstanceVariable:@"_vocalAttenuationButton" withType:"CSToggleButton"];
-  [v3 validateClass:@"CSShieldViewController" hasInstanceVariable:@"_reverbButton" withType:"CSToggleButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSShieldViewController" hasInstanceMethod:@"_endLoadingScreen" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CSShieldViewController" hasInstanceVariable:@"_addSongButtonItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"CSShieldViewController" hasInstanceVariable:@"_helpButtonItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"CSShieldViewController" hasInstanceVariable:@"_vocalAttenuationButton" withType:"CSToggleButton"];
+  [validationsCopy validateClass:@"CSShieldViewController" hasInstanceVariable:@"_reverbButton" withType:"CSToggleButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

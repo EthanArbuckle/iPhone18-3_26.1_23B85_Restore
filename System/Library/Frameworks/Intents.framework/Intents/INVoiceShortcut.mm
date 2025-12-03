@@ -1,51 +1,51 @@
 @interface INVoiceShortcut
-- (BOOL)isEqual:(id)a3;
-- (INVoiceShortcut)initWithCoder:(id)a3;
-- (INVoiceShortcut)initWithIntent:(id)a3;
-- (INVoiceShortcut)initWithUserActivity:(id)a3;
-- (id)_initWithIdentifier:(id)a3 invocationPhrase:(id)a4 shortcut:(id)a5;
-- (id)_initWithVCVoiceShortcut:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INVoiceShortcut)initWithCoder:(id)coder;
+- (INVoiceShortcut)initWithIntent:(id)intent;
+- (INVoiceShortcut)initWithUserActivity:(id)activity;
+- (id)_initWithIdentifier:(id)identifier invocationPhrase:(id)phrase shortcut:(id)shortcut;
+- (id)_initWithVCVoiceShortcut:(id)shortcut;
 - (id)description;
 - (id)intent;
 - (id)userActivity;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INVoiceShortcut
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(INVoiceShortcut *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(INVoiceShortcut *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(INVoiceShortcut *)self invocationPhrase];
-  [v4 encodeObject:v6 forKey:@"invocationPhrase"];
+  invocationPhrase = [(INVoiceShortcut *)self invocationPhrase];
+  [coderCopy encodeObject:invocationPhrase forKey:@"invocationPhrase"];
 
-  v7 = [(INVoiceShortcut *)self shortcut];
-  [v4 encodeObject:v7 forKey:@"shortcut"];
+  shortcut = [(INVoiceShortcut *)self shortcut];
+  [coderCopy encodeObject:shortcut forKey:@"shortcut"];
 }
 
-- (INVoiceShortcut)initWithCoder:(id)a3
+- (INVoiceShortcut)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = INVoiceShortcut;
   v5 = [(INVoiceShortcut *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"invocationPhrase"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"invocationPhrase"];
     invocationPhrase = v5->_invocationPhrase;
     v5->_invocationPhrase = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcut"];
     shortcut = v5->_shortcut;
     v5->_shortcut = v13;
 
@@ -55,10 +55,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -68,18 +68,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(INVoiceShortcut *)self identifier];
-      v7 = [(INVoiceShortcut *)v5 identifier];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      identifier = [(INVoiceShortcut *)self identifier];
+      identifier2 = [(INVoiceShortcut *)v5 identifier];
+      if ([identifier isEqual:identifier2])
       {
-        v8 = [(INVoiceShortcut *)self invocationPhrase];
-        v9 = [(INVoiceShortcut *)v5 invocationPhrase];
-        if ([v8 isEqual:v9])
+        invocationPhrase = [(INVoiceShortcut *)self invocationPhrase];
+        invocationPhrase2 = [(INVoiceShortcut *)v5 invocationPhrase];
+        if ([invocationPhrase isEqual:invocationPhrase2])
         {
-          v10 = [(INVoiceShortcut *)self shortcut];
-          v11 = [(INVoiceShortcut *)v5 shortcut];
-          v12 = [v10 isEqual:v11];
+          shortcut = [(INVoiceShortcut *)self shortcut];
+          shortcut2 = [(INVoiceShortcut *)v5 shortcut];
+          v12 = [shortcut isEqual:shortcut2];
         }
 
         else
@@ -113,20 +113,20 @@
   return v6;
 }
 
-- (id)_initWithVCVoiceShortcut:(id)a3
+- (id)_initWithVCVoiceShortcut:(id)shortcut
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 phrase];
+  shortcutCopy = shortcut;
+  phrase = [shortcutCopy phrase];
   v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v7 = [v4 identifier];
-  v8 = [v6 initWithUUIDString:v7];
+  identifier = [shortcutCopy identifier];
+  v8 = [v6 initWithUUIDString:identifier];
 
-  v9 = [v4 shortcut];
-  if (v9)
+  shortcut = [shortcutCopy shortcut];
+  if (shortcut)
   {
-    self = [(INVoiceShortcut *)self _initWithIdentifier:v8 invocationPhrase:v5 shortcut:v9];
-    v10 = self;
+    self = [(INVoiceShortcut *)self _initWithIdentifier:v8 invocationPhrase:phrase shortcut:shortcut];
+    selfCopy = self;
   }
 
   else
@@ -137,34 +137,34 @@
       v14 = 136315394;
       v15 = "[INVoiceShortcut _initWithVCVoiceShortcut:]";
       v16 = 2112;
-      v17 = v4;
+      v17 = shortcutCopy;
       _os_log_error_impl(&dword_18E991000, v11, OS_LOG_TYPE_ERROR, "%s Unexpectedly got nil INShortcut for voice shortcut %@", &v14, 0x16u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v10;
+  return selfCopy;
 }
 
-- (id)_initWithIdentifier:(id)a3 invocationPhrase:(id)a4 shortcut:(id)a5
+- (id)_initWithIdentifier:(id)identifier invocationPhrase:(id)phrase shortcut:(id)shortcut
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  phraseCopy = phrase;
+  shortcutCopy = shortcut;
   v17.receiver = self;
   v17.super_class = INVoiceShortcut;
   v12 = [(INVoiceShortcut *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_identifier, identifier);
+    v14 = [phraseCopy copy];
     invocationPhrase = v13->_invocationPhrase;
     v13->_invocationPhrase = v14;
 
-    objc_storeStrong(&v13->_shortcut, a5);
+    objc_storeStrong(&v13->_shortcut, shortcut);
   }
 
   return v13;
@@ -172,29 +172,29 @@
 
 - (id)userActivity
 {
-  v2 = [(INVoiceShortcut *)self shortcut];
-  v3 = [v2 userActivity];
+  shortcut = [(INVoiceShortcut *)self shortcut];
+  userActivity = [shortcut userActivity];
 
-  return v3;
+  return userActivity;
 }
 
 - (id)intent
 {
-  v2 = [(INVoiceShortcut *)self shortcut];
-  v3 = [v2 intent];
+  shortcut = [(INVoiceShortcut *)self shortcut];
+  intent = [shortcut intent];
 
-  return v3;
+  return intent;
 }
 
-- (INVoiceShortcut)initWithUserActivity:(id)a3
+- (INVoiceShortcut)initWithUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v10.receiver = self;
   v10.super_class = INVoiceShortcut;
   v5 = [(INVoiceShortcut *)&v10 init];
   if (v5)
   {
-    v6 = [[INShortcut alloc] initWithUserActivity:v4];
+    v6 = [[INShortcut alloc] initWithUserActivity:activityCopy];
     shortcut = v5->_shortcut;
     v5->_shortcut = v6;
 
@@ -204,15 +204,15 @@
   return v5;
 }
 
-- (INVoiceShortcut)initWithIntent:(id)a3
+- (INVoiceShortcut)initWithIntent:(id)intent
 {
-  v4 = a3;
+  intentCopy = intent;
   v10.receiver = self;
   v10.super_class = INVoiceShortcut;
   v5 = [(INVoiceShortcut *)&v10 init];
   if (v5)
   {
-    v6 = [[INShortcut alloc] initWithIntent:v4];
+    v6 = [[INShortcut alloc] initWithIntent:intentCopy];
     shortcut = v5->_shortcut;
     v5->_shortcut = v6;
 

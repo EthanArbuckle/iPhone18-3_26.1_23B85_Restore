@@ -5,10 +5,10 @@
 - (double)startTime;
 - (int64_t)numberOfRuns;
 - (void)reset;
-- (void)setActiveDuration:(double)a3;
-- (void)setNumberOfRuns:(int64_t)a3;
-- (void)setOngoingSyncMetrics:(id)a3;
-- (void)setStartTime:(double)a3;
+- (void)setActiveDuration:(double)duration;
+- (void)setNumberOfRuns:(int64_t)runs;
+- (void)setOngoingSyncMetrics:(id)metrics;
+- (void)setStartTime:(double)time;
 @end
 
 @implementation HDHDCloudSyncPipelineStagePushFullSyncMetricUserDefaultsStorage
@@ -28,75 +28,75 @@
 
 - (NSDictionary)ongoingSyncMetrics
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"HDCloudSyncFullSyncOngoing"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"HDCloudSyncFullSyncOngoing"];
 
   return v3;
 }
 
-- (void)setOngoingSyncMetrics:(id)a3
+- (void)setOngoingSyncMetrics:(id)metrics
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"HDCloudSyncFullSyncOngoing"];
+  metricsCopy = metrics;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:metricsCopy forKey:@"HDCloudSyncFullSyncOngoing"];
 }
 
 - (double)startTime
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"HDCloudSyncFullSyncStartTime"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"HDCloudSyncFullSyncStartTime"];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setDouble:@"HDCloudSyncFullSyncStartTime" forKey:a3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setDouble:@"HDCloudSyncFullSyncStartTime" forKey:time];
 }
 
 - (double)activeDuration
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"HDCloudSyncFullSyncActiveDuration"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"HDCloudSyncFullSyncActiveDuration"];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setActiveDuration:(double)a3
+- (void)setActiveDuration:(double)duration
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setDouble:@"HDCloudSyncFullSyncActiveDuration" forKey:a3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setDouble:@"HDCloudSyncFullSyncActiveDuration" forKey:duration];
 }
 
 - (int64_t)numberOfRuns
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"HDCloudSyncFullSyncNumberOfRuns"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"HDCloudSyncFullSyncNumberOfRuns"];
 
   return v3;
 }
 
-- (void)setNumberOfRuns:(int64_t)a3
+- (void)setNumberOfRuns:(int64_t)runs
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"HDCloudSyncFullSyncNumberOfRuns"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setInteger:runs forKey:@"HDCloudSyncFullSyncNumberOfRuns"];
 }
 
 - (void)reset
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 removeObjectForKey:@"HDCloudSyncFullSyncOngoing"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"HDCloudSyncFullSyncOngoing"];
 
   self->_currentRunStartTime = 0.0;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 removeObjectForKey:@"HDCloudSyncFullSyncActiveDuration"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 removeObjectForKey:@"HDCloudSyncFullSyncActiveDuration"];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v5 removeObjectForKey:@"HDCloudSyncFullSyncNumberOfRuns"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults3 removeObjectForKey:@"HDCloudSyncFullSyncNumberOfRuns"];
 }
 
 @end

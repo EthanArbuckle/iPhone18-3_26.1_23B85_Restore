@@ -1,52 +1,52 @@
 @interface STFamilyCirclePrimitiveMember
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMember:(id)a3;
-- (STFamilyCirclePrimitiveMember)initWithDSID:(id)a3 altDSID:(id)a4 appleID:(id)a5 firstName:(id)a6 lastName:(id)a7 memberType:(int64_t)a8 isMe:(BOOL)a9 isParent:(BOOL)a10 isOrganizer:(BOOL)a11 opaqueMember:(id)a12;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMember:(id)member;
+- (STFamilyCirclePrimitiveMember)initWithDSID:(id)d altDSID:(id)iD appleID:(id)appleID firstName:(id)name lastName:(id)lastName memberType:(int64_t)type isMe:(BOOL)me isParent:(BOOL)self0 isOrganizer:(BOOL)self1 opaqueMember:(id)self2;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation STFamilyCirclePrimitiveMember
 
-- (STFamilyCirclePrimitiveMember)initWithDSID:(id)a3 altDSID:(id)a4 appleID:(id)a5 firstName:(id)a6 lastName:(id)a7 memberType:(int64_t)a8 isMe:(BOOL)a9 isParent:(BOOL)a10 isOrganizer:(BOOL)a11 opaqueMember:(id)a12
+- (STFamilyCirclePrimitiveMember)initWithDSID:(id)d altDSID:(id)iD appleID:(id)appleID firstName:(id)name lastName:(id)lastName memberType:(int64_t)type isMe:(BOOL)me isParent:(BOOL)self0 isOrganizer:(BOOL)self1 opaqueMember:(id)self2
 {
-  v18 = a12;
+  memberCopy = member;
   v38.receiver = self;
   v38.super_class = STFamilyCirclePrimitiveMember;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  lastNameCopy = lastName;
+  nameCopy = name;
+  appleIDCopy = appleID;
+  iDCopy = iD;
+  dCopy = d;
   v24 = [(STFamilyCirclePrimitiveMember *)&v38 init];
-  v25 = [v23 copy];
+  v25 = [dCopy copy];
 
   dsid = v24->_dsid;
   v24->_dsid = v25;
 
-  v27 = [v22 copy];
+  v27 = [iDCopy copy];
   altDSID = v24->_altDSID;
   v24->_altDSID = v27;
 
-  v29 = [v21 copy];
+  v29 = [appleIDCopy copy];
   appleID = v24->_appleID;
   v24->_appleID = v29;
 
-  v31 = [v20 copy];
+  v31 = [nameCopy copy];
   firstName = v24->_firstName;
   v24->_firstName = v31;
 
-  v33 = [v19 copy];
+  v33 = [lastNameCopy copy];
   lastName = v24->_lastName;
   v24->_lastName = v33;
 
-  v24->_isMe = a9;
-  v24->_isParent = a10;
-  v24->_isOrganizer = a11;
+  v24->_isMe = me;
+  v24->_isParent = parent;
+  v24->_isOrganizer = organizer;
   opaqueMember = v24->_opaqueMember;
-  v24->_memberType = a8;
-  v24->_opaqueMember = v18;
+  v24->_memberType = type;
+  v24->_opaqueMember = memberCopy;
 
   return v24;
 }
@@ -54,26 +54,26 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STFamilyCirclePrimitiveMember *)self dsid];
-  v5 = [(STFamilyCirclePrimitiveMember *)self altDSID];
-  v6 = [(STFamilyCirclePrimitiveMember *)self appleID];
-  v7 = [NSString stringWithFormat:@"<%@: { DSID: %@, AltDSID: %@, AppleID: %@ isMe: %d>", v3, v4, v5, v6, [(STFamilyCirclePrimitiveMember *)self isMe]];
+  dsid = [(STFamilyCirclePrimitiveMember *)self dsid];
+  altDSID = [(STFamilyCirclePrimitiveMember *)self altDSID];
+  appleID = [(STFamilyCirclePrimitiveMember *)self appleID];
+  v7 = [NSString stringWithFormat:@"<%@: { DSID: %@, AltDSID: %@, AppleID: %@ isMe: %d>", v3, dsid, altDSID, appleID, [(STFamilyCirclePrimitiveMember *)self isMe]];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   BYTE2(v6) = self->_isOrganizer;
   LOWORD(v6) = *&self->_isMe;
   return [v4 initWithDSID:self->_dsid altDSID:self->_altDSID appleID:self->_appleID firstName:self->_firstName lastName:self->_lastName memberType:self->_memberType isMe:v6 isParent:self->_opaqueMember isOrganizer:? opaqueMember:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -83,7 +83,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STFamilyCirclePrimitiveMember *)self isEqualToMember:v4];
+      v5 = [(STFamilyCirclePrimitiveMember *)self isEqualToMember:equalCopy];
     }
 
     else
@@ -95,21 +95,21 @@
   return v5;
 }
 
-- (BOOL)isEqualToMember:(id)a3
+- (BOOL)isEqualToMember:(id)member
 {
-  v9 = a3;
-  if (v9 == self)
+  memberCopy = member;
+  if (memberCopy == self)
   {
     LOBYTE(v12) = 1;
     goto LABEL_55;
   }
 
-  v10 = [(STFamilyCirclePrimitiveMember *)self dsid];
-  if (v10 || ([(STFamilyCirclePrimitiveMember *)v9 dsid], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+  dsid = [(STFamilyCirclePrimitiveMember *)self dsid];
+  if (dsid || ([(STFamilyCirclePrimitiveMember *)memberCopy dsid], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = [(STFamilyCirclePrimitiveMember *)self dsid];
-    v5 = [(STFamilyCirclePrimitiveMember *)v9 dsid];
-    if (![v4 isEqualToNumber:v5])
+    dsid2 = [(STFamilyCirclePrimitiveMember *)self dsid];
+    dsid3 = [(STFamilyCirclePrimitiveMember *)memberCopy dsid];
+    if (![dsid2 isEqualToNumber:dsid3])
     {
       LOBYTE(v12) = 0;
 LABEL_51:
@@ -126,12 +126,12 @@ LABEL_51:
     v11 = 0;
   }
 
-  v13 = [(STFamilyCirclePrimitiveMember *)self altDSID];
-  if (v13 || ([(STFamilyCirclePrimitiveMember *)v9 altDSID], (v32 = objc_claimAutoreleasedReturnValue()) != 0))
+  altDSID = [(STFamilyCirclePrimitiveMember *)self altDSID];
+  if (altDSID || ([(STFamilyCirclePrimitiveMember *)memberCopy altDSID], (v32 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v6 = [(STFamilyCirclePrimitiveMember *)self altDSID];
-    v7 = [(STFamilyCirclePrimitiveMember *)v9 altDSID];
-    if (![v6 isEqualToString:v7])
+    altDSID2 = [(STFamilyCirclePrimitiveMember *)self altDSID];
+    altDSID3 = [(STFamilyCirclePrimitiveMember *)memberCopy altDSID];
+    if (![altDSID2 isEqualToString:altDSID3])
     {
       LOBYTE(v12) = 0;
       goto LABEL_49;
@@ -148,13 +148,13 @@ LABEL_51:
     v36 = 0;
   }
 
-  v14 = [(STFamilyCirclePrimitiveMember *)self appleID];
-  if (v14 || ([(STFamilyCirclePrimitiveMember *)v9 appleID], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+  appleID = [(STFamilyCirclePrimitiveMember *)self appleID];
+  if (appleID || ([(STFamilyCirclePrimitiveMember *)memberCopy appleID], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(STFamilyCirclePrimitiveMember *)self appleID];
-    v33 = [(STFamilyCirclePrimitiveMember *)v9 appleID];
-    v34 = v3;
-    if (![v3 isEqualToString:?])
+    appleID2 = [(STFamilyCirclePrimitiveMember *)self appleID];
+    appleID3 = [(STFamilyCirclePrimitiveMember *)memberCopy appleID];
+    v34 = appleID2;
+    if (![appleID2 isEqualToString:?])
     {
       LOBYTE(v12) = 0;
       goto LABEL_45;
@@ -169,12 +169,12 @@ LABEL_51:
     v31 = 0;
   }
 
-  v35 = [(STFamilyCirclePrimitiveMember *)self firstName];
-  if (v35 || ([(STFamilyCirclePrimitiveMember *)v9 firstName], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+  firstName = [(STFamilyCirclePrimitiveMember *)self firstName];
+  if (firstName || ([(STFamilyCirclePrimitiveMember *)memberCopy firstName], (v23 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(STFamilyCirclePrimitiveMember *)self firstName];
-    v30 = [(STFamilyCirclePrimitiveMember *)v9 firstName];
-    if (![v3 isEqualToString:?])
+    appleID2 = [(STFamilyCirclePrimitiveMember *)self firstName];
+    firstName2 = [(STFamilyCirclePrimitiveMember *)memberCopy firstName];
+    if (![appleID2 isEqualToString:?])
     {
       LOBYTE(v12) = 0;
       goto LABEL_42;
@@ -189,18 +189,18 @@ LABEL_51:
     v27 = 0;
   }
 
-  v26 = [(STFamilyCirclePrimitiveMember *)self lastName];
-  v28 = v3;
-  if (v26 || ([(STFamilyCirclePrimitiveMember *)v9 lastName], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
+  lastName = [(STFamilyCirclePrimitiveMember *)self lastName];
+  v28 = appleID2;
+  if (lastName || ([(STFamilyCirclePrimitiveMember *)memberCopy lastName], (v21 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v15 = [(STFamilyCirclePrimitiveMember *)self lastName];
-    v24 = [(STFamilyCirclePrimitiveMember *)v9 lastName];
-    v25 = v15;
-    if (![v15 isEqualToString:?])
+    lastName2 = [(STFamilyCirclePrimitiveMember *)self lastName];
+    lastName3 = [(STFamilyCirclePrimitiveMember *)memberCopy lastName];
+    v25 = lastName2;
+    if (![lastName2 isEqualToString:?])
     {
       LOBYTE(v12) = 0;
 LABEL_37:
-      v3 = v28;
+      appleID2 = v28;
 
       goto LABEL_40;
     }
@@ -214,11 +214,11 @@ LABEL_37:
     v22 = 0;
   }
 
-  v16 = [(STFamilyCirclePrimitiveMember *)self memberType];
-  if (v16 == [(STFamilyCirclePrimitiveMember *)v9 memberType]&& (v17 = [(STFamilyCirclePrimitiveMember *)self isMe], v17 == [(STFamilyCirclePrimitiveMember *)v9 isMe]) && (v18 = [(STFamilyCirclePrimitiveMember *)self isParent], v18 == [(STFamilyCirclePrimitiveMember *)v9 isParent]))
+  memberType = [(STFamilyCirclePrimitiveMember *)self memberType];
+  if (memberType == [(STFamilyCirclePrimitiveMember *)memberCopy memberType]&& (v17 = [(STFamilyCirclePrimitiveMember *)self isMe], v17 == [(STFamilyCirclePrimitiveMember *)memberCopy isMe]) && (v18 = [(STFamilyCirclePrimitiveMember *)self isParent], v18 == [(STFamilyCirclePrimitiveMember *)memberCopy isParent]))
   {
-    v19 = [(STFamilyCirclePrimitiveMember *)self isOrganizer];
-    v12 = v19 ^ [(STFamilyCirclePrimitiveMember *)v9 isOrganizer]^ 1;
+    isOrganizer = [(STFamilyCirclePrimitiveMember *)self isOrganizer];
+    v12 = isOrganizer ^ [(STFamilyCirclePrimitiveMember *)memberCopy isOrganizer]^ 1;
     if (v22)
     {
       goto LABEL_37;
@@ -234,9 +234,9 @@ LABEL_37:
     }
   }
 
-  v3 = v28;
+  appleID2 = v28;
 LABEL_40:
-  if (v26)
+  if (lastName)
   {
 
     if (!v27)
@@ -253,7 +253,7 @@ LABEL_42:
   }
 
 LABEL_43:
-  if (v35)
+  if (firstName)
   {
 
     if (!v31)
@@ -270,7 +270,7 @@ LABEL_45:
   }
 
 LABEL_46:
-  if (v14)
+  if (appleID)
   {
 
     if (v36)
@@ -279,7 +279,7 @@ LABEL_48:
       v11 = v37;
 LABEL_49:
 
-      if (v13)
+      if (altDSID)
       {
         goto LABEL_50;
       }
@@ -305,7 +305,7 @@ LABEL_58:
   }
 
   v11 = v37;
-  if (!v13)
+  if (!altDSID)
   {
     goto LABEL_58;
   }
@@ -318,7 +318,7 @@ LABEL_50:
   }
 
 LABEL_52:
-  if (!v10)
+  if (!dsid)
   {
   }
 
@@ -328,10 +328,10 @@ LABEL_55:
 
 - (unint64_t)hash
 {
-  v3 = [(STFamilyCirclePrimitiveMember *)self dsid];
-  v4 = [v3 hash];
-  v5 = [(STFamilyCirclePrimitiveMember *)self altDSID];
-  v6 = [v5 hash];
+  dsid = [(STFamilyCirclePrimitiveMember *)self dsid];
+  v4 = [dsid hash];
+  altDSID = [(STFamilyCirclePrimitiveMember *)self altDSID];
+  v6 = [altDSID hash];
 
   return v6 ^ v4;
 }

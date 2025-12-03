@@ -7,8 +7,8 @@
 
 - (id)sb_resolvedImage
 {
-  v1 = [a1 systemImageName];
-  v2 = [MEMORY[0x277D755B8] _systemImageNamed:v1];
+  systemImageName = [self systemImageName];
+  v2 = [MEMORY[0x277D755B8] _systemImageNamed:systemImageName];
   if (!v2)
   {
     v3 = SBLogAlertItems();
@@ -23,10 +23,10 @@
 
 - (id)sb_resolvedTintColor
 {
-  v1 = [a1 tintColor];
-  v2 = [v1 sb_resolvedColor];
+  tintColor = [self tintColor];
+  sb_resolvedColor = [tintColor sb_resolvedColor];
 
-  return v2;
+  return sb_resolvedColor;
 }
 
 @end

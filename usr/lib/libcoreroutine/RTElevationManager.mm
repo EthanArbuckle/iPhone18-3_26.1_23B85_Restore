@@ -1,23 +1,23 @@
 @interface RTElevationManager
-- (RTElevationManager)initWithElevationStore:(id)a3 elevationProvider:(id)a4;
-- (void)_addElevations:(id)a3 handler:(id)a4;
-- (void)_fetchElevationsWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchElevationsWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgeElevationsPredating:(id)a3 handler:(id)a4;
-- (void)addElevations:(id)a3 handler:(id)a4;
-- (void)fetchElevationsWithContext:(id)a3 handler:(id)a4;
-- (void)fetchElevationsWithOptions:(id)a3 handler:(id)a4;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)purgeElevationsPredating:(id)a3 handler:(id)a4;
+- (RTElevationManager)initWithElevationStore:(id)store elevationProvider:(id)provider;
+- (void)_addElevations:(id)elevations handler:(id)handler;
+- (void)_fetchElevationsWithContext:(id)context handler:(id)handler;
+- (void)_fetchElevationsWithOptions:(id)options handler:(id)handler;
+- (void)_purgeElevationsPredating:(id)predating handler:(id)handler;
+- (void)addElevations:(id)elevations handler:(id)handler;
+- (void)fetchElevationsWithContext:(id)context handler:(id)handler;
+- (void)fetchElevationsWithOptions:(id)options handler:(id)handler;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)purgeElevationsPredating:(id)predating handler:(id)handler;
 @end
 
 @implementation RTElevationManager
 
-- (RTElevationManager)initWithElevationStore:(id)a3 elevationProvider:(id)a4
+- (RTElevationManager)initWithElevationStore:(id)store elevationProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  storeCopy = store;
+  providerCopy = provider;
+  if (storeCopy)
   {
     v15.receiver = self;
     v15.super_class = RTElevationManager;
@@ -25,8 +25,8 @@
     p_isa = &v9->super.super.super.isa;
     if (v9)
     {
-      objc_storeStrong(&v9->_elevationStore, a3);
-      objc_storeStrong(p_isa + 5, a4);
+      objc_storeStrong(&v9->_elevationStore, store);
+      objc_storeStrong(p_isa + 5, provider);
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         v11 = _rt_log_facility_get_os_log(RTLogFacilityElevation);
@@ -39,7 +39,7 @@
     }
 
     self = p_isa;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -51,18 +51,18 @@
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: elevationStore", buf, 2u);
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)_fetchElevationsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchElevationsWithOptions:(id)options handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!optionsCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -83,8 +83,8 @@
     v12[2] = __58__RTElevationManager__fetchElevationsWithOptions_handler___block_invoke;
     v12[3] = &unk_2788C5508;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
+    v13 = optionsCopy;
+    v14 = handlerCopy;
     [(RTElevationStore *)elevationStore fetchStoredElevationsWithOptions:v13 handler:v12];
   }
 
@@ -97,7 +97,7 @@
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "ElevationStore was nil.", buf, 2u);
     }
 
-    (*(v8 + 2))(v8, MEMORY[0x277CBEBF8], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], 0);
   }
 }
 
@@ -135,29 +135,29 @@ void __58__RTElevationManager__fetchElevationsWithOptions_handler___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchElevationsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchElevationsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__RTElevationManager_fetchElevationsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchElevationsWithContext:(id)a3 handler:(id)a4
+- (void)_fetchElevationsWithContext:(id)context handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     elevationStore = self->_elevationStore;
     if (elevationStore)
@@ -167,8 +167,8 @@ void __58__RTElevationManager__fetchElevationsWithOptions_handler___block_invoke
       v15[2] = __58__RTElevationManager__fetchElevationsWithContext_handler___block_invoke;
       v15[3] = &unk_2788C5508;
       v18 = a2;
-      v16 = v7;
-      v17 = v8;
+      v16 = contextCopy;
+      v17 = handlerCopy;
       [(RTElevationStore *)elevationStore fetchStoredElevationsWithContext:v16 handler:v15];
     }
 
@@ -181,7 +181,7 @@ void __58__RTElevationManager__fetchElevationsWithOptions_handler___block_invoke
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "ElevationStore was nil.", buf, 2u);
       }
 
-      (*(v8 + 2))(v8, MEMORY[0x277CBEBF8], 0);
+      (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEBF8], 0);
     }
   }
 
@@ -245,37 +245,37 @@ void __58__RTElevationManager__fetchElevationsWithContext_handler___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchElevationsWithContext:(id)a3 handler:(id)a4
+- (void)fetchElevationsWithContext:(id)context handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__RTElevationManager_fetchElevationsWithContext_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = contextCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = contextCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_addElevations:(id)a3 handler:(id)a4
+- (void)_addElevations:(id)elevations handler:(id)handler
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v43 = a4;
-  if ([v5 count])
+  elevationsCopy = elevations;
+  handlerCopy = handler;
+  if ([elevationsCopy count])
   {
-    v6 = [v5 firstObject];
-    v40 = [v6 endDate];
+    firstObject = [elevationsCopy firstObject];
+    endDate = [firstObject endDate];
 
-    v7 = [v5 lastObject];
-    v39 = [v7 endDate];
+    lastObject = [elevationsCopy lastObject];
+    endDate2 = [lastObject endDate];
 
-    v41 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v40 endDate:v39];
+    v41 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:endDate endDate:endDate2];
     *&v53 = 0;
     *(&v53 + 1) = &v53;
     v54 = 0x3032000000;
@@ -322,11 +322,11 @@ void __58__RTElevationManager__fetchElevationsWithContext_handler___block_invoke
     v19 = v18;
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_104];
-    v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v23 = [v22 filteredArrayUsingPredicate:v21];
-    v24 = [v23 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+    firstObject2 = [v23 firstObject];
 
-    [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+    [v20 submitToCoreAnalytics:firstObject2 type:1 duration:v19];
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -378,11 +378,11 @@ LABEL_14:
       v44[3] = &unk_2788CF0F0;
       v44[4] = &v53;
       v44[5] = a2;
-      [(RTElevationStore *)v32 storeElevations:v5 handler:v44];
+      [(RTElevationStore *)v32 storeElevations:elevationsCopy handler:v44];
       v31 = *(*(&v53 + 1) + 40);
     }
 
-    v43[2](v43, v31);
+    handlerCopy[2](handlerCopy, v31);
 
     _Block_object_dispose(&v53, 8);
   }
@@ -401,7 +401,7 @@ LABEL_14:
       }
     }
 
-    v43[2](v43, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -455,32 +455,32 @@ void __45__RTElevationManager__addElevations_handler___block_invoke_6(uint64_t a
   }
 }
 
-- (void)addElevations:(id)a3 handler:(id)a4
+- (void)addElevations:(id)elevations handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  elevationsCopy = elevations;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__RTElevationManager_addElevations_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = elevationsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = elevationsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeElevationsPredating:(id)a3 handler:(id)a4
+- (void)_purgeElevationsPredating:(id)predating handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (predatingCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -513,44 +513,44 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [(RTElevationManager *)self elevationStore];
-  [v11 removeElevationsPredating:v6 handler:v8];
+  elevationStore = [(RTElevationManager *)self elevationStore];
+  [elevationStore removeElevationsPredating:predatingCopy handler:v8];
 }
 
-- (void)purgeElevationsPredating:(id)a3 handler:(id)a4
+- (void)purgeElevationsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__RTElevationManager_purgeElevationsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__RTElevationManager_performPurgeOfType_referenceDate_completion___block_invoke;
   block[3] = &unk_2788C47A8;
-  v17 = v10;
-  v18 = a3;
-  v15 = v9;
-  v16 = self;
+  v17 = completionCopy;
+  typeCopy = type;
+  v15 = dateCopy;
+  selfCopy = self;
   v19 = a2;
-  v12 = v10;
-  v13 = v9;
-  dispatch_async(v11, block);
+  v12 = completionCopy;
+  v13 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __66__RTElevationManager_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)

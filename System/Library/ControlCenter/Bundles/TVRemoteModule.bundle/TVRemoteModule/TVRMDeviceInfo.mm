@@ -3,25 +3,25 @@
 + (BOOL)needsLandscapeOrientationForCurrentDevice;
 + (UIEdgeInsets)contentEdgeInsets;
 + (double)expandedRoundedCornerRadius;
-+ (double)heightForCurrentDeviceWithOrientation:(int64_t)a3;
++ (double)heightForCurrentDeviceWithOrientation:(int64_t)orientation;
 + (double)widthForCurrentDevice;
 @end
 
 @implementation TVRMDeviceInfo
 
-+ (double)heightForCurrentDeviceWithOrientation:(int64_t)a3
++ (double)heightForCurrentDeviceWithOrientation:(int64_t)orientation
 {
   CCUIScreenBounds();
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [MEMORY[0x29EDC7A58] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v14)
+  if (userInterfaceIdiom)
   {
-    if ((a3 - 1) >= 2)
+    if ((orientation - 1) >= 2)
     {
       v34.origin.x = v6;
       v34.origin.y = v8;
@@ -38,7 +38,7 @@
 
   else
   {
-    if ([a1 needsLandscapeOrientationForCurrentDevice])
+    if ([self needsLandscapeOrientationForCurrentDevice])
     {
       v33.origin.x = v6;
       v33.origin.y = v8;
@@ -47,19 +47,19 @@
       return CGRectGetHeight(v33) + -54.0;
     }
 
-    v16 = [MEMORY[0x29EDC7A58] currentDevice];
-    if ([v16 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x29EDC7A58] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
     }
 
     else
     {
-      v18 = [MEMORY[0x29EDC7C40] mainScreen];
-      [v18 bounds];
+      mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+      [mainScreen bounds];
       v20 = v19;
 
-      v21 = [MEMORY[0x29EDC7C40] mainScreen];
-      [v21 bounds];
+      mainScreen2 = [MEMORY[0x29EDC7C40] mainScreen];
+      [mainScreen2 bounds];
       v23 = v22;
 
       if (v20 < v23)
@@ -73,19 +73,19 @@
       }
     }
 
-    v17 = [MEMORY[0x29EDC7A58] currentDevice];
-    if ([v17 userInterfaceIdiom])
+    currentDevice3 = [MEMORY[0x29EDC7A58] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
     }
 
     else
     {
-      v24 = [MEMORY[0x29EDC7C40] mainScreen];
-      [v24 bounds];
+      mainScreen3 = [MEMORY[0x29EDC7C40] mainScreen];
+      [mainScreen3 bounds];
       v26 = v25;
 
-      v27 = [MEMORY[0x29EDC7C40] mainScreen];
-      [v27 bounds];
+      mainScreen4 = [MEMORY[0x29EDC7C40] mainScreen];
+      [mainScreen4 bounds];
       v29 = v28;
 
       if (v26 < v29)
@@ -99,7 +99,7 @@
       }
     }
 
-    v30 = [a1 needsCompactLayoutForCurrentDevice];
+    needsCompactLayoutForCurrentDevice = [self needsCompactLayoutForCurrentDevice];
     v35.origin.x = v6;
     v35.origin.y = v8;
     v35.size.width = v10;
@@ -107,7 +107,7 @@
     Height = CGRectGetHeight(v35);
     v32 = Height + -128.0;
     result = Height + -96.0;
-    if (!v30)
+    if (!needsCompactLayoutForCurrentDevice)
     {
       return v32;
     }
@@ -123,21 +123,21 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x29EDC7A58] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v12)
+  if (userInterfaceIdiom)
   {
     return 360.0;
   }
 
-  v14 = [a1 needsLandscapeOrientationForCurrentDevice];
+  needsLandscapeOrientationForCurrentDevice = [self needsLandscapeOrientationForCurrentDevice];
   v15.origin.x = v4;
   v15.origin.y = v6;
   v15.size.width = v8;
   v15.size.height = v10;
   result = CGRectGetWidth(v15);
-  if (v14)
+  if (needsLandscapeOrientationForCurrentDevice)
   {
     return result + -128.0;
   }
@@ -150,17 +150,17 @@
   v3 = MEMORY[0x29EDC80C8];
   v4 = *MEMORY[0x29EDC80C8];
   v5 = *(MEMORY[0x29EDC80C8] + 16);
-  v6 = [MEMORY[0x29EDC7A58] currentDevice];
-  if ([v6 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
   else
   {
-    v7 = [a1 needsLandscapeOrientationForCurrentDevice];
+    needsLandscapeOrientationForCurrentDevice = [self needsLandscapeOrientationForCurrentDevice];
 
     v8 = 27.0;
-    if ((v7 & 1) == 0)
+    if ((needsLandscapeOrientationForCurrentDevice & 1) == 0)
     {
       v9 = 27.0;
       goto LABEL_9;
@@ -169,10 +169,10 @@
 
   v9 = *(v3 + 8);
   v10 = *(v3 + 24);
-  v11 = [MEMORY[0x29EDC7A58] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v5 = 27.0;
     v8 = 27.0;
@@ -183,7 +183,7 @@
     v8 = v10;
   }
 
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v4 = 27.0;
   }
@@ -212,29 +212,29 @@ LABEL_9:
   v14.size.width = width;
   v14.size.height = height;
   v7 = CGRectGetHeight(v14);
-  v8 = [MEMORY[0x29EDC7A58] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
-  v11 = v6 > v7 && v9 == 0;
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  v11 = v6 > v7 && userInterfaceIdiom == 0;
 
   return v11;
 }
 
 + (BOOL)needsCompactLayoutForCurrentDevice
 {
-  v2 = [MEMORY[0x29EDC7A58] currentDevice];
-  if ([v2 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x29EDC7C40] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
 
-    v7 = [MEMORY[0x29EDC7C40] mainScreen];
-    [v7 bounds];
+    mainScreen2 = [MEMORY[0x29EDC7C40] mainScreen];
+    [mainScreen2 bounds];
     v9 = v8;
 
     if (v6 >= v9)
@@ -255,10 +255,10 @@ LABEL_9:
 
 + (double)expandedRoundedCornerRadius
 {
-  v2 = [MEMORY[0x29EDC7A58] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x29EDC7A58] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
 
     MEMORY[0x2A1C5FAB8]();
@@ -266,9 +266,9 @@ LABEL_9:
 
   else if (+[TVRMDeviceInfo deviceHasRoundedCorners])
   {
-    v4 = [MEMORY[0x29EDC7C40] mainScreen];
-    v5 = [v4 traitCollection];
-    [v5 displayCornerRadius];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    [traitCollection displayCornerRadius];
     v7 = v6;
 
     return v7;

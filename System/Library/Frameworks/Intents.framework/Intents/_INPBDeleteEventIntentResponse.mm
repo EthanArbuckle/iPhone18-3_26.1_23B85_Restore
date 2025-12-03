@@ -1,36 +1,36 @@
 @interface _INPBDeleteEventIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBDeleteEventIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDeleteEventIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfirmationReason:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfirmationReason:(int)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDeleteEventIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDeleteEventIntentResponse *)self hasConfirmationReason])
   {
-    v4 = [(_INPBDeleteEventIntentResponse *)self confirmationReason];
-    if (v4 == 1)
+    confirmationReason = [(_INPBDeleteEventIntentResponse *)self confirmationReason];
+    if (confirmationReason == 1)
     {
       v5 = @"DELETE_ALL_RECURRENCES";
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", confirmationReason];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"confirmationReason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confirmationReason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -46,16 +46,16 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBDeleteEventIntentResponse *)self hasConfirmationReason];
-    if (v5 == [v4 hasConfirmationReason])
+    hasConfirmationReason = [(_INPBDeleteEventIntentResponse *)self hasConfirmationReason];
+    if (hasConfirmationReason == [equalCopy hasConfirmationReason])
     {
-      if (!-[_INPBDeleteEventIntentResponse hasConfirmationReason](self, "hasConfirmationReason") || ![v4 hasConfirmationReason] || (confirmationReason = self->_confirmationReason, confirmationReason == objc_msgSend(v4, "confirmationReason")))
+      if (!-[_INPBDeleteEventIntentResponse hasConfirmationReason](self, "hasConfirmationReason") || ![equalCopy hasConfirmationReason] || (confirmationReason = self->_confirmationReason, confirmationReason == objc_msgSend(equalCopy, "confirmationReason")))
       {
         v6 = 1;
       }
@@ -65,7 +65,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBDeleteEventIntentResponse allocWithZone:?]];
   if ([(_INPBDeleteEventIntentResponse *)self hasConfirmationReason])
@@ -76,33 +76,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDeleteEventIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBDeleteEventIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDeleteEventIntentResponse)initWithCoder:(id)a3
+- (_INPBDeleteEventIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDeleteEventIntentResponse *)self initWithData:v6];
+    self = [(_INPBDeleteEventIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_INPBDeleteEventIntentResponse *)self hasConfirmationReason])
   {
     confirmationReason = self->_confirmationReason;
@@ -110,10 +110,10 @@
   }
 }
 
-- (void)setConfirmationReason:(int)a3
+- (void)setConfirmationReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -121,7 +121,7 @@
   else
   {
     *&self->_has = has | 1;
-    self->_confirmationReason = a3;
+    self->_confirmationReason = reason;
   }
 }
 

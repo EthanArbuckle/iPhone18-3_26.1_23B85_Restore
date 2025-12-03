@@ -1,21 +1,21 @@
 @interface BSXPCServiceConnectionEventHandler
 - (BSXPCServiceConnectionEventHandler)init;
-- (id)remoteTargetWithHandshake:(void *)a3 assertionAttributes:;
+- (id)remoteTargetWithHandshake:(void *)handshake assertionAttributes:;
 - (uint64_t)encodeInitiatingContext:(uint64_t)result;
-- (void)_connectionInvalidated:(void *)a1;
-- (void)connection:(uint64_t)a3 handleConnection:;
-- (void)connection:(uint64_t)a3 handleMessage:;
-- (void)connection:(void *)a3 handleError:;
-- (void)connectionActivated:(void *)a1;
-- (void)connectionDisconnected:(uint64_t)a1;
-- (void)connectionHandleNoMoreChildren:(int)a3 withGeneration:;
-- (void)connectionInitialized:(int)a3 withActivationGeneration:(void *)a4 activeXPCConnection:(void *)a5 xpcConnectionTargetQueue:;
-- (void)connectionInterruptedFromXPCError:(void *)a1;
-- (void)initWithAssertionTarget:(void *)a1;
-- (void)setCalloutContext:(uint64_t)a1;
-- (void)setInitiatingContext:(uint64_t)a1;
-- (void)setInterfaceTarget:(uint64_t)a1;
-- (void)setQueue:(uint64_t)a1;
+- (void)_connectionInvalidated:(void *)invalidated;
+- (void)connection:(uint64_t)connection handleConnection:;
+- (void)connection:(uint64_t)connection handleMessage:;
+- (void)connection:(void *)connection handleError:;
+- (void)connectionActivated:(void *)activated;
+- (void)connectionDisconnected:(uint64_t)disconnected;
+- (void)connectionHandleNoMoreChildren:(int)children withGeneration:;
+- (void)connectionInitialized:(int)initialized withActivationGeneration:(void *)generation activeXPCConnection:(void *)connection xpcConnectionTargetQueue:;
+- (void)connectionInterruptedFromXPCError:(void *)error;
+- (void)initWithAssertionTarget:(void *)target;
+- (void)setCalloutContext:(uint64_t)context;
+- (void)setInitiatingContext:(uint64_t)context;
+- (void)setInterfaceTarget:(uint64_t)target;
+- (void)setQueue:(uint64_t)queue;
 @end
 
 @implementation BSXPCServiceConnectionEventHandler
@@ -34,7 +34,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSXPCServiceConnectionEventHandler.m";
     v18 = 1024;
@@ -51,14 +51,14 @@
   return result;
 }
 
-- (void)initWithAssertionTarget:(void *)a1
+- (void)initWithAssertionTarget:(void *)target
 {
-  if (!a1)
+  if (!target)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = target;
   v7.super_class = BSXPCServiceConnectionEventHandler;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   if (v3)
@@ -73,11 +73,11 @@
   return v3;
 }
 
-- (void)setCalloutContext:(uint64_t)a1
+- (void)setCalloutContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 136), a2);
+    objc_storeStrong((context + 136), a2);
   }
 }
 
@@ -104,28 +104,28 @@
   return result;
 }
 
-- (void)setInterfaceTarget:(uint64_t)a1
+- (void)setInterfaceTarget:(uint64_t)target
 {
-  if (a1)
+  if (target)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((target + 48), a2);
   }
 }
 
-- (void)setQueue:(uint64_t)a1
+- (void)setQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 152), a2);
+    objc_storeStrong((queue + 152), a2);
   }
 }
 
-- (id)remoteTargetWithHandshake:(void *)a3 assertionAttributes:
+- (id)remoteTargetWithHandshake:(void *)handshake assertionAttributes:
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v6 = [a3 count];
+    v6 = [handshake count];
     v7 = v6;
     if (a2 && !v6)
     {
@@ -140,7 +140,7 @@
         v26 = 2114;
         v27 = v22;
         v28 = 2048;
-        v29 = a1;
+        selfCopy = self;
         v30 = 2114;
         v31 = @"BSXPCServiceConnectionEventHandler.m";
         v32 = 1024;
@@ -157,16 +157,16 @@
       JUMPOUT(0x19A849DC0);
     }
 
-    os_unfair_lock_lock((a1 + 120));
-    if (v7 || (v12 = *(a1 + 40)) == 0)
+    os_unfair_lock_lock((self + 120));
+    if (v7 || (v12 = *(self + 40)) == 0)
     {
-      v8 = *(a1 + 16);
+      v8 = *(self + 16);
       if (v8)
       {
         v9 = *(v8 + 192);
-        v10 = [v9 isServer];
-        v11 = *(a1 + 160);
-        if (v10)
+        isServer = [v9 isServer];
+        v11 = *(self + 160);
+        if (isServer)
         {
           [v11 client];
         }
@@ -177,25 +177,25 @@
         }
         v13 = ;
 
-        v14 = [v13 methods];
-        v15 = [v14 count];
+        methods = [v13 methods];
+        v15 = [methods count];
 
         if (v15)
         {
           if (v7)
           {
-            v16 = a3;
+            handshakeCopy = handshake;
           }
 
           else
           {
-            v16 = 0;
+            handshakeCopy = 0;
           }
 
-          v12 = [BSXPCServiceConnectionProxy proxyForConnection:a2 handshake:v13 withProtocol:*(a1 + 124) activationGeneration:*(a1 + 24) activeXPCConnection:*(a1 + 32) xpcConnectionTargetQueue:*(a1 + 152) replyQueue:*(a1 + 8) target:v16 attributes:0 assertionProvider:?];
+          v12 = [BSXPCServiceConnectionProxy proxyForConnection:a2 handshake:v13 withProtocol:*(self + 124) activationGeneration:*(self + 24) activeXPCConnection:*(self + 32) xpcConnectionTargetQueue:*(self + 152) replyQueue:*(self + 8) target:handshakeCopy attributes:0 assertionProvider:?];
           if (!v7)
           {
-            objc_storeStrong((a1 + 40), v12);
+            objc_storeStrong((self + 40), v12);
           }
         }
 
@@ -211,7 +211,7 @@
       }
     }
 
-    os_unfair_lock_unlock((a1 + 120));
+    os_unfair_lock_unlock((self + 120));
   }
 
   else
@@ -224,12 +224,12 @@
   return v12;
 }
 
-- (void)connectionInitialized:(int)a3 withActivationGeneration:(void *)a4 activeXPCConnection:(void *)a5 xpcConnectionTargetQueue:
+- (void)connectionInitialized:(int)initialized withActivationGeneration:(void *)generation activeXPCConnection:(void *)connection xpcConnectionTargetQueue:
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 152))
+    if (!*(self + 152))
     {
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_queue cannot be nil"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -242,7 +242,7 @@
         v19 = 2114;
         v20 = v14;
         v21 = 2048;
-        v22 = a1;
+        selfCopy = self;
         v23 = 2114;
         v24 = @"BSXPCServiceConnectionEventHandler.m";
         v25 = 1024;
@@ -259,14 +259,14 @@
       JUMPOUT(0x19A849FDCLL);
     }
 
-    os_unfair_lock_lock((a1 + 120));
-    objc_storeStrong((a1 + 16), a2);
-    *(a1 + 124) = a3;
-    objc_storeStrong((a1 + 24), a4);
-    objc_storeStrong((a1 + 32), a5);
+    os_unfair_lock_lock((self + 120));
+    objc_storeStrong((self + 16), a2);
+    *(self + 124) = initialized;
+    objc_storeStrong((self + 24), generation);
+    objc_storeStrong((self + 32), connection);
     v10 = *MEMORY[0x1E69E9840];
 
-    os_unfair_lock_unlock((a1 + 120));
+    os_unfair_lock_unlock((self + 120));
   }
 
   else
@@ -275,33 +275,33 @@
   }
 }
 
-- (void)connectionDisconnected:(uint64_t)a1
+- (void)connectionDisconnected:(uint64_t)disconnected
 {
-  if (a1)
+  if (disconnected)
   {
-    os_unfair_lock_lock((a1 + 120));
-    v2 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    os_unfair_lock_lock((disconnected + 120));
+    v2 = *(disconnected + 16);
+    *(disconnected + 16) = 0;
 
-    v3 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v3 = *(disconnected + 24);
+    *(disconnected + 24) = 0;
 
-    v4 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v4 = *(disconnected + 32);
+    *(disconnected + 32) = 0;
 
-    v5 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    v5 = *(disconnected + 40);
+    *(disconnected + 40) = 0;
 
-    os_unfair_lock_unlock((a1 + 120));
+    os_unfair_lock_unlock((disconnected + 120));
   }
 }
 
-- (void)connection:(uint64_t)a3 handleConnection:
+- (void)connection:(uint64_t)connection handleConnection:
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 152);
+    v4 = *(self + 152);
     if (!v4)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"_queue must be set"];
@@ -315,7 +315,7 @@
         v17 = 2114;
         v18 = v12;
         v19 = 2048;
-        v20 = a1;
+        selfCopy = self;
         v21 = 2114;
         v22 = @"BSXPCServiceConnectionEventHandler.m";
         v23 = 1024;
@@ -333,9 +333,9 @@
     }
 
     [v4 assertBarrierOnQueue];
-    if (*(a1 + 136))
+    if (*(self + 136))
     {
-      v7 = *(a1 + 136);
+      v7 = *(self + 136);
     }
 
     else
@@ -347,9 +347,9 @@
     v14[1] = 3221225472;
     v14[2] = __66__BSXPCServiceConnectionEventHandler_connection_handleConnection___block_invoke;
     v14[3] = &unk_1E75205A8;
-    v14[4] = a1;
+    v14[4] = self;
     v14[5] = a2;
-    v14[6] = a3;
+    v14[6] = connection;
     BSXPCServiceConnectionExecuteCallOut(a2, v7, v14);
   }
 
@@ -428,12 +428,12 @@ LABEL_15:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionHandleNoMoreChildren:(int)a3 withGeneration:
+- (void)connectionHandleNoMoreChildren:(int)children withGeneration:
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v4 = a1[19];
+    v4 = self[19];
     if (!v4)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue must be set"];
@@ -447,7 +447,7 @@ LABEL_15:
         v18 = 2114;
         v19 = v12;
         v20 = 2048;
-        v21 = a1;
+        selfCopy = self;
         v22 = 2114;
         v23 = @"BSXPCServiceConnectionEventHandler.m";
         v24 = 1024;
@@ -465,11 +465,11 @@ LABEL_15:
     }
 
     [v4 assertBarrierOnQueue];
-    if (a1[8] && ([a2 _isClientInvalidated] & 1) == 0)
+    if (self[8] && ([a2 _isClientInvalidated] & 1) == 0)
     {
-      if (a1[17])
+      if (self[17])
       {
-        v7 = a1[17];
+        v7 = self[17];
       }
 
       else
@@ -482,8 +482,8 @@ LABEL_15:
       v14[2] = __84__BSXPCServiceConnectionEventHandler_connectionHandleNoMoreChildren_withGeneration___block_invoke;
       v14[3] = &unk_1E7520A10;
       v14[4] = a2;
-      v14[5] = a1;
-      v15 = a3;
+      v14[5] = self;
+      childrenCopy = children;
       BSXPCServiceConnectionExecuteCallOut(a2, v7, v14);
     }
   }
@@ -535,12 +535,12 @@ LABEL_6:
   return result;
 }
 
-- (void)connection:(uint64_t)a3 handleMessage:
+- (void)connection:(uint64_t)connection handleMessage:
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 152);
+    v4 = *(self + 152);
     if (!v4)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue must be set"];
@@ -554,7 +554,7 @@ LABEL_6:
         v17 = 2114;
         v18 = v12;
         v19 = 2048;
-        v20 = a1;
+        selfCopy = self;
         v21 = 2114;
         v22 = @"BSXPCServiceConnectionEventHandler.m";
         v23 = 1024;
@@ -572,9 +572,9 @@ LABEL_6:
     }
 
     [v4 assertBarrierOnQueue];
-    if (*(a1 + 136))
+    if (*(self + 136))
     {
-      v7 = *(a1 + 136);
+      v7 = *(self + 136);
     }
 
     else
@@ -587,8 +587,8 @@ LABEL_6:
     v14[2] = __63__BSXPCServiceConnectionEventHandler_connection_handleMessage___block_invoke;
     v14[3] = &unk_1E75205F8;
     v14[4] = a2;
-    v14[5] = a3;
-    v14[6] = a1;
+    v14[5] = connection;
+    v14[6] = self;
     v14[7] = sel_connection_handleMessage_;
     BSXPCServiceConnectionExecuteCallOut(a2, v7, v14);
   }
@@ -955,12 +955,12 @@ id __63__BSXPCServiceConnectionEventHandler_connection_handleMessage___block_inv
   return v5;
 }
 
-- (void)connection:(void *)a3 handleError:
+- (void)connection:(void *)connection handleError:
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v4 = a1[19];
+    v4 = self[19];
     if (!v4)
     {
       v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue must be set"];
@@ -974,7 +974,7 @@ id __63__BSXPCServiceConnectionEventHandler_connection_handleMessage___block_inv
         v17 = 2114;
         v18 = v12;
         v19 = 2048;
-        v20 = a1;
+        selfCopy = self;
         v21 = 2114;
         v22 = @"BSXPCServiceConnectionEventHandler.m";
         v23 = 1024;
@@ -992,16 +992,16 @@ id __63__BSXPCServiceConnectionEventHandler_connection_handleMessage___block_inv
     }
 
     [v4 assertBarrierOnQueue];
-    if (a1[10] && ([(os_unfair_lock_s *)a2 _isClientInvalidated]& 1) == 0)
+    if (self[10] && ([(os_unfair_lock_s *)a2 _isClientInvalidated]& 1) == 0)
     {
-      if ([a3 isBSServiceConnectionError] && objc_msgSend(a3, "code") == 1)
+      if ([connection isBSServiceConnectionError] && objc_msgSend(connection, "code") == 1)
       {
         [(BSXPCServiceConnection *)a2 _makingInterruptCallout];
       }
 
-      if (a1[17])
+      if (self[17])
       {
-        v7 = a1[17];
+        v7 = self[17];
       }
 
       else
@@ -1014,8 +1014,8 @@ id __63__BSXPCServiceConnectionEventHandler_connection_handleMessage___block_inv
       v14[2] = __61__BSXPCServiceConnectionEventHandler_connection_handleError___block_invoke;
       v14[3] = &unk_1E75205A8;
       v14[4] = a2;
-      v14[5] = a3;
-      v14[6] = a1;
+      v14[5] = connection;
+      v14[6] = self;
       BSXPCServiceConnectionExecuteCallOut(a2, v7, v14);
     }
   }
@@ -1065,12 +1065,12 @@ LABEL_6:
   return result;
 }
 
-- (void)connectionActivated:(void *)a1
+- (void)connectionActivated:(void *)activated
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (activated)
   {
-    v3 = a1[19];
+    v3 = activated[19];
     if (!v3)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue must be set"];
@@ -1084,7 +1084,7 @@ LABEL_6:
         v15 = 2114;
         v16 = v10;
         v17 = 2048;
-        v18 = a1;
+        activatedCopy = activated;
         v19 = 2114;
         v20 = @"BSXPCServiceConnectionEventHandler.m";
         v21 = 1024;
@@ -1102,11 +1102,11 @@ LABEL_6:
     }
 
     [v3 assertBarrierOnQueue];
-    if (a1[11] && ([a2 _isClientInvalidated] & 1) == 0)
+    if (activated[11] && ([a2 _isClientInvalidated] & 1) == 0)
     {
-      if (a1[17])
+      if (activated[17])
       {
-        v5 = a1[17];
+        v5 = activated[17];
       }
 
       else
@@ -1119,7 +1119,7 @@ LABEL_6:
       v12[2] = __58__BSXPCServiceConnectionEventHandler_connectionActivated___block_invoke;
       v12[3] = &unk_1E75209E8;
       v12[4] = a2;
-      v12[5] = a1;
+      v12[5] = activated;
       BSXPCServiceConnectionExecuteCallOut(a2, v5, v12);
     }
   }
@@ -1168,12 +1168,12 @@ LABEL_6:
   return result;
 }
 
-- (void)connectionInterruptedFromXPCError:(void *)a1
+- (void)connectionInterruptedFromXPCError:(void *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (error)
   {
-    v3 = a1[19];
+    v3 = error[19];
     if (!v3)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue must be set"];
@@ -1187,7 +1187,7 @@ LABEL_6:
         v15 = 2114;
         v16 = v10;
         v17 = 2048;
-        v18 = a1;
+        errorCopy = error;
         v19 = 2114;
         v20 = @"BSXPCServiceConnectionEventHandler.m";
         v21 = 1024;
@@ -1205,12 +1205,12 @@ LABEL_6:
     }
 
     [v3 assertBarrierOnQueue];
-    if (a1[12] && ([(os_unfair_lock_s *)a2 _isClientInvalidated]& 1) == 0)
+    if (error[12] && ([(os_unfair_lock_s *)a2 _isClientInvalidated]& 1) == 0)
     {
       [(BSXPCServiceConnection *)a2 _makingInterruptCallout];
-      if (a1[17])
+      if (error[17])
       {
-        v5 = a1[17];
+        v5 = error[17];
       }
 
       else
@@ -1223,7 +1223,7 @@ LABEL_6:
       v12[2] = __72__BSXPCServiceConnectionEventHandler_connectionInterruptedFromXPCError___block_invoke;
       v12[3] = &unk_1E75209E8;
       v12[4] = a2;
-      v12[5] = a1;
+      v12[5] = error;
       BSXPCServiceConnectionExecuteCallOut(a2, v5, v12);
     }
   }
@@ -1272,12 +1272,12 @@ LABEL_6:
   return result;
 }
 
-- (void)_connectionInvalidated:(void *)a1
+- (void)_connectionInvalidated:(void *)invalidated
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (invalidated)
   {
-    v3 = a1[19];
+    v3 = invalidated[19];
     if (!v3)
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"queue must be set"];
@@ -1291,7 +1291,7 @@ LABEL_6:
         v23 = 2114;
         v24 = v18;
         v25 = 2048;
-        v26 = a1;
+        invalidatedCopy = invalidated;
         v27 = 2114;
         v28 = @"BSXPCServiceConnectionEventHandler.m";
         v29 = 1024;
@@ -1309,11 +1309,11 @@ LABEL_6:
     }
 
     [v3 assertBarrierOnQueue];
-    if (a1[13] && ([a2 _isClientInvalidated] & 1) == 0)
+    if (invalidated[13] && ([a2 _isClientInvalidated] & 1) == 0)
     {
-      if (a1[17])
+      if (invalidated[17])
       {
-        v5 = a1[17];
+        v5 = invalidated[17];
       }
 
       else
@@ -1326,33 +1326,33 @@ LABEL_6:
       v20[2] = __61__BSXPCServiceConnectionEventHandler__connectionInvalidated___block_invoke;
       v20[3] = &unk_1E75209E8;
       v20[4] = a2;
-      v20[5] = a1;
+      v20[5] = invalidated;
       BSXPCServiceConnectionExecuteCallOut(a2, v5, v20);
     }
 
-    v6 = a1[9];
-    a1[9] = 0;
+    v6 = invalidated[9];
+    invalidated[9] = 0;
 
-    v7 = a1[7];
-    a1[7] = 0;
+    v7 = invalidated[7];
+    invalidated[7] = 0;
 
-    v8 = a1[8];
-    a1[8] = 0;
+    v8 = invalidated[8];
+    invalidated[8] = 0;
 
-    v9 = a1[10];
-    a1[10] = 0;
+    v9 = invalidated[10];
+    invalidated[10] = 0;
 
-    v10 = a1[11];
-    a1[11] = 0;
+    v10 = invalidated[11];
+    invalidated[11] = 0;
 
-    v11 = a1[12];
-    a1[12] = 0;
+    v11 = invalidated[12];
+    invalidated[12] = 0;
 
-    v12 = a1[13];
-    a1[13] = 0;
+    v12 = invalidated[13];
+    invalidated[13] = 0;
 
-    v13 = a1[14];
-    a1[14] = 0;
+    v13 = invalidated[14];
+    invalidated[14] = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1404,11 +1404,11 @@ LABEL_6:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setInitiatingContext:(uint64_t)a1
+- (void)setInitiatingContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
-    objc_storeStrong((a1 + 168), a2);
+    objc_storeStrong((context + 168), a2);
   }
 }
 

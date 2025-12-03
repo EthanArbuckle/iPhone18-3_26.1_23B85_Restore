@@ -3,9 +3,9 @@
 - (NSString)title;
 - (UIImage)image;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIDonationResultView
@@ -24,9 +24,9 @@
     }
   }
 
-  v11 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  return v11;
+  return image;
 }
 
 - (NSString)message
@@ -43,14 +43,14 @@
     }
   }
 
-  v11 = [(UILabel *)self->_messageLabel text];
+  text = [(UILabel *)self->_messageLabel text];
 
-  return v11;
+  return text;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -63,12 +63,12 @@
     }
   }
 
-  v13 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v13 != v4)
+  if (image != imageCopy)
   {
     imageView = self->_imageView;
-    if (v4)
+    if (imageCopy)
     {
       if (!imageView)
       {
@@ -77,14 +77,14 @@
         self->_imageView = v15;
 
         v17 = self->_imageView;
-        v18 = [(SKUIDonationResultView *)self backgroundColor];
-        [(UIImageView *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIDonationResultView *)self backgroundColor];
+        [(UIImageView *)v17 setBackgroundColor:backgroundColor];
 
         [(SKUIDonationResultView *)self addSubview:self->_imageView];
         imageView = self->_imageView;
       }
 
-      [(UIImageView *)imageView setImage:v4];
+      [(UIImageView *)imageView setImage:imageCopy];
       [(UIImageView *)self->_imageView sizeToFit];
     }
 
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -114,11 +114,11 @@
     }
   }
 
-  v13 = [(SKUIDonationResultView *)self message];
-  if (v13 != v4 && ([v4 isEqualToString:v13] & 1) == 0)
+  message = [(SKUIDonationResultView *)self message];
+  if (message != messageCopy && ([messageCopy isEqualToString:message] & 1) == 0)
   {
     messageLabel = self->_messageLabel;
-    if (v4)
+    if (messageCopy)
     {
       if (!messageLabel)
       {
@@ -127,8 +127,8 @@
         self->_messageLabel = v15;
 
         v17 = self->_messageLabel;
-        v18 = [(SKUIDonationResultView *)self backgroundColor];
-        [(UILabel *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIDonationResultView *)self backgroundColor];
+        [(UILabel *)v17 setBackgroundColor:backgroundColor];
 
         v19 = self->_messageLabel;
         v20 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -137,14 +137,14 @@
         [(UILabel *)self->_messageLabel setNumberOfLines:0];
         [(UILabel *)self->_messageLabel setTextAlignment:1];
         v21 = self->_messageLabel;
-        v22 = [MEMORY[0x277D75348] _secondaryLabelColor];
-        [(UILabel *)v21 setTextColor:v22];
+        _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+        [(UILabel *)v21 setTextColor:_secondaryLabelColor];
 
         [(SKUIDonationResultView *)self addSubview:self->_messageLabel];
         messageLabel = self->_messageLabel;
       }
 
-      [(UILabel *)messageLabel setText:v4];
+      [(UILabel *)messageLabel setText:messageCopy];
     }
 
     else
@@ -158,9 +158,9 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -173,11 +173,11 @@
     }
   }
 
-  v13 = [(SKUIDonationResultView *)self title];
-  if (v13 != v4 && ([v4 isEqualToString:v13] & 1) == 0)
+  title = [(SKUIDonationResultView *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v4)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -186,8 +186,8 @@
         self->_titleLabel = v15;
 
         v17 = self->_titleLabel;
-        v18 = [(SKUIDonationResultView *)self backgroundColor];
-        [(UILabel *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIDonationResultView *)self backgroundColor];
+        [(UILabel *)v17 setBackgroundColor:backgroundColor];
 
         v19 = self->_titleLabel;
         v20 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
@@ -196,14 +196,14 @@
         [(UILabel *)self->_titleLabel setNumberOfLines:0];
         [(UILabel *)self->_titleLabel setTextAlignment:1];
         v21 = self->_titleLabel;
-        v22 = [MEMORY[0x277D75348] _labelColor];
-        [(UILabel *)v21 setTextColor:v22];
+        _labelColor = [MEMORY[0x277D75348] _labelColor];
+        [(UILabel *)v21 setTextColor:_labelColor];
 
         [(SKUIDonationResultView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v4];
+      [(UILabel *)titleLabel setText:titleCopy];
     }
 
     else
@@ -231,9 +231,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  return v11;
+  return text;
 }
 
 - (void)layoutSubviews
@@ -265,21 +265,21 @@
   [(UILabel *)self->_messageLabel frame];
   [(UILabel *)self->_messageLabel sizeThatFits:v14, 1.79769313e308];
   v24 = v23;
-  v25 = [MEMORY[0x277D75418] currentDevice];
-  v26 = [v25 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v27 = 8.0;
-  if ((v26 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v27 = 46.0;
   }
 
   v28 = v22 + v18 + v27;
-  v29 = [MEMORY[0x277D75418] currentDevice];
-  v30 = [v29 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v31 = 12.0;
-  if ((v30 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v31 = 10.0;
   }
@@ -292,11 +292,11 @@
   v44.size.width = v16;
   v44.size.height = v18;
   MaxY = CGRectGetMaxY(v44);
-  v35 = [MEMORY[0x277D75418] currentDevice];
-  v36 = [v35 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
   v37 = 8.0;
-  if ((v36 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v37 = 46.0;
   }
@@ -308,11 +308,11 @@
   v45.size.width = v14;
   v45.size.height = v22;
   v39 = CGRectGetMaxY(v45);
-  v40 = [MEMORY[0x277D75418] currentDevice];
-  v41 = [v40 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
   v42 = 10.0;
-  if ((v41 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v42 = 12.0;
   }

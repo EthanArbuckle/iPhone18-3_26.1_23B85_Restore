@@ -1,54 +1,54 @@
 @interface SecureNavigationController
-- (_TtC20TranslationUIService26SecureNavigationController)initWithCoder:(id)a3;
-- (_TtC20TranslationUIService26SecureNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC20TranslationUIService26SecureNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC20TranslationUIService26SecureNavigationController)initWithRootViewController:(id)a3;
+- (_TtC20TranslationUIService26SecureNavigationController)initWithCoder:(id)coder;
+- (_TtC20TranslationUIService26SecureNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC20TranslationUIService26SecureNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC20TranslationUIService26SecureNavigationController)initWithRootViewController:(id)controller;
 @end
 
 @implementation SecureNavigationController
 
-- (_TtC20TranslationUIService26SecureNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC20TranslationUIService26SecureNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SecureNavigationController();
-  return [(SecureNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(SecureNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC20TranslationUIService26SecureNavigationController)initWithRootViewController:(id)a3
+- (_TtC20TranslationUIService26SecureNavigationController)initWithRootViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for SecureNavigationController();
-  return [(SecureNavigationController *)&v5 initWithRootViewController:a3];
+  return [(SecureNavigationController *)&v5 initWithRootViewController:controller];
 }
 
-- (_TtC20TranslationUIService26SecureNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20TranslationUIService26SecureNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100051158();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_100051128();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for SecureNavigationController();
-  v9 = [(SecureNavigationController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(SecureNavigationController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC20TranslationUIService26SecureNavigationController)initWithCoder:(id)a3
+- (_TtC20TranslationUIService26SecureNavigationController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SecureNavigationController();
-  v4 = a3;
-  v5 = [(SecureNavigationController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SecureNavigationController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

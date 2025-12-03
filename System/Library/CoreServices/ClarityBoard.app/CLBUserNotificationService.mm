@@ -1,31 +1,31 @@
 @interface CLBUserNotificationService
-+ (void)dispatchUserNotification:(id)a3 flags:(int)a4 replyPort:(unsigned int)a5 auditToken:(id)a6 presenter:(id)a7;
-+ (void)startWithAlertPresenter:(id)a3;
++ (void)dispatchUserNotification:(id)notification flags:(int)flags replyPort:(unsigned int)port auditToken:(id)token presenter:(id)presenter;
++ (void)startWithAlertPresenter:(id)presenter;
 @end
 
 @implementation CLBUserNotificationService
 
-+ (void)dispatchUserNotification:(id)a3 flags:(int)a4 replyPort:(unsigned int)a5 auditToken:(id)a6 presenter:(id)a7
++ (void)dispatchUserNotification:(id)notification flags:(int)flags replyPort:(unsigned int)port auditToken:(id)token presenter:(id)presenter
 {
-  if ((a4 & 8) != 0)
+  if ((flags & 8) != 0)
   {
-    [a7 cancelAlertFromDictionary:{a3, *&a4, *&a5, a6}];
+    [presenter cancelAlertFromDictionary:{notification, *&flags, *&port, token}];
   }
 
   else
   {
-    [a7 addAlertFromDictionary:a3 replyPort:*&a5 requestFlags:{*&a4, a6}];
+    [presenter addAlertFromDictionary:notification replyPort:*&port requestFlags:{*&flags, token}];
   }
 }
 
-+ (void)startWithAlertPresenter:(id)a3
++ (void)startWithAlertPresenter:(id)presenter
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000193F4;
   block[3] = &unk_1002FC2F0;
-  v3 = a3;
-  v8 = v3;
+  presenterCopy = presenter;
+  v8 = presenterCopy;
   if (qword_1003310C0 != -1)
   {
     dispatch_once(&qword_1003310C0, block);

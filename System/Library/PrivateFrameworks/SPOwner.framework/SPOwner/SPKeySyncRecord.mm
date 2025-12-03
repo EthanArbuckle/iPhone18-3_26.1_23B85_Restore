@@ -1,17 +1,17 @@
 @interface SPKeySyncRecord
-- (BOOL)isEqual:(id)a3;
-- (SPKeySyncRecord)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SPKeySyncRecord)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPKeySyncRecord
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -21,14 +21,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPKeySyncRecord *)v5 identifier];
-      v7 = [(SPKeySyncRecord *)self identifier];
-      if ([v6 isEqual:v7] && (v8 = -[SPKeySyncRecord lastIndexObserved](v5, "lastIndexObserved"), v8 == -[SPKeySyncRecord lastIndexObserved](self, "lastIndexObserved")))
+      v5 = equalCopy;
+      identifier = [(SPKeySyncRecord *)v5 identifier];
+      identifier2 = [(SPKeySyncRecord *)self identifier];
+      if ([identifier isEqual:identifier2] && (v8 = -[SPKeySyncRecord lastIndexObserved](v5, "lastIndexObserved"), v8 == -[SPKeySyncRecord lastIndexObserved](self, "lastIndexObserved")))
       {
-        v9 = [(SPKeySyncRecord *)v5 lastIndexObservationDate];
-        v10 = [(SPKeySyncRecord *)self lastIndexObservationDate];
-        v11 = [v9 isEqualToDate:v10];
+        lastIndexObservationDate = [(SPKeySyncRecord *)v5 lastIndexObservationDate];
+        lastIndexObservationDate2 = [(SPKeySyncRecord *)self lastIndexObservationDate];
+        v11 = [lastIndexObservationDate isEqualToDate:lastIndexObservationDate2];
       }
 
       else
@@ -54,40 +54,40 @@
   return v5 ^ [(NSDate *)lastIndexObservationDate hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SPKeySyncRecord *)self identifier];
-  v6 = [v5 copy];
+  identifier = [(SPKeySyncRecord *)self identifier];
+  v6 = [identifier copy];
   [v4 setIdentifier:v6];
 
   [v4 setLastIndexObserved:{-[SPKeySyncRecord lastIndexObserved](self, "lastIndexObserved")}];
-  v7 = [(SPKeySyncRecord *)self lastIndexObservationDate];
-  v8 = [v7 copy];
+  lastIndexObservationDate = [(SPKeySyncRecord *)self lastIndexObservationDate];
+  v8 = [lastIndexObservationDate copy];
   [v4 setLastIndexObservationDate:v8];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeDouble:@"lastIndexObserved" forKey:self->_lastIndexObserved];
-  [v5 encodeObject:self->_lastIndexObservationDate forKey:@"lastIndexObservationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeDouble:@"lastIndexObserved" forKey:self->_lastIndexObserved];
+  [coderCopy encodeObject:self->_lastIndexObservationDate forKey:@"lastIndexObservationDate"];
 }
 
-- (SPKeySyncRecord)initWithCoder:(id)a3
+- (SPKeySyncRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  [v4 decodeDoubleForKey:@"lastIndexObserved"];
+  [coderCopy decodeDoubleForKey:@"lastIndexObserved"];
   self->_lastIndexObserved = v7;
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastIndexObservationDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastIndexObservationDate"];
 
   lastIndexObservationDate = self->_lastIndexObservationDate;
   self->_lastIndexObservationDate = v8;

@@ -1,9 +1,9 @@
 @interface LicenseResponseMessage.Subject
 - (_TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject)init;
-- (_TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (_TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)length;
-- (unsigned)characterAtIndex:(int64_t)a3;
+- (unsigned)characterAtIndex:(int64_t)index;
 @end
 
 @implementation LicenseResponseMessage.Subject
@@ -11,7 +11,7 @@
 - (int64_t)length
 {
   v6 = *(&self->super.super.isa + OBJC_IVAR____TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject_licenseID);
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D30E977C();
   MEMORY[0x1D38B2610](v3);
 
@@ -27,14 +27,14 @@
   return result;
 }
 
-- (_TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject)initWithCoder:(id)a3
+- (_TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject)initWithCoder:(id)coder
 {
   result = sub_1D30E957C();
   __break(1u);
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   v5 = *(&self->super.super.isa + OBJC_IVAR____TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject_licenseID);
@@ -49,18 +49,18 @@
   return v8;
 }
 
-- (unsigned)characterAtIndex:(int64_t)a3
+- (unsigned)characterAtIndex:(int64_t)index
 {
   v8 = *(&self->super.super.isa + OBJC_IVAR____TtCV29ManagedBackgroundAssetsHelper22LicenseResponseMessage7Subject_licenseID);
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1D30E977C();
   MEMORY[0x1D38B2610](v5);
 
   v6 = sub_1D30E906C();
 
-  LOWORD(a3) = [v6 characterAtIndex_];
+  LOWORD(index) = [v6 characterAtIndex_];
 
-  return a3;
+  return index;
 }
 
 @end

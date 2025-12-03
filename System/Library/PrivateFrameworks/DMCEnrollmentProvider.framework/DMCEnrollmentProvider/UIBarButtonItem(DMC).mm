@@ -9,7 +9,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isKindOfClass = [a1 buttonType] == 3;
+    isKindOfClass = [self buttonType] == 3;
   }
 
   else

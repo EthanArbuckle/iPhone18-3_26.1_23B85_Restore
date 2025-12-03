@@ -1,27 +1,27 @@
 @interface TUICandidateGridAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityScannerGroupElements;
 @end
 
 @implementation TUICandidateGridAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TUICandidateGrid" hasInstanceMethod:@"setSelectedIndexPath:animated:scrollPosition:" withFullSignature:{"v", "@", "B", "Q", 0}];
-  [v3 validateClass:@"TUICandidateGrid" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"indexPathForSupplementaryView:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"TUICandidateGrid" hasInstanceVariable:@"_selectedIndexPath" withType:"NSIndexPath"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TUICandidateGrid" hasInstanceMethod:@"setSelectedIndexPath:animated:scrollPosition:" withFullSignature:{"v", "@", "B", "Q", 0}];
+  [validationsCopy validateClass:@"TUICandidateGrid" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"indexPathForSupplementaryView:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"TUICandidateGrid" hasInstanceVariable:@"_selectedIndexPath" withType:"NSIndexPath"];
 }
 
 - (id)_accessibilityScannerGroupElements
 {
   v84 = *MEMORY[0x29EDCA608];
-  v41 = [MEMORY[0x29EDC7328] defaultSwitchControlOptions];
-  [v41 setSorted:0];
-  [v41 setShouldReturnScannerGroups:0];
-  v3 = [(TUICandidateGridAccessibility *)self _accessibilityLeafDescendantsWithOptions:v41];
-  v49 = [MEMORY[0x29EDB8E00] dictionary];
+  defaultSwitchControlOptions = [MEMORY[0x29EDC7328] defaultSwitchControlOptions];
+  [defaultSwitchControlOptions setSorted:0];
+  [defaultSwitchControlOptions setShouldReturnScannerGroups:0];
+  v3 = [(TUICandidateGridAccessibility *)self _accessibilityLeafDescendantsWithOptions:defaultSwitchControlOptions];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   objc_opt_class();
   v50 = __UIAccessibilityCastAsClass();
   LOBYTE(buf) = 0;
@@ -94,7 +94,7 @@
 
         if (v11)
         {
-          v12 = [v11 section];
+          section = [v11 section];
           goto LABEL_18;
         }
 
@@ -108,30 +108,30 @@ LABEL_15:
         }
 
         v11 = 0;
-        v12 = -1;
+        section = -1;
 LABEL_18:
-        v15 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v12];
-        v16 = [v49 objectForKeyedSubscript:v15];
+        v15 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:section];
+        dictionary2 = [dictionary objectForKeyedSubscript:v15];
 
-        if (!v16)
+        if (!dictionary2)
         {
-          v16 = [MEMORY[0x29EDB8E00] dictionary];
-          v17 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v12];
-          [v49 setObject:v16 forKeyedSubscript:v17];
+          dictionary2 = [MEMORY[0x29EDB8E00] dictionary];
+          v17 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:section];
+          [dictionary setObject:dictionary2 forKeyedSubscript:v17];
         }
 
         v18 = round(v10);
         v19 = [MEMORY[0x29EDBA070] numberWithDouble:v18];
-        v20 = [v16 objectForKeyedSubscript:v19];
+        array = [dictionary2 objectForKeyedSubscript:v19];
 
-        if (!v20)
+        if (!array)
         {
-          v20 = [MEMORY[0x29EDB8DE8] array];
+          array = [MEMORY[0x29EDB8DE8] array];
           v21 = [MEMORY[0x29EDBA070] numberWithDouble:v18];
-          [v16 setObject:v20 forKeyedSubscript:v21];
+          [dictionary2 setObject:array forKeyedSubscript:v21];
         }
 
-        [v20 addObject:v8];
+        [array addObject:v8];
       }
 
       v5 = [obj countByEnumeratingWithState:&v68 objects:v83 count:16];
@@ -140,13 +140,13 @@ LABEL_18:
     while (v5);
   }
 
-  v44 = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v22 = [v49 allKeys];
-  v42 = [v22 sortedArrayUsingSelector:?];
+  allKeys = [dictionary allKeys];
+  v42 = [allKeys sortedArrayUsingSelector:?];
 
   v45 = [v42 countByEnumeratingWithState:&v57 objects:v77 count:16];
   if (v45)
@@ -165,14 +165,14 @@ LABEL_18:
         }
 
         v46 = v23;
-        v25 = [v49 objectForKeyedSubscript:*(*(&v57 + 1) + 8 * v23)];
-        v26 = [MEMORY[0x29EDB8DE8] array];
+        v25 = [dictionary objectForKeyedSubscript:*(*(&v57 + 1) + 8 * v23)];
+        array3 = [MEMORY[0x29EDB8DE8] array];
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v27 = [v25 allKeys];
-        v28 = [v27 sortedArrayUsingSelector:sel_compare_];
+        allKeys2 = [v25 allKeys];
+        v28 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
         v29 = [v28 countByEnumeratingWithState:&v53 objects:v76 count:16];
         if (v29)
@@ -202,7 +202,7 @@ LABEL_18:
               v74[2] = @"GroupScanBehaviorTraits";
               v75[2] = &unk_2A2349E40;
               v34 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v75 forKeys:v74 count:3];
-              [v26 addObject:v34];
+              [array3 addObject:v34];
             }
 
             v29 = [v28 countByEnumeratingWithState:&v53 objects:v76 count:16];
@@ -213,10 +213,10 @@ LABEL_18:
 
         v72[0] = @"GroupElements";
         v72[1] = @"GroupScanBehaviorTraits";
-        v73[0] = v26;
+        v73[0] = array3;
         v73[1] = &unk_2A2349E40;
         v35 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v73 forKeys:v72 count:2];
-        [v44 addObject:v35];
+        [array2 addObject:v35];
 
         v23 = v46 + 1;
       }
@@ -228,18 +228,18 @@ LABEL_18:
     while (v45);
   }
 
-  if ([v44 count] == 1)
+  if ([array2 count] == 1)
   {
-    v36 = [v44 firstObject];
-    v37 = [v36 objectForKeyedSubscript:@"GroupElements"];
+    firstObject = [array2 firstObject];
+    v37 = [firstObject objectForKeyedSubscript:@"GroupElements"];
 
-    v38 = v44;
+    v38 = array2;
   }
 
   else
   {
-    v38 = v44;
-    v37 = v44;
+    v38 = array2;
+    v37 = array2;
   }
 
   v39 = *MEMORY[0x29EDCA608];

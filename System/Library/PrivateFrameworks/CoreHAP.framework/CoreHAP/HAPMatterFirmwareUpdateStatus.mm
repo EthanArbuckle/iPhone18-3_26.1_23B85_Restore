@@ -1,12 +1,12 @@
 @interface HAPMatterFirmwareUpdateStatus
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPMatterFirmwareUpdateStatus)init;
-- (HAPMatterFirmwareUpdateStatus)initWithOTAProviderState:(id)a3 downloadedFirmwareVersionNumber:(id)a4 accessoryDownloadProgressPercent:(id)a5;
+- (HAPMatterFirmwareUpdateStatus)initWithOTAProviderState:(id)state downloadedFirmwareVersionNumber:(id)number accessoryDownloadProgressPercent:(id)percent;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPMatterFirmwareUpdateStatus
@@ -14,18 +14,18 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
-  v5 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
-  v6 = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
-  v7 = [v3 stringWithFormat:@"<HAPMatterFirmwareUpdateStatus OTAProviderState=%@, downloadedFirmwareVersionNumber=%@, accessoryDownloadProgressPercent=%@>", v4, v5, v6];
+  oTAProviderState = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
+  downloadedFirmwareVersionNumber = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
+  accessoryDownloadProgressPercent = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
+  v7 = [v3 stringWithFormat:@"<HAPMatterFirmwareUpdateStatus OTAProviderState=%@, downloadedFirmwareVersionNumber=%@, accessoryDownloadProgressPercent=%@>", oTAProviderState, downloadedFirmwareVersionNumber, accessoryDownloadProgressPercent];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,46 +35,46 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
-      v9 = [(HAPMatterFirmwareUpdateStatus *)v7 OTAProviderState];
-      if (v8 != v9)
+      v7 = equalCopy;
+      oTAProviderState = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
+      oTAProviderState2 = [(HAPMatterFirmwareUpdateStatus *)v7 OTAProviderState];
+      if (oTAProviderState != oTAProviderState2)
       {
-        v3 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
-        v4 = [(HAPMatterFirmwareUpdateStatus *)v7 OTAProviderState];
-        if (![v3 isEqual:v4])
+        oTAProviderState3 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
+        oTAProviderState4 = [(HAPMatterFirmwareUpdateStatus *)v7 OTAProviderState];
+        if (![oTAProviderState3 isEqual:oTAProviderState4])
         {
           v10 = 0;
           goto LABEL_19;
         }
       }
 
-      v11 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
-      v12 = [(HAPMatterFirmwareUpdateStatus *)v7 downloadedFirmwareVersionNumber];
-      v13 = v12;
-      if (v11 == v12)
+      downloadedFirmwareVersionNumber = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
+      downloadedFirmwareVersionNumber2 = [(HAPMatterFirmwareUpdateStatus *)v7 downloadedFirmwareVersionNumber];
+      v13 = downloadedFirmwareVersionNumber2;
+      if (downloadedFirmwareVersionNumber == downloadedFirmwareVersionNumber2)
       {
-        v28 = v12;
+        v28 = downloadedFirmwareVersionNumber2;
       }
 
       else
       {
-        v14 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
-        v27 = [(HAPMatterFirmwareUpdateStatus *)v7 downloadedFirmwareVersionNumber];
-        if (![v14 isEqual:?])
+        downloadedFirmwareVersionNumber3 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
+        downloadedFirmwareVersionNumber4 = [(HAPMatterFirmwareUpdateStatus *)v7 downloadedFirmwareVersionNumber];
+        if (![downloadedFirmwareVersionNumber3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_17;
         }
 
-        v26 = v14;
+        v26 = downloadedFirmwareVersionNumber3;
         v28 = v13;
       }
 
-      v15 = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
-      v16 = [(HAPMatterFirmwareUpdateStatus *)v7 accessoryDownloadProgressPercent];
-      v17 = v16;
-      if (v15 == v16)
+      accessoryDownloadProgressPercent = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
+      accessoryDownloadProgressPercent2 = [(HAPMatterFirmwareUpdateStatus *)v7 accessoryDownloadProgressPercent];
+      v17 = accessoryDownloadProgressPercent2;
+      if (accessoryDownloadProgressPercent == accessoryDownloadProgressPercent2)
       {
 
         v10 = 1;
@@ -83,29 +83,29 @@
       else
       {
         [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
-        v18 = v25 = v3;
+        v18 = v25 = oTAProviderState3;
         [(HAPMatterFirmwareUpdateStatus *)v7 accessoryDownloadProgressPercent];
-        v24 = v11;
-        v19 = v4;
-        v20 = v9;
-        v22 = v21 = v8;
+        v24 = downloadedFirmwareVersionNumber;
+        v19 = oTAProviderState4;
+        v20 = oTAProviderState2;
+        v22 = v21 = oTAProviderState;
         v10 = [v18 isEqual:v22];
 
-        v8 = v21;
-        v9 = v20;
-        v4 = v19;
-        v11 = v24;
+        oTAProviderState = v21;
+        oTAProviderState2 = v20;
+        oTAProviderState4 = v19;
+        downloadedFirmwareVersionNumber = v24;
 
-        v3 = v25;
+        oTAProviderState3 = v25;
       }
 
       v13 = v28;
-      v14 = v26;
-      if (v11 == v28)
+      downloadedFirmwareVersionNumber3 = v26;
+      if (downloadedFirmwareVersionNumber == v28)
       {
 LABEL_18:
 
-        if (v8 == v9)
+        if (oTAProviderState == oTAProviderState2)
         {
 LABEL_20:
 
@@ -130,18 +130,18 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPMatterFirmwareUpdateStatus allocWithZone:a3];
-  v5 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
-  v6 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
-  v7 = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
-  v8 = [(HAPMatterFirmwareUpdateStatus *)v4 initWithOTAProviderState:v5 downloadedFirmwareVersionNumber:v6 accessoryDownloadProgressPercent:v7];
+  v4 = [HAPMatterFirmwareUpdateStatus allocWithZone:zone];
+  oTAProviderState = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
+  downloadedFirmwareVersionNumber = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
+  accessoryDownloadProgressPercent = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
+  v8 = [(HAPMatterFirmwareUpdateStatus *)v4 initWithOTAProviderState:oTAProviderState downloadedFirmwareVersionNumber:downloadedFirmwareVersionNumber accessoryDownloadProgressPercent:accessoryDownloadProgressPercent];
 
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v41 = 0u;
@@ -166,13 +166,13 @@ LABEL_21:
   v24 = 0u;
   v22 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
+  oTAProviderState = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
 
-  if (v5)
+  if (oTAProviderState)
   {
-    v6 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
+    oTAProviderState2 = [(HAPMatterFirmwareUpdateStatus *)self OTAProviderState];
     v21 = 0;
-    v7 = [v6 serializeWithError:&v21];
+    v7 = [oTAProviderState2 serializeWithError:&v21];
     v8 = v21;
 
     if (v8)
@@ -189,11 +189,11 @@ LABEL_8:
       v12 = v9;
 
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus(v12);
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_20;
       }
 
@@ -204,13 +204,13 @@ LABEL_17:
     }
   }
 
-  v10 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
+  downloadedFirmwareVersionNumber = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
 
-  if (v10)
+  if (downloadedFirmwareVersionNumber)
   {
-    v11 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
+    downloadedFirmwareVersionNumber2 = [(HAPMatterFirmwareUpdateStatus *)self downloadedFirmwareVersionNumber];
     v20 = 0;
-    v7 = [v11 serializeWithError:&v20];
+    v7 = [downloadedFirmwareVersionNumber2 serializeWithError:&v20];
     v8 = v20;
 
     if (v8)
@@ -227,24 +227,24 @@ LABEL_17:
     }
   }
 
-  v14 = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
+  accessoryDownloadProgressPercent = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
 
-  if (v14)
+  if (accessoryDownloadProgressPercent)
   {
-    v15 = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
+    accessoryDownloadProgressPercent2 = [(HAPMatterFirmwareUpdateStatus *)self accessoryDownloadProgressPercent];
     v19 = 0;
-    v7 = [v15 serializeWithError:&v19];
+    v7 = [accessoryDownloadProgressPercent2 serializeWithError:&v19];
     v8 = v19;
 
     if (v8)
     {
 LABEL_15:
 
-      if (a3)
+      if (error)
       {
         v16 = v8;
         v13 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_20;
       }
 
@@ -271,11 +271,11 @@ LABEL_20:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v10 = 0;
@@ -290,13 +290,13 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v23 = self;
-  v24 = a4;
+  selfCopy = self;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v7 + v8;
+  v13 = bytes + v8;
   while (1)
   {
     v31 = 0;
@@ -356,11 +356,11 @@ LABEL_11:
       if (v9)
       {
 LABEL_14:
-        if (v24)
+        if (errorCopy)
         {
           v19 = v9;
           v20 = 0;
-          *v24 = v9;
+          *errorCopy = v9;
           goto LABEL_23;
         }
 
@@ -368,15 +368,15 @@ LABEL_14:
       }
 
 LABEL_20:
-      self = v23;
+      self = selfCopy;
       goto LABEL_21;
     }
   }
 
-  if (v24)
+  if (errorCopy)
   {
     HMErrorFromOSStatus(Next);
-    *v24 = v20 = 0;
+    *errorCopy = v20 = 0;
     goto LABEL_23;
   }
 
@@ -387,20 +387,20 @@ LABEL_23:
   return v20;
 }
 
-- (HAPMatterFirmwareUpdateStatus)initWithOTAProviderState:(id)a3 downloadedFirmwareVersionNumber:(id)a4 accessoryDownloadProgressPercent:(id)a5
+- (HAPMatterFirmwareUpdateStatus)initWithOTAProviderState:(id)state downloadedFirmwareVersionNumber:(id)number accessoryDownloadProgressPercent:(id)percent
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  numberCopy = number;
+  percentCopy = percent;
   v15.receiver = self;
   v15.super_class = HAPMatterFirmwareUpdateStatus;
   v12 = [(HAPMatterFirmwareUpdateStatus *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_OTAProviderState, a3);
-    objc_storeStrong(&v13->_downloadedFirmwareVersionNumber, a4);
-    objc_storeStrong(&v13->_accessoryDownloadProgressPercent, a5);
+    objc_storeStrong(&v12->_OTAProviderState, state);
+    objc_storeStrong(&v13->_downloadedFirmwareVersionNumber, number);
+    objc_storeStrong(&v13->_accessoryDownloadProgressPercent, percent);
   }
 
   return v13;
@@ -413,24 +413,24 @@ LABEL_23:
   return [(HAPMatterFirmwareUpdateStatus *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPMatterFirmwareUpdateStatus);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPMatterFirmwareUpdateStatus *)v6 parseFromData:v5 error:&v11];
+    [(HAPMatterFirmwareUpdateStatus *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

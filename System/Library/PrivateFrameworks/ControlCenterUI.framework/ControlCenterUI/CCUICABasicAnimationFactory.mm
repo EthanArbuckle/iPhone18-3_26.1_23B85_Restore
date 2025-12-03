@@ -1,46 +1,46 @@
 @interface CCUICABasicAnimationFactory
-- (CCUICABasicAnimationFactory)initWithParameters:(id)a3 speed:(double)a4;
+- (CCUICABasicAnimationFactory)initWithParameters:(id)parameters speed:(double)speed;
 - (id)_animation;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 @end
 
 @implementation CCUICABasicAnimationFactory
 
-- (CCUICABasicAnimationFactory)initWithParameters:(id)a3 speed:(double)a4
+- (CCUICABasicAnimationFactory)initWithParameters:(id)parameters speed:(double)speed
 {
-  v7 = a3;
+  parametersCopy = parameters;
   v11.receiver = self;
   v11.super_class = CCUICABasicAnimationFactory;
   v8 = [(CCUICABasicAnimationFactory *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_parameters, a3);
-    v9->_speed = a4;
+    objc_storeStrong(&v8->_parameters, parameters);
+    v9->_speed = speed;
   }
 
   return v9;
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CCUICABasicAnimationFactory *)self _animation];
-  [v6 setKeyPath:v5];
+  pathCopy = path;
+  _animation = [(CCUICABasicAnimationFactory *)self _animation];
+  [_animation setKeyPath:pathCopy];
 
-  return v6;
+  return _animation;
 }
 
 - (id)_animation
 {
-  v3 = [MEMORY[0x277CD9E10] animation];
+  animation = [MEMORY[0x277CD9E10] animation];
   [(CCUICABasicAnimationParameters *)self->_parameters duration];
-  [v3 setDuration:?];
+  [animation setDuration:?];
   speed = self->_speed;
   *&speed = speed;
-  [v3 setSpeed:speed];
+  [animation setSpeed:speed];
 
-  return v3;
+  return animation;
 }
 
 @end

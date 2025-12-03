@@ -1,14 +1,14 @@
 @interface FCNewsTabiTagCohortMembershipOutputConfiguration
-- (FCNewsTabiTagCohortMembershipOutputConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiTagCohortMembershipOutputConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCNewsTabiTagCohortMembershipOutputConfiguration
 
-- (FCNewsTabiTagCohortMembershipOutputConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiTagCohortMembershipOutputConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"cohortMembershipOutputName", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"cohortMembershipOutputName", 0);
   v6 = v5;
   if (v5)
   {
@@ -23,7 +23,7 @@
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -32,12 +32,12 @@
     v13[1] = 3221225472;
     v13[2] = __71__FCNewsTabiTagCohortMembershipOutputConfiguration_initWithDictionary___block_invoke;
     v13[3] = &unk_1E7C36F98;
-    v14 = v4;
-    v10 = __71__FCNewsTabiTagCohortMembershipOutputConfiguration_initWithDictionary___block_invoke(v13);
+    v14 = dictionaryCopy;
+    selfCopy = __71__FCNewsTabiTagCohortMembershipOutputConfiguration_initWithDictionary___block_invoke(v13);
     v7 = v14;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __71__FCNewsTabiTagCohortMembershipOutputConfiguration_initWithDictionary___block_invoke(uint64_t a1)
@@ -61,8 +61,8 @@ uint64_t __71__FCNewsTabiTagCohortMembershipOutputConfiguration_initWithDictiona
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiTagCohortMembershipOutputConfiguration *)self cohortMembershipOutputName];
-  [v3 appendFormat:@"\n\tcohortMembershipOutputName: %@;", v4];
+  cohortMembershipOutputName = [(FCNewsTabiTagCohortMembershipOutputConfiguration *)self cohortMembershipOutputName];
+  [v3 appendFormat:@"\n\tcohortMembershipOutputName: %@;", cohortMembershipOutputName];
 
   [v3 appendString:@"\n>"];
 

@@ -1,15 +1,15 @@
 @interface LookAroundPIPStateMachine
-- (BOOL)canSetStateTo:(unint64_t)a3;
-- (void)setStateTo:(unint64_t)a3;
+- (BOOL)canSetStateTo:(unint64_t)to;
+- (void)setStateTo:(unint64_t)to;
 @end
 
 @implementation LookAroundPIPStateMachine
 
-- (void)setStateTo:(unint64_t)a3
+- (void)setStateTo:(unint64_t)to
 {
   if ([(LookAroundPIPStateMachine *)self canSetStateTo:?])
   {
-    if (a3 && self->_showStateChanges)
+    if (to && self->_showStateChanges)
     {
       v5 = sub_100798614();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -26,14 +26,14 @@
         }
 
         v8 = v7;
-        if (a3 > 7)
+        if (to > 7)
         {
           v9 = &stru_1016631F0;
         }
 
         else
         {
-          v9 = off_101656310[a3];
+          v9 = off_101656310[to];
         }
 
         v10 = v9;
@@ -45,20 +45,20 @@
       }
     }
 
-    self->_state = a3;
+    self->_state = to;
   }
 }
 
-- (BOOL)canSetStateTo:(unint64_t)a3
+- (BOOL)canSetStateTo:(unint64_t)to
 {
   LOBYTE(v3) = 0;
-  if (a3 <= 3)
+  if (to <= 3)
   {
-    if (a3 <= 1)
+    if (to <= 1)
     {
-      if (a3)
+      if (to)
       {
-        if (a3 != 1)
+        if (to != 1)
         {
           return v3 & 1;
         }
@@ -72,7 +72,7 @@ LABEL_14:
       return v3 & 1;
     }
 
-    if (a3 == 2)
+    if (to == 2)
     {
       goto LABEL_14;
     }
@@ -84,16 +84,16 @@ LABEL_19:
     return v3 & 1;
   }
 
-  if (a3 - 4 >= 2)
+  if (to - 4 >= 2)
   {
-    if (a3 == 6)
+    if (to == 6)
     {
       v4 = self->_state == 5;
     }
 
     else
     {
-      if (a3 != 7)
+      if (to != 7)
       {
         return v3 & 1;
       }

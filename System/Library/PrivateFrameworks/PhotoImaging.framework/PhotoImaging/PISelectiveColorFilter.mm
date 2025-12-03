@@ -1,9 +1,9 @@
 @interface PISelectiveColorFilter
-+ (double)iptHueAngleFromRed:(double)a3 green:(double)a4 blue:(double)a5;
-+ (id)convertFromIPT:(id)a3;
-+ (id)convertToIPT:(id)a3;
++ (double)iptHueAngleFromRed:(double)red green:(double)green blue:(double)blue;
++ (id)convertFromIPT:(id)t;
++ (id)convertToIPT:(id)t;
 + (id)selectiveColorKernels;
-+ (void)iptFromLinearInto:(float *)a3 fromRed:(float)a4 green:(float)a5 blue:(float)a6;
++ (void)iptFromLinearInto:(float *)into fromRed:(float)red green:(float)green blue:(float)blue;
 - (id)hueSatLumTable;
 - (id)outputImage;
 @end
@@ -16,7 +16,7 @@
   v3 = self->_inputImage;
   v4 = [PISelectiveColorFilter convertToIPT:v3];
 
-  v5 = [(PISelectiveColorFilter *)self hueSatLumTable];
+  hueSatLumTable = [(PISelectiveColorFilter *)self hueSatLumTable];
   v6 = +[PISelectiveColorFilter selectiveColorKernels];
   v7 = [v6 objectForKeyedSubscript:@"iptLumHueSatTable"];
 
@@ -26,7 +26,7 @@
   v13 = v12;
   v15 = v14;
   v20[0] = v4;
-  v20[1] = v5;
+  v20[1] = hueSatLumTable;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v17 = [v7 applyWithExtent:&__block_literal_global_56_26237 roiCallback:v16 arguments:0 options:{v9, v11, v13, v15}];
 
@@ -55,8 +55,8 @@ double __37__PISelectiveColorFilter_outputImage__block_invoke(uint64_t a1, int a
   [v4 setValue:v5 forKey:@"inputColor"];
 
   v52 = v4;
-  v6 = [v4 outputImage];
-  v7 = [v6 imageByCroppingToRect:{0.0, 0.0}];
+  outputImage = [v4 outputImage];
+  v7 = [outputImage imageByCroppingToRect:{0.0, 0.0}];
 
   v8 = +[PISelectiveColorFilter selectiveColorKernels];
   v54 = [v8 objectForKeyedSubscript:@"add_gaussian"];
@@ -152,33 +152,33 @@ double __37__PISelectiveColorFilter_outputImage__block_invoke(uint64_t a1, int a
 
   v46 = [MEMORY[0x1E695F648] filterWithName:@"CIAdditionCompositing"];
   [v46 setValue:v7 forKey:@"inputBackgroundImage"];
-  v47 = [v52 outputImage];
-  [v46 setValue:v47 forKey:@"inputImage"];
+  outputImage2 = [v52 outputImage];
+  [v46 setValue:outputImage2 forKey:@"inputImage"];
 
-  v48 = [v46 outputImage];
+  outputImage3 = [v46 outputImage];
 
-  v49 = [v48 imageByCroppingToRect:{0.0, 0.0, 360.0, 1.0}];
+  v49 = [outputImage3 imageByCroppingToRect:{0.0, 0.0, 360.0, 1.0}];
 
   CGColorSpaceRelease(v51);
 
   return v49;
 }
 
-+ (id)convertFromIPT:(id)a3
++ (id)convertFromIPT:(id)t
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695F108];
-  v4 = a3;
+  tCopy = t;
   v5 = CGColorSpaceCreateWithName(v3);
   v6 = +[PISelectiveColorFilter selectiveColorKernels];
   v7 = [v6 objectForKeyedSubscript:@"iptToSRGB"];
 
-  [v4 extent];
+  [tCopy extent];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v20[0] = v4;
+  v20[0] = tCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
 
   v17 = [v7 applyWithExtent:v16 arguments:{v9, v11, v13, v15}];
@@ -190,13 +190,13 @@ double __37__PISelectiveColorFilter_outputImage__block_invoke(uint64_t a1, int a
   return v18;
 }
 
-+ (id)convertToIPT:(id)a3
++ (id)convertToIPT:(id)t
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695F108];
-  v4 = a3;
+  tCopy = t;
   v5 = CGColorSpaceCreateWithName(v3);
-  v6 = [v4 imageByColorMatchingWorkingSpaceToColorSpace:v5];
+  v6 = [tCopy imageByColorMatchingWorkingSpaceToColorSpace:v5];
 
   v7 = +[PISelectiveColorFilter selectiveColorKernels];
   v8 = [v7 objectForKeyedSubscript:@"srgbToIPT"];
@@ -236,28 +236,28 @@ uint64_t __47__PISelectiveColorFilter_selectiveColorKernels__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (double)iptHueAngleFromRed:(double)a3 green:(double)a4 blue:(double)a5
++ (double)iptHueAngleFromRed:(double)red green:(double)green blue:(double)blue
 {
   v9 = *MEMORY[0x1E69E9840];
-  *&a3 = a3;
-  *&a4 = a4;
-  *&a5 = a5;
-  [a1 iptFromLinearInto:v8 fromRed:a3 green:a4 blue:a5];
-  [a1 hueAngleFrom:v8];
+  *&red = red;
+  *&green = green;
+  *&blue = blue;
+  [self iptFromLinearInto:v8 fromRed:red green:green blue:blue];
+  [self hueAngleFrom:v8];
   return v6;
 }
 
-+ (void)iptFromLinearInto:(float *)a3 fromRed:(float)a4 green:(float)a5 blue:(float)a6
++ (void)iptFromLinearInto:(float *)into fromRed:(float)red green:(float)green blue:(float)blue
 {
   v7 = 0;
   v25 = *MEMORY[0x1E69E9840];
   v8 = &dword_1C784626C;
   do
   {
-    v9 = (*(v8 - 1) * a5) + (*(v8 - 2) * a4);
+    v9 = (*(v8 - 1) * green) + (*(v8 - 2) * red);
     v10 = *v8;
     v8 += 3;
-    *(&v21 + v7) = v9 + (v10 * a6);
+    *(&v21 + v7) = v9 + (v10 * blue);
     v7 += 4;
   }
 
@@ -289,8 +289,8 @@ uint64_t __47__PISelectiveColorFilter_selectiveColorKernels__block_invoke()
 
   while (v14 != 12);
   v20 = v24;
-  *a3 = v23;
-  *(a3 + 2) = v20;
+  *into = v23;
+  *(into + 2) = v20;
 }
 
 @end

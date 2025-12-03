@@ -1,10 +1,10 @@
 @interface _DPTokenFetcherService
-- (BOOL)saveTokens:(id)a3 toFileInPath:(id)a4;
+- (BOOL)saveTokens:(id)tokens toFileInPath:(id)path;
 - (_DPTokenFetcherService)init;
-- (_DPTokenFetcherService)initWithTokenConfig:(id)a3;
-- (id)extractTokenFieldsFromConfig:(id)a3;
+- (_DPTokenFetcherService)initWithTokenConfig:(id)config;
+- (id)extractTokenFieldsFromConfig:(id)config;
 - (id)fetchMultipleChallengeTokenPair;
-- (unint64_t)donateTokenCountToBitacoraForDirPath:(id)a3;
+- (unint64_t)donateTokenCountToBitacoraForDirPath:(id)path;
 - (void)fetchTokens;
 @end
 
@@ -16,27 +16,27 @@
   if (v3)
   {
     self = [(_DPTokenFetcherService *)self initWithTokenConfig:v3];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (_DPTokenFetcherService)initWithTokenConfig:(id)a3
+- (_DPTokenFetcherService)initWithTokenConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = _DPTokenFetcherService;
   v6 = [(_DPTokenFetcherService *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.DifferentialPrivacy.tokens", v8);
     queue = v7->_queue;
@@ -52,16 +52,16 @@
 
 - (id)fetchMultipleChallengeTokenPair
 {
-  v41 = [(_DPTokenFetcherService *)self tokenFields];
-  v39 = [v41 objectForKeyedSubscript:@"tokenKey"];
-  v38 = [v41 objectForKeyedSubscript:@"originNameKey"];
-  v2 = [(_DPTokenFetcherService *)self config];
-  v3 = [v2 issuerURL];
-  v4 = [NSURL URLWithString:v3];
-  v37 = [v4 host];
+  tokenFields = [(_DPTokenFetcherService *)self tokenFields];
+  v39 = [tokenFields objectForKeyedSubscript:@"tokenKey"];
+  v38 = [tokenFields objectForKeyedSubscript:@"originNameKey"];
+  config = [(_DPTokenFetcherService *)self config];
+  issuerURL = [config issuerURL];
+  v4 = [NSURL URLWithString:issuerURL];
+  host = [v4 host];
 
-  v36 = [[_DPPrivateAccessTokenChallenge alloc] initWithIssuer:v37 redemptionContext:0];
-  v5 = [v41 objectForKeyedSubscript:@"tokenType"];
+  v36 = [[_DPPrivateAccessTokenChallenge alloc] initWithIssuer:host redemptionContext:0];
+  v5 = [tokenFields objectForKeyedSubscript:@"tokenType"];
   if ([v5 unsignedIntegerValue] == 2)
   {
     v6 = 2;
@@ -81,12 +81,12 @@
     v8 = v7;
     [v7 setSystemClient:1];
     [v8 setBundleID:@"com.apple.DPSubmissionService"];
-    v9 = [(_DPTokenFetcherService *)self config];
-    v10 = [v9 tokensPerRefresh];
+    config2 = [(_DPTokenFetcherService *)self config];
+    tokensPerRefresh = [config2 tokensPerRefresh];
 
-    v43 = v10;
+    v43 = tokensPerRefresh;
     v42 = [&__NSArray0__struct mutableCopy];
-    if (v10)
+    if (tokensPerRefresh)
     {
       v11 = 0;
       v12 = 0;
@@ -109,7 +109,7 @@
         v15 = +[NSProcessInfo processInfo];
         [v15 systemUptime];
 
-        v16 = [(_DPTokenFetcherService *)self queue];
+        queue = [(_DPTokenFetcherService *)self queue];
         v46[0] = _NSConcreteStackBlock;
         v46[1] = 3221225472;
         v46[2] = sub_100006D60;
@@ -118,7 +118,7 @@
         v49 = &v60;
         v17 = v14;
         v47 = v17;
-        [v44 fetchTokenWithQueue:v16 completionHandler:v46];
+        [v44 fetchTokenWithQueue:queue completionHandler:v46];
 
         v18 = dispatch_time(0, 30000000000);
         if (dispatch_semaphore_wait(v17, v18))
@@ -232,10 +232,10 @@ LABEL_26:
   return v29;
 }
 
-- (id)extractTokenFieldsFromConfig:(id)a3
+- (id)extractTokenFieldsFromConfig:(id)config
 {
   v37 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v37];
+  v4 = [NSJSONSerialization JSONObjectWithData:config options:0 error:&v37];
   v5 = v37;
   v6 = v5;
   if (v4)
@@ -250,7 +250,7 @@ LABEL_26:
 
   if (v7)
   {
-    v29 = self;
+    selfCopy = self;
     v30 = v5;
     v31 = v4;
     v10 = [v4 objectForKeyedSubscript:@"token-keys"];
@@ -331,7 +331,7 @@ LABEL_26:
 LABEL_28:
 
     v9 = v32;
-    [(_DPTokenFetcherService *)v29 setTokenFields:v32];
+    [(_DPTokenFetcherService *)selfCopy setTokenFields:v32];
     v6 = v30;
     v4 = v31;
   }
@@ -350,22 +350,22 @@ LABEL_28:
   return v9;
 }
 
-- (BOOL)saveTokens:(id)a3 toFileInPath:(id)a4
+- (BOOL)saveTokens:(id)tokens toFileInPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  tokensCopy = tokens;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (pathCopy)
   {
-    v9 = v7;
+    tokensDirectoryPath = pathCopy;
   }
 
   else
   {
-    v9 = [(_DPTokenFetcherService *)self tokensDirectoryPath];
+    tokensDirectoryPath = [(_DPTokenFetcherService *)self tokensDirectoryPath];
   }
 
-  v10 = v9;
+  v10 = tokensDirectoryPath;
   v11 = +[NSFileManager defaultManager];
   v35 = 0;
   v12 = [v11 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v35];
@@ -385,7 +385,7 @@ LABEL_28:
 
     v20 = [v10 stringByAppendingPathComponent:v19];
     v34 = 0;
-    v21 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:&v34];
+    v21 = [NSJSONSerialization dataWithJSONObject:tokensCopy options:1 error:&v34];
     v22 = v34;
     v31 = v20;
     if (v22)
@@ -447,36 +447,36 @@ LABEL_19:
   v3 = +[_DPLog service];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(_DPTokenFetcherService *)self config];
+    config = [(_DPTokenFetcherService *)self config];
     v16 = 138412290;
-    v17 = v4;
+    v17 = config;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Fetching tokens as per configuration: %@", &v16, 0xCu);
   }
 
-  v5 = [(_DPTokenFetcherService *)self config];
-  v6 = [v5 issuerURL];
+  config2 = [(_DPTokenFetcherService *)self config];
+  issuerURL = [config2 issuerURL];
 
-  if (v6)
+  if (issuerURL)
   {
     v7 = objc_autoreleasePoolPush();
     v8 = [_DPDediscoBackgroundDownloaderService alloc];
-    v9 = [NSURL URLWithString:v6];
+    v9 = [NSURL URLWithString:issuerURL];
     v10 = [(_DPDediscoBackgroundDownloaderService *)v8 initWithURL:v9];
 
-    v11 = [(_DPDediscoBackgroundDownloaderService *)v10 downloadConfigSynchronously];
+    downloadConfigSynchronously = [(_DPDediscoBackgroundDownloaderService *)v10 downloadConfigSynchronously];
 
     objc_autoreleasePoolPop(v7);
-    if ([v11 length])
+    if ([downloadConfigSynchronously length])
     {
-      v12 = [(_DPTokenFetcherService *)self extractTokenFieldsFromConfig:v11];
+      v12 = [(_DPTokenFetcherService *)self extractTokenFieldsFromConfig:downloadConfigSynchronously];
       if (v12)
       {
         v13 = objc_autoreleasePoolPush();
         [(_DPTokenFetcherService *)self donateTokenCountToBitacoraForDirPath:0];
-        v14 = [(_DPTokenFetcherService *)self fetchMultipleChallengeTokenPair];
-        if ([v14 count])
+        fetchMultipleChallengeTokenPair = [(_DPTokenFetcherService *)self fetchMultipleChallengeTokenPair];
+        if ([fetchMultipleChallengeTokenPair count])
         {
-          [(_DPTokenFetcherService *)self saveTokens:v14 toFileInPath:0];
+          [(_DPTokenFetcherService *)self saveTokens:fetchMultipleChallengeTokenPair toFileInPath:0];
         }
 
         objc_autoreleasePoolPop(v13);
@@ -504,30 +504,30 @@ LABEL_19:
 
   else
   {
-    v11 = +[_DPLog service];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    downloadConfigSynchronously = +[_DPLog service];
+    if (os_log_type_enabled(downloadConfigSynchronously, OS_LOG_TYPE_INFO))
     {
       LOWORD(v16) = 0;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Missing issue URL. Skipping token fetching", &v16, 2u);
+      _os_log_impl(&_mh_execute_header, downloadConfigSynchronously, OS_LOG_TYPE_INFO, "Missing issue URL. Skipping token fetching", &v16, 2u);
     }
   }
 }
 
-- (unint64_t)donateTokenCountToBitacoraForDirPath:(id)a3
+- (unint64_t)donateTokenCountToBitacoraForDirPath:(id)path
 {
-  v4 = a3;
-  v25 = v4;
-  if (v4)
+  pathCopy = path;
+  v25 = pathCopy;
+  if (pathCopy)
   {
-    v5 = v4;
+    tokensDirectoryPath = pathCopy;
   }
 
   else
   {
-    v5 = [(_DPTokenFetcherService *)self tokensDirectoryPath];
+    tokensDirectoryPath = [(_DPTokenFetcherService *)self tokensDirectoryPath];
   }
 
-  v6 = v5;
+  v6 = tokensDirectoryPath;
   v7 = +[_DPStrings tokensFilePrefix];
   v24 = v6;
   v8 = [_DPTokenFetcherHelper filesInDirectory:v6 withPrefix:v7];

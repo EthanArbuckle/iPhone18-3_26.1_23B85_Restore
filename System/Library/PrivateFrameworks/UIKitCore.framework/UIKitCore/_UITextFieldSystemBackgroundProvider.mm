@@ -2,10 +2,10 @@
 + (id)systemStyleMetricsProvider;
 - (Class)systemBackgroundViewClass;
 - (id)backgroundView;
-- (id)overridingSetBackgroundColor:(id)a3;
-- (void)_buildDescription:(id)a3;
-- (void)addToTextField:(id)a3;
-- (void)enabledDidChangeAnimated:(BOOL)a3;
+- (id)overridingSetBackgroundColor:(id)color;
+- (void)_buildDescription:(id)description;
+- (void)addToTextField:(id)field;
+- (void)enabledDidChangeAnimated:(BOOL)animated;
 - (void)removeFromTextField;
 @end
 
@@ -16,11 +16,11 @@
   systemBackgroundView = self->_systemBackgroundView;
   if (!systemBackgroundView)
   {
-    v4 = [(_UITextFieldBackgroundProvider *)self textField];
-    v5 = [v4 isEditing];
+    textField = [(_UITextFieldBackgroundProvider *)self textField];
+    isEditing = [textField isEditing];
 
     v6 = objc_alloc([(_UITextFieldSystemBackgroundProvider *)self systemBackgroundViewClass]);
-    v7 = [v6 initWithFrame:v5 active:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    v7 = [v6 initWithFrame:isEditing active:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v8 = self->_systemBackgroundView;
     self->_systemBackgroundView = v7;
 
@@ -32,7 +32,7 @@
 
 - (Class)systemBackgroundViewClass
 {
-  v2 = [(_UITextFieldBackgroundProvider *)self textField];
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -61,9 +61,9 @@
 {
   if (self->_systemBackgroundView)
   {
-    v3 = [(_UITextFieldBackgroundProvider *)self textField];
-    v4 = [(UITextFieldBackgroundView *)self->_systemBackgroundView fillColor];
-    [v3 _setBackgroundColor:v4];
+    textField = [(_UITextFieldBackgroundProvider *)self textField];
+    fillColor = [(UITextFieldBackgroundView *)self->_systemBackgroundView fillColor];
+    [textField _setBackgroundColor:fillColor];
   }
 
   v5.receiver = self;
@@ -71,63 +71,63 @@
   [(_UITextFieldViewBackgroundProvider *)&v5 removeFromTextField];
 }
 
-- (void)addToTextField:(id)a3
+- (void)addToTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v7.receiver = self;
   v7.super_class = _UITextFieldSystemBackgroundProvider;
-  [(_UITextFieldViewBackgroundProvider *)&v7 addToTextField:v4];
+  [(_UITextFieldViewBackgroundProvider *)&v7 addToTextField:fieldCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 _roundedRectBackgroundCornerRadius];
+    [fieldCopy _roundedRectBackgroundCornerRadius];
     [(UITextFieldBackgroundView *)self->_systemBackgroundView setCornerRadius:?];
   }
 
-  v5 = [v4 backgroundColor];
-  v6 = [(_UITextFieldSystemBackgroundProvider *)self overridingSetBackgroundColor:v5];
-  [v4 _setBackgroundColor:v6];
+  backgroundColor = [fieldCopy backgroundColor];
+  v6 = [(_UITextFieldSystemBackgroundProvider *)self overridingSetBackgroundColor:backgroundColor];
+  [fieldCopy _setBackgroundColor:v6];
 }
 
-- (id)overridingSetBackgroundColor:(id)a3
+- (id)overridingSetBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   systemBackgroundView = self->_systemBackgroundView;
   if (systemBackgroundView)
   {
-    [(UITextFieldBackgroundView *)systemBackgroundView setFillColor:v4];
+    [(UITextFieldBackgroundView *)systemBackgroundView setFillColor:colorCopy];
     v6 = 0;
   }
 
   else
   {
-    v6 = v4;
+    v6 = colorCopy;
   }
 
   return v6;
 }
 
-- (void)enabledDidChangeAnimated:(BOOL)a3
+- (void)enabledDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v7.receiver = self;
   v7.super_class = _UITextFieldSystemBackgroundProvider;
   [(_UITextFieldBackgroundProvider *)&v7 enabledDidChangeAnimated:?];
   systemBackgroundView = self->_systemBackgroundView;
-  v6 = [(_UITextFieldBackgroundProvider *)self textField];
-  -[UITextFieldBackgroundView setEnabled:animated:](systemBackgroundView, "setEnabled:animated:", [v6 isEnabled], v3);
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  -[UITextFieldBackgroundView setEnabled:animated:](systemBackgroundView, "setEnabled:animated:", [textField isEnabled], animatedCopy);
 
   [(_UITextFieldViewBackgroundProvider *)self layoutIfNeeded];
 }
 
-- (void)_buildDescription:(id)a3
+- (void)_buildDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v7.receiver = self;
   v7.super_class = _UITextFieldSystemBackgroundProvider;
-  [(_UITextFieldViewBackgroundProvider *)&v7 _buildDescription:v4];
-  v5 = [(UITextFieldBackgroundView *)self->_systemBackgroundView fillColor];
-  v6 = [v4 appendName:@"fillColor" object:v5];
+  [(_UITextFieldViewBackgroundProvider *)&v7 _buildDescription:descriptionCopy];
+  fillColor = [(UITextFieldBackgroundView *)self->_systemBackgroundView fillColor];
+  v6 = [descriptionCopy appendName:@"fillColor" object:fillColor];
 }
 
 @end

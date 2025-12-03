@@ -1,6 +1,6 @@
 @interface MFComposeMailMessage
-+ (id)legacyMessageWithMessage:(id)a3 mailboxUid:(id)a4;
-+ (id)legacyMessageWithMessage:(id)a3 mailboxUid:(id)a4 skipAttachmentDownload:(BOOL)a5;
++ (id)legacyMessageWithMessage:(id)message mailboxUid:(id)uid;
++ (id)legacyMessageWithMessage:(id)message mailboxUid:(id)uid skipAttachmentDownload:(BOOL)download;
 - (EMMessageRepository)messageRepository;
 - (id)account;
 - (id)documentID;
@@ -11,47 +11,47 @@
 
 @implementation MFComposeMailMessage
 
-+ (id)legacyMessageWithMessage:(id)a3 mailboxUid:(id)a4 skipAttachmentDownload:(BOOL)a5
++ (id)legacyMessageWithMessage:(id)message mailboxUid:(id)uid skipAttachmentDownload:(BOOL)download
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [[MFEMMessageStore alloc] initWithEMMessage:v7 messageClass:objc_opt_class() mailboxUid:v8 skipAttachmentDownload:v5];
-  v10 = [(MFEMMessageStore *)v9 legacyMessage];
-  [v10 setEmailMessageRepresentation:v7];
+  downloadCopy = download;
+  messageCopy = message;
+  uidCopy = uid;
+  v9 = [[MFEMMessageStore alloc] initWithEMMessage:messageCopy messageClass:objc_opt_class() mailboxUid:uidCopy skipAttachmentDownload:downloadCopy];
+  legacyMessage = [(MFEMMessageStore *)v9 legacyMessage];
+  [legacyMessage setEmailMessageRepresentation:messageCopy];
 
-  return v10;
+  return legacyMessage;
 }
 
-+ (id)legacyMessageWithMessage:(id)a3 mailboxUid:(id)a4
++ (id)legacyMessageWithMessage:(id)message mailboxUid:(id)uid
 {
-  v4 = [a1 legacyMessageWithMessage:a3 mailboxUid:a4 skipAttachmentDownload:0];
+  v4 = [self legacyMessageWithMessage:message mailboxUid:uid skipAttachmentDownload:0];
 
   return v4;
 }
 
 - (id)account
 {
-  v2 = [(MFComposeMailMessage *)self mailbox];
-  v3 = [v2 account];
+  mailbox = [(MFComposeMailMessage *)self mailbox];
+  account = [mailbox account];
 
-  return v3;
+  return account;
 }
 
 - (EMMessageRepository)messageRepository
 {
-  v2 = [(MFComposeMailMessage *)self emailMessageRepresentation];
-  v3 = [v2 repository];
+  emailMessageRepresentation = [(MFComposeMailMessage *)self emailMessageRepresentation];
+  repository = [emailMessageRepresentation repository];
 
-  return v3;
+  return repository;
 }
 
 - (id)documentID
 {
-  v2 = [(MFComposeMailMessage *)self emailMessageRepresentation];
-  v3 = [v2 documentID];
+  emailMessageRepresentation = [(MFComposeMailMessage *)self emailMessageRepresentation];
+  documentID = [emailMessageRepresentation documentID];
 
-  return v3;
+  return documentID;
 }
 
 - (void)markAsViewed
@@ -59,13 +59,13 @@
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E699B300]) initWithBuilder:&__block_literal_global_7];
   v4 = objc_alloc(MEMORY[0x1E699AD68]);
-  v5 = [(MFComposeMailMessage *)self emailMessageRepresentation];
-  v9[0] = v5;
+  emailMessageRepresentation = [(MFComposeMailMessage *)self emailMessageRepresentation];
+  v9[0] = emailMessageRepresentation;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v7 = [v4 initWithMessageListItems:v6 origin:4 actor:2 flagChange:v3];
 
-  v8 = [(MFComposeMailMessage *)self messageRepository];
-  [v8 performMessageChangeAction:v7];
+  messageRepository = [(MFComposeMailMessage *)self messageRepository];
+  [messageRepository performMessageChangeAction:v7];
 }
 
 void __36__MFComposeMailMessage_markAsViewed__block_invoke(uint64_t a1, void *a2)
@@ -80,13 +80,13 @@ void __36__MFComposeMailMessage_markAsViewed__block_invoke(uint64_t a1, void *a2
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E699B300]) initWithBuilder:&__block_literal_global_16];
   v4 = objc_alloc(MEMORY[0x1E699AD68]);
-  v5 = [(MFComposeMailMessage *)self emailMessageRepresentation];
-  v9[0] = v5;
+  emailMessageRepresentation = [(MFComposeMailMessage *)self emailMessageRepresentation];
+  v9[0] = emailMessageRepresentation;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v7 = [v4 initWithMessageListItems:v6 origin:4 actor:2 flagChange:v3];
 
-  v8 = [(MFComposeMailMessage *)self messageRepository];
-  [v8 performMessageChangeAction:v7];
+  messageRepository = [(MFComposeMailMessage *)self messageRepository];
+  [messageRepository performMessageChangeAction:v7];
 }
 
 void __37__MFComposeMailMessage_markAsReplied__block_invoke(uint64_t a1, void *a2)
@@ -101,13 +101,13 @@ void __37__MFComposeMailMessage_markAsReplied__block_invoke(uint64_t a1, void *a
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E699B300]) initWithBuilder:&__block_literal_global_18];
   v4 = objc_alloc(MEMORY[0x1E699AD68]);
-  v5 = [(MFComposeMailMessage *)self emailMessageRepresentation];
-  v9[0] = v5;
+  emailMessageRepresentation = [(MFComposeMailMessage *)self emailMessageRepresentation];
+  v9[0] = emailMessageRepresentation;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v7 = [v4 initWithMessageListItems:v6 origin:4 actor:2 flagChange:v3];
 
-  v8 = [(MFComposeMailMessage *)self messageRepository];
-  [v8 performMessageChangeAction:v7];
+  messageRepository = [(MFComposeMailMessage *)self messageRepository];
+  [messageRepository performMessageChangeAction:v7];
 }
 
 void __39__MFComposeMailMessage_markAsForwarded__block_invoke(uint64_t a1, void *a2)

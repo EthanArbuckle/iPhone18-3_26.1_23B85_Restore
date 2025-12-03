@@ -1,25 +1,25 @@
 @interface MPSCounterStatistics
-- (BOOL)haveConvergedOn:(unint64_t)a3;
+- (BOOL)haveConvergedOn:(unint64_t)on;
 - (NSArray)getRawData;
 - (counterStats_t)getCounterResults;
 - (id)getGeneralStatistics;
-- (id)initializeWithPassList:(id)a3 numberOfEncodersInCurrentWorkload:(unint64_t)a4 numEncodesPerCommandBuffer:(unint64_t)a5 extraRequestedCounter:(id)a6 userSpecifiedIterations:(BOOL)a7 vendor:(unint64_t)a8 useGRC:(BOOL)a9;
+- (id)initializeWithPassList:(id)list numberOfEncodersInCurrentWorkload:(unint64_t)workload numEncodesPerCommandBuffer:(unint64_t)buffer extraRequestedCounter:(id)counter userSpecifiedIterations:(BOOL)iterations vendor:(unint64_t)vendor useGRC:(BOOL)c;
 - (unint64_t)numberOfDispatches;
-- (void)addMPSCounterData:(id)a3;
+- (void)addMPSCounterData:(id)data;
 - (void)clearStatistics;
 - (void)dealloc;
 - (void)printCounterResults;
-- (void)setNumberOfEncodersInCurrentWorkload:(unint64_t)a3;
-- (void)updateStatsForScope:(unint64_t)a3 withcurrentSample:(unint64_t *)a4 startSample:(unint64_t *)a5;
+- (void)setNumberOfEncodersInCurrentWorkload:(unint64_t)workload;
+- (void)updateStatsForScope:(unint64_t)scope withcurrentSample:(unint64_t *)sample startSample:(unint64_t *)startSample;
 @end
 
 @implementation MPSCounterStatistics
 
-- (void)setNumberOfEncodersInCurrentWorkload:(unint64_t)a3
+- (void)setNumberOfEncodersInCurrentWorkload:(unint64_t)workload
 {
   numberOfEncodersInCurrentWorkload = self->_numberOfEncodersInCurrentWorkload;
-  self->_numberOfEncodersInCurrentWorkload = a3;
-  if (numberOfEncodersInCurrentWorkload != a3)
+  self->_numberOfEncodersInCurrentWorkload = workload;
+  if (numberOfEncodersInCurrentWorkload != workload)
   {
 
     free(self->_metaDataContainer);
@@ -66,42 +66,42 @@
   }
 }
 
-- (id)initializeWithPassList:(id)a3 numberOfEncodersInCurrentWorkload:(unint64_t)a4 numEncodesPerCommandBuffer:(unint64_t)a5 extraRequestedCounter:(id)a6 userSpecifiedIterations:(BOOL)a7 vendor:(unint64_t)a8 useGRC:(BOOL)a9
+- (id)initializeWithPassList:(id)list numberOfEncodersInCurrentWorkload:(unint64_t)workload numEncodesPerCommandBuffer:(unint64_t)buffer extraRequestedCounter:(id)counter userSpecifiedIterations:(BOOL)iterations vendor:(unint64_t)vendor useGRC:(BOOL)c
 {
   v81.receiver = self;
   v81.super_class = MPSCounterStatistics;
   v15 = [(MPSCounterStatistics *)&v81 init];
   *(v15 + 1) = objc_alloc_init(MEMORY[0x277CBEB18]);
-  *(v15 + 2) = a4;
-  *(v15 + 3) = a3;
+  *(v15 + 2) = workload;
+  *(v15 + 3) = list;
   *(v15 + 10) = 0;
-  *(v15 + 20) = a8;
-  *(v15 + 18) = a5;
-  if (!a9)
+  *(v15 + 20) = vendor;
+  *(v15 + 18) = buffer;
+  if (!c)
   {
-    if (a6)
+    if (counter)
     {
-      v16 = a6;
+      counterCopy = counter;
     }
 
     else
     {
-      v16 = @"MTLStatVertexCost";
+      counterCopy = @"MTLStatVertexCost";
     }
 
-    *(v15 + 11) = v16;
+    *(v15 + 11) = counterCopy;
   }
 
-  v17 = a4 + 2;
-  *(v15 + 12) = malloc_type_malloc(88 * (a4 + 2), 0x1000040931E79F6uLL);
-  *(v15 + 13) = malloc_type_malloc(88 * (a4 + 2), 0x1000040931E79F6uLL);
+  v17 = workload + 2;
+  *(v15 + 12) = malloc_type_malloc(88 * (workload + 2), 0x1000040931E79F6uLL);
+  *(v15 + 13) = malloc_type_malloc(88 * (workload + 2), 0x1000040931E79F6uLL);
   v18 = objc_alloc_init(GeneralStatistics);
   v19 = MEMORY[0x277CBEBF8];
   *(v15 + 14) = v18;
   *(v15 + 15) = v19;
   *(v15 + 16) = v19;
   *(v15 + 17) = v19;
-  if (a4 != -2)
+  if (workload != -2)
   {
     v20 = 0;
     do
@@ -136,17 +136,17 @@
   v37 = v19;
   v38 = *(v15 + 16);
   v39 = *(v15 + 17);
-  if (!a7)
+  if (!iterations)
   {
-    v43 = objc_msgSend_objectAtIndexedSubscript_(*(v15 + 15), v40, a4 + 1, v41, v42);
+    v43 = objc_msgSend_objectAtIndexedSubscript_(*(v15 + 15), v40, workload + 1, v41, v42);
     objc_msgSend_ignoreNextNValues_(v43, v44, 5, v45, v46);
-    v50 = objc_msgSend_objectAtIndexedSubscript_(*(v15 + 16), v47, a4 + 1, v48, v49);
+    v50 = objc_msgSend_objectAtIndexedSubscript_(*(v15 + 16), v47, workload + 1, v48, v49);
     objc_msgSend_ignoreNextNValues_(v50, v51, 5, v52, v53);
-    v57 = objc_msgSend_objectAtIndexedSubscript_(*(v15 + 17), v54, a4 + 1, v55, v56);
+    v57 = objc_msgSend_objectAtIndexedSubscript_(*(v15 + 17), v54, workload + 1, v55, v56);
     objc_msgSend_ignoreNextNValues_(v57, v58, 5, v59, v60);
   }
 
-  if (a9)
+  if (c)
   {
     *(v15 + 2) = vdupq_n_s64(1uLL);
     *(v15 + 3) = xmmword_239916E20;
@@ -261,17 +261,17 @@
   return v7;
 }
 
-- (void)addMPSCounterData:(id)a3
+- (void)addMPSCounterData:(id)data
 {
   dispatch_semaphore_wait(self->_updateStatisticsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  objc_msgSend_addObject_(self->_rawData, v5, a3, v6, v7);
-  v12 = objc_msgSend_rawData(a3, v8, v9, v10, v11);
+  objc_msgSend_addObject_(self->_rawData, v5, data, v6, v7);
+  v12 = objc_msgSend_rawData(data, v8, v9, v10, v11);
   v17 = objc_msgSend_bytes(v12, v13, v14, v15, v16);
   v22 = v17;
   if (v17[self->_encoderOffset] % self->_numberOfEncodersInCurrentWorkload)
   {
     v23 = objc_msgSend_count(self->_passList, v18, v19, v20, v21);
-    v28 = objc_msgSend_numberOfSamples(a3, v24, v25, v26, v27);
+    v28 = objc_msgSend_numberOfSamples(data, v24, v25, v26, v27);
     if (!v28)
     {
       goto LABEL_7;
@@ -291,7 +291,7 @@
     *&self->_workloadEncodersExtraMin = xmmword_239916E30;
     self->_workloadEcoderRunningStatsValid = 1;
     v23 = objc_msgSend_count(self->_passList, v18, v19, v20, v21);
-    v28 = objc_msgSend_numberOfSamples(a3, v30, v31, v32, v33);
+    v28 = objc_msgSend_numberOfSamples(data, v30, v31, v32, v33);
     if (!v28)
     {
 LABEL_7:
@@ -357,14 +357,14 @@ LABEL_8:
   dispatch_semaphore_signal(updateStatisticsSemaphore);
 }
 
-- (void)updateStatsForScope:(unint64_t)a3 withcurrentSample:(unint64_t *)a4 startSample:(unint64_t *)a5
+- (void)updateStatsForScope:(unint64_t)scope withcurrentSample:(unint64_t *)sample startSample:(unint64_t *)startSample
 {
-  if (a3 == 1)
+  if (scope == 1)
   {
     numberOfEncodersInCurrentWorkload = self->_numberOfEncodersInCurrentWorkload;
     cyclesOffset = self->_cyclesOffset;
-    v9 = a4[cyclesOffset];
-    workloadEncodersCyclesMin = a5[cyclesOffset];
+    v9 = sample[cyclesOffset];
+    workloadEncodersCyclesMin = startSample[cyclesOffset];
     v11 = v9 - workloadEncodersCyclesMin;
     if (v9 < workloadEncodersCyclesMin)
     {
@@ -374,10 +374,10 @@ LABEL_8:
 
   else
   {
-    numberOfEncodersInCurrentWorkload = a5[self->_encoderOffset] % self->_numberOfEncodersInCurrentWorkload;
+    numberOfEncodersInCurrentWorkload = startSample[self->_encoderOffset] % self->_numberOfEncodersInCurrentWorkload;
     cyclesOffset = self->_cyclesOffset;
-    v12 = a4[cyclesOffset];
-    workloadEncodersCyclesMin = a5[cyclesOffset];
+    v12 = sample[cyclesOffset];
+    workloadEncodersCyclesMin = startSample[cyclesOffset];
     v11 = v12 - workloadEncodersCyclesMin;
     if (v12 < workloadEncodersCyclesMin)
     {
@@ -388,8 +388,8 @@ LABEL_6:
   }
 
   timeOffset = self->_timeOffset;
-  v14 = *&a4[timeOffset];
-  v15 = *&a5[timeOffset];
+  v14 = *&sample[timeOffset];
+  v15 = *&startSample[timeOffset];
   if (*&v14 < *&v15)
   {
     goto LABEL_6;
@@ -399,7 +399,7 @@ LABEL_6:
   {
     *&v5 = self->_timeStampScaleFactor * (*&v14 - *&v15);
     v95 = v5;
-    if (a3 != 1)
+    if (scope != 1)
     {
       goto LABEL_9;
     }
@@ -418,7 +418,7 @@ LABEL_19:
       v25->var2 = v28;
       v25->var1 = fmin(self->_workloadEncodersCyclesTaken, var1);
       encoderCoalescing = self->_encoderCoalescing;
-      v30 = objc_msgSend_objectAtIndexedSubscript_(self->_cycleCounterStatistics, a2, numberOfEncodersInCurrentWorkload + 1, a4, a5);
+      v30 = objc_msgSend_objectAtIndexedSubscript_(self->_cycleCounterStatistics, a2, numberOfEncodersInCurrentWorkload + 1, sample, startSample);
       v35 = *p_workloadEncodersCyclesTaken;
       if (encoderCoalescing)
       {
@@ -483,7 +483,7 @@ LABEL_19:
 
   *&v5 = (v14 - v15) * self->_timeStampScaleFactor;
   v95 = v5;
-  if (a3 == 1)
+  if (scope == 1)
   {
     goto LABEL_19;
   }
@@ -500,14 +500,14 @@ LABEL_9:
   *&self->_workloadEncodersCyclesTaken = vaddq_f64(*&self->_workloadEncodersCyclesTaken, v17);
   v18 = self->_workloadEncodersExtraTaken + 0.0;
   self->_workloadEncodersCyclesMin = workloadEncodersCyclesMin;
-  v19 = a4[cyclesOffset];
+  v19 = sample[cyclesOffset];
   if (workloadEncodersCyclesMax > v19)
   {
     v19 = workloadEncodersCyclesMax;
   }
 
   self->_workloadEncodersCyclesMax = v19;
-  workloadEncodersTimestampMin = a5[timeOffset];
+  workloadEncodersTimestampMin = startSample[timeOffset];
   workloadEncodersTimestampMax = self->_workloadEncodersTimestampMax;
   if (self->_workloadEncodersTimestampMin < workloadEncodersTimestampMin)
   {
@@ -515,7 +515,7 @@ LABEL_9:
   }
 
   self->_workloadEncodersTimestampMin = workloadEncodersTimestampMin;
-  v22 = a4[timeOffset];
+  v22 = sample[timeOffset];
   self->_workloadEncodersExtraTaken = v18;
   if (workloadEncodersTimestampMax > v22)
   {
@@ -535,7 +535,7 @@ LABEL_30:
   v62->var3 = v63;
   v62->var1 = fmin(v11, v64);
   v66 = self->_encoderCoalescing;
-  v67 = objc_msgSend_objectAtIndexedSubscript_(self->_cycleCounterStatistics, a2, numberOfEncodersInCurrentWorkload, a4, a5, v95);
+  v67 = objc_msgSend_objectAtIndexedSubscript_(self->_cycleCounterStatistics, a2, numberOfEncodersInCurrentWorkload, sample, startSample, v95);
   if (v66)
   {
     objc_msgSend_addSumOfNValues_n_(v67, v68, self->_numEncodesPerCommandBuffer, v70, v71, v11);
@@ -675,31 +675,31 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)haveConvergedOn:(unint64_t)a3
+- (BOOL)haveConvergedOn:(unint64_t)on
 {
   numberOfEncodersInCurrentWorkload = self->_numberOfEncodersInCurrentWorkload;
-  if (a3 == 2)
+  if (on == 2)
   {
     v10 = 136;
   }
 
-  else if (a3 == 1)
+  else if (on == 1)
   {
     v10 = 128;
   }
 
   else
   {
-    if (a3)
+    if (on)
     {
       return 0;
     }
 
     if (self->_vendor == 3)
     {
-      v9 = self;
+      selfCopy = self;
       off_2814650E0("NVIDIA resets their cycle counter every encoder so total cycles are not trustworthy", a2, 0, v3, v4, v5, v6, v7);
-      self = v9;
+      self = selfCopy;
     }
 
     v10 = 120;
@@ -717,7 +717,7 @@ LABEL_10:
   if (numberOfEncodersInCurrentWorkload)
   {
     v12 = 0;
-    v499 = self;
+    selfCopy = self;
     for (i = objc_msgSend_objectAtIndexedSubscript_(self->_timingCounterStatistics, v9, 0, v10, v11); ; i = objc_msgSend_objectAtIndexedSubscript_(self->_timingCounterStatistics, v9, v12, v10, v11))
     {
       objc_msgSend_mean(i, v14, v15, v16, v17);
@@ -794,8 +794,8 @@ LABEL_10:
             v146 = objc_msgSend_threadsgroupMemoryLength(v179, v190, v191, v192, v193);
             printf("\tthreadgroupsPerGrid {%lu x %lu x %lu} threadsPerThreadgroup {%lu x %lu x %lu} totalThreads: %lu threadgroupMemoryLength: %lu\n", v142, v141, v143, v140, v144, v139, v145, v146);
             ++v138;
-            self = v499;
-            v151 = objc_msgSend_allEncoders(v499->_infoCapture, v147, v148, v149, v150);
+            self = selfCopy;
+            v151 = objc_msgSend_allEncoders(selfCopy->_infoCapture, v147, v148, v149, v150);
             v12 = v166;
             v155 = objc_msgSend_objectAtIndexedSubscript_(v151, v152, v166, v153, v154);
             v160 = objc_msgSend_dispatches(v155, v156, v157, v158, v159);

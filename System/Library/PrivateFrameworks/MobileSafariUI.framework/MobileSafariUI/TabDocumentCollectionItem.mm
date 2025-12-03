@@ -1,11 +1,11 @@
 @interface TabDocumentCollectionItem
 + (id)placeholderItem;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (TabDocumentCollectionItem)init;
-- (void)setIcon:(id)a3;
-- (void)setMediaStateIcon:(unint64_t)a3;
-- (void)setTitle:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setMediaStateIcon:(unint64_t)icon;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TabDocumentCollectionItem
@@ -17,9 +17,9 @@
   v2 = [(TabDocumentCollectionItem *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = v2;
   }
@@ -29,19 +29,19 @@
 
 + (id)placeholderItem
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  [v2 setUUID:v3];
+  v2 = objc_alloc_init(self);
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [v2 setUUID:uUID];
 
   [v2 setIsPlaceholder:1];
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -51,7 +51,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(TabDocumentCollectionItem *)v4 UUID];
+      uUID = [(TabDocumentCollectionItem *)equalCopy UUID];
       v6 = WBSIsEqual();
     }
 
@@ -64,13 +64,13 @@
   return v6;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  iconCopy = icon;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_icon, a3);
+    objc_storeStrong(&self->_icon, icon);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -109,12 +109,12 @@
   }
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_mediaStateIcon != a3)
+  if (self->_mediaStateIcon != icon)
   {
-    self->_mediaStateIcon = a3;
+    self->_mediaStateIcon = icon;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -153,13 +153,13 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  titleCopy = title;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [titleCopy copy];
     title = self->_title;
     self->_title = v5;
 

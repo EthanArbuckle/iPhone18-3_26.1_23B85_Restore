@@ -1,8 +1,8 @@
 @interface CKInvisibleInkEffectView
 + (void)initialize;
-- (CKInvisibleInkEffectView)initWithFrame:(CGRect)a3;
+- (CKInvisibleInkEffectView)initWithFrame:(CGRect)frame;
 - (CKInvisibleInkEffectViewDelegate)delegate;
-- (void)invisibleInkEffectCoverageTrackerDidUncover:(id)a3;
+- (void)invisibleInkEffectCoverageTrackerDidUncover:(id)uncover;
 - (void)layoutSubviews;
 - (void)reset;
 @end
@@ -11,10 +11,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v2 objectForKey:@"DebugInvisibleInkUpdateInterval"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"DebugInvisibleInkUpdateInterval"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -31,11 +31,11 @@
   }
 }
 
-- (CKInvisibleInkEffectView)initWithFrame:(CGRect)a3
+- (CKInvisibleInkEffectView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CKInvisibleInkEffectView;
-  v3 = [(CKInvisibleInkEffectView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKInvisibleInkEffectView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CKInvisibleInkEffectCoverageTracker alloc];
@@ -43,8 +43,8 @@
     v7 = [(CKInvisibleInkEffectCoverageTracker *)v4 initWithSize:v5 touchLifetime:v6, 3.0];
     [(CKInvisibleInkEffectView *)v3 setCoverageTracker:v7];
 
-    v8 = [(CKInvisibleInkEffectView *)v3 coverageTracker];
-    [v8 setDelegate:v3];
+    coverageTracker = [(CKInvisibleInkEffectView *)v3 coverageTracker];
+    [coverageTracker setDelegate:v3];
   }
 
   return v3;
@@ -55,26 +55,26 @@
   v6.receiver = self;
   v6.super_class = CKInvisibleInkEffectView;
   [(CKInvisibleInkEffectView *)&v6 layoutSubviews];
-  v3 = [(CKInvisibleInkEffectView *)self coverageTracker];
+  coverageTracker = [(CKInvisibleInkEffectView *)self coverageTracker];
   [(CKInvisibleInkEffectView *)self bounds];
-  [v3 setSize:{v4, v5}];
+  [coverageTracker setSize:{v4, v5}];
 }
 
 - (void)reset
 {
-  v2 = [(CKInvisibleInkEffectView *)self coverageTracker];
-  [v2 reset];
+  coverageTracker = [(CKInvisibleInkEffectView *)self coverageTracker];
+  [coverageTracker reset];
 }
 
-- (void)invisibleInkEffectCoverageTrackerDidUncover:(id)a3
+- (void)invisibleInkEffectCoverageTrackerDidUncover:(id)uncover
 {
-  v4 = [(CKInvisibleInkEffectView *)self delegate];
+  delegate = [(CKInvisibleInkEffectView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKInvisibleInkEffectView *)self delegate];
-    [v6 invisibleInkEffectViewWasUncovered:self];
+    delegate2 = [(CKInvisibleInkEffectView *)self delegate];
+    [delegate2 invisibleInkEffectViewWasUncovered:self];
   }
 }
 

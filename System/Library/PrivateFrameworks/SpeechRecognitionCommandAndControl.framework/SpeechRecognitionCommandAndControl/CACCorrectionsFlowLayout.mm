@@ -1,7 +1,7 @@
 @interface CACCorrectionsFlowLayout
 - (double)_availableWidth;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -16,14 +16,14 @@
 
 - (double)_availableWidth
 {
-  v3 = [(CACCorrectionsFlowLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(CACCorrectionsFlowLayout *)self collectionView];
+  [collectionView bounds];
   Width = CGRectGetWidth(v16);
-  v5 = [(CACCorrectionsFlowLayout *)self collectionView];
-  [v5 contentInset];
+  collectionView2 = [(CACCorrectionsFlowLayout *)self collectionView];
+  [collectionView2 contentInset];
   v7 = Width - v6;
-  v8 = [(CACCorrectionsFlowLayout *)self collectionView];
-  [v8 contentInset];
+  collectionView3 = [(CACCorrectionsFlowLayout *)self collectionView];
+  [collectionView3 contentInset];
   v10 = v7 - v9;
   [(UICollectionViewFlowLayout *)self sectionInset];
   v12 = v10 - v11;
@@ -33,23 +33,23 @@
   return v14;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = CACCorrectionsFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v6 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(UICollectionViewFlowLayout *)&v6 layoutAttributesForItemAtIndexPath:path];
   [(CACCorrectionsFlowLayout *)self _availableWidth];
   [v4 setAvailableWidth:?];
 
   return v4;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = CACCorrectionsFlowLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v17 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UICollectionViewFlowLayout *)&v17 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(CACCorrectionsFlowLayout *)self _availableWidth];
   v6 = v5;
   v13 = 0u;

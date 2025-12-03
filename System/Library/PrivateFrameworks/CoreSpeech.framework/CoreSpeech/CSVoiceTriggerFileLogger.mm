@@ -1,35 +1,35 @@
 @interface CSVoiceTriggerFileLogger
-- (BOOL)_shouldLogDeviceId:(id)a3;
-- (BOOL)_shouldSkipLogging:(id)a3;
+- (BOOL)_shouldLogDeviceId:(id)id;
+- (BOOL)_shouldSkipLogging:(id)logging;
 - (CSVoiceTriggerFileLogger)init;
 - (id)_audioLogDirectory;
 - (id)_geckoLogDirectory;
-- (id)_metaFilenameWithRootDir:(id)a3 prefix:(id)a4 deviceId:(id)a5;
+- (id)_metaFilenameWithRootDir:(id)dir prefix:(id)prefix deviceId:(id)id;
 - (id)_timeStampString;
 - (void)_clearOldGeckoLoggingFiles;
 - (void)_clearOldLoggingFiles;
-- (void)_logGeckoWithFilePrefix:(id)a3 WithResult:(id)a4;
-- (void)_logSelfTriggerAudioWithPrefix:(id)a3 result:(id)a4;
-- (void)_logVTResult:(id)a3 metaFilePath:(id)a4 audioFilePath:(id)a5 completion:(id)a6;
-- (void)_moveSecureAudioCaptureFrom:(id)a3 withExclaveTimestamp:(id)a4;
-- (void)_notifyFalseRejectFeedbackBanner:(id)a3;
+- (void)_logGeckoWithFilePrefix:(id)prefix WithResult:(id)result;
+- (void)_logSelfTriggerAudioWithPrefix:(id)prefix result:(id)result;
+- (void)_logVTResult:(id)result metaFilePath:(id)path audioFilePath:(id)filePath completion:(id)completion;
+- (void)_moveSecureAudioCaptureFrom:(id)from withExclaveTimestamp:(id)timestamp;
+- (void)_notifyFalseRejectFeedbackBanner:(id)banner;
 - (void)_syncAvailableSecureCaptures;
-- (void)_writeDictionary:(id)a3 toPath:(id)a4;
-- (void)selfTriggerDetector:(id)a3 didDetectNearMiss:(id)a4;
-- (void)selfTriggerDetector:(id)a3 didDetectSelfTrigger:(id)a4;
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4;
-- (void)voiceTriggerDidDetectNearMiss:(id)a3 deviceId:(id)a4;
-- (void)voiceTriggerDidDetectSpeakerReject:(id)a3;
+- (void)_writeDictionary:(id)dictionary toPath:(id)path;
+- (void)selfTriggerDetector:(id)detector didDetectNearMiss:(id)miss;
+- (void)selfTriggerDetector:(id)detector didDetectSelfTrigger:(id)trigger;
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id;
+- (void)voiceTriggerDidDetectNearMiss:(id)miss deviceId:(id)id;
+- (void)voiceTriggerDidDetectSpeakerReject:(id)reject;
 @end
 
 @implementation CSVoiceTriggerFileLogger
 
-- (void)_notifyFalseRejectFeedbackBanner:(id)a3
+- (void)_notifyFalseRejectFeedbackBanner:(id)banner
 {
   v3 = kVTEItriggerScore;
-  v4 = a3;
-  v11 = [v4 objectForKey:v3];
-  v5 = [v4 objectForKey:kVTEITriggeredPhId];
+  bannerCopy = banner;
+  v11 = [bannerCopy objectForKey:v3];
+  v5 = [bannerCopy objectForKey:kVTEITriggeredPhId];
 
   if (v11)
   {
@@ -45,17 +45,17 @@
   {
     [v11 floatValue];
     v8 = v7;
-    v9 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
     LODWORD(v10) = v8;
-    [CSSiriDebugConnection launchSiriDebugFeedbackBannerFalseRejectBannerWithTriggerScore:v9 withTriggeredPhraseId:v10];
+    [CSSiriDebugConnection launchSiriDebugFeedbackBannerFalseRejectBannerWithTriggerScore:unsignedIntValue withTriggeredPhraseId:v10];
   }
 }
 
 - (void)_clearOldGeckoLoggingFiles
 {
   v4 = +[CSFPreferences sharedPreferences];
-  v2 = [v4 geckoAudioLogDirectory];
-  v3 = [NSURL URLWithString:v2];
+  geckoAudioLogDirectory = [v4 geckoAudioLogDirectory];
+  v3 = [NSURL URLWithString:geckoAudioLogDirectory];
   +[CSConfig daysBeforeRemovingLogFiles];
   [CSUtils removeLogFilesInDirectory:v3 matchingPattern:@".*" beforeDays:?];
 }
@@ -72,18 +72,18 @@
   [CSAudioFileManager removeRemoteP2PLogFilesOlderThanNDays:?];
 }
 
-- (void)_logSelfTriggerAudioWithPrefix:(id)a3 result:(id)a4
+- (void)_logSelfTriggerAudioWithPrefix:(id)prefix result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:v7])
+  prefixCopy = prefix;
+  resultCopy = result;
+  if (![(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:resultCopy])
   {
-    v8 = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
-    v9 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:v8 prefix:v6 deviceId:0];
+    _audioLogDirectory = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
+    v9 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:_audioLogDirectory prefix:prefixCopy deviceId:0];
 
     v10 = [v9 stringByReplacingOccurrencesOfString:@".json" withString:@".wav"];
-    v11 = [v7 objectForKeyedSubscript:kVTEIAudioProviderUUID];
-    v12 = [v7 mutableCopy];
+    v11 = [resultCopy objectForKeyedSubscript:kVTEIAudioProviderUUID];
+    v12 = [resultCopy mutableCopy];
     [v12 setObject:v10 forKey:kVTEICaptureFilePath];
     v13 = v12;
 
@@ -93,53 +93,53 @@
     block[2] = sub_10014B254;
     block[3] = &unk_100252D58;
     v19 = v13;
-    v20 = self;
+    selfCopy = self;
     v21 = v11;
     v22 = v10;
     v23 = v9;
     v15 = v9;
     v16 = v10;
     v17 = v11;
-    v7 = v13;
+    resultCopy = v13;
     dispatch_async(queue, block);
     [(CSVoiceTriggerFileLogger *)self _clearOldLoggingFiles];
   }
 }
 
-- (void)selfTriggerDetector:(id)a3 didDetectNearMiss:(id)a4
+- (void)selfTriggerDetector:(id)detector didDetectNearMiss:(id)miss
 {
-  v7 = a4;
+  missCopy = miss;
   if (-[CSVoiceTriggerFileLogger fileLoggingEnabled](self, "fileLoggingEnabled") || (+[CSFPreferences sharedPreferences](CSFPreferences, "sharedPreferences"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isSelfTriggerNearMissAudioLoggingEnabled], v5, v6))
   {
-    [(CSVoiceTriggerFileLogger *)self _logSelfTriggerAudioWithPrefix:@"-selfTriggerNearMiss" result:v7];
+    [(CSVoiceTriggerFileLogger *)self _logSelfTriggerAudioWithPrefix:@"-selfTriggerNearMiss" result:missCopy];
   }
 }
 
-- (void)selfTriggerDetector:(id)a3 didDetectSelfTrigger:(id)a4
+- (void)selfTriggerDetector:(id)detector didDetectSelfTrigger:(id)trigger
 {
-  v5 = a4;
+  triggerCopy = trigger;
   if ([(CSVoiceTriggerFileLogger *)self fileLoggingEnabled])
   {
-    [(CSVoiceTriggerFileLogger *)self _logSelfTriggerAudioWithPrefix:@"-selfTrigger" result:v5];
+    [(CSVoiceTriggerFileLogger *)self _logSelfTriggerAudioWithPrefix:@"-selfTrigger" result:triggerCopy];
   }
 }
 
-- (void)voiceTriggerDidDetectSpeakerReject:(id)a3
+- (void)voiceTriggerDidDetectSpeakerReject:(id)reject
 {
-  v10 = a3;
+  rejectCopy = reject;
   [(CSVoiceTriggerFileLogger *)self _notifyFalseRejectFeedbackBanner:?];
   if ([(CSVoiceTriggerFileLogger *)self fileLoggingEnabled])
   {
-    if ([(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:v10])
+    if ([(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:rejectCopy])
     {
       goto LABEL_6;
     }
 
-    v4 = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
-    v5 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:v4 prefix:@"-rejected" deviceId:0];
+    _audioLogDirectory = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
+    v5 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:_audioLogDirectory prefix:@"-rejected" deviceId:0];
 
     v6 = [v5 stringByReplacingOccurrencesOfString:@".json" withString:@".wav"];
-    v7 = [v10 mutableCopy];
+    v7 = [rejectCopy mutableCopy];
     [v7 setObject:v6 forKey:kVTEICaptureFilePath];
     v8 = v7;
 
@@ -151,33 +151,33 @@
 
   else
   {
-    v9 = v10;
+    v9 = rejectCopy;
   }
 
-  v10 = v9;
+  rejectCopy = v9;
   [(CSVoiceTriggerFileLogger *)self _logGeckoWithFilePrefix:@"-rejected" WithResult:v9];
 LABEL_6:
 }
 
-- (void)_logGeckoWithFilePrefix:(id)a3 WithResult:(id)a4
+- (void)_logGeckoWithFilePrefix:(id)prefix WithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (((CSIsIOS() & 1) != 0 || CSIsHorseman()) && [(CSVoiceTriggerFileLogger *)self geckoLoggingEnabled]&& ![(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:v7])
+  prefixCopy = prefix;
+  resultCopy = result;
+  if (((CSIsIOS() & 1) != 0 || CSIsHorseman()) && [(CSVoiceTriggerFileLogger *)self geckoLoggingEnabled]&& ![(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:resultCopy])
   {
-    v8 = [(CSVoiceTriggerFileLogger *)self _geckoLogDirectory];
-    if (v8)
+    _geckoLogDirectory = [(CSVoiceTriggerFileLogger *)self _geckoLogDirectory];
+    if (_geckoLogDirectory)
     {
-      v9 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:v8 prefix:v6 deviceId:0];
+      v9 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:_geckoLogDirectory prefix:prefixCopy deviceId:0];
       v10 = [v9 stringByReplacingOccurrencesOfString:@".json" withString:@".wav"];
-      v11 = [v7 mutableCopy];
+      v11 = [resultCopy mutableCopy];
       [v11 setObject:v10 forKey:kVTEICaptureFilePath];
       v12 = v11;
 
       [(CSVoiceTriggerFileLogger *)self _logVTResult:v12 metaFilePath:v9 audioFilePath:v10 completion:&stru_100252D10];
       [(CSVoiceTriggerFileLogger *)self _clearOldGeckoLoggingFiles];
 
-      v7 = v12;
+      resultCopy = v12;
     }
 
     else
@@ -193,23 +193,23 @@ LABEL_6:
   }
 }
 
-- (void)voiceTriggerDidDetectNearMiss:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidDetectNearMiss:(id)miss deviceId:(id)id
 {
-  v15 = a3;
-  v6 = a4;
-  [(CSVoiceTriggerFileLogger *)self _notifyFalseRejectFeedbackBanner:v15];
+  missCopy = miss;
+  idCopy = id;
+  [(CSVoiceTriggerFileLogger *)self _notifyFalseRejectFeedbackBanner:missCopy];
   if ([(CSVoiceTriggerFileLogger *)self fileLoggingEnabled])
   {
-    if ([(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:v15])
+    if ([(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:missCopy])
     {
       goto LABEL_9;
     }
 
-    v7 = [(CSVoiceTriggerFileLogger *)self _shouldLogDeviceId:v15];
-    v8 = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
+    v7 = [(CSVoiceTriggerFileLogger *)self _shouldLogDeviceId:missCopy];
+    _audioLogDirectory = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
     if (v7)
     {
-      v9 = v6;
+      v9 = idCopy;
     }
 
     else
@@ -217,10 +217,10 @@ LABEL_6:
       v9 = 0;
     }
 
-    v10 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:v8 prefix:@"-almost" deviceId:v9];
+    v10 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:_audioLogDirectory prefix:@"-almost" deviceId:v9];
 
     v11 = [v10 stringByReplacingOccurrencesOfString:@".json" withString:@".wav"];
-    v12 = [v15 mutableCopy];
+    v12 = [missCopy mutableCopy];
     [v12 setObject:v11 forKey:kVTEICaptureFilePath];
     v13 = v12;
 
@@ -232,20 +232,20 @@ LABEL_6:
 
   else
   {
-    v14 = v15;
+    v14 = missCopy;
   }
 
-  v15 = v14;
+  missCopy = v14;
   [(CSVoiceTriggerFileLogger *)self _logGeckoWithFilePrefix:@"-almost" WithResult:v14];
 LABEL_9:
 }
 
-- (void)_logVTResult:(id)a3 metaFilePath:(id)a4 audioFilePath:(id)a5 completion:(id)a6
+- (void)_logVTResult:(id)result metaFilePath:(id)path audioFilePath:(id)filePath completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  resultCopy = result;
+  pathCopy = path;
+  filePathCopy = filePath;
+  completionCopy = completion;
   if (self->_isExclaveHardware && CSIsInternalBuild())
   {
     queue = self->_queue;
@@ -260,14 +260,14 @@ LABEL_9:
     v26[1] = 3221225472;
     v26[2] = sub_10014BC7C;
     v26[3] = &unk_100252CA8;
-    v27 = v13;
-    v16 = v13;
+    v27 = completionCopy;
+    v16 = completionCopy;
     dispatch_async(v15, v26);
   }
 
   else
   {
-    v17 = [v10 objectForKeyedSubscript:kVTEIAudioProviderUUID];
+    v17 = [resultCopy objectForKeyedSubscript:kVTEIAudioProviderUUID];
     v18 = self->_queue;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -275,32 +275,32 @@ LABEL_9:
     v20[3] = &unk_100252CD0;
     v20[4] = self;
     v21 = v17;
-    v22 = v10;
-    v23 = v12;
-    v24 = v11;
-    v25 = v13;
-    v19 = v13;
+    v22 = resultCopy;
+    v23 = filePathCopy;
+    v24 = pathCopy;
+    v25 = completionCopy;
+    v19 = completionCopy;
     v16 = v17;
     dispatch_async(v18, v20);
   }
 }
 
-- (void)voiceTriggerDidDetectKeyword:(id)a3 deviceId:(id)a4
+- (void)voiceTriggerDidDetectKeyword:(id)keyword deviceId:(id)id
 {
-  v15 = a3;
-  v6 = a4;
+  keywordCopy = keyword;
+  idCopy = id;
   if ([(CSVoiceTriggerFileLogger *)self fileLoggingEnabled])
   {
-    if ([(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:v15])
+    if ([(CSVoiceTriggerFileLogger *)self _shouldSkipLogging:keywordCopy])
     {
       goto LABEL_9;
     }
 
-    v7 = [(CSVoiceTriggerFileLogger *)self _shouldLogDeviceId:v15];
-    v8 = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
+    v7 = [(CSVoiceTriggerFileLogger *)self _shouldLogDeviceId:keywordCopy];
+    _audioLogDirectory = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
     if (v7)
     {
-      v9 = v6;
+      v9 = idCopy;
     }
 
     else
@@ -308,10 +308,10 @@ LABEL_9:
       v9 = 0;
     }
 
-    v10 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:v8 prefix:@"-triggered" deviceId:v9];
+    v10 = [(CSVoiceTriggerFileLogger *)self _metaFilenameWithRootDir:_audioLogDirectory prefix:@"-triggered" deviceId:v9];
 
     v11 = [v10 stringByReplacingOccurrencesOfString:@".json" withString:@".wav"];
-    v12 = [v15 mutableCopy];
+    v12 = [keywordCopy mutableCopy];
     [v12 setObject:v11 forKey:kVTEICaptureFilePath];
     v13 = v12;
 
@@ -323,10 +323,10 @@ LABEL_9:
 
   else
   {
-    v14 = v15;
+    v14 = keywordCopy;
   }
 
-  v15 = v14;
+  keywordCopy = v14;
   [(CSVoiceTriggerFileLogger *)self _logGeckoWithFilePrefix:@"-triggered" WithResult:v14];
 LABEL_9:
 }
@@ -422,14 +422,14 @@ LABEL_9:
   }
 }
 
-- (void)_moveSecureAudioCaptureFrom:(id)a3 withExclaveTimestamp:(id)a4
+- (void)_moveSecureAudioCaptureFrom:(id)from withExclaveTimestamp:(id)timestamp
 {
-  v5 = a3;
-  v31 = a4;
+  fromCopy = from;
+  timestampCopy = timestamp;
   +[NSFileManager defaultManager];
   v27 = v40 = 0;
-  v32 = v5;
-  v6 = [v27 contentsOfDirectoryAtPath:v5 error:&v40];
+  v32 = fromCopy;
+  v6 = [v27 contentsOfDirectoryAtPath:fromCopy error:&v40];
   v7 = v40;
   if (v6)
   {
@@ -459,9 +459,9 @@ LABEL_9:
 
         v11 = *(*(&v36 + 1) + 8 * v10);
         v12 = [v32 stringByAppendingPathComponent:v11];
-        v13 = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
-        v14 = [NSString stringWithFormat:@"%@-%@", v31, v11];
-        v15 = [v13 stringByAppendingPathComponent:v14];
+        _audioLogDirectory = [(CSVoiceTriggerFileLogger *)self _audioLogDirectory];
+        v14 = [NSString stringWithFormat:@"%@-%@", timestampCopy, v11];
+        v15 = [_audioLogDirectory stringByAppendingPathComponent:v14];
 
         v16 = [NSURL fileURLWithPath:v12];
         v34 = 0;
@@ -557,30 +557,30 @@ LABEL_22:
 LABEL_25:
 }
 
-- (BOOL)_shouldSkipLogging:(id)a3
+- (BOOL)_shouldSkipLogging:(id)logging
 {
-  v3 = [a3 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+  v3 = [logging objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
   v4 = [v3 isEqualToString:kVTEIFirstPassTriggeredFromDarwin];
 
   return v4;
 }
 
-- (BOOL)_shouldLogDeviceId:(id)a3
+- (BOOL)_shouldLogDeviceId:(id)id
 {
-  v3 = [a3 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+  v3 = [id objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
   v4 = [v3 isEqualToString:kVTEIFirstPassTriggeredFromRemora];
 
   return v4;
 }
 
-- (void)_writeDictionary:(id)a3 toPath:(id)a4
+- (void)_writeDictionary:(id)dictionary toPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  if (dictionaryCopy)
   {
     v13 = 0;
-    v7 = [NSJSONSerialization dataWithJSONObject:v5 options:3 error:&v13];
+    v7 = [NSJSONSerialization dataWithJSONObject:dictionaryCopy options:3 error:&v13];
     v8 = v13;
     if (v8)
     {
@@ -588,18 +588,18 @@ LABEL_25:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v15 = "[CSVoiceTriggerFileLogger _writeDictionary:toPath:]";
         v16 = 2114;
-        v17 = v11;
+        v17 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Error writing out event info meta: %{public}@", buf, 0x16u);
       }
     }
 
     else
     {
-      [v7 writeToFile:v6 atomically:0];
+      [v7 writeToFile:pathCopy atomically:0];
     }
   }
 
@@ -615,25 +615,25 @@ LABEL_25:
   }
 }
 
-- (id)_metaFilenameWithRootDir:(id)a3 prefix:(id)a4 deviceId:(id)a5
+- (id)_metaFilenameWithRootDir:(id)dir prefix:(id)prefix deviceId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CSVoiceTriggerFileLogger *)self _timeStampString];
-  v12 = v11;
-  if (v8)
+  idCopy = id;
+  prefixCopy = prefix;
+  dirCopy = dir;
+  _timeStampString = [(CSVoiceTriggerFileLogger *)self _timeStampString];
+  v12 = _timeStampString;
+  if (idCopy)
   {
-    [NSString stringWithFormat:@"%@-%@%@%@", v11, v8, v9, @".json"];
+    [NSString stringWithFormat:@"%@-%@%@%@", _timeStampString, idCopy, prefixCopy, @".json"];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%@%@%@", v11, v9, @".json", v16];
+    [NSString stringWithFormat:@"%@%@%@", _timeStampString, prefixCopy, @".json", v16];
   }
   v13 = ;
 
-  v14 = [v10 stringByAppendingPathComponent:v13];
+  v14 = [dirCopy stringByAppendingPathComponent:v13];
 
   return v14;
 }
@@ -655,9 +655,9 @@ LABEL_25:
 {
   v2 = +[NSFileManager defaultManager];
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 geckoAudioLogDirectory];
+  geckoAudioLogDirectory = [v3 geckoAudioLogDirectory];
 
-  if ([v2 fileExistsAtPath:v4])
+  if ([v2 fileExistsAtPath:geckoAudioLogDirectory])
   {
     v5 = 0;
   }
@@ -668,7 +668,7 @@ LABEL_25:
     v20 = NSFileProtectionCompleteUnlessOpen;
     v6 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v12 = 0;
-    v7 = [v2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:v6 error:&v12];
+    v7 = [v2 createDirectoryAtPath:geckoAudioLogDirectory withIntermediateDirectories:1 attributes:v6 error:&v12];
     v5 = v12;
 
     if ((v7 & 1) == 0)
@@ -677,30 +677,30 @@ LABEL_25:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v10 = v8;
-        v11 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 136315650;
         v14 = "[CSVoiceTriggerFileLogger _geckoLogDirectory]";
         v15 = 2114;
-        v16 = v4;
+        v16 = geckoAudioLogDirectory;
         v17 = 2114;
-        v18 = v11;
+        v18 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s Couldn't create voice trigger audio logging directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
-      v4 = 0;
+      geckoAudioLogDirectory = 0;
     }
   }
 
-  return v4;
+  return geckoAudioLogDirectory;
 }
 
 - (id)_audioLogDirectory
 {
   v2 = +[NSFileManager defaultManager];
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 voiceTriggerAudioLogDirectory];
+  voiceTriggerAudioLogDirectory = [v3 voiceTriggerAudioLogDirectory];
 
-  if ([v2 fileExistsAtPath:v4])
+  if ([v2 fileExistsAtPath:voiceTriggerAudioLogDirectory])
   {
     v5 = 0;
   }
@@ -708,7 +708,7 @@ LABEL_25:
   else
   {
     v11 = 0;
-    v6 = [v2 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v11];
+    v6 = [v2 createDirectoryAtPath:voiceTriggerAudioLogDirectory withIntermediateDirectories:1 attributes:0 error:&v11];
     v5 = v11;
     if ((v6 & 1) == 0)
     {
@@ -716,29 +716,29 @@ LABEL_25:
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v9 = v7;
-        v10 = [v5 localizedDescription];
+        localizedDescription = [v5 localizedDescription];
         *buf = 136315650;
         v13 = "[CSVoiceTriggerFileLogger _audioLogDirectory]";
         v14 = 2114;
-        v15 = v4;
+        v15 = voiceTriggerAudioLogDirectory;
         v16 = 2114;
-        v17 = v10;
+        v17 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Couldn't create voice trigger audio logging directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
-      v4 = @"/tmp";
+      voiceTriggerAudioLogDirectory = @"/tmp";
     }
   }
 
-  return v4;
+  return voiceTriggerAudioLogDirectory;
 }
 
 - (CSVoiceTriggerFileLogger)init
 {
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 fileLoggingIsEnabled];
+  fileLoggingIsEnabled = [v3 fileLoggingIsEnabled];
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = -[CSVoiceTriggerFileLogger initWithSpeechManager:fileLoggingEnabled:geckoLoggingEnabled:](self, "initWithSpeechManager:fileLoggingEnabled:geckoLoggingEnabled:", 0, v4, [v5 geckoLoggingLevel] > 0);
+  v6 = -[CSVoiceTriggerFileLogger initWithSpeechManager:fileLoggingEnabled:geckoLoggingEnabled:](self, "initWithSpeechManager:fileLoggingEnabled:geckoLoggingEnabled:", 0, fileLoggingIsEnabled, [v5 geckoLoggingLevel] > 0);
 
   return v6;
 }

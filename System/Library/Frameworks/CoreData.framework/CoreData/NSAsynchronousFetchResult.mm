@@ -1,8 +1,8 @@
 @interface NSAsynchronousFetchResult
-- (id)initForFetchRequest:(id)a3 withContext:(id)a4 andProgress:(id)a5 completetionBlock:(id)a6;
+- (id)initForFetchRequest:(id)request withContext:(id)context andProgress:(id)progress completetionBlock:(id)block;
 - (uint64_t)setFinalResult:(uint64_t)result;
 - (void)dealloc;
-- (void)setOperationError:(id)a3;
+- (void)setOperationError:(id)error;
 @end
 
 @implementation NSAsynchronousFetchResult
@@ -25,14 +25,14 @@
   [(NSPersistentStoreAsynchronousResult *)&v4 dealloc];
 }
 
-- (id)initForFetchRequest:(id)a3 withContext:(id)a4 andProgress:(id)a5 completetionBlock:(id)a6
+- (id)initForFetchRequest:(id)request withContext:(id)context andProgress:(id)progress completetionBlock:(id)block
 {
   v9.receiver = self;
   v9.super_class = NSAsynchronousFetchResult;
-  v7 = [(NSPersistentStoreAsynchronousResult *)&v9 initWithContext:a4 andProgress:a5 completetionBlock:a6];
+  v7 = [(NSPersistentStoreAsynchronousResult *)&v9 initWithContext:context andProgress:progress completetionBlock:block];
   if (v7)
   {
-    v7->_fetchRequest = a3;
+    v7->_fetchRequest = request;
   }
 
   return v7;
@@ -50,19 +50,19 @@
       *(v3 + 56) = a2;
     }
 
-    v5 = [*(v3 + 48) fetchRequest];
+    fetchRequest = [*(v3 + 48) fetchRequest];
 
-    return [v5 _setAsyncResultHandle:0];
+    return [fetchRequest _setAsyncResultHandle:0];
   }
 
   return result;
 }
 
-- (void)setOperationError:(id)a3
+- (void)setOperationError:(id)error
 {
   v4.receiver = self;
   v4.super_class = NSAsynchronousFetchResult;
-  [(NSPersistentStoreAsynchronousResult *)&v4 setOperationError:a3];
+  [(NSPersistentStoreAsynchronousResult *)&v4 setOperationError:error];
   [(NSFetchRequest *)[(NSAsynchronousFetchRequest *)self->_fetchRequest fetchRequest] _setAsyncResultHandle:0];
 }
 

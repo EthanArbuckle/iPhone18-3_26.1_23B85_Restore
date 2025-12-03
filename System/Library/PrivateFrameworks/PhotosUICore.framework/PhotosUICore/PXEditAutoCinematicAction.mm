@@ -1,57 +1,57 @@
 @interface PXEditAutoCinematicAction
-- (PXEditAutoCinematicAction)initWithCinematicController:(id)a3;
-- (void)performAction:(id)a3;
-- (void)performRedo:(id)a3;
-- (void)performUndo:(id)a3;
+- (PXEditAutoCinematicAction)initWithCinematicController:(id)controller;
+- (void)performAction:(id)action;
+- (void)performRedo:(id)redo;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXEditAutoCinematicAction
 
-- (void)performRedo:(id)a3
+- (void)performRedo:(id)redo
 {
-  v6 = a3;
+  redoCopy = redo;
   isInAutoFocusState = self->_isInAutoFocusState;
-  v5 = [(PXCinematicEditController *)self->_cinematicController isInAutoFocusState];
-  if (isInAutoFocusState == v5)
+  isInAutoFocusState = [(PXCinematicEditController *)self->_cinematicController isInAutoFocusState];
+  if (isInAutoFocusState == isInAutoFocusState)
   {
     [(PXCinematicEditController *)self->_cinematicController toggleAutoFocusState];
   }
 
-  v6[2](v6, isInAutoFocusState == v5, 0);
+  redoCopy[2](redoCopy, isInAutoFocusState == isInAutoFocusState, 0);
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v6 = a3;
+  undoCopy = undo;
   isInAutoFocusState = self->_isInAutoFocusState;
-  v5 = [(PXCinematicEditController *)self->_cinematicController isInAutoFocusState];
-  if (isInAutoFocusState != v5)
+  isInAutoFocusState = [(PXCinematicEditController *)self->_cinematicController isInAutoFocusState];
+  if (isInAutoFocusState != isInAutoFocusState)
   {
     [(PXCinematicEditController *)self->_cinematicController toggleAutoFocusState];
   }
 
-  v6[2](v6, isInAutoFocusState != v5, 0);
+  undoCopy[2](undoCopy, isInAutoFocusState != isInAutoFocusState, 0);
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   cinematicController = self->_cinematicController;
-  v4 = a3;
+  actionCopy = action;
   [(PXCinematicEditController *)cinematicController toggleAutoFocusState];
-  v4[2](v4, 1, 0);
+  actionCopy[2](actionCopy, 1, 0);
 }
 
-- (PXEditAutoCinematicAction)initWithCinematicController:(id)a3
+- (PXEditAutoCinematicAction)initWithCinematicController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PXEditAutoCinematicAction;
   v6 = [(PXEditAutoCinematicAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cinematicController, a3);
-    v7->_isInAutoFocusState = [v5 isInAutoFocusState];
+    objc_storeStrong(&v6->_cinematicController, controller);
+    v7->_isInAutoFocusState = [controllerCopy isInAutoFocusState];
   }
 
   return v7;

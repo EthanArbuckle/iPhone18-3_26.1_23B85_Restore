@@ -1,21 +1,21 @@
 @interface MapsSuggestionsPortraitImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsPortraitImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    if ([v4 type] == 17)
+    if ([entryCopy type] == 17)
     {
-      v6 = [v5 geoMapItem];
-      v7 = [v6 name];
-      [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedTitle:v7 forEntry:v5];
+      geoMapItem = [v5 geoMapItem];
+      name = [geoMapItem name];
+      [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedTitle:name forEntry:v5];
 
       v8 = v5;
       if (![v8 containsKey:@"MapsSuggestionsOriginBundleIDKey"])

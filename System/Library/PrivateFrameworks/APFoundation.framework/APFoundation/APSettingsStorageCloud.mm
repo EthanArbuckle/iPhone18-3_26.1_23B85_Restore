@@ -1,17 +1,17 @@
 @interface APSettingsStorageCloud
-- (APSettingsStorageCloud)initWithDefaultValues:(id)a3;
-- (APSettingsStorageCloud)initWithDefaultValues:(id)a3 shouldUseLocalPersistance:(BOOL)a4 forSubclass:(Class)a5;
-- (id)valueForKey:(id)a3 error:(id *)a4;
+- (APSettingsStorageCloud)initWithDefaultValues:(id)values;
+- (APSettingsStorageCloud)initWithDefaultValues:(id)values shouldUseLocalPersistance:(BOOL)persistance forSubclass:(Class)subclass;
+- (id)valueForKey:(id)key error:(id *)error;
 - (void)dealloc;
 - (void)persistLocallyIfNeeded;
-- (void)setValue:(id)a3 forKey:(id)a4 error:(id *)a5;
+- (void)setValue:(id)value forKey:(id)key error:(id *)error;
 - (void)synchronize;
-- (void)updateCloudStore:(id)a3;
+- (void)updateCloudStore:(id)store;
 @end
 
 @implementation APSettingsStorageCloud
 
-- (APSettingsStorageCloud)initWithDefaultValues:(id)a3
+- (APSettingsStorageCloud)initWithDefaultValues:(id)values
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"initWithDefaultValues: is not available on APSettingsStorageCloud. Please use initWithDefaultValues:shouldUseLocalPersistance:forSubclass: instead.", v3);
@@ -27,20 +27,20 @@
   return 0;
 }
 
-- (APSettingsStorageCloud)initWithDefaultValues:(id)a3 shouldUseLocalPersistance:(BOOL)a4 forSubclass:(Class)a5
+- (APSettingsStorageCloud)initWithDefaultValues:(id)values shouldUseLocalPersistance:(BOOL)persistance forSubclass:(Class)subclass
 {
   v78 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  valuesCopy = values;
   v75.receiver = self;
   v75.super_class = APSettingsStorageCloud;
   v11 = [(APSettingsStorageCloud *)&v75 init];
   if (v11)
   {
-    v12 = objc_msgSend_copy(v7, v8, v9, v10);
+    v12 = objc_msgSend_copy(valuesCopy, v8, v9, v10);
     defaults = v11->_defaults;
     v11->_defaults = v12;
 
-    v11->_useLocalPersistance = a4;
+    v11->_useLocalPersistance = persistance;
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v19 = objc_msgSend_sha256hash(v15, v16, v17, v18);
@@ -186,10 +186,10 @@ LABEL_20:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateCloudStore:(id)a3
+- (void)updateCloudStore:(id)store
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_userInfo(a3, a2, a3, v3);
+  v5 = objc_msgSend_userInfo(store, a2, store, v3);
   v8 = objc_msgSend_objectForKey_(v5, v6, *MEMORY[0x1E696A9D8], v7);
   v12 = v8;
   if (v8)
@@ -264,11 +264,11 @@ LABEL_17:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valueForKey:(id)a3 error:(id *)a4
+- (id)valueForKey:(id)key error:(id *)error
 {
-  v5 = a3;
+  keyCopy = key;
   v9 = objc_msgSend_cloudStore(self, v6, v7, v8);
-  v12 = objc_msgSend_objectForKey_(v9, v10, v5, v11);
+  v12 = objc_msgSend_objectForKey_(v9, v10, keyCopy, v11);
 
   if (v12)
   {
@@ -278,33 +278,33 @@ LABEL_17:
   else
   {
     v17 = objc_msgSend_defaults(self, v13, v14, v15);
-    v21 = objc_msgSend_lastNamespacedComponent(v5, v18, v19, v20);
+    v21 = objc_msgSend_lastNamespacedComponent(keyCopy, v18, v19, v20);
     v16 = objc_msgSend_objectForKey_(v17, v22, v21, v23);
   }
 
   return v16;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (void)setValue:(id)value forKey:(id)key error:(id *)error
 {
-  v41 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v11 = objc_msgSend_defaults(self, v8, v9, v10);
-  v15 = objc_msgSend_lastNamespacedComponent(v7, v12, v13, v14);
+  v15 = objc_msgSend_lastNamespacedComponent(keyCopy, v12, v13, v14);
   v18 = objc_msgSend_objectForKey_(v11, v16, v15, v17);
 
   v22 = objc_msgSend_settingsClassNameForCloud(self, v19, v20, v21);
   v26 = objc_msgSend_cloudStore(self, v23, v24, v25);
   v30 = objc_msgSend_defaultStore(MEMORY[0x1E696AFB8], v27, v28, v29);
-  isEqual = objc_msgSend_isEqual_(v18, v31, v41, v32);
-  if (!v41 || isEqual)
+  isEqual = objc_msgSend_isEqual_(v18, v31, valueCopy, v32);
+  if (!valueCopy || isEqual)
   {
-    objc_msgSend_setValue_forKey_(v26, v41, 0, v7);
+    objc_msgSend_setValue_forKey_(v26, valueCopy, 0, keyCopy);
   }
 
   else
   {
-    objc_msgSend_setObject_forKey_(v26, v41, v41, v7);
+    objc_msgSend_setObject_forKey_(v26, valueCopy, valueCopy, keyCopy);
   }
 
   objc_msgSend_persistLocallyIfNeeded(self, v34, v35, v36);

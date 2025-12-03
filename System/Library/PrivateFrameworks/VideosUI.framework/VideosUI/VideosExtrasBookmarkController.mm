@@ -1,11 +1,11 @@
 @interface VideosExtrasBookmarkController
 + (id)sharedInstance;
-- (BOOL)pushBookmarkForAsset:(id)a3 bookmarkTime:(double)a4 playedToNominalLength:(BOOL)a5;
-- (BOOL)pushBookmarkForIdentifier:(id)a3 bookmarkTime:(double)a4 playedToNominalLength:(BOOL)a5;
+- (BOOL)pushBookmarkForAsset:(id)asset bookmarkTime:(double)time playedToNominalLength:(BOOL)length;
+- (BOOL)pushBookmarkForIdentifier:(id)identifier bookmarkTime:(double)time playedToNominalLength:(BOOL)length;
 - (VideosExtrasBookmarkController)init;
-- (void)_loadAllBookmarksWithRemainingIdentifiers:(id)a3 bookmarkTimes:(id)a4 completionBlock:(id)a5;
-- (void)pullBookmarksForAssets:(id)a3 completionBlock:(id)a4;
-- (void)pullBookmarksForIdentifiers:(id)a3 completionBlock:(id)a4;
+- (void)_loadAllBookmarksWithRemainingIdentifiers:(id)identifiers bookmarkTimes:(id)times completionBlock:(id)block;
+- (void)pullBookmarksForAssets:(id)assets completionBlock:(id)block;
+- (void)pullBookmarksForIdentifiers:(id)identifiers completionBlock:(id)block;
 @end
 
 @implementation VideosExtrasBookmarkController
@@ -49,9 +49,9 @@ void __48__VideosExtrasBookmarkController_sharedInstance__block_invoke()
   v13 = *(v8 + 1);
   *(v8 + 1) = v12;
 
-  v14 = [MEMORY[0x1E69D4868] domainForExtrasValues];
+  domainForExtrasValues = [MEMORY[0x1E69D4868] domainForExtrasValues];
   v15 = *(v8 + 2);
-  *(v8 + 2) = v14;
+  *(v8 + 2) = domainForExtrasValues;
 
   v21 = *(v8 + 2);
   if (!v21)
@@ -74,13 +74,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = *(v8 + 4);
-  *(v8 + 4) = v24;
+  *(v8 + 4) = dictionary;
 
-  v26 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v27 = *(v8 + 5);
-  *(v8 + 5) = v26;
+  *(v8 + 5) = dictionary2;
 
   *(v8 + 6) = 0x4024000000000000;
   VideosExtrasLoggingToOSLogging(6, @"Done initializing extras bookmarking.", v28, v29, v30, v31, v32, v33, v38);
@@ -92,11 +92,11 @@ LABEL_9:
   return v34;
 }
 
-- (void)pullBookmarksForAssets:(id)a3 completionBlock:(id)a4
+- (void)pullBookmarksForAssets:(id)assets completionBlock:(id)block
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  assetsCopy = assets;
   v9 = objc_alloc_init(v6);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -104,9 +104,9 @@ LABEL_9:
   v11[3] = &unk_1E872EAC8;
   v12 = v9;
   v10 = v9;
-  [v8 enumerateObjectsUsingBlock:v11];
+  [assetsCopy enumerateObjectsUsingBlock:v11];
 
-  [(VideosExtrasBookmarkController *)self pullBookmarksForIdentifiers:v10 completionBlock:v7];
+  [(VideosExtrasBookmarkController *)self pullBookmarksForIdentifiers:v10 completionBlock:blockCopy];
 }
 
 void __73__VideosExtrasBookmarkController_pullBookmarksForAssets_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -126,29 +126,29 @@ void __73__VideosExtrasBookmarkController_pullBookmarksForAssets_completionBlock
   [*(a1 + 32) addObject:?];
 }
 
-- (void)pullBookmarksForIdentifiers:(id)a3 completionBlock:(id)a4
+- (void)pullBookmarksForIdentifiers:(id)identifiers completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  if (identifiersCopy && [identifiersCopy count])
   {
-    VideosExtrasLoggingToOSLogging(6, @"Pulling bookmark times for identifiers: %@ ...", v8, v9, v10, v11, v12, v13, v6);
-    v14 = [v6 mutableCopy];
-    v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    VideosExtrasLoggingToOSLogging(6, @"Pulling bookmark times for identifiers: %@ ...", v8, v9, v10, v11, v12, v13, identifiersCopy);
+    v14 = [identifiersCopy mutableCopy];
+    v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __78__VideosExtrasBookmarkController_pullBookmarksForIdentifiers_completionBlock___block_invoke;
     v17[3] = &unk_1E872DF40;
-    v18 = v6;
+    v18 = identifiersCopy;
     v19 = v15;
-    v20 = v7;
+    v20 = blockCopy;
     v16 = v15;
     [(VideosExtrasBookmarkController *)self _loadAllBookmarksWithRemainingIdentifiers:v14 bookmarkTimes:v16 completionBlock:v17];
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 
@@ -166,21 +166,21 @@ uint64_t __78__VideosExtrasBookmarkController_pullBookmarksForIdentifiers_comple
   return result;
 }
 
-- (BOOL)pushBookmarkForAsset:(id)a3 bookmarkTime:(double)a4 playedToNominalLength:(BOOL)a5
+- (BOOL)pushBookmarkForAsset:(id)asset bookmarkTime:(double)time playedToNominalLength:(BOOL)length
 {
-  v5 = a5;
-  v8 = [a3 bookmarkID];
-  LOBYTE(v5) = [(VideosExtrasBookmarkController *)self pushBookmarkForIdentifier:v8 bookmarkTime:v5 playedToNominalLength:a4];
+  lengthCopy = length;
+  bookmarkID = [asset bookmarkID];
+  LOBYTE(lengthCopy) = [(VideosExtrasBookmarkController *)self pushBookmarkForIdentifier:bookmarkID bookmarkTime:lengthCopy playedToNominalLength:time];
 
-  return v5;
+  return lengthCopy;
 }
 
-- (BOOL)pushBookmarkForIdentifier:(id)a3 bookmarkTime:(double)a4 playedToNominalLength:(BOOL)a5
+- (BOOL)pushBookmarkForIdentifier:(id)identifier bookmarkTime:(double)time playedToNominalLength:(BOOL)length
 {
-  v5 = a5;
-  v8 = a3;
-  v15 = v8;
-  if (v8 && [v8 length])
+  lengthCopy = length;
+  identifierCopy = identifier;
+  v15 = identifierCopy;
+  if (identifierCopy && [identifierCopy length])
   {
     VideosExtrasLoggingToOSLogging(6, @"Bookmark update requested for identifier: %@, bookmark time: %.1f, played to nominal length: %d", v9, v10, v11, v12, v13, v14, v15);
     v36 = 0;
@@ -206,25 +206,25 @@ uint64_t __78__VideosExtrasBookmarkController_pullBookmarksForIdentifiers_comple
       }
 
       [v18 setBookmarkTimestamp:CFAbsoluteTimeGetCurrent()];
-      v19 = 0.0;
-      if (!v5)
+      timeCopy = 0.0;
+      if (!lengthCopy)
       {
-        v19 = a4;
+        timeCopy = time;
       }
 
-      [v18 setBookmarkTime:v19];
-      if (v5)
+      [v18 setBookmarkTime:timeCopy];
+      if (lengthCopy)
       {
-        v20 = [v18 userPlayCount] + 1;
+        userPlayCount = [v18 userPlayCount] + 1;
       }
 
       else
       {
-        v20 = [v18 userPlayCount];
+        userPlayCount = [v18 userPlayCount];
       }
 
-      [v18 setUserPlayCount:v20];
-      [v18 setHasBeenPlayed:v5];
+      [v18 setUserPlayCount:userPlayCount];
+      [v18 setHasBeenPlayed:lengthCopy];
       VideosExtrasLoggingToOSLogging(6, @"Pushing bookmark for identifier: %@, bookmark time: %.1f, played to nominal length: %@", v22, v23, v24, v25, v26, v27, v17);
       extrasService = self->_extrasService;
       v30[0] = MEMORY[0x1E69E9820];
@@ -232,7 +232,7 @@ uint64_t __78__VideosExtrasBookmarkController_pullBookmarksForIdentifiers_comple
       v30[2] = __95__VideosExtrasBookmarkController_pushBookmarkForIdentifier_bookmarkTime_playedToNominalLength___block_invoke_2;
       v30[3] = &unk_1E872EB18;
       v31 = v17;
-      v32 = self;
+      selfCopy = self;
       [(SBCPlaybackPositionValueService *)extrasService pushPlaybackPositionEntity:v18 completionBlock:v30];
     }
 
@@ -302,46 +302,46 @@ void __95__VideosExtrasBookmarkController_pushBookmarkForIdentifier_bookmarkTime
   }
 }
 
-- (void)_loadAllBookmarksWithRemainingIdentifiers:(id)a3 bookmarkTimes:(id)a4 completionBlock:(id)a5
+- (void)_loadAllBookmarksWithRemainingIdentifiers:(id)identifiers bookmarkTimes:(id)times completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstObject];
-  if (v11)
+  identifiersCopy = identifiers;
+  timesCopy = times;
+  blockCopy = block;
+  firstObject = [identifiersCopy firstObject];
+  if (firstObject)
   {
-    [v8 removeObjectAtIndex:0];
-    if ([v11 length])
+    [identifiersCopy removeObjectAtIndex:0];
+    if ([firstObject length])
     {
       v18 = [MEMORY[0x1E696AD98] numberWithDouble:CFAbsoluteTimeGetCurrent()];
-      [(NSMutableDictionary *)self->_updateTimeForEntities setObject:v18 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)self->_updateTimeForEntities setObject:v18 forKeyedSubscript:firstObject];
 
-      VideosExtrasLoggingToOSLogging(6, @"Pulling bookmark for identifier: %@", v19, v20, v21, v22, v23, v24, v11);
-      v25 = [objc_alloc(MEMORY[0x1E69D4870]) initWithPlaybackPositionDomain:self->_domain ubiquitousIdentifier:v11 foreignDatabaseEntityID:0];
+      VideosExtrasLoggingToOSLogging(6, @"Pulling bookmark for identifier: %@", v19, v20, v21, v22, v23, v24, firstObject);
+      v25 = [objc_alloc(MEMORY[0x1E69D4870]) initWithPlaybackPositionDomain:self->_domain ubiquitousIdentifier:firstObject foreignDatabaseEntityID:0];
       extrasService = self->_extrasService;
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __106__VideosExtrasBookmarkController__loadAllBookmarksWithRemainingIdentifiers_bookmarkTimes_completionBlock___block_invoke;
       v27[3] = &unk_1E872EB40;
-      v28 = v11;
-      v29 = self;
-      v30 = v9;
-      v31 = v8;
-      v32 = v10;
+      v28 = firstObject;
+      selfCopy = self;
+      v30 = timesCopy;
+      v31 = identifiersCopy;
+      v32 = blockCopy;
       [(SBCPlaybackPositionValueService *)extrasService pullPlaybackPositionEntity:v25 completionBlock:v27];
     }
 
     else
     {
-      VideosExtrasLoggingToOSLogging(6, @"Skipping bookmark pull for identifier: %@. No bookmark id found.", v12, v13, v14, v15, v16, v17, v11);
-      [v9 addObject:&unk_1F5E5CCD8];
-      [(VideosExtrasBookmarkController *)self _loadAllBookmarksWithRemainingIdentifiers:v8 bookmarkTimes:v9 completionBlock:v10];
+      VideosExtrasLoggingToOSLogging(6, @"Skipping bookmark pull for identifier: %@. No bookmark id found.", v12, v13, v14, v15, v16, v17, firstObject);
+      [timesCopy addObject:&unk_1F5E5CCD8];
+      [(VideosExtrasBookmarkController *)self _loadAllBookmarksWithRemainingIdentifiers:identifiersCopy bookmarkTimes:timesCopy completionBlock:blockCopy];
     }
   }
 
-  else if (v10)
+  else if (blockCopy)
   {
-    v10[2](v10);
+    blockCopy[2](blockCopy);
   }
 }
 

@@ -4,17 +4,17 @@
 - (BOOL)isTargetEndpointPlaying;
 - (BOOL)localOutputContextHasAirPlay;
 - (MRDRouteRecommendationDemotionContext)init;
-- (MRDRouteRecommendationDemotionContext)initWithPrimaryBundleIdentifier:(id)a3 recommendationType:(int64_t)a4 isASELocal:(BOOL)a5 localOutputContextHasAirPlay:(BOOL)a6 isSourceEndpointPlaying:(BOOL)a7 isTargetEndpointPlaying:(BOOL)a8 targetNowPlayingBundleIdentifier:(id)a9 targetEndpointContainsDiscoverableGroupLeader:(BOOL)a10;
+- (MRDRouteRecommendationDemotionContext)initWithPrimaryBundleIdentifier:(id)identifier recommendationType:(int64_t)type isASELocal:(BOOL)local localOutputContextHasAirPlay:(BOOL)play isSourceEndpointPlaying:(BOOL)playing isTargetEndpointPlaying:(BOOL)endpointPlaying targetNowPlayingBundleIdentifier:(id)bundleIdentifier targetEndpointContainsDiscoverableGroupLeader:(BOOL)self0;
 - (NSString)primaryBundleIdentifier;
 - (NSString)targetNowPlayingBundleIdentifier;
 - (int64_t)recommendationType;
-- (void)setIsASELocal:(BOOL)a3;
-- (void)setIsSourceEndpointPlaying:(BOOL)a3;
-- (void)setIsTargetEndpointPlaying:(BOOL)a3;
-- (void)setLocalOutputContextHasAirPlay:(BOOL)a3;
-- (void)setPrimaryBundleIdentifier:(id)a3;
-- (void)setRecommendationType:(int64_t)a3;
-- (void)setTargetNowPlayingBundleIdentifier:(id)a3;
+- (void)setIsASELocal:(BOOL)local;
+- (void)setIsSourceEndpointPlaying:(BOOL)playing;
+- (void)setIsTargetEndpointPlaying:(BOOL)playing;
+- (void)setLocalOutputContextHasAirPlay:(BOOL)play;
+- (void)setPrimaryBundleIdentifier:(id)identifier;
+- (void)setRecommendationType:(int64_t)type;
+- (void)setTargetNowPlayingBundleIdentifier:(id)identifier;
 @end
 
 @implementation MRDRouteRecommendationDemotionContext
@@ -31,7 +31,7 @@
   return v5;
 }
 
-- (void)setPrimaryBundleIdentifier:(id)a3
+- (void)setPrimaryBundleIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -49,11 +49,11 @@
   return *(self + v3);
 }
 
-- (void)setRecommendationType:(int64_t)a3
+- (void)setRecommendationType:(int64_t)type
 {
   v5 = OBJC_IVAR___MRDRouteRecommendationDemotionContext_recommendationType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (BOOL)isASELocal
@@ -63,11 +63,11 @@
   return *(self + v3);
 }
 
-- (void)setIsASELocal:(BOOL)a3
+- (void)setIsASELocal:(BOOL)local
 {
   v5 = OBJC_IVAR___MRDRouteRecommendationDemotionContext_isASELocal;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = local;
 }
 
 - (BOOL)localOutputContextHasAirPlay
@@ -77,11 +77,11 @@
   return *(self + v3);
 }
 
-- (void)setLocalOutputContextHasAirPlay:(BOOL)a3
+- (void)setLocalOutputContextHasAirPlay:(BOOL)play
 {
   v5 = OBJC_IVAR___MRDRouteRecommendationDemotionContext_localOutputContextHasAirPlay;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = play;
 }
 
 - (BOOL)isSourceEndpointPlaying
@@ -91,11 +91,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSourceEndpointPlaying:(BOOL)a3
+- (void)setIsSourceEndpointPlaying:(BOOL)playing
 {
   v5 = OBJC_IVAR___MRDRouteRecommendationDemotionContext_isSourceEndpointPlaying;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = playing;
 }
 
 - (BOOL)isTargetEndpointPlaying
@@ -105,11 +105,11 @@
   return *(self + v3);
 }
 
-- (void)setIsTargetEndpointPlaying:(BOOL)a3
+- (void)setIsTargetEndpointPlaying:(BOOL)playing
 {
   v5 = OBJC_IVAR___MRDRouteRecommendationDemotionContext_isTargetEndpointPlaying;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = playing;
 }
 
 - (NSString)targetNowPlayingBundleIdentifier
@@ -131,9 +131,9 @@
   return v4;
 }
 
-- (void)setTargetNowPlayingBundleIdentifier:(id)a3
+- (void)setTargetNowPlayingBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -152,10 +152,10 @@
   v7[1] = v6;
 }
 
-- (MRDRouteRecommendationDemotionContext)initWithPrimaryBundleIdentifier:(id)a3 recommendationType:(int64_t)a4 isASELocal:(BOOL)a5 localOutputContextHasAirPlay:(BOOL)a6 isSourceEndpointPlaying:(BOOL)a7 isTargetEndpointPlaying:(BOOL)a8 targetNowPlayingBundleIdentifier:(id)a9 targetEndpointContainsDiscoverableGroupLeader:(BOOL)a10
+- (MRDRouteRecommendationDemotionContext)initWithPrimaryBundleIdentifier:(id)identifier recommendationType:(int64_t)type isASELocal:(BOOL)local localOutputContextHasAirPlay:(BOOL)play isSourceEndpointPlaying:(BOOL)playing isTargetEndpointPlaying:(BOOL)endpointPlaying targetNowPlayingBundleIdentifier:(id)bundleIdentifier targetEndpointContainsDiscoverableGroupLeader:(BOOL)self0
 {
   v15 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a9)
+  if (bundleIdentifier)
   {
     v17 = v15;
     v18 = v16;
@@ -171,7 +171,7 @@
     v21 = 0;
   }
 
-  return sub_10037FD94(v15, v16, a4, a5, a6, a7, a8, v19, v21, a10);
+  return sub_10037FD94(v15, v16, type, local, play, playing, endpointPlaying, v19, v21, leader);
 }
 
 - (MRDRouteRecommendationDemotionContext)init

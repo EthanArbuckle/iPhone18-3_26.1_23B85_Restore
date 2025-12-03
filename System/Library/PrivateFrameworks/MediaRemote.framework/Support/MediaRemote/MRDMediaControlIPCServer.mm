@@ -1,6 +1,6 @@
 @interface MRDMediaControlIPCServer
 - (MRDMediaControlIPCServer)init;
-- (void)collectDiagnostic:(id)a3;
+- (void)collectDiagnostic:(id)diagnostic;
 - (void)start;
 @end
 
@@ -30,11 +30,11 @@
   }
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v5 = a3;
-  v6 = self;
-  sub_10034A328(a3);
+  diagnosticCopy = diagnostic;
+  selfCopy = self;
+  sub_10034A328(diagnostic);
 }
 
 - (MRDMediaControlIPCServer)init

@@ -1,21 +1,21 @@
 @interface HFAccessoryCategoryItemProvider
-- (HFAccessoryCategoryItemProvider)initWithHome:(id)a3;
+- (HFAccessoryCategoryItemProvider)initWithHome:(id)home;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFAccessoryCategoryItemProvider
 
-- (HFAccessoryCategoryItemProvider)initWithHome:(id)a3
+- (HFAccessoryCategoryItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFAccessoryCategoryItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     categoryItems = v7->_categoryItems;
     v7->_categoryItems = v8;
@@ -26,11 +26,11 @@
 
 - (id)reloadItems
 {
-  v3 = [MEMORY[0x277CD1680] hf_standardAccessoryCategoryTypes];
+  hf_standardAccessoryCategoryTypes = [MEMORY[0x277CD1680] hf_standardAccessoryCategoryTypes];
   objc_initWeak(&location, self);
-  v4 = [v3 allObjects];
-  v5 = [(HFAccessoryCategoryItemProvider *)self filter];
-  v6 = [(HFItemProvider *)self reloadItemsWithObjects:v4 keyAdaptor:&__block_literal_global_61 itemAdaptor:&__block_literal_global_4_1 filter:v5 itemMap:&__block_literal_global_7_1];
+  allObjects = [hf_standardAccessoryCategoryTypes allObjects];
+  filter = [(HFAccessoryCategoryItemProvider *)self filter];
+  v6 = [(HFItemProvider *)self reloadItemsWithObjects:allObjects keyAdaptor:&__block_literal_global_61 itemAdaptor:&__block_literal_global_4_1 filter:filter itemMap:&__block_literal_global_7_1];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__HFAccessoryCategoryItemProvider_reloadItems__block_invoke_4;
@@ -74,11 +74,11 @@ id __46__HFAccessoryCategoryItemProvider_reloadItems__block_invoke_4(uint64_t a1
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFAccessoryCategoryItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"home";
   v8[1] = @"accessory";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 

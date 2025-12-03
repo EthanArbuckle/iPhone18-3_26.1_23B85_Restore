@@ -1,14 +1,14 @@
 @interface HUQuickControlUtilities
-+ (BOOL)shouldAlwaysDisplayQuickControlAsSwitch:(id)a3;
-+ (BOOL)shouldDisplayQuickControlAsPushButton:(id)a3 preferredControl:(unint64_t)a4;
-+ (unint64_t)iconSizeForQuickControlSize:(unint64_t)a3;
-+ (unint64_t)quickControlStepperViewSizeForViewSizeSubclass:(int64_t)a3;
-+ (unint64_t)sliderQuickControlSizeForViewSizeSubclass:(int64_t)a3;
++ (BOOL)shouldAlwaysDisplayQuickControlAsSwitch:(id)switch;
++ (BOOL)shouldDisplayQuickControlAsPushButton:(id)button preferredControl:(unint64_t)control;
++ (unint64_t)iconSizeForQuickControlSize:(unint64_t)size;
++ (unint64_t)quickControlStepperViewSizeForViewSizeSubclass:(int64_t)subclass;
++ (unint64_t)sliderQuickControlSizeForViewSizeSubclass:(int64_t)subclass;
 @end
 
 @implementation HUQuickControlUtilities
 
-+ (unint64_t)quickControlStepperViewSizeForViewSizeSubclass:(int64_t)a3
++ (unint64_t)quickControlStepperViewSizeForViewSizeSubclass:(int64_t)subclass
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = &unk_282490E60;
@@ -16,12 +16,12 @@
   v8[0] = &unk_282490E78;
   v8[1] = &unk_282490EA8;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v5 = HUConstantIntegerForViewSizeSubclass(a3, v4);
+  v5 = HUConstantIntegerForViewSizeSubclass(subclass, v4);
 
   return v5;
 }
 
-+ (unint64_t)sliderQuickControlSizeForViewSizeSubclass:(int64_t)a3
++ (unint64_t)sliderQuickControlSizeForViewSizeSubclass:(int64_t)subclass
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v7[0] = &unk_282490E60;
@@ -29,20 +29,20 @@
   v8[0] = &unk_282490E78;
   v8[1] = &unk_282490EC0;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
-  v5 = HUConstantIntegerForViewSizeSubclass(a3, v4);
+  v5 = HUConstantIntegerForViewSizeSubclass(subclass, v4);
 
   return v5;
 }
 
-+ (unint64_t)iconSizeForQuickControlSize:(unint64_t)a3
++ (unint64_t)iconSizeForQuickControlSize:(unint64_t)size
 {
   v3 = 2;
-  if (a3 == 1)
+  if (size == 1)
   {
     v3 = 3;
   }
 
-  if (a3)
+  if (size)
   {
     return v3;
   }
@@ -53,22 +53,22 @@
   }
 }
 
-+ (BOOL)shouldAlwaysDisplayQuickControlAsSwitch:(id)a3
++ (BOOL)shouldAlwaysDisplayQuickControlAsSwitch:(id)switch
 {
   v3 = qword_281121EB8;
-  v4 = a3;
+  switchCopy = switch;
   if (v3 != -1)
   {
     dispatch_once(&qword_281121EB8, &__block_literal_global_52);
   }
 
-  v5 = [v4 valueSource];
+  valueSource = [switchCopy valueSource];
 
-  v6 = [v5 primaryServiceDescriptor];
-  v7 = [v6 serviceType];
+  primaryServiceDescriptor = [valueSource primaryServiceDescriptor];
+  serviceType = [primaryServiceDescriptor serviceType];
 
-  LOBYTE(v6) = [_MergedGlobals_616 containsObject:v7];
-  return v6;
+  LOBYTE(primaryServiceDescriptor) = [_MergedGlobals_616 containsObject:serviceType];
+  return primaryServiceDescriptor;
 }
 
 void __67__HUQuickControlUtilities_shouldAlwaysDisplayQuickControlAsSwitch___block_invoke()
@@ -82,22 +82,22 @@ void __67__HUQuickControlUtilities_shouldAlwaysDisplayQuickControlAsSwitch___blo
   _MergedGlobals_616 = v1;
 }
 
-+ (BOOL)shouldDisplayQuickControlAsPushButton:(id)a3 preferredControl:(unint64_t)a4
++ (BOOL)shouldDisplayQuickControlAsPushButton:(id)button preferredControl:(unint64_t)control
 {
-  v5 = a3;
-  v6 = [v5 valueSource];
-  v7 = [v6 primaryServiceDescriptor];
-  v8 = [v7 serviceType];
+  buttonCopy = button;
+  valueSource = [buttonCopy valueSource];
+  primaryServiceDescriptor = [valueSource primaryServiceDescriptor];
+  serviceType = [primaryServiceDescriptor serviceType];
 
-  if ([v8 isEqualToString:*MEMORY[0x277CD0F20]])
+  if ([serviceType isEqualToString:*MEMORY[0x277CD0F20]])
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [objc_opt_class() shouldAlwaysDisplayQuickControlAsSwitch:v5] ^ 1;
-    if (a4 == 1)
+    v10 = [objc_opt_class() shouldAlwaysDisplayQuickControlAsSwitch:buttonCopy] ^ 1;
+    if (control == 1)
     {
       v9 = v10;
     }

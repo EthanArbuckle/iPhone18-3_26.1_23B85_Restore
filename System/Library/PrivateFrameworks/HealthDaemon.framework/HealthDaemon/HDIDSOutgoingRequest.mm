@@ -1,13 +1,13 @@
 @interface HDIDSOutgoingRequest
-+ (id)_requestWithMessageID:(void *)a3 message:(void *)a4 syncStore:;
-+ (id)activationRequestWithRestore:(id)a3 syncStore:(id)a4 profile:(id)a5;
-+ (id)changeRequestWithChangeSet:(id)a3 status:(id)a4 syncStore:(id)a5 profile:(id)a6;
-+ (id)requestWithMessageID:(unsigned __int16)a3 participant:(id)a4;
-+ (id)speculativeChangeRequestWithChangeSet:(id)a3 syncStore:(id)a4 profile:(id)a5;
++ (id)_requestWithMessageID:(void *)d message:(void *)message syncStore:;
++ (id)activationRequestWithRestore:(id)restore syncStore:(id)store profile:(id)profile;
++ (id)changeRequestWithChangeSet:(id)set status:(id)status syncStore:(id)store profile:(id)profile;
++ (id)requestWithMessageID:(unsigned __int16)d participant:(id)participant;
++ (id)speculativeChangeRequestWithChangeSet:(id)set syncStore:(id)store profile:(id)profile;
 - (HDIDSOutgoingRequest)init;
 - (NSString)description;
 - (id)nanoSyncDescription;
-- (void)setPbRequest:(id)a3;
+- (void)setPbRequest:(id)request;
 @end
 
 @implementation HDIDSOutgoingRequest
@@ -27,88 +27,88 @@
 
 - (id)nanoSyncDescription
 {
-  v3 = [(HDIDSOutgoingRequest *)self persistentUserInfo];
-  v4 = [HDCodableNanoSyncMessage messageFromPersistentUserInfo:v3];
+  persistentUserInfo = [(HDIDSOutgoingRequest *)self persistentUserInfo];
+  v4 = [HDCodableNanoSyncMessage messageFromPersistentUserInfo:persistentUserInfo];
 
-  LODWORD(v3) = [(HDIDSOutgoingRequest *)self messageID];
-  v5 = [(HDIDSOutgoingRequest *)self idsIdentifier];
-  v6 = [v4 nanoSyncDescription];
-  v7 = FormattedMessageDescription(v3, 0, 1, v5, v6);
+  LODWORD(persistentUserInfo) = [(HDIDSOutgoingRequest *)self messageID];
+  idsIdentifier = [(HDIDSOutgoingRequest *)self idsIdentifier];
+  nanoSyncDescription = [v4 nanoSyncDescription];
+  v7 = FormattedMessageDescription(persistentUserInfo, 0, 1, idsIdentifier, nanoSyncDescription);
 
   return v7;
 }
 
-+ (id)activationRequestWithRestore:(id)a3 syncStore:(id)a4 profile:(id)a5
++ (id)activationRequestWithRestore:(id)restore syncStore:(id)store profile:(id)profile
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [HDCodableNanoSyncMessage messageWithSyncStore:v8 profile:a5];
-  [v10 setActivationRestore:v9];
+  storeCopy = store;
+  restoreCopy = restore;
+  v10 = [HDCodableNanoSyncMessage messageWithSyncStore:storeCopy profile:profile];
+  [v10 setActivationRestore:restoreCopy];
 
-  v11 = [(HDIDSOutgoingRequest *)a1 _requestWithMessageID:v10 message:v8 syncStore:?];
+  v11 = [(HDIDSOutgoingRequest *)self _requestWithMessageID:v10 message:storeCopy syncStore:?];
 
   return v11;
 }
 
-+ (id)_requestWithMessageID:(void *)a3 message:(void *)a4 syncStore:
++ (id)_requestWithMessageID:(void *)d message:(void *)message syncStore:
 {
-  v6 = a4;
-  v7 = a3;
+  messageCopy = message;
+  dCopy = d;
   objc_opt_self();
-  v8 = [v6 createRequestWithMessageID:a2];
+  v8 = [messageCopy createRequestWithMessageID:a2];
 
-  [v8 setPbRequest:v7];
-  v9 = [v7 copyPersistentUserInfo];
+  [v8 setPbRequest:dCopy];
+  copyPersistentUserInfo = [dCopy copyPersistentUserInfo];
 
-  [v8 setPersistentUserInfo:v9];
+  [v8 setPersistentUserInfo:copyPersistentUserInfo];
 
   return v8;
 }
 
-+ (id)changeRequestWithChangeSet:(id)a3 status:(id)a4 syncStore:(id)a5 profile:(id)a6
++ (id)changeRequestWithChangeSet:(id)set status:(id)status syncStore:(id)store profile:(id)profile
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [HDCodableNanoSyncMessage messageWithSyncStore:v10 profile:a6];
-  [v13 setChangeSet:v12];
+  storeCopy = store;
+  statusCopy = status;
+  setCopy = set;
+  v13 = [HDCodableNanoSyncMessage messageWithSyncStore:storeCopy profile:profile];
+  [v13 setChangeSet:setCopy];
 
-  [v13 setStatus:v11];
-  v14 = [(HDIDSOutgoingRequest *)a1 _requestWithMessageID:v13 message:v10 syncStore:?];
+  [v13 setStatus:statusCopy];
+  v14 = [(HDIDSOutgoingRequest *)self _requestWithMessageID:v13 message:storeCopy syncStore:?];
 
   return v14;
 }
 
-+ (id)speculativeChangeRequestWithChangeSet:(id)a3 syncStore:(id)a4 profile:(id)a5
++ (id)speculativeChangeRequestWithChangeSet:(id)set syncStore:(id)store profile:(id)profile
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [HDCodableNanoSyncMessage messageWithSyncStore:v8 profile:a5];
-  [v10 setChangeSet:v9];
+  storeCopy = store;
+  setCopy = set;
+  v10 = [HDCodableNanoSyncMessage messageWithSyncStore:storeCopy profile:profile];
+  [v10 setChangeSet:setCopy];
 
-  v11 = [(HDIDSOutgoingRequest *)a1 _requestWithMessageID:v10 message:v8 syncStore:?];
+  v11 = [(HDIDSOutgoingRequest *)self _requestWithMessageID:v10 message:storeCopy syncStore:?];
 
   return v11;
 }
 
-+ (id)requestWithMessageID:(unsigned __int16)a3 participant:(id)a4
++ (id)requestWithMessageID:(unsigned __int16)d participant:(id)participant
 {
-  v6 = a4;
-  v7 = objc_alloc_init(a1);
-  v7[6] = a3;
+  participantCopy = participant;
+  v7 = objc_alloc_init(self);
+  v7[6] = d;
   v8 = *(v7 + 2);
-  *(v7 + 2) = v6;
+  *(v7 + 2) = participantCopy;
 
   return v7;
 }
 
-- (void)setPbRequest:(id)a3
+- (void)setPbRequest:(id)request
 {
-  objc_storeStrong(&self->_pbRequest, a3);
-  v7 = a3;
-  v5 = [(PBCodable *)self->_pbRequest data];
+  objc_storeStrong(&self->_pbRequest, request);
+  requestCopy = request;
+  data = [(PBCodable *)self->_pbRequest data];
   data = self->_data;
-  self->_data = v5;
+  self->_data = data;
 }
 
 - (NSString)description

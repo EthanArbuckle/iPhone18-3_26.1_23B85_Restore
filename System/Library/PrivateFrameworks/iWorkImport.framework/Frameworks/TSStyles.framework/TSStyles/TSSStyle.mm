@@ -1,22 +1,22 @@
 @interface TSSStyle
-+ (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4 min:(int)a5 max:(int)a6;
-+ (BOOL)validateIntValueAsBool:(int *)a3 forProperty:(int)a4;
++ (BOOL)validateIntValue:(int *)value forProperty:(int)property min:(int)min max:(int)max;
++ (BOOL)validateIntValueAsBool:(int *)bool forProperty:(int)property;
 + (TSSPropertyMap)defaultPropertyMap;
 + (TSSPropertySet)properties;
 + (TSSPropertySet)propertiesAllowingNSNull;
-+ (double)fontSizeForFontSize:(double)a3 scalingFactor:(double)a4;
-+ (id)defaultStyleWithContext:(id)a3;
++ (double)fontSizeForFontSize:(double)size scalingFactor:(double)factor;
++ (id)defaultStyleWithContext:(id)context;
 + (id)description;
-- (BOOL)hasEqualPropertyValues:(id)a3;
-- (BOOL)hasEqualValues:(id)a3 forProperties:(id)a4;
-- (BOOL)hasEqualValuesToPropertyMap:(id)a3 forProperties:(id)a4;
-- (BOOL)isAncestorOf:(id)a3;
-- (BOOL)isDescendentOf:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStyle:(id)a3 ignoreObjectContext:(BOOL)a4;
-- (BOOL)isParentOf:(id)a3;
-- (BOOL)isRelatedTo:(id)a3;
-- (BOOL)overridePropertyMapIsEqualTo:(id)a3;
+- (BOOL)hasEqualPropertyValues:(id)values;
+- (BOOL)hasEqualValues:(id)values forProperties:(id)properties;
+- (BOOL)hasEqualValuesToPropertyMap:(id)map forProperties:(id)properties;
+- (BOOL)isAncestorOf:(id)of;
+- (BOOL)isDescendentOf:(id)of;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStyle:(id)style ignoreObjectContext:(BOOL)context;
+- (BOOL)isParentOf:(id)of;
+- (BOOL)isRelatedTo:(id)to;
+- (BOOL)overridePropertyMapIsEqualTo:(id)to;
 - (BOOL)overridesAnyProperty;
 - (NSSet)referencedStyles;
 - (NSString)contentTag;
@@ -25,57 +25,57 @@
 - (TSSStyle)baseStyleForVariation;
 - (TSSStyle)firstIdentifiedAncestor;
 - (TSSStyle)firstNamedAncestor;
-- (TSSStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6;
+- (TSSStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation;
 - (TSSStyle)rootAncestor;
 - (TSSStyle)rootIdentifiedAncestor;
 - (TSSStylesheet)stylesheet;
 - (TSURetainedPointerSet)children;
 - (TSURetainedPointerSet)descendants;
-- (id)archivableRepresentationOfChangeSet:(id)a3;
-- (id)copyFlattenedWithContext:(id)a3;
+- (id)archivableRepresentationOfChangeSet:(id)set;
+- (id)copyFlattenedWithContext:(id)context;
 - (id)copyPropertyMap;
-- (id)copyWithContext:(id)a3 includeParentProperties:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)copyWithZone:(_NSZone *)a3 context:(id)a4;
-- (id)newOverridePropertyMapWithPropertyMap:(id)a3;
-- (id)overridePropertyMapWithPropertyMap:(id)a3 overridePropertyMap:(id)a4 collapseSourceOverrides:(BOOL)a5;
-- (id)propertyMapIgnoringStyle:(id)a3;
-- (id)propertyMapThatNeedsToBeTransformedWithTransformedObjects:(id)a3;
-- (id)valuesForProperties:(id)a3;
+- (id)copyWithContext:(id)context includeParentProperties:(BOOL)properties;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)copyWithZone:(_NSZone *)zone context:(id)context;
+- (id)newOverridePropertyMapWithPropertyMap:(id)map;
+- (id)overridePropertyMapWithPropertyMap:(id)map overridePropertyMap:(id)propertyMap collapseSourceOverrides:(BOOL)overrides;
+- (id)propertyMapIgnoringStyle:(id)style;
+- (id)propertyMapThatNeedsToBeTransformedWithTransformedObjects:(id)objects;
+- (id)valuesForProperties:(id)properties;
 - (unint64_t)hash;
 - (unint64_t)overrideCount;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (void)removeAllValues;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setName:(id)a3;
-- (void)setObjectUUID:(id)a3;
-- (void)setOverridePropertyMap:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setStyleIdentifier:(id)a3;
-- (void)setStylesheet:(id)a3;
-- (void)setValuesForProperties:(id)a3;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setName:(id)name;
+- (void)setObjectUUID:(id)d;
+- (void)setOverridePropertyMap:(id)map;
+- (void)setParent:(id)parent;
+- (void)setStyleIdentifier:(id)identifier;
+- (void)setStylesheet:(id)stylesheet;
+- (void)setValuesForProperties:(id)properties;
 @end
 
 @implementation TSSStyle
 
-- (void)setStyleIdentifier:(id)a3
+- (void)setStyleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self->mStyleIdentifier != v4)
+  identifierCopy = identifier;
+  if (self->mStyleIdentifier != identifierCopy)
   {
-    v10 = v4;
+    v10 = identifierCopy;
     objc_msgSend_willModify(self, v5, v6);
     v9 = objc_msgSend_copy(v10, v7, v8);
 
     objc_storeStrong(&self->mStyleIdentifier, v9);
-    v4 = v9;
+    identifierCopy = v9;
   }
 }
 
-- (void)setStylesheet:(id)a3
+- (void)setStylesheet:(id)stylesheet
 {
-  obj = a3;
+  obj = stylesheet;
   WeakRetained = objc_loadWeakRetained(&self->mStylesheet);
 
   if (WeakRetained != obj)
@@ -110,10 +110,10 @@
 + (id)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v6 = objc_msgSend_stringWithFormat_(v3, v5, @"%@", v4);
 
-  for (i = objc_msgSend_superclass(a1, v7, v8); i != objc_opt_class(); i = objc_msgSend_superclass(i, v14, v15))
+  for (i = objc_msgSend_superclass(self, v7, v8); i != objc_opt_class(); i = objc_msgSend_superclass(i, v14, v15))
   {
     v12 = NSStringFromClass(i);
     objc_msgSend_appendFormat_(v6, v13, @" : %@", v12);
@@ -126,7 +126,7 @@
   v34[3] = sub_276C9C79C;
   v34[4] = sub_276C9C7AC;
   v35 = &stru_2885E7A20;
-  v19 = objc_msgSend_properties(a1, v17, v18);
+  v19 = objc_msgSend_properties(self, v17, v18);
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = sub_276C9C7B4;
@@ -145,11 +145,11 @@
   return v26;
 }
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc(objc_opt_class());
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, v3, 0, 0, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, contextCopy, 0, 0, 0);
 
   return isVariation;
 }
@@ -157,12 +157,12 @@
 + (TSSPropertyMap)defaultPropertyMap
 {
   v3 = objc_alloc_init(TSSPropertyMap);
-  v6 = objc_msgSend_properties(a1, v4, v5);
+  v6 = objc_msgSend_properties(self, v4, v5);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_276C9CB2C;
   v10[3] = &unk_27A6EE7D0;
-  v12 = a1;
+  selfCopy = self;
   v7 = v3;
   v11 = v7;
   objc_msgSend_enumeratePropertiesUsingBlock_(v6, v8, v10);
@@ -170,28 +170,28 @@
   return v7;
 }
 
-- (TSSStyle)initWithContext:(id)a3 name:(id)a4 overridePropertyMap:(id)a5 isVariation:(BOOL)a6
+- (TSSStyle)initWithContext:(id)context name:(id)name overridePropertyMap:(id)map isVariation:(BOOL)variation
 {
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  mapCopy = map;
   v61.receiver = self;
   v61.super_class = TSSStyle;
-  v13 = [(TSSStyle *)&v61 initWithContext:a3];
+  v13 = [(TSSStyle *)&v61 initWithContext:context];
   if (v13)
   {
-    if (!v11)
+    if (!mapCopy)
     {
       goto LABEL_13;
     }
 
     v14 = objc_opt_class();
     v17 = objc_msgSend_properties(v14, v15, v16);
-    v20 = objc_msgSend_allProperties(v11, v18, v19);
+    v20 = objc_msgSend_allProperties(mapCopy, v18, v19);
     v22 = objc_msgSend_containsProperties_(v17, v21, v20);
 
     if ((v22 & 1) == 0)
     {
-      v41 = objc_msgSend_allProperties(v11, v12, v23);
+      v41 = objc_msgSend_allProperties(mapCopy, v12, v23);
       v42 = objc_opt_class();
       v45 = objc_msgSend_properties(v42, v43, v44);
       v47 = objc_msgSend_propertySetByRemovingPropertiesFromSet_(v41, v46, v45);
@@ -210,7 +210,7 @@
     else
     {
 LABEL_13:
-      if (objc_msgSend_isEqual_(v10, v12, &stru_2885E7A20))
+      if (objc_msgSend_isEqual_(nameCopy, v12, &stru_2885E7A20))
       {
         v26 = MEMORY[0x277D81150];
         v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, "[TSSStyle initWithContext:name:overridePropertyMap:isVariation:]");
@@ -218,17 +218,17 @@ LABEL_13:
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v26, v30, v27, v29, 444, 0, "Style name may not be the empty string.");
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32);
-        v10 = 0;
+        nameCopy = 0;
       }
 
-      v33 = objc_msgSend_copy(v10, v24, v25);
+      v33 = objc_msgSend_copy(nameCopy, v24, v25);
       mName = v13->mName;
       v13->mName = v33;
 
-      if (v11)
+      if (mapCopy)
       {
         v35 = [TSSPropertyMap alloc];
-        v37 = objc_msgSend_initWithPropertyMap_(v35, v36, v11);
+        v37 = objc_msgSend_initWithPropertyMap_(v35, v36, mapCopy);
         mOverridePropertyMap = v13->mOverridePropertyMap;
         v13->mOverridePropertyMap = v37;
 
@@ -241,7 +241,7 @@ LABEL_13:
         objc_msgSend_enumerateDataPropertiesUsingBlock_(v39, v40, v59);
       }
 
-      v13->mIsVariation = a6;
+      v13->mIsVariation = variation;
       v13->mWasUnarchivedAsOrphanVariation = 0;
     }
   }
@@ -256,16 +256,16 @@ LABEL_13:
   return objc_msgSend_hash(v2, v3, v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToStyle_ignoreObjectContext = 1;
   }
 
-  else if (v4 && (v6 = objc_opt_class(), v6 == objc_opt_class()))
+  else if (equalCopy && (v6 = objc_opt_class(), v6 == objc_opt_class()))
   {
     isEqualToStyle_ignoreObjectContext = objc_msgSend_isEqualToStyle_ignoreObjectContext_(self, v7, v5, 0);
   }
@@ -278,10 +278,10 @@ LABEL_13:
   return isEqualToStyle_ignoreObjectContext;
 }
 
-- (BOOL)isEqualToStyle:(id)a3 ignoreObjectContext:(BOOL)a4
+- (BOOL)isEqualToStyle:(id)style ignoreObjectContext:(BOOL)context
 {
-  v4 = a4;
-  v6 = a3;
+  contextCopy = context;
+  styleCopy = style;
   v11 = objc_msgSend_context(self, v7, v8);
   if (v11)
   {
@@ -290,48 +290,48 @@ LABEL_13:
 
   else
   {
-    v13 = objc_msgSend_context(v6, v9, v10);
+    v13 = objc_msgSend_context(styleCopy, v9, v10);
     v12 = v13 == 0;
   }
 
-  isEqualToStyle_ignoreObjectContext_ignoreObjectUUID = objc_msgSend_isEqualToStyle_ignoreObjectContext_ignoreObjectUUID_(self, v14, v6, v12 | v4, v12 | v4);
+  isEqualToStyle_ignoreObjectContext_ignoreObjectUUID = objc_msgSend_isEqualToStyle_ignoreObjectContext_ignoreObjectUUID_(self, v14, styleCopy, v12 | contextCopy, v12 | contextCopy);
   return isEqualToStyle_ignoreObjectContext_ignoreObjectUUID;
 }
 
-- (id)copyFlattenedWithContext:(id)a3
+- (id)copyFlattenedWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_allocWithZone(objc_opt_class());
   mName = self->mName;
   v9 = objc_msgSend_propertyMap(self, v7, v8);
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v5, v10, v4, mName, v9, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v5, v10, contextCopy, mName, v9, 0);
 
   return isVariation;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 context:(id)a4
+- (id)copyWithZone:(_NSZone *)zone context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v7, v8, a3);
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v9, v10, v6, self->mName, self->mOverridePropertyMap, self->mIsVariation);
+  v9 = objc_msgSend_allocWithZone_(v7, v8, zone);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v9, v10, contextCopy, self->mName, self->mOverridePropertyMap, self->mIsVariation);
 
   return isVariation;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = objc_msgSend_context(self, a2, a3);
-  v7 = objc_msgSend_copyWithZone_context_(self, v6, a3, v5);
+  v5 = objc_msgSend_context(self, a2, zone);
+  v7 = objc_msgSend_copyWithZone_context_(self, v6, zone, v5);
 
   return v7;
 }
 
-- (id)copyWithContext:(id)a3 includeParentProperties:(BOOL)a4
+- (id)copyWithContext:(id)context includeParentProperties:(BOOL)properties
 {
-  v4 = a4;
-  v8 = objc_msgSend_copyWithZone_context_(self, a2, 0, a3);
-  if (v4)
+  propertiesCopy = properties;
+  v8 = objc_msgSend_copyWithZone_context_(self, a2, 0, context);
+  if (propertiesCopy)
   {
     v9 = objc_msgSend_propertyMap(self, v6, v7);
     objc_msgSend_setOverridePropertyMap_(v8, v10, v9);
@@ -341,20 +341,20 @@ LABEL_13:
   return v8;
 }
 
-- (id)valuesForProperties:(id)a3
+- (id)valuesForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_copyPropertyMap(self, v5, v6);
-  objc_msgSend_filterWithProperties_(v7, v8, v4);
+  objc_msgSend_filterWithProperties_(v7, v8, propertiesCopy);
 
   return v7;
 }
 
-- (void)setValuesForProperties:(id)a3
+- (void)setValuesForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   objc_msgSend_willModify(self, v5, v6);
-  if (v4)
+  if (propertiesCopy)
   {
     if (self->mOverridePropertyMap)
     {
@@ -363,19 +363,19 @@ LABEL_13:
       v16[2] = sub_276C9E57C;
       v16[3] = &unk_27A6EE848;
       v16[4] = self;
-      objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(v4, v7, v16);
-      objc_msgSend_addValuesFromPropertyMap_(self->mOverridePropertyMap, v9, v4);
+      objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(propertiesCopy, v7, v16);
+      objc_msgSend_addValuesFromPropertyMap_(self->mOverridePropertyMap, v9, propertiesCopy);
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = sub_276C9E604;
       v15[3] = &unk_27A6EE848;
       v15[4] = self;
-      objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(v4, v10, v15);
+      objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(propertiesCopy, v10, v15);
     }
 
     else
     {
-      v11 = objc_msgSend_copy(v4, v7, v8);
+      v11 = objc_msgSend_copy(propertiesCopy, v7, v8);
       mOverridePropertyMap = self->mOverridePropertyMap;
       self->mOverridePropertyMap = v11;
 
@@ -476,13 +476,13 @@ LABEL_13:
   return v5;
 }
 
-- (id)propertyMapIgnoringStyle:(id)a3
+- (id)propertyMapIgnoringStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   mParent = self->mParent;
   if (mParent)
   {
-    v8 = objc_msgSend_propertyMapIgnoringStyle_(mParent, v4, v6);
+    v8 = objc_msgSend_propertyMapIgnoringStyle_(mParent, v4, styleCopy);
   }
 
   else
@@ -490,7 +490,7 @@ LABEL_13:
     v8 = 0;
   }
 
-  if (self != v6 && objc_msgSend_count(self->mOverridePropertyMap, v4, v5))
+  if (self != styleCopy && objc_msgSend_count(self->mOverridePropertyMap, v4, v5))
   {
     mOverridePropertyMap = self->mOverridePropertyMap;
     if (v8)
@@ -537,15 +537,15 @@ LABEL_13:
   return objc_msgSend_copy(v9, v6, mOverridePropertyMap);
 }
 
-- (id)overridePropertyMapWithPropertyMap:(id)a3 overridePropertyMap:(id)a4 collapseSourceOverrides:(BOOL)a5
+- (id)overridePropertyMapWithPropertyMap:(id)map overridePropertyMap:(id)propertyMap collapseSourceOverrides:(BOOL)overrides
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  overridesCopy = overrides;
+  mapCopy = map;
+  propertyMapCopy = propertyMap;
   if (self->mIsVariation)
   {
-    v12 = self->mParent;
-    if (!v12)
+    selfCopy = self->mParent;
+    if (!selfCopy)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSSStyle overridePropertyMapWithPropertyMap:overridePropertyMap:collapseSourceOverrides:]");
@@ -553,7 +553,7 @@ LABEL_13:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 1152, 0, "Can't create variation of a nil base style.");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
-      v12 = 0;
+      selfCopy = 0;
       isVariation = objc_msgSend_isVariation(0, v20, v21);
       goto LABEL_6;
     }
@@ -561,10 +561,10 @@ LABEL_13:
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  isVariation = objc_msgSend_isVariation(v12, v10, v11);
+  isVariation = objc_msgSend_isVariation(selfCopy, v10, v11);
 LABEL_6:
   if (isVariation)
   {
@@ -582,7 +582,7 @@ LABEL_6:
   if (self->mIsVariation)
   {
     mOverridePropertyMap = self->mOverridePropertyMap;
-    if (v5)
+    if (overridesCopy)
     {
       objc_msgSend_addValuesFromPropertyMap_(v31, v33, mOverridePropertyMap);
     }
@@ -593,12 +593,12 @@ LABEL_6:
     }
   }
 
-  objc_msgSend_addValuesFromPropertyMap_(v34, v33, v9);
-  objc_msgSend_addValuesFromPropertyMap_(v31, v36, v8);
+  objc_msgSend_addValuesFromPropertyMap_(v34, v33, propertyMapCopy);
+  objc_msgSend_addValuesFromPropertyMap_(v31, v36, mapCopy);
   v39 = objc_msgSend_allProperties(v34, v37, v38);
   objc_msgSend_removeValuesForProperties_(v31, v40, v39);
 
-  v43 = objc_msgSend_propertyMap(v12, v41, v42);
+  v43 = objc_msgSend_propertyMap(selfCopy, v41, v42);
   objc_msgSend_removeValuesFromPropertyMap_(v31, v44, v43);
 
   objc_msgSend_addValuesFromPropertyMap_(v34, v45, v31);
@@ -606,13 +606,13 @@ LABEL_6:
   return v34;
 }
 
-- (id)newOverridePropertyMapWithPropertyMap:(id)a3
+- (id)newOverridePropertyMapWithPropertyMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   if (self->mIsVariation)
   {
-    v7 = self->mParent;
-    if (!v7)
+    selfCopy = self->mParent;
+    if (!selfCopy)
     {
       v8 = MEMORY[0x277D81150];
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSSStyle newOverridePropertyMapWithPropertyMap:]");
@@ -620,7 +620,7 @@ LABEL_6:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 1180, 0, "Can't create variation of a nil base style.");
 
       objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v13, v14);
-      v7 = 0;
+      selfCopy = 0;
       isVariation = objc_msgSend_isVariation(0, v15, v16);
       goto LABEL_6;
     }
@@ -628,10 +628,10 @@ LABEL_6:
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  isVariation = objc_msgSend_isVariation(v7, v5, v6);
+  isVariation = objc_msgSend_isVariation(selfCopy, v5, v6);
 LABEL_6:
   if (isVariation)
   {
@@ -646,44 +646,44 @@ LABEL_6:
   if (self->mIsVariation && (mOverridePropertyMap = self->mOverridePropertyMap) != 0)
   {
     v28 = objc_msgSend_copy(mOverridePropertyMap, v18, v19);
-    objc_msgSend_addValuesFromPropertyMap_(v28, v29, v4);
+    objc_msgSend_addValuesFromPropertyMap_(v28, v29, mapCopy);
   }
 
   else
   {
-    v28 = objc_msgSend_copy(v4, v18, v19);
+    v28 = objc_msgSend_copy(mapCopy, v18, v19);
   }
 
-  v32 = objc_msgSend_copyPropertyMap(v7, v30, v31);
+  v32 = objc_msgSend_copyPropertyMap(selfCopy, v30, v31);
   objc_msgSend_removeValuesFromPropertyMap_(v28, v33, v32);
 
   return v28;
 }
 
-- (BOOL)hasEqualPropertyValues:(id)a3
+- (BOOL)hasEqualPropertyValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v8 = objc_msgSend_properties(v5, v6, v7);
-  LOBYTE(self) = objc_msgSend_hasEqualValues_forProperties_(self, v9, v4, v8);
+  LOBYTE(self) = objc_msgSend_hasEqualValues_forProperties_(self, v9, valuesCopy, v8);
 
   return self;
 }
 
-- (BOOL)hasEqualValuesToPropertyMap:(id)a3 forProperties:(id)a4
+- (BOOL)hasEqualValuesToPropertyMap:(id)map forProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  propertiesCopy = properties;
   v8 = objc_opt_class();
   v11 = objc_msgSend_properties(v8, v9, v10);
-  if ((objc_msgSend_containsProperties_(v11, v12, v7) & 1) == 0)
+  if ((objc_msgSend_containsProperties_(v11, v12, propertiesCopy) & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v15 = objc_msgSend_allProperties(v6, v13, v14);
-  v17 = objc_msgSend_containsProperties_(v15, v16, v7);
+  v15 = objc_msgSend_allProperties(mapCopy, v13, v14);
+  v17 = objc_msgSend_containsProperties_(v15, v16, propertiesCopy);
 
   if (!v17)
   {
@@ -701,9 +701,9 @@ LABEL_5:
   v21[2] = sub_276C9F728;
   v21[3] = &unk_27A6EE870;
   v21[4] = self;
-  v22 = v6;
+  v22 = mapCopy;
   v23 = &v24;
-  objc_msgSend_enumeratePropertiesUsingBlock_(v7, v18, v21);
+  objc_msgSend_enumeratePropertiesUsingBlock_(propertiesCopy, v18, v21);
   v19 = *(v25 + 24);
 
   _Block_object_dispose(&v24, 8);
@@ -712,13 +712,13 @@ LABEL_6:
   return v19 & 1;
 }
 
-- (BOOL)hasEqualValues:(id)a3 forProperties:(id)a4
+- (BOOL)hasEqualValues:(id)values forProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  propertiesCopy = properties;
   v8 = objc_opt_class();
   v11 = objc_msgSend_properties(v8, v9, v10);
-  if ((objc_msgSend_containsProperties_(v11, v12, v7) & 1) == 0)
+  if ((objc_msgSend_containsProperties_(v11, v12, propertiesCopy) & 1) == 0)
   {
 
     goto LABEL_5;
@@ -726,7 +726,7 @@ LABEL_6:
 
   v13 = objc_opt_class();
   v16 = objc_msgSend_properties(v13, v14, v15);
-  v18 = objc_msgSend_containsProperties_(v16, v17, v7);
+  v18 = objc_msgSend_containsProperties_(v16, v17, propertiesCopy);
 
   if (!v18)
   {
@@ -744,9 +744,9 @@ LABEL_5:
   v22[2] = sub_276C9F8D0;
   v22[3] = &unk_27A6EE870;
   v22[4] = self;
-  v23 = v6;
+  v23 = valuesCopy;
   v24 = &v25;
-  objc_msgSend_enumeratePropertiesUsingBlock_(v7, v19, v22);
+  objc_msgSend_enumeratePropertiesUsingBlock_(propertiesCopy, v19, v22);
   v20 = *(v26 + 24);
 
   _Block_object_dispose(&v25, 8);
@@ -762,25 +762,25 @@ LABEL_6:
   return v3;
 }
 
-- (void)setOverridePropertyMap:(id)a3
+- (void)setOverridePropertyMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   objc_msgSend_willModify(self, v5, v6);
-  v9 = objc_msgSend_copy(v4, v7, v8);
+  v9 = objc_msgSend_copy(mapCopy, v7, v8);
 
   mOverridePropertyMap = self->mOverridePropertyMap;
   self->mOverridePropertyMap = v9;
 }
 
-- (BOOL)overridePropertyMapIsEqualTo:(id)a3
+- (BOOL)overridePropertyMapIsEqualTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   mOverridePropertyMap = self->mOverridePropertyMap;
-  if (mOverridePropertyMap == v5)
+  if (mOverridePropertyMap == toCopy)
   {
     v18 = 1;
     v8 = &v15;
@@ -788,7 +788,7 @@ LABEL_6:
 
   else
   {
-    isEqual = objc_msgSend_isEqual_(self->mOverridePropertyMap, v4, v5);
+    isEqual = objc_msgSend_isEqual_(self->mOverridePropertyMap, v4, toCopy);
     v8 = v16;
     *(v16 + 24) = isEqual;
     if (!isEqual)
@@ -799,13 +799,13 @@ LABEL_6:
     mOverridePropertyMap = self->mOverridePropertyMap;
   }
 
-  if (mOverridePropertyMap != v5)
+  if (mOverridePropertyMap != toCopy)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_276C9FAE8;
     v12[3] = &unk_27A6EE898;
-    v13 = v5;
+    v13 = toCopy;
     v14 = &v15;
     objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(mOverridePropertyMap, v9, v12);
 
@@ -821,18 +821,18 @@ LABEL_7:
 
 - (TSSStyle)rootAncestor
 {
-  v2 = self;
-  v5 = objc_msgSend_parent(v2, v3, v4);
+  selfCopy = self;
+  v5 = objc_msgSend_parent(selfCopy, v3, v4);
 
   if (v5)
   {
     do
     {
-      v8 = objc_msgSend_parent(v2, v6, v7);
+      v8 = objc_msgSend_parent(selfCopy, v6, v7);
 
       v11 = objc_msgSend_parent(v8, v9, v10);
 
-      v2 = v8;
+      selfCopy = v8;
     }
 
     while (v11);
@@ -840,7 +840,7 @@ LABEL_7:
 
   else
   {
-    v8 = v2;
+    v8 = selfCopy;
   }
 
   return v8;
@@ -848,21 +848,21 @@ LABEL_7:
 
 - (TSSStyle)baseStyleForVariation
 {
-  v2 = self;
-  if (objc_msgSend_isVariation(v2, v3, v4))
+  selfCopy = self;
+  if (objc_msgSend_isVariation(selfCopy, v3, v4))
   {
     while (1)
     {
-      v7 = objc_msgSend_parent(v2, v5, v6);
+      v7 = objc_msgSend_parent(selfCopy, v5, v6);
 
       if (!v7)
       {
         break;
       }
 
-      v10 = objc_msgSend_parent(v2, v8, v9);
+      v10 = objc_msgSend_parent(selfCopy, v8, v9);
 
-      v2 = v10;
+      selfCopy = v10;
       if ((objc_msgSend_isVariation(v10, v11, v12) & 1) == 0)
       {
         goto LABEL_6;
@@ -870,7 +870,7 @@ LABEL_7:
     }
   }
 
-  v10 = v2;
+  v10 = selfCopy;
 LABEL_6:
 
   return v10;
@@ -878,58 +878,58 @@ LABEL_6:
 
 - (TSSStyle)firstIdentifiedAncestor
 {
-  v4 = self;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      v5 = objc_msgSend_styleIdentifier(v4, v2, v3);
+      v5 = objc_msgSend_styleIdentifier(selfCopy, v2, v3);
 
       if (v5)
       {
         break;
       }
 
-      v8 = objc_msgSend_parent(v4, v6, v7);
+      v8 = objc_msgSend_parent(selfCopy, v6, v7);
 
-      v4 = v8;
+      selfCopy = v8;
     }
 
     while (v8);
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (TSSStyle)firstNamedAncestor
 {
-  v4 = self;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
     do
     {
-      if (objc_msgSend_isNamed(v4, v2, v3))
+      if (objc_msgSend_isNamed(selfCopy, v2, v3))
       {
         break;
       }
 
-      v7 = objc_msgSend_parent(v4, v5, v6);
+      v7 = objc_msgSend_parent(selfCopy, v5, v6);
 
-      v4 = v7;
+      selfCopy = v7;
     }
 
     while (v7);
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (TSSStyle)rootIdentifiedAncestor
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v5 = v2;
+    v5 = selfCopy;
     v6 = 0;
     do
     {
@@ -956,10 +956,10 @@ LABEL_6:
   return v6;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(&stru_2885E7A20, v5, v4))
+  nameCopy = name;
+  if (objc_msgSend_isEqualToString_(&stru_2885E7A20, v5, nameCopy))
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSSStyle setName:]");
@@ -970,18 +970,18 @@ LABEL_6:
   }
 
   objc_msgSend_willModify(self, v6, v7);
-  v17 = objc_msgSend_copy(v4, v15, v16);
+  v17 = objc_msgSend_copy(nameCopy, v15, v16);
 
   mName = self->mName;
   self->mName = v17;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v5 = a3;
-  if (self->mParent != v5)
+  parentCopy = parent;
+  if (self->mParent != parentCopy)
   {
-    v27 = v5;
+    v27 = parentCopy;
     objc_msgSend_willModify(self, v6, v7);
     if (v27)
     {
@@ -1006,8 +1006,8 @@ LABEL_6:
       }
     }
 
-    objc_storeStrong(&self->mParent, a3);
-    v5 = v27;
+    objc_storeStrong(&self->mParent, parent);
+    parentCopy = v27;
   }
 }
 
@@ -1116,28 +1116,28 @@ LABEL_6:
   return v20;
 }
 
-- (BOOL)isParentOf:(id)a3
+- (BOOL)isParentOf:(id)of
 {
-  v4 = objc_msgSend_parent(a3, a2, a3);
+  v4 = objc_msgSend_parent(of, a2, of);
   LOBYTE(self) = v4 == self;
 
   return self;
 }
 
-- (BOOL)isDescendentOf:(id)a3
+- (BOOL)isDescendentOf:(id)of
 {
-  v5 = a3;
+  ofCopy = of;
   mParent = self->mParent;
   if (mParent)
   {
-    if (mParent == v5)
+    if (mParent == ofCopy)
     {
       isDescendentOf = 1;
     }
 
     else
     {
-      isDescendentOf = objc_msgSend_isDescendentOf_(mParent, v4, v5);
+      isDescendentOf = objc_msgSend_isDescendentOf_(mParent, v4, ofCopy);
     }
   }
 
@@ -1149,14 +1149,14 @@ LABEL_6:
   return isDescendentOf;
 }
 
-- (BOOL)isAncestorOf:(id)a3
+- (BOOL)isAncestorOf:(id)of
 {
-  v4 = a3;
-  v7 = objc_msgSend_parent(v4, v5, v6);
+  ofCopy = of;
+  v7 = objc_msgSend_parent(ofCopy, v5, v6);
 
   if (v7)
   {
-    v12 = objc_msgSend_parent(v4, v8, v9);
+    v12 = objc_msgSend_parent(ofCopy, v8, v9);
     if (v12 == self)
     {
       isAncestorOf = 1;
@@ -1164,7 +1164,7 @@ LABEL_6:
 
     else
     {
-      v13 = objc_msgSend_parent(v4, v10, v11);
+      v13 = objc_msgSend_parent(ofCopy, v10, v11);
       isAncestorOf = objc_msgSend_isAncestorOf_(self, v14, v13);
     }
   }
@@ -1177,18 +1177,18 @@ LABEL_6:
   return isAncestorOf;
 }
 
-- (BOOL)isRelatedTo:(id)a3
+- (BOOL)isRelatedTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
-  if (self == v4)
+  toCopy = to;
+  v7 = toCopy;
+  if (self == toCopy)
   {
     v21 = 1;
   }
 
   else
   {
-    v10 = objc_msgSend_parent(v4, v5, v6);
+    v10 = objc_msgSend_parent(toCopy, v5, v6);
     if (v10 == self)
     {
       v21 = 1;
@@ -1230,46 +1230,46 @@ LABEL_6:
   return v2;
 }
 
-+ (BOOL)validateIntValue:(int *)a3 forProperty:(int)a4 min:(int)a5 max:(int)a6
++ (BOOL)validateIntValue:(int *)value forProperty:(int)property min:(int)min max:(int)max
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
 
-  v6 = *a3;
-  if (*a3 == 0x80000000)
+  v6 = *value;
+  if (*value == 0x80000000)
   {
     return 0;
   }
 
-  if (v6 < a5 || (a5 = a6, v6 > a6))
+  if (v6 < min || (min = max, v6 > max))
   {
-    *a3 = a5;
+    *value = min;
   }
 
   return 1;
 }
 
-+ (BOOL)validateIntValueAsBool:(int *)a3 forProperty:(int)a4
++ (BOOL)validateIntValueAsBool:(int *)bool forProperty:(int)property
 {
-  if (!a3 || *a3 == 0x80000000)
+  if (!bool || *bool == 0x80000000)
   {
     return 0;
   }
 
   result = 1;
-  if (*a3 > 1)
+  if (*bool > 1)
   {
-    *a3 = 1;
+    *bool = 1;
   }
 
   return result;
 }
 
-- (id)archivableRepresentationOfChangeSet:(id)a3
+- (id)archivableRepresentationOfChangeSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSSStyle archivableRepresentationOfChangeSet:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/styles/TSSStyle.m");
@@ -1290,9 +1290,9 @@ LABEL_6:
   objc_exception_throw(v22);
 }
 
-+ (double)fontSizeForFontSize:(double)a3 scalingFactor:(double)a4
++ (double)fontSizeForFontSize:(double)size scalingFactor:(double)factor
 {
-  v4 = a3 * a4;
+  v4 = size * factor;
   v5 = floor(v4);
   v6 = floor(v4 * 0.5);
   v7 = v6 + v6;
@@ -1307,17 +1307,17 @@ LABEL_6:
   }
 }
 
-- (id)propertyMapThatNeedsToBeTransformedWithTransformedObjects:(id)a3
+- (id)propertyMapThatNeedsToBeTransformedWithTransformedObjects:(id)objects
 {
-  v4 = a3;
-  v5 = self;
-  v7 = v5;
-  if (v5)
+  objectsCopy = objects;
+  selfCopy = self;
+  v7 = selfCopy;
+  if (selfCopy)
   {
-    v8 = v5;
+    v8 = selfCopy;
     do
     {
-      v9 = objc_msgSend_objectForKey_(v4, v6, v8);
+      v9 = objc_msgSend_objectForKey_(objectsCopy, v6, v8);
 
       if (v9)
       {
@@ -1365,31 +1365,31 @@ LABEL_6:
   return v8;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7 = objc_msgSend_propertyMap(self, v5, v6);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_276CA0FD0;
   v10[3] = &unk_27A6EE780;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   objc_msgSend_enumeratePropertiesAndObjectsUsingBlock_(v7, v9, v10);
 }
 
-- (void)setObjectUUID:(id)a3
+- (void)setObjectUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_objectUUID(self, v5, v6);
   v10 = objc_msgSend_copy(v7, v8, v9);
 
   v15.receiver = self;
   v15.super_class = TSSStyle;
-  [(TSSStyle *)&v15 setObjectUUID:v4];
+  [(TSSStyle *)&v15 setObjectUUID:dCopy];
   v13 = objc_msgSend_stylesheet(self, v11, v12);
-  objc_msgSend_style_didChangeUUIDToValue_fromValue_(v13, v14, self, v4, v10);
+  objc_msgSend_style_didChangeUUIDToValue_fromValue_(v13, v14, self, dCopy, v10);
 }
 
 - (TSSStylesheet)stylesheet
@@ -1399,70 +1399,70 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v7 = *(archive + 4);
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v10 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     mName = self->mName;
     self->mName = v10;
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 2) != 0)
   {
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
-    v14 = objc_msgSend_tsp_initWithProtobufString_(v12, v13, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+    v14 = objc_msgSend_tsp_initWithProtobufString_(v12, v13, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL);
     mStyleIdentifier = self->mStyleIdentifier;
     self->mStyleIdentifier = v14;
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 4) != 0)
   {
-    v16 = *(a3 + 5);
+    v16 = *(archive + 5);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = sub_276CA3864;
     v26[3] = &unk_27A6EEA28;
     v26[4] = self;
-    v17 = v6;
+    v17 = unarchiverCopy;
     v18 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v17, v19, v16, v18, 0, v26);
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 8) != 0)
   {
-    v20 = *(a3 + 6);
+    v20 = *(archive + 6);
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = sub_276CA387C;
     v25[3] = &unk_27A6EEA50;
     v25[4] = self;
-    v21 = v6;
+    v21 = unarchiverCopy;
     v22 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v21, v23, v20, v22, 0, v25);
   }
 
-  v24 = *(a3 + 56);
+  v24 = *(archive + 56);
   self->mIsVariation = v24;
-  if (v24 == 1 && (*(a3 + 16) & 4) == 0)
+  if (v24 == 1 && (*(archive + 16) & 4) == 0)
   {
     NSLog(&cfstr_UnarchivingAVa.isa, self);
     self->mWasUnarchivedAsOrphanVariation = 1;
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v8 = a4;
+  archiverCopy = archiver;
   if (self->mIsVariation && !self->mParent)
   {
     if (self->mWasUnarchivedAsOrphanVariation)
@@ -1485,9 +1485,9 @@ LABEL_6:
   if (mName)
   {
     v17 = objc_msgSend_tsp_protobufString(mName, v6, v7);
-    *(a3 + 4) |= 1u;
+    *(archive + 4) |= 1u;
     sub_276CA3CD4(__p, v17);
-    v18 = *(a3 + 1);
+    v18 = *(archive + 1);
     if (v18)
     {
       v32 = *(v18 & 0xFFFFFFFFFFFFFFFELL);
@@ -1504,9 +1504,9 @@ LABEL_6:
   if (mStyleIdentifier)
   {
     v20 = objc_msgSend_tsp_protobufString(mStyleIdentifier, v6, v7);
-    *(a3 + 4) |= 2u;
+    *(archive + 4) |= 2u;
     sub_276CA3CD4(__p, v20);
-    v21 = *(a3 + 1);
+    v21 = *(archive + 1);
     if (v21)
     {
       v33 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
@@ -1522,49 +1522,49 @@ LABEL_6:
   mParent = self->mParent;
   if (mParent)
   {
-    *(a3 + 4) |= 4u;
-    v23 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v23 = *(archive + 5);
     if (!v23)
     {
-      v24 = *(a3 + 1);
+      v24 = *(archive + 1);
       if (v24)
       {
         v24 = *(v24 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v23 = MEMORY[0x277CA0650](v24);
-      *(a3 + 5) = v23;
+      *(archive + 5) = v23;
     }
 
-    objc_msgSend_setStrongReference_message_(v8, v6, mParent, v23);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v6, mParent, v23);
   }
 
   if (self->mIsVariation)
   {
-    *(a3 + 4) |= 0x10u;
-    *(a3 + 56) = 1;
+    *(archive + 4) |= 0x10u;
+    *(archive + 56) = 1;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->mStylesheet);
 
-  if (WeakRetained && (objc_msgSend_isForCopy(v8, v26, v27) & 1) == 0)
+  if (WeakRetained && (objc_msgSend_isForCopy(archiverCopy, v26, v27) & 1) == 0)
   {
     v29 = objc_loadWeakRetained(&self->mStylesheet);
-    *(a3 + 4) |= 8u;
-    v30 = *(a3 + 6);
+    *(archive + 4) |= 8u;
+    v30 = *(archive + 6);
     if (!v30)
     {
-      v31 = *(a3 + 1);
+      v31 = *(archive + 1);
       if (v31)
       {
         v31 = *(v31 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v30 = MEMORY[0x277CA0650](v31);
-      *(a3 + 6) = v30;
+      *(archive + 6) = v30;
     }
 
-    objc_msgSend_setWeakReference_message_(v8, v28, v29, v30);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v28, v29, v30);
   }
 }
 

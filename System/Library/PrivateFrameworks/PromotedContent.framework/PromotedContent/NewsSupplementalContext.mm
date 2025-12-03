@@ -1,13 +1,13 @@
 @interface NewsSupplementalContext
 - (NSDictionary)dictionaryRepresentation;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation NewsSupplementalContext
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C1AA5ED0(v6);
 
   sub_1C1AAABE0(v6, v6[3]);
@@ -18,7 +18,7 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1AB7364();
 
   sub_1C1AC1F08(&qword_1EBF08210, &qword_1C1BA4330);

@@ -1,7 +1,7 @@
 @interface MPModelLibraryDeleteEntityChangeRequestOperation
 - (BOOL)_isCloudLibraryEnabled;
-- (void)_deleteItems:(id)a3 withLibrary:(id)a4;
-- (void)_handlePersistentID:(int64_t)a3 modelClass:(Class)a4 mediaLibrary:(id)a5;
+- (void)_deleteItems:(id)items withLibrary:(id)library;
+- (void)_handlePersistentID:(int64_t)d modelClass:(Class)class mediaLibrary:(id)library;
 - (void)execute;
 @end
 
@@ -9,36 +9,36 @@
 
 - (BOOL)_isCloudLibraryEnabled
 {
-  v2 = [(MPAsyncOperation *)self userIdentity];
-  v3 = [MPCloudController controllerWithUserIdentity:v2];
-  v4 = [v3 isCloudLibraryEnabled];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v3 = [MPCloudController controllerWithUserIdentity:userIdentity];
+  isCloudLibraryEnabled = [v3 isCloudLibraryEnabled];
 
-  return v4;
+  return isCloudLibraryEnabled;
 }
 
-- (void)_deleteItems:(id)a3 withLibrary:(id)a4
+- (void)_deleteItems:(id)items withLibrary:(id)library
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  libraryCopy = library;
+  if ([itemsCopy count])
   {
-    v8 = [(MPAsyncOperation *)self userIdentity];
-    v9 = [MPCloudController controllerWithUserIdentity:v8];
+    userIdentity = [(MPAsyncOperation *)self userIdentity];
+    v9 = [MPCloudController controllerWithUserIdentity:userIdentity];
 
-    v10 = [(MPAsyncOperation *)self userIdentity];
-    v11 = [MPCloudServiceStatusController cloudServiceStatusControllerWithUserIdentity:v10];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v11 = [MPCloudServiceStatusController cloudServiceStatusControllerWithUserIdentity:userIdentity2];
 
     if ([(MPModelLibraryDeleteEntityChangeRequestOperation *)self _isCloudLibraryEnabled])
     {
       v29 = v11;
       v30 = v9;
-      v32 = self;
+      selfCopy = self;
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v12 = v6;
+      v12 = itemsCopy;
       v13 = [v12 countByEnumeratingWithState:&v38 objects:v43 count:16];
       if (v13)
       {
@@ -81,14 +81,14 @@
       {
         v9 = v30;
         [v30 removeItemsWithSagaIDs:v15 completionHandler:0];
-        self = v32;
+        self = selfCopy;
 LABEL_37:
         v11 = v29;
 
         goto LABEL_38;
       }
 
-      self = v32;
+      self = selfCopy;
     }
 
     else
@@ -96,21 +96,21 @@ LABEL_37:
       if (![v11 isPurchaseHistoryEnabled])
       {
 LABEL_38:
-        [v7 deleteItems:v6];
+        [libraryCopy deleteItems:itemsCopy];
 
         goto LABEL_39;
       }
 
       v29 = v11;
       v30 = v9;
-      v31 = v7;
-      v33 = self;
+      v31 = libraryCopy;
+      selfCopy2 = self;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v28 = v6;
-      v19 = v6;
+      v28 = itemsCopy;
+      v19 = itemsCopy;
       v20 = [v19 countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (v20)
       {
@@ -156,15 +156,15 @@ LABEL_38:
       {
         v9 = v30;
         [v30 hideItemsWithPurchaseHistoryIDs:v15 completionHandler:0];
-        v6 = v28;
-        v7 = v31;
-        self = v33;
+        itemsCopy = v28;
+        libraryCopy = v31;
+        self = selfCopy2;
         goto LABEL_37;
       }
 
-      v6 = v28;
-      v7 = v31;
-      self = v33;
+      itemsCopy = v28;
+      libraryCopy = v31;
+      self = selfCopy2;
     }
 
     v9 = v30;
@@ -181,44 +181,44 @@ LABEL_39:
   [(MPAsyncOperation *)self finish];
 }
 
-- (void)_handlePersistentID:(int64_t)a3 modelClass:(Class)a4 mediaLibrary:(id)a5
+- (void)_handlePersistentID:(int64_t)d modelClass:(Class)class mediaLibrary:(id)library
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  libraryCopy = library;
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || [(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v9 = [v8 itemWithPersistentID:a3 verifyExistence:0];
+    v9 = [libraryCopy itemWithPersistentID:d verifyExistence:0];
     v10 = v9;
     if (v9)
     {
       v60[0] = v9;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:1];
-      [(MPModelLibraryDeleteEntityChangeRequestOperation *)self _deleteItems:v11 withLibrary:v8];
+      [(MPModelLibraryDeleteEntityChangeRequestOperation *)self _deleteItems:v11 withLibrary:libraryCopy];
     }
 
     else
     {
-      [(MPModelLibraryDeleteEntityChangeRequestOperation *)self _deleteItems:0 withLibrary:v8];
+      [(MPModelLibraryDeleteEntityChangeRequestOperation *)self _deleteItems:0 withLibrary:libraryCopy];
     }
 
     goto LABEL_8;
   }
 
-  if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v12 = objc_alloc_init(MPModelLibraryRequest);
     [(MPModelLibraryRequest *)v12 setFilteringOptions:0x10000];
-    [(MPModelLibraryRequest *)v12 setMediaLibrary:v8];
-    v13 = [a4 alloc];
+    [(MPModelLibraryRequest *)v12 setMediaLibrary:libraryCopy];
+    v13 = [class alloc];
     v14 = [MPIdentifierSet alloc];
     v15 = +[MPModelAlbumKind identityKind];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __96__MPModelLibraryDeleteEntityChangeRequestOperation__handlePersistentID_modelClass_mediaLibrary___block_invoke;
     v50[3] = &unk_1E767CDA0;
-    v16 = v8;
+    v16 = libraryCopy;
     v51 = v16;
-    v52 = a3;
+    dCopy = d;
     v17 = [(MPIdentifierSet *)v14 initWithSource:@"LibraryEdit" modelKind:v15 block:v50];
     v18 = [v13 initWithIdentifiers:v17 block:&__block_literal_global_30201];
 
@@ -234,7 +234,7 @@ LABEL_39:
     v47[2] = __96__MPModelLibraryDeleteEntityChangeRequestOperation__handlePersistentID_modelClass_mediaLibrary___block_invoke_4;
     v47[3] = &unk_1E767B6F0;
     v48 = v16;
-    v49 = self;
+    selfCopy = self;
     v21 = [(MPModelLibraryRequest *)v12 newOperationWithResponseHandler:v47];
     [(NSOperationQueue *)self->_operationQueue addOperation:v21];
 
@@ -245,20 +245,20 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
     v12 = objc_alloc_init(MPModelLibraryRequest);
-    [(MPModelLibraryRequest *)v12 setMediaLibrary:v8];
-    v23 = [a4 alloc];
+    [(MPModelLibraryRequest *)v12 setMediaLibrary:libraryCopy];
+    v23 = [class alloc];
     v24 = [MPIdentifierSet alloc];
     v25 = +[MPModelTVSeasonKind identityKind];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __96__MPModelLibraryDeleteEntityChangeRequestOperation__handlePersistentID_modelClass_mediaLibrary___block_invoke_6;
     v44[3] = &unk_1E767CDA0;
-    v26 = v8;
+    v26 = libraryCopy;
     v45 = v26;
-    v46 = a3;
+    dCopy2 = d;
     v27 = [(MPIdentifierSet *)v24 initWithSource:@"LibraryEdit" modelKind:v25 block:v44];
     v28 = [v23 initWithIdentifiers:v27 block:&__block_literal_global_29_30204];
 
@@ -274,7 +274,7 @@ LABEL_14:
     v41[2] = __96__MPModelLibraryDeleteEntityChangeRequestOperation__handlePersistentID_modelClass_mediaLibrary___block_invoke_9;
     v41[3] = &unk_1E767B6F0;
     v42 = v26;
-    v43 = self;
+    selfCopy2 = self;
     v31 = [(MPModelLibraryRequest *)v12 newOperationWithResponseHandler:v41];
     [(NSOperationQueue *)self->_operationQueue addOperation:v31];
 
@@ -282,9 +282,9 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v12 = [v8 playlistWithPersistentID:a3];
+    v12 = [libraryCopy playlistWithPersistentID:d];
     if (!v12)
     {
 LABEL_32:
@@ -301,7 +301,7 @@ LABEL_32:
     if (![(MPModelLibraryDeleteEntityChangeRequestOperation *)self _isCloudLibraryEnabled])
     {
 LABEL_31:
-      [v8 removePlaylist:v12 preserveUndeletableEntities:1];
+      [libraryCopy removePlaylist:v12 preserveUndeletableEntities:1];
       goto LABEL_32;
     }
 
@@ -316,9 +316,9 @@ LABEL_31:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v55 = self;
+          selfCopy3 = self;
           v56 = 2048;
-          v57 = a3;
+          dCopy3 = d;
           _os_log_impl(&dword_1A238D000, v39, OS_LOG_TYPE_ERROR, "%{public}@ Failed to retrieve saga IDs for removal given playlist with persistent ID=%lld, skipping cloud library update", buf, 0x16u);
         }
 
@@ -327,8 +327,8 @@ LABEL_31:
       }
 
       v34 = v33;
-      v35 = [(MPAsyncOperation *)self userIdentity];
-      v36 = [MPCloudController controllerWithUserIdentity:v35];
+      userIdentity = [(MPAsyncOperation *)self userIdentity];
+      v36 = [MPCloudController controllerWithUserIdentity:userIdentity];
       [v36 removePlaylistsWithSagaIDs:v34 performDeltaSync:1 completionHandler:0];
     }
 
@@ -342,8 +342,8 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v35 = [(MPAsyncOperation *)self userIdentity];
-      v36 = [MPCloudController controllerWithUserIdentity:v35];
+      userIdentity = [(MPAsyncOperation *)self userIdentity];
+      v36 = [MPCloudController controllerWithUserIdentity:userIdentity];
       v53 = v34;
       v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
       [v36 removePlaylistsWithSagaIDs:v38 performDeltaSync:0 completionHandler:0];
@@ -472,40 +472,40 @@ void __96__MPModelLibraryDeleteEntityChangeRequestOperation__handlePersistentID_
     [(NSOperationQueue *)self->_operationQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)self->_operationQueue setName:@"com.apple.MediaPlayer.MPModelLibraryKeepLocalChangeRequestOperation.operationQueue"];
     v5 = self->_operationQueue;
-    v6 = [MEMORY[0x1E696AF00] currentThread];
-    -[NSOperationQueue setQualityOfService:](v5, "setQualityOfService:", [v6 qualityOfService]);
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    -[NSOperationQueue setQualityOfService:](v5, "setQualityOfService:", [currentThread qualityOfService]);
   }
 
-  v7 = [(MPModelLibraryDeleteEntityChangeRequest *)self->_request modelObject];
-  v8 = [(MPAsyncOperation *)self userIdentity];
-  v9 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v8];
+  modelObject = [(MPModelLibraryDeleteEntityChangeRequest *)self->_request modelObject];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v9 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v10 = [v7 identifiers];
-  v11 = [v10 library];
-  v12 = [v11 persistentID];
+  identifiers = [modelObject identifiers];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
   v13 = objc_opt_class();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v7 anyObject];
+    anyObject = [modelObject anyObject];
     v13 = objc_opt_class();
   }
 
-  if (v12)
+  if (persistentID)
   {
-    [(MPModelLibraryDeleteEntityChangeRequestOperation *)self _handlePersistentID:v12 modelClass:v13 mediaLibrary:v9];
+    [(MPModelLibraryDeleteEntityChangeRequestOperation *)self _handlePersistentID:persistentID modelClass:v13 mediaLibrary:v9];
   }
 
   else
   {
-    v15 = [(MPAsyncOperation *)self userIdentity];
-    v16 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:v15];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v16 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:userIdentity2];
 
     v17 = objc_alloc_init(MPStoreLibraryMappingRequestOperation);
     [(MPStoreLibraryMappingRequestOperation *)v17 setLibraryView:v16];
     [(MPStoreLibraryMappingRequestOperation *)v17 setModelClass:objc_opt_class()];
-    v27[0] = v10;
+    v27[0] = identifiers;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
     [(MPStoreLibraryMappingRequestOperation *)v17 setIdentifierSets:v18];
 
@@ -513,8 +513,8 @@ void __96__MPModelLibraryDeleteEntityChangeRequestOperation__handlePersistentID_
     v20 = 3221225472;
     v21 = __59__MPModelLibraryDeleteEntityChangeRequestOperation_execute__block_invoke;
     v22 = &unk_1E767ACC8;
-    v23 = v10;
-    v24 = self;
+    v23 = identifiers;
+    selfCopy = self;
     v26 = v13;
     v25 = v9;
     [(MPStoreLibraryMappingRequestOperation *)v17 setResponseHandler:&v19];

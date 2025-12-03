@@ -1,58 +1,58 @@
 @interface WRM_BWEvalManager
 + (id)WRM_BWEvalManagerSingleton;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 - (BOOL)doesIRATClientSubscriptionContextExist;
 - (BOOL)isSmartDataModeEnabled;
 - (BOOL)isWiFiPrimary;
 - (BOOL)needWiFiLQM;
 - (WRM_BWEvalManager)init;
 - (id)getSpeedTestMetrics;
-- (id)getiRATClientFromList:(int)a3;
-- (int)getDeltaIPStats:(unint64_t *)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6;
+- (id)getiRATClientFromList:(int)list;
+- (int)getDeltaIPStats:(unint64_t *)stats :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6;
 - (unint64_t)getLPMState;
 - (unsigned)countStreamingEvent;
 - (unsigned)getMLPredictedCellBW;
 - (unsigned)getMLPredictedWiFiBW;
-- (unsigned)getPredictedCellBW:(double *)a3 backhaul:(double)a4;
-- (unsigned)getPredictedWiFiBW:(double *)a3 backhaul:(double)a4;
-- (unsigned)getPredictedWiFiBandwidth:(double *)a3;
-- (void)addiRatClient:(id)a3;
-- (void)calcAdjustedBandwith:(id *)a3 :(float)a4;
+- (unsigned)getPredictedCellBW:(double *)w backhaul:(double)backhaul;
+- (unsigned)getPredictedWiFiBW:(double *)w backhaul:(double)backhaul;
+- (unsigned)getPredictedWiFiBandwidth:(double *)bandwidth;
+- (void)addiRatClient:(id)client;
+- (void)calcAdjustedBandwith:(id *)bandwith :(float)a4;
 - (void)createMLModel;
 - (void)dealloc;
-- (void)evaluateCellularBandwidth:(id *)a3;
-- (void)evaluateSDMBWChangeNotification:(unint64_t)a3;
-- (void)evaluateWiFiBandwidth:(id *)a3;
+- (void)evaluateCellularBandwidth:(id *)bandwidth;
+- (void)evaluateSDMBWChangeNotification:(unint64_t)notification;
+- (void)evaluateWiFiBandwidth:(id *)bandwidth;
 - (void)evaluateWiFiLink;
 - (void)feedAWDCoreWiFiMetrics;
 - (void)feedAWDRadioStats;
-- (void)feedAWDStreamingStats:(id *)a3;
+- (void)feedAWDStreamingStats:(id *)stats;
 - (void)getInitialIPStats;
-- (void)handleAppStateChange:(id)a3;
-- (void)handleCellularDataMetricsRequest:(id)a3;
-- (void)handleControllerAvailability:(unint64_t)a3;
-- (void)handleEnhancedBufferingNotificatione:(id)a3;
-- (void)handleGetMLPredictedThroughput:(id)a3;
-- (void)handleGetStreamingMetrics:(id)a3;
-- (void)handleInternalMessage:(id)a3;
-- (void)handleLinkPrefSubscribe:(id)a3;
-- (void)handleNrPhyMetricsRequest:(id)a3;
-- (void)handleQSHMetrics:(id)a3;
-- (void)handleSessionNotification:(id)a3;
-- (void)handleUpdateStallMessage:(id)a3;
-- (void)handleWiFiMetricsRequest:(id)a3;
+- (void)handleAppStateChange:(id)change;
+- (void)handleCellularDataMetricsRequest:(id)request;
+- (void)handleControllerAvailability:(unint64_t)availability;
+- (void)handleEnhancedBufferingNotificatione:(id)notificatione;
+- (void)handleGetMLPredictedThroughput:(id)throughput;
+- (void)handleGetStreamingMetrics:(id)metrics;
+- (void)handleInternalMessage:(id)message;
+- (void)handleLinkPrefSubscribe:(id)subscribe;
+- (void)handleNrPhyMetricsRequest:(id)request;
+- (void)handleQSHMetrics:(id)metrics;
+- (void)handleSessionNotification:(id)notification;
+- (void)handleUpdateStallMessage:(id)message;
+- (void)handleWiFiMetricsRequest:(id)request;
 - (void)handleWiFiRegistered;
-- (void)handleWiFiStateChaneEvents:(id)a3;
-- (void)notifyScreenStatePassCodeNotEnabled:(int)a3;
-- (void)processSessionStatusUpdate:(id)a3;
+- (void)handleWiFiStateChaneEvents:(id)events;
+- (void)notifyScreenStatePassCodeNotEnabled:(int)enabled;
+- (void)processSessionStatusUpdate:(id)update;
 - (void)pruneOldStreamingEvents;
-- (void)queryInterfaceStats:(const char *)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6 :(unint64_t *)a7;
+- (void)queryInterfaceStats:(const char *)stats :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6 :(unint64_t *)a7;
 - (void)recordStreamingEvent;
 - (void)registerLPMNotifier;
 - (void)registerWebkitStreamingNotification;
-- (void)removeiRatClient:(id)a3;
-- (void)resetStreamingState:(BOOL)a3;
-- (void)startPeriodicTask:(double)a3 :(id)a4;
+- (void)removeiRatClient:(id)client;
+- (void)resetStreamingState:(BOOL)state;
+- (void)startPeriodicTask:(double)task :(id)a4;
 - (void)stopPeriodicTask;
 - (void)subscribeAppStateChangeEvent;
 - (void)subscribeForDeviceLockStateInfo;
@@ -60,13 +60,13 @@
 - (void)unSubscribeAppStateChangeEvent;
 - (void)unSubscribeForDeviceLockStateInfo;
 - (void)unSubscribeForScreenStateInfo;
-- (void)updateCameraState:(unsigned int)a3;
-- (void)updateControllerSession:(id)a3 ofId:(unint64_t)a4;
-- (void)updateControllerState:(id)a3;
-- (void)updateDLBWEstimation:(unsigned int)a3 :(unsigned int)a4;
+- (void)updateCameraState:(unsigned int)state;
+- (void)updateControllerSession:(id)session ofId:(unint64_t)id;
+- (void)updateControllerState:(id)state;
+- (void)updateDLBWEstimation:(unsigned int)estimation :(unsigned int)a4;
 - (void)updateLPMState;
-- (void)updateNRQSHMetrics:(unsigned int)a3 :(unsigned int)a4 :(unsigned int)a5;
-- (void)updateQSHMetrics:(unsigned int)a3 :(unsigned int)a4 :(unsigned int)a5 :(unsigned int)a6;
+- (void)updateNRQSHMetrics:(unsigned int)metrics :(unsigned int)a4 :(unsigned int)a5;
+- (void)updateQSHMetrics:(unsigned int)metrics :(unsigned int)a4 :(unsigned int)a5 :(unsigned int)a6;
 @end
 
 @implementation WRM_BWEvalManager
@@ -101,7 +101,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006AD34;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7DE8 != -1)
   {
     dispatch_once(&qword_1002B7DE8, block);
@@ -112,15 +112,15 @@
 
 - (BOOL)needWiFiLQM
 {
-  v2 = [(WRM_BWEvalManager *)self doesIRATClientSubscriptionContextExist];
+  doesIRATClientSubscriptionContextExist = [(WRM_BWEvalManager *)self doesIRATClientSubscriptionContextExist];
   v3 = "NO";
-  if (v2)
+  if (doesIRATClientSubscriptionContextExist)
   {
     v3 = "YES";
   }
 
   [WCM_Logging logLevel:28 message:@"%s: needWiFiLQM? %s ", "[WRM_BWEvalManager needWiFiLQM]", v3];
-  return v2;
+  return doesIRATClientSubscriptionContextExist;
 }
 
 - (BOOL)doesIRATClientSubscriptionContextExist
@@ -159,9 +159,9 @@ LABEL_11:
         objc_enumerationMutation(miRATClientContexts);
       }
 
-      v9 = [*(*(&v12 + 1) + 8 * i) getHandoverContexts];
-      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 28, @"%s: iRAT client Context count:%d.", "-[WRM_BWEvalManager doesIRATClientSubscriptionContextExist]", [v9 count]);
-      v6 |= [v9 count] != 0;
+      getHandoverContexts = [*(*(&v12 + 1) + 8 * i) getHandoverContexts];
+      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 28, @"%s: iRAT client Context count:%d.", "-[WRM_BWEvalManager doesIRATClientSubscriptionContextExist]", [getHandoverContexts count]);
+      v6 |= [getHandoverContexts count] != 0;
     }
 
     v5 = [(NSMutableArray *)miRATClientContexts countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -199,14 +199,14 @@ LABEL_12:
         }
 
         v4 = *(*(&v34 + 1) + 8 * v3);
-        v5 = [v4 getMyClientType];
+        getMyClientType = [v4 getMyClientType];
         v6 = "ClientCommCenter";
-        if (v5 != 1)
+        if (getMyClientType != 1)
         {
-          if (v5 - 2 >= 0x14)
+          if (getMyClientType - 2 >= 0x14)
           {
             v6 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
-            if (v5 == 22)
+            if (getMyClientType == 22)
             {
               v6 = "ClientCoreMediaStreaming";
             }
@@ -214,25 +214,25 @@ LABEL_12:
 
           else
           {
-            v6 = off_10023F268[v5 - 2];
+            v6 = off_10023F268[getMyClientType - 2];
           }
         }
 
         v27 = v3;
         [WCM_Logging logLevel:28 message:@"<%s>Evaluate WiFi Link: BEGIN.", v6];
         v26 = v4;
-        v7 = [v4 getHandoverContexts];
+        getHandoverContexts = [v4 getHandoverContexts];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v28 = v7;
-        v8 = [v7 countByEnumeratingWithState:&v30 objects:v41 count:16];
+        v28 = getHandoverContexts;
+        v8 = [getHandoverContexts countByEnumeratingWithState:&v30 objects:v41 count:16];
         if (v8)
         {
           v9 = v8;
           v29 = *v31;
-          if (v5 == 22)
+          if (getMyClientType == 22)
           {
             v10 = "ClientCoreMediaStreaming";
           }
@@ -242,7 +242,7 @@ LABEL_12:
             v10 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
           }
 
-          v11 = v5 - 2;
+          v11 = getMyClientType - 2;
           do
           {
             for (i = 0; i != v9; i = i + 1)
@@ -253,11 +253,11 @@ LABEL_12:
               }
 
               v13 = *(*(&v30 + 1) + 8 * i);
-              v14 = [v13 getApplicationType];
-              v15 = [v13 getConnectedLinkType];
-              v16 = [v13 getRecommenedLinkType];
+              getApplicationType = [v13 getApplicationType];
+              getConnectedLinkType = [v13 getConnectedLinkType];
+              getRecommenedLinkType = [v13 getRecommenedLinkType];
               v17 = "ClientCommCenter";
-              if (v5 != 1)
+              if (getMyClientType != 1)
               {
                 v17 = v10;
                 if (v11 <= 0x13)
@@ -267,23 +267,23 @@ LABEL_12:
               }
 
               v18 = "UNKNOWN_APP!!!";
-              if (v14 == 2)
+              if (getApplicationType == 2)
               {
                 v18 = "CT_Th_Call";
               }
 
-              if (v14 == 1)
+              if (getApplicationType == 1)
               {
                 v18 = "CT_VOICE";
               }
 
-              if (!v14)
+              if (!getApplicationType)
               {
                 v18 = "CT_DATA";
               }
 
               [WCM_Logging logLevel:28 message:@"<%s>{%s}Evaluate Link: BEGIN.", v17, v18];
-              if ([(WRM_BWEvalManager *)self evaluateLink:v14]== 1)
+              if ([(WRM_BWEvalManager *)self evaluateLink:getApplicationType]== 1)
               {
                 v19 = 1;
                 [v13 setLinkPreferenceNotificationRequired:1];
@@ -304,7 +304,7 @@ LABEL_12:
               [v13 setMaxMovEvalBW:*(&v39 + 1)];
               [v13 setNetworkEvalBW:v40];
               v20 = "ClientCommCenter";
-              if (v5 != 1)
+              if (getMyClientType != 1)
               {
                 v20 = v10;
                 if (v11 <= 0x13)
@@ -313,13 +313,13 @@ LABEL_12:
                 }
               }
 
-              if (v14)
+              if (getApplicationType)
               {
                 v21 = "CT_VOICE";
-                if (v14 != 1)
+                if (getApplicationType != 1)
                 {
                   v21 = "UNKNOWN_APP!!!";
-                  if (v14 == 2)
+                  if (getApplicationType == 2)
                   {
                     v21 = "CT_Th_Call";
                   }
@@ -333,7 +333,7 @@ LABEL_12:
 
               [WCM_Logging logLevel:28 message:@"<%s>{%s}Evaluate WIFI-CELLULAR Link BW: END.", v20, v21];
               v22 = "ClientCommCenter";
-              if (v5 != 1)
+              if (getMyClientType != 1)
               {
                 v22 = v10;
                 if (v11 <= 0x13)
@@ -380,12 +380,12 @@ LABEL_12:
 {
   if (self->mWiFi && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(WCM_WiFiController *)self->mWiFi wifiService];
+    wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
   }
 
   else
   {
-    v3 = 0;
+    wifiService = 0;
   }
 
   v4 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
@@ -393,8 +393,8 @@ LABEL_12:
   if (![+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")])
   {
     v6 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-    v7 = 0;
-    if (v3)
+    getCTDataIndictor = 0;
+    if (wifiService)
     {
       goto LABEL_7;
     }
@@ -407,49 +407,49 @@ LABEL_10:
 
   v6 = +[WRM_EnhancedCTService wrm_EnhancedCTServiceSingleton];
   [v6 setActiveSlot:{objc_msgSend(v6, "getUserDataPreferredSlot")}];
-  v7 = [v6 getCTDataIndictor];
-  if (!v3)
+  getCTDataIndictor = [v6 getCTDataIndictor];
+  if (!wifiService)
   {
     goto LABEL_10;
   }
 
 LABEL_7:
-  self->mWrmiRATStreaming->wrmRecommendedRAT = [(WCM_WiFiService *)v3 isWiFiPrimaryInterface];
-  if ([(WCM_WiFiService *)v3 isWiFiPrimaryInterface])
+  self->mWrmiRATStreaming->wrmRecommendedRAT = [(WCM_WiFiService *)wifiService isWiFiPrimaryInterface];
+  if ([(WCM_WiFiService *)wifiService isWiFiPrimaryInterface])
   {
-    self->mWrmiRATStreaming->wifiRssi = [(WCM_WiFiService *)v3 getRSSI];
-    [(WCM_WiFiService *)v3 getRxPhyRate];
+    self->mWrmiRATStreaming->wifiRssi = [(WCM_WiFiService *)wifiService getRSSI];
+    [(WCM_WiFiService *)wifiService getRxPhyRate];
     self->mWrmiRATStreaming->phyRate = v8;
-    self->mWrmiRATStreaming->cca = [(WCM_WiFiService *)v3 getCCA];
-    self->mWrmiRATStreaming->StationCount = [(WCM_WiFiService *)v3 getConnectedStationCount];
-    self->mWrmiRATStreaming->lqmScoreWifi = [(WCM_WiFiService *)v3 isWiFiQualityGoodForProximityMode];
-    self->mWrmiRATStreaming->decisionVIBE = [(WCM_WiFiService *)v3 getBEDecision];
-    self->mWrmiRATStreaming->decisionVO = [(WCM_WiFiService *)v3 getVoiceDecision];
-    self->mWrmiRATStreaming->expectedThroughputVIBE = [(WCM_WiFiService *)v3 getTxThroughputVI];
-    self->mWrmiRATStreaming->expectedThroughputVO = [(WCM_WiFiService *)v3 getTxThroughputVO];
-    self->mWrmiRATStreaming->packetLifetimeVIBE = [(WCM_WiFiService *)v3 getLifeTimeVI];
-    self->mWrmiRATStreaming->pkgLifeTimeVO = [(WCM_WiFiService *)v3 getLifeTimeVO];
-    self->mWrmiRATStreaming->pktLossRateVO = [(WCM_WiFiService *)v3 getTxLossRateVO];
-    self->mWrmiRATStreaming->goodDecisionsCounterVO = [(WCM_WiFiService *)v3 getGoodVoiceCounter];
-    self->mWrmiRATStreaming->badDecisionsCounterVO = [(WCM_WiFiService *)v3 getBadVoiceCounter];
-    self->mWrmiRATStreaming->goodDecisionsCounterVIBE = [(WCM_WiFiService *)v3 getGoodVoiceCounter];
-    self->mWrmiRATStreaming->badDecisionsCounterVIBE = [(WCM_WiFiService *)v3 getBadVideoCounter];
-    self->mWrmiRATStreaming->invalidDecisionCounter = [(WCM_WiFiService *)v3 getInvalidCounter];
-    self->mWrmiRATStreaming->weightedAveragePhyrateRx = [(WCM_WiFiService *)v3 getWghtAverageRXPhyRate];
-    self->mWrmiRATStreaming->weightedAveragePhyrateTx = [(WCM_WiFiService *)v3 getWghtAverageTXPhyRate];
-    self->mWrmiRATStreaming->weightedAverageRssi = [(WCM_WiFiService *)v3];
-    self->mWrmiRATStreaming->weightedAverageSnr = [(WCM_WiFiService *)v3 getWghtAverageSNR];
-    [(WCM_WiFiService *)v3 getTxPer];
+    self->mWrmiRATStreaming->cca = [(WCM_WiFiService *)wifiService getCCA];
+    self->mWrmiRATStreaming->StationCount = [(WCM_WiFiService *)wifiService getConnectedStationCount];
+    self->mWrmiRATStreaming->lqmScoreWifi = [(WCM_WiFiService *)wifiService isWiFiQualityGoodForProximityMode];
+    self->mWrmiRATStreaming->decisionVIBE = [(WCM_WiFiService *)wifiService getBEDecision];
+    self->mWrmiRATStreaming->decisionVO = [(WCM_WiFiService *)wifiService getVoiceDecision];
+    self->mWrmiRATStreaming->expectedThroughputVIBE = [(WCM_WiFiService *)wifiService getTxThroughputVI];
+    self->mWrmiRATStreaming->expectedThroughputVO = [(WCM_WiFiService *)wifiService getTxThroughputVO];
+    self->mWrmiRATStreaming->packetLifetimeVIBE = [(WCM_WiFiService *)wifiService getLifeTimeVI];
+    self->mWrmiRATStreaming->pkgLifeTimeVO = [(WCM_WiFiService *)wifiService getLifeTimeVO];
+    self->mWrmiRATStreaming->pktLossRateVO = [(WCM_WiFiService *)wifiService getTxLossRateVO];
+    self->mWrmiRATStreaming->goodDecisionsCounterVO = [(WCM_WiFiService *)wifiService getGoodVoiceCounter];
+    self->mWrmiRATStreaming->badDecisionsCounterVO = [(WCM_WiFiService *)wifiService getBadVoiceCounter];
+    self->mWrmiRATStreaming->goodDecisionsCounterVIBE = [(WCM_WiFiService *)wifiService getGoodVoiceCounter];
+    self->mWrmiRATStreaming->badDecisionsCounterVIBE = [(WCM_WiFiService *)wifiService getBadVideoCounter];
+    self->mWrmiRATStreaming->invalidDecisionCounter = [(WCM_WiFiService *)wifiService getInvalidCounter];
+    self->mWrmiRATStreaming->weightedAveragePhyrateRx = [(WCM_WiFiService *)wifiService getWghtAverageRXPhyRate];
+    self->mWrmiRATStreaming->weightedAveragePhyrateTx = [(WCM_WiFiService *)wifiService getWghtAverageTXPhyRate];
+    self->mWrmiRATStreaming->weightedAverageRssi = [(WCM_WiFiService *)wifiService];
+    self->mWrmiRATStreaming->weightedAverageSnr = [(WCM_WiFiService *)wifiService getWghtAverageSNR];
+    [(WCM_WiFiService *)wifiService getTxPer];
     self->mWrmiRATStreaming->txPER = (v9 * 100.0);
-    [(WCM_WiFiService *)v3 getRxRatio];
+    [(WCM_WiFiService *)wifiService getRxRatio];
     self->mWrmiRATStreaming->rxRetry = (v10 * 100.0);
-    self->mWrmiRATStreaming->devicePointOfInterest = [(WCM_WiFiService *)v3 getPointOfInterest];
-    self->mWrmiRATStreaming->wifChannelBW = [(WCM_WiFiService *)v3 getWiFiBW];
-    v11 = [(WCM_WiFiService *)v3 getChannelType];
+    self->mWrmiRATStreaming->devicePointOfInterest = [(WCM_WiFiService *)wifiService getPointOfInterest];
+    self->mWrmiRATStreaming->wifChannelBW = [(WCM_WiFiService *)wifiService getWiFiBW];
+    getChannelType = [(WCM_WiFiService *)wifiService getChannelType];
     v12 = self->mWrmiRATStreaming;
-    v12->wifChannelType = v11;
+    v12->wifChannelType = getChannelType;
     v12->wifilowDataMode = 0;
-    self->mWrmiRATStreaming->isWfiCaptive = [(WCM_WiFiService *)v3 isWiFiNetworkCaptive];
+    self->mWrmiRATStreaming->isWfiCaptive = [(WCM_WiFiService *)wifiService isWiFiNetworkCaptive];
     [v5 getTCPAvgRTT];
     self->mWrmiRATStreaming->tcpRTTAvg = (v13 * 1000.0);
     [v5 getTCPMinRTT];
@@ -486,9 +486,9 @@ LABEL_13:
       goto LABEL_28;
     }
 
-    v28 = [v6 getServingCellType];
+    getServingCellType = [v6 getServingCellType];
     v29 = self->mWrmiRATStreaming;
-    if (v28 != 9)
+    if (getServingCellType != 9)
     {
       v29->ratType = @"UNKNOWN_RADIO";
       goto LABEL_28;
@@ -521,7 +521,7 @@ LABEL_24:
   [v6 getServingCellRSRQ];
   v22 = self->mWrmiRATStreaming;
   v22->cellLteRSRQ = v21;
-  if (v7 - 16 >= 4 && v7 != 8)
+  if (getCTDataIndictor - 16 >= 4 && getCTDataIndictor != 8)
   {
     *&v22->cellNsaEnabled = 0;
     v22->cellNrRSRP = 0;
@@ -548,9 +548,9 @@ LABEL_28:
   self->mWrmiRATStreaming->cellEstimatedBW = v33;
   self->mWrmiRATStreaming->cellARFCN = [v6 getUARFCNDataSlot];
   self->mWrmiRATStreaming->cellBandInfo = [v6 getBandInfoDataSlot];
-  v34 = [v6 getBandWidthDataSlot];
+  getBandWidthDataSlot = [v6 getBandWidthDataSlot];
   v35 = self->mWrmiRATStreaming;
-  v35->cellChannelBW = v34;
+  v35->cellChannelBW = getBandWidthDataSlot;
   v35->tcpRTTAvg = self->mHarvestedLatency;
   v35->mac_DLCA_configured = dword_1002B7B84;
   v35->total_configured_bw = dword_1002B7B88;
@@ -569,7 +569,7 @@ LABEL_28:
   self->mWrmiRATStreaming->metricsUpdate = 1;
 }
 
-- (void)queryInterfaceStats:(const char *)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6 :(unint64_t *)a7
+- (void)queryInterfaceStats:(const char *)stats :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6 :(unint64_t *)a7
 {
   size = 0;
   *v23 = xmmword_100195790;
@@ -616,7 +616,7 @@ LABEL_28:
         }
 
         __dst[v17] = 0;
-        if (!strcmp(a3, __dst))
+        if (!strcmp(stats, __dst))
         {
           v11 += *(v14 + 7);
           v12 += *(v14 + 9);
@@ -671,11 +671,11 @@ LABEL_28:
 
 - (void)updateLPMState
 {
-  v2 = [(WRM_BWEvalManager *)self getLPMState];
-  if (byte_1002B7B34 != (v2 != 0))
+  getLPMState = [(WRM_BWEvalManager *)self getLPMState];
+  if (byte_1002B7B34 != (getLPMState != 0))
   {
-    byte_1002B7B34 = v2 != 0;
-    [WCM_Logging logLevel:24 message:@"LPM state:%d", v2 != 0];
+    byte_1002B7B34 = getLPMState != 0;
+    [WCM_Logging logLevel:24 message:@"LPM state:%d", getLPMState != 0];
   }
 }
 
@@ -768,14 +768,14 @@ LABEL_28:
   }
 }
 
-- (void)updateCameraState:(unsigned int)a3
+- (void)updateCameraState:(unsigned int)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002B050;
   v3[3] = &unk_10023DBA0;
   v3[4] = self;
-  v4 = a3;
+  stateCopy = state;
   dispatch_async([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")], v3);
 }
 
@@ -788,7 +788,7 @@ LABEL_28:
   mWiFi = self->mWiFi;
   if (mWiFi && [(WCM_WiFiService *)[(WCM_WiFiController *)mWiFi wifiService] isWiFiPrimaryInterface])
   {
-    v4 = "en0";
+    uTF8String = "en0";
   }
 
   else
@@ -797,16 +797,16 @@ LABEL_28:
     [WCM_Logging logLevel:24 message:@"getInitialIPStats internetInterfaceName=%@", v5];
     if (v5)
     {
-      v4 = [v5 UTF8String];
+      uTF8String = [v5 UTF8String];
     }
 
     else
     {
-      v4 = "pdp_ip0";
+      uTF8String = "pdp_ip0";
     }
   }
 
-  [(WRM_BWEvalManager *)self queryInterfaceStats:v4];
+  [(WRM_BWEvalManager *)self queryInterfaceStats:uTF8String];
   qword_1002B7D00 = v9;
   qword_1002B7D08 = v8;
   qword_1002B7D10 = v7;
@@ -814,7 +814,7 @@ LABEL_28:
   [WCM_Logging logLevel:24 message:@"sPackets: %llu, rPackets: %llu, txBytes: %llu, rxBytes: %llu", v9, v8, v7, v6];
 }
 
-- (int)getDeltaIPStats:(unint64_t *)a3 :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6
+- (int)getDeltaIPStats:(unint64_t *)stats :(unint64_t *)a4 :(unint64_t *)a5 :(unint64_t *)a6
 {
   v23 = 0;
   v24 = 0;
@@ -823,7 +823,7 @@ LABEL_28:
   v11 = [+[WRM_SCService WRM_SCServiceControllerSingleton](WRM_SCService "WRM_SCServiceControllerSingleton")];
   if (v11)
   {
-    v12 = "en0";
+    uTF8String = "en0";
   }
 
   else
@@ -832,18 +832,18 @@ LABEL_28:
     [WCM_Logging logLevel:24 message:@"getDeltaIPStats internetInterfaceName=%@", v13];
     if (v13)
     {
-      v12 = [v13 UTF8String];
+      uTF8String = [v13 UTF8String];
     }
 
     else
     {
-      v12 = "pdp_ip0";
+      uTF8String = "pdp_ip0";
     }
   }
 
-  [(WRM_BWEvalManager *)self queryInterfaceStats:v12];
+  [(WRM_BWEvalManager *)self queryInterfaceStats:uTF8String];
   v14 = v24;
-  *a3 = v24 - qword_1002B7D00;
+  *stats = v24 - qword_1002B7D00;
   v15 = v23;
   *a4 = v23 - qword_1002B7D08;
   v16 = v22;
@@ -855,19 +855,19 @@ LABEL_28:
   qword_1002B7D08 = v23;
   qword_1002B7D10 = v22;
   qword_1002B7D18 = v21;
-  v18 = *a3;
+  v18 = *stats;
   v19 = *a6;
-  [WCM_Logging logLevel:24 message:@"Delta TX: %llu, RX: %llu, RX Bytes: %llu, TX Bytes: %llu", *a3, *a4, *a6, *a5];
+  [WCM_Logging logLevel:24 message:@"Delta TX: %llu, RX: %llu, RX Bytes: %llu, TX Bytes: %llu", *stats, *a4, *a6, *a5];
   return v11;
 }
 
-- (void)startPeriodicTask:(double)a3 :(id)a4
+- (void)startPeriodicTask:(double)task :(id)a4
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002B4E0;
   v4[3] = &unk_10023DBF0;
-  *&v4[7] = a3;
+  *&v4[7] = task;
   v4[5] = self;
   v4[6] = a4;
   dispatch_async([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")], v4);
@@ -945,13 +945,13 @@ LABEL_28:
   return byte_1002B7C6A;
 }
 
-- (void)handleAppStateChange:(id)a3
+- (void)handleAppStateChange:(id)change
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002C3E0;
   v3[3] = &unk_10023DC80;
-  v3[4] = a3;
+  v3[4] = change;
   v3[5] = self;
   dispatch_async([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")], v3);
 }
@@ -963,20 +963,20 @@ LABEL_28:
   return [v2 isRecentDevice];
 }
 
-- (void)resetStreamingState:(BOOL)a3
+- (void)resetStreamingState:(BOOL)state
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002CA5C;
   block[3] = &unk_10023DCA0;
-  v4 = a3;
+  stateCopy = state;
   dispatch_async([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")], block);
 }
 
-- (void)handleInternalMessage:(id)a3
+- (void)handleInternalMessage:(id)message
 {
-  [WCM_Logging logLevel:28 message:@"%s: internalMsg: %@", "[WRM_BWEvalManager(privateFunctions) handleInternalMessage:]", a3];
-  uint64 = xpc_dictionary_get_uint64(a3, "kInternalMessageId");
+  [WCM_Logging logLevel:28 message:@"%s: internalMsg: %@", "[WRM_BWEvalManager(privateFunctions) handleInternalMessage:]", message];
+  uint64 = xpc_dictionary_get_uint64(message, "kInternalMessageId");
   if (uint64 == 1040 || uint64 == 1003)
   {
     v7 = @"handleInternalMessage:evaluateWiFiLink";
@@ -992,7 +992,7 @@ LABEL_28:
   [(WRM_BWEvalManager *)self evaluateWiFiLink];
 }
 
-- (void)handleUpdateStallMessage:(id)a3
+- (void)handleUpdateStallMessage:(id)message
 {
   [WCM_Logging logLevel:28 message:@"iRAT Video BW Mgr: handleUpdateStallMessage, Stall detected"];
   mWrmiRATStreaming = self->mWrmiRATStreaming;
@@ -1008,24 +1008,24 @@ LABEL_28:
   dispatch_async(mProximityMsgQueue, block);
 }
 
-- (void)handleGetMLPredictedThroughput:(id)a3
+- (void)handleGetMLPredictedThroughput:(id)throughput
 {
   [WCM_Logging logLevel:28 message:@"Called handleGetMLPredictedThroughput"];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(throughput, "kMessageArgs");
   int64 = xpc_dictionary_get_int64(value, "WRMMLPredictedThroughput_linkType");
   v7 = int64;
   if (int64 == -1)
   {
     if ([objc_msgSend(+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")])
     {
-      v8 = [(WRM_BWEvalManager *)self getMLPredictedWiFiBW];
-      [WCM_Logging logLevel:28 message:@"WiFiThroughputEstimation: primary interface: WiFi handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", -1, v8];
+      getMLPredictedWiFiBW = [(WRM_BWEvalManager *)self getMLPredictedWiFiBW];
+      [WCM_Logging logLevel:28 message:@"WiFiThroughputEstimation: primary interface: WiFi handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", -1, getMLPredictedWiFiBW];
     }
 
     else
     {
-      v8 = [(WRM_BWEvalManager *)self getMLPredictedCellBW];
-      [WCM_Logging logLevel:28 message:@"CellularThroughputEstimation: primary interface: Cellular handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", -1, v8];
+      getMLPredictedWiFiBW = [(WRM_BWEvalManager *)self getMLPredictedCellBW];
+      [WCM_Logging logLevel:28 message:@"CellularThroughputEstimation: primary interface: Cellular handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", -1, getMLPredictedWiFiBW];
     }
   }
 
@@ -1033,29 +1033,29 @@ LABEL_28:
   {
     if (int64 == 1)
     {
-      v8 = [(WRM_BWEvalManager *)self getMLPredictedWiFiBW];
-      [WCM_Logging logLevel:28 message:@"WiFiThroughputEstimation: handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", 1, v8];
+      getMLPredictedWiFiBW = [(WRM_BWEvalManager *)self getMLPredictedWiFiBW];
+      [WCM_Logging logLevel:28 message:@"WiFiThroughputEstimation: handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", 1, getMLPredictedWiFiBW];
     }
 
     else
     {
-      v8 = 0;
+      getMLPredictedWiFiBW = 0;
     }
   }
 
   else
   {
-    v8 = [(WRM_BWEvalManager *)self getMLPredictedCellBW];
-    [WCM_Logging logLevel:28 message:@"CellularThroughputEstimation: handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", 0, v8];
+    getMLPredictedWiFiBW = [(WRM_BWEvalManager *)self getMLPredictedCellBW];
+    [WCM_Logging logLevel:28 message:@"CellularThroughputEstimation: handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", 0, getMLPredictedWiFiBW];
   }
 
-  [WCM_Logging logLevel:28 message:@"handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", v7, v8];
-  reply = xpc_dictionary_create_reply(a3);
+  [WCM_Logging logLevel:28 message:@"handleGetMLPredictedThroughput: link: %llu, mlpredictedThroughput: %u", v7, getMLPredictedWiFiBW];
+  reply = xpc_dictionary_create_reply(throughput);
   if (reply)
   {
     v10 = reply;
-    xpc_dictionary_set_uint64(reply, "WRMMLPredictedThroughput_CoreMedia", v8);
-    remote_connection = xpc_dictionary_get_remote_connection(a3);
+    xpc_dictionary_set_uint64(reply, "WRMMLPredictedThroughput_CoreMedia", getMLPredictedWiFiBW);
+    remote_connection = xpc_dictionary_get_remote_connection(throughput);
     xpc_connection_send_message(remote_connection, v10);
     [WCM_Logging logLevel:28 message:@"Sending response to handleGetMLPredictedThroughput message %@", v10];
 
@@ -1069,35 +1069,35 @@ LABEL_28:
   }
 }
 
-- (void)handleGetStreamingMetrics:(id)a3
+- (void)handleGetStreamingMetrics:(id)metrics
 {
   [WCM_Logging logLevel:28 message:@"Called handleGetStreamingMetrics"];
   [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(metrics, "kMessageArgs");
   xpc_dictionary_get_uint64(value, "WRMGetStreamingMetrics_linkType");
   mHarvestedLatency = self->mHarvestedLatency;
   mStreamingSessionActive = self->mStreamingSessionActive;
   if (mStreamingSessionActive)
   {
-    v8 = 1;
+    isStreamingAppForeground = 1;
   }
 
   else
   {
-    v8 = [(WRM_BWEvalManager *)self isStreamingAppForeground];
+    isStreamingAppForeground = [(WRM_BWEvalManager *)self isStreamingAppForeground];
     mStreamingSessionActive = self->mStreamingSessionActive;
   }
 
   [WCM_Logging logLevel:28 message:@"handleGetStreamingMetrics: session active: %d, BW: %d", mStreamingSessionActive, self->mHarvestedBW];
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(metrics);
   if (reply)
   {
     v10 = reply;
-    xpc_dictionary_set_BOOL(reply, "isValid", v8);
+    xpc_dictionary_set_BOOL(reply, "isValid", isStreamingAppForeground);
     xpc_dictionary_set_uint64(v10, "MaxBW", self->mHarvestedBW);
     xpc_dictionary_set_uint64(v10, "StallDetected", self->mStreamingStallDetected);
     xpc_dictionary_set_uint64(v10, "AvgRTT", mHarvestedLatency);
-    remote_connection = xpc_dictionary_get_remote_connection(a3);
+    remote_connection = xpc_dictionary_get_remote_connection(metrics);
     xpc_connection_send_message(remote_connection, v10);
     [WCM_Logging logLevel:28 message:@"Sending response to handleGetStreamingMetrics message %@", v10];
 
@@ -1111,10 +1111,10 @@ LABEL_28:
   }
 }
 
-- (void)handleQSHMetrics:(id)a3
+- (void)handleQSHMetrics:(id)metrics
 {
   [WCM_Logging logLevel:28 message:@"Called handleQSHMetrics"];
-  reply = xpc_dictionary_create_reply(a3);
+  reply = xpc_dictionary_create_reply(metrics);
   if (reply)
   {
     v5 = reply;
@@ -1125,7 +1125,7 @@ LABEL_28:
     xpc_dictionary_set_uint64(v5, "lteMaxScheduledLayers", dword_1002B7B98);
     xpc_dictionary_set_uint64(v5, "nrModulation", dword_1002B7B9C);
     xpc_dictionary_set_uint64(v5, "totalCCs", dword_1002B7B84);
-    remote_connection = xpc_dictionary_get_remote_connection(a3);
+    remote_connection = xpc_dictionary_get_remote_connection(metrics);
     xpc_connection_send_message(remote_connection, v5);
     [WCM_Logging logLevel:28 message:@"Sending response to handleQSHMetrics message %@", v5];
 
@@ -1139,10 +1139,10 @@ LABEL_28:
   }
 }
 
-- (void)handleSessionNotification:(id)a3
+- (void)handleSessionNotification:(id)notification
 {
-  [WCM_Logging logLevel:28 message:@"%s: message: %@", "[WRM_BWEvalManager(privateFunctions) handleSessionNotification:]", a3];
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  [WCM_Logging logLevel:28 message:@"%s: message: %@", "[WRM_BWEvalManager(privateFunctions) handleSessionNotification:]", notification];
+  uint64 = xpc_dictionary_get_uint64(notification, "kMessageId");
   if (uint64 > 422)
   {
     if (uint64 > 2000)
@@ -1151,15 +1151,15 @@ LABEL_28:
       {
         case 2001:
 
-          [(WRM_BWEvalManager *)self handleCellularDataMetricsRequest:a3];
+          [(WRM_BWEvalManager *)self handleCellularDataMetricsRequest:notification];
           return;
         case 2002:
 
-          [(WRM_BWEvalManager *)self handleQSHMetrics:a3];
+          [(WRM_BWEvalManager *)self handleQSHMetrics:notification];
           return;
         case 2100:
 
-          [(WRM_BWEvalManager *)self handleWiFiMetricsRequest:a3];
+          [(WRM_BWEvalManager *)self handleWiFiMetricsRequest:notification];
           return;
       }
     }
@@ -1170,16 +1170,16 @@ LABEL_28:
       {
         case 423:
 
-          [(WRM_BWEvalManager *)self handleGetMLPredictedThroughput:a3];
+          [(WRM_BWEvalManager *)self handleGetMLPredictedThroughput:notification];
           return;
         case 1000:
-          value = xpc_dictionary_get_value(a3, "kMessageArgs");
+          value = xpc_dictionary_get_value(notification, "kMessageArgs");
 
           [(WRM_BWEvalManager *)self handleInternalMessage:value];
           return;
         case 2000:
 
-          [(WRM_BWEvalManager *)self handleNrPhyMetricsRequest:a3];
+          [(WRM_BWEvalManager *)self handleNrPhyMetricsRequest:notification];
           return;
       }
     }
@@ -1196,15 +1196,15 @@ LABEL_52:
     {
       case 412:
 
-        [(WRM_BWEvalManager *)self handleUpdateStallMessage:a3];
+        [(WRM_BWEvalManager *)self handleUpdateStallMessage:notification];
         return;
       case 417:
 
-        [(WRM_BWEvalManager *)self handleGetStreamingMetrics:a3];
+        [(WRM_BWEvalManager *)self handleGetStreamingMetrics:notification];
         return;
       case 418:
 
-        [(WRM_BWEvalManager *)self handleEnhancedBufferingNotificatione:a3];
+        [(WRM_BWEvalManager *)self handleEnhancedBufferingNotificatione:notification];
         return;
     }
 
@@ -1215,24 +1215,24 @@ LABEL_52:
   {
     case 103:
 
-      [(WRM_BWEvalManager *)self handleWiFiStateChaneEvents:a3];
+      [(WRM_BWEvalManager *)self handleWiFiStateChaneEvents:notification];
       break;
     case 404:
 
-      [(WRM_BWEvalManager *)self handleLinkPrefSubscribe:a3];
+      [(WRM_BWEvalManager *)self handleLinkPrefSubscribe:notification];
       break;
     case 405:
 
-      [(WRM_BWEvalManager *)self handleSubscribeStatusUpdate:a3];
+      [(WRM_BWEvalManager *)self handleSubscribeStatusUpdate:notification];
       return;
     default:
       goto LABEL_52;
   }
 }
 
-- (void)handleWiFiMetricsRequest:(id)a3
+- (void)handleWiFiMetricsRequest:(id)request
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  uint64 = xpc_dictionary_get_uint64(request, "kClientType");
   if ((uint64 - 1) >= 0x15)
   {
     v5 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
@@ -1257,9 +1257,9 @@ LABEL_52:
   dispatch_async(mQueue, block);
 }
 
-- (void)handleCellularDataMetricsRequest:(id)a3
+- (void)handleCellularDataMetricsRequest:(id)request
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  uint64 = xpc_dictionary_get_uint64(request, "kClientType");
   if ((uint64 - 1) >= 0x15)
   {
     v5 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
@@ -1284,9 +1284,9 @@ LABEL_52:
   dispatch_async(mQueue, block);
 }
 
-- (void)handleNrPhyMetricsRequest:(id)a3
+- (void)handleNrPhyMetricsRequest:(id)request
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  uint64 = xpc_dictionary_get_uint64(request, "kClientType");
   if ((uint64 - 1) >= 0x15)
   {
     v5 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
@@ -1311,9 +1311,9 @@ LABEL_52:
   dispatch_async(mQueue, block);
 }
 
-- (void)handleEnhancedBufferingNotificatione:(id)a3
+- (void)handleEnhancedBufferingNotificatione:(id)notificatione
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(notificatione, "kMessageArgs");
   v4 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList");
   count = xpc_array_get_count(v4);
   if (count)
@@ -1353,15 +1353,15 @@ LABEL_52:
   [(WRM_BWEvalManager *)self notifyEHBState:v8];
 }
 
-- (void)handleLinkPrefSubscribe:(id)a3
+- (void)handleLinkPrefSubscribe:(id)subscribe
 {
   [WCM_Logging logLevel:28 message:@"BW Link Eval Manager: handleLinkPrefSubscribe."];
   [(NSDate *)self->mCMStatusUpdateEvaluationTimer timeIntervalSinceNow];
   self->mTimeSinceCMStatusEvaluationStarted = v5;
   dword_1002B7C90 = 0;
   *&self->mDeviation = 0;
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  value = xpc_dictionary_get_value(subscribe, "kMessageArgs");
+  uint64 = xpc_dictionary_get_uint64(subscribe, "kClientType");
   v8 = [(WRM_BWEvalManager *)self getiRATClientFromList:uint64];
   if ((uint64 - 1) >= 0x15)
   {
@@ -1383,7 +1383,7 @@ LABEL_52:
   if (count)
   {
     v12 = count;
-    v19 = self;
+    selfCopy2 = self;
     [v8 removeAllMobilityContextsFromList];
     [WCM_Logging logLevel:24 message:@"Removing all contexts from iRAT client."];
     for (i = 0; i != v12; ++i)
@@ -1398,13 +1398,13 @@ LABEL_52:
     }
 
 LABEL_11:
-    [(WRM_BWEvalManager *)v19 evaluateWiFiLink];
-    if (v19->mWiFi && (objc_opt_respondsToSelector() & 1) != 0)
+    [(WRM_BWEvalManager *)selfCopy2 evaluateWiFiLink];
+    if (selfCopy2->mWiFi && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      mWiFi = v19->mWiFi;
-      v18 = [(WRM_BWEvalManager *)v19 needWiFiLQM];
+      mWiFi = selfCopy2->mWiFi;
+      needWiFiLQM = [(WRM_BWEvalManager *)selfCopy2 needWiFiLQM];
 
-      [(WCM_WiFiController *)mWiFi toggleWiFiLQMIfNeeded:v18];
+      [(WCM_WiFiController *)mWiFi toggleWiFiLQMIfNeeded:needWiFiLQM];
     }
 
     return;
@@ -1412,7 +1412,7 @@ LABEL_11:
 
   if ([(WRM_BWEvalManager *)self doesIRATClientSubscriptionContextExist])
   {
-    v19 = self;
+    selfCopy2 = self;
     [v8 removeAllMobilityContextsFromList];
     [WCM_Logging logLevel:24 message:@"Removing all contexts from iRAT client."];
     goto LABEL_11;
@@ -1421,9 +1421,9 @@ LABEL_11:
   [WCM_Logging logLevel:28 message:@"Ignoring un-subscribe message from a client for which subscription does not exist"];
 }
 
-- (void)processSessionStatusUpdate:(id)a3
+- (void)processSessionStatusUpdate:(id)update
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kWRMVideoStreamingStarted");
+  uint64 = xpc_dictionary_get_uint64(update, "kWRMVideoStreamingStarted");
   mStreamingConnectionReferenceCount = self->mStreamingConnectionReferenceCount;
   if (uint64)
   {
@@ -1485,16 +1485,16 @@ LABEL_11:
     [(WRM_BWEvalManager *)self notifyStreamingState:2];
   }
 
-  self->mStreamingConnectionExpectedTimeHorizon = xpc_dictionary_get_uint64(a3, "kWRMExpectedTimeHorizon");
-  self->mStreamingStallDetected = xpc_dictionary_get_uint64(a3, "kWRMVideoStreamingNumStallDetected");
-  self->mStreamingFatalErrorDetected = xpc_dictionary_get_uint64(a3, "kWRMVideoStreamingFatalErrorDetected") != 0;
-  self->mStreamingTotalStallDuration = xpc_dictionary_get_uint64(a3, "kWRMVideoStreamingTotalStallTime");
+  self->mStreamingConnectionExpectedTimeHorizon = xpc_dictionary_get_uint64(update, "kWRMExpectedTimeHorizon");
+  self->mStreamingStallDetected = xpc_dictionary_get_uint64(update, "kWRMVideoStreamingNumStallDetected");
+  self->mStreamingFatalErrorDetected = xpc_dictionary_get_uint64(update, "kWRMVideoStreamingFatalErrorDetected") != 0;
+  self->mStreamingTotalStallDuration = xpc_dictionary_get_uint64(update, "kWRMVideoStreamingTotalStallTime");
   [WCM_Logging logLevel:28 message:@"processSessionStatusUpdate: reference count: %lld", self->mStreamingConnectionReferenceCount];
 
   [(WRM_BWEvalManager *)self notifyCommCenterManager];
 }
 
-- (void)evaluateSDMBWChangeNotification:(unint64_t)a3
+- (void)evaluateSDMBWChangeNotification:(unint64_t)notification
 {
   if ([(WCM_WiFiService *)[(WCM_WiFiController *)self->mWiFi wifiService] isWiFiPrimaryInterface])
   {
@@ -1512,7 +1512,7 @@ LABEL_11:
     if (mMovAVGAchievedBW > 6500.0)
     {
 LABEL_11:
-      [WCM_Logging logLevel:28 message:@"%s: SDM actul: %d, WghtAVG BW: %f", "[WRM_BWEvalManager(privateFunctions) evaluateSDMBWChangeNotification:]", a3, mMovAVGAchievedBW];
+      [WCM_Logging logLevel:28 message:@"%s: SDM actul: %d, WghtAVG BW: %f", "[WRM_BWEvalManager(privateFunctions) evaluateSDMBWChangeNotification:]", notification, mMovAVGAchievedBW];
       return;
     }
 
@@ -1525,13 +1525,13 @@ LABEL_11:
   }
 
   dword_1002B7B80 = v6;
-  [WCM_Logging logLevel:28 message:@"%s: SDM recommendation changed, actul: %d, WghtAVG BW: %f", "[WRM_BWEvalManager(privateFunctions) evaluateSDMBWChangeNotification:]", a3, mMovAVGAchievedBW];
+  [WCM_Logging logLevel:28 message:@"%s: SDM recommendation changed, actul: %d, WghtAVG BW: %f", "[WRM_BWEvalManager(privateFunctions) evaluateSDMBWChangeNotification:]", notification, mMovAVGAchievedBW];
   v7 = self->mMovAVGAchievedBW;
 
   [(WRM_BWEvalManager *)self notifyStreamingState:0];
 }
 
-- (void)evaluateCellularBandwidth:(id *)a3
+- (void)evaluateCellularBandwidth:(id *)bandwidth
 {
   mAchievedCellBW = self->mAchievedCellBW;
   if (mAchievedCellBW > self->mAchievedMaxCellBW)
@@ -1540,23 +1540,23 @@ LABEL_11:
     [WCM_Logging logLevel:28 message:@"evaluateCellularBandwidth mAchievedMaxCellBW=%llu", mAchievedCellBW];
   }
 
-  a3->var4 = 0;
-  *&a3->var0 = 0u;
-  *&a3->var2 = 0u;
+  bandwidth->var4 = 0;
+  *&bandwidth->var0 = 0u;
+  *&bandwidth->var2 = 0u;
 }
 
-- (void)calcAdjustedBandwith:(id *)a3 :(float)a4
+- (void)calcAdjustedBandwith:(id *)bandwith :(float)a4
 {
-  var0 = a3->var0;
-  [WCM_Logging logLevel:28 message:@"calcAdjustedBandwith:minEvalBW: %d, CM reported BW:%d, Correction Factor:%.2f, maxBW: %d", a3->var0, self->mAchievedMaxWiFiBW, a4, self->mAchievedMaxWiFiBW];
+  var0 = bandwith->var0;
+  [WCM_Logging logLevel:28 message:@"calcAdjustedBandwith:minEvalBW: %d, CM reported BW:%d, Correction Factor:%.2f, maxBW: %d", bandwith->var0, self->mAchievedMaxWiFiBW, a4, self->mAchievedMaxWiFiBW];
   mScallingFactor = self->mScallingFactor;
-  v8 = a3->var0;
+  v8 = bandwith->var0;
   if (mScallingFactor > 1.0)
   {
-    v9 = a3->var1 / mScallingFactor;
+    v9 = bandwith->var1 / mScallingFactor;
     if (v8 > v9)
     {
-      a3->var0 = v9;
+      bandwith->var0 = v9;
       v8 = v9;
     }
   }
@@ -1566,46 +1566,46 @@ LABEL_11:
   {
     [WCM_Logging logLevel:28 message:@"Link is backhaul limited, use historical bandwitdh"];
     v11 = self->mAchievedMovAvgWiFiBW;
-    a3->var0 = v11;
+    bandwith->var0 = v11;
   }
 
   else
   {
     [WCM_Logging logLevel:28 message:@"Link is not backhaul limited, use WiFi estimated bandwitdh"];
-    v11 = a3->var0;
+    v11 = bandwith->var0;
   }
 
   v12 = (v11 - self->mEvalMovAvgWiFiBW + 8 * self->mEvalMovAvgWiFiBW) >> 3;
   self->mEvalMovAvgWiFiBW = v12;
-  a3->var2 = v12;
+  bandwith->var2 = v12;
 }
 
-- (void)evaluateWiFiBandwidth:(id *)a3
+- (void)evaluateWiFiBandwidth:(id *)bandwidth
 {
   v5 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
   if (v5)
   {
-    v6 = [v5 wifiService];
-    [v6 getMinMaxAvailableRxBandwidth:a3];
+    wifiService = [v5 wifiService];
+    [wifiService getMinMaxAvailableRxBandwidth:bandwidth];
     mAchievedWiFiBW = self->mAchievedWiFiBW;
     if (mAchievedWiFiBW > self->mAchievedMaxWiFiBW)
     {
       self->mAchievedMaxWiFiBW = mAchievedWiFiBW;
-      self->mScallingFactor = a3->var1 / mAchievedWiFiBW;
+      self->mScallingFactor = bandwidth->var1 / mAchievedWiFiBW;
       [WCM_Logging logLevel:28 message:@"evaluateWiFiBandwidth: mAchievedMaxWiFiBW=%llu", mAchievedWiFiBW];
     }
 
-    [v6 getMovingAvgOfRxRetryPercent];
+    [wifiService getMovingAvgOfRxRetryPercent];
     v9 = 1.0 - v8;
     *&v9 = v9;
 
-    [(WRM_BWEvalManager *)self calcAdjustedBandwith:a3];
+    [(WRM_BWEvalManager *)self calcAdjustedBandwith:bandwidth];
   }
 }
 
-- (void)handleWiFiStateChaneEvents:(id)a3
+- (void)handleWiFiStateChaneEvents:(id)events
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(events, "kMessageArgs");
   [WCM_Logging logLevel:28 message:@"WRM IDS Link Eval Manager received WiFi link state change event"];
   self->mAchievedMaxWiFiBW = 0;
   self->mAchievedBW = 0;
@@ -1629,10 +1629,10 @@ LABEL_11:
       mWiFi = self->mWiFi;
       if (mWiFi)
       {
-        v8 = [(WCM_WiFiController *)mWiFi wifiService];
-        [(WCM_WiFiService *)v8 setRSSI:int64];
-        [(WCM_WiFiService *)v8 setSNR:v6];
-        [(WCM_WiFiService *)v8 resetWiFiBWEstimationState];
+        wifiService = [(WCM_WiFiController *)mWiFi wifiService];
+        [(WCM_WiFiService *)wifiService setRSSI:int64];
+        [(WCM_WiFiService *)wifiService setSNR:v6];
+        [(WCM_WiFiService *)wifiService resetWiFiBWEstimationState];
       }
     }
 
@@ -1646,38 +1646,38 @@ LABEL_11:
   }
 }
 
-- (void)addiRatClient:(id)a3
+- (void)addiRatClient:(id)client
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
-  [(NSMutableArray *)self->miRATClientContexts addObject:a3];
+  [(NSMutableArray *)self->miRATClientContexts addObject:client];
   [(WRM_BWEvalManager *)self existingContexts];
 
   objc_sync_exit(miRATClientContexts);
 }
 
-- (void)removeiRatClient:(id)a3
+- (void)removeiRatClient:(id)client
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
   [(WRM_BWEvalManager *)self existingContexts];
-  [(NSMutableArray *)self->miRATClientContexts removeObject:a3];
+  [(NSMutableArray *)self->miRATClientContexts removeObject:client];
   [(WRM_BWEvalManager *)self existingContexts];
 
   objc_sync_exit(miRATClientContexts);
 }
 
-- (void)handleControllerAvailability:(unint64_t)a3
+- (void)handleControllerAvailability:(unint64_t)availability
 {
   if ([(WRM_BWEvalManager *)self enableiRATManager])
   {
-    if (a3 == 1)
+    if (availability == 1)
     {
 
       [(WRM_BWEvalManager *)self handleWiFiRegistered];
     }
 
-    else if (a3 == 20 || a3 == 13)
+    else if (availability == 20 || availability == 13)
     {
 
       [(WRM_BWEvalManager *)self handleIMGVideoClientRegisterd];
@@ -1696,11 +1696,11 @@ LABEL_11:
   }
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 WRM_BWEvalManagerSingleton];
+  wRM_BWEvalManagerSingleton = [self WRM_BWEvalManagerSingleton];
 
-  return v3;
+  return wRM_BWEvalManagerSingleton;
 }
 
 - (WRM_BWEvalManager)init
@@ -1729,9 +1729,9 @@ LABEL_11:
       mMetrics = v2->mMetrics;
     }
 
-    v4 = [(WRM_MetricsService *)mMetrics getWRMStreaming];
-    v2->mWrmiRATStreaming = v4;
-    v4->coldStartTypeCellular = 0;
+    getWRMStreaming = [(WRM_MetricsService *)mMetrics getWRMStreaming];
+    v2->mWrmiRATStreaming = getWRMStreaming;
+    getWRMStreaming->coldStartTypeCellular = 0;
     v2->mStreamingSessionActive = 0;
     v2->mEvalMovAvgWiFiBW = 0;
     *&v2->mAchievedBW = 0u;
@@ -1806,7 +1806,7 @@ LABEL_11:
   [(WRM_BWEvalManager *)&v9 dealloc];
 }
 
-- (void)updateControllerSession:(id)a3 ofId:(unint64_t)a4
+- (void)updateControllerSession:(id)session ofId:(unint64_t)id
 {
   mQueue = self->mQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1814,12 +1814,12 @@ LABEL_11:
   block[2] = sub_10006B128;
   block[3] = &unk_10023DFB8;
   block[5] = self;
-  block[6] = a4;
-  block[4] = a3;
+  block[6] = id;
+  block[4] = session;
   dispatch_async(mQueue, block);
 }
 
-- (void)updateControllerState:(id)a3
+- (void)updateControllerState:(id)state
 {
   mQueue = self->mQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -1827,11 +1827,11 @@ LABEL_11:
   v4[2] = sub_10006B414;
   v4[3] = &unk_10023DC80;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(mQueue, v4);
 }
 
-- (id)getiRATClientFromList:(int)a3
+- (id)getiRATClientFromList:(int)list
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
@@ -1854,7 +1854,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
-      if ([v10 getMyClientType] == a3)
+      if ([v10 getMyClientType] == list)
       {
         break;
       }
@@ -1886,29 +1886,29 @@ LABEL_9:
 {
   v11 = [[CWFInterface alloc] initWithServiceType:1];
   [v11 activate];
-  v3 = [v11 channel];
-  v4 = [v11 guardInterval];
-  v5 = [v11 numberOfSpatialStreams];
-  v6 = [v11 PHYMode];
-  v7 = [v11 MCSIndex];
-  v8 = [v11 bluetoothCoexistenceMode];
+  channel = [v11 channel];
+  guardInterval = [v11 guardInterval];
+  numberOfSpatialStreams = [v11 numberOfSpatialStreams];
+  pHYMode = [v11 PHYMode];
+  mCSIndex = [v11 MCSIndex];
+  bluetoothCoexistenceMode = [v11 bluetoothCoexistenceMode];
   mWrmiRATStreaming = self->mWrmiRATStreaming;
-  mWrmiRATStreaming->wifinumberOfSpatialStreams = v5;
-  v10 = v8;
-  mWrmiRATStreaming->wifiguardinterval = v4;
-  mWrmiRATStreaming->wifimcsindex = v7;
-  mWrmiRATStreaming->wifiCapability = v6;
-  mWrmiRATStreaming->btWiFiCoexState = v8;
-  self->mWrmiRATStreaming->wifichannel = [v3 channel];
-  [WCM_Logging logLevel:28 message:@"MCS: %lu, PMode: %d, GI: %lu, NSS: %lu, CCH: %@, COEX mode: %lu", v7, v6, v4, v5, v3, v10];
+  mWrmiRATStreaming->wifinumberOfSpatialStreams = numberOfSpatialStreams;
+  v10 = bluetoothCoexistenceMode;
+  mWrmiRATStreaming->wifiguardinterval = guardInterval;
+  mWrmiRATStreaming->wifimcsindex = mCSIndex;
+  mWrmiRATStreaming->wifiCapability = pHYMode;
+  mWrmiRATStreaming->btWiFiCoexState = bluetoothCoexistenceMode;
+  self->mWrmiRATStreaming->wifichannel = [channel channel];
+  [WCM_Logging logLevel:28 message:@"MCS: %lu, PMode: %d, GI: %lu, NSS: %lu, CCH: %@, COEX mode: %lu", mCSIndex, pHYMode, guardInterval, numberOfSpatialStreams, channel, v10];
   [v11 invalidate];
 }
 
-- (void)feedAWDStreamingStats:(id *)a3
+- (void)feedAWDStreamingStats:(id *)stats
 {
   [(WRM_BWEvalManager *)self feedAWDRadioStats];
   mWrmiRATStreaming = self->mWrmiRATStreaming;
-  *&mWrmiRATStreaming->estimatedHighBandwidth = vrev64q_s32(vuzp1q_s32(*&a3->var0, *&a3->var2));
+  *&mWrmiRATStreaming->estimatedHighBandwidth = vrev64q_s32(vuzp1q_s32(*&stats->var0, *&stats->var2));
   if (self->mStreamingFatalErrorDetected)
   {
     mWrmiRATStreaming->event = 3;
@@ -1967,7 +1967,7 @@ LABEL_9:
   return v3;
 }
 
-- (unsigned)getPredictedWiFiBandwidth:(double *)a3
+- (unsigned)getPredictedWiFiBandwidth:(double *)bandwidth
 {
   mAchievedMaxWiFiBW = self->mAchievedMaxWiFiBW;
   if (mAchievedMaxWiFiBW)
@@ -1980,12 +1980,12 @@ LABEL_9:
     v4 = 44.0;
   }
 
-  v5 = [(WRM_BWEvalManager *)self getPredictedWiFiBW:a3 backhaul:v4];
+  v5 = [(WRM_BWEvalManager *)self getPredictedWiFiBW:bandwidth backhaul:v4];
   [WCM_Logging logLevel:28 message:@"WiFiThroughputPrediction: getPredictedWiFiBandwidth: %d", v5];
   return v5;
 }
 
-- (unsigned)getPredictedWiFiBW:(double *)a3 backhaul:(double)a4
+- (unsigned)getPredictedWiFiBW:(double *)w backhaul:(double)backhaul
 {
   v35 = 0;
   if (!self->iratWiFiModel)
@@ -1996,8 +1996,8 @@ LABEL_9:
   mWiFi = self->mWiFi;
   if (mWiFi)
   {
-    v8 = [(WCM_WiFiController *)mWiFi wifiService];
-    if (![(WCM_WiFiService *)v8 isWiFiPrimaryInterface])
+    wifiService = [(WCM_WiFiController *)mWiFi wifiService];
+    if (![(WCM_WiFiService *)wifiService isWiFiPrimaryInterface])
     {
       [WCM_Logging logLevel:28 message:@"WiFi is not primary link"];
 LABEL_12:
@@ -2005,60 +2005,60 @@ LABEL_12:
       return mWiFi;
     }
 
-    v33 = a3;
+    wCopy = w;
     [objc_msgSend(+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
     v10 = v9 * 1000.0;
     v11 = [[CWFInterface alloc] initWithServiceType:1];
     [v11 activate];
-    v12 = [v11 guardInterval];
-    v13 = [v11 numberOfSpatialStreams];
+    guardInterval = [v11 guardInterval];
+    numberOfSpatialStreams = [v11 numberOfSpatialStreams];
     [v11 invalidate];
 
-    v14 = [(WCM_WiFiService *)v8 getChannelType];
-    v15 = [(WCM_WiFiService *)v8 isWiFiNetworkCaptive];
-    v34 = [(WCM_WiFiService *)v8 getCCA];
-    v16 = [(WCM_WiFiService *)v8 getWghtAverageRXPhyRate];
-    v17 = [(WCM_WiFiService *)v8 getWghtAverageMetricsValid];
-    if (v16 && v17)
+    getChannelType = [(WCM_WiFiService *)wifiService getChannelType];
+    isWiFiNetworkCaptive = [(WCM_WiFiService *)wifiService isWiFiNetworkCaptive];
+    getCCA = [(WCM_WiFiService *)wifiService getCCA];
+    getWghtAverageRXPhyRate = [(WCM_WiFiService *)wifiService getWghtAverageRXPhyRate];
+    getWghtAverageMetricsValid = [(WCM_WiFiService *)wifiService getWghtAverageMetricsValid];
+    if (getWghtAverageRXPhyRate && getWghtAverageMetricsValid)
     {
-      v18 = [(WCM_WiFiService *)v8 getWghtAverageRSSI];
-      v19 = [(WCM_WiFiService *)v8 getWghtAverageSNR];
-      v20 = [(WCM_WiFiService *)v8 getWghtAverageRXPhyRate]/ 1000.0;
+      getWghtAverageRSSI = [(WCM_WiFiService *)wifiService getWghtAverageRSSI];
+      getWghtAverageSNR = [(WCM_WiFiService *)wifiService getWghtAverageSNR];
+      v20 = [(WCM_WiFiService *)wifiService getWghtAverageRXPhyRate]/ 1000.0;
       v21 = @"wght_avg_valid, using weighted average";
     }
 
     else
     {
-      v18 = [(WCM_WiFiService *)v8 getRSSI];
-      v19 = [(WCM_WiFiService *)v8 getSNR];
-      [(WCM_WiFiService *)v8 getRxPhyRate];
+      getWghtAverageRSSI = [(WCM_WiFiService *)wifiService getRSSI];
+      getWghtAverageSNR = [(WCM_WiFiService *)wifiService getSNR];
+      [(WCM_WiFiService *)wifiService getRxPhyRate];
       v20 = v22;
       v21 = @"wght_avg not valid, using inst avg";
     }
 
     [WCM_Logging logLevel:28 message:v21];
     [WCM_Logging logLevel:28 message:@"Start ML recommendation for BW estimation"];
-    [WCM_Logging logLevel:28 message:@"WiFiThroughputPrediction input features: avg_rx_phy_rate: %f, avg_rssi: %d, avg_snr: %f, backhaul: %f, tcpRTTAvg: %f, wifChannelType: %f, wifiguardinterval: %lu, isWfiCaptive: %d, wifinumberOfSpatialStreams: %lu", *&v20, v18, v19, *&a4, *&v10, v14, v12, v15, v13];
+    [WCM_Logging logLevel:28 message:@"WiFiThroughputPrediction input features: avg_rx_phy_rate: %f, avg_rssi: %d, avg_snr: %f, backhaul: %f, tcpRTTAvg: %f, wifChannelType: %f, wifiguardinterval: %lu, isWfiCaptive: %d, wifinumberOfSpatialStreams: %lu", *&v20, getWghtAverageRSSI, getWghtAverageSNR, *&backhaul, *&v10, getChannelType, guardInterval, isWiFiNetworkCaptive, numberOfSpatialStreams];
     v36[0] = @"cca";
-    v37[0] = [NSNumber numberWithInt:v34];
+    v37[0] = [NSNumber numberWithInt:getCCA];
     v36[1] = @"weighted_average_phyrate_rx";
     v37[1] = [NSNumber numberWithDouble:v20];
     v36[2] = @"weighted_average_rssi";
-    v37[2] = [NSNumber numberWithInt:v18];
+    v37[2] = [NSNumber numberWithInt:getWghtAverageRSSI];
     v36[3] = @"weighted_average_snr";
-    v37[3] = [NSNumber numberWithInt:v19];
+    v37[3] = [NSNumber numberWithInt:getWghtAverageSNR];
     v36[4] = @"maxOfActualLowBandwidth_d";
-    v37[4] = [NSNumber numberWithDouble:a4];
+    v37[4] = [NSNumber numberWithDouble:backhaul];
     v36[5] = @"tcpRTTAvg";
     v37[5] = [NSNumber numberWithDouble:v10];
     v36[6] = @"wifChannelType";
-    v37[6] = [NSNumber numberWithInt:v14];
+    v37[6] = [NSNumber numberWithInt:getChannelType];
     v36[7] = @"wifiguardinterval";
-    v37[7] = [NSNumber numberWithUnsignedInteger:v12];
+    v37[7] = [NSNumber numberWithUnsignedInteger:guardInterval];
     v36[8] = @"isWfiCaptive";
-    v37[8] = [NSNumber numberWithBool:v15];
+    v37[8] = [NSNumber numberWithBool:isWiFiNetworkCaptive];
     v36[9] = @"wifinumberOfSpatialStreams";
-    v37[9] = [NSNumber numberWithUnsignedInteger:v13];
+    v37[9] = [NSNumber numberWithUnsignedInteger:numberOfSpatialStreams];
     v23 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:10];
     v24 = [objc_alloc(sub_10006BE8C()) initWithDictionary:v23 error:&v35];
     [WCM_Logging logLevel:28 message:@"Calling predictionFromFeatures, input:%@", [(NSDictionary *)v23 description]];
@@ -2066,10 +2066,10 @@ LABEL_12:
     if (v35)
     {
       [WCM_Logging logLevel:28 message:@"Ran into an error while predicting"];
-      v32 = [v35 localizedDescription];
+      localizedDescription = [v35 localizedDescription];
       v26 = @"Failed prediction: %@";
 LABEL_11:
-      [WCM_Logging logLevel:28 message:v26, v32];
+      [WCM_Logging logLevel:28 message:v26, localizedDescription];
 
       goto LABEL_12;
     }
@@ -2086,9 +2086,9 @@ LABEL_11:
     *&mWrmiRATStreaming->wifiModelConfidenceLevel = 0x200000001;
     mWrmiRATStreaming->mlPredictedWiFiBW = v27;
     [WCM_Logging logLevel:28 message:@"Complete ML recommendation for BW Estimation, Model Output: %f, Predicted Value: %f ", *&v27, v27];
-    [(WCM_WiFiService *)v8 resetWghtAverageMetricsFlag];
+    [(WCM_WiFiService *)wifiService resetWghtAverageMetricsFlag];
     LODWORD(v30) = self->mWrmiRATStreaming->mlPredictedWiFiBW;
-    *v33 = v30;
+    *wCopy = v30;
 
     [WCM_Logging logLevel:28 message:@"WiFiThroughputPrediction: getPredictedWiFiBW ML Model: %f", *&v28];
     LODWORD(mWiFi) = (v28 * 1000.0);
@@ -2105,19 +2105,19 @@ LABEL_11:
   return v3;
 }
 
-- (unsigned)getPredictedCellBW:(double *)a3 backhaul:(double)a4
+- (unsigned)getPredictedCellBW:(double *)w backhaul:(double)backhaul
 {
   if ([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")])
   {
     v7 = +[WRM_EnhancedCTService wrm_EnhancedCTServiceSingleton];
     [v7 setActiveSlot:{objc_msgSend(v7, "getUserDataPreferredSlot")}];
-    v8 = [v7 getCTDataIndictor];
+    getCTDataIndictor = [v7 getCTDataIndictor];
   }
 
   else
   {
     v7 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-    v8 = 0;
+    getCTDataIndictor = 0;
   }
 
   v9 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
@@ -2148,7 +2148,7 @@ LABEL_11:
   v18 = v14;
   if ([v7 getServingCellType] == 1)
   {
-    v64 = a4;
+    backhaulCopy = backhaul;
     [v7 getServingCellRSRP];
     v20 = v19;
     [v7 getServingCellSNR];
@@ -2158,7 +2158,7 @@ LABEL_11:
     v68 = v24;
     v69 = v20;
     v67 = v15;
-    if (v8 - 16 < 4 || v8 == 8)
+    if (getCTDataIndictor - 16 < 4 || getCTDataIndictor == 8)
     {
       v71 = v18;
       v72 = v17;
@@ -2185,7 +2185,7 @@ LABEL_11:
       v72 = 0.0;
     }
 
-    a4 = v64;
+    backhaul = backhaulCopy;
   }
 
   else if ([v7 getServingCellType] == 2)
@@ -2272,16 +2272,16 @@ LABEL_11:
     v39 = v35;
   }
 
-  v40 = [v11 getCellularDataLQM];
+  getCellularDataLQM = [v11 getCellularDataLQM];
   [v7 getMeasureBWDataSlot];
-  v41 = [v7 getBandWidthDataSlot];
+  getBandWidthDataSlot = [v7 getBandWidthDataSlot];
   [v7 getMeasureBWDataSlot];
   v42 = v23;
   v63 = v23;
   v44 = v43 / 1000.0;
   v59 = v43 / 1000.0;
-  v45 = a4 / 1000.0;
-  if (a4 == 0.0)
+  v45 = backhaul / 1000.0;
+  if (backhaul == 0.0)
   {
     v45 = 56.0;
   }
@@ -2421,7 +2421,7 @@ LABEL_11:
     v49 = 0.0;
   }
 
-  [WCM_Logging logLevel:28 message:@"CellularThroughputPrediction CellRSRP: %f, CellSnr: %f, lqmScorecellular: %f, ratType: %f, isFR1: %d, Backhaul: %f, pActualLowBandwidth: %f, cellNrRSRP: %f, cellNrRSRQ: %f, cellNrSNR: %f, cellLteRSRQ: %f, cellEstimatedBW: %f, cellChannelBW: %f, cellNsaEnabled: %f, cellBandInfo: %f, NRType: %f", *&v69, *&v22, *&v40, *&v42, v28, *&v49, *&v48, *&v70, *&v66, *&v74, *&v68, *&v44, *&v41, *&v38, *&v47, *&v39];
+  [WCM_Logging logLevel:28 message:@"CellularThroughputPrediction CellRSRP: %f, CellSnr: %f, lqmScorecellular: %f, ratType: %f, isFR1: %d, Backhaul: %f, pActualLowBandwidth: %f, cellNrRSRP: %f, cellNrRSRQ: %f, cellNrSNR: %f, cellLteRSRQ: %f, cellEstimatedBW: %f, cellChannelBW: %f, cellNsaEnabled: %f, cellBandInfo: %f, NRType: %f", *&v69, *&v22, *&getCellularDataLQM, *&v42, v28, *&v49, *&v48, *&v70, *&v66, *&v74, *&v68, *&v44, *&getBandWidthDataSlot, *&v38, *&v47, *&v39];
   [WCM_Logging logLevel:28 message:@"CellularThroughputPrediction QSH Metrics num_ccs: %f, total_configured_bw: %f, total_configured_mimo_layers: %f, lte_max_scheduled_mimo_layers_in_a_cell: %f, nr_configured_bw: %f, nr_total_scheduled_mimo_layers: %f, nr_max_dl_modulation: %f", *&v77, v76, v75, *&v67, *&v73, *&v72, *&v71];
   v79[0] = @"cellSinr";
   v80[0] = [NSNumber numberWithDouble:v22];
@@ -2434,9 +2434,9 @@ LABEL_11:
   v79[4] = @"maxOfActualLowBandwidth_d";
   v80[4] = [NSNumber numberWithDouble:v49];
   v79[5] = @"lqmScorecellular";
-  v80[5] = [NSNumber numberWithDouble:v40];
+  v80[5] = [NSNumber numberWithDouble:getCellularDataLQM];
   v79[6] = @"cellChannelBW";
-  v80[6] = [NSNumber numberWithDouble:v41];
+  v80[6] = [NSNumber numberWithDouble:getBandWidthDataSlot];
   v79[7] = @"cellNrSNR";
   v80[7] = [NSNumber numberWithDouble:v74];
   v79[8] = @"cellRsrp";
@@ -2460,10 +2460,10 @@ LABEL_11:
   if (v78)
   {
     [WCM_Logging logLevel:28 message:@"CellularThroughputPrediction: Ran into an error while predicting"];
-    v58 = [v78 localizedDescription];
+    localizedDescription = [v78 localizedDescription];
     v53 = @"CellularThroughputPrediction: Failed prediction: %@";
 LABEL_32:
-    [WCM_Logging logLevel:28 message:v53, v58];
+    [WCM_Logging logLevel:28 message:v53, localizedDescription];
 
     return 0;
   }
@@ -2479,46 +2479,46 @@ LABEL_32:
   self->mWrmiRATStreaming->mlPredictedCellBW = v55;
   [WCM_Logging logLevel:28 message:@"CellularThroughputPrediction: Completete ML recommendation for BW Estimation, Model Output: %f, Predicted Value: %f", *&v55, v55];
   LODWORD(v57) = self->mWrmiRATStreaming->mlPredictedCellBW;
-  *a3 = v57;
+  *w = v57;
 
   [WCM_Logging logLevel:28 message:@"CellularThroughputPrediction: getPredictedCellBW ML Model: %f", *&v56];
   return (v56 * 1000.0);
 }
 
-- (void)updateDLBWEstimation:(unsigned int)a3 :(unsigned int)a4
+- (void)updateDLBWEstimation:(unsigned int)estimation :(unsigned int)a4
 {
   mWrmiRATStreaming = self->mWrmiRATStreaming;
-  mWrmiRATStreaming->cellEstimatedBW = a3;
+  mWrmiRATStreaming->cellEstimatedBW = estimation;
   mWrmiRATStreaming->cellEstimatedBWConf = a4;
 }
 
-- (void)updateQSHMetrics:(unsigned int)a3 :(unsigned int)a4 :(unsigned int)a5 :(unsigned int)a6
+- (void)updateQSHMetrics:(unsigned int)metrics :(unsigned int)a4 :(unsigned int)a5 :(unsigned int)a6
 {
-  dword_1002B7B84 = a3;
+  dword_1002B7B84 = metrics;
   dword_1002B7B8C = a5;
   dword_1002B7B90 = a6;
   if ([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")])
   {
     v7 = +[WRM_EnhancedCTService wrm_EnhancedCTServiceSingleton];
     [v7 setActiveSlot:{objc_msgSend(v7, "getUserDataPreferredSlot")}];
-    v8 = [v7 getCTDataIndictor];
+    getCTDataIndictor = [v7 getCTDataIndictor];
   }
 
   else
   {
     v7 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-    v8 = 0;
+    getCTDataIndictor = 0;
   }
 
-  if ([v7 getServingCellType] == 1 && (v8 - 16 >= 4 && v8 != 8 || dword_1002B7B94 <= a4))
+  if ([v7 getServingCellType] == 1 && (getCTDataIndictor - 16 >= 4 && getCTDataIndictor != 8 || dword_1002B7B94 <= a4))
   {
     dword_1002B7B88 = a4;
   }
 }
 
-- (void)updateNRQSHMetrics:(unsigned int)a3 :(unsigned int)a4 :(unsigned int)a5
+- (void)updateNRQSHMetrics:(unsigned int)metrics :(unsigned int)a4 :(unsigned int)a5
 {
-  dword_1002B7B94 = a3;
+  dword_1002B7B94 = metrics;
   dword_1002B7B98 = a4;
   dword_1002B7B9C = a5;
 }
@@ -2615,11 +2615,11 @@ LABEL_32:
   [(NSNotificationCenter *)v3 removeObserver:self];
 }
 
-- (void)notifyScreenStatePassCodeNotEnabled:(int)a3
+- (void)notifyScreenStatePassCodeNotEnabled:(int)enabled
 {
   state64 = 0;
   v4 = MKBGetDeviceLockState();
-  notify_get_state(a3, &state64);
+  notify_get_state(enabled, &state64);
   v5 = state64;
   [WCM_Logging logLevel:24 message:@"Rx screen state change event NotDark:%d, keybagLockState: %d", state64 == 0, v4];
   if (v4 == 3)

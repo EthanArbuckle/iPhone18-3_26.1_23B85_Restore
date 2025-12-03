@@ -1,15 +1,15 @@
 @interface MapsSiriIPCInterface
 + (id)sharedInterface;
-- (void)_configureIncomingConnection:(id)a3;
+- (void)_configureIncomingConnection:(id)connection;
 - (void)_startMapsAppStateMonitor;
-- (void)endNavigationWithCompletion:(id)a3;
+- (void)endNavigationWithCompletion:(id)completion;
 - (void)establishConnection;
-- (void)getGuidanceState:(id)a3 completion:(id)a4;
-- (void)handleTrafficeReroute:(id)a3 completion:(id)a4;
-- (void)repeatLastGuidanceInstructionWithCompletion:(id)a3;
-- (void)repeatLastReroutePromptWithCompletion:(id)a3;
-- (void)setNavigationMuted:(id)a3 completion:(id)a4;
-- (void)setNavigationVoiceVolume:(id)a3 completion:(id)a4;
+- (void)getGuidanceState:(id)state completion:(id)completion;
+- (void)handleTrafficeReroute:(id)reroute completion:(id)completion;
+- (void)repeatLastGuidanceInstructionWithCompletion:(id)completion;
+- (void)repeatLastReroutePromptWithCompletion:(id)completion;
+- (void)setNavigationMuted:(id)muted completion:(id)completion;
+- (void)setNavigationVoiceVolume:(id)volume completion:(id)completion;
 @end
 
 @implementation MapsSiriIPCInterface
@@ -26,124 +26,124 @@
   return v3;
 }
 
-- (void)_configureIncomingConnection:(id)a3
+- (void)_configureIncomingConnection:(id)connection
 {
-  v4 = a3;
-  [v4 setExportedObject:self];
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self];
   v5 = +[NSXPCInterface _maps_mapsSiriXPCClientInterface];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = +[NSXPCInterface _maps_mapsSiriXPCInterface];
-  [v4 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 }
 
-- (void)handleTrafficeReroute:(id)a3 completion:(id)a4
+- (void)handleTrafficeReroute:(id)reroute completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  rerouteCopy = reroute;
+  completionCopy = completion;
   messagingQueue = self->super.super._messagingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_A738;
   block[3] = &unk_34C40;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = rerouteCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = rerouteCopy;
   dispatch_async(messagingQueue, block);
 }
 
-- (void)endNavigationWithCompletion:(id)a3
+- (void)endNavigationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   messagingQueue = self->super.super._messagingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_A840;
   v7[3] = &unk_34BA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(messagingQueue, v7);
 }
 
-- (void)getGuidanceState:(id)a3 completion:(id)a4
+- (void)getGuidanceState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   messagingQueue = self->super.super._messagingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_A974;
   block[3] = &unk_34C40;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = stateCopy;
   dispatch_async(messagingQueue, block);
 }
 
-- (void)repeatLastReroutePromptWithCompletion:(id)a3
+- (void)repeatLastReroutePromptWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   messagingQueue = self->super.super._messagingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_AA7C;
   v7[3] = &unk_34BA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(messagingQueue, v7);
 }
 
-- (void)repeatLastGuidanceInstructionWithCompletion:(id)a3
+- (void)repeatLastGuidanceInstructionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   messagingQueue = self->super.super._messagingQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_AB84;
   v7[3] = &unk_34BA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(messagingQueue, v7);
 }
 
-- (void)setNavigationMuted:(id)a3 completion:(id)a4
+- (void)setNavigationMuted:(id)muted completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  mutedCopy = muted;
+  completionCopy = completion;
   messagingQueue = self->super.super._messagingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_ACB8;
   block[3] = &unk_34C40;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = mutedCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = mutedCopy;
   dispatch_async(messagingQueue, block);
 }
 
-- (void)setNavigationVoiceVolume:(id)a3 completion:(id)a4
+- (void)setNavigationVoiceVolume:(id)volume completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  volumeCopy = volume;
+  completionCopy = completion;
   messagingQueue = self->super.super._messagingQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_AE64;
   block[3] = &unk_34C40;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = volumeCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = volumeCopy;
   dispatch_async(messagingQueue, block);
 }
 

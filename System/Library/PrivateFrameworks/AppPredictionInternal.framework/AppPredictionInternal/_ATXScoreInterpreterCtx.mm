@@ -1,21 +1,21 @@
 @interface _ATXScoreInterpreterCtx
-- (_ATXScoreInterpreterCtx)initWithInputScores:(id)a3 intentType:(id)a4;
+- (_ATXScoreInterpreterCtx)initWithInputScores:(id)scores intentType:(id)type;
 @end
 
 @implementation _ATXScoreInterpreterCtx
 
-- (_ATXScoreInterpreterCtx)initWithInputScores:(id)a3 intentType:(id)a4
+- (_ATXScoreInterpreterCtx)initWithInputScores:(id)scores intentType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  scoresCopy = scores;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = _ATXScoreInterpreterCtx;
   v9 = [(_ATXScoreInterpreterCtx *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->inputScores, a3);
-    objc_storeStrong(&v10->intentType, a4);
+    objc_storeStrong(&v9->inputScores, scores);
+    objc_storeStrong(&v10->intentType, type);
     v11 = objc_opt_new();
     subscores = v10->subscores;
     v10->subscores = v11;

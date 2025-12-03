@@ -1,30 +1,30 @@
 @interface PGDejunkerDeduper_CLSCurationItem
-- (BOOL)item:(id)a3 isStrongRequiredWithOptions:(id)a4;
-- (id)bestItemInItems:(id)a3 options:(id)a4;
-- (id)bestItemsInItems:(id)a3 options:(id)a4;
-- (id)debugPersonStringForItem:(id)a3;
-- (id)dejunkedDedupedItemIdentifiersWithItems:(id)a3 options:(id)a4 debugInfo:(id *)a5;
-- (id)dejunkedDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)a3;
-- (id)featureWithItem:(id)a3;
-- (id)itemsSortedByScoreWithItems:(id)a3 options:(id)a4;
-- (id)personLocalIdentifiersFromFaceInfos:(id)a3 faceQualityScore:(double *)a4;
-- (id)requiredItemsInItems:(id)a3 options:(id)a4 containStronglyRequiredItems:(BOOL *)a5;
-- (void)_buildCachesWithItems:(id)a3 options:(id)a4;
+- (BOOL)item:(id)item isStrongRequiredWithOptions:(id)options;
+- (id)bestItemInItems:(id)items options:(id)options;
+- (id)bestItemsInItems:(id)items options:(id)options;
+- (id)debugPersonStringForItem:(id)item;
+- (id)dejunkedDedupedItemIdentifiersWithItems:(id)items options:(id)options debugInfo:(id *)info;
+- (id)dejunkedDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block;
+- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)items;
+- (id)featureWithItem:(id)item;
+- (id)itemsSortedByScoreWithItems:(id)items options:(id)options;
+- (id)personLocalIdentifiersFromFaceInfos:(id)infos faceQualityScore:(double *)score;
+- (id)requiredItemsInItems:(id)items options:(id)options containStronglyRequiredItems:(BOOL *)requiredItems;
+- (void)_buildCachesWithItems:(id)items options:(id)options;
 @end
 
 @implementation PGDejunkerDeduper_CLSCurationItem
 
-- (id)personLocalIdentifiersFromFaceInfos:(id)a3 faceQualityScore:(double *)a4
+- (id)personLocalIdentifiersFromFaceInfos:(id)infos faceQualityScore:(double *)score
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infosCopy = infos;
   v27 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v4;
+  v5 = infosCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v6)
   {
@@ -87,7 +87,7 @@ LABEL_13:
   while (v7);
 LABEL_17:
 
-  if (a4)
+  if (score)
   {
     v20 = [v27 count];
     v21 = 0.0;
@@ -106,7 +106,7 @@ LABEL_17:
       v21 = v10 / v8;
     }
 
-    *a4 = v21;
+    *score = v21;
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -114,19 +114,19 @@ LABEL_17:
   return v27;
 }
 
-- (id)requiredItemsInItems:(id)a3 options:(id)a4 containStronglyRequiredItems:(BOOL *)a5
+- (id)requiredItemsInItems:(id)items options:(id)options containStronglyRequiredItems:(BOOL *)requiredItems
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  optionsCopy = options;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v21 = [v8 identifiersOfRequiredItems];
-  v10 = [v8 identifiersOfEligibleItems];
+  identifiersOfRequiredItems = [optionsCopy identifiersOfRequiredItems];
+  identifiersOfEligibleItems = [optionsCopy identifiersOfEligibleItems];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v7;
+  v11 = itemsCopy;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v12)
   {
@@ -147,15 +147,15 @@ LABEL_17:
       }
 
       v16 = *(*(&v23 + 1) + 8 * i);
-      v17 = [v16 clsIdentifier];
-      if (!v10 || ([v10 containsObject:v17] & 1) != 0 || objc_msgSend(v21, "containsObject:", v17))
+      clsIdentifier = [v16 clsIdentifier];
+      if (!identifiersOfEligibleItems || ([identifiersOfEligibleItems containsObject:clsIdentifier] & 1) != 0 || objc_msgSend(identifiersOfRequiredItems, "containsObject:", clsIdentifier))
       {
-        if ([(PGDejunkerDeduper_CLSCurationItem *)self item:v16 isStrongRequiredWithOptions:v8])
+        if ([(PGDejunkerDeduper_CLSCurationItem *)self item:v16 isStrongRequiredWithOptions:optionsCopy])
         {
           v22 = 1;
         }
 
-        else if (![(PGDejunkerDeduper_CLSCurationItem *)self item:v16 isWeaklyRequiredWithOptions:v8])
+        else if (![(PGDejunkerDeduper_CLSCurationItem *)self item:v16 isWeaklyRequiredWithOptions:optionsCopy])
         {
           goto LABEL_13;
         }
@@ -172,9 +172,9 @@ LABEL_13:
   while (v13);
 LABEL_17:
 
-  if (a5)
+  if (requiredItems)
   {
-    *a5 = v22 & 1;
+    *requiredItems = v22 & 1;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -182,30 +182,30 @@ LABEL_17:
   return v9;
 }
 
-- (BOOL)item:(id)a3 isStrongRequiredWithOptions:(id)a4
+- (BOOL)item:(id)item isStrongRequiredWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isFavorite])
+  itemCopy = item;
+  optionsCopy = options;
+  if ([itemCopy isFavorite])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v6 identifiersOfRequiredItems];
-    v9 = [v5 clsIdentifier];
-    v7 = [v8 containsObject:v9];
+    identifiersOfRequiredItems = [optionsCopy identifiersOfRequiredItems];
+    clsIdentifier = [itemCopy clsIdentifier];
+    v7 = [identifiersOfRequiredItems containsObject:clsIdentifier];
   }
 
   return v7;
 }
 
-- (id)itemsSortedByScoreWithItems:(id)a3 options:(id)a4
+- (id)itemsSortedByScoreWithItems:(id)items options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:v6];
+  optionsCopy = options;
+  itemsCopy = items;
+  v8 = [objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:optionsCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -213,16 +213,16 @@ LABEL_17:
   v11[3] = &unk_278881170;
   v12 = v8;
   v11[4] = self;
-  v9 = [v7 sortedArrayUsingComparator:v11];
+  v9 = [itemsCopy sortedArrayUsingComparator:v11];
 
   return v9;
 }
 
-- (id)featureWithItem:(id)a3
+- (id)featureWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 clsIdentifier];
-  v6 = [(NSDictionary *)self->_personLocalIdentifiersByItemIdentifier objectForKeyedSubscript:v5];
+  itemCopy = item;
+  clsIdentifier = [itemCopy clsIdentifier];
+  v6 = [(NSDictionary *)self->_personLocalIdentifiersByItemIdentifier objectForKeyedSubscript:clsIdentifier];
   if (v6)
   {
     v7 = 0;
@@ -230,27 +230,27 @@ LABEL_17:
 
   else
   {
-    v7 = [(NSDictionary *)self->_peopleScenesByItemIdentifier objectForKeyedSubscript:v5];
+    v7 = [(NSDictionary *)self->_peopleScenesByItemIdentifier objectForKeyedSubscript:clsIdentifier];
   }
 
   v8 = [PGDejunkerDeduperFeature alloc];
-  v9 = [v4 isVideo];
+  isVideo = [itemCopy isVideo];
 
-  v10 = [(PGDejunkerDeduperFeature *)v8 initWithPersonLocalIdentifiers:v6 peopleScenes:v7 isVideo:v9];
+  v10 = [(PGDejunkerDeduperFeature *)v8 initWithPersonLocalIdentifiers:v6 peopleScenes:v7 isVideo:isVideo];
 
   return v10;
 }
 
-- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)a3
+- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)items
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v26 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v26)
   {
@@ -269,10 +269,10 @@ LABEL_17:
         v5 = *(*(&v34 + 1) + 8 * v4);
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        v7 = MEMORY[0x277CBEBF8];
+        faceInfos = MEMORY[0x277CBEBF8];
         if (isKindOfClass)
         {
-          v7 = [v5 faceInfos];
+          faceInfos = [v5 faceInfos];
         }
 
         v27 = v5;
@@ -281,7 +281,7 @@ LABEL_17:
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v9 = v7;
+        v9 = faceInfos;
         v10 = [v9 countByEnumeratingWithState:&v30 objects:v38 count:16];
         if (v10)
         {
@@ -318,8 +318,8 @@ LABEL_17:
           while (v11);
         }
 
-        v20 = [v27 clsIdentifier];
-        [v25 setObject:v8 forKeyedSubscript:v20];
+        clsIdentifier = [v27 clsIdentifier];
+        [v25 setObject:v8 forKeyedSubscript:clsIdentifier];
 
         v4 = v28 + 1;
       }
@@ -336,20 +336,20 @@ LABEL_17:
   return v25;
 }
 
-- (id)debugPersonStringForItem:(id)a3
+- (id)debugPersonStringForItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(PGDejunkerDeduper_CLSCurationItem *)self featureWithItem:a3];
-  v4 = [v3 personLocalIdentifiers];
-  v5 = [v3 peopleScenes];
-  if ([v4 count])
+  v3 = [(PGDejunkerDeduper_CLSCurationItem *)self featureWithItem:item];
+  personLocalIdentifiers = [v3 personLocalIdentifiers];
+  peopleScenes = [v3 peopleScenes];
+  if ([personLocalIdentifiers count])
   {
-    v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    allObjects = objc_alloc_init(MEMORY[0x277CBEB18]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = personLocalIdentifiers;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -365,7 +365,7 @@ LABEL_17:
           }
 
           v12 = [*(*(&v17 + 1) + 8 * i) substringToIndex:{8, v17}];
-          [v6 addObject:v12];
+          [allObjects addObject:v12];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -374,15 +374,15 @@ LABEL_17:
       while (v9);
     }
 
-    [v6 sortUsingSelector:sel_compare_];
-    v13 = [v6 componentsJoinedByString:{@", "}];
+    [allObjects sortUsingSelector:sel_compare_];
+    v13 = [allObjects componentsJoinedByString:{@", "}];
     goto LABEL_12;
   }
 
-  if ([v5 count])
+  if ([peopleScenes count])
   {
-    v6 = [v5 allObjects];
-    v14 = [v6 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [peopleScenes allObjects];
+    v14 = [allObjects sortedArrayUsingSelector:sel_compare_];
     v13 = [v14 componentsJoinedByString:{@", "}];
 
 LABEL_12:
@@ -397,13 +397,13 @@ LABEL_13:
   return v13;
 }
 
-- (id)bestItemsInItems:(id)a3 options:(id)a4
+- (id)bestItemsInItems:(id)items options:(id)options
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  optionsCopy = options;
   v46 = 0;
-  v8 = [(PGDejunkerDeduper_CLSCurationItem *)self requiredItemsInItems:v6 options:v7 containStronglyRequiredItems:&v46];
+  v8 = [(PGDejunkerDeduper_CLSCurationItem *)self requiredItemsInItems:itemsCopy options:optionsCopy containStronglyRequiredItems:&v46];
   v9 = v8;
   if (v46 == 1)
   {
@@ -411,12 +411,12 @@ LABEL_13:
     goto LABEL_30;
   }
 
-  v11 = [objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:v7];
+  v11 = [objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:optionsCopy];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v12 = v6;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (!v13)
   {
@@ -426,10 +426,10 @@ LABEL_13:
   }
 
   v14 = v13;
-  v39 = v6;
-  v40 = self;
+  v39 = itemsCopy;
+  selfCopy = self;
   v37 = v9;
-  v38 = v7;
+  v38 = optionsCopy;
   v15 = 0;
   v16 = 0;
   v17 = *v43;
@@ -446,10 +446,10 @@ LABEL_13:
       }
 
       v21 = *(*(&v42 + 1) + 8 * i);
-      v22 = [v21 isFavorite];
+      isFavorite = [v21 isFavorite];
       [v21 clsContentScore];
       v24 = v23;
-      if (v11 && (faceQualityScoreByItemIdentifier = v40->_faceQualityScoreByItemIdentifier, [v21 clsIdentifier], v26 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](faceQualityScoreByItemIdentifier, "objectForKeyedSubscript:", v26), v27 = objc_claimAutoreleasedReturnValue(), v26, v27))
+      if (v11 && (faceQualityScoreByItemIdentifier = selfCopy->_faceQualityScoreByItemIdentifier, [v21 clsIdentifier], v26 = objc_claimAutoreleasedReturnValue(), -[NSDictionary objectForKeyedSubscript:](faceQualityScoreByItemIdentifier, "objectForKeyedSubscript:", v26), v27 = objc_claimAutoreleasedReturnValue(), v26, v27))
       {
         [v27 doubleValue];
         v29 = v28;
@@ -470,8 +470,8 @@ LABEL_13:
         }
       }
 
-      v31 = v22 & (v15 ^ 1);
-      if (v31 & 1) != 0 || ((v15 ^ v22))
+      v31 = isFavorite & (v15 ^ 1);
+      if (v31 & 1) != 0 || ((v15 ^ isFavorite))
       {
         if (!v31)
         {
@@ -483,7 +483,7 @@ LABEL_20:
 
         v18 = v29;
         v19 = v24;
-        v15 = v22;
+        v15 = isFavorite;
         v16 = v33;
         goto LABEL_21;
       }
@@ -510,8 +510,8 @@ LABEL_21:
   if (v16)
   {
     v9 = v37;
-    v7 = v38;
-    v6 = v39;
+    optionsCopy = v38;
+    itemsCopy = v39;
     if (![v37 containsObject:v16])
     {
       v34 = [v37 arrayByAddingObject:v16];
@@ -521,8 +521,8 @@ LABEL_21:
 
   else
   {
-    v7 = v38;
-    v6 = v39;
+    optionsCopy = v38;
+    itemsCopy = v39;
     v9 = v37;
   }
 
@@ -537,17 +537,17 @@ LABEL_30:
   return v10;
 }
 
-- (id)bestItemInItems:(id)a3 options:(id)a4
+- (id)bestItemInItems:(id)items options:(id)options
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v29 = a4;
-  v7 = [objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:v29];
+  itemsCopy = items;
+  optionsCopy = options;
+  v7 = [objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:optionsCopy];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v9)
   {
@@ -624,11 +624,11 @@ LABEL_23:
   return v11;
 }
 
-- (void)_buildCachesWithItems:(id)a3 options:(id)a4
+- (void)_buildCachesWithItems:(id)items options:(id)options
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v35 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = v7;
@@ -638,7 +638,7 @@ LABEL_23:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v10 = v5;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v11)
   {
@@ -657,14 +657,14 @@ LABEL_23:
         }
 
         v15 = *(*(&v38 + 1) + 8 * i);
-        v16 = [v15 clsIdentifier];
-        v17 = [v6 personDedupingType];
-        if (v17 == 2)
+        clsIdentifier = [v15 clsIdentifier];
+        personDedupingType = [optionsCopy personDedupingType];
+        if (personDedupingType == 2)
         {
-          v18 = [v15 clsPersonLocalIdentifiers];
-          if ([v18 count])
+          clsPersonLocalIdentifiers = [v15 clsPersonLocalIdentifiers];
+          if ([clsPersonLocalIdentifiers count])
           {
-            v20 = [MEMORY[0x277CBEB98] setWithArray:v18];
+            v20 = [MEMORY[0x277CBEB98] setWithArray:clsPersonLocalIdentifiers];
           }
 
           else
@@ -675,23 +675,23 @@ LABEL_23:
 
         else
         {
-          if (v17 != 3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+          if (personDedupingType != 3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             v20 = 0;
             goto LABEL_19;
           }
 
-          v18 = v15;
-          v19 = [v18 faceInfos];
-          if ([v19 count])
+          clsPersonLocalIdentifiers = v15;
+          faceInfos = [clsPersonLocalIdentifiers faceInfos];
+          if ([faceInfos count])
           {
             v37 = 0.0;
-            v20 = [(PGDejunkerDeduper_CLSCurationItem *)self personLocalIdentifiersFromFaceInfos:v19 faceQualityScore:&v37];
+            v20 = [(PGDejunkerDeduper_CLSCurationItem *)self personLocalIdentifiersFromFaceInfos:faceInfos faceQualityScore:&v37];
             if ([v20 count])
             {
               [MEMORY[0x277CCABB0] numberWithDouble:v37];
               v22 = v21 = v9;
-              [(NSDictionary *)v32 setObject:v22 forKeyedSubscript:v16];
+              [(NSDictionary *)v32 setObject:v22 forKeyedSubscript:clsIdentifier];
 
               v9 = v21;
               v10 = v31;
@@ -710,12 +710,12 @@ LABEL_23:
 LABEL_19:
         if ([v20 count])
         {
-          [(NSDictionary *)v8 setObject:v20 forKeyedSubscript:v16];
+          [(NSDictionary *)v8 setObject:v20 forKeyedSubscript:clsIdentifier];
         }
 
-        if ([v6 personDedupingType] && objc_msgSend(v15, "clsIsInhabited"))
+        if ([optionsCopy personDedupingType] && objc_msgSend(v15, "clsIsInhabited"))
         {
-          [(NSDictionary *)v35 setObject:v9 forKeyedSubscript:v16];
+          [(NSDictionary *)v35 setObject:v9 forKeyedSubscript:clsIdentifier];
         }
       }
 
@@ -741,11 +741,11 @@ LABEL_19:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dejunkedDedupedItemIdentifiersWithItems:(id)a3 options:(id)a4 debugInfo:(id *)a5
+- (id)dejunkedDedupedItemIdentifiersWithItems:(id)items options:(id)options debugInfo:(id *)info
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  optionsCopy = options;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = objc_alloc_init(MEMORY[0x277D3C7A0]);
   v32[0] = MEMORY[0x277D85DD0];
@@ -754,12 +754,12 @@ LABEL_19:
   v32[3] = &unk_278886108;
   v25 = v10;
   v33 = v25;
-  v11 = v8;
+  v11 = optionsCopy;
   v34 = v11;
   v12 = v9;
   v35 = v12;
-  v27 = v7;
-  [v7 enumerateKeysAndObjectsUsingBlock:v32];
+  v27 = itemsCopy;
+  [itemsCopy enumerateKeysAndObjectsUsingBlock:v32];
   v13 = [[PGDejunkerDeduperOptions alloc] initWithDictionaryRepresentation:v11];
   v14 = [objc_alloc(MEMORY[0x277D276A0]) initWithItems:v12];
   v15 = [(PGDejunkerDeduper_CLSCurationItem *)self dejunkedDedupedItemsInItems:v12 options:v13 debugInfo:v14 progressBlock:0];
@@ -783,8 +783,8 @@ LABEL_19:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v28 + 1) + 8 * i) clsIdentifier];
-        [v16 addObject:v22];
+        clsIdentifier = [*(*(&v28 + 1) + 8 * i) clsIdentifier];
+        [v16 addObject:clsIdentifier];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -793,9 +793,9 @@ LABEL_19:
     while (v19);
   }
 
-  if (a5)
+  if (info)
   {
-    *a5 = [v14 dictionaryRepresentationWithAppendExtraItemInfoBlock:0];
+    *info = [v14 dictionaryRepresentationWithAppendExtraItemInfoBlock:0];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -803,16 +803,16 @@ LABEL_19:
   return v16;
 }
 
-- (id)dejunkedDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)dejunkedDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  [(PGDejunkerDeduper_CLSCurationItem *)self _buildCachesWithItems:v13 options:v12];
+  blockCopy = block;
+  infoCopy = info;
+  optionsCopy = options;
+  itemsCopy = items;
+  [(PGDejunkerDeduper_CLSCurationItem *)self _buildCachesWithItems:itemsCopy options:optionsCopy];
   v16.receiver = self;
   v16.super_class = PGDejunkerDeduper_CLSCurationItem;
-  v14 = [(PGDejunkerDeduper *)&v16 dejunkedDedupedItemsInItems:v13 options:v12 debugInfo:v11 progressBlock:v10];
+  v14 = [(PGDejunkerDeduper *)&v16 dejunkedDedupedItemsInItems:itemsCopy options:optionsCopy debugInfo:infoCopy progressBlock:blockCopy];
 
   return v14;
 }

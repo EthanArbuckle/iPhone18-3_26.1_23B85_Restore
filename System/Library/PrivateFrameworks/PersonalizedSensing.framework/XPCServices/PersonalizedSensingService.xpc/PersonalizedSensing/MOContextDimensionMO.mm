@@ -1,25 +1,25 @@
 @interface MOContextDimensionMO
-+ (id)managedObjectWithContextDimension:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)updateManagedObject:(id)a3 withContextDimension:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithContextDimension:(id)dimension inManagedObjectContext:(id)context;
++ (void)updateManagedObject:(id)object withContextDimension:(id)dimension inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextDimensionMO
 
-+ (id)managedObjectWithContextDimension:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithContextDimension:(id)dimension inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextDimensionMO alloc] initWithContext:v5];
-  [MOContextDimensionMO updateManagedObject:v7 withContextDimension:v6 inManagedObjectContext:v5];
+  contextCopy = context;
+  dimensionCopy = dimension;
+  v7 = [[MOContextDimensionMO alloc] initWithContext:contextCopy];
+  [MOContextDimensionMO updateManagedObject:v7 withContextDimension:dimensionCopy inManagedObjectContext:contextCopy];
 
   return v7;
 }
 
-+ (void)updateManagedObject:(id)a3 withContextDimension:(id)a4 inManagedObjectContext:(id)a5
++ (void)updateManagedObject:(id)object withContextDimension:(id)dimension inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = [a4 name];
-  [v6 setName:v7];
+  objectCopy = object;
+  name = [dimension name];
+  [objectCopy setName:name];
 }
 
 @end

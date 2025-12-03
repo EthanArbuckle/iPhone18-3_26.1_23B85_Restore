@@ -1,11 +1,11 @@
 @interface BKCollectionControllerMemberManagingModifyResponse
 - (BKCollectionControllerMemberManagingModifyResponse)init;
-- (BKCollectionControllerMemberManagingModifyResponse)initWithAssetID:(id)a3 assetContentType:(int64_t)a4 collectionTitle:(id)a5;
+- (BKCollectionControllerMemberManagingModifyResponse)initWithAssetID:(id)d assetContentType:(int64_t)type collectionTitle:(id)title;
 @end
 
 @implementation BKCollectionControllerMemberManagingModifyResponse
 
-- (BKCollectionControllerMemberManagingModifyResponse)initWithAssetID:(id)a3 assetContentType:(int64_t)a4 collectionTitle:(id)a5
+- (BKCollectionControllerMemberManagingModifyResponse)initWithAssetID:(id)d assetContentType:(int64_t)type collectionTitle:(id)title
 {
   ObjectType = swift_getObjectType();
   v8 = sub_9202C();
@@ -14,7 +14,7 @@
   v12 = (self + OBJC_IVAR___BKCollectionControllerMemberManagingModifyResponse_assetID);
   *v12 = v8;
   v12[1] = v10;
-  *(self + OBJC_IVAR___BKCollectionControllerMemberManagingModifyResponse_assetContentType) = a4;
+  *(self + OBJC_IVAR___BKCollectionControllerMemberManagingModifyResponse_assetContentType) = type;
   v13 = (self + OBJC_IVAR___BKCollectionControllerMemberManagingModifyResponse_collectionTitle);
   *v13 = v11;
   v13[1] = v14;

@@ -34,14 +34,14 @@
     return INFINITY;
   }
 
-  v3 = [(CDResult *)self monotonicBegin];
-  v4 = [(CDResult *)self monotonicEnd];
+  monotonicBegin = [(CDResult *)self monotonicBegin];
+  monotonicEnd = [(CDResult *)self monotonicEnd];
   if (_MergedGlobals_12 != -1)
   {
     dispatch_once(&_MergedGlobals_12, &__block_literal_global_2);
   }
 
-  return ((v4 - v3) * dword_10006E288 / *algn_10006E28C) / 1000000000.0;
+  return ((monotonicEnd - monotonicBegin) * dword_10006E288 / *algn_10006E28C) / 1000000000.0;
 }
 
 @end

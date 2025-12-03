@@ -1,9 +1,9 @@
 @interface StorageInspector
-+ (id)createFromData:(id)a3 error:(id *)a4;
++ (id)createFromData:(id)data error:(id *)error;
 - (NSString)description;
 - (_TtC14IMDPersistence16StorageInspector)init;
-- (id)encodeToData:(id *)a3;
-- (void)runWithCompletionHandler:(id)a3;
+- (id)encodeToData:(id *)data;
+- (void)runWithCompletionHandler:(id)handler;
 @end
 
 @implementation StorageInspector
@@ -20,7 +20,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   StorageInspector.description.getter();
 
   v3 = sub_1B7CFEA30();
@@ -28,23 +28,23 @@
   return v3;
 }
 
-- (void)runWithCompletionHandler:(id)a3
+- (void)runWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   StorageInspector.run(_:)(sub_1B7C542DC, v5);
 }
 
-- (id)encodeToData:(id *)a3
+- (id)encodeToData:(id *)data
 {
   swift_getObjectType();
   v4 = sub_1B7CFDC10();
   v5 = *(v4 + 48);
   v6 = *(v4 + 52);
   swift_allocObject();
-  v7 = self;
+  selfCopy = self;
   sub_1B7CFDC00();
   sub_1B7C53DEC(&qword_1EBA528A8);
   v8 = sub_1B7CFDBF0();
@@ -56,10 +56,10 @@
   return v11;
 }
 
-+ (id)createFromData:(id)a3 error:(id *)a4
++ (id)createFromData:(id)data error:(id *)error
 {
   swift_getObjCClassMetadata();
-  v5 = a3;
+  dataCopy = data;
   v6 = sub_1B7CFE020();
   v8 = v7;
 

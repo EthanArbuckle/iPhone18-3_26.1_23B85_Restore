@@ -7,32 +7,32 @@
 - (BOOL)ekPredicateFilterMatches:()EKPredicateEvaluating
 {
   v4 = a3;
-  v5 = [a1 property];
-  if (v5 > 0xE)
+  property = [self property];
+  if (property > 0xE)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_1E77FDE50[v5];
+    v6 = off_1E77FDE50[property];
   }
 
   v7 = [v4 valueForKeyPath:v6];
 
-  if ([a1 isInteger])
+  if ([self isInteger])
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "integerValue")}];
+    stringValue = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "integerValue")}];
   }
 
-  else if ([a1 isString])
+  else if ([self isString])
   {
-    v8 = [a1 stringValue];
+    stringValue = [self stringValue];
   }
 
   else
   {
-    if (([a1 isDate] & 1) == 0)
+    if (([self isDate] & 1) == 0)
     {
       v9 = 0;
       v10 = v7 == 0;
@@ -40,32 +40,32 @@
       goto LABEL_30;
     }
 
-    v8 = [a1 dateValue];
+    stringValue = [self dateValue];
   }
 
-  v9 = v8;
+  v9 = stringValue;
   v10 = v7 == 0;
-  v11 = v8 == 0;
-  if (v7 && v8)
+  v11 = stringValue == 0;
+  if (v7 && stringValue)
   {
-    v12 = [v7 compare:v8];
-    v13 = [a1 comparison];
-    if (v13 > 2)
+    v12 = [v7 compare:stringValue];
+    comparison = [self comparison];
+    if (comparison > 2)
     {
       v14 = v12 != 1;
       v15 = v12 == 1;
       v19 = v12 != -1;
-      if (v13 != 5)
+      if (comparison != 5)
       {
         v19 = v12 != 1;
       }
 
-      if (v13 != 4)
+      if (comparison != 4)
       {
         v15 = v19;
       }
 
-      v17 = v13 == 3;
+      v17 = comparison == 3;
     }
 
     else
@@ -73,17 +73,17 @@
       v14 = v12 == 0;
       v15 = v12 != 0;
       v16 = v12 == -1;
-      if (v13 != 2)
+      if (comparison != 2)
       {
         v16 = v12 == 0;
       }
 
-      if (v13 != 1)
+      if (comparison != 1)
       {
         v15 = v16;
       }
 
-      v17 = v13 == 0;
+      v17 = comparison == 0;
     }
 
     if (v17)
@@ -99,16 +99,16 @@
     goto LABEL_33;
   }
 
-  if (v8 && !v7)
+  if (stringValue && !v7)
   {
     v18 = 0;
     goto LABEL_33;
   }
 
 LABEL_30:
-  v20 = [a1 comparison];
+  comparison2 = [self comparison];
   v21 = v10 ^ v11;
-  if (((1 << v20) & 0x16) == 0)
+  if (((1 << comparison2) & 0x16) == 0)
   {
     v21 = v10 ^ v11 ^ 1;
   }

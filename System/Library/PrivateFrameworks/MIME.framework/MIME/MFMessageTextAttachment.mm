@@ -1,14 +1,14 @@
 @interface MFMessageTextAttachment
 - (BOOL)isPlaceholder;
 - (MFMessageTextAttachment)init;
-- (MFMessageTextAttachment)initWithWrapper:(id)a3;
-- (id)cachedValueForKey:(id)a3;
+- (MFMessageTextAttachment)initWithWrapper:(id)wrapper;
+- (id)cachedValueForKey:(id)key;
 - (id)description;
-- (id)fileWrapperForcingDownload:(BOOL)a3;
-- (id)textEncodingNameForData:(id)a3 mimeType:(id)a4;
+- (id)fileWrapperForcingDownload:(BOOL)download;
+- (id)textEncodingNameForData:(id)data mimeType:(id)type;
 - (unsigned)approximateSize;
-- (void)inlineDisplayData:(id *)a3 mimeType:(id *)a4;
-- (void)setCachedValue:(id)a3 forKey:(id)a4;
+- (void)inlineDisplayData:(id *)data mimeType:(id *)type;
+- (void)setCachedValue:(id)value forKey:(id)key;
 @end
 
 @implementation MFMessageTextAttachment
@@ -21,9 +21,9 @@
   return v4;
 }
 
-- (MFMessageTextAttachment)initWithWrapper:(id)a3
+- (MFMessageTextAttachment)initWithWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = MFMessageTextAttachment;
   v5 = [(MFMessageTextAttachment *)&v9 init];
@@ -33,7 +33,7 @@
     cache = v5->_cache;
     v5->_cache = v6;
 
-    [(MFMessageTextAttachment *)v5 setCachedValue:v4 forKey:@"kMessageTextAttachmentFileWrapper"];
+    [(MFMessageTextAttachment *)v5 setCachedValue:wrapperCopy forKey:@"kMessageTextAttachmentFileWrapper"];
   }
 
   return v5;
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (id)cachedValueForKey:(id)a3
+- (id)cachedValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(NSMutableDictionary *)self->_cache mf_lock];
-  v5 = [(NSMutableDictionary *)self->_cache objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_cache objectForKey:keyCopy];
   [(NSMutableDictionary *)self->_cache mf_unlock];
 
   return v5;
 }
 
-- (void)setCachedValue:(id)a3 forKey:(id)a4
+- (void)setCachedValue:(id)value forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   [(NSMutableDictionary *)self->_cache mf_lock];
   cache = self->_cache;
-  if (v8)
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)cache setObject:v8 forKey:v6];
+    [(NSMutableDictionary *)cache setObject:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)cache removeObjectForKey:v6];
+    [(NSMutableDictionary *)cache removeObjectForKey:keyCopy];
   }
 
   [(NSMutableDictionary *)self->_cache mf_unlock];
@@ -81,44 +81,44 @@
 
 - (unsigned)approximateSize
 {
-  v8 = [(MFMessageTextAttachment *)self fileWrapper];
-  if (!v8)
+  fileWrapper = [(MFMessageTextAttachment *)self fileWrapper];
+  if (!fileWrapper)
   {
     return 0;
   }
 
-  v2 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithObjects:&v8 count:1];
+  v2 = [objc_allocWithZone(MEMORY[0x1E695DF70]) initWithObjects:&fileWrapper count:1];
   v3 = 0;
   while ([v2 count])
   {
-    v4 = [v2 lastObject];
+    lastObject = [v2 lastObject];
     [v2 removeLastObject];
-    if ([v4 isSymbolicLink])
+    if ([lastObject isSymbolicLink])
     {
       v3 += 1024;
       goto LABEL_12;
     }
 
-    if ([v4 isDirectory])
+    if ([lastObject isDirectory])
     {
-      v5 = [v4 fileWrappers];
-      v6 = [v5 allValues];
+      fileWrappers = [lastObject fileWrappers];
+      allValues = [fileWrappers allValues];
 
-      if (v6)
+      if (allValues)
       {
-        [v2 addObjectsFromArray:v6];
+        [v2 addObjectsFromArray:allValues];
       }
     }
 
     else
     {
-      if (![v4 isRegularFile])
+      if (![lastObject isRegularFile])
       {
         goto LABEL_12;
       }
 
-      v6 = [v4 regularFileContents];
-      v3 += [v6 length];
+      allValues = [lastObject regularFileContents];
+      v3 += [allValues length];
     }
 
 LABEL_12:
@@ -130,31 +130,31 @@ LABEL_12:
 - (BOOL)isPlaceholder
 {
   v2 = [(MFMessageTextAttachment *)self fileWrapperForcingDownload:0];
-  v3 = [v2 isPlaceholder];
+  isPlaceholder = [v2 isPlaceholder];
 
-  return v3;
+  return isPlaceholder;
 }
 
-- (void)inlineDisplayData:(id *)a3 mimeType:(id *)a4
+- (void)inlineDisplayData:(id *)data mimeType:(id *)type
 {
-  v6 = [(MFMessageTextAttachment *)self fileWrapperForcingDownload:a3 != 0];
+  v6 = [(MFMessageTextAttachment *)self fileWrapperForcingDownload:data != 0];
   v7 = v6;
-  if (a3)
+  if (data)
   {
-    *a3 = [v6 regularFileContents];
+    *data = [v6 regularFileContents];
     v6 = v7;
   }
 
-  if (a4)
+  if (type)
   {
-    *a4 = [v6 mimeType];
+    *type = [v6 mimeType];
     v6 = v7;
   }
 }
 
-- (id)fileWrapperForcingDownload:(BOOL)a3
+- (id)fileWrapperForcingDownload:(BOOL)download
 {
-  if (a3 && [(MFMessageTextAttachment *)self isPlaceholder])
+  if (download && [(MFMessageTextAttachment *)self isPlaceholder])
   {
     [(MFMessageTextAttachment *)self download];
   }
@@ -162,22 +162,22 @@ LABEL_12:
   return [(MFMessageTextAttachment *)self fileWrapper];
 }
 
-- (id)textEncodingNameForData:(id)a3 mimeType:(id)a4
+- (id)textEncodingNameForData:(id)data mimeType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dataCopy = data;
+  typeCopy = type;
+  v8 = typeCopy;
+  if (!typeCopy)
   {
     goto LABEL_9;
   }
 
-  if (!strcmp("text/html", [v7 UTF8String]))
+  if (!strcmp("text/html", [typeCopy UTF8String]))
   {
     Default = CFAllocatorGetDefault();
     v14 = MFGetMappedAllocator();
     CFAllocatorSetDefault(v14);
-    v15 = CFStringCreateWithBytes(v14, [v6 bytes], objc_msgSend(v6, "length"), 0x8000100u, 0);
+    v15 = CFStringCreateWithBytes(v14, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0x8000100u, 0);
     CFAllocatorSetDefault(Default);
     if (v15)
     {
@@ -196,12 +196,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [(MFMessageTextAttachment *)self textEncodingGuess];
-  v10 = v9;
+  textEncodingGuess = [(MFMessageTextAttachment *)self textEncodingGuess];
+  v10 = textEncodingGuess;
   v11 = @"UTF-8";
-  if (v9)
+  if (textEncodingGuess)
   {
-    v11 = v9;
+    v11 = textEncodingGuess;
   }
 
   v12 = v11;

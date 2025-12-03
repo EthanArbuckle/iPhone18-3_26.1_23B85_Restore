@@ -1,6 +1,6 @@
 @interface SXQuickLookService
 - (SXQuickLookService)init;
-- (void)fetchThumbnailForFile:(id)a3 size:(CGSize)a4 onCompletion:(id)a5 onError:(id)a6;
+- (void)fetchThumbnailForFile:(id)file size:(CGSize)size onCompletion:(id)completion onError:(id)error;
 @end
 
 @implementation SXQuickLookService
@@ -20,31 +20,31 @@
   return v2;
 }
 
-- (void)fetchThumbnailForFile:(id)a3 size:(CGSize)a4 onCompletion:(id)a5 onError:(id)a6
+- (void)fetchThumbnailForFile:(id)file size:(CGSize)size onCompletion:(id)completion onError:(id)error
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a5;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  errorCopy = error;
   v13 = MEMORY[0x1E697A0E0];
-  v14 = a3;
+  fileCopy = file;
   v15 = [v13 alloc];
-  v16 = [v14 fileURL];
+  fileURL = [fileCopy fileURL];
 
-  v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v17 scale];
-  v19 = [v15 initWithFileAtURL:v16 size:-1 scale:width representationTypes:{height, v18}];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v19 = [v15 initWithFileAtURL:fileURL size:-1 scale:width representationTypes:{height, v18}];
 
-  v20 = [(SXQuickLookService *)self generator];
+  generator = [(SXQuickLookService *)self generator];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __70__SXQuickLookService_fetchThumbnailForFile_size_onCompletion_onError___block_invoke;
   v23[3] = &unk_1E8501C00;
-  v24 = v11;
-  v25 = v12;
-  v21 = v12;
-  v22 = v11;
-  [v20 generateBestRepresentationForRequest:v19 completionHandler:v23];
+  v24 = completionCopy;
+  v25 = errorCopy;
+  v21 = errorCopy;
+  v22 = completionCopy;
+  [generator generateBestRepresentationForRequest:v19 completionHandler:v23];
 }
 
 void __70__SXQuickLookService_fetchThumbnailForFile_size_onCompletion_onError___block_invoke(uint64_t a1, void *a2)

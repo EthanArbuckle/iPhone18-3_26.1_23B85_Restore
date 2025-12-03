@@ -2,17 +2,17 @@
 + (id)allowedClasses;
 - (BOOL)PCSMigrationComplete;
 - (BOOL)shouldPerformPCSMigration;
-- (BRCClientState)initWithDictionary:(id)a3 clientStateData:(id)a4 scheduleFlushBlock:(id)a5;
+- (BRCClientState)initWithDictionary:(id)dictionary clientStateData:(id)data scheduleFlushBlock:(id)block;
 - (id)_prepareToSaveStateData;
 - (id)_stateToData;
 - (id)dataPendingSave;
 - (id)description;
 - (id)dictionary;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)scheduleFlush;
-- (void)setNeedsPCSMigration:(BOOL)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObjectAndScheduleFlush:(id)a3 forKey:(id)a4;
+- (void)setNeedsPCSMigration:(BOOL)migration;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObjectAndScheduleFlush:(id)flush forKey:(id)key;
 @end
 
 @implementation BRCClientState
@@ -56,8 +56,8 @@
     }
 
     brc_append_system_info_to_message();
-    v9 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    __assert_rtn("[BRCClientState _stateToData]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCClientState.m", 57, v9);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    __assert_rtn("[BRCClientState _stateToData]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCClientState.m", 57, uTF8String);
   }
 
   return v4;
@@ -67,8 +67,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(BRCClientState *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@ %p, %@>", v4, self, v5];
+  dictionary = [(BRCClientState *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@ %p, %@>", v4, self, dictionary];
 
   return v6;
 }
@@ -113,41 +113,41 @@ uint64_t __28__BRCClientState_dictionary__block_invoke(uint64_t a1)
   }
 
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 shouldPreparePCSMigration];
+  shouldPreparePCSMigration = [v3 shouldPreparePCSMigration];
 
-  return v4;
+  return shouldPreparePCSMigration;
 }
 
 - (BOOL)PCSMigrationComplete
 {
   v2 = [(BRCClientState *)self objectForKeyedSubscript:@"hasCompletedPCSMigration"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setNeedsPCSMigration:(BOOL)a3
+- (void)setNeedsPCSMigration:(BOOL)migration
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:!a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:!migration];
   [(BRCClientState *)self setObjectAndScheduleFlush:v4 forKey:@"hasCompletedPCSMigration"];
 }
 
-- (BRCClientState)initWithDictionary:(id)a3 clientStateData:(id)a4 scheduleFlushBlock:(id)a5
+- (BRCClientState)initWithDictionary:(id)dictionary clientStateData:(id)data scheduleFlushBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  dataCopy = data;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = BRCClientState;
   v11 = [(BRCClientState *)&v21 init];
   if (v11)
   {
-    if (!v8)
+    if (!dictionaryCopy)
     {
-      v8 = MEMORY[0x277CBEC10];
+      dictionaryCopy = MEMORY[0x277CBEC10];
     }
 
-    v12 = [v8 mutableCopy];
+    v12 = [dictionaryCopy mutableCopy];
     dict = v11->_dict;
     v11->_dict = v12;
 
@@ -158,16 +158,16 @@ uint64_t __28__BRCClientState_dictionary__block_invoke(uint64_t a1)
     queue = v11->_queue;
     v11->_queue = v16;
 
-    v18 = MEMORY[0x22AA4A310](v10);
+    v18 = MEMORY[0x22AA4A310](blockCopy);
     scheduleFlushBlock = v11->_scheduleFlushBlock;
     v11->_scheduleFlushBlock = v18;
 
-    if (!v9)
+    if (!dataCopy)
     {
       v11->_needsSave = 1;
     }
 
-    objc_storeStrong(&v11->_originalState, a4);
+    objc_storeStrong(&v11->_originalState, data);
   }
 
   return v11;
@@ -205,9 +205,9 @@ uint64_t __33__BRCClientState_dataPendingSave__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -219,10 +219,10 @@ uint64_t __33__BRCClientState_dataPendingSave__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__BRCClientState_objectForKey___block_invoke;
   block[3] = &unk_278500D08;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -241,26 +241,26 @@ uint64_t __31__BRCClientState_objectForKey___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__BRCClientState_setObject_forKey___block_invoke;
   block[3] = &unk_2784FF4A0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = objectCopy;
+  v9 = objectCopy;
+  v10 = keyCopy;
   dispatch_async(queue, block);
 }
 
-- (void)setObjectAndScheduleFlush:(id)a3 forKey:(id)a4
+- (void)setObjectAndScheduleFlush:(id)flush forKey:(id)key
 {
-  [(BRCClientState *)self setObject:a3 forKey:a4];
+  [(BRCClientState *)self setObject:flush forKey:key];
 
   [(BRCClientState *)self scheduleFlush];
 }

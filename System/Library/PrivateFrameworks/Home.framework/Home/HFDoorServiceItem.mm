@@ -1,17 +1,17 @@
 @interface HFDoorServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
 @end
 
 @implementation HFDoorServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  optionsCopy = options;
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v16[0] = @"title";
-  v6 = HFItemOptionalLocalizedString(@"HFControlShortTitleDoorState", v4);
+  v6 = HFItemOptionalLocalizedString(@"HFControlShortTitleDoorState", optionsCopy);
 
   v17[0] = v6;
   v17[1] = MEMORY[0x277CBEC38];
@@ -21,7 +21,7 @@
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
   v8 = [HFIncrementalStateControlItem alloc];
-  v9 = [(HFIncrementalStateControlItem *)v8 initWithValueSource:v5 incrementalAndPrimaryCharacteristicType:*MEMORY[0x277CCFB50] displayResults:v7];
+  v9 = [(HFIncrementalStateControlItem *)v8 initWithValueSource:controlItemValueSourceForPrimaryService incrementalAndPrimaryCharacteristicType:*MEMORY[0x277CCFB50] displayResults:v7];
   v10 = MEMORY[0x277CBEB98];
   v15 = v9;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
@@ -32,7 +32,7 @@
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
@@ -41,11 +41,11 @@
   v15[1] = v5;
   v15[2] = *MEMORY[0x277CCF9A0];
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
+  optionsCopy = options;
   v8 = [v6 arrayWithObjects:v15 count:3];
   v9 = [v4 setWithArray:v8];
 
-  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:v7];
+  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:optionsCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;

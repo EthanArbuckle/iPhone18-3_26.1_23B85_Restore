@@ -1,22 +1,22 @@
 @interface PKAccountWebServiceTransferEligibilityResponse
-- (PKAccountWebServiceTransferEligibilityResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5;
+- (PKAccountWebServiceTransferEligibilityResponse)initWithData:(id)data account:(id)account request:(id)request;
 @end
 
 @implementation PKAccountWebServiceTransferEligibilityResponse
 
-- (PKAccountWebServiceTransferEligibilityResponse)initWithData:(id)a3 account:(id)a4 request:(id)a5
+- (PKAccountWebServiceTransferEligibilityResponse)initWithData:(id)data account:(id)account request:(id)request
 {
   v13.receiver = self;
   v13.super_class = PKAccountWebServiceTransferEligibilityResponse;
-  v5 = [(PKWebServiceResponse *)&v13 initWithData:a3, a4, a5];
-  v6 = v5;
-  if (v5)
+  request = [(PKWebServiceResponse *)&v13 initWithData:data, account, request];
+  v6 = request;
+  if (request)
   {
-    v7 = [(PKWebServiceResponse *)v5 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)request JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v7;
+      v8 = jSONObject;
       v9 = [v8 PKStringForKey:@"eligibility"];
       v6->_eligibility = PKAccountTransferEligibilityFromString(v9);
 

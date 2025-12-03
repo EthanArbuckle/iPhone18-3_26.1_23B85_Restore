@@ -1,92 +1,92 @@
 @interface MTLCountersTraceComputeCommandEncoder
-- (id)init:(BinaryBuffer *)a3;
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5;
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4;
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4;
-- (void)memoryBarrierWithScope:(unint64_t)a3;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setComputePipelineState:(id)a3;
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6;
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)updateFence:(id)a3;
-- (void)useHeap:(id)a3;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useResource:(id)a3 usage:(unint64_t)a4;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)waitForFence:(id)a3;
+- (id)init:(BinaryBuffer *)init;
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count;
+- (void)memoryBarrierWithScope:(unint64_t)scope;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBufferOffset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setComputePipelineState:(id)state;
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)updateFence:(id)fence;
+- (void)useHeap:(id)heap;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useResource:(id)resource usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation MTLCountersTraceComputeCommandEncoder
 
-- (id)init:(BinaryBuffer *)a3
+- (id)init:(BinaryBuffer *)init
 {
   v4.receiver = self;
   v4.super_class = MTLCountersTraceComputeCommandEncoder;
-  return [(MTLCountersTraceCommandEncoder *)&v4 init:a3 flags:2];
+  return [(MTLCountersTraceCommandEncoder *)&v4 init:init flags:2];
 }
 
-- (void)dispatchThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerThreadgroup:(id *)a5
+- (void)dispatchThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerThreadgroup:(id *)threadgroup
 {
-  v5 = a4;
-  v6 = a3;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,MTLSize>(self->super._stream, 24, self->super._timer, &v6, &v5, a5);
+  offsetCopy = offset;
+  bufferCopy = buffer;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,MTLSize>(self->super._stream, 24, self->super._timer, &bufferCopy, &offsetCopy, threadgroup);
 }
 
-- (void)dispatchThreadsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4
+- (void)dispatchThreadsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 26, self->super._timer, &v5, &v4);
+  offsetCopy = offset;
+  bufferCopy = buffer;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 26, self->super._timer, &bufferCopy, &offsetCopy);
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v5 = a5;
-  v6 = a4;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long>(self->super._stream, 27, self->super._timer, &v7, &v6, &v5);
+  bufferCopy = buffer;
+  indexCopy = index;
+  offsetCopy = offset;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long>(self->super._stream, 27, self->super._timer, &bufferCopy, &offsetCopy, &indexCopy);
 }
 
-- (void)setBufferOffset:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setBufferOffset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<unsigned long,unsigned long>(self->super._stream, 28, self->super._timer, &v5, &v4);
+  indexCopy = index;
+  offsetCopy = offset;
+  BinaryBuffer::Append<unsigned long,unsigned long>(self->super._stream, 28, self->super._timer, &offsetCopy, &indexCopy);
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  v9 = a5;
+  rangeCopy = range;
   timer = self->super._timer;
   stream = self->super._stream;
-  v8[0] = a3;
-  v8[1] = a5.length;
-  v7[0] = a4;
-  v7[1] = a5.length;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto9MTLBuffer}* const>,BinaryBuffer::Array<unsigned long const>,_NSRange>(stream, 29, timer, v8, v7, &v9);
+  v8[0] = buffers;
+  v8[1] = range.length;
+  v7[0] = offsets;
+  v7[1] = range.length;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto9MTLBuffer}* const>,BinaryBuffer::Array<unsigned long const>,_NSRange>(stream, 29, timer, v8, v7, &rangeCopy);
 }
 
-- (void)setBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v5 = a5;
-  v6 = a4;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long>(self->super._stream, 30, self->super._timer, &v7, &v6, &v5);
+  bytesCopy = bytes;
+  indexCopy = index;
+  lengthCopy = length;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long>(self->super._stream, 30, self->super._timer, &bytesCopy, &lengthCopy, &indexCopy);
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
   v15[2] = *MEMORY[0x277D85DE8];
   timer = self->super._timer;
@@ -94,7 +94,7 @@
   v15[1] = v15;
   __src = 7937;
   v9 = 109;
-  v10 = a3;
+  stateCopy = state;
   numer = stream->_timebase.numer;
   denom = stream->_timebase.denom;
   v11 = -108;
@@ -105,69 +105,69 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 32, self->super._timer, &v5, &v4);
+  indexCopy = index;
+  stateCopy = state;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 32, self->super._timer, &stateCopy, &indexCopy);
 }
 
-- (void)setSamplerState:(id)a3 lodMinClamp:(float)a4 lodMaxClamp:(float)a5 atIndex:(unint64_t)a6
+- (void)setSamplerState:(id)state lodMinClamp:(float)clamp lodMaxClamp:(float)maxClamp atIndex:(unint64_t)index
 {
-  v9 = a3;
-  v8 = a4;
-  v7 = a5;
-  v6 = a6;
-  BinaryBuffer::Append<objc_object  {objcproto15MTLSamplerState}*,float,float,unsigned long>(self->super._stream, 33, self->super._timer, &v9, &v8, &v7, &v6);
+  stateCopy = state;
+  clampCopy = clamp;
+  maxClampCopy = maxClamp;
+  indexCopy = index;
+  BinaryBuffer::Append<objc_object  {objcproto15MTLSamplerState}*,float,float,unsigned long>(self->super._stream, 33, self->super._timer, &stateCopy, &clampCopy, &maxClampCopy, &indexCopy);
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  v7 = a4;
+  rangeCopy = range;
   timer = self->super._timer;
   stream = self->super._stream;
-  v6[0] = a3;
-  v6[1] = a4.length;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 34, timer, v6, &v7);
+  v6[0] = states;
+  v6[1] = range.length;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 34, timer, v6, &rangeCopy);
 }
 
-- (void)setSamplerStates:(const void *)a3 lodMinClamps:(const float *)a4 lodMaxClamps:(const float *)a5 withRange:(_NSRange)a6
+- (void)setSamplerStates:(const void *)states lodMinClamps:(const float *)clamps lodMaxClamps:(const float *)maxClamps withRange:(_NSRange)range
 {
-  v11 = a6;
-  v9 = a5;
-  v10 = a4;
+  rangeCopy = range;
+  maxClampsCopy = maxClamps;
+  clampsCopy = clamps;
   timer = self->super._timer;
   stream = self->super._stream;
-  v8[0] = a3;
-  v8[1] = a6.length;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,float const*,float const,_NSRange>(stream, 35, timer, v8, &v10, &v9, &v11);
+  v8[0] = states;
+  v8[1] = range.length;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,float const*,float const,_NSRange>(stream, 35, timer, v8, &clampsCopy, &maxClampsCopy, &rangeCopy);
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 37, self->super._timer, &v5, &v4);
+  indexCopy = index;
+  textureCopy = texture;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 37, self->super._timer, &textureCopy, &indexCopy);
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  v7 = a4;
+  rangeCopy = range;
   timer = self->super._timer;
   stream = self->super._stream;
-  v6[0] = a3;
-  v6[1] = a4.length;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 38, timer, v6, &v7);
+  v6[0] = textures;
+  v6[1] = range.length;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 38, timer, v6, &rangeCopy);
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<unsigned long,unsigned long>(self->super._stream, 39, self->super._timer, &v5, &v4);
+  indexCopy = index;
+  lengthCopy = length;
+  BinaryBuffer::Append<unsigned long,unsigned long>(self->super._stream, 39, self->super._timer, &lengthCopy, &indexCopy);
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   v15[2] = *MEMORY[0x277D85DE8];
   timer = self->super._timer;
@@ -175,7 +175,7 @@
   v15[1] = v15;
   __src = 29697;
   v9 = 109;
-  v10 = a3;
+  fenceCopy = fence;
   numer = stream->_timebase.numer;
   denom = stream->_timebase.denom;
   v11 = -108;
@@ -186,7 +186,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   v15[2] = *MEMORY[0x277D85DE8];
   timer = self->super._timer;
@@ -194,7 +194,7 @@
   v15[1] = v15;
   __src = 32257;
   v9 = 109;
-  v10 = a3;
+  fenceCopy = fence;
   numer = stream->_timebase.numer;
   denom = stream->_timebase.denom;
   v11 = -108;
@@ -205,7 +205,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
   v15[2] = *MEMORY[0x277D85DE8];
   timer = self->super._timer;
@@ -213,7 +213,7 @@
   v15[1] = v15;
   __src = 30209;
   v9 = 109;
-  v10 = a3;
+  heapCopy = heap;
   numer = stream->_timebase.numer;
   denom = stream->_timebase.denom;
   v11 = -108;
@@ -224,35 +224,35 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
-  v7 = a4;
+  countCopy = count;
   timer = self->super._timer;
   stream = self->super._stream;
-  v6[0] = a3;
-  v6[1] = a4;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto7MTLHeap}* const>,unsigned long>(stream, 120, timer, v6, &v7);
+  v6[0] = heaps;
+  v6[1] = count;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto7MTLHeap}* const>,unsigned long>(stream, 120, timer, v6, &countCopy);
 }
 
-- (void)useResource:(id)a3 usage:(unint64_t)a4
+- (void)useResource:(id)resource usage:(unint64_t)usage
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 122, self->super._timer, &v5, &v4);
+  usageCopy = usage;
+  resourceCopy = resource;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 122, self->super._timer, &resourceCopy, &usageCopy);
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
-  v9 = a4;
-  v7[1] = a4;
-  v8 = a5;
+  countCopy = count;
+  v7[1] = count;
+  usageCopy = usage;
   timer = self->super._timer;
   stream = self->super._stream;
-  v7[0] = a3;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto11MTLResource}* const>,unsigned long,unsigned long>(stream, 124, timer, v7, &v9, &v8);
+  v7[0] = resources;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto11MTLResource}* const>,unsigned long,unsigned long>(stream, 124, timer, v7, &countCopy, &usageCopy);
 }
 
-- (void)memoryBarrierWithScope:(unint64_t)a3
+- (void)memoryBarrierWithScope:(unint64_t)scope
 {
   v15[2] = *MEMORY[0x277D85DE8];
   timer = self->super._timer;
@@ -260,7 +260,7 @@
   v15[1] = v15;
   __src = 10241;
   v9 = 100;
-  v10 = a3;
+  scopeCopy = scope;
   numer = stream->_timebase.numer;
   denom = stream->_timebase.denom;
   v11 = -108;
@@ -271,48 +271,48 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)memoryBarrierWithResources:(const void *)a3 count:(unint64_t)a4
+- (void)memoryBarrierWithResources:(const void *)resources count:(unint64_t)count
 {
-  v7 = a4;
+  countCopy = count;
   timer = self->super._timer;
   stream = self->super._stream;
-  v6[0] = a3;
-  v6[1] = a4;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto7MTLHeap}* const>,unsigned long>(stream, 41, timer, v6, &v7);
+  v6[0] = resources;
+  v6[1] = count;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto7MTLHeap}* const>,unsigned long>(stream, 41, timer, v6, &countCopy);
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 108, self->super._timer, &v5, &v4);
+  indexCopy = index;
+  tableCopy = table;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 108, self->super._timer, &tableCopy, &indexCopy);
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  v7 = a4;
+  rangeCopy = range;
   timer = self->super._timer;
   stream = self->super._stream;
-  v6[0] = a3;
-  v6[1] = a4.length;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 109, timer, v6, &v7);
+  v6[0] = tables;
+  v6[1] = range.length;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 109, timer, v6, &rangeCopy);
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  v4 = a4;
-  v5 = a3;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 110, self->super._timer, &v5, &v4);
+  indexCopy = index;
+  tableCopy = table;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 110, self->super._timer, &tableCopy, &indexCopy);
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  v7 = a4;
+  rangeCopy = range;
   timer = self->super._timer;
   stream = self->super._stream;
-  v6[0] = a3;
-  v6[1] = a4.length;
-  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 111, timer, v6, &v7);
+  v6[0] = tables;
+  v6[1] = range.length;
+  BinaryBuffer::Append<BinaryBuffer::Array<objc_object  {objcproto15MTLSamplerState}* const>,_NSRange>(stream, 111, timer, v6, &rangeCopy);
 }
 
 @end

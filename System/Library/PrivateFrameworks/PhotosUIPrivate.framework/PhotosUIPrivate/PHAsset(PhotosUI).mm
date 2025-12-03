@@ -45,12 +45,12 @@ LABEL_3:
         objc_enumerationMutation(v3);
       }
 
-      v11 = [*(*(&v13 + 1) + 8 * v9) mediaType];
-      v6 = v11;
+      mediaType = [*(*(&v13 + 1) + 8 * v9) mediaType];
+      v6 = mediaType;
       if ((v8 & 1) == 0)
       {
         v6 = v10;
-        if (v11 != v10)
+        if (mediaType != v10)
         {
           break;
         }
@@ -115,7 +115,7 @@ LABEL_12:
 + (id)pu_typeStringForAssets:()PhotosUI
 {
   v4 = a3;
-  v5 = [a1 pu_typeStringForMediaType:{objc_msgSend(a1, "_pu_mediaTypeForAssets:", v4)}];
+  v5 = [self pu_typeStringForMediaType:{objc_msgSend(self, "_pu_mediaTypeForAssets:", v4)}];
   v6 = [v4 count];
 
   if (v6 != 1)

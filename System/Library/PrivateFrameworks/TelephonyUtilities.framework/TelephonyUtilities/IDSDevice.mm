@@ -1,11 +1,11 @@
 @interface IDSDevice
 + (BOOL)pairedDeviceUniqueIDOverrideExists;
 + (id)pairedDeviceUniqueIDOverride;
-- (BOOL)canReceiveMessagesForCallProvider:(id)a3;
+- (BOOL)canReceiveMessagesForCallProvider:(id)provider;
 - (BOOL)canReceiveRelayedCalls;
 - (BOOL)canReceiveRelayedGFTCalls;
 - (BOOL)isAudioAccessoryDevice;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPairedDevice;
 - (BOOL)isWatchDevice;
 - (BOOL)supportsRelayCallingWithoutLocalRelayCallingEnabled;
@@ -13,7 +13,7 @@
 - (BOOL)supportsUserDrivenCallActivation;
 - (NSArray)csd_aliasStrings;
 - (NSString)csd_localizedDeviceCategory;
-- (id)csd_destinationForAlias:(id)a3;
+- (id)csd_destinationForAlias:(id)alias;
 - (id)normalizedDeviceType;
 @end
 
@@ -21,8 +21,8 @@
 
 - (BOOL)canReceiveRelayedCalls
 {
-  v3 = [(IDSDevice *)self uniqueIDOverride];
-  if (([TUCallCapabilities isRelayCallingEnabledForDeviceWithID:v3]& 1) != 0)
+  uniqueIDOverride = [(IDSDevice *)self uniqueIDOverride];
+  if (([TUCallCapabilities isRelayCallingEnabledForDeviceWithID:uniqueIDOverride]& 1) != 0)
   {
     v4 = 1;
   }
@@ -73,9 +73,9 @@ LABEL_6:
     return 1;
   }
 
-  v4 = [objc_opt_class() pairedDeviceUniqueIDOverride];
-  v5 = [(IDSDevice *)self uniqueIDOverride];
-  v6 = [v4 isEqualToString:v5];
+  pairedDeviceUniqueIDOverride = [objc_opt_class() pairedDeviceUniqueIDOverride];
+  uniqueIDOverride = [(IDSDevice *)self uniqueIDOverride];
+  v6 = [pairedDeviceUniqueIDOverride isEqualToString:uniqueIDOverride];
 
   return v6;
 }
@@ -94,30 +94,30 @@ LABEL_6:
 
 - (BOOL)isAudioAccessoryDevice
 {
-  v2 = [(IDSDevice *)self modelIdentifier];
-  v3 = [v2 hasPrefix:@"AudioAccessory"];
+  modelIdentifier = [(IDSDevice *)self modelIdentifier];
+  v3 = [modelIdentifier hasPrefix:@"AudioAccessory"];
 
   return v3;
 }
 
 + (BOOL)pairedDeviceUniqueIDOverrideExists
 {
-  v2 = [a1 pairedDeviceUniqueIDOverride];
-  v3 = v2 != 0;
+  pairedDeviceUniqueIDOverride = [self pairedDeviceUniqueIDOverride];
+  v3 = pairedDeviceUniqueIDOverride != 0;
 
   return v3;
 }
 
 - (id)normalizedDeviceType
 {
-  v2 = [(IDSDevice *)self modelIdentifier];
-  if ([v2 rangeOfString:@"iPod"] == 0x7FFFFFFFFFFFFFFFLL)
+  modelIdentifier = [(IDSDevice *)self modelIdentifier];
+  if ([modelIdentifier rangeOfString:@"iPod"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v2 rangeOfString:@"iPad"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([modelIdentifier rangeOfString:@"iPad"] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ([v2 rangeOfString:@"iPhone"] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([modelIdentifier rangeOfString:@"iPhone"] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v2 rangeOfString:@"Mac"] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([modelIdentifier rangeOfString:@"Mac"] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v3 = &stru_100631E68;
         }
@@ -151,7 +151,7 @@ LABEL_6:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v2;
+      v7 = modelIdentifier;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[WARN] Couldn't identify device type based on model identifier (%@)", &v6, 0xCu);
     }
   }
@@ -179,16 +179,16 @@ LABEL_6:
 
 - (NSArray)csd_aliasStrings
 {
-  v2 = [(IDSDevice *)self identities];
-  v3 = [v2 __imArrayByApplyingBlock:&stru_10061F078];
+  identities = [(IDSDevice *)self identities];
+  v3 = [identities __imArrayByApplyingBlock:&stru_10061F078];
 
   return v3;
 }
 
-- (id)csd_destinationForAlias:(id)a3
+- (id)csd_destinationForAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(IDSDevice *)self pushToken];
+  aliasCopy = alias;
+  pushToken = [(IDSDevice *)self pushToken];
   v6 = IDSCopyBestGuessIDForID();
 
   v7 = IDSCopyIDForTokenWithID();
@@ -198,8 +198,8 @@ LABEL_6:
 
 - (BOOL)isWatchDevice
 {
-  v2 = [(IDSDevice *)self modelIdentifier];
-  v3 = [v2 hasPrefix:@"Watch"];
+  modelIdentifier = [(IDSDevice *)self modelIdentifier];
+  v3 = [modelIdentifier hasPrefix:@"Watch"];
 
   return v3;
 }
@@ -224,61 +224,61 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(IDSDevice *)self capabilities];
-  v4 = [v3 valueForCapability:IDSRegistrationPropertySupportsGFTRelay] != 0;
+  capabilities = [(IDSDevice *)self capabilities];
+  v4 = [capabilities valueForCapability:IDSRegistrationPropertySupportsGFTRelay] != 0;
 
   return v4;
 }
 
 - (BOOL)supportsUserDrivenCallActivation
 {
-  v2 = [(IDSDevice *)self capabilities];
-  v3 = [v2 valueForCapability:@"supports-user-driven-call-activation"] != 0;
+  capabilities = [(IDSDevice *)self capabilities];
+  v3 = [capabilities valueForCapability:@"supports-user-driven-call-activation"] != 0;
 
   return v3;
 }
 
-- (BOOL)canReceiveMessagesForCallProvider:(id)a3
+- (BOOL)canReceiveMessagesForCallProvider:(id)provider
 {
-  v4 = a3;
-  if ([v4 isTelephonyProvider])
+  providerCopy = provider;
+  if ([providerCopy isTelephonyProvider])
   {
     goto LABEL_2;
   }
 
-  if ([v4 isFaceTimeProvider])
+  if ([providerCopy isFaceTimeProvider])
   {
     if (![(IDSDevice *)self isPairedDevice]&& ![(IDSDevice *)self isAudioAccessoryDevice])
     {
 LABEL_9:
-      v5 = 0;
+      canReceiveRelayedCalls = 0;
       goto LABEL_10;
     }
   }
 
-  else if (![v4 isTinCanProvider] || !-[IDSDevice isPairedDevice](self, "isPairedDevice"))
+  else if (![providerCopy isTinCanProvider] || !-[IDSDevice isPairedDevice](self, "isPairedDevice"))
   {
     goto LABEL_9;
   }
 
 LABEL_2:
-  v5 = [(IDSDevice *)self canReceiveRelayedCalls];
+  canReceiveRelayedCalls = [(IDSDevice *)self canReceiveRelayedCalls];
 LABEL_10:
 
-  return v5;
+  return canReceiveRelayedCalls;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IDSDevice *)self uniqueIDOverride];
-    v7 = [v5 uniqueIDOverride];
+    v5 = equalCopy;
+    uniqueIDOverride = [(IDSDevice *)self uniqueIDOverride];
+    uniqueIDOverride2 = [v5 uniqueIDOverride];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [uniqueIDOverride isEqualToString:uniqueIDOverride2];
   }
 
   else

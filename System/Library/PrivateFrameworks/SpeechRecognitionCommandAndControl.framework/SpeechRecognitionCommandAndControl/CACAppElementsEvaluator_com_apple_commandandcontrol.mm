@@ -1,12 +1,12 @@
 @interface CACAppElementsEvaluator_com_apple_commandandcontrol
-- (id)actionableAXElementsFromAXElements:(id)a3;
+- (id)actionableAXElementsFromAXElements:(id)elements;
 @end
 
 @implementation CACAppElementsEvaluator_com_apple_commandandcontrol
 
-- (id)actionableAXElementsFromAXElements:(id)a3
+- (id)actionableAXElementsFromAXElements:(id)elements
 {
-  v3 = [a3 copy];
+  v3 = [elements copy];
 
   return v3;
 }

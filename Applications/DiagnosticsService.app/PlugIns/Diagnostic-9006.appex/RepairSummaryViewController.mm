@@ -1,15 +1,15 @@
 @interface RepairSummaryViewController
 - (BOOL)shouldPresentInHostApp;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancel;
-- (void)cancelTapped:(id)a3;
-- (void)continueTapped:(id)a3;
-- (void)endTestWithStatusCode:(int64_t)a3 error:(id)a4;
-- (void)handleButtonEvent:(unint64_t)a3;
+- (void)cancelTapped:(id)tapped;
+- (void)continueTapped:(id)tapped;
+- (void)endTestWithStatusCode:(int64_t)code error:(id)error;
+- (void)handleButtonEvent:(unint64_t)event;
 - (void)initRepairSummaryTable;
 - (void)moveToNextViewController;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 - (void)updateViewWithRepairSummary;
@@ -18,30 +18,30 @@
 
 @implementation RepairSummaryViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "[RepairSummaryViewController setupWithInputs:responder:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = inputsCopy;
     *&buf[22] = 2112;
-    v30 = v7;
+    v30 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", buf, 0x20u);
   }
 
-  [(RepairSummaryViewController *)self setInputs:v6];
-  v9 = [(RepairSummaryViewController *)self inputs];
-  v10 = v9 == 0;
+  [(RepairSummaryViewController *)self setInputs:inputsCopy];
+  inputs = [(RepairSummaryViewController *)self inputs];
+  v10 = inputs == 0;
 
   if (v10)
   {
-    v11 = [(RepairSummaryViewController *)self result];
-    [v11 setStatusCode:&off_10000C8F8];
+    result = [(RepairSummaryViewController *)self result];
+    [result setStatusCode:&off_10000C8F8];
 
     [(RepairSummaryViewController *)self setFinished:1];
   }
@@ -61,8 +61,8 @@
       sub_10000505C();
     }
 
-    v14 = [(RepairSummaryViewController *)self result];
-    [v14 setStatusCode:&off_10000C910];
+    result2 = [(RepairSummaryViewController *)self result];
+    [result2 setStatusCode:&off_10000C910];
 
     [(RepairSummaryViewController *)self setFinished:1];
   }
@@ -88,8 +88,8 @@
   v17 = objc_opt_new();
   [(RepairSummaryViewController *)self setButtonEventMonitor:v17];
 
-  v18 = [(RepairSummaryViewController *)self buttonEventMonitor];
-  LODWORD(v17) = v18 == 0;
+  buttonEventMonitor = [(RepairSummaryViewController *)self buttonEventMonitor];
+  LODWORD(v17) = buttonEventMonitor == 0;
 
   if (v17)
   {
@@ -99,20 +99,20 @@
       sub_100005090();
     }
 
-    v20 = [(RepairSummaryViewController *)self result];
-    [v20 setStatusCode:&off_10000C910];
+    result3 = [(RepairSummaryViewController *)self result];
+    [result3 setStatusCode:&off_10000C910];
 
     [(RepairSummaryViewController *)self setFinished:1];
   }
 
   objc_initWeak(buf, self);
-  v21 = [(RepairSummaryViewController *)self buttonEventMonitor];
+  buttonEventMonitor2 = [(RepairSummaryViewController *)self buttonEventMonitor];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000172C;
   v23[3] = &unk_10000C2A0;
   objc_copyWeak(&v24, buf);
-  [v21 startWithPriority:200 completion:v23];
+  [buttonEventMonitor2 startWithPriority:200 completion:v23];
 
   v22 = dispatch_semaphore_create(0);
   [(RepairSummaryViewController *)self setUiNeededKnownSemaphore:v22];
@@ -124,8 +124,8 @@
 
 - (void)start
 {
-  v3 = [(RepairSummaryViewController *)self result];
-  [v3 setStatusCode:&off_10000C928];
+  result = [(RepairSummaryViewController *)self result];
+  [result setStatusCode:&off_10000C928];
 
   v4 = MGGetBoolAnswer();
   v5 = MGGetBoolAnswer();
@@ -142,8 +142,8 @@
       v11 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
       v12 = [NSError errorWithDomain:v10 code:-72 userInfo:v11];
 
-      v13 = [(RepairSummaryViewController *)self uiNeededKnownSemaphore];
-      dispatch_semaphore_signal(v13);
+      uiNeededKnownSemaphore = [(RepairSummaryViewController *)self uiNeededKnownSemaphore];
+      dispatch_semaphore_signal(uiNeededKnownSemaphore);
 
       [(RepairSummaryViewController *)self endTestWithStatusCode:-72 error:v12];
     }
@@ -163,8 +163,8 @@
 
   else
   {
-    v7 = [(RepairSummaryViewController *)self uiNeededKnownSemaphore];
-    dispatch_semaphore_signal(v7);
+    uiNeededKnownSemaphore2 = [(RepairSummaryViewController *)self uiNeededKnownSemaphore];
+    dispatch_semaphore_signal(uiNeededKnownSemaphore2);
 
     [(RepairSummaryViewController *)self endTestWithStatusCode:-6 error:0];
   }
@@ -193,13 +193,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(RepairSummaryViewController *)self buttonEventMonitor];
+  buttonEventMonitor = [(RepairSummaryViewController *)self buttonEventMonitor];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000020E4;
   v5[3] = &unk_10000C2F0;
   v5[4] = self;
-  [v4 stopWithCompletion:v5];
+  [buttonEventMonitor stopWithCompletion:v5];
 }
 
 - (void)viewDidLoad
@@ -219,11 +219,11 @@
 
 - (void)initRepairSummaryTable
 {
-  v3 = [(RepairSummaryViewController *)self preflightResults];
-  v4 = [CRPreflightUtils spcResults:v3];
+  preflightResults = [(RepairSummaryViewController *)self preflightResults];
+  v4 = [CRPreflightUtils spcResults:preflightResults];
 
-  v5 = [(RepairSummaryViewController *)self preflightResults];
-  v6 = [v5 objectForKeyedSubscript:@"keyBlob"];
+  preflightResults2 = [(RepairSummaryViewController *)self preflightResults];
+  v6 = [preflightResults2 objectForKeyedSubscript:@"keyBlob"];
   [(RepairSummaryViewController *)self setPreflightRIK:v6];
 
   v7 = [v4 objectForKeyedSubscript:@"pass"];
@@ -264,8 +264,8 @@
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v18 = [(RepairSummaryViewController *)self passSPCs];
-  v19 = [v18 countByEnumeratingWithState:&v147 objects:v159 count:16];
+  passSPCs = [(RepairSummaryViewController *)self passSPCs];
+  v19 = [passSPCs countByEnumeratingWithState:&v147 objects:v159 count:16];
   if (v19)
   {
     v20 = v19;
@@ -276,43 +276,43 @@
       {
         if (*v148 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(passSPCs);
         }
 
         v23 = *(*(&v147 + 1) + 8 * i);
         v24 = [(RepairSummaryViewController *)self getComponentString:v23];
         if (v24)
         {
-          v25 = [(RepairSummaryViewController *)self tableDataText];
-          [v25 addObject:v24];
+          tableDataText = [(RepairSummaryViewController *)self tableDataText];
+          [tableDataText addObject:v24];
 
-          v26 = [(RepairSummaryViewController *)self tableDataText2];
+          tableDataText2 = [(RepairSummaryViewController *)self tableDataText2];
           v27 = +[NSBundle mainBundle];
           v28 = [v27 localizedStringForKey:@"TEXT_PASS" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-          [v26 addObject:v28];
+          [tableDataText2 addObject:v28];
 
-          v29 = [(RepairSummaryViewController *)self tableImage];
+          tableImage = [(RepairSummaryViewController *)self tableImage];
           v30 = [UIImage systemImageNamed:@"checkmark.seal.fill"];
-          [v29 addObject:v30];
+          [tableImage addObject:v30];
 
-          v31 = [(RepairSummaryViewController *)self tableImageColor];
+          tableImageColor = [(RepairSummaryViewController *)self tableImageColor];
           v32 = +[UIColor systemGreenColor];
-          [v31 addObject:v32];
+          [tableImageColor addObject:v32];
         }
 
         else
         {
-          v31 = handleForCategory();
-          if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+          tableImageColor = handleForCategory();
+          if (os_log_type_enabled(tableImageColor, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v158 = v23;
-            _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, tableImageColor, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
           }
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v147 objects:v159 count:16];
+      v20 = [passSPCs countByEnumeratingWithState:&v147 objects:v159 count:16];
     }
 
     while (v20);
@@ -322,8 +322,8 @@
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v33 = [(RepairSummaryViewController *)self failSPCs];
-  v34 = [v33 countByEnumeratingWithState:&v143 objects:v156 count:16];
+  failSPCs = [(RepairSummaryViewController *)self failSPCs];
+  v34 = [failSPCs countByEnumeratingWithState:&v143 objects:v156 count:16];
   if (v34)
   {
     v35 = v34;
@@ -334,43 +334,43 @@
       {
         if (*v144 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(failSPCs);
         }
 
         v38 = *(*(&v143 + 1) + 8 * j);
         v39 = [(RepairSummaryViewController *)self getComponentString:v38];
         if (v39)
         {
-          v40 = [(RepairSummaryViewController *)self tableDataText];
-          [v40 addObject:v39];
+          tableDataText3 = [(RepairSummaryViewController *)self tableDataText];
+          [tableDataText3 addObject:v39];
 
-          v41 = [(RepairSummaryViewController *)self tableDataText2];
+          tableDataText22 = [(RepairSummaryViewController *)self tableDataText2];
           v42 = +[NSBundle mainBundle];
           v43 = [v42 localizedStringForKey:@"TEXT_UNKNOWN" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-          [v41 addObject:v43];
+          [tableDataText22 addObject:v43];
 
-          v44 = [(RepairSummaryViewController *)self tableImage];
+          tableImage2 = [(RepairSummaryViewController *)self tableImage];
           v45 = [UIImage systemImageNamed:@"exclamationmark.triangle.fill"];
-          [v44 addObject:v45];
+          [tableImage2 addObject:v45];
 
-          v46 = [(RepairSummaryViewController *)self tableImageColor];
+          tableImageColor2 = [(RepairSummaryViewController *)self tableImageColor];
           v47 = +[UIColor systemYellowColor];
-          [v46 addObject:v47];
+          [tableImageColor2 addObject:v47];
         }
 
         else
         {
-          v46 = handleForCategory();
-          if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+          tableImageColor2 = handleForCategory();
+          if (os_log_type_enabled(tableImageColor2, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v158 = v38;
-            _os_log_error_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, tableImageColor2, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
           }
         }
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v143 objects:v156 count:16];
+      v35 = [failSPCs countByEnumeratingWithState:&v143 objects:v156 count:16];
     }
 
     while (v35);
@@ -380,8 +380,8 @@
   v142 = 0u;
   v139 = 0u;
   v140 = 0u;
-  v48 = [(RepairSummaryViewController *)self lockSPCs];
-  v49 = [v48 countByEnumeratingWithState:&v139 objects:v155 count:16];
+  lockSPCs = [(RepairSummaryViewController *)self lockSPCs];
+  v49 = [lockSPCs countByEnumeratingWithState:&v139 objects:v155 count:16];
   if (v49)
   {
     v50 = v49;
@@ -392,43 +392,43 @@
       {
         if (*v140 != v51)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(lockSPCs);
         }
 
         v53 = *(*(&v139 + 1) + 8 * k);
         v54 = [(RepairSummaryViewController *)self getComponentString:v53];
         if (v54)
         {
-          v55 = [(RepairSummaryViewController *)self tableDataText];
-          [v55 addObject:v54];
+          tableDataText4 = [(RepairSummaryViewController *)self tableDataText];
+          [tableDataText4 addObject:v54];
 
-          v56 = [(RepairSummaryViewController *)self tableDataText2];
+          tableDataText23 = [(RepairSummaryViewController *)self tableDataText2];
           v57 = +[NSBundle mainBundle];
           v58 = [v57 localizedStringForKey:@"TEXT_LOCK" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-          [v56 addObject:v58];
+          [tableDataText23 addObject:v58];
 
-          v59 = [(RepairSummaryViewController *)self tableImage];
+          tableImage3 = [(RepairSummaryViewController *)self tableImage];
           v60 = [UIImage systemImageNamed:@"lock.circle.fill"];
-          [v59 addObject:v60];
+          [tableImage3 addObject:v60];
 
-          v61 = [(RepairSummaryViewController *)self tableImageColor];
+          tableImageColor3 = [(RepairSummaryViewController *)self tableImageColor];
           v62 = +[UIColor blackColor];
-          [v61 addObject:v62];
+          [tableImageColor3 addObject:v62];
         }
 
         else
         {
-          v61 = handleForCategory();
-          if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
+          tableImageColor3 = handleForCategory();
+          if (os_log_type_enabled(tableImageColor3, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v158 = v53;
-            _os_log_error_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, tableImageColor3, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
           }
         }
       }
 
-      v50 = [v48 countByEnumeratingWithState:&v139 objects:v155 count:16];
+      v50 = [lockSPCs countByEnumeratingWithState:&v139 objects:v155 count:16];
     }
 
     while (v50);
@@ -438,8 +438,8 @@
   v138 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v63 = [(RepairSummaryViewController *)self unauthSPCs];
-  v64 = [v63 countByEnumeratingWithState:&v135 objects:v154 count:16];
+  unauthSPCs = [(RepairSummaryViewController *)self unauthSPCs];
+  v64 = [unauthSPCs countByEnumeratingWithState:&v135 objects:v154 count:16];
   if (v64)
   {
     v65 = v64;
@@ -450,43 +450,43 @@
       {
         if (*v136 != v66)
         {
-          objc_enumerationMutation(v63);
+          objc_enumerationMutation(unauthSPCs);
         }
 
         v68 = *(*(&v135 + 1) + 8 * m);
         v69 = [(RepairSummaryViewController *)self getComponentString:v68];
         if (v69)
         {
-          v70 = [(RepairSummaryViewController *)self tableDataText];
-          [v70 addObject:v69];
+          tableDataText5 = [(RepairSummaryViewController *)self tableDataText];
+          [tableDataText5 addObject:v69];
 
-          v71 = [(RepairSummaryViewController *)self tableDataText2];
+          tableDataText24 = [(RepairSummaryViewController *)self tableDataText2];
           v72 = +[NSBundle mainBundle];
           v73 = [v72 localizedStringForKey:@"TEXT_UNKNOWN" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-          [v71 addObject:v73];
+          [tableDataText24 addObject:v73];
 
-          v74 = [(RepairSummaryViewController *)self tableImage];
+          tableImage4 = [(RepairSummaryViewController *)self tableImage];
           v75 = [UIImage systemImageNamed:@"exclamationmark.triangle.fill"];
-          [v74 addObject:v75];
+          [tableImage4 addObject:v75];
 
-          v76 = [(RepairSummaryViewController *)self tableImageColor];
+          tableImageColor4 = [(RepairSummaryViewController *)self tableImageColor];
           v77 = +[UIColor systemYellowColor];
-          [v76 addObject:v77];
+          [tableImageColor4 addObject:v77];
         }
 
         else
         {
-          v76 = handleForCategory();
-          if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
+          tableImageColor4 = handleForCategory();
+          if (os_log_type_enabled(tableImageColor4, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v158 = v68;
-            _os_log_error_impl(&_mh_execute_header, v76, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, tableImageColor4, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
           }
         }
       }
 
-      v65 = [v63 countByEnumeratingWithState:&v135 objects:v154 count:16];
+      v65 = [unauthSPCs countByEnumeratingWithState:&v135 objects:v154 count:16];
     }
 
     while (v65);
@@ -496,8 +496,8 @@
   v134 = 0u;
   v131 = 0u;
   v132 = 0u;
-  v78 = [(RepairSummaryViewController *)self lostSPCs];
-  v79 = [v78 countByEnumeratingWithState:&v131 objects:v153 count:16];
+  lostSPCs = [(RepairSummaryViewController *)self lostSPCs];
+  v79 = [lostSPCs countByEnumeratingWithState:&v131 objects:v153 count:16];
   if (v79)
   {
     v80 = v79;
@@ -508,43 +508,43 @@
       {
         if (*v132 != v81)
         {
-          objc_enumerationMutation(v78);
+          objc_enumerationMutation(lostSPCs);
         }
 
         v83 = *(*(&v131 + 1) + 8 * n);
         v84 = [(RepairSummaryViewController *)self getComponentString:v83];
         if (v84)
         {
-          v85 = [(RepairSummaryViewController *)self tableDataText];
-          [v85 addObject:v84];
+          tableDataText6 = [(RepairSummaryViewController *)self tableDataText];
+          [tableDataText6 addObject:v84];
 
-          v86 = [(RepairSummaryViewController *)self tableDataText2];
+          tableDataText25 = [(RepairSummaryViewController *)self tableDataText2];
           v87 = +[NSBundle mainBundle];
           v88 = [v87 localizedStringForKey:@"TEXT_LOST" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-          [v86 addObject:v88];
+          [tableDataText25 addObject:v88];
 
-          v89 = [(RepairSummaryViewController *)self tableImage];
+          tableImage5 = [(RepairSummaryViewController *)self tableImage];
           v90 = [UIImage _systemImageNamed:@"findmy"];
-          [v89 addObject:v90];
+          [tableImage5 addObject:v90];
 
-          v91 = [(RepairSummaryViewController *)self tableImageColor];
+          tableImageColor5 = [(RepairSummaryViewController *)self tableImageColor];
           v92 = +[UIColor systemBlueColor];
-          [v91 addObject:v92];
+          [tableImageColor5 addObject:v92];
         }
 
         else
         {
-          v91 = handleForCategory();
-          if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
+          tableImageColor5 = handleForCategory();
+          if (os_log_type_enabled(tableImageColor5, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v158 = v83;
-            _os_log_error_impl(&_mh_execute_header, v91, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, tableImageColor5, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
           }
         }
       }
 
-      v80 = [v78 countByEnumeratingWithState:&v131 objects:v153 count:16];
+      v80 = [lostSPCs countByEnumeratingWithState:&v131 objects:v153 count:16];
     }
 
     while (v80);
@@ -554,8 +554,8 @@
   v130 = 0u;
   v127 = 0u;
   v128 = 0u;
-  v93 = [(RepairSummaryViewController *)self deniedSPCs];
-  v94 = [v93 countByEnumeratingWithState:&v127 objects:v152 count:16];
+  deniedSPCs = [(RepairSummaryViewController *)self deniedSPCs];
+  v94 = [deniedSPCs countByEnumeratingWithState:&v127 objects:v152 count:16];
   if (v94)
   {
     v95 = v94;
@@ -566,43 +566,43 @@
       {
         if (*v128 != v96)
         {
-          objc_enumerationMutation(v93);
+          objc_enumerationMutation(deniedSPCs);
         }
 
         v98 = *(*(&v127 + 1) + 8 * ii);
         v99 = [(RepairSummaryViewController *)self getComponentString:v98];
         if (v99)
         {
-          v100 = [(RepairSummaryViewController *)self tableDataText];
-          [v100 addObject:v99];
+          tableDataText7 = [(RepairSummaryViewController *)self tableDataText];
+          [tableDataText7 addObject:v99];
 
-          v101 = [(RepairSummaryViewController *)self tableDataText2];
+          tableDataText26 = [(RepairSummaryViewController *)self tableDataText2];
           v102 = +[NSBundle mainBundle];
           v103 = [v102 localizedStringForKey:@"TEXT_DENIED" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-          [v101 addObject:v103];
+          [tableDataText26 addObject:v103];
 
-          v104 = [(RepairSummaryViewController *)self tableImage];
+          tableImage6 = [(RepairSummaryViewController *)self tableImage];
           v105 = [UIImage _systemImageNamed:@"findmy"];
-          [v104 addObject:v105];
+          [tableImage6 addObject:v105];
 
-          v106 = [(RepairSummaryViewController *)self tableImageColor];
+          tableImageColor6 = [(RepairSummaryViewController *)self tableImageColor];
           v107 = +[UIColor systemBlueColor];
-          [v106 addObject:v107];
+          [tableImageColor6 addObject:v107];
         }
 
         else
         {
-          v106 = handleForCategory();
-          if (os_log_type_enabled(v106, OS_LOG_TYPE_ERROR))
+          tableImageColor6 = handleForCategory();
+          if (os_log_type_enabled(tableImageColor6, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v158 = v98;
-            _os_log_error_impl(&_mh_execute_header, v106, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, tableImageColor6, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
           }
         }
       }
 
-      v95 = [v93 countByEnumeratingWithState:&v127 objects:v152 count:16];
+      v95 = [deniedSPCs countByEnumeratingWithState:&v127 objects:v152 count:16];
     }
 
     while (v95);
@@ -612,8 +612,8 @@
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v108 = [(RepairSummaryViewController *)self sealedSPCs];
-  v109 = [v108 countByEnumeratingWithState:&v123 objects:v151 count:16];
+  sealedSPCs = [(RepairSummaryViewController *)self sealedSPCs];
+  v109 = [sealedSPCs countByEnumeratingWithState:&v123 objects:v151 count:16];
   if (v109)
   {
     v110 = v109;
@@ -624,42 +624,42 @@
       {
         if (*v124 != v111)
         {
-          objc_enumerationMutation(v108);
+          objc_enumerationMutation(sealedSPCs);
         }
 
         v113 = *(*(&v123 + 1) + 8 * jj);
         v114 = [(RepairSummaryViewController *)self getComponentString:v113];
         if (v114)
         {
-          v115 = [(RepairSummaryViewController *)self tableDataText];
-          [v115 addObject:v114];
+          tableDataText8 = [(RepairSummaryViewController *)self tableDataText];
+          [tableDataText8 addObject:v114];
 
-          v116 = [(RepairSummaryViewController *)self tableDataText2];
-          v117 = [NSString stringWithFormat:@"A new %@ was detected and must be repaired", v114];
-          [v116 addObject:v117];
+          tableDataText27 = [(RepairSummaryViewController *)self tableDataText2];
+          v114 = [NSString stringWithFormat:@"A new %@ was detected and must be repaired", v114];
+          [tableDataText27 addObject:v114];
 
-          v118 = [(RepairSummaryViewController *)self tableImage];
+          tableImage7 = [(RepairSummaryViewController *)self tableImage];
           v119 = [UIImage systemImageNamed:@"checkmark.seal.fill"];
-          [v118 addObject:v119];
+          [tableImage7 addObject:v119];
 
-          v120 = [(RepairSummaryViewController *)self tableImageColor];
+          tableImageColor7 = [(RepairSummaryViewController *)self tableImageColor];
           v121 = +[UIColor systemGreenColor];
-          [v120 addObject:v121];
+          [tableImageColor7 addObject:v121];
         }
 
         else
         {
-          v120 = handleForCategory();
-          if (os_log_type_enabled(v120, OS_LOG_TYPE_ERROR))
+          tableImageColor7 = handleForCategory();
+          if (os_log_type_enabled(tableImageColor7, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
             v158 = v113;
-            _os_log_error_impl(&_mh_execute_header, v120, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, tableImageColor7, OS_LOG_TYPE_ERROR, "Unknown SPC: %@", buf, 0xCu);
           }
         }
       }
 
-      v110 = [v108 countByEnumeratingWithState:&v123 objects:v151 count:16];
+      v110 = [sealedSPCs countByEnumeratingWithState:&v123 objects:v151 count:16];
     }
 
     while (v110);
@@ -686,9 +686,9 @@
   v8 = [v7 localizedStringForKey:@"TEST_DETAILS" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
   v11 = @"iphone.and.screwdriver";
-  if (v10 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v11 = @"ipad.and.screwdriver";
   }
@@ -699,85 +699,85 @@
   v13 = [[OBTableWelcomeController alloc] initWithTitle:v6 detailText:v8 symbolName:v12 adoptTableViewScrollView:1];
   [(RepairSummaryViewController *)self setContentViewController:v13];
 
-  v14 = [(RepairSummaryViewController *)self contentViewController];
-  [v14 setScrollingDisabled:0];
+  contentViewController = [(RepairSummaryViewController *)self contentViewController];
+  [contentViewController setScrollingDisabled:0];
 
-  v15 = [(RepairSummaryViewController *)self contentViewController];
-  v16 = [v15 buttonTray];
-  [v16 setHidden:0];
+  contentViewController2 = [(RepairSummaryViewController *)self contentViewController];
+  buttonTray = [contentViewController2 buttonTray];
+  [buttonTray setHidden:0];
 
   [(RepairSummaryViewController *)self initRepairSummaryTable];
   v17 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  v18 = [(RepairSummaryViewController *)self contentViewController];
-  [v18 setTableView:v17];
+  contentViewController3 = [(RepairSummaryViewController *)self contentViewController];
+  [contentViewController3 setTableView:v17];
 
   v19 = +[UIColor clearColor];
-  v20 = [(RepairSummaryViewController *)self contentViewController];
-  v21 = [v20 tableView];
-  [v21 setBackgroundColor:v19];
+  contentViewController4 = [(RepairSummaryViewController *)self contentViewController];
+  tableView = [contentViewController4 tableView];
+  [tableView setBackgroundColor:v19];
 
-  v22 = [(RepairSummaryViewController *)self contentViewController];
-  v23 = [v22 tableView];
-  [v23 setBackgroundView:0];
+  contentViewController5 = [(RepairSummaryViewController *)self contentViewController];
+  tableView2 = [contentViewController5 tableView];
+  [tableView2 setBackgroundView:0];
 
-  v24 = [(RepairSummaryViewController *)self contentViewController];
-  v25 = [v24 tableView];
-  [v25 setDelegate:self];
+  contentViewController6 = [(RepairSummaryViewController *)self contentViewController];
+  tableView3 = [contentViewController6 tableView];
+  [tableView3 setDelegate:self];
 
-  v26 = [(RepairSummaryViewController *)self contentViewController];
-  v27 = [v26 tableView];
-  [v27 setDataSource:self];
+  contentViewController7 = [(RepairSummaryViewController *)self contentViewController];
+  tableView4 = [contentViewController7 tableView];
+  [tableView4 setDataSource:self];
 
-  v28 = [(RepairSummaryViewController *)self contentViewController];
-  v29 = [v28 tableView];
-  [v29 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
+  contentViewController8 = [(RepairSummaryViewController *)self contentViewController];
+  tableView5 = [contentViewController8 tableView];
+  [tableView5 registerClass:objc_opt_class() forCellReuseIdentifier:@"Cell"];
 
-  v30 = [(RepairSummaryViewController *)self contentViewController];
-  v31 = [v30 tableView];
-  [v31 reloadData];
+  contentViewController9 = [(RepairSummaryViewController *)self contentViewController];
+  tableView6 = [contentViewController9 tableView];
+  [tableView6 reloadData];
 
   v32 = +[OBBoldTrayButton boldButton];
   [(RepairSummaryViewController *)self setBoldButton:v32];
 
-  v33 = [(RepairSummaryViewController *)self boldButton];
+  boldButton = [(RepairSummaryViewController *)self boldButton];
   v34 = +[NSBundle mainBundle];
   v35 = [v34 localizedStringForKey:@"CONTINUE" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-  [v33 setTitle:v35 forState:0];
+  [boldButton setTitle:v35 forState:0];
 
-  v36 = [(RepairSummaryViewController *)self boldButton];
-  [v36 addTarget:self action:"continueTapped:" forControlEvents:64];
+  boldButton2 = [(RepairSummaryViewController *)self boldButton];
+  [boldButton2 addTarget:self action:"continueTapped:" forControlEvents:64];
 
-  v37 = [(RepairSummaryViewController *)self contentViewController];
-  v38 = [v37 buttonTray];
-  v39 = [(RepairSummaryViewController *)self boldButton];
-  [v38 addButton:v39];
+  contentViewController10 = [(RepairSummaryViewController *)self contentViewController];
+  buttonTray2 = [contentViewController10 buttonTray];
+  boldButton3 = [(RepairSummaryViewController *)self boldButton];
+  [buttonTray2 addButton:boldButton3];
 
   v40 = +[OBLinkTrayButton linkButton];
   [(RepairSummaryViewController *)self setLinkButton:v40];
 
-  v41 = [(RepairSummaryViewController *)self linkButton];
+  linkButton = [(RepairSummaryViewController *)self linkButton];
   v42 = +[NSBundle mainBundle];
   v43 = [v42 localizedStringForKey:@"CANCEL" value:&stru_10000C3F8 table:@"RepairSummaryPlugin-Release"];
-  [v41 setTitle:v43 forState:0];
+  [linkButton setTitle:v43 forState:0];
 
-  v44 = [(RepairSummaryViewController *)self linkButton];
-  [v44 addTarget:self action:"cancelTapped:" forControlEvents:64];
+  linkButton2 = [(RepairSummaryViewController *)self linkButton];
+  [linkButton2 addTarget:self action:"cancelTapped:" forControlEvents:64];
 
-  v45 = [(RepairSummaryViewController *)self contentViewController];
-  v46 = [v45 buttonTray];
-  v47 = [(RepairSummaryViewController *)self linkButton];
-  [v46 addButton:v47];
+  contentViewController11 = [(RepairSummaryViewController *)self contentViewController];
+  buttonTray3 = [contentViewController11 buttonTray];
+  linkButton3 = [(RepairSummaryViewController *)self linkButton];
+  [buttonTray3 addButton:linkButton3];
 
-  v48 = [(RepairSummaryViewController *)self viewControllers];
-  v49 = [(RepairSummaryViewController *)self contentViewController];
-  [v48 addObject:v49];
+  viewControllers = [(RepairSummaryViewController *)self viewControllers];
+  contentViewController12 = [(RepairSummaryViewController *)self contentViewController];
+  [viewControllers addObject:contentViewController12];
 
   v90 = 0u;
   v91 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v50 = [(RepairSummaryViewController *)self failSPCs];
-  v51 = [v50 countByEnumeratingWithState:&v88 objects:v93 count:16];
+  failSPCs = [(RepairSummaryViewController *)self failSPCs];
+  v51 = [failSPCs countByEnumeratingWithState:&v88 objects:v93 count:16];
   if (v51)
   {
     v52 = v51;
@@ -789,7 +789,7 @@
       {
         if (*v89 != v53)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(failSPCs);
         }
 
         v55 = [[UnknownPartViewController alloc] initWithSPC:*(*(&v88 + 1) + 8 * v54)];
@@ -797,15 +797,15 @@
         if (v55)
         {
           [(UnknownPartViewController *)v55 setCoordinator:self];
-          v57 = [(RepairSummaryViewController *)self viewControllers];
-          [v57 addObject:v56];
+          viewControllers2 = [(RepairSummaryViewController *)self viewControllers];
+          [viewControllers2 addObject:v56];
         }
 
         v54 = v54 + 1;
       }
 
       while (v52 != v54);
-      v52 = [v50 countByEnumeratingWithState:&v88 objects:v93 count:16];
+      v52 = [failSPCs countByEnumeratingWithState:&v88 objects:v93 count:16];
     }
 
     while (v52);
@@ -815,8 +815,8 @@
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v58 = [(RepairSummaryViewController *)self unauthSPCs];
-  v59 = [v58 countByEnumeratingWithState:&v84 objects:v92 count:16];
+  unauthSPCs = [(RepairSummaryViewController *)self unauthSPCs];
+  v59 = [unauthSPCs countByEnumeratingWithState:&v84 objects:v92 count:16];
   if (v59)
   {
     v60 = v59;
@@ -828,7 +828,7 @@
       {
         if (*v85 != v61)
         {
-          objc_enumerationMutation(v58);
+          objc_enumerationMutation(unauthSPCs);
         }
 
         v63 = [[UnknownPartViewController alloc] initWithSPC:*(*(&v84 + 1) + 8 * v62)];
@@ -836,15 +836,15 @@
         if (v63)
         {
           [(UnknownPartViewController *)v63 setCoordinator:self];
-          v65 = [(RepairSummaryViewController *)self viewControllers];
-          [v65 addObject:v64];
+          viewControllers3 = [(RepairSummaryViewController *)self viewControllers];
+          [viewControllers3 addObject:v64];
         }
 
         v62 = v62 + 1;
       }
 
       while (v60 != v62);
-      v60 = [v58 countByEnumeratingWithState:&v84 objects:v92 count:16];
+      v60 = [unauthSPCs countByEnumeratingWithState:&v84 objects:v92 count:16];
     }
 
     while (v60);
@@ -853,27 +853,27 @@
   v66 = objc_opt_new();
   [(RepairSummaryViewController *)self setNavigationController:v66];
 
-  v67 = [(RepairSummaryViewController *)self view];
-  [v67 bounds];
+  view = [(RepairSummaryViewController *)self view];
+  [view bounds];
   v69 = v68;
   v71 = v70;
   v73 = v72;
   v75 = v74;
-  v76 = [(RepairSummaryViewController *)self navigationController];
-  v77 = [v76 view];
-  [v77 setFrame:{v69, v71, v73, v75}];
+  navigationController = [(RepairSummaryViewController *)self navigationController];
+  view2 = [navigationController view];
+  [view2 setFrame:{v69, v71, v73, v75}];
 
-  v78 = [(RepairSummaryViewController *)self view];
-  v79 = [(RepairSummaryViewController *)self navigationController];
-  v80 = [v79 view];
-  [v78 addSubview:v80];
+  view3 = [(RepairSummaryViewController *)self view];
+  navigationController2 = [(RepairSummaryViewController *)self navigationController];
+  view4 = [navigationController2 view];
+  [view3 addSubview:view4];
 
-  v81 = [(RepairSummaryViewController *)self navigationController];
-  [(RepairSummaryViewController *)self addChildViewController:v81];
+  navigationController3 = [(RepairSummaryViewController *)self navigationController];
+  [(RepairSummaryViewController *)self addChildViewController:navigationController3];
 
   [(RepairSummaryViewController *)self moveToNextViewController];
-  v82 = [(RepairSummaryViewController *)self navigationController];
-  [v82 didMoveToParentViewController:self];
+  navigationController4 = [(RepairSummaryViewController *)self navigationController];
+  [navigationController4 didMoveToParentViewController:self];
 }
 
 - (void)moveToNextViewController
@@ -886,8 +886,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v12, 0xCu);
   }
 
-  v4 = [(RepairSummaryViewController *)self viewControllers];
-  v5 = [v4 count];
+  viewControllers = [(RepairSummaryViewController *)self viewControllers];
+  v5 = [viewControllers count];
 
   v6 = handleForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -899,13 +899,13 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Move to next view", &v12, 2u);
     }
 
-    v8 = [(RepairSummaryViewController *)self navigationController];
-    v9 = [(RepairSummaryViewController *)self viewControllers];
-    v10 = [v9 objectAtIndexedSubscript:0];
-    [v8 pushViewController:v10 animated:1];
+    navigationController = [(RepairSummaryViewController *)self navigationController];
+    viewControllers2 = [(RepairSummaryViewController *)self viewControllers];
+    v10 = [viewControllers2 objectAtIndexedSubscript:0];
+    [navigationController pushViewController:v10 animated:1];
 
-    v11 = [(RepairSummaryViewController *)self viewControllers];
-    [v11 removeObjectAtIndex:0];
+    viewControllers3 = [(RepairSummaryViewController *)self viewControllers];
+    [viewControllers3 removeObjectAtIndex:0];
   }
 
   else
@@ -920,54 +920,54 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(RepairSummaryViewController *)self tableDataText:a3];
+  v4 = [(RepairSummaryViewController *)self tableDataText:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:v6];
-  v8 = [v7 defaultContentConfiguration];
-  v9 = [(RepairSummaryViewController *)self tableDataText];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v8 setText:v10];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:pathCopy];
+  defaultContentConfiguration = [v7 defaultContentConfiguration];
+  tableDataText = [(RepairSummaryViewController *)self tableDataText];
+  v10 = [tableDataText objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [defaultContentConfiguration setText:v10];
 
-  v11 = [(RepairSummaryViewController *)self tableDataText2];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v8 setSecondaryText:v12];
+  tableDataText2 = [(RepairSummaryViewController *)self tableDataText2];
+  v12 = [tableDataText2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [defaultContentConfiguration setSecondaryText:v12];
 
-  v13 = [(RepairSummaryViewController *)self tableImage];
-  v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-  [v8 setImage:v14];
+  tableImage = [(RepairSummaryViewController *)self tableImage];
+  v14 = [tableImage objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [defaultContentConfiguration setImage:v14];
 
-  v15 = [(RepairSummaryViewController *)self tableImageColor];
-  v16 = [v6 row];
+  tableImageColor = [(RepairSummaryViewController *)self tableImageColor];
+  v16 = [pathCopy row];
 
-  v17 = [v15 objectAtIndexedSubscript:v16];
-  v18 = [v8 imageProperties];
-  [v18 setTintColor:v17];
+  v17 = [tableImageColor objectAtIndexedSubscript:v16];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setTintColor:v17];
 
-  v19 = [v8 textProperties];
-  v20 = [v19 font];
-  [v20 pointSize];
+  textProperties = [defaultContentConfiguration textProperties];
+  font = [textProperties font];
+  [font pointSize];
   v21 = [UIFont boldSystemFontOfSize:?];
-  v22 = [v8 textProperties];
-  [v22 setFont:v21];
+  textProperties2 = [defaultContentConfiguration textProperties];
+  [textProperties2 setFont:v21];
 
-  [v7 setContentConfiguration:v8];
+  [v7 setContentConfiguration:defaultContentConfiguration];
   v23 = +[UIColor systemGroupedBackgroundColor];
-  v24 = [v7 contentView];
-  [v24 setBackgroundColor:v23];
+  contentView = [v7 contentView];
+  [contentView setBackgroundColor:v23];
 
   return v7;
 }
 
-- (void)continueTapped:(id)a3
+- (void)continueTapped:(id)tapped
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -979,7 +979,7 @@
   [(RepairSummaryViewController *)self moveToNextViewController];
 }
 
-- (void)cancelTapped:(id)a3
+- (void)cancelTapped:(id)tapped
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -991,13 +991,13 @@
   [(RepairSummaryViewController *)self endTestWithStatusCode:-82 error:0];
 }
 
-- (void)handleButtonEvent:(unint64_t)a3
+- (void)handleButtonEvent:(unint64_t)event
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = a3;
+    eventCopy = event;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Physical button event: %ld", &v5, 0xCu);
   }
 }
@@ -1012,22 +1012,22 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v6, 0xCu);
   }
 
-  v4 = [(RepairSummaryViewController *)self uiNeededKnownSemaphore];
-  dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+  uiNeededKnownSemaphore = [(RepairSummaryViewController *)self uiNeededKnownSemaphore];
+  dispatch_semaphore_wait(uiNeededKnownSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   return [(RepairSummaryViewController *)self repairSummaryNeeded];
 }
 
-- (void)endTestWithStatusCode:(int64_t)a3 error:(id)a4
+- (void)endTestWithStatusCode:(int64_t)code error:(id)error
 {
-  v8 = a4;
-  if (a3)
+  errorCopy = error;
+  if (code)
   {
-    v9 = [NSNumber numberWithInteger:a3];
-    v10 = [(RepairSummaryViewController *)self result];
-    [v10 setStatusCode:v9];
+    v9 = [NSNumber numberWithInteger:code];
+    result = [(RepairSummaryViewController *)self result];
+    [result setStatusCode:v9];
 
-    v11 = [v8 description];
+    v11 = [errorCopy description];
     v12 = v11;
     if (!v11)
     {
@@ -1036,7 +1036,7 @@
 
     v51[1] = @"errorCode";
     v52[0] = v12;
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     v14 = v13;
     if (!v13)
     {
@@ -1048,8 +1048,8 @@
     v16 = v51;
 LABEL_23:
     v25 = [NSDictionary dictionaryWithObjects:v15 forKeys:v16 count:2];
-    v26 = [(RepairSummaryViewController *)self result];
-    [v26 setData:v25];
+    result2 = [(RepairSummaryViewController *)self result];
+    [result2 setData:v25];
 
     if (!v13)
     {
@@ -1063,20 +1063,20 @@ LABEL_23:
     goto LABEL_28;
   }
 
-  v17 = [(RepairSummaryViewController *)self lockSPCs];
-  if (v17)
+  lockSPCs = [(RepairSummaryViewController *)self lockSPCs];
+  if (lockSPCs)
   {
-    v4 = [(RepairSummaryViewController *)self lockSPCs];
-    if ([v4 count])
+    lockSPCs2 = [(RepairSummaryViewController *)self lockSPCs];
+    if ([lockSPCs2 count])
     {
 
 LABEL_18:
       v23 = [NSNumber numberWithInteger:0];
-      v24 = [(RepairSummaryViewController *)self result];
-      [v24 setStatusCode:v23];
+      result3 = [(RepairSummaryViewController *)self result];
+      [result3 setStatusCode:v23];
 
       v57[0] = @"error";
-      v11 = [v8 description];
+      v11 = [errorCopy description];
       v12 = v11;
       if (!v11)
       {
@@ -1085,7 +1085,7 @@ LABEL_18:
 
       v58[0] = v12;
       v57[1] = @"errorCode";
-      v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+      v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
       v14 = v13;
       if (!v13)
       {
@@ -1099,25 +1099,25 @@ LABEL_18:
     }
   }
 
-  v18 = [(RepairSummaryViewController *)self lostSPCs];
-  if (v18)
+  lostSPCs = [(RepairSummaryViewController *)self lostSPCs];
+  if (lostSPCs)
   {
-    v5 = [(RepairSummaryViewController *)self lostSPCs];
-    if ([v5 count])
+    lostSPCs2 = [(RepairSummaryViewController *)self lostSPCs];
+    if ([lostSPCs2 count])
     {
       v19 = 1;
       goto LABEL_15;
     }
   }
 
-  v20 = [(RepairSummaryViewController *)self deniedSPCs];
-  if (v20)
+  deniedSPCs = [(RepairSummaryViewController *)self deniedSPCs];
+  if (deniedSPCs)
   {
-    v21 = v20;
-    v22 = [(RepairSummaryViewController *)self deniedSPCs];
-    v19 = [v22 count] != 0;
+    v21 = deniedSPCs;
+    deniedSPCs2 = [(RepairSummaryViewController *)self deniedSPCs];
+    v19 = [deniedSPCs2 count] != 0;
 
-    if (!v18)
+    if (!lostSPCs)
     {
       goto LABEL_16;
     }
@@ -1126,13 +1126,13 @@ LABEL_18:
   }
 
   v19 = 0;
-  if (v18)
+  if (lostSPCs)
   {
 LABEL_15:
   }
 
 LABEL_16:
-  if (v17)
+  if (lockSPCs)
   {
 
     if (v19)
@@ -1150,15 +1150,15 @@ LABEL_16:
     }
   }
 
-  v27 = [(RepairSummaryViewController *)self passSPCs];
-  v28 = [v27 mutableCopy];
+  passSPCs = [(RepairSummaryViewController *)self passSPCs];
+  v28 = [passSPCs mutableCopy];
 
-  v29 = [(RepairSummaryViewController *)self sealedSPCs];
-  if (v29)
+  sealedSPCs = [(RepairSummaryViewController *)self sealedSPCs];
+  if (sealedSPCs)
   {
-    v30 = v29;
-    v31 = [(RepairSummaryViewController *)self sealedSPCs];
-    v32 = [v31 count];
+    v30 = sealedSPCs;
+    sealedSPCs2 = [(RepairSummaryViewController *)self sealedSPCs];
+    v32 = [sealedSPCs2 count];
 
     if (v32)
     {
@@ -1166,9 +1166,9 @@ LABEL_16:
     }
   }
 
-  v33 = [(RepairSummaryViewController *)self preflightRIK];
+  preflightRIK = [(RepairSummaryViewController *)self preflightRIK];
 
-  if (v33 && (-[RepairSummaryViewController preflightRIK](self, "preflightRIK"), v34 = objc_claimAutoreleasedReturnValue(), [v34 base64EncodedStringWithOptions:0], v33 = objc_claimAutoreleasedReturnValue(), v34, !v33))
+  if (preflightRIK && (-[RepairSummaryViewController preflightRIK](self, "preflightRIK"), v34 = objc_claimAutoreleasedReturnValue(), [v34 base64EncodedStringWithOptions:0], preflightRIK = objc_claimAutoreleasedReturnValue(), v34, !preflightRIK))
   {
     v36 = handleForCategory();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -1176,7 +1176,7 @@ LABEL_16:
       sub_1000050C4();
     }
 
-    v33 = 0;
+    preflightRIK = 0;
     v35 = -87;
     if (!v28)
     {
@@ -1205,14 +1205,14 @@ LABEL_43:
     v35 = -88;
   }
 
-  if (v28 && v33 && [v28 count])
+  if (v28 && preflightRIK && [v28 count])
   {
     v38 = [NSNumber numberWithInteger:v35];
-    v39 = [(RepairSummaryViewController *)self result];
-    [v39 setStatusCode:v38];
+    result4 = [(RepairSummaryViewController *)self result];
+    [result4 setStatusCode:v38];
 
     v55[0] = @"error";
-    v40 = [v8 description];
+    v40 = [errorCopy description];
     v41 = v40;
     if (!v40)
     {
@@ -1221,7 +1221,7 @@ LABEL_43:
 
     v56[0] = v41;
     v55[1] = @"errorCode";
-    v42 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+    v42 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     v43 = v42;
     if (!v42)
     {
@@ -1229,7 +1229,7 @@ LABEL_43:
     }
 
     v56[1] = v43;
-    v56[2] = v33;
+    v56[2] = preflightRIK;
     v55[2] = @"preflightRIK";
     v55[3] = @"preflightPartSPC";
     v56[3] = v28;
@@ -1241,11 +1241,11 @@ LABEL_43:
   else
   {
     v47 = [NSNumber numberWithInteger:v35];
-    v48 = [(RepairSummaryViewController *)self result];
-    [v48 setStatusCode:v47];
+    result5 = [(RepairSummaryViewController *)self result];
+    [result5 setStatusCode:v47];
 
     v53[0] = @"error";
-    v40 = [v8 description];
+    v40 = [errorCopy description];
     v41 = v40;
     if (!v40)
     {
@@ -1254,7 +1254,7 @@ LABEL_43:
 
     v53[1] = @"errorCode";
     v54[0] = v41;
-    v42 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+    v42 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     v43 = v42;
     if (!v42)
     {
@@ -1268,8 +1268,8 @@ LABEL_43:
   }
 
   v49 = [NSDictionary dictionaryWithObjects:v44 forKeys:v45 count:v46];
-  v50 = [(RepairSummaryViewController *)self result];
-  [v50 setData:v49];
+  result6 = [(RepairSummaryViewController *)self result];
+  [result6 setData:v49];
 
   if (!v42)
   {

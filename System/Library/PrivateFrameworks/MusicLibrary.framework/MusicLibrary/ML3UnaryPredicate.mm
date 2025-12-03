@@ -1,10 +1,10 @@
 @interface ML3UnaryPredicate
-+ (id)predicateWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ML3UnaryPredicate)initWithCoder:(id)a3;
-- (ML3UnaryPredicate)initWithPredicate:(id)a3;
++ (id)predicateWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
+- (ML3UnaryPredicate)initWithCoder:(id)coder;
+- (ML3UnaryPredicate)initWithPredicate:(id)predicate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3UnaryPredicate
@@ -14,16 +14,16 @@
   v7.receiver = self;
   v7.super_class = ML3UnaryPredicate;
   v3 = [(ML3Predicate *)&v7 hash];
-  v4 = [(ML3UnaryPredicate *)self predicate];
-  v5 = [v4 hash];
+  predicate = [(ML3UnaryPredicate *)self predicate];
+  v5 = [predicate hash];
 
   return v3 + v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -32,18 +32,18 @@
   {
     v9.receiver = self;
     v9.super_class = ML3UnaryPredicate;
-    if ([(ML3Predicate *)&v9 isEqual:v4])
+    if ([(ML3Predicate *)&v9 isEqual:equalCopy])
     {
-      v5 = [(ML3UnaryPredicate *)self predicate];
-      v6 = [(ML3UnaryPredicate *)v4 predicate];
-      if (v5 == v6)
+      predicate = [(ML3UnaryPredicate *)self predicate];
+      predicate2 = [(ML3UnaryPredicate *)equalCopy predicate];
+      if (predicate == predicate2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [predicate isEqual:predicate2];
       }
     }
 
@@ -56,50 +56,50 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ML3UnaryPredicate;
-  v4 = a3;
-  [(ML3Predicate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ML3Predicate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ML3UnaryPredicate *)self predicate:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"predicate"];
+  [coderCopy encodeObject:v5 forKey:@"predicate"];
 }
 
-- (ML3UnaryPredicate)initWithCoder:(id)a3
+- (ML3UnaryPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ML3UnaryPredicate;
   v5 = [(ML3UnaryPredicate *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
     [(ML3UnaryPredicate *)v5 setPredicate:v6];
   }
 
   return v5;
 }
 
-- (ML3UnaryPredicate)initWithPredicate:(id)a3
+- (ML3UnaryPredicate)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v8.receiver = self;
   v8.super_class = ML3UnaryPredicate;
   v5 = [(ML3UnaryPredicate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ML3UnaryPredicate *)v5 setPredicate:v4];
+    [(ML3UnaryPredicate *)v5 setPredicate:predicateCopy];
   }
 
   return v6;
 }
 
-+ (id)predicateWithPredicate:(id)a3
++ (id)predicateWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPredicate:v4];
+  predicateCopy = predicate;
+  v5 = [[self alloc] initWithPredicate:predicateCopy];
 
   return v5;
 }

@@ -2,8 +2,8 @@
 - (CXPlayDTMFCallAction)initWithCallUUID:(NSUUID *)callUUID digits:(NSString *)digits type:(CXPlayDTMFCallActionType)type;
 - (CXPlayDTMFCallAction)initWithCoder:(NSCoder *)aDecoder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXPlayDTMFCallAction
@@ -35,25 +35,25 @@
 {
   v6.receiver = self;
   v6.super_class = CXPlayDTMFCallAction;
-  v3 = [(CXCallAction *)&v6 customDescription];
-  v4 = [(CXPlayDTMFCallAction *)self digits];
-  [v3 appendFormat:@" digits=%@", v4];
+  customDescription = [(CXCallAction *)&v6 customDescription];
+  digits = [(CXPlayDTMFCallAction *)self digits];
+  [customDescription appendFormat:@" digits=%@", digits];
 
-  [v3 appendFormat:@" type=%ld", -[CXPlayDTMFCallAction type](self, "type")];
+  [customDescription appendFormat:@" type=%ld", -[CXPlayDTMFCallAction type](self, "type")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CXPlayDTMFCallAction;
-  v6 = a3;
-  [(CXCallAction *)&v8 updateSanitizedCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXCallAction *)&v8 updateSanitizedCopy:copyCopy withZone:zone];
   v7 = [(CXPlayDTMFCallAction *)self digits:v8.receiver];
-  [v6 setDigits:v7];
+  [copyCopy setDigits:v7];
 
-  [v6 setType:{-[CXPlayDTMFCallAction type](self, "type")}];
+  [copyCopy setType:{-[CXPlayDTMFCallAction type](self, "type")}];
 }
 
 - (CXPlayDTMFCallAction)initWithCoder:(NSCoder *)aDecoder
@@ -77,19 +77,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CXPlayDTMFCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v9 encodeWithCoder:coderCopy];
   v5 = [(CXPlayDTMFCallAction *)self digits:v9.receiver];
   v6 = NSStringFromSelector(sel_digits);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(CXPlayDTMFCallAction *)self type];
+  type = [(CXPlayDTMFCallAction *)self type];
   v8 = NSStringFromSelector(sel_type);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:type forKey:v8];
 }
 
 @end

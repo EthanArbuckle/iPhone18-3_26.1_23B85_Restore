@@ -1,8 +1,8 @@
 @interface WK_RTCEncodedImage
 - (EncodedImage)nativeEncodedImage;
-- (WK_RTCEncodedImage)initWithNativeEncodedImage:(const void *)a3;
+- (WK_RTCEncodedImage)initWithNativeEncodedImage:(const void *)image;
 - (scoped_refptr<webrtc::EncodedImageBufferInterface>)encodedData;
-- (void)setEncodedData:(scoped_refptr<webrtc::EncodedImageBufferInterface>)a3;
+- (void)setEncodedData:(scoped_refptr<webrtc::EncodedImageBufferInterface>)data;
 @end
 
 @implementation WK_RTCEncodedImage
@@ -27,10 +27,10 @@
   return v6;
 }
 
-- (void)setEncodedData:(scoped_refptr<webrtc::EncodedImageBufferInterface>)a3
+- (void)setEncodedData:(scoped_refptr<webrtc::EncodedImageBufferInterface>)data
 {
   v5 = [WK_RTCWrappedEncodedImageBuffer alloc];
-  v6 = *a3.ptr_;
+  v6 = *data.ptr_;
   v9 = v6;
   if (v6)
   {
@@ -48,14 +48,14 @@
   }
 }
 
-- (WK_RTCEncodedImage)initWithNativeEncodedImage:(const void *)a3
+- (WK_RTCEncodedImage)initWithNativeEncodedImage:(const void *)image
 {
   v14.receiver = self;
   v14.super_class = WK_RTCEncodedImage;
   v4 = [(WK_RTCEncodedImage *)&v14 init];
   if (v4)
   {
-    v5 = *(a3 + 17);
+    v5 = *(image + 17);
     v13 = v5;
     if (v5)
     {
@@ -85,20 +85,20 @@
       (*(*v12 + 8))();
     }
 
-    [(WK_RTCEncodedImage *)v4 setEncodedWidth:*a3];
-    [(WK_RTCEncodedImage *)v4 setEncodedHeight:*(a3 + 1)];
-    [(WK_RTCEncodedImage *)v4 setTimeStamp:*(a3 + 38)];
-    [(WK_RTCEncodedImage *)v4 setCaptureTimeMs:*(a3 + 2)];
-    [(WK_RTCEncodedImage *)v4 setNtpTimeMs:*(a3 + 1)];
-    [(WK_RTCEncodedImage *)v4 setFlags:*(a3 + 40)];
-    [(WK_RTCEncodedImage *)v4 setEncodeStartMs:*(a3 + 6)];
-    [(WK_RTCEncodedImage *)v4 setEncodeFinishMs:*(a3 + 7)];
-    [(WK_RTCEncodedImage *)v4 setFrameType:*(a3 + 6)];
-    [(WK_RTCEncodedImage *)v4 setRotation:*(a3 + 7)];
-    v9 = [MEMORY[0x277CCABB0] numberWithInt:*(a3 + 9)];
+    [(WK_RTCEncodedImage *)v4 setEncodedWidth:*image];
+    [(WK_RTCEncodedImage *)v4 setEncodedHeight:*(image + 1)];
+    [(WK_RTCEncodedImage *)v4 setTimeStamp:*(image + 38)];
+    [(WK_RTCEncodedImage *)v4 setCaptureTimeMs:*(image + 2)];
+    [(WK_RTCEncodedImage *)v4 setNtpTimeMs:*(image + 1)];
+    [(WK_RTCEncodedImage *)v4 setFlags:*(image + 40)];
+    [(WK_RTCEncodedImage *)v4 setEncodeStartMs:*(image + 6)];
+    [(WK_RTCEncodedImage *)v4 setEncodeFinishMs:*(image + 7)];
+    [(WK_RTCEncodedImage *)v4 setFrameType:*(image + 6)];
+    [(WK_RTCEncodedImage *)v4 setRotation:*(image + 7)];
+    v9 = [MEMORY[0x277CCABB0] numberWithInt:*(image + 9)];
     [(WK_RTCEncodedImage *)v4 setQp:v9];
 
-    [(WK_RTCEncodedImage *)v4 setContentType:*(a3 + 32) == 1];
+    [(WK_RTCEncodedImage *)v4 setContentType:*(image + 32) == 1];
   }
 
   return v4;
@@ -168,17 +168,17 @@
 
   else
   {
-    v7 = [(WK_RTCEncodedImage *)self buffer];
+    buffer = [(WK_RTCEncodedImage *)self buffer];
 
-    if (v7)
+    if (buffer)
     {
-      v8 = [(WK_RTCEncodedImage *)self buffer];
+      buffer2 = [(WK_RTCEncodedImage *)self buffer];
       operator new();
     }
   }
 
-  v9 = [(WK_RTCEncodedImage *)self buffer];
-  retstr->var11 = [v9 length];
+  buffer3 = [(WK_RTCEncodedImage *)self buffer];
+  retstr->var11 = [buffer3 length];
 
   retstr->var0 = [(WK_RTCEncodedImage *)self encodedWidth];
   retstr->var1 = [(WK_RTCEncodedImage *)self encodedHeight];

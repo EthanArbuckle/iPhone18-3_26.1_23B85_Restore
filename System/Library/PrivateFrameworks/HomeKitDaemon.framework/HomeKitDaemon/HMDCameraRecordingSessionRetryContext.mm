@@ -1,17 +1,17 @@
 @interface HMDCameraRecordingSessionRetryContext
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3;
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3 preferences:(id)a4;
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue;
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue preferences:(id)preferences;
 - (double)retryInterval;
 - (void)computeNextRetryInterval;
-- (void)setRetryInterval:(double)a3;
+- (void)setRetryInterval:(double)interval;
 @end
 
 @implementation HMDCameraRecordingSessionRetryContext
 
 - (void)computeNextRetryInterval
 {
-  v3 = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   [(HMDCameraRecordingSessionRetryContext *)self setRetryCount:[(HMDCameraRecordingSessionRetryContext *)self retryCount]+ 1];
   [(HMDCameraRecordingSessionRetryContext *)self retryInterval];
@@ -28,40 +28,40 @@
 
 - (double)retryInterval
 {
-  v3 = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_retryInterval;
 }
 
-- (void)setRetryInterval:(double)a3
+- (void)setRetryInterval:(double)interval
 {
-  v5 = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDCameraRecordingSessionRetryContext *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  self->_retryInterval = a3;
+  self->_retryInterval = interval;
 }
 
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3 preferences:(id)a4
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue preferences:(id)preferences
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  preferencesCopy = preferences;
   v25.receiver = self;
   v25.super_class = HMDCameraRecordingSessionRetryContext;
   v9 = [(HMDCameraRecordingSessionRetryContext *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_workQueue, a3);
-    v11 = [v8 preferenceForKey:@"recordingSessionInitialRetryInterval"];
-    v12 = [v11 numberValue];
-    [v12 doubleValue];
+    objc_storeStrong(&v9->_workQueue, queue);
+    v11 = [preferencesCopy preferenceForKey:@"recordingSessionInitialRetryInterval"];
+    numberValue = [v11 numberValue];
+    [numberValue doubleValue];
     v10->_retryInterval = v13;
 
-    v14 = [v8 preferenceForKey:@"recordingSessionMaxRetryInterval"];
-    v15 = [v14 numberValue];
-    [v15 doubleValue];
+    v14 = [preferencesCopy preferenceForKey:@"recordingSessionMaxRetryInterval"];
+    numberValue2 = [v14 numberValue];
+    [numberValue2 doubleValue];
     v10->_maxRetryInterval = v16;
 
     v17 = objc_autoreleasePoolPush();
@@ -88,12 +88,12 @@
   return v10;
 }
 
-- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)a3
+- (HMDCameraRecordingSessionRetryContext)initWithWorkQueue:(id)queue
 {
   v4 = MEMORY[0x277D0F8D0];
-  v5 = a3;
-  v6 = [v4 sharedPreferences];
-  v7 = [(HMDCameraRecordingSessionRetryContext *)self initWithWorkQueue:v5 preferences:v6];
+  queueCopy = queue;
+  sharedPreferences = [v4 sharedPreferences];
+  v7 = [(HMDCameraRecordingSessionRetryContext *)self initWithWorkQueue:queueCopy preferences:sharedPreferences];
 
   return v7;
 }

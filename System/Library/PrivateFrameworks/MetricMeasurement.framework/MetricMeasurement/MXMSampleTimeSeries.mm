@@ -1,9 +1,9 @@
 @interface MXMSampleTimeSeries
-- (MXMSampleTimeSeries)initWithAbsoluteTimeSeries:(unint64_t *)a3 length:(unint64_t)a4;
-- (MXMSampleTimeSeries)initWithContinuousTimeSeries:(unint64_t *)a3 length:(unint64_t)a4;
-- (MXMSampleTimeSeries)initWithTimeSeries:(double *)a3 tag:(id)a4 unit:(id)a5 length:(unint64_t)a6;
+- (MXMSampleTimeSeries)initWithAbsoluteTimeSeries:(unint64_t *)series length:(unint64_t)length;
+- (MXMSampleTimeSeries)initWithContinuousTimeSeries:(unint64_t *)series length:(unint64_t)length;
+- (MXMSampleTimeSeries)initWithTimeSeries:(double *)series tag:(id)tag unit:(id)unit length:(unint64_t)length;
 - (id)timeIndex;
-- (void)_appendAbsoluteTime:(unint64_t)a3;
+- (void)_appendAbsoluteTime:(unint64_t)time;
 @end
 
 @implementation MXMSampleTimeSeries
@@ -15,29 +15,29 @@
   return WeakRetained;
 }
 
-- (MXMSampleTimeSeries)initWithAbsoluteTimeSeries:(unint64_t *)a3 length:(unint64_t)a4
+- (MXMSampleTimeSeries)initWithAbsoluteTimeSeries:(unint64_t *)series length:(unint64_t)length
 {
-  v7 = malloc_type_malloc(8 * a4, 0x100004000313F17uLL);
+  v7 = malloc_type_malloc(8 * length, 0x100004000313F17uLL);
   v8 = v7;
-  if (a4)
+  if (length)
   {
     v9 = v7;
-    v10 = a4;
+    lengthCopy = length;
     do
     {
-      v11 = *a3++;
+      v11 = *series++;
       [MXMMachUtils _nanosecondsWithAbsoluteTime:v11];
       *v9++ = v12;
-      --v10;
+      --lengthCopy;
     }
 
-    while (v10);
+    while (lengthCopy);
   }
 
   objc_initWeak(&location, self);
   v13 = +[MXMClockSampleTag absoluteTime];
-  v14 = [MEMORY[0x277CCADD0] nanoseconds];
-  v15 = [(MXMSampleTimeSeries *)self initWithTimeSeries:v8 tag:v13 unit:v14 length:a4];
+  nanoseconds = [MEMORY[0x277CCADD0] nanoseconds];
+  v15 = [(MXMSampleTimeSeries *)self initWithTimeSeries:v8 tag:v13 unit:nanoseconds length:length];
 
   if (v15)
   {
@@ -50,34 +50,34 @@
   return v15;
 }
 
-- (MXMSampleTimeSeries)initWithContinuousTimeSeries:(unint64_t *)a3 length:(unint64_t)a4
+- (MXMSampleTimeSeries)initWithContinuousTimeSeries:(unint64_t *)series length:(unint64_t)length
 {
   if (initWithContinuousTimeSeries_length__onceToken != -1)
   {
     [MXMSampleTimeSeries initWithContinuousTimeSeries:length:];
   }
 
-  v7 = malloc_type_malloc(8 * a4, 0x100004000313F17uLL);
+  v7 = malloc_type_malloc(8 * length, 0x100004000313F17uLL);
   v8 = v7;
-  if (a4)
+  if (length)
   {
     v9 = v7;
-    v10 = a4;
+    lengthCopy = length;
     do
     {
-      v11 = *a3++;
+      v11 = *series++;
       [MXMMachUtils _nanosecondsWithContinuousTime:v11];
       *v9++ = v12;
-      --v10;
+      --lengthCopy;
     }
 
-    while (v10);
+    while (lengthCopy);
   }
 
   objc_initWeak(&location, self);
   v13 = +[MXMClockSampleTag continuousTime];
-  v14 = [MEMORY[0x277CCADD0] nanoseconds];
-  v15 = [(MXMSampleTimeSeries *)self initWithTimeSeries:v8 tag:v13 unit:v14 length:a4];
+  nanoseconds = [MEMORY[0x277CCADD0] nanoseconds];
+  v15 = [(MXMSampleTimeSeries *)self initWithTimeSeries:v8 tag:v13 unit:nanoseconds length:length];
 
   if (v15)
   {
@@ -97,14 +97,14 @@ uint64_t __59__MXMSampleTimeSeries_initWithContinuousTimeSeries_length___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (MXMSampleTimeSeries)initWithTimeSeries:(double *)a3 tag:(id)a4 unit:(id)a5 length:(unint64_t)a6
+- (MXMSampleTimeSeries)initWithTimeSeries:(double *)series tag:(id)tag unit:(id)unit length:(unint64_t)length
 {
-  v10 = a4;
-  v11 = a5;
+  tagCopy = tag;
+  unitCopy = unit;
   objc_initWeak(&location, self);
   v15.receiver = self;
   v15.super_class = MXMSampleTimeSeries;
-  v12 = [(MXMSampleSet *)&v15 initWithTime:0 tag:v10 unit:v11 attributes:0 doubleValues:a3 length:a6];
+  v12 = [(MXMSampleSet *)&v15 initWithTime:0 tag:tagCopy unit:unitCopy attributes:0 doubleValues:series length:length];
   if (v12)
   {
     v13 = objc_loadWeakRetained(&location);
@@ -116,20 +116,20 @@ uint64_t __59__MXMSampleTimeSeries_initWithContinuousTimeSeries_length___block_i
   return v12;
 }
 
-- (void)_appendAbsoluteTime:(unint64_t)a3
+- (void)_appendAbsoluteTime:(unint64_t)time
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MXMSampleSet *)v4 _prepareUnderlyingBufferSizeWithAdditionalBytes:8];
-  [MXMMachUtils _nanosecondsWithAbsoluteTime:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MXMSampleSet *)selfCopy _prepareUnderlyingBufferSizeWithAdditionalBytes:8];
+  [MXMMachUtils _nanosecondsWithAbsoluteTime:time];
   v6 = v5;
-  v7 = [(MXMSampleSet *)v4 underlyingBuffer];
-  *(v7 + 8 * [(MXMSampleSet *)v4 index][8]) = v6;
-  v8 = [(MXMSampleSet *)v4 index];
-  ++*(v8 + 8);
-  objc_sync_exit(v4);
+  underlyingBuffer = [(MXMSampleSet *)selfCopy underlyingBuffer];
+  *(underlyingBuffer + 8 * [(MXMSampleSet *)selfCopy index][8]) = v6;
+  index = [(MXMSampleSet *)selfCopy index];
+  ++*(index + 8);
+  objc_sync_exit(selfCopy);
 
-  [(MXMSampleSet *)v4 setCachedSamples:0];
+  [(MXMSampleSet *)selfCopy setCachedSamples:0];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface MRDSettings
 + (MRDSettings)currentSettings;
-- (BOOL)_BOOLValueForKey:(id)a3 usingDefaultValue:(BOOL)a4;
+- (BOOL)_BOOLValueForKey:(id)key usingDefaultValue:(BOOL)value;
 - (BOOL)verboseOutputContextManagerLogging;
 - (MRDSettings)init;
 - (NSArray)connectedClientAuditTokens;
 - (NSArray)expectedClientAuditTokens;
 - (NSString)recentGroupSessionParticipantsPepper;
-- (double)_doubleValueForKey:(id)a3 usingDefaultValue:(double)a4;
+- (double)_doubleValueForKey:(id)key usingDefaultValue:(double)value;
 - (double)nativeEndpointWaitInterval;
 - (double)recentlyRebootedInterval;
-- (id)defaultSupportedCommandsDataForClient:(id)a3;
-- (int64_t)_integerValueForKey:(id)a3 usingDefaultValue:(int64_t)a4;
-- (void)setConnectedClientAuditTokens:(id)a3;
-- (void)setExpectedClientAuditTokens:(id)a3;
-- (void)updateDefaultSupportedCommandsData:(id)a3 forClient:(id)a4;
+- (id)defaultSupportedCommandsDataForClient:(id)client;
+- (int64_t)_integerValueForKey:(id)key usingDefaultValue:(int64_t)value;
+- (void)setConnectedClientAuditTokens:(id)tokens;
+- (void)setExpectedClientAuditTokens:(id)tokens;
+- (void)updateDefaultSupportedCommandsData:(id)data forClient:(id)client;
 @end
 
 @implementation MRDSettings
@@ -61,20 +61,20 @@
   return v3;
 }
 
-- (void)setConnectedClientAuditTokens:(id)a3
+- (void)setConnectedClientAuditTokens:(id)tokens
 {
   userDefaults = self->_userDefaults;
-  v5 = a3;
+  tokensCopy = tokens;
   [(NSUserDefaults *)userDefaults setObject:0 forKey:@"ConnectedClientPIDs"];
-  [(NSUserDefaults *)self->_userDefaults setObject:v5 forKey:@"ConnectedClientAuditTokens"];
+  [(NSUserDefaults *)self->_userDefaults setObject:tokensCopy forKey:@"ConnectedClientAuditTokens"];
 }
 
-- (void)setExpectedClientAuditTokens:(id)a3
+- (void)setExpectedClientAuditTokens:(id)tokens
 {
   userDefaults = self->_userDefaults;
-  v5 = a3;
+  tokensCopy = tokens;
   [(NSUserDefaults *)userDefaults setObject:0 forKey:@"ExpectedClientPIDs"];
-  [(NSUserDefaults *)self->_userDefaults setObject:v5 forKey:@"ExpectedClientAuditTokens"];
+  [(NSUserDefaults *)self->_userDefaults setObject:tokensCopy forKey:@"ExpectedClientAuditTokens"];
 }
 
 - (double)recentlyRebootedInterval
@@ -129,24 +129,24 @@
   return qword_100529640;
 }
 
-- (id)defaultSupportedCommandsDataForClient:(id)a3
+- (id)defaultSupportedCommandsDataForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(MRDSettings *)self defaultSupportedCommandsData];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  clientCopy = client;
+  defaultSupportedCommandsData = [(MRDSettings *)self defaultSupportedCommandsData];
+  v6 = [defaultSupportedCommandsData objectForKeyedSubscript:clientCopy];
 
   return v6;
 }
 
-- (void)updateDefaultSupportedCommandsData:(id)a3 forClient:(id)a4
+- (void)updateDefaultSupportedCommandsData:(id)data forClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MRDSettings *)self defaultSupportedCommandsData];
-  v11 = v8;
-  if (v8)
+  clientCopy = client;
+  dataCopy = data;
+  defaultSupportedCommandsData = [(MRDSettings *)self defaultSupportedCommandsData];
+  v11 = defaultSupportedCommandsData;
+  if (defaultSupportedCommandsData)
   {
-    v9 = [v8 mutableCopy];
+    v9 = [defaultSupportedCommandsData mutableCopy];
   }
 
   else
@@ -155,49 +155,49 @@
   }
 
   v10 = v9;
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  [v9 setObject:dataCopy forKeyedSubscript:clientCopy];
 
   [(NSUserDefaults *)self->_userDefaults setObject:v10 forKey:@"DefaultSupportedCommands"];
 }
 
-- (BOOL)_BOOLValueForKey:(id)a3 usingDefaultValue:(BOOL)a4
+- (BOOL)_BOOLValueForKey:(id)key usingDefaultValue:(BOOL)value
 {
-  v6 = a3;
-  v7 = [(NSUserDefaults *)self->_userDefaults objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSUserDefaults *)self->_userDefaults objectForKey:keyCopy];
 
   if (v7)
   {
-    a4 = [(NSUserDefaults *)self->_userDefaults BOOLForKey:v6];
+    value = [(NSUserDefaults *)self->_userDefaults BOOLForKey:keyCopy];
   }
 
-  return a4;
+  return value;
 }
 
-- (double)_doubleValueForKey:(id)a3 usingDefaultValue:(double)a4
+- (double)_doubleValueForKey:(id)key usingDefaultValue:(double)value
 {
-  v6 = a3;
-  v7 = [(NSUserDefaults *)self->_userDefaults objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSUserDefaults *)self->_userDefaults objectForKey:keyCopy];
 
   if (v7)
   {
-    [(NSUserDefaults *)self->_userDefaults doubleForKey:v6];
-    a4 = v8;
+    [(NSUserDefaults *)self->_userDefaults doubleForKey:keyCopy];
+    value = v8;
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)_integerValueForKey:(id)a3 usingDefaultValue:(int64_t)a4
+- (int64_t)_integerValueForKey:(id)key usingDefaultValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [(NSUserDefaults *)self->_userDefaults objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSUserDefaults *)self->_userDefaults objectForKey:keyCopy];
 
   if (v7)
   {
-    a4 = [(NSUserDefaults *)self->_userDefaults integerForKey:v6];
+    value = [(NSUserDefaults *)self->_userDefaults integerForKey:keyCopy];
   }
 
-  return a4;
+  return value;
 }
 
 @end

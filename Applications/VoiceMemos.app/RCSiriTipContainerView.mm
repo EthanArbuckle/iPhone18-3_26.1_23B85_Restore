@@ -14,12 +14,12 @@
 
 - (double)preferredHeight
 {
-  v2 = self;
-  [(RCSiriTipContainerView *)v2 layoutMargins];
-  [(RCSiriTipContainerView *)v2 layoutMargins];
-  [(RCSiriTipContainerView *)v2 bounds];
+  selfCopy = self;
+  [(RCSiriTipContainerView *)selfCopy layoutMargins];
+  [(RCSiriTipContainerView *)selfCopy layoutMargins];
+  [(RCSiriTipContainerView *)selfCopy bounds];
   CGRectGetWidth(v9);
-  v3 = *(v2 + OBJC_IVAR____TtC10VoiceMemos22RCSiriTipContainerView_siriTipView);
+  v3 = *(selfCopy + OBJC_IVAR____TtC10VoiceMemos22RCSiriTipContainerView_siriTipView);
   DebugData.init(name:)(v4);
   v5 = v3;
   SiriTipUIView.sizeThatFits(_:)();

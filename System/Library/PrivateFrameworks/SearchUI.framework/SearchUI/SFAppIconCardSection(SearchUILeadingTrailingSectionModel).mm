@@ -26,8 +26,8 @@
     v12 = 12.0;
     if (!v11)
     {
-      v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v13 bounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen bounds];
       v15 = (v14 + -32.0 - v10) * 0.5;
 
       v12 = fmax(v15, 0.0);
@@ -36,7 +36,7 @@
     [v16 setLeadingFractionalWidth:(v7 + v12 * 2.0) / v10];
     [v16 setVerticalSpacing:0.0];
     [v16 setPrefersSeparatorsInTrailingGroup:1];
-    [a1 customizeRowModelsForAppTopHitWithShortcuts:v16];
+    [self customizeRowModelsForAppTopHitWithShortcuts:v16];
   }
 }
 
@@ -56,11 +56,11 @@
 - (void)customizeRowModelsForAppTopHitWithShortcuts:()SearchUILeadingTrailingSectionModel
 {
   v18 = a3;
-  v3 = [v18 rowModels];
-  v4 = [v3 count];
+  rowModels = [v18 rowModels];
+  v4 = [rowModels count];
 
-  v5 = [v18 trailingRowModels];
-  v6 = [v5 count];
+  trailingRowModels = [v18 trailingRowModels];
+  v6 = [trailingRowModels count];
 
   if (v4)
   {
@@ -70,8 +70,8 @@
     v10 = 110.0 / v6;
     do
     {
-      v11 = [v18 rowModels];
-      v12 = [v11 objectAtIndexedSubscript:v7];
+      rowModels2 = [v18 rowModels];
+      v12 = [rowModels2 objectAtIndexedSubscript:v7];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())

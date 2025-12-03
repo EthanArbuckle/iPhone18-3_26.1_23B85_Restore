@@ -1,55 +1,55 @@
 @interface FCSportsEventRecordSource
-+ (BOOL)recognizesRecordID:(id)a3;
++ (BOOL)recognizesRecordID:(id)d;
 - (id)localizableKeys;
 - (id)localizableLanguageSpecificKeys;
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCSportsEventRecordSource
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v6 = MEMORY[0x1E69B6FE0];
-  v7 = a4;
-  v8 = a3;
+  baseCopy = base;
+  recordCopy = record;
   v9 = objc_alloc_init(v6);
-  [v9 setBase:v7];
+  [v9 setBase:baseCopy];
 
-  v10 = [(FCRecordSource *)self localizedLanguageSpecificKeysByOriginalKey];
-  v11 = [(FCRecordSource *)self localizedKeysByOriginalKey];
-  v12 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"superfeedConfigResourceID" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  localizedLanguageSpecificKeysByOriginalKey = [(FCRecordSource *)self localizedLanguageSpecificKeysByOriginalKey];
+  localizedKeysByOriginalKey = [(FCRecordSource *)self localizedKeysByOriginalKey];
+  v12 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"superfeedConfigResourceID" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setSuperfeedConfigResourceID:v12];
 
-  v13 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"eventArticleListID" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v13 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"eventArticleListID" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setEventArticleListID:v13];
 
-  v14 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"highlightsArticleListID" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v14 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"highlightsArticleListID" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setHighlightsArticleListID:v14];
 
-  v15 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"eventCompetitorTagIDs" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v15 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"eventCompetitorTagIDs" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setEventCompetitorTagIDs:v15];
 
-  v16 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"eventLeagueTagID" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v16 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"eventLeagueTagID" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setEventLeagueTagID:v16];
 
-  v17 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"sportsData" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v17 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"sportsData" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setSportsData:v17];
 
-  v18 = [v8 objectForKeyedSubscript:@"minNewsVersion"];
+  v18 = [recordCopy objectForKeyedSubscript:@"minNewsVersion"];
   [v9 setMinimumNewsVersion:{+[FCRestrictions integerRepresentationOfShortVersionString:](FCRestrictions, "integerRepresentationOfShortVersionString:", v18)}];
 
-  v19 = [v8 objectForKeyedSubscript:@"sportsTheme"];
+  v19 = [recordCopy objectForKeyedSubscript:@"sportsTheme"];
   [v9 setSportsTheme:v19];
 
-  v20 = [v8 objectForKeyedSubscript:@"isDeprecated"];
+  v20 = [recordCopy objectForKeyedSubscript:@"isDeprecated"];
   [v9 setIsDeprecated:{objc_msgSend(v20, "BOOLValue")}];
 
-  v21 = [v8 objectForKey:@"blockedStorefrontIDs"];
+  v21 = [recordCopy objectForKey:@"blockedStorefrontIDs"];
   v22 = [v21 mutableCopy];
   [v9 setBlockedStorefrontIDs:v22];
 
-  v23 = [v8 objectForKey:@"allowedStorefrontIDs"];
+  v23 = [recordCopy objectForKey:@"allowedStorefrontIDs"];
 
   v24 = [v23 mutableCopy];
   [v9 setAllowedStorefrontIDs:v24];
@@ -57,11 +57,11 @@
   return v9;
 }
 
-+ (BOOL)recognizesRecordID:(id)a3
++ (BOOL)recognizesRecordID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[FCSportsEventRecordSource recordIDPrefixes];
-  v5 = [FCRecordSource recognizesRecordID:v3 inRecordIDPrefixes:v4];
+  v5 = [FCRecordSource recognizesRecordID:dCopy inRecordIDPrefixes:v4];
 
   return v5;
 }

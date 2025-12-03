@@ -1,21 +1,21 @@
 @interface LimitedLibraryButtonPickerViewInternal.ControllerCoordinator
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 @end
 
 @implementation LimitedLibraryButtonPickerViewInternal.ControllerCoordinator
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  contactCopy = contact;
   self;
-  sub_199AFD8A8(v7);
+  sub_199AFD8A8(contactCopy);
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   self;
   sub_199AFDA78();
 }

@@ -7,10 +7,10 @@
 - (uint64_t)afui_hasContentEqualTo:()SiriSharedUIFrameworkAdditions
 {
   v4 = a3;
-  v5 = [a1 cardSections];
-  v6 = [v5 count];
-  v7 = [v4 cardSections];
-  v8 = [v7 count];
+  cardSections = [self cardSections];
+  v6 = [cardSections count];
+  cardSections2 = [v4 cardSections];
+  v8 = [cardSections2 count];
 
   if (v6 != v8)
   {
@@ -19,19 +19,19 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [a1 cardSections];
-  v10 = [v9 count];
+  cardSections3 = [self cardSections];
+  v10 = [cardSections3 count];
 
   if (v10)
   {
     v11 = 0;
     while (1)
     {
-      v12 = [a1 cardSections];
-      v13 = [v12 objectAtIndex:v11];
+      cardSections4 = [self cardSections];
+      v13 = [cardSections4 objectAtIndex:v11];
 
-      v14 = [v4 cardSections];
-      v15 = [v14 objectAtIndex:v11];
+      cardSections5 = [v4 cardSections];
+      v15 = [cardSections5 objectAtIndex:v11];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -43,18 +43,18 @@ LABEL_14:
         }
       }
 
-      v16 = [v13 nextCard];
-      v17 = [v16 cardSections];
-      if (v17)
+      nextCard = [v13 nextCard];
+      cardSections6 = [nextCard cardSections];
+      if (cardSections6)
       {
 
         break;
       }
 
-      v18 = [v15 nextCard];
-      v19 = [v18 cardSections];
+      nextCard2 = [v15 nextCard];
+      cardSections7 = [nextCard2 cardSections];
 
-      if (v19)
+      if (cardSections7)
       {
         break;
       }
@@ -63,15 +63,15 @@ LABEL_14:
       [v15 setCardSectionId:&stru_282F84AA8];
       [v13 setResultIdentifier:&stru_282F84AA8];
       [v15 setResultIdentifier:&stru_282F84AA8];
-      v20 = [v13 dictionaryRepresentation];
-      v21 = [v15 dictionaryRepresentation];
-      v22 = [v20 isEqual:v21];
+      dictionaryRepresentation = [v13 dictionaryRepresentation];
+      dictionaryRepresentation2 = [v15 dictionaryRepresentation];
+      v22 = [dictionaryRepresentation isEqual:dictionaryRepresentation2];
 
       if (v22)
       {
         ++v11;
-        v23 = [a1 cardSections];
-        v24 = [v23 count];
+        cardSections8 = [self cardSections];
+        v24 = [cardSections8 count];
 
         if (v24 > v11)
         {

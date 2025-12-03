@@ -1,41 +1,41 @@
 @interface APButtonTrayScrollViewAssistant
-- (APButtonTrayScrollViewAssistant)initWithDelegate:(id)a3;
+- (APButtonTrayScrollViewAssistant)initWithDelegate:(id)delegate;
 - (APButtonTrayScrollViewAssistantDelegate)delegate;
-- (void)performAdjustmentsForScrollView:(id)a3;
+- (void)performAdjustmentsForScrollView:(id)view;
 @end
 
 @implementation APButtonTrayScrollViewAssistant
 
-- (APButtonTrayScrollViewAssistant)initWithDelegate:(id)a3
+- (APButtonTrayScrollViewAssistant)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = APButtonTrayScrollViewAssistant;
   v5 = [(APButtonTrayScrollViewAssistant *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)performAdjustmentsForScrollView:(id)a3
+- (void)performAdjustmentsForScrollView:(id)view
 {
-  v22 = a3;
-  v4 = [(APButtonTrayScrollViewAssistant *)self delegate];
-  v5 = [v4 buttonTrayForAssistant:self];
+  viewCopy = view;
+  delegate = [(APButtonTrayScrollViewAssistant *)self delegate];
+  v5 = [delegate buttonTrayForAssistant:self];
 
   if (v5)
   {
     [v5 bounds];
-    [v5 convertRect:v22 toView:?];
+    [v5 convertRect:viewCopy toView:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    [v22 bounds];
+    [viewCopy bounds];
     v26.origin.x = v14;
     v26.origin.y = v15;
     v26.size.width = v16;
@@ -61,8 +61,8 @@
       v21 = 0.0;
     }
 
-    [v22 setContentInset:{v19, v20, height, v21}];
-    [v22 setScrollIndicatorInsets:{v19, v20, height, v21}];
+    [viewCopy setContentInset:{v19, v20, height, v21}];
+    [viewCopy setScrollIndicatorInsets:{v19, v20, height, v21}];
   }
 }
 

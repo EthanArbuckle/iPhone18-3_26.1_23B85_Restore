@@ -1,31 +1,31 @@
 @interface NEIKEv2CertificatePayload
 - (BOOL)generatePayloadData;
 - (BOOL)hasRequiredFields;
-- (BOOL)parsePayloadData:(id)a3;
+- (BOOL)parsePayloadData:(id)data;
 @end
 
 @implementation NEIKEv2CertificatePayload
 
-- (BOOL)parsePayloadData:(id)a3
+- (BOOL)parsePayloadData:(id)data
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     LOBYTE(v11) = 0;
-    [v4 getBytes:&v11 length:1];
+    [dataCopy getBytes:&v11 length:1];
     if (self)
     {
       self->_encoding = v11;
     }
 
-    v6 = [v4 subdataWithRange:{1, objc_msgSend(v4, "length") - 1}];
+    v6 = [dataCopy subdataWithRange:{1, objc_msgSend(dataCopy, "length") - 1}];
     if (self)
     {
       objc_setProperty_atomic(self, v5, v6, 40);
     }
 
-    v7 = [(NEIKEv2CertificatePayload *)self hasRequiredFields];
+    hasRequiredFields = [(NEIKEv2CertificatePayload *)self hasRequiredFields];
   }
 
   else
@@ -38,11 +38,11 @@
       _os_log_error_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_ERROR, "BACKTRACE %s called with null (payloadData.length >= sizeof(ikev2_payload_cert_hdr_t))", &v11, 0xCu);
     }
 
-    v7 = 0;
+    hasRequiredFields = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return hasRequiredFields;
 }
 
 - (BOOL)generatePayloadData
@@ -98,22 +98,22 @@ LABEL_12:
 
 - (BOOL)hasRequiredFields
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = objc_getProperty(self, a2, 40, 1);
     if (v3)
     {
-      LOBYTE(v2) = v2->_encoding != 0;
+      LOBYTE(selfCopy) = selfCopy->_encoding != 0;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
 @end

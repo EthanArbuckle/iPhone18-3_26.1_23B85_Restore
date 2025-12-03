@@ -1,6 +1,6 @@
 @interface VCAudioPowerLevelMonitor
 - (VCAudioPowerLevelMonitor)init;
-- (void)detectRemoteAveragePowerLevel:(float)a3 timestamp:(unsigned int)a4;
+- (void)detectRemoteAveragePowerLevel:(float)level timestamp:(unsigned int)timestamp;
 @end
 
 @implementation VCAudioPowerLevelMonitor
@@ -13,11 +13,11 @@
   v2 = [(VCAudioPowerLevelMonitor *)&v7 init];
   if (v2)
   {
-    v3 = [+[VCDefaults sharedInstance](VCDefaults forceAudioPowerTimeInterval];
-    v2->audioLowPowerTimeInterval = 24000 * v3;
-    if (v3 >= 1)
+    forceAudioPowerTimeInterval = [+[VCDefaults sharedInstance](VCDefaults forceAudioPowerTimeInterval];
+    v2->audioLowPowerTimeInterval = 24000 * forceAudioPowerTimeInterval;
+    if (forceAudioPowerTimeInterval >= 1)
     {
-      v4 = 50 * v3;
+      v4 = 50 * forceAudioPowerTimeInterval;
       [+[VCDefaults sharedInstance](VCDefaults forceAudioPowerThreshold];
       v2->audioPowerThreshold = v5;
       v2->currentAudioAverage = -120.0;
@@ -30,22 +30,22 @@
   return v2;
 }
 
-- (void)detectRemoteAveragePowerLevel:(float)a3 timestamp:(unsigned int)a4
+- (void)detectRemoteAveragePowerLevel:(float)level timestamp:(unsigned int)timestamp
 {
   audioLowPowerTimeInterval = self->audioLowPowerTimeInterval;
   if (audioLowPowerTimeInterval)
   {
     if (self->isAudioPowerMovingAverage)
     {
-      a3 = ((1.0 - self->audioPowerMovingAverageCoefficient) * self->currentAudioAverage) + (self->audioPowerMovingAverageCoefficient * fmaxf(a3, -120.0));
+      level = ((1.0 - self->audioPowerMovingAverageCoefficient) * self->currentAudioAverage) + (self->audioPowerMovingAverageCoefficient * fmaxf(level, -120.0));
     }
 
-    self->currentAudioAverage = a3;
-    if (a3 <= self->audioPowerThreshold)
+    self->currentAudioAverage = level;
+    if (level <= self->audioPowerThreshold)
     {
-      if (a4 - self->startDetectRemoteAudioLowPowerTime > audioLowPowerTimeInterval)
+      if (timestamp - self->startDetectRemoteAudioLowPowerTime > audioLowPowerTimeInterval)
       {
-        self->startDetectRemoteAudioLowPowerTime = a4;
+        self->startDetectRemoteAudioLowPowerTime = timestamp;
         [(VCAudioPowerLevelMonitorDelegate *)[(VCAudioPowerLevelMonitor *)self delegate] vcAudioPowerLevelMonitor:self isAudioBelowThreshold:1];
         self->isAudioPowerBelowThreshold = 1;
       }
@@ -53,13 +53,13 @@
 
     else
     {
-      self->startDetectRemoteAudioLowPowerTime = a4;
+      self->startDetectRemoteAudioLowPowerTime = timestamp;
       if (self->isAudioPowerBelowThreshold)
       {
         self->isAudioPowerBelowThreshold = 0;
-        v6 = [(VCAudioPowerLevelMonitor *)self delegate];
+        delegate = [(VCAudioPowerLevelMonitor *)self delegate];
 
-        [(VCAudioPowerLevelMonitorDelegate *)v6 vcAudioPowerLevelMonitor:self isAudioBelowThreshold:0];
+        [(VCAudioPowerLevelMonitorDelegate *)delegate vcAudioPowerLevelMonitor:self isAudioBelowThreshold:0];
       }
     }
   }

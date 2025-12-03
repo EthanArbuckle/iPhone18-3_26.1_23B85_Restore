@@ -1,12 +1,12 @@
 @interface HMFNetAddress
 + (id)localAddress;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMFNetAddress)init;
-- (HMFNetAddress)initWithHostname:(id)a3;
-- (HMFNetAddress)initWithSocketAddress:(const sockaddr *)a3;
+- (HMFNetAddress)initWithHostname:(id)hostname;
+- (HMFNetAddress)initWithSocketAddress:(const sockaddr *)address;
 - (NSString)addressString;
 - (id)attributeDescriptions;
-- (id)dataUsingEncoding:(unint64_t)a3;
+- (id)dataUsingEncoding:(unint64_t)encoding;
 - (unint64_t)addressFamily;
 - (unint64_t)hash;
 @end
@@ -49,10 +49,10 @@ void __29__HMFNetAddress_localAddress__block_invoke()
   objc_exception_throw(v7);
 }
 
-- (HMFNetAddress)initWithSocketAddress:(const sockaddr *)a3
+- (HMFNetAddress)initWithSocketAddress:(const sockaddr *)address
 {
   v24 = *MEMORY[0x277D85DE8];
-  sa_family = a3->sa_family;
+  sa_family = address->sa_family;
   if (sa_family == 2)
   {
     v6 = off_2786E64E8;
@@ -68,7 +68,7 @@ void __29__HMFNetAddress_localAddress__block_invoke()
     v6 = off_2786E64F0;
   }
 
-  v7 = [objc_alloc(*v6) initWithSocketAddress:a3];
+  v7 = [objc_alloc(*v6) initWithSocketAddress:address];
   if (v7)
   {
     v8 = v7;
@@ -81,20 +81,20 @@ void __29__HMFNetAddress_localAddress__block_invoke()
       objc_storeStrong(&v9->_internal, v8);
     }
 
-    v11 = v10;
+    selfCopy = v10;
 
-    v12 = v11;
+    v12 = selfCopy;
     goto LABEL_12;
   }
 
 LABEL_9:
   v13 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v15 = HMFGetLogIdentifier(v11);
-    v16 = a3->sa_family;
+    v15 = HMFGetLogIdentifier(selfCopy);
+    v16 = address->sa_family;
     *buf = 138543618;
     v21 = v15;
     v22 = 1024;
@@ -110,34 +110,34 @@ LABEL_12:
   return v12;
 }
 
-- (HMFNetAddress)initWithHostname:(id)a3
+- (HMFNetAddress)initWithHostname:(id)hostname
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  hostnameCopy = hostname;
+  if (hostnameCopy)
   {
     v15.receiver = self;
     v15.super_class = HMFNetAddress;
     v5 = [(HMFNetAddress *)&v15 init];
     if (v5)
     {
-      v6 = [[_HMFNetAddressHostname alloc] initWithHostname:v4];
+      v6 = [[_HMFNetAddressHostname alloc] initWithHostname:hostnameCopy];
       internal = v5->_internal;
       v5->_internal = &v6->super;
     }
 
-    v8 = v5;
-    v9 = v8;
+    selfCopy = v5;
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = HMFGetLogIdentifier(v8);
+      v12 = HMFGetLogIdentifier(selfCopy);
       *buf = 138543362;
       v17 = v12;
       _os_log_impl(&dword_22ADEC000, v11, OS_LOG_TYPE_ERROR, "%{public}@Invalid hostname", buf, 0xCu);
@@ -153,16 +153,16 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v2 = [(HMFNetAddress *)self internal];
-  v3 = [v2 hash];
+  internal = [(HMFNetAddress *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -172,9 +172,9 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMFNetAddress *)self internal];
-      v6 = [(HMFNetAddress *)v4 internal];
-      v7 = [v5 isEqual:v6];
+      internal = [(HMFNetAddress *)self internal];
+      internal2 = [(HMFNetAddress *)equalCopy internal];
+      v7 = [internal isEqual:internal2];
     }
 
     else
@@ -190,8 +190,8 @@ LABEL_12:
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMFNetAddress *)self addressString];
-  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Address" value:v4];
+  addressString = [(HMFNetAddress *)self addressString];
+  v5 = [(HMFAttributeDescription *)v3 initWithName:@"Address" value:addressString];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -202,24 +202,24 @@ LABEL_12:
 
 - (unint64_t)addressFamily
 {
-  v2 = [(HMFNetAddress *)self internal];
-  v3 = [v2 addressFamily];
+  internal = [(HMFNetAddress *)self internal];
+  addressFamily = [internal addressFamily];
 
-  return v3;
+  return addressFamily;
 }
 
 - (NSString)addressString
 {
-  v2 = [(HMFNetAddress *)self internal];
-  v3 = [v2 addressString];
+  internal = [(HMFNetAddress *)self internal];
+  addressString = [internal addressString];
 
-  return v3;
+  return addressString;
 }
 
-- (id)dataUsingEncoding:(unint64_t)a3
+- (id)dataUsingEncoding:(unint64_t)encoding
 {
-  v4 = [(HMFNetAddress *)self internal];
-  v5 = [v4 dataUsingEncoding:a3];
+  internal = [(HMFNetAddress *)self internal];
+  v5 = [internal dataUsingEncoding:encoding];
 
   return v5;
 }

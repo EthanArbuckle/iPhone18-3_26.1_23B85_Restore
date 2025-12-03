@@ -1,14 +1,14 @@
 @interface PHPreferences
-- (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value;
 - (NSString)domain;
-- (id)numberForKey:(id)a3 defaultValue:(id)a4;
-- (id)preferencesValueForKey:(id)a3;
-- (id)stringForKey:(id)a3 defaultValue:(id)a4;
-- (int64_t)integerForKey:(id)a3 defaultValue:(int64_t)a4;
-- (unint64_t)unsignedIntegerForKey:(id)a3 defaultValue:(unint64_t)a4;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4;
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4;
-- (void)setUnsignedInteger:(unint64_t)a3 forKey:(id)a4;
+- (id)numberForKey:(id)key defaultValue:(id)value;
+- (id)preferencesValueForKey:(id)key;
+- (id)stringForKey:(id)key defaultValue:(id)value;
+- (int64_t)integerForKey:(id)key defaultValue:(int64_t)value;
+- (unint64_t)unsignedIntegerForKey:(id)key defaultValue:(unint64_t)value;
+- (void)setInteger:(int64_t)integer forKey:(id)key;
+- (void)setPreferencesValue:(id)value forKey:(id)key;
+- (void)setUnsignedInteger:(unint64_t)integer forKey:(id)key;
 @end
 
 @implementation PHPreferences
@@ -19,9 +19,9 @@
   if (!domain)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
     v6 = self->_domain;
-    self->_domain = v5;
+    self->_domain = bundleIdentifier;
 
     domain = self->_domain;
   }
@@ -29,41 +29,41 @@
   return domain;
 }
 
-- (id)preferencesValueForKey:(id)a3
+- (id)preferencesValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PHPreferences *)self domain];
-  v6 = [(PHPreferences *)self preferencesValueForKey:v4 domain:v5];
+  keyCopy = key;
+  domain = [(PHPreferences *)self domain];
+  v6 = [(PHPreferences *)self preferencesValueForKey:keyCopy domain:domain];
 
   return v6;
 }
 
-- (void)setPreferencesValue:(id)a3 forKey:(id)a4
+- (void)setPreferencesValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PHPreferences *)self domain];
-  [(PHPreferences *)self setPreferencesValue:v7 forKey:v6 domain:v8];
+  keyCopy = key;
+  valueCopy = value;
+  domain = [(PHPreferences *)self domain];
+  [(PHPreferences *)self setPreferencesValue:valueCopy forKey:keyCopy domain:domain];
 }
 
-- (BOOL)BOOLForKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLForKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = [(PHPreferences *)self numberForKey:a3 defaultValue:0];
+  v5 = [(PHPreferences *)self numberForKey:key defaultValue:0];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (id)numberForKey:(id)a3 defaultValue:(id)a4
+- (id)numberForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(PHPreferences *)self preferencesValueForKey:a3];
+  valueCopy = value;
+  v7 = [(PHPreferences *)self preferencesValueForKey:key];
   objc_opt_class();
-  v8 = v6;
+  v8 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -72,50 +72,50 @@
   return v8;
 }
 
-- (int64_t)integerForKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)integerForKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(PHPreferences *)self numberForKey:a3 defaultValue:0];
+  v5 = [(PHPreferences *)self numberForKey:key defaultValue:0];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4
+- (void)setInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
-  [(PHPreferences *)self setNumber:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [NSNumber numberWithInteger:integer];
+  [(PHPreferences *)self setNumber:v7 forKey:keyCopy];
 }
 
-- (unint64_t)unsignedIntegerForKey:(id)a3 defaultValue:(unint64_t)a4
+- (unint64_t)unsignedIntegerForKey:(id)key defaultValue:(unint64_t)value
 {
-  v5 = [(PHPreferences *)self numberForKey:a3 defaultValue:0];
+  v5 = [(PHPreferences *)self numberForKey:key defaultValue:0];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 unsignedIntegerValue];
+    value = [v5 unsignedIntegerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setUnsignedInteger:(unint64_t)a3 forKey:(id)a4
+- (void)setUnsignedInteger:(unint64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
-  [(PHPreferences *)self setNumber:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [NSNumber numberWithUnsignedInteger:integer];
+  [(PHPreferences *)self setNumber:v7 forKey:keyCopy];
 }
 
-- (id)stringForKey:(id)a3 defaultValue:(id)a4
+- (id)stringForKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = [(PHPreferences *)self preferencesValueForKey:a3];
+  valueCopy = value;
+  v7 = [(PHPreferences *)self preferencesValueForKey:key];
   objc_opt_class();
-  v8 = v6;
+  v8 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;

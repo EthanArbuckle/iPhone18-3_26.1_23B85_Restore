@@ -1,45 +1,45 @@
 @interface RMDeclarationUniqueIdentifier
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeclarationIdentifier:(id)a3;
-- (RMDeclarationUniqueIdentifier)initWithCoder:(id)a3;
-- (RMDeclarationUniqueIdentifier)initWithDeclarationPayload:(id)a3;
-- (RMDeclarationUniqueIdentifier)initWithManagementSourceIdentifier:(id)a3 type:(id)a4 identifier:(id)a5 serverToken:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeclarationIdentifier:(id)identifier;
+- (RMDeclarationUniqueIdentifier)initWithCoder:(id)coder;
+- (RMDeclarationUniqueIdentifier)initWithDeclarationPayload:(id)payload;
+- (RMDeclarationUniqueIdentifier)initWithManagementSourceIdentifier:(id)identifier type:(id)type identifier:(id)a5 serverToken:(id)token;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMDeclarationUniqueIdentifier
 
-- (RMDeclarationUniqueIdentifier)initWithDeclarationPayload:(id)a3
+- (RMDeclarationUniqueIdentifier)initWithDeclarationPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 managementSourceIdentifier];
-  v6 = [v4 declarationType];
-  v7 = [v4 identifier];
-  v8 = [v4 serverToken];
+  payloadCopy = payload;
+  managementSourceIdentifier = [payloadCopy managementSourceIdentifier];
+  declarationType = [payloadCopy declarationType];
+  identifier = [payloadCopy identifier];
+  serverToken = [payloadCopy serverToken];
 
-  v9 = [(RMDeclarationUniqueIdentifier *)self initWithManagementSourceIdentifier:v5 type:v6 identifier:v7 serverToken:v8];
+  v9 = [(RMDeclarationUniqueIdentifier *)self initWithManagementSourceIdentifier:managementSourceIdentifier type:declarationType identifier:identifier serverToken:serverToken];
   return v9;
 }
 
-- (RMDeclarationUniqueIdentifier)initWithManagementSourceIdentifier:(id)a3 type:(id)a4 identifier:(id)a5 serverToken:(id)a6
+- (RMDeclarationUniqueIdentifier)initWithManagementSourceIdentifier:(id)identifier type:(id)type identifier:(id)a5 serverToken:(id)token
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v12 = a5;
-  v13 = a6;
+  tokenCopy = token;
   v24.receiver = self;
   v24.super_class = RMDeclarationUniqueIdentifier;
   v14 = [(RMDeclarationUniqueIdentifier *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     managementSourceIdentifier = v14->_managementSourceIdentifier;
     v14->_managementSourceIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [typeCopy copy];
     type = v14->_type;
     v14->_type = v17;
 
@@ -47,7 +47,7 @@
     identifier = v14->_identifier;
     v14->_identifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [tokenCopy copy];
     serverToken = v14->_serverToken;
     v14->_serverToken = v21;
   }
@@ -59,19 +59,19 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
-  v6 = [(RMDeclarationUniqueIdentifier *)self type];
-  v7 = [(RMDeclarationUniqueIdentifier *)self identifier];
-  v8 = [(RMDeclarationUniqueIdentifier *)self serverToken];
-  v9 = [NSString stringWithFormat:@"<%@: %p { managementSourceIdentifier = %@, type = %@, identifier = %@, serverToken = %@ }>", v4, self, v5, v6, v7, v8];
+  managementSourceIdentifier = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
+  type = [(RMDeclarationUniqueIdentifier *)self type];
+  identifier = [(RMDeclarationUniqueIdentifier *)self identifier];
+  serverToken = [(RMDeclarationUniqueIdentifier *)self serverToken];
+  v9 = [NSString stringWithFormat:@"<%@: %p { managementSourceIdentifier = %@, type = %@, identifier = %@, serverToken = %@ }>", v4, self, managementSourceIdentifier, type, identifier, serverToken];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -81,7 +81,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RMDeclarationUniqueIdentifier *)self isEqualToDeclarationIdentifier:v4];
+      v5 = [(RMDeclarationUniqueIdentifier *)self isEqualToDeclarationIdentifier:equalCopy];
     }
 
     else
@@ -93,27 +93,27 @@
   return v5;
 }
 
-- (BOOL)isEqualToDeclarationIdentifier:(id)a3
+- (BOOL)isEqualToDeclarationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(RMDeclarationUniqueIdentifier *)self hash];
-  if (v5 == [v4 hash])
+  if (v5 == [identifierCopy hash])
   {
-    v6 = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
-    v7 = [v4 managementSourceIdentifier];
-    if ([v6 isEqualToString:v7])
+    managementSourceIdentifier = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
+    managementSourceIdentifier2 = [identifierCopy managementSourceIdentifier];
+    if ([managementSourceIdentifier isEqualToString:managementSourceIdentifier2])
     {
-      v8 = [(RMDeclarationUniqueIdentifier *)self type];
-      v9 = [v4 type];
-      if ([v8 isEqualToString:v9])
+      type = [(RMDeclarationUniqueIdentifier *)self type];
+      type2 = [identifierCopy type];
+      if ([type isEqualToString:type2])
       {
-        v10 = [(RMDeclarationUniqueIdentifier *)self identifier];
-        v11 = [v4 identifier];
-        if ([v10 isEqualToString:v11])
+        identifier = [(RMDeclarationUniqueIdentifier *)self identifier];
+        identifier2 = [identifierCopy identifier];
+        if ([identifier isEqualToString:identifier2])
         {
-          v12 = [(RMDeclarationUniqueIdentifier *)self serverToken];
-          v13 = [v4 serverToken];
-          v14 = [v12 isEqualToString:v13];
+          serverToken = [(RMDeclarationUniqueIdentifier *)self serverToken];
+          serverToken2 = [identifierCopy serverToken];
+          v14 = [serverToken isEqualToString:serverToken2];
         }
 
         else
@@ -144,25 +144,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
-  v4 = [v3 hash];
-  v5 = [(RMDeclarationUniqueIdentifier *)self type];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RMDeclarationUniqueIdentifier *)self identifier];
-  v8 = [v7 hash];
-  v9 = [(RMDeclarationUniqueIdentifier *)self serverToken];
-  v10 = v8 ^ [v9 hash];
+  managementSourceIdentifier = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
+  v4 = [managementSourceIdentifier hash];
+  type = [(RMDeclarationUniqueIdentifier *)self type];
+  v6 = [type hash] ^ v4;
+  identifier = [(RMDeclarationUniqueIdentifier *)self identifier];
+  v8 = [identifier hash];
+  serverToken = [(RMDeclarationUniqueIdentifier *)self serverToken];
+  v10 = v8 ^ [serverToken hash];
 
   return v6 ^ v10;
 }
 
-- (RMDeclarationUniqueIdentifier)initWithCoder:(id)a3
+- (RMDeclarationUniqueIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managementSourceIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managementSourceIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverToken"];
 
   if (v5)
   {
@@ -176,42 +176,42 @@
 
   if (v9 || v7 == 0 || v8 == 0)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RMDeclarationUniqueIdentifier *)self initWithManagementSourceIdentifier:v5 type:v6 identifier:v7 serverToken:v8];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
-  [v4 encodeObject:v5 forKey:@"managementSourceIdentifier"];
+  coderCopy = coder;
+  managementSourceIdentifier = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
+  [coderCopy encodeObject:managementSourceIdentifier forKey:@"managementSourceIdentifier"];
 
-  v6 = [(RMDeclarationUniqueIdentifier *)self type];
-  [v4 encodeObject:v6 forKey:@"type"];
+  type = [(RMDeclarationUniqueIdentifier *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  v7 = [(RMDeclarationUniqueIdentifier *)self identifier];
-  [v4 encodeObject:v7 forKey:@"identifier"];
+  identifier = [(RMDeclarationUniqueIdentifier *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v8 = [(RMDeclarationUniqueIdentifier *)self serverToken];
-  [v4 encodeObject:v8 forKey:@"serverToken"];
+  serverToken = [(RMDeclarationUniqueIdentifier *)self serverToken];
+  [coderCopy encodeObject:serverToken forKey:@"serverToken"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RMDeclarationUniqueIdentifier alloc];
-  v5 = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
-  v6 = [(RMDeclarationUniqueIdentifier *)self type];
-  v7 = [(RMDeclarationUniqueIdentifier *)self identifier];
-  v8 = [(RMDeclarationUniqueIdentifier *)self serverToken];
-  v9 = [(RMDeclarationUniqueIdentifier *)v4 initWithManagementSourceIdentifier:v5 type:v6 identifier:v7 serverToken:v8];
+  managementSourceIdentifier = [(RMDeclarationUniqueIdentifier *)self managementSourceIdentifier];
+  type = [(RMDeclarationUniqueIdentifier *)self type];
+  identifier = [(RMDeclarationUniqueIdentifier *)self identifier];
+  serverToken = [(RMDeclarationUniqueIdentifier *)self serverToken];
+  v9 = [(RMDeclarationUniqueIdentifier *)v4 initWithManagementSourceIdentifier:managementSourceIdentifier type:type identifier:identifier serverToken:serverToken];
 
   return v9;
 }

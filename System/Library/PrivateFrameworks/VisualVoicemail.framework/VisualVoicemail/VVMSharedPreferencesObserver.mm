@@ -2,12 +2,12 @@
 + (id)sharedPreferencesObserver;
 - (BOOL)isAirplaneMode;
 - (VVMSharedPreferencesObserver)init;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)checkAirplaneModePreference;
 - (void)dealloc;
-- (void)handleRadioPreferencesChanged:(id)a3;
-- (void)notifyAirplaneModeChanged_sync:(BOOL)a3;
-- (void)removeDelegate:(id)a3;
+- (void)handleRadioPreferencesChanged:(id)changed;
+- (void)notifyAirplaneModeChanged_sync:(BOOL)changed_sync;
+- (void)removeDelegate:(id)delegate;
 - (void)setupAirplaneModeCallback;
 @end
 
@@ -37,7 +37,7 @@
     v23 = 2112;
     v24 = objc_opt_class();
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v4 = v24;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ %p Creating", buf, 0x2Au);
   }
@@ -50,10 +50,10 @@
   {
     v5->lock._os_unfair_lock_opaque = 0;
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v7 bundleIdentifier];
+    bundleIdentifier = [v7 bundleIdentifier];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [NSString stringWithFormat:@"%@.%@", v8, v10];
+    v11 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v10];
     v12 = v11;
     v13 = dispatch_queue_create([v11 UTF8String], 0);
     queue = v6->queue;
@@ -206,9 +206,9 @@ LABEL_15:
   [(VVMSharedPreferencesObserver *)self setAirplaneMode:v7 != 0];
 }
 
-- (void)handleRadioPreferencesChanged:(id)a3
+- (void)handleRadioPreferencesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_10000B2B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,12 +219,12 @@ LABEL_15:
     v14 = 2112;
     v15 = objc_opt_class();
     v16 = 2112;
-    v17 = v4;
+    v17 = changedCopy;
     v6 = v15;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is handling RadioPreferencesChanged with info <%@>", &v10, 0x2Au);
   }
 
-  if ([v4 isEqualToString:@"AirplaneMode"])
+  if ([changedCopy isEqualToString:@"AirplaneMode"])
   {
     [(VVMSharedPreferencesObserver *)self checkAirplaneModePreference];
   }
@@ -242,7 +242,7 @@ LABEL_15:
       v14 = 2112;
       v15 = v8;
       v16 = 2112;
-      v17 = v4;
+      v17 = changedCopy;
       v9 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#I %s%s%@ is suppressing notification for %@", &v10, 0x2Au);
     }
@@ -257,7 +257,7 @@ LABEL_15:
   return airplane;
 }
 
-- (void)notifyAirplaneModeChanged_sync:(BOOL)a3
+- (void)notifyAirplaneModeChanged_sync:(BOOL)changed_sync
 {
   v5 = sub_10000B2B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -297,7 +297,7 @@ LABEL_15:
         block[2] = sub_10000BE6C;
         block[3] = &unk_1000ED8D8;
         block[4] = v10;
-        v14 = a3;
+        changed_syncCopy = changed_sync;
         dispatch_async(v11, block);
       }
 
@@ -308,21 +308,21 @@ LABEL_15:
   }
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->lock);
-  [(NSMapTable *)self->delegates setObject:v6 forKey:v7];
+  [(NSMapTable *)self->delegates setObject:queueCopy forKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->lock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->lock);
-  [(NSMapTable *)self->delegates removeObjectForKey:v4];
+  [(NSMapTable *)self->delegates removeObjectForKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->lock);
 }

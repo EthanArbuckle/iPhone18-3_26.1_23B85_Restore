@@ -1,59 +1,59 @@
 @interface NIServerAnalyticsManager
-- (BOOL)_isSemiStaticFromVIO:(optional<nearby:(optional<nearby:(double)a5 :algorithms::common::Pose> *)a4 :algorithms::common::Pose> *)a3 ::;
-- (NIServerAnalyticsManager)initWithBundleIdentifier:(id)a3;
-- (VectorAggregateErrors)_calculateErrorStatsFromVector:(SEL)a3;
-- (double)_deltaDistanceFromVIOPoses:(optional<nearby:(optional<nearby::algorithms::common::Pose> *)a4 :algorithms::common::Pose> *)a3 :;
-- (double)_finderTimeFromFirstPoseTo:(double)a3;
+- (BOOL)_isSemiStaticFromVIO:(optional<nearby:(optional<nearby:(double)o :algorithms::common::Pose> *)a4 :algorithms::common::Pose> *)a3 ::;
+- (NIServerAnalyticsManager)initWithBundleIdentifier:(id)identifier;
+- (VectorAggregateErrors)_calculateErrorStatsFromVector:(SEL)vector;
+- (double)_deltaDistanceFromVIOPoses:(optional<nearby:(optional<nearby::algorithms::common::Pose> *)poses :algorithms::common::Pose> *)a3 :;
+- (double)_finderTimeFromFirstPoseTo:(double)to;
 - (id).cxx_construct;
-- (id)_algorithmSourceToString:(int)a3;
-- (void)_calculateAndLogErrorsFromIODeltaP:(NIServerAnalyticsManager *)self vioDeltaP:(SEL)a2 vioPos:;
-- (void)_calculateIOMetrics:(double)a3;
+- (id)_algorithmSourceToString:(int)string;
+- (void)_calculateAndLogErrorsFromIODeltaP:(NIServerAnalyticsManager *)self vioDeltaP:(SEL)p vioPos:;
+- (void)_calculateIOMetrics:(double)metrics;
 - (void)_calculatePoseSplicingMetrics;
 - (void)_calculateStraightLineDistance;
 - (void)_onVIOReset;
-- (void)_sessionStoppedWithTimestamp:(double)a3;
+- (void)_sessionStoppedWithTimestamp:(double)timestamp;
 - (void)_submitFindingSessionEndStats;
-- (void)_updateAlignedPDRMetrics:(const void *)a3;
-- (void)_updateMinMaxRangeAndRSSI:(double)a3 uwbRSSI:(double)a4 nbRSSI:(optional<double>)a5;
-- (void)_updateUserMovedDistanceWithPose:(const void *)a3 lastPoseInfo:(void *)a4;
-- (void)appBecameNotVisibleWithTimestamp:(double)a3;
-- (void)appBecameVisibleWithTimestamp:(double)a3;
+- (void)_updateAlignedPDRMetrics:(const void *)metrics;
+- (void)_updateMinMaxRangeAndRSSI:(double)i uwbRSSI:(double)sI nbRSSI:(optional<double>)sSI;
+- (void)_updateUserMovedDistanceWithPose:(const void *)pose lastPoseInfo:(void *)info;
+- (void)appBecameNotVisibleWithTimestamp:(double)timestamp;
+- (void)appBecameVisibleWithTimestamp:(double)timestamp;
 - (void)appPresentedLiveActivity;
 - (void)dealloc;
-- (void)lifecycleTimeoutAfterTrackingForDiscoveryToken:(id)a3;
-- (void)lifecycleTimeoutBeforeTrackingForDiscoveryToken:(id)a3;
-- (void)nearbyObjectUpdated:(id)a3;
-- (void)sessionConfiguredAccessoryWithTimestamp:(double)a3;
-- (void)sessionConfiguredAccessoryWithTimestamp:(double)a3 withTxPower:(int)a4;
-- (void)sessionConnectedToAccessoryWithTimestamp:(double)a3;
-- (void)sessionInterruptedWithTimestamp:(double)a3;
-- (void)sessionInvalidatedWithTimestamp:(double)a3;
-- (void)sessionPausedWithTimestamp:(double)a3;
-- (void)sessionSuccessfullyRanWithConfig:(id)a3 withTimestamp:(double)a4;
-- (void)updateFindButtonTime:(double)a3;
-- (void)updateWithAcquisitionReason:(int)a3;
-- (void)updateWithBTRSSIMeasurementWithTimestamp:(double)a3 withRssi:(double)a4;
-- (void)updateWithFindeePeerData:(const void *)a3;
-- (void)updateWithFinderPeerData:(const void *)a3;
+- (void)lifecycleTimeoutAfterTrackingForDiscoveryToken:(id)token;
+- (void)lifecycleTimeoutBeforeTrackingForDiscoveryToken:(id)token;
+- (void)nearbyObjectUpdated:(id)updated;
+- (void)sessionConfiguredAccessoryWithTimestamp:(double)timestamp;
+- (void)sessionConfiguredAccessoryWithTimestamp:(double)timestamp withTxPower:(int)power;
+- (void)sessionConnectedToAccessoryWithTimestamp:(double)timestamp;
+- (void)sessionInterruptedWithTimestamp:(double)timestamp;
+- (void)sessionInvalidatedWithTimestamp:(double)timestamp;
+- (void)sessionPausedWithTimestamp:(double)timestamp;
+- (void)sessionSuccessfullyRanWithConfig:(id)config withTimestamp:(double)timestamp;
+- (void)updateFindButtonTime:(double)time;
+- (void)updateWithAcquisitionReason:(int)reason;
+- (void)updateWithBTRSSIMeasurementWithTimestamp:(double)timestamp withRssi:(double)rssi;
+- (void)updateWithFindeePeerData:(const void *)data;
+- (void)updateWithFinderPeerData:(const void *)data;
 - (void)updateWithMissedRange;
-- (void)updateWithNewRegion:(id)a3 withTimestamp:(double)a4;
-- (void)updateWithPDR:(const void *)a3;
+- (void)updateWithNewRegion:(id)region withTimestamp:(double)timestamp;
+- (void)updateWithPDR:(const void *)r;
 - (void)updateWithPeerLocationFromFMF;
-- (void)updateWithPose:(const void *)a3;
-- (void)updateWithRangeResult:(RangeResult *)a3;
-- (void)updateWithRangingMode:(int)a3;
-- (void)updateWithSASolution:(Solution *)a3;
-- (void)updateWithSelfLocation:(const LocationInput *)a3;
-- (void)updateWithSolution:(const void *)a3;
-- (void)updateWithSuccessfulRange:(double)a3 uwbRSSI:(double)a4 nbRSSI:(optional<double>)a5;
-- (void)updateWithVIOPose:(Pose *)a3;
+- (void)updateWithPose:(const void *)pose;
+- (void)updateWithRangeResult:(RangeResult *)result;
+- (void)updateWithRangingMode:(int)mode;
+- (void)updateWithSASolution:(Solution *)solution;
+- (void)updateWithSelfLocation:(const LocationInput *)location;
+- (void)updateWithSolution:(const void *)solution;
+- (void)updateWithSuccessfulRange:(double)range uwbRSSI:(double)i nbRSSI:(optional<double>)sI;
+- (void)updateWithVIOPose:(Pose *)pose;
 @end
 
 @implementation NIServerAnalyticsManager
 
-- (NIServerAnalyticsManager)initWithBundleIdentifier:(id)a3
+- (NIServerAnalyticsManager)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = NIServerAnalyticsManager;
   v6 = [(NIServerAnalyticsManager *)&v26 init];
@@ -61,12 +61,12 @@
   v8 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
     bundleIdentifier = v8->_bundleIdentifier;
     if (bundleIdentifier)
     {
-      v10 = [(NSString *)bundleIdentifier UTF8String];
-      v11 = strlen(v10);
+      uTF8String = [(NSString *)bundleIdentifier UTF8String];
+      v11 = strlen(uTF8String);
       if (v11 >= 0x7FFFFFFFFFFFFFF8)
       {
         sub_100013AEC();
@@ -81,7 +81,7 @@
       HIBYTE(v25) = v11;
       if (v11)
       {
-        memmove(&__dst, v10, v11);
+        memmove(&__dst, uTF8String, v11);
       }
 
       *(&__dst + v12) = 0;
@@ -260,10 +260,10 @@
   [(NIServerAnalyticsManager *)&v3 dealloc];
 }
 
-- (void)sessionSuccessfullyRanWithConfig:(id)a3 withTimestamp:(double)a4
+- (void)sessionSuccessfullyRanWithConfig:(id)config withTimestamp:(double)timestamp
 {
-  v7 = a3;
-  if (!v7)
+  configCopy = config;
+  if (!configCopy)
   {
     v83 = +[NSAssertionHandler currentHandler];
     [v83 handleFailureInMethod:a2 object:self file:@"NIServerAnalyticsManager.mm" lineNumber:679 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
@@ -276,9 +276,9 @@
     *buf = 138412802;
     *&buf[4] = bundleIdentifier;
     v90 = 2112;
-    *v91 = v7;
+    *v91 = configCopy;
     *&v91[8] = 2048;
-    v92 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "#ni-ca,[%@] sessionSuccessfullyRanWithConfig: %@ withTimestamp: %f [s]", buf, 0x20u);
   }
 
@@ -286,8 +286,8 @@
   {
 LABEL_24:
     self->_isRunning = 1;
-    self->_runTimestamp = a4;
-    self->_visibilityUpdateTimestamp = a4;
+    self->_runTimestamp = timestamp;
+    self->_visibilityUpdateTimestamp = timestamp;
     self->_receivedDistance = 0;
     self->_timeSpentVisible = 0.0;
     self->_timeSpentNotVisible = 0.0;
@@ -432,7 +432,7 @@ LABEL_24:
     if (v34 == objc_opt_class())
     {
       *p_sessionType = 1;
-      v41 = v7;
+      v41 = configCopy;
       *p_backgroundMode = [v41 backgroundMode];
       self->_isCameraAssistanceEnabled = [v41 _internalIsCameraAssistanceEnabled];
       self->_isExtendedDistanceMeasurementEnabled = [v41 isExtendedDistanceMeasurementEnabled];
@@ -448,9 +448,9 @@ LABEL_24:
         goto LABEL_97;
       }
 
-      v36 = v7;
-      v37 = [v36 discoveryTokenVariant];
-      if (v37 == 1)
+      v36 = configCopy;
+      discoveryTokenVariant = [v36 discoveryTokenVariant];
+      if (discoveryTokenVariant == 1)
       {
         if ([v36 isFinder])
         {
@@ -464,22 +464,22 @@ LABEL_24:
 
       else
       {
-        if (v37 != 2)
+        if (discoveryTokenVariant != 2)
         {
           goto LABEL_96;
         }
 
-        v38 = [v36 preferredUpdateRate];
-        self->_askedToRange = v38 == 2;
-        if (v38 == 2)
+        preferredUpdateRate = [v36 preferredUpdateRate];
+        self->_askedToRange = preferredUpdateRate == 2;
+        if (preferredUpdateRate == 2)
         {
-          [(NIServerAnalyticsManager *)self updateFindButtonTime:a4];
+          [(NIServerAnalyticsManager *)self updateFindButtonTime:timestamp];
         }
 
-        v39 = [v36 requestedMeasurementQuality];
-        if (v39 != 3)
+        requestedMeasurementQuality = [v36 requestedMeasurementQuality];
+        if (requestedMeasurementQuality != 3)
         {
-          if (v39 == 1)
+          if (requestedMeasurementQuality == 1)
           {
             self->_sessionType = 5;
             v40 = 1.0;
@@ -580,7 +580,7 @@ LABEL_112:
             v90 = 2112;
             *v91 = @"com.apple.nearbyinteractionv2.start";
             *&v91[8] = 2112;
-            v92 = *&v81;
+            timestampCopy = *&v81;
             _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_INFO, "#ni-ca,[%@] send analytics event %@:\n%@\n", buf, 0x20u);
           }
 
@@ -605,19 +605,19 @@ LABEL_112:
     }
 
     *p_sessionType = 2;
-    v42 = v7;
+    v42 = configCopy;
     *p_backgroundMode = [v42 backgroundMode];
     self->_isCameraAssistanceEnabled = [v42 _internalIsCameraAssistanceEnabled];
-    v43 = [v42 accessoryConfigData];
-    v44 = v43;
-    v45 = [v43 bytes];
+    accessoryConfigData = [v42 accessoryConfigData];
+    v44 = accessoryConfigData;
+    bytes = [accessoryConfigData bytes];
 
-    v46 = [v42 accessoryConfigData];
-    v47 = [v46 length];
+    accessoryConfigData2 = [v42 accessoryConfigData];
+    v47 = [accessoryConfigData2 length];
     v86 = 0;
     v87 = 0;
     v88 = 0;
-    sub_1000069DC(&v86, v45, v47 + v45, v47);
+    sub_1000069DC(&v86, bytes, v47 + bytes, v47);
 
     v48 = v86;
     v49 = v87 - v86;
@@ -734,7 +734,7 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "#ni-ca,[%@] Session is already running. Stop it first.", buf, 0xCu);
     }
 
-    [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:a4];
+    [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:timestamp];
     if (v12)
     {
       ++self->_clientRequestIndex;
@@ -755,7 +755,7 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  v10 = v7;
+  v10 = configCopy;
   v11 = self->_sessionType - 5;
   v12 = v11 < 2;
   if (v11 > 1)
@@ -795,7 +795,7 @@ LABEL_16:
 
     if (self->_askedToRange)
     {
-      [(NIServerAnalyticsManager *)self updateFindButtonTime:a4];
+      [(NIServerAnalyticsManager *)self updateFindButtonTime:timestamp];
       goto LABEL_118;
     }
 
@@ -805,7 +805,7 @@ LABEL_16:
 LABEL_118:
 }
 
-- (void)sessionPausedWithTimestamp:(double)a3
+- (void)sessionPausedWithTimestamp:(double)timestamp
 {
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
@@ -814,14 +814,14 @@ LABEL_118:
     v7 = 138412546;
     v8 = bundleIdentifier;
     v9 = 2048;
-    v10 = a3;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] sessionPausedWithTimestamp: %f [s]", &v7, 0x16u);
   }
 
-  [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:a3];
+  [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:timestamp];
 }
 
-- (void)sessionInterruptedWithTimestamp:(double)a3
+- (void)sessionInterruptedWithTimestamp:(double)timestamp
 {
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
@@ -830,14 +830,14 @@ LABEL_118:
     v7 = 138412546;
     v8 = bundleIdentifier;
     v9 = 2048;
-    v10 = a3;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] sessionInterruptedWithTimestamp: %f [s]", &v7, 0x16u);
   }
 
-  [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:a3];
+  [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:timestamp];
 }
 
-- (void)sessionInvalidatedWithTimestamp:(double)a3
+- (void)sessionInvalidatedWithTimestamp:(double)timestamp
 {
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
@@ -846,14 +846,14 @@ LABEL_118:
     v7 = 138412546;
     v8 = bundleIdentifier;
     v9 = 2048;
-    v10 = a3;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] sessionInvalidatedWithTimestamp: %f [s]", &v7, 0x16u);
   }
 
-  [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:a3];
+  [(NIServerAnalyticsManager *)self _sessionStoppedWithTimestamp:timestamp];
 }
 
-- (void)appBecameVisibleWithTimestamp:(double)a3
+- (void)appBecameVisibleWithTimestamp:(double)timestamp
 {
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
@@ -862,7 +862,7 @@ LABEL_118:
     v9 = 138412546;
     v10 = bundleIdentifier;
     v11 = 2048;
-    v12 = a3;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] appBecameVisibleWithTimestamp: %f [s]", &v9, 0x16u);
   }
 
@@ -880,13 +880,13 @@ LABEL_118:
 
   else
   {
-    self->_timeSpentNotVisible = self->_timeSpentNotVisible + a3 - self->_visibilityUpdateTimestamp;
-    self->_visibilityUpdateTimestamp = a3;
+    self->_timeSpentNotVisible = self->_timeSpentNotVisible + timestamp - self->_visibilityUpdateTimestamp;
+    self->_visibilityUpdateTimestamp = timestamp;
     self->_isVisible = 1;
   }
 }
 
-- (void)appBecameNotVisibleWithTimestamp:(double)a3
+- (void)appBecameNotVisibleWithTimestamp:(double)timestamp
 {
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
@@ -895,14 +895,14 @@ LABEL_118:
     v10 = 138412546;
     v11 = bundleIdentifier;
     v12 = 2048;
-    v13 = a3;
+    timestampCopy = timestamp;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] appBecameNotVisibleWithTimestamp: %f [s]", &v10, 0x16u);
   }
 
   if (self->_isVisible)
   {
-    v7 = self->_timeSpentVisible + a3 - self->_visibilityUpdateTimestamp;
-    self->_visibilityUpdateTimestamp = a3;
+    v7 = self->_timeSpentVisible + timestamp - self->_visibilityUpdateTimestamp;
+    self->_visibilityUpdateTimestamp = timestamp;
     self->_timeSpentVisible = v7;
     self->_isVisible = 0;
   }
@@ -934,27 +934,27 @@ LABEL_118:
   self->_isLiveActivityEverActive = 1;
 }
 
-- (void)updateWithRangeResult:(RangeResult *)a3
+- (void)updateWithRangeResult:(RangeResult *)result
 {
   if (self->_isCameraAssistanceEnabled && !self->_receivedRangeMeasurement)
   {
     self->_receivedRangeMeasurement = 1;
-    self->_firstRangeMeasurementTime = a3->var1;
+    self->_firstRangeMeasurementTime = result->var1;
   }
 }
 
-- (void)updateWithVIOPose:(Pose *)a3
+- (void)updateWithVIOPose:(Pose *)pose
 {
   if (self->_isCameraAssistanceEnabled)
   {
-    if (a3[1].source.var0.__val_ == 2)
+    if (pose[1].source.var0.__val_ == 2)
     {
       if (!self->_isCurrentlyTrackingVIO)
       {
         self->_isCurrentlyTrackingVIO = 1;
       }
 
-      lightEstimate = a3[1].lightEstimate;
+      lightEstimate = pose[1].lightEstimate;
       if (self->_hasStartedVIOTracking)
       {
         v4 = vsubq_f32(*self->_lastVIOPosition, lightEstimate);
@@ -985,11 +985,11 @@ LABEL_118:
   }
 }
 
-- (void)updateWithSASolution:(Solution *)a3
+- (void)updateWithSASolution:(Solution *)solution
 {
   if (self->_isCameraAssistanceEnabled)
   {
-    if (a3->var2.__engaged_)
+    if (solution->var2.__engaged_)
     {
       if (!self->_isCurrentlyHorizontallyConverged)
       {
@@ -999,13 +999,13 @@ LABEL_118:
       if (!self->_hasHorizontallyConverged)
       {
         self->_hasHorizontallyConverged = 1;
-        if (!a3->var1.var1)
+        if (!solution->var1.var1)
         {
           sub_10049CF74();
         }
 
-        self->_timeToHorizontalConvergence = a3->var1.var0.var1.var1 - self->_firstRangeMeasurementTime;
-        self->_rangeAtHorizontalConvergence = a3->var1.var0.var1.var2;
+        self->_timeToHorizontalConvergence = solution->var1.var0.var1.var1 - self->_firstRangeMeasurementTime;
+        self->_rangeAtHorizontalConvergence = solution->var1.var0.var1.var2;
         self->_distanceMovedToHorizontalConvergence = self->_totalDistanceMoved;
       }
     }
@@ -1016,7 +1016,7 @@ LABEL_118:
       ++self->_numberOfLostHorizontalConvergence;
     }
 
-    if (a3->var0.var0 == 1)
+    if (solution->var0.var0 == 1)
     {
       if (!self->_isCurrentlyVerticallyConverged)
       {
@@ -1026,13 +1026,13 @@ LABEL_118:
       if (!self->_hasVerticallyConverged)
       {
         self->_hasVerticallyConverged = 1;
-        if (!a3->var1.var1)
+        if (!solution->var1.var1)
         {
           sub_10049CFA0();
         }
 
-        self->_timeToVerticalConvergence = a3->var1.var0.var1.var1 - self->_firstRangeMeasurementTime;
-        self->_rangeAtVerticalConvergence = a3->var1.var0.var1.var2;
+        self->_timeToVerticalConvergence = solution->var1.var0.var1.var1 - self->_firstRangeMeasurementTime;
+        self->_rangeAtVerticalConvergence = solution->var1.var0.var1.var2;
         self->_distanceMovedToVerticalConvergence = self->_totalDistanceMoved;
       }
     }
@@ -1045,7 +1045,7 @@ LABEL_118:
   }
 }
 
-- (void)updateWithFindeePeerData:(const void *)a3
+- (void)updateWithFindeePeerData:(const void *)data
 {
   if (self->_sessionType != 3)
   {
@@ -1064,22 +1064,22 @@ LABEL_118:
   if (self->_timeAtFirstPeerData == -1.0)
   {
     self->_timeAtFirstPeerData = sub_100005288();
-    if ((*(a3 + 16) & 1) == 0)
+    if ((*(data + 16) & 1) == 0)
     {
       goto LABEL_40;
     }
 
-    self->_lastMotionCategory.var0.__val_ = *(a3 + 2);
+    self->_lastMotionCategory.var0.__val_ = *(data + 2);
     self->_lastMotionCategory.__engaged_ = 1;
     self->_timeAtLastBoundedDisplacementUpdate = sub_100005288();
-    if (*(a3 + 72) == 1)
+    if (*(data + 72) == 1)
     {
-      self->_lastDisplacementSourceFindee.var0.__val_ = *(a3 + 10);
+      self->_lastDisplacementSourceFindee.var0.__val_ = *(data + 10);
       self->_lastDisplacementSourceFindee.__engaged_ = 1;
     }
   }
 
-  if (*(a3 + 16) == 1)
+  if (*(data + 16) == 1)
   {
     numberOfBoundedDisplacementFromPeerData = self->_numberOfBoundedDisplacementFromPeerData;
     v6 = __CFADD__(numberOfBoundedDisplacementFromPeerData, 1);
@@ -1090,7 +1090,7 @@ LABEL_118:
     }
 
     self->_numberOfBoundedDisplacementFromPeerData = v9;
-    v10 = *(a3 + 2);
+    v10 = *(data + 2);
     if (v10 <= 2)
     {
       v11 = qword_1005497C0[v10];
@@ -1125,10 +1125,10 @@ LABEL_40:
   }
 
 LABEL_22:
-  if (*(a3 + 72) == 1)
+  if (*(data + 72) == 1)
   {
     v16 = 412;
-    if (*(a3 + 10) == 1)
+    if (*(data + 10) == 1)
     {
       v16 = 400;
     }
@@ -1144,7 +1144,7 @@ LABEL_22:
     *(&self->super.isa + v16) = v18;
   }
 
-  if (*(a3 + 112) == 1)
+  if (*(data + 112) == 1)
   {
     numberOfDeltaVelocityFromPeerData = self->_numberOfDeltaVelocityFromPeerData;
     v6 = __CFADD__(numberOfDeltaVelocityFromPeerData, 1);
@@ -1157,7 +1157,7 @@ LABEL_22:
     self->_numberOfDeltaVelocityFromPeerData = v20;
   }
 
-  if (*(a3 + 160) == 1)
+  if (*(data + 160) == 1)
   {
     numberOfLocationFromPeerData = self->_numberOfLocationFromPeerData;
     v6 = __CFADD__(numberOfLocationFromPeerData, 1);
@@ -1187,7 +1187,7 @@ LABEL_22:
   }
 }
 
-- (void)_calculateAndLogErrorsFromIODeltaP:(NIServerAnalyticsManager *)self vioDeltaP:(SEL)a2 vioPos:
+- (void)_calculateAndLogErrorsFromIODeltaP:(NIServerAnalyticsManager *)self vioDeltaP:(SEL)p vioPos:
 {
   v5 = v4;
   v6 = v3;
@@ -1228,16 +1228,16 @@ LABEL_22:
   }
 }
 
-- (void)_updateAlignedPDRMetrics:(const void *)a3
+- (void)_updateAlignedPDRMetrics:(const void *)metrics
 {
   v5 = sub_10003F5C8();
   v6 = sub_100005288();
   *v7.i64 = v6 - v5;
-  v8 = *a3 + v6 - v5;
-  if (!self->_timeAtFirstIOPose.__engaged_ && *(a3 + 32) == 1 && *(a3 + 48) == 1)
+  v8 = *metrics + v6 - v5;
+  if (!self->_timeAtFirstIOPose.__engaged_ && *(metrics + 32) == 1 && *(metrics + 48) == 1)
   {
-    v9 = *(a3 + 24);
-    v7.i64[1] = *(a3 + 5);
+    v9 = *(metrics + 24);
+    v7.i64[1] = *(metrics + 5);
     *v7.f32 = vcvt_f32_f64(v7);
     *v7.i64 = sqrtf(vaddv_f32(vmul_f32(*v7.f32, *v7.f32))) / 0.1;
     if (*v7.i64 > 0.15)
@@ -1247,7 +1247,7 @@ LABEL_22:
     }
   }
 
-  sub_1003FC0A8(&self->_pdrAligner, a3, &v27, v8, v7);
+  sub_1003FC0A8(&self->_pdrAligner, metrics, &v27, v8, v7);
   v10 = sub_1003FBC7C(&self->_pdrAligner);
   v11.n128_f64[0] = v8;
   sub_1003FC038(&self->_pdrAligner._poseHistory.__map_.__first_, v24, v11);
@@ -1343,34 +1343,34 @@ LABEL_22:
   }
 }
 
-- (void)updateWithPDR:(const void *)a3
+- (void)updateWithPDR:(const void *)r
 {
   sessionType = self->_sessionType;
   if (sessionType == 4)
   {
-    [(NIServerAnalyticsManager *)self _updateAlignedPDRMetrics:a3];
+    [(NIServerAnalyticsManager *)self _updateAlignedPDRMetrics:r];
     timeAtLastIOUpdate = self->_timeAtLastIOUpdate;
-    v8 = *a3;
+    v8 = *r;
     if (timeAtLastIOUpdate == -1.0)
     {
       self->_timeAtLastIOUpdate = v8;
       timeAtLastIOUpdate = v8;
     }
 
-    v9 = *(a3 + 7);
-    v70 = *(a3 + 6);
+    v9 = *(r + 7);
+    v70 = *(r + 6);
     v71 = v9;
-    v10 = *(a3 + 9);
-    v72 = *(a3 + 8);
+    v10 = *(r + 9);
+    v72 = *(r + 8);
     v73 = v10;
-    v11 = *(a3 + 3);
-    v66 = *(a3 + 2);
+    v11 = *(r + 3);
+    v66 = *(r + 2);
     v67 = v11;
-    v12 = *(a3 + 5);
-    v68 = *(a3 + 4);
+    v12 = *(r + 5);
+    v68 = *(r + 4);
     v69 = v12;
-    v13 = *(a3 + 1);
-    v64 = *a3;
+    v13 = *(r + 1);
+    v64 = *r;
     v65 = v13;
     if (![(NIServerAnalyticsManager *)self _isPDRAvailable:&v64]|| !self->_lastPoseHadNormalTrackingState)
     {
@@ -1391,12 +1391,12 @@ LABEL_22:
     }
 
     self->_numberOfPDRUpdates = v16;
-    if ((*(a3 + 32) & 1) == 0 || (*(a3 + 48) & 1) == 0)
+    if ((*(r + 32) & 1) == 0 || (*(r + 48) & 1) == 0)
     {
       goto LABEL_36;
     }
 
-    v17 = sqrt(*(a3 + 5) * *(a3 + 5) + *(a3 + 3) * *(a3 + 3));
+    v17 = sqrt(*(r + 5) * *(r + 5) + *(r + 3) * *(r + 3));
     self->_pdrPathLengthWhenVIOAvailable = self->_pdrPathLengthWhenVIOAvailable + v17;
     v18 = *&self->_anon_3b8[56];
     v70 = *&self->_anon_3b8[40];
@@ -1492,8 +1492,8 @@ LABEL_34:
         *&self->_anon_c28[8] = v50;
         self->_anon_c28[72] = self->_anon_3b8[72];
         *&self->_vioPoseAtLastPDRUpdate.var0.__null_state_ = v52;
-        v54 = *a3;
-        self->_pdrTimeAtLastPDRUpdate = *a3;
+        v54 = *r;
+        self->_pdrTimeAtLastPDRUpdate = *r;
         self->_timeAtLastIOUpdate = v54;
         return;
       }
@@ -1514,43 +1514,43 @@ LABEL_34:
   {
     if (self->_pdrTimeAtFirstPDRUpdate == -1.0)
     {
-      v6 = *a3;
-      self->_pdrTimeAtFirstPDRUpdate = *a3;
+      v6 = *r;
+      self->_pdrTimeAtFirstPDRUpdate = *r;
 LABEL_24:
       self->_pdrTimeAtLastPDRUpdate = v6;
       return;
     }
 
     pdrIsYieldingDeltaPosition = self->_pdrIsYieldingDeltaPosition;
-    v33 = *(a3 + 7);
-    v70 = *(a3 + 6);
+    v33 = *(r + 7);
+    v70 = *(r + 6);
     v71 = v33;
-    v34 = *(a3 + 9);
-    v72 = *(a3 + 8);
+    v34 = *(r + 9);
+    v72 = *(r + 8);
     v73 = v34;
-    v35 = *(a3 + 3);
-    v66 = *(a3 + 2);
+    v35 = *(r + 3);
+    v66 = *(r + 2);
     v67 = v35;
-    v36 = *(a3 + 5);
-    v68 = *(a3 + 4);
+    v36 = *(r + 5);
+    v68 = *(r + 4);
     v69 = v36;
-    v37 = *(a3 + 1);
-    v64 = *a3;
+    v37 = *(r + 1);
+    v64 = *r;
     v65 = v37;
     if (![(NIServerAnalyticsManager *)self _isPDRAvailable:&v64])
     {
 LABEL_23:
-      v6 = *a3;
+      v6 = *r;
       goto LABEL_24;
     }
 
     self->_pdrIsYieldingDeltaPosition = 1;
-    if (*(a3 + 32) & 1) != 0 && (*(a3 + 48))
+    if (*(r + 32) & 1) != 0 && (*(r + 48))
     {
-      v38 = sqrt(*(a3 + 5) * *(a3 + 5) + *(a3 + 3) * *(a3 + 3));
+      v38 = sqrt(*(r + 5) * *(r + 5) + *(r + 3) * *(r + 3));
       if (pdrIsYieldingDeltaPosition)
       {
-        v39 = *a3 - self->_pdrTimeAtLastPDRUpdate;
+        v39 = *r - self->_pdrTimeAtLastPDRUpdate;
         if (v38 / v39 < 0.1)
         {
           self->_timePDRIndicatesStatic = v39 + self->_timePDRIndicatesStatic;
@@ -1566,17 +1566,17 @@ LABEL_36:
   }
 }
 
-- (void)updateWithSuccessfulRange:(double)a3 uwbRSSI:(double)a4 nbRSSI:(optional<double>)a5
+- (void)updateWithSuccessfulRange:(double)range uwbRSSI:(double)i nbRSSI:(optional<double>)sI
 {
   sessionType = self->_sessionType;
   switch(sessionType)
   {
     case 5:
-      [(NIServerAnalyticsManager *)self _updateMinMaxRangeAndRSSI:*&a5.var0.__val_ uwbRSSI:*&a5.__engaged_ nbRSSI:a3, a4];
+      [(NIServerAnalyticsManager *)self _updateMinMaxRangeAndRSSI:*&sI.var0.__val_ uwbRSSI:*&sI.__engaged_ nbRSSI:range, i];
       if (self->_timeAtFirstRawUWBRange == -1.0)
       {
         self->_timeAtFirstRawUWBRange = sub_100005288();
-        self->_firstRawRangeValue = a3;
+        self->_firstRawRangeValue = range;
         if (self->_timeAtFirstValidPose != -1.0)
         {
           v13 = *&self->_anon_3b8[8];
@@ -1604,10 +1604,10 @@ LABEL_36:
       }
 
       self->_numberOfRawRanges = v18;
-      self->_currentRawRangeValue = a3;
+      self->_currentRawRangeValue = range;
       break;
     case 4:
-      [(NIServerAnalyticsManager *)self _updateMinMaxRangeAndRSSI:*&a5.var0.__val_ uwbRSSI:*&a5.__engaged_ nbRSSI:a3, a4];
+      [(NIServerAnalyticsManager *)self _updateMinMaxRangeAndRSSI:*&sI.var0.__val_ uwbRSSI:*&sI.__engaged_ nbRSSI:range, i];
       if (self->_timeAtFirstRawUWBRange == -1.0)
       {
         self->_timeAtFirstRawUWBRange = sub_100005288();
@@ -1634,17 +1634,17 @@ LABEL_36:
 
       self->_numberOfSuccessfulRanges = v10;
 
-      [(NIServerAnalyticsManager *)self _updateMinMaxRangeAndRSSI:*&a5.var0.__val_ uwbRSSI:*&a5.__engaged_ nbRSSI:a3, a4];
+      [(NIServerAnalyticsManager *)self _updateMinMaxRangeAndRSSI:*&sI.var0.__val_ uwbRSSI:*&sI.__engaged_ nbRSSI:range, i];
       break;
   }
 }
 
-- (void)updateWithSelfLocation:(const LocationInput *)a3
+- (void)updateWithSelfLocation:(const LocationInput *)location
 {
   sessionType = self->_sessionType;
   if (sessionType == 3)
   {
-    var11 = a3->var11;
+    var11 = location->var11;
     timeAtFirstLocationUpdate = self->_timeAtFirstLocationUpdate;
     v7 = sub_100005288();
     if (timeAtFirstLocationUpdate == -1.0)
@@ -1817,11 +1817,11 @@ LABEL_58:
   }
 }
 
-- (void)updateWithAcquisitionReason:(int)a3
+- (void)updateWithAcquisitionReason:(int)reason
 {
   if ((self->_sessionType - 3) <= 1)
   {
-    self->_acquisitionReason = a3;
+    self->_acquisitionReason = reason;
     v4 = objc_alloc_init(NSMutableDictionary);
     v5 = [NSNumber numberWithInt:self->_acquisitionReason];
     [v4 setObject:v5 forKey:@"AcquisitionReason"];
@@ -1846,12 +1846,12 @@ LABEL_58:
   }
 }
 
-- (void)updateWithPose:(const void *)a3
+- (void)updateWithPose:(const void *)pose
 {
   if ((self->_sessionType & 0xFFFFFFFE) == 4)
   {
     v5 = sub_100005288();
-    if (!self->_lastPoseHadNormalTrackingState || *(a3 + 20) == 2)
+    if (!self->_lastPoseHadNormalTrackingState || *(pose + 20) == 2)
     {
       v7 = v5;
       if (self->_timeAtFirstPose == -1.0)
@@ -1860,17 +1860,17 @@ LABEL_58:
         self->_rangeAtFirstPose = self->_lastDistance_finding;
       }
 
-      v8 = *(a3 + 5);
-      v118[4] = *(a3 + 4);
+      v8 = *(pose + 5);
+      v118[4] = *(pose + 4);
       v119 = v8;
-      v9 = *(a3 + 7);
-      v120 = *(a3 + 6);
+      v9 = *(pose + 7);
+      v120 = *(pose + 6);
       v121 = v9;
-      v10 = *(a3 + 1);
-      v118[0] = *a3;
+      v10 = *(pose + 1);
+      v118[0] = *pose;
       v118[1] = v10;
-      v11 = *(a3 + 3);
-      v118[2] = *(a3 + 2);
+      v11 = *(pose + 3);
+      v118[2] = *(pose + 2);
       v118[3] = v11;
       if (self->_lastSolutionHadDriftingVIO)
       {
@@ -1878,14 +1878,14 @@ LABEL_58:
       }
 
       sub_1003FCA04(&self->_pdrAligner, v118, &v117);
-      if (*(a3 + 20) == 2)
+      if (*(pose + 20) == 2)
       {
         self->_lastPoseHadNormalTrackingState = 1;
-        minYCoordinateFinder = *(a3 + 17);
+        minYCoordinateFinder = *(pose + 17);
         maxYCoordinateFinder = self->_maxYCoordinateFinder;
         if (maxYCoordinateFinder <= minYCoordinateFinder)
         {
-          maxYCoordinateFinder = *(a3 + 17);
+          maxYCoordinateFinder = *(pose + 17);
         }
 
         self->_maxYCoordinateFinder = maxYCoordinateFinder;
@@ -1900,19 +1900,19 @@ LABEL_58:
         {
           self->_timeAtFirstValidPose = v7;
           p_firstPose = &self->_firstPose;
-          v15 = *a3;
-          v16 = *(a3 + 1);
-          v17 = *(a3 + 3);
+          v15 = *pose;
+          v16 = *(pose + 1);
+          v17 = *(pose + 3);
           if (self->_anon_328[72] == 1)
           {
-            *&self->_firstPose.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_firstPose.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_firstPose.__engaged_ = v17;
             *&p_firstPose->var0.__null_state_ = v15;
             self->_firstPose.var0.__val_.lightEstimate = v16;
-            v18 = *(a3 + 4);
-            v19 = *(a3 + 5);
-            v20 = *(a3 + 6);
-            *&self->_anon_328[56] = *(a3 + 14);
+            v18 = *(pose + 4);
+            v19 = *(pose + 5);
+            v20 = *(pose + 6);
+            *&self->_anon_328[56] = *(pose + 14);
             *&self->_anon_328[24] = v19;
             *&self->_anon_328[40] = v20;
             *&self->_anon_328[8] = v18;
@@ -1920,14 +1920,14 @@ LABEL_58:
 
           else
           {
-            *&self->_firstPose.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_firstPose.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_firstPose.__engaged_ = v17;
             *&p_firstPose->var0.__null_state_ = v15;
             self->_firstPose.var0.__val_.lightEstimate = v16;
-            v24 = *(a3 + 4);
-            v25 = *(a3 + 5);
-            v26 = *(a3 + 7);
-            *&self->_anon_328[40] = *(a3 + 6);
+            v24 = *(pose + 4);
+            v25 = *(pose + 5);
+            v26 = *(pose + 7);
+            *&self->_anon_328[40] = *(pose + 6);
             *&self->_anon_328[56] = v26;
             *&self->_anon_328[8] = v24;
             *&self->_anon_328[24] = v25;
@@ -1935,19 +1935,19 @@ LABEL_58:
           }
 
           p_firstArrowUserMovedDistance = &self->_firstArrowUserMovedDistance;
-          v28 = *a3;
-          v29 = *(a3 + 1);
-          v30 = *(a3 + 3);
+          v28 = *pose;
+          v29 = *(pose + 1);
+          v30 = *(pose + 3);
           if (self->_anon_778[8] == 1)
           {
-            *&self->_firstArrowUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_firstArrowUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_firstArrowUserMovedDistance.previousPoseOfUser.__engaged_ = v30;
             *&p_firstArrowUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v28;
             self->_firstArrowUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v29;
-            v31 = *(a3 + 4);
-            v32 = *(a3 + 5);
-            v33 = *(a3 + 6);
-            self->_firstArrowUserMovedDistance.traveledDistance = *(a3 + 14);
+            v31 = *(pose + 4);
+            v32 = *(pose + 5);
+            v33 = *(pose + 6);
+            self->_firstArrowUserMovedDistance.traveledDistance = *(pose + 14);
             *&self->_firstArrowUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v32;
             *&self->_firstArrowUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = v33;
             *&self->_firstArrowUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v31;
@@ -1955,14 +1955,14 @@ LABEL_58:
 
           else
           {
-            *&self->_firstArrowUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_firstArrowUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_firstArrowUserMovedDistance.previousPoseOfUser.__engaged_ = v30;
             *&p_firstArrowUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v28;
             self->_firstArrowUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v29;
-            v34 = *(a3 + 4);
-            v35 = *(a3 + 5);
-            v36 = *(a3 + 7);
-            *&self->_firstArrowUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(a3 + 6);
+            v34 = *(pose + 4);
+            v35 = *(pose + 5);
+            v36 = *(pose + 7);
+            *&self->_firstArrowUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(pose + 6);
             *&self->_firstArrowUserMovedDistance.traveledDistance = v36;
             *&self->_firstArrowUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v34;
             *&self->_firstArrowUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v35;
@@ -1970,19 +1970,19 @@ LABEL_58:
           }
 
           p_firstOutputRangeUserMovedDistance = &self->_firstOutputRangeUserMovedDistance;
-          v38 = *a3;
-          v39 = *(a3 + 1);
-          v40 = *(a3 + 3);
+          v38 = *pose;
+          v39 = *(pose + 1);
+          v40 = *(pose + 3);
           if (self->_anon_8a8[8] == 1)
           {
-            *&self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.__engaged_ = v40;
             *&p_firstOutputRangeUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v38;
             self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v39;
-            v41 = *(a3 + 4);
-            v42 = *(a3 + 5);
-            v43 = *(a3 + 6);
-            self->_firstOutputRangeUserMovedDistance.traveledDistance = *(a3 + 14);
+            v41 = *(pose + 4);
+            v42 = *(pose + 5);
+            v43 = *(pose + 6);
+            self->_firstOutputRangeUserMovedDistance.traveledDistance = *(pose + 14);
             *&self->_firstOutputRangeUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v42;
             *&self->_firstOutputRangeUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = v43;
             *&self->_firstOutputRangeUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v41;
@@ -1990,14 +1990,14 @@ LABEL_58:
 
           else
           {
-            *&self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.__engaged_ = v40;
             *&p_firstOutputRangeUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v38;
             self->_firstOutputRangeUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v39;
-            v44 = *(a3 + 4);
-            v45 = *(a3 + 5);
-            v46 = *(a3 + 7);
-            *&self->_firstOutputRangeUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(a3 + 6);
+            v44 = *(pose + 4);
+            v45 = *(pose + 5);
+            v46 = *(pose + 7);
+            *&self->_firstOutputRangeUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(pose + 6);
             *&self->_firstOutputRangeUserMovedDistance.traveledDistance = v46;
             *&self->_firstOutputRangeUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v44;
             *&self->_firstOutputRangeUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v45;
@@ -2005,19 +2005,19 @@ LABEL_58:
           }
 
           p_armsReachUserMovedDistance = &self->_armsReachUserMovedDistance;
-          v48 = *a3;
-          v49 = *(a3 + 1);
-          v50 = *(a3 + 3);
+          v48 = *pose;
+          v49 = *(pose + 1);
+          v50 = *(pose + 3);
           if (self->_anon_9d8[8] == 1)
           {
-            *&self->_armsReachUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_armsReachUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_armsReachUserMovedDistance.previousPoseOfUser.__engaged_ = v50;
             *&p_armsReachUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v48;
             self->_armsReachUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v49;
-            v51 = *(a3 + 4);
-            v52 = *(a3 + 5);
-            v53 = *(a3 + 6);
-            self->_armsReachUserMovedDistance.traveledDistance = *(a3 + 14);
+            v51 = *(pose + 4);
+            v52 = *(pose + 5);
+            v53 = *(pose + 6);
+            self->_armsReachUserMovedDistance.traveledDistance = *(pose + 14);
             *&self->_armsReachUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v52;
             *&self->_armsReachUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = v53;
             *&self->_armsReachUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v51;
@@ -2025,14 +2025,14 @@ LABEL_58:
 
           else
           {
-            *&self->_armsReachUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_armsReachUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_armsReachUserMovedDistance.previousPoseOfUser.__engaged_ = v50;
             *&p_armsReachUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v48;
             self->_armsReachUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v49;
-            v54 = *(a3 + 4);
-            v55 = *(a3 + 5);
-            v56 = *(a3 + 7);
-            *&self->_armsReachUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(a3 + 6);
+            v54 = *(pose + 4);
+            v55 = *(pose + 5);
+            v56 = *(pose + 7);
+            *&self->_armsReachUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(pose + 6);
             *&self->_armsReachUserMovedDistance.traveledDistance = v56;
             *&self->_armsReachUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v54;
             *&self->_armsReachUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v55;
@@ -2040,19 +2040,19 @@ LABEL_58:
           }
 
           p_totalUserMovedDistance = &self->_totalUserMovedDistance;
-          v58 = *a3;
-          v59 = *(a3 + 1);
-          v60 = *(a3 + 3);
+          v58 = *pose;
+          v59 = *(pose + 1);
+          v60 = *(pose + 3);
           if (self->_anon_b08[8] == 1)
           {
-            *&self->_totalUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_totalUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_totalUserMovedDistance.previousPoseOfUser.__engaged_ = v60;
             *&p_totalUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v58;
             self->_totalUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v59;
-            v61 = *(a3 + 4);
-            v62 = *(a3 + 5);
-            v63 = *(a3 + 6);
-            self->_totalUserMovedDistance.traveledDistance = *(a3 + 14);
+            v61 = *(pose + 4);
+            v62 = *(pose + 5);
+            v63 = *(pose + 6);
+            self->_totalUserMovedDistance.traveledDistance = *(pose + 14);
             *&self->_totalUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v62;
             *&self->_totalUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = v63;
             *&self->_totalUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v61;
@@ -2060,14 +2060,14 @@ LABEL_58:
 
           else
           {
-            *&self->_totalUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+            *&self->_totalUserMovedDistance.previousPoseOfUser.var0.__val_.source.var0.__null_state_ = *(pose + 2);
             *&self->_totalUserMovedDistance.previousPoseOfUser.__engaged_ = v60;
             *&p_totalUserMovedDistance->previousPoseOfUser.var0.__null_state_ = v58;
             self->_totalUserMovedDistance.previousPoseOfUser.var0.__val_.lightEstimate = v59;
-            v64 = *(a3 + 4);
-            v65 = *(a3 + 5);
-            v66 = *(a3 + 7);
-            *&self->_totalUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(a3 + 6);
+            v64 = *(pose + 4);
+            v65 = *(pose + 5);
+            v66 = *(pose + 7);
+            *&self->_totalUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.odometryAvailability.var0.__null_state_ = *(pose + 6);
             *&self->_totalUserMovedDistance.traveledDistance = v66;
             *&self->_totalUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.trackingState = v64;
             *&self->_totalUserMovedDistance.oldPreviousPoseOfUser.var0.__val_.lightEstimate.__engaged_ = v65;
@@ -2075,19 +2075,19 @@ LABEL_58:
           }
 
           v67 = &self->_anon_778[24];
-          v68 = *a3;
-          v69 = *(a3 + 1);
-          v70 = *(a3 + 3);
+          v68 = *pose;
+          v69 = *(pose + 1);
+          v70 = *(pose + 3);
           if (self->_anon_778[152] == 1)
           {
-            *&self->_anon_778[56] = *(a3 + 2);
+            *&self->_anon_778[56] = *(pose + 2);
             *&self->_anon_778[72] = v70;
             *v67 = v68;
             *&self->_anon_778[40] = v69;
-            v71 = *(a3 + 4);
-            v72 = *(a3 + 5);
-            v73 = *(a3 + 6);
-            *&self->_anon_778[136] = *(a3 + 14);
+            v71 = *(pose + 4);
+            v72 = *(pose + 5);
+            v73 = *(pose + 6);
+            *&self->_anon_778[136] = *(pose + 14);
             *&self->_anon_778[104] = v72;
             *&self->_anon_778[120] = v73;
             *&self->_anon_778[88] = v71;
@@ -2095,14 +2095,14 @@ LABEL_58:
 
           else
           {
-            *&self->_anon_778[56] = *(a3 + 2);
+            *&self->_anon_778[56] = *(pose + 2);
             *&self->_anon_778[72] = v70;
             *v67 = v68;
             *&self->_anon_778[40] = v69;
-            v74 = *(a3 + 4);
-            v75 = *(a3 + 5);
-            v76 = *(a3 + 7);
-            *&self->_anon_778[120] = *(a3 + 6);
+            v74 = *(pose + 4);
+            v75 = *(pose + 5);
+            v76 = *(pose + 7);
+            *&self->_anon_778[120] = *(pose + 6);
             *&self->_anon_778[136] = v76;
             *&self->_anon_778[88] = v74;
             *&self->_anon_778[104] = v75;
@@ -2110,19 +2110,19 @@ LABEL_58:
           }
 
           v77 = &self->_anon_8a8[24];
-          v78 = *a3;
-          v79 = *(a3 + 1);
-          v80 = *(a3 + 3);
+          v78 = *pose;
+          v79 = *(pose + 1);
+          v80 = *(pose + 3);
           if (self->_anon_8a8[152] == 1)
           {
-            *&self->_anon_8a8[56] = *(a3 + 2);
+            *&self->_anon_8a8[56] = *(pose + 2);
             *&self->_anon_8a8[72] = v80;
             *v77 = v78;
             *&self->_anon_8a8[40] = v79;
-            v81 = *(a3 + 4);
-            v82 = *(a3 + 5);
-            v83 = *(a3 + 6);
-            *&self->_anon_8a8[136] = *(a3 + 14);
+            v81 = *(pose + 4);
+            v82 = *(pose + 5);
+            v83 = *(pose + 6);
+            *&self->_anon_8a8[136] = *(pose + 14);
             *&self->_anon_8a8[104] = v82;
             *&self->_anon_8a8[120] = v83;
             *&self->_anon_8a8[88] = v81;
@@ -2130,14 +2130,14 @@ LABEL_58:
 
           else
           {
-            *&self->_anon_8a8[56] = *(a3 + 2);
+            *&self->_anon_8a8[56] = *(pose + 2);
             *&self->_anon_8a8[72] = v80;
             *v77 = v78;
             *&self->_anon_8a8[40] = v79;
-            v84 = *(a3 + 4);
-            v85 = *(a3 + 5);
-            v86 = *(a3 + 7);
-            *&self->_anon_8a8[120] = *(a3 + 6);
+            v84 = *(pose + 4);
+            v85 = *(pose + 5);
+            v86 = *(pose + 7);
+            *&self->_anon_8a8[120] = *(pose + 6);
             *&self->_anon_8a8[136] = v86;
             *&self->_anon_8a8[88] = v84;
             *&self->_anon_8a8[104] = v85;
@@ -2145,19 +2145,19 @@ LABEL_58:
           }
 
           v87 = &self->_anon_9d8[24];
-          v88 = *a3;
-          v89 = *(a3 + 1);
-          v90 = *(a3 + 3);
+          v88 = *pose;
+          v89 = *(pose + 1);
+          v90 = *(pose + 3);
           if (self->_anon_9d8[152] == 1)
           {
-            *&self->_anon_9d8[56] = *(a3 + 2);
+            *&self->_anon_9d8[56] = *(pose + 2);
             *&self->_anon_9d8[72] = v90;
             *v87 = v88;
             *&self->_anon_9d8[40] = v89;
-            v91 = *(a3 + 4);
-            v92 = *(a3 + 5);
-            v93 = *(a3 + 6);
-            *&self->_anon_9d8[136] = *(a3 + 14);
+            v91 = *(pose + 4);
+            v92 = *(pose + 5);
+            v93 = *(pose + 6);
+            *&self->_anon_9d8[136] = *(pose + 14);
             *&self->_anon_9d8[104] = v92;
             *&self->_anon_9d8[120] = v93;
             *&self->_anon_9d8[88] = v91;
@@ -2165,14 +2165,14 @@ LABEL_58:
 
           else
           {
-            *&self->_anon_9d8[56] = *(a3 + 2);
+            *&self->_anon_9d8[56] = *(pose + 2);
             *&self->_anon_9d8[72] = v90;
             *v87 = v88;
             *&self->_anon_9d8[40] = v89;
-            v94 = *(a3 + 4);
-            v95 = *(a3 + 5);
-            v96 = *(a3 + 7);
-            *&self->_anon_9d8[120] = *(a3 + 6);
+            v94 = *(pose + 4);
+            v95 = *(pose + 5);
+            v96 = *(pose + 7);
+            *&self->_anon_9d8[120] = *(pose + 6);
             *&self->_anon_9d8[136] = v96;
             *&self->_anon_9d8[88] = v94;
             *&self->_anon_9d8[104] = v95;
@@ -2180,19 +2180,19 @@ LABEL_58:
           }
 
           v97 = &self->_anon_b08[24];
-          v98 = *a3;
-          v99 = *(a3 + 1);
-          v100 = *(a3 + 3);
+          v98 = *pose;
+          v99 = *(pose + 1);
+          v100 = *(pose + 3);
           if (self->_anon_b08[152] == 1)
           {
-            *&self->_anon_b08[56] = *(a3 + 2);
+            *&self->_anon_b08[56] = *(pose + 2);
             *&self->_anon_b08[72] = v100;
             *v97 = v98;
             *&self->_anon_b08[40] = v99;
-            v101 = *(a3 + 4);
-            v102 = *(a3 + 5);
-            v103 = *(a3 + 6);
-            *&self->_anon_b08[136] = *(a3 + 14);
+            v101 = *(pose + 4);
+            v102 = *(pose + 5);
+            v103 = *(pose + 6);
+            *&self->_anon_b08[136] = *(pose + 14);
             *&self->_anon_b08[104] = v102;
             *&self->_anon_b08[120] = v103;
             *&self->_anon_b08[88] = v101;
@@ -2200,14 +2200,14 @@ LABEL_58:
 
           else
           {
-            *&self->_anon_b08[56] = *(a3 + 2);
+            *&self->_anon_b08[56] = *(pose + 2);
             *&self->_anon_b08[72] = v100;
             *v97 = v98;
             *&self->_anon_b08[40] = v99;
-            v104 = *(a3 + 4);
-            v105 = *(a3 + 5);
-            v106 = *(a3 + 7);
-            *&self->_anon_b08[120] = *(a3 + 6);
+            v104 = *(pose + 4);
+            v105 = *(pose + 5);
+            v106 = *(pose + 7);
+            *&self->_anon_b08[120] = *(pose + 6);
             *&self->_anon_b08[136] = v106;
             *&self->_anon_b08[88] = v104;
             *&self->_anon_b08[104] = v105;
@@ -2222,36 +2222,36 @@ LABEL_58:
 
         if (self->_timeAtFirstArrow == -1.0)
         {
-          [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:a3 lastPoseInfo:&self->_firstArrowUserMovedDistance];
+          [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:pose lastPoseInfo:&self->_firstArrowUserMovedDistance];
         }
 
         if (self->_timeAtFirstOutputRange == -1.0)
         {
-          [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:a3 lastPoseInfo:&self->_firstOutputRangeUserMovedDistance];
+          [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:pose lastPoseInfo:&self->_firstOutputRangeUserMovedDistance];
         }
 
         if (self->_timeAtArmsLength == -1.0)
         {
-          [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:a3 lastPoseInfo:&self->_armsReachUserMovedDistance];
+          [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:pose lastPoseInfo:&self->_armsReachUserMovedDistance];
         }
 
-        [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:a3 lastPoseInfo:&self->_totalUserMovedDistance];
+        [(NIServerAnalyticsManager *)self _updateUserMovedDistanceWithPose:pose lastPoseInfo:&self->_totalUserMovedDistance];
       }
 
       p_lastPose = &self->_lastPose;
-      v108 = *a3;
-      v109 = *(a3 + 1);
-      v110 = *(a3 + 3);
+      v108 = *pose;
+      v109 = *(pose + 1);
+      v110 = *(pose + 3);
       if (self->_anon_3b8[72] == 1)
       {
-        *&self->_lastPose.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+        *&self->_lastPose.var0.__val_.source.var0.__null_state_ = *(pose + 2);
         *&self->_lastPose.__engaged_ = v110;
         *&p_lastPose->var0.__null_state_ = v108;
         self->_lastPose.var0.__val_.lightEstimate = v109;
-        v111 = *(a3 + 4);
-        v112 = *(a3 + 5);
-        v113 = *(a3 + 6);
-        *&self->_anon_3b8[56] = *(a3 + 14);
+        v111 = *(pose + 4);
+        v112 = *(pose + 5);
+        v113 = *(pose + 6);
+        *&self->_anon_3b8[56] = *(pose + 14);
         *&self->_anon_3b8[24] = v112;
         *&self->_anon_3b8[40] = v113;
         *&self->_anon_3b8[8] = v111;
@@ -2259,14 +2259,14 @@ LABEL_58:
 
       else
       {
-        *&self->_lastPose.var0.__val_.source.var0.__null_state_ = *(a3 + 2);
+        *&self->_lastPose.var0.__val_.source.var0.__null_state_ = *(pose + 2);
         *&self->_lastPose.__engaged_ = v110;
         *&p_lastPose->var0.__null_state_ = v108;
         self->_lastPose.var0.__val_.lightEstimate = v109;
-        v114 = *(a3 + 4);
-        v115 = *(a3 + 5);
-        v116 = *(a3 + 7);
-        *&self->_anon_3b8[40] = *(a3 + 6);
+        v114 = *(pose + 4);
+        v115 = *(pose + 5);
+        v116 = *(pose + 7);
+        *&self->_anon_3b8[40] = *(pose + 6);
         *&self->_anon_3b8[56] = v116;
         *&self->_anon_3b8[8] = v114;
         *&self->_anon_3b8[24] = v115;
@@ -2293,52 +2293,52 @@ LABEL_58:
   }
 }
 
-- (void)_updateUserMovedDistanceWithPose:(const void *)a3 lastPoseInfo:(void *)a4
+- (void)_updateUserMovedDistanceWithPose:(const void *)pose lastPoseInfo:(void *)info
 {
-  if (*(a4 + 128) == 1 && *(a4 + 272) == 1)
+  if (*(info + 128) == 1 && *(info + 272) == 1)
   {
-    v4 = *(a3 + 4);
-    v5 = vsubq_f32(*(a4 + 4), v4);
+    v4 = *(pose + 4);
+    v5 = vsubq_f32(*(info + 4), v4);
     v6 = vmulq_f32(v5, v5);
-    v7 = vsubq_f32(*(a4 + 13), v4);
+    v7 = vsubq_f32(*(info + 13), v4);
     v8 = vmulq_f32(v7, v7);
     v9 = vsqrt_f32(vadd_f32(vzip1_s32(*&vextq_s8(v8, v8, 8uLL), *&vextq_s8(v6, v6, 8uLL)), vadd_f32(vzip1_s32(*v8.i8, *v6.i8), vzip2_s32(*v8.i8, *v6.i8))));
     *v8.i8 = vcgt_f32(v9, 0x3F0000003F000000);
     if (v8.i32[1] & v8.i32[0])
     {
-      *(a4 + 36) = *(a4 + 36) + v9.f32[1];
-      v10 = *(a4 + 3);
-      *(a4 + 11) = *(a4 + 2);
-      *(a4 + 12) = v10;
-      *(a4 + 272) = *(a4 + 128);
-      v11 = *(a4 + 7);
-      *(a4 + 15) = *(a4 + 6);
-      *(a4 + 16) = v11;
-      v12 = *(a4 + 5);
-      *(a4 + 13) = *(a4 + 4);
-      *(a4 + 14) = v12;
-      v13 = *(a4 + 1);
-      *(a4 + 9) = *a4;
-      *(a4 + 10) = v13;
-      v14 = *a3;
-      v15 = *(a3 + 1);
-      v16 = *(a3 + 3);
-      *(a4 + 2) = *(a3 + 2);
-      *(a4 + 3) = v16;
-      *a4 = v14;
-      *(a4 + 1) = v15;
-      v17 = *(a3 + 4);
-      v18 = *(a3 + 5);
-      v19 = *(a3 + 6);
-      *(a4 + 14) = *(a3 + 14);
-      *(a4 + 5) = v18;
-      *(a4 + 6) = v19;
-      *(a4 + 4) = v17;
+      *(info + 36) = *(info + 36) + v9.f32[1];
+      v10 = *(info + 3);
+      *(info + 11) = *(info + 2);
+      *(info + 12) = v10;
+      *(info + 272) = *(info + 128);
+      v11 = *(info + 7);
+      *(info + 15) = *(info + 6);
+      *(info + 16) = v11;
+      v12 = *(info + 5);
+      *(info + 13) = *(info + 4);
+      *(info + 14) = v12;
+      v13 = *(info + 1);
+      *(info + 9) = *info;
+      *(info + 10) = v13;
+      v14 = *pose;
+      v15 = *(pose + 1);
+      v16 = *(pose + 3);
+      *(info + 2) = *(pose + 2);
+      *(info + 3) = v16;
+      *info = v14;
+      *(info + 1) = v15;
+      v17 = *(pose + 4);
+      v18 = *(pose + 5);
+      v19 = *(pose + 6);
+      *(info + 14) = *(pose + 14);
+      *(info + 5) = v18;
+      *(info + 6) = v19;
+      *(info + 4) = v17;
     }
   }
 }
 
-- (void)updateWithFinderPeerData:(const void *)a3
+- (void)updateWithFinderPeerData:(const void *)data
 {
   if (self->_sessionType != 4)
   {
@@ -2349,16 +2349,16 @@ LABEL_58:
   if (self->_timeAtFirstPeerData == -1.0)
   {
     self->_timeAtFirstPeerData = v5;
-    if (*(a3 + 72) == 1)
+    if (*(data + 72) == 1)
     {
-      self->_lastDisplacementSourceFindee.var0.__val_ = *(a3 + 10);
+      self->_lastDisplacementSourceFindee.var0.__val_ = *(data + 10);
       self->_lastDisplacementSourceFindee.__engaged_ = 1;
     }
   }
 
-  if (*(a3 + 72) == 1)
+  if (*(data + 72) == 1)
   {
-    v6 = *(a3 + 10);
+    v6 = *(data + 10);
     if (self->_timeAtFirstPDRFromFindeeData == -1.0 && v6 == 1)
     {
       p_timeAtFirstPDRFromFindeeData = &self->_timeAtFirstPDRFromFindeeData;
@@ -2378,11 +2378,11 @@ LABEL_58:
 LABEL_19:
     if (self->_lastDisplacementSourceFindee.__engaged_ && self->_lastDisplacementSourceFindee.var0.__val_ == v6)
     {
-      minYCoordinateFindee = *(a3 + 8);
+      minYCoordinateFindee = *(data + 8);
       maxYCoordinateFindee = self->_maxYCoordinateFindee;
       if (minYCoordinateFindee >= maxYCoordinateFindee)
       {
-        maxYCoordinateFindee = *(a3 + 8);
+        maxYCoordinateFindee = *(data + 8);
       }
 
       self->_maxYCoordinateFindee = maxYCoordinateFindee;
@@ -2393,7 +2393,7 @@ LABEL_19:
 
       self->_minYCoordinateFindee = minYCoordinateFindee;
       self->_didFindeeChangeFloor |= vabdd_f64(maxYCoordinateFindee, minYCoordinateFindee) > 2.5;
-      if ((*(a3 + 72) & 1) == 0)
+      if ((*(data + 72) & 1) == 0)
       {
         sub_1000195BC();
       }
@@ -2413,17 +2413,17 @@ LABEL_19:
   self->_maxYCoordinateFindee = -1.79769313e308;
   self->_minYCoordinateFindee = 1.79769313e308;
 LABEL_29:
-  if (*(a3 + 112) == 1 && self->_timeAtFirstDeltaVelocityFromFindeeData == -1.0)
+  if (*(data + 112) == 1 && self->_timeAtFirstDeltaVelocityFromFindeeData == -1.0)
   {
     self->_timeAtFirstDeltaVelocityFromFindeeData = v5;
   }
 
-  if (*(a3 + 16) == 1 && !*(a3 + 2) && self->_timeAtFirstStaticFromFindeeData == -1.0)
+  if (*(data + 16) == 1 && !*(data + 2) && self->_timeAtFirstStaticFromFindeeData == -1.0)
   {
     self->_timeAtFirstStaticFromFindeeData = v5;
   }
 
-  if (*(a3 + 160) == 1)
+  if (*(data + 160) == 1)
   {
     if (self->_timeAtFirstPeerLocationFromFindeeData == -1.0)
     {
@@ -2447,14 +2447,14 @@ LABEL_29:
   self->_numberOfPeerDataFinder = v14;
 }
 
-- (void)updateWithSolution:(const void *)a3
+- (void)updateWithSolution:(const void *)solution
 {
   if ((self->_sessionType & 0xFFFFFFFE) == 4)
   {
     v5 = sub_100005288();
-    if (*(a3 + 408) == 1 && self->_lastSolutionTime.__engaged_)
+    if (*(solution + 408) == 1 && self->_lastSolutionTime.__engaged_)
     {
-      v6 = *(a3 + 101);
+      v6 = *(solution + 101);
       if (v6 <= 5)
       {
         *(&self->super.isa + qword_1005497F0[v6]) = v5 - self->_lastSolutionTime.var0.__val_ + *(&self->super.isa + qword_1005497F0[v6]);
@@ -2463,7 +2463,7 @@ LABEL_29:
 
     if (self->_timeAtFirstPose != -1.0)
     {
-      if (self->_lastSolutionHadArrow && (*(a3 + 256) & 1) == 0 && self->_timeAtArmsLength == -1.0)
+      if (self->_lastSolutionHadArrow && (*(solution + 256) & 1) == 0 && self->_timeAtArmsLength == -1.0)
       {
         numberOfArrowRevokes = self->_numberOfArrowRevokes;
         v8 = __CFADD__(numberOfArrowRevokes, 1);
@@ -2476,17 +2476,17 @@ LABEL_29:
         self->_numberOfArrowRevokes = v9;
       }
 
-      self->_lastSolutionHadDriftingVIO = *(a3 + 428);
-      if (*(a3 + 256) == 1)
+      self->_lastSolutionHadDriftingVIO = *(solution + 428);
+      if (*(solution + 256) == 1)
       {
         self->_lastSolutionHadArrow = 1;
         timeAtFirstArrow = self->_timeAtFirstArrow;
         if (timeAtFirstArrow == -1.0)
         {
           self->_timeAtFirstArrow = v5;
-          if (*(a3 + 416))
+          if (*(solution + 416))
           {
-            v11 = *(a3 + 103);
+            v11 = *(solution + 103);
           }
 
           else
@@ -2495,9 +2495,9 @@ LABEL_29:
           }
 
           self->_firstArrowAlgorithmSource = v11;
-          if (*(a3 + 240) == 1)
+          if (*(solution + 240) == 1)
           {
-            v12 = *(a3 + 6);
+            v12 = *(solution + 6);
             if (v12 != 1.1755e-38)
             {
               self->_rangeAtFirstArrow = v12;
@@ -2544,12 +2544,12 @@ LABEL_29:
         self->_lastSolutionHadArrow = 0;
       }
 
-      if (*(a3 + 240) == 1 && *(a3 + 6) != 1.1755e-38)
+      if (*(solution + 240) == 1 && *(solution + 6) != 1.1755e-38)
       {
         if (self->_timeAtFirstOutputRange == -1.0)
         {
           self->_timeAtFirstOutputRange = v5;
-          v20 = *(a3 + 416) ? *(a3 + 103) : 0;
+          v20 = *(solution + 416) ? *(solution + 103) : 0;
           self->_firstOutputRangeAlgorithmSource = v20;
           if (self->_timeAtFirstValidPose != -1.0)
           {
@@ -2566,14 +2566,14 @@ LABEL_29:
             *&self->_anon_568[24] = v21;
             self->_anon_568[72] = self->_anon_3b8[72];
             *&self->_firstOutputRangePose.var0.__null_state_ = v23;
-            if ((*(a3 + 240) & 1) == 0)
+            if ((*(solution + 240) & 1) == 0)
             {
               sub_1000195BC();
             }
           }
         }
 
-        v25 = *(a3 + 6);
+        v25 = *(solution + 6);
         if (self->_firstOutputDistance == -1.0)
         {
           self->_firstOutputDistance = v25;
@@ -2603,7 +2603,7 @@ LABEL_29:
         if (self->_timeAtArmsLength == -1.0 && self->_armsLengthDistance >= v25)
         {
           self->_timeAtArmsLength = v5;
-          v28 = *(a3 + 416) ? *(a3 + 103) : 0;
+          v28 = *(solution + 416) ? *(solution + 103) : 0;
           self->_armsReachAlgorithmSource = v28;
           if (self->_timeAtFirstValidPose != -1.0)
           {
@@ -2660,9 +2660,9 @@ LABEL_29:
   }
 }
 
-- (void)nearbyObjectUpdated:(id)a3
+- (void)nearbyObjectUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
   {
@@ -2670,11 +2670,11 @@ LABEL_29:
     v14 = 138412546;
     v15 = bundleIdentifier;
     v16 = 2112;
-    v17 = v4;
+    v17 = updatedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] nearbyObjectUpdated: %@", &v14, 0x16u);
   }
 
-  [v4 distance];
+  [updatedCopy distance];
   if (v7 == NINearbyObjectDistanceNotAvailable)
   {
     v8 = qword_1009ECD20;
@@ -2689,7 +2689,7 @@ LABEL_29:
 
   else
   {
-    [v4 distance];
+    [updatedCopy distance];
     v11 = v10;
     if (self->_receivedDistance)
     {
@@ -2721,9 +2721,9 @@ LABEL_29:
   }
 }
 
-- (void)lifecycleTimeoutBeforeTrackingForDiscoveryToken:(id)a3
+- (void)lifecycleTimeoutBeforeTrackingForDiscoveryToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
   {
@@ -2731,7 +2731,7 @@ LABEL_29:
     v8 = 138412546;
     v9 = bundleIdentifier;
     v10 = 2112;
-    v11 = v4;
+    v11 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] lifecycleTimeoutBeforeTrackingForDiscoveryToken: %@", &v8, 0x16u);
   }
 
@@ -2739,9 +2739,9 @@ LABEL_29:
   self->_lifecycleTimeoutType = @"Before Tracking";
 }
 
-- (void)lifecycleTimeoutAfterTrackingForDiscoveryToken:(id)a3
+- (void)lifecycleTimeoutAfterTrackingForDiscoveryToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = qword_1009ECD20;
   if (os_log_type_enabled(qword_1009ECD20, OS_LOG_TYPE_INFO))
   {
@@ -2749,7 +2749,7 @@ LABEL_29:
     v8 = 138412546;
     v9 = bundleIdentifier;
     v10 = 2112;
-    v11 = v4;
+    v11 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "#ni-ca,[%@] lifecycleTimeoutAfterTrackingForDiscoveryToken: %@", &v8, 0x16u);
   }
 
@@ -2757,19 +2757,19 @@ LABEL_29:
   self->_lifecycleTimeoutType = @"After Tracking";
 }
 
-- (void)updateFindButtonTime:(double)a3
+- (void)updateFindButtonTime:(double)time
 {
   if (self->_timeAtFindButton == -1.0)
   {
-    self->_timeAtFindButton = a3;
+    self->_timeAtFindButton = time;
   }
 }
 
-- (void)sessionConnectedToAccessoryWithTimestamp:(double)a3
+- (void)sessionConnectedToAccessoryWithTimestamp:(double)timestamp
 {
   if (self->_timeAtConnect == -1.0)
   {
-    self->_timeAtConnect = a3;
+    self->_timeAtConnect = timestamp;
     if (self->_timeAtFirstValidPose != -1.0)
     {
       v3 = *&self->_anon_3b8[8];
@@ -2789,67 +2789,67 @@ LABEL_29:
   }
 }
 
-- (void)sessionConfiguredAccessoryWithTimestamp:(double)a3
+- (void)sessionConfiguredAccessoryWithTimestamp:(double)timestamp
 {
   if (self->_timeAtConfigure == -1.0)
   {
-    self->_timeAtConfigure = a3;
+    self->_timeAtConfigure = timestamp;
   }
 }
 
-- (void)sessionConfiguredAccessoryWithTimestamp:(double)a3 withTxPower:(int)a4
+- (void)sessionConfiguredAccessoryWithTimestamp:(double)timestamp withTxPower:(int)power
 {
   if (self->_timeAtConfigure == -1.0)
   {
-    self->_timeAtConfigure = a3;
-    self->_itemBtTxPower.var0.__val_ = a4;
+    self->_timeAtConfigure = timestamp;
+    self->_itemBtTxPower.var0.__val_ = power;
     self->_itemBtTxPower.__engaged_ = 1;
   }
 }
 
-- (void)updateWithRangingMode:(int)a3
+- (void)updateWithRangingMode:(int)mode
 {
   if (self->_rangingMode == -1)
   {
-    self->_rangingMode = a3;
+    self->_rangingMode = mode;
   }
 }
 
-- (void)updateWithBTRSSIMeasurementWithTimestamp:(double)a3 withRssi:(double)a4
+- (void)updateWithBTRSSIMeasurementWithTimestamp:(double)timestamp withRssi:(double)rssi
 {
   if (self->_timeAtFirstBtRssiMeasurement == -1.0)
   {
-    self->_timeAtFirstBtRssiMeasurement = a3;
-    self->_firstBtRssi = a4;
+    self->_timeAtFirstBtRssiMeasurement = timestamp;
+    self->_firstBtRssi = rssi;
   }
 
-  self->_lastBtRssi = a4;
+  self->_lastBtRssi = rssi;
 }
 
-- (void)updateWithNewRegion:(id)a3 withTimestamp:(double)a4
+- (void)updateWithNewRegion:(id)region withTimestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = v6;
+  regionCopy = region;
+  v7 = regionCopy;
   lastRegion = self->_lastRegion;
-  if (v6 && !lastRegion)
+  if (regionCopy && !lastRegion)
   {
     ++self->_numberOfRegionFoundEvents;
 LABEL_8:
-    if ([(NIRegionPredicate *)v6 devicePresencePreset]== 1 && self->_timeAtArmsLength == -1.0)
+    if ([(NIRegionPredicate *)regionCopy devicePresencePreset]== 1 && self->_timeAtArmsLength == -1.0)
     {
-      self->_timeAtArmsLength = a4;
+      self->_timeAtArmsLength = timestamp;
     }
 
     goto LABEL_11;
   }
 
-  if (!v6 && lastRegion)
+  if (!regionCopy && lastRegion)
   {
     ++self->_numberOfRegionRevokes;
     goto LABEL_11;
   }
 
-  if (v6)
+  if (regionCopy)
   {
     goto LABEL_8;
   }
@@ -2859,59 +2859,59 @@ LABEL_11:
   self->_lastRegion = v7;
 }
 
-- (void)_updateMinMaxRangeAndRSSI:(double)a3 uwbRSSI:(double)a4 nbRSSI:(optional<double>)a5
+- (void)_updateMinMaxRangeAndRSSI:(double)i uwbRSSI:(double)sI nbRSSI:(optional<double>)sSI
 {
   if (self->_firstDistance_finding == -1.0)
   {
-    self->_firstDistance_finding = a3;
-    self->_firstUWBRSSI = a4;
+    self->_firstDistance_finding = i;
+    self->_firstUWBRSSI = sI;
   }
 
   lastNBRSSI = self->_lastNBRSSI;
-  v6 = lastNBRSSI != 0.0 && a5.__engaged_;
-  if (lastNBRSSI == 0.0 && a5.__engaged_)
+  v6 = lastNBRSSI != 0.0 && sSI.__engaged_;
+  if (lastNBRSSI == 0.0 && sSI.__engaged_)
   {
-    self->_firstNBRSSI = a5.var0.__val_;
-    self->_lastNBRSSI = a5.var0.__val_;
+    self->_firstNBRSSI = sSI.var0.__val_;
+    self->_lastNBRSSI = sSI.var0.__val_;
     v6 = 1;
   }
 
-  self->_lastDistance_finding = a3;
+  self->_lastDistance_finding = i;
   maxDistance_finding = self->_maxDistance_finding;
-  if (maxDistance_finding <= a3)
+  if (maxDistance_finding <= i)
   {
-    maxDistance_finding = a3;
+    maxDistance_finding = i;
   }
 
   self->_maxDistance_finding = maxDistance_finding;
   minUWBRSSI = self->_minUWBRSSI;
-  if (minUWBRSSI >= a4)
+  if (minUWBRSSI >= sI)
   {
-    minUWBRSSI = a4;
+    minUWBRSSI = sI;
   }
 
   self->_minUWBRSSI = minUWBRSSI;
   v9 = *&self->_maxUWBRSSI;
   v10.f64[0] = self->_maxUWBRSSI;
-  v10.f64[1] = a3;
+  v10.f64[1] = i;
   v11.f64[1] = self->_minDistance_finding;
-  v11.f64[0] = a4;
-  self->_lastUWBRSSI = a4;
+  v11.f64[0] = sI;
+  self->_lastUWBRSSI = sI;
   v12 = vcgtq_f64(v10, v11);
-  v10.f64[0] = a4;
+  v10.f64[0] = sI;
   *&self->_maxUWBRSSI = vbslq_s8(v12, v9, v10);
   if (v6)
   {
-    val = a5.var0.__val_;
-    self->_lastNBRSSI = a5.var0.__val_;
+    val = sSI.var0.__val_;
+    self->_lastNBRSSI = sSI.var0.__val_;
     minNBRSSI = self->_minNBRSSI;
-    if (minNBRSSI >= a5.var0.__val_)
+    if (minNBRSSI >= sSI.var0.__val_)
     {
-      minNBRSSI = a5.var0.__val_;
+      minNBRSSI = sSI.var0.__val_;
     }
 
     self->_minNBRSSI = minNBRSSI;
-    if (self->_maxNBRSSI > a5.var0.__val_)
+    if (self->_maxNBRSSI > sSI.var0.__val_)
     {
       val = self->_maxNBRSSI;
     }
@@ -2920,31 +2920,31 @@ LABEL_11:
   }
 }
 
-- (double)_finderTimeFromFirstPoseTo:(double)a3
+- (double)_finderTimeFromFirstPoseTo:(double)to
 {
   v3 = -1.0;
-  if (a3 != -1.0)
+  if (to != -1.0)
   {
     timeAtFirstPose = self->_timeAtFirstPose;
     if (timeAtFirstPose != -1.0)
     {
-      return a3 - timeAtFirstPose;
+      return to - timeAtFirstPose;
     }
   }
 
   return v3;
 }
 
-- (id)_algorithmSourceToString:(int)a3
+- (id)_algorithmSourceToString:(int)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"None";
   }
 
   else
   {
-    return off_10098B5F0[a3];
+    return off_10098B5F0[string];
   }
 }
 
@@ -3085,12 +3085,12 @@ LABEL_11:
   self->_vioPathLength = 0.0;
 }
 
-- (double)_deltaDistanceFromVIOPoses:(optional<nearby:(optional<nearby::algorithms::common::Pose> *)a4 :algorithms::common::Pose> *)a3 :
+- (double)_deltaDistanceFromVIOPoses:(optional<nearby:(optional<nearby::algorithms::common::Pose> *)poses :algorithms::common::Pose> *)a3 :
 {
   result = 0.0;
-  if (a3[2].var0.__val_.lightEstimate.var0.__null_state_ == 1 && a4[2].var0.__val_.lightEstimate.var0.__null_state_ == 1)
+  if (a3[2].var0.__val_.lightEstimate.var0.__null_state_ == 1 && poses[2].var0.__val_.lightEstimate.var0.__null_state_ == 1)
   {
-    v5 = vsubq_f32(*&a4[1].var0.__val_.trackingState, *&a3[1].var0.__val_.trackingState);
+    v5 = vsubq_f32(*&poses[1].var0.__val_.trackingState, *&a3[1].var0.__val_.trackingState);
     v6 = vmulq_f32(v5, v5);
     return sqrtf(v6.f32[2] + vaddv_f32(*v6.f32));
   }
@@ -3098,7 +3098,7 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)_isSemiStaticFromVIO:(optional<nearby:(optional<nearby:(double)a5 :algorithms::common::Pose> *)a4 :algorithms::common::Pose> *)a3 ::
+- (BOOL)_isSemiStaticFromVIO:(optional<nearby:(optional<nearby:(double)o :algorithms::common::Pose> *)a4 :algorithms::common::Pose> *)a3 ::
 {
   if (a3[2].var0.__val_.lightEstimate.var0.__null_state_ != 1)
   {
@@ -3137,10 +3137,10 @@ LABEL_11:
   v16[0] = *&a4->var0.__null_state_;
   v16[1] = v13;
   [(NIServerAnalyticsManager *)self _deltaDistanceFromVIOPoses:v17];
-  return v14 / a5 < 0.15;
+  return v14 / o < 0.15;
 }
 
-- (void)_calculateIOMetrics:(double)a3
+- (void)_calculateIOMetrics:(double)metrics
 {
   vioPathLengthWhenPDRIsAvailable = self->_vioPathLengthWhenPDRIsAvailable;
   if (vioPathLengthWhenPDRIsAvailable > 0.0)
@@ -3180,7 +3180,7 @@ LABEL_11:
   }
 }
 
-- (VectorAggregateErrors)_calculateErrorStatsFromVector:(SEL)a3
+- (VectorAggregateErrors)_calculateErrorStatsFromVector:(SEL)vector
 {
   if (a4->__end_ == a4->__begin_)
   {
@@ -3368,7 +3368,7 @@ LABEL_11:
   AnalyticsSendEventLazy();
 }
 
-- (void)_sessionStoppedWithTimestamp:(double)a3
+- (void)_sessionStoppedWithTimestamp:(double)timestamp
 {
   if (!self->_isRunning)
   {
@@ -3387,7 +3387,7 @@ LABEL_11:
 
   self->_isRunning = 0;
   runTimestamp = self->_runTimestamp;
-  v6 = a3 - self->_visibilityUpdateTimestamp;
+  v6 = timestamp - self->_visibilityUpdateTimestamp;
   v7 = 80;
   if (self->_isVisible)
   {
@@ -3398,7 +3398,7 @@ LABEL_11:
   timeAtFirstLocationUpdate = self->_timeAtFirstLocationUpdate;
   pdrTimeAtLastPDRUpdate = self->_pdrTimeAtLastPDRUpdate;
   pdrTimeAtFirstPDRUpdate = self->_pdrTimeAtFirstPDRUpdate;
-  self->_timeToSessionEnd = a3 - self->_timeAtFirstPeerData;
+  self->_timeToSessionEnd = timestamp - self->_timeAtFirstPeerData;
   std::mutex::lock(&stru_1009E9B50);
   --byte_1009ECD78;
   p_sessionType = &self->_sessionType;
@@ -3458,7 +3458,7 @@ LABEL_21:
 
   v386 = objc_alloc_init(NSMutableDictionary);
   [v386 setObject:self->_bundleIdentifier forKey:@"appBundleID"];
-  v15 = a3 - runTimestamp;
+  v15 = timestamp - runTimestamp;
   v16 = [NSNumber numberWithDouble:v15];
   [v386 setObject:v16 forKey:@"totalDuration"];
 
@@ -3791,7 +3791,7 @@ LABEL_49:
 
       if (self->_timeAtFirstLocationUpdate != -1.0)
       {
-        v90 = a3 - timeAtFirstLocationUpdate;
+        v90 = timestamp - timeAtFirstLocationUpdate;
         timeLocationFromAccessory = self->_timeLocationFromAccessory;
         v92 = 0.0;
         if (timeLocationFromAccessory != -1.0 && v90 != 0.0)
@@ -4079,7 +4079,7 @@ LABEL_49:
     {
       v184 = objc_alloc_init(NSMutableDictionary);
       [v184 setObject:self->_bundleIdentifier forKey:@"appBundleID"];
-      [(NIServerAnalyticsManager *)self _finderTimeFromFirstPoseTo:a3];
+      [(NIServerAnalyticsManager *)self _finderTimeFromFirstPoseTo:timestamp];
       v186 = v185;
       if (self->_timeAtFirstOutputRange != -1.0)
       {
@@ -4595,7 +4595,7 @@ LABEL_49:
       v304 = [NSNumber numberWithDouble:timeAtFindButton - self->_runTimestamp];
       [v297 setObject:v304 forKey:@"timeToRangeRequest"];
 
-      v305 = [NSNumber numberWithDouble:a3 - self->_timeAtFindButton];
+      v305 = [NSNumber numberWithDouble:timestamp - self->_timeAtFindButton];
       [v297 setObject:v305 forKey:@"rangingDuration"];
 
       timeAtFirstRawUWBRange = self->_timeAtFirstRawUWBRange;
@@ -4804,8 +4804,8 @@ LABEL_49:
       v349 = self->_timeAtFindButton;
       if (v349 != -1.0)
       {
-        v350 = [NSNumber numberWithDouble:self->_timeAtConnect - v349];
-        [v297 setObject:v350 forKey:@"timeFromFindButtonToConnect"];
+        v349 = [NSNumber numberWithDouble:self->_timeAtConnect - v349];
+        [v297 setObject:v349 forKey:@"timeFromFindButtonToConnect"];
       }
     }
 
@@ -4823,8 +4823,8 @@ LABEL_49:
       v353 = self->_timeAtFindButton;
       if (v353 != -1.0)
       {
-        v354 = [NSNumber numberWithDouble:self->_timeAtConfigure - v353];
-        [v297 setObject:v354 forKey:@"timeFromFindButtonToConfigure"];
+        v353 = [NSNumber numberWithDouble:self->_timeAtConfigure - v353];
+        [v297 setObject:v353 forKey:@"timeFromFindButtonToConfigure"];
       }
     }
 

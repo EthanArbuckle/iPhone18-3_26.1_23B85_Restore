@@ -1,8 +1,8 @@
 @interface BWMattingInferenceStorage
-- (id)newMetadataDictionarySatisfyingRequirement:(id)a3;
-- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)a3 withPropagationSampleBuffer:(opaqueCMSampleBuffer *)a4;
+- (id)newMetadataDictionarySatisfyingRequirement:(id)requirement;
+- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)requirement withPropagationSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
-- (void)setDictionary:(id)a3 forMetadataRequirement:(id)a4;
+- (void)setDictionary:(id)dictionary forMetadataRequirement:(id)requirement;
 @end
 
 @implementation BWMattingInferenceStorage
@@ -14,7 +14,7 @@
   [(BWInferenceProviderStorage *)&v3 dealloc];
 }
 
-- (void)setDictionary:(id)a3 forMetadataRequirement:(id)a4
+- (void)setDictionary:(id)dictionary forMetadataRequirement:(id)requirement
 {
   metadataDictionaryByRequirement = self->_metadataDictionaryByRequirement;
   if (!metadataDictionaryByRequirement)
@@ -23,23 +23,23 @@
     self->_metadataDictionaryByRequirement = metadataDictionaryByRequirement;
   }
 
-  [(NSMutableDictionary *)metadataDictionaryByRequirement setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)metadataDictionaryByRequirement setObject:dictionary forKeyedSubscript:requirement];
 }
 
-- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)a3 withPropagationSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (opaqueCMSampleBuffer)newSampleBufferSatisfyingRequirement:(id)requirement withPropagationSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   target = 0;
-  v7 = [objc_msgSend(objc_msgSend(a3 "videoFormat")];
+  v7 = [objc_msgSend(objc_msgSend(requirement "videoFormat")];
   if (v7)
   {
     v7 = CFRetain(v7);
   }
 
   cf = v7;
-  v8 = [(BWInferenceProviderStorage *)self pixelBufferForRequirement:a3];
+  v8 = [(BWInferenceProviderStorage *)self pixelBufferForRequirement:requirement];
   if (v8)
   {
-    if (BWCMSampleBufferCreateDeepCopyWithNewPixelBuffer(a4, v8, 0, &cf, &target))
+    if (BWCMSampleBufferCreateDeepCopyWithNewPixelBuffer(buffer, v8, 0, &cf, &target))
     {
       [BWMattingInferenceStorage newSampleBufferSatisfyingRequirement:withPropagationSampleBuffer:];
     }
@@ -65,9 +65,9 @@
   return target;
 }
 
-- (id)newMetadataDictionarySatisfyingRequirement:(id)a3
+- (id)newMetadataDictionarySatisfyingRequirement:(id)requirement
 {
-  v3 = [(NSMutableDictionary *)self->_metadataDictionaryByRequirement objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_metadataDictionaryByRequirement objectForKeyedSubscript:requirement];
 
   return v3;
 }

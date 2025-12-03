@@ -1,12 +1,12 @@
 @interface TTRIPinnedListsView
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (BOOL)isUserInteractionEnabled;
-- (_TtC9Reminders19TTRIPinnedListsView)initWithArrangedSubviewRows:(id)a3;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)didSelectControl:(id)a3;
-- (void)didTapControl:(id)a3;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (_TtC9Reminders19TTRIPinnedListsView)initWithArrangedSubviewRows:(id)rows;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)didSelectControl:(id)control;
+- (void)didTapControl:(id)control;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation TTRIPinnedListsView
@@ -18,33 +18,33 @@
   return [(TTRIPinnedListsView *)&v3 isUserInteractionEnabled];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TTRIPinnedListsView();
   v4 = v5.receiver;
-  [(TTRIPinnedListsView *)&v5 setUserInteractionEnabled:v3];
+  [(TTRIPinnedListsView *)&v5 setUserInteractionEnabled:enabledCopy];
   sub_100319198();
 }
 
-- (void)didTapControl:(id)a3
+- (void)didTapControl:(id)control
 {
-  v5 = a3;
-  v6 = self;
-  sub_100318C48(a3);
+  controlCopy = control;
+  selfCopy = self;
+  sub_100318C48(control);
 }
 
-- (void)didSelectControl:(id)a3
+- (void)didSelectControl:(id)control
 {
-  if ((self->NUIContainerGridView_opaque[OBJC_IVAR____TtC9Reminders19TTRIPinnedListsView_selectionFollowsFocus] & 1) == 0 && a3)
+  if ((self->NUIContainerGridView_opaque[OBJC_IVAR____TtC9Reminders19TTRIPinnedListsView_selectionFollowsFocus] & 1) == 0 && control)
   {
-    v9 = self;
-    v4 = a3;
-    v5 = [(TTRIPinnedListsView *)v4 view];
-    if (v5)
+    selfCopy = self;
+    controlCopy = control;
+    view = [(TTRIPinnedListsView *)controlCopy view];
+    if (view)
     {
-      v6 = v5;
+      v6 = view;
       type metadata accessor for TTRIPinnedListControl();
       v7 = swift_dynamicCastClass();
       if (v7)
@@ -55,22 +55,22 @@
 
       else
       {
-        v8 = v4;
-        v4 = v9;
-        v9 = v6;
+        v8 = controlCopy;
+        controlCopy = selfCopy;
+        selfCopy = v6;
       }
     }
   }
 }
 
-- (_TtC9Reminders19TTRIPinnedListsView)initWithArrangedSubviewRows:(id)a3
+- (_TtC9Reminders19TTRIPinnedListsView)initWithArrangedSubviewRows:(id)rows
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
   v5 = &self->NUIContainerGridView_opaque[OBJC_IVAR____TtC9Reminders19TTRIPinnedListsView_pinnedListsViewDelegate];
   if (swift_unknownObjectWeakLoadStrong())
@@ -79,7 +79,7 @@
     swift_getObjectType();
     v7 = *(v6 + 24);
     swift_unknownObjectRetain();
-    v8 = self;
+    selfCopy = self;
     v9 = v7();
     swift_unknownObjectRelease();
     swift_unknownObjectRelease();
@@ -93,24 +93,24 @@
   return v9 & 1;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_10031ACD4(a4);
+  selfCopy = self;
+  v8 = sub_10031ACD4(update);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
-  v6 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10031B18C(a4);
+  selfCopy = self;
+  sub_10031B18C(drop);
 
   swift_unknownObjectRelease();
 }

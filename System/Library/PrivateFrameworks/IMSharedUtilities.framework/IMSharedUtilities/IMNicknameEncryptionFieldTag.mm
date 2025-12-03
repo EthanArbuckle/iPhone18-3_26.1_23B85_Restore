@@ -1,14 +1,14 @@
 @interface IMNicknameEncryptionFieldTag
-- (BOOL)isEqualToTag:(id)a3 error:(id *)a4;
+- (BOOL)isEqualToTag:(id)tag error:(id *)error;
 @end
 
 @implementation IMNicknameEncryptionFieldTag
 
-- (BOOL)isEqualToTag:(id)a3 error:(id *)a4
+- (BOOL)isEqualToTag:(id)tag error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = IMNicknameEncryptionFieldTag;
-  return [(IMNicknameEncryptionTag *)&v5 isEqualToTag:a3 error:a4];
+  return [(IMNicknameEncryptionTag *)&v5 isEqualToTag:tag error:error];
 }
 
 @end

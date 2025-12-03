@@ -1,22 +1,22 @@
 @interface SUAnalyticsManager
 + (id)sharedManager;
-+ (id)sharedManagerWithPath:(id)a3;
++ (id)sharedManagerWithPath:(id)path;
 - (BOOL)_queue_submitAllEvents;
-- (BOOL)_queue_submitEvent:(id)a3;
-- (BOOL)saveEventToDisk:(id)a3;
+- (BOOL)_queue_submitEvent:(id)event;
+- (BOOL)saveEventToDisk:(id)disk;
 - (BOOL)submitAllEvents;
-- (BOOL)submitEvent:(id)a3;
-- (BOOL)submitEventsWithName:(id)a3;
+- (BOOL)submitEvent:(id)event;
+- (BOOL)submitEventsWithName:(id)name;
 - (NSDictionary)events;
 - (SUAnalyticsManager)init;
-- (SUAnalyticsManager)initWithPath:(id)a3;
-- (id)copyEventFromPath:(id)a3;
-- (id)coreAnalyticEventforSUAnalyticEvent:(id)a3;
-- (void)_queue_setEvent:(id)a3;
+- (SUAnalyticsManager)initWithPath:(id)path;
+- (id)copyEventFromPath:(id)path;
+- (id)coreAnalyticEventforSUAnalyticEvent:(id)event;
+- (void)_queue_setEvent:(id)event;
 - (void)removeAllEvents;
-- (void)removeEvent:(id)a3;
-- (void)removeEventsWithName:(id)a3;
-- (void)setEvent:(id)a3;
+- (void)removeEvent:(id)event;
+- (void)removeEventsWithName:(id)name;
+- (void)setEvent:(id)event;
 @end
 
 @implementation SUAnalyticsManager
@@ -44,9 +44,9 @@
   return v2;
 }
 
-- (SUAnalyticsManager)initWithPath:(id)a3
+- (SUAnalyticsManager)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = SUAnalyticsManager;
   v6 = [(SUAnalyticsManager *)&v13 init];
@@ -61,7 +61,7 @@
     coreEventSubmitter = v6->_coreEventSubmitter;
     v6->_coreEventSubmitter = v10;
 
-    objc_storeStrong(&v6->_savePath, a3);
+    objc_storeStrong(&v6->_savePath, path);
   }
 
   return v6;
@@ -104,16 +104,16 @@ void __35__SUAnalyticsManager_sharedManager__block_invoke()
   sharedManager___manager = v9;
 }
 
-+ (id)sharedManagerWithPath:(id)a3
++ (id)sharedManagerWithPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__SUAnalyticsManager_sharedManagerWithPath___block_invoke;
   block[3] = &unk_279CAA708;
-  v10 = v3;
+  v10 = pathCopy;
   v4 = sharedManagerWithPath__onceToken;
-  v5 = v3;
+  v5 = pathCopy;
   if (v4 != -1)
   {
     dispatch_once(&sharedManagerWithPath__onceToken, block);
@@ -157,12 +157,12 @@ void __44__SUAnalyticsManager_sharedManagerWithPath___block_invoke(uint64_t a1)
   sharedManagerWithPath____manager = v13;
 }
 
-- (id)copyEventFromPath:(id)a3
+- (id)copyEventFromPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v42 = 0;
-  v5 = [v4 attributesOfItemAtPath:v3 error:&v42];
+  v5 = [defaultManager attributesOfItemAtPath:pathCopy error:&v42];
   v6 = v42;
   v7 = v6;
   if (v5)
@@ -185,13 +185,13 @@ void __44__SUAnalyticsManager_sharedManagerWithPath___block_invoke(uint64_t a1)
   if (!v10 || (v11 = v10, [v5 objectForKeyedSubscript:v9], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", *MEMORY[0x277CCA1F0]), v12, v11, (v13 & 1) != 0))
   {
     v41 = 0;
-    v14 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3 options:0 error:&v41];
+    v14 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy options:0 error:&v41];
     v15 = v41;
     v7 = v15;
     if (!v14 || v15)
     {
       v18 = SULogAnalytics();
-      SULogErrorForSubsystem(v18, @"Failed to read contents of event file: %@ (%@)", v26, v27, v28, v29, v30, v31, v3);
+      SULogErrorForSubsystem(v18, @"Failed to read contents of event file: %@ (%@)", v26, v27, v28, v29, v30, v31, pathCopy);
       v19 = 0;
     }
 
@@ -204,7 +204,7 @@ void __44__SUAnalyticsManager_sharedManagerWithPath___block_invoke(uint64_t a1)
       if (!v16 || v17)
       {
         v32 = SULogAnalytics();
-        SULogErrorForSubsystem(v32, @"Invalid event data for :%@ (%@)", v33, v34, v35, v36, v37, v38, v3);
+        SULogErrorForSubsystem(v32, @"Invalid event data for :%@ (%@)", v33, v34, v35, v36, v37, v38, pathCopy);
 
         v19 = 0;
       }
@@ -220,16 +220,16 @@ void __44__SUAnalyticsManager_sharedManagerWithPath___block_invoke(uint64_t a1)
   {
 LABEL_13:
     v14 = SULogAnalytics();
-    SULogErrorForSubsystem(v14, @"Invalid file type found for even at path: %@ [%@] (skipping)", v20, v21, v22, v23, v24, v25, v3);
+    SULogErrorForSubsystem(v14, @"Invalid file type found for even at path: %@ [%@] (skipping)", v20, v21, v22, v23, v24, v25, pathCopy);
     v19 = 0;
   }
 
   return v19;
 }
 
-- (BOOL)saveEventToDisk:(id)a3
+- (BOOL)saveEventToDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v11 = 0;
   v12 = &v11;
@@ -240,15 +240,15 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __38__SUAnalyticsManager_saveEventToDisk___block_invoke;
   block[3] = &unk_279CAC0F8;
-  v9 = v4;
+  v9 = diskCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = diskCopy;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(diskCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return diskCopy;
 }
 
 void __38__SUAnalyticsManager_saveEventToDisk___block_invoke(uint64_t a1)
@@ -316,17 +316,17 @@ LABEL_9:
   }
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(stateQueue);
-  [(SUAnalyticsManager *)self saveEventToDisk:v5];
+  [(SUAnalyticsManager *)self saveEventToDisk:eventCopy];
 }
 
-- (void)removeEvent:(id)a3
+- (void)removeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -334,8 +334,8 @@ LABEL_9:
   v7[2] = __34__SUAnalyticsManager_removeEvent___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -433,9 +433,9 @@ void __34__SUAnalyticsManager_removeEvent___block_invoke(uint64_t a1)
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEventsWithName:(id)a3
+- (void)removeEventsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -443,8 +443,8 @@ void __34__SUAnalyticsManager_removeEvent___block_invoke(uint64_t a1)
   v7[2] = __43__SUAnalyticsManager_removeEventsWithName___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -592,9 +592,9 @@ void __37__SUAnalyticsManager_removeAllEvents__block_invoke(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)submitEvent:(id)a3
+- (BOOL)submitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v11 = 0;
   v12 = &v11;
@@ -606,14 +606,14 @@ void __37__SUAnalyticsManager_removeAllEvents__block_invoke(uint64_t a1)
   block[2] = __34__SUAnalyticsManager_submitEvent___block_invoke;
   block[3] = &unk_279CABAB0;
   block[4] = self;
-  v9 = v4;
+  v9 = eventCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(eventCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return eventCopy;
 }
 
 void __34__SUAnalyticsManager_submitEvent___block_invoke(uint64_t a1)
@@ -722,9 +722,9 @@ LABEL_20:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)submitEventsWithName:(id)a3
+- (BOOL)submitEventsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v12 = 0;
   v13 = &v12;
@@ -735,15 +735,15 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __43__SUAnalyticsManager_submitEventsWithName___block_invoke;
   block[3] = &unk_279CAC0F8;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  v9 = v4;
-  v6 = v4;
+  v9 = nameCopy;
+  v6 = nameCopy;
   dispatch_sync(stateQueue, block);
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(nameCopy) = *(v13 + 24);
 
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return nameCopy;
 }
 
 void __43__SUAnalyticsManager_submitEventsWithName___block_invoke(uint64_t a1)
@@ -854,23 +854,23 @@ LABEL_23:
 
 - (BOOL)submitAllEvents
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  stateQueue = v2->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __37__SUAnalyticsManager_submitAllEvents__block_invoke;
   v5[3] = &unk_279CAA948;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(stateQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __37__SUAnalyticsManager_submitAllEvents__block_invoke(uint64_t a1)
@@ -986,13 +986,13 @@ uint64_t __28__SUAnalyticsManager_events__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_queue_setEvent:(id)a3
+- (void)_queue_setEvent:(id)event
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(stateQueue);
   coreEventSubmitter = self->_coreEventSubmitter;
-  v7 = [(SUAnalyticsManager *)self coreAnalyticEventforSUAnalyticEvent:v5];
+  v7 = [(SUAnalyticsManager *)self coreAnalyticEventforSUAnalyticEvent:eventCopy];
 
   [(SUCoreAnalyticsEventSubmitter *)coreEventSubmitter setEvent:v7];
 }
@@ -1005,35 +1005,35 @@ uint64_t __28__SUAnalyticsManager_events__block_invoke(uint64_t a1)
   return [(SUCoreAnalyticsEventSubmitter *)coreEventSubmitter submitAllEvents];
 }
 
-- (BOOL)_queue_submitEvent:(id)a3
+- (BOOL)_queue_submitEvent:(id)event
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(stateQueue);
   coreEventSubmitter = self->_coreEventSubmitter;
-  v7 = [(SUAnalyticsManager *)self coreAnalyticEventforSUAnalyticEvent:v5];
+  v7 = [(SUAnalyticsManager *)self coreAnalyticEventforSUAnalyticEvent:eventCopy];
 
   LOBYTE(coreEventSubmitter) = [(SUCoreAnalyticsEventSubmitter *)coreEventSubmitter submitEvent:v7];
   return coreEventSubmitter;
 }
 
-- (id)coreAnalyticEventforSUAnalyticEvent:(id)a3
+- (id)coreAnalyticEventforSUAnalyticEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventCopy = event;
   v4 = objc_alloc(MEMORY[0x277D64158]);
-  v5 = [v3 eventName];
-  v6 = [v4 initWithEventName:v5];
+  eventName = [eventCopy eventName];
+  v6 = [v4 initWithEventName:eventName];
 
-  v7 = [v3 eventUUID];
-  [v6 setEventUUID:v7];
+  eventUUID = [eventCopy eventUUID];
+  [v6 setEventUUID:eventUUID];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v3 eventPayload];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  eventPayload = [eventCopy eventPayload];
+  v9 = [eventPayload countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1044,16 +1044,16 @@ uint64_t __28__SUAnalyticsManager_events__block_invoke(uint64_t a1)
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(eventPayload);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v3 eventPayload];
-        v15 = [v14 objectForKey:v13];
+        eventPayload2 = [eventCopy eventPayload];
+        v15 = [eventPayload2 objectForKey:v13];
         [v6 setEventPayloadEntry:v13 value:v15];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [eventPayload countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);

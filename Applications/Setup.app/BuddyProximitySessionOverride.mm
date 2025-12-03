@@ -1,26 +1,26 @@
 @interface BuddyProximitySessionOverride
 - (id)handshake;
 - (id)information;
-- (id)sendAction:(id)a3;
+- (id)sendAction:(id)action;
 - (void)finishPairing;
-- (void)setDelegateOnClient:(id)a3;
+- (void)setDelegateOnClient:(id)client;
 @end
 
 @implementation BuddyProximitySessionOverride
 
-- (id)sendAction:(id)a3
+- (id)sendAction:(id)action
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   oslog = _BYLoggingFacility();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
-    v3 = [objc_opt_class() actionID];
-    sub_10007B2CC(buf, v9, v3);
+    actionID = [objc_opt_class() actionID];
+    sub_10007B2CC(buf, v9, actionID);
     _os_log_impl(&_mh_execute_header, oslog, v10, "Received action: Class: %@, ActionID: %ld", buf, 0x16u);
     objc_storeStrong(&v9, 0);
   }
@@ -30,8 +30,8 @@
   if (objc_opt_isKindOfClass())
   {
     v8 = location[0];
-    v4 = [(BuddyProximitySessionOverride *)v13 information];
-    [v8 setInformation:v4];
+    information = [(BuddyProximitySessionOverride *)selfCopy information];
+    [v8 setInformation:information];
 
     objc_storeStrong(&v8, 0);
   }
@@ -42,8 +42,8 @@
     if (objc_opt_isKindOfClass())
     {
       v7 = location[0];
-      v5 = [(BuddyProximitySessionOverride *)v13 handshake];
-      [v7 setHandshake:v5];
+      handshake = [(BuddyProximitySessionOverride *)selfCopy handshake];
+      [v7 setHandshake:handshake];
 
       objc_storeStrong(&v7, 0);
     }
@@ -53,13 +53,13 @@
   return 0;
 }
 
-- (void)setDelegateOnClient:(id)a3
+- (void)setDelegateOnClient:(id)client
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] setProximitySessionMessageSessionDelegate:v4];
+  objc_storeStrong(location, client);
+  [location[0] setProximitySessionMessageSessionDelegate:selfCopy];
   objc_storeStrong(location, 0);
 }
 
@@ -130,7 +130,7 @@
 
 - (id)handshake
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v2 = [BuddyOverrideUtilities sourceDeviceValueFor:10];
   v3 = v2 != 0;

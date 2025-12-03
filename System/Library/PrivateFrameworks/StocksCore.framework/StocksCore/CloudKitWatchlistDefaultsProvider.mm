@@ -1,12 +1,12 @@
 @interface CloudKitWatchlistDefaultsProvider
-- (void)fetchWatchlistDefaultsWithCompletion:(id)a3;
+- (void)fetchWatchlistDefaultsWithCompletion:(id)completion;
 @end
 
 @implementation CloudKitWatchlistDefaultsProvider
 
-- (void)fetchWatchlistDefaultsWithCompletion:(id)a3
+- (void)fetchWatchlistDefaultsWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   sub_1DACB71F4();

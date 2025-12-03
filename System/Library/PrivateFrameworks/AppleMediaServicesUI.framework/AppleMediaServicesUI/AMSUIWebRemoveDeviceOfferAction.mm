@@ -1,20 +1,20 @@
 @interface AMSUIWebRemoveDeviceOfferAction
-- (AMSUIWebRemoveDeviceOfferAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebRemoveDeviceOfferAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebRemoveDeviceOfferAction
 
-- (AMSUIWebRemoveDeviceOfferAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebRemoveDeviceOfferAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = AMSUIWebRemoveDeviceOfferAction;
-  v8 = [(AMSUIWebAction *)&v18 initWithJSObject:v6 context:v7];
+  v8 = [(AMSUIWebAction *)&v18 initWithJSObject:objectCopy context:contextCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"account"];
+    v9 = [objectCopy objectForKeyedSubscript:@"account"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -26,12 +26,12 @@
       v10 = 0;
     }
 
-    v11 = [v7 iTunesAccountFromJSAccount:v10];
+    v11 = [contextCopy iTunesAccountFromJSAccount:v10];
     v12 = [v11 copy];
     account = v8->_account;
     v8->_account = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"identifier"];
+    v14 = [objectCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,29 +54,29 @@
 {
   v18.receiver = self;
   v18.super_class = AMSUIWebRemoveDeviceOfferAction;
-  v3 = [(AMSUIWebAction *)&v18 runAction];
-  v4 = [(AMSUIWebRemoveDeviceOfferAction *)self identifier];
-  if (v4 && (v5 = v4, -[AMSUIWebRemoveDeviceOfferAction identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 length], v6, v5, v7))
+  runAction = [(AMSUIWebAction *)&v18 runAction];
+  identifier = [(AMSUIWebRemoveDeviceOfferAction *)self identifier];
+  if (identifier && (v5 = identifier, -[AMSUIWebRemoveDeviceOfferAction identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 length], v6, v5, v7))
   {
     v8 = MEMORY[0x1E698C8A8];
-    v9 = [(AMSUIWebRemoveDeviceOfferAction *)self identifier];
-    v10 = [(AMSUIWebRemoveDeviceOfferAction *)self account];
-    v11 = [(AMSUIWebAction *)self context];
-    v12 = [v11 bag];
-    [v8 removeDeviceOfferWithIdentifier:v9 account:v10 bag:v12 logKey:0];
+    identifier2 = [(AMSUIWebRemoveDeviceOfferAction *)self identifier];
+    account = [(AMSUIWebRemoveDeviceOfferAction *)self account];
+    context = [(AMSUIWebAction *)self context];
+    v12 = [context bag];
+    [v8 removeDeviceOfferWithIdentifier:identifier2 account:account bag:v12 logKey:0];
 
-    v13 = [MEMORY[0x1E698C7F0] promiseWithSuccess];
-    v14 = [v13 promiseAdapter];
+    promiseWithSuccess = [MEMORY[0x1E698C7F0] promiseWithSuccess];
+    promiseAdapter = [promiseWithSuccess promiseAdapter];
   }
 
   else
   {
     v15 = MEMORY[0x1E698CAD0];
-    v13 = AMSError();
-    v14 = [v15 promiseWithError:v13];
+    promiseWithSuccess = AMSError();
+    promiseAdapter = [v15 promiseWithError:promiseWithSuccess];
   }
 
-  v16 = v14;
+  v16 = promiseAdapter;
 
   return v16;
 }

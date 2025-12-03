@@ -34,7 +34,7 @@
 
 - (NSString)signature
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D91500D8();
 
   v3 = _sSS18PodcastsFoundationE18userDefaultsObjectSo8NSStringCSgyF_0();

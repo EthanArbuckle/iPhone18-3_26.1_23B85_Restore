@@ -1,8 +1,8 @@
 @interface PKPaymentSetupDiscoverCardSectionController
 - (PKPaymentSetupDiscoverCardSectionController)init;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentSetupDiscoverCardSectionController
@@ -16,8 +16,8 @@
   if (v2)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v4 = [v3 UUIDString];
-    v11[0] = v4;
+    uUIDString = [v3 UUIDString];
+    v11[0] = uUIDString;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     identifiers = v2->_identifiers;
     v2->_identifiers = v5;
@@ -38,7 +38,7 @@ void __51__PKPaymentSetupDiscoverCardSectionController_init__block_invoke(uint64
   [v3 setBackgroundColor:v4];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v4 appendItems:&unk_1F3CC8540];
@@ -46,11 +46,11 @@ void __51__PKPaymentSetupDiscoverCardSectionController_init__block_invoke(uint64
   return v4;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 container];
-  [v4 contentSize];
+  container = [environment container];
+  [container contentSize];
   v6 = v5 + -32.0;
 
   v7 = MEMORY[0x1E6995588];
@@ -82,11 +82,11 @@ void __51__PKPaymentSetupDiscoverCardSectionController_init__block_invoke(uint64
   return v17;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v5 = a3;
+  registrationCopy = registration;
   v6 = PKLocalizedPaymentString(&cfstr_LearnAboutWall.isa);
-  [v5 setTitle:v6];
+  [registrationCopy setTitle:v6];
 }
 
 @end

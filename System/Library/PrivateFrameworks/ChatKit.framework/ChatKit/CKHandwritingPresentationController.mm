@@ -6,13 +6,13 @@
 - (CKHandwritingViewControllerSendDelegate)cachedSendDelegate;
 - (void)_doInitialization;
 - (void)_flushHandwritingWindowCacheIfNeeded;
-- (void)_handleApplicationDidEnterBackground:(id)a3;
+- (void)_handleApplicationDidEnterBackground:(id)background;
 - (void)_loadCachedPayloadIntoBrowser;
 - (void)_updateVisibilityState;
 - (void)dealloc;
-- (void)setPluginPayload:(id)a3;
-- (void)setSendDelegate:(id)a3;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setPluginPayload:(id)payload;
+- (void)setSendDelegate:(id)delegate;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation CKHandwritingPresentationController
@@ -27,13 +27,13 @@
     v3 = [[CKScheduledUpdater alloc] initWithTarget:v2 action:sel__updateVisibilityState];
     [(CKHandwritingPresentationController *)v2 setAnimationScheduledUpdater:v3];
 
-    v4 = [(CKHandwritingPresentationController *)v2 animationScheduledUpdater];
-    [v4 setUpdateSynchronouslyIfPossible:1];
+    animationScheduledUpdater = [(CKHandwritingPresentationController *)v2 animationScheduledUpdater];
+    [animationScheduledUpdater setUpdateSynchronouslyIfPossible:1];
 
     [(CKHandwritingPresentationController *)v2 setForegrounded:1];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleApplicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
-    [v5 addObserver:v2 selector:sel__handleApplicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleApplicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleApplicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v2;
@@ -41,91 +41,91 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
-  [v4 invalidate];
+  animationScheduledUpdater = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
+  [animationScheduledUpdater invalidate];
 
   v5.receiver = self;
   v5.super_class = CKHandwritingPresentationController;
   [(CKHandwritingPresentationController *)&v5 dealloc];
 }
 
-- (void)setSendDelegate:(id)a3
+- (void)setSendDelegate:(id)delegate
 {
-  v4 = a3;
-  [(CKHandwritingPresentationController *)self setCachedSendDelegate:v4];
-  v5 = [(CKHandwritingPresentationController *)self browserViewController];
-  [v5 setSendDelegate:v4];
+  delegateCopy = delegate;
+  [(CKHandwritingPresentationController *)self setCachedSendDelegate:delegateCopy];
+  browserViewController = [(CKHandwritingPresentationController *)self browserViewController];
+  [browserViewController setSendDelegate:delegateCopy];
 }
 
-- (void)setPluginPayload:(id)a3
+- (void)setPluginPayload:(id)payload
 {
-  [(CKHandwritingPresentationController *)self setCachedPluginPayload:a3];
+  [(CKHandwritingPresentationController *)self setCachedPluginPayload:payload];
 
   [(CKHandwritingPresentationController *)self _loadCachedPayloadIntoBrowser];
 }
 
 - (CKBrowserItemPayload)pluginPayload
 {
-  v3 = [(CKHandwritingPresentationController *)self browserViewController];
+  browserViewController = [(CKHandwritingPresentationController *)self browserViewController];
 
-  if (v3)
+  if (browserViewController)
   {
-    v4 = [(CKHandwritingPresentationController *)self browserViewController];
+    browserViewController2 = [(CKHandwritingPresentationController *)self browserViewController];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CKHandwritingPresentationController *)self browserViewController];
-      if ([v6 supportsResumablePayload])
+      browserViewController3 = [(CKHandwritingPresentationController *)self browserViewController];
+      if ([browserViewController3 supportsResumablePayload])
       {
-        v7 = [v6 resumablePayload];
+        resumablePayload = [browserViewController3 resumablePayload];
       }
 
       else
       {
-        v7 = 0;
+        resumablePayload = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      resumablePayload = 0;
     }
 
-    [(CKHandwritingPresentationController *)self setCachedPluginPayload:v7];
+    [(CKHandwritingPresentationController *)self setCachedPluginPayload:resumablePayload];
   }
 
   else
   {
-    v7 = [(CKHandwritingPresentationController *)self cachedPluginPayload];
+    resumablePayload = [(CKHandwritingPresentationController *)self cachedPluginPayload];
   }
 
-  return v7;
+  return resumablePayload;
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(CKHandwritingPresentationController *)self requestedVisibility]!= a3)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if ([(CKHandwritingPresentationController *)self requestedVisibility]!= visible)
   {
-    [(CKHandwritingPresentationController *)self setRequestedVisibility:v5];
-    [(CKHandwritingPresentationController *)self setRequestedVisibilityShouldBeAnimated:v4];
-    v7 = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
-    [v7 setNeedsUpdate];
+    [(CKHandwritingPresentationController *)self setRequestedVisibility:visibleCopy];
+    [(CKHandwritingPresentationController *)self setRequestedVisibilityShouldBeAnimated:animatedCopy];
+    animationScheduledUpdater = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
+    [animationScheduledUpdater setNeedsUpdate];
   }
 }
 
 - (BOOL)isHandwritingLandscape
 {
-  v3 = [(CKHandwritingPresentationController *)self handwritingWindow];
-  if (v3)
+  handwritingWindow = [(CKHandwritingPresentationController *)self handwritingWindow];
+  if (handwritingWindow)
   {
-    v4 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    v5 = [v4 isHidden] ^ 1;
+    handwritingWindow2 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    v5 = [handwritingWindow2 isHidden] ^ 1;
   }
 
   else
@@ -136,7 +136,7 @@
   return v5;
 }
 
-- (void)_handleApplicationDidEnterBackground:(id)a3
+- (void)_handleApplicationDidEnterBackground:(id)background
 {
   [(CKHandwritingPresentationController *)self setForegrounded:0];
 
@@ -145,15 +145,15 @@
 
 - (void)_updateVisibilityState
 {
-  v4 = [(CKHandwritingPresentationController *)self requestedVisibility];
-  if (v4 != [(CKHandwritingPresentationController *)self actualVisibility])
+  requestedVisibility = [(CKHandwritingPresentationController *)self requestedVisibility];
+  if (requestedVisibility != [(CKHandwritingPresentationController *)self actualVisibility])
   {
-    v5 = [(CKHandwritingPresentationController *)self requestedVisibility];
+    requestedVisibility2 = [(CKHandwritingPresentationController *)self requestedVisibility];
     v48 = 0;
     v49 = &v48;
     v50 = 0x2020000000;
-    v51 = [(CKHandwritingPresentationController *)self requestedVisibilityShouldBeAnimated];
-    if (!v5)
+    requestedVisibilityShouldBeAnimated = [(CKHandwritingPresentationController *)self requestedVisibilityShouldBeAnimated];
+    if (!requestedVisibility2)
     {
       v46.a = 0.0;
       *&v46.b = &v46;
@@ -167,22 +167,22 @@
       aBlock[4] = self;
       aBlock[5] = &v48;
       *&v46.ty = _Block_copy(aBlock);
-      v19 = [(CKHandwritingPresentationController *)self browserViewController];
-      [v19 viewWillDisappear:*(v49 + 24)];
+      browserViewController = [(CKHandwritingPresentationController *)self browserViewController];
+      [browserViewController viewWillDisappear:*(v49 + 24)];
 
-      v20 = [(CKHandwritingPresentationController *)self delegate];
+      delegate = [(CKHandwritingPresentationController *)self delegate];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(CKHandwritingPresentationController *)self delegate];
-        [v22 handwritingPresentationControllerWillHideHandwriting:self];
+        delegate2 = [(CKHandwritingPresentationController *)self delegate];
+        [delegate2 handwritingPresentationControllerWillHideHandwriting:self];
       }
 
       if (*(v49 + 24) == 1)
       {
-        v23 = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
-        [v23 beginHoldingUpdatesForKey:@"UpdatingVisibility"];
+        animationScheduledUpdater = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
+        [animationScheduledUpdater beginHoldingUpdatesForKey:@"UpdatingVisibility"];
 
         v42[0] = MEMORY[0x1E69E9820];
         v42[1] = 3221225472;
@@ -208,90 +208,90 @@
       goto LABEL_28;
     }
 
-    v6 = [MEMORY[0x1E69DCD68] sharedInstance];
-    [v6 disableInterfaceAutorotation:1];
+    mEMORY[0x1E69DCD68] = [MEMORY[0x1E69DCD68] sharedInstance];
+    [mEMORY[0x1E69DCD68] disableInterfaceAutorotation:1];
 
-    v7 = [(CKHandwritingPresentationController *)self deviceOrientationManager];
+    deviceOrientationManager = [(CKHandwritingPresentationController *)self deviceOrientationManager];
 
-    if (!v7)
+    if (!deviceOrientationManager)
     {
-      v40 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v40 handleFailureInMethod:a2 object:self file:@"CKHandwritingPresentationController.m" lineNumber:161 description:{@"Please set a device orientation manager on %@ before setting it to be visible", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"CKHandwritingPresentationController.m" lineNumber:161 description:{@"Please set a device orientation manager on %@ before setting it to be visible", self}];
     }
 
-    v8 = [(CKHandwritingPresentationController *)self deviceOrientationManager];
-    [v8 beginListeningForOrientationEventsWithKey:@"HandwritingVisible"];
+    deviceOrientationManager2 = [(CKHandwritingPresentationController *)self deviceOrientationManager];
+    [deviceOrientationManager2 beginListeningForOrientationEventsWithKey:@"HandwritingVisible"];
 
     [(CKHandwritingPresentationController *)self _doInitialization];
-    v9 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    [v9 setHidden:0];
+    handwritingWindow = [(CKHandwritingPresentationController *)self handwritingWindow];
+    [handwritingWindow setHidden:0];
 
     if (![(CKHandwritingPresentationController *)self suppressAppearanceCallbacksBecauseOfFirstInitialization])
     {
-      v10 = [(CKHandwritingPresentationController *)self browserViewController];
-      [v10 viewWillAppear:*(v49 + 24)];
+      browserViewController2 = [(CKHandwritingPresentationController *)self browserViewController];
+      [browserViewController2 viewWillAppear:*(v49 + 24)];
     }
 
-    v11 = [(CKHandwritingPresentationController *)self delegate];
+    delegate3 = [(CKHandwritingPresentationController *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CKHandwritingPresentationController *)self delegate];
-      [v13 handwritingPresentationControllerWillShowHandwriting:self];
+      delegate4 = [(CKHandwritingPresentationController *)self delegate];
+      [delegate4 handwritingPresentationControllerWillShowHandwriting:self];
     }
 
-    v14 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    [v14 setEatOrientationEvents:0];
+    handwritingWindow2 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    [handwritingWindow2 setEatOrientationEvents:0];
 
     if ([(CKHandwritingPresentationController *)self initialInterfaceOrientation])
     {
-      v15 = [(CKHandwritingPresentationController *)self initialInterfaceOrientation];
-      if (v15 == 3)
+      initialInterfaceOrientation = [(CKHandwritingPresentationController *)self initialInterfaceOrientation];
+      if (initialInterfaceOrientation == 3)
       {
-        v24 = [MEMORY[0x1E69DC938] currentDevice];
-        [v24 setOrientation:3];
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        [currentDevice setOrientation:3];
 
-        v25 = [(CKHandwritingPresentationController *)self handwritingWindow];
-        [v25 _updateInterfaceOrientationFromDeviceOrientation:0];
+        handwritingWindow3 = [(CKHandwritingPresentationController *)self handwritingWindow];
+        [handwritingWindow3 _updateInterfaceOrientationFromDeviceOrientation:0];
 
-        v18 = [(CKHandwritingPresentationController *)self handwritingWindow];
-        [v18 setEatOrientationEvents:1];
+        handwritingWindow4 = [(CKHandwritingPresentationController *)self handwritingWindow];
+        [handwritingWindow4 setEatOrientationEvents:1];
       }
 
       else
       {
-        if (v15 != 4)
+        if (initialInterfaceOrientation != 4)
         {
           goto LABEL_21;
         }
 
-        v16 = [MEMORY[0x1E69DC938] currentDevice];
-        [v16 setOrientation:4];
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        [currentDevice2 setOrientation:4];
 
-        v17 = [(CKHandwritingPresentationController *)self handwritingWindow];
-        [v17 _updateInterfaceOrientationFromDeviceOrientation:0];
+        handwritingWindow5 = [(CKHandwritingPresentationController *)self handwritingWindow];
+        [handwritingWindow5 _updateInterfaceOrientationFromDeviceOrientation:0];
 
-        v18 = [(CKHandwritingPresentationController *)self handwritingWindow];
-        [v18 setEatOrientationEvents:1];
+        handwritingWindow4 = [(CKHandwritingPresentationController *)self handwritingWindow];
+        [handwritingWindow4 setEatOrientationEvents:1];
       }
     }
 
 LABEL_21:
     if (*(v49 + 24) == 1)
     {
-      v26 = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
-      [v26 beginHoldingUpdatesForKey:@"UpdatingVisibility"];
+      animationScheduledUpdater2 = [(CKHandwritingPresentationController *)self animationScheduledUpdater];
+      [animationScheduledUpdater2 beginHoldingUpdatesForKey:@"UpdatingVisibility"];
 
-      v27 = [(CKHandwritingPresentationController *)self browserViewController];
-      v28 = [v27 view];
-      [v28 setAlpha:0.0];
+      browserViewController3 = [(CKHandwritingPresentationController *)self browserViewController];
+      view = [browserViewController3 view];
+      [view setAlpha:0.0];
 
       CGAffineTransformMakeScale(&v47, 0.800000012, 0.800000012);
-      v29 = [(CKHandwritingPresentationController *)self browserViewController];
-      v30 = [v29 view];
+      browserViewController4 = [(CKHandwritingPresentationController *)self browserViewController];
+      view2 = [browserViewController4 view];
       v46 = v47;
-      [v30 setTransform:&v46];
+      [view2 setTransform:&v46];
 
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
@@ -308,17 +308,17 @@ LABEL_21:
 
     else
     {
-      v31 = [(CKHandwritingPresentationController *)self browserViewController];
-      v32 = [v31 view];
-      [v32 setAlpha:1.0];
+      browserViewController5 = [(CKHandwritingPresentationController *)self browserViewController];
+      view3 = [browserViewController5 view];
+      [view3 setAlpha:1.0];
 
-      v33 = [(CKHandwritingPresentationController *)self browserViewController];
-      v34 = [v33 view];
+      browserViewController6 = [(CKHandwritingPresentationController *)self browserViewController];
+      view4 = [browserViewController6 view];
       v35 = *(MEMORY[0x1E695EFD0] + 16);
       *&v46.a = *MEMORY[0x1E695EFD0];
       *&v46.c = v35;
       *&v46.tx = *(MEMORY[0x1E695EFD0] + 32);
-      [v34 setTransform:&v46];
+      [view4 setTransform:&v46];
 
       [(CKHandwritingPresentationController *)self setActualVisibility:1];
       if ([(CKHandwritingPresentationController *)self suppressAppearanceCallbacksBecauseOfFirstInitialization])
@@ -328,17 +328,17 @@ LABEL_21:
 
       else
       {
-        v36 = [(CKHandwritingPresentationController *)self browserViewController];
-        [v36 viewDidAppear:0];
+        browserViewController7 = [(CKHandwritingPresentationController *)self browserViewController];
+        [browserViewController7 viewDidAppear:0];
       }
 
-      v37 = [(CKHandwritingPresentationController *)self delegate];
+      delegate5 = [(CKHandwritingPresentationController *)self delegate];
       v38 = objc_opt_respondsToSelector();
 
       if (v38)
       {
-        v39 = [(CKHandwritingPresentationController *)self delegate];
-        [v39 handwritingPresentationControllerDidShowHandwriting:self];
+        delegate6 = [(CKHandwritingPresentationController *)self delegate];
+        [delegate6 handwritingPresentationControllerDidShowHandwriting:self];
       }
     }
 
@@ -444,18 +444,18 @@ void __61__CKHandwritingPresentationController__updateVisibilityState__block_inv
 {
   if (![(CKHandwritingPresentationController *)self foregrounded]&& ![(CKHandwritingPresentationController *)self actualVisibility]&& ![(CKHandwritingPresentationController *)self requestedVisibility])
   {
-    v3 = [(CKHandwritingPresentationController *)self browserViewController];
+    browserViewController = [(CKHandwritingPresentationController *)self browserViewController];
 
-    if (v3)
+    if (browserViewController)
     {
       [(CKHandwritingPresentationController *)self setBrowserViewController:0];
-      v4 = [(CKHandwritingPresentationController *)self handwritingWindow];
-      [v4 setRootViewController:0];
+      handwritingWindow = [(CKHandwritingPresentationController *)self handwritingWindow];
+      [handwritingWindow setRootViewController:0];
     }
 
-    v5 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    handwritingWindow2 = [(CKHandwritingPresentationController *)self handwritingWindow];
 
-    if (v5)
+    if (handwritingWindow2)
     {
 
       [(CKHandwritingPresentationController *)self setHandwritingWindow:0];
@@ -465,50 +465,50 @@ void __61__CKHandwritingPresentationController__updateVisibilityState__block_inv
 
 - (void)_doInitialization
 {
-  v3 = [(CKHandwritingPresentationController *)self handwritingWindow];
+  handwritingWindow = [(CKHandwritingPresentationController *)self handwritingWindow];
 
-  if (!v3)
+  if (!handwritingWindow)
   {
     v4 = [CKHandwritingWindow alloc];
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v7 = v6;
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v9 = [(CKHandwritingWindow *)v4 initWithFrame:0.0, 0.0, v7];
     [(CKHandwritingPresentationController *)self setHandwritingWindow:v9];
 
-    v10 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    [v10 setLevel:1.79769313e308];
+    handwritingWindow2 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    [handwritingWindow2 setLevel:1.79769313e308];
 
-    v11 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    [v11 _setWindowControlsStatusBarOrientation:0];
+    handwritingWindow3 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    [handwritingWindow3 _setWindowControlsStatusBarOrientation:0];
 
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v13 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    [v13 setScreen:v12];
+    mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+    handwritingWindow4 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    [handwritingWindow4 setScreen:mainScreen3];
 
-    v14 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    handwritingWindow5 = [(CKHandwritingPresentationController *)self handwritingWindow];
     v15 = +[CKUIBehavior sharedBehaviors];
     [v15 presentationControllerWindowLevel];
-    [v14 setWindowLevel:?];
+    [handwritingWindow5 setWindowLevel:?];
 
-    v16 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    v17 = [MEMORY[0x1E69DD2E8] keyWindow];
-    v18 = [v17 windowScene];
-    [v16 setWindowScene:v18];
+    handwritingWindow6 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    windowScene = [keyWindow windowScene];
+    [handwritingWindow6 setWindowScene:windowScene];
   }
 
-  v19 = [(CKHandwritingPresentationController *)self browserViewController];
+  browserViewController = [(CKHandwritingPresentationController *)self browserViewController];
 
-  if (!v19)
+  if (!browserViewController)
   {
-    v20 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v21 = [(CKHandwritingPresentationController *)self pluginBundleID];
-    v33 = [v20 balloonPluginForBundleID:v21];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    pluginBundleID = [(CKHandwritingPresentationController *)self pluginBundleID];
+    v33 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:pluginBundleID];
 
     v22 = objc_alloc([v33 browserClass]);
-    v23 = [(CKHandwritingPresentationController *)self browserViewController];
+    browserViewController2 = [(CKHandwritingPresentationController *)self browserViewController];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
@@ -523,37 +523,37 @@ void __61__CKHandwritingPresentationController__updateVisibilityState__block_inv
 
     v26 = v25;
     [(CKHandwritingPresentationController *)self setBrowserViewController:v25];
-    v27 = [(CKHandwritingPresentationController *)self handwritingWindow];
-    v28 = [v27 rootViewController];
-    v29 = [(CKHandwritingPresentationController *)self browserViewController];
+    handwritingWindow7 = [(CKHandwritingPresentationController *)self handwritingWindow];
+    rootViewController = [handwritingWindow7 rootViewController];
+    browserViewController3 = [(CKHandwritingPresentationController *)self browserViewController];
 
-    if (v28 != v29)
+    if (rootViewController != browserViewController3)
     {
-      v30 = [(CKHandwritingPresentationController *)self browserViewController];
-      v31 = [(CKHandwritingPresentationController *)self handwritingWindow];
-      [v31 setRootViewController:v30];
+      browserViewController4 = [(CKHandwritingPresentationController *)self browserViewController];
+      handwritingWindow8 = [(CKHandwritingPresentationController *)self handwritingWindow];
+      [handwritingWindow8 setRootViewController:browserViewController4];
 
       [(CKHandwritingPresentationController *)self setSuppressAppearanceCallbacksBecauseOfFirstInitialization:1];
     }
 
     [(CKHandwritingPresentationController *)self _loadCachedPayloadIntoBrowser];
-    v32 = [(CKHandwritingPresentationController *)self cachedSendDelegate];
-    [v26 setSendDelegate:v32];
+    cachedSendDelegate = [(CKHandwritingPresentationController *)self cachedSendDelegate];
+    [v26 setSendDelegate:cachedSendDelegate];
   }
 }
 
 - (void)_loadCachedPayloadIntoBrowser
 {
-  v3 = [(CKHandwritingPresentationController *)self browserViewController];
+  browserViewController = [(CKHandwritingPresentationController *)self browserViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(CKHandwritingPresentationController *)self browserViewController];
-    if ([v6 supportsResumablePayload])
+    browserViewController2 = [(CKHandwritingPresentationController *)self browserViewController];
+    if ([browserViewController2 supportsResumablePayload])
     {
-      v5 = [(CKHandwritingPresentationController *)self cachedPluginPayload];
-      [v6 setResumablePayload:v5];
+      cachedPluginPayload = [(CKHandwritingPresentationController *)self cachedPluginPayload];
+      [browserViewController2 setResumablePayload:cachedPluginPayload];
     }
   }
 }

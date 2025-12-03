@@ -51,10 +51,10 @@
   }
 
   v5 = [[CIFilter filterWithName:?]];
-  v6 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
   v7 = +[CIDither _kernelDither];
-  [(CIImage *)v6 extent];
-  v12[0] = v6;
+  [(CIImage *)imageByUnpremultiplyingAlpha extent];
+  v12[0] = imageByUnpremultiplyingAlpha;
   v12[1] = v5;
   v12[2] = self->inputIntensity;
   return [objc_msgSend(v7 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v12, 3), v8, v9, v10, v11), "imageByPremultiplyingAlpha"}];

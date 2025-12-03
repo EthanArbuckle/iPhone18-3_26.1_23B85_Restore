@@ -7,8 +7,8 @@
 
 - (id)contentsImage
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [UIImage _kitImageNamed:@"Item_LiquidDetection" withTrait:v2];
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [UIImage _kitImageNamed:@"Item_LiquidDetection" withTrait:traitCollection];
 
   v4 = [_UILegibilityImageSet imageFromImage:v3 withShadowImage:0];
 

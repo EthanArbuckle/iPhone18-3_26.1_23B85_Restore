@@ -1,7 +1,7 @@
 @interface FigCaptureSourceVideoFormat
 - ($2825F4736939C4A6D3AD43837233062D)nativeDimensions;
 - ($2825F4736939C4A6D3AD43837233062D)previewDimensions;
-- ($2825F4736939C4A6D3AD43837233062D)previewDimensionsForAspectRatio:(int)a3;
+- ($2825F4736939C4A6D3AD43837233062D)previewDimensionsForAspectRatio:(int)ratio;
 - ($2825F4736939C4A6D3AD43837233062D)sourceCropAspectRatio;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)maxExposureDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minExposureDuration;
@@ -67,7 +67,7 @@
 - (BOOL)isSmartStyleRenderingSupported;
 - (BOOL)isSpatialOverCaptureSupported;
 - (BOOL)isSphereAssistedAutoFocusEnabled;
-- (BOOL)isStabilizationModeSupported:(int)a3;
+- (BOOL)isStabilizationModeSupported:(int)supported;
 - (BOOL)isStagePreviewRenderingSupported;
 - (BOOL)isStereoFusionSupported;
 - (BOOL)isStereoPhotoCaptureSupported;
@@ -83,14 +83,14 @@
 - (BOOL)isStudioLightingSupportedForContinuityCapture;
 - (BOOL)isSupplementalTimeOfFlightCameraSupported;
 - (BOOL)isUltraHighResolutionZeroShutterLagSupported;
-- (BOOL)isValidDerivedSourceFormatForUnderlyingFormat:(id)a3;
+- (BOOL)isValidDerivedSourceFormatForUnderlyingFormat:(id)format;
 - (BOOL)isVideoGreenGhostMitigationSupported;
 - (BOOL)isVideoGreenGhostMitigationUsesLightSourceMaskAndKeypointDescriptorData;
 - (BOOL)isVideoGreenGhostOfflineMetadataEnabled;
 - (BOOL)isVideoHDRFusionSupported;
 - (BOOL)isVideoSTFMetadataEnabled;
 - (BOOL)isVideoSTFSupported;
-- (BOOL)isVideoStabilizationStrengthSupported:(int)a3;
+- (BOOL)isVideoStabilizationStrengthSupported:(int)supported;
 - (BOOL)isWideAsStatisticsPrimaryEnabled;
 - (BOOL)isWideColorSupported;
 - (BOOL)isWideDigitalFlashAvailableShallowDepthOfFieldEffectsEnabled;
@@ -103,7 +103,7 @@
 - (BOOL)reactionEffectsSupported;
 - (BOOL)reactionEffectsSupportedForContinuityCapture;
 - (BOOL)semanticRenderingSupported;
-- (BOOL)shouldPreferSIFRFormatWithHighlightRecoveryEnabled:(BOOL)a3;
+- (BOOL)shouldPreferSIFRFormatWithHighlightRecoveryEnabled:(BOOL)enabled;
 - (BOOL)stillImageEnhancedResByMaintainingSensorResolutionSupported;
 - (BOOL)sushiRawBlackBorderingEnabled;
 - (BOOL)sushiRawSupported;
@@ -114,21 +114,21 @@
 - (BOOL)zeroShutterLagRequiresUserInitiatedCaptureRequestTime;
 - (CGPoint)sensorCenterOffset;
 - (CGRect)maxVisibleSensorRect;
-- (CGSize)stabilizationOverscanFromSensorForFESCropDimensions:(id)a3 preferSIFRFormat:(BOOL)a4 geometricDistortionCorrection:(BOOL)a5 useFESCompanionIndex:(BOOL)a6;
+- (CGSize)stabilizationOverscanFromSensorForFESCropDimensions:(id)dimensions preferSIFRFormat:(BOOL)format geometricDistortionCorrection:(BOOL)correction useFESCompanionIndex:(BOOL)index;
 - (FigCaptureSourceVideoFormat)_resolveProperties;
-- (FigCaptureSourceVideoFormat)initWithCoder:(id)a3;
-- (FigCaptureSourceVideoFormat)initWithFigCaptureStreamFormatDictionary:(id)a3 pixelFormatOverride:(unsigned int)a4;
-- (FigCaptureSourceVideoFormat)initWithXPCEncoding:(id)a3;
+- (FigCaptureSourceVideoFormat)initWithCoder:(id)coder;
+- (FigCaptureSourceVideoFormat)initWithFigCaptureStreamFormatDictionary:(id)dictionary pixelFormatOverride:(unsigned int)override;
+- (FigCaptureSourceVideoFormat)initWithXPCEncoding:(id)encoding;
 - (NSArray)secondaryNativeResolutionZoomFactors;
 - (NSArray)supportedColorSpaces;
-- (double)_fieldOfViewForAspectRatio:(int)a3 horizontal:(int)a4 gdcEnabled:;
-- (float)_fieldOfViewWithCrop:(uint64_t)a1;
+- (double)_fieldOfViewForAspectRatio:(int)ratio horizontal:(int)horizontal gdcEnabled:;
+- (float)_fieldOfViewWithCrop:(uint64_t)crop;
 - (float)_geometricDistortionCorrectedFieldOfViewCropMultiplier;
 - (float)actionCameraAEMaxGainScaleFactor;
 - (float)aeMaxGain;
 - (float)cinematicStabilizationExtendedLookAheadDuration;
-- (float)defaultMaxFrameRateForSessionPreset:(id)a3;
-- (float)defaultMinFrameRateForSessionPreset:(id)a3;
+- (float)defaultMaxFrameRateForSessionPreset:(id)preset;
+- (float)defaultMinFrameRateForSessionPreset:(id)preset;
 - (float)defaultPortraitLightingEffectStrength;
 - (float)defaultSimulatedAperture;
 - (float)depthDataAEMaxGain;
@@ -157,7 +157,7 @@
 - (id)_avfcAttributes;
 - (id)_highResStillImageDimensions;
 - (id)_sourceDimensions;
-- (id)copyWithNewPixelFormat:(unsigned int)a3;
+- (id)copyWithNewPixelFormat:(unsigned int)format;
 - (id)copyXPCEncoding;
 - (id)fastSwitchingMainCaptureStreamFormat;
 - (id)highResStillImageDimensions;
@@ -185,19 +185,19 @@
 - (int)verticalSensorBinningFactor;
 - (int)videoStabilizationGeneratedTransformsOutputHeightOverride;
 - (int)videoStabilizationGeneratedTransformsOutputWidthOverride;
-- (uint64_t)_supportsDepthDataFormatForDisparity:(int)a3 streaming:;
+- (uint64_t)_supportsDepthDataFormatForDisparity:(int)disparity streaming:;
 - (unint64_t)_highQualitySensorDimensions;
 - (unint64_t)_maxUseableSensorDimensions;
 - (unint64_t)_nativeDimensionsWithoutCrop;
 - (unint64_t)_outputDimensions;
-- (unint64_t)_visibleSensorDimensionsIncludingCinematic:(id *)a1;
+- (unint64_t)_visibleSensorDimensionsIncludingCinematic:(id *)cinematic;
 - (unsigned)internalDemosaicedRawPixelFormat;
 - (unsigned)mediaType;
 - (unsigned)supportedDemosaicedRawPixelFormat;
 - (unsigned)supportedRawPixelFormat;
-- (void)_buildFESCompanionFormatsForType:(uint64_t)a1;
+- (void)_buildFESCompanionFormatsForType:(uint64_t)type;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)geometricDistortionCorrectedFieldOfView;
 @end
 
@@ -216,27 +216,27 @@
 
 - (BOOL)isPhotoFormat
 {
-  v3 = [(FigCaptureSourceVideoFormat *)self _outputDimensions];
-  if (fcsf_isHighResPhotoFormat(v3))
+  _outputDimensions = [(FigCaptureSourceVideoFormat *)self _outputDimensions];
+  if (fcsf_isHighResPhotoFormat(_outputDimensions))
   {
     return 1;
   }
 
-  if (fcsf_isHighResPhotoFormat(__ROR8__(v3, 32)))
+  if (fcsf_isHighResPhotoFormat(__ROR8__(_outputDimensions, 32)))
   {
     return 1;
   }
 
-  v4 = HIDWORD(v3);
-  if (v3 == 1280 && v4 == 960)
+  v4 = HIDWORD(_outputDimensions);
+  if (_outputDimensions == 1280 && v4 == 960)
   {
     return 1;
   }
 
   v6 = v4 == 1280 || v4 == 720;
-  v7 = v6 && v3 == 960;
+  v7 = v6 && _outputDimensions == 960;
   v8 = v7;
-  v9 = v4 == 960 && v3 == 720;
+  v9 = v4 == 960 && _outputDimensions == 720;
   if (v9 || v8)
   {
     return 1;
@@ -270,23 +270,23 @@
   {
     if ([(FigCaptureSourceVideoFormat *)self stabilizationTypeOverrideForCinematic]== 3 || [(FigCaptureSourceVideoFormat *)self stabilizationTypeOverrideForStandard]== 3)
     {
-      v5 = [(FigCaptureSourceVideoFormat *)self _outputDimensions];
+      _outputDimensions = [(FigCaptureSourceVideoFormat *)self _outputDimensions];
       LODWORD(v4) = 1107296256;
-      if (v5 != 960)
+      if (_outputDimensions != 960)
       {
-        v6 = HIDWORD(v5);
-        if (HIDWORD(v5) != 540)
+        v6 = HIDWORD(_outputDimensions);
+        if (HIDWORD(_outputDimensions) != 540)
         {
           LODWORD(v4) = 30.0;
-          if (v5 != 1024 && v6 != 768)
+          if (_outputDimensions != 1024 && v6 != 768)
           {
             LODWORD(v4) = 24.0;
-            if (v5 != 1280 && v6 != 720)
+            if (_outputDimensions != 1280 && v6 != 720)
             {
               LODWORD(v4) = 16.0;
-              if (v5 != 1920 && v6 != 1080)
+              if (_outputDimensions != 1920 && v6 != 1080)
               {
-                v7 = v6 == 2160 || v5 == 3840;
+                v7 = v6 == 2160 || _outputDimensions == 3840;
                 LODWORD(v4) = 16.0;
                 if (v7)
                 {
@@ -432,7 +432,7 @@
   if (result)
   {
     v1 = result;
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v2 = [v1[1] objectForKeyedSubscript:@"HighResStillImageDimensions"];
     v11 = 0u;
     v12 = 0u;
@@ -454,7 +454,7 @@
           }
 
           v6 = *(*(&v11 + 1) + 8 * i);
-          [v9 addObject:{-[FigCaptureSourceFormatDimensions initWithDimensions:deferredPhotoProxyDimensions:isPrivate:flavor:maxUpscalingDimensions:]([FigCaptureSourceFormatDimensions alloc], "initWithDimensions:deferredPhotoProxyDimensions:isPrivate:flavor:maxUpscalingDimensions:", objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Width", "intValue") | (objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Height", "intValue") << 32), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"DeferredPhotoProxyWidth", "intValue") | (objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"DeferredPhotoProxyHeight", "intValue") << 32), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Private", "BOOLValue"), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Flavor", "intValue"), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"MaxUpscalingWidth", "intValue") | (objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"MaxUpscalingHeight", "intValue") << 32))}];
+          [array addObject:{-[FigCaptureSourceFormatDimensions initWithDimensions:deferredPhotoProxyDimensions:isPrivate:flavor:maxUpscalingDimensions:]([FigCaptureSourceFormatDimensions alloc], "initWithDimensions:deferredPhotoProxyDimensions:isPrivate:flavor:maxUpscalingDimensions:", objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Width", "intValue") | (objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Height", "intValue") << 32), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"DeferredPhotoProxyWidth", "intValue") | (objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"DeferredPhotoProxyHeight", "intValue") << 32), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Private", "BOOLValue"), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"Flavor", "intValue"), objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"MaxUpscalingWidth", "intValue") | (objc_msgSend(objc_msgSend(v6, "objectForKeyedSubscript:", @"MaxUpscalingHeight", "intValue") << 32))}];
         }
 
         v4 = [obj countByEnumeratingWithState:&v11 objects:v10 count:16];
@@ -463,7 +463,7 @@
       while (v4);
     }
 
-    return [v9 copy];
+    return [array copy];
   }
 
   return result;
@@ -471,8 +471,8 @@
 
 - (id)highResStillImageDimensions
 {
-  v5 = [(FigCaptureSourceVideoFormat *)&self->super.super.isa _highResStillImageDimensions];
-  if (![v5 count])
+  _highResStillImageDimensions = [(FigCaptureSourceVideoFormat *)&self->super.super.isa _highResStillImageDimensions];
+  if (![_highResStillImageDimensions count])
   {
     if ([(FigCaptureSourceVideoFormat *)self isHighResStillImageSupported])
     {
@@ -485,8 +485,8 @@
       else
       {
         [(FigCaptureSourceVideoFormat *)&self->super.super.isa _maxUseableSensorDimensions];
-        v10 = [OUTLINED_FUNCTION_9_25() horizontalSensorBinningFactor];
-        v11 = v10 / [(FigCaptureSourceVideoFormat *)self verticalSensorBinningFactor];
+        horizontalSensorBinningFactor = [OUTLINED_FUNCTION_9_25() horizontalSensorBinningFactor];
+        v11 = horizontalSensorBinningFactor / [(FigCaptureSourceVideoFormat *)self verticalSensorBinningFactor];
         if (v11 != 1.0)
         {
           if (v11 < 1.0)
@@ -514,10 +514,10 @@
 
     else
     {
-      v7 = [(FigCaptureSourceFormat *)self dimensions];
+      dimensions = [(FigCaptureSourceFormat *)self dimensions];
       v6 = 0;
-      v3 = HIDWORD(*&v7);
-      var0 = v7.var0;
+      v3 = HIDWORD(*&dimensions);
+      var0 = dimensions.var0;
     }
 
     if (var0 >= 1 && v3 >= 1)
@@ -527,7 +527,7 @@
     }
   }
 
-  return v5;
+  return _highResStillImageDimensions;
 }
 
 - (BOOL)capturesStillsFromVideoStream
@@ -542,19 +542,19 @@
   if (result)
   {
     v1 = result;
-    v2 = [result sensorCropDimensions];
-    if (v2 < 1 || SHIDWORD(v2) < 1)
+    sensorCropDimensions = [result sensorCropDimensions];
+    if (sensorCropDimensions < 1 || SHIDWORD(sensorCropDimensions) < 1)
     {
-      v4 = [v1 sensorDimensions];
+      sensorDimensions = [v1 sensorDimensions];
     }
 
     else
     {
-      v4 = [v1 sensorCropDimensions];
+      sensorDimensions = [v1 sensorCropDimensions];
     }
 
-    v5 = v4;
-    v6 = HIDWORD(v4);
+    v5 = sensorDimensions;
+    v6 = HIDWORD(sensorDimensions);
     v7 = [objc_msgSend(v1[1] objectForKeyedSubscript:{@"HighQualitySensorWidth", "intValue"}];
     v8 = [objc_msgSend(v1[1] objectForKeyedSubscript:{@"HighQualitySensorHeight", "intValue"}];
     if (v7 > v5 || v7 == 0)
@@ -580,16 +580,16 @@
 
 - (unint64_t)_maxUseableSensorDimensions
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  [(FigCaptureSourceVideoFormat *)a1 _sourceDimensions];
-  v2 = [OUTLINED_FUNCTION_12_26() sourceCropAspectRatio];
-  v3 = v2;
-  v4 = HIDWORD(v2);
-  if (v2 < 1 || SHIDWORD(v2) < 1)
+  [(FigCaptureSourceVideoFormat *)self _sourceDimensions];
+  sourceCropAspectRatio = [OUTLINED_FUNCTION_12_26() sourceCropAspectRatio];
+  v3 = sourceCropAspectRatio;
+  v4 = HIDWORD(sourceCropAspectRatio);
+  if (sourceCropAspectRatio < 1 || SHIDWORD(sourceCropAspectRatio) < 1)
   {
     return v1;
   }
@@ -611,10 +611,10 @@
 - ($2825F4736939C4A6D3AD43837233062D)sourceCropAspectRatio
 {
   [(FigCaptureSourceVideoFormat *)self _outputDimensions];
-  v6 = [OUTLINED_FUNCTION_12_26() postGDCCropDimensions];
-  v7 = HIDWORD(v6);
-  v8 = v6 < 1 || SHIDWORD(v6) < 1;
-  if (v8 && ((v6 = [-[NSArray lastObject](self->_frontEndScalerCompanionFormats "lastObject")], v7 = HIDWORD(v6), v6 >= 1) ? (v9 = SHIDWORD(v6) < 1) : (v9 = 1), v9))
+  postGDCCropDimensions = [OUTLINED_FUNCTION_12_26() postGDCCropDimensions];
+  v7 = HIDWORD(postGDCCropDimensions);
+  v8 = postGDCCropDimensions < 1 || SHIDWORD(postGDCCropDimensions) < 1;
+  if (v8 && ((postGDCCropDimensions = [-[NSArray lastObject](self->_frontEndScalerCompanionFormats "lastObject")], v7 = HIDWORD(postGDCCropDimensions), postGDCCropDimensions >= 1) ? (v9 = SHIDWORD(postGDCCropDimensions) < 1) : (v9 = 1), v9))
   {
     [(FigCaptureSourceVideoFormat *)&self->super.super.isa _sourceDimensions];
     v12 = ([OUTLINED_FUNCTION_9_25() horizontalSensorBinningFactor] * v3);
@@ -623,7 +623,7 @@
 
   else
   {
-    v10 = v6 / v7;
+    v10 = postGDCCropDimensions / v7;
   }
 
   if (vabds_f32(v10, v2.var0 / v2.var1) <= 0.01)
@@ -924,7 +924,7 @@
 
 - (id)_avfcAttributes
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -934,15 +934,15 @@
     dispatch_once(&qword_1ED844F00, &__block_literal_global_827);
   }
 
-  v2 = [a1[1] mutableCopy];
+  v2 = [self[1] mutableCopy];
   [v2 removeObjectsForKeys:_MergedGlobals_5];
-  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a1, "format")}];
+  v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(self, "format")}];
   [v2 setObject:v3 forKeyedSubscript:*MEMORY[0x1E6966130]];
-  v4 = [a1 supportedDepthDataFormats];
-  if ([v4 count])
+  supportedDepthDataFormats = [self supportedDepthDataFormats];
+  if ([supportedDepthDataFormats count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v13 = OUTLINED_FUNCTION_1_2(v5, v6, v7, v8, v9, v10, v11, v12, v29, v2, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, 0);
+    array = [MEMORY[0x1E695DF70] array];
+    v13 = OUTLINED_FUNCTION_1_2(array, v6, v7, v8, v9, v10, v11, v12, v29, v2, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, 0);
     if (v13)
     {
       v14 = v13;
@@ -953,7 +953,7 @@
         {
           if (MEMORY[0] != v15)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(supportedDepthDataFormats);
           }
 
           v17 = *(8 * i);
@@ -963,7 +963,7 @@
           {
             v27 = [v17[1] mutableCopy];
             [v27 removeObjectsForKeys:_MergedGlobals_5];
-            [v5 addObject:v27];
+            [array addObject:v27];
           }
         }
 
@@ -974,7 +974,7 @@
     }
 
     v2 = v31;
-    [v31 setObject:v5 forKeyedSubscript:@"SupportedDepthDataFormats"];
+    [v31 setObject:array forKeyedSubscript:@"SupportedDepthDataFormats"];
   }
 
   return v2;
@@ -1058,9 +1058,9 @@
 
 - (float)spatialOverCapturePercentage
 {
-  v2 = [(FigCaptureSourceVideoFormat *)self isSpatialOverCaptureSupported];
+  isSpatialOverCaptureSupported = [(FigCaptureSourceVideoFormat *)self isSpatialOverCaptureSupported];
   result = 40.0;
-  if (!v2)
+  if (!isSpatialOverCaptureSupported)
   {
     return 0.0;
   }
@@ -1343,29 +1343,29 @@
 {
   [(FigCaptureSourceVideoFormat *)&self->super.super.isa _maxUseableSensorDimensions];
   [OUTLINED_FUNCTION_12_26() sensorDimensions];
-  v6 = [OUTLINED_FUNCTION_9_25() preGDCSensorCropDimensions];
-  if (v6 >= 1 && SHIDWORD(v6) >= 1)
+  preGDCSensorCropDimensions = [OUTLINED_FUNCTION_9_25() preGDCSensorCropDimensions];
+  if (preGDCSensorCropDimensions >= 1 && SHIDWORD(preGDCSensorCropDimensions) >= 1)
   {
-    v2 = [(FigCaptureSourceVideoFormat *)self preGDCSensorCropDimensions];
+    preGDCSensorCropDimensions2 = [(FigCaptureSourceVideoFormat *)self preGDCSensorCropDimensions];
   }
 
-  v8 = HIDWORD(*&v2);
+  v8 = HIDWORD(*&preGDCSensorCropDimensions2);
   v9 = 0.0;
-  if (v3 <= v2.var0 && v4 <= v2.var1)
+  if (v3 <= preGDCSensorCropDimensions2.var0 && v4 <= preGDCSensorCropDimensions2.var1)
   {
     LODWORD(v8) = v4;
-    v2.var0 = v3;
+    preGDCSensorCropDimensions2.var0 = v3;
     v12 = 0.0;
   }
 
   else
   {
     [(FigCaptureSourceVideoFormat *)self sensorCenterOffset];
-    v12 = v11 + ((v3 - v2.var0) / 2);
-    v9 = v13 + ((v4 - v2.var1) / 2);
+    v12 = v11 + ((v3 - preGDCSensorCropDimensions2.var0) / 2);
+    v9 = v13 + ((v4 - preGDCSensorCropDimensions2.var1) / 2);
   }
 
-  var0 = v2.var0;
+  var0 = preGDCSensorCropDimensions2.var0;
   v15 = v8;
   result.size.height = v15;
   result.size.width = var0;
@@ -1443,9 +1443,9 @@
 
 - (BOOL)isStillImageOutputDownscaledInHWISP
 {
-  v3 = [(FigCaptureSourceVideoFormat *)&self->super.super.isa _sourceDimensions];
-  v4 = v3;
-  v5 = v3 >> 32;
+  _sourceDimensions = [(FigCaptureSourceVideoFormat *)&self->super.super.isa _sourceDimensions];
+  v4 = _sourceDimensions;
+  v5 = _sourceDimensions >> 32;
   v6 = [objc_msgSend(-[FigCaptureSourceVideoFormat highResStillImageDimensions](self "highResStillImageDimensions")];
   if (v4 <= 4608 && v5 < 4609)
   {
@@ -1685,8 +1685,8 @@
 - (BOOL)isLensSmudgeDetectionSupported
 {
   v3 = [-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"LensSmudgeDetectionSupported", "BOOLValue"}];
-  v4 = [(FigCaptureSourceVideoFormat *)self previewDimensions];
-  v6 = v4.var0 > 1023 && v4.var1 > 1023;
+  previewDimensions = [(FigCaptureSourceVideoFormat *)self previewDimensions];
+  v6 = previewDimensions.var0 > 1023 && previewDimensions.var1 > 1023;
   return v3 && v6;
 }
 
@@ -1699,18 +1699,18 @@
 
 - (NSArray)supportedColorSpaces
 {
-  v3 = [(FigCaptureSourceFormat *)self format];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = v4;
-  if (v3 == 2016686640)
+  format = [(FigCaptureSourceFormat *)self format];
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = array;
+  if (format == 2016686640)
   {
     v6 = &unk_1F2243E10;
     goto LABEL_13;
   }
 
-  if (v3 != 2016686642)
+  if (format != 2016686642)
   {
-    if (FigCapturePixelFormatIsPackedBayerRaw(v3))
+    if (FigCapturePixelFormatIsPackedBayerRaw(format))
     {
       [v5 addObject:&unk_1F2243E40];
 LABEL_12:
@@ -1719,7 +1719,7 @@ LABEL_12:
     }
 
     [v5 addObject:&unk_1F2243E28];
-    if (![-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"WideColorSupported", "BOOLValue"}] || v3 != 875704422)
+    if (![-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"WideColorSupported", "BOOLValue"}] || format != 875704422)
     {
       goto LABEL_14;
     }
@@ -1730,7 +1730,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [v4 addObject:&unk_1F2243E28];
+  [array addObject:&unk_1F2243E28];
   if ([(NSDictionary *)self->super._formatDictionary objectForKeyedSubscript:@"10BitVideoHDRSupportedForProRes"])
   {
     [v5 addObject:&unk_1F2243E10];
@@ -1754,11 +1754,11 @@ LABEL_14:
 
 - (float)fieldOfView
 {
-  v3 = [(FigCaptureSourceVideoFormat *)&self->super.super.isa _maxUseableSensorDimensions];
+  _maxUseableSensorDimensions = [(FigCaptureSourceVideoFormat *)&self->super.super.isa _maxUseableSensorDimensions];
   LODWORD(v4) = 1.0;
-  if (v3)
+  if (_maxUseableSensorDimensions)
   {
-    *&v4 = v3 / [(FigCaptureSourceVideoFormat *)self sensorDimensions];
+    *&v4 = _maxUseableSensorDimensions / [(FigCaptureSourceVideoFormat *)self sensorDimensions];
   }
 
   return [(FigCaptureSourceVideoFormat *)self _fieldOfViewWithCrop:?];
@@ -1786,12 +1786,12 @@ LABEL_14:
 
 - (float)_geometricDistortionCorrectedFieldOfViewCropMultiplier
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [objc_msgSend(OUTLINED_FUNCTION_10_23(a1) objectForKeyedSubscript:{@"StillImageGDCInDCProcessorOutputCropWidth", "intValue"}];
+  v2 = [objc_msgSend(OUTLINED_FUNCTION_10_23(self) objectForKeyedSubscript:{@"StillImageGDCInDCProcessorOutputCropWidth", "intValue"}];
   v7 = *(MEMORY[0x1E695F050] + 16);
   v3 = 1.0;
   if (!v2)
@@ -1800,11 +1800,11 @@ LABEL_14:
     {
       if (*&v7 != 0.0)
       {
-        v5 = [(FigCaptureSourceVideoFormat *)v1 _nativeDimensionsWithoutCrop];
-        if (*(&v7 + 1) / OUTLINED_FUNCTION_14_15(v5) <= 1.0)
+        _nativeDimensionsWithoutCrop = [(FigCaptureSourceVideoFormat *)v1 _nativeDimensionsWithoutCrop];
+        if (*(&v7 + 1) / OUTLINED_FUNCTION_14_15(_nativeDimensionsWithoutCrop) <= 1.0)
         {
-          v6 = [(FigCaptureSourceVideoFormat *)v1 _nativeDimensionsWithoutCrop];
-          return *(&v7 + 1) / OUTLINED_FUNCTION_14_15(v6);
+          _nativeDimensionsWithoutCrop2 = [(FigCaptureSourceVideoFormat *)v1 _nativeDimensionsWithoutCrop];
+          return *(&v7 + 1) / OUTLINED_FUNCTION_14_15(_nativeDimensionsWithoutCrop2);
         }
       }
     }
@@ -1815,21 +1815,21 @@ LABEL_14:
 
 - (unint64_t)_nativeDimensionsWithoutCrop
 {
-  if (a1)
+  if (self)
   {
-    v2 = OUTLINED_FUNCTION_10_23(a1);
+    v2 = OUTLINED_FUNCTION_10_23(self);
     v3 = *off_1E798C938;
     if ([v2 objectForKeyedSubscript:*off_1E798C938] && (v4 = *off_1E798C930, objc_msgSend(v1[1], "objectForKeyedSubscript:", *off_1E798C930)))
     {
       v5 = [objc_msgSend(v1[1] objectForKeyedSubscript:{v3), "intValue"}];
-      a1 = [objc_msgSend(v1[1] objectForKeyedSubscript:{v4), "intValue"}];
+      self = [objc_msgSend(v1[1] objectForKeyedSubscript:{v4), "intValue"}];
     }
 
     else
     {
-      v6 = [v1 sensorDimensions];
-      v5 = v6;
-      a1 = HIDWORD(v6);
+      sensorDimensions = [v1 sensorDimensions];
+      v5 = sensorDimensions;
+      self = HIDWORD(sensorDimensions);
     }
   }
 
@@ -1838,7 +1838,7 @@ LABEL_14:
     v5 = 0;
   }
 
-  return v5 | (a1 << 32);
+  return v5 | (self << 32);
 }
 
 - (float)zoomFactorUpscaleThreshold
@@ -1846,8 +1846,8 @@ LABEL_14:
   v3 = [(FigCaptureSourceVideoFormat *)&self->super.super.isa _visibleSensorDimensionsIncludingCinematic:?];
   v4 = v3;
   v5 = HIDWORD(v3);
-  v6 = [(FigCaptureSourceVideoFormat *)self _outputDimensions];
-  return fmaxf(fminf(v4 / v6, v5 / SHIDWORD(v6)), 1.0);
+  _outputDimensions = [(FigCaptureSourceVideoFormat *)self _outputDimensions];
+  return fmaxf(fminf(v4 / _outputDimensions, v5 / SHIDWORD(_outputDimensions)), 1.0);
 }
 
 - (NSArray)secondaryNativeResolutionZoomFactors
@@ -1919,8 +1919,8 @@ LABEL_14:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(FigCaptureSourceVideoFormat *)self supportedColorSpaces];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  supportedColorSpaces = [(FigCaptureSourceVideoFormat *)self supportedColorSpaces];
+  v3 = [(NSArray *)supportedColorSpaces countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1932,7 +1932,7 @@ LABEL_14:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(supportedColorSpaces);
         }
 
         if ([*(*(&v9 + 1) + 8 * v6) intValue] - 1 < 5)
@@ -1945,7 +1945,7 @@ LABEL_14:
       }
 
       while (v4 != v6);
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v3 = [(NSArray *)supportedColorSpaces countByEnumeratingWithState:&v9 objects:v8 count:16];
       v4 = v3;
       if (v3)
       {
@@ -2114,15 +2114,15 @@ LABEL_14:
     p_previewDimensions->var1 = v5;
     if (!v4)
     {
-      v6 = [(FigCaptureSourceFormat *)self dimensions];
+      dimensions = [(FigCaptureSourceFormat *)self dimensions];
       if ([(FigCaptureSourceVideoFormat *)self cinematicFramingOutputDimensions]&& [(FigCaptureSourceVideoFormat *)self cinematicFramingOutputDimensions]>> 32)
       {
-        v6 = [(FigCaptureSourceVideoFormat *)self cinematicFramingOutputDimensions];
+        dimensions = [(FigCaptureSourceVideoFormat *)self cinematicFramingOutputDimensions];
       }
 
       if ([(FigCaptureSourceVideoFormat *)self smartCropOutputDimensions]&& [(FigCaptureSourceVideoFormat *)self smartCropOutputDimensions]>> 32)
       {
-        v6 = [(FigCaptureSourceVideoFormat *)self smartCropOutputDimensions];
+        dimensions = [(FigCaptureSourceVideoFormat *)self smartCropOutputDimensions];
       }
 
       v7 = [(NSDictionary *)self->super._formatDictionary objectForKeyedSubscript:@"SensorOrientation"];
@@ -2136,13 +2136,13 @@ LABEL_14:
         v8 = 1;
       }
 
-      if ([(FigCaptureSourceVideoFormat *)self isDynamicAspectRatioSupported]&& v6.var0 == v6.var1)
+      if ([(FigCaptureSourceVideoFormat *)self isDynamicAspectRatioSupported]&& dimensions.var0 == dimensions.var1)
       {
         v9 = 0;
         LODWORD(v10) = 0;
         do
         {
-          v11 = FigCaptureOptimalVideoPreviewDimensionsForSourceDimensions(*&v6, v8, v9);
+          v11 = FigCaptureOptimalVideoPreviewDimensionsForSourceDimensions(*&dimensions, v8, v9);
           v12 = HIDWORD(v11);
           if (v11 > SHIDWORD(v11))
           {
@@ -2168,7 +2168,7 @@ LABEL_14:
 
       else
       {
-        v13 = FigCaptureOptimalVideoPreviewDimensionsForSourceDimensions(*&v6, v8, 0);
+        v13 = FigCaptureOptimalVideoPreviewDimensionsForSourceDimensions(*&dimensions, v8, 0);
       }
 
       *p_previewDimensions = v13;
@@ -2192,11 +2192,11 @@ LABEL_14:
   return [v2 BOOLValue];
 }
 
-- (FigCaptureSourceVideoFormat)initWithFigCaptureStreamFormatDictionary:(id)a3 pixelFormatOverride:(unsigned int)a4
+- (FigCaptureSourceVideoFormat)initWithFigCaptureStreamFormatDictionary:(id)dictionary pixelFormatOverride:(unsigned int)override
 {
   v7.receiver = self;
   v7.super_class = FigCaptureSourceVideoFormat;
-  v4 = [(FigCaptureSourceFormat *)&v7 initWithFigCaptureStreamFormatDictionary:a3 pixelFormatOverride:*&a4];
+  v4 = [(FigCaptureSourceFormat *)&v7 initWithFigCaptureStreamFormatDictionary:dictionary pixelFormatOverride:*&override];
   v5 = v4;
   if (v4)
   {
@@ -2206,9 +2206,9 @@ LABEL_14:
   return v5;
 }
 
-- (FigCaptureSourceVideoFormat)initWithXPCEncoding:(id)a3
+- (FigCaptureSourceVideoFormat)initWithXPCEncoding:(id)encoding
 {
-  if (a3)
+  if (encoding)
   {
     FigXPCMessageCopyCFDictionary();
     [FigCaptureSourceVideoFormat initWithXPCEncoding:];
@@ -2222,29 +2222,29 @@ LABEL_14:
   return 0;
 }
 
-- (FigCaptureSourceVideoFormat)initWithCoder:(id)a3
+- (FigCaptureSourceVideoFormat)initWithCoder:(id)coder
 {
-  v4 = [a3 decodePropertyListForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "formatDictionary")}];
+  v4 = [coder decodePropertyListForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "formatDictionary")}];
 
   return [(FigCaptureSourceVideoFormat *)self initWithFigCaptureStreamFormatDictionary:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   formatDictionary = self->super._formatDictionary;
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"formatDictionary"];
 
-  [a3 encodeObject:formatDictionary forKey:v5];
+  [coder encodeObject:formatDictionary forKey:v5];
 }
 
-- (id)copyWithNewPixelFormat:(unsigned int)a3
+- (id)copyWithNewPixelFormat:(unsigned int)format
 {
   if (!self->super._formatDictionary)
   {
     return 0;
   }
 
-  v3 = *&a3;
+  v3 = *&format;
   v5 = [FigCaptureSourceVideoFormat alloc];
   formatDictionary = self->super._formatDictionary;
 
@@ -2274,9 +2274,9 @@ LABEL_14:
     {
       if (![(NSDictionary *)self->super._formatDictionary objectForKeyedSubscript:@"SensorCropWidth"]|| ![(NSDictionary *)self->super._formatDictionary objectForKeyedSubscript:@"SensorCropHeight"])
       {
-        v9 = [(FigCaptureSourceVideoFormat *)self sensorDimensions];
-        var0 = v9.var0;
-        v8 = HIDWORD(*&v9);
+        sensorDimensions = [(FigCaptureSourceVideoFormat *)self sensorDimensions];
+        var0 = sensorDimensions.var0;
+        v8 = HIDWORD(*&sensorDimensions);
         return (var0 | (v8 << 32));
       }
 
@@ -2290,16 +2290,16 @@ LABEL_14:
   return (var0 | (v8 << 32));
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)previewDimensionsForAspectRatio:(int)a3
+- ($2825F4736939C4A6D3AD43837233062D)previewDimensionsForAspectRatio:(int)ratio
 {
-  v4 = [(FigCaptureSourceVideoFormat *)self previewDimensions];
+  previewDimensions = [(FigCaptureSourceVideoFormat *)self previewDimensions];
 
-  return FigCaptureConvertDimensionsForAspectRatio(*&v4, a3);
+  return FigCaptureConvertDimensionsForAspectRatio(*&previewDimensions, ratio);
 }
 
-- (float)defaultMinFrameRateForSessionPreset:(id)a3
+- (float)defaultMinFrameRateForSessionPreset:(id)preset
 {
-  if (!a3 || (v5 = -[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary, "objectForKeyedSubscript:", @"VideoDefaultMinFrameRatesForPresets")) == 0 || ([objc_msgSend(v5 objectForKeyedSubscript:{a3), "floatValue"}], v6 == 0.0))
+  if (!preset || (v5 = -[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary, "objectForKeyedSubscript:", @"VideoDefaultMinFrameRatesForPresets")) == 0 || ([objc_msgSend(v5 objectForKeyedSubscript:{preset), "floatValue"}], v6 == 0.0))
   {
     [-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"VideoDefaultMinFrameRate", "floatValue"}];
   }
@@ -2310,10 +2310,10 @@ LABEL_14:
     return v7;
   }
 
-  v8 = [(FigCaptureSourceVideoFormat *)self isPhotoFormat];
-  [(FigCaptureSourceVideoFormat *)self defaultMaxFrameRateForSessionPreset:a3];
+  isPhotoFormat = [(FigCaptureSourceVideoFormat *)self isPhotoFormat];
+  [(FigCaptureSourceVideoFormat *)self defaultMaxFrameRateForSessionPreset:preset];
   v7 = v9;
-  if (!v8)
+  if (!isPhotoFormat)
   {
     return v7;
   }
@@ -2329,9 +2329,9 @@ LABEL_14:
   return result;
 }
 
-- (float)defaultMaxFrameRateForSessionPreset:(id)a3
+- (float)defaultMaxFrameRateForSessionPreset:(id)preset
 {
-  if (!a3 || (v5 = -[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary, "objectForKeyedSubscript:", @"VideoDefaultMaxFrameRatesForPresets")) == 0 || ([objc_msgSend(v5 objectForKeyedSubscript:{a3), "floatValue"}], result == 0.0))
+  if (!preset || (v5 = -[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary, "objectForKeyedSubscript:", @"VideoDefaultMaxFrameRatesForPresets")) == 0 || ([objc_msgSend(v5 objectForKeyedSubscript:{preset), "floatValue"}], result == 0.0))
   {
     [-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"VideoDefaultMaxFrameRate", "floatValue"}];
   }
@@ -2346,64 +2346,64 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isStabilizationModeSupported:(int)a3
+- (BOOL)isStabilizationModeSupported:(int)supported
 {
-  v3 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (a3 > 2)
+  if (supported > 2)
   {
-    if (a3 > 4)
+    if (supported > 4)
     {
-      if (a3 != 5)
+      if (supported != 5)
       {
-        if (a3 != 6)
+        if (supported != 6)
         {
           return self;
         }
 
-        formatDictionary = v3->super._formatDictionary;
+        formatDictionary = selfCopy->super._formatDictionary;
         v5 = @"LowLatencyStabilizationSupported";
         goto LABEL_23;
       }
 
-      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](v3->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationSupported", "BOOLValue"}];
+      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](selfCopy->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationSupported", "BOOLValue"}];
       if (!self)
       {
         return self;
       }
 
-      self = [(NSDictionary *)v3->super._formatDictionary objectForKeyedSubscript:@"CinematicVideoStabilizationExtendedLookAheadDuration"];
+      self = [(NSDictionary *)selfCopy->super._formatDictionary objectForKeyedSubscript:@"CinematicVideoStabilizationExtendedLookAheadDuration"];
       if (!self)
       {
         return self;
       }
 
-      v6 = v3->super._formatDictionary;
+      v6 = selfCopy->super._formatDictionary;
       v7 = @"CinematicVideoStabilizationExtendedEnhancedSupported";
     }
 
     else
     {
-      if (a3 != 3)
+      if (supported != 3)
       {
-        formatDictionary = v3->super._formatDictionary;
+        formatDictionary = selfCopy->super._formatDictionary;
         v5 = @"PreviewStabilizationSupported";
         goto LABEL_23;
       }
 
-      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](v3->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationSupported", "BOOLValue"}];
+      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](selfCopy->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationSupported", "BOOLValue"}];
       if (!self)
       {
         return self;
       }
 
-      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](v3->super._formatDictionary objectForKeyedSubscript:{@"CinematicVideoStabilizationSupported", "BOOLValue"}];
+      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](selfCopy->super._formatDictionary objectForKeyedSubscript:{@"CinematicVideoStabilizationSupported", "BOOLValue"}];
       if (!self)
       {
         return self;
       }
 
-      v6 = v3->super._formatDictionary;
+      v6 = selfCopy->super._formatDictionary;
       v7 = @"CinematicVideoStabilizationExtendedLookAheadDuration";
     }
 
@@ -2411,23 +2411,23 @@ LABEL_14:
     return self;
   }
 
-  switch(a3)
+  switch(supported)
   {
     case 0:
       LOBYTE(self) = 1;
       return self;
     case 1:
-      formatDictionary = v3->super._formatDictionary;
+      formatDictionary = selfCopy->super._formatDictionary;
       v5 = @"VideoStabilizationSupported";
       break;
     case 2:
-      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](v3->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationSupported", "BOOLValue"}];
+      LODWORD(self) = [-[NSDictionary objectForKeyedSubscript:](selfCopy->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationSupported", "BOOLValue"}];
       if (!self)
       {
         return self;
       }
 
-      formatDictionary = v3->super._formatDictionary;
+      formatDictionary = selfCopy->super._formatDictionary;
       v5 = @"CinematicVideoStabilizationSupported";
       break;
     default:
@@ -2508,15 +2508,15 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)shouldPreferSIFRFormatWithHighlightRecoveryEnabled:(BOOL)a3
+- (BOOL)shouldPreferSIFRFormatWithHighlightRecoveryEnabled:(BOOL)enabled
 {
-  v5 = [(FigCaptureSourceVideoFormat *)self isSIFRSupported];
-  if (v5 && !a3)
+  isSIFRSupported = [(FigCaptureSourceVideoFormat *)self isSIFRSupported];
+  if (isSIFRSupported && !enabled)
   {
-    LOBYTE(v5) = [(FigCaptureSourceVideoFormat *)self nonSIFRCompanionFormat]== 0;
+    LOBYTE(isSIFRSupported) = [(FigCaptureSourceVideoFormat *)self nonSIFRCompanionFormat]== 0;
   }
 
-  return v5;
+  return isSIFRSupported;
 }
 
 - (int)sensorHDRCompanionIndex
@@ -2538,10 +2538,10 @@ LABEL_23:
   return [v2 BOOLValue];
 }
 
-- (BOOL)isVideoStabilizationStrengthSupported:(int)a3
+- (BOOL)isVideoStabilizationStrengthSupported:(int)supported
 {
   v5 = [-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationSupported", "BOOLValue"}];
-  if ([-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationMaxStrength", "intValue"}] >= a3)
+  if ([-[NSDictionary objectForKeyedSubscript:](self->super._formatDictionary objectForKeyedSubscript:{@"VideoStabilizationMaxStrength", "intValue"}] >= supported)
   {
     v6 = v5;
   }
@@ -2552,17 +2552,17 @@ LABEL_23:
   }
 
   v7 = v5 ^ 1;
-  if (a3)
+  if (supported)
   {
     v7 = 0;
   }
 
-  if (a3 == 1)
+  if (supported == 1)
   {
     v7 = v5;
   }
 
-  if ((a3 - 2) >= 3)
+  if ((supported - 2) >= 3)
   {
     return v7;
   }
@@ -2581,15 +2581,15 @@ LABEL_23:
   return result;
 }
 
-- (CGSize)stabilizationOverscanFromSensorForFESCropDimensions:(id)a3 preferSIFRFormat:(BOOL)a4 geometricDistortionCorrection:(BOOL)a5 useFESCompanionIndex:(BOOL)a6
+- (CGSize)stabilizationOverscanFromSensorForFESCropDimensions:(id)dimensions preferSIFRFormat:(BOOL)format geometricDistortionCorrection:(BOOL)correction useFESCompanionIndex:(BOOL)index
 {
-  var0 = a3.var0;
-  var1 = a3.var1;
-  v10 = [(FigCaptureSourceVideoFormat *)self sensorCropDimensions];
-  v11 = HIDWORD(*&v10);
-  v12 = v10.var0;
-  v13 = [(FigCaptureSourceVideoFormat *)self _highQualitySensorDimensions];
-  if (!a4)
+  var0 = dimensions.var0;
+  var1 = dimensions.var1;
+  sensorCropDimensions = [(FigCaptureSourceVideoFormat *)self sensorCropDimensions];
+  v11 = HIDWORD(*&sensorCropDimensions);
+  v12 = sensorCropDimensions.var0;
+  _highQualitySensorDimensions = [(FigCaptureSourceVideoFormat *)self _highQualitySensorDimensions];
+  if (!format)
   {
     if ([(FigCaptureSourceVideoFormat *)self nonSIFRCompanionFormat])
     {
@@ -2605,9 +2605,9 @@ LABEL_23:
   v15 = MEMORY[0x1E695F060];
   if (!v12 || !v11)
   {
-    v16 = [(FigCaptureSourceVideoFormat *)self sensorDimensions];
-    v12 = v16.var0;
-    v11 = HIDWORD(*&v16);
+    sensorDimensions = [(FigCaptureSourceVideoFormat *)self sensorDimensions];
+    v12 = sensorDimensions.var0;
+    v11 = HIDWORD(*&sensorDimensions);
   }
 
   v17 = *v15;
@@ -2634,15 +2634,15 @@ LABEL_23:
     v22 = var1;
   }
 
-  if (v13 >= 1 && v21 > v13)
+  if (_highQualitySensorDimensions >= 1 && v21 > _highQualitySensorDimensions)
   {
-    v17 = v21 / v13 + -1.0;
+    v17 = v21 / _highQualitySensorDimensions + -1.0;
   }
 
   v23 = v15[1];
-  if (SHIDWORD(v13) >= 1 && v22 > SHIDWORD(v13))
+  if (SHIDWORD(_highQualitySensorDimensions) >= 1 && v22 > SHIDWORD(_highQualitySensorDimensions))
   {
-    v23 = v22 / HIDWORD(v13) + -1.0;
+    v23 = v22 / HIDWORD(_highQualitySensorDimensions) + -1.0;
   }
 
   result.height = v23;
@@ -2873,17 +2873,17 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
   return result;
 }
 
-- (BOOL)isValidDerivedSourceFormatForUnderlyingFormat:(id)a3
+- (BOOL)isValidDerivedSourceFormatForUnderlyingFormat:(id)format
 {
-  if (!a3)
+  if (!format)
   {
     return 0;
   }
 
-  v4 = [(FigCaptureSourceFormat *)self uniqueID];
-  v5 = [a3 uniqueID];
+  uniqueID = [(FigCaptureSourceFormat *)self uniqueID];
+  uniqueID2 = [format uniqueID];
 
-  return [(NSString *)v4 isEqualToString:v5];
+  return [(NSString *)uniqueID isEqualToString:uniqueID2];
 }
 
 - (float)actionCameraAEMaxGainScaleFactor
@@ -2897,14 +2897,14 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
   return result;
 }
 
-- (float)_fieldOfViewWithCrop:(uint64_t)a1
+- (float)_fieldOfViewWithCrop:(uint64_t)crop
 {
-  if (!a1)
+  if (!crop)
   {
     return 0.0;
   }
 
-  [objc_msgSend(OUTLINED_FUNCTION_10_23(a1) objectForKeyedSubscript:{*off_1E798D3E8), "floatValue"}];
+  [objc_msgSend(OUTLINED_FUNCTION_10_23(crop) objectForKeyedSubscript:{*off_1E798D3E8), "floatValue"}];
   v5 = v4;
   [objc_msgSend(*(v2 + 8) objectForKeyedSubscript:{@"AdditionalHorizontalFOVCropMultiplier", "floatValue"}];
   if (v6 == 0.0)
@@ -2923,14 +2923,14 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
   return v5;
 }
 
-- (double)_fieldOfViewForAspectRatio:(int)a3 horizontal:(int)a4 gdcEnabled:
+- (double)_fieldOfViewForAspectRatio:(int)ratio horizontal:(int)horizontal gdcEnabled:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  if (a2 && ([a1 isDynamicAspectRatioSupported] & 1) == 0)
+  if (a2 && ([self isDynamicAspectRatioSupported] & 1) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
@@ -2938,9 +2938,9 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
     return 0.0;
   }
 
-  v8 = [(FigCaptureSourceVideoFormat *)a1 _maxUseableSensorDimensions];
-  v9 = FigCaptureConvertDimensionsForAspectRatio(v8, a2);
-  if (a3)
+  _maxUseableSensorDimensions = [(FigCaptureSourceVideoFormat *)self _maxUseableSensorDimensions];
+  v9 = FigCaptureConvertDimensionsForAspectRatio(_maxUseableSensorDimensions, a2);
+  if (ratio)
   {
     v10 = v9;
   }
@@ -2950,50 +2950,50 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
     v10 = HIDWORD(v9);
   }
 
-  v11 = [a1 fesInputCropDimensions];
-  if (v11 < 1 || SHIDWORD(v11) < 1)
+  fesInputCropDimensions = [self fesInputCropDimensions];
+  if (fesInputCropDimensions < 1 || SHIDWORD(fesInputCropDimensions) < 1)
   {
-    v13 = [a1 sensorDimensions];
+    sensorDimensions = [self sensorDimensions];
   }
 
   else
   {
-    v13 = [a1 fesInputCropDimensions];
+    sensorDimensions = [self fesInputCropDimensions];
   }
 
-  v14 = v10 / v13;
-  if (a4)
+  v14 = v10 / sensorDimensions;
+  if (horizontal)
   {
-    v14 = v14 * [(FigCaptureSourceVideoFormat *)a1 _geometricDistortionCorrectedFieldOfViewCropMultiplier];
+    v14 = v14 * [(FigCaptureSourceVideoFormat *)self _geometricDistortionCorrectedFieldOfViewCropMultiplier];
   }
 
-  *&result = [(FigCaptureSourceVideoFormat *)a1 _fieldOfViewWithCrop:v14];
+  *&result = [(FigCaptureSourceVideoFormat *)self _fieldOfViewWithCrop:v14];
   return result;
 }
 
-- (unint64_t)_visibleSensorDimensionsIncludingCinematic:(id *)a1
+- (unint64_t)_visibleSensorDimensionsIncludingCinematic:(id *)cinematic
 {
-  if (!a1)
+  if (!cinematic)
   {
     return 0;
   }
 
-  v4 = [(FigCaptureSourceVideoFormat *)a1 _maxUseableSensorDimensions];
-  if (a2 && [a1 isStabilizationModeSupported:2])
+  _maxUseableSensorDimensions = [(FigCaptureSourceVideoFormat *)cinematic _maxUseableSensorDimensions];
+  if (a2 && [cinematic isStabilizationModeSupported:2])
   {
-    [a1 stabilizationOverscanPercentageOverrideForCinematic];
+    [cinematic stabilizationOverscanPercentageOverrideForCinematic];
     OUTLINED_FUNCTION_5_42(v5);
     v9 = 1.2;
   }
 
   else
   {
-    if (![a1 isStabilizationModeSupported:1])
+    if (![cinematic isStabilizationModeSupported:1])
     {
-      return v4;
+      return _maxUseableSensorDimensions;
     }
 
-    [a1 stabilizationOverscanPercentageOverrideForStandard];
+    [cinematic stabilizationOverscanPercentageOverrideForStandard];
     OUTLINED_FUNCTION_5_42(v10);
     v9 = 1.1;
   }
@@ -3005,11 +3005,11 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
 
   v11 = v9;
   v12 = (1.0 / v11);
-  LODWORD(v7) = llround(SHIDWORD(v4) * v12 * 0.5);
-  return (2 * llround(v4 * v12 * 0.5)) | (v7 << 33);
+  LODWORD(v7) = llround(SHIDWORD(_maxUseableSensorDimensions) * v12 * 0.5);
+  return (2 * llround(_maxUseableSensorDimensions * v12 * 0.5)) | (v7 << 33);
 }
 
-- (uint64_t)_supportsDepthDataFormatForDisparity:(int)a3 streaming:
+- (uint64_t)_supportsDepthDataFormatForDisparity:(int)disparity streaming:
 {
   if (!result)
   {
@@ -3037,7 +3037,7 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
       }
 
       v9 = *(8 * v8);
-      if (a3)
+      if (disparity)
       {
         if ([v9 isStillImageOnlyDepthData])
         {
@@ -3050,16 +3050,16 @@ id __46__FigCaptureSourceVideoFormat__avfcAttributes__block_invoke()
         goto LABEL_15;
       }
 
-      v10 = [v9 format];
+      format = [v9 format];
       if (a2)
       {
-        if (FigDepthFormatIsDisparity(v10))
+        if (FigDepthFormatIsDisparity(format))
         {
           return 1;
         }
       }
 
-      else if (FigDepthFormatIsDepth(v10))
+      else if (FigDepthFormatIsDepth(format))
       {
         return 1;
       }
@@ -3090,8 +3090,8 @@ LABEL_15:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(FigCaptureSourceVideoFormat *)self supportedDepthDataFormats];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    supportedDepthDataFormats = [(FigCaptureSourceVideoFormat *)self supportedDepthDataFormats];
+    v5 = [(NSArray *)supportedDepthDataFormats countByEnumeratingWithState:&v12 objects:v11 count:16];
     if (v5)
     {
       v6 = v5;
@@ -3102,7 +3102,7 @@ LABEL_4:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(supportedDepthDataFormats);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
@@ -3117,7 +3117,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v11 count:16];
+          v6 = [(NSArray *)supportedDepthDataFormats countByEnumeratingWithState:&v12 objects:v11 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -3138,14 +3138,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)_buildFESCompanionFormatsForType:(uint64_t)a1
+- (void)_buildFESCompanionFormatsForType:(uint64_t)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
 
-  v2 = [*(a1 + 8) objectForKeyedSubscript:a2];
+  v2 = [*(type + 8) objectForKeyedSubscript:a2];
   OUTLINED_FUNCTION_43();
   v4 = [v3 countByEnumeratingWithState:? objects:? count:?];
   if (v4)
@@ -3204,15 +3204,15 @@ LABEL_11:
 
 - (void)geometricDistortionCorrectedFieldOfView
 {
-  v6 = *(a1 + 24);
-  v7 = [(FigCaptureSourceVideoFormat *)a2 _nativeDimensionsWithoutCrop];
-  v8 = v6 / OUTLINED_FUNCTION_14_15(v7);
+  v6 = *(self + 24);
+  _nativeDimensionsWithoutCrop = [(FigCaptureSourceVideoFormat *)a2 _nativeDimensionsWithoutCrop];
+  v8 = v6 / OUTLINED_FUNCTION_14_15(_nativeDimensionsWithoutCrop);
   v9 = 1.0;
   if (v8 <= 1.0)
   {
-    v10 = *(a1 + 24);
-    v11 = [(FigCaptureSourceVideoFormat *)a2 _nativeDimensionsWithoutCrop];
-    v9 = v10 / OUTLINED_FUNCTION_14_15(v11);
+    v10 = *(self + 24);
+    _nativeDimensionsWithoutCrop2 = [(FigCaptureSourceVideoFormat *)a2 _nativeDimensionsWithoutCrop];
+    v9 = v10 / OUTLINED_FUNCTION_14_15(_nativeDimensionsWithoutCrop2);
   }
 
   *a3 = [(FigCaptureSourceVideoFormat *)a2 _fieldOfViewWithCrop:v9];

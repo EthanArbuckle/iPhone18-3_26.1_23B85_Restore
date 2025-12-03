@@ -1,9 +1,9 @@
 @interface ICOutlineState
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToICOutlineState:(id)a3;
-- (BOOL)mergeWithState:(id)a3;
-- (ICOutlineState)initWithCollapsedUUIDs:(id)a3;
-- (ICOutlineState)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToICOutlineState:(id)state;
+- (BOOL)mergeWithState:(id)state;
+- (ICOutlineState)initWithCollapsedUUIDs:(id)ds;
+- (ICOutlineState)initWithData:(id)data;
 - (NSArray)collapsedUUIDStrings;
 - (NSData)data;
 - (unint64_t)hash;
@@ -15,8 +15,8 @@
 - (void)updateCollapsedUUIDs
 {
   objc_opt_class();
-  v3 = [(ICOutlineState *)self mergeableValue];
-  v4 = [v3 value];
+  mergeableValue = [(ICOutlineState *)self mergeableValue];
+  value = [mergeableValue value];
   v9 = ICDynamicCast();
 
   v5 = MEMORY[0x277CBEB98];
@@ -26,15 +26,15 @@
   self->_collapsedUUIDs = v7;
 }
 
-- (ICOutlineState)initWithData:(id)a3
+- (ICOutlineState)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = ICOutlineState;
   v5 = [(ICOutlineState *)&v9 init];
   if (v5)
   {
-    v6 = [[ICTTMergeableWallClockValue alloc] initWithData:v4];
+    v6 = [[ICTTMergeableWallClockValue alloc] initWithData:dataCopy];
     mergeableValue = v5->_mergeableValue;
     v5->_mergeableValue = v6;
 
@@ -44,22 +44,22 @@
   return v5;
 }
 
-- (ICOutlineState)initWithCollapsedUUIDs:(id)a3
+- (ICOutlineState)initWithCollapsedUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = ICOutlineState;
   v5 = [(ICOutlineState *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dsCopy copy];
     collapsedUUIDs = v5->_collapsedUUIDs;
     v5->_collapsedUUIDs = v6;
 
     v8 = [ICTTMergeableWallClockValue alloc];
-    v9 = [(ICOutlineState *)v5 collapsedUUIDStrings];
+    collapsedUUIDStrings = [(ICOutlineState *)v5 collapsedUUIDStrings];
     v10 = [MEMORY[0x277CBEAA8] now];
-    v11 = [(ICTTMergeableWallClockValue *)v8 initWithValue:v9 timestamp:v10];
+    v11 = [(ICTTMergeableWallClockValue *)v8 initWithValue:collapsedUUIDStrings timestamp:v10];
     mergeableValue = v5->_mergeableValue;
     v5->_mergeableValue = v11;
   }
@@ -69,22 +69,22 @@
 
 - (NSData)data
 {
-  v2 = [(ICOutlineState *)self mergeableValue];
-  v3 = [v2 serialize];
+  mergeableValue = [(ICOutlineState *)self mergeableValue];
+  serialize = [mergeableValue serialize];
 
-  return v3;
+  return serialize;
 }
 
-- (BOOL)mergeWithState:(id)a3
+- (BOOL)mergeWithState:(id)state
 {
-  v4 = a3;
-  v5 = [(ICOutlineState *)self mergeableValue];
+  stateCopy = state;
+  mergeableValue = [(ICOutlineState *)self mergeableValue];
 
-  if (v5)
+  if (mergeableValue)
   {
-    v6 = [(ICOutlineState *)self mergeableValue];
-    v7 = [v4 mergeableValue];
-    v8 = [v6 merge:v7];
+    mergeableValue2 = [(ICOutlineState *)self mergeableValue];
+    mergeableValue3 = [stateCopy mergeableValue];
+    v8 = [mergeableValue2 merge:mergeableValue3];
 
     [(ICOutlineState *)self updateCollapsedUUIDs];
     v9 = v8 == 2;
@@ -92,8 +92,8 @@
 
   else
   {
-    v10 = [v4 mergeableValue];
-    [(ICOutlineState *)self setMergeableValue:v10];
+    mergeableValue4 = [stateCopy mergeableValue];
+    [(ICOutlineState *)self setMergeableValue:mergeableValue4];
 
     v9 = 1;
   }
@@ -101,18 +101,18 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICOutlineState *)self isEqualToICOutlineState:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICOutlineState *)self isEqualToICOutlineState:v5];
   }
 
   return v6;
@@ -121,7 +121,7 @@
 - (unint64_t)hash
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(ICOutlineState *)self collapsedUUIDs];
+  collapsedUUIDs = [(ICOutlineState *)self collapsedUUIDs];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [v4 hash];
@@ -130,7 +130,7 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v2;
+  v6 = collapsedUUIDs;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -171,21 +171,21 @@ id __38__ICOutlineState_updateCollapsedUUIDs__block_invoke(uint64_t a1, void *a2
 
 - (NSArray)collapsedUUIDStrings
 {
-  v2 = [(ICOutlineState *)self collapsedUUIDs];
-  v3 = [v2 ic_map:&__block_literal_global_14];
-  v4 = [v3 allObjects];
+  collapsedUUIDs = [(ICOutlineState *)self collapsedUUIDs];
+  v3 = [collapsedUUIDs ic_map:&__block_literal_global_14];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (BOOL)isEqualToICOutlineState:(id)a3
+- (BOOL)isEqualToICOutlineState:(id)state
 {
-  v4 = a3;
-  v5 = [(ICOutlineState *)self collapsedUUIDs];
-  v6 = [v4 collapsedUUIDs];
+  stateCopy = state;
+  collapsedUUIDs = [(ICOutlineState *)self collapsedUUIDs];
+  collapsedUUIDs2 = [stateCopy collapsedUUIDs];
 
-  LOBYTE(v4) = [v5 isEqualToSet:v6];
-  return v4;
+  LOBYTE(stateCopy) = [collapsedUUIDs isEqualToSet:collapsedUUIDs2];
+  return stateCopy;
 }
 
 @end

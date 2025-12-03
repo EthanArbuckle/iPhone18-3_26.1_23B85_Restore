@@ -1,7 +1,7 @@
 @interface OSLogEventProxy
 + (id)_make;
 - ($8814E4F230000EB768D7E307C62B5F7C)lossCount;
-- (BOOL)_setLogEvent:(id *)event rangeUUIDIndex:(unint64_t)a4 machTimebase:(mach_timebase_info *)a5 traceFilename:(id)a6;
+- (BOOL)_setLogEvent:(id *)event rangeUUIDIndex:(unint64_t)index machTimebase:(mach_timebase_info *)timebase traceFilename:(id)filename;
 - (NSDictionary)metricData;
 - (NSDictionary)metricDimensions;
 - (NSDictionary)metricMetadata;
@@ -24,7 +24,7 @@
 - (OSLogEventProxy)retain;
 - (const)senderImageUUIDBytes;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (timeval)lossEndUnixDate;
 - (timeval)lossStartUnixDate;
 - (timezone)lossEndUnixTimeZone;
@@ -41,10 +41,10 @@
 - (unint64_t)timeToLive;
 - (unint64_t)transitionActivityIdentifier;
 - (void)_assertBalanced;
-- (void)_fillFromMessageV1:(id)a3 withTimebase:(mach_timebase_info)a4;
-- (void)_fillFromMessageV2:(id)a3 withTimebase:(mach_timebase_info)a4;
-- (void)_fillFromOSLogMessage:(id)a3;
-- (void)_setBuffer:(const void *)a3 size:(unint64_t)a4 privateBuffer:(const void *)a5 privateSize:(unint64_t)a6;
+- (void)_fillFromMessageV1:(id)v1 withTimebase:(mach_timebase_info)timebase;
+- (void)_fillFromMessageV2:(id)v2 withTimebase:(mach_timebase_info)timebase;
+- (void)_fillFromOSLogMessage:(id)message;
+- (void)_setBuffer:(const void *)buffer size:(unint64_t)size privateBuffer:(const void *)privateBuffer privateSize:(unint64_t)privateSize;
 - (void)_setFallbackTimezone;
 - (void)_unmake;
 - (void)release;
@@ -198,9 +198,9 @@ LABEL_5:
 
 - (NSString)process
 {
-  v2 = [(OSLogEventProxy *)self processImagePath];
+  processImagePath = [(OSLogEventProxy *)self processImagePath];
 
-  return [(NSString *)v2 lastPathComponent];
+  return [(NSString *)processImagePath lastPathComponent];
 }
 
 - (unint64_t)creatorProcessUniqueIdentifier
@@ -549,7 +549,7 @@ LABEL_11:
 
 + (id)_make
 {
-  result = NSAllocateObject(a1, 0, 0);
+  result = NSAllocateObject(self, 0, 0);
   *(result + 46) = *_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3));
   *(result + 47) = 0;
   *(result + 365) = 1;
@@ -638,9 +638,9 @@ LABEL_8:
 
 - (NSString)sender
 {
-  v2 = [(OSLogEventProxy *)self senderImagePath];
+  senderImagePath = [(OSLogEventProxy *)self senderImagePath];
 
-  return [(NSString *)v2 lastPathComponent];
+  return [(NSString *)senderImagePath lastPathComponent];
 }
 
 - ($8814E4F230000EB768D7E307C62B5F7C)lossCount
@@ -1316,7 +1316,7 @@ LABEL_17:
   return [v3 stringWithFormat:@"<%@: %p, %p, %02x, %d, %s>", v5, self, event, self->_eint.type, self->_eint.pid, self->_eint.common.message];
 }
 
-- (void)_fillFromOSLogMessage:(id)a3
+- (void)_fillFromOSLogMessage:(id)message
 {
   if (_fillFromOSLogMessage__onceToken != -1)
   {
@@ -1400,10 +1400,10 @@ LABEL_17:
   *&self->_eint.proc_imageuuid = 0u;
   self->_event = 0;
   self->_efv = 0;
-  version = _os_activity_stream_entry_get_version(a3);
+  version = _os_activity_stream_entry_get_version(message);
   if (version == 2)
   {
-    [(OSLogEventProxy *)self _fillFromMessageV2:a3 withTimebase:_fillFromOSLogMessage__timebase];
+    [(OSLogEventProxy *)self _fillFromMessageV2:message withTimebase:_fillFromOSLogMessage__timebase];
   }
 
   else
@@ -1416,7 +1416,7 @@ LABEL_17:
       return;
     }
 
-    [(OSLogEventProxy *)self _fillFromMessageV1:a3 withTimebase:_fillFromOSLogMessage__timebase];
+    [(OSLogEventProxy *)self _fillFromMessageV1:message withTimebase:_fillFromOSLogMessage__timebase];
   }
 
   if (self->_eint.proc_imagepath)
@@ -1430,9 +1430,9 @@ LABEL_17:
   }
 }
 
-- (void)_fillFromMessageV2:(id)a3 withTimebase:(mach_timebase_info)a4
+- (void)_fillFromMessageV2:(id)v2 withTimebase:(mach_timebase_info)timebase
 {
-  value = xpc_dictionary_get_value(a3, "entryData");
+  value = xpc_dictionary_get_value(v2, "entryData");
   if (!value)
   {
     return;
@@ -1454,7 +1454,7 @@ LABEL_17:
   self->_eint.common.tz.tz_minuteswest = bytes_ptr[27];
   self->_eint.common.tv_gmt.tv_sec = *(bytes_ptr + 23);
   self->_eint.common.tv_gmt.tv_usec = bytes_ptr[25];
-  if (xpc_dictionary_get_BOOL(a3, "32bits"))
+  if (xpc_dictionary_get_BOOL(v2, "32bits"))
   {
     self->_eint.common.opaque_flags = 1;
   }
@@ -1467,7 +1467,7 @@ LABEL_17:
   self->_eint.common.format_offset = *(bytes_ptr + 31);
   self->_eint.common.image_uuid = v9 + *(bytes_ptr + 19);
   self->_eint.common.image_path = v9 + *(bytes_ptr + 21);
-  self->_eint.common.timebase = a4;
+  self->_eint.common.timebase = timebase;
   v14 = *(bytes_ptr + 35);
   v15 = v9 + v14;
   if (!v14)
@@ -1557,15 +1557,15 @@ LABEL_19:
   }
 }
 
-- (void)_fillFromMessageV1:(id)a3 withTimebase:(mach_timebase_info)a4
+- (void)_fillFromMessageV1:(id)v1 withTimebase:(mach_timebase_info)timebase
 {
-  numer = a4.numer;
-  denom = a4.denom;
-  self->_eint.pid = xpc_dictionary_get_uint64(a3, "pid");
-  self->_eint.proc_id = xpc_dictionary_get_uint64(a3, "procid");
-  self->_eint.uid = xpc_dictionary_get_uint64(a3, "uid");
-  self->_eint.proc_imageuuid = xpc_dictionary_get_uuid(a3, "procuuid");
-  string = xpc_dictionary_get_string(a3, "procpath");
+  numer = timebase.numer;
+  denom = timebase.denom;
+  self->_eint.pid = xpc_dictionary_get_uint64(v1, "pid");
+  self->_eint.proc_id = xpc_dictionary_get_uint64(v1, "procid");
+  self->_eint.uid = xpc_dictionary_get_uint64(v1, "uid");
+  self->_eint.proc_imageuuid = xpc_dictionary_get_uuid(v1, "procuuid");
+  string = xpc_dictionary_get_string(v1, "procpath");
   self->_eint.proc_imagepath = string;
   if (!string)
   {
@@ -1576,33 +1576,33 @@ LABEL_19:
     }
   }
 
-  self->_eint.activity_id = xpc_dictionary_get_uint64(a3, "aid");
-  self->_eint.parent_id = xpc_dictionary_get_uint64(a3, "paid");
-  self->_eint.type = xpc_dictionary_get_uint64(a3, "type");
-  self->_eint.common.tz.tz_dsttime = xpc_dictionary_get_int64(a3, "timezoneDSTflag");
-  self->_eint.common.tz.tz_minuteswest = xpc_dictionary_get_int64(a3, "timezoneMinutesWest");
-  self->_eint.common.tv_gmt.tv_sec = xpc_dictionary_get_int64(a3, "timeGMTsec");
-  self->_eint.common.tv_gmt.tv_usec = xpc_dictionary_get_int64(a3, "timeGMTusec");
-  if (xpc_dictionary_get_BOOL(a3, "32bits"))
+  self->_eint.activity_id = xpc_dictionary_get_uint64(v1, "aid");
+  self->_eint.parent_id = xpc_dictionary_get_uint64(v1, "paid");
+  self->_eint.type = xpc_dictionary_get_uint64(v1, "type");
+  self->_eint.common.tz.tz_dsttime = xpc_dictionary_get_int64(v1, "timezoneDSTflag");
+  self->_eint.common.tz.tz_minuteswest = xpc_dictionary_get_int64(v1, "timezoneMinutesWest");
+  self->_eint.common.tv_gmt.tv_sec = xpc_dictionary_get_int64(v1, "timeGMTsec");
+  self->_eint.common.tv_gmt.tv_usec = xpc_dictionary_get_int64(v1, "timeGMTusec");
+  if (xpc_dictionary_get_BOOL(v1, "32bits"))
   {
     self->_eint.common.opaque_flags = 1;
   }
 
-  uint64 = xpc_dictionary_get_uint64(a3, "traceid");
+  uint64 = xpc_dictionary_get_uint64(v1, "traceid");
   v11 = uint64;
   self->_eint.common.trace_id = uint64;
-  self->_eint.common.thread = xpc_dictionary_get_uint64(a3, "thread");
-  self->_eint.common.timestamp = xpc_dictionary_get_uint64(a3, "timestamp");
-  self->_eint.common.offset = xpc_dictionary_get_uint64(a3, "offset");
-  self->_eint.common.format_offset = xpc_dictionary_get_uint64(a3, "formatoffset");
-  self->_eint.common.image_uuid = xpc_dictionary_get_uuid(a3, "imageuuid");
+  self->_eint.common.thread = xpc_dictionary_get_uint64(v1, "thread");
+  self->_eint.common.timestamp = xpc_dictionary_get_uint64(v1, "timestamp");
+  self->_eint.common.offset = xpc_dictionary_get_uint64(v1, "offset");
+  self->_eint.common.format_offset = xpc_dictionary_get_uint64(v1, "formatoffset");
+  self->_eint.common.image_uuid = xpc_dictionary_get_uuid(v1, "imageuuid");
   p_image_uuid = &self->_eint.common.image_uuid;
-  self->_eint.common.image_path = xpc_dictionary_get_string(a3, "imagepath");
+  self->_eint.common.image_path = xpc_dictionary_get_string(v1, "imagepath");
   self->_eint.common.timebase.numer = numer;
   self->_eint.common.timebase.denom = denom;
-  v13 = xpc_dictionary_get_string(a3, "formatstring");
+  v13 = xpc_dictionary_get_string(v1, "formatstring");
   self->_eint.common.message = v13;
-  if (!v13 && (v14 = xpc_dictionary_get_string(a3, "name"), (self->_eint.common.message = v14) == 0) || !self->_eint.common.image_path)
+  if (!v13 && (v14 = xpc_dictionary_get_string(v1, "name"), (self->_eint.common.message = v14) == 0) || !self->_eint.common.image_path)
   {
     v15 = *p_image_uuid;
     if (*p_image_uuid)
@@ -1629,27 +1629,27 @@ LABEL_19:
         return;
       }
 
-      self->_eint.var0.log_message.var1.signpost_id = xpc_dictionary_get_uint64(a3, "signpostid");
-      self->_eint.var0.log_message.signpost_name = xpc_dictionary_get_string(a3, "signpostname");
+      self->_eint.var0.log_message.var1.signpost_id = xpc_dictionary_get_uint64(v1, "signpostid");
+      self->_eint.var0.log_message.signpost_name = xpc_dictionary_get_string(v1, "signpostname");
       self->_eint.var0.log_message.var0.signpost_type = BYTE1(v11) & 0x3F;
       self->_eint.var0.log_message.signpost_scope = BYTE1(v11) & 0xC0;
     }
 
     if ((self->_eint.common.opaque_flags & 2) == 0)
     {
-      self->_eint.var0.activity_create.creator_aid = xpc_dictionary_get_data(a3, "buffer", &self->_eint.var0.activity_create.unique_pid);
-      self->_eint.var0.loss.end.tv_gmt.tv_sec = xpc_dictionary_get_data(a3, "privdata", &self->_eint.var0.log_message.privdata_sz);
-      self->_eint.var0.log_message.category = xpc_dictionary_get_string(a3, "category");
-      self->_eint.var0.log_message.subsystem = xpc_dictionary_get_string(a3, "subsystem");
-      self->_eint.var0.log_message.persisted = xpc_dictionary_get_BOOL(a3, "persisted");
-      if (xpc_dictionary_get_uint64(a3, "timeToLive") > 0xFE)
+      self->_eint.var0.activity_create.creator_aid = xpc_dictionary_get_data(v1, "buffer", &self->_eint.var0.activity_create.unique_pid);
+      self->_eint.var0.loss.end.tv_gmt.tv_sec = xpc_dictionary_get_data(v1, "privdata", &self->_eint.var0.log_message.privdata_sz);
+      self->_eint.var0.log_message.category = xpc_dictionary_get_string(v1, "category");
+      self->_eint.var0.log_message.subsystem = xpc_dictionary_get_string(v1, "subsystem");
+      self->_eint.var0.log_message.persisted = xpc_dictionary_get_BOOL(v1, "persisted");
+      if (xpc_dictionary_get_uint64(v1, "timeToLive") > 0xFE)
       {
         v17 = -1;
       }
 
       else
       {
-        v17 = xpc_dictionary_get_uint64(a3, "timeToLive");
+        v17 = xpc_dictionary_get_uint64(v1, "timeToLive");
       }
 
       self->_eint.var0.log_message.ttl = v17;
@@ -1662,27 +1662,27 @@ LABEL_19:
 
   else if (type == 515)
   {
-    self->_eint.var0.useraction.persisted = xpc_dictionary_get_BOOL(a3, "persisted");
+    self->_eint.var0.useraction.persisted = xpc_dictionary_get_BOOL(v1, "persisted");
   }
 
   else if (type == 768)
   {
-    xpc_dictionary_get_value(a3, "payload");
-    self->_eint.var0.activity_create.creator_aid = xpc_dictionary_get_data(a3, "buffer", &self->_eint.var0.activity_create.unique_pid);
+    xpc_dictionary_get_value(v1, "payload");
+    self->_eint.var0.activity_create.creator_aid = xpc_dictionary_get_data(v1, "buffer", &self->_eint.var0.activity_create.unique_pid);
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v3 = NSStringFromSelector(a3);
+  v3 = NSStringFromSelector(selector);
   NSLog(&stru_2841AD1D0.isa, v3);
   return 0;
 }
 
-- (BOOL)_setLogEvent:(id *)event rangeUUIDIndex:(unint64_t)a4 machTimebase:(mach_timebase_info *)a5 traceFilename:(id)a6
+- (BOOL)_setLogEvent:(id *)event rangeUUIDIndex:(unint64_t)index machTimebase:(mach_timebase_info *)timebase traceFilename:(id)filename
 {
   v124 = *MEMORY[0x277D85DE8];
-  self->_uuidi = a4;
+  self->_uuidi = index;
   processImagePath = self->_processImagePath;
   if (processImagePath)
   {
@@ -1768,7 +1768,7 @@ LABEL_19:
     self->_eint.var0.timesync.continuous_time = event->var5.var1.var1.var1;
     self->_eint.var0.timesync.wallclock_nsec = event->var5.var1.var1.var2;
     self->_eint.common.timestamp = event->var5.var1.var1.var1;
-    self->_eint.common.timebase = *a5;
+    self->_eint.common.timebase = *timebase;
     self->_eint.common.tz = event->var5.var0.var2.var2.iov_len;
     var2 = event->var5.var1.var1.var2;
     self->_eint.common.tv_gmt.tv_sec = var2 / 0x3B9ACA00;
@@ -1784,7 +1784,7 @@ LABEL_35:
     self->_eint.type = 1280;
     self->_eint.var0.timesync.flags = 1;
     self->_eint.var0.timesync.ttl = event->var5.var2.var1;
-    self->_eint.common.timebase = *a5;
+    self->_eint.common.timebase = *timebase;
     if (event->var5.var2.var2)
     {
       self->_eint.var0.timesync.flags = 3;
@@ -2342,7 +2342,7 @@ LABEL_148:
   return _parse_trace(self, v87);
 }
 
-- (void)_setBuffer:(const void *)a3 size:(unint64_t)a4 privateBuffer:(const void *)a5 privateSize:(unint64_t)a6
+- (void)_setBuffer:(const void *)buffer size:(unint64_t)size privateBuffer:(const void *)privateBuffer privateSize:(unint64_t)privateSize
 {
   v7 = *MEMORY[0x277D85DE8];
   if (self->_eint.var0.timesync.flags)
@@ -2353,11 +2353,11 @@ LABEL_148:
     __break(1u);
   }
 
-  self->_eint.var0.activity_create.creator_aid = a3;
-  self->_eint.var0.activity_create.unique_pid = a4;
-  self->_eint.var0.loss.end.tv_gmt.tv_sec = a5;
-  self->_eint.var0.log_message.privdata_sz = a6;
-  self->_eint.common.sz += a6 + a4;
+  self->_eint.var0.activity_create.creator_aid = buffer;
+  self->_eint.var0.activity_create.unique_pid = size;
+  self->_eint.var0.loss.end.tv_gmt.tv_sec = privateBuffer;
+  self->_eint.var0.log_message.privdata_sz = privateSize;
+  self->_eint.common.sz += privateSize + size;
   v6 = *MEMORY[0x277D85DE8];
 }
 

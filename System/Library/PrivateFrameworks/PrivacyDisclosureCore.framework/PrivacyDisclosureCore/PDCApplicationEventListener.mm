@@ -1,8 +1,8 @@
 @interface PDCApplicationEventListener
 + (id)sharedInstance;
-- (PDCApplicationEventListener)initWithConsentStore:(id)a3 applicationEnvironment:(id)a4 targetQueue:(id)a5;
+- (PDCApplicationEventListener)initWithConsentStore:(id)store applicationEnvironment:(id)environment targetQueue:(id)queue;
 - (void)activate;
-- (void)applicationDidUninstall:(id)a3;
+- (void)applicationDidUninstall:(id)uninstall;
 - (void)checkForStaleConsentRecords;
 - (void)invalidate;
 @end
@@ -33,23 +33,23 @@ void __45__PDCApplicationEventListener_sharedInstance__block_invoke()
   sharedInstance_result = v3;
 }
 
-- (PDCApplicationEventListener)initWithConsentStore:(id)a3 applicationEnvironment:(id)a4 targetQueue:(id)a5
+- (PDCApplicationEventListener)initWithConsentStore:(id)store applicationEnvironment:(id)environment targetQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  environmentCopy = environment;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = PDCApplicationEventListener;
   v12 = [(PDCApplicationEventListener *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_consentStore, a3);
-    objc_storeStrong(&v13->_applicationEnvironment, a4);
+    objc_storeStrong(&v12->_consentStore, store);
+    objc_storeStrong(&v13->_applicationEnvironment, environment);
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"PDCApplicationEventListener.0x%p", v13];
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create_with_target_V2(v15, v16, v11);
+    v17 = dispatch_queue_create_with_target_V2(uTF8String, v16, queueCopy);
     queue = v13->_queue;
     v13->_queue = v17;
 
@@ -120,8 +120,8 @@ uint64_t __39__PDCApplicationEventListener_activate__block_invoke(uint64_t a1)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(PDCConsentStore *)self->_consentStore consentedBundleIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  consentedBundleIdentifiers = [(PDCConsentStore *)self->_consentStore consentedBundleIdentifiers];
+  v4 = [consentedBundleIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -132,7 +132,7 @@ uint64_t __39__PDCApplicationEventListener_activate__block_invoke(uint64_t a1)
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(consentedBundleIdentifiers);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -144,7 +144,7 @@ uint64_t __39__PDCApplicationEventListener_activate__block_invoke(uint64_t a1)
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [consentedBundleIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -153,18 +153,18 @@ uint64_t __39__PDCApplicationEventListener_activate__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationDidUninstall:(id)a3
+- (void)applicationDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   if (![(PDCApplicationEventListener *)self cancelled])
   {
-    v5 = [(PDCConsentStore *)self->_consentStore writeUserConsentedRegulatoryDisclosureVersion:0 forBundleIdentifier:v4];
+    v5 = [(PDCConsentStore *)self->_consentStore writeUserConsentedRegulatoryDisclosureVersion:0 forBundleIdentifier:uninstallCopy];
     if (v5)
     {
       v6 = PDC_LOG_CHANNEL_PREFIXPrivacyDisclosureCore();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(PDCApplicationEventListener *)v4 applicationDidUninstall:v5, v6];
+        [(PDCApplicationEventListener *)uninstallCopy applicationDidUninstall:v5, v6];
       }
     }
   }

@@ -1,7 +1,7 @@
 @interface HFAccessoryLikeObject
 + (NSMapTable)objectMap;
-+ (id)_accessoryLikeObjectForObject:(id)a3;
-+ (id)accessoryLikeObjectsForAccessoryRepresentable:(id)a3;
++ (id)_accessoryLikeObjectForObject:(id)object;
++ (id)accessoryLikeObjectsForAccessoryRepresentable:(id)representable;
 + (void)_invalidateObjectMap;
 - (BOOL)hf_canShowInControlCenter;
 - (BOOL)hf_canSpanMultipleRooms;
@@ -13,13 +13,13 @@
 - (BOOL)hf_isFavorite;
 - (BOOL)hf_isForcedVisibleInHomeStatus;
 - (BOOL)hf_isIdentifiable;
-- (BOOL)hf_isInRoom:(id)a3;
+- (BOOL)hf_isInRoom:(id)room;
 - (BOOL)hf_isMatterOnlyAccessory;
 - (BOOL)hf_isVisibleInHomeStatus;
 - (BOOL)hf_showInHomeDashboard;
 - (BOOL)hf_supportsHomeStatus;
 - (Class)hf_itemClass;
-- (HFAccessoryLikeObject)initWithHomeKitObject:(id)a3;
+- (HFAccessoryLikeObject)initWithHomeKitObject:(id)object;
 - (HFAccessoryLikeObjectRootHomeKitObjectProvider)dataSource;
 - (HFAccessoryType)hf_accessoryType;
 - (HFServiceNameComponents)hf_serviceNameComponents;
@@ -30,8 +30,8 @@
 - (NSSet)hf_containedServices;
 - (NSString)debugDescription;
 - (NSString)hf_tileSize;
-- (id)hf_moveToRoom:(id)a3;
-- (id)hf_setTileSize:(id)a3;
+- (id)hf_moveToRoom:(id)room;
+- (id)hf_setTileSize:(id)size;
 @end
 
 @implementation HFAccessoryLikeObject
@@ -55,19 +55,19 @@ void __34__HFAccessoryLikeObject_objectMap__block_invoke()
   _MergedGlobals_306 = v0;
 }
 
-+ (id)_accessoryLikeObjectForObject:(id)a3
++ (id)_accessoryLikeObjectForObject:(id)object
 {
-  v4 = [a3 hf_rootAccessoryLikeHomeKitObject];
+  hf_rootAccessoryLikeHomeKitObject = [object hf_rootAccessoryLikeHomeKitObject];
   os_unfair_lock_lock_with_options();
-  v5 = [a1 objectMap];
-  v6 = [v5 objectForKey:v4];
+  objectMap = [self objectMap];
+  v6 = [objectMap objectForKey:hf_rootAccessoryLikeHomeKitObject];
 
   if (!v6 || ([v6 dataSource], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v8 = [[a1 alloc] initWithHomeKitObject:v4];
+    v8 = [[self alloc] initWithHomeKitObject:hf_rootAccessoryLikeHomeKitObject];
 
-    v9 = [a1 objectMap];
-    [v9 setObject:v8 forKey:v4];
+    objectMap2 = [self objectMap];
+    [objectMap2 setObject:v8 forKey:hf_rootAccessoryLikeHomeKitObject];
 
     v6 = v8;
   }
@@ -87,22 +87,22 @@ void __34__HFAccessoryLikeObject_objectMap__block_invoke()
   }
 
   os_unfair_lock_lock_with_options();
-  v4 = [a1 objectMap];
-  [v4 removeAllObjects];
+  objectMap = [self objectMap];
+  [objectMap removeAllObjects];
 
   os_unfair_lock_unlock(&_HFAccessoryLikeObjectMapLock);
 }
 
-- (HFAccessoryLikeObject)initWithHomeKitObject:(id)a3
+- (HFAccessoryLikeObject)initWithHomeKitObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = HFAccessoryLikeObject;
   v5 = [(HFAccessoryLikeObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, objectCopy);
   }
 
   return v6;
@@ -110,14 +110,14 @@ void __34__HFAccessoryLikeObject_objectMap__block_invoke()
 
 - (HMRoom)room
 {
-  v3 = [(HFAccessoryLikeObject *)self dataSource];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
-  v5 = [(HFAccessoryLikeObject *)self dataSource];
-  v6 = v5;
+  dataSource2 = [(HFAccessoryLikeObject *)self dataSource];
+  dataSource3 = dataSource2;
   if (v4)
   {
-    v7 = [v5 hf_parentRoom];
+    hf_parentRoom = [dataSource2 hf_parentRoom];
 LABEL_3:
 
     goto LABEL_8;
@@ -128,90 +128,90 @@ LABEL_3:
 
   if (isKindOfClass)
   {
-    v6 = [(HFAccessoryLikeObject *)self dataSource];
-    if ([v6 hf_areAllServicesInSameRoom])
+    dataSource3 = [(HFAccessoryLikeObject *)self dataSource];
+    if ([dataSource3 hf_areAllServicesInSameRoom])
     {
-      v9 = [v6 services];
-      v10 = [v9 firstObject];
-      v7 = [v10 hf_parentRoom];
+      services = [dataSource3 services];
+      firstObject = [services firstObject];
+      hf_parentRoom = [firstObject hf_parentRoom];
     }
 
     else
     {
-      v7 = 0;
+      hf_parentRoom = 0;
     }
 
     goto LABEL_3;
   }
 
-  v7 = 0;
+  hf_parentRoom = 0;
 LABEL_8:
 
-  return v7;
+  return hf_parentRoom;
 }
 
 - (HFServiceNameComponents)hf_serviceNameComponents
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_serviceNameComponents];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_serviceNameComponents = [dataSource hf_serviceNameComponents];
 
-  return v3;
+  return hf_serviceNameComponents;
 }
 
 - (NSSet)hf_associatedAccessories
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_associatedAccessories];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_associatedAccessories = [dataSource hf_associatedAccessories];
 
-  return v3;
+  return hf_associatedAccessories;
 }
 
 - (NSSet)hf_containedCharacteristics
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_containedCharacteristics];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_containedCharacteristics = [dataSource hf_containedCharacteristics];
 
-  return v3;
+  return hf_containedCharacteristics;
 }
 
 - (NSSet)hf_containedServices
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_containedServices];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_containedServices = [dataSource hf_containedServices];
 
-  return v3;
+  return hf_containedServices;
 }
 
 - (NSSet)hf_containedProfiles
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_containedProfiles];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_containedProfiles = [dataSource hf_containedProfiles];
 
-  return v3;
+  return hf_containedProfiles;
 }
 
-- (BOOL)hf_isInRoom:(id)a3
+- (BOOL)hf_isInRoom:(id)room
 {
-  v4 = a3;
-  v5 = [(HFAccessoryLikeObject *)self room];
+  roomCopy = room;
+  room = [(HFAccessoryLikeObject *)self room];
 
-  if (v5)
+  if (room)
   {
-    v6 = [(HFAccessoryLikeObject *)self room];
-    v7 = [v6 uniqueIdentifier];
-    v8 = [v4 uniqueIdentifier];
-    v9 = [v7 hmf_isEqualToUUID:v8];
+    room2 = [(HFAccessoryLikeObject *)self room];
+    uniqueIdentifier = [room2 uniqueIdentifier];
+    uniqueIdentifier2 = [roomCopy uniqueIdentifier];
+    v9 = [uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2];
   }
 
   else
   {
-    v6 = [(HFAccessoryLikeObject *)self accessories];
+    room2 = [(HFAccessoryLikeObject *)self accessories];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __37__HFAccessoryLikeObject_hf_isInRoom___block_invoke;
     v11[3] = &unk_277DF3888;
-    v12 = v4;
-    v9 = [v6 na_any:v11];
+    v12 = roomCopy;
+    v9 = [room2 na_any:v11];
   }
 
   return v9;
@@ -229,47 +229,47 @@ uint64_t __37__HFAccessoryLikeObject_hf_isInRoom___block_invoke(uint64_t a1, voi
 
 - (Class)hf_itemClass
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_itemClass];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_itemClass = [dataSource hf_itemClass];
 
-  return v3;
+  return hf_itemClass;
 }
 
 - (HFAccessoryType)hf_accessoryType
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_accessoryType];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_accessoryType = [dataSource hf_accessoryType];
 
-  return v3;
+  return hf_accessoryType;
 }
 
 - (BOOL)hf_canSpanMultipleRooms
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_canSpanMultipleRooms];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_canSpanMultipleRooms = [dataSource hf_canSpanMultipleRooms];
 
-  return v3;
+  return hf_canSpanMultipleRooms;
 }
 
 - (BOOL)hf_isIdentifiable
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_isIdentifiable];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_isIdentifiable = [dataSource hf_isIdentifiable];
 
-  return v3;
+  return hf_isIdentifiable;
 }
 
 - (BOOL)hf_canShowInControlCenter
 {
-  v3 = [(HFAccessoryLikeObject *)self homeKitObject];
+  homeKitObject = [(HFAccessoryLikeObject *)self homeKitObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(HFAccessoryLikeObject *)self homeKitObject];
-  v6 = v5;
+  homeKitObject2 = [(HFAccessoryLikeObject *)self homeKitObject];
+  homeKitObject3 = homeKitObject2;
   if (isKindOfClass)
   {
-    v7 = [v5 hf_showsAsAccessoryInControlCentre];
+    hf_showsAsAccessoryInControlCentre = [homeKitObject2 hf_showsAsAccessoryInControlCentre];
   }
 
   else
@@ -282,28 +282,28 @@ uint64_t __37__HFAccessoryLikeObject_hf_isInRoom___block_invoke(uint64_t a1, voi
       return 1;
     }
 
-    v6 = [(HFAccessoryLikeObject *)self homeKitObject];
-    v7 = [v6 hf_showsAsServiceInControlCentre];
+    homeKitObject3 = [(HFAccessoryLikeObject *)self homeKitObject];
+    hf_showsAsAccessoryInControlCentre = [homeKitObject3 hf_showsAsServiceInControlCentre];
   }
 
-  v9 = v7;
+  v9 = hf_showsAsAccessoryInControlCentre;
 
   return v9;
 }
 
 - (BOOL)hf_isMatterOnlyAccessory
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_isMatterOnlyAccessory];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_isMatterOnlyAccessory = [dataSource hf_isMatterOnlyAccessory];
 
-  return v3;
+  return hf_isMatterOnlyAccessory;
 }
 
-- (id)hf_moveToRoom:(id)a3
+- (id)hf_moveToRoom:(id)room
 {
-  v4 = a3;
-  v5 = [(HFAccessoryLikeObject *)self dataSource];
-  v6 = [v5 hf_moveToRoom:v4];
+  roomCopy = room;
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v6 = [dataSource hf_moveToRoom:roomCopy];
 
   return v6;
 }
@@ -312,114 +312,114 @@ uint64_t __37__HFAccessoryLikeObject_hf_isInRoom___block_invoke(uint64_t a1, voi
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HFAccessoryLikeObject *)self homeKitObject];
-  v6 = [v3 stringWithFormat:@"<%@:%p-%@>", v4, self, v5];
+  homeKitObject = [(HFAccessoryLikeObject *)self homeKitObject];
+  v6 = [v3 stringWithFormat:@"<%@:%p-%@>", v4, self, homeKitObject];
 
   return v6;
 }
 
 - (BOOL)hf_isFavorite
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_isOnForContextType:2];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v3 = [dataSource hf_isOnForContextType:2];
 
   return v3;
 }
 
 - (BOOL)hf_hasSetFavorite
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_hasSetForContextType:2];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v3 = [dataSource hf_hasSetForContextType:2];
 
   return v3;
 }
 
 - (BOOL)hf_effectiveIsFavorite
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_shouldBeOnForContextType:2];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v3 = [dataSource hf_shouldBeOnForContextType:2];
 
   return v3;
 }
 
 - (BOOL)hf_supportsHomeStatus
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_supportsHomeStatus];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_supportsHomeStatus = [dataSource hf_supportsHomeStatus];
 
-  return v3;
+  return hf_supportsHomeStatus;
 }
 
 - (BOOL)hf_isVisibleInHomeStatus
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_isVisibleInHomeStatus];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_isVisibleInHomeStatus = [dataSource hf_isVisibleInHomeStatus];
 
-  return v3;
+  return hf_isVisibleInHomeStatus;
 }
 
 - (BOOL)hf_hasSetVisibleInHomeStatus
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_hasSetVisibleInHomeStatus];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_hasSetVisibleInHomeStatus = [dataSource hf_hasSetVisibleInHomeStatus];
 
-  return v3;
+  return hf_hasSetVisibleInHomeStatus;
 }
 
 - (BOOL)hf_isForcedVisibleInHomeStatus
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_isForcedVisibleInHomeStatus];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_isForcedVisibleInHomeStatus = [dataSource hf_isForcedVisibleInHomeStatus];
 
-  return v3;
+  return hf_isForcedVisibleInHomeStatus;
 }
 
 - (BOOL)hf_showInHomeDashboard
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_isOnForContextType:3];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v3 = [dataSource hf_isOnForContextType:3];
 
   return v3;
 }
 
 - (BOOL)hf_hasSetShowInHomeDashboard
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_hasSetForContextType:3];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v3 = [dataSource hf_hasSetForContextType:3];
 
   return v3;
 }
 
 - (BOOL)hf_effectiveShowInHomeDashboard
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_shouldBeOnForContextType:3];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v3 = [dataSource hf_shouldBeOnForContextType:3];
 
   return v3;
 }
 
 - (NSString)hf_tileSize
 {
-  v2 = [(HFAccessoryLikeObject *)self dataSource];
-  v3 = [v2 hf_tileSize];
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  hf_tileSize = [dataSource hf_tileSize];
 
-  return v3;
+  return hf_tileSize;
 }
 
-- (id)hf_setTileSize:(id)a3
+- (id)hf_setTileSize:(id)size
 {
-  v4 = a3;
-  v5 = [(HFAccessoryLikeObject *)self dataSource];
-  v6 = [v5 hf_setTileSize:v4];
+  sizeCopy = size;
+  dataSource = [(HFAccessoryLikeObject *)self dataSource];
+  v6 = [dataSource hf_setTileSize:sizeCopy];
 
   return v6;
 }
 
-+ (id)accessoryLikeObjectsForAccessoryRepresentable:(id)a3
++ (id)accessoryLikeObjectsForAccessoryRepresentable:(id)representable
 {
-  v3 = a3;
+  representableCopy = representable;
   objc_opt_class();
-  v4 = v3;
+  v4 = representableCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -443,8 +443,8 @@ LABEL_6:
   if (objc_opt_respondsToSelector())
   {
     v10 = MEMORY[0x277CBEB98];
-    v11 = [v4 hf_accessoryLikeObject];
-    v8 = [v10 na_setWithSafeObject:v11];
+    hf_accessoryLikeObject = [v4 hf_accessoryLikeObject];
+    v8 = [v10 na_setWithSafeObject:hf_accessoryLikeObject];
   }
 
   else if ((objc_opt_respondsToSelector() & 1) == 0 || ([v4 hf_accessoryLikeObjects], (v8 = objc_claimAutoreleasedReturnValue()) == 0))

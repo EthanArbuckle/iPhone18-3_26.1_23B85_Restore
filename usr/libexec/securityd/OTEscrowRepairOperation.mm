@@ -1,10 +1,10 @@
 @interface OTEscrowRepairOperation
-- (BOOL)enableWithPasscodeStashSecret:(id)a3 account:(id)a4 error:(id *)a5;
-- (BOOL)shouldIgnoreError:(id)a3;
-- (OTEscrowRepairOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 followupHandler:(id)a6 contextType:(int64_t)a7;
-- (id)fetchPETForUsername:(id)a3;
+- (BOOL)enableWithPasscodeStashSecret:(id)secret account:(id)account error:(id *)error;
+- (BOOL)shouldIgnoreError:(id)error;
+- (OTEscrowRepairOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState followupHandler:(id)handler contextType:(int64_t)type;
+- (id)fetchPETForUsername:(id)username;
 - (id)serializedIDMSData;
-- (void)deleteRecord:(id)a3;
+- (void)deleteRecord:(id)record;
 - (void)groupStart;
 @end
 
@@ -12,13 +12,13 @@
 
 - (id)serializedIDMSData
 {
-  v3 = [(OTEscrowRepairOperation *)self deps];
-  v4 = [v3 authKitAdapter];
-  v5 = [(OTEscrowRepairOperation *)self deps];
-  v6 = [v5 activeAccount];
-  v7 = [v6 altDSID];
+  deps = [(OTEscrowRepairOperation *)self deps];
+  authKitAdapter = [deps authKitAdapter];
+  deps2 = [(OTEscrowRepairOperation *)self deps];
+  activeAccount = [deps2 activeAccount];
+  altDSID = [activeAccount altDSID];
   v13 = 0;
-  v8 = [v4 passwordResetTokenByAltDSID:v7 error:&v13];
+  v8 = [authKitAdapter passwordResetTokenByAltDSID:altDSID error:&v13];
   v9 = v13;
 
   if (v8)
@@ -45,9 +45,9 @@
   return v11;
 }
 
-- (id)fetchPETForUsername:(id)a3
+- (id)fetchPETForUsername:(id)username
 {
-  v3 = a3;
+  usernameCopy = username;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -55,7 +55,7 @@
   v16 = sub_1001FA840;
   v17 = 0;
   v4 = objc_alloc_init(AKAppleIDAuthenticationContext);
-  [v4 setUsername:v3];
+  [v4 setUsername:usernameCopy];
   [v4 setAuthenticationType:1];
   [v4 setIsUsernameEditable:0];
   v5 = objc_alloc_init(AKAppleIDAuthenticationController);
@@ -75,52 +75,52 @@
   return v7;
 }
 
-- (BOOL)enableWithPasscodeStashSecret:(id)a3 account:(id)a4 error:(id *)a5
+- (BOOL)enableWithPasscodeStashSecret:(id)secret account:(id)account error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  accountCopy = account;
+  secretCopy = secret;
   v10 = [[SecureBackup alloc] initWithUserActivityLabel:@"escrow-repair-enable"];
   [v10 setIcdp:1];
   [v10 setUsesMultipleiCSC:1];
-  v11 = [v8 propertiesForDataclass:@"com.apple.Dataclass.Account"];
+  v11 = [accountCopy propertiesForDataclass:@"com.apple.Dataclass.Account"];
   v12 = [v11 objectForKeyedSubscript:@"iCloudEnv"];
   [v10 setICloudEnv:v12];
 
-  v13 = [v8 aa_authToken];
-  [v10 setAuthToken:v13];
+  aa_authToken = [accountCopy aa_authToken];
+  [v10 setAuthToken:aa_authToken];
 
-  v14 = [v8 propertiesForDataclass:kAccountDataclassKeychainSync];
+  v14 = [accountCopy propertiesForDataclass:kAccountDataclassKeychainSync];
   v15 = [v14 objectForKeyedSubscript:@"escrowProxyUrl"];
   [v10 setEscrowProxyURL:v15];
 
-  v16 = [v8 username];
-  [v10 setAppleID:v16];
+  username = [accountCopy username];
+  [v10 setAppleID:username];
 
-  v17 = [v8 aa_personID];
-  [v10 setDsid:v17];
+  aa_personID = [accountCopy aa_personID];
+  [v10 setDsid:aa_personID];
 
-  v18 = [v8 username];
+  username2 = [accountCopy username];
 
-  v19 = [(OTEscrowRepairOperation *)self fetchPETForUsername:v18];
+  v19 = [(OTEscrowRepairOperation *)self fetchPETForUsername:username2];
   [v10 setICloudPassword:v19];
 
-  v20 = [(OTEscrowRepairOperation *)self deps];
-  v21 = [v20 deviceSessionID];
-  [v10 setDeviceSessionID:v21];
+  deps = [(OTEscrowRepairOperation *)self deps];
+  deviceSessionID = [deps deviceSessionID];
+  [v10 setDeviceSessionID:deviceSessionID];
 
-  v22 = [(OTEscrowRepairOperation *)self deps];
-  v23 = [v22 flowID];
-  [v10 setFlowID:v23];
+  deps2 = [(OTEscrowRepairOperation *)self deps];
+  flowID = [deps2 flowID];
+  [v10 setFlowID:flowID];
 
-  v24 = [(OTEscrowRepairOperation *)self serializedIDMSData];
-  [v10 setIdmsData:v24];
+  serializedIDMSData = [(OTEscrowRepairOperation *)self serializedIDMSData];
+  [v10 setIdmsData:serializedIDMSData];
 
-  [v10 setPasscodeStashSecret:v9];
+  [v10 setPasscodeStashSecret:secretCopy];
   [v10 setGenerateClientMetadata:1];
-  v25 = [(OTEscrowRepairOperation *)self deps];
-  v26 = [v25 secureBackupAdapter];
+  deps3 = [(OTEscrowRepairOperation *)self deps];
+  secureBackupAdapter = [deps3 secureBackupAdapter];
   v40 = 0;
-  v27 = [v26 enableWithSecureBackup:v10 error:&v40];
+  v27 = [secureBackupAdapter enableWithSecureBackup:v10 error:&v40];
   v28 = v40;
 
   v29 = sub_100006274("octagon-escrow-repair");
@@ -133,11 +133,11 @@
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "successfully enrolled escrow record", buf, 2u);
     }
 
-    v31 = [(OTEscrowRepairOperation *)self followupHandler];
-    v32 = [(OTEscrowRepairOperation *)self deps];
-    v33 = [v32 activeAccount];
+    followupHandler = [(OTEscrowRepairOperation *)self followupHandler];
+    deps4 = [(OTEscrowRepairOperation *)self deps];
+    activeAccount = [deps4 activeAccount];
     v39 = 0;
-    v34 = [v31 clearAllRepairFollowUps:v33 error:&v39];
+    v34 = [followupHandler clearAllRepairFollowUps:activeAccount error:&v39];
     v35 = v39;
 
     if ((v34 & 1) == 0)
@@ -161,37 +161,37 @@
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "failed to enroll escrow record: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v37 = v28;
-      *a5 = v28;
+      *error = v28;
     }
   }
 
   return v27;
 }
 
-- (void)deleteRecord:(id)a3
+- (void)deleteRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = [[SecureBackup alloc] initWithUserActivityLabel:@"escrow-repair-disable"];
   [v5 setIcdp:1];
-  [v5 setRecordID:v4];
+  [v5 setRecordID:recordCopy];
 
-  v6 = [(OTEscrowRepairOperation *)self deps];
-  v7 = [v6 deviceSessionID];
-  [v5 setDeviceSessionID:v7];
+  deps = [(OTEscrowRepairOperation *)self deps];
+  deviceSessionID = [deps deviceSessionID];
+  [v5 setDeviceSessionID:deviceSessionID];
 
-  v8 = [(OTEscrowRepairOperation *)self deps];
-  v9 = [v8 flowID];
-  [v5 setFlowID:v9];
+  deps2 = [(OTEscrowRepairOperation *)self deps];
+  flowID = [deps2 flowID];
+  [v5 setFlowID:flowID];
 
   v16 = 0;
-  LODWORD(v7) = [v5 disableWithError:&v16];
+  LODWORD(deviceSessionID) = [v5 disableWithError:&v16];
   v10 = v16;
   v11 = sub_100006274("octagon-escrow-repair");
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (deviceSessionID)
   {
     if (v12)
     {
@@ -221,16 +221,16 @@ LABEL_6:
   if (_os_feature_enabled_impl())
   {
     v3 = [AAFAnalyticsEventSecurity alloc];
-    v4 = [(OTEscrowRepairOperation *)self deps];
-    v5 = [v4 activeAccount];
-    v6 = [v5 altDSID];
-    v7 = [(OTEscrowRepairOperation *)self deps];
-    v8 = [v7 flowID];
-    v9 = [(OTEscrowRepairOperation *)self deps];
-    v10 = [v9 deviceSessionID];
+    deps = [(OTEscrowRepairOperation *)self deps];
+    activeAccount = [deps activeAccount];
+    altDSID = [activeAccount altDSID];
+    deps2 = [(OTEscrowRepairOperation *)self deps];
+    flowID = [deps2 flowID];
+    deps3 = [(OTEscrowRepairOperation *)self deps];
+    deviceSessionID = [deps3 deviceSessionID];
     v48 = kSecurityRTCEventCategoryAccountDataAccessRecovery;
     LOBYTE(v44) = 1;
-    v11 = [v3 initWithKeychainCircleMetrics:0 altDSID:v6 flowID:v8 deviceSessionID:v10 eventName:kSecurityRTCEventNameEscrowRepairOperation testsAreEnabled:0 canSendMetrics:v44 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+    v11 = [v3 initWithKeychainCircleMetrics:0 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:kSecurityRTCEventNameEscrowRepairOperation testsAreEnabled:0 canSendMetrics:v44 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
     if ([(OTEscrowRepairOperation *)self contextType]== 100)
     {
@@ -244,9 +244,9 @@ LABEL_6:
         log = sub_100006274("SecError");
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [(OTEscrowRepairOperation *)self contextType];
+          contextType = [(OTEscrowRepairOperation *)self contextType];
           *buf = 134217984;
-          *&buf[4] = v40;
+          *&buf[4] = contextType;
           _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "octagon-escrow-repair: unsupported context type: %ld", buf, 0xCu);
         }
 
@@ -260,15 +260,15 @@ LABEL_6:
     if (log)
     {
       v13 = [AAFAnalyticsEventSecurity alloc];
-      v14 = [(OTEscrowRepairOperation *)self deps];
-      v15 = [v14 activeAccount];
-      v16 = [v15 altDSID];
-      v17 = [(OTEscrowRepairOperation *)self deps];
-      v18 = [v17 flowID];
-      v19 = [(OTEscrowRepairOperation *)self deps];
-      v20 = [v19 deviceSessionID];
+      deps4 = [(OTEscrowRepairOperation *)self deps];
+      activeAccount2 = [deps4 activeAccount];
+      altDSID2 = [activeAccount2 altDSID];
+      deps5 = [(OTEscrowRepairOperation *)self deps];
+      flowID2 = [deps5 flowID];
+      deps6 = [(OTEscrowRepairOperation *)self deps];
+      deviceSessionID2 = [deps6 deviceSessionID];
       LOBYTE(v45) = 1;
-      v21 = [v13 initWithKeychainCircleMetrics:0 altDSID:v16 flowID:v18 deviceSessionID:v20 eventName:log testsAreEnabled:0 canSendMetrics:v45 category:v48];
+      v21 = [v13 initWithKeychainCircleMetrics:0 altDSID:altDSID2 flowID:flowID2 deviceSessionID:deviceSessionID2 eventName:log testsAreEnabled:0 canSendMetrics:v45 category:v48];
     }
 
     else
@@ -287,13 +287,13 @@ LABEL_6:
     v22 = [NSBlockOperation blockOperationWithBlock:v59];
     [(OTEscrowRepairOperation *)self setFinishedOp:v22];
 
-    v23 = [(OTEscrowRepairOperation *)self finishedOp];
-    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v23];
+    finishedOp = [(OTEscrowRepairOperation *)self finishedOp];
+    [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-    v24 = [(OTEscrowRepairOperation *)self deps];
-    v25 = [v24 stateHolder];
+    deps7 = [(OTEscrowRepairOperation *)self deps];
+    stateHolder = [deps7 stateHolder];
     v58 = 0;
-    v26 = [v25 getEgoPeerID:&v58];
+    v26 = [stateHolder getEgoPeerID:&v58];
     v27 = v58;
 
     if (!v26 || v27)
@@ -307,31 +307,31 @@ LABEL_6:
       }
 
       [(CKKSResultOperation *)self setError:v27];
-      v32 = [(OTEscrowRepairOperation *)self finishedOp];
-      [(CKKSGroupOperation *)self runBeforeGroupFinished:v32];
+      finishedOp2 = [(OTEscrowRepairOperation *)self finishedOp];
+      [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp2];
     }
 
     else
     {
       v28 = +[ACAccountStore defaultStore];
-      v29 = [(OTEscrowRepairOperation *)self deps];
-      v30 = [v29 activeAccount];
-      v31 = [v30 appleAccountID];
+      deps8 = [(OTEscrowRepairOperation *)self deps];
+      activeAccount3 = [deps8 activeAccount];
+      appleAccountID = [activeAccount3 appleAccountID];
       v57 = 0;
-      v47 = [v28 accountWithIdentifier:v31 error:&v57];
-      v32 = v57;
+      v47 = [v28 accountWithIdentifier:appleAccountID error:&v57];
+      finishedOp2 = v57;
 
       if (v47)
       {
 
-        v33 = [(OTEscrowRepairOperation *)self deps];
-        v34 = [v33 laContextAdapter];
+        deps9 = [(OTEscrowRepairOperation *)self deps];
+        laContextAdapter = [deps9 laContextAdapter];
         v35 = +[NSData data];
         v55 = 0;
         v56 = 0;
-        v36 = [v34 setCredential:v35 type:-12 laContext:&v56 error:&v55];
+        v36 = [laContextAdapter setCredential:v35 type:-12 laContext:&v56 error:&v55];
         v46 = v56;
-        v37 = v55;
+        finishedOp4 = v55;
 
         if (v36)
         {
@@ -357,17 +357,17 @@ LABEL_6:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *&buf[4] = v37;
+            *&buf[4] = finishedOp4;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "failed to retrieve passcode stash: %@", buf, 0xCu);
           }
 
-          [(CKKSResultOperation *)self setError:v37];
+          [(CKKSResultOperation *)self setError:finishedOp4];
         }
 
-        v43 = [(OTEscrowRepairOperation *)self finishedOp];
-        [(CKKSGroupOperation *)self runBeforeGroupFinished:v43];
+        finishedOp3 = [(OTEscrowRepairOperation *)self finishedOp];
+        [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp3];
 
-        v32 = v47;
+        finishedOp2 = v47;
       }
 
       else
@@ -379,9 +379,9 @@ LABEL_6:
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "failed to get account", buf, 2u);
         }
 
-        [(CKKSResultOperation *)self setError:v32];
-        v37 = [(OTEscrowRepairOperation *)self finishedOp];
-        [(CKKSGroupOperation *)self runBeforeGroupFinished:v37];
+        [(CKKSResultOperation *)self setError:finishedOp2];
+        finishedOp4 = [(OTEscrowRepairOperation *)self finishedOp];
+        [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp4];
       }
     }
 
@@ -403,39 +403,39 @@ LABEL_33:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)shouldIgnoreError:(id)a3
+- (BOOL)shouldIgnoreError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:CKErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:CKErrorDomain])
   {
     goto LABEL_14;
   }
 
-  v5 = [v3 code];
+  code = [errorCopy code];
 
-  if (v5 != 3)
+  if (code != 3)
   {
     goto LABEL_15;
   }
 
-  v6 = [v3 userInfo];
-  v4 = [v6 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [errorCopy userInfo];
+  domain = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  if (!v4)
+  if (!domain)
   {
     goto LABEL_15;
   }
 
-  v7 = [v4 domain];
-  if (([v7 isEqualToString:NSURLErrorDomain] & 1) == 0)
+  v4Domain = [domain domain];
+  if (([v4Domain isEqualToString:NSURLErrorDomain] & 1) == 0)
   {
 
 LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v4 code] == -1009 || objc_msgSend(v4, "code") == -1 || objc_msgSend(v4, "code") == -1003 || objc_msgSend(v4, "code") == -1004 || objc_msgSend(v4, "code") == -1006 || objc_msgSend(v4, "code") == -1018 || objc_msgSend(v4, "code") == -1020)
+  if ([domain code] == -1009 || objc_msgSend(domain, "code") == -1 || objc_msgSend(domain, "code") == -1003 || objc_msgSend(domain, "code") == -1004 || objc_msgSend(domain, "code") == -1006 || objc_msgSend(domain, "code") == -1018 || objc_msgSend(domain, "code") == -1020)
   {
     v8 = 1;
 LABEL_28:
@@ -443,20 +443,20 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v15 = [v4 code];
+  code2 = [domain code];
 
-  if (v15 == -2000)
+  if (code2 == -2000)
   {
     goto LABEL_17;
   }
 
 LABEL_15:
-  v9 = [v3 domain];
-  if ([v9 isEqualToString:kCloudServicesErrorDomain])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:kCloudServicesErrorDomain])
   {
-    v10 = [v3 code];
+    code3 = [errorCopy code];
 
-    if (v10 == 22)
+    if (code3 == 22)
     {
 LABEL_17:
       v8 = 1;
@@ -468,8 +468,8 @@ LABEL_17:
   {
   }
 
-  v4 = [v3 domain];
-  if (![v4 isEqualToString:@"com.apple.security.trustedpeers.container"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"com.apple.security.trustedpeers.container"])
   {
     v8 = 0;
 LABEL_29:
@@ -477,19 +477,19 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v11 = [v3 code];
+  code4 = [errorCopy code];
 
-  if (v11 == 38)
+  if (code4 == 38)
   {
-    v12 = [v3 userInfo];
-    v4 = [v12 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo2 = [errorCopy userInfo];
+    domain = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-    v7 = [v4 domain];
-    if ([v7 isEqualToString:@"securityd"])
+    v4Domain = [domain domain];
+    if ([v4Domain isEqualToString:@"securityd"])
     {
-      v13 = [v4 code];
+      code5 = [domain code];
 
-      if (v13 == -25308)
+      if (code5 == -25308)
       {
         v8 = -1;
       }
@@ -512,23 +512,23 @@ LABEL_30:
   return v8 & 1;
 }
 
-- (OTEscrowRepairOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 followupHandler:(id)a6 contextType:(int64_t)a7
+- (OTEscrowRepairOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState followupHandler:(id)handler contextType:(int64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = OTEscrowRepairOperation;
   v17 = [(CKKSGroupOperation *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deps, a3);
-    objc_storeStrong(&v18->_followupHandler, a6);
-    objc_storeStrong(&v18->_intendedState, a4);
-    objc_storeStrong(&v18->_nextState, a5);
-    v18->_contextType = a7;
+    objc_storeStrong(&v17->_deps, dependencies);
+    objc_storeStrong(&v18->_followupHandler, handler);
+    objc_storeStrong(&v18->_intendedState, state);
+    objc_storeStrong(&v18->_nextState, errorState);
+    v18->_contextType = type;
   }
 
   return v18;

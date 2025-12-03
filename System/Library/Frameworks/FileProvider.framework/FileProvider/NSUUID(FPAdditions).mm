@@ -9,14 +9,14 @@
 {
   shouldObfuscateFilenames = fp_shouldObfuscateFilenames();
 
-  return [a1 fp_UUIDWithObfuscation:shouldObfuscateFilenames];
+  return [self fp_UUIDWithObfuscation:shouldObfuscateFilenames];
 }
 
 - (id)fp_UUIDWithObfuscation:()FPAdditions
 {
-  v4 = [a1 UUIDString];
-  v5 = v4;
-  if (a3 && ![v4 isEqualToString:@"00000000-0000-0000-0000-000000000000"])
+  uUIDString = [self UUIDString];
+  v5 = uUIDString;
+  if (a3 && ![uUIDString isEqualToString:@"00000000-0000-0000-0000-000000000000"])
   {
     v7 = [v5 substringToIndex:2];
     v8 = [v5 substringFromIndex:{objc_msgSend(v5, "length") - 2}];

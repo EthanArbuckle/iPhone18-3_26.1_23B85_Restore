@@ -1,23 +1,23 @@
 @interface CAFUITileViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (_TtC5CAFUI23CAFUITileViewController)initWithCoder:(id)a3;
-- (_TtC5CAFUI23CAFUITileViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)automakerSettingService:(id)a3 didUpdateDisabled:(BOOL)a4;
-- (void)automakerSettingService:(id)a3 didUpdateHidden:(BOOL)a4;
-- (void)automakerSettingService:(id)a3 didUpdateSectionIdentifier:(id)a4;
-- (void)automakerSettingService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (_TtC5CAFUI23CAFUITileViewController)initWithCoder:(id)coder;
+- (_TtC5CAFUI23CAFUITileViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)automakerSettingService:(id)service didUpdateDisabled:(BOOL)disabled;
+- (void)automakerSettingService:(id)service didUpdateHidden:(BOOL)hidden;
+- (void)automakerSettingService:(id)service didUpdateSectionIdentifier:(id)identifier;
+- (void)automakerSettingService:(id)service didUpdateSortOrder:(unsigned __int8)order;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dismissIfModal;
-- (void)punchThroughController:(id)a3 didDismissPunchThroughWithIdentifier:(id)a4;
+- (void)punchThroughController:(id)controller didDismissPunchThroughWithIdentifier:(id)identifier;
 - (void)updateForLimitUIChanged;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CAFUITileViewController
 
-- (_TtC5CAFUI23CAFUITileViewController)initWithCoder:(id)a3
+- (_TtC5CAFUI23CAFUITileViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC5CAFUI23CAFUITileViewController_presentedPTIdentifier);
   *v3 = 0;
@@ -32,112 +32,112 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CAFUITileViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  CAFUITileViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  CAFUITileViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CAFUITileViewController();
   v4 = v5.receiver;
-  [(CAFUITileViewController *)&v5 viewWillDisappear:v3];
+  [(CAFUITileViewController *)&v5 viewWillDisappear:disappearCopy];
   [*&v4[OBJC_IVAR____TtC5CAFUI23CAFUITileViewController_volumeNotificationAssertion] cancelSuspension];
 }
 
-- (_TtC5CAFUI23CAFUITileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5CAFUI23CAFUITileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = specialized CAFUITileViewController.collectionView(_:shouldHighlightItemAt:)(v9);
 
   (*(v7 + 8))(v9, v6);
   return self & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  CAFUITileViewController.collectionView(_:didSelectItemAt:)(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  CAFUITileViewController.collectionView(_:didSelectItemAt:)(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 }
 
 - (void)dismissIfModal
 {
-  v4 = self;
-  v2 = [(CAFUITileViewController *)v4 presentingViewController];
-  if (v2)
+  selfCopy = self;
+  presentingViewController = [(CAFUITileViewController *)selfCopy presentingViewController];
+  if (presentingViewController)
   {
-    v3 = v2;
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = presentingViewController;
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)punchThroughController:(id)a3 didDismissPunchThroughWithIdentifier:(id)a4
+- (void)punchThroughController:(id)controller didDismissPunchThroughWithIdentifier:(id)identifier
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized CAFUITileViewController.punchThroughController(_:didDismissPunchThroughWithIdentifier:)(v6, v8);
 }
 
 - (void)updateForLimitUIChanged
 {
-  v2 = self;
+  selfCopy = self;
   CAFUITileViewController.updateForLimitUIChanged()();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4
+- (void)automakerSettingService:(id)service didUpdateSortOrder:(unsigned __int8)order
 {
-  v4 = self;
+  selfCopy = self;
   CAFUITileViewController.resetAndReload()();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateSectionIdentifier:(id)a4
+- (void)automakerSettingService:(id)service didUpdateSectionIdentifier:(id)identifier
 {
-  v4 = self;
+  selfCopy = self;
   CAFUITileViewController.resetAndReload()();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateHidden:(BOOL)a4
+- (void)automakerSettingService:(id)service didUpdateHidden:(BOOL)hidden
 {
-  v6 = a3;
-  v7 = self;
-  CAFUITileViewController.automakerSettingService(_:didUpdateHidden:)(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileViewController.automakerSettingService(_:didUpdateHidden:)(serviceCopy, hidden);
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateDisabled:(BOOL)a4
+- (void)automakerSettingService:(id)service didUpdateDisabled:(BOOL)disabled
 {
-  v6 = a3;
-  v7 = self;
-  CAFUITileViewController.automakerSettingService(_:didUpdateDisabled:)(v6, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFUITileViewController.automakerSettingService(_:didUpdateDisabled:)(serviceCopy, disabled);
 }
 
 @end

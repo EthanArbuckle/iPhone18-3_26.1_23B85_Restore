@@ -1,44 +1,44 @@
 @interface HUCameraTimelapseController
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)cmTimeFromDate:(SEL)a3;
-- (BOOL)canSeekWithClip:(id)a3;
-- (HUCameraTimelapseController)initWithCameraProfile:(id)a3;
-- (id)playerItemForURL:(id)a3;
-- (void)_fallbackToHighQualityClip:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)cmTimeFromDate:(SEL)date;
+- (BOOL)canSeekWithClip:(id)clip;
+- (HUCameraTimelapseController)initWithCameraProfile:(id)profile;
+- (id)playerItemForURL:(id)l;
+- (void)_fallbackToHighQualityClip:(id)clip;
 - (void)_hideAllTimelapseLayers;
-- (void)_loadPlayerForTimelapseClip:(id)a3 atLocation:(id)a4;
-- (void)_loadPlayerFromLocation:(id)a3;
+- (void)_loadPlayerForTimelapseClip:(id)clip atLocation:(id)location;
+- (void)_loadPlayerFromLocation:(id)location;
 - (void)_showOnlyImageLayer;
 - (void)_showOnlyPlayerLayer;
-- (void)_updateTimelapseClip:(id)a3 withHighQualityClip:(id)a4;
+- (void)_updateTimelapseClip:(id)clip withHighQualityClip:(id)qualityClip;
 - (void)actuallySeekToTime;
 - (void)dealloc;
-- (void)didDownloadVideoFileForClip:(id)a3 toURL:(id)a4;
-- (void)failedToDownloadVideoFileForClip:(id)a3;
-- (void)foundVideoFileForClip:(id)a3 atURL:(id)a4;
+- (void)didDownloadVideoFileForClip:(id)clip toURL:(id)l;
+- (void)failedToDownloadVideoFileForClip:(id)clip;
+- (void)foundVideoFileForClip:(id)clip atURL:(id)l;
 - (void)hideAllViews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resetForNewCamera;
-- (void)seekToDate:(id)a3;
-- (void)setChaseTime:(id *)a3;
-- (void)setTimelapseVisibility:(BOOL)a3;
+- (void)seekToDate:(id)date;
+- (void)setChaseTime:(id *)time;
+- (void)setTimelapseVisibility:(BOOL)visibility;
 - (void)trySeekToChaseTime;
 - (void)updatePlaceholderContent;
-- (void)updateToPlaybackPosition:(id)a3 forHighQualityClip:(id)a4;
-- (void)updateVideoBounds:(CGRect)a3;
+- (void)updateToPlaybackPosition:(id)position forHighQualityClip:(id)clip;
+- (void)updateVideoBounds:(CGRect)bounds;
 @end
 
 @implementation HUCameraTimelapseController
 
-- (HUCameraTimelapseController)initWithCameraProfile:(id)a3
+- (HUCameraTimelapseController)initWithCameraProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v19.receiver = self;
   v19.super_class = HUCameraTimelapseController;
   v6 = [(HUCameraTimelapseController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cameraProfile, a3);
+    objc_storeStrong(&v6->_cameraProfile, profile);
     v8 = objc_alloc_init(MEMORY[0x277CE6598]);
     player = v7->_player;
     v7->_player = v8;
@@ -70,11 +70,11 @@
 
 - (void)resetForNewCamera
 {
-  v3 = [(HUCameraTimelapseController *)self imageLayer];
-  [v3 setContents:0];
+  imageLayer = [(HUCameraTimelapseController *)self imageLayer];
+  [imageLayer setContents:0];
 
-  v4 = [(HUCameraTimelapseController *)self cachedPlayerItems];
-  [v4 removeAllObjects];
+  cachedPlayerItems = [(HUCameraTimelapseController *)self cachedPlayerItems];
+  [cachedPlayerItems removeAllObjects];
 
   [(HUCameraTimelapseController *)self setCurrentClip:0];
   [(HUCameraTimelapseController *)self setHighQualityClip:0];
@@ -82,34 +82,34 @@
   [(HUCameraTimelapseController *)self setTimelapseVisibility:0];
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)cmTimeFromDate:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)cmTimeFromDate:(SEL)date
 {
   v6 = a4;
-  v7 = [(HUCameraTimelapseController *)self currentClip];
-  v8 = [v7 startDate];
-  [v6 timeIntervalSinceDate:v8];
+  currentClip = [(HUCameraTimelapseController *)self currentClip];
+  startDate = [currentClip startDate];
+  [v6 timeIntervalSinceDate:startDate];
   v10 = v9;
 
   return CMTimeMakeWithSeconds(retstr, v10, 1000);
 }
 
-- (BOOL)canSeekWithClip:(id)a3
+- (BOOL)canSeekWithClip:(id)clip
 {
-  v4 = a3;
-  v5 = [(HUCameraTimelapseController *)self currentClip];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v4 uniqueIdentifier];
+  clipCopy = clip;
+  currentClip = [(HUCameraTimelapseController *)self currentClip];
+  uniqueIdentifier = [currentClip uniqueIdentifier];
+  uniqueIdentifier2 = [clipCopy uniqueIdentifier];
 
-  LOBYTE(v4) = [v6 isEqual:v7];
-  return v4;
+  LOBYTE(clipCopy) = [uniqueIdentifier isEqual:uniqueIdentifier2];
+  return clipCopy;
 }
 
-- (id)playerItemForURL:(id)a3
+- (id)playerItemForURL:(id)l
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUCameraTimelapseController *)self cachedPlayerItems];
-  v6 = [v5 objectForKey:v4];
+  lCopy = l;
+  cachedPlayerItems = [(HUCameraTimelapseController *)self cachedPlayerItems];
+  v6 = [cachedPlayerItems objectForKey:lCopy];
 
   if (!v6)
   {
@@ -117,13 +117,13 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = lCopy;
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Adding player item to cache: %@", &v10, 0xCu);
     }
 
-    v6 = [objc_alloc(MEMORY[0x277CE65B0]) initWithURL:v4];
-    v8 = [(HUCameraTimelapseController *)self cachedPlayerItems];
-    [v8 setObject:v6 forKey:v4];
+    v6 = [objc_alloc(MEMORY[0x277CE65B0]) initWithURL:lCopy];
+    cachedPlayerItems2 = [(HUCameraTimelapseController *)self cachedPlayerItems];
+    [cachedPlayerItems2 setObject:v6 forKey:lCopy];
   }
 
   return v6;
@@ -132,51 +132,51 @@
 - (void)updatePlaceholderContent
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D14498] sharedManager];
-  v4 = [(HUCameraTimelapseController *)self highQualityClip];
-  v5 = [v3 firstPosterFrameImageForClip:v4];
+  mEMORY[0x277D14498] = [MEMORY[0x277D14498] sharedManager];
+  highQualityClip = [(HUCameraTimelapseController *)self highQualityClip];
+  v5 = [mEMORY[0x277D14498] firstPosterFrameImageForClip:highQualityClip];
 
   if (v5)
   {
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HUCameraTimelapseController *)self highQualityClip];
-      v8 = [v7 uniqueIdentifier];
-      v9 = [(HUCameraTimelapseController *)self currentClip];
-      v10 = [v9 uniqueIdentifier];
+      highQualityClip2 = [(HUCameraTimelapseController *)self highQualityClip];
+      uniqueIdentifier = [highQualityClip2 uniqueIdentifier];
+      currentClip = [(HUCameraTimelapseController *)self currentClip];
+      uniqueIdentifier2 = [currentClip uniqueIdentifier];
       v20 = 67109634;
       *v21 = 1;
       *&v21[4] = 2112;
-      *&v21[6] = v8;
+      *&v21[6] = uniqueIdentifier;
       v22 = 2112;
-      v23 = v10;
+      v23 = uniqueIdentifier2;
       _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "IMAGE: Updating camera clip with first poster frame:%{BOOL}d for Full:%@ Timelapse:%@", &v20, 0x1Cu);
     }
 
 LABEL_8:
-    v17 = [v5 CGImage];
-    v18 = [(HUCameraTimelapseController *)self imageLayer];
-    [v18 setContents:v17];
+    cGImage = [v5 CGImage];
+    imageLayer = [(HUCameraTimelapseController *)self imageLayer];
+    [imageLayer setContents:cGImage];
     goto LABEL_9;
   }
 
-  v11 = [(HUCameraTimelapseController *)self highQualityClip];
-  v5 = [v3 heroFrameImageForClip:v11];
+  highQualityClip3 = [(HUCameraTimelapseController *)self highQualityClip];
+  v5 = [mEMORY[0x277D14498] heroFrameImageForClip:highQualityClip3];
 
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(HUCameraTimelapseController *)self highQualityClip];
-    v14 = [v13 uniqueIdentifier];
-    v15 = [(HUCameraTimelapseController *)self currentClip];
-    v16 = [v15 uniqueIdentifier];
+    highQualityClip4 = [(HUCameraTimelapseController *)self highQualityClip];
+    uniqueIdentifier3 = [highQualityClip4 uniqueIdentifier];
+    currentClip2 = [(HUCameraTimelapseController *)self currentClip];
+    uniqueIdentifier4 = [currentClip2 uniqueIdentifier];
     v20 = 67109634;
     *v21 = v5 != 0;
     *&v21[4] = 2112;
-    *&v21[6] = v14;
+    *&v21[6] = uniqueIdentifier3;
     v22 = 2112;
-    v23 = v16;
+    v23 = uniqueIdentifier4;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "IMAGE: Updating camera clip with hero frame:%{BOOL}d for Full:%@ Timelapse:%@", &v20, 0x1Cu);
   }
 
@@ -192,51 +192,51 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v18 = [(HUCameraTimelapseController *)self currentClip];
-  v19 = [v18 uniqueIdentifier];
+  imageLayer = [(HUCameraTimelapseController *)self currentClip];
+  uniqueIdentifier5 = [imageLayer uniqueIdentifier];
   v20 = 138412290;
-  *v21 = v19;
+  *v21 = uniqueIdentifier5;
   _os_log_error_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_ERROR, "IMAGE: No image available for %@. Using stale image.", &v20, 0xCu);
 
 LABEL_9:
 LABEL_10:
 }
 
-- (void)_updateTimelapseClip:(id)a3 withHighQualityClip:(id)a4
+- (void)_updateTimelapseClip:(id)clip withHighQualityClip:(id)qualityClip
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  qualityClipCopy = qualityClip;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(HUCameraTimelapseController *)self currentClip];
-    v10 = [v9 uniqueIdentifier];
-    v11 = [v6 uniqueIdentifier];
+    currentClip = [(HUCameraTimelapseController *)self currentClip];
+    uniqueIdentifier = [currentClip uniqueIdentifier];
+    uniqueIdentifier2 = [clipCopy uniqueIdentifier];
     v17 = 138412546;
-    v18 = v10;
+    v18 = uniqueIdentifier;
     v19 = 2112;
-    v20 = v11;
+    v20 = uniqueIdentifier2;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "Updating timelapse from %@ to %@", &v17, 0x16u);
   }
 
   [(HUCameraTimelapseController *)self setPlayingHLSPlayerItem:0];
   [(HUCameraTimelapseController *)self setDownloadState:0];
-  [(HUCameraTimelapseController *)self setCurrentClip:v6];
-  v12 = [(HUCameraTimelapseController *)self imageLayer];
-  [v12 setContents:0];
+  [(HUCameraTimelapseController *)self setCurrentClip:clipCopy];
+  imageLayer = [(HUCameraTimelapseController *)self imageLayer];
+  [imageLayer setContents:0];
 
-  v13 = [(HUCameraTimelapseController *)self currentClip];
+  currentClip2 = [(HUCameraTimelapseController *)self currentClip];
 
-  if (v13)
+  if (currentClip2)
   {
     [(HUCameraTimelapseController *)self updatePlaceholderContent];
   }
 
-  if ([v7 isComplete])
+  if ([qualityClipCopy isComplete])
   {
-    v14 = [MEMORY[0x277D144F8] sharedProvider];
-    [v14 getVideoForTimelapseClip:v6 taskType:0 delegate:self];
+    mEMORY[0x277D144F8] = [MEMORY[0x277D144F8] sharedProvider];
+    [mEMORY[0x277D144F8] getVideoForTimelapseClip:clipCopy taskType:0 delegate:self];
   }
 
   else
@@ -244,29 +244,29 @@ LABEL_10:
     v15 = HFLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v6 uniqueIdentifier];
+      uniqueIdentifier3 = [clipCopy uniqueIdentifier];
       v17 = 138412290;
-      v18 = v16;
+      v18 = uniqueIdentifier3;
       _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Using HLS Playlist to play in-progress timelapse clip:%@", &v17, 0xCu);
     }
 
-    [(HUCameraTimelapseController *)self _fallbackToHighQualityClip:v7];
+    [(HUCameraTimelapseController *)self _fallbackToHighQualityClip:qualityClipCopy];
   }
 }
 
-- (void)_fallbackToHighQualityClip:(id)a3
+- (void)_fallbackToHighQualityClip:(id)clip
 {
-  v4 = a3;
-  if (v4)
+  clipCopy = clip;
+  if (clipCopy)
   {
     [(HUCameraTimelapseController *)self setPlayingHLSPlayerItem:1];
     v5 = objc_alloc(MEMORY[0x277D14488]);
-    v6 = [(HUCameraTimelapseController *)self cameraProfile];
-    v7 = [v6 clipManager];
-    v8 = [v5 initWithClipManager:v7 clip:v4];
+    cameraProfile = [(HUCameraTimelapseController *)self cameraProfile];
+    clipManager = [cameraProfile clipManager];
+    v8 = [v5 initWithClipManager:clipManager clip:clipCopy];
 
-    v9 = [(HUCameraTimelapseController *)self player];
-    [v9 replaceCurrentItemWithPlayerItem:v8];
+    player = [(HUCameraTimelapseController *)self player];
+    [player replaceCurrentItemWithPlayerItem:v8];
   }
 
   else
@@ -280,9 +280,9 @@ LABEL_10:
   }
 }
 
-- (void)setTimelapseVisibility:(BOOL)a3
+- (void)setTimelapseVisibility:(BOOL)visibility
 {
-  if (!a3)
+  if (!visibility)
   {
 LABEL_8:
 
@@ -318,58 +318,58 @@ LABEL_3:
 
 - (void)_hideAllTimelapseLayers
 {
-  v3 = [(HUCameraTimelapseController *)self playerLayer];
-  [v3 setHidden:1];
+  playerLayer = [(HUCameraTimelapseController *)self playerLayer];
+  [playerLayer setHidden:1];
 
-  v4 = [(HUCameraTimelapseController *)self imageLayer];
-  [v4 setHidden:1];
+  imageLayer = [(HUCameraTimelapseController *)self imageLayer];
+  [imageLayer setHidden:1];
 }
 
 - (void)_showOnlyPlayerLayer
 {
-  v3 = [(HUCameraTimelapseController *)self playerLayer];
-  [v3 setHidden:0];
+  playerLayer = [(HUCameraTimelapseController *)self playerLayer];
+  [playerLayer setHidden:0];
 
-  v4 = [(HUCameraTimelapseController *)self imageLayer];
-  [v4 setHidden:1];
+  imageLayer = [(HUCameraTimelapseController *)self imageLayer];
+  [imageLayer setHidden:1];
 }
 
 - (void)_showOnlyImageLayer
 {
-  v3 = [(HUCameraTimelapseController *)self playerLayer];
-  [v3 setHidden:1];
+  playerLayer = [(HUCameraTimelapseController *)self playerLayer];
+  [playerLayer setHidden:1];
 
-  v4 = [(HUCameraTimelapseController *)self imageLayer];
-  [v4 setHidden:0];
+  imageLayer = [(HUCameraTimelapseController *)self imageLayer];
+  [imageLayer setHidden:0];
 }
 
-- (void)updateToPlaybackPosition:(id)a3 forHighQualityClip:(id)a4
+- (void)updateToPlaybackPosition:(id)position forHighQualityClip:(id)clip
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D144F0] sharedManager];
-  v8 = [v17 clipPlaybackDate];
-  v9 = [v7 timelapseClipPositionForDate:v8 inHighQualityClip:v6];
+  positionCopy = position;
+  clipCopy = clip;
+  mEMORY[0x277D144F0] = [MEMORY[0x277D144F0] sharedManager];
+  clipPlaybackDate = [positionCopy clipPlaybackDate];
+  v9 = [mEMORY[0x277D144F0] timelapseClipPositionForDate:clipPlaybackDate inHighQualityClip:clipCopy];
 
   if (v9)
   {
     [(HUCameraTimelapseController *)self setTimelapseVisibility:0];
-    [(HUCameraTimelapseController *)self setHighQualityClip:v6];
-    v10 = [(HUCameraTimelapseController *)self currentClip];
-    v11 = [v10 uniqueIdentifier];
-    v12 = [v9 clip];
-    v13 = [v12 uniqueIdentifier];
-    v14 = [v11 isEqual:v13];
+    [(HUCameraTimelapseController *)self setHighQualityClip:clipCopy];
+    currentClip = [(HUCameraTimelapseController *)self currentClip];
+    uniqueIdentifier = [currentClip uniqueIdentifier];
+    clip = [v9 clip];
+    uniqueIdentifier2 = [clip uniqueIdentifier];
+    v14 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [v9 clip];
-      [(HUCameraTimelapseController *)self _updateTimelapseClip:v15 withHighQualityClip:v6];
+      clip2 = [v9 clip];
+      [(HUCameraTimelapseController *)self _updateTimelapseClip:clip2 withHighQualityClip:clipCopy];
     }
 
     [(HUCameraTimelapseController *)self setTimelapseVisibility:1];
-    v16 = [v17 clipPlaybackDate];
-    [(HUCameraTimelapseController *)self seekToDate:v16];
+    clipPlaybackDate2 = [positionCopy clipPlaybackDate];
+    [(HUCameraTimelapseController *)self seekToDate:clipPlaybackDate2];
   }
 
   else
@@ -379,28 +379,28 @@ LABEL_3:
   }
 }
 
-- (void)updateVideoBounds:(CGRect)a3
+- (void)updateVideoBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [(HUCameraTimelapseController *)self playerLayer:a3.origin.x];
-  v7 = [v6 superlayer];
-  [v7 bounds];
+  v6 = [(HUCameraTimelapseController *)self playerLayer:bounds.origin.x];
+  superlayer = [v6 superlayer];
+  [superlayer bounds];
   v8 = CGRectGetMidX(v24) - width * 0.5;
 
-  v9 = [(HUCameraTimelapseController *)self playerLayer];
-  v10 = [v9 superlayer];
-  [v10 bounds];
+  playerLayer = [(HUCameraTimelapseController *)self playerLayer];
+  superlayer2 = [playerLayer superlayer];
+  [superlayer2 bounds];
   v11 = CGRectGetMidY(v25) - height * 0.5;
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setValue:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277CDA918]];
-  v12 = [(HUCameraTimelapseController *)self playerLayer];
-  [v12 setFrame:{v8, v11, width, height}];
+  playerLayer2 = [(HUCameraTimelapseController *)self playerLayer];
+  [playerLayer2 setFrame:{v8, v11, width, height}];
 
-  v13 = [(HUCameraTimelapseController *)self imageLayer];
-  [v13 setFrame:{v8, v11, width, height}];
+  imageLayer = [(HUCameraTimelapseController *)self imageLayer];
+  [imageLayer setFrame:{v8, v11, width, height}];
 
   [MEMORY[0x277CD9FF0] commit];
   v14 = HFLogForCategory();
@@ -430,10 +430,10 @@ LABEL_3:
   [(HUCameraTimelapseController *)self setTimelapseVisibility:0];
 }
 
-- (void)seekToDate:(id)a3
+- (void)seekToDate:(id)date
 {
   memset(&v6, 0, sizeof(v6));
-  [(HUCameraTimelapseController *)self cmTimeFromDate:a3];
+  [(HUCameraTimelapseController *)self cmTimeFromDate:date];
   [(HUCameraTimelapseController *)self chaseTime];
   v4 = v6;
   if (CMTimeCompare(&v4, &time2))
@@ -478,38 +478,38 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v3 = [(HUCameraTimelapseController *)self player];
-  v4 = [v3 currentItem];
-  v5 = [v4 asset];
-  v6 = [v5 URL];
+  player = [(HUCameraTimelapseController *)self player];
+  currentItem = [player currentItem];
+  asset = [currentItem asset];
+  v6 = [asset URL];
 
-  v7 = [(HUCameraTimelapseController *)self currentClip];
+  currentClip = [(HUCameraTimelapseController *)self currentClip];
 
-  if (!v7)
+  if (!currentClip)
   {
     goto LABEL_18;
   }
 
-  v8 = [v6 path];
-  v9 = [(HUCameraTimelapseController *)self currentClip];
-  v10 = [v9 uniqueIdentifier];
-  v11 = [v10 UUIDString];
-  if ([v8 containsString:v11])
+  path = [v6 path];
+  currentClip2 = [(HUCameraTimelapseController *)self currentClip];
+  uniqueIdentifier = [currentClip2 uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  if ([path containsString:uUIDString])
   {
 
 LABEL_12:
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(HUCameraTimelapseController *)self player];
-      v16 = [v15 currentItem];
-      v17 = [v16 asset];
-      v18 = [(HUCameraTimelapseController *)self currentClip];
-      v19 = [v18 uniqueIdentifier];
+      player2 = [(HUCameraTimelapseController *)self player];
+      currentItem2 = [player2 currentItem];
+      asset2 = [currentItem2 asset];
+      currentClip3 = [(HUCameraTimelapseController *)self currentClip];
+      uniqueIdentifier2 = [currentClip3 uniqueIdentifier];
       v26 = 138412546;
-      v27 = v17;
+      v27 = asset2;
       v28 = 2112;
-      v29 = v19;
+      v29 = uniqueIdentifier2;
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "Seeking with current item:%@ for clip:%@", &v26, 0x16u);
     }
 
@@ -517,9 +517,9 @@ LABEL_12:
     goto LABEL_18;
   }
 
-  v13 = [(HUCameraTimelapseController *)self isPlayingHLSPlayerItem];
+  isPlayingHLSPlayerItem = [(HUCameraTimelapseController *)self isPlayingHLSPlayerItem];
 
-  if (v13)
+  if (isPlayingHLSPlayerItem)
   {
     goto LABEL_12;
   }
@@ -527,15 +527,15 @@ LABEL_12:
   v20 = HFLogForCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    v21 = [(HUCameraTimelapseController *)self player];
-    v22 = [v21 currentItem];
-    v23 = [v22 asset];
-    v24 = [(HUCameraTimelapseController *)self currentClip];
-    v25 = [v24 uniqueIdentifier];
+    player3 = [(HUCameraTimelapseController *)self player];
+    currentItem3 = [player3 currentItem];
+    asset3 = [currentItem3 asset];
+    currentClip4 = [(HUCameraTimelapseController *)self currentClip];
+    uniqueIdentifier3 = [currentClip4 uniqueIdentifier];
     v26 = 138412546;
-    v27 = v23;
+    v27 = asset3;
     v28 = 2112;
-    v29 = v25;
+    v29 = uniqueIdentifier3;
     _os_log_error_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_ERROR, "Unable to seek due to mismatched item:%@ for clip:%@", &v26, 0x16u);
   }
 
@@ -548,7 +548,7 @@ LABEL_18:
   v13 = 0uLL;
   v14 = 0;
   [(HUCameraTimelapseController *)self chaseTime];
-  v3 = [(HUCameraTimelapseController *)self player];
+  player = [(HUCameraTimelapseController *)self player];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__HUCameraTimelapseController_actuallySeekToTime__block_invoke;
@@ -562,7 +562,7 @@ LABEL_18:
   v7 = *(MEMORY[0x277CC08F0] + 16);
   v4 = v6;
   v5 = v7;
-  [v3 seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
+  [player seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
 }
 
 void __49__HUCameraTimelapseController_actuallySeekToTime__block_invoke(uint64_t a1, int a2)
@@ -607,28 +607,28 @@ void __49__HUCameraTimelapseController_actuallySeekToTime__block_invoke(uint64_t
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (HUCameraTimelapseControllerContext == a6)
+  if (HUCameraTimelapseControllerContext == context)
   {
-    if ([a3 isEqual:{@"status", a4, a5}])
+    if ([path isEqual:{@"status", object, change}])
     {
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = MEMORY[0x277CCABB0];
-        v9 = [(HUCameraTimelapseController *)self player];
-        v10 = [v8 numberWithInteger:{objc_msgSend(v9, "status")}];
+        player = [(HUCameraTimelapseController *)self player];
+        v10 = [v8 numberWithInteger:{objc_msgSend(player, "status")}];
         *buf = 138412546;
-        v14 = self;
+        selfCopy = self;
         v15 = 2112;
         v16 = v10;
         _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "Player:%@ status changed:%@", buf, 0x16u);
       }
 
-      v11 = [(HUCameraTimelapseController *)self player];
-      -[HUCameraTimelapseController setPlayerItemStatus:](self, "setPlayerItemStatus:", [v11 status]);
+      player2 = [(HUCameraTimelapseController *)self player];
+      -[HUCameraTimelapseController setPlayerItemStatus:](self, "setPlayerItemStatus:", [player2 status]);
     }
   }
 
@@ -636,64 +636,64 @@ void __49__HUCameraTimelapseController_actuallySeekToTime__block_invoke(uint64_t
   {
     v12.receiver = self;
     v12.super_class = HUCameraTimelapseController;
-    [(HUCameraTimelapseController *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(HUCameraTimelapseController *)&v12 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(HUCameraTimelapseController *)self player];
-  [v3 removeObserver:self forKeyPath:@"status"];
+  player = [(HUCameraTimelapseController *)self player];
+  [player removeObserver:self forKeyPath:@"status"];
 
-  v4 = [MEMORY[0x277D144F0] sharedManager];
-  [v4 setClipManager:0];
+  mEMORY[0x277D144F0] = [MEMORY[0x277D144F0] sharedManager];
+  [mEMORY[0x277D144F0] setClipManager:0];
 
   v5.receiver = self;
   v5.super_class = HUCameraTimelapseController;
   [(HUCameraTimelapseController *)&v5 dealloc];
 }
 
-- (void)didDownloadVideoFileForClip:(id)a3 toURL:(id)a4
+- (void)didDownloadVideoFileForClip:(id)clip toURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  lCopy = l;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HUCameraTimelapseController_didDownloadVideoFileForClip_toURL___block_invoke;
   block[3] = &unk_277DB8810;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = clipCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = clipCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)foundVideoFileForClip:(id)a3 atURL:(id)a4
+- (void)foundVideoFileForClip:(id)clip atURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  lCopy = l;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HUCameraTimelapseController_foundVideoFileForClip_atURL___block_invoke;
   block[3] = &unk_277DB8810;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = clipCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = clipCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)failedToDownloadVideoFileForClip:(id)a3
+- (void)failedToDownloadVideoFileForClip:(id)clip
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clipCopy = clip;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = clipCopy;
     _os_log_error_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_ERROR, "Error fetching clip: %@", &v6, 0xCu);
   }
 
@@ -701,19 +701,19 @@ void __49__HUCameraTimelapseController_actuallySeekToTime__block_invoke(uint64_t
   [(HUCameraTimelapseController *)self setTimelapseVisibility:0];
 }
 
-- (void)_loadPlayerForTimelapseClip:(id)a3 atLocation:(id)a4
+- (void)_loadPlayerForTimelapseClip:(id)clip atLocation:(id)location
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUCameraTimelapseController *)self currentClip];
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v6 uniqueIdentifier];
-  v11 = [v9 hmf_isEqualToUUID:v10];
+  clipCopy = clip;
+  locationCopy = location;
+  currentClip = [(HUCameraTimelapseController *)self currentClip];
+  uniqueIdentifier = [currentClip uniqueIdentifier];
+  uniqueIdentifier2 = [clipCopy uniqueIdentifier];
+  v11 = [uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2];
 
   if (v11)
   {
-    [(HUCameraTimelapseController *)self _loadPlayerFromLocation:v7];
+    [(HUCameraTimelapseController *)self _loadPlayerFromLocation:locationCopy];
   }
 
   else
@@ -722,27 +722,27 @@ void __49__HUCameraTimelapseController_actuallySeekToTime__block_invoke(uint64_t
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = clipCopy;
       _os_log_error_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_ERROR, "No longer need timelapse for clip: %@", &v13, 0xCu);
     }
   }
 }
 
-- (void)_loadPlayerFromLocation:(id)a3
+- (void)_loadPlayerFromLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   [(HUCameraTimelapseController *)self setDownloadState:1];
   [(HUCameraTimelapseController *)self setTimelapseVisibility:1];
-  v6 = [(HUCameraTimelapseController *)self playerItemForURL:v4];
+  v6 = [(HUCameraTimelapseController *)self playerItemForURL:locationCopy];
 
-  v5 = [(HUCameraTimelapseController *)self player];
-  [v5 replaceCurrentItemWithPlayerItem:v6];
+  player = [(HUCameraTimelapseController *)self player];
+  [player replaceCurrentItemWithPlayerItem:v6];
 }
 
-- (void)setChaseTime:(id *)a3
+- (void)setChaseTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_chaseTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_chaseTime.epoch = time->var3;
   *&self->_chaseTime.value = v3;
 }
 

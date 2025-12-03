@@ -1,14 +1,14 @@
 @interface JobPipelineInMemoryStorage
-- (id)downloadAtIndex:(int64_t)a3;
-- (id)downloadForEpisodeWithUuid:(id)a3;
-- (int64_t)indexForDownload:(id)a3;
+- (id)downloadAtIndex:(int64_t)index;
+- (id)downloadForEpisodeWithUuid:(id)uuid;
+- (int64_t)indexForDownload:(id)download;
 - (int64_t)numberOfDownloads;
-- (int64_t)numberOfDownloadsFrom:(id)a3;
+- (int64_t)numberOfDownloadsFrom:(id)from;
 @end
 
 @implementation JobPipelineInMemoryStorage
 
-- (id)downloadForEpisodeWithUuid:(id)a3
+- (id)downloadForEpisodeWithUuid:(id)uuid
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -18,20 +18,20 @@
   return v6;
 }
 
-- (int64_t)indexForDownload:(id)a3
+- (int64_t)indexForDownload:(id)download
 {
   swift_unknownObjectRetain();
 
-  v4 = sub_1003AD358(a3);
+  v4 = sub_1003AD358(download);
   swift_unknownObjectRelease();
 
   return v4;
 }
 
-- (id)downloadAtIndex:(int64_t)a3
+- (id)downloadAtIndex:(int64_t)index
 {
 
-  v4 = sub_1003AD64C(a3);
+  v4 = sub_1003AD64C(index);
 
   return v4;
 }
@@ -44,7 +44,7 @@
   return v2;
 }
 
-- (int64_t)numberOfDownloadsFrom:(id)a3
+- (int64_t)numberOfDownloadsFrom:(id)from
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

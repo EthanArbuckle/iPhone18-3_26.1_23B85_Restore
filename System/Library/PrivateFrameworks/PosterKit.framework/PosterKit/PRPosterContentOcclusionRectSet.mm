@@ -1,36 +1,36 @@
 @interface PRPosterContentOcclusionRectSet
-+ (PRPosterContentOcclusionRectSet)allocWithZone:(_NSZone *)a3;
-+ (id)occlusionRectSetForName:(id)a3 rect:(CGRect)a4;
-- (BOOL)isEqual:(id)a3;
++ (PRPosterContentOcclusionRectSet)allocWithZone:(_NSZone *)zone;
++ (id)occlusionRectSetForName:(id)name rect:(CGRect)rect;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PRPosterContentOcclusionRectSet)init;
-- (PRPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)a3;
-- (PRPosterContentOcclusionRectSet)initWithCoder:(id)a3;
-- (PRPosterContentOcclusionRectSet)initWithNameToRectMap:(id)a3;
-- (PRPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)a3;
+- (PRPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)coder;
+- (PRPosterContentOcclusionRectSet)initWithCoder:(id)coder;
+- (PRPosterContentOcclusionRectSet)initWithNameToRectMap:(id)map;
+- (PRPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)set;
 - (id)allRects;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)rectWithName:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)rectWithName:(id)name;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterContentOcclusionRectSet
 
-+ (id)occlusionRectSetForName:(id)a3 rect:(CGRect)a4
++ (id)occlusionRectSetForName:(id)name rect:(CGRect)rect
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v9 = a3;
-    v10 = [a1 alloc];
-    v16 = v9;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    nameCopy = name;
+    v10 = [self alloc];
+    v16 = nameCopy;
     *v15 = x;
     *&v15[1] = y;
     *&v15[2] = width;
@@ -50,42 +50,42 @@
   return v13;
 }
 
-+ (PRPosterContentOcclusionRectSet)allocWithZone:(_NSZone *)a3
++ (PRPosterContentOcclusionRectSet)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(PRPosterContentOcclusionRectSet *)PRImmutablePosterContentOcclusionRectSet allocWithZone:a3];
+    return [(PRPosterContentOcclusionRectSet *)PRImmutablePosterContentOcclusionRectSet allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___PRPosterContentOcclusionRectSet;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
-- (PRPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)a3
+- (PRPosterContentOcclusionRectSet)initWithOcclusionRectSet:(id)set
 {
-  v4 = [a3 nameToRectMap];
-  v5 = [v4 copy];
+  nameToRectMap = [set nameToRectMap];
+  v5 = [nameToRectMap copy];
   v6 = [(PRPosterContentOcclusionRectSet *)self initWithNameToRectMap:v5];
 
   return v6;
 }
 
-- (PRPosterContentOcclusionRectSet)initWithNameToRectMap:(id)a3
+- (PRPosterContentOcclusionRectSet)initWithNameToRectMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_opt_self();
   v6 = [(PRPosterContentOcclusionRectSet *)self isMemberOfClass:v5];
 
   if (v6)
   {
-    v7 = [[PRImmutablePosterContentOcclusionRectSet alloc] initWithNameToRectMap:v4];
+    v7 = [[PRImmutablePosterContentOcclusionRectSet alloc] initWithNameToRectMap:mapCopy];
   }
 
   else
@@ -95,9 +95,9 @@
     v8 = [(PRPosterContentOcclusionRectSet *)&v12 init];
     if (v8)
     {
-      v9 = [v4 copy];
+      v9 = [mapCopy copy];
 
-      v4 = v9;
+      mapCopy = v9;
     }
 
     v7 = v8;
@@ -132,11 +132,11 @@
   return p_super;
 }
 
-- (id)rectWithName:(id)a3
+- (id)rectWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  nameToRectMap = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
+  v6 = [nameToRectMap objectForKeyedSubscript:nameCopy];
 
   v7 = [v6 copy];
 
@@ -145,26 +145,26 @@
 
 - (id)allRects
 {
-  v2 = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
-  v3 = [v2 copy];
+  nameToRectMap = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
+  v3 = [nameToRectMap copy];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(PRPosterContentOcclusionRectSet *)v5 nameToRectMap];
-    v7 = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
-    v8 = [v6 isEqualToDictionary:v7];
+    nameToRectMap = [(PRPosterContentOcclusionRectSet *)v5 nameToRectMap];
+    nameToRectMap2 = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
+    v8 = [nameToRectMap isEqualToDictionary:nameToRectMap2];
   }
 
   else
@@ -177,11 +177,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  nameToRectMap = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
+  v5 = [builder appendObject:nameToRectMap];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
@@ -193,10 +193,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(PRPosterContentOcclusionRectSet *)self allRects];
-  v5 = [v4 keyEnumerator];
+  allRects = [(PRPosterContentOcclusionRectSet *)self allRects];
+  keyEnumerator = [allRects keyEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -207,7 +207,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -216,62 +216,62 @@
         v12 = [v3 appendRect:v10 withName:?];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(PRPosterContentOcclusionRectSet *)PRImmutablePosterContentOcclusionRectSet allocWithZone:a3];
+  v4 = [(PRPosterContentOcclusionRectSet *)PRImmutablePosterContentOcclusionRectSet allocWithZone:zone];
 
   return [(PRPosterContentOcclusionRectSet *)v4 initWithOcclusionRectSet:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(PRPosterContentOcclusionRectSet *)PRMutablePosterContentOcclusionRectSet allocWithZone:a3];
+  v4 = [(PRPosterContentOcclusionRectSet *)PRMutablePosterContentOcclusionRectSet allocWithZone:zone];
 
   return [(PRPosterContentOcclusionRectSet *)v4 initWithOcclusionRectSet:self];
 }
 
-- (PRPosterContentOcclusionRectSet)initWithCoder:(id)a3
+- (PRPosterContentOcclusionRectSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"nameToRectMap"];
+  v6 = [coderCopy decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"nameToRectMap"];
 
   v7 = [(PRPosterContentOcclusionRectSet *)self initWithNameToRectMap:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
-  [v4 encodeObject:v5 forKey:@"nameToRectMap"];
+  coderCopy = coder;
+  nameToRectMap = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
+  [coderCopy encodeObject:nameToRectMap forKey:@"nameToRectMap"];
 }
 
-- (PRPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)a3
+- (PRPosterContentOcclusionRectSet)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeDictionaryOfClass:objc_opt_class() forKey:@"nameToRectMap"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeDictionaryOfClass:objc_opt_class() forKey:@"nameToRectMap"];
 
   v6 = [(PRPosterContentOcclusionRectSet *)self initWithNameToRectMap:v5];
   return v6;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
-  [v4 encodeDictionary:v5 forKey:@"nameToRectMap"];
+  coderCopy = coder;
+  nameToRectMap = [(PRPosterContentOcclusionRectSet *)self nameToRectMap];
+  [coderCopy encodeDictionary:nameToRectMap forKey:@"nameToRectMap"];
 }
 
 @end

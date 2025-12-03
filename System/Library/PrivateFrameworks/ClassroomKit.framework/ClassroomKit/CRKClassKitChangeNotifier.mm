@@ -1,9 +1,9 @@
 @interface CRKClassKitChangeNotifier
-- (BOOL)updateObservedTrustedPersonIDsWithRoster:(id)a3;
-- (CRKClassKitChangeNotifier)initWithRequirements:(id)a3;
+- (BOOL)updateObservedTrustedPersonIDsWithRoster:(id)roster;
+- (CRKClassKitChangeNotifier)initWithRequirements:(id)requirements;
 - (CRKClassKitChangeNotifierDelegate)delegate;
 - (id)makeObserverBlock;
-- (id)trustedPersonIDsInRoster:(id)a3;
+- (id)trustedPersonIDsInRoster:(id)roster;
 - (void)dataChanged;
 - (void)dealloc;
 - (void)startObservingGeneralChanges;
@@ -15,19 +15,19 @@
 
 - (void)dealloc
 {
-  v3 = [(CRKClassKitChangeNotifier *)self generalObserverToken];
-  v4 = [(CRKClassKitChangeNotifier *)self trustedPersonObserverToken];
-  v5 = [(CRKClassKitChangeNotifier *)self requirements];
+  generalObserverToken = [(CRKClassKitChangeNotifier *)self generalObserverToken];
+  trustedPersonObserverToken = [(CRKClassKitChangeNotifier *)self trustedPersonObserverToken];
+  requirements = [(CRKClassKitChangeNotifier *)self requirements];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__CRKClassKitChangeNotifier_dealloc__block_invoke;
   block[3] = &unk_278DC1DF0;
-  v11 = v3;
-  v12 = v5;
-  v13 = v4;
-  v6 = v4;
-  v7 = v5;
-  v8 = v3;
+  v11 = generalObserverToken;
+  v12 = requirements;
+  v13 = trustedPersonObserverToken;
+  v6 = trustedPersonObserverToken;
+  v7 = requirements;
+  v8 = generalObserverToken;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v9.receiver = self;
@@ -53,16 +53,16 @@ uint64_t __36__CRKClassKitChangeNotifier_dealloc__block_invoke(uint64_t result)
   return result;
 }
 
-- (CRKClassKitChangeNotifier)initWithRequirements:(id)a3
+- (CRKClassKitChangeNotifier)initWithRequirements:(id)requirements
 {
-  v5 = a3;
+  requirementsCopy = requirements;
   v11.receiver = self;
   v11.super_class = CRKClassKitChangeNotifier;
   v6 = [(CRKClassKitChangeNotifier *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requirements, a3);
+    objc_storeStrong(&v6->_requirements, requirements);
     v8 = objc_opt_new();
     observedTrustedPersonIDs = v7->_observedTrustedPersonIDs;
     v7->_observedTrustedPersonIDs = v8;
@@ -73,17 +73,17 @@ uint64_t __36__CRKClassKitChangeNotifier_dealloc__block_invoke(uint64_t result)
   return v7;
 }
 
-- (BOOL)updateObservedTrustedPersonIDsWithRoster:(id)a3
+- (BOOL)updateObservedTrustedPersonIDsWithRoster:(id)roster
 {
-  v4 = [(CRKClassKitChangeNotifier *)self trustedPersonIDsInRoster:a3];
-  v5 = [(CRKClassKitChangeNotifier *)self observedTrustedPersonIDs];
-  if (v5 | v4 && (v6 = v5, -[CRKClassKitChangeNotifier observedTrustedPersonIDs](self, "observedTrustedPersonIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:v4], v7, v6, (v8 & 1) == 0))
+  v4 = [(CRKClassKitChangeNotifier *)self trustedPersonIDsInRoster:roster];
+  observedTrustedPersonIDs = [(CRKClassKitChangeNotifier *)self observedTrustedPersonIDs];
+  if (observedTrustedPersonIDs | v4 && (v6 = observedTrustedPersonIDs, -[CRKClassKitChangeNotifier observedTrustedPersonIDs](self, "observedTrustedPersonIDs"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqual:v4], v7, v6, (v8 & 1) == 0))
   {
     [(CRKClassKitChangeNotifier *)self setObservedTrustedPersonIDs:v4];
     [(CRKClassKitChangeNotifier *)self stopObservingTrustedPersons];
-    v10 = [(CRKClassKitChangeNotifier *)self requirements];
-    v11 = [(CRKClassKitChangeNotifier *)self makeObserverBlock];
-    v12 = [v10 addObserverForPersonIDs:v4 observerBlock:v11];
+    requirements = [(CRKClassKitChangeNotifier *)self requirements];
+    makeObserverBlock = [(CRKClassKitChangeNotifier *)self makeObserverBlock];
+    v12 = [requirements addObserverForPersonIDs:v4 observerBlock:makeObserverBlock];
     [(CRKClassKitChangeNotifier *)self setTrustedPersonObserverToken:v12];
 
     v9 = 1;
@@ -99,21 +99,21 @@ uint64_t __36__CRKClassKitChangeNotifier_dealloc__block_invoke(uint64_t result)
 
 - (void)startObservingGeneralChanges
 {
-  v5 = [(CRKClassKitChangeNotifier *)self requirements];
-  v3 = [(CRKClassKitChangeNotifier *)self makeObserverBlock];
-  v4 = [v5 addGeneralObserver:v3];
+  requirements = [(CRKClassKitChangeNotifier *)self requirements];
+  makeObserverBlock = [(CRKClassKitChangeNotifier *)self makeObserverBlock];
+  v4 = [requirements addGeneralObserver:makeObserverBlock];
   [(CRKClassKitChangeNotifier *)self setGeneralObserverToken:v4];
 }
 
 - (void)stopObservingGeneralChanges
 {
-  v3 = [(CRKClassKitChangeNotifier *)self generalObserverToken];
+  generalObserverToken = [(CRKClassKitChangeNotifier *)self generalObserverToken];
 
-  if (v3)
+  if (generalObserverToken)
   {
-    v4 = [(CRKClassKitChangeNotifier *)self requirements];
-    v5 = [(CRKClassKitChangeNotifier *)self generalObserverToken];
-    [v4 removeObserver:v5];
+    requirements = [(CRKClassKitChangeNotifier *)self requirements];
+    generalObserverToken2 = [(CRKClassKitChangeNotifier *)self generalObserverToken];
+    [requirements removeObserver:generalObserverToken2];
 
     [(CRKClassKitChangeNotifier *)self setGeneralObserverToken:0];
   }
@@ -121,13 +121,13 @@ uint64_t __36__CRKClassKitChangeNotifier_dealloc__block_invoke(uint64_t result)
 
 - (void)stopObservingTrustedPersons
 {
-  v3 = [(CRKClassKitChangeNotifier *)self trustedPersonObserverToken];
+  trustedPersonObserverToken = [(CRKClassKitChangeNotifier *)self trustedPersonObserverToken];
 
-  if (v3)
+  if (trustedPersonObserverToken)
   {
-    v4 = [(CRKClassKitChangeNotifier *)self requirements];
-    v5 = [(CRKClassKitChangeNotifier *)self trustedPersonObserverToken];
-    [v4 removeObserver:v5];
+    requirements = [(CRKClassKitChangeNotifier *)self requirements];
+    trustedPersonObserverToken2 = [(CRKClassKitChangeNotifier *)self trustedPersonObserverToken];
+    [requirements removeObserver:trustedPersonObserverToken2];
 
     [(CRKClassKitChangeNotifier *)self setTrustedPersonObserverToken:0];
   }
@@ -179,22 +179,22 @@ void __46__CRKClassKitChangeNotifier_makeObserverBlock__block_invoke_2(uint64_t 
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "ClassKit data changed", v5, 2u);
   }
 
-  v4 = [(CRKClassKitChangeNotifier *)self delegate];
-  [v4 notifierDidObserveClassKitChange:self];
+  delegate = [(CRKClassKitChangeNotifier *)self delegate];
+  [delegate notifierDidObserveClassKitChange:self];
 }
 
-- (id)trustedPersonIDsInRoster:(id)a3
+- (id)trustedPersonIDsInRoster:(id)roster
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  rosterCopy = roster;
   v4 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = v3;
-  v5 = [v3 courses];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v19 = rosterCopy;
+  courses = [rosterCopy courses];
+  v6 = [courses countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -205,7 +205,7 @@ void __46__CRKClassKitChangeNotifier_makeObserverBlock__block_invoke_2(uint64_t 
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(courses);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
@@ -213,8 +213,8 @@ void __46__CRKClassKitChangeNotifier_makeObserverBlock__block_invoke_2(uint64_t 
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v11 = [v10 trustedUsers];
-        v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        trustedUsers = [v10 trustedUsers];
+        v12 = [trustedUsers countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v12)
         {
           v13 = v12;
@@ -225,21 +225,21 @@ void __46__CRKClassKitChangeNotifier_makeObserverBlock__block_invoke_2(uint64_t 
             {
               if (*v21 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(trustedUsers);
               }
 
-              v16 = [*(*(&v20 + 1) + 8 * j) identifier];
-              [v4 addObject:v16];
+              identifier = [*(*(&v20 + 1) + 8 * j) identifier];
+              [v4 addObject:identifier];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v13 = [trustedUsers countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v13);
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [courses countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v7);

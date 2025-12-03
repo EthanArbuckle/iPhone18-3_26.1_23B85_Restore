@@ -1,5 +1,5 @@
 @interface EKShowInRemindersDetailItem
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)reset;
 @end
 
@@ -14,7 +14,7 @@
   self->_cell = 0;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)

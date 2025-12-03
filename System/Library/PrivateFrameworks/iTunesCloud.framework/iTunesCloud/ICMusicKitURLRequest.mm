@@ -1,60 +1,60 @@
 @interface ICMusicKitURLRequest
-+ (unint64_t)_defaultMaxRetryCountForReason:(id)a3;
++ (unint64_t)_defaultMaxRetryCountForReason:(id)reason;
 - (ICMusicKitRequestContext)requestContext;
-- (ICMusicKitURLRequest)initWithURL:(id)a3 requestContext:(id)a4;
-- (ICMusicKitURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4 resumeData:(id)a5;
+- (ICMusicKitURLRequest)initWithURL:(id)l requestContext:(id)context;
+- (ICMusicKitURLRequest)initWithURLRequest:(id)request requestContext:(id)context resumeData:(id)data;
 - (ICStoreURLRequest)_pendingEquivalentStoreURLRequest;
 - (NSDictionary)additionalHTTPCookies;
-- (id)_buildStoreURLRequestWithUpdatedDomains:(id)a3 withBag:(id)a4;
+- (id)_buildStoreURLRequestWithUpdatedDomains:(id)domains withBag:(id)bag;
 - (id)_description;
 - (id)description;
-- (void)_buildEquivalentStoreURLRequestWithDeveloperToken:(id)a3 completionHandler:(id)a4;
-- (void)_buildMusicKitURLRequestWithBaseURLRequest:(id)a3 completionHandler:(id)a4;
-- (void)_buildStoreURLRequestWithUpdatedDomains:(id)a3 completionHandler:(id)a4;
-- (void)_buildUserTokenBasedMusicKitURLRequestWithBaseURLRequest:(id)a3 developerToken:(id)a4 completionHandler:(id)a5;
-- (void)_setDeveloperToken:(id)a3;
-- (void)_updateURLSessionManagedPropertiesForEquivalentStoreURLRequest:(id)a3;
-- (void)buildURLRequestWithCompletionHandler:(id)a3;
+- (void)_buildEquivalentStoreURLRequestWithDeveloperToken:(id)token completionHandler:(id)handler;
+- (void)_buildMusicKitURLRequestWithBaseURLRequest:(id)request completionHandler:(id)handler;
+- (void)_buildStoreURLRequestWithUpdatedDomains:(id)domains completionHandler:(id)handler;
+- (void)_buildUserTokenBasedMusicKitURLRequestWithBaseURLRequest:(id)request developerToken:(id)token completionHandler:(id)handler;
+- (void)_setDeveloperToken:(id)token;
+- (void)_updateURLSessionManagedPropertiesForEquivalentStoreURLRequest:(id)request;
+- (void)buildURLRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICMusicKitURLRequest
 
-- (void)_updateURLSessionManagedPropertiesForEquivalentStoreURLRequest:(id)a3
+- (void)_updateURLSessionManagedPropertiesForEquivalentStoreURLRequest:(id)request
 {
-  v7 = a3;
-  v4 = [(ICURLRequest *)self currentURLRequest];
-  [v7 setCurrentURLRequest:v4];
+  requestCopy = request;
+  currentURLRequest = [(ICURLRequest *)self currentURLRequest];
+  [requestCopy setCurrentURLRequest:currentURLRequest];
 
-  [v7 setRedirectCount:{-[ICURLRequest redirectCount](self, "redirectCount")}];
-  [v7 setRequestState:{-[ICURLRequest requestState](self, "requestState")}];
-  v5 = [(ICURLRequest *)self error];
-  [v7 setError:v5];
+  [requestCopy setRedirectCount:{-[ICURLRequest redirectCount](self, "redirectCount")}];
+  [requestCopy setRequestState:{-[ICURLRequest requestState](self, "requestState")}];
+  error = [(ICURLRequest *)self error];
+  [requestCopy setError:error];
 
-  [v7 setHandlingType:{-[ICURLRequest handlingType](self, "handlingType")}];
-  v6 = [(ICURLRequest *)self retryReason];
-  [v7 setRetryReason:v6];
+  [requestCopy setHandlingType:{-[ICURLRequest handlingType](self, "handlingType")}];
+  retryReason = [(ICURLRequest *)self retryReason];
+  [requestCopy setRetryReason:retryReason];
 
   [(ICURLRequest *)self retryDelay];
-  [v7 setRetryDelay:?];
+  [requestCopy setRetryDelay:?];
 }
 
-- (void)_buildUserTokenBasedMusicKitURLRequestWithBaseURLRequest:(id)a3 developerToken:(id)a4 completionHandler:(id)a5
+- (void)_buildUserTokenBasedMusicKitURLRequestWithBaseURLRequest:(id)request developerToken:(id)token completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 copy];
+  requestCopy = request;
+  tokenCopy = token;
+  handlerCopy = handler;
+  v11 = [requestCopy copy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __114__ICMusicKitURLRequest__buildUserTokenBasedMusicKitURLRequestWithBaseURLRequest_developerToken_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF9290;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = tokenCopy;
+  v17 = requestCopy;
+  v18 = handlerCopy;
+  v12 = requestCopy;
+  v13 = tokenCopy;
+  v14 = handlerCopy;
   [(ICMusicKitURLRequest *)self _buildStoreURLRequestWithUpdatedDomains:v11 completionHandler:v15];
 }
 
@@ -280,21 +280,21 @@ void __114__ICMusicKitURLRequest__buildUserTokenBasedMusicKitURLRequestWithBaseU
   }
 }
 
-- (void)_buildEquivalentStoreURLRequestWithDeveloperToken:(id)a3 completionHandler:(id)a4
+- (void)_buildEquivalentStoreURLRequestWithDeveloperToken:(id)token completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICURLRequest *)self urlRequest];
-  v9 = [v8 copy];
+  tokenCopy = token;
+  handlerCopy = handler;
+  urlRequest = [(ICURLRequest *)self urlRequest];
+  v9 = [urlRequest copy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92__ICMusicKitURLRequest__buildEquivalentStoreURLRequestWithDeveloperToken_completionHandler___block_invoke;
   v12[3] = &unk_1E7BF9218;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v10 = v6;
-  v11 = v7;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = tokenCopy;
+  v10 = tokenCopy;
+  v11 = handlerCopy;
   [(ICMusicKitURLRequest *)self _buildStoreURLRequestWithUpdatedDomains:v9 completionHandler:v12];
 }
 
@@ -409,20 +409,20 @@ void __92__ICMusicKitURLRequest__buildEquivalentStoreURLRequestWithDeveloperToke
   [v16 setPersonalizationStyle:{objc_msgSend(*(a1 + 32), "_storeRequestPersonalizationStyle")}];
 }
 
-- (id)_buildStoreURLRequestWithUpdatedDomains:(id)a3 withBag:(id)a4
+- (id)_buildStoreURLRequestWithUpdatedDomains:(id)domains withBag:(id)bag
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
-  v9 = [v7 dictionaryForBagKey:@"ampMusicAPIRegexDomains"];
+  domainsCopy = domains;
+  bagCopy = bag;
+  v8 = [domainsCopy mutableCopy];
+  v9 = [bagCopy dictionaryForBagKey:@"ampMusicAPIRegexDomains"];
   if (_os_feature_enabled_impl())
   {
     v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v38 = self;
+      selfCopy = self;
       v39 = 2112;
       v40 = v9;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Overriding Music API Domain Regex Dictionary from %@", buf, 0x16u);
@@ -449,22 +449,22 @@ void __92__ICMusicKitURLRequest__buildEquivalentStoreURLRequestWithDeveloperToke
     goto LABEL_22;
   }
 
-  v14 = [v6 URL];
-  v15 = [v14 host];
-  v16 = [v15 isEqualToString:v13];
+  v14 = [domainsCopy URL];
+  host = [v14 host];
+  v16 = [host isEqualToString:v13];
 
   if (!v16)
   {
     goto LABEL_22;
   }
 
-  v30 = self;
-  v17 = [v6 URL];
-  v18 = [v17 absoluteString];
+  selfCopy2 = self;
+  v17 = [domainsCopy URL];
+  absoluteString = [v17 absoluteString];
 
-  v19 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v18];
-  v36 = v18;
-  v35 = [v18 length];
+  v19 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:absoluteString];
+  v36 = absoluteString;
+  v35 = [absoluteString length];
   v20 = [v9 ic_arrayValueForKey:@"endpoints"];
   v21 = v20;
   if (!v20)
@@ -474,14 +474,14 @@ void __92__ICMusicKitURLRequest__buildEquivalentStoreURLRequestWithDeveloperToke
 
   v32 = v8;
   v33 = v19;
-  v31 = v7;
+  v31 = bagCopy;
   if (![v20 count])
   {
     goto LABEL_20;
   }
 
   v22 = 0;
-  v34 = v6;
+  v34 = domainsCopy;
   while (1)
   {
     v23 = [v21 objectAtIndex:v22];
@@ -508,10 +508,10 @@ LABEL_18:
   }
 
   v26 = [objc_alloc(MEMORY[0x1E696AE70]) initWithPattern:v25 options:1 error:0];
-  if (![v26 numberOfMatchesInString:v18 options:0 range:{0, v35}] || !objc_msgSend(v24, "length"))
+  if (![v26 numberOfMatchesInString:absoluteString options:0 range:{0, v35}] || !objc_msgSend(v24, "length"))
   {
 
-    v6 = v34;
+    domainsCopy = v34;
     goto LABEL_18;
   }
 
@@ -519,7 +519,7 @@ LABEL_18:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v38 = v30;
+    selfCopy = selfCopy2;
     v39 = 2114;
     v40 = v36;
     v41 = 2114;
@@ -530,14 +530,14 @@ LABEL_18:
   }
 
   [v33 setHost:v24];
-  v6 = v34;
+  domainsCopy = v34;
 LABEL_20:
   v19 = v33;
   v27 = [v33 URL];
   v8 = v32;
   [v32 setURL:v27];
 
-  v7 = v31;
+  bagCopy = v31;
 LABEL_21:
 
 LABEL_22:
@@ -546,27 +546,27 @@ LABEL_23:
   return v8;
 }
 
-- (void)_buildStoreURLRequestWithUpdatedDomains:(id)a3 completionHandler:(id)a4
+- (void)_buildStoreURLRequestWithUpdatedDomains:(id)domains completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v8 = +[ICURLBagProvider sharedBagProvider];
-    v9 = [(ICMusicKitURLRequest *)self requestContext];
+    requestContext = [(ICMusicKitURLRequest *)self requestContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __82__ICMusicKitURLRequest__buildStoreURLRequestWithUpdatedDomains_completionHandler___block_invoke;
     v10[3] = &unk_1E7BF9DB0;
-    v12 = v7;
+    v12 = handlerCopy;
     v10[4] = self;
-    v11 = v6;
-    [v8 getBagForRequestContext:v9 withCompletionHandler:v10];
+    v11 = domainsCopy;
+    [v8 getBagForRequestContext:requestContext withCompletionHandler:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, domainsCopy, 0);
   }
 }
 
@@ -588,27 +588,27 @@ void __82__ICMusicKitURLRequest__buildStoreURLRequestWithUpdatedDomains_completi
   }
 }
 
-- (void)_buildMusicKitURLRequestWithBaseURLRequest:(id)a3 completionHandler:(id)a4
+- (void)_buildMusicKitURLRequestWithBaseURLRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICMusicKitURLRequest *)self requestContext];
-  v9 = [v8 clientInfo];
-  v10 = [v8 developerTokenProvider];
+  requestCopy = request;
+  handlerCopy = handler;
+  requestContext = [(ICMusicKitURLRequest *)self requestContext];
+  clientInfo = [requestContext clientInfo];
+  developerTokenProvider = [requestContext developerTokenProvider];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__ICMusicKitURLRequest__buildMusicKitURLRequestWithBaseURLRequest_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF91C0;
-  v16 = v10;
-  v17 = self;
-  v19 = v6;
-  v20 = v7;
-  v18 = v8;
-  v11 = v6;
-  v12 = v8;
-  v13 = v7;
-  v14 = v10;
-  [v14 fetchDeveloperTokenForClientInfo:v9 completionHandler:v15];
+  v16 = developerTokenProvider;
+  selfCopy = self;
+  v19 = requestCopy;
+  v20 = handlerCopy;
+  v18 = requestContext;
+  v11 = requestCopy;
+  v12 = requestContext;
+  v13 = handlerCopy;
+  v14 = developerTokenProvider;
+  [v14 fetchDeveloperTokenForClientInfo:clientInfo completionHandler:v15];
 }
 
 void __85__ICMusicKitURLRequest__buildMusicKitURLRequestWithBaseURLRequest_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -655,9 +655,9 @@ void __85__ICMusicKitURLRequest__buildMusicKitURLRequestWithBaseURLRequest_compl
 {
   v4.receiver = self;
   v4.super_class = ICMusicKitURLRequest;
-  v2 = [(ICURLRequest *)&v4 requestContext];
+  requestContext = [(ICURLRequest *)&v4 requestContext];
 
-  return v2;
+  return requestContext;
 }
 
 - (NSDictionary)additionalHTTPCookies
@@ -690,18 +690,18 @@ void __85__ICMusicKitURLRequest__buildMusicKitURLRequestWithBaseURLRequest_compl
   return v6;
 }
 
-- (void)buildURLRequestWithCompletionHandler:(id)a3
+- (void)buildURLRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__ICMusicKitURLRequest_buildURLRequestWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7BF9190;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = ICMusicKitURLRequest;
-  v5 = v4;
+  v5 = handlerCopy;
   [(ICURLRequest *)&v6 buildURLRequestWithCompletionHandler:v7];
 }
 
@@ -745,8 +745,8 @@ void __61__ICMusicKitURLRequest_buildURLRequestWithCompletionHandler___block_inv
   v3 = self->_cachedDescription;
   if (!v3)
   {
-    v4 = [(ICMusicKitURLRequest *)self _description];
-    v5 = [v4 copy];
+    _description = [(ICMusicKitURLRequest *)self _description];
+    v5 = [_description copy];
     cachedDescription = self->_cachedDescription;
     self->_cachedDescription = v5;
 
@@ -763,8 +763,8 @@ void __61__ICMusicKitURLRequest_buildURLRequestWithCompletionHandler___block_inv
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ICMusicKitURLRequest *)self requestContext];
-  [v6 appendFormat:@"; requestContext = %@", v7];
+  requestContext = [(ICMusicKitURLRequest *)self requestContext];
+  [v6 appendFormat:@"; requestContext = %@", requestContext];
   [v6 appendString:@">"];
 
   return v6;
@@ -778,44 +778,44 @@ void __61__ICMusicKitURLRequest_buildURLRequestWithCompletionHandler___block_inv
   return pendingEquivalentStoreURLRequest;
 }
 
-- (void)_setDeveloperToken:(id)a3
+- (void)_setDeveloperToken:(id)token
 {
-  v9 = a3;
+  tokenCopy = token;
   v4 = self->_developerToken;
   developerToken = v4;
-  if (v4 != v9)
+  if (v4 != tokenCopy)
   {
-    v6 = [(NSString *)v4 isEqual:v9];
+    v6 = [(NSString *)v4 isEqual:tokenCopy];
 
-    v7 = v9;
+    v7 = tokenCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v8 = v9;
+    v8 = tokenCopy;
     developerToken = self->_developerToken;
     self->_developerToken = v8;
   }
 
-  v7 = v9;
+  v7 = tokenCopy;
 LABEL_5:
 }
 
-- (ICMusicKitURLRequest)initWithURLRequest:(id)a3 requestContext:(id)a4 resumeData:(id)a5
+- (ICMusicKitURLRequest)initWithURLRequest:(id)request requestContext:(id)context resumeData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ICMusicKitURLRequest.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"[requestContext isKindOfClass:[ICMusicKitRequestContext class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicKitURLRequest.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"[requestContext isKindOfClass:[ICMusicKitRequestContext class]]"}];
   }
 
   v14.receiver = self;
   v14.super_class = ICMusicKitURLRequest;
-  v10 = [(ICURLRequest *)&v14 initWithURLRequest:v8 requestContext:v9 resumeData:0];
+  v10 = [(ICURLRequest *)&v14 initWithURLRequest:requestCopy requestContext:contextCopy resumeData:0];
   v11 = v10;
   if (v10)
   {
@@ -825,21 +825,21 @@ LABEL_5:
   return v11;
 }
 
-- (ICMusicKitURLRequest)initWithURL:(id)a3 requestContext:(id)a4
+- (ICMusicKitURLRequest)initWithURL:(id)l requestContext:(id)context
 {
   v6 = MEMORY[0x1E695AC68];
-  v7 = a4;
-  v8 = [v6 requestWithURL:a3];
-  v9 = [(ICMusicKitURLRequest *)self initWithURLRequest:v8 requestContext:v7 resumeData:0];
+  contextCopy = context;
+  v8 = [v6 requestWithURL:l];
+  v9 = [(ICMusicKitURLRequest *)self initWithURLRequest:v8 requestContext:contextCopy resumeData:0];
 
   return v9;
 }
 
-+ (unint64_t)_defaultMaxRetryCountForReason:(id)a3
++ (unint64_t)_defaultMaxRetryCountForReason:(id)reason
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 == @"developer-token-invalidated")
+  reasonCopy = reason;
+  v4 = reasonCopy;
+  if (reasonCopy == @"developer-token-invalidated")
   {
 LABEL_7:
     v5 = 1;
@@ -847,7 +847,7 @@ LABEL_7:
   }
 
   v5 = 1;
-  if (([(__CFString *)v3 isEqual:@"developer-token-invalidated"]& 1) == 0 && v4 != @"music-user-token-invalidated")
+  if (([(__CFString *)reasonCopy isEqual:@"developer-token-invalidated"]& 1) == 0 && v4 != @"music-user-token-invalidated")
   {
     v5 = 1;
     if (([(__CFString *)v4 isEqual:@"music-user-token-invalidated"]& 1) == 0 && v4 != @"other")

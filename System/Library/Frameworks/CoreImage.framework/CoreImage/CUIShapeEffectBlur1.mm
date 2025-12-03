@@ -110,7 +110,7 @@
       }
 
       v15 = [CIVector vectorWithX:[(NSNumber *)self->inputShadowBlurInner intValue] Y:[(NSNumber *)self->inputShadowBlurOuter intValue]];
-      v16 = [(CUIShapeEffectBlur1 *)self _kernel];
+      _kernel = [(CUIShapeEffectBlur1 *)self _kernel];
       [(CIImage *)v6 extent];
       v18 = v17;
       v20 = v19;
@@ -138,7 +138,7 @@
       v33[7] = inputShadowColorInner;
       v33[8] = self->inputShadowColorOuter;
       v33[9] = v15;
-      return [v16 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v33, 10), v35.origin.x, v35.origin.y, v35.size.width, v35.size.height}];
+      return [_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v33, 10), v35.origin.x, v35.origin.y, v35.size.width, v35.size.height}];
     }
 
     else

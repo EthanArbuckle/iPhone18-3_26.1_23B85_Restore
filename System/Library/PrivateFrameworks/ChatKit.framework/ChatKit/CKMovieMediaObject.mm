@@ -1,9 +1,9 @@
 @interface CKMovieMediaObject
-+ (CGImage)playButtonPreviewForCGImage:(CGImage *)a3 scale:(double)a4 isFromMe:(BOOL)a5;
++ (CGImage)playButtonPreviewForCGImage:(CGImage *)image scale:(double)scale isFromMe:(BOOL)me;
 + (id)UTITypes;
-+ (id)playButtonPreviewForUIImage:(id)a3 scale:(double)a4 contentAlignmentInsets:(UIEdgeInsets)a5;
++ (id)playButtonPreviewForUIImage:(id)image scale:(double)scale contentAlignmentInsets:(UIEdgeInsets)insets;
 - (AVURLAsset)asset;
-- (BOOL)_assetContainsMetadataKey:(id)a3;
+- (BOOL)_assetContainsMetadataKey:(id)key;
 - (BOOL)allowAutoplay;
 - (BOOL)canExport;
 - (BOOL)hasNoVideoTrack;
@@ -14,14 +14,14 @@
 - (Class)balloonViewClass;
 - (Class)previewBalloonViewClass;
 - (Class)replyContextBalloonViewClass;
-- (id)attachmentSummary:(unint64_t)a3;
-- (id)bbPreviewFillToSize:(CGSize)a3;
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4;
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4;
+- (id)attachmentSummary:(unint64_t)summary;
+- (id)bbPreviewFillToSize:(CGSize)size;
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets;
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation;
 - (id)metricsCollectorMediaType;
-- (id)previewForWidth:(double)a3 orientation:(char)a4;
+- (id)previewForWidth:(double)width orientation:(char)orientation;
 - (id)previewItemTitle;
-- (void)prewarmPreviewForWidth:(double)a3 orientation:(char)a4;
+- (void)prewarmPreviewForWidth:(double)width orientation:(char)orientation;
 - (void)updateVideoInfo;
 @end
 
@@ -58,9 +58,9 @@ uint64_t __30__CKMovieMediaObject_UTITypes__block_invoke_2(uint64_t a1, uint64_t
 
 - (id)metricsCollectorMediaType
 {
-  v2 = [(CKMovieMediaObject *)self isAutoloopVideo];
+  isAutoloopVideo = [(CKMovieMediaObject *)self isAutoloopVideo];
   v3 = MEMORY[0x1E69A7498];
-  if (!v2)
+  if (!isAutoloopVideo)
   {
     v3 = MEMORY[0x1E69A74C8];
   }
@@ -70,7 +70,7 @@ uint64_t __30__CKMovieMediaObject_UTITypes__block_invoke_2(uint64_t a1, uint64_t
   return v4;
 }
 
-- (id)attachmentSummary:(unint64_t)a3
+- (id)attachmentSummary:(unint64_t)summary
 {
   if ([(CKMovieMediaObject *)self isJellyfishVideo])
   {
@@ -82,8 +82,8 @@ uint64_t __30__CKMovieMediaObject_UTITypes__block_invoke_2(uint64_t a1, uint64_t
 
   else
   {
-    v9 = [(CKMediaObject *)self filename];
-    v10 = [v9 isEqualToString:@"Video Message.mov"];
+    filename = [(CKMediaObject *)self filename];
+    v10 = [filename isEqualToString:@"Video Message.mov"];
 
     v5 = MEMORY[0x1E696AEC0];
     v6 = IMSharedUtilitiesFrameworkBundle();
@@ -100,9 +100,9 @@ uint64_t __30__CKMovieMediaObject_UTITypes__block_invoke_2(uint64_t a1, uint64_t
   }
 
   v11 = [v6 localizedStringForKey:v8 value:&stru_1F04268F8 table:@"IMSharedUtilities"];
-  v12 = [v5 localizedStringWithFormat:v11, a3];
+  summary = [v5 localizedStringWithFormat:v11, summary];
 
-  return v12;
+  return summary;
 }
 
 - (BOOL)isAutoloopVideo
@@ -246,10 +246,10 @@ uint64_t __37__CKMovieMediaObject_isAutoloopVideo__block_invoke_223(uint64_t res
 {
   if (![(CKMovieMediaObject *)self isJellyfishInitialized])
   {
-    v3 = [(CKMediaObject *)self transfer];
-    v4 = [v3 attributionInfo];
+    transfer = [(CKMediaObject *)self transfer];
+    attributionInfo = [transfer attributionInfo];
 
-    v5 = [v4 objectForKey:*MEMORY[0x1E69A6FB0]];
+    v5 = [attributionInfo objectForKey:*MEMORY[0x1E69A6FB0]];
     if (v5)
     {
       v6 = IMBalloonExtensionIDWithSuffix();
@@ -260,30 +260,30 @@ uint64_t __37__CKMovieMediaObject_isAutoloopVideo__block_invoke_223(uint64_t res
   return self->_isJellyfishVideo;
 }
 
-- (BOOL)_assetContainsMetadataKey:(id)a3
+- (BOOL)_assetContainsMetadataKey:(id)key
 {
   v4 = MEMORY[0x1E69A7F00];
-  v5 = a3;
-  v6 = [(CKMovieMediaObject *)self asset];
-  LOBYTE(v4) = [v4 asset:v6 containsMetadataKey:v5];
+  keyCopy = key;
+  asset = [(CKMovieMediaObject *)self asset];
+  LOBYTE(v4) = [v4 asset:asset containsMetadataKey:keyCopy];
 
   return v4;
 }
 
 - (BOOL)allowAutoplay
 {
-  v3 = [(CKMediaObject *)self messageContext];
-  v4 = [v3 isFromMe];
+  messageContext = [(CKMediaObject *)self messageContext];
+  isFromMe = [messageContext isFromMe];
 
-  if (v4)
+  if (isFromMe)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v6 = [(CKMediaObject *)self messageContext];
-    v5 = [v6 isSpam] ^ 1;
+    messageContext2 = [(CKMediaObject *)self messageContext];
+    v5 = [messageContext2 isSpam] ^ 1;
   }
 
   return v5;
@@ -293,14 +293,14 @@ uint64_t __37__CKMovieMediaObject_isAutoloopVideo__block_invoke_223(uint64_t res
 {
   if ([(CKMovieMediaObject *)self isAutoloopVideo])
   {
-    v3 = [(CKMediaObject *)self transfer];
-    if ([v3 isFileDataReady])
+    transfer = [(CKMediaObject *)self transfer];
+    if ([transfer isFileDataReady])
     {
-      v4 = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
+      transcoderPreviewGenerationFailed = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
 
-      if (!v4)
+      if (!transcoderPreviewGenerationFailed)
       {
-        v5 = [(CKMovieMediaObject *)self previewBalloonViewClass];
+        previewBalloonViewClass = [(CKMovieMediaObject *)self previewBalloonViewClass];
         goto LABEL_7;
       }
     }
@@ -312,10 +312,10 @@ uint64_t __37__CKMovieMediaObject_isAutoloopVideo__block_invoke_223(uint64_t res
 
   v7.receiver = self;
   v7.super_class = CKMovieMediaObject;
-  v5 = [(CKMediaObject *)&v7 balloonViewClass];
+  previewBalloonViewClass = [(CKMediaObject *)&v7 balloonViewClass];
 LABEL_7:
 
-  return v5;
+  return previewBalloonViewClass;
 }
 
 - (Class)previewBalloonViewClass
@@ -342,9 +342,9 @@ LABEL_7:
   return v3;
 }
 
-- (id)previewForWidth:(double)a3 orientation:(char)a4
+- (id)previewForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   if ([(CKMovieMediaObject *)self hasNoVideoTrack])
   {
     v7 = 0;
@@ -354,38 +354,38 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = CKMovieMediaObject;
-    v7 = [(CKMediaObject *)&v9 previewForWidth:v4 orientation:a3];
+    v7 = [(CKMediaObject *)&v9 previewForWidth:orientationCopy orientation:width];
   }
 
   return v7;
 }
 
-- (void)prewarmPreviewForWidth:(double)a3 orientation:(char)a4
+- (void)prewarmPreviewForWidth:(double)width orientation:(char)orientation
 {
   v4.receiver = self;
   v4.super_class = CKMovieMediaObject;
-  [(CKMediaObject *)&v4 prewarmPreviewForWidth:a4 orientation:a3];
+  [(CKMediaObject *)&v4 prewarmPreviewForWidth:orientation orientation:width];
 }
 
-- (id)generateThumbnailForWidth:(double)a3 orientation:(char)a4
+- (id)generateThumbnailForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   [(CKMovieMediaObject *)self pxSize];
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v13 = 1.0 / v12;
   v14 = v8 * v13;
   v15 = v10 * v13;
 
   v16 = +[CKUIBehavior sharedBehaviors];
-  [v16 thumbnailFillSizeForWidth:a3 imageSize:{v14, v15}];
+  [v16 thumbnailFillSizeForWidth:width imageSize:{v14, v15}];
   v18 = v17;
   v20 = v19;
 
   v21 = +[CKUIBehavior sharedBehaviors];
-  [v21 thumbnailContentAlignmentInsetsForOrientation:v4];
+  [v21 thumbnailContentAlignmentInsetsForOrientation:orientationCopy];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -394,14 +394,14 @@ LABEL_7:
   return [(CKMovieMediaObject *)self generateThumbnailFillToSize:v18 contentAlignmentInsets:v20, v23, v25, v27, v29];
 }
 
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets
 {
-  bottom = a4.bottom;
-  right = a4.right;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
+  bottom = insets.bottom;
+  right = insets.right;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
   v52 = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x193AF5ED0]("kCMTimeZero", @"CoreMedia");
   v48 = *v8;
@@ -409,16 +409,16 @@ LABEL_7:
   [(CKMovieMediaObject *)self pxSize];
   v10 = v9;
   v12 = v11;
-  v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v15 = v14;
 
-  v16 = [(CKMovieMediaObject *)self thumbnail];
-  v17 = v16;
-  if (v16)
+  thumbnail = [(CKMovieMediaObject *)self thumbnail];
+  v17 = thumbnail;
+  if (thumbnail)
   {
-    v18 = [v16 CGImage];
-    CFRetain(v18);
+    cGImage = [thumbnail CGImage];
+    CFRetain(cGImage);
   }
 
   else
@@ -443,8 +443,8 @@ LABEL_7:
       v20 = height * v15 / v12;
     }
 
-    v21 = [(CKMovieMediaObject *)self asset];
-    v22 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:v21];
+    asset = [(CKMovieMediaObject *)self asset];
+    v22 = [MEMORY[0x1E6987E68] assetImageGeneratorWithAsset:asset];
     v23 = fmax(v19, v20);
     v24 = ceil(v12 * v23);
     v25 = ceil(v10 * v23);
@@ -452,13 +452,13 @@ LABEL_7:
     [v22 setMaximumSize:{v25, v24}];
     *buf = v48;
     *&buf[16] = v49;
-    v18 = [v22 copyCGImageAtTime:buf actualTime:0 error:0];
+    cGImage = [v22 copyCGImageAtTime:buf actualTime:0 error:0];
   }
 
-  if (v18)
+  if (cGImage)
   {
-    v26 = CGImageGetWidth(v18);
-    v27 = CGImageGetHeight(v18);
+    v26 = CGImageGetWidth(cGImage);
+    v27 = CGImageGetHeight(cGImage);
     v28 = v15;
     if ([objc_opt_class() shouldScaleUpPreview])
     {
@@ -528,7 +528,7 @@ LABEL_7:
       }
     }
 
-    v39 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v18 scale:objc_msgSend(v17 orientation:{"imageOrientation"), v28}];
+    v39 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:cGImage scale:objc_msgSend(v17 orientation:{"imageOrientation"), v28}];
 
     if (![(CKMovieMediaObject *)self isJellyfishVideo]&& ![(CKMovieMediaObject *)self isAutoloopVideo]|| [(CKMovieMediaObject *)self isMultitrackMemoriesVideo:v42])
     {
@@ -537,7 +537,7 @@ LABEL_7:
       v39 = v40;
     }
 
-    CFRelease(v18);
+    CFRelease(cGImage);
   }
 
   else
@@ -548,36 +548,36 @@ LABEL_7:
   return v39;
 }
 
-+ (CGImage)playButtonPreviewForCGImage:(CGImage *)a3 scale:(double)a4 isFromMe:(BOOL)a5
++ (CGImage)playButtonPreviewForCGImage:(CGImage *)image scale:(double)scale isFromMe:(BOOL)me
 {
-  v5 = a5;
+  meCopy = me;
   v9 = +[CKUIBehavior sharedBehaviors];
-  [v9 thumbnailContentAlignmentInsetsForOrientation:v5];
+  [v9 thumbnailContentAlignmentInsetsForOrientation:meCopy];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [MEMORY[0x1E69DCAB8] imageWithCGImage:a3 scale:0 orientation:a4];
-  v19 = [a1 playButtonPreviewForUIImage:v18 scale:a4 contentAlignmentInsets:{v11, v13, v15, v17}];
+  v18 = [MEMORY[0x1E69DCAB8] imageWithCGImage:image scale:0 orientation:scale];
+  v19 = [self playButtonPreviewForUIImage:v18 scale:scale contentAlignmentInsets:{v11, v13, v15, v17}];
 
-  v20 = [v19 CGImage];
-  return v20;
+  cGImage = [v19 CGImage];
+  return cGImage;
 }
 
-+ (id)playButtonPreviewForUIImage:(id)a3 scale:(double)a4 contentAlignmentInsets:(UIEdgeInsets)a5
++ (id)playButtonPreviewForUIImage:(id)image scale:(double)scale contentAlignmentInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  v9 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  imageCopy = image;
   v10 = +[CKUIBehavior sharedBehaviors];
-  v11 = [v10 playButtonImage];
-  v12 = [v10 playButtonArrowImage];
-  v13 = [v10 playButtonPunchesOutArrow];
-  v14 = [v10 playButtonBackdropStyle];
-  [v11 size];
+  playButtonImage = [v10 playButtonImage];
+  playButtonArrowImage = [v10 playButtonArrowImage];
+  playButtonPunchesOutArrow = [v10 playButtonPunchesOutArrow];
+  playButtonBackdropStyle = [v10 playButtonBackdropStyle];
+  [playButtonImage size];
   v16 = v15;
   v18 = v17;
   v19 = +[CKUIBehavior sharedBehaviors];
@@ -585,10 +585,10 @@ LABEL_7:
   v22 = v16 + v20 + v21;
   v25 = v18 + v23 + v24;
 
-  v26 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v27 = [v26 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  if ((v27 & 1) == 0)
+  if ((isRoundTailedBalloonShapeEnabled & 1) == 0)
   {
     v28 = +[CKUIBehavior sharedBehaviors];
     [v28 balloonMaskTailSizeForTailShape:1];
@@ -597,31 +597,31 @@ LABEL_7:
     v22 = v22 + v30 * 2.0;
   }
 
-  [v9 size];
+  [imageCopy size];
   if (v32 < v22 || v31 < v25)
   {
-    v34 = v9;
+    v34 = imageCopy;
     v35 = v34;
   }
 
   else
   {
-    [v9 size];
-    UIGraphicsBeginImageContextWithOptions(v73, 0, a4);
+    [imageCopy size];
+    UIGraphicsBeginImageContextWithOptions(v73, 0, scale);
     v36 = *MEMORY[0x1E695EFF8];
     v37 = *(MEMORY[0x1E695EFF8] + 8);
-    [v9 size];
+    [imageCopy size];
     v68 = v37;
     v69 = v36;
     v38 = left + v36;
     v70 = top + v37;
     v40 = v39 - (left + right);
     v42 = v41 - (top + bottom);
-    [v11 size];
+    [playButtonImage size];
     v44 = v43;
     v46 = v45;
-    [v11 scale];
-    v48 = v47 / a4;
+    [playButtonImage scale];
+    v48 = v47 / scale;
     v49 = v44 * v48;
     v50 = v46 * v48;
     if (CKMainScreenScale_once_29 != -1)
@@ -637,11 +637,11 @@ LABEL_7:
 
     v67 = floor((v38 + (v40 - v49) * 0.5) * v51) / v51;
     v52 = floor((v70 + (v42 - v50) * 0.5) * v51) / v51;
-    [v12 size];
+    [playButtonArrowImage size];
     v54 = v53;
     v56 = v55;
-    [v11 scale];
-    v58 = v57 / a4;
+    [playButtonImage scale];
+    v58 = v57 / scale;
     v59 = v54 * v58;
     v60 = v56 * v58;
     if (CKMainScreenScale_once_29 != -1)
@@ -657,56 +657,56 @@ LABEL_7:
 
     v62 = floor((v38 + (v40 - v59) * 0.5) * v61) / v61;
     v63 = floor((v70 + (v42 - v60) * 0.5) * v61) / v61;
-    [v11 drawInRect:{v67, v52, v49, v50}];
-    if (v13)
+    [playButtonImage drawInRect:{v67, v52, v49, v50}];
+    if (playButtonPunchesOutArrow)
     {
-      [v12 drawInRect:23 blendMode:v62 alpha:{v63, v59, v60, 1.0}];
+      [playButtonArrowImage drawInRect:23 blendMode:v62 alpha:{v63, v59, v60, 1.0}];
     }
 
     v64 = UIGraphicsGetImageFromCurrentImageContext();
 
     UIGraphicsEndImageContext();
-    v65 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:v14 graphicsQuality:100];
+    v65 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:playButtonBackdropStyle graphicsQuality:100];
     [v65 setGrayscaleTintMaskImage:v64];
     [v65 setColorTintMaskImage:v64];
     [v65 setFilterMaskImage:v64];
-    v34 = [v9 _applyBackdropViewSettings:v65];
+    v34 = [imageCopy _applyBackdropViewSettings:v65];
 
     [v34 size];
-    UIGraphicsBeginImageContextWithOptions(v74, 0, a4);
+    UIGraphicsBeginImageContextWithOptions(v74, 0, scale);
     [v34 drawAtPoint:{v69, v68}];
-    if (v13)
+    if (playButtonPunchesOutArrow)
     {
-      [v12 drawInRect:26 blendMode:v62 alpha:{v63, v59, v60, 0.4}];
+      [playButtonArrowImage drawInRect:26 blendMode:v62 alpha:{v63, v59, v60, 0.4}];
     }
 
     else
     {
-      [v12 drawInRect:{v62, v63, v59, v60}];
+      [playButtonArrowImage drawInRect:{v62, v63, v59, v60}];
     }
 
     v35 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    v11 = v64;
+    playButtonImage = v64;
   }
 
   return v35;
 }
 
-- (id)bbPreviewFillToSize:(CGSize)a3
+- (id)bbPreviewFillToSize:(CGSize)size
 {
   v14 = *MEMORY[0x1E69E9840];
-  if ([(CKMediaObject *)self transcoderPreviewGenerationFailed:a3.width])
+  if ([(CKMediaObject *)self transcoderPreviewGenerationFailed:size.width])
   {
     if (IMOSLoggingEnabled())
     {
       v4 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [(CKMediaObject *)self transferGUID];
+        transferGUID = [(CKMediaObject *)self transferGUID];
         v12 = 138412290;
-        v13 = v5;
+        v13 = transferGUID;
         _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Transfer %@ was marked as failed for preview generation, not showing preview in notification", &v12, 0xCu);
       }
     }
@@ -716,8 +716,8 @@ LABEL_7:
 
   else
   {
-    v7 = [(CKMediaObject *)self fileURL];
-    v8 = [(CKMediaObject *)self previewFilenameExtension];
+    fileURL = [(CKMediaObject *)self fileURL];
+    previewFilenameExtension = [(CKMediaObject *)self previewFilenameExtension];
     v9 = IMAttachmentPreviewFileURL();
 
     v6 = [(CKMediaObject *)self savedPreviewFromURL:v9 forOrientation:0];
@@ -741,8 +741,8 @@ LABEL_7:
   [(CKMovieMediaObject *)self pxSize];
   v3 = v2;
   v5 = v4;
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v8 = 1.0 / v7;
   v9 = v3 * v8;
   v10 = v5 * v8;
@@ -756,20 +756,20 @@ LABEL_7:
 
 - (BOOL)canExport
 {
-  v3 = [(CKMediaObject *)self transfer];
-  v4 = [v3 isFileDataReady];
+  transfer = [(CKMediaObject *)self transfer];
+  isFileDataReady = [transfer isFileDataReady];
 
-  if (!v4)
+  if (!isFileDataReady)
   {
     return 0;
   }
 
-  v5 = [(CKMediaObject *)self fileURL];
-  v6 = [v5 path];
+  fileURL = [(CKMediaObject *)self fileURL];
+  path = [fileURL path];
 
-  if (v6)
+  if (path)
   {
-    IsCompatibleWithSavedPhotosAlbum = UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(v6);
+    IsCompatibleWithSavedPhotosAlbum = UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path);
   }
 
   else
@@ -791,8 +791,8 @@ LABEL_7:
 
   else
   {
-    v6 = [(CKMediaObject *)self filename];
-    v7 = [v6 isEqualToString:@"Video Message.mov"];
+    filename = [(CKMediaObject *)self filename];
+    v7 = [filename isEqualToString:@"Video Message.mov"];
 
     v3 = CKFrameworkBundle();
     v4 = v3;
@@ -816,10 +816,10 @@ LABEL_7:
 {
   if (![(CKMovieMediaObject *)self checkedVideoInfo])
   {
-    v3 = [(CKMediaObject *)self transfer];
-    v4 = [v3 isFileDataReady];
+    transfer = [(CKMediaObject *)self transfer];
+    isFileDataReady = [transfer isFileDataReady];
 
-    if (v4)
+    if (isFileDataReady)
     {
       [(CKMovieMediaObject *)self updateVideoInfo];
       [(CKMovieMediaObject *)self setCheckedVideoInfo:1];
@@ -837,18 +837,18 @@ LABEL_7:
 {
   if (!self->_asset)
   {
-    v3 = [(CKMediaObject *)self transfer];
-    if ([v3 isFileDataReady])
+    transfer = [(CKMediaObject *)self transfer];
+    if ([transfer isFileDataReady])
     {
-      v4 = [(CKMovieMediaObject *)self hasNoVideoTrack];
+      hasNoVideoTrack = [(CKMovieMediaObject *)self hasNoVideoTrack];
 
-      if (v4)
+      if (hasNoVideoTrack)
       {
         goto LABEL_6;
       }
 
-      v3 = [(CKMediaObject *)self fileURL];
-      v5 = CKAVURLAssetForURL(v3);
+      transfer = [(CKMediaObject *)self fileURL];
+      v5 = CKAVURLAssetForURL(transfer);
       asset = self->_asset;
       self->_asset = v5;
     }
@@ -862,30 +862,30 @@ LABEL_6:
 
 - (BOOL)hasNoVideoTrack
 {
-  v3 = [(CKMovieMediaObject *)self checkedVideoInfo];
-  if (v3)
+  checkedVideoInfo = [(CKMovieMediaObject *)self checkedVideoInfo];
+  if (checkedVideoInfo)
   {
-    LOBYTE(v3) = ![(CKMovieMediaObject *)self hasVideoTrack];
+    LOBYTE(checkedVideoInfo) = ![(CKMovieMediaObject *)self hasVideoTrack];
   }
 
-  return v3;
+  return checkedVideoInfo;
 }
 
 - (void)updateVideoInfo
 {
-  v3 = [(CKMovieMediaObject *)self asset];
-  v4 = [v3 tracksWithMediaType:*MEMORY[0x1E6987608]];
-  v5 = [v4 lastObject];
+  asset = [(CKMovieMediaObject *)self asset];
+  v4 = [asset tracksWithMediaType:*MEMORY[0x1E6987608]];
+  lastObject = [v4 lastObject];
 
-  if (v5)
+  if (lastObject)
   {
     [(CKMovieMediaObject *)self setHasVideoTrack:1];
     v6 = *MEMORY[0x1E695EFF8];
     v7 = *(MEMORY[0x1E695EFF8] + 8);
-    [v5 naturalSize];
+    [lastObject naturalSize];
     v9 = v8;
     v11 = v10;
-    [v5 preferredTransform];
+    [lastObject preferredTransform];
     v13.origin.x = v6;
     v13.origin.y = v7;
     v13.size.width = v9;

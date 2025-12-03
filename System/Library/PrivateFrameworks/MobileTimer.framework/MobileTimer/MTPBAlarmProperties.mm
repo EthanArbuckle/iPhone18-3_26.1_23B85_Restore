@@ -1,44 +1,44 @@
 @interface MTPBAlarmProperties
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllowsSnooze:(BOOL)a3;
-- (void)setHasBedtimeDismissedAction:(BOOL)a3;
-- (void)setHasBedtimeFiredDate:(BOOL)a3;
-- (void)setHasBedtimeHour:(BOOL)a3;
-- (void)setHasBedtimeMinute:(BOOL)a3;
-- (void)setHasBedtimeReminderMinutes:(BOOL)a3;
-- (void)setHasBedtimeSnoozeFireDate:(BOOL)a3;
-- (void)setHasDaySetting:(BOOL)a3;
-- (void)setHasDismissedAction:(BOOL)a3;
-- (void)setHasDismissedDate:(BOOL)a3;
-- (void)setHasFiredDate:(BOOL)a3;
-- (void)setHasHour:(BOOL)a3;
-- (void)setHasIsEnabled:(BOOL)a3;
-- (void)setHasIsSleepAlarm:(BOOL)a3;
-- (void)setHasKeepOffUntilDate:(BOOL)a3;
-- (void)setHasLastModifiedDate:(BOOL)a3;
-- (void)setHasMinute:(BOOL)a3;
-- (void)setHasOnboardingVersion:(BOOL)a3;
-- (void)setHasRevision:(BOOL)a3;
-- (void)setHasSleepMode:(BOOL)a3;
-- (void)setHasSleepModeOptions:(BOOL)a3;
-- (void)setHasSleepSchedule:(BOOL)a3;
-- (void)setHasSleepTracking:(BOOL)a3;
-- (void)setHasSnoozeFireDate:(BOOL)a3;
-- (void)setHasTimeInBedTracking:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllowsSnooze:(BOOL)snooze;
+- (void)setHasBedtimeDismissedAction:(BOOL)action;
+- (void)setHasBedtimeFiredDate:(BOOL)date;
+- (void)setHasBedtimeHour:(BOOL)hour;
+- (void)setHasBedtimeMinute:(BOOL)minute;
+- (void)setHasBedtimeReminderMinutes:(BOOL)minutes;
+- (void)setHasBedtimeSnoozeFireDate:(BOOL)date;
+- (void)setHasDaySetting:(BOOL)setting;
+- (void)setHasDismissedAction:(BOOL)action;
+- (void)setHasDismissedDate:(BOOL)date;
+- (void)setHasFiredDate:(BOOL)date;
+- (void)setHasHour:(BOOL)hour;
+- (void)setHasIsEnabled:(BOOL)enabled;
+- (void)setHasIsSleepAlarm:(BOOL)alarm;
+- (void)setHasKeepOffUntilDate:(BOOL)date;
+- (void)setHasLastModifiedDate:(BOOL)date;
+- (void)setHasMinute:(BOOL)minute;
+- (void)setHasOnboardingVersion:(BOOL)version;
+- (void)setHasRevision:(BOOL)revision;
+- (void)setHasSleepMode:(BOOL)mode;
+- (void)setHasSleepModeOptions:(BOOL)options;
+- (void)setHasSleepSchedule:(BOOL)schedule;
+- (void)setHasSleepTracking:(BOOL)tracking;
+- (void)setHasSnoozeFireDate:(BOOL)date;
+- (void)setHasTimeInBedTracking:(BOOL)tracking;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTPBAlarmProperties
 
-- (void)setHasHour:(BOOL)a3
+- (void)setHasHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 0x4000;
   }
@@ -51,9 +51,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasMinute:(BOOL)a3
+- (void)setHasMinute:(BOOL)minute
 {
-  if (a3)
+  if (minute)
   {
     v3 = 0x8000;
   }
@@ -66,9 +66,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasAllowsSnooze:(BOOL)a3
+- (void)setHasAllowsSnooze:(BOOL)snooze
 {
-  if (a3)
+  if (snooze)
   {
     v3 = 0x80000;
   }
@@ -81,9 +81,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasDaySetting:(BOOL)a3
+- (void)setHasDaySetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 4096;
   }
@@ -96,9 +96,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasIsSleepAlarm:(BOOL)a3
+- (void)setHasIsSleepAlarm:(BOOL)alarm
 {
-  if (a3)
+  if (alarm)
   {
     v3 = 0x200000;
   }
@@ -111,9 +111,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasBedtimeHour:(BOOL)a3
+- (void)setHasBedtimeHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 512;
   }
@@ -126,9 +126,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasBedtimeMinute:(BOOL)a3
+- (void)setHasBedtimeMinute:(BOOL)minute
 {
-  if (a3)
+  if (minute)
   {
     v3 = 1024;
   }
@@ -141,9 +141,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasBedtimeReminderMinutes:(BOOL)a3
+- (void)setHasBedtimeReminderMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 2048;
   }
@@ -156,9 +156,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasRevision:(BOOL)a3
+- (void)setHasRevision:(BOOL)revision
 {
-  if (a3)
+  if (revision)
   {
     v3 = 0x20000;
   }
@@ -171,9 +171,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasLastModifiedDate:(BOOL)a3
+- (void)setHasLastModifiedDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 64;
   }
@@ -186,9 +186,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasSnoozeFireDate:(BOOL)a3
+- (void)setHasSnoozeFireDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 128;
   }
@@ -201,9 +201,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasBedtimeSnoozeFireDate:(BOOL)a3
+- (void)setHasBedtimeSnoozeFireDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -216,9 +216,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasIsEnabled:(BOOL)a3
+- (void)setHasIsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x100000;
   }
@@ -231,9 +231,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasFiredDate:(BOOL)a3
+- (void)setHasFiredDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 16;
   }
@@ -246,9 +246,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasDismissedDate:(BOOL)a3
+- (void)setHasDismissedDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -261,9 +261,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasSleepMode:(BOOL)a3
+- (void)setHasSleepMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 0x400000;
   }
@@ -276,9 +276,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasSleepTracking:(BOOL)a3
+- (void)setHasSleepTracking:(BOOL)tracking
 {
-  if (a3)
+  if (tracking)
   {
     v3 = 0x1000000;
   }
@@ -291,9 +291,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasSleepSchedule:(BOOL)a3
+- (void)setHasSleepSchedule:(BOOL)schedule
 {
-  if (a3)
+  if (schedule)
   {
     v3 = 0x800000;
   }
@@ -306,9 +306,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasOnboardingVersion:(BOOL)a3
+- (void)setHasOnboardingVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 0x10000;
   }
@@ -321,9 +321,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasSleepModeOptions:(BOOL)a3
+- (void)setHasSleepModeOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 0x40000;
   }
@@ -336,9 +336,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasTimeInBedTracking:(BOOL)a3
+- (void)setHasTimeInBedTracking:(BOOL)tracking
 {
-  if (a3)
+  if (tracking)
   {
     v3 = 0x2000000;
   }
@@ -351,9 +351,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasDismissedAction:(BOOL)a3
+- (void)setHasDismissedAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 0x2000;
   }
@@ -366,9 +366,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasBedtimeFiredDate:(BOOL)a3
+- (void)setHasBedtimeFiredDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -381,9 +381,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasBedtimeDismissedAction:(BOOL)a3
+- (void)setHasBedtimeDismissedAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 256;
   }
@@ -396,9 +396,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasKeepOffUntilDate:(BOOL)a3
+- (void)setHasKeepOffUntilDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 32;
   }
@@ -417,20 +417,20 @@
   v8.receiver = self;
   v8.super_class = MTPBAlarmProperties;
   v4 = [(MTPBAlarmProperties *)&v8 description];
-  v5 = [(MTPBAlarmProperties *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTPBAlarmProperties *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   alarmID = self->_alarmID;
   if (alarmID)
   {
-    [v3 setObject:alarmID forKey:@"alarmID"];
+    [dictionary setObject:alarmID forKey:@"alarmID"];
   }
 
   has = self->_has;
@@ -472,8 +472,8 @@
   sound = self->_sound;
   if (sound)
   {
-    v14 = [(MTPBSound *)sound dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"sound"];
+    dictionaryRepresentation = [(MTPBSound *)sound dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"sound"];
   }
 
   v15 = self->_has;
@@ -819,14 +819,14 @@ LABEL_38:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v34 = v4;
+  toCopy = to;
+  v34 = toCopy;
   if (self->_alarmID)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   has = self->_has;
@@ -834,7 +834,7 @@ LABEL_38:
   {
     hour = self->_hour;
     PBDataWriterWriteUint32Field();
-    v4 = v34;
+    toCopy = v34;
     has = self->_has;
   }
 
@@ -842,13 +842,13 @@ LABEL_38:
   {
     minute = self->_minute;
     PBDataWriterWriteUint32Field();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v34;
+    toCopy = v34;
   }
 
   v8 = self->_has;
@@ -856,7 +856,7 @@ LABEL_38:
   {
     allowsSnooze = self->_allowsSnooze;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
     v8 = self->_has;
   }
 
@@ -864,13 +864,13 @@ LABEL_38:
   {
     daySetting = self->_daySetting;
     PBDataWriterWriteUint32Field();
-    v4 = v34;
+    toCopy = v34;
   }
 
   if (self->_sound)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v34;
+    toCopy = v34;
   }
 
   v11 = self->_has;
@@ -878,7 +878,7 @@ LABEL_38:
   {
     isSleepAlarm = self->_isSleepAlarm;
     PBDataWriterWriteBOOLField();
-    v4 = v34;
+    toCopy = v34;
     v11 = self->_has;
     if ((*&v11 & 0x200) == 0)
     {
@@ -899,7 +899,7 @@ LABEL_17:
 
   bedtimeHour = self->_bedtimeHour;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x400) == 0)
   {
@@ -915,7 +915,7 @@ LABEL_18:
 LABEL_43:
   bedtimeMinute = self->_bedtimeMinute;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x800) == 0)
   {
@@ -931,7 +931,7 @@ LABEL_19:
 LABEL_44:
   bedtimeReminderMinutes = self->_bedtimeReminderMinutes;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x20000) == 0)
   {
@@ -947,7 +947,7 @@ LABEL_20:
 LABEL_45:
   revision = self->_revision;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x40) == 0)
   {
@@ -963,7 +963,7 @@ LABEL_21:
 LABEL_46:
   lastModifiedDate = self->_lastModifiedDate;
   PBDataWriterWriteDoubleField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x80) == 0)
   {
@@ -979,7 +979,7 @@ LABEL_22:
 LABEL_47:
   snoozeFireDate = self->_snoozeFireDate;
   PBDataWriterWriteDoubleField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 4) == 0)
   {
@@ -995,7 +995,7 @@ LABEL_23:
 LABEL_48:
   bedtimeSnoozeFireDate = self->_bedtimeSnoozeFireDate;
   PBDataWriterWriteDoubleField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x100000) == 0)
   {
@@ -1011,7 +1011,7 @@ LABEL_24:
 LABEL_49:
   isEnabled = self->_isEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x10) == 0)
   {
@@ -1027,7 +1027,7 @@ LABEL_25:
 LABEL_50:
   firedDate = self->_firedDate;
   PBDataWriterWriteDoubleField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 8) == 0)
   {
@@ -1043,7 +1043,7 @@ LABEL_26:
 LABEL_51:
   dismissedDate = self->_dismissedDate;
   PBDataWriterWriteDoubleField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x400000) == 0)
   {
@@ -1059,7 +1059,7 @@ LABEL_27:
 LABEL_52:
   sleepMode = self->_sleepMode;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x1000000) == 0)
   {
@@ -1075,7 +1075,7 @@ LABEL_28:
 LABEL_53:
   sleepTracking = self->_sleepTracking;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x800000) == 0)
   {
@@ -1091,7 +1091,7 @@ LABEL_29:
 LABEL_54:
   sleepSchedule = self->_sleepSchedule;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x10000) == 0)
   {
@@ -1107,7 +1107,7 @@ LABEL_30:
 LABEL_55:
   onboardingVersion = self->_onboardingVersion;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x40000) == 0)
   {
@@ -1123,7 +1123,7 @@ LABEL_31:
 LABEL_56:
   sleepModeOptions = self->_sleepModeOptions;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x2000000) == 0)
   {
@@ -1139,7 +1139,7 @@ LABEL_32:
 LABEL_57:
   timeInBedTracking = self->_timeInBedTracking;
   PBDataWriterWriteBOOLField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x2000) == 0)
   {
@@ -1155,7 +1155,7 @@ LABEL_33:
 LABEL_58:
   dismissedAction = self->_dismissedAction;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 2) == 0)
   {
@@ -1171,7 +1171,7 @@ LABEL_34:
 LABEL_59:
   bedtimeFiredDate = self->_bedtimeFiredDate;
   PBDataWriterWriteDoubleField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 1) == 0)
   {
@@ -1187,7 +1187,7 @@ LABEL_35:
 LABEL_60:
   bedtimeDismissedDate = self->_bedtimeDismissedDate;
   PBDataWriterWriteDoubleField();
-  v4 = v34;
+  toCopy = v34;
   v11 = self->_has;
   if ((*&v11 & 0x100) == 0)
   {
@@ -1203,73 +1203,73 @@ LABEL_36:
 LABEL_61:
   bedtimeDismissedAction = self->_bedtimeDismissedAction;
   PBDataWriterWriteUint32Field();
-  v4 = v34;
+  toCopy = v34;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_37:
     keepOffUntilDate = self->_keepOffUntilDate;
     PBDataWriterWriteDoubleField();
-    v4 = v34;
+    toCopy = v34;
   }
 
 LABEL_38:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_alarmID)
   {
-    [v4 setAlarmID:?];
-    v4 = v8;
+    [toCopy setAlarmID:?];
+    toCopy = v8;
   }
 
   has = self->_has;
   if ((*&has & 0x4000) != 0)
   {
-    *(v4 + 26) = self->_hour;
-    *(v4 + 38) |= 0x4000u;
+    *(toCopy + 26) = self->_hour;
+    *(toCopy + 38) |= 0x4000u;
     has = self->_has;
   }
 
   if ((*&has & 0x8000) != 0)
   {
-    *(v4 + 27) = self->_minute;
-    *(v4 + 38) |= 0x8000u;
+    *(toCopy + 27) = self->_minute;
+    *(toCopy + 38) |= 0x8000u;
   }
 
   if (self->_title)
   {
     [v8 setTitle:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x80000) != 0)
   {
-    *(v4 + 144) = self->_allowsSnooze;
-    *(v4 + 38) |= 0x80000u;
+    *(toCopy + 144) = self->_allowsSnooze;
+    *(toCopy + 38) |= 0x80000u;
     v6 = self->_has;
   }
 
   if ((*&v6 & 0x1000) != 0)
   {
-    *(v4 + 24) = self->_daySetting;
-    *(v4 + 38) |= 0x1000u;
+    *(toCopy + 24) = self->_daySetting;
+    *(toCopy + 38) |= 0x1000u;
   }
 
   if (self->_sound)
   {
     [v8 setSound:?];
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x200000) != 0)
   {
-    *(v4 + 146) = self->_isSleepAlarm;
-    *(v4 + 38) |= 0x200000u;
+    *(toCopy + 146) = self->_isSleepAlarm;
+    *(toCopy + 38) |= 0x200000u;
     v7 = self->_has;
     if ((*&v7 & 0x200) == 0)
     {
@@ -1288,8 +1288,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  *(v4 + 21) = self->_bedtimeHour;
-  *(v4 + 38) |= 0x200u;
+  *(toCopy + 21) = self->_bedtimeHour;
+  *(toCopy + 38) |= 0x200u;
   v7 = self->_has;
   if ((*&v7 & 0x400) == 0)
   {
@@ -1303,8 +1303,8 @@ LABEL_18:
   }
 
 LABEL_43:
-  *(v4 + 22) = self->_bedtimeMinute;
-  *(v4 + 38) |= 0x400u;
+  *(toCopy + 22) = self->_bedtimeMinute;
+  *(toCopy + 38) |= 0x400u;
   v7 = self->_has;
   if ((*&v7 & 0x800) == 0)
   {
@@ -1318,8 +1318,8 @@ LABEL_19:
   }
 
 LABEL_44:
-  *(v4 + 23) = self->_bedtimeReminderMinutes;
-  *(v4 + 38) |= 0x800u;
+  *(toCopy + 23) = self->_bedtimeReminderMinutes;
+  *(toCopy + 38) |= 0x800u;
   v7 = self->_has;
   if ((*&v7 & 0x20000) == 0)
   {
@@ -1333,8 +1333,8 @@ LABEL_20:
   }
 
 LABEL_45:
-  *(v4 + 29) = self->_revision;
-  *(v4 + 38) |= 0x20000u;
+  *(toCopy + 29) = self->_revision;
+  *(toCopy + 38) |= 0x20000u;
   v7 = self->_has;
   if ((*&v7 & 0x40) == 0)
   {
@@ -1348,8 +1348,8 @@ LABEL_21:
   }
 
 LABEL_46:
-  *(v4 + 7) = *&self->_lastModifiedDate;
-  *(v4 + 38) |= 0x40u;
+  *(toCopy + 7) = *&self->_lastModifiedDate;
+  *(toCopy + 38) |= 0x40u;
   v7 = self->_has;
   if ((*&v7 & 0x80) == 0)
   {
@@ -1363,8 +1363,8 @@ LABEL_22:
   }
 
 LABEL_47:
-  *(v4 + 8) = *&self->_snoozeFireDate;
-  *(v4 + 38) |= 0x80u;
+  *(toCopy + 8) = *&self->_snoozeFireDate;
+  *(toCopy + 38) |= 0x80u;
   v7 = self->_has;
   if ((*&v7 & 4) == 0)
   {
@@ -1378,8 +1378,8 @@ LABEL_23:
   }
 
 LABEL_48:
-  *(v4 + 3) = *&self->_bedtimeSnoozeFireDate;
-  *(v4 + 38) |= 4u;
+  *(toCopy + 3) = *&self->_bedtimeSnoozeFireDate;
+  *(toCopy + 38) |= 4u;
   v7 = self->_has;
   if ((*&v7 & 0x100000) == 0)
   {
@@ -1393,8 +1393,8 @@ LABEL_24:
   }
 
 LABEL_49:
-  *(v4 + 145) = self->_isEnabled;
-  *(v4 + 38) |= 0x100000u;
+  *(toCopy + 145) = self->_isEnabled;
+  *(toCopy + 38) |= 0x100000u;
   v7 = self->_has;
   if ((*&v7 & 0x10) == 0)
   {
@@ -1408,8 +1408,8 @@ LABEL_25:
   }
 
 LABEL_50:
-  *(v4 + 5) = *&self->_firedDate;
-  *(v4 + 38) |= 0x10u;
+  *(toCopy + 5) = *&self->_firedDate;
+  *(toCopy + 38) |= 0x10u;
   v7 = self->_has;
   if ((*&v7 & 8) == 0)
   {
@@ -1423,8 +1423,8 @@ LABEL_26:
   }
 
 LABEL_51:
-  *(v4 + 4) = *&self->_dismissedDate;
-  *(v4 + 38) |= 8u;
+  *(toCopy + 4) = *&self->_dismissedDate;
+  *(toCopy + 38) |= 8u;
   v7 = self->_has;
   if ((*&v7 & 0x400000) == 0)
   {
@@ -1438,8 +1438,8 @@ LABEL_27:
   }
 
 LABEL_52:
-  *(v4 + 147) = self->_sleepMode;
-  *(v4 + 38) |= 0x400000u;
+  *(toCopy + 147) = self->_sleepMode;
+  *(toCopy + 38) |= 0x400000u;
   v7 = self->_has;
   if ((*&v7 & 0x1000000) == 0)
   {
@@ -1453,8 +1453,8 @@ LABEL_28:
   }
 
 LABEL_53:
-  *(v4 + 149) = self->_sleepTracking;
-  *(v4 + 38) |= 0x1000000u;
+  *(toCopy + 149) = self->_sleepTracking;
+  *(toCopy + 38) |= 0x1000000u;
   v7 = self->_has;
   if ((*&v7 & 0x800000) == 0)
   {
@@ -1468,8 +1468,8 @@ LABEL_29:
   }
 
 LABEL_54:
-  *(v4 + 148) = self->_sleepSchedule;
-  *(v4 + 38) |= 0x800000u;
+  *(toCopy + 148) = self->_sleepSchedule;
+  *(toCopy + 38) |= 0x800000u;
   v7 = self->_has;
   if ((*&v7 & 0x10000) == 0)
   {
@@ -1483,8 +1483,8 @@ LABEL_30:
   }
 
 LABEL_55:
-  *(v4 + 28) = self->_onboardingVersion;
-  *(v4 + 38) |= 0x10000u;
+  *(toCopy + 28) = self->_onboardingVersion;
+  *(toCopy + 38) |= 0x10000u;
   v7 = self->_has;
   if ((*&v7 & 0x40000) == 0)
   {
@@ -1498,8 +1498,8 @@ LABEL_31:
   }
 
 LABEL_56:
-  *(v4 + 30) = self->_sleepModeOptions;
-  *(v4 + 38) |= 0x40000u;
+  *(toCopy + 30) = self->_sleepModeOptions;
+  *(toCopy + 38) |= 0x40000u;
   v7 = self->_has;
   if ((*&v7 & 0x2000000) == 0)
   {
@@ -1513,8 +1513,8 @@ LABEL_32:
   }
 
 LABEL_57:
-  *(v4 + 150) = self->_timeInBedTracking;
-  *(v4 + 38) |= 0x2000000u;
+  *(toCopy + 150) = self->_timeInBedTracking;
+  *(toCopy + 38) |= 0x2000000u;
   v7 = self->_has;
   if ((*&v7 & 0x2000) == 0)
   {
@@ -1528,8 +1528,8 @@ LABEL_33:
   }
 
 LABEL_58:
-  *(v4 + 25) = self->_dismissedAction;
-  *(v4 + 38) |= 0x2000u;
+  *(toCopy + 25) = self->_dismissedAction;
+  *(toCopy + 38) |= 0x2000u;
   v7 = self->_has;
   if ((*&v7 & 2) == 0)
   {
@@ -1543,8 +1543,8 @@ LABEL_34:
   }
 
 LABEL_59:
-  *(v4 + 2) = *&self->_bedtimeFiredDate;
-  *(v4 + 38) |= 2u;
+  *(toCopy + 2) = *&self->_bedtimeFiredDate;
+  *(toCopy + 38) |= 2u;
   v7 = self->_has;
   if ((*&v7 & 1) == 0)
   {
@@ -1558,8 +1558,8 @@ LABEL_35:
   }
 
 LABEL_60:
-  *(v4 + 1) = *&self->_bedtimeDismissedDate;
-  *(v4 + 38) |= 1u;
+  *(toCopy + 1) = *&self->_bedtimeDismissedDate;
+  *(toCopy + 38) |= 1u;
   v7 = self->_has;
   if ((*&v7 & 0x100) == 0)
   {
@@ -1573,22 +1573,22 @@ LABEL_36:
   }
 
 LABEL_61:
-  *(v4 + 20) = self->_bedtimeDismissedAction;
-  *(v4 + 38) |= 0x100u;
+  *(toCopy + 20) = self->_bedtimeDismissedAction;
+  *(toCopy + 38) |= 0x100u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_37:
-    *(v4 + 6) = *&self->_keepOffUntilDate;
-    *(v4 + 38) |= 0x20u;
+    *(toCopy + 6) = *&self->_keepOffUntilDate;
+    *(toCopy + 38) |= 0x20u;
   }
 
 LABEL_38:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_alarmID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_alarmID copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
@@ -1606,7 +1606,7 @@ LABEL_38:
     *(v5 + 152) |= 0x8000u;
   }
 
-  v9 = [(NSString *)self->_title copyWithZone:a3];
+  v9 = [(NSString *)self->_title copyWithZone:zone];
   v10 = *(v5 + 136);
   *(v5 + 136) = v9;
 
@@ -1624,7 +1624,7 @@ LABEL_38:
     *(v5 + 152) |= 0x1000u;
   }
 
-  v12 = [(MTPBSound *)self->_sound copyWithZone:a3];
+  v12 = [(MTPBSound *)self->_sound copyWithZone:zone];
   v13 = *(v5 + 128);
   *(v5 + 128) = v12;
 
@@ -1948,16 +1948,16 @@ LABEL_31:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_161;
   }
 
   alarmID = self->_alarmID;
-  if (alarmID | *(v4 + 9))
+  if (alarmID | *(equalCopy + 9))
   {
     if (![(NSString *)alarmID isEqual:?])
     {
@@ -1966,10 +1966,10 @@ LABEL_31:
   }
 
   has = self->_has;
-  v7 = *(v4 + 38);
+  v7 = *(equalCopy + 38);
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_hour != *(v4 + 26))
+    if ((v7 & 0x4000) == 0 || self->_hour != *(equalCopy + 26))
     {
       goto LABEL_161;
     }
@@ -1982,7 +1982,7 @@ LABEL_31:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_minute != *(v4 + 27))
+    if ((v7 & 0x8000) == 0 || self->_minute != *(equalCopy + 27))
     {
       goto LABEL_161;
     }
@@ -1994,7 +1994,7 @@ LABEL_31:
   }
 
   title = self->_title;
-  if (title | *(v4 + 17))
+  if (title | *(equalCopy + 17))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -2004,7 +2004,7 @@ LABEL_31:
     has = self->_has;
   }
 
-  v9 = *(v4 + 38);
+  v9 = *(equalCopy + 38);
   if ((*&has & 0x80000) != 0)
   {
     if ((v9 & 0x80000) == 0)
@@ -2012,16 +2012,16 @@ LABEL_31:
       goto LABEL_161;
     }
 
-    v10 = *(v4 + 144);
+    v10 = *(equalCopy + 144);
     if (self->_allowsSnooze)
     {
-      if ((*(v4 + 144) & 1) == 0)
+      if ((*(equalCopy + 144) & 1) == 0)
       {
         goto LABEL_161;
       }
     }
 
-    else if (*(v4 + 144))
+    else if (*(equalCopy + 144))
     {
       goto LABEL_161;
     }
@@ -2034,7 +2034,7 @@ LABEL_31:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v9 & 0x1000) == 0 || self->_daySetting != *(v4 + 24))
+    if ((v9 & 0x1000) == 0 || self->_daySetting != *(equalCopy + 24))
     {
       goto LABEL_161;
     }
@@ -2046,7 +2046,7 @@ LABEL_31:
   }
 
   sound = self->_sound;
-  if (sound | *(v4 + 16))
+  if (sound | *(equalCopy + 16))
   {
     if (![(MTPBSound *)sound isEqual:?])
     {
@@ -2056,7 +2056,7 @@ LABEL_31:
     has = self->_has;
   }
 
-  v12 = *(v4 + 38);
+  v12 = *(equalCopy + 38);
   if ((*&has & 0x200000) != 0)
   {
     if ((v12 & 0x200000) == 0)
@@ -2064,16 +2064,16 @@ LABEL_31:
       goto LABEL_161;
     }
 
-    v13 = *(v4 + 146);
+    v13 = *(equalCopy + 146);
     if (self->_isSleepAlarm)
     {
-      if ((*(v4 + 146) & 1) == 0)
+      if ((*(equalCopy + 146) & 1) == 0)
       {
         goto LABEL_161;
       }
     }
 
-    else if (*(v4 + 146))
+    else if (*(equalCopy + 146))
     {
       goto LABEL_161;
     }
@@ -2086,7 +2086,7 @@ LABEL_31:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v12 & 0x200) == 0 || self->_bedtimeHour != *(v4 + 21))
+    if ((v12 & 0x200) == 0 || self->_bedtimeHour != *(equalCopy + 21))
     {
       goto LABEL_161;
     }
@@ -2099,7 +2099,7 @@ LABEL_31:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v12 & 0x400) == 0 || self->_bedtimeMinute != *(v4 + 22))
+    if ((v12 & 0x400) == 0 || self->_bedtimeMinute != *(equalCopy + 22))
     {
       goto LABEL_161;
     }
@@ -2112,7 +2112,7 @@ LABEL_31:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v12 & 0x800) == 0 || self->_bedtimeReminderMinutes != *(v4 + 23))
+    if ((v12 & 0x800) == 0 || self->_bedtimeReminderMinutes != *(equalCopy + 23))
     {
       goto LABEL_161;
     }
@@ -2125,7 +2125,7 @@ LABEL_31:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v12 & 0x20000) == 0 || self->_revision != *(v4 + 29))
+    if ((v12 & 0x20000) == 0 || self->_revision != *(equalCopy + 29))
     {
       goto LABEL_161;
     }
@@ -2138,7 +2138,7 @@ LABEL_31:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v12 & 0x40) == 0 || self->_lastModifiedDate != *(v4 + 7))
+    if ((v12 & 0x40) == 0 || self->_lastModifiedDate != *(equalCopy + 7))
     {
       goto LABEL_161;
     }
@@ -2151,7 +2151,7 @@ LABEL_31:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v12 & 0x80) == 0 || self->_snoozeFireDate != *(v4 + 8))
+    if ((v12 & 0x80) == 0 || self->_snoozeFireDate != *(equalCopy + 8))
     {
       goto LABEL_161;
     }
@@ -2164,7 +2164,7 @@ LABEL_31:
 
   if ((*&has & 4) != 0)
   {
-    if ((v12 & 4) == 0 || self->_bedtimeSnoozeFireDate != *(v4 + 3))
+    if ((v12 & 4) == 0 || self->_bedtimeSnoozeFireDate != *(equalCopy + 3))
     {
       goto LABEL_161;
     }
@@ -2182,16 +2182,16 @@ LABEL_31:
       goto LABEL_161;
     }
 
-    v14 = *(v4 + 145);
+    v14 = *(equalCopy + 145);
     if (self->_isEnabled)
     {
-      if ((*(v4 + 145) & 1) == 0)
+      if ((*(equalCopy + 145) & 1) == 0)
       {
         goto LABEL_161;
       }
     }
 
-    else if (*(v4 + 145))
+    else if (*(equalCopy + 145))
     {
       goto LABEL_161;
     }
@@ -2204,7 +2204,7 @@ LABEL_31:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v12 & 0x10) == 0 || self->_firedDate != *(v4 + 5))
+    if ((v12 & 0x10) == 0 || self->_firedDate != *(equalCopy + 5))
     {
       goto LABEL_161;
     }
@@ -2217,7 +2217,7 @@ LABEL_31:
 
   if ((*&has & 8) != 0)
   {
-    if ((v12 & 8) == 0 || self->_dismissedDate != *(v4 + 4))
+    if ((v12 & 8) == 0 || self->_dismissedDate != *(equalCopy + 4))
     {
       goto LABEL_161;
     }
@@ -2235,16 +2235,16 @@ LABEL_31:
       goto LABEL_161;
     }
 
-    v15 = *(v4 + 147);
+    v15 = *(equalCopy + 147);
     if (self->_sleepMode)
     {
-      if ((*(v4 + 147) & 1) == 0)
+      if ((*(equalCopy + 147) & 1) == 0)
       {
         goto LABEL_161;
       }
     }
 
-    else if (*(v4 + 147))
+    else if (*(equalCopy + 147))
     {
       goto LABEL_161;
     }
@@ -2262,16 +2262,16 @@ LABEL_31:
       goto LABEL_161;
     }
 
-    v16 = *(v4 + 149);
+    v16 = *(equalCopy + 149);
     if (self->_sleepTracking)
     {
-      if ((*(v4 + 149) & 1) == 0)
+      if ((*(equalCopy + 149) & 1) == 0)
       {
         goto LABEL_161;
       }
     }
 
-    else if (*(v4 + 149))
+    else if (*(equalCopy + 149))
     {
       goto LABEL_161;
     }
@@ -2289,16 +2289,16 @@ LABEL_31:
       goto LABEL_161;
     }
 
-    v17 = *(v4 + 148);
+    v17 = *(equalCopy + 148);
     if (self->_sleepSchedule)
     {
-      if ((*(v4 + 148) & 1) == 0)
+      if ((*(equalCopy + 148) & 1) == 0)
       {
         goto LABEL_161;
       }
     }
 
-    else if (*(v4 + 148))
+    else if (*(equalCopy + 148))
     {
       goto LABEL_161;
     }
@@ -2311,7 +2311,7 @@ LABEL_31:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v12 & 0x10000) == 0 || self->_onboardingVersion != *(v4 + 28))
+    if ((v12 & 0x10000) == 0 || self->_onboardingVersion != *(equalCopy + 28))
     {
       goto LABEL_161;
     }
@@ -2324,7 +2324,7 @@ LABEL_31:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v12 & 0x40000) == 0 || self->_sleepModeOptions != *(v4 + 30))
+    if ((v12 & 0x40000) == 0 || self->_sleepModeOptions != *(equalCopy + 30))
     {
       goto LABEL_161;
     }
@@ -2352,16 +2352,16 @@ LABEL_161:
     goto LABEL_161;
   }
 
-  v18 = *(v4 + 150);
+  v18 = *(equalCopy + 150);
   if (self->_timeInBedTracking)
   {
-    if ((*(v4 + 150) & 1) == 0)
+    if ((*(equalCopy + 150) & 1) == 0)
     {
       goto LABEL_161;
     }
   }
 
-  else if (*(v4 + 150))
+  else if (*(equalCopy + 150))
   {
     goto LABEL_161;
   }
@@ -2369,7 +2369,7 @@ LABEL_161:
 LABEL_130:
   if ((*&has & 0x2000) != 0)
   {
-    if ((v12 & 0x2000) == 0 || self->_dismissedAction != *(v4 + 25))
+    if ((v12 & 0x2000) == 0 || self->_dismissedAction != *(equalCopy + 25))
     {
       goto LABEL_161;
     }
@@ -2382,7 +2382,7 @@ LABEL_130:
 
   if ((*&has & 2) != 0)
   {
-    if ((v12 & 2) == 0 || self->_bedtimeFiredDate != *(v4 + 2))
+    if ((v12 & 2) == 0 || self->_bedtimeFiredDate != *(equalCopy + 2))
     {
       goto LABEL_161;
     }
@@ -2395,7 +2395,7 @@ LABEL_130:
 
   if (*&has)
   {
-    if ((v12 & 1) == 0 || self->_bedtimeDismissedDate != *(v4 + 1))
+    if ((v12 & 1) == 0 || self->_bedtimeDismissedDate != *(equalCopy + 1))
     {
       goto LABEL_161;
     }
@@ -2408,7 +2408,7 @@ LABEL_130:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v12 & 0x100) == 0 || self->_bedtimeDismissedAction != *(v4 + 20))
+    if ((v12 & 0x100) == 0 || self->_bedtimeDismissedAction != *(equalCopy + 20))
     {
       goto LABEL_161;
     }
@@ -2421,7 +2421,7 @@ LABEL_130:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v12 & 0x20) == 0 || self->_keepOffUntilDate != *(v4 + 6))
+    if ((v12 & 0x20) == 0 || self->_keepOffUntilDate != *(equalCopy + 6))
     {
       goto LABEL_161;
     }
@@ -2431,7 +2431,7 @@ LABEL_130:
 
   else
   {
-    v19 = (*(v4 + 38) & 0x20) == 0;
+    v19 = (*(equalCopy + 38) & 0x20) == 0;
   }
 
 LABEL_162:
@@ -2956,52 +2956,52 @@ LABEL_95:
   return v61 ^ v62 ^ v4 ^ v5 ^ v7 ^ v8 ^ v9 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v21 ^ v22 ^ v26 ^ v30 ^ v34 ^ v35 ^ v39 ^ v40 ^ v41 ^ v42 ^ v43 ^ v44 ^ v45 ^ v49 ^ v50 ^ v54 ^ v58;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v10 = v4;
-  if (*(v4 + 9))
+  fromCopy = from;
+  v10 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(MTPBAlarmProperties *)self setAlarmID:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x4000) != 0)
   {
-    self->_hour = *(v4 + 26);
+    self->_hour = *(fromCopy + 26);
     *&self->_has |= 0x4000u;
-    v5 = *(v4 + 38);
+    v5 = *(fromCopy + 38);
   }
 
   if ((v5 & 0x8000) != 0)
   {
-    self->_minute = *(v4 + 27);
+    self->_minute = *(fromCopy + 27);
     *&self->_has |= 0x8000u;
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(MTPBAlarmProperties *)self setTitle:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v6 = *(v4 + 38);
+  v6 = *(fromCopy + 38);
   if ((v6 & 0x80000) != 0)
   {
-    self->_allowsSnooze = *(v4 + 144);
+    self->_allowsSnooze = *(fromCopy + 144);
     *&self->_has |= 0x80000u;
-    v6 = *(v4 + 38);
+    v6 = *(fromCopy + 38);
   }
 
   if ((v6 & 0x1000) != 0)
   {
-    self->_daySetting = *(v4 + 24);
+    self->_daySetting = *(fromCopy + 24);
     *&self->_has |= 0x1000u;
   }
 
   sound = self->_sound;
-  v8 = *(v4 + 16);
+  v8 = *(fromCopy + 16);
   if (sound)
   {
     if (!v8)
@@ -3022,14 +3022,14 @@ LABEL_95:
     sound = [(MTPBAlarmProperties *)self setSound:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_19:
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x200000) != 0)
   {
-    self->_isSleepAlarm = *(v4 + 146);
+    self->_isSleepAlarm = *(fromCopy + 146);
     *&self->_has |= 0x200000u;
-    v9 = *(v4 + 38);
+    v9 = *(fromCopy + 38);
     if ((v9 & 0x200) == 0)
     {
 LABEL_21:
@@ -3047,9 +3047,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  self->_bedtimeHour = *(v4 + 21);
+  self->_bedtimeHour = *(fromCopy + 21);
   *&self->_has |= 0x200u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x400) == 0)
   {
 LABEL_22:
@@ -3062,9 +3062,9 @@ LABEL_22:
   }
 
 LABEL_47:
-  self->_bedtimeMinute = *(v4 + 22);
+  self->_bedtimeMinute = *(fromCopy + 22);
   *&self->_has |= 0x400u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x800) == 0)
   {
 LABEL_23:
@@ -3077,9 +3077,9 @@ LABEL_23:
   }
 
 LABEL_48:
-  self->_bedtimeReminderMinutes = *(v4 + 23);
+  self->_bedtimeReminderMinutes = *(fromCopy + 23);
   *&self->_has |= 0x800u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x20000) == 0)
   {
 LABEL_24:
@@ -3092,9 +3092,9 @@ LABEL_24:
   }
 
 LABEL_49:
-  self->_revision = *(v4 + 29);
+  self->_revision = *(fromCopy + 29);
   *&self->_has |= 0x20000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x40) == 0)
   {
 LABEL_25:
@@ -3107,9 +3107,9 @@ LABEL_25:
   }
 
 LABEL_50:
-  self->_lastModifiedDate = *(v4 + 7);
+  self->_lastModifiedDate = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x80) == 0)
   {
 LABEL_26:
@@ -3122,9 +3122,9 @@ LABEL_26:
   }
 
 LABEL_51:
-  self->_snoozeFireDate = *(v4 + 8);
+  self->_snoozeFireDate = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 4) == 0)
   {
 LABEL_27:
@@ -3137,9 +3137,9 @@ LABEL_27:
   }
 
 LABEL_52:
-  self->_bedtimeSnoozeFireDate = *(v4 + 3);
+  self->_bedtimeSnoozeFireDate = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x100000) == 0)
   {
 LABEL_28:
@@ -3152,9 +3152,9 @@ LABEL_28:
   }
 
 LABEL_53:
-  self->_isEnabled = *(v4 + 145);
+  self->_isEnabled = *(fromCopy + 145);
   *&self->_has |= 0x100000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x10) == 0)
   {
 LABEL_29:
@@ -3167,9 +3167,9 @@ LABEL_29:
   }
 
 LABEL_54:
-  self->_firedDate = *(v4 + 5);
+  self->_firedDate = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 8) == 0)
   {
 LABEL_30:
@@ -3182,9 +3182,9 @@ LABEL_30:
   }
 
 LABEL_55:
-  self->_dismissedDate = *(v4 + 4);
+  self->_dismissedDate = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x400000) == 0)
   {
 LABEL_31:
@@ -3197,9 +3197,9 @@ LABEL_31:
   }
 
 LABEL_56:
-  self->_sleepMode = *(v4 + 147);
+  self->_sleepMode = *(fromCopy + 147);
   *&self->_has |= 0x400000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x1000000) == 0)
   {
 LABEL_32:
@@ -3212,9 +3212,9 @@ LABEL_32:
   }
 
 LABEL_57:
-  self->_sleepTracking = *(v4 + 149);
+  self->_sleepTracking = *(fromCopy + 149);
   *&self->_has |= 0x1000000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x800000) == 0)
   {
 LABEL_33:
@@ -3227,9 +3227,9 @@ LABEL_33:
   }
 
 LABEL_58:
-  self->_sleepSchedule = *(v4 + 148);
+  self->_sleepSchedule = *(fromCopy + 148);
   *&self->_has |= 0x800000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x10000) == 0)
   {
 LABEL_34:
@@ -3242,9 +3242,9 @@ LABEL_34:
   }
 
 LABEL_59:
-  self->_onboardingVersion = *(v4 + 28);
+  self->_onboardingVersion = *(fromCopy + 28);
   *&self->_has |= 0x10000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x40000) == 0)
   {
 LABEL_35:
@@ -3257,9 +3257,9 @@ LABEL_35:
   }
 
 LABEL_60:
-  self->_sleepModeOptions = *(v4 + 30);
+  self->_sleepModeOptions = *(fromCopy + 30);
   *&self->_has |= 0x40000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x2000000) == 0)
   {
 LABEL_36:
@@ -3272,9 +3272,9 @@ LABEL_36:
   }
 
 LABEL_61:
-  self->_timeInBedTracking = *(v4 + 150);
+  self->_timeInBedTracking = *(fromCopy + 150);
   *&self->_has |= 0x2000000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x2000) == 0)
   {
 LABEL_37:
@@ -3287,9 +3287,9 @@ LABEL_37:
   }
 
 LABEL_62:
-  self->_dismissedAction = *(v4 + 25);
+  self->_dismissedAction = *(fromCopy + 25);
   *&self->_has |= 0x2000u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 2) == 0)
   {
 LABEL_38:
@@ -3302,9 +3302,9 @@ LABEL_38:
   }
 
 LABEL_63:
-  self->_bedtimeFiredDate = *(v4 + 2);
+  self->_bedtimeFiredDate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 1) == 0)
   {
 LABEL_39:
@@ -3317,9 +3317,9 @@ LABEL_39:
   }
 
 LABEL_64:
-  self->_bedtimeDismissedDate = *(v4 + 1);
+  self->_bedtimeDismissedDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v9 = *(v4 + 38);
+  v9 = *(fromCopy + 38);
   if ((v9 & 0x100) == 0)
   {
 LABEL_40:
@@ -3332,18 +3332,18 @@ LABEL_40:
   }
 
 LABEL_65:
-  self->_bedtimeDismissedAction = *(v4 + 20);
+  self->_bedtimeDismissedAction = *(fromCopy + 20);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 38) & 0x20) != 0)
+  if ((*(fromCopy + 38) & 0x20) != 0)
   {
 LABEL_41:
-    self->_keepOffUntilDate = *(v4 + 6);
+    self->_keepOffUntilDate = *(fromCopy + 6);
     *&self->_has |= 0x20u;
   }
 
 LABEL_42:
 
-  MEMORY[0x1EEE66BB8](sound, v4);
+  MEMORY[0x1EEE66BB8](sound, fromCopy);
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface ARUISpriteTexture
-- (ARUISpriteTexture)initWithImage:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARUISpriteTexture)initWithImage:(id)image;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation ARUISpriteTexture
 
-- (ARUISpriteTexture)initWithImage:(id)a3
+- (ARUISpriteTexture)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v17.receiver = self;
   v17.super_class = ARUISpriteTexture;
   v5 = [(ARUISpriteTexture *)&v17 init];
   if (v5)
   {
-    [v4 size];
+    [imageCopy size];
     v7 = v6;
     v5->_height = v7;
-    [v4 size];
+    [imageCopy size];
     *&v8 = v8;
     v5->_width = *&v8;
     v9 = MTLCreateSystemDefaultDevice();
@@ -25,7 +25,7 @@
     {
       v10 = [objc_alloc(MEMORY[0x1E6974438]) initWithDevice:v9];
       v16 = 0;
-      v11 = [v10 newTextureWithCGImage:objc_msgSend(v4 options:"CGImage") error:{0, &v16}];
+      v11 = [v10 newTextureWithCGImage:objc_msgSend(imageCopy options:"CGImage") error:{0, &v16}];
       v12 = v16;
       texture = v5->_texture;
       v5->_texture = v11;
@@ -35,7 +35,7 @@
         v14 = arui_rings_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
         {
-          [(ARUISpriteTexture *)v4 initWithImage:v12, v14];
+          [(ARUISpriteTexture *)imageCopy initWithImage:v12, v14];
         }
       }
     }
@@ -57,20 +57,20 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v8 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_texture)
       {
@@ -79,8 +79,8 @@
 
       else
       {
-        v9 = [(ARUISpriteTexture *)v5 texture];
-        v7 = v9 == 0;
+        texture = [(ARUISpriteTexture *)v5 texture];
+        v7 = texture == 0;
       }
 
       width = self->_width;
@@ -93,8 +93,8 @@
         if (!v7 && v8)
         {
           texture = self->_texture;
-          v15 = [(ARUISpriteTexture *)v6 texture];
-          v8 = texture == v15;
+          texture2 = [(ARUISpriteTexture *)v6 texture];
+          v8 = texture == texture2;
         }
       }
 

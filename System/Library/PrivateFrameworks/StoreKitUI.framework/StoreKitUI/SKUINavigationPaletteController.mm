@@ -1,16 +1,16 @@
 @interface SKUINavigationPaletteController
-- (SKUINavigationPaletteController)initWithPaletteViewElement:(id)a3;
+- (SKUINavigationPaletteController)initWithPaletteViewElement:(id)element;
 - (id)view;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)reloadSectionViews;
 - (void)willAppearInNavigationBar;
 @end
 
 @implementation SKUINavigationPaletteController
 
-- (SKUINavigationPaletteController)initWithPaletteViewElement:(id)a3
+- (SKUINavigationPaletteController)initWithPaletteViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUINavigationPaletteController initWithPaletteViewElement:];
@@ -22,7 +22,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewElement, a3);
+    objc_storeStrong(&v6->_viewElement, element);
   }
 
   return v7;
@@ -30,14 +30,14 @@
 
 - (void)reloadSectionViews
 {
-  v3 = [(SKUINavigationBarSectionController *)self context];
-  [v3 maximumNavigationBarWidth];
+  context = [(SKUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v5 = v4;
 
   paletteView = self->_paletteView;
   viewElement = self->_viewElement;
-  v8 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
-  [(SKUINavigationPaletteView *)paletteView reloadWithViewElement:viewElement width:v8 context:v5];
+  viewLayoutContext = [(SKUINavigationBarSectionController *)self viewLayoutContext];
+  [(SKUINavigationPaletteView *)paletteView reloadWithViewElement:viewElement width:viewLayoutContext context:v5];
 
   v9.receiver = self;
   v9.super_class = SKUINavigationPaletteController;
@@ -49,17 +49,17 @@
   paletteView = self->_paletteView;
   if (!paletteView)
   {
-    v4 = [(SKUINavigationBarSectionController *)self context];
-    v5 = [v4 clientContext];
-    v6 = SKUIUserInterfaceIdiom(v5);
+    context = [(SKUINavigationBarSectionController *)self context];
+    clientContext = [context clientContext];
+    v6 = SKUIUserInterfaceIdiom(clientContext);
 
-    [v4 maximumNavigationBarWidth];
+    [context maximumNavigationBarWidth];
     v8 = v7;
     v9 = *MEMORY[0x277CBF3A0];
     v10 = *(MEMORY[0x277CBF3A0] + 8);
     viewElement = self->_viewElement;
-    v12 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
-    [SKUINavigationPaletteView sizeThatFitsWidth:viewElement viewElement:v12 context:v8];
+    viewLayoutContext = [(SKUINavigationBarSectionController *)self viewLayoutContext];
+    [SKUINavigationPaletteView sizeThatFitsWidth:viewElement viewElement:viewLayoutContext context:v8];
     v14 = v13;
     v16 = v15;
 
@@ -85,8 +85,8 @@
 
     [(SKUINavigationPaletteView *)self->_paletteView setAutoresizingMask:2];
     v21 = self->_paletteView;
-    v22 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIViewReuseView *)v21 setBackgroundColor:v22];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIViewReuseView *)v21 setBackgroundColor:clearColor];
 
     [(SKUINavigationPaletteView *)self->_paletteView setContentInset:0.0, 15.0, 0.0, 15.0];
     if (v6 == 1)
@@ -96,8 +96,8 @@
 
     v23 = self->_paletteView;
     v24 = self->_viewElement;
-    v25 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
-    [(SKUINavigationPaletteView *)v23 reloadWithViewElement:v24 width:v25 context:v8];
+    viewLayoutContext2 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
+    [(SKUINavigationPaletteView *)v23 reloadWithViewElement:v24 width:viewLayoutContext2 context:v8];
 
     paletteView = self->_paletteView;
   }
@@ -107,25 +107,25 @@
 
 - (void)willAppearInNavigationBar
 {
-  v3 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
-  v4 = [(SKUINavigationBarSectionController *)self context];
-  [v4 maximumNavigationBarWidth];
+  viewLayoutContext = [(SKUINavigationBarSectionController *)self viewLayoutContext];
+  context = [(SKUINavigationBarSectionController *)self context];
+  [context maximumNavigationBarWidth];
   v6 = v5;
 
-  [SKUINavigationPaletteView requestLayoutForViewElement:self->_viewElement width:v3 context:v6];
-  [SKUINavigationPaletteView prefetchResourcesForViewElement:self->_viewElement reason:0 context:v3];
+  [SKUINavigationPaletteView requestLayoutForViewElement:self->_viewElement width:viewLayoutContext context:v6];
+  [SKUINavigationPaletteView prefetchResourcesForViewElement:self->_viewElement reason:0 context:viewLayoutContext];
   v7.receiver = self;
   v7.super_class = SKUINavigationPaletteController;
   [(SKUINavigationBarSectionController *)&v7 willAppearInNavigationBar];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   paletteView = self->_paletteView;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SKUINavigationBarSectionController *)self viewLayoutContext];
-  [(SKUINavigationPaletteView *)paletteView setImage:v7 forArtworkRequest:v8 context:v9];
+  imageCopy = image;
+  requestCopy = request;
+  viewLayoutContext = [(SKUINavigationBarSectionController *)self viewLayoutContext];
+  [(SKUINavigationPaletteView *)paletteView setImage:imageCopy forArtworkRequest:requestCopy context:viewLayoutContext];
 }
 
 - (void)initWithPaletteViewElement:.cold.1()

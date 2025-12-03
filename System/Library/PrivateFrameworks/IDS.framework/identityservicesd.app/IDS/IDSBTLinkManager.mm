@@ -1,42 +1,42 @@
 @interface IDSBTLinkManager
-- (IDSBTLinkManager)initWithDelegate:(id)a3 pairedDevice:(id)a4;
+- (IDSBTLinkManager)initWithDelegate:(id)delegate pairedDevice:(id)device;
 - (id)nanoRegistryPluginManager;
 - (void)_advertiseNow;
 - (void)_connectNow;
 - (void)_stopAdvertising;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)connect;
 - (void)dealloc;
 - (void)obliterateConnectionInfo;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
-- (void)peripheralManagerDidUpdateState:(id)a3;
-- (void)removeLink:(id)a3;
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5;
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4;
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5;
-- (void)scalablePipeManagerDidUpdateState:(id)a3;
-- (void)setLinkPreferences:(id)a3;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
+- (void)peripheralManagerDidUpdateState:(id)state;
+- (void)removeLink:(id)link;
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error;
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint;
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect;
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error;
+- (void)scalablePipeManagerDidUpdateState:(id)state;
+- (void)setLinkPreferences:(id)preferences;
 - (void)start;
 - (void)startDatagramLink;
-- (void)startDatagramLinkWithEndpointIdentifier:(id)a3;
-- (void)startDatagramLinkWithName:(id)a3;
+- (void)startDatagramLinkWithEndpointIdentifier:(id)identifier;
+- (void)startDatagramLinkWithName:(id)name;
 - (void)stop;
 - (void)stopDatagramLink;
-- (void)stopDatagramLinkWithEndpointIdentifier:(id)a3;
-- (void)stopDatagramLinkWithName:(id)a3;
-- (void)updatePairedDevice:(id)a3;
+- (void)stopDatagramLinkWithEndpointIdentifier:(id)identifier;
+- (void)stopDatagramLinkWithName:(id)name;
+- (void)updatePairedDevice:(id)device;
 @end
 
 @implementation IDSBTLinkManager
 
-- (IDSBTLinkManager)initWithDelegate:(id)a3 pairedDevice:(id)a4
+- (IDSBTLinkManager)initWithDelegate:(id)delegate pairedDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  deviceCopy = device;
   v36.receiver = self;
   v36.super_class = IDSBTLinkManager;
   v8 = [(IDSBTLinkManager *)&v36 init];
@@ -69,13 +69,13 @@ LABEL_27:
     }
   }
 
-  if (v7)
+  if (deviceCopy)
   {
     v10 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v7;
+      v38 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "using %@ UUID from LinkManager", buf, 0xCu);
     }
 
@@ -83,17 +83,17 @@ LABEL_27:
     {
       if (_IDSShouldLogTransport())
       {
-        v35 = v7;
+        v35 = deviceCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v35 = v7;
+          v35 = deviceCopy;
           _IDSLogV();
         }
       }
     }
 
-    v11 = [(IDSBTLinkManager *)v7 copy];
+    v11 = [(IDSBTLinkManager *)deviceCopy copy];
     pipePeripheralUUIDString = v8->_pipePeripheralUUIDString;
     v8->_pipePeripheralUUIDString = v11;
 
@@ -138,16 +138,16 @@ LABEL_27:
     v20 = v18;
     if (v18 || (v20 = v19) != 0)
     {
-      v21 = [v20 BOOLValue];
+      bOOLValue = [v20 BOOLValue];
     }
 
     else
     {
-      v21 = 1;
+      bOOLValue = 1;
     }
 
-    v8->_useSkywalkChannel = v21;
-    objc_storeWeak(&v8->_delegate, v6);
+    v8->_useSkywalkChannel = bOOLValue;
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v8->_isPipeConnectingOrConnected = 0;
     v22 = objc_alloc_init(NSMutableDictionary);
     linkIDToLink = v8->_linkIDToLink;
@@ -201,7 +201,7 @@ LABEL_35:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "============= Old BTLinkManager %@ stopping =============", buf, 0xCu);
   }
 
@@ -209,11 +209,11 @@ LABEL_35:
   {
     if (_IDSShouldLogTransport())
     {
-      v4 = self;
+      selfCopy3 = self;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v4 = self;
+        selfCopy3 = self;
         _IDSLogV();
       }
     }
@@ -251,8 +251,8 @@ LABEL_35:
     p_peripheralManager = &self->_peripheralManager;
     [(CBPeripheralManager *)self->_peripheralManager startAdvertising:0, v7];
     self->_isAdvertising = 1;
-    v6 = [(IDSBTLinkManager *)self nanoRegistryPluginManager];
-    [v6 notifyWatchDidStartAdvertisingWithPeripheralManager:*p_peripheralManager];
+    nanoRegistryPluginManager = [(IDSBTLinkManager *)self nanoRegistryPluginManager];
+    [nanoRegistryPluginManager notifyWatchDidStartAdvertisingWithPeripheralManager:*p_peripheralManager];
   }
 }
 
@@ -285,8 +285,8 @@ LABEL_35:
     }
 
     self->_isAdvertising = 0;
-    v4 = [(IDSBTLinkManager *)self nanoRegistryPluginManager];
-    [v4 notifyWatchDidStopAdvertisingWithPeripheralManager:self->_peripheralManager];
+    nanoRegistryPluginManager = [(IDSBTLinkManager *)self nanoRegistryPluginManager];
+    [nanoRegistryPluginManager notifyWatchDidStopAdvertisingWithPeripheralManager:self->_peripheralManager];
   }
 }
 
@@ -333,9 +333,9 @@ LABEL_35:
 
       if (v9 && [v9 count])
       {
-        v10 = [v9 firstObject];
+        firstObject = [v9 firstObject];
         pipePeripheral = self->_pipePeripheral;
-        self->_pipePeripheral = v10;
+        self->_pipePeripheral = firstObject;
 
         v12 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -446,34 +446,34 @@ LABEL_23:
   dispatch_async(managerQueue, block);
 }
 
-- (void)removeLink:(id)a3
+- (void)removeLink:(id)link
 {
-  v4 = a3;
-  v5 = [v4 linkID];
+  linkCopy = link;
+  linkID = [linkCopy linkID];
   managerQueue = self->_managerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005BA2B8;
   block[3] = &unk_100BD6E18;
-  v10 = v4;
-  v11 = v5;
-  v12 = self;
-  v7 = v5;
-  v8 = v4;
+  v10 = linkCopy;
+  v11 = linkID;
+  selfCopy = self;
+  v7 = linkID;
+  v8 = linkCopy;
   dispatch_async(managerQueue, block);
 }
 
-- (void)updatePairedDevice:(id)a3
+- (void)updatePairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005BA4A8;
   v7[3] = &unk_100BD6E40;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -488,17 +488,17 @@ LABEL_23:
   dispatch_async(managerQueue, block);
 }
 
-- (void)setLinkPreferences:(id)a3
+- (void)setLinkPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005BB204;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = preferencesCopy;
+  v6 = preferencesCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -524,56 +524,56 @@ LABEL_23:
   dispatch_async(managerQueue, block);
 }
 
-- (void)startDatagramLinkWithName:(id)a3
+- (void)startDatagramLinkWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005BB8C8;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(managerQueue, v7);
 }
 
-- (void)stopDatagramLinkWithName:(id)a3
+- (void)stopDatagramLinkWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005BB9C8;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(managerQueue, v7);
 }
 
-- (void)startDatagramLinkWithEndpointIdentifier:(id)a3
+- (void)startDatagramLinkWithEndpointIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_datagramPipeRegistration objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_datagramPipeRegistration objectForKeyedSubscript:identifierCopy];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [NSNumber numberWithUnsignedInteger:v6 + 1];
-  [(NSMutableDictionary *)self->_datagramPipeRegistration setObject:v7 forKeyedSubscript:v4];
+  v7 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [(NSMutableDictionary *)self->_datagramPipeRegistration setObject:v7 forKeyedSubscript:identifierCopy];
 
   if (self->_pipeRegistered)
   {
-    if (v6)
+    if (unsignedIntegerValue)
     {
       v8 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        *v20 = v4;
+        *v20 = identifierCopy;
         *&v20[8] = 1024;
-        *&v20[10] = v6;
+        *&v20[10] = unsignedIntegerValue;
         v21 = 1024;
-        v22 = v6 + 1;
+        v22 = unsignedIntegerValue + 1;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Not registering datagram link endpoint %@ registrationCount %u => %u", buf, 0x18u);
       }
 
@@ -600,7 +600,7 @@ LABEL_8:
         *buf = 67109634;
         *v20 = v10;
         *&v20[4] = 2112;
-        *&v20[6] = v4;
+        *&v20[6] = identifierCopy;
         v21 = 1024;
         v22 = 1;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Registering datagram link type %d endpoint %@ registrationCount 0 => %u", buf, 0x18u);
@@ -610,13 +610,13 @@ LABEL_8:
       {
         if (_IDSShouldLogTransport())
         {
-          v15 = v4;
+          v15 = identifierCopy;
           v16 = 1;
           v14 = v10;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
-            v15 = v4;
+            v15 = identifierCopy;
             v16 = 1;
             v14 = v10;
             _IDSLogV();
@@ -628,7 +628,7 @@ LABEL_8:
       v17 = CBScalablePipeOptionTransport;
       v18 = &off_100C3CD18;
       v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1, v14, v15, v16];
-      [(CBScalablePipeManager *)pipeManager registerEndpoint:v4 type:v10 priority:3 options:v13];
+      [(CBScalablePipeManager *)pipeManager registerEndpoint:identifierCopy type:v10 priority:3 options:v13];
     }
   }
 
@@ -655,20 +655,20 @@ LABEL_8:
   }
 }
 
-- (void)stopDatagramLinkWithEndpointIdentifier:(id)a3
+- (void)stopDatagramLinkWithEndpointIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_datagramPipeRegistration objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_datagramPipeRegistration objectForKeyedSubscript:identifierCopy];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 == 1)
+  if (unsignedIntegerValue == 1)
   {
-    [(NSMutableDictionary *)self->_datagramPipeRegistration setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_datagramPipeRegistration setObject:0 forKeyedSubscript:identifierCopy];
     v8 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v4;
+      v15 = identifierCopy;
       v16 = 1024;
       v17 = 1;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unregistering datagram link endpoint %@ registrationCount %u => 0", buf, 0x12u);
@@ -678,32 +678,32 @@ LABEL_8:
     {
       if (_IDSShouldLogTransport())
       {
-        v11 = v4;
+        v11 = identifierCopy;
         v12 = 1;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v11 = v4;
+          v11 = identifierCopy;
           v12 = 1;
           _IDSLogV();
         }
       }
     }
 
-    [(CBScalablePipeManager *)self->_pipeManager unregisterEndpoint:v4, v11, v12];
+    [(CBScalablePipeManager *)self->_pipeManager unregisterEndpoint:identifierCopy, v11, v12];
   }
 
-  else if (v6)
+  else if (unsignedIntegerValue)
   {
     v9 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v15 = v4;
+      v15 = identifierCopy;
       v16 = 1024;
-      v17 = v6;
+      v17 = unsignedIntegerValue;
       v18 = 1024;
-      v19 = v6 - 1;
+      v19 = unsignedIntegerValue - 1;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Not unregistering datagram link endpoint %@ registrationCount %u => %u", buf, 0x18u);
     }
 
@@ -711,22 +711,22 @@ LABEL_8:
     {
       if (_IDSShouldLogTransport())
       {
-        v12 = v6;
-        v13 = (v6 - 1);
-        v11 = v4;
+        v12 = unsignedIntegerValue;
+        v13 = (unsignedIntegerValue - 1);
+        v11 = identifierCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v12 = v6;
-          v13 = (v6 - 1);
-          v11 = v4;
+          v12 = unsignedIntegerValue;
+          v13 = (unsignedIntegerValue - 1);
+          v11 = identifierCopy;
           _IDSLogV();
         }
       }
     }
 
-    v10 = [NSNumber numberWithUnsignedInteger:v6 - 1, v11, v12, v13];
-    [(NSMutableDictionary *)self->_datagramPipeRegistration setObject:v10 forKeyedSubscript:v4];
+    v10 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue - 1, v11, v12, v13];
+    [(NSMutableDictionary *)self->_datagramPipeRegistration setObject:v10 forKeyedSubscript:identifierCopy];
   }
 
   else
@@ -735,7 +735,7 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Cannot unregister datagram link endpoint %@ - not registered", buf, 0xCu);
     }
 
@@ -753,24 +753,24 @@ LABEL_8:
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 5)
+    if (([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 5)
     {
       v6 = "UnexpectedState";
     }
 
     else
     {
-      v6 = (&_centralManagerStateStrings)[[v4 state]];
+      v6 = (&_centralManagerStateStrings)[[stateCopy state]];
     }
 
     *buf = 138412546;
-    v13 = v4;
+    v13 = stateCopy;
     v14 = 2080;
     v15 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ didUpdateState %s", buf, 0x16u);
@@ -778,37 +778,37 @@ LABEL_8:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v7 = ([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 5 ? "UnexpectedState" : (&_centralManagerStateStrings)[objc_msgSend(v4, "state")];
-    v10 = v4;
+    v7 = ([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 5 ? "UnexpectedState" : (&_centralManagerStateStrings)[objc_msgSend(stateCopy, "state")];
+    v10 = stateCopy;
     v11 = v7;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 5)
+      if (([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 5)
       {
         v8 = "UnexpectedState";
       }
 
       else
       {
-        v8 = (&_centralManagerStateStrings)[[v4 state]];
+        v8 = (&_centralManagerStateStrings)[[stateCopy state]];
       }
 
-      v10 = v4;
+      v10 = stateCopy;
       v11 = v8;
       _IDSLogV();
     }
   }
 
-  if ([v4 state] == 5)
+  if ([stateCopy state] == 5)
   {
     [(IDSBTLinkManager *)self _connectNow];
   }
 
-  else if ([v4 state] <= 4)
+  else if ([stateCopy state] <= 4)
   {
     self->_isPipeConnectingOrConnected = 0;
-    if ([v4 state] <= 3)
+    if ([stateCopy state] <= 3)
     {
       pipePeripheral = self->_pipePeripheral;
       self->_pipePeripheral = 0;
@@ -816,17 +816,17 @@ LABEL_8:
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   v7 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v9 = v5;
+    v9 = managerCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = peripheralCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ didConnectPeripheral %@", buf, 0x16u);
   }
 
@@ -843,20 +843,20 @@ LABEL_8:
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v18 = v8;
+    v18 = managerCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = peripheralCopy;
     v21 = 2112;
-    v22 = v10;
+    v22 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ didFailToConnectPeripheral %@ err %@", buf, 0x20u);
   }
 
@@ -864,15 +864,15 @@ LABEL_8:
   {
     if (_IDSShouldLogTransport())
     {
-      v15 = v9;
-      v16 = v10;
-      v14 = v8;
+      v15 = peripheralCopy;
+      v16 = errorCopy;
+      v14 = managerCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v15 = v9;
-        v16 = v10;
-        v14 = v8;
+        v15 = peripheralCopy;
+        v16 = errorCopy;
+        v14 = managerCopy;
         _IDSLogV();
       }
     }
@@ -895,20 +895,20 @@ LABEL_8:
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  errorCopy = error;
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v18 = v8;
+    v18 = managerCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = peripheralCopy;
     v21 = 2112;
-    v22 = v10;
+    v22 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ didDisconnectPeripheral %@ err %@", buf, 0x20u);
   }
 
@@ -916,15 +916,15 @@ LABEL_8:
   {
     if (_IDSShouldLogTransport())
     {
-      v15 = v9;
-      v16 = v10;
-      v14 = v8;
+      v15 = peripheralCopy;
+      v16 = errorCopy;
+      v14 = managerCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v15 = v9;
-        v16 = v10;
-        v14 = v8;
+        v15 = peripheralCopy;
+        v16 = errorCopy;
+        v14 = managerCopy;
         _IDSLogV();
       }
     }
@@ -947,24 +947,24 @@ LABEL_8:
   }
 }
 
-- (void)peripheralManagerDidUpdateState:(id)a3
+- (void)peripheralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 5)
+    if (([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 5)
     {
       v6 = "UnexpectedState";
     }
 
     else
     {
-      v6 = (&_peripheralManagerStateStrings)[[v4 state]];
+      v6 = (&_peripheralManagerStateStrings)[[stateCopy state]];
     }
 
     *buf = 138412546;
-    v12 = v4;
+    v12 = stateCopy;
     v13 = 2080;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ didUpdateState %s", buf, 0x16u);
@@ -972,50 +972,50 @@ LABEL_8:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v7 = ([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 5 ? "UnexpectedState" : (&_peripheralManagerStateStrings)[objc_msgSend(v4, "state")];
-    v9 = v4;
+    v7 = ([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 5 ? "UnexpectedState" : (&_peripheralManagerStateStrings)[objc_msgSend(stateCopy, "state")];
+    v9 = stateCopy;
     v10 = v7;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (([v4 state] & 0x8000000000000000) != 0 || objc_msgSend(v4, "state") > 5)
+      if (([stateCopy state] & 0x8000000000000000) != 0 || objc_msgSend(stateCopy, "state") > 5)
       {
         v8 = "UnexpectedState";
       }
 
       else
       {
-        v8 = (&_peripheralManagerStateStrings)[[v4 state]];
+        v8 = (&_peripheralManagerStateStrings)[[stateCopy state]];
       }
 
-      v9 = v4;
+      v9 = stateCopy;
       v10 = v8;
       _IDSLogV();
     }
   }
 
-  if ([v4 state] == 5)
+  if ([stateCopy state] == 5)
   {
     [(IDSBTLinkManager *)self _advertiseNow];
   }
 
-  else if ([v4 state] <= 4 && objc_msgSend(v4, "state") <= 3)
+  else if ([stateCopy state] <= 4 && objc_msgSend(stateCopy, "state") <= 3)
   {
     self->_isAdvertising = 0;
   }
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  advertisingCopy = advertising;
+  errorCopy = error;
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v6;
+    v10 = advertisingCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ didStartAdvertising error %@", buf, 0x16u);
   }
 
@@ -1031,26 +1031,26 @@ LABEL_8:
     }
   }
 
-  if (v7)
+  if (errorCopy)
   {
     self->_isAdvertising = 0;
   }
 }
 
-- (void)scalablePipeManagerDidUpdateState:(id)a3
+- (void)scalablePipeManagerDidUpdateState:(id)state
 {
-  v38 = a3;
+  stateCopy = state;
   v4 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    if (([(__CFString *)v38 state]& 0x8000000000000000) != 0 || [(__CFString *)v38 state]> 5)
+    if (([(__CFString *)stateCopy state]& 0x8000000000000000) != 0 || [(__CFString *)stateCopy state]> 5)
     {
       v5 = "UnexpectedState";
     }
 
     else
     {
-      v5 = (&off_100BE1028)[[(__CFString *)v38 state]];
+      v5 = (&off_100BE1028)[[(__CFString *)stateCopy state]];
     }
 
     *buf = 136315138;
@@ -1060,19 +1060,19 @@ LABEL_8:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
   {
-    v6 = ([(__CFString *)v38 state]& 0x8000000000000000) != 0 || [(__CFString *)v38 state]> 5 ? "UnexpectedState" : (&off_100BE1028)[[(__CFString *)v38 state]];
+    v6 = ([(__CFString *)stateCopy state]& 0x8000000000000000) != 0 || [(__CFString *)stateCopy state]> 5 ? "UnexpectedState" : (&off_100BE1028)[[(__CFString *)stateCopy state]];
     v33 = v6;
     _IDSLogTransport();
     if (_IDSShouldLog())
     {
-      if (([(__CFString *)v38 state]& 0x8000000000000000) != 0 || [(__CFString *)v38 state]> 5)
+      if (([(__CFString *)stateCopy state]& 0x8000000000000000) != 0 || [(__CFString *)stateCopy state]> 5)
       {
         v7 = "UnexpectedState";
       }
 
       else
       {
-        v7 = (&off_100BE1028)[[(__CFString *)v38 state]];
+        v7 = (&off_100BE1028)[[(__CFString *)stateCopy state]];
       }
 
       v33 = v7;
@@ -1083,18 +1083,18 @@ LABEL_8:
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if (([(__CFString *)v38 state]& 0x8000000000000000) != 0 || [(__CFString *)v38 state]> 5)
+    if (([(__CFString *)stateCopy state]& 0x8000000000000000) != 0 || [(__CFString *)stateCopy state]> 5)
     {
       v9 = "UnexpectedState";
     }
 
     else
     {
-      v9 = (&off_100BE1028)[[(__CFString *)v38 state]];
+      v9 = (&off_100BE1028)[[(__CFString *)stateCopy state]];
     }
 
     *buf = 138412546;
-    v47 = v38;
+    v47 = stateCopy;
     v48 = 2080;
     v49 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ didUpdateState %s", buf, 0x16u);
@@ -1102,22 +1102,22 @@ LABEL_8:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    if (([(__CFString *)v38 state]& 0x8000000000000000) != 0 || [(__CFString *)v38 state]> 5)
+    if (([(__CFString *)stateCopy state]& 0x8000000000000000) != 0 || [(__CFString *)stateCopy state]> 5)
     {
       v10 = "UnexpectedState";
     }
 
     else
     {
-      v10 = (&off_100BE1028)[[(__CFString *)v38 state]];
+      v10 = (&off_100BE1028)[[(__CFString *)stateCopy state]];
     }
 
     v35 = v10;
-    v33 = v38;
+    v33 = stateCopy;
     _IDSLogV();
   }
 
-  if ([(__CFString *)v38 state:v33]== 5)
+  if ([(__CFString *)stateCopy state:v33]== 5)
   {
     if (!self->_pipeRegistered)
     {
@@ -1132,7 +1132,7 @@ LABEL_8:
         }
 
         *buf = 138412802;
-        v47 = v38;
+        v47 = stateCopy;
         v48 = 2112;
         v49 = @"com.apple.ids";
         v50 = 2112;
@@ -1154,7 +1154,7 @@ LABEL_8:
 
         v36 = @"com.apple.ids";
         v37 = v14;
-        v34 = v38;
+        v34 = stateCopy;
         _IDSLogV();
       }
 
@@ -1219,7 +1219,7 @@ LABEL_8:
       v23 = [NSNumber numberWithInteger:v22, v34, v36, v37];
       v45 = v23;
       v24 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-      [(__CFString *)v38 registerEndpoint:@"com.apple.ids" type:!isCentral priority:1 options:v24];
+      [(__CFString *)stateCopy registerEndpoint:@"com.apple.ids" type:!isCentral priority:1 options:v24];
     }
 
     self->_isPoweredOn = 1;
@@ -1229,7 +1229,7 @@ LABEL_8:
 
   else
   {
-    if ([(__CFString *)v38 state]> 4)
+    if ([(__CFString *)stateCopy state]> 4)
     {
       goto LABEL_83;
     }
@@ -1295,7 +1295,7 @@ LABEL_8:
     v32 = objc_loadWeakRetained(&self->_delegate);
     [v32 manager:self didPowerStateChange:0];
 
-    if ([(__CFString *)v38 state]<= 3)
+    if ([(__CFString *)stateCopy state]<= 3)
     {
       self->_pipeRegistered = 0;
     }
@@ -1304,18 +1304,18 @@ LABEL_8:
 LABEL_83:
 }
 
-- (void)scalablePipeManager:(id)a3 didRegisterEndpoint:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager didRegisterEndpoint:(id)endpoint error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  endpointCopy = endpoint;
+  errorCopy = error;
   v11 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v9;
+    v17 = endpointCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, " => Pipe did register endpoint: %@  error: %@", buf, 0x16u);
   }
 
@@ -1323,13 +1323,13 @@ LABEL_83:
   {
     if (_IDSShouldLogTransport())
     {
-      v13 = v9;
-      v14 = v10;
+      v13 = endpointCopy;
+      v14 = errorCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v13 = v9;
-        v14 = v10;
+        v13 = endpointCopy;
+        v14 = errorCopy;
         _IDSLogV();
       }
     }
@@ -1339,19 +1339,19 @@ LABEL_83:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v17 = v8;
+    v17 = managerCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = endpointCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ didRegisterEndpoint id %@ err %@", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v14 = v9;
-    v15 = v10;
-    v13 = v8;
+    v14 = endpointCopy;
+    v15 = errorCopy;
+    v13 = managerCopy;
     _IDSLogV();
   }
 
@@ -1359,15 +1359,15 @@ LABEL_83:
   [(IDSBTLinkManager *)self _connectNow:v13];
 }
 
-- (void)scalablePipeManager:(id)a3 didUnregisterEndpoint:(id)a4
+- (void)scalablePipeManager:(id)manager didUnregisterEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  endpointCopy = endpoint;
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v7;
+    v24 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, " => Pipe did unregister endpoint: %@", buf, 0xCu);
   }
 
@@ -1375,11 +1375,11 @@ LABEL_83:
   {
     if (_IDSShouldLogTransport())
     {
-      v18 = v7;
+      v18 = endpointCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v18 = v7;
+        v18 = endpointCopy;
         _IDSLogV();
       }
     }
@@ -1389,20 +1389,20 @@ LABEL_83:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = managerCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@ didUnregisterEndpoint id %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v18 = v6;
-    v20 = v7;
+    v18 = managerCopy;
+    v20 = endpointCopy;
     _IDSLogV();
   }
 
-  if ([(__CFString *)v7 isEqualToString:@"com.apple.ids", v18, v20])
+  if ([(__CFString *)endpointCopy isEqualToString:@"com.apple.ids", v18, v20])
   {
     isCentral = self->_isCentral;
     v11 = OSLogHandleForIDSCategory();
@@ -1420,7 +1420,7 @@ LABEL_83:
         v13 = @"Server";
       }
 
-      v24 = v6;
+      v24 = managerCopy;
       v25 = 2112;
       v26 = @"com.apple.ids";
       v27 = 2112;
@@ -1442,7 +1442,7 @@ LABEL_83:
 
       v21 = @"com.apple.ids";
       v22 = v14;
-      v19 = v6;
+      v19 = managerCopy;
       _IDSLogV();
     }
 
@@ -1485,19 +1485,19 @@ LABEL_83:
       }
     }
 
-    [(__CFString *)v6 registerEndpoint:@"com.apple.ids" type:!isCentral priority:1 options:0, v19, v21, v22];
+    [(__CFString *)managerCopy registerEndpoint:@"com.apple.ids" type:!isCentral priority:1 options:0, v19, v21, v22];
   }
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidConnect:(id)a4
+- (void)scalablePipeManager:(id)manager pipeDidConnect:(id)connect
 {
-  v50 = a3;
-  v51 = a4;
+  managerCopy = manager;
+  connectCopy = connect;
   v6 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v60 = v51;
+    *v60 = connectCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, " => Pipe did connect: %@", buf, 0xCu);
   }
 
@@ -1505,11 +1505,11 @@ LABEL_83:
   {
     if (_IDSShouldLogTransport())
     {
-      v41 = v51;
+      v41 = connectCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v41 = v51;
+        v41 = connectCopy;
         _IDSLogV();
       }
     }
@@ -1519,50 +1519,50 @@ LABEL_83:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v60 = v50;
+    *v60 = managerCopy;
     *&v60[8] = 2112;
-    *&v60[10] = v51;
+    *&v60[10] = connectCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ pipeDidConnect %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v41 = v50;
-    v44 = v51;
+    v41 = managerCopy;
+    v44 = connectCopy;
     _IDSLogV();
   }
 
-  v8 = [v51 name];
-  v9 = [v8 hasPrefix:@"com.apple.ids.datagram"];
+  name = [connectCopy name];
+  v9 = [name hasPrefix:@"com.apple.ids.datagram"];
 
-  v10 = [v51 name];
-  v11 = [v10 isEqualToString:@"com.apple.ids"];
+  name2 = [connectCopy name];
+  v11 = [name2 isEqualToString:@"com.apple.ids"];
 
   if ((v11 | v9))
   {
     v12 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v51 name];
+      name3 = [connectCopy name];
       *buf = 138412546;
-      *v60 = v50;
+      *v60 = managerCopy;
       *&v60[8] = 2112;
-      *&v60[10] = v13;
+      *&v60[10] = name3;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ got a new pipe for service %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      [v51 name];
-      v45 = v42 = v50;
+      [connectCopy name];
+      v45 = v42 = managerCopy;
       _IDSLogV();
     }
 
-    v14 = [v51 peer];
-    v15 = [v14 identifier];
-    v49 = [v15 UUIDString];
+    peer = [connectCopy peer];
+    identifier = [peer identifier];
+    uUIDString = [identifier UUIDString];
 
-    if (v49)
+    if (uUIDString)
     {
       if ([(NSString *)self->_pipePeripheralUUIDString isEqualToString:@"LOCAL-SETUP-STARTED"])
       {
@@ -1570,7 +1570,7 @@ LABEL_83:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v60 = v49;
+          *v60 = uUIDString;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "pipe UUID is not set yet - deferring verification for %@ until addPairedDevice", buf, 0xCu);
         }
 
@@ -1578,11 +1578,11 @@ LABEL_83:
         {
           if (_IDSShouldLogTransport())
           {
-            v43 = v49;
+            v43 = uUIDString;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v43 = v49;
+              v43 = uUIDString;
               _IDSLogV();
             }
           }
@@ -1590,8 +1590,8 @@ LABEL_83:
 
         if (v9)
         {
-          v17 = [v51 name];
-          [(IDSBTLinkManager *)self stopDatagramLinkWithEndpointIdentifier:v17];
+          name4 = [connectCopy name];
+          [(IDSBTLinkManager *)self stopDatagramLinkWithEndpointIdentifier:name4];
 
 LABEL_95:
           goto LABEL_96;
@@ -1607,7 +1607,7 @@ LABEL_95:
           pendingPipes = self->_pendingPipes;
         }
 
-        [(NSMutableArray *)pendingPipes addObject:v51, v43];
+        [(NSMutableArray *)pendingPipes addObject:connectCopy, v43];
 LABEL_88:
         if (self->_isCentral)
         {
@@ -1631,13 +1631,13 @@ LABEL_88:
         goto LABEL_95;
       }
 
-      if ([(NSString *)self->_pipePeripheralUUIDString isEqualToString:v49])
+      if ([(NSString *)self->_pipePeripheralUUIDString isEqualToString:uUIDString])
       {
         v19 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v60 = v49;
+          *v60 = uUIDString;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Pipe UUID %@ match", buf, 0xCu);
         }
 
@@ -1645,11 +1645,11 @@ LABEL_88:
         {
           if (_IDSShouldLogTransport())
           {
-            v43 = v49;
+            v43 = uUIDString;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v43 = v49;
+              v43 = uUIDString;
               _IDSLogV();
             }
           }
@@ -1657,12 +1657,12 @@ LABEL_88:
 
         if (v9)
         {
-          v48 = [[IDSBTDatagramLink alloc] initWithPipe:v51 withDeviceUniqueID:0 cbuuid:v49];
+          v48 = [[IDSBTDatagramLink alloc] initWithPipe:connectCopy withDeviceUniqueID:0 cbuuid:uUIDString];
         }
 
         else
         {
-          v48 = [[IDSBTLink alloc] initWithPipe:v51 useSkywalkChannel:self->_useSkywalkChannel withDeviceUniqueID:0 cbuuid:v49];
+          v48 = [[IDSBTLink alloc] initWithPipe:connectCopy useSkywalkChannel:self->_useSkywalkChannel withDeviceUniqueID:0 cbuuid:uUIDString];
         }
 
         v25 = OSLogHandleForIDSCategory();
@@ -1683,12 +1683,12 @@ LABEL_88:
         {
           if (v9)
           {
-            [(NSMutableDictionary *)self->_linkIDToDatagramLink setObject:v48 forKey:v49];
+            [(NSMutableDictionary *)self->_linkIDToDatagramLink setObject:v48 forKey:uUIDString];
           }
 
           else
           {
-            [(NSMutableDictionary *)self->_linkIDToLink setObject:v48 forKey:v49];
+            [(NSMutableDictionary *)self->_linkIDToLink setObject:v48 forKey:uUIDString];
             [(IDSBTLinkManager *)self setLinkPreferences:0];
             [(NSMutableDictionary *)self->_datagramPipeRegistration allKeys];
             v55 = 0u;
@@ -1787,7 +1787,7 @@ LABEL_88:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v60 = v49;
+          *v60 = uUIDString;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "could not create a link for %@", buf, 0xCu);
         }
 
@@ -1815,7 +1815,7 @@ LABEL_88:
         {
           pipePeripheralUUIDString = self->_pipePeripheralUUIDString;
           *buf = 138412546;
-          *v60 = v49;
+          *v60 = uUIDString;
           *&v60[8] = 2112;
           *&v60[10] = pipePeripheralUUIDString;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "new UUID %@ doesn't match to existing UUID %@ - ignoring this new pipe", buf, 0x16u);
@@ -1872,19 +1872,19 @@ LABEL_88:
 LABEL_96:
 }
 
-- (void)scalablePipeManager:(id)a3 pipeDidDisconnect:(id)a4 error:(id)a5
+- (void)scalablePipeManager:(id)manager pipeDidDisconnect:(id)disconnect error:(id)error
 {
-  v40 = a3;
-  v8 = a4;
-  v41 = a5;
-  v42 = v8;
+  managerCopy = manager;
+  disconnectCopy = disconnect;
+  errorCopy = error;
+  v42 = disconnectCopy;
   v9 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v49 = v8;
+    v49 = disconnectCopy;
     v50 = 2112;
-    v51 = v41;
+    v51 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, " => Pipe did disconnect: %@   error: %@", buf, 0x16u);
   }
 
@@ -1892,13 +1892,13 @@ LABEL_96:
   {
     if (_IDSShouldLogTransport())
     {
-      v30 = v8;
-      v33 = v41;
+      v30 = disconnectCopy;
+      v33 = errorCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v30 = v8;
-        v33 = v41;
+        v30 = disconnectCopy;
+        v33 = errorCopy;
         _IDSLogV();
       }
     }
@@ -1908,40 +1908,40 @@ LABEL_96:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v49 = v40;
+    v49 = managerCopy;
     v50 = 2112;
-    v51 = v8;
+    v51 = disconnectCopy;
     v52 = 2112;
-    v53 = v41;
+    v53 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ pipeDidDisconnect %@ err %@", buf, 0x20u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v33 = v8;
-    v36 = v41;
-    v30 = v40;
+    v33 = disconnectCopy;
+    v36 = errorCopy;
+    v30 = managerCopy;
     _IDSLogV();
   }
 
-  v11 = [(NSMutableDictionary *)v8 name:v30];
+  v11 = [(NSMutableDictionary *)disconnectCopy name:v30];
   v12 = [v11 hasPrefix:@"com.apple.ids.datagram"];
 
-  v13 = [(NSMutableDictionary *)v42 name];
-  v14 = [v13 isEqualToString:@"com.apple.ids"];
+  name = [(NSMutableDictionary *)v42 name];
+  v14 = [name isEqualToString:@"com.apple.ids"];
 
   if ((v14 | v12))
   {
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(NSMutableDictionary *)v42 name];
+      name2 = [(NSMutableDictionary *)v42 name];
       *buf = 138412802;
-      v49 = v40;
+      v49 = managerCopy;
       v50 = 2112;
       v51 = v42;
       v52 = 2112;
-      v53 = v16;
+      v53 = name2;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@ pipe %@ disconnected for service %@", buf, 0x20u);
     }
 
@@ -1949,24 +1949,24 @@ LABEL_96:
     {
       [(NSMutableDictionary *)v42 name];
       v37 = v34 = v42;
-      v31 = v40;
+      v31 = managerCopy;
       _IDSLogV();
     }
 
     v17 = [(NSMutableDictionary *)v42 peer:v31];
-    v18 = [v17 identifier];
-    v38 = [v18 UUIDString];
+    identifier = [v17 identifier];
+    uUIDString = [identifier UUIDString];
 
     if (v12)
     {
-      v39 = [(NSMutableDictionary *)self->_linkIDToDatagramLink objectForKey:v38];
-      [(NSMutableDictionary *)self->_linkIDToDatagramLink removeObjectForKey:v38];
+      v39 = [(NSMutableDictionary *)self->_linkIDToDatagramLink objectForKey:uUIDString];
+      [(NSMutableDictionary *)self->_linkIDToDatagramLink removeObjectForKey:uUIDString];
     }
 
     else
     {
-      v39 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:v38];
-      [(NSMutableDictionary *)self->_linkIDToLink removeObjectForKey:v38];
+      v39 = [(NSMutableDictionary *)self->_linkIDToLink objectForKey:uUIDString];
+      [(NSMutableDictionary *)self->_linkIDToLink removeObjectForKey:uUIDString];
       [(NSMutableDictionary *)self->_datagramPipeRegistration allKeys];
       v45 = 0u;
       v46 = 0u;

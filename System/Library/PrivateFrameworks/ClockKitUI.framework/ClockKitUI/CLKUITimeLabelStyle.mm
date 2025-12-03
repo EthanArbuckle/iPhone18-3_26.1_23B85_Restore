@@ -1,12 +1,12 @@
 @interface CLKUITimeLabelStyle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CLKUITimeLabelStyle
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setThreeDigitFont:self->_threeDigitFont];
@@ -16,10 +16,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -29,16 +29,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CLKUITimeLabelStyle *)v4 threeDigitFont];
-      if ([v5 isEqual:self->_threeDigitFont])
+      threeDigitFont = [(CLKUITimeLabelStyle *)equalCopy threeDigitFont];
+      if ([threeDigitFont isEqual:self->_threeDigitFont])
       {
-        v6 = [(CLKUITimeLabelStyle *)v4 fourDigitFont];
-        if ([v6 isEqual:self->_fourDigitFont])
+        fourDigitFont = [(CLKUITimeLabelStyle *)equalCopy fourDigitFont];
+        if ([fourDigitFont isEqual:self->_fourDigitFont])
         {
-          v7 = [(CLKUITimeLabelStyle *)v4 designatorFont];
-          if ([v7 isEqual:self->_designatorFont])
+          designatorFont = [(CLKUITimeLabelStyle *)equalCopy designatorFont];
+          if ([designatorFont isEqual:self->_designatorFont])
           {
-            v8 = [(CLKUITimeLabelStyle *)v4 stringAttributes];
+            stringAttributes = [(CLKUITimeLabelStyle *)equalCopy stringAttributes];
             v9 = CLKEqualObjects();
           }
 

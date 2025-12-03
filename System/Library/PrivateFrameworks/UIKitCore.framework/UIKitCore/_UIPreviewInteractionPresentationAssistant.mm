@@ -1,140 +1,140 @@
 @interface _UIPreviewInteractionPresentationAssistant
-- (_UIPreviewInteractionPresentationAssistant)initWithViewControllerPresentation:(id)a3;
-- (double)transitionDuration:(id)a3;
+- (_UIPreviewInteractionPresentationAssistant)initWithViewControllerPresentation:(id)presentation;
+- (double)transitionDuration:(id)duration;
 - (id)_sourcePreviewPortal;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_applyStashedParentViewControllerIfNecessary;
-- (void)_createpresentationAnimatorIfNecessary:(id)a3;
+- (void)_createpresentationAnimatorIfNecessary:(id)necessary;
 - (void)_postInteractionCleanup;
 - (void)_stashParentViewControllerIfNecessary;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 - (void)dismissViewController;
-- (void)presentFromViewController:(id)a3 sourcePreview:(id)a4 dismissalCompletion:(id)a5;
+- (void)presentFromViewController:(id)controller sourcePreview:(id)preview dismissalCompletion:(id)completion;
 @end
 
 @implementation _UIPreviewInteractionPresentationAssistant
 
-- (_UIPreviewInteractionPresentationAssistant)initWithViewControllerPresentation:(id)a3
+- (_UIPreviewInteractionPresentationAssistant)initWithViewControllerPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v8.receiver = self;
   v8.super_class = _UIPreviewInteractionPresentationAssistant;
   v5 = [(_UIPreviewInteractionPresentationAssistant *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIPreviewInteractionPresentationAssistant *)v5 setPresentation:v4];
+    [(_UIPreviewInteractionPresentationAssistant *)v5 setPresentation:presentationCopy];
   }
 
   return v6;
 }
 
-- (void)presentFromViewController:(id)a3 sourcePreview:(id)a4 dismissalCompletion:(id)a5
+- (void)presentFromViewController:(id)controller sourcePreview:(id)preview dismissalCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-  v12 = [v11 viewController];
+  completionCopy = completion;
+  previewCopy = preview;
+  controllerCopy = controller;
+  presentation = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+  viewController = [presentation viewController];
 
   [(_UIPreviewInteractionPresentationAssistant *)self _stashParentViewControllerIfNecessary];
-  [v12 _setOverrideUseCustomPresentation:1];
-  [v12 _setOverrideTransitioningDelegate:self];
-  [(_UIPreviewInteractionPresentationAssistant *)self setSourcePreview:v9];
+  [viewController _setOverrideUseCustomPresentation:1];
+  [viewController _setOverrideTransitioningDelegate:self];
+  [(_UIPreviewInteractionPresentationAssistant *)self setSourcePreview:previewCopy];
 
-  [(_UIPreviewInteractionPresentationAssistant *)self setDismissalCompletion:v8];
-  [v10 presentViewController:v12 animated:1 completion:0];
+  [(_UIPreviewInteractionPresentationAssistant *)self setDismissalCompletion:completionCopy];
+  [controllerCopy presentViewController:viewController animated:1 completion:0];
 }
 
 - (void)dismissViewController
 {
-  v3 = [(UIViewControllerContextTransitioning *)self->_currentContext containerView];
-  [v3 setUserInteractionEnabled:0];
+  containerView = [(UIViewControllerContextTransitioning *)self->_currentContext containerView];
+  [containerView setUserInteractionEnabled:0];
 
-  v4 = [(_UIPreviewInteractionPresentationAssistant *)self presentationAnimator];
-  if (([v4 isReversed] & 1) == 0 && objc_msgSend(v4, "_animationState") != 5)
+  presentationAnimator = [(_UIPreviewInteractionPresentationAssistant *)self presentationAnimator];
+  if (([presentationAnimator isReversed] & 1) == 0 && objc_msgSend(presentationAnimator, "_animationState") != 5)
   {
-    if (-[_UIPreviewInteractionPresentationAssistant isAppearing](self, "isAppearing") && [v4 isRunning])
+    if (-[_UIPreviewInteractionPresentationAssistant isAppearing](self, "isAppearing") && [presentationAnimator isRunning])
     {
-      [v4 pauseAnimation];
+      [presentationAnimator pauseAnimation];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __67___UIPreviewInteractionPresentationAssistant_dismissViewController__block_invoke;
       v12[3] = &unk_1E70F3590;
       v12[4] = self;
       [UIView performWithoutAnimation:v12];
-      v5 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-      v6 = [v5 appearanceTransition];
+      presentation = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+      appearanceTransition = [presentation appearanceTransition];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
       {
-        v8 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-        v9 = [v8 appearanceTransition];
-        [v9 transitionWillReverse];
+        presentation2 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+        appearanceTransition2 = [presentation2 appearanceTransition];
+        [appearanceTransition2 transitionWillReverse];
       }
 
-      [v4 setReversed:1];
-      v10 = [v4 timingParameters];
-      [v4 continueAnimationWithTimingParameters:v10 durationFactor:1.0];
+      [presentationAnimator setReversed:1];
+      timingParameters = [presentationAnimator timingParameters];
+      [presentationAnimator continueAnimationWithTimingParameters:timingParameters durationFactor:1.0];
     }
 
     else
     {
-      v10 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-      v11 = [v10 viewController];
-      [v11 dismissViewControllerAnimated:1 completion:0];
+      timingParameters = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+      viewController = [timingParameters viewController];
+      [viewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
 - (void)_stashParentViewControllerIfNecessary
 {
-  v3 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-  v8 = [v3 viewController];
+  presentation = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+  viewController = [presentation viewController];
 
-  v4 = [v8 parentViewController];
+  parentViewController = [viewController parentViewController];
 
-  if (v4)
+  if (parentViewController)
   {
-    v5 = [v8 parentViewController];
-    [(_UIPreviewInteractionPresentationAssistant *)self setStashedParentViewController:v5];
+    parentViewController2 = [viewController parentViewController];
+    [(_UIPreviewInteractionPresentationAssistant *)self setStashedParentViewController:parentViewController2];
 
-    v6 = [v8 view];
-    v7 = [v6 superview];
-    [(_UIPreviewInteractionPresentationAssistant *)self setStashedSuperView:v7];
+    view = [viewController view];
+    superview = [view superview];
+    [(_UIPreviewInteractionPresentationAssistant *)self setStashedSuperView:superview];
 
-    [v8 willMoveToParentViewController:0];
-    [v8 removeFromParentViewController];
+    [viewController willMoveToParentViewController:0];
+    [viewController removeFromParentViewController];
   }
 }
 
 - (void)_applyStashedParentViewControllerIfNecessary
 {
-  v3 = [(_UIPreviewInteractionPresentationAssistant *)self stashedParentViewController];
+  stashedParentViewController = [(_UIPreviewInteractionPresentationAssistant *)self stashedParentViewController];
 
-  if (v3)
+  if (stashedParentViewController)
   {
-    v4 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-    v5 = [v4 viewController];
+    presentation = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+    viewController = [presentation viewController];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __90___UIPreviewInteractionPresentationAssistant__applyStashedParentViewControllerIfNecessary__block_invoke;
     aBlock[3] = &unk_1E70F35B8;
     aBlock[4] = self;
-    v6 = v5;
+    v6 = viewController;
     v12 = v6;
     v7 = _Block_copy(aBlock);
-    v8 = [v6 transitionCoordinator];
-    if (v8)
+    transitionCoordinator = [v6 transitionCoordinator];
+    if (transitionCoordinator)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __90___UIPreviewInteractionPresentationAssistant__applyStashedParentViewControllerIfNecessary__block_invoke_3;
       v9[3] = &unk_1E70F3770;
       v10 = v7;
-      [v8 animateAlongsideTransition:0 completion:v9];
+      [transitionCoordinator animateAlongsideTransition:0 completion:v9];
     }
 
     else
@@ -146,22 +146,22 @@
 
 - (id)_sourcePreviewPortal
 {
-  v2 = [(_UIPreviewInteractionPresentationAssistant *)self sourcePreview];
+  sourcePreview = [(_UIPreviewInteractionPresentationAssistant *)self sourcePreview];
   v3 = [_UIPortalView alloc];
-  v4 = [v2 view];
-  [v4 bounds];
+  view = [sourcePreview view];
+  [view bounds];
   v5 = [(_UIPortalView *)v3 initWithFrame:?];
 
   [(_UIPortalView *)v5 setHidesSourceView:_AXSReduceMotionEnabled() == 0];
   [(_UIPortalView *)v5 setMatchesAlpha:1];
-  v6 = [v2 view];
-  [(_UIPortalView *)v5 setSourceView:v6];
+  view2 = [sourcePreview view];
+  [(_UIPortalView *)v5 setSourceView:view2];
 
-  v7 = [v2 target];
-  v8 = v7;
-  if (v7)
+  target = [sourcePreview target];
+  v8 = target;
+  if (target)
   {
-    [v7 transform];
+    [target transform];
   }
 
   else
@@ -181,56 +181,56 @@
   return v5;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-  v12 = [v11 presentationController];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceViewControllerCopy = sourceViewController;
+  presentation = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+  presentationController = [presentation presentationController];
 
-  if (!v12)
+  if (!presentationController)
   {
-    v12 = [[UIPreviewPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v9];
+    presentationController = [[UIPreviewPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
   }
 
-  [(UIPresentationController *)v12 _setShouldContinueTouchesOnTargetViewController:1];
-  [(UIPresentationController *)v12 _setContainerIgnoresDirectTouchEvents:0];
-  [(UIPreviewPresentationController *)v12 setAppliesVisualEffectsToPresentingView:0];
-  v13 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-  v14 = [v13 customViewForTouchContinuation];
-  [(UIPresentationController *)v12 _setCustomViewForTouchContinuation:v14];
+  [(UIPresentationController *)presentationController _setShouldContinueTouchesOnTargetViewController:1];
+  [(UIPresentationController *)presentationController _setContainerIgnoresDirectTouchEvents:0];
+  [(UIPreviewPresentationController *)presentationController setAppliesVisualEffectsToPresentingView:0];
+  presentation2 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+  customViewForTouchContinuation = [presentation2 customViewForTouchContinuation];
+  [(UIPresentationController *)presentationController _setCustomViewForTouchContinuation:customViewForTouchContinuation];
 
-  v15 = [(_UIPreviewInteractionPresentationAssistant *)self _sourcePreviewPortal];
-  [(_UIPreviewInteractionPresentationAssistant *)self setPresentationSourcePortalView:v15];
+  _sourcePreviewPortal = [(_UIPreviewInteractionPresentationAssistant *)self _sourcePreviewPortal];
+  [(_UIPreviewInteractionPresentationAssistant *)self setPresentationSourcePortalView:_sourcePreviewPortal];
 
-  objc_initWeak(&location, v12);
+  objc_initWeak(&location, presentationController);
   objc_initWeak(&from, self);
-  v16 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-  v17 = [v16 customContainerView];
+  presentation3 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+  customContainerView = [presentation3 customContainerView];
 
-  if (v17)
+  if (customContainerView)
   {
-    v18 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-    v19 = [v18 customContainerView];
+    presentation4 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+    customContainerView2 = [presentation4 customContainerView];
   }
 
   else
   {
-    v20 = [(_UIPreviewInteractionPresentationAssistant *)self highlighter];
-    v21 = [v20 customContainerView];
+    highlighter = [(_UIPreviewInteractionPresentationAssistant *)self highlighter];
+    customContainerView3 = [highlighter customContainerView];
 
-    if (!v21)
+    if (!customContainerView3)
     {
       v22 = 0;
       goto LABEL_10;
     }
 
-    v18 = [(_UIPreviewInteractionPresentationAssistant *)self highlighter];
-    v19 = [v18 customContainerView];
+    presentation4 = [(_UIPreviewInteractionPresentationAssistant *)self highlighter];
+    customContainerView2 = [presentation4 customContainerView];
   }
 
-  v22 = v19;
+  v22 = customContainerView2;
 
   if (v22)
   {
@@ -240,7 +240,7 @@
     v30[3] = &unk_1E70FE928;
     v22 = v22;
     v31 = v22;
-    [(UIPresentationController *)v12 set_containerSuperviewForCurrentTransition:v30];
+    [(UIPresentationController *)presentationController set_containerSuperviewForCurrentTransition:v30];
   }
 
 LABEL_10:
@@ -250,14 +250,14 @@ LABEL_10:
   v27[3] = &unk_1E711CB98;
   objc_copyWeak(&v28, &from);
   objc_copyWeak(&v29, &location);
-  [(UIPresentationController *)v12 set_customFromViewForCurrentTransition:v27];
+  [(UIPresentationController *)presentationController set_customFromViewForCurrentTransition:v27];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __141___UIPreviewInteractionPresentationAssistant_presentationControllerForPresentedViewController_presentingViewController_sourceViewController___block_invoke_3;
   v24[3] = &unk_1E711CB98;
   objc_copyWeak(&v25, &from);
   objc_copyWeak(&v26, &location);
-  [(UIPresentationController *)v12 set_customToViewForCurrentTransition:v24];
+  [(UIPresentationController *)presentationController set_customToViewForCurrentTransition:v24];
   objc_destroyWeak(&v26);
   objc_destroyWeak(&v25);
   objc_destroyWeak(&v29);
@@ -266,14 +266,14 @@ LABEL_10:
   objc_destroyWeak(&from);
   objc_destroyWeak(&location);
 
-  return v12;
+  return presentationController;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(_UIPreviewInteractionPresentationAssistant *)self isAppearing];
+  isAppearing = [(_UIPreviewInteractionPresentationAssistant *)self isAppearing];
   result = 0.35;
-  if (v3)
+  if (isAppearing)
   {
     return 0.4;
   }
@@ -281,34 +281,34 @@ LABEL_10:
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v5 = a3;
-  [(_UIPreviewInteractionPresentationAssistant *)self _createpresentationAnimatorIfNecessary:v5];
-  v6 = [(_UIPreviewInteractionPresentationAssistant *)self presentationAnimator];
-  objc_storeStrong(&self->_currentContext, a3);
-  v7 = [(_UIPreviewInteractionPresentationAssistant *)self isAppearing];
-  v8 = [v5 containerView];
-  [v8 setUserInteractionEnabled:v7];
-  v9 = [v5 viewForKey:@"UITransitionContextFromView"];
-  v10 = [v5 viewForKey:@"UITransitionContextToView"];
-  v11 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-  v12 = v11;
-  if (v7)
+  transitionCopy = transition;
+  [(_UIPreviewInteractionPresentationAssistant *)self _createpresentationAnimatorIfNecessary:transitionCopy];
+  presentationAnimator = [(_UIPreviewInteractionPresentationAssistant *)self presentationAnimator];
+  objc_storeStrong(&self->_currentContext, transition);
+  isAppearing = [(_UIPreviewInteractionPresentationAssistant *)self isAppearing];
+  containerView = [transitionCopy containerView];
+  [containerView setUserInteractionEnabled:isAppearing];
+  v9 = [transitionCopy viewForKey:@"UITransitionContextFromView"];
+  v10 = [transitionCopy viewForKey:@"UITransitionContextToView"];
+  presentation = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+  v12 = presentation;
+  if (isAppearing)
   {
-    [v11 appearanceTransition];
+    [presentation appearanceTransition];
   }
 
   else
   {
-    [v11 disappearanceTransition];
+    [presentation disappearanceTransition];
   }
   v13 = ;
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(_UIPreviewInteractionPresentationAssistant *)self sourcePreview];
-    [v13 setSourcePreview:v14];
+    sourcePreview = [(_UIPreviewInteractionPresentationAssistant *)self sourcePreview];
+    [v13 setSourcePreview:sourcePreview];
   }
 
   if (objc_opt_respondsToSelector())
@@ -318,8 +318,8 @@ LABEL_10:
     v38[2] = __64___UIPreviewInteractionPresentationAssistant_animateTransition___block_invoke;
     v38[3] = &unk_1E711B150;
     v38[4] = self;
-    v43 = v7;
-    v39 = v8;
+    v43 = isAppearing;
+    v39 = containerView;
     v40 = v9;
     v41 = v10;
     v42 = v13;
@@ -336,10 +336,10 @@ LABEL_10:
   v33 = v16;
   v17 = v10;
   v34 = v17;
-  v18 = v8;
+  v18 = containerView;
   v35 = v18;
-  v36 = self;
-  v37 = v7;
+  selfCopy = self;
+  v37 = isAppearing;
   v19 = _Block_copy(aBlock);
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -348,9 +348,9 @@ LABEL_10:
   v28[4] = self;
   v20 = v15;
   v29 = v20;
-  v30 = v7;
+  v30 = isAppearing;
   v21 = _Block_copy(v28);
-  if (v7)
+  if (isAppearing)
   {
     objc_initWeak(&location, self);
     v25[0] = MEMORY[0x1E69E9820];
@@ -358,8 +358,8 @@ LABEL_10:
     v25[2] = __64___UIPreviewInteractionPresentationAssistant_animateTransition___block_invoke_16;
     v25[3] = &unk_1E70F3668;
     objc_copyWeak(&v26, &location);
-    v22 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-    [v22 setPrivatePresentationCompletionBlock:v25];
+    presentation2 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+    [presentation2 setPrivatePresentationCompletionBlock:v25];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(&location);
@@ -377,35 +377,35 @@ LABEL_10:
 
   else
   {
-    [v6 addAnimations:v19];
-    [v6 addCompletion:v21];
-    [v6 startAnimation];
+    [presentationAnimator addAnimations:v19];
+    [presentationAnimator addCompletion:v21];
+    [presentationAnimator startAnimation];
   }
 }
 
 - (void)_postInteractionCleanup
 {
-  v9 = [(_UIPreviewInteractionPresentationAssistant *)self highlighter];
-  if (v9)
+  highlighter = [(_UIPreviewInteractionPresentationAssistant *)self highlighter];
+  if (highlighter)
   {
-    v3 = [v9 customBackgroundEffectView];
-    [v3 removeFromSuperview];
+    customBackgroundEffectView = [highlighter customBackgroundEffectView];
+    [customBackgroundEffectView removeFromSuperview];
 
     [(_UIPreviewInteractionPresentationAssistant *)self setHighlighter:0];
   }
 
-  v4 = [(_UIPreviewInteractionPresentationAssistant *)self presentationSourcePortalView];
-  [v4 removeFromSuperview];
+  presentationSourcePortalView = [(_UIPreviewInteractionPresentationAssistant *)self presentationSourcePortalView];
+  [presentationSourcePortalView removeFromSuperview];
 
   [(_UIPreviewInteractionPresentationAssistant *)self setPresentationSourcePortalView:0];
   [(_UIPreviewInteractionPresentationAssistant *)self setSourcePreview:0];
-  v5 = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
-  v6 = [v5 viewController];
+  presentation = [(_UIPreviewInteractionPresentationAssistant *)self presentation];
+  viewController = [presentation viewController];
 
-  [v6 _setOverrideUseCustomPresentation:0];
-  [v6 _setOverrideTransitioningDelegate:0];
-  v7 = [(_UIPreviewInteractionPresentationAssistant *)self dismissalCompletion];
-  v8 = [v7 copy];
+  [viewController _setOverrideUseCustomPresentation:0];
+  [viewController _setOverrideTransitioningDelegate:0];
+  dismissalCompletion = [(_UIPreviewInteractionPresentationAssistant *)self dismissalCompletion];
+  v8 = [dismissalCompletion copy];
 
   [(_UIPreviewInteractionPresentationAssistant *)self setDismissalCompletion:0];
   if (v8)
@@ -416,11 +416,11 @@ LABEL_10:
   [(_UIPreviewInteractionPresentationAssistant *)self _applyStashedParentViewControllerIfNecessary];
 }
 
-- (void)_createpresentationAnimatorIfNecessary:(id)a3
+- (void)_createpresentationAnimatorIfNecessary:(id)necessary
 {
   if (!self->_presentationAnimator)
   {
-    [(_UIPreviewInteractionPresentationAssistant *)self transitionDuration:a3];
+    [(_UIPreviewInteractionPresentationAssistant *)self transitionDuration:necessary];
     v6 = v5;
     if ([(_UIPreviewInteractionPresentationAssistant *)self isAppearing])
     {

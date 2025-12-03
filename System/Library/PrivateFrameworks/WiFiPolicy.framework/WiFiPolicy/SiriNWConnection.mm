@@ -1,29 +1,29 @@
 @interface SiriNWConnection
-- (SiriNWConnection)initWithQueueAndCompletion:(id)a3 reason:(id)a4 callback:(id)a5;
+- (SiriNWConnection)initWithQueueAndCompletion:(id)completion reason:(id)reason callback:(id)callback;
 - (id)_getAttemptedEndpoints;
-- (id)_setParametersForHost:(const char *)a3 useTLS:(BOOL)a4 initialPayload:(id)a5;
+- (id)_setParametersForHost:(const char *)host useTLS:(BOOL)s initialPayload:(id)payload;
 - (void)_cancelOpenTimer;
-- (void)_closeWithError:(id)a3;
-- (void)_configureConnection:(id)a3;
-- (void)_getNWConnectionWithInitialData:(id)a3 completion:(id)a4;
-- (void)_invokeOpenCompletionWithError:(id)a3;
+- (void)_closeWithError:(id)error;
+- (void)_configureConnection:(id)connection;
+- (void)_getNWConnectionWithInitialData:(id)data completion:(id)completion;
+- (void)_invokeOpenCompletionWithError:(id)error;
 - (void)_setupOpenTimer;
 - (void)close;
 - (void)dealloc;
-- (void)openConnectionForURL:(id)a3 withConnectionId:(id)a4 initialPayload:(id)a5 completion:(id)a6;
-- (void)runSiriProbeWithDepth:(int64_t)a3 trafficClass:(unsigned int)a4;
+- (void)openConnectionForURL:(id)l withConnectionId:(id)id initialPayload:(id)payload completion:(id)completion;
+- (void)runSiriProbeWithDepth:(int64_t)depth trafficClass:(unsigned int)class;
 @end
 
 @implementation SiriNWConnection
 
-- (SiriNWConnection)initWithQueueAndCompletion:(id)a3 reason:(id)a4 callback:(id)a5
+- (SiriNWConnection)initWithQueueAndCompletion:(id)completion reason:(id)reason callback:(id)callback
 {
-  v9 = a3;
-  v10 = a4;
-  objc_storeStrong(&self->_queue, a3);
-  v11 = a5;
-  objc_storeStrong(&self->_reason, a4);
-  v12 = MEMORY[0x23839E400](v11);
+  completionCopy = completion;
+  reasonCopy = reason;
+  objc_storeStrong(&self->_queue, completion);
+  callbackCopy = callback;
+  objc_storeStrong(&self->_reason, reason);
+  v12 = MEMORY[0x23839E400](callbackCopy);
 
   wfcompletion = self->_wfcompletion;
   self->_wfcompletion = v12;
@@ -34,7 +34,7 @@
   dateToDisable = self->_dateToDisable;
   self->_dateToDisable = v15;
 
-  if ([v10 containsString:@"expireddate"])
+  if ([reasonCopy containsString:@"expireddate"])
   {
     v17 = [v14 dateFromString:@"2024-01-30"];
     v18 = self->_dateToDisable;
@@ -52,11 +52,11 @@
   [(SiriNWConnection *)&v3 dealloc];
 }
 
-- (void)runSiriProbeWithDepth:(int64_t)a3 trafficClass:(unsigned int)a4
+- (void)runSiriProbeWithDepth:(int64_t)depth trafficClass:(unsigned int)class
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  self->_network_traffic_class = a4;
-  if (a3 == 2)
+  self->_network_traffic_class = class;
+  if (depth == 2)
   {
     v12 = [MEMORY[0x277CBEBC0] URLWithString:@"https://guzzoni.apple.com:443/ace"];
     url = self->_url;
@@ -64,7 +64,7 @@
     v10 = 10;
   }
 
-  else if (a3 == 1)
+  else if (depth == 1)
   {
     v11 = [MEMORY[0x277CBEBC0] URLWithString:@"https://guzzoni.apple.com:443/"];
     url = self->_url;
@@ -74,7 +74,7 @@
 
   else
   {
-    if (a3)
+    if (depth)
     {
       goto LABEL_10;
     }
@@ -104,7 +104,7 @@ LABEL_10:
   if (v15 <= 0.0)
   {
     NSLog(&cfstr_SProbingOkToRu.isa, "[SiriNWConnection runSiriProbeWithDepth:trafficClass:]", self->_dateToDisable, v13);
-    NSLog(&cfstr_SStartingNwcon.isa, "[SiriNWConnection runSiriProbeWithDepth:trafficClass:]", self->_network_traffic_class, a3);
+    NSLog(&cfstr_SStartingNwcon.isa, "[SiriNWConnection runSiriProbeWithDepth:trafficClass:]", self->_network_traffic_class, depth);
     v23 = self->_url;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -119,8 +119,8 @@ LABEL_10:
     NSLog(&cfstr_SProbingHasBee.isa, "[SiriNWConnection runSiriProbeWithDepth:trafficClass:]", self->_dateToDisable, v13);
     v16 = MEMORY[0x277CCA9B8];
     v26 = *MEMORY[0x277CCA450];
-    v17 = [MEMORY[0x277CCA8D8] mainBundle];
-    v18 = [v17 localizedStringForKey:@"Past Siri Probe Functional Date" value:&stru_28487EF20 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v18 = [mainBundle localizedStringForKey:@"Past Siri Probe Functional Date" value:&stru_28487EF20 table:0];
     v27[0] = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v20 = [v16 errorWithDomain:@"com.apple.wifi.policy" code:1 userInfo:v19];
@@ -166,50 +166,50 @@ void __55__SiriNWConnection_runSiriProbeWithDepth_trafficClass___block_invoke(ui
   [*(a1 + 32) _closeWithError:v7];
 }
 
-- (void)_invokeOpenCompletionWithError:(id)a3
+- (void)_invokeOpenCompletionWithError:(id)error
 {
   openCompletion = self->_openCompletion;
   if (openCompletion)
   {
-    v5 = a3;
+    errorCopy = error;
     v7 = MEMORY[0x23839E400](openCompletion);
     v6 = self->_openCompletion;
     self->_openCompletion = 0;
 
-    v7[2](v7, v5);
+    v7[2](v7, errorCopy);
   }
 }
 
-- (void)_getNWConnectionWithInitialData:(id)a3 completion:(id)a4
+- (void)_getNWConnectionWithInitialData:(id)data completion:(id)completion
 {
-  v17 = a3;
-  v6 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v7 = self->_resolvedHost;
-  v8 = [(NSURL *)self->_url port];
-  v9 = [v8 stringValue];
+  port = [(NSURL *)self->_url port];
+  stringValue = [port stringValue];
 
-  v10 = [(NSURL *)self->_url scheme];
-  self->_usingTLS = [v10 caseInsensitiveCompare:@"https"] == 0;
+  scheme = [(NSURL *)self->_url scheme];
+  self->_usingTLS = [scheme caseInsensitiveCompare:@"https"] == 0;
 
-  if (!v9)
+  if (!stringValue)
   {
     NSLog(&cfstr_SFailedToFindP.isa, "[SiriNWConnection _getNWConnectionWithInitialData:completion:]", self->_url);
     if (self->_usingTLS)
     {
-      v9 = @"443";
+      stringValue = @"443";
     }
 
     else
     {
-      v9 = @"80";
+      stringValue = @"80";
     }
   }
 
-  v11 = [(NSString *)v7 UTF8String];
-  host = nw_endpoint_create_host(v11, [(__CFString *)v9 UTF8String]);
+  uTF8String = [(NSString *)v7 UTF8String];
+  host = nw_endpoint_create_host(uTF8String, [(__CFString *)stringValue UTF8String]);
   if (host || ([MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.wifi.policy.siri" code:22 userInfo:0], v16 = objc_claimAutoreleasedReturnValue(), NSLog(&cfstr_SFailedToCreat_4.isa, "-[SiriNWConnection _getNWConnectionWithInitialData:completion:]", v16), !v16))
   {
-    v13 = [(SiriNWConnection *)self _setParametersForHost:v11 useTLS:self->_usingTLS initialPayload:v17];
+    v13 = [(SiriNWConnection *)self _setParametersForHost:uTF8String useTLS:self->_usingTLS initialPayload:dataCopy];
     v14 = nw_connection_create(host, v13);
     v15 = +[WiFiPolicyNetworkActivityTracing sharedNetworkActivityTracing];
     [v15 networkActivityAddNWConnection:v14 toActivityWithLabel:self->_probeLabel];
@@ -231,25 +231,25 @@ void __55__SiriNWConnection_runSiriProbeWithDepth_trafficClass___block_invoke(ui
     v14 = 0;
   }
 
-  v6[2](v6, v14, v16);
+  completionCopy[2](completionCopy, v14, v16);
 }
 
-- (void)openConnectionForURL:(id)a3 withConnectionId:(id)a4 initialPayload:(id)a5 completion:(id)a6
+- (void)openConnectionForURL:(id)l withConnectionId:(id)id initialPayload:(id)payload completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 host];
-  v15 = [v14 copy];
+  completionCopy = completion;
+  payloadCopy = payload;
+  idCopy = id;
+  lCopy = l;
+  host = [lCopy host];
+  v15 = [host copy];
   resolvedHost = self->_resolvedHost;
   self->_resolvedHost = v15;
 
-  v17 = [v13 copy];
+  v17 = [lCopy copy];
   url = self->_url;
   self->_url = v17;
 
-  v19 = [v12 copy];
+  v19 = [idCopy copy];
   connectionId = self->_connectionId;
   self->_connectionId = v19;
 
@@ -260,8 +260,8 @@ void __55__SiriNWConnection_runSiriProbeWithDepth_trafficClass___block_invoke(ui
   v25[2] = __84__SiriNWConnection_openConnectionForURL_withConnectionId_initialPayload_completion___block_invoke;
   v25[3] = &unk_2789C7940;
   v25[4] = self;
-  v26 = v10;
-  v21 = v10;
+  v26 = completionCopy;
+  v21 = completionCopy;
   v22 = MEMORY[0x23839E400](v25);
   openCompletion = self->_openCompletion;
   self->_openCompletion = v22;
@@ -271,7 +271,7 @@ void __55__SiriNWConnection_runSiriProbeWithDepth_trafficClass___block_invoke(ui
   v24[2] = __84__SiriNWConnection_openConnectionForURL_withConnectionId_initialPayload_completion___block_invoke_2;
   v24[3] = &unk_2789C7968;
   v24[4] = self;
-  [(SiriNWConnection *)self _getNWConnectionWithInitialData:v11 completion:v24];
+  [(SiriNWConnection *)self _getNWConnectionWithInitialData:payloadCopy completion:v24];
 }
 
 void __84__SiriNWConnection_openConnectionForURL_withConnectionId_initialPayload_completion___block_invoke(uint64_t a1, void *a2)
@@ -305,13 +305,13 @@ void __84__SiriNWConnection_openConnectionForURL_withConnectionId_initialPayload
   }
 }
 
-- (void)_configureConnection:(id)a3
+- (void)_configureConnection:(id)connection
 {
-  v5 = a3;
-  objc_storeStrong(&self->_connection, a3);
+  connectionCopy = connection;
+  objc_storeStrong(&self->_connection, connection);
   objc_storeStrong(&self->_content_context, *MEMORY[0x277CD9220]);
-  nw_connection_set_queue(v5, self->_queue);
-  v6 = v5;
+  nw_connection_set_queue(connectionCopy, self->_queue);
+  v6 = connectionCopy;
   MEMORY[0x23839DF90]();
   nw_connection_set_read_close_handler();
   nw_connection_set_write_close_handler();
@@ -444,7 +444,7 @@ uint64_t __41__SiriNWConnection__configureConnection___block_invoke_3(uint64_t a
   v8[3] = &unk_2789C6608;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_source_set_event_handler(v5, v8);
   dispatch_resume(v5);
   openTimer = self->_openTimer;
@@ -496,10 +496,10 @@ void __35__SiriNWConnection__setupOpenTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_closeWithError:(id)a3
+- (void)_closeWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   if (self->_isCanceled)
   {
     NSLog(&cfstr_SIsAlredyCance.isa, "[SiriNWConnection _closeWithError:]");
@@ -507,9 +507,9 @@ void __35__SiriNWConnection__setupOpenTimer__block_invoke(uint64_t a1)
 
   else
   {
-    if (v4)
+    if (errorCopy)
     {
-      NSLog(&cfstr_SClosingWithEr.isa, "[SiriNWConnection _closeWithError:]", v4);
+      NSLog(&cfstr_SClosingWithEr.isa, "[SiriNWConnection _closeWithError:]", errorCopy);
     }
 
     else
@@ -543,9 +543,9 @@ void __35__SiriNWConnection__setupOpenTimer__block_invoke(uint64_t a1)
 
       if (!self->_attemptedEndpoints)
       {
-        v14 = [(SiriNWConnection *)self _getAttemptedEndpoints];
+        _getAttemptedEndpoints = [(SiriNWConnection *)self _getAttemptedEndpoints];
         attemptedEndpoints = self->_attemptedEndpoints;
-        self->_attemptedEndpoints = v14;
+        self->_attemptedEndpoints = _getAttemptedEndpoints;
       }
 
       v16 = dispatch_group_create();
@@ -654,12 +654,12 @@ void __36__SiriNWConnection__closeWithError___block_invoke_4(uint64_t a1, void *
   dispatch_async(queue, block);
 }
 
-- (id)_setParametersForHost:(const char *)a3 useTLS:(BOOL)a4 initialPayload:(id)a5
+- (id)_setParametersForHost:(const char *)host useTLS:(BOOL)s initialPayload:(id)payload
 {
-  v5 = a4;
-  v8 = a5;
+  sCopy = s;
+  payloadCopy = payload;
   v9 = MEMORY[0x23839E400](*MEMORY[0x277CD9238]);
-  if (v5)
+  if (sCopy)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -672,10 +672,10 @@ void __36__SiriNWConnection__closeWithError___block_invoke_4(uint64_t a1, void *
   }
 
   secure_tcp = nw_parameters_create_secure_tcp(v9, &__block_literal_global_218);
-  if (v5)
+  if (sCopy)
   {
-    v12 = strlen(a3);
-    v13 = xpc_data_create(a3, v12);
+    v12 = strlen(host);
+    v13 = xpc_data_create(host, v12);
     nw_parameters_set_tls_session_id();
   }
 
@@ -691,7 +691,7 @@ void __36__SiriNWConnection__closeWithError___block_invoke_4(uint64_t a1, void *
   nw_parameters_set_traffic_class();
   nw_parameters_set_indefinite();
   nw_parameters_set_tfo();
-  if (v8)
+  if (payloadCopy)
   {
     nw_parameters_set_initial_data_payload();
   }

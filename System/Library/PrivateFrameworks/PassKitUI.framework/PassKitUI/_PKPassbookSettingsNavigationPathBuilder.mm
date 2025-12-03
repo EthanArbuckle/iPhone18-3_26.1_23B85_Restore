@@ -1,11 +1,11 @@
 @interface _PKPassbookSettingsNavigationPathBuilder
-+ (void)appendAutofillViewNavigationPathTo:(id)a3 descriptors:(id)a4 authentication:(id)a5 settingsController:(id)a6;
++ (void)appendAutofillViewNavigationPathTo:(id)to descriptors:(id)descriptors authentication:(id)authentication settingsController:(id)controller;
 - (_PKPassbookSettingsNavigationPathBuilder)init;
 @end
 
 @implementation _PKPassbookSettingsNavigationPathBuilder
 
-+ (void)appendAutofillViewNavigationPathTo:(id)a3 descriptors:(id)a4 authentication:(id)a5 settingsController:(id)a6
++ (void)appendAutofillViewNavigationPathTo:(id)to descriptors:(id)descriptors authentication:(id)authentication settingsController:(id)controller
 {
   v25 = sub_1BE04CEB4();
   v27 = *(v25 - 8);
@@ -17,9 +17,9 @@
   v15 = &v24 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1BD9FB9E8();
   v16 = sub_1BE052744();
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
+  toCopy = to;
+  authenticationCopy = authentication;
+  controllerCopy = controller;
   v20 = sub_1BE04AAC4();
   v22 = v21;
 
@@ -27,7 +27,7 @@
   v28 = v16;
   v29 = v20;
   v30 = v22;
-  v31 = v19;
+  v31 = controllerCopy;
   type metadata accessor for AutoFillFPANCardsView(0);
   sub_1BD9FBA34(&qword_1EBD5BBF0, type metadata accessor for AutoFillFPANCardsView);
   sub_1BE04CEA4();

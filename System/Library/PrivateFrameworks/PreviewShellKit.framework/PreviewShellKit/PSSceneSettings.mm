@@ -1,19 +1,19 @@
 @interface PSSceneSettings
-- (PSSceneSettings)initWithSettings:(id)a3;
+- (PSSceneSettings)initWithSettings:(id)settings;
 @end
 
 @implementation PSSceneSettings
 
-- (PSSceneSettings)initWithSettings:(id)a3
+- (PSSceneSettings)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = PSSceneSettings;
   v6 = [(PSSceneSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;

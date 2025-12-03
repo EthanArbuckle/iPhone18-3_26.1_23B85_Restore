@@ -1,22 +1,22 @@
 @interface CLKTextProviderCache
-- (id)_cacheForStyle:(id)a3;
-- (id)attributedStringAndSize:(CGSize *)a3 forMaxWidth:(double)a4 withStyle:(id)a5 generator:(id)a6;
-- (id)attributedStringForIndex:(unint64_t)a3 withStyle:(id)a4 generator:(id)a5;
+- (id)_cacheForStyle:(id)style;
+- (id)attributedStringAndSize:(CGSize *)size forMaxWidth:(double)width withStyle:(id)style generator:(id)generator;
+- (id)attributedStringForIndex:(unint64_t)index withStyle:(id)style generator:(id)generator;
 @end
 
 @implementation CLKTextProviderCache
 
-- (id)attributedStringAndSize:(CGSize *)a3 forMaxWidth:(double)a4 withStyle:(id)a5 generator:(id)a6
+- (id)attributedStringAndSize:(CGSize *)size forMaxWidth:(double)width withStyle:(id)style generator:(id)generator
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CLKTextProviderCache *)self _cacheForStyle:v10];
-  v13 = [v12 attributedStringAndSize:a3 forMaxWidth:a4];
+  styleCopy = style;
+  generatorCopy = generator;
+  v12 = [(CLKTextProviderCache *)self _cacheForStyle:styleCopy];
+  v13 = [v12 attributedStringAndSize:size forMaxWidth:width];
   if (!v13)
   {
-    v14 = [v12 attributedStringCount];
-    v15 = v11[2](v11, v14);
+    attributedStringCount = [v12 attributedStringCount];
+    v15 = generatorCopy[2](generatorCopy, attributedStringCount);
     if (v15)
     {
       v13 = v15;
@@ -25,13 +25,13 @@
         [v13 size];
         v17 = v16;
         v19 = v18;
-        [v10 minimumScaleFactor];
+        [styleCopy minimumScaleFactor];
         if (!CLKFloatEqualsFloat(v20, 0.0))
         {
           v21 = objc_alloc_init(MEMORY[0x277D74260]);
-          [v10 minimumScaleFactor];
+          [styleCopy minimumScaleFactor];
           [v21 setMinimumScaleFactor:?];
-          [v13 boundingRectWithSize:1 options:v21 context:{a4, 0.0}];
+          [v13 boundingRectWithSize:1 options:v21 context:{width, 0.0}];
           v24 = v23;
           v25 = v22;
           if (v22 < v19 || CLKFloatEqualsFloat(v22, v19))
@@ -42,20 +42,20 @@
         }
 
         [v12 addAttributedString:v13 withSize:{v17, v19}];
-        if (v14 > 9 || v17 <= a4)
+        if (attributedStringCount > 9 || v17 <= width)
         {
           break;
         }
 
-        v14 = [v12 attributedStringCount];
-        v13 = v11[2](v11, v14);
+        attributedStringCount = [v12 attributedStringCount];
+        v13 = generatorCopy[2](generatorCopy, attributedStringCount);
         if (!v13)
         {
           goto LABEL_12;
         }
       }
 
-      if (v14 >= 0xA)
+      if (attributedStringCount >= 0xA)
       {
         v26 = CLKLoggingObjectForDomain(4);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -68,35 +68,35 @@
         }
       }
 
-      if (a3)
+      if (size)
       {
-        a3->width = v17;
-        a3->height = v19;
+        size->width = v17;
+        size->height = v19;
       }
     }
 
     else
     {
 LABEL_12:
-      v13 = [v12 smallestAttributedStringAndSize:a3];
+      v13 = [v12 smallestAttributedStringAndSize:size];
     }
   }
 
   return v13;
 }
 
-- (id)attributedStringForIndex:(unint64_t)a3 withStyle:(id)a4 generator:(id)a5
+- (id)attributedStringForIndex:(unint64_t)index withStyle:(id)style generator:(id)generator
 {
-  v8 = a5;
-  v9 = [(CLKTextProviderCache *)self _cacheForStyle:a4];
-  v10 = [v9 attributedStringCount];
-  if (v10 <= a3)
+  generatorCopy = generator;
+  v9 = [(CLKTextProviderCache *)self _cacheForStyle:style];
+  attributedStringCount = [v9 attributedStringCount];
+  if (attributedStringCount <= index)
   {
-    v12 = v10;
+    v12 = attributedStringCount;
     v13 = 0;
     do
     {
-      v11 = v8[2](v8, v12);
+      v11 = generatorCopy[2](generatorCopy, v12);
 
       if (!v11)
       {
@@ -109,20 +109,20 @@ LABEL_12:
       v13 = v11;
     }
 
-    while (v12 <= a3);
+    while (v12 <= index);
   }
 
   else
   {
-    v11 = [v9 attributedStringForIndex:a3];
+    v11 = [v9 attributedStringForIndex:index];
   }
 
   return v11;
 }
 
-- (id)_cacheForStyle:(id)a3
+- (id)_cacheForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   cachesByStyle = self->_cachesByStyle;
   if (!cachesByStyle)
   {
@@ -133,11 +133,11 @@ LABEL_12:
     cachesByStyle = self->_cachesByStyle;
   }
 
-  v8 = [(NSMutableDictionary *)cachesByStyle objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)cachesByStyle objectForKeyedSubscript:styleCopy];
   if (!v8)
   {
     v8 = objc_alloc_init(_StringAndWidthCache);
-    [(NSMutableDictionary *)self->_cachesByStyle setObject:v8 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_cachesByStyle setObject:v8 forKeyedSubscript:styleCopy];
   }
 
   return v8;

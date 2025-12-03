@@ -1,36 +1,36 @@
 @interface WFViewServiceApplication
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (id)bannerSourceForPresentable:(id)a3;
-- (void)_handlePlatformSpecificActions:(id)a3 forScene:(id)a4 withTransitionContext:(id)a5;
-- (void)workflowStatusWorkflowDidFinishWithSuccess:(BOOL)a3;
-- (void)workflowStatusWorkflowWillBeginRunningWithAttribution:(id)a3 context:(id)a4;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (id)bannerSourceForPresentable:(id)presentable;
+- (void)_handlePlatformSpecificActions:(id)actions forScene:(id)scene withTransitionContext:(id)context;
+- (void)workflowStatusWorkflowDidFinishWithSuccess:(BOOL)success;
+- (void)workflowStatusWorkflowWillBeginRunningWithAttribution:(id)attribution context:(id)context;
 @end
 
 @implementation WFViewServiceApplication
 
-- (id)bannerSourceForPresentable:(id)a3
+- (id)bannerSourceForPresentable:(id)presentable
 {
-  v3 = [a3 requesterIdentifier];
-  v4 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:v3];
+  requesterIdentifier = [presentable requesterIdentifier];
+  v4 = [BNBannerSource bannerSourceForDestination:0 forRequesterIdentifier:requesterIdentifier];
 
   return v4;
 }
 
-- (void)workflowStatusWorkflowDidFinishWithSuccess:(BOOL)a3
+- (void)workflowStatusWorkflowDidFinishWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v5 = sub_100001568();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v14 = "[WFViewServiceApplication workflowStatusWorkflowDidFinishWithSuccess:]";
     v15 = 1024;
-    v16 = v3;
+    v16 = successCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s workflowDidFinishWithSuccess: %i", buf, 0x12u);
   }
 
-  v6 = [(WFViewServiceApplication *)self lastPresentedStatus];
-  if (v3)
+  lastPresentedStatus = [(WFViewServiceApplication *)self lastPresentedStatus];
+  if (successCopy)
   {
     v7 = dispatch_time(0, 1000000000);
     v11[0] = _NSConcreteStackBlock;
@@ -38,40 +38,40 @@
     v11[2] = sub_1000015BC;
     v11[3] = &unk_1000103C0;
     v11[4] = self;
-    v12 = v6;
+    v12 = lastPresentedStatus;
     dispatch_after(v7, &_dispatch_main_q, v11);
   }
 
   else
   {
-    v8 = [(WFViewServiceApplication *)self bannerSourceForPresentable:v6];
-    v9 = [v6 requestIdentifier];
-    v10 = [v8 revokePresentableWithRequestIdentifier:v9 reason:@"done" animated:1 userInfo:&__NSDictionary0__struct error:0];
+    v8 = [(WFViewServiceApplication *)self bannerSourceForPresentable:lastPresentedStatus];
+    requestIdentifier = [lastPresentedStatus requestIdentifier];
+    v10 = [v8 revokePresentableWithRequestIdentifier:requestIdentifier reason:@"done" animated:1 userInfo:&__NSDictionary0__struct error:0];
   }
 }
 
-- (void)workflowStatusWorkflowWillBeginRunningWithAttribution:(id)a3 context:(id)a4
+- (void)workflowStatusWorkflowWillBeginRunningWithAttribution:(id)attribution context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  attributionCopy = attribution;
+  contextCopy = context;
   v8 = sub_100001568();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[WFViewServiceApplication workflowStatusWorkflowWillBeginRunningWithAttribution:context:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = attributionCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s workflowWillBeginRunningWithAttribution: %@ context: %@", buf, 0x20u);
   }
 
-  v9 = [[WFApertureStatusViewController alloc] initWithRunningContext:v7 attribution:v6];
+  v9 = [[WFApertureStatusViewController alloc] initWithRunningContext:contextCopy attribution:attributionCopy];
   objc_storeStrong(&self->_lastPresentedStatus, v9);
   v10 = [(WFViewServiceApplication *)self bannerSourceForPresentable:v9];
-  v11 = [(WFApertureStatusViewController *)v9 postOptions];
+  postOptions = [(WFApertureStatusViewController *)v9 postOptions];
   v15 = 0;
-  v12 = [v10 postPresentable:v9 options:1 userInfo:v11 error:&v15];
+  v12 = [v10 postPresentable:v9 options:1 userInfo:postOptions error:&v15];
   v13 = v15;
 
   if ((v12 & 1) == 0)
@@ -88,42 +88,42 @@
   }
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = [UISceneConfiguration alloc];
-  v7 = [v5 role];
+  role = [sessionCopy role];
 
-  v8 = [v6 initWithName:@"Main" sessionRole:v7];
+  v8 = [v6 initWithName:@"Main" sessionRole:role];
 
   return v8;
 }
 
-- (void)_handlePlatformSpecificActions:(id)a3 forScene:(id)a4 withTransitionContext:(id)a5
+- (void)_handlePlatformSpecificActions:(id)actions forScene:(id)scene withTransitionContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFViewServiceApplication *)self activeConnection];
+  actionsCopy = actions;
+  sceneCopy = scene;
+  contextCopy = context;
+  activeConnection = [(WFViewServiceApplication *)self activeConnection];
 
-  if (v11)
+  if (activeConnection)
   {
-    v12 = sub_100001568();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    info = sub_100001568();
+    if (os_log_type_enabled(info, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v28 = "[WFViewServiceApplication _handlePlatformSpecificActions:forScene:withTransitionContext:]";
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s View service application already has an active connection, dropping incoming connection", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, info, OS_LOG_TYPE_DEFAULT, "%s View service application already has an active connection, dropping incoming connection", buf, 0xCu);
     }
   }
 
   else
   {
-    v13 = [v8 allObjects];
-    v14 = [v13 firstObject];
-    v12 = [v14 info];
+    allObjects = [actionsCopy allObjects];
+    firstObject = [allObjects firstObject];
+    info = [firstObject info];
 
-    v15 = [v12 objectForSetting:0];
+    v15 = [info objectForSetting:0];
     if (v15)
     {
       v16 = objc_alloc_init(NSXPCListenerEndpoint);
@@ -151,8 +151,8 @@
       v19 = WFWorkflowStatusHostXPCInterface();
       [v17 setRemoteObjectInterface:v19];
 
-      v20 = [v17 remoteObjectProxy];
-      [v20 workflowStatusHostBeginConnection];
+      remoteObjectProxy = [v17 remoteObjectProxy];
+      [remoteObjectProxy workflowStatusHostBeginConnection];
 
       v21 = sub_100001568();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))

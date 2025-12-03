@@ -1,72 +1,72 @@
 @interface SNTestRunner
 - (BOOL)runExtendedLaunchTest;
-- (BOOL)runTest:(id)a3 options:(id)a4 fallingBackWith:(id)a5;
-- (BOOL)runTestRun:(id)a3 testName:(id)a4 options:(id)a5 fallingBackWith:(id)a6;
-- (SNTestRunner)initWithApplication:(id)a3 testCoordinator:(id)a4 testStore:(id)a5;
+- (BOOL)runTest:(id)test options:(id)options fallingBackWith:(id)with;
+- (BOOL)runTestRun:(id)run testName:(id)name options:(id)options fallingBackWith:(id)with;
+- (SNTestRunner)initWithApplication:(id)application testCoordinator:(id)coordinator testStore:(id)store;
 @end
 
 @implementation SNTestRunner
 
 - (BOOL)runExtendedLaunchTest
 {
-  v3 = [(SNTestRunner *)self testStore];
-  v4 = [v3 extendedLaunchTestRun];
+  testStore = [(SNTestRunner *)self testStore];
+  extendedLaunchTestRun = [testStore extendedLaunchTestRun];
 
-  if (!v4)
+  if (!extendedLaunchTestRun)
   {
     return 0;
   }
 
-  v5 = [(SNTestRunner *)self testStore];
-  v6 = [v5 extendedLaunchTestRun];
-  v7 = [(SNTestRunner *)self testCoordinator];
-  v8 = [v7 launchTestName];
-  v9 = [(SNTestRunner *)self runTestRun:v6 testName:v8 options:0 fallingBackWith:0];
+  testStore2 = [(SNTestRunner *)self testStore];
+  extendedLaunchTestRun2 = [testStore2 extendedLaunchTestRun];
+  testCoordinator = [(SNTestRunner *)self testCoordinator];
+  launchTestName = [testCoordinator launchTestName];
+  v9 = [(SNTestRunner *)self runTestRun:extendedLaunchTestRun2 testName:launchTestName options:0 fallingBackWith:0];
 
   return v9;
 }
 
-- (SNTestRunner)initWithApplication:(id)a3 testCoordinator:(id)a4 testStore:(id)a5
+- (SNTestRunner)initWithApplication:(id)application testCoordinator:(id)coordinator testStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  applicationCopy = application;
+  coordinatorCopy = coordinator;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = SNTestRunner;
   v12 = [(SNTestRunner *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_application, a3);
-    objc_storeStrong(&v13->_testCoordinator, a4);
-    objc_storeStrong(&v13->_testStore, a5);
+    objc_storeStrong(&v12->_application, application);
+    objc_storeStrong(&v13->_testCoordinator, coordinator);
+    objc_storeStrong(&v13->_testStore, store);
   }
 
   return v13;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4 fallingBackWith:(id)a5
+- (BOOL)runTest:(id)test options:(id)options fallingBackWith:(id)with
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SNTestRunner *)self testStore];
-  v12 = [v11 testRunForTestName:v8];
+  testCopy = test;
+  optionsCopy = options;
+  withCopy = with;
+  testStore = [(SNTestRunner *)self testStore];
+  v12 = [testStore testRunForTestName:testCopy];
 
   if (v12)
   {
-    v13 = [(SNTestRunner *)self runTestRun:v12 testName:v8 options:v9 fallingBackWith:v10];
+    v13 = [(SNTestRunner *)self runTestRun:v12 testName:testCopy options:optionsCopy fallingBackWith:withCopy];
   }
 
   else
   {
-    if (!v10)
+    if (!withCopy)
     {
       v14 = 0;
       goto LABEL_6;
     }
 
-    v13 = v10[2](v10);
+    v13 = withCopy[2](withCopy);
   }
 
   v14 = v13;
@@ -75,26 +75,26 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)runTestRun:(id)a3 testName:(id)a4 options:(id)a5 fallingBackWith:(id)a6
+- (BOOL)runTestRun:(id)run testName:(id)name options:(id)options fallingBackWith:(id)with
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  runCopy = run;
+  nameCopy = name;
+  withCopy = with;
   v12 = objc_alloc_init(SNTestChain);
   v13 = [SNTestContext alloc];
-  v14 = [(SNTestRunner *)self application];
-  v15 = [(SNTestContext *)v13 initWithApplication:v14 testName:v10];
+  application = [(SNTestRunner *)self application];
+  v15 = [(SNTestContext *)v13 initWithApplication:application testName:nameCopy];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __60__SNTestRunner_runTestRun_testName_options_fallingBackWith___block_invoke;
   v30[3] = &unk_279D94208;
-  v16 = v9;
+  v16 = runCopy;
   v31 = v16;
   v17 = v15;
   v32 = v17;
-  v33 = v11;
-  v18 = v11;
+  v33 = withCopy;
+  v18 = withCopy;
   [(SNTestChain *)v12 addLink:v30];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -103,7 +103,7 @@ LABEL_6:
   v26[4] = self;
   v27 = v16;
   v28 = v17;
-  v19 = v10;
+  v19 = nameCopy;
   v29 = v19;
   v20 = v17;
   v21 = v16;

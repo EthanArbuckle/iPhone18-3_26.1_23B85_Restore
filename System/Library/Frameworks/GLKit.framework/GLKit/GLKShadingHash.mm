@@ -1,11 +1,11 @@
 @interface GLKShadingHash
 - (GLKShadingHash)init;
-- (id)compiledFshForKey:(id)a3;
-- (id)compiledVshForKey:(id)a3;
+- (id)compiledFshForKey:(id)key;
+- (id)compiledVshForKey:(id)key;
 - (void)dealloc;
 - (void)purgeAllShaders;
-- (void)setCompiledFsh:(id)a3 forKey:(id)a4;
-- (void)setCompiledVsh:(id)a3 forKey:(id)a4;
+- (void)setCompiledFsh:(id)fsh forKey:(id)key;
+- (void)setCompiledVsh:(id)vsh forKey:(id)key;
 @end
 
 @implementation GLKShadingHash
@@ -82,7 +82,7 @@ uint64_t __33__GLKShadingHash_purgeAllShaders__block_invoke_2(uint64_t a1)
   return [v5 removeAllObjects];
 }
 
-- (void)setCompiledVsh:(id)a3 forKey:(id)a4
+- (void)setCompiledVsh:(id)vsh forKey:(id)key
 {
   vshQueue = self->_vshQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -90,12 +90,12 @@ uint64_t __33__GLKShadingHash_purgeAllShaders__block_invoke_2(uint64_t a1)
   block[2] = __40__GLKShadingHash_setCompiledVsh_forKey___block_invoke;
   block[3] = &unk_278A58148;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = vsh;
+  block[6] = key;
   dispatch_sync(vshQueue, block);
 }
 
-- (id)compiledVshForKey:(id)a3
+- (id)compiledVshForKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -108,7 +108,7 @@ uint64_t __33__GLKShadingHash_purgeAllShaders__block_invoke_2(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__GLKShadingHash_compiledVshForKey___block_invoke;
   block[3] = &unk_278A57DA8;
-  block[5] = a3;
+  block[5] = key;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(vshQueue, block);
@@ -124,7 +124,7 @@ id __36__GLKShadingHash_compiledVshForKey___block_invoke(void *a1)
   return result;
 }
 
-- (void)setCompiledFsh:(id)a3 forKey:(id)a4
+- (void)setCompiledFsh:(id)fsh forKey:(id)key
 {
   fshQueue = self->_fshQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -132,12 +132,12 @@ id __36__GLKShadingHash_compiledVshForKey___block_invoke(void *a1)
   block[2] = __40__GLKShadingHash_setCompiledFsh_forKey___block_invoke;
   block[3] = &unk_278A58148;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = fsh;
+  block[6] = key;
   dispatch_sync(fshQueue, block);
 }
 
-- (id)compiledFshForKey:(id)a3
+- (id)compiledFshForKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -150,7 +150,7 @@ id __36__GLKShadingHash_compiledVshForKey___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __36__GLKShadingHash_compiledFshForKey___block_invoke;
   block[3] = &unk_278A57DA8;
-  block[5] = a3;
+  block[5] = key;
   block[6] = &v7;
   block[4] = self;
   dispatch_sync(fshQueue, block);

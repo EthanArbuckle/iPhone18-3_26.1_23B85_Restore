@@ -1,11 +1,11 @@
 @interface CRKClassSessionBeacon
 - (CRKClassSessionBeacon)init;
 - (void)advertiserDidRegisterService;
-- (void)advertiserDidUpdateState:(id)a3;
+- (void)advertiserDidUpdateState:(id)state;
 - (void)advertiserFailedToRegisterService;
-- (void)advertiserPendingServiceOfType:(id)a3;
-- (void)startAdvertisingClassSessionWithIdentifier:(id)a3;
-- (void)startAdvertisingWithUUID:(id)a3 IPAddress:(unsigned int)a4;
+- (void)advertiserPendingServiceOfType:(id)type;
+- (void)startAdvertisingClassSessionWithIdentifier:(id)identifier;
+- (void)startAdvertisingWithUUID:(id)d IPAddress:(unsigned int)address;
 - (void)stopAdvertising;
 @end
 
@@ -27,35 +27,35 @@
   return v2;
 }
 
-- (void)startAdvertisingClassSessionWithIdentifier:(id)a3
+- (void)startAdvertisingClassSessionWithIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(CRKClassSessionBeacon *)self setAdvertisedIdentifier:v4];
+  identifierCopy = identifier;
+  [(CRKClassSessionBeacon *)self setAdvertisedIdentifier:identifierCopy];
   v8 = 0;
   v9 = 0;
-  v5 = [v4 organizationUUID];
-  [v5 getUUIDBytes:&v8];
+  organizationUUID = [identifierCopy organizationUUID];
+  [organizationUUID getUUIDBytes:&v8];
 
   WORD2(v9) = __rev16([(CRKClassSessionBeacon *)self flags]);
-  HIWORD(v9) = __rev16([v4 groupID]);
+  HIWORD(v9) = __rev16([identifierCopy groupID]);
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v8];
-  v7 = [v4 leaderIP];
+  leaderIP = [identifierCopy leaderIP];
 
-  [(CRKClassSessionBeacon *)self startAdvertisingWithUUID:v6 IPAddress:v7];
+  [(CRKClassSessionBeacon *)self startAdvertisingWithUUID:v6 IPAddress:leaderIP];
 }
 
-- (void)startAdvertisingWithUUID:(id)a3 IPAddress:(unsigned int)a4
+- (void)startAdvertisingWithUUID:(id)d IPAddress:(unsigned int)address
 {
   v23[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+  dCopy = d;
+  beaconAdvertisement = [(CRKClassSessionBeacon *)self beaconAdvertisement];
 
-  if (v7)
+  if (beaconAdvertisement)
   {
-    v8 = [(CRKClassSessionBeacon *)self advertiser];
-    v9 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
-    [v8 deregisterService:v9];
+    advertiser = [(CRKClassSessionBeacon *)self advertiser];
+    beaconAdvertisement2 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+    [advertiser deregisterService:beaconAdvertisement2];
   }
 
   v10 = *MEMORY[0x277D7BC90];
@@ -65,13 +65,13 @@
   v23[0] = &unk_2856727D8;
   v23[1] = v11;
   v22[2] = *MEMORY[0x277D7BCB0];
-  v12 = [v6 UUIDString];
-  v23[2] = v12;
+  uUIDString = [dCopy UUIDString];
+  v23[2] = uUIDString;
   v22[3] = *MEMORY[0x277D7BCA0];
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:HIWORD(a4)];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:HIWORD(address)];
   v23[3] = v13;
   v22[4] = *MEMORY[0x277D7BCA8];
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:address];
   v23[4] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:5];
   [(CRKClassSessionBeacon *)self setBeaconAdvertisement:v15];
@@ -79,15 +79,15 @@
   v16 = _CRKLogBluetooth_1();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+    beaconAdvertisement3 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
     v20 = 138543362;
-    v21 = v17;
+    v21 = beaconAdvertisement3;
     _os_log_impl(&dword_243550000, v16, OS_LOG_TYPE_DEFAULT, "Beacon advertisement %{public}@", &v20, 0xCu);
   }
 
-  v18 = [(CRKClassSessionBeacon *)self advertiser];
-  v19 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
-  [v18 registerService:v19];
+  advertiser2 = [(CRKClassSessionBeacon *)self advertiser];
+  beaconAdvertisement4 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+  [advertiser2 registerService:beaconAdvertisement4];
 }
 
 - (void)stopAdvertising
@@ -96,47 +96,47 @@
   v3 = _CRKLogBluetooth_1();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRKClassSessionBeacon *)self advertisedIdentifier];
+    advertisedIdentifier = [(CRKClassSessionBeacon *)self advertisedIdentifier];
     v8 = 138543362;
-    v9 = v4;
+    v9 = advertisedIdentifier;
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "Bluetooth Beacon STOP advertising %{public}@", &v8, 0xCu);
   }
 
-  v5 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+  beaconAdvertisement = [(CRKClassSessionBeacon *)self beaconAdvertisement];
 
-  if (v5)
+  if (beaconAdvertisement)
   {
-    v6 = [(CRKClassSessionBeacon *)self advertiser];
-    v7 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
-    [v6 deregisterService:v7];
+    advertiser = [(CRKClassSessionBeacon *)self advertiser];
+    beaconAdvertisement2 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+    [advertiser deregisterService:beaconAdvertisement2];
   }
 
   [(CRKClassSessionBeacon *)self setBeaconAdvertisement:0];
   [(CRKClassSessionBeacon *)self setAdvertising:0];
 }
 
-- (void)advertiserDidUpdateState:(id)a3
+- (void)advertiserDidUpdateState:(id)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = _CRKLogBluetooth_1();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "advertiserState")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(stateCopy, "advertiserState")}];
     v10 = 138543362;
     v11 = v6;
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "Beacon advertiser updated state %{public}@", &v10, 0xCu);
   }
 
-  if ([v4 state] == 3 && !-[CRKClassSessionBeacon isAdvertising](self, "isAdvertising"))
+  if ([stateCopy state] == 3 && !-[CRKClassSessionBeacon isAdvertising](self, "isAdvertising"))
   {
-    v7 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+    beaconAdvertisement = [(CRKClassSessionBeacon *)self beaconAdvertisement];
 
-    if (v7)
+    if (beaconAdvertisement)
     {
-      v8 = [(CRKClassSessionBeacon *)self advertiser];
-      v9 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
-      [v8 registerService:v9];
+      advertiser = [(CRKClassSessionBeacon *)self advertiser];
+      beaconAdvertisement2 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+      [advertiser registerService:beaconAdvertisement2];
     }
   }
 }
@@ -147,9 +147,9 @@
   v3 = _CRKLogBluetooth_1();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRKClassSessionBeacon *)self beaconAdvertisement];
+    beaconAdvertisement = [(CRKClassSessionBeacon *)self beaconAdvertisement];
     v5 = 138543362;
-    v6 = v4;
+    v6 = beaconAdvertisement;
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "Beacon advertiser registered service %{public}@", &v5, 0xCu);
   }
 
@@ -159,19 +159,19 @@
 - (void)advertiserFailedToRegisterService
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 beaconAdvertisement];
+  beaconAdvertisement = [self beaconAdvertisement];
   v4 = 138543362;
-  v5 = v3;
+  v5 = beaconAdvertisement;
   _os_log_error_impl(&dword_243550000, a2, OS_LOG_TYPE_ERROR, "Beacon advertiser failed to register service %{public}@", &v4, 0xCu);
 }
 
-- (void)advertiserPendingServiceOfType:(id)a3
+- (void)advertiserPendingServiceOfType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = _CRKLogBluetooth_1();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    [(CRKClassSessionBeacon *)v3 advertiserPendingServiceOfType:v4];
+    [(CRKClassSessionBeacon *)typeCopy advertiserPendingServiceOfType:v4];
   }
 }
 

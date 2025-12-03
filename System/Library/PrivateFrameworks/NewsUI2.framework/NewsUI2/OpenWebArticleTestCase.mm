@@ -1,7 +1,7 @@
 @interface OpenWebArticleTestCase
 - (NSString)testName;
 - (_TtC7NewsUI222OpenWebArticleTestCase)init;
-- (void)runTestWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation OpenWebArticleTestCase
@@ -27,13 +27,13 @@
   return v2;
 }
 
-- (void)runTestWithContext:(id)a3 completion:(id)a4
+- (void)runTestWithContext:(id)context completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = a3;
-  v8 = [v7 application];
+  contextCopy = context;
+  application = [contextCopy application];
   v9 = swift_allocObject();
   *(v9 + 16) = sub_218967168;
   *(v9 + 24) = v6;
@@ -45,7 +45,7 @@
   v11[3] = &block_descriptor_36;
   v10 = _Block_copy(v11);
 
-  [v8 ts:v10 installCACommitCompletionBlock:?];
+  [application ts:v10 installCACommitCompletionBlock:?];
 
   _Block_release(v10);
 }

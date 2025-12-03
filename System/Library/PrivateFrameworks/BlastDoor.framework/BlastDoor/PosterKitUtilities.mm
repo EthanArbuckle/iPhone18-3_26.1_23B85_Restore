@@ -1,15 +1,15 @@
 @interface PosterKitUtilities
-+ (BOOL)saveCompoundLayerStack:(id)a3 toWallpaperURL:(id)a4 error:(id *)a5;
-+ (BOOL)storeConfiguredPropertiesForPath:(id)a3 configuredProperties:(id)a4 error:(id *)a5;
++ (BOOL)saveCompoundLayerStack:(id)stack toWallpaperURL:(id)l error:(id *)error;
++ (BOOL)storeConfiguredPropertiesForPath:(id)path configuredProperties:(id)properties error:(id *)error;
 + (id)archiver;
-+ (id)configurationIdentityWithProvider:(id)a3 identifier:(id)a4 posterUUID:(id)a5 version:(unint64_t)a6 supplement:(unint64_t)a7 role:(int64_t)a8;
-+ (id)configurationWithPath:(id)a3;
-+ (id)configuredPropertiesWithTitleStyleConfiguration:(id)a3 renderingConfiguration:(id)a4;
-+ (id)discreteColorsContentStyleForColors:(id)a3 vibrant:(BOOL)a4 supportsVariation:(BOOL)a5 variation:(double)a6;
-+ (id)gradientContentStyleForColors:(id)a3 gradientType:(unint64_t)a4 locations:(id)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7;
-+ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)a3 error:(id *)a4;
-+ (id)posterColorWithColor:(CGColor *)a3 preferredStyle:(unint64_t)a4 localizedName:(id)a5;
-+ (id)serverPathWithProviderURL:(id)a3 identity:(id)a4;
++ (id)configurationIdentityWithProvider:(id)provider identifier:(id)identifier posterUUID:(id)d version:(unint64_t)version supplement:(unint64_t)supplement role:(int64_t)role;
++ (id)configurationWithPath:(id)path;
++ (id)configuredPropertiesWithTitleStyleConfiguration:(id)configuration renderingConfiguration:(id)renderingConfiguration;
++ (id)discreteColorsContentStyleForColors:(id)colors vibrant:(BOOL)vibrant supportsVariation:(BOOL)variation variation:(double)a6;
++ (id)gradientContentStyleForColors:(id)colors gradientType:(unint64_t)type locations:(id)locations startPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
++ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)configuration error:(id *)error;
++ (id)posterColorWithColor:(CGColor *)color preferredStyle:(unint64_t)style localizedName:(id)name;
++ (id)serverPathWithProviderURL:(id)l identity:(id)identity;
 + (id)vibrantMaterialContentStyle;
 + (id)vibrantMonochromeContentStyle;
 @end
@@ -43,10 +43,10 @@
   return v4;
 }
 
-+ (id)posterColorWithColor:(CGColor *)a3 preferredStyle:(unint64_t)a4 localizedName:(id)a5
++ (id)posterColorWithColor:(CGColor *)color preferredStyle:(unint64_t)style localizedName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  nameCopy = name;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2050000000;
@@ -66,19 +66,19 @@
   v9 = v8;
   _Block_object_dispose(&v16, 8);
   v10 = [v8 alloc];
-  v11 = [objc_alloc(getUIColorClass()) initWithCGColor:a3];
-  v12 = [v10 initWithColor:v11 preferredStyle:a4 localizedName:v7];
+  v11 = [objc_alloc(getUIColorClass()) initWithCGColor:color];
+  v12 = [v10 initWithColor:v11 preferredStyle:style localizedName:nameCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)configuredPropertiesWithTitleStyleConfiguration:(id)a3 renderingConfiguration:(id)a4
++ (id)configuredPropertiesWithTitleStyleConfiguration:(id)configuration renderingConfiguration:(id)renderingConfiguration
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  renderingConfigurationCopy = renderingConfiguration;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -97,18 +97,18 @@
 
   v8 = v7;
   _Block_object_dispose(&v13, 8);
-  v9 = [[v7 alloc] initWithTitleStyleConfiguration:v5 focusConfiguration:0 complicationLayout:0 renderingConfiguration:v6 homeScreenConfiguration:0 colorVariationsConfiguration:0 quickActionsConfiguration:0 suggestionMetadata:0 otherMetadata:0 userInfo:0];
+  v9 = [[v7 alloc] initWithTitleStyleConfiguration:configurationCopy focusConfiguration:0 complicationLayout:0 renderingConfiguration:renderingConfigurationCopy homeScreenConfiguration:0 colorVariationsConfiguration:0 quickActionsConfiguration:0 suggestionMetadata:0 otherMetadata:0 userInfo:0];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-+ (BOOL)storeConfiguredPropertiesForPath:(id)a3 configuredProperties:(id)a4 error:(id *)a5
++ (BOOL)storeConfiguredPropertiesForPath:(id)path configuredProperties:(id)properties error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  propertiesCopy = properties;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -127,44 +127,44 @@
 
   v10 = v9;
   _Block_object_dispose(&v15, 8);
-  v11 = [v9 storeConfiguredPropertiesForPath:v7 configuredProperties:v8 error:a5];
+  v11 = [v9 storeConfiguredPropertiesForPath:pathCopy configuredProperties:propertiesCopy error:error];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-+ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)a3 error:(id *)a4
++ (id)loadConfiguredPropertiesFromPosterConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
+  configurationCopy = configuration;
   PosterKitLibrary();
-  v6 = [v5 pr_loadConfiguredPropertiesWithError:a4];
+  v6 = [configurationCopy pr_loadConfiguredPropertiesWithError:error];
 
   return v6;
 }
 
-+ (id)discreteColorsContentStyleForColors:(id)a3 vibrant:(BOOL)a4 supportsVariation:(BOOL)a5 variation:(double)a6
++ (id)discreteColorsContentStyleForColors:(id)colors vibrant:(BOOL)vibrant supportsVariation:(BOOL)variation variation:(double)a6
 {
-  v7 = a5;
-  v8 = a4;
+  variationCopy = variation;
+  vibrantCopy = vibrant;
   v23 = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277CBEB18];
-  v10 = a3;
-  v11 = [[v9 alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+  colorsCopy = colors;
+  v11 = [[v9 alloc] initWithCapacity:{objc_msgSend(colorsCopy, "count")}];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __94__PosterKitUtilities_discreteColorsContentStyleForColors_vibrant_supportsVariation_variation___block_invoke;
   v21 = &unk_2781764C0;
   v22 = v11;
   v12 = v11;
-  [v10 enumerateObjectsUsingBlock:&v18];
+  [colorsCopy enumerateObjectsUsingBlock:&v18];
 
   v13 = objc_alloc(getPRPosterContentDiscreteColorsStyleClass());
-  if (v8 && v7)
+  if (vibrantCopy && variationCopy)
   {
     v14 = [v13 initWithVibrantColors:v12 variation:{a6, v18, v19, v20, v21, v22, v23}];
   }
 
-  else if (v7 || !v8)
+  else if (variationCopy || !vibrantCopy)
   {
     v14 = [v13 initWithOpaqueColors:v12 variation:{a6, v18, v19, v20, v21, v22, v23}];
   }
@@ -190,23 +190,23 @@ void __94__PosterKitUtilities_discreteColorsContentStyleForColors_vibrant_suppor
   [v2 addObject:v4];
 }
 
-+ (id)gradientContentStyleForColors:(id)a3 gradientType:(unint64_t)a4 locations:(id)a5 startPoint:(CGPoint)a6 endPoint:(CGPoint)a7
++ (id)gradientContentStyleForColors:(id)colors gradientType:(unint64_t)type locations:(id)locations startPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v9 = point.y;
+  v10 = point.x;
   v29 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v13, "count")}];
+  colorsCopy = colors;
+  locationsCopy = locations;
+  v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(colorsCopy, "count")}];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __95__PosterKitUtilities_gradientContentStyleForColors_gradientType_locations_startPoint_endPoint___block_invoke;
   v22[3] = &unk_2781764C0;
   v16 = v15;
   v23 = v16;
-  [v13 enumerateObjectsUsingBlock:v22];
+  [colorsCopy enumerateObjectsUsingBlock:v22];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -225,7 +225,7 @@ void __94__PosterKitUtilities_discreteColorsContentStyleForColors_vibrant_suppor
 
   v18 = v17;
   _Block_object_dispose(&v25, 8);
-  v19 = [[v17 alloc] initWithColors:v16 gradientType:a4 locations:v14 startPoint:v10 endPoint:{v9, x, y}];
+  v19 = [[v17 alloc] initWithColors:v16 gradientType:type locations:locationsCopy startPoint:v10 endPoint:{v9, x, y}];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -295,11 +295,11 @@ void __95__PosterKitUtilities_gradientContentStyleForColors_gradientType_locatio
   return v4;
 }
 
-+ (BOOL)saveCompoundLayerStack:(id)a3 toWallpaperURL:(id)a4 error:(id *)a5
++ (BOOL)saveCompoundLayerStack:(id)stack toWallpaperURL:(id)l error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  stackCopy = stack;
+  lCopy = l;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -318,19 +318,19 @@ void __95__PosterKitUtilities_gradientContentStyleForColors_gradientType_locatio
 
   v10 = v9;
   _Block_object_dispose(&v15, 8);
-  v11 = [v9 saveSegmentationItem:0 compoundLayerStack:v7 style:0 toWallpaperURL:v8 error:a5];
+  v11 = [v9 saveSegmentationItem:0 compoundLayerStack:stackCopy style:0 toWallpaperURL:lCopy error:error];
 
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-+ (id)configurationIdentityWithProvider:(id)a3 identifier:(id)a4 posterUUID:(id)a5 version:(unint64_t)a6 supplement:(unint64_t)a7 role:(int64_t)a8
++ (id)configurationIdentityWithProvider:(id)provider identifier:(id)identifier posterUUID:(id)d version:(unint64_t)version supplement:(unint64_t)supplement role:(int64_t)role
 {
   v34 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (a8 == 1)
+  providerCopy = provider;
+  identifierCopy = identifier;
+  dCopy = d;
+  if (role == 1)
   {
     v30 = 0;
     v31 = &v30;
@@ -359,7 +359,7 @@ void __95__PosterKitUtilities_gradientContentStyleForColors_gradientType_locatio
     goto LABEL_10;
   }
 
-  if (!a8)
+  if (!role)
   {
     v30 = 0;
     v31 = &v30;
@@ -410,18 +410,18 @@ LABEL_12:
 
   v21 = v20;
   _Block_object_dispose(&v30, 8);
-  v22 = [v20 configurationIdentityWithProvider:v13 identifier:v14 role:v19 posterUUID:v15 version:a6 supplement:a7];
+  v22 = [v20 configurationIdentityWithProvider:providerCopy identifier:identifierCopy role:v19 posterUUID:dCopy version:version supplement:supplement];
 
   v23 = *MEMORY[0x277D85DE8];
 
   return v22;
 }
 
-+ (id)serverPathWithProviderURL:(id)a3 identity:(id)a4
++ (id)serverPathWithProviderURL:(id)l identity:(id)identity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  identityCopy = identity;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -440,17 +440,17 @@ LABEL_12:
 
   v8 = v7;
   _Block_object_dispose(&v13, 8);
-  v9 = [v7 pathWithProviderURL:v5 identity:v6];
+  v9 = [v7 pathWithProviderURL:lCopy identity:identityCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-+ (id)configurationWithPath:(id)a3
++ (id)configurationWithPath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -469,7 +469,7 @@ LABEL_12:
 
   v5 = v4;
   _Block_object_dispose(&v10, 8);
-  v6 = [[v4 alloc] initWithPath:v3];
+  v6 = [[v4 alloc] initWithPath:pathCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 

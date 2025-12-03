@@ -2,9 +2,9 @@
 + (id)exportedInterface;
 + (id)serviceViewControllerInterface;
 - (CSAddParticipantsPublicController)publicController;
-- (void)dismissViewControllerWithError:(id)a3 shareURL:(id)a4 ckShare:(id)a5;
-- (void)showContactPickerFromSourceRect:(id)a3;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)dismissViewControllerWithError:(id)error shareURL:(id)l ckShare:(id)share;
+- (void)showContactPickerFromSourceRect:(id)rect;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation CSAddParticipantsRemoteViewController
@@ -84,35 +84,35 @@
   return v2;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = CSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(CSAddParticipantsRemoteViewController *)v4 viewServiceDidTerminateWithError:v5];
+    [(CSAddParticipantsRemoteViewController *)errorCopy viewServiceDidTerminateWithError:v5];
   }
 
-  [(CSAddParticipantsRemoteViewController *)self dismissViewControllerWithError:v4 shareURL:0 ckShare:0];
+  [(CSAddParticipantsRemoteViewController *)self dismissViewControllerWithError:errorCopy shareURL:0 ckShare:0];
   v6.receiver = self;
   v6.super_class = CSAddParticipantsRemoteViewController;
-  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:v4];
+  [(_UIRemoteViewController *)&v6 viewServiceDidTerminateWithError:errorCopy];
 }
 
-- (void)dismissViewControllerWithError:(id)a3 shareURL:(id)a4 ckShare:(id)a5
+- (void)dismissViewControllerWithError:(id)error shareURL:(id)l ckShare:(id)share
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CSAddParticipantsRemoteViewController *)self publicController];
-  [v11 dismissViewControllerWithError:v10 shareURL:v9 ckShare:v8];
+  shareCopy = share;
+  lCopy = l;
+  errorCopy = error;
+  publicController = [(CSAddParticipantsRemoteViewController *)self publicController];
+  [publicController dismissViewControllerWithError:errorCopy shareURL:lCopy ckShare:shareCopy];
 }
 
-- (void)showContactPickerFromSourceRect:(id)a3
+- (void)showContactPickerFromSourceRect:(id)rect
 {
-  v4 = a3;
-  v5 = [(CSAddParticipantsRemoteViewController *)self publicController];
-  [v5 showContactPickerFromSourceRect:v4];
+  rectCopy = rect;
+  publicController = [(CSAddParticipantsRemoteViewController *)self publicController];
+  [publicController showContactPickerFromSourceRect:rectCopy];
 }
 
 - (CSAddParticipantsPublicController)publicController

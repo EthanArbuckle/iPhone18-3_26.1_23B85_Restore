@@ -1,9 +1,9 @@
 @interface DiscoverySheetViewController
-- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapContinueButton;
 - (void)didTapXButton;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -11,17 +11,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005C7148();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for DiscoverySheetViewController();
   v4 = v5.receiver;
-  [(DiscoverySheetViewController *)&v5 viewDidAppear:v3];
+  [(DiscoverySheetViewController *)&v5 viewDidAppear:appearCopy];
   sub_1005C7880();
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -32,30 +32,30 @@
 
 - (void)didTapXButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005C7F98();
-  [(DiscoverySheetViewController *)v2 dismissViewControllerAnimated:1 completion:0];
+  [(DiscoverySheetViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)didTapContinueButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005C7F78();
   if (swift_unknownObjectWeakLoadStrong())
   {
-    sub_10032A418(v2);
+    sub_10032A418(selfCopy);
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC10FitnessApp28DiscoverySheetViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

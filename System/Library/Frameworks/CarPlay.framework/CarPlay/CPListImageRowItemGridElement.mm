@@ -1,6 +1,6 @@
 @interface CPListImageRowItemGridElement
 + (CGSize)maximumImageSize;
-- (CPListImageRowItemGridElement)initWithImage:(id)a3;
+- (CPListImageRowItemGridElement)initWithImage:(id)image;
 @end
 
 @implementation CPListImageRowItemGridElement
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (CPListImageRowItemGridElement)initWithImage:(id)a3
+- (CPListImageRowItemGridElement)initWithImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = CPListImageRowItemGridElement;
-  return [(CPListImageRowItemElement *)&v4 initWithImage:a3];
+  return [(CPListImageRowItemElement *)&v4 initWithImage:image];
 }
 
 @end

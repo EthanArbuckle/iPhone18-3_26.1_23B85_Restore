@@ -2,24 +2,24 @@
 - (SEL)selector;
 - (id)description;
 - (id)prettyMethodName;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation NUAssertionInfo
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 - (SEL)selector
@@ -40,39 +40,39 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NUAssertionInfo *)self prettyMethodName];
-  v7 = [(NUAssertionInfo *)self message];
-  v8 = [(NUAssertionInfo *)self currentlyExecutingJobName];
-  v9 = [v3 stringWithFormat:@"<%@: %p> failure in %@: %@ %@", v5, self, v6, v7, v8];
+  prettyMethodName = [(NUAssertionInfo *)self prettyMethodName];
+  message = [(NUAssertionInfo *)self message];
+  currentlyExecutingJobName = [(NUAssertionInfo *)self currentlyExecutingJobName];
+  v9 = [v3 stringWithFormat:@"<%@: %p> failure in %@: %@ %@", v5, self, prettyMethodName, message, currentlyExecutingJobName];
 
   return v9;
 }
 
 - (id)prettyMethodName
 {
-  v3 = [(NUAssertionInfo *)self functionName];
+  functionName = [(NUAssertionInfo *)self functionName];
 
-  if (v3)
+  if (functionName)
   {
-    v4 = [(NUAssertionInfo *)self functionName];
+    functionName2 = [(NUAssertionInfo *)self functionName];
   }
 
   else
   {
-    v5 = [(NUAssertionInfo *)self isClassMethod];
+    isClassMethod = [(NUAssertionInfo *)self isClassMethod];
     v6 = MEMORY[0x1E696AEC0];
     v7 = NSStringFromClass([(NUAssertionInfo *)self objectClass]);
     v8 = NSStringFromSelector([(NUAssertionInfo *)self selector]);
     v9 = 45;
-    if (v5)
+    if (isClassMethod)
     {
       v9 = 43;
     }
 
-    v4 = [v6 stringWithFormat:@"%c[%@ %@]", v9, v7, v8];
+    functionName2 = [v6 stringWithFormat:@"%c[%@ %@]", v9, v7, v8];
   }
 
-  return v4;
+  return functionName2;
 }
 
 @end

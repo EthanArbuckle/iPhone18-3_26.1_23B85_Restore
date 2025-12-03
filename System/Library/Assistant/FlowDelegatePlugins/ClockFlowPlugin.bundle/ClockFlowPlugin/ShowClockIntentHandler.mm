@@ -1,14 +1,14 @@
 @interface ShowClockIntentHandler
 - (_TtC15ClockFlowPlugin22ShowClockIntentHandler)init;
-- (void)confirmShowClock:(id)a3 completion:(id)a4;
-- (void)handleShowClock:(id)a3 completion:(id)a4;
+- (void)confirmShowClock:(id)clock completion:(id)completion;
+- (void)handleShowClock:(id)clock completion:(id)completion;
 @end
 
 @implementation ShowClockIntentHandler
 
-- (void)confirmShowClock:(id)a3 completion:(id)a4
+- (void)confirmShowClock:(id)clock completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = [objc_allocWithZone(type metadata accessor for ShowClockIntentResponse()) init];
   v6 = OBJC_IVAR___ShowClockIntentResponse_code;
   swift_beginAccess();
@@ -18,13 +18,13 @@
   _Block_release(v4);
 }
 
-- (void)handleShowClock:(id)a3 completion:(id)a4
+- (void)handleShowClock:(id)clock completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_309C(v7, v6);
+  clockCopy = clock;
+  selfCopy = self;
+  sub_309C(clockCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

@@ -1,22 +1,22 @@
 @interface NSValue
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation NSValue
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(NSValue *)self rangeValue];
-  v6 = [v4 rangeValue];
+  compareCopy = compare;
+  rangeValue = [(NSValue *)self rangeValue];
+  rangeValue2 = [compareCopy rangeValue];
 
   v7 = -1;
-  if (v5 >= v6)
+  if (rangeValue >= rangeValue2)
   {
     v7 = 1;
   }
 
-  if (v5 == v6)
+  if (rangeValue == rangeValue2)
   {
     return 0;
   }

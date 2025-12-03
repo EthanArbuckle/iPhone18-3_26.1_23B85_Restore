@@ -1,31 +1,31 @@
 @interface PPTBasicTest
 - (BKLibraryAsset)asset;
 - (BOOL)hasHandler;
-- (PPTBasicTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6;
+- (PPTBasicTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test;
 - (id)bookshelf;
-- (void)finishPPTTestWithResult:(unint64_t)a3;
-- (void)onBookViewControllerChange:(id)a3;
+- (void)finishPPTTestWithResult:(unint64_t)result;
+- (void)onBookViewControllerChange:(id)change;
 - (void)startPPTTest;
-- (void)subscribeToStartNotification:(id)a3 endNotification:(id)a4;
+- (void)subscribeToStartNotification:(id)notification endNotification:(id)endNotification;
 - (void)terminate;
 @end
 
 @implementation PPTBasicTest
 
-- (PPTBasicTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6
+- (PPTBasicTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nameCopy = name;
+  optionsCopy = options;
+  definitionCopy = definition;
   v22.receiver = self;
   v22.super_class = PPTBasicTest;
   v14 = [(PPTBasicTest *)&v22 init];
   if (v14)
   {
-    v15 = [v13 objectForKeyedSubscript:@"book-type"];
+    v15 = [definitionCopy objectForKeyedSubscript:@"book-type"];
     if (v15)
     {
-      v21 = a6;
+      testCopy = test;
       v16 = [&off_100A43D40 objectForKeyedSubscript:v15];
       v17 = *(v14 + 11);
       *(v14 + 11) = v16;
@@ -47,13 +47,13 @@
         v18 = *buf;
       }
 
-      a6 = v21;
+      test = testCopy;
     }
 
-    objc_storeStrong(v14 + 5, a4);
-    objc_storeStrong(v14 + 6, a5);
-    objc_storeStrong(v14 + 7, a3);
-    v14[8] = a6;
+    objc_storeStrong(v14 + 5, options);
+    objc_storeStrong(v14 + 6, definition);
+    objc_storeStrong(v14 + 7, name);
+    v14[8] = test;
     *(v14 + 5) = 5;
     *(v14 + 12) = 0x100000002;
     *(v14 + 8) = 1;
@@ -72,9 +72,9 @@
   p_asset = &self->_asset;
   if (!self->_asset)
   {
-    v4 = [(PPTBasicTest *)self bookTitle];
+    bookTitle = [(PPTBasicTest *)self bookTitle];
 
-    if (v4)
+    if (bookTitle)
     {
       v5 = +[BKLibraryManager defaultManager];
       if (!v5)
@@ -87,15 +87,15 @@
         }
       }
 
-      v7 = [v5 predicateForLocalLibraryAssets];
+      predicateForLocalLibraryAssets = [v5 predicateForLocalLibraryAssets];
       v8 = [[NSFetchRequest alloc] initWithEntityName:@"BKLibraryAsset"];
-      v28 = v7;
-      [v8 setPredicate:v7];
+      v28 = predicateForLocalLibraryAssets;
+      [v8 setPredicate:predicateForLocalLibraryAssets];
       v29 = v5;
-      v9 = [v5 uiChildContext];
+      uiChildContext = [v5 uiChildContext];
       v34 = 0;
       v27 = v8;
-      v10 = [v9 executeFetchRequest:v8 error:&v34];
+      v10 = [uiChildContext executeFetchRequest:v8 error:&v34];
       v26 = v34;
 
       v11 = sub_1001E65B0();
@@ -127,9 +127,9 @@
             }
 
             v18 = *(*(&v30 + 1) + 8 * i);
-            v19 = [v18 title];
-            v20 = [(PPTBasicTest *)self bookTitle];
-            v21 = [v19 isEqualToString:v20];
+            title = [v18 title];
+            bookTitle2 = [(PPTBasicTest *)self bookTitle];
+            v21 = [title isEqualToString:bookTitle2];
 
             if (v21)
             {
@@ -155,9 +155,9 @@ LABEL_21:
         v22 = sub_1001E65B0();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [(PPTBasicTest *)self bookTitle];
+          bookTitle3 = [(PPTBasicTest *)self bookTitle];
           *buf = 138543362;
-          v37 = v23;
+          v37 = bookTitle3;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Failed to find book named: %{public}@", buf, 0xCu);
         }
       }
@@ -185,7 +185,7 @@ LABEL_21:
         v6[2] = sub_100181C20;
         v6[3] = &unk_100A03440;
         v7 = v5;
-        v8 = self;
+        selfCopy = self;
         [v7 installCACommitCompletionBlock:v6];
       }
 
@@ -197,12 +197,12 @@ LABEL_21:
   }
 }
 
-- (void)finishPPTTestWithResult:(unint64_t)a3
+- (void)finishPPTTestWithResult:(unint64_t)result
 {
   if (self->_running)
   {
-    self->_result = a3;
-    if (!a3 && self->_mainTest)
+    self->_result = result;
+    if (!result && self->_mainTest)
     {
       v4 = +[UIApplication sharedApplication];
       v5 = [v4 isRunningTest:self->_name];
@@ -224,14 +224,14 @@ LABEL_21:
   }
 }
 
-- (void)subscribeToStartNotification:(id)a3 endNotification:(id)a4
+- (void)subscribeToStartNotification:(id)notification endNotification:(id)endNotification
 {
-  v6 = a4;
-  v7 = a3;
+  endNotificationCopy = endNotification;
+  notificationCopy = notification;
   v8 = +[NSNotificationCenter defaultCenter];
-  [v8 addObserver:self selector:"_handleTestStart:" name:v7 object:0];
+  [v8 addObserver:self selector:"_handleTestStart:" name:notificationCopy object:0];
 
-  [v8 addObserver:self selector:"_handleTestEnd:" name:v6 object:0];
+  [v8 addObserver:self selector:"_handleTestEnd:" name:endNotificationCopy object:0];
 }
 
 - (BOOL)hasHandler
@@ -247,9 +247,9 @@ LABEL_21:
   return 1;
 }
 
-- (void)onBookViewControllerChange:(id)a3
+- (void)onBookViewControllerChange:(id)change
 {
-  [a3 bookController];
+  [change bookController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100181F64;
@@ -272,15 +272,15 @@ LABEL_21:
 - (id)bookshelf
 {
   v2 = +[BKAppDelegate sceneManager];
-  v3 = [v2 primarySceneController];
+  primarySceneController = [v2 primarySceneController];
 
-  if (!v3)
+  if (!primarySceneController)
   {
     sub_100792174();
   }
 
-  v4 = [v3 rootBarCoordinator];
-  v5 = [v4 selectedTopViewController];
+  rootBarCoordinator = [primarySceneController rootBarCoordinator];
+  selectedTopViewController = [rootBarCoordinator selectedTopViewController];
 
   objc_opt_class();
   v6 = BUDynamicCast();

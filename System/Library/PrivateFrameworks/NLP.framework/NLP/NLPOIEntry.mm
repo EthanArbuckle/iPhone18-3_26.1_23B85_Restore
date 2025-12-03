@@ -1,19 +1,19 @@
 @interface NLPOIEntry
-- (NLPOIEntry)initWithProtoBuf:(id)a3;
+- (NLPOIEntry)initWithProtoBuf:(id)buf;
 - (unsigned)category;
 - (void)dealloc;
 @end
 
 @implementation NLPOIEntry
 
-- (NLPOIEntry)initWithProtoBuf:(id)a3
+- (NLPOIEntry)initWithProtoBuf:(id)buf
 {
   v6.receiver = self;
   v6.super_class = NLPOIEntry;
   v4 = [(NLPOIEntry *)&v6 init];
   if (v4)
   {
-    v4->m_impl = a3;
+    v4->m_impl = buf;
   }
 
   return v4;

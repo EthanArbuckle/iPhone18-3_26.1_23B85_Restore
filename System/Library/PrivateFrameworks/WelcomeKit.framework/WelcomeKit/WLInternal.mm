@@ -6,9 +6,9 @@
 
 + (BOOL)isInternal
 {
-  v2 = [@"com.apple.welcomekit" UTF8String];
+  uTF8String = [@"com.apple.welcomekit" UTF8String];
 
-  return MEMORY[0x282203340](v2);
+  return MEMORY[0x282203340](uTF8String);
 }
 
 @end

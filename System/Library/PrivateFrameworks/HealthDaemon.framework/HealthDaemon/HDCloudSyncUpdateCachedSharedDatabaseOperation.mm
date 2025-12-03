@@ -7,23 +7,23 @@
 - (void)main
 {
   v41 = *MEMORY[0x277D85DE8];
-  v2 = [(HDCloudSyncOperation *)self configuration];
-  v3 = [v2 repository];
-  v4 = [v3 syncAvailability];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  syncAvailability = [repository syncAvailability];
 
-  if ([v4 shouldSyncSummarySharingPull] & 1) != 0 || (objc_msgSend(v4, "shouldSyncSummarySharingPush"))
+  if ([syncAvailability shouldSyncSummarySharingPull] & 1) != 0 || (objc_msgSend(syncAvailability, "shouldSyncSummarySharingPush"))
   {
-    v25 = v4;
+    v25 = syncAvailability;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v5 = [(HDCloudSyncOperation *)self configuration];
-    v6 = [v5 repository];
-    v7 = [v6 allCKContainers];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration2 repository];
+    allCKContainers = [repository2 allCKContainers];
 
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v30 objects:v40 count:16];
+    obj = allCKContainers;
+    v8 = [allCKContainers countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v8)
     {
       v9 = v8;
@@ -41,13 +41,13 @@
           }
 
           v13 = *(*(&v30 + 1) + 8 * v11);
-          v14 = [(HDCloudSyncOperation *)self configuration];
-          v15 = [v14 cachedCloudState];
-          v16 = [v13 containerIdentifier];
-          v17 = [v13 sharedCloudDatabase];
-          v18 = [v17 databaseScope];
+          configuration3 = [(HDCloudSyncOperation *)self configuration];
+          cachedCloudState = [configuration3 cachedCloudState];
+          containerIdentifier = [v13 containerIdentifier];
+          sharedCloudDatabase = [v13 sharedCloudDatabase];
+          databaseScope = [sharedCloudDatabase databaseScope];
           v29 = v12;
-          v19 = [v15 addDatabaseWithContainerIdentifier:v16 databaseScope:v18 error:&v29];
+          v19 = [cachedCloudState addDatabaseWithContainerIdentifier:containerIdentifier databaseScope:databaseScope error:&v29];
           v10 = v29;
 
           if ((v19 & 1) == 0)
@@ -57,11 +57,11 @@
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               v21 = v20;
-              v22 = [v13 containerIdentifier];
+              containerIdentifier2 = [v13 containerIdentifier];
               *buf = 138543874;
-              v35 = self;
+              selfCopy2 = self;
               v36 = 2114;
-              v37 = v22;
+              v37 = containerIdentifier2;
               v38 = 2114;
               v39 = v10;
               _os_log_error_impl(&dword_228986000, v21, OS_LOG_TYPE_ERROR, "%{public}@ Failed to update cache with shared database in container %{public}@, error: %{public}@", buf, 0x20u);
@@ -87,7 +87,7 @@
     }
 
     [(HDCloudSyncOperation *)self finishWithSuccess:1 error:0];
-    v4 = v25;
+    syncAvailability = v25;
   }
 
   else
@@ -97,7 +97,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v35 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping fetching shared database because platform/profile does not support summary sharing", buf, 0xCu);
     }
 

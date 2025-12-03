@@ -1,30 +1,30 @@
 @interface PXFeaturedPhotosAssetsDataSourceManager
-- (PXFeaturedPhotosAssetsDataSourceManager)initWithSuggestionsDataSourceManager:(id)a3 assetCollection:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)updateDataSourceWithNewSuggestions:(id)a3 changeDetails:(id)a4 assetCollection:(id)a5 cache:(id)a6;
+- (PXFeaturedPhotosAssetsDataSourceManager)initWithSuggestionsDataSourceManager:(id)manager assetCollection:(id)collection;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)updateDataSourceWithNewSuggestions:(id)suggestions changeDetails:(id)details assetCollection:(id)collection cache:(id)cache;
 @end
 
 @implementation PXFeaturedPhotosAssetsDataSourceManager
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (dataSourceManagerObservationContext == a5)
+  observableCopy = observable;
+  if (dataSourceManagerObservationContext == context)
   {
-    if (a4)
+    if (change)
     {
-      v9 = [(PXFeaturedPhotosAssetsDataSourceManager *)self suggestionsDataSource];
-      v10 = [(PXFeaturedPhotosAssetsDataSourceManager *)self suggestionsDataSourceManager];
-      v11 = [v10 dataSource];
+      suggestionsDataSource = [(PXFeaturedPhotosAssetsDataSourceManager *)self suggestionsDataSource];
+      suggestionsDataSourceManager = [(PXFeaturedPhotosAssetsDataSourceManager *)self suggestionsDataSourceManager];
+      dataSource = [suggestionsDataSourceManager dataSource];
 
-      [(PXFeaturedPhotosAssetsDataSourceManager *)self setSuggestionsDataSource:v11];
-      v12 = [(PXFeaturedPhotosAssetsDataSourceManager *)self suggestionsDataSourceManager];
-      v13 = [v12 changeHistory];
-      v14 = [v13 changeDetailsFromDataSourceIdentifier:objc_msgSend(v9 toDataSourceIdentifier:{"identifier"), objc_msgSend(v11, "identifier")}];
+      [(PXFeaturedPhotosAssetsDataSourceManager *)self setSuggestionsDataSource:dataSource];
+      suggestionsDataSourceManager2 = [(PXFeaturedPhotosAssetsDataSourceManager *)self suggestionsDataSourceManager];
+      changeHistory = [suggestionsDataSourceManager2 changeHistory];
+      v14 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(suggestionsDataSource toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource, "identifier")}];
 
-      v15 = [(PXFeaturedPhotosAssetsDataSourceManager *)self assetCollection];
-      v16 = [(PXFeaturedPhotosAssetsDataSourceManager *)self keyAssetBySuggestionIdentifierCache];
-      [(PXFeaturedPhotosAssetsDataSourceManager *)self updateDataSourceWithNewSuggestions:v11 changeDetails:v14 assetCollection:v15 cache:v16];
+      assetCollection = [(PXFeaturedPhotosAssetsDataSourceManager *)self assetCollection];
+      keyAssetBySuggestionIdentifierCache = [(PXFeaturedPhotosAssetsDataSourceManager *)self keyAssetBySuggestionIdentifierCache];
+      [(PXFeaturedPhotosAssetsDataSourceManager *)self updateDataSourceWithNewSuggestions:dataSource changeDetails:v14 assetCollection:assetCollection cache:keyAssetBySuggestionIdentifierCache];
     }
   }
 
@@ -32,27 +32,27 @@
   {
     v17.receiver = self;
     v17.super_class = PXFeaturedPhotosAssetsDataSourceManager;
-    [(PXPhotoKitAssetsDataSourceManager *)&v17 observable:v8 didChange:a4 context:a5];
+    [(PXPhotoKitAssetsDataSourceManager *)&v17 observable:observableCopy didChange:change context:context];
   }
 }
 
-- (void)updateDataSourceWithNewSuggestions:(id)a3 changeDetails:(id)a4 assetCollection:(id)a5 cache:(id)a6
+- (void)updateDataSourceWithNewSuggestions:(id)suggestions changeDetails:(id)details assetCollection:(id)collection cache:(id)cache
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  suggestionsCopy = suggestions;
+  collectionCopy = collection;
+  cacheCopy = cache;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __114__PXFeaturedPhotosAssetsDataSourceManager_updateDataSourceWithNewSuggestions_changeDetails_assetCollection_cache___block_invoke;
   block[3] = &unk_1E7748228;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = suggestionsCopy;
+  v18 = collectionCopy;
+  v19 = cacheCopy;
+  v13 = cacheCopy;
+  v14 = collectionCopy;
+  v15 = suggestionsCopy;
   objc_copyWeak(&v20, &location);
   dispatch_async(queue, block);
   objc_destroyWeak(&v20);
@@ -87,24 +87,24 @@ void __114__PXFeaturedPhotosAssetsDataSourceManager_updateDataSourceWithNewSugge
   [v3 setAllowedUUIDs:v5 manualOrderUUIDs:v7 forAssetCollections:v8];
 }
 
-- (PXFeaturedPhotosAssetsDataSourceManager)initWithSuggestionsDataSourceManager:(id)a3 assetCollection:(id)a4
+- (PXFeaturedPhotosAssetsDataSourceManager)initWithSuggestionsDataSourceManager:(id)manager assetCollection:(id)collection
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  managerCopy = manager;
+  collectionCopy = collection;
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v8 setIncludeAssetSourceTypes:5];
-  [v8 setIncludeHiddenAssets:0];
-  [v8 setIncludeGuestAssets:1];
-  v29 = v8;
-  v9 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v8];
+  [librarySpecificFetchOptions setIncludeAssetSourceTypes:5];
+  [librarySpecificFetchOptions setIncludeHiddenAssets:0];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v29 = librarySpecificFetchOptions;
+  v9 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v10 = MEMORY[0x1E6978650];
-  v11 = [v6 title];
+  title = [collectionCopy title];
 
   v33 = v9;
-  v12 = [v10 transientAssetCollectionWithAssetFetchResult:v9 title:v11 identifier:@"PXFeaturedPhotosVirtualCollection"];
+  v12 = [v10 transientAssetCollectionWithAssetFetchResult:v9 title:title identifier:@"PXFeaturedPhotosVirtualCollection"];
 
   v13 = MEMORY[0x1E6978760];
   v40[0] = v12;
@@ -115,9 +115,9 @@ void __114__PXFeaturedPhotosAssetsDataSourceManager_updateDataSourceWithNewSugge
   v30 = [MEMORY[0x1E6978650] fetchCollectionsInCollectionList:v15 options:0];
   v28 = [[PXPhotosDataSourceConfiguration alloc] initWithCollectionListFetchResult:v30 options:8392705];
   v16 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v28];
-  v17 = [v5 dataSource];
+  dataSource = [managerCopy dataSource];
   v18 = objc_alloc_init(MEMORY[0x1E695DEE0]);
-  v19 = allowedUUIDsForSuggestionsDataSource(v17, v18);
+  v19 = allowedUUIDsForSuggestionsDataSource(dataSource, v18);
   v38 = v12;
   v20 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v19];
   v39 = v20;
@@ -136,7 +136,7 @@ void __114__PXFeaturedPhotosAssetsDataSourceManager_updateDataSourceWithNewSugge
   if (v24)
   {
     objc_storeStrong(&v24->_assetCollection, v12);
-    objc_storeStrong(&v25->_suggestionsDataSourceManager, a3);
+    objc_storeStrong(&v25->_suggestionsDataSourceManager, manager);
     px_dispatch_queue_create_serial();
   }
 

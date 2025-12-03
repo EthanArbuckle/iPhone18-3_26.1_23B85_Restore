@@ -1,13 +1,13 @@
 @interface SetSharedLocationVisibilityIntent
-- (SetSharedLocationVisibilityIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (SetSharedLocationVisibilityIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (SetSharedLocationVisibilityIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (SetSharedLocationVisibilityIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation SetSharedLocationVisibilityIntent
 
-- (SetSharedLocationVisibilityIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (SetSharedLocationVisibilityIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_266DAA70C();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SetSharedLocationVisibilityIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return SetSharedLocationVisibilityIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (SetSharedLocationVisibilityIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (SetSharedLocationVisibilityIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_266DAA70C();
   sub_266DAA70C();
-  if (a5)
+  if (name)
   {
     sub_266DAA6AC();
   }

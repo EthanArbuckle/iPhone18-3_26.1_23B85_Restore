@@ -1,9 +1,9 @@
 @interface WebDefaultUIDelegate
 + (id)sharedUIDelegate;
-- (CGRect)webViewFrame:(id)a3;
-- (id)webView:(id)a3 createWebViewWithRequest:(id)a4 windowFeatures:(id)a5;
-- (id)webViewFirstResponder:(id)a3;
-- (void)webView:(id)a3 makeFirstResponder:(id)a4;
+- (CGRect)webViewFrame:(id)frame;
+- (id)webView:(id)view createWebViewWithRequest:(id)request windowFeatures:(id)features;
+- (id)webViewFirstResponder:(id)responder;
+- (void)webView:(id)view makeFirstResponder:(id)responder;
 @end
 
 @implementation WebDefaultUIDelegate
@@ -21,45 +21,45 @@
   return result;
 }
 
-- (id)webView:(id)a3 createWebViewWithRequest:(id)a4 windowFeatures:(id)a5
+- (id)webView:(id)view createWebViewWithRequest:(id)request windowFeatures:(id)features
 {
-  [a3 UIDelegate];
+  [view UIDelegate];
   if (objc_opt_respondsToSelector())
   {
     return 0;
   }
 
-  [a3 UIDelegate];
+  [view UIDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  v7 = [a3 UIDelegate];
+  uIDelegate = [view UIDelegate];
 
-  return [v7 webView:a3 createWebViewWithRequest:a4];
+  return [uIDelegate webView:view createWebViewWithRequest:request];
 }
 
-- (id)webViewFirstResponder:(id)a3
+- (id)webViewFirstResponder:(id)responder
 {
-  v3 = [a3 window];
+  window = [responder window];
 
-  return [v3 firstResponder];
+  return [window firstResponder];
 }
 
-- (void)webView:(id)a3 makeFirstResponder:(id)a4
+- (void)webView:(id)view makeFirstResponder:(id)responder
 {
-  v5 = [a3 window];
+  window = [view window];
 
-  [v5 makeFirstResponder:a4];
+  [window makeFirstResponder:responder];
 }
 
-- (CGRect)webViewFrame:(id)a3
+- (CGRect)webViewFrame:(id)frame
 {
-  v3 = [a3 window];
-  if (v3)
+  window = [frame window];
+  if (window)
   {
-    [v3 frame];
+    [window frame];
   }
 
   else

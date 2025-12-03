@@ -7,8 +7,8 @@
 + (id)languageHeaderCode
 {
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v4 = [v2 minimizedLanguagesFromLanguages:v3];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v4 = [v2 minimizedLanguagesFromLanguages:preferredLanguages];
 
   v5 = [v4 count];
   if (v5)

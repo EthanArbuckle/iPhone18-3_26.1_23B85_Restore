@@ -1,7 +1,7 @@
 @interface CHLogServer
 + (id)sharedInstance;
 - (CHLogServer)init;
-- (id)logHandleForDomain:(const char *)a3;
+- (id)logHandleForDomain:(const char *)domain;
 @end
 
 @implementation CHLogServer
@@ -42,18 +42,18 @@ uint64_t __29__CHLogServer_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)logHandleForDomain:(const char *)a3
+- (id)logHandleForDomain:(const char *)domain
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
-  v6 = [(CHLogServer *)self logHandleToDomain];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:domain];
+  logHandleToDomain = [(CHLogServer *)self logHandleToDomain];
+  v7 = [logHandleToDomain objectForKeyedSubscript:v5];
 
   if (!v7)
   {
-    v7 = os_log_create("com.apple.callhistory", a3);
-    v8 = [(CHLogServer *)self logHandleToDomain];
-    [v8 setObject:v7 forKeyedSubscript:v5];
+    v7 = os_log_create("com.apple.callhistory", domain);
+    logHandleToDomain2 = [(CHLogServer *)self logHandleToDomain];
+    [logHandleToDomain2 setObject:v7 forKeyedSubscript:v5];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);

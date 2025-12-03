@@ -1,25 +1,25 @@
 @interface PXPhotoKitSelectVariationAssetActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
 + (NSString)editOperationType;
-- (void)cancelActionWithCompletionHandler:(id)a3;
+- (void)cancelActionWithCompletionHandler:(id)handler;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXPhotoKitSelectVariationAssetActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  if ([a4 assetCollectionType] == 7)
+  assetCopy = asset;
+  if ([collection assetCollectionType] == 7)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [a1 editOperationManager];
-    v11 = [a1 editOperationType];
-    v9 = [v10 canPerformEditOperationWithType:v11 onAsset:v8];
+    editOperationManager = [self editOperationManager];
+    editOperationType = [self editOperationType];
+    v9 = [editOperationManager canPerformEditOperationWithType:editOperationType onAsset:assetCopy];
   }
 
   return v9;
@@ -27,25 +27,25 @@
 
 + (NSString)editOperationType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitSelectVariationAssetActionPerformer.m" lineNumber:36 description:{@"Method %s is a responsibility of subclass %@", "+[PXPhotoKitSelectVariationAssetActionPerformer editOperationType]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitSelectVariationAssetActionPerformer.m" lineNumber:36 description:{@"Method %s is a responsibility of subclass %@", "+[PXPhotoKitSelectVariationAssetActionPerformer editOperationType]", v6}];
 
   abort();
 }
 
-- (void)cancelActionWithCompletionHandler:(id)a3
+- (void)cancelActionWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(PXPhotoKitSelectVariationAssetActionPerformer *)self progress];
-  [v4 cancel];
+  handlerCopy = handler;
+  progress = [(PXPhotoKitSelectVariationAssetActionPerformer *)self progress];
+  [progress cancel];
 
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy);
+    v5 = handlerCopy;
   }
 }
 
@@ -53,8 +53,8 @@
 {
   v3 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:0];
   [(PXPhotoKitSelectVariationAssetActionPerformer *)self setProgress:v3];
-  v4 = [objc_opt_class() editOperationManager];
-  v5 = [objc_opt_class() editOperationType];
+  editOperationManager = [objc_opt_class() editOperationManager];
+  editOperationType = [objc_opt_class() editOperationType];
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -66,23 +66,23 @@
   v21[4] = __Block_byref_object_dispose__50733;
   v22 = 0;
   v6 = dispatch_group_create();
-  v7 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  assetsByAssetCollection = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__PXPhotoKitSelectVariationAssetActionPerformer_performBackgroundTask__block_invoke;
   v13[3] = &unk_1E7731F18;
   v8 = v6;
   v14 = v8;
-  v9 = v4;
+  v9 = editOperationManager;
   v15 = v9;
-  v10 = v5;
+  v10 = editOperationType;
   v16 = v10;
-  v17 = self;
+  selfCopy = self;
   v19 = v21;
   v20 = v23;
   v11 = v3;
   v18 = v11;
-  [v7 enumerateKeysAndObjectsUsingBlock:v13];
+  [assetsByAssetCollection enumerateKeysAndObjectsUsingBlock:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;

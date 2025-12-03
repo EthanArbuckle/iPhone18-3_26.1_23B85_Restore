@@ -10,14 +10,14 @@
 
 - (id)delegateFor_didCreateTask
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 8) & 8) != 0)
+    if ((*(self + 8) & 8) != 0)
     {
-      if ((*(a1 + 12) & 8) != 0)
+      if ((*(self + 12) & 8) != 0)
       {
 LABEL_4:
-        a1 = objc_getProperty(a1, a2, 24, 1);
+        self = objc_getProperty(self, a2, 24, 1);
 LABEL_10:
         v2 = vars8;
         goto LABEL_11;
@@ -26,10 +26,10 @@ LABEL_10:
 
     else
     {
-      v3 = a1;
-      objc_getProperty(a1, a2, 24, 1);
+      selfCopy = self;
+      objc_getProperty(self, a2, 24, 1);
       v4 = objc_opt_respondsToSelector();
-      a1 = v3;
+      self = selfCopy;
       if (v4)
       {
         v5 = 8;
@@ -40,33 +40,33 @@ LABEL_10:
         v5 = 0;
       }
 
-      v3[12] = v3[12] & 0xF7 | v5;
-      v3[8] |= 8u;
+      selfCopy[12] = selfCopy[12] & 0xF7 | v5;
+      selfCopy[8] |= 8u;
       if (v5)
       {
         goto LABEL_4;
       }
     }
 
-    a1 = [(NWURLSessionDelegateWrapper *)*(a1 + 4) delegateFor_didCreateTask];
+    self = [(NWURLSessionDelegateWrapper *)*(self + 4) delegateFor_didCreateTask];
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 - (id)delegateFor_sessionDidReceiveChallenge
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 8) & 2) != 0)
+    if ((*(self + 8) & 2) != 0)
     {
-      if ((*(a1 + 12) & 2) != 0)
+      if ((*(self + 12) & 2) != 0)
       {
 LABEL_4:
-        a1 = objc_getProperty(a1, a2, 24, 1);
+        self = objc_getProperty(self, a2, 24, 1);
 LABEL_10:
         v2 = vars8;
         goto LABEL_11;
@@ -75,10 +75,10 @@ LABEL_10:
 
     else
     {
-      v3 = a1;
-      objc_getProperty(a1, a2, 24, 1);
+      selfCopy = self;
+      objc_getProperty(self, a2, 24, 1);
       v4 = objc_opt_respondsToSelector();
-      a1 = v3;
+      self = selfCopy;
       if (v4)
       {
         v5 = 2;
@@ -89,33 +89,33 @@ LABEL_10:
         v5 = 0;
       }
 
-      v3[12] = v3[12] & 0xFD | v5;
-      v3[8] |= 2u;
+      selfCopy[12] = selfCopy[12] & 0xFD | v5;
+      selfCopy[8] |= 2u;
       if (v5)
       {
         goto LABEL_4;
       }
     }
 
-    a1 = [(NWURLSessionDelegateWrapper *)*(a1 + 4) delegateFor_sessionDidReceiveChallenge];
+    self = [(NWURLSessionDelegateWrapper *)*(self + 4) delegateFor_sessionDidReceiveChallenge];
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 - (void)delegateFor_didReceiveChallenge
 {
-  if (a1)
+  if (self)
   {
-    if (a1[1] < 0)
+    if (self[1] < 0)
     {
-      if ((*(a1 + 12) & 0x80) == 0)
+      if ((*(self + 12) & 0x80) == 0)
       {
 LABEL_4:
-        a1 = [(NWURLSessionDelegateWrapper *)a1[4] delegateFor_didReceiveChallenge];
+        self = [(NWURLSessionDelegateWrapper *)self[4] delegateFor_didReceiveChallenge];
 LABEL_10:
         v2 = vars8;
         goto LABEL_11;
@@ -124,10 +124,10 @@ LABEL_10:
 
     else
     {
-      v3 = a1;
-      objc_getProperty(a1, a2, 24, 1);
+      selfCopy = self;
+      objc_getProperty(self, a2, 24, 1);
       v4 = objc_opt_respondsToSelector();
-      a1 = v3;
+      self = selfCopy;
       if (v4)
       {
         v5 = 0x80;
@@ -138,34 +138,34 @@ LABEL_10:
         v5 = 0;
       }
 
-      v6 = v5 & 0x80 | v3[12] & 0x7F;
-      v3[12] = v6;
-      v3[8] |= 0x80u;
+      v6 = v5 & 0x80 | selfCopy[12] & 0x7F;
+      selfCopy[12] = v6;
+      selfCopy[8] |= 0x80u;
       if ((v6 & 0x80) == 0)
       {
         goto LABEL_4;
       }
     }
 
-    a1 = objc_getProperty(a1, a2, 24, 1);
+    self = objc_getProperty(self, a2, 24, 1);
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 - (id)delegateFor_willCacheResponse
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 10) & 0x20) != 0)
+    if ((*(self + 10) & 0x20) != 0)
     {
-      if ((*(a1 + 14) & 0x20) != 0)
+      if ((*(self + 14) & 0x20) != 0)
       {
 LABEL_4:
-        a1 = objc_getProperty(a1, a2, 24, 1);
+        self = objc_getProperty(self, a2, 24, 1);
 LABEL_10:
         v2 = vars8;
         goto LABEL_11;
@@ -174,10 +174,10 @@ LABEL_10:
 
     else
     {
-      v3 = a1;
-      objc_getProperty(a1, a2, 24, 1);
+      selfCopy = self;
+      objc_getProperty(self, a2, 24, 1);
       v4 = objc_opt_respondsToSelector();
-      a1 = v3;
+      self = selfCopy;
       if (v4)
       {
         v5 = 32;
@@ -188,33 +188,33 @@ LABEL_10:
         v5 = 0;
       }
 
-      v3[14] = v3[14] & 0xDF | v5;
-      v3[10] |= 0x20u;
+      selfCopy[14] = selfCopy[14] & 0xDF | v5;
+      selfCopy[10] |= 0x20u;
       if (v5)
       {
         goto LABEL_4;
       }
     }
 
-    a1 = [(NWURLSessionDelegateWrapper *)*(a1 + 4) delegateFor_willCacheResponse];
+    self = [(NWURLSessionDelegateWrapper *)*(self + 4) delegateFor_willCacheResponse];
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 - (id)delegateFor_didFinishCollectingMetrics
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 9) & 8) != 0)
+    if ((*(self + 9) & 8) != 0)
     {
-      if ((*(a1 + 13) & 8) != 0)
+      if ((*(self + 13) & 8) != 0)
       {
 LABEL_4:
-        a1 = objc_getProperty(a1, a2, 24, 1);
+        self = objc_getProperty(self, a2, 24, 1);
 LABEL_10:
         v2 = vars8;
         goto LABEL_11;
@@ -223,10 +223,10 @@ LABEL_10:
 
     else
     {
-      v3 = a1;
-      objc_getProperty(a1, a2, 24, 1);
+      selfCopy = self;
+      objc_getProperty(self, a2, 24, 1);
       v4 = objc_opt_respondsToSelector();
-      a1 = v3;
+      self = selfCopy;
       if (v4)
       {
         v5 = 8;
@@ -237,21 +237,21 @@ LABEL_10:
         v5 = 0;
       }
 
-      v3[13] = v3[13] & 0xF7 | v5;
-      v3[9] |= 8u;
+      selfCopy[13] = selfCopy[13] & 0xF7 | v5;
+      selfCopy[9] |= 8u;
       if (v5)
       {
         goto LABEL_4;
       }
     }
 
-    a1 = [(NWURLSessionDelegateWrapper *)*(a1 + 4) delegateFor_didFinishCollectingMetrics];
+    self = [(NWURLSessionDelegateWrapper *)*(self + 4) delegateFor_didFinishCollectingMetrics];
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface APPCContentDepiction
 - (APPCContentDepiction)init;
-- (APPCContentDepiction)initWithIdentifier:(id)a3 adjacentPosition:(unint64_t)a4 placement:(int64_t)a5 language:(id)a6 locale:(id)a7 searchTerms:(id)a8 keywords:(id)a9 categories:(id)a10;
-- (APPCContentDepiction)initWithIdentifier:(id)a3 placement:(int64_t)a4 language:(id)a5 locale:(id)a6 searchTerms:(id)a7 keywords:(id)a8 categories:(id)a9;
+- (APPCContentDepiction)initWithIdentifier:(id)identifier adjacentPosition:(unint64_t)position placement:(int64_t)placement language:(id)language locale:(id)locale searchTerms:(id)terms keywords:(id)keywords categories:(id)self0;
+- (APPCContentDepiction)initWithIdentifier:(id)identifier placement:(int64_t)placement language:(id)language locale:(id)locale searchTerms:(id)terms keywords:(id)keywords categories:(id)categories;
 @end
 
 @implementation APPCContentDepiction
 
-- (APPCContentDepiction)initWithIdentifier:(id)a3 placement:(int64_t)a4 language:(id)a5 locale:(id)a6 searchTerms:(id)a7 keywords:(id)a8 categories:(id)a9
+- (APPCContentDepiction)initWithIdentifier:(id)identifier placement:(int64_t)placement language:(id)language locale:(id)locale searchTerms:(id)terms keywords:(id)keywords categories:(id)categories
 {
   v9 = sub_1C1B94D88();
   v11 = v10;
@@ -17,10 +17,10 @@
   v18 = sub_1C1B94EC8();
   v19 = sub_1C1B94EC8();
   v20 = sub_1C1B94EC8();
-  return ContentDepiction.init(identifier:placement:language:locale:searchTerms:keywords:categories:)(v9, v11, a4, v12, v14, v15, v17, v18, v19, v20);
+  return ContentDepiction.init(identifier:placement:language:locale:searchTerms:keywords:categories:)(v9, v11, placement, v12, v14, v15, v17, v18, v19, v20);
 }
 
-- (APPCContentDepiction)initWithIdentifier:(id)a3 adjacentPosition:(unint64_t)a4 placement:(int64_t)a5 language:(id)a6 locale:(id)a7 searchTerms:(id)a8 keywords:(id)a9 categories:(id)a10
+- (APPCContentDepiction)initWithIdentifier:(id)identifier adjacentPosition:(unint64_t)position placement:(int64_t)placement language:(id)language locale:(id)locale searchTerms:(id)terms keywords:(id)keywords categories:(id)self0
 {
   v11 = sub_1C1B94D88();
   v13 = v12;
@@ -34,8 +34,8 @@
   v22 = (self + OBJC_IVAR___APPCContentDepiction_identifier);
   *v22 = v11;
   v22[1] = v13;
-  *(self + OBJC_IVAR___APPCContentDepiction_adjacentPosition) = a4;
-  *(self + OBJC_IVAR___APPCContentDepiction_placement) = a5;
+  *(self + OBJC_IVAR___APPCContentDepiction_adjacentPosition) = position;
+  *(self + OBJC_IVAR___APPCContentDepiction_placement) = placement;
   v23 = (self + OBJC_IVAR___APPCContentDepiction_language);
   *v23 = v26;
   v23[1] = v15;

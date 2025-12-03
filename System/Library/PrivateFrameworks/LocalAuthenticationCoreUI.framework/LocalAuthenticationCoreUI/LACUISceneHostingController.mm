@@ -1,39 +1,39 @@
 @interface LACUISceneHostingController
-- (LACUISceneHostingController)initWithConfiguration:(id)a3;
+- (LACUISceneHostingController)initWithConfiguration:(id)configuration;
 - (LACUISceneHostingControllerDelegate)sceneConnectionDelegate;
 - (void)_sendConnectionEndpoint;
 - (void)clientIsReady;
-- (void)hostingControllerDidReconnect:(id)a3;
-- (void)prepareRemoteSceneWithCompletion:(id)a3;
-- (void)sendAction:(id)a3 completion:(id)a4;
+- (void)hostingControllerDidReconnect:(id)reconnect;
+- (void)prepareRemoteSceneWithCompletion:(id)completion;
+- (void)sendAction:(id)action completion:(id)completion;
 @end
 
 @implementation LACUISceneHostingController
 
-- (LACUISceneHostingController)initWithConfiguration:(id)a3
+- (LACUISceneHostingController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = LACUISceneHostingController;
   v6 = [(LACUISceneHostingController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
   }
 
   return v7;
 }
 
-- (void)prepareRemoteSceneWithCompletion:(id)a3
+- (void)prepareRemoteSceneWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__LACUISceneHostingController_prepareRemoteSceneWithCompletion___block_invoke;
   aBlock[3] = &unk_27981E770;
-  v5 = v4;
+  v5 = completionCopy;
   v18 = v5;
   v6 = _Block_copy(aBlock);
   if (self->_sceneHostingController)
@@ -61,11 +61,11 @@
     v11 = LACLogUI();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(LACAngelHostedSceneConfiguration *)self->_configuration sceneIdentifier];
+      sceneIdentifier = [(LACAngelHostedSceneConfiguration *)self->_configuration sceneIdentifier];
       *buf = 138412546;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
-      v22 = v12;
+      v22 = sceneIdentifier;
       _os_log_impl(&dword_256063000, v11, OS_LOG_TYPE_DEFAULT, "%@ preparing remote scene: %@", buf, 0x16u);
     }
 
@@ -152,11 +152,11 @@ void __64__LACUISceneHostingController_prepareRemoteSceneWithCompletion___block_
   }
 }
 
-- (void)sendAction:(id)a3 completion:(id)a4
+- (void)sendAction:(id)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[LACUIHostedSceneActionHostToClient alloc] initWithAction:v7 completion:v6];
+  completionCopy = completion;
+  actionCopy = action;
+  v8 = [[LACUIHostedSceneActionHostToClient alloc] initWithAction:actionCopy completion:completionCopy];
 
   [(_UISceneHostingController *)self->_sceneHostingController sendAction:v8];
 }
@@ -167,11 +167,11 @@ void __64__LACUISceneHostingController_prepareRemoteSceneWithCompletion___block_
   v3 = LACLogUI();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(LACAngelHostedSceneConfiguration *)self->_configuration sceneIdentifier];
+    sceneIdentifier = [(LACAngelHostedSceneConfiguration *)self->_configuration sceneIdentifier];
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = sceneIdentifier;
     _os_log_impl(&dword_256063000, v3, OS_LOG_TYPE_DEFAULT, "%@ prepared remote scene: %@", &v8, 0x16u);
   }
 
@@ -186,29 +186,29 @@ void __64__LACUISceneHostingController_prepareRemoteSceneWithCompletion___block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hostingControllerDidReconnect:(id)a3
+- (void)hostingControllerDidReconnect:(id)reconnect
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reconnectCopy = reconnect;
   if (self->_didConnect)
   {
     v5 = LACLogUI();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v4;
+      v13 = reconnectCopy;
       _os_log_impl(&dword_256063000, v5, OS_LOG_TYPE_DEFAULT, "%@ hosting controller did reconnect: %@", &v10, 0x16u);
     }
 
-    v6 = [(LACUISceneHostingController *)self sceneConnectionDelegate];
+    sceneConnectionDelegate = [(LACUISceneHostingController *)self sceneConnectionDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(LACUISceneHostingController *)self sceneConnectionDelegate];
-      [v8 sceneHostingControllerDidReconnect:self];
+      sceneConnectionDelegate2 = [(LACUISceneHostingController *)self sceneConnectionDelegate];
+      [sceneConnectionDelegate2 sceneHostingControllerDidReconnect:self];
     }
   }
 
@@ -222,14 +222,14 @@ void __64__LACUISceneHostingController_prepareRemoteSceneWithCompletion___block_
 
 - (void)_sendConnectionEndpoint
 {
-  v3 = [(LACAngelHostedSceneConfiguration *)self->_configuration connectionEndpoint];
+  connectionEndpoint = [(LACAngelHostedSceneConfiguration *)self->_configuration connectionEndpoint];
 
-  if (v3)
+  if (connectionEndpoint)
   {
     v4 = [LACUIHostedSceneAction alloc];
-    v5 = [(LACAngelHostedSceneConfiguration *)self->_configuration connectionEndpoint];
-    v6 = [v5 _endpoint];
-    v8 = [(LACUIHostedSceneAction *)v4 initWithRawIdentifier:1001 value:v6];
+    connectionEndpoint2 = [(LACAngelHostedSceneConfiguration *)self->_configuration connectionEndpoint];
+    _endpoint = [connectionEndpoint2 _endpoint];
+    v8 = [(LACUIHostedSceneAction *)v4 initWithRawIdentifier:1001 value:_endpoint];
 
     [(LACUISceneHostingController *)self sendAction:v8 completion:&__block_literal_global_4];
   }

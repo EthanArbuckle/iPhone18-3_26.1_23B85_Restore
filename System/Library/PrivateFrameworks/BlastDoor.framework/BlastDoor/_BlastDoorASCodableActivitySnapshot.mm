@@ -1,33 +1,33 @@
 @interface _BlastDoorASCodableActivitySnapshot
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActiveHoursGoal:(BOOL)a3;
-- (void)setHasAmm:(BOOL)a3;
-- (void)setHasBriskMinutes:(BOOL)a3;
-- (void)setHasBriskMinutesGoal:(BOOL)a3;
-- (void)setHasEnergyBurned:(BOOL)a3;
-- (void)setHasEnergyBurnedGoal:(BOOL)a3;
-- (void)setHasMmg:(BOOL)a3;
-- (void)setHasMmv:(BOOL)a3;
-- (void)setHasPushCount:(BOOL)a3;
-- (void)setHasSnapshotIndex:(BOOL)a3;
-- (void)setHasStepCount:(BOOL)a3;
-- (void)setHasTimeZoneOffsetFromUTCForNoon:(BOOL)a3;
-- (void)setHasWalkingAndRunningDistance:(BOOL)a3;
-- (void)setHasWheelchairUse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActiveHoursGoal:(BOOL)goal;
+- (void)setHasAmm:(BOOL)amm;
+- (void)setHasBriskMinutes:(BOOL)minutes;
+- (void)setHasBriskMinutesGoal:(BOOL)goal;
+- (void)setHasEnergyBurned:(BOOL)burned;
+- (void)setHasEnergyBurnedGoal:(BOOL)goal;
+- (void)setHasMmg:(BOOL)mmg;
+- (void)setHasMmv:(BOOL)mmv;
+- (void)setHasPushCount:(BOOL)count;
+- (void)setHasSnapshotIndex:(BOOL)index;
+- (void)setHasStepCount:(BOOL)count;
+- (void)setHasTimeZoneOffsetFromUTCForNoon:(BOOL)noon;
+- (void)setHasWalkingAndRunningDistance:(BOOL)distance;
+- (void)setHasWheelchairUse:(BOOL)use;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _BlastDoorASCodableActivitySnapshot
 
-- (void)setHasSnapshotIndex:(BOOL)a3
+- (void)setHasSnapshotIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 1024;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasTimeZoneOffsetFromUTCForNoon:(BOOL)a3
+- (void)setHasTimeZoneOffsetFromUTCForNoon:(BOOL)noon
 {
-  if (a3)
+  if (noon)
   {
     v3 = 4096;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasEnergyBurned:(BOOL)a3
+- (void)setHasEnergyBurned:(BOOL)burned
 {
-  if (a3)
+  if (burned)
   {
     v3 = 32;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasEnergyBurnedGoal:(BOOL)a3
+- (void)setHasEnergyBurnedGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 64;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasBriskMinutes:(BOOL)a3
+- (void)setHasBriskMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 8;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasBriskMinutesGoal:(BOOL)a3
+- (void)setHasBriskMinutesGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 16;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasActiveHoursGoal:(BOOL)a3
+- (void)setHasActiveHoursGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 2;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasWalkingAndRunningDistance:(BOOL)a3
+- (void)setHasWalkingAndRunningDistance:(BOOL)distance
 {
-  if (a3)
+  if (distance)
   {
     v3 = 0x2000;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasStepCount:(BOOL)a3
+- (void)setHasStepCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2048;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasPushCount:(BOOL)a3
+- (void)setHasPushCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasWheelchairUse:(BOOL)a3
+- (void)setHasWheelchairUse:(BOOL)use
 {
-  if (a3)
+  if (use)
   {
     v3 = 0x4000;
   }
@@ -190,9 +190,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasMmv:(BOOL)a3
+- (void)setHasMmv:(BOOL)mmv
 {
-  if (a3)
+  if (mmv)
   {
     v3 = 256;
   }
@@ -205,9 +205,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasMmg:(BOOL)a3
+- (void)setHasMmg:(BOOL)mmg
 {
-  if (a3)
+  if (mmg)
   {
     v3 = 128;
   }
@@ -220,9 +220,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasAmm:(BOOL)a3
+- (void)setHasAmm:(BOOL)amm
 {
-  if (a3)
+  if (amm)
   {
     v3 = 4;
   }
@@ -242,8 +242,8 @@
   v9.receiver = self;
   v9.super_class = _BlastDoorASCodableActivitySnapshot;
   v4 = [(_BlastDoorASCodableActivitySnapshot *)&v9 description];
-  v5 = [(_BlastDoorASCodableActivitySnapshot *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_BlastDoorASCodableActivitySnapshot *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   v7 = *MEMORY[0x277D85DE8];
 
@@ -252,25 +252,25 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(_BlastDoorASCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(_BlastDoorASCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   sourceUUID = self->_sourceUUID;
   if (sourceUUID)
   {
-    [v3 setObject:sourceUUID forKey:@"sourceUUID"];
+    [dictionary setObject:sourceUUID forKey:@"sourceUUID"];
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_snapshotIndex];
-    [v3 setObject:v10 forKey:@"snapshotIndex"];
+    [dictionary setObject:v10 forKey:@"snapshotIndex"];
 
     has = self->_has;
     if ((has & 0x1000) == 0)
@@ -291,7 +291,7 @@ LABEL_7:
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_timeZoneOffsetFromUTCForNoon];
-  [v3 setObject:v11 forKey:@"timeZoneOffsetFromUTCForNoon"];
+  [dictionary setObject:v11 forKey:@"timeZoneOffsetFromUTCForNoon"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -307,7 +307,7 @@ LABEL_8:
 
 LABEL_26:
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_energyBurned];
-  [v3 setObject:v12 forKey:@"energyBurned"];
+  [dictionary setObject:v12 forKey:@"energyBurned"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -323,7 +323,7 @@ LABEL_9:
 
 LABEL_27:
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_energyBurnedGoal];
-  [v3 setObject:v13 forKey:@"energyBurnedGoal"];
+  [dictionary setObject:v13 forKey:@"energyBurnedGoal"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -339,7 +339,7 @@ LABEL_10:
 
 LABEL_28:
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:self->_briskMinutes];
-  [v3 setObject:v14 forKey:@"briskMinutes"];
+  [dictionary setObject:v14 forKey:@"briskMinutes"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -355,7 +355,7 @@ LABEL_11:
 
 LABEL_29:
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:self->_briskMinutesGoal];
-  [v3 setObject:v15 forKey:@"briskMinutesGoal"];
+  [dictionary setObject:v15 forKey:@"briskMinutesGoal"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -371,7 +371,7 @@ LABEL_12:
 
 LABEL_30:
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:self->_activeHours];
-  [v3 setObject:v16 forKey:@"activeHours"];
+  [dictionary setObject:v16 forKey:@"activeHours"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -387,7 +387,7 @@ LABEL_13:
 
 LABEL_31:
   v17 = [MEMORY[0x277CCABB0] numberWithDouble:self->_activeHoursGoal];
-  [v3 setObject:v17 forKey:@"activeHoursGoal"];
+  [dictionary setObject:v17 forKey:@"activeHoursGoal"];
 
   has = self->_has;
   if ((has & 0x2000) == 0)
@@ -403,7 +403,7 @@ LABEL_14:
 
 LABEL_32:
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:self->_walkingAndRunningDistance];
-  [v3 setObject:v18 forKey:@"walkingAndRunningDistance"];
+  [dictionary setObject:v18 forKey:@"walkingAndRunningDistance"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -419,7 +419,7 @@ LABEL_15:
 
 LABEL_33:
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:self->_stepCount];
-  [v3 setObject:v19 forKey:@"stepCount"];
+  [dictionary setObject:v19 forKey:@"stepCount"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -435,7 +435,7 @@ LABEL_16:
 
 LABEL_34:
   v20 = [MEMORY[0x277CCABB0] numberWithDouble:self->_pushCount];
-  [v3 setObject:v20 forKey:@"pushCount"];
+  [dictionary setObject:v20 forKey:@"pushCount"];
 
   has = self->_has;
   if ((has & 0x4000) == 0)
@@ -451,7 +451,7 @@ LABEL_17:
 
 LABEL_35:
   v21 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_wheelchairUse];
-  [v3 setObject:v21 forKey:@"wheelchairUse"];
+  [dictionary setObject:v21 forKey:@"wheelchairUse"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -467,7 +467,7 @@ LABEL_18:
 
 LABEL_36:
   v22 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mmv];
-  [v3 setObject:v22 forKey:@"mmv"];
+  [dictionary setObject:v22 forKey:@"mmv"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -483,34 +483,34 @@ LABEL_19:
 
 LABEL_37:
   v23 = [MEMORY[0x277CCABB0] numberWithDouble:self->_mmg];
-  [v3 setObject:v23 forKey:@"mmg"];
+  [dictionary setObject:v23 forKey:@"mmg"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_20:
     v8 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_amm];
-    [v3 setObject:v8 forKey:@"amm"];
+    [dictionary setObject:v8 forKey:@"amm"];
   }
 
 LABEL_21:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v21 = v4;
+  toCopy = to;
+  v21 = toCopy;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_sourceUUID)
   {
     PBDataWriterWriteDataField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   has = self->_has;
@@ -518,7 +518,7 @@ LABEL_21:
   {
     snapshotIndex = self->_snapshotIndex;
     PBDataWriterWriteInt64Field();
-    v4 = v21;
+    toCopy = v21;
     has = self->_has;
     if ((has & 0x1000) == 0)
     {
@@ -539,7 +539,7 @@ LABEL_7:
 
   timeZoneOffsetFromUTCForNoon = self->_timeZoneOffsetFromUTCForNoon;
   PBDataWriterWriteInt64Field();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -555,7 +555,7 @@ LABEL_8:
 LABEL_26:
   energyBurned = self->_energyBurned;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -571,7 +571,7 @@ LABEL_9:
 LABEL_27:
   energyBurnedGoal = self->_energyBurnedGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -587,7 +587,7 @@ LABEL_10:
 LABEL_28:
   briskMinutes = self->_briskMinutes;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -603,7 +603,7 @@ LABEL_11:
 LABEL_29:
   briskMinutesGoal = self->_briskMinutesGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -619,7 +619,7 @@ LABEL_12:
 LABEL_30:
   activeHours = self->_activeHours;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -635,7 +635,7 @@ LABEL_13:
 LABEL_31:
   activeHoursGoal = self->_activeHoursGoal;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -651,7 +651,7 @@ LABEL_14:
 LABEL_32:
   walkingAndRunningDistance = self->_walkingAndRunningDistance;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -667,7 +667,7 @@ LABEL_15:
 LABEL_33:
   stepCount = self->_stepCount;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -683,7 +683,7 @@ LABEL_16:
 LABEL_34:
   pushCount = self->_pushCount;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -699,7 +699,7 @@ LABEL_17:
 LABEL_35:
   wheelchairUse = self->_wheelchairUse;
   PBDataWriterWriteInt64Field();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -715,7 +715,7 @@ LABEL_18:
 LABEL_36:
   mmv = self->_mmv;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -731,39 +731,39 @@ LABEL_19:
 LABEL_37:
   mmg = self->_mmg;
   PBDataWriterWriteDoubleField();
-  v4 = v21;
+  toCopy = v21;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_20:
     amm = self->_amm;
     PBDataWriterWriteInt64Field();
-    v4 = v21;
+    toCopy = v21;
   }
 
 LABEL_21:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v6;
+    [toCopy setSample:?];
+    toCopy = v6;
   }
 
   if (self->_sourceUUID)
   {
     [v6 setSourceUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x400) != 0)
   {
-    *(v4 + 11) = self->_snapshotIndex;
-    *(v4 + 72) |= 0x400u;
+    *(toCopy + 11) = self->_snapshotIndex;
+    *(toCopy + 72) |= 0x400u;
     has = self->_has;
     if ((has & 0x1000) == 0)
     {
@@ -782,8 +782,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 13) = self->_timeZoneOffsetFromUTCForNoon;
-  *(v4 + 72) |= 0x1000u;
+  *(toCopy + 13) = self->_timeZoneOffsetFromUTCForNoon;
+  *(toCopy + 72) |= 0x1000u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -797,8 +797,8 @@ LABEL_8:
   }
 
 LABEL_26:
-  *(v4 + 6) = *&self->_energyBurned;
-  *(v4 + 72) |= 0x20u;
+  *(toCopy + 6) = *&self->_energyBurned;
+  *(toCopy + 72) |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -812,8 +812,8 @@ LABEL_9:
   }
 
 LABEL_27:
-  *(v4 + 7) = *&self->_energyBurnedGoal;
-  *(v4 + 72) |= 0x40u;
+  *(toCopy + 7) = *&self->_energyBurnedGoal;
+  *(toCopy + 72) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -827,8 +827,8 @@ LABEL_10:
   }
 
 LABEL_28:
-  *(v4 + 4) = *&self->_briskMinutes;
-  *(v4 + 72) |= 8u;
+  *(toCopy + 4) = *&self->_briskMinutes;
+  *(toCopy + 72) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -842,8 +842,8 @@ LABEL_11:
   }
 
 LABEL_29:
-  *(v4 + 5) = *&self->_briskMinutesGoal;
-  *(v4 + 72) |= 0x10u;
+  *(toCopy + 5) = *&self->_briskMinutesGoal;
+  *(toCopy + 72) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -857,8 +857,8 @@ LABEL_12:
   }
 
 LABEL_30:
-  *(v4 + 1) = *&self->_activeHours;
-  *(v4 + 72) |= 1u;
+  *(toCopy + 1) = *&self->_activeHours;
+  *(toCopy + 72) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -872,8 +872,8 @@ LABEL_13:
   }
 
 LABEL_31:
-  *(v4 + 2) = *&self->_activeHoursGoal;
-  *(v4 + 72) |= 2u;
+  *(toCopy + 2) = *&self->_activeHoursGoal;
+  *(toCopy + 72) |= 2u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -887,8 +887,8 @@ LABEL_14:
   }
 
 LABEL_32:
-  *(v4 + 14) = *&self->_walkingAndRunningDistance;
-  *(v4 + 72) |= 0x2000u;
+  *(toCopy + 14) = *&self->_walkingAndRunningDistance;
+  *(toCopy + 72) |= 0x2000u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -902,8 +902,8 @@ LABEL_15:
   }
 
 LABEL_33:
-  *(v4 + 12) = *&self->_stepCount;
-  *(v4 + 72) |= 0x800u;
+  *(toCopy + 12) = *&self->_stepCount;
+  *(toCopy + 72) |= 0x800u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -917,8 +917,8 @@ LABEL_16:
   }
 
 LABEL_34:
-  *(v4 + 10) = *&self->_pushCount;
-  *(v4 + 72) |= 0x200u;
+  *(toCopy + 10) = *&self->_pushCount;
+  *(toCopy + 72) |= 0x200u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -932,8 +932,8 @@ LABEL_17:
   }
 
 LABEL_35:
-  *(v4 + 15) = self->_wheelchairUse;
-  *(v4 + 72) |= 0x4000u;
+  *(toCopy + 15) = self->_wheelchairUse;
+  *(toCopy + 72) |= 0x4000u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -947,8 +947,8 @@ LABEL_18:
   }
 
 LABEL_36:
-  *(v4 + 9) = *&self->_mmv;
-  *(v4 + 72) |= 0x100u;
+  *(toCopy + 9) = *&self->_mmv;
+  *(toCopy + 72) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -962,26 +962,26 @@ LABEL_19:
   }
 
 LABEL_37:
-  *(v4 + 8) = *&self->_mmg;
-  *(v4 + 72) |= 0x80u;
+  *(toCopy + 8) = *&self->_mmg;
+  *(toCopy + 72) |= 0x80u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_20:
-    *(v4 + 3) = self->_amm;
-    *(v4 + 72) |= 4u;
+    *(toCopy + 3) = self->_amm;
+    *(toCopy + 72) |= 4u;
   }
 
 LABEL_21:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_BlastDoorASCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_BlastDoorASCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 128);
   *(v5 + 128) = v6;
 
-  v8 = [(NSData *)self->_sourceUUID copyWithZone:a3];
+  v8 = [(NSData *)self->_sourceUUID copyWithZone:zone];
   v9 = *(v5 + 136);
   *(v5 + 136) = v8;
 
@@ -1200,16 +1200,16 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_81;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 16))
+  if (sample | *(equalCopy + 16))
   {
     if (![(_BlastDoorASCodableSample *)sample isEqual:?])
     {
@@ -1218,7 +1218,7 @@ LABEL_16:
   }
 
   sourceUUID = self->_sourceUUID;
-  if (sourceUUID | *(v4 + 17))
+  if (sourceUUID | *(equalCopy + 17))
   {
     if (![(NSData *)sourceUUID isEqual:?])
     {
@@ -1227,16 +1227,16 @@ LABEL_16:
   }
 
   has = self->_has;
-  v8 = *(v4 + 72);
+  v8 = *(equalCopy + 72);
   if ((has & 0x400) != 0)
   {
-    if ((*(v4 + 72) & 0x400) == 0 || self->_snapshotIndex != *(v4 + 11))
+    if ((*(equalCopy + 72) & 0x400) == 0 || self->_snapshotIndex != *(equalCopy + 11))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 72) & 0x400) != 0)
+  else if ((*(equalCopy + 72) & 0x400) != 0)
   {
 LABEL_81:
     v9 = 0;
@@ -1245,20 +1245,20 @@ LABEL_81:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 72) & 0x1000) == 0 || self->_timeZoneOffsetFromUTCForNoon != *(v4 + 13))
+    if ((*(equalCopy + 72) & 0x1000) == 0 || self->_timeZoneOffsetFromUTCForNoon != *(equalCopy + 13))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 72) & 0x1000) != 0)
+  else if ((*(equalCopy + 72) & 0x1000) != 0)
   {
     goto LABEL_81;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((v8 & 0x20) == 0 || self->_energyBurned != *(v4 + 6))
+    if ((v8 & 0x20) == 0 || self->_energyBurned != *(equalCopy + 6))
     {
       goto LABEL_81;
     }
@@ -1271,7 +1271,7 @@ LABEL_81:
 
   if ((has & 0x40) != 0)
   {
-    if ((v8 & 0x40) == 0 || self->_energyBurnedGoal != *(v4 + 7))
+    if ((v8 & 0x40) == 0 || self->_energyBurnedGoal != *(equalCopy + 7))
     {
       goto LABEL_81;
     }
@@ -1284,7 +1284,7 @@ LABEL_81:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_briskMinutes != *(v4 + 4))
+    if ((v8 & 8) == 0 || self->_briskMinutes != *(equalCopy + 4))
     {
       goto LABEL_81;
     }
@@ -1297,7 +1297,7 @@ LABEL_81:
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_briskMinutesGoal != *(v4 + 5))
+    if ((v8 & 0x10) == 0 || self->_briskMinutesGoal != *(equalCopy + 5))
     {
       goto LABEL_81;
     }
@@ -1310,7 +1310,7 @@ LABEL_81:
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_activeHours != *(v4 + 1))
+    if ((v8 & 1) == 0 || self->_activeHours != *(equalCopy + 1))
     {
       goto LABEL_81;
     }
@@ -1323,7 +1323,7 @@ LABEL_81:
 
   if ((has & 2) != 0)
   {
-    if ((v8 & 2) == 0 || self->_activeHoursGoal != *(v4 + 2))
+    if ((v8 & 2) == 0 || self->_activeHoursGoal != *(equalCopy + 2))
     {
       goto LABEL_81;
     }
@@ -1336,72 +1336,72 @@ LABEL_81:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 72) & 0x2000) == 0 || self->_walkingAndRunningDistance != *(v4 + 14))
+    if ((*(equalCopy + 72) & 0x2000) == 0 || self->_walkingAndRunningDistance != *(equalCopy + 14))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 72) & 0x2000) != 0)
+  else if ((*(equalCopy + 72) & 0x2000) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 72) & 0x800) == 0 || self->_stepCount != *(v4 + 12))
+    if ((*(equalCopy + 72) & 0x800) == 0 || self->_stepCount != *(equalCopy + 12))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 72) & 0x800) != 0)
+  else if ((*(equalCopy + 72) & 0x800) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 72) & 0x200) == 0 || self->_pushCount != *(v4 + 10))
+    if ((*(equalCopy + 72) & 0x200) == 0 || self->_pushCount != *(equalCopy + 10))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 72) & 0x200) != 0)
+  else if ((*(equalCopy + 72) & 0x200) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 72) & 0x4000) == 0 || self->_wheelchairUse != *(v4 + 15))
+    if ((*(equalCopy + 72) & 0x4000) == 0 || self->_wheelchairUse != *(equalCopy + 15))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 72) & 0x4000) != 0)
+  else if ((*(equalCopy + 72) & 0x4000) != 0)
   {
     goto LABEL_81;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 72) & 0x100) == 0 || self->_mmv != *(v4 + 9))
+    if ((*(equalCopy + 72) & 0x100) == 0 || self->_mmv != *(equalCopy + 9))
     {
       goto LABEL_81;
     }
   }
 
-  else if ((*(v4 + 72) & 0x100) != 0)
+  else if ((*(equalCopy + 72) & 0x100) != 0)
   {
     goto LABEL_81;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v8 & 0x80) == 0 || self->_mmg != *(v4 + 8))
+    if ((v8 & 0x80) == 0 || self->_mmg != *(equalCopy + 8))
     {
       goto LABEL_81;
     }
@@ -1414,7 +1414,7 @@ LABEL_81:
 
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_amm != *(v4 + 3))
+    if ((v8 & 4) == 0 || self->_amm != *(equalCopy + 3))
     {
       goto LABEL_81;
     }
@@ -1863,12 +1863,12 @@ LABEL_85:
   return v4 ^ v3 ^ v8 ^ v9 ^ v13 ^ v14 ^ v18 ^ v22 ^ v26 ^ v30 ^ v34 ^ v38 ^ v42 ^ v46 ^ v50 ^ v51 ^ v55;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 16);
-  v8 = v4;
+  v6 = *(fromCopy + 16);
+  v8 = fromCopy;
   if (sample)
   {
     if (!v6)
@@ -1889,20 +1889,20 @@ LABEL_85:
     [(_BlastDoorASCodableActivitySnapshot *)self setSample:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(_BlastDoorASCodableActivitySnapshot *)self setSourceUUID:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x400) != 0)
   {
-    self->_snapshotIndex = *(v4 + 11);
+    self->_snapshotIndex = *(fromCopy + 11);
     *&self->_has |= 0x400u;
-    v7 = *(v4 + 72);
+    v7 = *(fromCopy + 72);
     if ((v7 & 0x1000) == 0)
     {
 LABEL_11:
@@ -1915,14 +1915,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 72) & 0x1000) == 0)
+  else if ((*(fromCopy + 72) & 0x1000) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_timeZoneOffsetFromUTCForNoon = *(v4 + 13);
+  self->_timeZoneOffsetFromUTCForNoon = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x20) == 0)
   {
 LABEL_12:
@@ -1935,9 +1935,9 @@ LABEL_12:
   }
 
 LABEL_30:
-  self->_energyBurned = *(v4 + 6);
+  self->_energyBurned = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x40) == 0)
   {
 LABEL_13:
@@ -1950,9 +1950,9 @@ LABEL_13:
   }
 
 LABEL_31:
-  self->_energyBurnedGoal = *(v4 + 7);
+  self->_energyBurnedGoal = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 8) == 0)
   {
 LABEL_14:
@@ -1965,9 +1965,9 @@ LABEL_14:
   }
 
 LABEL_32:
-  self->_briskMinutes = *(v4 + 4);
+  self->_briskMinutes = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x10) == 0)
   {
 LABEL_15:
@@ -1980,9 +1980,9 @@ LABEL_15:
   }
 
 LABEL_33:
-  self->_briskMinutesGoal = *(v4 + 5);
+  self->_briskMinutesGoal = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 1) == 0)
   {
 LABEL_16:
@@ -1995,9 +1995,9 @@ LABEL_16:
   }
 
 LABEL_34:
-  self->_activeHours = *(v4 + 1);
+  self->_activeHours = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 2) == 0)
   {
 LABEL_17:
@@ -2010,9 +2010,9 @@ LABEL_17:
   }
 
 LABEL_35:
-  self->_activeHoursGoal = *(v4 + 2);
+  self->_activeHoursGoal = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x2000) == 0)
   {
 LABEL_18:
@@ -2025,9 +2025,9 @@ LABEL_18:
   }
 
 LABEL_36:
-  self->_walkingAndRunningDistance = *(v4 + 14);
+  self->_walkingAndRunningDistance = *(fromCopy + 14);
   *&self->_has |= 0x2000u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x800) == 0)
   {
 LABEL_19:
@@ -2040,9 +2040,9 @@ LABEL_19:
   }
 
 LABEL_37:
-  self->_stepCount = *(v4 + 12);
+  self->_stepCount = *(fromCopy + 12);
   *&self->_has |= 0x800u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x200) == 0)
   {
 LABEL_20:
@@ -2055,9 +2055,9 @@ LABEL_20:
   }
 
 LABEL_38:
-  self->_pushCount = *(v4 + 10);
+  self->_pushCount = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x4000) == 0)
   {
 LABEL_21:
@@ -2070,9 +2070,9 @@ LABEL_21:
   }
 
 LABEL_39:
-  self->_wheelchairUse = *(v4 + 15);
+  self->_wheelchairUse = *(fromCopy + 15);
   *&self->_has |= 0x4000u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x100) == 0)
   {
 LABEL_22:
@@ -2085,9 +2085,9 @@ LABEL_22:
   }
 
 LABEL_40:
-  self->_mmv = *(v4 + 9);
+  self->_mmv = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v7 = *(v4 + 72);
+  v7 = *(fromCopy + 72);
   if ((v7 & 0x80) == 0)
   {
 LABEL_23:
@@ -2100,12 +2100,12 @@ LABEL_23:
   }
 
 LABEL_41:
-  self->_mmg = *(v4 + 8);
+  self->_mmg = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 72) & 4) != 0)
+  if ((*(fromCopy + 72) & 4) != 0)
   {
 LABEL_24:
-    self->_amm = *(v4 + 3);
+    self->_amm = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

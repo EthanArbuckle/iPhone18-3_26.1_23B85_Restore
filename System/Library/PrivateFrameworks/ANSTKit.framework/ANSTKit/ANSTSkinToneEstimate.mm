@@ -1,10 +1,10 @@
 @interface ANSTSkinToneEstimate
 + (id)new;
 - (ANSTSkinToneEstimate)init;
-- (ANSTSkinToneEstimate)initWithCoder:(id)a3;
-- (ANSTSkinToneEstimate)initWithTypeIConfidence:(int64_t)a3 typeIIConfidence:(int64_t)a4 typeIIIConfidence:(int64_t)a5 typeIVConfidence:(int64_t)a6 typeVConfidence:(int64_t)a7 typeVIConfidence:(int64_t)a8 firmwareConfidence:(int64_t)a9;
+- (ANSTSkinToneEstimate)initWithCoder:(id)coder;
+- (ANSTSkinToneEstimate)initWithTypeIConfidence:(int64_t)confidence typeIIConfidence:(int64_t)iConfidence typeIIIConfidence:(int64_t)iIConfidence typeIVConfidence:(int64_t)vConfidence typeVConfidence:(int64_t)typeVConfidence typeVIConfidence:(int64_t)vIConfidence firmwareConfidence:(int64_t)firmwareConfidence;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ANSTSkinToneEstimate
@@ -18,33 +18,33 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTSkinToneEstimate)initWithTypeIConfidence:(int64_t)a3 typeIIConfidence:(int64_t)a4 typeIIIConfidence:(int64_t)a5 typeIVConfidence:(int64_t)a6 typeVConfidence:(int64_t)a7 typeVIConfidence:(int64_t)a8 firmwareConfidence:(int64_t)a9
+- (ANSTSkinToneEstimate)initWithTypeIConfidence:(int64_t)confidence typeIIConfidence:(int64_t)iConfidence typeIIIConfidence:(int64_t)iIConfidence typeIVConfidence:(int64_t)vConfidence typeVConfidence:(int64_t)typeVConfidence typeVIConfidence:(int64_t)vIConfidence firmwareConfidence:(int64_t)firmwareConfidence
 {
   v16.receiver = self;
   v16.super_class = ANSTSkinToneEstimate;
   result = [(ANSTSkinToneEstimate *)&v16 init];
-  result->_typeIConfidence = a3;
-  result->_typeIIConfidence = a4;
-  result->_typeIIIConfidence = a5;
-  result->_typeIVConfidence = a6;
-  result->_typeVConfidence = a7;
-  result->_typeVIConfidence = a8;
-  result->_firmwareConfidence = a9;
+  result->_typeIConfidence = confidence;
+  result->_typeIIConfidence = iConfidence;
+  result->_typeIIIConfidence = iIConfidence;
+  result->_typeIVConfidence = vConfidence;
+  result->_typeVConfidence = typeVConfidence;
+  result->_typeVIConfidence = vIConfidence;
+  result->_firmwareConfidence = firmwareConfidence;
   return result;
 }
 
-- (ANSTSkinToneEstimate)initWithCoder:(id)a3
+- (ANSTSkinToneEstimate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = ANSTSkinToneEstimate;
   v5 = [(ANSTSkinToneEstimate *)&v49 init];
-  v6 = v4;
+  v6 = coderCopy;
   v7 = objc_opt_class();
   v8 = NSStringFromSelector(sel_typeIConfidence);
   v10 = objc_msgSend_decodeObjectOfClass_forKey_(v6, v9, v7, v8);
@@ -128,16 +128,16 @@ LABEL_9:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v5, self->_typeIConfidence);
   v7 = NSStringFromSelector(sel_typeIConfidence);
-  objc_msgSend_encodeObject_forKey_(v4, v8, v6, v7);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v6, v7);
 
   typeIIConfidence = self->_typeIIConfidence;
   v10 = MEMORY[0x277CCABB0];
-  v11 = v4;
+  v11 = coderCopy;
   v13 = objc_msgSend_numberWithInteger_(v10, v12, typeIIConfidence);
   v14 = NSStringFromSelector(sel_typeIIConfidence);
   objc_msgSend_encodeObject_forKey_(v11, v15, v13, v14);

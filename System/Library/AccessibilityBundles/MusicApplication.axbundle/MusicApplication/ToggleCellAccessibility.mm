@@ -16,32 +16,32 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(ToggleCellAccessibility *)self _axChildSwitch];
+  _axChildSwitch = [(ToggleCellAccessibility *)self _axChildSwitch];
 
-  if (v3)
+  if (_axChildSwitch)
   {
-    v4 = [(ToggleCellAccessibility *)self _axChildSwitch];
-    v5 = [v4 accessibilityValue];
+    _axChildSwitch2 = [(ToggleCellAccessibility *)self _axChildSwitch];
+    accessibilityValue = [_axChildSwitch2 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = ToggleCellAccessibility;
-    v5 = [(ToggleCellAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(ToggleCellAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(ToggleCellAccessibility *)self _axChildSwitch];
+  _axChildSwitch = [(ToggleCellAccessibility *)self _axChildSwitch];
 
-  if (v3)
+  if (_axChildSwitch)
   {
-    v4 = [(ToggleCellAccessibility *)self _axChildSwitch];
-    [v4 accessibilityActivationPoint];
+    _axChildSwitch2 = [(ToggleCellAccessibility *)self _axChildSwitch];
+    [_axChildSwitch2 accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
 
@@ -63,14 +63,14 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(ToggleCellAccessibility *)self _axChildSwitch];
+  _axChildSwitch = [(ToggleCellAccessibility *)self _axChildSwitch];
 
-  if (v3)
+  if (_axChildSwitch)
   {
-    v4 = [(ToggleCellAccessibility *)self _axChildSwitch];
-    v5 = [v4 accessibilityTraits];
+    _axChildSwitch2 = [(ToggleCellAccessibility *)self _axChildSwitch];
+    accessibilityTraits = [_axChildSwitch2 accessibilityTraits];
 
-    return v5;
+    return accessibilityTraits;
   }
 
   else

@@ -1,5 +1,5 @@
 @interface _NSPersonNameComponentsStyleFormatterAbbreviated
-- (id)_formattedStringFromOrderedKeys:(id)a3 components:(id)a4 attributesByRange:(id)a5;
+- (id)_formattedStringFromOrderedKeys:(id)keys components:(id)components attributesByRange:(id)range;
 - (id)abbreviatedKeys;
 - (id)fallbackStyleFormatter;
 - (id)keysOfInterest;
@@ -42,16 +42,16 @@
   return v2;
 }
 
-- (id)_formattedStringFromOrderedKeys:(id)a3 components:(id)a4 attributesByRange:(id)a5
+- (id)_formattedStringFromOrderedKeys:(id)keys components:(id)components attributesByRange:(id)range
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = [NSPersonNameComponentsFormatter __abbreviatedNameFormatForPersonNameComponents:a4];
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v7 = [NSPersonNameComponentsFormatter __abbreviatedNameFormatForPersonNameComponents:components];
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(keys, "count")}];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v44 objects:v43 count:16];
+  v9 = [keys countByEnumeratingWithState:&v44 objects:v43 count:16];
   if (v9)
   {
     v10 = v9;
@@ -62,17 +62,17 @@
       {
         if (*v45 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(keys);
         }
 
         v13 = *(*(&v44 + 1) + 8 * i);
-        if (+[NSPersonNameComponentsFormatter __inferredScriptIndexFromString:](NSPersonNameComponentsFormatter, "__inferredScriptIndexFromString:", [a4 valueForKey:v13]) != 1)
+        if (+[NSPersonNameComponentsFormatter __inferredScriptIndexFromString:](NSPersonNameComponentsFormatter, "__inferredScriptIndexFromString:", [components valueForKey:v13]) != 1)
         {
           [v8 addObject:v13];
         }
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v44 objects:v43 count:16];
+      v10 = [keys countByEnumeratingWithState:&v44 objects:v43 count:16];
     }
 
     while (v10);
@@ -81,8 +81,8 @@
   if ((v7 - 1) < 4)
   {
     [(_NSPersonNameComponentsStyleFormatter *)self masterFormatter];
-    v14 = [objc_opt_class() __shouldFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly];
-    v15 = v14;
+    __shouldFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly = [objc_opt_class() __shouldFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly];
+    v15 = __shouldFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly;
     if ((v7 & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       v42[0] = @"givenName";
@@ -93,7 +93,7 @@
 
     else
     {
-      if (!((v7 != 2) | v14 & 1))
+      if (!((v7 != 2) | __shouldFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly & 1))
       {
         v41 = @"familyName";
         v16 = MEMORY[0x1E695DEC8];
@@ -123,7 +123,7 @@ LABEL_22:
             v26 = *(*(&v36 + 1) + 8 * v25);
             if ([v8 containsObject:v26])
             {
-              v27 = [a4 valueForKeyPath:v26];
+              v27 = [components valueForKeyPath:v26];
               if ([v27 length])
               {
                 break;
@@ -181,7 +181,7 @@ LABEL_39:
           [(NSPersonNameComponents *)v28 setValue:v27 forKey:v26];
         }
 
-        v20 = [[[_NSPersonNameComponentsStyleFormatterLong alloc] initWithMasterFormatter:[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter]] _formattedStringFromOrderedKeys:v8 components:v29 attributesByRange:a5];
+        v20 = [[[_NSPersonNameComponentsStyleFormatterLong alloc] initWithMasterFormatter:[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter]] _formattedStringFromOrderedKeys:v8 components:v29 attributesByRange:range];
         goto LABEL_42;
       }
 
@@ -199,7 +199,7 @@ LABEL_39:
   {
     v34.receiver = self;
     v34.super_class = _NSPersonNameComponentsStyleFormatterAbbreviated;
-    v20 = [(_NSPersonNameComponentsStyleFormatter *)&v34 _formattedStringFromOrderedKeys:v8 components:a4 attributesByRange:a5];
+    v20 = [(_NSPersonNameComponentsStyleFormatter *)&v34 _formattedStringFromOrderedKeys:v8 components:components attributesByRange:range];
 LABEL_42:
     v18 = v20;
     return [v18 uppercaseStringWithLocale:{+[NSPersonNameComponentsFormatter __currentLocale](NSPersonNameComponentsFormatter, "__currentLocale")}];

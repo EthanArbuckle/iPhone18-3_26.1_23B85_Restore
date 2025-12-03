@@ -1,5 +1,5 @@
 @interface TRIReferenceManagedDirReaderLock
-- (TRIReferenceManagedDirReaderLock)initWithDir:(id)a3;
+- (TRIReferenceManagedDirReaderLock)initWithDir:(id)dir;
 - (void)dealloc;
 @end
 
@@ -43,14 +43,14 @@ void __42__TRIReferenceManagedDirReaderLock_unlock__block_invoke(uint64_t a1, in
   [(TRIReferenceManagedDirReaderLock *)&v3 dealloc];
 }
 
-- (TRIReferenceManagedDirReaderLock)initWithDir:(id)a3
+- (TRIReferenceManagedDirReaderLock)initWithDir:(id)dir
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  dirCopy = dir;
+  if (!dirCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"TRIReferenceManagedDirReaderLock.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"dir"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIReferenceManagedDirReaderLock.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"dir"}];
   }
 
   v28.receiver = self;
@@ -62,7 +62,7 @@ void __42__TRIReferenceManagedDirReaderLock_unlock__block_invoke(uint64_t a1, in
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v7->_dir, a3);
+  objc_storeStrong(&v7->_dir, dir);
   v9 = open([(NSString *)v8->_dir fileSystemRepresentation], 0x100000);
   if (v9 < 0)
   {
@@ -74,7 +74,7 @@ void __42__TRIReferenceManagedDirReaderLock_unlock__block_invoke(uint64_t a1, in
       v25 = strerror(*v24);
       v26 = *__error();
       *buf = 138412802;
-      v30 = dir;
+      dirCopy2 = dir;
       v31 = 2080;
       v32 = v25;
       v33 = 1024;
@@ -107,7 +107,7 @@ LABEL_14:
     v21 = strerror(*v20);
     v22 = *__error();
     *buf = 138412802;
-    v30 = v19;
+    dirCopy2 = v19;
     v31 = 2080;
     v32 = v21;
     v33 = 1024;

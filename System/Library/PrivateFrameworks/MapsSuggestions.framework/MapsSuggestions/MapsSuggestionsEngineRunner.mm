@@ -1,9 +1,9 @@
 @interface MapsSuggestionsEngineRunner
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 maxEntries:(unint64_t)a9;
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 runTimeLeeway:(double)a9 sleepTimeLeeway:(double)a10 maxEntries:(unint64_t)a11 nilledWhenAsleep:(BOOL)a12;
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 runTimeLeeway:(double)a9 sleepTimeLeeway:(double)a10 maxEntries:(unint64_t)a11 nilledWhenAsleep:(BOOL)a12 wakeUpTimerClass:(Class)a13;
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 runTimeLeeway:(double)a9 sleepTimeLeeway:(double)a10 maxEntries:(unint64_t)a11 nilledWhenAsleep:(BOOL)a12 wakeUpTimerClass:(Class)a13 stopRunTimerClass:(Class)a14;
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 runTimeLeeway:(double)a8 sleepTimeLeeway:(double)a9 maxEntries:(unint64_t)a10 nilledWhenAsleep:(BOOL)a11;
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime maxEntries:(unint64_t)entries;
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)self0 maxEntries:(unint64_t)self1 nilledWhenAsleep:(BOOL)self2;
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)self0 maxEntries:(unint64_t)self1 nilledWhenAsleep:(BOOL)self2 wakeUpTimerClass:(Class)self3;
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)self0 maxEntries:(unint64_t)self1 nilledWhenAsleep:(BOOL)self2 wakeUpTimerClass:(Class)self3 stopRunTimerClass:(Class)self4;
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)timeLeeway maxEntries:(unint64_t)self0 nilledWhenAsleep:(BOOL)self1;
 - (id).cxx_construct;
 - (id)objectForJSON;
 - (uint64_t)_q_passedAllConditions;
@@ -15,26 +15,26 @@
 - (void)_q_scheduleASAPWakeUp;
 - (void)_q_scheduleStopRun;
 - (void)_q_scheduleWakeUp;
-- (void)_q_sendStateForStep:(uint64_t)a1;
-- (void)_q_startRunBecauseOfTrigger:(uint64_t)a1;
+- (void)_q_sendStateForStep:(uint64_t)step;
+- (void)_q_startRunBecauseOfTrigger:(uint64_t)trigger;
 - (void)_q_stopRun;
-- (void)_q_triggerFired:(uint64_t)a1;
+- (void)_q_triggerFired:(uint64_t)fired;
 - (void)_q_updateMinSleep;
 - (void)_q_wakeUp;
-- (void)addCondition:(id)a3;
-- (void)addConditions:(id)a3;
-- (void)addPostFilter:(id)a3;
-- (void)addTrigger:(id)a3;
-- (void)addTriggers:(id)a3;
-- (void)invalidateForMapsSuggestionsManager:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)removeCondition:(id)a3;
-- (void)removeConditions:(id)a3;
-- (void)removeTrigger:(id)a3;
-- (void)removeTriggers:(id)a3;
+- (void)addCondition:(id)condition;
+- (void)addConditions:(id)conditions;
+- (void)addPostFilter:(id)filter;
+- (void)addTrigger:(id)trigger;
+- (void)addTriggers:(id)triggers;
+- (void)invalidateForMapsSuggestionsManager:(id)manager;
+- (void)registerObserver:(id)observer;
+- (void)removeCondition:(id)condition;
+- (void)removeConditions:(id)conditions;
+- (void)removeTrigger:(id)trigger;
+- (void)removeTriggers:(id)triggers;
 - (void)runASAP;
 - (void)scheduleNextRun;
-- (void)triggerFired:(id)a3;
+- (void)triggerFired:(id)fired;
 @end
 
 @implementation MapsSuggestionsEngineRunner
@@ -49,9 +49,9 @@
     v3 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [v1 uniqueName];
+      uniqueName = [v1 uniqueName];
       *buf = 138412546;
-      v23 = v4;
+      v23 = uniqueName;
       v24 = 2080;
       v25 = "[MapsSuggestionsEngineRunner _q_passedAllConditions]";
       _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "{%@} %s", buf, 0x16u);
@@ -93,14 +93,14 @@
             v12 = GEOFindOrCreateLog();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
             {
-              v13 = [v11 uniqueName];
+              uniqueName2 = [v11 uniqueName];
               *buf = 138412290;
-              v23 = v13;
+              v23 = uniqueName2;
               _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "RUNCONDITION{%@} failed", buf, 0xCu);
             }
 
-            v14 = [v11 uniqueName];
-            v15 = [v14 copy];
+            uniqueName3 = [v11 uniqueName];
+            v15 = [uniqueName3 copy];
             v16 = *(v1 + 176);
             *(v1 + 176) = v15;
 
@@ -152,7 +152,7 @@
 - (void)_q_fetchLatestAutomobileOptions
 {
   v5 = @"NO";
-  if (a1)
+  if (self)
   {
     v5 = @"YES";
   }
@@ -184,29 +184,29 @@
 - (void)_q_fetchEntries
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v3 = [a1 uniqueName];
+      uniqueName = [self uniqueName];
       *buf = 138412546;
-      v9 = v3;
+      v9 = uniqueName;
       v10 = 2080;
       v11 = "[MapsSuggestionsEngineRunner _q_fetchEntries]";
       _os_log_impl(&dword_1C5126000, v2, OS_LOG_TYPE_DEBUG, "{%@} %s", buf, 0x16u);
     }
 
-    dispatch_assert_queue_V2(*(a1 + 8));
-    objc_initWeak(buf, a1);
-    v4 = *(a1 + 24);
-    v5 = *(a1 + 136);
+    dispatch_assert_queue_V2(*(self + 8));
+    objc_initWeak(buf, self);
+    v4 = *(self + 24);
+    v5 = *(self + 136);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__MapsSuggestionsEngineRunner__q_fetchEntries__block_invoke;
     v6[3] = &unk_1E81F8200;
     objc_copyWeak(&v7, buf);
-    [v4 topSuggestionsForSink:a1 count:v5 transportType:4 callback:v6 onQueue:*(a1 + 8)];
+    [v4 topSuggestionsForSink:self count:v5 transportType:4 callback:v6 onQueue:*(self + 8)];
     objc_destroyWeak(&v7);
     objc_destroyWeak(buf);
   }
@@ -296,21 +296,21 @@ LABEL_12:
 LABEL_17:
 }
 
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 runTimeLeeway:(double)a9 sleepTimeLeeway:(double)a10 maxEntries:(unint64_t)a11 nilledWhenAsleep:(BOOL)a12 wakeUpTimerClass:(Class)a13 stopRunTimerClass:(Class)a14
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)self0 maxEntries:(unint64_t)self1 nilledWhenAsleep:(BOOL)self2 wakeUpTimerClass:(Class)self3 stopRunTimerClass:(Class)self4
 {
-  v26 = a3;
-  v27 = a4;
+  builderCopy = builder;
+  nameCopy = name;
   v78.receiver = self;
   v78.super_class = MapsSuggestionsEngineRunner;
   v28 = [(MapsSuggestionsEngineRunner *)&v78 init];
   if (v28)
   {
-    v71 = v27;
-    v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@Queue", v27];
-    v69 = a11;
-    v70 = a12;
+    v71 = nameCopy;
+    nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@Queue", nameCopy];
+    entriesCopy = entries;
+    asleepCopy = asleep;
     v30 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    MSg::Queue::Queue(&location, v29, v30);
+    MSg::Queue::Queue(&location, nameCopy, v30);
     v31 = location;
     location = 0;
     innerQueue = v28->_queue._innerQueue;
@@ -321,15 +321,15 @@ LABEL_17:
     name = v28->_queue._name;
     v28->_queue._name = v33;
 
-    v35 = [v27 copy];
-    v68 = a14;
-    v36 = v26;
+    v35 = [nameCopy copy];
+    timerClassCopy = timerClass;
+    v36 = builderCopy;
     v37 = [MapsSuggestionsObservers alloc];
     v38 = v28->_queue._innerQueue;
-    v39 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@Observers", v27];
-    v40 = [(MapsSuggestionsObservers *)v37 initWithCallbackQueue:v38 name:v39];
+    nameCopy2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@Observers", nameCopy];
+    v40 = [(MapsSuggestionsObservers *)v37 initWithCallbackQueue:v38 name:nameCopy2];
     v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v67 = a13;
+    classCopy = class;
     v42 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v43 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     circuits = v28->_config.circuits;
@@ -344,12 +344,12 @@ LABEL_17:
     v47 = *v28->_anon_38;
     *v28->_anon_38 = 0;
 
-    *&v28->_anon_38[8] = a5;
-    *&v28->_anon_38[16] = a6;
-    *&v28->_anon_38[24] = a7;
-    *&v28->_anon_38[32] = a8;
-    *&v28->_anon_38[40] = a9;
-    *&v28->_anon_38[48] = a10;
+    *&v28->_anon_38[8] = time;
+    *&v28->_anon_38[16] = runTime;
+    *&v28->_anon_38[24] = sleepTime;
+    *&v28->_anon_38[32] = maxSleepTime;
+    *&v28->_anon_38[40] = leeway;
+    *&v28->_anon_38[48] = timeLeeway;
     v48 = *&v28->_anon_38[56];
     *&v28->_anon_38[56] = v41;
 
@@ -359,13 +359,13 @@ LABEL_17:
     v50 = *&v28->_anon_38[72];
     *&v28->_anon_38[72] = v43;
 
-    *&v28->_anon_38[80] = v69;
-    v28->_anon_38[88] = v70;
+    *&v28->_anon_38[80] = entriesCopy;
+    v28->_anon_38[88] = asleepCopy;
 
     objc_initWeak(&location, v28);
-    v51 = [MEMORY[0x1E695DF00] distantPast];
-    v52 = [MEMORY[0x1E695DF00] distantPast];
-    v53 = [v68 alloc];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    distantPast2 = [MEMORY[0x1E695DF00] distantPast];
+    v53 = [timerClassCopy alloc];
     v54 = v28->_queue._innerQueue;
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
@@ -373,7 +373,7 @@ LABEL_17:
     v74[3] = &unk_1E81F5208;
     objc_copyWeak(&v75, &location);
     v55 = [v53 initWithName:@"MapsSuggestionsEngineRunnerRunTimer" queue:v54 block:v74];
-    v56 = [v67 alloc];
+    v56 = [classCopy alloc];
     v57 = v28->_queue._innerQueue;
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
@@ -382,10 +382,10 @@ LABEL_17:
     objc_copyWeak(&v73, &location);
     v58 = [v56 initWithName:@"MapsSuggestionsEngineRunnerSleepTimer" queue:v57 block:v72];
     firedTriggerName = v28->_state.firedTriggerName;
-    v28->_state.firedTriggerName = v51;
+    v28->_state.firedTriggerName = distantPast;
 
     failedConditionName = v28->_state.failedConditionName;
-    v28->_state.failedConditionName = v52;
+    v28->_state.failedConditionName = distantPast2;
 
     lastError = v28->_state.lastError;
     v28->_state.lastError = 0;
@@ -405,7 +405,7 @@ LABEL_17:
     objc_destroyWeak(&v73);
     objc_destroyWeak(&v75);
     objc_destroyWeak(&location);
-    v27 = v71;
+    nameCopy = v71;
   }
 
   return v28;
@@ -440,34 +440,34 @@ void __199__MapsSuggestionsEngineRunner_initWithEngineBuilder_name_minRunTime_ma
 - (void)_q_stopRun
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v3 = [a1 uniqueName];
+      uniqueName = [self uniqueName];
       *buf = 138412546;
-      v20 = v3;
+      v20 = uniqueName;
       v21 = 2080;
       v22 = "[MapsSuggestionsEngineRunner _q_stopRun]";
       _os_log_impl(&dword_1C5126000, v2, OS_LOG_TYPE_DEBUG, "{%@} %s", buf, 0x16u);
     }
 
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [*(a1 + 200) copy];
+    dispatch_assert_queue_V2(*(self + 8));
+    v4 = [*(self + 200) copy];
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [a1 uniqueName];
+      uniqueName2 = [self uniqueName];
       *buf = 138412290;
-      v20 = v6;
+      v20 = uniqueName2;
       _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} detaching Engine", buf, 0xCu);
     }
 
-    [*(a1 + 24) detachSink:a1];
-    [(MapsSuggestionsEngineRunner *)a1 _q_sendStateForStep:?];
-    objc_initWeak(&location, a1);
-    v7 = *(a1 + 48);
+    [*(self + 24) detachSink:self];
+    [(MapsSuggestionsEngineRunner *)self _q_sendStateForStep:?];
+    objc_initWeak(&location, self);
+    v7 = *(self + 48);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __41__MapsSuggestionsEngineRunner__q_stopRun__block_invoke;
@@ -476,32 +476,32 @@ void __199__MapsSuggestionsEngineRunner_initWithEngineBuilder_name_minRunTime_ma
     v8 = v4;
     v16 = v8;
     [v7 callBlock:v15];
-    if (*(a1 + 144) == 1)
+    if (*(self + 144) == 1)
     {
-      [(MapsSuggestionsEngineRunner *)a1 _q_sendStateForStep:?];
+      [(MapsSuggestionsEngineRunner *)self _q_sendStateForStep:?];
       v9 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [a1 uniqueName];
+        uniqueName3 = [self uniqueName];
         *buf = 138412290;
-        v20 = v10;
+        v20 = uniqueName3;
         _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "{%@} destroying Engine", buf, 0xCu);
       }
 
-      v11 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      v11 = *(self + 24);
+      *(self + 24) = 0;
     }
 
-    v12 = *(a1 + 200);
-    *(a1 + 200) = 0;
+    v12 = *(self + 200);
+    *(self + 200) = 0;
 
-    v13 = *(a1 + 168);
-    *(a1 + 168) = 0;
+    v13 = *(self + 168);
+    *(self + 168) = 0;
 
-    v14 = *(a1 + 176);
-    *(a1 + 176) = 0;
+    v14 = *(self + 176);
+    *(self + 176) = 0;
 
-    [(MapsSuggestionsEngineRunner *)a1 _q_scheduleWakeUp];
+    [(MapsSuggestionsEngineRunner *)self _q_scheduleWakeUp];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
   }
@@ -540,76 +540,76 @@ void __199__MapsSuggestionsEngineRunner_initWithEngineBuilder_name_minRunTime_ma
   OUTLINED_FUNCTION_0_8(&dword_1C5126000, v3, v4, "{%@} failed at least one Condition. Rescheduling.", v5);
 }
 
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 runTimeLeeway:(double)a8 sleepTimeLeeway:(double)a9 maxEntries:(unint64_t)a10 nilledWhenAsleep:(BOOL)a11
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)timeLeeway maxEntries:(unint64_t)self0 nilledWhenAsleep:(BOOL)self1
 {
-  v11 = a11;
-  v20 = a3;
-  v21 = a4;
+  asleepCopy = asleep;
+  builderCopy = builder;
+  nameCopy = name;
   GEOConfigGetDouble();
   v23 = v22;
   v24 = objc_opt_class();
-  v25 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:v20 name:v21 minRunTime:a10 maxRunTime:v11 minSleepTime:v24 maxSleepTime:objc_opt_class() runTimeLeeway:a5 sleepTimeLeeway:a6 maxEntries:a7 nilledWhenAsleep:v23 wakeUpTimerClass:a8 stopRunTimerClass:a9];
+  v25 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:builderCopy name:nameCopy minRunTime:entries maxRunTime:asleepCopy minSleepTime:v24 maxSleepTime:objc_opt_class() runTimeLeeway:time sleepTimeLeeway:runTime maxEntries:sleepTime nilledWhenAsleep:v23 wakeUpTimerClass:leeway stopRunTimerClass:timeLeeway];
 
   return v25;
 }
 
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 runTimeLeeway:(double)a9 sleepTimeLeeway:(double)a10 maxEntries:(unint64_t)a11 nilledWhenAsleep:(BOOL)a12 wakeUpTimerClass:(Class)a13
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)self0 maxEntries:(unint64_t)self1 nilledWhenAsleep:(BOOL)self2 wakeUpTimerClass:(Class)self3
 {
-  v14 = a12;
-  v24 = a3;
-  v25 = a4;
-  v26 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:v24 name:v25 minRunTime:a11 maxRunTime:v14 minSleepTime:a13 maxSleepTime:objc_opt_class() runTimeLeeway:a5 sleepTimeLeeway:a6 maxEntries:a7 nilledWhenAsleep:a8 wakeUpTimerClass:a9 stopRunTimerClass:a10];
+  asleepCopy = asleep;
+  builderCopy = builder;
+  nameCopy = name;
+  v26 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:builderCopy name:nameCopy minRunTime:entries maxRunTime:asleepCopy minSleepTime:class maxSleepTime:objc_opt_class() runTimeLeeway:time sleepTimeLeeway:runTime maxEntries:sleepTime nilledWhenAsleep:maxSleepTime wakeUpTimerClass:leeway stopRunTimerClass:timeLeeway];
 
   return v26;
 }
 
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 runTimeLeeway:(double)a9 sleepTimeLeeway:(double)a10 maxEntries:(unint64_t)a11 nilledWhenAsleep:(BOOL)a12
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime runTimeLeeway:(double)leeway sleepTimeLeeway:(double)self0 maxEntries:(unint64_t)self1 nilledWhenAsleep:(BOOL)self2
 {
-  v12 = a12;
-  v22 = a3;
-  v23 = a4;
-  v24 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:v22 name:v23 minRunTime:a11 maxRunTime:v12 minSleepTime:objc_opt_class() maxSleepTime:a5 runTimeLeeway:a6 sleepTimeLeeway:a7 maxEntries:a8 nilledWhenAsleep:a9 wakeUpTimerClass:a10];
+  asleepCopy = asleep;
+  builderCopy = builder;
+  nameCopy = name;
+  v24 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:builderCopy name:nameCopy minRunTime:entries maxRunTime:asleepCopy minSleepTime:objc_opt_class() maxSleepTime:time runTimeLeeway:runTime sleepTimeLeeway:sleepTime maxEntries:maxSleepTime nilledWhenAsleep:leeway wakeUpTimerClass:timeLeeway];
 
   return v24;
 }
 
-- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)a3 name:(id)a4 minRunTime:(double)a5 maxRunTime:(double)a6 minSleepTime:(double)a7 maxSleepTime:(double)a8 maxEntries:(unint64_t)a9
+- (MapsSuggestionsEngineRunner)initWithEngineBuilder:(id)builder name:(id)name minRunTime:(double)time maxRunTime:(double)runTime minSleepTime:(double)sleepTime maxSleepTime:(double)maxSleepTime maxEntries:(unint64_t)entries
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:v16 name:v17 minRunTime:a9 maxRunTime:1 minSleepTime:objc_opt_class() maxSleepTime:a5 runTimeLeeway:a6 sleepTimeLeeway:a7 maxEntries:a8 nilledWhenAsleep:1.0 wakeUpTimerClass:1.0];
+  builderCopy = builder;
+  nameCopy = name;
+  v18 = [(MapsSuggestionsEngineRunner *)self initWithEngineBuilder:builderCopy name:nameCopy minRunTime:entries maxRunTime:1 minSleepTime:objc_opt_class() maxSleepTime:time runTimeLeeway:runTime sleepTimeLeeway:sleepTime maxEntries:maxSleepTime nilledWhenAsleep:1.0 wakeUpTimerClass:1.0];
 
   return v18;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsEngineRunner *)self uniqueName];
-    v7 = [v4 uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName2 = [observerCopy uniqueName];
     *buf = 138412802;
-    v14 = v6;
+    v14 = uniqueName;
     v15 = 2080;
     v16 = "[MapsSuggestionsEngineRunner registerObserver:]";
     v17 = 2112;
-    v18 = v7;
+    v18 = uniqueName2;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
-  [(NSArray *)self->_config.conditions registerObserver:v4 handler:0];
+  [(NSArray *)self->_config.conditions registerObserver:observerCopy handler:0];
   objc_initWeak(buf, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__MapsSuggestionsEngineRunner_registerObserver___block_invoke;
   v10[3] = &unk_1E81F5970;
   objc_copyWeak(&v12, buf);
-  v11 = v4;
+  v11 = observerCopy;
   innerQueue = self->_queue._innerQueue;
-  v9 = v4;
+  v9 = observerCopy;
   dispatch_async(innerQueue, v10);
 
   objc_destroyWeak(&v12);
@@ -761,14 +761,14 @@ void __48__MapsSuggestionsEngineRunner_registerObserver___block_invoke(uint64_t 
   }
 }
 
-- (void)addTrigger:(id)a3
+- (void)addTrigger:(id)trigger
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (triggerCopy)
   {
-    v7 = v4;
+    v7 = triggerCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v7 count:1];
     [(MapsSuggestionsEngineRunner *)self addTriggers:v6];
   }
@@ -791,20 +791,20 @@ void __48__MapsSuggestionsEngineRunner_registerObserver___block_invoke(uint64_t 
   }
 }
 
-- (void)addTriggers:(id)a3
+- (void)addTriggers:(id)triggers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  triggersCopy = triggers;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
     *buf = 138412802;
-    v13 = v6;
+    v13 = uniqueName;
     v14 = 2080;
     v15 = "[MapsSuggestionsEngineRunner addTriggers:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = triggersCopy;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
@@ -812,10 +812,10 @@ void __48__MapsSuggestionsEngineRunner_registerObserver___block_invoke(uint64_t 
   v9[1] = 3221225472;
   v9[2] = __43__MapsSuggestionsEngineRunner_addTriggers___block_invoke;
   v9[3] = &unk_1E81F69F0;
-  v10 = v4;
-  v11 = self;
+  v10 = triggersCopy;
+  selfCopy = self;
   innerQueue = self->_queue._innerQueue;
-  v8 = v4;
+  v8 = triggersCopy;
   dispatch_async(innerQueue, v9);
 }
 
@@ -852,29 +852,29 @@ void __43__MapsSuggestionsEngineRunner_addTriggers___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeTrigger:(id)a3
+- (void)removeTrigger:(id)trigger
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6[0] = v4;
+  triggerCopy = trigger;
+  v6[0] = triggerCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(MapsSuggestionsEngineRunner *)self removeTriggers:v5];
 }
 
-- (void)removeTriggers:(id)a3
+- (void)removeTriggers:(id)triggers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  triggersCopy = triggers;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
     *buf = 138412802;
-    v13 = v6;
+    v13 = uniqueName;
     v14 = 2080;
     v15 = "[MapsSuggestionsEngineRunner removeTriggers:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = triggersCopy;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
@@ -882,10 +882,10 @@ void __43__MapsSuggestionsEngineRunner_addTriggers___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v9[2] = __46__MapsSuggestionsEngineRunner_removeTriggers___block_invoke;
   v9[3] = &unk_1E81F69F0;
-  v10 = v4;
-  v11 = self;
+  v10 = triggersCopy;
+  selfCopy = self;
   innerQueue = self->_queue._innerQueue;
-  v8 = v4;
+  v8 = triggersCopy;
   dispatch_async(innerQueue, v9);
 }
 
@@ -922,14 +922,14 @@ void __46__MapsSuggestionsEngineRunner_removeTriggers___block_invoke(uint64_t a1
   }
 }
 
-- (void)addCondition:(id)a3
+- (void)addCondition:(id)condition
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  conditionCopy = condition;
+  v5 = conditionCopy;
+  if (conditionCopy)
   {
-    v7 = v4;
+    v7 = conditionCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v7 count:1];
     [(MapsSuggestionsEngineRunner *)self addConditions:v6];
   }
@@ -952,20 +952,20 @@ void __46__MapsSuggestionsEngineRunner_removeTriggers___block_invoke(uint64_t a1
   }
 }
 
-- (void)addConditions:(id)a3
+- (void)addConditions:(id)conditions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conditionsCopy = conditions;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
     *buf = 138412802;
-    v13 = v6;
+    v13 = uniqueName;
     v14 = 2080;
     v15 = "[MapsSuggestionsEngineRunner addConditions:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = conditionsCopy;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
@@ -973,10 +973,10 @@ void __46__MapsSuggestionsEngineRunner_removeTriggers___block_invoke(uint64_t a1
   v9[1] = 3221225472;
   v9[2] = __45__MapsSuggestionsEngineRunner_addConditions___block_invoke;
   v9[3] = &unk_1E81F69F0;
-  v10 = v4;
-  v11 = self;
+  v10 = conditionsCopy;
+  selfCopy = self;
   innerQueue = self->_queue._innerQueue;
-  v8 = v4;
+  v8 = conditionsCopy;
   dispatch_async(innerQueue, v9);
 }
 
@@ -1013,21 +1013,21 @@ void __45__MapsSuggestionsEngineRunner_addConditions___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addPostFilter:(id)a3
+- (void)addPostFilter:(id)filter
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  filterCopy = filter;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsEngineRunner *)self uniqueName];
-    v7 = [v4 uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName2 = [filterCopy uniqueName];
     *buf = 138412802;
-    v13 = v6;
+    v13 = uniqueName;
     v14 = 2080;
     v15 = "[MapsSuggestionsEngineRunner addPostFilter:]";
     v16 = 2112;
-    v17 = v7;
+    v17 = uniqueName2;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
@@ -1036,9 +1036,9 @@ void __45__MapsSuggestionsEngineRunner_addConditions___block_invoke(uint64_t a1)
   v10[2] = __45__MapsSuggestionsEngineRunner_addPostFilter___block_invoke;
   v10[3] = &unk_1E81F69F0;
   v10[4] = self;
-  v11 = v4;
+  v11 = filterCopy;
   innerQueue = self->_queue._innerQueue;
-  v9 = v4;
+  v9 = filterCopy;
   dispatch_async(innerQueue, v10);
 }
 
@@ -1056,14 +1056,14 @@ void *__45__MapsSuggestionsEngineRunner_addPostFilter___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)removeCondition:(id)a3
+- (void)removeCondition:(id)condition
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  conditionCopy = condition;
+  v5 = conditionCopy;
+  if (conditionCopy)
   {
-    v7 = v4;
+    v7 = conditionCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v7 count:1];
     [(MapsSuggestionsEngineRunner *)self removeConditions:v6];
   }
@@ -1086,20 +1086,20 @@ void *__45__MapsSuggestionsEngineRunner_addPostFilter___block_invoke(uint64_t a1
   }
 }
 
-- (void)removeConditions:(id)a3
+- (void)removeConditions:(id)conditions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conditionsCopy = conditions;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
     *buf = 138412802;
-    v13 = v6;
+    v13 = uniqueName;
     v14 = 2080;
     v15 = "[MapsSuggestionsEngineRunner removeConditions:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = conditionsCopy;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
   }
 
@@ -1107,10 +1107,10 @@ void *__45__MapsSuggestionsEngineRunner_addPostFilter___block_invoke(uint64_t a1
   v9[1] = 3221225472;
   v9[2] = __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke;
   v9[3] = &unk_1E81F69F0;
-  v10 = v4;
-  v11 = self;
+  v10 = conditionsCopy;
+  selfCopy = self;
   innerQueue = self->_queue._innerQueue;
-  v8 = v4;
+  v8 = conditionsCopy;
   dispatch_async(innerQueue, v9);
 }
 
@@ -1147,14 +1147,14 @@ void __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke(uint64_t 
   }
 }
 
-- (void)_q_sendStateForStep:(uint64_t)a1
+- (void)_q_sendStateForStep:(uint64_t)step
 {
   location[16] = *MEMORY[0x1E69E9840];
   v56 = a2;
-  if (a1)
+  if (step)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    val = a1;
+    dispatch_assert_queue_V2(*(step + 8));
+    val = step;
     v75[0] = @"now";
     v39 = MapsSuggestionsNow();
     v76 = MSg::jsonFor(v39, v3);
@@ -1250,8 +1250,8 @@ void __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke(uint64_t 
             }
             v21 = ;
 
-            v22 = [v20 nameForJSON];
-            [v14 setObject:v21 forKeyedSubscript:v22];
+            nameForJSON = [v20 nameForJSON];
+            [v14 setObject:v21 forKeyedSubscript:nameForJSON];
           }
 
           v16 = [v15 countByEnumeratingWithState:&v71 objects:location count:16];
@@ -1260,15 +1260,15 @@ void __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke(uint64_t 
         while (v16);
       }
 
-      v23 = [v14 copy];
+      null = [v14 copy];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v85 = v23;
+    v85 = null;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:v75 count:10];
 
     objc_initWeak(location, val);
@@ -1288,56 +1288,56 @@ void __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke(uint64_t 
   }
 }
 
-- (void)_q_startRunBecauseOfTrigger:(uint64_t)a1
+- (void)_q_startRunBecauseOfTrigger:(uint64_t)trigger
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (trigger)
   {
     v4 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [a1 uniqueName];
-      v6 = [v3 uniqueName];
+      uniqueName = [trigger uniqueName];
+      uniqueName2 = [v3 uniqueName];
       *buf = 138412802;
-      v35 = v5;
+      v35 = uniqueName;
       v36 = 2080;
       v37 = "[MapsSuggestionsEngineRunner _q_startRunBecauseOfTrigger:]";
       v38 = 2112;
-      v39 = v6;
+      v39 = uniqueName2;
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "{%@} %s %@", buf, 0x20u);
     }
 
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v7 = [v3 uniqueName];
-    v8 = [v7 copy];
-    v9 = *(a1 + 168);
-    *(a1 + 168) = v8;
+    dispatch_assert_queue_V2(*(trigger + 8));
+    uniqueName3 = [v3 uniqueName];
+    v8 = [uniqueName3 copy];
+    v9 = *(trigger + 168);
+    *(trigger + 168) = v8;
 
-    [(MapsSuggestionsEngineRunner *)a1 _q_sendStateForStep:?];
-    if (!*(a1 + 24))
+    [(MapsSuggestionsEngineRunner *)trigger _q_sendStateForStep:?];
+    if (!*(trigger + 24))
     {
       v10 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [a1 uniqueName];
+        uniqueName4 = [trigger uniqueName];
         *buf = 138412290;
-        v35 = v11;
+        v35 = uniqueName4;
         _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "{%@} Building Engine", buf, 0xCu);
       }
 
-      [(MapsSuggestionsEngineRunner *)a1 _q_sendStateForStep:?];
-      v12 = [*(a1 + 40) build];
-      v13 = *(a1 + 24);
-      *(a1 + 24) = v12;
+      [(MapsSuggestionsEngineRunner *)trigger _q_sendStateForStep:?];
+      build = [*(trigger + 40) build];
+      v13 = *(trigger + 24);
+      *(trigger + 24) = build;
 
-      [(MapsSuggestionsEngineRunner *)a1 _q_fetchLatestAutomobileOptions];
-      [*(a1 + 24) setAutomobileOptions:*(a1 + 56)];
+      [(MapsSuggestionsEngineRunner *)trigger _q_fetchLatestAutomobileOptions];
+      [*(trigger + 24) setAutomobileOptions:*(trigger + 56)];
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v14 = *(a1 + 128);
+      v14 = *(trigger + 128);
       v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v15)
       {
@@ -1352,7 +1352,7 @@ void __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke(uint64_t 
               objc_enumerationMutation(v14);
             }
 
-            [*(a1 + 24) addAdditionalFilter:*(*(&v29 + 1) + 8 * v17++) forSink:a1];
+            [*(trigger + 24) addAdditionalFilter:*(*(&v29 + 1) + 8 * v17++) forSink:trigger];
           }
 
           while (v15 != v17);
@@ -1362,20 +1362,20 @@ void __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke(uint64_t 
         while (v15);
       }
 
-      [(MapsSuggestionsEngineRunner *)a1 _q_sendStateForStep:?];
+      [(MapsSuggestionsEngineRunner *)trigger _q_sendStateForStep:?];
     }
 
-    v18 = MapsSuggestionsNowWithOffset(*(a1 + 64));
-    v19 = *(a1 + 152);
-    *(a1 + 152) = v18;
+    v18 = MapsSuggestionsNowWithOffset(*(trigger + 64));
+    v19 = *(trigger + 152);
+    *(trigger + 152) = v18;
 
     v20 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [a1 uniqueName];
-      v22 = *(a1 + 152);
+      uniqueName5 = [trigger uniqueName];
+      v22 = *(trigger + 152);
       *buf = 138412546;
-      v35 = v21;
+      v35 = uniqueName5;
       v36 = 2112;
       v37 = v22;
       _os_log_impl(&dword_1C5126000, v20, OS_LOG_TYPE_DEBUG, "{%@} will be silent until %@", buf, 0x16u);
@@ -1384,18 +1384,18 @@ void __48__MapsSuggestionsEngineRunner_removeConditions___block_invoke(uint64_t 
     v23 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
-      v24 = [a1 uniqueName];
+      uniqueName6 = [trigger uniqueName];
       *buf = 138412290;
-      v35 = v24;
+      v35 = uniqueName6;
       _os_log_impl(&dword_1C5126000, v23, OS_LOG_TYPE_DEBUG, "{%@} attaching Engine", buf, 0xCu);
     }
 
-    [(MapsSuggestionsEngineRunner *)a1 _q_scheduleStopRun];
-    [(MapsSuggestionsEngineRunner *)a1 _q_sendStateForStep:?];
-    [*(a1 + 24) attachSink:a1];
-    [(MapsSuggestionsEngineRunner *)a1 _q_fetchEntries];
-    objc_initWeak(buf, a1);
-    v25 = *(a1 + 48);
+    [(MapsSuggestionsEngineRunner *)trigger _q_scheduleStopRun];
+    [(MapsSuggestionsEngineRunner *)trigger _q_sendStateForStep:?];
+    [*(trigger + 24) attachSink:trigger];
+    [(MapsSuggestionsEngineRunner *)trigger _q_fetchEntries];
+    objc_initWeak(buf, trigger);
+    v25 = *(trigger + 48);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __59__MapsSuggestionsEngineRunner__q_startRunBecauseOfTrigger___block_invoke;
@@ -1474,19 +1474,19 @@ void __41__MapsSuggestionsEngineRunner__q_stopRun__block_invoke(uint64_t a1, voi
 - (void)_q_scheduleWakeUp
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (*(a1 + 88) != 0.0)
+    dispatch_assert_queue_V2(*(self + 8));
+    if (*(self + 88) != 0.0)
     {
       v2 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
       {
-        v3 = [a1 uniqueName];
-        v4 = *(a1 + 88);
-        v5 = *(a1 + 104);
+        uniqueName = [self uniqueName];
+        v4 = *(self + 88);
+        v5 = *(self + 104);
         v6 = 138412802;
-        v7 = v3;
+        v7 = uniqueName;
         v8 = 2048;
         v9 = v4;
         v10 = 2048;
@@ -1502,20 +1502,20 @@ void __41__MapsSuggestionsEngineRunner__q_stopRun__block_invoke(uint64_t a1, voi
 - (void)_q_scheduleASAPWakeUp
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (*(a1 + 80) != 0.0)
+    dispatch_assert_queue_V2(*(self + 8));
+    if (*(self + 80) != 0.0)
     {
-      v2 = MapsSuggestionsIsInTheFuture(*(a1 + 160));
+      v2 = MapsSuggestionsIsInTheFuture(*(self + 160));
       GEOFindOrCreateLog();
       v4 = v3 = v2;
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
-        v5 = [a1 uniqueName];
-        v6 = *(a1 + 104);
+        uniqueName = [self uniqueName];
+        v6 = *(self + 104);
         v7 = 138412802;
-        v8 = v5;
+        v8 = uniqueName;
         v9 = 2048;
         v10 = v3;
         v11 = 2048;
@@ -1545,9 +1545,9 @@ void __41__MapsSuggestionsEngineRunner__q_stopRun__block_invoke(uint64_t a1, voi
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
     v5 = 138412546;
-    v6 = v4;
+    v6 = uniqueName;
     v7 = 2080;
     v8 = "[MapsSuggestionsEngineRunner scheduleNextRun]";
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "{%@} %s", &v5, 0x16u);
@@ -1562,9 +1562,9 @@ void __41__MapsSuggestionsEngineRunner__q_stopRun__block_invoke(uint64_t a1, voi
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
     v5 = 138412546;
-    v6 = v4;
+    v6 = uniqueName;
     v7 = 2080;
     v8 = "[MapsSuggestionsEngineRunner runASAP]";
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "{%@} %s", &v5, 0x16u);
@@ -1573,56 +1573,56 @@ void __41__MapsSuggestionsEngineRunner__q_stopRun__block_invoke(uint64_t a1, voi
   MSg::Queue::async<MapsSuggestionsEngineRunner>(&self->_queue, self, &__block_literal_global_88_0);
 }
 
-- (void)_q_triggerFired:(uint64_t)a1
+- (void)_q_triggerFired:(uint64_t)fired
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (fired)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [v3 uniqueName];
-    v5 = [v4 copy];
-    v6 = *(a1 + 168);
-    *(a1 + 168) = v5;
+    dispatch_assert_queue_V2(*(fired + 8));
+    uniqueName = [v3 uniqueName];
+    v5 = [uniqueName copy];
+    v6 = *(fired + 168);
+    *(fired + 168) = v5;
 
-    if (MapsSuggestionsIsInTheFuture(*(a1 + 160)))
+    if (MapsSuggestionsIsInTheFuture(*(fired + 160)))
     {
       if (GEOConfigGetBOOL())
       {
-        [(MapsSuggestionsEngineRunner *)a1 _q_scheduleASAPWakeUp];
+        [(MapsSuggestionsEngineRunner *)fired _q_scheduleASAPWakeUp];
         v7 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          v8 = [a1 uniqueName];
-          v9 = *(a1 + 160);
-          v10 = [v3 uniqueName];
+          uniqueName2 = [fired uniqueName];
+          v9 = *(fired + 160);
+          uniqueName3 = [v3 uniqueName];
           v16 = 138412802;
-          v17 = v8;
+          v17 = uniqueName2;
           v18 = 2112;
           v19 = v9;
           v20 = 2112;
-          v21 = v10;
+          v21 = uniqueName3;
           _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "{%@} is within the minSleepTime window. Will run after %@. Ignoring Trigger: %@", &v16, 0x20u);
         }
       }
 
-      [(MapsSuggestionsEngineRunner *)a1 _q_sendStateForStep:?];
+      [(MapsSuggestionsEngineRunner *)fired _q_sendStateForStep:?];
 LABEL_15:
-      v14 = *(a1 + 168);
-      *(a1 + 168) = 0;
+      v14 = *(fired + 168);
+      *(fired + 168) = 0;
 
-      v15 = *(a1 + 176);
-      *(a1 + 176) = 0;
+      v15 = *(fired + 176);
+      *(fired + 176) = 0;
 
       goto LABEL_16;
     }
 
-    if (([(MapsSuggestionsEngineRunner *)a1 _q_passedAllConditions]& 1) == 0)
+    if (([(MapsSuggestionsEngineRunner *)fired _q_passedAllConditions]& 1) == 0)
     {
       v13 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        [a1 uniqueName];
+        [fired uniqueName];
         objc_claimAutoreleasedReturnValue();
         [MapsSuggestionsEngineRunner _q_triggerFired:];
       }
@@ -1630,35 +1630,35 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    [(MapsSuggestionsEngineRunner *)a1 _q_updateMinSleep];
+    [(MapsSuggestionsEngineRunner *)fired _q_updateMinSleep];
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [a1 uniqueName];
+      uniqueName4 = [fired uniqueName];
       v16 = 138412290;
-      v17 = v12;
+      v17 = uniqueName4;
       _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "{%@} is allowed to run!", &v16, 0xCu);
     }
 
-    [(MapsSuggestionsEngineRunner *)a1 _q_startRunBecauseOfTrigger:v3];
+    [(MapsSuggestionsEngineRunner *)fired _q_startRunBecauseOfTrigger:v3];
   }
 
 LABEL_16:
 }
 
-- (void)triggerFired:(id)a3
+- (void)triggerFired:(id)fired
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  firedCopy = fired;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(MapsSuggestionsEngineRunner *)self uniqueName];
-    v7 = [v4 uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName2 = [firedCopy uniqueName];
     *buf = 138412546;
-    v12 = v6;
+    v12 = uniqueName;
     v13 = 2112;
-    v14 = v7;
+    v14 = uniqueName2;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "{%@} fired TRIGGER{%@}!", buf, 0x16u);
   }
 
@@ -1666,20 +1666,20 @@ LABEL_16:
   v9[1] = 3221225472;
   v9[2] = __44__MapsSuggestionsEngineRunner_triggerFired___block_invoke;
   v9[3] = &unk_1E81F81B0;
-  v8 = v4;
+  v8 = firedCopy;
   v10 = v8;
   MSg::Queue::async<MapsSuggestionsEngineRunner>(&self->_queue, self, v9);
 }
 
-- (void)invalidateForMapsSuggestionsManager:(id)a3
+- (void)invalidateForMapsSuggestionsManager:(id)manager
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v5 = [(MapsSuggestionsEngineRunner *)self uniqueName];
+    uniqueName = [(MapsSuggestionsEngineRunner *)self uniqueName];
     v6 = 138412546;
-    v7 = v5;
+    v7 = uniqueName;
     v8 = 2080;
     v9 = "[MapsSuggestionsEngineRunner invalidateForMapsSuggestionsManager:]";
     _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "{%@} %s", &v6, 0x16u);

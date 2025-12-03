@@ -1,26 +1,26 @@
 @interface TPSConstellationContentParser
 + (id)inlineIconPlaceHolderImage;
-- (CGRect)boundsForImage:(id)a3 size:(CGSize)a4;
+- (CGRect)boundsForImage:(id)image size:(CGSize)size;
 - (TPSConstellationContentParser)init;
 - (TPSConstellationContentParserDelegate)delegate;
 - (UIFont)boldFont;
 - (UIFont)italicFont;
-- (double)scaledValueForSize:(double)a3;
-- (id)_colorForSystemColorString:(id)a3;
-- (id)accessibilityLabelFromAttribute:(id)a3;
-- (id)attributedStringForConstellationContent:(id)a3 defaultAttributes:(id)a4 identifier:(id)a5 language:(id)a6 assetsBaseURL:(id)a7 assetFileInfoManager:(id)a8 supportsLinks:(BOOL)a9 error:(id *)a10;
-- (id)attributedStringForContent:(id)a3 error:(id *)a4;
-- (id)attributedStringForInlineIconNode:(id)a3;
-- (id)attributedStringForParagraphNode:(id)a3 error:(id *)a4;
-- (id)attributedStringForPersonalizedTextNode:(id)a3 error:(id *)a4;
-- (id)attributedStringForSymbolNode:(id)a3;
-- (id)attributedStringForTextNode:(id)a3;
-- (id)attributesWithMarks:(id)a3;
+- (double)scaledValueForSize:(double)size;
+- (id)_colorForSystemColorString:(id)string;
+- (id)accessibilityLabelFromAttribute:(id)attribute;
+- (id)attributedStringForConstellationContent:(id)content defaultAttributes:(id)attributes identifier:(id)identifier language:(id)language assetsBaseURL:(id)l assetFileInfoManager:(id)manager supportsLinks:(BOOL)links error:(id *)self0;
+- (id)attributedStringForContent:(id)content error:(id *)error;
+- (id)attributedStringForInlineIconNode:(id)node;
+- (id)attributedStringForParagraphNode:(id)node error:(id *)error;
+- (id)attributedStringForPersonalizedTextNode:(id)node error:(id *)error;
+- (id)attributedStringForSymbolNode:(id)node;
+- (id)attributedStringForTextNode:(id)node;
+- (id)attributesWithMarks:(id)marks;
 - (int64_t)numOfActiveRemoteURLSessions;
 - (void)cancelAssetFetches;
 - (void)dealloc;
-- (void)fetchAssetConfiguration:(id)a3 cacheIdentifier:(id)a4 textAttachment:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)fetchAssetConfiguration:(id)configuration cacheIdentifier:(id)identifier textAttachment:(id)attachment;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation TPSConstellationContentParser
@@ -31,7 +31,7 @@
   block[1] = 3221225472;
   block[2] = __59__TPSConstellationContentParser_inlineIconPlaceHolderImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (inlineIconPlaceHolderImage_predicate != -1)
   {
     dispatch_once(&inlineIconPlaceHolderImage_predicate, block);
@@ -70,21 +70,21 @@ void __59__TPSConstellationContentParser_inlineIconPlaceHolderImage__block_invok
     syncQueue = v2->_syncQueue;
     v2->_syncQueue = v4;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     assetsSessionItemMap = v2->_assetsSessionItemMap;
-    v2->_assetsSessionItemMap = v6;
+    v2->_assetsSessionItemMap = dictionary;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     assetsTextAttachmentMap = v2->_assetsTextAttachmentMap;
-    v2->_assetsTextAttachmentMap = v8;
+    v2->_assetsTextAttachmentMap = dictionary2;
   }
 
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -99,14 +99,14 @@ void __59__TPSConstellationContentParser_inlineIconPlaceHolderImage__block_invok
 
 - (void)cancelAssetFetches
 {
-  v3 = [(TPSConstellationContentParser *)self assetsSessionItemMap];
-  v6 = [v3 copy];
+  assetsSessionItemMap = [(TPSConstellationContentParser *)self assetsSessionItemMap];
+  v6 = [assetsSessionItemMap copy];
 
-  v4 = [(TPSConstellationContentParser *)self assetsSessionItemMap];
-  [v4 removeAllObjects];
+  assetsSessionItemMap2 = [(TPSConstellationContentParser *)self assetsSessionItemMap];
+  [assetsSessionItemMap2 removeAllObjects];
 
-  v5 = [(TPSConstellationContentParser *)self assetsTextAttachmentMap];
-  [v5 removeAllObjects];
+  assetsTextAttachmentMap = [(TPSConstellationContentParser *)self assetsTextAttachmentMap];
+  [assetsTextAttachmentMap removeAllObjects];
 
   [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global];
 }
@@ -126,8 +126,8 @@ void __51__TPSConstellationContentParser_cancelAssetFetches__block_invoke(uint64
   {
     if ([(TPSConstellationContentParser *)self delegateRespondsToBoldFont])
     {
-      v4 = [(TPSConstellationContentParser *)self delegate];
-      v5 = [v4 constellationContentParserBoldFont:self];
+      delegate = [(TPSConstellationContentParser *)self delegate];
+      v5 = [delegate constellationContentParserBoldFont:self];
       v6 = self->_boldFont;
       self->_boldFont = v5;
     }
@@ -135,8 +135,8 @@ void __51__TPSConstellationContentParser_cancelAssetFetches__block_invoke(uint64
     boldFont = self->_boldFont;
     if (!boldFont)
     {
-      v7 = [(TPSConstellationContentParser *)self defaultAttributes];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+      defaultAttributes = [(TPSConstellationContentParser *)self defaultAttributes];
+      v8 = [defaultAttributes objectForKeyedSubscript:*MEMORY[0x277D740A8]];
       v9 = self->_boldFont;
       self->_boldFont = v8;
 
@@ -154,8 +154,8 @@ void __51__TPSConstellationContentParser_cancelAssetFetches__block_invoke(uint64
   {
     if ([(TPSConstellationContentParser *)self delegateRespondsToItalicFont])
     {
-      v4 = [(TPSConstellationContentParser *)self delegate];
-      v5 = [v4 constellationContentParserItalicFont:self];
+      delegate = [(TPSConstellationContentParser *)self delegate];
+      v5 = [delegate constellationContentParserItalicFont:self];
       v6 = self->_italicFont;
       self->_italicFont = v5;
     }
@@ -163,8 +163,8 @@ void __51__TPSConstellationContentParser_cancelAssetFetches__block_invoke(uint64
     italicFont = self->_italicFont;
     if (!italicFont)
     {
-      v7 = [(TPSConstellationContentParser *)self defaultAttributes];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+      defaultAttributes = [(TPSConstellationContentParser *)self defaultAttributes];
+      v8 = [defaultAttributes objectForKeyedSubscript:*MEMORY[0x277D740A8]];
       v9 = self->_italicFont;
       self->_italicFont = v8;
 
@@ -181,14 +181,14 @@ void __51__TPSConstellationContentParser_cancelAssetFetches__block_invoke(uint64
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(TPSConstellationContentParser *)self syncQueue];
+  syncQueue = [(TPSConstellationContentParser *)self syncQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__TPSConstellationContentParser_numOfActiveRemoteURLSessions__block_invoke;
   v6[3] = &unk_2784511C0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(syncQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -201,22 +201,22 @@ void __61__TPSConstellationContentParser_numOfActiveRemoteURLSessions__block_inv
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (id)attributedStringForConstellationContent:(id)a3 defaultAttributes:(id)a4 identifier:(id)a5 language:(id)a6 assetsBaseURL:(id)a7 assetFileInfoManager:(id)a8 supportsLinks:(BOOL)a9 error:(id *)a10
+- (id)attributedStringForConstellationContent:(id)content defaultAttributes:(id)attributes identifier:(id)identifier language:(id)language assetsBaseURL:(id)l assetFileInfoManager:(id)manager supportsLinks:(BOOL)links error:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  [(TPSConstellationContentParser *)self setIdentifier:v18];
-  [(TPSConstellationContentParser *)self setDefaultAttributes:v17];
+  contentCopy = content;
+  attributesCopy = attributes;
+  identifierCopy = identifier;
+  languageCopy = language;
+  lCopy = l;
+  managerCopy = manager;
+  [(TPSConstellationContentParser *)self setIdentifier:identifierCopy];
+  [(TPSConstellationContentParser *)self setDefaultAttributes:attributesCopy];
   [(TPSConstellationContentParser *)self setNumberOfParagraphTags:0];
-  [(TPSConstellationContentParser *)self setLanguage:v19];
-  [(TPSConstellationContentParser *)self setAssetsBaseURL:v20];
-  [(TPSConstellationContentParser *)self setAssetFileInfoManager:v21];
-  [(TPSConstellationContentParser *)self setSupportsLinks:a9];
-  v22 = [(TPSConstellationContentParser *)self attributedStringForContent:v16 error:a10];
+  [(TPSConstellationContentParser *)self setLanguage:languageCopy];
+  [(TPSConstellationContentParser *)self setAssetsBaseURL:lCopy];
+  [(TPSConstellationContentParser *)self setAssetFileInfoManager:managerCopy];
+  [(TPSConstellationContentParser *)self setSupportsLinks:links];
+  v22 = [(TPSConstellationContentParser *)self attributedStringForContent:contentCopy error:error];
   if ([(TPSConstellationContentParser *)self numberOfParagraphTags]>= 2)
   {
     v23 = objc_alloc_init(MEMORY[0x277D74240]);
@@ -226,7 +226,7 @@ void __61__TPSConstellationContentParser_numOfActiveRemoteURLSessions__block_inv
 
   objc_initWeak(&location, self);
   v24 = [v22 copy];
-  v25 = [(TPSConstellationContentParser *)self syncQueue];
+  syncQueue = [(TPSConstellationContentParser *)self syncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __166__TPSConstellationContentParser_attributedStringForConstellationContent_defaultAttributes_identifier_language_assetsBaseURL_assetFileInfoManager_supportsLinks_error___block_invoke;
@@ -234,7 +234,7 @@ void __61__TPSConstellationContentParser_numOfActiveRemoteURLSessions__block_inv
   objc_copyWeak(&v30, &location);
   v26 = v24;
   v29 = v26;
-  dispatch_async(v25, block);
+  dispatch_async(syncQueue, block);
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -248,11 +248,11 @@ void __166__TPSConstellationContentParser_attributedStringForConstellationConten
   [WeakRetained setAttributedString:*(a1 + 32)];
 }
 
-- (id)attributedStringForContent:(id)a3 error:(id *)a4
+- (id)attributedStringForContent:(id)content error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  contentCopy = content;
+  if (contentCopy)
   {
     v7 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:&stru_28345ED28 attributes:0];
     [v7 beginEditing];
@@ -260,7 +260,7 @@ void __166__TPSConstellationContentParser_attributedStringForConstellationConten
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v6;
+    v8 = contentCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (!v9)
     {
@@ -289,7 +289,7 @@ void __166__TPSConstellationContentParser_attributedStringForConstellationConten
               continue;
             }
 
-            v15 = [(TPSConstellationContentParser *)self attributedStringForParagraphNode:v13 error:a4];
+            v15 = [(TPSConstellationContentParser *)self attributedStringForParagraphNode:v13 error:error];
           }
 
           else
@@ -309,7 +309,7 @@ void __166__TPSConstellationContentParser_attributedStringForConstellationConten
               v15 = [(TPSConstellationContentParser *)self attributedStringForInlineIconNode:v13];
               break;
             case 4:
-              v15 = [(TPSConstellationContentParser *)self attributedStringForPersonalizedTextNode:v13 error:a4];
+              v15 = [(TPSConstellationContentParser *)self attributedStringForPersonalizedTextNode:v13 error:error];
               break;
             default:
               continue;
@@ -340,24 +340,24 @@ LABEL_24:
   return v7;
 }
 
-- (id)attributesWithMarks:(id)a3
+- (id)attributesWithMarks:(id)marks
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  marksCopy = marks;
+  if (![marksCopy count])
   {
     goto LABEL_26;
   }
 
-  v5 = [(TPSConstellationContentParser *)self defaultAttributes];
-  v6 = [v5 mutableCopy];
+  defaultAttributes = [(TPSConstellationContentParser *)self defaultAttributes];
+  v6 = [defaultAttributes mutableCopy];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v27 = v4;
-  v7 = v4;
+  v27 = marksCopy;
+  v7 = marksCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v8)
   {
@@ -390,18 +390,18 @@ LABEL_24:
             continue;
           }
 
-          v17 = [MEMORY[0x277D75348] labelColor];
+          labelColor = [MEMORY[0x277D75348] labelColor];
           v18 = v6;
-          v19 = v17;
+          v19 = labelColor;
           v20 = v11;
           goto LABEL_20;
         }
 
-        v16 = [(TPSConstellationContentParser *)self italicFont];
+        italicFont = [(TPSConstellationContentParser *)self italicFont];
 LABEL_19:
-        v17 = v16;
+        labelColor = italicFont;
         v18 = v6;
-        v19 = v17;
+        v19 = labelColor;
         v20 = v12;
 LABEL_20:
         [v18 setObject:v19 forKey:v20];
@@ -415,7 +415,7 @@ LABEL_20:
           continue;
         }
 
-        v16 = [(TPSConstellationContentParser *)self boldFont];
+        italicFont = [(TPSConstellationContentParser *)self boldFont];
         goto LABEL_19;
       }
 
@@ -424,11 +424,11 @@ LABEL_20:
         continue;
       }
 
-      v21 = self;
+      selfCopy = self;
       v22 = v12;
       v23 = v11;
-      v17 = [MEMORY[0x277D716F0] hrefForLinkMark:v14];
-      v24 = [MEMORY[0x277CBEBC0] URLWithString:v17];
+      labelColor = [MEMORY[0x277D716F0] hrefForLinkMark:v14];
+      v24 = [MEMORY[0x277CBEBC0] URLWithString:labelColor];
       if (v24)
       {
         [v6 setObject:v24 forKey:v28];
@@ -436,7 +436,7 @@ LABEL_20:
 
       v11 = v23;
       v12 = v22;
-      self = v21;
+      self = selfCopy;
       v7 = v29;
 LABEL_21:
     }
@@ -447,29 +447,29 @@ LABEL_21:
   while (v9);
 LABEL_24:
 
-  v4 = v27;
+  marksCopy = v27;
   if (v6)
   {
-    v25 = [v6 copy];
+    defaultAttributes2 = [v6 copy];
 
     goto LABEL_27;
   }
 
 LABEL_26:
-  v25 = [(TPSConstellationContentParser *)self defaultAttributes];
+  defaultAttributes2 = [(TPSConstellationContentParser *)self defaultAttributes];
 LABEL_27:
 
-  return v25;
+  return defaultAttributes2;
 }
 
-- (id)attributedStringForTextNode:(id)a3
+- (id)attributedStringForTextNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 TPSSafeArrayForKey:@"marks"];
+  nodeCopy = node;
+  v5 = [nodeCopy TPSSafeArrayForKey:@"marks"];
   v6 = [(TPSConstellationContentParser *)self attributesWithMarks:v5];
   if (-[TPSConstellationContentParser supportsLinks](self, "supportsLinks") || ([v6 objectForKeyedSubscript:*MEMORY[0x277D740E8]], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v9 = [MEMORY[0x277D716F0] textForContentNode:v4];
+    v9 = [MEMORY[0x277D716F0] textForContentNode:nodeCopy];
     if (v9)
     {
       v8 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v9 attributes:v6];
@@ -489,9 +489,9 @@ LABEL_27:
   return v8;
 }
 
-- (id)attributedStringForParagraphNode:(id)a3 error:(id *)a4
+- (id)attributedStringForParagraphNode:(id)node error:(id *)error
 {
-  v6 = a3;
+  nodeCopy = node;
   if ([(TPSConstellationContentParser *)self numberOfParagraphTags]< 1)
   {
     v10 = 0;
@@ -500,16 +500,16 @@ LABEL_27:
   else
   {
     v7 = objc_alloc(MEMORY[0x277CCA898]);
-    v8 = [(TPSConstellationContentParser *)self defaultAttributes];
-    v9 = [v7 initWithString:@"\n" attributes:v8];
+    defaultAttributes = [(TPSConstellationContentParser *)self defaultAttributes];
+    v9 = [v7 initWithString:@"\n" attributes:defaultAttributes];
 
     v10 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v9];
   }
 
   [(TPSConstellationContentParser *)self setNumberOfParagraphTags:[(TPSConstellationContentParser *)self numberOfParagraphTags]+ 1];
-  v11 = [v6 TPSSafeArrayForKey:*MEMORY[0x277D71900]];
+  v11 = [nodeCopy TPSSafeArrayForKey:*MEMORY[0x277D71900]];
 
-  v12 = [(TPSConstellationContentParser *)self attributedStringForContent:v11 error:a4];
+  v12 = [(TPSConstellationContentParser *)self attributedStringForContent:v11 error:error];
   v13 = v12;
   if (v12)
   {
@@ -535,9 +535,9 @@ LABEL_27:
   return v15;
 }
 
-- (id)attributedStringForSymbolNode:(id)a3
+- (id)attributedStringForSymbolNode:(id)node
 {
-  v4 = [a3 TPSSafeDictionaryForKey:*MEMORY[0x277D718F0]];
+  v4 = [node TPSSafeDictionaryForKey:*MEMORY[0x277D718F0]];
   v5 = [v4 TPSSafeStringForKey:*MEMORY[0x277D718E8]];
   if (!v5)
   {
@@ -611,8 +611,8 @@ LABEL_18:
   [v16 setAccessibilityLabel:v17];
   [v16 setAccessibilityElementsHidden:{objc_msgSend(v17, "isEqualToString:", @" "}];
   v18 = objc_alloc(MEMORY[0x277CCA898]);
-  v19 = [(TPSConstellationContentParser *)self defaultAttributes];
-  v20 = [v18 initWithAttachment:v16 attributes:v19];
+  defaultAttributes = [(TPSConstellationContentParser *)self defaultAttributes];
+  v20 = [v18 initWithAttachment:v16 attributes:defaultAttributes];
 
   v9 = [objc_alloc(MEMORY[0x277CCA898]) initWithAttributedString:v20];
   v10 = v7;
@@ -624,9 +624,9 @@ LABEL_21:
   return v9;
 }
 
-- (id)accessibilityLabelFromAttribute:(id)a3
+- (id)accessibilityLabelFromAttribute:(id)attribute
 {
-  v3 = [a3 TPSSafeStringForKey:*MEMORY[0x277D71888]];
+  v3 = [attribute TPSSafeStringForKey:*MEMORY[0x277D71888]];
   if (![(__CFString *)v3 length])
   {
 
@@ -636,17 +636,17 @@ LABEL_21:
   return v3;
 }
 
-- (id)attributedStringForInlineIconNode:(id)a3
+- (id)attributedStringForInlineIconNode:(id)node
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = [a3 TPSSafeDictionaryForKey:*MEMORY[0x277D718F0]];
+  v4 = [node TPSSafeDictionaryForKey:*MEMORY[0x277D718F0]];
   v5 = [v4 TPSSafeStringForKey:*MEMORY[0x277D718A8]];
-  v6 = [(TPSConstellationContentParser *)self assetsBaseURL];
-  v7 = [(TPSConstellationContentParser *)self language];
-  v8 = v7;
+  assetsBaseURL = [(TPSConstellationContentParser *)self assetsBaseURL];
+  language = [(TPSConstellationContentParser *)self language];
+  v8 = language;
   if (v5)
   {
-    v9 = v6 == 0;
+    v9 = assetsBaseURL == 0;
   }
 
   else
@@ -654,13 +654,13 @@ LABEL_21:
     v9 = 1;
   }
 
-  if (v9 || v7 == 0)
+  if (v9 || language == 0)
   {
-    v11 = [MEMORY[0x277D71778] default];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    default = [MEMORY[0x277D71778] default];
+    if (os_log_type_enabled(default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_220B31000, v11, OS_LOG_TYPE_DEFAULT, "Unable to fetch inline icon due due to missing imageID / baseURL / language", buf, 2u);
+      _os_log_impl(&dword_220B31000, default, OS_LOG_TYPE_DEFAULT, "Unable to fetch inline icon due due to missing imageID / baseURL / language", buf, 2u);
     }
 
     v12 = 0;
@@ -668,40 +668,40 @@ LABEL_21:
 
   else
   {
-    v13 = [(TPSConstellationContentParser *)self traitCollection];
-    v14 = [v13 userInterfaceStyle] == 2;
+    traitCollection = [(TPSConstellationContentParser *)self traitCollection];
+    v14 = [traitCollection userInterfaceStyle] == 2;
 
-    v15 = [(TPSConstellationContentParser *)self traitCollection];
-    [v15 displayScale];
+    traitCollection2 = [(TPSConstellationContentParser *)self traitCollection];
+    [traitCollection2 displayScale];
     v17 = v16;
 
     if (v17 == 0.0)
     {
-      v18 = [MEMORY[0x277D759A0] mainScreen];
-      [v18 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v17 = v19;
     }
 
-    v20 = [(TPSConstellationContentParser *)self assetFileInfoManager];
-    v11 = [v20 fileInfoWithMainIdentifier:v5 userInterfaceStyle:v14 scale:v17];
+    assetFileInfoManager = [(TPSConstellationContentParser *)self assetFileInfoManager];
+    default = [assetFileInfoManager fileInfoWithMainIdentifier:v5 userInterfaceStyle:v14 scale:v17];
 
-    v21 = [v11 size];
-    v22 = [v21 width];
-    [v22 floatValue];
+    v21 = [default size];
+    width = [v21 width];
+    [width floatValue];
     v24 = v23;
-    v25 = [v21 height];
-    [v25 floatValue];
+    height = [v21 height];
+    [height floatValue];
     v27 = v26;
 
     v28 = *(MEMORY[0x277CBF3A8] + 8);
     if (*MEMORY[0x277CBF3A8] == v24 && v28 == v27)
     {
-      v42 = [MEMORY[0x277D71778] default];
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      default2 = [MEMORY[0x277D71778] default];
+      if (os_log_type_enabled(default2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v52 = v5;
-        _os_log_impl(&dword_220B31000, v42, OS_LOG_TYPE_DEFAULT, "No file found with size information for identifier %@", buf, 0xCu);
+        _os_log_impl(&dword_220B31000, default2, OS_LOG_TYPE_DEFAULT, "No file found with size information for identifier %@", buf, 0xCu);
       }
 
       v12 = 0;
@@ -718,29 +718,29 @@ LABEL_21:
       [v30 setAccessibilityElementsHidden:{objc_msgSend(v31, "isEqualToString:", @" "}];
       v32 = objc_alloc_init(MEMORY[0x277D716A8]);
       [v32 setImageId:v5];
-      [v32 setBaseURL:v6];
+      [v32 setBaseURL:assetsBaseURL];
       v33 = objc_alloc(MEMORY[0x277D716B0]);
-      v34 = [(TPSConstellationContentParser *)self assetFileInfoManager];
+      assetFileInfoManager2 = [(TPSConstellationContentParser *)self assetFileInfoManager];
       v48 = v32;
-      v35 = [v33 initWithAssets:v32 language:v8 userInterfaceStyle:v14 assetFileInfoManager:v34];
+      v35 = [v33 initWithAssets:v32 language:v8 userInterfaceStyle:v14 assetFileInfoManager:assetFileInfoManager2];
 
       v36 = [v35 cacheIdentifierForType:0];
-      v37 = [TPSImageAssetController getImageForIdentifier:v36];
-      if (!v37)
+      inlineIconPlaceHolderImage = [TPSImageAssetController getImageForIdentifier:v36];
+      if (!inlineIconPlaceHolderImage)
       {
-        v37 = [objc_opt_class() inlineIconPlaceHolderImage];
+        inlineIconPlaceHolderImage = [objc_opt_class() inlineIconPlaceHolderImage];
         [(TPSConstellationContentParser *)self fetchAssetConfiguration:v35 cacheIdentifier:v36 textAttachment:v30];
       }
 
       v46 = v35;
-      [v30 setImage:{v37, v36}];
-      [(TPSConstellationContentParser *)self boundsForImage:v37 size:v24, v27];
+      [v30 setImage:{inlineIconPlaceHolderImage, v36}];
+      [(TPSConstellationContentParser *)self boundsForImage:inlineIconPlaceHolderImage size:v24, v27];
       [v30 setBounds:?];
       if (v30)
       {
         v38 = objc_alloc(MEMORY[0x277CCA898]);
-        v39 = [(TPSConstellationContentParser *)self defaultAttributes];
-        v40 = [v38 initWithAttachment:v30 attributes:v39];
+        defaultAttributes = [(TPSConstellationContentParser *)self defaultAttributes];
+        v40 = [v38 initWithAttachment:v30 attributes:defaultAttributes];
 
         v41 = [objc_alloc(MEMORY[0x277CCA898]) initWithAttributedString:v40];
       }
@@ -752,26 +752,26 @@ LABEL_21:
 
       v21 = v50;
       v4 = v47;
-      v43 = [MEMORY[0x277D71778] default];
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
+      default3 = [MEMORY[0x277D71778] default];
+      if (os_log_type_enabled(default3, OS_LOG_TYPE_DEBUG))
       {
-        [(TPSConstellationContentParser *)v5 attributedStringForInlineIconNode:v43, v24, v27];
+        [(TPSConstellationContentParser *)v5 attributedStringForInlineIconNode:default3, v24, v27];
       }
 
-      v42 = v41;
-      v12 = v42;
+      default2 = v41;
+      v12 = default2;
     }
   }
 
   return v12;
 }
 
-- (id)attributedStringForPersonalizedTextNode:(id)a3 error:(id *)a4
+- (id)attributedStringForPersonalizedTextNode:(id)node error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 TPSSafeArrayForKey:@"marks"];
+  nodeCopy = node;
+  v7 = [nodeCopy TPSSafeArrayForKey:@"marks"];
   v8 = [(TPSConstellationContentParser *)self attributesWithMarks:v7];
-  v9 = [v6 TPSSafeDictionaryForKey:*MEMORY[0x277D718F0]];
+  v9 = [nodeCopy TPSSafeDictionaryForKey:*MEMORY[0x277D718F0]];
 
   v10 = [v9 TPSSafeNumberForKey:*MEMORY[0x277D718B8]];
   v11 = [v9 TPSSafeNumberForKey:*MEMORY[0x277D718B0]];
@@ -791,18 +791,18 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  v14 = [v10 integerValue];
-  v15 = [v12 integerValue];
-  if (!v14)
+  integerValue = [v10 integerValue];
+  integerValue2 = [v12 integerValue];
+  if (!integerValue)
   {
-    v16 = v15;
-    v17 = [(TPSConstellationContentParser *)self delegate];
+    v16 = integerValue2;
+    delegate = [(TPSConstellationContentParser *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(TPSConstellationContentParser *)self delegate];
-      v20 = [v19 constellationContentParser:self personalizedStringForID:v16];
+      delegate2 = [(TPSConstellationContentParser *)self delegate];
+      v20 = [delegate2 constellationContentParser:self personalizedStringForID:v16];
 
       if (v20)
       {
@@ -821,11 +821,11 @@ LABEL_21:
   if (!v20)
   {
 LABEL_12:
-    if (a4 && !*a4)
+    if (error && !*error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.tipsUI.contentParser" code:1 userInfo:0];
       v20 = 0;
-      *a4 = v21 = 0;
+      *error = v21 = 0;
     }
 
     else
@@ -844,12 +844,12 @@ LABEL_16:
   return v21;
 }
 
-- (void)fetchAssetConfiguration:(id)a3 cacheIdentifier:(id)a4 textAttachment:(id)a5
+- (void)fetchAssetConfiguration:(id)configuration cacheIdentifier:(id)identifier textAttachment:(id)attachment
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  attachmentCopy = attachment;
+  if (identifierCopy)
   {
     objc_initWeak(location, self);
     v43 = 0;
@@ -858,16 +858,16 @@ LABEL_16:
     v46 = __Block_byref_object_copy_;
     v47 = __Block_byref_object_dispose_;
     v48 = 0;
-    v11 = [(TPSConstellationContentParser *)self syncQueue];
+    syncQueue = [(TPSConstellationContentParser *)self syncQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __88__TPSConstellationContentParser_fetchAssetConfiguration_cacheIdentifier_textAttachment___block_invoke;
     block[3] = &unk_278451210;
     v42 = &v43;
     block[4] = self;
-    v12 = v9;
+    v12 = identifierCopy;
     v41 = v12;
-    dispatch_sync(v11, block);
+    dispatch_sync(syncQueue, block);
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
@@ -875,9 +875,9 @@ LABEL_16:
     aBlock[3] = &unk_278451260;
     v13 = v12;
     v36 = v13;
-    v37 = self;
+    selfCopy = self;
     objc_copyWeak(&v39, location);
-    v38 = v10;
+    v38 = attachmentCopy;
     v14 = _Block_copy(aBlock);
     v15 = v14;
     v16 = v14[2];
@@ -889,7 +889,7 @@ LABEL_16:
     else
     {
       v16(v14);
-      v17 = [MEMORY[0x277D71708] assetPathFromAssetConfiguration:v8 type:0];
+      v17 = [MEMORY[0x277D71708] assetPathFromAssetConfiguration:configurationCopy type:0];
       v18 = *MEMORY[0x277CCA798];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
@@ -899,17 +899,17 @@ LABEL_16:
       v33 = &v43;
       v19 = v13;
       v31 = v19;
-      v32 = self;
+      selfCopy2 = self;
       LODWORD(v20) = v18;
       v21 = [TPSImageAssetController formattedDataForPath:v17 identifier:v19 priority:v30 completionHandler:v20];
       v22 = v44[5];
       v44[5] = v21;
 
-      v23 = [v44[5] sessionTask];
+      sessionTask = [v44[5] sessionTask];
       LODWORD(v24) = v18;
-      [v23 setPriority:v24];
+      [sessionTask setPriority:v24];
 
-      v25 = [(TPSConstellationContentParser *)self syncQueue];
+      syncQueue2 = [(TPSConstellationContentParser *)self syncQueue];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __88__TPSConstellationContentParser_fetchAssetConfiguration_cacheIdentifier_textAttachment___block_invoke_7;
@@ -917,7 +917,7 @@ LABEL_16:
       objc_copyWeak(&v29, location);
       v27 = v19;
       v28 = &v43;
-      dispatch_async(v25, v26);
+      dispatch_async(syncQueue2, v26);
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(&v34);
@@ -1090,11 +1090,11 @@ void __88__TPSConstellationContentParser_fetchAssetConfiguration_cacheIdentifier
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 32)];
 }
 
-- (CGRect)boundsForImage:(id)a3 size:(CGSize)a4
+- (CGRect)boundsForImage:(id)image size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [a3 size];
+  height = size.height;
+  width = size.width;
+  [image size];
   if (width == 0.0)
   {
     if (v7 == 0.0)
@@ -1162,10 +1162,10 @@ void __88__TPSConstellationContentParser_fetchAssetConfiguration_cacheIdentifier
   return result;
 }
 
-- (double)scaledValueForSize:(double)a3
+- (double)scaledValueForSize:(double)size
 {
-  v4 = [(TPSConstellationContentParser *)self defaultAttributes];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+  defaultAttributes = [(TPSConstellationContentParser *)self defaultAttributes];
+  v5 = [defaultAttributes objectForKeyedSubscript:*MEMORY[0x277D740A8]];
   v6 = v5;
   if (v5)
   {
@@ -1181,37 +1181,37 @@ void __88__TPSConstellationContentParser_fetchAssetConfiguration_cacheIdentifier
 
   [v8 pointSize];
   v10 = v9;
-  if (a3 <= 0.0)
+  if (size <= 0.0)
   {
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 scale];
-    a3 = a3 / v12;
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    size = size / v12;
   }
 
-  return v10 / 17.0 * a3;
+  return v10 / 17.0 * size;
 }
 
-- (id)_colorForSystemColorString:(id)a3
+- (id)_colorForSystemColorString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D75348] labelColor];
-  if (v3 && ([v3 isEqualToString:@"black"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"labelColor") & 1) == 0)
+  stringCopy = string;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  if (stringCopy && ([stringCopy isEqualToString:@"black"] & 1) == 0 && (objc_msgSend(stringCopy, "isEqualToString:", @"labelColor") & 1) == 0)
   {
-    if (([v3 hasSuffix:@"Color"] & 1) == 0)
+    if (([stringCopy hasSuffix:@"Color"] & 1) == 0)
     {
-      v5 = [v3 stringByAppendingString:@"Color"];
+      v5 = [stringCopy stringByAppendingString:@"Color"];
 
-      v3 = v5;
+      stringCopy = v5;
     }
 
-    v6 = [MEMORY[0x277D75348] performSelector:NSSelectorFromString(v3)];
+    v6 = [MEMORY[0x277D75348] performSelector:NSSelectorFromString(stringCopy)];
 
-    v4 = v6;
+    labelColor = v6;
   }
 
-  v7 = v4;
+  v7 = labelColor;
 
-  return v4;
+  return labelColor;
 }
 
 - (TPSConstellationContentParserDelegate)delegate

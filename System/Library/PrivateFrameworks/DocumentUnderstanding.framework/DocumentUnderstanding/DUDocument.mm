@@ -1,13 +1,13 @@
 @interface DUDocument
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)documentUIElements;
 - (NSArray)keywords;
-- (_TtC21DocumentUnderstanding10DUDocument)initWithText:(id)a3 maxLength:(int64_t)a4;
+- (_TtC21DocumentUnderstanding10DUDocument)initWithText:(id)text maxLength:(int64_t)length;
 - (_TtC21DocumentUnderstanding18DUDocumentHTMLData)documentHTMLData;
 - (_TtC21DocumentUnderstanding21DUDocumentMessageData)documentMessageData;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)rawCopy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DUDocument
@@ -57,9 +57,9 @@
   return v2;
 }
 
-- (_TtC21DocumentUnderstanding10DUDocument)initWithText:(id)a3 maxLength:(int64_t)a4
+- (_TtC21DocumentUnderstanding10DUDocument)initWithText:(id)text maxLength:(int64_t)length
 {
-  if (a3)
+  if (text)
   {
     v5 = sub_232CE9D50();
   }
@@ -70,27 +70,27 @@
     v6 = 0;
   }
 
-  return DUDocument.init(text:maxLength:)(v5, v6, a4);
+  return DUDocument.init(text:maxLength:)(v5, v6, length);
 }
 
 - (id)rawCopy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_232B591FC();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_232B592B4();
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B59448(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -99,11 +99,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_232CEA420();
     swift_unknownObjectRelease();
@@ -112,7 +112,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_232B596E8(v8);

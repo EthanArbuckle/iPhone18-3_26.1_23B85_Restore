@@ -1,35 +1,35 @@
 @interface TRSetupActivationResponse
-- (TRSetupActivationResponse)initWithCoder:(id)a3;
+- (TRSetupActivationResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRSetupActivationResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = TRSetupActivationResponse;
-  [(TRMessage *)&v5 encodeWithCoder:v4];
+  [(TRMessage *)&v5 encodeWithCoder:coderCopy];
   if (self->_activated)
   {
-    [v4 encodeBool:1 forKey:@"TRSetupNetworkMessages_hN"];
+    [coderCopy encodeBool:1 forKey:@"TRSetupNetworkMessages_hN"];
   }
 
-  [v4 encodeObject:self->_error forKey:@"TRSetupActivationMessages_err"];
+  [coderCopy encodeObject:self->_error forKey:@"TRSetupActivationMessages_err"];
 }
 
-- (TRSetupActivationResponse)initWithCoder:(id)a3
+- (TRSetupActivationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRSetupActivationResponse;
-  v5 = [(TRMessage *)&v9 initWithCoder:v4];
+  v5 = [(TRMessage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_activated = [v4 decodeBoolForKey:@"TRSetupNetworkMessages_hN"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupActivationMessages_err"];
+    v5->_activated = [coderCopy decodeBoolForKey:@"TRSetupNetworkMessages_hN"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRSetupActivationMessages_err"];
     error = v5->_error;
     v5->_error = v6;
   }

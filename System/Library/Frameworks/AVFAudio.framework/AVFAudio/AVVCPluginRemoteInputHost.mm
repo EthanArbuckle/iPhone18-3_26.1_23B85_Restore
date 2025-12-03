@@ -1,15 +1,15 @@
 @interface AVVCPluginRemoteInputHost
 - (AVVCPluginRemoteInputHost)init;
 - (AVVoiceController)mMotherController;
-- (id)allBundles:(id *)a3;
-- (id)findDeviceWithIdentifier:(id)a3;
+- (id)allBundles:(id *)bundles;
+- (id)findDeviceWithIdentifier:(id)identifier;
 - (id)findFirstBluetoothDevice;
 - (id)mockPluginEndpoint;
 - (void)dealloc;
-- (void)inputPlugin:(id)a3 didPublishDevice:(id)a4;
-- (void)inputPlugin:(id)a3 didUnpublishDevice:(id)a4;
+- (void)inputPlugin:(id)plugin didPublishDevice:(id)device;
+- (void)inputPlugin:(id)plugin didUnpublishDevice:(id)device;
 - (void)invalidatePlugins;
-- (void)setParentVoiceController:(id)a3;
+- (void)setParentVoiceController:(id)controller;
 @end
 
 @implementation AVVCPluginRemoteInputHost
@@ -48,7 +48,7 @@
     v26 = 1024;
     v27 = 193;
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 2048;
     v31 = WeakRetained;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d self(%p) controller(%p)", buf, 0x26u);
@@ -92,7 +92,7 @@ LABEL_10:
     }
 
     v14 = v11;
-    v13 = [v14 mockPluginEndpoint];
+    mockPluginEndpoint = [v14 mockPluginEndpoint];
 
     if (kAVVCScope)
     {
@@ -116,7 +116,7 @@ LABEL_10:
       v26 = 1024;
       v27 = 210;
       v28 = 2112;
-      v29 = v13;
+      selfCopy = mockPluginEndpoint;
       _os_log_impl(&dword_1BA5AC000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d mock plugin endpoint (%@)", buf, 0x1Cu);
     }
   }
@@ -130,7 +130,7 @@ LABEL_16:
       v12 = *kAVVCScope;
       if (!v12)
       {
-        v13 = 0;
+        mockPluginEndpoint = 0;
         goto LABEL_30;
       }
     }
@@ -150,20 +150,20 @@ LABEL_16:
       _os_log_impl(&dword_1BA5AC000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d couldn't find mock plugin", buf, 0x12u);
     }
 
-    v13 = 0;
+    mockPluginEndpoint = 0;
   }
 
 LABEL_30:
   v17 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return mockPluginEndpoint;
 }
 
-- (void)inputPlugin:(id)a3 didUnpublishDevice:(id)a4
+- (void)inputPlugin:(id)plugin didUnpublishDevice:(id)device
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  deviceCopy = device;
   if (kAVVCScope)
   {
     v8 = *kAVVCScope;
@@ -183,26 +183,26 @@ LABEL_30:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_mMotherController);
-    v12 = [v7 deviceIdentifier];
+    deviceIdentifier = [deviceCopy deviceIdentifier];
     *v24 = 136316674;
     *&v24[4] = "AVVCPluginRemoteInputHost.mm";
     *&v24[12] = 1024;
     *&v24[14] = 177;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
     v28 = WeakRetained;
     v29 = 2048;
-    v30 = v6;
+    v30 = pluginCopy;
     v31 = 2048;
-    v32 = v7;
+    v32 = deviceCopy;
     v33 = 2112;
-    v34 = v12;
+    v34 = deviceIdentifier;
     _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d self(%p) controller(%p) plugin(%p), did UNpublish device(%p) with id(%@)", v24, 0x44u);
   }
 
 LABEL_8:
-  if (v7)
+  if (deviceCopy)
   {
     v13 = objc_loadWeakRetained(&self->_mMotherController);
     if (v13)
@@ -228,7 +228,7 @@ LABEL_8:
       if (v15)
       {
         v16 = objc_loadWeakRetained(&self->_mMotherController);
-        [v16 handlePluginDidUnpublishDevice:v6 withDevice:v7];
+        [v16 handlePluginDidUnpublishDevice:pluginCopy withDevice:deviceCopy];
         goto LABEL_30;
       }
     }
@@ -298,11 +298,11 @@ LABEL_31:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)inputPlugin:(id)a3 didPublishDevice:(id)a4
+- (void)inputPlugin:(id)plugin didPublishDevice:(id)device
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  deviceCopy = device;
   if (kAVVCScope)
   {
     v8 = *kAVVCScope;
@@ -322,26 +322,26 @@ LABEL_31:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     WeakRetained = objc_loadWeakRetained(&self->_mMotherController);
-    v12 = [v7 deviceIdentifier];
+    deviceIdentifier = [deviceCopy deviceIdentifier];
     *v24 = 136316674;
     *&v24[4] = "AVVCPluginRemoteInputHost.mm";
     *&v24[12] = 1024;
     *&v24[14] = 163;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2048;
     v28 = WeakRetained;
     v29 = 2048;
-    v30 = v6;
+    v30 = pluginCopy;
     v31 = 2048;
-    v32 = v7;
+    v32 = deviceCopy;
     v33 = 2112;
-    v34 = v12;
+    v34 = deviceIdentifier;
     _os_log_impl(&dword_1BA5AC000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d self(%p) controller(%p) plugin(%p), did publish device(%p) with id(%@)", v24, 0x44u);
   }
 
 LABEL_8:
-  if (v7)
+  if (deviceCopy)
   {
     v13 = objc_loadWeakRetained(&self->_mMotherController);
     if (v13)
@@ -367,7 +367,7 @@ LABEL_8:
       if (v15)
       {
         v16 = objc_loadWeakRetained(&self->_mMotherController);
-        [v16 handlePluginDidPublishDevice:v6 withDevice:v7];
+        [v16 handlePluginDidPublishDevice:pluginCopy withDevice:deviceCopy];
         goto LABEL_30;
       }
     }
@@ -437,10 +437,10 @@ LABEL_31:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setParentVoiceController:(id)a3
+- (void)setParentVoiceController:(id)controller
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllerCopy = controller;
   if (kAVVCScope)
   {
     v5 = *kAVVCScope;
@@ -465,16 +465,16 @@ LABEL_31:
     v12 = 1024;
     v13 = 157;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
     v17 = WeakRetained;
     v18 = 2048;
-    v19 = v4;
+    v19 = controllerCopy;
     _os_log_impl(&dword_1BA5AC000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d self(%p) oldController(%p) newController(%p)", &v10, 0x30u);
   }
 
 LABEL_8:
-  objc_storeWeak(&self->_mMotherController, v4);
+  objc_storeWeak(&self->_mMotherController, controllerCopy);
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -509,8 +509,8 @@ LABEL_8:
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v4 = [v3 devices];
-      v5 = [v4 countByEnumeratingWithState:&v23 objects:v41 count:16];
+      devices = [v3 devices];
+      v5 = [devices countByEnumeratingWithState:&v23 objects:v41 count:16];
       if (!v5)
       {
 LABEL_21:
@@ -525,7 +525,7 @@ LABEL_8:
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v23 + 1) + 8 * v7);
@@ -548,9 +548,9 @@ LABEL_8:
         v12 = v9;
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [v8 deviceIdentifier];
-          v14 = [v3 devices];
-          v15 = [v14 count];
+          deviceIdentifier = [v8 deviceIdentifier];
+          devices2 = [v3 devices];
+          v15 = [devices2 count];
           *buf = 136316162;
           v32 = "AVVCPluginRemoteInputHost.mm";
           v33 = 1024;
@@ -558,7 +558,7 @@ LABEL_8:
           v35 = 2048;
           v36 = v8;
           v37 = 2112;
-          v38 = v13;
+          v38 = deviceIdentifier;
           v39 = 1024;
           v40 = v15;
           _os_log_impl(&dword_1BA5AC000, v12, OS_LOG_TYPE_DEBUG, "%25s:%-5d Device(%p). Identifier: %@ (num devices = %d)", buf, 0x2Cu);
@@ -572,7 +572,7 @@ LABEL_18:
 
         if (v5 == ++v7)
         {
-          v5 = [v4 countByEnumeratingWithState:&v23 objects:v41 count:16];
+          v5 = [devices countByEnumeratingWithState:&v23 objects:v41 count:16];
           if (v5)
           {
             goto LABEL_8;
@@ -603,10 +603,10 @@ LABEL_26:
   return v16;
 }
 
-- (id)findDeviceWithIdentifier:(id)a3
+- (id)findDeviceWithIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__AVVCPluginRemoteInputHost_findDeviceWithIdentifier___block_invoke;
@@ -650,7 +650,7 @@ LABEL_28:
       v40 = 1024;
       v41 = 129;
       v42 = 2112;
-      v43 = v4;
+      v43 = identifierCopy;
       _os_log_impl(&dword_1BA5AC000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d Cannot find Remote Input device %@", buf, 0x1Cu);
     }
 
@@ -674,8 +674,8 @@ LABEL_5:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [v7 devices];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v46 count:16];
+    devices = [v7 devices];
+    v9 = [devices countByEnumeratingWithState:&v29 objects:v46 count:16];
     if (v9)
     {
       break;
@@ -703,7 +703,7 @@ LABEL_10:
   {
     if (*v30 != v10)
     {
-      objc_enumerationMutation(v8);
+      objc_enumerationMutation(devices);
     }
 
     v12 = *(*(&v29 + 1) + 8 * v11);
@@ -728,7 +728,7 @@ LABEL_10:
       v16 = v13;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        v17 = [v12 deviceIdentifier];
+        deviceIdentifier = [v12 deviceIdentifier];
         *buf = 136315906;
         v39 = "AVVCPluginRemoteInputHost.mm";
         v40 = 1024;
@@ -736,14 +736,14 @@ LABEL_10:
         v42 = 2048;
         v43 = v12;
         v44 = 2112;
-        v45 = v17;
+        v45 = deviceIdentifier;
         _os_log_impl(&dword_1BA5AC000, v16, OS_LOG_TYPE_DEBUG, "%25s:%-5d Device(%p). Identifier: %@", buf, 0x26u);
       }
     }
 
 LABEL_21:
-    v18 = [v12 deviceIdentifier];
-    v19 = areDeviceUIDsSame(v18, v4);
+    deviceIdentifier2 = [v12 deviceIdentifier];
+    v19 = areDeviceUIDsSame(deviceIdentifier2, identifierCopy);
 
     if (v19)
     {
@@ -752,7 +752,7 @@ LABEL_21:
 
     if (v9 == ++v11)
     {
-      v9 = [v8 countByEnumeratingWithState:&v29 objects:v46 count:16];
+      v9 = [devices countByEnumeratingWithState:&v29 objects:v46 count:16];
       if (v9)
       {
         goto LABEL_10;
@@ -791,7 +791,7 @@ LABEL_21:
     v40 = 1024;
     v41 = 132;
     v42 = 2112;
-    v43 = v4;
+    v43 = identifierCopy;
     _os_log_impl(&dword_1BA5AC000, v21, OS_LOG_TYPE_DEBUG, "%25s:%-5d findDeviceWithIdentifier: found the device %@", buf, 0x1Cu);
   }
 
@@ -894,12 +894,12 @@ void __54__AVVCPluginRemoteInputHost_findDeviceWithIdentifier___block_invoke(uin
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)allBundles:(id *)a3
+- (id)allBundles:(id *)bundles
 {
   v42 = *MEMORY[0x1E69E9840];
-  v25 = [MEMORY[0x1E696AC08] defaultManager];
-  v23 = [v25 URLsForDirectory:5 inDomains:10];
-  v24 = [MEMORY[0x1E695DF70] array];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v23 = [defaultManager URLsForDirectory:5 inDomains:10];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -942,13 +942,13 @@ void __54__AVVCPluginRemoteInputHost_findDeviceWithIdentifier___block_invoke(uin
               v12 = v11;
               if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
               {
-                v13 = [v8 absoluteString];
+                absoluteString = [v8 absoluteString];
                 *buf = 136315650;
                 v34 = "AVVCPluginRemoteInputHost.mm";
                 v35 = 1024;
                 v36 = 84;
                 v37 = 2112;
-                v38 = v13;
+                v38 = absoluteString;
                 _os_log_impl(&dword_1BA5AC000, v12, OS_LOG_TYPE_DEBUG, "%25s:%-5d Searching plugin path %@", buf, 0x1Cu);
               }
             }
@@ -956,7 +956,7 @@ void __54__AVVCPluginRemoteInputHost_findDeviceWithIdentifier___block_invoke(uin
         }
 
         v27 = v10;
-        v14 = [v25 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:0 options:4 error:&v27];
+        v14 = [defaultManager contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:0 options:4 error:&v27];
         v4 = v27;
 
         if (v4)
@@ -970,14 +970,14 @@ LABEL_20:
             v18 = v15;
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
             {
-              v19 = [v8 absoluteString];
+              absoluteString2 = [v8 absoluteString];
               v20 = [v4 debugDescription];
               *buf = 136315906;
               v34 = "AVVCPluginRemoteInputHost.mm";
               v35 = 1024;
               v36 = 87;
               v37 = 2112;
-              v38 = v19;
+              v38 = absoluteString2;
               v39 = 2112;
               v40 = v20;
               _os_log_impl(&dword_1BA5AC000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d Error enumerating the remote input bundles at %@: %@", buf, 0x26u);
@@ -995,7 +995,7 @@ LABEL_20:
 
         else
         {
-          [v24 addObjectsFromArray:v14];
+          [array addObjectsFromArray:v14];
         }
 
 LABEL_23:
@@ -1014,7 +1014,7 @@ LABEL_24:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return array;
 }
 
 - (void)invalidatePlugins
@@ -1042,7 +1042,7 @@ LABEL_24:
     v23 = 1024;
     v24 = 60;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d invalidatePlugins : invalidating all plugins *** %p", buf, 0x1Cu);
   }
 
@@ -1091,7 +1091,7 @@ LABEL_8:
           v23 = 1024;
           v24 = 62;
           v25 = 2048;
-          v26 = v11;
+          selfCopy = v11;
           _os_log_impl(&dword_1BA5AC000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d -----> calling invalidate on plugin instance %p", buf, 0x1Cu);
         }
 
@@ -1133,7 +1133,7 @@ LABEL_20:
     v9 = 1024;
     v10 = 55;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_DEBUG, "%25s:%-5d dealloc : releasing all plugins *** %p", buf, 0x1Cu);
   }
 
@@ -1207,13 +1207,13 @@ LABEL_9:
             v15 = v13;
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
-              v16 = [v12 absoluteString];
+              absoluteString = [v12 absoluteString];
               *buf = 136315650;
               v38 = "AVVCPluginRemoteInputHost.mm";
               v39 = 1024;
               v40 = 33;
               v41 = 2112;
-              v42 = v16;
+              v42 = absoluteString;
               _os_log_impl(&dword_1BA5AC000, v15, OS_LOG_TYPE_DEBUG, "%25s:%-5d Plugin Bundle URL: %@", buf, 0x1Cu);
             }
 
@@ -1222,13 +1222,13 @@ LABEL_21:
             v18 = v17;
             if (v17)
             {
-              v19 = [v17 principalClass];
-              if (![v19 conformsToProtocol:&unk_1F386CCB8])
+              principalClass = [v17 principalClass];
+              if (![principalClass conformsToProtocol:&unk_1F386CCB8])
               {
                 goto LABEL_37;
               }
 
-              v20 = [[v19 alloc] initWithPluginDelegate:v28];
+              v20 = [[principalClass alloc] initWithPluginDelegate:v28];
               [(AVAudioRemoteInputPlugin *)v28->mPlugins addObject:v20];
               if (kAVVCScope)
               {
@@ -1248,7 +1248,7 @@ LABEL_21:
               v24 = v21;
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
               {
-                v25 = NSStringFromClass(v19);
+                v25 = NSStringFromClass(principalClass);
                 *buf = 136315650;
                 v38 = "AVVCPluginRemoteInputHost.mm";
                 v39 = 1024;

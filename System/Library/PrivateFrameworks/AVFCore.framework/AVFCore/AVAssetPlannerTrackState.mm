@@ -1,7 +1,7 @@
 @interface AVAssetPlannerTrackState
 + (id)emptyState;
-+ (id)fromDictionary:(id)a3 error:(id *)a4;
-- (BOOL)resumableBy:(id)a3;
++ (id)fromDictionary:(id)dictionary error:(id *)error;
+- (BOOL)resumableBy:(id)by;
 - (id)description;
 - (id)toDictionary;
 - (void)dealloc;
@@ -16,11 +16,11 @@
   return v2;
 }
 
-+ (id)fromDictionary:(id)a3 error:(id *)a4
++ (id)fromDictionary:(id)dictionary error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
   v36 = 0;
-  v6 = [a3 objectForKey:@"AssemblyTrackID"];
+  v6 = [dictionary objectForKey:@"AssemblyTrackID"];
   if (!v6)
   {
     [AVAssetPlannerTrackState fromDictionary:? error:?];
@@ -35,15 +35,15 @@
     goto LABEL_45;
   }
 
-  v8 = [v7 intValue];
-  if (!v8)
+  intValue = [v7 intValue];
+  if (!intValue)
   {
     [AVAssetPlannerTrackState fromDictionary:? error:?];
     goto LABEL_45;
   }
 
-  v9 = v8;
-  v10 = [a3 objectForKey:@"MediaType"];
+  v9 = intValue;
+  v10 = [dictionary objectForKey:@"MediaType"];
   if (!v10)
   {
     [AVAssetPlannerTrackState fromDictionary:? error:?];
@@ -58,7 +58,7 @@
     goto LABEL_45;
   }
 
-  v12 = [a3 objectForKey:@"RequiresVideoCompression"];
+  v12 = [dictionary objectForKey:@"RequiresVideoCompression"];
   if (!v12)
   {
     [AVAssetPlannerTrackState fromDictionary:? error:?];
@@ -73,15 +73,15 @@
     goto LABEL_45;
   }
 
-  v14 = [v13 BOOLValue];
-  if (!v14)
+  bOOLValue = [v13 BOOLValue];
+  if (!bOOLValue)
   {
     v17 = 0;
     v16 = 0;
     goto LABEL_15;
   }
 
-  v15 = [a3 objectForKey:@"VideoCodecType"];
+  v15 = [dictionary objectForKey:@"VideoCodecType"];
   if (!v15)
   {
     [AVAssetPlannerTrackState fromDictionary:? error:?];
@@ -97,16 +97,16 @@ LABEL_45:
     v30 = v37;
 LABEL_31:
     v28 = 0;
-    if (a4 && v30)
+    if (error && v30)
     {
       v28 = 0;
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVFoundationErrorDomain" code:v30 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"AVFoundationErrorDomain" code:v30 userInfo:0];
     }
 
     return v28;
   }
 
-  v17 = [a3 objectForKey:@"LastCompletedSegmentFinalHDRMetadataGenerationState"];
+  v17 = [dictionary objectForKey:@"LastCompletedSegmentFinalHDRMetadataGenerationState"];
   if (v17)
   {
     objc_opt_class();
@@ -118,7 +118,7 @@ LABEL_31:
   }
 
 LABEL_15:
-  v18 = [a3 objectForKey:@"Segments"];
+  v18 = [dictionary objectForKey:@"Segments"];
   if (!v18)
   {
     [AVAssetPlannerTrackState fromDictionary:? error:?];
@@ -134,8 +134,8 @@ LABEL_15:
   }
 
   v20 = v9;
-  v31 = a4;
-  v21 = [MEMORY[0x1E695DF70] array];
+  errorCopy = error;
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -169,11 +169,11 @@ LABEL_15:
         {
           [AVAssetPlannerTrackState fromDictionary:? error:?];
           v30 = v37;
-          a4 = v31;
+          error = errorCopy;
           goto LABEL_31;
         }
 
-        [v21 addObject:v26];
+        [array addObject:v26];
       }
 
       v23 = [v19 countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -186,9 +186,9 @@ LABEL_15:
   [v28 setAssemblyTrackID:v20];
   [v28 setMediaType:v11];
   [v28 setVideoCodecType:v16];
-  [v28 setRequiresVideoCompression:v14];
+  [v28 setRequiresVideoCompression:bOOLValue];
   [v28 setLastCompletedSegmentFinalHDRMetadataGenerationState:v17];
-  [v28 setSegmentStates:v21];
+  [v28 setSegmentStates:array];
   return v28;
 }
 
@@ -202,22 +202,22 @@ LABEL_15:
 - (id)toDictionary
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", self->_assemblyTrackID), @"AssemblyTrackID"}];
-  [v3 setObject:self->_mediaType forKey:@"MediaType"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_requiresVideoCompression), @"RequiresVideoCompression"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", self->_assemblyTrackID), @"AssemblyTrackID"}];
+  [dictionary setObject:self->_mediaType forKey:@"MediaType"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_requiresVideoCompression), @"RequiresVideoCompression"}];
   videoCodecType = self->_videoCodecType;
   if (videoCodecType)
   {
-    [v3 setObject:videoCodecType forKey:@"VideoCodecType"];
+    [dictionary setObject:videoCodecType forKey:@"VideoCodecType"];
   }
 
   if ([(AVAssetPlannerTrackState *)self lastCompletedSegmentFinalHDRMetadataGenerationState])
   {
-    [v3 setObject:-[AVAssetPlannerTrackState lastCompletedSegmentFinalHDRMetadataGenerationState](self forKey:{"lastCompletedSegmentFinalHDRMetadataGenerationState"), @"LastCompletedSegmentFinalHDRMetadataGenerationState"}];
+    [dictionary setObject:-[AVAssetPlannerTrackState lastCompletedSegmentFinalHDRMetadataGenerationState](self forKey:{"lastCompletedSegmentFinalHDRMetadataGenerationState"), @"LastCompletedSegmentFinalHDRMetadataGenerationState"}];
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -238,7 +238,7 @@ LABEL_15:
           objc_enumerationMutation(segmentStates);
         }
 
-        [v5 addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * v10++), "toDictionary")}];
+        [array addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * v10++), "toDictionary")}];
       }
 
       while (v8 != v10);
@@ -248,8 +248,8 @@ LABEL_15:
     while (v8);
   }
 
-  [v3 setObject:v5 forKey:@"Segments"];
-  return v3;
+  [dictionary setObject:array forKey:@"Segments"];
+  return dictionary;
 }
 
 - (id)description
@@ -260,22 +260,22 @@ LABEL_15:
   return [v4 stringWithFormat:@"<%@: %p, %@>", NSStringFromClass(v5), self, v3];
 }
 
-- (BOOL)resumableBy:(id)a3
+- (BOOL)resumableBy:(id)by
 {
   assemblyTrackID = self->_assemblyTrackID;
-  if (assemblyTrackID != [a3 assemblyTrackID])
+  if (assemblyTrackID != [by assemblyTrackID])
   {
     goto LABEL_13;
   }
 
-  v6 = -[NSString isEqual:](self->_mediaType, "isEqual:", [a3 mediaType]);
+  v6 = -[NSString isEqual:](self->_mediaType, "isEqual:", [by mediaType]);
   if (!v6)
   {
     return v6;
   }
 
   requiresVideoCompression = self->_requiresVideoCompression;
-  if (requiresVideoCompression != [a3 requiresVideoCompression] || (v8 = -[NSArray count](self->_segmentStates, "count"), v8 != objc_msgSend(objc_msgSend(a3, "segmentStates"), "count")))
+  if (requiresVideoCompression != [by requiresVideoCompression] || (v8 = -[NSArray count](self->_segmentStates, "count"), v8 != objc_msgSend(objc_msgSend(by, "segmentStates"), "count")))
   {
 LABEL_13:
     LOBYTE(v6) = 0;
@@ -294,7 +294,7 @@ LABEL_13:
     v11 = 0;
     do
     {
-      v6 = [-[NSArray objectAtIndex:](self->_segmentStates objectAtIndex:{v11), "resumableBy:", objc_msgSend(objc_msgSend(a3, "segmentStates"), "objectAtIndex:", v11)}];
+      v6 = [-[NSArray objectAtIndex:](self->_segmentStates objectAtIndex:{v11), "resumableBy:", objc_msgSend(objc_msgSend(by, "segmentStates"), "objectAtIndex:", v11)}];
       if (v6)
       {
         v12 = v10 == v11;

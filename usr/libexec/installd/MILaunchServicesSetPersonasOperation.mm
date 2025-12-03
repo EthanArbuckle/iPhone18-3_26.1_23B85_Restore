@@ -1,29 +1,29 @@
 @interface MILaunchServicesSetPersonasOperation
-- (BOOL)isEqual:(id)a3;
-- (MILaunchServicesSetPersonasOperation)initWithBundleID:(id)a3 domain:(unint64_t)a4 personas:(id)a5 registrationUUID:(id)a6 serialNumber:(unint64_t)a7;
-- (MILaunchServicesSetPersonasOperation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MILaunchServicesSetPersonasOperation)initWithBundleID:(id)d domain:(unint64_t)domain personas:(id)personas registrationUUID:(id)iD serialNumber:(unint64_t)number;
+- (MILaunchServicesSetPersonasOperation)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MILaunchServicesSetPersonasOperation
 
-- (MILaunchServicesSetPersonasOperation)initWithBundleID:(id)a3 domain:(unint64_t)a4 personas:(id)a5 registrationUUID:(id)a6 serialNumber:(unint64_t)a7
+- (MILaunchServicesSetPersonasOperation)initWithBundleID:(id)d domain:(unint64_t)domain personas:(id)personas registrationUUID:(id)iD serialNumber:(unint64_t)number
 {
-  v12 = a3;
-  v13 = a5;
+  dCopy = d;
+  personasCopy = personas;
   v20.receiver = self;
   v20.super_class = MILaunchServicesSetPersonasOperation;
-  v14 = [(MILaunchServicesOperation *)&v20 initWithOperationUUID:a6 serialNumber:a7];
+  v14 = [(MILaunchServicesOperation *)&v20 initWithOperationUUID:iD serialNumber:number];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [dCopy copy];
     bundleID = v14->_bundleID;
     v14->_bundleID = v15;
 
-    v14->_domain = a4;
-    v17 = [v13 copy];
+    v14->_domain = domain;
+    v17 = [personasCopy copy];
     personaUniqueStrings = v14->_personaUniqueStrings;
     v14->_personaUniqueStrings = v17;
   }
@@ -31,18 +31,18 @@
   return v14;
 }
 
-- (MILaunchServicesSetPersonasOperation)initWithCoder:(id)a3
+- (MILaunchServicesSetPersonasOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = MILaunchServicesSetPersonasOperation;
-  v5 = [(MILaunchServicesOperation *)&v25 initWithCoder:v4];
+  v5 = [(MILaunchServicesOperation *)&v25 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
   bundleID = v5->_bundleID;
   v5->_bundleID = v6;
 
@@ -56,7 +56,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
   v5->_domain = [v9 unsignedIntegerValue];
 
   domain = v5->_domain;
@@ -66,7 +66,7 @@ LABEL_9:
     v24 = v5->_domain;
     sub_100010734("[MILaunchServicesSetPersonasOperation initWithCoder:]", 49, MIInstallerErrorDomain, 186, 0, 0, @"Invalid installation domain value when deserializing registration for %@: %lu", v11, v20);
     v21 = LABEL_10:;
-    [v4 failWithError:v21];
+    [coderCopy failWithError:v21];
 
     v16 = 0;
     goto LABEL_11;
@@ -75,7 +75,7 @@ LABEL_9:
   v12 = objc_opt_class();
   v23 = objc_opt_class();
   v13 = [NSSet setWithObjects:v12];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"personaUniqueStrings"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"personaUniqueStrings"];
   personaUniqueStrings = v5->_personaUniqueStrings;
   v5->_personaUniqueStrings = v14;
 
@@ -94,39 +94,39 @@ LABEL_11:
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = MILaunchServicesSetPersonasOperation;
-  v4 = a3;
-  [(MILaunchServicesOperation *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(MILaunchServicesOperation *)&v8 encodeWithCoder:coderCopy];
   v5 = [(MILaunchServicesSetPersonasOperation *)self bundleID:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"bundleID"];
+  [coderCopy encodeObject:v5 forKey:@"bundleID"];
 
   v6 = [NSNumber numberWithUnsignedInteger:[(MILaunchServicesSetPersonasOperation *)self domain]];
-  [v4 encodeObject:v6 forKey:@"domain"];
+  [coderCopy encodeObject:v6 forKey:@"domain"];
 
-  v7 = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
-  [v4 encodeObject:v7 forKey:@"personaUniqueStrings"];
+  personaUniqueStrings = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
+  [coderCopy encodeObject:personaUniqueStrings forKey:@"personaUniqueStrings"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = MILaunchServicesSetPersonasOperation;
-  if ([(MILaunchServicesOperation *)&v14 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(MILaunchServicesOperation *)&v14 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(MILaunchServicesSetPersonasOperation *)self bundleID];
-    v7 = [v5 bundleID];
-    v8 = sub_100011064(v6, v7);
+    v5 = equalCopy;
+    bundleID = [(MILaunchServicesSetPersonasOperation *)self bundleID];
+    bundleID2 = [v5 bundleID];
+    v8 = sub_100011064(bundleID, bundleID2);
 
     if (v8 && (v9 = [v5 domain], v9 == -[MILaunchServicesSetPersonasOperation domain](self, "domain")))
     {
-      v10 = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
-      v11 = [v5 personaUniqueStrings];
-      v12 = sub_100011064(v10, v11);
+      personaUniqueStrings = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
+      personaUniqueStrings2 = [v5 personaUniqueStrings];
+      v12 = sub_100011064(personaUniqueStrings, personaUniqueStrings2);
     }
 
     else
@@ -148,29 +148,29 @@ LABEL_11:
   v10.receiver = self;
   v10.super_class = MILaunchServicesSetPersonasOperation;
   v3 = [(MILaunchServicesOperation *)&v10 hash];
-  v4 = [(MILaunchServicesSetPersonasOperation *)self bundleID];
-  v5 = [v4 hash];
+  bundleID = [(MILaunchServicesSetPersonasOperation *)self bundleID];
+  v5 = [bundleID hash];
   v6 = v5 ^ [(MILaunchServicesSetPersonasOperation *)self domain];
-  v7 = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
-  v8 = v6 ^ [v7 hash];
+  personaUniqueStrings = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
+  v8 = v6 ^ [personaUniqueStrings hash];
 
   return v8 ^ v3;
 }
 
 - (id)description
 {
-  v3 = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
-  v4 = [v3 allObjects];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  personaUniqueStrings = [(MILaunchServicesSetPersonasOperation *)self personaUniqueStrings];
+  allObjects = [personaUniqueStrings allObjects];
+  v5 = [allObjects componentsJoinedByString:{@", "}];
 
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(MILaunchServicesOperation *)self operationUUID];
-  v9 = [(MILaunchServicesOperation *)self serialNumber];
-  v10 = [(MILaunchServicesSetPersonasOperation *)self bundleID];
+  operationUUID = [(MILaunchServicesOperation *)self operationUUID];
+  serialNumber = [(MILaunchServicesOperation *)self serialNumber];
+  bundleID = [(MILaunchServicesSetPersonasOperation *)self bundleID];
   [(MILaunchServicesSetPersonasOperation *)self domain];
   v11 = MIStringForInstallationDomain();
-  v12 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@ personas:[%@]>", v7, v8, v9, v10, v11, v5];
+  v12 = [NSString stringWithFormat:@"<%@: %@:%lu %@/%@ personas:[%@]>", v7, operationUUID, serialNumber, bundleID, v11, v5];
 
   return v12;
 }

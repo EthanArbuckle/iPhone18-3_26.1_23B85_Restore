@@ -1,18 +1,18 @@
 @interface PurgeStatsReporter
-+ (BOOL)sendPurgeStatsEventWithKey:(id)a3;
++ (BOOL)sendPurgeStatsEventWithKey:(id)key;
 - (BOOL)statsAreStale;
-- (PurgeStatsReporter)initWithPath:(id)a3;
+- (PurgeStatsReporter)initWithPath:(id)path;
 - (id)load;
-- (void)appendAndSaveStats:(id)a3;
-- (void)save:(id)a3;
+- (void)appendAndSaveStats:(id)stats;
+- (void)save:(id)save;
 - (void)sendAndResetStats;
 @end
 
 @implementation PurgeStatsReporter
 
-- (PurgeStatsReporter)initWithPath:(id)a3
+- (PurgeStatsReporter)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = PurgeStatsReporter;
   v5 = [(PurgeStatsReporter *)&v24 init];
@@ -25,7 +25,7 @@
   persistenceQueue = v5->_persistenceQueue;
   v5->_persistenceQueue = v6;
 
-  v8 = [NSURL fileURLWithPath:v4];
+  v8 = [NSURL fileURLWithPath:pathCopy];
   persistenceURL = v5->_persistenceURL;
   v5->_persistenceURL = v8;
 
@@ -42,8 +42,8 @@
     goto LABEL_19;
   }
 
-  v11 = [(NSURL *)v10 path];
-  v12 = access([v11 UTF8String], 0);
+  path = [(NSURL *)v10 path];
+  v12 = access([path UTF8String], 0);
 
   if (!v12)
   {
@@ -69,9 +69,9 @@
     goto LABEL_16;
   }
 
-  v14 = [(NSURL *)v5->_persistenceURL path];
+  path2 = [(NSURL *)v5->_persistenceURL path];
   v23 = 0;
-  v15 = [v13 writeToFile:v14 options:0 error:&v23];
+  v15 = [v13 writeToFile:path2 options:0 error:&v23];
   v16 = v23;
 
   if ((v15 & 1) == 0)
@@ -80,11 +80,11 @@ LABEL_16:
     v20 = CDGetLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(NSURL *)v5->_persistenceURL path];
+      path3 = [(NSURL *)v5->_persistenceURL path];
       *buf = 138412802;
       v26 = v13;
       v27 = 2112;
-      v28 = v22;
+      v28 = path3;
       v29 = 2112;
       v30 = v16;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "unable to write results to cache file. Data: %@, Path: %@, Error: %@", buf, 0x20u);
@@ -102,17 +102,17 @@ LABEL_20:
   return v19;
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   persistenceQueue = self->_persistenceQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __27__PurgeStatsReporter_save___block_invoke;
   v7[3] = &unk_100060B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = saveCopy;
+  v6 = saveCopy;
   dispatch_sync(persistenceQueue, v7);
 }
 
@@ -232,8 +232,8 @@ void __26__PurgeStatsReporter_load__block_invoke(uint64_t a1)
 
 - (BOOL)statsAreStale
 {
-  v2 = [(PurgeStatsReporter *)self load];
-  v3 = [NSMutableDictionary dictionaryWithDictionary:v2];
+  load = [(PurgeStatsReporter *)self load];
+  v3 = [NSMutableDictionary dictionaryWithDictionary:load];
 
   +[NSDate timeIntervalSinceReferenceDate];
   v5 = v4;
@@ -243,8 +243,8 @@ void __26__PurgeStatsReporter_load__block_invoke(uint64_t a1)
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v3 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [v3 allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -256,7 +256,7 @@ void __26__PurgeStatsReporter_load__block_invoke(uint64_t a1)
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = [*(*(&v19 + 1) + 8 * i) substringToIndex:{objc_msgSend(*(*(&v19 + 1) + 8 * i), "rangeOfString:", @"_"}];
@@ -272,7 +272,7 @@ void __26__PurgeStatsReporter_load__block_invoke(uint64_t a1)
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -288,23 +288,23 @@ LABEL_11:
   return v17;
 }
 
-- (void)appendAndSaveStats:(id)a3
+- (void)appendAndSaveStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   if ([(PurgeStatsReporter *)self statsAreStale])
   {
     [(PurgeStatsReporter *)self resetPurgeStats];
   }
 
-  v5 = [(PurgeStatsReporter *)self load];
-  v10 = [NSMutableDictionary dictionaryWithDictionary:v5];
+  load = [(PurgeStatsReporter *)self load];
+  v10 = [NSMutableDictionary dictionaryWithDictionary:load];
 
   +[NSDate timeIntervalSinceReferenceDate];
   v7 = v6;
   v8 = +[NSUUID UUID];
   v9 = [NSString stringWithFormat:@"%lf_%@", v7, v8];
 
-  [v10 setObject:v4 forKeyedSubscript:v9];
+  [v10 setObject:statsCopy forKeyedSubscript:v9];
   [(PurgeStatsReporter *)self save:v10];
 }
 
@@ -396,21 +396,21 @@ LABEL_22:
   [(PurgeStatsReporter *)self resetPurgeStats];
 }
 
-+ (BOOL)sendPurgeStatsEventWithKey:(id)a3
++ (BOOL)sendPurgeStatsEventWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = CDGetLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v10 = "+[PurgeStatsReporter sendPurgeStatsEventWithKey:]";
     v11 = 2112;
-    v12 = v3;
+    v12 = keyCopy;
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%s : %@", buf, 0x16u);
   }
 
-  v8 = v3;
-  v5 = v3;
+  v8 = keyCopy;
+  v5 = keyCopy;
   v6 = AnalyticsSendEventLazy();
 
   return v6;

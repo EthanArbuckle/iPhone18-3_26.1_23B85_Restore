@@ -1,139 +1,139 @@
 @interface CRLWPTextKnobTracker
-+ (const)p_lineFragmentForCharIndex:(unint64_t)a3 knobTag:(unint64_t)a4 selectionType:(unint64_t)a5 rep:(id)a6;
++ (const)p_lineFragmentForCharIndex:(unint64_t)index knobTag:(unint64_t)tag selectionType:(unint64_t)type rep:(id)rep;
 - (BOOL)p_isMagnifyingVerticalText;
-- (BOOL)p_newHeadCharIndex:(unint64_t)a3 isPastTailCharIndex:(unint64_t)a4 rep:(id)a5;
-- (BOOL)p_newTailCharIndex:(unint64_t)a3 isPastHeadCharIndex:(unint64_t)a4 rep:(id)a5;
+- (BOOL)p_newHeadCharIndex:(unint64_t)index isPastTailCharIndex:(unint64_t)charIndex rep:(id)rep;
+- (BOOL)p_newTailCharIndex:(unint64_t)index isPastHeadCharIndex:(unint64_t)charIndex rep:(id)rep;
 - (CGPoint)magnificationPoint;
-- (CRLWPTextKnobTracker)initWithRep:(id)a3 knob:(id)a4;
-- (_NSRange)adjustSelectionRange:(_NSRange)a3 forStorage:(id)a4;
+- (CRLWPTextKnobTracker)initWithRep:(id)rep knob:(id)knob;
+- (_NSRange)adjustSelectionRange:(_NSRange)range forStorage:(id)storage;
 - (id)p_rangedMagnifier;
-- (unint64_t)p_charIndexForKnob:(unint64_t)a3 selection:(id)a4;
+- (unint64_t)p_charIndexForKnob:(unint64_t)knob selection:(id)selection;
 - (void)dealloc;
 - (void)endMovingKnob;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
 - (void)p_cleanupWhenDone;
 - (void)p_fixUpWordSelection;
-- (void)p_magnifyWithTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6 delayed:(BOOL)a7;
-- (void)p_setSelectionFromPoint:(CGPoint)a3;
-- (void)p_startMagnifyingAt:(CGPoint)a3;
-- (void)p_stopMagnifyingWithAnimation:(BOOL)a3;
-- (void)updateSelectionAfterAutoscroll:(id)a3;
+- (void)p_magnifyWithTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated delayed:(BOOL)delayed;
+- (void)p_setSelectionFromPoint:(CGPoint)point;
+- (void)p_startMagnifyingAt:(CGPoint)at;
+- (void)p_stopMagnifyingWithAnimation:(BOOL)animation;
+- (void)updateSelectionAfterAutoscroll:(id)autoscroll;
 @end
 
 @implementation CRLWPTextKnobTracker
 
-- (CRLWPTextKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLWPTextKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  knobCopy = knob;
   v66.receiver = self;
   v66.super_class = CRLWPTextKnobTracker;
-  v8 = [(CRLCanvasKnobTracker *)&v66 initWithRep:v6 knob:v7];
+  v8 = [(CRLCanvasKnobTracker *)&v66 initWithRep:repCopy knob:knobCopy];
   if (v8)
   {
     v9 = objc_opt_class();
     v10 = [(CRLCanvasKnobTracker *)v8 rep];
-    v11 = [v10 interactiveCanvasController];
-    v12 = [v11 editorController];
-    v13 = [v12 textInputEditor];
-    v14 = sub_100014370(v9, v13);
+    interactiveCanvasController = [v10 interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    textInputEditor = [editorController textInputEditor];
+    v14 = sub_100014370(v9, textInputEditor);
     [(CRLWPTextKnobTracker *)v8 setTextEditor:v14];
 
-    v15 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    [v15 setKnobTracking:1];
+    textEditor = [(CRLWPTextKnobTracker *)v8 textEditor];
+    [textEditor setKnobTracking:1];
 
-    v16 = [(CRLCanvasKnobTracker *)v8 knob];
-    v17 = [v16 tag];
-    v18 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    [v18 setKnobTag:v17];
+    knob = [(CRLCanvasKnobTracker *)v8 knob];
+    v17 = [knob tag];
+    textEditor2 = [(CRLWPTextKnobTracker *)v8 textEditor];
+    [textEditor2 setKnobTag:v17];
 
     v19 = [(CRLCanvasKnobTracker *)v8 rep];
-    [v7 position];
+    [knobCopy position];
     [v19 convertNaturalPointToUnscaledCanvas:?];
     v21 = v20;
     v23 = v22;
-    v24 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    [v24 setKnobTrackingDragPoint:{v21, v23}];
+    textEditor3 = [(CRLWPTextKnobTracker *)v8 textEditor];
+    [textEditor3 setKnobTrackingDragPoint:{v21, v23}];
 
-    v25 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    v8->_multiTap = [v25 knobTrackingTapCount] > 1;
+    textEditor4 = [(CRLWPTextKnobTracker *)v8 textEditor];
+    v8->_multiTap = [textEditor4 knobTrackingTapCount] > 1;
 
-    v26 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    v27 = [v26 selection];
+    textEditor5 = [(CRLWPTextKnobTracker *)v8 textEditor];
+    selection = [textEditor5 selection];
 
-    v8->_selectionType = [v27 type];
-    v8->_rangeAtStart.location = [v27 range];
+    v8->_selectionType = [selection type];
+    v8->_rangeAtStart.location = [selection range];
     v8->_rangeAtStart.length = v28;
     if (v8->_selectionType != 7)
     {
-      v29 = [(CRLWPTextKnobTracker *)v8 textEditor];
-      v30 = [v29 editorHelper];
-      v31 = [v30 logicalToVisualSelection:v27];
+      textEditor6 = [(CRLWPTextKnobTracker *)v8 textEditor];
+      editorHelper = [textEditor6 editorHelper];
+      v31 = [editorHelper logicalToVisualSelection:selection];
 
-      v32 = [(CRLWPTextKnobTracker *)v8 textEditor];
-      [v32 setSelection:v31];
+      textEditor7 = [(CRLWPTextKnobTracker *)v8 textEditor];
+      [textEditor7 setSelection:v31];
 
-      v27 = v31;
+      selection = v31;
     }
 
-    v33 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    v34 = [v33 editorHelper];
-    v35 = [v34 calculateVisualRunsFromSelection:v27 updateControllerSelection:1];
+    textEditor8 = [(CRLWPTextKnobTracker *)v8 textEditor];
+    editorHelper2 = [textEditor8 editorHelper];
+    v35 = [editorHelper2 calculateVisualRunsFromSelection:selection updateControllerSelection:1];
 
-    v36 = [v35 start];
+    start = [v35 start];
     v37 = [v35 end];
     if ([v35 isVisual])
     {
-      v36 = [v35 headCharIndex];
-      v38 = [v35 tailCharIndex];
-      if (v38 < v36)
+      start = [v35 headCharIndex];
+      tailCharIndex = [v35 tailCharIndex];
+      if (tailCharIndex < start)
       {
-        v36 = v38;
+        start = tailCharIndex;
       }
 
-      v39 = [v35 headCharIndex];
-      v40 = [v35 tailCharIndex];
-      if (v39 <= v40)
+      headCharIndex = [v35 headCharIndex];
+      tailCharIndex2 = [v35 tailCharIndex];
+      if (headCharIndex <= tailCharIndex2)
       {
-        v41 = v40;
+        v41 = tailCharIndex2;
       }
 
       else
       {
-        v41 = v39;
+        v41 = headCharIndex;
       }
 
       v8->_headCharAtStart = [v35 headCharIndex];
       v8->_tailCharAtStart = [v35 tailCharIndex];
-      v42 = [(CRLWPTextKnobTracker *)v8 textEditor];
-      v43 = [v42 storage];
-      v37 = sub_10027F35C(v41, v43);
+      textEditor9 = [(CRLWPTextKnobTracker *)v8 textEditor];
+      storage = [textEditor9 storage];
+      v37 = sub_10027F35C(v41, storage);
     }
 
     else
     {
-      v8->_headCharAtStart = v36;
+      v8->_headCharAtStart = start;
       v8->_tailCharAtStart = v37;
     }
 
-    if (v36 <= v37)
+    if (start <= v37)
     {
       v44 = v37;
     }
 
     else
     {
-      v44 = v36;
+      v44 = start;
     }
 
-    if (v36 >= v37)
+    if (start >= v37)
     {
       v45 = v37;
     }
 
     else
     {
-      v45 = v36;
+      v45 = start;
     }
 
     v8->_rangeAtStart.location = v45;
@@ -141,26 +141,26 @@
     v46 = [(CRLCanvasKnobTracker *)v8 rep];
     [v46 refreshEditMenu];
 
-    v47 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    v48 = [v47 wantsParagraphModeWithSelection:v35];
+    textEditor10 = [(CRLWPTextKnobTracker *)v8 textEditor];
+    v48 = [textEditor10 wantsParagraphModeWithSelection:v35];
 
     if (v48)
     {
       v49 = [(CRLCanvasKnobTracker *)v8 rep];
-      v50 = [(CRLCanvasKnobTracker *)v8 knob];
-      if ([v50 tag] == 10)
+      knob2 = [(CRLCanvasKnobTracker *)v8 knob];
+      if ([knob2 tag] == 10)
       {
-        v51 = [v35 start];
+        start2 = [v35 start];
       }
 
       else
       {
-        v51 = [v35 end];
+        start2 = [v35 end];
       }
 
-      v52 = v51;
-      v53 = [(CRLCanvasKnobTracker *)v8 knob];
-      v54 = [v49 repForCharIndex:v52 isStart:{objc_msgSend(v53, "tag") == 11}];
+      v52 = start2;
+      knob3 = [(CRLCanvasKnobTracker *)v8 knob];
+      v54 = [v49 repForCharIndex:v52 isStart:{objc_msgSend(knob3, "tag") == 11}];
 
       v55 = [(CRLCanvasKnobTracker *)v8 rep];
 
@@ -173,17 +173,17 @@
       [v56 invalidateKnobs];
 
       v57 = [(CRLCanvasKnobTracker *)v8 rep];
-      v58 = [(CRLCanvasKnobTracker *)v8 knob];
-      v59 = [v57 knobForTag:{objc_msgSend(v58, "tag")}];
+      knob4 = [(CRLCanvasKnobTracker *)v8 knob];
+      v59 = [v57 knobForTag:{objc_msgSend(knob4, "tag")}];
       [(CRLCanvasKnobTracker *)v8 setKnob:v59];
     }
 
-    v60 = [(CRLWPTextKnobTracker *)v8 textEditor];
-    v61 = [v60 interactiveCanvasController];
-    if (v61)
+    textEditor11 = [(CRLWPTextKnobTracker *)v8 textEditor];
+    interactiveCanvasController2 = [textEditor11 interactiveCanvasController];
+    if (interactiveCanvasController2)
     {
       v62 = [(CRLCanvasKnobTracker *)v8 rep];
-      if (v7)
+      if (knobCopy)
       {
         v63 = v62 == 0;
       }
@@ -200,9 +200,9 @@
         goto LABEL_35;
       }
 
-      v60 = [(CRLCanvasKnobTracker *)v8 rep];
-      [v7 position];
-      [CRLWPTextKnobTracker p_magnifyWithTarget:v8 magnificationPoint:"p_magnifyWithTarget:magnificationPoint:offset:animated:delayed:" offset:v60 animated:1 delayed:1];
+      textEditor11 = [(CRLCanvasKnobTracker *)v8 rep];
+      [knobCopy position];
+      [CRLWPTextKnobTracker p_magnifyWithTarget:v8 magnificationPoint:"p_magnifyWithTarget:magnificationPoint:offset:animated:delayed:" offset:textEditor11 animated:1 delayed:1];
     }
 
 LABEL_35:
@@ -254,7 +254,7 @@ LABEL_35:
   [(CRLCanvasKnobTracker *)&v10 dealloc];
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
   if (self->_ignoreNextCall)
   {
@@ -263,12 +263,12 @@ LABEL_35:
 
   else
   {
-    y = a3.y;
-    x = a3.x;
+    y = position.y;
+    x = position.x;
     self->_knobMoved = 1;
     [(CRLWPTextKnobTracker *)self p_setSelectionFromPoint:?];
-    v6 = [(CRLWPTextKnobTracker *)self textEditor];
-    [v6 setKnobTrackingDragPoint:{x, y}];
+    textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+    [textEditor setKnobTrackingDragPoint:{x, y}];
 
     v7 = [(CRLCanvasKnobTracker *)self rep];
     [v7 invalidateKnobPositions];
@@ -294,8 +294,8 @@ LABEL_35:
   if (!self->_doneTracking)
   {
     self->_doneTracking = 1;
-    v3 = [(CRLWPTextKnobTracker *)self textEditor];
-    [v3 setKnobTracking:0];
+    textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+    [textEditor setKnobTracking:0];
 
     v4 = [(CRLCanvasKnobTracker *)self rep];
     [v4 invalidateKnobs];
@@ -306,13 +306,13 @@ LABEL_35:
 
 - (BOOL)p_isMagnifyingVerticalText
 {
-  v3 = [(CRLWPTextKnobTracker *)self textEditor];
-  v4 = [v3 selection];
+  textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+  selection = [textEditor selection];
 
-  v5 = [(CRLCanvasKnobTracker *)self knob];
-  v6 = [v5 tag];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v6 = [knob tag];
 
-  v7 = [(CRLWPTextKnobTracker *)self p_charIndexForKnob:v6 selection:v4];
+  v7 = [(CRLWPTextKnobTracker *)self p_charIndexForKnob:v6 selection:selection];
   selectionType = self->_selectionType;
   v9 = [(CRLCanvasKnobTracker *)self rep];
   v10 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:v7 knobTag:v6 selectionType:selectionType rep:v9];
@@ -330,14 +330,14 @@ LABEL_35:
   return v11;
 }
 
-+ (const)p_lineFragmentForCharIndex:(unint64_t)a3 knobTag:(unint64_t)a4 selectionType:(unint64_t)a5 rep:(id)a6
++ (const)p_lineFragmentForCharIndex:(unint64_t)index knobTag:(unint64_t)tag selectionType:(unint64_t)type rep:(id)rep
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [a6 columns];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  columns = [rep columns];
+  v10 = [columns countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -347,10 +347,10 @@ LABEL_3:
     {
       if (*v16 != v11)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(columns);
       }
 
-      v13 = [*(*(&v15 + 1) + 8 * v12) lineFragmentForCharIndex:a3 knobTag:a4 selectionType:a5];
+      v13 = [*(*(&v15 + 1) + 8 * v12) lineFragmentForCharIndex:index knobTag:tag selectionType:type];
       if (v13)
       {
         break;
@@ -358,7 +358,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [columns countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -393,69 +393,69 @@ LABEL_9:
   return v5;
 }
 
-- (void)p_startMagnifyingAt:(CGPoint)a3
+- (void)p_startMagnifyingAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   self->_didDragKnob = 1;
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isRedesignedTextCursorEnabled])
   {
-    v7 = [(CRLWPTextKnobTracker *)self textEditor];
-    v6 = [v7 textSelectionDelegate];
-    [v6 beginLoupeSessionAt:{x, y}];
+    textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+    textSelectionDelegate = [textEditor textSelectionDelegate];
+    [textSelectionDelegate beginLoupeSessionAt:{x, y}];
   }
 }
 
-- (void)p_magnifyWithTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6 delayed:(BOOL)a7
+- (void)p_magnifyWithTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated delayed:(BOOL)delayed
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   self->_didDragKnob = 1;
-  if ([_TtC8Freeform19CRLFeatureFlagGroup isRedesignedTextCursorEnabled:a3])
+  if ([_TtC8Freeform19CRLFeatureFlagGroup isRedesignedTextCursorEnabled:target])
   {
-    v11 = [(CRLWPTextKnobTracker *)self textEditor];
-    v10 = [v11 textSelectionDelegate];
-    [v10 moveLoupeTo:{x, y}];
+    textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+    textSelectionDelegate = [textEditor textSelectionDelegate];
+    [textSelectionDelegate moveLoupeTo:{x, y}];
   }
 }
 
-- (void)p_stopMagnifyingWithAnimation:(BOOL)a3
+- (void)p_stopMagnifyingWithAnimation:(BOOL)animation
 {
   if (+[_TtC8Freeform19CRLFeatureFlagGroup isRedesignedTextCursorEnabled])
   {
-    v5 = [(CRLWPTextKnobTracker *)self textEditor];
-    v4 = [v5 textSelectionDelegate];
-    [v4 endLoupeSession];
+    textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+    textSelectionDelegate = [textEditor textSelectionDelegate];
+    [textSelectionDelegate endLoupeSession];
   }
 }
 
-- (void)p_setSelectionFromPoint:(CGPoint)a3
+- (void)p_setSelectionFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v142 = [(CRLWPTextKnobTracker *)self textEditor];
-  v6 = [v142 storage];
-  v7 = [v142 closestRepToPoint:v6 forStorage:{x, y}];
+  y = point.y;
+  x = point.x;
+  textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+  storage = [textEditor storage];
+  v7 = [textEditor closestRepToPoint:storage forStorage:{x, y}];
   v8 = v7;
   if (v7)
   {
     [v7 convertNaturalPointFromUnscaledCanvas:{x, y}];
     v10 = v9;
     v12 = v11;
-    v13 = [v8 columns];
-    v14 = [v13 firstObject];
-    v15 = [v14 textIsVertical];
+    columns = [v8 columns];
+    firstObject = [columns firstObject];
+    textIsVertical = [firstObject textIsVertical];
 
     if (((self->_multiTap | [(CRLWPEditor *)self->_textEditor wantsParagraphMode]) & 1) == 0)
     {
-      if (v15)
+      if (textIsVertical)
       {
-        v16 = [(CRLCanvasKnobTracker *)self knob];
-        [v8 knobOffsetForKnob:v16 paragraphMode:0];
+        knob = [(CRLCanvasKnobTracker *)self knob];
+        [v8 knobOffsetForKnob:knob paragraphMode:0];
         v18 = v17;
 
-        v19 = [(CRLCanvasKnobTracker *)self knob];
-        v20 = [v19 tag];
+        knob2 = [(CRLCanvasKnobTracker *)self knob];
+        v20 = [knob2 tag];
         v21 = 1.0;
         if (v20 == 11)
         {
@@ -467,12 +467,12 @@ LABEL_9:
 
       else
       {
-        v22 = [(CRLCanvasKnobTracker *)self knob];
-        [v8 knobOffsetForKnob:v22 paragraphMode:0];
+        knob3 = [(CRLCanvasKnobTracker *)self knob];
+        [v8 knobOffsetForKnob:knob3 paragraphMode:0];
         v24 = v23;
 
-        v19 = [(CRLCanvasKnobTracker *)self knob];
-        v25 = [v19 tag];
+        knob2 = [(CRLCanvasKnobTracker *)self knob];
+        v25 = [knob2 tag];
         v26 = -1.0;
         if (v25 == 11)
         {
@@ -483,19 +483,19 @@ LABEL_9:
       }
     }
 
-    v141 = [v142 selection];
-    [v141 range];
-    v27 = [(CRLCanvasKnobTracker *)self knob];
-    v139 = v15;
-    v28 = [v27 tag];
+    selection = [textEditor selection];
+    [selection range];
+    knob4 = [(CRLCanvasKnobTracker *)self knob];
+    v139 = textIsVertical;
+    v28 = [knob4 tag];
 
-    v29 = [v141 type];
-    v30 = [v8 layout];
-    tailCharAtStart = [CRLWPColumn charIndexForPointWithPinning:v28 == 10 isTail:v29 selectionType:v30 inLayoutTarget:v10, v12];
+    type = [selection type];
+    layout = [v8 layout];
+    tailCharAtStart = [CRLWPColumn charIndexForPointWithPinning:v28 == 10 isTail:type selectionType:layout inLayoutTarget:v10, v12];
 
     if (tailCharAtStart == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v32 = v141;
+      selection3 = selection;
 LABEL_124:
       v97 = v8;
 LABEL_142:
@@ -503,7 +503,7 @@ LABEL_142:
       goto LABEL_143;
     }
 
-    v140 = v6;
+    v140 = storage;
     if (self->_multiTap)
     {
       if (v28 == 11)
@@ -524,7 +524,7 @@ LABEL_26:
           goto LABEL_31;
         }
 
-        [v142 setKnobTag:v33];
+        [textEditor setKnobTag:v33];
         v40 = [(CRLCanvasKnobTracker *)self rep];
         [v40 invalidateKnobs];
 
@@ -648,8 +648,8 @@ LABEL_32:
         goto LABEL_75;
       }
 
-      v38 = [v142 storage];
-      v39 = [v38 previousCharacterIndex:self->_rangeAtStart.length + p_rangeAtStart->location];
+      storage2 = [textEditor storage];
+      v39 = [storage2 previousCharacterIndex:self->_rangeAtStart.length + p_rangeAtStart->location];
     }
 
     else
@@ -659,8 +659,8 @@ LABEL_32:
         goto LABEL_36;
       }
 
-      v38 = [v142 storage];
-      v39 = [v38 nextCharacterIndex:p_rangeAtStart->location];
+      storage2 = [textEditor storage];
+      v39 = [storage2 nextCharacterIndex:p_rangeAtStart->location];
     }
 
     v70 = v39;
@@ -678,11 +678,11 @@ LABEL_31:
 
 LABEL_37:
       v137 = v28;
-      v44 = [v141 type];
+      type2 = [selection type];
       v45 = tailCharAtStart;
-      if (v44 != 7)
+      if (type2 != 7)
       {
-        v45 = [v6 previousCharacterIndex:tailCharAtStart];
+        v45 = [storage previousCharacterIndex:tailCharAtStart];
       }
 
       v46 = [(CRLWPTextKnobTracker *)self p_newTailCharIndex:v45 isPastHeadCharIndex:self->_headCharAtStart rep:v8];
@@ -758,7 +758,7 @@ LABEL_37:
 
 LABEL_75:
       v59 = [CRLWPSelection selectionWithRange:tailCharAtStart, length];
-      v60 = [v142 wantsParagraphModeWithSelection:v59];
+      v60 = [textEditor wantsParagraphModeWithSelection:v59];
 
       if (!v60)
       {
@@ -786,44 +786,44 @@ LABEL_119:
 
         v88 = [(CRLWPTextKnobTracker *)self adjustSelectionRange:tailCharAtStart forStorage:length, v69];
         v90 = v89;
-        v91 = [v142 editorHelper];
-        v147.location = [v91 selectionRangeForCharIndex:{objc_msgSend(v141, "range")}];
+        editorHelper = [textEditor editorHelper];
+        v147.location = [editorHelper selectionRangeForCharIndex:{objc_msgSend(selection, "range")}];
         v147.length = v92;
         v145.location = v88;
         v145.length = v90;
         v93 = sub_1002BC8E0(v145, v147);
         v95 = v94;
 
-        if ([v141 range] == v93 && v96 == v95)
+        if ([selection range] == v93 && v96 == v95)
         {
-          v6 = v140;
-          v32 = v141;
+          storage = v140;
+          selection3 = selection;
           goto LABEL_124;
         }
 
-        v6 = v140;
-        v98 = [objc_alloc(objc_msgSend(v142 "wpSelectionClass"))];
-        v99 = [v142 editorController];
-        [v99 setSelection:v98 forEditor:v142 withFlags:14];
+        storage = v140;
+        v98 = [objc_alloc(objc_msgSend(textEditor "wpSelectionClass"))];
+        editorController = [textEditor editorController];
+        [editorController setSelection:v98 forEditor:textEditor withFlags:14];
 
-        v100 = [v142 editorHelper];
-        v101 = [v142 selection];
-        v102 = [v100 calculateVisualRunsFromSelection:v101 updateControllerSelection:1];
+        editorHelper2 = [textEditor editorHelper];
+        selection2 = [textEditor selection];
+        v102 = [editorHelper2 calculateVisualRunsFromSelection:selection2 updateControllerSelection:1];
 
-        v32 = [v142 selection];
+        selection3 = [textEditor selection];
 
-        self->_selectionType = [v32 type];
+        self->_selectionType = [selection3 type];
         if (v138)
         {
-          v103 = [v32 start];
+          start = [selection3 start];
         }
 
         else
         {
-          v103 = [v32 end];
+          start = [selection3 end];
         }
 
-        v104 = [v8 repForCharIndex:v103 isStart:v138];
+        v104 = [v8 repForCharIndex:start isStart:v138];
         v105 = v104;
         if (v104)
         {
@@ -833,7 +833,7 @@ LABEL_119:
 
           if (v106 != v97)
           {
-            [v142 setKnobTag:v137];
+            [textEditor setKnobTag:v137];
             v107 = [(CRLCanvasKnobTracker *)self rep];
             [v107 invalidateKnobs];
 
@@ -851,50 +851,50 @@ LABEL_119:
         }
 
         v110 = [(CRLCanvasKnobTracker *)self rep];
-        v111 = [(CRLCanvasKnobTracker *)self knob];
-        [v110 knobCenterForSelection:v32 knob:v111];
+        knob5 = [(CRLCanvasKnobTracker *)self knob];
+        [v110 knobCenterForSelection:selection3 knob:knob5];
         v113 = v112;
         v115 = v114;
-        v116 = [(CRLCanvasKnobTracker *)self knob];
-        [v116 setPosition:{v113, v115}];
+        knob6 = [(CRLCanvasKnobTracker *)self knob];
+        [knob6 setPosition:{v113, v115}];
 
-        v117 = [(CRLCanvasKnobTracker *)self knob];
-        [v117 position];
+        knob7 = [(CRLCanvasKnobTracker *)self knob];
+        [knob7 position];
         v119 = v118;
         v121 = v120;
         v122 = CGRectNull.origin.y;
 
-        v123 = [*(&self->super.super.isa + v136) wantsParagraphMode];
+        wantsParagraphMode = [*(&self->super.super.isa + v136) wantsParagraphMode];
         v124 = v119 == CGRectNull.origin.x;
         if (v121 != v122)
         {
           v124 = 0;
         }
 
-        if ((v123 | v124) == 1)
+        if ((wantsParagraphMode | v124) == 1)
         {
           [(CRLWPTextKnobTracker *)self p_stopMagnifyingWithAnimation:1];
         }
 
         else
         {
-          v125 = [v142 interactiveCanvasController];
-          if (v125)
+          interactiveCanvasController = [textEditor interactiveCanvasController];
+          if (interactiveCanvasController)
           {
             v126 = [(CRLCanvasKnobTracker *)self rep];
             if (v126)
             {
-              v127 = [(CRLCanvasKnobTracker *)self knob];
+              knob8 = [(CRLCanvasKnobTracker *)self knob];
 
-              if (!v127)
+              if (!knob8)
               {
                 goto LABEL_141;
               }
 
-              v125 = [(CRLCanvasKnobTracker *)self rep];
-              v128 = [(CRLCanvasKnobTracker *)self knob];
-              [v128 position];
-              [CRLWPTextKnobTracker p_magnifyWithTarget:"p_magnifyWithTarget:magnificationPoint:offset:animated:delayed:" magnificationPoint:v125 offset:self->_textMagnifierTimer == 0 animated:0 delayed:?];
+              interactiveCanvasController = [(CRLCanvasKnobTracker *)self rep];
+              knob9 = [(CRLCanvasKnobTracker *)self knob];
+              [knob9 position];
+              [CRLWPTextKnobTracker p_magnifyWithTarget:"p_magnifyWithTarget:magnificationPoint:offset:animated:delayed:" magnificationPoint:interactiveCanvasController offset:self->_textMagnifierTimer == 0 animated:0 delayed:?];
             }
           }
         }
@@ -904,8 +904,8 @@ LABEL_141:
         goto LABEL_142;
       }
 
-      v61 = [v8 columns];
-      v62 = [CRLWPColumn closestColumnInColumnsArray:v61 forPoint:0 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:v10, v12];
+      columns2 = [v8 columns];
+      v62 = [CRLWPColumn closestColumnInColumnsArray:columns2 forPoint:0 ignoreEmptyColumns:1 ignoreDrawableOnlyColumns:v10, v12];
 
       v63 = [v62 lineFragmentClosestToPoint:5 knobTag:{v10, v12}];
       v64 = v63;
@@ -1074,8 +1074,8 @@ LABEL_108:
 
       if (v139)
       {
-        v129 = [(CRLCanvasKnobTracker *)self knob];
-        v130 = [v129 tag];
+        knob10 = [(CRLCanvasKnobTracker *)self knob];
+        v130 = [knob10 tag];
         v131 = 1.0;
         if (v130 == 11)
         {
@@ -1087,8 +1087,8 @@ LABEL_108:
 
       else
       {
-        v129 = [(CRLCanvasKnobTracker *)self knob];
-        v132 = [v129 tag];
+        knob10 = [(CRLCanvasKnobTracker *)self knob];
+        v132 = [knob10 tag];
         v133 = -1.0;
         if (v132 == 11)
         {
@@ -1098,8 +1098,8 @@ LABEL_108:
         v12 = v75 + v133;
       }
 
-      v134 = [v8 layout];
-      v135 = [CRLWPColumn charIndexForPointWithPinning:v134 inLayoutTarget:v10, v12];
+      layout2 = [v8 layout];
+      v135 = [CRLWPColumn charIndexForPointWithPinning:layout2 inLayoutTarget:v10, v12];
 
       if (v135 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1115,20 +1115,20 @@ LABEL_30:
 LABEL_143:
 }
 
-- (BOOL)p_newHeadCharIndex:(unint64_t)a3 isPastTailCharIndex:(unint64_t)a4 rep:(id)a5
+- (BOOL)p_newHeadCharIndex:(unint64_t)index isPastTailCharIndex:(unint64_t)charIndex rep:(id)rep
 {
-  v8 = a5;
-  v9 = a3 >= a4;
+  repCopy = rep;
+  v9 = index >= charIndex;
   if (self->_selectionType == 7 && ![(CRLWPEditor *)self->_textEditor wantsParagraphMode])
   {
-    v10 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:a3 knobTag:11 selectionType:self->_selectionType rep:v8];
-    v12 = [v8 range];
+    v10 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:index knobTag:11 selectionType:self->_selectionType rep:repCopy];
+    range = [repCopy range];
     v13 = 0;
-    v14 = a4 >= v12;
-    v15 = a4 - v12;
+    v14 = charIndex >= range;
+    v15 = charIndex - range;
     if (v14 && v15 < v11)
     {
-      v13 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:a4 knobTag:11 selectionType:self->_selectionType rep:v8];
+      v13 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:charIndex knobTag:11 selectionType:self->_selectionType rep:repCopy];
     }
 
     if (v10)
@@ -1143,12 +1143,12 @@ LABEL_143:
 
     if (v16)
     {
-      v17 = [(CRLWPTextKnobTracker *)self textEditor];
-      v18 = [v17 storage];
-      v19 = [v18 isWritingDirectionRightToLeftForParagraphAtCharIndex:a3];
+      textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+      storage = [textEditor storage];
+      v19 = [storage isWritingDirectionRightToLeftForParagraphAtCharIndex:index];
 
-      v20 = sub_100212D9C(v10, a3);
-      v21 = sub_100212D9C(v10, a4);
+      v20 = sub_100212D9C(v10, index);
+      v21 = sub_100212D9C(v10, charIndex);
       if (v19)
       {
         v9 = v20 < v21;
@@ -1164,20 +1164,20 @@ LABEL_143:
   return v9;
 }
 
-- (BOOL)p_newTailCharIndex:(unint64_t)a3 isPastHeadCharIndex:(unint64_t)a4 rep:(id)a5
+- (BOOL)p_newTailCharIndex:(unint64_t)index isPastHeadCharIndex:(unint64_t)charIndex rep:(id)rep
 {
-  v8 = a5;
-  v9 = a3 <= a4;
+  repCopy = rep;
+  v9 = index <= charIndex;
   if (self->_selectionType == 7 && ![(CRLWPEditor *)self->_textEditor wantsParagraphMode])
   {
-    v10 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:a3 knobTag:11 selectionType:self->_selectionType rep:v8];
-    v12 = [v8 range];
+    v10 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:index knobTag:11 selectionType:self->_selectionType rep:repCopy];
+    range = [repCopy range];
     v13 = 0;
-    v14 = a4 >= v12;
-    v15 = a4 - v12;
+    v14 = charIndex >= range;
+    v15 = charIndex - range;
     if (v14 && v15 < v11)
     {
-      v13 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:a4 knobTag:11 selectionType:self->_selectionType rep:v8];
+      v13 = [CRLWPTextKnobTracker p_lineFragmentForCharIndex:charIndex knobTag:11 selectionType:self->_selectionType rep:repCopy];
     }
 
     if (v10)
@@ -1192,12 +1192,12 @@ LABEL_143:
 
     if (v16)
     {
-      v17 = [(CRLWPTextKnobTracker *)self textEditor];
-      v18 = [v17 storage];
-      v19 = [v18 isWritingDirectionRightToLeftForParagraphAtCharIndex:a3];
+      textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+      storage = [textEditor storage];
+      v19 = [storage isWritingDirectionRightToLeftForParagraphAtCharIndex:index];
 
-      v20 = sub_100212D9C(v10, a3);
-      v21 = sub_100212D9C(v10, a4);
+      v20 = sub_100212D9C(v10, index);
+      v21 = sub_100212D9C(v10, charIndex);
       if (v19)
       {
         v9 = v20 > v21;
@@ -1222,11 +1222,11 @@ LABEL_143:
 
   [(CRLWPTextMagnifierRanged *)self->_magnifier horizontalMovement];
   v4 = v3;
-  v41 = [(CRLCanvasKnobTracker *)self knob];
-  v5 = [v41 tag];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v5 = [knob tag];
 
-  v6 = [(CRLWPTextKnobTracker *)self textEditor];
-  v42 = [v6 selection];
+  textEditor = [(CRLWPTextKnobTracker *)self textEditor];
+  selection = [textEditor selection];
 
   if (v4 >= 0.0)
   {
@@ -1237,23 +1237,23 @@ LABEL_143:
 
     if (v5 != 11)
     {
-      v7 = [v42 end];
+      start2 = [selection end];
       v10 = [(CRLCanvasKnobTracker *)self rep];
       v11 = v10;
       if (v10)
       {
-        v12 = [(CRLWPSelection *)v10 columnForCharIndex:v7];
-        if (v12)
+        textEditor4 = [(CRLWPSelection *)v10 columnForCharIndex:start2];
+        if (textEditor4)
         {
-          v13 = [v12 lineFragmentForCharIndex:v7 knobTag:10 selectionType:{objc_msgSend(v42, "type")}];
+          v13 = [textEditor4 lineFragmentForCharIndex:start2 knobTag:10 selectionType:{objc_msgSend(selection, "type")}];
           if (v13)
           {
             v14 = *(v13 + 3) < 0 ? &xmmword_101464828 : v13;
-            if (*v14 < v7 && v7 == (*v14 + *(v14 + 1)))
+            if (*v14 < start2 && start2 == (*v14 + *(v14 + 1)))
             {
-              v15 = [(CRLWPTextKnobTracker *)self textEditor];
-              v16 = [v15 storage];
-              v17 = sub_10027E3D4([v16 characterAtIndex:v7 - 1]);
+              textEditor2 = [(CRLWPTextKnobTracker *)self textEditor];
+              storage = [textEditor2 storage];
+              v17 = sub_10027E3D4([storage characterAtIndex:start2 - 1]);
 
               if (v17)
               {
@@ -1267,42 +1267,42 @@ LABEL_143:
       goto LABEL_22;
     }
 
-    v8 = [v42 start];
+    start = [selection start];
 LABEL_11:
-    v7 = v8;
+    start2 = start;
     v9 = 0;
     goto LABEL_23;
   }
 
   if (v5 != 11)
   {
-    v8 = [v42 end];
+    start = [selection end];
     goto LABEL_11;
   }
 
-  v7 = [v42 start];
+  start2 = [selection start];
 LABEL_22:
   v9 = 1;
 LABEL_23:
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  if (start2 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    location = [v42 range];
+    location = [selection range];
     length = v19;
     if (v9)
     {
-      v21 = [(CRLWPTextKnobTracker *)self textEditor];
-      v22 = [v21 storage];
-      v23 = [v22 wordAtCharIndex:v7 includePreviousWord:1];
+      textEditor3 = [(CRLWPTextKnobTracker *)self textEditor];
+      storage2 = [textEditor3 storage];
+      v23 = [storage2 wordAtCharIndex:start2 includePreviousWord:1];
       v25 = v24;
 
       if (v23 == 0x7FFFFFFFFFFFFFFFLL)
       {
 LABEL_36:
-        v11 = -[CRLWPSelection initWithType:range:styleInsertionBehavior:caretAffinity:]([CRLWPSelection alloc], "initWithType:range:styleInsertionBehavior:caretAffinity:", [v42 type], location, length, objc_msgSend(v42, "styleInsertionBehavior"), objc_msgSend(v42, "caretAffinity"));
-        v12 = [(CRLWPTextKnobTracker *)self textEditor];
-        v39 = [v12 editorController];
-        v40 = [(CRLWPTextKnobTracker *)self textEditor];
-        [v39 setSelection:v11 forEditor:v40 withFlags:9];
+        v11 = -[CRLWPSelection initWithType:range:styleInsertionBehavior:caretAffinity:]([CRLWPSelection alloc], "initWithType:range:styleInsertionBehavior:caretAffinity:", [selection type], location, length, objc_msgSend(selection, "styleInsertionBehavior"), objc_msgSend(selection, "caretAffinity"));
+        textEditor4 = [(CRLWPTextKnobTracker *)self textEditor];
+        editorController = [textEditor4 editorController];
+        textEditor5 = [(CRLWPTextKnobTracker *)self textEditor];
+        [editorController setSelection:v11 forEditor:textEditor5 withFlags:9];
 
 LABEL_37:
         goto LABEL_38;
@@ -1311,19 +1311,19 @@ LABEL_37:
 
     else if (v5 == 11)
     {
-      v27 = [(CRLWPTextKnobTracker *)self textEditor];
-      v28 = [v27 nextWordFromIndex:v7 forward:1];
+      textEditor6 = [(CRLWPTextKnobTracker *)self textEditor];
+      v28 = [textEditor6 nextWordFromIndex:start2 forward:1];
 
       if (v28 < &location[length])
       {
-        location += v28 - v7;
-        length -= v28 - v7;
+        location += v28 - start2;
+        length -= v28 - start2;
         goto LABEL_36;
       }
 
-      v36 = [(CRLWPTextKnobTracker *)self textEditor];
-      v37 = [v36 storage];
-      v23 = [v37 wordAtCharIndex:v7 includePreviousWord:1];
+      textEditor7 = [(CRLWPTextKnobTracker *)self textEditor];
+      storage3 = [textEditor7 storage];
+      v23 = [storage3 wordAtCharIndex:start2 includePreviousWord:1];
       v25 = v38;
 
       if (v23 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1334,19 +1334,19 @@ LABEL_37:
 
     else
     {
-      v29 = [(CRLWPTextKnobTracker *)self textEditor];
-      v30 = [v29 nextWordFromIndex:v7 forward:0];
+      textEditor8 = [(CRLWPTextKnobTracker *)self textEditor];
+      v30 = [textEditor8 nextWordFromIndex:start2 forward:0];
       v32 = v31;
 
       if (v30 != 0x7FFFFFFFFFFFFFFFLL && &v30[v32] > location)
       {
-        length = &v30[v32 + length - v7];
+        length = &v30[v32 + length - start2];
         goto LABEL_36;
       }
 
-      v33 = [(CRLWPTextKnobTracker *)self textEditor];
-      v34 = [v33 storage];
-      v23 = [v34 wordAtCharIndex:v7 includePreviousWord:1];
+      textEditor9 = [(CRLWPTextKnobTracker *)self textEditor];
+      storage4 = [textEditor9 storage];
+      v23 = [storage4 wordAtCharIndex:start2 includePreviousWord:1];
       v25 = v35;
 
       if (v23 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1368,53 +1368,53 @@ LABEL_37:
 LABEL_38:
 }
 
-- (unint64_t)p_charIndexForKnob:(unint64_t)a3 selection:(id)a4
+- (unint64_t)p_charIndexForKnob:(unint64_t)knob selection:(id)selection
 {
-  v5 = a4;
-  if ([v5 type] == 7)
+  selectionCopy = selection;
+  if ([selectionCopy type] == 7)
   {
-    if (a3 == 11)
+    if (knob == 11)
     {
-      v6 = [v5 headCharIndex];
+      headCharIndex = [selectionCopy headCharIndex];
     }
 
     else
     {
-      v6 = [v5 tailCharIndex];
+      headCharIndex = [selectionCopy tailCharIndex];
     }
   }
 
-  else if (a3 == 11)
+  else if (knob == 11)
   {
-    v6 = [v5 start];
+    headCharIndex = [selectionCopy start];
   }
 
   else
   {
-    v6 = [v5 end];
+    headCharIndex = [selectionCopy end];
   }
 
-  v7 = v6;
+  v7 = headCharIndex;
 
   return v7;
 }
 
-- (_NSRange)adjustSelectionRange:(_NSRange)a3 forStorage:(id)a4
+- (_NSRange)adjustSelectionRange:(_NSRange)range forStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (void)updateSelectionAfterAutoscroll:(id)a3
+- (void)updateSelectionAfterAutoscroll:(id)autoscroll
 {
-  v8 = a3;
-  [v8 adjustedUnscaledAutoscrollPoint];
+  autoscrollCopy = autoscroll;
+  [autoscrollCopy adjustedUnscaledAutoscrollPoint];
   v5 = v4;
   v7 = v6;
-  -[CRLWPTextMagnifierRanged setAutoscrollDirections:](self->_magnifier, "setAutoscrollDirections:", [v8 directions]);
+  -[CRLWPTextMagnifierRanged setAutoscrollDirections:](self->_magnifier, "setAutoscrollDirections:", [autoscrollCopy directions]);
   [(CRLWPTextKnobTracker *)self p_setSelectionFromPoint:v5, v7];
   [(CRLWPTextMagnifierRanged *)self->_magnifier postAutoscrollPoint:v5, v7];
 }

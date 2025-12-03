@@ -1,32 +1,32 @@
 @interface CAARSchemaCAARProactiveFeatures
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARProactiveFeatures)initWithDictionary:(id)a3;
-- (CAARSchemaCAARProactiveFeatures)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARProactiveFeatures)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARProactiveFeatures)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppRelevanceScore:(BOOL)a3;
-- (void)setHasIntentRelevanceScore:(BOOL)a3;
-- (void)setHasIsAppInTopFiveRelevance:(BOOL)a3;
-- (void)setHasIsAppInTopTenRelevance:(BOOL)a3;
-- (void)setHasIsIntentInTopFiveRelevance:(BOOL)a3;
-- (void)setHasIsIntentInTopOneRelevance:(BOOL)a3;
-- (void)setHasIsIntentInTopTenRelevance:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppRelevanceScore:(BOOL)score;
+- (void)setHasIntentRelevanceScore:(BOOL)score;
+- (void)setHasIsAppInTopFiveRelevance:(BOOL)relevance;
+- (void)setHasIsAppInTopTenRelevance:(BOOL)relevance;
+- (void)setHasIsIntentInTopFiveRelevance:(BOOL)relevance;
+- (void)setHasIsIntentInTopOneRelevance:(BOOL)relevance;
+- (void)setHasIsIntentInTopTenRelevance:(BOOL)relevance;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARProactiveFeatures
 
-- (CAARSchemaCAARProactiveFeatures)initWithDictionary:(id)a3
+- (CAARSchemaCAARProactiveFeatures)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = CAARSchemaCAARProactiveFeatures;
   v5 = [(CAARSchemaCAARProactiveFeatures *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isAppInTopOneRelevance"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isAppInTopOneRelevance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,42 +34,42 @@
     }
 
     v16 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"isAppInTopFiveRelevance"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isAppInTopFiveRelevance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARProactiveFeatures setIsAppInTopFiveRelevance:](v5, "setIsAppInTopFiveRelevance:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isAppInTopTenRelevance"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isAppInTopTenRelevance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARProactiveFeatures setIsAppInTopTenRelevance:](v5, "setIsAppInTopTenRelevance:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isIntentInTopOneRelevance"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isIntentInTopOneRelevance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARProactiveFeatures setIsIntentInTopOneRelevance:](v5, "setIsIntentInTopOneRelevance:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isIntentInTopFiveRelevance"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isIntentInTopFiveRelevance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARProactiveFeatures setIsIntentInTopFiveRelevance:](v5, "setIsIntentInTopFiveRelevance:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isIntentInTopTenRelevance"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isIntentInTopTenRelevance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARProactiveFeatures setIsIntentInTopTenRelevance:](v5, "setIsIntentInTopTenRelevance:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"appRelevanceScore"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"appRelevanceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(CAARSchemaCAARProactiveFeatures *)v5 setAppRelevanceScore:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"intentRelevanceScore"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"intentRelevanceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,30 +91,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARProactiveFeatures)initWithJSON:(id)a3
+- (CAARSchemaCAARProactiveFeatures)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARProactiveFeatures *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARProactiveFeatures *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARProactiveFeatures *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -127,14 +127,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x40) != 0)
   {
     v7 = MEMORY[0x1E696AD98];
     [(CAARSchemaCAARProactiveFeatures *)self appRelevanceScore];
     v8 = [v7 numberWithDouble:?];
-    [v3 setObject:v8 forKeyedSubscript:@"appRelevanceScore"];
+    [dictionary setObject:v8 forKeyedSubscript:@"appRelevanceScore"];
 
     has = self->_has;
     if ((has & 0x80) == 0)
@@ -157,7 +157,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(CAARSchemaCAARProactiveFeatures *)self intentRelevanceScore];
   v10 = [v9 numberWithDouble:?];
-  [v3 setObject:v10 forKeyedSubscript:@"intentRelevanceScore"];
+  [dictionary setObject:v10 forKeyedSubscript:@"intentRelevanceScore"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -173,7 +173,7 @@ LABEL_4:
 
 LABEL_15:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARProactiveFeatures isAppInTopFiveRelevance](self, "isAppInTopFiveRelevance")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isAppInTopFiveRelevance"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isAppInTopFiveRelevance"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -189,7 +189,7 @@ LABEL_5:
 
 LABEL_16:
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARProactiveFeatures isAppInTopOneRelevance](self, "isAppInTopOneRelevance")}];
-  [v3 setObject:v12 forKeyedSubscript:@"isAppInTopOneRelevance"];
+  [dictionary setObject:v12 forKeyedSubscript:@"isAppInTopOneRelevance"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -205,7 +205,7 @@ LABEL_6:
 
 LABEL_17:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARProactiveFeatures isAppInTopTenRelevance](self, "isAppInTopTenRelevance")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isAppInTopTenRelevance"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isAppInTopTenRelevance"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -221,7 +221,7 @@ LABEL_7:
 
 LABEL_18:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARProactiveFeatures isIntentInTopFiveRelevance](self, "isIntentInTopFiveRelevance")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isIntentInTopFiveRelevance"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isIntentInTopFiveRelevance"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -237,19 +237,19 @@ LABEL_8:
 
 LABEL_19:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARProactiveFeatures isIntentInTopOneRelevance](self, "isIntentInTopOneRelevance")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isIntentInTopOneRelevance"];
+  [dictionary setObject:v15 forKeyedSubscript:@"isIntentInTopOneRelevance"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_9:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[CAARSchemaCAARProactiveFeatures isIntentInTopTenRelevance](self, "isIntentInTopTenRelevance")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isIntentInTopTenRelevance"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isIntentInTopTenRelevance"];
   }
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -407,16 +407,16 @@ LABEL_19:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_34;
@@ -425,13 +425,13 @@ LABEL_19:
   if (*&has)
   {
     isAppInTopOneRelevance = self->_isAppInTopOneRelevance;
-    if (isAppInTopOneRelevance != [v4 isAppInTopOneRelevance])
+    if (isAppInTopOneRelevance != [equalCopy isAppInTopOneRelevance])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -443,13 +443,13 @@ LABEL_19:
   if (v8)
   {
     isAppInTopFiveRelevance = self->_isAppInTopFiveRelevance;
-    if (isAppInTopFiveRelevance != [v4 isAppInTopFiveRelevance])
+    if (isAppInTopFiveRelevance != [equalCopy isAppInTopFiveRelevance])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -461,13 +461,13 @@ LABEL_19:
   if (v10)
   {
     isAppInTopTenRelevance = self->_isAppInTopTenRelevance;
-    if (isAppInTopTenRelevance != [v4 isAppInTopTenRelevance])
+    if (isAppInTopTenRelevance != [equalCopy isAppInTopTenRelevance])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -479,13 +479,13 @@ LABEL_19:
   if (v12)
   {
     isIntentInTopOneRelevance = self->_isIntentInTopOneRelevance;
-    if (isIntentInTopOneRelevance != [v4 isIntentInTopOneRelevance])
+    if (isIntentInTopOneRelevance != [equalCopy isIntentInTopOneRelevance])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -497,13 +497,13 @@ LABEL_19:
   if (v14)
   {
     isIntentInTopFiveRelevance = self->_isIntentInTopFiveRelevance;
-    if (isIntentInTopFiveRelevance != [v4 isIntentInTopFiveRelevance])
+    if (isIntentInTopFiveRelevance != [equalCopy isIntentInTopFiveRelevance])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -515,13 +515,13 @@ LABEL_19:
   if (v16)
   {
     isIntentInTopTenRelevance = self->_isIntentInTopTenRelevance;
-    if (isIntentInTopTenRelevance != [v4 isIntentInTopTenRelevance])
+    if (isIntentInTopTenRelevance != [equalCopy isIntentInTopTenRelevance])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -533,11 +533,11 @@ LABEL_19:
   if (v18)
   {
     appRelevanceScore = self->_appRelevanceScore;
-    [v4 appRelevanceScore];
+    [equalCopy appRelevanceScore];
     if (appRelevanceScore == v20)
     {
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
       goto LABEL_30;
     }
 
@@ -555,7 +555,7 @@ LABEL_30:
   if ((*&has & 0x80) != 0)
   {
     intentRelevanceScore = self->_intentRelevanceScore;
-    [v4 intentRelevanceScore];
+    [equalCopy intentRelevanceScore];
     if (intentRelevanceScore != v23)
     {
       goto LABEL_34;
@@ -568,9 +568,9 @@ LABEL_35:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -674,9 +674,9 @@ LABEL_19:
 LABEL_9:
 }
 
-- (void)setHasIntentRelevanceScore:(BOOL)a3
+- (void)setHasIntentRelevanceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 0x80;
   }
@@ -689,9 +689,9 @@ LABEL_9:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasAppRelevanceScore:(BOOL)a3
+- (void)setHasAppRelevanceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 64;
   }
@@ -704,9 +704,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsIntentInTopTenRelevance:(BOOL)a3
+- (void)setHasIsIntentInTopTenRelevance:(BOOL)relevance
 {
-  if (a3)
+  if (relevance)
   {
     v3 = 32;
   }
@@ -719,9 +719,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsIntentInTopFiveRelevance:(BOOL)a3
+- (void)setHasIsIntentInTopFiveRelevance:(BOOL)relevance
 {
-  if (a3)
+  if (relevance)
   {
     v3 = 16;
   }
@@ -734,9 +734,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsIntentInTopOneRelevance:(BOOL)a3
+- (void)setHasIsIntentInTopOneRelevance:(BOOL)relevance
 {
-  if (a3)
+  if (relevance)
   {
     v3 = 8;
   }
@@ -749,9 +749,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsAppInTopTenRelevance:(BOOL)a3
+- (void)setHasIsAppInTopTenRelevance:(BOOL)relevance
 {
-  if (a3)
+  if (relevance)
   {
     v3 = 4;
   }
@@ -764,9 +764,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsAppInTopFiveRelevance:(BOOL)a3
+- (void)setHasIsAppInTopFiveRelevance:(BOOL)relevance
 {
-  if (a3)
+  if (relevance)
   {
     v3 = 2;
   }

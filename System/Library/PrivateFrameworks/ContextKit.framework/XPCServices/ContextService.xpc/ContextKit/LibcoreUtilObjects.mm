@@ -1,30 +1,30 @@
 @interface LibcoreUtilObjects
-+ (BOOL)equalWithId:(id)a3 withId:(id)a4;
-+ (int)hashCodeWithId:(id)a3;
++ (BOOL)equalWithId:(id)id withId:(id)withId;
++ (int)hashCodeWithId:(id)id;
 @end
 
 @implementation LibcoreUtilObjects
 
-+ (BOOL)equalWithId:(id)a3 withId:(id)a4
++ (BOOL)equalWithId:(id)id withId:(id)withId
 {
-  if (a3 == a4)
+  if (id == withId)
   {
     return 1;
   }
 
-  if (a3)
+  if (id)
   {
-    return [a3 isEqual:a4];
+    return [id isEqual:withId];
   }
 
   return 0;
 }
 
-+ (int)hashCodeWithId:(id)a3
++ (int)hashCodeWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    return [a3 hash];
+    return [id hash];
   }
 
   else

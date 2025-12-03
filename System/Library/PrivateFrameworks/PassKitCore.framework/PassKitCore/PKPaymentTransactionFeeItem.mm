@@ -1,21 +1,21 @@
 @interface PKPaymentTransactionFeeItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFeeItem:(id)a3;
-- (PKPaymentTransactionFeeItem)initWithCoder:(id)a3;
-- (PKPaymentTransactionFeeItem)initWithFeeDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFeeItem:(id)item;
+- (PKPaymentTransactionFeeItem)initWithCoder:(id)coder;
+- (PKPaymentTransactionFeeItem)initWithFeeDictionary:(id)dictionary;
 - (id)description;
 - (id)jsonDictionaryRepresentation;
 - (unint64_t)hash;
-- (void)_initWithFeeDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithFeeDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionFeeItem
 
-- (PKPaymentTransactionFeeItem)initWithFeeDictionary:(id)a3
+- (PKPaymentTransactionFeeItem)initWithFeeDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v9.receiver = self;
     v9.super_class = PKPaymentTransactionFeeItem;
@@ -23,37 +23,37 @@
     v6 = v5;
     if (v5)
     {
-      [(PKPaymentTransactionFeeItem *)v5 _initWithFeeDictionary:v4];
+      [(PKPaymentTransactionFeeItem *)v5 _initWithFeeDictionary:dictionaryCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)_initWithFeeDictionary:(id)a3
+- (void)_initWithFeeDictionary:(id)dictionary
 {
-  v15 = a3;
-  v4 = [v15 objectForKey:@"identifier"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v4;
 
-  v6 = [v15 objectForKey:@"type"];
+  v6 = [dictionaryCopy objectForKey:@"type"];
   self->_type = PKPaymentTransactionFeeItemTypeFromString(v6);
 
-  v7 = [v15 PKDecimalNumberFromStringForKey:@"amount"];
-  v8 = [v15 objectForKey:@"currencyCode"];
+  v7 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amount"];
+  v8 = [dictionaryCopy objectForKey:@"currencyCode"];
   if (v7)
   {
-    v9 = [MEMORY[0x1E696AB90] notANumber];
-    v10 = [v7 isEqualToNumber:v9];
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v10 = [v7 isEqualToNumber:notANumber];
 
     if ((v10 & 1) == 0)
     {
@@ -66,35 +66,35 @@
     }
   }
 
-  v13 = [v15 objectForKey:@"localizedDisplayName"];
+  v13 = [dictionaryCopy objectForKey:@"localizedDisplayName"];
   localizedDisplayName = self->_localizedDisplayName;
   self->_localizedDisplayName = v13;
 }
 
 - (id)jsonDictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   currencyAmount = self->_currencyAmount;
   if (currencyAmount)
   {
-    v7 = [(PKCurrencyAmount *)currencyAmount currency];
-    v8 = [(PKCurrencyAmount *)self->_currencyAmount amount];
-    if (v7)
+    currency = [(PKCurrencyAmount *)currencyAmount currency];
+    amount = [(PKCurrencyAmount *)self->_currencyAmount amount];
+    if (currency)
     {
-      [v4 setObject:v7 forKey:@"currencyCode"];
+      [v4 setObject:currency forKey:@"currencyCode"];
     }
 
-    if (v8)
+    if (amount)
     {
-      v9 = [v8 stringValue];
-      [v4 setObject:v9 forKey:@"amount"];
+      stringValue = [amount stringValue];
+      [v4 setObject:stringValue forKey:@"amount"];
     }
   }
 
@@ -144,26 +144,26 @@ LABEL_23:
   return v13;
 }
 
-- (PKPaymentTransactionFeeItem)initWithCoder:(id)a3
+- (PKPaymentTransactionFeeItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPaymentTransactionFeeItem;
   v5 = [(PKPaymentTransactionFeeItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmount"];
     currencyAmount = v5->_currencyAmount;
     v5->_currencyAmount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKPaymentTransactionFeeItemTypeFromString(v10);
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDisplayName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDisplayName"];
     localizedDisplayName = v5->_localizedDisplayName;
     v5->_localizedDisplayName = v11;
   }
@@ -171,11 +171,11 @@ LABEL_23:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_identifier forKey:@"identifier"];
-  [v6 encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_currencyAmount forKey:@"currencyAmount"];
   type = self->_type;
   if (type <= 2)
   {
@@ -210,44 +210,44 @@ LABEL_23:
 
   v5 = @"unknown";
 LABEL_13:
-  [v6 encodeObject:v5 forKey:@"type"];
-  [v6 encodeObject:self->_localizedDisplayName forKey:@"localizedDisplayName"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:self->_localizedDisplayName forKey:@"localizedDisplayName"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_currencyAmount];
-  [v3 safelyAddObject:self->_localizedDisplayName];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_currencyAmount];
+  [array safelyAddObject:self->_localizedDisplayName];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionFeeItem *)self isEqualToFeeItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionFeeItem *)self isEqualToFeeItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFeeItem:(id)a3
+- (BOOL)isEqualToFeeItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = itemCopy[1];
   if (identifier)
   {
     v7 = v6 == 0;
@@ -272,7 +272,7 @@ LABEL_13:
   }
 
   currencyAmount = self->_currencyAmount;
-  v9 = v4[3];
+  v9 = itemCopy[3];
   if (currencyAmount && v9)
   {
     if (![(PKCurrencyAmount *)currencyAmount isEqual:?])
@@ -287,7 +287,7 @@ LABEL_13:
   }
 
   localizedDisplayName = self->_localizedDisplayName;
-  v11 = v4[4];
+  v11 = itemCopy[4];
   if (!localizedDisplayName || !v11)
   {
     if (localizedDisplayName == v11)
@@ -306,7 +306,7 @@ LABEL_19:
   }
 
 LABEL_17:
-  v12 = self->_type == v4[2];
+  v12 = self->_type == itemCopy[2];
 LABEL_20:
 
   return v12;

@@ -1,56 +1,56 @@
 @interface REMChangeSet
-+ (id)errorChangeSetWithError:(id)a3;
++ (id)errorChangeSetWithError:(id)error;
 - (BOOL)_filterAndFlattenAndConsolidateChanges;
-- (BOOL)enumerateChanges:(int64_t)a3 forModelsOfClass:(Class)a4 withBlock:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (REMChangeSet)initWithChangeTransactions:(id)a3;
-- (REMChangeSet)initWithCoder:(id)a3;
-- (REMChangeSet)initWithError:(id)a3;
+- (BOOL)enumerateChanges:(int64_t)changes forModelsOfClass:(Class)class withBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (REMChangeSet)initWithChangeTransactions:(id)transactions;
+- (REMChangeSet)initWithCoder:(id)coder;
+- (REMChangeSet)initWithError:(id)error;
 - (id)description;
-- (id)lastChangeTokenForAccountID:(id)a3;
+- (id)lastChangeTokenForAccountID:(id)d;
 - (void)_filterAndFlattenAndConsolidateChanges;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMChangeSet
 
-+ (id)errorChangeSetWithError:(id)a3
++ (id)errorChangeSetWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[REMChangeSet alloc] initWithError:v3];
+  errorCopy = error;
+  v4 = [[REMChangeSet alloc] initWithError:errorCopy];
 
   return v4;
 }
 
-- (REMChangeSet)initWithError:(id)a3
+- (REMChangeSet)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v10.receiver = self;
   v10.super_class = REMChangeSet;
   v6 = [(REMChangeSet *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     transactions = v7->_transactions;
     v7->_transactions = MEMORY[0x1E695E0F0];
 
-    v7->_isTruncated = [v5 code] == 4;
+    v7->_isTruncated = [errorCopy code] == 4;
   }
 
   return v7;
 }
 
-- (REMChangeSet)initWithChangeTransactions:(id)a3
+- (REMChangeSet)initWithChangeTransactions:(id)transactions
 {
-  v5 = a3;
+  transactionsCopy = transactions;
   v9.receiver = self;
   v9.super_class = REMChangeSet;
   v6 = [(REMChangeSet *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transactions, a3);
+    objc_storeStrong(&v6->_transactions, transactions);
   }
 
   return v7;
@@ -60,14 +60,14 @@
 {
   v12 = MEMORY[0x1E696AEC0];
   v11 = [(NSArray *)self->_transactions count];
-  v13 = [(NSArray *)self->_transactions firstObject];
-  v3 = [v13 changes];
-  v4 = [v3 firstObject];
-  v10 = [v4 changeID];
-  v5 = [(NSArray *)self->_transactions lastObject];
-  v6 = [v5 changes];
-  v7 = [v6 lastObject];
-  v8 = [v12 stringWithFormat:@"REMChangeSet<%p>: {raw-txn-count=%lu, chg-ids-from=%lld, chg-ids-to=%lld} {filtered-txn-count=%lu, cnsld-inserts=%lu, cnsld-updates=%lu, #cnsld-deletes=%lu}; {error=%@}", self, v11, v10, objc_msgSend(v7, "changeID"), -[NSArray count](self->_filteredTransactions, "count"), -[NSArray count](self->_inserts, "count"), -[NSArray count](self->_updates, "count"), -[NSArray count](self->_deletes, "count"), self->_error];;
+  firstObject = [(NSArray *)self->_transactions firstObject];
+  changes = [firstObject changes];
+  firstObject2 = [changes firstObject];
+  changeID = [firstObject2 changeID];
+  lastObject = [(NSArray *)self->_transactions lastObject];
+  changes2 = [lastObject changes];
+  lastObject2 = [changes2 lastObject];
+  v8 = [v12 stringWithFormat:@"REMChangeSet<%p>: {raw-txn-count=%lu, chg-ids-from=%lld, chg-ids-to=%lld} {filtered-txn-count=%lu, cnsld-inserts=%lu, cnsld-updates=%lu, #cnsld-deletes=%lu}; {error=%@}", self, v11, changeID, objc_msgSend(lastObject2, "changeID"), -[NSArray count](self->_filteredTransactions, "count"), -[NSArray count](self->_inserts, "count"), -[NSArray count](self->_updates, "count"), -[NSArray count](self->_deletes, "count"), self->_error];;
 
   return v8;
 }
@@ -75,26 +75,26 @@
 - (BOOL)_filterAndFlattenAndConsolidateChanges
 {
   v124 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v84 = [MEMORY[0x1E695DFA8] set];
   v83 = [MEMORY[0x1E695DFA8] set];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v82 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E695DF70] array];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v6 = [(REMChangeSet *)self transactions];
-  v7 = [v6 countByEnumeratingWithState:&v106 objects:v123 count:16];
-  v85 = self;
-  v86 = v3;
-  v89 = v4;
-  v81 = v5;
+  transactions = [(REMChangeSet *)self transactions];
+  v7 = [transactions countByEnumeratingWithState:&v106 objects:v123 count:16];
+  selfCopy = self;
+  v86 = dictionary;
+  v89 = dictionary2;
+  v81 = array;
   if (!v7)
   {
 
-    [(REMChangeSet *)self setFilteredTransactions:v5];
+    [(REMChangeSet *)self setFilteredTransactions:array];
     goto LABEL_57;
   }
 
@@ -103,7 +103,7 @@
   v10 = *v107;
   *&v8 = 138412290;
   v77 = v8;
-  obj = v6;
+  obj = transactions;
   v80 = *v107;
   do
   {
@@ -113,17 +113,17 @@
     {
       if (*v107 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(transactions);
       }
 
       v12 = *(*(&v106 + 1) + 8 * v11);
       context = objc_autoreleasePoolPush();
-      v13 = [v12 accountID];
+      accountID = [v12 accountID];
 
-      if (!v13)
+      if (!accountID)
       {
         v35 = [MEMORY[0x1E696ABC0] errorWithREMChangeErrorCode:6];
-        [(REMChangeSet *)v85 setError:v35];
+        [(REMChangeSet *)selfCopy setError:v35];
 
         v36 = +[REMLog changeTracking];
         if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
@@ -132,22 +132,22 @@
         }
 
         objc_autoreleasePoolPop(context);
-        [(REMChangeSet *)v85 setFilteredTransactions:v5];
-        v3 = v86;
+        [(REMChangeSet *)selfCopy setFilteredTransactions:array];
+        dictionary = v86;
         goto LABEL_53;
       }
 
-      v14 = [(REMChangeSet *)v85 filterByTransactionAuthorStrings];
+      filterByTransactionAuthorStrings = [(REMChangeSet *)selfCopy filterByTransactionAuthorStrings];
 
-      if (v14)
+      if (filterByTransactionAuthorStrings)
       {
-        v15 = [v12 author];
-        if ([(REMChangeSet *)v85 filterByTransactionAuthorsIsExclusion])
+        author = [v12 author];
+        if ([(REMChangeSet *)selfCopy filterByTransactionAuthorsIsExclusion])
         {
-          if (v15)
+          if (author)
           {
-            v16 = [(REMChangeSet *)v85 filterByTransactionAuthorStrings];
-            v17 = [v16 containsObject:v15];
+            filterByTransactionAuthorStrings2 = [(REMChangeSet *)selfCopy filterByTransactionAuthorStrings];
+            v17 = [filterByTransactionAuthorStrings2 containsObject:author];
 
             if (v17)
             {
@@ -156,7 +156,7 @@
           }
         }
 
-        else if (!v15 || (-[REMChangeSet filterByTransactionAuthorStrings](v85, "filterByTransactionAuthorStrings"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 containsObject:v15], v18, !v19))
+        else if (!author || (-[REMChangeSet filterByTransactionAuthorStrings](selfCopy, "filterByTransactionAuthorStrings"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 containsObject:author], v18, !v19))
         {
 LABEL_43:
           v34 = context;
@@ -164,17 +164,17 @@ LABEL_43:
         }
       }
 
-      [v5 addObject:{v12, v77}];
-      v20 = [v12 changes];
+      [array addObject:{v12, v77}];
+      changes = [v12 changes];
       v102 = 0u;
       v103 = 0u;
       v104 = 0u;
       v105 = 0u;
-      v15 = v20;
-      v21 = [v15 countByEnumeratingWithState:&v102 objects:v122 count:16];
+      author = changes;
+      v21 = [author countByEnumeratingWithState:&v102 objects:v122 count:16];
       if (!v21)
       {
-        v5 = v81;
+        array = v81;
         goto LABEL_45;
       }
 
@@ -186,13 +186,13 @@ LABEL_43:
         {
           if (*v103 != v23)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(author);
           }
 
           v25 = *(*(&v102 + 1) + 8 * i);
-          v26 = [(REMChangeSet *)v25 transaction];
+          transaction = [(REMChangeSet *)v25 transaction];
 
-          if (!v26)
+          if (!transaction)
           {
             v33 = os_log_create("com.apple.reminderkit", "default");
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -206,14 +206,14 @@ LABEL_43:
             goto LABEL_42;
           }
 
-          v27 = [(REMChangeSet *)v25 changedObjectID];
+          changedObjectID = [(REMChangeSet *)v25 changedObjectID];
 
-          if (v27)
+          if (changedObjectID)
           {
-            v28 = [(REMChangeSet *)v25 changedObjectID];
+            changedObjectID2 = [(REMChangeSet *)v25 changedObjectID];
             if ([(REMChangeSet *)v25 changeType]== 1)
             {
-              v29 = [v86 objectForKeyedSubscript:v28];
+              v29 = [v86 objectForKeyedSubscript:changedObjectID2];
               v30 = v29;
               if (v29)
               {
@@ -223,7 +223,7 @@ LABEL_43:
               else
               {
                 v32 = [MEMORY[0x1E695DF70] arrayWithObject:v25];
-                [v86 setObject:v32 forKey:v28];
+                [v86 setObject:v32 forKey:changedObjectID2];
               }
 
 LABEL_35:
@@ -244,34 +244,34 @@ LABEL_35:
                 goto LABEL_35;
               }
 
-              [v83 addObject:v28];
-              v31 = v82;
+              [v83 addObject:changedObjectID2];
+              v31 = dictionary3;
             }
 
             else
             {
-              [v84 addObject:v28];
+              [v84 addObject:changedObjectID2];
               v31 = v89;
             }
 
-            [v31 setObject:v25 forKey:v28];
+            [v31 setObject:v25 forKey:changedObjectID2];
             goto LABEL_36;
           }
 
-          v28 = +[REMLog changeTracking];
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+          changedObjectID2 = +[REMLog changeTracking];
+          if (os_log_type_enabled(changedObjectID2, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
             v119 = v25;
             v120 = 2112;
             v121 = v12;
-            _os_log_error_impl(&dword_19A0DB000, v28, OS_LOG_TYPE_ERROR, "chg.changedObjectID is nil! {chg: %@, txn: %@}", buf, 0x16u);
+            _os_log_error_impl(&dword_19A0DB000, changedObjectID2, OS_LOG_TYPE_ERROR, "chg.changedObjectID is nil! {chg: %@, txn: %@}", buf, 0x16u);
           }
 
 LABEL_36:
         }
 
-        v22 = [v15 countByEnumeratingWithState:&v102 objects:v122 count:16];
+        v22 = [author countByEnumeratingWithState:&v102 objects:v122 count:16];
         if (v22)
         {
           continue;
@@ -282,8 +282,8 @@ LABEL_36:
 
 LABEL_42:
       v10 = v80;
-      v5 = v81;
-      v6 = obj;
+      array = v81;
+      transactions = obj;
       v9 = v90;
 LABEL_45:
       v34 = context;
@@ -291,28 +291,28 @@ LABEL_45:
 LABEL_46:
       objc_autoreleasePoolPop(v34);
       ++v11;
-      v4 = v89;
+      dictionary2 = v89;
     }
 
     while (v11 != v9);
-    v9 = [v6 countByEnumeratingWithState:&v106 objects:v123 count:16];
+    v9 = [transactions countByEnumeratingWithState:&v106 objects:v123 count:16];
   }
 
   while (v9);
 
-  [(REMChangeSet *)v85 setFilteredTransactions:v5];
-  v3 = v86;
+  [(REMChangeSet *)selfCopy setFilteredTransactions:array];
+  dictionary = v86;
   if ((v79 & 1) == 0)
   {
 LABEL_57:
-    v39 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     v98 = 0u;
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v40 = [v3 allValues];
-    v41 = [v40 countByEnumeratingWithState:&v98 objects:v115 count:16];
-    contexta = v39;
+    allValues = [dictionary allValues];
+    v41 = [allValues countByEnumeratingWithState:&v98 objects:v115 count:16];
+    contexta = dictionary4;
     if (!v41)
     {
       goto LABEL_72;
@@ -327,16 +327,16 @@ LABEL_57:
       {
         if (*v99 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(allValues);
         }
 
         v45 = *(*(&v98 + 1) + 8 * v44);
         v46 = objc_autoreleasePoolPush();
         if ([v45 count] < 2)
         {
-          v48 = [v45 objectAtIndexedSubscript:0];
-          v49 = [v48 changedObjectID];
-          if (v49)
+          copyForCoalescing = [v45 objectAtIndexedSubscript:0];
+          changedObjectID3 = [copyForCoalescing changedObjectID];
+          if (changedObjectID3)
           {
             goto LABEL_66;
           }
@@ -348,23 +348,23 @@ LABEL_57:
         {
           [v45 sortUsingComparator:&__block_literal_global_14];
           v47 = [v45 objectAtIndexedSubscript:0];
-          v48 = [v47 copyForCoalescing];
+          copyForCoalescing = [v47 copyForCoalescing];
 
-          v49 = [v48 changedObjectID];
-          if (v49)
+          changedObjectID3 = [copyForCoalescing changedObjectID];
+          if (changedObjectID3)
           {
             v50 = [v45 subarrayWithRange:{1, objc_msgSend(v45, "count") - 1}];
-            [v48 setCoalescedChanges:v50];
+            [copyForCoalescing setCoalescedChanges:v50];
 
-            [v48 setIsCoalesced:1];
-            v39 = contexta;
+            [copyForCoalescing setIsCoalesced:1];
+            dictionary4 = contexta;
 LABEL_66:
-            [v39 setObject:v48 forKey:v49];
+            [dictionary4 setObject:copyForCoalescing forKey:changedObjectID3];
             goto LABEL_67;
           }
 
           [REMChangeSet _filterAndFlattenAndConsolidateChanges];
-          v39 = contexta;
+          dictionary4 = contexta;
         }
 
 LABEL_67:
@@ -374,7 +374,7 @@ LABEL_67:
       }
 
       while (v42 != v44);
-      v51 = [v40 countByEnumeratingWithState:&v98 objects:v115 count:16];
+      v51 = [allValues countByEnumeratingWithState:&v98 objects:v115 count:16];
       v42 = v51;
       if (!v51)
       {
@@ -402,7 +402,7 @@ LABEL_72:
 
               v56 = *(*(&v94 + 1) + 8 * j);
               v57 = objc_autoreleasePoolPush();
-              v58 = [v39 objectForKeyedSubscript:v56];
+              v58 = [dictionary4 objectForKeyedSubscript:v56];
               if (v58)
               {
                 v59 = [v53 objectForKeyedSubscript:v56];
@@ -411,15 +411,15 @@ LABEL_72:
                   [REMChangeSet _filterAndFlattenAndConsolidateChanges];
                 }
 
-                v60 = [v59 copyForCoalescing];
-                [v60 setIsCoalesced:1];
-                v61 = [v58 coalescedChanges];
-                if (v61)
+                copyForCoalescing2 = [v59 copyForCoalescing];
+                [copyForCoalescing2 setIsCoalesced:1];
+                coalescedChanges = [v58 coalescedChanges];
+                if (coalescedChanges)
                 {
                   v113 = v58;
                   v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v113 count:1];
-                  v63 = [v62 arrayByAddingObjectsFromArray:v61];
-                  [v60 setCoalescedChanges:v63];
+                  v63 = [v62 arrayByAddingObjectsFromArray:coalescedChanges];
+                  [copyForCoalescing2 setCoalescedChanges:v63];
 
                   v53 = v89;
                 }
@@ -428,11 +428,11 @@ LABEL_72:
                 {
                   v112 = v58;
                   v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v112 count:1];
-                  [v60 setCoalescedChanges:v62];
+                  [copyForCoalescing2 setCoalescedChanges:v62];
                 }
 
-                [v53 setObject:v60 forKey:v56];
-                v39 = contexta;
+                [v53 setObject:copyForCoalescing2 forKey:v56];
+                dictionary4 = contexta;
                 [contexta removeObjectForKey:v56];
               }
 
@@ -445,40 +445,40 @@ LABEL_72:
           while (v54);
         }
 
-        v64 = [v83 allObjects];
-        [v39 removeObjectsForKeys:v64];
+        allObjects = [v83 allObjects];
+        [dictionary4 removeObjectsForKeys:allObjects];
 
-        v65 = [v39 allValues];
-        [v65 sortedArrayUsingComparator:&__block_literal_global_14];
+        allValues2 = [dictionary4 allValues];
+        [allValues2 sortedArrayUsingComparator:&__block_literal_global_14];
         v67 = v66 = v53;
-        [(REMChangeSet *)v85 setUpdates:v67];
+        [(REMChangeSet *)selfCopy setUpdates:v67];
 
-        v68 = [v83 allObjects];
-        [v66 removeObjectsForKeys:v68];
+        allObjects2 = [v83 allObjects];
+        [v66 removeObjectsForKeys:allObjects2];
 
-        v69 = [obja allObjects];
-        [v82 removeObjectsForKeys:v69];
+        allObjects3 = [obja allObjects];
+        [dictionary3 removeObjectsForKeys:allObjects3];
 
-        v70 = [v66 allValues];
-        v71 = [v70 sortedArrayUsingComparator:&__block_literal_global_14];
-        [(REMChangeSet *)v85 setInserts:v71];
+        allValues3 = [v66 allValues];
+        v71 = [allValues3 sortedArrayUsingComparator:&__block_literal_global_14];
+        [(REMChangeSet *)selfCopy setInserts:v71];
 
-        v72 = [v82 allValues];
-        v73 = [v72 sortedArrayUsingComparator:&__block_literal_global_14];
-        [(REMChangeSet *)v85 setDeletes:v73];
+        allValues4 = [dictionary3 allValues];
+        v73 = [allValues4 sortedArrayUsingComparator:&__block_literal_global_14];
+        [(REMChangeSet *)selfCopy setDeletes:v73];
 
         v74 = +[REMLog changeTracking];
         if (os_log_type_enabled(v74, OS_LOG_TYPE_INFO))
         {
           *v110 = 138412290;
-          v111 = v85;
+          v111 = selfCopy;
           _os_log_impl(&dword_19A0DB000, v74, OS_LOG_TYPE_INFO, "REMChangeSet _filterAndFlattenAndConsolidateChanges was successful. ChangeSet: %@", v110, 0xCu);
         }
 
         v38 = 1;
-        v3 = v86;
-        v4 = v89;
-        v5 = v81;
+        dictionary = v86;
+        dictionary2 = v89;
+        array = v81;
         v37 = contexta;
         goto LABEL_89;
       }
@@ -490,7 +490,7 @@ LABEL_53:
   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
   {
     *buf = v78;
-    v119 = v85;
+    v119 = selfCopy;
     _os_log_impl(&dword_19A0DB000, v37, OS_LOG_TYPE_INFO, "REMChangeSet _filterAndFlattenAndConsolidateChanges failed. ChangeSet: %@", buf, 0xCu);
   }
 
@@ -530,19 +530,19 @@ uint64_t __54__REMChangeSet__filterAndFlattenAndConsolidateChanges__block_invoke
   return v10;
 }
 
-- (BOOL)enumerateChanges:(int64_t)a3 forModelsOfClass:(Class)a4 withBlock:(id)a5
+- (BOOL)enumerateChanges:(int64_t)changes forModelsOfClass:(Class)class withBlock:(id)block
 {
-  v6 = a3;
-  v8 = a5;
-  if (v8)
+  changesCopy = changes;
+  blockCopy = block;
+  if (blockCopy)
   {
     if (![(REMChangeSet *)self isTruncated])
     {
-      v9 = [(REMChangeSet *)self error];
+      error = [(REMChangeSet *)self error];
 
-      if (!v9)
+      if (!error)
       {
-        if (!a4)
+        if (!class)
         {
           v14 = &__block_literal_global_17;
 LABEL_11:
@@ -551,18 +551,18 @@ LABEL_11:
           v20[2] = __60__REMChangeSet_enumerateChanges_forModelsOfClass_withBlock___block_invoke_2;
           v20[3] = &unk_1E7508AC0;
           v21 = v14;
-          v22 = v8;
+          v22 = blockCopy;
           v15 = v14;
           v16 = MEMORY[0x19A8FD720](v20);
-          if (v6)
+          if (changesCopy)
           {
-            v18 = [(REMChangeSet *)self inserts];
-            (v16)[2](v16, v18, 0);
+            inserts = [(REMChangeSet *)self inserts];
+            (v16)[2](v16, inserts, 0);
 
-            if ((v6 & 2) == 0)
+            if ((changesCopy & 2) == 0)
             {
 LABEL_13:
-              if ((v6 & 4) == 0)
+              if ((changesCopy & 4) == 0)
               {
 LABEL_15:
 
@@ -573,22 +573,22 @@ LABEL_22:
               }
 
 LABEL_14:
-              v17 = [(REMChangeSet *)self deletes];
-              (v16)[2](v16, v17, 2);
+              deletes = [(REMChangeSet *)self deletes];
+              (v16)[2](v16, deletes, 2);
 
               goto LABEL_15;
             }
           }
 
-          else if ((v6 & 2) == 0)
+          else if ((changesCopy & 2) == 0)
           {
             goto LABEL_13;
           }
 
-          v19 = [(REMChangeSet *)self updates];
-          (v16)[2](v16, v19, 1);
+          updates = [(REMChangeSet *)self updates];
+          (v16)[2](v16, updates, 1);
 
-          if ((v6 & 4) == 0)
+          if ((changesCopy & 4) == 0)
           {
             goto LABEL_15;
           }
@@ -598,7 +598,7 @@ LABEL_14:
 
         if (objc_opt_respondsToSelector())
         {
-          v12 = [(objc_class *)a4 performSelector:sel_cdEntityName];
+          v12 = [(objc_class *)class performSelector:sel_cdEntityName];
           if (v12)
           {
 LABEL_9:
@@ -616,9 +616,9 @@ LABEL_9:
 
         else if (objc_opt_respondsToSelector())
         {
-          if (([(objc_class *)a4 methodForSelector:sel_conformsToREMChangeTrackingIdentifiable])(a4, sel_conformsToREMChangeTrackingIdentifiable))
+          if (([(objc_class *)class methodForSelector:sel_conformsToREMChangeTrackingIdentifiable])(class, sel_conformsToREMChangeTrackingIdentifiable))
           {
-            v12 = NSStringFromClass(a4);
+            v12 = NSStringFromClass(class);
             if (v12)
             {
               goto LABEL_9;
@@ -629,7 +629,7 @@ LABEL_9:
         v15 = +[REMLog changeTracking];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
         {
-          [REMChangeSet enumerateChanges:a4 forModelsOfClass:v15 withBlock:?];
+          [REMChangeSet enumerateChanges:class forModelsOfClass:v15 withBlock:?];
         }
 
         v10 = 0;
@@ -713,16 +713,16 @@ void __60__REMChangeSet_enumerateChanges_forModelsOfClass_withBlock___block_invo
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)lastChangeTokenForAccountID:(id)a3
+- (id)lastChangeTokenForAccountID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if ([(REMChangeSet *)self isTruncated]|| ([(REMChangeSet *)self error], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = +[REMLog changeTracking];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    reverseObjectEnumerator = +[REMLog changeTracking];
+    if (os_log_type_enabled(reverseObjectEnumerator, OS_LOG_TYPE_ERROR))
     {
-      [(REMChangeSet *)v4 lastChangeTokenForAccountID:v6];
+      [(REMChangeSet *)dCopy lastChangeTokenForAccountID:reverseObjectEnumerator];
     }
   }
 
@@ -732,10 +732,10 @@ void __60__REMChangeSet_enumerateChanges_forModelsOfClass_withBlock___block_invo
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [(REMChangeSet *)self transactions];
-    v6 = [v10 reverseObjectEnumerator];
+    transactions = [(REMChangeSet *)self transactions];
+    reverseObjectEnumerator = [transactions reverseObjectEnumerator];
 
-    v11 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v11)
     {
       v12 = v11;
@@ -746,20 +746,20 @@ void __60__REMChangeSet_enumerateChanges_forModelsOfClass_withBlock___block_invo
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v15 accountID];
-          if ([v4 isEqual:v16])
+          accountID = [v15 accountID];
+          if ([dCopy isEqual:accountID])
           {
-            v7 = [v15 token];
+            token = [v15 token];
 
             goto LABEL_6;
           }
         }
 
-        v12 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v12)
         {
           continue;
@@ -769,45 +769,45 @@ void __60__REMChangeSet_enumerateChanges_forModelsOfClass_withBlock___block_invo
       }
     }
 
-    v6 = +[REMLog changeTracking];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    reverseObjectEnumerator = +[REMLog changeTracking];
+    if (os_log_type_enabled(reverseObjectEnumerator, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(REMChangeSet *)self transactions];
+      transactions2 = [(REMChangeSet *)self transactions];
       *buf = 138543618;
-      v23 = v4;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v17;
-      _os_log_impl(&dword_19A0DB000, v6, OS_LOG_TYPE_DEFAULT, "REMChangeset does not contain token for accountID (this is not an error). Returning nil {accountID: %{public}@, transactions: %@}", buf, 0x16u);
+      v25 = transactions2;
+      _os_log_impl(&dword_19A0DB000, reverseObjectEnumerator, OS_LOG_TYPE_DEFAULT, "REMChangeset does not contain token for accountID (this is not an error). Returning nil {accountID: %{public}@, transactions: %@}", buf, 0x16u);
     }
   }
 
-  v7 = 0;
+  token = 0;
 LABEL_6:
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return token;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMChangeSet *)self error];
-  [v4 encodeObject:v5 forKey:@"error"];
+  coderCopy = coder;
+  error = [(REMChangeSet *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 
-  v6 = [(REMChangeSet *)self transactions];
-  [v4 encodeObject:v6 forKey:@"transactions"];
+  transactions = [(REMChangeSet *)self transactions];
+  [coderCopy encodeObject:transactions forKey:@"transactions"];
 }
 
-- (REMChangeSet)initWithCoder:(id)a3
+- (REMChangeSet)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"transactions"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"transactions"];
 
   if (v5)
   {
@@ -825,7 +825,7 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19A0DB000, v11, OS_LOG_TYPE_INFO, "REMChangeSet initWithCoder: {self=%p}", buf, 0xCu);
     }
 
@@ -838,33 +838,33 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMChangeSet *)self transactions];
-      v8 = [(REMChangeSet *)v6 transactions];
-      if (v7 == v8)
+      transactions = [(REMChangeSet *)self transactions];
+      transactions2 = [(REMChangeSet *)v6 transactions];
+      if (transactions == transactions2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMChangeSet *)self transactions];
-        v10 = [(REMChangeSet *)v6 transactions];
-        v11 = [v9 isEqual:v10];
+        transactions3 = [(REMChangeSet *)self transactions];
+        transactions4 = [(REMChangeSet *)v6 transactions];
+        v11 = [transactions3 isEqual:transactions4];
       }
     }
 

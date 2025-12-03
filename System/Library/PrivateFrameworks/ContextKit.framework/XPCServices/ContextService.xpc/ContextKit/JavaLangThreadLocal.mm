@@ -1,11 +1,11 @@
 @interface JavaLangThreadLocal
 + (void)initialize;
 - (id)get;
-- (id)initializeValuesWithJavaLangThread:(id)a3;
-- (id)valuesWithJavaLangThread:(id)a3;
+- (id)initializeValuesWithJavaLangThread:(id)thread;
+- (id)valuesWithJavaLangThread:(id)thread;
 - (void)dealloc;
 - (void)remove;
-- (void)setWithId:(id)a3;
+- (void)setWithId:(id)id;
 @end
 
 @implementation JavaLangThreadLocal
@@ -58,7 +58,7 @@ LABEL_10:
   return [v5 getAfterMissWithJavaLangThreadLocal:self];
 }
 
-- (void)setWithId:(id)a3
+- (void)setWithId:(id)id
 {
   v5 = JavaLangThread_currentThread();
   v6 = [(JavaLangThreadLocal *)self valuesWithJavaLangThread:v5];
@@ -71,7 +71,7 @@ LABEL_10:
     }
   }
 
-  [v6 putWithJavaLangThreadLocal:self withId:a3];
+  [v6 putWithJavaLangThreadLocal:self withId:id];
 }
 
 - (void)remove
@@ -84,9 +84,9 @@ LABEL_10:
   }
 }
 
-- (id)initializeValuesWithJavaLangThread:(id)a3
+- (id)initializeValuesWithJavaLangThread:(id)thread
 {
-  if (!a3)
+  if (!thread)
   {
     JreThrowNullPointerException();
   }
@@ -94,17 +94,17 @@ LABEL_10:
   v4 = [JavaLangThreadLocal_Values alloc];
   JavaLangThreadLocal_Values_init(v4);
 
-  return JreStrongAssignAndConsume(a3 + 2, v4);
+  return JreStrongAssignAndConsume(thread + 2, v4);
 }
 
-- (id)valuesWithJavaLangThread:(id)a3
+- (id)valuesWithJavaLangThread:(id)thread
 {
-  if (!a3)
+  if (!thread)
   {
     JreThrowNullPointerException();
   }
 
-  return *(a3 + 2);
+  return *(thread + 2);
 }
 
 - (void)dealloc
@@ -116,7 +116,7 @@ LABEL_10:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilConcurrentAtomicAtomicInteger_initWithInt_(0);
     JreStrongAssignAndConsume(&qword_100554B98, v2);

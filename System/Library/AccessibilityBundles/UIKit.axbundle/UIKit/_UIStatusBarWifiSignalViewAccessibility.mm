@@ -7,10 +7,10 @@
 
 - (id)_accessibilitySignalStrengthText
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v3.receiver = v4;
+    v3.receiver = selfCopy;
     v3.super_class = _UIStatusBarWifiSignalViewAccessibility;
     v5 = objc_msgSendSuper2(&v3, sel_accessibilityValue);
   }

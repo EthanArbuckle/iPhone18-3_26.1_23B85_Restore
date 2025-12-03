@@ -1,22 +1,22 @@
 @interface HeartRateCoordinatorClient
-- (void)handleFilteredHeartRate:(id)a3;
-- (void)handleOneSecondStreamingHeartRate:(id)a3;
+- (void)handleFilteredHeartRate:(id)rate;
+- (void)handleOneSecondStreamingHeartRate:(id)rate;
 @end
 
 @implementation HeartRateCoordinatorClient
 
-- (void)handleFilteredHeartRate:(id)a3
+- (void)handleFilteredHeartRate:(id)rate
 {
-  v4 = a3;
-  v5 = self;
-  HeartRateCoordinatorClient.handleFilteredHeartRate(_:)(v4);
+  rateCopy = rate;
+  selfCopy = self;
+  HeartRateCoordinatorClient.handleFilteredHeartRate(_:)(rateCopy);
 }
 
-- (void)handleOneSecondStreamingHeartRate:(id)a3
+- (void)handleOneSecondStreamingHeartRate:(id)rate
 {
-  v4 = a3;
-  v5 = self;
-  HeartRateCoordinatorClient.handleOneSecondStreamingHeartRate(_:)(v4);
+  rateCopy = rate;
+  selfCopy = self;
+  HeartRateCoordinatorClient.handleOneSecondStreamingHeartRate(_:)(rateCopy);
 }
 
 @end

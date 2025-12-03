@@ -1,13 +1,13 @@
 @interface XRVMRegion
-+ (unint64_t)regionIndexInArray:(id)a3 forAddress:(unint64_t)a4;
++ (unint64_t)regionIndexInArray:(id)array forAddress:(unint64_t)address;
 + (void)initialize;
-- (BOOL)isAdjacentTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)regionMatch:(id)a3;
-- (BOOL)typeMatches:(id)a3;
-- (XRVMRegion)initWithAddress:(unint64_t)a3 size:(unint64_t)a4 regionInfo:(vm_region_submap_info_64 *)a5;
-- (XRVMRegion)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isAdjacentTo:(id)to;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)regionMatch:(id)match;
+- (BOOL)typeMatches:(id)matches;
+- (XRVMRegion)initWithAddress:(unint64_t)address size:(unint64_t)size regionInfo:(vm_region_submap_info_64 *)info;
+- (XRVMRegion)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)displayPath;
 - (id)displayType;
@@ -15,20 +15,20 @@
 - (int)maxProtection;
 - (unint64_t)virtualSize;
 - (unsigned)virtualPages;
-- (void)_setResident:(unsigned int)a3 dirty:(unsigned int)a4 swapped:(unsigned int)a5 speculative:(unsigned int)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPath:(id)a3 type:(id)a4;
+- (void)_setResident:(unsigned int)resident dirty:(unsigned int)dirty swapped:(unsigned int)swapped speculative:(unsigned int)speculative;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPath:(id)path type:(id)type;
 @end
 
 @implementation XRVMRegion
 
-+ (unint64_t)regionIndexInArray:(id)a3 forAddress:(unint64_t)a4
++ (unint64_t)regionIndexInArray:(id)array forAddress:(unint64_t)address
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  arrayCopy = array;
+  v6 = arrayCopy;
+  if (arrayCopy)
   {
-    Count = CFArrayGetCount(v5);
+    Count = CFArrayGetCount(arrayCopy);
     v8 = Count - 1;
     if (Count >= 1)
     {
@@ -37,21 +37,21 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 unsignedLongLongValue];
+        unsignedLongLongValue = [v10 unsignedLongLongValue];
       }
 
       else
       {
-        v11 = v10[1];
+        unsignedLongLongValue = v10[1];
       }
 
-      if (v11 <= a4)
+      if (unsignedLongLongValue <= address)
       {
         v10 = v10;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v10 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v10 unsignedLongLongValue];
         }
 
         else
@@ -59,10 +59,10 @@
           v14 = v10[1];
           v15 = v10[2];
 
-          v13 = v15 + v14;
+          unsignedLongLongValue2 = v15 + v14;
         }
 
-        if (v13 > a4)
+        if (unsignedLongLongValue2 > address)
         {
           v12 = 0;
           goto LABEL_14;
@@ -74,7 +74,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v10 unsignedLongLongValue];
+          unsignedLongLongValue3 = [v10 unsignedLongLongValue];
         }
 
         else
@@ -82,24 +82,24 @@
           v19 = v10[1];
           v20 = v10[2];
 
-          v18 = v20 + v19;
+          unsignedLongLongValue3 = v20 + v19;
         }
 
-        if (v18 > a4)
+        if (unsignedLongLongValue3 > address)
         {
           v10 = v10;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v21 = [v10 unsignedLongLongValue];
+            unsignedLongLongValue4 = [v10 unsignedLongLongValue];
           }
 
           else
           {
-            v21 = v10[1];
+            unsignedLongLongValue4 = v10[1];
           }
 
-          if (v21 <= a4)
+          if (unsignedLongLongValue4 <= address)
           {
             v12 = v8;
             goto LABEL_14;
@@ -118,21 +118,21 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v25 = [v23 unsignedLongLongValue];
+                unsignedLongLongValue5 = [v23 unsignedLongLongValue];
               }
 
               else
               {
-                v25 = v23[1];
+                unsignedLongLongValue5 = v23[1];
               }
 
-              if (v25 <= a4)
+              if (unsignedLongLongValue5 <= address)
               {
                 v10 = v23;
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v26 = [v10 unsignedLongLongValue];
+                  unsignedLongLongValue6 = [v10 unsignedLongLongValue];
                 }
 
                 else
@@ -140,11 +140,11 @@
                   v27 = v10[1];
                   v28 = v10[2];
 
-                  v26 = v28 + v27;
+                  unsignedLongLongValue6 = v28 + v27;
                 }
 
                 v22 = v12;
-                if (v26 > a4)
+                if (unsignedLongLongValue6 > address)
                 {
                   goto LABEL_14;
                 }
@@ -181,29 +181,29 @@ LABEL_15:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    MEMORY[0x2821F9670](a1, sel_setVersion_);
+    MEMORY[0x2821F9670](self, sel_setVersion_);
   }
 }
 
-- (XRVMRegion)initWithAddress:(unint64_t)a3 size:(unint64_t)a4 regionInfo:(vm_region_submap_info_64 *)a5
+- (XRVMRegion)initWithAddress:(unint64_t)address size:(unint64_t)size regionInfo:(vm_region_submap_info_64 *)info
 {
   v12.receiver = self;
   v12.super_class = XRVMRegion;
   result = [(XRVMRegion *)&v12 init];
   if (result)
   {
-    result->start = a3;
-    result->length = a4;
-    result->current_prot = a5->protection;
-    result->max_prot = a5->max_protection;
-    result->external_pager = a5->external_pager;
-    result->share_mode = a5->share_mode;
-    result->user_tag = a5->user_tag;
+    result->start = address;
+    result->length = size;
+    result->current_prot = info->protection;
+    result->max_prot = info->max_protection;
+    result->external_pager = info->external_pager;
+    result->share_mode = info->share_mode;
+    result->user_tag = info->user_tag;
     v9 = MEMORY[0x277D85F70];
-    result->is_submap = a5->is_submap != 0;
+    result->is_submap = info->is_submap != 0;
     if (*v9 >= *MEMORY[0x277D85F88])
     {
       v10 = MEMORY[0x277D85F90];
@@ -215,10 +215,10 @@ LABEL_15:
     }
 
     result->region_page_shift = *v10;
-    result->pages_resident = a5->pages_resident;
-    result->pages_dirtied = a5->pages_dirtied;
-    result->pages_swapped_out = a5->pages_swapped_out;
-    result->pages_shared_now_private = a5->pages_shared_now_private;
+    result->pages_resident = info->pages_resident;
+    result->pages_dirtied = info->pages_dirtied;
+    result->pages_swapped_out = info->pages_swapped_out;
+    result->pages_shared_now_private = info->pages_shared_now_private;
     v11 = *MEMORY[0x277D85F80];
     if (*MEMORY[0x277D85F80] >= *MEMORY[0x277D85FA0])
     {
@@ -231,9 +231,9 @@ LABEL_15:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->start;
   *(result + 2) = self->length;
   *(result + 6) = self->current_prot;
@@ -247,10 +247,10 @@ LABEL_15:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
-  if ([v15 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     region_page_shift = self->region_page_shift;
     ref_count = self->ref_count;
@@ -264,41 +264,41 @@ LABEL_15:
     length = self->length;
     start = self->start;
     DTXPrimitiveArrayCreateWithTypesAndValues();
-    [v15 encodeBytes:DTXPrimitiveArrayGetSerialized() length:0 forKey:{@"dataList", start, 6, length, 3, current_prot, 3, max_prot, 3, v8, 3, pages_resident, 3, pages_shared_now_private, 3, pages_swapped_out, 3, pages_dirtied, 3, ref_count, 3, region_page_shift, 0}];
+    [coderCopy encodeBytes:DTXPrimitiveArrayGetSerialized() length:0 forKey:{@"dataList", start, 6, length, 3, current_prot, 3, max_prot, 3, v8, 3, pages_resident, 3, pages_shared_now_private, 3, pages_swapped_out, 3, pages_dirtied, 3, ref_count, 3, region_page_shift, 0}];
     DTXPrimitiveArrayDestroy();
-    [v15 encodeObject:self->path forKey:@"path"];
-    [v15 encodeObject:self->type forKey:@"type"];
+    [coderCopy encodeObject:self->path forKey:@"path"];
+    [coderCopy encodeObject:self->type forKey:@"type"];
   }
 
   else
   {
-    [v15 encodeValueOfObjCType:"Q" at:&self->start];
-    [v15 encodeValueOfObjCType:"Q" at:&self->length];
-    [v15 encodeValueOfObjCType:"i" at:&self->current_prot];
-    [v15 encodeValueOfObjCType:"i" at:&self->max_prot];
-    [v15 encodeValueOfObjCType:"C" at:&self->external_pager];
-    [v15 encodeValueOfObjCType:"C" at:&self->share_mode];
-    [v15 encodeValueOfObjCType:"C" at:&self->user_tag];
-    [v15 encodeValueOfObjCType:"B" at:&self->is_submap];
-    [v15 encodeValueOfObjCType:"I" at:&self->pages_resident];
-    [v15 encodeValueOfObjCType:"I" at:&self->pages_shared_now_private];
-    [v15 encodeValueOfObjCType:"I" at:&self->pages_swapped_out];
-    [v15 encodeValueOfObjCType:"I" at:&self->pages_dirtied];
-    [v15 encodeValueOfObjCType:"I" at:&self->ref_count];
-    [v15 encodeValueOfObjCType:"I" at:&self->region_page_shift];
-    [v15 encodeObject:self->path];
-    [v15 encodeObject:self->type];
-    [v15 encodeObject:0];
+    [coderCopy encodeValueOfObjCType:"Q" at:&self->start];
+    [coderCopy encodeValueOfObjCType:"Q" at:&self->length];
+    [coderCopy encodeValueOfObjCType:"i" at:&self->current_prot];
+    [coderCopy encodeValueOfObjCType:"i" at:&self->max_prot];
+    [coderCopy encodeValueOfObjCType:"C" at:&self->external_pager];
+    [coderCopy encodeValueOfObjCType:"C" at:&self->share_mode];
+    [coderCopy encodeValueOfObjCType:"C" at:&self->user_tag];
+    [coderCopy encodeValueOfObjCType:"B" at:&self->is_submap];
+    [coderCopy encodeValueOfObjCType:"I" at:&self->pages_resident];
+    [coderCopy encodeValueOfObjCType:"I" at:&self->pages_shared_now_private];
+    [coderCopy encodeValueOfObjCType:"I" at:&self->pages_swapped_out];
+    [coderCopy encodeValueOfObjCType:"I" at:&self->pages_dirtied];
+    [coderCopy encodeValueOfObjCType:"I" at:&self->ref_count];
+    [coderCopy encodeValueOfObjCType:"I" at:&self->region_page_shift];
+    [coderCopy encodeObject:self->path];
+    [coderCopy encodeObject:self->type];
+    [coderCopy encodeObject:0];
   }
 }
 
-- (XRVMRegion)initWithCoder:(id)a3
+- (XRVMRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    if ([v4 allowsKeyedCoding])
+    if ([coderCopy allowsKeyedCoding])
     {
       v22 = 0;
       [v5 decodeBytesForKey:@"dataList" returnedLength:&v22];
@@ -384,15 +384,15 @@ LABEL_15:
         [v5 decodeValueOfObjCType:"I" at:&self->region_page_shift size:4];
       }
 
-      v15 = [v5 decodeObject];
+      decodeObject = [v5 decodeObject];
       v16 = self->path;
-      self->path = v15;
+      self->path = decodeObject;
 
-      v17 = [v5 decodeObject];
+      decodeObject2 = [v5 decodeObject];
       v18 = self->type;
-      self->type = v17;
+      self->type = decodeObject2;
 
-      v19 = [v5 decodeObject];
+      decodeObject3 = [v5 decodeObject];
     }
 
     v20 = *MEMORY[0x277D85F80];
@@ -413,8 +413,8 @@ LABEL_15:
   v10.receiver = self;
   v10.super_class = XRVMRegion;
   v4 = [(XRVMRegion *)&v10 description];
-  v5 = [(XRVMRegion *)self displayType];
-  v6 = v5;
+  displayType = [(XRVMRegion *)self displayType];
+  v6 = displayType;
   path = self->path;
   if (!path)
   {
@@ -429,15 +429,15 @@ LABEL_15:
     }
   }
 
-  v8 = [v3 stringWithFormat:@"%@  %16@ %#16llx-%#16llx %1x/%1x %@", v4, v5, self->start, self->length + self->start, self->current_prot, self->max_prot, path];
+  path = [v3 stringWithFormat:@"%@  %16@ %#16llx-%#16llx %1x/%1x %@", v4, displayType, self->start, self->length + self->start, self->current_prot, self->max_prot, path];
 
-  return v8;
+  return path;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_20;
@@ -448,11 +448,11 @@ LABEL_15:
   {
     v11.receiver = self;
     v11.super_class = XRVMRegion;
-    v9 = [(XRVMRegion *)&v11 isEqual:v4];
+    v9 = [(XRVMRegion *)&v11 isEqual:equalCopy];
     goto LABEL_20;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5;
   if (self->start == v5->start && self->length == v5->length && self->current_prot == v5->current_prot && self->max_prot == v5->max_prot && self->user_tag == v5->user_tag && self->pages_resident == v5->pages_resident && self->pages_shared_now_private == v5->pages_shared_now_private && self->pages_swapped_out == v5->pages_swapped_out && self->pages_dirtied == v5->pages_dirtied)
   {
@@ -478,23 +478,23 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)regionMatch:(id)a3
+- (BOOL)regionMatch:(id)match
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *&self->start == *(v4 + 8) && [(XRVMRegion *)self typeMatches:v4];
+  matchCopy = match;
+  v5 = matchCopy;
+  v6 = *&self->start == *(matchCopy + 8) && [(XRVMRegion *)self typeMatches:matchCopy];
 
   return v6;
 }
 
-- (BOOL)typeMatches:(id)a3
+- (BOOL)typeMatches:(id)matches
 {
-  v4 = a3;
-  v5 = v4;
+  matchesCopy = matches;
+  v5 = matchesCopy;
   v10 = 0;
-  if (v4)
+  if (matchesCopy)
   {
-    if (self->current_prot == *(v4 + 6) && self->max_prot == *(v4 + 7) && self->user_tag == *(v4 + 34) && self->external_pager == *(v4 + 32))
+    if (self->current_prot == *(matchesCopy + 6) && self->max_prot == *(matchesCopy + 7) && self->user_tag == *(matchesCopy + 34) && self->external_pager == *(matchesCopy + 32))
     {
       type = self->type;
       if (!type || (v7 = v5[6]) == 0 || type == v7 || [(NSString *)type isEqualToString:?])
@@ -511,44 +511,44 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)isAdjacentTo:(id)a3
+- (BOOL)isAdjacentTo:(id)to
 {
-  if (!a3)
+  if (!to)
   {
     return 0;
   }
 
   start = self->start;
-  v4 = *(a3 + 1);
-  return start == *(a3 + 2) + v4 || self->length + start == v4;
+  v4 = *(to + 1);
+  return start == *(to + 2) + v4 || self->length + start == v4;
 }
 
-- (void)setPath:(id)a3 type:(id)a4
+- (void)setPath:(id)path type:(id)type
 {
-  v13 = a3;
-  v6 = a4;
+  pathCopy = path;
+  typeCopy = type;
   path = self->path;
-  if (!path || ![(NSString *)path isEqualToString:v13])
+  if (!path || ![(NSString *)path isEqualToString:pathCopy])
   {
-    v8 = [v13 copy];
+    v8 = [pathCopy copy];
     v9 = self->path;
     self->path = v8;
   }
 
   type = self->type;
-  if (!type || ![(NSString *)type isEqualToString:v6])
+  if (!type || ![(NSString *)type isEqualToString:typeCopy])
   {
-    v11 = [v6 copy];
+    v11 = [typeCopy copy];
     v12 = self->type;
     self->type = v11;
   }
 }
 
-- (void)_setResident:(unsigned int)a3 dirty:(unsigned int)a4 swapped:(unsigned int)a5 speculative:(unsigned int)a6
+- (void)_setResident:(unsigned int)resident dirty:(unsigned int)dirty swapped:(unsigned int)swapped speculative:(unsigned int)speculative
 {
-  self->pages_resident = a3;
-  self->pages_swapped_out = a5;
-  self->pages_dirtied = a4;
+  self->pages_resident = resident;
+  self->pages_swapped_out = swapped;
+  self->pages_dirtied = dirty;
 }
 
 - (unint64_t)virtualSize

@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterWANFirewall
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterWANFirewall)init;
-- (HMDNetworkRouterWANFirewall)initWithType:(int64_t)a3;
+- (HMDNetworkRouterWANFirewall)initWithType:(int64_t)type;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterWANFirewall
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDNetworkRouterWANFirewall *)self type];
-  if (v3)
+  type = [(HMDNetworkRouterWANFirewall *)self type];
+  if (type)
   {
-    if (v3 == 1)
+    if (type == 1)
     {
       v4 = @"HMDNetworkRouterWANFirewallTypeAllowListAccess";
     }
 
     else
     {
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDNetworkRouterWANFirewallType %ld", v3];
+      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown HMDNetworkRouterWANFirewallType %ld", type];
     }
   }
 
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -51,11 +51,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDNetworkRouterWANFirewall *)self type];
-      v7 = [(HMDNetworkRouterWANFirewall *)v5 type];
+      v5 = equalCopy;
+      type = [(HMDNetworkRouterWANFirewall *)self type];
+      type2 = [(HMDNetworkRouterWANFirewall *)v5 type];
 
-      v8 = v6 == v7;
+      v8 = type == type2;
     }
 
     else
@@ -67,28 +67,28 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterWANFirewall allocWithZone:a3];
-  v5 = [(HMDNetworkRouterWANFirewall *)self type];
+  v4 = [HMDNetworkRouterWANFirewall allocWithZone:zone];
+  type = [(HMDNetworkRouterWANFirewall *)self type];
 
-  return [(HMDNetworkRouterWANFirewall *)v4 initWithType:v5];
+  return [(HMDNetworkRouterWANFirewall *)v4 initWithType:type];
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
-  v3 = [(HMDNetworkRouterWANFirewall *)self type];
+  type = [(HMDNetworkRouterWANFirewall *)self type];
 
-  return MEMORY[0x2821501D8](v3);
+  return MEMORY[0x2821501D8](type);
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (!error)
   {
-    if (![v6 length])
+    if (![dataCopy length])
     {
       v8 = 0;
       goto LABEL_7;
@@ -97,8 +97,8 @@
     goto LABEL_5;
   }
 
-  *a4 = 0;
-  if ([v6 length])
+  *error = 0;
+  if ([dataCopy length])
   {
 LABEL_5:
     [v7 bytes];
@@ -109,20 +109,20 @@ LABEL_5:
   }
 
   [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0F1A0] code:3 userInfo:0];
-  *a4 = v8 = 0;
+  *error = v8 = 0;
 LABEL_7:
 
   return v8;
 }
 
-- (HMDNetworkRouterWANFirewall)initWithType:(int64_t)a3
+- (HMDNetworkRouterWANFirewall)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = HMDNetworkRouterWANFirewall;
   result = [(HMDNetworkRouterWANFirewall *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -141,24 +141,24 @@ LABEL_7:
   return result;
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterWANFirewall);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterWANFirewall *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterWANFirewall *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

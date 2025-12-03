@@ -1,66 +1,66 @@
 @interface TLAlertQueuePlayerController
-+ ($96EE1C12479E9B303E9C2794B92A11A2)_externalEnvironmentValuesForAlert:(id)a3;
-+ (BOOL)_shouldApplyAttentionAwarenessEffectsForAlert:(id)a3;
-+ (BOOL)_shouldBypassRingerSwitchPolicyForAlert:(id)a3;
-+ (BOOL)_shouldEnsureActiveAudioSessionWhenStartingPlaybackForAlert:(id)a3;
-+ (BOOL)_shouldHandleAudioSessionActivationForAlert:(id)a3;
-+ (BOOL)_shouldRepeatVibrationForAlert:(id)a3 externalEnvironmentValues:(id)a4;
-+ (BOOL)_shouldVibrateForAlert:(id)a3;
-+ (double)_audioPlaybackInitiationDelayForAlert:(id)a3 externalEnvironmentValues:(id)a4;
-+ (double)_audioVolumeRampingDurationForAlert:(id)a3 externalEnvironmentValues:(id)a4 toneAssetDuration:(double)a5;
-+ (id)_audioCategoryForAlert:(id)a3 externalEnvironmentValues:(id)a4;
-+ (id)_audioModeForAlert:(id)a3 audioCategory:(id)a4;
-+ (id)_clientNameForAlert:(id)a3;
-+ (id)_mediaExperienceAudioCategoryForAudioSessionCategory:(id)a3;
-+ (int64_t)_clientPriorityForAlert:(id)a3;
-- (BOOL)_canPlayToneAsset:(id)a3;
++ ($96EE1C12479E9B303E9C2794B92A11A2)_externalEnvironmentValuesForAlert:(id)alert;
++ (BOOL)_shouldApplyAttentionAwarenessEffectsForAlert:(id)alert;
++ (BOOL)_shouldBypassRingerSwitchPolicyForAlert:(id)alert;
++ (BOOL)_shouldEnsureActiveAudioSessionWhenStartingPlaybackForAlert:(id)alert;
++ (BOOL)_shouldHandleAudioSessionActivationForAlert:(id)alert;
++ (BOOL)_shouldRepeatVibrationForAlert:(id)alert externalEnvironmentValues:(id)values;
++ (BOOL)_shouldVibrateForAlert:(id)alert;
++ (double)_audioPlaybackInitiationDelayForAlert:(id)alert externalEnvironmentValues:(id)values;
++ (double)_audioVolumeRampingDurationForAlert:(id)alert externalEnvironmentValues:(id)values toneAssetDuration:(double)duration;
++ (id)_audioCategoryForAlert:(id)alert externalEnvironmentValues:(id)values;
++ (id)_audioModeForAlert:(id)alert audioCategory:(id)category;
++ (id)_clientNameForAlert:(id)alert;
++ (id)_mediaExperienceAudioCategoryForAudioSessionCategory:(id)category;
++ (int64_t)_clientPriorityForAlert:(id)alert;
+- (BOOL)_canPlayToneAsset:(id)asset;
 - (BOOL)_isPreventingAudioSessionDeactivation;
-- (BOOL)stopPlayingAlerts:(id)a3 withOptions:(id)a4 playbackCompletionType:(int64_t)a5;
+- (BOOL)stopPlayingAlerts:(id)alerts withOptions:(id)options playbackCompletionType:(int64_t)type;
 - (NSString)description;
 - (TLAlertQueuePlayerController)init;
-- (float)_audioVolumeForAlert:(id)a3 audioCategory:(id)a4;
-- (id)_fallbackToneIdentifierForStateDescriptor:(id)a3;
-- (id)_vibrationPatternDictionaryForStateDescriptor:(id)a3 allowsArtificiallyRepeatingPropertyListRepresentation:(BOOL)a4;
-- (void)_activateAudioSessionIfNeededForStateDescriptor:(id)a3;
-- (void)_applyAudioVolume:(float)a3 forAlert:(id)a4 isForMusicPlayback:(BOOL)a5 phase:(int64_t)a6;
+- (float)_audioVolumeForAlert:(id)alert audioCategory:(id)category;
+- (id)_fallbackToneIdentifierForStateDescriptor:(id)descriptor;
+- (id)_vibrationPatternDictionaryForStateDescriptor:(id)descriptor allowsArtificiallyRepeatingPropertyListRepresentation:(BOOL)representation;
+- (void)_activateAudioSessionIfNeededForStateDescriptor:(id)descriptor;
+- (void)_applyAudioVolume:(float)volume forAlert:(id)alert isForMusicPlayback:(BOOL)playback phase:(int64_t)phase;
 - (void)_beginPreventingAudioSessionDeactivation;
-- (void)_createQueuePlayerIfNecessaryForStateDescriptor:(id)a3;
-- (void)_deactivateAudioSessionIfNeededForStateDescriptor:(id)a3;
-- (void)_destroyQueuePlayerForStateDescriptor:(id)a3;
-- (void)_didPrepareToPlayMusicForStateDescriptor:(id)a3 withError:(id)a4;
-- (void)_didReceiveAttentionPollingEventOfType:(int64_t)a3 stateDescriptor:(id)a4;
-- (void)_endPreventingAudioSessionDeactivationForStateDescriptor:(id)a3;
-- (void)_ensureMusicPlaybackStartedForStateDescriptor:(id)a3;
-- (void)_handleActivationAssertionStatusChangeForAlert:(id)a3 updatedStatus:(BOOL)a4 previousStateDescriptor:(id)a5 updatedStateDescriptor:(id)a6;
-- (void)_handleAudioSessionInterruptionNotification:(id)a3;
-- (void)_handleAudioSessionInterruptionOfType:(unint64_t)a3 withOptions:(unint64_t)a4;
-- (void)_initiateAudioPlaybackForStateDescriptor:(id)a3 audioVolumeRampingDuration:(double)a4;
-- (void)_notifyPlaybackObserverForStateDescriptor:(id)a3 isForMusicPlayback:(BOOL)a4;
-- (void)_performDelayedAudioPlaybackInitiationForStateDescriptor:(id)a3 audioVolumeRampingDuration:(double)a4;
-- (void)_playAlertForStateDescriptor:(id)a3 previousStateDescriptor:(id)a4;
-- (void)_queuePlayer:(id)a3 currentItemStatusWasUpdatedToValue:(int64_t)a4;
-- (void)_queuePlayer:(id)a3 currentItemWasUpdatedFromValue:(id)a4;
-- (void)_reloadPlaybackForStateDescriptor:(id)a3 withToneIdentifier:(id)a4;
-- (void)_reportAudioStartEventForStateDescriptor:(id)a3;
-- (void)_resetClientPriorityForStateDescriptor:(id)a3;
+- (void)_createQueuePlayerIfNecessaryForStateDescriptor:(id)descriptor;
+- (void)_deactivateAudioSessionIfNeededForStateDescriptor:(id)descriptor;
+- (void)_destroyQueuePlayerForStateDescriptor:(id)descriptor;
+- (void)_didPrepareToPlayMusicForStateDescriptor:(id)descriptor withError:(id)error;
+- (void)_didReceiveAttentionPollingEventOfType:(int64_t)type stateDescriptor:(id)descriptor;
+- (void)_endPreventingAudioSessionDeactivationForStateDescriptor:(id)descriptor;
+- (void)_ensureMusicPlaybackStartedForStateDescriptor:(id)descriptor;
+- (void)_handleActivationAssertionStatusChangeForAlert:(id)alert updatedStatus:(BOOL)status previousStateDescriptor:(id)descriptor updatedStateDescriptor:(id)stateDescriptor;
+- (void)_handleAudioSessionInterruptionNotification:(id)notification;
+- (void)_handleAudioSessionInterruptionOfType:(unint64_t)type withOptions:(unint64_t)options;
+- (void)_initiateAudioPlaybackForStateDescriptor:(id)descriptor audioVolumeRampingDuration:(double)duration;
+- (void)_notifyPlaybackObserverForStateDescriptor:(id)descriptor isForMusicPlayback:(BOOL)playback;
+- (void)_performDelayedAudioPlaybackInitiationForStateDescriptor:(id)descriptor audioVolumeRampingDuration:(double)duration;
+- (void)_playAlertForStateDescriptor:(id)descriptor previousStateDescriptor:(id)stateDescriptor;
+- (void)_queuePlayer:(id)player currentItemStatusWasUpdatedToValue:(int64_t)value;
+- (void)_queuePlayer:(id)player currentItemWasUpdatedFromValue:(id)value;
+- (void)_reloadPlaybackForStateDescriptor:(id)descriptor withToneIdentifier:(id)identifier;
+- (void)_reportAudioStartEventForStateDescriptor:(id)descriptor;
+- (void)_resetClientPriorityForStateDescriptor:(id)descriptor;
 - (void)_resetFlagsForSwitchingAuxiliaryAudioSession;
-- (void)_startMusicPlaybackForStateDescriptor:(id)a3 mediaItem:(id)a4;
-- (void)_startObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)a3;
+- (void)_startMusicPlaybackForStateDescriptor:(id)descriptor mediaItem:(id)item;
+- (void)_startObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)descriptor;
 - (void)_startObservingQueuePlayer;
-- (void)_startPlaybackForStateDescriptor:(id)a3 usingAssetWithLoadedProperties:(id)a4 shouldConfirmAlertStillPlaying:(BOOL)a5;
-- (void)_startPlaybackForStateDescriptor:(id)a3 usingConfirmedPlayableAsset:(id)a4;
-- (void)_startPlaybackForStateDescriptor:(id)a3 usingConfirmedPlayableAsset:(id)a4 hasAlreadyDetectedUserAttention:(BOOL)a5;
+- (void)_startPlaybackForStateDescriptor:(id)descriptor usingAssetWithLoadedProperties:(id)properties shouldConfirmAlertStillPlaying:(BOOL)playing;
+- (void)_startPlaybackForStateDescriptor:(id)descriptor usingConfirmedPlayableAsset:(id)asset;
+- (void)_startPlaybackForStateDescriptor:(id)descriptor usingConfirmedPlayableAsset:(id)asset hasAlreadyDetectedUserAttention:(BOOL)attention;
 - (void)_stopMusicPlayback;
-- (void)_stopObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)a3;
+- (void)_stopObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)descriptor;
 - (void)_stopObservingQueuePlayer;
-- (void)_stopPlaybackForStateDescriptor:(id)a3;
-- (void)_stopPlaybackForStateDescriptor:(id)a3 withOptions:(id)a4 playerWasAlreadyPausedExternally:(BOOL)a5;
-- (void)_stopPlayingAlertForStateDescriptor:(id)a3 withOptions:(id)a4 playbackCompletionType:(int64_t)a5;
+- (void)_stopPlaybackForStateDescriptor:(id)descriptor;
+- (void)_stopPlaybackForStateDescriptor:(id)descriptor withOptions:(id)options playerWasAlreadyPausedExternally:(BOOL)externally;
+- (void)_stopPlayingAlertForStateDescriptor:(id)descriptor withOptions:(id)options playbackCompletionType:(int64_t)type;
 - (void)dealloc;
-- (void)handleActivationAssertionStatusChangeForAlert:(id)a3 updatedStatus:(BOOL)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playAlert:(id)a3 withCompletionHandler:(id)a4;
-- (void)updateAudioVolumeDynamicallyForAlert:(id)a3 toValue:(float)a4;
+- (void)handleActivationAssertionStatusChangeForAlert:(id)alert updatedStatus:(BOOL)status;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playAlert:(id)alert withCompletionHandler:(id)handler;
+- (void)updateAudioVolumeDynamicallyForAlert:(id)alert toValue:(float)value;
 @end
 
 @implementation TLAlertQueuePlayerController
@@ -139,16 +139,16 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)playAlert:(id)a3 withCompletionHandler:(id)a4
+- (void)playAlert:(id)alert withCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
+  playingAlert = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
 
-  if (v8 == v6)
+  if (playingAlert == alertCopy)
   {
     os_unfair_lock_unlock(&self->_lock);
     v15 = 0;
@@ -158,7 +158,7 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
   else
   {
     v9 = self->_stateDescriptor;
-    v10 = [[TLAlertQueuePlayerStateDescriptor alloc] initWithPlayingAlert:v6 completionHandler:v7 previousStateDescriptor:v9];
+    v10 = [[TLAlertQueuePlayerStateDescriptor alloc] initWithPlayingAlert:alertCopy completionHandler:handlerCopy previousStateDescriptor:v9];
     stateDescriptor = self->_stateDescriptor;
     self->_stateDescriptor = v10;
 
@@ -167,9 +167,9 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
     {
       v13 = self->_stateDescriptor;
       *buf = 138543874;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
-      v23 = v6;
+      v23 = alertCopy;
       v24 = 2114;
       v25 = v13;
       _os_log_impl(&dword_1D9356000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: -playAlert:(%{public}@) …: Updated _stateDescriptor to %{public}@.", buf, 0x20u);
@@ -200,13 +200,13 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)stopPlayingAlerts:(id)a3 withOptions:(id)a4 playbackCompletionType:(int64_t)a5
+- (BOOL)stopPlayingAlerts:(id)alerts withOptions:(id)options playbackCompletionType:(int64_t)type
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  alertsCopy = alerts;
+  optionsCopy = options;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  if (a5 == 5)
+  if (type == 5)
   {
     v10 = TLLogGeneral();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
@@ -217,16 +217,16 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
       v13 = TLLogGeneral();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v12 lastPathComponent];
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
+        lastPathComponent = [v12 lastPathComponent];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 136381443;
-        v50 = "[TLAlertQueuePlayerController stopPlayingAlerts:withOptions:playbackCompletionType:]";
+        selfCopy4 = "[TLAlertQueuePlayerController stopPlayingAlerts:withOptions:playbackCompletionType:]";
         v51 = 2113;
-        v52 = v14;
+        v52 = lastPathComponent;
         v53 = 2049;
         v54 = 260;
         v55 = 2113;
-        v56 = v15;
+        v56 = callStackSymbols;
         _os_log_impl(&dword_1D9356000, v13, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", buf, 0x2Au);
       }
     }
@@ -250,29 +250,29 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
   v17 = TLLogPlayback();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v8 count];
-    v19 = NSStringFromTLAlertPlaybackCompletionType(a5);
+    v18 = [alertsCopy count];
+    v19 = NSStringFromTLAlertPlaybackCompletionType(type);
     *buf = 138544130;
-    v50 = self;
+    selfCopy4 = self;
     v51 = 2048;
     v52 = v18;
     v53 = 2114;
-    v54 = v9;
+    v54 = optionsCopy;
     v55 = 2114;
     v56 = v19;
     _os_log_impl(&dword_1D9356000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: -stopPlayingAlerts:(<%lu alerts>) options:(%{public}@) playbackCompletionType:(%{public}@).", buf, 0x2Au);
   }
 
-  v38 = a5;
-  v39 = v9;
+  typeCopy = type;
+  v39 = optionsCopy;
 
   os_unfair_lock_lock(&self->_lock);
-  v20 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
+  playingAlert = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v21 = v8;
+  v21 = alertsCopy;
   v22 = [v21 countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v22)
   {
@@ -291,14 +291,14 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
         v27 = *(*(&v44 + 1) + 8 * i);
         p_super = TLLogPlayback();
         v29 = os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT);
-        if (v27 == v20)
+        if (v27 == playingAlert)
         {
           if (v29)
           {
             *buf = 138543618;
-            v50 = self;
+            selfCopy4 = self;
             v51 = 2114;
-            v52 = v20;
+            v52 = playingAlert;
             _os_log_impl(&dword_1D9356000, p_super, OS_LOG_TYPE_DEFAULT, "%{public}@: -stopPlayingAlerts…: %{public}@ is playing. Interrupting it.", buf, 0x16u);
           }
 
@@ -309,7 +309,7 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
         else if (v29)
         {
           *buf = 138543618;
-          v50 = self;
+          selfCopy4 = self;
           v51 = 2114;
           v52 = v27;
           _os_log_impl(&dword_1D9356000, p_super, OS_LOG_TYPE_DEFAULT, "%{public}@: -stopPlayingAlerts…: %{public}@ is NOT playing. Skipping it.", buf, 0x16u);
@@ -330,16 +330,16 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
   stateDescriptor = self->_stateDescriptor;
   if (v24 == stateDescriptor)
   {
-    v31 = [(TLAlertQueuePlayerStateDescriptor *)stateDescriptor stateDescriptorForCompletedPlayback];
+    stateDescriptorForCompletedPlayback = [(TLAlertQueuePlayerStateDescriptor *)stateDescriptor stateDescriptorForCompletedPlayback];
     v32 = self->_stateDescriptor;
-    self->_stateDescriptor = v31;
+    self->_stateDescriptor = stateDescriptorForCompletedPlayback;
 
     v33 = TLLogPlayback();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       v34 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor debugDescription];
       *buf = 138543618;
-      v50 = self;
+      selfCopy4 = self;
       v51 = 2114;
       v52 = v34;
       _os_log_impl(&dword_1D9356000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: -stopPlayingAlerts…: Updated _stateDescriptor to %{public}@.", buf, 0x16u);
@@ -357,7 +357,7 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
     v40[4] = self;
     v41 = v24;
     v42 = v39;
-    v43 = v38;
+    v43 = typeCopy;
     [(TLAudioQueue *)audioQueue performTaskWithBlock:v40];
   }
 
@@ -365,15 +365,15 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
   return v24 != 0;
 }
 
-- (void)updateAudioVolumeDynamicallyForAlert:(id)a3 toValue:(float)a4
+- (void)updateAudioVolumeDynamicallyForAlert:(id)alert toValue:(float)value
 {
-  v6 = a3;
+  alertCopy = alert;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
+  playingAlert = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v7 == v6)
+  if (playingAlert == alertCopy)
   {
     audioQueue = self->_audioQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -381,8 +381,8 @@ void __39__TLAlertQueuePlayerController_dealloc__block_invoke(uint64_t a1)
     v9[2] = __77__TLAlertQueuePlayerController_updateAudioVolumeDynamicallyForAlert_toValue___block_invoke;
     v9[3] = &unk_1E8579738;
     v9[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = alertCopy;
+    valueCopy = value;
     [(TLAudioQueue *)audioQueue performTaskWithBlock:v9];
   }
 }
@@ -411,32 +411,32 @@ uint64_t __77__TLAlertQueuePlayerController_updateAudioVolumeDynamicallyForAlert
   return result;
 }
 
-- (void)handleActivationAssertionStatusChangeForAlert:(id)a3 updatedStatus:(BOOL)a4
+- (void)handleActivationAssertionStatusChangeForAlert:(id)alert updatedStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  alertCopy = alert;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v7 = self->_stateDescriptor;
   v8 = v7;
-  if (v4)
+  if (statusCopy)
   {
-    v9 = [[TLAlertQueuePlayerStateDescriptor alloc] initForAcquiringActivationAssertionWithAlertForAudioEnvironmentSetup:v6 previousStateDescriptor:v7];
+    stateDescriptorByRelinquishingActivationAssertion = [[TLAlertQueuePlayerStateDescriptor alloc] initForAcquiringActivationAssertionWithAlertForAudioEnvironmentSetup:alertCopy previousStateDescriptor:v7];
 LABEL_3:
-    v10 = v9;
+    v10 = stateDescriptorByRelinquishingActivationAssertion;
     goto LABEL_9;
   }
 
-  v11 = [(TLAlertQueuePlayerStateDescriptor *)v7 alertForAudioEnvironmentSetup];
-  v12 = v11;
-  if (v11 == v6)
+  alertForAudioEnvironmentSetup = [(TLAlertQueuePlayerStateDescriptor *)v7 alertForAudioEnvironmentSetup];
+  v12 = alertForAudioEnvironmentSetup;
+  if (alertForAudioEnvironmentSetup == alertCopy)
   {
-    v13 = [(TLAlertQueuePlayerStateDescriptor *)v8 isAlertActivationAssertionAcquired];
+    isAlertActivationAssertionAcquired = [(TLAlertQueuePlayerStateDescriptor *)v8 isAlertActivationAssertionAcquired];
 
-    if (v13)
+    if (isAlertActivationAssertionAcquired)
     {
-      v9 = [(TLAlertQueuePlayerStateDescriptor *)v8 stateDescriptorByRelinquishingActivationAssertion];
+      stateDescriptorByRelinquishingActivationAssertion = [(TLAlertQueuePlayerStateDescriptor *)v8 stateDescriptorByRelinquishingActivationAssertion];
       goto LABEL_3;
     }
   }
@@ -451,14 +451,14 @@ LABEL_9:
   v14 = TLLogPlayback();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v6 debugDescription];
+    v15 = [alertCopy debugDescription];
     stateDescriptor = self->_stateDescriptor;
     *buf = 138544130;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
     v30 = v15;
     v31 = 1024;
-    v32 = v4;
+    v32 = statusCopy;
     v33 = 2114;
     v34 = stateDescriptor;
     _os_log_impl(&dword_1D9356000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: -handleActivationAssertionStatusChangeForAlert:(%{public}@) updatedStatus:(%{BOOL}d): Updated _stateDescriptor to %{public}@.", buf, 0x26u);
@@ -471,35 +471,35 @@ LABEL_9:
   v22[2] = __92__TLAlertQueuePlayerController_handleActivationAssertionStatusChangeForAlert_updatedStatus___block_invoke;
   v22[3] = &unk_1E8579D68;
   v22[4] = self;
-  v23 = v6;
-  v26 = v4;
+  v23 = alertCopy;
+  v26 = statusCopy;
   v24 = v8;
   v25 = v10;
   v18 = v10;
   v19 = v8;
-  v20 = v6;
+  v20 = alertCopy;
   [(TLAudioQueue *)audioQueue performTaskWithBlock:v22];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_playAlertForStateDescriptor:(id)a3 previousStateDescriptor:(id)a4
+- (void)_playAlertForStateDescriptor:(id)descriptor previousStateDescriptor:(id)stateDescriptor
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  stateDescriptorCopy = stateDescriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  v8 = [v6 playingAlert];
+  playingAlert = [descriptorCopy playingAlert];
   v9 = TLLogPlayback();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *v19 = 138543874;
     *&v19[4] = self;
     v20 = 2114;
-    v21 = v6;
+    v21 = descriptorCopy;
     v22 = 2114;
-    v23 = v7;
+    v23 = stateDescriptorCopy;
     _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -_playAlertForStateDescriptor:(%{public}@) previousStateDescriptor:(%{public}@).", v19, 0x20u);
   }
 
@@ -508,8 +508,8 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v10 = [v6 alertForAudioEnvironmentSetup];
-  v11 = [objc_opt_class() _shouldUseAuxiliaryAudioSessionForAlert:v10];
+  alertForAudioEnvironmentSetup = [descriptorCopy alertForAudioEnvironmentSetup];
+  v11 = [objc_opt_class() _shouldUseAuxiliaryAudioSessionForAlert:alertForAudioEnvironmentSetup];
   isUsingAuxiliaryAudioSession = self->_isUsingAuxiliaryAudioSession;
   if (isUsingAuxiliaryAudioSession != v11)
   {
@@ -526,7 +526,7 @@ LABEL_9:
 
       *&v19[4] = self;
       v20 = 2114;
-      v21 = v10;
+      v21 = alertForAudioEnvironmentSetup;
       v22 = 2082;
       v23 = v15;
       v24 = 2114;
@@ -535,44 +535,44 @@ LABEL_9:
     }
 
 LABEL_11:
-    [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:v7, *v19];
-    [v7 invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:4 error:0];
-    v17 = [v8 toneIdentifier];
-    [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:v6 withToneIdentifier:v17];
+    [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:stateDescriptorCopy, *v19];
+    [stateDescriptorCopy invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:4 error:0];
+    toneIdentifier = [playingAlert toneIdentifier];
+    [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:descriptorCopy withToneIdentifier:toneIdentifier];
 
     goto LABEL_12;
   }
 
   [(TLAlertQueuePlayerController *)self _beginPreventingAudioSessionDeactivation];
 
-  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:v7];
-  [v7 invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:4 error:0];
-  v13 = [v8 toneIdentifier];
-  [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:v6 withToneIdentifier:v13];
+  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:stateDescriptorCopy];
+  [stateDescriptorCopy invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:4 error:0];
+  toneIdentifier2 = [playingAlert toneIdentifier];
+  [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:descriptorCopy withToneIdentifier:toneIdentifier2];
 
-  [(TLAlertQueuePlayerController *)self _endPreventingAudioSessionDeactivationForStateDescriptor:v6];
+  [(TLAlertQueuePlayerController *)self _endPreventingAudioSessionDeactivationForStateDescriptor:descriptorCopy];
 LABEL_12:
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopPlayingAlertForStateDescriptor:(id)a3 withOptions:(id)a4 playbackCompletionType:(int64_t)a5
+- (void)_stopPlayingAlertForStateDescriptor:(id)descriptor withOptions:(id)options playbackCompletionType:(int64_t)type
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v10 = TLLogPlayback();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = NSStringFromTLAlertPlaybackCompletionType(a5);
+    v11 = NSStringFromTLAlertPlaybackCompletionType(type);
     *buf = 138544130;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v8;
+    *&buf[14] = descriptorCopy;
     *&buf[22] = 2114;
-    UIBackgroundTaskInvalid = v9;
+    UIBackgroundTaskInvalid = optionsCopy;
     LOWORD(v32[0]) = 2114;
     *(v32 + 2) = v11;
     _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopPlayingAlertForStateDescriptor:(%{public}@) withOptions:(%{public}@) playbackCompletionType:(%{public}@).", buf, 0x2Au);
@@ -596,25 +596,25 @@ LABEL_12:
 
   v13 = v12;
   _Block_object_dispose(v33, 8);
-  v14 = [v12 sharedApplication];
-  if (v14)
+  sharedApplication = [v12 sharedApplication];
+  if (sharedApplication)
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     UIBackgroundTaskInvalid = getUIBackgroundTaskInvalid();
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v8 playingAlert];
-    v17 = [v15 stringWithFormat:@"Stopping playing alert: %@", v16];
+    playingAlert = [descriptorCopy playingAlert];
+    v17 = [v15 stringWithFormat:@"Stopping playing alert: %@", playingAlert];
 
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __103__TLAlertQueuePlayerController__stopPlayingAlertForStateDescriptor_withOptions_playbackCompletionType___block_invoke_2;
     v25[3] = &unk_1E8579D90;
     v29 = buf;
-    v18 = v14;
+    v18 = sharedApplication;
     v26 = v18;
-    v27 = self;
+    selfCopy = self;
     v19 = v17;
     v28 = v19;
     v20 = MEMORY[0x1DA730160](v25);
@@ -641,8 +641,8 @@ LABEL_12:
     v20 = &__block_literal_global_16;
   }
 
-  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:v8 withOptions:v9 playerWasAlreadyPausedExternally:0];
-  [v8 invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:a5 error:0];
+  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:descriptorCopy withOptions:optionsCopy playerWasAlreadyPausedExternally:0];
+  [descriptorCopy invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:type error:0];
   dispatch_async(MEMORY[0x1E69E96A0], v20);
 
   v24 = *MEMORY[0x1E69E9840];
@@ -675,16 +675,16 @@ void __103__TLAlertQueuePlayerController__stopPlayingAlertForStateDescriptor_wit
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleActivationAssertionStatusChangeForAlert:(id)a3 updatedStatus:(BOOL)a4 previousStateDescriptor:(id)a5 updatedStateDescriptor:(id)a6
+- (void)_handleActivationAssertionStatusChangeForAlert:(id)alert updatedStatus:(BOOL)status previousStateDescriptor:(id)descriptor updatedStateDescriptor:(id)stateDescriptor
 {
-  v8 = a4;
+  statusCopy = status;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  alertCopy = alert;
+  descriptorCopy = descriptor;
+  stateDescriptorCopy = stateDescriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  if (!v12 && v8)
+  if (!stateDescriptorCopy && statusCopy)
   {
     v13 = TLLogGeneral();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
@@ -695,16 +695,16 @@ void __103__TLAlertQueuePlayerController__stopPlayingAlertForStateDescriptor_wit
       v16 = TLLogGeneral();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v15 lastPathComponent];
-        v18 = [MEMORY[0x1E696AF00] callStackSymbols];
+        lastPathComponent = [v15 lastPathComponent];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         v25 = 136381443;
-        v26 = "[TLAlertQueuePlayerController _handleActivationAssertionStatusChangeForAlert:updatedStatus:previousStateDescriptor:updatedStateDescriptor:]";
+        selfCopy = "[TLAlertQueuePlayerController _handleActivationAssertionStatusChangeForAlert:updatedStatus:previousStateDescriptor:updatedStateDescriptor:]";
         v27 = 2113;
-        v28 = v17;
+        v28 = lastPathComponent;
         v29 = 2049;
         *v30 = 407;
         *&v30[8] = 2113;
-        *&v30[10] = v18;
+        *&v30[10] = callStackSymbols;
         _os_log_impl(&dword_1D9356000, v16, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v25, 0x2Au);
       }
     }
@@ -729,39 +729,39 @@ void __103__TLAlertQueuePlayerController__stopPlayingAlertForStateDescriptor_wit
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138544386;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v10;
+    v28 = alertCopy;
     v29 = 1024;
-    *v30 = v8;
+    *v30 = statusCopy;
     *&v30[4] = 2114;
-    *&v30[6] = v11;
+    *&v30[6] = descriptorCopy;
     *&v30[14] = 2114;
-    *&v30[16] = v12;
+    *&v30[16] = stateDescriptorCopy;
     _os_log_impl(&dword_1D9356000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: -_handleActivationAssertionStatusChangeForAlert:(%{public}@) updatedStatus:(%{BOOL}d) previousStateDescriptor:(%{public}@) updatedStateDescriptor:(%{public}@).", &v25, 0x30u);
   }
 
-  if (v8)
+  if (statusCopy)
   {
     if (self->_isAudioEnvironmentSetup)
     {
-      [(TLAlertQueuePlayerController *)self _restoreAudioEnvironmentForStateDescriptor:v11 isForMusicPlayback:0];
+      [(TLAlertQueuePlayerController *)self _restoreAudioEnvironmentForStateDescriptor:descriptorCopy isForMusicPlayback:0];
     }
 
-    [(TLAlertQueuePlayerController *)self _prepareAudioEnvironmentForStateDescriptor:v12 isForMusicPlayback:0];
+    [(TLAlertQueuePlayerController *)self _prepareAudioEnvironmentForStateDescriptor:stateDescriptorCopy isForMusicPlayback:0];
   }
 
   else
   {
-    v21 = [v11 alertForAudioEnvironmentSetup];
-    v22 = v21;
-    if (v21 == v10)
+    alertForAudioEnvironmentSetup = [descriptorCopy alertForAudioEnvironmentSetup];
+    v22 = alertForAudioEnvironmentSetup;
+    if (alertForAudioEnvironmentSetup == alertCopy)
     {
-      v23 = [v11 isAlertActivationAssertionAcquired];
+      isAlertActivationAssertionAcquired = [descriptorCopy isAlertActivationAssertionAcquired];
 
-      if (v23)
+      if (isAlertActivationAssertionAcquired)
       {
-        [(TLAlertQueuePlayerController *)self _restoreAudioEnvironmentForStateDescriptor:v11 isForMusicPlayback:0];
+        [(TLAlertQueuePlayerController *)self _restoreAudioEnvironmentForStateDescriptor:descriptorCopy isForMusicPlayback:0];
       }
     }
 
@@ -773,10 +773,10 @@ void __103__TLAlertQueuePlayerController__stopPlayingAlertForStateDescriptor_wit
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_canPlayToneAsset:(id)a3
+- (BOOL)_canPlayToneAsset:(id)asset
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   [objc_opt_class() _propertyKeysOfInterestForToneAssets];
   v30 = 0u;
@@ -797,7 +797,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v28 + 1) + 8 * v8);
-      if ([v4 statusOfValueForKey:v9 error:0] != 2)
+      if ([assetCopy statusOfValueForKey:v9 error:0] != 2)
       {
         break;
       }
@@ -820,7 +820,7 @@ LABEL_3:
       *buf = 138543874;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = assetCopy;
       *&buf[22] = 2114;
       v37 = v9;
       _os_log_error_impl(&dword_1D9356000, v18, OS_LOG_TYPE_ERROR, "%{public}@: -_canPlayToneAsset:(%{public}@). Can't play tone asset because property %{public}@ is not loaded.", buf, 0x20u);
@@ -833,9 +833,9 @@ LABEL_9:
 
   v26 = 0uLL;
   v27 = 0;
-  if (v4)
+  if (assetCopy)
   {
-    [v4 duration];
+    [assetCopy duration];
   }
 
   *&v32 = 0;
@@ -906,7 +906,7 @@ LABEL_31:
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = assetCopy;
       _os_log_impl(&dword_1D9356000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: -_canPlayToneAsset:(%{public}@). Can't play tone asset because its duration is too short.", buf, 0x16u);
     }
 
@@ -921,7 +921,7 @@ LABEL_24:
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = assetCopy;
     _os_log_impl(&dword_1D9356000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: -_canPlayToneAsset:(%{public}@). Can play!", buf, 0x16u);
   }
 
@@ -932,11 +932,11 @@ LABEL_25:
   return v17;
 }
 
-- (void)_reloadPlaybackForStateDescriptor:(id)a3 withToneIdentifier:(id)a4
+- (void)_reloadPlaybackForStateDescriptor:(id)descriptor withToneIdentifier:(id)identifier
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v8 = TLLogPlayback();
@@ -945,16 +945,16 @@ LABEL_25:
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = descriptorCopy;
     *&buf[22] = 2114;
-    v57 = v7;
+    v57 = identifierCopy;
     _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_reloadPlaybackForStateDescriptor:(%{public}@) withToneIdentifier:(%{public}@).", buf, 0x20u);
   }
 
-  v9 = [(TLAlertQueuePlayerStateDescriptor *)v6 playingAlert];
-  if (v9 && [v7 length])
+  playingAlert = [(TLAlertQueuePlayerStateDescriptor *)descriptorCopy playingAlert];
+  if (playingAlert && [identifierCopy length])
   {
-    v10 = [v7 copy];
+    v10 = [identifierCopy copy];
     playingToneIdentifier = self->_playingToneIdentifier;
     self->_playingToneIdentifier = v10;
 
@@ -966,21 +966,21 @@ LABEL_25:
         [TLAlertQueuePlayerController _reloadPlaybackForStateDescriptor:&self->_queuePlayer withToneIdentifier:?];
       }
 
-      [(TLAlertQueuePlayerController *)self _destroyQueuePlayerForStateDescriptor:v6];
+      [(TLAlertQueuePlayerController *)self _destroyQueuePlayerForStateDescriptor:descriptorCopy];
     }
 
-    [(TLAlertQueuePlayerController *)self _createQueuePlayerIfNecessaryForStateDescriptor:v6];
-    v13 = [v9 toneIdentifier];
-    v14 = [v13 isEqualToString:self->_playingToneIdentifier];
+    [(TLAlertQueuePlayerController *)self _createQueuePlayerIfNecessaryForStateDescriptor:descriptorCopy];
+    toneIdentifier = [playingAlert toneIdentifier];
+    v14 = [toneIdentifier isEqualToString:self->_playingToneIdentifier];
 
     if (v14)
     {
-      v15 = [v9 configuration];
-      v16 = [v15 externalToneFileURL];
-      if (v16 || (v25 = [v15 externalToneMediaLibraryItemIdentifier]) == 0)
+      configuration = [playingAlert configuration];
+      externalToneFileURL = [configuration externalToneFileURL];
+      if (externalToneFileURL || (v25 = [configuration externalToneMediaLibraryItemIdentifier]) == 0)
       {
         v17 = 0;
-        v18 = 0;
+        lastObject = 0;
       }
 
       else
@@ -1050,28 +1050,28 @@ LABEL_25:
 
         v34 = v33;
         _Block_object_dispose(&v52, 8);
-        v35 = [v33 songsQuery];
-        [v35 addFilterPredicate:v32];
-        v36 = [v35 items];
-        v18 = [v36 lastObject];
+        songsQuery = [v33 songsQuery];
+        [songsQuery addFilterPredicate:v32];
+        items = [songsQuery items];
+        lastObject = [items lastObject];
 
-        v17 = v18 != 0;
+        v17 = lastObject != 0;
       }
     }
 
     else
     {
       v17 = 0;
-      v18 = 0;
-      v16 = 0;
+      lastObject = 0;
+      externalToneFileURL = 0;
     }
 
-    if (!v16 && !v17)
+    if (!externalToneFileURL && !v17)
     {
       if ([(NSString *)self->_playingToneIdentifier isEqualToString:@"<none>"])
       {
-        [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:v6 usingAssetWithLoadedProperties:0 shouldConfirmAlertStillPlaying:0];
-        v16 = 0;
+        [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:descriptorCopy usingAssetWithLoadedProperties:0 shouldConfirmAlertStillPlaying:0];
+        externalToneFileURL = 0;
 LABEL_47:
 
         goto LABEL_48;
@@ -1080,10 +1080,10 @@ LABEL_47:
       v37 = +[TLToneManager sharedToneManager];
       v38 = [v37 filePathForToneIdentifier:self->_playingToneIdentifier];
 
-      v16 = [MEMORY[0x1E695DFF8] fileURLWithPath:v38 isDirectory:0];
+      externalToneFileURL = [MEMORY[0x1E695DFF8] fileURLWithPath:v38 isDirectory:0];
     }
 
-    if (v16 && ([MEMORY[0x1E6988168] assetWithURL:v16], (v39 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (externalToneFileURL && ([MEMORY[0x1E6988168] assetWithURL:externalToneFileURL], (v39 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v40 = TLLogPlayback();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -1096,40 +1096,40 @@ LABEL_47:
       }
 
       self->_isWaitingToCompleteReloadPlaybackRequest = 1;
-      v41 = [objc_opt_class() _propertyKeysOfInterestForToneAssets];
+      _propertyKeysOfInterestForToneAssets = [objc_opt_class() _propertyKeysOfInterestForToneAssets];
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __85__TLAlertQueuePlayerController__reloadPlaybackForStateDescriptor_withToneIdentifier___block_invoke;
       v49[3] = &unk_1E8579038;
       v49[4] = self;
       v50 = v39;
-      v51 = v6;
+      v51 = descriptorCopy;
       v42 = v39;
-      [v42 loadValuesAsynchronouslyForKeys:v41 completionHandler:v49];
+      [v42 loadValuesAsynchronouslyForKeys:_propertyKeysOfInterestForToneAssets completionHandler:v49];
     }
 
     else
     {
       v43 = TLLogPlayback();
       v44 = v43;
-      if (v18)
+      if (lastObject)
       {
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v18 title];
-          v46 = [v18 artist];
+          title = [lastObject title];
+          artist = [lastObject artist];
           *buf = 138544130;
           *&buf[4] = self;
           *&buf[12] = 2114;
-          *&buf[14] = v18;
+          *&buf[14] = lastObject;
           *&buf[22] = 2114;
-          v57 = v45;
+          v57 = title;
           LOWORD(v58[0]) = 2114;
-          *(v58 + 2) = v46;
+          *(v58 + 2) = artist;
           _os_log_impl(&dword_1D9356000, v44, OS_LOG_TYPE_DEFAULT, "%{public}@: -_reloadPlayback…: Found a media item for the specified external tone information: %{public}@ (“%{public}@” from “%{public}@”).", buf, 0x2Au);
         }
 
-        [(TLAlertQueuePlayerController *)self _startMusicPlaybackForStateDescriptor:v6 mediaItem:v18];
+        [(TLAlertQueuePlayerController *)self _startMusicPlaybackForStateDescriptor:descriptorCopy mediaItem:lastObject];
       }
 
       else
@@ -1139,8 +1139,8 @@ LABEL_47:
           [TLAlertQueuePlayerController _reloadPlaybackForStateDescriptor:withToneIdentifier:];
         }
 
-        v47 = [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:v6];
-        [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:v6 withToneIdentifier:v47];
+        v47 = [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:descriptorCopy];
+        [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:descriptorCopy withToneIdentifier:v47];
       }
     }
 
@@ -1155,11 +1155,11 @@ LABEL_47:
 
   os_unfair_lock_lock(&self->_lock);
   stateDescriptor = self->_stateDescriptor;
-  if (stateDescriptor == v6)
+  if (stateDescriptor == descriptorCopy)
   {
-    v21 = [(TLAlertQueuePlayerStateDescriptor *)stateDescriptor stateDescriptorForCompletedPlayback];
+    stateDescriptorForCompletedPlayback = [(TLAlertQueuePlayerStateDescriptor *)stateDescriptor stateDescriptorForCompletedPlayback];
     v22 = self->_stateDescriptor;
-    self->_stateDescriptor = v21;
+    self->_stateDescriptor = stateDescriptorForCompletedPlayback;
 
     v23 = TLLogPlayback();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -1174,9 +1174,9 @@ LABEL_47:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:v6];
-  v16 = [MEMORY[0x1E696ABC0] tl_errorWithDomain:@"TLAlertErrorDomain" description:@"Failed to prepare tone asset for playback."];
-  [(TLAlertQueuePlayerStateDescriptor *)v6 invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:5 error:v16];
+  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:descriptorCopy];
+  externalToneFileURL = [MEMORY[0x1E696ABC0] tl_errorWithDomain:@"TLAlertErrorDomain" description:@"Failed to prepare tone asset for playback."];
+  [(TLAlertQueuePlayerStateDescriptor *)descriptorCopy invokePlayingAlertCompletionHandlerWithPlaybackCompletionType:5 error:externalToneFileURL];
 LABEL_48:
 
   v48 = *MEMORY[0x1E69E9840];
@@ -1211,45 +1211,45 @@ void __85__TLAlertQueuePlayerController__reloadPlaybackForStateDescriptor_withTo
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startPlaybackForStateDescriptor:(id)a3 usingAssetWithLoadedProperties:(id)a4 shouldConfirmAlertStillPlaying:(BOOL)a5
+- (void)_startPlaybackForStateDescriptor:(id)descriptor usingAssetWithLoadedProperties:(id)properties shouldConfirmAlertStillPlaying:(BOOL)playing
 {
-  v5 = a5;
+  playingCopy = playing;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  propertiesCopy = properties;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v10 = TLLogPlayback();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138544130;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2114;
-    v18 = v8;
+    v18 = descriptorCopy;
     v19 = 2114;
-    v20 = v9;
+    v20 = propertiesCopy;
     v21 = 1024;
-    v22 = v5;
+    v22 = playingCopy;
     _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlaybackForStateDescriptor:(%{public}@) usingAssetWithLoadedProperties:(%{public}@) shouldConfirmAlertStillPlaying:(%{BOOL}d).", &v15, 0x26u);
   }
 
   self->_isWaitingToCompleteReloadPlaybackRequest = 0;
-  if (v5)
+  if (playingCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v11 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
-    v12 = [v8 playingAlert];
+    playingAlert = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
+    playingAlert2 = [descriptorCopy playingAlert];
 
     os_unfair_lock_unlock(&self->_lock);
-    if (v11 != v12)
+    if (playingAlert != playingAlert2)
     {
       v13 = TLLogPlayback();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138543618;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2114;
-        v18 = v8;
+        v18 = descriptorCopy;
         _os_log_impl(&dword_1D9356000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlayback… usingAssetWithLoadedProperties…: Playing alert for %{public}@ is no longer actually playing; aborting playback initiation.", &v15, 0x16u);
       }
 
@@ -1257,37 +1257,37 @@ void __85__TLAlertQueuePlayerController__reloadPlaybackForStateDescriptor_withTo
     }
   }
 
-  if (v9 && ![(TLAlertQueuePlayerController *)self _canPlayToneAsset:v9])
+  if (propertiesCopy && ![(TLAlertQueuePlayerController *)self _canPlayToneAsset:propertiesCopy])
   {
-    v13 = [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:v8];
-    [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:v8 withToneIdentifier:v13];
+    v13 = [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:descriptorCopy];
+    [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:descriptorCopy withToneIdentifier:v13];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:v8 usingConfirmedPlayableAsset:v9];
+  [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:descriptorCopy usingConfirmedPlayableAsset:propertiesCopy];
 LABEL_12:
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startPlaybackForStateDescriptor:(id)a3 usingConfirmedPlayableAsset:(id)a4
+- (void)_startPlaybackForStateDescriptor:(id)descriptor usingConfirmedPlayableAsset:(id)asset
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  assetCopy = asset;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v8 = TLLogPlayback();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = descriptorCopy;
     v19 = 2114;
-    v20 = v7;
+    v20 = assetCopy;
     _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlaybackForStateDescriptor:(%{public}@) usingConfirmedPlayableAsset:(%{public}@).", &v15, 0x20u);
   }
 
@@ -1297,23 +1297,23 @@ LABEL_12:
   {
     queuePlayer = self->_queuePlayer;
     v15 = 138543618;
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2114;
     v18 = queuePlayer;
     _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlayback… usingConfirmedPlayableAsset…: [_queuePlayer removeAllItems] on %{public}@ before initiating playback.", &v15, 0x16u);
   }
 
   [(AVQueuePlayer *)self->_queuePlayer removeAllItems];
-  objc_storeStrong(&self->_toneAssetForPendingPlayingAlert, a4);
+  objc_storeStrong(&self->_toneAssetForPendingPlayingAlert, asset);
   self->_hasToneAssetForPendingPlayingAlert = 1;
-  [(TLAlertQueuePlayerController *)self _willBeginPlayingAlertForStateDescriptor:v6 isForMusicPlayback:0];
+  [(TLAlertQueuePlayerController *)self _willBeginPlayingAlertForStateDescriptor:descriptorCopy isForMusicPlayback:0];
   if (self->_attentionPollingToken && !self->_isAttentionAwarenessSubsystemFullyInitialized)
   {
     v13 = TLLogPlayback();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1D9356000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlayback… usingConfirmedPlayableAsset…: Currently polling for attention, and attention awareness subsystem not initialized yet. Waiting to see if we already have the user's attention.", &v15, 0xCu);
     }
   }
@@ -1330,18 +1330,18 @@ LABEL_12:
       v12 = self->_lastAttentionPollingEventType == 1;
     }
 
-    [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:v6 usingConfirmedPlayableAsset:v7 hasAlreadyDetectedUserAttention:v12];
+    [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:descriptorCopy usingConfirmedPlayableAsset:assetCopy hasAlreadyDetectedUserAttention:v12];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startPlaybackForStateDescriptor:(id)a3 usingConfirmedPlayableAsset:(id)a4 hasAlreadyDetectedUserAttention:(BOOL)a5
+- (void)_startPlaybackForStateDescriptor:(id)descriptor usingConfirmedPlayableAsset:(id)asset hasAlreadyDetectedUserAttention:(BOOL)attention
 {
-  v73 = a5;
+  attentionCopy = attention;
   v91[3] = *MEMORY[0x1E69E9840];
-  v74 = a3;
-  v77 = a4;
+  descriptorCopy = descriptor;
+  assetCopy = asset;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v7 = TLLogPlayback();
@@ -1350,25 +1350,25 @@ LABEL_12:
     *buf = 138544130;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v74;
+    *&buf[14] = descriptorCopy;
     *&buf[22] = 2114;
-    v90 = v77;
+    v90 = assetCopy;
     LOWORD(v91[0]) = 1024;
-    *(v91 + 2) = v73;
+    *(v91 + 2) = attentionCopy;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlaybackForStateDescriptor:(%{public}@) usingConfirmedPlayableAsset:(%{public}@) hasAlreadyDetectedUserAttention:(%{BOOL}d).", buf, 0x26u);
   }
 
-  v75 = [v74 playingAlert];
-  if ([objc_opt_class() _shouldVibrateForAlert:v75])
+  playingAlert = [descriptorCopy playingAlert];
+  if ([objc_opt_class() _shouldVibrateForAlert:playingAlert])
   {
     v8 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-    v9 = [v8 hasSynchronizedEmbeddedVibrationsCapability];
+    hasSynchronizedEmbeddedVibrationsCapability = [v8 hasSynchronizedEmbeddedVibrationsCapability];
 
-    if (v9)
+    if (hasSynchronizedEmbeddedVibrationsCapability)
     {
-      v10 = [v75 toneIdentifier];
-      v11 = [v75 vibrationIdentifier];
-      if (![v11 hasPrefix:@"synchronizedvibration:"] || (objc_msgSend(v75, "_hasSynchronizedVibrationUnmatchedWithTone") & 1) != 0 || (objc_msgSend(v10, "hasPrefix:", @"alarmWakeUp:") & 1) != 0)
+      toneIdentifier = [playingAlert toneIdentifier];
+      vibrationIdentifier = [playingAlert vibrationIdentifier];
+      if (![vibrationIdentifier hasPrefix:@"synchronizedvibration:"] || (objc_msgSend(playingAlert, "_hasSynchronizedVibrationUnmatchedWithTone") & 1) != 0 || (objc_msgSend(toneIdentifier, "hasPrefix:", @"alarmWakeUp:") & 1) != 0)
       {
         v76 = 0;
       }
@@ -1378,11 +1378,11 @@ LABEL_12:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v53 = [v77 URL];
-          v54 = [v53 pathExtension];
+          v53 = [assetCopy URL];
+          pathExtension = [v53 pathExtension];
 
-          v55 = [v54 lowercaseString];
-          v56 = [v55 isEqualToString:@"caf"];
+          lowercaseString = [pathExtension lowercaseString];
+          v56 = [lowercaseString isEqualToString:@"caf"];
 
           if (v56)
           {
@@ -1434,8 +1434,8 @@ LABEL_12:
     v70 = 0;
   }
 
-  v71 = [v75 configuration];
-  if (!v77)
+  configuration = [playingAlert configuration];
+  if (!assetCopy)
   {
     v19 = 0;
     goto LABEL_59;
@@ -1443,7 +1443,7 @@ LABEL_12:
 
   v83 = 0uLL;
   v84 = 0;
-  [v77 duration];
+  [assetCopy duration];
   v81 = 0uLL;
   v82 = 0;
   v85 = 0;
@@ -1475,9 +1475,9 @@ LABEL_12:
   *buf = v81;
   *&buf[16] = v82;
   v17 = v14(buf);
-  [objc_opt_class() _audioVolumeRampingDurationForAlert:v75 externalEnvironmentValues:*&self->_externalEnvironmentValues toneAssetDuration:v17];
+  [objc_opt_class() _audioVolumeRampingDurationForAlert:playingAlert externalEnvironmentValues:*&self->_externalEnvironmentValues toneAssetDuration:v17];
   v19 = v18;
-  if ([v71 shouldRepeat])
+  if ([configuration shouldRepeat])
   {
     v20 = llround(1.0 / v17) + 2;
   }
@@ -1498,13 +1498,13 @@ LABEL_12:
     *&buf[22] = 2114;
     v90 = queuePlayer;
     LOWORD(v91[0]) = 2114;
-    *(v91 + 2) = v77;
+    *(v91 + 2) = assetCopy;
     _os_log_impl(&dword_1D9356000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlayback… hasAlreadyDetected…: inserting %lu player items into %{public}@ for tone asset: %{public}@.", buf, 0x2Au);
   }
 
   if (self->_attentionPollingToken)
   {
-    v24 = [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator audioMixForAsset:v77];
+    v24 = [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator audioMixForAsset:assetCopy];
     if (!v20)
     {
       goto LABEL_58;
@@ -1523,7 +1523,7 @@ LABEL_29:
     v69 = v23;
     while (1)
     {
-      v26 = [MEMORY[0x1E69880B0] playerItemWithAsset:{v77, v69}];
+      v26 = [MEMORY[0x1E69880B0] playerItemWithAsset:{assetCopy, v69}];
       if (!v26)
       {
         v37 = TLLogPlayback();
@@ -1534,7 +1534,7 @@ LABEL_29:
           *&buf[12] = 2048;
           *&buf[14] = v25;
           *&buf[22] = 2114;
-          v90 = v77;
+          v90 = assetCopy;
           _os_log_error_impl(&dword_1D9356000, v37, OS_LOG_TYPE_ERROR, "%{public}@: -_startPlayback… hasAlreadyDetected…: (iteration #%lu) failed to create AVPlayerItem for tone asset: %{public}@.", buf, 0x20u);
         }
 
@@ -1584,15 +1584,15 @@ LABEL_57:
       _os_log_impl(&dword_1D9356000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlayback… hasAlreadyDetected…: [playerItem setHapticPlaybackLocality:AVPlayerItemHapticPlaybackLocalityDefaultWithFullStrength] on %{public}@.", buf, 0x16u);
     }
 
-    v29 = [v26 tl_hapticTracks];
-    v30 = [v29 attenuatedHapticPlayerItemTrack];
-    v31 = [v29 hapticPlayerItemTrack];
-    v32 = v31;
-    if (v30)
+    tl_hapticTracks = [v26 tl_hapticTracks];
+    attenuatedHapticPlayerItemTrack = [tl_hapticTracks attenuatedHapticPlayerItemTrack];
+    hapticPlayerItemTrack = [tl_hapticTracks hapticPlayerItemTrack];
+    v32 = hapticPlayerItemTrack;
+    if (attenuatedHapticPlayerItemTrack)
     {
-      if (v73)
+      if (attentionCopy)
       {
-        [v31 setEnabled:0];
+        [hapticPlayerItemTrack setEnabled:0];
         [v32 setMutesHaptics:1];
         v33 = TLLogPlayback();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -1604,8 +1604,8 @@ LABEL_57:
           _os_log_impl(&dword_1D9356000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlayback… hasAlreadyDetected…: [hapticPlayerItemTrack setEnabled:NO] and [hapticPlayerItemTrack setMutesHaptics:YES] on %{public}@.", buf, 0x16u);
         }
 
-        [v30 setEnabled:1];
-        [v30 setMutesHaptics:0];
+        [attenuatedHapticPlayerItemTrack setEnabled:1];
+        [attenuatedHapticPlayerItemTrack setMutesHaptics:0];
         v34 = TLLogPlayback();
         if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
@@ -1615,14 +1615,14 @@ LABEL_57:
         *buf = 138543618;
         *&buf[4] = self;
         *&buf[12] = 2114;
-        *&buf[14] = v30;
+        *&buf[14] = attenuatedHapticPlayerItemTrack;
         v35 = v34;
         v36 = "%{public}@: -_startPlayback… hasAlreadyDetected…: [attenuatedHapticPlayerItemTrack setEnabled:YES] and [attenuatedHapticPlayerItemTrack setMutesHaptics:NO] on %{public}@.";
       }
 
       else
       {
-        [v31 setEnabled:1];
+        [hapticPlayerItemTrack setEnabled:1];
         [v32 setMutesHaptics:0];
         v39 = TLLogPlayback();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -1634,8 +1634,8 @@ LABEL_57:
           _os_log_impl(&dword_1D9356000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startPlayback… hasAlreadyDetected…: [hapticPlayerItemTrack setEnabled:YES] and [hapticPlayerItemTrack setMutesHaptics:NO] on %{public}@.", buf, 0x16u);
         }
 
-        [v30 setEnabled:1];
-        [v30 setMutesHaptics:1];
+        [attenuatedHapticPlayerItemTrack setEnabled:1];
+        [attenuatedHapticPlayerItemTrack setMutesHaptics:1];
         v34 = TLLogPlayback();
         if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
@@ -1645,7 +1645,7 @@ LABEL_57:
         *buf = 138543618;
         *&buf[4] = self;
         *&buf[12] = 2114;
-        *&buf[14] = v30;
+        *&buf[14] = attenuatedHapticPlayerItemTrack;
         v35 = v34;
         v36 = "%{public}@: -_startPlayback… hasAlreadyDetected…: [attenuatedHapticPlayerItemTrack setEnabled:YES] and [attenuatedHapticPlayerItemTrack setMutesHaptics:YES] on %{public}@.";
       }
@@ -1655,7 +1655,7 @@ LABEL_57:
 
     else
     {
-      [v31 setActiveHapticChannelIndex:v73];
+      [hapticPlayerItemTrack setActiveHapticChannelIndex:attentionCopy];
       v34 = TLLogPlayback();
       if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
@@ -1667,7 +1667,7 @@ LABEL_53:
       *buf = v69;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v73;
+      *&buf[14] = attentionCopy;
       *&buf[22] = 2114;
       v90 = v32;
       v35 = v34;
@@ -1685,7 +1685,7 @@ LABEL_59:
   [(TLAlertQueuePlayerController *)self _startObservingQueuePlayer];
   if (v70)
   {
-    v40 = [(TLAlertQueuePlayerController *)self _vibrationPatternDictionaryForStateDescriptor:v74 allowsArtificiallyRepeatingPropertyListRepresentation:1];
+    v40 = [(TLAlertQueuePlayerController *)self _vibrationPatternDictionaryForStateDescriptor:descriptorCopy allowsArtificiallyRepeatingPropertyListRepresentation:1];
     if (v40)
     {
       v41 = TLLogPlayback();
@@ -1704,13 +1704,13 @@ LABEL_59:
 
     else
     {
-      v43 = [v75 vibrationIdentifier];
-      v44 = [v43 isEqualToString:@"<none>"];
+      vibrationIdentifier2 = [playingAlert vibrationIdentifier];
+      v44 = [vibrationIdentifier2 isEqualToString:@"<none>"];
 
       if (v44)
       {
-        v45 = [(AVQueuePlayer *)self->_queuePlayer vibrationPattern];
-        v46 = v45 == 0;
+        vibrationPattern = [(AVQueuePlayer *)self->_queuePlayer vibrationPattern];
+        v46 = vibrationPattern == 0;
 
         if (!v46)
         {
@@ -1723,16 +1723,16 @@ LABEL_59:
             v50 = TLLogGeneral();
             if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
             {
-              v51 = [v49 lastPathComponent];
-              v52 = [MEMORY[0x1E696AF00] callStackSymbols];
+              lastPathComponent = [v49 lastPathComponent];
+              callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
               *buf = 136381443;
               *&buf[4] = "[TLAlertQueuePlayerController _startPlaybackForStateDescriptor:usingConfirmedPlayableAsset:hasAlreadyDetectedUserAttention:]";
               *&buf[12] = 2113;
-              *&buf[14] = v51;
+              *&buf[14] = lastPathComponent;
               *&buf[22] = 2049;
               v90 = 721;
               LOWORD(v91[0]) = 2113;
-              *(v91 + 2) = v52;
+              *(v91 + 2) = callStackSymbols;
               _os_log_impl(&dword_1D9356000, v50, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", buf, 0x2Au);
             }
           }
@@ -1769,11 +1769,11 @@ LABEL_59:
     }
   }
 
-  [objc_opt_class() _audioPlaybackInitiationDelayForAlert:v75 externalEnvironmentValues:*&self->_externalEnvironmentValues];
+  [objc_opt_class() _audioPlaybackInitiationDelayForAlert:playingAlert externalEnvironmentValues:*&self->_externalEnvironmentValues];
   v63 = v62;
   if (v62 <= 0.00000011920929)
   {
-    [(TLAlertQueuePlayerController *)self _initiateAudioPlaybackForStateDescriptor:v74 audioVolumeRampingDuration:*&v19];
+    [(TLAlertQueuePlayerController *)self _initiateAudioPlaybackForStateDescriptor:descriptorCopy audioVolumeRampingDuration:*&v19];
   }
 
   else
@@ -1799,7 +1799,7 @@ LABEL_59:
     block[2] = __125__TLAlertQueuePlayerController__startPlaybackForStateDescriptor_usingConfirmedPlayableAsset_hasAlreadyDetectedUserAttention___block_invoke;
     block[3] = &unk_1E8579DB8;
     objc_copyWeak(v80, buf);
-    v79 = v74;
+    v79 = descriptorCopy;
     v80[1] = v19;
     dispatch_after(v66, v67, block);
 
@@ -1807,7 +1807,7 @@ LABEL_59:
     objc_destroyWeak(buf);
   }
 
-  [(TLAlertQueuePlayerController *)self _notifyPlaybackObserverForStateDescriptor:v74 isForMusicPlayback:0];
+  [(TLAlertQueuePlayerController *)self _notifyPlaybackObserverForStateDescriptor:descriptorCopy isForMusicPlayback:0];
 
   v68 = *MEMORY[0x1E69E9840];
 }
@@ -1830,40 +1830,40 @@ void __125__TLAlertQueuePlayerController__startPlaybackForStateDescriptor_usingC
   }
 }
 
-- (void)_initiateAudioPlaybackForStateDescriptor:(id)a3 audioVolumeRampingDuration:(double)a4
+- (void)_initiateAudioPlaybackForStateDescriptor:(id)descriptor audioVolumeRampingDuration:(double)duration
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v7 = TLLogPlayback();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy3 = self;
     v17 = 2114;
-    v18 = *&v6;
+    durationCopy2 = *&descriptorCopy;
     v19 = 2050;
-    v20 = a4;
+    durationCopy = duration;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -_initiateAudioPlaybackForStateDescriptor:(%{public}@) audioVolumeRampingDuration:(%{public}f).", &v15, 0x20u);
   }
 
   v8 = TLLogPlayback();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (a4 <= 0.00000011920929)
+  if (duration <= 0.00000011920929)
   {
     if (v9)
     {
       queuePlayer = self->_queuePlayer;
       v15 = 138543618;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2114;
-      v18 = *&queuePlayer;
+      durationCopy2 = *&queuePlayer;
       _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_initiateAudioPlayback…: [_queuePlayer play] for %{public}@.", &v15, 0x16u);
     }
 
     [(AVQueuePlayer *)self->_queuePlayer play];
-    [(TLAlertQueuePlayerController *)self _reportAudioStartEventForStateDescriptor:v6];
+    [(TLAlertQueuePlayerController *)self _reportAudioStartEventForStateDescriptor:descriptorCopy];
   }
 
   else
@@ -1872,16 +1872,16 @@ void __125__TLAlertQueuePlayerController__startPlaybackForStateDescriptor_usingC
     {
       v10 = self->_queuePlayer;
       v15 = 138543874;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2050;
-      v18 = a4;
+      durationCopy2 = duration;
       v19 = 2114;
-      v20 = *&v10;
+      durationCopy = *&v10;
       _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_initiateAudioPlayback…: [_queuePlayer setRate:withVolumeRampDuration:] with %{public}f for %{public}@.", &v15, 0x20u);
     }
 
     v11 = self->_queuePlayer;
-    soft_CMTimeMakeWithSeconds(a4);
+    soft_CMTimeMakeWithSeconds(duration);
     LODWORD(v12) = 1.0;
     [(AVQueuePlayer *)v11 setRate:&v15 withVolumeRampDuration:v12];
   }
@@ -1889,32 +1889,32 @@ void __125__TLAlertQueuePlayerController__startPlaybackForStateDescriptor_usingC
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performDelayedAudioPlaybackInitiationForStateDescriptor:(id)a3 audioVolumeRampingDuration:(double)a4
+- (void)_performDelayedAudioPlaybackInitiationForStateDescriptor:(id)descriptor audioVolumeRampingDuration:(double)duration
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v7 = TLLogPlayback();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543874;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2114;
-    v16 = v6;
+    v16 = descriptorCopy;
     v17 = 2050;
-    v18 = a4;
+    durationCopy = duration;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -_performDelayedAudioPlaybackInitiationForStateDescriptor:(%{public}@) audioVolumeRampingDuration:(%{public}f).", &v13, 0x20u);
   }
 
   os_unfair_lock_lock(&self->_lock);
   v8 = self->_stateDescriptor;
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [v6 playingAlert];
-  v10 = [(TLAlertQueuePlayerStateDescriptor *)v8 playingAlert];
-  if (v10 == v9)
+  playingAlert = [descriptorCopy playingAlert];
+  playingAlert2 = [(TLAlertQueuePlayerStateDescriptor *)v8 playingAlert];
+  if (playingAlert2 == playingAlert)
   {
-    [(TLAlertQueuePlayerController *)self _initiateAudioPlaybackForStateDescriptor:v8 audioVolumeRampingDuration:a4];
+    [(TLAlertQueuePlayerController *)self _initiateAudioPlaybackForStateDescriptor:v8 audioVolumeRampingDuration:duration];
   }
 
   else
@@ -1923,11 +1923,11 @@ void __125__TLAlertQueuePlayerController__startPlaybackForStateDescriptor_usingC
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543874;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
-      v16 = v10;
+      v16 = playingAlert2;
       v17 = 2114;
-      v18 = *&v9;
+      durationCopy = *&playingAlert;
       _os_log_impl(&dword_1D9356000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: -_performDelayedAudioPlaybackInitiation…: playingAlert (%{public}@) doesn't match with alert with delayed audio playback initiation (%{public}@). Aborting.", &v13, 0x20u);
     }
   }
@@ -1935,44 +1935,44 @@ void __125__TLAlertQueuePlayerController__startPlaybackForStateDescriptor_usingC
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyPlaybackObserverForStateDescriptor:(id)a3 isForMusicPlayback:(BOOL)a4
+- (void)_notifyPlaybackObserverForStateDescriptor:(id)descriptor isForMusicPlayback:(BOOL)playback
 {
-  v4 = a4;
+  playbackCopy = playback;
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v7 = TLLogPlayback();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v30 = self;
+    selfCopy = self;
     v31 = 2114;
-    v32 = v6;
+    v32 = descriptorCopy;
     v33 = 1024;
-    v34 = v4;
+    v34 = playbackCopy;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -_notifyPlaybackObserverForStateDescriptor:(%{public}@) isForMusicPlayback:(%{BOOL}d).", buf, 0x1Cu);
   }
 
-  v8 = [v6 playingAlert];
-  v9 = [v8 playbackObserver];
+  playingAlert = [descriptorCopy playingAlert];
+  playbackObserver = [playingAlert playbackObserver];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(AVAudioSession *)self->_audioSession reporterID];
+    reporterID = [(AVAudioSession *)self->_audioSession reporterID];
     v11 = [(TLAlertQueuePlayerController *)self description];
     v12 = dispatch_get_global_queue(0, 0);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __93__TLAlertQueuePlayerController__notifyPlaybackObserverForStateDescriptor_isForMusicPlayback___block_invoke;
     v24[3] = &unk_1E85797D8;
-    v28 = v4;
+    v28 = playbackCopy;
     v13 = &v25;
-    v27[1] = v10;
+    v27[1] = reporterID;
     v25 = v11;
     v14 = &v26;
-    v26 = v9;
+    v26 = playbackObserver;
     v15 = v27;
-    v27[0] = v8;
+    v27[0] = playingAlert;
     v16 = v11;
     v17 = v24;
 LABEL_7:
@@ -1992,9 +1992,9 @@ LABEL_7:
     v13 = &v21;
     v21 = v18;
     v14 = &v22;
-    v22 = v9;
+    v22 = playbackObserver;
     v15 = &v23;
-    v23 = v8;
+    v23 = playingAlert;
     v16 = v18;
     v17 = v20;
     goto LABEL_7;
@@ -2053,33 +2053,33 @@ uint64_t __93__TLAlertQueuePlayerController__notifyPlaybackObserverForStateDescr
   return result;
 }
 
-- (void)_stopPlaybackForStateDescriptor:(id)a3
+- (void)_stopPlaybackForStateDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:v4 withOptions:0 playerWasAlreadyPausedExternally:0];
+  [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:descriptorCopy withOptions:0 playerWasAlreadyPausedExternally:0];
 }
 
-- (void)_stopPlaybackForStateDescriptor:(id)a3 withOptions:(id)a4 playerWasAlreadyPausedExternally:(BOOL)a5
+- (void)_stopPlaybackForStateDescriptor:(id)descriptor withOptions:(id)options playerWasAlreadyPausedExternally:(BOOL)externally
 {
-  v5 = a5;
+  externallyCopy = externally;
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v10 = TLLogPlayback();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v31 = 138544130;
-    v32 = self;
+    selfCopy8 = self;
     v33 = 2114;
-    v34 = v8;
+    v34 = descriptorCopy;
     v35 = 2114;
-    v36 = v9;
+    v36 = optionsCopy;
     v37 = 1024;
-    v38 = v5;
+    v38 = externallyCopy;
     _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopPlaybackForStateDescriptor:(%{public}@) withOptions:(%{public}@) playerWasAlreadyPausedExternally:(%{BOOL}d).", &v31, 0x26u);
   }
 
@@ -2087,28 +2087,28 @@ uint64_t __93__TLAlertQueuePlayerController__notifyPlaybackObserverForStateDescr
   self->_isStoppingPlayingAlert = 1;
   if (self->_queuePlayer)
   {
-    if (v5)
+    if (externallyCopy)
     {
       v12 = TLLogPlayback();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         queuePlayer = self->_queuePlayer;
         v31 = 138543618;
-        v32 = self;
+        selfCopy8 = self;
         v33 = 2114;
         v34 = queuePlayer;
         _os_log_impl(&dword_1D9356000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopPlaybackFor…: playerWasAlreadyPausedExternally = YES for %{public}@.", &v31, 0x16u);
       }
     }
 
-    else if (v9 && ([(AVQueuePlayer *)v9 fadeOutDuration], v15 = v14, v14 > 0.00000011920929))
+    else if (optionsCopy && ([(AVQueuePlayer *)optionsCopy fadeOutDuration], v15 = v14, v14 > 0.00000011920929))
     {
       v16 = TLLogPlayback();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = self->_queuePlayer;
         v31 = 138543874;
-        v32 = self;
+        selfCopy8 = self;
         v33 = 2048;
         v34 = *&v15;
         v35 = 2114;
@@ -2128,7 +2128,7 @@ uint64_t __93__TLAlertQueuePlayerController__notifyPlaybackObserverForStateDescr
       {
         v20 = self->_queuePlayer;
         v31 = 138543618;
-        v32 = self;
+        selfCopy8 = self;
         v33 = 2114;
         v34 = v20;
         _os_log_impl(&dword_1D9356000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopPlaybackFor…: [_queuePlayer pause] for %{public}@.", &v31, 0x16u);
@@ -2143,23 +2143,23 @@ uint64_t __93__TLAlertQueuePlayerController__notifyPlaybackObserverForStateDescr
     {
       v22 = self->_queuePlayer;
       v31 = 138543618;
-      v32 = self;
+      selfCopy8 = self;
       v33 = 2114;
       v34 = v22;
       _os_log_impl(&dword_1D9356000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopPlaybackFor…: [_queuePlayer removeAllItems] for %{public}@.", &v31, 0x16u);
     }
 
     [(AVQueuePlayer *)self->_queuePlayer removeAllItems];
-    v23 = [(AVQueuePlayer *)self->_queuePlayer vibrationPattern];
+    vibrationPattern = [(AVQueuePlayer *)self->_queuePlayer vibrationPattern];
 
-    if (v23)
+    if (vibrationPattern)
     {
       v24 = TLLogPlayback();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         v25 = self->_queuePlayer;
         v31 = 138543618;
-        v32 = self;
+        selfCopy8 = self;
         v33 = 2114;
         v34 = v25;
         _os_log_impl(&dword_1D9356000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopPlaybackFor…: [_queuePlayer setVibrationPattern:nil] for %{public}@.", &v31, 0x16u);
@@ -2177,7 +2177,7 @@ uint64_t __93__TLAlertQueuePlayerController__notifyPlaybackObserverForStateDescr
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 138543618;
-      v32 = self;
+      selfCopy8 = self;
       v33 = 2048;
       v34 = 0x3FE0000000000000;
       _os_log_impl(&dword_1D9356000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopMusicPlayback: Start delay of %.1fs to avoid a perceptible glitch upon restoring previous audio volume for Media Playback.", &v31, 0x16u);
@@ -2188,14 +2188,14 @@ uint64_t __93__TLAlertQueuePlayerController__notifyPlaybackObserverForStateDescr
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 138543618;
-      v32 = self;
+      selfCopy8 = self;
       v33 = 2048;
       v34 = 0x3FE0000000000000;
       _os_log_impl(&dword_1D9356000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopMusicPlayback: Ended delay of %.1fs to avoid a perceptible glitch upon restoring previous audio volume for Media Playback.", &v31, 0x16u);
     }
   }
 
-  [(TLAlertQueuePlayerController *)self _didEndPlayingAlertForStateDescriptor:v8 isForMusicPlayback:isPlayingMusic];
+  [(TLAlertQueuePlayerController *)self _didEndPlayingAlertForStateDescriptor:descriptorCopy isForMusicPlayback:isPlayingMusic];
   toneAssetForPendingPlayingAlert = self->_toneAssetForPendingPlayingAlert;
   self->_toneAssetForPendingPlayingAlert = 0;
 
@@ -2223,10 +2223,10 @@ void __94__TLAlertQueuePlayerController__prepareAudioEnvironmentForStateDescript
   }
 }
 
-- (void)_resetClientPriorityForStateDescriptor:(id)a3
+- (void)_resetClientPriorityForStateDescriptor:(id)descriptor
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   queuePlayer = self->_queuePlayer;
   if (queuePlayer)
@@ -2236,17 +2236,17 @@ void __94__TLAlertQueuePlayerController__prepareAudioEnvironmentForStateDescript
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = self->_queuePlayer;
-      v8 = [v4 alertForAudioEnvironmentSetup];
+      alertForAudioEnvironmentSetup = [descriptorCopy alertForAudioEnvironmentSetup];
       v10 = 138544386;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v4;
+      v13 = descriptorCopy;
       v14 = 2048;
       v15 = 0;
       v16 = 2114;
       v17 = v7;
       v18 = 2114;
-      v19 = v8;
+      v19 = alertForAudioEnvironmentSetup;
       _os_log_impl(&dword_1D9356000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: -_resetClientPriorityForStateDescriptor:(%{public}@). Reset client priority to %ld on %{public}@ for %{public}@.", &v10, 0x34u);
     }
   }
@@ -2297,7 +2297,7 @@ LABEL_8:
   {
     audioSession = self->_audioSession;
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = audioSession;
     _os_log_impl(&dword_1D9356000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: -_resetFlagsForSwitchingAuxiliaryAudioSession. Did reset internal flags related to auxiliary audio session %{public}@.", &v9, 0x16u);
@@ -2307,11 +2307,11 @@ LABEL_11:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_applyAudioVolume:(float)a3 forAlert:(id)a4 isForMusicPlayback:(BOOL)a5 phase:(int64_t)a6
+- (void)_applyAudioVolume:(float)volume forAlert:(id)alert isForMusicPlayback:(BOOL)playback phase:(int64_t)phase
 {
-  v7 = a5;
+  playbackCopy = playback;
   v48 = *MEMORY[0x1E69E9840];
-  v10 = COERCE_DOUBLE(a4);
+  v10 = COERCE_DOUBLE(alert);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v11 = [objc_opt_class() _audioVolumeApplicationPolicyForAlert:*&v10 externalEnvironmentValues:*&self->_externalEnvironmentValues];
   v12 = v11;
@@ -2325,27 +2325,27 @@ LABEL_11:
     v13 = off_1E8579E98[v11];
   }
 
-  if (a6 > 2)
+  if (phase > 2)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = off_1E8579EB8[a6];
+    v14 = off_1E8579EB8[phase];
   }
 
   v15 = TLLogPlayback();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544642;
-    v39 = self;
+    selfCopy7 = self;
     v40 = 2048;
-    v41 = a3;
+    volumeCopy = volume;
     v42 = 2114;
-    v43 = v10;
+    volumeCopy5 = v10;
     v44 = 1024;
-    *v45 = v7;
+    *v45 = playbackCopy;
     *&v45[4] = 2114;
     *&v45[6] = v14;
     *&v45[14] = 2114;
@@ -2370,7 +2370,7 @@ LABEL_11:
       v16 = 0.0;
     }
 
-    if (v26 && vabds_f32(v37, a3) <= 0.00000011921)
+    if (v26 && vabds_f32(v37, volume) <= 0.00000011921)
     {
       TLLogPlayback();
       *&v29 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -2378,11 +2378,11 @@ LABEL_11:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544130;
-        v39 = self;
+        selfCopy7 = self;
         v40 = 2114;
-        v41 = *&v19;
+        volumeCopy = *&v19;
         v42 = 2048;
-        v43 = a3;
+        volumeCopy5 = volume;
         v44 = 2114;
         *v45 = v10;
         _os_log_impl(&dword_1D9356000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: -_applyAudioVolume…: Existing volume on %{public}@ for active audio category matches requested volume %f for %{public}@.", buf, 0x2Au);
@@ -2393,18 +2393,18 @@ LABEL_11:
 
     else
     {
-      *&v27 = a3;
+      *&v27 = volume;
       v28 = [v19 setActiveCategoryVolumeTo:v27];
       TLLogPlayback();
       *&v29 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544386;
-        v39 = self;
+        selfCopy7 = self;
         v40 = 2114;
-        v41 = *&v19;
+        volumeCopy = *&v19;
         v42 = 2048;
-        v43 = a3;
+        volumeCopy5 = volume;
         v44 = 2114;
         *v45 = v10;
         *&v45[8] = 1024;
@@ -2422,7 +2422,7 @@ LABEL_11:
       if (v12 != 1 || (queuePlayer = self->_queuePlayer) == 0)
       {
         v24 = 0;
-        if (!a6)
+        if (!phase)
         {
           goto LABEL_45;
         }
@@ -2431,7 +2431,7 @@ LABEL_11:
       }
 
       [(AVQueuePlayer *)queuePlayer volume];
-      if (vabds_f32(*&v18, a3) <= 0.00000011921)
+      if (vabds_f32(*&v18, volume) <= 0.00000011921)
       {
         TLLogPlayback();
         *&v19 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -2439,11 +2439,11 @@ LABEL_11:
         {
           v35 = self->_queuePlayer;
           *buf = 138543874;
-          v39 = self;
+          selfCopy7 = self;
           v40 = 2114;
-          v41 = *&v35;
+          volumeCopy = *&v35;
           v42 = 2048;
-          v43 = a3;
+          volumeCopy5 = volume;
           v21 = "%{public}@: -_applyAudioVolume…: Existing volume of %{public}@ is already set to %f.";
           v22 = v19;
           v23 = 32;
@@ -2453,7 +2453,7 @@ LABEL_11:
 
       else
       {
-        *&v18 = a3;
+        *&v18 = volume;
         [(AVQueuePlayer *)self->_queuePlayer setVolume:v18];
         TLLogPlayback();
         *&v19 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
@@ -2461,11 +2461,11 @@ LABEL_11:
         {
           v20 = self->_queuePlayer;
           *buf = 138544130;
-          v39 = self;
+          selfCopy7 = self;
           v40 = 2114;
-          v41 = *&v20;
+          volumeCopy = *&v20;
           v42 = 2048;
-          v43 = a3;
+          volumeCopy5 = volume;
           v44 = 2114;
           *v45 = v10;
           v21 = "%{public}@: -_applyAudioVolume…: Adjusted volume of %{public}@ to %f for %{public}@.";
@@ -2480,7 +2480,7 @@ LABEL_37:
       goto LABEL_44;
     }
 
-    if (v7)
+    if (playbackCopy)
     {
       v25 = *MEMORY[0x1E6958068];
     }
@@ -2508,20 +2508,20 @@ LABEL_37:
       v16 = 0.0;
     }
 
-    if (v31 && vabds_f32(v37, a3) <= 0.00000011921)
+    if (v31 && vabds_f32(v37, volume) <= 0.00000011921)
     {
       v34 = TLLogPlayback();
       v16 = 0.0;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544386;
-        v39 = self;
+        selfCopy7 = self;
         v40 = 2114;
-        v41 = v30;
+        volumeCopy = v30;
         v42 = 2114;
-        v43 = *&v29;
+        volumeCopy5 = *&v29;
         v44 = 2048;
-        *v45 = a3;
+        *v45 = volume;
         *&v45[8] = 2114;
         *&v45[10] = v10;
         _os_log_impl(&dword_1D9356000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@: -_applyAudioVolume…: Existing volume on %{public}@ for MediaExperience audio category %{public}@ matches requested volume %f for %{public}@.", buf, 0x34u);
@@ -2532,21 +2532,21 @@ LABEL_37:
 
     else
     {
-      *&v32 = a3;
+      *&v32 = volume;
       v33 = [*&v30 setVolumeTo:v29 forCategory:v32];
       v34 = TLLogPlayback();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544898;
-        v39 = self;
+        selfCopy7 = self;
         v40 = 2114;
-        v41 = v30;
+        volumeCopy = v30;
         v42 = 2114;
-        v43 = *&v29;
+        volumeCopy5 = *&v29;
         v44 = 2048;
         *v45 = v37;
         *&v45[8] = 2048;
-        *&v45[10] = a3;
+        *&v45[10] = volume;
         *&v45[18] = 2114;
         *&v45[20] = v10;
         v46 = 1024;
@@ -2557,7 +2557,7 @@ LABEL_37:
   }
 
 LABEL_44:
-  if (!a6)
+  if (!phase)
   {
 LABEL_45:
     self->_previousAudioVolume = v16;
@@ -2569,13 +2569,13 @@ LABEL_46:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didReceiveAttentionPollingEventOfType:(int64_t)a3 stateDescriptor:(id)a4
+- (void)_didReceiveAttentionPollingEventOfType:(int64_t)type stateDescriptor:(id)descriptor
 {
   v59 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  if (a3 == 1)
+  if (type == 1)
   {
     v45 = @"attention detected";
     v7 = 1;
@@ -2584,7 +2584,7 @@ LABEL_46:
   else
   {
     v7 = 0;
-    if (a3)
+    if (type)
     {
       v45 = 0;
     }
@@ -2601,18 +2601,18 @@ LABEL_46:
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     *buf = 138544130;
-    v52 = self;
+    selfCopy5 = self;
     v53 = 2114;
     v54 = v45;
     v55 = 2114;
     v56 = v10;
     v57 = 2048;
-    v58 = v6;
+    v58 = descriptorCopy;
     _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didReceiveAttentionPollingEventOfType:(%{public}@) stateDescriptor:(<%{public}@: %p>).", buf, 0x2Au);
   }
 
   self->_isAttentionAwarenessSubsystemFullyInitialized = 1;
-  self->_lastAttentionPollingEventType = a3;
+  self->_lastAttentionPollingEventType = type;
   v11 = self->_toneAssetForPendingPlayingAlert;
   hasToneAssetForPendingPlayingAlert = self->_hasToneAssetForPendingPlayingAlert;
   toneAssetForPendingPlayingAlert = self->_toneAssetForPendingPlayingAlert;
@@ -2622,20 +2622,20 @@ LABEL_46:
   os_unfair_lock_lock(&self->_lock);
   v14 = self->_stateDescriptor;
   os_unfair_lock_unlock(&self->_lock);
-  v15 = [(TLAlertQueuePlayerStateDescriptor *)v14 alertForAudioEnvironmentSetup];
-  v16 = [v6 alertForAudioEnvironmentSetup];
-  v17 = v16;
-  if (v15 == v16)
+  alertForAudioEnvironmentSetup = [(TLAlertQueuePlayerStateDescriptor *)v14 alertForAudioEnvironmentSetup];
+  alertForAudioEnvironmentSetup2 = [descriptorCopy alertForAudioEnvironmentSetup];
+  v17 = alertForAudioEnvironmentSetup2;
+  if (alertForAudioEnvironmentSetup == alertForAudioEnvironmentSetup2)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (!a3 && hasToneAssetForPendingPlayingAlert)
+      if (!type && hasToneAssetForPendingPlayingAlert)
       {
-        v18 = [(TLAlertQueuePlayerStateDescriptor *)v14 analytics];
-        [v18 setDidAttenuatePlayback:0];
-        v21 = [MEMORY[0x1E695DF00] date];
-        [v21 timeIntervalSinceReferenceDate];
-        [v18 setStartTime:?];
+        analytics = [(TLAlertQueuePlayerStateDescriptor *)v14 analytics];
+        [analytics setDidAttenuatePlayback:0];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceReferenceDate];
+        [analytics setStartTime:?];
 
         [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:v14 usingConfirmedPlayableAsset:v11 hasAlreadyDetectedUserAttention:0];
         goto LABEL_11;
@@ -2644,38 +2644,38 @@ LABEL_46:
       goto LABEL_12;
     }
 
-    v44 = v16;
-    v22 = [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator effectParameters];
-    v18 = [(TLAlertQueuePlayerStateDescriptor *)v14 analytics];
-    [v18 setDidAttenuatePlayback:1];
-    v23 = [MEMORY[0x1E695DF00] date];
-    [v23 timeIntervalSinceReferenceDate];
+    v44 = alertForAudioEnvironmentSetup2;
+    effectParameters = [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator effectParameters];
+    analytics = [(TLAlertQueuePlayerStateDescriptor *)v14 analytics];
+    [analytics setDidAttenuatePlayback:1];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceReferenceDate];
     if (hasToneAssetForPendingPlayingAlert)
     {
-      [v18 setStartTime:?];
+      [analytics setStartTime:?];
 
-      [v18 startTime];
-      [v18 setAttenuationTime:?];
-      [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator setEffectParameters:v22, 1065353216];
+      [analytics startTime];
+      [analytics setAttenuationTime:?];
+      [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator setEffectParameters:effectParameters, 1065353216];
       [(TLAlertQueuePlayerController *)self _startPlaybackForStateDescriptor:v14 usingConfirmedPlayableAsset:v11 hasAlreadyDetectedUserAttention:1];
       v17 = v44;
       goto LABEL_11;
     }
 
-    v40 = v15;
+    v40 = alertForAudioEnvironmentSetup;
     v41 = v14;
     v42 = v11;
     v43 = v7;
-    v39 = v18;
-    [v18 setAttenuationTime:?];
+    v39 = analytics;
+    [analytics setAttenuationTime:?];
 
-    [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator setEffectParameters:v22 effectMixFadeDuration:1065353216, 0.75];
-    v24 = [(AVQueuePlayer *)self->_queuePlayer items];
+    [(TLAttentionAwarenessEffectCoordinator *)self->_effectCoordinator setEffectParameters:effectParameters effectMixFadeDuration:1065353216, 0.75];
+    items = [(AVQueuePlayer *)self->_queuePlayer items];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v25 = [v24 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    v25 = [items countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (!v25)
     {
       goto LABEL_38;
@@ -2689,7 +2689,7 @@ LABEL_23:
     {
       if (*v47 != v27)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(items);
       }
 
       v29 = *(*(&v46 + 1) + 8 * v28);
@@ -2698,21 +2698,21 @@ LABEL_23:
         goto LABEL_36;
       }
 
-      v30 = [v29 tl_hapticTracks];
-      v31 = [v30 attenuatedHapticPlayerItemTrack];
-      v32 = [v30 hapticPlayerItemTrack];
-      v33 = v32;
-      if (v31)
+      tl_hapticTracks = [v29 tl_hapticTracks];
+      attenuatedHapticPlayerItemTrack = [tl_hapticTracks attenuatedHapticPlayerItemTrack];
+      hapticPlayerItemTrack = [tl_hapticTracks hapticPlayerItemTrack];
+      v33 = hapticPlayerItemTrack;
+      if (attenuatedHapticPlayerItemTrack)
       {
         break;
       }
 
-      [v32 setActiveHapticChannelIndex:1];
+      [hapticPlayerItemTrack setActiveHapticChannelIndex:1];
       v35 = TLLogPlayback();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544130;
-        v52 = self;
+        selfCopy5 = self;
         v53 = 2114;
         v54 = v45;
         v55 = 2048;
@@ -2731,7 +2731,7 @@ LABEL_35:
 LABEL_36:
       if (v26 == ++v28)
       {
-        v26 = [v24 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v26 = [items countByEnumeratingWithState:&v46 objects:v50 count:16];
         if (!v26)
         {
 LABEL_38:
@@ -2740,8 +2740,8 @@ LABEL_38:
           v7 = v43;
           v14 = v41;
           v11 = v42;
-          v18 = v39;
-          v15 = v40;
+          analytics = v39;
+          alertForAudioEnvironmentSetup = v40;
           goto LABEL_11;
         }
 
@@ -2749,12 +2749,12 @@ LABEL_38:
       }
     }
 
-    [v32 setMutesHaptics:1];
+    [hapticPlayerItemTrack setMutesHaptics:1];
     v34 = TLLogPlayback();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v52 = self;
+      selfCopy5 = self;
       v53 = 2114;
       v54 = v45;
       v55 = 2114;
@@ -2762,7 +2762,7 @@ LABEL_38:
       _os_log_impl(&dword_1D9356000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didReceiveAttentionPollingEventOfType:(%{public}@) […]: [hapticPlayerItemTrack setMutesHaptics:YES] on %{public}@.", buf, 0x20u);
     }
 
-    [v31 setMutesHaptics:0];
+    [attenuatedHapticPlayerItemTrack setMutesHaptics:0];
     v35 = TLLogPlayback();
     if (!os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
@@ -2770,27 +2770,27 @@ LABEL_38:
     }
 
     *buf = 138543874;
-    v52 = self;
+    selfCopy5 = self;
     v53 = 2114;
     v54 = v45;
     v55 = 2114;
-    v56 = v31;
+    v56 = attenuatedHapticPlayerItemTrack;
     v36 = v35;
     v37 = "%{public}@: -_didReceiveAttentionPollingEventOfType:(%{public}@) […]: [attenuatedHapticPlayerItemTrack setMutesHaptics:NO] on %{public}@.";
     v38 = 32;
     goto LABEL_34;
   }
 
-  v18 = TLLogPlayback();
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  analytics = TLLogPlayback();
+  if (os_log_type_enabled(analytics, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v52 = self;
+    selfCopy5 = self;
     v53 = 2114;
     v54 = v45;
     v55 = 2114;
-    v56 = v15;
-    _os_log_impl(&dword_1D9356000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didReceiveAttentionPollingEventOfType:(%{public}@) […]: alertForAudioEnvironmentSetup argument doesn't match with activeAlertForAudioEnvironmentSetup: %{public}@. Aborting logic to affect current playback state.", buf, 0x20u);
+    v56 = alertForAudioEnvironmentSetup;
+    _os_log_impl(&dword_1D9356000, analytics, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didReceiveAttentionPollingEventOfType:(%{public}@) […]: alertForAudioEnvironmentSetup argument doesn't match with activeAlertForAudioEnvironmentSetup: %{public}@. Aborting logic to affect current playback state.", buf, 0x20u);
   }
 
 LABEL_11:
@@ -2805,26 +2805,26 @@ LABEL_12:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createQueuePlayerIfNecessaryForStateDescriptor:(id)a3
+- (void)_createQueuePlayerIfNecessaryForStateDescriptor:(id)descriptor
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  v5 = [(AVQueuePlayer *)v4 playingAlert];
-  if (v5)
+  playingAlert = [(AVQueuePlayer *)descriptorCopy playingAlert];
+  if (playingAlert)
   {
-    v6 = [objc_opt_class() _clientNameForAlert:v5];
-    v7 = [objc_opt_class() _clientPriorityForAlert:v5];
-    v8 = [objc_opt_class() _shouldEnsureActiveAudioSessionWhenStartingPlaybackForAlert:v5];
-    v9 = [objc_opt_class() _shouldUseAuxiliaryAudioSessionForAlert:v5];
+    v6 = [objc_opt_class() _clientNameForAlert:playingAlert];
+    v7 = [objc_opt_class() _clientPriorityForAlert:playingAlert];
+    v8 = [objc_opt_class() _shouldEnsureActiveAudioSessionWhenStartingPlaybackForAlert:playingAlert];
+    v9 = [objc_opt_class() _shouldUseAuxiliaryAudioSessionForAlert:playingAlert];
     v10 = TLLogPlayback();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544642;
-      v32 = self;
+      selfCopy6 = self;
       v33 = 2114;
-      v34 = v4;
+      v34 = descriptorCopy;
       v35 = 2114;
       v36 = v6;
       v37 = 2048;
@@ -2844,35 +2844,35 @@ LABEL_12:
 
     v29 = v8;
     v30 = v7;
-    v12 = [(AVQueuePlayer *)queuePlayer _clientName];
-    v13 = [(AVQueuePlayer *)self->_queuePlayer _clientPriority];
-    v14 = [(AVQueuePlayer *)self->_queuePlayer _ensuresActiveAudioSessionWhenStartingPlayback];
-    v15 = [(AVQueuePlayer *)self->_queuePlayer audioSession];
+    _clientName = [(AVQueuePlayer *)queuePlayer _clientName];
+    _clientPriority = [(AVQueuePlayer *)self->_queuePlayer _clientPriority];
+    _ensuresActiveAudioSessionWhenStartingPlayback = [(AVQueuePlayer *)self->_queuePlayer _ensuresActiveAudioSessionWhenStartingPlayback];
+    audioSession = [(AVQueuePlayer *)self->_queuePlayer audioSession];
 
     v16 = TLLogPlayback();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544386;
-      v32 = self;
+      selfCopy6 = self;
       v33 = 2114;
-      v34 = v12;
+      v34 = _clientName;
       v35 = 2048;
-      v36 = v13;
+      v36 = _clientPriority;
       v37 = 1024;
-      *v38 = v14;
+      *v38 = _ensuresActiveAudioSessionWhenStartingPlayback;
       *&v38[4] = 1024;
-      *&v38[6] = v15 != 0;
+      *&v38[6] = audioSession != 0;
       _os_log_impl(&dword_1D9356000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: -_createQueuePlayerIfNecessary…: Existing player is configured with clientName = %{public}@. clientPriority = %ld. ensuresActiveAudioSessionWhenStartingPlayback = %{BOOL}d. isUsingAuxiliaryAudioSession = %{BOOL}d.", buf, 0x2Cu);
     }
 
-    if (![(AVQueuePlayer *)v12 isEqualToString:v6]|| v13 != v30)
+    if (![(AVQueuePlayer *)_clientName isEqualToString:v6]|| _clientPriority != v30)
     {
       v17 = TLLogPlayback();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v20 = self->_queuePlayer;
         *buf = 138543618;
-        v32 = self;
+        selfCopy6 = self;
         v33 = 2114;
         v34 = v20;
         _os_log_impl(&dword_1D9356000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: -_createQueuePlayerIfNecessary…: Client name or priority don't match those of %{public}@. Destroying it.", buf, 0x16u);
@@ -2883,9 +2883,9 @@ LABEL_12:
     }
 
     LOBYTE(v8) = v29;
-    if (v29 == v14)
+    if (v29 == _ensuresActiveAudioSessionWhenStartingPlayback)
     {
-      if (v9 == (v15 != 0))
+      if (v9 == (audioSession != 0))
       {
         goto LABEL_20;
       }
@@ -2895,7 +2895,7 @@ LABEL_12:
       {
         v21 = self->_queuePlayer;
         *buf = 138543618;
-        v32 = self;
+        selfCopy6 = self;
         v33 = 2114;
         v34 = v21;
         v19 = "%{public}@: -_createQueuePlayerIfNecessary…: Policy for picking between auxiliary and shared audio session doesn't match that of %{public}@. Destroying it.";
@@ -2910,7 +2910,7 @@ LABEL_12:
       {
         v18 = self->_queuePlayer;
         *buf = 138543618;
-        v32 = self;
+        selfCopy6 = self;
         v33 = 2114;
         v34 = v18;
         v19 = "%{public}@: -_createQueuePlayerIfNecessary…: Policy for ensuring active audio session when starting playback doesn't match that of %{public}@. Destroying it.";
@@ -2921,7 +2921,7 @@ LABEL_18:
 
 LABEL_19:
 
-    [(TLAlertQueuePlayerController *)self _destroyQueuePlayerForStateDescriptor:v4];
+    [(TLAlertQueuePlayerController *)self _destroyQueuePlayerForStateDescriptor:descriptorCopy];
 LABEL_20:
 
     v7 = v30;
@@ -2934,8 +2934,8 @@ LABEL_28:
 
 LABEL_21:
     v22 = objc_alloc(MEMORY[0x1E6988100]);
-    v23 = [(TLAudioQueue *)self->_audioQueue _underlyingSerialQueue];
-    v24 = [v22 initWithDispatchQueue:v23];
+    _underlyingSerialQueue = [(TLAudioQueue *)self->_audioQueue _underlyingSerialQueue];
+    v24 = [v22 initWithDispatchQueue:_underlyingSerialQueue];
     v25 = self->_queuePlayer;
     self->_queuePlayer = v24;
 
@@ -2957,7 +2957,7 @@ LABEL_21:
     {
       v27 = self->_queuePlayer;
       *buf = 138543618;
-      v32 = self;
+      selfCopy6 = self;
       v33 = 2114;
       v34 = v27;
       _os_log_impl(&dword_1D9356000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: -_createQueuePlayerIfNecessary…: Created queue player: %{public}@.", buf, 0x16u);
@@ -2971,10 +2971,10 @@ LABEL_29:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_destroyQueuePlayerForStateDescriptor:(id)a3
+- (void)_destroyQueuePlayerForStateDescriptor:(id)descriptor
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   if (self->_queuePlayer)
@@ -2984,9 +2984,9 @@ LABEL_29:
     {
       queuePlayer = self->_queuePlayer;
       v11 = 138543874;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
-      v14 = v4;
+      v14 = descriptorCopy;
       v15 = 2114;
       v16 = queuePlayer;
       _os_log_impl(&dword_1D9356000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: -_destroyQueuePlayerForStateDescriptor:(%{public}@). _queuePlayer = %{public}@.", &v11, 0x20u);
@@ -2994,7 +2994,7 @@ LABEL_29:
 
     if (!self->_isStoppingPlayingAlert)
     {
-      [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:v4];
+      [(TLAlertQueuePlayerController *)self _stopPlaybackForStateDescriptor:descriptorCopy];
     }
 
     v7 = TLLogPlayback();
@@ -3002,7 +3002,7 @@ LABEL_29:
     {
       v8 = self->_queuePlayer;
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = v8;
       _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -_destroyQueuePlayer…: Tossing queue player: %{public}@.", &v11, 0x16u);
@@ -3027,7 +3027,7 @@ LABEL_29:
     {
       queuePlayer = self->_queuePlayer;
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2114;
       v9 = queuePlayer;
       _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startObservingQueuePlayer: %{public}@.", &v6, 0x16u);
@@ -3053,7 +3053,7 @@ LABEL_29:
     {
       queuePlayer = self->_queuePlayer;
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2114;
       v9 = queuePlayer;
       _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopObservingQueuePlayer: %{public}@.", &v6, 0x16u);
@@ -3067,22 +3067,22 @@ LABEL_29:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (_TLAlertQueuePlayerCurrentItemObservationContext == a6 && [v10 isEqualToString:@"currentItem"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (_TLAlertQueuePlayerCurrentItemObservationContext == context && [pathCopy isEqualToString:@"currentItem"])
   {
-    v13 = [v12 objectForKey:*MEMORY[0x1E696A500]];
+    v13 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
     audioQueue = self->_audioQueue;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __79__TLAlertQueuePlayerController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v24[3] = &unk_1E8579038;
     v25 = v13;
-    v26 = v11;
-    v27 = self;
+    v26 = objectCopy;
+    selfCopy = self;
     v15 = v13;
     [(TLAudioQueue *)audioQueue performTaskWithBlock:v24];
 
@@ -3091,23 +3091,23 @@ LABEL_29:
 
   else
   {
-    if (_TLAlertQueuePlayerCurrentItemStatusObservationContext != a6 || ![v10 isEqualToString:@"currentItem.status"])
+    if (_TLAlertQueuePlayerCurrentItemStatusObservationContext != context || ![pathCopy isEqualToString:@"currentItem.status"])
     {
       v19.receiver = self;
       v19.super_class = TLAlertQueuePlayerController;
-      [(TLAlertQueuePlayerController *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(TLAlertQueuePlayerController *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_9;
     }
 
-    v17 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
+    v17 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     v18 = self->_audioQueue;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __79__TLAlertQueuePlayerController_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
     v20[3] = &unk_1E8579038;
     v21 = v17;
-    v22 = v11;
-    v23 = self;
+    v22 = objectCopy;
+    selfCopy2 = self;
     v15 = v17;
     [(TLAudioQueue *)v18 performTaskWithBlock:v20];
 
@@ -3158,14 +3158,14 @@ uint64_t __79__TLAlertQueuePlayerController_observeValueForKeyPath_ofObject_chan
   return result;
 }
 
-- (void)_queuePlayer:(id)a3 currentItemWasUpdatedFromValue:(id)a4
+- (void)_queuePlayer:(id)player currentItemWasUpdatedFromValue:(id)value
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  playerCopy = player;
+  valueCopy = value;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  if (self->_queuePlayer == v6)
+  if (self->_queuePlayer == playerCopy)
   {
     v8 = TLLogPlayback();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -3173,9 +3173,9 @@ uint64_t __79__TLAlertQueuePlayerController_observeValueForKeyPath_ofObject_chan
       *buf = 138543874;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = valueCopy;
       *&buf[22] = 2114;
-      v38 = v6;
+      v38 = playerCopy;
       _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: currentItemWasUpdatedFromValue:(%{public}@) for %{public}@.", buf, 0x20u);
     }
 
@@ -3185,7 +3185,7 @@ uint64_t __79__TLAlertQueuePlayerController_observeValueForKeyPath_ofObject_chan
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = valueCopy;
       _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: currentItemWasUpdated…: Calling [removedItem seekToTime:kCMTimeZero completionHandler:NULL] on %{public}@.", buf, 0x16u);
     }
 
@@ -3218,17 +3218,17 @@ uint64_t __79__TLAlertQueuePlayerController_observeValueForKeyPath_ofObject_chan
     v13 = *v10;
     *&buf[16] = *(v10 + 16);
     *buf = v13;
-    [v7 seekToTime:buf completionHandler:{0, v33}];
-    v14 = [(AVQueuePlayer *)self->_queuePlayer items];
-    v15 = [v14 count];
+    [valueCopy seekToTime:buf completionHandler:{0, v33}];
+    items = [(AVQueuePlayer *)self->_queuePlayer items];
+    v15 = [items count];
 
     os_unfair_lock_lock(&self->_lock);
     v16 = self->_stateDescriptor;
-    v17 = [(TLAlertQueuePlayerStateDescriptor *)v16 playingAlert];
-    v18 = [v17 configuration];
-    v19 = [v18 shouldRepeat];
+    playingAlert = [(TLAlertQueuePlayerStateDescriptor *)v16 playingAlert];
+    configuration = [playingAlert configuration];
+    shouldRepeat = [configuration shouldRepeat];
 
-    if ((v15 != 0) | v19 & 1)
+    if ((v15 != 0) | shouldRepeat & 1)
     {
       os_unfair_lock_unlock(&self->_lock);
       if (v15)
@@ -3252,11 +3252,11 @@ uint64_t __79__TLAlertQueuePlayerController_observeValueForKeyPath_ofObject_chan
             *buf = 138543618;
             *&buf[4] = self;
             *&buf[12] = 2114;
-            *&buf[14] = v7;
+            *&buf[14] = valueCopy;
             _os_log_impl(&dword_1D9356000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: currentItemWasUpdated…: Re-inserting that same item again: %{public}@.", buf, 0x16u);
           }
 
-          [(AVQueuePlayer *)self->_queuePlayer insertItem:v7 afterItem:0];
+          [(AVQueuePlayer *)self->_queuePlayer insertItem:valueCopy afterItem:0];
         }
 
         [(TLAlertQueuePlayerController *)self _startObservingQueuePlayer];
@@ -3268,9 +3268,9 @@ LABEL_33:
 
     else
     {
-      v23 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor stateDescriptorForCompletedPlayback];
+      stateDescriptorForCompletedPlayback = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor stateDescriptorForCompletedPlayback];
       stateDescriptor = self->_stateDescriptor;
-      self->_stateDescriptor = v23;
+      self->_stateDescriptor = stateDescriptorForCompletedPlayback;
 
       v25 = TLLogPlayback();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -3286,7 +3286,7 @@ LABEL_33:
       os_unfair_lock_unlock(&self->_lock);
     }
 
-    if (v19)
+    if (shouldRepeat)
     {
       isWaitingToCompleteReloadPlaybackRequest = self->_isWaitingToCompleteReloadPlaybackRequest;
       v28 = TLLogPlayback();
@@ -3338,33 +3338,33 @@ LABEL_34:
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_queuePlayer:(id)a3 currentItemStatusWasUpdatedToValue:(int64_t)a4
+- (void)_queuePlayer:(id)player currentItemStatusWasUpdatedToValue:(int64_t)value
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  playerCopy = player;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  if (a4 == 2 && self->_queuePlayer == v6)
+  if (value == 2 && self->_queuePlayer == playerCopy)
   {
-    v7 = [(AVQueuePlayer *)v6 currentItem];
-    v8 = [v7 error];
-    v9 = [v8 code];
+    currentItem = [(AVQueuePlayer *)playerCopy currentItem];
+    error = [currentItem error];
+    code = [error code];
 
     v10 = TLLogPlayback();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 138544130;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2048;
       v19 = 2;
       v20 = 2114;
-      v21 = v6;
+      v21 = playerCopy;
       v22 = 2048;
-      v23 = v9;
+      v23 = code;
       _os_log_error_impl(&dword_1D9356000, v10, OS_LOG_TYPE_ERROR, "%{public}@: currentItemStatusWasUpdatedToValue:(%ld) for %{public}@. itemStatus == AVPlayerItemStatusFailed. currentItemErrorCode: %ld.", &v16, 0x2Au);
     }
 
-    if (v9 != -11819)
+    if (code != -11819)
     {
       isWaitingToCompleteReloadPlaybackRequest = self->_isWaitingToCompleteReloadPlaybackRequest;
       v12 = TLLogPlayback();
@@ -3374,11 +3374,11 @@ LABEL_34:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 138543874;
-          v17 = self;
+          selfCopy2 = self;
           v18 = 2048;
           v19 = 2;
           v20 = 2114;
-          v21 = v6;
+          v21 = playerCopy;
           _os_log_impl(&dword_1D9356000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: currentItemStatusWasUpdatedToValue:(%ld) for %{public}@. Tone could not be prepared for playback, but we are already waiting for a fallback tone to begin playing. Doing nothing.", &v16, 0x20u);
         }
       }
@@ -3403,19 +3403,19 @@ LABEL_34:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_clientNameForAlert:(id)a3
++ (id)_clientNameForAlert:(id)alert
 {
-  v3 = a3;
-  v4 = [v3 configuration];
-  v5 = [v3 type];
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  type = [alertCopy type];
 
-  v6 = [v4 topic];
-  if (([v4 isForPreview] & 1) != 0 || v5 == 1)
+  topic = [configuration topic];
+  if (([configuration isForPreview] & 1) != 0 || type == 1)
   {
     v7 = @"Phone";
   }
 
-  else if (v5 == 16 && ([v6 isEqualToString:@"TLAlertTopicSystemNotificationFindMyDevice"] & 1) != 0)
+  else if (type == 16 && ([topic isEqualToString:@"TLAlertTopicSystemNotificationFindMyDevice"] & 1) != 0)
   {
     v7 = @"LocatePhone";
   }
@@ -3428,16 +3428,16 @@ LABEL_34:
   return v7;
 }
 
-+ (int64_t)_clientPriorityForAlert:(id)a3
++ (int64_t)_clientPriorityForAlert:(id)alert
 {
-  v3 = a3;
-  v4 = [v3 configuration];
-  if ([v4 isForPreview])
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  if ([configuration isForPreview])
   {
     v5 = 0;
   }
 
-  else if ([v3 type] == 1)
+  else if ([alertCopy type] == 1)
   {
     v5 = 10;
   }
@@ -3450,38 +3450,38 @@ LABEL_34:
   return v5;
 }
 
-+ (BOOL)_shouldEnsureActiveAudioSessionWhenStartingPlaybackForAlert:(id)a3
++ (BOOL)_shouldEnsureActiveAudioSessionWhenStartingPlaybackForAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [v4 configuration];
-  if ([v5 isForPreview])
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  if ([configuration isForPreview])
   {
     LOBYTE(v6) = 1;
   }
 
   else
   {
-    v6 = [a1 _shouldHandleAudioSessionActivationForAlert:v4] ^ 1;
+    v6 = [self _shouldHandleAudioSessionActivationForAlert:alertCopy] ^ 1;
   }
 
   return v6;
 }
 
-+ (id)_audioCategoryForAlert:(id)a3 externalEnvironmentValues:(id)a4
++ (id)_audioCategoryForAlert:(id)alert externalEnvironmentValues:(id)values
 {
-  var0 = a4.var0;
-  v5 = a3;
-  v6 = [v5 configuration];
-  v7 = [v5 type];
+  var0 = values.var0;
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  type = [alertCopy type];
 
-  v8 = [v6 topic];
-  v9 = [v6 audioCategory];
-  if (![v9 length])
+  topic = [configuration topic];
+  audioCategory = [configuration audioCategory];
+  if (![audioCategory length])
   {
-    if ([v6 isForPreview])
+    if ([configuration isForPreview])
     {
       v10 = MEMORY[0x1E6958088];
-      if (v7 == 13)
+      if (type == 13)
       {
         v10 = MEMORY[0x1E6958030];
       }
@@ -3489,27 +3489,27 @@ LABEL_34:
 LABEL_31:
       v19 = *v10;
 
-      v9 = v19;
+      audioCategory = v19;
       goto LABEL_32;
     }
 
-    if (v7 > 17)
+    if (type > 17)
     {
-      if (v7 == 18)
+      if (type == 18)
       {
-        if ([v6 shouldForcePlayingAtUserSelectedAudioVolume])
+        if ([configuration shouldForcePlayingAtUserSelectedAudioVolume])
         {
           v11 = MEMORY[0x1E6958030];
         }
 
         else
         {
-          if (([v8 isEqualToString:@"TLAlertTopicEmergencyNonInterrupting"] & 1) == 0)
+          if (([topic isEqualToString:@"TLAlertTopicEmergencyNonInterrupting"] & 1) == 0)
           {
-            v17 = [v6 shouldIgnoreRingerSwitch];
+            shouldIgnoreRingerSwitch = [configuration shouldIgnoreRingerSwitch];
             v11 = MEMORY[0x1E6958048];
             v12 = MEMORY[0x1E6958040];
-            v13 = v17 == 0;
+            v13 = shouldIgnoreRingerSwitch == 0;
 LABEL_26:
             if (!v13)
             {
@@ -3525,18 +3525,18 @@ LABEL_26:
 LABEL_28:
         v18 = *v11;
 
-        v9 = v18;
+        audioCategory = v18;
         goto LABEL_29;
       }
 
-      if (v7 == 22)
+      if (type == 22)
       {
 LABEL_22:
         v11 = MEMORY[0x1E6958050];
         goto LABEL_28;
       }
 
-      if (v7 != 28)
+      if (type != 28)
       {
         goto LABEL_29;
       }
@@ -3546,11 +3546,11 @@ LABEL_18:
       goto LABEL_28;
     }
 
-    if (v7 != 1)
+    if (type != 1)
     {
-      if (v7 != 16)
+      if (type != 16)
       {
-        if (v7 != 17 || ![v8 isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
+        if (type != 17 || ![topic isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
         {
           goto LABEL_29;
         }
@@ -3561,10 +3561,10 @@ LABEL_18:
         goto LABEL_26;
       }
 
-      if (([v8 isEqualToString:@"TLAlertTopicSystemNotificationFindMyDevice"] & 1) == 0)
+      if (([topic isEqualToString:@"TLAlertTopicSystemNotificationFindMyDevice"] & 1) == 0)
       {
 LABEL_29:
-        if ([v9 length])
+        if ([audioCategory length])
         {
           goto LABEL_32;
         }
@@ -3576,14 +3576,14 @@ LABEL_29:
       goto LABEL_22;
     }
 
-    if ([v8 isEqualToString:@"TLAlertTopicIncomingCallAppNotification"])
+    if ([topic isEqualToString:@"TLAlertTopicIncomingCallAppNotification"])
     {
       goto LABEL_18;
     }
 
-    v14 = [MEMORY[0x1E696AE30] processInfo];
-    v15 = [v14 processName];
-    v16 = [v15 isEqualToString:@"tlutil"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    v16 = [processName isEqualToString:@"tlutil"];
 
     if (v16)
     {
@@ -3593,13 +3593,13 @@ LABEL_29:
 
 LABEL_32:
 
-  return v9;
+  return audioCategory;
 }
 
-+ (id)_audioModeForAlert:(id)a3 audioCategory:(id)a4
++ (id)_audioModeForAlert:(id)alert audioCategory:(id)category
 {
-  v5 = a3;
-  if ([a4 isEqualToString:*MEMORY[0x1E6958040]] && (objc_msgSend(v5, "configuration"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_hasCustomAudioVolume"), v6, v7))
+  alertCopy = alert;
+  if ([category isEqualToString:*MEMORY[0x1E6958040]] && (objc_msgSend(alertCopy, "configuration"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_hasCustomAudioVolume"), v6, v7))
   {
     v8 = *MEMORY[0x1E6958138];
   }
@@ -3612,40 +3612,40 @@ LABEL_32:
   return v8;
 }
 
-+ (id)_mediaExperienceAudioCategoryForAudioSessionCategory:(id)a3
++ (id)_mediaExperienceAudioCategoryForAudioSessionCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E6958030]])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:*MEMORY[0x1E6958030]])
   {
     v4 = @"Alarm";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6958080]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E6958080]])
   {
     v4 = @"Ringtone";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6958088]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E6958088]])
   {
     v4 = @"RingtonePreview";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6958050]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E6958050]])
   {
     v4 = @"FindMyPhone";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6958040]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E6958040]])
   {
     v4 = @"EmergencyAlert";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6958048]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E6958048]])
   {
     v4 = @"EmergencyAlert_Muteable";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E6958068]])
+  else if ([categoryCopy isEqualToString:*MEMORY[0x1E6958068]])
   {
     v4 = @"MediaPlayback";
   }
@@ -3658,20 +3658,20 @@ LABEL_32:
   return v4;
 }
 
-- (float)_audioVolumeForAlert:(id)a3 audioCategory:(id)a4
+- (float)_audioVolumeForAlert:(id)alert audioCategory:(id)category
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  alertCopy = alert;
+  categoryCopy = category;
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  v8 = [v6 configuration];
-  [v8 audioVolume];
+  configuration = [alertCopy configuration];
+  [configuration audioVolume];
   v10 = v9;
-  if (([v8 _hasCustomAudioVolume] & 1) == 0 && objc_msgSend(v7, "isEqualToString:", *MEMORY[0x1E6958030]))
+  if (([configuration _hasCustomAudioVolume] & 1) == 0 && objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E6958030]))
   {
     v17 = 1.0;
-    v11 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    v12 = [v11 getVolume:&v17 forCategory:@"Ringtone"];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    v12 = [mEMORY[0x1E69AED10] getVolume:&v17 forCategory:@"Ringtone"];
     v13 = TLLogPlayback();
     v14 = v13;
     if (v12)
@@ -3679,9 +3679,9 @@ LABEL_32:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2114;
-        v21 = v6;
+        v21 = alertCopy;
         v22 = 2048;
         v23 = v17;
         _os_log_impl(&dword_1D9356000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: -_audioVolumeFor…: Did retrieve ringer volume successfully for fallback volume value for alert %{public}@: %f.", buf, 0x20u);
@@ -3695,9 +3695,9 @@ LABEL_32:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2114;
-        v21 = v6;
+        v21 = alertCopy;
         v22 = 2048;
         v23 = v10;
         _os_log_error_impl(&dword_1D9356000, v14, OS_LOG_TYPE_ERROR, "%{public}@: -_audioVolumeFor…: Failed to retrieve ringer volume for fallback volume value for alert %{public}@. Using default value instead: %f.", buf, 0x20u);
@@ -3709,55 +3709,55 @@ LABEL_32:
   return v10;
 }
 
-+ (BOOL)_shouldBypassRingerSwitchPolicyForAlert:(id)a3
++ (BOOL)_shouldBypassRingerSwitchPolicyForAlert:(id)alert
 {
-  v3 = a3;
-  v4 = [v3 configuration];
-  if (([v4 isForPreview] & 1) != 0 || objc_msgSend(v3, "type") == 18 && !objc_msgSend(v4, "shouldForcePlayingAtUserSelectedAudioVolume"))
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  if (([configuration isForPreview] & 1) != 0 || objc_msgSend(alertCopy, "type") == 18 && !objc_msgSend(configuration, "shouldForcePlayingAtUserSelectedAudioVolume"))
   {
-    v5 = 0;
+    shouldIgnoreRingerSwitch = 0;
   }
 
   else
   {
-    v5 = [v4 shouldIgnoreRingerSwitch];
+    shouldIgnoreRingerSwitch = [configuration shouldIgnoreRingerSwitch];
   }
 
-  return v5;
+  return shouldIgnoreRingerSwitch;
 }
 
-+ (BOOL)_shouldHandleAudioSessionActivationForAlert:(id)a3
++ (BOOL)_shouldHandleAudioSessionActivationForAlert:(id)alert
 {
-  v3 = a3;
-  v4 = [v3 configuration];
-  v5 = [v3 type];
-  v6 = [v3 configuration];
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  type = [alertCopy type];
+  configuration2 = [alertCopy configuration];
 
-  v7 = [v6 topic];
+  topic = [configuration2 topic];
 
-  if (v5 != 1 || ([v4 isForPreview] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"TLAlertTopicIncomingCallAppNotification") & 1) != 0)
+  if (type != 1 || ([configuration isForPreview] & 1) != 0 || (objc_msgSend(topic, "isEqualToString:", @"TLAlertTopicIncomingCallAppNotification") & 1) != 0)
   {
     v8 = 1;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AE30] processInfo];
-    v11 = [v10 processName];
-    v8 = [v11 isEqualToString:@"tlutil"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    v8 = [processName isEqualToString:@"tlutil"];
   }
 
   return v8 & 1;
 }
 
-- (void)_activateAudioSessionIfNeededForStateDescriptor:(id)a3
+- (void)_activateAudioSessionIfNeededForStateDescriptor:(id)descriptor
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  v5 = [v4 alertForAudioEnvironmentSetup];
-  if (!self->_isAudioSessionActive && [objc_opt_class() _shouldHandleAudioSessionActivationForAlert:v5])
+  alertForAudioEnvironmentSetup = [descriptorCopy alertForAudioEnvironmentSetup];
+  if (!self->_isAudioSessionActive && [objc_opt_class() _shouldHandleAudioSessionActivationForAlert:alertForAudioEnvironmentSetup])
   {
     audioSession = self->_audioSession;
     v16 = 0;
@@ -3770,15 +3770,15 @@ LABEL_32:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v14 = self->_audioSession;
-        v15 = [v9 tl_nonRedundantDescription];
+        tl_nonRedundantDescription = [v9 tl_nonRedundantDescription];
         *buf = 138544130;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2114;
         v20 = v14;
         v21 = 2114;
-        v22 = v5;
+        v22 = alertForAudioEnvironmentSetup;
         v23 = 2114;
-        v24 = v15;
+        v24 = tl_nonRedundantDescription;
         _os_log_error_impl(&dword_1D9356000, v12, OS_LOG_TYPE_ERROR, "%{public}@: -_activateAudioSession…: Failed activating audio session %{public}@ for %{public}@ with error: %{public}@.", buf, 0x2Au);
       }
     }
@@ -3791,25 +3791,25 @@ LABEL_32:
       {
         v11 = self->_audioSession;
         *buf = 138543874;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2114;
         v20 = v11;
         v21 = 2114;
-        v22 = v5;
+        v22 = alertForAudioEnvironmentSetup;
         _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -_activateAudioSession…: Successfully activated audio session %{public}@ for %{public}@.", buf, 0x20u);
       }
 
-      [(TLAlertQueuePlayerController *)self _startObservingAudioSessionInterruptionNotificationsForStateDescriptor:v4];
+      [(TLAlertQueuePlayerController *)self _startObservingAudioSessionInterruptionNotificationsForStateDescriptor:descriptorCopy];
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deactivateAudioSessionIfNeededForStateDescriptor:(id)a3
+- (void)_deactivateAudioSessionIfNeededForStateDescriptor:(id)descriptor
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v5 = TLLogPlayback();
@@ -3817,15 +3817,15 @@ LABEL_32:
   {
     isAudioSessionActive = self->_isAudioSessionActive;
     *buf = 138543874;
-    v23 = self;
+    selfCopy6 = self;
     v24 = 2114;
-    v25 = v4;
+    v25 = descriptorCopy;
     v26 = 1024;
     LODWORD(v27) = isAudioSessionActive;
     _os_log_impl(&dword_1D9356000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: -_deactivateAudioSessionIfNeededForStateDescriptor:(%{public}@): _isAudioSessionActive = %{BOOL}d.", buf, 0x1Cu);
   }
 
-  v7 = [(AVAudioSession *)v4 alertForAudioEnvironmentSetup];
+  alertForAudioEnvironmentSetup = [(AVAudioSession *)descriptorCopy alertForAudioEnvironmentSetup];
   if (self->_isAudioSessionActive)
   {
     if ([(TLAlertQueuePlayerController *)self _isPreventingAudioSessionDeactivation])
@@ -3834,24 +3834,24 @@ LABEL_32:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v23 = self;
+        selfCopy6 = self;
         _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_deactivateAudioSession…: Skipping audio session deactivation because it is currently being prevented.", buf, 0xCu);
       }
     }
 
     else
     {
-      [(TLAlertQueuePlayerController *)self _stopObservingAudioSessionInterruptionNotificationsForStateDescriptor:v4];
+      [(TLAlertQueuePlayerController *)self _stopObservingAudioSessionInterruptionNotificationsForStateDescriptor:descriptorCopy];
       v9 = TLLogPlayback();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         audioSession = self->_audioSession;
         *buf = 138543874;
-        v23 = self;
+        selfCopy6 = self;
         v24 = 2114;
         v25 = audioSession;
         v26 = 2114;
-        v27 = v7;
+        v27 = alertForAudioEnvironmentSetup;
         _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -_deactivateAudioSession…: About to deactivate audio session %{public}@ for %{public}@.", buf, 0x20u);
       }
 
@@ -3868,19 +3868,19 @@ LABEL_32:
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             v19 = self->_audioSession;
-            v20 = [v8 tl_nonRedundantDescription];
+            tl_nonRedundantDescription = [v8 tl_nonRedundantDescription];
             *buf = 138544130;
-            v23 = self;
+            selfCopy6 = self;
             v24 = 2114;
             v25 = v19;
             v26 = 2114;
-            v27 = v7;
+            v27 = alertForAudioEnvironmentSetup;
             v28 = 2114;
-            v29 = v20;
+            v29 = tl_nonRedundantDescription;
             _os_log_error_impl(&dword_1D9356000, v16, OS_LOG_TYPE_ERROR, "%{public}@: -_deactivateAudioSession…: Failed to deactivate audio session %{public}@ for %{public}@ with error: %{public}@.", buf, 0x2Au);
           }
 
-          [(TLAlertQueuePlayerController *)self _startObservingAudioSessionInterruptionNotificationsForStateDescriptor:v4];
+          [(TLAlertQueuePlayerController *)self _startObservingAudioSessionInterruptionNotificationsForStateDescriptor:descriptorCopy];
           goto LABEL_20;
         }
 
@@ -3890,11 +3890,11 @@ LABEL_32:
         {
           v18 = self->_audioSession;
           *buf = 138543874;
-          v23 = self;
+          selfCopy6 = self;
           v24 = 2114;
           v25 = v18;
           v26 = 2114;
-          v27 = v7;
+          v27 = alertForAudioEnvironmentSetup;
           _os_log_error_impl(&dword_1D9356000, v14, OS_LOG_TYPE_ERROR, "%{public}@: -_deactivateAudioSession…: Failed to deactivate audio session %{public}@ for %{public}@ with error code AVAudioSessionErrorCodeIsBusy. Treating that as a successful audio session deactivation.", buf, 0x20u);
         }
       }
@@ -3907,11 +3907,11 @@ LABEL_32:
         {
           v15 = self->_audioSession;
           *buf = 138543874;
-          v23 = self;
+          selfCopy6 = self;
           v24 = 2114;
           v25 = v15;
           v26 = 2114;
-          v27 = v7;
+          v27 = alertForAudioEnvironmentSetup;
           _os_log_impl(&dword_1D9356000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: -_deactivateAudioSession…: Successfully deactivated audio session %{public}@ for %{public}@.", buf, 0x20u);
         }
       }
@@ -3923,26 +3923,26 @@ LABEL_20:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)a3
+- (void)_startObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)descriptor
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   if (!self->_isObservingAudioSessionInterruptionNotification)
   {
     self->_isObservingAudioSessionInterruptionNotification = 1;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__handleAudioSessionInterruptionNotification_ name:*MEMORY[0x1E69580D8] object:self->_audioSession];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleAudioSessionInterruptionNotification_ name:*MEMORY[0x1E69580D8] object:self->_audioSession];
 
     v6 = TLLogPlayback();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 playingAlert];
+      playingAlert = [descriptorCopy playingAlert];
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v7;
+      v12 = playingAlert;
       _os_log_impl(&dword_1D9356000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startObservingAudioSessionInterruptionNotifications…: Started observing interruptions for %{public}@.", &v9, 0x16u);
     }
   }
@@ -3950,26 +3950,26 @@ LABEL_20:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)a3
+- (void)_stopObservingAudioSessionInterruptionNotificationsForStateDescriptor:(id)descriptor
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   if (self->_isObservingAudioSessionInterruptionNotification)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E69580D8] object:self->_audioSession];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69580D8] object:self->_audioSession];
 
     self->_isObservingAudioSessionInterruptionNotification = 0;
     v6 = TLLogPlayback();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 playingAlert];
+      playingAlert = [descriptorCopy playingAlert];
       v9 = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v7;
+      v12 = playingAlert;
       _os_log_impl(&dword_1D9356000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopObservingAudioSessionInterruptionNotifications…: Stopped observing interruptions for %{public}@.", &v9, 0x16u);
     }
   }
@@ -3977,17 +3977,17 @@ LABEL_20:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAudioSessionInterruptionNotification:(id)a3
+- (void)_handleAudioSessionInterruptionNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E6958100]];
-  v7 = [v6 unsignedIntegerValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E6958100]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKey:*MEMORY[0x1E69580E8]];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [userInfo2 objectForKey:*MEMORY[0x1E69580E8]];
+  unsignedIntegerValue2 = [v9 unsignedIntegerValue];
 
   audioQueue = self->_audioQueue;
   v12[0] = MEMORY[0x1E69E9820];
@@ -3995,38 +3995,38 @@ LABEL_20:
   v12[2] = __76__TLAlertQueuePlayerController__handleAudioSessionInterruptionNotification___block_invoke;
   v12[3] = &unk_1E8579E08;
   v12[4] = self;
-  v12[5] = v7;
-  v12[6] = v10;
+  v12[5] = unsignedIntegerValue;
+  v12[6] = unsignedIntegerValue2;
   [(TLAudioQueue *)audioQueue performTaskWithBlock:v12];
 }
 
-- (void)_handleAudioSessionInterruptionOfType:(unint64_t)a3 withOptions:(unint64_t)a4
+- (void)_handleAudioSessionInterruptionOfType:(unint64_t)type withOptions:(unint64_t)options
 {
   v19 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
-  if (a3 == 1)
+  if (type == 1)
   {
     v6 = TLLogPlayback();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543362;
-      v16 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1D9356000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: -_handleAudioSessionInterruption…: Handling interruption of type AVAudioSessionInterruptionTypeBegan.", &v15, 0xCu);
     }
 
     os_unfair_lock_lock(&self->_lock);
     v7 = self->_stateDescriptor;
-    v8 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor stateDescriptorForCompletedPlayback];
+    stateDescriptorForCompletedPlayback = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor stateDescriptorForCompletedPlayback];
     stateDescriptor = self->_stateDescriptor;
-    self->_stateDescriptor = v8;
+    self->_stateDescriptor = stateDescriptorForCompletedPlayback;
 
     v10 = TLLogPlayback();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor debugDescription];
       v15 = 138543618;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2114;
       v18 = v11;
       _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -_handleAudioSessionInterruption…: Updated _stateDescriptor to %{public}@.", &v15, 0x16u);
@@ -4036,11 +4036,11 @@ LABEL_20:
     v12 = TLLogPlayback();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(TLAlertQueuePlayerStateDescriptor *)v7 playingAlert];
+      playingAlert = [(TLAlertQueuePlayerStateDescriptor *)v7 playingAlert];
       v15 = 138543618;
-      v16 = self;
+      selfCopy3 = self;
       v17 = 2114;
-      v18 = v13;
+      v18 = playingAlert;
       _os_log_impl(&dword_1D9356000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: -_handleAudioSessionInterruption…: Resetting state and marking %{public}@ as interrupted by the system.", &v15, 0x16u);
     }
 
@@ -4070,17 +4070,17 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: -_beginPreventingAudioSessionDeactivation.", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_endPreventingAudioSessionDeactivationForStateDescriptor:(id)a3
+- (void)_endPreventingAudioSessionDeactivationForStateDescriptor:(id)descriptor
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   audioSessionDeactivationPreventionRequestsCount = self->_audioSessionDeactivationPreventionRequestsCount;
@@ -4095,16 +4095,16 @@ LABEL_20:
       v9 = TLLogGeneral();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v8 lastPathComponent];
-        v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+        lastPathComponent = [v8 lastPathComponent];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         v19 = 136381443;
-        v20 = "[TLAlertQueuePlayerController _endPreventingAudioSessionDeactivationForStateDescriptor:]";
+        selfCopy3 = "[TLAlertQueuePlayerController _endPreventingAudioSessionDeactivationForStateDescriptor:]";
         v21 = 2113;
-        v22 = v10;
+        v22 = lastPathComponent;
         v23 = 2049;
         v24 = 2224;
         v25 = 2113;
-        v26 = v11;
+        v26 = callStackSymbols;
         _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v19, 0x2Au);
       }
     }
@@ -4132,31 +4132,31 @@ LABEL_20:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543618;
-    v20 = self;
+    selfCopy3 = self;
     v21 = 2114;
-    v22 = v4;
+    v22 = descriptorCopy;
     _os_log_impl(&dword_1D9356000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: -_endPreventingAudioSessionDeactivationForStateDescriptor:(%{public}@).", &v19, 0x16u);
   }
 
   if (!self->_audioSessionDeactivationPreventionRequestsCount)
   {
-    v14 = [v4 playingAlert];
+    playingAlert = [descriptorCopy playingAlert];
 
-    if (!v14)
+    if (!playingAlert)
     {
       v15 = TLLogPlayback();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138543362;
-        v20 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1D9356000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: -_endPreventingAudioSessionDeactivation…: No alert was playing, calling -_deactivateAudioSessionIfNeeded…", &v19, 0xCu);
       }
 
       isAudioSessionActive = self->_isAudioSessionActive;
-      [(TLAlertQueuePlayerController *)self _deactivateAudioSessionIfNeededForStateDescriptor:v4];
+      [(TLAlertQueuePlayerController *)self _deactivateAudioSessionIfNeededForStateDescriptor:descriptorCopy];
       if (isAudioSessionActive && !self->_isAudioSessionActive)
       {
-        [(TLAlertQueuePlayerController *)self _resetClientPriorityForStateDescriptor:v4];
+        [(TLAlertQueuePlayerController *)self _resetClientPriorityForStateDescriptor:descriptorCopy];
       }
 
       else
@@ -4165,7 +4165,7 @@ LABEL_20:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138543362;
-          v20 = self;
+          selfCopy3 = self;
           _os_log_impl(&dword_1D9356000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: -_endPreventingAudioSessionDeactivation…: Skipping reset client priority because the audio session was NOT just deactivated.", &v19, 0xCu);
         }
       }
@@ -4175,34 +4175,34 @@ LABEL_20:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_reportAudioStartEventForStateDescriptor:(id)a3
+- (void)_reportAudioStartEventForStateDescriptor:(id)descriptor
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v5 = TLLogPlayback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v4;
+    v19 = descriptorCopy;
     _os_log_impl(&dword_1D9356000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: -_reportAudioStartEventForStateDescriptor:(%{public}@).", buf, 0x16u);
   }
 
-  v6 = [v4 playingAlert];
-  if ([v6 type] == 13)
+  playingAlert = [descriptorCopy playingAlert];
+  if ([playingAlert type] == 13)
   {
     v7 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-    v8 = [v7 isInternalInstall];
+    isInternalInstall = [v7 isInternalInstall];
 
-    if (v8)
+    if (isInternalInstall)
     {
       v9 = [objc_alloc(MEMORY[0x1E69E4FF0]) initWithReporterID:-[AVAudioSession reporterID](self->_audioSession serviceType:{"reporterID"), 4}];
       v10 = NSStringFromTLAlertType(0xDuLL);
-      v11 = [v6 toneIdentifier];
-      v15[1] = v11;
+      toneIdentifier = [playingAlert toneIdentifier];
+      v15[1] = toneIdentifier;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:2];
 
       [v9 sendMessage:v12 category:8 type:1];
@@ -4212,11 +4212,11 @@ LABEL_20:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startMusicPlaybackForStateDescriptor:(id)a3 mediaItem:(id)a4
+- (void)_startMusicPlaybackForStateDescriptor:(id)descriptor mediaItem:(id)item
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  itemCopy = item;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v8 = TLLogPlayback();
@@ -4225,9 +4225,9 @@ LABEL_20:
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = descriptorCopy;
     *&buf[22] = 2114;
-    v46 = v7;
+    v46 = itemCopy;
     _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startMusicPlaybackForStateDescriptor:(%{public}@) mediaItem:(%{public}@).", buf, 0x20u);
   }
 
@@ -4252,8 +4252,8 @@ LABEL_20:
     v10 = v9;
     _Block_object_dispose(&v41, 8);
     v11 = [v9 alloc];
-    v12 = [(TLAudioQueue *)self->_audioQueue _underlyingSerialQueue];
-    v13 = [v11 initWithClientIdentifier:@"ToneLibrary" queue:v12];
+    _underlyingSerialQueue = [(TLAudioQueue *)self->_audioQueue _underlyingSerialQueue];
+    v13 = [v11 initWithClientIdentifier:@"ToneLibrary" queue:_underlyingSerialQueue];
     musicPlayer = self->_musicPlayer;
     self->_musicPlayer = v13;
 
@@ -4311,7 +4311,7 @@ LABEL_20:
 
   v29 = v28;
   _Block_object_dispose(&v41, 8);
-  v48[0] = v7;
+  v48[0] = itemCopy;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
   v31 = [v28 collectionWithItems:v30];
 
@@ -4324,7 +4324,7 @@ LABEL_20:
     *&buf[12] = 2114;
     *&buf[14] = v31;
     *&buf[22] = 2114;
-    v46 = v7;
+    v46 = itemCopy;
     LOWORD(v47[0]) = 2114;
     *(v47 + 2) = v33;
     _os_log_impl(&dword_1D9356000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: -_startMusicPlayback…: Setting queue with collection %{public}@ [%{public}@] on %{public}@.", buf, 0x2Au);
@@ -4348,32 +4348,32 @@ LABEL_20:
   v39[2] = __80__TLAlertQueuePlayerController__startMusicPlaybackForStateDescriptor_mediaItem___block_invoke;
   v39[3] = &unk_1E8579E30;
   v39[4] = self;
-  v40 = v6;
-  v37 = v6;
+  v40 = descriptorCopy;
+  v37 = descriptorCopy;
   [(MPMusicPlayerApplicationController *)v36 prepareToPlayWithCompletionHandler:v39];
 
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didPrepareToPlayMusicForStateDescriptor:(id)a3 withError:(id)a4
+- (void)_didPrepareToPlayMusicForStateDescriptor:(id)descriptor withError:(id)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v8 = TLLogPlayback();
   v9 = v8;
-  if (v7)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v42 = self;
+      selfCopy9 = self;
       v43 = 2114;
-      v44 = v6;
+      v44 = descriptorCopy;
       v45 = 2114;
-      v46 = v7;
+      v46 = errorCopy;
       _os_log_error_impl(&dword_1D9356000, v9, OS_LOG_TYPE_ERROR, "%{public}@: -_didPrepareToPlayMusicForStateDescriptor:(%{public}@) withError:(%{public}@).", buf, 0x20u);
     }
   }
@@ -4381,35 +4381,35 @@ LABEL_20:
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v42 = self;
+    selfCopy9 = self;
     v43 = 2114;
-    v44 = v6;
+    v44 = descriptorCopy;
     _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didPrepareToPlayMusicForStateDescriptor:(%{public}@)…: Succeeded!", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
-  v11 = [v6 playingAlert];
+  playingAlert = [(TLAlertQueuePlayerStateDescriptor *)self->_stateDescriptor playingAlert];
+  playingAlert2 = [descriptorCopy playingAlert];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v10 == v11)
+  if (playingAlert == playingAlert2)
   {
-    if (v7)
+    if (errorCopy)
     {
-      v12 = [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:v6];
-      [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:v6 withToneIdentifier:v12];
+      playingAlert3 = [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:descriptorCopy];
+      [(TLAlertQueuePlayerController *)self _reloadPlaybackForStateDescriptor:descriptorCopy withToneIdentifier:playingAlert3];
     }
 
     else
     {
-      [(TLAlertQueuePlayerController *)self _willBeginPlayingAlertForStateDescriptor:v6 isForMusicPlayback:1];
-      v12 = [v6 playingAlert];
-      v13 = [objc_opt_class() _shouldVibrateForAlert:v12];
+      [(TLAlertQueuePlayerController *)self _willBeginPlayingAlertForStateDescriptor:descriptorCopy isForMusicPlayback:1];
+      playingAlert3 = [descriptorCopy playingAlert];
+      v13 = [objc_opt_class() _shouldVibrateForAlert:playingAlert3];
       v14 = TLLogPlayback();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v42 = self;
+        selfCopy9 = self;
         v43 = 1024;
         LODWORD(v44) = v13;
         _os_log_impl(&dword_1D9356000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didPrepareToPlayMusic…: Should vibrate: %{BOOL}d.", buf, 0x12u);
@@ -4417,7 +4417,7 @@ LABEL_20:
 
       if (v13)
       {
-        v15 = [(TLAlertQueuePlayerController *)self _vibrationPatternDictionaryForStateDescriptor:v6 allowsArtificiallyRepeatingPropertyListRepresentation:0];
+        v15 = [(TLAlertQueuePlayerController *)self _vibrationPatternDictionaryForStateDescriptor:descriptorCopy allowsArtificiallyRepeatingPropertyListRepresentation:0];
         if (v15)
         {
           v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -4428,7 +4428,7 @@ LABEL_20:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v42 = self;
+            selfCopy9 = self;
             v43 = 2048;
             v44 = 4095;
             _os_log_impl(&dword_1D9356000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didPrepareToPlayMusic…: Calling AudioServicesPlaySystemSoundWithOptions with a non-nil pattern for soundID: %lu.", buf, 0x16u);
@@ -4438,7 +4438,7 @@ LABEL_20:
           v36 = 3221225472;
           v37 = __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor_withError___block_invoke;
           v38 = &unk_1E8579828;
-          v39 = self;
+          selfCopy5 = self;
           v40 = 4095;
           AudioServicesPlaySystemSoundWithOptions();
         }
@@ -4449,7 +4449,7 @@ LABEL_20:
       {
         musicPlayer = self->_musicPlayer;
         *buf = 138543618;
-        v42 = self;
+        selfCopy9 = self;
         v43 = 2114;
         v44 = musicPlayer;
         _os_log_impl(&dword_1D9356000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didPrepareToPlayMusic…: Calling -play on %{public}@.", buf, 0x16u);
@@ -4461,14 +4461,14 @@ LABEL_20:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v42 = self;
+        selfCopy9 = self;
         v43 = 2048;
         v44 = 0x4014000000000000;
         _os_log_impl(&dword_1D9356000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didPrepareToPlayMusic…: Setting timer for %.1f seconds to check if music playback actually started.", buf, 0x16u);
       }
 
-      v21 = [(TLAudioQueue *)self->_audioQueue _underlyingSerialQueue];
-      v22 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v21);
+      _underlyingSerialQueue = [(TLAudioQueue *)self->_audioQueue _underlyingSerialQueue];
+      v22 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, _underlyingSerialQueue);
       musicPlaybackCheckTimerSource = self->_musicPlaybackCheckTimerSource;
       self->_musicPlaybackCheckTimerSource = v22;
 
@@ -4480,26 +4480,26 @@ LABEL_20:
       v30 = 3221225472;
       v31 = __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor_withError___block_invoke_150;
       v32 = &unk_1E8578900;
-      v33 = self;
-      v27 = v6;
+      selfCopy8 = self;
+      v27 = descriptorCopy;
       v34 = v27;
       dispatch_source_set_event_handler(v26, &v29);
       dispatch_resume(self->_musicPlaybackCheckTimerSource);
-      [(TLAlertQueuePlayerController *)self _reportAudioStartEventForStateDescriptor:v27, v29, v30, v31, v32, v33];
+      [(TLAlertQueuePlayerController *)self _reportAudioStartEventForStateDescriptor:v27, v29, v30, v31, v32, selfCopy8];
       [(TLAlertQueuePlayerController *)self _notifyPlaybackObserverForStateDescriptor:v27 isForMusicPlayback:1];
     }
   }
 
   else
   {
-    v12 = TLLogPlayback();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    playingAlert3 = TLLogPlayback();
+    if (os_log_type_enabled(playingAlert3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v42 = self;
+      selfCopy9 = self;
       v43 = 2114;
-      v44 = v6;
-      _os_log_impl(&dword_1D9356000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didPrepareToPlayMusic…: Playing alert for %{public}@ is no longer actually playing; aborting playback initiation.", buf, 0x16u);
+      v44 = descriptorCopy;
+      _os_log_impl(&dword_1D9356000, playingAlert3, OS_LOG_TYPE_DEFAULT, "%{public}@: -_didPrepareToPlayMusic…: Playing alert for %{public}@ is no longer actually playing; aborting playback initiation.", buf, 0x16u);
     }
   }
 
@@ -4524,17 +4524,17 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_ensureMusicPlaybackStartedForStateDescriptor:(id)a3
+- (void)_ensureMusicPlaybackStartedForStateDescriptor:(id)descriptor
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = COERCE_DOUBLE(a3);
+  v4 = COERCE_DOUBLE(descriptor);
   os_unfair_lock_assert_not_owner(&self->_lock);
   [(TLAudioQueue *)self->_audioQueue assertRunningOnAudioQueue];
   v5 = TLLogPlayback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy3 = self;
     v14 = 2114;
     v15 = v4;
     _os_log_impl(&dword_1D9356000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: -_ensureMusicPlaybackStartedForStateDescriptor:(%{public}@)", &v12, 0x16u);
@@ -4546,7 +4546,7 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy3 = self;
     v14 = 2048;
     v15 = v7;
     _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: -_ensureMusicPlaybackStarted…: Music playback rate: %.3f.", &v12, 0x16u);
@@ -4570,7 +4570,7 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1D9356000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: -_ensureMusicPlaybackStarted…: Music appears to be playing just fine!", &v12, 0xCu);
   }
 
@@ -4589,7 +4589,7 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
     {
       musicPlayer = self->_musicPlayer;
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = musicPlayer;
       _os_log_impl(&dword_1D9356000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: -_stopMusicPlayback: Calling -stop on %{public}@.", &v11, 0x16u);
@@ -4606,7 +4606,7 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
     {
       musicPlaybackVibrationSoundID = self->_musicPlaybackVibrationSoundID;
       v11 = 138543874;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2048;
       v14 = musicPlaybackVibrationSoundID;
       v15 = 1024;
@@ -4630,47 +4630,47 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_vibrationPatternDictionaryForStateDescriptor:(id)a3 allowsArtificiallyRepeatingPropertyListRepresentation:(BOOL)a4
+- (id)_vibrationPatternDictionaryForStateDescriptor:(id)descriptor allowsArtificiallyRepeatingPropertyListRepresentation:(BOOL)representation
 {
-  v4 = a4;
+  representationCopy = representation;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  descriptorCopy = descriptor;
   v7 = TLLogPlayback();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v6;
+    v27 = descriptorCopy;
     v28 = 1024;
-    v29 = v4;
+    v29 = representationCopy;
     _os_log_impl(&dword_1D9356000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: -_vibrationPatternDictionaryForStateDescriptor:(%{public}@) allowsArtificiallyRepeatingPropertyListRepresentation:(%{BOOL}d).", &v24, 0x1Cu);
   }
 
-  v8 = [v6 playingAlert];
-  v9 = [v8 configuration];
-  v10 = [v9 externalVibrationPattern];
-  if (v10)
+  playingAlert = [descriptorCopy playingAlert];
+  configuration = [playingAlert configuration];
+  externalVibrationPattern = [configuration externalVibrationPattern];
+  if (externalVibrationPattern)
   {
-    v11 = v10;
+    v11 = externalVibrationPattern;
   }
 
   else
   {
-    v16 = [v9 externalVibrationPatternFileURL];
-    if (!v16 || (v17 = v16, [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v16], v11 = objc_claimAutoreleasedReturnValue(), v17, !v11))
+    externalVibrationPatternFileURL = [configuration externalVibrationPatternFileURL];
+    if (!externalVibrationPatternFileURL || (v17 = externalVibrationPatternFileURL, [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:externalVibrationPatternFileURL], v11 = objc_claimAutoreleasedReturnValue(), v17, !v11))
     {
-      v18 = [v8 vibrationIdentifier];
-      if ([v18 isEqualToString:@"<none>"])
+      vibrationIdentifier = [playingAlert vibrationIdentifier];
+      if ([vibrationIdentifier isEqualToString:@"<none>"])
       {
         v15 = 0;
       }
 
       else
       {
-        if (v4)
+        if (representationCopy)
         {
-          v19 = [objc_opt_class() _shouldRepeatVibrationForAlert:v8 externalEnvironmentValues:*&self->_externalEnvironmentValues];
+          v19 = [objc_opt_class() _shouldRepeatVibrationForAlert:playingAlert externalEnvironmentValues:*&self->_externalEnvironmentValues];
         }
 
         else
@@ -4679,7 +4679,7 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
         }
 
         v21 = +[TLVibrationManager sharedVibrationManager];
-        v15 = [v21 patternForVibrationWithIdentifier:v18 repeating:v19];
+        v15 = [v21 patternForVibrationWithIdentifier:vibrationIdentifier repeating:v19];
       }
 
       v11 = 0;
@@ -4687,13 +4687,13 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
     }
   }
 
-  if (v4 && [v9 shouldRepeat])
+  if (representationCopy && [configuration shouldRepeat])
   {
     v12 = [[TLVibrationPattern alloc] initWithPropertyListRepresentation:v11];
     v13 = v12;
     if (v12)
     {
-      v14 = [(TLVibrationPattern *)v12 _artificiallyRepeatingPropertyListRepresentation];
+      _artificiallyRepeatingPropertyListRepresentation = [(TLVibrationPattern *)v12 _artificiallyRepeatingPropertyListRepresentation];
     }
 
     else
@@ -4704,10 +4704,10 @@ void __83__TLAlertQueuePlayerController__didPrepareToPlayMusicForStateDescriptor
         [TLAlertQueuePlayerController _vibrationPatternDictionaryForStateDescriptor:allowsArtificiallyRepeatingPropertyListRepresentation:];
       }
 
-      v14 = v11;
+      _artificiallyRepeatingPropertyListRepresentation = v11;
     }
 
-    v15 = v14;
+    v15 = _artificiallyRepeatingPropertyListRepresentation;
   }
 
   else
@@ -4723,55 +4723,55 @@ LABEL_23:
   return v15;
 }
 
-+ (BOOL)_shouldVibrateForAlert:(id)a3
++ (BOOL)_shouldVibrateForAlert:(id)alert
 {
-  v3 = a3;
-  if ([v3 type] == 18 && (objc_msgSend(v3, "configuration"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "shouldIgnoreRingerSwitch"), v4, (v5 & 1) != 0))
+  alertCopy = alert;
+  if ([alertCopy type] == 18 && (objc_msgSend(alertCopy, "configuration"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "shouldIgnoreRingerSwitch"), v4, (v5 & 1) != 0))
   {
-    v6 = 1;
+    shouldVibrateForCurrentRingerSwitchState = 1;
   }
 
   else
   {
     v7 = +[TLVibrationManager sharedVibrationManager];
-    v6 = [v7 shouldVibrateForCurrentRingerSwitchState];
+    shouldVibrateForCurrentRingerSwitchState = [v7 shouldVibrateForCurrentRingerSwitchState];
   }
 
-  return v6;
+  return shouldVibrateForCurrentRingerSwitchState;
 }
 
-+ (BOOL)_shouldRepeatVibrationForAlert:(id)a3 externalEnvironmentValues:(id)a4
++ (BOOL)_shouldRepeatVibrationForAlert:(id)alert externalEnvironmentValues:(id)values
 {
-  v6 = a3;
-  if ([TLAlertPlaybackPolicy shouldRepeatVibrationForAlert:v6 withPlaybackBackend:0])
+  alertCopy = alert;
+  if ([TLAlertPlaybackPolicy shouldRepeatVibrationForAlert:alertCopy withPlaybackBackend:0])
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [a1 _shouldApplyStandardDelayAndAudioVolumeRampForAlert:v6 externalEnvironmentValues:*&a4];
+    v7 = [self _shouldApplyStandardDelayAndAudioVolumeRampForAlert:alertCopy externalEnvironmentValues:*&values];
   }
 
   return v7;
 }
 
-+ (BOOL)_shouldApplyAttentionAwarenessEffectsForAlert:(id)a3
++ (BOOL)_shouldApplyAttentionAwarenessEffectsForAlert:(id)alert
 {
-  v3 = a3;
-  v4 = [v3 configuration];
-  v5 = [v4 isForPreview];
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  isForPreview = [configuration isForPreview];
 
-  if (v5)
+  if (isForPreview)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v3 type];
+    type = [alertCopy type];
     v6 = 0;
-    if (v7 <= 0x1C && ((1 << v7) & 0x10006002) != 0)
+    if (type <= 0x1C && ((1 << type) & 0x10006002) != 0)
     {
       v6 = +[TLAttentionAwarenessObserver supportsAttenuatingTonesForAttentionDetected];
     }
@@ -4780,13 +4780,13 @@ LABEL_23:
   return v6;
 }
 
-+ (double)_audioPlaybackInitiationDelayForAlert:(id)a3 externalEnvironmentValues:(id)a4
++ (double)_audioPlaybackInitiationDelayForAlert:(id)alert externalEnvironmentValues:(id)values
 {
-  v6 = a3;
-  v7 = [v6 configuration];
-  [v7 _audioPlaybackInitiationDelay];
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  [configuration _audioPlaybackInitiationDelay];
   v9 = v8;
-  if (v8 <= 0.00000011920929 && [a1 _shouldApplyStandardDelayAndAudioVolumeRampForAlert:v6 externalEnvironmentValues:*&a4])
+  if (v8 <= 0.00000011920929 && [self _shouldApplyStandardDelayAndAudioVolumeRampForAlert:alertCopy externalEnvironmentValues:*&values])
   {
     v9 = 3.0;
   }
@@ -4794,16 +4794,16 @@ LABEL_23:
   return v9;
 }
 
-+ (double)_audioVolumeRampingDurationForAlert:(id)a3 externalEnvironmentValues:(id)a4 toneAssetDuration:(double)a5
++ (double)_audioVolumeRampingDurationForAlert:(id)alert externalEnvironmentValues:(id)values toneAssetDuration:(double)duration
 {
-  v8 = a3;
-  v9 = [v8 configuration];
-  [v9 _audioVolumeRampingDuration];
+  alertCopy = alert;
+  configuration = [alertCopy configuration];
+  [configuration _audioVolumeRampingDuration];
   v11 = v10;
   if (v10 <= 0.00000011920929)
   {
-    v12 = [a1 _shouldApplyStandardDelayAndAudioVolumeRampForAlert:v8 externalEnvironmentValues:*&a4];
-    v13 = fmin(a5 * 0.5, 2.0);
+    v12 = [self _shouldApplyStandardDelayAndAudioVolumeRampForAlert:alertCopy externalEnvironmentValues:*&values];
+    v13 = fmin(duration * 0.5, 2.0);
     if (v12)
     {
       v11 = v13;
@@ -4813,28 +4813,28 @@ LABEL_23:
   return v11;
 }
 
-- (id)_fallbackToneIdentifierForStateDescriptor:(id)a3
+- (id)_fallbackToneIdentifierForStateDescriptor:(id)descriptor
 {
   audioQueue = self->_audioQueue;
-  v5 = a3;
+  descriptorCopy = descriptor;
   [(TLAudioQueue *)audioQueue assertRunningOnAudioQueue];
-  v6 = [v5 playingAlert];
+  playingAlert = [descriptorCopy playingAlert];
 
-  if (v6)
+  if (playingAlert)
   {
-    v7 = [v6 type];
+    type = [playingAlert type];
     v8 = +[TLToneManager sharedToneManager];
-    v9 = [v8 defaultToneIdentifierForAlertType:v7];
-    v10 = [v6 configuration];
-    v11 = [v10 topic];
-    v12 = [v8 currentToneIdentifierForAlertType:v7 topic:v11];
+    v9 = [v8 defaultToneIdentifierForAlertType:type];
+    configuration = [playingAlert configuration];
+    topic = [configuration topic];
+    v12 = [v8 currentToneIdentifierForAlertType:type topic:topic];
 
     if ([(NSString *)self->_playingToneIdentifier isEqualToString:v9])
     {
       v13 = TLLogPlayback();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:v7, v13];
+        [(TLAlertQueuePlayerController *)self _fallbackToneIdentifierForStateDescriptor:type, v13];
       }
 
       v14 = 0;
@@ -4864,66 +4864,66 @@ LABEL_23:
   return v14;
 }
 
-+ ($96EE1C12479E9B303E9C2794B92A11A2)_externalEnvironmentValuesForAlert:(id)a3
++ ($96EE1C12479E9B303E9C2794B92A11A2)_externalEnvironmentValuesForAlert:(id)alert
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v4 configuration];
-  v7 = [v6 topic];
+  alertCopy = alert;
+  type = [alertCopy type];
+  configuration = [alertCopy configuration];
+  topic = [configuration topic];
 
-  if (v5 == 17 && [v7 isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
+  if (type == 17 && [topic isEqualToString:@"TLAlertTopicAppNotificationCriticalAlert"])
   {
     v8 = TLLogPlayback();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543618;
-      v21 = a1;
+      selfCopy3 = self;
       v22 = 2114;
-      v23 = v4;
+      v23 = alertCopy;
       _os_log_impl(&dword_1D9356000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: _externalEnvironmentValuesForAlert:(%{public}@).", &v20, 0x16u);
     }
 
-    v9 = [MEMORY[0x1E69AED10] sharedAVSystemController];
-    v10 = [v9 attributeForKey:*MEMORY[0x1E69AEA38]];
+    mEMORY[0x1E69AED10] = [MEMORY[0x1E69AED10] sharedAVSystemController];
+    v10 = [mEMORY[0x1E69AED10] attributeForKey:*MEMORY[0x1E69AEA38]];
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 BOOLValue])
     {
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
     else
     {
-      v11 = 0;
+      bOOLValue = 0;
     }
 
     v13 = TLLogPlayback();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543874;
-      v21 = a1;
+      selfCopy3 = self;
       v22 = 2114;
-      v23 = v4;
+      v23 = alertCopy;
       v24 = 1024;
-      LODWORD(v25) = v11;
+      LODWORD(v25) = bOOLValue;
       _os_log_impl(&dword_1D9356000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: _externalEnvironmentValuesForAlert:(%{public}@): isIncomingCallActive = %{BOOL}d.", &v20, 0x1Cu);
     }
 
-    v14 = [MEMORY[0x1E69587F0] sharedSystemAudioContext];
-    v15 = [v14 outputDevice];
-    v16 = [v15 deviceSubType];
+    mEMORY[0x1E69587F0] = [MEMORY[0x1E69587F0] sharedSystemAudioContext];
+    outputDevice = [mEMORY[0x1E69587F0] outputDevice];
+    deviceSubType = [outputDevice deviceSubType];
 
-    v12 = v16 == 4;
+    v12 = deviceSubType == 4;
     v17 = TLLogPlayback();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138544130;
-      v21 = a1;
+      selfCopy3 = self;
       v22 = 2114;
-      v23 = v4;
+      v23 = alertCopy;
       v24 = 2048;
-      v25 = v16;
+      v25 = deviceSubType;
       v26 = 1024;
-      v27 = v16 == 4;
+      v27 = deviceSubType == 4;
       _os_log_impl(&dword_1D9356000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: _externalEnvironmentValuesForAlert:(%{public}@): outputDeviceSubType = %lld; usesReceiverRoute = %{BOOL}d.", &v20, 0x26u);
     }
   }
@@ -4931,11 +4931,11 @@ LABEL_23:
   else
   {
     v12 = 0;
-    LOWORD(v11) = 0;
+    LOWORD(bOOLValue) = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return (v11 | (v12 << 8));
+  return (bOOLValue | (v12 << 8));
 }
 
 - (void)_reloadPlaybackForStateDescriptor:(uint64_t)a1 withToneIdentifier:(uint64_t *)a2 .cold.1(uint64_t a1, uint64_t *a2)

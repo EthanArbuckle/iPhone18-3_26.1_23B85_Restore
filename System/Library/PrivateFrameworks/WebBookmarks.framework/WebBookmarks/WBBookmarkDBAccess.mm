@@ -1,75 +1,75 @@
 @interface WBBookmarkDBAccess
-- (BOOL)addItem:(void *)a3 underFolderWithServerId:(id)a4 database:(void *)a5;
-- (BOOL)changeIsDAVMoveChange:(void *)a3;
-- (BOOL)changeIsMoveChange:(void *)a3;
-- (BOOL)item:(void *)a3 isEqualToItem:(void *)a4;
-- (BOOL)item:(void *)a3 isInFolderWithServerSyncId:(id)a4;
-- (BOOL)performMaintenanceOnDatabase:(void *)a3 afterVersion:(id)a4;
+- (BOOL)addItem:(void *)item underFolderWithServerId:(id)id database:(void *)database;
+- (BOOL)changeIsDAVMoveChange:(void *)change;
+- (BOOL)changeIsMoveChange:(void *)change;
+- (BOOL)item:(void *)item isEqualToItem:(void *)toItem;
+- (BOOL)item:(void *)item isInFolderWithServerSyncId:(id)id;
+- (BOOL)performMaintenanceOnDatabase:(void *)database afterVersion:(id)version;
 - (NSString)description;
-- (WBBookmarkDBAccess)initWithCollectionType:(int64_t)a3 storeOwner:(int64_t)a4;
-- (__CFArray)copyChangesWithDatabase:(void *)a3 changeToken:(const void *)a4;
-- (__CFData)copySyncDataWithDatabase:(void *)a3;
-- (__CFData)copySyncDataWithItem:(void *)a3;
-- (__CFString)copyParentServerIdWithItem:(void *)a3;
-- (__CFString)copyServerIdWithChange:(void *)a3;
-- (__CFString)copyServerIdWithItem:(void *)a3;
-- (__CFString)copySyncKeyWithItem:(void *)a3;
-- (id)copyAccountHashWithDatabase:(void *)a3;
-- (id)copyAttributesWithItem:(void *)a3;
-- (id)copyChangeTokenWithDatabase:(void *)a3;
-- (id)copyDeletedBookmarkSyncDataWithChange:(void *)a3;
+- (WBBookmarkDBAccess)initWithCollectionType:(int64_t)type storeOwner:(int64_t)owner;
+- (__CFArray)copyChangesWithDatabase:(void *)database changeToken:(const void *)token;
+- (__CFData)copySyncDataWithDatabase:(void *)database;
+- (__CFData)copySyncDataWithItem:(void *)item;
+- (__CFString)copyParentServerIdWithItem:(void *)item;
+- (__CFString)copyServerIdWithChange:(void *)change;
+- (__CFString)copyServerIdWithItem:(void *)item;
+- (__CFString)copySyncKeyWithItem:(void *)item;
+- (id)copyAccountHashWithDatabase:(void *)database;
+- (id)copyAttributesWithItem:(void *)item;
+- (id)copyChangeTokenWithDatabase:(void *)database;
+- (id)copyDeletedBookmarkSyncDataWithChange:(void *)change;
 - (id)copyDeviceIdentifier;
-- (id)copyFirstServerIdInFolderWithServerId:(id)a3 database:(void *)a4;
-- (id)copyLastServerIdInFolderWithServerId:(id)a3 database:(void *)a4;
-- (id)copyLocalIDsInFolderWithLocalID:(id)a3 database:(void *)a4;
-- (id)copyModifiedAttributesWithChange:(void *)a3;
-- (id)copySaveURLForAssetWithKey:(id)a3 item:(void *)a4;
-- (id)copyServerIdInFolderAfterServerId:(id)a3 database:(void *)a4;
-- (id)copyServerIdInFolderBeforeServerId:(id)a3 database:(void *)a4;
-- (id)copyServerIdsInFolderWithServerId:(id)a3 database:(void *)a4;
-- (id)copyUsernameAccountHashWithDatabase:(void *)a3;
-- (id)copyValueForKey:(id)a3 item:(void *)a4;
-- (int)changeTypeForChange:(void *)a3;
-- (int64_t)bookmarkTypeForChange:(void *)a3;
-- (int64_t)bookmarkTypeWithBookmark:(void *)a3;
-- (int64_t)folderTypeForChange:(void *)a3;
-- (int64_t)folderTypeWithFolder:(void *)a3;
-- (int64_t)itemTypeForChange:(void *)a3;
-- (int64_t)itemTypeWithItem:(void *)a3;
-- (int64_t)localCloudKitMigrationState:(void *)a3;
-- (void)beginMergingChangesWithDatabase:(void *)a3;
-- (void)clearAllSyncDataWithDatabase:(void *)a3;
-- (void)clearChangesWithChangeToken:(void *)a3 database:(void *)a4;
-- (void)clearlAllLocalBookmarksForAutomatedTestingWithDatabase:(void *)a3;
-- (void)closeDatabase:(void *)a3 shouldSave:(BOOL)a4;
-- (void)copyChangedItemWithChange:(void *)a3;
+- (id)copyFirstServerIdInFolderWithServerId:(id)id database:(void *)database;
+- (id)copyLastServerIdInFolderWithServerId:(id)id database:(void *)database;
+- (id)copyLocalIDsInFolderWithLocalID:(id)d database:(void *)database;
+- (id)copyModifiedAttributesWithChange:(void *)change;
+- (id)copySaveURLForAssetWithKey:(id)key item:(void *)item;
+- (id)copyServerIdInFolderAfterServerId:(id)id database:(void *)database;
+- (id)copyServerIdInFolderBeforeServerId:(id)id database:(void *)database;
+- (id)copyServerIdsInFolderWithServerId:(id)id database:(void *)database;
+- (id)copyUsernameAccountHashWithDatabase:(void *)database;
+- (id)copyValueForKey:(id)key item:(void *)item;
+- (int)changeTypeForChange:(void *)change;
+- (int64_t)bookmarkTypeForChange:(void *)change;
+- (int64_t)bookmarkTypeWithBookmark:(void *)bookmark;
+- (int64_t)folderTypeForChange:(void *)change;
+- (int64_t)folderTypeWithFolder:(void *)folder;
+- (int64_t)itemTypeForChange:(void *)change;
+- (int64_t)itemTypeWithItem:(void *)item;
+- (int64_t)localCloudKitMigrationState:(void *)state;
+- (void)beginMergingChangesWithDatabase:(void *)database;
+- (void)clearAllSyncDataWithDatabase:(void *)database;
+- (void)clearChangesWithChangeToken:(void *)token database:(void *)database;
+- (void)clearlAllLocalBookmarksForAutomatedTestingWithDatabase:(void *)database;
+- (void)closeDatabase:(void *)database shouldSave:(BOOL)save;
+- (void)copyChangedItemWithChange:(void *)change;
 - (void)copyDeviceIdentifier;
-- (void)copyItemWithLocalID:(id)a3 database:(void *)a4;
-- (void)copyItemWithServerId:(id)a3 database:(void *)a4;
-- (void)createBookmarkWithType:(int64_t)a3 database:(void *)a4;
+- (void)copyItemWithLocalID:(id)d database:(void *)database;
+- (void)copyItemWithServerId:(id)id database:(void *)database;
+- (void)createBookmarkWithType:(int64_t)type database:(void *)database;
 - (void)createDatabase;
-- (void)createFolderWithType:(int64_t)a3 database:(void *)a4;
-- (void)finishMergingChangesWithDatabase:(void *)a3;
-- (void)notifyForSaveOfAssetWithKey:(id)a3 item:(void *)a4;
-- (void)openDatabase:(void *)a3;
-- (void)performDeduplicationWithDatabase:(void *)a3 mode:(int64_t)a4;
-- (void)removeItemWithServerId:(__CFString *)a3 database:(void *)a4;
+- (void)createFolderWithType:(int64_t)type database:(void *)database;
+- (void)finishMergingChangesWithDatabase:(void *)database;
+- (void)notifyForSaveOfAssetWithKey:(id)key item:(void *)item;
+- (void)openDatabase:(void *)database;
+- (void)performDeduplicationWithDatabase:(void *)database mode:(int64_t)mode;
+- (void)removeItemWithServerId:(__CFString *)id database:(void *)database;
 - (void)resetDeviceIdentifier;
-- (void)saveDatabase:(void *)a3;
-- (void)setAccountHash:(id)a3 database:(void *)a4;
-- (void)setChildrenOrder:(id)a3 forFolderWithServerId:(id)a4 database:(void *)a5;
-- (void)setDeletedBookmarkSyncData:(id)a3 change:(void *)a4;
-- (void)setLocalCloudKitMigrationState:(int64_t)a3 database:(void *)a4;
-- (void)setModifiedAttributes:(id)a3 item:(void *)a4;
-- (void)setServerId:(__CFString *)a3 item:(void *)a4;
-- (void)setSyncData:(__CFData *)a3 database:(void *)a4;
-- (void)setSyncData:(__CFData *)a3 item:(void *)a4;
-- (void)setSyncKey:(__CFString *)a3 item:(void *)a4;
+- (void)saveDatabase:(void *)database;
+- (void)setAccountHash:(id)hash database:(void *)database;
+- (void)setChildrenOrder:(id)order forFolderWithServerId:(id)id database:(void *)database;
+- (void)setDeletedBookmarkSyncData:(id)data change:(void *)change;
+- (void)setLocalCloudKitMigrationState:(int64_t)state database:(void *)database;
+- (void)setModifiedAttributes:(id)attributes item:(void *)item;
+- (void)setServerId:(__CFString *)id item:(void *)item;
+- (void)setSyncData:(__CFData *)data database:(void *)database;
+- (void)setSyncData:(__CFData *)data item:(void *)item;
+- (void)setSyncKey:(__CFString *)key item:(void *)item;
 @end
 
 @implementation WBBookmarkDBAccess
 
-- (WBBookmarkDBAccess)initWithCollectionType:(int64_t)a3 storeOwner:(int64_t)a4
+- (WBBookmarkDBAccess)initWithCollectionType:(int64_t)type storeOwner:(int64_t)owner
 {
   v10.receiver = self;
   v10.super_class = WBBookmarkDBAccess;
@@ -77,8 +77,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_collectionType = a3;
-    v6->_storeOwner = a4;
+    v6->_collectionType = type;
+    v6->_storeOwner = owner;
     v8 = v6;
   }
 
@@ -109,9 +109,9 @@
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s()", v24, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 hasPrefix:@"com.apple.dataaccess"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier hasPrefix:@"com.apple.dataaccess"];
 
   if (collectionType == 1)
   {
@@ -140,10 +140,10 @@ LABEL_9:
   v10 = 0;
 LABEL_11:
   [v12 setStoreOwner:storeOwner];
-  v13 = [v10 lockSync];
+  lockSync = [v10 lockSync];
   v14 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-  if (v13)
+  if (lockSync)
   {
     if (v15)
     {
@@ -216,7 +216,7 @@ LABEL_30:
   return v20;
 }
 
-- (void)openDatabase:(void *)a3
+- (void)openDatabase:(void *)database
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -225,14 +225,14 @@ LABEL_30:
     v8 = 136315394;
     v9 = "BADatabaseOpen";
     v10 = 2114;
-    v11 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v8, 0x16u);
   }
 
-  v5 = a3;
-  if (([v5 maintainsSyncMetadata] & 1) == 0)
+  databaseCopy2 = database;
+  if (([databaseCopy2 maintainsSyncMetadata] & 1) == 0)
   {
-    [v5 beginSyncTransaction];
+    [databaseCopy2 beginSyncTransaction];
   }
 
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -246,7 +246,7 @@ LABEL_30:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveDatabase:(void *)a3
+- (void)saveDatabase:(void *)database
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -255,20 +255,20 @@ LABEL_30:
     v8 = 136315394;
     v9 = "BADatabaseSave";
     v10 = 2114;
-    v11 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v8, 0x16u);
   }
 
-  v5 = a3;
-  if (([v5 maintainsSyncMetadata] & 1) == 0)
+  databaseCopy2 = database;
+  if (([databaseCopy2 maintainsSyncMetadata] & 1) == 0)
   {
-    [v5 commitSyncTransaction];
+    [databaseCopy2 commitSyncTransaction];
   }
 
-  [v5 _postBookmarksDidReloadNotificationAndStartReadingListFetcherIfChangesWereMade];
-  if (([v5 maintainsSyncMetadata] & 1) == 0)
+  [databaseCopy2 _postBookmarksDidReloadNotificationAndStartReadingListFetcherIfChangesWereMade];
+  if (([databaseCopy2 maintainsSyncMetadata] & 1) == 0)
   {
-    [v5 beginSyncTransaction];
+    [databaseCopy2 beginSyncTransaction];
   }
 
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -282,9 +282,9 @@ LABEL_30:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)closeDatabase:(void *)a3 shouldSave:(BOOL)a4
+- (void)closeDatabase:(void *)database shouldSave:(BOOL)save
 {
-  v4 = a4;
+  saveCopy = save;
   v17 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -292,28 +292,28 @@ LABEL_30:
     v11 = 136315650;
     v12 = "BADatabaseClose";
     v13 = 2114;
-    v14 = a3;
+    databaseCopy = database;
     v15 = 1024;
-    v16 = v4;
+    v16 = saveCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, shouldSave: %d)", &v11, 0x1Cu);
   }
 
-  v7 = a3;
-  v8 = [v7 maintainsSyncMetadata];
-  if (v4)
+  databaseCopy2 = database;
+  maintainsSyncMetadata = [databaseCopy2 maintainsSyncMetadata];
+  if (saveCopy)
   {
-    if ((v8 & 1) == 0)
+    if ((maintainsSyncMetadata & 1) == 0)
     {
-      [v7 commitSyncTransaction];
+      [databaseCopy2 commitSyncTransaction];
     }
 
-    [v7 _restoreMissingSpecialBookmarksWithChangeNotification:0];
-    [v7 _postBookmarksDidReloadNotificationAndStartReadingListFetcherIfChangesWereMade];
+    [databaseCopy2 _restoreMissingSpecialBookmarksWithChangeNotification:0];
+    [databaseCopy2 _postBookmarksDidReloadNotificationAndStartReadingListFetcherIfChangesWereMade];
   }
 
-  else if ((v8 & 1) == 0)
+  else if ((maintainsSyncMetadata & 1) == 0)
   {
-    [v7 rollbackSyncTransaction];
+    [databaseCopy2 rollbackSyncTransaction];
   }
 
   objc_opt_class();
@@ -337,7 +337,7 @@ LABEL_30:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFData)copySyncDataWithDatabase:(void *)a3
+- (__CFData)copySyncDataWithDatabase:(void *)database
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -346,12 +346,12 @@ LABEL_30:
     v11 = 136315394;
     v12 = "BADatabaseCopySyncData";
     v13 = 2114;
-    v14 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v11, 0x16u);
   }
 
-  v5 = a3;
-  v6 = [v5 syncDataForKey:@"BASyncData"];
+  databaseCopy2 = database;
+  v6 = [databaseCopy2 syncDataForKey:@"BASyncData"];
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -368,7 +368,7 @@ LABEL_30:
     v11 = 136315394;
     v12 = "BADatabaseCopySyncData";
     v13 = 2114;
-    v14 = v8;
+    databaseCopy = v8;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "<- %s -> Return data of size: %{public}@", &v11, 0x16u);
     if (v6)
     {
@@ -379,15 +379,15 @@ LABEL_30:
   return v6;
 }
 
-- (void)setSyncData:(__CFData *)a3 database:(void *)a4
+- (void)setSyncData:(__CFData *)data database:(void *)database
 {
   v16 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if (a3)
+    if (data)
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithLong:CFDataGetLength(a3)];
+      v7 = [MEMORY[0x277CCABB0] numberWithLong:CFDataGetLength(data)];
     }
 
     else
@@ -398,16 +398,16 @@ LABEL_30:
     v10 = 136315650;
     v11 = "BADatabaseSetSyncData";
     v12 = 2114;
-    v13 = a4;
+    databaseCopy = database;
     v14 = 2114;
     v15 = v7;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, data size: %{public}@)", &v10, 0x20u);
-    if (a3)
+    if (data)
     {
     }
   }
 
-  [a4 setSyncData:a3 forKey:@"BASyncData"];
+  [database setSyncData:data forKey:@"BASyncData"];
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -419,7 +419,7 @@ LABEL_30:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearAllSyncDataWithDatabase:(void *)a3
+- (void)clearAllSyncDataWithDatabase:(void *)database
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -428,11 +428,11 @@ LABEL_30:
     v7 = 136315394;
     v8 = "BADatabaseClearAllSyncData";
     v9 = 2114;
-    v10 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v7, 0x16u);
   }
 
-  [a3 _clearAllSyncData];
+  [database _clearAllSyncData];
   v5 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -444,7 +444,7 @@ LABEL_30:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFArray)copyChangesWithDatabase:(void *)a3 changeToken:(const void *)a4
+- (__CFArray)copyChangesWithDatabase:(void *)database changeToken:(const void *)token
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -453,33 +453,33 @@ LABEL_30:
     v14 = 136315394;
     v15 = "BADatabaseCopyChanges";
     v16 = 2114;
-    v17 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v14, 0x16u);
   }
 
-  v7 = a3;
-  v8 = [v7 changeList];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "currentRecordGeneration")}];
+  databaseCopy2 = database;
+  changeList = [databaseCopy2 changeList];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(databaseCopy2, "currentRecordGeneration")}];
 
   v10 = v9;
-  *a4 = v10;
+  *token = v10;
   v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v14 = 136315650;
     v15 = "BADatabaseCopyChanges";
     v16 = 2114;
-    v17 = v8;
+    databaseCopy = changeList;
     v18 = 2114;
     v19 = v10;
     _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_INFO, "<- %s -> %{public}@, %{public}@", &v14, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v8;
+  return changeList;
 }
 
-- (void)clearChangesWithChangeToken:(void *)a3 database:(void *)a4
+- (void)clearChangesWithChangeToken:(void *)token database:(void *)database
 {
   v33 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -488,15 +488,15 @@ LABEL_30:
     v27 = 136315650;
     v28 = "BADatabaseClearChangesForToken";
     v29 = 2114;
-    v30 = a4;
+    databaseCopy = database;
     v31 = 2114;
-    v32 = a3;
+    tokenCopy = token;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, %{public}@)", &v27, 0x20u);
   }
 
-  v7 = a4;
-  v8 = [a3 intValue];
-  if ([v7 currentRecordGeneration] != v8)
+  databaseCopy2 = database;
+  intValue = [token intValue];
+  if ([databaseCopy2 currentRecordGeneration] != intValue)
   {
     v9 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -505,7 +505,7 @@ LABEL_30:
     }
   }
 
-  if (([v7 _clearChangeList] & 1) == 0)
+  if (([databaseCopy2 _clearChangeList] & 1) == 0)
   {
     v17 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -525,58 +525,58 @@ LABEL_30:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeItemWithServerId:(__CFString *)a3 database:(void *)a4
+- (void)removeItemWithServerId:(__CFString *)id database:(void *)database
 {
   v33 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(__CFString *)a3 wb_stringByRedactingBookmarkDAVServerID];
+    wb_stringByRedactingBookmarkDAVServerID = [(__CFString *)id wb_stringByRedactingBookmarkDAVServerID];
     v30 = 136315650;
     *v31 = "BADatabaseRemoveItemWithServerId";
     *&v31[8] = 2114;
-    *&v31[10] = a4;
+    *&v31[10] = database;
     *&v31[18] = 2114;
-    v32 = v8;
+    v32 = wb_stringByRedactingBookmarkDAVServerID;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, %{public}@)", &v30, 0x20u);
   }
 
-  if (a3)
+  if (id)
   {
-    v9 = a4;
-    v10 = [v9 bookmarkWithServerID:a3 excludeDeletedBookmarks:0];
+    databaseCopy = database;
+    v10 = [databaseCopy bookmarkWithServerID:id excludeDeletedBookmarks:0];
     v11 = v10;
     if (v10)
     {
       if ([v10 isReadingListItem])
       {
-        v12 = [v11 UUID];
-        [v9 clearReadingListArchiveWithUUID:v12];
+        uUID = [v11 UUID];
+        [databaseCopy clearReadingListArchiveWithUUID:uUID];
       }
 
       if ([v11 isReadingListFolder])
       {
-        [v9 clearAllReadingListArchives];
+        [databaseCopy clearAllReadingListArchives];
       }
 
       v13 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = v13;
-        v15 = [v11 identifier];
-        v16 = [(__CFString *)a3 wb_stringByRedactingBookmarkDAVServerID];
-        v17 = [v11 parentID];
+        identifier = [v11 identifier];
+        wb_stringByRedactingBookmarkDAVServerID2 = [(__CFString *)id wb_stringByRedactingBookmarkDAVServerID];
+        parentID = [v11 parentID];
         v30 = 67109634;
-        *v31 = v15;
+        *v31 = identifier;
         *&v31[4] = 2114;
-        *&v31[6] = v16;
+        *&v31[6] = wb_stringByRedactingBookmarkDAVServerID2;
         *&v31[14] = 1024;
-        *&v31[16] = v17;
+        *&v31[16] = parentID;
         _os_log_impl(&dword_272C20000, v14, OS_LOG_TYPE_INFO, "Deleting bookmark with ID %d and serverID %{public}@ from parent with ID %d", &v30, 0x18u);
       }
 
-      [v9 deleteBookmark:v11 leaveTombstone:0];
+      [databaseCopy deleteBookmark:v11 leaveTombstone:0];
       v18 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
@@ -629,7 +629,7 @@ LABEL_23:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginMergingChangesWithDatabase:(void *)a3
+- (void)beginMergingChangesWithDatabase:(void *)database
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -638,11 +638,11 @@ LABEL_23:
     v7 = 136315394;
     v8 = "BADatabaseBeginMergingChanges";
     v9 = 2114;
-    v10 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v7, 0x16u);
   }
 
-  [a3 _setMergeMode:1];
+  [database _setMergeMode:1];
   v5 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -654,7 +654,7 @@ LABEL_23:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishMergingChangesWithDatabase:(void *)a3
+- (void)finishMergingChangesWithDatabase:(void *)database
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -663,11 +663,11 @@ LABEL_23:
     v7 = 136315394;
     v8 = "BADatabaseFinishMergingChanges";
     v9 = 2114;
-    v10 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v7, 0x16u);
   }
 
-  [a3 _setMergeMode:0];
+  [database _setMergeMode:0];
   v5 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -679,7 +679,7 @@ LABEL_23:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFString)copyServerIdWithItem:(void *)a3
+- (__CFString)copyServerIdWithItem:(void *)item
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -688,23 +688,23 @@ LABEL_23:
     v13 = 136315394;
     v14 = "BAItemCopyServerId";
     v15 = 2114;
-    v16 = a3;
+    itemCopy = item;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@)", &v13, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 serverID];
-  v7 = [v6 copy];
+  bookmark = [item bookmark];
+  serverID = [bookmark serverID];
+  v7 = [serverID copy];
 
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [(__CFString *)v7 wb_stringByRedactingBookmarkDAVServerID];
+    wb_stringByRedactingBookmarkDAVServerID = [(__CFString *)v7 wb_stringByRedactingBookmarkDAVServerID];
     v13 = 136315394;
     v14 = "BAItemCopyServerId";
     v15 = 2114;
-    v16 = v10;
+    itemCopy = wb_stringByRedactingBookmarkDAVServerID;
     _os_log_impl(&dword_272C20000, v9, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v13, 0x16u);
   }
 
@@ -712,35 +712,35 @@ LABEL_23:
   return v7;
 }
 
-- (void)setServerId:(__CFString *)a3 item:(void *)a4
+- (void)setServerId:(__CFString *)id item:(void *)item
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(__CFString *)a3 wb_stringByRedactingBookmarkDAVServerID];
+    wb_stringByRedactingBookmarkDAVServerID = [(__CFString *)id wb_stringByRedactingBookmarkDAVServerID];
     v15 = 136315650;
     v16 = "BAItemSetServerId";
     v17 = 2114;
-    v18 = a4;
+    itemCopy = item;
     v19 = 2114;
-    v20 = v8;
+    v20 = wb_stringByRedactingBookmarkDAVServerID;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@, %{public}@)", &v15, 0x20u);
   }
 
-  v9 = a4;
-  v10 = [v9 bookmark];
-  if ([v10 isInserted])
+  itemCopy2 = item;
+  bookmark = [itemCopy2 bookmark];
+  if ([bookmark isInserted])
   {
-    v11 = [v9 collection];
-    v12 = [v9 bookmark];
-    [v11 setServerID:a3 forBookmark:v12];
+    collection = [itemCopy2 collection];
+    bookmark2 = [itemCopy2 bookmark];
+    [collection setServerID:id forBookmark:bookmark2];
   }
 
   else
   {
-    [v10 setServerID:a3];
+    [bookmark setServerID:id];
   }
 
   v13 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -754,7 +754,7 @@ LABEL_23:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFString)copyParentServerIdWithItem:(void *)a3
+- (__CFString)copyParentServerIdWithItem:(void *)item
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -763,28 +763,28 @@ LABEL_23:
     v16 = 136315394;
     v17 = "BAItemCopyParentServerId";
     v18 = 2114;
-    v19 = a3;
+    itemCopy = item;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@)", &v16, 0x16u);
   }
 
-  v5 = a3;
-  v6 = [v5 bookmark];
-  v7 = [v6 parentID];
+  itemCopy2 = item;
+  bookmark = [itemCopy2 bookmark];
+  parentID = [bookmark parentID];
 
-  v8 = [v5 collection];
+  collection = [itemCopy2 collection];
 
-  v9 = [v8 serverIDForBookmarkID:v7];
+  v9 = [collection serverIDForBookmarkID:parentID];
   v10 = [v9 copy];
 
   v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [(__CFString *)v10 wb_stringByRedactingBookmarkDAVServerID];
+    wb_stringByRedactingBookmarkDAVServerID = [(__CFString *)v10 wb_stringByRedactingBookmarkDAVServerID];
     v16 = 136315394;
     v17 = "BAItemCopyParentServerId";
     v18 = 2114;
-    v19 = v13;
+    itemCopy = wb_stringByRedactingBookmarkDAVServerID;
     _os_log_impl(&dword_272C20000, v12, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v16, 0x16u);
   }
 
@@ -792,7 +792,7 @@ LABEL_23:
   return v10;
 }
 
-- (__CFString)copySyncKeyWithItem:(void *)a3
+- (__CFString)copySyncKeyWithItem:(void *)item
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -801,13 +801,13 @@ LABEL_23:
     v11 = 136315394;
     v12 = "BAItemCopySyncKey";
     v13 = 2114;
-    v14 = a3;
+    itemCopy = item;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@)", &v11, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 syncKey];
-  v7 = [v6 copy];
+  bookmark = [item bookmark];
+  syncKey = [bookmark syncKey];
+  v7 = [syncKey copy];
 
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -815,7 +815,7 @@ LABEL_23:
     v11 = 136315394;
     v12 = "BAItemCopySyncKey";
     v13 = 2114;
-    v14 = v7;
+    itemCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> syncKey: %{public}@", &v11, 0x16u);
   }
 
@@ -823,7 +823,7 @@ LABEL_23:
   return v7;
 }
 
-- (void)setSyncKey:(__CFString *)a3 item:(void *)a4
+- (void)setSyncKey:(__CFString *)key item:(void *)item
 {
   v18 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -832,23 +832,23 @@ LABEL_23:
     v12 = 136315650;
     v13 = "BAItemSetSyncKey";
     v14 = 2114;
-    v15 = a4;
+    itemCopy = item;
     v16 = 2114;
-    v17 = a3;
+    keyCopy = key;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@, syncKey: %{public}@)", &v12, 0x20u);
   }
 
-  v7 = a4;
-  v8 = [v7 bookmark];
-  if ([v8 isInserted])
+  itemCopy2 = item;
+  bookmark = [itemCopy2 bookmark];
+  if ([bookmark isInserted])
   {
-    v9 = [v7 collection];
-    [v9 _setSyncKey:a3 forBookmark:v8];
+    collection = [itemCopy2 collection];
+    [collection _setSyncKey:key forBookmark:bookmark];
   }
 
   else
   {
-    [v8 setSyncKey:a3];
+    [bookmark setSyncKey:key];
   }
 
   v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -862,7 +862,7 @@ LABEL_23:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFData)copySyncDataWithItem:(void *)a3
+- (__CFData)copySyncDataWithItem:(void *)item
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -871,14 +871,14 @@ LABEL_23:
     v13 = 136315394;
     v14 = "BAItemCopySyncData";
     v15 = 2114;
-    v16 = a3;
+    itemCopy = item;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@)", &v13, 0x16u);
   }
 
-  v5 = a3;
-  v6 = [v5 bookmark];
-  v7 = [v6 syncData];
-  v8 = [v7 copy];
+  itemCopy2 = item;
+  bookmark = [itemCopy2 bookmark];
+  syncData = [bookmark syncData];
+  v8 = [syncData copy];
 
   v9 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -896,7 +896,7 @@ LABEL_23:
     v13 = 136315394;
     v14 = "BAItemCopySyncData";
     v15 = 2114;
-    v16 = v10;
+    itemCopy = v10;
     _os_log_impl(&dword_272C20000, v9, OS_LOG_TYPE_INFO, "<- %s -> Return data of size: %{public}@", &v13, 0x16u);
     if (v8)
     {
@@ -907,15 +907,15 @@ LABEL_23:
   return v8;
 }
 
-- (void)setSyncData:(__CFData *)a3 item:(void *)a4
+- (void)setSyncData:(__CFData *)data item:(void *)item
 {
   v19 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if (a3)
+    if (data)
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithLong:CFDataGetLength(a3)];
+      v7 = [MEMORY[0x277CCABB0] numberWithLong:CFDataGetLength(data)];
     }
 
     else
@@ -926,26 +926,26 @@ LABEL_23:
     v13 = 136315650;
     v14 = "BAItemSetSyncData";
     v15 = 2114;
-    v16 = a4;
+    itemCopy = item;
     v17 = 2114;
     v18 = v7;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@, data of size: %{public}@)", &v13, 0x20u);
-    if (a3)
+    if (data)
     {
     }
   }
 
-  v8 = a4;
-  v9 = [v8 bookmark];
-  if ([v9 isInserted])
+  itemCopy2 = item;
+  bookmark = [itemCopy2 bookmark];
+  if ([bookmark isInserted])
   {
-    v10 = [v8 collection];
-    [v10 _setSyncData:a3 forBookmark:v9];
+    collection = [itemCopy2 collection];
+    [collection _setSyncData:data forBookmark:bookmark];
   }
 
   else
   {
-    [v9 setSyncData:a3];
+    [bookmark setSyncData:data];
   }
 
   v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -959,7 +959,7 @@ LABEL_23:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int)changeTypeForChange:(void *)a3
+- (int)changeTypeForChange:(void *)change
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -968,26 +968,26 @@ LABEL_23:
     v9 = 136315394;
     v10 = "BAChangeGetChangeType";
     v11 = 2114;
-    v12 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@)", &v9, 0x16u);
   }
 
-  v5 = [a3 changeType];
+  changeType = [change changeType];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "BAChangeGetChangeType";
     v11 = 1024;
-    LODWORD(v12) = v5;
+    LODWORD(changeCopy) = changeType;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "<- %s -> %d", &v9, 0x12u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return changeType;
 }
 
-- (void)copyChangedItemWithChange:(void *)a3
+- (void)copyChangedItemWithChange:(void *)change
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -996,12 +996,12 @@ LABEL_23:
     v14 = 136315394;
     v15 = "BAChangeCopyChangedItem";
     v16 = 2114;
-    v17 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@)", &v14, 0x16u);
   }
 
-  v5 = a3;
-  if ([v5 changeType] == 2)
+  changeCopy2 = change;
+  if ([changeCopy2 changeType] == 2)
   {
     v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1017,9 +1017,9 @@ LABEL_23:
   else
   {
     v8 = [BABookmarkItem alloc];
-    v9 = [v5 collection];
-    v10 = [v5 bookmark];
-    v7 = [(BABookmarkItem *)v8 initWithBookmarkCollection:v9 bookmark:v10];
+    collection = [changeCopy2 collection];
+    bookmark = [changeCopy2 bookmark];
+    v7 = [(BABookmarkItem *)v8 initWithBookmarkCollection:collection bookmark:bookmark];
 
     v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -1027,7 +1027,7 @@ LABEL_23:
       v14 = 136315394;
       v15 = "BAChangeCopyChangedItem";
       v16 = 2114;
-      v17 = v7;
+      changeCopy = v7;
       _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v14, 0x16u);
     }
   }
@@ -1036,7 +1036,7 @@ LABEL_23:
   return v7;
 }
 
-- (__CFString)copyServerIdWithChange:(void *)a3
+- (__CFString)copyServerIdWithChange:(void *)change
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1045,30 +1045,30 @@ LABEL_23:
     v12 = 136315394;
     v13 = "BAChangeCopyServerId";
     v14 = 2114;
-    v15 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@)", &v12, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 serverID];
+  bookmark = [change bookmark];
+  serverID = [bookmark serverID];
 
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    v9 = [(__CFString *)v6 wb_stringByRedactingBookmarkDAVServerID];
+    wb_stringByRedactingBookmarkDAVServerID = [(__CFString *)serverID wb_stringByRedactingBookmarkDAVServerID];
     v12 = 136315394;
     v13 = "BAChangeCopyServerId";
     v14 = 2114;
-    v15 = v9;
+    changeCopy = wb_stringByRedactingBookmarkDAVServerID;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v12, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v6;
+  return serverID;
 }
 
-- (BOOL)changeIsDAVMoveChange:(void *)a3
+- (BOOL)changeIsDAVMoveChange:(void *)change
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1077,12 +1077,12 @@ LABEL_23:
     v10 = 136315394;
     v11 = "BAChangeIsMove";
     v12 = 2114;
-    v13 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(%{public}@)", &v10, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 attributesMarkedAsModified:64];
+  bookmark = [change bookmark];
+  v6 = [bookmark attributesMarkedAsModified:64];
 
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1090,7 +1090,7 @@ LABEL_23:
     v10 = 136315394;
     v11 = "BAChangeIsMove";
     v12 = 1024;
-    LODWORD(v13) = v6;
+    LODWORD(changeCopy) = v6;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "<- %s -> %d", &v10, 0x12u);
   }
 
@@ -1098,7 +1098,7 @@ LABEL_23:
   return v6;
 }
 
-- (int64_t)itemTypeForChange:(void *)a3
+- (int64_t)itemTypeForChange:(void *)change
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1107,12 +1107,12 @@ LABEL_23:
     v10 = 136315394;
     v11 = "CKBAChangeGetItemType";
     v12 = 2114;
-    v13 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@)", &v10, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 isFolder];
+  bookmark = [change bookmark];
+  isFolder = [bookmark isFolder];
 
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1120,15 +1120,15 @@ LABEL_23:
     v10 = 136315394;
     v11 = "CKBAChangeGetItemType";
     v12 = 2048;
-    v13 = v6;
+    changeCopy = isFolder;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "<- %s -> %ld", &v10, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v6;
+  return isFolder;
 }
 
-- (int64_t)folderTypeForChange:(void *)a3
+- (int64_t)folderTypeForChange:(void *)change
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1137,13 +1137,13 @@ LABEL_23:
     v11 = 136315394;
     v12 = "CKBAChangeGetFolder";
     v13 = 2114;
-    v14 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(folder: %{public}@)", &v11, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 specialID];
-  switch(v6)
+  bookmark = [change bookmark];
+  specialID = [bookmark specialID];
+  switch(specialID)
   {
     case 4:
       v7 = 0;
@@ -1168,7 +1168,7 @@ LABEL_23:
     v11 = 136315394;
     v12 = "CKBAChangeGetFolder";
     v13 = 2048;
-    v14 = v7;
+    changeCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %ld", &v11, 0x16u);
   }
 
@@ -1176,7 +1176,7 @@ LABEL_23:
   return v7;
 }
 
-- (int64_t)bookmarkTypeForChange:(void *)a3
+- (int64_t)bookmarkTypeForChange:(void *)change
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1185,12 +1185,12 @@ LABEL_23:
     v9 = 136315394;
     v10 = "CKBAChangeGetBookmarkType";
     v11 = 2114;
-    v12 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(bookmark: %{public}@)", &v9, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = CKBABookmarkTypeForBookmark(v5);
+  bookmark = [change bookmark];
+  v6 = CKBABookmarkTypeForBookmark(bookmark);
 
   v7 = *MEMORY[0x277D85DE8];
   return v6;
@@ -1208,8 +1208,8 @@ LABEL_23:
   }
 
   v4 = [WebBookmarkCollection deviceIdentifierForCloudKitWithCollectionType:self->_collectionType generateIfNeeded:1];
-  v5 = [v4 UUID];
-  v6 = [v5 UUIDString];
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
 
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1226,7 +1226,7 @@ LABEL_23:
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v6;
+  return uUIDString;
 }
 
 - (void)resetDeviceIdentifier
@@ -1253,40 +1253,40 @@ LABEL_23:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)performMaintenanceOnDatabase:(void *)a3 afterVersion:(id)a4
+- (BOOL)performMaintenanceOnDatabase:(void *)database afterVersion:(id)version
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  versionCopy = version;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v15 = 136315650;
     v16 = "CKBADatabasePerformMaintenanceAfterVersion";
     v17 = 2114;
-    v18 = a3;
+    databaseCopy = database;
     v19 = 2114;
-    v20 = v5;
+    v20 = versionCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, start version: %{public}@)", &v15, 0x20u);
   }
 
-  v7 = a3;
-  v8 = [@"605.2.2" safari_isVersionStringGreaterThanVersionString:v5];
-  v9 = [v5 safari_isVersionStringBetweenVersionString:@"606" andVersionString:@"606.1.16"];
+  databaseCopy2 = database;
+  v8 = [@"605.2.2" safari_isVersionStringGreaterThanVersionString:versionCopy];
+  v9 = [versionCopy safari_isVersionStringBetweenVersionString:@"606" andVersionString:@"606.1.16"];
   if ((v8 & 1) != 0 || v9)
   {
-    v10 = [v7 fixCachedNumberOfChildrenIfNeeded];
+    fixCachedNumberOfChildrenIfNeeded = [databaseCopy2 fixCachedNumberOfChildrenIfNeeded];
   }
 
   else
   {
-    v10 = 0;
+    fixCachedNumberOfChildrenIfNeeded = 0;
   }
 
   v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = "NO";
-    if (v10)
+    if (fixCachedNumberOfChildrenIfNeeded)
     {
       v12 = "YES";
     }
@@ -1294,15 +1294,15 @@ LABEL_23:
     v15 = 136315394;
     v16 = "CKBADatabasePerformMaintenanceAfterVersion";
     v17 = 2080;
-    v18 = v12;
+    databaseCopy = v12;
     _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_INFO, "<- %s -> %s", &v15, 0x16u);
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v10;
+  return fixCachedNumberOfChildrenIfNeeded;
 }
 
-- (int64_t)localCloudKitMigrationState:(void *)a3
+- (int64_t)localCloudKitMigrationState:(void *)state
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1311,26 +1311,26 @@ LABEL_23:
     v9 = 136315394;
     v10 = "CKBADatabaseGetLocalCloudKitMigrationState";
     v11 = 2114;
-    v12 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v9, 0x16u);
   }
 
-  v5 = [a3 localMigrationState];
+  localMigrationState = [state localMigrationState];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "CKBADatabaseGetLocalCloudKitMigrationState";
     v11 = 2048;
-    v12 = v5;
+    stateCopy = localMigrationState;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "<- %s -> %lld", &v9, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return localMigrationState;
 }
 
-- (void)setLocalCloudKitMigrationState:(int64_t)a3 database:(void *)a4
+- (void)setLocalCloudKitMigrationState:(int64_t)state database:(void *)database
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1339,13 +1339,13 @@ LABEL_23:
     v9 = 136315650;
     v10 = "CKBADatabaseSetLocalCloudKitMigrationState";
     v11 = 2114;
-    v12 = a4;
+    databaseCopy = database;
     v13 = 2048;
-    v14 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, migration state: %lld)", &v9, 0x20u);
   }
 
-  [a4 setLocalMigrationState:a3 generateDeviceIdentifierIfNeeded:1];
+  [database setLocalMigrationState:state generateDeviceIdentifierIfNeeded:1];
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1357,7 +1357,7 @@ LABEL_23:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyUsernameAccountHashWithDatabase:(void *)a3
+- (id)copyUsernameAccountHashWithDatabase:(void *)database
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1366,26 +1366,26 @@ LABEL_23:
     v9 = 136315394;
     v10 = "CKBADatabaseCopyUsernameAccountHash";
     v11 = 2114;
-    v12 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v9, 0x16u);
   }
 
-  v5 = [a3 deprecatedUsernameAccountHash];
+  deprecatedUsernameAccountHash = [database deprecatedUsernameAccountHash];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "CKBADatabaseCopyUsernameAccountHash";
     v11 = 2114;
-    v12 = v5;
+    databaseCopy = deprecatedUsernameAccountHash;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v9, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return deprecatedUsernameAccountHash;
 }
 
-- (id)copyAccountHashWithDatabase:(void *)a3
+- (id)copyAccountHashWithDatabase:(void *)database
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1394,42 +1394,42 @@ LABEL_23:
     v9 = 136315394;
     v10 = "CKBADatabaseCopyAccountHash";
     v11 = 2114;
-    v12 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v9, 0x16u);
   }
 
-  v5 = [a3 accountHash];
+  accountHash = [database accountHash];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 136315394;
     v10 = "CKBADatabaseCopyAccountHash";
     v11 = 2114;
-    v12 = v5;
+    databaseCopy = accountHash;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v9, 0x16u);
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return accountHash;
 }
 
-- (void)setAccountHash:(id)a3 database:(void *)a4
+- (void)setAccountHash:(id)hash database:(void *)database
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  hashCopy = hash;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 136315650;
     v10 = "CKBADatabaseSetAccountHash";
     v11 = 2114;
-    v12 = a4;
+    databaseCopy = database;
     v13 = 2114;
-    v14 = v5;
+    v14 = hashCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, account hash: %{public}@)", &v9, 0x20u);
   }
 
-  [a4 updateAccountHash:v5];
+  [database updateAccountHash:hashCopy];
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1441,7 +1441,7 @@ LABEL_23:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyChangeTokenWithDatabase:(void *)a3
+- (id)copyChangeTokenWithDatabase:(void *)database
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1450,13 +1450,13 @@ LABEL_23:
     v11 = 136315394;
     v12 = "CKBADatabaseCopyChangeToken";
     v13 = 2114;
-    v14 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v11, 0x16u);
   }
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "currentRecordGeneration")}];
+  databaseCopy2 = database;
+  v7 = [v5 numberWithInteger:{objc_msgSend(databaseCopy2, "currentRecordGeneration")}];
 
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -1464,7 +1464,7 @@ LABEL_23:
     v11 = 136315394;
     v12 = "CKBADatabaseCopyChangeToken";
     v13 = 2114;
-    v14 = v7;
+    databaseCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v11, 0x16u);
   }
 
@@ -1472,45 +1472,45 @@ LABEL_23:
   return v7;
 }
 
-- (void)copyItemWithLocalID:(id)a3 database:(void *)a4
+- (void)copyItemWithLocalID:(id)d database:(void *)database
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v17 = 136315650;
     v18 = "CKBADatabaseCopyItemWithLocalID";
     v19 = 2114;
-    v20 = a4;
+    databaseCopy = database;
     v21 = 2114;
-    v22 = v5;
+    v22 = dCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, %{public}@)", &v17, 0x20u);
   }
 
-  if (!v5)
+  if (!dCopy)
   {
-    v7 = 0;
+    intValue = 0;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 intValue];
+    intValue = [dCopy intValue];
 LABEL_7:
-    v8 = a4;
-    v9 = [v8 bookmarkWithID:v7];
+    databaseCopy2 = database;
+    v9 = [databaseCopy2 bookmarkWithID:intValue];
     if (v9)
     {
-      v10 = [[BABookmarkItem alloc] initWithBookmarkCollection:v8 bookmark:v9];
+      v10 = [[BABookmarkItem alloc] initWithBookmarkCollection:databaseCopy2 bookmark:v9];
       v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v17 = 136315394;
         v18 = "CKBADatabaseCopyItemWithLocalID";
         v19 = 2114;
-        v20 = v10;
+        databaseCopy = v10;
         _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v17, 0x16u);
       }
     }
@@ -1552,34 +1552,34 @@ LABEL_19:
   return v10;
 }
 
-- (id)copyLocalIDsInFolderWithLocalID:(id)a3 database:(void *)a4
+- (id)copyLocalIDsInFolderWithLocalID:(id)d database:(void *)database
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v17 = 136315650;
     v18 = "CKBADatabaseCopyLocalIDsInFolderWithLocalID";
     v19 = 2114;
-    v20 = a4;
+    databaseCopy = database;
     v21 = 2114;
-    v22 = v5;
+    v22 = dCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, %{public}@)", &v17, 0x20u);
   }
 
-  if (!v5)
+  if (!dCopy)
   {
-    v7 = 0;
+    intValue = 0;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 intValue];
+    intValue = [dCopy intValue];
 LABEL_7:
-    v8 = [a4 syncableBookmarksIDsInFolderWithBookmarkID:v7];
+    v8 = [database syncableBookmarksIDsInFolderWithBookmarkID:intValue];
     v9 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     v10 = v9;
     if (v8)
@@ -1589,7 +1589,7 @@ LABEL_7:
         v17 = 136315394;
         v18 = "CKBADatabaseCopyLocalIDsInFolderWithLocalID";
         v19 = 2114;
-        v20 = v8;
+        databaseCopy = v8;
         _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v17, 0x16u);
       }
 
@@ -1636,34 +1636,34 @@ LABEL_21:
   return v8;
 }
 
-- (void)copyItemWithServerId:(id)a3 database:(void *)a4
+- (void)copyItemWithServerId:(id)id database:(void *)database
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v14 = 136315650;
     v15 = "CKBADatabaseCopyItemWithServerId";
     v16 = 2114;
-    v17 = a4;
+    databaseCopy = database;
     v18 = 2114;
-    v19 = v5;
+    v19 = idCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, %{public}@)", &v14, 0x20u);
   }
 
-  v7 = a4;
-  v8 = [v7 bookmarkWithServerID:v5 excludeDeletedBookmarks:1];
+  databaseCopy2 = database;
+  v8 = [databaseCopy2 bookmarkWithServerID:idCopy excludeDeletedBookmarks:1];
   if (v8)
   {
-    v9 = [[BABookmarkItem alloc] initWithBookmarkCollection:v7 bookmark:v8];
+    v9 = [[BABookmarkItem alloc] initWithBookmarkCollection:databaseCopy2 bookmark:v8];
     v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v14 = 136315394;
       v15 = "CKBADatabaseCopyItemWithServerId";
       v16 = 2114;
-      v17 = v9;
+      databaseCopy = v9;
       _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v14, 0x16u);
     }
   }
@@ -1685,28 +1685,28 @@ LABEL_21:
   return v9;
 }
 
-- (BOOL)addItem:(void *)a3 underFolderWithServerId:(id)a4 database:(void *)a5
+- (BOOL)addItem:(void *)item underFolderWithServerId:(id)id database:(void *)database
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  idCopy = id;
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v34 = 136315906;
     v35 = "CKBADatabaseAddItemUnderFolderWithServerId";
     v36 = 2114;
-    v37 = a5;
+    databaseCopy = database;
     v38 = 2114;
-    v39 = a3;
+    itemCopy = item;
     v40 = 2114;
-    v41 = v7;
+    v41 = idCopy;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, item: %{public}@, parentSyncServerId: %{public}@)", &v34, 0x2Au);
   }
 
-  v9 = a3;
-  v10 = [v9 collection];
-  v11 = [v9 bookmark];
-  v12 = [v10 bookmarkIDForServerID:v7 excludeDeletedBookmarks:1];
+  itemCopy2 = item;
+  collection = [itemCopy2 collection];
+  bookmark = [itemCopy2 bookmark];
+  v12 = [collection bookmarkIDForServerID:idCopy excludeDeletedBookmarks:1];
   if (v12 == 0x7FFFFFFF)
   {
     v13 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1715,7 +1715,7 @@ LABEL_21:
       v34 = 136315394;
       v35 = "saveBookmarkUnderFolderWithServerId";
       v36 = 2114;
-      v37 = v7;
+      databaseCopy = idCopy;
       _os_log_impl(&dword_272C20000, v13, OS_LOG_TYPE_INFO, "@@ %s: Parent server ID %{public}@ does not point to any item in the local database", &v34, 0x16u);
     }
 
@@ -1723,26 +1723,26 @@ LABEL_21:
   }
 
   v15 = v12;
-  if ([v10 isMerging])
+  if ([collection isMerging])
   {
-    if ([v11 specialID])
+    if ([bookmark specialID])
     {
-      v16 = [v10 bookmarkWithSpecialID:{objc_msgSend(v11, "specialID")}];
+      v16 = [collection bookmarkWithSpecialID:{objc_msgSend(bookmark, "specialID")}];
       if (v16)
       {
 LABEL_10:
-        [v10 _mergeBookmark:v11 withOriginalBookmark:v16 prioritizeOriginalBookmarkAttributes:0 generateChangesIfNeeded:1];
-        [v10 _markBookmarkID:objc_msgSend(v16 added:{"identifier"), 0}];
-        v17 = [v11 serverID];
-        [v10 setServerID:v17 forBookmark:v16];
+        [collection _mergeBookmark:bookmark withOriginalBookmark:v16 prioritizeOriginalBookmarkAttributes:0 generateChangesIfNeeded:1];
+        [collection _markBookmarkID:objc_msgSend(v16 added:{"identifier"), 0}];
+        serverID = [bookmark serverID];
+        [collection setServerID:serverID forBookmark:v16];
 
-        v18 = [v11 syncData];
-        [v10 _setSyncData:v18 forBookmark:v16];
+        syncData = [bookmark syncData];
+        [collection _setSyncData:syncData forBookmark:v16];
 
-        v19 = [v11 syncKey];
-        [v10 _setSyncKey:v19 forBookmark:v16];
+        syncKey = [bookmark syncKey];
+        [collection _setSyncKey:syncKey forBookmark:v16];
 
-        [v9 setBookmark:v16];
+        [itemCopy2 setBookmark:v16];
         v20 = WBS_LOG_CHANNEL_PREFIXBookmarks();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
@@ -1756,17 +1756,17 @@ LABEL_10:
 
     else
     {
-      v21 = [v11 isFolder];
-      v22 = [v11 title];
-      if (v21)
+      isFolder = [bookmark isFolder];
+      title = [bookmark title];
+      if (isFolder)
       {
-        v16 = [v10 _mergeCandidateFolderWithTitle:v22 parent:v15 mergeMode:{objc_msgSend(v10, "_mergeMode")}];
+        v16 = [collection _mergeCandidateFolderWithTitle:title parent:v15 mergeMode:{objc_msgSend(collection, "_mergeMode")}];
       }
 
       else
       {
-        v23 = [v11 address];
-        v16 = [v10 _mergeCandidateBookmarkWithTitle:v22 address:v23 parent:v15 mergeMode:{objc_msgSend(v10, "_mergeMode")}];
+        address = [bookmark address];
+        v16 = [collection _mergeCandidateBookmarkWithTitle:title address:address parent:v15 mergeMode:{objc_msgSend(collection, "_mergeMode")}];
       }
 
       if (v16)
@@ -1776,23 +1776,23 @@ LABEL_10:
     }
   }
 
-  if (([v11 isInserted] & 1) == 0)
+  if (([bookmark isInserted] & 1) == 0)
   {
-    [v11 _setParentID:v15];
-    [v10 _saveBookmark:v11 withSpecialID:objc_msgSend(v11 updateGenerationIfNeeded:{"specialID"), 0}];
-    [v10 _markBookmarkID:objc_msgSend(v11 added:{"identifier"), 0}];
-    v26 = [v11 serverID];
-    [v10 setServerID:v26 forBookmark:v11];
+    [bookmark _setParentID:v15];
+    [collection _saveBookmark:bookmark withSpecialID:objc_msgSend(bookmark updateGenerationIfNeeded:{"specialID"), 0}];
+    [collection _markBookmarkID:objc_msgSend(bookmark added:{"identifier"), 0}];
+    serverID2 = [bookmark serverID];
+    [collection setServerID:serverID2 forBookmark:bookmark];
 
-    v27 = [v11 syncData];
-    [v10 _setSyncData:v27 forBookmark:v11];
+    syncData2 = [bookmark syncData];
+    [collection _setSyncData:syncData2 forBookmark:bookmark];
 
-    v28 = [v11 syncKey];
-    [v10 _setSyncKey:v28 forBookmark:v11];
+    syncKey2 = [bookmark syncKey];
+    [collection _setSyncKey:syncKey2 forBookmark:bookmark];
 
-    v29 = [v11 identifier];
-    v30 = [v11 isSelectedFavoritesFolder];
-    [v10 updateSelectedFavoritesFolderWithBookmarkID:v29 wasFavoritesFolder:0 isFavoritesFolder:{objc_msgSend(v30, "BOOLValue")}];
+    identifier = [bookmark identifier];
+    isSelectedFavoritesFolder = [bookmark isSelectedFavoritesFolder];
+    [collection updateSelectedFavoritesFolderWithBookmarkID:identifier wasFavoritesFolder:0 isFavoritesFolder:{objc_msgSend(isSelectedFavoritesFolder, "BOOLValue")}];
 
     v24 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     v14 = 1;
@@ -1804,14 +1804,14 @@ LABEL_10:
     v34 = 136315650;
     v35 = "saveBookmarkUnderFolderWithServerId";
     v36 = 2114;
-    v37 = v9;
+    databaseCopy = itemCopy2;
     v38 = 2114;
-    v39 = v7;
+    itemCopy = idCopy;
     v25 = "@@ %s: Record %{public}@ was insert in parent record with server ID %{public}@";
     goto LABEL_23;
   }
 
-  if ([v11 parentID] == v15)
+  if ([bookmark parentID] == v15)
   {
     v24 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     v14 = 1;
@@ -1823,14 +1823,14 @@ LABEL_10:
     v34 = 136315650;
     v35 = "saveBookmarkUnderFolderWithServerId";
     v36 = 2114;
-    v37 = v9;
+    databaseCopy = itemCopy2;
     v38 = 2114;
-    v39 = v7;
+    itemCopy = idCopy;
     v25 = "@@ %s: Record %{public}@ is already inside parent record with server ID %{public}@";
     goto LABEL_23;
   }
 
-  if (![v10 _moveBookmark:v11 toFolderWithID:v15 detectCycles:1])
+  if (![collection _moveBookmark:bookmark toFolderWithID:v15 detectCycles:1])
   {
 LABEL_6:
     v14 = 0;
@@ -1844,9 +1844,9 @@ LABEL_6:
     v34 = 136315650;
     v35 = "saveBookmarkUnderFolderWithServerId";
     v36 = 2114;
-    v37 = v9;
+    databaseCopy = itemCopy2;
     v38 = 2114;
-    v39 = v7;
+    itemCopy = idCopy;
     v25 = "@@ %s: Record %{public}@ did move to parent record with server ID %{public}@";
 LABEL_23:
     _os_log_impl(&dword_272C20000, v24, OS_LOG_TYPE_INFO, v25, &v34, 0x20u);
@@ -1860,7 +1860,7 @@ LABEL_24:
     v34 = 136315394;
     v35 = "CKBADatabaseAddItemUnderFolderWithServerId";
     v36 = 1024;
-    LODWORD(v37) = v14;
+    LODWORD(databaseCopy) = v14;
     _os_log_impl(&dword_272C20000, v31, OS_LOG_TYPE_INFO, "<- %s -> %d", &v34, 0x12u);
   }
 
@@ -1868,7 +1868,7 @@ LABEL_24:
   return v14;
 }
 
-- (void)performDeduplicationWithDatabase:(void *)a3 mode:(int64_t)a4
+- (void)performDeduplicationWithDatabase:(void *)database mode:(int64_t)mode
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -1877,13 +1877,13 @@ LABEL_24:
     v9 = 136315650;
     v10 = "CKBADatabasePerformDeduplication";
     v11 = 2114;
-    v12 = a3;
+    databaseCopy = database;
     v13 = 2048;
-    v14 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, mode: %ld)", &v9, 0x20u);
   }
 
-  [a3 _deduplicateBookmarksForSyncingAndTrackChanges:a4 == 2 considerBookmarksWithSyncDataAsUnique:a4 == 1];
+  [database _deduplicateBookmarksForSyncingAndTrackChanges:mode == 2 considerBookmarksWithSyncDataAsUnique:mode == 1];
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1895,25 +1895,25 @@ LABEL_24:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyServerIdsInFolderWithServerId:(id)a3 database:(void *)a4
+- (id)copyServerIdsInFolderWithServerId:(id)id database:(void *)database
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [v5 wb_stringByRedactingBookmarkDAVServerID];
+    wb_stringByRedactingBookmarkDAVServerID = [idCopy wb_stringByRedactingBookmarkDAVServerID];
     *buf = 136315650;
     v26 = "CKBADatabaseCopyServerIdsInFolderWithServerId";
     v27 = 2114;
-    v28 = a4;
+    databaseCopy = database;
     v29 = 2114;
-    v30 = v8;
+    v30 = wb_stringByRedactingBookmarkDAVServerID;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, %{public}@)", buf, 0x20u);
   }
 
-  v9 = [a4 serverIDsInFolderWithServerID:v5 excludeDeletedBookmarks:1];
+  v9 = [database serverIDsInFolderWithServerID:idCopy excludeDeletedBookmarks:1];
   v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1939,8 +1939,8 @@ LABEL_24:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * v17) wb_stringByRedactingBookmarkDAVServerID];
-          [v12 addObject:v18];
+          wb_stringByRedactingBookmarkDAVServerID2 = [*(*(&v21 + 1) + 8 * v17) wb_stringByRedactingBookmarkDAVServerID];
+          [v12 addObject:wb_stringByRedactingBookmarkDAVServerID2];
 
           ++v17;
         }
@@ -1955,7 +1955,7 @@ LABEL_24:
     *buf = 136315394;
     v26 = "CKBADatabaseCopyServerIdsInFolderWithServerId";
     v27 = 2114;
-    v28 = v12;
+    databaseCopy = v12;
     _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", buf, 0x16u);
   }
 
@@ -1963,29 +1963,29 @@ LABEL_24:
   return v9;
 }
 
-- (void)setChildrenOrder:(id)a3 forFolderWithServerId:(id)a4 database:(void *)a5
+- (void)setChildrenOrder:(id)order forFolderWithServerId:(id)id database:(void *)database
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  orderCopy = order;
+  idCopy = id;
   v9 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v8 wb_stringByRedactingBookmarkDAVServerID];
-    v12 = [v7 safari_mapObjectsUsingBlock:&__block_literal_global_1];
+    wb_stringByRedactingBookmarkDAVServerID = [idCopy wb_stringByRedactingBookmarkDAVServerID];
+    v12 = [orderCopy safari_mapObjectsUsingBlock:&__block_literal_global_1];
     v15 = 136315906;
     v16 = "CKBADatabaseSetChildrenOrderForFolderWithServerId";
     v17 = 2114;
-    v18 = a5;
+    databaseCopy = database;
     v19 = 2114;
-    v20 = v11;
+    v20 = wb_stringByRedactingBookmarkDAVServerID;
     v21 = 2114;
     v22 = v12;
     _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, %{public}@, %{public}@)", &v15, 0x2Au);
   }
 
-  [a5 _orderChildrenWithServerIDs:v7 inFolderWithServerID:v8 excludeDeletedBookmarks:1];
+  [database _orderChildrenWithServerIDs:orderCopy inFolderWithServerID:idCopy excludeDeletedBookmarks:1];
   v13 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -1997,30 +1997,30 @@ LABEL_24:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyServerIdInFolderBeforeServerId:(id)a3 database:(void *)a4
+- (id)copyServerIdInFolderBeforeServerId:(id)id database:(void *)database
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
     v12 = "CKBADatabaseCopyServerIdInFolderBeforeServerId";
     v13 = 2114;
-    v14 = a4;
+    databaseCopy = database;
     v15 = 2114;
-    v16 = v5;
+    v16 = idCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, request before targetItemId: %{public}@)", &v11, 0x20u);
   }
 
-  v7 = [a4 _serverIDBeforeServerID:v5];
+  v7 = [database _serverIDBeforeServerID:idCopy];
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "CKBADatabaseCopyServerIdInFolderBeforeServerId";
     v13 = 2114;
-    v14 = v7;
+    databaseCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v11, 0x16u);
   }
 
@@ -2028,30 +2028,30 @@ LABEL_24:
   return v7;
 }
 
-- (id)copyServerIdInFolderAfterServerId:(id)a3 database:(void *)a4
+- (id)copyServerIdInFolderAfterServerId:(id)id database:(void *)database
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
     v12 = "CKBADatabaseCopyServerIdInFolderAfterServerId";
     v13 = 2114;
-    v14 = a4;
+    databaseCopy = database;
     v15 = 2114;
-    v16 = v5;
+    v16 = idCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, request after targetItemId: %{public}@)", &v11, 0x20u);
   }
 
-  v7 = [a4 _serverIDAfterServerID:v5];
+  v7 = [database _serverIDAfterServerID:idCopy];
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "CKBADatabaseCopyServerIdInFolderAfterServerId";
     v13 = 2114;
-    v14 = v7;
+    databaseCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v11, 0x16u);
   }
 
@@ -2059,30 +2059,30 @@ LABEL_24:
   return v7;
 }
 
-- (id)copyFirstServerIdInFolderWithServerId:(id)a3 database:(void *)a4
+- (id)copyFirstServerIdInFolderWithServerId:(id)id database:(void *)database
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
     v12 = "CKBADatabaseCopyFirstServerIdInFolderWithServerId";
     v13 = 2114;
-    v14 = a4;
+    databaseCopy = database;
     v15 = 2114;
-    v16 = v5;
+    v16 = idCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, folderServerId: %{public}@)", &v11, 0x20u);
   }
 
-  v7 = [a4 _firstServerIDInFolderWithServerID:v5];
+  v7 = [database _firstServerIDInFolderWithServerID:idCopy];
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "CKBADatabaseCopyFirstServerIdInFolderWithServerId";
     v13 = 2114;
-    v14 = v7;
+    databaseCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v11, 0x16u);
   }
 
@@ -2090,30 +2090,30 @@ LABEL_24:
   return v7;
 }
 
-- (id)copyLastServerIdInFolderWithServerId:(id)a3 database:(void *)a4
+- (id)copyLastServerIdInFolderWithServerId:(id)id database:(void *)database
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
     v12 = "CKBADatabaseCopyLastServerIdInFolderWithServerId";
     v13 = 2114;
-    v14 = a4;
+    databaseCopy = database;
     v15 = 2114;
-    v16 = v5;
+    v16 = idCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, folderServerId: %{public}@)", &v11, 0x20u);
   }
 
-  v7 = [a4 _lastServerIDInFolderWithServerID:v5];
+  v7 = [database _lastServerIDInFolderWithServerID:idCopy];
   v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "CKBADatabaseCopyLastServerIdInFolderWithServerId";
     v13 = 2114;
-    v14 = v7;
+    databaseCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v11, 0x16u);
   }
 
@@ -2121,7 +2121,7 @@ LABEL_24:
   return v7;
 }
 
-- (int64_t)itemTypeWithItem:(void *)a3
+- (int64_t)itemTypeWithItem:(void *)item
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2130,12 +2130,12 @@ LABEL_24:
     v10 = 136315394;
     v11 = "CKBAItemGetItemType";
     v12 = 2114;
-    v13 = a3;
+    itemCopy = item;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@)", &v10, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 isFolder];
+  bookmark = [item bookmark];
+  isFolder = [bookmark isFolder];
 
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -2143,42 +2143,42 @@ LABEL_24:
     v10 = 136315394;
     v11 = "CKBAItemGetItemType";
     v12 = 2048;
-    v13 = v6;
+    itemCopy = isFolder;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "<- %s -> %ld", &v10, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v6;
+  return isFolder;
 }
 
-- (BOOL)item:(void *)a3 isInFolderWithServerSyncId:(id)a4
+- (BOOL)item:(void *)item isInFolderWithServerSyncId:(id)id
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  idCopy = id;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v20 = 136315650;
     v21 = "CKBAItemGetIsInFolderWithServerSyncId";
     v22 = 2114;
-    v23 = a3;
+    itemCopy = item;
     v24 = 2112;
-    v25 = v5;
+    v25 = idCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@, parentRecordName: %@)", &v20, 0x20u);
   }
 
-  v7 = a3;
-  v8 = [v7 bookmark];
-  if ([v8 isInserted])
+  itemCopy2 = item;
+  bookmark = [itemCopy2 bookmark];
+  if ([bookmark isInserted])
   {
-    v9 = [v7 collection];
-    v10 = [v8 parentID];
-    if (v5 || v10)
+    collection = [itemCopy2 collection];
+    parentID = [bookmark parentID];
+    if (idCopy || parentID)
     {
-      if (v5)
+      if (idCopy)
       {
-        v14 = [v9 serverIDForBookmarkID:v10];
-        v12 = [v14 isEqualToString:v5];
+        v14 = [collection serverIDForBookmarkID:parentID];
+        v12 = [v14 isEqualToString:idCopy];
         v15 = WBS_LOG_CHANNEL_PREFIXBookmarks();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
@@ -2191,7 +2191,7 @@ LABEL_24:
           v20 = 136315394;
           v21 = "CKBAItemGetIsInFolderWithServerSyncId";
           v22 = 2080;
-          v23 = v16;
+          itemCopy = v16;
           _os_log_impl(&dword_272C20000, v15, OS_LOG_TYPE_INFO, "<- %s -> %s", &v20, 0x16u);
         }
       }
@@ -2240,7 +2240,7 @@ LABEL_24:
   return v12;
 }
 
-- (BOOL)item:(void *)a3 isEqualToItem:(void *)a4
+- (BOOL)item:(void *)item isEqualToItem:(void *)toItem
 {
   v19 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2249,22 +2249,22 @@ LABEL_24:
     v13 = 136315650;
     v14 = "CKBAItemIsEqualToItem";
     v15 = 2114;
-    v16 = a3;
+    itemCopy = item;
     v17 = 2114;
-    v18 = a4;
+    toItemCopy = toItem;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(item1: %{public}@, item2: %{public}@)", &v13, 0x20u);
   }
 
-  v7 = [a3 bookmark];
-  v8 = [a4 bookmark];
-  v9 = [v7 isEqualToBookmark:v8];
+  bookmark = [item bookmark];
+  bookmark2 = [toItem bookmark];
+  v9 = [bookmark isEqualToBookmark:bookmark2];
   v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v13 = 136315394;
     v14 = "CKBAItemIsEqualToItem";
     v15 = 1024;
-    LODWORD(v16) = v9;
+    LODWORD(itemCopy) = v9;
     _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "<- %s -> %d", &v13, 0x12u);
   }
 
@@ -2272,7 +2272,7 @@ LABEL_24:
   return v9;
 }
 
-- (int64_t)folderTypeWithFolder:(void *)a3
+- (int64_t)folderTypeWithFolder:(void *)folder
 {
   v15 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2281,13 +2281,13 @@ LABEL_24:
     v11 = 136315394;
     v12 = "CKBAFolderGetFolderType";
     v13 = 2114;
-    v14 = a3;
+    folderCopy = folder;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(folder: %{public}@)", &v11, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = [v5 specialID];
-  switch(v6)
+  bookmark = [folder bookmark];
+  specialID = [bookmark specialID];
+  switch(specialID)
   {
     case 4:
       v7 = 0;
@@ -2312,7 +2312,7 @@ LABEL_24:
     v11 = 136315394;
     v12 = "CKBAFolderGetFolderType";
     v13 = 2048;
-    v14 = v7;
+    folderCopy = v7;
     _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "<- %s -> %ld", &v11, 0x16u);
   }
 
@@ -2320,7 +2320,7 @@ LABEL_24:
   return v7;
 }
 
-- (void)createFolderWithType:(int64_t)a3 database:(void *)a4
+- (void)createFolderWithType:(int64_t)type database:(void *)database
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2329,31 +2329,31 @@ LABEL_24:
     v15 = 136315650;
     v16 = "CKBADatabaseCreateFolder";
     v17 = 2114;
-    v18 = a4;
+    databaseCopy = database;
     v19 = 2048;
-    v20 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, folder type: %lld)", &v15, 0x20u);
   }
 
-  v7 = a4;
+  databaseCopy2 = database;
   v8 = [WebBookmark alloc];
-  v9 = [v7 configuration];
-  v10 = -[WebBookmark initFolderWithParentID:collectionType:](v8, "initFolderWithParentID:collectionType:", 0, [v9 collectionType]);
+  configuration = [databaseCopy2 configuration];
+  v10 = -[WebBookmark initFolderWithParentID:collectionType:](v8, "initFolderWithParentID:collectionType:", 0, [configuration collectionType]);
 
-  if ((a3 - 1) <= 2 && *off_279E75430[a3 - 1])
+  if ((type - 1) <= 2 && *off_279E75430[type - 1])
   {
     [v10 markSpecial:?];
   }
 
-  [v10 setSubtype:a3 == 4];
-  v11 = [[BABookmarkItem alloc] initWithBookmarkCollection:v7 bookmark:v10];
+  [v10 setSubtype:type == 4];
+  v11 = [[BABookmarkItem alloc] initWithBookmarkCollection:databaseCopy2 bookmark:v10];
   v12 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v15 = 136315394;
     v16 = "CKBADatabaseCreateFolder";
     v17 = 2114;
-    v18 = v11;
+    databaseCopy = v11;
     _os_log_impl(&dword_272C20000, v12, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v15, 0x16u);
   }
 
@@ -2361,7 +2361,7 @@ LABEL_24:
   return v11;
 }
 
-- (int64_t)bookmarkTypeWithBookmark:(void *)a3
+- (int64_t)bookmarkTypeWithBookmark:(void *)bookmark
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2370,18 +2370,18 @@ LABEL_24:
     v9 = 136315394;
     v10 = "CKBABookmarkGetBookmarkType";
     v11 = 2114;
-    v12 = a3;
+    bookmarkCopy = bookmark;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(bookmark: %{public}@)", &v9, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  v6 = CKBABookmarkTypeForBookmark(v5);
+  bookmark = [bookmark bookmark];
+  v6 = CKBABookmarkTypeForBookmark(bookmark);
 
   v7 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)createBookmarkWithType:(int64_t)a3 database:(void *)a4
+- (void)createBookmarkWithType:(int64_t)type database:(void *)database
 {
   v23 = *MEMORY[0x277D85DE8];
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2390,20 +2390,20 @@ LABEL_24:
     v17 = 136315650;
     v18 = "CKBADatabaseCreateBookmark";
     v19 = 2114;
-    v20 = a4;
+    databaseCopy = database;
     v21 = 2048;
-    v22 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@, bookmark type: %lld)", &v17, 0x20u);
   }
 
-  v7 = a4;
-  switch(a3)
+  databaseCopy2 = database;
+  switch(type)
   {
     case 2:
       v11 = [WebBookmark alloc];
-      v9 = [v7 currentDeviceIdentifier];
-      v12 = [v7 configuration];
-      v10 = -[WebBookmark initWithTitle:address:parentID:subtype:deviceIdentifier:collectionType:](v11, "initWithTitle:address:parentID:subtype:deviceIdentifier:collectionType:", &stru_288259858, &stru_288259858, 0, 1, v9, [v12 collectionType]);
+      currentDeviceIdentifier = [databaseCopy2 currentDeviceIdentifier];
+      configuration = [databaseCopy2 configuration];
+      v10 = -[WebBookmark initWithTitle:address:parentID:subtype:deviceIdentifier:collectionType:](v11, "initWithTitle:address:parentID:subtype:deviceIdentifier:collectionType:", &stru_288259858, &stru_288259858, 0, 1, currentDeviceIdentifier, [configuration collectionType]);
 
       goto LABEL_9;
     case 1:
@@ -2411,8 +2411,8 @@ LABEL_24:
       goto LABEL_11;
     case 0:
       v8 = [WebBookmark alloc];
-      v9 = [v7 configuration];
-      v10 = -[WebBookmark initWithTitle:address:collectionType:](v8, "initWithTitle:address:collectionType:", &stru_288259858, &stru_288259858, [v9 collectionType]);
+      currentDeviceIdentifier = [databaseCopy2 configuration];
+      v10 = -[WebBookmark initWithTitle:address:collectionType:](v8, "initWithTitle:address:collectionType:", &stru_288259858, &stru_288259858, [currentDeviceIdentifier collectionType]);
 LABEL_9:
 
       goto LABEL_11;
@@ -2420,14 +2420,14 @@ LABEL_9:
 
   v10 = 0;
 LABEL_11:
-  v13 = [[BABookmarkItem alloc] initWithBookmarkCollection:v7 bookmark:v10];
+  v13 = [[BABookmarkItem alloc] initWithBookmarkCollection:databaseCopy2 bookmark:v10];
   v14 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v17 = 136315394;
     v18 = "CKBADatabaseCreateBookmark";
     v19 = 2114;
-    v20 = v13;
+    databaseCopy = v13;
     _os_log_impl(&dword_272C20000, v14, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", &v17, 0x16u);
   }
 
@@ -2435,7 +2435,7 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)changeIsMoveChange:(void *)a3
+- (BOOL)changeIsMoveChange:(void *)change
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2444,19 +2444,19 @@ LABEL_11:
     v10 = 136315394;
     v11 = "CKBAChangeGetWasBookmarkMoved";
     v12 = 2114;
-    v13 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@)", &v10, 0x16u);
   }
 
-  v5 = [a3 bookmark];
-  if ([v5 attributesMarkedAsModified:64])
+  bookmark = [change bookmark];
+  if ([bookmark attributesMarkedAsModified:64])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 attributesMarkedAsModified:4];
+    v6 = [bookmark attributesMarkedAsModified:4];
   }
 
   v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2465,7 +2465,7 @@ LABEL_11:
     v10 = 136315394;
     v11 = "CKBAChangeGetWasBookmarkMoved";
     v12 = 1024;
-    LODWORD(v13) = v6;
+    LODWORD(changeCopy) = v6;
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "<- %s -> %d", &v10, 0x12u);
   }
 
@@ -2473,7 +2473,7 @@ LABEL_11:
   return v6;
 }
 
-- (id)copyDeletedBookmarkSyncDataWithChange:(void *)a3
+- (id)copyDeletedBookmarkSyncDataWithChange:(void *)change
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2482,25 +2482,25 @@ LABEL_11:
     v14 = 136315394;
     v15 = "CKBAChangeCopyDeletedBookmarkSyncData";
     v16 = 2114;
-    v17 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@)", &v14, 0x16u);
   }
 
-  v5 = a3;
-  if ([v5 changeType] == 2)
+  changeCopy2 = change;
+  if ([changeCopy2 changeType] == 2)
   {
-    v6 = [v5 bookmark];
-    v7 = [v6 syncData];
+    bookmark = [changeCopy2 bookmark];
+    syncData = [bookmark syncData];
 
     v8 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = v8;
-      v10 = [v7 length];
+      v10 = [syncData length];
       v14 = 136315650;
       v15 = "CKBAChangeCopyDeletedBookmarkSyncData";
       v16 = 2048;
-      v17 = v7;
+      changeCopy = syncData;
       v18 = 2048;
       v19 = v10;
       _os_log_impl(&dword_272C20000, v9, OS_LOG_TYPE_INFO, "<- %s -> syncData %p of size: %ld", &v14, 0x20u);
@@ -2517,17 +2517,17 @@ LABEL_11:
       _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_INFO, "<- %s -> (null)", &v14, 0xCu);
     }
 
-    v7 = 0;
+    syncData = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v7;
+  return syncData;
 }
 
-- (void)setDeletedBookmarkSyncData:(id)a3 change:(void *)a4
+- (void)setDeletedBookmarkSyncData:(id)data change:(void *)change
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dataCopy = data;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -2535,22 +2535,22 @@ LABEL_11:
     v22 = 136315906;
     v23 = "CKBAChangeSetDeletedBookmarkSyncData";
     v24 = 2114;
-    v25 = a4;
+    changeCopy = change;
     v26 = 2048;
-    v27 = v5;
+    v27 = dataCopy;
     v28 = 2048;
-    v29 = [v5 length];
+    v29 = [dataCopy length];
     _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@, syncData %p of size: %zd)", &v22, 0x2Au);
   }
 
-  v8 = a4;
-  v9 = [v8 bookmark];
-  if ([v8 changeType] == 2)
+  changeCopy2 = change;
+  bookmark = [changeCopy2 bookmark];
+  if ([changeCopy2 changeType] == 2)
   {
-    if ([v9 isInserted])
+    if ([bookmark isInserted])
     {
-      v10 = [v8 collection];
-      [v10 _setSyncData:v5 forBookmark:v9];
+      collection = [changeCopy2 collection];
+      [collection _setSyncData:dataCopy forBookmark:bookmark];
 
       v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -2585,7 +2585,7 @@ LABEL_15:
     v12 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      [(WBBookmarkDBAccess *)v12 setDeletedBookmarkSyncData:v8 change:v9];
+      [(WBBookmarkDBAccess *)v12 setDeletedBookmarkSyncData:changeCopy2 change:bookmark];
     }
 
     v11 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2600,7 +2600,7 @@ LABEL_15:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyModifiedAttributesWithChange:(void *)a3
+- (id)copyModifiedAttributesWithChange:(void *)change
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2609,16 +2609,16 @@ LABEL_15:
     v14 = 136315394;
     v15 = "CKBAChangeCopyModifiedAttributes";
     v16 = 2114;
-    v17 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(change: %{public}@)", &v14, 0x16u);
   }
 
-  v5 = a3;
-  v6 = [v5 bookmark];
-  v7 = [v5 changeType] == 0;
-  v8 = [v5 collection];
+  changeCopy2 = change;
+  bookmark = [changeCopy2 bookmark];
+  v7 = [changeCopy2 changeType] == 0;
+  collection = [changeCopy2 collection];
 
-  v9 = copyBookmarkAttributes(v6, v8, v7);
+  v9 = copyBookmarkAttributes(bookmark, collection, v7);
 
   v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2638,7 +2638,7 @@ LABEL_15:
   return v9;
 }
 
-- (id)copyAttributesWithItem:(void *)a3
+- (id)copyAttributesWithItem:(void *)item
 {
   v22 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2647,21 +2647,21 @@ LABEL_15:
     v18 = 136315394;
     v19 = "CKBAItemCopyAttributes";
     v20 = 2114;
-    v21 = a3;
+    itemCopy = item;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@)", &v18, 0x16u);
   }
 
   v5 = MEMORY[0x277CBEB38];
-  v6 = a3;
+  itemCopy2 = item;
   v7 = [v5 alloc];
-  v8 = [v6 bookmark];
-  v9 = [v6 collection];
-  v10 = copyBookmarkAttributes(v8, v9, 1);
+  bookmark = [itemCopy2 bookmark];
+  collection = [itemCopy2 collection];
+  v10 = copyBookmarkAttributes(bookmark, collection, 1);
   v11 = [v7 initWithDictionary:v10 copyItems:1];
 
-  v12 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  v13 = [v11 allKeysForObject:v12];
+  v13 = [v11 allKeysForObject:null];
   [v11 removeObjectsForKeys:v13];
 
   v14 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -2682,17 +2682,17 @@ LABEL_15:
   return v11;
 }
 
-- (void)setModifiedAttributes:(id)a3 item:(void *)a4
+- (void)setModifiedAttributes:(id)attributes item:(void *)item
 {
   v107 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  attributesCopy = attributes;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "CKBAItemSetModifiedAttributes";
     *&buf[12] = 2114;
-    *&buf[14] = a4;
+    *&buf[14] = item;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@)", buf, 0x16u);
   }
 
@@ -2702,19 +2702,19 @@ LABEL_15:
     [WBBookmarkDBAccess setModifiedAttributes:item:];
   }
 
-  v8 = a4;
-  v9 = [v8 bookmark];
-  v10 = [v8 collection];
+  itemCopy = item;
+  bookmark = [itemCopy bookmark];
+  collection = [itemCopy collection];
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
   *&buf[16] = __CKBAItemSetModifiedAttributes_block_invoke;
   v104 = &unk_279E753F0;
-  v11 = v9;
+  v11 = bookmark;
   v105 = v11;
-  v12 = v10;
+  v12 = collection;
   v106 = v12;
   v13 = MEMORY[0x2743D6830](buf);
-  v14 = [v5 objectForKeyedSubscript:@"Title"];
+  v14 = [attributesCopy objectForKeyedSubscript:@"Title"];
   v15 = 0x277CCA000uLL;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2738,8 +2738,8 @@ LABEL_15:
 
   else
   {
-    v22 = [MEMORY[0x277CBEB68] null];
-    v23 = [(__CFString *)v14 isEqual:v22];
+    null = [MEMORY[0x277CBEB68] null];
+    v23 = [(__CFString *)v14 isEqual:null];
 
     if (!v23)
     {
@@ -2762,18 +2762,18 @@ LABEL_15:
 LABEL_14:
   if (![v11 isFolder])
   {
-    v33 = [v5 objectForKeyedSubscript:@"URL"];
+    v33 = [attributesCopy objectForKeyedSubscript:@"URL"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34 = [v33 absoluteString];
+      absoluteString = [v33 absoluteString];
       v35 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         v36 = MEMORY[0x277CCABB0];
         v37 = v35;
-        v38 = [v36 numberWithUnsignedInteger:{objc_msgSend(v34, "length")}];
+        v38 = [v36 numberWithUnsignedInteger:{objc_msgSend(absoluteString, "length")}];
         v99 = 136315394;
         v100 = "CKBAItemSetModifiedAttributes";
         v101 = 2114;
@@ -2783,13 +2783,13 @@ LABEL_14:
         v15 = 0x277CCA000;
       }
 
-      [v11 setAddress:v34];
+      [v11 setAddress:absoluteString];
     }
 
     else
     {
-      v39 = [MEMORY[0x277CBEB68] null];
-      v40 = [v33 isEqual:v39];
+      null2 = [MEMORY[0x277CBEB68] null];
+      v40 = [v33 isEqual:null2];
 
       if (v40)
       {
@@ -2805,7 +2805,7 @@ LABEL_14:
       }
     }
 
-    v42 = [v5 objectForKeyedSubscript:@"ShowIconOnly"];
+    v42 = [attributesCopy objectForKeyedSubscript:@"ShowIconOnly"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2820,13 +2820,13 @@ LABEL_14:
         _os_log_impl(&dword_272C20000, v43, OS_LOG_TYPE_INFO, "@@ %s: Set showIconOnly to value: %@", &v99, 0x16u);
       }
 
-      v44 = [v42 BOOLValue];
+      bOOLValue = [v42 BOOLValue];
     }
 
     else
     {
-      v45 = [MEMORY[0x277CBEB68] null];
-      v46 = [v42 isEqual:v45];
+      null3 = [MEMORY[0x277CBEB68] null];
+      v46 = [v42 isEqual:null3];
 
       if (!v46)
       {
@@ -2841,20 +2841,20 @@ LABEL_14:
         _os_log_impl(&dword_272C20000, v47, OS_LOG_TYPE_INFO, "@@ %s: Set showIconOnly to value: 0", &v99, 0xCu);
       }
 
-      v44 = 0;
+      bOOLValue = 0;
     }
 
-    [v11 setShowIconOnly:v44];
+    [v11 setShowIconOnly:bOOLValue];
 LABEL_38:
-    v48 = [v5 objectForKeyedSubscript:@"DateAdded"];
+    v48 = [attributesCopy objectForKeyedSubscript:@"DateAdded"];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v50 = v48;
     if ((isKindOfClass & 1) == 0)
     {
-      v51 = [MEMORY[0x277CBEB68] null];
-      v52 = [v48 isEqual:v51];
+      null4 = [MEMORY[0x277CBEB68] null];
+      v52 = [v48 isEqual:null4];
 
       if (!v52)
       {
@@ -2880,15 +2880,15 @@ LABEL_42:
       goto LABEL_83;
     }
 
-    v53 = [v5 objectForKeyedSubscript:@"DateLastViewed"];
+    v53 = [attributesCopy objectForKeyedSubscript:@"DateLastViewed"];
 
     objc_opt_class();
     v54 = objc_opt_isKindOfClass();
     v55 = v53;
     if ((v54 & 1) == 0)
     {
-      v56 = [MEMORY[0x277CBEB68] null];
-      v57 = [v53 isEqual:v56];
+      null5 = [MEMORY[0x277CBEB68] null];
+      v57 = [v53 isEqual:null5];
 
       if (!v57)
       {
@@ -2900,7 +2900,7 @@ LABEL_42:
 
     [v11 setReadingListDateLastViewed:v55];
 LABEL_47:
-    v58 = [v5 objectForKeyedSubscript:@"PreviewText"];
+    v58 = [attributesCopy objectForKeyedSubscript:@"PreviewText"];
 
     v59 = *(v15 + 3240);
     objc_opt_class();
@@ -2908,18 +2908,18 @@ LABEL_47:
     v61 = v58;
     if ((v60 & 1) == 0)
     {
-      v62 = [MEMORY[0x277CBEB68] null];
-      v63 = [v58 isEqual:v62];
+      null6 = [MEMORY[0x277CBEB68] null];
+      v63 = [v58 isEqual:null6];
 
       if (!v63)
       {
 LABEL_51:
-        v48 = [v5 wb_URLForKey:@"ImageURL" isValid:0];
+        v48 = [attributesCopy wb_URLForKey:@"ImageURL" isValid:0];
 
         if (v48)
         {
-          v64 = [v48 absoluteString];
-          [v11 setReadingListIconURL:v64];
+          absoluteString2 = [v48 absoluteString];
+          [v11 setReadingListIconURL:absoluteString2];
         }
 
         v13[2](v13);
@@ -2943,16 +2943,16 @@ LABEL_83:
     goto LABEL_51;
   }
 
-  v25 = [v12 configuration];
-  v26 = [v25 collectionType];
+  configuration = [v12 configuration];
+  collectionType = [configuration collectionType];
 
-  if (v26 != 1)
+  if (collectionType != 1)
   {
     v27 = v14;
     goto LABEL_62;
   }
 
-  v27 = [v5 objectForKeyedSubscript:@"LastSelectedTab"];
+  v27 = [attributesCopy objectForKeyedSubscript:@"LastSelectedTab"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2975,8 +2975,8 @@ LABEL_83:
 
   else
   {
-    v66 = [MEMORY[0x277CBEB68] null];
-    v67 = [v27 isEqual:v66];
+    null7 = [MEMORY[0x277CBEB68] null];
+    v67 = [v27 isEqual:null7];
 
     if (!v67)
     {
@@ -2996,7 +2996,7 @@ LABEL_83:
 
   [v11 setLastSelectedChildID:v32];
 LABEL_62:
-  v69 = [v5 objectForKeyedSubscript:@"SymbolImageName"];
+  v69 = [attributesCopy objectForKeyedSubscript:@"SymbolImageName"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3040,7 +3040,7 @@ LABEL_62:
 
   [v11 setSymbolImageName:v72];
 LABEL_70:
-  v77 = [v5 objectForKeyedSubscript:@"ShowIconOnly"];
+  v77 = [attributesCopy objectForKeyedSubscript:@"ShowIconOnly"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3055,14 +3055,14 @@ LABEL_70:
       _os_log_impl(&dword_272C20000, v78, OS_LOG_TYPE_INFO, "@@ %s: Set showIconOnly to value: %@", &v99, 0x16u);
     }
 
-    v79 = [v77 BOOLValue];
+    bOOLValue2 = [v77 BOOLValue];
 LABEL_78:
-    [v11 setShowIconOnly:v79];
+    [v11 setShowIconOnly:bOOLValue2];
     goto LABEL_79;
   }
 
-  v80 = [MEMORY[0x277CBEB68] null];
-  v81 = [v77 isEqual:v80];
+  null8 = [MEMORY[0x277CBEB68] null];
+  v81 = [v77 isEqual:null8];
 
   if (v81)
   {
@@ -3074,17 +3074,17 @@ LABEL_78:
       _os_log_impl(&dword_272C20000, v82, OS_LOG_TYPE_INFO, "@@ %s: Set showIconOnly to value: 0", &v99, 0xCu);
     }
 
-    v79 = 0;
+    bOOLValue2 = 0;
     goto LABEL_78;
   }
 
 LABEL_79:
-  v48 = [v5 objectForKeyedSubscript:@"IsSelectedFavoritesFolder"];
+  v48 = [attributesCopy objectForKeyedSubscript:@"IsSelectedFavoritesFolder"];
 
   if (v48)
   {
-    v83 = [MEMORY[0x277CBEB68] null];
-    v84 = [v48 isEqual:v83];
+    null9 = [MEMORY[0x277CBEB68] null];
+    v84 = [v48 isEqual:null9];
 
     if (!v84)
     {
@@ -3097,22 +3097,22 @@ LABEL_79:
 
       else
       {
-        v87 = [MEMORY[0x277CBEB68] null];
-        v88 = [v48 isEqual:v87];
+        null10 = [MEMORY[0x277CBEB68] null];
+        v88 = [v48 isEqual:null10];
 
         if (!v88)
         {
           v89 = 0;
 LABEL_90:
-          v90 = [v5 objectForKeyedSubscript:@"DateAdded"];
+          v90 = [attributesCopy objectForKeyedSubscript:@"DateAdded"];
 
           objc_opt_class();
           v91 = objc_opt_isKindOfClass();
           v92 = v90;
           if ((v91 & 1) == 0)
           {
-            v93 = [MEMORY[0x277CBEB68] null];
-            v94 = [v90 isEqual:v93];
+            null11 = [MEMORY[0x277CBEB68] null];
+            v94 = [v90 isEqual:null11];
 
             if (!v94)
             {
@@ -3127,9 +3127,9 @@ LABEL_94:
           v13[2](v13);
           if (v89 && [v11 isInserted])
           {
-            v95 = [v90 BOOLValue];
-            v96 = [v8 collection];
-            [v96 updateSelectedFavoritesFolderWithBookmarkID:objc_msgSend(v11 wasFavoritesFolder:"identifier") isFavoritesFolder:{v95 ^ 1, v95}];
+            bOOLValue3 = [v90 BOOLValue];
+            collection2 = [itemCopy collection];
+            [collection2 updateSelectedFavoritesFolderWithBookmarkID:objc_msgSend(v11 wasFavoritesFolder:"identifier") isFavoritesFolder:{bOOLValue3 ^ 1, bOOLValue3}];
           }
 
           v97 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -3168,39 +3168,39 @@ LABEL_100:
   v98 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyValueForKey:(id)a3 item:(void *)a4
+- (id)copyValueForKey:(id)key item:(void *)item
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  keyCopy = key;
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *v33 = 136315650;
     *&v33[4] = "CKBAItemCopyValueForKey";
     *&v33[12] = 2114;
-    *&v33[14] = a4;
+    *&v33[14] = item;
     v34 = 2114;
-    v35 = v5;
+    v35 = keyCopy;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_INFO, "-> %s(item: %{public}@, key: %{public}@)", v33, 0x20u);
   }
 
-  v7 = [a4 bookmark];
-  if ([v5 isEqualToString:@"Title"])
+  bookmark = [item bookmark];
+  if ([keyCopy isEqualToString:@"Title"])
   {
-    v8 = [v7 title];
+    title = [bookmark title];
     v9 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       [WBBookmarkDBAccess copyValueForKey:item:];
     }
 
-    v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    address = WBS_LOG_CHANNEL_PREFIXBookmarks();
+    if (!os_log_type_enabled(address, OS_LOG_TYPE_INFO))
     {
       goto LABEL_66;
     }
 
-    if (v8)
+    if (title)
     {
       goto LABEL_8;
     }
@@ -3209,9 +3209,9 @@ LABEL_100:
     goto LABEL_34;
   }
 
-  if (![v7 isFolder])
+  if (![bookmark isFolder])
   {
-    if ([v5 isEqualToString:@"DateAdded"])
+    if ([keyCopy isEqualToString:@"DateAdded"])
     {
       v13 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -3230,9 +3230,9 @@ LABEL_100:
       goto LABEL_18;
     }
 
-    if ([v5 isEqualToString:@"URL"])
+    if ([keyCopy isEqualToString:@"URL"])
     {
-      v10 = [v7 address];
+      address = [bookmark address];
       v17 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
@@ -3242,9 +3242,9 @@ LABEL_100:
       v18 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        if (v10)
+        if (address)
         {
-          v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSObject length](v10, "length")}];
+          v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSObject length](address, "length")}];
         }
 
         else
@@ -3257,17 +3257,17 @@ LABEL_100:
         *&v33[12] = 2114;
         *&v33[14] = v19;
         _os_log_impl(&dword_272C20000, v18, OS_LOG_TYPE_INFO, "<- %s -> Return value redacted; length: %{public}@", v33, 0x16u);
-        if (v10)
+        if (address)
         {
         }
       }
 
-      v27 = v10;
+      readingListIconURL = address;
     }
 
     else
     {
-      if (([v7 isReadingListItem] & 1) == 0)
+      if (([bookmark isReadingListItem] & 1) == 0)
       {
         v22 = WBS_LOG_CHANNEL_PREFIXBookmarks();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -3278,11 +3278,11 @@ LABEL_100:
         }
 
 LABEL_53:
-        v8 = 0;
+        title = 0;
         goto LABEL_67;
       }
 
-      if ([v5 isEqualToString:@"DateLastViewed"])
+      if ([keyCopy isEqualToString:@"DateLastViewed"])
       {
         v23 = WBS_LOG_CHANNEL_PREFIXBookmarks();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -3298,11 +3298,11 @@ LABEL_53:
           _os_log_impl(&dword_272C20000, v24, OS_LOG_TYPE_INFO, "<- %s -> Return value redacted", v33, 0xCu);
         }
 
-        v15 = [v7 dateLastViewed];
+        dateLastViewed = [bookmark dateLastViewed];
         goto LABEL_20;
       }
 
-      if ([v5 isEqualToString:@"PreviewText"])
+      if ([keyCopy isEqualToString:@"PreviewText"])
       {
         v25 = WBS_LOG_CHANNEL_PREFIXBookmarks();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -3318,11 +3318,11 @@ LABEL_53:
           _os_log_impl(&dword_272C20000, v26, OS_LOG_TYPE_INFO, "<- %s -> Return value redacted", v33, 0xCu);
         }
 
-        v15 = [v7 previewText];
+        dateLastViewed = [bookmark previewText];
         goto LABEL_20;
       }
 
-      v30 = [v5 isEqualToString:@"ImageURL"];
+      v30 = [keyCopy isEqualToString:@"ImageURL"];
       v31 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       v22 = v31;
       if (!v30)
@@ -3350,37 +3350,37 @@ LABEL_53:
         _os_log_impl(&dword_272C20000, v32, OS_LOG_TYPE_INFO, "<- %s -> Return value redacted", v33, 0xCu);
       }
 
-      v27 = [v7 readingListIconURL];
-      v10 = v27;
+      readingListIconURL = [bookmark readingListIconURL];
+      address = readingListIconURL;
     }
 
-    v8 = bookmarkURLWithString(v27);
+    title = bookmarkURLWithString(readingListIconURL);
 LABEL_66:
 
     goto LABEL_67;
   }
 
-  if (![v5 isEqualToString:@"IsSelectedFavoritesFolder"])
+  if (![keyCopy isEqualToString:@"IsSelectedFavoritesFolder"])
   {
-    if ([v5 isEqualToString:@"SymbolImageName"])
+    if ([keyCopy isEqualToString:@"SymbolImageName"])
     {
-      v8 = [v7 symbolImageName];
+      title = [bookmark symbolImageName];
       v16 = WBS_LOG_CHANNEL_PREFIXBookmarks();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         [WBBookmarkDBAccess copyValueForKey:item:];
       }
 
-      v10 = WBS_LOG_CHANNEL_PREFIXBookmarks();
-      if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      address = WBS_LOG_CHANNEL_PREFIXBookmarks();
+      if (!os_log_type_enabled(address, OS_LOG_TYPE_INFO))
       {
         goto LABEL_66;
       }
 
-      if (v8)
+      if (title)
       {
 LABEL_8:
-        v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "length")}];
+        v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(title, "length")}];
         goto LABEL_34;
       }
 
@@ -3390,15 +3390,15 @@ LABEL_34:
       *&v33[4] = "CKBAItemCopyValueForKey";
       *&v33[12] = 2114;
       *&v33[14] = v11;
-      _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "<- %s -> Return value redacted; length: %{public}@", v33, 0x16u);
-      if (v8)
+      _os_log_impl(&dword_272C20000, address, OS_LOG_TYPE_INFO, "<- %s -> Return value redacted; length: %{public}@", v33, 0x16u);
+      if (title)
       {
       }
 
       goto LABEL_66;
     }
 
-    v20 = [v5 isEqualToString:@"DateAdded"];
+    v20 = [keyCopy isEqualToString:@"DateAdded"];
     v21 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     v22 = v21;
     if (v20)
@@ -3419,9 +3419,9 @@ LABEL_34:
 LABEL_18:
       _os_log_impl(&dword_272C20000, v14, OS_LOG_TYPE_INFO, "<- %s -> Return value redacted", v33, 0xCu);
 LABEL_19:
-      v15 = [v7 dateAdded];
+      dateLastViewed = [bookmark dateAdded];
 LABEL_20:
-      v8 = v15;
+      title = dateLastViewed;
       goto LABEL_67;
     }
 
@@ -3437,24 +3437,24 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v8 = [v7 isSelectedFavoritesFolder];
+  title = [bookmark isSelectedFavoritesFolder];
   v12 = WBS_LOG_CHANNEL_PREFIXBookmarks();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *v33 = 136315394;
     *&v33[4] = "CKBAItemCopyValueForKey";
     *&v33[12] = 2114;
-    *&v33[14] = v8;
+    *&v33[14] = title;
     _os_log_impl(&dword_272C20000, v12, OS_LOG_TYPE_INFO, "<- %s -> %{public}@", v33, 0x16u);
   }
 
 LABEL_67:
 
   v28 = *MEMORY[0x277D85DE8];
-  return v8;
+  return title;
 }
 
-- (void)clearlAllLocalBookmarksForAutomatedTestingWithDatabase:(void *)a3
+- (void)clearlAllLocalBookmarksForAutomatedTestingWithDatabase:(void *)database
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -3463,14 +3463,14 @@ LABEL_67:
     v8 = 136315394;
     v9 = "CKBADatabaseClearAllLocalBookmarksForAutomatedTesting";
     v10 = 2114;
-    v11 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_272C20000, v4, OS_LOG_TYPE_INFO, "-> %s(database: %{public}@)", &v8, 0x16u);
   }
 
-  v5 = a3;
-  if ([v5 mergeWithBookmarksDictionary:MEMORY[0x277CBEC10] clearHidden:1 clearSyncData:0 error:0])
+  databaseCopy2 = database;
+  if ([databaseCopy2 mergeWithBookmarksDictionary:MEMORY[0x277CBEC10] clearHidden:1 clearSyncData:0 error:0])
   {
-    [v5 postBookmarksDidReloadNotification];
+    [databaseCopy2 postBookmarksDidReloadNotification];
   }
 
   v6 = WBS_LOG_CHANNEL_PREFIXBookmarks();
@@ -3484,39 +3484,39 @@ LABEL_67:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copySaveURLForAssetWithKey:(id)a3 item:(void *)a4
+- (id)copySaveURLForAssetWithKey:(id)key item:(void *)item
 {
-  if (![a3 isEqual:@"BackgroundImage"])
+  if (![key isEqual:@"BackgroundImage"])
   {
     return 0;
   }
 
-  v5 = [a4 bookmark];
-  v6 = [[WBTabGroup alloc] initWithBookmark:v5];
-  v7 = [(WBTabGroup *)v6 uuid];
+  bookmark = [item bookmark];
+  v6 = [[WBTabGroup alloc] initWithBookmark:bookmark];
+  uuid = [(WBTabGroup *)v6 uuid];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 safari_startPageBackgroundImageFileURLForIdentifier:v7];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager safari_startPageBackgroundImageFileURLForIdentifier:uuid];
 
   return v9;
 }
 
-- (void)notifyForSaveOfAssetWithKey:(id)a3 item:(void *)a4
+- (void)notifyForSaveOfAssetWithKey:(id)key item:(void *)item
 {
-  if ([a3 isEqual:@"BackgroundImage"])
+  if ([key isEqual:@"BackgroundImage"])
   {
-    v5 = [a4 bookmark];
-    v6 = [[WBTabGroup alloc] initWithBookmark:v5];
-    v7 = [(WBTabGroup *)v6 uuid];
+    bookmark = [item bookmark];
+    v6 = [[WBTabGroup alloc] initWithBookmark:bookmark];
+    uuid = [(WBTabGroup *)v6 uuid];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __55__WBBookmarkDBAccess_notifyForSaveOfAssetWithKey_item___block_invoke;
     v10[3] = &unk_279E753F0;
-    v11 = v7;
-    v12 = v5;
-    v8 = v5;
-    v9 = v7;
+    v11 = uuid;
+    v12 = bookmark;
+    v8 = bookmark;
+    v9 = uuid;
     dispatch_async(MEMORY[0x277D85CD0], v10);
   }
 }

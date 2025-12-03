@@ -1,28 +1,28 @@
 @interface DeliveryAccount
-+ (DeliveryAccount)accountWithHostname:(id)a3 username:(id)a4;
-+ (DeliveryAccount)accountWithHostname:(id)a3 username:(id)a4 lookForExistingAccounts:(BOOL)a5;
-+ (DeliveryAccount)accountWithIdentifier:(id)a3;
-+ (DeliveryAccount)accountWithUniqueId:(id)a3;
++ (DeliveryAccount)accountWithHostname:(id)hostname username:(id)username;
++ (DeliveryAccount)accountWithHostname:(id)hostname username:(id)username lookForExistingAccounts:(BOOL)accounts;
++ (DeliveryAccount)accountWithIdentifier:(id)identifier;
++ (DeliveryAccount)accountWithUniqueId:(id)id;
 + (id)carrierDeliveryAccount;
 + (id)deliveryAccounts;
-+ (id)existingAccountForUniqueID:(id)a3;
-+ (id)existingAccountWithHostname:(id)a3 username:(id)a4;
-+ (id)existingAccountWithIdentifier:(id)a3;
++ (id)existingAccountForUniqueID:(id)d;
++ (id)existingAccountWithHostname:(id)hostname username:(id)username;
++ (id)existingAccountWithIdentifier:(id)identifier;
 + (void)_postDeliveryAccountsHaveChanged;
-+ (void)addDeliveryAccount:(id)a3;
++ (void)addDeliveryAccount:(id)account;
 + (void)reloadDeliveryAccounts;
-+ (void)removeDeliveryAccount:(id)a3;
++ (void)removeDeliveryAccount:(id)account;
 - (BOOL)hasEnoughInformationForEasySetup;
 - (BOOL)hasNoReferences;
 - (BOOL)shouldUseAuthentication;
 - (NSString)identifier;
-- (id)newDeliveryWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6;
-- (id)newDeliveryWithMessage:(id)a3;
+- (id)newDeliveryWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other;
+- (id)newDeliveryWithMessage:(id)message;
 - (unint64_t)maximumMessageBytes;
-- (void)_setAccountProperties:(id)a3;
-- (void)_updateAccountDescriptionWithUsername:(id)a3 hostname:(id)a4;
-- (void)setMaximumMessageBytes:(unint64_t)a3;
-- (void)setUsername:(id)a3;
+- (void)_setAccountProperties:(id)properties;
+- (void)_updateAccountDescriptionWithUsername:(id)username hostname:(id)hostname;
+- (void)setMaximumMessageBytes:(unint64_t)bytes;
+- (void)setUsername:(id)username;
 @end
 
 @implementation DeliveryAccount
@@ -40,18 +40,18 @@
 
 - (NSString)identifier
 {
-  v3 = [(MFAccount *)self hostname];
-  v4 = [(MFAccount *)self username];
-  if (v4)
+  hostname = [(MFAccount *)self hostname];
+  username = [(MFAccount *)self username];
+  if (username)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [(MFAccount *)self username];
-    v7 = [v5 stringWithFormat:@"%@:%@", v3, v6];
+    username2 = [(MFAccount *)self username];
+    v7 = [v5 stringWithFormat:@"%@:%@", hostname, username2];
   }
 
   else
   {
-    v7 = v3;
+    v7 = hostname;
   }
 
   return v7;
@@ -60,9 +60,9 @@
 - (unint64_t)maximumMessageBytes
 {
   v2 = [(MFAccount *)self accountPropertyForKey:@"MaxMessageBytes"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 + (void)reloadDeliveryAccounts
@@ -74,7 +74,7 @@
   v4 = getDeliveryAccounts();
   +[DeliveryAccount mf_unlock];
 
-  [a1 _postDeliveryAccountsHaveChanged];
+  [self _postDeliveryAccountsHaveChanged];
 }
 
 + (void)_postDeliveryAccountsHaveChanged
@@ -83,15 +83,15 @@
   v2 = objc_alloc(MEMORY[0x1E695DEC8]);
   v5 = [v2 initWithArray:sDeliveryAccounts];
   +[DeliveryAccount mf_unlock];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = [MEMORY[0x1E696AD80] notificationWithName:@"DeliveryAccountsDidChange" object:v5 userInfo:0];
-  [v3 postNotification:v4];
+  [defaultCenter postNotification:v4];
 }
 
-+ (id)existingAccountForUniqueID:(id)a3
++ (id)existingAccountForUniqueID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   +[DeliveryAccount mf_lock];
   v15 = 0u;
   v16 = 0u;
@@ -112,8 +112,8 @@
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 uniqueID];
-        v10 = [v9 isEqualToString:v3];
+        uniqueID = [v8 uniqueID];
+        v10 = [uniqueID isEqualToString:dCopy];
 
         if (v10)
         {
@@ -140,47 +140,47 @@ LABEL_11:
   return v5;
 }
 
-+ (void)addDeliveryAccount:(id)a3
++ (void)addDeliveryAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     +[DeliveryAccount mf_lock];
     v3 = getDeliveryAccounts();
-    [v3 addObject:v4];
-    [v4 savePersistentAccount];
+    [v3 addObject:accountCopy];
+    [accountCopy savePersistentAccount];
     +[DeliveryAccount mf_unlock];
   }
 }
 
-+ (void)removeDeliveryAccount:(id)a3
++ (void)removeDeliveryAccount:(id)account
 {
-  v3 = a3;
-  if (v3)
+  accountCopy = account;
+  if (accountCopy)
   {
-    v4 = [MEMORY[0x1E696AD80] notificationWithName:@"DeliveryAccountWillBeRemoved" object:v3];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    v4 = [MEMORY[0x1E696AD80] notificationWithName:@"DeliveryAccountWillBeRemoved" object:accountCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = MEMORY[0x1E69E9820];
-    v6 = v5;
+    v6 = defaultCenter;
     v11 = v6;
     v7 = v4;
     v12 = v7;
-    v8 = [MEMORY[0x1E699B978] mainThreadScheduler];
-    [v8 performBlock:&v10];
+    mainThreadScheduler = [MEMORY[0x1E699B978] mainThreadScheduler];
+    [mainThreadScheduler performBlock:&v10];
 
     +[DeliveryAccount mf_lock];
     v9 = getDeliveryAccounts();
-    [v9 removeObject:v3];
-    [v3 removePersistentAccount];
+    [v9 removeObject:accountCopy];
+    [accountCopy removePersistentAccount];
     +[DeliveryAccount mf_unlock];
   }
 }
 
-+ (DeliveryAccount)accountWithUniqueId:(id)a3
++ (DeliveryAccount)accountWithUniqueId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [a1 deliveryAccounts];
+  idCopy = id;
+  [self deliveryAccounts];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -199,8 +199,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uniqueID];
-        v11 = [v4 isEqualToString:v10];
+        uniqueID = [v9 uniqueID];
+        v11 = [idCopy isEqualToString:uniqueID];
 
         if (v11)
         {
@@ -226,11 +226,11 @@ LABEL_11:
   return v6;
 }
 
-+ (DeliveryAccount)accountWithIdentifier:(id)a3
++ (DeliveryAccount)accountWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [a1 deliveryAccounts];
+  identifierCopy = identifier;
+  [self deliveryAccounts];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -249,8 +249,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -276,10 +276,10 @@ LABEL_11:
   return v6;
 }
 
-+ (id)existingAccountWithIdentifier:(id)a3
++ (id)existingAccountWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   +[DeliveryAccount mf_lock];
   v15 = 0u;
   v16 = 0u;
@@ -300,8 +300,8 @@ LABEL_11:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 identifier];
-        v10 = [v9 isEqualToString:v3];
+        identifier = [v8 identifier];
+        v10 = [identifier isEqualToString:identifierCopy];
 
         if (v10)
         {
@@ -328,48 +328,48 @@ LABEL_11:
   return v5;
 }
 
-+ (id)existingAccountWithHostname:(id)a3 username:(id)a4
++ (id)existingAccountWithHostname:(id)hostname username:(id)username
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  hostnameCopy = hostname;
+  usernameCopy = username;
+  v8 = hostnameCopy;
   v9 = v8;
-  if (v7)
+  if (usernameCopy)
   {
     v9 = v8;
-    if (([v7 isEqualToString:&stru_1F273A5E0] & 1) == 0)
+    if (([usernameCopy isEqualToString:&stru_1F273A5E0] & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v8, v7];
+      usernameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v8, usernameCopy];
 
-      v9 = v10;
+      v9 = usernameCopy;
     }
   }
 
-  v11 = [a1 accountWithIdentifier:v9];
+  v11 = [self accountWithIdentifier:v9];
 
   return v11;
 }
 
-+ (DeliveryAccount)accountWithHostname:(id)a3 username:(id)a4
++ (DeliveryAccount)accountWithHostname:(id)hostname username:(id)username
 {
-  v4 = [a1 accountWithHostname:a3 username:a4 lookForExistingAccounts:1];
+  v4 = [self accountWithHostname:hostname username:username lookForExistingAccounts:1];
 
   return v4;
 }
 
-+ (DeliveryAccount)accountWithHostname:(id)a3 username:(id)a4 lookForExistingAccounts:(BOOL)a5
++ (DeliveryAccount)accountWithHostname:(id)hostname username:(id)username lookForExistingAccounts:(BOOL)accounts
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (!v5 || ([a1 existingAccountWithHostname:v8 username:v9], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  accountsCopy = accounts;
+  hostnameCopy = hostname;
+  usernameCopy = username;
+  if (!accountsCopy || ([self existingAccountWithHostname:hostnameCopy username:usernameCopy], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v11 = [MEMORY[0x1E695DF20] dictionary];
-    v10 = [a1 newAccountWithDictionary:v11];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
+    v10 = [self newAccountWithDictionary:dictionary];
 
-    [v10 setHostname:v8];
-    [v10 setUsername:v9];
-    [v10 _updateAccountDescriptionWithUsername:v9 hostname:v8];
+    [v10 setHostname:hostnameCopy];
+    [v10 setUsername:usernameCopy];
+    [v10 _updateAccountDescriptionWithUsername:usernameCopy hostname:hostnameCopy];
     [DeliveryAccount addDeliveryAccount:v10];
   }
 
@@ -388,7 +388,7 @@ LABEL_11:
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = v5;
-      v8 = 0xFFFFFFFFLL;
+      intValue = 0xFFFFFFFFLL;
     }
 
     else
@@ -397,12 +397,12 @@ LABEL_11:
       v11 = [v5 substringFromIndex:v6 + 1];
       if ([v11 length])
       {
-        v8 = [v11 intValue];
+        intValue = [v11 intValue];
       }
 
       else
       {
-        v8 = 0xFFFFFFFFLL;
+        intValue = 0xFFFFFFFFLL;
       }
 
       v7 = v10;
@@ -410,13 +410,13 @@ LABEL_11:
 
     if ([v7 length])
     {
-      v12 = [MEMORY[0x1E695DF20] dictionary];
-      v9 = [a1 newAccountWithDictionary:v12];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
+      v9 = [self newAccountWithDictionary:dictionary];
 
       [v9 setHostname:v7];
-      if (v8 >= 1)
+      if (intValue >= 1)
       {
-        [v9 setPortNumber:v8];
+        [v9 setPortNumber:intValue];
       }
     }
 
@@ -434,21 +434,21 @@ LABEL_11:
   return v9;
 }
 
-- (id)newDeliveryWithMessage:(id)a3
+- (id)newDeliveryWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [objc_alloc(-[DeliveryAccount deliveryClass](self "deliveryClass"))];
   [v5 setAccount:self];
 
   return v5;
 }
 
-- (id)newDeliveryWithHeaders:(id)a3 HTML:(id)a4 plainTextAlternative:(id)a5 other:(id)a6
+- (id)newDeliveryWithHeaders:(id)headers HTML:(id)l plainTextAlternative:(id)alternative other:(id)other
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  headersCopy = headers;
+  lCopy = l;
+  alternativeCopy = alternative;
+  otherCopy = other;
   v14 = [objc_alloc(-[DeliveryAccount deliveryClass](self "deliveryClass"))];
   [v14 setAccount:self];
 
@@ -457,13 +457,13 @@ LABEL_11:
 
 - (BOOL)shouldUseAuthentication
 {
-  v3 = [(MFAccount *)self username];
+  username = [(MFAccount *)self username];
   v4 = [(MFAccount *)self accountPropertyForKey:@"ShouldUseAuthentication"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v3)
+  if (username)
   {
-    v6 = ([v3 isEqualToString:&stru_1F273A5E0] ^ 1) & v5;
+    v6 = ([username isEqualToString:&stru_1F273A5E0] ^ 1) & bOOLValue;
   }
 
   else
@@ -474,36 +474,36 @@ LABEL_11:
   return v6;
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v4 = a3;
-  -[DeliveryAccount setShouldUseAuthentication:](self, "setShouldUseAuthentication:", [v4 length] != 0);
+  usernameCopy = username;
+  -[DeliveryAccount setShouldUseAuthentication:](self, "setShouldUseAuthentication:", [usernameCopy length] != 0);
   v6.receiver = self;
   v6.super_class = DeliveryAccount;
-  [(MFAccount *)&v6 setUsername:v4];
-  v5 = [(MFAccount *)self hostname];
-  [(DeliveryAccount *)self _updateAccountDescriptionWithUsername:v4 hostname:v5];
+  [(MFAccount *)&v6 setUsername:usernameCopy];
+  hostname = [(MFAccount *)self hostname];
+  [(DeliveryAccount *)self _updateAccountDescriptionWithUsername:usernameCopy hostname:hostname];
 }
 
-- (void)_setAccountProperties:(id)a3
+- (void)_setAccountProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7.receiver = self;
   v7.super_class = DeliveryAccount;
-  [(MFAccount *)&v7 _setAccountProperties:v4];
-  v5 = [v4 objectForKey:@"Username"];
-  v6 = [v4 objectForKey:@"Hostname"];
+  [(MFAccount *)&v7 _setAccountProperties:propertiesCopy];
+  v5 = [propertiesCopy objectForKey:@"Username"];
+  v6 = [propertiesCopy objectForKey:@"Hostname"];
   if (v5 | v6)
   {
     [(DeliveryAccount *)self _updateAccountDescriptionWithUsername:v5 hostname:v6];
   }
 }
 
-- (void)setMaximumMessageBytes:(unint64_t)a3
+- (void)setMaximumMessageBytes:(unint64_t)bytes
 {
-  if ([(DeliveryAccount *)self maximumMessageBytes]!= a3)
+  if ([(DeliveryAccount *)self maximumMessageBytes]!= bytes)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:bytes];
     [(MFAccount *)self setAccountProperty:v5 forKey:@"MaxMessageBytes"];
 
     [(MFAccount *)self savePersistentAccount];
@@ -513,7 +513,7 @@ LABEL_11:
 - (BOOL)hasNoReferences
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(DeliveryAccount *)self identifier];
+  identifier = [(DeliveryAccount *)self identifier];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -532,11 +532,11 @@ LABEL_11:
           objc_enumerationMutation(v3);
         }
 
-        v7 = [*(*(&v12 + 1) + 8 * i) deliveryAccount];
-        v8 = [v7 identifier];
+        deliveryAccount = [*(*(&v12 + 1) + 8 * i) deliveryAccount];
+        identifier2 = [deliveryAccount identifier];
 
-        LOBYTE(v7) = [v8 isEqualToString:v2];
-        if (v7)
+        LOBYTE(deliveryAccount) = [identifier2 isEqualToString:identifier];
+        if (deliveryAccount)
         {
           v9 = 0;
           goto LABEL_11;
@@ -562,40 +562,40 @@ LABEL_11:
 
 - (BOOL)hasEnoughInformationForEasySetup
 {
-  v3 = [(MFAccount *)self hostname];
-  v4 = [v3 length];
+  hostname = [(MFAccount *)self hostname];
+  v4 = [hostname length];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(MFAccount *)self username];
-  v6 = [v5 length] != 0;
+  username = [(MFAccount *)self username];
+  v6 = [username length] != 0;
 
   return v6;
 }
 
-- (void)_updateAccountDescriptionWithUsername:(id)a3 hostname:(id)a4
+- (void)_updateAccountDescriptionWithUsername:(id)username hostname:(id)hostname
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(MFAccount *)self persistentAccount];
-  if (v7)
+  usernameCopy = username;
+  hostnameCopy = hostname;
+  persistentAccount = [(MFAccount *)self persistentAccount];
+  if (persistentAccount)
   {
-    if ([v13 length])
+    if ([usernameCopy length])
     {
-      v8 = [v13 rangeOfString:@"@"];
-      v9 = v13;
+      v8 = [usernameCopy rangeOfString:@"@"];
+      v9 = usernameCopy;
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if ([v6 length])
+        if ([hostnameCopy length])
         {
-          v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@@%@", v13, v6];
+          hostnameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@@%@", usernameCopy, hostnameCopy];
 LABEL_8:
-          v12 = v10;
+          v12 = hostnameCopy;
 LABEL_10:
-          [v7 setAccountDescription:v12];
+          [persistentAccount setAccountDescription:v12];
 
           goto LABEL_11;
         }
@@ -608,15 +608,15 @@ LABEL_9:
 
     else
     {
-      v11 = [v6 length];
-      v9 = v6;
+      v11 = [hostnameCopy length];
+      v9 = hostnameCopy;
       if (!v11)
       {
         goto LABEL_9;
       }
     }
 
-    v10 = [v9 copy];
+    hostnameCopy = [v9 copy];
     goto LABEL_8;
   }
 

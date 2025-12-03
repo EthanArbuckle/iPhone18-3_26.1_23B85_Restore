@@ -1,38 +1,38 @@
 @interface FCCKDatabaseEncryptionStartUpMiddleware
-- (id)initWithEncryptionMigrator:(id *)a1;
-- (void)_adoptSentinel:(void *)a3 secureSentinel:(void *)a4 forDatabase:(void *)a5 completion:;
-- (void)_associateChildOperation:(uint64_t)a1;
-- (void)_createSentinelsIfNeededForDatabase:(void *)a3 completion:;
-- (void)_deleteOldDataIfDesiredWithSentinel:(void *)a3 secureSentinel:(void *)a4 database:(void *)a5 completion:;
-- (void)performStartUpForDatabase:(id)a3 completion:(id)a4;
+- (id)initWithEncryptionMigrator:(id *)migrator;
+- (void)_adoptSentinel:(void *)sentinel secureSentinel:(void *)secureSentinel forDatabase:(void *)database completion:;
+- (void)_associateChildOperation:(uint64_t)operation;
+- (void)_createSentinelsIfNeededForDatabase:(void *)database completion:;
+- (void)_deleteOldDataIfDesiredWithSentinel:(void *)sentinel secureSentinel:(void *)secureSentinel database:(void *)database completion:;
+- (void)performStartUpForDatabase:(id)database completion:(id)completion;
 @end
 
 @implementation FCCKDatabaseEncryptionStartUpMiddleware
 
-- (id)initWithEncryptionMigrator:(id *)a1
+- (id)initWithEncryptionMigrator:(id *)migrator
 {
   v4 = a2;
-  if (a1)
+  if (migrator)
   {
-    v7.receiver = a1;
+    v7.receiver = migrator;
     v7.super_class = FCCKDatabaseEncryptionStartUpMiddleware;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    migrator = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return migrator;
 }
 
-- (void)performStartUpForDatabase:(id)a3 completion:(id)a4
+- (void)performStartUpForDatabase:(id)database completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (WeakRetained = objc_loadWeakRetained(v6 + 2), WeakRetained, !WeakRetained))
+  databaseCopy = database;
+  completionCopy = completion;
+  if (!databaseCopy || (WeakRetained = objc_loadWeakRetained(databaseCopy + 2), WeakRetained, !WeakRetained))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -53,12 +53,12 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __80__FCCKDatabaseEncryptionStartUpMiddleware_performStartUpForDatabase_completion___block_invoke;
   aBlock[3] = &unk_1E7C39710;
-  v9 = v7;
+  v9 = completionCopy;
   v27 = v9;
-  v10 = v6;
+  v10 = databaseCopy;
   v26 = v10;
   v11 = _Block_copy(aBlock);
-  if (v6 && (v12 = objc_loadWeakRetained(v10 + 2), v12, v12))
+  if (databaseCopy && (v12 = objc_loadWeakRetained(v10 + 2), v12, v12))
   {
     v13 = FCPrivateDataEncryptionLog;
     if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT))
@@ -486,46 +486,46 @@ LABEL_17:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_adoptSentinel:(void *)a3 secureSentinel:(void *)a4 forDatabase:(void *)a5 completion:
+- (void)_adoptSentinel:(void *)sentinel secureSentinel:(void *)secureSentinel forDatabase:(void *)database completion:
 {
   v29 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  sentinelCopy = sentinel;
+  secureSentinelCopy = secureSentinel;
+  if (self)
   {
-    v12 = a5;
-    v13 = [(CKRecord *)v9 fc_sentinel_databaseVersion];
-    if (v11)
+    databaseCopy = database;
+    fc_sentinel_databaseVersion = [(CKRecord *)v9 fc_sentinel_databaseVersion];
+    if (secureSentinelCopy)
     {
-      v11[5] = v13;
-      objc_setProperty_atomic(v11, v14, v9, 64);
+      secureSentinelCopy[5] = fc_sentinel_databaseVersion;
+      objc_setProperty_atomic(secureSentinelCopy, v14, v9, 64);
     }
 
-    v15 = [(CKRecord *)v9 fc_sentinel_databaseVersion];
+    fc_sentinel_databaseVersion2 = [(CKRecord *)v9 fc_sentinel_databaseVersion];
     v16 = FCPrivateDataEncryptionLog;
     v17 = os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT);
-    if (v15)
+    if (fc_sentinel_databaseVersion2)
     {
       if (v17)
       {
         v25 = 138412546;
         v26 = v9;
         v27 = 2112;
-        v28 = v10;
+        v28 = sentinelCopy;
         _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEFAULT, "Sentinel says migration has finished -- going online with encryption {sentinel: %@, secure sentinel: %@}", &v25, 0x16u);
       }
 
-      v20 = [(CKRecord *)v9 fc_sentinel_encryptionKey];
-      if (v11)
+      fc_sentinel_encryptionKey = [(CKRecord *)v9 fc_sentinel_encryptionKey];
+      if (secureSentinelCopy)
       {
-        objc_setProperty_atomic(v11, v19, v20, 48);
+        objc_setProperty_atomic(secureSentinelCopy, v19, fc_sentinel_encryptionKey, 48);
       }
 
-      v22 = [(CKRecord *)v10 fc_secureSentinel_encryptionKey];
-      if (v11)
+      fc_secureSentinel_encryptionKey = [(CKRecord *)sentinelCopy fc_secureSentinel_encryptionKey];
+      if (secureSentinelCopy)
       {
-        objc_setProperty_atomic(v11, v21, v22, 56);
+        objc_setProperty_atomic(secureSentinelCopy, v21, fc_secureSentinel_encryptionKey, 56);
       }
     }
 
@@ -536,34 +536,34 @@ LABEL_17:
         v25 = 138412546;
         v26 = v9;
         v27 = 2112;
-        v28 = v10;
+        v28 = sentinelCopy;
         _os_log_impl(&dword_1B63EF000, v16, OS_LOG_TYPE_DEFAULT, "Sentinel says migration has not finished -- going online without encryption {sentinel: %@, secure sentinel: %@}", &v25, 0x16u);
       }
 
-      if (v11)
+      if (secureSentinelCopy)
       {
-        objc_setProperty_atomic(v11, v18, 0, 48);
-        objc_setProperty_atomic(v11, v23, 0, 56);
+        objc_setProperty_atomic(secureSentinelCopy, v18, 0, 48);
+        objc_setProperty_atomic(secureSentinelCopy, v23, 0, 56);
       }
     }
 
-    v12[2](v12, 0);
+    databaseCopy[2](databaseCopy, 0);
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_deleteOldDataIfDesiredWithSentinel:(void *)a3 secureSentinel:(void *)a4 database:(void *)a5 completion:
+- (void)_deleteOldDataIfDesiredWithSentinel:(void *)sentinel secureSentinel:(void *)secureSentinel database:(void *)database completion:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  sentinelCopy = sentinel;
+  secureSentinelCopy = secureSentinel;
+  databaseCopy = database;
+  if (self)
   {
-    if (v11)
+    if (secureSentinelCopy)
     {
-      WeakRetained = objc_loadWeakRetained(v11 + 2);
+      WeakRetained = objc_loadWeakRetained(secureSentinelCopy + 2);
     }
 
     else
@@ -575,11 +575,11 @@ LABEL_17:
     v14[1] = 3221225472;
     v14[2] = __114__FCCKDatabaseEncryptionStartUpMiddleware__deleteOldDataIfDesiredWithSentinel_secureSentinel_database_completion___block_invoke;
     v14[3] = &unk_1E7C47C10;
-    v19 = v12;
+    v19 = databaseCopy;
     v15 = v9;
-    v16 = v10;
-    v17 = a1;
-    v18 = v11;
+    v16 = sentinelCopy;
+    selfCopy = self;
+    v18 = secureSentinelCopy;
     [WeakRetained fetchCleanupToVersionForDatabase:v18 completion:v14];
   }
 }
@@ -782,12 +782,12 @@ void __90__FCCKDatabaseEncryptionStartUpMiddleware__tryToStartUpDatabase_targetV
   }
 }
 
-- (void)_createSentinelsIfNeededForDatabase:(void *)a3 completion:
+- (void)_createSentinelsIfNeededForDatabase:(void *)database completion:
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  databaseCopy = database;
+  if (self)
   {
     v7 = [MEMORY[0x1E695DEF0] fc_randomDataWithLength:32];
     v8 = [MEMORY[0x1E695DEF0] fc_randomDataWithLength:32];
@@ -824,7 +824,7 @@ void __90__FCCKDatabaseEncryptionStartUpMiddleware__tryToStartUpDatabase_targetV
       v20 = 3221225472;
       v21 = __90__FCCKDatabaseEncryptionStartUpMiddleware__createSentinelsIfNeededForDatabase_completion___block_invoke;
       v22 = &unk_1E7C40AE8;
-      v23 = v6;
+      v23 = databaseCopy;
       [(FCCKPrivateSaveRecordsOperation *)v15 setSaveRecordsCompletionBlock:&v19];
       v17 = v15;
       [(FCOperation *)v17 setQualityOfService:25, v19, v20, v21, v22];
@@ -938,9 +938,9 @@ void __105__FCCKDatabaseEncryptionStartUpMiddleware__migrateToVersion_sentinel_s
   }
 }
 
-- (void)_associateChildOperation:(uint64_t)a1
+- (void)_associateChildOperation:(uint64_t)operation
 {
-  if (a1)
+  if (operation)
   {
     v2 = a2;
     [v2 setQualityOfService:25];

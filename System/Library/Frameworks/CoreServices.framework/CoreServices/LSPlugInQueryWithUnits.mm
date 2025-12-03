@@ -1,44 +1,44 @@
 @interface LSPlugInQueryWithUnits
-- (LSPlugInQueryWithUnits)initWithCoder:(id)a3;
-- (LSPlugInQueryWithUnits)initWithPlugInUnits:(id)a3 forDatabaseWithUUID:(id)a4;
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (LSPlugInQueryWithUnits)initWithCoder:(id)coder;
+- (LSPlugInQueryWithUnits)initWithPlugInUnits:(id)units forDatabaseWithUUID:(id)d;
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSPlugInQueryWithUnits
 
-- (LSPlugInQueryWithUnits)initWithPlugInUnits:(id)a3 forDatabaseWithUUID:(id)a4
+- (LSPlugInQueryWithUnits)initWithPlugInUnits:(id)units forDatabaseWithUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  unitsCopy = units;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = LSPlugInQueryWithUnits;
-  v8 = [(LSPlugInQuery *)&v12 _init];
-  if (v8)
+  _init = [(LSPlugInQuery *)&v12 _init];
+  if (_init)
   {
-    v9 = [v6 copy];
-    pluginUnits = v8->_pluginUnits;
-    v8->_pluginUnits = v9;
+    v9 = [unitsCopy copy];
+    pluginUnits = _init->_pluginUnits;
+    _init->_pluginUnits = v9;
 
-    objc_storeStrong(&v8->_dbUUID, a4);
+    objc_storeStrong(&_init->_dbUUID, d);
   }
 
-  return v8;
+  return _init;
 }
 
-- (LSPlugInQueryWithUnits)initWithCoder:(id)a3
+- (LSPlugInQueryWithUnits)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = LSPlugInQueryWithUnits;
-  v5 = [(LSPlugInQuery *)&v11 initWithCoder:v4];
+  v5 = [(LSPlugInQuery *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"pluginUnits"];
+    v6 = [coderCopy ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"pluginUnits"];
     pluginUnits = v5->_pluginUnits;
     v5->_pluginUnits = v6;
 
-    v8 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"dbUUID"];
+    v8 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"dbUUID"];
     dbUUID = v5->_dbUUID;
     v5->_dbUUID = v8;
   }
@@ -46,19 +46,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pluginUnits = self->_pluginUnits;
-  v5 = a3;
-  [v5 encodeObject:pluginUnits forKey:@"pluginUnits"];
-  [v5 encodeObject:self->_dbUUID forKey:@"dbUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:pluginUnits forKey:@"pluginUnits"];
+  [coderCopy encodeObject:self->_dbUUID forKey:@"dbUUID"];
 }
 
-- (void)_enumerateWithXPCConnection:(id)a3 block:(id)a4
+- (void)_enumerateWithXPCConnection:(id)connection block:(id)block
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  blockCopy = block;
   v22 = 0;
   v23 = 0;
   inited = _LSContextInitReturningError(&v23, &v22);
@@ -81,7 +81,7 @@
       {
         if ([v16 count])
         {
-          [(LSPlugInQuery *)self sort:0 pluginIDs:v15 andYield:v7 context:&v23];
+          [(LSPlugInQuery *)self sort:0 pluginIDs:v15 andYield:blockCopy context:&v23];
         }
       }
 
@@ -100,7 +100,7 @@
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
         v20 = _LSMakeNSErrorImpl(@"LSApplicationWorkspaceErrorDomain", 114, v19, "[LSPlugInQueryWithUnits _enumerateWithXPCConnection:block:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSPlugInQueryAll.m", 141);
 
-        v7[2](v7, 0, v20);
+        blockCopy[2](blockCopy, 0, v20);
         v9 = v20;
       }
     }
@@ -111,7 +111,7 @@
       v25 = @"DB UUID mismatch";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v16 = _LSMakeNSErrorImpl(@"LSApplicationWorkspaceErrorDomain", 114, v15, "[LSPlugInQueryWithUnits _enumerateWithXPCConnection:block:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSPlugInQueryAll.m", 147);
-      v7[2](v7, 0, v16);
+      blockCopy[2](blockCopy, 0, v16);
     }
 
     _LSContextDestroy(&v23);
@@ -119,7 +119,7 @@
 
   else
   {
-    v7[2](v7, 0, v9);
+    blockCopy[2](blockCopy, 0, v9);
   }
 
   v21 = *MEMORY[0x1E69E9840];

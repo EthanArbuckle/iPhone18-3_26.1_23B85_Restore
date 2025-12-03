@@ -3,10 +3,10 @@
 - (_TtC6MapsUI23MUEVChargerAvailability)availability;
 - (_TtC6MapsUI31MUEVChargerAvailabilityProvider)init;
 - (void)dealloc;
-- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)a3;
-- (void)setAvailability:(id)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)charger;
+- (void)setAvailability:(id)availability;
+- (void)setIsActive:(BOOL)active;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation MUEVChargerAvailabilityProvider
@@ -18,13 +18,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAvailability:(id)a3
+- (void)setAvailability:(id)availability
 {
   v5 = OBJC_IVAR____TtC6MapsUI31MUEVChargerAvailabilityProvider_availability;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = availability;
+  availabilityCopy = availability;
 }
 
 - (BOOL)isActive
@@ -34,14 +34,14 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
   v5 = OBJC_IVAR____TtC6MapsUI31MUEVChargerAvailabilityProvider_isActive;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = active;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC6MapsUI31MUEVChargerAvailabilityProvider_availabilityRefresher);
-  v7 = self;
-  EVChargerAvailabilityDownloader.isActive.setter(a3);
+  selfCopy = self;
+  EVChargerAvailabilityDownloader.isActive.setter(active);
 }
 
 - (void)dealloc
@@ -55,7 +55,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   v6.receiver = self;
@@ -70,21 +70,21 @@
   return result;
 }
 
-- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)a3
+- (void)didDownloadEVChargerAvailabilityWithEvCharger:(id)charger
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC6MapsUI31MUEVChargerAvailabilityProvider_evCharger);
-  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI31MUEVChargerAvailabilityProvider_evCharger) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI31MUEVChargerAvailabilityProvider_evCharger) = charger;
+  chargerCopy = charger;
+  selfCopy = self;
 
   sub_1C56641C0();
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  MUEVChargerAvailabilityProvider.virtualGarageDidUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  MUEVChargerAvailabilityProvider.virtualGarageDidUpdate(_:)(updateCopy);
 }
 
 @end

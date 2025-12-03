@@ -1,18 +1,18 @@
 @interface FALaunchScreenTimeSetupHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (FALaunchScreenTimeSetupHook)init;
-- (FALaunchScreenTimeSetupHook)initWithAccountStore:(id)a3 screenTimeRequestProvider:(id)a4 childSetupControllerProvider:(id)a5 familyFetcher:(id)a6;
+- (FALaunchScreenTimeSetupHook)initWithAccountStore:(id)store screenTimeRequestProvider:(id)provider childSetupControllerProvider:(id)controllerProvider familyFetcher:(id)fetcher;
 - (RUIServerHookDelegate)delegate;
-- (id)_extractAgeFromObjectModel:(id)a3;
-- (id)_extractNameFromObjectModel:(id)a3;
-- (id)extractDSIDFromObjectModel:(id)a3;
-- (void)_enableScreentimeWithIntroductionModel:(id)a3 account:(id)a4 dsidNum:(id)a5 completion:(id)a6;
+- (id)_extractAgeFromObjectModel:(id)model;
+- (id)_extractNameFromObjectModel:(id)model;
+- (id)extractDSIDFromObjectModel:(id)model;
+- (void)_enableScreentimeWithIntroductionModel:(id)model account:(id)account dsidNum:(id)num completion:(id)completion;
 - (void)_launchScreenTimeSettings;
-- (void)_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:(id)a3 inObjectModel:(id)a4 isExpressSetup:(BOOL)a5 withCompletion:(id)a6;
-- (void)_refreshFamilyCircleIfNeededForMemberDSID:(id)a3 completionHandler:(id)a4;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:(id)d inObjectModel:(id)model isExpressSetup:(BOOL)setup withCompletion:(id)completion;
+- (void)_refreshFamilyCircleIfNeededForMemberDSID:(id)d completionHandler:(id)handler;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation FALaunchScreenTimeSetupHook
@@ -22,88 +22,88 @@
   v3 = objc_alloc_init(FASTChildSetupControllerProvider);
   v4 = objc_alloc_init(MEMORY[0x277D082F0]);
   v5 = objc_alloc_init(_TtC14FamilyCircleUI21FAFamilyCircleFetcher);
-  v6 = [MEMORY[0x277CB8F48] defaultStore];
-  v7 = [(FALaunchScreenTimeSetupHook *)self initWithAccountStore:v6 screenTimeRequestProvider:v4 childSetupControllerProvider:v3 familyFetcher:v5];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v7 = [(FALaunchScreenTimeSetupHook *)self initWithAccountStore:defaultStore screenTimeRequestProvider:v4 childSetupControllerProvider:v3 familyFetcher:v5];
 
   return v7;
 }
 
-- (FALaunchScreenTimeSetupHook)initWithAccountStore:(id)a3 screenTimeRequestProvider:(id)a4 childSetupControllerProvider:(id)a5 familyFetcher:(id)a6
+- (FALaunchScreenTimeSetupHook)initWithAccountStore:(id)store screenTimeRequestProvider:(id)provider childSetupControllerProvider:(id)controllerProvider familyFetcher:(id)fetcher
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  providerCopy = provider;
+  controllerProviderCopy = controllerProvider;
+  fetcherCopy = fetcher;
   v18.receiver = self;
   v18.super_class = FALaunchScreenTimeSetupHook;
   v15 = [(FALaunchScreenTimeSetupHook *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountStore, a3);
-    objc_storeStrong(&v16->_screenTimeRequestProvider, a4);
-    objc_storeStrong(&v16->_childSetupControllerProvider, a5);
-    objc_storeStrong(&v16->_familyFetcher, a6);
+    objc_storeStrong(&v15->_accountStore, store);
+    objc_storeStrong(&v16->_screenTimeRequestProvider, provider);
+    objc_storeStrong(&v16->_childSetupControllerProvider, controllerProvider);
+    objc_storeStrong(&v16->_familyFetcher, fetcher);
   }
 
   return v16;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"family:launchScreenTimeSetup"];
+  name = [element name];
+  v4 = [name isEqualToString:@"family:launchScreenTimeSetup"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D46250]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:*MEMORY[0x277D46250]];
   v5 = [v4 isEqualToString:@"family:launchScreenTimeSetup"];
 
   return v5;
 }
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v13 = [(FALaunchScreenTimeSetupHook *)self extractDSIDFromObjectModel:v10];
-  v12 = [v11 objectForKeyedSubscript:@"isExpressSetup"];
+  completionCopy = completion;
+  modelCopy = model;
+  attributesCopy = attributes;
+  v13 = [(FALaunchScreenTimeSetupHook *)self extractDSIDFromObjectModel:modelCopy];
+  v12 = [attributesCopy objectForKeyedSubscript:@"isExpressSetup"];
 
-  -[FALaunchScreenTimeSetupHook _launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:](self, "_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:", v13, v10, [v12 BOOLValue], v9);
+  -[FALaunchScreenTimeSetupHook _launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:](self, "_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:", v13, modelCopy, [v12 BOOLValue], completionCopy);
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(FALaunchScreenTimeSetupHook *)self extractDSIDFromObjectModel:v7];
-  v8 = [v7 clientInfo];
-  v9 = [v8 objectForKeyedSubscript:@"isExpressSetup"];
-  -[FALaunchScreenTimeSetupHook _launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:](self, "_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:", v10, v7, [v9 BOOLValue], v6);
+  completionCopy = completion;
+  modelCopy = model;
+  v10 = [(FALaunchScreenTimeSetupHook *)self extractDSIDFromObjectModel:modelCopy];
+  clientInfo = [modelCopy clientInfo];
+  v9 = [clientInfo objectForKeyedSubscript:@"isExpressSetup"];
+  -[FALaunchScreenTimeSetupHook _launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:](self, "_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:inObjectModel:isExpressSetup:withCompletion:", v10, modelCopy, [v9 BOOLValue], completionCopy);
 }
 
-- (void)_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:(id)a3 inObjectModel:(id)a4 isExpressSetup:(BOOL)a5 withCompletion:(id)a6
+- (void)_launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID:(id)d inObjectModel:(id)model isExpressSetup:(BOOL)setup withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  modelCopy = model;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __129__FALaunchScreenTimeSetupHook__launchScreenTimeSetupAndRefreshFamilyIfNeededForDSID_inObjectModel_isExpressSetup_withCompletion___block_invoke;
   v16[3] = &unk_2782F3908;
   v16[4] = self;
-  v17 = v10;
-  v20 = a5;
-  v18 = v11;
-  v19 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = dCopy;
+  setupCopy = setup;
+  v18 = modelCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = modelCopy;
+  v15 = dCopy;
   [(FALaunchScreenTimeSetupHook *)self _refreshFamilyCircleIfNeededForMemberDSID:v15 completionHandler:v16];
 }
 
@@ -233,30 +233,30 @@ void __105__FALaunchScreenTimeSetupHook__launchScreenTimeSetupForUser_inObjectMo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshFamilyCircleIfNeededForMemberDSID:(id)a3 completionHandler:(id)a4
+- (void)_refreshFamilyCircleIfNeededForMemberDSID:(id)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v18 = v6;
+    v18 = dCopy;
     _os_log_impl(&dword_21BB35000, v8, OS_LOG_TYPE_DEFAULT, "Starting family refresh if needed for dsid: %{private}@", buf, 0xCu);
   }
 
-  v9 = [(FALaunchScreenTimeSetupHook *)self familyFetcher];
+  familyFetcher = [(FALaunchScreenTimeSetupHook *)self familyFetcher];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__FALaunchScreenTimeSetupHook__refreshFamilyCircleIfNeededForMemberDSID_completionHandler___block_invoke;
   v13[3] = &unk_2782F39A8;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 fetchCachedFamilyCircleWithQualityOfService:25 completionHandler:v13];
+  v14 = dCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dCopy;
+  [familyFetcher fetchCachedFamilyCircleWithQualityOfService:25 completionHandler:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -355,35 +355,35 @@ void __91__FALaunchScreenTimeSetupHook__refreshFamilyCircleIfNeededForMemberDSID
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableScreentimeWithIntroductionModel:(id)a3 account:(id)a4 dsidNum:(id)a5 completion:(id)a6
+- (void)_enableScreentimeWithIntroductionModel:(id)model account:(id)account dsidNum:(id)num completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  numCopy = num;
+  completionCopy = completion;
   v12 = MEMORY[0x277D082F8];
-  v13 = a3;
+  modelCopy = model;
   v14 = [v12 alloc];
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = [v14 initWithIntroductionModel:v13 date:v15 dsid:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  v16 = [v14 initWithIntroductionModel:modelCopy date:date dsid:numCopy];
 
   v17 = _FALogSystem();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
-  if (a4)
+  if (account)
   {
     if (v18)
     {
       [FALaunchScreenTimeSetupHook _enableScreentimeWithIntroductionModel:account:dsidNum:completion:];
     }
 
-    v19 = [(FALaunchScreenTimeSetupHook *)self screenTimeRequestProvider];
+    screenTimeRequestProvider = [(FALaunchScreenTimeSetupHook *)self screenTimeRequestProvider];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __97__FALaunchScreenTimeSetupHook__enableScreentimeWithIntroductionModel_account_dsidNum_completion___block_invoke_71;
     v24[3] = &unk_2782F3A20;
     v24[4] = self;
-    v25 = v10;
-    v26 = v11;
-    v20 = v11;
-    [v19 enableScreenTimeSettingsForDSID:v10 screentimeObject:v16 completionHandler:v24];
+    v25 = numCopy;
+    v26 = completionCopy;
+    v20 = completionCopy;
+    [screenTimeRequestProvider enableScreenTimeSettingsForDSID:numCopy screentimeObject:v16 completionHandler:v24];
 
     v21 = v25;
   }
@@ -395,16 +395,16 @@ void __91__FALaunchScreenTimeSetupHook__refreshFamilyCircleIfNeededForMemberDSID
       [FALaunchScreenTimeSetupHook _enableScreentimeWithIntroductionModel:account:dsidNum:completion:];
     }
 
-    v22 = [(FALaunchScreenTimeSetupHook *)self screenTimeRequestProvider];
+    screenTimeRequestProvider2 = [(FALaunchScreenTimeSetupHook *)self screenTimeRequestProvider];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __97__FALaunchScreenTimeSetupHook__enableScreentimeWithIntroductionModel_account_dsidNum_completion___block_invoke;
     v27[3] = &unk_2782F39D0;
-    v28 = v10;
+    v28 = numCopy;
     v29 = v16;
-    v30 = v11;
-    v23 = v11;
-    [v22 cacheScreenTimeSettingToDiskWithDSID:v10 screentimeObject:v29 completionHandler:v27];
+    v30 = completionCopy;
+    v23 = completionCopy;
+    [screenTimeRequestProvider2 cacheScreenTimeSettingToDiskWithDSID:numCopy screentimeObject:v29 completionHandler:v27];
 
     v21 = v28;
   }
@@ -469,10 +469,10 @@ void __97__FALaunchScreenTimeSetupHook__enableScreentimeWithIntroductionModel_ac
   }
 }
 
-- (id)_extractAgeFromObjectModel:(id)a3
+- (id)_extractAgeFromObjectModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:@"dependentAge"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:@"dependentAge"];
 
   if (v4)
   {
@@ -488,15 +488,15 @@ void __97__FALaunchScreenTimeSetupHook__enableScreentimeWithIntroductionModel_ac
   return v6;
 }
 
-- (id)_extractNameFromObjectModel:(id)a3
+- (id)_extractNameFromObjectModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 clientInfo];
-  v5 = [v4 objectForKeyedSubscript:@"dependentFirstName"];
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  v5 = [clientInfo objectForKeyedSubscript:@"dependentFirstName"];
 
-  v6 = [v3 clientInfo];
+  clientInfo2 = [modelCopy clientInfo];
 
-  v7 = [v6 objectForKeyedSubscript:@"dependentLastName"];
+  v7 = [clientInfo2 objectForKeyedSubscript:@"dependentLastName"];
 
   v8 = objc_alloc_init(MEMORY[0x277CCAC00]);
   [v8 setGivenName:v5];
@@ -519,10 +519,10 @@ void __97__FALaunchScreenTimeSetupHook__enableScreentimeWithIntroductionModel_ac
   return v11;
 }
 
-- (id)extractDSIDFromObjectModel:(id)a3
+- (id)extractDSIDFromObjectModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKeyedSubscript:@"dsid"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKeyedSubscript:@"dsid"];
 
   v5 = objc_alloc_init(MEMORY[0x277CCABB8]);
   v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en-US"];
@@ -537,8 +537,8 @@ void __97__FALaunchScreenTimeSetupHook__enableScreentimeWithIntroductionModel_ac
 {
   v4 = 0;
   v2 = [MEMORY[0x277D08358] urlDestinationTo:8 error:&v4];
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 openSensitiveURL:v2 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0];
 }
 
 - (RUIServerHookDelegate)delegate

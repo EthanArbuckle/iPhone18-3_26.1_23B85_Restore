@@ -1,13 +1,13 @@
 @interface BRCPQLInjectionObjectsEnumerationSortOrder
-+ (id)_createInjectionSortOrder:(unint64_t)a3;
-- (BRCPQLInjectionObjectsEnumerationSortOrder)initWithSortOrder:(unint64_t)a3;
++ (id)_createInjectionSortOrder:(unint64_t)order;
+- (BRCPQLInjectionObjectsEnumerationSortOrder)initWithSortOrder:(unint64_t)order;
 @end
 
 @implementation BRCPQLInjectionObjectsEnumerationSortOrder
 
-- (BRCPQLInjectionObjectsEnumerationSortOrder)initWithSortOrder:(unint64_t)a3
+- (BRCPQLInjectionObjectsEnumerationSortOrder)initWithSortOrder:(unint64_t)order
 {
-  v4 = [objc_opt_class() _createInjectionSortOrder:a3];
+  v4 = [objc_opt_class() _createInjectionSortOrder:order];
   v7.receiver = self;
   v7.super_class = BRCPQLInjectionObjectsEnumerationSortOrder;
   v5 = [(BRCPQLInjectionBase *)&v7 initWithActualInjection:v4];
@@ -15,9 +15,9 @@
   return v5;
 }
 
-+ (id)_createInjectionSortOrder:(unint64_t)a3
++ (id)_createInjectionSortOrder:(unint64_t)order
 {
-  switch(a3)
+  switch(order)
   {
     case 3uLL:
       v3 = " ORDER BY item DESC";

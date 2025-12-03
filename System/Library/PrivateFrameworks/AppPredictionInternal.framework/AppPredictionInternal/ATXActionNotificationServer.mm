@@ -1,28 +1,28 @@
 @interface ATXActionNotificationServer
 + (ATXActionNotificationServer)sharedInstance;
-+ (id)_requestIdentifierForBundleId:(id)a3;
-+ (id)bundleIdFromRequestIdentifier:(id)a3;
-+ (id)localizedContentBodyStringWithString:(id)a3 forAction:(id)a4;
++ (id)_requestIdentifierForBundleId:(id)id;
++ (id)bundleIdFromRequestIdentifier:(id)identifier;
++ (id)localizedContentBodyStringWithString:(id)string forAction:(id)action;
 - (ATXActionNotificationServer)init;
 - (BOOL)_isRTL;
-- (id)_actionKeyFromNotification:(id)a3;
-- (id)_blendingCacheUpdateUUIDFromNotification:(id)a3;
-- (id)_localizedStringForKey:(id)a3 defaultValue:(id)a4 languageCode:(id)a5;
-- (id)_unarchiveProactiveSuggestionFromNotification:(id)a3;
+- (id)_actionKeyFromNotification:(id)notification;
+- (id)_blendingCacheUpdateUUIDFromNotification:(id)notification;
+- (id)_localizedStringForKey:(id)key defaultValue:(id)value languageCode:(id)code;
+- (id)_unarchiveProactiveSuggestionFromNotification:(id)notification;
 - (id)proactiveSuggestionsCurrentlyOnLockscreen;
 - (unint64_t)deliveredNotificationCount;
-- (void)_postNotificationForProactiveSuggestion:(id)a3 blendingCacheUpdateUUID:(id)a4;
-- (void)_postTestNotificationWithPredictionCount:(int64_t)a3;
-- (void)_removeNotificationWithIdentifier:(id)a3 trackEvent:(BOOL)a4;
+- (void)_postNotificationForProactiveSuggestion:(id)suggestion blendingCacheUpdateUUID:(id)d;
+- (void)_postTestNotificationWithPredictionCount:(int64_t)count;
+- (void)_removeNotificationWithIdentifier:(id)identifier trackEvent:(BOOL)event;
 - (void)_setupNotifications;
-- (void)postDemoOrDebugNotificationForATXAction:(id)a3;
-- (void)postNotificationForATXAction:(id)a3;
-- (void)postNotificationForProactiveSuggestion:(id)a3 blendingCacheUpdateUUID:(id)a4;
-- (void)removeActionPredictionNotificationsMatchingAction:(id)a3;
-- (void)removeAllActionPredictionNotificationsAndTrackEvent:(BOOL)a3 recordFeedback:(BOOL)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4;
+- (void)postDemoOrDebugNotificationForATXAction:(id)action;
+- (void)postNotificationForATXAction:(id)action;
+- (void)postNotificationForProactiveSuggestion:(id)suggestion blendingCacheUpdateUUID:(id)d;
+- (void)removeActionPredictionNotificationsMatchingAction:(id)action;
+- (void)removeAllActionPredictionNotificationsAndTrackEvent:(BOOL)event recordFeedback:(BOOL)feedback;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress;
 @end
 
 @implementation ATXActionNotificationServer
@@ -48,29 +48,29 @@ uint64_t __45__ATXActionNotificationServer_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)_requestIdentifierForBundleId:(id)a3
++ (id)_requestIdentifierForBundleId:(id)id
 {
-  v3 = a3;
-  if (v3)
+  idCopy = id;
+  if (idCopy)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    v7 = [v4 stringWithFormat:@"%@|%@", v3, v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    uUIDString2 = [v4 stringWithFormat:@"%@|%@", idCopy, uUIDString];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v5 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID UUIDString];
   }
 
-  return v7;
+  return uUIDString2;
 }
 
-+ (id)bundleIdFromRequestIdentifier:(id)a3
++ (id)bundleIdFromRequestIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"|"];
+  v3 = [identifier componentsSeparatedByString:@"|"];
   if ([v3 count] < 2)
   {
     v4 = 0;
@@ -84,23 +84,23 @@ uint64_t __45__ATXActionNotificationServer_sharedInstance__block_invoke()
   return v4;
 }
 
-+ (id)localizedContentBodyStringWithString:(id)a3 forAction:(id)a4
++ (id)localizedContentBodyStringWithString:(id)string forAction:(id)action
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 routeInfo];
-  if (v7 && (v8 = v7, [v6 routeInfo], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isExternalRoute"), v9, v8, v10))
+  stringCopy = string;
+  actionCopy = action;
+  routeInfo = [actionCopy routeInfo];
+  if (routeInfo && (v8 = routeInfo, [actionCopy routeInfo], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isExternalRoute"), v9, v8, v10))
   {
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"AirPlay to %@" value:&stru_2839A6058 table:0];
-    v14 = [v6 routeInfo];
-    v15 = [v14 deviceName];
-    v16 = [v11 initWithFormat:v13, v15];
+    routeInfo2 = [actionCopy routeInfo];
+    deviceName = [routeInfo2 deviceName];
+    v16 = [v11 initWithFormat:v13, deviceName];
 
-    if ([v5 length])
+    if ([stringCopy length])
     {
-      v17 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:v5 arguments:0];
+      v17 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:stringCopy arguments:0];
       v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@\n%@", v17, v16];
     }
 
@@ -112,14 +112,14 @@ uint64_t __45__ATXActionNotificationServer_sharedInstance__block_invoke()
 
   else
   {
-    if ([v5 length])
+    if ([stringCopy length])
     {
-      v19 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:v5 arguments:0];
+      v19 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:stringCopy arguments:0];
     }
 
     else
     {
-      v19 = v5;
+      v19 = stringCopy;
     }
 
     v18 = v19;
@@ -180,9 +180,9 @@ uint64_t __45__ATXActionNotificationServer_sharedInstance__block_invoke()
     notifySuccessTracker = v6->_notifySuccessTracker;
     v6->_notifySuccessTracker = v22;
 
-    v24 = [MEMORY[0x277CEB500] sharedInstance];
+    mEMORY[0x277CEB500] = [MEMORY[0x277CEB500] sharedInstance];
     engagementRecordManager = v6->_engagementRecordManager;
-    v6->_engagementRecordManager = v24;
+    v6->_engagementRecordManager = mEMORY[0x277CEB500];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -226,40 +226,40 @@ void __35__ATXActionNotificationServer_init__block_invoke(uint64_t a1, int a2, v
   [(UNUserNotificationCenter *)notificationCenter setNotificationCategories:v4];
 }
 
-- (void)_postTestNotificationWithPredictionCount:(int64_t)a3
+- (void)_postTestNotificationWithPredictionCount:(int64_t)count
 {
   v47 = *MEMORY[0x277D85DE8];
   v5 = __atxlog_handle_notifications();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v46 = a3;
+    countCopy = count;
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_INFO, "Posting %ld test notification(s)", buf, 0xCu);
   }
 
-  if (a3 >= 1)
+  if (count >= 1)
   {
     buf[0] = 0;
     if (CFPreferencesGetAppBooleanValue(@"displayLastDonationOnCoverSheet", *MEMORY[0x277CEBD00], buf))
     {
-      v6 = [MEMORY[0x277CEB2F8] actionResponseForDeveloperMode];
-      v7 = [v6 scoredActions];
-      if (!v7)
+      actionResponseForDeveloperMode = [MEMORY[0x277CEB2F8] actionResponseForDeveloperMode];
+      scoredActions = [actionResponseForDeveloperMode scoredActions];
+      if (!scoredActions)
       {
-        v8 = [v6 proactiveSuggestions];
+        proactiveSuggestions = [actionResponseForDeveloperMode proactiveSuggestions];
 
-        if (v8)
+        if (proactiveSuggestions)
         {
-          v32 = a3;
+          countCopy2 = count;
           v9 = objc_alloc(MEMORY[0x277CBEB18]);
-          v10 = [v6 proactiveSuggestions];
-          v34 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+          proactiveSuggestions2 = [actionResponseForDeveloperMode proactiveSuggestions];
+          v34 = [v9 initWithCapacity:{objc_msgSend(proactiveSuggestions2, "count")}];
 
           v41 = 0u;
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          obj = [v6 proactiveSuggestions];
+          obj = [actionResponseForDeveloperMode proactiveSuggestions];
           v11 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
           if (v11)
           {
@@ -276,11 +276,11 @@ void __35__ATXActionNotificationServer_init__block_invoke(uint64_t a1, int a2, v
 
                 v15 = *(*(&v39 + 1) + 8 * i);
                 v16 = objc_alloc(MEMORY[0x277CEB7F0]);
-                v17 = [v15 atxActionExecutableObject];
-                v18 = [v15 scoreSpecification];
-                [v18 rawScore];
+                atxActionExecutableObject = [v15 atxActionExecutableObject];
+                scoreSpecification = [v15 scoreSpecification];
+                [scoreSpecification rawScore];
                 *&v19 = v19;
-                v20 = [v16 initWithPredictedItem:v17 score:v19];
+                v20 = [v16 initWithPredictedItem:atxActionExecutableObject score:v19];
 
                 if (v20)
                 {
@@ -294,45 +294,45 @@ void __35__ATXActionNotificationServer_init__block_invoke(uint64_t a1, int a2, v
             while (v12);
           }
 
-          v7 = [v34 copy];
-          a3 = v32;
+          scoredActions = [v34 copy];
+          count = countCopy2;
         }
 
         else
         {
-          v7 = 0;
+          scoredActions = 0;
         }
       }
 
-      v24 = [v7 count];
-      if (v24 >= a3)
+      v24 = [scoredActions count];
+      if (v24 >= count)
       {
-        v25 = a3;
+        countCopy3 = count;
       }
 
       else
       {
-        v25 = v24;
+        countCopy3 = v24;
       }
 
-      v22 = [v7 subarrayWithRange:{0, v25}];
+      scoredActions2 = [scoredActions subarrayWithRange:{0, countCopy3}];
     }
 
     else
     {
-      v6 = objc_alloc_init(MEMORY[0x277CEB2E0]);
-      v21 = [v6 actionPredictionsForConsumerSubType:21 limit:a3];
+      actionResponseForDeveloperMode = objc_alloc_init(MEMORY[0x277CEB2E0]);
+      v21 = [actionResponseForDeveloperMode actionPredictionsForConsumerSubType:21 limit:count];
       if (!v21)
       {
         v23 = 0;
         goto LABEL_34;
       }
 
-      v7 = v21;
-      v22 = [v21 scoredActions];
+      scoredActions = v21;
+      scoredActions2 = [v21 scoredActions];
     }
 
-    v23 = v22;
+    v23 = scoredActions2;
 
     if (![v23 count])
     {
@@ -345,8 +345,8 @@ LABEL_35:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v6 = v23;
-    v26 = [v6 countByEnumeratingWithState:&v35 objects:v43 count:16];
+    actionResponseForDeveloperMode = v23;
+    v26 = [actionResponseForDeveloperMode countByEnumeratingWithState:&v35 objects:v43 count:16];
     if (v26)
     {
       v27 = v26;
@@ -357,20 +357,20 @@ LABEL_35:
         {
           if (*v36 != v28)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(actionResponseForDeveloperMode);
           }
 
-          v30 = [*(*(&v35 + 1) + 8 * j) predictedItem];
-          [(ATXActionNotificationServer *)self postDemoOrDebugNotificationForATXAction:v30];
+          predictedItem = [*(*(&v35 + 1) + 8 * j) predictedItem];
+          [(ATXActionNotificationServer *)self postDemoOrDebugNotificationForATXAction:predictedItem];
         }
 
-        v27 = [v6 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        v27 = [actionResponseForDeveloperMode countByEnumeratingWithState:&v35 objects:v43 count:16];
       }
 
       while (v27);
     }
 
-    v23 = v6;
+    v23 = actionResponseForDeveloperMode;
 LABEL_34:
 
     goto LABEL_35;
@@ -380,10 +380,10 @@ LABEL_36:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postNotificationForATXAction:(id)a3
+- (void)postNotificationForATXAction:(id)action
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   [(PETScalarEventTracker *)self->_notifyInitTracker trackEventWithPropertyValues:MEMORY[0x277CBEBF8]];
   if ([(ATXActionNotificationServer *)self hasLockscreenPrediction])
   {
@@ -391,7 +391,7 @@ LABEL_36:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = actionCopy;
       _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Trying to predict action %@", &v8, 0xCu);
     }
 
@@ -404,28 +404,28 @@ LABEL_36:
     [(ATXActionNotificationServer *)self removeAllActionPredictionNotificationsAndTrackEvent:0 recordFeedback:0];
   }
 
-  [(ATXActionNotificationServer *)self postDemoOrDebugNotificationForATXAction:v4];
+  [(ATXActionNotificationServer *)self postDemoOrDebugNotificationForATXAction:actionCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postDemoOrDebugNotificationForATXAction:(id)a3
+- (void)postDemoOrDebugNotificationForATXAction:(id)action
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D42070];
-  v5 = a3;
+  actionCopy = action;
   v6 = [v4 clientModelIdFromClientModelType:25];
   v7 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v6 clientModelVersion:@"1.0"];
   v8 = objc_alloc(MEMORY[0x277CEB7F0]);
   LODWORD(v9) = 1.0;
-  v10 = [v8 initWithPredictedItem:v5 score:v9];
+  v10 = [v8 initWithPredictedItem:actionCopy score:v9];
 
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   v12 = [ATXProactiveSuggestionBuilder proactiveSuggestionsForLockscreenActions:v11 clientModelSpec:v7];
-  v13 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
-  [(ATXActionNotificationServer *)self _postNotificationForProactiveSuggestion:v13 blendingCacheUpdateUUID:0];
+  [(ATXActionNotificationServer *)self _postNotificationForProactiveSuggestion:firstObject blendingCacheUpdateUUID:0];
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -598,11 +598,11 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
   }
 }
 
-- (void)postNotificationForProactiveSuggestion:(id)a3 blendingCacheUpdateUUID:(id)a4
+- (void)postNotificationForProactiveSuggestion:(id)suggestion blendingCacheUpdateUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  dCopy = d;
   [(PETScalarEventTracker *)self->_notifyInitTracker trackEventWithPropertyValues:MEMORY[0x277CBEBF8]];
   if ([(ATXActionNotificationServer *)self hasLockscreenPrediction])
   {
@@ -610,7 +610,7 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v6;
+      v12 = suggestionCopy;
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "Trying to predict suggestion %@", &v11, 0xCu);
     }
 
@@ -623,16 +623,16 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
     [(ATXActionNotificationServer *)self removeAllActionPredictionNotificationsAndTrackEvent:0 recordFeedback:0];
   }
 
-  [(ATXActionNotificationServer *)self _postNotificationForProactiveSuggestion:v6 blendingCacheUpdateUUID:v7];
+  [(ATXActionNotificationServer *)self _postNotificationForProactiveSuggestion:suggestionCopy blendingCacheUpdateUUID:dCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postNotificationForProactiveSuggestion:(id)a3 blendingCacheUpdateUUID:(id)a4
+- (void)_postNotificationForProactiveSuggestion:(id)suggestion blendingCacheUpdateUUID:(id)d
 {
   v72[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v59 = a4;
+  suggestionCopy = suggestion;
+  dCopy = d;
   v7 = __atxlog_handle_blending();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -641,48 +641,48 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
     *buf = 138412546;
     v66 = v9;
     v67 = 2112;
-    v68 = v6;
+    v68 = suggestionCopy;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "%@ - attempting to post notification for suggestion: %@", buf, 0x16u);
   }
 
-  v10 = [(__CFString *)v6 atxActionExecutableObject];
-  v11 = v10;
-  if (v10)
+  atxActionExecutableObject = [(__CFString *)suggestionCopy atxActionExecutableObject];
+  v11 = atxActionExecutableObject;
+  if (atxActionExecutableObject)
   {
-    v12 = [v10 actionTitle];
-    v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v58 = [v12 stringByTrimmingCharactersInSet:v13];
+    actionTitle = [atxActionExecutableObject actionTitle];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v58 = [actionTitle stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v14 = [v11 actionSubtitle];
-    v15 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v57 = [v14 stringByTrimmingCharactersInSet:v15];
+    actionSubtitle = [v11 actionSubtitle];
+    whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v57 = [actionSubtitle stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
-    v16 = [v11 _bundleIdForDisplay];
-    if (v16)
+    _bundleIdForDisplay = [v11 _bundleIdForDisplay];
+    if (_bundleIdForDisplay)
     {
       if ([v58 length] || objc_msgSend(v57, "length"))
       {
-        if ([v16 isEqualToString:@"com.apple.mobilenotes"] && (objc_msgSend(v11, "isHeuristic") & 1) == 0)
+        if ([_bundleIdForDisplay isEqualToString:@"com.apple.mobilenotes"] && (objc_msgSend(v11, "isHeuristic") & 1) == 0)
         {
 
           v57 = 0;
         }
 
-        v56 = [(__CFString *)v6 encodeAsProto];
-        v55 = [v11 actionKey];
-        if (v56 && v55)
+        encodeAsProto = [(__CFString *)suggestionCopy encodeAsProto];
+        actionKey = [v11 actionKey];
+        if (encodeAsProto && actionKey)
         {
           v71[0] = @"actionKey";
           v71[1] = @"proactiveSuggestion";
-          v72[0] = v55;
-          v72[1] = v56;
+          v72[0] = actionKey;
+          v72[1] = encodeAsProto;
           v71[2] = @"blendingCacheUpdateUUID";
-          v17 = [v59 UUIDString];
-          v18 = v17;
+          uUIDString = [dCopy UUIDString];
+          v18 = uUIDString;
           v19 = &stru_2839A6058;
-          if (v17)
+          if (uUIDString)
           {
-            v19 = v17;
+            v19 = uUIDString;
           }
 
           v72[2] = v19;
@@ -694,13 +694,13 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
           [(__CFString *)v20 setShouldHideDate:1];
           [(__CFString *)v20 setSound:0];
           [(__CFString *)v20 setShouldAuthenticateDefaultAction:1];
-          if ([v16 length])
+          if ([_bundleIdForDisplay length])
           {
-            v21 = [v11 bundleId];
-            v22 = [v11 userActivityWebpageURL];
+            bundleId = [v11 bundleId];
+            userActivityWebpageURL = [v11 userActivityWebpageURL];
             v23 = ATXBundleIdReplacementForBundleIdWithWebpageURLHint();
 
-            v16 = v23;
+            _bundleIdForDisplay = v23;
           }
 
           v24 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:v58 arguments:0];
@@ -712,19 +712,19 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
           v26 = __atxlog_handle_notifications();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [(__CFString *)v20 title];
-            v28 = [(__CFString *)v20 body];
+            title = [(__CFString *)v20 title];
+            body = [(__CFString *)v20 body];
             *buf = 138412546;
-            v66 = v27;
+            v66 = title;
             v67 = 2112;
-            v68 = v28;
+            v68 = body;
             _os_log_impl(&dword_2263AA000, v26, OS_LOG_TYPE_DEFAULT, "UNMutableNotificationContent content title: %@, body: %@", buf, 0x16u);
           }
 
-          v29 = [v11 intent];
-          v54 = [v29 _className];
+          intent = [v11 intent];
+          _className = [intent _className];
 
-          if ([v54 isEqualToString:@"DNDToggleDoNotDisturbIntent"])
+          if ([_className isEqualToString:@"DNDToggleDoNotDisturbIntent"])
           {
             v50 = [MEMORY[0x277CE1FB0] iconNamed:@"dnd-notif-icon"];
             [(__CFString *)v20 setIcon:v50, v50];
@@ -732,14 +732,14 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
 
           else
           {
-            if ([v54 isEqualToString:@"WFSetAirplaneModeIntent"])
+            if ([_className isEqualToString:@"WFSetAirplaneModeIntent"])
             {
               [MEMORY[0x277CE1FB0] iconNamed:@"airplane-notif-icon"];
             }
 
             else
             {
-              [MEMORY[0x277CE1FB0] iconForApplicationIdentifier:v16];
+              [MEMORY[0x277CE1FB0] iconForApplicationIdentifier:_bundleIdForDisplay];
             }
             v52 = ;
             [(__CFString *)v20 setIcon:v52, v52];
@@ -748,10 +748,10 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
           v34 = [(ATXActionNotificationServer *)self _localizedStringForKey:@"ATXNotificationFooter" defaultValue:@"ATXNotificationFooter" languageCode:0];
           [(__CFString *)v20 setFooter:v34];
 
-          v35 = [v11 intent];
-          v36 = [v35 atx_supportsBackgroundExecution];
+          intent2 = [v11 intent];
+          atx_supportsBackgroundExecution = [intent2 atx_supportsBackgroundExecution];
 
-          if (v36 && (([MEMORY[0x277D42590] isAudioAccessory] & 1) != 0 || !objc_msgSend(v11, "isTVWhiteListedLongFormMedia")))
+          if (atx_supportsBackgroundExecution && (([MEMORY[0x277D42590] isAudioAccessory] & 1) != 0 || !objc_msgSend(v11, "isTVWhiteListedLongFormMedia")))
           {
             [(__CFString *)v20 setShouldBackgroundDefaultAction:1];
             [(__CFString *)v20 setShouldPreventNotificationDismissalAfterDefaultAction:1];
@@ -773,29 +773,29 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
             _os_log_impl(&dword_2263AA000, v37, OS_LOG_TYPE_DEFAULT, "%{public}s posting content: %@", buf, 0x16u);
           }
 
-          v38 = [v11 intent];
-          v39 = [v38 _intents_bundleIdForDisplay];
-          v40 = v39;
-          if (v39)
+          intent3 = [v11 intent];
+          _intents_bundleIdForDisplay = [intent3 _intents_bundleIdForDisplay];
+          v40 = _intents_bundleIdForDisplay;
+          if (_intents_bundleIdForDisplay)
           {
-            v41 = v39;
+            bundleId2 = _intents_bundleIdForDisplay;
           }
 
           else
           {
-            v41 = [v11 bundleId];
+            bundleId2 = [v11 bundleId];
           }
 
-          v42 = v41;
+          v42 = bundleId2;
 
           v43 = [objc_opt_class() _requestIdentifierForBundleId:v42];
           v44 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v43 content:v20 trigger:0 destinations:6];
           v45 = __atxlog_handle_notifications();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
           {
-            v46 = [v44 identifier];
+            identifier = [v44 identifier];
             *buf = 138412290;
-            v66 = v46;
+            v66 = identifier;
             _os_log_impl(&dword_2263AA000, v45, OS_LOG_TYPE_DEFAULT, "posting notification req id: %@", buf, 0xCu);
           }
 
@@ -807,8 +807,8 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
           v60[3] = &unk_2785A0CC0;
           objc_copyWeak(&v64, buf);
           v61 = v11;
-          v62 = v6;
-          v63 = v59;
+          v62 = suggestionCopy;
+          v63 = dCopy;
           [(UNUserNotificationCenter *)notificationCenter addNotificationRequest:v44 withCompletionHandler:v60];
 
           objc_destroyWeak(&v64);
@@ -822,16 +822,16 @@ void __72__ATXActionNotificationServer_proactiveSuggestionsCurrentlyOnLockscreen
           {
             v49 = @"nil";
             *buf = 138412802;
-            v66 = v55;
+            v66 = actionKey;
             v67 = 2112;
-            if (v56)
+            if (encodeAsProto)
             {
               v49 = @"not nil";
             }
 
             v68 = v49;
             v69 = 2112;
-            v70 = v6;
+            v70 = suggestionCopy;
             _os_log_fault_impl(&dword_2263AA000, v32, OS_LOG_TYPE_FAULT, "not posting notification for actionKey: %@, proactiveSuggestionData: %@, suggestion: %@", buf, 0x20u);
           }
 
@@ -955,9 +955,9 @@ void __95__ATXActionNotificationServer__postNotificationForProactiveSuggestion_b
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeActionPredictionNotificationsMatchingAction:(id)a3
+- (void)removeActionPredictionNotificationsMatchingAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = dispatch_semaphore_create(0);
   objc_initWeak(&location, self);
   notificationCenter = self->_notificationCenter;
@@ -967,7 +967,7 @@ void __95__ATXActionNotificationServer__postNotificationForProactiveSuggestion_b
   v10[3] = &unk_2785A0CE8;
   objc_copyWeak(&v13, &location);
   v10[4] = self;
-  v7 = v4;
+  v7 = actionCopy;
   v11 = v7;
   v8 = v5;
   v12 = v8;
@@ -1068,22 +1068,22 @@ void __81__ATXActionNotificationServer_removeActionPredictionNotificationsMatchi
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllActionPredictionNotificationsAndTrackEvent:(BOOL)a3 recordFeedback:(BOOL)a4
+- (void)removeAllActionPredictionNotificationsAndTrackEvent:(BOOL)event recordFeedback:(BOOL)feedback
 {
-  v4 = a4;
-  v5 = a3;
+  feedbackCopy = feedback;
+  eventCopy = event;
   v24 = *MEMORY[0x277D85DE8];
   v7 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109376;
-    HIDWORD(buf) = v5;
+    HIDWORD(buf) = eventCopy;
     v22 = 1024;
-    v23 = v4;
+    v23 = feedbackCopy;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "removing all lockscreen predictions with trackEvent: %{BOOL}d and recordFeedback: %{BOOL}d", &buf, 0xEu);
   }
 
-  if (v5)
+  if (eventCopy)
   {
     [(PETScalarEventTracker *)self->_removeTracker trackEventWithPropertyValues:MEMORY[0x277CBEBF8]];
   }
@@ -1096,12 +1096,12 @@ void __81__ATXActionNotificationServer_removeActionPredictionNotificationsMatchi
   v15 = __98__ATXActionNotificationServer_removeAllActionPredictionNotificationsAndTrackEvent_recordFeedback___block_invoke;
   v16 = &unk_2785A0D10;
   objc_copyWeak(&v19, &buf);
-  v20 = v4;
-  v17 = self;
+  v20 = feedbackCopy;
+  selfCopy = self;
   v10 = v8;
   v18 = v10;
   [(UNUserNotificationCenter *)notificationCenter getDeliveredNotificationsWithCompletionHandler:&v13];
-  if ([MEMORY[0x277D425A0] waitForSemaphore:v10 timeoutSeconds:{2.0, v13, v14, v15, v16, v17}] == 1)
+  if ([MEMORY[0x277D425A0] waitForSemaphore:v10 timeoutSeconds:{2.0, v13, v14, v15, v16, selfCopy}] == 1)
   {
     v11 = __atxlog_handle_notifications();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1194,18 +1194,18 @@ void __98__ATXActionNotificationServer_removeAllActionPredictionNotificationsAnd
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeNotificationWithIdentifier:(id)a3 trackEvent:(BOOL)a4
+- (void)_removeNotificationWithIdentifier:(id)identifier trackEvent:(BOOL)event
 {
-  v4 = a4;
+  eventCopy = event;
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (eventCopy)
   {
     [(PETScalarEventTracker *)self->_removeTracker trackEventWithPropertyValues:MEMORY[0x277CBEBF8]];
   }
 
   notificationCenter = self->_notificationCenter;
-  v13[0] = v6;
+  v13[0] = identifierCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   [(UNUserNotificationCenter *)notificationCenter removeDeliveredNotificationsWithIdentifiers:v8];
 
@@ -1213,7 +1213,7 @@ void __98__ATXActionNotificationServer_removeAllActionPredictionNotificationsAnd
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = identifierCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "Removed notification with identifier: %@", &v11, 0xCu);
   }
 
@@ -1223,36 +1223,36 @@ void __98__ATXActionNotificationServer_removeAllActionPredictionNotificationsAnd
 - (BOOL)_isRTL
 {
   v2 = MEMORY[0x277CBEAF8];
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 localeIdentifier];
-  LOBYTE(v2) = [v2 characterDirectionForLanguage:v4] == 2;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  LOBYTE(v2) = [v2 characterDirectionForLanguage:localeIdentifier] == 2;
 
   return v2;
 }
 
-- (id)_localizedStringForKey:(id)a3 defaultValue:(id)a4 languageCode:(id)a5
+- (id)_localizedStringForKey:(id)key defaultValue:(id)value languageCode:(id)code
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  codeCopy = code;
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if (!v9)
+  if (!codeCopy)
   {
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
-    v9 = [v11 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    codeCopy = [currentLocale localeIdentifier];
 
-    if (!v9)
+    if (!codeCopy)
     {
 LABEL_16:
-      if ([v8 length])
+      if ([valueCopy length])
       {
-        v21 = v8;
+        v21 = valueCopy;
       }
 
       else
       {
-        v21 = v7;
+        v21 = keyCopy;
       }
 
       v16 = v21;
@@ -1260,12 +1260,12 @@ LABEL_16:
     }
   }
 
-  v12 = [v10 localizations];
+  localizations = [v10 localizations];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v13 = CFBundleCopyLocalizationsForPreferences(v12, [MEMORY[0x277CBEA60] arrayWithObject:v9]);
+  v13 = CFBundleCopyLocalizationsForPreferences(localizations, [MEMORY[0x277CBEA60] arrayWithObject:codeCopy]);
   v14 = [(__CFArray *)v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v14)
   {
@@ -1291,7 +1291,7 @@ LABEL_16:
       CFBundleGetBundleWithIdentifier([v10 bundleIdentifier]);
       v16 = CFBundleCopyLocalizedStringForLocalization();
 
-      if (v16 && ([v16 isEqualToString:v7] & 1) == 0)
+      if (v16 && ([v16 isEqualToString:keyCopy] & 1) == 0)
       {
 
         goto LABEL_20;
@@ -1323,22 +1323,22 @@ LABEL_20:
   return v16;
 }
 
-- (id)_actionKeyFromNotification:(id)a3
+- (id)_actionKeyFromNotification:(id)notification
 {
-  v3 = [a3 request];
-  v4 = [v3 content];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"actionKey"];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"actionKey"];
 
   return v6;
 }
 
-- (id)_blendingCacheUpdateUUIDFromNotification:(id)a3
+- (id)_blendingCacheUpdateUUIDFromNotification:(id)notification
 {
-  v3 = [a3 request];
-  v4 = [v3 content];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"blendingCacheUpdateUUID"];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"blendingCacheUpdateUUID"];
 
   if (v6)
   {
@@ -1353,12 +1353,12 @@ LABEL_20:
   return v7;
 }
 
-- (id)_unarchiveProactiveSuggestionFromNotification:(id)a3
+- (id)_unarchiveProactiveSuggestionFromNotification:(id)notification
 {
-  v3 = [a3 request];
-  v4 = [v3 content];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"proactiveSuggestion"];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"proactiveSuggestion"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1392,41 +1392,41 @@ LABEL_10:
   return v8;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v73 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   v9 = __atxlog_handle_notifications();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v66 = v7;
+    v66 = responseCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "daemon didReceiveNotificationResponse: %@", buf, 0xCu);
   }
 
-  v10 = [v7 notification];
-  v11 = [(ATXActionNotificationServer *)self _unarchiveProactiveSuggestionFromNotification:v10];
+  notification = [responseCopy notification];
+  v11 = [(ATXActionNotificationServer *)self _unarchiveProactiveSuggestionFromNotification:notification];
 
-  v12 = [v11 atxActionExecutableObject];
-  v13 = [v7 notification];
-  v14 = [(ATXActionNotificationServer *)self _blendingCacheUpdateUUIDFromNotification:v13];
+  atxActionExecutableObject = [v11 atxActionExecutableObject];
+  notification2 = [responseCopy notification];
+  v14 = [(ATXActionNotificationServer *)self _blendingCacheUpdateUUIDFromNotification:notification2];
 
-  v15 = [v7 actionIdentifier];
-  v16 = [v15 isEqualToString:*MEMORY[0x277CE20E8]];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v16 = [actionIdentifier isEqualToString:*MEMORY[0x277CE20E8]];
   v17 = __atxlog_handle_feedback();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v66 = v15;
+    v66 = actionIdentifier;
     v67 = 2112;
-    v68 = v12;
+    v68 = atxActionExecutableObject;
     _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "received notification center response with identifier: %@ for action: %@", buf, 0x16u);
   }
 
-  if (v11 && v12)
+  if (v11 && atxActionExecutableObject)
   {
-    v58 = v7;
+    v58 = responseCopy;
     if (v16)
     {
       v18 = 2;
@@ -1454,15 +1454,15 @@ LABEL_10:
     {
       v57 = v20;
       [(ATXEngagementRecordManager *)engagementRecordManager addEngagedSuggestion:v20 engagementRecordType:1];
-      if ([v12 actionType] == 5)
+      if ([atxActionExecutableObject actionType] == 5)
       {
         v25 = __atxlog_handle_notifications();
-        v7 = v58;
+        responseCopy = v58;
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v12 bundleId];
+          bundleId = [atxActionExecutableObject bundleId];
           *buf = 138412290;
-          v66 = v26;
+          v66 = bundleId;
           _os_log_impl(&dword_2263AA000, v25, OS_LOG_TYPE_DEFAULT, "launching UAUserActivityProxy for bundleId: %@", buf, 0xCu);
         }
 
@@ -1470,23 +1470,23 @@ LABEL_10:
         block[1] = 3221225472;
         block[2] = __107__ATXActionNotificationServer_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
         block[3] = &unk_278596BB8;
-        v61 = v12;
+        v61 = atxActionExecutableObject;
         dispatch_async(MEMORY[0x277D85CD0], block);
-        if (v8)
+        if (handlerCopy)
         {
-          v8[2](v8);
+          handlerCopy[2](handlerCopy);
         }
 
         v11 = v57;
         goto LABEL_42;
       }
 
-      v7 = v58;
-      if ([v12 actionType] || (objc_msgSend(v12, "intent"), v28 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v28, (isKindOfClass & 1) == 0))
+      responseCopy = v58;
+      if ([atxActionExecutableObject actionType] || (objc_msgSend(atxActionExecutableObject, "intent"), v28 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v28, (isKindOfClass & 1) == 0))
       {
-        if ([v12 actionType] && objc_msgSend(v12, "actionType") != 2)
+        if ([atxActionExecutableObject actionType] && objc_msgSend(atxActionExecutableObject, "actionType") != 2)
         {
-          if ([v12 actionType] != 1)
+          if ([atxActionExecutableObject actionType] != 1)
           {
             v53 = __atxlog_handle_notifications();
             if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
@@ -1494,10 +1494,10 @@ LABEL_10:
               [ATXActionNotificationServer userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:];
             }
 
-            v31 = 0;
+            linkAction = 0;
             v47 = 0;
             v11 = v57;
-            if (!v8)
+            if (!handlerCopy)
             {
               goto LABEL_41;
             }
@@ -1506,11 +1506,11 @@ LABEL_10:
           }
 
           v49 = objc_alloc(MEMORY[0x277CD4158]);
-          v30 = [v12 userActivity];
-          v50 = [v12 bundleId];
-          v32 = [v49 initWithUserActivity:v30 bundleIdentifier:v50];
+          userActivity = [atxActionExecutableObject userActivity];
+          bundleId2 = [atxActionExecutableObject bundleId];
+          v32 = [v49 initWithUserActivity:userActivity bundleIdentifier:bundleId2];
 
-          v31 = 0;
+          linkAction = 0;
           v36 = 2;
 LABEL_32:
 
@@ -1521,13 +1521,13 @@ LABEL_32:
             _os_log_impl(&dword_2263AA000, v37, OS_LOG_TYPE_DEFAULT, "invoking ShortcutsRuntime for execution", buf, 2u);
           }
 
-          if (v31)
+          if (linkAction)
           {
             v55 = v36;
             v56 = v32;
             v38 = objc_alloc(MEMORY[0x277D7A150]);
-            v39 = [v12 bundleId];
-            v40 = [v38 initWithLinkAction:v31 bundleIdentifier:v39 resultSurface:2];
+            bundleId3 = [atxActionExecutableObject bundleId];
+            v40 = [v38 initWithLinkAction:linkAction bundleIdentifier:bundleId3 resultSurface:2];
             currentWorkflowRunnerClient = self->_currentWorkflowRunnerClient;
             self->_currentWorkflowRunnerClient = v40;
           }
@@ -1542,12 +1542,12 @@ LABEL_32:
                 [ATXActionNotificationServer userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:];
               }
 
-              v31 = 0;
+              linkAction = 0;
               v47 = 0;
               v11 = v57;
 LABEL_39:
               v14 = v59;
-              if (!v8)
+              if (!handlerCopy)
               {
 LABEL_41:
 
@@ -1555,25 +1555,25 @@ LABEL_41:
               }
 
 LABEL_40:
-              v8[2](v8);
+              handlerCopy[2](handlerCopy);
               goto LABEL_41;
             }
 
             v55 = v36;
             v56 = v32;
             v42 = [objc_alloc(MEMORY[0x277D7A150]) initWithINShortcut:v32 executionContext:3];
-            v39 = self->_currentWorkflowRunnerClient;
+            bundleId3 = self->_currentWorkflowRunnerClient;
             self->_currentWorkflowRunnerClient = v42;
           }
 
           [(WFSuggestionsWorkflowRunnerClient *)self->_currentWorkflowRunnerClient setDelegate:self];
           v62[0] = @"notifID";
-          v43 = [v58 notification];
-          v44 = [v43 request];
-          v45 = [v44 identifier];
+          notification3 = [v58 notification];
+          request = [notification3 request];
+          identifier = [request identifier];
           v62[1] = @"atxAction";
-          v63[0] = v45;
-          v63[1] = v12;
+          v63[0] = identifier;
+          v63[1] = atxActionExecutableObject;
           v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:2];
           [(WFSuggestionsWorkflowRunnerClient *)self->_currentWorkflowRunnerClient setUserInfo:v46];
 
@@ -1584,20 +1584,20 @@ LABEL_40:
           goto LABEL_39;
         }
 
-        v33 = [v12 bundleId];
-        v34 = [v12 intent];
-        [v34 _setLaunchId:v33];
+        bundleId4 = [atxActionExecutableObject bundleId];
+        intent = [atxActionExecutableObject intent];
+        [intent _setLaunchId:bundleId4];
 
         v35 = objc_alloc(MEMORY[0x277CD4158]);
-        v30 = [v12 intent];
-        v32 = [v35 initWithIntent:v30];
-        v31 = 0;
+        userActivity = [atxActionExecutableObject intent];
+        v32 = [v35 initWithIntent:userActivity];
+        linkAction = 0;
       }
 
       else
       {
-        v30 = [v12 intent];
-        v31 = [v30 linkAction];
+        userActivity = [atxActionExecutableObject intent];
+        linkAction = [userActivity linkAction];
         v32 = 0;
       }
 
@@ -1607,14 +1607,14 @@ LABEL_40:
 
     [(ATXEngagementRecordManager *)engagementRecordManager addHiddenSuggestion:v20 duration:120 engagementRecordType:*MEMORY[0x277CEBA90]];
     v11 = v20;
-    v7 = v58;
-    if (!v8)
+    responseCopy = v58;
+    if (!handlerCopy)
     {
       goto LABEL_42;
     }
 
 LABEL_24:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
     goto LABEL_42;
   }
 
@@ -1632,12 +1632,12 @@ LABEL_24:
       v69 = 2112;
       v70 = v11;
       v71 = 2112;
-      v72 = v12;
+      v72 = atxActionExecutableObject;
       _os_log_fault_impl(&dword_2263AA000, v27, OS_LOG_TYPE_FAULT, "%@ - found blendingCacheUpdateUUID: %@, but no suggestion or action: %@ %@", buf, 0x2Au);
     }
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     goto LABEL_24;
   }
@@ -1701,41 +1701,41 @@ LABEL_5:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  progressCopy = progress;
   v7 = __atxlog_handle_notifications();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218240;
-    v10 = v5;
+    v10 = clientCopy;
     v11 = 2048;
-    v12 = v6;
+    v12 = progressCopy;
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "workflowRunnerClient: <%p> didStartRunningWorkflowWithProgress: <%p>", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
-  v6 = a6;
+  cancelledCopy = cancelled;
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  clientCopy = client;
+  errorCopy = error;
   v11 = __atxlog_handle_notifications();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 134217984;
-    v25 = v9;
+    v25 = clientCopy;
     _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "workflowRunnerClient: <%p> didFinishRunningWorkflowWithOutput:error:cancelled:", &v24, 0xCu);
   }
 
-  if (v10 || v6)
+  if (errorCopy || cancelledCopy)
   {
-    if (v6)
+    if (cancelledCopy)
     {
       v18 = __atxlog_handle_notifications();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1745,7 +1745,7 @@ LABEL_5:
       }
     }
 
-    if (v10)
+    if (errorCopy)
     {
       v19 = __atxlog_handle_notifications();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1769,9 +1769,9 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v9;
-      v14 = [v13 userInfo];
-      v15 = [v14 objectForKeyedSubscript:@"notifID"];
+      v13 = clientCopy;
+      userInfo = [v13 userInfo];
+      v15 = [userInfo objectForKeyedSubscript:@"notifID"];
       v16 = __atxlog_handle_notifications();
       v17 = v16;
       if (v15)
@@ -1794,7 +1794,7 @@ LABEL_5:
         }
       }
 
-      v21 = [v14 objectForKeyedSubscript:@"atxAction"];
+      v21 = [userInfo objectForKeyedSubscript:@"atxAction"];
       if ([v21 actionType] == 1)
       {
         v22 = 2;

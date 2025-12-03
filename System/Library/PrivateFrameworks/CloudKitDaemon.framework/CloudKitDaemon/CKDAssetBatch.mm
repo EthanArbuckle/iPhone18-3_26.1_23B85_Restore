@@ -3,32 +3,32 @@
 - (BOOL)isEmptyOfRereferencesAssets;
 - (BOOL)isPackageSectionBatch;
 - (BOOL)isRereferenceAssetBatch;
-- (CKDAssetBatch)initWithAssetZone:(id)a3;
+- (CKDAssetBatch)initWithAssetZone:(id)zone;
 - (CKDAssetTokenRequest)assetTokenRequest;
 - (NSArray)allRegularAndSectionAndRereferenceItems;
 - (id)CKPropertiesDescription;
 - (id)firstMMCSItemError;
 - (unsigned)sizeUpperBound;
-- (void)failIfNotDoneAllRegularAndSectionAndRereferenceItemsWithError:(id)a3;
+- (void)failIfNotDoneAllRegularAndSectionAndRereferenceItemsWithError:(id)error;
 @end
 
 @implementation CKDAssetBatch
 
-- (CKDAssetBatch)initWithAssetZone:(id)a3
+- (CKDAssetBatch)initWithAssetZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v21.receiver = self;
   v21.super_class = CKDAssetBatch;
   v6 = [(CKDAssetBatch *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetZone, a3);
+    objc_storeStrong(&v6->_assetZone, zone);
     v8 = objc_opt_new();
     assetRecords = v7->_assetRecords;
     v7->_assetRecords = v8;
 
-    v12 = objc_msgSend_assetZoneKey(v5, v10, v11);
+    v12 = objc_msgSend_assetZoneKey(zoneCopy, v10, v11);
     v15 = objc_msgSend_useMMCSEncryptionV2(v12, v13, v14);
     v18 = objc_msgSend_BOOLValue(v15, v16, v17);
 
@@ -124,10 +124,10 @@
   return v3;
 }
 
-- (void)failIfNotDoneAllRegularAndSectionAndRereferenceItemsWithError:(id)a3
+- (void)failIfNotDoneAllRegularAndSectionAndRereferenceItemsWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -152,7 +152,7 @@
 
         if (!v16)
         {
-          objc_msgSend_setError_(v15, v10, v4);
+          objc_msgSend_setError_(v15, v10, errorCopy);
         }
       }
 

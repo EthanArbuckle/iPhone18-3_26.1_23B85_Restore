@@ -16,14 +16,14 @@
 - (void)audioRouteChanged
 {
   v2 = +[AVAudioSession sharedInstance];
-  v3 = [v2 currentRoute];
+  currentRoute = [v2 currentRoute];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 outputs];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  outputs = [currentRoute outputs];
+  v5 = [outputs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -34,31 +34,31 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(outputs);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 portType];
-        if ([v10 isEqualToString:AVAudioSessionPortBuiltInReceiver])
+        portType = [v9 portType];
+        if ([portType isEqualToString:AVAudioSessionPortBuiltInReceiver])
         {
         }
 
         else
         {
-          v11 = [v9 portType];
-          v12 = [v11 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
+          portType2 = [v9 portType];
+          v12 = [portType2 isEqualToString:AVAudioSessionPortBuiltInSpeaker];
 
           if (!v12)
           {
 
-            v4 = +[NSNotificationCenter defaultCenter];
-            [v4 postNotificationName:@"HeadphonesConnectedNotification" object:0];
+            outputs = +[NSNotificationCenter defaultCenter];
+            [outputs postNotificationName:@"HeadphonesConnectedNotification" object:0];
             goto LABEL_13;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [outputs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

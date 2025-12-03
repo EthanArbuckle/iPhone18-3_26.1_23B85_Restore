@@ -1,17 +1,17 @@
 @interface PIVToken
-- (BOOL)populateIdentityFromSmartCard:(id)a3 into:(id)a4 certificateTag:(unint64_t)a5 name:(id)a6 keyTag:(unint64_t)a7 name:(id)a8 sign:(BOOL)a9 suitableForLogin:(BOOL)a10 keyManagement:(BOOL)a11 constraint:(id)a12 error:(id *)a13;
-- (PIVToken)initWithSmartCard:(id)a3 AID:(id)a4 PIVDriver:(id)a5 error:(id *)p_isa;
-- (id)dataOfCertificate:(id)a3 smartCard:(id)a4 error:(id *)a5;
-- (id)token:(id)a3 createSessionWithError:(id *)a4;
+- (BOOL)populateIdentityFromSmartCard:(id)card into:(id)into certificateTag:(unint64_t)tag name:(id)name keyTag:(unint64_t)keyTag name:(id)a8 sign:(BOOL)sign suitableForLogin:(BOOL)self0 keyManagement:(BOOL)self1 constraint:(id)self2 error:(id *)self3;
+- (PIVToken)initWithSmartCard:(id)card AID:(id)d PIVDriver:(id)driver error:(id *)p_isa;
+- (id)dataOfCertificate:(id)certificate smartCard:(id)card error:(id *)error;
+- (id)token:(id)token createSessionWithError:(id *)error;
 @end
 
 @implementation PIVToken
 
-- (id)dataOfCertificate:(id)a3 smartCard:(id)a4 error:(id *)a5
+- (id)dataOfCertificate:(id)certificate smartCard:(id)card error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 recordsOfObject:v7 error:a5];
+  certificateCopy = certificate;
+  cardCopy = card;
+  v9 = [cardCopy recordsOfObject:certificateCopy error:error];
   v10 = v9;
   if (v9)
   {
@@ -37,21 +37,21 @@
     {
       if (*(v17 + 24) == 1)
       {
-        v12 = [v11 inflate];
+        inflate = [v11 inflate];
       }
 
       else
       {
-        v12 = v11;
+        inflate = v11;
       }
 
-      v13 = v12;
+      v13 = inflate;
     }
 
-    else if (a5)
+    else if (error)
     {
       [NSError errorWithDomain:TKErrorDomain code:-6 userInfo:0];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -71,69 +71,69 @@
   return v13;
 }
 
-- (BOOL)populateIdentityFromSmartCard:(id)a3 into:(id)a4 certificateTag:(unint64_t)a5 name:(id)a6 keyTag:(unint64_t)a7 name:(id)a8 sign:(BOOL)a9 suitableForLogin:(BOOL)a10 keyManagement:(BOOL)a11 constraint:(id)a12 error:(id *)a13
+- (BOOL)populateIdentityFromSmartCard:(id)card into:(id)into certificateTag:(unint64_t)tag name:(id)name keyTag:(unint64_t)keyTag name:(id)a8 sign:(BOOL)sign suitableForLogin:(BOOL)self0 keyManagement:(BOOL)self1 constraint:(id)self2 error:(id *)self3
 {
-  v19 = a13;
-  v20 = a4;
-  v21 = a6;
+  errorCopy = error;
+  intoCopy = into;
+  nameCopy = name;
   v44 = a8;
-  v22 = a12;
-  v23 = a3;
-  v24 = [TKBERTLVRecord dataForTag:a5];
-  v25 = [(PIVToken *)self dataOfCertificate:v24 smartCard:v23 error:a13];
+  constraintCopy = constraint;
+  cardCopy = card;
+  v24 = [TKBERTLVRecord dataForTag:tag];
+  v25 = [(PIVToken *)self dataOfCertificate:v24 smartCard:cardCopy error:error];
 
   if (v25)
   {
-    v26 = SecCertificateCreateWithData(kCFAllocatorDefault, v25);
-    if (v26)
+    domain = SecCertificateCreateWithData(kCFAllocatorDefault, v25);
+    if (domain)
     {
-      v27 = [[TKTokenKeychainCertificate alloc] initWithCertificate:v26 objectID:v24];
+      v27 = [[TKTokenKeychainCertificate alloc] initWithCertificate:domain objectID:v24];
       v28 = v27;
       if (!v27)
       {
-        v19 = 0;
+        errorCopy = 0;
 LABEL_23:
 
         goto LABEL_24;
       }
 
-      v43 = v22;
-      [v27 setName:v21];
+      v43 = constraintCopy;
+      [v27 setName:nameCopy];
       v29 = [PIVTokenKeychainKey alloc];
-      v30 = [NSNumber numberWithUnsignedLongLong:a7];
-      v31 = [v28 objectID];
-      v32 = [(PIVTokenKeychainKey *)v29 initWithCertificate:v26 objectID:v30 certificateID:v31];
+      v30 = [NSNumber numberWithUnsignedLongLong:keyTag];
+      objectID = [v28 objectID];
+      v32 = [(PIVTokenKeychainKey *)v29 initWithCertificate:domain objectID:v30 certificateID:objectID];
 
-      v19 = v32 != 0;
+      errorCopy = v32 != 0;
       if (!v32)
       {
 LABEL_22:
 
-        v22 = v43;
+        constraintCopy = v43;
         goto LABEL_23;
       }
 
       [(PIVTokenKeychainKey *)v32 setName:v44];
       v42 = +[NSMutableDictionary dictionary];
-      [(PIVTokenKeychainKey *)v32 setCanSign:a9];
-      [(PIVTokenKeychainKey *)v32 setSuitableForLogin:a10];
-      if (a9)
+      [(PIVTokenKeychainKey *)v32 setCanSign:sign];
+      [(PIVTokenKeychainKey *)v32 setSuitableForLogin:login];
+      if (sign)
       {
         [v42 setObject:v43 forKeyedSubscript:&off_100008688];
       }
 
-      v33 = [(PIVTokenKeychainKey *)v32 keyType];
-      v34 = [v33 isEqual:kSecAttrKeyTypeRSA];
+      keyType = [(PIVTokenKeychainKey *)v32 keyType];
+      v34 = [keyType isEqual:kSecAttrKeyTypeRSA];
 
       if (v34)
       {
-        [(PIVTokenKeychainKey *)v32 setCanDecrypt:a11];
-        if (!a11)
+        [(PIVTokenKeychainKey *)v32 setCanDecrypt:management];
+        if (!management)
         {
 LABEL_21:
           [(PIVTokenKeychainKey *)v32 setConstraints:v42];
-          [v20 addObject:v28];
-          [v20 addObject:v32];
+          [intoCopy addObject:v28];
+          [intoCopy addObject:v32];
 
           goto LABEL_22;
         }
@@ -143,16 +143,16 @@ LABEL_21:
 
       else
       {
-        v39 = [(PIVTokenKeychainKey *)v32 keyType];
-        v40 = [v39 isEqual:kSecAttrKeyTypeECSECPrimeRandom];
+        keyType2 = [(PIVTokenKeychainKey *)v32 keyType];
+        v40 = [keyType2 isEqual:kSecAttrKeyTypeECSECPrimeRandom];
 
         if (!v40)
         {
           goto LABEL_21;
         }
 
-        [(PIVTokenKeychainKey *)v32 setCanPerformKeyExchange:a11];
-        if (!a11)
+        [(PIVTokenKeychainKey *)v32 setCanPerformKeyExchange:management];
+        if (!management)
         {
           goto LABEL_21;
         }
@@ -164,14 +164,14 @@ LABEL_21:
       goto LABEL_21;
     }
 
-    if (a13)
+    if (error)
     {
       v45 = NSLocalizedDescriptionKey;
       v36 = +[NSBundle mainBundle];
       v37 = [v36 localizedStringForKey:@"CORRUPTED_CERT" value:&stru_1000083D8 table:0];
       v46 = v37;
       v38 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
-      *a13 = [NSError errorWithDomain:TKErrorDomain code:-3 userInfo:v38];
+      *error = [NSError errorWithDomain:TKErrorDomain code:-3 userInfo:v38];
 
       goto LABEL_15;
     }
@@ -179,30 +179,30 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  if (a13)
+  if (error)
   {
-    v26 = [*a13 domain];
-    if (![v26 isEqual:TKErrorDomain])
+    domain = [*error domain];
+    if (![domain isEqual:TKErrorDomain])
     {
 LABEL_15:
-      v19 = 0;
+      errorCopy = 0;
       goto LABEL_24;
     }
 
-    v19 = [*a13 code] == -6;
+    errorCopy = [*error code] == -6;
 LABEL_24:
   }
 
-  return v19;
+  return errorCopy;
 }
 
-- (PIVToken)initWithSmartCard:(id)a3 AID:(id)a4 PIVDriver:(id)a5 error:(id *)p_isa
+- (PIVToken)initWithSmartCard:(id)card AID:(id)d PIVDriver:(id)driver error:(id *)p_isa
 {
-  v71 = a3;
-  v66 = a4;
-  v67 = a5;
+  cardCopy = card;
+  dCopy = d;
+  driverCopy = driver;
   v10 = [TKBERTLVRecord dataForTag:6275330];
-  v68 = [v71 recordsOfObject:v10 error:p_isa];
+  v68 = [cardCopy recordsOfObject:v10 error:p_isa];
 
   if (v68)
   {
@@ -224,7 +224,7 @@ LABEL_24:
       v12 = v86[5];
       v83.receiver = self;
       v83.super_class = PIVToken;
-      v13 = [(PIVToken *)&v83 initWithSmartCard:v71 AID:v66 instanceID:v12 tokenDriver:v67];
+      v13 = [(PIVToken *)&v83 initWithSmartCard:cardCopy AID:dCopy instanceID:v12 tokenDriver:driverCopy];
       if (v13)
       {
         v69 = v13;
@@ -234,7 +234,7 @@ LABEL_24:
         v82 = 0;
         v14 = [TKBERTLVRecord dataForTag:6275340];
         v78 = 0;
-        v65 = [v71 recordsOfObject:v14 error:&v78];
+        v65 = [cardCopy recordsOfObject:v14 error:&v78];
         v15 = v78;
 
         if (v65)
@@ -266,7 +266,7 @@ LABEL_24:
         v76 = v15;
         BYTE2(v60) = 0;
         LOWORD(v60) = 257;
-        v23 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:v71 name:v70 keyTag:6275333 name:v20 sign:154 suitableForLogin:v22 keyManagement:v60 constraint:@"PIN" error:&v76];
+        v23 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:cardCopy name:v70 keyTag:6275333 name:v20 sign:154 suitableForLogin:v22 keyManagement:v60 constraint:@"PIN" error:&v76];
         v24 = v76;
 
         if ((v23 & 1) == 0)
@@ -287,7 +287,7 @@ LABEL_24:
         v75 = v24;
         BYTE2(v61) = 0;
         LOWORD(v61) = 1;
-        v30 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:v71 name:v70 keyTag:6275329 name:v27 sign:158 suitableForLogin:v29 keyManagement:v61 constraint:&__kCFBooleanTrue error:&v75];
+        v30 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:cardCopy name:v70 keyTag:6275329 name:v27 sign:158 suitableForLogin:v29 keyManagement:v61 constraint:&__kCFBooleanTrue error:&v75];
         v31 = v75;
 
         if ((v30 & 1) == 0)
@@ -308,7 +308,7 @@ LABEL_24:
         v74 = v31;
         BYTE2(v62) = 0;
         LOWORD(v62) = 1;
-        v37 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:v71 name:v70 keyTag:6275338 name:v34 sign:156 suitableForLogin:v36 keyManagement:v62 constraint:@"PINAlways" error:&v74];
+        v37 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:cardCopy name:v70 keyTag:6275338 name:v34 sign:156 suitableForLogin:v36 keyManagement:v62 constraint:@"PINAlways" error:&v74];
         v38 = v74;
 
         if ((v37 & 1) == 0)
@@ -329,7 +329,7 @@ LABEL_24:
         v73 = v38;
         BYTE2(v63) = 1;
         LOWORD(v63) = 0;
-        v44 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:v71 name:v70 keyTag:6275339 name:v41 sign:157 suitableForLogin:v43 keyManagement:v63 constraint:@"PIN" error:&v73];
+        v44 = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:cardCopy name:v70 keyTag:6275339 name:v41 sign:157 suitableForLogin:v43 keyManagement:v63 constraint:@"PIN" error:&v73];
         v45 = v73;
 
         if ((v44 & 1) == 0)
@@ -360,7 +360,7 @@ LABEL_24:
             v72 = v45;
             BYTE2(v64) = 1;
             LOWORD(v64) = 0;
-            LOBYTE(v53) = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:v71 name:v70 keyTag:v47 + 6275341 name:v51 sign:v47 + 130 suitableForLogin:v54 keyManagement:v64 constraint:@"PIN" error:&v72];
+            LOBYTE(v53) = [PIVToken populateIdentityFromSmartCard:v69 into:"populateIdentityFromSmartCard:into:certificateTag:name:keyTag:name:sign:suitableForLogin:keyManagement:constraint:error:" certificateTag:cardCopy name:v70 keyTag:v47 + 6275341 name:v51 sign:v47 + 130 suitableForLogin:v54 keyManagement:v64 constraint:@"PIN" error:&v72];
             v55 = v72;
 
             if (v53)
@@ -398,8 +398,8 @@ LABEL_24:
           }
         }
 
-        v58 = [(PIVToken *)v69 keychainContents];
-        [v58 fillWithItems:v70];
+        keychainContents = [(PIVToken *)v69 keychainContents];
+        [keychainContents fillWithItems:v70];
 
         _Block_object_dispose(&v79, 8);
         v13 = v69;
@@ -438,7 +438,7 @@ LABEL_24:
   return p_isa;
 }
 
-- (id)token:(id)a3 createSessionWithError:(id *)a4
+- (id)token:(id)token createSessionWithError:(id *)error
 {
   v4 = [[PIVTokenSession alloc] initWithToken:self];
 

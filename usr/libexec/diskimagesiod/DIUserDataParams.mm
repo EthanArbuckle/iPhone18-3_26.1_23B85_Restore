@@ -1,19 +1,19 @@
 @interface DIUserDataParams
-- (BOOL)embedWithError:(id *)a3;
-- (BOOL)openExistingImageWithError:(id *)a3;
-- (BOOL)retrieveWithError:(id *)a3;
-- (DIUserDataParams)initWithCoder:(id)a3;
-- (DIUserDataParams)initWithURL:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)embedWithError:(id *)error;
+- (BOOL)openExistingImageWithError:(id *)error;
+- (BOOL)retrieveWithError:(id *)error;
+- (DIUserDataParams)initWithCoder:(id)coder;
+- (DIUserDataParams)initWithURL:(id)l error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIUserDataParams
 
-- (DIUserDataParams)initWithURL:(id)a3 error:(id *)a4
+- (DIUserDataParams)initWithURL:(id)l error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = DIUserDataParams;
-  v4 = [(DIBaseParams *)&v8 initWithURL:a3 error:a4];
+  v4 = [(DIBaseParams *)&v8 initWithURL:l error:error];
   v5 = v4;
   if (v4)
   {
@@ -24,15 +24,15 @@
   return v5;
 }
 
-- (DIUserDataParams)initWithCoder:(id)a3
+- (DIUserDataParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = DIUserDataParams;
-  v5 = [(DIBaseParams *)&v15 initWithCoder:v4];
+  v5 = [(DIBaseParams *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userData"];
     if (v6)
     {
       v7 = objc_opt_class();
@@ -60,15 +60,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = DIUserDataParams;
-  [(DIBaseParams *)&v16 encodeWithCoder:v4];
-  v5 = [(DIUserDataParams *)self userDict];
+  [(DIBaseParams *)&v16 encodeWithCoder:coderCopy];
+  userDict = [(DIUserDataParams *)self userDict];
   v15 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:0 error:&v15];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:userDict requiringSecureCoding:0 error:&v15];
   v7 = v15;
 
   if (v7)
@@ -114,12 +114,12 @@
     *__error() = v8;
   }
 
-  [v4 encodeObject:v6 forKey:{@"userData", v12, v13, v14}];
+  [coderCopy encodeObject:v6 forKey:{@"userData", v12, v13, v14}];
 }
 
-- (BOOL)retrieveWithError:(id *)a3
+- (BOOL)retrieveWithError:(id *)error
 {
-  if (![(DIBaseParams *)self openExistingImageWithFlags:0 error:a3])
+  if (![(DIBaseParams *)self openExistingImageWithFlags:0 error:error])
   {
     return 0;
   }
@@ -135,7 +135,7 @@
     v31 = 2080;
     v32 = "[DIUserDataParams retrieveWithError:]";
     v33 = 2114;
-    v34 = self;
+    selfCopy2 = self;
     LODWORD(v26) = 28;
     v25 = buf;
     v7 = _os_log_send_and_compose_impl();
@@ -157,21 +157,21 @@
       v31 = 2080;
       v32 = "[DIUserDataParams retrieveWithError:]";
       v33 = 2114;
-      v34 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
     }
   }
 
   *__error() = v5;
   v10 = objc_alloc_init(DIClient2Controller_XPCHandler);
-  if ([(DIClient2Controller_XPCHandler *)v10 connectWithError:a3]&& [(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:2 error:a3])
+  if ([(DIClient2Controller_XPCHandler *)v10 connectWithError:error]&& [(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:2 error:error])
   {
-    v11 = [(DIBaseParams *)self diskImageParamsXPC];
-    v12 = [(DIBaseParams *)self shadowChain];
-    v13 = [v12 shouldValidate];
-    if (v11)
+    diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+    shadowChain = [(DIBaseParams *)self shadowChain];
+    shouldValidate = [shadowChain shouldValidate];
+    if (diskImageParamsXPC)
     {
-      [v11 createDiskImageWithCache:0 shadowValidation:v13];
+      [diskImageParamsXPC createDiskImageWithCache:0 shadowValidation:shouldValidate];
     }
 
     else
@@ -196,7 +196,7 @@
       v31 = 2080;
       v32 = "[DIUserDataParams retrieveWithError:]";
       v33 = 1024;
-      LODWORD(v34) = v18;
+      LODWORD(selfCopy2) = v18;
       v19 = _os_log_send_and_compose_impl();
 
       if (v19)
@@ -211,14 +211,14 @@
       v20 = sub_1000E957C();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(DIUserDataParams *)self userDict];
-        v22 = [v21 count];
+        userDict = [(DIUserDataParams *)self userDict];
+        v22 = [userDict count];
         *buf = 68158210;
         v30 = 38;
         v31 = 2080;
         v32 = "[DIUserDataParams retrieveWithError:]";
         v33 = 1024;
-        LODWORD(v34) = v22;
+        LODWORD(selfCopy2) = v22;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%.*s: User data retrieving passed, %d value(s) found", buf, 0x18u);
       }
     }
@@ -243,17 +243,17 @@
   return v8;
 }
 
-- (BOOL)embedWithError:(id *)a3
+- (BOOL)embedWithError:(id *)error
 {
-  v5 = [(DIUserDataParams *)self userDict];
-  if (!v5 || (-[DIUserDataParams userDict](self, "userDict"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v5, !v7))
+  userDict = [(DIUserDataParams *)self userDict];
+  if (!userDict || (-[DIUserDataParams userDict](self, "userDict"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, userDict, !v7))
   {
     v13 = @"userDict cannot be nil or empty";
-    return [DIError failWithPOSIXCode:22 verboseInfo:v13 error:a3];
+    return [DIError failWithPOSIXCode:22 verboseInfo:v13 error:error];
   }
 
-  v8 = [(DIBaseParams *)self diskImageParamsXPC];
-  if (v8)
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  if (diskImageParamsXPC)
   {
     [(DIBaseParams *)self backend];
     v9 = (*(**buf + 48))(*buf);
@@ -265,11 +265,11 @@
     if ((v9 & 1) == 0)
     {
       v13 = @"The image was unlocked before setting userData";
-      return [DIError failWithPOSIXCode:22 verboseInfo:v13 error:a3];
+      return [DIError failWithPOSIXCode:22 verboseInfo:v13 error:error];
     }
   }
 
-  if (![(DIBaseParams *)self openExistingImageWithFlags:2 error:a3])
+  if (![(DIBaseParams *)self openExistingImageWithFlags:2 error:error])
   {
     return 0;
   }
@@ -285,7 +285,7 @@
     *v30 = 2080;
     *&v30[2] = "[DIUserDataParams embedWithError:]";
     v31 = 2114;
-    v32 = self;
+    selfCopy2 = self;
     v12 = _os_log_send_and_compose_impl();
 
     if (v12)
@@ -305,21 +305,21 @@
       *v30 = 2080;
       *&v30[2] = "[DIUserDataParams embedWithError:]";
       v31 = 2114;
-      v32 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
     }
   }
 
   *__error() = v10;
   v17 = objc_alloc_init(DIClient2Controller_XPCHandler);
-  if (-[DIClient2Controller_XPCHandler connectWithError:](v17, "connectWithError:", a3) && -[DIBaseParams prepareImageWithXpcHandler:fileMode:error:](self, "prepareImageWithXpcHandler:fileMode:error:", v17, 4, a3) && (-[DIBaseParams diskImageParamsXPC](self, "diskImageParamsXPC"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 lockBackendsWithError:a3], v18, (v19 & 1) != 0))
+  if (-[DIClient2Controller_XPCHandler connectWithError:](v17, "connectWithError:", error) && -[DIBaseParams prepareImageWithXpcHandler:fileMode:error:](self, "prepareImageWithXpcHandler:fileMode:error:", v17, 4, error) && (-[DIBaseParams diskImageParamsXPC](self, "diskImageParamsXPC"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 lockBackendsWithError:error], v18, (v19 & 1) != 0))
   {
-    v20 = [(DIBaseParams *)self diskImageParamsXPC];
-    v21 = [(DIBaseParams *)self shadowChain];
-    v22 = [v21 shouldValidate];
-    if (v20)
+    diskImageParamsXPC2 = [(DIBaseParams *)self diskImageParamsXPC];
+    shadowChain = [(DIBaseParams *)self shadowChain];
+    shouldValidate = [shadowChain shouldValidate];
+    if (diskImageParamsXPC2)
     {
-      [v20 createDiskImageWithCache:0 shadowValidation:v22];
+      [diskImageParamsXPC2 createDiskImageWithCache:0 shadowValidation:shouldValidate];
     }
 
     else
@@ -327,8 +327,8 @@
       v28 = 0;
     }
 
-    v23 = [(DIUserDataParams *)self userDict];
-    (*(*v28 + 120))(v28, v23);
+    userDict2 = [(DIUserDataParams *)self userDict];
+    (*(*v28 + 120))(v28, userDict2);
 
     v24 = *__error();
     if (sub_1000E95F0())
@@ -378,12 +378,12 @@
   return v14;
 }
 
-- (BOOL)openExistingImageWithError:(id *)a3
+- (BOOL)openExistingImageWithError:(id *)error
 {
-  v5 = [(DIUserDataParams *)self userDict];
-  LOBYTE(a3) = -[DIBaseParams openExistingImageWithFlags:error:](self, "openExistingImageWithFlags:error:", 2 * ([v5 count] != 0), a3);
+  userDict = [(DIUserDataParams *)self userDict];
+  LOBYTE(error) = -[DIBaseParams openExistingImageWithFlags:error:](self, "openExistingImageWithFlags:error:", 2 * ([userDict count] != 0), error);
 
-  return a3;
+  return error;
 }
 
 @end

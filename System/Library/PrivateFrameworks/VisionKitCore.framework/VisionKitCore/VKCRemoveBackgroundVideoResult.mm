@@ -2,40 +2,40 @@
 - (CGSize)canvasSize;
 - (NSData)data;
 - (UTType)utType;
-- (VKCRemoveBackgroundVideoResult)initWithMADVideoResult:(id)a3 request:(id)a4;
-- (void)generateVideoSizeWithData:(id)a3;
+- (VKCRemoveBackgroundVideoResult)initWithMADVideoResult:(id)result request:(id)request;
+- (void)generateVideoSizeWithData:(id)data;
 @end
 
 @implementation VKCRemoveBackgroundVideoResult
 
-- (VKCRemoveBackgroundVideoResult)initWithMADVideoResult:(id)a3 request:(id)a4
+- (VKCRemoveBackgroundVideoResult)initWithMADVideoResult:(id)result request:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  requestCopy = request;
   v13.receiver = self;
   v13.super_class = VKCRemoveBackgroundVideoResult;
   v9 = [(VKCRemoveBackgroundVideoResult *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_madResult, a3);
-    objc_storeStrong(&v10->_request, a4);
+    objc_storeStrong(&v9->_madResult, result);
+    objc_storeStrong(&v10->_request, request);
     v10->_canvasSize = *MEMORY[0x1E695F060];
-    v11 = [(MADVideoRemoveBackgroundResult *)v10->_madResult data];
-    [(VKCRemoveBackgroundVideoResult *)v10 generateVideoSizeWithData:v11];
+    data = [(MADVideoRemoveBackgroundResult *)v10->_madResult data];
+    [(VKCRemoveBackgroundVideoResult *)v10 generateVideoSizeWithData:data];
   }
 
   return v10;
 }
 
-- (void)generateVideoSizeWithData:(id)a3
+- (void)generateVideoSizeWithData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v15 = v4;
-    v5 = CGImageSourceCreateWithData(v4, 0);
-    v4 = v15;
+    v15 = dataCopy;
+    v5 = CGImageSourceCreateWithData(dataCopy, 0);
+    dataCopy = v15;
     if (v5)
     {
       v6 = CGImageSourceCopyProperties(v5, 0);
@@ -56,25 +56,25 @@
 
       CFRelease(v5);
 
-      v4 = v15;
+      dataCopy = v15;
     }
   }
 }
 
 - (UTType)utType
 {
-  v2 = [(VKCRemoveBackgroundVideoResult *)self madResult];
-  v3 = [v2 uniformTypeIdentifier];
+  madResult = [(VKCRemoveBackgroundVideoResult *)self madResult];
+  uniformTypeIdentifier = [madResult uniformTypeIdentifier];
 
-  return v3;
+  return uniformTypeIdentifier;
 }
 
 - (NSData)data
 {
-  v2 = [(VKCRemoveBackgroundVideoResult *)self madResult];
-  v3 = [v2 data];
+  madResult = [(VKCRemoveBackgroundVideoResult *)self madResult];
+  data = [madResult data];
 
-  return v3;
+  return data;
 }
 
 - (CGSize)canvasSize

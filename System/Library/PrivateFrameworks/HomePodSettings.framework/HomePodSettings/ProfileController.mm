@@ -1,10 +1,10 @@
 @interface ProfileController
-- (void)profilesChangedForLocalDeviceWithProfiles:(id)a3;
+- (void)profilesChangedForLocalDeviceWithProfiles:(id)profiles;
 @end
 
 @implementation ProfileController
 
-- (void)profilesChangedForLocalDeviceWithProfiles:(id)a3
+- (void)profilesChangedForLocalDeviceWithProfiles:(id)profiles
 {
   v3 = sub_2543A2718();
 

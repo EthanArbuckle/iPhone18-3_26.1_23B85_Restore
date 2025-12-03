@@ -1,28 +1,28 @@
 @interface HKFeatureAvailabilityProvidingDataSource
 - (HKFeatureAvailabilityHealthDataSource)healthDataSource;
-- (HKFeatureAvailabilityProvidingDataSource)initWithHealthDataSource:(id)a3;
-- (id)featureAvailabilityProvidingForFeatureIdentifier:(id)a3;
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4;
-- (void)setKnownFeatureAvailabilityProviding:(id)a3;
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4;
+- (HKFeatureAvailabilityProvidingDataSource)initWithHealthDataSource:(id)source;
+- (id)featureAvailabilityProvidingForFeatureIdentifier:(id)identifier;
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle;
+- (void)setKnownFeatureAvailabilityProviding:(id)providing;
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key;
 @end
 
 @implementation HKFeatureAvailabilityProvidingDataSource
 
-- (HKFeatureAvailabilityProvidingDataSource)initWithHealthDataSource:(id)a3
+- (HKFeatureAvailabilityProvidingDataSource)initWithHealthDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HKFeatureAvailabilityProvidingDataSource;
   v5 = [(HKObserverBridge *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_healthDataSource, v4);
+    objc_storeWeak(&v5->_healthDataSource, sourceCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     featureAvailabilityProvidingByFeatureIdentifier = v6->_featureAvailabilityProvidingByFeatureIdentifier;
-    v6->_featureAvailabilityProvidingByFeatureIdentifier = v7;
+    v6->_featureAvailabilityProvidingByFeatureIdentifier = dictionary;
 
     v9 = HKCreateSerialDispatchQueue(v6, 0);
     observationQueue = v6->_observationQueue;
@@ -32,19 +32,19 @@
   return v6;
 }
 
-- (void)setKnownFeatureAvailabilityProviding:(id)a3
+- (void)setKnownFeatureAvailabilityProviding:(id)providing
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  providingCopy = providing;
+  v5 = providingCopy;
+  if (providingCopy)
   {
-    v6 = [v4 featureIdentifier];
+    featureIdentifier = [providingCopy featureIdentifier];
     os_unfair_lock_lock(&self->_lock);
-    v7 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:featureIdentifier];
 
     if (!v7)
     {
-      [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier setObject:v5 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier setObject:v5 forKeyedSubscript:featureIdentifier];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -53,26 +53,26 @@
   else
   {
     _HKInitializeLogging();
-    v6 = HKLogInfrastructure();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    featureIdentifier = HKLogInfrastructure();
+    if (os_log_type_enabled(featureIdentifier, OS_LOG_TYPE_ERROR))
     {
       [HKFeatureAvailabilityProvidingDataSource setKnownFeatureAvailabilityProviding:];
     }
   }
 }
 
-- (id)featureAvailabilityProvidingForFeatureIdentifier:(id)a3
+- (id)featureAvailabilityProvidingForFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_healthDataSource);
   v6 = WeakRetained;
   if (WeakRetained)
   {
     if ([WeakRetained requiresWeakRetention])
     {
-      v7 = [v6 featureAvailabilityProvidingForFeatureIdentifier:v4];
+      v7 = [v6 featureAvailabilityProvidingForFeatureIdentifier:identifierCopy];
       os_unfair_lock_lock(&self->_lock);
-      v8 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:v4];
+      v8 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
 
       if (v8)
       {
@@ -87,7 +87,7 @@ LABEL_14:
         v9 = HKLogInfrastructure();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
         {
-          [(HKFeatureAvailabilityProvidingDataSource *)self featureAvailabilityProvidingForFeatureIdentifier:v4, v9];
+          [(HKFeatureAvailabilityProvidingDataSource *)self featureAvailabilityProvidingForFeatureIdentifier:identifierCopy, v9];
         }
 
         goto LABEL_14;
@@ -97,20 +97,20 @@ LABEL_14:
     else
     {
       os_unfair_lock_lock(&self->_lock);
-      v12 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:v4];
+      v12 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
 
       if (v12)
       {
 LABEL_15:
-        v11 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:v4];
+        v11 = [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
         os_unfair_lock_unlock(&self->_lock);
         goto LABEL_16;
       }
 
-      v7 = [v6 featureAvailabilityProvidingForFeatureIdentifier:v4];
+      v7 = [v6 featureAvailabilityProvidingForFeatureIdentifier:identifierCopy];
     }
 
-    [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier setObject:v7 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_featureAvailabilityProvidingByFeatureIdentifier setObject:v7 forKeyedSubscript:identifierCopy];
     goto LABEL_14;
   }
 
@@ -127,22 +127,22 @@ LABEL_16:
   return v11;
 }
 
-- (id)makeAndRegisterBridgedObserverForKey:(id)a3 handle:(id)a4
+- (id)makeAndRegisterBridgedObserverForKey:(id)key handle:(id)handle
 {
-  v6 = a4;
-  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self featureAvailabilityProvidingForFeatureIdentifier:a3];
-  v8 = [[_HKFeatureAvailabilityProvidingObserverBridge alloc] initWithHandle:v6];
+  handleCopy = handle;
+  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self featureAvailabilityProvidingForFeatureIdentifier:key];
+  v8 = [[_HKFeatureAvailabilityProvidingObserverBridge alloc] initWithHandle:handleCopy];
 
   [v7 registerObserver:v8 queue:self->_observationQueue];
 
   return v8;
 }
 
-- (void)unregisterBridgedObserver:(id)a3 forKey:(id)a4
+- (void)unregisterBridgedObserver:(id)observer forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self featureAvailabilityProvidingForFeatureIdentifier:a4];
-  [v7 unregisterObserver:v6];
+  observerCopy = observer;
+  v7 = [(HKFeatureAvailabilityProvidingDataSource *)self featureAvailabilityProvidingForFeatureIdentifier:key];
+  [v7 unregisterObserver:observerCopy];
 }
 
 - (HKFeatureAvailabilityHealthDataSource)healthDataSource

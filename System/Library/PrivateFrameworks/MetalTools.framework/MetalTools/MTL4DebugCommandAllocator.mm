@@ -1,15 +1,15 @@
 @interface MTL4DebugCommandAllocator
-- (MTL4DebugCommandAllocator)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4DebugCommandAllocator)initWithBaseObject:(id)object parent:(id)parent;
 - (void)reset;
 @end
 
 @implementation MTL4DebugCommandAllocator
 
-- (MTL4DebugCommandAllocator)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4DebugCommandAllocator)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4DebugCommandAllocator;
-  result = [(MTL4ToolsCommandAllocator *)&v5 initWithBaseObject:a3 parent:a4];
+  result = [(MTL4ToolsCommandAllocator *)&v5 initWithBaseObject:object parent:parent];
   if (result)
   {
     result->_currentGeneration = 1;

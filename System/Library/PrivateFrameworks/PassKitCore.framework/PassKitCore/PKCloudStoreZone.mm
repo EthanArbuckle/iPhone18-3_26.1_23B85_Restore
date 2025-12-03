@@ -1,41 +1,41 @@
 @interface PKCloudStoreZone
-+ (void)zoneValueForZoneName:(id)a3 outZoneType:(unint64_t *)a4 outAccountIdentifier:(id *)a5 altDSID:(id *)a6;
-- (BOOL)isEqual:(id)a3;
-- (PKCloudStoreZone)initWithCoder:(id)a3;
-- (PKCloudStoreZone)initWithZoneID:(id)a3 containerName:(id)a4 scope:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)zoneValueForZoneName:(id)name outZoneType:(unint64_t *)type outAccountIdentifier:(id *)identifier altDSID:(id *)d;
+- (BOOL)isEqual:(id)equal;
+- (PKCloudStoreZone)initWithCoder:(id)coder;
+- (PKCloudStoreZone)initWithZoneID:(id)d containerName:(id)name scope:(int64_t)scope;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)recordZone;
-- (id)shareParticipantWithHandle:(id)a3;
-- (id)shareParticipantWithLookupInfo:(id)a3;
+- (id)shareParticipantWithHandle:(id)handle;
+- (id)shareParticipantWithLookupInfo:(id)info;
 - (id)zoneID;
 - (id)zoneSubscription;
 - (unint64_t)hash;
 - (unint64_t)zoneType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreZone
 
-- (PKCloudStoreZone)initWithZoneID:(id)a3 containerName:(id)a4 scope:(int64_t)a5
+- (PKCloudStoreZone)initWithZoneID:(id)d containerName:(id)name scope:(int64_t)scope
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = PKCloudStoreZone;
   v10 = [(PKCloudStoreZone *)&v18 init];
   if (v10)
   {
-    v11 = [v8 zoneName];
+    zoneName = [dCopy zoneName];
     zoneName = v10->_zoneName;
-    v10->_zoneName = v11;
+    v10->_zoneName = zoneName;
 
-    v13 = [v8 ownerName];
+    ownerName = [dCopy ownerName];
     ownerName = v10->_ownerName;
-    v10->_ownerName = v13;
+    v10->_ownerName = ownerName;
 
-    objc_storeStrong(&v10->_containerName, a4);
-    v10->_scope = a5;
+    objc_storeStrong(&v10->_containerName, name);
+    v10->_scope = scope;
     v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     shareParticipants = v10->_shareParticipants;
     v10->_shareParticipants = v15;
@@ -44,35 +44,35 @@
   return v10;
 }
 
-- (PKCloudStoreZone)initWithCoder:(id)a3
+- (PKCloudStoreZone)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKCloudStoreZone;
   v5 = [(PKCloudStoreZone *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ownerName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ownerName"];
     ownerName = v5->_ownerName;
     v5->_ownerName = v8;
 
-    v5->_scope = [v4 decodeIntegerForKey:@"scope"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerName"];
+    v5->_scope = [coderCopy decodeIntegerForKey:@"scope"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerName"];
     containerName = v5->_containerName;
     v5->_containerName = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneSubscriptionIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneSubscriptionIdentifier"];
     zoneSubscriptionIdentifier = v5->_zoneSubscriptionIdentifier;
     v5->_zoneSubscriptionIdentifier = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"shareParticipants"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"shareParticipants"];
     shareParticipants = v5->_shareParticipants;
     v5->_shareParticipants = v17;
   }
@@ -80,23 +80,23 @@
   return v5;
 }
 
-+ (void)zoneValueForZoneName:(id)a3 outZoneType:(unint64_t *)a4 outAccountIdentifier:(id *)a5 altDSID:(id *)a6
++ (void)zoneValueForZoneName:(id)name outZoneType:(unint64_t *)type outAccountIdentifier:(id *)identifier altDSID:(id *)d
 {
-  v9 = a3;
-  v28 = v9;
-  if (@"transactions" == v9)
+  nameCopy = name;
+  v28 = nameCopy;
+  if (@"transactions" == nameCopy)
   {
 
     goto LABEL_7;
   }
 
-  if (!v9 || !@"transactions")
+  if (!nameCopy || !@"transactions")
   {
 
     goto LABEL_9;
   }
 
-  v10 = [(__CFString *)v9 isEqualToString:@"transactions"];
+  v10 = [(__CFString *)nameCopy isEqualToString:@"transactions"];
 
   if (v10)
   {
@@ -265,21 +265,21 @@ LABEL_24:
   }
 
 LABEL_32:
-  if (a5)
+  if (identifier)
   {
     v20 = v12;
-    *a5 = v12;
+    *identifier = v12;
   }
 
-  if (a6)
+  if (d)
   {
     v21 = v11;
-    *a6 = v11;
+    *d = v11;
   }
 
-  if (a4)
+  if (type)
   {
-    *a4 = v13;
+    *type = v13;
   }
 }
 
@@ -290,10 +290,10 @@ LABEL_32:
   return v3;
 }
 
-- (id)shareParticipantWithHandle:(id)a3
+- (id)shareParticipantWithHandle:(id)handle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handleCopy = handle;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -313,9 +313,9 @@ LABEL_32:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 participantHandle];
-        v11 = v4;
-        v12 = v10;
+        participantHandle = [v9 participantHandle];
+        v11 = handleCopy;
+        v12 = participantHandle;
         v13 = v12;
         if (v12 == v11)
         {
@@ -325,7 +325,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v4 && v12)
+        if (handleCopy && v12)
         {
           v14 = [v11 isEqualToString:v12];
 
@@ -355,10 +355,10 @@ LABEL_17:
   return v6;
 }
 
-- (id)shareParticipantWithLookupInfo:(id)a3
+- (id)shareParticipantWithLookupInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -378,11 +378,11 @@ LABEL_17:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 lookupInfo];
-        v11 = v10;
-        if (v4 && v10)
+        lookupInfo = [v9 lookupInfo];
+        v11 = lookupInfo;
+        if (infoCopy && lookupInfo)
         {
-          v12 = [v4 isEqual:v10];
+          v12 = [infoCopy isEqual:lookupInfo];
 
           if (v12)
           {
@@ -393,7 +393,7 @@ LABEL_17:
         else
         {
 
-          if (v11 == v4)
+          if (v11 == infoCopy)
           {
 LABEL_14:
             v6 = v9;
@@ -419,10 +419,10 @@ LABEL_15:
 
 - (id)recordZone
 {
-  v2 = [(PKCloudStoreZone *)self zoneID];
-  if (v2)
+  zoneID = [(PKCloudStoreZone *)self zoneID];
+  if (zoneID)
   {
-    v3 = [objc_alloc(MEMORY[0x1E695BA80]) initWithZoneID:v2];
+    v3 = [objc_alloc(MEMORY[0x1E695BA80]) initWithZoneID:zoneID];
   }
 
   else
@@ -461,9 +461,9 @@ LABEL_15:
   if (self->_zoneSubscriptionIdentifier)
   {
     v3 = objc_alloc(MEMORY[0x1E695BAA0]);
-    v4 = [(PKCloudStoreZone *)self recordZone];
-    v5 = [v4 zoneID];
-    v6 = [v3 initWithZoneID:v5 subscriptionID:self->_zoneSubscriptionIdentifier];
+    recordZone = [(PKCloudStoreZone *)self recordZone];
+    zoneID = [recordZone zoneID];
+    v6 = [v3 initWithZoneID:zoneID subscriptionID:self->_zoneSubscriptionIdentifier];
   }
 
   else
@@ -474,50 +474,50 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   zoneName = self->_zoneName;
-  v5 = a3;
-  [v5 encodeObject:zoneName forKey:@"zoneName"];
-  [v5 encodeObject:self->_zoneSubscriptionIdentifier forKey:@"zoneSubscriptionIdentifier"];
-  [v5 encodeObject:self->_ownerName forKey:@"ownerName"];
-  [v5 encodeInteger:self->_scope forKey:@"scope"];
-  [v5 encodeObject:self->_shareParticipants forKey:@"shareParticipants"];
+  coderCopy = coder;
+  [coderCopy encodeObject:zoneName forKey:@"zoneName"];
+  [coderCopy encodeObject:self->_zoneSubscriptionIdentifier forKey:@"zoneSubscriptionIdentifier"];
+  [coderCopy encodeObject:self->_ownerName forKey:@"ownerName"];
+  [coderCopy encodeInteger:self->_scope forKey:@"scope"];
+  [coderCopy encodeObject:self->_shareParticipants forKey:@"shareParticipants"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKCloudStoreZone allocWithZone:](PKCloudStoreZone init];
-  v6 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v6 = [(NSString *)self->_zoneName copyWithZone:zone];
   zoneName = v5->_zoneName;
   v5->_zoneName = v6;
 
-  v8 = [(NSString *)self->_containerName copyWithZone:a3];
+  v8 = [(NSString *)self->_containerName copyWithZone:zone];
   containerName = v5->_containerName;
   v5->_containerName = v8;
 
-  v10 = [(NSString *)self->_zoneSubscriptionIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_zoneSubscriptionIdentifier copyWithZone:zone];
   zoneSubscriptionIdentifier = v5->_zoneSubscriptionIdentifier;
   v5->_zoneSubscriptionIdentifier = v10;
 
-  v12 = [(NSString *)self->_ownerName copyWithZone:a3];
+  v12 = [(NSString *)self->_ownerName copyWithZone:zone];
   ownerName = v5->_ownerName;
   v5->_ownerName = v12;
 
   v5->_scope = self->_scope;
-  v14 = [(NSSet *)self->_shareParticipants copyWithZone:a3];
+  v14 = [(NSSet *)self->_shareParticipants copyWithZone:zone];
   shareParticipants = v5->_shareParticipants;
   v5->_shareParticipants = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -585,13 +585,13 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_zoneName];
-  [v3 safelyAddObject:self->_zoneSubscriptionIdentifier];
-  [v3 safelyAddObject:self->_containerName];
-  [v3 safelyAddObject:self->_ownerName];
-  [v3 safelyAddObject:self->_shareParticipants];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_zoneName];
+  [array safelyAddObject:self->_zoneSubscriptionIdentifier];
+  [array safelyAddObject:self->_containerName];
+  [array safelyAddObject:self->_ownerName];
+  [array safelyAddObject:self->_shareParticipants];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_scope - v4 + 32 * v4;
 
   return v5;

@@ -1,46 +1,46 @@
 @interface NTKSimpleFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (NTKSimpleFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_backgroundAlphaForEditMode:(int64_t)a3;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (NTKSimpleFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_backgroundAlphaForEditMode:(int64_t)mode;
 - (double)_dateComplicationCenterOffset;
 - (double)_dateComplicationRightAlignment;
-- (double)_handsAlphaForEditMode:(int64_t)a3;
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3;
-- (double)_secondHandAlphaForEditMode:(int64_t)a3;
+- (double)_handsAlphaForEditMode:(int64_t)mode;
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot;
+- (double)_secondHandAlphaForEditMode:(int64_t)mode;
 - (double)_verticalPaddingForStatusBar;
-- (id)_createTickReplicatorForTick:(id)a3 radius:(double)a4 count:(unint64_t)a5 skip:(unint64_t)a6;
-- (id)_createTickWithSize:(CGSize)a3 rounded:(BOOL)a4;
-- (id)_createTicksAndReplicators:(id *)a3 forDensity:(unint64_t)a4;
-- (id)_createTicksViewForDensityIfNeeded:(unint64_t)a3;
-- (id)_dateComplicationFontForStyle:(unint64_t)a3;
-- (id)_faceColorSchemeForFaceColorPalette:(id)a3;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_slotForUtilitySlot:(int64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4;
-- (int64_t)_utilitySlotForSlot:(id)a3;
-- (unint64_t)_layoutStyleForSlot:(id)a3;
-- (unint64_t)textLayoutStyleForSlot:(int64_t)a3;
-- (void)_addDetailedMinutesToView:(id)a3;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyForegroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationFactory:(id)a3;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (id)_createTickReplicatorForTick:(id)tick radius:(double)radius count:(unint64_t)count skip:(unint64_t)skip;
+- (id)_createTickWithSize:(CGSize)size rounded:(BOOL)rounded;
+- (id)_createTicksAndReplicators:(id *)replicators forDensity:(unint64_t)density;
+- (id)_createTicksViewForDensityIfNeeded:(unint64_t)needed;
+- (id)_dateComplicationFontForStyle:(unint64_t)style;
+- (id)_faceColorSchemeForFaceColorPalette:(id)palette;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_slotForUtilitySlot:(int64_t)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot;
+- (int64_t)_utilitySlotForSlot:(id)slot;
+- (unint64_t)_layoutStyleForSlot:(id)slot;
+- (unint64_t)textLayoutStyleForSlot:(int64_t)slot;
+- (void)_addDetailedMinutesToView:(id)view;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyForegroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationFactory:(id)factory;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_createBackgroundViewIfNeeded;
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8;
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot;
 - (void)_handleBoldTextPreferenceChange;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
-- (void)_prepareForStatusChange:(BOOL)a3;
+- (void)_prepareForStatusChange:(BOOL)change;
 - (void)_removeComplicationOverlapHiding;
-- (void)_setDensity:(unint64_t)a3;
+- (void)_setDensity:(unint64_t)density;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateComplicationOverlapHiding;
 - (void)_updateDateComplicationPositionIfNecessary;
@@ -50,18 +50,18 @@
 
 @implementation NTKSimpleFaceView
 
-- (NTKSimpleFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSimpleFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKSimpleFaceView;
-  v9 = [(NTKSimpleFaceView *)&v15 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKSimpleFaceView *)&v15 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
     v9->_ticksLargeLightness = 1.0;
     v9->_ticksSmallLightness = 1.0;
-    v11 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v11 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     complicationFactory = v10->_complicationFactory;
     v10->_complicationFactory = v11;
 
@@ -94,15 +94,15 @@
   v23.size.height = v10;
   CGRectGetWidth(v23);
   y = CGPointZero.y;
-  v12 = [(NTKSimpleFaceView *)self device];
+  device = [(NTKSimpleFaceView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(NTKSimpleFaceView *)self timeView];
-  [v21 ntk_setBoundsAndPositionFromFrame:{v14, v16, v18, v20}];
+  timeView = [(NTKSimpleFaceView *)self timeView];
+  [timeView ntk_setBoundsAndPositionFromFrame:{v14, v16, v18, v20}];
 
   [(NTKSimpleFaceView *)self _updateDateComplicationPositionIfNecessary];
   [(NTKSimpleFaceView *)self _updateComplicationOverlapHiding];
@@ -116,10 +116,10 @@
   [(NTKSimpleFaceView *)self _createBackgroundViewIfNeeded];
   v3 = [(NTKSimpleFaceView *)self _createTicksViewForDensityIfNeeded:self->_density];
   [(NTKSimpleFaceView *)self _updateComplicationOverlapHiding];
-  v4 = [(NTKSimpleFaceView *)self contentView];
-  [v4 addSubview:self->_backgroundView];
+  contentView = [(NTKSimpleFaceView *)self contentView];
+  [contentView addSubview:self->_backgroundView];
   v5 = +[UIColor blackColor];
-  [v4 setBackgroundColor:v5];
+  [contentView setBackgroundColor:v5];
 }
 
 - (void)_unloadSnapshotContentViews
@@ -143,15 +143,15 @@
   }
 
   while (v4 != 4);
-  v7 = [(NTKSimpleFaceView *)self contentView];
+  contentView = [(NTKSimpleFaceView *)self contentView];
   v8 = +[UIColor clearColor];
-  [v7 setBackgroundColor:v8];
+  [contentView setBackgroundColor:v8];
 }
 
 - (double)_verticalPaddingForStatusBar
 {
-  v2 = [(NTKSimpleFaceView *)self device];
-  if ([v2 sizeClass])
+  device = [(NTKSimpleFaceView *)self device];
+  if ([device sizeClass])
   {
     v3 = 1.0;
   }
@@ -164,44 +164,44 @@
   return v3;
 }
 
-- (void)_prepareForStatusChange:(BOOL)a3
+- (void)_prepareForStatusChange:(BOOL)change
 {
   v5.receiver = self;
   v5.super_class = NTKSimpleFaceView;
   [(NTKSimpleFaceView *)&v5 _prepareForStatusChange:?];
-  self->_showingStatus = a3;
+  self->_showingStatus = change;
   [(NTKSimpleFaceView *)self _updateComplicationOverlapHiding];
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqualToString:NTKComplicationSlotTopLeft])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotTopLeft])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:NTKComplicationSlotTopRight])
+  else if ([slotCopy isEqualToString:NTKComplicationSlotTopRight])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:NTKComplicationSlotBottomLeft])
+  else if ([slotCopy isEqualToString:NTKComplicationSlotBottomLeft])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:NTKComplicationSlotBottomRight])
+  else if ([slotCopy isEqualToString:NTKComplicationSlotBottomRight])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:NTKComplicationSlotBottomCenter])
+  else if ([slotCopy isEqualToString:NTKComplicationSlotBottomCenter])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:NTKComplicationSlotDate])
+  else if ([slotCopy isEqualToString:NTKComplicationSlotDate])
   {
     v4 = 12;
   }
@@ -214,10 +214,10 @@
   return v4;
 }
 
-- (id)_slotForUtilitySlot:(int64_t)a3
+- (id)_slotForUtilitySlot:(int64_t)slot
 {
-  v4 = a3 - 1;
-  if (a3 - 1) <= 0xB && ((0xA0Fu >> v4))
+  v4 = slot - 1;
+  if (slot - 1) <= 0xB && ((0xA0Fu >> v4))
   {
     v5 = **(&off_10470 + v4);
   }
@@ -230,65 +230,65 @@
   return v5;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:v10 family:a4 forSlot:[(NTKSimpleFaceView *)self _utilitySlotForSlot:v9]];
+  slotCopy = slot;
+  complicationCopy = complication;
+  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:complicationCopy family:family forSlot:[(NTKSimpleFaceView *)self _utilitySlotForSlot:slotCopy]];
 
-  [(NTKSimpleFaceView *)self _configureComplicationView:v11 forSlot:v9];
+  [(NTKSimpleFaceView *)self _configureComplicationView:v11 forSlot:slotCopy];
   return v11;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v9 = a3;
-  v6 = a4;
-  [(NTKUtilityComplicationFactory *)self->_complicationFactory configureComplicationView:v9 forSlot:v6];
-  if ([v9 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+  viewCopy = view;
+  slotCopy = slot;
+  [(NTKUtilityComplicationFactory *)self->_complicationFactory configureComplicationView:viewCopy forSlot:slotCopy];
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
   {
     complicationFactory = self->_complicationFactory;
-    v8 = v9;
+    v8 = viewCopy;
     [(NTKUtilityComplicationFactory *)complicationFactory foregroundAlphaForEditing:[(NTKSimpleFaceView *)self editing]];
     [v8 setForegroundAlpha:?];
     [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForEditing:[(NTKSimpleFaceView *)self editing]];
     [v8 setForegroundImageAlpha:?];
     [v8 setAccentColor:self->_accentColor];
-    [v8 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKSimpleFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", v6))}];
+    [v8 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKSimpleFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", slotCopy))}];
   }
 }
 
-- (unint64_t)_layoutStyleForSlot:(id)a3
+- (unint64_t)_layoutStyleForSlot:(id)slot
 {
-  if ([a3 isEqualToString:NTKComplicationSlotDate])
+  if ([slot isEqualToString:NTKComplicationSlotDate])
   {
     return 0;
   }
 
-  v5 = [(NTKSimpleFaceView *)self device];
-  v4 = [v5 deviceCategory] != &dword_0 + 1;
+  device = [(NTKSimpleFaceView *)self device];
+  v4 = [device deviceCategory] != &dword_0 + 1;
 
   return v4;
 }
 
-- (void)_curvedComplicationCircleRadius:(double *)a3 centerAngle:(double *)a4 maxAngularWidth:(double *)a5 circleCenter:(CGPoint *)a6 interior:(BOOL *)a7 forSlot:(id)a8
+- (void)_curvedComplicationCircleRadius:(double *)radius centerAngle:(double *)angle maxAngularWidth:(double *)width circleCenter:(CGPoint *)center interior:(BOOL *)interior forSlot:(id)slot
 {
-  v16 = a8;
+  slotCopy = slot;
   if ([(NTKSimpleFaceView *)self _layoutStyleForSlot:?]== &dword_0 + 1)
   {
-    v14 = [(NTKSimpleFaceView *)self _utilitySlotForSlot:v16];
-    v15 = [(NTKSimpleFaceView *)self device];
-    [NTKUtilityComplicationFactory curvedCircleRadius:a3 centerAngle:a4 maxAngularWidth:a5 circleCenter:a6 interior:a7 forSlot:v14 forDevice:v15];
+    v14 = [(NTKSimpleFaceView *)self _utilitySlotForSlot:slotCopy];
+    device = [(NTKSimpleFaceView *)self device];
+    [NTKUtilityComplicationFactory curvedCircleRadius:radius centerAngle:angle maxAngularWidth:width circleCenter:center interior:interior forSlot:v14 forDevice:device];
   }
 }
 
-- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)a3 slot:(id)a4
+- (int64_t)_legacyLayoutOverrideforComplicationType:(unint64_t)type slot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v6 = [(NTKSimpleFaceView *)self _utilitySlotForSlot:a4];
+  v6 = [(NTKSimpleFaceView *)self _utilitySlotForSlot:slot];
 
-  return [(NTKUtilityComplicationFactory *)complicationFactory layoutOverrideForComplicationType:a3 inSlot:v6];
+  return [(NTKUtilityComplicationFactory *)complicationFactory layoutOverrideForComplicationType:type inSlot:v6];
 }
 
 - (void)_loadLayoutRules
@@ -334,33 +334,33 @@
   }
 }
 
-- (id)_faceColorSchemeForFaceColorPalette:(id)a3
+- (id)_faceColorSchemeForFaceColorPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [(NTKSimpleFaceView *)self device];
-  v6 = [NTKFaceColorScheme colorSchemeForDevice:v5 withFaceColorPalette:v4 units:392];
+  paletteCopy = palette;
+  device = [(NTKSimpleFaceView *)self device];
+  v6 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:paletteCopy units:392];
 
   return v6;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 == 11)
+  optionCopy = option;
+  slotCopy = slot;
+  v10 = slotCopy;
+  if (mode == 11)
   {
-    v32 = [v8 density];
-    [(NTKSimpleFaceView *)self _setDensity:v32];
+    density = [optionCopy density];
+    [(NTKSimpleFaceView *)self _setDensity:density];
     v33 = 0;
     v38 = *&CGAffineTransformIdentity.c;
     v40 = *&CGAffineTransformIdentity.a;
     v36 = *&CGAffineTransformIdentity.tx;
     do
     {
-      if (v32 == v33)
+      if (density == v33)
       {
-        v34 = [(NTKSimpleFaceView *)self _createTicksViewForDensityIfNeeded:v32];
+        v34 = [(NTKSimpleFaceView *)self _createTicksViewForDensityIfNeeded:density];
         v35 = 1.0;
       }
 
@@ -382,24 +382,24 @@
     while (v33 != &dword_4);
   }
 
-  else if (a4 == 10)
+  else if (mode == 10)
   {
-    v37 = v9;
-    v39 = v8;
-    v11 = [(NTKSimpleFaceView *)self faceColorPalette];
-    v12 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:v11];
+    v37 = slotCopy;
+    v39 = optionCopy;
+    faceColorPalette = [(NTKSimpleFaceView *)self faceColorPalette];
+    v12 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:faceColorPalette];
 
-    v13 = [(NTKSimpleFaceView *)self timeView];
-    v14 = [v12 accentColor];
-    [v13 applySecondHandColor:v14];
+    timeView = [(NTKSimpleFaceView *)self timeView];
+    accentColor = [v12 accentColor];
+    [timeView applySecondHandColor:accentColor];
 
-    v15 = [v12 tickColor];
+    tickColor = [v12 tickColor];
     ticksSmallColor = self->_ticksSmallColor;
-    self->_ticksSmallColor = v15;
+    self->_ticksSmallColor = tickColor;
 
-    v17 = [v12 alternativeTickColor];
+    alternativeTickColor = [v12 alternativeTickColor];
     ticksLargeColor = self->_ticksLargeColor;
-    self->_ticksLargeColor = v17;
+    self->_ticksLargeColor = alternativeTickColor;
 
     for (i = 0; i != 4; ++i)
     {
@@ -414,22 +414,22 @@
       }
 
       v21 = v20;
-      v22 = [(NTKSimpleFaceViewTicksView *)v20 smallTick];
+      smallTick = [(NTKSimpleFaceViewTicksView *)v20 smallTick];
       v23 = self->_ticksSmallColor;
       v24 = qword_C130[i];
       v25 = NTKColorByPremultiplyingAlpha();
-      [v22 setBackgroundColor:{objc_msgSend(v25, "CGColor")}];
+      [smallTick setBackgroundColor:{objc_msgSend(v25, "CGColor")}];
 
-      v26 = [(NTKSimpleFaceViewTicksView *)v21 largeTick];
+      largeTick = [(NTKSimpleFaceViewTicksView *)v21 largeTick];
       v27 = self->_ticksLargeColor;
       v28 = qword_C150[i];
       v29 = NTKColorByPremultiplyingAlpha();
-      [v26 setBackgroundColor:{objc_msgSend(v29, "CGColor")}];
+      [largeTick setBackgroundColor:{objc_msgSend(v29, "CGColor")}];
     }
 
-    v30 = [v12 accentColor];
+    accentColor2 = [v12 accentColor];
     accentColor = self->_accentColor;
-    self->_accentColor = v30;
+    self->_accentColor = accentColor2;
 
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
@@ -438,7 +438,7 @@
     v42[4] = self;
     [(NTKSimpleFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v42];
 
-    v8 = v39;
+    optionCopy = v39;
     v10 = v37;
   }
 }
@@ -461,11 +461,11 @@
   [(NTKSimpleFaceView *)self _updateDateComplicationPositionIfNecessary];
 }
 
-- (void)_setDensity:(unint64_t)a3
+- (void)_setDensity:(unint64_t)density
 {
-  if (self->_density != a3)
+  if (self->_density != density)
   {
-    self->_density = a3;
+    self->_density = density;
     [(NTKSimpleFaceView *)self _updateDateComplicationPositionIfNecessary];
 
     [(NTKSimpleFaceView *)self layoutComplicationViews];
@@ -489,55 +489,55 @@
   v6 = [(NTKSimpleFaceView *)self _createTicksViewForDensityIfNeeded:self->_density];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v43.receiver = self;
   v43.super_class = NTKSimpleFaceView;
-  [(NTKSimpleFaceView *)&v43 _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 == 11)
+  [(NTKSimpleFaceView *)&v43 _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode == 11)
   {
-    v32 = [v12 density];
-    v33 = [v13 density];
+    density = [optionCopy density];
+    density2 = [toOptionCopy density];
     v34 = 0;
     do
     {
-      if (v32 == v34 || v33 == v34)
+      if (density == v34 || density2 == v34)
       {
-        if (v33 == v34)
+        if (density2 == v34)
         {
-          v37 = a3;
+          fractionCopy = fraction;
         }
 
         else
         {
-          v37 = 1.0 - a3;
+          fractionCopy = 1.0 - fraction;
         }
 
-        if (v32 == v33)
+        if (density == density2)
         {
           v36 = 1.0;
         }
 
         else
         {
-          v36 = v37;
+          v36 = fractionCopy;
         }
 
-        v35 = [(NTKSimpleFaceView *)self _createTicksViewForDensityIfNeeded:v34, v37];
+        fractionCopy = [(NTKSimpleFaceView *)self _createTicksViewForDensityIfNeeded:v34, fractionCopy];
       }
 
       else
       {
-        v35 = self->_ticksViews[v34];
+        fractionCopy = self->_ticksViews[v34];
         v36 = 0.0;
       }
 
       v38 = v36 * v36 * (v36 * -2.0 + 3.0) * 0.2 + 0.8;
-      [(NTKSimpleFaceViewTicksView *)v35 setAlpha:?];
+      [(NTKSimpleFaceViewTicksView *)fractionCopy setAlpha:?];
       CGAffineTransformMakeScale(&v40, v38, v38);
-      [(NTKSimpleFaceViewTicksView *)v35 setTransform:&v40];
+      [(NTKSimpleFaceViewTicksView *)fractionCopy setTransform:&v40];
 
       v34 = v34 + 1;
     }
@@ -545,100 +545,100 @@
     while (v34 != &dword_4);
   }
 
-  else if (a6 == 10)
+  else if (mode == 10)
   {
-    v14 = [(NTKSimpleFaceView *)self interpolatedColorPalette];
-    v15 = [v14 fromPalette];
-    v16 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:v15];
-    v17 = [(NTKSimpleFaceView *)self interpolatedColorPalette];
-    v18 = [v17 toPalette];
-    v19 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:v18];
-    v20 = [NTKFaceColorScheme interpolationFrom:v16 to:v19 fraction:a3];
+    interpolatedColorPalette = [(NTKSimpleFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    v16 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:fromPalette];
+    interpolatedColorPalette2 = [(NTKSimpleFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
+    v19 = [(NTKSimpleFaceView *)self _faceColorSchemeForFaceColorPalette:toPalette];
+    v20 = [NTKFaceColorScheme interpolationFrom:v16 to:v19 fraction:fraction];
 
-    v39 = [v20 tickColor];
-    v21 = [v20 alternativeTickColor];
-    v22 = [v20 accentColor];
+    tickColor = [v20 tickColor];
+    alternativeTickColor = [v20 alternativeTickColor];
+    accentColor = [v20 accentColor];
     v23 = [(NTKSimpleFaceView *)self _createTicksViewForDensityIfNeeded:self->_density];
-    v24 = [v23 smallTick];
+    smallTick = [v23 smallTick];
     v25 = qword_C130[self->_density];
     v26 = NTKColorByPremultiplyingAlpha();
-    [v24 setBackgroundColor:{objc_msgSend(v26, "CGColor")}];
+    [smallTick setBackgroundColor:{objc_msgSend(v26, "CGColor")}];
 
-    v27 = [v23 largeTick];
+    largeTick = [v23 largeTick];
     v28 = qword_C150[self->_density];
     v29 = NTKColorByPremultiplyingAlpha();
-    [v27 setBackgroundColor:{objc_msgSend(v29, "CGColor")}];
+    [largeTick setBackgroundColor:{objc_msgSend(v29, "CGColor")}];
 
-    v30 = [(NTKSimpleFaceView *)self timeView];
-    [v30 applySecondHandColor:v22];
+    timeView = [(NTKSimpleFaceView *)self timeView];
+    [timeView applySecondHandColor:accentColor];
 
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_2F34;
     v41[3] = &unk_103E0;
-    v42 = v22;
-    v31 = v22;
+    v42 = accentColor;
+    v31 = accentColor;
     [(NTKSimpleFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v41];
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v14.receiver = self;
   v14.super_class = NTKSimpleFaceView;
   [(NTKSimpleFaceView *)&v14 _configureForEditMode:?];
-  [(NTKSimpleFaceView *)self _handsAlphaForEditMode:a3];
+  [(NTKSimpleFaceView *)self _handsAlphaForEditMode:mode];
   v6 = v5;
-  [(NTKSimpleFaceView *)self _secondHandAlphaForEditMode:a3];
+  [(NTKSimpleFaceView *)self _secondHandAlphaForEditMode:mode];
   v8 = v7;
-  v9 = [(NTKSimpleFaceView *)self timeView];
-  v10 = [v9 minuteHandView];
-  [v10 setAlpha:v6];
+  timeView = [(NTKSimpleFaceView *)self timeView];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setAlpha:v6];
 
-  v11 = [v9 hourHandView];
-  [v11 setAlpha:v6];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setAlpha:v6];
 
-  v12 = [v9 secondHandView];
-  [v12 setAlpha:v8];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setAlpha:v8];
 
   backgroundView = self->_backgroundView;
-  [(NTKSimpleFaceView *)self _backgroundAlphaForEditMode:a3];
+  [(NTKSimpleFaceView *)self _backgroundAlphaForEditMode:mode];
   [(UIView *)backgroundView setAlpha:?];
-  [(NTKSimpleFaceView *)self _applyForegroundAlphaForTransitionFraction:a3 fromEditMode:a3 toEditMode:0.0];
+  [(NTKSimpleFaceView *)self _applyForegroundAlphaForTransitionFraction:mode fromEditMode:mode toEditMode:0.0];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [(NTKSimpleFaceView *)self _handsAlphaForEditMode:?];
-  [(NTKSimpleFaceView *)self _handsAlphaForEditMode:a5];
+  [(NTKSimpleFaceView *)self _handsAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v10 = v9;
-  [(NTKSimpleFaceView *)self _secondHandAlphaForEditMode:a4];
-  [(NTKSimpleFaceView *)self _secondHandAlphaForEditMode:a5];
+  [(NTKSimpleFaceView *)self _secondHandAlphaForEditMode:mode];
+  [(NTKSimpleFaceView *)self _secondHandAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  v16 = [(NTKSimpleFaceView *)self timeView];
-  v13 = [v16 minuteHandView];
-  [v13 setAlpha:v10];
+  timeView = [(NTKSimpleFaceView *)self timeView];
+  minuteHandView = [timeView minuteHandView];
+  [minuteHandView setAlpha:v10];
 
-  v14 = [v16 hourHandView];
-  [v14 setAlpha:v10];
+  hourHandView = [timeView hourHandView];
+  [hourHandView setAlpha:v10];
 
-  v15 = [v16 secondHandView];
-  [v15 setAlpha:v12];
+  secondHandView = [timeView secondHandView];
+  [secondHandView setAlpha:v12];
 
-  [(NTKSimpleFaceView *)self _backgroundAlphaForEditMode:a4];
-  [(NTKSimpleFaceView *)self _backgroundAlphaForEditMode:a5];
+  [(NTKSimpleFaceView *)self _backgroundAlphaForEditMode:mode];
+  [(NTKSimpleFaceView *)self _backgroundAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   [(UIView *)self->_backgroundView setAlpha:?];
-  [(NTKSimpleFaceView *)self _applyForegroundAlphaForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKSimpleFaceView *)self _applyForegroundAlphaForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
 }
 
-- (void)_applyForegroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_applyForegroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [NTKUtilityComplicationFactory foregroundAlphaForTransitionFraction:"foregroundAlphaForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
   v10 = v9;
-  [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_32DC;
@@ -648,21 +648,21 @@
   [(NTKSimpleFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v12];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v14.receiver = self;
   v14.super_class = NTKSimpleFaceView;
-  [(NTKSimpleFaceView *)&v14 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKSimpleFaceView *)&v14 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     v10 = v9;
-    v11 = [(NTKSimpleFaceView *)self timeView];
-    v12 = [v11 secondHandView];
-    [v12 setScale:v10];
+    timeView = [(NTKSimpleFaceView *)self timeView];
+    secondHandView = [timeView secondHandView];
+    [secondHandView setScale:v10];
   }
 
-  else if (a4 == 11)
+  else if (mode == 11)
   {
     NTKLargeElementScaleForBreathingFraction();
     backgroundView = self->_backgroundView;
@@ -671,27 +671,27 @@
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v18.receiver = self;
   v18.super_class = NTKSimpleFaceView;
-  [(NTKSimpleFaceView *)&v18 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKSimpleFaceView *)&v18 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKAlphaForRubberBandingFraction();
     v10 = v9;
-    v11 = [(NTKSimpleFaceView *)self timeView];
-    v12 = [v11 secondHandView];
-    [v12 setAlpha:v10];
+    timeView = [(NTKSimpleFaceView *)self timeView];
+    secondHandView = [timeView secondHandView];
+    [secondHandView setAlpha:v10];
 
     NTKScaleForRubberBandingFraction();
     v14 = v13;
-    v15 = [(NTKSimpleFaceView *)self timeView];
-    v16 = [v15 secondHandView];
-    [v16 setScale:v14];
+    timeView2 = [(NTKSimpleFaceView *)self timeView];
+    secondHandView2 = [timeView2 secondHandView];
+    [secondHandView2 setScale:v14];
   }
 
-  else if (a4 == 11)
+  else if (mode == 11)
   {
     NTKScaleForRubberBandingFraction();
     backgroundView = self->_backgroundView;
@@ -702,9 +702,9 @@
   }
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = [(NTKSimpleFaceView *)self _keylineViewForDensityEditing:11];
   }
@@ -713,15 +713,15 @@
   {
     v6.receiver = self;
     v6.super_class = NTKSimpleFaceView;
-    v4 = [(NTKSimpleFaceView *)&v6 _keylineViewForCustomEditMode:a3 slot:a4];
+    v4 = [(NTKSimpleFaceView *)&v6 _keylineViewForCustomEditMode:mode slot:slot];
   }
 
   return v4;
 }
 
-- (CGRect)_keylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_keylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     v4 = [(NTKSimpleFaceView *)self device:11];
     [v4 screenBounds];
@@ -735,7 +735,7 @@
   {
     v21.receiver = self;
     v21.super_class = NTKSimpleFaceView;
-    [(NTKSimpleFaceView *)&v21 _relativeKeylineFrameForCustomEditMode:a3 slot:a4];
+    [(NTKSimpleFaceView *)&v21 _relativeKeylineFrameForCustomEditMode:mode slot:slot];
     v6 = v13;
     v8 = v14;
     v10 = v15;
@@ -753,17 +753,17 @@
   return result;
 }
 
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqual:NTKComplicationSlotDate])
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotDate])
   {
     NTKKeylineCornerRadiusSmall();
   }
 
   else
   {
-    [(NTKUtilityComplicationFactory *)self->_complicationFactory keylineCornerRadiusForSlot:[(NTKSimpleFaceView *)self _utilitySlotForSlot:v4]];
+    [(NTKUtilityComplicationFactory *)self->_complicationFactory keylineCornerRadiusForSlot:[(NTKSimpleFaceView *)self _utilitySlotForSlot:slotCopy]];
   }
 
   v6 = v5;
@@ -771,9 +771,9 @@
   return v6;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 11)
+  if (options == 11)
   {
     return &off_10B80;
   }
@@ -784,15 +784,15 @@
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 == 11)
+  optionCopy = option;
+  v9 = optionCopy;
+  if (mode == 11)
   {
-    v10 = v8;
-    v11 = [a5 objectForKeyedSubscript:&off_10918];
-    v12 = [objc_opt_class() _swatchImageFaceName];
+    v10 = optionCopy;
+    v11 = [options objectForKeyedSubscript:&off_10918];
+    _swatchImageFaceName = [objc_opt_class() _swatchImageFaceName];
     if (!qword_15C58)
     {
       v13 = objc_opt_new();
@@ -800,40 +800,40 @@
       qword_15C58 = v13;
     }
 
-    v15 = [NSString stringWithFormat:@"%@-%@-%@", v12, v10, v11];
+    v15 = [NSString stringWithFormat:@"%@-%@-%@", _swatchImageFaceName, v10, v11];
     v16 = [qword_15C58 objectForKey:v15];
     if (!v16)
     {
-      v17 = [v10 density];
+      density = [v10 density];
       v52 = v15;
-      if (v17 > 3)
+      if (density > 3)
       {
         v18 = 0;
       }
 
       else
       {
-        v18 = *(&off_104D0 + v17);
+        v18 = *(&off_104D0 + density);
       }
 
-      v55 = [NSString stringWithFormat:v18, v12];
-      v19 = [(NTKSimpleFaceView *)self faceColorPalette];
-      v20 = [v19 copy];
+      v55 = [NSString stringWithFormat:v18, _swatchImageFaceName];
+      faceColorPalette = [(NTKSimpleFaceView *)self faceColorPalette];
+      v20 = [faceColorPalette copy];
 
       if ([v11 conformsToProtocol:&OBJC_PROTOCOL___NTKPigmentEditOptionConvertible])
       {
         v21 = [NTKFaceColorPaletteConfiguration alloc];
-        v22 = [v11 pigmentEditOption];
-        v23 = [v21 initWithPigmentEditOption:v22];
+        pigmentEditOption = [v11 pigmentEditOption];
+        v23 = [v21 initWithPigmentEditOption:pigmentEditOption];
         [v20 setConfiguration:v23];
       }
 
-      v24 = [(NTKSimpleFaceView *)self device];
+      device = [(NTKSimpleFaceView *)self device];
       v51 = v20;
-      v25 = [NTKFaceColorScheme colorSchemeForDevice:v24 withFaceColorPalette:v20 units:392];
+      v25 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:v20 units:392];
 
       v54 = CLKLocaleNumberSystemPrefix();
-      if ([v12 isEqualToString:@"Utility"])
+      if ([_swatchImageFaceName isEqualToString:@"Utility"])
       {
         v26 = @"Swatch-Utility-Face-SmallTicks";
         v27 = v55;
@@ -847,12 +847,12 @@
 
       v50 = v26;
       v28 = NTKImageNamed();
-      v29 = [v25 tickColor];
-      v48 = [v28 _flatImageWithColor:v29];
+      tickColor = [v25 tickColor];
+      v48 = [v28 _flatImageWithColor:tickColor];
 
       v30 = [v27 stringByAppendingString:@"-LargeTicks"];
       v53 = v10;
-      if ([v12 isEqualToString:@"Utility"] && objc_msgSend(v10, "density") || objc_msgSend(v10, "density") == &dword_0 + 3)
+      if ([_swatchImageFaceName isEqualToString:@"Utility"] && objc_msgSend(v10, "density") || objc_msgSend(v10, "density") == &dword_0 + 3)
       {
         v31 = [v30 stringByAppendingFormat:@"-%@", v54];
         v32 = v30;
@@ -862,8 +862,8 @@
       v47 = v30;
       v33 = NTKImageNamed();
       v49 = v25;
-      v34 = [v25 alternativeTickColor];
-      v35 = [v33 _flatImageWithColor:v34];
+      alternativeTickColor = [v25 alternativeTickColor];
+      v35 = [v33 _flatImageWithColor:alternativeTickColor];
 
       v36 = NTKImageNamed();
       v46 = [(NTKSimpleFaceView *)self _swatchColorForColorOption:v11];
@@ -897,33 +897,33 @@
   {
     v56.receiver = self;
     v56.super_class = NTKSimpleFaceView;
-    v16 = [(NTKSimpleFaceView *)&v56 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:a5];
+    v16 = [(NTKSimpleFaceView *)&v56 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:options];
   }
 
   return v16;
 }
 
-- (unint64_t)textLayoutStyleForSlot:(int64_t)a3
+- (unint64_t)textLayoutStyleForSlot:(int64_t)slot
 {
-  v4 = [(NTKSimpleFaceView *)self _slotForUtilitySlot:a3];
+  v4 = [(NTKSimpleFaceView *)self _slotForUtilitySlot:slot];
   v5 = [(NTKSimpleFaceView *)self layoutStyleForSlot:v4];
 
   return v5;
 }
 
-- (void)_configureComplicationFactory:(id)a3
+- (void)_configureComplicationFactory:(id)factory
 {
   v10 = 0;
   v8 = 0u;
   v9 = 0u;
   v7 = 0u;
   memset(v6, 0, sizeof(v6));
-  v5 = a3;
-  v4 = [(NTKSimpleFaceView *)self device];
-  sub_6044(v4, v6);
+  factoryCopy = factory;
+  device = [(NTKSimpleFaceView *)self device];
+  sub_6044(device, v6);
 
-  [v5 setDateKeylineMaxWidth:*(&v7 + 1)];
-  [v5 setDateHorizontalCenterOffset:*&v8];
+  [factoryCopy setDateKeylineMaxWidth:*(&v7 + 1)];
+  [factoryCopy setDateHorizontalCenterOffset:*&v8];
 }
 
 - (void)_createBackgroundViewIfNeeded
@@ -940,21 +940,21 @@
   }
 }
 
-- (void)_addDetailedMinutesToView:(id)a3
+- (void)_addDetailedMinutesToView:(id)view
 {
-  v20 = a3;
-  v4 = [(NTKSimpleFaceView *)self device];
+  viewCopy = view;
+  device = [(NTKSimpleFaceView *)self device];
   v26 = 0;
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
   memset(v21, 0, sizeof(v21));
-  sub_6044(v4, v21);
-  [NTKAnalogUtilities dialDiameterForDevice:v4];
+  sub_6044(device, v21);
+  [NTKAnalogUtilities dialDiameterForDevice:device];
   v6 = v5 * 0.5 + *(&v22 + 1);
   v7 = [CLKFont systemFontOfSize:*&v23];
-  [v20 center];
+  [viewCopy center];
   v18 = v9;
   v19 = v8;
   v10 = 0;
@@ -977,28 +977,28 @@
     [v14 setBounds:?];
     v17 = __sincos_stret(v13 * -6.28318531 / 60.0 + 1.57079633);
     [v14 setCenter:{v19 + round(v6 * v17.__cosval), v18 - round(v6 * v17.__sinval)}];
-    [v20 addSubview:v14];
+    [viewCopy addSubview:v14];
     if (v13 > 34)
     {
       if (v13 == 35)
       {
-        [v20 setDigit_35:v14];
+        [viewCopy setDigit_35:v14];
       }
 
       else if (v13 == 55)
       {
-        [v20 setDigit_55:v14];
+        [viewCopy setDigit_55:v14];
       }
     }
 
     else if (v13 == 5)
     {
-      [v20 setDigit_05:v14];
+      [viewCopy setDigit_05:v14];
     }
 
     else if (v13 == 25)
     {
-      [v20 setDigit_25:v14];
+      [viewCopy setDigit_25:v14];
     }
 
     ++v10;
@@ -1007,22 +1007,22 @@
   while (v10 != 8);
 }
 
-- (id)_createTicksViewForDensityIfNeeded:(unint64_t)a3
+- (id)_createTicksViewForDensityIfNeeded:(unint64_t)needed
 {
   ticksViews = self->_ticksViews;
-  v6 = self->_ticksViews[a3];
+  v6 = self->_ticksViews[needed];
   if (!v6)
   {
     v7 = [NTKSimpleFaceViewTicksView alloc];
     [(NTKSimpleFaceView *)self bounds];
     v6 = [(NTKSimpleFaceViewTicksView *)v7 initWithFrame:?];
-    v8 = ticksViews[a3];
-    ticksViews[a3] = v6;
+    v8 = ticksViews[needed];
+    ticksViews[needed] = v6;
 
     [(NTKSimpleFaceView *)self _createBackgroundViewIfNeeded];
     [(UIView *)self->_backgroundView addSubview:v6];
     v9 = 0.0;
-    if (self->_density == a3)
+    if (self->_density == needed)
     {
       v9 = 1.0;
     }
@@ -1032,14 +1032,14 @@
     v11 = v10;
     v13 = v12;
     v43 = 0;
-    v38 = [(NTKSimpleFaceView *)self _createTicksAndReplicators:&v43 forDensity:a3];
+    v38 = [(NTKSimpleFaceView *)self _createTicksAndReplicators:&v43 forDensity:needed];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v37 = v43;
-    v14 = [v37 allValues];
-    v15 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    allValues = [v37 allValues];
+    v15 = [allValues countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1050,7 +1050,7 @@
         {
           if (*v40 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allValues);
           }
 
           v19 = *(*(&v39 + 1) + 8 * i);
@@ -1058,11 +1058,11 @@
           [v19 setContentsMultiplyColor:{objc_msgSend(v20, "CGColor")}];
 
           [v19 setPosition:{v11, v13}];
-          v21 = [(NTKSimpleFaceViewTicksView *)v6 layer];
-          [v21 addSublayer:v19];
+          layer = [(NTKSimpleFaceViewTicksView *)v6 layer];
+          [layer addSublayer:v19];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v16 = [allValues countByEnumeratingWithState:&v39 objects:v44 count:16];
       }
 
       while (v16);
@@ -1071,7 +1071,7 @@
     v22 = [v37 objectForKeyedSubscript:&off_10930];
     [(NTKSimpleFaceViewTicksView *)v6 setPills:v22];
 
-    if (a3 == 3)
+    if (needed == 3)
     {
       [(NTKSimpleFaceView *)self _addDetailedMinutesToView:v6];
     }
@@ -1085,31 +1085,31 @@
     v25 = [v38 objectForKeyedSubscript:&off_10930];
     [(NTKSimpleFaceViewTicksView *)v6 setPillTick:v25];
 
-    v26 = [(NTKSimpleFaceViewTicksView *)v6 smallTick];
+    smallTick = [(NTKSimpleFaceViewTicksView *)v6 smallTick];
     ticksSmallColor = self->_ticksSmallColor;
-    v28 = qword_C130[a3];
+    v28 = qword_C130[needed];
     v29 = NTKColorByPremultiplyingAlpha();
-    [v26 setBackgroundColor:{objc_msgSend(v29, "CGColor")}];
+    [smallTick setBackgroundColor:{objc_msgSend(v29, "CGColor")}];
 
-    v30 = [(NTKSimpleFaceViewTicksView *)v6 largeTick];
+    largeTick = [(NTKSimpleFaceViewTicksView *)v6 largeTick];
     ticksLargeColor = self->_ticksLargeColor;
-    v32 = qword_C150[a3];
+    v32 = qword_C150[needed];
     v33 = NTKColorByPremultiplyingAlpha();
-    [v30 setBackgroundColor:{objc_msgSend(v33, "CGColor")}];
+    [largeTick setBackgroundColor:{objc_msgSend(v33, "CGColor")}];
 
-    v34 = [(NTKSimpleFaceViewTicksView *)v6 pillTick];
+    pillTick = [(NTKSimpleFaceViewTicksView *)v6 pillTick];
     v35 = [UIColor colorWithWhite:0.7 alpha:1.0];
-    [v34 setBackgroundColor:{objc_msgSend(v35, "CGColor")}];
+    [pillTick setBackgroundColor:{objc_msgSend(v35, "CGColor")}];
   }
 
   return v6;
 }
 
-- (id)_createTickWithSize:(CGSize)a3 rounded:(BOOL)a4
+- (id)_createTickWithSize:(CGSize)size rounded:(BOOL)rounded
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  roundedCopy = rounded;
+  height = size.height;
+  width = size.width;
   v7 = +[CALayer layer];
   [v7 setBounds:{CGPointZero.x, CGPointZero.y, width, height}];
   v8 = +[UIColor whiteColor];
@@ -1117,7 +1117,7 @@
 
   [v7 setAnchorPoint:{0.5, 0.0}];
   v9 = width * 0.5;
-  if (!v4)
+  if (!roundedCopy)
   {
     v9 = 0.0;
   }
@@ -1127,7 +1127,7 @@
   return v7;
 }
 
-- (id)_createTicksAndReplicators:(id *)a3 forDensity:(unint64_t)a4
+- (id)_createTicksAndReplicators:(id *)replicators forDensity:(unint64_t)density
 {
   v34 = 0;
   v32 = 0u;
@@ -1139,11 +1139,11 @@
   v7 = [(NTKSimpleFaceView *)self device:0];
   sub_6044(v7, &v27);
 
-  v8 = [(NTKSimpleFaceView *)self device];
-  [NTKAnalogUtilities dialDiameterForDevice:v8];
+  device = [(NTKSimpleFaceView *)self device];
+  [NTKAnalogUtilities dialDiameterForDevice:device];
   v10 = v9;
 
-  if (a4 == 1)
+  if (density == 1)
   {
     v14 = 0;
     v13 = 0;
@@ -1153,7 +1153,7 @@
 
   else
   {
-    if (a4 == 3)
+    if (density == 3)
     {
       v11 = 0;
       v12 = 240;
@@ -1162,10 +1162,10 @@
 
     else
     {
-      if (a4 != 2)
+      if (density != 2)
       {
         v16 = 0;
-        *a3 = 0;
+        *replicators = 0;
         goto LABEL_12;
       }
 
@@ -1200,29 +1200,29 @@
   }
 
   v25 = v17;
-  *a3 = v17;
+  *replicators = v17;
 
 LABEL_12:
 
   return v16;
 }
 
-- (id)_createTickReplicatorForTick:(id)a3 radius:(double)a4 count:(unint64_t)a5 skip:(unint64_t)a6
+- (id)_createTickReplicatorForTick:(id)tick radius:(double)radius count:(unint64_t)count skip:(unint64_t)skip
 {
-  v8 = a4 + a4;
-  v9 = 6.28318531 / a5;
-  if (a6)
+  v8 = radius + radius;
+  v9 = 6.28318531 / count;
+  if (skip)
   {
     v11 = *&CGAffineTransformIdentity.c;
     *&v20.a = *&CGAffineTransformIdentity.a;
     *&v20.c = v11;
     *&v20.tx = *&CGAffineTransformIdentity.tx;
-    v12 = a6 * 6.28318531 / a5;
+    v12 = skip * 6.28318531 / count;
     *&v18.m11 = *&v20.a;
     *&v18.m13 = v11;
     *&v18.m21 = *&v20.tx;
-    v13 = a3;
-    CGAffineTransformTranslate(&v20, &v18, 0.0, a4);
+    tickCopy = tick;
+    CGAffineTransformTranslate(&v20, &v18, 0.0, radius);
     v19 = v20;
     CGAffineTransformRotate(&v18, &v19, v9);
     *&v20.c = *&v18.m13;
@@ -1231,39 +1231,39 @@ LABEL_12:
     *&v19.a = *&v18.m11;
     *&v19.c = *&v18.m13;
     *&v19.tx = *&v18.m21;
-    CGAffineTransformTranslate(&v18, &v19, 0.0, -a4);
+    CGAffineTransformTranslate(&v18, &v19, 0.0, -radius);
     *&v20.c = *&v18.m13;
     *&v20.tx = *&v18.m21;
     *&v20.a = *&v18.m11;
-    [v13 setAffineTransform:&v18];
-    [v13 setPosition:{a4, 0.0}];
+    [tickCopy setAffineTransform:&v18];
+    [tickCopy setPosition:{radius, 0.0}];
     v14 = +[CAReplicatorLayer layer];
     [v14 setBounds:{0.0, 0.0, v8, v8}];
-    [v14 setPosition:{a4, a4}];
+    [v14 setPosition:{radius, radius}];
     CATransform3DMakeRotation(&v18, v9, 0.0, 0.0, 1.0);
     [v14 setInstanceTransform:&v18];
-    [v14 setInstanceCount:a6 - 1];
-    [v14 addSublayer:v13];
+    [v14 setInstanceCount:skip - 1];
+    [v14 addSublayer:tickCopy];
 
     v15 = +[CAReplicatorLayer layer];
     [v15 setBounds:{0.0, 0.0, v8, v8}];
     CATransform3DMakeRotation(&v18, v12, 0.0, 0.0, 1.0);
     [v15 setInstanceTransform:&v18];
-    [v15 setInstanceCount:a5 / a6];
+    [v15 setInstanceCount:count / skip];
     [v15 addSublayer:v14];
   }
 
   else
   {
-    v16 = a3;
-    [v16 setPosition:{a4, 0.0}];
+    tickCopy2 = tick;
+    [tickCopy2 setPosition:{radius, 0.0}];
     v15 = +[CAReplicatorLayer layer];
     [v15 setBounds:{0.0, 0.0, v8, v8}];
-    [v15 setPosition:{a4, a4}];
+    [v15 setPosition:{radius, radius}];
     CATransform3DMakeRotation(&v18, v9, 0.0, 0.0, 1.0);
     [v15 setInstanceTransform:&v18];
-    [v15 setInstanceCount:a5];
-    [v15 addSublayer:v16];
+    [v15 setInstanceCount:count];
+    [v15 addSublayer:tickCopy2];
   }
 
   return v15;
@@ -1271,28 +1271,28 @@ LABEL_12:
 
 - (void)_removeComplicationOverlapHiding
 {
-  v3 = [(NTKSimpleFaceView *)self device];
-  v4 = [v3 deviceCategory];
+  device = [(NTKSimpleFaceView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v4 != &dword_0 + 1)
+  if (deviceCategory != &dword_0 + 1)
   {
     v5 = 0;
     ticksViews = self->_ticksViews;
     do
     {
       v7 = ticksViews[v5];
-      v8 = [(NTKSimpleFaceViewTicksView *)v7 digit];
-      [v8 setHidden:0];
+      digit = [(NTKSimpleFaceViewTicksView *)v7 digit];
+      [digit setHidden:0];
 
-      v9 = [(NTKSimpleFaceViewTicksView *)v7 digit];
-      [v9 setHidden:0];
+      digit2 = [(NTKSimpleFaceViewTicksView *)v7 digit];
+      [digit2 setHidden:0];
 
-      v10 = [(NTKSimpleFaceViewTicksView *)v7 digit];
-      [v10 setHidden:0];
+      digit3 = [(NTKSimpleFaceViewTicksView *)v7 digit];
+      [digit3 setHidden:0];
 
-      v11 = [(NTKSimpleFaceViewTicksView *)v7 digit];
+      digit4 = [(NTKSimpleFaceViewTicksView *)v7 digit];
 
-      [v11 setHidden:0];
+      [digit4 setHidden:0];
       ++v5;
     }
 
@@ -1302,12 +1302,12 @@ LABEL_12:
 
 - (void)_updateComplicationOverlapHiding
 {
-  v3 = [(NTKSimpleFaceView *)self device];
-  v4 = [v3 deviceCategory];
+  device = [(NTKSimpleFaceView *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v4 != &dword_0 + 1)
+  if (deviceCategory != &dword_0 + 1)
   {
-    v16 = [(NTKSimpleFaceView *)self delegate];
+    delegate = [(NTKSimpleFaceView *)self delegate];
     v5 = 0;
     ticksViews = self->_ticksViews;
     v7 = NTKComplicationSlotTopRight;
@@ -1317,18 +1317,18 @@ LABEL_12:
     do
     {
       v11 = ticksViews[v5];
-      v12 = [(NTKSimpleFaceViewTicksView *)v11 digit];
-      [v12 setHidden:{objc_msgSend(v16, "faceViewComplicationIsEmptyForSlot:", v7) ^ 1}];
+      digit = [(NTKSimpleFaceViewTicksView *)v11 digit];
+      [digit setHidden:{objc_msgSend(delegate, "faceViewComplicationIsEmptyForSlot:", v7) ^ 1}];
 
-      v13 = [(NTKSimpleFaceViewTicksView *)v11 digit];
-      [v13 setHidden:{objc_msgSend(v16, "faceViewComplicationIsEmptyForSlot:", v8) ^ 1}];
+      digit2 = [(NTKSimpleFaceViewTicksView *)v11 digit];
+      [digit2 setHidden:{objc_msgSend(delegate, "faceViewComplicationIsEmptyForSlot:", v8) ^ 1}];
 
-      v14 = [(NTKSimpleFaceViewTicksView *)v11 digit];
-      [v14 setHidden:{objc_msgSend(v16, "faceViewComplicationIsEmptyForSlot:", v9) ^ 1}];
+      digit3 = [(NTKSimpleFaceViewTicksView *)v11 digit];
+      [digit3 setHidden:{objc_msgSend(delegate, "faceViewComplicationIsEmptyForSlot:", v9) ^ 1}];
 
-      v15 = [(NTKSimpleFaceViewTicksView *)v11 digit];
+      digit4 = [(NTKSimpleFaceViewTicksView *)v11 digit];
 
-      [v15 setHidden:{objc_msgSend(v16, "faceViewComplicationIsEmptyForSlot:", v10) ^ 1}];
+      [digit4 setHidden:{objc_msgSend(delegate, "faceViewComplicationIsEmptyForSlot:", v10) ^ 1}];
       ++v5;
     }
 
@@ -1336,24 +1336,24 @@ LABEL_12:
   }
 }
 
-- (id)_dateComplicationFontForStyle:(unint64_t)a3
+- (id)_dateComplicationFontForStyle:(unint64_t)style
 {
-  v4 = [(NTKSimpleFaceView *)self device];
-  v5 = [v4 sizeClass];
+  device = [(NTKSimpleFaceView *)self device];
+  sizeClass = [device sizeClass];
 
   v6 = 11.0;
-  if (!v5)
+  if (!sizeClass)
   {
     v6 = 10.0;
   }
 
   v7 = 17.0;
-  if (!v5)
+  if (!sizeClass)
   {
     v7 = 15.0;
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     v6 = v7;
   }
@@ -1363,15 +1363,15 @@ LABEL_12:
   return v8;
 }
 
-- (double)_secondHandAlphaForEditMode:(int64_t)a3
+- (double)_secondHandAlphaForEditMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return NTKEditModeDimmedAlpha;
   }
 
   result = 1.0;
-  if (a3 == 11)
+  if (mode == 11)
   {
     return 0.0;
   }
@@ -1379,9 +1379,9 @@ LABEL_12:
   return result;
 }
 
-- (double)_handsAlphaForEditMode:(int64_t)a3
+- (double)_handsAlphaForEditMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 1:
       return NTKEditModeDimmedAlpha;
@@ -1394,15 +1394,15 @@ LABEL_12:
   return 1.0;
 }
 
-- (double)_backgroundAlphaForEditMode:(int64_t)a3
+- (double)_backgroundAlphaForEditMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return NTKEditModeDimmedAlpha;
   }
 
   result = 1.0;
-  if (a3 == 10)
+  if (mode == 10)
   {
     return NTKEditModeDimmedAlpha + NTKEditModeDimmedAlpha;
   }
@@ -1414,9 +1414,9 @@ LABEL_12:
 {
   v3 = NTKComplicationSlotDate;
   v4 = [(NTKSimpleFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotDate];
-  v31 = [v4 display];
+  display = [v4 display];
 
-  if (v31)
+  if (display)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1430,9 +1430,9 @@ LABEL_12:
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = v31;
-      v17 = [v16 dateStyle];
-      self->_dateStyle = v17;
+      v16 = display;
+      dateStyle = [v16 dateStyle];
+      self->_dateStyle = dateStyle;
       [v16 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
       v19 = v18;
 
@@ -1446,8 +1446,8 @@ LABEL_12:
       v26 = v25;
       [v8 setReferenceFrame:{v24, v11, v13, v15}];
       [v9 setReferenceFrame:{v24, v11, v13, v15}];
-      v27 = v17 == &dword_4;
-      v28 = v17 != &dword_4;
+      v27 = dateStyle == &dword_4;
+      v28 = dateStyle != &dword_4;
       if (v27)
       {
         v29 = Width - v26 - v19;
@@ -1462,8 +1462,8 @@ LABEL_12:
       [v6 setHorizontalLayout:v28];
       [v7 setReferenceFrame:{v29, v11, v13, v15}];
       [v7 setHorizontalLayout:v28];
-      v30 = [(NTKSimpleFaceView *)self delegate];
-      [v30 faceViewWantsComplicationKeylineFramesReloaded];
+      delegate = [(NTKSimpleFaceView *)self delegate];
+      [delegate faceViewWantsComplicationKeylineFramesReloaded];
     }
   }
 }

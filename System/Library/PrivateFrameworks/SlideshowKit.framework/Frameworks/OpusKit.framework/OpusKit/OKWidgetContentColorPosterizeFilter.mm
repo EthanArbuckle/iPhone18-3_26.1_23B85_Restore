@@ -1,10 +1,10 @@
 @interface OKWidgetContentColorPosterizeFilter
-+ (id)filterWithInputLevels:(id)a3;
++ (id)filterWithInputLevels:(id)levels;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
-- (void)setSettingInputLevels:(id)a3;
+- (void)setSettingInputLevels:(id)levels;
 @end
 
 @implementation OKWidgetContentColorPosterizeFilter
@@ -29,7 +29,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetContentColorPosterizeFilter;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"inputLevels";
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (void)setSettingInputLevels:(id)a3
+- (void)setSettingInputLevels:(id)levels
 {
   inputLevels = self->_inputLevels;
   if (inputLevels)
@@ -49,21 +49,21 @@
     self->_inputLevels = 0;
   }
 
-  self->_inputLevels = a3;
+  self->_inputLevels = levels;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentColorPosterizeFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentColorPosterizeFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-+ (id)filterWithInputLevels:(id)a3
++ (id)filterWithInputLevels:(id)levels
 {
   v4 = objc_alloc_init(OKWidgetContentColorPosterizeFilter);
-  [(OKWidgetContentColorPosterizeFilter *)v4 setInputLevels:a3];
+  [(OKWidgetContentColorPosterizeFilter *)v4 setInputLevels:levels];
 
   return v4;
 }

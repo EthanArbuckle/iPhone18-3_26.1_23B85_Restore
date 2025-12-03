@@ -8,7 +8,7 @@
 - (BOOL)useTickMarkLegibilityShadows;
 - (CEKContactObserver)contactObserver;
 - (CEKFluidBehaviorSettings)_externalScrollSettings;
-- (CEKSlider)initWithTitle:(id)a3 tickMarkStyle:(unint64_t)a4;
+- (CEKSlider)initWithTitle:(id)title tickMarkStyle:(unint64_t)style;
 - (CEKSliderDelegate)delegate;
 - (CEKSliderPositionDriver)_sliderDriver;
 - (CEKTickMarksConfiguration)tickMarksConfiguration;
@@ -18,81 +18,81 @@
 - (CGRect)frameForValueLabel;
 - (CGSize)tickMarkSize;
 - (NSString)title;
-- (double)_valueForScrollViewXOffset:(double)a3;
+- (double)_valueForScrollViewXOffset:(double)offset;
 - (double)_xOffsetForMarkedValue;
-- (double)xOffsetForValue:(double)a3;
-- (id)_attributedStringFromValue:(double)a3 usingFormatter:(id)a4;
-- (id)formattedIntegerStringFromNumber:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (double)xOffsetForValue:(double)value;
+- (id)_attributedStringFromValue:(double)value usingFormatter:(id)formatter;
+- (id)formattedIntegerStringFromNumber:(id)number;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)selectionFeedbackProfile;
 - (int64_t)tickMarkCount;
 - (int64_t)titleAlignment;
-- (void)_applyExternalTarget:(double)a3 mode:(int64_t)a4 completion:(id)a5;
-- (void)_clampValuesAndUpdateScrollPosition:(BOOL)a3;
+- (void)_applyExternalTarget:(double)target mode:(int64_t)mode completion:(id)completion;
+- (void)_clampValuesAndUpdateScrollPosition:(BOOL)position;
 - (void)_createExternalScrollAnimatorIfNeeded;
 - (void)_createGradientIfNeeded;
 - (void)_handleExternalScrollAnimated;
 - (void)_resetSnapped;
-- (void)_setActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setDimmed:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setOverscrolling:(BOOL)a3;
-- (void)_setShowValueLabel:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setValue:(double)a3 shouldSendActions:(BOOL)a4 shouldUpdateScrollPosition:(BOOL)a5;
+- (void)_setActive:(BOOL)active animated:(BOOL)animated;
+- (void)_setDimmed:(BOOL)dimmed animated:(BOOL)animated;
+- (void)_setOverscrolling:(BOOL)overscrolling;
+- (void)_setShowValueLabel:(BOOL)label animated:(BOOL)animated;
+- (void)_setValue:(double)value shouldSendActions:(BOOL)actions shouldUpdateScrollPosition:(BOOL)position;
 - (void)_sliderDidEndScrolling;
-- (void)_updateColorsAnimated:(BOOL)a3;
-- (void)_updateEnableAppearanceStateAnimated:(BOOL)a3;
+- (void)_updateColorsAnimated:(BOOL)animated;
+- (void)_updateEnableAppearanceStateAnimated:(BOOL)animated;
 - (void)_updateFonts;
 - (void)_updateLegibilityBackground;
 - (void)_updateMagneticTickIndexes;
-- (void)_updateMarkedViewAnimated:(BOOL)a3;
+- (void)_updateMarkedViewAnimated:(BOOL)animated;
 - (void)_updateScrollViewPosition;
 - (void)_updateValueLabel;
-- (void)contactBeganWithAction:(id)a3;
-- (void)contactEndedWithAction:(id)a3;
-- (void)contactUpdatedWithAction:(id)a3;
+- (void)contactBeganWithAction:(id)action;
+- (void)contactEndedWithAction:(id)action;
+- (void)contactUpdatedWithAction:(id)action;
 - (void)layoutSubviews;
 - (void)performWaveAnimation;
 - (void)removeGradients;
 - (void)resetToDefault;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setDefaultValue:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEnabled:(BOOL)a3 dimmed:(BOOL)a4 animated:(BOOL)a5;
-- (void)setFontStyle:(unint64_t)a3;
-- (void)setGradientInsets:(id)a3;
-- (void)setLabelVerticalPadding:(double)a3;
-- (void)setLevelIndicatorHeight:(double)a3;
-- (void)setLogarithmic:(BOOL)a3;
-- (void)setMagneticRange:(id)a3;
-- (void)setMarkedValue:(double)a3 animated:(BOOL)a4;
-- (void)setMaximumValue:(double)a3;
-- (void)setMinimumValue:(double)a3;
-- (void)setOpaqueGradientsWithColor:(id)a3;
-- (void)setSelectionFeedbackProfile:(int64_t)a3;
-- (void)setSliderVerticalAlignment:(int64_t)a3;
-- (void)setSliderVerticalOffset:(double)a3;
-- (void)setTextOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setTickMarkCount:(int64_t)a3;
-- (void)setTickMarkSize:(CGSize)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAlignment:(int64_t)a3;
-- (void)setTitleAlpha:(double)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setDefaultValue:(double)value;
+- (void)setDelegate:(id)delegate;
+- (void)setEnabled:(BOOL)enabled dimmed:(BOOL)dimmed animated:(BOOL)animated;
+- (void)setFontStyle:(unint64_t)style;
+- (void)setGradientInsets:(id)insets;
+- (void)setLabelVerticalPadding:(double)padding;
+- (void)setLevelIndicatorHeight:(double)height;
+- (void)setLogarithmic:(BOOL)logarithmic;
+- (void)setMagneticRange:(id)range;
+- (void)setMarkedValue:(double)value animated:(BOOL)animated;
+- (void)setMaximumValue:(double)value;
+- (void)setMinimumValue:(double)value;
+- (void)setOpaqueGradientsWithColor:(id)color;
+- (void)setSelectionFeedbackProfile:(int64_t)profile;
+- (void)setSliderVerticalAlignment:(int64_t)alignment;
+- (void)setSliderVerticalOffset:(double)offset;
+- (void)setTextOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setTickMarkCount:(int64_t)count;
+- (void)setTickMarkSize:(CGSize)size;
+- (void)setTitle:(id)title;
+- (void)setTitleAlignment:(int64_t)alignment;
+- (void)setTitleAlpha:(double)alpha;
 - (void)setTransparentGradients;
-- (void)setUseTickMarkLegibilityShadows:(BOOL)a3;
-- (void)setValueLabelFormat:(int64_t)a3;
-- (void)setValueLabelMultiplier:(double)a3;
-- (void)setValueLabelVisibility:(int64_t)a3;
+- (void)setUseTickMarkLegibilityShadows:(BOOL)shadows;
+- (void)setValueLabelFormat:(int64_t)format;
+- (void)setValueLabelMultiplier:(double)multiplier;
+- (void)setValueLabelVisibility:(int64_t)visibility;
 - (void)tintColorDidChange;
 @end
 
 @implementation CEKSlider
 
-- (CEKSlider)initWithTitle:(id)a3 tickMarkStyle:(unint64_t)a4
+- (CEKSlider)initWithTitle:(id)title tickMarkStyle:(unint64_t)style
 {
-  v6 = a3;
+  titleCopy = title;
   v38.receiver = self;
   v38.super_class = CEKSlider;
   v7 = *MEMORY[0x1E695F058];
@@ -107,8 +107,8 @@
     v11->_fontStyle = 0;
     v11->_titleAlpha = 0.6;
     v11->_animationDuration = 0.25;
-    v13 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(CEKSlider *)v12 setTintColor:v13];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(CEKSlider *)v12 setTintColor:systemYellowColor];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
     contentScrollView = v12->__contentScrollView;
@@ -119,14 +119,14 @@
     [(UIScrollView *)v12->__contentScrollView setShowsHorizontalScrollIndicator:0];
     [(UIScrollView *)v12->__contentScrollView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
     [(UIScrollView *)v12->__contentScrollView _setSupportsPointerDragScrolling:1];
-    v16 = [(UIScrollView *)v12->__contentScrollView panGestureRecognizer];
-    [v16 _wantsGESEvents:1];
+    panGestureRecognizer = [(UIScrollView *)v12->__contentScrollView panGestureRecognizer];
+    [panGestureRecognizer _wantsGESEvents:1];
 
     [(CEKSlider *)v12 addSubview:v12->__contentScrollView];
-    v12->__ticksStyle = a4;
-    if (a4)
+    v12->__ticksStyle = style;
+    if (style)
     {
-      if (a4 == 1)
+      if (style == 1)
       {
         v17 = objc_alloc_init(CEKDynamicTickMarksView);
         dynamicTickMarksView = v12->__dynamicTickMarksView;
@@ -144,19 +144,19 @@
     }
 
     [(CEKTickMarksContainer *)v12->__tickMarksView setDelegate:v12];
-    v21 = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
-    [v21 setTickMarkSpacing:9.0];
+    tickMarksModel = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
+    [tickMarksModel setTickMarkSpacing:9.0];
 
-    v22 = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
-    [v22 setTickMarkWidth:1.0];
+    tickMarksModel2 = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
+    [tickMarksModel2 setTickMarkWidth:1.0];
 
-    v23 = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
-    [v23 setMainTickMarkInterval:10];
+    tickMarksModel3 = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
+    [tickMarksModel3 setMainTickMarkInterval:10];
 
     [(UIScrollView *)v12->__contentScrollView addSubview:v12->__tickMarksView];
     v12->_tickMarkSize = xmmword_1B7EDA700;
-    v24 = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
-    [v24 setTickMarksCount:41];
+    tickMarksModel4 = [(CEKTickMarksContainer *)v12->__tickMarksView tickMarksModel];
+    [tickMarksModel4 setTickMarksCount:41];
 
     v12->_sliderVerticalAlignment = 0;
     v12->_labelVerticalPadding = 10.0;
@@ -170,11 +170,11 @@
       levelIndicatorView = v12->__levelIndicatorView;
       v12->__levelIndicatorView = v25;
 
-      v27 = [MEMORY[0x1E69DC888] labelColor];
-      [(UIView *)v12->__levelIndicatorView setBackgroundColor:v27];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UIView *)v12->__levelIndicatorView setBackgroundColor:labelColor];
 
-      v28 = [(UIView *)v12->__levelIndicatorView layer];
-      [v28 setAnchorPoint:{0.5, 0.0}];
+      layer = [(UIView *)v12->__levelIndicatorView layer];
+      [layer setAnchorPoint:{0.5, 0.0}];
 
       [(CEKSlider *)v12 addSubview:v12->__levelIndicatorView];
     }
@@ -182,22 +182,22 @@
     v12->_minimumValue = -1.0;
     v12->_maximumValue = 1.0;
     v12->_markedValue = 1.79769313e308;
-    if ([v6 length])
+    if ([titleCopy length])
     {
       v29 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
-      v30 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v29 setBackgroundColor:v30];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v29 setBackgroundColor:clearColor];
 
       [(UILabel *)v29 setTextAlignment:4];
       [(UILabel *)v29 setLineBreakMode:0];
       [(UILabel *)v29 setNumberOfLines:0];
       [(UILabel *)v29 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v31 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor2 = [MEMORY[0x1E69DC888] labelColor];
       [(CEKSlider *)v12 titleAlpha];
-      v32 = [v31 colorWithAlphaComponent:?];
+      v32 = [labelColor2 colorWithAlphaComponent:?];
       [(UILabel *)v29 setTextColor:v32];
 
-      [(UILabel *)v29 setText:v6];
+      [(UILabel *)v29 setText:titleCopy];
       titleLabel = v12->__titleLabel;
       v12->__titleLabel = v29;
       v34 = v29;
@@ -271,39 +271,39 @@ void __30__CEKSlider__decimalFormatter__block_invoke()
   [_decimalFormatter_decimalFormatter setNegativePrefix:v3];
 }
 
-- (id)formattedIntegerStringFromNumber:(id)a3
+- (id)formattedIntegerStringFromNumber:(id)number
 {
-  [a3 doubleValue];
+  [number doubleValue];
   v5 = v4;
-  v6 = [objc_opt_class() _integerFormatter];
-  v7 = [(CEKSlider *)self _attributedStringFromValue:v6 usingFormatter:v5];
+  _integerFormatter = [objc_opt_class() _integerFormatter];
+  v7 = [(CEKSlider *)self _attributedStringFromValue:_integerFormatter usingFormatter:v5];
 
   return v7;
 }
 
-- (id)_attributedStringFromValue:(double)a3 usingFormatter:(id)a4
+- (id)_attributedStringFromValue:(double)value usingFormatter:(id)formatter
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v8 = [v6 stringFromNumber:v7];
+  formatterCopy = formatter;
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  v8 = [formatterCopy stringFromNumber:v7];
 
-  v9 = [v6 stringFromNumber:&unk_1F2FE0320];
+  v9 = [formatterCopy stringFromNumber:&unk_1F2FE0320];
   if ([v8 isEqualToString:v9])
   {
-    v10 = [v6 stringFromNumber:&unk_1F2FDFAF8];
+    v10 = [formatterCopy stringFromNumber:&unk_1F2FDFAF8];
 
     v8 = v10;
   }
 
   v11 = CEKFrameworkBundle();
-  v12 = [v11 preferredLocalizations];
-  v13 = [v12 firstObject];
+  preferredLocalizations = [v11 preferredLocalizations];
+  firstObject = [preferredLocalizations firstObject];
 
-  v14 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v13];
-  v15 = [(CEKSlider *)self _valueLabel];
-  v16 = [v15 font];
-  [v16 pointSize];
+  v14 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:firstObject];
+  _valueLabel = [(CEKSlider *)self _valueLabel];
+  font = [_valueLabel font];
+  [font pointSize];
   v18 = v17;
 
   if (CEKIsCustomKerningSupportedForLocale(v14))
@@ -324,9 +324,9 @@ void __30__CEKSlider__decimalFormatter__block_invoke()
   return v21;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -341,13 +341,13 @@ void __30__CEKSlider__decimalFormatter__block_invoke()
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v18.receiver = self;
   v18.super_class = CEKSlider;
-  v7 = [(CEKSlider *)&v18 hitTest:a4 withEvent:?];
+  v7 = [(CEKSlider *)&v18 hitTest:event withEvent:?];
   [(CEKSlider *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -363,9 +363,9 @@ void __30__CEKSlider__decimalFormatter__block_invoke()
     v20.y = y;
     if (CGRectContainsPoint(v21, v20))
     {
-      v16 = [(CEKSlider *)self _contentScrollView];
+      _contentScrollView = [(CEKSlider *)self _contentScrollView];
 
-      v7 = v16;
+      v7 = _contentScrollView;
     }
   }
 
@@ -380,13 +380,13 @@ void __30__CEKSlider__decimalFormatter__block_invoke()
   [(CEKSlider *)self tickMarkSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(CEKSlider *)self _tickMarksView];
-  v8 = [v7 tickMarksModel];
-  [v8 setTickMarkWidth:v4];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  [tickMarksModel setTickMarkWidth:v4];
 
-  v9 = [(CEKSlider *)self _tickMarksView];
-  v10 = [v9 tickMarksModel];
-  [v10 requiredWidth];
+  _tickMarksView2 = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel2 = [_tickMarksView2 tickMarksModel];
+  [tickMarksModel2 requiredWidth];
   v12 = v11;
 
   [(CEKSlider *)self bounds];
@@ -394,9 +394,9 @@ void __30__CEKSlider__decimalFormatter__block_invoke()
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [(CEKSlider *)self sliderVerticalAlignment];
+  sliderVerticalAlignment = [(CEKSlider *)self sliderVerticalAlignment];
   v100 = v20;
-  if (v21 == 2)
+  if (sliderVerticalAlignment == 2)
   {
     [(CEKSlider *)self levelIndicatorHeight];
     v31 = v30 + 33.0 - v6;
@@ -405,7 +405,7 @@ void __30__CEKSlider__decimalFormatter__block_invoke()
     goto LABEL_7;
   }
 
-  if (v21 == 1)
+  if (sliderVerticalAlignment == 1)
   {
     v106.origin.x = v14;
     v106.origin.y = v16;
@@ -421,7 +421,7 @@ LABEL_7:
 
   v23 = *MEMORY[0x1E695F058];
   v22 = *(MEMORY[0x1E695F058] + 8);
-  if (!v21)
+  if (!sliderVerticalAlignment)
   {
     v94 = 0;
     UIRectCenteredYInRectScale();
@@ -437,13 +437,13 @@ LABEL_8:
   recta = v22;
   v101 = v18;
   v102 = v33;
-  v35 = [(CEKSlider *)self _dynamicTickMarksView];
+  _dynamicTickMarksView = [(CEKSlider *)self _dynamicTickMarksView];
   [(CEKSlider *)self bounds];
-  [(CEKSlider *)self convertRect:v35 toView:?];
-  [v35 setVisibleBounds:?];
+  [(CEKSlider *)self convertRect:_dynamicTickMarksView toView:?];
+  [_dynamicTickMarksView setVisibleBounds:?];
   v95 = CEKPixelWidthForView(self);
-  v36 = [(CEKSlider *)self _tickMarksView];
-  [v36 frameForAlignmentRect:{v23, v22, v12, v6}];
+  _tickMarksView3 = [(CEKSlider *)self _tickMarksView];
+  [_tickMarksView3 frameForAlignmentRect:{v23, v22, v12, v6}];
   v38 = v37;
   v39 = v23;
   v40 = v6;
@@ -451,8 +451,8 @@ LABEL_8:
   v44 = v43;
   v46 = v45;
 
-  v47 = [(CEKSlider *)self _tickMarksView];
-  [v47 setFrame:{v38, v42, v44, v46}];
+  _tickMarksView4 = [(CEKSlider *)self _tickMarksView];
+  [_tickMarksView4 setFrame:{v38, v42, v44, v46}];
 
   [(CEKSlider *)self levelIndicatorHeight];
   v99 = v34;
@@ -471,8 +471,8 @@ LABEL_8:
   v56 = MaxY - v55;
   if (![(CEKSlider *)self _isAnimating])
   {
-    v57 = [(CEKSlider *)self _levelIndicatorView];
-    [v57 setFrame:{v49, v56, v51, v53}];
+    _levelIndicatorView = [(CEKSlider *)self _levelIndicatorView];
+    [_levelIndicatorView setFrame:{v49, v56, v51, v53}];
   }
 
   v108.origin.x = v49;
@@ -484,11 +484,11 @@ LABEL_8:
   y = v109.origin.y;
   width = v109.size.width;
   height = v109.size.height;
-  v62 = [(CEKSlider *)self _levelIndicatorBackgroundView];
-  [v62 setFrame:{x, y, width, height}];
+  _levelIndicatorBackgroundView = [(CEKSlider *)self _levelIndicatorBackgroundView];
+  [_levelIndicatorBackgroundView setFrame:{x, y, width, height}];
 
-  v63 = [(CEKSlider *)self _contentScrollView];
-  [v63 setFrame:{v102, v99, v101, v100}];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  [_contentScrollView setFrame:{v102, v99, v101, v100}];
 
   v110.origin.x = v49;
   v110.origin.y = v56;
@@ -510,28 +510,28 @@ LABEL_8:
   v113.size.width = v51;
   v113.size.height = v53;
   v67 = MaxX - CGRectGetMaxX(v113);
-  v68 = [(CEKSlider *)self _contentScrollView];
-  [v68 setContentInset:{0.0, v65, 0.0, v67}];
+  _contentScrollView2 = [(CEKSlider *)self _contentScrollView];
+  [_contentScrollView2 setContentInset:{0.0, v65, 0.0, v67}];
 
-  v69 = [(CEKSlider *)self _contentScrollView];
-  [v69 setContentSize:{v96, rect}];
+  _contentScrollView3 = [(CEKSlider *)self _contentScrollView];
+  [_contentScrollView3 setContentSize:{v96, rect}];
 
   if ([(CEKSlider *)self _markedValueWithinRange])
   {
     [(CEKSlider *)self _xOffsetForMarkedValue];
     v71 = v70 + -4.0;
-    v72 = [(CEKSlider *)self _dotView];
-    [v72 setFrame:{v71, v56, 8.0, 8.0}];
+    _dotView = [(CEKSlider *)self _dotView];
+    [_dotView setFrame:{v71, v56, 8.0, 8.0}];
   }
 
-  v73 = [(CEKSlider *)self _titleLabel];
-  v74 = [(CEKSlider *)self _valueLabel];
+  _titleLabel = [(CEKSlider *)self _titleLabel];
+  _valueLabel = [(CEKSlider *)self _valueLabel];
   v75 = *(MEMORY[0x1E695EFD0] + 16);
   *&v104.a = *MEMORY[0x1E695EFD0];
   *&v104.c = v75;
   *&v104.tx = *(MEMORY[0x1E695EFD0] + 32);
-  v76 = [(CEKSlider *)self textOrientation];
-  if (v76 == 1)
+  textOrientation = [(CEKSlider *)self textOrientation];
+  if (textOrientation == 1)
   {
     v78 = -1.57079633;
   }
@@ -539,7 +539,7 @@ LABEL_8:
   else
   {
     v77 = 18.0;
-    if (v76 != 2)
+    if (textOrientation != 2)
     {
       goto LABEL_17;
     }
@@ -551,25 +551,25 @@ LABEL_8:
   v77 = 28.0;
 LABEL_17:
   v103 = v104;
-  [v74 setTransform:&v103];
+  [_valueLabel setTransform:&v103];
   v103 = v104;
-  [v73 setTransform:&v103];
+  [_titleLabel setTransform:&v103];
   [(CEKSlider *)self labelVerticalPadding];
   v80 = v79;
-  [v73 setFrame:{10.0, v79, v101 + -20.0, 18.0}];
-  [v74 setFrame:{0.0, v80, v101, v77}];
-  v81 = [(CEKSlider *)self _edgeGradientView];
-  v82 = v81;
-  if (v81)
+  [_titleLabel setFrame:{10.0, v79, v101 + -20.0, 18.0}];
+  [_valueLabel setFrame:{0.0, v80, v101, v77}];
+  _edgeGradientView = [(CEKSlider *)self _edgeGradientView];
+  v82 = _edgeGradientView;
+  if (_edgeGradientView)
   {
     v84 = *MEMORY[0x1E69DDCE0];
     v83 = *(MEMORY[0x1E69DDCE0] + 8);
     v86 = *(MEMORY[0x1E69DDCE0] + 16);
     v85 = *(MEMORY[0x1E69DDCE0] + 24);
-    v87 = [v81 edgeGradientStyle];
-    if (v87 != 2)
+    edgeGradientStyle = [_edgeGradientView edgeGradientStyle];
+    if (edgeGradientStyle != 2)
     {
-      if (v87 == 1)
+      if (edgeGradientStyle == 1)
       {
         v114.origin.x = v49;
         v114.origin.y = v56;
@@ -585,7 +585,7 @@ LABEL_17:
         goto LABEL_24;
       }
 
-      if (v87)
+      if (edgeGradientStyle)
       {
         v88 = v99;
         v89 = v100;
@@ -615,9 +615,9 @@ LABEL_24:
   [(CEKSlider *)self setValue:?];
 }
 
-- (void)_clampValuesAndUpdateScrollPosition:(BOOL)a3
+- (void)_clampValuesAndUpdateScrollPosition:(BOOL)position
 {
-  v3 = a3;
+  positionCopy = position;
   [(CEKSlider *)self minimumValue];
   v6 = v5;
   [(CEKSlider *)self defaultValue];
@@ -650,38 +650,38 @@ LABEL_24:
   }
 
   self->_value = v14;
-  if (v3)
+  if (positionCopy)
   {
 
     [(CEKSlider *)self _updateScrollViewPosition];
   }
 }
 
-- (void)setDefaultValue:(double)a3
+- (void)setDefaultValue:(double)value
 {
-  if (self->_defaultValue != a3)
+  if (self->_defaultValue != value)
   {
-    self->_defaultValue = a3;
+    self->_defaultValue = value;
     [(CEKSlider *)self _clampValuesAndUpdateScrollPosition:1];
   }
 }
 
-- (void)setMinimumValue:(double)a3
+- (void)setMinimumValue:(double)value
 {
-  if (self->_minimumValue != a3)
+  if (self->_minimumValue != value)
   {
-    self->_minimumValue = a3;
+    self->_minimumValue = value;
     [(CEKSlider *)self _clampValuesAndUpdateScrollPosition:1];
 
     [(CEKSlider *)self _updateMagneticTickIndexes];
   }
 }
 
-- (void)setMaximumValue:(double)a3
+- (void)setMaximumValue:(double)value
 {
-  if (self->_maximumValue != a3)
+  if (self->_maximumValue != value)
   {
-    self->_maximumValue = a3;
+    self->_maximumValue = value;
     [(CEKSlider *)self _clampValuesAndUpdateScrollPosition:1];
 
     [(CEKSlider *)self _updateMagneticTickIndexes];
@@ -690,43 +690,43 @@ LABEL_24:
 
 - (NSString)title
 {
-  v2 = [(CEKSlider *)self _titleLabel];
-  v3 = [v2 text];
+  _titleLabel = [(CEKSlider *)self _titleLabel];
+  text = [_titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v8 = a3;
-  v4 = [(CEKSlider *)self _titleLabel];
-  v5 = [v4 text];
-  v6 = [v8 isEqualToString:v5];
+  titleCopy = title;
+  _titleLabel = [(CEKSlider *)self _titleLabel];
+  text = [_titleLabel text];
+  v6 = [titleCopy isEqualToString:text];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CEKSlider *)self _titleLabel];
-    [v7 setText:v8];
+    _titleLabel2 = [(CEKSlider *)self _titleLabel];
+    [_titleLabel2 setText:titleCopy];
 
     [(CEKSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleAlpha:(double)a3
+- (void)setTitleAlpha:(double)alpha
 {
-  if (self->_titleAlpha != a3)
+  if (self->_titleAlpha != alpha)
   {
-    self->_titleAlpha = a3;
+    self->_titleAlpha = alpha;
     [(CEKSlider *)self _updateColorsAnimated:0];
   }
 }
 
-- (void)setMarkedValue:(double)a3 animated:(BOOL)a4
+- (void)setMarkedValue:(double)value animated:(BOOL)animated
 {
-  if (self->_markedValue != a3)
+  if (self->_markedValue != value)
   {
-    self->_markedValue = a3;
-    [(CEKSlider *)self _updateMarkedViewAnimated:a4];
+    self->_markedValue = value;
+    [(CEKSlider *)self _updateMarkedViewAnimated:animated];
 
     [(CEKSlider *)self setNeedsLayout];
   }
@@ -748,12 +748,12 @@ LABEL_24:
   return v8 <= v9;
 }
 
-- (void)_updateMarkedViewAnimated:(BOOL)a3
+- (void)_updateMarkedViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CEKSlider *)self _dotView];
-  v6 = [(CEKSlider *)self _markedValueWithinRange];
-  if (!v6 && !v5)
+  animatedCopy = animated;
+  _dotView = [(CEKSlider *)self _dotView];
+  _markedValueWithinRange = [(CEKSlider *)self _markedValueWithinRange];
+  if (!_markedValueWithinRange && !_dotView)
   {
     return;
   }
@@ -774,7 +774,7 @@ LABEL_24:
 
   if ([(CEKSlider *)self _ticksStyle]== 1)
   {
-    v12 = v11 > 0.02 && v6;
+    v12 = v11 > 0.02 && _markedValueWithinRange;
     v13 = 0.0;
     if (!v12)
     {
@@ -785,16 +785,16 @@ LABEL_24:
   else
   {
     v13 = 0.0;
-    if (!v6 || ![(CEKSlider *)self _isActive]&& v11 <= 0.01)
+    if (!_markedValueWithinRange || ![(CEKSlider *)self _isActive]&& v11 <= 0.01)
     {
       goto LABEL_22;
     }
   }
 
-  v14 = [(CEKSlider *)self _isDimmed];
-  if (v14 || v5)
+  _isDimmed = [(CEKSlider *)self _isDimmed];
+  if (_isDimmed || _dotView)
   {
-    if (v14)
+    if (_isDimmed)
     {
       goto LABEL_22;
     }
@@ -802,31 +802,31 @@ LABEL_24:
 
   else
   {
-    v5 = objc_alloc_init(CEKSliderDotView);
-    v15 = [(CEKSlider *)self tickMarksConfiguration];
-    -[CEKSliderDotView setUseLegibilityShadow:](v5, "setUseLegibilityShadow:", [v15 useTickMarkLegibilityShadows]);
+    _dotView = objc_alloc_init(CEKSliderDotView);
+    tickMarksConfiguration = [(CEKSlider *)self tickMarksConfiguration];
+    -[CEKSliderDotView setUseLegibilityShadow:](_dotView, "setUseLegibilityShadow:", [tickMarksConfiguration useTickMarkLegibilityShadows]);
 
-    [(CEKSliderDotView *)v5 setAlpha:0.0];
+    [(CEKSliderDotView *)_dotView setAlpha:0.0];
     if ([(CEKSlider *)self _ticksStyle]== 1)
     {
-      v16 = [(CEKSlider *)self tickMarksConfiguration];
-      v17 = [v16 secondaryTickMarkColor];
-      [(CEKSliderDotView *)v5 setDotColor:v17];
+      tickMarksConfiguration2 = [(CEKSlider *)self tickMarksConfiguration];
+      secondaryTickMarkColor = [tickMarksConfiguration2 secondaryTickMarkColor];
+      [(CEKSliderDotView *)_dotView setDotColor:secondaryTickMarkColor];
     }
 
-    objc_storeStrong(&self->__dotView, v5);
-    v18 = [(CEKSlider *)self _contentScrollView];
-    v19 = [(CEKSlider *)self _tickMarksView];
-    [v18 insertSubview:v5 aboveSubview:v19];
+    objc_storeStrong(&self->__dotView, _dotView);
+    _contentScrollView = [(CEKSlider *)self _contentScrollView];
+    _tickMarksView = [(CEKSlider *)self _tickMarksView];
+    [_contentScrollView insertSubview:_dotView aboveSubview:_tickMarksView];
 
     [(CEKSlider *)self setNeedsLayout];
   }
 
   v13 = 1.0;
 LABEL_22:
-  if (!v3 || ([(CEKSliderDotView *)v5 alpha], v20 == v13))
+  if (!animatedCopy || ([(CEKSliderDotView *)_dotView alpha], v20 == v13))
   {
-    [(CEKSliderDotView *)v5 setAlpha:v13];
+    [(CEKSliderDotView *)_dotView setAlpha:v13];
   }
 
   else
@@ -838,19 +838,19 @@ LABEL_22:
     v25[1] = 3221225472;
     v25[2] = __39__CEKSlider__updateMarkedViewAnimated___block_invoke;
     v25[3] = &unk_1E7CC6660;
-    v26 = v5;
+    v26 = _dotView;
     v27 = v13;
-    v24 = v5;
+    v24 = _dotView;
     [v21 animateWithDuration:v25 animations:0 completion:v23];
   }
 }
 
 - (CEKTickMarksConfiguration)tickMarksConfiguration
 {
-  v2 = [(CEKSlider *)self _tickMarksView];
-  v3 = [v2 tickMarksModel];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
 
-  return v3;
+  return tickMarksModel;
 }
 
 - (void)_updateLegibilityBackground
@@ -869,82 +869,82 @@ LABEL_22:
       [(UIView *)self->__levelIndicatorBackgroundView setBackgroundColor:v6];
 
       v7 = self->__levelIndicatorBackgroundView;
-      v8 = [(CEKSlider *)self _levelIndicatorView];
-      [(CEKSlider *)self insertSubview:v7 belowSubview:v8];
+      _levelIndicatorView = [(CEKSlider *)self _levelIndicatorView];
+      [(CEKSlider *)self insertSubview:v7 belowSubview:_levelIndicatorView];
     }
   }
 
-  v9 = [(CEKSlider *)self _levelIndicatorView];
-  [v9 setAlpha:v3];
+  _levelIndicatorView2 = [(CEKSlider *)self _levelIndicatorView];
+  [_levelIndicatorView2 setAlpha:v3];
 }
 
-- (void)setUseTickMarkLegibilityShadows:(BOOL)a3
+- (void)setUseTickMarkLegibilityShadows:(BOOL)shadows
 {
-  v3 = a3;
-  v5 = [(CEKSlider *)self _dotView];
-  [v5 setUseLegibilityShadow:v3];
+  shadowsCopy = shadows;
+  _dotView = [(CEKSlider *)self _dotView];
+  [_dotView setUseLegibilityShadow:shadowsCopy];
 
-  v6 = [(CEKSlider *)self tickMarksConfiguration];
-  [v6 setUseTickMarkLegibilityShadows:v3];
+  tickMarksConfiguration = [(CEKSlider *)self tickMarksConfiguration];
+  [tickMarksConfiguration setUseTickMarkLegibilityShadows:shadowsCopy];
 
   [(CEKSlider *)self _updateLegibilityBackground];
 }
 
 - (BOOL)useTickMarkLegibilityShadows
 {
-  v2 = [(CEKSlider *)self tickMarksConfiguration];
-  v3 = [v2 useTickMarkLegibilityShadows];
+  tickMarksConfiguration = [(CEKSlider *)self tickMarksConfiguration];
+  useTickMarkLegibilityShadows = [tickMarksConfiguration useTickMarkLegibilityShadows];
 
-  return v3;
+  return useTickMarkLegibilityShadows;
 }
 
-- (void)setTickMarkCount:(int64_t)a3
+- (void)setTickMarkCount:(int64_t)count
 {
-  v5 = [(CEKSlider *)self _tickMarksView];
-  v4 = [v5 tickMarksModel];
-  [v4 setTickMarksCount:a3];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  [tickMarksModel setTickMarksCount:count];
 }
 
 - (int64_t)tickMarkCount
 {
-  v2 = [(CEKSlider *)self _tickMarksView];
-  v3 = [v2 tickMarksModel];
-  v4 = [v3 tickMarksCount];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  tickMarksCount = [tickMarksModel tickMarksCount];
 
-  return v4;
+  return tickMarksCount;
 }
 
-- (void)setLogarithmic:(BOOL)a3
+- (void)setLogarithmic:(BOOL)logarithmic
 {
-  v3 = a3;
-  v5 = [(CEKSlider *)self _tickMarksView];
-  v4 = [v5 tickMarksModel];
-  [v4 setLogarithmic:v3];
+  logarithmicCopy = logarithmic;
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  [tickMarksModel setLogarithmic:logarithmicCopy];
 }
 
 - (BOOL)logarithmic
 {
-  v2 = [(CEKSlider *)self _tickMarksView];
-  v3 = [v2 tickMarksModel];
-  v4 = [v3 logarithmic];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  logarithmic = [tickMarksModel logarithmic];
 
-  return v4;
+  return logarithmic;
 }
 
-- (void)setTickMarkSize:(CGSize)a3
+- (void)setTickMarkSize:(CGSize)size
 {
-  if (self->_tickMarkSize.width != a3.width || self->_tickMarkSize.height != a3.height)
+  if (self->_tickMarkSize.width != size.width || self->_tickMarkSize.height != size.height)
   {
-    self->_tickMarkSize = a3;
+    self->_tickMarkSize = size;
     [(CEKSlider *)self setNeedsLayout];
   }
 }
 
 - (void)_createGradientIfNeeded
 {
-  v3 = [(CEKSlider *)self _edgeGradientView];
+  _edgeGradientView = [(CEKSlider *)self _edgeGradientView];
 
-  if (!v3)
+  if (!_edgeGradientView)
   {
     v4 = objc_alloc_init(CEKEdgeGradientView);
     [(CEKSlider *)self _setEdgeGradientView:v4];
@@ -954,44 +954,44 @@ LABEL_22:
 - (void)setTransparentGradients
 {
   [(CEKSlider *)self _createGradientIfNeeded];
-  v6 = [(CEKSlider *)self _edgeGradientView];
-  [v6 setEdgeGradientStyleBlack];
+  _edgeGradientView = [(CEKSlider *)self _edgeGradientView];
+  [_edgeGradientView setEdgeGradientStyleBlack];
   v3 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-  v4 = [v6 layer];
-  [v4 setCompositingFilter:v3];
+  layer = [_edgeGradientView layer];
+  [layer setCompositingFilter:v3];
 
-  v5 = [(CEKSlider *)self _contentScrollView];
-  [(CEKSlider *)self insertSubview:v6 aboveSubview:v5];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  [(CEKSlider *)self insertSubview:_edgeGradientView aboveSubview:_contentScrollView];
 }
 
-- (void)setOpaqueGradientsWithColor:(id)a3
+- (void)setOpaqueGradientsWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(CEKSlider *)self _createGradientIfNeeded];
-  v7 = [(CEKSlider *)self _edgeGradientView];
-  [v7 setCustomEdgeGradientStyleWithColor:v4];
+  _edgeGradientView = [(CEKSlider *)self _edgeGradientView];
+  [_edgeGradientView setCustomEdgeGradientStyleWithColor:colorCopy];
 
-  v5 = [v7 layer];
-  [v5 setCompositingFilter:0];
+  layer = [_edgeGradientView layer];
+  [layer setCompositingFilter:0];
 
-  v6 = [(CEKSlider *)self _contentScrollView];
-  [(CEKSlider *)self insertSubview:v7 aboveSubview:v6];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  [(CEKSlider *)self insertSubview:_edgeGradientView aboveSubview:_contentScrollView];
 }
 
 - (void)removeGradients
 {
-  v3 = [(CEKSlider *)self _edgeGradientView];
-  [v3 removeFromSuperview];
+  _edgeGradientView = [(CEKSlider *)self _edgeGradientView];
+  [_edgeGradientView removeFromSuperview];
 
   [(CEKSlider *)self _setEdgeGradientView:0];
 }
 
-- (void)setGradientInsets:(id)a3
+- (void)setGradientInsets:(id)insets
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = insets.var1;
+  var0 = insets.var0;
   p_gradientInsets = &self->_gradientInsets;
-  if (!CEKEdgeInsetsEqualToInsets(a3.var0, a3.var1, self->_gradientInsets.startInset, self->_gradientInsets.endInset))
+  if (!CEKEdgeInsetsEqualToInsets(insets.var0, insets.var1, self->_gradientInsets.startInset, self->_gradientInsets.endInset))
   {
     p_gradientInsets->startInset = var0;
     p_gradientInsets->endInset = var1;
@@ -1000,43 +1000,43 @@ LABEL_22:
   }
 }
 
-- (void)setEnabled:(BOOL)a3 dimmed:(BOOL)a4 animated:(BOOL)a5
+- (void)setEnabled:(BOOL)enabled dimmed:(BOOL)dimmed animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if ([(CEKSlider *)self isEnabled]!= a3 || [(CEKSlider *)self _isDimmed]!= v6)
+  animatedCopy = animated;
+  dimmedCopy = dimmed;
+  enabledCopy = enabled;
+  if ([(CEKSlider *)self isEnabled]!= enabled || [(CEKSlider *)self _isDimmed]!= dimmedCopy)
   {
-    [(CEKSlider *)self setEnabled:v7];
-    [(CEKSlider *)self _setDimmed:v6 animated:v5];
+    [(CEKSlider *)self setEnabled:enabledCopy];
+    [(CEKSlider *)self _setDimmed:dimmedCopy animated:animatedCopy];
     [(CEKSlider *)self contactEndedWithAction:0];
-    v9 = [(CEKSlider *)self _dynamicTickMarksView];
-    [v9 setEnabled:v7];
+    _dynamicTickMarksView = [(CEKSlider *)self _dynamicTickMarksView];
+    [_dynamicTickMarksView setEnabled:enabledCopy];
   }
 }
 
-- (void)_setDimmed:(BOOL)a3 animated:(BOOL)a4
+- (void)_setDimmed:(BOOL)dimmed animated:(BOOL)animated
 {
-  if (self->__dimmed != a3)
+  if (self->__dimmed != dimmed)
   {
-    self->__dimmed = a3;
-    [(CEKSlider *)self _updateEnableAppearanceStateAnimated:a4];
+    self->__dimmed = dimmed;
+    [(CEKSlider *)self _updateEnableAppearanceStateAnimated:animated];
   }
 }
 
-- (void)_updateEnableAppearanceStateAnimated:(BOOL)a3
+- (void)_updateEnableAppearanceStateAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CEKSlider *)self _isDimmed];
+  animatedCopy = animated;
+  _isDimmed = [(CEKSlider *)self _isDimmed];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke;
   aBlock[3] = &unk_1E7CC6AC0;
   aBlock[4] = self;
-  v10 = v5;
+  v10 = _isDimmed;
   v6 = _Block_copy(aBlock);
   v7 = v6;
-  if (v3)
+  if (animatedCopy)
   {
     [(CEKSlider *)self _setAnimating:1];
     v8[0] = MEMORY[0x1E69E9820];
@@ -1052,7 +1052,7 @@ LABEL_22:
     (*(v6 + 2))(v6);
   }
 
-  [(CEKSlider *)self _updateMarkedViewAnimated:v3];
+  [(CEKSlider *)self _updateMarkedViewAnimated:animatedCopy];
 }
 
 void __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke(uint64_t a1)
@@ -1094,39 +1094,39 @@ void __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke(uint64_
   [v14 setAlpha:v13];
 }
 
-- (void)setMagneticRange:(id)a3
+- (void)setMagneticRange:(id)range
 {
-  v5 = a3;
-  if (self->_magneticRange != v5)
+  rangeCopy = range;
+  if (self->_magneticRange != rangeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_magneticRange, a3);
+    v6 = rangeCopy;
+    objc_storeStrong(&self->_magneticRange, range);
     [(CEKSlider *)self _updateMagneticTickIndexes];
-    v5 = v6;
+    rangeCopy = v6;
   }
 }
 
 - (void)_updateMagneticTickIndexes
 {
-  v17 = [(CEKSlider *)self magneticRange];
-  v3 = [MEMORY[0x1E696AD50] indexSet];
-  v4 = [(CEKSlider *)self _tickMarksView];
-  v5 = [v4 tickMarksModel];
+  magneticRange = [(CEKSlider *)self magneticRange];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
 
-  if ([v17 count])
+  if ([magneticRange count])
   {
     v6 = 0;
     do
     {
-      v7 = [v17 valueAtIndex:v6];
+      v7 = [magneticRange valueAtIndex:v6];
       [v7 doubleValue];
       v9 = v8;
 
       [(CEKSlider *)self minimumValue];
       v11 = v10;
       [(CEKSlider *)self maximumValue];
-      [v5 xOffsetForNormalizedValue:{CEKProgress(v9, v11, v12)}];
-      v14 = [v5 floorTickMarkIndexForXOffset:v13 + 0.001];
+      [tickMarksModel xOffsetForNormalizedValue:{CEKProgress(v9, v11, v12)}];
+      v14 = [tickMarksModel floorTickMarkIndexForXOffset:v13 + 0.001];
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v15 = 0;
@@ -1137,15 +1137,15 @@ void __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke(uint64_
         v15 = v14;
       }
 
-      [v3 addIndex:v15];
+      [indexSet addIndex:v15];
       ++v6;
     }
 
-    while (v6 < [v17 count]);
+    while (v6 < [magneticRange count]);
   }
 
-  v16 = [(CEKSlider *)self _dynamicTickMarksView];
-  [v16 setMagneticTickMarkIndexes:v3];
+  _dynamicTickMarksView = [(CEKSlider *)self _dynamicTickMarksView];
+  [_dynamicTickMarksView setMagneticTickMarkIndexes:indexSet];
 }
 
 - (void)_resetSnapped
@@ -1158,8 +1158,8 @@ void __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke(uint64_
 
 - (void)performWaveAnimation
 {
-  v2 = [(CEKSlider *)self _dynamicTickMarksView];
-  [v2 performWaveAnimation];
+  _dynamicTickMarksView = [(CEKSlider *)self _dynamicTickMarksView];
+  [_dynamicTickMarksView performWaveAnimation];
 }
 
 - (void)tintColorDidChange
@@ -1170,9 +1170,9 @@ void __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke(uint64_
   [(CEKSlider *)self _updateColorsAnimated:0];
 }
 
-- (void)_updateColorsAnimated:(BOOL)a3
+- (void)_updateColorsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CEKSlider *)self _isActive])
   {
     [(CEKSlider *)self tintColor];
@@ -1183,12 +1183,12 @@ void __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke(uint64_
     [MEMORY[0x1E69DC888] labelColor];
   }
   v5 = ;
-  v6 = [(CEKSlider *)self tintColor];
+  tintColor = [(CEKSlider *)self tintColor];
   if (![(CEKSlider *)self _isActive]&& [(CEKSlider *)self valueLabelVisibility]== 2)
   {
-    v7 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
 
-    v6 = v7;
+    tintColor = labelColor;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1198,11 +1198,11 @@ void __50__CEKSlider__updateEnableAppearanceStateAnimated___block_invoke(uint64_
   aBlock[4] = self;
   v8 = v5;
   v14 = v8;
-  v9 = v6;
+  v9 = tintColor;
   v15 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (v3)
+  if (animatedCopy)
   {
     v12 = MEMORY[0x1E69DD250];
     [(CEKSlider *)self animationDuration];
@@ -1232,21 +1232,21 @@ void __35__CEKSlider__updateColorsAnimated___block_invoke(uint64_t a1)
   [v8 setTextColor:v7];
 }
 
-- (void)_setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)_setActive:(BOOL)active animated:(BOOL)animated
 {
-  if (self->__active != a3)
+  if (self->__active != active)
   {
-    v5 = a4;
-    v6 = a3;
-    self->__active = a3;
+    animatedCopy = animated;
+    activeCopy = active;
+    self->__active = active;
     if ([(CEKSlider *)self valueLabelVisibility]== 1)
     {
-      [(CEKSlider *)self _setShowValueLabel:v6 animated:v5];
+      [(CEKSlider *)self _setShowValueLabel:activeCopy animated:animatedCopy];
     }
 
-    [(CEKSlider *)self _updateColorsAnimated:v5];
+    [(CEKSlider *)self _updateColorsAnimated:animatedCopy];
 
-    [(CEKSlider *)self _updateMarkedViewAnimated:v5];
+    [(CEKSlider *)self _updateMarkedViewAnimated:animatedCopy];
   }
 }
 
@@ -1255,24 +1255,24 @@ void __35__CEKSlider__updateColorsAnimated___block_invoke(uint64_t a1)
   [(CEKSlider *)self markedValue];
   [(CEKSlider *)self xOffsetForValue:?];
   v4 = v3;
-  v5 = [(CEKSlider *)self _contentScrollView];
-  [v5 contentInset];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  [_contentScrollView contentInset];
   v7 = v4 + v6;
 
   return v7;
 }
 
-- (double)xOffsetForValue:(double)a3
+- (double)xOffsetForValue:(double)value
 {
   [(CEKSlider *)self minimumValue];
   v6 = v5;
   [(CEKSlider *)self maximumValue];
-  v8 = CEKProgress(a3, v6, v7);
-  v9 = [(CEKSlider *)self _tickMarksView];
-  v10 = [v9 tickMarksModel];
-  [v10 xOffsetForNormalizedValue:v8];
-  v11 = [(CEKSlider *)self _contentScrollView];
-  [v11 contentInset];
+  v8 = CEKProgress(value, v6, v7);
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
+  [tickMarksModel xOffsetForNormalizedValue:v8];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  [_contentScrollView contentInset];
 
   UIRoundToViewScale();
   return result;
@@ -1284,20 +1284,20 @@ void __35__CEKSlider__updateColorsAnimated___block_invoke(uint64_t a1)
   [(CEKSlider *)self value];
   [(CEKSlider *)self xOffsetForValue:?];
   v5 = v4;
-  v6 = [(CEKSlider *)self _contentScrollView];
-  [v6 setContentOffset:0 animated:{v5, v3}];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  [_contentScrollView setContentOffset:0 animated:{v5, v3}];
 }
 
-- (void)_setValue:(double)a3 shouldSendActions:(BOOL)a4 shouldUpdateScrollPosition:(BOOL)a5
+- (void)_setValue:(double)value shouldSendActions:(BOOL)actions shouldUpdateScrollPosition:(BOOL)position
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    v5 = a4;
-    self->_value = a3;
-    [(CEKSlider *)self _clampValuesAndUpdateScrollPosition:a5];
+    actionsCopy = actions;
+    self->_value = value;
+    [(CEKSlider *)self _clampValuesAndUpdateScrollPosition:position];
     [(CEKSlider *)self _updateMarkedViewAnimated:1];
     [(CEKSlider *)self _updateValueLabel];
-    if (v5)
+    if (actionsCopy)
     {
 
       [(CEKSlider *)self sendActionsForControlEvents:4096];
@@ -1305,36 +1305,36 @@ void __35__CEKSlider__updateColorsAnimated___block_invoke(uint64_t a1)
   }
 }
 
-- (double)_valueForScrollViewXOffset:(double)a3
+- (double)_valueForScrollViewXOffset:(double)offset
 {
-  v5 = [(CEKSlider *)self _contentScrollView];
-  [v5 contentInset];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  [_contentScrollView contentInset];
   v7 = v6;
-  v8 = (v6 + a3) / CEKScrollableDistanceInScrollView(v5);
-  v9 = [(CEKSlider *)self _tickMarksView];
-  v10 = [v9 tickMarksModel];
+  v8 = (v6 + offset) / CEKScrollableDistanceInScrollView(_contentScrollView);
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
 
-  v11 = [(CEKSlider *)self magneticRange];
+  magneticRange = [(CEKSlider *)self magneticRange];
   [(CEKSlider *)self minimumValue];
   v13 = v12;
   [(CEKSlider *)self maximumValue];
   v15 = v14;
-  [v10 absoluteValueForNormalizedValue:v8 inAbsoluteRangeSize:v14 - v13];
+  [tickMarksModel absoluteValueForNormalizedValue:v8 inAbsoluteRangeSize:v14 - v13];
   v17 = v13 + v16;
-  if ([v11 count])
+  if ([magneticRange count])
   {
-    v18 = [v11 valueAtIndex:{objc_msgSend(v11, "indexOfValueClosestToValue:", v17)}];
+    v18 = [magneticRange valueAtIndex:{objc_msgSend(magneticRange, "indexOfValueClosestToValue:", v17)}];
     [v18 doubleValue];
     v20 = v19;
 
-    [v10 xOffsetForNormalizedValue:{CEKProgress(v20, v13, v15)}];
+    [tickMarksModel xOffsetForNormalizedValue:{CEKProgress(v20, v13, v15)}];
     v22 = v21 - v7;
     v23 = CEKPixelWidthForView(self) * 0.5;
-    if (vabdd_f64(v22, a3) > v23)
+    if (vabdd_f64(v22, offset) > v23)
     {
-      [v10 xOffsetForNormalizedValue:1.0];
+      [tickMarksModel xOffsetForNormalizedValue:1.0];
       v20 = v17;
-      if (v24 - v7 - a3 < v23)
+      if (v24 - v7 - offset < v23)
       {
         [(CEKSlider *)self maximumValue];
         v20 = v25;
@@ -1350,41 +1350,41 @@ void __35__CEKSlider__updateColorsAnimated___block_invoke(uint64_t a1)
   return v20;
 }
 
-- (void)setValueLabelVisibility:(int64_t)a3
+- (void)setValueLabelVisibility:(int64_t)visibility
 {
-  if (self->_valueLabelVisibility != a3)
+  if (self->_valueLabelVisibility != visibility)
   {
-    self->_valueLabelVisibility = a3;
-    if (a3 == 2)
+    self->_valueLabelVisibility = visibility;
+    if (visibility == 2)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = a3 == 1 && [(CEKSlider *)self _isActive];
+      v5 = visibility == 1 && [(CEKSlider *)self _isActive];
     }
 
     [(CEKSlider *)self _setShowValueLabel:v5 animated:0];
   }
 }
 
-- (void)_setShowValueLabel:(BOOL)a3 animated:(BOOL)a4
+- (void)_setShowValueLabel:(BOOL)label animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  labelCopy = label;
   v7 = 0.0;
-  if (a3)
+  if (label)
   {
-    v8 = [(CEKSlider *)self _valueLabel];
+    _valueLabel = [(CEKSlider *)self _valueLabel];
 
     v7 = 1.0;
-    if (!v8)
+    if (!_valueLabel)
     {
       v11 = objc_alloc(MEMORY[0x1E69DCC10]);
       v12 = [v11 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v13 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v12 setBackgroundColor:v13];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v12 setBackgroundColor:clearColor];
 
       [(UILabel *)v12 setTextAlignment:1];
       [(UILabel *)v12 setLineBreakMode:4];
@@ -1396,26 +1396,26 @@ void __35__CEKSlider__updateColorsAnimated___block_invoke(uint64_t a1)
 
       [(CEKSlider *)self addSubview:self->__valueLabel];
       [(CEKSlider *)self _updateFonts];
-      if (v4)
+      if (animatedCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_9:
-      v16 = [(CEKSlider *)self _valueLabel];
-      [v16 setAlpha:v7];
+      _valueLabel2 = [(CEKSlider *)self _valueLabel];
+      [_valueLabel2 setAlpha:v7];
 
       goto LABEL_10;
     }
   }
 
-  if (!v4)
+  if (!animatedCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  if (v5)
+  if (labelCopy)
   {
     v9 = 0x10000;
   }
@@ -1435,7 +1435,7 @@ LABEL_4:
   *&v17[5] = v7;
   [v10 animateWithDuration:v9 delay:v17 options:0 animations:? completion:?];
 LABEL_10:
-  [(CEKSlider *)self _updateColorsAnimated:v4];
+  [(CEKSlider *)self _updateColorsAnimated:animatedCopy];
   [(CEKSlider *)self _updateValueLabel];
   [(CEKSlider *)self setNeedsLayout];
 }
@@ -1447,28 +1447,28 @@ void __41__CEKSlider__setShowValueLabel_animated___block_invoke(uint64_t a1)
   [v2 setAlpha:v1];
 }
 
-- (void)setValueLabelFormat:(int64_t)a3
+- (void)setValueLabelFormat:(int64_t)format
 {
-  if (self->_valueLabelFormat != a3)
+  if (self->_valueLabelFormat != format)
   {
-    self->_valueLabelFormat = a3;
+    self->_valueLabelFormat = format;
     [(CEKSlider *)self _updateValueLabel];
   }
 }
 
-- (void)setValueLabelMultiplier:(double)a3
+- (void)setValueLabelMultiplier:(double)multiplier
 {
-  if (self->_valueLabelMultiplier != a3)
+  if (self->_valueLabelMultiplier != multiplier)
   {
-    self->_valueLabelMultiplier = a3;
+    self->_valueLabelMultiplier = multiplier;
     [(CEKSlider *)self _updateValueLabel];
   }
 }
 
 - (void)_updateValueLabel
 {
-  v3 = [(CEKSlider *)self _valueLabel];
-  [v3 alpha];
+  _valueLabel = [(CEKSlider *)self _valueLabel];
+  [_valueLabel alpha];
   v5 = v4;
 
   if (v5 <= 0.0)
@@ -1477,24 +1477,24 @@ void __41__CEKSlider__setShowValueLabel_animated___block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  v6 = [(CEKSlider *)self valueLabelFormat];
-  if (v6 == 1)
+  valueLabelFormat = [(CEKSlider *)self valueLabelFormat];
+  if (valueLabelFormat == 1)
   {
-    v7 = [objc_opt_class() _decimalFormatter];
+    _decimalFormatter = [objc_opt_class() _decimalFormatter];
   }
 
   else
   {
-    if (v6)
+    if (valueLabelFormat)
     {
       v8 = 0;
       goto LABEL_9;
     }
 
-    v7 = [objc_opt_class() _integerFormatter];
+    _decimalFormatter = [objc_opt_class() _integerFormatter];
   }
 
-  v8 = v7;
+  v8 = _decimalFormatter;
 LABEL_9:
   [(CEKSlider *)self value];
   v10 = v9;
@@ -1502,53 +1502,53 @@ LABEL_9:
   v13 = [(CEKSlider *)self _attributedStringFromValue:v8 usingFormatter:v10 * v11];
 
 LABEL_10:
-  v12 = [(CEKSlider *)self _valueLabel];
-  [v12 setAttributedText:v13];
+  _valueLabel2 = [(CEKSlider *)self _valueLabel];
+  [_valueLabel2 setAttributedText:v13];
 }
 
-- (void)setFontStyle:(unint64_t)a3
+- (void)setFontStyle:(unint64_t)style
 {
-  if (self->_fontStyle != a3)
+  if (self->_fontStyle != style)
   {
-    self->_fontStyle = a3;
+    self->_fontStyle = style;
     [(CEKSlider *)self _updateFonts];
   }
 }
 
 - (void)_updateFonts
 {
-  v3 = [(CEKSlider *)self fontStyle];
-  v4 = CEKFontOfSizeAndStyle(v3, 14.0);
-  v5 = [(CEKSlider *)self _titleLabel];
-  [v5 setFont:v4];
+  fontStyle = [(CEKSlider *)self fontStyle];
+  v4 = CEKFontOfSizeAndStyle(fontStyle, 14.0);
+  _titleLabel = [(CEKSlider *)self _titleLabel];
+  [_titleLabel setFont:v4];
 
-  v7 = CEKMonospacedStylisticNumeralFontOfSizeAndStyle(v3, 14.0);
-  v6 = [(CEKSlider *)self _valueLabel];
-  [v6 setFont:v7];
+  v7 = CEKMonospacedStylisticNumeralFontOfSizeAndStyle(fontStyle, 14.0);
+  _valueLabel = [(CEKSlider *)self _valueLabel];
+  [_valueLabel setFont:v7];
 }
 
-- (void)setSelectionFeedbackProfile:(int64_t)a3
+- (void)setSelectionFeedbackProfile:(int64_t)profile
 {
-  v4 = [(CEKSlider *)self _feedbackGenerator];
-  [v4 setProfile:a3];
+  _feedbackGenerator = [(CEKSlider *)self _feedbackGenerator];
+  [_feedbackGenerator setProfile:profile];
 }
 
 - (int64_t)selectionFeedbackProfile
 {
-  v2 = [(CEKSlider *)self _feedbackGenerator];
-  v3 = [v2 profile];
+  _feedbackGenerator = [(CEKSlider *)self _feedbackGenerator];
+  profile = [_feedbackGenerator profile];
 
-  return v3;
+  return profile;
 }
 
-- (void)setTextOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setTextOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_textOrientation != a3)
+  if (self->_textOrientation != orientation)
   {
-    if (a4)
+    if (animated)
     {
       [(CEKSlider *)self layoutIfNeeded];
-      self->_textOrientation = a3;
+      self->_textOrientation = orientation;
       [(CEKSlider *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -1560,7 +1560,7 @@ LABEL_10:
 
     else
     {
-      self->_textOrientation = a3;
+      self->_textOrientation = orientation;
 
       [(CEKSlider *)self setNeedsLayout];
     }
@@ -1569,50 +1569,50 @@ LABEL_10:
 
 - (int64_t)titleAlignment
 {
-  v2 = [(CEKSlider *)self _titleLabel];
-  v3 = [v2 textAlignment];
+  _titleLabel = [(CEKSlider *)self _titleLabel];
+  textAlignment = [_titleLabel textAlignment];
 
-  return v3;
+  return textAlignment;
 }
 
-- (void)setTitleAlignment:(int64_t)a3
+- (void)setTitleAlignment:(int64_t)alignment
 {
-  v4 = [(CEKSlider *)self _titleLabel];
-  [v4 setTextAlignment:a3];
+  _titleLabel = [(CEKSlider *)self _titleLabel];
+  [_titleLabel setTextAlignment:alignment];
 }
 
-- (void)setSliderVerticalOffset:(double)a3
+- (void)setSliderVerticalOffset:(double)offset
 {
-  if (self->_sliderVerticalOffset != a3)
+  if (self->_sliderVerticalOffset != offset)
   {
-    self->_sliderVerticalOffset = a3;
+    self->_sliderVerticalOffset = offset;
     [(CEKSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setLabelVerticalPadding:(double)a3
+- (void)setLabelVerticalPadding:(double)padding
 {
-  if (self->_labelVerticalPadding != a3)
+  if (self->_labelVerticalPadding != padding)
   {
-    self->_labelVerticalPadding = a3;
+    self->_labelVerticalPadding = padding;
     [(CEKSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setSliderVerticalAlignment:(int64_t)a3
+- (void)setSliderVerticalAlignment:(int64_t)alignment
 {
-  if (self->_sliderVerticalAlignment != a3)
+  if (self->_sliderVerticalAlignment != alignment)
   {
-    self->_sliderVerticalAlignment = a3;
+    self->_sliderVerticalAlignment = alignment;
     [(CEKSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setLevelIndicatorHeight:(double)a3
+- (void)setLevelIndicatorHeight:(double)height
 {
-  if (self->_levelIndicatorHeight != a3)
+  if (self->_levelIndicatorHeight != height)
   {
-    self->_levelIndicatorHeight = a3;
+    self->_levelIndicatorHeight = height;
     [(CEKSlider *)self setNeedsLayout];
   }
 }
@@ -1620,8 +1620,8 @@ LABEL_10:
 - (CGRect)frameForTitleLabel
 {
   [(CEKSlider *)self layoutIfNeeded];
-  v3 = [(CEKSlider *)self _titleLabel];
-  [v3 frame];
+  _titleLabel = [(CEKSlider *)self _titleLabel];
+  [_titleLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1641,8 +1641,8 @@ LABEL_10:
 - (CGRect)frameForValueLabel
 {
   [(CEKSlider *)self layoutIfNeeded];
-  v3 = [(CEKSlider *)self _valueLabel];
-  [v3 frame];
+  _valueLabel = [(CEKSlider *)self _valueLabel];
+  [_valueLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1662,8 +1662,8 @@ LABEL_10:
 - (CGRect)frameForLevelIndicator
 {
   [(CEKSlider *)self layoutIfNeeded];
-  v3 = [(CEKSlider *)self _levelIndicatorView];
-  [v3 frame];
+  _levelIndicatorView = [(CEKSlider *)self _levelIndicatorView];
+  [_levelIndicatorView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1683,10 +1683,10 @@ LABEL_10:
 - (CGRect)frameForTicksView
 {
   [(CEKSlider *)self layoutIfNeeded];
-  v3 = [(CEKSlider *)self _contentScrollView];
-  v4 = [(CEKSlider *)self _tickMarksView];
-  [v4 frame];
-  [v3 convertRect:self toView:?];
+  _contentScrollView = [(CEKSlider *)self _contentScrollView];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  [_tickMarksView frame];
+  [_contentScrollView convertRect:self toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -1703,75 +1703,75 @@ LABEL_10:
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(CEKSlider *)self _dynamicTickMarksView];
+  scrollCopy = scroll;
+  _dynamicTickMarksView = [(CEKSlider *)self _dynamicTickMarksView];
   [(CEKSlider *)self bounds];
-  [(CEKSlider *)self convertRect:v5 toView:?];
-  [v5 setVisibleBounds:?];
+  [(CEKSlider *)self convertRect:_dynamicTickMarksView toView:?];
+  [_dynamicTickMarksView setVisibleBounds:?];
   if ([(CEKSlider *)self _isreAdjustingOffsets])
   {
     goto LABEL_30;
   }
 
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   v45 = v6;
   v46 = v7;
   if (self->_delegateFlags.respondsToWillUpdateValue)
   {
-    v8 = [v4 panGestureRecognizer];
-    [v8 velocityInView:self];
+    panGestureRecognizer = [scrollCopy panGestureRecognizer];
+    [panGestureRecognizer velocityInView:self];
     v10 = v9;
 
-    v11 = [(CEKSlider *)self delegate];
-    [v11 slider:self willUpdateValue:&v45 withVelocity:v10];
+    delegate = [(CEKSlider *)self delegate];
+    [delegate slider:self willUpdateValue:&v45 withVelocity:v10];
 
     [(CEKSlider *)self set_reAdjustingOffsets:1];
-    [v4 setContentOffset:{v45, v46}];
+    [scrollCopy setContentOffset:{v45, v46}];
     [(CEKSlider *)self set_reAdjustingOffsets:0];
   }
 
-  v12 = [(CEKSlider *)self _isExternallyScrolling]|| [(CEKSlider *)self _isScrollExternallyAnimating];
-  if ([v4 isTracking])
+  _isScrollExternallyAnimating = [(CEKSlider *)self _isExternallyScrolling]|| [(CEKSlider *)self _isScrollExternallyAnimating];
+  if ([scrollCopy isTracking])
   {
-    v13 = 1;
+    isDecelerating = 1;
 LABEL_10:
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     [(CEKSlider *)self _valueForScrollViewXOffset:?];
     v14 = 1;
     [(CEKSlider *)self _setValue:1 shouldSendActions:0 shouldUpdateScrollPosition:?];
     goto LABEL_12;
   }
 
-  v13 = [v4 isDecelerating];
-  if ((v13 | v12))
+  isDecelerating = [scrollCopy isDecelerating];
+  if ((isDecelerating | _isScrollExternallyAnimating))
   {
     goto LABEL_10;
   }
 
   v14 = 0;
-  v13 = 0;
+  isDecelerating = 0;
 LABEL_12:
   if (self->_delegateFlags.respondsToDidScroll)
   {
-    v15 = [(CEKSlider *)self delegate];
-    [v15 sliderDidScroll:self];
+    delegate2 = [(CEKSlider *)self delegate];
+    [delegate2 sliderDidScroll:self];
   }
 
-  v16 = [(CEKSlider *)self _tickMarksView];
-  v17 = [v16 tickMarksModel];
+  _tickMarksView = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel = [_tickMarksView tickMarksModel];
 
   [(CEKSlider *)self value];
   v19 = v18;
   [(CEKSlider *)self minimumValue];
   v21 = v20;
   [(CEKSlider *)self maximumValue];
-  [v17 xOffsetForNormalizedValue:{CEKProgress(v19, v21, v22)}];
+  [tickMarksModel xOffsetForNormalizedValue:{CEKProgress(v19, v21, v22)}];
   v24 = v23;
-  v25 = [(CEKSlider *)self _tickMarksView];
-  v26 = [v25 tickMarksModel];
-  v27 = [v26 floorTickMarkIndexForXOffset:v24 + 0.001];
+  _tickMarksView2 = [(CEKSlider *)self _tickMarksView];
+  tickMarksModel2 = [_tickMarksView2 tickMarksModel];
+  v27 = [tickMarksModel2 floorTickMarkIndexForXOffset:v24 + 0.001];
 
   if (v27 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1784,43 +1784,43 @@ LABEL_12:
   }
 
   [(CEKSlider *)self _setTickMarkIndex:v27];
-  v28 = [(CEKSlider *)self _dynamicTickMarksView];
-  [v28 setSelectedTickMarkIndex:v27 animated:v14];
+  _dynamicTickMarksView2 = [(CEKSlider *)self _dynamicTickMarksView];
+  [_dynamicTickMarksView2 setSelectedTickMarkIndex:v27 animated:v14];
 
   if (!v14)
   {
     goto LABEL_24;
   }
 
-  v29 = [(CEKSlider *)self feedbackScope];
-  if ((v29 - 1) > 1)
+  feedbackScope = [(CEKSlider *)self feedbackScope];
+  if ((feedbackScope - 1) > 1)
   {
     goto LABEL_24;
   }
 
-  v30 = v29;
-  v44 = [v17 tickMarksCount];
-  v43 = [v17 isMainTickMarkAtIndex:v27];
-  v31 = [(CEKSlider *)self _dynamicTickMarksView];
-  v32 = [v31 magneticTickMarkIndexes];
-  v33 = [v32 containsIndex:v27];
+  v30 = feedbackScope;
+  tickMarksCount = [tickMarksModel tickMarksCount];
+  v43 = [tickMarksModel isMainTickMarkAtIndex:v27];
+  _dynamicTickMarksView3 = [(CEKSlider *)self _dynamicTickMarksView];
+  magneticTickMarkIndexes = [_dynamicTickMarksView3 magneticTickMarkIndexes];
+  v33 = [magneticTickMarkIndexes containsIndex:v27];
 
-  if (!v27 || v27 == v44 - 1)
+  if (!v27 || v27 == tickMarksCount - 1)
   {
-    v36 = [(CEKSlider *)self _feedbackGenerator];
-    [v36 performFeedback];
+    _feedbackGenerator = [(CEKSlider *)self _feedbackGenerator];
+    [_feedbackGenerator performFeedback];
 
-    v35 = [(CEKSlider *)self _feedbackGenerator];
-    [v35 playEndTickSound];
+    _feedbackGenerator2 = [(CEKSlider *)self _feedbackGenerator];
+    [_feedbackGenerator2 playEndTickSound];
   }
 
   else if ((v43 | v33))
   {
-    v34 = [(CEKSlider *)self _feedbackGenerator];
-    [v34 performFeedback];
+    _feedbackGenerator3 = [(CEKSlider *)self _feedbackGenerator];
+    [_feedbackGenerator3 performFeedback];
 
-    v35 = [(CEKSlider *)self _feedbackGenerator];
-    [v35 playMajorTickSound];
+    _feedbackGenerator2 = [(CEKSlider *)self _feedbackGenerator];
+    [_feedbackGenerator2 playMajorTickSound];
   }
 
   else
@@ -1830,23 +1830,23 @@ LABEL_12:
       goto LABEL_24;
     }
 
-    v42 = [(CEKSlider *)self _feedbackGenerator];
-    [v42 performFeedback];
+    _feedbackGenerator4 = [(CEKSlider *)self _feedbackGenerator];
+    [_feedbackGenerator4 performFeedback];
 
-    v35 = [(CEKSlider *)self _feedbackGenerator];
-    [v35 playMinorTickSound];
+    _feedbackGenerator2 = [(CEKSlider *)self _feedbackGenerator];
+    [_feedbackGenerator2 playMinorTickSound];
   }
 
 LABEL_24:
-  [v4 contentInset];
+  [scrollCopy contentInset];
   v38 = v37;
-  v39 = CEKScrollableDistanceInScrollView(v4) - v37;
+  v39 = CEKScrollableDistanceInScrollView(scrollCopy) - v37;
   v40 = v45 > v39 + 20.0 || v45 < -20.0 - v38;
   [(CEKSlider *)self _setOverscrolling:v40];
-  if (v13)
+  if (isDecelerating)
   {
-    v41 = [(CEKSlider *)self _externalScrollOffsetAnimator];
-    [v41 invalidate];
+    _externalScrollOffsetAnimator = [(CEKSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator invalidate];
 
     [(CEKSlider *)self _setExternalScrollOffsetAnimator:0];
     [(CEKSlider *)self contactEndedWithAction:0];
@@ -1856,51 +1856,51 @@ LABEL_24:
 LABEL_30:
 }
 
-- (void)_setOverscrolling:(BOOL)a3
+- (void)_setOverscrolling:(BOOL)overscrolling
 {
-  if (self->__overscrolling != a3)
+  if (self->__overscrolling != overscrolling)
   {
-    v3 = a3;
-    self->__overscrolling = a3;
-    v5 = [(CEKSlider *)self feedbackScope];
-    if (v3)
+    overscrollingCopy = overscrolling;
+    self->__overscrolling = overscrolling;
+    feedbackScope = [(CEKSlider *)self feedbackScope];
+    if (overscrollingCopy)
     {
-      if (v5)
+      if (feedbackScope)
       {
-        v6 = [(CEKSlider *)self _feedbackGenerator];
-        [v6 playOverscrollTickSound];
+        _feedbackGenerator = [(CEKSlider *)self _feedbackGenerator];
+        [_feedbackGenerator playOverscrollTickSound];
       }
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(CEKSlider *)self _feedbackGenerator];
-  [v4 prepareFeedback];
+  _feedbackGenerator = [(CEKSlider *)self _feedbackGenerator];
+  [_feedbackGenerator prepareFeedback];
 
   [(CEKSlider *)self _setActive:1 animated:1];
   if (self->_delegateFlags.respondsToWillBeginScrolling)
   {
-    v5 = [(CEKSlider *)self delegate];
-    [v5 sliderWillBeginScrolling:self];
+    delegate = [(CEKSlider *)self delegate];
+    [delegate sliderWillBeginScrolling:self];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   if (self->_delegateFlags.respondsToWillEndScrolling)
   {
-    y = a4.y;
-    x = a4.x;
-    v10 = [(CEKSlider *)self delegate];
-    [v10 sliderWillEndScrolling:self withVelocity:a5 targetContentOffset:{x, y}];
+    y = velocity.y;
+    x = velocity.x;
+    delegate = [(CEKSlider *)self delegate];
+    [delegate sliderWillEndScrolling:self withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(CEKSlider *)self _sliderDidEndScrolling];
   }
@@ -1911,8 +1911,8 @@ LABEL_30:
   [(CEKSlider *)self _setActive:0 animated:1];
   if (self->_delegateFlags.respondsToDidEndScrolling)
   {
-    v3 = [(CEKSlider *)self delegate];
-    [v3 sliderDidEndScrolling:self];
+    delegate = [(CEKSlider *)self delegate];
+    [delegate sliderDidEndScrolling:self];
   }
 }
 
@@ -1931,45 +1931,45 @@ LABEL_30:
   return sliderDriver;
 }
 
-- (void)contactBeganWithAction:(id)a3
+- (void)contactBeganWithAction:(id)action
 {
-  v8 = a3;
+  actionCopy = action;
   if (![(CEKSlider *)self _isExternalScrollingAllowed]&& [(CEKSlider *)self isEnabled])
   {
     [(CEKSlider *)self _setExternalScrollingAllowed:1];
     [(CEKSlider *)self _setExternalOverScroll:0.0];
-    v4 = [(CEKSlider *)self _sliderDriver];
-    [v4 contactBeganWithAction:v8];
+    _sliderDriver = [(CEKSlider *)self _sliderDriver];
+    [_sliderDriver contactBeganWithAction:actionCopy];
 
-    v5 = [(CEKSlider *)self _contentScrollView];
-    [v5 contentOffset];
+    _contentScrollView = [(CEKSlider *)self _contentScrollView];
+    [_contentScrollView contentOffset];
     v7 = v6;
-    [v5 setContentOffset:0 animated:?];
+    [_contentScrollView setContentOffset:0 animated:?];
     [(CEKSlider *)self _applyExternalTarget:2 mode:v7];
   }
 }
 
-- (void)contactUpdatedWithAction:(id)a3
+- (void)contactUpdatedWithAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(CEKSlider *)self _isExternalScrollingAllowed])
   {
-    v5 = [(CEKSlider *)self _contentScrollView];
+    _contentScrollView = [(CEKSlider *)self _contentScrollView];
     if (![(CEKSlider *)self _isExternallyScrolling])
     {
       [(CEKSlider *)self _setExternallyScrolling:1];
-      [(CEKSlider *)self scrollViewWillBeginDragging:v5];
+      [(CEKSlider *)self scrollViewWillBeginDragging:_contentScrollView];
     }
 
     [(CEKSlider *)self _createExternalScrollAnimatorIfNeeded];
-    v6 = [(CEKSlider *)self _sliderDriver];
-    [v6 distanceTraveled];
+    _sliderDriver = [(CEKSlider *)self _sliderDriver];
+    [_sliderDriver distanceTraveled];
     v8 = v7;
-    [v6 contactUpdatedWithAction:v4];
-    [v6 distanceTraveled];
+    [_sliderDriver contactUpdatedWithAction:actionCopy];
+    [_sliderDriver distanceTraveled];
     v10 = v9 - v8;
-    v11 = [(CEKSlider *)self _externalScrollOffsetAnimator];
-    [v11 value];
+    _externalScrollOffsetAnimator = [(CEKSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator value];
     v13 = v12;
 
     v14 = v10 + v13;
@@ -2055,26 +2055,26 @@ LABEL_13:
       goto LABEL_35;
     }
 
-    v33 = [(CEKSlider *)self magneticRange];
-    if (!v33)
+    magneticRange = [(CEKSlider *)self magneticRange];
+    if (!magneticRange)
     {
       goto LABEL_32;
     }
 
     [(CEKSlider *)self value];
-    v34 = [v33 indexOfValueClosestToValue:?];
+    v34 = [magneticRange indexOfValueClosestToValue:?];
     if (v34 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_32;
     }
 
-    v35 = [v33 valueAtIndex:v34];
+    v35 = [magneticRange valueAtIndex:v34];
     [v35 doubleValue];
     v37 = v36;
 
     [(CEKSlider *)self xOffsetForValue:v37];
-    v38 = [(CEKSlider *)self traitCollection];
-    [v38 displayScale];
+    traitCollection = [(CEKSlider *)self traitCollection];
+    [traitCollection displayScale];
     UIRoundToScale();
     v32 = v39;
 
@@ -2135,10 +2135,10 @@ LABEL_35:
   }
 }
 
-- (void)contactEndedWithAction:(id)a3
+- (void)contactEndedWithAction:(id)action
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   if (![(CEKSlider *)self _isExternalScrollingAllowed])
   {
     goto LABEL_27;
@@ -2147,18 +2147,18 @@ LABEL_35:
   [(CEKSlider *)self _resetSnapped];
   [(CEKSlider *)self _setExternalScrollingAllowed:0];
   [(CEKSlider *)self _setExternallyScrolling:0];
-  v5 = [(CEKSlider *)self _sliderDriver];
-  [v5 contactEndedWithAction:v4];
-  [v5 velocity];
+  _sliderDriver = [(CEKSlider *)self _sliderDriver];
+  [_sliderDriver contactEndedWithAction:actionCopy];
+  [_sliderDriver velocity];
   v7 = v6;
-  [v5 distanceToDecelerate];
+  [_sliderDriver distanceToDecelerate];
   v9 = v8;
-  v10 = [(CEKSlider *)self _externalScrollOffsetAnimator];
-  [v10 value];
+  _externalScrollOffsetAnimator = [(CEKSlider *)self _externalScrollOffsetAnimator];
+  [_externalScrollOffsetAnimator value];
   v12 = v11;
 
-  v13 = [(CEKSlider *)self traitCollection];
-  [v13 displayScale];
+  traitCollection = [(CEKSlider *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v15 = v14;
 
@@ -2169,17 +2169,17 @@ LABEL_35:
   [(CEKSlider *)self xOffsetForValue:?];
   v19 = v18;
   v20 = fmax(v17, fmin(v18, v15));
-  v21 = [(CEKSlider *)self magneticRange];
-  if (v21)
+  magneticRange = [(CEKSlider *)self magneticRange];
+  if (magneticRange)
   {
-    v22 = [(CEKSlider *)self _externalScrollOffsetAnimator];
-    [v22 value];
+    _externalScrollOffsetAnimator2 = [(CEKSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator2 value];
     [(CEKSlider *)self _valueForScrollViewXOffset:?];
     v24 = v23;
 
-    v25 = [v21 indexOfValueClosestToValue:v24];
-    v26 = [v21 indexOfValueGreaterThanValue:v24];
-    v27 = [v21 indexOfValueLessThanValue:v24];
+    v25 = [magneticRange indexOfValueClosestToValue:v24];
+    v26 = [magneticRange indexOfValueGreaterThanValue:v24];
+    v27 = [magneticRange indexOfValueLessThanValue:v24];
     if (v20 != v12 || v25 == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (v7 <= 20.0 || v26 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2195,13 +2195,13 @@ LABEL_35:
           goto LABEL_22;
         }
 
-        v45 = [v21 valueAtIndex:v27];
+        v45 = [magneticRange valueAtIndex:v27];
         [v45 doubleValue];
         v31 = v46;
 
         [(CEKSlider *)self xOffsetForValue:v31];
-        v47 = [(CEKSlider *)self traitCollection];
-        [v47 displayScale];
+        traitCollection2 = [(CEKSlider *)self traitCollection];
+        [traitCollection2 displayScale];
         UIRoundToScale();
         v49 = v48;
 
@@ -2215,13 +2215,13 @@ LABEL_35:
 
       else
       {
-        v29 = [v21 valueAtIndex:v26];
+        v29 = [magneticRange valueAtIndex:v26];
         [v29 doubleValue];
         v31 = v30;
 
         [(CEKSlider *)self xOffsetForValue:v31];
-        v32 = [(CEKSlider *)self traitCollection];
-        [v32 displayScale];
+        traitCollection3 = [(CEKSlider *)self traitCollection];
+        [traitCollection3 displayScale];
         UIRoundToScale();
         v34 = v33;
 
@@ -2245,15 +2245,15 @@ LABEL_35:
       goto LABEL_19;
     }
 
-    v36 = [v21 valueAtIndex:v25];
+    v36 = [magneticRange valueAtIndex:v25];
     [v36 doubleValue];
     v38 = v37;
 
     if (vabdd_f64(v38, v24) < 0.1)
     {
       [(CEKSlider *)self xOffsetForValue:v38];
-      v39 = [(CEKSlider *)self traitCollection];
-      [v39 displayScale];
+      traitCollection4 = [(CEKSlider *)self traitCollection];
+      [traitCollection4 displayScale];
       UIRoundToScale();
       v41 = v40;
 
@@ -2287,8 +2287,8 @@ LABEL_22:
 
   else
   {
-    v57 = [(CEKSlider *)self _contentScrollView];
-    [(CEKSlider *)self scrollViewDidEndDragging:v57 willDecelerate:1];
+    _contentScrollView = [(CEKSlider *)self _contentScrollView];
+    [(CEKSlider *)self scrollViewDidEndDragging:_contentScrollView willDecelerate:1];
 
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
@@ -2338,42 +2338,42 @@ uint64_t __36__CEKSlider_contactEndedWithAction___block_invoke(uint64_t a1)
 
 - (BOOL)_isScrollExternallyAnimating
 {
-  v2 = [(CEKSlider *)self _externalScrollOffsetAnimator];
-  [v2 presentationValue];
-  [v2 value];
+  _externalScrollOffsetAnimator = [(CEKSlider *)self _externalScrollOffsetAnimator];
+  [_externalScrollOffsetAnimator presentationValue];
+  [_externalScrollOffsetAnimator value];
   v3 = BSFloatEqualToFloat();
 
   return v3 ^ 1;
 }
 
-- (void)_applyExternalTarget:(double)a3 mode:(int64_t)a4 completion:(id)a5
+- (void)_applyExternalTarget:(double)target mode:(int64_t)mode completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(CEKSlider *)self _externalScrollOffsetAnimator];
+  completionCopy = completion;
+  _externalScrollOffsetAnimator = [(CEKSlider *)self _externalScrollOffsetAnimator];
   UIRoundToViewScale();
   v10 = v9;
-  if (!v8 || ([v8 value], v10 != v11))
+  if (!_externalScrollOffsetAnimator || ([_externalScrollOffsetAnimator value], v10 != v11))
   {
     [(CEKSlider *)self _createExternalScrollAnimatorIfNeeded];
-    v12 = [(CEKSlider *)self _externalScrollOffsetAnimator];
-    [v12 value];
+    _externalScrollOffsetAnimator2 = [(CEKSlider *)self _externalScrollOffsetAnimator];
+    [_externalScrollOffsetAnimator2 value];
     v14 = v10 - v13;
 
     if (v14 != 0.0)
     {
-      v15 = [(CEKSlider *)self contactObserver];
-      [v15 observeContactRecognitionDelta:v14];
+      contactObserver = [(CEKSlider *)self contactObserver];
+      [contactObserver observeContactRecognitionDelta:v14];
     }
 
     v16 = MEMORY[0x1E69DD250];
-    v17 = [(CEKSlider *)self _externalScrollSettings];
+    _externalScrollSettings = [(CEKSlider *)self _externalScrollSettings];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __50__CEKSlider__applyExternalTarget_mode_completion___block_invoke;
     v18[3] = &unk_1E7CC6660;
     v18[4] = self;
     *&v18[5] = v10;
-    [v16 cek_animateWithSettings:v17 mode:a4 animations:v18 completion:v7];
+    [v16 cek_animateWithSettings:_externalScrollSettings mode:mode animations:v18 completion:completionCopy];
   }
 }
 
@@ -2387,9 +2387,9 @@ void __50__CEKSlider__applyExternalTarget_mode_completion___block_invoke(uint64_
 - (void)_createExternalScrollAnimatorIfNeeded
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CEKSlider *)self _externalScrollOffsetAnimator];
+  _externalScrollOffsetAnimator = [(CEKSlider *)self _externalScrollOffsetAnimator];
 
-  if (!v3)
+  if (!_externalScrollOffsetAnimator)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD268]);
     [(CEKSlider *)self _setExternalScrollOffsetAnimator:v4];
@@ -2422,16 +2422,16 @@ void __50__CEKSlider__createExternalScrollAnimatorIfNeeded__block_invoke(uint64_
 
 - (void)_handleExternalScrollAnimated
 {
-  v3 = [(CEKSlider *)self _externalScrollOffsetAnimator];
-  if (v3)
+  _externalScrollOffsetAnimator = [(CEKSlider *)self _externalScrollOffsetAnimator];
+  if (_externalScrollOffsetAnimator)
   {
-    v5 = v3;
-    v4 = [(CEKSlider *)self _contentScrollView];
-    [v4 contentOffset];
+    v5 = _externalScrollOffsetAnimator;
+    _contentScrollView = [(CEKSlider *)self _contentScrollView];
+    [_contentScrollView contentOffset];
     [v5 presentationValue];
-    [v4 setContentOffset:?];
+    [_contentScrollView setContentOffset:?];
 
-    v3 = v5;
+    _externalScrollOffsetAnimator = v5;
   }
 }
 

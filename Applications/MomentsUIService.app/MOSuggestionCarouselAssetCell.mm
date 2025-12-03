@@ -2,7 +2,7 @@
 - (BOOL)isSelected;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation MOSuggestionCarouselAssetCell
@@ -14,19 +14,19 @@
   return [(MOSuggestionCarouselAssetCell *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MOSuggestionCarouselAssetCell();
   v4 = v8.receiver;
-  [(MOSuggestionCarouselAssetCell *)&v8 setSelected:v3];
+  [(MOSuggestionCarouselAssetCell *)&v8 setSelected:selectedCopy];
   v5 = *&v4[OBJC_IVAR____TtC16MomentsUIService29MOSuggestionCarouselAssetCell_checkPlatterView];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 isSelected];
-    (*((swift_isaMask & *v6) + 0xA0))(v7);
+    isSelected = [v4 isSelected];
+    (*((swift_isaMask & *v6) + 0xA0))(isSelected);
   }
 }
 

@@ -1,21 +1,21 @@
 @interface NUPixelBufferSourceNode
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3;
-- (NUPixelBufferSourceNode)initWithPixelBuffer:(__CVBuffer *)a3 settings:(id)a4 orientation:(int64_t)a5;
-- (NUPixelBufferSourceNode)initWithSettings:(id)a3 orientation:(int64_t)a4;
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options;
+- (NUPixelBufferSourceNode)initWithPixelBuffer:(__CVBuffer *)buffer settings:(id)settings orientation:(int64_t)orientation;
+- (NUPixelBufferSourceNode)initWithSettings:(id)settings orientation:(int64_t)orientation;
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation NUPixelBufferSourceNode
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)pixelSizeWithSourceOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(NUSourceNode *)self auxiliaryImageType];
-  v6 = [(NUSourceNode *)self auxiliaryImageType];
-  if (!v5 || (v7 = v6, [(NUSourceNode *)self auxiliaryImageType]== 11) || v7 == 1)
+  optionsCopy = options;
+  auxiliaryImageType = [(NUSourceNode *)self auxiliaryImageType];
+  auxiliaryImageType2 = [(NUSourceNode *)self auxiliaryImageType];
+  if (!auxiliaryImageType || (v7 = auxiliaryImageType2, [(NUSourceNode *)self auxiliaryImageType]== 11) || v7 == 1)
   {
-    v10 = [v4 objectForKeyedSubscript:@"applyCleanAperture"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"applyCleanAperture"];
     v11 = v10;
     if (v10)
     {
@@ -55,11 +55,11 @@
   return result;
 }
 
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error
 {
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a5)
+  optionsCopy = options;
+  if (!error)
   {
     v17 = NUAssertLogger_530();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -80,8 +80,8 @@
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v54 = v31;
         v55 = 2114;
@@ -92,8 +92,8 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v54 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -102,7 +102,7 @@
     _NUAssertFailHandler("[NUPixelBufferSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1140, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "error != NULL");
   }
 
-  if (!a4)
+  if (!factor)
   {
     v24 = NUAssertLogger_530();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -123,8 +123,8 @@
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v41 callStackSymbols];
+        v44 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v54 = v40;
         v55 = 2114;
@@ -135,8 +135,8 @@
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v54 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -145,13 +145,13 @@
     _NUAssertFailHandler("[NUPixelBufferSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1142, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "subsampleFactor != NULL");
   }
 
-  v9 = v8;
-  *a4 = 1;
+  v9 = optionsCopy;
+  *factor = 1;
   if ([(NUSourceNode *)self auxiliaryImageType]== 2 || [(NUSourceNode *)self auxiliaryImageType]== 11 || [(NUSourceNode *)self auxiliaryImageType]== 10 || [(NUSourceNode *)self auxiliaryImageType]== 9 || [(NUSourceNode *)self auxiliaryImageType]== 3 || [(NUSourceNode *)self auxiliaryImageType]== 4)
   {
     v51 = *MEMORY[0x1E695F9A8];
-    v10 = [MEMORY[0x1E695DFB0] null];
-    v52 = v10;
+    null = [MEMORY[0x1E695DFB0] null];
+    v52 = null;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
 LABEL_10:
     v12 = v11;
@@ -162,31 +162,31 @@ LABEL_10:
   if ([(NUSourceNode *)self auxiliaryImageType]== 1 && [NUColorSpace shouldTagAsDisplayP3:self->_pixelBuffer])
   {
     v49 = *MEMORY[0x1E695F9A8];
-    v10 = +[NUColorSpace displayP3ColorSpace];
-    v50 = [v10 CGColorSpace];
-    v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
+    null = +[NUColorSpace displayP3ColorSpace];
+    cGColorSpace = [null CGColorSpace];
+    v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&cGColorSpace forKeys:&v49 count:1];
     goto LABEL_10;
   }
 
   v12 = MEMORY[0x1E695E0F8];
 LABEL_11:
-  v13 = self;
-  objc_sync_enter(v13);
-  v14 = v13->_image;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v14 = selfCopy->_image;
   if (!v14)
   {
-    v14 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:v13->_pixelBuffer options:v12];
+    v14 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:selfCopy->_pixelBuffer options:v12];
     if (!v14)
     {
-      *a5 = [NUError errorWithCode:3 reason:@"Unable to produce CIImage from CVPixelBuffer" object:v13];
+      *error = [NUError errorWithCode:3 reason:@"Unable to produce CIImage from CVPixelBuffer" object:selfCopy];
     }
 
-    objc_storeStrong(&v13->_image, v14);
+    objc_storeStrong(&selfCopy->_image, v14);
   }
 
-  v15 = [(NUVideoFrameSourceNode *)v13 applySourceOptions:v9 image:v14];
+  v15 = [(NUVideoFrameSourceNode *)selfCopy applySourceOptions:v9 image:v14];
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
@@ -199,10 +199,10 @@ LABEL_11:
   [(NUPixelBufferSourceNode *)&v3 dealloc];
 }
 
-- (NUPixelBufferSourceNode)initWithSettings:(id)a3 orientation:(int64_t)a4
+- (NUPixelBufferSourceNode)initWithSettings:(id)settings orientation:(int64_t)orientation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  settingsCopy = settings;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_415);
@@ -246,8 +246,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -263,8 +263,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;
@@ -280,11 +280,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUPixelBufferSourceNode initWithSettings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1130, @"Initializer not available: [%@ %@], use designated initializer instead.", v28, v29, v30, v31, v27);
 }
 
-- (NUPixelBufferSourceNode)initWithPixelBuffer:(__CVBuffer *)a3 settings:(id)a4 orientation:(int64_t)a5
+- (NUPixelBufferSourceNode)initWithPixelBuffer:(__CVBuffer *)buffer settings:(id)settings orientation:(int64_t)orientation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!a3)
+  settingsCopy = settings;
+  if (!buffer)
   {
     v17 = NUAssertLogger_530();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -305,8 +305,8 @@ LABEL_14:
         v24 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v35 = v24;
         v36 = 2114;
@@ -317,8 +317,8 @@ LABEL_14:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -327,9 +327,9 @@ LABEL_14:
     _NUAssertFailHandler("[NUPixelBufferSourceNode initWithPixelBuffer:settings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+Video.m", 1109, @"Invalid parameter not satisfying: %s", v29, v30, v31, v32, "pixelBuffer != nil");
   }
 
-  v9 = v8;
-  v10 = [v8 mutableCopy];
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  v9 = settingsCopy;
+  v10 = [settingsCopy mutableCopy];
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   Seed = IOSurfaceGetSeed(IOSurface);
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:IOSurfaceGetID(IOSurface)];
   [v10 setObject:v13 forKeyedSubscript:@"surfaceID"];
@@ -339,8 +339,8 @@ LABEL_14:
 
   v33.receiver = self;
   v33.super_class = NUPixelBufferSourceNode;
-  v15 = [(NUVideoFrameSourceNode *)&v33 initWithSettings:v10 orientation:a5];
-  v15->_pixelBuffer = CVPixelBufferRetain(a3);
+  v15 = [(NUVideoFrameSourceNode *)&v33 initWithSettings:v10 orientation:orientation];
+  v15->_pixelBuffer = CVPixelBufferRetain(buffer);
 
   return v15;
 }

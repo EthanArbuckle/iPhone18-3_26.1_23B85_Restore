@@ -1,19 +1,19 @@
 @interface PRSPosterSnapshot
-- (BOOL)writePNGToURL:(id)a3 error:(id *)a4;
-- (PRSPosterSnapshot)initWithBSXPCCoder:(id)a3;
-- (PRSPosterSnapshot)initWithCodableImage:(id)a3 imageOrientation:(int64_t)a4 switcherConfigurationPath:(id)a5 homeScreenConfigurationPath:(id)a6 variant:(int64_t)a7 configurationType:(int64_t)a8;
-- (PRSPosterSnapshot)initWithIOSurface:(id)a3 imageOrientation:(int64_t)a4 switcherConfigurationPath:(id)a5 homeScreenConfigurationPath:(id)a6 variant:(int64_t)a7 configurationType:(int64_t)a8;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (BOOL)writePNGToURL:(id)l error:(id *)error;
+- (PRSPosterSnapshot)initWithBSXPCCoder:(id)coder;
+- (PRSPosterSnapshot)initWithCodableImage:(id)image imageOrientation:(int64_t)orientation switcherConfigurationPath:(id)path homeScreenConfigurationPath:(id)configurationPath variant:(int64_t)variant configurationType:(int64_t)type;
+- (PRSPosterSnapshot)initWithIOSurface:(id)surface imageOrientation:(int64_t)orientation switcherConfigurationPath:(id)path homeScreenConfigurationPath:(id)configurationPath variant:(int64_t)variant configurationType:(int64_t)type;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation PRSPosterSnapshot
 
-- (PRSPosterSnapshot)initWithCodableImage:(id)a3 imageOrientation:(int64_t)a4 switcherConfigurationPath:(id)a5 homeScreenConfigurationPath:(id)a6 variant:(int64_t)a7 configurationType:(int64_t)a8
+- (PRSPosterSnapshot)initWithCodableImage:(id)image imageOrientation:(int64_t)orientation switcherConfigurationPath:(id)path homeScreenConfigurationPath:(id)configurationPath variant:(int64_t)variant configurationType:(int64_t)type
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = v16;
+  imageCopy = image;
+  pathCopy = path;
+  configurationPathCopy = configurationPath;
+  v18 = pathCopy;
   if (v18)
   {
     NSClassFromString(&cfstr_Pfserverposter.isa);
@@ -23,7 +23,7 @@
     }
   }
 
-  v19 = v17;
+  v19 = configurationPathCopy;
   if (v19)
   {
     NSClassFromString(&cfstr_Pfserverposter.isa);
@@ -39,23 +39,23 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_codableImage, a3);
-    objc_storeStrong(&v21->_switcherConfigurationPath, a5);
-    objc_storeStrong(&v21->_homeScreenConfigurationPath, a6);
-    v21->_variant = a7;
-    v21->_configurationType = a8;
-    v21->_imageOrientation = a4;
+    objc_storeStrong(&v20->_codableImage, image);
+    objc_storeStrong(&v21->_switcherConfigurationPath, path);
+    objc_storeStrong(&v21->_homeScreenConfigurationPath, configurationPath);
+    v21->_variant = variant;
+    v21->_configurationType = type;
+    v21->_imageOrientation = orientation;
   }
 
   return v21;
 }
 
-- (PRSPosterSnapshot)initWithIOSurface:(id)a3 imageOrientation:(int64_t)a4 switcherConfigurationPath:(id)a5 homeScreenConfigurationPath:(id)a6 variant:(int64_t)a7 configurationType:(int64_t)a8
+- (PRSPosterSnapshot)initWithIOSurface:(id)surface imageOrientation:(int64_t)orientation switcherConfigurationPath:(id)path homeScreenConfigurationPath:(id)configurationPath variant:(int64_t)variant configurationType:(int64_t)type
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = v15;
+  surfaceCopy = surface;
+  pathCopy = path;
+  configurationPathCopy = configurationPath;
+  v18 = surfaceCopy;
   if (v18)
   {
     NSClassFromString(&cfstr_Iosurface.isa);
@@ -65,10 +65,10 @@
     }
   }
 
-  v27 = a4;
-  v19 = a8;
+  orientationCopy = orientation;
+  typeCopy = type;
 
-  v20 = v16;
+  v20 = pathCopy;
   if (v20)
   {
     NSClassFromString(&cfstr_Pfserverposter.isa);
@@ -78,7 +78,7 @@
     }
   }
 
-  v21 = v17;
+  v21 = configurationPathCopy;
   if (v21)
   {
     NSClassFromString(&cfstr_Pfserverposter.isa);
@@ -102,21 +102,21 @@
   if (v24)
   {
     objc_storeStrong(&v24->_codableImage, v23);
-    objc_storeStrong(&v25->_switcherConfigurationPath, a5);
-    objc_storeStrong(&v25->_homeScreenConfigurationPath, a6);
-    v25->_variant = a7;
-    v25->_configurationType = v19;
-    v25->_imageOrientation = v27;
+    objc_storeStrong(&v25->_switcherConfigurationPath, path);
+    objc_storeStrong(&v25->_homeScreenConfigurationPath, configurationPath);
+    v25->_variant = variant;
+    v25->_configurationType = typeCopy;
+    v25->_imageOrientation = orientationCopy;
   }
 
   return v25;
 }
 
-- (BOOL)writePNGToURL:(id)a3 error:(id *)a4
+- (BOOL)writePNGToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRSPosterSnapshot *)self image];
-  v8 = v6;
+  lCopy = l;
+  image = [(PRSPosterSnapshot *)self image];
+  v8 = lCopy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -139,30 +139,30 @@
     [PRSPosterSnapshot writePNGToURL:error:];
   }
 
-  v10 = v9(v7, v8, a4);
+  v10 = v9(image, v8, error);
 
   return v10;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   codableImage = self->_codableImage;
-  v5 = a3;
-  [v5 encodeObject:codableImage forKey:@"image"];
-  [v5 encodeObject:self->_switcherConfigurationPath forKey:@"_switcherConfigurationPath"];
-  [v5 encodeObject:self->_homeScreenConfigurationPath forKey:@"_homeScreenConfigurationPath"];
-  [v5 encodeUInt64:self->_variant forKey:@"_variant"];
-  [v5 encodeUInt64:self->_configurationType forKey:@"_configurationType"];
-  [v5 encodeInt64:self->_imageOrientation forKey:@"_imageOrientation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:codableImage forKey:@"image"];
+  [coderCopy encodeObject:self->_switcherConfigurationPath forKey:@"_switcherConfigurationPath"];
+  [coderCopy encodeObject:self->_homeScreenConfigurationPath forKey:@"_homeScreenConfigurationPath"];
+  [coderCopy encodeUInt64:self->_variant forKey:@"_variant"];
+  [coderCopy encodeUInt64:self->_configurationType forKey:@"_configurationType"];
+  [coderCopy encodeInt64:self->_imageOrientation forKey:@"_imageOrientation"];
 }
 
-- (PRSPosterSnapshot)initWithBSXPCCoder:(id)a3
+- (PRSPosterSnapshot)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"image"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"image"])
   {
     v5 = objc_opt_self();
-    v6 = [v4 decodeObjectOfClass:v5 forKey:@"image"];
+    v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"image"];
   }
 
   else
@@ -171,12 +171,12 @@
   }
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"_switcherConfigurationPath"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"_switcherConfigurationPath"];
 
   v9 = objc_opt_self();
-  v10 = [v4 decodeObjectOfClass:v9 forKey:@"_homeScreenConfigurationPath"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"_homeScreenConfigurationPath"];
 
-  v11 = -[PRSPosterSnapshot initWithCodableImage:imageOrientation:switcherConfigurationPath:homeScreenConfigurationPath:variant:configurationType:](self, "initWithCodableImage:imageOrientation:switcherConfigurationPath:homeScreenConfigurationPath:variant:configurationType:", v6, [v4 decodeInt64ForKey:@"_imageOrientation"], v8, v10, objc_msgSend(v4, "decodeUInt64ForKey:", @"_variant"), objc_msgSend(v4, "decodeUInt64ForKey:", @"_configurationType"));
+  v11 = -[PRSPosterSnapshot initWithCodableImage:imageOrientation:switcherConfigurationPath:homeScreenConfigurationPath:variant:configurationType:](self, "initWithCodableImage:imageOrientation:switcherConfigurationPath:homeScreenConfigurationPath:variant:configurationType:", v6, [coderCopy decodeInt64ForKey:@"_imageOrientation"], v8, v10, objc_msgSend(coderCopy, "decodeUInt64ForKey:", @"_variant"), objc_msgSend(coderCopy, "decodeUInt64ForKey:", @"_configurationType"));
   return v11;
 }
 

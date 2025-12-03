@@ -1,31 +1,31 @@
 @interface PAAggregateVisibilityStateMonitorHandle
-- (PAAggregateVisibilityStateMonitorHandle)initWithStartupInterval:(double)a3 onQueue:(id)a4 delegate:(id)a5;
-- (void)bindToRawHandle:(id)a3;
+- (PAAggregateVisibilityStateMonitorHandle)initWithStartupInterval:(double)interval onQueue:(id)queue delegate:(id)delegate;
+- (void)bindToRawHandle:(id)handle;
 - (void)invalidate;
 - (void)recomputeCurrentState;
-- (void)setVisibilityState:(int64_t)a3 forBundleID:(id)a4;
+- (void)setVisibilityState:(int64_t)state forBundleID:(id)d;
 - (void)startupIntervalExpired;
 @end
 
 @implementation PAAggregateVisibilityStateMonitorHandle
 
-- (PAAggregateVisibilityStateMonitorHandle)initWithStartupInterval:(double)a3 onQueue:(id)a4 delegate:(id)a5
+- (PAAggregateVisibilityStateMonitorHandle)initWithStartupInterval:(double)interval onQueue:(id)queue delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = PAAggregateVisibilityStateMonitorHandle;
   v11 = [(PAAggregateVisibilityStateMonitorHandle *)&v24 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     states = v11->_states;
-    v11->_states = v12;
+    v11->_states = dictionary;
 
-    objc_storeWeak(&v11->_delegate, v10);
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_queue, queue);
     v11->_currentState = 0;
-    if (a3 <= 0.0)
+    if (interval <= 0.0)
     {
       v11->_startupPeriodElapsed = 1;
     }
@@ -38,8 +38,8 @@
       v11->_startupTimer = v14;
 
       v16 = v11->_startupTimer;
-      v17 = dispatch_time(0, (a3 * 1000000000.0));
-      dispatch_source_set_timer(v16, v17, 0xFFFFFFFFFFFFFFFFLL, (a3 * 1000000000.0) >> 2);
+      v17 = dispatch_time(0, (interval * 1000000000.0));
+      dispatch_source_set_timer(v16, v17, 0xFFFFFFFFFFFFFFFFLL, (interval * 1000000000.0) >> 2);
       v18 = v11->_startupTimer;
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
@@ -63,10 +63,10 @@ void __84__PAAggregateVisibilityStateMonitorHandle_initWithStartupInterval_onQue
   [WeakRetained startupIntervalExpired];
 }
 
-- (void)bindToRawHandle:(id)a3
+- (void)bindToRawHandle:(id)handle
 {
-  v6 = a3;
-  objc_storeStrong(&self->_rawHandle, a3);
+  handleCopy = handle;
+  objc_storeStrong(&self->_rawHandle, handle);
   startupTimer = self->_startupTimer;
   if (startupTimer)
   {
@@ -89,13 +89,13 @@ void __84__PAAggregateVisibilityStateMonitorHandle_initWithStartupInterval_onQue
   [(PAAggregateVisibilityStateMonitorHandle *)self recomputeCurrentState];
 }
 
-- (void)setVisibilityState:(int64_t)a3 forBundleID:(id)a4
+- (void)setVisibilityState:(int64_t)state forBundleID:(id)d
 {
   queue = self->_queue;
-  v7 = a4;
+  dCopy = d;
   dispatch_assert_queue_V2(queue);
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [(NSMutableDictionary *)self->_states setObject:v8 forKeyedSubscript:v7];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  [(NSMutableDictionary *)self->_states setObject:v8 forKeyedSubscript:dCopy];
 
   [(PAAggregateVisibilityStateMonitorHandle *)self recomputeCurrentState];
 }
@@ -126,10 +126,10 @@ void __84__PAAggregateVisibilityStateMonitorHandle_initWithStartupInterval_onQue
         }
 
         v10 = [(NSMutableDictionary *)self->_states objectForKeyedSubscript:*(*(&v14 + 1) + 8 * i), v14];
-        v11 = [v10 integerValue];
-        if (v11 > v7)
+        integerValue = [v10 integerValue];
+        if (integerValue > v7)
         {
-          v7 = v11;
+          v7 = integerValue;
         }
       }
 

@@ -1,7 +1,7 @@
 @interface EFSQLDeleteStatement
-- (EFSQLDeleteStatement)initWithTable:(id)a3 where:(id)a4;
+- (EFSQLDeleteStatement)initWithTable:(id)table where:(id)where;
 - (NSString)queryString;
-- (void)orderByColumn:(id)a3 ascending:(BOOL)a4;
+- (void)orderByColumn:(id)column ascending:(BOOL)ascending;
 @end
 
 @implementation EFSQLDeleteStatement
@@ -30,18 +30,18 @@
   return v4;
 }
 
-- (EFSQLDeleteStatement)initWithTable:(id)a3 where:(id)a4
+- (EFSQLDeleteStatement)initWithTable:(id)table where:(id)where
 {
-  v7 = a3;
-  v8 = a4;
+  tableCopy = table;
+  whereCopy = where;
   v14.receiver = self;
   v14.super_class = EFSQLDeleteStatement;
   v9 = [(EFSQLDeleteStatement *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_table, a3);
-    objc_storeStrong(&v10->_where, a4);
+    objc_storeStrong(&v9->_table, table);
+    objc_storeStrong(&v10->_where, where);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     orderExpressions = v10->_orderExpressions;
     v10->_orderExpressions = v11;
@@ -50,9 +50,9 @@
   return v10;
 }
 
-- (void)orderByColumn:(id)a3 ascending:(BOOL)a4
+- (void)orderByColumn:(id)column ascending:(BOOL)ascending
 {
-  v5 = [EFSQLColumnExpression column:a3];
+  v5 = [EFSQLColumnExpression column:column];
   [EFSQLDeleteStatement orderBy:"orderBy:ascending:" ascending:?];
 }
 

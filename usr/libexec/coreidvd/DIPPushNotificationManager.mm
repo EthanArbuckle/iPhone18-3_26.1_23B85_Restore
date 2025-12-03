@@ -1,26 +1,26 @@
 @interface DIPPushNotificationManager
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation DIPPushNotificationManager
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v6 = a4;
+    tokenCopy = token;
     v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_10000B90C(v4, v5);
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
 
-  sub_100027E30(a4);
+  sub_100027E30(message);
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface GCHIDServiceInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHIDServiceInfo:(id)a3;
-- (GCHIDServiceInfo)initWithService:(__IOHIDServiceClient *)a3 queue:(id)a4 functions:(const GCHIDServiceClientFunctions *)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHIDServiceInfo:(id)info;
+- (GCHIDServiceInfo)initWithService:(__IOHIDServiceClient *)service queue:(id)queue functions:(const GCHIDServiceClientFunctions *)functions;
 - (NSString)debugDescription;
-- (id)dictionaryPropertyForKey:(id)a3;
-- (id)numberPropertyForKey:(id)a3;
-- (id)propertyForKey:(id)a3;
-- (id)propertyForKey:(id)a3 ofClass:(Class)a4;
-- (id)stringPropertyForKey:(id)a3;
+- (id)dictionaryPropertyForKey:(id)key;
+- (id)numberPropertyForKey:(id)key;
+- (id)propertyForKey:(id)key;
+- (id)propertyForKey:(id)key ofClass:(Class)class;
+- (id)stringPropertyForKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation GCHIDServiceInfo
 
-- (GCHIDServiceInfo)initWithService:(__IOHIDServiceClient *)a3 queue:(id)a4 functions:(const GCHIDServiceClientFunctions *)a5
+- (GCHIDServiceInfo)initWithService:(__IOHIDServiceClient *)service queue:(id)queue functions:(const GCHIDServiceClientFunctions *)functions
 {
-  v10 = a4;
-  v11 = v10;
-  if (a3)
+  queueCopy = queue;
+  v11 = queueCopy;
+  if (service)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -39,9 +39,9 @@ LABEL_3:
   v18.receiver = self;
   v18.super_class = GCHIDServiceInfo;
   v12 = [(GCHIDServiceInfo *)&v18 init];
-  v12->_functions = a5;
-  objc_storeStrong(&v12->_queue, a4);
-  v12->_service = CFRetain(a3);
+  v12->_functions = functions;
+  objc_storeStrong(&v12->_queue, queue);
+  v12->_service = CFRetain(service);
   functions = v12->_functions;
   if (functions)
   {
@@ -69,22 +69,22 @@ LABEL_3:
   [(GCHIDServiceInfo *)&v3 dealloc];
 }
 
-- (BOOL)isEqualToHIDServiceInfo:(id)a3
+- (BOOL)isEqualToHIDServiceInfo:(id)info
 {
   registryID = self->_registryID;
-  v4 = [a3 registryID];
-  LOBYTE(registryID) = [(NSNumber *)registryID isEqual:v4];
+  registryID = [info registryID];
+  LOBYTE(registryID) = [(NSNumber *)registryID isEqual:registryID];
 
   return registryID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(GCHIDServiceInfo *)self isEqualToHIDServiceInfo:v4];
+    v5 = [(GCHIDServiceInfo *)self isEqualToHIDServiceInfo:equalCopy];
   }
 
   else
@@ -96,7 +96,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    v5 = [(NSNumber *)self->_registryID isEqual:v4];
+    v5 = [(NSNumber *)self->_registryID isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -107,36 +107,36 @@ LABEL_7:
 
 - (NSString)debugDescription
 {
-  v3 = [(NSNumber *)self->_registryID longLongValue];
+  longLongValue = [(NSNumber *)self->_registryID longLongValue];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 stringWithFormat:@"<%@ %p registryID='%#010llx'>", v6, self, v3];
+  v7 = [v4 stringWithFormat:@"<%@ %p registryID='%#010llx'>", v6, self, longLongValue];
 
   return v7;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
   functions = self->_functions;
   if (functions)
   {
-    v4 = (functions->var1)(self->_service, a3);
+    v4 = (functions->var1)(self->_service, key);
   }
 
   else
   {
-    v4 = MEMORY[0x1E696CD20](self->_service, a3);
+    v4 = MEMORY[0x1E696CD20](self->_service, key);
   }
 
   return v4;
 }
 
-- (id)propertyForKey:(id)a3 ofClass:(Class)a4
+- (id)propertyForKey:(id)key ofClass:(Class)class
 {
-  v5 = [(GCHIDServiceInfo *)self propertyForKey:a3];
+  v5 = [(GCHIDServiceInfo *)self propertyForKey:key];
   v6 = v5;
-  if (a4 && v5 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (class && v5 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
     v6 = 0;
@@ -145,26 +145,26 @@ LABEL_7:
   return v6;
 }
 
-- (id)stringPropertyForKey:(id)a3
+- (id)stringPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GCHIDServiceInfo *)self propertyForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(GCHIDServiceInfo *)self propertyForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)numberPropertyForKey:(id)a3
+- (id)numberPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GCHIDServiceInfo *)self propertyForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(GCHIDServiceInfo *)self propertyForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dictionaryPropertyForKey:(id)a3
+- (id)dictionaryPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GCHIDServiceInfo *)self propertyForKey:v4 ofClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(GCHIDServiceInfo *)self propertyForKey:keyCopy ofClass:objc_opt_class()];
 
   return v5;
 }

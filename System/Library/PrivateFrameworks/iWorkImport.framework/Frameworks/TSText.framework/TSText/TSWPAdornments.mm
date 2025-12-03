@@ -4,22 +4,22 @@
 - (CGPoint)positions;
 - (CGPoint)textPosition;
 - (CGRect)rects;
-- (TSWPAdornments)initWithType:(int)a3 color:(CGColor *)a4 font:(__CTFont *)a5 flippedFont:(__CTFont *)a6;
+- (TSWPAdornments)initWithType:(int)type color:(CGColor *)color font:(__CTFont *)font flippedFont:(__CTFont *)flippedFont;
 - (id).cxx_construct;
 - (unint64_t)charIndexes;
 - (unsigned)flippedGlyphs;
 - (unsigned)glyphs;
-- (void)addAdornmentWithAttachmentPosition:(id)a3;
-- (void)addAdornmentWithCharIndex:(unint64_t)a3 point:(CGPoint)a4 glyph:(unsigned __int16)a5 rect:(CGRect)a6;
-- (void)addAdornmentWithPoint:(CGPoint)a3 glyph:(unsigned __int16)a4 flipped:(BOOL)a5;
-- (void)incrementCharIndexes:(int64_t)a3 startingAt:(unint64_t)a4;
-- (void)removeAdornmentAt:(unint64_t)a3;
-- (void)setAscent:(double)a3 descent:(double)a4 advance:(double)a5;
+- (void)addAdornmentWithAttachmentPosition:(id)position;
+- (void)addAdornmentWithCharIndex:(unint64_t)index point:(CGPoint)point glyph:(unsigned __int16)glyph rect:(CGRect)rect;
+- (void)addAdornmentWithPoint:(CGPoint)point glyph:(unsigned __int16)glyph flipped:(BOOL)flipped;
+- (void)incrementCharIndexes:(int64_t)indexes startingAt:(unint64_t)at;
+- (void)removeAdornmentAt:(unint64_t)at;
+- (void)setAscent:(double)ascent descent:(double)descent advance:(double)advance;
 @end
 
 @implementation TSWPAdornments
 
-- (TSWPAdornments)initWithType:(int)a3 color:(CGColor *)a4 font:(__CTFont *)a5 flippedFont:(__CTFont *)a6
+- (TSWPAdornments)initWithType:(int)type color:(CGColor *)color font:(__CTFont *)font flippedFont:(__CTFont *)flippedFont
 {
   v16.receiver = self;
   v16.super_class = TSWPAdornments;
@@ -27,10 +27,10 @@
   v12 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    objc_msgSend_setColor_(v10, v11, a4);
-    objc_msgSend_setFont_(v12, v13, a5);
-    objc_msgSend_setFlippedFont_(v12, v14, a6);
+    v10->_type = type;
+    objc_msgSend_setColor_(v10, v11, color);
+    objc_msgSend_setFont_(v12, v13, font);
+    objc_msgSend_setFlippedFont_(v12, v14, flippedFont);
     v12->_location = 1;
     v12->_verticalAdjustment = 0.0;
     v12->_descent = 0.0;
@@ -134,20 +134,20 @@
   }
 }
 
-- (void)setAscent:(double)a3 descent:(double)a4 advance:(double)a5
+- (void)setAscent:(double)ascent descent:(double)descent advance:(double)advance
 {
-  self->_ascent = a3;
-  self->_descent = a4;
-  self->_advance = a5;
+  self->_ascent = ascent;
+  self->_descent = descent;
+  self->_advance = advance;
 }
 
-- (void)addAdornmentWithPoint:(CGPoint)a3 glyph:(unsigned __int16)a4 flipped:(BOOL)a5
+- (void)addAdornmentWithPoint:(CGPoint)point glyph:(unsigned __int16)glyph flipped:(BOOL)flipped
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v20 = a3;
-  glyphs = a4;
+  flippedCopy = flipped;
+  y = point.y;
+  x = point.x;
+  pointCopy = point;
+  glyphs = glyph;
   if ((self->_type - 1) >= 2)
   {
     v9 = MEMORY[0x277D81150];
@@ -158,7 +158,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (v5)
+  if (flippedCopy)
   {
     CTFontGetAdvancesForGlyphs(self->_flippedFont, kCTFontOrientationDefault, &glyphs, &advances, 1);
     *&v17 = x - advances.width;
@@ -169,21 +169,21 @@
 
   else
   {
-    sub_276D20ABC(&self->_positions, &v20);
+    sub_276D20ABC(&self->_positions, &pointCopy);
     p_flippedGlyphs = &self->_glyphs;
   }
 
   sub_276DF6CA4(&p_flippedGlyphs->__begin_, &glyphs);
 }
 
-- (void)addAdornmentWithCharIndex:(unint64_t)a3 point:(CGPoint)a4 glyph:(unsigned __int16)a5 rect:(CGRect)a6
+- (void)addAdornmentWithCharIndex:(unint64_t)index point:(CGPoint)point glyph:(unsigned __int16)glyph rect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v44 = a4;
-  v43 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pointCopy = point;
+  glyphCopy = glyph;
   if ((self->_type | 2) != 6)
   {
     v12 = MEMORY[0x277D81150];
@@ -228,7 +228,7 @@
     v29 = end - begin;
     v30 = (8 * v24);
     v31 = (8 * v24 - 8 * v29);
-    *v30 = a3;
+    *v30 = index;
     v21 = v30 + 1;
     memcpy(v31, begin, v23);
     v32 = self->_charIndexes.__begin_;
@@ -243,13 +243,13 @@
 
   else
   {
-    *end = a3;
+    *end = index;
     v21 = end + 1;
   }
 
   self->_charIndexes.__end_ = v21;
-  sub_276D20ABC(&self->_positions, &v44);
-  sub_276DF6CA4(&self->_glyphs.__begin_, &v43);
+  sub_276D20ABC(&self->_positions, &pointCopy);
+  sub_276DF6CA4(&self->_glyphs.__begin_, &glyphCopy);
   v33 = self->_rects.__end_;
   v34 = self->_rects.__cap_;
   if (v33 >= v34)
@@ -308,10 +308,10 @@
   self->_rects.__end_ = v35;
 }
 
-- (void)addAdornmentWithAttachmentPosition:(id)a3
+- (void)addAdornmentWithAttachmentPosition:(id)position
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = position.var1;
+  var0 = position.var0;
   if (self->_type != 3)
   {
     v6 = MEMORY[0x277D81150];
@@ -378,17 +378,17 @@
   self->_attachmentPositions.__end_ = v15;
 }
 
-- (void)removeAdornmentAt:(unint64_t)a3
+- (void)removeAdornmentAt:(unint64_t)at
 {
   begin = self->_charIndexes.__begin_;
   end = self->_charIndexes.__end_;
-  if (a3 < end - begin)
+  if (at < end - begin)
   {
-    v7 = &begin[a3];
+    v7 = &begin[at];
     v8 = (end - (v7 + 1));
     if (end != v7 + 1)
     {
-      memmove(&begin[a3], v7 + 1, end - (v7 + 1));
+      memmove(&begin[at], v7 + 1, end - (v7 + 1));
     }
 
     self->_charIndexes.__end_ = &v8[v7];
@@ -396,13 +396,13 @@
 
   v10 = self->_glyphs.__begin_;
   v9 = self->_glyphs.__end_;
-  if (a3 < v9 - v10)
+  if (at < v9 - v10)
   {
-    v11 = &v10[a3];
+    v11 = &v10[at];
     v12 = (v9 - (v11 + 1));
     if (v9 != v11 + 1)
     {
-      memmove(&v10[a3], v11 + 1, v9 - (v11 + 1));
+      memmove(&v10[at], v11 + 1, v9 - (v11 + 1));
     }
 
     self->_glyphs.__end_ = &v12[v11];
@@ -410,13 +410,13 @@
 
   v14 = self->_rects.__begin_;
   v13 = self->_rects.__end_;
-  if (a3 < v13 - v14)
+  if (at < v13 - v14)
   {
-    v15 = &v14[a3];
+    v15 = &v14[at];
     v16 = (v13 - &v15[1]);
     if (v13 != &v15[1])
     {
-      memmove(&v14[a3], &v15[1], v13 - &v15[1]);
+      memmove(&v14[at], &v15[1], v13 - &v15[1]);
     }
 
     self->_rects.__end_ = &v16[v15];
@@ -424,9 +424,9 @@
 
   v18 = self->_positions.__begin_;
   v17 = self->_positions.__end_;
-  if (a3 < v17 - v18)
+  if (at < v17 - v18)
   {
-    v19 = &v18[a3];
+    v19 = &v18[at];
     v20 = (v17 - &v19[1]);
     if (v17 != &v19[1])
     {
@@ -437,15 +437,15 @@
   }
 }
 
-- (void)incrementCharIndexes:(int64_t)a3 startingAt:(unint64_t)a4
+- (void)incrementCharIndexes:(int64_t)indexes startingAt:(unint64_t)at
 {
   begin = self->_charIndexes.__begin_;
   end = self->_charIndexes.__end_;
   while (begin != end)
   {
-    if (*begin >= a4)
+    if (*begin >= at)
     {
-      *begin += a3;
+      *begin += indexes;
     }
 
     ++begin;
@@ -455,9 +455,9 @@
   v7 = self->_attachmentPositions.__end_;
   while (v6 != v7)
   {
-    if (*v6 >= a4)
+    if (*v6 >= at)
     {
-      *v6 += a3;
+      *v6 += indexes;
     }
 
     v6 = (v6 + 16);

@@ -1,30 +1,30 @@
 @interface HMHealthKitUtilities
 + (id)frequencyBins;
-+ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)a3;
++ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)audiogram;
 + (id)requiredFrequencyBins;
 + (id)sharedInstance;
-- (BOOL)_isAudiogramValid:(id)a3;
-- (BOOL)_updateHMRegionStatusFromFeatureStatus:(id)a3 featureIdentifier:(id)a4;
+- (BOOL)_isAudiogramValid:(id)valid;
+- (BOOL)_updateHMRegionStatusFromFeatureStatus:(id)status featureIdentifier:(id)identifier;
 - (HMHealthKitUtilities)init;
-- (unsigned)_regionSupportStatusForFeatureID:(id)a3;
-- (unsigned)getRegionSupportStatusForFeatureID:(id)a3;
+- (unsigned)_regionSupportStatusForFeatureID:(id)d;
+- (unsigned)getRegionSupportStatusForFeatureID:(id)d;
 - (void)_activate;
-- (void)_audiogramsQueryHandler:(id)a3 results:(id)a4 error:(id)a5;
+- (void)_audiogramsQueryHandler:(id)handler results:(id)results error:(id)error;
 - (void)_invalidate;
-- (void)_registerForRegionStatusUpdatesWithFeatureIdentifier:(id)a3;
+- (void)_registerForRegionStatusUpdatesWithFeatureIdentifier:(id)identifier;
 - (void)_startAudiogramQuery;
 - (void)activate;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 - (void)invalidate;
 - (void)startAudiogramQuery;
-- (void)updateHMSettingsStruct:(id *)a3 fromAudiogram:(id)a4;
+- (void)updateHMSettingsStruct:(id *)struct fromAudiogram:(id)audiogram;
 @end
 
 @implementation HMHealthKitUtilities
 
 - (void)_startAudiogramQuery
 {
-  v3 = [MEMORY[0x277CCD720] audiogramSampleType];
+  audiogramSampleType = [MEMORY[0x277CCD720] audiogramSampleType];
   v4 = objc_alloc_init(MEMORY[0x277CCD4D8]);
   v5 = objc_alloc(MEMORY[0x277CCD8D0]);
   v7[0] = MEMORY[0x277D85DD0];
@@ -32,7 +32,7 @@
   v7[2] = __44__HMHealthKitUtilities__startAudiogramQuery__block_invoke;
   v7[3] = &unk_2796F0190;
   v7[4] = self;
-  v6 = [v5 initWithSampleType:v3 predicate:0 limit:0 sortDescriptors:0 resultsHandler:v7];
+  v6 = [v5 initWithSampleType:audiogramSampleType predicate:0 limit:0 sortDescriptors:0 resultsHandler:v7];
   if (gLogCategory_HMHealthKitUtilities <= 30 && (gLogCategory_HMHealthKitUtilities != -1 || _LogCategory_Initialize()))
   {
     [HMHealthKitUtilities _startAudiogramQuery];
@@ -100,26 +100,26 @@ void __44__HMHealthKitUtilities__startAudiogramQuery__block_invoke(uint64_t a1, 
   return v2;
 }
 
-+ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)a3
++ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)audiogram
 {
-  v3 = a3;
-  if (v3)
+  audiogramCopy = audiogram;
+  if (audiogramCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v5 = [v3 sensitivityPoints];
+    sensitivityPoints = [audiogramCopy sensitivityPoints];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __71__HMHealthKitUtilities_frequencyToHearingDecibelLevelMapFromAudiogram___block_invoke;
     v9[3] = &unk_2796F00F0;
-    v10 = v3;
+    v10 = audiogramCopy;
     v12 = &v13;
     v6 = v4;
     v11 = v6;
-    [v5 enumerateObjectsUsingBlock:v9];
+    [sensitivityPoints enumerateObjectsUsingBlock:v9];
 
     if (v14[3])
     {
@@ -374,13 +374,13 @@ uint64_t __38__HMHealthKitUtilities_sharedInstance__block_invoke()
   self->_activateCalled = 0;
 }
 
-- (void)_audiogramsQueryHandler:(id)a3 results:(id)a4 error:(id)a5
+- (void)_audiogramsQueryHandler:(id)handler results:(id)results error:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  handlerCopy = handler;
+  resultsCopy = results;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (gLogCategory_HMHealthKitUtilities <= 90 && (gLogCategory_HMHealthKitUtilities != -1 || _LogCategory_Initialize()))
     {
@@ -388,13 +388,13 @@ uint64_t __38__HMHealthKitUtilities_sharedInstance__block_invoke()
     }
 
     v11 = +[HMServiceDaemon sharedHMServiceDaemon];
-    [v11 reportValidAudiograms:MEMORY[0x277CBEBF8] invalidAudiograms:MEMORY[0x277CBEBF8] error:v10];
+    [v11 reportValidAudiograms:MEMORY[0x277CBEBF8] invalidAudiograms:MEMORY[0x277CBEBF8] error:errorCopy];
   }
 
   else
   {
-    v30 = v8;
-    v12 = v9;
+    v30 = handlerCopy;
+    v12 = resultsCopy;
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v31 = 0u;
@@ -449,16 +449,16 @@ uint64_t __38__HMHealthKitUtilities_sharedInstance__block_invoke()
     v28 = [(NSArray *)self->_invalidAudiograms copy];
     [v26 reportValidAudiograms:v27 invalidAudiograms:v28 error:0];
 
-    v8 = v30;
+    handlerCopy = v30;
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isAudiogramValid:(id)a3
+- (BOOL)_isAudiogramValid:(id)valid
 {
-  v3 = a3;
-  v4 = [HMHealthKitUtilities frequencyToHearingDecibelLevelMapFromAudiogram:v3];
+  validCopy = valid;
+  v4 = [HMHealthKitUtilities frequencyToHearingDecibelLevelMapFromAudiogram:validCopy];
   if (v4)
   {
     v11 = 0;
@@ -498,9 +498,9 @@ void __42__HMHealthKitUtilities__isAudiogramValid___block_invoke(uint64_t a1, ui
   }
 }
 
-- (void)updateHMSettingsStruct:(id *)a3 fromAudiogram:(id)a4
+- (void)updateHMSettingsStruct:(id *)struct fromAudiogram:(id)audiogram
 {
-  v72 = [HMHealthKitUtilities frequencyToHearingDecibelLevelMapFromAudiogram:a4];
+  v72 = [HMHealthKitUtilities frequencyToHearingDecibelLevelMapFromAudiogram:audiogram];
   if (v72)
   {
     v5 = +[HMHealthKitUtilities frequencyBins];
@@ -508,73 +508,73 @@ void __42__HMHealthKitUtilities__isAudiogramValid___block_invoke(uint64_t a1, ui
     v7 = [v72 objectForKey:v6];
     v8 = [v7 objectForKey:@"left"];
     [v8 floatValue];
-    a3->var3.var0 = v9;
+    struct->var3.var0 = v9;
 
     v10 = [v5 objectAtIndexedSubscript:0];
     v11 = [v72 objectForKey:v10];
     v12 = [v11 objectForKey:@"right"];
     [v12 floatValue];
-    a3->var4.var0 = v13;
+    struct->var4.var0 = v13;
 
     v14 = [v5 objectAtIndexedSubscript:1];
     v15 = [v72 objectForKey:v14];
     v16 = [v15 objectForKey:@"left"];
     [v16 floatValue];
-    a3->var3.var1 = v17;
+    struct->var3.var1 = v17;
 
     v18 = [v5 objectAtIndexedSubscript:1];
     v19 = [v72 objectForKey:v18];
     v20 = [v19 objectForKey:@"right"];
     [v20 floatValue];
-    a3->var4.var1 = v21;
+    struct->var4.var1 = v21;
 
     v22 = [v5 objectAtIndexedSubscript:2];
     v23 = [v72 objectForKey:v22];
     v24 = [v23 objectForKey:@"left"];
     [v24 floatValue];
-    a3->var3.var2 = v25;
+    struct->var3.var2 = v25;
 
     v26 = [v5 objectAtIndexedSubscript:2];
     v27 = [v72 objectForKey:v26];
     v28 = [v27 objectForKey:@"right"];
     [v28 floatValue];
-    a3->var4.var2 = v29;
+    struct->var4.var2 = v29;
 
     v30 = [v5 objectAtIndexedSubscript:3];
     v31 = [v72 objectForKey:v30];
     v32 = [v31 objectForKey:@"left"];
     [v32 floatValue];
-    a3->var3.var3 = v33;
+    struct->var3.var3 = v33;
 
     v34 = [v5 objectAtIndexedSubscript:3];
     v35 = [v72 objectForKey:v34];
     v36 = [v35 objectForKey:@"right"];
     [v36 floatValue];
-    a3->var4.var3 = v37;
+    struct->var4.var3 = v37;
 
     v38 = [v5 objectAtIndexedSubscript:5];
     v39 = [v72 objectForKey:v38];
     v40 = [v39 objectForKey:@"left"];
     [v40 floatValue];
-    a3->var3.var5 = v41;
+    struct->var3.var5 = v41;
 
     v42 = [v5 objectAtIndexedSubscript:5];
     v43 = [v72 objectForKey:v42];
     v44 = [v43 objectForKey:@"right"];
     [v44 floatValue];
-    a3->var4.var5 = v45;
+    struct->var4.var5 = v45;
 
     v46 = [v5 objectAtIndexedSubscript:7];
     v47 = [v72 objectForKey:v46];
     v48 = [v47 objectForKey:@"left"];
     [v48 floatValue];
-    a3->var3.var7 = v49;
+    struct->var3.var7 = v49;
 
     v50 = [v5 objectAtIndexedSubscript:7];
     v51 = [v72 objectForKey:v50];
     v52 = [v51 objectForKey:@"right"];
     [v52 floatValue];
-    a3->var4.var7 = v53;
+    struct->var4.var7 = v53;
 
     v54 = [v5 objectAtIndexedSubscript:4];
     v55 = [v72 objectForKey:v54];
@@ -583,19 +583,19 @@ void __42__HMHealthKitUtilities__isAudiogramValid___block_invoke(uint64_t a1, ui
     {
       v56 = [v55 objectForKey:@"left"];
       [v56 floatValue];
-      a3->var3.var4 = v57;
+      struct->var3.var4 = v57;
 
       v58 = [v55 objectForKey:@"right"];
       [v58 floatValue];
-      a3->var4.var4 = v59;
+      struct->var4.var4 = v59;
 
       goto LABEL_8;
     }
 
-    var4 = (a3->var3.var3 + a3->var3.var5) * 0.5;
-    a3->var3.var4 = var4;
-    v61 = (a3->var4.var3 + a3->var4.var5) * 0.5;
-    a3->var4.var4 = v61;
+    var4 = (struct->var3.var3 + struct->var3.var5) * 0.5;
+    struct->var3.var4 = var4;
+    v61 = (struct->var4.var3 + struct->var4.var5) * 0.5;
+    struct->var4.var4 = v61;
     if (gLogCategory_HMHealthKitUtilities <= 30)
     {
       if (gLogCategory_HMHealthKitUtilities != -1)
@@ -609,8 +609,8 @@ LABEL_6:
 
       if (_LogCategory_Initialize())
       {
-        var4 = a3->var3.var4;
-        v61 = a3->var4.var4;
+        var4 = struct->var3.var4;
+        v61 = struct->var4.var4;
         goto LABEL_6;
       }
     }
@@ -623,17 +623,17 @@ LABEL_8:
     {
       v64 = [v63 objectForKey:@"left"];
       [v64 floatValue];
-      a3->var3.var6 = v65;
+      struct->var3.var6 = v65;
 
       v66 = [v63 objectForKey:@"right"];
       [v66 floatValue];
-      a3->var4.var6 = v67;
+      struct->var4.var6 = v67;
     }
 
     else
     {
-      a3->var3.var6 = (a3->var3.var5 + a3->var3.var7) * 0.5;
-      a3->var4.var6 = (a3->var4.var5 + a3->var4.var7) * 0.5;
+      struct->var3.var6 = (struct->var3.var5 + struct->var3.var7) * 0.5;
+      struct->var4.var6 = (struct->var4.var5 + struct->var4.var7) * 0.5;
       if (gLogCategory_HMHealthKitUtilities <= 30)
       {
         if (gLogCategory_HMHealthKitUtilities == -1)
@@ -643,8 +643,8 @@ LABEL_8:
             goto LABEL_14;
           }
 
-          var6 = a3->var3.var6;
-          v69 = a3->var4.var6;
+          var6 = struct->var3.var6;
+          v69 = struct->var4.var6;
         }
 
         LogPrintF();
@@ -660,20 +660,20 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  providingCopy = providing;
+  statusCopy = status;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___block_invoke;
   block[3] = &unk_2796F00A0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = providingCopy;
+  v13 = statusCopy;
+  selfCopy = self;
+  v9 = statusCopy;
+  v10 = providingCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -702,16 +702,16 @@ void __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___
   }
 }
 
-- (unsigned)getRegionSupportStatusForFeatureID:(id)a3
+- (unsigned)getRegionSupportStatusForFeatureID:(id)d
 {
-  v4 = a3;
-  [(HMHealthKitUtilities *)self _registerForRegionStatusUpdatesWithFeatureIdentifier:v4];
-  LOBYTE(self) = [(HMHealthKitUtilities *)self _regionSupportStatusForFeatureID:v4];
+  dCopy = d;
+  [(HMHealthKitUtilities *)self _registerForRegionStatusUpdatesWithFeatureIdentifier:dCopy];
+  LOBYTE(self) = [(HMHealthKitUtilities *)self _regionSupportStatusForFeatureID:dCopy];
 
   return self;
 }
 
-- (unsigned)_regionSupportStatusForFeatureID:(id)a3
+- (unsigned)_regionSupportStatusForFeatureID:(id)d
 {
   featureIDRegionStatusMap = self->_featureIDRegionStatusMap;
   if (!featureIDRegionStatusMap)
@@ -719,15 +719,15 @@ void __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___
     return 0;
   }
 
-  v4 = [(NSMutableDictionary *)featureIDRegionStatusMap objectForKeyedSubscript:a3];
-  v5 = [v4 intValue];
+  v4 = [(NSMutableDictionary *)featureIDRegionStatusMap objectForKeyedSubscript:d];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
-- (void)_registerForRegionStatusUpdatesWithFeatureIdentifier:(id)a3
+- (void)_registerForRegionStatusUpdatesWithFeatureIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   featureManagerMap = self->_featureManagerMap;
   if (!featureManagerMap)
   {
@@ -738,12 +738,12 @@ void __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___
     featureManagerMap = self->_featureManagerMap;
   }
 
-  v8 = [(NSMutableDictionary *)featureManagerMap objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)featureManagerMap objectForKeyedSubscript:identifierCopy];
   if (!v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CCD4D8]);
-    v8 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureIdentifier:v4 healthStore:v9 countryCodeSource:1];
-    [(NSMutableDictionary *)self->_featureManagerMap setObject:v8 forKeyedSubscript:v4];
+    v8 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureIdentifier:identifierCopy healthStore:v9 countryCodeSource:1];
+    [(NSMutableDictionary *)self->_featureManagerMap setObject:v8 forKeyedSubscript:identifierCopy];
     v14 = 0;
     v10 = [v8 featureStatusWithError:&v14];
     v11 = v14;
@@ -760,7 +760,7 @@ void __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___
 
     if (v13)
     {
-      [(HMHealthKitUtilities *)self _updateHMRegionStatusFromFeatureStatus:v10 featureIdentifier:v4];
+      [(HMHealthKitUtilities *)self _updateHMRegionStatusFromFeatureStatus:v10 featureIdentifier:identifierCopy];
       [v8 registerObserver:self];
     }
 
@@ -771,30 +771,30 @@ void __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___
         [HMHealthKitUtilities _registerForRegionStatusUpdatesWithFeatureIdentifier:];
       }
 
-      [(NSMutableDictionary *)self->_featureManagerMap setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_featureManagerMap setObject:0 forKeyedSubscript:identifierCopy];
     }
   }
 }
 
-- (BOOL)_updateHMRegionStatusFromFeatureStatus:(id)a3 featureIdentifier:(id)a4
+- (BOOL)_updateHMRegionStatusFromFeatureStatus:(id)status featureIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  identifierCopy = identifier;
   v8 = *MEMORY[0x277CCBE70];
-  v9 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBE70]];
-  v10 = [v9 areAllRequirementsSatisfied];
+  v9 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBE70]];
+  areAllRequirementsSatisfied = [v9 areAllRequirementsSatisfied];
 
-  v11 = [v6 objectForKeyedSubscript:v8];
-  v12 = [v11 highestPriorityUnsatisfiedRequirement];
+  v11 = [statusCopy objectForKeyedSubscript:v8];
+  highestPriorityUnsatisfiedRequirement = [v11 highestPriorityUnsatisfiedRequirement];
 
   v13 = *MEMORY[0x277CCBDF0];
-  v14 = [v6 objectForKeyedSubscript:*MEMORY[0x277CCBDF0]];
-  v15 = [v14 areAllRequirementsSatisfied];
+  v14 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBDF0]];
+  areAllRequirementsSatisfied2 = [v14 areAllRequirementsSatisfied];
 
-  v16 = [v6 objectForKeyedSubscript:v13];
-  v17 = [v16 highestPriorityUnsatisfiedRequirement];
+  v16 = [statusCopy objectForKeyedSubscript:v13];
+  highestPriorityUnsatisfiedRequirement2 = [v16 highestPriorityUnsatisfiedRequirement];
 
-  if (v15)
+  if (areAllRequirementsSatisfied2)
   {
     v18 = 2;
   }
@@ -804,7 +804,7 @@ void __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___
     v18 = 3;
   }
 
-  if (v10)
+  if (areAllRequirementsSatisfied)
   {
     v19 = v18;
   }
@@ -824,14 +824,14 @@ void __70__HMHealthKitUtilities_featureStatusProviding_didUpdateFeatureStatus___
     featureIDRegionStatusMap = self->_featureIDRegionStatusMap;
   }
 
-  v23 = [(NSMutableDictionary *)featureIDRegionStatusMap objectForKeyedSubscript:v7];
-  v24 = [v23 intValue];
+  v23 = [(NSMutableDictionary *)featureIDRegionStatusMap objectForKeyedSubscript:identifierCopy];
+  intValue = [v23 intValue];
 
-  if (v24 == v19)
+  if (intValue == v19)
   {
     if (gLogCategory_HMHealthKitUtilities <= 10 && (gLogCategory_HMHealthKitUtilities != -1 || _LogCategory_Initialize()))
     {
-      v28 = *(off_2796F01D0 + (((v24 << 56) - 0x100000000000000) >> 53));
+      v28 = *(off_2796F01D0 + (((intValue << 56) - 0x100000000000000) >> 53));
 LABEL_23:
       LogPrintF();
     }
@@ -840,13 +840,13 @@ LABEL_23:
   else
   {
     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v19];
-    [(NSMutableDictionary *)self->_featureIDRegionStatusMap setObject:v25 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_featureIDRegionStatusMap setObject:v25 forKeyedSubscript:identifierCopy];
 
     if (gLogCategory_HMHealthKitUtilities <= 30 && (gLogCategory_HMHealthKitUtilities != -1 || _LogCategory_Initialize()))
     {
-      if ((v24 & 0xFC) == 0)
+      if ((intValue & 0xFC) == 0)
       {
-        v26 = off_2796F01B0[v24 & 3];
+        v26 = off_2796F01B0[intValue & 3];
       }
 
       v29 = off_2796F01D0[v19 - 1];
@@ -854,7 +854,7 @@ LABEL_23:
     }
   }
 
-  return v24 != v19;
+  return intValue != v19;
 }
 
 - (uint64_t)_isAudiogramValid:(uint64_t)result .cold.1(uint64_t result)

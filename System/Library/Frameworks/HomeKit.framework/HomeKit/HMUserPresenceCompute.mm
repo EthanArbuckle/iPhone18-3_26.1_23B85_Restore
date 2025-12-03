@@ -1,15 +1,15 @@
 @interface HMUserPresenceCompute
-+ (HMUserPresenceCompute)computeWithCoder:(id)a3;
-+ (HMUserPresenceCompute)computeWithDict:(id)a3;
-+ (HMUserPresenceCompute)computeWithMessage:(id)a3;
-+ (HMUserPresenceCompute)computeWithNumber:(id)a3;
-+ (HMUserPresenceCompute)computeWithValue:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMUserPresenceCompute)initWithNumber:(id)a3;
++ (HMUserPresenceCompute)computeWithCoder:(id)coder;
++ (HMUserPresenceCompute)computeWithDict:(id)dict;
++ (HMUserPresenceCompute)computeWithMessage:(id)message;
++ (HMUserPresenceCompute)computeWithNumber:(id)number;
++ (HMUserPresenceCompute)computeWithValue:(unint64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (HMUserPresenceCompute)initWithNumber:(id)number;
 - (NSNumber)number;
 - (id)description;
-- (void)addToCoder:(id)a3;
-- (void)addToPayload:(id)a3;
+- (void)addToCoder:(id)coder;
+- (void)addToPayload:(id)payload;
 @end
 
 @implementation HMUserPresenceCompute
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -47,8 +47,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMUserPresenceCompute *)self value];
-      v8 = v7 == [(HMUserPresenceCompute *)v6 value];
+      value = [(HMUserPresenceCompute *)self value];
+      v8 = value == [(HMUserPresenceCompute *)v6 value];
     }
 
     else
@@ -63,88 +63,88 @@
 - (NSNumber)number
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(HMUserPresenceCompute *)self value];
+  value = [(HMUserPresenceCompute *)self value];
 
-  return [v2 numberWithUnsignedInteger:v3];
+  return [v2 numberWithUnsignedInteger:value];
 }
 
-- (void)addToPayload:(id)a3
+- (void)addToPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMUserPresenceCompute *)self number];
-  [v4 setObject:v5 forKeyedSubscript:@"kUserPresenceComputeStatusKey"];
+  payloadCopy = payload;
+  number = [(HMUserPresenceCompute *)self number];
+  [payloadCopy setObject:number forKeyedSubscript:@"kUserPresenceComputeStatusKey"];
 }
 
-- (void)addToCoder:(id)a3
+- (void)addToCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMUserPresenceCompute *)self number];
-  [v4 encodeObject:v5 forKey:@"kUserPresenceComputeStatusKey"];
+  coderCopy = coder;
+  number = [(HMUserPresenceCompute *)self number];
+  [coderCopy encodeObject:number forKey:@"kUserPresenceComputeStatusKey"];
 }
 
-- (HMUserPresenceCompute)initWithNumber:(id)a3
+- (HMUserPresenceCompute)initWithNumber:(id)number
 {
-  v4 = a3;
-  if (v4)
+  numberCopy = number;
+  if (numberCopy)
   {
     v8.receiver = self;
     v8.super_class = HMUserPresenceCompute;
     v5 = [(HMUserPresenceCompute *)&v8 init];
     if (v5)
     {
-      v5->_value = [v4 unsignedIntegerValue];
+      v5->_value = [numberCopy unsignedIntegerValue];
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (HMUserPresenceCompute)computeWithCoder:(id)a3
++ (HMUserPresenceCompute)computeWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceComputeStatusKey"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kUserPresenceComputeStatusKey"];
 
   v5 = [HMUserPresenceCompute computeWithNumber:v4];
 
   return v5;
 }
 
-+ (HMUserPresenceCompute)computeWithDict:(id)a3
++ (HMUserPresenceCompute)computeWithDict:(id)dict
 {
-  v3 = [a3 hmf_numberForKey:@"kUserPresenceComputeStatusKey"];
+  v3 = [dict hmf_numberForKey:@"kUserPresenceComputeStatusKey"];
   v4 = [HMUserPresenceCompute computeWithNumber:v3];
 
   return v4;
 }
 
-+ (HMUserPresenceCompute)computeWithMessage:(id)a3
++ (HMUserPresenceCompute)computeWithMessage:(id)message
 {
-  v3 = [a3 numberForKey:@"kUserPresenceComputeStatusKey"];
+  v3 = [message numberForKey:@"kUserPresenceComputeStatusKey"];
   v4 = [HMUserPresenceCompute computeWithNumber:v3];
 
   return v4;
 }
 
-+ (HMUserPresenceCompute)computeWithNumber:(id)a3
++ (HMUserPresenceCompute)computeWithNumber:(id)number
 {
-  v3 = a3;
-  v4 = [[HMUserPresenceCompute alloc] initWithNumber:v3];
+  numberCopy = number;
+  v4 = [[HMUserPresenceCompute alloc] initWithNumber:numberCopy];
 
   return v4;
 }
 
-+ (HMUserPresenceCompute)computeWithValue:(unint64_t)a3
++ (HMUserPresenceCompute)computeWithValue:(unint64_t)value
 {
   v4 = [HMUserPresenceCompute alloc];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
   v6 = [(HMUserPresenceCompute *)v4 initWithNumber:v5];
 
   return v6;

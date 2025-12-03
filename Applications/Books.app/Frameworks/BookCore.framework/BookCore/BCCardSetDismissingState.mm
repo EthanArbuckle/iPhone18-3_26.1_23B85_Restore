@@ -1,76 +1,76 @@
 @interface BCCardSetDismissingState
-- (void)_finishAnimationWithScrollView:(id)a3 cardViewController:(id)a4 cardData:(id)a5;
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewDidEndDecelerating:(id)a5 contentScrollView:(id)a6;
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewDidEndDragging:(id)a5 willDecelerate:(BOOL)a6 contentScrollView:(id)a7;
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewDidScroll:(id)a5 contentScrollView:(id)a6;
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewWillBeginDragging:(id)a5 contentScrollView:(id)a6;
-- (void)cardViewController:(id)a3 contentScrollViewDidChange:(id)a4 cardData:(id)a5;
-- (void)cardViewController:(id)a3 dismissPan:(id)a4 cardData:(id)a5;
-- (void)cardViewController:(id)a3 willDismissWithCardData:(id)a4;
-- (void)didBecomeCurrentStateCardViewController:(id)a3 previousState:(id)a4 cardData:(id)a5;
+- (void)_finishAnimationWithScrollView:(id)view cardViewController:(id)controller cardData:(id)data;
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewDidEndDecelerating:(id)decelerating contentScrollView:(id)view;
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate contentScrollView:(id)view;
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewDidScroll:(id)scroll contentScrollView:(id)view;
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewWillBeginDragging:(id)dragging contentScrollView:(id)view;
+- (void)cardViewController:(id)controller contentScrollViewDidChange:(id)change cardData:(id)data;
+- (void)cardViewController:(id)controller dismissPan:(id)pan cardData:(id)data;
+- (void)cardViewController:(id)controller willDismissWithCardData:(id)data;
+- (void)didBecomeCurrentStateCardViewController:(id)controller previousState:(id)state cardData:(id)data;
 @end
 
 @implementation BCCardSetDismissingState
 
-- (void)didBecomeCurrentStateCardViewController:(id)a3 previousState:(id)a4 cardData:(id)a5
+- (void)didBecomeCurrentStateCardViewController:(id)controller previousState:(id)state cardData:(id)data
 {
   v11.receiver = self;
   v11.super_class = BCCardSetDismissingState;
-  v8 = a5;
-  v9 = a3;
-  [(BCCardSetState *)&v11 didBecomeCurrentStateCardViewController:v9 previousState:a4 cardData:v8];
-  v10 = [v9 contentScrollView];
-  [(BCCardSetDismissingState *)self cardViewController:v9 contentScrollViewDidChange:v10 cardData:v8];
+  dataCopy = data;
+  controllerCopy = controller;
+  [(BCCardSetState *)&v11 didBecomeCurrentStateCardViewController:controllerCopy previousState:state cardData:dataCopy];
+  contentScrollView = [controllerCopy contentScrollView];
+  [(BCCardSetDismissingState *)self cardViewController:controllerCopy contentScrollViewDidChange:contentScrollView cardData:dataCopy];
 }
 
-- (void)cardViewController:(id)a3 contentScrollViewDidChange:(id)a4 cardData:(id)a5
+- (void)cardViewController:(id)controller contentScrollViewDidChange:(id)change cardData:(id)data
 {
-  v5 = [a3 scrollView];
-  [v5 setShowsVerticalScrollIndicator:0];
+  scrollView = [controller scrollView];
+  [scrollView setShowsVerticalScrollIndicator:0];
 }
 
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewWillBeginDragging:(id)a5 contentScrollView:(id)a6
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewWillBeginDragging:(id)dragging contentScrollView:(id)view
 {
-  v7 = a6;
-  v8 = a4;
+  viewCopy = view;
+  dataCopy = data;
   objc_opt_class();
-  v9 = [v8 animator];
+  animator = [dataCopy animator];
   v10 = BUDynamicCast();
   [v10 pauseDismissCancellationAndReset];
-  [v8 setRawCurrentCardOffset:?];
+  [dataCopy setRawCurrentCardOffset:?];
 
-  v11 = [v7 delegate];
-  [v11 scrollViewWillBeginDragging:v7];
+  delegate = [viewCopy delegate];
+  [delegate scrollViewWillBeginDragging:viewCopy];
 }
 
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewDidScroll:(id)a5 contentScrollView:(id)a6
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewDidScroll:(id)scroll contentScrollView:(id)view
 {
-  v28 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 contentOffset];
+  controllerCopy = controller;
+  dataCopy = data;
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   v12 = v11;
-  [v10 adjustedContentInset];
+  [scrollCopy adjustedContentInset];
   v14 = v12 + v13;
-  [v9 rawCurrentCardOffset];
-  [v9 setRawCurrentCardOffset:v15 - v14];
-  [v9 rawCurrentCardOffset];
+  [dataCopy rawCurrentCardOffset];
+  [dataCopy setRawCurrentCardOffset:v15 - v14];
+  [dataCopy rawCurrentCardOffset];
   if (v16 <= 0.0)
   {
-    [v9 setRawCurrentCardOffset:0.0];
-    [v9 rawCurrentCardOffset];
+    [dataCopy setRawCurrentCardOffset:0.0];
+    [dataCopy rawCurrentCardOffset];
     v22 = v23;
-    v24 = [v9 animator];
-    [v24 setFractionComplete:0.0];
+    animator = [dataCopy animator];
+    [animator setFractionComplete:0.0];
 
-    v25 = [v9 animator];
-    [v25 stopAnimation:0];
+    animator2 = [dataCopy animator];
+    [animator2 stopAnimation:0];
 
-    v26 = [v9 animator];
-    [v26 finishAnimationAtPosition:1];
+    animator3 = [dataCopy animator];
+    [animator3 finishAnimationAtPosition:1];
 
-    [v9 setAnimator:0];
-    if ([v28 itemPushedOnCard])
+    [dataCopy setAnimator:0];
+    if ([controllerCopy itemPushedOnCard])
     {
       +[BCCardSetState pushedContractedState];
     }
@@ -79,50 +79,50 @@
     {
       +[BCCardSetState contractedState];
     }
-    v20 = ;
-    [v9 setCurrentState:v20];
+    animator5 = ;
+    [dataCopy setCurrentState:animator5];
   }
 
   else
   {
-    v17 = [v9 animator];
+    animator4 = [dataCopy animator];
 
-    if (!v17)
+    if (!animator4)
     {
-      v18 = [v9 cardSetData];
-      v19 = [v18 animatorForInteractiveDismiss];
-      [v9 setAnimator:v19];
+      cardSetData = [dataCopy cardSetData];
+      animatorForInteractiveDismiss = [cardSetData animatorForInteractiveDismiss];
+      [dataCopy setAnimator:animatorForInteractiveDismiss];
     }
 
     objc_opt_class();
-    v20 = [v9 animator];
+    animator5 = [dataCopy animator];
     v21 = BUDynamicCast();
-    [v9 rawCurrentCardOffset];
+    [dataCopy rawCurrentCardOffset];
     [v21 updateDismissFractionCompleteWithCardOffset:?];
 
     v22 = 0.0;
   }
 
-  [v10 adjustedContentInset];
-  [(BCCardSetState *)self adjustScrollView:v10 newContentOffset:v9 cardData:-v22 - v27];
+  [scrollCopy adjustedContentInset];
+  [(BCCardSetState *)self adjustScrollView:scrollCopy newContentOffset:dataCopy cardData:-v22 - v27];
 }
 
-- (void)_finishAnimationWithScrollView:(id)a3 cardViewController:(id)a4 cardData:(id)a5
+- (void)_finishAnimationWithScrollView:(id)view cardViewController:(id)controller cardData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v9 scrollViewVerticalVelocityWhenDraggingEnded];
+  viewCopy = view;
+  controllerCopy = controller;
+  dataCopy = data;
+  [dataCopy scrollViewVerticalVelocityWhenDraggingEnded];
   v11 = v10 * -1000.0;
   objc_opt_class();
-  v12 = [v9 animator];
+  animator = [dataCopy animator];
   v13 = BUDynamicCast();
 
   v14 = 0.0;
-  [v9 setScrollViewVerticalVelocityWhenDraggingEnded:0.0];
-  if (v11 < 0.0 || v11 < 3000.0 && ([v9 rawCurrentCardOffset], v17 = v16, objc_msgSend(v9, "cardSetData"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "cutoffToDismissScrollView:", v7), v20 = v19, v18, v17 <= v20))
+  [dataCopy setScrollViewVerticalVelocityWhenDraggingEnded:0.0];
+  if (v11 < 0.0 || v11 < 3000.0 && ([dataCopy rawCurrentCardOffset], v17 = v16, objc_msgSend(dataCopy, "cardSetData"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "cutoffToDismissScrollView:", viewCopy), v20 = v19, v18, v17 <= v20))
   {
-    [v9 rawCurrentCardOffset];
+    [dataCopy rawCurrentCardOffset];
     if (fabs(v15) >= 2.22044605e-16)
     {
       v14 = -v11 / v15;
@@ -132,105 +132,105 @@
     v22[1] = 3221225472;
     v22[2] = sub_1534A0;
     v22[3] = &unk_2C8200;
-    v23 = v9;
-    v24 = v8;
+    v23 = dataCopy;
+    v24 = controllerCopy;
     [v13 animateDismissCancellationWithVelocity:v22 completion:v14];
   }
 
   else
   {
     [v13 stopAnimation:1];
-    [v9 setAnimator:0];
-    [v9 setRawCurrentCardOffset:0.0];
-    v21 = [v9 cardSetData];
-    [v21 _didCommitDismissWithVelocity:v13 interactiveAnimator:v11];
+    [dataCopy setAnimator:0];
+    [dataCopy setRawCurrentCardOffset:0.0];
+    cardSetData = [dataCopy cardSetData];
+    [cardSetData _didCommitDismissWithVelocity:v13 interactiveAnimator:v11];
   }
 }
 
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewDidEndDragging:(id)a5 willDecelerate:(BOOL)a6 contentScrollView:(id)a7
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate contentScrollView:(id)view
 {
-  v14 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 animator];
+  controllerCopy = controller;
+  dataCopy = data;
+  draggingCopy = dragging;
+  animator = [dataCopy animator];
 
-  if (v13 && !a6)
+  if (animator && !decelerate)
   {
-    [(BCCardSetDismissingState *)self _finishAnimationWithScrollView:v12 cardViewController:v14 cardData:v11];
+    [(BCCardSetDismissingState *)self _finishAnimationWithScrollView:draggingCopy cardViewController:controllerCopy cardData:dataCopy];
   }
 }
 
-- (void)cardViewController:(id)a3 cardData:(id)a4 scrollViewDidEndDecelerating:(id)a5 contentScrollView:(id)a6
+- (void)cardViewController:(id)controller cardData:(id)data scrollViewDidEndDecelerating:(id)decelerating contentScrollView:(id)view
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 animator];
+  controllerCopy = controller;
+  dataCopy = data;
+  deceleratingCopy = decelerating;
+  animator = [dataCopy animator];
 
-  if (v11)
+  if (animator)
   {
-    [(BCCardSetDismissingState *)self _finishAnimationWithScrollView:v10 cardViewController:v12 cardData:v9];
+    [(BCCardSetDismissingState *)self _finishAnimationWithScrollView:deceleratingCopy cardViewController:controllerCopy cardData:dataCopy];
   }
 }
 
-- (void)cardViewController:(id)a3 willDismissWithCardData:(id)a4
+- (void)cardViewController:(id)controller willDismissWithCardData:(id)data
 {
   v8.receiver = self;
   v8.super_class = BCCardSetDismissingState;
-  v5 = a4;
-  [(BCCardSetState *)&v8 cardViewController:a3 willDismissWithCardData:v5];
+  dataCopy = data;
+  [(BCCardSetState *)&v8 cardViewController:controller willDismissWithCardData:dataCopy];
   objc_opt_class();
-  v6 = [v5 animator];
+  animator = [dataCopy animator];
 
   v7 = BUDynamicCast();
 
   [v7 stopAnimation:1];
 }
 
-- (void)cardViewController:(id)a3 dismissPan:(id)a4 cardData:(id)a5
+- (void)cardViewController:(id)controller dismissPan:(id)pan cardData:(id)data
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 state];
-  if ((v10 - 3) >= 3)
+  controllerCopy = controller;
+  panCopy = pan;
+  dataCopy = data;
+  state = [panCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v10 != &dword_0 + 2)
+    if (state != &dword_0 + 2)
     {
       goto LABEL_8;
     }
 
-    v15 = [v21 cardView];
-    [v8 translationInView:v15];
-    [v9 setRawCurrentCardOffset:v16];
+    cardView = [controllerCopy cardView];
+    [panCopy translationInView:cardView];
+    [dataCopy setRawCurrentCardOffset:v16];
 
-    v17 = [v9 animator];
+    animator = [dataCopy animator];
 
-    if (!v17)
+    if (!animator)
     {
-      v18 = [v9 cardSetData];
-      v19 = [v18 animatorForInteractiveDismiss];
-      [v9 setAnimator:v19];
+      cardSetData = [dataCopy cardSetData];
+      animatorForInteractiveDismiss = [cardSetData animatorForInteractiveDismiss];
+      [dataCopy setAnimator:animatorForInteractiveDismiss];
     }
 
     objc_opt_class();
-    v14 = [v9 animator];
+    animator2 = [dataCopy animator];
     v20 = BUDynamicCast();
-    [v9 rawCurrentCardOffset];
+    [dataCopy rawCurrentCardOffset];
     [v20 updateDismissFractionCompleteWithCardOffset:?];
   }
 
   else
   {
-    v11 = [v21 scrollView];
-    [v11 setScrollEnabled:1];
+    scrollView = [controllerCopy scrollView];
+    [scrollView setScrollEnabled:1];
 
-    v12 = [v21 cardView];
-    [v8 velocityInView:v12];
-    [v9 setScrollViewVerticalVelocityWhenDraggingEnded:v13 / -1000.0];
+    cardView2 = [controllerCopy cardView];
+    [panCopy velocityInView:cardView2];
+    [dataCopy setScrollViewVerticalVelocityWhenDraggingEnded:v13 / -1000.0];
 
-    v14 = [v21 scrollView];
-    [(BCCardSetDismissingState *)self _finishAnimationWithScrollView:v14 cardViewController:v21 cardData:v9];
+    animator2 = [controllerCopy scrollView];
+    [(BCCardSetDismissingState *)self _finishAnimationWithScrollView:animator2 cardViewController:controllerCopy cardData:dataCopy];
   }
 
 LABEL_8:

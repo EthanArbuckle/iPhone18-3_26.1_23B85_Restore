@@ -1,7 +1,7 @@
 @interface SiriUIMapTemplateViewController
 - (void)loadView;
-- (void)mapTemplateView:(id)a3 didModifyPlacemark:(id)a4;
-- (void)mapTemplateViewDidSelectMap:(id)a3;
+- (void)mapTemplateView:(id)view didModifyPlacemark:(id)placemark;
+- (void)mapTemplateViewDidSelectMap:(id)map;
 - (void)prepareForDismissal;
 @end
 
@@ -12,27 +12,27 @@
   v4.receiver = self;
   v4.super_class = SiriUIMapTemplateViewController;
   [(SiriUIBaseTemplateViewController *)&v4 loadView];
-  v3 = [(SiriUIMapTemplateViewController *)self view];
-  [v3 setDelegate:self];
+  view = [(SiriUIMapTemplateViewController *)self view];
+  [view setDelegate:self];
 }
 
 - (void)prepareForDismissal
 {
-  v2 = [(SiriUIMapTemplateViewController *)self view];
-  [v2 prepareForDismissal];
+  view = [(SiriUIMapTemplateViewController *)self view];
+  [view prepareForDismissal];
 }
 
-- (void)mapTemplateView:(id)a3 didModifyPlacemark:(id)a4
+- (void)mapTemplateView:(id)view didModifyPlacemark:(id)placemark
 {
-  v5 = a4;
-  v6 = [(SiriUITemplateViewController *)self delegate];
-  [v6 mapTemplateViewController:self didModifyPlacemark:v5];
+  placemarkCopy = placemark;
+  delegate = [(SiriUITemplateViewController *)self delegate];
+  [delegate mapTemplateViewController:self didModifyPlacemark:placemarkCopy];
 }
 
-- (void)mapTemplateViewDidSelectMap:(id)a3
+- (void)mapTemplateViewDidSelectMap:(id)map
 {
-  v4 = [(SiriUITemplateViewController *)self delegate];
-  [v4 presentDetailsForTemplateViewController:self];
+  delegate = [(SiriUITemplateViewController *)self delegate];
+  [delegate presentDetailsForTemplateViewController:self];
 }
 
 @end

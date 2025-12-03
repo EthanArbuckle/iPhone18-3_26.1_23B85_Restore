@@ -1,7 +1,7 @@
 @interface DataVPNManagerImpl
 - (DataVPNManagerImpl)initWithCallback:(function<void)(BOOL;
 - (id).cxx_construct;
-- (void)connectivityManagerDidChange:(id)a3;
+- (void)connectivityManagerDidChange:(id)change;
 @end
 
 @implementation DataVPNManagerImpl
@@ -20,25 +20,25 @@
   return 0;
 }
 
-- (void)connectivityManagerDidChange:(id)a3
+- (void)connectivityManagerDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 connectivityState];
-  v6 = [v4 usesPolicyBasedRouting];
-  v7 = [DataVPNManagerImpl connectedState:v5];
+  changeCopy = change;
+  connectivityState = [changeCopy connectivityState];
+  usesPolicyBasedRouting = [changeCopy usesPolicyBasedRouting];
+  v7 = [DataVPNManagerImpl connectedState:connectivityState];
   v8 = sub_100032AC8(self->_logger.__ptr_);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = asStringBool(v7);
     v11 = 1024;
-    v12 = v5;
+    v12 = connectivityState;
     v13 = 2080;
-    v14 = asStringBool(v6);
+    v14 = asStringBool(usesPolicyBasedRouting);
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I VPN connectivity: %s (%d), usesPolicyBasedRouting: %s", &v9, 0x1Cu);
   }
 
-  sub_100447630(&self->_callback, v7, v6);
+  sub_100447630(&self->_callback, v7, usesPolicyBasedRouting);
 }
 
 - (id).cxx_construct

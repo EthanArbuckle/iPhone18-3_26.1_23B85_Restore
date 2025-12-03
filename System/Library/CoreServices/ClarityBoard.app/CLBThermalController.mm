@@ -1,6 +1,6 @@
 @interface CLBThermalController
 - (CLBThermalController)init;
-- (void)_logThermalEvent:(id)a3;
+- (void)_logThermalEvent:(id)event;
 - (void)_startObservingThermalEvents;
 @end
 
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- (void)_logThermalEvent:(id)a3
+- (void)_logThermalEvent:(id)event
 {
-  v3 = a3;
-  v4 = [[NSString alloc] initWithFormat:v3 arguments:&v7];
+  eventCopy = event;
+  v4 = [[NSString alloc] initWithFormat:eventCopy arguments:&v7];
 
   v5 = [[NSMutableArray alloc] initWithObjects:{v4, 0}];
   v6 = GetThermalState();

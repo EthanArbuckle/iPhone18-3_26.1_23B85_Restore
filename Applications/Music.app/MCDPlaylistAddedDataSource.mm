@@ -16,23 +16,23 @@
 
   v5 = [MPPropertySet alloc];
   v6 = +[MPModelPlaylist requiredLibraryAddStatusObservationProperties];
-  v7 = [v6 properties];
-  v8 = [v7 allObjects];
-  v9 = [v5 initWithProperties:v8 relationships:v4];
+  properties = [v6 properties];
+  allObjects = [properties allObjects];
+  v9 = [v5 initWithProperties:allObjects relationships:v4];
 
   return v9;
 }
 
 - (id)storeIDs
 {
-  v2 = [(MCDPlaylistTracksDataSource *)self playlist];
-  v3 = [v2 identifiers];
-  v4 = [v3 universalStore];
-  v5 = [v4 globalPlaylistID];
+  playlist = [(MCDPlaylistTracksDataSource *)self playlist];
+  identifiers = [playlist identifiers];
+  universalStore = [identifiers universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  if (v5)
+  if (globalPlaylistID)
   {
-    v8 = v5;
+    v8 = globalPlaylistID;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
   }
 

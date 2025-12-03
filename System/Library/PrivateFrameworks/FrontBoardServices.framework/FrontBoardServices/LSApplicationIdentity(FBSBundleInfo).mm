@@ -7,21 +7,21 @@
 
 - (id)fbs_shortDescription
 {
-  v2 = objc_getAssociatedObject(a1, &__FBSShortDescription);
+  v2 = objc_getAssociatedObject(self, &__FBSShortDescription);
   if (!v2)
   {
     v3 = MEMORY[0x1E69635D8];
-    v4 = [a1 identityString];
-    v5 = [v3 bundleIdentifierForIdentityString:v4 error:0];
+    identityString = [self identityString];
+    v5 = [v3 bundleIdentifierForIdentityString:identityString error:0];
 
-    v6 = [a1 fbs_personaUniqueString];
-    v7 = v6;
-    if (v6)
+    fbs_personaUniqueString = [self fbs_personaUniqueString];
+    v7 = fbs_personaUniqueString;
+    if (fbs_personaUniqueString)
     {
-      v8 = [v6 componentsSeparatedByString:@"-"];
-      v9 = [v8 lastObject];
+      v8 = [fbs_personaUniqueString componentsSeparatedByString:@"-"];
+      lastObject = [v8 lastObject];
 
-      v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v5, v9];
+      v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v5, lastObject];
     }
 
     else
@@ -29,7 +29,7 @@
       v2 = v5;
     }
 
-    objc_setAssociatedObject(a1, &__FBSShortDescription, v2, 0x303);
+    objc_setAssociatedObject(self, &__FBSShortDescription, v2, 0x303);
   }
 
   return v2;
@@ -37,17 +37,17 @@
 
 - (id)fbs_mediumDescription
 {
-  v2 = objc_getAssociatedObject(a1, &__FBSMediumDescription);
+  v2 = objc_getAssociatedObject(self, &__FBSMediumDescription);
   if (!v2)
   {
     v3 = MEMORY[0x1E69635D8];
-    v4 = [a1 identityString];
-    v5 = [v3 bundleIdentifierForIdentityString:v4 error:0];
+    identityString = [self identityString];
+    v5 = [v3 bundleIdentifierForIdentityString:identityString error:0];
 
-    v6 = [a1 fbs_personaUniqueString];
-    if (v6)
+    fbs_personaUniqueString = [self fbs_personaUniqueString];
+    if (fbs_personaUniqueString)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v5, v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v5, fbs_personaUniqueString];
     }
 
     else
@@ -56,7 +56,7 @@
     }
 
     v2 = v7;
-    objc_setAssociatedObject(a1, &__FBSMediumDescription, v7, 0x303);
+    objc_setAssociatedObject(self, &__FBSMediumDescription, v7, 0x303);
   }
 
   return v2;

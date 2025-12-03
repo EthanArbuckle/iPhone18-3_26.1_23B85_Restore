@@ -1,11 +1,11 @@
 @interface STSWifiSession
 - (BOOL)isConnected;
-- (void)altCarrierSendData:(id)a3 completion:(id)a4;
-- (void)connectionCancelled:(id)a3;
+- (void)altCarrierSendData:(id)data completion:(id)completion;
+- (void)connectionCancelled:(id)cancelled;
 - (void)connectionEstablishmentTimedout;
-- (void)processRequest:(id)a3 connection:(id)a4;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidInvalidate:(id)a3 error:(id)a4;
+- (void)processRequest:(id)request connection:(id)connection;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidInvalidate:(id)invalidate error:(id)error;
 - (void)sessionTimedout;
 @end
 
@@ -13,16 +13,16 @@
 
 - (void)connectionEstablishmentTimedout
 {
-  if (a1)
+  if (self)
   {
-    sub_10001BF6C(*(a1 + 56));
-    os_unfair_lock_lock((a1 + 12));
-    v2 = [*(a1 + 64) copy];
-    [*(a1 + 64) removeAllObjects];
-    v3 = *(a1 + 56);
-    *(a1 + 56) = 0;
+    sub_10001BF6C(*(self + 56));
+    os_unfair_lock_lock((self + 12));
+    v2 = [*(self + 64) copy];
+    [*(self + 64) removeAllObjects];
+    v3 = *(self + 56);
+    *(self + 56) = 0;
 
-    os_unfair_lock_unlock((a1 + 12));
+    os_unfair_lock_unlock((self + 12));
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -54,24 +54,24 @@
       while (v6);
     }
 
-    sub_100024EC0(*(a1 + 40), v9, v10, v11, v12, v13, v14, v15);
-    v16 = *(a1 + 40);
-    *(a1 + 40) = 0;
+    sub_100024EC0(*(self + 40), v9, v10, v11, v12, v13, v14, v15);
+    v16 = *(self + 40);
+    *(self + 40) = 0;
 
-    os_unfair_lock_lock((a1 + 12));
-    *(a1 + 48) = 0;
-    os_unfair_lock_unlock((a1 + 12));
+    os_unfair_lock_lock((self + 12));
+    *(self + 48) = 0;
+    os_unfair_lock_unlock((self + 12));
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSWifiSession sessionDidConnect:]", 159, self, @"connectionHandle=%@", v5, v6, v4);
+  connectCopy = connect;
+  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSWifiSession sessionDidConnect:]", 159, self, @"connectionHandle=%@", v5, v6, connectCopy);
   os_unfair_lock_lock(&self->_lock);
   if (self)
   {
-    [(NSMutableArray *)self->_connectionHandles addObject:v4];
+    [(NSMutableArray *)self->_connectionHandles addObject:connectCopy];
     connectionState = self->_connectionState;
     self->_connectionState = 1;
     v8 = connectionState == 1;
@@ -79,7 +79,7 @@
 
   else
   {
-    [0 addObject:v4];
+    [0 addObject:connectCopy];
     v8 = 0;
   }
 
@@ -103,7 +103,7 @@
 
       if (v15 == 1)
       {
-        sub_100021710(self, v4);
+        sub_100021710(self, connectCopy);
       }
     }
   }
@@ -158,7 +158,7 @@ LABEL_19:
     }
 
     v19 = handoverSession;
-    sub_10001BA50(v4, self, v19);
+    sub_10001BA50(connectCopy, self, v19);
   }
 
   if (!v8)
@@ -169,10 +169,10 @@ LABEL_19:
 LABEL_21:
 }
 
-- (void)sessionDidInvalidate:(id)a3 error:(id)a4
+- (void)sessionDidInvalidate:(id)invalidate error:(id)error
 {
-  v5 = a4;
-  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSWifiSession sessionDidInvalidate:error:]", 195, self, @"error=%@", v6, v7, v5);
+  errorCopy = error;
+  sub_10002483C(OS_LOG_TYPE_INFO, 0, "[STSWifiSession sessionDidInvalidate:error:]", 195, self, @"error=%@", v6, v7, errorCopy);
   os_unfair_lock_lock(&self->_lock);
   if (!self)
   {
@@ -204,9 +204,9 @@ LABEL_7:
   v16[0] = @"transactionEndEventTime";
   v16[1] = @"errorCode";
   v17[0] = v11;
-  v12 = [v5 code];
+  code = [errorCopy code];
 
-  v13 = [NSNumber numberWithInteger:v12];
+  v13 = [NSNumber numberWithInteger:code];
   v17[1] = v13;
   v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
 
@@ -214,22 +214,22 @@ LABEL_7:
   [v15 postISOTransactionEvent:v14 prepOnly:0];
 }
 
-- (void)connectionCancelled:(id)a3
+- (void)connectionCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[STSWifiSession connectionCancelled:]", 218, self, &stru_100059C08, v5, v6, v10);
-  sub_10001BF6C(v4);
+  sub_10001BF6C(cancelledCopy);
   os_unfair_lock_lock(&self->_lock);
   if (!self)
   {
-    [0 removeObject:v4];
+    [0 removeObject:cancelledCopy];
 
     os_unfair_lock_unlock(0xC);
     WeakRetained = 0;
     goto LABEL_6;
   }
 
-  [(NSMutableArray *)self->_connectionHandles removeObject:v4];
+  [(NSMutableArray *)self->_connectionHandles removeObject:cancelledCopy];
 
   connectionState = self->_connectionState;
   self->_connectionState = 2;
@@ -256,10 +256,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)altCarrierSendData:(id)a3 completion:(id)a4
+- (void)altCarrierSendData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   if (self)
   {
@@ -279,9 +279,9 @@ LABEL_8:
     v70 = NSLocalizedDescriptionKey;
     *buf = off_100069A80;
     v16 = [NSDictionary dictionaryWithObjects:buf forKeys:&v70 count:1];
-    v17 = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:8 userInfo:v16];
+    firstObject = [NSError errorWithDomain:@"STSXPCHelperErrorDomain" code:8 userInfo:v16];
 
-    v7[2](v7, v17);
+    completionCopy[2](completionCopy, firstObject);
     goto LABEL_43;
   }
 
@@ -319,7 +319,7 @@ LABEL_47:
 LABEL_14:
 
 LABEL_15:
-  v21 = [v6 length];
+  v21 = [dataCopy length];
   if (self)
   {
     useHTTPServerOnPublisher = self->_useHTTPServerOnPublisher;
@@ -336,26 +336,26 @@ LABEL_15:
       if (v26)
       {
         v27 = [[NSURL alloc] initWithString:&stru_100059C08];
-        v28 = v6;
+        v28 = dataCopy;
         v29 = objc_alloc_init(NSMutableDictionary);
         [v29 setObject:@"application/CBOR" forKeyedSubscript:@"Content-Type"];
         v30 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v28 length]);
-        v31 = [v30 stringValue];
-        [v29 setObject:v31 forKeyedSubscript:@"Content-Length"];
+        stringValue = [v30 stringValue];
+        [v29 setObject:stringValue forKeyedSubscript:@"Content-Length"];
 
         v32 = [[NSHTTPURLResponse alloc] initWithURL:v27 statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:v29];
         v33 = [[HTTPServerResponse alloc] initWithResponse:v32 bodyData:v28];
 
         os_unfair_lock_lock(&self->_lock);
-        v17 = self->_activeHandle;
+        firstObject = self->_activeHandle;
         os_unfair_lock_unlock(&self->_lock);
         v60[0] = _NSConcreteStackBlock;
         v60[1] = 3221225472;
         v60[2] = sub_1000226EC;
         v60[3] = &unk_100058F20;
         v60[4] = self;
-        v61 = v7;
-        sub_10001BB34(&v17->super.isa, v33, v60);
+        v61 = completionCopy;
+        sub_10001BB34(&firstObject->super.isa, v33, v60);
 
         goto LABEL_43;
       }
@@ -392,15 +392,15 @@ LABEL_35:
 
     v35 = 0;
 LABEL_36:
-    v17 = [(NSMutableArray *)v35 firstObject];
+    firstObject = [(NSMutableArray *)v35 firstObject];
     os_unfair_lock_unlock(&self->_lock);
     v54[0] = _NSConcreteStackBlock;
     v54[1] = 3221225472;
     v54[2] = sub_1000229A0;
     v54[3] = &unk_100059140;
     v54[4] = self;
-    v55 = v7;
-    sub_10001B964(v17, v6, v54);
+    v55 = completionCopy;
+    sub_10001B964(firstObject, dataCopy, v54);
 
     goto LABEL_43;
   }
@@ -414,12 +414,12 @@ LABEL_28:
 
   v34 = 0;
 LABEL_29:
-  v17 = [(NSMutableArray *)v34 firstObject];
-  v53 = sub_10001B740(v17);
+  firstObject = [(NSMutableArray *)v34 firstObject];
+  v53 = sub_10001B740(firstObject);
   os_unfair_lock_unlock(&self->_lock);
   if (v53)
   {
-    v52 = v6;
+    v52 = dataCopy;
     v36 = v53;
     if (self)
     {
@@ -452,7 +452,7 @@ LABEL_29:
       v64 = 3221225472;
       v65 = sub_1000230D4;
       v66 = &unk_100059118;
-      v67 = self;
+      selfCopy = self;
       objc_copyWeak(v69, &location);
       v68 = &v70;
       v44 = [v40 dataTaskWithRequest:v43 completionHandler:buf];
@@ -499,8 +499,8 @@ LABEL_29:
   block[2] = sub_100022920;
   block[3] = &unk_100059190;
   v57 = v46;
-  v58 = self;
-  v59 = v7;
+  selfCopy2 = self;
+  v59 = completionCopy;
   v50 = v46;
   dispatch_async(queue, block);
 
@@ -550,19 +550,19 @@ LABEL_43:
   return v3;
 }
 
-- (void)processRequest:(id)a3 connection:(id)a4
+- (void)processRequest:(id)request connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  connectionCopy = connection;
   v8 = [[NSURL alloc] initWithString:&stru_100059C08];
   v9 = [[NSHTTPURLResponse alloc] initWithURL:v8 statusCode:400 HTTPVersion:0 headerFields:0];
-  v10 = [v6 HTTPMethod];
-  v11 = [v10 uppercaseString];
-  v12 = [v11 isEqualToString:@"POST"];
+  hTTPMethod = [requestCopy HTTPMethod];
+  uppercaseString = [hTTPMethod uppercaseString];
+  v12 = [uppercaseString isEqualToString:@"POST"];
 
   if (v12)
   {
-    v15 = [v6 valueForHTTPHeaderField:@"Content-Type"];
+    v15 = [requestCopy valueForHTTPHeaderField:@"Content-Type"];
     v16 = v15;
     if (v15 && ([(HTTPServerResponse *)v15 isEqualToString:@"application/CBOR"]& 1) != 0)
     {
@@ -575,20 +575,20 @@ LABEL_43:
           sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[STSWifiSession processRequest:connection:]", 391, self, @"One outstanding request in progress", v17, v18, v22[0]);
           v19 = [[NSHTTPURLResponse alloc] initWithURL:v8 statusCode:503 HTTPVersion:0 headerFields:0];
           v20 = [[HTTPServerResponse alloc] initWithResponse:v19];
-          sub_10001BB34(v7, v20, 0);
+          sub_10001BB34(connectionCopy, v20, 0);
 
 LABEL_9:
           goto LABEL_10;
         }
 
-        sub_1000168CC(self, v7);
+        sub_1000168CC(self, connectionCopy);
         os_unfair_lock_unlock(&self->_lock);
         queue = self->_queue;
       }
 
       else
       {
-        sub_1000168CC(0, v7);
+        sub_1000168CC(0, connectionCopy);
         os_unfair_lock_unlock(0xC);
         queue = 0;
       }
@@ -598,20 +598,20 @@ LABEL_9:
       v22[2] = sub_100023040;
       v22[3] = &unk_100058CB0;
       v22[4] = self;
-      v23 = v6;
+      v23 = requestCopy;
       dispatch_async(queue, v22);
 
       goto LABEL_10;
     }
 
     v19 = [[HTTPServerResponse alloc] initWithResponse:v9];
-    sub_10001BB34(v7, v19, 0);
+    sub_10001BB34(connectionCopy, v19, 0);
     goto LABEL_9;
   }
 
   sub_10002483C(OS_LOG_TYPE_ERROR, 0, "[STSWifiSession processRequest:connection:]", 370, self, @"Expected POST command on HTTP request", v13, v14, v22[0]);
   v16 = [[HTTPServerResponse alloc] initWithResponse:v9];
-  sub_10001BB34(v7, v16, 0);
+  sub_10001BB34(connectionCopy, v16, 0);
 LABEL_10:
 }
 

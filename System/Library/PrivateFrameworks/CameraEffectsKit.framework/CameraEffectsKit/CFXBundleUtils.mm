@@ -7,18 +7,18 @@
 
 + (BOOL)isRunningMessagesExtension
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.camera.CameraMessagesApp"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.camera.CameraMessagesApp"];
 
   return v4;
 }
 
 + (BOOL)isRunningFacetime
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.InCallService"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
   return v4;
 }

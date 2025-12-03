@@ -1,20 +1,20 @@
 @interface DSSharingPerson
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isMe:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isMe:(id)me;
 - (DSSharingPerson)init;
-- (DSSharingPerson)initWithSource:(id)a3 sharedResource:(id)a4 participant:(id)a5 deviceOwnerRole:(int64_t)a6;
-- (DSSharingPerson)initWithSource:(id)a3 sharedResource:(id)a4 participant:(id)a5 deviceOwnerRole:(int64_t)a6 contact:(id)a7;
-- (DSSharingPerson)initWithSource:(id)a3 sharedResource:(id)a4 unknownParticipant:(id)a5 deviceOwnerRole:(int64_t)a6;
+- (DSSharingPerson)initWithSource:(id)source sharedResource:(id)resource participant:(id)participant deviceOwnerRole:(int64_t)role;
+- (DSSharingPerson)initWithSource:(id)source sharedResource:(id)resource participant:(id)participant deviceOwnerRole:(int64_t)role contact:(id)contact;
+- (DSSharingPerson)initWithSource:(id)source sharedResource:(id)resource unknownParticipant:(id)participant deviceOwnerRole:(int64_t)role;
 - (NSArray)allSources;
 - (NSArray)sortedSourceNames;
 - (NSArray)termsOfAddress;
 - (NSString)displayGivenName;
 - (NSString)displayName;
 - (NSString)localizedDetail;
-- (id)participationForSourceName:(id)a3;
-- (id)sharedResourcesForSourceName:(id)a3;
-- (id)valueForKey:(id)a3;
+- (id)participationForSourceName:(id)name;
+- (id)sharedResourcesForSourceName:(id)name;
+- (id)valueForKey:(id)key;
 - (int64_t)score;
 - (uint64_t)emailAddresses;
 - (uint64_t)identifier;
@@ -24,35 +24,35 @@
 - (uint64_t)shareDirectionBySourceName;
 - (uint64_t)sharedResourcesBySource;
 - (unint64_t)hash;
-- (unint64_t)shareDirectionForSharedResource:(id)a3;
-- (unint64_t)shareDirectionForSourceName:(id)a3;
-- (void)addSource:(id)a3 sharedResource:(id)a4 participant:(id)a5 deviceOwnerRole:(int64_t)a6;
+- (unint64_t)shareDirectionForSharedResource:(id)resource;
+- (unint64_t)shareDirectionForSourceName:(id)name;
+- (void)addSource:(id)source sharedResource:(id)resource participant:(id)participant deviceOwnerRole:(int64_t)role;
 - (void)displayName;
-- (void)removeParticipant:(id)a3 fromSource:(id)a4;
-- (void)removeSourceWithName:(id)a3;
-- (void)setEmailAddresses:(uint64_t)a1;
-- (void)setIdentifier:(uint64_t)a1;
-- (void)setNames:(uint64_t)a1;
-- (void)setPhoneNumbers:(uint64_t)a1;
-- (void)setShareDirectionByResource:(uint64_t)a1;
-- (void)setShareDirectionBySourceName:(uint64_t)a1;
-- (void)setSharedResourcesBySource:(uint64_t)a1;
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4;
-- (void)stopSharingSourceNames:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)stopSharingSources:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)updateContactFromIdentity:(id)a3;
-- (void)updateContactFromParticipant:(id)a3;
-- (void)updateKnownEmailAddressesForParticipant:(id)a3;
-- (void)updateKnownNameForParticipant:(id)a3;
-- (void)updateKnownPhoneNumbersForParticipant:(id)a3;
-- (void)updateShareDirectionForParticipant:(id)a3 source:(id)a4 sharedResource:(id)a5 deviceOwnerRole:(int64_t)a6;
+- (void)removeParticipant:(id)participant fromSource:(id)source;
+- (void)removeSourceWithName:(id)name;
+- (void)setEmailAddresses:(uint64_t)addresses;
+- (void)setIdentifier:(uint64_t)identifier;
+- (void)setNames:(uint64_t)names;
+- (void)setPhoneNumbers:(uint64_t)numbers;
+- (void)setShareDirectionByResource:(uint64_t)resource;
+- (void)setShareDirectionBySourceName:(uint64_t)name;
+- (void)setSharedResourcesBySource:(uint64_t)source;
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion;
+- (void)stopSharingSourceNames:(id)names queue:(id)queue completion:(id)completion;
+- (void)stopSharingSources:(id)sources queue:(id)queue completion:(id)completion;
+- (void)updateContactFromIdentity:(id)identity;
+- (void)updateContactFromParticipant:(id)participant;
+- (void)updateKnownEmailAddressesForParticipant:(id)participant;
+- (void)updateKnownNameForParticipant:(id)participant;
+- (void)updateKnownPhoneNumbersForParticipant:(id)participant;
+- (void)updateShareDirectionForParticipant:(id)participant source:(id)source sharedResource:(id)resource deviceOwnerRole:(int64_t)role;
 @end
 
 @implementation DSSharingPerson
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogSharingPerson = os_log_create("com.apple.DigitalSeparation", "DSSharingPerson");
 
@@ -60,55 +60,55 @@
   }
 }
 
-- (DSSharingPerson)initWithSource:(id)a3 sharedResource:(id)a4 participant:(id)a5 deviceOwnerRole:(int64_t)a6
+- (DSSharingPerson)initWithSource:(id)source sharedResource:(id)resource participant:(id)participant deviceOwnerRole:(int64_t)role
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sourceCopy = source;
+  resourceCopy = resource;
+  participantCopy = participant;
   v13 = [(DSSharingPerson *)self init];
   v14 = v13;
   if (v13)
   {
-    [(DSSharingPerson *)v13 updateContactFromParticipant:v12];
-    [(DSSharingPerson *)v14 addSource:v10 sharedResource:v11 participant:v12 deviceOwnerRole:a6];
+    [(DSSharingPerson *)v13 updateContactFromParticipant:participantCopy];
+    [(DSSharingPerson *)v14 addSource:sourceCopy sharedResource:resourceCopy participant:participantCopy deviceOwnerRole:role];
   }
 
   return v14;
 }
 
-- (DSSharingPerson)initWithSource:(id)a3 sharedResource:(id)a4 participant:(id)a5 deviceOwnerRole:(int64_t)a6 contact:(id)a7
+- (DSSharingPerson)initWithSource:(id)source sharedResource:(id)resource participant:(id)participant deviceOwnerRole:(int64_t)role contact:(id)contact
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  sourceCopy = source;
+  resourceCopy = resource;
+  participantCopy = participant;
+  contactCopy = contact;
   v16 = [(DSSharingPerson *)self init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_contact, a7);
-    v18 = [v15 identifier];
+    objc_storeStrong(&v16->_contact, contact);
+    identifier = [contactCopy identifier];
     identifier = v17->_identifier;
-    v17->_identifier = v18;
+    v17->_identifier = identifier;
 
-    [(DSSharingPerson *)v17 addSource:v12 sharedResource:v13 participant:v14 deviceOwnerRole:a6];
+    [(DSSharingPerson *)v17 addSource:sourceCopy sharedResource:resourceCopy participant:participantCopy deviceOwnerRole:role];
   }
 
   return v17;
 }
 
-- (DSSharingPerson)initWithSource:(id)a3 sharedResource:(id)a4 unknownParticipant:(id)a5 deviceOwnerRole:(int64_t)a6
+- (DSSharingPerson)initWithSource:(id)source sharedResource:(id)resource unknownParticipant:(id)participant deviceOwnerRole:(int64_t)role
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sourceCopy = source;
+  resourceCopy = resource;
+  participantCopy = participant;
   v13 = [(DSSharingPerson *)self init];
   if (v13)
   {
-    v14 = [v12 identity];
-    [(DSSharingPerson *)v13 updateContactFromIdentity:v14];
+    identity = [participantCopy identity];
+    [(DSSharingPerson *)v13 updateContactFromIdentity:identity];
 
-    [(DSSharingPerson *)v13 addSource:v10 sharedResource:v11 participant:v12 deviceOwnerRole:a6];
+    [(DSSharingPerson *)v13 addSource:sourceCopy sharedResource:resourceCopy participant:participantCopy deviceOwnerRole:role];
   }
 
   return v13;
@@ -121,17 +121,17 @@
   v2 = [(DSSharingPerson *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sources = v2->_sources;
-    v2->_sources = v3;
+    v2->_sources = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     participantsBySource = v2->_participantsBySource;
-    v2->_participantsBySource = v5;
+    v2->_participantsBySource = dictionary2;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     sharedResourcesBySource = v2->_sharedResourcesBySource;
-    v2->_sharedResourcesBySource = v7;
+    v2->_sharedResourcesBySource = dictionary3;
 
     v9 = [MEMORY[0x277CBEB58] set];
     emailAddresses = v2->_emailAddresses;
@@ -141,9 +141,9 @@
     names = v2->_names;
     v2->_names = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     shareDirectionBySourceName = v2->_shareDirectionBySourceName;
-    v2->_shareDirectionBySourceName = v13;
+    v2->_shareDirectionBySourceName = dictionary4;
 
     v15 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:0 valueOptions:1282];
     shareDirectionByResource = v2->_shareDirectionByResource;
@@ -157,34 +157,34 @@
   return v2;
 }
 
-- (void)updateContactFromParticipant:(id)a3
+- (void)updateContactFromParticipant:(id)participant
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSSharingPerson *)self contact];
+  participantCopy = participant;
+  contact = [(DSSharingPerson *)self contact];
 
-  if (!v5)
+  if (!contact)
   {
-    v7 = [(DSSharingPerson *)v4 identity];
-    v8 = [(DSSharingPerson *)self contactMatchingIdentity:v7];
+    identity = [(DSSharingPerson *)participantCopy identity];
+    contact2 = [(DSSharingPerson *)self contactMatchingIdentity:identity];
     v9 = DSLogSharingPerson;
-    if (v8)
+    if (contact2)
     {
       if (os_log_type_enabled(DSLogSharingPerson, OS_LOG_TYPE_INFO))
       {
         v12 = 138478339;
-        v13 = v8;
+        v13 = contact2;
         v14 = 2114;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2113;
-        v17 = v7;
+        selfCopy3 = identity;
         _os_log_impl(&dword_248C40000, v9, OS_LOG_TYPE_INFO, "Found contact %{private}@ for %{public}@ source: %{private}@", &v12, 0x20u);
       }
 
-      v11 = [v8 identifier];
-      [(DSSharingPerson *)self setIdentifier:v11];
+      identifier = [contact2 identifier];
+      [(DSSharingPerson *)self setIdentifier:identifier];
 
-      [(DSSourceDescriptor *)self setSourceName:v8];
+      [(DSSourceDescriptor *)self setSourceName:contact2];
     }
 
     else
@@ -192,13 +192,13 @@
       if (os_log_type_enabled(DSLogSharingPerson, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138478083;
-        v13 = v7;
+        v13 = identity;
         v14 = 2114;
-        v15 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_248C40000, v9, OS_LOG_TYPE_DEFAULT, "No contact found for identity: %{private}@, person: %{public}@ . Trying other fallbacks...", &v12, 0x16u);
       }
 
-      [(DSSharingPerson *)self updateContactFromIdentity:v7];
+      [(DSSharingPerson *)self updateContactFromIdentity:identity];
     }
 
     goto LABEL_8;
@@ -207,38 +207,38 @@
   v6 = DSLogSharingPerson;
   if (os_log_type_enabled(DSLogSharingPerson, OS_LOG_TYPE_INFO))
   {
-    v7 = v6;
-    v8 = [(DSSharingPerson *)self contact];
+    identity = v6;
+    contact2 = [(DSSharingPerson *)self contact];
     v12 = 138478339;
-    v13 = v8;
+    v13 = contact2;
     v14 = 2113;
-    v15 = v4;
+    selfCopy2 = participantCopy;
     v16 = 2114;
-    v17 = self;
-    _os_log_impl(&dword_248C40000, v7, OS_LOG_TYPE_INFO, "Using cached contact %{private}@ for participant %{private}@, person %{public}@", &v12, 0x20u);
+    selfCopy3 = self;
+    _os_log_impl(&dword_248C40000, identity, OS_LOG_TYPE_INFO, "Using cached contact %{private}@ for participant %{private}@, person %{public}@", &v12, 0x20u);
 LABEL_8:
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateContactFromIdentity:(id)a3
+- (void)updateContactFromIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [v4 nameComponents];
+  identityCopy = identity;
+  nameComponents = [identityCopy nameComponents];
 
-  if (v5)
+  if (nameComponents)
   {
     v6 = MEMORY[0x277CCAC08];
-    v7 = [v4 nameComponents];
-    v8 = [v6 localizedStringFromPersonNameComponents:v7 style:3 options:0];
+    nameComponents2 = [identityCopy nameComponents];
+    v8 = [v6 localizedStringFromPersonNameComponents:nameComponents2 style:3 options:0];
 
     if ([v8 length])
     {
-      v9 = [v8 ds_formattedPotentialPhoneNumber];
-      v10 = [v4 phoneNumber];
-      v11 = [v10 ds_formattedPotentialPhoneNumber];
-      v12 = [v9 isEqualToString:v11];
+      ds_formattedPotentialPhoneNumber = [v8 ds_formattedPotentialPhoneNumber];
+      phoneNumber = [identityCopy phoneNumber];
+      ds_formattedPotentialPhoneNumber2 = [phoneNumber ds_formattedPotentialPhoneNumber];
+      v12 = [ds_formattedPotentialPhoneNumber isEqualToString:ds_formattedPotentialPhoneNumber2];
 
       if ((v12 & 1) == 0)
       {
@@ -248,12 +248,12 @@ LABEL_8:
     }
   }
 
-  v13 = [v4 emailAddress];
-  v14 = [v13 length];
+  emailAddress = [identityCopy emailAddress];
+  v14 = [emailAddress length];
 
   if (v14)
   {
-    [(DSSharingPerson *)v4 updateContactFromIdentity:&v17];
+    [(DSSharingPerson *)identityCopy updateContactFromIdentity:&v17];
 LABEL_10:
     v8 = v17;
 LABEL_11:
@@ -261,32 +261,32 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  v15 = [v4 phoneNumber];
-  v16 = [v15 length];
+  phoneNumber2 = [identityCopy phoneNumber];
+  v16 = [phoneNumber2 length];
 
   if (v16)
   {
-    [(DSSharingPerson *)v4 updateContactFromIdentity:&v17];
+    [(DSSharingPerson *)identityCopy updateContactFromIdentity:&v17];
     goto LABEL_10;
   }
 
 LABEL_7:
 }
 
-- (void)updateKnownEmailAddressesForParticipant:(id)a3
+- (void)updateKnownEmailAddressesForParticipant:(id)participant
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSSharingPerson *)self contact];
-  v6 = [v5 emailAddresses];
+  participantCopy = participant;
+  contact = [(DSSharingPerson *)self contact];
+  emailAddresses = [contact emailAddresses];
 
-  if (v6)
+  if (emailAddresses)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v6;
+    v7 = emailAddresses;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
@@ -314,8 +314,8 @@ LABEL_7:
           }
 
           v14 = emailAddresses;
-          v15 = [v12 value];
-          [(NSMutableSet *)v14 addObject:v15];
+          value = [v12 value];
+          [(NSMutableSet *)v14 addObject:value];
 
           ++v11;
         }
@@ -329,35 +329,35 @@ LABEL_7:
     }
   }
 
-  v17 = [v4 identity];
-  v18 = [v17 emailAddress];
+  identity = [participantCopy identity];
+  emailAddress = [identity emailAddress];
 
-  if ([v18 length] && (objc_msgSend(v18, "isPhoneNumber") & 1) == 0)
+  if ([emailAddress length] && (objc_msgSend(emailAddress, "isPhoneNumber") & 1) == 0)
   {
-    [(DSSharingPerson *)self updateKnownEmailAddressesForParticipant:v18];
+    [(DSSharingPerson *)self updateKnownEmailAddressesForParticipant:emailAddress];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateKnownNameForParticipant:(id)a3
+- (void)updateKnownNameForParticipant:(id)participant
 {
-  v10 = a3;
+  participantCopy = participant;
   v4 = MEMORY[0x277CBDA78];
-  v5 = [(DSSharingPerson *)self contact];
-  v6 = [v4 stringFromContact:v5 style:0];
+  contact = [(DSSharingPerson *)self contact];
+  v6 = [v4 stringFromContact:contact style:0];
 
   if ([v6 length])
   {
     [(DSSharingPerson *)self updateKnownNameForParticipant:v6];
   }
 
-  v7 = [v10 identity];
-  v8 = [v7 nameComponents];
+  identity = [participantCopy identity];
+  nameComponents = [identity nameComponents];
 
-  if (v8)
+  if (nameComponents)
   {
-    v9 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v8 style:0 options:0];
+    v9 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:nameComponents style:0 options:0];
 
     if (([MEMORY[0x277CFBE08] isStringEmailAddress:v9] & 1) == 0 && (objc_msgSend(MEMORY[0x277CFBE78], "isStringPhoneNumber:", v9) & 1) == 0 && (objc_msgSend(v9, "isPhoneNumber") & 1) == 0 && objc_msgSend(v9, "length"))
     {
@@ -371,20 +371,20 @@ LABEL_7:
   }
 }
 
-- (void)updateKnownPhoneNumbersForParticipant:(id)a3
+- (void)updateKnownPhoneNumbersForParticipant:(id)participant
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSSharingPerson *)self contact];
-  v6 = [v5 phoneNumbers];
+  participantCopy = participant;
+  contact = [(DSSharingPerson *)self contact];
+  phoneNumbers = [contact phoneNumbers];
 
-  if (v6)
+  if (phoneNumbers)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v6;
+    v7 = phoneNumbers;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
@@ -412,9 +412,9 @@ LABEL_7:
           }
 
           v14 = phoneNumbers;
-          v15 = [v12 value];
-          v16 = [v15 stringValue];
-          [(NSMutableSet *)v14 addObject:v16];
+          value = [v12 value];
+          stringValue = [value stringValue];
+          [(NSMutableSet *)v14 addObject:stringValue];
 
           ++v11;
         }
@@ -428,42 +428,42 @@ LABEL_7:
     }
   }
 
-  v18 = [v4 identity];
-  v19 = [v18 phoneNumber];
-  v20 = [v19 ds_formattedPotentialPhoneNumber];
+  identity = [participantCopy identity];
+  phoneNumber = [identity phoneNumber];
+  ds_formattedPotentialPhoneNumber = [phoneNumber ds_formattedPotentialPhoneNumber];
 
-  if ([v20 length])
+  if ([ds_formattedPotentialPhoneNumber length])
   {
-    [(DSSharingPerson *)self updateKnownPhoneNumbersForParticipant:v20];
+    [(DSSharingPerson *)self updateKnownPhoneNumbersForParticipant:ds_formattedPotentialPhoneNumber];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeParticipant:(id)a3 fromSource:(id)a4
+- (void)removeParticipant:(id)participant fromSource:(id)source
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = v6;
+  participantCopy = participant;
+  sourceCopy = source;
+  v7 = sourceCopy;
   if (self)
   {
     v8 = self->_participantsBySource;
-    v9 = [v7 name];
-    v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:v9];
+    name = [v7 name];
+    v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:name];
 
-    [v10 removeObject:v16];
+    [v10 removeObject:participantCopy];
     participantsBySource = self->_participantsBySource;
   }
 
   else
   {
-    [DSSharingPerson removeParticipant:v6 fromSource:v16];
+    [DSSharingPerson removeParticipant:sourceCopy fromSource:participantCopy];
     participantsBySource = 0;
   }
 
   v12 = participantsBySource;
-  v13 = [v7 name];
-  v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
+  name2 = [v7 name];
+  v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:name2];
 
   v15 = [v14 count];
   if (!v15)
@@ -472,10 +472,10 @@ LABEL_7:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -485,7 +485,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(DSSharingPerson *)self isEqual:v4, &v7];
+      [(DSSharingPerson *)self isEqual:equalCopy, &v7];
       v5 = v7;
     }
 
@@ -500,111 +500,111 @@ LABEL_7:
 
 - (NSString)displayName
 {
-  v3 = [(DSSharingPerson *)self contact];
+  contact = [(DSSharingPerson *)self contact];
 
-  if (v3)
+  if (contact)
   {
     v4 = MEMORY[0x277CBDA78];
-    v5 = [(DSSharingPerson *)self contact];
-    v6 = [v4 stringFromContact:v5 style:0];
+    contact2 = [(DSSharingPerson *)self contact];
+    contact5 = [v4 stringFromContact:contact2 style:0];
 
-    if (v6)
+    if (contact5)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = DSLocStringForKey(@"SHARING_PERSON_DISPLAY_NAME");
-      v9 = [v7 stringWithFormat:v8, v6];
+      emailAddresses2 = DSLocStringForKey(@"SHARING_PERSON_DISPLAY_NAME");
+      value = [v7 stringWithFormat:emailAddresses2, contact5];
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v10 = [(DSSharingPerson *)self contact];
-    v11 = [v10 emailAddresses];
-    v12 = [v11 count];
+    contact3 = [(DSSharingPerson *)self contact];
+    emailAddresses = [contact3 emailAddresses];
+    v12 = [emailAddresses count];
 
-    v13 = [(DSSharingPerson *)self contact];
-    v6 = v13;
+    contact4 = [(DSSharingPerson *)self contact];
+    contact5 = contact4;
     if (v12)
     {
-      v8 = [v13 emailAddresses];
-      v14 = [v8 firstObject];
-      v9 = [v14 value];
+      emailAddresses2 = [contact4 emailAddresses];
+      firstObject = [emailAddresses2 firstObject];
+      value = [firstObject value];
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v15 = [v13 phoneNumbers];
-    v16 = [v15 count];
+    phoneNumbers = [contact4 phoneNumbers];
+    v16 = [phoneNumbers count];
 
     if (v16)
     {
-      v6 = [(DSSharingPerson *)self contact];
-      v8 = [v6 phoneNumbers];
-      v14 = [v8 firstObject];
-      v17 = [v14 value];
-      v9 = [v17 stringValue];
+      contact5 = [(DSSharingPerson *)self contact];
+      emailAddresses2 = [contact5 phoneNumbers];
+      firstObject = [emailAddresses2 firstObject];
+      value2 = [firstObject value];
+      value = [value2 stringValue];
 
       goto LABEL_8;
     }
 
-    v9 = 0;
+    value = 0;
   }
 
   else
   {
     [(DSSharingPerson *)self displayName];
-    v9 = v19;
+    value = v19;
   }
 
 LABEL_10:
 
-  return v9;
+  return value;
 }
 
 - (NSString)displayGivenName
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAC00]);
-  v4 = [(DSSharingPerson *)self contact];
-  v5 = [v4 givenName];
-  [v3 setGivenName:v5];
+  contact = [(DSSharingPerson *)self contact];
+  givenName = [contact givenName];
+  [v3 setGivenName:givenName];
 
-  v6 = [(DSSharingPerson *)self contact];
-  v7 = [v6 familyName];
-  [v3 setFamilyName:v7];
+  contact2 = [(DSSharingPerson *)self contact];
+  familyName = [contact2 familyName];
+  [v3 setFamilyName:familyName];
 
   v8 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v3 style:1 options:0];
   if ([v8 length])
   {
-    v9 = v8;
+    displayName = v8;
   }
 
   else
   {
-    v9 = [(DSSharingPerson *)self displayName];
+    displayName = [(DSSharingPerson *)self displayName];
   }
 
-  v10 = v9;
+  v10 = displayName;
 
   return v10;
 }
 
 - (NSArray)termsOfAddress
 {
-  v3 = [(DSSharingPerson *)self contact];
+  contact = [(DSSharingPerson *)self contact];
 
-  if (v3)
+  if (contact)
   {
-    v4 = [(DSSharingPerson *)self contact];
-    v5 = [v4 termsOfAddress];
+    contact2 = [(DSSharingPerson *)self contact];
+    termsOfAddress = [contact2 termsOfAddress];
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEBF8];
+    termsOfAddress = MEMORY[0x277CBEBF8];
   }
 
-  return v5;
+  return termsOfAddress;
 }
 
 uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -641,13 +641,13 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
 - (NSString)localizedDetail
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(DSSharingPerson *)self sortedSourceNames];
-  v3 = [MEMORY[0x277CBEB18] array];
+  sortedSourceNames = [(DSSharingPerson *)self sortedSourceNames];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = sortedSourceNames;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -663,8 +663,8 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
         }
 
         v9 = [DSSourceDescriptor sourceDescriptorForSource:*(*(&v14 + 1) + 8 * i), v14];
-        v10 = [v9 localizedName];
-        [v3 addObject:v10];
+        localizedName = [v9 localizedName];
+        [array addObject:localizedName];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -673,20 +673,20 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
     while (v6);
   }
 
-  v11 = [DSUtilities localizedDetailStringWithTruncationFromArray:v3 withType:@"com.apple.DigitalSeparation.Resources"];
+  v11 = [DSUtilities localizedDetailStringWithTruncationFromArray:array withType:@"com.apple.DigitalSeparation.Resources"];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (void)stopSharingSources:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)stopSharingSources:(id)sources queue:(id)queue completion:(id)completion
 {
   v155 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  queue = a4;
-  v116 = a5;
-  v126 = [MEMORY[0x277CBEB18] array];
+  sourcesCopy = sources;
+  queue = queue;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = dispatch_group_create();
   v9 = os_signpost_id_generate(DSLogSharingPerson);
   v10 = DSLogSharingPerson;
@@ -702,7 +702,7 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  obj = v7;
+  obj = sourcesCopy;
   v122 = [obj countByEnumeratingWithState:&v145 objects:v154 count:16];
   if (v122)
   {
@@ -721,8 +721,8 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
 
         v123 = v12;
         v14 = *(*(&v145 + 1) + 8 * v12);
-        v15 = [v14 name];
-        v16 = [DSRestrictionStore isSourceRestricted:v15];
+        name = [v14 name];
+        v16 = [DSRestrictionStore isSourceRestricted:name];
 
         if (v16)
         {
@@ -730,15 +730,15 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
           if (os_log_type_enabled(DSLogSharingPerson, OS_LOG_TYPE_INFO))
           {
             v18 = v17;
-            v19 = [v14 name];
+            name2 = [v14 name];
             *buf = 138412290;
-            v151 = v19;
+            v151 = name2;
             _os_log_impl(&dword_248C40000, v18, OS_LOG_TYPE_INFO, "Cannot reset %@ due to restrictions", buf, 0xCu);
           }
 
-          v20 = [v14 name];
-          v21 = [DSError errorWithCode:6 sourceName:v20];
-          [v126 addObject:v21];
+          name3 = [v14 name];
+          v21 = [DSError errorWithCode:6 sourceName:name3];
+          [array addObject:v21];
 
           goto LABEL_127;
         }
@@ -755,8 +755,8 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
         }
 
         v23 = participantsBySource;
-        v24 = [v14 name];
-        v25 = [(NSMutableDictionary *)v23 objectForKeyedSubscript:v24];
+        name4 = [v14 name];
+        v25 = [(NSMutableDictionary *)v23 objectForKeyedSubscript:name4];
         v124 = [v25 copy];
 
         if ([v124 count] < 2 || (objc_opt_respondsToSelector() & 1) == 0)
@@ -786,8 +786,8 @@ uint64_t __36__DSSharingPerson_sortedSourceNames__block_invoke(uint64_t a1, uint
               v37 = *(*(&v135 + 1) + 8 * v36);
               dispatch_group_enter(v8);
               v38 = os_signpost_id_generate(DSLogSharingPerson);
-              v39 = [v14 name];
-              v40 = [v39 isEqualToString:@"com.apple.DigitalSeparation.Calendars"];
+              name5 = [v14 name];
+              v40 = [name5 isEqualToString:@"com.apple.DigitalSeparation.Calendars"];
 
               if (v40)
               {
@@ -806,8 +806,8 @@ LABEL_70:
 
               else
               {
-                v46 = [v14 name];
-                v47 = [v46 isEqualToString:@"com.apple.DigitalSeparation.FindMy"];
+                name6 = [v14 name];
+                v47 = [name6 isEqualToString:@"com.apple.DigitalSeparation.FindMy"];
 
                 if (v47)
                 {
@@ -825,8 +825,8 @@ LABEL_70:
 
                 else
                 {
-                  v49 = [v14 name];
-                  v50 = [v49 isEqualToString:@"com.apple.DigitalSeparation.Photos"];
+                  name7 = [v14 name];
+                  v50 = [name7 isEqualToString:@"com.apple.DigitalSeparation.Photos"];
 
                   if (v50)
                   {
@@ -844,8 +844,8 @@ LABEL_70:
 
                   else
                   {
-                    v52 = [v14 name];
-                    v53 = [v52 isEqualToString:@"com.apple.DigitalSeparation.HomeKit.HomeSharing"];
+                    name8 = [v14 name];
+                    v53 = [name8 isEqualToString:@"com.apple.DigitalSeparation.HomeKit.HomeSharing"];
 
                     if (v53)
                     {
@@ -863,8 +863,8 @@ LABEL_70:
 
                     else
                     {
-                      v55 = [v14 name];
-                      v56 = [v55 isEqualToString:@"com.apple.DigitalSeparation.HealthKit.HealthSharing"];
+                      name9 = [v14 name];
+                      v56 = [name9 isEqualToString:@"com.apple.DigitalSeparation.HealthKit.HealthSharing"];
 
                       if (v56)
                       {
@@ -882,8 +882,8 @@ LABEL_70:
 
                       else
                       {
-                        v58 = [v14 name];
-                        v59 = [v58 isEqualToString:@"com.apple.DigitalSeparation.Notes"];
+                        name10 = [v14 name];
+                        v59 = [name10 isEqualToString:@"com.apple.DigitalSeparation.Notes"];
 
                         if (v59)
                         {
@@ -901,8 +901,8 @@ LABEL_70:
 
                         else
                         {
-                          v61 = [v14 name];
-                          v62 = [v61 isEqualToString:@"com.apple.DigitalSeparation.Zelkova"];
+                          name11 = [v14 name];
+                          v62 = [name11 isEqualToString:@"com.apple.DigitalSeparation.Zelkova"];
 
                           if (v62)
                           {
@@ -920,8 +920,8 @@ LABEL_70:
 
                           else
                           {
-                            v64 = [v14 name];
-                            v65 = [v64 isEqualToString:@"com.apple.DigitalSeparation.Fitness"];
+                            name12 = [v14 name];
+                            v65 = [name12 isEqualToString:@"com.apple.DigitalSeparation.Fitness"];
 
                             if (v65)
                             {
@@ -939,8 +939,8 @@ LABEL_70:
 
                             else
                             {
-                              v67 = [v14 name];
-                              v68 = [v67 isEqualToString:@"com.apple.DigitalSeparation.PassKeys"];
+                              name13 = [v14 name];
+                              v68 = [name13 isEqualToString:@"com.apple.DigitalSeparation.PassKeys"];
 
                               if (v68)
                               {
@@ -958,8 +958,8 @@ LABEL_70:
 
                               else
                               {
-                                v70 = [v14 name];
-                                v71 = [v70 isEqualToString:@"com.apple.DigitalSeparation.ItemSharing"];
+                                name14 = [v14 name];
+                                v71 = [name14 isEqualToString:@"com.apple.DigitalSeparation.ItemSharing"];
 
                                 if (v71)
                                 {
@@ -977,8 +977,8 @@ LABEL_70:
 
                                 else
                                 {
-                                  v73 = [v14 name];
-                                  v74 = [v73 isEqualToString:@"com.apple.DigitalSeparation.Maps"];
+                                  name15 = [v14 name];
+                                  v74 = [name15 isEqualToString:@"com.apple.DigitalSeparation.Maps"];
 
                                   v75 = DSLogSharingPerson;
                                   v42 = v75;
@@ -1024,11 +1024,11 @@ LABEL_70:
               v76 = DSLogSharingPerson;
               if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
               {
-                v77 = [v14 name];
+                name16 = [v14 name];
                 *buf = 138478083;
                 v151 = v37;
                 v152 = 2114;
-                v153 = v77;
+                v153 = name16;
                 _os_log_impl(&dword_248C40000, v76, OS_LOG_TYPE_INFO, "Stopping sharing of %{private}@ from source %{public}@", buf, 0x16u);
               }
 
@@ -1038,7 +1038,7 @@ LABEL_70:
               v131[3] = &unk_278F73050;
               v131[4] = v14;
               v131[5] = v37;
-              v132 = v126;
+              v132 = array;
               objc_copyWeak(v134, &location);
               v134[1] = v38;
               v133 = v8;
@@ -1062,8 +1062,8 @@ LABEL_81:
 
         dispatch_group_enter(v8);
         v26 = os_signpost_id_generate(DSLogSharingPerson);
-        v27 = [v14 name];
-        v28 = [v27 isEqualToString:@"com.apple.DigitalSeparation.Calendars"];
+        name17 = [v14 name];
+        v28 = [name17 isEqualToString:@"com.apple.DigitalSeparation.Calendars"];
 
         if (v28)
         {
@@ -1082,8 +1082,8 @@ LABEL_122:
 
         else
         {
-          v79 = [v14 name];
-          v80 = [v79 isEqualToString:@"com.apple.DigitalSeparation.FindMy"];
+          name18 = [v14 name];
+          v80 = [name18 isEqualToString:@"com.apple.DigitalSeparation.FindMy"];
 
           if (v80)
           {
@@ -1101,8 +1101,8 @@ LABEL_122:
 
           else
           {
-            v82 = [v14 name];
-            v83 = [v82 isEqualToString:@"com.apple.DigitalSeparation.Photos"];
+            name19 = [v14 name];
+            v83 = [name19 isEqualToString:@"com.apple.DigitalSeparation.Photos"];
 
             if (v83)
             {
@@ -1120,8 +1120,8 @@ LABEL_122:
 
             else
             {
-              v85 = [v14 name];
-              v86 = [v85 isEqualToString:@"com.apple.DigitalSeparation.HomeKit.HomeSharing"];
+              name20 = [v14 name];
+              v86 = [name20 isEqualToString:@"com.apple.DigitalSeparation.HomeKit.HomeSharing"];
 
               if (v86)
               {
@@ -1139,8 +1139,8 @@ LABEL_122:
 
               else
               {
-                v88 = [v14 name];
-                v89 = [v88 isEqualToString:@"com.apple.DigitalSeparation.HealthKit.HealthSharing"];
+                name21 = [v14 name];
+                v89 = [name21 isEqualToString:@"com.apple.DigitalSeparation.HealthKit.HealthSharing"];
 
                 if (v89)
                 {
@@ -1158,8 +1158,8 @@ LABEL_122:
 
                 else
                 {
-                  v91 = [v14 name];
-                  v92 = [v91 isEqualToString:@"com.apple.DigitalSeparation.Notes"];
+                  name22 = [v14 name];
+                  v92 = [name22 isEqualToString:@"com.apple.DigitalSeparation.Notes"];
 
                   if (v92)
                   {
@@ -1177,8 +1177,8 @@ LABEL_122:
 
                   else
                   {
-                    v94 = [v14 name];
-                    v95 = [v94 isEqualToString:@"com.apple.DigitalSeparation.Zelkova"];
+                    name23 = [v14 name];
+                    v95 = [name23 isEqualToString:@"com.apple.DigitalSeparation.Zelkova"];
 
                     if (v95)
                     {
@@ -1196,8 +1196,8 @@ LABEL_122:
 
                     else
                     {
-                      v97 = [v14 name];
-                      v98 = [v97 isEqualToString:@"com.apple.DigitalSeparation.Fitness"];
+                      name24 = [v14 name];
+                      v98 = [name24 isEqualToString:@"com.apple.DigitalSeparation.Fitness"];
 
                       if (v98)
                       {
@@ -1215,8 +1215,8 @@ LABEL_122:
 
                       else
                       {
-                        v100 = [v14 name];
-                        v101 = [v100 isEqualToString:@"com.apple.DigitalSeparation.PassKeys"];
+                        name25 = [v14 name];
+                        v101 = [name25 isEqualToString:@"com.apple.DigitalSeparation.PassKeys"];
 
                         if (v101)
                         {
@@ -1234,8 +1234,8 @@ LABEL_122:
 
                         else
                         {
-                          v103 = [v14 name];
-                          v104 = [v103 isEqualToString:@"com.apple.DigitalSeparation.ItemSharing"];
+                          name26 = [v14 name];
+                          v104 = [name26 isEqualToString:@"com.apple.DigitalSeparation.ItemSharing"];
 
                           if (v104)
                           {
@@ -1253,8 +1253,8 @@ LABEL_122:
 
                           else
                           {
-                            v106 = [v14 name];
-                            v107 = [v106 isEqualToString:@"com.apple.DigitalSeparation.Maps"];
+                            name27 = [v14 name];
+                            v107 = [name27 isEqualToString:@"com.apple.DigitalSeparation.Maps"];
 
                             v108 = DSLogSharingPerson;
                             v30 = v108;
@@ -1300,11 +1300,11 @@ LABEL_122:
         v109 = DSLogSharingPerson;
         if (os_log_type_enabled(v109, OS_LOG_TYPE_INFO))
         {
-          v110 = [v14 name];
+          name28 = [v14 name];
           *buf = 138478083;
           v151 = v124;
           v152 = 2114;
-          v153 = v110;
+          v153 = name28;
           _os_log_impl(&dword_248C40000, v109, OS_LOG_TYPE_INFO, "Stopping sharing of participants %{private}@ from source %{public}@", buf, 0x16u);
         }
 
@@ -1315,7 +1315,7 @@ LABEL_122:
         v139[4] = v14;
         v111 = v124;
         v140 = v111;
-        v141 = v126;
+        v141 = array;
         objc_copyWeak(v143, &location);
         v143[1] = v26;
         v142 = v8;
@@ -1341,11 +1341,11 @@ LABEL_127:
   block[1] = 3221225472;
   block[2] = __55__DSSharingPerson_stopSharingSources_queue_completion___block_invoke_329;
   block[3] = &unk_278F72BB0;
-  v129 = v116;
+  v129 = completionCopy;
   v130 = spid;
-  v128 = v126;
-  v113 = v116;
-  v114 = v126;
+  v128 = array;
+  v113 = completionCopy;
+  v114 = array;
   dispatch_group_notify(v8, queue, block);
 
   v115 = *MEMORY[0x277D85DE8];
@@ -1946,18 +1946,18 @@ void __55__DSSharingPerson_stopSharingSources_queue_completion___block_invoke_32
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)stopSharingSourceNames:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)stopSharingSourceNames:(id)names queue:(id)queue completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CBEB18] array];
+  namesCopy = names;
+  queueCopy = queue;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v8;
+  v12 = namesCopy;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
@@ -1986,7 +1986,7 @@ void __55__DSSharingPerson_stopSharingSources_queue_completion___block_invoke_32
         v18 = [(NSMutableDictionary *)sources objectForKeyedSubscript:*(*(&v21 + 1) + 8 * v16), v21];
         if (v18)
         {
-          [v11 addObject:v18];
+          [array addObject:v18];
         }
 
         ++v16;
@@ -2000,78 +2000,78 @@ void __55__DSSharingPerson_stopSharingSources_queue_completion___block_invoke_32
     while (v19);
   }
 
-  [(DSSharingPerson *)self stopSharingSources:v11 queue:v9 completion:v10];
+  [(DSSharingPerson *)self stopSharingSources:array queue:queueCopy completion:completionCopy];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"displayName"])
+  if ([key isEqualToString:@"displayName"])
   {
-    v4 = [(DSSharingPerson *)self displayName];
+    displayName = [(DSSharingPerson *)self displayName];
   }
 
   else
   {
-    v4 = 0;
+    displayName = 0;
   }
 
-  return v4;
+  return displayName;
 }
 
-- (void)setIdentifier:(uint64_t)a1
+- (void)setIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    objc_storeStrong((a1 + 40), a2);
-  }
-}
-
-- (void)setSharedResourcesBySource:(uint64_t)a1
-{
-  if (a1)
-  {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((identifier + 40), a2);
   }
 }
 
-- (void)setEmailAddresses:(uint64_t)a1
+- (void)setSharedResourcesBySource:(uint64_t)source
 {
-  if (a1)
+  if (source)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((source + 32), a2);
   }
 }
 
-- (void)setNames:(uint64_t)a1
+- (void)setEmailAddresses:(uint64_t)addresses
 {
-  if (a1)
+  if (addresses)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((addresses + 48), a2);
   }
 }
 
-- (void)setShareDirectionBySourceName:(uint64_t)a1
+- (void)setNames:(uint64_t)names
 {
-  if (a1)
+  if (names)
   {
-    objc_storeStrong((a1 + 72), a2);
+    objc_storeStrong((names + 56), a2);
   }
 }
 
-- (void)setShareDirectionByResource:(uint64_t)a1
+- (void)setShareDirectionBySourceName:(uint64_t)name
 {
-  if (a1)
+  if (name)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((name + 72), a2);
   }
 }
 
-- (void)setPhoneNumbers:(uint64_t)a1
+- (void)setShareDirectionByResource:(uint64_t)resource
 {
-  if (a1)
+  if (resource)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((resource + 80), a2);
+  }
+}
+
+- (void)setPhoneNumbers:(uint64_t)numbers
+{
+  if (numbers)
+  {
+    objc_storeStrong((numbers + 64), a2);
   }
 }
 
@@ -2105,22 +2105,22 @@ void __55__DSSharingPerson_stopSharingSources_queue_completion___block_invoke_32
   return result;
 }
 
-- (void)updateShareDirectionForParticipant:(id)a3 source:(id)a4 sharedResource:(id)a5 deviceOwnerRole:(int64_t)a6
+- (void)updateShareDirectionForParticipant:(id)participant source:(id)source sharedResource:(id)resource deviceOwnerRole:(int64_t)role
 {
-  v24 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a6 == 2)
+  participantCopy = participant;
+  sourceCopy = source;
+  resourceCopy = resource;
+  if (role == 2)
   {
-    v22 = [v24 role];
-    if (v22 == 1)
+    role = [participantCopy role];
+    if (role == 1)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = 4 * (v22 == 2);
+      v12 = 4 * (role == 2);
     }
 
     if (self)
@@ -2131,7 +2131,7 @@ void __55__DSSharingPerson_stopSharingSources_queue_completion___block_invoke_32
 
   else
   {
-    if (a6 == 1)
+    if (role == 1)
     {
       v12 = 2;
     }
@@ -2152,29 +2152,29 @@ LABEL_6:
   shareDirectionBySourceName = 0;
 LABEL_7:
   v14 = shareDirectionBySourceName;
-  v15 = [v10 name];
-  v16 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:v15];
+  name = [sourceCopy name];
+  v16 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:name];
 
-  v17 = [v16 unsignedIntegerValue];
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17 | v12];
+  unsignedIntegerValue = [v16 unsignedIntegerValue];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue | v12];
   if (self)
   {
     v19 = self->_shareDirectionBySourceName;
-    v20 = [v10 name];
-    OUTLINED_FUNCTION_10_0(v20);
+    name2 = [sourceCopy name];
+    OUTLINED_FUNCTION_10_0(name2);
 
     shareDirectionByResource = self->_shareDirectionByResource;
   }
 
   else
   {
-    v23 = [v10 name];
-    [0 setObject:v18 forKeyedSubscript:v23];
+    name3 = [sourceCopy name];
+    [0 setObject:v18 forKeyedSubscript:name3];
 
     shareDirectionByResource = 0;
   }
 
-  NSMapInsert(shareDirectionByResource, v11, v12);
+  NSMapInsert(shareDirectionByResource, resourceCopy, v12);
 }
 
 - (uint64_t)shareDirectionBySourceName
@@ -2197,20 +2197,20 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)shareDirectionForSourceName:(id)a3
+- (unint64_t)shareDirectionForSourceName:(id)name
 {
   if (self)
   {
     self = self->_shareDirectionBySourceName;
   }
 
-  v3 = [(DSSharingPerson *)self objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(DSSharingPerson *)self objectForKeyedSubscript:name];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)shareDirectionForSharedResource:(id)a3
+- (unint64_t)shareDirectionForSharedResource:(id)resource
 {
   if (self)
   {
@@ -2223,70 +2223,70 @@ LABEL_7:
   }
 
   v5 = shareDirectionByResource;
-  v6 = NSMapGet(v5, a3);
+  v6 = NSMapGet(v5, resource);
 
   return v6;
 }
 
-- (void)addSource:(id)a3 sharedResource:(id)a4 participant:(id)a5 deviceOwnerRole:(int64_t)a6
+- (void)addSource:(id)source sharedResource:(id)resource participant:(id)participant deviceOwnerRole:(int64_t)role
 {
-  v28 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  resourceCopy = resource;
+  participantCopy = participant;
   if (self)
   {
     v11 = self->_sources;
-    v12 = [v28 name];
-    [(NSMutableDictionary *)v11 setObject:v28 forKeyedSubscript:v12];
+    name = [sourceCopy name];
+    [(NSMutableDictionary *)v11 setObject:sourceCopy forKeyedSubscript:name];
 
     participantsBySource = self->_participantsBySource;
   }
 
   else
   {
-    v26 = [v28 name];
-    [0 setObject:v28 forKeyedSubscript:v26];
+    name2 = [sourceCopy name];
+    [0 setObject:sourceCopy forKeyedSubscript:name2];
 
     participantsBySource = 0;
   }
 
   v14 = participantsBySource;
-  v15 = [v28 name];
-  v16 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:v15];
+  name3 = [sourceCopy name];
+  array = [(NSMutableDictionary *)v14 objectForKeyedSubscript:name3];
 
-  if (!v16)
+  if (!array)
   {
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  [v16 addObject:v10];
+  [array addObject:participantCopy];
   if (self)
   {
     v17 = self->_participantsBySource;
-    v18 = [v28 name];
-    OUTLINED_FUNCTION_10_0(v18);
+    name4 = [sourceCopy name];
+    OUTLINED_FUNCTION_10_0(name4);
 
     sharedResourcesBySource = self->_sharedResourcesBySource;
   }
 
   else
   {
-    v27 = [v28 name];
-    [0 setObject:v16 forKeyedSubscript:v27];
+    name5 = [sourceCopy name];
+    [0 setObject:array forKeyedSubscript:name5];
 
     sharedResourcesBySource = 0;
   }
 
   v20 = sharedResourcesBySource;
-  v21 = [v28 name];
-  v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:v21];
+  name6 = [sourceCopy name];
+  v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:name6];
 
   if (!v22)
   {
     v22 = [MEMORY[0x277CBEB58] set];
   }
 
-  [v22 addObject:v9];
+  [v22 addObject:resourceCopy];
   if (self)
   {
     v23 = self->_sharedResourcesBySource;
@@ -2298,8 +2298,8 @@ LABEL_7:
   }
 
   v24 = v23;
-  v25 = [v28 name];
-  [(NSMutableDictionary *)v24 setObject:v22 forKeyedSubscript:v25];
+  name7 = [sourceCopy name];
+  [(NSMutableDictionary *)v24 setObject:v22 forKeyedSubscript:name7];
 
   [OUTLINED_FUNCTION_8_0() updateKnownEmailAddressesForParticipant:?];
   [OUTLINED_FUNCTION_8_0() updateKnownNameForParticipant:?];
@@ -2317,10 +2317,10 @@ LABEL_7:
   return result;
 }
 
-- (void)removeSourceWithName:(id)a3
+- (void)removeSourceWithName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   if (self)
   {
     sources = self->_sources;
@@ -2331,13 +2331,13 @@ LABEL_7:
     sources = 0;
   }
 
-  v6 = [(NSMutableDictionary *)sources objectForKey:v4];
+  v6 = [(NSMutableDictionary *)sources objectForKey:nameCopy];
 
   if (v6)
   {
     if (self)
     {
-      v7 = [(NSMutableDictionary *)self->_participantsBySource objectForKeyedSubscript:v4];
+      v7 = [(NSMutableDictionary *)self->_participantsBySource objectForKeyedSubscript:nameCopy];
       [v7 removeAllObjects];
 
       v8 = self->_sources;
@@ -2345,13 +2345,13 @@ LABEL_7:
 
     else
     {
-      v16 = [0 objectForKeyedSubscript:v4];
+      v16 = [0 objectForKeyedSubscript:nameCopy];
       [v16 removeAllObjects];
 
       v8 = 0;
     }
 
-    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)v8 setObject:0 forKeyedSubscript:nameCopy];
   }
 
   else if (os_log_type_enabled(DSLogSharingPerson, OS_LOG_TYPE_FAULT))
@@ -2396,9 +2396,9 @@ LABEL_7:
         }
 
         v10 = [DSSourceDescriptor sourceDescriptorForSource:*(*(&v19 + 1) + 8 * i), v19];
-        v11 = [v10 priority];
-        v12 = __OFADD__(v7, v11);
-        v7 += v11;
+        priority = [v10 priority];
+        v12 = __OFADD__(v7, priority);
+        v7 += priority;
         if (v12)
         {
           v13 = DSLogSharingPerson;
@@ -2456,27 +2456,27 @@ LABEL_18:
   return result;
 }
 
-- (id)sharedResourcesForSourceName:(id)a3
+- (id)sharedResourcesForSourceName:(id)name
 {
   if (self)
   {
     self = self->_sharedResourcesBySource;
   }
 
-  v3 = [(DSSharingPerson *)self objectForKeyedSubscript:a3];
+  v3 = [(DSSharingPerson *)self objectForKeyedSubscript:name];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (id)participationForSourceName:(id)a3
+- (id)participationForSourceName:(id)name
 {
   if (self)
   {
     self = self->_participantsBySource;
   }
 
-  v3 = [(DSSharingPerson *)self objectForKeyedSubscript:a3];
+  v3 = [(DSSharingPerson *)self objectForKeyedSubscript:name];
   v4 = [v3 copy];
 
   return v4;
@@ -2502,12 +2502,12 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)isMe:(id)a3
+- (BOOL)isMe:(id)me
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 meCardIdentifier];
-  v6 = v5;
+  meCopy = me;
+  meCardIdentifier = [meCopy meCardIdentifier];
+  v6 = meCardIdentifier;
   if (self)
   {
     identifier = self->_identifier;
@@ -2518,11 +2518,11 @@ LABEL_18:
     identifier = 0;
   }
 
-  v8 = [v5 isEqualToString:identifier];
+  v8 = [meCardIdentifier isEqualToString:identifier];
 
   if (!v8)
   {
-    v12 = [v4 emails];
+    emails = [meCopy emails];
     if (self)
     {
       emailAddresses = self->_emailAddresses;
@@ -2533,7 +2533,7 @@ LABEL_18:
       emailAddresses = 0;
     }
 
-    if ([(NSMutableSet *)emailAddresses intersectsSet:v12])
+    if ([(NSMutableSet *)emailAddresses intersectsSet:emails])
     {
       v14 = DSLogSharingPerson;
       LOBYTE(v10) = 1;
@@ -2545,7 +2545,7 @@ LABEL_18:
         }
 
         OUTLINED_FUNCTION_9_0();
-        v38 = v12;
+        v38 = emails;
         v16 = v14;
         OUTLINED_FUNCTION_0_4(&dword_248C40000, v17, v18, "%{private}@ is one of the email addresses in the Apple ID primary account: %{private}@", v19, v20, v21, v22, v36);
       }
@@ -2553,7 +2553,7 @@ LABEL_18:
 
     else
     {
-      v23 = [v4 phoneNumbers];
+      phoneNumbers = [meCopy phoneNumbers];
       if (self)
       {
         phoneNumbers = self->_phoneNumbers;
@@ -2564,7 +2564,7 @@ LABEL_18:
         phoneNumbers = 0;
       }
 
-      v10 = [(NSMutableSet *)phoneNumbers intersectsSet:v23];
+      v10 = [(NSMutableSet *)phoneNumbers intersectsSet:phoneNumbers];
       if (v10)
       {
         v25 = DSLogSharingPerson;
@@ -2576,7 +2576,7 @@ LABEL_18:
           }
 
           OUTLINED_FUNCTION_9_0();
-          v38 = v23;
+          v38 = phoneNumbers;
           v27 = v25;
           OUTLINED_FUNCTION_0_4(&dword_248C40000, v28, v29, "%{private}@ is one of the phone numbers in the Apple ID primary account: %{private}@", v30, v31, v32, v33, v36);
         }
@@ -2602,8 +2602,8 @@ LABEL_18:
 
     v36 = 138477827;
     v37 = v11;
-    v12 = v9;
-    _os_log_impl(&dword_248C40000, v12, OS_LOG_TYPE_INFO, "%{private}@ is the me card", &v36, 0xCu);
+    emails = v9;
+    _os_log_impl(&dword_248C40000, emails, OS_LOG_TYPE_INFO, "%{private}@ is the me card", &v36, 0xCu);
 LABEL_23:
   }
 
@@ -2618,8 +2618,8 @@ LABEL_23:
     self = self->_sources;
   }
 
-  v2 = [(DSSharingPerson *)self allKeys];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_9];
+  allKeys = [(DSSharingPerson *)self allKeys];
+  v3 = [allKeys sortedArrayUsingComparator:&__block_literal_global_9];
 
   return v3;
 }
@@ -2634,7 +2634,7 @@ LABEL_23:
   return [(DSSharingPerson *)self allValues];
 }
 
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion
 {
   if (self)
   {
@@ -2646,10 +2646,10 @@ LABEL_23:
     sources = 0;
   }
 
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)sources allValues];
-  [(DSSharingPerson *)self stopSharingSources:v9 queue:v8 completion:v7];
+  completionCopy = completion;
+  queueCopy = queue;
+  allValues = [(NSMutableDictionary *)sources allValues];
+  [(DSSharingPerson *)self stopSharingSources:allValues queue:queueCopy completion:completionCopy];
 }
 
 - (void)updateContactFromIdentity:(void *)a1 .cold.1(void *a1, uint64_t a2)
@@ -2797,16 +2797,16 @@ LABEL_4:
 
 - (void)displayName
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    a1 = a1[7];
+    self = self[7];
   }
 
-  v4 = [a1 anyObject];
-  if (v4)
+  anyObject = [self anyObject];
+  if (anyObject)
   {
-    v5 = v4;
+    v5 = anyObject;
     v6 = MEMORY[0x277CCACA8];
     v7 = DSLocStringForKey(@"SHARING_PERSON_DISPLAY_NAME");
     v8 = [v6 stringWithFormat:v7, v5];
@@ -2814,9 +2814,9 @@ LABEL_4:
 
   else
   {
-    if (v3)
+    if (selfCopy)
     {
-      v9 = v3[5];
+      v9 = selfCopy[5];
     }
 
     else

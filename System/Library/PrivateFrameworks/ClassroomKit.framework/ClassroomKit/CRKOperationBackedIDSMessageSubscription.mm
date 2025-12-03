@@ -1,8 +1,8 @@
 @interface CRKOperationBackedIDSMessageSubscription
-- (CRKOperationBackedIDSMessageSubscription)initWithListenOperation:(id)a3 handler:(id)a4;
+- (CRKOperationBackedIDSMessageSubscription)initWithListenOperation:(id)operation handler:(id)handler;
 - (void)cancel;
 - (void)dealloc;
-- (void)taskOperation:(id)a3 didPostNotificationWithName:(id)a4 userInfo:(id)a5;
+- (void)taskOperation:(id)operation didPostNotificationWithName:(id)name userInfo:(id)info;
 @end
 
 @implementation CRKOperationBackedIDSMessageSubscription
@@ -15,18 +15,18 @@
   [(CRKOperationBackedIDSMessageSubscription *)&v3 dealloc];
 }
 
-- (CRKOperationBackedIDSMessageSubscription)initWithListenOperation:(id)a3 handler:(id)a4
+- (CRKOperationBackedIDSMessageSubscription)initWithListenOperation:(id)operation handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = CRKOperationBackedIDSMessageSubscription;
   v9 = [(CRKOperationBackedIDSMessageSubscription *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_listenOperation, a3);
-    v11 = MEMORY[0x245D3AAD0](v8);
+    objc_storeStrong(&v9->_listenOperation, operation);
+    v11 = MEMORY[0x245D3AAD0](handlerCopy);
     handler = v10->_handler;
     v10->_handler = v11;
   }
@@ -34,32 +34,32 @@
   return v10;
 }
 
-- (void)taskOperation:(id)a3 didPostNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)taskOperation:(id)operation didPostNotificationWithName:(id)name userInfo:(id)info
 {
-  v7 = a5;
-  v13 = v7;
-  if (!v7)
+  infoCopy = info;
+  v13 = infoCopy;
+  if (!infoCopy)
   {
     [CRKOperationBackedIDSMessageSubscription taskOperation:a2 didPostNotificationWithName:self userInfo:?];
-    v7 = 0;
+    infoCopy = 0;
   }
 
-  v8 = [CRKIDSMessageNotificationInfo instanceWithDictionary:v7];
-  v9 = [(CRKOperationBackedIDSMessageSubscription *)self handler];
-  v10 = [v8 message];
-  v11 = [v8 senderAppleID];
-  v12 = [v8 senderAddress];
-  (v9)[2](v9, v10, v11, v12);
+  v8 = [CRKIDSMessageNotificationInfo instanceWithDictionary:infoCopy];
+  handler = [(CRKOperationBackedIDSMessageSubscription *)self handler];
+  message = [v8 message];
+  senderAppleID = [v8 senderAppleID];
+  senderAddress = [v8 senderAddress];
+  (handler)[2](handler, message, senderAppleID, senderAddress);
 }
 
 - (void)cancel
 {
-  v3 = [(CRKOperationBackedIDSMessageSubscription *)self handler];
+  handler = [(CRKOperationBackedIDSMessageSubscription *)self handler];
 
-  if (v3)
+  if (handler)
   {
-    v4 = [(CRKOperationBackedIDSMessageSubscription *)self listenOperation];
-    [v4 cancel];
+    listenOperation = [(CRKOperationBackedIDSMessageSubscription *)self listenOperation];
+    [listenOperation cancel];
 
     [(CRKOperationBackedIDSMessageSubscription *)self setHandler:0];
   }

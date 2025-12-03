@@ -1,13 +1,13 @@
 @interface PersonRankingService
-- (id)rankedPersonsForObjCWithMaxCount:(int64_t)a3 error:(id *)a4;
+- (id)rankedPersonsForObjCWithMaxCount:(int64_t)count error:(id *)error;
 @end
 
 @implementation PersonRankingService
 
-- (id)rankedPersonsForObjCWithMaxCount:(int64_t)a3 error:(id *)a4
+- (id)rankedPersonsForObjCWithMaxCount:(int64_t)count error:(id *)error
 {
-  v5 = self;
-  sub_1ABE32FB8(a3);
+  selfCopy = self;
+  sub_1ABE32FB8(count);
 
   sub_1ABE34FC0();
   v6 = sub_1ABF240C4();

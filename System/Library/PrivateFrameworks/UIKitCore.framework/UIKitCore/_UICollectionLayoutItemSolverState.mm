@@ -1,5 +1,5 @@
 @interface _UICollectionLayoutItemSolverState
-- (id)initWithSolutionFrames:(void *)a3 itemFrameCount:(void *)a4 supplementaryFrameCount:(void *)a5 solvedFittingFrame:(void *)a6 preferredSizeGroupingRanges:(double)a7 additionalOffsetForOutermostGroup:(double)a8 errorDescription:(double)a9;
+- (id)initWithSolutionFrames:(void *)frames itemFrameCount:(void *)count supplementaryFrameCount:(void *)frameCount solvedFittingFrame:(void *)frame preferredSizeGroupingRanges:(double)ranges additionalOffsetForOutermostGroup:(double)group errorDescription:(double)description;
 - (void)_generateMemoizedSolutionFramesBasedData;
 - (void)auxillaryFrames;
 - (void)itemFrames;
@@ -11,50 +11,50 @@
 
 - (void)itemFrames
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[1];
+    selfCopy = self;
+    v3 = self[1];
     if (!v3)
     {
-      [(_UICollectionLayoutItemSolverState *)a1 _generateMemoizedSolutionFramesBasedData];
-      v3 = v2[1];
+      [(_UICollectionLayoutItemSolverState *)self _generateMemoizedSolutionFramesBasedData];
+      v3 = selfCopy[1];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_generateMemoizedSolutionFramesBasedData
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:a1 file:@"_UICollectionLayoutItemSolver.m" lineNumber:1725 description:{@"Invalid parameter not satisfying: %@", @"!_supplementaryDictByKindIndex"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:self file:@"_UICollectionLayoutItemSolver.m" lineNumber:1725 description:{@"Invalid parameter not satisfying: %@", @"!_supplementaryDictByKindIndex"}];
     }
 
-    if (*(a1 + 16))
+    if (*(self + 16))
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:a1 file:@"_UICollectionLayoutItemSolver.m" lineNumber:1726 description:{@"Invalid parameter not satisfying: %@", @"!_auxillaryFrames"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:self file:@"_UICollectionLayoutItemSolver.m" lineNumber:1726 description:{@"Invalid parameter not satisfying: %@", @"!_auxillaryFrames"}];
     }
 
-    if (*(a1 + 8))
+    if (*(self + 8))
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:a1 file:@"_UICollectionLayoutItemSolver.m" lineNumber:1727 description:{@"Invalid parameter not satisfying: %@", @"!_itemFrames"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:self file:@"_UICollectionLayoutItemSolver.m" lineNumber:1727 description:{@"Invalid parameter not satisfying: %@", @"!_itemFrames"}];
     }
 
-    if (!*(a1 + 48))
+    if (!*(self + 48))
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:a1 file:@"_UICollectionLayoutItemSolver.m" lineNumber:1728 description:{@"Invalid parameter not satisfying: %@", @"_solutionFrames"}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:self file:@"_UICollectionLayoutItemSolver.m" lineNumber:1728 description:{@"Invalid parameter not satisfying: %@", @"_solutionFrames"}];
     }
 
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -65,8 +65,8 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v28 = a1;
-    v4 = *(a1 + 48);
+    selfCopy = self;
+    v4 = *(self + 48);
     v5 = [v4 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v5)
     {
@@ -94,29 +94,29 @@
             else if ((v10 & 0xFFFFFFFFFFFFFFFELL) == 2)
             {
               [v3 addObject:*(*(&v31 + 1) + 8 * v8)];
-              v11 = [(_UICollectionLayoutFramesQueryResult *)v9 auxillaryItem];
-              if (!v11)
+              auxillaryItem = [(_UICollectionLayoutFramesQueryResult *)v9 auxillaryItem];
+              if (!auxillaryItem)
               {
-                v14 = [MEMORY[0x1E696AAA8] currentHandler];
-                [v14 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:v28 file:@"_UICollectionLayoutItemSolver.m" lineNumber:1747 description:{@"Invalid parameter not satisfying: %@", @"auxillaryItem"}];
+                currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+                [currentHandler5 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:selfCopy file:@"_UICollectionLayoutItemSolver.m" lineNumber:1747 description:{@"Invalid parameter not satisfying: %@", @"auxillaryItem"}];
               }
 
-              v12 = [v11 elementKind];
-              if (![v12 length])
+              elementKind = [auxillaryItem elementKind];
+              if (![elementKind length])
               {
-                v15 = [MEMORY[0x1E696AAA8] currentHandler];
-                [v15 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:v28 file:@"_UICollectionLayoutItemSolver.m" lineNumber:1749 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
+                currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+                [currentHandler6 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:selfCopy file:@"_UICollectionLayoutItemSolver.m" lineNumber:1749 description:{@"Invalid parameter not satisfying: %@", @"kind.length"}];
               }
 
-              v13 = [_UICollectionLayoutFramesQueryResult kindIndexKeyForKind:v12 index:v9[2]];
+              v13 = [_UICollectionLayoutFramesQueryResult kindIndexKeyForKind:elementKind index:v9[2]];
               if (!v13)
               {
-                v27 = [MEMORY[0x1E696AAA8] currentHandler];
-                [v27 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:v28 file:@"_UICollectionLayoutItemSolver.m" lineNumber:1752 description:{@"Invalid parameter not satisfying: %@", @"kindIndexKey"}];
+                currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+                [currentHandler7 handleFailureInMethod:sel__generateMemoizedSolutionFramesBasedData object:selfCopy file:@"_UICollectionLayoutItemSolver.m" lineNumber:1752 description:{@"Invalid parameter not satisfying: %@", @"kindIndexKey"}];
               }
 
               [v29 setObject:v9 forKeyedSubscript:v13];
-              [(_UICollectionLayoutAuxillaryOffsets *)v30 incrementCountForElementKind:v12];
+              [(_UICollectionLayoutAuxillaryOffsets *)v30 incrementCountForElementKind:elementKind];
             }
           }
 
@@ -130,88 +130,88 @@
       while (v6);
     }
 
-    v16 = v28[1];
-    v28[1] = v2;
+    v16 = selfCopy[1];
+    selfCopy[1] = v2;
     v17 = v2;
 
-    v18 = v28[2];
-    v28[2] = v3;
+    v18 = selfCopy[2];
+    selfCopy[2] = v3;
     v19 = v3;
 
-    v20 = v28[3];
-    v28[3] = v29;
+    v20 = selfCopy[3];
+    selfCopy[3] = v29;
     v21 = v29;
 
-    v22 = v28[4];
-    v28[4] = v30;
+    v22 = selfCopy[4];
+    selfCopy[4] = v30;
   }
 }
 
 - (void)supplementaryFrameOffsets
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[4];
+    selfCopy = self;
+    v3 = self[4];
     if (!v3)
     {
-      [(_UICollectionLayoutItemSolverState *)a1 _generateMemoizedSolutionFramesBasedData];
-      v3 = v2[4];
+      [(_UICollectionLayoutItemSolverState *)self _generateMemoizedSolutionFramesBasedData];
+      v3 = selfCopy[4];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)auxillaryFrames
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      [(_UICollectionLayoutItemSolverState *)a1 _generateMemoizedSolutionFramesBasedData];
-      v3 = v2[2];
+      [(_UICollectionLayoutItemSolverState *)self _generateMemoizedSolutionFramesBasedData];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithSolutionFrames:(void *)a3 itemFrameCount:(void *)a4 supplementaryFrameCount:(void *)a5 solvedFittingFrame:(void *)a6 preferredSizeGroupingRanges:(double)a7 additionalOffsetForOutermostGroup:(double)a8 errorDescription:(double)a9
+- (id)initWithSolutionFrames:(void *)frames itemFrameCount:(void *)count supplementaryFrameCount:(void *)frameCount solvedFittingFrame:(void *)frame preferredSizeGroupingRanges:(double)ranges additionalOffsetForOutermostGroup:(double)group errorDescription:(double)description
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = _UICollectionLayoutItemSolverState;
   v23 = objc_msgSendSuper2(&v30, sel_init);
   v24 = v23;
   if (v23)
   {
     objc_storeStrong(v23 + 6, a2);
-    v24[7] = a3;
-    v24[8] = a4;
-    *(v24 + 13) = a7;
-    *(v24 + 14) = a8;
-    *(v24 + 15) = a9;
+    v24[7] = frames;
+    v24[8] = count;
+    *(v24 + 13) = ranges;
+    *(v24 + 14) = group;
+    *(v24 + 15) = description;
     *(v24 + 16) = a10;
-    v25 = [a5 copy];
+    v25 = [frameCount copy];
     v26 = v24[9];
     v24[9] = v25;
 
     *(v24 + 11) = a11;
     *(v24 + 12) = a12;
-    v27 = [a6 copy];
+    v27 = [frame copy];
     v28 = v24[10];
     v24[10] = v27;
   }
@@ -221,21 +221,21 @@
 
 - (void)supplementaryDictByKindIndex
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     if (!v3)
     {
-      [(_UICollectionLayoutItemSolverState *)a1 _generateMemoizedSolutionFramesBasedData];
-      v3 = v2[3];
+      [(_UICollectionLayoutItemSolverState *)self _generateMemoizedSolutionFramesBasedData];
+      v3 = selfCopy[3];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

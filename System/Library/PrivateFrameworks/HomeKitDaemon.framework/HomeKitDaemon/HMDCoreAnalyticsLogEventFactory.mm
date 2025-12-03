@@ -1,6 +1,6 @@
 @interface HMDCoreAnalyticsLogEventFactory
 + (id)logCategory;
-- (id)logEventForTaggedEvent:(id)a3;
+- (id)logEventForTaggedEvent:(id)event;
 @end
 
 @implementation HMDCoreAnalyticsLogEventFactory
@@ -25,12 +25,12 @@ void __46__HMDCoreAnalyticsLogEventFactory_logCategory__block_invoke()
   logCategory__hmf_once_v2_209213 = v1;
 }
 
-- (id)logEventForTaggedEvent:(id)a3
+- (id)logEventForTaggedEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -38,7 +38,7 @@ void __46__HMDCoreAnalyticsLogEventFactory_logCategory__block_invoke()
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = eventCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_ERROR, "%{public}@Failed to get log event for unknown tagged event: %@", &v11, 0x16u);
   }
 

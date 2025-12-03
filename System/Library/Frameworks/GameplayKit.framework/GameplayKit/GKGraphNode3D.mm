@@ -1,13 +1,13 @@
 @interface GKGraphNode3D
 + (GKGraphNode3D)nodeWithPoint:(vector_float3)point;
-- (GKGraphNode3D)initWithCoder:(id)a3;
+- (GKGraphNode3D)initWithCoder:(id)coder;
 - (GKGraphNode3D)initWithPoint:(vector_float3)point;
-- (float)costToNode:(id)a3;
-- (float)estimatedCostToNode:(id)a3;
+- (float)costToNode:(id)node;
+- (float)estimatedCostToNode:(id)node;
 - (id)description;
 - (vector_float3)position;
 - (void)deleteCGraphNode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKGraphNode3D
@@ -52,18 +52,18 @@
   return v4;
 }
 
-- (float)estimatedCostToNode:(id)a3
+- (float)estimatedCostToNode:(id)node
 {
-  v4 = a3;
-  v5 = (*(*self->_cGraphNode3D + 24))(self->_cGraphNode3D, [v4 cGraphNode]);
+  nodeCopy = node;
+  v5 = (*(*self->_cGraphNode3D + 24))(self->_cGraphNode3D, [nodeCopy cGraphNode]);
 
   return v5;
 }
 
-- (float)costToNode:(id)a3
+- (float)costToNode:(id)node
 {
-  v4 = a3;
-  v5 = (*(*self->_cGraphNode3D + 24))(self->_cGraphNode3D, [v4 cGraphNode]);
+  nodeCopy = node;
+  v5 = (*(*self->_cGraphNode3D + 24))(self->_cGraphNode3D, [nodeCopy cGraphNode]);
 
   return v5;
 }
@@ -77,36 +77,36 @@
   return [v3 stringWithFormat:@"GKGraphNode2D: {%.2f, %.2f}", *&v5, v6];
 }
 
-- (GKGraphNode3D)initWithCoder:(id)a3
+- (GKGraphNode3D)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = GKGraphNode3D;
-  v5 = [(GKGraphNode *)&v11 initWithCoder:v4];
-  [v4 decodeFloatForKey:@"positionX"];
+  v5 = [(GKGraphNode *)&v11 initWithCoder:coderCopy];
+  [coderCopy decodeFloatForKey:@"positionX"];
   v10 = v6;
-  [v4 decodeFloatForKey:@"positionY"];
+  [coderCopy decodeFloatForKey:@"positionY"];
   v9 = v7;
-  [v4 decodeFloatForKey:@"positionZ"];
+  [coderCopy decodeFloatForKey:@"positionZ"];
   [(GKGraphNode3D *)v5 setPosition:COERCE_DOUBLE(__PAIR64__(v9, v10))];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = GKGraphNode3D;
-  [(GKGraphNode *)&v8 encodeWithCoder:v4];
+  [(GKGraphNode *)&v8 encodeWithCoder:coderCopy];
   [(GKGraphNode3D *)self position];
-  [v4 encodeFloat:@"positionX" forKey:?];
+  [coderCopy encodeFloat:@"positionX" forKey:?];
   [(GKGraphNode3D *)self position];
   LODWORD(v5) = HIDWORD(v5);
-  [v4 encodeFloat:@"positionY" forKey:v5];
+  [coderCopy encodeFloat:@"positionY" forKey:v5];
   [(GKGraphNode3D *)self position];
   LODWORD(v7) = v6;
-  [v4 encodeFloat:@"positionZ" forKey:v7];
+  [coderCopy encodeFloat:@"positionZ" forKey:v7];
 }
 
 @end

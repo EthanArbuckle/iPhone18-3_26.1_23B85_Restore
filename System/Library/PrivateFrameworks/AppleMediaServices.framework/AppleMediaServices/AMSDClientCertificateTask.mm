@@ -1,23 +1,23 @@
 @interface AMSDClientCertificateTask
-- (AMSDClientCertificateTask)initWithAccount:(id)a3 options:(id)a4;
-- (id)_baaOptionsWithOptions:(id)a3 error:(id *)a4;
+- (AMSDClientCertificateTask)initWithAccount:(id)account options:(id)options;
+- (id)_baaOptionsWithOptions:(id)options error:(id *)error;
 - (id)performClientCertChainRequest;
 @end
 
 @implementation AMSDClientCertificateTask
 
-- (AMSDClientCertificateTask)initWithAccount:(id)a3 options:(id)a4
+- (AMSDClientCertificateTask)initWithAccount:(id)account options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = AMSDClientCertificateTask;
   v9 = [(AMSDClientCertificateTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
@@ -48,13 +48,13 @@
   return v4;
 }
 
-- (id)_baaOptionsWithOptions:(id)a3 error:(id *)a4
+- (id)_baaOptionsWithOptions:(id)options error:(id *)error
 {
   v6 = AMSSetLogKeyIfNeeded();
   v7 = objc_alloc_init(NSMutableDictionary);
-  v8 = [(AMSDClientCertificateTask *)self options];
+  options = [(AMSDClientCertificateTask *)self options];
   v21 = 0;
-  v9 = [AMSKeychain createAccessControlRefWithOptions:v8 error:&v21];
+  v9 = [AMSKeychain createAccessControlRefWithOptions:options error:&v21];
   v10 = v21;
 
   if (v9)
@@ -70,8 +70,8 @@
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       *buf = 138543874;
@@ -80,7 +80,7 @@
       v26 = v6;
       v27 = 2114;
       v28 = v10;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Create Cert Chain: ACL creation failed with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Create Cert Chain: ACL creation failed with error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -92,15 +92,15 @@
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       *buf = 138543618;
       v24 = v16;
       v25 = 2114;
       v26 = v6;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Create Cert Chain: ACL creation failed", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Create Cert Chain: ACL creation failed", buf, 0x16u);
     }
 
     AMSError();
@@ -117,10 +117,10 @@ LABEL_14:
   v17 = [NSArray arrayWithObjects:v22 count:2];
   [v7 setObject:v17 forKeyedSubscript:kMAOptionsBAAOIDSToInclude];
 
-  if (a4)
+  if (error)
   {
     v18 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v19 = [v7 copy];

@@ -1,36 +1,36 @@
 @interface SUUICellImageView
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SUUICellImageView
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v9.receiver = self;
   v9.super_class = SUUICellImageView;
-  if ([(SUUICellImageView *)&v9 isHighlighted]!= a3)
+  if ([(SUUICellImageView *)&v9 isHighlighted]!= highlighted)
   {
-    if (v3)
+    if (highlightedCopy)
     {
-      v5 = [(SUUICellImageView *)self backgroundColor];
+      backgroundColor = [(SUUICellImageView *)self backgroundColor];
       cachedBackgroundColor = self->_cachedBackgroundColor;
-      self->_cachedBackgroundColor = v5;
+      self->_cachedBackgroundColor = backgroundColor;
 
-      v7 = [MEMORY[0x277D75348] clearColor];
-      [(SUUICellImageView *)self setBackgroundColor:v7];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(SUUICellImageView *)self setBackgroundColor:clearColor];
     }
 
     else
     {
       [(SUUICellImageView *)self setBackgroundColor:self->_cachedBackgroundColor];
-      v7 = self->_cachedBackgroundColor;
+      clearColor = self->_cachedBackgroundColor;
       self->_cachedBackgroundColor = 0;
     }
 
     v8.receiver = self;
     v8.super_class = SUUICellImageView;
-    [(SUUICellImageView *)&v8 setHighlighted:v3];
+    [(SUUICellImageView *)&v8 setHighlighted:highlightedCopy];
   }
 }
 

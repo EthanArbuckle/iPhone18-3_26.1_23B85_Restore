@@ -1,20 +1,20 @@
 @interface HAPFieldWrapper
-- (HAPFieldWrapper)initWithTlvId:(unint64_t)a3 name:(id)a4;
+- (HAPFieldWrapper)initWithTlvId:(unint64_t)id name:(id)name;
 @end
 
 @implementation HAPFieldWrapper
 
-- (HAPFieldWrapper)initWithTlvId:(unint64_t)a3 name:(id)a4
+- (HAPFieldWrapper)initWithTlvId:(unint64_t)id name:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = HAPFieldWrapper;
   v8 = [(HAPFieldWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_tlvid = a3;
-    objc_storeStrong(&v8->_name, a4);
+    v8->_tlvid = id;
+    objc_storeStrong(&v8->_name, name);
   }
 
   return v9;

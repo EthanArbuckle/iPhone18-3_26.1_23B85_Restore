@@ -1,12 +1,12 @@
 @interface HKClinicalProviderServiceStore
 - (HKClinicalProviderServiceStore)init;
-- (HKClinicalProviderServiceStore)initWithHealthStore:(id)a3;
-- (void)cancelInFlightSearchQueriesWithCompletion:(id)a3;
-- (void)fetchLogoDataForBrand:(id)a3 scaleKey:(id)a4 completion:(id)a5;
-- (void)fetchRemoteGatewayWithExternalID:(id)a3 batchID:(id)a4 completion:(id)a5;
-- (void)fetchRemoteProviderWithExternalID:(id)a3 batchID:(id)a4 completion:(id)a5;
-- (void)fetchRemoteSearchResultsPageForQuery:(id)a3 completion:(id)a4;
-- (void)setHealthRecordsEnvironment:(int64_t)a3 completion:(id)a4;
+- (HKClinicalProviderServiceStore)initWithHealthStore:(id)store;
+- (void)cancelInFlightSearchQueriesWithCompletion:(id)completion;
+- (void)fetchLogoDataForBrand:(id)brand scaleKey:(id)key completion:(id)completion;
+- (void)fetchRemoteGatewayWithExternalID:(id)d batchID:(id)iD completion:(id)completion;
+- (void)fetchRemoteProviderWithExternalID:(id)d batchID:(id)iD completion:(id)completion;
+- (void)fetchRemoteSearchResultsPageForQuery:(id)query completion:(id)completion;
+- (void)setHealthRecordsEnvironment:(int64_t)environment completion:(id)completion;
 @end
 
 @implementation HKClinicalProviderServiceStore
@@ -21,18 +21,18 @@
   return 0;
 }
 
-- (HKClinicalProviderServiceStore)initWithHealthStore:(id)a3
+- (HKClinicalProviderServiceStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKClinicalProviderServiceStore;
   v5 = [(HKClinicalProviderServiceStore *)&v12 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v9 = [v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
   }
@@ -40,15 +40,15 @@
   return v5;
 }
 
-- (void)fetchRemoteSearchResultsPageForQuery:(id)a3 completion:(id)a4
+- (void)fetchRemoteSearchResultsPageForQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  queryCopy = query;
+  v7 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__HKClinicalProviderServiceStore_fetchRemoteSearchResultsPageForQuery_completion___block_invoke;
   v12[3] = &unk_2796DD0E8;
-  v13 = v6;
+  v13 = queryCopy;
   v14 = v7;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -56,13 +56,13 @@
   v10[3] = &unk_2796DBFF8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = queryCopy;
   [(HKClinicalProviderServiceStore *)self _fetchServerProxyWithHandler:v12 errorHandler:v10];
 }
 
-- (void)cancelInFlightSearchQueriesWithCompletion:(id)a3
+- (void)cancelInFlightSearchQueriesWithCompletion:(id)completion
 {
-  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__HKClinicalProviderServiceStore_cancelInFlightSearchQueriesWithCompletion___block_invoke;
@@ -77,17 +77,17 @@
   [(HKClinicalProviderServiceStore *)self _fetchServerProxyWithHandler:v8 errorHandler:v6];
 }
 
-- (void)fetchRemoteProviderWithExternalID:(id)a3 batchID:(id)a4 completion:(id)a5
+- (void)fetchRemoteProviderWithExternalID:(id)d batchID:(id)iD completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  dCopy = d;
+  iDCopy = iD;
+  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __87__HKClinicalProviderServiceStore_fetchRemoteProviderWithExternalID_batchID_completion___block_invoke;
   v16[3] = &unk_2796DD138;
-  v17 = v8;
-  v18 = v9;
+  v17 = dCopy;
+  v18 = iDCopy;
   v19 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -95,22 +95,22 @@
   v14[3] = &unk_2796DBFF8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = iDCopy;
+  v13 = dCopy;
   [(HKClinicalProviderServiceStore *)self _fetchServerProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (void)fetchRemoteGatewayWithExternalID:(id)a3 batchID:(id)a4 completion:(id)a5
+- (void)fetchRemoteGatewayWithExternalID:(id)d batchID:(id)iD completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  dCopy = d;
+  iDCopy = iD;
+  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __86__HKClinicalProviderServiceStore_fetchRemoteGatewayWithExternalID_batchID_completion___block_invoke;
   v16[3] = &unk_2796DD138;
-  v17 = v8;
-  v18 = v9;
+  v17 = dCopy;
+  v18 = iDCopy;
   v19 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -118,22 +118,22 @@
   v14[3] = &unk_2796DBFF8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = iDCopy;
+  v13 = dCopy;
   [(HKClinicalProviderServiceStore *)self _fetchServerProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (void)fetchLogoDataForBrand:(id)a3 scaleKey:(id)a4 completion:(id)a5
+- (void)fetchLogoDataForBrand:(id)brand scaleKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  brandCopy = brand;
+  keyCopy = key;
+  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __76__HKClinicalProviderServiceStore_fetchLogoDataForBrand_scaleKey_completion___block_invoke;
   v16[3] = &unk_2796DD138;
-  v17 = v8;
-  v18 = v9;
+  v17 = brandCopy;
+  v18 = keyCopy;
   v19 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -141,19 +141,19 @@
   v14[3] = &unk_2796DBFF8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = keyCopy;
+  v13 = brandCopy;
   [(HKClinicalProviderServiceStore *)self _fetchServerProxyWithHandler:v16 errorHandler:v14];
 }
 
-- (void)setHealthRecordsEnvironment:(int64_t)a3 completion:(id)a4
+- (void)setHealthRecordsEnvironment:(int64_t)environment completion:(id)completion
 {
-  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__HKClinicalProviderServiceStore_setHealthRecordsEnvironment_completion___block_invoke;
   v10[3] = &unk_2796DD160;
-  v12 = a3;
+  environmentCopy = environment;
   v11 = v6;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;

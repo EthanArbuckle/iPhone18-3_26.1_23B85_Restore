@@ -1,25 +1,25 @@
 @interface _TVListTemplateView
-- (_TVListTemplateView)initWithFrame:(CGRect)a3;
+- (_TVListTemplateView)initWithFrame:(CGRect)frame;
 - (id)preferredFocusEnvironments;
 - (int64_t)listAlignment;
-- (void)adjustScrollForListView:(id)a3;
+- (void)adjustScrollForListView:(id)view;
 - (void)layoutSubviews;
-- (void)setBackdropEnabled:(BOOL)a3;
-- (void)setBannerView:(id)a3;
-- (void)setBgImageView:(id)a3;
-- (void)setListView:(id)a3;
-- (void)setOverlayBlurOffset:(double)a3;
-- (void)setPreviewView:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setBackdropEnabled:(BOOL)enabled;
+- (void)setBannerView:(id)view;
+- (void)setBgImageView:(id)view;
+- (void)setListView:(id)view;
+- (void)setOverlayBlurOffset:(double)offset;
+- (void)setPreviewView:(id)view;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation _TVListTemplateView
 
-- (_TVListTemplateView)initWithFrame:(CGRect)a3
+- (_TVListTemplateView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = _TVListTemplateView;
-  v3 = [(_TVListTemplateView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVListTemplateView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D754F8]);
@@ -38,46 +38,46 @@
   return v3;
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   bannerView = self->_bannerView;
   if (bannerView)
   {
-    [(UIView *)bannerView setSemanticContentAttribute:a3];
+    [(UIView *)bannerView setSemanticContentAttribute:attribute];
   }
 
   bgImageView = self->_bgImageView;
   if (bgImageView)
   {
-    [(UIView *)bgImageView setSemanticContentAttribute:a3];
+    [(UIView *)bgImageView setSemanticContentAttribute:attribute];
   }
 
   listView = self->_listView;
   if (listView)
   {
-    [(UIView *)listView setSemanticContentAttribute:a3];
+    [(UIView *)listView setSemanticContentAttribute:attribute];
   }
 
   previewView = self->_previewView;
   if (previewView)
   {
-    [(UIView *)previewView setSemanticContentAttribute:a3];
+    [(UIView *)previewView setSemanticContentAttribute:attribute];
   }
 
   v9.receiver = self;
   v9.super_class = _TVListTemplateView;
-  [(_TVListTemplateView *)&v9 setSemanticContentAttribute:a3];
+  [(_TVListTemplateView *)&v9 setSemanticContentAttribute:attribute];
 }
 
-- (void)setBgImageView:(id)a3
+- (void)setBgImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bgImageView = self->_bgImageView;
-  v8 = v5;
-  if (bgImageView != v5)
+  v8 = viewCopy;
+  if (bgImageView != viewCopy)
   {
     [(UIView *)bgImageView removeFromSuperview];
-    objc_storeStrong(&self->_bgImageView, a3);
+    objc_storeStrong(&self->_bgImageView, view);
     v7 = self->_bgImageView;
     if (v7)
     {
@@ -89,15 +89,15 @@
   [(_TVListTemplateView *)self setNeedsLayout];
 }
 
-- (void)setBannerView:(id)a3
+- (void)setBannerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bannerView = self->_bannerView;
-  v9 = v5;
-  if (bannerView != v5)
+  v9 = viewCopy;
+  if (bannerView != viewCopy)
   {
     [(UIView *)bannerView removeFromSuperview];
-    objc_storeStrong(&self->_bannerView, a3);
+    objc_storeStrong(&self->_bannerView, view);
     v7 = self->_bannerView;
     if (v7)
     {
@@ -118,15 +118,15 @@
   [(_TVListTemplateView *)self setNeedsLayout];
 }
 
-- (void)setListView:(id)a3
+- (void)setListView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   listView = self->_listView;
-  v8 = v5;
-  if (listView != v5)
+  v8 = viewCopy;
+  if (listView != viewCopy)
   {
     [(UIView *)listView removeFromSuperview];
-    objc_storeStrong(&self->_listView, a3);
+    objc_storeStrong(&self->_listView, view);
     v7 = self->_listView;
     if (v7)
     {
@@ -138,15 +138,15 @@
   [(_TVListTemplateView *)self setNeedsLayout];
 }
 
-- (void)setPreviewView:(id)a3
+- (void)setPreviewView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   previewView = self->_previewView;
-  if (previewView != v5)
+  if (previewView != viewCopy)
   {
     v7 = previewView;
-    objc_storeStrong(&self->_previewView, a3);
-    [(UIView *)v5 setAlpha:0.0];
+    objc_storeStrong(&self->_previewView, view);
+    [(UIView *)viewCopy setAlpha:0.0];
     v8 = MEMORY[0x277D75D18];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -170,13 +170,13 @@
   [(_TVListTemplateView *)self setNeedsLayout:v11];
 }
 
-- (void)setBackdropEnabled:(BOOL)a3
+- (void)setBackdropEnabled:(BOOL)enabled
 {
-  if (self->_backdropEnabled != a3)
+  if (self->_backdropEnabled != enabled)
   {
-    self->_backdropEnabled = a3;
+    self->_backdropEnabled = enabled;
     backdropView = self->_backdropView;
-    if (a3)
+    if (enabled)
     {
       if (!backdropView)
       {
@@ -199,11 +199,11 @@
   }
 }
 
-- (void)setOverlayBlurOffset:(double)a3
+- (void)setOverlayBlurOffset:(double)offset
 {
-  self->_bgVisualEffectOffset = a3;
+  self->_bgVisualEffectOffset = offset;
   bgVisualEffectView = self->_bgVisualEffectView;
-  if (a3 == 0.0)
+  if (offset == 0.0)
   {
     [(UIVisualEffectView *)bgVisualEffectView removeFromSuperview];
     v10 = self->_bgVisualEffectView;
@@ -256,21 +256,21 @@
   return v2;
 }
 
-- (void)adjustScrollForListView:(id)a3
+- (void)adjustScrollForListView:(id)view
 {
   if (!self->_floatingBanner)
   {
     bannerView = self->_bannerView;
-    v6 = a3;
+    viewCopy = view;
     [(UIView *)bannerView tv_margin];
     v8 = v7;
     [(UIView *)self->_bannerView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    [v6 contentOffset];
+    [viewCopy contentOffset];
     v16 = v15;
-    [v6 contentInset];
+    [viewCopy contentInset];
     v18 = v17;
 
     v19 = self->_bannerView;
@@ -281,12 +281,12 @@
 
 - (int64_t)listAlignment
 {
-  v2 = [(_TVListTemplateView *)self listView];
-  v3 = [v2 tv_alignment];
+  listView = [(_TVListTemplateView *)self listView];
+  tv_alignment = [listView tv_alignment];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((tv_alignment & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
-    return v3;
+    return tv_alignment;
   }
 
   else
@@ -303,8 +303,8 @@
   [(_TVListTemplateView *)self bounds];
   v4 = v3;
   v115 = v5;
-  v6 = [(_TVListTemplateView *)self bannerView];
-  [v6 tv_margin];
+  bannerView = [(_TVListTemplateView *)self bannerView];
+  [bannerView tv_margin];
   v8 = v7;
   v10 = v9;
   v112 = v11;
@@ -328,39 +328,39 @@
     v17 = 0.0;
   }
 
-  v18 = [(_TVListTemplateView *)self bannerView];
-  [v18 sizeThatFits:{v17, 0.0}];
+  bannerView2 = [(_TVListTemplateView *)self bannerView];
+  [bannerView2 sizeThatFits:{v17, 0.0}];
   v20 = v19;
 
   if (!self->_floatingBanner)
   {
-    v21 = [(_TVListTemplateView *)self listView];
+    listView = [(_TVListTemplateView *)self listView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v23 = [(_TVListTemplateView *)self listView];
-      v24 = [v23 collectionView];
+      listView2 = [(_TVListTemplateView *)self listView];
+      collectionView = [listView2 collectionView];
 
-      [v24 contentOffset];
+      [collectionView contentOffset];
       v26 = v25;
-      [v24 contentInset];
+      [collectionView contentInset];
       v14 = v8 - (v26 + v27);
     }
   }
 
-  v28 = [(_TVListTemplateView *)self bannerView];
-  [v28 setFrame:{v10, v14, v17, v20}];
+  bannerView3 = [(_TVListTemplateView *)self bannerView];
+  [bannerView3 setFrame:{v10, v14, v17, v20}];
 
-  v29 = [(_TVListTemplateView *)self listView];
-  [v29 tv_margin];
+  listView3 = [(_TVListTemplateView *)self listView];
+  [listView3 tv_margin];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
-  v38 = [(_TVListTemplateView *)self listAlignment];
+  listAlignment = [(_TVListTemplateView *)self listAlignment];
   bgVisualEffectOffset = self->_bgVisualEffectOffset;
   if (bgVisualEffectOffset == 0.0)
   {
@@ -390,8 +390,8 @@
   }
 
   v43 = v115 - (v35 + v42);
-  v44 = [(_TVListTemplateView *)self listView];
-  [v44 tv_itemWidth];
+  listView4 = [(_TVListTemplateView *)self listView];
+  [listView4 tv_itemWidth];
   Width = v45;
 
   if (Width == 0.0)
@@ -401,7 +401,7 @@
   }
 
   v109 = v113 - Width - v37;
-  if (v38 == 1)
+  if (listAlignment == 1)
   {
     v47 = v33;
   }
@@ -411,19 +411,19 @@
     v47 = v113 - Width - v37;
   }
 
-  v48 = [(_TVListTemplateView *)self listView];
+  listView5 = [(_TVListTemplateView *)self listView];
   v107 = v47;
   v110 = Width;
-  [v48 setFrame:{v47, v42, Width, v43}];
+  [listView5 setFrame:{v47, v42, Width, v43}];
 
-  v49 = [(UIVisualEffectView *)self->_backdropView layer];
-  [v49 setCornerRadius:40.0];
+  layer = [(UIVisualEffectView *)self->_backdropView layer];
+  [layer setCornerRadius:40.0];
 
-  v50 = [(UIVisualEffectView *)self->_backdropView layer];
-  [v50 setMasksToBounds:1];
+  layer2 = [(UIVisualEffectView *)self->_backdropView layer];
+  [layer2 setMasksToBounds:1];
 
   v111 = v37;
-  if (v38 == 3)
+  if (listAlignment == 3)
   {
     [(UIView *)self->_listView frame];
     MinX = CGRectGetMinX(v119) - v33;
@@ -435,7 +435,7 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  if (v38 == 1)
+  if (listAlignment == 1)
   {
     [(UIView *)self->_listView frame];
     MinX = CGRectGetMinX(v120);
@@ -448,15 +448,15 @@ LABEL_24:
   v54 = 1;
 LABEL_26:
   [(UIVisualEffectView *)self->_backdropView setHidden:v54];
-  v55 = [(_TVListTemplateView *)self previewView];
-  [v55 tv_margin];
+  previewView = [(_TVListTemplateView *)self previewView];
+  [previewView tv_margin];
   v57 = v56;
   v59 = v58;
   v61 = v60;
   v63 = v62;
 
-  v64 = [(_TVListTemplateView *)self previewView];
-  [v64 tv_itemWidth];
+  previewView2 = [(_TVListTemplateView *)self previewView];
+  [previewView2 tv_itemWidth];
   v66 = v65;
 
   v67 = self->_bgVisualEffectOffset;
@@ -468,7 +468,7 @@ LABEL_26:
 
   v69 = v113 - (v63 + v33 + Width + fmax(v111, v59));
   v114 = fmax(v63, v33);
-  if (v38 == 3)
+  if (listAlignment == 3)
   {
     v70 = v109 - (v59 + v114);
   }
@@ -495,8 +495,8 @@ LABEL_26:
     v73 = 0.0;
   }
 
-  v74 = [(_TVListTemplateView *)self previewView];
-  v75 = v74;
+  previewView3 = [(_TVListTemplateView *)self previewView];
+  v75 = previewView3;
   if (v66 >= v70 || v66 <= 0.0)
   {
     v77 = v70;
@@ -507,7 +507,7 @@ LABEL_26:
     v77 = v66;
   }
 
-  [v74 sizeThatFits:{v77, 0.0}];
+  [previewView3 sizeThatFits:{v77, 0.0}];
   v79 = v78;
   v81 = v80;
 
@@ -535,12 +535,12 @@ LABEL_26:
 
   if (v85 < v73)
   {
-    v86 = [(_TVListTemplateView *)self previewView];
+    previewView4 = [(_TVListTemplateView *)self previewView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v87 = [(_TVListTemplateView *)self previewView];
-      v88 = [v87 collectionView];
+      previewView5 = [(_TVListTemplateView *)self previewView];
+      collectionView2 = [previewView5 collectionView];
       objc_opt_class();
       v89 = objc_opt_isKindOfClass();
 
@@ -555,14 +555,14 @@ LABEL_26:
     }
   }
 
-  v90 = [(_TVListTemplateView *)self previewView];
-  v91 = [v90 tv_alignment];
+  previewView6 = [(_TVListTemplateView *)self previewView];
+  tv_alignment = [previewView6 tv_alignment];
 
-  if (v91 == 2)
+  if (tv_alignment == 2)
   {
     v92 = (v70 - v83) * 0.5;
     v93 = floorf(v92);
-    if (v38 == 3)
+    if (listAlignment == 3)
     {
       v59 = v109 - v83 - v114 - v93;
     }
@@ -576,7 +576,7 @@ LABEL_26:
   else
   {
     v94 = fmax(v59, v111);
-    if (v38 != 3)
+    if (listAlignment != 3)
     {
       v59 = v110 + v107 + v94;
     }
@@ -593,33 +593,33 @@ LABEL_26:
     v85 = v85 - v71;
   }
 
-  v96 = [(_TVListTemplateView *)self previewView];
-  [v96 setFrame:{v59, v71, v83, v85}];
+  previewView7 = [(_TVListTemplateView *)self previewView];
+  [previewView7 setFrame:{v59, v71, v83, v85}];
 
   [(UIFocusContainerGuide *)self->_previewFocusGuide _setManualLayoutFrame:v59, 0.0, v83, v115];
-  v97 = [(_TVListTemplateView *)self listView];
+  listView6 = [(_TVListTemplateView *)self listView];
 
-  if (v97)
+  if (listView6)
   {
     v98 = self->_backdropView;
     if (v98)
     {
-      v99 = [(UIVisualEffectView *)v98 superview];
+      superview = [(UIVisualEffectView *)v98 superview];
 
-      if (v99 != self)
+      if (superview != self)
       {
         v100 = self->_backdropView;
-        v101 = [(_TVListTemplateView *)self listView];
-        [(_TVListTemplateView *)self insertSubview:v100 belowSubview:v101];
+        listView7 = [(_TVListTemplateView *)self listView];
+        [(_TVListTemplateView *)self insertSubview:v100 belowSubview:listView7];
       }
     }
 
     previewView = self->_previewView;
     if (previewView)
     {
-      v103 = [(UIView *)previewView superview];
+      superview2 = [(UIView *)previewView superview];
 
-      if (v103 != self)
+      if (superview2 != self)
       {
         v104 = self->_previewView;
         if (self->_backdropView)

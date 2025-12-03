@@ -1,34 +1,34 @@
 @interface AMSUIFadeAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation AMSUIFadeAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v7 = [v4 containerView];
-  v8 = [v5 presentedViewController];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  containerView = [transitionCopy containerView];
+  presentedViewController = [v5 presentedViewController];
 
-  [(AMSUIFadeAnimator *)self transitionDuration:v4];
+  [(AMSUIFadeAnimator *)self transitionDuration:transitionCopy];
   v10 = v9;
-  if (v8 == v6)
+  if (presentedViewController == v6)
   {
-    [v4 finalFrameForViewController:v6];
+    [transitionCopy finalFrameForViewController:v6];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [v6 view];
-    [v23 setAlpha:0.0];
+    view = [v6 view];
+    [view setAlpha:0.0];
 
-    v24 = [v6 view];
-    [v24 setFrame:{v16, v18, v20, v22}];
+    view2 = [v6 view];
+    [view2 setFrame:{v16, v18, v20, v22}];
 
-    v25 = [v6 view];
-    [v7 addSubview:v25];
+    view3 = [v6 view];
+    [containerView addSubview:view3];
 
     v11 = v32;
     v32[0] = MEMORY[0x1E69E9820];
@@ -58,8 +58,8 @@
   v29[1] = 3221225472;
   v29[2] = __39__AMSUIFadeAnimator_animateTransition___block_invoke_3;
   v29[3] = &unk_1E7F24DA0;
-  v30 = v4;
-  v28 = v4;
+  v30 = transitionCopy;
+  v28 = transitionCopy;
   [v27 addCompletion:v29];
   [v27 startAnimation];
 }

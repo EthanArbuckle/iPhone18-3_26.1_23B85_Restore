@@ -1,26 +1,26 @@
 @interface PPLocationReadOnlyClient
 + (id)sharedInstance;
-- (BOOL)locationRecordsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5;
-- (BOOL)rankedLocationsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5;
+- (BOOL)locationRecordsWithQuery:(id)query error:(id *)error handleBatch:(id)batch;
+- (BOOL)rankedLocationsWithQuery:(id)query error:(id *)error handleBatch:(id)batch;
 - (PPLocationReadOnlyClient)init;
 - (void)_unblockPendingQueries;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPLocationReadOnlyClient
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PPLocationReadOnlyClient *)self _remoteObjectProxy];
-  [v8 registerFeedback:v7 completion:v6];
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  _remoteObjectProxy = [(PPLocationReadOnlyClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (BOOL)locationRecordsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)locationRecordsWithQuery:(id)query error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  batchCopy = batch;
   v10 = objc_opt_class();
   queryManager = self->_queryManager;
   v19[0] = MEMORY[0x1E69E9820];
@@ -28,19 +28,19 @@
   v19[2] = __71__PPLocationReadOnlyClient_locationRecordsWithQuery_error_handleBatch___block_invoke;
   v19[3] = &unk_1E77F7998;
   v19[4] = self;
-  v20 = v8;
+  v20 = queryCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__PPLocationReadOnlyClient_locationRecordsWithQuery_error_handleBatch___block_invoke_2;
   v15[3] = &unk_1E77F79C0;
-  v17 = v9;
+  v17 = batchCopy;
   v18 = v10;
   v16 = @"locationRecordsWithQuery";
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a4) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"locationRecordsWithQuery" error:a4 queryInitializer:v19 handleBatch:v15];
+  v12 = batchCopy;
+  v13 = queryCopy;
+  LOBYTE(error) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"locationRecordsWithQuery" error:error queryInitializer:v19 handleBatch:v15];
 
-  return a4;
+  return error;
 }
 
 void __71__PPLocationReadOnlyClient_locationRecordsWithQuery_error_handleBatch___block_invoke(uint64_t a1, uint64_t a2)
@@ -58,10 +58,10 @@ void __71__PPLocationReadOnlyClient_locationRecordsWithQuery_error_handleBatch__
   (*(a1[5] + 16))();
 }
 
-- (BOOL)rankedLocationsWithQuery:(id)a3 error:(id *)a4 handleBatch:(id)a5
+- (BOOL)rankedLocationsWithQuery:(id)query error:(id *)error handleBatch:(id)batch
 {
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  batchCopy = batch;
   v10 = objc_opt_class();
   queryManager = self->_queryManager;
   v19[0] = MEMORY[0x1E69E9820];
@@ -69,19 +69,19 @@ void __71__PPLocationReadOnlyClient_locationRecordsWithQuery_error_handleBatch__
   v19[2] = __71__PPLocationReadOnlyClient_rankedLocationsWithQuery_error_handleBatch___block_invoke;
   v19[3] = &unk_1E77F7998;
   v19[4] = self;
-  v20 = v8;
+  v20 = queryCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__PPLocationReadOnlyClient_rankedLocationsWithQuery_error_handleBatch___block_invoke_2;
   v15[3] = &unk_1E77F79C0;
-  v17 = v9;
+  v17 = batchCopy;
   v18 = v10;
   v16 = @"rankedLocationsWithQuery";
-  v12 = v9;
-  v13 = v8;
-  LOBYTE(a4) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedLocationsWithQuery" error:a4 queryInitializer:v19 handleBatch:v15];
+  v12 = batchCopy;
+  v13 = queryCopy;
+  LOBYTE(error) = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedLocationsWithQuery" error:error queryInitializer:v19 handleBatch:v15];
 
-  return a4;
+  return error;
 }
 
 void __71__PPLocationReadOnlyClient_rankedLocationsWithQuery_error_handleBatch___block_invoke(uint64_t a1, uint64_t a2)
@@ -209,7 +209,7 @@ void __32__PPLocationReadOnlyClient_init__block_invoke_83(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__PPLocationReadOnlyClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken8_6582 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken8_6582, block);

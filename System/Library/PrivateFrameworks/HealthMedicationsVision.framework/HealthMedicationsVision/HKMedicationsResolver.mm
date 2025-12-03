@@ -1,52 +1,52 @@
 @interface HKMedicationsResolver
-- (BOOL)hkt_prepareNgramAssetWithError:(id *)a3;
+- (BOOL)hkt_prepareNgramAssetWithError:(id *)error;
 - (BOOL)hkt_setUpDatabase;
 - (BOOL)lineHasUsefulInfo;
-- (BOOL)resetInMemoryDBWithError:(id *)a3;
-- (BOOL)resetResolverWithError:(id *)a3;
-- (HKMedicationsMapResult)createNgramMapsWithError:(uint64_t)a1;
-- (HKMedicationsMercuryIdGroup)updateIdGroup:(unsigned int)a3 ingredientMatched:(int)a4 tradeNameMatched:(void *)a5 matchingTradeNames:;
-- (HKMedicationsResolver)initWithAssetUrl:(id)a3;
-- (id)abbreviate:(id *)a1;
-- (id)abbreviationsWithError:(uint64_t)a1;
-- (id)createNgramCountsWithError:(uint64_t)a1;
-- (id)filterAndAddGenerics:(id)a3 transcripts:(id)a4 criterion:(float)a5 limit:(int64_t)a6 error:(id *)a7;
-- (id)hkt_ngramsWithError:(id *)a3;
-- (id)ingredientsWithError:(uint64_t)a1;
-- (id)ngramsFrom:(uint64_t)a3 minLength:(uint64_t)a4 maxLength:;
-- (id)resolveText:(id)a3 error:(id *)a4;
-- (id)tradenamesWithError:(uint64_t)a1;
-- (int64_t)consecutiveLCSUsingTranscript:(id)a3 prediction:(id)a4;
-- (int64_t)countOfContinousDigitsInLine:(id)a3;
-- (int64_t)hkt_ngramIdCountWithError:(id *)a3;
-- (uint64_t)checkLCSCriterion:(void *)a1 transcripts:(void *)a2 strings:(void *)a3 normalizationType:(uint64_t)a4 tolerance:(float)a5;
-- (uint64_t)createNgramAssetsWithError:(uint64_t)a1;
-- (uint64_t)dropNgramAssetsWithError:(uint64_t)a1;
-- (uint64_t)getGenericSpecificIdForClinicalId:(uint64_t)a3 genericId:;
-- (uint64_t)looksLikeGenericInText:(uint64_t)a1;
-- (uint64_t)setupDatabaseWithError:(uint64_t)a1;
-- (uint64_t)setupNgramTables:(uint64_t)a1;
+- (BOOL)resetInMemoryDBWithError:(id *)error;
+- (BOOL)resetResolverWithError:(id *)error;
+- (HKMedicationsMapResult)createNgramMapsWithError:(uint64_t)error;
+- (HKMedicationsMercuryIdGroup)updateIdGroup:(unsigned int)group ingredientMatched:(int)matched tradeNameMatched:(void *)nameMatched matchingTradeNames:;
+- (HKMedicationsResolver)initWithAssetUrl:(id)url;
+- (id)abbreviate:(id *)abbreviate;
+- (id)abbreviationsWithError:(uint64_t)error;
+- (id)createNgramCountsWithError:(uint64_t)error;
+- (id)filterAndAddGenerics:(id)generics transcripts:(id)transcripts criterion:(float)criterion limit:(int64_t)limit error:(id *)error;
+- (id)hkt_ngramsWithError:(id *)error;
+- (id)ingredientsWithError:(uint64_t)error;
+- (id)ngramsFrom:(uint64_t)from minLength:(uint64_t)length maxLength:;
+- (id)resolveText:(id)text error:(id *)error;
+- (id)tradenamesWithError:(uint64_t)error;
+- (int64_t)consecutiveLCSUsingTranscript:(id)transcript prediction:(id)prediction;
+- (int64_t)countOfContinousDigitsInLine:(id)line;
+- (int64_t)hkt_ngramIdCountWithError:(id *)error;
+- (uint64_t)checkLCSCriterion:(void *)criterion transcripts:(void *)transcripts strings:(void *)strings normalizationType:(uint64_t)type tolerance:(float)tolerance;
+- (uint64_t)createNgramAssetsWithError:(uint64_t)error;
+- (uint64_t)dropNgramAssetsWithError:(uint64_t)error;
+- (uint64_t)getGenericSpecificIdForClinicalId:(uint64_t)id genericId:;
+- (uint64_t)looksLikeGenericInText:(uint64_t)text;
+- (uint64_t)setupDatabaseWithError:(uint64_t)error;
+- (uint64_t)setupNgramTables:(uint64_t)tables;
 - (void)checkNgramFrame;
 - (void)dealloc;
-- (void)fillNgramsForText:(uint64_t)a3 n:;
-- (void)processNgramLine:(id)a3 n:(int64_t)a4;
+- (void)fillNgramsForText:(uint64_t)text n:;
+- (void)processNgramLine:(id)line n:(int64_t)n;
 @end
 
 @implementation HKMedicationsResolver
 
-- (HKMedicationsResolver)initWithAssetUrl:(id)a3
+- (HKMedicationsResolver)initWithAssetUrl:(id)url
 {
-  v5 = a3;
+  urlCopy = url;
   v12.receiver = self;
   v12.super_class = HKMedicationsResolver;
   v6 = [(HKMedicationsResolver *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetUrl, a3);
-    v8 = [objc_alloc(MEMORY[0x277D10B30]) initMemoryDatabase];
+    objc_storeStrong(&v6->_assetUrl, url);
+    initMemoryDatabase = [objc_alloc(MEMORY[0x277D10B30]) initMemoryDatabase];
     db = v7->_db;
-    v7->_db = v8;
+    v7->_db = initMemoryDatabase;
 
     if ([(HDSQLiteDatabase *)v7->_db openWithError:0])
     {
@@ -77,16 +77,16 @@ void __48__HKMedicationsResolver_setupDatabaseWithError___block_invoke(uint64_t 
   sqlite3_bind_text(a2, 1, [v4 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (BOOL)resetResolverWithError:(id *)a3
+- (BOOL)resetResolverWithError:(id *)error
 {
   self->_numberOfNewNgrams = 0;
   self->_numberOfUsedNgrams = 0;
-  return [(HKMedicationsResolver *)self resetInMemoryDBWithError:a3];
+  return [(HKMedicationsResolver *)self resetInMemoryDBWithError:error];
 }
 
-- (BOOL)resetInMemoryDBWithError:(id *)a3
+- (BOOL)resetInMemoryDBWithError:(id *)error
 {
-  v3 = [(HDSQLiteDatabase *)self->_db executeSQLStatements:&unk_2863C5880 error:a3];
+  v3 = [(HDSQLiteDatabase *)self->_db executeSQLStatements:&unk_2863C5880 error:error];
   if ((v3 & 1) == 0)
   {
     _HKInitializeLogging();
@@ -138,9 +138,9 @@ uint64_t __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_6(u
   return 1;
 }
 
-- (id)createNgramCountsWithError:(uint64_t)a1
+- (id)createNgramCountsWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     v10 = 0;
     v11 = &v10;
@@ -148,13 +148,13 @@ uint64_t __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_6(u
     v13 = __Block_byref_object_copy__1;
     v14 = __Block_byref_object_dispose__1;
     v15 = objc_alloc_init(HKMedicationsNgramCounts);
-    v4 = *(a1 + 8);
+    v4 = *(error + 8);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__HKMedicationsResolver_createNgramCountsWithError___block_invoke;
     v9[3] = &unk_2796D28E0;
     v9[4] = &v10;
-    if (([v4 executeSQL:@"SELECT COUNT(*) FROM ngram_list;" error:a2 bindingHandler:0 enumerationHandler:v9] & 1) != 0 && (v5 = *(a1 + 8), v8[0] = MEMORY[0x277D85DD0], v8[1] = 3221225472, v8[2] = __52__HKMedicationsResolver_createNgramCountsWithError___block_invoke_2, v8[3] = &unk_2796D28E0, v8[4] = &v10, objc_msgSend(v5, "executeSQL:error:bindingHandler:enumerationHandler:", @"SELECT COUNT(*) FROM ngram_id_list;", a2, 0, v8)))
+    if (([v4 executeSQL:@"SELECT COUNT(*) FROM ngram_list;" error:a2 bindingHandler:0 enumerationHandler:v9] & 1) != 0 && (v5 = *(error + 8), v8[0] = MEMORY[0x277D85DD0], v8[1] = 3221225472, v8[2] = __52__HKMedicationsResolver_createNgramCountsWithError___block_invoke_2, v8[3] = &unk_2796D28E0, v8[4] = &v10, objc_msgSend(v5, "executeSQL:error:bindingHandler:enumerationHandler:", @"SELECT COUNT(*) FROM ngram_id_list;", a2, 0, v8)))
     {
       v6 = v11[5];
     }
@@ -177,7 +177,7 @@ uint64_t __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_6(u
 
 - (BOOL)lineHasUsefulInfo
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -202,7 +202,7 @@ uint64_t __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_6(u
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v1 = *(a1 + 8);
+  v1 = *(self + 8);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__HKMedicationsResolver_lineHasUsefulInfo__block_invoke;
@@ -241,20 +241,20 @@ uint64_t __42__HKMedicationsResolver_lineHasUsefulInfo__block_invoke(void *a1, u
   return 1;
 }
 
-- (void)processNgramLine:(id)a3 n:(int64_t)a4
+- (void)processNgramLine:(id)line n:(int64_t)n
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lineCopy = line;
   v7 = [MEMORY[0x277CBEB98] setWithObject:@"compare to"];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v6 lowercaseString];
-  v10 = [v8 setWithObject:v9];
+  lowercaseString = [lineCopy lowercaseString];
+  v10 = [v8 setWithObject:lowercaseString];
   v11 = [HKMedicationsResolver checkLCSCriterion:v10 transcripts:v7 strings:2 normalizationType:0.95 tolerance:?];
 
-  if ((v11 & 1) == 0 && [(HKMedicationsResolver *)self countOfContinousDigitsInLine:v6]<= 5)
+  if ((v11 & 1) == 0 && [(HKMedicationsResolver *)self countOfContinousDigitsInLine:lineCopy]<= 5)
   {
-    v13 = [v6 normalizeForType:2];
-    v14 = [(HKMedicationsResolver *)self ngramsFrom:v13 minLength:3 maxLength:a4 + 1];
+    v13 = [lineCopy normalizeForType:2];
+    v14 = [(HKMedicationsResolver *)self ngramsFrom:v13 minLength:3 maxLength:n + 1];
 
     v37 = 0u;
     v38 = 0u;
@@ -360,17 +360,17 @@ uint64_t __44__HKMedicationsResolver_processNgramLine_n___block_invoke(uint64_t 
   return sqlite3_bind_text(a2, 1, v3, -1, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (uint64_t)getGenericSpecificIdForClinicalId:(uint64_t)a3 genericId:
+- (uint64_t)getGenericSpecificIdForClinicalId:(uint64_t)id genericId:
 {
   v3 = 0;
   v25 = *MEMORY[0x277D85DE8];
-  if (a1 && a3)
+  if (self && id)
   {
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v5 = *(a1 + 8);
+    v5 = *(self + 8);
     v13[4] = a2;
     v14 = 0;
     v13[0] = MEMORY[0x277D85DD0];
@@ -382,7 +382,7 @@ uint64_t __44__HKMedicationsResolver_processNgramLine_n___block_invoke(uint64_t 
     v12[2] = __69__HKMedicationsResolver_getGenericSpecificIdForClinicalId_genericId___block_invoke_2;
     v12[3] = &unk_2796D2950;
     v12[4] = &v15;
-    v12[5] = a3;
+    v12[5] = id;
     v6 = [v5 executeSQL:@"SELECT specific_id FROM generic_map where clinical_id = ? LIMIT 1;" error:&v14 bindingHandler:v13 enumerationHandler:v12];
     v7 = v14;
     if (v6)
@@ -423,20 +423,20 @@ uint64_t __69__HKMedicationsResolver_getGenericSpecificIdForClinicalId_genericId
   return 0;
 }
 
-- (id)resolveText:(id)a3 error:(id *)a4
+- (id)resolveText:(id)text error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  textCopy = text;
   if (!self->_dbReady)
   {
-    if (([(HKMedicationsResolver *)self setupDatabaseWithError:a4]& 1) == 0)
+    if (([(HKMedicationsResolver *)self setupDatabaseWithError:error]& 1) == 0)
     {
       v9 = 0;
       self->_dbReady = 0;
       goto LABEL_10;
     }
 
-    v10 = [(HKMedicationsResolver *)self setupNgramTables:a4];
+    v10 = [(HKMedicationsResolver *)self setupNgramTables:error];
     self->_dbReady = v10;
     if (!v10)
     {
@@ -444,24 +444,24 @@ uint64_t __69__HKMedicationsResolver_getGenericSpecificIdForClinicalId_genericId
     }
   }
 
-  if ([(HKMedicationsResolver *)self dropNgramAssetsWithError:a4])
+  if ([(HKMedicationsResolver *)self dropNgramAssetsWithError:error])
   {
-    v7 = [(HKMedicationsResolver *)self createNgramCountsWithError:a4];
+    v7 = [(HKMedicationsResolver *)self createNgramCountsWithError:error];
     v8 = v7;
-    if (v7 && (v13 = [v7 seen], v14 = objc_msgSend(v8, "used"), -[HKMedicationsResolver fillNgramsForText:n:](self, v6, 5), -[HKMedicationsResolver createNgramAssetsWithError:](self)) && (-[HKMedicationsResolver createNgramCountsWithError:](self, a4), v32 = objc_claimAutoreleasedReturnValue(), v8, (v8 = v32) != 0))
+    if (v7 && (v13 = [v7 seen], v14 = objc_msgSend(v8, "used"), -[HKMedicationsResolver fillNgramsForText:n:](self, textCopy, 5), -[HKMedicationsResolver createNgramAssetsWithError:](self)) && (-[HKMedicationsResolver createNgramCountsWithError:](self, error), v32 = objc_claimAutoreleasedReturnValue(), v8, (v8 = v32) != 0))
     {
-      v15 = [v32 seen];
-      v16 = [v32 used];
-      if (v16 == v14)
+      seen = [v32 seen];
+      used = [v32 used];
+      if (used == v14)
       {
         v9 = objc_alloc_init(HKMedicationsResolverResult);
       }
 
       else
       {
-        self->_numberOfNewNgrams = v15 - v13;
-        self->_numberOfUsedNgrams = v16 - v14;
-        v17 = [(HKMedicationsResolver *)self createNgramMapsWithError:a4];
+        self->_numberOfNewNgrams = seen - v13;
+        self->_numberOfUsedNgrams = used - v14;
+        v17 = [(HKMedicationsResolver *)self createNgramMapsWithError:error];
         if (v17)
         {
           v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -484,21 +484,21 @@ uint64_t __69__HKMedicationsResolver_getGenericSpecificIdForClinicalId_genericId
                 }
 
                 v19 = *(*(&v47 + 1) + 8 * i);
-                v20 = [v17 commonDict];
-                v21 = [v20 integerForKey:{objc_msgSend(v19, "integerValue")}];
+                commonDict = [v17 commonDict];
+                v21 = [commonDict integerForKey:{objc_msgSend(v19, "integerValue")}];
 
-                v22 = [v17 ngramCount];
-                v23 = [v17 commonSetSizeDict];
-                v24 = [v23 integerForKey:{objc_msgSend(v19, "integerValue")}];
+                ngramCount = [v17 ngramCount];
+                commonSetSizeDict = [v17 commonSetSizeDict];
+                v24 = [commonSetSizeDict integerForKey:{objc_msgSend(v19, "integerValue")}];
 
-                v25 = v24 + v22;
+                v25 = v24 + ngramCount;
                 v43 = 0;
                 v44 = &v43;
                 v45 = 0x2020000000;
-                v46 = v21 / (v24 + v22 - v21);
+                v46 = v21 / (v24 + ngramCount - v21);
                 v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-                v27 = [v17 uniqueDict];
-                v28 = [v19 integerValue];
+                uniqueDict = [v17 uniqueDict];
+                integerValue = [v19 integerValue];
                 v37[0] = MEMORY[0x277D85DD0];
                 v37[1] = 3221225472;
                 v37[2] = __43__HKMedicationsResolver_resolveText_error___block_invoke;
@@ -509,7 +509,7 @@ uint64_t __69__HKMedicationsResolver_getGenericSpecificIdForClinicalId_genericId
                 v29 = v26;
                 v39 = v29;
                 v40 = &v43;
-                [v27 enumerateIntegersForKey:v28 block:v37];
+                [uniqueDict enumerateIntegersForKey:integerValue block:v37];
 
                 [v29 sortUsingComparator:&__block_literal_global];
                 if (*(v44 + 6) > 0.03)
@@ -534,7 +534,7 @@ uint64_t __69__HKMedicationsResolver_getGenericSpecificIdForClinicalId_genericId
 
           [v33 sortUsingComparator:&__block_literal_global_452];
           v9 = objc_alloc_init(HKMedicationsResolverResult);
-          [(HKMedicationsResolverResult *)v9 setLooksGeneric:[(HKMedicationsResolver *)self looksLikeGenericInText:v6]];
+          [(HKMedicationsResolverResult *)v9 setLooksGeneric:[(HKMedicationsResolver *)self looksLikeGenericInText:textCopy]];
           [(HKMedicationsResolverResult *)v9 setResolvedIds:v33];
           [(HKMedicationsResolverResult *)v9 setNumberOfNewNgrams:self->_numberOfNewNgrams];
           [(HKMedicationsResolverResult *)v9 setNumberOfUsedNgrams:self->_numberOfUsedNgrams];
@@ -657,47 +657,47 @@ uint64_t __43__HKMedicationsResolver_resolveText_error___block_invoke_3(uint64_t
   return v9;
 }
 
-- (id)filterAndAddGenerics:(id)a3 transcripts:(id)a4 criterion:(float)a5 limit:(int64_t)a6 error:(id *)a7
+- (id)filterAndAddGenerics:(id)generics transcripts:(id)transcripts criterion:(float)criterion limit:(int64_t)limit error:(id *)error
 {
   v104 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v86 = a4;
+  genericsCopy = generics;
+  transcriptsCopy = transcripts;
   v13 = objc_alloc_init(HKMedicationsResolverResult);
-  v14 = [v12 resolvedIds];
-  v15 = [v14 count];
+  resolvedIds = [genericsCopy resolvedIds];
+  v15 = [resolvedIds count];
 
-  if (v15 < a6)
+  if (v15 < limit)
   {
-    a6 = v15;
+    limit = v15;
   }
 
-  if (a5 == 0.0)
+  if (criterion == 0.0)
   {
-    v16 = [v12 resolvedIds];
-    v17 = [v16 subarrayWithRange:{0, a6}];
+    resolvedIds2 = [genericsCopy resolvedIds];
+    v17 = [resolvedIds2 subarrayWithRange:{0, limit}];
     [(HKMedicationsResolverResult *)v13 setResolvedIds:v17];
 
-    v18 = [v12 ngramList];
-    [(HKMedicationsResolverResult *)v13 setNgramList:v18];
+    ngramList = [genericsCopy ngramList];
+    [(HKMedicationsResolverResult *)v13 setNgramList:ngramList];
 
-    v19 = [v12 usedNgrams];
-    [(HKMedicationsResolverResult *)v13 setUsedNgrams:v19];
+    usedNgrams = [genericsCopy usedNgrams];
+    [(HKMedicationsResolverResult *)v13 setUsedNgrams:usedNgrams];
 
     v20 = v13;
     goto LABEL_52;
   }
 
-  v75 = v12;
+  v75 = genericsCopy;
   if (!self->_dbReady)
   {
-    if (([(HKMedicationsResolver *)self setupDatabaseWithError:a7]& 1) == 0)
+    if (([(HKMedicationsResolver *)self setupDatabaseWithError:error]& 1) == 0)
     {
       v20 = 0;
       self->_dbReady = 0;
       goto LABEL_52;
     }
 
-    v71 = [(HKMedicationsResolver *)self setupNgramTables:a7];
+    v71 = [(HKMedicationsResolver *)self setupNgramTables:error];
     self->_dbReady = v71;
     if (!v71)
     {
@@ -711,7 +711,7 @@ uint64_t __43__HKMedicationsResolver_resolveText_error___block_invoke_3(uint64_t
     ingredients = self->_ingredients;
     self->_ingredients = v65;
 
-    if (*a7)
+    if (*error)
     {
       goto LABEL_62;
     }
@@ -723,20 +723,20 @@ uint64_t __43__HKMedicationsResolver_resolveText_error___block_invoke_3(uint64_t
     tradenames = self->_tradenames;
     self->_tradenames = v67;
 
-    if (*a7)
+    if (*error)
     {
       goto LABEL_62;
     }
   }
 
-  if (self->_abbreviations || ([HKMedicationsResolver abbreviationsWithError:?], v69 = objc_claimAutoreleasedReturnValue(), abbreviations = self->_abbreviations, self->_abbreviations = v69, abbreviations, !*a7))
+  if (self->_abbreviations || ([HKMedicationsResolver abbreviationsWithError:?], v69 = objc_claimAutoreleasedReturnValue(), abbreviations = self->_abbreviations, self->_abbreviations = v69, abbreviations, !*error))
   {
-    v72 = a6;
+    limitCopy = limit;
     v74 = v13;
     v76 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v21 = [v12 resolvedIds];
-    v22 = [v12 resolvedIds];
-    v23 = [v22 count];
+    resolvedIds3 = [genericsCopy resolvedIds];
+    resolvedIds4 = [genericsCopy resolvedIds];
+    v23 = [resolvedIds4 count];
 
     if (v23 >= 0x32)
     {
@@ -748,7 +748,7 @@ uint64_t __43__HKMedicationsResolver_resolveText_error___block_invoke_3(uint64_t
       v24 = v23;
     }
 
-    v25 = [v21 subarrayWithRange:{0, v24, v72}];
+    v25 = [resolvedIds3 subarrayWithRange:{0, v24, limitCopy}];
 
     v99 = 0u;
     v100 = 0u;
@@ -827,14 +827,14 @@ uint64_t __43__HKMedicationsResolver_resolveText_error___block_invoke_3(uint64_t
 LABEL_30:
             v79 = v32;
             v80 = v31;
-            v78 = [HKMedicationsResolver checkLCSCriterion:v86 transcripts:v31 strings:2 normalizationType:a5 tolerance:?];
+            v78 = [HKMedicationsResolver checkLCSCriterion:transcriptsCopy transcripts:v31 strings:2 normalizationType:criterion tolerance:?];
             v85 = objc_alloc_init(*(v28 + 2904));
             v89 = 0u;
             v90 = 0u;
             v91 = 0u;
             v92 = 0u;
-            v43 = [v83 subHgIds];
-            v44 = [v43 countByEnumeratingWithState:&v89 objects:v101 count:16];
+            subHgIds = [v83 subHgIds];
+            v44 = [subHgIds countByEnumeratingWithState:&v89 objects:v101 count:16];
             if (v44)
             {
               v45 = v44;
@@ -847,14 +847,14 @@ LABEL_30:
                 {
                   if (*v90 != v47)
                   {
-                    objc_enumerationMutation(v43);
+                    objc_enumerationMutation(subHgIds);
                   }
 
-                  v49 = [*(*(&v89 + 1) + 8 * v48) hgId];
-                  v50 = [(HKMedicationsNumberToStringMap *)self->_tradenames stringForKey:v49];
-                  if (v50 && ([MEMORY[0x277CBEB98] setWithObject:v50], v52 = objc_claimAutoreleasedReturnValue(), v53 = -[HKMedicationsResolver checkLCSCriterion:transcripts:strings:normalizationType:tolerance:](self, v86, v52, 2, a5), v52, v53))
+                  hgId = [*(*(&v89 + 1) + 8 * v48) hgId];
+                  v50 = [(HKMedicationsNumberToStringMap *)self->_tradenames stringForKey:hgId];
+                  if (v50 && ([MEMORY[0x277CBEB98] setWithObject:v50], v52 = objc_claimAutoreleasedReturnValue(), v53 = -[HKMedicationsResolver checkLCSCriterion:transcripts:strings:normalizationType:tolerance:](self, transcriptsCopy, v52, 2, criterion), v52, v53))
                   {
-                    v54 = [MEMORY[0x277CCABB0] numberWithInteger:v49];
+                    v54 = [MEMORY[0x277CCABB0] numberWithInteger:hgId];
                     [v85 addObject:v54];
 
                     v51 = 1;
@@ -871,7 +871,7 @@ LABEL_30:
                 }
 
                 while (v45 != v48);
-                v55 = [v43 countByEnumeratingWithState:&v89 objects:v101 count:16];
+                v55 = [subHgIds countByEnumeratingWithState:&v89 objects:v101 count:16];
                 v45 = v55;
               }
 
@@ -912,7 +912,7 @@ LABEL_30:
     v87[2] = __80__HKMedicationsResolver_filterAndAddGenerics_transcripts_criterion_limit_error___block_invoke_2;
     v87[3] = &unk_2796D29E0;
     v87[4] = self;
-    v12 = v75;
+    genericsCopy = v75;
     v58 = v75;
     v88 = v58;
     [v76 enumerateObjectsUsingBlock:v87];
@@ -929,11 +929,11 @@ LABEL_30:
       [(HKMedicationsResolverResult *)v74 setResolvedIds:v59];
     }
 
-    v61 = [v58 ngramList];
-    [(HKMedicationsResolverResult *)v60 setNgramList:v61];
+    ngramList2 = [v58 ngramList];
+    [(HKMedicationsResolverResult *)v60 setNgramList:ngramList2];
 
-    v62 = [v58 usedNgrams];
-    [(HKMedicationsResolverResult *)v60 setUsedNgrams:v62];
+    usedNgrams2 = [v58 usedNgrams];
+    [(HKMedicationsResolverResult *)v60 setUsedNgrams:usedNgrams2];
 
     v20 = v60;
     v13 = v60;
@@ -1081,13 +1081,13 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
   return 1;
 }
 
-- (int64_t)consecutiveLCSUsingTranscript:(id)a3 prediction:(id)a4
+- (int64_t)consecutiveLCSUsingTranscript:(id)transcript prediction:(id)prediction
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  v8 = [v6 length];
+  transcriptCopy = transcript;
+  predictionCopy = prediction;
+  v7 = [transcriptCopy length];
+  v8 = [predictionCopy length];
   v20 = &v20;
   v9 = 8 * (v7 + 1 + (v7 + 1) * v8);
   v10 = &v20 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1110,8 +1110,8 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
       {
         for (i = 0; i != v8; ++i)
         {
-          v15 = [v5 characterAtIndex:v13 - 1];
-          if (v15 == [v6 characterAtIndex:i])
+          v15 = [transcriptCopy characterAtIndex:v13 - 1];
+          if (v15 == [predictionCopy characterAtIndex:i])
           {
             v16 = *&v10[8 * i];
             *(v12 + 8 * i) = v16 + 1;
@@ -1139,17 +1139,17 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
   return v11;
 }
 
-- (int64_t)countOfContinousDigitsInLine:(id)a3
+- (int64_t)countOfContinousDigitsInLine:(id)line
 {
-  v3 = a3;
-  if ([v3 length])
+  lineCopy = line;
+  if ([lineCopy length])
   {
     v4 = 0;
     v5 = 0;
     v6 = 0;
     do
     {
-      v7 = [v3 characterAtIndex:v6] - 48;
+      v7 = [lineCopy characterAtIndex:v6] - 48;
       if (v4 <= v5)
       {
         v8 = v5;
@@ -1178,7 +1178,7 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
       ++v6;
     }
 
-    while (v6 < [v3 length]);
+    while (v6 < [lineCopy length]);
   }
 
   else
@@ -1200,7 +1200,7 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
   return v9;
 }
 
-- (int64_t)hkt_ngramIdCountWithError:(id *)a3
+- (int64_t)hkt_ngramIdCountWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -1212,7 +1212,7 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
   v6[2] = __51__HKMedicationsResolver_hkt_ngramIdCountWithError___block_invoke;
   v6[3] = &unk_2796D28E0;
   v6[4] = &v7;
-  if (([(HDSQLiteDatabase *)db executeSQL:@"SELECT COUNT(*) FROM ngram_id_list" error:a3 bindingHandler:0 enumerationHandler:v6]& 1) != 0)
+  if (([(HDSQLiteDatabase *)db executeSQL:@"SELECT COUNT(*) FROM ngram_id_list" error:error bindingHandler:0 enumerationHandler:v6]& 1) != 0)
   {
     v4 = v8[3];
   }
@@ -1226,7 +1226,7 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
   return v4;
 }
 
-- (id)hkt_ngramsWithError:(id *)a3
+- (id)hkt_ngramsWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -1240,7 +1240,7 @@ uint64_t __45__HKMedicationsResolver_tradenamesWithError___block_invoke(uint64_t
   v8[2] = __45__HKMedicationsResolver_hkt_ngramsWithError___block_invoke;
   v8[3] = &unk_2796D28E0;
   v8[4] = &v9;
-  if (([(HDSQLiteDatabase *)db executeSQL:@"SELECT * from ngram_list" error:a3 bindingHandler:0 enumerationHandler:v8]& 1) != 0)
+  if (([(HDSQLiteDatabase *)db executeSQL:@"SELECT * from ngram_list" error:error bindingHandler:0 enumerationHandler:v8]& 1) != 0)
   {
     v6 = v10[5];
   }
@@ -1266,17 +1266,17 @@ uint64_t __45__HKMedicationsResolver_hkt_ngramsWithError___block_invoke(uint64_t
   return 1;
 }
 
-- (uint64_t)setupDatabaseWithError:(uint64_t)a1
+- (uint64_t)setupDatabaseWithError:(uint64_t)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    v4 = *(a1 + 8);
+    v4 = *(error + 8);
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_13();
     v21 = __48__HKMedicationsResolver_setupDatabaseWithError___block_invoke;
     v22 = &unk_2796D2890;
-    v23 = a1;
+    errorCopy = error;
     v7 = [v5 executeSQL:@"ATTACH DATABASE ? AS pbs_assets;" error:v6 bindingHandler:v20 enumerationHandler:0];
     v8 = MEMORY[0x277CCC2B0];
     if ((v7 & 1) == 0)
@@ -1296,7 +1296,7 @@ uint64_t __45__HKMedicationsResolver_hkt_ngramsWithError___block_invoke(uint64_t
       }
     }
 
-    v10 = [*(a1 + 8) executeSQLStatements:&unk_2863C5850 error:0];
+    v10 = [*(error + 8) executeSQLStatements:&unk_2863C5850 error:0];
     if ((v10 & 1) == 0)
     {
       _HKInitializeLogging();
@@ -1321,12 +1321,12 @@ uint64_t __45__HKMedicationsResolver_hkt_ngramsWithError___block_invoke(uint64_t
   return v10;
 }
 
-- (uint64_t)setupNgramTables:(uint64_t)a1
+- (uint64_t)setupNgramTables:(uint64_t)tables
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (tables)
   {
-    v3 = [*(a1 + 8) executeSQLStatements:&unk_2863C5868 error:a2];
+    v3 = [*(tables + 8) executeSQLStatements:&unk_2863C5868 error:a2];
     if ((v3 & 1) == 0)
     {
       _HKInitializeLogging();
@@ -1351,9 +1351,9 @@ uint64_t __45__HKMedicationsResolver_hkt_ngramsWithError___block_invoke(uint64_t
   return v3;
 }
 
-- (uint64_t)createNgramAssetsWithError:(uint64_t)a1
+- (uint64_t)createNgramAssetsWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
@@ -1369,12 +1369,12 @@ uint64_t __45__HKMedicationsResolver_hkt_ngramsWithError___block_invoke(uint64_t
   return [v5 executeSQLStatements:&unk_2863C58C8 error:v1];
 }
 
-- (uint64_t)dropNgramAssetsWithError:(uint64_t)a1
+- (uint64_t)dropNgramAssetsWithError:(uint64_t)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    v3 = [*(a1 + 8) executeSQLStatements:&unk_2863C58E0 error:a2];
+    v3 = [*(error + 8) executeSQLStatements:&unk_2863C58E0 error:a2];
     if ((v3 & 1) == 0)
     {
       _HKInitializeLogging();
@@ -1399,12 +1399,12 @@ uint64_t __45__HKMedicationsResolver_hkt_ngramsWithError___block_invoke(uint64_t
   return v3;
 }
 
-- (HKMedicationsMapResult)createNgramMapsWithError:(uint64_t)a1
+- (HKMedicationsMapResult)createNgramMapsWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     v4 = objc_alloc_init(HKMedicationsMapResult);
-    v5 = *(a1 + 8);
+    v5 = *(error + 8);
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke;
@@ -1421,7 +1421,7 @@ LABEL_15:
     }
 
     v9 = objc_alloc_init(HKMedicationsNumberToNumberMap);
-    v10 = *(a1 + 8);
+    v10 = *(error + 8);
     v47 = MEMORY[0x277D85DD0];
     v48 = 3221225472;
     v49 = __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_2;
@@ -1433,7 +1433,7 @@ LABEL_15:
       [OUTLINED_FUNCTION_9() setCommonDict:?];
 
       v13 = objc_alloc_init(HKMedicationsNumberToNumberPairListMap);
-      v14 = *(a1 + 8);
+      v14 = *(error + 8);
       v42 = MEMORY[0x277D85DD0];
       v43 = 3221225472;
       v44 = __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_3;
@@ -1445,7 +1445,7 @@ LABEL_15:
         [OUTLINED_FUNCTION_9() setUniqueDict:?];
 
         v16 = objc_alloc_init(HKMedicationsNumberToNumberMap);
-        v17 = *(a1 + 8);
+        v17 = *(error + 8);
         v37 = MEMORY[0x277D85DD0];
         v38 = 3221225472;
         v39 = __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_4;
@@ -1457,7 +1457,7 @@ LABEL_15:
           [OUTLINED_FUNCTION_9() setCommonSetSizeDict:?];
 
           v19 = objc_alloc_init(HKMedicationsNumberToNumberMap);
-          v20 = *(a1 + 8);
+          v20 = *(error + 8);
           v32 = MEMORY[0x277D85DD0];
           v33 = 3221225472;
           v34 = __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_5;
@@ -1469,7 +1469,7 @@ LABEL_15:
             [OUTLINED_FUNCTION_9() setUniqueSetSizeDict:?];
 
             v22 = objc_alloc_init(MEMORY[0x277CBEB58]);
-            v23 = *(a1 + 8);
+            v23 = *(error + 8);
             v27 = MEMORY[0x277D85DD0];
             v28 = 3221225472;
             v29 = __50__HKMedicationsResolver_createNgramMapsWithError___block_invoke_6;
@@ -1518,25 +1518,25 @@ LABEL_16:
   return v8;
 }
 
-- (uint64_t)checkLCSCriterion:(void *)a1 transcripts:(void *)a2 strings:(void *)a3 normalizationType:(uint64_t)a4 tolerance:(float)a5
+- (uint64_t)checkLCSCriterion:(void *)criterion transcripts:(void *)transcripts strings:(void *)strings normalizationType:(uint64_t)type tolerance:(float)tolerance
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a2;
-  v10 = a3;
-  if (a1)
+  transcriptsCopy = transcripts;
+  stringsCopy = strings;
+  if (criterion)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v11 = v9;
+    v11 = transcriptsCopy;
     v28 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v28)
     {
       v12 = *v35;
       v26 = *v35;
-      v27 = v9;
-      v29 = v10;
+      v27 = transcriptsCopy;
+      v29 = stringsCopy;
       do
       {
         for (i = 0; i != v28; ++i)
@@ -1546,12 +1546,12 @@ LABEL_16:
             objc_enumerationMutation(v11);
           }
 
-          v14 = [*(*(&v34 + 1) + 8 * i) normalizeForType:{a4, v26}];
+          v14 = [*(*(&v34 + 1) + 8 * i) normalizeForType:{type, v26}];
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v15 = v10;
+          v15 = stringsCopy;
           v16 = [v15 countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (v16)
           {
@@ -1566,16 +1566,16 @@ LABEL_16:
                   objc_enumerationMutation(v15);
                 }
 
-                v20 = [*(*(&v30 + 1) + 8 * j) normalizeForType:a4];
-                v21 = [a1 consecutiveLCSUsingTranscript:v14 prediction:v20];
+                v20 = [*(*(&v30 + 1) + 8 * j) normalizeForType:type];
+                v21 = [criterion consecutiveLCSUsingTranscript:v14 prediction:v20];
                 v22 = v21 / [v20 length];
 
-                if (v22 >= a5)
+                if (v22 >= tolerance)
                 {
 
                   v23 = 1;
-                  v9 = v27;
-                  v10 = v29;
+                  transcriptsCopy = v27;
+                  stringsCopy = v29;
                   goto LABEL_20;
                 }
               }
@@ -1590,12 +1590,12 @@ LABEL_16:
             }
           }
 
-          v10 = v29;
+          stringsCopy = v29;
           v12 = v26;
         }
 
         v23 = 0;
-        v9 = v27;
+        transcriptsCopy = v27;
         v28 = [v11 countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
@@ -1619,10 +1619,10 @@ LABEL_20:
   return v23;
 }
 
-- (id)ngramsFrom:(uint64_t)a3 minLength:(uint64_t)a4 maxLength:
+- (id)ngramsFrom:(uint64_t)from minLength:(uint64_t)length maxLength:
 {
   v4 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v7 = [a2 componentsSeparatedByString:@"\n"];
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -1643,7 +1643,7 @@ LABEL_20:
             objc_enumerationMutation(v9);
           }
 
-          v15 = [HKMedicationsNgramGenerator tokensFrom:*(v18 + 8 * i) minimumLength:a3 maximumLength:a4];
+          v15 = [HKMedicationsNgramGenerator tokensFrom:*(v18 + 8 * i) minimumLength:from maximumLength:length];
           [v8 addObjectsFromArray:v15];
         }
 
@@ -1668,15 +1668,15 @@ LABEL_20:
 - (void)checkNgramFrame
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8);
+    v2 = *(self + 8);
     v16 = 0;
     v3 = [v2 executeSQLStatements:&unk_2863C5928 error:&v16];
     v4 = v16;
     if (v3)
     {
-      v5 = *(a1 + 8);
+      v5 = *(self + 8);
       v15 = v4;
       v6 = [v5 executeSQLStatements:&unk_2863C5940 error:&v15];
       v7 = v15;
@@ -1716,10 +1716,10 @@ LABEL_20:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fillNgramsForText:(uint64_t)a3 n:
+- (void)fillNgramsForText:(uint64_t)text n:
 {
   v3 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v6 = [a2 componentsSeparatedByString:@"\n"];
     OUTLINED_FUNCTION_7();
@@ -1739,8 +1739,8 @@ LABEL_20:
             objc_enumerationMutation(v6);
           }
 
-          v12 = [*(v14 + 8 * v11) lowercaseString];
-          [a1 processNgramLine:v12 n:a3];
+          lowercaseString = [*(v14 + 8 * v11) lowercaseString];
+          [self processNgramLine:lowercaseString n:text];
 
           ++v11;
         }
@@ -1753,17 +1753,17 @@ LABEL_20:
       while (v9);
     }
 
-    [(HKMedicationsResolver *)a1 checkNgramFrame];
+    [(HKMedicationsResolver *)self checkNgramFrame];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)looksLikeGenericInText:(uint64_t)a1
+- (uint64_t)looksLikeGenericInText:(uint64_t)text
 {
-  v2 = a1;
+  textCopy = text;
   v20 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (text)
   {
     [a2 componentsSeparatedByString:@"\n"];
     objc_claimAutoreleasedReturnValue();
@@ -1787,13 +1787,13 @@ LABEL_20:
           v9 = *(v17[1] + 8 * v8);
           v10 = [MEMORY[0x277CBEB98] setWithArray:&unk_2863C5958];
           v11 = MEMORY[0x277CBEB98];
-          v12 = [v9 lowercaseString];
-          v13 = [v11 setWithObject:v12];
-          v14 = [HKMedicationsResolver checkLCSCriterion:v2 transcripts:v13 strings:v10 normalizationType:2 tolerance:0.9];
+          lowercaseString = [v9 lowercaseString];
+          v13 = [v11 setWithObject:lowercaseString];
+          v14 = [HKMedicationsResolver checkLCSCriterion:textCopy transcripts:v13 strings:v10 normalizationType:2 tolerance:0.9];
 
           if (v14)
           {
-            v2 = 1;
+            textCopy = 1;
             goto LABEL_12;
           }
 
@@ -1811,17 +1811,17 @@ LABEL_20:
       }
     }
 
-    v2 = 0;
+    textCopy = 0;
 LABEL_12:
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v2;
+  return textCopy;
 }
 
-- (id)ingredientsWithError:(uint64_t)a1
+- (id)ingredientsWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     OUTLINED_FUNCTION_12();
     v2 = objc_alloc_init(HKMedicationsNumberToStringMap);
@@ -1844,9 +1844,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)tradenamesWithError:(uint64_t)a1
+- (id)tradenamesWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     OUTLINED_FUNCTION_12();
     v2 = objc_alloc_init(HKMedicationsNumberToStringMap);
@@ -1869,9 +1869,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)abbreviationsWithError:(uint64_t)a1
+- (id)abbreviationsWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     OUTLINED_FUNCTION_12();
     v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -1894,21 +1894,21 @@ LABEL_12:
   return v8;
 }
 
-- (id)abbreviate:(id *)a1
+- (id)abbreviate:(id *)abbreviate
 {
-  v2 = a1;
+  abbreviateCopy = abbreviate;
   v44 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (abbreviate)
   {
-    v3 = [a2 lowercaseString];
-    v4 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v5 = [v3 stringByTrimmingCharactersInSet:v4];
+    lowercaseString = [a2 lowercaseString];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v5 = [lowercaseString stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     v6 = [v5 stringByReplacingOccurrencesOfString:@" withString:{", @" "}];
 
-    v7 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
     v31 = v6;
-    v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+    v8 = [v6 componentsSeparatedByCharactersInSet:whitespaceCharacterSet2];
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v36 = 0u;
@@ -1931,7 +1931,7 @@ LABEL_12:
           }
 
           v15 = *(*(&v36 + 1) + 8 * i);
-          v16 = [v2[8] objectForKeyedSubscript:v15];
+          v16 = [abbreviateCopy[8] objectForKeyedSubscript:v15];
           v17 = v16;
           if (v16)
           {
@@ -1970,11 +1970,11 @@ LABEL_12:
             }
 
             v24 = *(*(&v32 + 1) + 8 * j);
-            v25 = [v24 allKeys];
-            v26 = [v25 firstObject];
+            allKeys = [v24 allKeys];
+            firstObject = [allKeys firstObject];
 
-            v27 = [v24 objectForKeyedSubscript:v26];
-            v28 = [v3 stringByReplacingOccurrencesOfString:v26 withString:v27];
+            v27 = [v24 objectForKeyedSubscript:firstObject];
+            v28 = [lowercaseString stringByReplacingOccurrencesOfString:firstObject withString:v27];
           }
 
           v21 = [v19 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -1983,34 +1983,34 @@ LABEL_12:
         while (v21);
       }
 
-      v2 = v3;
+      abbreviateCopy = lowercaseString;
     }
 
     else
     {
-      v2 = 0;
+      abbreviateCopy = 0;
     }
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return abbreviateCopy;
 }
 
-- (HKMedicationsMercuryIdGroup)updateIdGroup:(unsigned int)a3 ingredientMatched:(int)a4 tradeNameMatched:(void *)a5 matchingTradeNames:
+- (HKMedicationsMercuryIdGroup)updateIdGroup:(unsigned int)group ingredientMatched:(int)matched tradeNameMatched:(void *)nameMatched matchingTradeNames:
 {
   v38 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a5;
-  if (a1)
+  nameMatchedCopy = nameMatched;
+  if (self)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v10 = [v7 subHgIds];
-    v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    subHgIds = [v7 subHgIds];
+    v11 = [subHgIds countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2021,27 +2021,27 @@ LABEL_12:
         {
           if (*v34 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subHgIds);
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
-          v16 = [v15 hgId];
+          hgId = [v15 hgId];
           [v15 jaccardSimilarity];
           v18 = v17;
-          v19 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
-          v20 = [v8 containsObject:v19];
+          v19 = [MEMORY[0x277CCABB0] numberWithInteger:hgId];
+          v20 = [nameMatchedCopy containsObject:v19];
 
           if (v20)
           {
             v21 = v18 + 1.0;
-            if (!a3)
+            if (!group)
             {
               v21 = v18;
             }
 
             v22 = v21 + 1.0;
             v23 = objc_alloc_init(HKMedicationsMercuryId);
-            [(HKMedicationsMercuryId *)v23 setHgId:v16];
+            [(HKMedicationsMercuryId *)v23 setHgId:hgId];
             *&v24 = v22;
             [(HKMedicationsMercuryId *)v23 setJaccardSimilarity:v24];
             [(HKMedicationsMercuryId *)v23 setTradeNameMatched:1];
@@ -2049,7 +2049,7 @@ LABEL_12:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v12 = [subHgIds countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v12);
@@ -2057,12 +2057,12 @@ LABEL_12:
 
     [v9 sortUsingComparator:&__block_literal_global_460];
     [v7 maxJaccardSimilarity];
-    if (a3)
+    if (group)
     {
       v25 = v25 + 1.0;
     }
 
-    if (a4)
+    if (matched)
     {
       v26 = v25 + 1.0;
     }
@@ -2076,7 +2076,7 @@ LABEL_12:
     -[HKMedicationsMercuryIdGroup setPrimaryHgId:](v27, "setPrimaryHgId:", [v7 primaryHgId]);
     *&v28 = v26;
     [(HKMedicationsMercuryIdGroup *)v27 setMaxJaccardSimilarity:v28];
-    [(HKMedicationsMercuryIdGroup *)v27 setIngredientMatched:a3];
+    [(HKMedicationsMercuryIdGroup *)v27 setIngredientMatched:group];
     [(HKMedicationsMercuryIdGroup *)v27 setSubHgIds:v9];
   }
 
@@ -2090,9 +2090,9 @@ LABEL_12:
   return v27;
 }
 
-- (BOOL)hkt_prepareNgramAssetWithError:(id *)a3
+- (BOOL)hkt_prepareNgramAssetWithError:(id *)error
 {
-  if (![(HKMedicationsResolver *)self setupDatabaseWithError:a3]|| ![(HKMedicationsResolver *)self setupNgramTables:a3])
+  if (![(HKMedicationsResolver *)self setupDatabaseWithError:error]|| ![(HKMedicationsResolver *)self setupNgramTables:error])
   {
     return 0;
   }

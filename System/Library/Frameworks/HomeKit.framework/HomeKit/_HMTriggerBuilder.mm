@@ -1,8 +1,8 @@
 @interface _HMTriggerBuilder
 + (void)initialize;
-- (BOOL)_removeActionSet:(uint64_t)a1;
+- (BOOL)_removeActionSet:(uint64_t)set;
 - (BOOL)isEnabled;
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (BOOL)nameIsConfigured;
 - (Class)class;
 - (HMActionSetBuilder)triggerOwnedActionSet;
@@ -10,33 +10,33 @@
 - (NSArray)actionSets;
 - (NSString)configuredName;
 - (NSString)name;
-- (_HMTriggerBuilder)initWithContext:(id)a3 home:(id)a4;
+- (_HMTriggerBuilder)initWithContext:(id)context home:(id)home;
 - (id)__findTriggerOwnedActionSet;
-- (uint64_t)__addActionSet:(uint64_t)a1;
-- (uint64_t)__indexOfActionSet:(uint64_t)a1;
-- (uint64_t)_addActionSet:(os_unfair_lock_s *)a1;
-- (void)addActionSet:(id)a3;
-- (void)addActionSet:(id)a3 completionHandler:(id)a4;
-- (void)addActionSetOfType:(id)a3 completionHandler:(id)a4;
-- (void)removeActionSet:(id)a3;
-- (void)removeActionSet:(id)a3 completionHandler:(id)a4;
-- (void)removePolicy:(id)a3 completionHandler:(id)a4;
-- (void)setActionSets:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setName:(id)a3 isConfigured:(BOOL)a4;
-- (void)setPolicy:(id)a3;
-- (void)updateName:(id)a3 configuredName:(id)a4 completionHandler:(id)a5;
-- (void)updatePolicy:(id)a3 completionHandler:(id)a4;
+- (uint64_t)__addActionSet:(uint64_t)set;
+- (uint64_t)__indexOfActionSet:(uint64_t)set;
+- (uint64_t)_addActionSet:(os_unfair_lock_s *)set;
+- (void)addActionSet:(id)set;
+- (void)addActionSet:(id)set completionHandler:(id)handler;
+- (void)addActionSetOfType:(id)type completionHandler:(id)handler;
+- (void)removeActionSet:(id)set;
+- (void)removeActionSet:(id)set completionHandler:(id)handler;
+- (void)removePolicy:(id)policy completionHandler:(id)handler;
+- (void)setActionSets:(id)sets;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setName:(id)name isConfigured:(BOOL)configured;
+- (void)setPolicy:(id)policy;
+- (void)updateName:(id)name configuredName:(id)configuredName completionHandler:(id)handler;
+- (void)updatePolicy:(id)policy completionHandler:(id)handler;
 @end
 
 @implementation _HMTriggerBuilder
 
-- (void)addActionSetOfType:(id)a3 completionHandler:(id)a4
+- (void)addActionSetOfType:(id)type completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
-  if (!v6)
+  typeCopy = type;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTriggerBuilder addActionSetOfType:completionHandler:]", @"completion"];
     v14 = v13 = self;
@@ -62,8 +62,8 @@ LABEL_12:
     objc_exception_throw(v22);
   }
 
-  v7 = v6;
-  if (([v23 isEqualToString:@"HMActionSetTypeTriggerOwned"] & 1) == 0)
+  v7 = handlerCopy;
+  if (([typeCopy isEqualToString:@"HMActionSetTypeTriggerOwned"] & 1) == 0)
   {
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
@@ -82,9 +82,9 @@ LABEL_12:
   }
 
   v9 = context;
-  v10 = [(_HMContext *)v9 delegateCaller];
-  v11 = [(_HMTriggerBuilder *)self triggerOwnedActionSet];
-  [v10 callCompletion:v7 actionSet:v11 error:0];
+  delegateCaller = [(_HMContext *)v9 delegateCaller];
+  triggerOwnedActionSet = [(_HMTriggerBuilder *)self triggerOwnedActionSet];
+  [delegateCaller callCompletion:v7 actionSet:triggerOwnedActionSet error:0];
 
   v12 = *MEMORY[0x1E69E9840];
 }
@@ -92,8 +92,8 @@ LABEL_12:
 - (HMActionSetBuilder)triggerOwnedActionSet
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(_HMTriggerBuilder *)self __findTriggerOwnedActionSet];
-  if (!v3)
+  __findTriggerOwnedActionSet = [(_HMTriggerBuilder *)self __findTriggerOwnedActionSet];
+  if (!__findTriggerOwnedActionSet)
   {
     v4 = [HMActionSetBuilder alloc];
     if (self)
@@ -107,24 +107,24 @@ LABEL_12:
     }
 
     v6 = context;
-    v7 = [(_HMAutomationBuilder *)self home];
-    v3 = [(HMActionSetBuilder *)v4 initWithType:@"HMActionSetTypeTriggerOwned" context:v6 home:v7];
+    home = [(_HMAutomationBuilder *)self home];
+    __findTriggerOwnedActionSet = [(HMActionSetBuilder *)v4 initWithType:@"HMActionSetTypeTriggerOwned" context:v6 home:home];
 
-    [(NSMutableArray *)self->_actionSets insertObject:v3 atIndex:0];
+    [(NSMutableArray *)self->_actionSets insertObject:__findTriggerOwnedActionSet atIndex:0];
   }
 
   os_unfair_lock_unlock(&self->super._lock);
 
-  return v3;
+  return __findTriggerOwnedActionSet;
 }
 
 - (id)__findTriggerOwnedActionSet
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 64) firstObject];
-    v2 = v1;
-    if (v1 && ([v1 actionSetType], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "isEqualToString:", @"HMActionSetTypeTriggerOwned"), v3, v4))
+    firstObject = [*(self + 64) firstObject];
+    v2 = firstObject;
+    if (firstObject && ([firstObject actionSetType], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "isEqualToString:", @"HMActionSetTypeTriggerOwned"), v3, v4))
     {
       v5 = v2;
     }
@@ -143,16 +143,16 @@ LABEL_12:
   return v5;
 }
 
-- (void)removeActionSet:(id)a3 completionHandler:(id)a4
+- (void)removeActionSet:(id)set completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  setCopy = set;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTriggerBuilder removeActionSet:completionHandler:]", @"completion"];
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -169,10 +169,10 @@ LABEL_12:
     objc_exception_throw(v29);
   }
 
-  v8 = v7;
-  v9 = [(_HMAutomationBuilder *)self home];
+  v8 = handlerCopy;
+  home = [(_HMAutomationBuilder *)self home];
   v30 = 0;
-  v10 = [HMTrigger _validateActionSet:v6 home:v9 homeOwnedOnly:0 error:&v30];
+  v10 = [HMTrigger _validateActionSet:setCopy home:home homeOwnedOnly:0 error:&v30];
   v11 = v30;
 
   if ((v10 & 1) == 0)
@@ -188,8 +188,8 @@ LABEL_12:
     }
 
     v14 = context;
-    v15 = [(_HMContext *)v14 delegateCaller];
-    v16 = v15;
+    delegateCaller = [(_HMContext *)v14 delegateCaller];
+    v16 = delegateCaller;
     if (v11)
     {
       v17 = v8;
@@ -206,7 +206,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v12 = [(_HMTriggerBuilder *)self _removeActionSet:v6];
+  v12 = [(_HMTriggerBuilder *)self _removeActionSet:setCopy];
   if (self)
   {
     v13 = self->super._context;
@@ -218,8 +218,8 @@ LABEL_14:
   }
 
   v14 = v13;
-  v15 = [(_HMContext *)v14 delegateCaller];
-  v16 = v15;
+  delegateCaller = [(_HMContext *)v14 delegateCaller];
+  v16 = delegateCaller;
   if (!v12)
   {
     v20 = MEMORY[0x1E696ABC0];
@@ -230,26 +230,26 @@ LABEL_14:
   v17 = v8;
   v18 = 0;
 LABEL_11:
-  [v15 callCompletion:v17 error:v18];
+  [delegateCaller callCompletion:v17 error:v18];
 LABEL_15:
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_removeActionSet:(uint64_t)a1
+- (BOOL)_removeActionSet:(uint64_t)set
 {
   v3 = a2;
-  if (a1)
+  if (set)
   {
     os_unfair_lock_lock_with_options();
-    v4 = [(_HMTriggerBuilder *)a1 __indexOfActionSet:v3];
+    v4 = [(_HMTriggerBuilder *)set __indexOfActionSet:v3];
     v5 = v4 != 0x7FFFFFFFFFFFFFFFLL;
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [*(a1 + 64) removeObjectAtIndex:v4];
+      [*(set + 64) removeObjectAtIndex:v4];
     }
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((set + 8));
   }
 
   else
@@ -260,30 +260,30 @@ LABEL_15:
   return v5;
 }
 
-- (uint64_t)__indexOfActionSet:(uint64_t)a1
+- (uint64_t)__indexOfActionSet:(uint64_t)set
 {
   v3 = a2;
-  v4 = [v3 uniqueIdentifier];
-  v5 = *(a1 + 64);
+  uniqueIdentifier = [v3 uniqueIdentifier];
+  v5 = *(set + 64);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40___HMTriggerBuilder___indexOfActionSet___block_invoke;
   v10[3] = &unk_1E7546B38;
   v6 = v3;
   v11 = v6;
-  v12 = v4;
-  v7 = v4;
+  v12 = uniqueIdentifier;
+  v7 = uniqueIdentifier;
   v8 = [v5 indexOfObjectPassingTest:v10];
 
   return v8;
 }
 
-- (void)removeActionSet:(id)a3
+- (void)removeActionSet:(id)set
 {
-  v4 = a3;
-  v5 = [(_HMAutomationBuilder *)self home];
+  setCopy = set;
+  home = [(_HMAutomationBuilder *)self home];
   v9 = 0;
-  v6 = [HMTrigger _validateActionSet:v4 home:v5 homeOwnedOnly:0 error:&v9];
+  v6 = [HMTrigger _validateActionSet:setCopy home:home homeOwnedOnly:0 error:&v9];
   v7 = v9;
 
   if ((v6 & 1) == 0)
@@ -292,19 +292,19 @@ LABEL_15:
     objc_exception_throw(v8);
   }
 
-  [(_HMTriggerBuilder *)self _removeActionSet:v4];
+  [(_HMTriggerBuilder *)self _removeActionSet:setCopy];
 }
 
-- (void)addActionSet:(id)a3 completionHandler:(id)a4
+- (void)addActionSet:(id)set completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  setCopy = set;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTriggerBuilder addActionSet:completionHandler:]", @"completion"];
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -321,10 +321,10 @@ LABEL_15:
     objc_exception_throw(v29);
   }
 
-  v8 = v7;
-  v9 = [(_HMAutomationBuilder *)self home];
+  v8 = handlerCopy;
+  home = [(_HMAutomationBuilder *)self home];
   v30 = 0;
-  v10 = [HMTrigger _validateActionSet:v6 home:v9 homeOwnedOnly:1 error:&v30];
+  v10 = [HMTrigger _validateActionSet:setCopy home:home homeOwnedOnly:1 error:&v30];
   v11 = v30;
 
   if ((v10 & 1) == 0)
@@ -340,8 +340,8 @@ LABEL_15:
     }
 
     v14 = context;
-    v15 = [(_HMContext *)v14 delegateCaller];
-    v16 = v15;
+    delegateCaller = [(_HMContext *)v14 delegateCaller];
+    v16 = delegateCaller;
     if (v11)
     {
       v17 = v8;
@@ -358,7 +358,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v12 = [(_HMTriggerBuilder *)self _addActionSet:v6];
+  v12 = [(_HMTriggerBuilder *)self _addActionSet:setCopy];
   if (self)
   {
     v13 = self->super._context;
@@ -370,8 +370,8 @@ LABEL_14:
   }
 
   v14 = v13;
-  v15 = [(_HMContext *)v14 delegateCaller];
-  v16 = v15;
+  delegateCaller = [(_HMContext *)v14 delegateCaller];
+  v16 = delegateCaller;
   if ((v12 & 1) == 0)
   {
     v20 = MEMORY[0x1E696ABC0];
@@ -382,20 +382,20 @@ LABEL_14:
   v17 = v8;
   v18 = 0;
 LABEL_11:
-  [v15 callCompletion:v17 error:v18];
+  [delegateCaller callCompletion:v17 error:v18];
 LABEL_15:
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (uint64_t)_addActionSet:(os_unfair_lock_s *)a1
+- (uint64_t)_addActionSet:(os_unfair_lock_s *)set
 {
   v3 = a2;
-  if (a1)
+  if (set)
   {
     os_unfair_lock_lock_with_options();
-    v4 = [(_HMTriggerBuilder *)a1 __addActionSet:v3];
-    os_unfair_lock_unlock(a1 + 2);
+    v4 = [(_HMTriggerBuilder *)set __addActionSet:v3];
+    os_unfair_lock_unlock(set + 2);
   }
 
   else
@@ -406,32 +406,32 @@ LABEL_15:
   return v4;
 }
 
-- (uint64_t)__addActionSet:(uint64_t)a1
+- (uint64_t)__addActionSet:(uint64_t)set
 {
   v3 = a2;
-  if (a1)
+  if (set)
   {
-    if ([(_HMTriggerBuilder *)a1 __indexOfActionSet:v3]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(_HMTriggerBuilder *)set __indexOfActionSet:v3]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      [*(a1 + 64) addObject:v3];
-      a1 = 1;
+      [*(set + 64) addObject:v3];
+      set = 1;
     }
 
     else
     {
-      a1 = 0;
+      set = 0;
     }
   }
 
-  return a1;
+  return set;
 }
 
-- (void)addActionSet:(id)a3
+- (void)addActionSet:(id)set
 {
-  v4 = a3;
-  v5 = [(_HMAutomationBuilder *)self home];
+  setCopy = set;
+  home = [(_HMAutomationBuilder *)self home];
   v9 = 0;
-  v6 = [HMTrigger _validateActionSet:v4 home:v5 homeOwnedOnly:1 error:&v9];
+  v6 = [HMTrigger _validateActionSet:setCopy home:home homeOwnedOnly:1 error:&v9];
   v7 = v9;
 
   if ((v6 & 1) == 0)
@@ -440,17 +440,17 @@ LABEL_15:
     objc_exception_throw(v8);
   }
 
-  [(_HMTriggerBuilder *)self _addActionSet:v4];
+  [(_HMTriggerBuilder *)self _addActionSet:setCopy];
 }
 
-- (void)setActionSets:(id)a3
+- (void)setActionSets:(id)sets
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setsCopy = sets;
   os_unfair_lock_lock_with_options();
-  v5 = [(_HMTriggerBuilder *)self __findTriggerOwnedActionSet];
+  __findTriggerOwnedActionSet = [(_HMTriggerBuilder *)self __findTriggerOwnedActionSet];
 
-  if (v5)
+  if (__findTriggerOwnedActionSet)
   {
     [(NSMutableArray *)self->_actionSets removeObjectsInRange:1, [(NSMutableArray *)self->_actionSets count]- 1];
   }
@@ -464,7 +464,7 @@ LABEL_15:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = setsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -479,9 +479,9 @@ LABEL_15:
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [(_HMAutomationBuilder *)self home];
+        home = [(_HMAutomationBuilder *)self home];
         v16 = 0;
-        v12 = [HMTrigger _validateActionSet:v10 home:v11 homeOwnedOnly:1 error:&v16];
+        v12 = [HMTrigger _validateActionSet:v10 home:home homeOwnedOnly:1 error:&v16];
         v13 = v16;
 
         if ((v12 & 1) == 0)
@@ -512,10 +512,10 @@ LABEL_15:
   return v3;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock_with_options();
-  self->_enabled = a3;
+  self->_enabled = enabled;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -528,11 +528,11 @@ LABEL_15:
   return enabled;
 }
 
-- (void)removePolicy:(id)a3 completionHandler:(id)a4
+- (void)removePolicy:(id)policy completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v17 = 0;
-  v7 = [HMTrigger _validatePolicy:a3 error:&v17];
+  v7 = [HMTrigger _validatePolicy:policy error:&v17];
   v8 = v17;
   if (v7)
   {
@@ -548,9 +548,9 @@ LABEL_15:
     }
 
     v10 = context;
-    v11 = [(_HMContext *)v10 delegateCaller];
-    v12 = v11;
-    v13 = v6;
+    delegateCaller = [(_HMContext *)v10 delegateCaller];
+    v12 = delegateCaller;
+    v13 = handlerCopy;
     v14 = 0;
   }
 
@@ -567,34 +567,34 @@ LABEL_15:
     }
 
     v10 = v15;
-    v11 = [(_HMContext *)v10 delegateCaller];
-    v12 = v11;
+    delegateCaller = [(_HMContext *)v10 delegateCaller];
+    v12 = delegateCaller;
     if (!v8)
     {
       v16 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      [v12 callCompletion:v6 error:v16];
+      [v12 callCompletion:handlerCopy error:v16];
 
       goto LABEL_10;
     }
 
-    v13 = v6;
+    v13 = handlerCopy;
     v14 = v8;
   }
 
-  [v11 callCompletion:v13 error:v14];
+  [delegateCaller callCompletion:v13 error:v14];
 LABEL_10:
 }
 
-- (void)updatePolicy:(id)a3 completionHandler:(id)a4
+- (void)updatePolicy:(id)policy completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  handlerCopy = handler;
   v18 = 0;
-  v8 = [HMTrigger _validatePolicy:v6 error:&v18];
+  v8 = [HMTrigger _validatePolicy:policyCopy error:&v18];
   v9 = v18;
   if (v8)
   {
-    [(_HMTriggerBuilder *)self setPolicy:v6];
+    [(_HMTriggerBuilder *)self setPolicy:policyCopy];
     if (self)
     {
       context = self->super._context;
@@ -606,9 +606,9 @@ LABEL_10:
     }
 
     v11 = context;
-    v12 = [(_HMContext *)v11 delegateCaller];
-    v13 = v12;
-    v14 = v7;
+    delegateCaller = [(_HMContext *)v11 delegateCaller];
+    v13 = delegateCaller;
+    v14 = handlerCopy;
     v15 = 0;
   }
 
@@ -625,30 +625,30 @@ LABEL_10:
     }
 
     v11 = v16;
-    v12 = [(_HMContext *)v11 delegateCaller];
-    v13 = v12;
+    delegateCaller = [(_HMContext *)v11 delegateCaller];
+    v13 = delegateCaller;
     if (!v9)
     {
       v17 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      [v13 callCompletion:v7 error:v17];
+      [v13 callCompletion:handlerCopy error:v17];
 
       goto LABEL_10;
     }
 
-    v14 = v7;
+    v14 = handlerCopy;
     v15 = v9;
   }
 
-  [v12 callCompletion:v14 error:v15];
+  [delegateCaller callCompletion:v14 error:v15];
 LABEL_10:
 }
 
-- (void)setPolicy:(id)a3
+- (void)setPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   os_unfair_lock_lock_with_options();
   policy = self->_policy;
-  self->_policy = v4;
+  self->_policy = policyCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -662,17 +662,17 @@ LABEL_10:
   return v3;
 }
 
-- (void)updateName:(id)a3 configuredName:(id)a4 completionHandler:(id)a5
+- (void)updateName:(id)name configuredName:(id)configuredName completionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  nameCopy = name;
+  configuredNameCopy = configuredName;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMTriggerBuilder updateName:configuredName:completionHandler:]", @"completion"];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -689,24 +689,24 @@ LABEL_10:
     objc_exception_throw(v25);
   }
 
-  v11 = v10;
+  v11 = handlerCopy;
   v26 = 0;
-  v12 = [HMTrigger _validateName:v8 configuredName:v9 error:&v26];
+  v12 = [HMTrigger _validateName:nameCopy configuredName:configuredNameCopy error:&v26];
   v13 = v26;
   v14 = v13;
   if (v12)
   {
-    if (v9)
+    if (configuredNameCopy)
     {
-      v15 = v9;
+      v15 = configuredNameCopy;
     }
 
     else
     {
-      v15 = v8;
+      v15 = nameCopy;
     }
 
-    [(_HMTriggerBuilder *)self setName:v15 isConfigured:v9 != 0];
+    [(_HMTriggerBuilder *)self setName:v15 isConfigured:configuredNameCopy != 0];
     v14 = 0;
   }
 
@@ -721,8 +721,8 @@ LABEL_10:
   }
 
   v17 = context;
-  v18 = [(_HMContext *)v17 delegateCaller];
-  [v18 callCompletion:v11 error:v14];
+  delegateCaller = [(_HMContext *)v17 delegateCaller];
+  [delegateCaller callCompletion:v11 error:v14];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -746,24 +746,24 @@ LABEL_10:
   return v4;
 }
 
-- (void)setName:(id)a3 isConfigured:(BOOL)a4
+- (void)setName:(id)name isConfigured:(BOOL)configured
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
   name = self->_name;
-  self->_name = v6;
+  self->_name = nameCopy;
 
-  if (v6)
+  if (nameCopy)
   {
-    v8 = a4;
+    configuredCopy = configured;
   }
 
   else
   {
-    v8 = 0;
+    configuredCopy = 0;
   }
 
-  self->_nameIsConfigured = v8;
+  self->_nameIsConfigured = configuredCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -791,11 +791,11 @@ LABEL_10:
   return v4;
 }
 
-- (_HMTriggerBuilder)initWithContext:(id)a3 home:(id)a4
+- (_HMTriggerBuilder)initWithContext:(id)context home:(id)home
 {
   v8.receiver = self;
   v8.super_class = _HMTriggerBuilder;
-  v4 = [(_HMAutomationBuilder *)&v8 initWithContext:a3 home:a4];
+  v4 = [(_HMAutomationBuilder *)&v8 initWithContext:context home:home];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -806,16 +806,16 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = _HMTriggerBuilder;
-  return [(_HMTriggerBuilder *)&v6 isKindOfClass:a3];
+  return [(_HMTriggerBuilder *)&v6 isKindOfClass:class];
 }
 
 - (Class)class
@@ -833,10 +833,10 @@ LABEL_10:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_opt_class();
-    [a1 adoptExternalCategoriesFromClasses:{v3, objc_opt_class(), 0}];
+    [self adoptExternalCategoriesFromClasses:{v3, objc_opt_class(), 0}];
   }
 }
 

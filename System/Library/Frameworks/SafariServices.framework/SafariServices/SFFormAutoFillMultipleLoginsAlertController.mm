@@ -1,36 +1,36 @@
 @interface SFFormAutoFillMultipleLoginsAlertController
-+ (id)alertControllerWithMatchesFromFormProtectionSpace:(id)a3 matchesFromOtherProtectionSpaces:(id)a4 externalCredentials:(id)a5 preferredStyle:(int64_t)a6 formURL:(id)a7 completionHandler:(id)a8;
-- (void)_sceneDidEnterBackground:(id)a3;
-- (void)setCancelsWhenAppEntersBackground:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
++ (id)alertControllerWithMatchesFromFormProtectionSpace:(id)space matchesFromOtherProtectionSpaces:(id)spaces externalCredentials:(id)credentials preferredStyle:(int64_t)style formURL:(id)l completionHandler:(id)handler;
+- (void)_sceneDidEnterBackground:(id)background;
+- (void)setCancelsWhenAppEntersBackground:(BOOL)background;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFFormAutoFillMultipleLoginsAlertController
 
-+ (id)alertControllerWithMatchesFromFormProtectionSpace:(id)a3 matchesFromOtherProtectionSpaces:(id)a4 externalCredentials:(id)a5 preferredStyle:(int64_t)a6 formURL:(id)a7 completionHandler:(id)a8
++ (id)alertControllerWithMatchesFromFormProtectionSpace:(id)space matchesFromOtherProtectionSpaces:(id)spaces externalCredentials:(id)credentials preferredStyle:(int64_t)style formURL:(id)l completionHandler:(id)handler
 {
   v87 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v64 = a7;
-  v65 = a8;
-  v17 = [a1 alertControllerWithTitle:0 message:0 preferredStyle:a6];
+  spaceCopy = space;
+  spacesCopy = spaces;
+  credentialsCopy = credentials;
+  lCopy = l;
+  handlerCopy = handler;
+  v17 = [self alertControllerWithTitle:0 message:0 preferredStyle:style];
   [v17 setImageIfNecessaryWithName:@"alert-passwords"];
-  v61 = v14;
-  if ([v14 count] || objc_msgSend(v15, "count") || objc_msgSend(v16, "count"))
+  v61 = spaceCopy;
+  if ([spaceCopy count] || objc_msgSend(spacesCopy, "count") || objc_msgSend(credentialsCopy, "count"))
   {
     v18 = _WBSLocalizedString();
     [v17 setTitle:v18];
   }
 
   v66 = v17;
-  v59 = v15;
+  v59 = spacesCopy;
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v16;
+  obj = credentialsCopy;
   v19 = [obj countByEnumeratingWithState:&v81 objects:v86 count:16];
   if (v19)
   {
@@ -46,15 +46,15 @@
         }
 
         v23 = *(*(&v81 + 1) + 8 * i);
-        v24 = [MEMORY[0x1E69C8E18] titleForCredentialIdentity:v23 formURL:{v64, v59}];
-        v25 = [v23 user];
-        v26 = [SFCredentialDisplayData descriptionForPasswordWithUser:v25 creationDate:0];
+        v24 = [MEMORY[0x1E69C8E18] titleForCredentialIdentity:v23 formURL:{lCopy, v59}];
+        user = [v23 user];
+        v26 = [SFCredentialDisplayData descriptionForPasswordWithUser:user creationDate:0];
 
         v79[0] = MEMORY[0x1E69E9820];
         v79[1] = 3221225472;
         v79[2] = __191__SFFormAutoFillMultipleLoginsAlertController_alertControllerWithMatchesFromFormProtectionSpace_matchesFromOtherProtectionSpaces_externalCredentials_preferredStyle_formURL_completionHandler___block_invoke;
         v79[3] = &unk_1E8492AE8;
-        v27 = v65;
+        v27 = handlerCopy;
         v79[4] = v23;
         v80 = v27;
         v28 = [SFMultipleLineAlertAction actionWithTitle:v26 detail:v24 handler:v79];
@@ -68,22 +68,22 @@
   }
 
   v29 = [v59 count];
-  v30 = [MEMORY[0x1E69C8DE0] sharedManager];
-  v31 = [v30 enabledExtensions];
-  v32 = [v31 count];
+  mEMORY[0x1E69C8DE0] = [MEMORY[0x1E69C8DE0] sharedManager];
+  enabledExtensions = [mEMORY[0x1E69C8DE0] enabledExtensions];
+  v32 = [enabledExtensions count];
 
-  v33 = 1;
+  shouldAutoFillPasswordsFromKeychain = 1;
   if (!v29 && v32 <= 1)
   {
     if (v32)
     {
-      v34 = [MEMORY[0x1E69C8DB8] sharedFeatureManager];
-      v33 = [v34 shouldAutoFillPasswordsFromKeychain];
+      mEMORY[0x1E69C8DB8] = [MEMORY[0x1E69C8DB8] sharedFeatureManager];
+      shouldAutoFillPasswordsFromKeychain = [mEMORY[0x1E69C8DB8] shouldAutoFillPasswordsFromKeychain];
     }
 
     else
     {
-      v33 = 0;
+      shouldAutoFillPasswordsFromKeychain = 0;
     }
   }
 
@@ -107,23 +107,23 @@
         }
 
         v39 = *(*(&v75 + 1) + 8 * j);
-        v40 = [v39 match];
-        v41 = [v40 user];
-        v42 = [v39 creationDate];
-        v43 = [SFCredentialDisplayData descriptionForPasswordWithUser:v41 creationDate:v42];
+        match = [v39 match];
+        user2 = [match user];
+        creationDate = [v39 creationDate];
+        v43 = [SFCredentialDisplayData descriptionForPasswordWithUser:user2 creationDate:creationDate];
 
-        if (v33)
+        if (shouldAutoFillPasswordsFromKeychain)
         {
-          v44 = [v39 detail];
+          detail = [v39 detail];
           v72[0] = MEMORY[0x1E69E9820];
           v72[1] = 3221225472;
           v72[2] = __191__SFFormAutoFillMultipleLoginsAlertController_alertControllerWithMatchesFromFormProtectionSpace_matchesFromOtherProtectionSpaces_externalCredentials_preferredStyle_formURL_completionHandler___block_invoke_2;
           v72[3] = &unk_1E8492AE8;
-          v45 = v65;
-          v73 = v40;
+          v45 = handlerCopy;
+          v73 = match;
           v74 = v45;
-          v46 = v40;
-          v47 = [SFMultipleLineAlertAction actionWithTitle:v43 detail:v44 handler:v72];
+          v46 = match;
+          v47 = [SFMultipleLineAlertAction actionWithTitle:v43 detail:detail handler:v72];
           [v66 addAction:v47];
 
           v49 = &v73;
@@ -137,12 +137,12 @@
           v69[1] = 3221225472;
           v69[2] = __191__SFFormAutoFillMultipleLoginsAlertController_alertControllerWithMatchesFromFormProtectionSpace_matchesFromOtherProtectionSpaces_externalCredentials_preferredStyle_formURL_completionHandler___block_invoke_3;
           v69[3] = &unk_1E8492AE8;
-          v51 = v65;
-          v70 = v40;
+          v51 = handlerCopy;
+          v70 = match;
           v71 = v51;
-          v52 = v40;
-          v44 = [v50 actionWithTitle:v43 style:0 handler:v69];
-          [v66 addAction:v44];
+          v52 = match;
+          detail = [v50 actionWithTitle:v43 style:0 handler:v69];
+          [v66 addAction:detail];
           v49 = &v70;
           v48 = &v71;
         }
@@ -160,8 +160,8 @@
   v67[1] = 3221225472;
   v67[2] = __191__SFFormAutoFillMultipleLoginsAlertController_alertControllerWithMatchesFromFormProtectionSpace_matchesFromOtherProtectionSpaces_externalCredentials_preferredStyle_formURL_completionHandler___block_invoke_4;
   v67[3] = &unk_1E8492B10;
-  v68 = v65;
-  v55 = v65;
+  v68 = handlerCopy;
+  v55 = handlerCopy;
   v56 = [v53 actionWithTitle:v54 style:1 handler:v67];
 
   [v66 addAction:v56];
@@ -171,49 +171,49 @@
   return v66;
 }
 
-- (void)setCancelsWhenAppEntersBackground:(BOOL)a3
+- (void)setCancelsWhenAppEntersBackground:(BOOL)background
 {
-  if (self->_cancelsWhenAppEntersBackground != a3)
+  if (self->_cancelsWhenAppEntersBackground != background)
   {
-    self->_cancelsWhenAppEntersBackground = a3;
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    v7 = v6;
-    if (a3)
+    self->_cancelsWhenAppEntersBackground = background;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v7 = defaultCenter;
+    if (background)
     {
-      [v6 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+      [defaultCenter addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
     }
 
     else
     {
-      [v6 removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SFFormAutoFillMultipleLoginsAlertController;
-  [(SFFormAutoFillMultipleLoginsAlertController *)&v5 viewWillDisappear:a3];
+  [(SFFormAutoFillMultipleLoginsAlertController *)&v5 viewWillDisappear:disappear];
   if (self->_cancelsWhenAppEntersBackground || ([(SFFormAutoFillMultipleLoginsAlertController *)self isBeingDismissed]& 1) != 0 || [(SFFormAutoFillMultipleLoginsAlertController *)self isMovingFromParentViewController])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE348] object:0];
   }
 }
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v8 = a3;
-  v4 = [(SFFormAutoFillMultipleLoginsAlertController *)self viewIfLoaded];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  backgroundCopy = background;
+  viewIfLoaded = [(SFFormAutoFillMultipleLoginsAlertController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (v6)
+  if (windowScene)
   {
-    v7 = [v8 object];
+    object = [backgroundCopy object];
 
-    if (v6 == v7)
+    if (windowScene == object)
     {
       [(SFFormAutoFillMultipleLoginsAlertController *)self _dismissWithAction:self->_cancelAction];
     }

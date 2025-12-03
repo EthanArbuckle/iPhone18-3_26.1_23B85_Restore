@@ -1,6 +1,6 @@
 @interface PKExternalProviders
 - (PKExternalProviders)init;
-- (PKExternalProviders)initWithLaunchServicesProvider:(id)a3;
+- (PKExternalProviders)initWithLaunchServicesProvider:(id)provider;
 @end
 
 @implementation PKExternalProviders
@@ -40,16 +40,16 @@
   return v2;
 }
 
-- (PKExternalProviders)initWithLaunchServicesProvider:(id)a3
+- (PKExternalProviders)initWithLaunchServicesProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v19.receiver = self;
   v19.super_class = PKExternalProviders;
   v6 = [(PKExternalProviders *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ls, a3);
+    objc_storeStrong(&v6->_ls, provider);
     v8 = objc_opt_new();
     filesystem = v7->_filesystem;
     v7->_filesystem = v8;

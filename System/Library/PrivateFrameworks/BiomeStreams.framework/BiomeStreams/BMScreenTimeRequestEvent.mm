@@ -1,10 +1,10 @@
 @interface BMScreenTimeRequestEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMScreenTimeRequestEvent)initWithProto:(id)a3;
-- (BMScreenTimeRequestEvent)initWithProtoData:(id)a3;
-- (BMScreenTimeRequestEvent)initWithRequestID:(id)a3 kind:(int)a4 status:(int)a5 eventTime:(double)a6 approvalTime:(int)a7 requesterDSID:(id)a8 responderDSID:(id)a9 websitePath:(id)a10 bundleID:(id)a11 isActionUserDevice:(BOOL)a12;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validNonOptionalProperty:(id)a3 propertyName:(id)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMScreenTimeRequestEvent)initWithProto:(id)proto;
+- (BMScreenTimeRequestEvent)initWithProtoData:(id)data;
+- (BMScreenTimeRequestEvent)initWithRequestID:(id)d kind:(int)kind status:(int)status eventTime:(double)time approvalTime:(int)approvalTime requesterDSID:(id)iD responderDSID:(id)sID websitePath:(id)self0 bundleID:(id)self1 isActionUserDevice:(BOOL)self2;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validNonOptionalProperty:(id)property propertyName:(id)name;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
@@ -13,11 +13,11 @@
 
 @implementation BMScreenTimeRequestEvent
 
-- (BOOL)validNonOptionalProperty:(id)a3 propertyName:(id)a4
+- (BOOL)validNonOptionalProperty:(id)property propertyName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  propertyCopy = property;
+  nameCopy = name;
+  if (!propertyCopy)
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -28,8 +28,8 @@
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v8 = [v5 stringByTrimmingCharactersInSet:v7];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  v8 = [propertyCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v9 = [v8 length];
 
   if (!v9)
@@ -52,13 +52,13 @@ LABEL_9:
   return v10;
 }
 
-- (BMScreenTimeRequestEvent)initWithRequestID:(id)a3 kind:(int)a4 status:(int)a5 eventTime:(double)a6 approvalTime:(int)a7 requesterDSID:(id)a8 responderDSID:(id)a9 websitePath:(id)a10 bundleID:(id)a11 isActionUserDevice:(BOOL)a12
+- (BMScreenTimeRequestEvent)initWithRequestID:(id)d kind:(int)kind status:(int)status eventTime:(double)time approvalTime:(int)approvalTime requesterDSID:(id)iD responderDSID:(id)sID websitePath:(id)self0 bundleID:(id)self1 isActionUserDevice:(BOOL)self2
 {
-  v32 = a3;
-  v31 = a8;
-  v19 = a9;
-  v30 = a10;
-  v20 = a11;
+  dCopy = d;
+  iDCopy = iD;
+  sIDCopy = sID;
+  pathCopy = path;
+  bundleIDCopy = bundleID;
   v33.receiver = self;
   v33.super_class = BMScreenTimeRequestEvent;
   v21 = [(BMEventBase *)&v33 init];
@@ -68,9 +68,9 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if ((a5 - 2) >= 2)
+  if ((status - 2) >= 2)
   {
-    if (!a5)
+    if (!status)
     {
       v23 = __biome_log_for_category();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -82,17 +82,17 @@ LABEL_9:
     }
   }
 
-  else if (![(BMScreenTimeRequestEvent *)v21 validNonOptionalProperty:v19 propertyName:@"responderDSID"])
+  else if (![(BMScreenTimeRequestEvent *)v21 validNonOptionalProperty:sIDCopy propertyName:@"responderDSID"])
   {
     goto LABEL_19;
   }
 
-  if (![(BMScreenTimeRequestEvent *)v22 validNonOptionalProperty:v32 propertyName:@"requestID"]|| ![(BMScreenTimeRequestEvent *)v22 validNonOptionalProperty:v31 propertyName:@"requesterDSID"])
+  if (![(BMScreenTimeRequestEvent *)v22 validNonOptionalProperty:dCopy propertyName:@"requestID"]|| ![(BMScreenTimeRequestEvent *)v22 validNonOptionalProperty:iDCopy propertyName:@"requesterDSID"])
   {
     goto LABEL_19;
   }
 
-  switch(a4)
+  switch(kind)
   {
     case 0:
       v23 = __biome_log_for_category();
@@ -107,7 +107,7 @@ LABEL_8:
     case 1:
       v24 = @"websitePath";
       v25 = v22;
-      v26 = v30;
+      v26 = pathCopy;
 LABEL_16:
       if ([(BMScreenTimeRequestEvent *)v25 validNonOptionalProperty:v26 propertyName:v24])
       {
@@ -120,20 +120,20 @@ LABEL_19:
     case 2:
       v24 = @"bundleID";
       v25 = v22;
-      v26 = v20;
+      v26 = bundleIDCopy;
       goto LABEL_16;
   }
 
-  objc_storeStrong(&v22->_requestID, a3);
-  v22->_kind = a4;
-  v22->_status = a5;
-  v22->_eventTime = a6;
-  v22->_approvalTime = a7;
-  objc_storeStrong(&v22->_requesterDSID, a8);
-  objc_storeStrong(&v22->_responderDSID, a9);
-  objc_storeStrong(&v22->_websitePath, a10);
-  objc_storeStrong(&v22->_bundleID, a11);
-  v22->_isActionUserDevice = a12;
+  objc_storeStrong(&v22->_requestID, d);
+  v22->_kind = kind;
+  v22->_status = status;
+  v22->_eventTime = time;
+  v22->_approvalTime = approvalTime;
+  objc_storeStrong(&v22->_requesterDSID, iD);
+  objc_storeStrong(&v22->_responderDSID, sID);
+  objc_storeStrong(&v22->_websitePath, path);
+  objc_storeStrong(&v22->_bundleID, bundleID);
+  v22->_isActionUserDevice = device;
 LABEL_18:
   v27 = v22;
 LABEL_20:
@@ -141,12 +141,12 @@ LABEL_20:
   return v27;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 1)
+  dataCopy = data;
+  if (version == 1)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -165,38 +165,38 @@ LABEL_20:
 
 - (id)encodeAsProto
 {
-  v2 = [(BMScreenTimeRequestEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMScreenTimeRequestEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMScreenTimeRequestEvent)initWithProtoData:(id)a3
+- (BMScreenTimeRequestEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBScreenTimeRequestEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBScreenTimeRequestEvent alloc] initWithData:dataCopy];
 
     self = [(BMScreenTimeRequestEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BMScreenTimeRequestEvent)initWithProto:(id)a3
+- (BMScreenTimeRequestEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_16:
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -212,55 +212,55 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v5 = v4;
-  v6 = [v5 status];
-  if (v6 - 1 >= 3)
+  v5 = protoCopy;
+  status = [v5 status];
+  if (status - 1 >= 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v6;
+    v7 = status;
   }
 
   v23 = v7;
-  v8 = [v5 kind];
-  if (v8 == 1)
+  kind = [v5 kind];
+  if (kind == 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = 2 * (v8 == 2);
+    v9 = 2 * (kind == 2);
   }
 
-  v10 = [v5 approvalTime];
-  if (v10 - 1 >= 3)
+  approvalTime = [v5 approvalTime];
+  if (approvalTime - 1 >= 3)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v10;
+    v11 = approvalTime;
   }
 
-  v12 = [v5 requestID];
+  requestID = [v5 requestID];
   [v5 eventTime];
   v14 = v13;
-  v15 = [v5 requesterDSID];
-  v16 = [v5 responderDSID];
-  v17 = [v5 websitePath];
-  v18 = [v5 bundleID];
+  requesterDSID = [v5 requesterDSID];
+  responderDSID = [v5 responderDSID];
+  websitePath = [v5 websitePath];
+  bundleID = [v5 bundleID];
   LOBYTE(v22) = [v5 isActionUserDevice];
-  self = [(BMScreenTimeRequestEvent *)self initWithRequestID:v12 kind:v9 status:v23 eventTime:v11 approvalTime:v15 requesterDSID:v16 responderDSID:v14 websitePath:v17 bundleID:v18 isActionUserDevice:v22];
+  self = [(BMScreenTimeRequestEvent *)self initWithRequestID:requestID kind:v9 status:v23 eventTime:v11 approvalTime:requesterDSID requesterDSID:responderDSID responderDSID:v14 websitePath:websitePath bundleID:bundleID isActionUserDevice:v22];
 
-  v19 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)proto
@@ -315,36 +315,36 @@ LABEL_17:
 
 - (id)jsonDict
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_requestID forKeyedSubscript:@"requestID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_requestID forKeyedSubscript:@"requestID"];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_status];
-  [v3 setObject:v4 forKeyedSubscript:@"status"];
+  [dictionary setObject:v4 forKeyedSubscript:@"status"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithInt:self->_kind];
-  [v3 setObject:v5 forKeyedSubscript:@"kind"];
+  [dictionary setObject:v5 forKeyedSubscript:@"kind"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_eventTime];
-  [v3 setObject:v6 forKeyedSubscript:@"eventTime"];
+  [dictionary setObject:v6 forKeyedSubscript:@"eventTime"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:self->_approvalTime];
-  [v3 setObject:v7 forKeyedSubscript:@"approvalTime"];
+  [dictionary setObject:v7 forKeyedSubscript:@"approvalTime"];
 
-  [v3 setObject:self->_requesterDSID forKeyedSubscript:@"requesterDSID"];
-  [v3 setObject:self->_responderDSID forKeyedSubscript:@"responderDSID"];
-  [v3 setObject:self->_websitePath forKeyedSubscript:@"websitePath"];
-  [v3 setObject:self->_bundleID forKeyedSubscript:@"bundleID"];
+  [dictionary setObject:self->_requesterDSID forKeyedSubscript:@"requesterDSID"];
+  [dictionary setObject:self->_responderDSID forKeyedSubscript:@"responderDSID"];
+  [dictionary setObject:self->_websitePath forKeyedSubscript:@"websitePath"];
+  [dictionary setObject:self->_bundleID forKeyedSubscript:@"bundleID"];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isActionUserDevice];
-  [v3 setObject:v8 forKeyedSubscript:@"isActionUserDevice"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isActionUserDevice"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMScreenTimeRequestEvent *)self jsonDict];
+  jsonDict = [(BMScreenTimeRequestEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -359,29 +359,29 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = MEMORY[0x1E696AD98];
     [(BMScreenTimeRequestEvent *)self eventTime];
     v7 = [v6 numberWithDouble:?];
-    v8 = [v7 longValue];
+    longValue = [v7 longValue];
 
     v9 = MEMORY[0x1E696AD98];
     [v5 eventTime];
     v10 = [v9 numberWithDouble:?];
-    v11 = [v10 longValue];
+    longValue2 = [v10 longValue];
 
-    v12 = [(BMScreenTimeRequestEvent *)self requestID];
-    v13 = [v5 requestID];
-    v14 = [v12 isEqualToString:v13];
+    requestID = [(BMScreenTimeRequestEvent *)self requestID];
+    requestID2 = [v5 requestID];
+    v14 = [requestID isEqualToString:requestID2];
 
-    LODWORD(v12) = [(BMScreenTimeRequestEvent *)self status];
-    if (v12 == [v5 status])
+    LODWORD(requestID) = [(BMScreenTimeRequestEvent *)self status];
+    if (requestID == [v5 status])
     {
       v15 = v14;
     }
@@ -391,8 +391,8 @@ LABEL_17:
       v15 = 0;
     }
 
-    v16 = [(BMScreenTimeRequestEvent *)self kind];
-    if (v16 == [v5 kind])
+    kind = [(BMScreenTimeRequestEvent *)self kind];
+    if (kind == [v5 kind])
     {
       v17 = v15;
     }
@@ -402,7 +402,7 @@ LABEL_17:
       v17 = 0;
     }
 
-    if (v8 == v11)
+    if (longValue == longValue2)
     {
       v18 = v17;
     }
@@ -412,8 +412,8 @@ LABEL_17:
       v18 = 0;
     }
 
-    v19 = [(BMScreenTimeRequestEvent *)self approvalTime];
-    if (v19 == [v5 approvalTime])
+    approvalTime = [(BMScreenTimeRequestEvent *)self approvalTime];
+    if (approvalTime == [v5 approvalTime])
     {
       v20 = v18;
     }
@@ -423,72 +423,72 @@ LABEL_17:
       v20 = 0;
     }
 
-    v21 = [(BMScreenTimeRequestEvent *)self requesterDSID];
-    v22 = [v5 requesterDSID];
-    v23 = v20 & [v21 isEqualToString:v22];
+    requesterDSID = [(BMScreenTimeRequestEvent *)self requesterDSID];
+    requesterDSID2 = [v5 requesterDSID];
+    v23 = v20 & [requesterDSID isEqualToString:requesterDSID2];
 
-    v24 = [(BMScreenTimeRequestEvent *)self responderDSID];
-    if (v24)
+    responderDSID = [(BMScreenTimeRequestEvent *)self responderDSID];
+    if (responderDSID)
     {
     }
 
     else
     {
-      v26 = [v5 responderDSID];
+      responderDSID2 = [v5 responderDSID];
 
-      if (!v26)
+      if (!responderDSID2)
       {
         goto LABEL_19;
       }
     }
 
-    v27 = [(BMScreenTimeRequestEvent *)self responderDSID];
-    v28 = [v5 responderDSID];
-    v23 &= [v27 isEqualToString:v28];
+    responderDSID3 = [(BMScreenTimeRequestEvent *)self responderDSID];
+    responderDSID4 = [v5 responderDSID];
+    v23 &= [responderDSID3 isEqualToString:responderDSID4];
 
 LABEL_19:
-    v29 = [(BMScreenTimeRequestEvent *)self websitePath];
-    if (v29)
+    websitePath = [(BMScreenTimeRequestEvent *)self websitePath];
+    if (websitePath)
     {
     }
 
     else
     {
-      v30 = [v5 websitePath];
+      websitePath2 = [v5 websitePath];
 
-      if (!v30)
+      if (!websitePath2)
       {
         goto LABEL_23;
       }
     }
 
-    v31 = [(BMScreenTimeRequestEvent *)self websitePath];
-    v32 = [v5 websitePath];
-    v23 &= [v31 isEqualToString:v32];
+    websitePath3 = [(BMScreenTimeRequestEvent *)self websitePath];
+    websitePath4 = [v5 websitePath];
+    v23 &= [websitePath3 isEqualToString:websitePath4];
 
 LABEL_23:
-    v33 = [(BMScreenTimeRequestEvent *)self bundleID];
-    if (v33)
+    bundleID = [(BMScreenTimeRequestEvent *)self bundleID];
+    if (bundleID)
     {
     }
 
     else
     {
-      v34 = [v5 bundleID];
+      bundleID2 = [v5 bundleID];
 
-      if (!v34)
+      if (!bundleID2)
       {
 LABEL_27:
-        v37 = [(BMScreenTimeRequestEvent *)self isActionUserDevice];
-        v25 = v23 & (v37 ^ [v5 isActionUserDevice] ^ 1);
+        isActionUserDevice = [(BMScreenTimeRequestEvent *)self isActionUserDevice];
+        v25 = v23 & (isActionUserDevice ^ [v5 isActionUserDevice] ^ 1);
 
         goto LABEL_28;
       }
     }
 
-    v35 = [(BMScreenTimeRequestEvent *)self bundleID];
-    v36 = [v5 bundleID];
-    v23 &= [v35 isEqualToString:v36];
+    bundleID3 = [(BMScreenTimeRequestEvent *)self bundleID];
+    bundleID4 = [v5 bundleID];
+    v23 &= [bundleID3 isEqualToString:bundleID4];
 
     goto LABEL_27;
   }

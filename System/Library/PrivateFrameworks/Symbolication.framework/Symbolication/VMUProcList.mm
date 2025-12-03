@@ -6,12 +6,12 @@
 - (id)allPIDs;
 - (id)allPathNames;
 - (id)allProcInfos;
-- (id)newestProcInfoWithName:(id)a3;
+- (id)newestProcInfoWithName:(id)name;
 - (unint64_t)count;
 - (void)_populateFromSystem;
-- (void)addProcInfo:(id)a3;
-- (void)removeProcInfo:(id)a3;
-- (void)setProcInfos:(id)a3;
+- (void)addProcInfo:(id)info;
+- (void)removeProcInfo:(id)info;
+- (void)setProcInfos:(id)infos;
 @end
 
 @implementation VMUProcList
@@ -41,17 +41,17 @@
   return v2;
 }
 
-- (void)setProcInfos:(id)a3
+- (void)setProcInfos:(id)infos
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infosCopy = infos;
   [(NSLock *)self->procLock lock];
   [(NSMutableDictionary *)self->allProcs removeAllObjects];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v4;
+  v5 = infosCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -84,28 +84,28 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addProcInfo:(id)a3
+- (void)addProcInfo:(id)info
 {
   procLock = self->procLock;
-  v5 = a3;
+  infoCopy = info;
   [(NSLock *)procLock lock];
   allProcs = self->allProcs;
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v5, "pid")}];
-  [(NSMutableDictionary *)allProcs setObject:v5 forKeyedSubscript:v7];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(infoCopy, "pid")}];
+  [(NSMutableDictionary *)allProcs setObject:infoCopy forKeyedSubscript:v7];
 
   [(NSLock *)self->procLock unlock];
 
   [(VMUProcList *)self update];
 }
 
-- (void)removeProcInfo:(id)a3
+- (void)removeProcInfo:(id)info
 {
   procLock = self->procLock;
-  v5 = a3;
+  infoCopy = info;
   [(NSLock *)procLock lock];
   allProcs = self->allProcs;
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v5 pid];
+  v8 = [infoCopy pid];
 
   v9 = [v7 numberWithInt:v8];
   [(NSMutableDictionary *)allProcs removeObjectForKey:v9];
@@ -164,10 +164,10 @@
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 unsignedIntValue];
-        if (v12)
+        unsignedIntValue = [v11 unsignedIntValue];
+        if (unsignedIntValue)
         {
-          v13 = v12 == v4;
+          v13 = unsignedIntValue == v4;
         }
 
         else
@@ -177,7 +177,7 @@
 
         if (!v13)
         {
-          v14 = v12;
+          v14 = unsignedIntValue;
           v15 = [(NSMutableDictionary *)self->allProcs objectForKeyedSubscript:v11];
           if (!v15)
           {
@@ -221,31 +221,31 @@
 - (id)allProcInfos
 {
   [(NSLock *)self->procLock lock];
-  v3 = [(NSMutableDictionary *)self->filteredProcs allValues];
+  allValues = [(NSMutableDictionary *)self->filteredProcs allValues];
   [(NSLock *)self->procLock unlock];
 
-  return v3;
+  return allValues;
 }
 
 - (id)allPIDs
 {
   [(NSLock *)self->procLock lock];
-  v3 = [(NSMutableDictionary *)self->filteredProcs allKeys];
+  allKeys = [(NSMutableDictionary *)self->filteredProcs allKeys];
   [(NSLock *)self->procLock unlock];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)allNames
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(NSLock *)self->procLock lock];
   filteredProcs = self->filteredProcs;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __23__VMUProcList_allNames__block_invoke;
   v7[3] = &unk_1E8278848;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
   [(NSMutableDictionary *)filteredProcs enumerateKeysAndObjectsUsingBlock:v7];
   [(NSLock *)self->procLock unlock];
@@ -262,14 +262,14 @@ void __23__VMUProcList_allNames__block_invoke(uint64_t a1, uint64_t a2, void *a3
 
 - (id)allPathNames
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(NSLock *)self->procLock lock];
   filteredProcs = self->filteredProcs;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __27__VMUProcList_allPathNames__block_invoke;
   v7[3] = &unk_1E8278848;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
   [(NSMutableDictionary *)filteredProcs enumerateKeysAndObjectsUsingBlock:v7];
   [(NSLock *)self->procLock unlock];
@@ -284,9 +284,9 @@ void __27__VMUProcList_allPathNames__block_invoke(uint64_t a1, uint64_t a2, void
   [v3 addObject:v4];
 }
 
-- (id)newestProcInfoWithName:(id)a3
+- (id)newestProcInfoWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -307,7 +307,7 @@ void __27__VMUProcList_allPathNames__block_invoke(uint64_t a1, uint64_t a2, void
   v12 = __38__VMUProcList_newestProcInfoWithName___block_invoke;
   v13 = &unk_1E8278870;
   v17 = v5;
-  v7 = v4;
+  v7 = nameCopy;
   v14 = v7;
   v15 = &v19;
   v16 = v18;

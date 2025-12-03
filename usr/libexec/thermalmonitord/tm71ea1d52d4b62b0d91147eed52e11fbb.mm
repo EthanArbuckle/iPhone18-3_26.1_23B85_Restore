@@ -1,20 +1,20 @@
 @interface tm71ea1d52d4b62b0d91147eed52e11fbb
 - (id)getGridX;
 - (id)getGridY;
-- (id)initProduct:(id)a3;
+- (id)initProduct:(id)product;
 - (int)compute2DGridTemps;
 - (void)resetVTFilterState;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm71ea1d52d4b62b0d91147eed52e11fbb
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v6.receiver = self;
   v6.super_class = tm71ea1d52d4b62b0d91147eed52e11fbb;
-  v3 = [(CommonProduct *)&v6 initProduct:a3];
+  v3 = [(CommonProduct *)&v6 initProduct:product];
   v4 = v3;
   if (v3)
   {
@@ -32,7 +32,7 @@
   self->_filteredArcModuleTemperature = -1;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
   v4 = qword_1000AB824;
   v5 = qword_1000AB82C;
@@ -43,7 +43,7 @@
   v8 = HIDWORD(qword_1000AB8F4);
   v86 = HIDWORD(qword_1000AB8E0);
   v87 = HIDWORD(qword_1000AB834);
-  if (a3)
+  if (load)
   {
     [(tm71ea1d52d4b62b0d91147eed52e11fbb *)self resetVTFilterState];
   }
@@ -164,15 +164,15 @@
   v55 = [(CommonProduct *)self findComponent:26];
   *&v56 = v54 / 100.0;
   [v55 calculateControlEffort:v56];
-  v57 = [(CommonProduct *)self getChargerState];
-  if (v57 - 10 > 0x3C)
+  getChargerState = [(CommonProduct *)self getChargerState];
+  if (getChargerState - 10 > 0x3C)
   {
     goto LABEL_24;
   }
 
-  if (((1 << (v57 - 10)) & 0x1004010000100000) == 0)
+  if (((1 << (getChargerState - 10)) & 0x1004010000100000) == 0)
   {
-    if (v57 == 10)
+    if (getChargerState == 10)
     {
       v68 = xmmword_1000AB908;
       v69 = [(CommonProduct *)self findComponent:32];
@@ -185,16 +185,16 @@
       v74 = [(CommonProduct *)self findComponent:30];
       LODWORD(v75) = 30.0;
       [v74 calculateControlEffort:v75];
-      v76 = self;
+      selfCopy2 = self;
       v77 = 31;
 LABEL_26:
-      v66 = [(CommonProduct *)v76 findComponent:v77];
+      v66 = [(CommonProduct *)selfCopy2 findComponent:v77];
       LODWORD(v67) = 30.0;
       goto LABEL_27;
     }
 
 LABEL_24:
-    if (v57)
+    if (getChargerState)
     {
       return;
     }
@@ -208,7 +208,7 @@ LABEL_24:
     v82 = [(CommonProduct *)self findComponent:32];
     LODWORD(v83) = 30.0;
     [v82 calculateControlEffort:v83];
-    v76 = self;
+    selfCopy2 = self;
     v77 = 33;
     goto LABEL_26;
   }
@@ -263,32 +263,32 @@ LABEL_27:
 
 - (int)compute2DGridTemps
 {
-  v3 = [(tm71ea1d52d4b62b0d91147eed52e11fbb *)self gasGaugeBatteryTemperature];
+  gasGaugeBatteryTemperature = [(tm71ea1d52d4b62b0d91147eed52e11fbb *)self gasGaugeBatteryTemperature];
   v4 = HIDWORD(qword_1000AB82C);
   v6 = HIDWORD(qword_1000AB834);
   v5 = dword_1000AB83C;
   v7 = qword_1000AB82C;
   v8 = SHIDWORD(qword_1000AB8E0);
   baseVT = self->super.baseVT;
-  v10 = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000661D0, xmmword_1000661C0, v3), xmmword_1000661E0, qword_1000AB82C), xmmword_1000661F0, SHIDWORD(qword_1000AB8E0))));
-  v11 = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100067950, xmmword_100066200, v3), xmmword_100067960, qword_1000AB82C), xmmword_100067970, SHIDWORD(qword_1000AB8E0))));
+  v10 = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000661D0, xmmword_1000661C0, gasGaugeBatteryTemperature), xmmword_1000661E0, qword_1000AB82C), xmmword_1000661F0, SHIDWORD(qword_1000AB8E0))));
+  v11 = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100067950, xmmword_100066200, gasGaugeBatteryTemperature), xmmword_100067960, qword_1000AB82C), xmmword_100067970, SHIDWORD(qword_1000AB8E0))));
   *baseVT = v10;
   *(baseVT + 1) = v11;
   baseVT[4] = (v7 * 0.55 + -135.0 + v8 * 0.42);
-  *(baseVT + 5) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100067980, xmmword_100066240, v3), xmmword_100067990, v7), xmmword_100066270, v8)));
-  *(baseVT + 7) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000679A0, xmmword_100066280, v3), xmmword_1000679B0, v7), xmmword_1000662B0, v8)));
+  *(baseVT + 5) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100067980, xmmword_100066240, gasGaugeBatteryTemperature), xmmword_100067990, v7), xmmword_100066270, v8)));
+  *(baseVT + 7) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000679A0, xmmword_100066280, gasGaugeBatteryTemperature), xmmword_1000679B0, v7), xmmword_1000662B0, v8)));
   baseVT[9] = (v7 * 0.13 + -262.0 + v4 * 0.34 + v8 * 0.59);
-  *(baseVT + 5) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000662C0, vdupq_n_s64(0x3FD1DB22D0E56042uLL), v3), xmmword_1000662D0, v7), xmmword_1000662E0, v8)));
-  *(baseVT + 6) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066300, xmmword_1000662F0, v3), xmmword_1000679C0, v7), xmmword_1000679D0, v8)));
+  *(baseVT + 5) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000662C0, vdupq_n_s64(0x3FD1DB22D0E56042uLL), gasGaugeBatteryTemperature), xmmword_1000662D0, v7), xmmword_1000662E0, v8)));
+  *(baseVT + 6) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066300, xmmword_1000662F0, gasGaugeBatteryTemperature), xmmword_1000679C0, v7), xmmword_1000679D0, v8)));
   baseVT[14] = (v7 * 0.1 + -243.0 + v6 * 0.29 + v8 * 0.71);
-  *(baseVT + 15) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000679F0, xmmword_1000679E0, v3), xmmword_100067A00, v8)));
-  *(baseVT + 17) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066370, xmmword_100066360, v3), xmmword_100067A10, v8)));
-  baseVT[19] = (v3 * 0.13 + -142.0 + v5 * 0.01 + v8 * 0.91);
-  baseVT[20] = (v3 * -0.148 + 3.0 + v8 * 1.13);
+  *(baseVT + 15) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_1000679F0, xmmword_1000679E0, gasGaugeBatteryTemperature), xmmword_100067A00, v8)));
+  *(baseVT + 17) = vmovn_s64(vcvtq_s64_f64(vmlaq_n_f64(vmlaq_n_f64(xmmword_100066370, xmmword_100066360, gasGaugeBatteryTemperature), xmmword_100067A10, v8)));
+  baseVT[19] = (gasGaugeBatteryTemperature * 0.13 + -142.0 + v5 * 0.01 + v8 * 0.91);
+  baseVT[20] = (gasGaugeBatteryTemperature * -0.148 + 3.0 + v8 * 1.13);
   baseVT[21] = (v6 * -0.02 + -92.1 + v8 * 1.05);
-  baseVT[22] = (v3 * -0.01 + -21.0 + v8 * 1.05);
-  baseVT[23] = (v3 * 0.07 + 13.1 + v7 * -0.05 + v8 * 0.99);
-  baseVT[24] = (v3 * -0.02 + -118.0 + v5 * -0.04 + v8 * 1.13);
+  baseVT[22] = (gasGaugeBatteryTemperature * -0.01 + -21.0 + v8 * 1.05);
+  baseVT[23] = (gasGaugeBatteryTemperature * 0.07 + 13.1 + v7 * -0.05 + v8 * 0.99);
+  baseVT[24] = (gasGaugeBatteryTemperature * -0.02 + -118.0 + v5 * -0.04 + v8 * 1.13);
   v12 = vdupq_lane_s32(v10, 0);
   v13 = 1;
   v14 = v12;

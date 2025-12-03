@@ -1,14 +1,14 @@
 @interface CLIndoorState
-+ (DebounceParameters)getFitnessModeDebounceParamsWithOptionalAvailabilityTile:(SEL)a3;
++ (DebounceParameters)getFitnessModeDebounceParamsWithOptionalAvailabilityTile:(SEL)tile;
 - (CLIndoorState)init;
 - (optional<std::chrono::time_point<std::chrono::steady_clock,)lastPrefetchTimestamp;
-- (uint64_t)setLatestNavModeEstimate:(uint64_t)a3;
+- (uint64_t)setLatestNavModeEstimate:(uint64_t)estimate;
 - (void)clearLocationGroups;
 - (void)dealloc;
-- (void)setLastIndoorError:(optional<CLIndoorError> *)a3;
-- (void)setLastPrefetchTimestamp:()optional<std:(std:()std:(1000000000>>>> *)a3 :ratio<1 :chrono::duration<long)long :chrono::time_point<std::chrono::steady_clock;
-- (void)setLatestPosition:(CLLastFix *)a3;
-- (void)updatePrefetchParameters:(id)a3;
+- (void)setLastIndoorError:(optional<CLIndoorError> *)error;
+- (void)setLastPrefetchTimestamp:()optional<std:(std:()std:(1000000000>>>> *)std :ratio<1 :chrono::duration<long)long :chrono::time_point<std::chrono::steady_clock;
+- (void)setLatestPosition:(CLLastFix *)position;
+- (void)updatePrefetchParameters:(id)parameters;
 @end
 
 @implementation CLIndoorState
@@ -44,25 +44,25 @@
   [(CLIndoorState *)&v3 dealloc];
 }
 
-- (void)setLatestPosition:(CLLastFix *)a3
+- (void)setLatestPosition:(CLLastFix *)position
 {
   m_initialized = self->_latestPosition.m_initialized;
-  v5 = *&a3->var0.coordinate.longitude;
-  v4 = *&a3->var0.altitude;
-  *(&self->_latestPosition.m_storage.dummy_.aligner_ + 7) = *&a3->var0.suitability;
+  v5 = *&position->var0.coordinate.longitude;
+  v4 = *&position->var0.altitude;
+  *(&self->_latestPosition.m_storage.dummy_.aligner_ + 7) = *&position->var0.suitability;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 23) = v5;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 39) = v4;
-  v6 = *&a3->var0.timestamp;
-  v7 = *&a3->var0.lifespan;
-  v8 = *&a3->var0.course;
-  *(&self->_latestPosition.m_storage.dummy_.aligner_ + 55) = *&a3->var0.speed;
+  v6 = *&position->var0.timestamp;
+  v7 = *&position->var0.lifespan;
+  v8 = *&position->var0.course;
+  *(&self->_latestPosition.m_storage.dummy_.aligner_ + 55) = *&position->var0.speed;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 103) = v7;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 87) = v6;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 71) = v8;
-  v9 = *&a3->var0.referenceFrame;
-  v10 = *&a3->var0.ellipsoidalAltitude;
-  v11 = *&a3->var0.rawCourse;
-  *(&self->_latestPosition.m_storage.dummy_.aligner_ + 119) = a3->var0.rawCoordinate;
+  v9 = *&position->var0.referenceFrame;
+  v10 = *&position->var0.ellipsoidalAltitude;
+  v11 = *&position->var0.rawCourse;
+  *(&self->_latestPosition.m_storage.dummy_.aligner_ + 119) = position->var0.rawCoordinate;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 167) = v10;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 151) = v9;
   *(&self->_latestPosition.m_storage.dummy_.aligner_ + 135) = v11;
@@ -72,14 +72,14 @@
   }
 }
 
-- (void)setLastIndoorError:(optional<CLIndoorError> *)a3
+- (void)setLastIndoorError:(optional<CLIndoorError> *)error
 {
   if (self->_lastIndoorError.m_storage.dummy_.data[6] == 1)
   {
-    if (a3->m_initialized)
+    if (error->m_initialized)
     {
-      v3 = *(&a3->m_storage.dummy_.aligner_ + 7);
-      *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 22) = *(&a3->m_storage.dummy_.aligner_ + 15);
+      v3 = *(&error->m_storage.dummy_.aligner_ + 7);
+      *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 22) = *(&error->m_storage.dummy_.aligner_ + 15);
       *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 14) = v3;
     }
 
@@ -89,18 +89,18 @@
     }
   }
 
-  else if (a3->m_initialized)
+  else if (error->m_initialized)
   {
-    *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 14) = *(&a3->m_storage.dummy_.aligner_ + 7);
+    *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 14) = *(&error->m_storage.dummy_.aligner_ + 7);
     self->_lastIndoorError.m_storage.dummy_.data[6] = 1;
   }
 }
 
-- (void)updatePrefetchParameters:(id)a3
+- (void)updatePrefetchParameters:(id)parameters
 {
-  *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 102) = [a3 indoorPrefetchMaxFloorCount];
-  *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 86) = (1000 * [a3 indoorPrefetchRadiusKM]);
-  *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 118) = (1000 * [a3 indoorLocationOfInterestMergeRadiusKM]);
+  *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 102) = [parameters indoorPrefetchMaxFloorCount];
+  *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 86) = (1000 * [parameters indoorPrefetchRadiusKM]);
+  *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 118) = (1000 * [parameters indoorLocationOfInterestMergeRadiusKM]);
   if (qword_1025D4620 != -1)
   {
     sub_101869E48();
@@ -137,11 +137,11 @@
     }
   }
 
-  if ([a3 hasRegionalPrefetchMaxFloorCount])
+  if ([parameters hasRegionalPrefetchMaxFloorCount])
   {
-    *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 110) = [a3 regionalPrefetchMaxFloorCount];
-    *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 94) = (1000 * [a3 regionalPrefetchRadiusKM]);
-    v9 = (1000 * [a3 regionalLocationOfInterestMergeRadiusKM]);
+    *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 110) = [parameters regionalPrefetchMaxFloorCount];
+    *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 94) = (1000 * [parameters regionalPrefetchRadiusKM]);
+    v9 = (1000 * [parameters regionalLocationOfInterestMergeRadiusKM]);
   }
 
   else
@@ -194,9 +194,9 @@
     sub_101869F60();
   }
 
-  v15 = [(CLIndoorState *)self fitnessModeStateMachine];
-  [CLIndoorState getFitnessModeDebounceParamsWithOptionalAvailabilityTile:a3];
-  sub_10025C9DC(v15, buf);
+  fitnessModeStateMachine = [(CLIndoorState *)self fitnessModeStateMachine];
+  [CLIndoorState getFitnessModeDebounceParamsWithOptionalAvailabilityTile:parameters];
+  sub_10025C9DC(fitnessModeStateMachine, buf);
 }
 
 - (void)clearLocationGroups
@@ -244,54 +244,54 @@
   *(&self->_lastIndoorError.m_storage.dummy_.aligner_ + 30) = 0;
 }
 
-+ (DebounceParameters)getFitnessModeDebounceParamsWithOptionalAvailabilityTile:(SEL)a3
++ (DebounceParameters)getFitnessModeDebounceParamsWithOptionalAvailabilityTile:(SEL)tile
 {
   if (a4 && ([a4 hasMotionActivityDebounceParameters] & 1) != 0)
   {
     if ([a4 hasCyclingToNonFitnessSeconds])
     {
-      v6 = [a4 cyclingToNonFitnessSeconds];
+      cyclingToNonFitnessSeconds = [a4 cyclingToNonFitnessSeconds];
     }
 
     else
     {
-      v6 = 180;
+      cyclingToNonFitnessSeconds = 180;
     }
 
     if ([a4 hasRunningToNonFitnessSeconds])
     {
-      v12 = [a4 runningToNonFitnessSeconds];
+      runningToNonFitnessSeconds = [a4 runningToNonFitnessSeconds];
     }
 
     else
     {
-      v12 = 180;
+      runningToNonFitnessSeconds = 180;
     }
 
     if ([a4 hasNonFitnessToCyclingSeconds])
     {
-      v13 = [a4 nonFitnessToCyclingSeconds];
+      nonFitnessToCyclingSeconds = [a4 nonFitnessToCyclingSeconds];
     }
 
     else
     {
-      v13 = 10;
+      nonFitnessToCyclingSeconds = 10;
     }
 
     if ([a4 hasNonFitnessToRunningSeconds])
     {
-      v11 = [a4 nonFitnessToRunningSeconds];
+      nonFitnessToRunningSeconds = [a4 nonFitnessToRunningSeconds];
     }
 
     else
     {
-      v11 = 10;
+      nonFitnessToRunningSeconds = 10;
     }
 
     v7 = retstr;
-    v8 = v6;
-    v9 = v12;
-    v10 = v13;
+    v8 = cyclingToNonFitnessSeconds;
+    v9 = runningToNonFitnessSeconds;
+    v10 = nonFitnessToCyclingSeconds;
   }
 
   else
@@ -300,15 +300,15 @@
     v8 = 180;
     v9 = 180;
     v10 = 10;
-    v11 = 10;
+    nonFitnessToRunningSeconds = 10;
   }
 
-  return sub_10025CAE0(v7, v8, v9, v10, v11);
+  return sub_10025CAE0(v7, v8, v9, v10, nonFitnessToRunningSeconds);
 }
 
-- (uint64_t)setLatestNavModeEstimate:(uint64_t)a3
+- (uint64_t)setLatestNavModeEstimate:(uint64_t)estimate
 {
-  *(result + 368) = a3;
+  *(result + 368) = estimate;
   *(result + 376) = a4;
   *(result + 380) = BYTE4(a4);
   return result;
@@ -326,13 +326,13 @@
   return self;
 }
 
-- (void)setLastPrefetchTimestamp:()optional<std:(std:()std:(1000000000>>>> *)a3 :ratio<1 :chrono::duration<long)long :chrono::time_point<std::chrono::steady_clock
+- (void)setLastPrefetchTimestamp:()optional<std:(std:()std:(1000000000>>>> *)std :ratio<1 :chrono::duration<long)long :chrono::time_point<std::chrono::steady_clock
 {
   if (self->_lastIndoorError.m_storage.dummy_.data[174] == 1)
   {
-    if (a3->m_initialized)
+    if (std->m_initialized)
     {
-      self->_locationGroups = *(&a3->m_storage.dummy_.aligner_ + 7);
+      self->_locationGroups = *(&std->m_storage.dummy_.aligner_ + 7);
     }
 
     else
@@ -341,9 +341,9 @@
     }
   }
 
-  else if (a3->m_initialized)
+  else if (std->m_initialized)
   {
-    self->_locationGroups = *(&a3->m_storage.dummy_.aligner_ + 7);
+    self->_locationGroups = *(&std->m_storage.dummy_.aligner_ + 7);
     self->_lastIndoorError.m_storage.dummy_.data[174] = 1;
   }
 }

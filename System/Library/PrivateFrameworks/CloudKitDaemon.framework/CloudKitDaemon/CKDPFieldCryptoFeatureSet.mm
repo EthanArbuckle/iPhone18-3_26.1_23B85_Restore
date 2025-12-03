@@ -1,16 +1,16 @@
 @interface CKDPFieldCryptoFeatureSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)minimumSchemaVersion;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEncryptedFieldContextType:(BOOL)a3;
-- (void)setHasMinimumSchemaVersion:(BOOL)a3;
-- (void)setHasMmcsVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEncryptedFieldContextType:(BOOL)type;
+- (void)setHasMinimumSchemaVersion:(BOOL)version;
+- (void)setHasMmcsVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPFieldCryptoFeatureSet
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasMinimumSchemaVersion:(BOOL)a3
+- (void)setHasMinimumSchemaVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMmcsVersion:(BOOL)a3
+- (void)setHasMmcsVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEncryptedFieldContextType:(BOOL)a3
+- (void)setHasEncryptedFieldContextType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -143,9 +143,9 @@ LABEL_6:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -196,14 +196,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[4] = self->_minimumSchemaVersion;
-    *(v4 + 24) |= 4u;
+    toCopy[4] = self->_minimumSchemaVersion;
+    *(toCopy + 24) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -222,8 +222,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_mmcsVersion;
-  *(v4 + 24) |= 8u;
+  toCopy[5] = self->_mmcsVersion;
+  *(toCopy + 24) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -237,22 +237,22 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[3] = self->_encryptedFieldContextType;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_encryptedFieldContextType;
+  *(toCopy + 24) |= 2u;
   if (*&self->_has)
   {
 LABEL_5:
-    v4[2] = self->_assetKeyEncryptionType;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_assetKeyEncryptionType;
+    *(toCopy + 24) |= 1u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   has = self->_has;
   if ((has & 4) != 0)
@@ -305,24 +305,24 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_minimumSchemaVersion != *(v4 + 4))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_minimumSchemaVersion != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
 LABEL_21:
     v7 = 0;
@@ -331,34 +331,34 @@ LABEL_21:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 24) & 8) == 0 || self->_mmcsVersion != *(v4 + 5))
+    if ((*(equalCopy + 24) & 8) == 0 || self->_mmcsVersion != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 8) != 0)
+  else if ((*(equalCopy + 24) & 8) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_encryptedFieldContextType != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_encryptedFieldContextType != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_21;
   }
 
-  v7 = (*(v4 + 24) & 1) == 0;
+  v7 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_assetKeyEncryptionType != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_assetKeyEncryptionType != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
@@ -425,15 +425,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 4) != 0)
   {
-    self->_minimumSchemaVersion = *(v4 + 4);
+    self->_minimumSchemaVersion = *(fromCopy + 4);
     *&self->_has |= 4u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -446,14 +446,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 8) == 0)
+  else if ((*(fromCopy + 24) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_mmcsVersion = *(v4 + 5);
+  self->_mmcsVersion = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -466,12 +466,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_encryptedFieldContextType = *(v4 + 3);
+  self->_encryptedFieldContextType = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
 LABEL_5:
-    self->_assetKeyEncryptionType = *(v4 + 2);
+    self->_assetKeyEncryptionType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

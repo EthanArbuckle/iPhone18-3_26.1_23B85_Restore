@@ -1,9 +1,9 @@
 @interface MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams)init;
-- (MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,9 +16,9 @@
   v2 = [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     groupKeySetIDs = v2->_groupKeySetIDs;
-    v2->_groupKeySetIDs = v3;
+    v2->_groupKeySetIDs = array;
 
     timedInvokeTimeoutMs = v2->_timedInvokeTimeoutMs;
     v2->_timedInvokeTimeoutMs = 0;
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams);
-  v5 = [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)self groupKeySetIDs];
-  [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)v4 setGroupKeySetIDs:v5];
+  groupKeySetIDs = [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)self groupKeySetIDs];
+  [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)v4 setGroupKeySetIDs:groupKeySetIDs];
 
-  v6 = [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -94,7 +94,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams;
@@ -102,7 +102,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGroupKeyManagementClusterKeySetReadAllIndicesResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -118,13 +118,13 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   sub_2393C5AAC(v13);
   v11 = 0;
   v12 = 0;
-  sub_2393C5BDC(v13, a3);
+  sub_2393C5BDC(v13, struct);
   while (sub_238DD5C4C(&v11))
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v13[36]];

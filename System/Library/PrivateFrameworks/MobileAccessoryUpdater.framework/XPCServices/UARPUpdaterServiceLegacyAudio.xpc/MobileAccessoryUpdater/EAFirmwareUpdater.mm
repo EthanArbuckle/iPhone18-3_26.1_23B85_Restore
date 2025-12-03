@@ -1,65 +1,65 @@
 @interface EAFirmwareUpdater
-+ (id)findAccessoryWithProtocolString:(id)a3 serialNum:(id)a4;
-+ (id)getEAFirmwareRevisionActive:(id)a3 forProtocol:(id)a4;
-+ (id)getEAFirmwareRevisionPending:(id)a3 forProtocol:(id)a4;
++ (id)findAccessoryWithProtocolString:(id)string serialNum:(id)num;
++ (id)getEAFirmwareRevisionActive:(id)active forProtocol:(id)protocol;
++ (id)getEAFirmwareRevisionPending:(id)pending forProtocol:(id)protocol;
 - (BOOL)findAccessory;
-- (BOOL)isDeploymentAllowed:(id)a3;
+- (BOOL)isDeploymentAllowed:(id)allowed;
 - (BOOL)isRestartRequired;
 - (BOOL)isSleepWakeRequired;
 - (BOOL)isUrgentUpdate;
-- (BOOL)stitchManifestInSuperBinary:(id)a3 withManifest:(id)a4 withId:(unsigned int)a5;
+- (BOOL)stitchManifestInSuperBinary:(id)binary withManifest:(id)manifest withId:(unsigned int)id;
 - (BOOL)updateRequiresPersonalization;
 - (BOOL)updateRequiresSuperBinary;
-- (EAFirmwareUpdater)initWithDeviceClass:(id)a3 assetType:(id)a4 skipDFU:(BOOL)a5 byteEscape:(BOOL)a6 skipReconnect:(BOOL)a7 skipVersionCheck:(BOOL)a8 options:(id)a9 serialNum:(id)a10;
-- (id)applyFirmware:(id)a3 progress:(id)a4 update:(id)a5 personalization:(id)a6;
-- (id)assetWithMaxVersion:(id)a3;
-- (id)createEndOfUpdateEventDict:(id)a3 error:(id)a4;
+- (EAFirmwareUpdater)initWithDeviceClass:(id)class assetType:(id)type skipDFU:(BOOL)u byteEscape:(BOOL)escape skipReconnect:(BOOL)reconnect skipVersionCheck:(BOOL)check options:(id)options serialNum:(id)self0;
+- (id)applyFirmware:(id)firmware progress:(id)progress update:(id)update personalization:(id)personalization;
+- (id)assetWithMaxVersion:(id)version;
+- (id)createEndOfUpdateEventDict:(id)dict error:(id)error;
 - (id)flushOutput;
 - (id)openSession;
 - (id)queryPredicate;
-- (id)supportedProtocolForAccessory:(id)a3;
+- (id)supportedProtocolForAccessory:(id)accessory;
 - (id)validateAsset;
-- (id)validateAssetAttributes:(id)a3;
-- (id)writeData:(id)a3;
+- (id)validateAssetAttributes:(id)attributes;
+- (id)writeData:(id)data;
 - (unsigned)getPersonalizationID;
 - (unsigned)getWhitelistedPersonalizationFields;
-- (void)_accessoryDidConnect:(id)a3;
-- (void)_accessoryDidDisconnect:(id)a3;
+- (void)_accessoryDidConnect:(id)connect;
+- (void)_accessoryDidDisconnect:(id)disconnect;
 - (void)closeSession;
 - (void)dealloc;
-- (void)firmwareUpdateComplete:(id)a3 error:(id)a4;
-- (void)handleFirmwareUpdateStatus:(id)a3;
+- (void)firmwareUpdateComplete:(id)complete error:(id)error;
+- (void)handleFirmwareUpdateStatus:(id)status;
 - (void)handleInputData;
-- (void)handleSessionError:(unsigned int)a3 message:(id)a4;
-- (void)personalizationResponse:(id)a3 error:(id)a4;
-- (void)processPersonalizationInfoFromAccessory:(id)a3;
-- (void)reconnectTimerDidFire:(id)a3;
-- (void)setAccessory:(id)a3;
-- (void)setFirmwareBundle:(id)a3;
-- (void)setFirmwareLocalURL:(id)a3;
-- (void)setFirmwareURL:(id)a3 withManifest:(id)a4 signature:(id)a5 certificate:(id)a6 hash:(id)a7;
-- (void)setManifestIDs:(id)a3;
-- (void)setSession:(id)a3;
+- (void)handleSessionError:(unsigned int)error message:(id)message;
+- (void)personalizationResponse:(id)response error:(id)error;
+- (void)processPersonalizationInfoFromAccessory:(id)accessory;
+- (void)reconnectTimerDidFire:(id)fire;
+- (void)setAccessory:(id)accessory;
+- (void)setFirmwareBundle:(id)bundle;
+- (void)setFirmwareLocalURL:(id)l;
+- (void)setFirmwareURL:(id)l withManifest:(id)manifest signature:(id)signature certificate:(id)certificate hash:(id)hash;
+- (void)setManifestIDs:(id)ds;
+- (void)setSession:(id)session;
 - (void)stopReconnectTimer;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
-- (void)updateComplete:(id)a3 error:(id)a4;
-- (void)updateProgress:(double)a3;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
+- (void)updateComplete:(id)complete error:(id)error;
+- (void)updateProgress:(double)progress;
 @end
 
 @implementation EAFirmwareUpdater
 
-+ (id)findAccessoryWithProtocolString:(id)a3 serialNum:(id)a4
++ (id)findAccessoryWithProtocolString:(id)string serialNum:(id)num
 {
-  if (a3)
+  if (string)
   {
     v6 = +[EAAccessoryManager sharedAccessoryManager];
     if (v6)
     {
-      v7 = [(EAAccessoryManager *)v6 connectedAccessories];
-      if (v7)
+      connectedAccessories = [(EAAccessoryManager *)v6 connectedAccessories];
+      if (connectedAccessories)
       {
-        v8 = v7;
-        if ([(NSArray *)v7 count])
+        v8 = connectedAccessories;
+        if ([(NSArray *)connectedAccessories count])
         {
           v28 = 0u;
           v29 = 0u;
@@ -81,15 +81,15 @@
                 }
 
                 v12 = *(*(&v26 + 1) + 8 * i);
-                v13 = [v12 protocolStrings];
-                if (v13)
+                protocolStrings = [v12 protocolStrings];
+                if (protocolStrings)
                 {
-                  v14 = v13;
+                  v14 = protocolStrings;
                   v24 = 0u;
                   v25 = 0u;
                   v22 = 0u;
                   v23 = 0u;
-                  v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+                  v15 = [protocolStrings countByEnumeratingWithState:&v22 objects:v30 count:16];
                   if (v15)
                   {
                     v16 = v15;
@@ -103,7 +103,7 @@ LABEL_13:
                         objc_enumerationMutation(v14);
                       }
 
-                      if ([*(*(&v22 + 1) + 8 * v18) rangeOfString:a3] != 0x7FFFFFFFFFFFFFFFLL && (!a4 || (objc_msgSend(a4, "isEqualToString:", objc_msgSend(v12, "serialNumber")) & 1) != 0))
+                      if ([*(*(&v22 + 1) + 8 * v18) rangeOfString:string] != 0x7FFFFFFFFFFFFFFFLL && (!num || (objc_msgSend(num, "isEqualToString:", objc_msgSend(v12, "serialNumber")) & 1) != 0))
                       {
                         break;
                       }
@@ -141,58 +141,58 @@ LABEL_23:
     }
   }
 
-  NSLog(@"%s() No EAAccessory found for protocol=%@", a2, "+[EAFirmwareUpdater findAccessoryWithProtocolString:serialNum:]", a3);
+  NSLog(@"%s() No EAAccessory found for protocol=%@", a2, "+[EAFirmwareUpdater findAccessoryWithProtocolString:serialNum:]", string);
   return 0;
 }
 
-- (EAFirmwareUpdater)initWithDeviceClass:(id)a3 assetType:(id)a4 skipDFU:(BOOL)a5 byteEscape:(BOOL)a6 skipReconnect:(BOOL)a7 skipVersionCheck:(BOOL)a8 options:(id)a9 serialNum:(id)a10
+- (EAFirmwareUpdater)initWithDeviceClass:(id)class assetType:(id)type skipDFU:(BOOL)u byteEscape:(BOOL)escape skipReconnect:(BOOL)reconnect skipVersionCheck:(BOOL)check options:(id)options serialNum:(id)self0
 {
   v27.receiver = self;
   v27.super_class = EAFirmwareUpdater;
-  v15 = [(EAFirmwareUpdater *)&v27 initWithAssetType:a4];
+  v15 = [(EAFirmwareUpdater *)&v27 initWithAssetType:type];
   if (!v15)
   {
     goto LABEL_14;
   }
 
-  if (([a3 hasPrefix:@"com.apple.MobileAccessoryUpdater.EA"] & 1) == 0 && (objc_msgSend(a3, "hasPrefix:", @"com.apple.UARP.EA") & 1) == 0)
+  if (([class hasPrefix:@"com.apple.MobileAccessoryUpdater.EA"] & 1) == 0 && (objc_msgSend(class, "hasPrefix:", @"com.apple.UARP.EA") & 1) == 0)
   {
-    NSLog(@"%s: Invalid deviceClass base = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", a3);
+    NSLog(@"%s: Invalid deviceClass base = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", class);
     goto LABEL_14;
   }
 
-  v16 = [a3 rangeOfString:@"dfu"];
-  v17 = [a3 rangeOfString:@"app"];
-  v18 = [a3 rangeOfString:@"app.multiasset"];
+  v16 = [class rangeOfString:@"dfu"];
+  v17 = [class rangeOfString:@"app"];
+  v18 = [class rangeOfString:@"app.multiasset"];
   v19 = v18;
   if (v16 == 0x7FFFFFFFFFFFFFFFLL && v17 == 0x7FFFFFFFFFFFFFFFLL && v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    NSLog(@"%s: Invalid deviceClass extension = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", a3);
+    NSLog(@"%s: Invalid deviceClass extension = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", class);
     goto LABEL_14;
   }
 
-  v20 = [a3 componentsSeparatedByString:@"."];
+  v20 = [class componentsSeparatedByString:@"."];
   if ([v20 count] != 7 && objc_msgSend(v20, "count") != 8)
   {
-    NSLog(@"%s: Invalid deviceClass components = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", a3);
+    NSLog(@"%s: Invalid deviceClass components = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", class);
     goto LABEL_14;
   }
 
-  v21 = [v20 lastObject];
-  if (!v21)
+  lastObject = [v20 lastObject];
+  if (!lastObject)
   {
-    NSLog(@"%s: Invalid deviceClass eaID string = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", a3);
+    NSLog(@"%s: Invalid deviceClass eaID string = %@\n", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", class);
     goto LABEL_14;
   }
 
-  v22 = v21;
+  v22 = lastObject;
   v15->_overrideProtocol = 0;
   v15->_firmwareUpdateIsUrgent = 0;
   v15->_firmwareUpdateComplete = 0;
   v15->_isExpectingReconnect = 0;
   v15->_forceSilentUpdate = 0;
-  v15->_skipDFUMode = a5;
-  v15->_skipVersionCheck = a8;
+  v15->_skipDFUMode = u;
+  v15->_skipVersionCheck = check;
   v15->_closeEASession = 0;
   v15->_excludeUniqueAccessoryCheck = 0;
   v15->_reconnectTimer = 0;
@@ -217,14 +217,14 @@ LABEL_23:
   v15->_manifestIDs = 0;
   v15->_manifestList = 0;
   v15->_manifestIndex = 0;
-  v15->_serialNumber = [a10 copy];
+  v15->_serialNumber = [num copy];
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (v17 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [(EAFirmwareUpdater *)v15 log:5 format:@"%s: huh? Unknown session type in device class %@", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", a3];
+        [(EAFirmwareUpdater *)v15 log:5 format:@"%s: huh? Unknown session type in device class %@", "[EAFirmwareUpdater initWithDeviceClass:assetType:skipDFU:byteEscape:skipReconnect:skipVersionCheck:options:serialNum:]", class];
 LABEL_14:
         v23 = v15;
         return 0;
@@ -232,9 +232,9 @@ LABEL_14:
 
       [(EAFirmwareUpdater *)v15 setProtocolString:v15->_appProtocol];
       v15->_isMultiAssetSession = 0;
-      v15->_byteEscape = a6;
+      v15->_byteEscape = escape;
       v24 = 468;
-      a6 = a7;
+      escape = reconnect;
     }
 
     else
@@ -248,15 +248,15 @@ LABEL_14:
   else
   {
     [(EAFirmwareUpdater *)v15 setProtocolString:v15->_multiAssetAppProtocol];
-    a6 = 0;
+    escape = 0;
     v15->_isMultiAssetSession = 1;
     v15->_skipDFUMode = 1;
     v24 = 467;
   }
 
-  v15->MobileAssetUpdater_opaque[v24] = a6;
-  v15->_deviceClass = a3;
-  v15->_deviceOptions = a9;
+  v15->MobileAssetUpdater_opaque[v24] = escape;
+  v15->_deviceClass = class;
+  v15->_deviceOptions = options;
   dispatch_sync(&_dispatch_main_q, &stru_10002C960);
   [+[EAAccessoryManager sharedAccessoryManager](EAAccessoryManager registerForLocalNotifications];
   [+[EAAccessoryManager sharedAccessoryManager](EAAccessoryManager setShouldAllowInternalProtocols:"setShouldAllowInternalProtocols:", 1];
@@ -353,7 +353,7 @@ LABEL_14:
   [(EAFirmwareUpdater *)&v14 dealloc];
 }
 
-- (void)setFirmwareLocalURL:(id)a3
+- (void)setFirmwareLocalURL:(id)l
 {
   -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater setFirmwareLocalURL:]", [[NSString alloc] initWithFormat:@"%s: EAFirmwareUpdater setFirmwareImage\n", "-[EAFirmwareUpdater setFirmwareLocalURL:]"]);
   if (!self->_iAUPServer)
@@ -363,7 +363,7 @@ LABEL_14:
     [(iAUPServer *)v5 setDelegate:self];
   }
 
-  v6 = [[FirmwareBundle alloc] initWithURL:a3 hashData:0 signatureData:0 certData:0];
+  v6 = [[FirmwareBundle alloc] initWithURL:l hashData:0 signatureData:0 certData:0];
   [self->_iAUPServer setFirmwareBundle:v6];
 
   v7 = [(NSString *)self->_protocolString componentsSeparatedByString:@"."];
@@ -377,9 +377,9 @@ LABEL_14:
     v8 = 0;
   }
 
-  v9 = [self->_iAUPServer firmwareBundle];
+  firmwareBundle = [self->_iAUPServer firmwareBundle];
 
-  [(FirmwareBundle *)v9 setProductIDCode:v8];
+  [(FirmwareBundle *)firmwareBundle setProductIDCode:v8];
 }
 
 - (BOOL)findAccessory
@@ -392,9 +392,9 @@ LABEL_14:
   return [(EAFirmwareUpdater *)self accessory]!= 0;
 }
 
-- (void)setManifestIDs:(id)a3
+- (void)setManifestIDs:(id)ds
 {
-  v4 = [a3 copy];
+  v4 = [ds copy];
   self->_manifestIDs = v4;
   self->_manifestList = [(NSDictionary *)v4 allKeys];
   self->_manifestIndex = 0;
@@ -416,14 +416,14 @@ LABEL_14:
   objc_sync_exit(self);
 }
 
-- (void)reconnectTimerDidFire:(id)a3
+- (void)reconnectTimerDidFire:(id)fire
 {
   v4 = [NSString alloc];
   isExpectingReconnect = self->_isExpectingReconnect;
-  v6 = [(EAAccessory *)[(EAFirmwareUpdater *)self accessory] modelNumber];
-  v7 = [(EAAccessory *)[(EAFirmwareUpdater *)self accessory] connectionID];
+  modelNumber = [(EAAccessory *)[(EAFirmwareUpdater *)self accessory] modelNumber];
+  connectionID = [(EAAccessory *)[(EAFirmwareUpdater *)self accessory] connectionID];
   v8 = [objc_opt_class() getEAFirmwareRevisionActive:-[EAFirmwareUpdater accessory](self forProtocol:{"accessory"), self->_protocolString}];
-  -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater reconnectTimerDidFire:]", [v4 initWithFormat:@"Timed out waiting for accessory to reconnect _isExpectingReconnect=%d accessory=[%@:%lu:FWvA%@:FWvP%@]", isExpectingReconnect, v6, v7, v8, objc_msgSend(objc_opt_class(), "getEAFirmwareRevisionPending:forProtocol:", -[EAFirmwareUpdater accessory](self, "accessory"), self->_protocolString)]);
+  -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater reconnectTimerDidFire:]", [v4 initWithFormat:@"Timed out waiting for accessory to reconnect _isExpectingReconnect=%d accessory=[%@:%lu:FWvA%@:FWvP%@]", isExpectingReconnect, modelNumber, connectionID, v8, objc_msgSend(objc_opt_class(), "getEAFirmwareRevisionPending:forProtocol:", -[EAFirmwareUpdater accessory](self, "accessory"), self->_protocolString)]);
   objc_sync_enter(self);
   if ([(EAFirmwareUpdater *)self accessory])
   {
@@ -449,7 +449,7 @@ LABEL_14:
   objc_sync_exit(self);
 }
 
-- (void)setFirmwareURL:(id)a3 withManifest:(id)a4 signature:(id)a5 certificate:(id)a6 hash:(id)a7
+- (void)setFirmwareURL:(id)l withManifest:(id)manifest signature:(id)signature certificate:(id)certificate hash:(id)hash
 {
   -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater setFirmwareURL:withManifest:signature:certificate:hash:]", [[NSString alloc] initWithFormat:@"%s: EAFirmwareUpdater using local files for %@\n", "-[EAFirmwareUpdater setFirmwareURL:withManifest:signature:certificate:hash:]", self->_protocolString]);
   if (!self->_iAUPServer)
@@ -459,9 +459,9 @@ LABEL_14:
     [(iAUPServer *)v13 setDelegate:self];
   }
 
-  v14 = [[FirmwareBundle alloc] initWithURL:a3 hashData:a7 signatureData:a5 certData:a6];
+  v14 = [[FirmwareBundle alloc] initWithURL:l hashData:hash signatureData:signature certData:certificate];
   [self->_iAUPServer setFirmwareBundle:v14];
-  [(FirmwareBundle *)[self->_iAUPServer firmwareBundle] setBuildManifest:a4];
+  [(FirmwareBundle *)[self->_iAUPServer firmwareBundle] setBuildManifest:manifest];
 
   v15 = [(NSString *)self->_protocolString componentsSeparatedByString:@"."];
   if (v15)
@@ -474,12 +474,12 @@ LABEL_14:
     v16 = 0;
   }
 
-  v17 = [self->_iAUPServer firmwareBundle];
+  firmwareBundle = [self->_iAUPServer firmwareBundle];
 
-  [(FirmwareBundle *)v17 setProductIDCode:v16];
+  [(FirmwareBundle *)firmwareBundle setProductIDCode:v16];
 }
 
-- (void)setFirmwareBundle:(id)a3
+- (void)setFirmwareBundle:(id)bundle
 {
   -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater setFirmwareBundle:]", [[NSString alloc] initWithFormat:@"%s: EAFirmwareUpdater using local firmware bundles for %@\n", "-[EAFirmwareUpdater setFirmwareBundle:]", self->_protocolString]);
   iAUPServer = self->_iAUPServer;
@@ -491,41 +491,41 @@ LABEL_14:
     iAUPServer = self->_iAUPServer;
   }
 
-  [iAUPServer setFirmwareBundle:a3];
+  [iAUPServer setFirmwareBundle:bundle];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   session = self->_session;
-  if (session != a3)
+  if (session != session)
   {
     if (session)
     {
-      v10 = a3;
-      v5 = [(EASession *)session inputStream];
-      if (v5)
+      sessionCopy = session;
+      inputStream = [(EASession *)session inputStream];
+      if (inputStream)
       {
-        v6 = v5;
-        [(NSInputStream *)v5 close];
+        v6 = inputStream;
+        [(NSInputStream *)inputStream close];
         [(NSInputStream *)v6 removeFromRunLoop:+[NSRunLoop forMode:"mainRunLoop"], NSDefaultRunLoopMode];
       }
 
-      v7 = [(EASession *)self->_session outputStream];
-      if (v7)
+      outputStream = [(EASession *)self->_session outputStream];
+      if (outputStream)
       {
-        v8 = v7;
-        [(NSOutputStream *)v7 close];
+        v8 = outputStream;
+        [(NSOutputStream *)outputStream close];
         [(NSOutputStream *)v8 removeFromRunLoop:+[NSRunLoop forMode:"mainRunLoop"], NSDefaultRunLoopMode];
       }
 
-      a3 = v10;
+      session = sessionCopy;
     }
 
-    self->_session = a3;
-    if (a3)
+    self->_session = session;
+    if (session)
     {
 
-      v9 = a3;
+      sessionCopy2 = session;
     }
   }
 }
@@ -546,27 +546,27 @@ LABEL_14:
   return [NSPredicate predicateWithBlock:v4];
 }
 
-- (id)validateAssetAttributes:(id)a3
+- (id)validateAssetAttributes:(id)attributes
 {
-  if (a3)
+  if (attributes)
   {
-    -[EAFirmwareUpdater setFirmwareBundleFilename:](self, "setFirmwareBundleFilename:", [a3 objectForKey:@"FirmwareBundle"]);
+    -[EAFirmwareUpdater setFirmwareBundleFilename:](self, "setFirmwareBundleFilename:", [attributes objectForKey:@"FirmwareBundle"]);
     if ([(EAFirmwareUpdater *)self firmwareBundleFilename])
     {
-      v18 = [a3 objectForKey:@"ForceSilentUpdate"];
+      v18 = [attributes objectForKey:@"ForceSilentUpdate"];
       if (v18)
       {
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
       }
 
       else
       {
-        v19 = 0;
+        bOOLValue = 0;
       }
 
-      [(EAFirmwareUpdater *)self setForceSilentUpdate:v19];
+      [(EAFirmwareUpdater *)self setForceSilentUpdate:bOOLValue];
       -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater validateAssetAttributes:]", [[NSString alloc] initWithFormat:@"EA FUD Plugin: forceSilentUpdate=%d", -[EAFirmwareUpdater forceSilentUpdate](self, "forceSilentUpdate")]);
-      self->_firmwareVersionAvailable = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%@.%@", [a3 objectForKeyedSubscript:@"FirmwareVersionMajor"], objc_msgSend(a3, "objectForKeyedSubscript:", @"FirmwareVersionMinor"), objc_msgSend(a3, "objectForKeyedSubscript:", @"FirmwareVersionRelease"));
+      self->_firmwareVersionAvailable = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@.%@.%@", [attributes objectForKeyedSubscript:@"FirmwareVersionMajor"], objc_msgSend(attributes, "objectForKeyedSubscript:", @"FirmwareVersionMinor"), objc_msgSend(attributes, "objectForKeyedSubscript:", @"FirmwareVersionRelease"));
       -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater validateAssetAttributes:]", [[NSString alloc] initWithFormat:@"Firmware version available = %@", self->_firmwareVersionAvailable]);
     }
 
@@ -585,9 +585,9 @@ LABEL_14:
   }
 }
 
-- (BOOL)isDeploymentAllowed:(id)a3
+- (BOOL)isDeploymentAllowed:(id)allowed
 {
-  v3 = [a3 objectForKey:@"DeploymentList"];
+  v3 = [allowed objectForKey:@"DeploymentList"];
   if (!v3)
   {
     return 1;
@@ -662,11 +662,11 @@ LABEL_14:
   }
 }
 
-- (void)processPersonalizationInfoFromAccessory:(id)a3
+- (void)processPersonalizationInfoFromAccessory:(id)accessory
 {
   v55 = +[NSMutableArray array];
   v63 = 0;
-  if (!a3)
+  if (!accessory)
   {
     v46 = @"Invalid Info from Accessory";
 LABEL_88:
@@ -719,18 +719,18 @@ LABEL_88:
         }
       }
 
-      if ([a3 objectForKey:@"BoardID"])
+      if ([accessory objectForKey:@"BoardID"])
       {
-        [v11 setBoardID:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"BoardID", "unsignedIntValue")}];
-        if ([a3 objectForKey:@"ChipID"])
+        [v11 setBoardID:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"BoardID", "unsignedIntValue")}];
+        if ([accessory objectForKey:@"ChipID"])
         {
-          [v11 setChipID:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"ChipID", "unsignedIntValue")}];
-          if ([a3 objectForKey:@"ECID"])
+          [v11 setChipID:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"ChipID", "unsignedIntValue")}];
+          if ([accessory objectForKey:@"ECID"])
           {
             if ([v11 requestPrefix] && objc_msgSend(objc_msgSend(v11, "requestPrefix"), "isEqualToString:", @"Baobab"))
             {
               v62 = 0;
-              v63 = bswap64([objc_msgSend(a3 objectForKey:{@"ECID", "unsignedLongValue"}]);
+              v63 = bswap64([objc_msgSend(accessory objectForKey:{@"ECID", "unsignedLongValue"}]);
               v19 = [[NSMutableData alloc] initWithBytes:&v62 length:8];
               [v19 appendBytes:&v63 length:8];
               [v11 setExtEcID:v19];
@@ -738,7 +738,7 @@ LABEL_88:
 
             else
             {
-              [v11 setEcID:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"ECID", "unsignedLongValue")}];
+              [v11 setEcID:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"ECID", "unsignedLongValue")}];
               v19 = 0;
             }
 
@@ -751,25 +751,25 @@ LABEL_88:
             v19 = 0;
           }
 
-          if ([a3 objectForKey:@"securityDomain"])
+          if ([accessory objectForKey:@"securityDomain"])
           {
-            [v11 setSecurityDomain:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"securityDomain", "unsignedIntValue")}];
-            if ([a3 objectForKey:@"productionMode"])
+            [v11 setSecurityDomain:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"securityDomain", "unsignedIntValue")}];
+            if ([accessory objectForKey:@"productionMode"])
             {
-              [v11 setProductionMode:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"productionMode", "BOOLValue")}];
-              if ([a3 objectForKey:@"securityMode"])
+              [v11 setProductionMode:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"productionMode", "BOOLValue")}];
+              if ([accessory objectForKey:@"securityMode"])
               {
-                v25 = [a3 objectForKey:@"securityMode"];
+                v25 = [accessory objectForKey:@"securityMode"];
                 if (v25 != +[NSNull null])
                 {
-                  [v11 setSecurityMode:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"securityMode", "BOOLValue")}];
+                  [v11 setSecurityMode:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"securityMode", "BOOLValue")}];
                 }
 
-                if ([a3 objectForKey:@"nonceHash"])
+                if ([accessory objectForKey:@"nonceHash"])
                 {
                   if ([v11 requestPrefix] && objc_msgSend(objc_msgSend(v11, "requestPrefix"), "isEqualToString:", @"Baobab"))
                   {
-                    v26 = [[NSData alloc] initWithBytes:objc_msgSend(objc_msgSend(a3 length:{"objectForKey:", @"nonceHash", "bytes"), 16}];
+                    v26 = [[NSData alloc] initWithBytes:objc_msgSend(objc_msgSend(accessory length:{"objectForKey:", @"nonceHash", "bytes"), 16}];
                     [v11 setNonceHash:v26];
 
                     v27 = [[NSString alloc] initWithFormat:@"Truncating nonceHash=%@\n", objc_msgSend(v11, "nonceHash")];
@@ -779,18 +779,18 @@ LABEL_88:
 
                   else
                   {
-                    [v11 setNonceHash:{objc_msgSend(a3, "objectForKey:", @"nonceHash"}];
+                    [v11 setNonceHash:{objc_msgSend(accessory, "objectForKey:", @"nonceHash"}];
                   }
 
-                  v28 = [a3 objectForKey:@"chipEpoch"];
+                  v28 = [accessory objectForKey:@"chipEpoch"];
                   if (v28 != +[NSNull null](NSNull, "null") && (![v11 requestPrefix] || (objc_msgSend(objc_msgSend(v11, "requestPrefix"), "isEqualToString:", @"DMC") & 1) == 0))
                   {
-                    [v11 setChipEpoch:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"chipEpoch", "unsignedIntValue")}];
+                    [v11 setChipEpoch:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"chipEpoch", "unsignedIntValue")}];
                   }
 
-                  if ([a3 objectForKey:@"enableMixMatch"])
+                  if ([accessory objectForKey:@"enableMixMatch"])
                   {
-                    [v11 setEnableMixMatch:{objc_msgSend(objc_msgSend(a3, "objectForKey:", @"enableMixMatch", "BOOLValue")}];
+                    [v11 setEnableMixMatch:{objc_msgSend(objc_msgSend(accessory, "objectForKey:", @"enableMixMatch", "BOOLValue")}];
                     if ([(EAFirmwareUpdater *)self firmwareBundleURL]|| [self->_iAUPServer firmwareBundle])
                     {
                       if (![v11 responseFormat])
@@ -801,7 +801,7 @@ LABEL_88:
                           v31 = 0;
 LABEL_50:
                           memset(v61, 0, sizeof(v61));
-                          v54 = self;
+                          selfCopy = self;
                           v53 = v31;
                           if (-[NSArray countByEnumeratingWithState:objects:count:](buildIdentities, "countByEnumeratingWithState:objects:count:", v61, v67, 16) && (v35 = [**(&v61[0] + 1) objectForKey:@"Manifest"], v57 = 0u, v58 = 0u, v59 = 0u, v60 = 0u, (v36 = objc_msgSend(v35, "countByEnumeratingWithState:objects:count:", &v57, v66, 16)) != 0))
                           {
@@ -827,7 +827,7 @@ LABEL_50:
                                 {
                                   v38 = 0;
 LABEL_84:
-                                  self = v54;
+                                  self = selfCopy;
                                   goto LABEL_76;
                                 }
 
@@ -879,16 +879,16 @@ LABEL_84:
                           [v11 setObjectList:{objc_msgSend(v55, "copy")}];
                           if ([v11 responseFormat])
                           {
-                            v44 = [(FirmwareBundle *)v53 firmwareImage];
+                            firmwareImage = [(FirmwareBundle *)v53 firmwareImage];
                           }
 
                           else
                           {
-                            v44 = 0;
+                            firmwareImage = 0;
                           }
 
-                          self = v54;
-                          [v11 setPayload:v44];
+                          self = selfCopy;
+                          [v11 setPayload:firmwareImage];
 LABEL_76:
                           (*(self->_personalizationRequestHandler + 2))();
                           v45 = 0;
@@ -901,11 +901,11 @@ LABEL_76:
                         }
                       }
 
-                      v29 = [self->_iAUPServer firmwareBundle];
-                      if (v29 || (v30 = [[FirmwareBundle alloc] initWithBundlePath:[(NSURL *)[(EAFirmwareUpdater *)self firmwareBundleURL] path]], [self->_iAUPServer setFirmwareBundle:v30], v30, (v29 = [self->_iAUPServer firmwareBundle]) != 0))
+                      firmwareBundle = [self->_iAUPServer firmwareBundle];
+                      if (firmwareBundle || (v30 = [[FirmwareBundle alloc] initWithBundlePath:[(NSURL *)[(EAFirmwareUpdater *)self firmwareBundleURL] path]], [self->_iAUPServer setFirmwareBundle:v30], v30, (firmwareBundle = [self->_iAUPServer firmwareBundle]) != 0))
                       {
-                        v31 = v29;
-                        if ([(FirmwareBundle *)v29 buildManifest])
+                        v31 = firmwareBundle;
+                        if ([(FirmwareBundle *)firmwareBundle buildManifest])
                         {
                           if (![(FirmwareBundle *)v31 firmwareImage]&& [(FirmwareBundle *)v31 firmwareLocalURL])
                           {
@@ -1037,16 +1037,16 @@ LABEL_78:
   }
 }
 
-- (BOOL)stitchManifestInSuperBinary:(id)a3 withManifest:(id)a4 withId:(unsigned int)a5
+- (BOOL)stitchManifestInSuperBinary:(id)binary withManifest:(id)manifest withId:(unsigned int)id
 {
   v6 = @"Error null data to stitchManifestInSuperBinary";
-  if (!a3 || !a4)
+  if (!binary || !manifest)
   {
     goto LABEL_18;
   }
 
-  [a3 bytes];
-  [a3 length];
+  [binary bytes];
+  [binary length];
   v10 = parseSuperBinaryAndPayloadHeaders();
   if (!v10)
   {
@@ -1068,7 +1068,7 @@ LABEL_18:
       v14 = [[NSString alloc] initWithBytes:v13 length:4 encoding:4];
       if ([v14 isEqualToString:@"IM4M"])
       {
-        if ((*(v13 + 4) & a5) != 0)
+        if ((*(v13 + 4) & id) != 0)
         {
           break;
         }
@@ -1080,17 +1080,17 @@ LABEL_18:
       }
     }
 
-    if ([a4 length] > *(v13 + 16))
+    if ([manifest length] > *(v13 + 16))
     {
       v17 = @"Error manifest too large for SuperBinary payload";
     }
 
     else
     {
-      [a3 mutableBytes];
-      [a3 length];
-      [a4 bytes];
-      [a4 length];
+      [binary mutableBytes];
+      [binary length];
+      [manifest bytes];
+      [manifest length];
       if (updateSuperBinaryPayload())
       {
         v15 = 1;
@@ -1115,9 +1115,9 @@ LABEL_14:
   return v15;
 }
 
-- (void)personalizationResponse:(id)a3 error:(id)a4
+- (void)personalizationResponse:(id)response error:(id)error
 {
-  if (!a3 || a4)
+  if (!response || error)
   {
     eaNotificationDispatchQueue = self->_eaNotificationDispatchQueue;
     block[0] = _NSConcreteStackBlock;
@@ -1125,8 +1125,8 @@ LABEL_14:
     block[2] = sub_100007110;
     block[3] = &unk_10002C9D8;
     block[4] = self;
-    block[5] = a4;
-    block[6] = a3;
+    block[5] = error;
+    block[6] = response;
     dispatch_async(eaNotificationDispatchQueue, block);
     goto LABEL_7;
   }
@@ -1134,7 +1134,7 @@ LABEL_14:
   v6 = [-[NSDictionary objectForKey:](self->_deviceOptions objectForKey:{@"PersonalizationResponseFormat", "unsignedIntValue"}];
   if ([self->_iAUPServer firmwareBundle])
   {
-    v7 = [(FirmwareBundle *)[self->_iAUPServer firmwareBundle] productIDCode];
+    productIDCode = [(FirmwareBundle *)[self->_iAUPServer firmwareBundle] productIDCode];
     if (v6)
     {
       goto LABEL_13;
@@ -1143,7 +1143,7 @@ LABEL_14:
 
   else
   {
-    v7 = 0;
+    productIDCode = 0;
     if (v6)
     {
       goto LABEL_13;
@@ -1157,7 +1157,7 @@ LABEL_14:
     {
       v12 = v10 << 24;
       v9 = [[NSMutableData alloc] initWithData:{-[FirmwareBundle firmwareImage](-[iAUPServer firmwareBundle](self->_iAUPServer, "firmwareBundle"), "firmwareImage")}];
-      if (![(EAFirmwareUpdater *)self stitchManifestInSuperBinary:v9 withManifest:a3 withId:v12])
+      if (![(EAFirmwareUpdater *)self stitchManifestInSuperBinary:v9 withManifest:response withId:v12])
       {
         sub_100014CE0(self, v13);
         goto LABEL_18;
@@ -1174,14 +1174,14 @@ LABEL_7:
   }
 
 LABEL_13:
-  v14 = [[FirmwareBundle alloc] initWithData:a3 hashData:0 signatureData:0 certData:0];
+  v14 = [[FirmwareBundle alloc] initWithData:response hashData:0 signatureData:0 certData:0];
   v9 = 0;
 LABEL_14:
   [self->_iAUPServer setFirmwareBundle:v14];
 
-  if (v7)
+  if (productIDCode)
   {
-    [(FirmwareBundle *)[self->_iAUPServer firmwareBundle] setProductIDCode:v7];
+    [(FirmwareBundle *)[self->_iAUPServer firmwareBundle] setProductIDCode:productIDCode];
   }
 
   if (![self->_iAUPServer personalizationComplete])
@@ -1192,9 +1192,9 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)handleSessionError:(unsigned int)a3 message:(id)a4
+- (void)handleSessionError:(unsigned int)error message:(id)message
 {
-  v9 = sub_100006010(0, a3, a4, a4, v4, v5, v6, v7, v11[0]);
+  v9 = sub_100006010(0, error, message, message, v4, v5, v6, v7, v11[0]);
   eaNotificationDispatchQueue = self->_eaNotificationDispatchQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1207,13 +1207,13 @@ LABEL_18:
   [(EAFirmwareUpdater *)self updateComplete:[NSDictionary error:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:&v12 forKeys:1 count:?], v9];
 }
 
-- (id)applyFirmware:(id)a3 progress:(id)a4 update:(id)a5 personalization:(id)a6
+- (id)applyFirmware:(id)firmware progress:(id)progress update:(id)update personalization:(id)personalization
 {
   [(EAFirmwareUpdater *)self log:5 format:@"%s"];
-  self->_applyCompletion = _Block_copy(a3);
-  self->_progressHandler = _Block_copy(a4);
-  self->_updateHandler = _Block_copy(a5);
-  v11 = _Block_copy(a6);
+  self->_applyCompletion = _Block_copy(firmware);
+  self->_progressHandler = _Block_copy(progress);
+  self->_updateHandler = _Block_copy(update);
+  v11 = _Block_copy(personalization);
   self->_personalizationRequestHandler = v11;
   if (!self->_applyCompletion || !self->_progressHandler || (self->_updateHandler ? (v12 = v11 == 0) : (v12 = 1), v12))
   {
@@ -1271,7 +1271,7 @@ LABEL_35:
     v24 = "nil";
   }
 
-  v25 = [(FirmwareBundle *)v21 firmwareImageSize];
+  firmwareImageSize = [(FirmwareBundle *)v21 firmwareImageSize];
   if ([(FirmwareBundle *)v21 hash])
   {
     v26 = "valid";
@@ -1297,7 +1297,7 @@ LABEL_35:
     v23 = "valid";
   }
 
-  v28 = [v22 initWithFormat:@"FirmwareBundle created [image=%s imageSize=%d hash=%s signature=%s cert=%s productID=%d baseAddress=%d]\n", v24, v25, v26, v27, v23, -[FirmwareBundle productIDCode](v21, "productIDCode"), -[FirmwareBundle firmwareImageBaseAddress](v21, "firmwareImageBaseAddress")];
+  v28 = [v22 initWithFormat:@"FirmwareBundle created [image=%s imageSize=%d hash=%s signature=%s cert=%s productID=%d baseAddress=%d]\n", v24, firmwareImageSize, v26, v27, v23, -[FirmwareBundle productIDCode](v21, "productIDCode"), -[FirmwareBundle firmwareImageBaseAddress](v21, "firmwareImageBaseAddress")];
   [(EAFirmwareUpdater *)self log:5 format:@"%s %@"];
   [self->_iAUPServer setFirmwareBundle:v21];
 
@@ -1347,18 +1347,18 @@ LABEL_36:
         v9 = v8;
         [(EAFirmwareUpdater *)self setSession:v8];
 
-        v10 = [(EASession *)self->_session inputStream];
-        if (v10)
+        inputStream = [(EASession *)self->_session inputStream];
+        if (inputStream)
         {
-          v11 = v10;
-          [(NSInputStream *)v10 setDelegate:self];
+          v11 = inputStream;
+          [(NSInputStream *)inputStream setDelegate:self];
           [(NSInputStream *)v11 scheduleInRunLoop:+[NSRunLoop forMode:"mainRunLoop"], NSDefaultRunLoopMode];
           [(NSInputStream *)v11 open];
-          v12 = [(EASession *)self->_session outputStream];
-          if (v12)
+          outputStream = [(EASession *)self->_session outputStream];
+          if (outputStream)
           {
-            v13 = v12;
-            [(NSOutputStream *)v12 setDelegate:self];
+            v13 = outputStream;
+            [(NSOutputStream *)outputStream setDelegate:self];
             [(NSOutputStream *)v13 scheduleInRunLoop:+[NSRunLoop forMode:"mainRunLoop"], NSDefaultRunLoopMode];
             [(NSOutputStream *)v13 open];
             return 0;
@@ -1403,19 +1403,19 @@ LABEL_36:
   if (self->_session)
   {
     -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater closeSession]", [[NSString alloc] initWithFormat:@"Closing EA Session=%@", self->_session]);
-    v3 = [(EASession *)self->_session inputStream];
-    if (v3)
+    inputStream = [(EASession *)self->_session inputStream];
+    if (inputStream)
     {
-      v4 = v3;
-      [(NSInputStream *)v3 close];
+      v4 = inputStream;
+      [(NSInputStream *)inputStream close];
       [(NSInputStream *)v4 removeFromRunLoop:+[NSRunLoop forMode:"mainRunLoop"], NSDefaultRunLoopMode];
     }
 
-    v5 = [(EASession *)self->_session outputStream];
-    if (v5)
+    outputStream = [(EASession *)self->_session outputStream];
+    if (outputStream)
     {
-      v6 = v5;
-      [(NSOutputStream *)v5 close];
+      v6 = outputStream;
+      [(NSOutputStream *)outputStream close];
       [(NSOutputStream *)v6 removeFromRunLoop:+[NSRunLoop forMode:"mainRunLoop"], NSDefaultRunLoopMode];
     }
 
@@ -1423,21 +1423,21 @@ LABEL_36:
   }
 }
 
-- (id)writeData:(id)a3
+- (id)writeData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater writeData:]", [[NSString alloc] initWithFormat:@"- writing %u bytes", objc_msgSend(a3, "length")]);
+    -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater writeData:]", [[NSString alloc] initWithFormat:@"- writing %u bytes", objc_msgSend(data, "length")]);
     if (![(EAFirmwareUpdater *)self isMultiAssetSession]&& !self->_closeEASession)
     {
-      v10 = [a3 bytes];
+      bytes = [data bytes];
       v11 = 3;
       if (!self->_byteEscape)
       {
         v11 = 4;
       }
 
-      if (v10[v11] == 65 && !self->_skipReconnect)
+      if (bytes[v11] == 65 && !self->_skipReconnect)
       {
         [(EAFirmwareUpdater *)self startReconnectTimer:2];
       }
@@ -1446,13 +1446,13 @@ LABEL_36:
     outputData = self->_outputData;
     if (outputData)
     {
-      [(NSMutableData *)outputData appendData:a3];
+      [(NSMutableData *)outputData appendData:data];
 LABEL_12:
 
       return [(EAFirmwareUpdater *)self flushOutput];
     }
 
-    v13 = [[NSMutableData alloc] initWithData:a3];
+    v13 = [[NSMutableData alloc] initWithData:data];
     self->_outputData = v13;
     if (v13)
     {
@@ -1472,19 +1472,19 @@ LABEL_12:
   return sub_100006010(0, v15, v14, v3, v4, v5, v6, v7, v18);
 }
 
-- (void)updateProgress:(double)a3
+- (void)updateProgress:(double)progress
 {
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
-    progressHandler[2](a3);
+    progressHandler[2](progress);
   }
 }
 
-- (id)createEndOfUpdateEventDict:(id)a3 error:(id)a4
+- (id)createEndOfUpdateEventDict:(id)dict error:(id)error
 {
   -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater createEndOfUpdateEventDict:error:]", [[NSString alloc] initWithFormat:&stru_10002DC80]);
-  v7 = [a3 objectForKey:@"Event"];
+  v7 = [dict objectForKey:@"Event"];
   if (!v7)
   {
     sub_100014DE8(self, v8);
@@ -1536,9 +1536,9 @@ LABEL_12:
   self->_cumulativeTimeTaken = [NSNumber numberWithUnsignedInt:[(NSNumber *)self->_currentSessionTimeTaken unsignedIntValue]+ [(NSNumber *)self->_cumulativeTimeTaken unsignedIntValue]];
   self->_cumulativeCloakTime = [NSNumber numberWithUnsignedInt:[(NSNumber *)self->_currentSessionCloakTime unsignedIntValue]+ [(NSNumber *)self->_cumulativeCloakTime unsignedIntValue]];
   v17 = [NSNumber numberWithUnsignedInt:[(NSNumber *)self->_resumeCount unsignedIntValue]+ 1];
-  if (a4 && [a4 userInfo] && objc_msgSend(objc_msgSend(a4, "userInfo"), "objectForKey:", NSLocalizedDescriptionKey))
+  if (error && [error userInfo] && objc_msgSend(objc_msgSend(error, "userInfo"), "objectForKey:", NSLocalizedDescriptionKey))
   {
-    v18 = [objc_msgSend(a4 "userInfo")];
+    v18 = [objc_msgSend(error "userInfo")];
   }
 
   else
@@ -1587,9 +1587,9 @@ LABEL_22:
   return v23;
 }
 
-- (void)firmwareUpdateComplete:(id)a3 error:(id)a4
+- (void)firmwareUpdateComplete:(id)complete error:(id)error
 {
-  if (a4)
+  if (error)
   {
 
     [EAFirmwareUpdater updateComplete:"updateComplete:error:" error:?];
@@ -1600,7 +1600,7 @@ LABEL_22:
     self->_firmwareUpdateComplete = 1;
     if (self->_isMultiAssetSession || [self->_iAUPServer iAUPVersion]== 2 || self->_closeEASession)
     {
-      [(EAFirmwareUpdater *)self updateComplete:a3 error:0];
+      [(EAFirmwareUpdater *)self updateComplete:complete error:0];
       eaNotificationDispatchQueue = self->_eaNotificationDispatchQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -1635,10 +1635,10 @@ LABEL_22:
   return [-[NSDictionary objectForKey:](self->_manifestIDs objectForKey:{-[NSArray objectAtIndexedSubscript:](self->_manifestList, "objectAtIndexedSubscript:", self->_manifestIndex)), "intValue"}] | 1;
 }
 
-- (void)updateComplete:(id)a3 error:(id)a4
+- (void)updateComplete:(id)complete error:(id)error
 {
   objc_sync_enter(self);
-  [(EAFirmwareUpdater *)self log:5 format:@"error=%@", a4];
+  [(EAFirmwareUpdater *)self log:5 format:@"error=%@", error];
   [(EAFirmwareUpdater *)self stopReconnectTimer];
   eaNotificationDispatchQueue = self->_eaNotificationDispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1652,28 +1652,28 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  if (a3)
+  if (complete)
   {
-    v8 = [(EAFirmwareUpdater *)self createEndOfUpdateEventDict:a3 error:a4];
-    if ([objc_msgSend(a3 objectForKeyedSubscript:{@"Event", "isEqualToString:", @"com.apple.fud.updateInterrupted"}])
+    v8 = [(EAFirmwareUpdater *)self createEndOfUpdateEventDict:complete error:error];
+    if ([objc_msgSend(complete objectForKeyedSubscript:{@"Event", "isEqualToString:", @"com.apple.fud.updateInterrupted"}])
     {
-      v9 = [a4 userInfo];
+      userInfo = [error userInfo];
       v10 = 1;
     }
 
     else
     {
-      if (![objc_msgSend(a3 objectForKeyedSubscript:{@"Event", "isEqualToString:", @"com.apple.fud.updateFailed"}])
+      if (![objc_msgSend(complete objectForKeyedSubscript:{@"Event", "isEqualToString:", @"com.apple.fud.updateFailed"}])
       {
         v11 = 0;
         goto LABEL_10;
       }
 
-      v9 = [a4 userInfo];
+      userInfo = [error userInfo];
       v10 = 4;
     }
 
-    v11 = [NSError errorWithDomain:@"com.apple.MobileAccessoryUpdater.ErrorDomain" code:v10 userInfo:v9];
+    v11 = [NSError errorWithDomain:@"com.apple.MobileAccessoryUpdater.ErrorDomain" code:v10 userInfo:userInfo];
   }
 
   else
@@ -1683,8 +1683,8 @@ LABEL_22:
   }
 
 LABEL_10:
-  v12 = [(EAFirmwareUpdater *)self applyCompletion];
-  v12[2](v12, v8, v11);
+  applyCompletion = [(EAFirmwareUpdater *)self applyCompletion];
+  applyCompletion[2](applyCompletion, v8, v11);
   _Block_release(self->_applyCompletion);
   self->_applyCompletion = 0;
   progressHandler = self->_progressHandler;
@@ -1714,7 +1714,7 @@ LABEL_16:
   objc_sync_exit(self);
 }
 
-- (void)_accessoryDidConnect:(id)a3
+- (void)_accessoryDidConnect:(id)connect
 {
   v18[0] = 0;
   v18[1] = v18;
@@ -1722,11 +1722,11 @@ LABEL_16:
   v18[3] = sub_100008A18;
   v18[4] = sub_100008A28;
   v18[5] = 0;
-  -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater _accessoryDidConnect:]", [[NSString alloc] initWithFormat:@"notification=%@", a3]);
+  -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater _accessoryDidConnect:]", [[NSString alloc] initWithFormat:@"notification=%@", connect]);
   -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater _accessoryDidConnect:]", [[NSString alloc] initWithFormat:@"_isExpectingReconnect=%d _isMultiAssetSession=%d current=[%@:%lu:FWvA%@:FWvP%@] ", self->_isExpectingReconnect, self->_isMultiAssetSession, -[EAAccessory modelNumber](-[EAFirmwareUpdater accessory](self, "accessory"), "modelNumber"), -[EAAccessory connectionID](-[EAFirmwareUpdater accessory](self, "accessory"), "connectionID"), -[EAAccessory firmwareRevisionActive](-[EAFirmwareUpdater accessory](self, "accessory"), "firmwareRevisionActive"), -[EAAccessory firmwareRevisionPending](-[EAFirmwareUpdater accessory](self, "accessory"), "firmwareRevisionPending")]);
-  if (a3)
+  if (connect)
   {
-    v5 = [objc_msgSend(a3 "userInfo")];
+    v5 = [objc_msgSend(connect "userInfo")];
     if (v5)
     {
       v6 = [(EAFirmwareUpdater *)self supportedProtocolForAccessory:v5];
@@ -1791,41 +1791,41 @@ LABEL_16:
   _Block_object_dispose(v18, 8);
 }
 
-- (void)_accessoryDidDisconnect:(id)a3
+- (void)_accessoryDidDisconnect:(id)disconnect
 {
-  -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater _accessoryDidDisconnect:]", [[NSString alloc] initWithFormat:@"notification=%@", a3]);
+  -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater _accessoryDidDisconnect:]", [[NSString alloc] initWithFormat:@"notification=%@", disconnect]);
   if (self->_eaNotificationDispatchQueue)
   {
     objc_sync_enter(self);
-    v5 = [objc_msgSend(a3 "userInfo")];
+    v5 = [objc_msgSend(disconnect "userInfo")];
     -[EAFirmwareUpdater log:format:](self, "log:format:", 5, @"%s %@", "-[EAFirmwareUpdater _accessoryDidDisconnect:]", [[NSString alloc] initWithFormat:@"_isExpectingReconnect=%d _isMultiAssetSession=%d disconnecting=[%@:%lu:FWvA%@:FWvP%@] current=[%@:%lu:FWvA%@:FWP%@]", self->_isExpectingReconnect, self->_isMultiAssetSession, objc_msgSend(v5, "modelNumber"), objc_msgSend(v5, "connectionID"), objc_msgSend(v5, "firmwareRevisionActive"), objc_msgSend(v5, "firmwareRevisionPending"), -[EAAccessory modelNumber](-[EAFirmwareUpdater accessory](self, "accessory"), "modelNumber"), -[EAAccessory connectionID](-[EAFirmwareUpdater accessory](self, "accessory"), "connectionID"), -[EAAccessory firmwareRevisionActive](-[EAFirmwareUpdater accessory](self, "accessory"), "firmwareRevisionActive"), -[EAAccessory firmwareRevisionPending](-[EAFirmwareUpdater accessory](self, "accessory"), "firmwareRevisionPending")]);
     sub_100014E80(&self->_eaNotificationDispatchQueue, &v6, v5, self);
   }
 }
 
-+ (id)getEAFirmwareRevisionActive:(id)a3 forProtocol:(id)a4
++ (id)getEAFirmwareRevisionActive:(id)active forProtocol:(id)protocol
 {
-  v4 = 0;
-  if (a3)
+  firmwareRevisionActive = 0;
+  if (active)
   {
-    if (a4)
+    if (protocol)
     {
-      v4 = [a3 firmwareRevisionActive];
-      v7 = [objc_msgSend(a3 "modelNumber")];
-      v8 = [objc_msgSend(a3 "modelNumber")];
-      if (([objc_msgSend(a3 "modelNumber")] & 1) != 0 || (v8 & 1) != 0 || v7)
+      firmwareRevisionActive = [active firmwareRevisionActive];
+      v7 = [objc_msgSend(active "modelNumber")];
+      v8 = [objc_msgSend(active "modelNumber")];
+      if (([objc_msgSend(active "modelNumber")] & 1) != 0 || (v8 & 1) != 0 || v7)
       {
-        if ([a3 protocolDetails] && objc_msgSend(objc_msgSend(a3, "protocolDetails"), "objectForKey:", a4))
+        if ([active protocolDetails] && objc_msgSend(objc_msgSend(active, "protocolDetails"), "objectForKey:", protocol))
         {
-          v9 = [objc_msgSend(a3 "protocolDetails")];
-          v4 = [v9 objectForKey:EAProtocolFirmwareVersionActiveKey];
+          v9 = [objc_msgSend(active "protocolDetails")];
+          firmwareRevisionActive = [v9 objectForKey:EAProtocolFirmwareVersionActiveKey];
           sub_10000924C();
           NSLog(@"%s(): fwRevisionActive=%@ forProtocol=%@");
         }
 
         else
         {
-          [a3 protocolDetails];
+          [active protocolDetails];
           sub_10000924C();
           NSLog(@"%s() EAAccessory has no protocolDetails=%@ for protocol");
         }
@@ -1833,32 +1833,32 @@ LABEL_16:
     }
   }
 
-  return v4;
+  return firmwareRevisionActive;
 }
 
-+ (id)getEAFirmwareRevisionPending:(id)a3 forProtocol:(id)a4
++ (id)getEAFirmwareRevisionPending:(id)pending forProtocol:(id)protocol
 {
-  v4 = 0;
-  if (a3)
+  firmwareRevisionPending = 0;
+  if (pending)
   {
-    if (a4)
+    if (protocol)
     {
-      v4 = [a3 firmwareRevisionPending];
-      v7 = [objc_msgSend(a3 "modelNumber")];
-      v8 = [objc_msgSend(a3 "modelNumber")];
-      if (([objc_msgSend(a3 "modelNumber")] & 1) != 0 || (v8 & 1) != 0 || v7)
+      firmwareRevisionPending = [pending firmwareRevisionPending];
+      v7 = [objc_msgSend(pending "modelNumber")];
+      v8 = [objc_msgSend(pending "modelNumber")];
+      if (([objc_msgSend(pending "modelNumber")] & 1) != 0 || (v8 & 1) != 0 || v7)
       {
-        if ([a3 protocolDetails] && objc_msgSend(objc_msgSend(a3, "protocolDetails"), "objectForKey:", a4))
+        if ([pending protocolDetails] && objc_msgSend(objc_msgSend(pending, "protocolDetails"), "objectForKey:", protocol))
         {
-          v9 = [objc_msgSend(a3 "protocolDetails")];
-          v4 = [v9 objectForKey:EAProtocolFirmwareVersionPendingKey];
+          v9 = [objc_msgSend(pending "protocolDetails")];
+          firmwareRevisionPending = [v9 objectForKey:EAProtocolFirmwareVersionPendingKey];
           sub_10000924C();
           NSLog(@"%s(): fwRevisionPending=%@ forProtocol=%@");
         }
 
         else
         {
-          [a3 protocolDetails];
+          [pending protocolDetails];
           sub_10000924C();
           NSLog(@"%s() EAAccessory has no protocolDetails=%@ for protocol");
         }
@@ -1866,12 +1866,12 @@ LABEL_16:
     }
   }
 
-  return v4;
+  return firmwareRevisionPending;
 }
 
-- (void)setAccessory:(id)a3
+- (void)setAccessory:(id)accessory
 {
-  if (self->_accessory == a3)
+  if (self->_accessory == accessory)
   {
     goto LABEL_18;
   }
@@ -1879,12 +1879,12 @@ LABEL_16:
   v24 = [objc_opt_class() getEAFirmwareRevisionPending:self->_accessory forProtocol:self->_protocolString];
   v23 = [objc_opt_class() getEAFirmwareRevisionActive:self->_accessory forProtocol:self->_protocolString];
   v5 = [NSString alloc];
-  v6 = [(EAAccessory *)self->_accessory modelNumber];
-  v7 = [(EAAccessory *)self->_accessory connectionID];
-  v8 = [a3 modelNumber];
-  v9 = [a3 connectionID];
-  v10 = [objc_opt_class() getEAFirmwareRevisionActive:a3 forProtocol:self->_protocolString];
-  v11 = [v5 initWithFormat:@"old=[%@:%lu:FWvA%@:FWvP%@] new=[%@:%lu:FWvA%@:FWvP%@] ", v6, v7, v23, v24, v8, v9, v10, objc_msgSend(objc_opt_class(), "getEAFirmwareRevisionPending:forProtocol:", a3, self->_protocolString)];
+  modelNumber = [(EAAccessory *)self->_accessory modelNumber];
+  connectionID = [(EAAccessory *)self->_accessory connectionID];
+  modelNumber2 = [accessory modelNumber];
+  connectionID2 = [accessory connectionID];
+  v10 = [objc_opt_class() getEAFirmwareRevisionActive:accessory forProtocol:self->_protocolString];
+  v11 = [v5 initWithFormat:@"old=[%@:%lu:FWvA%@:FWvP%@] new=[%@:%lu:FWvA%@:FWvP%@] ", modelNumber, connectionID, v23, v24, modelNumber2, connectionID2, v10, objc_msgSend(objc_opt_class(), "getEAFirmwareRevisionPending:forProtocol:", accessory, self->_protocolString)];
   [sub_1000091D4() log:"-[EAFirmwareUpdater setAccessory:]" format:v11];
   accessory = self->_accessory;
   if (accessory)
@@ -1892,13 +1892,13 @@ LABEL_16:
     [(EAAccessory *)accessory setDelegate:0];
   }
 
-  self->_accessory = a3;
-  if (!a3)
+  self->_accessory = accessory;
+  if (!accessory)
   {
     goto LABEL_15;
   }
 
-  v13 = a3;
+  accessoryCopy = accessory;
   [(EAFirmwareUpdater *)self setProtocolString:[(EAFirmwareUpdater *)self supportedProtocolForAccessory:self->_accessory]];
   if (![(EAFirmwareUpdater *)self protocolString])
   {
@@ -1948,9 +1948,9 @@ LABEL_15:
   [v21 setSession:?];
 }
 
-- (id)supportedProtocolForAccessory:(id)a3
+- (id)supportedProtocolForAccessory:(id)accessory
 {
-  if (!a3)
+  if (!accessory)
   {
     return 0;
   }
@@ -1961,7 +1961,7 @@ LABEL_15:
     result = [(EAFirmwareUpdater *)self appProtocol];
     if (result)
     {
-      result = [a3 protocolStrings];
+      result = [accessory protocolStrings];
       if (result)
       {
         v6 = result;
@@ -2027,9 +2027,9 @@ LABEL_15:
   return result;
 }
 
-- (id)assetWithMaxVersion:(id)a3
+- (id)assetWithMaxVersion:(id)version
 {
-  if (!a3)
+  if (!version)
   {
     return 0;
   }
@@ -2038,7 +2038,7 @@ LABEL_15:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v4 = [version countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v4)
   {
     return 0;
@@ -2049,7 +2049,7 @@ LABEL_15:
   v24 = 0;
   v6 = 0;
   v25 = 0;
-  obj = a3;
+  obj = version;
   v7 = 0;
   v8 = *v28;
   do
@@ -2062,35 +2062,35 @@ LABEL_15:
       }
 
       v10 = *(*(&v27 + 1) + 8 * i);
-      v11 = [v10 attributes];
-      if (v11)
+      attributes = [v10 attributes];
+      if (attributes)
       {
-        v12 = v11;
-        v13 = [v11 objectForKey:@"FirmwareVersionMajor"];
+        v12 = attributes;
+        v13 = [attributes objectForKey:@"FirmwareVersionMajor"];
         if (v13)
         {
-          v14 = [v13 unsignedLongLongValue];
+          unsignedLongLongValue = [v13 unsignedLongLongValue];
           v15 = [v12 objectForKey:@"FirmwareVersionMinor"];
           if (v15)
           {
-            v16 = [v15 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v15 unsignedLongLongValue];
             v17 = [v12 objectForKey:@"FirmwareVersionRelease"];
             if (v17)
             {
-              v18 = [v17 unsignedLongLongValue];
+              unsignedLongLongValue3 = [v17 unsignedLongLongValue];
               v19 = [v12 objectForKey:@"FormatVersion"];
               if (v19)
               {
-                v20 = [v19 unsignedLongLongValue];
-                if (v20 >= v7)
+                unsignedLongLongValue4 = [v19 unsignedLongLongValue];
+                if (unsignedLongLongValue4 >= v7)
                 {
-                  if (v14 > v6 || v14 == v6 && (v16 > v25 || (v16 == v25 ? (v21 = v18 > v24) : (v21 = 0), v21)))
+                  if (unsignedLongLongValue > v6 || unsignedLongLongValue == v6 && (unsignedLongLongValue2 > v25 || (unsignedLongLongValue2 == v25 ? (v21 = unsignedLongLongValue3 > v24) : (v21 = 0), v21)))
                   {
                     v23 = v10;
-                    v24 = v18;
-                    v6 = v14;
-                    v25 = v16;
-                    v7 = v20;
+                    v24 = unsignedLongLongValue3;
+                    v6 = unsignedLongLongValue;
+                    v25 = unsignedLongLongValue2;
+                    v7 = unsignedLongLongValue4;
                   }
                 }
               }
@@ -2171,7 +2171,7 @@ LABEL_31:
     [(FirmwareBundle *)v14 loadFirmwareImage];
   }
 
-  v17 = [(NSData *)[(FirmwareBundle *)v14 firmwareImage] bytes];
+  bytes = [(NSData *)[(FirmwareBundle *)v14 firmwareImage] bytes];
   [(NSData *)[(FirmwareBundle *)v14 firmwareImage] length];
   v18 = parseSuperBinaryAndPayloadHeaders();
   if (!v18)
@@ -2207,7 +2207,7 @@ LABEL_31:
       }
     }
 
-    v28 = &v17[*(v21 + 3)];
+    v28 = &bytes[*(v21 + 3)];
     v29 = (*(v21 + 4) + *(v21 + 3));
     if (metadataTLVGetNext())
     {
@@ -2224,23 +2224,23 @@ LABEL_21:
   return result;
 }
 
-- (void)handleFirmwareUpdateStatus:(id)a3
+- (void)handleFirmwareUpdateStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
-    v5 = [a3 objectForKey:@"Event"];
+    v5 = [status objectForKey:@"Event"];
     if (([v5 isEqualToString:@"com.apple.fud.updateStarted"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.fud.updateResumed"))
     {
       self->_updateStartTime = +[NSDate date];
-      self->_cumulativeBytesDownloaded = [a3 objectForKeyedSubscript:@"totalBytesDownloadedSoFar"];
-      self->_totalBytesForCompleteUpdate = [a3 objectForKeyedSubscript:@"totalBytesForCompleteUpdate"];
+      self->_cumulativeBytesDownloaded = [status objectForKeyedSubscript:@"totalBytesDownloadedSoFar"];
+      self->_totalBytesForCompleteUpdate = [status objectForKeyedSubscript:@"totalBytesForCompleteUpdate"];
       [(NSNumber *)self->_cumulativeBytesDownloaded floatValue];
       v7 = v6;
       [(NSNumber *)self->_totalBytesForCompleteUpdate floatValue];
       self->_resumedFromPercentNum = [NSNumber numberWithUnsignedInt:((v7 / v8) * 100.0)];
-      self->_resumeCount = [a3 objectForKeyedSubscript:@"resumeCount"];
-      self->_cumulativeCloakTime = [a3 objectForKeyedSubscript:@"cumulativeCloakTime"];
-      self->_cumulativeTimeTaken = [a3 objectForKeyedSubscript:@"cumulativeUpdateTime"];
+      self->_resumeCount = [status objectForKeyedSubscript:@"resumeCount"];
+      self->_cumulativeCloakTime = [status objectForKeyedSubscript:@"cumulativeCloakTime"];
+      self->_cumulativeTimeTaken = [status objectForKeyedSubscript:@"cumulativeUpdateTime"];
       v13[0] = @"Event";
       v13[1] = @"transportType";
       v14[0] = v5;
@@ -2267,18 +2267,18 @@ LABEL_21:
   }
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  switch(a4)
+  switch(event)
   {
     case 0uLL:
-      v7 = a3;
+      streamCopy4 = stream;
       goto LABEL_9;
     case 1uLL:
-      v7 = a3;
+      streamCopy4 = stream;
       goto LABEL_9;
     case 2uLL:
-      [sub_1000091D4() log:a3 format:?];
+      [sub_1000091D4() log:stream format:?];
       eaNotificationDispatchQueue = self->_eaNotificationDispatchQueue;
       if (!eaNotificationDispatchQueue)
       {
@@ -2298,7 +2298,7 @@ LABEL_21:
     case 7uLL:
       return;
     case 4uLL:
-      [sub_1000091D4() log:a3 format:?];
+      [sub_1000091D4() log:stream format:?];
       eaNotificationDispatchQueue = self->_eaNotificationDispatchQueue;
       if (!eaNotificationDispatchQueue)
       {
@@ -2315,17 +2315,17 @@ LABEL_12:
       dispatch_async(eaNotificationDispatchQueue, v6);
       break;
     case 8uLL:
-      v7 = a3;
+      streamCopy4 = stream;
       goto LABEL_9;
     default:
-      if (a4 != 16)
+      if (event != 16)
       {
         return;
       }
 
-      v7 = a3;
+      streamCopy4 = stream;
 LABEL_9:
-      [sub_1000091D4() log:v7 format:?];
+      [sub_1000091D4() log:streamCopy4 format:?];
       break;
   }
 }
@@ -2338,11 +2338,11 @@ LABEL_9:
     session = self->_session;
     if (session)
     {
-      v9 = [(EASession *)session outputStream];
-      if (v9)
+      outputStream = [(EASession *)session outputStream];
+      if (outputStream)
       {
-        v10 = v9;
-        if ([(NSOutputStream *)v9 hasSpaceAvailable])
+        v10 = outputStream;
+        if ([(NSOutputStream *)outputStream hasSpaceAvailable])
         {
           while ([(NSMutableData *)self->_outputData length])
           {
@@ -2399,11 +2399,11 @@ LABEL_11:
     session = self->_session;
     if (session)
     {
-      v4 = [(EASession *)session inputStream];
-      if (v4)
+      inputStream = [(EASession *)session inputStream];
+      if (inputStream)
       {
-        v5 = v4;
-        if ([(NSInputStream *)v4 hasBytesAvailable])
+        v5 = inputStream;
+        if ([(NSInputStream *)inputStream hasBytesAvailable])
         {
           do
           {

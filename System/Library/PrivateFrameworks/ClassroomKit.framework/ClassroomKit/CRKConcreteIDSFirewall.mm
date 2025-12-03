@@ -1,59 +1,59 @@
 @interface CRKConcreteIDSFirewall
-+ (id)appleIDFromFirewallEntry:(id)a3;
-+ (id)firewallEntryForAppleID:(id)a3;
-- (CRKConcreteIDSFirewall)initWithUnderlyingFirewall:(id)a3;
-- (void)addAllowedAppleIDs:(id)a3 completion:(id)a4;
-- (void)fetchAllowedAppleIDsWithCompletion:(id)a3;
-- (void)removeAllowedAppleIDs:(id)a3 completion:(id)a4;
++ (id)appleIDFromFirewallEntry:(id)entry;
++ (id)firewallEntryForAppleID:(id)d;
+- (CRKConcreteIDSFirewall)initWithUnderlyingFirewall:(id)firewall;
+- (void)addAllowedAppleIDs:(id)ds completion:(id)completion;
+- (void)fetchAllowedAppleIDsWithCompletion:(id)completion;
+- (void)removeAllowedAppleIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation CRKConcreteIDSFirewall
 
-- (CRKConcreteIDSFirewall)initWithUnderlyingFirewall:(id)a3
+- (CRKConcreteIDSFirewall)initWithUnderlyingFirewall:(id)firewall
 {
-  v5 = a3;
+  firewallCopy = firewall;
   v9.receiver = self;
   v9.super_class = CRKConcreteIDSFirewall;
   v6 = [(CRKConcreteIDSFirewall *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingFirewall, a3);
+    objc_storeStrong(&v6->_underlyingFirewall, firewall);
   }
 
   return v7;
 }
 
-- (void)addAllowedAppleIDs:(id)a3 completion:(id)a4
+- (void)addAllowedAppleIDs:(id)ds completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKConcreteIDSFirewall addAllowedAppleIDs:a2 completion:?];
   }
 
-  if ([v7 count])
+  if ([dsCopy count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __56__CRKConcreteIDSFirewall_addAllowedAppleIDs_completion___block_invoke;
     v14[3] = &unk_278DC0F90;
     v14[4] = self;
-    v9 = [v7 crk_mapUsingBlock:v14];
-    v10 = [(CRKConcreteIDSFirewall *)self underlyingFirewall];
-    v11 = [v9 allObjects];
+    v9 = [dsCopy crk_mapUsingBlock:v14];
+    underlyingFirewall = [(CRKConcreteIDSFirewall *)self underlyingFirewall];
+    allObjects = [v9 allObjects];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __56__CRKConcreteIDSFirewall_addAllowedAppleIDs_completion___block_invoke_2;
     v12[3] = &unk_278DC0FE0;
-    v13 = v8;
-    [v10 donateEntries:v11 withCompletion:v12];
+    v13 = completionCopy;
+    [underlyingFirewall donateEntries:allObjects withCompletion:v12];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -79,36 +79,36 @@ void __56__CRKConcreteIDSFirewall_addAllowedAppleIDs_completion___block_invoke_2
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)removeAllowedAppleIDs:(id)a3 completion:(id)a4
+- (void)removeAllowedAppleIDs:(id)ds completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKConcreteIDSFirewall removeAllowedAppleIDs:a2 completion:?];
   }
 
-  if ([v7 count])
+  if ([dsCopy count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __59__CRKConcreteIDSFirewall_removeAllowedAppleIDs_completion___block_invoke;
     v14[3] = &unk_278DC0F90;
     v14[4] = self;
-    v9 = [v7 crk_mapUsingBlock:v14];
-    v10 = [(CRKConcreteIDSFirewall *)self underlyingFirewall];
-    v11 = [v9 allObjects];
+    v9 = [dsCopy crk_mapUsingBlock:v14];
+    underlyingFirewall = [(CRKConcreteIDSFirewall *)self underlyingFirewall];
+    allObjects = [v9 allObjects];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __59__CRKConcreteIDSFirewall_removeAllowedAppleIDs_completion___block_invoke_2;
     v12[3] = &unk_278DC0FE0;
-    v13 = v8;
-    [v10 removeDonatedEntries:v11 withCompletion:v12];
+    v13 = completionCopy;
+    [underlyingFirewall removeDonatedEntries:allObjects withCompletion:v12];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -134,23 +134,23 @@ void __59__CRKConcreteIDSFirewall_removeAllowedAppleIDs_completion___block_invok
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)fetchAllowedAppleIDsWithCompletion:(id)a3
+- (void)fetchAllowedAppleIDsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKConcreteIDSFirewall fetchAllowedAppleIDsWithCompletion:a2];
   }
 
-  v6 = [(CRKConcreteIDSFirewall *)self underlyingFirewall];
+  underlyingFirewall = [(CRKConcreteIDSFirewall *)self underlyingFirewall];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__CRKConcreteIDSFirewall_fetchAllowedAppleIDsWithCompletion___block_invoke;
   v8[3] = &unk_278DC1078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 currentDonatedEntries:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [underlyingFirewall currentDonatedEntries:v8];
 }
 
 void __61__CRKConcreteIDSFirewall_fetchAllowedAppleIDsWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -205,20 +205,20 @@ id __61__CRKConcreteIDSFirewall_fetchAllowedAppleIDsWithCompletion___block_invok
   return v3;
 }
 
-+ (id)firewallEntryForAppleID:(id)a3
++ (id)firewallEntryForAppleID:(id)d
 {
-  v3 = [MEMORY[0x277D18A48] URIWithUnprefixedURI:a3];
+  v3 = [MEMORY[0x277D18A48] URIWithUnprefixedURI:d];
   v4 = [objc_alloc(MEMORY[0x277D18718]) initWithURI:v3];
 
   return v4;
 }
 
-+ (id)appleIDFromFirewallEntry:(id)a3
++ (id)appleIDFromFirewallEntry:(id)entry
 {
-  v3 = [a3 uri];
-  v4 = [v3 unprefixedURI];
+  v3 = [entry uri];
+  unprefixedURI = [v3 unprefixedURI];
 
-  return v4;
+  return unprefixedURI;
 }
 
 - (void)addAllowedAppleIDs:(const char *)a1 completion:.cold.1(const char *a1)

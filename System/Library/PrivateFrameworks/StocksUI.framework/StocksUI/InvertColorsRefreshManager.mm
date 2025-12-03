@@ -1,10 +1,10 @@
 @interface InvertColorsRefreshManager
-- (void)accessibilityInvertColorsStatusDidChange:(id)a3;
+- (void)accessibilityInvertColorsStatusDidChange:(id)change;
 @end
 
 @implementation InvertColorsRefreshManager
 
-- (void)accessibilityInvertColorsStatusDidChange:(id)a3
+- (void)accessibilityInvertColorsStatusDidChange:(id)change
 {
   v3 = sub_220884A6C();
   v4 = *(v3 - 8);

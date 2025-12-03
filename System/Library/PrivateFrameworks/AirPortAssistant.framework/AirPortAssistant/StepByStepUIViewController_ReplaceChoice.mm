@@ -1,8 +1,8 @@
 @interface StepByStepUIViewController_ReplaceChoice
 - (void)loadView;
 - (void)setupTable;
-- (void)touchInCellAtIndexPath:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)touchInCellAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_ReplaceChoice
@@ -93,22 +93,22 @@
   objc_msgSend_setDelegate_(self, v21, self);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  objc_msgSend_setupTable(self, a2, a3);
+  appearCopy = appear;
+  objc_msgSend_setupTable(self, a2, appear);
   v7 = objc_msgSend_inParamDict(self, v5, v6);
   v9 = objc_msgSend_objectForKey_(v7, v8, @"kSBSKey_TargetBase");
   objc_msgSend_syncTopoUIForTarget_andSource_andNetwork_connectionType_(self, v10, v9, 0, 0, 0);
   v11.receiver = self;
   v11.super_class = StepByStepUIViewController_ReplaceChoice;
-  [(StepByStepUIViewController *)&v11 viewWillAppear:v3];
+  [(StepByStepUIViewController *)&v11 viewWillAppear:appearCopy];
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
-  v5 = objc_msgSend_tableManager(self, a2, a3);
-  v8 = objc_msgSend_section(a3, v6, v7);
+  v5 = objc_msgSend_tableManager(self, a2, path);
+  v8 = objc_msgSend_section(path, v6, v7);
   v10 = objc_msgSend_tagOfSelectedRowInMenuSection_(v5, v9, v8);
   v12 = 310;
   if (v10 == 1)

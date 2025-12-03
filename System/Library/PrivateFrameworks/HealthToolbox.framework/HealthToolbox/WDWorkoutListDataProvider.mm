@@ -1,8 +1,8 @@
 @interface WDWorkoutListDataProvider
 - (id)sampleTypes;
-- (id)textForObject:(id)a3;
+- (id)textForObject:(id)object;
 - (id)timePeriodFormatter;
-- (id)titleForSection:(unint64_t)a3;
+- (id)titleForSection:(unint64_t)section;
 @end
 
 @implementation WDWorkoutListDataProvider
@@ -10,8 +10,8 @@
 - (id)sampleTypes
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCD720] workoutType];
-  v6[0] = v2;
+  workoutType = [MEMORY[0x277CCD720] workoutType];
+  v6[0] = workoutType;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -19,10 +19,10 @@
   return v3;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
-  v3 = [(WDSampleListDataProvider *)self samples];
-  if ([v3 count] < 1)
+  samples = [(WDSampleListDataProvider *)self samples];
+  if ([samples count] < 1)
   {
     v5 = &stru_28641D9B8;
   }
@@ -36,13 +36,13 @@
   return v5;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 duration];
+  [object duration];
   v5 = [v4 numberWithDouble:?];
-  v6 = [(WDWorkoutListDataProvider *)self timePeriodFormatter];
-  v7 = [v6 stringFromNumber:v5 displayType:0 unitController:0];
+  timePeriodFormatter = [(WDWorkoutListDataProvider *)self timePeriodFormatter];
+  v7 = [timePeriodFormatter stringFromNumber:v5 displayType:0 unitController:0];
 
   return v7;
 }

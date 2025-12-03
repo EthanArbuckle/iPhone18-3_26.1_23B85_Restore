@@ -1,24 +1,24 @@
 @interface MFMailMessageLibraryMailboxURLMigrationStep
-- (BOOL)_renameMailboxDataFolders:(sqlite3 *)a3;
-- (BOOL)_renameMailboxURLsForMailAccount:(id)a3 inSQLiteDB:(sqlite3 *)a4;
-- (BOOL)_updateMailboxURLsInSQLitedb:(sqlite3 *)a3 withOldURLToNewURLMap:(id)a4;
+- (BOOL)_renameMailboxDataFolders:(sqlite3 *)folders;
+- (BOOL)_renameMailboxURLsForMailAccount:(id)account inSQLiteDB:(sqlite3 *)b;
+- (BOOL)_updateMailboxURLsInSQLitedb:(sqlite3 *)litedb withOldURLToNewURLMap:(id)map;
 - (BOOL)performMigrationStep;
-- (MFMailMessageLibraryMailboxURLMigrationStep)initWithSQLiteConnection:(id)a3;
-- (void)_purgeFoldersMatchingPatterns:(id)a3;
+- (MFMailMessageLibraryMailboxURLMigrationStep)initWithSQLiteConnection:(id)connection;
+- (void)_purgeFoldersMatchingPatterns:(id)patterns;
 @end
 
 @implementation MFMailMessageLibraryMailboxURLMigrationStep
 
-- (MFMailMessageLibraryMailboxURLMigrationStep)initWithSQLiteConnection:(id)a3
+- (MFMailMessageLibraryMailboxURLMigrationStep)initWithSQLiteConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = MFMailMessageLibraryMailboxURLMigrationStep;
   v6 = [(MFMailMessageLibraryMailboxURLMigrationStep *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sqliteConnection, a3);
+    objc_storeStrong(&v6->_sqliteConnection, connection);
   }
 
   return v7;
@@ -26,12 +26,12 @@
 
 - (BOOL)performMigrationStep
 {
-  v3 = [(EDPersistenceDatabaseConnection *)self->_sqliteConnection sqlDB];
+  sqlDB = [(EDPersistenceDatabaseConnection *)self->_sqliteConnection sqlDB];
 
-  return [(MFMailMessageLibraryMailboxURLMigrationStep *)self _renameMailboxDataFolders:v3];
+  return [(MFMailMessageLibraryMailboxURLMigrationStep *)self _renameMailboxDataFolders:sqlDB];
 }
 
-- (BOOL)_renameMailboxDataFolders:(sqlite3 *)a3
+- (BOOL)_renameMailboxDataFolders:(sqlite3 *)folders
 {
   v51 = *MEMORY[0x1E69E9840];
   v34 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -56,101 +56,101 @@
 
         v7 = *(*(&v40 + 1) + 8 * i);
         v8 = objc_opt_class();
-        v9 = [v7 uniqueID];
-        v10 = [v7 hostname];
-        v11 = [v7 username];
-        v12 = [v8 legacyPathForAccountIdentifier:v9 withHostname:v10 username:v11];
+        uniqueID = [v7 uniqueID];
+        hostname = [v7 hostname];
+        username = [v7 username];
+        v12 = [v8 legacyPathForAccountIdentifier:uniqueID withHostname:hostname username:username];
 
         if (v12)
         {
-          v13 = [v7 defaultPath];
+          defaultPath = [v7 defaultPath];
           v14 = MFLogGeneral();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v7 ef_publicDescription];
+            ef_publicDescription = [v7 ef_publicDescription];
             *buf = 138543874;
-            v45 = v15;
+            v45 = ef_publicDescription;
             v46 = 2112;
             v47 = v12;
             v48 = 2112;
-            v49 = v13;
+            v49 = defaultPath;
             _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator: Start Migrating Mailbox FilePath for Account %{public}@ from %@ to %@...", buf, 0x20u);
           }
 
           v39 = 1;
-          v16 = [MEMORY[0x1E696AC08] defaultManager];
-          if ([v16 fileExistsAtPath:v12 isDirectory:&v39])
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          if ([defaultManager fileExistsAtPath:v12 isDirectory:&v39])
           {
             v38 = 0;
-            v17 = [v16 moveItemAtPath:v12 toPath:v13 error:&v38];
+            v17 = [defaultManager moveItemAtPath:v12 toPath:defaultPath error:&v38];
             v18 = v38;
             if ((v17 & 1) == 0)
             {
               v19 = MFLogGeneral();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
-                v29 = [v18 ef_publicDescription];
+                ef_publicDescription2 = [v18 ef_publicDescription];
                 *buf = 138412802;
                 v45 = v12;
                 v46 = 2112;
-                v47 = v13;
+                v47 = defaultPath;
                 v48 = 2114;
-                v49 = v29;
+                v49 = ef_publicDescription2;
                 _os_log_error_impl(&dword_1B0389000, v19, OS_LOG_TYPE_ERROR, "#MobileMailMigrator Failed to Rename Path from %@ to %@ Due to Error %{public}@. Deleting the legacyMailboxPath.", buf, 0x20u);
               }
 
-              [v16 removeItemAtPath:v12 error:0];
+              [defaultManager removeItemAtPath:v12 error:0];
             }
           }
 
           v20 = MFLogGeneral();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v7 ef_publicDescription];
+            ef_publicDescription3 = [v7 ef_publicDescription];
             *buf = 138543362;
-            v45 = v21;
+            v45 = ef_publicDescription3;
             _os_log_impl(&dword_1B0389000, v20, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator: Finished Migrating Mailbox FilePath for Account: %{public}@", buf, 0xCu);
           }
 
           v22 = MFLogGeneral();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [v7 ef_publicDescription];
+            ef_publicDescription4 = [v7 ef_publicDescription];
             *buf = 138543362;
-            v45 = v23;
+            v45 = ef_publicDescription4;
             _os_log_impl(&dword_1B0389000, v22, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator: Start Migrating Mailbox URLs for Account: %{public}@", buf, 0xCu);
           }
 
-          v5 = [(MFMailMessageLibraryMailboxURLMigrationStep *)self _renameMailboxURLsForMailAccount:v7 inSQLiteDB:a3];
+          v5 = [(MFMailMessageLibraryMailboxURLMigrationStep *)self _renameMailboxURLsForMailAccount:v7 inSQLiteDB:folders];
           v24 = MFLogGeneral();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v7 ef_publicDescription];
+            ef_publicDescription5 = [v7 ef_publicDescription];
             *buf = 138543618;
-            v45 = v25;
+            v45 = ef_publicDescription5;
             v46 = 1024;
             LODWORD(v47) = v5;
             _os_log_impl(&dword_1B0389000, v24, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator: Finish Migrating Mailbox URLs for Account: %{public}@ with result %d", buf, 0x12u);
           }
 
-          v26 = [v7 username];
+          username2 = [v7 username];
 
-          if (v26)
+          if (username2)
           {
-            v27 = [v7 username];
-            [v34 addObject:v27];
+            username3 = [v7 username];
+            [v34 addObject:username3];
           }
         }
 
         else
         {
-          v13 = MFLogGeneral();
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+          defaultPath = MFLogGeneral();
+          if (os_log_type_enabled(defaultPath, OS_LOG_TYPE_DEFAULT))
           {
-            v28 = [v7 ef_publicDescription];
+            ef_publicDescription6 = [v7 ef_publicDescription];
             *buf = 138543362;
-            v45 = v28;
-            _os_log_impl(&dword_1B0389000, v13, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator: No Legacy Path For Account %{public}@, skipping migration...", buf, 0xCu);
+            v45 = ef_publicDescription6;
+            _os_log_impl(&dword_1B0389000, defaultPath, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator: No Legacy Path For Account %{public}@, skipping migration...", buf, 0xCu);
           }
         }
       }
@@ -189,18 +189,18 @@
   return v5;
 }
 
-- (BOOL)_renameMailboxURLsForMailAccount:(id)a3 inSQLiteDB:(sqlite3 *)a4
+- (BOOL)_renameMailboxURLsForMailAccount:(id)account inSQLiteDB:(sqlite3 *)b
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 legacySQLExpressionToMatchAllMailboxes];
+  accountCopy = account;
+  legacySQLExpressionToMatchAllMailboxes = [accountCopy legacySQLExpressionToMatchAllMailboxes];
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v7 ef_SQLExpression];
-  v10 = [v8 stringWithFormat:@"SELECT url FROM mailboxes WHERE %@", v9];
-  v11 = [v10 UTF8String];
+  ef_SQLExpression = [legacySQLExpressionToMatchAllMailboxes ef_SQLExpression];
+  v10 = [v8 stringWithFormat:@"SELECT url FROM mailboxes WHERE %@", ef_SQLExpression];
+  uTF8String = [v10 UTF8String];
 
   ppStmt = 0xAAAAAAAAAAAAAAAALL;
-  v12 = sqlite3_prepare_v2(a4, v11, -1, &ppStmt, 0);
+  v12 = sqlite3_prepare_v2(b, uTF8String, -1, &ppStmt, 0);
   v13 = v12;
   if (!ppStmt || v12)
   {
@@ -230,7 +230,7 @@
       v17 = objc_alloc(MEMORY[0x1E696AEC0]);
       v18 = [v17 initWithUTF8String:{sqlite3_column_text(ppStmt, 0)}];
       v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v20 = [v6 URLStringFromLegacyURLString:v18];
+      v20 = [accountCopy URLStringFromLegacyURLString:v18];
       v21 = [v19 initWithString:v20];
 
       if ([v18 length])
@@ -249,9 +249,9 @@
       v29 = MFLogGeneral();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [v6 ef_publicDescription];
+        ef_publicDescription = [accountCopy ef_publicDescription];
         *buf = 138543362;
-        v35 = v30;
+        v35 = ef_publicDescription;
         _os_log_impl(&dword_1B0389000, v29, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator No Mailboxes found for account %{public}@ to migrate.", buf, 0xCu);
       }
     }
@@ -261,19 +261,19 @@
       v25 = MFLogGeneral();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v6 ef_publicDescription];
-        v27 = [v14 allKeys];
-        v28 = [v14 allValues];
+        ef_publicDescription2 = [accountCopy ef_publicDescription];
+        allKeys = [v14 allKeys];
+        allValues = [v14 allValues];
         *buf = 138543874;
-        v35 = v26;
+        v35 = ef_publicDescription2;
         v36 = 2112;
-        v37 = v27;
+        v37 = allKeys;
         v38 = 2112;
-        v39 = v28;
+        v39 = allValues;
         _os_log_impl(&dword_1B0389000, v25, OS_LOG_TYPE_DEFAULT, "#MobileMailMigrator For Account %{public}@ Renaming Mailboxes From URL %@ To %@", buf, 0x20u);
       }
 
-      v22 = [(MFMailMessageLibraryMailboxURLMigrationStep *)self _updateMailboxURLsInSQLitedb:a4 withOldURLToNewURLMap:v14];
+      v22 = [(MFMailMessageLibraryMailboxURLMigrationStep *)self _updateMailboxURLsInSQLitedb:b withOldURLToNewURLMap:v14];
     }
   }
 
@@ -281,15 +281,15 @@
   return v22;
 }
 
-- (BOOL)_updateMailboxURLsInSQLitedb:(sqlite3 *)a3 withOldURLToNewURLMap:(id)a4
+- (BOOL)_updateMailboxURLsInSQLitedb:(sqlite3 *)litedb withOldURLToNewURLMap:(id)map
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  mapCopy = map;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = [v5 allKeys];
+  obj = [mapCopy allKeys];
   v6 = [obj countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v6)
   {
@@ -304,12 +304,12 @@
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v5 objectForKey:v9];
+        v10 = [mapCopy objectForKey:v9];
         v11 = v10;
-        v12 = [v10 UTF8String];
+        uTF8String = [v10 UTF8String];
         v13 = v9;
-        v14 = sqlite3_mprintf("UPDATE mailboxes SET url = '%q' WHERE url = '%q';", v12, [v9 UTF8String]);
-        v15 = sqlite3_exec(a3, v14, 0, 0, 0);
+        v14 = sqlite3_mprintf("UPDATE mailboxes SET url = '%q' WHERE url = '%q';", uTF8String, [v9 UTF8String]);
+        v15 = sqlite3_exec(litedb, v14, 0, 0, 0);
         if (v15)
         {
           v16 = MFLogGeneral();
@@ -338,16 +338,16 @@
   return 1;
 }
 
-- (void)_purgeFoldersMatchingPatterns:(id)a3
+- (void)_purgeFoldersMatchingPatterns:(id)patterns
 {
-  v3 = a3;
+  patternsCopy = patterns;
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__MFMailMessageLibraryMailboxURLMigrationStep__purgeFoldersMatchingPatterns___block_invoke;
   block[3] = &unk_1E7AA25C0;
-  v7 = v3;
-  v5 = v3;
+  v7 = patternsCopy;
+  v5 = patternsCopy;
   dispatch_async(v4, block);
 }
 

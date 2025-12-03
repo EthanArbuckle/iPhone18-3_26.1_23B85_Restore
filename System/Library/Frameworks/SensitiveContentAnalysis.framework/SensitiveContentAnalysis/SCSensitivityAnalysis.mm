@@ -1,33 +1,33 @@
 @interface SCSensitivityAnalysis
-+ (id)fetchExclusionPredicateWithCompactAnalysisKeyPath:(id)a3;
-+ (id)subscribeToSensitiveContentPolicyChangeNotifications:(id)a3;
-+ (void)prefetchSensitiveContentPolicy:(id)a3;
++ (id)fetchExclusionPredicateWithCompactAnalysisKeyPath:(id)path;
++ (id)subscribeToSensitiveContentPolicyChangeNotifications:(id)notifications;
++ (void)prefetchSensitiveContentPolicy:(id)policy;
 - (BOOL)isContentPreviewable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)mayNeedOnDemandAnalysis;
 - (BOOL)shouldShowStickerAttributions;
 - (NSData)dataRepresentation;
 - (SCSensitivityAnalysis)init;
-- (SCSensitivityAnalysis)initWithAnalysisResults:(id)a3 error:(id *)a4;
-- (SCSensitivityAnalysis)initWithDataRepresentation:(id)a3 error:(id *)a4;
-- (SCSensitivityAnalysis)initWithMediaAnalysisServiceResult:(id)a3;
-- (SCSensitivityAnalysis)initWithNudityDetectionValue:(BOOL)a3;
-- (id)initFromCompactAnalysis:(int64_t)a3 error:(id *)a4;
-- (id)transferringStateFromAnalysis:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SCSensitivityAnalysis)initWithAnalysisResults:(id)results error:(id *)error;
+- (SCSensitivityAnalysis)initWithDataRepresentation:(id)representation error:(id *)error;
+- (SCSensitivityAnalysis)initWithMediaAnalysisServiceResult:(id)result;
+- (SCSensitivityAnalysis)initWithNudityDetectionValue:(BOOL)value;
+- (id)initFromCompactAnalysis:(int64_t)analysis error:(id *)error;
+- (id)transferringStateFromAnalysis:(id)analysis;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCSensitivityAnalysis
 
-+ (void)prefetchSensitiveContentPolicy:(id)a3
++ (void)prefetchSensitiveContentPolicy:(id)policy
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB5E8F30);
   MEMORY[0x1EEE9AC00]();
   v6 = &v12 - v5;
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(policy);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  *(v8 + 24) = a1;
+  *(v8 + 24) = self;
   v9 = sub_1AEAF982C();
   (*(*(v9 - 8) + 56))(v6, 1, 1, v9);
   v10 = swift_allocObject();
@@ -43,36 +43,36 @@
   sub_1AEAC1C28(0, 0, v6, &unk_1AEB02740, v11);
 }
 
-- (SCSensitivityAnalysis)initWithNudityDetectionValue:(BOOL)a3
+- (SCSensitivityAnalysis)initWithNudityDetectionValue:(BOOL)value
 {
   v3 = (self + OBJC_IVAR___SCSensitivityAnalysis__analysis);
-  *v3 = a3;
+  *v3 = value;
   v3[1] = 0;
   v5.receiver = self;
   v5.super_class = SCSensitivityAnalysis;
   return [(SCSensitivityAnalysis *)&v5 init];
 }
 
-- (SCSensitivityAnalysis)initWithMediaAnalysisServiceResult:(id)a3
+- (SCSensitivityAnalysis)initWithMediaAnalysisServiceResult:(id)result
 {
-  v3 = a3;
-  v4 = sub_1AEADBBBC(v3);
+  resultCopy = result;
+  v4 = sub_1AEADBBBC(resultCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SCSensitivityAnalysis.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SCSensitivityAnalysis.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1AEAF9CCC();
     swift_unknownObjectRelease();
@@ -81,7 +81,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SCSensitivityAnalysis.isEqual(_:)(v8);
@@ -97,12 +97,12 @@
   return result;
 }
 
-+ (id)subscribeToSensitiveContentPolicyChangeNotifications:(id)a3
++ (id)subscribeToSensitiveContentPolicyChangeNotifications:(id)notifications
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB5E8F30);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v18 - v5;
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(notifications);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = sub_1AEAF982C();
@@ -131,7 +131,7 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR___SCSensitivityAnalysis__analysis);
   v3 = *(&self->super.isa + OBJC_IVAR___SCSensitivityAnalysis__analysis + 2);
-  v4 = self;
+  selfCopy = self;
   v5 = swift_slowAlloc();
   *v5 = (v3 << 16) | (v2 << 32) | 0x100000000000000;
   v6 = sub_1AEADBD18(v5, 8);
@@ -144,25 +144,25 @@
   return v9;
 }
 
-- (SCSensitivityAnalysis)initWithDataRepresentation:(id)a3 error:(id *)a4
+- (SCSensitivityAnalysis)initWithDataRepresentation:(id)representation error:(id *)error
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = sub_1AEAF8CEC();
   v7 = v6;
 
   return SCSensitivityAnalysis.init(dataRepresentation:)(v5, v7);
 }
 
-- (id)transferringStateFromAnalysis:(id)a3
+- (id)transferringStateFromAnalysis:(id)analysis
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AEAD8CC0(v4);
+  analysisCopy = analysis;
+  selfCopy = self;
+  v6 = sub_1AEAD8CC0(analysisCopy);
 
   return v6;
 }
 
-+ (id)fetchExclusionPredicateWithCompactAnalysisKeyPath:(id)a3
++ (id)fetchExclusionPredicateWithCompactAnalysisKeyPath:(id)path
 {
   v3 = sub_1AEAF95BC();
   v5 = v4;
@@ -197,7 +197,7 @@
 
 - (BOOL)isContentPreviewable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AEADA704();
 
   return v3;
@@ -205,33 +205,33 @@
 
 - (BOOL)mayNeedOnDemandAnalysis
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AEADA840();
 
   return v3;
 }
 
-- (id)initFromCompactAnalysis:(int64_t)a3 error:(id *)a4
+- (id)initFromCompactAnalysis:(int64_t)analysis error:(id *)error
 {
   ObjCClassFromObject = swift_getObjCClassFromObject();
-  SensitivityAnalysis.init(from:)(a3, &v8);
-  LODWORD(a3) = v8;
-  v6 = [objc_allocWithZone(ObjCClassFromObject) initWithNudityDetectionValue_];
-  *&v6[OBJC_IVAR___SCSensitivityAnalysis__analysis] = a3;
+  SensitivityAnalysis.init(from:)(analysis, &v8);
+  LODWORD(analysis) = v8;
+  initWithNudityDetectionValue_ = [objc_allocWithZone(ObjCClassFromObject) initWithNudityDetectionValue_];
+  *&initWithNudityDetectionValue_[OBJC_IVAR___SCSensitivityAnalysis__analysis] = analysis;
   swift_getObjectType();
   swift_deallocPartialClassInstance();
-  return v6;
+  return initWithNudityDetectionValue_;
 }
 
 - (BOOL)shouldShowStickerAttributions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AEADAB50();
 
   return v3;
 }
 
-- (SCSensitivityAnalysis)initWithAnalysisResults:(id)a3 error:(id *)a4
+- (SCSensitivityAnalysis)initWithAnalysisResults:(id)results error:(id *)error
 {
   sub_1AEA49EF8(0, &unk_1EB5E9718);
   v4 = sub_1AEAF96EC();

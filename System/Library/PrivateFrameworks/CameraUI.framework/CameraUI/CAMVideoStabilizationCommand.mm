@@ -1,14 +1,14 @@
 @interface CAMVideoStabilizationCommand
-- (CAMVideoStabilizationCommand)initWithAutomaticVideoStabilizationEnabled:(BOOL)a3 strength:(int64_t)a4 frontRearSimultaneousVideoEnabled:(BOOL)a5 configureSecondaryDevice:(BOOL)a6;
-- (CAMVideoStabilizationCommand)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMVideoStabilizationCommand)initWithAutomaticVideoStabilizationEnabled:(BOOL)enabled strength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)videoEnabled configureSecondaryDevice:(BOOL)device;
+- (CAMVideoStabilizationCommand)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMVideoStabilizationCommand
 
-- (CAMVideoStabilizationCommand)initWithAutomaticVideoStabilizationEnabled:(BOOL)a3 strength:(int64_t)a4 frontRearSimultaneousVideoEnabled:(BOOL)a5 configureSecondaryDevice:(BOOL)a6
+- (CAMVideoStabilizationCommand)initWithAutomaticVideoStabilizationEnabled:(BOOL)enabled strength:(int64_t)strength frontRearSimultaneousVideoEnabled:(BOOL)videoEnabled configureSecondaryDevice:(BOOL)device
 {
   v14.receiver = self;
   v14.super_class = CAMVideoStabilizationCommand;
@@ -16,51 +16,51 @@
   v11 = v10;
   if (v10)
   {
-    v10->__enabled = a3;
-    v10->__strength = a4;
-    v10->__frontRearSimultaneousVideoEnabled = a5;
-    v10->__configureSecondaryDevice = a6;
+    v10->__enabled = enabled;
+    v10->__strength = strength;
+    v10->__frontRearSimultaneousVideoEnabled = videoEnabled;
+    v10->__configureSecondaryDevice = device;
     v12 = v10;
   }
 
   return v11;
 }
 
-- (CAMVideoStabilizationCommand)initWithCoder:(id)a3
+- (CAMVideoStabilizationCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMVideoStabilizationCommand;
   v5 = [(CAMCaptureCommand *)&v8 init];
   if (v5)
   {
-    v5->__enabled = [v4 decodeBoolForKey:@"CAMVideoStabilizationCommandEnabled"];
-    v5->__strength = [v4 decodeIntegerForKey:@"CAMVideoStabilizationCommandStrength"];
-    v5->__frontRearSimultaneousVideoEnabled = [v4 decodeBoolForKey:@"CAMVideoStabilizationCommandFrontRearSimultaneousVideoEnabled"];
-    v5->__configureSecondaryDevice = [v4 decodeBoolForKey:@"CAMVideoStabilizationCommandConfigureSecondaryDevice"];
+    v5->__enabled = [coderCopy decodeBoolForKey:@"CAMVideoStabilizationCommandEnabled"];
+    v5->__strength = [coderCopy decodeIntegerForKey:@"CAMVideoStabilizationCommandStrength"];
+    v5->__frontRearSimultaneousVideoEnabled = [coderCopy decodeBoolForKey:@"CAMVideoStabilizationCommandFrontRearSimultaneousVideoEnabled"];
+    v5->__configureSecondaryDevice = [coderCopy decodeBoolForKey:@"CAMVideoStabilizationCommandConfigureSecondaryDevice"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMVideoStabilizationCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMVideoStabilizationCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoStabilizationCommandEnabled"}];
-  [v4 encodeInteger:-[CAMVideoStabilizationCommand _strength](self forKey:{"_strength"), @"CAMVideoStabilizationCommandStrength"}];
-  [v4 encodeBool:-[CAMVideoStabilizationCommand _frontRearSimultaneousVideoEnabled](self forKey:{"_frontRearSimultaneousVideoEnabled"), @"CAMVideoStabilizationCommandFrontRearSimultaneousVideoEnabled"}];
-  [v4 encodeBool:-[CAMVideoStabilizationCommand _configureSecondaryDevice](self forKey:{"_configureSecondaryDevice"), @"CAMVideoStabilizationCommandConfigureSecondaryDevice"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMVideoStabilizationCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoStabilizationCommandEnabled"}];
+  [coderCopy encodeInteger:-[CAMVideoStabilizationCommand _strength](self forKey:{"_strength"), @"CAMVideoStabilizationCommandStrength"}];
+  [coderCopy encodeBool:-[CAMVideoStabilizationCommand _frontRearSimultaneousVideoEnabled](self forKey:{"_frontRearSimultaneousVideoEnabled"), @"CAMVideoStabilizationCommandFrontRearSimultaneousVideoEnabled"}];
+  [coderCopy encodeBool:-[CAMVideoStabilizationCommand _configureSecondaryDevice](self forKey:{"_configureSecondaryDevice"), @"CAMVideoStabilizationCommandConfigureSecondaryDevice"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMVideoStabilizationCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMVideoStabilizationCommand *)self _isEnabled];
   *(v4 + 4) = [(CAMVideoStabilizationCommand *)self _strength];
   v4[25] = [(CAMVideoStabilizationCommand *)self _frontRearSimultaneousVideoEnabled];
@@ -68,40 +68,40 @@
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentMovieFileOutput];
+  contextCopy = context;
+  currentMovieFileOutput = [contextCopy currentMovieFileOutput];
   v6 = +[CAMCaptureCapabilities capabilities];
-  v36 = self;
+  selfCopy = self;
   if ([(CAMVideoStabilizationCommand *)self _configureSecondaryDevice])
   {
-    v7 = [v4 currentSecondaryVideoDevice];
-    v8 = [v4 currentSecondaryVideoDeviceFormat];
-    [v4 currentSecondaryVideoDeviceInput];
+    currentSecondaryVideoDevice = [contextCopy currentSecondaryVideoDevice];
+    currentSecondaryVideoDeviceFormat = [contextCopy currentSecondaryVideoDeviceFormat];
+    [contextCopy currentSecondaryVideoDeviceInput];
   }
 
   else
   {
-    v7 = [v4 currentVideoDevice];
-    v8 = [v4 currentVideoDeviceFormat];
-    [v4 currentVideoDeviceInput];
+    currentSecondaryVideoDevice = [contextCopy currentVideoDevice];
+    currentSecondaryVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
+    [contextCopy currentVideoDeviceInput];
   }
   v9 = ;
-  v10 = [v7 position];
-  v11 = [v6 isFrontRearSimultaneousVideoFrontVideoStabilizationSupported];
-  if (v7 && (v10 != 2 || v11 & 1 | ![(CAMVideoStabilizationCommand *)self _frontRearSimultaneousVideoEnabled]))
+  position = [currentSecondaryVideoDevice position];
+  isFrontRearSimultaneousVideoFrontVideoStabilizationSupported = [v6 isFrontRearSimultaneousVideoFrontVideoStabilizationSupported];
+  if (currentSecondaryVideoDevice && (position != 2 || isFrontRearSimultaneousVideoFrontVideoStabilizationSupported & 1 | ![(CAMVideoStabilizationCommand *)self _frontRearSimultaneousVideoEnabled]))
   {
-    v32 = v7;
+    v32 = currentSecondaryVideoDevice;
     v33 = v6;
-    v34 = v5;
-    v35 = v4;
+    v34 = currentMovieFileOutput;
+    v35 = contextCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = [v5 connections];
+    obj = [currentMovieFileOutput connections];
     v39 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v39)
     {
@@ -122,8 +122,8 @@
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
-          v15 = [v14 inputPorts];
-          v16 = [v15 countByEnumeratingWithState:&v41 objects:v49 count:16];
+          inputPorts = [v14 inputPorts];
+          v16 = [inputPorts countByEnumeratingWithState:&v41 objects:v49 count:16];
           if (v16)
           {
             v17 = v16;
@@ -134,17 +134,17 @@
               {
                 if (*v42 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(inputPorts);
                 }
 
                 v20 = *(*(&v41 + 1) + 8 * j);
-                v21 = [v20 input];
-                v22 = v21;
-                if (v21 == v9)
+                input = [v20 input];
+                v22 = input;
+                if (input == v9)
                 {
-                  v23 = [v20 mediaType];
+                  mediaType = [v20 mediaType];
 
-                  if (v23 == v12)
+                  if (mediaType == v12)
                   {
                     v24 = v14;
 
@@ -158,7 +158,7 @@
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v41 objects:v49 count:16];
+              v17 = [inputPorts countByEnumeratingWithState:&v41 objects:v49 count:16];
               if (v17)
               {
                 continue;
@@ -182,10 +182,10 @@ LABEL_24:
       v40 = 0;
     }
 
-    v8 = v31;
+    currentSecondaryVideoDeviceFormat = v31;
     v26 = [v31 isVideoStabilizationModeSupported:3];
-    v27 = [(CAMVideoStabilizationCommand *)v36 _strength];
-    if (v27 > 3)
+    _strength = [(CAMVideoStabilizationCommand *)selfCopy _strength];
+    if (_strength > 3)
     {
       v28 = 0;
       v29 = 0;
@@ -193,13 +193,13 @@ LABEL_24:
 
     else
     {
-      v28 = qword_1A3A688A0[v27];
-      v29 = qword_1A3A688C0[v27];
+      v28 = qword_1A3A688A0[_strength];
+      v29 = qword_1A3A688C0[_strength];
     }
 
-    v5 = v34;
-    v4 = v35;
-    v7 = v32;
+    currentMovieFileOutput = v34;
+    contextCopy = v35;
+    currentSecondaryVideoDevice = v32;
     v6 = v33;
     if ([v40 isVideoStabilizationSupported])
     {

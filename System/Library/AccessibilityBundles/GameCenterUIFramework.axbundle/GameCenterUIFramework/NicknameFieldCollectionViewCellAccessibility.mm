@@ -1,56 +1,56 @@
 @interface NicknameFieldCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsHandwriting;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation NicknameFieldCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.NicknameFieldCollectionViewCell" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITextField" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UITextField" hasInstanceMethod:@"_clearButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.NicknameFieldCollectionViewCell" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITextField" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UITextField" hasInstanceMethod:@"_clearButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 accessibilityLabel];
+  _accessibilityTextViewTextOperationResponder = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityLabel = [_accessibilityTextViewTextOperationResponder accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 accessibilityValue];
+  _accessibilityTextViewTextOperationResponder = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityValue = [_accessibilityTextViewTextOperationResponder accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityLineNumberAndColumnForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  _accessibilityTextViewTextOperationResponder = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityLineNumberAndColumnForPoint:{x, y}];
 
   return v6;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityRangeForLineNumberAndColumn:v4];
+  columnCopy = column;
+  _accessibilityTextViewTextOperationResponder = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityRangeForLineNumberAndColumn:columnCopy];
   v8 = v7;
 
   v9 = v6;
@@ -60,19 +60,19 @@
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  [v5 _accessibilitySetSelectedTextRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  _accessibilityTextViewTextOperationResponder = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  [_accessibilityTextViewTextOperationResponder _accessibilitySetSelectedTextRange:{location, length}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDBDC00] | *MEMORY[0x29EDC7598];
-  v3 = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v4 = [v3 safeBoolForKey:@"isEditing"];
+  _accessibilityTextViewTextOperationResponder = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v4 = [_accessibilityTextViewTextOperationResponder safeBoolForKey:@"isEditing"];
 
   v5 = *MEMORY[0x29EDC7528];
   if (!v4)
@@ -85,8 +85,8 @@
 
 - (BOOL)_accessibilitySupportsHandwriting
 {
-  v3 = [(NicknameFieldCollectionViewCellAccessibility *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7528] & ~v3) == 0)
+  accessibilityTraits = [(NicknameFieldCollectionViewCellAccessibility *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7528] & ~accessibilityTraits) == 0)
   {
     return 1;
   }
@@ -99,24 +99,24 @@
 - (id)_accessibilitySupplementaryFooterViews
 {
   v9[1] = *MEMORY[0x29EDCA608];
-  v3 = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  if ([v3 safeBoolForKey:@"isEditing"])
+  _accessibilityTextViewTextOperationResponder = [(NicknameFieldCollectionViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  if ([_accessibilityTextViewTextOperationResponder safeBoolForKey:@"isEditing"])
   {
-    v4 = [v3 safeValueForKey:@"_clearButton"];
+    v4 = [_accessibilityTextViewTextOperationResponder safeValueForKey:@"_clearButton"];
     v9[0] = v4;
-    v5 = [MEMORY[0x29EDB8D80] arrayWithObjects:v9 count:1];
+    _accessibilitySupplementaryFooterViews = [MEMORY[0x29EDB8D80] arrayWithObjects:v9 count:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NicknameFieldCollectionViewCellAccessibility;
-    v5 = [(NicknameFieldCollectionViewCellAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(NicknameFieldCollectionViewCellAccessibility *)&v8 _accessibilitySupplementaryFooterViews];
   }
 
   v6 = *MEMORY[0x29EDCA608];
 
-  return v5;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 @end

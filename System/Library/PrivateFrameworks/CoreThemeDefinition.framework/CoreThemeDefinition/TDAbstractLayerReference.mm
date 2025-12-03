@@ -2,7 +2,7 @@
 - (CGRect)frameRect;
 - (CGRect)primitiveFrameRect;
 - (void)awakeFromFetch;
-- (void)setFrameRect:(CGRect)a3;
+- (void)setFrameRect:(CGRect)rect;
 @end
 
 @implementation TDAbstractLayerReference
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (void)setFrameRect:(CGRect)a3
+- (void)setFrameRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TDAbstractLayerReference *)self willChangeValueForKey:@"frameRect"];
   self->_frameRect.origin.x = x;
   self->_frameRect.origin.y = y;

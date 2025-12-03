@@ -1,25 +1,25 @@
 @interface BLTSectionConfigurationInternal
 - (BLTSectionConfigurationInternal)init;
-- (BOOL)applyAllowListToChildSections:(id)a3;
-- (BOOL)hasSectionIDDisplayedCriticalBulletins:(id)a3;
-- (BOOL)hasSectionIDOptedOutOfAttachmentCoordination:(id)a3;
-- (BOOL)hasSectionIDOptedOutOfNotificationTuning:(id)a3;
-- (BOOL)hasSectionIDOptedOutOfSettingsCoordination:(id)a3;
-- (BOOL)hasSectionIDOptedOutOfSubtitleRemovalForOlderWatches:(id)a3;
-- (BOOL)hasSectionIDOptedOutOfWaitForUserIdle:(id)a3;
-- (BOOL)setCoordinationType:(unint64_t)a3 sectionID:(id)a4;
-- (BOOL)shouldSectionIDAlwaysAlert:(id)a3 category:(id)a4;
-- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)a3;
-- (BOOL)shouldUsePhoneExpirationDateForSectionID:(id)a3;
+- (BOOL)applyAllowListToChildSections:(id)sections;
+- (BOOL)hasSectionIDDisplayedCriticalBulletins:(id)bulletins;
+- (BOOL)hasSectionIDOptedOutOfAttachmentCoordination:(id)coordination;
+- (BOOL)hasSectionIDOptedOutOfNotificationTuning:(id)tuning;
+- (BOOL)hasSectionIDOptedOutOfSettingsCoordination:(id)coordination;
+- (BOOL)hasSectionIDOptedOutOfSubtitleRemovalForOlderWatches:(id)watches;
+- (BOOL)hasSectionIDOptedOutOfWaitForUserIdle:(id)idle;
+- (BOOL)setCoordinationType:(unint64_t)type sectionID:(id)d;
+- (BOOL)shouldSectionIDAlwaysAlert:(id)alert category:(id)category;
+- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)sync;
+- (BOOL)shouldUsePhoneExpirationDateForSectionID:(id)d;
 - (id)_loadConfigurations;
-- (id)additionalBridgeSectionIDsForSectionID:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)additionalBridgeSectionIDsForSectionID:(id)d;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)watchVersionThatUsesAttachmentURLForSectionID:(id)a3;
-- (id)watchVersionThatUsesUserInfoForContextForSectionID:(id)a3;
-- (unint64_t)coordinationTypeForSectionID:(id)a3 subtype:(int64_t)a4 category:(id)a5;
-- (unint64_t)legacyMapLocationForSectionID:(id)a3;
+- (id)watchVersionThatUsesAttachmentURLForSectionID:(id)d;
+- (id)watchVersionThatUsesUserInfoForContextForSectionID:(id)d;
+- (unint64_t)coordinationTypeForSectionID:(id)d subtype:(int64_t)subtype category:(id)category;
+- (unint64_t)legacyMapLocationForSectionID:(id)d;
 @end
 
 @implementation BLTSectionConfigurationInternal
@@ -32,32 +32,32 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(BLTSectionConfigurationInternal *)v2 _loadConfigurations];
+    _loadConfigurations = [(BLTSectionConfigurationInternal *)v2 _loadConfigurations];
     configurations = v3->_configurations;
-    v3->_configurations = v4;
+    v3->_configurations = _loadConfigurations;
   }
 
   return v3;
 }
 
-- (unint64_t)coordinationTypeForSectionID:(id)a3 subtype:(int64_t)a4 category:(id)a5
+- (unint64_t)coordinationTypeForSectionID:(id)d subtype:(int64_t)subtype category:(id)category
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:v8];
-  v11 = [v10 coordinationTypeWithSubtype:a4];
-  v12 = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
-  v13 = [v12 bltVersion];
+  dCopy = d;
+  categoryCopy = category;
+  v10 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:dCopy];
+  v11 = [v10 coordinationTypeWithSubtype:subtype];
+  blt_boundedWaitForActivePairedDevice = [MEMORY[0x277D2BCF8] blt_boundedWaitForActivePairedDevice];
+  bltVersion = [blt_boundedWaitForActivePairedDevice bltVersion];
 
   if (v11 == 2)
   {
-    if (v13 >= 4)
+    if (bltVersion >= 4)
     {
-      if (a4 == 0xFFFFFFFF80000000)
+      if (subtype == 0xFFFFFFFF80000000)
       {
-        v14 = [v10 allowListedSubtypes];
-        v15 = [v14 count] != 0;
+        allowListedSubtypes = [v10 allowListedSubtypes];
+        v15 = [allowListedSubtypes count] != 0;
       }
 
       else
@@ -66,8 +66,8 @@
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v18 = [v10 allowListedSubtypes];
-        v19 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        allowListedSubtypes2 = [v10 allowListedSubtypes];
+        v19 = [allowListedSubtypes2 countByEnumeratingWithState:&v34 objects:v38 count:16];
         if (v19)
         {
           v20 = *v35;
@@ -77,17 +77,17 @@
             {
               if (*v35 != v20)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(allowListedSubtypes2);
               }
 
-              if ([*(*(&v34 + 1) + 8 * i) integerValue] == a4)
+              if ([*(*(&v34 + 1) + 8 * i) integerValue] == subtype)
               {
                 v15 = 1;
                 goto LABEL_22;
               }
             }
 
-            v19 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
+            v19 = [allowListedSubtypes2 countByEnumeratingWithState:&v34 objects:v38 count:16];
             if (v19)
             {
               continue;
@@ -101,7 +101,7 @@
 LABEL_22:
       }
 
-      if (v15 || !v9 || v13 < 7)
+      if (v15 || !categoryCopy || bltVersion < 7)
       {
         if (!v15)
         {
@@ -111,8 +111,8 @@ LABEL_22:
 
       else
       {
-        v23 = [v10 allowListedCategories];
-        v24 = [v23 containsObject:v9];
+        allowListedCategories = [v10 allowListedCategories];
+        v24 = [allowListedCategories containsObject:categoryCopy];
 
         if ((v24 & 1) == 0)
         {
@@ -129,13 +129,13 @@ LABEL_27:
     goto LABEL_30;
   }
 
-  if (v9 && v13 >= 6)
+  if (categoryCopy && bltVersion >= 6)
   {
     v30 = 0;
     v31 = &v30;
     v32 = 0x2020000000;
-    v16 = [v10 denyListedCategories];
-    v17 = [v16 containsObject:v9];
+    denyListedCategories = [v10 denyListedCategories];
+    v17 = [denyListedCategories containsObject:categoryCopy];
 
     v33 = v17;
     if (v31[3])
@@ -145,14 +145,14 @@ LABEL_27:
 
     else
     {
-      v22 = [v10 denyListedCategoriesWithVersion];
+      denyListedCategoriesWithVersion = [v10 denyListedCategoriesWithVersion];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __81__BLTSectionConfigurationInternal_coordinationTypeForSectionID_subtype_category___block_invoke;
       v27[3] = &unk_278D319B8;
       v29 = &v30;
-      v28 = v9;
-      [v22 enumerateKeysAndObjectsUsingBlock:v27];
+      v28 = categoryCopy;
+      [denyListedCategoriesWithVersion enumerateKeysAndObjectsUsingBlock:v27];
 
       if (v31[3])
       {
@@ -180,102 +180,102 @@ void __81__BLTSectionConfigurationInternal_coordinationTypeForSectionID_subtype_
   *a4 = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)hasSectionIDOptedOutOfAttachmentCoordination:(id)a3
+- (BOOL)hasSectionIDOptedOutOfAttachmentCoordination:(id)coordination
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 optOutOfAttachmentTransmission];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:coordination];
+  optOutOfAttachmentTransmission = [v3 optOutOfAttachmentTransmission];
 
-  return v4;
+  return optOutOfAttachmentTransmission;
 }
 
-- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)a3
+- (BOOL)shouldSectionIDSettingsAlwaysSync:(id)sync
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 alwaysSyncSettings];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:sync];
+  alwaysSyncSettings = [v3 alwaysSyncSettings];
 
-  return v4;
+  return alwaysSyncSettings;
 }
 
-- (BOOL)shouldSectionIDAlwaysAlert:(id)a3 category:(id)a4
+- (BOOL)shouldSectionIDAlwaysAlert:(id)alert category:(id)category
 {
-  v6 = a4;
-  v7 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
+  categoryCopy = category;
+  v7 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:alert];
   v8 = v7;
-  if (v6 && ([v7 denyListedCategories], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsObject:", v6), v9, (v10 & 1) != 0))
+  if (categoryCopy && ([v7 denyListedCategories], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsObject:", categoryCopy), v9, (v10 & 1) != 0))
   {
-    v11 = 0;
+    alwaysAlert = 0;
   }
 
   else
   {
-    v11 = [v8 alwaysAlert];
+    alwaysAlert = [v8 alwaysAlert];
   }
 
-  return v11;
+  return alwaysAlert;
 }
 
-- (BOOL)hasSectionIDOptedOutOfWaitForUserIdle:(id)a3
+- (BOOL)hasSectionIDOptedOutOfWaitForUserIdle:(id)idle
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 optOutOfWaitForUserIdle];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:idle];
+  optOutOfWaitForUserIdle = [v3 optOutOfWaitForUserIdle];
 
-  return v4;
+  return optOutOfWaitForUserIdle;
 }
 
-- (BOOL)hasSectionIDOptedOutOfNotificationTuning:(id)a3
+- (BOOL)hasSectionIDOptedOutOfNotificationTuning:(id)tuning
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 optOutOfNotificationTuning];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:tuning];
+  optOutOfNotificationTuning = [v3 optOutOfNotificationTuning];
 
-  return v4;
+  return optOutOfNotificationTuning;
 }
 
-- (BOOL)hasSectionIDDisplayedCriticalBulletins:(id)a3
+- (BOOL)hasSectionIDDisplayedCriticalBulletins:(id)bulletins
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 hasDisplayedCriticalBulletins];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:bulletins];
+  hasDisplayedCriticalBulletins = [v3 hasDisplayedCriticalBulletins];
 
-  return v4;
+  return hasDisplayedCriticalBulletins;
 }
 
-- (BOOL)applyAllowListToChildSections:(id)a3
+- (BOOL)applyAllowListToChildSections:(id)sections
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 applyAllowListToChildSections];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:sections];
+  applyAllowListToChildSections = [v3 applyAllowListToChildSections];
 
-  return v4;
+  return applyAllowListToChildSections;
 }
 
-- (unint64_t)legacyMapLocationForSectionID:(id)a3
+- (unint64_t)legacyMapLocationForSectionID:(id)d
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 hasLegacyMapInUserInfo];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:d];
+  hasLegacyMapInUserInfo = [v3 hasLegacyMapInUserInfo];
 
-  return v4;
+  return hasLegacyMapInUserInfo;
 }
 
-- (id)watchVersionThatUsesUserInfoForContextForSectionID:(id)a3
+- (id)watchVersionThatUsesUserInfoForContextForSectionID:(id)d
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 watchVersionThatUsesUserInfoForContext];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:d];
+  watchVersionThatUsesUserInfoForContext = [v3 watchVersionThatUsesUserInfoForContext];
 
-  return v4;
+  return watchVersionThatUsesUserInfoForContext;
 }
 
-- (id)additionalBridgeSectionIDsForSectionID:(id)a3
+- (id)additionalBridgeSectionIDsForSectionID:(id)d
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 additionalBridgeSectionIDs];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:d];
+  additionalBridgeSectionIDs = [v3 additionalBridgeSectionIDs];
 
-  return v4;
+  return additionalBridgeSectionIDs;
 }
 
-- (BOOL)hasSectionIDOptedOutOfSubtitleRemovalForOlderWatches:(id)a3
+- (BOOL)hasSectionIDOptedOutOfSubtitleRemovalForOlderWatches:(id)watches
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 optOutOfSubtitleRemovalForOlderWatches];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:watches];
+  optOutOfSubtitleRemovalForOlderWatches = [v3 optOutOfSubtitleRemovalForOlderWatches];
 
-  return v4;
+  return optOutOfSubtitleRemovalForOlderWatches;
 }
 
 - (id)_loadConfigurations
@@ -284,12 +284,12 @@ void __81__BLTSectionConfigurationInternal_coordinationTypeForSectionID_subtype_
   v3 = [v2 pathForResource:@"SectionConfiguration" ofType:@"plist"];
 
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v3];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__BLTSectionConfigurationInternal__loadConfigurations__block_invoke;
   v8[3] = &unk_278D319E0;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
   [v4 enumerateKeysAndObjectsUsingBlock:v8];
 
@@ -303,52 +303,52 @@ void __54__BLTSectionConfigurationInternal__loadConfigurations__block_invoke(uin
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (BOOL)shouldUsePhoneExpirationDateForSectionID:(id)a3
+- (BOOL)shouldUsePhoneExpirationDateForSectionID:(id)d
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 shouldUsePhoneExpirationDate];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:d];
+  shouldUsePhoneExpirationDate = [v3 shouldUsePhoneExpirationDate];
 
-  return v4;
+  return shouldUsePhoneExpirationDate;
 }
 
-- (BOOL)hasSectionIDOptedOutOfSettingsCoordination:(id)a3
+- (BOOL)hasSectionIDOptedOutOfSettingsCoordination:(id)coordination
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 optOutOfSettingsCoordination];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:coordination];
+  optOutOfSettingsCoordination = [v3 optOutOfSettingsCoordination];
 
-  return v4;
+  return optOutOfSettingsCoordination;
 }
 
-- (BOOL)setCoordinationType:(unint64_t)a3 sectionID:(id)a4
+- (BOOL)setCoordinationType:(unint64_t)type sectionID:(id)d
 {
-  v5 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a4];
-  LOBYTE(a3) = [v5 updateCoordinationType:a3];
+  v5 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:d];
+  LOBYTE(type) = [v5 updateCoordinationType:type];
 
-  return a3;
+  return type;
 }
 
-- (id)watchVersionThatUsesAttachmentURLForSectionID:(id)a3
+- (id)watchVersionThatUsesAttachmentURLForSectionID:(id)d
 {
-  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:a3];
-  v4 = [v3 watchVersionThatUsesAttachmentURL];
+  v3 = [(NSDictionary *)self->_configurations objectForKeyedSubscript:d];
+  watchVersionThatUsesAttachmentURL = [v3 watchVersionThatUsesAttachmentURL];
 
-  return v4;
+  return watchVersionThatUsesAttachmentURL;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BLTSectionConfigurationInternal *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BLTSectionConfigurationInternal *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BLTSectionConfigurationInternal *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BLTSectionConfigurationInternal *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder

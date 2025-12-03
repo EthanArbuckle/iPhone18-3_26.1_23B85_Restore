@@ -1,8 +1,8 @@
 @interface CLSCLIPprintModel
-+ (id)encodeText:(id)a3 textEncoder:(id)a4;
-+ (id)encodeTextAverage:(id)a3 textEncoder:(id)a4;
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSCLIPprintModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (id)encodeText:(id)text textEncoder:(id)encoder;
++ (id)encodeTextAverage:(id)average textEncoder:(id)encoder;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSCLIPprintModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)initForTesting;
 @end
 
@@ -15,7 +15,7 @@
   return [(CLSCLIPprintModel *)self initWithSceneAnalysisVersion:v3];
 }
 
-- (CLSCLIPprintModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSCLIPprintModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -24,13 +24,13 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x54)
+    if (version < 0x54)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v6 = objc_opt_class();
         *buf = 67109378;
-        v11 = a3;
+        versionCopy = version;
         v12 = 2112;
         v13 = v6;
         _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -49,17 +49,17 @@
   return v5;
 }
 
-+ (id)encodeTextAverage:(id)a3 textEncoder:(id)a4
++ (id)encodeTextAverage:(id)average textEncoder:(id)encoder
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  averageCopy = average;
+  encoderCopy = encoder;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v8 = v5;
+  v8 = averageCopy;
   v9 = [v8 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v9)
   {
@@ -74,7 +74,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [CLSCLIPprintModel encodeText:*(*(&v43 + 1) + 8 * i) textEncoder:v6];
+        v13 = [CLSCLIPprintModel encodeText:*(*(&v43 + 1) + 8 * i) textEncoder:encoderCopy];
         if (!v13)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -109,12 +109,12 @@ LABEL_28:
     goto LABEL_39;
   }
 
-  v15 = [v7 firstObject];
-  v16 = [v15 length];
+  firstObject = [v7 firstObject];
+  v16 = [firstObject length];
 
   v17 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v16];
-  v18 = [v17 mutableBytes];
-  if (!v18)
+  mutableBytes = [v17 mutableBytes];
+  if (!mutableBytes)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -126,7 +126,7 @@ LABEL_28:
     goto LABEL_38;
   }
 
-  v19 = v18;
+  v19 = mutableBytes;
   v36 = v17;
   v20 = v16 >> 2;
   v40 = 0u;
@@ -171,8 +171,8 @@ LABEL_43:
         goto LABEL_37;
       }
 
-      v26 = [v25 bytes];
-      if (!v26)
+      bytes = [v25 bytes];
+      if (!bytes)
       {
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -191,7 +191,7 @@ LABEL_43:
       {
         do
         {
-          v29 = *v26++;
+          v29 = *bytes++;
           *v27 = v29 + *v27;
           ++v27;
           --v28;
@@ -235,10 +235,10 @@ LABEL_39:
   return v31;
 }
 
-+ (id)encodeText:(id)a3 textEncoder:(id)a4
++ (id)encodeText:(id)text textEncoder:(id)encoder
 {
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  encoderCopy = encoder;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -253,9 +253,9 @@ LABEL_39:
   v15 = &v16;
   v8 = v7;
   v13 = v8;
-  v9 = v5;
+  v9 = textCopy;
   v14 = v9;
-  [v6 runOnInputText:v9 completion:v12];
+  [encoderCopy runOnInputText:v9 completion:v12];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v10 = v17[5];
 
@@ -311,9 +311,9 @@ intptr_t __44__CLSCLIPprintModel_encodeText_textEncoder___block_invoke_2(uint64_
   return dispatch_semaphore_signal(v7);
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
-  if (a3 >= 0x54)
+  if (version >= 0x54)
   {
     return 84;
   }

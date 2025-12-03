@@ -1,31 +1,31 @@
 @interface HomeSearchStatusOutlineCellModel
-- (BOOL)isEqual:(id)a3;
-- (HomeSearchStatusOutlineCellModel)initWithErrorString:(id)a3 enableStructuredRAPAffordance:(BOOL)a4 delegate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HomeSearchStatusOutlineCellModel)initWithErrorString:(id)string enableStructuredRAPAffordance:(BOOL)affordance delegate:(id)delegate;
 @end
 
 @implementation HomeSearchStatusOutlineCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(HomeSearchStatusOutlineCellModel *)v5 errorString];
-    v7 = v6;
-    if (v6 == self->_errorString)
+    errorString = [(HomeSearchStatusOutlineCellModel *)v5 errorString];
+    v7 = errorString;
+    if (errorString == self->_errorString)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [(NSString *)v6 isEqual:?];
+      v8 = [(NSString *)errorString isEqual:?];
     }
   }
 
@@ -37,19 +37,19 @@
   return v8;
 }
 
-- (HomeSearchStatusOutlineCellModel)initWithErrorString:(id)a3 enableStructuredRAPAffordance:(BOOL)a4 delegate:(id)a5
+- (HomeSearchStatusOutlineCellModel)initWithErrorString:(id)string enableStructuredRAPAffordance:(BOOL)affordance delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  stringCopy = string;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = HomeSearchStatusOutlineCellModel;
   v11 = [(HomeSearchStatusOutlineCellModel *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_errorString, a3);
-    v12->_enableStructuredRAPAffordance = a4;
-    objc_storeStrong(&v12->_delegate, a5);
+    objc_storeStrong(&v11->_errorString, string);
+    v12->_enableStructuredRAPAffordance = affordance;
+    objc_storeStrong(&v12->_delegate, delegate);
   }
 
   return v12;

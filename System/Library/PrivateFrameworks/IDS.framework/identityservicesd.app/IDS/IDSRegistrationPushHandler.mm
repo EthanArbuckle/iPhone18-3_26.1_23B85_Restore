@@ -5,12 +5,12 @@
 - (void)_acceptIncomingPushes;
 - (void)_ignoreIncomingPushes;
 - (void)_updateListenerIfNeeded;
-- (void)addListener:(id)a3;
+- (void)addListener:(id)listener;
 - (void)dealloc;
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7;
-- (void)handler:(id)a3 pushTokenChanged:(id)a4;
-- (void)removeListener:(id)a3;
-- (void)setRegistered:(BOOL)a3;
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context;
+- (void)handler:(id)handler pushTokenChanged:(id)changed;
+- (void)removeListener:(id)listener;
+- (void)setRegistered:(BOOL)registered;
 @end
 
 @implementation IDSRegistrationPushHandler
@@ -42,15 +42,15 @@
   if (self->_registeredForPush)
   {
     v2 = [IDSPushHandler sharedInstanceWithPortName:@"com.apple.identityservicesd.aps"];
-    v3 = [v2 pushToken];
+    pushToken = [v2 pushToken];
   }
 
   else
   {
-    v3 = 0;
+    pushToken = 0;
   }
 
-  return v3;
+  return pushToken;
 }
 
 - (void)_updateListenerIfNeeded
@@ -60,8 +60,8 @@
     v4 = objc_autoreleasePoolPush();
     isListening = self->_isListening;
     v6 = [IDSPushHandler sharedInstanceWithPortName:@"com.apple.identityservicesd.aps"];
-    v7 = [(IDSRegistrationPushHandler *)self _pushTopics];
-    v8 = [NSSet setWithArray:v7];
+    _pushTopics = [(IDSRegistrationPushHandler *)self _pushTopics];
+    v8 = [NSSet setWithArray:_pushTopics];
     if (isListening)
     {
       [v6 setTopics:v8 forListener:self];
@@ -69,9 +69,9 @@
 
     else
     {
-      v9 = [objc_opt_class() commandToHandlerBlock];
-      v10 = [v9 allKeys];
-      v11 = [NSSet setWithArray:v10];
+      commandToHandlerBlock = [objc_opt_class() commandToHandlerBlock];
+      allKeys = [commandToHandlerBlock allKeys];
+      v11 = [NSSet setWithArray:allKeys];
       v12 = im_primary_queue();
       [v6 addListener:self topics:v8 commands:v11 queue:v12];
 
@@ -121,9 +121,9 @@
   }
 }
 
-- (void)setRegistered:(BOOL)a3
+- (void)setRegistered:(BOOL)registered
 {
-  if (a3)
+  if (registered)
   {
     [(IDSRegistrationPushHandler *)self _acceptIncomingPushes];
   }
@@ -147,9 +147,9 @@
   return v2;
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v7 = a3;
+  listenerCopy = listener;
   if (([(NSMutableArray *)self->_handlers containsObjectIdenticalTo:?]& 1) == 0)
   {
     handlers = self->_handlers;
@@ -162,13 +162,13 @@
       handlers = self->_handlers;
     }
 
-    [(NSMutableArray *)handlers addObject:v7];
+    [(NSMutableArray *)handlers addObject:listenerCopy];
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  [(NSMutableArray *)self->_handlers removeObjectIdenticalTo:a3];
+  [(NSMutableArray *)self->_handlers removeObjectIdenticalTo:listener];
   if (![(NSMutableArray *)self->_handlers count])
   {
     handlers = self->_handlers;
@@ -176,33 +176,33 @@
   }
 }
 
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context
 {
-  v12 = a4;
+  messageCopy = message;
   v8 = objc_opt_class();
-  v9 = sub_10001B808(v8, v12, @"c");
+  v9 = sub_10001B808(v8, messageCopy, @"c");
   if (v9)
   {
-    v10 = [objc_opt_class() commandToHandlerBlock];
-    v11 = [v10 objectForKey:v9];
+    commandToHandlerBlock = [objc_opt_class() commandToHandlerBlock];
+    v11 = [commandToHandlerBlock objectForKey:v9];
 
     if (v11)
     {
-      (v11)[2](v11, self, v12);
+      (v11)[2](v11, self, messageCopy);
     }
   }
 }
 
-- (void)handler:(id)a3 pushTokenChanged:(id)a4
+- (void)handler:(id)handler pushTokenChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableArray *)self->_handlers _copyForEnumerating];
+  handlerCopy = handler;
+  changedCopy = changed;
+  _copyForEnumerating = [(NSMutableArray *)self->_handlers _copyForEnumerating];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v8;
+  v9 = _copyForEnumerating;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -220,7 +220,7 @@
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handler:self pushTokenChanged:{v7, v14}];
+          [v13 handler:self pushTokenChanged:{changedCopy, v14}];
         }
 
         v12 = v12 + 1;

@@ -8,14 +8,14 @@
 
 - (id)ITK_loggingDescription
 {
-  if ([a1 conformsToProtocol:&unk_2867157E0])
+  if ([self conformsToProtocol:&unk_2867157E0])
   {
-    [objc_opt_class() ITK_loggingDescriptionFromLoggable:a1 isPretty:0];
+    [objc_opt_class() ITK_loggingDescriptionFromLoggable:self isPretty:0];
   }
 
   else
   {
-    [a1 description];
+    [self description];
   }
   v2 = ;
 
@@ -24,14 +24,14 @@
 
 - (id)ITK_prettyLoggingDescription
 {
-  if ([a1 conformsToProtocol:&unk_2867157E0])
+  if ([self conformsToProtocol:&unk_2867157E0])
   {
-    [objc_opt_class() ITK_loggingDescriptionFromLoggable:a1 isPretty:1];
+    [objc_opt_class() ITK_loggingDescriptionFromLoggable:self isPretty:1];
   }
 
   else
   {
-    [a1 description];
+    [self description];
   }
   v2 = ;
 
@@ -46,8 +46,8 @@
   v8 = NSStringFromClass(v7);
   v9 = [v6 stringWithFormat:@"<%@ ", v8];
 
-  v10 = [v5 ITK_loggingIdentifier];
-  if (!v10)
+  iTK_loggingIdentifier = [v5 ITK_loggingIdentifier];
+  if (!iTK_loggingIdentifier)
   {
     [v9 appendFormat:@"%p", v5];
     if (a4)
@@ -60,7 +60,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v9 appendString:v10];
+  [v9 appendString:iTK_loggingIdentifier];
   if (!a4)
   {
     goto LABEL_5;
@@ -70,7 +70,7 @@ LABEL_3:
   [v9 appendString:@"\n"];
   v11 = @"\t%@ = %@\n";
 LABEL_6:
-  v12 = [v5 ITK_loggingValues];
+  iTK_loggingValues = [v5 ITK_loggingValues];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__NSObject_ITKLoggable__ITK_loggingDescriptionFromLoggable_isPretty___block_invoke;
@@ -79,7 +79,7 @@ LABEL_6:
   v13 = v9;
   v18 = v13;
   v19 = v11;
-  [v12 enumerateKeysAndObjectsUsingBlock:v17];
+  [iTK_loggingValues enumerateKeysAndObjectsUsingBlock:v17];
   [v13 appendString:@">"];
   v14 = v19;
   v15 = v13;

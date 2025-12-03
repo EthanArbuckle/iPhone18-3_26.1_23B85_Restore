@@ -2,32 +2,32 @@
 + (AXUltronModelAssetManager)sharedInstance;
 - (AXUltronModelAssetManager)init;
 - (BOOL)isAssetDownloadStalled;
-- (BOOL)isKShotAsset:(id)a3;
+- (BOOL)isKShotAsset:(id)asset;
 - (BOOL)isKShotUsingSoundPrint;
-- (id)_filterAssetsToCache:(id)a3;
-- (id)_supportedTypesFromAssets:(id)a3;
+- (id)_filterAssetsToCache:(id)cache;
+- (id)_supportedTypesFromAssets:(id)assets;
 - (id)localPathForKShotGeneralApplianceDetector;
 - (id)localPathForKShotHallucinator;
 - (id)localPathForKShotModelWeights;
-- (id)localURLForDetector:(id)a3;
+- (id)localURLForDetector:(id)detector;
 - (int64_t)_expectedCurrentlyDownloadingSize;
 - (int64_t)_totalBytesOfAllAssetsWritten;
 - (int64_t)_totalExpectedTimeOfAllAssets;
 - (int64_t)assetStatus;
 - (int64_t)totalSizeExpected;
 - (int64_t)totalSizeOccupied;
-- (void)_cacheAsset:(id)a3;
+- (void)_cacheAsset:(id)asset;
 - (void)_downloadAssets;
 - (void)_resetDownloadTracking;
-- (void)addObserver:(id)a3;
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8;
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7;
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6;
-- (void)downloadAssets:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining;
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads;
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error;
+- (void)downloadAssets:(id)assets;
 - (void)notifyAssetsNotReady;
 - (void)notifyAssetsReady;
 - (void)notifyAssetsState;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)stopDownloadingAssets;
 @end
 
@@ -86,8 +86,8 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
     v2->_cachedAssets = v13;
 
     v15 = MEMORY[0x277CE6668];
-    v16 = [MEMORY[0x277CE66A8] policy];
-    v17 = [v15 assetControllerWithPolicy:v16 qosClass:25];
+    policy = [MEMORY[0x277CE66A8] policy];
+    v17 = [v15 assetControllerWithPolicy:policy qosClass:25];
     assetController = v2->_assetController;
     v2->_assetController = v17;
 
@@ -111,61 +111,61 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
   [(NSMutableDictionary *)assetsDownloading removeAllObjects];
 }
 
-- (BOOL)isKShotAsset:(id)a3
+- (BOOL)isKShotAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 ultronModelName];
-  if ([v4 isEqualToString:*MEMORY[0x277CE6EF0]])
+  assetCopy = asset;
+  ultronModelName = [assetCopy ultronModelName];
+  if ([ultronModelName isEqualToString:*MEMORY[0x277CE6EF0]])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 ultronModelName];
-    if ([v6 isEqualToString:*MEMORY[0x277CE6EF8]])
+    ultronModelName2 = [assetCopy ultronModelName];
+    if ([ultronModelName2 isEqualToString:*MEMORY[0x277CE6EF8]])
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v3 ultronModelName];
-      v5 = [v7 isEqualToString:*MEMORY[0x277CE6EE8]];
+      ultronModelName3 = [assetCopy ultronModelName];
+      v5 = [ultronModelName3 isEqualToString:*MEMORY[0x277CE6EE8]];
     }
   }
 
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [AXUltronModelAssetManager addObserver:];
   }
 
-  if (([(NSMutableArray *)self->_observers containsObject:v4]& 1) == 0)
+  if (([(NSMutableArray *)self->_observers containsObject:observerCopy]& 1) == 0)
   {
-    [(NSMutableArray *)self->_observers addObject:v4];
+    [(NSMutableArray *)self->_observers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(NSMutableArray *)self->_observers containsObject:?])
   {
-    [(NSMutableArray *)self->_observers removeObject:v4];
+    [(NSMutableArray *)self->_observers removeObject:observerCopy];
   }
 }
 
 - (void)notifyAssetsReady
 {
   v7 = *MEMORY[0x277D85DE8];
-  [*(a1 + 8) count];
+  [*(self + 8) count];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
@@ -210,27 +210,27 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
 
 - (void)notifyAssetsState
 {
-  v3 = [(AXUltronModelAssetManager *)self assetStatus];
-  if (v3 > 1)
+  assetStatus = [(AXUltronModelAssetManager *)self assetStatus];
+  if (assetStatus > 1)
   {
-    if (v3 == 2)
+    if (assetStatus == 2)
     {
-      v5 = [(AXUltronModelAssetManager *)self _totalBytesOfAllAssetsWritten];
-      if (v5 <= self->_previousReportedSize)
+      _totalBytesOfAllAssetsWritten = [(AXUltronModelAssetManager *)self _totalBytesOfAllAssetsWritten];
+      if (_totalBytesOfAllAssetsWritten <= self->_previousReportedSize)
       {
         previousReportedSize = self->_previousReportedSize;
       }
 
       else
       {
-        previousReportedSize = v5;
+        previousReportedSize = _totalBytesOfAllAssetsWritten;
       }
 
-      v7 = [(AXUltronModelAssetManager *)self _expectedCurrentlyDownloadingSize];
+      _expectedCurrentlyDownloadingSize = [(AXUltronModelAssetManager *)self _expectedCurrentlyDownloadingSize];
       expectedDownloadSize = self->_expectedDownloadSize;
-      if (v7 > expectedDownloadSize)
+      if (_expectedCurrentlyDownloadingSize > expectedDownloadSize)
       {
-        expectedDownloadSize = v7;
+        expectedDownloadSize = _expectedCurrentlyDownloadingSize;
       }
 
       if (expectedDownloadSize <= 1)
@@ -248,43 +248,43 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
         previousReportedSize = v9 - 1;
       }
 
-      v10 = [(AXUltronModelAssetManager *)self _totalExpectedTimeOfAllAssets];
-      v11 = [(AXUltronModelAssetManager *)self isAssetDownloadStalled];
+      _totalExpectedTimeOfAllAssets = [(AXUltronModelAssetManager *)self _totalExpectedTimeOfAllAssets];
+      isAssetDownloadStalled = [(AXUltronModelAssetManager *)self isAssetDownloadStalled];
 
-      [(AXUltronModelAssetManager *)self notifyDownloadProgress:previousReportedSize totalSizeExpected:v9 totalRemainingTime:v11 isStalled:v10];
+      [(AXUltronModelAssetManager *)self notifyDownloadProgress:previousReportedSize totalSizeExpected:v9 totalRemainingTime:isAssetDownloadStalled isStalled:_totalExpectedTimeOfAllAssets];
     }
 
-    else if (v3 == 3)
+    else if (assetStatus == 3)
     {
       [(AXUltronModelAssetManager *)self _resetDownloadTracking];
-      v4 = [(AXUltronModelAssetManager *)self totalSizeOccupied];
-      [(AXUltronModelAssetManager *)self notifyDownloadProgress:v4 totalSizeExpected:v4 totalRemainingTime:0 isStalled:0.0];
+      totalSizeOccupied = [(AXUltronModelAssetManager *)self totalSizeOccupied];
+      [(AXUltronModelAssetManager *)self notifyDownloadProgress:totalSizeOccupied totalSizeExpected:totalSizeOccupied totalRemainingTime:0 isStalled:0.0];
 
       [(AXUltronModelAssetManager *)self notifyAssetsReady];
     }
   }
 
-  else if (v3 <= 1)
+  else if (assetStatus <= 1)
   {
 
     [(AXUltronModelAssetManager *)self notifyAssetsNotReady];
   }
 }
 
-- (id)localURLForDetector:(id)a3
+- (id)localURLForDetector:(id)detector
 {
-  v3 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:a3];
-  v4 = [v3 localURL];
+  v3 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:detector];
+  localURL = [v3 localURL];
 
-  return v4;
+  return localURL;
 }
 
 - (id)localPathForKShotHallucinator
 {
   v2 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:*MEMORY[0x277CE6EF0]];
-  v3 = [v2 localURL];
+  localURL = [v2 localURL];
 
-  v4 = [v3 URLByAppendingPathComponent:*MEMORY[0x277CE6EC8]];
+  v4 = [localURL URLByAppendingPathComponent:*MEMORY[0x277CE6EC8]];
 
   return v4;
 }
@@ -292,9 +292,9 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
 - (id)localPathForKShotModelWeights
 {
   v2 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:*MEMORY[0x277CE6EF8]];
-  v3 = [v2 localURL];
+  localURL = [v2 localURL];
 
-  v4 = [v3 URLByAppendingPathComponent:*MEMORY[0x277CE6EE0]];
+  v4 = [localURL URLByAppendingPathComponent:*MEMORY[0x277CE6EE0]];
 
   return v4;
 }
@@ -302,9 +302,9 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
 - (id)localPathForKShotGeneralApplianceDetector
 {
   v2 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:*MEMORY[0x277CE6EE8]];
-  v3 = [v2 localURL];
+  localURL = [v2 localURL];
 
-  v4 = [v3 URLByAppendingPathComponent:*MEMORY[0x277CE6EC0]];
+  v4 = [localURL URLByAppendingPathComponent:*MEMORY[0x277CE6EC0]];
 
   return v4;
 }
@@ -312,9 +312,9 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
 - (BOOL)isKShotUsingSoundPrint
 {
   v2 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:*MEMORY[0x277CE6EE8]];
-  v3 = [v2 isUsingSoundPrint];
+  isUsingSoundPrint = [v2 isUsingSoundPrint];
 
-  return v3;
+  return isUsingSoundPrint;
 }
 
 - (int64_t)totalSizeOccupied
@@ -324,8 +324,8 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_cachedAssets allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_cachedAssets allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -337,15 +337,15 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
-        v10 = [v9 unarchivedFileSize];
-        v6 += [v10 longLongValue];
+        unarchivedFileSize = [v9 unarchivedFileSize];
+        v6 += [unarchivedFileSize longLongValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -367,8 +367,8 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_cachedAssets allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_cachedAssets allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -380,15 +380,15 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_cachedAssets objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
-        v10 = [v9 downloadSize];
-        v6 += [v10 longLongValue];
+        downloadSize = [v9 downloadSize];
+        v6 += [downloadSize longLongValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -410,8 +410,8 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)self->_cachedAssets allValues];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_cachedAssets allValues];
+  v4 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -422,7 +422,7 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -438,7 +438,7 @@ uint64_t __43__AXUltronModelAssetManager_sharedInstance__block_invoke()
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -456,20 +456,20 @@ void __50__AXUltronModelAssetManager_stopDownloadingAssets__block_invoke(uint64_
   }
 }
 
-- (void)downloadAssets:(id)a3
+- (void)downloadAssets:(id)assets
 {
   if (([(AXAssetController *)self->_assetController hasInProgressDownloads]& 1) == 0)
   {
-    v4 = [(NSMutableDictionary *)self->_cachedAssets allValues];
-    v5 = [(AXUltronModelAssetManager *)self assetDownloadQueue];
+    allValues = [(NSMutableDictionary *)self->_cachedAssets allValues];
+    assetDownloadQueue = [(AXUltronModelAssetManager *)self assetDownloadQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __44__AXUltronModelAssetManager_downloadAssets___block_invoke;
     v7[3] = &unk_278BDD2C0;
-    v8 = v4;
-    v9 = self;
-    v6 = v4;
-    dispatch_async(v5, v7);
+    v8 = allValues;
+    selfCopy = self;
+    v6 = allValues;
+    dispatch_async(assetDownloadQueue, v7);
   }
 }
 
@@ -548,7 +548,7 @@ void __44__AXUltronModelAssetManager_downloadAssets___block_invoke_293(uint64_t 
 
 - (void)_downloadAssets
 {
-  v4 = [OUTLINED_FUNCTION_3_2(a1 a2)];
+  v4 = [OUTLINED_FUNCTION_3_2(self a2)];
   *v3 = 138412290;
   *v2 = v4;
   OUTLINED_FUNCTION_4(&dword_23D62D000, v5, v6, "Tried to assign total bytes written to an asset type that we don't currently support - should not happen! %@");
@@ -570,8 +570,8 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)self->_assetsTotalBytesWritten allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_assetsTotalBytesWritten allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -583,14 +583,14 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_assetsTotalBytesWritten objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
         v6 += [v9 longLongValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -612,8 +612,8 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(NSMutableDictionary *)self->_cachedAssets allValues];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)self->_cachedAssets allValues];
+  v4 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -625,22 +625,22 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         assetsDownloading = self->_assetsDownloading;
-        v11 = [v9 ultronModelName];
-        v12 = [(NSMutableDictionary *)assetsDownloading objectForKey:v11];
+        ultronModelName = [v9 ultronModelName];
+        v12 = [(NSMutableDictionary *)assetsDownloading objectForKey:ultronModelName];
 
         if (v12)
         {
-          v13 = [v9 downloadSize];
-          v6 += [v13 longLongValue];
+          downloadSize = [v9 downloadSize];
+          v6 += [downloadSize longLongValue];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -662,8 +662,8 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)self->_assetsTotalTimeExpected allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_assetsTotalTimeExpected allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -675,14 +675,14 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_assetsTotalTimeExpected objectForKeyedSubscript:*(*(&v12 + 1) + 8 * i)];
         v6 += [v9 longLongValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -704,8 +704,8 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_assetDownloadStalled allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_assetDownloadStalled allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -716,20 +716,20 @@ void __44__AXUltronModelAssetManager__downloadAssets__block_invoke(uint64_t a1)
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = [(NSMutableDictionary *)self->_assetDownloadStalled objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
-        v9 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
 
-        if (!v9)
+        if (!bOOLValue)
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v5)
       {
         continue;
@@ -753,8 +753,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(NSMutableDictionary *)self->_cachedAssets allValues];
-  v4 = [v3 ax_filteredArrayUsingBlock:&__block_literal_global_300];
+  allValues = [(NSMutableDictionary *)self->_cachedAssets allValues];
+  v4 = [allValues ax_filteredArrayUsingBlock:&__block_literal_global_300];
 
   v5 = [v4 count];
   if (v5 == [(NSMutableDictionary *)self->_cachedAssets count])
@@ -764,8 +764,8 @@ LABEL_11:
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_assetsDownloading allValues];
-    v8 = [v7 containsObject:MEMORY[0x277CBEC38]];
+    allValues2 = [(NSMutableDictionary *)self->_assetsDownloading allValues];
+    v8 = [allValues2 containsObject:MEMORY[0x277CBEC38]];
 
     if (v8)
     {
@@ -781,33 +781,33 @@ LABEL_11:
   return v6;
 }
 
-- (void)_cacheAsset:(id)a3
+- (void)_cacheAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 ultronModelName];
+  assetCopy = asset;
+  ultronModelName = [assetCopy ultronModelName];
   v6 = AXSDSoundDetectionTypeForIdentifier();
 
   if (v6 == *MEMORY[0x277CE6F70] || v6 == *MEMORY[0x277CE6F60])
   {
-    if (![(AXUltronModelAssetManager *)self isKShotAsset:v4])
+    if (![(AXUltronModelAssetManager *)self isKShotAsset:assetCopy])
     {
       v17 = AXLogUltron();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        [AXUltronModelAssetManager _cacheAsset:v4];
+        [AXUltronModelAssetManager _cacheAsset:assetCopy];
       }
 
       goto LABEL_19;
     }
 
-    v8 = [v4 ultronModelName];
+    ultronModelName2 = [assetCopy ultronModelName];
     v9 = [(NSMutableDictionary *)self->_cachedAssets objectForKey:v6];
 
     cachedAssets = self->_cachedAssets;
     if (v9)
     {
       v11 = [(NSMutableDictionary *)cachedAssets objectForKey:v6];
-      v12 = [v11 isOlderThanAsset:v4];
+      v12 = [v11 isOlderThanAsset:assetCopy];
 
       if (!v12)
       {
@@ -819,7 +819,7 @@ LABEL_11:
       cachedAssets = self->_cachedAssets;
     }
 
-    [(NSMutableDictionary *)cachedAssets setObject:v4 forKey:v8];
+    [(NSMutableDictionary *)cachedAssets setObject:assetCopy forKey:ultronModelName2];
     goto LABEL_11;
   }
 
@@ -832,24 +832,24 @@ LABEL_11:
   }
 
   v15 = [(NSMutableDictionary *)v14 objectForKey:v6];
-  v16 = [v15 isOlderThanAsset:v4];
+  v16 = [v15 isOlderThanAsset:assetCopy];
 
   if (v16)
   {
     v14 = self->_cachedAssets;
 LABEL_15:
-    [(NSMutableDictionary *)v14 setObject:v4 forKey:v6];
+    [(NSMutableDictionary *)v14 setObject:assetCopy forKey:v6];
   }
 
 LABEL_19:
 }
 
-- (void)assetController:(id)a3 didFinishRefreshingAssets:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6
+- (void)assetController:(id)controller didFinishRefreshingAssets:(id)assets wasSuccessful:(BOOL)successful error:(id)error
 {
-  v7 = a4;
-  v10 = a6;
-  v8 = v10;
-  v9 = v7;
+  assetsCopy = assets;
+  errorCopy = error;
+  v8 = errorCopy;
+  v9 = assetsCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
@@ -920,13 +920,13 @@ LABEL_15:
   return result;
 }
 
-- (id)_filterAssetsToCache:(id)a3
+- (id)_filterAssetsToCache:(id)cache
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cacheCopy = cache;
   v5 = objc_opt_new();
-  v16 = v4;
-  v6 = [MEMORY[0x277CE66A8] compatibleAssetsFromRefreshedAssets:v4];
+  v16 = cacheCopy;
+  v6 = [MEMORY[0x277CE66A8] compatibleAssetsFromRefreshedAssets:cacheCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -952,9 +952,9 @@ LABEL_15:
           v12 = AXLogUltron();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v11 ultronModelName];
+            ultronModelName = [v11 ultronModelName];
             *buf = 138412546;
-            v22 = v13;
+            v22 = ultronModelName;
             v23 = 2112;
             v24 = v11;
             _os_log_debug_impl(&dword_23D62D000, v12, OS_LOG_TYPE_DEBUG, "Caching asset with name: %@. Asset: %@", buf, 0x16u);
@@ -978,10 +978,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)_supportedTypesFromAssets:(id)a3
+- (id)_supportedTypesFromAssets:(id)assets
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_opt_new();
   if (AXIsSoundDetectionMedinaSupportEnabled())
   {
@@ -1045,7 +1045,7 @@ LABEL_15:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = [MEMORY[0x277CE66A8] compatibleAssetsFromRefreshedAssets:{v3, v3}];
+  v16 = [MEMORY[0x277CE66A8] compatibleAssetsFromRefreshedAssets:{assetsCopy, assetsCopy}];
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v45 count:16];
   if (v17)
   {
@@ -1063,7 +1063,7 @@ LABEL_15:
         }
 
         v23 = *(*(&v32 + 1) + 8 * k);
-        v24 = [v23 ultronModelName];
+        ultronModelName = [v23 ultronModelName];
         v25 = AXSDSoundDetectionTypeForIdentifier();
 
         if (v25 == *v20 || v25 == *v21)
@@ -1095,10 +1095,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)assetController:(id)a3 asset:(id)a4 downloadProgressTotalWritten:(int64_t)a5 totalExpected:(int64_t)a6 isStalled:(BOOL)a7 expectedTimeRemaining:(double)a8
+- (void)assetController:(id)controller asset:(id)asset downloadProgressTotalWritten:(int64_t)written totalExpected:(int64_t)expected isStalled:(BOOL)stalled expectedTimeRemaining:(double)remaining
 {
-  v9 = a4;
-  v8 = v9;
+  assetCopy = asset;
+  v8 = assetCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
@@ -1146,12 +1146,12 @@ void __126__AXUltronModelAssetManager_assetController_asset_downloadProgressTota
   [*(a1 + 40) notifyAssetsState];
 }
 
-- (void)assetController:(id)a3 didFinishDownloadingAsset:(id)a4 wasSuccessful:(BOOL)a5 error:(id)a6 hasRemainingDownloads:(BOOL)a7
+- (void)assetController:(id)controller didFinishDownloadingAsset:(id)asset wasSuccessful:(BOOL)successful error:(id)error hasRemainingDownloads:(BOOL)downloads
 {
-  v8 = a4;
-  v11 = a6;
-  v9 = v11;
-  v10 = v8;
+  assetCopy = asset;
+  errorCopy = error;
+  v9 = errorCopy;
+  v10 = assetCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 

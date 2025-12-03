@@ -1,18 +1,18 @@
 @interface PXCMMProgressBannerView
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PXCMMProgressBannerView)init;
-- (PXCMMProgressBannerView)initWithCoder:(id)a3;
-- (PXCMMProgressBannerView)initWithFrame:(CGRect)a3;
-- (PXCMMProgressBannerView)initWithMomentShareStatusPresentation:(id)a3;
+- (PXCMMProgressBannerView)initWithCoder:(id)coder;
+- (PXCMMProgressBannerView)initWithFrame:(CGRect)frame;
+- (PXCMMProgressBannerView)initWithMomentShareStatusPresentation:(id)presentation;
 - (PXCMMProgressBannerViewDelegate)delegate;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
-- (void)_performActionFromView:(id)a3 sourceRect:(CGRect)a4;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
+- (void)_performActionFromView:(id)view sourceRect:(CGRect)rect;
 - (void)_updateActivityTitle;
 - (void)_updatePauseTitle;
 - (void)_updateProgress;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXCMMProgressBannerView
@@ -24,12 +24,12 @@
   return WeakRetained;
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 contentType] == 2 && (objc_msgSend(v9, "tagIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"com.apple.photos.ui.link-action"), v11, v12))
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  if ([itemCopy contentType] == 2 && (objc_msgSend(itemCopy, "tagIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"com.apple.photos.ui.link-action"), v11, v12))
   {
     objc_initWeak(&location, self);
     v13 = MEMORY[0x1E69DC628];
@@ -37,8 +37,8 @@
     v16[1] = 3221225472;
     v16[2] = __75__PXCMMProgressBannerView_textView_primaryActionForTextItem_defaultAction___block_invoke;
     v16[3] = &unk_1E774A2F8;
-    v17 = v9;
-    v18 = v8;
+    v17 = itemCopy;
+    v18 = viewCopy;
     objc_copyWeak(&v19, &location);
     v14 = [v13 actionWithHandler:v16];
     objc_destroyWeak(&v19);
@@ -73,16 +73,16 @@ void __75__PXCMMProgressBannerView_textView_primaryActionForTextItem_defaultActi
   [WeakRetained _performActionFromView:a1[5] sourceRect:{v10, v12, v14, v16}];
 }
 
-- (void)_performActionFromView:(id)a3 sourceRect:(CGRect)a4
+- (void)_performActionFromView:(id)view sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation action];
-  if (v10)
+  viewCopy = view;
+  action = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation action];
+  if (action)
   {
     v11 = PLUserStatusUIGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -93,12 +93,12 @@ void __75__PXCMMProgressBannerView_textView_primaryActionForTextItem_defaultActi
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "CMM Progress Banner: User invoked un-pause action (%{public}@)", buf, 0xCu);
     }
 
-    v13 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation actionConfirmationAlertTitle];
-    v14 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation actionConfirmationAlertButtonTitle];
-    v15 = v14;
-    if (v13)
+    actionConfirmationAlertTitle = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation actionConfirmationAlertTitle];
+    actionConfirmationAlertButtonTitle = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation actionConfirmationAlertButtonTitle];
+    v15 = actionConfirmationAlertButtonTitle;
+    if (actionConfirmationAlertTitle)
     {
-      v16 = v14 == 0;
+      v16 = actionConfirmationAlertButtonTitle == 0;
     }
 
     else
@@ -120,7 +120,7 @@ void __75__PXCMMProgressBannerView_textView_primaryActionForTextItem_defaultActi
       }
 
       objc_initWeak(buf, self);
-      v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v13 message:0 preferredStyle:0];
+      v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:actionConfirmationAlertTitle message:0 preferredStyle:0];
       v22 = MEMORY[0x1E69DC648];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
@@ -128,7 +128,7 @@ void __75__PXCMMProgressBannerView_textView_primaryActionForTextItem_defaultActi
       v34[3] = &unk_1E773B820;
       v34[4] = self;
       objc_copyWeak(&v36, buf);
-      v35 = v10;
+      v35 = action;
       v23 = [v22 actionWithTitle:v15 style:0 handler:v34];
       [v21 addAction:v23];
 
@@ -143,18 +143,18 @@ void __75__PXCMMProgressBannerView_textView_primaryActionForTextItem_defaultActi
       v26 = [v24 actionWithTitle:v25 style:1 handler:v32];
       [v21 addAction:v26];
 
-      v27 = [v21 popoverPresentationController];
-      [v27 setSourceView:v9];
+      popoverPresentationController = [v21 popoverPresentationController];
+      [popoverPresentationController setSourceView:viewCopy];
 
-      v28 = [v21 popoverPresentationController];
-      [v28 setSourceRect:{x, y, width, height}];
+      popoverPresentationController2 = [v21 popoverPresentationController];
+      [popoverPresentationController2 setSourceRect:{x, y, width, height}];
 
-      v29 = [v21 popoverPresentationController];
-      [v29 setPermittedArrowDirections:2];
+      popoverPresentationController3 = [v21 popoverPresentationController];
+      [popoverPresentationController3 setPermittedArrowDirections:2];
 
       [(PXCMMProgressBannerView *)self setAlertController:v21];
-      v30 = [(PXCMMProgressBannerView *)self delegate];
-      [v30 progressBannerView:self presentViewController:v21];
+      delegate = [(PXCMMProgressBannerView *)self delegate];
+      [delegate progressBannerView:self presentViewController:v21];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(&v36);
@@ -172,7 +172,7 @@ void __75__PXCMMProgressBannerView_textView_primaryActionForTextItem_defaultActi
         _os_log_impl(&dword_1A3C1C000, v18, OS_LOG_TYPE_DEFAULT, "CMM Progress Banner: Invoking action without confirmation (%{public}@)", buf, 0xCu);
       }
 
-      v10[2](v10);
+      action[2](action);
     }
   }
 }
@@ -211,28 +211,28 @@ void __61__PXCMMProgressBannerView__performActionFromView_sourceRect___block_inv
   [WeakRetained setAlertController:0];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (PXMomentShareStatusPresentationObservationContext_128145 != a5)
+  observableCopy = observable;
+  if (PXMomentShareStatusPresentationObservationContext_128145 != context)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:287 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:287 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if ((a4 & 0x20) != 0)
+  v10 = observableCopy;
+  if ((change & 0x20) != 0)
   {
     [(PXCMMProgressBannerView *)self _updatePauseTitle];
   }
 
-  if ((a4 & 0x7C0) != 0)
+  if ((change & 0x7C0) != 0)
   {
-    v11 = [(PXCMMProgressBannerView *)self alertController];
-    if (v11)
+    alertController = [(PXCMMProgressBannerView *)self alertController];
+    if (alertController)
     {
       v12 = PLUserStatusUIGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -243,14 +243,14 @@ void __61__PXCMMProgressBannerView__performActionFromView_sourceRect___block_inv
         _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEFAULT, "CMM Progress Banner: Auto-dismiss alert for replaced action (%{public}@)", &v16, 0xCu);
       }
 
-      v14 = [(PXCMMProgressBannerView *)self delegate];
-      [v14 progressBannerView:self dismissViewController:v11];
+      delegate = [(PXCMMProgressBannerView *)self delegate];
+      [delegate progressBannerView:self dismissViewController:alertController];
 
       [(PXCMMProgressBannerView *)self setAlertController:0];
     }
 
-    LODWORD(v11) = 1;
-    if ((a4 & 0x1000) != 0)
+    LODWORD(alertController) = 1;
+    if ((change & 0x1000) != 0)
     {
       goto LABEL_10;
     }
@@ -258,21 +258,21 @@ void __61__PXCMMProgressBannerView__performActionFromView_sourceRect___block_inv
 
   else
   {
-    v11 = ((a4 >> 3) & 1);
-    if ((a4 & 0x1000) != 0)
+    alertController = ((change >> 3) & 1);
+    if ((change & 0x1000) != 0)
     {
 LABEL_10:
       [(PXCMMProgressBannerView *)self _updateProgress];
     }
   }
 
-  if (v11)
+  if (alertController)
   {
     [(PXCMMProgressBannerView *)self _updateActivityTitle];
   }
 }
 
-- (CGSize)_performLayoutInWidth:(double)a3 updateSubviewFrames:(BOOL)a4
+- (CGSize)_performLayoutInWidth:(double)width updateSubviewFrames:(BOOL)frames
 {
   [(UITextView *)self->_activityTextView font];
   objc_claimAutoreleasedReturnValue();
@@ -288,10 +288,10 @@ LABEL_10:
     if ([v4 showProgressBannerView])
     {
       v5 = +[PXCompleteMyMomentSettings sharedInstance];
-      v6 = [v5 showProgressBannerViewPaused];
+      showProgressBannerViewPaused = [v5 showProgressBannerViewPaused];
 
       LODWORD(v3) = 0.5;
-      if (v6)
+      if (showProgressBannerViewPaused)
       {
         *&v3 = -1.0;
       }
@@ -311,32 +311,32 @@ LABEL_10:
 
 - (void)_updatePauseTitle
 {
-  v8 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation pauseTitle];
-  if (![(__CFString *)v8 length])
+  pauseTitle = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation pauseTitle];
+  if (![(__CFString *)pauseTitle length])
   {
     v3 = +[PXCompleteMyMomentSettings sharedInstance];
     if ([v3 showProgressBannerView])
     {
       v4 = +[PXCompleteMyMomentSettings sharedInstance];
-      v5 = [v4 showProgressBannerViewPaused];
+      showProgressBannerViewPaused = [v4 showProgressBannerViewPaused];
 
-      if (!v5)
+      if (!showProgressBannerViewPaused)
       {
         goto LABEL_6;
       }
 
-      v3 = v8;
-      v8 = @"<debug pause status>";
+      v3 = pauseTitle;
+      pauseTitle = @"<debug pause status>";
     }
   }
 
 LABEL_6:
-  v6 = [(UILabel *)self->_pauseLabel text];
-  v7 = [v6 length] == 0;
+  text = [(UILabel *)self->_pauseLabel text];
+  v7 = [text length] == 0;
 
-  LODWORD(v6) = [(__CFString *)v8 length]== 0;
-  [(UILabel *)self->_pauseLabel setText:v8];
-  if (v7 != v6)
+  LODWORD(text) = [(__CFString *)pauseTitle length]== 0;
+  [(UILabel *)self->_pauseLabel setText:pauseTitle];
+  if (v7 != text)
   {
     [(PXCMMProgressBannerView *)self setNeedsLayout];
   }
@@ -345,13 +345,13 @@ LABEL_6:
 - (void)_updateActivityTitle
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation activityTitle];
-  if (![v2 length])
+  activityTitle = [(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation activityTitle];
+  if (![activityTitle length])
   {
     v3 = +[PXCompleteMyMomentSettings sharedInstance];
-    v4 = [v3 showProgressBannerView];
+    showProgressBannerView = [v3 showProgressBannerView];
 
-    if (v4)
+    if (showProgressBannerView)
     {
     }
   }
@@ -368,21 +368,21 @@ LABEL_6:
   [(PXCMMProgressBannerView *)self _performLayoutInWidth:1 updateSubviewFrames:v3];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXCMMProgressBannerView *)self _performLayoutInWidth:0 updateSubviewFrames:a3.width, a3.height];
+  [(PXCMMProgressBannerView *)self _performLayoutInWidth:0 updateSubviewFrames:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (PXCMMProgressBannerView)initWithMomentShareStatusPresentation:(id)a3
+- (PXCMMProgressBannerView)initWithMomentShareStatusPresentation:(id)presentation
 {
-  v6 = a3;
-  if (!v6)
+  presentationCopy = presentation;
+  if (!presentationCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"momentShareStatusPresentation"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"momentShareStatusPresentation"}];
   }
 
   v17.receiver = self;
@@ -395,7 +395,7 @@ LABEL_6:
   p_isa = &v11->super.super.super.isa;
   if (v11)
   {
-    objc_storeStrong(&v11->_momentShareStatusPresentation, a3);
+    objc_storeStrong(&v11->_momentShareStatusPresentation, presentation);
     [p_isa[51] registerChangeObserver:p_isa context:PXMomentShareStatusPresentationObservationContext_128145];
     v13 = [objc_alloc(MEMORY[0x1E69DD298]) initWithFrame:{v7, v8, v9, v10}];
     v14 = p_isa[52];
@@ -412,27 +412,27 @@ LABEL_6:
   return 0;
 }
 
-- (PXCMMProgressBannerView)initWithCoder:(id)a3
+- (PXCMMProgressBannerView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXCMMProgressBannerView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:48 description:{@"%s is not available as initializer", "-[PXCMMProgressBannerView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXCMMProgressBannerView)initWithFrame:(CGRect)a3
+- (PXCMMProgressBannerView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXCMMProgressBannerView initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXCMMProgressBannerView initWithFrame:]"}];
 
   abort();
 }
 
 - (PXCMMProgressBannerView)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXCMMProgressBannerView init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMProgressBannerView.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXCMMProgressBannerView init]"}];
 
   abort();
 }

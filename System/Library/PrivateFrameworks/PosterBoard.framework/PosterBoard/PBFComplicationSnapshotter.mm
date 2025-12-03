@@ -1,48 +1,48 @@
 @interface PBFComplicationSnapshotter
 - (BOOL)_hasStarted;
-- (BOOL)_startAttempt:(unint64_t)a3 previousError:(id)a4;
+- (BOOL)_startAttempt:(unint64_t)attempt previousError:(id)error;
 - (BOOL)_wasCleanedUp;
 - (BOOL)_wasInvalidated;
 - (BOOL)isFinished;
 - (BOOL)start;
 - (NSError)error;
-- (PBFComplicationSnapshotter)initWithComplicationSnapshotRequest:(id)a3;
+- (PBFComplicationSnapshotter)initWithComplicationSnapshotRequest:(id)request;
 - (UIImage)snapshot;
 - (double)elapsedTime;
-- (void)_finishWithImage:(id)a3 error:(id)a4;
+- (void)_finishWithImage:(id)image error:(id)error;
 - (void)_main_cleanup;
-- (void)_main_kickoffHostViewController:(id)a3 attempt:(unint64_t)a4;
+- (void)_main_kickoffHostViewController:(id)controller attempt:(unint64_t)attempt;
 - (void)_main_requestTimedOut;
-- (void)addObserver:(id)a3;
-- (void)cancelWithReason:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)cancelWithReason:(id)reason;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PBFComplicationSnapshotter
 
-- (PBFComplicationSnapshotter)initWithComplicationSnapshotRequest:(id)a3
+- (PBFComplicationSnapshotter)initWithComplicationSnapshotRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v20.receiver = self;
   v20.super_class = PBFComplicationSnapshotter;
   v6 = [(PBFComplicationSnapshotter *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_request, request);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     lock_observers = v7->_lock_observers;
-    v7->_lock_observers = v8;
+    v7->_lock_observers = weakObjectsHashTable;
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [v12 substringToIndex:7];
-    v14 = [v5 widget];
-    v15 = [v14 extensionBundleIdentifier];
-    v16 = [v5 metrics];
-    v17 = [v10 stringWithFormat:@"%@-%@-%@", v13, v15, v16];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v13 = [uUIDString substringToIndex:7];
+    widget = [requestCopy widget];
+    extensionBundleIdentifier = [widget extensionBundleIdentifier];
+    metrics = [requestCopy metrics];
+    v17 = [v10 stringWithFormat:@"%@-%@-%@", v13, extensionBundleIdentifier, metrics];
     snapshotterIdentifier = v7->_snapshotterIdentifier;
     v7->_snapshotterIdentifier = v17;
 
@@ -105,11 +105,11 @@ LABEL_8:
   return 0;
 }
 
-- (void)_main_kickoffHostViewController:(id)a3 attempt:(unint64_t)a4
+- (void)_main_kickoffHostViewController:(id)controller attempt:(unint64_t)attempt
 {
-  v7 = a3;
+  controllerCopy = controller;
   NSClassFromString(&cfstr_Chswidget.isa);
-  if (!v7)
+  if (!controllerCopy)
   {
     [PBFComplicationSnapshotter _main_kickoffHostViewController:a2 attempt:?];
   }
@@ -122,8 +122,8 @@ LABEL_8:
   BSDispatchQueueAssertMain();
   if ([(PBFComplicationSnapshotter *)self _wasInvalidated])
   {
-    v8 = PBFLogComplicationSnapshotter();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    metrics = PBFLogComplicationSnapshotter();
+    if (os_log_type_enabled(metrics, OS_LOG_TYPE_ERROR))
     {
       [PBFComplicationSnapshotter _main_kickoffHostViewController:attempt:];
     }
@@ -131,8 +131,8 @@ LABEL_8:
 
   else
   {
-    v8 = [(PBFComplicationSnapshotRequest *)self->_request metrics];
-    v9 = [objc_alloc(MEMORY[0x277CFA558]) initWithWidget:v7 metrics:v8 widgetConfigurationIdentifier:0];
+    metrics = [(PBFComplicationSnapshotRequest *)self->_request metrics];
+    v9 = [objc_alloc(MEMORY[0x277CFA558]) initWithWidget:controllerCopy metrics:metrics widgetConfigurationIdentifier:0];
     hostViewController = self->_hostViewController;
     self->_hostViewController = v9;
 
@@ -156,7 +156,7 @@ LABEL_8:
     [(CHUISWidgetHostViewController *)self->_hostViewController setInlineTextParameters:v12];
     [(CHUISWidgetHostViewController *)self->_hostViewController setVisibility:3];
     [(CHUISWidgetHostViewController *)self->_hostViewController setPresentationMode:2];
-    if (a4 == 2)
+    if (attempt == 2)
     {
       [(CHUISWidgetHostViewController *)self->_hostViewController setContentType:2];
     }
@@ -168,9 +168,9 @@ LABEL_8:
     v17[1] = 3221225472;
     v17[2] = __70__PBFComplicationSnapshotter__main_kickoffHostViewController_attempt___block_invoke;
     v17[3] = &unk_2782C6CF8;
-    v18 = v7;
+    v18 = controllerCopy;
     objc_copyWeak(v19, &location);
-    v19[1] = a4;
+    v19[1] = attempt;
     [(CHUISWidgetHostViewController *)v15 snapshotContentWithTimeout:v16 queue:v17 completion:30.0];
 
     objc_destroyWeak(v19);
@@ -263,10 +263,10 @@ void __70__PBFComplicationSnapshotter__main_kickoffHostViewController_attempt___
   }
 }
 
-- (BOOL)_startAttempt:(unint64_t)a3 previousError:(id)a4
+- (BOOL)_startAttempt:(unint64_t)attempt previousError:(id)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   if ([(PBFComplicationSnapshotter *)self _wasInvalidated])
   {
     v7 = PBFLogComplicationSnapshotter();
@@ -280,11 +280,11 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a3 >= 4)
+  if (attempt >= 4)
   {
-    if (v6)
+    if (errorCopy)
     {
-      v7 = v6;
+      v7 = errorCopy;
     }
 
     else
@@ -300,13 +300,13 @@ LABEL_18:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       snapshotterIdentifier = self->_snapshotterIdentifier;
-      v22 = [v7 pf_description];
+      pf_description = [v7 pf_description];
       *buf = 138543874;
       v30 = snapshotterIdentifier;
       v31 = 2050;
-      v32 = a3;
+      attemptCopy2 = attempt;
       v33 = 2114;
-      v34 = v22;
+      v34 = pf_description;
       _os_log_error_impl(&dword_21B526000, v19, OS_LOG_TYPE_ERROR, "(%{public}@)[_startAttempt:previousError:] Not starting complication snapshotter attempt %{public}lu. Finishing with error: %{public}@", buf, 0x20u);
     }
 
@@ -321,22 +321,22 @@ LABEL_18:
     *buf = 138543618;
     v30 = v9;
     v31 = 2050;
-    v32 = a3;
+    attemptCopy2 = attempt;
     _os_log_impl(&dword_21B526000, v8, OS_LOG_TYPE_DEFAULT, "(%{public}@)[_startAttempt:previousError:] Starting complication snapshotter attempt %{public}lu", buf, 0x16u);
   }
 
-  v10 = [(PBFComplicationSnapshotRequest *)self->_request widget];
+  widget = [(PBFComplicationSnapshotRequest *)self->_request widget];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__PBFComplicationSnapshotter__startAttempt_previousError___block_invoke;
   block[3] = &unk_2782C56C0;
-  v7 = v10;
+  v7 = widget;
   v26 = v7;
-  v27 = self;
-  v28 = a3;
+  selfCopy = self;
+  attemptCopy3 = attempt;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if (([v11 BOOLForKey:@"DISABLE_SNAPSHOT_TIMEOUT"] & 1) == 0)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if (([standardUserDefaults BOOLForKey:@"DISABLE_SNAPSHOT_TIMEOUT"] & 1) == 0)
   {
     v12 = PBFLogComplicationSnapshotter();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -406,13 +406,13 @@ void __58__PBFComplicationSnapshotter__startAttempt_previousError___block_invoke
   [WeakRetained _main_requestTimedOut];
 }
 
-- (void)_finishWithImage:(id)a3 error:(id)a4
+- (void)_finishWithImage:(id)image error:(id)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v24 = v7;
-  obj = a4;
-  if (__PAIR128__(obj, v7) == 0)
+  imageCopy = image;
+  v24 = imageCopy;
+  obj = error;
+  if (__PAIR128__(obj, imageCopy) == 0)
   {
     v8 = MEMORY[0x277CCA9B8];
     v41 = *MEMORY[0x277CCA470];
@@ -426,7 +426,7 @@ void __58__PBFComplicationSnapshotter__startAttempt_previousError___block_invoke
   if (!self->_lock_finished)
   {
     self->_lock_endTime = CFAbsoluteTimeGetCurrent();
-    objc_storeStrong(&self->_snapshot, a3);
+    objc_storeStrong(&self->_snapshot, image);
     objc_storeStrong(&self->_error, obj);
     v11 = PBFLogComplicationSnapshotter();
     v12 = v11;
@@ -509,24 +509,24 @@ void __58__PBFComplicationSnapshotter__startAttempt_previousError___block_invoke
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)cancelWithReason:(id)a3
+- (void)cancelWithReason:(id)reason
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCA9B8];
-  if (a3)
+  if (reason)
   {
-    v5 = a3;
+    reasonCopy = reason;
   }
 
   else
   {
-    v5 = @"(null)";
+    reasonCopy = @"(null)";
   }
 
   v10 = *MEMORY[0x277CCA470];
-  v11[0] = v5;
+  v11[0] = reasonCopy;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  reasonCopy2 = reason;
   v8 = [v6 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9 = [v4 pbf_generalErrorWithCode:4 userInfo:v8];
 
@@ -640,20 +640,20 @@ void __58__PBFComplicationSnapshotter__startAttempt_previousError___block_invoke
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

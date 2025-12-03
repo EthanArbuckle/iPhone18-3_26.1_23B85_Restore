@@ -1,30 +1,30 @@
 @interface SYUserActivityWrapper
-- (SYUserActivityWrapper)initWithCoder:(id)a3;
-- (SYUserActivityWrapper)initWithUserActivity:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SYUserActivityWrapper)initWithCoder:(id)coder;
+- (SYUserActivityWrapper)initWithUserActivity:(id)activity;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SYUserActivityWrapper
 
-- (SYUserActivityWrapper)initWithUserActivity:(id)a3
+- (SYUserActivityWrapper)initWithUserActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v9.receiver = self;
   v9.super_class = SYUserActivityWrapper;
   v6 = [(SYUserActivityWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userActivity, a3);
+    objc_storeStrong(&v6->_userActivity, activity);
   }
 
   return v7;
 }
 
-- (SYUserActivityWrapper)initWithCoder:(id)a3
+- (SYUserActivityWrapper)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
 
   if (v5)
   {
@@ -32,26 +32,26 @@
     if (v6)
     {
       self = [(SYUserActivityWrapper *)self initWithUserActivity:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   userActivity = self->_userActivity;
   v9 = 0;
   v6 = [(NSUserActivity *)userActivity _createUserActivityDataWithSaving:0 options:0 error:&v9];
@@ -65,7 +65,7 @@
     }
   }
 
-  [v4 encodeObject:v6 forKey:@"userActivityData"];
+  [coderCopy encodeObject:v6 forKey:@"userActivityData"];
 }
 
 - (void)encodeWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

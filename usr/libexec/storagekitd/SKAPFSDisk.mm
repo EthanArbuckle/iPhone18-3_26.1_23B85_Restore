@@ -1,66 +1,66 @@
 @interface SKAPFSDisk
-+ (BOOL)isLIFSAPFSWithDiskDescription:(id)a3;
-- (BOOL)_cacheInfoForDADisk:(id)a3;
++ (BOOL)isLIFSAPFSWithDiskDescription:(id)description;
+- (BOOL)_cacheInfoForDADisk:(id)disk;
 - (BOOL)canResize;
-- (BOOL)canUpdateDiskIdentifierWithDiskInfo:(id)a3;
-- (BOOL)cleanupWithError:(id *)a3;
+- (BOOL)canUpdateDiskIdentifierWithDiskInfo:(id)info;
+- (BOOL)cleanupWithError:(id *)error;
 - (NSString)containerBSDName;
 - (id)getDataVolumeBSD;
-- (id)liveDiskIdentifierWithDiskDescription:(id)a3;
-- (id)volumeNameWithDiskDescription:(id)a3;
+- (id)liveDiskIdentifierWithDiskDescription:(id)description;
+- (id)volumeNameWithDiskDescription:(id)description;
 - (void)_cacheVolumeGroup;
 - (void)cacheEncryptionInfo;
 @end
 
 @implementation SKAPFSDisk
 
-- (BOOL)_cacheInfoForDADisk:(id)a3
+- (BOOL)_cacheInfoForDADisk:(id)disk
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v25.receiver = v5;
+  diskCopy = disk;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v25.receiver = selfCopy;
   v25.super_class = SKAPFSDisk;
-  if (![(SKAPFSDisk *)&v25 _cacheInfoForDADisk:v4])
+  if (![(SKAPFSDisk *)&v25 _cacheInfoForDADisk:diskCopy])
   {
     goto LABEL_12;
   }
 
-  [(SKAPFSDisk *)v5 setType:kSKDiskTypeAPFSLV];
-  [(SKAPFSDisk *)v5 setFilesystemType:kSKDiskFileSystemAPFS];
-  if ([(SKAPFSDisk *)v5 isIOMediaDisk])
+  [(SKAPFSDisk *)selfCopy setType:kSKDiskTypeAPFSLV];
+  [(SKAPFSDisk *)selfCopy setFilesystemType:kSKDiskFileSystemAPFS];
+  if ([(SKAPFSDisk *)selfCopy isIOMediaDisk])
   {
-    v6 = [(SKAPFSDisk *)v5 mediaUUID];
-    v7 = v6 == 0;
+    mediaUUID = [(SKAPFSDisk *)selfCopy mediaUUID];
+    v7 = mediaUUID == 0;
 
     if (!v7)
     {
-      [(SKAPFSDisk *)v5 setSupportsVerify:1];
-      [(SKAPFSDisk *)v5 setSupportsRepair:1];
+      [(SKAPFSDisk *)selfCopy setSupportsVerify:1];
+      [(SKAPFSDisk *)selfCopy setSupportsRepair:1];
       v24 = 0;
-      v8 = [(SKAPFSDisk *)v5 diskIdentifier];
-      v9 = v8;
-      [v8 fileSystemRepresentation];
+      diskIdentifier = [(SKAPFSDisk *)selfCopy diskIdentifier];
+      v9 = diskIdentifier;
+      [diskIdentifier fileSystemRepresentation];
       APFSVolumeRole();
 
-      [(SKAPFSDisk *)v5 setApfsRole:SKAPFSVolumeRoleNone];
-      [(SKAPFSDisk *)v5 setRole:kSKDiskRoleMacData];
-      v16 = [(SKAPFSDisk *)v5 _getFilesystem];
-      [(SKAPFSDisk *)v5 setFilesystem:v16];
+      [(SKAPFSDisk *)selfCopy setApfsRole:SKAPFSVolumeRoleNone];
+      [(SKAPFSDisk *)selfCopy setRole:kSKDiskRoleMacData];
+      _getFilesystem = [(SKAPFSDisk *)selfCopy _getFilesystem];
+      [(SKAPFSDisk *)selfCopy setFilesystem:_getFilesystem];
 
-      [(SKAPFSDisk *)v5 _cacheVolumeGroup];
-      [(SKAPFSDisk *)v5 cacheEncryptionInfo];
+      [(SKAPFSDisk *)selfCopy _cacheVolumeGroup];
+      [(SKAPFSDisk *)selfCopy cacheEncryptionInfo];
       goto LABEL_13;
     }
 
     v13 = sub_10000BFD0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(SKAPFSDisk *)v5 diskIdentifier];
+      diskIdentifier2 = [(SKAPFSDisk *)selfCopy diskIdentifier];
       *buf = 136315394;
       v27 = "[SKAPFSDisk(Daemon) _cacheInfoForDADisk:]";
       v28 = 2114;
-      v29 = v14;
+      v29 = diskIdentifier2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s: APFS volume %{public}@ has no UUID", buf, 0x16u);
     }
 
@@ -69,86 +69,86 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  if ([(SKAPFSDisk *)v5 isIOSRootSnapshot])
+  if ([(SKAPFSDisk *)selfCopy isIOSRootSnapshot])
   {
-    v10 = [(SKAPFSDisk *)v5 _getFilesystem];
-    [(SKAPFSDisk *)v5 setFilesystem:v10];
+    _getFilesystem2 = [(SKAPFSDisk *)selfCopy _getFilesystem];
+    [(SKAPFSDisk *)selfCopy setFilesystem:_getFilesystem2];
 
-    [(SKAPFSDisk *)v5 setApfsRole:SKAPFSVolumeRoleNone];
+    [(SKAPFSDisk *)selfCopy setApfsRole:SKAPFSVolumeRoleNone];
     v11 = &kSKDiskRoleSnapshot;
   }
 
   else
   {
     v12 = [SKFilesystem filesystemFor:@"apfs" caseSensitive:0 encrypted:0 isExtension:1];
-    [(SKAPFSDisk *)v5 setFilesystem:v12];
+    [(SKAPFSDisk *)selfCopy setFilesystem:v12];
 
-    [(SKAPFSDisk *)v5 setApfsRole:SKAPFSVolumeRoleNone];
+    [(SKAPFSDisk *)selfCopy setApfsRole:SKAPFSVolumeRoleNone];
     v11 = &kSKDiskRoleMacData;
   }
 
-  [(SKAPFSDisk *)v5 setRole:*v11];
+  [(SKAPFSDisk *)selfCopy setRole:*v11];
 LABEL_13:
-  v17 = [(SKAPFSDisk *)v5 filesystem];
-  -[SKAPFSDisk setIsCaseSensitive:](v5, "setIsCaseSensitive:", [v17 isCaseSensitive]);
+  filesystem = [(SKAPFSDisk *)selfCopy filesystem];
+  -[SKAPFSDisk setIsCaseSensitive:](selfCopy, "setIsCaseSensitive:", [filesystem isCaseSensitive]);
 
-  v18 = [(SKAPFSDisk *)v5 filesystem];
-  v19 = [v18 isEncrypted];
-  v20 = [(SKAPFSDisk *)v5 isEncrypted];
+  filesystem2 = [(SKAPFSDisk *)selfCopy filesystem];
+  isEncrypted = [filesystem2 isEncrypted];
+  isEncrypted2 = [(SKAPFSDisk *)selfCopy isEncrypted];
 
-  if (v19 != v20)
+  if (isEncrypted != isEncrypted2)
   {
     v21 = +[SKDaemonManager sharedManager];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100010F84;
     v23[3] = &unk_100049118;
-    v23[4] = v5;
+    v23[4] = selfCopy;
     [v21 filesystemsWithCallbackBlock:v23];
   }
 
   v15 = 1;
 LABEL_16:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
 
-- (id)liveDiskIdentifierWithDiskDescription:(id)a3
+- (id)liveDiskIdentifierWithDiskDescription:(id)description
 {
-  v3 = a3;
-  v4 = [SKAPFSDisk isLIFSAPFSWithDiskDescription:v3];
+  descriptionCopy = description;
+  v4 = [SKAPFSDisk isLIFSAPFSWithDiskDescription:descriptionCopy];
   v5 = &kDADiskDescriptionVolumeLifsURLKey;
   if (!v4)
   {
     v5 = &kDADiskDescriptionMediaBSDNameKey;
   }
 
-  v6 = [v3 objectForKeyedSubscript:*v5];
+  v6 = [descriptionCopy objectForKeyedSubscript:*v5];
 
   return v6;
 }
 
-- (id)volumeNameWithDiskDescription:(id)a3
+- (id)volumeNameWithDiskDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if ([(SKAPFSDisk *)self isLiveFSAPFSDisk])
   {
     v5 = [kSKDiskIdentifierLiveFSAPFSPrefix length];
-    v6 = [(SKAPFSDisk *)self diskIdentifier];
-    v7 = [(SKAPFSDisk *)self diskIdentifier];
-    v8 = [v6 rangeOfString:@"/" options:0 range:{v5, objc_msgSend(v7, "length") - v5}];
+    diskIdentifier = [(SKAPFSDisk *)self diskIdentifier];
+    diskIdentifier2 = [(SKAPFSDisk *)self diskIdentifier];
+    v8 = [diskIdentifier rangeOfString:@"/" options:0 range:{v5, objc_msgSend(diskIdentifier2, "length") - v5}];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = sub_10000BFD0();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(SKAPFSDisk *)self diskIdentifier];
+        diskIdentifier3 = [(SKAPFSDisk *)self diskIdentifier];
         *buf = 136315394;
         v16 = "[SKAPFSDisk(Daemon) volumeNameWithDiskDescription:]";
         v17 = 2112;
-        v18 = v10;
+        v18 = diskIdentifier3;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s: Invalid volume name in LiveFS URL %@", buf, 0x16u);
       }
 
@@ -157,8 +157,8 @@ LABEL_16:
 
     else
     {
-      v12 = [(SKAPFSDisk *)self diskIdentifier];
-      v11 = [v12 substringFromIndex:v8 + 1];
+      diskIdentifier4 = [(SKAPFSDisk *)self diskIdentifier];
+      v11 = [diskIdentifier4 substringFromIndex:v8 + 1];
     }
   }
 
@@ -166,7 +166,7 @@ LABEL_16:
   {
     v14.receiver = self;
     v14.super_class = SKAPFSDisk;
-    v11 = [(SKAPFSDisk *)&v14 volumeNameWithDiskDescription:v4];
+    v11 = [(SKAPFSDisk *)&v14 volumeNameWithDiskDescription:descriptionCopy];
   }
 
   return v11;
@@ -174,51 +174,51 @@ LABEL_16:
 
 - (void)cacheEncryptionInfo
 {
-  v3 = [(SKAPFSDisk *)self privateCache];
-  v4 = [v3 liveDiskIdentifier];
+  privateCache = [(SKAPFSDisk *)self privateCache];
+  liveDiskIdentifier = [privateCache liveDiskIdentifier];
 
-  v5 = [(SKAPFSDisk *)self apfsRole];
-  if (v5 == SKAPFSVolumeRoleSystem)
+  apfsRole = [(SKAPFSDisk *)self apfsRole];
+  if (apfsRole == SKAPFSVolumeRoleSystem)
   {
-    v6 = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
+    apfsVolumeGroupUUID = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
 
-    if (!v6)
+    if (!apfsVolumeGroupUUID)
     {
       goto LABEL_5;
     }
 
     [(SKAPFSDisk *)self getDataVolumeBSD];
-    v4 = v5 = v4;
+    liveDiskIdentifier = apfsRole = liveDiskIdentifier;
   }
 
 LABEL_5:
-  if (v4)
+  if (liveDiskIdentifier)
   {
     v7 = +[SKDaemonManager sharedManager];
-    v8 = [v7 diskArbSession];
+    diskArbSession = [v7 diskArbSession];
 
-    v9 = DADiskCreateFromBSDName(kCFAllocatorDefault, v8, [v4 fileSystemRepresentation]);
+    v9 = DADiskCreateFromBSDName(kCFAllocatorDefault, diskArbSession, [liveDiskIdentifier fileSystemRepresentation]);
     if (v9)
     {
       v10 = [[SKIOMedia alloc] initWithDADisk:v9];
       p_super = &v10->super.super;
       if (v10)
       {
-        v12 = [(SKIOObject *)v10 copyProperties];
-        v13 = [v12 objectForKeyedSubscript:@"Encrypted"];
+        copyProperties = [(SKIOObject *)v10 copyProperties];
+        v13 = [copyProperties objectForKeyedSubscript:@"Encrypted"];
         v14 = sub_100010328(v13);
 
-        v15 = [v12 objectForKeyedSubscript:@"Effaceable"];
+        v15 = [copyProperties objectForKeyedSubscript:@"Effaceable"];
         v16 = sub_100010328(v15);
 
-        v17 = [v12 objectForKeyedSubscript:@"Locked"];
+        v17 = [copyProperties objectForKeyedSubscript:@"Locked"];
         v18 = sub_100010328(v17);
 
         [(SKAPFSDisk *)self setIsEncrypted:(v14 | v16) & 1];
         buf[0] = 0;
         if ([(SKAPFSDisk *)self isEncrypted])
         {
-          [v4 fileSystemRepresentation];
+          [liveDiskIdentifier fileSystemRepresentation];
           APFSVolumeGetVEKState();
           v19 = buf[0] ^ 1;
         }
@@ -253,7 +253,7 @@ LABEL_5:
         *buf = 136315394;
         v22 = "[SKAPFSDisk(Daemon) cacheEncryptionInfo]";
         v23 = 2114;
-        v24 = v4;
+        v24 = liveDiskIdentifier;
         _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_ERROR, "%s: Cannot create DADisk for data volume %{public}@", buf, 0x16u);
       }
     }
@@ -266,8 +266,8 @@ LABEL_5:
   v18 = 0;
   v15 = 0;
   v16 = 0;
-  v3 = [(SKAPFSDisk *)self diskIdentifier];
-  v4 = [v3 substringFromIndex:4];
+  diskIdentifier = [(SKAPFSDisk *)self diskIdentifier];
+  v4 = [diskIdentifier substringFromIndex:4];
   v5 = [v4 componentsSeparatedByString:@"s"];
 
   if ([v5 count] > 1)
@@ -297,11 +297,11 @@ LABEL_5:
     v6 = sub_10000BFD0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(SKAPFSDisk *)self diskIdentifier];
+      diskIdentifier2 = [(SKAPFSDisk *)self diskIdentifier];
       *buf = 136315394;
       v12 = "[SKAPFSDisk(Daemon) _cacheVolumeGroup]";
       v13 = 2114;
-      v14 = v7;
+      v14 = diskIdentifier2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s: Invalid BSD name for APFS volume: %{public}@", buf, 0x16u);
     }
   }
@@ -309,18 +309,18 @@ LABEL_5:
 
 - (BOOL)canResize
 {
-  v2 = [(SKAPFSDisk *)self container];
-  v3 = [v2 designatedPhysicalStore];
-  v4 = [v3 canResize];
+  container = [(SKAPFSDisk *)self container];
+  designatedPhysicalStore = [container designatedPhysicalStore];
+  canResize = [designatedPhysicalStore canResize];
 
-  return v4;
+  return canResize;
 }
 
 - (NSString)containerBSDName
 {
-  v3 = [(SKAPFSDisk *)self privateCache];
-  v4 = [v3 wholeDADisk];
-  BSDName = DADiskGetBSDName(v4);
+  privateCache = [(SKAPFSDisk *)self privateCache];
+  wholeDADisk = [privateCache wholeDADisk];
+  BSDName = DADiskGetBSDName(wholeDADisk);
 
   if (BSDName)
   {
@@ -332,11 +332,11 @@ LABEL_5:
     v7 = sub_10000BFD0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(SKAPFSDisk *)self diskIdentifier];
+      diskIdentifier = [(SKAPFSDisk *)self diskIdentifier];
       v10 = 136315394;
       v11 = "[SKAPFSDisk(Daemon) containerBSDName]";
       v12 = 2114;
-      v13 = v8;
+      v13 = diskIdentifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s: Failed getting container BSD name for %{public}@", &v10, 0x16u);
     }
 
@@ -348,18 +348,18 @@ LABEL_5:
 
 - (id)getDataVolumeBSD
 {
-  v3 = [(SKAPFSDisk *)self containerBSDName];
-  if (v3)
+  containerBSDName = [(SKAPFSDisk *)self containerBSDName];
+  if (containerBSDName)
   {
     v4 = [NSUUID alloc];
-    v5 = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
-    v6 = [v4 initWithUUIDString:v5];
+    apfsVolumeGroupUUID = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
+    v6 = [v4 initWithUUIDString:apfsVolumeGroupUUID];
 
     v35[0] = 0;
     v35[1] = 0;
     [v6 getUUIDBytes:v35];
     v27 = 0;
-    [v3 UTF8String];
+    [containerBSDName UTF8String];
     Volumes = APFSContainerVolumeGroupGetVolumes();
     if (Volumes)
     {
@@ -367,11 +367,11 @@ LABEL_5:
       v9 = sub_10000BFD0();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
+        apfsVolumeGroupUUID2 = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
         buf = 136315650;
         v30 = "[SKAPFSDisk(Daemon) getDataVolumeBSD]";
         v31 = 2114;
-        v32 = v10;
+        v32 = apfsVolumeGroupUUID2;
         v33 = 1024;
         v34 = v8;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s: Failed to get volumes in APFS group %{public}@, err %d", &buf, 0x1Cu);
@@ -400,7 +400,7 @@ LABEL_5:
               objc_enumerationMutation(v9);
             }
 
-            v15 = [NSString stringWithFormat:@"%@s%@", v3, *(*(&v23 + 1) + 8 * i)];
+            v15 = [NSString stringWithFormat:@"%@s%@", containerBSDName, *(*(&v23 + 1) + 8 * i)];
             [v15 fileSystemRepresentation];
             v16 = APFSVolumeRole();
             if (v16)
@@ -438,11 +438,11 @@ LABEL_5:
       v17 = sub_10000BFD0();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
+        apfsVolumeGroupUUID3 = [(SKAPFSDisk *)self apfsVolumeGroupUUID];
         buf = 136315394;
         v30 = "[SKAPFSDisk(Daemon) getDataVolumeBSD]";
         v31 = 2114;
-        v32 = v18;
+        v32 = apfsVolumeGroupUUID3;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s: Failed to find data volume in APFS group %{public}@", &buf, 0x16u);
       }
 
@@ -453,9 +453,9 @@ LABEL_21:
   return 0;
 }
 
-+ (BOOL)isLIFSAPFSWithDiskDescription:(id)a3
++ (BOOL)isLIFSAPFSWithDiskDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:kDADiskDescriptionVolumeLifsURLKey];
+  v3 = [description objectForKeyedSubscript:kDADiskDescriptionVolumeLifsURLKey];
   v4 = v3;
   if (v3)
   {
@@ -470,29 +470,29 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)canUpdateDiskIdentifierWithDiskInfo:(id)a3
+- (BOOL)canUpdateDiskIdentifierWithDiskInfo:(id)info
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isLIFSAPFSWithDiskDescription:v3];
+  infoCopy = info;
+  v4 = [objc_opt_class() isLIFSAPFSWithDiskDescription:infoCopy];
 
   return v4;
 }
 
-- (BOOL)cleanupWithError:(id *)a3
+- (BOOL)cleanupWithError:(id *)error
 {
   if (![(SKAPFSDisk *)self isIOMediaDisk])
   {
     return 1;
   }
 
-  v5 = [(SKAPFSDisk *)self diskIdentifier];
-  v6 = SK_DM_APFSUtils_deleteVolume(v5);
+  diskIdentifier = [(SKAPFSDisk *)self diskIdentifier];
+  v6 = SK_DM_APFSUtils_deleteVolume(diskIdentifier);
 
-  if (a3)
+  if (error)
   {
     if (v6)
     {
-      *a3 = [SKError errorWithOSStatus:v6 error:a3];
+      *error = [SKError errorWithOSStatus:v6 error:error];
     }
   }
 

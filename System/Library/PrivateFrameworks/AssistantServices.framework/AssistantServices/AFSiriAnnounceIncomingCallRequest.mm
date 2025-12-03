@@ -1,14 +1,14 @@
 @interface AFSiriAnnounceIncomingCallRequest
-- (AFSiriAnnounceIncomingCallRequest)initWithIncomingCall:(id)a3;
-- (void)performRequestWithCompletion:(id)a3;
+- (AFSiriAnnounceIncomingCallRequest)initWithIncomingCall:(id)call;
+- (void)performRequestWithCompletion:(id)completion;
 @end
 
 @implementation AFSiriAnnounceIncomingCallRequest
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -18,13 +18,13 @@
     v32 = 2112;
     v33 = call;
     _os_log_debug_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_24;
     }
   }
 
-  else if (!v4)
+  else if (!completionCopy)
   {
     goto LABEL_24;
   }
@@ -50,7 +50,7 @@
         _os_log_error_impl(&dword_1912FE000, v17, OS_LOG_TYPE_ERROR, "%s Failed to serialize call %@: %@", buf, 0x20u);
       }
 
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
       v11 = 0;
     }
 
@@ -83,7 +83,7 @@
         handler[1] = 3221225472;
         handler[2] = __66__AFSiriAnnounceIncomingCallRequest_performRequestWithCompletion___block_invoke;
         handler[3] = &unk_1E7348638;
-        v26 = v4;
+        v26 = completionCopy;
         v25 = v14;
         xpc_connection_send_message_with_reply(v25, v12, 0, handler);
       }
@@ -100,7 +100,7 @@
           _os_log_error_impl(&dword_1912FE000, v15, OS_LOG_TYPE_ERROR, "%s Unable to send xpc message for %@", buf, 0x16u);
         }
 
-        v4[2](v4, 0);
+        completionCopy[2](completionCopy, 0);
         if (v14)
         {
           xpc_connection_cancel(v14);
@@ -123,7 +123,7 @@
       _os_log_error_impl(&dword_1912FE000, v16, OS_LOG_TYPE_ERROR, "%s Announce Telephony is not enabled, rejecting request", buf, 0xCu);
     }
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_24:
@@ -144,15 +144,15 @@ void __66__AFSiriAnnounceIncomingCallRequest_performRequestWithCompletion___bloc
   xpc_connection_cancel(v3);
 }
 
-- (AFSiriAnnounceIncomingCallRequest)initWithIncomingCall:(id)a3
+- (AFSiriAnnounceIncomingCallRequest)initWithIncomingCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v9.receiver = self;
   v9.super_class = AFSiriAnnounceIncomingCallRequest;
   v5 = [(AFSiriAnnounceIncomingCallRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [callCopy copy];
     call = v5->_call;
     v5->_call = v6;
   }

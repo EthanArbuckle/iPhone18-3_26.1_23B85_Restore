@@ -1,40 +1,40 @@
 @interface PRSPosterGalleryItemPrototype
-- (BOOL)isEqual:(id)a3;
-- (PRSPosterGalleryItemPrototype)initWithCoder:(id)a3;
-- (PRSPosterGalleryItemPrototype)initWithIdentifier:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 galleryOptions:(id)a6;
-- (PRSPosterGalleryItemPrototype)initWithProactiveRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRSPosterGalleryItemPrototype)initWithCoder:(id)coder;
+- (PRSPosterGalleryItemPrototype)initWithIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier galleryOptions:(id)options;
+- (PRSPosterGalleryItemPrototype)initWithProactiveRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)proactiveRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRSPosterGalleryItemPrototype
 
-- (PRSPosterGalleryItemPrototype)initWithIdentifier:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5 galleryOptions:(id)a6
+- (PRSPosterGalleryItemPrototype)initWithIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier containerBundleIdentifier:(id)containerBundleIdentifier galleryOptions:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  containerBundleIdentifierCopy = containerBundleIdentifier;
+  optionsCopy = options;
   v26.receiver = self;
   v26.super_class = PRSPosterGalleryItemPrototype;
   v14 = [(PRSPosterGalleryItemPrototype *)&v26 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [bundleIdentifierCopy copy];
     extensionBundleIdentifier = v14->_extensionBundleIdentifier;
     v14->_extensionBundleIdentifier = v17;
 
-    v19 = [v12 copy];
+    v19 = [containerBundleIdentifierCopy copy];
     containerBundleIdentifier = v14->_containerBundleIdentifier;
     v14->_containerBundleIdentifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [optionsCopy copy];
     v22 = v21;
     if (v21)
     {
@@ -53,16 +53,16 @@
   return v14;
 }
 
-- (PRSPosterGalleryItemPrototype)initWithProactiveRepresentation:(id)a3
+- (PRSPosterGalleryItemPrototype)initWithProactiveRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 extensionBundleIdentifier];
-  v7 = [v4 containerBundleIdentifier];
-  v8 = [v4 galleryOptions];
+  representationCopy = representation;
+  identifier = [representationCopy identifier];
+  extensionBundleIdentifier = [representationCopy extensionBundleIdentifier];
+  containerBundleIdentifier = [representationCopy containerBundleIdentifier];
+  galleryOptions = [representationCopy galleryOptions];
 
-  v9 = [v8 posterBoardRepresentation];
-  v10 = [(PRSPosterGalleryItemPrototype *)self initWithIdentifier:v5 extensionBundleIdentifier:v6 containerBundleIdentifier:v7 galleryOptions:v9];
+  posterBoardRepresentation = [galleryOptions posterBoardRepresentation];
+  v10 = [(PRSPosterGalleryItemPrototype *)self initWithIdentifier:identifier extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier galleryOptions:posterBoardRepresentation];
 
   return v10;
 }
@@ -74,9 +74,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
   containerBundleIdentifier = self->_containerBundleIdentifier;
@@ -85,10 +85,10 @@
   return [v4 initWithIdentifier:identifier extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier galleryOptions:galleryOptions];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -96,7 +96,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -119,7 +119,7 @@
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E698E6A0] builder];
+      builder = [MEMORY[0x1E698E6A0] builder];
       identifier = self->_identifier;
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
@@ -127,7 +127,7 @@
       v32[3] = &unk_1E818CD58;
       v12 = v9;
       v33 = v12;
-      v13 = [v10 appendObject:identifier counterpart:v32];
+      v13 = [builder appendObject:identifier counterpart:v32];
       extensionBundleIdentifier = self->_extensionBundleIdentifier;
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
@@ -135,7 +135,7 @@
       v30[3] = &unk_1E818CD58;
       v15 = v12;
       v31 = v15;
-      v16 = [v10 appendObject:extensionBundleIdentifier counterpart:v30];
+      v16 = [builder appendObject:extensionBundleIdentifier counterpart:v30];
       containerBundleIdentifier = self->_containerBundleIdentifier;
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
@@ -143,15 +143,15 @@
       v28[3] = &unk_1E818CD58;
       v18 = v15;
       v29 = v18;
-      v19 = [v10 appendObject:containerBundleIdentifier counterpart:v28];
+      v19 = [builder appendObject:containerBundleIdentifier counterpart:v28];
       galleryOptions = self->_galleryOptions;
       v23 = MEMORY[0x1E69E9820];
       v24 = 3221225472;
       v25 = __41__PRSPosterGalleryItemPrototype_isEqual___block_invoke_4;
       v26 = &unk_1E818CD58;
       v27 = v18;
-      v21 = [v10 appendObject:galleryOptions counterpart:&v23];
-      v8 = [v10 isEqual];
+      v21 = [builder appendObject:galleryOptions counterpart:&v23];
+      v8 = [builder isEqual];
     }
 
     else
@@ -165,57 +165,57 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_identifier];
-  v5 = [v3 appendObject:self->_extensionBundleIdentifier];
-  v6 = [v3 appendObject:self->_containerBundleIdentifier];
-  v7 = [v3 appendObject:self->_galleryOptions];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_identifier];
+  v5 = [builder appendObject:self->_extensionBundleIdentifier];
+  v6 = [builder appendObject:self->_containerBundleIdentifier];
+  v7 = [builder appendObject:self->_galleryOptions];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (PRSPosterGalleryItemPrototype)initWithCoder:(id)a3
+- (PRSPosterGalleryItemPrototype)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_identifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_extensionBundleIdentifier);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_containerBundleIdentifier);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = objc_opt_class();
   v15 = NSStringFromSelector(sel_galleryOptions);
-  v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+  v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
 
   v17 = [(PRSPosterGalleryItemPrototype *)self initWithIdentifier:v7 extensionBundleIdentifier:v10 containerBundleIdentifier:v13 galleryOptions:v16];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_identifier);
-  [v5 encodeObject:identifier forKey:v6];
+  [coderCopy encodeObject:identifier forKey:v6];
 
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
   v8 = NSStringFromSelector(sel_extensionBundleIdentifier);
-  [v5 encodeObject:extensionBundleIdentifier forKey:v8];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:v8];
 
   containerBundleIdentifier = self->_containerBundleIdentifier;
   v10 = NSStringFromSelector(sel_containerBundleIdentifier);
-  [v5 encodeObject:containerBundleIdentifier forKey:v10];
+  [coderCopy encodeObject:containerBundleIdentifier forKey:v10];
 
   galleryOptions = self->_galleryOptions;
   v12 = NSStringFromSelector(sel_galleryOptions);
-  [v5 encodeObject:galleryOptions forKey:v12];
+  [coderCopy encodeObject:galleryOptions forKey:v12];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface HomeNotificationTableViewController
-- (HomeNotificationTableViewController)initWithNotification:(id)a3 home:(id)a4 cameraProfile:(id)a5 notificationUUID:(id)a6 clipUUID:(id)a7 snapshot:(id)a8;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_createNearbyAccessoryViewControllerWithSourceItem:(id)a3 supportsQuickControls:(BOOL)a4;
+- (HomeNotificationTableViewController)initWithNotification:(id)notification home:(id)home cameraProfile:(id)profile notificationUUID:(id)d clipUUID:(id)iD snapshot:(id)snapshot;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_createNearbyAccessoryViewControllerWithSourceItem:(id)item supportsQuickControls:(BOOL)controls;
 - (id)_currentSectionIdentifiers;
-- (id)_identifierForSection:(unint64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)_identifierForSection:(unint64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_numberOfSectionsToShow;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)reloadAfterNotificationUpdate;
 - (void)updateNearbyAccessoriesViewController;
 - (void)viewDidLayoutSubviews;
@@ -16,64 +16,64 @@
 
 @implementation HomeNotificationTableViewController
 
-- (HomeNotificationTableViewController)initWithNotification:(id)a3 home:(id)a4 cameraProfile:(id)a5 notificationUUID:(id)a6 clipUUID:(id)a7 snapshot:(id)a8
+- (HomeNotificationTableViewController)initWithNotification:(id)notification home:(id)home cameraProfile:(id)profile notificationUUID:(id)d clipUUID:(id)iD snapshot:(id)snapshot
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  notificationCopy = notification;
+  homeCopy = home;
+  profileCopy = profile;
+  dCopy = d;
+  iDCopy = iD;
+  snapshotCopy = snapshot;
   v38.receiver = self;
   v38.super_class = HomeNotificationTableViewController;
   v20 = [(HomeNotificationTableViewController *)&v38 initWithStyle:0];
   if (v20)
   {
-    v21 = HFLogForCategory();
-    v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-    obj = a8;
-    if (v19)
+    request = HFLogForCategory();
+    v22 = os_log_type_enabled(request, OS_LOG_TYPE_DEFAULT);
+    obj = snapshot;
+    if (snapshotCopy)
     {
       if (v22)
       {
         *buf = 138412546;
-        v40 = v17;
+        v40 = dCopy;
         v41 = 2112;
-        v42 = v18;
-        _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "NotificationUUID:%@ launched with a snapshot. No player for clipUUID:%@", buf, 0x16u);
+        v42 = iDCopy;
+        _os_log_impl(&_mh_execute_header, request, OS_LOG_TYPE_DEFAULT, "NotificationUUID:%@ launched with a snapshot. No player for clipUUID:%@", buf, 0x16u);
       }
     }
 
     else
     {
-      v36 = v15;
+      v36 = homeCopy;
       if (v22)
       {
         *buf = 138412546;
-        v40 = v17;
+        v40 = dCopy;
         v41 = 2112;
-        v42 = v18;
-        _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "NotificationUUID:%@ launched without a snapshot. Load player for clipUUID:%@", buf, 0x16u);
+        v42 = iDCopy;
+        _os_log_impl(&_mh_execute_header, request, OS_LOG_TYPE_DEFAULT, "NotificationUUID:%@ launched without a snapshot. Load player for clipUUID:%@", buf, 0x16u);
       }
 
       v34 = [HUNCCameraPlayerViewController alloc];
-      v21 = [v14 request];
-      v35 = [v21 content];
-      v23 = [v35 attachments];
-      v24 = [v23 firstObject];
-      [v24 URL];
-      v26 = v25 = v14;
-      v27 = [v34 initWithCameraProfile:v16 notificationUUID:v17 clipUUID:v18 imageURL:v26];
+      request = [notificationCopy request];
+      content = [request content];
+      attachments = [content attachments];
+      firstObject = [attachments firstObject];
+      [firstObject URL];
+      v26 = v25 = notificationCopy;
+      v27 = [v34 initWithCameraProfile:profileCopy notificationUUID:dCopy clipUUID:iDCopy imageURL:v26];
       playerViewController = v20->_playerViewController;
       v20->_playerViewController = v27;
 
-      v14 = v25;
-      v15 = v36;
+      notificationCopy = v25;
+      homeCopy = v36;
     }
 
     v29 = [HFCameraItem alloc];
-    v30 = [v15 hf_characteristicValueManager];
-    v31 = [v29 initWithProfile:v16 valueSource:v30];
+    hf_characteristicValueManager = [homeCopy hf_characteristicValueManager];
+    v31 = [v29 initWithProfile:profileCopy valueSource:hf_characteristicValueManager];
 
     v32 = [(HomeNotificationTableViewController *)v20 _createNearbyAccessoryViewControllerWithSourceItem:v31 supportsQuickControls:0];
     [(HomeNotificationTableViewController *)v20 setNearbyAccessoriesViewController:v32];
@@ -90,36 +90,36 @@
   v18.super_class = HomeNotificationTableViewController;
   [(HomeNotificationTableViewController *)&v18 viewDidLoad];
   [(HomeNotificationTableViewController *)self setSectionContentInsetFollowsLayoutMargins:0];
-  v3 = [(HomeNotificationTableViewController *)self tableView];
-  [v3 setScrollEnabled:0];
+  tableView = [(HomeNotificationTableViewController *)self tableView];
+  [tableView setScrollEnabled:0];
 
-  v4 = [(HomeNotificationTableViewController *)self tableView];
-  [v4 setAllowsSelection:0];
+  tableView2 = [(HomeNotificationTableViewController *)self tableView];
+  [tableView2 setAllowsSelection:0];
 
-  v5 = [(HomeNotificationTableViewController *)self tableView];
-  [v5 setShowsHorizontalScrollIndicator:0];
+  tableView3 = [(HomeNotificationTableViewController *)self tableView];
+  [tableView3 setShowsHorizontalScrollIndicator:0];
 
-  v6 = [(HomeNotificationTableViewController *)self tableView];
-  [v6 setSeparatorStyle:0];
+  tableView4 = [(HomeNotificationTableViewController *)self tableView];
+  [tableView4 setSeparatorStyle:0];
 
-  v7 = [(HomeNotificationTableViewController *)self tableView];
-  [v7 setContentInsetAdjustmentBehavior:2];
+  tableView5 = [(HomeNotificationTableViewController *)self tableView];
+  [tableView5 setContentInsetAdjustmentBehavior:2];
 
-  v8 = [(HomeNotificationTableViewController *)self tableView];
+  tableView6 = [(HomeNotificationTableViewController *)self tableView];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v8 registerClass:v9 forCellReuseIdentifier:v11];
+  [tableView6 registerClass:v9 forCellReuseIdentifier:v11];
 
   objc_initWeak(&location, self);
-  v12 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
-  v13 = [v12 hu_preloadContent];
+  nearbyAccessoriesViewController = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
+  hu_preloadContent = [nearbyAccessoriesViewController hu_preloadContent];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100006E90;
   v15[3] = &unk_100018920;
   objc_copyWeak(&v16, &location);
-  v14 = [v13 addCompletionBlock:v15];
+  v14 = [hu_preloadContent addCompletionBlock:v15];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -130,31 +130,31 @@
   v4.receiver = self;
   v4.super_class = HomeNotificationTableViewController;
   [(HomeNotificationTableViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(HomeNotificationTableViewController *)self tableView];
-  [v3 contentSize];
+  tableView = [(HomeNotificationTableViewController *)self tableView];
+  [tableView contentSize];
   [(HomeNotificationTableViewController *)self setPreferredContentSize:?];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v5.receiver = self;
   v5.super_class = HomeNotificationTableViewController;
-  [(HomeNotificationTableViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v4 = [(HomeNotificationTableViewController *)self tableView];
-  [v4 reloadData];
+  [(HomeNotificationTableViewController *)&v5 preferredContentSizeDidChangeForChildContentContainer:container];
+  tableView = [(HomeNotificationTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateNearbyAccessoriesViewController
 {
-  v3 = [(HomeNotificationTableViewController *)self numberOfSectionsDisplayed];
-  if (v3 != [(HomeNotificationTableViewController *)self _numberOfSectionsToShow])
+  numberOfSectionsDisplayed = [(HomeNotificationTableViewController *)self numberOfSectionsDisplayed];
+  if (numberOfSectionsDisplayed != [(HomeNotificationTableViewController *)self _numberOfSectionsToShow])
   {
-    v4 = [(HomeNotificationTableViewController *)self tableView];
-    [v4 reloadData];
+    tableView = [(HomeNotificationTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   [(HomeNotificationTableViewController *)self setNumberOfSectionsDisplayed:[(HomeNotificationTableViewController *)self _numberOfSectionsToShow]];
 
@@ -170,24 +170,24 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Notification has been updated. Force reload.", v5, 2u);
   }
 
-  v4 = [(HomeNotificationTableViewController *)self playerViewController];
-  [v4 reloadAfterNotificationUpdate];
+  playerViewController = [(HomeNotificationTableViewController *)self playerViewController];
+  [playerViewController reloadAfterNotificationUpdate];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[HomeNotificationTableViewController _identifierForSection:](self, "_identifierForSection:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[HomeNotificationTableViewController _identifierForSection:](self, "_identifierForSection:", [pathCopy section]);
   if ([v8 isEqualToString:@"notificationMediaViewerSection"])
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v6 dequeueReusableCellWithIdentifier:v10 forIndexPath:v7];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
 
-    v12 = [(HomeNotificationTableViewController *)self snapshot];
+    snapshot = [(HomeNotificationTableViewController *)self snapshot];
 
-    if (v12)
+    if (snapshot)
     {
       v13 = +[UIColor blackColor];
       [v11 setBackgroundColor:v13];
@@ -195,33 +195,33 @@
       v14 = [[HUCameraBadgeView alloc] initWithSize:1];
       v15 = [[HUCameraView alloc] initWithBadgeView:v14];
       [v15 setBadgeHidden:0];
-      v16 = [(HomeNotificationTableViewController *)self snapshot];
-      [v15 setCameraSource:v16];
+      snapshot2 = [(HomeNotificationTableViewController *)self snapshot];
+      [v15 setCameraSource:snapshot2];
 
       [v15 setAutoresizingMask:18];
-      [v6 bounds];
+      [viewCopy bounds];
       v18 = v17;
-      [v6 bounds];
+      [viewCopy bounds];
       v20 = v19;
-      v21 = [v15 cameraSource];
-      [v21 aspectRatio];
+      cameraSource = [v15 cameraSource];
+      [cameraSource aspectRatio];
       [v15 setFrame:{0.0, 0.0, v18, v20 / v22}];
 
-      v23 = [v11 contentView];
-      [v23 addSubview:v15];
+      contentView = [v11 contentView];
+      [contentView addSubview:v15];
     }
 
     else
     {
-      v35 = [(HomeNotificationTableViewController *)self playerViewController];
+      playerViewController = [(HomeNotificationTableViewController *)self playerViewController];
 
-      if (v35)
+      if (playerViewController)
       {
         v36 = +[UIColor systemBlackColor];
         [v11 setBackgroundColor:v36];
 
-        v37 = [(HomeNotificationTableViewController *)self playerViewController];
-        [v11 setViewController:v37];
+        playerViewController2 = [(HomeNotificationTableViewController *)self playerViewController];
+        [v11 setViewController:playerViewController2];
 
         left = UIEdgeInsetsZero.left;
         bottom = UIEdgeInsetsZero.bottom;
@@ -236,25 +236,25 @@
   {
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    v11 = [v6 dequeueReusableCellWithIdentifier:v25 forIndexPath:v7];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v25 forIndexPath:pathCopy];
 
-    v26 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
+    nearbyAccessoriesViewController = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
 
-    if (v26)
+    if (nearbyAccessoriesViewController)
     {
-      v27 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
-      [v11 setViewController:v27];
+      nearbyAccessoriesViewController2 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
+      [v11 setViewController:nearbyAccessoriesViewController2];
 
-      v28 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
-      v29 = [v28 collectionView];
-      [v29 setScrollEnabled:0];
+      nearbyAccessoriesViewController3 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
+      collectionView = [nearbyAccessoriesViewController3 collectionView];
+      [collectionView setScrollEnabled:0];
 
       v30 = UIEdgeInsetsZero.left;
       v31 = UIEdgeInsetsZero.bottom;
       v32 = UIEdgeInsetsZero.right;
-      v33 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
-      v34 = [v33 collectionView];
-      [v34 setContentInset:{UIEdgeInsetsZero.top, v30, v31, v32}];
+      nearbyAccessoriesViewController4 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
+      collectionView2 = [nearbyAccessoriesViewController4 collectionView];
+      [collectionView2 setContentInset:{UIEdgeInsetsZero.top, v30, v31, v32}];
     }
   }
 
@@ -266,19 +266,19 @@
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[HomeNotificationTableViewController _identifierForSection:](self, "_identifierForSection:", [v7 section]);
-  v9 = [(HomeNotificationTableViewController *)self snapshot];
-  if (v9 && (v10 = v9, v11 = [v8 isEqualToString:@"notificationMediaViewerSection"], v10, v11))
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[HomeNotificationTableViewController _identifierForSection:](self, "_identifierForSection:", [pathCopy section]);
+  snapshot = [(HomeNotificationTableViewController *)self snapshot];
+  if (snapshot && (v10 = snapshot, v11 = [v8 isEqualToString:@"notificationMediaViewerSection"], v10, v11))
   {
-    v12 = [(HomeNotificationTableViewController *)self tableView];
-    [v12 bounds];
+    tableView = [(HomeNotificationTableViewController *)self tableView];
+    [tableView bounds];
     v14 = v13;
-    v15 = [(HomeNotificationTableViewController *)self snapshot];
-    [v15 aspectRatio];
+    snapshot2 = [(HomeNotificationTableViewController *)self snapshot];
+    [snapshot2 aspectRatio];
     v17 = v14 / v16;
   }
 
@@ -286,7 +286,7 @@
   {
     v20.receiver = self;
     v20.super_class = HomeNotificationTableViewController;
-    [(HomeNotificationTableViewController *)&v20 tableView:v6 heightForRowAtIndexPath:v7];
+    [(HomeNotificationTableViewController *)&v20 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v17 = v18;
   }
 
@@ -295,10 +295,10 @@
 
 - (int64_t)_numberOfSectionsToShow
 {
-  v2 = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
-  v3 = [v2 itemManager];
-  v4 = [v3 allDisplayedItems];
-  if ([v4 count])
+  nearbyAccessoriesViewController = [(HomeNotificationTableViewController *)self nearbyAccessoriesViewController];
+  itemManager = [nearbyAccessoriesViewController itemManager];
+  allDisplayedItems = [itemManager allDisplayedItems];
+  if ([allDisplayedItems count])
   {
     v5 = 2;
   }
@@ -320,32 +320,32 @@
   return v2;
 }
 
-- (id)_identifierForSection:(unint64_t)a3
+- (id)_identifierForSection:(unint64_t)section
 {
-  v4 = [(HomeNotificationTableViewController *)self _currentSectionIdentifiers];
-  if ([v4 count] <= a3)
+  _currentSectionIdentifiers = [(HomeNotificationTableViewController *)self _currentSectionIdentifiers];
+  if ([_currentSectionIdentifiers count] <= section)
   {
-    NSLog(@"Received identifier request for section (%lu), but only have (%lu) sections", a3, [v4 count]);
+    NSLog(@"Received identifier request for section (%lu), but only have (%lu) sections", section, [_currentSectionIdentifiers count]);
   }
 
-  if ([v4 count] <= a3)
+  if ([_currentSectionIdentifiers count] <= section)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [_currentSectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   return v5;
 }
 
-- (id)_createNearbyAccessoryViewControllerWithSourceItem:(id)a3 supportsQuickControls:(BOOL)a4
+- (id)_createNearbyAccessoryViewControllerWithSourceItem:(id)item supportsQuickControls:(BOOL)controls
 {
   v6 = objc_allocWithZone(sub_10000CAC0());
-  v7 = a3;
-  v8 = self;
+  itemCopy = item;
+  selfCopy = self;
   v9 = sub_10000CAB0();
   sub_10000C2A4();
   swift_unknownObjectRetain();

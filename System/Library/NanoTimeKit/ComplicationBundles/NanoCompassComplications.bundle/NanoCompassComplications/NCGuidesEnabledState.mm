@@ -1,11 +1,11 @@
 @interface NCGuidesEnabledState
 + (id)sharedInstance;
-- (BOOL)isEnabledForGuideType:(int64_t)a3;
+- (BOOL)isEnabledForGuideType:(int64_t)type;
 - (NCGuidesEnabledState)init;
-- (id)NSStringFromNCGuideType:(int64_t)a3;
+- (id)NSStringFromNCGuideType:(int64_t)type;
 - (void)_lock_saveGuideEnabledStatesToDefaults;
-- (void)_withLock:(id)a3;
-- (void)setEnabled:(BOOL)a3 forGuideType:(int64_t)a4;
+- (void)_withLock:(id)lock;
+- (void)setEnabled:(BOOL)enabled forGuideType:(int64_t)type;
 @end
 
 @implementation NCGuidesEnabledState
@@ -22,17 +22,17 @@
   return v3;
 }
 
-- (id)NSStringFromNCGuideType:(int64_t)a3
+- (id)NSStringFromNCGuideType:(int64_t)type
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    return off_278B940C8[a3];
+    return off_278B940C8[type];
   }
 
   v5 = NCLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_23BD656F8(a3, v5);
+    sub_23BD656F8(type, v5);
   }
 
   return 0;
@@ -143,11 +143,11 @@
   return v3;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -160,9 +160,9 @@
   objc_msgSend_synchronize(v10, v7, v8, v9);
 }
 
-- (void)setEnabled:(BOOL)a3 forGuideType:(int64_t)a4
+- (void)setEnabled:(BOOL)enabled forGuideType:(int64_t)type
 {
-  v6 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, a4, a4);
+  v6 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, type, type);
   v9 = objc_msgSend_objectForKeyedSubscript_(self->_guideTypeName, v7, v6, v8);
   v10 = v9;
   if (v9)
@@ -173,19 +173,19 @@
     v16[3] = &unk_278B94080;
     v16[4] = self;
     v17 = v9;
-    v18 = a3;
+    enabledCopy = enabled;
     objc_msgSend__withLock_(self, v11, v16, v12);
     objc_msgSend__backupEnabledStates(self, v13, v14, v15);
   }
 }
 
-- (BOOL)isEnabledForGuideType:(int64_t)a3
+- (BOOL)isEnabledForGuideType:(int64_t)type
 {
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 1;
-  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, a3, v3);
+  v5 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], a2, type, v3);
   v8 = objc_msgSend_objectForKeyedSubscript_(self->_guideTypeName, v6, v5, v7);
   v9 = v8;
   if (v8)

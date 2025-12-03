@@ -12,8 +12,8 @@
   }
 
   v4 = a3;
-  v5 = [a1 payloadApps];
-  v6 = [v5 containsObject:v4];
+  payloadApps = [self payloadApps];
+  v6 = [payloadApps containsObject:v4];
 
   return v6;
 }

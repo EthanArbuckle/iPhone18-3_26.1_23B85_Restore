@@ -2,34 +2,34 @@
 - (id).cxx_construct;
 - (id)window;
 - (unsigned)contextID;
-- (void)setContextID:(unsigned int)a3;
-- (void)setVisibilityPropagationView:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setContextID:(unsigned int)d;
+- (void)setVisibilityPropagationView:(id)view;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation WKLayerHostView
 
 - (unsigned)contextID
 {
-  v2 = [(WKLayerHostView *)self layerHost];
+  layerHost = [(WKLayerHostView *)self layerHost];
 
-  return [v2 contextId];
+  return [layerHost contextId];
 }
 
-- (void)setContextID:(unsigned int)a3
+- (void)setContextID:(unsigned int)d
 {
-  v3 = *&a3;
-  v4 = [(WKLayerHostView *)self layerHost];
+  v3 = *&d;
+  layerHost = [(WKLayerHostView *)self layerHost];
 
-  [v4 setContextId:v3];
+  [layerHost setContextId:v3];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  objc_storeWeak(&self->_window.m_weakReference, a3);
+  objc_storeWeak(&self->_window.m_weakReference, window);
   v5.receiver = self;
   v5.super_class = WKLayerHostView;
-  [(WKLayerHostView *)&v5 willMoveToWindow:a3];
+  [(WKLayerHostView *)&v5 willMoveToWindow:window];
 }
 
 - (id)window
@@ -46,23 +46,23 @@
   return result;
 }
 
-- (void)setVisibilityPropagationView:(id)a3
+- (void)setVisibilityPropagationView:(id)view
 {
   [(UIView *)self->_visibilityPropagationView.m_ptr removeFromSuperview];
-  if (a3)
+  if (view)
   {
-    v5 = a3;
+    viewCopy = view;
   }
 
   m_ptr = self->_visibilityPropagationView.m_ptr;
-  self->_visibilityPropagationView.m_ptr = a3;
+  self->_visibilityPropagationView.m_ptr = view;
   if (m_ptr)
   {
 
-    a3 = self->_visibilityPropagationView.m_ptr;
+    view = self->_visibilityPropagationView.m_ptr;
   }
 
-  [(WKLayerHostView *)self addSubview:a3];
+  [(WKLayerHostView *)self addSubview:view];
 }
 
 - (id).cxx_construct

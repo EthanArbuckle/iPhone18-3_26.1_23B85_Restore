@@ -1,36 +1,36 @@
 @interface UGCPOIEnrichmentHeaderView
-- (UGCPOIEnrichmentHeaderView)initWithFrame:(CGRect)a3;
+- (UGCPOIEnrichmentHeaderView)initWithFrame:(CGRect)frame;
 - (void)_cancelBrandIconDownload;
 - (void)_refreshContent;
-- (void)_setBrandIcon:(id)a3 fallbackToMapItemIcon:(BOOL)a4;
+- (void)_setBrandIcon:(id)icon fallbackToMapItemIcon:(BOOL)itemIcon;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_startBrandIconDownload;
 - (void)_updateIcon;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setHideSummaryText:(BOOL)a3;
-- (void)setMapItem:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setHideSummaryText:(BOOL)text;
+- (void)setMapItem:(id)item;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UGCPOIEnrichmentHeaderView
 
-- (void)_setBrandIcon:(id)a3 fallbackToMapItemIcon:(BOOL)a4
+- (void)_setBrandIcon:(id)icon fallbackToMapItemIcon:(BOOL)itemIcon
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = v6;
-  if (v6)
+  itemIconCopy = itemIcon;
+  iconCopy = icon;
+  v10 = iconCopy;
+  if (iconCopy)
   {
-    v7 = v6;
+    v7 = iconCopy;
   }
 
-  else if (v4)
+  else if (itemIconCopy)
   {
     mapItem = self->_mapItem;
-    v9 = [(UGCPOIEnrichmentHeaderView *)self traitCollection];
-    [v9 displayScale];
+    traitCollection = [(UGCPOIEnrichmentHeaderView *)self traitCollection];
+    [traitCollection displayScale];
     v7 = [MKIconManager imageForMapItem:mapItem forScale:0 fallbackToBundleIcon:?];
   }
 
@@ -80,12 +80,12 @@
 
 - (void)_updateIcon
 {
-  v3 = [(UGCPOIEnrichmentHeaderView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(UGCPOIEnrichmentHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
-  v6 = [(MKMapItem *)self->_mapItem _geoMapItem];
-  obj = [v6 _bestAvatarBrandIconURLForSize:1 allowSmaller:{v5 * 40.0, v5 * 40.0}];
+  _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+  obj = [_geoMapItem _bestAvatarBrandIconURLForSize:1 allowSmaller:{v5 * 40.0, v5 * 40.0}];
 
   brandIconURL = obj;
   if (obj != self->_brandIconURL)
@@ -106,16 +106,16 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = UGCPOIEnrichmentHeaderView;
-  v4 = a3;
-  [(UGCPOIEnrichmentHeaderView *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UGCPOIEnrichmentHeaderView *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(UGCPOIEnrichmentHeaderView *)self traitCollection:v10.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
@@ -139,8 +139,8 @@
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    v4 = [(MKMapItem *)mapItem name];
-    [(UILabel *)self->_titleLabel setText:v4];
+    name = [(MKMapItem *)mapItem name];
+    [(UILabel *)self->_titleLabel setText:name];
 
     if (self->_hideSummaryText)
     {
@@ -149,32 +149,32 @@
 
     else
     {
-      v5 = [(MKMapItem *)self->_mapItem _shortAddress];
-      [(UILabel *)self->_secondaryLabel setText:v5];
+      _shortAddress = [(MKMapItem *)self->_mapItem _shortAddress];
+      [(UILabel *)self->_secondaryLabel setText:_shortAddress];
     }
 
     [(UGCPOIEnrichmentHeaderView *)self _updateIcon];
   }
 }
 
-- (void)setHideSummaryText:(BOOL)a3
+- (void)setHideSummaryText:(BOOL)text
 {
-  if (self->_hideSummaryText != a3)
+  if (self->_hideSummaryText != text)
   {
-    self->_hideSummaryText = a3;
+    self->_hideSummaryText = text;
     [(UGCPOIEnrichmentHeaderView *)self _refreshContent];
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_mapItem != v5)
+  itemCopy = item;
+  if (self->_mapItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mapItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_mapItem, item);
     [(UGCPOIEnrichmentHeaderView *)self _refreshContent];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
@@ -182,8 +182,8 @@
 {
   v3 = [[MUSizeLayout alloc] initWithItem:self->_headerImageView size:{40.0, 40.0}];
   v4 = [MUStackLayout alloc];
-  v5 = [(UGCPOIEnrichmentHeaderView *)self layoutMarginsGuide];
-  v6 = [v4 initWithContainer:v5 axis:1];
+  layoutMarginsGuide = [(UGCPOIEnrichmentHeaderView *)self layoutMarginsGuide];
+  v6 = [v4 initWithContainer:layoutMarginsGuide axis:1];
 
   titleLabel = self->_titleLabel;
   v11[0] = self->_headerImageView;
@@ -251,11 +251,11 @@
   [(UGCPOIEnrichmentHeaderView *)&v3 dealloc];
 }
 
-- (UGCPOIEnrichmentHeaderView)initWithFrame:(CGRect)a3
+- (UGCPOIEnrichmentHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UGCPOIEnrichmentHeaderView;
-  v3 = [(UGCPOIEnrichmentHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCPOIEnrichmentHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,21 +1,21 @@
 @interface UIPhraseBoundaryGestureRecognizer
-- (UIPhraseBoundaryGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIPhraseBoundaryGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (UITextInput)textInput;
 - (id)userData;
 - (void)_resetGestureRecognizer;
 - (void)_startEnoughTimeElapsedTimer;
 - (void)clearAllTimers;
-- (void)secondDelayElapsed:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)secondDelayElapsed:(id)elapsed;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation UIPhraseBoundaryGestureRecognizer
 
-- (UIPhraseBoundaryGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIPhraseBoundaryGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = UIPhraseBoundaryGestureRecognizer;
-  v4 = [(UILongPressGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UILongPressGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -34,9 +34,9 @@
   [(UILongPressGestureRecognizer *)&v3 _resetGestureRecognizer];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     v5 = [UIDelayedAction alloc];
     [(UIPhraseBoundaryGestureRecognizer *)self secondDelay];
@@ -47,10 +47,10 @@
 
   v8.receiver = self;
   v8.super_class = UIPhraseBoundaryGestureRecognizer;
-  [(UIGestureRecognizer *)&v8 setState:a3];
+  [(UIGestureRecognizer *)&v8 setState:state];
 }
 
-- (void)secondDelayElapsed:(id)a3
+- (void)secondDelayElapsed:(id)elapsed
 {
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan || [(UIGestureRecognizer *)self state]== UIGestureRecognizerStateChanged)
   {
@@ -62,10 +62,10 @@
 
 - (void)_startEnoughTimeElapsedTimer
 {
-  v3 = [(UIPhraseBoundaryGestureRecognizer *)self textInput];
-  v4 = [v3 _hasMarkedText];
+  textInput = [(UIPhraseBoundaryGestureRecognizer *)self textInput];
+  _hasMarkedText = [textInput _hasMarkedText];
 
-  if ((v4 & 1) == 0)
+  if ((_hasMarkedText & 1) == 0)
   {
     NSLog(&cfstr_WarningPhraseB.isa);
     v28.receiver = self;
@@ -74,22 +74,22 @@
     return;
   }
 
-  v5 = [(UIPhraseBoundaryGestureRecognizer *)self textInput];
-  v6 = [v5 textInputView];
+  textInput2 = [(UIPhraseBoundaryGestureRecognizer *)self textInput];
+  textInputView = [textInput2 textInputView];
   [(UILongPressGestureRecognizer *)self centroid];
   v8 = v7;
   v10 = v9;
-  v11 = [(UIGestureRecognizer *)self view];
-  [v6 convertPoint:v11 fromView:{v8, v10}];
+  view = [(UIGestureRecognizer *)self view];
+  [textInputView convertPoint:view fromView:{v8, v10}];
   v13 = v12;
   v15 = v14;
 
-  if (![v5 _usesAsynchronousProtocol])
+  if (![textInput2 _usesAsynchronousProtocol])
   {
-    v16 = [v5 markedTextRange];
-    v17 = [v5 closestPositionToPoint:v16 withinRange:{v13, v15}];
+    markedTextRange = [textInput2 markedTextRange];
+    v17 = [textInput2 closestPositionToPoint:markedTextRange withinRange:{v13, v15}];
 
-    [v5 caretRectForPosition:v17];
+    [textInput2 caretRectForPosition:v17];
     v22 = v21 + v20 * 0.5 - v13;
     if (v22 >= 0.0)
     {
@@ -130,7 +130,7 @@
 
   if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled])
   {
-    if ([v5 pointIsNearMarkedText:{v13, v15}])
+    if ([textInput2 pointIsNearMarkedText:{v13, v15}])
     {
       goto LABEL_22;
     }
@@ -140,9 +140,9 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (![v5 conformsToProtocol:&unk_1F016C810])
+  if (![textInput2 conformsToProtocol:&unk_1F016C810])
   {
-    if ([v5 pointIsNearMarkedText:{v13, v15}])
+    if ([textInput2 pointIsNearMarkedText:{v13, v15}])
     {
       goto LABEL_22;
     }
@@ -150,7 +150,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (([v5 isPointNearMarkedText:{v13, v15}] & 1) == 0)
+  if (([textInput2 isPointNearMarkedText:{v13, v15}] & 1) == 0)
   {
     goto LABEL_24;
   }

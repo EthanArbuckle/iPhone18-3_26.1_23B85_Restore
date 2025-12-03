@@ -8,9 +8,9 @@
 {
   v3 = objc_opt_new();
   [v3 setSize:{-[SKPartitionDescriptor size](self, "size")}];
-  v4 = [(SKPartitionDescriptor *)self innerDescriptor];
-  v5 = [v4 filesystem];
-  [v3 setFs:v5];
+  innerDescriptor = [(SKPartitionDescriptor *)self innerDescriptor];
+  filesystem = [innerDescriptor filesystem];
+  [v3 setFs:filesystem];
 
   return v3;
 }

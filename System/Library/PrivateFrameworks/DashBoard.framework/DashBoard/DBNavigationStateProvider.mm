@@ -7,26 +7,26 @@
 - (NSString)mostRecentClusterNavigatingApp;
 - (NSString)mostRecentDashboardNavigatingApp;
 - (NSString)mostRecentNavigatingApp;
-- (id)_initWithActiveNavigationIdentifiersObserver:(id)a3;
+- (id)_initWithActiveNavigationIdentifiersObserver:(id)observer;
 - (void)_updateMostRecentClusterApp;
 - (void)_updateMostRecentDockApp;
-- (void)activeNavigationIdentifiersObserver:(id)a3 updatedActiveNavigationIdentifiers:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)appHistory:(id)a3 mostRecentHomeScreenUpdatedTo:(id)a4;
-- (void)appHistory:(id)a3 mostRecentNavigationAppUpdatedTo:(id)a4;
-- (void)appHistory:(id)a3 mostRecentOtherAppUpdatedTo:(id)a4;
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6;
-- (void)removeObserver:(id)a3;
-- (void)setIconProvider:(id)a3;
+- (void)activeNavigationIdentifiersObserver:(id)observer updatedActiveNavigationIdentifiers:(id)identifiers;
+- (void)addObserver:(id)observer;
+- (void)appHistory:(id)history mostRecentHomeScreenUpdatedTo:(id)to;
+- (void)appHistory:(id)history mostRecentNavigationAppUpdatedTo:(id)to;
+- (void)appHistory:(id)history mostRecentOtherAppUpdatedTo:(id)to;
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications;
+- (void)removeObserver:(id)observer;
+- (void)setIconProvider:(id)provider;
 @end
 
 @implementation DBNavigationStateProvider
 
 - (NSArray)navigatingIdentifiers
 {
-  v2 = [(DBNavigationStateProvider *)self activeNavigationIdentifiersObserver];
-  v3 = [v2 activeNavigationIdentifiers];
-  v4 = [v3 copy];
+  activeNavigationIdentifiersObserver = [(DBNavigationStateProvider *)self activeNavigationIdentifiersObserver];
+  activeNavigationIdentifiers = [activeNavigationIdentifiersObserver activeNavigationIdentifiers];
+  v4 = [activeNavigationIdentifiers copy];
 
   return v4;
 }
@@ -40,14 +40,14 @@
   aBlock[3] = &unk_278F03A08;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(DBNavigationStateProvider *)self navigatingIdentifiers];
-  v5 = [v4 db_map:v3];
+  navigatingIdentifiers = [(DBNavigationStateProvider *)self navigatingIdentifiers];
+  v5 = [navigatingIdentifiers db_map:v3];
 
-  v6 = [v5 lastObject];
-  v7 = v6;
-  if (v6)
+  lastObject = [v5 lastObject];
+  v7 = lastObject;
+  if (lastObject)
   {
-    v8 = [v6 copy];
+    v8 = [lastObject copy];
     [(DBNavigationStateProvider *)self setMostRecentlyActivatedDashboardApp:v8];
 
     v9 = DBLogForCategory(0x16uLL);
@@ -69,14 +69,14 @@
   aBlock[3] = &unk_278F03A08;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(DBNavigationStateProvider *)self navigatingIdentifiers];
-  v5 = [v4 db_map:v3];
+  navigatingIdentifiers = [(DBNavigationStateProvider *)self navigatingIdentifiers];
+  v5 = [navigatingIdentifiers db_map:v3];
 
-  v6 = [v5 lastObject];
-  v7 = v6;
-  if (v6)
+  lastObject = [v5 lastObject];
+  v7 = lastObject;
+  if (lastObject)
   {
-    v8 = [v6 copy];
+    v8 = [lastObject copy];
     [(DBNavigationStateProvider *)self setMostRecentlyActivatedClusterApp:v8];
 
     v9 = DBLogForCategory(0x16uLL);
@@ -112,40 +112,40 @@
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
   v4 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  v5 = [(DBNavigationStateProvider *)self appHistoryAppDockProvider];
-  v6 = [v5 orderedBundleIdentifiersMatchingDockCategory:1];
+  appHistoryAppDockProvider = [(DBNavigationStateProvider *)self appHistoryAppDockProvider];
+  v6 = [appHistoryAppDockProvider orderedBundleIdentifiersMatchingDockCategory:1];
   [v4 addObjectsFromArray:v6];
 
-  v7 = [(DBNavigationStateProvider *)self navigatingIdentifiers];
-  [v4 addObjectsFromArray:v7];
+  navigatingIdentifiers = [(DBNavigationStateProvider *)self navigatingIdentifiers];
+  [v4 addObjectsFromArray:navigatingIdentifiers];
 
-  v8 = [(DBNavigationStateProvider *)self mostRecentlyActivatedDashboardApp];
-  if (v8)
+  mostRecentlyActivatedDashboardApp = [(DBNavigationStateProvider *)self mostRecentlyActivatedDashboardApp];
+  if (mostRecentlyActivatedDashboardApp)
   {
-    [v4 addObject:v8];
+    [v4 addObject:mostRecentlyActivatedDashboardApp];
   }
 
   v9 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_80];
   [v4 removeObjectsAtIndexes:v9];
-  v10 = [v4 array];
-  v11 = [v10 db_map:v3];
+  array = [v4 array];
+  v11 = [array db_map:v3];
 
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__4;
   v20 = __Block_byref_object_dispose__4;
-  if ([v4 containsObject:v8])
+  if ([v4 containsObject:mostRecentlyActivatedDashboardApp])
   {
-    v12 = v8;
+    firstObject = mostRecentlyActivatedDashboardApp;
   }
 
   else
   {
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
   }
 
-  v21 = v12;
+  v21 = firstObject;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__DBNavigationStateProvider_mostRecentDashboardNavigatingApp__block_invoke_3;
@@ -227,9 +227,9 @@ uint64_t __61__DBNavigationStateProvider_mostRecentDashboardNavigatingApp__block
   return v4;
 }
 
-- (id)_initWithActiveNavigationIdentifiersObserver:(id)a3
+- (id)_initWithActiveNavigationIdentifiersObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v11.receiver = self;
   v11.super_class = DBNavigationStateProvider;
   v6 = [(DBNavigationStateProvider *)&v11 init];
@@ -239,7 +239,7 @@ uint64_t __61__DBNavigationStateProvider_mostRecentDashboardNavigatingApp__block
     observers = v6->_observers;
     v6->_observers = v7;
 
-    objc_storeStrong(&v6->_activeNavigationIdentifiersObserver, a3);
+    objc_storeStrong(&v6->_activeNavigationIdentifiersObserver, observer);
     [(CARActiveNavigationIdentifiersObserver *)v6->_activeNavigationIdentifiersObserver addObserver:v6];
     v9 = +[DBApplicationController sharedInstance];
     [v9 addObserver:v6];
@@ -248,9 +248,9 @@ uint64_t __61__DBNavigationStateProvider_mostRecentDashboardNavigatingApp__block
   return v6;
 }
 
-- (void)setIconProvider:(id)a3
+- (void)setIconProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_iconProvider);
 
   if (WeakRetained != obj)
@@ -265,19 +265,19 @@ uint64_t __61__DBNavigationStateProvider_mostRecentDashboardNavigatingApp__block
     {
       [(DBNavigationStateProvider *)self _updateMostRecentDockApp];
       [(DBNavigationStateProvider *)self _updateMostRecentClusterApp];
-      v7 = [(DBNavigationStateProvider *)self observers];
-      v8 = [(DBNavigationStateProvider *)self activeNavigationIdentifiersObserver];
-      v9 = [v8 activeNavigationIdentifiers];
-      [v7 navigationStateProvider:self navigatingIdentifiersDidChange:v9];
+      observers = [(DBNavigationStateProvider *)self observers];
+      activeNavigationIdentifiersObserver = [(DBNavigationStateProvider *)self activeNavigationIdentifiersObserver];
+      activeNavigationIdentifiers = [activeNavigationIdentifiersObserver activeNavigationIdentifiers];
+      [observers navigationStateProvider:self navigatingIdentifiersDidChange:activeNavigationIdentifiers];
     }
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v8 = a3;
-  v4 = [(DBNavigationStateProvider *)self observers];
-  [v4 addObserver:v8];
+  observerCopy = observer;
+  observers = [(DBNavigationStateProvider *)self observers];
+  [observers addObserver:observerCopy];
 
   if (DBIsInternalInstall_onceToken_2 != -1)
   {
@@ -286,16 +286,16 @@ uint64_t __61__DBNavigationStateProvider_mostRecentDashboardNavigatingApp__block
 
   if (DBIsInternalInstall_isInternal_2 != 1 || ([MEMORY[0x277CBEBD0] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLForKey:", @"CARDisableAutoLaunchNavigation"), v5, (v6 & 1) == 0))
   {
-    v7 = [(DBNavigationStateProvider *)self navigatingIdentifiers];
-    [v8 navigationStateProvider:self navigatingIdentifiersDidChange:v7];
+    navigatingIdentifiers = [(DBNavigationStateProvider *)self navigatingIdentifiers];
+    [observerCopy navigationStateProvider:self navigatingIdentifiersDidChange:navigatingIdentifiers];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBNavigationStateProvider *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBNavigationStateProvider *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (NSString)mostRecentClusterNavigatingApp
@@ -307,40 +307,40 @@ uint64_t __61__DBNavigationStateProvider_mostRecentDashboardNavigatingApp__block
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
   v4 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  v5 = [(DBNavigationStateProvider *)self appHistoryAppDockProvider];
-  v6 = [v5 orderedBundleIdentifiersMatchingDockCategory:1];
+  appHistoryAppDockProvider = [(DBNavigationStateProvider *)self appHistoryAppDockProvider];
+  v6 = [appHistoryAppDockProvider orderedBundleIdentifiersMatchingDockCategory:1];
   [v4 addObjectsFromArray:v6];
 
-  v7 = [(DBNavigationStateProvider *)self navigatingIdentifiers];
-  [v4 addObjectsFromArray:v7];
+  navigatingIdentifiers = [(DBNavigationStateProvider *)self navigatingIdentifiers];
+  [v4 addObjectsFromArray:navigatingIdentifiers];
 
-  v8 = [(DBNavigationStateProvider *)self mostRecentlyActivatedClusterApp];
-  if (v8)
+  mostRecentlyActivatedClusterApp = [(DBNavigationStateProvider *)self mostRecentlyActivatedClusterApp];
+  if (mostRecentlyActivatedClusterApp)
   {
-    [v4 addObject:v8];
+    [v4 addObject:mostRecentlyActivatedClusterApp];
   }
 
   v9 = [v4 indexesOfObjectsPassingTest:&__block_literal_global_26];
   [v4 removeObjectsAtIndexes:v9];
-  v10 = [v4 array];
-  v11 = [v10 db_map:v3];
+  array = [v4 array];
+  v11 = [array db_map:v3];
 
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__4;
   v20 = __Block_byref_object_dispose__4;
-  if ([v4 containsObject:v8])
+  if ([v4 containsObject:mostRecentlyActivatedClusterApp])
   {
-    v12 = v8;
+    firstObject = mostRecentlyActivatedClusterApp;
   }
 
   else
   {
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
   }
 
-  v21 = v12;
+  v21 = firstObject;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__DBNavigationStateProvider_mostRecentClusterNavigatingApp__block_invoke_77;
@@ -409,10 +409,10 @@ void __59__DBNavigationStateProvider_mostRecentClusterNavigatingApp__block_invok
 
 - (NSString)mostRecentNavigatingApp
 {
-  v2 = [(DBNavigationStateProvider *)self navigatingIdentifiers];
-  v3 = [v2 lastObject];
+  navigatingIdentifiers = [(DBNavigationStateProvider *)self navigatingIdentifiers];
+  lastObject = [navigatingIdentifiers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 id __53__DBNavigationStateProvider__updateMostRecentDockApp__block_invoke(uint64_t a1, void *a2)
@@ -467,34 +467,34 @@ LABEL_6:
   return v7;
 }
 
-- (void)appHistory:(id)a3 mostRecentHomeScreenUpdatedTo:(id)a4
+- (void)appHistory:(id)history mostRecentHomeScreenUpdatedTo:(id)to
 {
-  [(DBNavigationStateProvider *)self _updateMostRecentDockApp:a3];
+  [(DBNavigationStateProvider *)self _updateMostRecentDockApp:history];
 
   [(DBNavigationStateProvider *)self _updateMostRecentClusterApp];
 }
 
-- (void)appHistory:(id)a3 mostRecentNavigationAppUpdatedTo:(id)a4
+- (void)appHistory:(id)history mostRecentNavigationAppUpdatedTo:(id)to
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  toCopy = to;
   v6 = DBLogForCategory(0x16uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v14 = 138543362;
-    v15 = v5;
+    v15 = toCopy;
     _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_INFO, "Most recent navigation app updated to %{public}@", &v14, 0xCu);
   }
 
-  v7 = [(DBNavigationStateProvider *)self infoProvider];
-  if ([v7 bundleIdentifierSupportsDashboard:v5])
+  infoProvider = [(DBNavigationStateProvider *)self infoProvider];
+  if ([infoProvider bundleIdentifierSupportsDashboard:toCopy])
   {
-    v8 = [(DBNavigationStateProvider *)self iconProvider];
-    v9 = [v8 isIconVisibleForIdentifier:v5];
+    iconProvider = [(DBNavigationStateProvider *)self iconProvider];
+    v9 = [iconProvider isIconVisibleForIdentifier:toCopy];
 
     if (v9)
     {
-      [(DBNavigationStateProvider *)self setMostRecentlyActivatedDashboardApp:v5];
+      [(DBNavigationStateProvider *)self setMostRecentlyActivatedDashboardApp:toCopy];
     }
   }
 
@@ -502,15 +502,15 @@ LABEL_6:
   {
   }
 
-  v10 = [(DBNavigationStateProvider *)self infoProvider];
-  if ([v10 bundleIdentifierSupportsInstrumentCluster:v5])
+  infoProvider2 = [(DBNavigationStateProvider *)self infoProvider];
+  if ([infoProvider2 bundleIdentifierSupportsInstrumentCluster:toCopy])
   {
-    v11 = [(DBNavigationStateProvider *)self iconProvider];
-    v12 = [v11 isIconVisibleForIdentifier:v5];
+    iconProvider2 = [(DBNavigationStateProvider *)self iconProvider];
+    v12 = [iconProvider2 isIconVisibleForIdentifier:toCopy];
 
     if (v12)
     {
-      [(DBNavigationStateProvider *)self setMostRecentlyActivatedClusterApp:v5];
+      [(DBNavigationStateProvider *)self setMostRecentlyActivatedClusterApp:toCopy];
     }
   }
 
@@ -518,41 +518,41 @@ LABEL_6:
   {
   }
 
-  v13 = [(DBNavigationStateProvider *)self observers];
-  [v13 navigationStateProvider:self frontmostIdentifierDidChange:v5];
+  observers = [(DBNavigationStateProvider *)self observers];
+  [observers navigationStateProvider:self frontmostIdentifierDidChange:toCopy];
 }
 
-- (void)appHistory:(id)a3 mostRecentOtherAppUpdatedTo:(id)a4
+- (void)appHistory:(id)history mostRecentOtherAppUpdatedTo:(id)to
 {
-  v8 = a4;
-  v5 = [(DBNavigationStateProvider *)self infoProvider];
-  if ([v5 bundleIdentifierIsCertificationApp:v8])
+  toCopy = to;
+  infoProvider = [(DBNavigationStateProvider *)self infoProvider];
+  if ([infoProvider bundleIdentifierIsCertificationApp:toCopy])
   {
-    v6 = [(DBNavigationStateProvider *)self infoProvider];
-    v7 = [v6 bundleIdentifierSupportsInstrumentCluster:v8];
+    infoProvider2 = [(DBNavigationStateProvider *)self infoProvider];
+    v7 = [infoProvider2 bundleIdentifierSupportsInstrumentCluster:toCopy];
 
     if (!v7)
     {
       goto LABEL_5;
     }
 
-    v5 = [(DBNavigationStateProvider *)self observers];
-    [v5 navigationStateProvider:self frontmostIdentifierDidChange:v8];
+    infoProvider = [(DBNavigationStateProvider *)self observers];
+    [infoProvider navigationStateProvider:self frontmostIdentifierDidChange:toCopy];
   }
 
 LABEL_5:
 }
 
-- (void)activeNavigationIdentifiersObserver:(id)a3 updatedActiveNavigationIdentifiers:(id)a4
+- (void)activeNavigationIdentifiersObserver:(id)observer updatedActiveNavigationIdentifiers:(id)identifiers
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  identifiersCopy = identifiers;
   v8 = DBLogForCategory(0x16uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v7;
+    v13 = identifiersCopy;
     _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "Active navigation identifiers changed: %{public}@", buf, 0xCu);
   }
 
@@ -561,8 +561,8 @@ LABEL_5:
   v10[2] = __100__DBNavigationStateProvider_activeNavigationIdentifiersObserver_updatedActiveNavigationIdentifiers___block_invoke;
   v10[3] = &unk_278F014B8;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
+  v11 = observerCopy;
+  v9 = observerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 }
 
@@ -584,12 +584,12 @@ void __100__DBNavigationStateProvider_activeNavigationIdentifiersObserver_update
   }
 }
 
-- (void)applicationController:(id)a3 addedApplications:(id)a4 updatedApplications:(id)a5 removedApplications:(id)a6
+- (void)applicationController:(id)controller addedApplications:(id)applications updatedApplications:(id)updatedApplications removedApplications:(id)removedApplications
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  controllerCopy = controller;
+  applicationsCopy = applications;
+  updatedApplicationsCopy = updatedApplications;
+  removedApplicationsCopy = removedApplications;
   if (DBIsInternalInstall_onceToken_2 != -1)
   {
     [DBNavigationStateProvider setIconProvider:];
@@ -599,10 +599,10 @@ void __100__DBNavigationStateProvider_activeNavigationIdentifiersObserver_update
   {
     [(DBNavigationStateProvider *)self _updateMostRecentDockApp];
     [(DBNavigationStateProvider *)self _updateMostRecentClusterApp];
-    v15 = [(DBNavigationStateProvider *)self observers];
-    v16 = [(DBNavigationStateProvider *)self activeNavigationIdentifiersObserver];
-    v17 = [v16 activeNavigationIdentifiers];
-    [v15 navigationStateProvider:self navigatingIdentifiersDidChange:v17];
+    observers = [(DBNavigationStateProvider *)self observers];
+    activeNavigationIdentifiersObserver = [(DBNavigationStateProvider *)self activeNavigationIdentifiersObserver];
+    activeNavigationIdentifiers = [activeNavigationIdentifiersObserver activeNavigationIdentifiers];
+    [observers navigationStateProvider:self navigatingIdentifiersDidChange:activeNavigationIdentifiers];
   }
 }
 

@@ -1,35 +1,35 @@
 @interface TUConversationMember
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMember:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMember:(id)member;
 - (BOOL)needsContactLookupForDisplayName;
 - (BOOL)pseudonym;
-- (BOOL)representsSameMemberAs:(id)a3;
+- (BOOL)representsSameMemberAs:(id)as;
 - (NSArray)idsDestinations;
 - (NSSet)handles;
 - (NSString)idsDestination;
 - (NSString)idsFromID;
-- (TUConversationMember)initWithCoder:(id)a3;
-- (TUConversationMember)initWithContact:(id)a3;
-- (TUConversationMember)initWithContact:(id)a3 additionalHandles:(id)a4;
-- (TUConversationMember)initWithDestination:(id)a3;
-- (TUConversationMember)initWithDestinations:(id)a3;
-- (TUConversationMember)initWithHandle:(id)a3 nickname:(id)a4 joinedFromLetMeIn:(BOOL)a5;
-- (TUConversationMember)initWithHandles:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUConversationMember)initWithCoder:(id)coder;
+- (TUConversationMember)initWithContact:(id)contact;
+- (TUConversationMember)initWithContact:(id)contact additionalHandles:(id)handles;
+- (TUConversationMember)initWithDestination:(id)destination;
+- (TUConversationMember)initWithDestinations:(id)destinations;
+- (TUConversationMember)initWithHandle:(id)handle nickname:(id)nickname joinedFromLetMeIn:(BOOL)in;
+- (TUConversationMember)initWithHandles:(id)handles;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValidationSource:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValidationSource:(int64_t)source;
 @end
 
 @implementation TUConversationMember
 
 - (unint64_t)hash
 {
-  v3 = [(TUConversationMember *)self handle];
-  v4 = [v3 hash];
-  v5 = [(TUConversationMember *)self lightweightPrimary];
-  v6 = [v5 hash] ^ v4;
+  handle = [(TUConversationMember *)self handle];
+  v4 = [handle hash];
+  lightweightPrimary = [(TUConversationMember *)self lightweightPrimary];
+  v6 = [lightweightPrimary hash] ^ v4;
   v7 = v6 ^ [(TUConversationMember *)self lightweightPrimaryParticipantIdentifier];
   if ([(TUConversationMember *)self isLightweightMember])
   {
@@ -41,21 +41,21 @@
     v8 = 1237;
   }
 
-  v9 = [(TUConversationMember *)self association];
-  v10 = v7 ^ v8 ^ [v9 hash];
-  v11 = [(TUConversationMember *)self stableDeviceIdentifier];
-  v12 = [v11 hash];
-  v13 = [(TUConversationMember *)self proposedParticipantCluster];
-  v14 = v12 ^ [v13 hash];
+  association = [(TUConversationMember *)self association];
+  v10 = v7 ^ v8 ^ [association hash];
+  stableDeviceIdentifier = [(TUConversationMember *)self stableDeviceIdentifier];
+  v12 = [stableDeviceIdentifier hash];
+  proposedParticipantCluster = [(TUConversationMember *)self proposedParticipantCluster];
+  v14 = v12 ^ [proposedParticipantCluster hash];
 
   return v10 ^ v14;
 }
 
 - (BOOL)needsContactLookupForDisplayName
 {
-  v3 = [(TUConversationMember *)self handle];
-  v4 = [v3 value];
-  if ([v4 destinationIdIsTemporary])
+  handle = [(TUConversationMember *)self handle];
+  value = [handle value];
+  if ([value destinationIdIsTemporary])
   {
     LOBYTE(v5) = 0;
 LABEL_8:
@@ -63,18 +63,18 @@ LABEL_8:
     return v5;
   }
 
-  v6 = [(TUConversationMember *)self handle];
-  v7 = [v6 value];
-  v8 = [v7 destinationIdIsPseudonym];
+  handle2 = [(TUConversationMember *)self handle];
+  value2 = [handle2 value];
+  destinationIdIsPseudonym = [value2 destinationIdIsPseudonym];
 
-  if ((v8 & 1) == 0)
+  if ((destinationIdIsPseudonym & 1) == 0)
   {
-    v3 = [(TUConversationMember *)self handle];
-    v4 = [v3 siriDisplayName];
-    if (v4)
+    handle = [(TUConversationMember *)self handle];
+    value = [handle siriDisplayName];
+    if (value)
     {
-      v9 = [(TUConversationMember *)self handle];
-      v5 = [v9 shouldHideContact] ^ 1;
+      handle3 = [(TUConversationMember *)self handle];
+      v5 = [handle3 shouldHideContact] ^ 1;
     }
 
     else
@@ -89,10 +89,10 @@ LABEL_8:
   return v5;
 }
 
-- (TUConversationMember)initWithHandle:(id)a3 nickname:(id)a4 joinedFromLetMeIn:(BOOL)a5
+- (TUConversationMember)initWithHandle:(id)handle nickname:(id)nickname joinedFromLetMeIn:(BOOL)in
 {
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  nicknameCopy = nickname;
   v27.receiver = self;
   v27.super_class = TUConversationMember;
   v10 = [(TUConversationMember *)&v27 init];
@@ -101,12 +101,12 @@ LABEL_8:
     goto LABEL_16;
   }
 
-  v11 = v8;
-  v12 = [v11 isoCountryCode];
-  v13 = v12;
-  if (v12)
+  v11 = handleCopy;
+  isoCountryCode = [v11 isoCountryCode];
+  v13 = isoCountryCode;
+  if (isoCountryCode)
   {
-    v14 = v12;
+    v14 = isoCountryCode;
   }
 
   else
@@ -129,7 +129,7 @@ LABEL_8:
   if ([v11 type] == 2)
   {
     v18 = [v11 canonicalHandleForISOCountryCode:v14];
-    v19 = v11;
+    value = v11;
 LABEL_12:
 
     goto LABEL_13;
@@ -138,9 +138,9 @@ LABEL_12:
   v18 = v11;
   if ([v11 type] == 3)
   {
-    v19 = [v11 value];
-    v20 = [v19 lowercaseString];
-    v18 = [TUHandle normalizedEmailAddressHandleForValue:v20];
+    value = [v11 value];
+    lowercaseString = [value lowercaseString];
+    v18 = [TUHandle normalizedEmailAddressHandleForValue:lowercaseString];
 
     goto LABEL_12;
   }
@@ -150,44 +150,44 @@ LABEL_13:
   handle = v10->_handle;
   v10->_handle = v21;
 
-  if ([v9 length])
+  if ([nicknameCopy length])
   {
-    v23 = [v9 copy];
+    v23 = [nicknameCopy copy];
     nickname = v10->_nickname;
     v10->_nickname = v23;
   }
 
-  v25 = [v11 siriDisplayName];
-  [(TUHandle *)v10->_handle setSiriDisplayName:v25];
+  siriDisplayName = [v11 siriDisplayName];
+  [(TUHandle *)v10->_handle setSiriDisplayName:siriDisplayName];
 
-  v10->_joinedFromLetMeIn = a5;
+  v10->_joinedFromLetMeIn = in;
   v10->_isOtherInvitedHandle = 0;
 
 LABEL_16:
   return v10;
 }
 
-- (TUConversationMember)initWithHandles:(id)a3
+- (TUConversationMember)initWithHandles:(id)handles
 {
-  v4 = [a3 anyObject];
-  v5 = [(TUConversationMember *)self initWithHandle:v4];
+  anyObject = [handles anyObject];
+  v5 = [(TUConversationMember *)self initWithHandle:anyObject];
 
   return v5;
 }
 
-- (TUConversationMember)initWithContact:(id)a3 additionalHandles:(id)a4
+- (TUConversationMember)initWithContact:(id)contact additionalHandles:(id)handles
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  if ([v6 isKeyAvailable:*MEMORY[0x1E695C330]])
+  contactCopy = contact;
+  v7 = [handles mutableCopy];
+  if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C330]])
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [v6 phoneNumbers];
-    v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v9 = [phoneNumbers countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v9)
     {
       v10 = v9;
@@ -198,36 +198,36 @@ LABEL_16:
         {
           if (*v35 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v13 = *(*(&v34 + 1) + 8 * i);
           if (([v13 tuIsSuggested] & 1) == 0)
           {
             v14 = [TUHandle alloc];
-            v15 = [v13 value];
-            v16 = [v15 stringValue];
-            v17 = [(TUHandle *)v14 initWithType:2 value:v16];
+            value = [v13 value];
+            stringValue = [value stringValue];
+            v17 = [(TUHandle *)v14 initWithType:2 value:stringValue];
 
             [v7 addObject:v17];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v10 = [phoneNumbers countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v10);
     }
   }
 
-  if ([v6 isKeyAvailable:*MEMORY[0x1E695C208]])
+  if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C208]])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = [v6 emailAddresses];
-    v19 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    emailAddresses = [contactCopy emailAddresses];
+    v19 = [emailAddresses countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v19)
     {
       v20 = v19;
@@ -238,21 +238,21 @@ LABEL_16:
         {
           if (*v31 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(emailAddresses);
           }
 
           v23 = *(*(&v30 + 1) + 8 * j);
           if (([v23 tuIsSuggested] & 1) == 0)
           {
             v24 = [TUHandle alloc];
-            v25 = [v23 value];
-            v26 = [(TUHandle *)v24 initWithType:3 value:v25];
+            value2 = [v23 value];
+            v26 = [(TUHandle *)v24 initWithType:3 value:value2];
 
             [v7 addObject:v26];
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v20 = [emailAddresses countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v20);
@@ -265,28 +265,28 @@ LABEL_16:
   return v27;
 }
 
-- (TUConversationMember)initWithContact:(id)a3
+- (TUConversationMember)initWithContact:(id)contact
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  contactCopy = contact;
   v6 = [v4 set];
-  v7 = [(TUConversationMember *)self initWithContact:v5 additionalHandles:v6];
+  v7 = [(TUConversationMember *)self initWithContact:contactCopy additionalHandles:v6];
 
   return v7;
 }
 
-- (TUConversationMember)initWithDestination:(id)a3
+- (TUConversationMember)initWithDestination:(id)destination
 {
-  v4 = [TUHandle handleWithDestinationID:a3];
+  v4 = [TUHandle handleWithDestinationID:destination];
   v5 = [(TUConversationMember *)self initWithHandle:v4];
 
   return v5;
 }
 
-- (TUConversationMember)initWithDestinations:(id)a3
+- (TUConversationMember)initWithDestinations:(id)destinations
 {
-  v4 = [a3 firstObject];
-  v5 = [TUHandle handleWithDestinationID:v4];
+  firstObject = [destinations firstObject];
+  v5 = [TUHandle handleWithDestinationID:firstObject];
 
   v6 = [(TUConversationMember *)self initWithHandle:v5];
   return v6;
@@ -297,13 +297,13 @@ LABEL_16:
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_handle);
-  v5 = [(TUConversationMember *)self handle];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  handle = [(TUConversationMember *)self handle];
+  [v3 appendFormat:@"%@=%@", v4, handle];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_nickname);
-  v7 = [(TUConversationMember *)self nickname];
-  [v3 appendFormat:@"%@=%@", v6, v7];
+  nickname = [(TUConversationMember *)self nickname];
+  [v3 appendFormat:@"%@=%@", v6, nickname];
 
   [v3 appendFormat:@", "];
   v8 = NSStringFromSelector(sel_isLightweightMember);
@@ -313,9 +313,9 @@ LABEL_16:
   {
     [v3 appendFormat:@", "];
     v9 = NSStringFromSelector(sel_isValidated);
-    v10 = [(TUConversationMember *)self isValidated];
+    isValidated = [(TUConversationMember *)self isValidated];
     v11 = @"NO";
-    if (v10)
+    if (isValidated)
     {
       v11 = @"YES";
     }
@@ -325,8 +325,8 @@ LABEL_16:
 
   [v3 appendFormat:@", "];
   v12 = NSStringFromSelector(sel_lightweightPrimary);
-  v13 = [(TUConversationMember *)self lightweightPrimary];
-  [v3 appendFormat:@"%@=%@", v12, v13];
+  lightweightPrimary = [(TUConversationMember *)self lightweightPrimary];
+  [v3 appendFormat:@"%@=%@", v12, lightweightPrimary];
 
   [v3 appendFormat:@", "];
   v14 = NSStringFromSelector(sel_lightweightPrimaryParticipantIdentifier);
@@ -338,13 +338,13 @@ LABEL_16:
 
   [v3 appendFormat:@", "];
   v16 = NSStringFromSelector(sel_dateReceivedLetMeIn);
-  v17 = [(TUConversationMember *)self dateReceivedLetMeIn];
-  [v3 appendFormat:@"%@=%@", v16, v17];
+  dateReceivedLetMeIn = [(TUConversationMember *)self dateReceivedLetMeIn];
+  [v3 appendFormat:@"%@=%@", v16, dateReceivedLetMeIn];
 
   [v3 appendFormat:@", "];
   v18 = NSStringFromSelector(sel_dateInitiatedLetMeIn);
-  v19 = [(TUConversationMember *)self dateInitiatedLetMeIn];
-  [v3 appendFormat:@"%@=%@", v18, v19];
+  dateInitiatedLetMeIn = [(TUConversationMember *)self dateInitiatedLetMeIn];
+  [v3 appendFormat:@"%@=%@", v18, dateInitiatedLetMeIn];
 
   [v3 appendFormat:@", "];
   v20 = NSStringFromSelector(sel_isOtherInvitedHandle);
@@ -352,32 +352,32 @@ LABEL_16:
 
   [v3 appendFormat:@", "];
   v21 = NSStringFromSelector(sel_association);
-  v22 = [(TUConversationMember *)self association];
-  [v3 appendFormat:@"%@=%@", v21, v22];
+  association = [(TUConversationMember *)self association];
+  [v3 appendFormat:@"%@=%@", v21, association];
 
   [v3 appendFormat:@", "];
   v23 = NSStringFromSelector(sel_associationVoucher);
-  v24 = [(TUConversationMember *)self associationVoucher];
-  [v3 appendFormat:@"%@=%@", v23, v24];
+  associationVoucher = [(TUConversationMember *)self associationVoucher];
+  [v3 appendFormat:@"%@=%@", v23, associationVoucher];
 
-  v25 = [(TUConversationMember *)self stableDeviceIdentifier];
+  stableDeviceIdentifier = [(TUConversationMember *)self stableDeviceIdentifier];
 
-  if (v25)
+  if (stableDeviceIdentifier)
   {
     [v3 appendFormat:@", "];
     v26 = NSStringFromSelector(sel_stableDeviceIdentifier);
-    v27 = [(TUConversationMember *)self stableDeviceIdentifier];
-    [v3 appendFormat:@"%@=%@", v26, v27];
+    stableDeviceIdentifier2 = [(TUConversationMember *)self stableDeviceIdentifier];
+    [v3 appendFormat:@"%@=%@", v26, stableDeviceIdentifier2];
   }
 
-  v28 = [(TUConversationMember *)self proposedParticipantCluster];
+  proposedParticipantCluster = [(TUConversationMember *)self proposedParticipantCluster];
 
-  if (v28)
+  if (proposedParticipantCluster)
   {
     [v3 appendFormat:@", "];
     v29 = NSStringFromSelector(sel_proposedParticipantCluster);
-    v30 = [(TUConversationMember *)self proposedParticipantCluster];
-    [v3 appendFormat:@"%@=%@", v29, v30];
+    proposedParticipantCluster2 = [(TUConversationMember *)self proposedParticipantCluster];
+    [v3 appendFormat:@"%@=%@", v29, proposedParticipantCluster2];
   }
 
   [v3 appendFormat:@">"];
@@ -389,8 +389,8 @@ LABEL_16:
 - (NSSet)handles
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(TUConversationMember *)self handle];
-  v4 = [v2 setWithObject:v3];
+  handle = [(TUConversationMember *)self handle];
+  v4 = [v2 setWithObject:handle];
 
   return v4;
 }
@@ -398,17 +398,17 @@ LABEL_16:
 - (NSString)idsFromID
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(TUConversationMember *)self handle];
-  v4 = TUCopyIDSFromIDForHandle(v3);
+  handle = [(TUConversationMember *)self handle];
+  v4 = TUCopyIDSFromIDForHandle(handle);
 
   if (!v4)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(TUConversationMember *)self handle];
+      handle2 = [(TUConversationMember *)self handle];
       v10 = 138412290;
-      v11 = v6;
+      v11 = handle2;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "[WARN] Could not convert %@ to IDS fromID", &v10, 0xCu);
     }
   }
@@ -423,17 +423,17 @@ LABEL_16:
 - (NSString)idsDestination
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(TUConversationMember *)self handle];
-  v4 = TUCopyIDSCanonicalAddressForHandle(v3);
+  handle = [(TUConversationMember *)self handle];
+  v4 = TUCopyIDSCanonicalAddressForHandle(handle);
 
   if (!v4)
   {
     v5 = TUDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(TUConversationMember *)self handle];
+      handle2 = [(TUConversationMember *)self handle];
       v10 = 138412290;
-      v11 = v6;
+      v11 = handle2;
       _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "[WARN] Could not convert %@ to IDS destination", &v10, 0xCu);
     }
   }
@@ -448,8 +448,8 @@ LABEL_16:
 - (NSArray)idsDestinations
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(TUConversationMember *)self idsDestination];
-  v6[0] = v2;
+  idsDestination = [(TUConversationMember *)self idsDestination];
+  v6[0] = idsDestination;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -457,67 +457,67 @@ LABEL_16:
   return v3;
 }
 
-- (BOOL)representsSameMemberAs:(id)a3
+- (BOOL)representsSameMemberAs:(id)as
 {
-  v4 = a3;
-  v5 = [(TUConversationMember *)self handle];
-  v6 = [v4 handle];
+  asCopy = as;
+  handle = [(TUConversationMember *)self handle];
+  handle2 = [asCopy handle];
 
-  LOBYTE(v4) = [v5 isEqualToHandle:v6];
-  return v4;
+  LOBYTE(asCopy) = [handle isEqualToHandle:handle2];
+  return asCopy;
 }
 
 - (BOOL)pseudonym
 {
-  v2 = [(TUConversationMember *)self handle];
-  v3 = [v2 value];
-  v4 = [v3 destinationIdIsPseudonym];
+  handle = [(TUConversationMember *)self handle];
+  value = [handle value];
+  destinationIdIsPseudonym = [value destinationIdIsPseudonym];
 
-  return v4;
+  return destinationIdIsPseudonym;
 }
 
-- (void)setValidationSource:(int64_t)a3
+- (void)setValidationSource:(int64_t)source
 {
-  if (a3 != 1 || self->_validationSource != 2)
+  if (source != 1 || self->_validationSource != 2)
   {
-    self->_validationSource = a3;
+    self->_validationSource = source;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationMember *)self isEqualToMember:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationMember *)self isEqualToMember:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToMember:(id)a3
+- (BOOL)isEqualToMember:(id)member
 {
-  v4 = a3;
-  v5 = [(TUConversationMember *)self handle];
-  v6 = [v4 handle];
-  if ([v5 isEqualToHandle:v6])
+  memberCopy = member;
+  handle = [(TUConversationMember *)self handle];
+  handle2 = [memberCopy handle];
+  if ([handle isEqualToHandle:handle2])
   {
-    v7 = [(TUConversationMember *)self lightweightPrimary];
-    v8 = [v4 lightweightPrimary];
-    if (TUObjectsAreEqualOrNil(v7, v8) && (v9 = -[TUConversationMember lightweightPrimaryParticipantIdentifier](self, "lightweightPrimaryParticipantIdentifier"), v9 == [v4 lightweightPrimaryParticipantIdentifier]) && (v10 = -[TUConversationMember isLightweightMember](self, "isLightweightMember"), v10 == objc_msgSend(v4, "isLightweightMember")))
+    lightweightPrimary = [(TUConversationMember *)self lightweightPrimary];
+    lightweightPrimary2 = [memberCopy lightweightPrimary];
+    if (TUObjectsAreEqualOrNil(lightweightPrimary, lightweightPrimary2) && (v9 = -[TUConversationMember lightweightPrimaryParticipantIdentifier](self, "lightweightPrimaryParticipantIdentifier"), v9 == [memberCopy lightweightPrimaryParticipantIdentifier]) && (v10 = -[TUConversationMember isLightweightMember](self, "isLightweightMember"), v10 == objc_msgSend(memberCopy, "isLightweightMember")))
     {
-      v13 = [(TUConversationMember *)self association];
-      v14 = [v4 association];
-      if (TUObjectsAreEqualOrNil(v13, v14))
+      association = [(TUConversationMember *)self association];
+      association2 = [memberCopy association];
+      if (TUObjectsAreEqualOrNil(association, association2))
       {
-        v15 = [(TUConversationMember *)self stableDeviceIdentifier];
-        v16 = [v4 stableDeviceIdentifier];
-        if (TUObjectsAreEqualOrNil(v15, v16))
+        stableDeviceIdentifier = [(TUConversationMember *)self stableDeviceIdentifier];
+        stableDeviceIdentifier2 = [memberCopy stableDeviceIdentifier];
+        if (TUObjectsAreEqualOrNil(stableDeviceIdentifier, stableDeviceIdentifier2))
         {
-          v18 = [(TUConversationMember *)self proposedParticipantCluster];
-          [v4 proposedParticipantCluster];
-          v17 = v19 = v15;
-          v11 = TUObjectsAreEqualOrNil(v18, v17);
+          proposedParticipantCluster = [(TUConversationMember *)self proposedParticipantCluster];
+          [memberCopy proposedParticipantCluster];
+          v17 = v19 = stableDeviceIdentifier;
+          v11 = TUObjectsAreEqualOrNil(proposedParticipantCluster, v17);
 
-          v15 = v19;
+          stableDeviceIdentifier = v19;
         }
 
         else
@@ -546,111 +546,111 @@ LABEL_16:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUConversationMember *)self handle];
-  v6 = [(TUConversationMember *)self nickname];
-  v7 = [v4 initWithHandle:v5 nickname:v6 joinedFromLetMeIn:{-[TUConversationMember joinedFromLetMeIn](self, "joinedFromLetMeIn")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  handle = [(TUConversationMember *)self handle];
+  nickname = [(TUConversationMember *)self nickname];
+  v7 = [v4 initWithHandle:handle nickname:nickname joinedFromLetMeIn:{-[TUConversationMember joinedFromLetMeIn](self, "joinedFromLetMeIn")}];
 
-  v8 = [(TUConversationMember *)self lightweightPrimary];
-  [v7 setLightweightPrimary:v8];
+  lightweightPrimary = [(TUConversationMember *)self lightweightPrimary];
+  [v7 setLightweightPrimary:lightweightPrimary];
 
   [v7 setIsLightweightMember:{-[TUConversationMember isLightweightMember](self, "isLightweightMember")}];
   [v7 setIsOtherInvitedHandle:{-[TUConversationMember isOtherInvitedHandle](self, "isOtherInvitedHandle")}];
-  v9 = [(TUConversationMember *)self dateReceivedLetMeIn];
-  [v7 setDateReceivedLetMeIn:v9];
+  dateReceivedLetMeIn = [(TUConversationMember *)self dateReceivedLetMeIn];
+  [v7 setDateReceivedLetMeIn:dateReceivedLetMeIn];
 
-  v10 = [(TUConversationMember *)self dateInitiatedLetMeIn];
-  [v7 setDateInitiatedLetMeIn:v10];
+  dateInitiatedLetMeIn = [(TUConversationMember *)self dateInitiatedLetMeIn];
+  [v7 setDateInitiatedLetMeIn:dateInitiatedLetMeIn];
 
   [v7 setLightweightPrimaryParticipantIdentifier:{-[TUConversationMember lightweightPrimaryParticipantIdentifier](self, "lightweightPrimaryParticipantIdentifier")}];
   [v7 setValidationSource:{-[TUConversationMember validationSource](self, "validationSource")}];
-  v11 = [(TUConversationMember *)self association];
-  v12 = [v11 copy];
+  association = [(TUConversationMember *)self association];
+  v12 = [association copy];
   [v7 setAssociation:v12];
 
-  v13 = [(TUConversationMember *)self associationVoucher];
-  v14 = [v13 copy];
+  associationVoucher = [(TUConversationMember *)self associationVoucher];
+  v14 = [associationVoucher copy];
   [v7 setAssociationVoucher:v14];
 
-  v15 = [(TUConversationMember *)self stableDeviceIdentifier];
-  v16 = [v15 copy];
+  stableDeviceIdentifier = [(TUConversationMember *)self stableDeviceIdentifier];
+  v16 = [stableDeviceIdentifier copy];
   [v7 setStableDeviceIdentifier:v16];
 
-  v17 = [(TUConversationMember *)self proposedParticipantCluster];
-  v18 = [v17 copy];
+  proposedParticipantCluster = [(TUConversationMember *)self proposedParticipantCluster];
+  v18 = [proposedParticipantCluster copy];
   [v7 setProposedParticipantCluster:v18];
 
   return v7;
 }
 
-- (TUConversationMember)initWithCoder:(id)a3
+- (TUConversationMember)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_handle);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_nickname);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = NSStringFromSelector(sel_joinedFromLetMeIn);
-  v12 = [v4 decodeBoolForKey:v11];
+  v12 = [coderCopy decodeBoolForKey:v11];
 
   v13 = objc_opt_class();
   v14 = NSStringFromSelector(sel_dateReceivedLetMeIn);
-  v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+  v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
 
   v16 = objc_opt_class();
   v17 = NSStringFromSelector(sel_dateInitiatedLetMeIn);
-  v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
 
   v19 = [(TUConversationMember *)self initWithHandle:v7 nickname:v10 joinedFromLetMeIn:v12];
   if (v19)
   {
     v20 = objc_opt_class();
     v21 = NSStringFromSelector(sel_lightweightPrimary);
-    v22 = [v4 decodeObjectOfClass:v20 forKey:v21];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
     lightweightPrimary = v19->_lightweightPrimary;
     v19->_lightweightPrimary = v22;
 
     v24 = NSStringFromSelector(sel_lightweightPrimaryParticipantIdentifier);
-    v19->_lightweightPrimaryParticipantIdentifier = [v4 decodeInt64ForKey:v24];
+    v19->_lightweightPrimaryParticipantIdentifier = [coderCopy decodeInt64ForKey:v24];
 
     v25 = NSStringFromSelector(sel_isLightweightMember);
-    v19->_isLightweightMember = [v4 decodeBoolForKey:v25];
+    v19->_isLightweightMember = [coderCopy decodeBoolForKey:v25];
 
     v26 = NSStringFromSelector(sel_isOtherInvitedHandle);
-    v19->_isOtherInvitedHandle = [v4 decodeBoolForKey:v26];
+    v19->_isOtherInvitedHandle = [coderCopy decodeBoolForKey:v26];
 
     objc_storeStrong(&v19->_dateReceivedLetMeIn, v15);
     objc_storeStrong(&v19->_dateInitiatedLetMeIn, v18);
     v27 = NSStringFromSelector(sel_validationSource);
-    v19->_validationSource = [v4 decodeIntegerForKey:v27];
+    v19->_validationSource = [coderCopy decodeIntegerForKey:v27];
 
     v28 = objc_opt_class();
     v29 = NSStringFromSelector(sel_association);
-    v30 = [v4 decodeObjectOfClass:v28 forKey:v29];
+    v30 = [coderCopy decodeObjectOfClass:v28 forKey:v29];
     association = v19->_association;
     v19->_association = v30;
 
     v32 = objc_opt_class();
     v33 = NSStringFromSelector(sel_associationVoucher);
-    v34 = [v4 decodeObjectOfClass:v32 forKey:v33];
+    v34 = [coderCopy decodeObjectOfClass:v32 forKey:v33];
     associationVoucher = v19->_associationVoucher;
     v19->_associationVoucher = v34;
 
     v36 = objc_opt_class();
     v37 = NSStringFromSelector(sel_stableDeviceIdentifier);
-    v38 = [v4 decodeObjectOfClass:v36 forKey:v37];
+    v38 = [coderCopy decodeObjectOfClass:v36 forKey:v37];
     stableDeviceIdentifier = v19->_stableDeviceIdentifier;
     v19->_stableDeviceIdentifier = v38;
 
     v40 = objc_opt_class();
     v41 = NSStringFromSelector(sel_proposedParticipantCluster);
-    v42 = [v4 decodeObjectOfClass:v40 forKey:v41];
+    v42 = [coderCopy decodeObjectOfClass:v40 forKey:v41];
     proposedParticipantCluster = v19->_proposedParticipantCluster;
     v19->_proposedParticipantCluster = v42;
   }
@@ -658,64 +658,64 @@ LABEL_16:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationMember *)self handle];
+  coderCopy = coder;
+  handle = [(TUConversationMember *)self handle];
   v6 = NSStringFromSelector(sel_handle);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:handle forKey:v6];
 
-  v7 = [(TUConversationMember *)self nickname];
+  nickname = [(TUConversationMember *)self nickname];
   v8 = NSStringFromSelector(sel_nickname);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:nickname forKey:v8];
 
-  v9 = [(TUConversationMember *)self lightweightPrimary];
+  lightweightPrimary = [(TUConversationMember *)self lightweightPrimary];
   v10 = NSStringFromSelector(sel_lightweightPrimary);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:lightweightPrimary forKey:v10];
 
-  v11 = [(TUConversationMember *)self lightweightPrimaryParticipantIdentifier];
+  lightweightPrimaryParticipantIdentifier = [(TUConversationMember *)self lightweightPrimaryParticipantIdentifier];
   v12 = NSStringFromSelector(sel_lightweightPrimaryParticipantIdentifier);
-  [v4 encodeInt64:v11 forKey:v12];
+  [coderCopy encodeInt64:lightweightPrimaryParticipantIdentifier forKey:v12];
 
-  v13 = [(TUConversationMember *)self isLightweightMember];
+  isLightweightMember = [(TUConversationMember *)self isLightweightMember];
   v14 = NSStringFromSelector(sel_isLightweightMember);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:isLightweightMember forKey:v14];
 
-  v15 = [(TUConversationMember *)self joinedFromLetMeIn];
+  joinedFromLetMeIn = [(TUConversationMember *)self joinedFromLetMeIn];
   v16 = NSStringFromSelector(sel_joinedFromLetMeIn);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:joinedFromLetMeIn forKey:v16];
 
-  v17 = [(TUConversationMember *)self isOtherInvitedHandle];
+  isOtherInvitedHandle = [(TUConversationMember *)self isOtherInvitedHandle];
   v18 = NSStringFromSelector(sel_isOtherInvitedHandle);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:isOtherInvitedHandle forKey:v18];
 
-  v19 = [(TUConversationMember *)self dateReceivedLetMeIn];
+  dateReceivedLetMeIn = [(TUConversationMember *)self dateReceivedLetMeIn];
   v20 = NSStringFromSelector(sel_dateReceivedLetMeIn);
-  [v4 encodeObject:v19 forKey:v20];
+  [coderCopy encodeObject:dateReceivedLetMeIn forKey:v20];
 
-  v21 = [(TUConversationMember *)self dateInitiatedLetMeIn];
+  dateInitiatedLetMeIn = [(TUConversationMember *)self dateInitiatedLetMeIn];
   v22 = NSStringFromSelector(sel_dateInitiatedLetMeIn);
-  [v4 encodeObject:v21 forKey:v22];
+  [coderCopy encodeObject:dateInitiatedLetMeIn forKey:v22];
 
-  v23 = [(TUConversationMember *)self validationSource];
+  validationSource = [(TUConversationMember *)self validationSource];
   v24 = NSStringFromSelector(sel_validationSource);
-  [v4 encodeInteger:v23 forKey:v24];
+  [coderCopy encodeInteger:validationSource forKey:v24];
 
-  v25 = [(TUConversationMember *)self association];
+  association = [(TUConversationMember *)self association];
   v26 = NSStringFromSelector(sel_association);
-  [v4 encodeObject:v25 forKey:v26];
+  [coderCopy encodeObject:association forKey:v26];
 
-  v27 = [(TUConversationMember *)self associationVoucher];
+  associationVoucher = [(TUConversationMember *)self associationVoucher];
   v28 = NSStringFromSelector(sel_associationVoucher);
-  [v4 encodeObject:v27 forKey:v28];
+  [coderCopy encodeObject:associationVoucher forKey:v28];
 
-  v29 = [(TUConversationMember *)self stableDeviceIdentifier];
+  stableDeviceIdentifier = [(TUConversationMember *)self stableDeviceIdentifier];
   v30 = NSStringFromSelector(sel_stableDeviceIdentifier);
-  [v4 encodeObject:v29 forKey:v30];
+  [coderCopy encodeObject:stableDeviceIdentifier forKey:v30];
 
-  v32 = [(TUConversationMember *)self proposedParticipantCluster];
+  proposedParticipantCluster = [(TUConversationMember *)self proposedParticipantCluster];
   v31 = NSStringFromSelector(sel_proposedParticipantCluster);
-  [v4 encodeObject:v32 forKey:v31];
+  [coderCopy encodeObject:proposedParticipantCluster forKey:v31];
 }
 
 @end

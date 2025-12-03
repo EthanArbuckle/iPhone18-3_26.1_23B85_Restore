@@ -1,18 +1,18 @@
 @interface LABiometryFallbackRequirement
 + (LABiometryFallbackRequirement)devicePasscodeRequirement;
-+ (id)customPasswordRequirement:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)initWithAuthenticationType:(void *)a3 subrequirements:;
-- (void)encodeWithACLCoder:(id)a3;
++ (id)customPasswordRequirement:(id)requirement;
+- (BOOL)isEqual:(id)equal;
+- (id)initWithAuthenticationType:(void *)type subrequirements:;
+- (void)encodeWithACLCoder:(id)coder;
 @end
 
 @implementation LABiometryFallbackRequirement
 
-- (void)encodeWithACLCoder:(id)a3
+- (void)encodeWithACLCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setFallbackAuthenticationType:self->_authType];
+  coderCopy = coder;
+  [coderCopy setFallbackAuthenticationType:self->_authType];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -33,7 +33,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) encodeWithACLCoder:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) encodeWithACLCoder:{coderCopy, v11}];
       }
 
       while (v7 != v9);
@@ -46,32 +46,32 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[1] == self->_authType;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[1] == self->_authType;
 
   return v5;
 }
 
-- (id)initWithAuthenticationType:(void *)a3 subrequirements:
+- (id)initWithAuthenticationType:(void *)type subrequirements:
 {
-  v6 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = LABiometryFallbackRequirement;
     v7 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       v7[1] = a2;
-      objc_storeStrong(v7 + 2, a3);
+      objc_storeStrong(v7 + 2, type);
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (LABiometryFallbackRequirement)devicePasscodeRequirement
@@ -82,10 +82,10 @@
   return v3;
 }
 
-+ (id)customPasswordRequirement:(id)a3
++ (id)customPasswordRequirement:(id)requirement
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requirementCopy = requirement;
   v5 = objc_alloc(OUTLINED_FUNCTION_0());
   v10[0] = v3;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];

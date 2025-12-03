@@ -1,66 +1,66 @@
 @interface HKDateGraphViewController
 - (CGSize)minimumSize;
-- (HKDateGraphViewController)initWithCoder:(id)a3;
-- (HKDateGraphViewController)initWithDateZoom:(int64_t)a3 previousDateZoom:(int64_t)a4 previousXAxisSpace:(double)a5 currentCalendar:(id)a6 customDateAxis:(id)a7;
-- (HKDateGraphViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_createGraphViewWithDateZoom:(int64_t)a3 previousDateZoom:(int64_t)a4 previousXAxisSpace:(double)a5 currentCalendar:(id)a6 customDateAxis:(id)a7;
+- (HKDateGraphViewController)initWithCoder:(id)coder;
+- (HKDateGraphViewController)initWithDateZoom:(int64_t)zoom previousDateZoom:(int64_t)dateZoom previousXAxisSpace:(double)space currentCalendar:(id)calendar customDateAxis:(id)axis;
+- (HKDateGraphViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_createGraphViewWithDateZoom:(int64_t)zoom previousDateZoom:(int64_t)dateZoom previousXAxisSpace:(double)space currentCalendar:(id)calendar customDateAxis:(id)axis;
 - (id)_dateAxisStyle;
-- (int64_t)defaultAlignmentForTimeScope:(int64_t)a3;
-- (void)_marginStyleChangeForContext:(int64_t)a3 graphView:(id)a4;
+- (int64_t)defaultAlignmentForTimeScope:(int64_t)scope;
+- (void)_marginStyleChangeForContext:(int64_t)context graphView:(id)view;
 - (void)_setupGraphViewSelectionStyle;
-- (void)graphView:(id)a3 didFinishUserScrollingToValueRange:(id)a4;
-- (void)graphView:(id)a3 didUpdateVisibleValueRange:(id)a4 changeContext:(int64_t)a5;
+- (void)graphView:(id)view didFinishUserScrollingToValueRange:(id)range;
+- (void)graphView:(id)view didUpdateVisibleValueRange:(id)range changeContext:(int64_t)context;
 - (void)loadView;
-- (void)setDetailView:(id)a3;
-- (void)setDisableXAxis:(BOOL)a3;
-- (void)setMinimumSize:(CGSize)a3;
+- (void)setDetailView:(id)view;
+- (void)setDisableXAxis:(BOOL)axis;
+- (void)setMinimumSize:(CGSize)size;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HKDateGraphViewController
 
-- (HKDateGraphViewController)initWithDateZoom:(int64_t)a3 previousDateZoom:(int64_t)a4 previousXAxisSpace:(double)a5 currentCalendar:(id)a6 customDateAxis:(id)a7
+- (HKDateGraphViewController)initWithDateZoom:(int64_t)zoom previousDateZoom:(int64_t)dateZoom previousXAxisSpace:(double)space currentCalendar:(id)calendar customDateAxis:(id)axis
 {
-  v13 = a6;
-  v14 = [(HKDateGraphViewController *)self _createGraphViewWithDateZoom:a3 previousDateZoom:a4 previousXAxisSpace:v13 currentCalendar:a7 customDateAxis:a5];
+  calendarCopy = calendar;
+  v14 = [(HKDateGraphViewController *)self _createGraphViewWithDateZoom:zoom previousDateZoom:dateZoom previousXAxisSpace:calendarCopy currentCalendar:axis customDateAxis:space];
   v18.receiver = self;
   v18.super_class = HKDateGraphViewController;
-  v15 = [(HKGraphViewController *)&v18 initWithGraphView:v14 dateZoom:a3];
+  v15 = [(HKGraphViewController *)&v18 initWithGraphView:v14 dateZoom:zoom];
   v16 = v15;
   if (v15)
   {
     v15->_minimumSize = xmmword_1C3D5D480;
-    objc_storeStrong(&v15->_currentCalendar, a6);
+    objc_storeStrong(&v15->_currentCalendar, calendar);
   }
 
   return v16;
 }
 
-- (HKDateGraphViewController)initWithCoder:(id)a3
+- (HKDateGraphViewController)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HKDateGraphViewController.m" lineNumber:72 description:@"Use designated initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKDateGraphViewController.m" lineNumber:72 description:@"Use designated initializer"];
 
   return 0;
 }
 
-- (HKDateGraphViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HKDateGraphViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HKDateGraphViewController.m" lineNumber:77 description:@"Use designated initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKDateGraphViewController.m" lineNumber:77 description:@"Use designated initializer"];
 
   return 0;
 }
 
-- (void)setMinimumSize:(CGSize)a3
+- (void)setMinimumSize:(CGSize)size
 {
-  self->_minimumSize = a3;
-  v5 = [(HKDateGraphViewController *)self view];
+  self->_minimumSize = size;
+  view = [(HKDateGraphViewController *)self view];
   [(HKDateGraphViewController *)self minimumSize];
-  [v5 setMinimumHeight:v4];
+  [view setMinimumHeight:v4];
   [(HKDateGraphViewController *)self minimumSize];
-  [v5 setMinimumWidth:?];
+  [view setMinimumWidth:?];
 }
 
 - (void)loadView
@@ -80,16 +80,16 @@
   v8.super_class = HKDateGraphViewController;
   [(HKDateGraphViewController *)&v8 viewDidLoad];
   [(HKDateGraphViewController *)self _setupGraphViewSelectionStyle];
-  v3 = [(HKDateGraphViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(HKDateGraphViewController *)self view];
+  [view setClipsToBounds:1];
 
-  v4 = [(HKDateGraphViewController *)self view];
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  view2 = [(HKDateGraphViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view2 setBackgroundColor:systemBackgroundColor];
 
-  v6 = [(HKDateGraphViewController *)self view];
-  v7 = [(HKGraphViewController *)self graphView];
-  [v6 addSubview:v7];
+  view3 = [(HKDateGraphViewController *)self view];
+  graphView = [(HKGraphViewController *)self graphView];
+  [view3 addSubview:graphView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -97,56 +97,56 @@
   v17.receiver = self;
   v17.super_class = HKDateGraphViewController;
   [(HKDateGraphViewController *)&v17 viewWillLayoutSubviews];
-  v3 = [(HKDateGraphViewController *)self view];
-  [v3 bounds];
+  view = [(HKDateGraphViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(HKGraphViewController *)self graphView];
-  [v12 setFrame:{v5, v7, v9, v11 + -12.0}];
+  graphView = [(HKGraphViewController *)self graphView];
+  [graphView setFrame:{v5, v7, v9, v11 + -12.0}];
 
-  v13 = [(HKDateGraphViewController *)self view];
-  [v13 layoutMargins];
+  view2 = [(HKDateGraphViewController *)self view];
+  [view2 layoutMargins];
   v15 = v14;
 
   if (v15 > 16.0)
   {
-    v16 = [(HKGraphViewController *)self graphView];
-    [v16 setHardLeftMarginWidth:v15];
+    graphView2 = [(HKGraphViewController *)self graphView];
+    [graphView2 setHardLeftMarginWidth:v15];
   }
 }
 
-- (id)_createGraphViewWithDateZoom:(int64_t)a3 previousDateZoom:(int64_t)a4 previousXAxisSpace:(double)a5 currentCalendar:(id)a6 customDateAxis:(id)a7
+- (id)_createGraphViewWithDateZoom:(int64_t)zoom previousDateZoom:(int64_t)dateZoom previousXAxisSpace:(double)space currentCalendar:(id)calendar customDateAxis:(id)axis
 {
-  v12 = a6;
-  v13 = a7;
+  calendarCopy = calendar;
+  axisCopy = axis;
   v14 = [HKGraphView alloc];
   v15 = [(HKGraphView *)v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  [(HKGraphView *)v15 setXAxisSpace:a5];
-  v16 = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
-  [(HKGraphView *)v15 setOutlineColor:v16];
+  [(HKGraphView *)v15 setXAxisSpace:space];
+  hk_chartAxisMajorGridColor = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
+  [(HKGraphView *)v15 setOutlineColor:hk_chartAxisMajorGridColor];
 
   [(HKGraphView *)v15 setOutlineOptions:5];
   [(HKGraphView *)v15 setFeatheringOptions:15];
-  if (v13)
+  if (axisCopy)
   {
-    v17 = v13;
+    v17 = axisCopy;
   }
 
   else
   {
     v18 = [HKDateAxis alloc];
-    v19 = [(HKDateGraphViewController *)self _dateAxisStyle];
-    v17 = [(HKDateAxis *)v18 initWithCurrentCalendar:v12 axisStyle:v19];
+    _dateAxisStyle = [(HKDateGraphViewController *)self _dateAxisStyle];
+    v17 = [(HKDateAxis *)v18 initWithCurrentCalendar:calendarCopy axisStyle:_dateAxisStyle];
   }
 
-  [(HKGraphView *)v15 setMinimumDateZoom:a3];
-  [(HKGraphView *)v15 setMaximumDateZoom:a3];
-  [(HKGraphView *)v15 setPreviousDateZoom:a4];
+  [(HKGraphView *)v15 setMinimumDateZoom:zoom];
+  [(HKGraphView *)v15 setMaximumDateZoom:zoom];
+  [(HKGraphView *)v15 setPreviousDateZoom:dateZoom];
   [(HKGraphView *)v15 setXAxis:v17];
-  [(HKGraphView *)v15 setCurrentCalendar:v12];
+  [(HKGraphView *)v15 setCurrentCalendar:calendarCopy];
   [(HKGraphView *)v15 setVirtualLeftMarginWidth:0.0];
   [(HKGraphView *)v15 setVirtualLeftMarginStyle:0];
   [(HKGraphView *)v15 setHardLeftMarginWidth:16.0];
@@ -166,19 +166,19 @@
   [(HKGraphViewSelectionStyle *)v6 setTouchPointLineStrokeStyle:v4];
 
   [(HKGraphViewSelectionStyle *)v6 setUnselectedSeriesAlpha:1.0];
-  v5 = [(HKGraphViewController *)self graphView];
-  [v5 setSelectionStyle:v6];
+  graphView = [(HKGraphViewController *)self graphView];
+  [graphView setSelectionStyle:v6];
 }
 
 - (id)_dateAxisStyle
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
-  v5 = [HKStrokeStyle strokeStyleWithColor:v4 lineWidth:1.0];
+  hk_chartAxisLabelColor = [MEMORY[0x1E69DC888] hk_chartAxisLabelColor];
+  v5 = [HKStrokeStyle strokeStyleWithColor:hk_chartAxisLabelColor lineWidth:1.0];
   [v3 setAxisLineStyle:v5];
 
-  v6 = [(HKDateGraphViewController *)self _xAxisLabelFont];
-  v7 = [HKAxisLabelStyle labelStyleWithColor:v4 font:v6 horizontalAlignment:0 verticalAlignment:3];
+  _xAxisLabelFont = [(HKDateGraphViewController *)self _xAxisLabelFont];
+  v7 = [HKAxisLabelStyle labelStyleWithColor:hk_chartAxisLabelColor font:_xAxisLabelFont horizontalAlignment:0 verticalAlignment:3];
   [v3 setLabelStyle:v7];
 
   [v3 setTickPositions:0];
@@ -186,71 +186,71 @@
   [v3 setShowGridLines:1];
   [v3 setLocation:2];
   [v3 setFillInnerPadding:3.0];
-  v8 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v9 = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
-  v10 = [MEMORY[0x1E69DC888] hk_chartAxisMinorGridColor];
-  v11 = [HKStrokeStyle strokeStyleWithColor:v9 lineWidth:0.5];
+  hk_chartGrayGraphColor = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  hk_chartAxisMajorGridColor = [MEMORY[0x1E69DC888] hk_chartAxisMajorGridColor];
+  hk_chartAxisMinorGridColor = [MEMORY[0x1E69DC888] hk_chartAxisMinorGridColor];
+  v11 = [HKStrokeStyle strokeStyleWithColor:hk_chartAxisMajorGridColor lineWidth:0.5];
   [v11 setDashStyle:1];
   [v3 setGridLineStyle:v11];
-  v12 = [HKStrokeStyle strokeStyleWithColor:v10 lineWidth:0.5];
+  v12 = [HKStrokeStyle strokeStyleWithColor:hk_chartAxisMinorGridColor lineWidth:0.5];
   [v12 setDashStyle:1];
   [v3 setMinorGridLineStyle:v12];
-  v13 = [HKStrokeStyle strokeStyleWithColor:v8 lineWidth:0.5];
+  v13 = [HKStrokeStyle strokeStyleWithColor:hk_chartGrayGraphColor lineWidth:0.5];
   [v13 setDashStyle:0];
   [v3 setReferenceGridLineStyle:v13];
 
   return v3;
 }
 
-- (void)_marginStyleChangeForContext:(int64_t)a3 graphView:(id)a4
+- (void)_marginStyleChangeForContext:(int64_t)context graphView:(id)view
 {
-  v4 = a3 != 1;
-  v6 = a4;
+  v4 = context != 1;
+  viewCopy = view;
   v5 = 2 * v4;
-  [v6 setVirtualLeftMarginStyle:v5];
-  [v6 setVirtualRightMarginStyle:v5];
+  [viewCopy setVirtualLeftMarginStyle:v5];
+  [viewCopy setVirtualRightMarginStyle:v5];
 }
 
-- (void)graphView:(id)a3 didUpdateVisibleValueRange:(id)a4 changeContext:(int64_t)a5
+- (void)graphView:(id)view didUpdateVisibleValueRange:(id)range changeContext:(int64_t)context
 {
-  v8 = a4;
-  v9 = a3;
-  [(HKDateGraphViewController *)self _marginStyleChangeForContext:a5 graphView:v9];
-  v10 = [(HKGraphViewController *)self graphViewDelegateProxy];
-  [v10 graphView:v9 didUpdateVisibleValueRange:v8 changeContext:a5];
+  rangeCopy = range;
+  viewCopy = view;
+  [(HKDateGraphViewController *)self _marginStyleChangeForContext:context graphView:viewCopy];
+  graphViewDelegateProxy = [(HKGraphViewController *)self graphViewDelegateProxy];
+  [graphViewDelegateProxy graphView:viewCopy didUpdateVisibleValueRange:rangeCopy changeContext:context];
 }
 
-- (void)graphView:(id)a3 didFinishUserScrollingToValueRange:(id)a4
+- (void)graphView:(id)view didFinishUserScrollingToValueRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKGraphViewController *)self graphViewDelegateProxy];
-  [v8 graphView:v7 didFinishUserScrollingToValueRange:v6];
+  rangeCopy = range;
+  viewCopy = view;
+  graphViewDelegateProxy = [(HKGraphViewController *)self graphViewDelegateProxy];
+  [graphViewDelegateProxy graphView:viewCopy didFinishUserScrollingToValueRange:rangeCopy];
 }
 
-- (int64_t)defaultAlignmentForTimeScope:(int64_t)a3
+- (int64_t)defaultAlignmentForTimeScope:(int64_t)scope
 {
-  v4 = [(HKGraphViewController *)self graphViewDelegateProxy];
-  v5 = [v4 defaultAlignmentForTimeScope:a3];
+  graphViewDelegateProxy = [(HKGraphViewController *)self graphViewDelegateProxy];
+  v5 = [graphViewDelegateProxy defaultAlignmentForTimeScope:scope];
 
   return v5;
 }
 
-- (void)setDisableXAxis:(BOOL)a3
+- (void)setDisableXAxis:(BOOL)axis
 {
-  v3 = a3;
-  self->_disableXAxis = a3;
-  v4 = [(HKGraphViewController *)self graphView];
-  [v4 setDisableXAxis:v3];
+  axisCopy = axis;
+  self->_disableXAxis = axis;
+  graphView = [(HKGraphViewController *)self graphView];
+  [graphView setDisableXAxis:axisCopy];
 }
 
-- (void)setDetailView:(id)a3
+- (void)setDetailView:(id)view
 {
   v5.receiver = self;
   v5.super_class = HKDateGraphViewController;
-  [(HKGraphViewController *)&v5 setDetailView:a3];
-  v4 = [(HKGraphViewController *)self graphView];
-  [v4 setVirtualLeftMarginWidth:0.0];
+  [(HKGraphViewController *)&v5 setDetailView:view];
+  graphView = [(HKGraphViewController *)self graphView];
+  [graphView setVirtualLeftMarginWidth:0.0];
 }
 
 - (CGSize)minimumSize

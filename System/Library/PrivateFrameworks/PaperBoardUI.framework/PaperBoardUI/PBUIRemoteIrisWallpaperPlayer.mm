@@ -2,9 +2,9 @@
 - (PBUIIrisWallpaperPlayerDelegate)irisDelegate;
 - (PBUIRemoteIrisWallpaperPlayer)init;
 - (PBUIRemoteIrisWallpaperPlayerDelegate)delegate;
-- (void)_setIrisPlaybackState:(int64_t)a3;
-- (void)_setTouchActive:(BOOL)a3;
-- (void)_wallpaperGestureChanged:(id)a3;
+- (void)_setIrisPlaybackState:(int64_t)state;
+- (void)_setTouchActive:(BOOL)active;
+- (void)_wallpaperGestureChanged:(id)changed;
 @end
 
 @implementation PBUIRemoteIrisWallpaperPlayer
@@ -27,33 +27,33 @@
   return v2;
 }
 
-- (void)_setIrisPlaybackState:(int64_t)a3
+- (void)_setIrisPlaybackState:(int64_t)state
 {
-  if (self->_irisPlaybackState != a3)
+  if (self->_irisPlaybackState != state)
   {
-    self->_irisPlaybackState = a3;
-    v5 = [(PBUIRemoteIrisWallpaperPlayer *)self irisDelegate];
+    self->_irisPlaybackState = state;
+    irisDelegate = [(PBUIRemoteIrisWallpaperPlayer *)self irisDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 irisWallpaperPlayerPlaybackStateDidChange:self];
+      [irisDelegate irisWallpaperPlayerPlaybackStateDidChange:self];
     }
   }
 }
 
-- (void)_wallpaperGestureChanged:(id)a3
+- (void)_wallpaperGestureChanged:(id)changed
 {
-  if (self->_gestureRecognizer == a3)
+  if (self->_gestureRecognizer == changed)
   {
-    v4 = [a3 state];
-    if ((v4 - 3) >= 3)
+    state = [changed state];
+    if ((state - 3) >= 3)
     {
-      if (v4 == 2)
+      if (state == 2)
       {
 
         [(PBUIRemoteIrisWallpaperPlayer *)self _handleWallpaperGestureChanged];
       }
 
-      else if (v4 == 1)
+      else if (state == 1)
       {
 
         [(PBUIRemoteIrisWallpaperPlayer *)self _handleWallpaperGestureBegan];
@@ -68,21 +68,21 @@
   }
 }
 
-- (void)_setTouchActive:(BOOL)a3
+- (void)_setTouchActive:(BOOL)active
 {
-  if (self->_touchActive != a3)
+  if (self->_touchActive != active)
   {
-    self->_touchActive = a3;
-    v6 = [(PBUIRemoteIrisWallpaperPlayer *)self delegate];
+    self->_touchActive = active;
+    delegate = [(PBUIRemoteIrisWallpaperPlayer *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 remoteIrisWallpaperPlayer:self touchActiveChanged:self->_touchActive];
+      [delegate remoteIrisWallpaperPlayer:self touchActiveChanged:self->_touchActive];
     }
 
-    v5 = [(PBUIRemoteIrisWallpaperPlayer *)self irisDelegate];
+    irisDelegate = [(PBUIRemoteIrisWallpaperPlayer *)self irisDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 irisWallpaperPlayerIsInteractingDidChange:self];
+      [irisDelegate irisWallpaperPlayerIsInteractingDidChange:self];
     }
   }
 }

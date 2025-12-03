@@ -32,8 +32,8 @@
 
 - (SiriCoreNWContext)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SiriCoreNWContext.m" lineNumber:29 description:{@"%s is marked as NS_UNAVAILABLE. Use the designated initializer instead.", "-[SiriCoreNWContext init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SiriCoreNWContext.m" lineNumber:29 description:{@"%s is marked as NS_UNAVAILABLE. Use the designated initializer instead.", "-[SiriCoreNWContext init]"}];
 
   return 0;
 }

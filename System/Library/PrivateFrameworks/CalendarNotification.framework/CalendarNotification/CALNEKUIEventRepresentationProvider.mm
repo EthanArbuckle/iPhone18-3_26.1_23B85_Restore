@@ -1,10 +1,10 @@
 @interface CALNEKUIEventRepresentationProvider
 + (id)sharedInstance;
-- (id)eventRepresentationDictionaryForInvitationNotification:(id)a3 event:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7;
-- (id)eventRepresentationDictionaryForResourceChangeNotification:(id)a3 message:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7;
-- (id)eventRepresentationDictionaryForResponseNotificationWithTitle:(id)a3 message:(id)a4;
-- (id)eventRepresentationDictionaryForUpcomingEvent:(id)a3 date:(id)a4 displayTimeZone:(id)a5;
-- (id)updateEventRepresentationDictionary:(id)a3 withHypothesisMessage:(id)a4;
+- (id)eventRepresentationDictionaryForInvitationNotification:(id)notification event:(id)event date:(id)date endDate:(id)endDate timeZone:(id)zone;
+- (id)eventRepresentationDictionaryForResourceChangeNotification:(id)notification message:(id)message date:(id)date endDate:(id)endDate timeZone:(id)zone;
+- (id)eventRepresentationDictionaryForResponseNotificationWithTitle:(id)title message:(id)message;
+- (id)eventRepresentationDictionaryForUpcomingEvent:(id)event date:(id)date displayTimeZone:(id)zone;
+- (id)updateEventRepresentationDictionary:(id)dictionary withHypothesisMessage:(id)message;
 @end
 
 @implementation CALNEKUIEventRepresentationProvider
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __53__CALNEKUIEventRepresentationProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_7 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_7, block);
@@ -34,56 +34,56 @@ uint64_t __53__CALNEKUIEventRepresentationProvider_sharedInstance__block_invoke(
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)eventRepresentationDictionaryForUpcomingEvent:(id)a3 date:(id)a4 displayTimeZone:(id)a5
+- (id)eventRepresentationDictionaryForUpcomingEvent:(id)event date:(id)date displayTimeZone:(id)zone
 {
   v7 = MEMORY[0x277CC5B80];
-  v8 = a3;
-  v9 = [v7 upcomingEventNotificationRepresentationWithEvent:v8 date:a4 displayTimeZone:a5];
-  [CALNEventRepresentationDataSourceUtils updateEventRepresentation:v9 forEvent:v8];
+  eventCopy = event;
+  v9 = [v7 upcomingEventNotificationRepresentationWithEvent:eventCopy date:date displayTimeZone:zone];
+  [CALNEventRepresentationDataSourceUtils updateEventRepresentation:v9 forEvent:eventCopy];
 
-  v10 = [v9 dictionaryRepresentation];
+  dictionaryRepresentation = [v9 dictionaryRepresentation];
 
-  return v10;
+  return dictionaryRepresentation;
 }
 
-- (id)eventRepresentationDictionaryForInvitationNotification:(id)a3 event:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7
+- (id)eventRepresentationDictionaryForInvitationNotification:(id)notification event:(id)event date:(id)date endDate:(id)endDate timeZone:(id)zone
 {
   v11 = MEMORY[0x277CC5B80];
-  v12 = a4;
-  v13 = [v11 invitationNotificationRepresentationWithNotification:a3 event:v12 date:a5 endDate:a6 timeZone:a7];
-  [CALNEventRepresentationDataSourceUtils updateEventRepresentation:v13 forEvent:v12];
+  eventCopy = event;
+  v13 = [v11 invitationNotificationRepresentationWithNotification:notification event:eventCopy date:date endDate:endDate timeZone:zone];
+  [CALNEventRepresentationDataSourceUtils updateEventRepresentation:v13 forEvent:eventCopy];
 
-  v14 = [v13 dictionaryRepresentation];
+  dictionaryRepresentation = [v13 dictionaryRepresentation];
 
-  return v14;
+  return dictionaryRepresentation;
 }
 
-- (id)eventRepresentationDictionaryForResourceChangeNotification:(id)a3 message:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7
+- (id)eventRepresentationDictionaryForResourceChangeNotification:(id)notification message:(id)message date:(id)date endDate:(id)endDate timeZone:(id)zone
 {
-  v7 = [MEMORY[0x277CC5B80] resourceChangeNotificationWithNotification:a3 message:a4 date:a5 endDate:a6 timeZone:a7];
-  v8 = [v7 dictionaryRepresentation];
+  v7 = [MEMORY[0x277CC5B80] resourceChangeNotificationWithNotification:notification message:message date:date endDate:endDate timeZone:zone];
+  dictionaryRepresentation = [v7 dictionaryRepresentation];
 
-  return v8;
+  return dictionaryRepresentation;
 }
 
-- (id)eventRepresentationDictionaryForResponseNotificationWithTitle:(id)a3 message:(id)a4
+- (id)eventRepresentationDictionaryForResponseNotificationWithTitle:(id)title message:(id)message
 {
-  v4 = [MEMORY[0x277CC5B80] responseNotificationWithTitle:a3 message:a4];
-  v5 = [v4 dictionaryRepresentation];
+  v4 = [MEMORY[0x277CC5B80] responseNotificationWithTitle:title message:message];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
 
-  return v5;
+  return dictionaryRepresentation;
 }
 
-- (id)updateEventRepresentationDictionary:(id)a3 withHypothesisMessage:(id)a4
+- (id)updateEventRepresentationDictionary:(id)dictionary withHypothesisMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = MEMORY[0x277CC5B80];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithDictionary:v7];
+  dictionaryCopy = dictionary;
+  v8 = [[v6 alloc] initWithDictionary:dictionaryCopy];
 
   if ([v8 type] == 1)
   {
-    [v8 updateUpcomingEventNotificationWithHypothesisMessage:v5];
+    [v8 updateUpcomingEventNotificationWithHypothesisMessage:messageCopy];
   }
 
   else
@@ -95,9 +95,9 @@ uint64_t __53__CALNEKUIEventRepresentationProvider_sharedInstance__block_invoke(
     }
   }
 
-  v10 = [v8 dictionaryRepresentation];
+  dictionaryRepresentation = [v8 dictionaryRepresentation];
 
-  return v10;
+  return dictionaryRepresentation;
 }
 
 - (void)updateEventRepresentationDictionary:(void *)a1 withHypothesisMessage:(NSObject *)a2 .cold.1(void *a1, NSObject *a2)

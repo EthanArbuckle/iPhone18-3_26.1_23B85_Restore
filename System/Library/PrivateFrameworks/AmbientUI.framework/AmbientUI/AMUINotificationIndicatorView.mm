@@ -1,18 +1,18 @@
 @interface AMUINotificationIndicatorView
-- (AMUINotificationIndicatorView)initWithNotificationCount:(unint64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)_attributedStringForNotificationCount:(unint64_t)a3;
+- (AMUINotificationIndicatorView)initWithNotificationCount:(unint64_t)count;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)_attributedStringForNotificationCount:(unint64_t)count;
 - (id)_fontForNotificationIndicatorLabel;
 - (id)_notificationIndicatorImage;
 - (void)_configureNotificationIndicatorLabelIfNecessary;
 - (void)layoutSubviews;
-- (void)setHideNotificationCount:(BOOL)a3;
-- (void)setNotificationCount:(unint64_t)a3;
+- (void)setHideNotificationCount:(BOOL)count;
+- (void)setNotificationCount:(unint64_t)count;
 @end
 
 @implementation AMUINotificationIndicatorView
 
-- (AMUINotificationIndicatorView)initWithNotificationCount:(unint64_t)a3
+- (AMUINotificationIndicatorView)initWithNotificationCount:(unint64_t)count
 {
   v8.receiver = self;
   v8.super_class = AMUINotificationIndicatorView;
@@ -20,29 +20,29 @@
   v5 = v4;
   if (v4)
   {
-    v4->_notificationCount = a3;
+    v4->_notificationCount = count;
     v4->_hideNotificationCount = 1;
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"amui-notification-indicator-view, count:%lu", a3];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"amui-notification-indicator-view, count:%lu", count];
     [(AMUINotificationIndicatorView *)v5 setAccessibilityIdentifier:v6];
   }
 
   return v5;
 }
 
-- (void)setNotificationCount:(unint64_t)a3
+- (void)setNotificationCount:(unint64_t)count
 {
-  if (self->_notificationCount != a3)
+  if (self->_notificationCount != count)
   {
-    self->_notificationCount = a3;
+    self->_notificationCount = count;
     [(AMUINotificationIndicatorView *)self setNeedsLayout];
   }
 }
 
-- (void)setHideNotificationCount:(BOOL)a3
+- (void)setHideNotificationCount:(BOOL)count
 {
-  if (self->_hideNotificationCount != a3)
+  if (self->_hideNotificationCount != count)
   {
-    self->_hideNotificationCount = a3;
+    self->_hideNotificationCount = count;
     [(UILabel *)self->_notificationIndicatorLabel removeFromSuperview];
     notificationIndicatorLabel = self->_notificationIndicatorLabel;
     self->_notificationIndicatorLabel = 0;
@@ -51,10 +51,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(AMUINotificationIndicatorView *)self _configureNotificationIndicatorLabelIfNecessary];
   notificationIndicatorLabel = self->_notificationIndicatorLabel;
 
@@ -91,8 +91,8 @@
     self->_notificationIndicatorLabel = v5;
 
     v7 = self->_notificationIndicatorLabel;
-    v8 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UILabel *)v7 setTextColor:v8];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UILabel *)v7 setTextColor:systemWhiteColor];
 
     [(AMUINotificationIndicatorView *)self addSubview:self->_notificationIndicatorLabel];
   }
@@ -108,8 +108,8 @@ LABEL_5:
 
 - (id)_fontForNotificationIndicatorLabel
 {
-  v2 = [MEMORY[0x277CF0D60] preferredFontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+  v3 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
 
   return v3;
 }
@@ -117,8 +117,8 @@ LABEL_5:
 - (id)_notificationIndicatorImage
 {
   v2 = MEMORY[0x277D755D0];
-  v3 = [(AMUINotificationIndicatorView *)self _fontForNotificationIndicatorLabel];
-  v4 = [v2 configurationWithFont:v3];
+  _fontForNotificationIndicatorLabel = [(AMUINotificationIndicatorView *)self _fontForNotificationIndicatorLabel];
+  v4 = [v2 configurationWithFont:_fontForNotificationIndicatorLabel];
 
   v5 = [MEMORY[0x277D755B8] systemImageNamed:@"circlebadge.fill" withConfiguration:v4];
   v6 = [v5 imageWithRenderingMode:2];
@@ -126,17 +126,17 @@ LABEL_5:
   return v6;
 }
 
-- (id)_attributedStringForNotificationCount:(unint64_t)a3
+- (id)_attributedStringForNotificationCount:(unint64_t)count
 {
-  v5 = [(AMUINotificationIndicatorView *)self _notificationIndicatorImage];
+  _notificationIndicatorImage = [(AMUINotificationIndicatorView *)self _notificationIndicatorImage];
   v6 = objc_alloc_init(MEMORY[0x277D74270]);
-  [v6 setImage:v5];
+  [v6 setImage:_notificationIndicatorImage];
   v7 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v6];
   v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:v7];
   if (![(AMUINotificationIndicatorView *)self hideNotificationCount])
   {
     v9 = MEMORY[0x277CCABB8];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
     v11 = [v9 localizedStringFromNumber:v10 numberStyle:0];
 
     v12 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v11];

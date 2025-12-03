@@ -1,7 +1,7 @@
 @interface MCRestrictionUtilities
-+ (id)intersectionFeatureForPayloadRestrictionKey:(id)a3;
++ (id)intersectionFeatureForPayloadRestrictionKey:(id)key;
 + (id)intersectionFeaturesWithPayloadRestictionKeyAlias;
-+ (id)intersectionPayloadRestrictionKeysForFeature:(id)a3;
++ (id)intersectionPayloadRestrictionKeysForFeature:(id)feature;
 @end
 
 @implementation MCRestrictionUtilities
@@ -9,17 +9,17 @@
 + (id)intersectionFeaturesWithPayloadRestictionKeyAlias
 {
   v2 = _intersectionFeaturesToAlias();
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-+ (id)intersectionPayloadRestrictionKeysForFeature:(id)a3
++ (id)intersectionPayloadRestrictionKeysForFeature:(id)feature
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  featureCopy = feature;
   v4 = _intersectionFeaturesToAlias();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:featureCopy];
   v6 = v5;
   if (v5)
   {
@@ -28,7 +28,7 @@
 
   else
   {
-    v11[0] = v3;
+    v11[0] = featureCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   }
 
@@ -39,16 +39,16 @@
   return v8;
 }
 
-+ (id)intersectionFeatureForPayloadRestrictionKey:(id)a3
++ (id)intersectionFeatureForPayloadRestrictionKey:(id)key
 {
   v3 = _intersectionAliasToFeatures_onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[MCRestrictionUtilities intersectionFeatureForPayloadRestrictionKey:];
   }
 
-  v5 = [_intersectionAliasToFeatures_dict objectForKey:v4];
+  v5 = [_intersectionAliasToFeatures_dict objectForKey:keyCopy];
   v6 = v5;
   if (v5)
   {
@@ -57,7 +57,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = keyCopy;
   }
 
   v8 = v7;

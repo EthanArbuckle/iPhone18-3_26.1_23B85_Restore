@@ -1,23 +1,23 @@
 @interface PKEducationalMessageSectionController
-- (PKEducationalMessageSectionController)initWithConfiguration:(id)a3;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (PKEducationalMessageSectionController)initWithConfiguration:(id)configuration;
+- (id)cellRegistrationForItem:(id)item;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 @end
 
 @implementation PKEducationalMessageSectionController
 
-- (PKEducationalMessageSectionController)initWithConfiguration:(id)a3
+- (PKEducationalMessageSectionController)initWithConfiguration:(id)configuration
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PKEducationalMessageSectionController;
   v5 = [(PKEducationalMessageSectionController *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (configurationCopy)
     {
-      v13[0] = v4;
+      v13[0] = configurationCopy;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     }
 
@@ -27,13 +27,13 @@
     }
 
     objc_storeStrong(&v5->_items, v6);
-    if (v4)
+    if (configurationCopy)
     {
     }
 
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v8 = [v7 UUIDString];
-    v12 = v8;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v12 = uUIDString;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
     [(PKDynamicListSectionController *)v5 setIdentifiers:v9];
   }
@@ -41,7 +41,7 @@
   return v5;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v5 appendItems:self->_items];
@@ -49,7 +49,7 @@
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
   v3 = MEMORY[0x1E69DC800];
   v4 = objc_opt_class();

@@ -1,27 +1,27 @@
 @interface iCloudStorageSummary
-- (iCloudStorageSummary)initWithStorageSummary:(id)a3;
+- (iCloudStorageSummary)initWithStorageSummary:(id)summary;
 @end
 
 @implementation iCloudStorageSummary
 
-- (iCloudStorageSummary)initWithStorageSummary:(id)a3
+- (iCloudStorageSummary)initWithStorageSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v12.receiver = self;
   v12.super_class = iCloudStorageSummary;
   v5 = [(iCloudStorageSummary *)&v12 init];
   if (v5)
   {
-    v6 = [v4 totalStorage];
+    totalStorage = [summaryCopy totalStorage];
     totalStorage = v5->_totalStorage;
-    v5->_totalStorage = v6;
+    v5->_totalStorage = totalStorage;
 
-    v8 = [v4 usedStorage];
+    usedStorage = [summaryCopy usedStorage];
     usedStorage = v5->_usedStorage;
-    v5->_usedStorage = v8;
+    v5->_usedStorage = usedStorage;
 
-    v10 = [v4 subscriptionInfo];
-    v5->_isiCloudPlusSubscriber = [v10 isiCloudPlusSubscriber];
+    subscriptionInfo = [summaryCopy subscriptionInfo];
+    v5->_isiCloudPlusSubscriber = [subscriptionInfo isiCloudPlusSubscriber];
   }
 
   return v5;

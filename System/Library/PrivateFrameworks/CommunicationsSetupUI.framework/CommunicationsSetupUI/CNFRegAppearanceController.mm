@@ -1,5 +1,5 @@
 @interface CNFRegAppearanceController
-+ (id)appearanceControllerForStyle:(int64_t)a3;
++ (id)appearanceControllerForStyle:(int64_t)style;
 + (id)globalAppearanceController;
 + (id)gradientAppearanceController;
 + (id)modernAppearanceController;
@@ -39,8 +39,8 @@
   if (!tableCellCheckmarkImage_sTintedImage)
   {
     v3 = [MEMORY[0x277D755B8] kitImageNamed:@"UIPreferencesBlueCheck.png"];
-    v4 = [MEMORY[0x277D75348] _labelColor];
-    v5 = [v3 _flatImageWithColor:v4];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
+    v5 = [v3 _flatImageWithColor:_labelColor];
     v6 = tableCellCheckmarkImage_sTintedImage;
     tableCellCheckmarkImage_sTintedImage = v5;
 
@@ -56,8 +56,8 @@
   if (!tableCellCheckmarkImageDisabled_sTintedImage_0)
   {
     v3 = [MEMORY[0x277D755B8] kitImageNamed:@"UIPreferencesBlueCheck.png"];
-    v4 = [MEMORY[0x277D75348] _tertiaryLabelColor];
-    v5 = [v3 _flatImageWithColor:v4];
+    _tertiaryLabelColor = [MEMORY[0x277D75348] _tertiaryLabelColor];
+    v5 = [v3 _flatImageWithColor:_tertiaryLabelColor];
     v6 = tableCellCheckmarkImageDisabled_sTintedImage_0;
     tableCellCheckmarkImageDisabled_sTintedImage_0 = v5;
 
@@ -160,24 +160,24 @@ LABEL_6:
 {
   v3 = CNFRegGlobalAppearanceStyle();
 
-  return [a1 appearanceControllerForStyle:v3];
+  return [self appearanceControllerForStyle:v3];
 }
 
-+ (id)appearanceControllerForStyle:(int64_t)a3
++ (id)appearanceControllerForStyle:(int64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
-    switch(a3)
+    switch(style)
     {
       case 4:
-        v3 = [a1 modernAppearanceController];
+        modernAppearanceController = [self modernAppearanceController];
         break;
       case 5:
-        v3 = [a1 modernTransparentLightAppearanceController];
+        modernAppearanceController = [self modernTransparentLightAppearanceController];
         break;
       case 6:
 LABEL_9:
-        v3 = [a1 modernTransparentDarkAppearanceController];
+        modernAppearanceController = [self modernTransparentDarkAppearanceController];
         break;
       default:
         goto LABEL_5;
@@ -186,24 +186,24 @@ LABEL_9:
 
   else
   {
-    switch(a3)
+    switch(style)
     {
       case 1:
-        v3 = [a1 stripedAppearanceController];
+        modernAppearanceController = [self stripedAppearanceController];
         break;
       case 2:
-        v3 = [a1 gradientAppearanceController];
+        modernAppearanceController = [self gradientAppearanceController];
         break;
       case 3:
         goto LABEL_9;
       default:
 LABEL_5:
-        v3 = [a1 defaultAppearanceController];
+        modernAppearanceController = [self defaultAppearanceController];
         break;
     }
   }
 
-  return v3;
+  return modernAppearanceController;
 }
 
 + (id)stripedAppearanceController

@@ -1,10 +1,10 @@
 @interface BRCAccountOnlinePerformer
-+ (BOOL)addPerformer:(id)a3;
-+ (void)removePerformer:(id)a3;
-- (BRCAccountOnlinePerformer)initWithDSID:(id)a3;
++ (BOOL)addPerformer:(id)performer;
++ (void)removePerformer:(id)performer;
+- (BRCAccountOnlinePerformer)initWithDSID:(id)d;
 - (id)_key;
 - (void)_close;
-- (void)networkReachabilityChanged:(BOOL)a3;
+- (void)networkReachabilityChanged:(BOOL)changed;
 - (void)perform;
 - (void)resumeAndAutoClose;
 @end
@@ -21,11 +21,11 @@
   return v6;
 }
 
-+ (BOOL)addPerformer:(id)a3
++ (BOOL)addPerformer:(id)performer
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  performerCopy = performer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!g_performers)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
@@ -33,40 +33,40 @@
     g_performers = v6;
   }
 
-  v8 = [v4 _key];
-  v9 = [g_performers objectForKey:v8];
+  _key = [performerCopy _key];
+  v9 = [g_performers objectForKey:_key];
 
   if (!v9)
   {
-    [g_performers setObject:v4 forKey:v8];
+    [g_performers setObject:performerCopy forKey:_key];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v9 == 0;
 }
 
-+ (void)removePerformer:(id)a3
++ (void)removePerformer:(id)performer
 {
-  v7 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
+  performerCopy = performer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = g_performers;
-  v6 = [v7 _key];
-  [v5 removeObjectForKey:v6];
+  _key = [performerCopy _key];
+  [v5 removeObjectForKey:_key];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BRCAccountOnlinePerformer)initWithDSID:(id)a3
+- (BRCAccountOnlinePerformer)initWithDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = BRCAccountOnlinePerformer;
   v6 = [(BRCAccountOnlinePerformer *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dsid, a3);
+    objc_storeStrong(&v6->_dsid, d);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(v8, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.bird.account-migrator", v9);
@@ -78,9 +78,9 @@
   return v7;
 }
 
-- (void)networkReachabilityChanged:(BOOL)a3
+- (void)networkReachabilityChanged:(BOOL)changed
 {
-  if (a3)
+  if (changed)
   {
     [(BRCThrottler *)self->_throttler reset];
     throttler = self->_throttler;
@@ -92,7 +92,7 @@
 - (void)resumeAndAutoClose
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(a1 + 8);
+  v7 = *(self + 8);
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_3_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);

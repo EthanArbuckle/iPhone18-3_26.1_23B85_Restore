@@ -1,56 +1,56 @@
 @interface ATXDefaultHomeScreenItemRanker
-+ (BOOL)_shouldDownrankWidget:(id)a3;
-+ (id)stringForAlgorithmType:(int)a3;
-+ (int64_t)_downrankComparator:(id)a3 widget2:(id)a4;
-+ (void)filterOutDuplicateWidgetsFromSameAppBundleId:(id)a3;
-- (ATXDefaultHomeScreenItemRanker)initWithCachedWidgetPersonalityToAppScore:(id)a3 spotlightAppLaunchHistogram:(id)a4 appLaunchCounts:(id)a5;
-- (double)_rawLaunchScoreForWidget:(id)a3;
-- (double)_uniqueDaysLaunchedScoreForWidget:(id)a3;
-- (id)_globalPopularityPlistStringKey:(int)a3;
-- (id)_rankerPlistToDictionary:(int)a3;
-- (id)_scoreForWidget:(id)a3 withGlobalPopularityDictionary:(id)a4;
-- (id)_timelineRelevanceAdoptionHelper:(int)a3;
-- (id)_widgetsBySortingAndFilteringWidgets:(id)a3 byAppLaunchAndRankerPlist:(int)a4 regularlyUsedThreshold:(double)a5;
-- (id)widgetsBySortingAndFilteringWidgetsUsingOnboardingStacksAlgorithm:(id)a3 algorithm:(int)a4 regularlyUsedThreshold:(double)a5;
-- (id)widgetsBySortingAndFilteringWidgetsUsingPersonalizedGalleryAlgorithm:(id)a3 rankerPlistType:(int)a4 regularlyUsedThreshold:(double)a5 limit:(id)a6;
-- (id)widgetsBySortingWidgetsUsingDayZeroGalleryAlgorithm:(id)a3;
-- (int64_t)_rankerDictionaryComparator:(id)a3 timelineRelevanceAdoptionHelper:(id)a4 widget1:(id)a5 widget2:(id)a6;
-- (int64_t)_uniqueDaysLaunchedComparatorForWidget1:(id)a3 widget2:(id)a4;
-- (unint64_t)_appUsageFrequencyForWidget:(id)a3 regularlyUsedThreshold:(double)a4;
-- (void)_filterOutWidgetsFromProtectedApps:(id)a3;
-- (void)_filterOutWidgetsNotFromTopLaunchedApps:(id)a3;
-- (void)_filterOutWidgetsThatAreNotRegularlyUsed:(id)a3 regularlyUsedThreshold:(double)a4;
-- (void)_sortWidgets:(id)a3 byRankerPlist:(int)a4 shouldDownRankAlreadyInstalledWidgets:(BOOL)a5;
-- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)a3 shouldDownRankAlreadyInstalledWidgets:(BOOL)a4;
-- (void)_sortWidgetsByRawLaunchCounts:(id)a3 shouldDownRankAlreadyInstalledWidgets:(BOOL)a4;
++ (BOOL)_shouldDownrankWidget:(id)widget;
++ (id)stringForAlgorithmType:(int)type;
++ (int64_t)_downrankComparator:(id)comparator widget2:(id)widget2;
++ (void)filterOutDuplicateWidgetsFromSameAppBundleId:(id)id;
+- (ATXDefaultHomeScreenItemRanker)initWithCachedWidgetPersonalityToAppScore:(id)score spotlightAppLaunchHistogram:(id)histogram appLaunchCounts:(id)counts;
+- (double)_rawLaunchScoreForWidget:(id)widget;
+- (double)_uniqueDaysLaunchedScoreForWidget:(id)widget;
+- (id)_globalPopularityPlistStringKey:(int)key;
+- (id)_rankerPlistToDictionary:(int)dictionary;
+- (id)_scoreForWidget:(id)widget withGlobalPopularityDictionary:(id)dictionary;
+- (id)_timelineRelevanceAdoptionHelper:(int)helper;
+- (id)_widgetsBySortingAndFilteringWidgets:(id)widgets byAppLaunchAndRankerPlist:(int)plist regularlyUsedThreshold:(double)threshold;
+- (id)widgetsBySortingAndFilteringWidgetsUsingOnboardingStacksAlgorithm:(id)algorithm algorithm:(int)a4 regularlyUsedThreshold:(double)threshold;
+- (id)widgetsBySortingAndFilteringWidgetsUsingPersonalizedGalleryAlgorithm:(id)algorithm rankerPlistType:(int)type regularlyUsedThreshold:(double)threshold limit:(id)limit;
+- (id)widgetsBySortingWidgetsUsingDayZeroGalleryAlgorithm:(id)algorithm;
+- (int64_t)_rankerDictionaryComparator:(id)comparator timelineRelevanceAdoptionHelper:(id)helper widget1:(id)widget1 widget2:(id)widget2;
+- (int64_t)_uniqueDaysLaunchedComparatorForWidget1:(id)widget1 widget2:(id)widget2;
+- (unint64_t)_appUsageFrequencyForWidget:(id)widget regularlyUsedThreshold:(double)threshold;
+- (void)_filterOutWidgetsFromProtectedApps:(id)apps;
+- (void)_filterOutWidgetsNotFromTopLaunchedApps:(id)apps;
+- (void)_filterOutWidgetsThatAreNotRegularlyUsed:(id)used regularlyUsedThreshold:(double)threshold;
+- (void)_sortWidgets:(id)widgets byRankerPlist:(int)plist shouldDownRankAlreadyInstalledWidgets:(BOOL)installedWidgets;
+- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)launched shouldDownRankAlreadyInstalledWidgets:(BOOL)widgets;
+- (void)_sortWidgetsByRawLaunchCounts:(id)counts shouldDownRankAlreadyInstalledWidgets:(BOOL)widgets;
 @end
 
 @implementation ATXDefaultHomeScreenItemRanker
 
-- (ATXDefaultHomeScreenItemRanker)initWithCachedWidgetPersonalityToAppScore:(id)a3 spotlightAppLaunchHistogram:(id)a4 appLaunchCounts:(id)a5
+- (ATXDefaultHomeScreenItemRanker)initWithCachedWidgetPersonalityToAppScore:(id)score spotlightAppLaunchHistogram:(id)histogram appLaunchCounts:(id)counts
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  scoreCopy = score;
+  histogramCopy = histogram;
+  countsCopy = counts;
   v15.receiver = self;
   v15.super_class = ATXDefaultHomeScreenItemRanker;
   v12 = [(ATXDefaultHomeScreenItemRanker *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_cachedWidgetPersonalityToAppScore, a3);
-    objc_storeStrong(&v13->_spotlightAppLaunchHistogram, a4);
-    objc_storeStrong(&v13->_appLaunchCounts, a5);
+    objc_storeStrong(&v12->_cachedWidgetPersonalityToAppScore, score);
+    objc_storeStrong(&v13->_spotlightAppLaunchHistogram, histogram);
+    objc_storeStrong(&v13->_appLaunchCounts, counts);
   }
 
   return v13;
 }
 
-+ (int64_t)_downrankComparator:(id)a3 widget2:(id)a4
++ (int64_t)_downrankComparator:(id)comparator widget2:(id)widget2
 {
-  v6 = a4;
-  v7 = [a1 _shouldDownrankWidget:a3];
-  v8 = [a1 _shouldDownrankWidget:v6];
+  widget2Copy = widget2;
+  v7 = [self _shouldDownrankWidget:comparator];
+  v8 = [self _shouldDownrankWidget:widget2Copy];
 
   if ((v7 ^ 1 | v8))
   {
@@ -63,21 +63,21 @@
   }
 }
 
-+ (BOOL)_shouldDownrankWidget:(id)a3
++ (BOOL)_shouldDownrankWidget:(id)widget
 {
-  v3 = a3;
-  v4 = [v3 rankType] == 4 || objc_msgSend(v3, "rankType") == 6;
+  widgetCopy = widget;
+  v4 = [widgetCopy rankType] == 4 || objc_msgSend(widgetCopy, "rankType") == 6;
 
   return v4;
 }
 
-- (int64_t)_rankerDictionaryComparator:(id)a3 timelineRelevanceAdoptionHelper:(id)a4 widget1:(id)a5 widget2:(id)a6
+- (int64_t)_rankerDictionaryComparator:(id)comparator timelineRelevanceAdoptionHelper:(id)helper widget1:(id)widget1 widget2:(id)widget2
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!(v10 | v11))
+  comparatorCopy = comparator;
+  helperCopy = helper;
+  widget1Copy = widget1;
+  widget2Copy = widget2;
+  if (!(comparatorCopy | helperCopy))
   {
     v26 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -88,21 +88,21 @@
     goto LABEL_9;
   }
 
-  if (v11)
+  if (helperCopy)
   {
-    v14 = [v12 avocadoDescriptor];
-    v15 = [v14 extensionBundleIdentifier];
-    v28 = v12;
-    v16 = [v12 avocadoDescriptor];
-    v17 = [v16 kind];
-    v18 = [v11 globalDiverseSchemaRawNumber:v15 kind:v17];
+    avocadoDescriptor = [widget1Copy avocadoDescriptor];
+    extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+    v28 = widget1Copy;
+    avocadoDescriptor2 = [widget1Copy avocadoDescriptor];
+    kind = [avocadoDescriptor2 kind];
+    v18 = [helperCopy globalDiverseSchemaRawNumber:extensionBundleIdentifier kind:kind];
 
-    v19 = [v13 avocadoDescriptor];
-    v20 = [v19 extensionBundleIdentifier];
-    v21 = [v13 avocadoDescriptor];
-    [v21 kind];
+    avocadoDescriptor3 = [widget2Copy avocadoDescriptor];
+    extensionBundleIdentifier2 = [avocadoDescriptor3 extensionBundleIdentifier];
+    avocadoDescriptor4 = [widget2Copy avocadoDescriptor];
+    [avocadoDescriptor4 kind];
     v23 = v22 = self;
-    v24 = [v11 globalDiverseSchemaRawNumber:v20 kind:v23];
+    v24 = [helperCopy globalDiverseSchemaRawNumber:extensionBundleIdentifier2 kind:v23];
 
     self = v22;
     if (v18)
@@ -111,11 +111,11 @@
     }
 
 LABEL_19:
-    v12 = v28;
+    widget1Copy = v28;
     goto LABEL_10;
   }
 
-  if (!v10)
+  if (!comparatorCopy)
   {
 LABEL_9:
     v24 = 0;
@@ -123,16 +123,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v28 = v12;
-  v18 = [(ATXDefaultHomeScreenItemRanker *)self _scoreForWidget:v12 withGlobalPopularityDictionary:v10];
-  v24 = [(ATXDefaultHomeScreenItemRanker *)self _scoreForWidget:v13 withGlobalPopularityDictionary:v10];
+  v28 = widget1Copy;
+  v18 = [(ATXDefaultHomeScreenItemRanker *)self _scoreForWidget:widget1Copy withGlobalPopularityDictionary:comparatorCopy];
+  v24 = [(ATXDefaultHomeScreenItemRanker *)self _scoreForWidget:widget2Copy withGlobalPopularityDictionary:comparatorCopy];
   if (!v18)
   {
     goto LABEL_19;
   }
 
 LABEL_4:
-  v12 = v28;
+  widget1Copy = v28;
   if (v24)
   {
     v25 = [v24 compare:v18];
@@ -157,82 +157,82 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v25 = [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedComparatorForWidget1:v12 widget2:v13];
+  v25 = [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedComparatorForWidget1:widget1Copy widget2:widget2Copy];
 LABEL_16:
 
   return v25;
 }
 
-- (id)_scoreForWidget:(id)a3 withGlobalPopularityDictionary:(id)a4
+- (id)_scoreForWidget:(id)widget withGlobalPopularityDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 avocadoDescriptor];
-  v8 = [v7 extensionBundleIdentifier];
-  v9 = [v6 avocadoDescriptor];
+  dictionaryCopy = dictionary;
+  widgetCopy = widget;
+  avocadoDescriptor = [widgetCopy avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  avocadoDescriptor2 = [widgetCopy avocadoDescriptor];
 
-  v10 = [v9 kind];
-  v11 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:v8 kind:v10];
+  kind = [avocadoDescriptor2 kind];
+  v11 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:extensionBundleIdentifier kind:kind];
 
-  v12 = [v5 objectForKeyedSubscript:v11];
+  v12 = [dictionaryCopy objectForKeyedSubscript:v11];
 
   return v12;
 }
 
-- (double)_uniqueDaysLaunchedScoreForWidget:(id)a3
+- (double)_uniqueDaysLaunchedScoreForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [v4 avocadoDescriptor];
-  v6 = [v5 extensionBundleIdentifier];
-  v7 = [v4 avocadoDescriptor];
-  v8 = [v7 kind];
-  v9 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:v6 kind:v8];
+  widgetCopy = widget;
+  avocadoDescriptor = [widgetCopy avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  avocadoDescriptor2 = [widgetCopy avocadoDescriptor];
+  kind = [avocadoDescriptor2 kind];
+  v9 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:extensionBundleIdentifier kind:kind];
 
   v10 = [(NSMutableDictionary *)self->_cachedWidgetPersonalityToAppScore objectForKeyedSubscript:v9];
 
   if (!v10)
   {
-    v11 = [[ATXDefaultHomeScreenItemAppLaunchScorer alloc] initWithWidget:v4 appLaunchHistogram:self->_spotlightAppLaunchHistogram];
+    v11 = [[ATXDefaultHomeScreenItemAppLaunchScorer alloc] initWithWidget:widgetCopy appLaunchHistogram:self->_spotlightAppLaunchHistogram];
     v12 = [(ATXDefaultHomeScreenItemAppLaunchScorer *)v11 scoreWithCachedAppLaunchData:self->_appLaunchCounts];
     [(NSMutableDictionary *)self->_cachedWidgetPersonalityToAppScore setObject:v12 forKeyedSubscript:v9];
   }
 
   v13 = [(NSMutableDictionary *)self->_cachedWidgetPersonalityToAppScore objectForKeyedSubscript:v9];
-  v14 = [v13 uniqueDaysLaunched];
+  uniqueDaysLaunched = [v13 uniqueDaysLaunched];
 
-  return v14;
+  return uniqueDaysLaunched;
 }
 
-- (double)_rawLaunchScoreForWidget:(id)a3
+- (double)_rawLaunchScoreForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [v4 avocadoDescriptor];
-  v6 = [v5 extensionBundleIdentifier];
-  v7 = [v4 avocadoDescriptor];
-  v8 = [v7 kind];
-  v9 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:v6 kind:v8];
+  widgetCopy = widget;
+  avocadoDescriptor = [widgetCopy avocadoDescriptor];
+  extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+  avocadoDescriptor2 = [widgetCopy avocadoDescriptor];
+  kind = [avocadoDescriptor2 kind];
+  v9 = [ATXWidgetPersonality stringRepresentationForExtensionBundleId:extensionBundleIdentifier kind:kind];
 
   v10 = [(NSMutableDictionary *)self->_cachedWidgetPersonalityToAppScore objectForKeyedSubscript:v9];
 
   if (!v10)
   {
-    v11 = [[ATXDefaultHomeScreenItemAppLaunchScorer alloc] initWithWidget:v4 appLaunchHistogram:self->_spotlightAppLaunchHistogram];
+    v11 = [[ATXDefaultHomeScreenItemAppLaunchScorer alloc] initWithWidget:widgetCopy appLaunchHistogram:self->_spotlightAppLaunchHistogram];
     v12 = [(ATXDefaultHomeScreenItemAppLaunchScorer *)v11 scoreWithCachedAppLaunchData:self->_appLaunchCounts];
     [(NSMutableDictionary *)self->_cachedWidgetPersonalityToAppScore setObject:v12 forKeyedSubscript:v9];
   }
 
   v13 = [(NSMutableDictionary *)self->_cachedWidgetPersonalityToAppScore objectForKeyedSubscript:v9];
-  v14 = [v13 rawLaunchCount];
+  rawLaunchCount = [v13 rawLaunchCount];
 
-  return v14;
+  return rawLaunchCount;
 }
 
-- (int64_t)_uniqueDaysLaunchedComparatorForWidget1:(id)a3 widget2:(id)a4
+- (int64_t)_uniqueDaysLaunchedComparatorForWidget1:(id)widget1 widget2:(id)widget2
 {
-  v6 = a4;
-  [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedScoreForWidget:a3];
+  widget2Copy = widget2;
+  [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedScoreForWidget:widget1];
   v8 = v7;
-  [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedScoreForWidget:v6];
+  [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedScoreForWidget:widget2Copy];
   v10 = v9;
 
   v11 = -1;
@@ -252,15 +252,15 @@ LABEL_16:
   }
 }
 
-- (void)_sortWidgetsByRawLaunchCounts:(id)a3 shouldDownRankAlreadyInstalledWidgets:(BOOL)a4
+- (void)_sortWidgetsByRawLaunchCounts:(id)counts shouldDownRankAlreadyInstalledWidgets:(BOOL)widgets
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __102__ATXDefaultHomeScreenItemRanker__sortWidgetsByRawLaunchCounts_shouldDownRankAlreadyInstalledWidgets___block_invoke;
   v4[3] = &unk_1E80C58F0;
-  v5 = a4;
+  widgetsCopy = widgets;
   v4[4] = self;
-  [a3 sortWithOptions:16 usingComparator:v4];
+  [counts sortWithOptions:16 usingComparator:v4];
 }
 
 uint64_t __102__ATXDefaultHomeScreenItemRanker__sortWidgetsByRawLaunchCounts_shouldDownRankAlreadyInstalledWidgets___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -292,15 +292,15 @@ uint64_t __102__ATXDefaultHomeScreenItemRanker__sortWidgetsByRawLaunchCounts_sho
   return v7;
 }
 
-- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)a3 shouldDownRankAlreadyInstalledWidgets:(BOOL)a4
+- (void)_sortWidgetsByDistinctDaysAppWasLaunched:(id)launched shouldDownRankAlreadyInstalledWidgets:(BOOL)widgets
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __113__ATXDefaultHomeScreenItemRanker__sortWidgetsByDistinctDaysAppWasLaunched_shouldDownRankAlreadyInstalledWidgets___block_invoke;
   v4[3] = &unk_1E80C58F0;
-  v5 = a4;
+  widgetsCopy = widgets;
   v4[4] = self;
-  [a3 sortWithOptions:16 usingComparator:v4];
+  [launched sortWithOptions:16 usingComparator:v4];
 }
 
 uint64_t __113__ATXDefaultHomeScreenItemRanker__sortWidgetsByDistinctDaysAppWasLaunched_shouldDownRankAlreadyInstalledWidgets___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -315,23 +315,23 @@ uint64_t __113__ATXDefaultHomeScreenItemRanker__sortWidgetsByDistinctDaysAppWasL
   return v7;
 }
 
-- (void)_sortWidgets:(id)a3 byRankerPlist:(int)a4 shouldDownRankAlreadyInstalledWidgets:(BOOL)a5
+- (void)_sortWidgets:(id)widgets byRankerPlist:(int)plist shouldDownRankAlreadyInstalledWidgets:(BOOL)installedWidgets
 {
-  v6 = *&a4;
-  v8 = a3;
+  v6 = *&plist;
+  widgetsCopy = widgets;
   v9 = [(ATXDefaultHomeScreenItemRanker *)self _rankerPlistToDictionary:v6];
   v10 = [(ATXDefaultHomeScreenItemRanker *)self _timelineRelevanceAdoptionHelper:v6];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __99__ATXDefaultHomeScreenItemRanker__sortWidgets_byRankerPlist_shouldDownRankAlreadyInstalledWidgets___block_invoke;
   v13[3] = &unk_1E80C5918;
-  v16 = a5;
+  installedWidgetsCopy = installedWidgets;
   v13[4] = self;
   v14 = v9;
   v15 = v10;
   v11 = v10;
   v12 = v9;
-  [v8 sortWithOptions:16 usingComparator:v13];
+  [widgetsCopy sortWithOptions:16 usingComparator:v13];
 }
 
 uint64_t __99__ATXDefaultHomeScreenItemRanker__sortWidgets_byRankerPlist_shouldDownRankAlreadyInstalledWidgets___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -346,9 +346,9 @@ uint64_t __99__ATXDefaultHomeScreenItemRanker__sortWidgets_byRankerPlist_shouldD
   return v7;
 }
 
-- (id)_timelineRelevanceAdoptionHelper:(int)a3
+- (id)_timelineRelevanceAdoptionHelper:(int)helper
 {
-  if (a3 == 6)
+  if (helper == 6)
   {
     v4 = objc_opt_new();
   }
@@ -361,9 +361,9 @@ uint64_t __99__ATXDefaultHomeScreenItemRanker__sortWidgets_byRankerPlist_shouldD
   return v4;
 }
 
-- (id)_rankerPlistToDictionary:(int)a3
+- (id)_rankerPlistToDictionary:(int)dictionary
 {
-  if (a3 <= 5 && ((v3 = *&a3, (v5 = self->_cachedRankerDictionary) != 0) || ([ATXAssets2 dictionaryFromLazyPlistForClass:objc_opt_class()], v6 = objc_claimAutoreleasedReturnValue(), cachedRankerDictionary = self->_cachedRankerDictionary, self->_cachedRankerDictionary = v6, cachedRankerDictionary, (v5 = self->_cachedRankerDictionary) != 0)))
+  if (dictionary <= 5 && ((v3 = *&dictionary, (v5 = self->_cachedRankerDictionary) != 0) || ([ATXAssets2 dictionaryFromLazyPlistForClass:objc_opt_class()], v6 = objc_claimAutoreleasedReturnValue(), cachedRankerDictionary = self->_cachedRankerDictionary, self->_cachedRankerDictionary = v6, cachedRankerDictionary, (v5 = self->_cachedRankerDictionary) != 0)))
   {
     v8 = v5;
     v9 = [(ATXDefaultHomeScreenItemRanker *)self _globalPopularityPlistStringKey:v3];
@@ -383,9 +383,9 @@ uint64_t __99__ATXDefaultHomeScreenItemRanker__sortWidgets_byRankerPlist_shouldD
   return v11;
 }
 
-- (id)widgetsBySortingWidgetsUsingDayZeroGalleryAlgorithm:(id)a3
+- (id)widgetsBySortingWidgetsUsingDayZeroGalleryAlgorithm:(id)algorithm
 {
-  v4 = [a3 mutableCopy];
+  v4 = [algorithm mutableCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__ATXDefaultHomeScreenItemRanker_widgetsBySortingWidgetsUsingDayZeroGalleryAlgorithm___block_invoke;
@@ -405,12 +405,12 @@ uint64_t __86__ATXDefaultHomeScreenItemRanker_widgetsBySortingWidgetsUsingDayZer
   return v6;
 }
 
-- (id)widgetsBySortingAndFilteringWidgetsUsingPersonalizedGalleryAlgorithm:(id)a3 rankerPlistType:(int)a4 regularlyUsedThreshold:(double)a5 limit:(id)a6
+- (id)widgetsBySortingAndFilteringWidgetsUsingPersonalizedGalleryAlgorithm:(id)algorithm rankerPlistType:(int)type regularlyUsedThreshold:(double)threshold limit:(id)limit
 {
-  v7 = *&a4;
+  v7 = *&type;
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = [a3 mutableCopy];
+  limitCopy = limit;
+  v11 = [algorithm mutableCopy];
   v12 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
@@ -445,13 +445,13 @@ uint64_t __86__ATXDefaultHomeScreenItemRanker_widgetsBySortingWidgetsUsingDayZer
     while (v15);
   }
 
-  v19 = [(ATXDefaultHomeScreenItemRanker *)self _widgetsBySortingAndFilteringWidgets:v11 byAppLaunchAndRankerPlist:v7 regularlyUsedThreshold:a5];
-  v20 = [(ATXDefaultHomeScreenItemRanker *)self _widgetsBySortingAndFilteringWidgets:v12 byAppLaunchAndRankerPlist:v7 regularlyUsedThreshold:a5];
+  v19 = [(ATXDefaultHomeScreenItemRanker *)self _widgetsBySortingAndFilteringWidgets:v11 byAppLaunchAndRankerPlist:v7 regularlyUsedThreshold:threshold];
+  v20 = [(ATXDefaultHomeScreenItemRanker *)self _widgetsBySortingAndFilteringWidgets:v12 byAppLaunchAndRankerPlist:v7 regularlyUsedThreshold:threshold];
   v21 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v20, "count")}];
   [v19 insertObjects:v20 atIndexes:v21];
-  if (v10 && (v22 = [v10 integerValue], v22 < objc_msgSend(v19, "count")))
+  if (limitCopy && (v22 = [limitCopy integerValue], v22 < objc_msgSend(v19, "count")))
   {
-    v23 = [v19 subarrayWithRange:{0, objc_msgSend(v10, "integerValue")}];
+    v23 = [v19 subarrayWithRange:{0, objc_msgSend(limitCopy, "integerValue")}];
   }
 
   else
@@ -464,9 +464,9 @@ uint64_t __86__ATXDefaultHomeScreenItemRanker_widgetsBySortingWidgetsUsingDayZer
   return v24;
 }
 
-- (id)widgetsBySortingAndFilteringWidgetsUsingOnboardingStacksAlgorithm:(id)a3 algorithm:(int)a4 regularlyUsedThreshold:(double)a5
+- (id)widgetsBySortingAndFilteringWidgetsUsingOnboardingStacksAlgorithm:(id)algorithm algorithm:(int)a4 regularlyUsedThreshold:(double)threshold
 {
-  v8 = [a3 mutableCopy];
+  v8 = [algorithm mutableCopy];
   if (a4 <= 1)
   {
     if (a4)
@@ -486,7 +486,7 @@ uint64_t __86__ATXDefaultHomeScreenItemRanker_widgetsBySortingWidgetsUsingDayZer
 
     [(ATXDefaultHomeScreenItemRanker *)self _sortWidgetsByDistinctDaysAppWasLaunched:v8 shouldDownRankAlreadyInstalledWidgets:0];
 LABEL_10:
-    [(ATXDefaultHomeScreenItemRanker *)self _filterOutWidgetsThatAreNotRegularlyUsed:v8 regularlyUsedThreshold:a5];
+    [(ATXDefaultHomeScreenItemRanker *)self _filterOutWidgetsThatAreNotRegularlyUsed:v8 regularlyUsedThreshold:threshold];
     goto LABEL_12;
   }
 
@@ -510,10 +510,10 @@ LABEL_12:
   return v8;
 }
 
-- (void)_filterOutWidgetsFromProtectedApps:(id)a3
+- (void)_filterOutWidgetsFromProtectedApps:(id)apps
 {
   v40 = *MEMORY[0x1E69E9840];
-  v28 = a3;
+  appsCopy = apps;
   v3 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
   v5 = CFPreferencesCopyAppValue(@"SBSearchDisabledShortcuts", @"com.apple.spotlightui");
@@ -535,7 +535,7 @@ LABEL_12:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = [v28 copy];
+  v10 = [appsCopy copy];
   v11 = [v10 countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v11)
   {
@@ -553,50 +553,50 @@ LABEL_12:
         }
 
         v16 = *(*(&v29 + 1) + 8 * i);
-        v17 = [v16 appBundleId];
+        appBundleId = [v16 appBundleId];
 
-        if (v17)
+        if (appBundleId)
         {
-          v18 = [v16 appBundleId];
-          v19 = [v9 containsObject:v18];
+          appBundleId2 = [v16 appBundleId];
+          v19 = [v9 containsObject:appBundleId2];
 
           if (v19)
           {
             v20 = __atxlog_handle_home_screen();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v16 appBundleId];
+              appBundleId3 = [v16 appBundleId];
               *buf = 136315650;
               v34 = "[ATXDefaultHomeScreenItemRanker _filterOutWidgetsFromProtectedApps:]";
               v35 = 2112;
               v36 = v16;
               v37 = 2112;
-              v38 = v21;
+              v38 = appBundleId3;
               _os_log_impl(&dword_1BF549000, v20, OS_LOG_TYPE_DEFAULT, "%s: filtering out widget descriptor: %@. Reason: Show on Homescreen is disabled for the parent bundleId %@", buf, 0x20u);
             }
 
-            [v28 removeObject:v16];
+            [appsCopy removeObject:v16];
           }
 
-          v22 = [v16 appBundleId];
-          v23 = [v3 bundleIdIsLockedOrHiddenByUserPreference:v22];
+          appBundleId4 = [v16 appBundleId];
+          v23 = [v3 bundleIdIsLockedOrHiddenByUserPreference:appBundleId4];
 
           if (v23)
           {
             v24 = __atxlog_handle_home_screen();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
-              v25 = [v16 appBundleId];
+              appBundleId5 = [v16 appBundleId];
               *buf = 136315650;
               v34 = "[ATXDefaultHomeScreenItemRanker _filterOutWidgetsFromProtectedApps:]";
               v35 = 2112;
               v36 = v16;
               v37 = 2112;
-              v38 = v25;
+              v38 = appBundleId5;
               _os_log_impl(&dword_1BF549000, v24, OS_LOG_TYPE_DEFAULT, "%s: filtering out widget descriptor: %@. Reason: the parent bundleId %@ is locked or hidden by user preference", buf, 0x20u);
             }
 
-            [v28 removeObject:v16];
+            [appsCopy removeObject:v16];
           }
         }
 
@@ -621,15 +621,15 @@ LABEL_12:
   }
 }
 
-- (void)_filterOutWidgetsThatAreNotRegularlyUsed:(id)a3 regularlyUsedThreshold:(double)a4
+- (void)_filterOutWidgetsThatAreNotRegularlyUsed:(id)used regularlyUsedThreshold:(double)threshold
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  usedCopy = used;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v6 copy];
+  v7 = [usedCopy copy];
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v8)
   {
@@ -648,7 +648,7 @@ LABEL_12:
 
         v13 = *(*(&v18 + 1) + 8 * i);
         [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedScoreForWidget:v13, v17];
-        if (v14 < a4)
+        if (v14 < threshold)
         {
           v15 = v14;
           v16 = __atxlog_handle_home_screen();
@@ -663,7 +663,7 @@ LABEL_12:
             _os_log_impl(&dword_1BF549000, v16, OS_LOG_TYPE_DEFAULT, "%s: filtering out 3P widget because it is not regularly used (days launched: %f): %@", buf, 0x20u);
           }
 
-          [v6 removeObject:v13];
+          [usedCopy removeObject:v13];
         }
       }
 
@@ -674,9 +674,9 @@ LABEL_12:
   }
 }
 
-- (void)_filterOutWidgetsNotFromTopLaunchedApps:(id)a3
+- (void)_filterOutWidgetsNotFromTopLaunchedApps:(id)apps
 {
-  v3 = a3;
+  appsCopy = apps;
   v4 = objc_opt_new();
   v14 = 0;
   v15 = &v14;
@@ -689,12 +689,12 @@ LABEL_12:
   v5 = v4;
   v12 = v5;
   v13 = &v14;
-  [v3 enumerateObjectsUsingBlock:&v8];
+  [appsCopy enumerateObjectsUsingBlock:&v8];
   v6 = v15[3];
   if (v6)
   {
-    v7 = [v3 count];
-    [v3 removeObjectsInRange:{v6, v7 - v15[3]}];
+    v7 = [appsCopy count];
+    [appsCopy removeObjectsInRange:{v6, v7 - v15[3]}];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -719,16 +719,16 @@ void __74__ATXDefaultHomeScreenItemRanker__filterOutWidgetsNotFromTopLaunchedApp
   }
 }
 
-+ (void)filterOutDuplicateWidgetsFromSameAppBundleId:(id)a3
++ (void)filterOutDuplicateWidgetsFromSameAppBundleId:(id)id
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idCopy = id;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 copy];
+  v5 = [idCopy copy];
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -744,22 +744,22 @@ void __74__ATXDefaultHomeScreenItemRanker__filterOutWidgetsNotFromTopLaunchedApp
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 appBundleId];
+        appBundleId = [v10 appBundleId];
 
-        if (v11)
+        if (appBundleId)
         {
-          v12 = [v10 appBundleId];
-          v13 = [v4 containsObject:v12];
+          appBundleId2 = [v10 appBundleId];
+          v13 = [v4 containsObject:appBundleId2];
 
           if (v13)
           {
-            [v3 removeObject:v10];
+            [idCopy removeObject:v10];
           }
 
           else
           {
-            v14 = [v10 appBundleId];
-            [v4 addObject:v14];
+            appBundleId3 = [v10 appBundleId];
+            [v4 addObject:appBundleId3];
           }
         }
       }
@@ -771,10 +771,10 @@ void __74__ATXDefaultHomeScreenItemRanker__filterOutWidgetsNotFromTopLaunchedApp
   }
 }
 
-- (id)_widgetsBySortingAndFilteringWidgets:(id)a3 byAppLaunchAndRankerPlist:(int)a4 regularlyUsedThreshold:(double)a5
+- (id)_widgetsBySortingAndFilteringWidgets:(id)widgets byAppLaunchAndRankerPlist:(int)plist regularlyUsedThreshold:(double)threshold
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  widgetsCopy = widgets;
   v8 = objc_opt_new();
   v9 = objc_opt_new();
   v10 = objc_opt_new();
@@ -783,7 +783,7 @@ void __74__ATXDefaultHomeScreenItemRanker__filterOutWidgetsNotFromTopLaunchedApp
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = v7;
+  v12 = widgetsCopy;
   v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v13)
   {
@@ -807,7 +807,7 @@ void __74__ATXDefaultHomeScreenItemRanker__filterOutWidgetsNotFromTopLaunchedApp
           goto LABEL_7;
         }
 
-        v20 = [(ATXDefaultHomeScreenItemRanker *)self _appUsageFrequencyForWidget:v17 regularlyUsedThreshold:a5];
+        v20 = [(ATXDefaultHomeScreenItemRanker *)self _appUsageFrequencyForWidget:v17 regularlyUsedThreshold:threshold];
         if (!v20)
         {
           v19 = v10;
@@ -841,10 +841,10 @@ LABEL_8:
     while (v22);
   }
 
-  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v8 byRankerPlist:a4 shouldDownRankAlreadyInstalledWidgets:1];
-  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v9 byRankerPlist:a4 shouldDownRankAlreadyInstalledWidgets:1];
-  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v10 byRankerPlist:a4 shouldDownRankAlreadyInstalledWidgets:1];
-  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v11 byRankerPlist:a4 shouldDownRankAlreadyInstalledWidgets:1];
+  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v8 byRankerPlist:plist shouldDownRankAlreadyInstalledWidgets:1];
+  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v9 byRankerPlist:plist shouldDownRankAlreadyInstalledWidgets:1];
+  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v10 byRankerPlist:plist shouldDownRankAlreadyInstalledWidgets:1];
+  [(ATXDefaultHomeScreenItemRanker *)self _sortWidgets:v11 byRankerPlist:plist shouldDownRankAlreadyInstalledWidgets:1];
   v23 = [v8 arrayByAddingObjectsFromArray:v9];
   v24 = [v23 arrayByAddingObjectsFromArray:v10];
   v25 = [v24 arrayByAddingObjectsFromArray:v11];
@@ -856,10 +856,10 @@ LABEL_8:
   return v26;
 }
 
-- (unint64_t)_appUsageFrequencyForWidget:(id)a3 regularlyUsedThreshold:(double)a4
+- (unint64_t)_appUsageFrequencyForWidget:(id)widget regularlyUsedThreshold:(double)threshold
 {
-  [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedScoreForWidget:a3];
-  if (v5 >= a4)
+  [(ATXDefaultHomeScreenItemRanker *)self _uniqueDaysLaunchedScoreForWidget:widget];
+  if (v5 >= threshold)
   {
     return 2;
   }
@@ -870,29 +870,29 @@ LABEL_8:
   }
 }
 
-- (id)_globalPopularityPlistStringKey:(int)a3
+- (id)_globalPopularityPlistStringKey:(int)key
 {
-  if (a3 > 5)
+  if (key > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E80C5988[a3];
+    return off_1E80C5988[key];
   }
 }
 
-+ (id)stringForAlgorithmType:(int)a3
++ (id)stringForAlgorithmType:(int)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E80C59B8[a3];
+    return off_1E80C59B8[type];
   }
 }
 

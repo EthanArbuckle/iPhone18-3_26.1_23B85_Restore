@@ -11,9 +11,9 @@
 
 - (BOOL)areCentroidDbAndMetadataDbValid
 {
-  v3 = [(CLWifiAssociatedApCentroidSyncedDataStore *)self isCentroidDatabaseValid];
-  v4 = [(CLWifiAssociatedApCentroidSyncedDataStore *)self isMetadataDatabaseValid];
-  if (v3 != v4)
+  isCentroidDatabaseValid = [(CLWifiAssociatedApCentroidSyncedDataStore *)self isCentroidDatabaseValid];
+  isMetadataDatabaseValid = [(CLWifiAssociatedApCentroidSyncedDataStore *)self isMetadataDatabaseValid];
+  if (isCentroidDatabaseValid != isMetadataDatabaseValid)
   {
     if (qword_1025D4620 != -1)
     {
@@ -24,30 +24,30 @@
     if (os_log_type_enabled(qword_1025D4628, OS_LOG_TYPE_FAULT))
     {
       v7[0] = 67240448;
-      v7[1] = v3;
+      v7[1] = isCentroidDatabaseValid;
       v8 = 1026;
-      v9 = v4;
+      v9 = isMetadataDatabaseValid;
       _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_FAULT, "[CloudKit] WifiAssociatedApCentroidStore, centroid DB and metadata DB are in different states: %{public}d vs %{public}d", v7, 0xEu);
     }
 
     if (sub_10000A100(121, 0))
     {
-      sub_1019D6404(v3, v4);
+      sub_1019D6404(isCentroidDatabaseValid, isMetadataDatabaseValid);
     }
   }
 
-  return v3 && v4;
+  return isCentroidDatabaseValid && isMetadataDatabaseValid;
 }
 
 - (BOOL)isValid
 {
-  v3 = [(CLWifiAssociatedApCentroidSyncedDataStore *)self areCentroidDbAndMetadataDbValid];
-  if (v3)
+  areCentroidDbAndMetadataDbValid = [(CLWifiAssociatedApCentroidSyncedDataStore *)self areCentroidDbAndMetadataDbValid];
+  if (areCentroidDbAndMetadataDbValid)
   {
-    LOBYTE(v3) = self->_syncEngine != 0;
+    LOBYTE(areCentroidDbAndMetadataDbValid) = self->_syncEngine != 0;
   }
 
-  return v3;
+  return areCentroidDbAndMetadataDbValid;
 }
 
 - (BOOL)isCentroidDatabaseValid

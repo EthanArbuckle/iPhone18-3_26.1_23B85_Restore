@@ -1,13 +1,13 @@
 @interface KNAnimationRandomGenerator
-+ (id)randomGeneratorFromPluginContext:(id)a3;
-+ (id)randomGeneratorWithSeed:(id)a3;
++ (id)randomGeneratorFromPluginContext:(id)context;
++ (id)randomGeneratorWithSeed:(id)seed;
 + (void)configureFromUserDefaults;
-- (KNAnimationRandomGenerator)initWithSeed:(id)a3;
-- (double)doubleBetween:(double)a3 :(double)a4;
+- (KNAnimationRandomGenerator)initWithSeed:(id)seed;
+- (double)doubleBetween:(double)between :(double)a4;
 - (double)randomDouble;
-- (int64_t)intBetween:(int64_t)a3 :(int64_t)a4;
+- (int64_t)intBetween:(int64_t)between :(int64_t)a4;
 - (void)dealloc;
-- (void)setSeed:(unint64_t)a3;
+- (void)setSeed:(unint64_t)seed;
 @end
 
 @implementation KNAnimationRandomGenerator
@@ -29,9 +29,9 @@
   byte_280A3BFA1 = objc_msgSend_BOOLForKey_(v14, v12, @"RandomNumberSeedAlwaysRandom");
 }
 
-- (KNAnimationRandomGenerator)initWithSeed:(id)a3
+- (KNAnimationRandomGenerator)initWithSeed:(id)seed
 {
-  v4 = a3;
+  seedCopy = seed;
   v13.receiver = self;
   v13.super_class = KNAnimationRandomGenerator;
   v7 = [(KNAnimationRandomGenerator *)&v13 init];
@@ -42,7 +42,7 @@
       objc_msgSend_setSeed_(v7, v5, 0);
     }
 
-    else if (byte_280A3BFA1 == 1 || !v4)
+    else if (byte_280A3BFA1 == 1 || !seedCopy)
     {
       v10 = arc4random_uniform(0x7FFFFFFFu);
       objc_msgSend_setSeed_(v7, v11, v10);
@@ -50,7 +50,7 @@
 
     else
     {
-      v8 = objc_msgSend_integerValue(v4, v5, v6);
+      v8 = objc_msgSend_integerValue(seedCopy, v5, v6);
       objc_msgSend_setSeed_(v7, v9, v8);
     }
   }
@@ -58,12 +58,12 @@
   return v7;
 }
 
-+ (id)randomGeneratorFromPluginContext:(id)a3
++ (id)randomGeneratorFromPluginContext:(id)context
 {
-  v3 = a3;
-  if (objc_msgSend_isBuild(v3, v4, v5))
+  contextCopy = context;
+  if (objc_msgSend_isBuild(contextCopy, v4, v5))
   {
-    v8 = objc_msgSend_buildAttributes(v3, v6, v7);
+    v8 = objc_msgSend_buildAttributes(contextCopy, v6, v7);
     v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"KNBuildCustomAttributesRandomNumberSeed");
 LABEL_5:
     v14 = v10;
@@ -71,9 +71,9 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if (objc_msgSend_isTransition(v3, v6, v7))
+  if (objc_msgSend_isTransition(contextCopy, v6, v7))
   {
-    v8 = objc_msgSend_transitionAttributes(v3, v11, v12);
+    v8 = objc_msgSend_transitionAttributes(contextCopy, v11, v12);
     v10 = objc_msgSend_objectForKeyedSubscript_(v8, v13, @"KNTransitionCustomAttributesRandomNumberSeed");
     goto LABEL_5;
   }
@@ -86,11 +86,11 @@ LABEL_7:
   return v17;
 }
 
-+ (id)randomGeneratorWithSeed:(id)a3
++ (id)randomGeneratorWithSeed:(id)seed
 {
-  v3 = a3;
+  seedCopy = seed;
   v4 = [KNAnimationRandomGenerator alloc];
-  v6 = objc_msgSend_initWithSeed_(v4, v5, v3);
+  v6 = objc_msgSend_initWithSeed_(v4, v5, seedCopy);
 
   return v6;
 }
@@ -108,7 +108,7 @@ LABEL_7:
   [(KNAnimationRandomGenerator *)&v4 dealloc];
 }
 
-- (void)setSeed:(unint64_t)a3
+- (void)setSeed:(unint64_t)seed
 {
   randGenerator = self->_randGenerator;
   if (!randGenerator)
@@ -119,7 +119,7 @@ LABEL_7:
   }
 
   TSCERandGenerator::setNewDocumentSeed(randGenerator);
-  self->_seed = a3;
+  self->_seed = seed;
 }
 
 - (double)randomDouble
@@ -140,7 +140,7 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)intBetween:(int64_t)a3 :(int64_t)a4
+- (int64_t)intBetween:(int64_t)between :(int64_t)a4
 {
   if (!self->_randGenerator)
   {
@@ -152,51 +152,51 @@ LABEL_7:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  if (a3 >= a4)
+  if (between >= a4)
   {
-    v14 = a4;
+    betweenCopy = a4;
   }
 
   else
   {
-    v14 = a3;
+    betweenCopy = between;
   }
 
-  if (a3 <= a4)
+  if (between <= a4)
   {
-    v15 = a4;
+    betweenCopy2 = a4;
   }
 
   else
   {
-    v15 = a3;
+    betweenCopy2 = between;
   }
 
-  if (v14 <= 0xFFFFFFFF7FFFFFFFLL)
+  if (betweenCopy <= 0xFFFFFFFF7FFFFFFFLL)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNAnimationRandomGenerator intBetween::]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimationRandomGenerator.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 132, 0, "Random generator int between value less that INT_MIN is undefined : %ld.", v14);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 132, 0, "Random generator int between value less that INT_MIN is undefined : %ld.", betweenCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   }
 
-  if (v15 >= 0x80000000)
+  if (betweenCopy2 >= 0x80000000)
   {
     v23 = MEMORY[0x277D81150];
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNAnimationRandomGenerator intBetween::]");
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimationRandomGenerator.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v27, v24, v26, 133, 0, "Random generator int between value greater than INT_MAX is undefined : %ld.", v15);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v27, v24, v26, 133, 0, "Random generator int between value greater than INT_MAX is undefined : %ld.", betweenCopy2);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
   }
 
-  TSCERandGenerator::randWithMinMax(self->_randGenerator, v14, v15);
+  TSCERandGenerator::randWithMinMax(self->_randGenerator, betweenCopy, betweenCopy2);
   return vcvtmd_s64_f64(v30);
 }
 
-- (double)doubleBetween:(double)a3 :(double)a4
+- (double)doubleBetween:(double)between :(double)a4
 {
   randGenerator = self->_randGenerator;
   if (!randGenerator)
@@ -210,27 +210,27 @@ LABEL_7:
     randGenerator = self->_randGenerator;
   }
 
-  if (a3 >= a4)
+  if (between >= a4)
   {
-    v15 = a4;
+    betweenCopy = a4;
   }
 
   else
   {
-    v15 = a3;
+    betweenCopy = between;
   }
 
-  if (a3 >= a4)
+  if (between >= a4)
   {
-    a4 = a3;
+    a4 = between;
   }
 
   TSCERandGenerator::randomDouble(randGenerator);
   v17 = a4 * v16;
-  v18 = v15 * v16;
-  v19 = v15 + v17 - v18;
-  result = v15 + v17 - v18;
-  if (v15 >= 0.0 != a4 < 0.0)
+  v18 = betweenCopy * v16;
+  v19 = betweenCopy + v17 - v18;
+  result = betweenCopy + v17 - v18;
+  if (betweenCopy >= 0.0 != a4 < 0.0)
   {
     return v19;
   }

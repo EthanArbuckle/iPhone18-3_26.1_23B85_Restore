@@ -12,7 +12,7 @@
 - (CGPoint)undoKeyOffset;
 - (CGPoint)variantSymbolTextOffset;
 - (UIEdgeInsets)dynamicInsets;
-- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)a3;
+- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)rows;
 - (UIEdgeInsets)variantSymbolFrameInsets;
 - (UIEdgeInsets)wideShadowPaddleInsets;
 - (UIEdgeInsets)wideShadowPopupMenuInsets;
@@ -30,9 +30,9 @@
 
 - (double)stringKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 20.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneChocoLandscape;
@@ -44,9 +44,9 @@
 
 - (double)assistKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 14.0;
-  if (v3)
+  if (dynamicFactory)
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactoryiPhoneChocoLandscape;
@@ -58,8 +58,8 @@
 
 - (double)moreKeyFontSize
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = 19.0;
   }
@@ -74,8 +74,8 @@
 
 - (double)moreABCKeyFontSize
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = 19.0;
   }
@@ -90,8 +90,8 @@
 
 - (CGPoint)internationalKeyOffset
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 usesCompactKeycapsFont])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig usesCompactKeycapsFont])
   {
     v3 = -1.0;
   }
@@ -110,18 +110,18 @@
 
 - (CGPoint)returnKeyOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v6 = -0.5;
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
     v6 = -2.0;
   }
 
   v7 = -1.0;
-  if (v5)
+  if (dynamicFactory)
   {
     v7 = v6;
   }
@@ -134,13 +134,13 @@
 
 - (CGPoint)dictationKeyOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
-  if (v4 & 1 | !v5)
+  if (usesCompactKeycapsFont & 1 | !dynamicFactory)
   {
     v6 = 0.0;
     v7 = -1.0;
@@ -153,18 +153,18 @@
 
 - (CGPoint)more123KeyOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v6 = 0.5;
   v7 = 0.0;
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
     v6 = 0.0;
   }
 
-  if ((v4 & 1) == 0 && !v5)
+  if ((usesCompactKeycapsFont & 1) == 0 && !dynamicFactory)
   {
     v8.receiver = self;
     v8.super_class = UIKBRenderFactoryiPhoneChocoLandscape;
@@ -178,23 +178,23 @@
 
 - (CGPoint)moreABCKeyOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
-  if ((v4 | v5))
+  if ((usesCompactKeycapsFont | dynamicFactory))
   {
     v6 = 0.0;
   }
 
-  if (v5)
+  if (dynamicFactory)
   {
     v7 = -0.5;
   }
 
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
     v7 = 0.0;
   }
@@ -206,18 +206,18 @@
 
 - (CGPoint)realEmojiKeyOffset
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v6 = -1.0;
-  if (!v4)
+  if (!usesCompactKeycapsFont)
   {
     v6 = -0.5;
   }
 
   v7 = 0.0;
-  if ((v4 & 1) == 0 && v5)
+  if ((usesCompactKeycapsFont & 1) == 0 && dynamicFactory)
   {
     v8.receiver = self;
     v8.super_class = UIKBRenderFactoryiPhoneChocoLandscape;
@@ -313,15 +313,15 @@
 
 - (UIEdgeInsets)variantSymbolFrameInsets
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v3 = 4.5;
-  if (v2)
+  if (dynamicFactory)
   {
     v3 = -7.0;
   }
 
   v4 = 7.5;
-  if (!v2)
+  if (!dynamicFactory)
   {
     v4 = -1.5;
   }
@@ -337,9 +337,9 @@
 
 - (CGPoint)variantSymbolTextOffset
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v3 = 1.0;
-  if (!v2)
+  if (!dynamicFactory)
   {
     v3 = 2.0;
   }
@@ -352,9 +352,9 @@
 
 - (CGPoint)popupSymbolTextOffset
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   v3 = -7.0;
-  if (!v2)
+  if (!dynamicFactory)
   {
     v3 = -6.0;
   }
@@ -402,9 +402,9 @@
 
 - (double)dynamicBottomRowMultiplier
 {
-  v2 = [(UIKBRenderFactory *)self dynamicFactory];
+  dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
   result = 0.1;
-  if (v2)
+  if (dynamicFactory)
   {
     return 0.125;
   }
@@ -412,14 +412,14 @@
   return result;
 }
 
-- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)a3
+- (UIEdgeInsets)dynamicInsetsForNumberOfRows:(unint64_t)rows
 {
-  if (a3 > 4)
+  if (rows > 4)
   {
-    v8 = [(UIKBRenderFactory *)self dynamicFactory];
+    dynamicFactory = [(UIKBRenderFactory *)self dynamicFactory];
     v3 = 0.0;
     v9 = 1.0;
-    if (v8)
+    if (dynamicFactory)
     {
       v6 = 1.0;
     }
@@ -429,12 +429,12 @@
       v6 = 0.0;
     }
 
-    if (v8)
+    if (dynamicFactory)
     {
       v9 = 2.0;
     }
 
-    if (a3 == 5)
+    if (rows == 5)
     {
       v5 = v9;
     }
@@ -444,7 +444,7 @@
       v5 = v6;
     }
 
-    if (a3 == 5)
+    if (rows == 5)
     {
       v6 = v9;
     }
@@ -466,23 +466,23 @@
 
 - (id)lightKeycapsFontName
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
-  v5 = [(UIKBRenderFactory *)self boldTextEnabled];
+  boldTextEnabled = [(UIKBRenderFactory *)self boldTextEnabled];
   v6 = @".KeycapsB-Keys";
-  if (v5)
+  if (boldTextEnabled)
   {
     v6 = @".PhoneKeyCaps";
   }
 
   v7 = @"UIKBRenderFactorySystemCompactFontName";
-  if (v5)
+  if (boldTextEnabled)
   {
     v7 = @".SFCompact-Bold";
   }
 
-  if (v4)
+  if (usesCompactKeycapsFont)
   {
     v8 = v7;
   }

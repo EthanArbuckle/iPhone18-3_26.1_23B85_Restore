@@ -1,7 +1,7 @@
 @interface BKAppImportCoordinator
 - (BKAppImportCoordinator)init;
-- (void)_handleImportedAndPotentiallyMigratedAsset:(id)a3 canShow:(BOOL)a4 transaction:(id)a5;
-- (void)importBookFromURL:(id)a3 openAfterImport:(BOOL)a4 importInPlace:(BOOL)a5 showLibraryAllCollection:(BOOL)a6 switchToLibrary:(BOOL)a7 transaction:(id)a8 completion:(id)a9;
+- (void)_handleImportedAndPotentiallyMigratedAsset:(id)asset canShow:(BOOL)show transaction:(id)transaction;
+- (void)importBookFromURL:(id)l openAfterImport:(BOOL)import importInPlace:(BOOL)place showLibraryAllCollection:(BOOL)collection switchToLibrary:(BOOL)library transaction:(id)transaction completion:(id)completion;
 @end
 
 @implementation BKAppImportCoordinator
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)importBookFromURL:(id)a3 openAfterImport:(BOOL)a4 importInPlace:(BOOL)a5 showLibraryAllCollection:(BOOL)a6 switchToLibrary:(BOOL)a7 transaction:(id)a8 completion:(id)a9
+- (void)importBookFromURL:(id)l openAfterImport:(BOOL)import importInPlace:(BOOL)place showLibraryAllCollection:(BOOL)collection switchToLibrary:(BOOL)library transaction:(id)transaction completion:(id)completion
 {
-  v12 = a3;
-  v13 = a8;
-  v14 = a9;
+  lCopy = l;
+  transactionCopy = transaction;
+  completionCopy = completion;
   +[NSDate timeIntervalSinceReferenceDate];
   v16 = v15;
   [(BKAppImportCoordinator *)self lastImportedBookTimestamp];
@@ -45,21 +45,21 @@
   v59[1] = 3221225472;
   v59[2] = sub_100076A64;
   v59[3] = &unk_100A03440;
-  v18 = [[BKResolveAssetForImportOperation alloc] initWithURL:v12];
+  v18 = [[BKResolveAssetForImportOperation alloc] initWithURL:lCopy];
   v60 = v18;
-  v61 = self;
+  selfCopy = self;
   v19 = objc_retainBlock(v59);
   v53[0] = _NSConcreteStackBlock;
   v53[1] = 3221225472;
   v53[2] = sub_100076AA4;
   v53[3] = &unk_100A04690;
-  v20 = v14;
+  v20 = completionCopy;
   v55 = v20;
   v21 = v19;
   v56 = v21;
   v53[4] = self;
-  v58 = a5;
-  v22 = v13;
+  placeCopy = place;
+  v22 = transactionCopy;
   v54 = v22;
   v57 = v62;
   v51[0] = _NSConcreteStackBlock;
@@ -82,16 +82,16 @@
   block[1] = 3221225472;
   block[2] = sub_100077888;
   block[3] = &unk_100A047D0;
-  v37 = v12;
-  v38 = self;
+  v37 = lCopy;
+  selfCopy2 = self;
   v41 = v21;
   v42 = v20;
-  v45 = a6;
+  collectionCopy = collection;
   v39 = v18;
   v40 = v22;
   v46 = v33;
-  v47 = a5;
-  v48 = a7;
+  placeCopy2 = place;
+  libraryCopy = library;
   v43 = v23;
   v44 = v62;
   v25 = v23;
@@ -99,17 +99,17 @@
   v27 = v20;
   v28 = v21;
   v29 = v18;
-  v30 = v12;
+  v30 = lCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v62, 8);
 }
 
-- (void)_handleImportedAndPotentiallyMigratedAsset:(id)a3 canShow:(BOOL)a4 transaction:(id)a5
+- (void)_handleImportedAndPotentiallyMigratedAsset:(id)asset canShow:(BOOL)show transaction:(id)transaction
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  assetCopy = asset;
+  transactionCopy = transaction;
+  if (assetCopy)
   {
     v10 = +[BKLibraryManager defaultManager];
     v11[0] = _NSConcreteStackBlock;
@@ -117,9 +117,9 @@
     v11[2] = sub_100077FDC;
     v11[3] = &unk_100A047F8;
     v11[4] = self;
-    v12 = v8;
-    v14 = a4;
-    v13 = v9;
+    v12 = assetCopy;
+    showCopy = show;
+    v13 = transactionCopy;
     [v10 addCustomOperationBlock:v11];
   }
 }

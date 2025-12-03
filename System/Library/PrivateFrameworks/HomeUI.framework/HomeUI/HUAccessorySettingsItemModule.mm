@@ -1,52 +1,52 @@
 @interface HUAccessorySettingsItemModule
-- (BOOL)checkSoftwareVersionForAccessories:(id)a3 neededSoftwareVersion:(id)a4;
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5 usageOptions:(id)a6;
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 homeKitSettingsVendor:(id)a4 usageOptions:(id)a5;
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 mediaAccessoryItem:(id)a4;
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 settingGroupItem:(id)a4 usageOptions:(id)a5;
-- (id)_itemSectionForGroup:(id)a3 entity:(id)a4 settingItems:(id)a5 groupItems:(id)a6;
-- (id)_itemSectionWithEntity:(id)a3 items:(id)a4;
-- (id)_itemSectionsForGroupKeyPaths:(id)a3;
+- (BOOL)checkSoftwareVersionForAccessories:(id)accessories neededSoftwareVersion:(id)version;
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item usageOptions:(id)options;
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater homeKitSettingsVendor:(id)vendor usageOptions:(id)options;
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater mediaAccessoryItem:(id)item;
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater settingGroupItem:(id)item usageOptions:(id)options;
+- (id)_itemSectionForGroup:(id)group entity:(id)entity settingItems:(id)items groupItems:(id)groupItems;
+- (id)_itemSectionWithEntity:(id)entity items:(id)items;
+- (id)_itemSectionsForGroupKeyPaths:(id)paths;
 - (id)_itemSectionsForParentGroupWithItems;
-- (id)_itemSectionsForShowInSeperateSectionItems:(id)a3;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
-- (id)getAllHomePodFromItem:(id)a3;
+- (id)_itemSectionsForShowInSeperateSectionItems:(id)items;
+- (id)buildSectionsWithDisplayedItems:(id)items;
+- (id)getAllHomePodFromItem:(id)item;
 - (id)itemProviders;
-- (id)updateItem:(id)a3 withValue:(id)a4;
+- (id)updateItem:(id)item withValue:(id)value;
 - (void)_registerForAccessorySettingsUpdates;
 - (void)_resetIfNeeded;
 - (void)_unregisterForAccessorySettingsUpdates;
-- (void)updateItems:(id)a3;
-- (void)updateItems:(id)a3 matchingDependency:(id)a4;
-- (void)updateItemsForKeyPath:(id)a3;
+- (void)updateItems:(id)items;
+- (void)updateItems:(id)items matchingDependency:(id)dependency;
+- (void)updateItemsForKeyPath:(id)path;
 @end
 
 @implementation HUAccessorySettingsItemModule
 
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 mediaAccessoryItem:(id)a4
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater mediaAccessoryItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 accessories];
-  v9 = [v8 anyObject];
-  v10 = [v9 home];
-  v11 = [(HUAccessorySettingsItemModule *)self initWithItemUpdater:v7 home:v10 sourceItem:v6 usageOptions:0];
+  itemCopy = item;
+  updaterCopy = updater;
+  accessories = [itemCopy accessories];
+  anyObject = [accessories anyObject];
+  home = [anyObject home];
+  v11 = [(HUAccessorySettingsItemModule *)self initWithItemUpdater:updaterCopy home:home sourceItem:itemCopy usageOptions:0];
 
   return v11;
 }
 
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5 usageOptions:(id)a6
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item usageOptions:(id)options
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13FC8]];
+  updaterCopy = updater;
+  homeCopy = home;
+  itemCopy = item;
+  optionsCopy = options;
+  latestResults = [itemCopy latestResults];
+  homeKitSettingsVendor = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FC8]];
   v17 = &unk_282575DB0;
-  if ([v16 conformsToProtocol:v17])
+  if ([homeKitSettingsVendor conformsToProtocol:v17])
   {
-    v18 = v16;
+    v18 = homeKitSettingsVendor;
   }
 
   else
@@ -58,38 +58,38 @@
 
   if (!v19)
   {
-    v20 = v13;
+    v20 = itemCopy;
     v21 = [v20 conformsToProtocol:&unk_28251B378] ? v20 : 0;
     v22 = v21;
 
-    v16 = [v22 homeKitSettingsVendor];
+    homeKitSettingsVendor = [v22 homeKitSettingsVendor];
 
-    if (!v16)
+    if (!homeKitSettingsVendor)
     {
-      v33 = [MEMORY[0x277CCA890] currentHandler];
-      [v33 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModule.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModule.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"homeKitSettingsVendor"}];
 
-      v16 = 0;
+      homeKitSettingsVendor = 0;
     }
   }
 
   v34.receiver = self;
   v34.super_class = HUAccessorySettingsItemModule;
-  v23 = [(HUServiceDetailsItemModule *)&v34 initWithItemUpdater:v11 home:v12 sourceItem:v13];
+  v23 = [(HUServiceDetailsItemModule *)&v34 initWithItemUpdater:updaterCopy home:homeCopy sourceItem:itemCopy];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_homeKitSettingsVendor, v16);
-    v25 = [v16 settings];
+    objc_storeStrong(&v23->_homeKitSettingsVendor, homeKitSettingsVendor);
+    settings = [homeKitSettingsVendor settings];
     settings = v24->_settings;
-    v24->_settings = v25;
+    v24->_settings = settings;
 
-    v27 = [v16 settings];
-    v28 = [v27 hf_codex];
+    settings2 = [homeKitSettingsVendor settings];
+    hf_codex = [settings2 hf_codex];
     codex = v24->_codex;
-    v24->_codex = v28;
+    v24->_codex = hf_codex;
 
-    v30 = [objc_alloc(MEMORY[0x277D14360]) initWithHomeKitSettingsVendor:v16 settingGroup:0 usageOptions:v14];
+    v30 = [objc_alloc(MEMORY[0x277D14360]) initWithHomeKitSettingsVendor:homeKitSettingsVendor settingGroup:0 usageOptions:optionsCopy];
     accessorySettingsItemProvider = v24->_accessorySettingsItemProvider;
     v24->_accessorySettingsItemProvider = v30;
   }
@@ -97,39 +97,39 @@
   return v24;
 }
 
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 homeKitSettingsVendor:(id)a4 usageOptions:(id)a5
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater homeKitSettingsVendor:(id)vendor usageOptions:(id)options
 {
   v8 = MEMORY[0x277D14340];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithHomeKitSettingsVendor:v10 usageOptions:v9];
+  optionsCopy = options;
+  vendorCopy = vendor;
+  updaterCopy = updater;
+  v12 = [[v8 alloc] initWithHomeKitSettingsVendor:vendorCopy usageOptions:optionsCopy];
 
-  v13 = [(HUAccessorySettingsItemModule *)self initWithItemUpdater:v11 settingGroupItem:v12 usageOptions:v9];
+  v13 = [(HUAccessorySettingsItemModule *)self initWithItemUpdater:updaterCopy settingGroupItem:v12 usageOptions:optionsCopy];
   return v13;
 }
 
-- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)a3 settingGroupItem:(id)a4 usageOptions:(id)a5
+- (HUAccessorySettingsItemModule)initWithItemUpdater:(id)updater settingGroupItem:(id)item usageOptions:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 homeKitSettingsVendor];
-  v12 = [v11 hf_home];
-  v13 = [(HUAccessorySettingsItemModule *)self initWithItemUpdater:v10 home:v12 sourceItem:v8 usageOptions:v9];
+  itemCopy = item;
+  optionsCopy = options;
+  updaterCopy = updater;
+  homeKitSettingsVendor = [itemCopy homeKitSettingsVendor];
+  hf_home = [homeKitSettingsVendor hf_home];
+  v13 = [(HUAccessorySettingsItemModule *)self initWithItemUpdater:updaterCopy home:hf_home sourceItem:itemCopy usageOptions:optionsCopy];
 
   if (v13)
   {
-    v14 = [v8 entity];
+    entity = [itemCopy entity];
     parentEntity = v13->_parentEntity;
-    v13->_parentEntity = v14;
+    v13->_parentEntity = entity;
 
-    v16 = [v8 settingGroup];
+    settingGroup = [itemCopy settingGroup];
     parentSettingGroup = v13->_parentSettingGroup;
-    v13->_parentSettingGroup = v16;
+    v13->_parentSettingGroup = settingGroup;
 
-    v18 = [v8 settingGroup];
-    [(HFAccessorySettingsItemProvider *)v13->_accessorySettingsItemProvider setSettingGroup:v18];
+    settingGroup2 = [itemCopy settingGroup];
+    [(HFAccessorySettingsItemProvider *)v13->_accessorySettingsItemProvider setSettingGroup:settingGroup2];
   }
 
   return v13;
@@ -146,8 +146,8 @@
   else
   {
     v5 = objc_opt_new();
-    v6 = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
-    [(NSSet *)v5 na_safeAddObject:v6];
+    accessorySettingsItemProvider = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
+    [(NSSet *)v5 na_safeAddObject:accessorySettingsItemProvider];
 
     v7 = self->_itemProviders;
     self->_itemProviders = v5;
@@ -159,42 +159,42 @@
   return v3;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   [(HUAccessorySettingsItemModule *)self _resetIfNeeded];
-  v5 = [(HUAccessorySettingsItemModule *)self settings];
-  if (!v5)
+  settings = [(HUAccessorySettingsItemModule *)self settings];
+  if (!settings)
   {
     goto LABEL_15;
   }
 
-  v6 = v5;
-  v7 = [(HUAccessorySettingsItemModule *)self parentSettingGroup];
-  if (!v7)
+  v6 = settings;
+  parentSettingGroup = [(HUAccessorySettingsItemModule *)self parentSettingGroup];
+  if (!parentSettingGroup)
   {
 
     goto LABEL_15;
   }
 
-  v8 = v7;
-  v9 = [(HUAccessorySettingsItemModule *)self codex];
+  v8 = parentSettingGroup;
+  codex = [(HUAccessorySettingsItemModule *)self codex];
 
-  if (!v9)
+  if (!codex)
   {
 LABEL_15:
     v29 = MEMORY[0x277CBEBF8];
     goto LABEL_16;
   }
 
-  v10 = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
+  accessorySettingsItemProvider = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __65__HUAccessorySettingsItemModule_buildSectionsWithDisplayedItems___block_invoke;
   v49[3] = &unk_277DB85D8;
-  v11 = v10;
+  v11 = accessorySettingsItemProvider;
   v50 = v11;
-  v12 = [v4 na_filter:v49];
+  v12 = [itemsCopy na_filter:v49];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __65__HUAccessorySettingsItemModule_buildSectionsWithDisplayedItems___block_invoke_2;
@@ -213,24 +213,24 @@ LABEL_15:
   [(HUAccessorySettingsItemModule *)self setGroupItemsToBeDisplayed:v14];
 
   v15 = objc_opt_new();
-  v16 = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
-  v17 = [v16 settingGroup];
-  v18 = [v17 keyPath];
+  accessorySettingsItemProvider2 = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
+  settingGroup = [accessorySettingsItemProvider2 settingGroup];
+  keyPath = [settingGroup keyPath];
 
   v19 = MEMORY[0x277CBEB40];
-  v20 = [(HUAccessorySettingsItemModule *)self codex];
-  v45 = v18;
-  v21 = [v20 hf_nodeWithKeyPath:v18];
-  v22 = [v21 hf_sortedAccessorySettingsChildren];
-  v23 = [v22 na_filter:&__block_literal_global_209];
+  codex2 = [(HUAccessorySettingsItemModule *)self codex];
+  v45 = keyPath;
+  v21 = [codex2 hf_nodeWithKeyPath:keyPath];
+  hf_sortedAccessorySettingsChildren = [v21 hf_sortedAccessorySettingsChildren];
+  v23 = [hf_sortedAccessorySettingsChildren na_filter:&__block_literal_global_209];
   v24 = [v23 na_map:&__block_literal_global_111_4];
   v25 = [v19 orderedSetWithArray:v24];
 
-  v26 = [(HUAccessorySettingsItemModule *)self _itemSectionsForParentGroupWithItems];
-  [v15 addObjectsFromArray:v26];
+  _itemSectionsForParentGroupWithItems = [(HUAccessorySettingsItemModule *)self _itemSectionsForParentGroupWithItems];
+  [v15 addObjectsFromArray:_itemSectionsForParentGroupWithItems];
 
-  v27 = [(HUAccessorySettingsItemModule *)self parentEntity];
-  LODWORD(v24) = [v27 wantsSeparateSectionPerGroup];
+  parentEntity = [(HUAccessorySettingsItemModule *)self parentEntity];
+  LODWORD(v24) = [parentEntity wantsSeparateSectionPerGroup];
 
   if (v24)
   {
@@ -239,19 +239,19 @@ LABEL_15:
   }
 
   v29 = [v15 sortedArrayUsingComparator:&__block_literal_global_114_2];
-  v30 = [(HUAccessorySettingsItemModule *)self parentEntity];
-  v31 = [v30 adapterIdentifier];
+  parentEntity2 = [(HUAccessorySettingsItemModule *)self parentEntity];
+  adapterIdentifier = [parentEntity2 adapterIdentifier];
 
-  if (v31)
+  if (adapterIdentifier)
   {
     v42 = v25;
     v43 = v15;
     v44 = v11;
-    v32 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
-    v33 = [v32 hf_settingsAdapterManager];
-    v34 = [(HUAccessorySettingsItemModule *)self parentEntity];
-    v35 = [v34 adapterIdentifier];
-    v36 = [v33 adapterForIdentifier:v35];
+    homeKitSettingsVendor = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
+    hf_settingsAdapterManager = [homeKitSettingsVendor hf_settingsAdapterManager];
+    parentEntity3 = [(HUAccessorySettingsItemModule *)self parentEntity];
+    adapterIdentifier2 = [parentEntity3 adapterIdentifier];
+    v36 = [hf_settingsAdapterManager adapterForIdentifier:adapterIdentifier2];
     if ([v36 conformsToProtocol:&unk_2825BDAE0])
     {
       v37 = v36;
@@ -266,8 +266,8 @@ LABEL_15:
 
     if (objc_opt_respondsToSelector())
     {
-      v39 = [(HUAccessorySettingsItemModule *)self parentEntity];
-      v40 = [v38 customizeSections:v29 forEntity:v39];
+      parentEntity4 = [(HUAccessorySettingsItemModule *)self parentEntity];
+      v40 = [v38 customizeSections:v29 forEntity:parentEntity4];
 
       v29 = v40;
     }
@@ -404,27 +404,27 @@ uint64_t __65__HUAccessorySettingsItemModule_buildSectionsWithDisplayedItems___b
   return v9;
 }
 
-- (void)updateItems:(id)a3
+- (void)updateItems:(id)items
 {
-  v6 = [MEMORY[0x277D14788] requestToUpdateItems:a3 senderSelector:a2];
-  v4 = [(HFItemModule *)self itemUpdater];
-  v5 = [v4 performItemUpdateRequest:v6];
+  v6 = [MEMORY[0x277D14788] requestToUpdateItems:items senderSelector:a2];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v5 = [itemUpdater performItemUpdateRequest:v6];
 }
 
-- (void)updateItems:(id)a3 matchingDependency:(id)a4
+- (void)updateItems:(id)items matchingDependency:(id)dependency
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB58] setWithSet:a3];
-  v8 = [(HUAccessorySettingsItemModule *)self itemProviders];
+  dependencyCopy = dependency;
+  v7 = [MEMORY[0x277CBEB58] setWithSet:items];
+  itemProviders = [(HUAccessorySettingsItemModule *)self itemProviders];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __64__HUAccessorySettingsItemModule_updateItems_matchingDependency___block_invoke;
   v14 = &unk_277DC1718;
-  v15 = v6;
+  v15 = dependencyCopy;
   v16 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 na_each:&v11];
+  v10 = dependencyCopy;
+  [itemProviders na_each:&v11];
 
   [(HUAccessorySettingsItemModule *)self updateItems:v9, v11, v12, v13, v14];
 }
@@ -454,20 +454,20 @@ void __64__HUAccessorySettingsItemModule_updateItems_matchingDependency___block_
   }
 }
 
-- (void)updateItemsForKeyPath:(id)a3
+- (void)updateItemsForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_opt_new();
-  v6 = [(HUAccessorySettingsItemModule *)self itemProviders];
+  itemProviders = [(HUAccessorySettingsItemModule *)self itemProviders];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __55__HUAccessorySettingsItemModule_updateItemsForKeyPath___block_invoke;
   v12 = &unk_277DC1718;
-  v13 = v4;
+  v13 = pathCopy;
   v14 = v5;
   v7 = v5;
-  v8 = v4;
-  [v6 na_each:&v9];
+  v8 = pathCopy;
+  [itemProviders na_each:&v9];
 
   [(HUAccessorySettingsItemModule *)self updateItems:v7, v9, v10, v11, v12];
 }
@@ -497,38 +497,38 @@ void __55__HUAccessorySettingsItemModule_updateItemsForKeyPath___block_invoke_2(
   }
 }
 
-- (id)updateItem:(id)a3 withValue:(id)a4
+- (id)updateItem:(id)item withValue:(id)value
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 latestResults];
-  v8 = [v7 objectForKey:*MEMORY[0x277D13370]];
+  itemCopy = item;
+  valueCopy = value;
+  latestResults = [itemCopy latestResults];
+  v8 = [latestResults objectForKey:*MEMORY[0x277D13370]];
 
   v9 = HFLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v29 = v5;
+    v29 = itemCopy;
     v30 = 2112;
     v31 = v8;
     v32 = 2112;
-    v33 = v6;
+    v33 = valueCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Attempting to update item '%@' (Setting: %@) to value: %@", buf, 0x20u);
   }
 
-  if (v5 && v8)
+  if (itemCopy && v8)
   {
-    v10 = [v5 updateValue:v6];
+    v10 = [itemCopy updateValue:valueCopy];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __54__HUAccessorySettingsItemModule_updateItem_withValue___block_invoke;
     v24[3] = &unk_277DBE710;
-    v11 = v5;
+    v11 = itemCopy;
     v25 = v11;
     v12 = v8;
     v26 = v12;
-    v13 = v6;
+    v13 = valueCopy;
     v27 = v13;
     v14 = [v10 addFailureBlock:v24];
 
@@ -550,9 +550,9 @@ void __55__HUAccessorySettingsItemModule_updateItemsForKeyPath___block_invoke_2(
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v29 = v5;
+      v29 = itemCopy;
       v30 = 2112;
-      v31 = v6;
+      v31 = valueCopy;
       _os_log_error_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_ERROR, "Failed to update setting; no item or setting for item: %@ / value: %@", buf, 0x16u);
     }
 
@@ -609,172 +609,172 @@ void __54__HUAccessorySettingsItemModule_updateItem_withValue___block_invoke_136
 
 - (void)_registerForAccessorySettingsUpdates
 {
-  v4 = [(HUAccessorySettingsItemModule *)self settings];
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  if (v4)
+  settings = [(HUAccessorySettingsItemModule *)self settings];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  if (settings)
   {
-    [v3 addHomeKitSettingsObserver:self];
+    [mEMORY[0x277D146E8] addHomeKitSettingsObserver:self];
   }
 
   else
   {
-    [v3 addMediaObjectObserver:self];
+    [mEMORY[0x277D146E8] addMediaObjectObserver:self];
   }
 }
 
 - (void)_unregisterForAccessorySettingsUpdates
 {
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v3 removeHomeKitSettingsObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] removeHomeKitSettingsObserver:self];
 
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v4 removeMediaObjectObserver:self];
+  mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8]2 removeMediaObjectObserver:self];
 }
 
-- (id)_itemSectionWithEntity:(id)a3 items:(id)a4
+- (id)_itemSectionWithEntity:(id)entity items:(id)items
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  entityCopy = entity;
+  itemsCopy = items;
+  if (!itemsCopy)
   {
-    v39 = [MEMORY[0x277CCA890] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModule.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"items"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsItemModule.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"items"}];
   }
 
-  v9 = [v7 keyPath];
-  v10 = v9;
-  if (v9)
+  keyPath = [entityCopy keyPath];
+  v10 = keyPath;
+  if (keyPath)
   {
-    v11 = v9;
+    uUIDString = keyPath;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v12 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:v11];
-  [v13 setItems:v8];
-  v14 = [v7 headerTitleFormatter];
+  v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:uUIDString];
+  [v13 setItems:itemsCopy];
+  headerTitleFormatter = [entityCopy headerTitleFormatter];
 
-  if (v14)
+  if (headerTitleFormatter)
   {
-    v15 = [v7 headerTitleFormatter];
-    v16 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
-    v17 = [v15 attributedStringForObjectValue:v16 withDefaultAttributes:0];
+    headerTitleFormatter2 = [entityCopy headerTitleFormatter];
+    homeKitSettingsVendor = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
+    localizedHeader2 = [headerTitleFormatter2 attributedStringForObjectValue:homeKitSettingsVendor withDefaultAttributes:0];
 
-    if (v17)
+    if (localizedHeader2)
     {
-      [v13 setAttributedHeaderTitle:v17];
+      [v13 setAttributedHeaderTitle:localizedHeader2];
     }
 
     else
     {
-      v19 = [v7 headerTitleFormatter];
-      v20 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
-      v21 = [v19 stringForObjectValue:v20];
+      headerTitleFormatter3 = [entityCopy headerTitleFormatter];
+      homeKitSettingsVendor2 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
+      v21 = [headerTitleFormatter3 stringForObjectValue:homeKitSettingsVendor2];
       [v13 setHeaderTitle:v21];
 
-      v17 = 0;
+      localizedHeader2 = 0;
     }
   }
 
   else
   {
-    v18 = [v7 localizedHeader];
+    localizedHeader = [entityCopy localizedHeader];
 
-    if (!v18)
+    if (!localizedHeader)
     {
       goto LABEL_13;
     }
 
-    v17 = [v7 localizedHeader];
-    [v13 setHeaderTitle:v17];
+    localizedHeader2 = [entityCopy localizedHeader];
+    [v13 setHeaderTitle:localizedHeader2];
   }
 
 LABEL_13:
-  v22 = [v7 footerTitleFormatter];
+  footerTitleFormatter = [entityCopy footerTitleFormatter];
 
-  if (v22)
+  if (footerTitleFormatter)
   {
-    v23 = [v7 footerTitleFormatter];
-    v24 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
-    v25 = [v23 attributedStringForObjectValue:v24 withDefaultAttributes:0];
+    footerTitleFormatter2 = [entityCopy footerTitleFormatter];
+    homeKitSettingsVendor3 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
+    localizedFooter2 = [footerTitleFormatter2 attributedStringForObjectValue:homeKitSettingsVendor3 withDefaultAttributes:0];
 
-    if (v25)
+    if (localizedFooter2)
     {
-      [v13 setAttributedFooterTitle:v25];
+      [v13 setAttributedFooterTitle:localizedFooter2];
     }
 
     else
     {
-      v27 = [v7 footerTitleFormatter];
-      v28 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
-      v29 = [v27 stringForObjectValue:v28];
+      footerTitleFormatter3 = [entityCopy footerTitleFormatter];
+      homeKitSettingsVendor4 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
+      v29 = [footerTitleFormatter3 stringForObjectValue:homeKitSettingsVendor4];
       [v13 setFooterTitle:v29];
 
-      v25 = 0;
+      localizedFooter2 = 0;
     }
   }
 
   else
   {
-    v26 = [v7 localizedFooter];
+    localizedFooter = [entityCopy localizedFooter];
 
-    if (!v26)
+    if (!localizedFooter)
     {
       goto LABEL_20;
     }
 
-    v25 = [v7 localizedFooter];
-    [v13 setFooterTitle:v25];
+    localizedFooter2 = [entityCopy localizedFooter];
+    [v13 setFooterTitle:localizedFooter2];
   }
 
 LABEL_20:
-  if (!v7)
+  if (!entityCopy)
   {
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", 0x7FFFFFFFFFFFFFFFLL, @"HUAccessorySettingsItemModuleSortKey"];
-    v41 = v30;
-    v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    [v13 setUserInfo:v31];
+    sortKey = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", 0x7FFFFFFFFFFFFFFFLL, @"HUAccessorySettingsItemModuleSortKey"];
+    v41 = sortKey;
+    0x7FFFFFFFFFFFFFFFLL = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
+    [v13 setUserInfo:0x7FFFFFFFFFFFFFFFLL];
 LABEL_26:
 
     goto LABEL_27;
   }
 
   v42 = @"HUAccessorySettingsItemModuleSortKey";
-  v30 = [v7 sortKey];
-  v31 = v30;
-  if (!v30)
+  sortKey = [entityCopy sortKey];
+  0x7FFFFFFFFFFFFFFFLL = sortKey;
+  if (!sortKey)
   {
-    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 0x7FFFFFFFFFFFFFFFLL];
+    0x7FFFFFFFFFFFFFFFLL = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 0x7FFFFFFFFFFFFFFFLL];
   }
 
-  v43[0] = v31;
+  v43[0] = 0x7FFFFFFFFFFFFFFFLL;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:&v42 count:1];
   [v13 setUserInfo:v32];
 
-  if (!v30)
+  if (!sortKey)
   {
     goto LABEL_26;
   }
 
 LABEL_27:
 
-  v33 = [v7 adapterIdentifier];
+  adapterIdentifier = [entityCopy adapterIdentifier];
 
-  if (v33)
+  if (adapterIdentifier)
   {
-    v34 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
-    v35 = [v34 hf_settingsAdapterManager];
-    v36 = [v7 adapterIdentifier];
-    v37 = [v35 adapterForIdentifier:v36];
+    homeKitSettingsVendor5 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
+    hf_settingsAdapterManager = [homeKitSettingsVendor5 hf_settingsAdapterManager];
+    adapterIdentifier2 = [entityCopy adapterIdentifier];
+    v37 = [hf_settingsAdapterManager adapterForIdentifier:adapterIdentifier2];
 
     if (objc_opt_respondsToSelector())
     {
-      [v37 configureSection:v13 forEntity:v7];
+      [v37 configureSection:v13 forEntity:entityCopy];
     }
   }
 
@@ -783,20 +783,20 @@ LABEL_27:
 
 - (id)_itemSectionsForParentGroupWithItems
 {
-  v2 = self;
+  selfCopy = self;
   v44 = *MEMORY[0x277D85DE8];
-  v29 = [(HUAccessorySettingsItemModule *)self settingItemsToBeDisplayed];
-  v26 = [(HUAccessorySettingsItemModule *)v2 groupItemsToBeDisplayed];
+  settingItemsToBeDisplayed = [(HUAccessorySettingsItemModule *)self settingItemsToBeDisplayed];
+  groupItemsToBeDisplayed = [(HUAccessorySettingsItemModule *)selfCopy groupItemsToBeDisplayed];
   v27 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = [(HUAccessorySettingsItemModule *)v2 parentSettingGroup];
-  v4 = [v3 settings];
+  parentSettingGroup = [(HUAccessorySettingsItemModule *)selfCopy parentSettingGroup];
+  settings = [parentSettingGroup settings];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  obj = settings;
+  v5 = [settings countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -816,13 +816,13 @@ LABEL_27:
         v34[2] = __69__HUAccessorySettingsItemModule__itemSectionsForParentGroupWithItems__block_invoke;
         v34[3] = &unk_277DB85D8;
         v34[4] = v9;
-        v10 = [v29 na_firstObjectPassingTest:v34];
+        v10 = [settingItemsToBeDisplayed na_firstObjectPassingTest:v34];
         if (v10)
         {
-          v11 = v2;
-          v12 = [(HUAccessorySettingsItemModule *)v2 codex];
-          v13 = [v9 keyPath];
-          v14 = [v12 hf_nodeWithKeyPath:v13];
+          v11 = selfCopy;
+          codex = [(HUAccessorySettingsItemModule *)selfCopy codex];
+          keyPath = [v9 keyPath];
+          v14 = [codex hf_nodeWithKeyPath:keyPath];
 
           if (v14)
           {
@@ -834,16 +834,16 @@ LABEL_27:
             v15 = HFLogForCategory();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v9 keyPath];
+              keyPath2 = [v9 keyPath];
               *buf = 138412546;
               v40 = v10;
               v41 = 2112;
-              v42 = v16;
+              v42 = keyPath2;
               _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Dropping item (%@) with setting not in allowlist: %@", buf, 0x16u);
             }
           }
 
-          v2 = v11;
+          selfCopy = v11;
         }
       }
 
@@ -853,10 +853,10 @@ LABEL_27:
     while (v6);
   }
 
-  v17 = [(HUAccessorySettingsItemModule *)v2 parentEntity];
-  v18 = [v17 wantsSeparateSectionPerGroup];
+  parentEntity = [(HUAccessorySettingsItemModule *)selfCopy parentEntity];
+  wantsSeparateSectionPerGroup = [parentEntity wantsSeparateSectionPerGroup];
 
-  if (v18)
+  if (wantsSeparateSectionPerGroup)
   {
     v19 = objc_opt_new();
     v30[0] = MEMORY[0x277D85DD0];
@@ -866,10 +866,10 @@ LABEL_27:
     v20 = v31;
     v21 = v19;
     v31[0] = v21;
-    v31[1] = v2;
+    v31[1] = selfCopy;
     v22 = v27;
     [v27 enumerateObjectsUsingBlock:v30];
-    v23 = v26;
+    v23 = groupItemsToBeDisplayed;
   }
 
   else
@@ -882,10 +882,10 @@ LABEL_27:
     v22 = v27;
     v24 = v27;
     v33 = v24;
-    v23 = v26;
-    [v26 na_each:v32];
+    v23 = groupItemsToBeDisplayed;
+    [groupItemsToBeDisplayed na_each:v32];
     [v24 sortUsingComparator:&__block_literal_global_156_1];
-    v21 = [(HUAccessorySettingsItemModule *)v2 _itemSectionsForShowInSeperateSectionItems:v24];
+    v21 = [(HUAccessorySettingsItemModule *)selfCopy _itemSectionsForShowInSeperateSectionItems:v24];
   }
 
   return v21;
@@ -939,17 +939,17 @@ void __69__HUAccessorySettingsItemModule__itemSectionsForParentGroupWithItems__b
   [v2 na_safeAddObject:v7];
 }
 
-- (id)_itemSectionsForShowInSeperateSectionItems:(id)a3
+- (id)_itemSectionsForShowInSeperateSectionItems:(id)items
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
-  v5 = [v3 mutableCopy];
+  v5 = [itemsCopy mutableCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v3;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
@@ -965,15 +965,15 @@ void __69__HUAccessorySettingsItemModule__itemSectionsForParentGroupWithItems__b
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 entity];
-        v13 = [v12 showInSeperateSection];
+        entity = [v11 entity];
+        showInSeperateSection = [entity showInSeperateSection];
 
-        if (v13)
+        if (showInSeperateSection)
         {
-          v14 = [v11 entity];
+          entity2 = [v11 entity];
           v28 = v11;
           v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
-          v16 = [(HUAccessorySettingsItemModule *)self _itemSectionWithEntity:v14 items:v15];
+          v16 = [(HUAccessorySettingsItemModule *)self _itemSectionWithEntity:entity2 items:v15];
           [v4 na_safeAddObject:v16];
 
           [v5 removeObject:v11];
@@ -987,25 +987,25 @@ void __69__HUAccessorySettingsItemModule__itemSectionsForParentGroupWithItems__b
   }
 
   v17 = v5;
-  v18 = [v5 firstObject];
-  v19 = [v18 entity];
-  v20 = [v5 array];
-  v21 = [(HUAccessorySettingsItemModule *)self _itemSectionWithEntity:v19 items:v20];
+  firstObject = [v5 firstObject];
+  entity3 = [firstObject entity];
+  array = [v5 array];
+  v21 = [(HUAccessorySettingsItemModule *)self _itemSectionWithEntity:entity3 items:array];
   [v4 na_safeAddObject:v21];
 
   return v4;
 }
 
-- (id)_itemSectionsForGroupKeyPaths:(id)a3
+- (id)_itemSectionsForGroupKeyPaths:(id)paths
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathsCopy = paths;
   v19 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = pathsCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
@@ -1021,25 +1021,25 @@ void __69__HUAccessorySettingsItemModule__itemSectionsForParentGroupWithItems__b
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [(HUAccessorySettingsItemModule *)self codex];
-        v11 = [v10 hf_nodeWithKeyPath:v9];
-        v12 = [v11 representedObject];
+        codex = [(HUAccessorySettingsItemModule *)self codex];
+        v11 = [codex hf_nodeWithKeyPath:v9];
+        representedObject = [v11 representedObject];
 
-        if (v12)
+        if (representedObject)
         {
-          v13 = [(HUAccessorySettingsItemModule *)self groupItemsToBeDisplayed];
+          groupItemsToBeDisplayed = [(HUAccessorySettingsItemModule *)self groupItemsToBeDisplayed];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __63__HUAccessorySettingsItemModule__itemSectionsForGroupKeyPaths___block_invoke;
           v21[3] = &unk_277DC17D8;
           v21[4] = v9;
-          v14 = [v13 na_firstObjectPassingTest:v21];
+          v14 = [groupItemsToBeDisplayed na_firstObjectPassingTest:v21];
 
           if (v14)
           {
-            v15 = [(HUAccessorySettingsItemModule *)self settingItemsToBeDisplayed];
-            v16 = [(HUAccessorySettingsItemModule *)self groupItemsToBeDisplayed];
-            v17 = [(HUAccessorySettingsItemModule *)self _itemSectionForGroup:v14 entity:v12 settingItems:v15 groupItems:v16];
+            settingItemsToBeDisplayed = [(HUAccessorySettingsItemModule *)self settingItemsToBeDisplayed];
+            groupItemsToBeDisplayed2 = [(HUAccessorySettingsItemModule *)self groupItemsToBeDisplayed];
+            v17 = [(HUAccessorySettingsItemModule *)self _itemSectionForGroup:v14 entity:representedObject settingItems:settingItemsToBeDisplayed groupItems:groupItemsToBeDisplayed2];
 
             [v19 na_safeAddObject:v17];
           }
@@ -1063,30 +1063,30 @@ uint64_t __63__HUAccessorySettingsItemModule__itemSectionsForGroupKeyPaths___blo
   return v4;
 }
 
-- (id)_itemSectionForGroup:(id)a3 entity:(id)a4 settingItems:(id)a5 groupItems:(id)a6
+- (id)_itemSectionForGroup:(id)group entity:(id)entity settingItems:(id)items groupItems:(id)groupItems
 {
-  v9 = a3;
-  v10 = a4;
+  groupCopy = group;
+  entityCopy = entity;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __85__HUAccessorySettingsItemModule__itemSectionForGroup_entity_settingItems_groupItems___block_invoke;
   v35[3] = &unk_277DC1800;
-  v11 = v9;
+  v11 = groupCopy;
   v36 = v11;
-  v12 = v10;
+  v12 = entityCopy;
   v37 = v12;
-  v13 = a5;
-  v14 = [a6 na_filter:v35];
-  v15 = [v11 settingGroup];
-  v16 = [v15 settings];
+  itemsCopy = items;
+  v14 = [groupItems na_filter:v35];
+  settingGroup = [v11 settingGroup];
+  settings = [settingGroup settings];
 
   v30 = MEMORY[0x277D85DD0];
   v31 = 3221225472;
   v32 = __85__HUAccessorySettingsItemModule__itemSectionForGroup_entity_settingItems_groupItems___block_invoke_2;
   v33 = &unk_277DC1850;
-  v17 = v16;
+  v17 = settings;
   v34 = v17;
-  v18 = [v13 na_filter:&v30];
+  v18 = [itemsCopy na_filter:&v30];
 
   v19 = v14;
   if (v14)
@@ -1124,8 +1124,8 @@ LABEL_4:
 LABEL_5:
   v21 = [v20 na_filter:&__block_literal_global_165];
   v22 = [v20 na_setByRemovingObjectsFromSet:v21];
-  v23 = [v22 allObjects];
-  v24 = [v23 sortedArrayUsingComparator:&__block_literal_global_167];
+  allObjects = [v22 allObjects];
+  v24 = [allObjects sortedArrayUsingComparator:&__block_literal_global_167];
 
   if ([v24 count])
   {
@@ -1230,66 +1230,66 @@ uint64_t __85__HUAccessorySettingsItemModule__itemSectionForGroup_entity_setting
 
 - (void)_resetIfNeeded
 {
-  v3 = [(HUAccessorySettingsItemModule *)self settings];
-  v4 = v3 == 0;
+  settings = [(HUAccessorySettingsItemModule *)self settings];
+  v4 = settings == 0;
 
-  if (!v3)
+  if (!settings)
   {
-    v5 = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
-    v6 = [v5 settings];
+    homeKitSettingsVendor = [(HUAccessorySettingsItemModule *)self homeKitSettingsVendor];
+    settings2 = [homeKitSettingsVendor settings];
     settings = self->_settings;
-    self->_settings = v6;
+    self->_settings = settings2;
   }
 
-  v8 = [(HUAccessorySettingsItemModule *)self parentSettingGroup];
-  if (v8)
+  parentSettingGroup = [(HUAccessorySettingsItemModule *)self parentSettingGroup];
+  if (parentSettingGroup)
   {
-    v9 = v8;
+    accessorySettingsItemProvider = parentSettingGroup;
   }
 
   else
   {
-    v10 = [(HMSettings *)self->_settings rootGroup];
+    rootGroup = [(HMSettings *)self->_settings rootGroup];
 
-    if (!v10)
+    if (!rootGroup)
     {
       goto LABEL_8;
     }
 
-    v11 = [(HMSettings *)self->_settings rootGroup];
+    rootGroup2 = [(HMSettings *)self->_settings rootGroup];
     parentSettingGroup = self->_parentSettingGroup;
-    self->_parentSettingGroup = v11;
+    self->_parentSettingGroup = rootGroup2;
 
     v13 = self->_parentSettingGroup;
-    v9 = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
-    [v9 setSettingGroup:v13];
+    accessorySettingsItemProvider = [(HUAccessorySettingsItemModule *)self accessorySettingsItemProvider];
+    [accessorySettingsItemProvider setSettingGroup:v13];
     v4 = 1;
   }
 
 LABEL_8:
-  v14 = [(HUAccessorySettingsItemModule *)self codex];
+  codex = [(HUAccessorySettingsItemModule *)self codex];
 
-  if (!v14)
+  if (!codex)
   {
-    v15 = [(HUAccessorySettingsItemModule *)self settings];
-    v16 = [v15 hf_codex];
+    settings3 = [(HUAccessorySettingsItemModule *)self settings];
+    hf_codex = [settings3 hf_codex];
     codex = self->_codex;
-    self->_codex = v16;
+    self->_codex = hf_codex;
 
     v4 = 1;
   }
 
-  v18 = [(HUAccessorySettingsItemModule *)self parentEntity];
-  if (v18 || (-[HUAccessorySettingsItemModule parentSettingGroup](self, "parentSettingGroup"), v18 = objc_claimAutoreleasedReturnValue(), [v18 keyPath], (v19 = objc_claimAutoreleasedReturnValue()) == 0))
+  parentEntity = [(HUAccessorySettingsItemModule *)self parentEntity];
+  if (parentEntity || (-[HUAccessorySettingsItemModule parentSettingGroup](self, "parentSettingGroup"), parentEntity = objc_claimAutoreleasedReturnValue(), [parentEntity keyPath], (v19 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_12;
   }
 
   v20 = v19;
-  v21 = [(HUAccessorySettingsItemModule *)self codex];
+  codex2 = [(HUAccessorySettingsItemModule *)self codex];
 
-  if (!v21)
+  if (!codex2)
   {
 LABEL_12:
     if (!v4)
@@ -1300,13 +1300,13 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v22 = [(HUAccessorySettingsItemModule *)self codex];
-  v23 = [(HUAccessorySettingsItemModule *)self parentSettingGroup];
-  v24 = [v23 keyPath];
-  v25 = [v22 hf_nodeWithKeyPath:v24];
-  v26 = [v25 representedObject];
+  codex3 = [(HUAccessorySettingsItemModule *)self codex];
+  parentSettingGroup2 = [(HUAccessorySettingsItemModule *)self parentSettingGroup];
+  keyPath = [parentSettingGroup2 keyPath];
+  v25 = [codex3 hf_nodeWithKeyPath:keyPath];
+  representedObject = [v25 representedObject];
   parentEntity = self->_parentEntity;
-  self->_parentEntity = v26;
+  self->_parentEntity = representedObject;
 
 LABEL_17:
   [(HUAccessorySettingsItemModule *)self _unregisterForAccessorySettingsUpdates];
@@ -1314,16 +1314,16 @@ LABEL_17:
   [(HUAccessorySettingsItemModule *)self _registerForAccessorySettingsUpdates];
 }
 
-- (id)getAllHomePodFromItem:(id)a3
+- (id)getAllHomePodFromItem:(id)item
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v5 = v3;
+    v5 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -1336,8 +1336,8 @@ LABEL_17:
 
     v7 = v6;
 
-    v8 = [v7 accessory];
-    v14[0] = v8;
+    accessory = [v7 accessory];
+    v14[0] = accessory;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
 
@@ -1350,7 +1350,7 @@ LABEL_17:
     }
 
     objc_opt_class();
-    v10 = v3;
+    v10 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -1363,8 +1363,8 @@ LABEL_17:
 
     v7 = v11;
 
-    v8 = [v7 components];
-    v9 = [v8 na_map:&__block_literal_global_172];
+    accessory = [v7 components];
+    v9 = [accessory na_map:&__block_literal_global_172];
   }
 
   v12 = v9;
@@ -1383,18 +1383,18 @@ id __55__HUAccessorySettingsItemModule_getAllHomePodFromItem___block_invoke(uint
   return v3;
 }
 
-- (BOOL)checkSoftwareVersionForAccessories:(id)a3 neededSoftwareVersion:(id)a4
+- (BOOL)checkSoftwareVersionForAccessories:(id)accessories neededSoftwareVersion:(id)version
 {
-  v5 = a4;
+  versionCopy = version;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__HUAccessorySettingsItemModule_checkSoftwareVersionForAccessories_neededSoftwareVersion___block_invoke;
   v8[3] = &unk_277DB8EC0;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a3) = [a3 na_any:v8];
+  v9 = versionCopy;
+  v6 = versionCopy;
+  LOBYTE(accessories) = [accessories na_any:v8];
 
-  return a3;
+  return accessories;
 }
 
 uint64_t __90__HUAccessorySettingsItemModule_checkSoftwareVersionForAccessories_neededSoftwareVersion___block_invoke(uint64_t a1, void *a2)

@@ -1,7 +1,7 @@
 @interface EDSenderRepository
 + (id)log;
-- (EDSenderRepository)initWithSenderPersistence:(id)a3;
-- (void)simpleAddressesForRelevantSendersForSearchWithCompletionHandler:(id)a3;
+- (EDSenderRepository)initWithSenderPersistence:(id)persistence;
+- (void)simpleAddressesForRelevantSendersForSearchWithCompletionHandler:(id)handler;
 @end
 
 @implementation EDSenderRepository
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __25__EDSenderRepository_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_94 != -1)
   {
     dispatch_once(&log_onceToken_94, block);
@@ -31,16 +31,16 @@ void __25__EDSenderRepository_log__block_invoke(uint64_t a1)
   log_log_94 = v1;
 }
 
-- (EDSenderRepository)initWithSenderPersistence:(id)a3
+- (EDSenderRepository)initWithSenderPersistence:(id)persistence
 {
-  v5 = a3;
+  persistenceCopy = persistence;
   v11.receiver = self;
   v11.super_class = EDSenderRepository;
   v6 = [(EDSenderRepository *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_senderPersistence, a3);
+    objc_storeStrong(&v6->_senderPersistence, persistence);
     v8 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"EDSenderRepository.persistenceScheduler" qualityOfService:25];
     persistenceScheduler = v7->_persistenceScheduler;
     v7->_persistenceScheduler = v8;
@@ -49,18 +49,18 @@ void __25__EDSenderRepository_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)simpleAddressesForRelevantSendersForSearchWithCompletionHandler:(id)a3
+- (void)simpleAddressesForRelevantSendersForSearchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(EDSenderRepository *)self persistenceScheduler];
+  handlerCopy = handler;
+  persistenceScheduler = [(EDSenderRepository *)self persistenceScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__EDSenderRepository_simpleAddressesForRelevantSendersForSearchWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8250C30;
   v7[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
-  [v5 performVoucherPreservingBlock:v7];
+  [persistenceScheduler performVoucherPreservingBlock:v7];
 }
 
 void __86__EDSenderRepository_simpleAddressesForRelevantSendersForSearchWithCompletionHandler___block_invoke(uint64_t a1)

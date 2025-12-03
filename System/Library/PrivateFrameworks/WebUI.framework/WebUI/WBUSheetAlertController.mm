@@ -1,24 +1,24 @@
 @interface WBUSheetAlertController
-- (WBUSheetAlertController)initWithAlert:(id)a3 automaticallyDismiss:(BOOL)a4 completionHandler:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (WBUSheetAlertController)initWithAlert:(id)alert automaticallyDismiss:(BOOL)dismiss completionHandler:(id)handler;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_setUpAlert;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WBUSheetAlertController
 
-- (WBUSheetAlertController)initWithAlert:(id)a3 automaticallyDismiss:(BOOL)a4 completionHandler:(id)a5
+- (WBUSheetAlertController)initWithAlert:(id)alert automaticallyDismiss:(BOOL)dismiss completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  alertCopy = alert;
+  handlerCopy = handler;
   v11 = [(WBUSheetAlertController *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_alert, a3);
-    v12->_automaticallyDismiss = a4;
-    v13 = MEMORY[0x2743DCFC0](v10);
+    objc_storeStrong(&v11->_alert, alert);
+    v12->_automaticallyDismiss = dismiss;
+    v13 = MEMORY[0x2743DCFC0](handlerCopy);
     handler = v12->_handler;
     v12->_handler = v13;
 
@@ -32,18 +32,18 @@
 - (void)_setUpAlert
 {
   objc_initWeak(&location, self);
-  v3 = [(WebUIAlert *)self->_alert buttonTitles];
-  v4 = [v3 count];
-  v5 = [v3 objectAtIndexedSubscript:0];
+  buttonTitles = [(WebUIAlert *)self->_alert buttonTitles];
+  v4 = [buttonTitles count];
+  v5 = [buttonTitles objectAtIndexedSubscript:0];
   if (v4 == 2)
   {
-    v6 = [v3 objectAtIndexedSubscript:1];
+    v6 = [buttonTitles objectAtIndexedSubscript:1];
   }
 
   else if (v4 == 1 && [(WebUIAlert *)self->_alert defaultAction]!= 4)
   {
 
-    v6 = [v3 objectAtIndexedSubscript:0];
+    v6 = [buttonTitles objectAtIndexedSubscript:0];
     v5 = 0;
   }
 
@@ -53,27 +53,27 @@
   }
 
   [(WBUSheetAlertController *)self setPreferredStyle:1];
-  v7 = [(WebUIAlert *)self->_alert titles];
-  if (v7)
+  titles = [(WebUIAlert *)self->_alert titles];
+  if (titles)
   {
     v8 = [objc_alloc(MEMORY[0x277D75B58]) initWithStyle:0];
     [(WBUSheetAlertController *)self setContentViewController:v8];
-    v9 = [v8 tableView];
+    tableView = [v8 tableView];
     tableView = self->_tableView;
-    self->_tableView = v9;
+    self->_tableView = tableView;
 
     [(UITableView *)self->_tableView setDelegate:self];
     [(UITableView *)self->_tableView setDataSource:self];
     v11 = self->_tableView;
-    v12 = [(UITableView *)v11 indexPathForSelectedRow];
-    [(UITableView *)v11 deselectRowAtIndexPath:v12 animated:0];
+    indexPathForSelectedRow = [(UITableView *)v11 indexPathForSelectedRow];
+    [(UITableView *)v11 deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
   }
 
-  v13 = [(WebUIAlert *)self->_alert title];
-  [(WBUSheetAlertController *)self setTitle:v13];
+  title = [(WebUIAlert *)self->_alert title];
+  [(WBUSheetAlertController *)self setTitle:title];
 
-  v14 = [(WebUIAlert *)self->_alert bodyText];
-  [(WBUSheetAlertController *)self setMessage:v14];
+  bodyText = [(WebUIAlert *)self->_alert bodyText];
+  [(WBUSheetAlertController *)self setMessage:bodyText];
 
   automaticallyDismiss = self->_automaticallyDismiss;
   v26[0] = MEMORY[0x277D85DD0];
@@ -136,38 +136,38 @@ void __38__WBUSheetAlertController__setUpAlert__block_invoke_3(uint64_t a1)
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WebUIAlert *)self->_alert identities:a3];
+  v4 = [(WebUIAlert *)self->_alert identities:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WebUIAlert *)self->_alert titles];
+  pathCopy = path;
+  titles = [(WebUIAlert *)self->_alert titles];
   v7 = objc_alloc_init(MEMORY[0x277D75B48]);
-  v8 = [v5 row];
-  if (v8 < [v6 count])
+  v8 = [pathCopy row];
+  if (v8 < [titles count])
   {
-    v9 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
-    v10 = [v7 textLabel];
-    [v10 setText:v9];
+    v9 = [titles objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    textLabel = [v7 textLabel];
+    [textLabel setText:v9];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WebUIAlert *)self->_alert titles];
-  v7 = [v5 row];
-  if (v7 < [v6 count])
+  pathCopy = path;
+  titles = [(WebUIAlert *)self->_alert titles];
+  v7 = [pathCopy row];
+  if (v7 < [titles count])
   {
-    -[WebUIAlert setSelectedTableItemIndex:](self->_alert, "setSelectedTableItemIndex:", [v5 row]);
+    -[WebUIAlert setSelectedTableItemIndex:](self->_alert, "setSelectedTableItemIndex:", [pathCopy row]);
     if (self->_automaticallyDismiss)
     {
       v9[0] = MEMORY[0x277D85DD0];

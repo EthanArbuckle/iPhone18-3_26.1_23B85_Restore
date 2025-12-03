@@ -34,17 +34,17 @@
   v19 = 0;
   v20 = 0;
   v18 = "";
-  [a1 length];
+  [self length];
   CEMEnumerateEmojiTokensInStringWithBlock();
   if (a3 && v22[5])
   {
     v6 = v16[4];
     v7 = v16[5];
-    if (v7 + v6 < [a1 length])
+    if (v7 + v6 < [self length])
     {
       v8 = v16[4];
       v9 = v16[5];
-      v10 = [a1 length];
+      v10 = [self length];
       v34.length = v10 - (v16[4] + v16[5]);
       v11 = v22[5];
       v34.location = v9 + v8;

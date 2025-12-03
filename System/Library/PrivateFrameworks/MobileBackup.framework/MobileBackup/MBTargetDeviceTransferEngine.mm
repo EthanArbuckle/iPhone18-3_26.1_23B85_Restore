@@ -1,63 +1,63 @@
 @interface MBTargetDeviceTransferEngine
-- (BOOL)_checkFreeDiskSpace:(unint64_t)a3 preflightInfo:(id)a4 error:(id *)a5;
-- (BOOL)_handleCompletionWithError:(id *)a3;
-- (BOOL)_handleTimeout:(BOOL)a3 error:(id *)a4;
-- (BOOL)_removeDirectory:(id)a3 error:(id *)a4;
-- (BOOL)_requestBackupWithSourceInfo:(id)a3 preflightInfo:(id)a4 error:(id *)a5;
-- (BOOL)_restoreKeychainWithKeychainTransferResponse:(id)a3 error:(id *)a4;
-- (BOOL)_restoreWithSourceInfo:(id)a3 error:(id *)a4;
-- (BOOL)_setUpFileTransferSessionWithError:(id *)a3;
-- (BOOL)_waitForControlConnectionWithBlock:(id)a3;
+- (BOOL)_checkFreeDiskSpace:(unint64_t)space preflightInfo:(id)info error:(id *)error;
+- (BOOL)_handleCompletionWithError:(id *)error;
+- (BOOL)_handleTimeout:(BOOL)timeout error:(id *)error;
+- (BOOL)_removeDirectory:(id)directory error:(id *)error;
+- (BOOL)_requestBackupWithSourceInfo:(id)info preflightInfo:(id)preflightInfo error:(id *)error;
+- (BOOL)_restoreKeychainWithKeychainTransferResponse:(id)response error:(id *)error;
+- (BOOL)_restoreWithSourceInfo:(id)info error:(id *)error;
+- (BOOL)_setUpFileTransferSessionWithError:(id *)error;
+- (BOOL)_waitForControlConnectionWithBlock:(id)block;
 - (BOOL)cancel;
 - (MBServiceManagerDeviceTransferDelegate)delegate;
-- (MBTargetDeviceTransferEngine)initWithSessionInfo:(id)a3;
-- (id)_perform:(id)a3;
-- (id)_requestInitWithError:(id *)a3;
-- (id)_requestKeychainWithSourceInfo:(id)a3 error:(id *)a4;
-- (id)_requestPreflightWithSourceInfo:(id)a3 error:(id *)a4;
-- (id)_restoreEngineWithSourceInfo:(id)a3;
+- (MBTargetDeviceTransferEngine)initWithSessionInfo:(id)info;
+- (id)_perform:(id)_perform;
+- (id)_requestInitWithError:(id *)error;
+- (id)_requestKeychainWithSourceInfo:(id)info error:(id *)error;
+- (id)_requestPreflightWithSourceInfo:(id)info error:(id *)error;
+- (id)_restoreEngineWithSourceInfo:(id)info;
 - (void)_cancelDisconnectTimer;
 - (void)_disableInfraWiFi;
 - (void)_enableInfraWiFi;
-- (void)_finishWithError:(id)a3;
-- (void)_handleFileTransferSessionProgress:(id)a3;
-- (void)_postTransferProgressNotification:(id)a3;
+- (void)_finishWithError:(id)error;
+- (void)_handleFileTransferSessionProgress:(id)progress;
+- (void)_postTransferProgressNotification:(id)notification;
 - (void)_saveDeviceTransferInfo;
-- (void)_sendDoneMessageWithError:(id)a3;
-- (void)_sendRestoreProgressMessageWithPercentage:(unint64_t)a3;
+- (void)_sendDoneMessageWithError:(id)error;
+- (void)_sendRestoreProgressMessageWithPercentage:(unint64_t)percentage;
 - (void)_signalControlConnectionStarted;
 - (void)_start;
 - (void)_startDisconnectTimer;
 - (void)_startTrackingPeerConnectionStatus;
 - (void)_stopTrackingPeerConnectionStatus;
 - (void)dealloc;
-- (void)progressUpdatedWithPercentage:(double)a3 size:(unint64_t)a4;
+- (void)progressUpdatedWithPercentage:(double)percentage size:(unint64_t)size;
 - (void)start;
-- (void)startDataTransferWithPreflightInfo:(id)a3 completion:(id)a4;
-- (void)startKeychainDataImportWithKeychainInfo:(id)a3 completion:(id)a4;
-- (void)startKeychainDataTransferWithCompletion:(id)a3;
-- (void)startPreflightWithCompletion:(id)a3;
-- (void)updatedTotalProgress:(id)a3;
+- (void)startDataTransferWithPreflightInfo:(id)info completion:(id)completion;
+- (void)startKeychainDataImportWithKeychainInfo:(id)info completion:(id)completion;
+- (void)startKeychainDataTransferWithCompletion:(id)completion;
+- (void)startPreflightWithCompletion:(id)completion;
+- (void)updatedTotalProgress:(id)progress;
 @end
 
 @implementation MBTargetDeviceTransferEngine
 
-- (MBTargetDeviceTransferEngine)initWithSessionInfo:(id)a3
+- (MBTargetDeviceTransferEngine)initWithSessionInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine initWithSessionInfo:]", "MBTargetDeviceTransferEngine.m", 93, "sessionInfo");
   }
 
-  v5 = v4;
-  v6 = [v4 fileTransferSession];
-  if (!v6)
+  v5 = infoCopy;
+  fileTransferSession = [infoCopy fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine initWithSessionInfo:]", "MBTargetDeviceTransferEngine.m", 95, "fileTransferSession");
   }
 
-  v7 = v6;
+  v7 = fileTransferSession;
   v8 = +[MBDriveSettingsContext defaultSettingsContext];
   v50.receiver = self;
   v50.super_class = MBTargetDeviceTransferEngine;
@@ -85,9 +85,9 @@
 
     [(MBTargetDeviceTransferEngine *)v9 setFileTransferSession:v7];
     v22 = [@"/var/mobile/Library/Caches/Backup/DT" stringByAppendingString:@"/"];
-    v23 = [v22 stringByStandardizingPath];
+    stringByStandardizingPath = [v22 stringByStandardizingPath];
 
-    v24 = [NSURL fileURLWithPath:v23 isDirectory:1];
+    v24 = [NSURL fileURLWithPath:stringByStandardizingPath isDirectory:1];
     v25 = [[MBPeerTransferDrive alloc] initWithRootURL:v24 fileTransferSession:v7 uploadBatchSize:128 concurrentUploadBatchCount:1 concurrentOpenBatchCount:1];
     transferDrive = v9->_transferDrive;
     v9->_transferDrive = v25;
@@ -102,8 +102,8 @@
     progressModel = v9->_progressModel;
     v9->_progressModel = v31;
 
-    v33 = [(MBTargetDeviceTransferEngine *)v9 progressModel];
-    [v33 setDelegate:v9];
+    progressModel = [(MBTargetDeviceTransferEngine *)v9 progressModel];
+    [progressModel setDelegate:v9];
 
     v34 = dispatch_group_create();
     progressGroup = v9->_progressGroup;
@@ -145,33 +145,33 @@
 
 - (void)dealloc
 {
-  v3 = [(MBTargetDeviceTransferEngine *)self transferDrive];
-  [v3 stopListeningForFileTransfers];
+  transferDrive = [(MBTargetDeviceTransferEngine *)self transferDrive];
+  [transferDrive stopListeningForFileTransfers];
 
   v4.receiver = self;
   v4.super_class = MBTargetDeviceTransferEngine;
   [(MBTargetDeviceTransferEngine *)&v4 dealloc];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  if (atomic_exchange(&v6->_finished, 1u))
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (atomic_exchange(&selfCopy->_finished, 1u))
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    if (![(MBEngine *)v6 isCanceled]|| ([MBError errorWithCode:202 format:@"Canceled"], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![(MBEngine *)selfCopy isCanceled]|| ([MBError errorWithCode:202 format:@"Canceled"], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v7 = v5;
+      v7 = errorCopy;
     }
 
-    [(MBTargetDeviceTransferEngine *)v6 setCompletionError:v7];
-    objc_sync_exit(v6);
+    [(MBTargetDeviceTransferEngine *)selfCopy setCompletionError:v7];
+    objc_sync_exit(selfCopy);
 
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -183,47 +183,47 @@
       _MBLog();
     }
 
-    [(MBTargetDeviceTransferEngine *)v6 startTime];
+    [(MBTargetDeviceTransferEngine *)selfCopy startTime];
     v9 = 0.0;
     if (v10 > 0.0)
     {
       +[NSDate timeIntervalSinceReferenceDate];
       v12 = v11;
-      [(MBTargetDeviceTransferEngine *)v6 startTime];
+      [(MBTargetDeviceTransferEngine *)selfCopy startTime];
       v9 = v12 - v13;
     }
 
-    v14 = [(MBTargetDeviceTransferEngine *)v6 transaction];
-    [(MBTargetDeviceTransferEngine *)v6 setTransaction:0];
-    v15 = [(MBTargetDeviceTransferEngine *)v6 deviceLockAssertion];
-    [(MBTargetDeviceTransferEngine *)v6 setDeviceLockAssertion:0];
-    [v15 drop];
+    transaction = [(MBTargetDeviceTransferEngine *)selfCopy transaction];
+    [(MBTargetDeviceTransferEngine *)selfCopy setTransaction:0];
+    deviceLockAssertion = [(MBTargetDeviceTransferEngine *)selfCopy deviceLockAssertion];
+    [(MBTargetDeviceTransferEngine *)selfCopy setDeviceLockAssertion:0];
+    [deviceLockAssertion drop];
 
-    v16 = [(MBTargetDeviceTransferEngine *)v6 powerAssertion];
-    [(MBTargetDeviceTransferEngine *)v6 setPowerAssertion:0];
-    [(MBTargetDeviceTransferEngine *)v6 _stopTrackingPeerConnectionStatus];
-    v17 = [(MBTargetDeviceTransferEngine *)v6 sessionQueue];
+    powerAssertion = [(MBTargetDeviceTransferEngine *)selfCopy powerAssertion];
+    [(MBTargetDeviceTransferEngine *)selfCopy setPowerAssertion:0];
+    [(MBTargetDeviceTransferEngine *)selfCopy _stopTrackingPeerConnectionStatus];
+    sessionQueue = [(MBTargetDeviceTransferEngine *)selfCopy sessionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10010F820;
     block[3] = &unk_1003BC0B0;
-    block[4] = v6;
-    dispatch_async(v17, block);
+    block[4] = selfCopy;
+    dispatch_async(sessionQueue, block);
 
-    v18 = [(MBTargetDeviceTransferEngine *)v6 transferLocalDrive];
-    [v18 invalidate];
+    transferLocalDrive = [(MBTargetDeviceTransferEngine *)selfCopy transferLocalDrive];
+    [transferLocalDrive invalidate];
 
-    v19 = [(MBTargetDeviceTransferEngine *)v6 transferDrive];
-    [v19 invalidate];
+    transferDrive = [(MBTargetDeviceTransferEngine *)selfCopy transferDrive];
+    [transferDrive invalidate];
 
-    if ([(MBTargetDeviceTransferEngine *)v6 connectionType]== 1 && [(MBTargetDeviceTransferEngine *)v6 chargeToken])
+    if ([(MBTargetDeviceTransferEngine *)selfCopy connectionType]== 1 && [(MBTargetDeviceTransferEngine *)selfCopy chargeToken])
     {
-      [(MBTargetDeviceTransferEngine *)v6 chargeToken];
+      [(MBTargetDeviceTransferEngine *)selfCopy chargeToken];
       MBCancelChargeLimit();
-      [(MBTargetDeviceTransferEngine *)v6 setChargeToken:0];
+      [(MBTargetDeviceTransferEngine *)selfCopy setChargeToken:0];
     }
 
-    v20 = [(MBTargetDeviceTransferEngine *)v6 progressGroup];
+    progressGroup = [(MBTargetDeviceTransferEngine *)selfCopy progressGroup];
     v21 = dispatch_get_global_queue(17, 0);
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
@@ -231,92 +231,92 @@
     v35[3] = &unk_1003BC060;
     v22 = v7;
     v36 = v22;
-    v37 = v6;
-    dispatch_group_async(v20, v21, v35);
+    v37 = selfCopy;
+    dispatch_group_async(progressGroup, v21, v35);
 
     v23 = +[MBDaemon sharedDaemon];
     [v23 holdWorkAssertion:a2];
 
-    v24 = [(MBTargetDeviceTransferEngine *)v6 progressGroup];
-    v25 = [(MBTargetDeviceTransferEngine *)v6 sessionQueue];
+    progressGroup2 = [(MBTargetDeviceTransferEngine *)selfCopy progressGroup];
+    sessionQueue2 = [(MBTargetDeviceTransferEngine *)selfCopy sessionQueue];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_10010F9F4;
     v30[3] = &unk_1003BD018;
-    v30[4] = v6;
+    v30[4] = selfCopy;
     v31 = v22;
     v34 = v9;
-    v32 = v16;
-    v33 = v14;
-    v26 = v14;
-    v27 = v16;
+    v32 = powerAssertion;
+    v33 = transaction;
+    v26 = transaction;
+    v27 = powerAssertion;
     v28 = v22;
-    dispatch_group_notify(v24, v25, v30);
+    dispatch_group_notify(progressGroup2, sessionQueue2, v30);
   }
 }
 
-- (BOOL)_handleCompletionWithError:(id *)a3
+- (BOOL)_handleCompletionWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _handleCompletionWithError:]", "MBTargetDeviceTransferEngine.m", 230, "error");
   }
 
   if ([(MBEngine *)self isCanceled])
   {
-    v5 = [MBError errorWithCode:202 format:@"Canceled"];
-    if (v5)
+    completionError = [MBError errorWithCode:202 format:@"Canceled"];
+    if (completionError)
     {
 LABEL_4:
-      v6 = v5;
-      *a3 = v5;
+      v6 = completionError;
+      *error = completionError;
     }
   }
 
   else
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    if ([(MBTargetDeviceTransferEngine *)v8 isFinished])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(MBTargetDeviceTransferEngine *)selfCopy isFinished])
     {
-      v5 = [(MBTargetDeviceTransferEngine *)v8 completionError];
-      if (!v5)
+      completionError = [(MBTargetDeviceTransferEngine *)selfCopy completionError];
+      if (!completionError)
       {
-        v5 = [MBError errorWithCode:1 format:@"Invalid state (finished)"];
+        completionError = [MBError errorWithCode:1 format:@"Invalid state (finished)"];
       }
     }
 
     else
     {
-      v5 = 0;
+      completionError = 0;
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
-    if (v5)
+    if (completionError)
     {
       goto LABEL_4;
     }
   }
 
-  return v5 == 0;
+  return completionError == 0;
 }
 
 - (BOOL)cancel
 {
   v16.receiver = self;
   v16.super_class = MBTargetDeviceTransferEngine;
-  v3 = [(MBEngine *)&v16 cancel];
-  if (!v3)
+  cancel = [(MBEngine *)&v16 cancel];
+  if (!cancel)
   {
-    v4 = [(MBTargetDeviceTransferEngine *)self transferLocalDrive];
-    [v4 invalidate];
+    transferLocalDrive = [(MBTargetDeviceTransferEngine *)self transferLocalDrive];
+    [transferLocalDrive invalidate];
 
-    v5 = [(MBTargetDeviceTransferEngine *)self transferDrive];
-    [v5 invalidate];
+    transferDrive = [(MBTargetDeviceTransferEngine *)self transferDrive];
+    [transferDrive invalidate];
 
-    v6 = [(MBTargetDeviceTransferEngine *)self requestBackupSemaphore];
-    if (v6)
+    requestBackupSemaphore = [(MBTargetDeviceTransferEngine *)self requestBackupSemaphore];
+    if (requestBackupSemaphore)
     {
       v7 = MBGetDefaultLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -326,12 +326,12 @@ LABEL_4:
         _MBLog();
       }
 
-      dispatch_semaphore_signal(v6);
+      dispatch_semaphore_signal(requestBackupSemaphore);
     }
 
-    v8 = [(MBTargetDeviceTransferEngine *)self requestKeychainSemaphore];
+    requestKeychainSemaphore = [(MBTargetDeviceTransferEngine *)self requestKeychainSemaphore];
 
-    if (v8)
+    if (requestKeychainSemaphore)
     {
       v9 = MBGetDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -341,12 +341,12 @@ LABEL_4:
         _MBLog();
       }
 
-      dispatch_semaphore_signal(v8);
+      dispatch_semaphore_signal(requestKeychainSemaphore);
     }
 
-    v10 = [(MBTargetDeviceTransferEngine *)self requestPreflightSemaphore];
+    requestPreflightSemaphore = [(MBTargetDeviceTransferEngine *)self requestPreflightSemaphore];
 
-    if (v10)
+    if (requestPreflightSemaphore)
     {
       v11 = MBGetDefaultLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -356,12 +356,12 @@ LABEL_4:
         _MBLog();
       }
 
-      dispatch_semaphore_signal(v10);
+      dispatch_semaphore_signal(requestPreflightSemaphore);
     }
 
-    v12 = [(MBTargetDeviceTransferEngine *)self requestInitSemaphore];
+    requestInitSemaphore = [(MBTargetDeviceTransferEngine *)self requestInitSemaphore];
 
-    if (v12)
+    if (requestInitSemaphore)
     {
       v13 = MBGetDefaultLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -371,19 +371,19 @@ LABEL_4:
         _MBLog();
       }
 
-      dispatch_semaphore_signal(v12);
+      dispatch_semaphore_signal(requestInitSemaphore);
     }
 
     [(MBTargetDeviceTransferEngine *)self _signalControlConnectionStarted];
     [(MBTargetDeviceTransferEngine *)self _finishWithError:0];
   }
 
-  return v3;
+  return cancel;
 }
 
-- (id)_perform:(id)a3
+- (id)_perform:(id)_perform
 {
-  v4 = a3;
+  _performCopy = _perform;
   v5 = objc_autoreleasePoolPush();
   if ([(MBEngine *)self isCanceled])
   {
@@ -393,7 +393,7 @@ LABEL_4:
   else
   {
     v10 = 0;
-    v7 = v4[2](v4, &v10);
+    v7 = _performCopy[2](_performCopy, &v10);
     v8 = v10;
     v6 = v8;
     if ((v7 & 1) == 0 && !v8)
@@ -409,18 +409,18 @@ LABEL_4:
 
 - (void)_startDisconnectTimer
 {
-  v3 = [(MBTargetDeviceTransferEngine *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(MBTargetDeviceTransferEngine *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   [(MBTargetDeviceTransferEngine *)self _cancelDisconnectTimer];
   if (![(MBTargetDeviceTransferEngine *)self isFinished])
   {
     v4 = +[MBBehaviorOptions sharedOptions];
-    v5 = [v4 d2dTransferDisconnectTimeout];
+    d2dTransferDisconnectTimeout = [v4 d2dTransferDisconnectTimeout];
 
-    v6 = [(MBTargetDeviceTransferEngine *)self sessionQueue];
-    v7 = v5;
-    v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v6);
+    sessionQueue2 = [(MBTargetDeviceTransferEngine *)self sessionQueue];
+    v7 = d2dTransferDisconnectTimeout;
+    v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, sessionQueue2);
 
     v9 = dispatch_walltime(0, 1000000000 * v7);
     dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -449,14 +449,14 @@ LABEL_4:
 
 - (void)_cancelDisconnectTimer
 {
-  v3 = [(MBTargetDeviceTransferEngine *)self sessionQueue];
-  dispatch_assert_queue_V2(v3);
+  sessionQueue = [(MBTargetDeviceTransferEngine *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
-  v4 = [(MBTargetDeviceTransferEngine *)self disconnectTimer];
-  if (v4)
+  disconnectTimer = [(MBTargetDeviceTransferEngine *)self disconnectTimer];
+  if (disconnectTimer)
   {
     [(MBTargetDeviceTransferEngine *)self setDisconnectTimer:0];
-    dispatch_source_cancel(v4);
+    dispatch_source_cancel(disconnectTimer);
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -469,36 +469,36 @@ LABEL_4:
 
 - (void)_signalControlConnectionStarted
 {
-  v2 = [(MBTargetDeviceTransferEngine *)self connectSemaphore];
-  if (v2)
+  connectSemaphore = [(MBTargetDeviceTransferEngine *)self connectSemaphore];
+  if (connectSemaphore)
   {
-    v3 = v2;
-    dispatch_semaphore_signal(v2);
-    v2 = v3;
+    v3 = connectSemaphore;
+    dispatch_semaphore_signal(connectSemaphore);
+    connectSemaphore = v3;
   }
 }
 
-- (BOOL)_waitForControlConnectionWithBlock:(id)a3
+- (BOOL)_waitForControlConnectionWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = dispatch_semaphore_create(0);
   [(MBTargetDeviceTransferEngine *)self setConnectSemaphore:v5];
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   v6 = +[MBBehaviorOptions sharedOptions];
-  v7 = [v6 d2dTransferDisconnectTimeout];
+  d2dTransferDisconnectTimeout = [v6 d2dTransferDisconnectTimeout];
 
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = v7;
+    v14 = d2dTransferDisconnectTimeout;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Waiting for up to %llus to allow a control connection to show up", buf, 0xCu);
-    v12 = v7;
+    v12 = d2dTransferDisconnectTimeout;
     _MBLog();
   }
 
-  v9 = dispatch_time(0, 1000000000 * v7);
+  v9 = dispatch_time(0, 1000000000 * d2dTransferDisconnectTimeout);
   v10 = dispatch_semaphore_wait(v5, v9) == 0;
   [(MBTargetDeviceTransferEngine *)self setConnectSemaphore:0, v12];
 
@@ -545,19 +545,19 @@ LABEL_4:
   }
 }
 
-- (void)_handleFileTransferSessionProgress:(id)a3
+- (void)_handleFileTransferSessionProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(MBTargetDeviceTransferEngine *)self sessionQueue];
-  dispatch_assert_queue_V2(v5);
+  progressCopy = progress;
+  sessionQueue = [(MBTargetDeviceTransferEngine *)self sessionQueue];
+  dispatch_assert_queue_V2(sessionQueue);
 
   if (![(MBTargetDeviceTransferEngine *)self isFinished])
   {
-    v6 = [(MBTargetDeviceTransferEngine *)self delegate];
-    -[MBTargetDeviceTransferEngine setConnectionType:](self, "setConnectionType:", +[MBDeviceTransferConnectionInfo connectionTypeFromLinkType:](MBDeviceTransferConnectionInfo, "connectionTypeFromLinkType:", [v4 linkType]));
-    if ([v4 type] != 10)
+    delegate = [(MBTargetDeviceTransferEngine *)self delegate];
+    -[MBTargetDeviceTransferEngine setConnectionType:](self, "setConnectionType:", +[MBDeviceTransferConnectionInfo connectionTypeFromLinkType:](MBDeviceTransferConnectionInfo, "connectionTypeFromLinkType:", [progressCopy linkType]));
+    if ([progressCopy type] != 10)
     {
-      if ([v4 type] != 11)
+      if ([progressCopy type] != 11)
       {
 LABEL_20:
 
@@ -572,8 +572,8 @@ LABEL_20:
       {
         atomic_store(0, &self->_peerConnected);
         [(MBTargetDeviceTransferEngine *)self _startDisconnectTimer];
-        v12 = [(MBTargetDeviceTransferEngine *)self connection];
-        [v6 connection:v12 didUpdateDeviceTransferConnectionInfo:v7];
+        connection = [(MBTargetDeviceTransferEngine *)self connection];
+        [delegate connection:connection didUpdateDeviceTransferConnectionInfo:v7];
       }
 
 LABEL_19:
@@ -636,8 +636,8 @@ LABEL_18:
       }
     }
 
-    v15 = [(MBTargetDeviceTransferEngine *)self connection];
-    [v6 connection:v15 didUpdateDeviceTransferConnectionInfo:v7];
+    connection2 = [(MBTargetDeviceTransferEngine *)self connection];
+    [delegate connection:connection2 didUpdateDeviceTransferConnectionInfo:v7];
 
     goto LABEL_18;
   }
@@ -645,49 +645,49 @@ LABEL_18:
 LABEL_21:
 }
 
-- (BOOL)_setUpFileTransferSessionWithError:(id *)a3
+- (BOOL)_setUpFileTransferSessionWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _setUpFileTransferSessionWithError:]", "MBTargetDeviceTransferEngine.m", 406, "error");
   }
 
-  v5 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-  if (!v5)
+  fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _setUpFileTransferSessionWithError:]", "MBTargetDeviceTransferEngine.m", 408, "fileTransferSession");
   }
 
-  v6 = [(MBTargetDeviceTransferEngine *)self transferDrive];
-  if (!v6)
+  transferDrive = [(MBTargetDeviceTransferEngine *)self transferDrive];
+  if (!transferDrive)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _setUpFileTransferSessionWithError:]", "MBTargetDeviceTransferEngine.m", 410, "transferDrive");
   }
 
   v7 = +[MBBehaviorOptions sharedOptions];
-  v8 = [(MBTargetDeviceTransferEngine *)self sessionQueue];
-  [v5 setDispatchQueue:v8];
+  sessionQueue = [(MBTargetDeviceTransferEngine *)self sessionQueue];
+  [fileTransferSession setDispatchQueue:sessionQueue];
 
-  [v5 setFlags:{objc_msgSend(v5, "flags") | 3}];
+  [fileTransferSession setFlags:{objc_msgSend(fileTransferSession, "flags") | 3}];
   if ([v7 d2dTransferUSBOnly])
   {
-    [v5 setFlags:{objc_msgSend(v5, "flags") | 0x30}];
-    [v5 setFlags:{objc_msgSend(v5, "flags") & 0xFFFFFFF3}];
+    [fileTransferSession setFlags:{objc_msgSend(fileTransferSession, "flags") | 0x30}];
+    [fileTransferSession setFlags:{objc_msgSend(fileTransferSession, "flags") & 0xFFFFFFF3}];
   }
 
   if (([v7 d2dTransferUseCompression] & 1) == 0)
   {
-    [v5 setFlags:{objc_msgSend(v5, "flags") & 0xFFFFFEFF}];
+    [fileTransferSession setFlags:{objc_msgSend(fileTransferSession, "flags") & 0xFFFFFEFF}];
   }
 
   v9 = [NSURL fileURLWithPath:@"/var/mobile/Library/Caches/Backup/RFReceiveTemp" isDirectory:1];
-  [v5 setTemporaryDirectoryURL:v9];
+  [fileTransferSession setTemporaryDirectoryURL:v9];
 
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = fileTransferSession;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Setting up the FT session: %@", buf, 0xCu);
     _MBLog();
   }
@@ -698,30 +698,30 @@ LABEL_21:
   v19[2] = sub_100110FA8;
   v19[3] = &unk_1003BED78;
   objc_copyWeak(&v20, buf);
-  [v5 setCompletionHandler:v19];
+  [fileTransferSession setCompletionHandler:v19];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001110A8;
   v17[3] = &unk_1003BEDA0;
   objc_copyWeak(&v18, buf);
-  [v5 setProgressHandler:v17];
+  [fileTransferSession setProgressHandler:v17];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001111CC;
   v16[3] = &unk_1003BEDC8;
   v16[4] = self;
-  [MBPeerMessenger registerRequestHandler:v16 forTask:@"MBPeerTaskDone" session:v5];
+  [MBPeerMessenger registerRequestHandler:v16 forTask:@"MBPeerTaskDone" session:fileTransferSession];
   [(MBTargetDeviceTransferEngine *)self _startTrackingPeerConnectionStatus];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10011138C;
   v14[3] = &unk_1003BC0B0;
-  v11 = v6;
+  v11 = transferDrive;
   v15 = v11;
   v12 = [(MBTargetDeviceTransferEngine *)self _waitForControlConnectionWithBlock:v14];
   if (!v12)
   {
-    *a3 = [MBError errorWithCode:15 format:@"Timed out"];
+    *error = [MBError errorWithCode:15 format:@"Timed out"];
   }
 
   objc_destroyWeak(&v18);
@@ -734,9 +734,9 @@ LABEL_21:
 - (void)_disableInfraWiFi
 {
   v3 = +[MBBehaviorOptions sharedOptions];
-  v4 = [v3 d2dTransferUSBOnly];
+  d2dTransferUSBOnly = [v3 d2dTransferUSBOnly];
 
-  if (v4)
+  if (d2dTransferUSBOnly)
   {
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -749,19 +749,19 @@ LABEL_21:
 
   else
   {
-    v6 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-    if (!v6)
+    fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+    if (!fileTransferSession)
     {
       __assert_rtn("[MBTargetDeviceTransferEngine _disableInfraWiFi]", "MBTargetDeviceTransferEngine.m", 473, "fileTransferSession");
     }
 
-    v5 = v6;
-    [v6 setFlags:[v6 flags]| 4];
+    v5 = fileTransferSession;
+    [fileTransferSession setFlags:[fileTransferSession flags]| 4];
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v9 = [v5 flags];
+      flags = [v5 flags];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Disabled infra WiFi, flags:0x%x", buf, 8u);
       [v5 flags];
       _MBLog();
@@ -772,9 +772,9 @@ LABEL_21:
 - (void)_enableInfraWiFi
 {
   v3 = +[MBBehaviorOptions sharedOptions];
-  v4 = [v3 d2dTransferUSBOnly];
+  d2dTransferUSBOnly = [v3 d2dTransferUSBOnly];
 
-  if (v4)
+  if (d2dTransferUSBOnly)
   {
     v5 = MBGetDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -787,19 +787,19 @@ LABEL_21:
 
   else
   {
-    v6 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-    if (!v6)
+    fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+    if (!fileTransferSession)
     {
       __assert_rtn("[MBTargetDeviceTransferEngine _enableInfraWiFi]", "MBTargetDeviceTransferEngine.m", 484, "fileTransferSession");
     }
 
-    v5 = v6;
-    [v6 setFlags:[v6 flags]& 0xFFFFFFFB];
+    v5 = fileTransferSession;
+    [fileTransferSession setFlags:[fileTransferSession flags]& 0xFFFFFFFB];
     v7 = MBGetDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v9 = [v5 flags];
+      flags = [v5 flags];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Enabled infra WiFi, flags:0x%x", buf, 8u);
       [v5 flags];
       _MBLog();
@@ -807,22 +807,22 @@ LABEL_21:
   }
 }
 
-- (BOOL)_checkFreeDiskSpace:(unint64_t)a3 preflightInfo:(id)a4 error:(id *)a5
+- (BOOL)_checkFreeDiskSpace:(unint64_t)space preflightInfo:(id)info error:(id *)error
 {
-  v7 = a4;
-  if (!v7)
+  infoCopy = info;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _checkFreeDiskSpace:preflightInfo:error:]", "MBTargetDeviceTransferEngine.m", 491, "preflightInfo");
   }
 
-  if (!a5)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _checkFreeDiskSpace:preflightInfo:error:]", "MBTargetDeviceTransferEngine.m", 492, "error");
   }
 
-  v8 = v7;
-  v9 = [v7 sourceDeviceDataSize] + 0x1C0000000;
-  if (v9 > a3)
+  v8 = infoCopy;
+  v9 = [infoCopy sourceDeviceDataSize] + 0x1C0000000;
+  if (v9 > space)
   {
     v10 = MBGetDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -832,31 +832,31 @@ LABEL_21:
       v15 = 2048;
       v16 = 0x1C0000000;
       v17 = 2048;
-      v18 = a3;
+      spaceCopy = space;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Insufficient free disk space - totalSize:%llu, reservedSize:%llu, freeDiskSpace:%llu", buf, 0x20u);
       _MBLog();
     }
 
     v11 = [MBError errorWithCode:106 format:@"Insufficient free disk space"];
-    *a5 = v11;
+    *error = v11;
     if (!v11)
     {
       __assert_rtn("[MBTargetDeviceTransferEngine _checkFreeDiskSpace:preflightInfo:error:]", "MBTargetDeviceTransferEngine.m", 502, "result || *error");
     }
   }
 
-  return v9 <= a3;
+  return v9 <= space;
 }
 
-- (void)startPreflightWithCompletion:(id)a3
+- (void)startPreflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine startPreflightWithCompletion:]", "MBTargetDeviceTransferEngine.m", 507, "completion");
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   v6 = MBFreeDiskSpace();
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -882,7 +882,7 @@ LABEL_21:
   v8 = dispatch_group_create();
   v9 = self->_transferSummary;
   dispatch_group_enter(v8);
-  v10 = [(MBTargetDeviceTransferEngine *)self queue];
+  queue = [(MBTargetDeviceTransferEngine *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100111BBC;
@@ -894,7 +894,7 @@ LABEL_21:
   v24 = v11;
   v26 = v27;
   v12 = v8;
-  dispatch_async(v10, block);
+  dispatch_async(queue, block);
 
   v13 = dispatch_get_global_queue(17, 0);
   v16[0] = _NSConcreteStackBlock;
@@ -905,7 +905,7 @@ LABEL_21:
   v19 = v5;
   v20 = v27;
   v17 = v11;
-  v18 = self;
+  selfCopy = self;
   v14 = v5;
   v15 = v11;
   dispatch_group_notify(v12, v13, v16);
@@ -914,15 +914,15 @@ LABEL_21:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)startKeychainDataTransferWithCompletion:(id)a3
+- (void)startKeychainDataTransferWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine startKeychainDataTransferWithCompletion:]", "MBTargetDeviceTransferEngine.m", 597, "completion");
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   v6 = MBFreeDiskSpace();
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -948,7 +948,7 @@ LABEL_21:
   v8 = dispatch_group_create();
   dispatch_group_enter(v8);
   v9 = self->_transferSummary;
-  v10 = [(MBTargetDeviceTransferEngine *)self queue];
+  queue = [(MBTargetDeviceTransferEngine *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001127E0;
@@ -960,7 +960,7 @@ LABEL_21:
   v23 = v11;
   v25 = v26;
   v12 = v8;
-  dispatch_async(v10, block);
+  dispatch_async(queue, block);
 
   v13 = dispatch_get_global_queue(17, 0);
   v16[0] = _NSConcreteStackBlock;
@@ -980,17 +980,17 @@ LABEL_21:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)startKeychainDataImportWithKeychainInfo:(id)a3 completion:(id)a4
+- (void)startKeychainDataImportWithKeychainInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine startKeychainDataImportWithKeychainInfo:completion:]", "MBTargetDeviceTransferEngine.m", 650, "keychainInfo");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine startKeychainDataImportWithKeychainInfo:completion:]", "MBTargetDeviceTransferEngine.m", 651, "completion");
   }
@@ -1014,7 +1014,7 @@ LABEL_21:
   v11 = dispatch_group_create();
   dispatch_group_enter(v11);
   v12 = self->_transferSummary;
-  v13 = [(MBTargetDeviceTransferEngine *)self queue];
+  queue = [(MBTargetDeviceTransferEngine *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100112FC8;
@@ -1022,12 +1022,12 @@ LABEL_21:
   block[4] = self;
   v25 = v11;
   p_buf = &buf;
-  v26 = v6;
+  v26 = infoCopy;
   v14 = v12;
   v27 = v14;
-  v15 = v6;
+  v15 = infoCopy;
   v16 = v11;
-  dispatch_async(v13, block);
+  dispatch_async(queue, block);
 
   v17 = dispatch_get_global_queue(17, 0);
   v20[0] = _NSConcreteStackBlock;
@@ -1044,17 +1044,17 @@ LABEL_21:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)startDataTransferWithPreflightInfo:(id)a3 completion:(id)a4
+- (void)startDataTransferWithPreflightInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine startDataTransferWithPreflightInfo:completion:]", "MBTargetDeviceTransferEngine.m", 711, "preflightInfo");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine startDataTransferWithPreflightInfo:completion:]", "MBTargetDeviceTransferEngine.m", 712, "completion");
   }
@@ -1077,19 +1077,19 @@ LABEL_21:
   v29 = 0;
   v11 = dispatch_group_create();
   dispatch_group_enter(v11);
-  v12 = [(MBTargetDeviceTransferEngine *)self queue];
+  queue = [(MBTargetDeviceTransferEngine *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001137E0;
   block[3] = &unk_1003BEF08;
   block[4] = self;
   v21 = v11;
-  v22 = v6;
+  v22 = infoCopy;
   p_buf = &buf;
   v24 = v9;
-  v13 = v6;
+  v13 = infoCopy;
   v14 = v11;
-  dispatch_async(v12, block);
+  dispatch_async(queue, block);
 
   v15 = dispatch_get_global_queue(17, 0);
   v17[0] = _NSConcreteStackBlock;
@@ -1105,15 +1105,15 @@ LABEL_21:
   _Block_object_dispose(&buf, 8);
 }
 
-- (BOOL)_removeDirectory:(id)a3 error:(id *)a4
+- (BOOL)_removeDirectory:(id)directory error:(id *)error
 {
-  v5 = a3;
-  if (!a4)
+  directoryCopy = directory;
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _removeDirectory:error:]", "MBTargetDeviceTransferEngine.m", 793, "error");
   }
 
-  v6 = v5;
+  v6 = directoryCopy;
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1124,19 +1124,19 @@ LABEL_21:
   }
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 removeItemAtPath:v6 error:a4];
+  v9 = [v8 removeItemAtPath:v6 error:error];
 
   if (v9)
   {
     goto LABEL_5;
   }
 
-  v11 = [*a4 domain];
-  if ([v11 isEqualToString:NSCocoaErrorDomain])
+  domain = [*error domain];
+  if ([domain isEqualToString:NSCocoaErrorDomain])
   {
-    v12 = [*a4 code];
+    code = [*error code];
 
-    if (v12 == 4)
+    if (code == 4)
     {
 LABEL_5:
       v10 = 1;
@@ -1151,13 +1151,13 @@ LABEL_5:
   v13 = MBGetDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    v14 = *a4;
+    v14 = *error;
     *buf = 138412546;
     v18 = v6;
     v19 = 2112;
     v20 = v14;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to remove the directory at %@: %@", buf, 0x16u);
-    v16 = *a4;
+    v16 = *error;
     _MBLog();
   }
 
@@ -1169,8 +1169,8 @@ LABEL_13:
 
 - (void)_start
 {
-  v3 = [(MBTargetDeviceTransferEngine *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(MBTargetDeviceTransferEngine *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
@@ -1180,17 +1180,17 @@ LABEL_13:
   v4 = [(MBTargetDeviceTransferEngine *)self _perform:v38];
   if (!v4)
   {
-    v6 = [(MBTargetDeviceTransferEngine *)self persona];
-    v7 = [v6 userRestoreDirectory];
+    persona = [(MBTargetDeviceTransferEngine *)self persona];
+    userRestoreDirectory = [persona userRestoreDirectory];
     v37 = 0;
-    v8 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:v7 error:&v37];
+    v8 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:userRestoreDirectory error:&v37];
     v5 = v37;
 
     if (v8)
     {
-      v9 = [v6 userIncompleteRestoreDirectory];
+      userIncompleteRestoreDirectory = [persona userIncompleteRestoreDirectory];
       v36 = v5;
-      v10 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:v9 error:&v36];
+      v10 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:userIncompleteRestoreDirectory error:&v36];
       v11 = v36;
 
       if ((v10 & 1) == 0)
@@ -1201,40 +1201,40 @@ LABEL_13:
         goto LABEL_15;
       }
 
-      v12 = [(MBTargetDeviceTransferEngine *)self persona];
-      v13 = [v12 shouldRestoreToSharedVolume];
+      persona2 = [(MBTargetDeviceTransferEngine *)self persona];
+      shouldRestoreToSharedVolume = [persona2 shouldRestoreToSharedVolume];
 
-      if (!v13)
+      if (!shouldRestoreToSharedVolume)
       {
         goto LABEL_8;
       }
 
-      v14 = [v6 sharedRestoreDirectory];
+      sharedRestoreDirectory = [persona sharedRestoreDirectory];
       v35 = v11;
-      v15 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:v14 error:&v35];
+      v15 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:sharedRestoreDirectory error:&v35];
       v5 = v35;
 
       if (v15)
       {
-        v16 = [v6 sharedIncompleteRestoreDirectory];
+        sharedIncompleteRestoreDirectory = [persona sharedIncompleteRestoreDirectory];
         v34 = v5;
-        v17 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:v16 error:&v34];
+        v17 = [(MBTargetDeviceTransferEngine *)self _removeDirectory:sharedIncompleteRestoreDirectory error:&v34];
         v11 = v34;
 
         if (v17)
         {
 LABEL_8:
-          v18 = [(MBTargetDeviceTransferEngine *)self transferDrive];
-          [v18 cleanUpReceivedFilesDirectory];
+          transferDrive = [(MBTargetDeviceTransferEngine *)self transferDrive];
+          [transferDrive cleanUpReceivedFilesDirectory];
 
           v33 = v11;
-          LOBYTE(v18) = [(MBTargetDeviceTransferEngine *)self _setUpFileTransferSessionWithError:&v33];
+          LOBYTE(transferDrive) = [(MBTargetDeviceTransferEngine *)self _setUpFileTransferSessionWithError:&v33];
           v19 = v33;
 
-          if (v18)
+          if (transferDrive)
           {
-            v20 = [(MBTargetDeviceTransferEngine *)self progressModel];
-            [v20 updateTotalProgressWithPhaseProgress:1 phase:0.0];
+            progressModel = [(MBTargetDeviceTransferEngine *)self progressModel];
+            [progressModel updateTotalProgressWithPhaseProgress:1 phase:0.0];
 
             v21 = self->_transferSummary;
             v27 = 0;
@@ -1248,7 +1248,7 @@ LABEL_8:
             v23[2] = sub_100114548;
             v23[3] = &unk_1003BEF58;
             v22 = v21;
-            v25 = self;
+            selfCopy = self;
             v26 = &v27;
             v24 = v22;
             v5 = [(MBTargetDeviceTransferEngine *)self _perform:v23];
@@ -1306,26 +1306,26 @@ LABEL_16:
   MBLogDeviceProperties();
   +[NSDate timeIntervalSinceReferenceDate];
   [(MBTargetDeviceTransferEngine *)self setStartTime:?];
-  v6 = [(MBTargetDeviceTransferEngine *)self powerAssertion];
-  [v6 hold];
+  powerAssertion = [(MBTargetDeviceTransferEngine *)self powerAssertion];
+  [powerAssertion hold];
 
-  v7 = [(MBTargetDeviceTransferEngine *)self queue];
+  queue = [(MBTargetDeviceTransferEngine *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011473C;
   block[3] = &unk_1003BC0B0;
   block[4] = self;
-  dispatch_async(v7, block);
+  dispatch_async(queue, block);
 }
 
-- (BOOL)_handleTimeout:(BOOL)a3 error:(id *)a4
+- (BOOL)_handleTimeout:(BOOL)timeout error:(id *)error
 {
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _handleTimeout:error:]", "MBTargetDeviceTransferEngine.m", 894, "error");
   }
 
-  v5 = a3;
+  timeoutCopy = timeout;
   if ([(MBEngine *)self isCanceled])
   {
     v6 = @"Canceled";
@@ -1334,7 +1334,7 @@ LABEL_16:
 
   else
   {
-    if (!v5)
+    if (!timeoutCopy)
     {
       return 1;
     }
@@ -1347,7 +1347,7 @@ LABEL_16:
   if (v8)
   {
     v9 = v8;
-    *a4 = v9;
+    *error = v9;
 
     return 0;
   }
@@ -1355,15 +1355,15 @@ LABEL_16:
   return 1;
 }
 
-- (id)_requestInitWithError:(id *)a3
+- (id)_requestInitWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestInitWithError:]", "MBTargetDeviceTransferEngine.m", 913, "error");
   }
 
-  v5 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-  if (!v5)
+  fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestInitWithError:]", "MBTargetDeviceTransferEngine.m", 915, "fileTransferSession");
   }
@@ -1378,7 +1378,7 @@ LABEL_16:
 
   v7 = dispatch_semaphore_create(0);
   [(MBTargetDeviceTransferEngine *)self setRequestInitSemaphore:v7];
-  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:a3])
+  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:error])
   {
     v18 = 0;
     goto LABEL_34;
@@ -1410,11 +1410,11 @@ LABEL_16:
   v46 = buf;
   v11 = v7;
   v44 = v11;
-  [MBPeerMessenger sendRequest:v10 session:v5 responseHandler:v43];
+  [MBPeerMessenger sendRequest:v10 session:fileTransferSession responseHandler:v43];
   v12 = dispatch_time(0, 3600000000000);
   v13 = dispatch_semaphore_wait(v11, v12);
   [(MBTargetDeviceTransferEngine *)self setRequestInitSemaphore:0];
-  if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v13 != 0 error:a3])
+  if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v13 != 0 error:error])
   {
     if (*(v54 + 5))
     {
@@ -1439,7 +1439,7 @@ LABEL_16:
       }
 
       v18 = 0;
-      *a3 = *(v54 + 5);
+      *error = *(v54 + 5);
       goto LABEL_33;
     }
 
@@ -1454,28 +1454,28 @@ LABEL_16:
       _MBLog();
     }
 
-    v21 = [v48[5] sourceProtocolVersion];
-    if (!v21)
+    sourceProtocolVersion = [v48[5] sourceProtocolVersion];
+    if (!sourceProtocolVersion)
     {
       __assert_rtn("[MBTargetDeviceTransferEngine _requestInitWithError:]", "MBTargetDeviceTransferEngine.m", 953, "sourceProtocolVersion");
     }
 
-    v22 = [v48[5] sourceProductVersion];
-    if (!v22)
+    sourceProductVersion = [v48[5] sourceProductVersion];
+    if (!sourceProductVersion)
     {
       __assert_rtn("[MBTargetDeviceTransferEngine _requestInitWithError:]", "MBTargetDeviceTransferEngine.m", 955, "sourceProductVersion");
     }
 
-    v39 = [v48[5] sourceRequiredProductVersion];
-    v23 = [v48[5] sourceDeviceClass];
-    v38 = v22;
-    if (!v23)
+    sourceRequiredProductVersion = [v48[5] sourceRequiredProductVersion];
+    sourceDeviceClass = [v48[5] sourceDeviceClass];
+    v38 = sourceProductVersion;
+    if (!sourceDeviceClass)
     {
       __assert_rtn("[MBTargetDeviceTransferEngine _requestInitWithError:]", "MBTargetDeviceTransferEngine.m", 958, "sourceDeviceClass");
     }
 
-    v24 = v23;
-    if ([v21 unsignedLongValue] <= 1)
+    v24 = sourceDeviceClass;
+    if ([sourceProtocolVersion unsignedLongValue] <= 1)
     {
       v26 = MBProductVersion();
       v27 = MBIsRestoreCompatible();
@@ -1504,7 +1504,7 @@ LABEL_28:
           v48[5] = 0;
 
           v33 = v30;
-          *a3 = v30;
+          *error = v30;
           v34 = MBGetDefaultLog();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
@@ -1541,22 +1541,22 @@ LABEL_34:
   return v18;
 }
 
-- (id)_requestPreflightWithSourceInfo:(id)a3 error:(id *)a4
+- (id)_requestPreflightWithSourceInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  infoCopy = info;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestPreflightWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 979, "sourceInfo");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestPreflightWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 980, "error");
   }
 
-  v7 = v6;
-  v8 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-  if (!v8)
+  v7 = infoCopy;
+  fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestPreflightWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 982, "fileTransferSession");
   }
@@ -1566,27 +1566,27 @@ LABEL_34:
 
   [(MBTargetDeviceTransferEngine *)self setPreflightDuration:0];
   v10 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v11 = [(MBTargetDeviceTransferEngine *)self progressModel];
-  [v11 updateTotalProgressWithPhaseProgress:2 phase:0.0];
+  progressModel = [(MBTargetDeviceTransferEngine *)self progressModel];
+  [progressModel updateTotalProgressWithPhaseProgress:2 phase:0.0];
 
-  v12 = [v7 sourceDeviceName];
-  v13 = [v7 sourceDeviceUDID];
+  sourceDeviceName = [v7 sourceDeviceName];
+  sourceDeviceUDID = [v7 sourceDeviceUDID];
   v14 = MBGetDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = sourceDeviceName;
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = sourceDeviceUDID;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Starting to preflight on %@ (%@)", buf, 0x16u);
-    v27 = v12;
-    v28 = v13;
+    v27 = sourceDeviceName;
+    v28 = sourceDeviceUDID;
     _MBLog();
   }
 
   v15 = dispatch_semaphore_create(0);
   [(MBTargetDeviceTransferEngine *)self setRequestPreflightSemaphore:v15];
-  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:a4])
+  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:error])
   {
     v24 = 0;
   }
@@ -1615,11 +1615,11 @@ LABEL_34:
     v34 = buf;
     v17 = v15;
     v32 = v17;
-    [MBPeerMessenger sendRequest:v16 session:v8 responseHandler:v31];
+    [MBPeerMessenger sendRequest:v16 session:fileTransferSession responseHandler:v31];
     v18 = dispatch_time(0, 604800000000000);
     v19 = dispatch_semaphore_wait(v17, v18);
     [(MBTargetDeviceTransferEngine *)self setRequestPreflightSemaphore:0];
-    if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v19 != 0 error:a4, v27, v28])
+    if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v19 != 0 error:error, v27, v28])
     {
       if (*(*&buf[8] + 40))
       {
@@ -1644,7 +1644,7 @@ LABEL_34:
         }
 
         v24 = 0;
-        *a4 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
 
       else
@@ -1654,9 +1654,9 @@ LABEL_34:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *v41 = 138412546;
-          v42 = v12;
+          v42 = sourceDeviceName;
           v43 = 2112;
-          v44 = v13;
+          v44 = sourceDeviceUDID;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Finished preflighting on %@ (%@)", v41, 0x16u);
           _MBLog();
         }
@@ -1677,44 +1677,44 @@ LABEL_34:
   return v24;
 }
 
-- (id)_requestKeychainWithSourceInfo:(id)a3 error:(id *)a4
+- (id)_requestKeychainWithSourceInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  infoCopy = info;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestKeychainWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 1028, "sourceInfo");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestKeychainWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 1029, "error");
   }
 
-  v7 = v6;
-  v8 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-  if (!v8)
+  v7 = infoCopy;
+  fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestKeychainWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 1031, "fileTransferSession");
   }
 
-  v9 = [v7 sourceDeviceName];
-  v10 = [v7 sourceDeviceUDID];
+  sourceDeviceName = [v7 sourceDeviceName];
+  sourceDeviceUDID = [v7 sourceDeviceUDID];
   v11 = MBGetDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v9;
+    *&buf[4] = sourceDeviceName;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = sourceDeviceUDID;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Starting to transfer the keychain data from %@ (%@)", buf, 0x16u);
-    v25 = v9;
-    v26 = v10;
+    v25 = sourceDeviceName;
+    v26 = sourceDeviceUDID;
     _MBLog();
   }
 
   v28 = dispatch_semaphore_create(0);
   [(MBTargetDeviceTransferEngine *)self setRequestKeychainSemaphore:?];
-  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:a4])
+  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:error])
   {
     v22 = 0;
   }
@@ -1733,7 +1733,7 @@ LABEL_34:
     v36 = sub_100111BA4;
     v37 = sub_100111BB4;
     v38 = 0;
-    v12 = a4;
+    errorCopy = error;
     v13 = objc_opt_new();
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
@@ -1744,11 +1744,11 @@ LABEL_34:
     v14 = v28;
     v30 = v14;
     v15 = v13;
-    [MBPeerMessenger sendRequest:v13 session:v8 responseHandler:v29];
+    [MBPeerMessenger sendRequest:v13 session:fileTransferSession responseHandler:v29];
     v16 = dispatch_time(0, 3600000000000);
     v17 = dispatch_semaphore_wait(v14, v16);
     [(MBTargetDeviceTransferEngine *)self setRequestKeychainSemaphore:0];
-    if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v17 != 0 error:v12, v25, v26])
+    if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v17 != 0 error:errorCopy, v25, v26])
     {
       if (*(*&buf[8] + 40))
       {
@@ -1773,7 +1773,7 @@ LABEL_34:
         }
 
         v22 = 0;
-        *v12 = *(*&buf[8] + 40);
+        *errorCopy = *(*&buf[8] + 40);
       }
 
       else
@@ -1782,9 +1782,9 @@ LABEL_34:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *v39 = 138412546;
-          v40 = v9;
+          v40 = sourceDeviceName;
           v41 = 2112;
-          v42 = v10;
+          v42 = sourceDeviceUDID;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Finished transferring the keychain data from %@ (%@)", v39, 0x16u);
           _MBLog();
         }
@@ -1805,43 +1805,43 @@ LABEL_34:
   return v22;
 }
 
-- (BOOL)_restoreKeychainWithKeychainTransferResponse:(id)a3 error:(id *)a4
+- (BOOL)_restoreKeychainWithKeychainTransferResponse:(id)response error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  responseCopy = response;
+  if (!responseCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _restoreKeychainWithKeychainTransferResponse:error:]", "MBTargetDeviceTransferEngine.m", 1070, "keybagTransferResponse");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _restoreKeychainWithKeychainTransferResponse:error:]", "MBTargetDeviceTransferEngine.m", 1071, "error");
   }
 
-  v7 = v6;
-  v8 = [v6 keychainFileName];
-  v9 = [v7 keybagData];
-  v10 = [v7 passwordData];
-  v11 = [(MBTargetDeviceTransferEngine *)self transferDrive];
-  v12 = [v11 fullURLForDriveRelativePath:v8];
-  v13 = [v12 path];
+  v7 = responseCopy;
+  keychainFileName = [responseCopy keychainFileName];
+  keybagData = [v7 keybagData];
+  passwordData = [v7 passwordData];
+  transferDrive = [(MBTargetDeviceTransferEngine *)self transferDrive];
+  v12 = [transferDrive fullURLForDriveRelativePath:keychainFileName];
+  path = [v12 path];
 
-  if (!v13)
+  if (!path)
   {
     v28 = @"nil keychain file path";
 LABEL_23:
     [MBError errorWithCode:1 format:v28];
-    *a4 = v20 = 0;
+    *error = v20 = 0;
     goto LABEL_28;
   }
 
-  if (!v9)
+  if (!keybagData)
   {
     v28 = @"nil keybag data";
     goto LABEL_23;
   }
 
-  if (!v10)
+  if (!passwordData)
   {
     v28 = @"nil password data";
     goto LABEL_23;
@@ -1849,7 +1849,7 @@ LABEL_23:
 
   v14 = +[NSFileManager defaultManager];
   v35 = 0;
-  v15 = [v14 attributesOfItemAtPath:v13 error:&v35];
+  v15 = [v14 attributesOfItemAtPath:path error:&v35];
   v16 = v35;
 
   v32 = v15;
@@ -1859,22 +1859,22 @@ LABEL_23:
     v17 = MBGetDefaultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v31 unsignedLongLongValue];
-      v19 = [v9 length];
+      unsignedLongLongValue = [v31 unsignedLongLongValue];
+      v19 = [keybagData length];
       *buf = 138412802;
-      v37 = v13;
+      v37 = path;
       v38 = 2048;
-      v39 = v18;
+      v39 = unsignedLongLongValue;
       v40 = 2048;
       v41 = v19;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Restoring the keychain from %@ (size:%llu, keybagData.length:%ld)", buf, 0x20u);
       [v31 unsignedLongLongValue];
-      [v9 length];
+      [keybagData length];
       _MBLog();
     }
 
     v34 = v16;
-    v20 = RestoreKeychainFromDisk(v13, v9, v10, &v34);
+    v20 = RestoreKeychainFromDisk(path, keybagData, passwordData, &v34);
     v21 = v34;
 
     if (!v20)
@@ -1883,7 +1883,7 @@ LABEL_23:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v37 = v13;
+        v37 = path;
         v38 = 2112;
         v39 = v21;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to restore the keychain from %@: %@", buf, 0x16u);
@@ -1891,21 +1891,21 @@ LABEL_23:
       }
 
       v23 = v21;
-      *a4 = v21;
+      *error = v21;
     }
 
     v24 = MBGetDefaultLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v37 = v13;
+      v37 = path;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Removing the keychain temporary file at %@", buf, 0xCu);
       _MBLog();
     }
 
     v25 = +[NSFileManager defaultManager];
     v33 = v21;
-    v26 = [v25 removeItemAtPath:v13 error:&v33];
+    v26 = [v25 removeItemAtPath:path error:&v33];
     v16 = v33;
 
     if ((v26 & 1) == 0)
@@ -1914,7 +1914,7 @@ LABEL_23:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v37 = v13;
+        v37 = path;
         v38 = 2112;
         v39 = v16;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Failed to remove the keychain temporary file at %@: %@", buf, 0x16u);
@@ -1929,7 +1929,7 @@ LABEL_23:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v37 = v13;
+      v37 = path;
       v38 = 2112;
       v39 = v16;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to fetch the attributes for %@: %@", buf, 0x16u);
@@ -1937,35 +1937,35 @@ LABEL_23:
     }
 
     [MBError errorWithCode:1 error:v16 format:@"Failed to fetch the attributes for the keychain temporary file"];
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
 LABEL_28:
   return v20;
 }
 
-- (BOOL)_requestBackupWithSourceInfo:(id)a3 preflightInfo:(id)a4 error:(id *)a5
+- (BOOL)_requestBackupWithSourceInfo:(id)info preflightInfo:(id)preflightInfo error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  infoCopy = info;
+  preflightInfoCopy = preflightInfo;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestBackupWithSourceInfo:preflightInfo:error:]", "MBTargetDeviceTransferEngine.m", 1116, "sourceInfo");
   }
 
-  if (!v9)
+  if (!preflightInfoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestBackupWithSourceInfo:preflightInfo:error:]", "MBTargetDeviceTransferEngine.m", 1117, "preflightInfo");
   }
 
-  if (!a5)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestBackupWithSourceInfo:preflightInfo:error:]", "MBTargetDeviceTransferEngine.m", 1118, "error");
   }
 
-  v45 = v9;
-  v47 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-  if (!v47)
+  v45 = preflightInfoCopy;
+  fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _requestBackupWithSourceInfo:preflightInfo:error:]", "MBTargetDeviceTransferEngine.m", 1120, "fileTransferSession");
   }
@@ -1973,15 +1973,15 @@ LABEL_28:
   v46 = self->_transferSummary;
   v10 = +[NSDate date];
   [(MBTargetDeviceTransferEngine *)self setFileTransferStartDate:v10];
-  v11 = [(MBTargetDeviceTransferEngine *)self progressModel];
-  [v11 setFileTransferStartDate:v10];
+  progressModel = [(MBTargetDeviceTransferEngine *)self progressModel];
+  [progressModel setFileTransferStartDate:v10];
 
-  v12 = [(MBTargetDeviceTransferEngine *)self progressModel];
-  [v12 updateTotalProgressWithPhaseProgress:3 phase:0.0];
+  progressModel2 = [(MBTargetDeviceTransferEngine *)self progressModel];
+  [progressModel2 updateTotalProgressWithPhaseProgress:3 phase:0.0];
 
-  v40 = [v45 sourceDeviceDataSize];
-  v44 = [v8 sourceDeviceName];
-  [v8 sourceDeviceUDID];
+  sourceDeviceDataSize = [v45 sourceDeviceDataSize];
+  sourceDeviceName = [infoCopy sourceDeviceName];
+  [infoCopy sourceDeviceUDID];
   *&v43 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   [(MBTargetDeviceTransferSummary *)v46 trackDataTransferStart];
   +[NSDate timeIntervalSinceReferenceDate];
@@ -1990,15 +1990,15 @@ LABEL_28:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    *&buf[4] = v40;
+    *&buf[4] = sourceDeviceDataSize;
     *&buf[12] = 2112;
-    *&buf[14] = v44;
+    *&buf[14] = sourceDeviceName;
     *&buf[22] = 2112;
     v61 = v43;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Starting to transfer data (%llu) from %@ (%@)", buf, 0x20u);
-    v37 = v44;
+    v37 = sourceDeviceName;
     v39 = v43;
-    v36 = v40;
+    v36 = sourceDeviceDataSize;
     _MBLog();
   }
 
@@ -2008,12 +2008,12 @@ LABEL_28:
   v51[2] = sub_100116928;
   v51[3] = &unk_1003BEFF8;
   objc_copyWeak(&v52, &location);
-  v16 = [(MBTargetDeviceTransferEngine *)self transferDrive];
-  [v16 setReceiveProgressHandler:v51];
+  transferDrive = [(MBTargetDeviceTransferEngine *)self transferDrive];
+  [transferDrive setReceiveProgressHandler:v51];
 
   v17 = dispatch_semaphore_create(0);
   [(MBTargetDeviceTransferEngine *)self setRequestBackupSemaphore:v17];
-  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:a5])
+  if ([(MBEngine *)self isCanceled]&& ![(MBTargetDeviceTransferEngine *)self _handleTimeout:0 error:error])
   {
     v29 = 0;
   }
@@ -2036,18 +2036,18 @@ LABEL_28:
     v50 = buf;
     v19 = v17;
     v49 = v19;
-    [MBPeerMessenger sendRequest:v18 session:v47 responseHandler:v48];
+    [MBPeerMessenger sendRequest:v18 session:fileTransferSession responseHandler:v48];
     v20 = dispatch_time(0, 604800000000000);
     v21 = dispatch_semaphore_wait(v19, v20);
     [(MBTargetDeviceTransferEngine *)self setRequestBackupSemaphore:0];
-    v22 = [(MBTargetDeviceTransferEngine *)self transferDrive];
-    [v22 setReceiveProgressHandler:0];
+    transferDrive2 = [(MBTargetDeviceTransferEngine *)self transferDrive];
+    [transferDrive2 setReceiveProgressHandler:0];
 
-    v23 = [(MBTargetDeviceTransferEngine *)self progressModel];
-    v24 = [v23 progressInfo];
+    progressModel3 = [(MBTargetDeviceTransferEngine *)self progressModel];
+    progressInfo = [progressModel3 progressInfo];
 
-    -[MBTargetDeviceTransferSummary trackDataTransferEndWithTotalByteCount:totalFileCount:bytesTransferred:filesTransferred:](v46, "trackDataTransferEndWithTotalByteCount:totalFileCount:bytesTransferred:filesTransferred:", [v24 totalByteCount], objc_msgSend(v24, "totalFileCount"), objc_msgSend(v24, "bytesTransferred"), objc_msgSend(v24, "filesTransferred"));
-    if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v21 != 0 error:a5, v36, v37, v39])
+    -[MBTargetDeviceTransferSummary trackDataTransferEndWithTotalByteCount:totalFileCount:bytesTransferred:filesTransferred:](v46, "trackDataTransferEndWithTotalByteCount:totalFileCount:bytesTransferred:filesTransferred:", [progressInfo totalByteCount], objc_msgSend(progressInfo, "totalFileCount"), objc_msgSend(progressInfo, "bytesTransferred"), objc_msgSend(progressInfo, "filesTransferred"));
+    if ([(MBTargetDeviceTransferEngine *)self _handleTimeout:v21 != 0 error:error, v36, v37, v39])
     {
       if (*(*&buf[8] + 40))
       {
@@ -2072,7 +2072,7 @@ LABEL_28:
         }
 
         v29 = 0;
-        *a5 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
 
       else
@@ -2083,7 +2083,7 @@ LABEL_28:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
           *v54 = 138412546;
-          v55 = v44;
+          v55 = sourceDeviceName;
           v56 = 2112;
           v57 = *&v43;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Finished transferring data from %@ (%@)", v54, 0x16u);
@@ -2094,11 +2094,11 @@ LABEL_28:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *v54 = 134218496;
-          v55 = v40;
+          v55 = sourceDeviceDataSize;
           v56 = 2048;
           v57 = v31 - v14;
           v58 = 2048;
-          v59 = (v40 >> 20) / (v31 - v14);
+          v59 = (sourceDeviceDataSize >> 20) / (v31 - v14);
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Total bytes transferred: %llu. Total time spent on transferring: %f. Average throughput: %.2f", v54, 0x20u);
           _MBLog();
         }
@@ -2137,70 +2137,70 @@ LABEL_28:
   v5 = [NSNumber numberWithInteger:[(MBTargetDeviceTransferEngine *)self connectionType]];
   [v3 setObject:v5 forKeyedSubscript:@"ConnectionType"];
 
-  v6 = [(MBTargetDeviceTransferEngine *)self peerInitResponse];
-  v7 = v6;
-  if (v6)
+  peerInitResponse = [(MBTargetDeviceTransferEngine *)self peerInitResponse];
+  v7 = peerInitResponse;
+  if (peerInitResponse)
   {
-    v8 = [v6 sourceDeviceUDID];
-    if (v8)
+    sourceDeviceUDID = [peerInitResponse sourceDeviceUDID];
+    if (sourceDeviceUDID)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"SourceDeviceUDID"];
+      [v3 setObject:sourceDeviceUDID forKeyedSubscript:@"SourceDeviceUDID"];
     }
 
-    v9 = [v7 sourceProtocolVersion];
-    if (v9)
+    sourceProtocolVersion = [v7 sourceProtocolVersion];
+    if (sourceProtocolVersion)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"SourceDeviceProtocolVersion"];
+      [v3 setObject:sourceProtocolVersion forKeyedSubscript:@"SourceDeviceProtocolVersion"];
     }
 
-    v10 = [v7 sourceBuildVersion];
-    if (v10)
+    sourceBuildVersion = [v7 sourceBuildVersion];
+    if (sourceBuildVersion)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"SourceDeviceBuildVersion"];
+      [v3 setObject:sourceBuildVersion forKeyedSubscript:@"SourceDeviceBuildVersion"];
     }
   }
 
-  v11 = [(MBTargetDeviceTransferEngine *)self progressModel];
-  v12 = [v11 progressInfo];
+  progressModel = [(MBTargetDeviceTransferEngine *)self progressModel];
+  progressInfo = [progressModel progressInfo];
 
-  if (v12)
+  if (progressInfo)
   {
-    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v12 bytesTransferred]);
+    v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [progressInfo bytesTransferred]);
     [v3 setObject:v13 forKeyedSubscript:@"BytesTransferred"];
 
-    v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v12 filesTransferred]);
+    v14 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [progressInfo filesTransferred]);
     [v3 setObject:v14 forKeyedSubscript:@"FilesTransferred"];
   }
 
-  v15 = [(MBTargetDeviceTransferEngine *)self preflightStartDate];
-  v16 = [(MBTargetDeviceTransferEngine *)self preflightDuration];
-  if (v16)
+  preflightStartDate = [(MBTargetDeviceTransferEngine *)self preflightStartDate];
+  preflightDuration = [(MBTargetDeviceTransferEngine *)self preflightDuration];
+  if (preflightDuration)
   {
-    v17 = [NSNumber numberWithUnsignedLongLong:v16];
+    v17 = [NSNumber numberWithUnsignedLongLong:preflightDuration];
     [v3 setObject:v17 forKeyedSubscript:@"PreflightDuration"];
   }
 
-  if (v15)
+  if (preflightStartDate)
   {
-    [v3 setObject:v15 forKeyedSubscript:@"PreflightStartDate"];
+    [v3 setObject:preflightStartDate forKeyedSubscript:@"PreflightStartDate"];
   }
 
-  v18 = [(MBTargetDeviceTransferEngine *)self fileTransferStartDate];
-  v19 = [(MBTargetDeviceTransferEngine *)self fileTransferEndDate];
-  v20 = v19;
-  if (v18 && v19)
+  fileTransferStartDate = [(MBTargetDeviceTransferEngine *)self fileTransferStartDate];
+  fileTransferEndDate = [(MBTargetDeviceTransferEngine *)self fileTransferEndDate];
+  v20 = fileTransferEndDate;
+  if (fileTransferStartDate && fileTransferEndDate)
   {
-    [v19 timeIntervalSinceDate:v18];
+    [fileTransferEndDate timeIntervalSinceDate:fileTransferStartDate];
     v22 = v21;
-    [v3 setObject:v18 forKeyedSubscript:@"FileTransferStartDate"];
+    [v3 setObject:fileTransferStartDate forKeyedSubscript:@"FileTransferStartDate"];
     v23 = [NSNumber numberWithLongLong:v22];
     [v3 setObject:v23 forKeyedSubscript:@"FileTransferDuration"];
   }
 
-  v24 = [(MBTargetDeviceTransferEngine *)self restoreStartDate];
-  if (v24)
+  restoreStartDate = [(MBTargetDeviceTransferEngine *)self restoreStartDate];
+  if (restoreStartDate)
   {
-    [v3 setObject:v24 forKeyedSubscript:@"RestoreStartDate"];
+    [v3 setObject:restoreStartDate forKeyedSubscript:@"RestoreStartDate"];
   }
 
   v25 = [MBPersona personalPersonaWithError:0];
@@ -2217,63 +2217,63 @@ LABEL_28:
   }
 }
 
-- (BOOL)_restoreWithSourceInfo:(id)a3 error:(id *)a4
+- (BOOL)_restoreWithSourceInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  infoCopy = info;
+  if (!infoCopy)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _restoreWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 1232, "sourceInfo");
   }
 
-  if (!a4)
+  if (!error)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _restoreWithSourceInfo:error:]", "MBTargetDeviceTransferEngine.m", 1233, "error");
   }
 
-  v7 = v6;
+  v7 = infoCopy;
   v8 = self->_transferSummary;
   [(MBTargetDeviceTransferSummary *)v8 trackRestoreStart];
-  v9 = [v7 sourceDeviceName];
-  v10 = [v7 sourceDeviceUDID];
+  sourceDeviceName = [v7 sourceDeviceName];
+  sourceDeviceUDID = [v7 sourceDeviceUDID];
   v11 = MBGetDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v9;
+    v21 = sourceDeviceName;
     v22 = 2112;
-    v23 = v10;
+    v23 = sourceDeviceUDID;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Starting to restore data from %@ (%@)", buf, 0x16u);
     _MBLog();
   }
 
   v12 = +[NSDate date];
   [(MBTargetDeviceTransferEngine *)self setRestoreStartDate:v12];
-  v13 = [(MBTargetDeviceTransferEngine *)self progressModel];
-  [v13 setRestoreStartDate:v12];
+  progressModel = [(MBTargetDeviceTransferEngine *)self progressModel];
+  [progressModel setRestoreStartDate:v12];
 
   [(MBTargetDeviceTransferEngine *)self progressUpdatedWithPercentage:0 size:0.0];
   [(MBTargetDeviceTransferEngine *)self _saveDeviceTransferInfo];
   v14 = [(MBTargetDeviceTransferEngine *)self _restoreEngineWithSourceInfo:v7];
-  v15 = [v14 restore];
+  restore = [v14 restore];
   [(MBTargetDeviceTransferSummary *)v8 trackRestoreEnd];
   v16 = MBGetDefaultLog();
   v17 = v16;
-  if (v15)
+  if (restore)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v21 = v9;
+      v21 = sourceDeviceName;
       v22 = 2112;
-      v23 = v10;
+      v23 = sourceDeviceUDID;
       v24 = 2112;
-      v25 = v15;
+      v25 = restore;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to restore data from %@ (%@): %@", buf, 0x20u);
       _MBLog();
     }
 
-    v18 = v15;
-    *a4 = v15;
+    v18 = restore;
+    *error = restore;
   }
 
   else
@@ -2281,61 +2281,61 @@ LABEL_28:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v9;
+      v21 = sourceDeviceName;
       v22 = 2112;
-      v23 = v10;
+      v23 = sourceDeviceUDID;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Finished restoring data from %@ (%@)", buf, 0x16u);
       _MBLog();
     }
   }
 
-  return v15 == 0;
+  return restore == 0;
 }
 
-- (id)_restoreEngineWithSourceInfo:(id)a3
+- (id)_restoreEngineWithSourceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[MBDriveSettingsContext defaultSettingsContext];
   [v5 setIsDeviceTransfer:1];
   v6 = MBAllDrivePlugins();
   [v5 setPlugins:v6];
 
-  v7 = [v4 sourceDeviceUDID];
-  [v5 setSourceIdentifier:v7];
+  sourceDeviceUDID = [infoCopy sourceDeviceUDID];
+  [v5 setSourceIdentifier:sourceDeviceUDID];
 
   v8 = MBDeviceUDID_Legacy();
   [v5 setTargetIdentifier:v8];
 
-  v9 = [(MBTargetDeviceTransferEngine *)self transferLocalDrive];
-  if (!v9)
+  transferLocalDrive = [(MBTargetDeviceTransferEngine *)self transferLocalDrive];
+  if (!transferLocalDrive)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _restoreEngineWithSourceInfo:]", "MBTargetDeviceTransferEngine.m", 1275, "self.transferLocalDrive");
   }
 
-  v10 = [(MBTargetDeviceTransferEngine *)self transferLocalDrive];
-  [v5 setDrive:v10];
+  transferLocalDrive2 = [(MBTargetDeviceTransferEngine *)self transferLocalDrive];
+  [v5 setDrive:transferLocalDrive2];
 
   v11 = +[MBCKManager sharedInstance];
   [v5 setManager:v11];
 
   [v5 setApplicationIDs:0];
   v12 = [[MBDriveRestoreEngine alloc] initWithSettingsContext:v5 debugContext:0];
-  v13 = [(MBDriveRestoreEngine *)v12 progress];
-  [v13 setDelegate:self];
+  progress = [(MBDriveRestoreEngine *)v12 progress];
+  [progress setDelegate:self];
 
   return v12;
 }
 
-- (void)_sendDoneMessageWithError:(id)a3
+- (void)_sendDoneMessageWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-  if (!v5)
+  errorCopy = error;
+  fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _sendDoneMessageWithError:]", "MBTargetDeviceTransferEngine.m", 1288, "fileTransferSession");
   }
 
-  v6 = v5;
+  v6 = fileTransferSession;
   v7 = atomic_load(&self->_peerConnectedOnce);
   if (v7 & 1) == 0 || (v8 = atomic_load(&self->_receivedDoneMessage), (v8) || (v9 = atomic_load(&self->_sentDoneMessage), (v9) || (atomic_exchange(&self->_sendingDoneMessage, 1u))
   {
@@ -2354,7 +2354,7 @@ LABEL_28:
   {
     v10 = self->_transferSummary;
     [(MBTargetDeviceTransferSummary *)v10 trackDoneStart];
-    v11 = [[MBPeerDoneRequest alloc] initWithError:v4];
+    v11 = [[MBPeerDoneRequest alloc] initWithError:errorCopy];
     v12 = dispatch_semaphore_create(0);
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
@@ -2362,7 +2362,7 @@ LABEL_28:
     v22 = &unk_1003BF048;
     v13 = v11;
     v23 = v13;
-    v24 = self;
+    selfCopy = self;
     v14 = v12;
     v25 = v14;
     [MBPeerMessenger sendRequest:v13 session:v6 responseHandler:&v19];
@@ -2387,42 +2387,42 @@ LABEL_28:
   }
 }
 
-- (void)_sendRestoreProgressMessageWithPercentage:(unint64_t)a3
+- (void)_sendRestoreProgressMessageWithPercentage:(unint64_t)percentage
 {
-  v5 = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
-  if (!v5)
+  fileTransferSession = [(MBTargetDeviceTransferEngine *)self fileTransferSession];
+  if (!fileTransferSession)
   {
     __assert_rtn("[MBTargetDeviceTransferEngine _sendRestoreProgressMessageWithPercentage:]", "MBTargetDeviceTransferEngine.m", 1326, "fileTransferSession");
   }
 
-  v6 = v5;
+  v6 = fileTransferSession;
   v7 = atomic_load(&self->_peerConnectedOnce);
   if ((v7 & 1) != 0 && (v8 = atomic_load(&self->_receivedDoneMessage), (v8 & 1) == 0))
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    if (v10->_lastRestoreProgressPercentage == a3)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_lastRestoreProgressPercentage == percentage)
     {
-      objc_sync_exit(v10);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      v10->_lastRestoreProgressPercentage = a3;
-      objc_sync_exit(v10);
+      selfCopy->_lastRestoreProgressPercentage = percentage;
+      objc_sync_exit(selfCopy);
 
-      if (a3 <= 0x64 && (atomic_exchange(&v10->_sendingRestoreProgressMessage, 1u) & 1) == 0)
+      if (percentage <= 0x64 && (atomic_exchange(&selfCopy->_sendingRestoreProgressMessage, 1u) & 1) == 0)
       {
-        v11 = [(MBTargetDeviceTransferEngine *)v10 progressGroup];
+        progressGroup = [(MBTargetDeviceTransferEngine *)selfCopy progressGroup];
         v12 = dispatch_get_global_queue(17, 0);
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1001179A8;
         block[3] = &unk_1003BDB10;
-        v16 = a3;
+        percentageCopy = percentage;
         v14 = v6;
-        v15 = v10;
-        dispatch_group_async(v11, v12, block);
+        v15 = selfCopy;
+        dispatch_group_async(progressGroup, v12, block);
 
         v9 = v14;
         goto LABEL_12;
@@ -2453,44 +2453,44 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)_postTransferProgressNotification:(id)a3
+- (void)_postTransferProgressNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = +[MBNotificationCenter sharedNotificationCenter];
   v5 = kMBTargetDeviceTransferProgressNotification;
-  [v3 progress];
+  [notificationCopy progress];
   [v4 postNotification:v5 ifStateChanged:(v6 * 100.0)];
 
   v9 = +[MBNotificationCenter sharedNotificationCenter];
   v7 = kMBTargetDeviceTransferMinutesRemainingNotification;
-  v8 = [v3 minutesRemaining];
+  minutesRemaining = [notificationCopy minutesRemaining];
 
-  [v9 postNotification:v7 ifStateChanged:v8];
+  [v9 postNotification:v7 ifStateChanged:minutesRemaining];
 }
 
-- (void)updatedTotalProgress:(id)a3
+- (void)updatedTotalProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   if (![(MBEngine *)self isCanceled])
   {
-    v5 = [(MBTargetDeviceTransferEngine *)self progressGroup];
-    v6 = [(MBTargetDeviceTransferEngine *)self sessionQueue];
+    progressGroup = [(MBTargetDeviceTransferEngine *)self progressGroup];
+    sessionQueue = [(MBTargetDeviceTransferEngine *)self sessionQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100117E8C;
     v7[3] = &unk_1003BC060;
     v7[4] = self;
-    v8 = v4;
-    dispatch_group_async(v5, v6, v7);
+    v8 = progressCopy;
+    dispatch_group_async(progressGroup, sessionQueue, v7);
   }
 }
 
-- (void)progressUpdatedWithPercentage:(double)a3 size:(unint64_t)a4
+- (void)progressUpdatedWithPercentage:(double)percentage size:(unint64_t)size
 {
-  v6 = [(MBTargetDeviceTransferEngine *)self progressModel];
-  [v6 updateTotalProgressWithPhaseProgress:4 phase:a3 / 100.0];
+  progressModel = [(MBTargetDeviceTransferEngine *)self progressModel];
+  [progressModel updateTotalProgressWithPhaseProgress:4 phase:percentage / 100.0];
 
-  [(MBTargetDeviceTransferEngine *)self _sendRestoreProgressMessageWithPercentage:a3];
+  [(MBTargetDeviceTransferEngine *)self _sendRestoreProgressMessageWithPercentage:percentage];
 }
 
 - (MBServiceManagerDeviceTransferDelegate)delegate

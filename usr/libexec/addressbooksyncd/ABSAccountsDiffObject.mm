@@ -1,6 +1,6 @@
 @interface ABSAccountsDiffObject
 - (ABSAccountsDiffObject)init;
-- (BOOL)matches:(id)a3;
+- (BOOL)matches:(id)matches;
 - (NSString)description;
 @end
 
@@ -14,8 +14,8 @@
   if (v2)
   {
     v3 = +[ABSyncInterface sharedInstance];
-    v4 = [v3 serverState];
-    v5 = [v4 getStringValueForKey:@"com.apple.absd.accounts.sha" default:@"0"];
+    serverState = [v3 serverState];
+    v5 = [serverState getStringValueForKey:@"com.apple.absd.accounts.sha" default:@"0"];
     sha = v2->_sha;
     v2->_sha = v5;
   }
@@ -23,7 +23,7 @@
   return v2;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
   v4 = +[ABSAccountsSyncObject sha];
   v5 = [(ABSAccountsDiffObject *)self sha];

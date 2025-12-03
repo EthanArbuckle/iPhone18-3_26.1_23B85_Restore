@@ -1,57 +1,57 @@
 @interface UIKBBackdropView
-- (UIKBBackdropView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)_generateCornerContentsImage:(unint64_t)a3;
-- (void)_applyGlassBackground:(BOOL)a3;
-- (void)_applyGlassBackgroundToSubview:(id)a3;
-- (void)_setRenderConfig:(id)a3;
-- (void)_updateCornerRadiiIfNecessaryWithTopRadius:(double)a3 useDeviceCorners:(BOOL)a4;
-- (void)setImageForCorners:(id)a3;
-- (void)transitionToStyle:(int64_t)a3 isSplit:(BOOL)a4;
-- (void)updateCorners:(unint64_t)a3;
-- (void)updateCornersWithCornerRadii:(CACornerRadii *)a3;
+- (UIKBBackdropView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)_generateCornerContentsImage:(unint64_t)image;
+- (void)_applyGlassBackground:(BOOL)background;
+- (void)_applyGlassBackgroundToSubview:(id)subview;
+- (void)_setRenderConfig:(id)config;
+- (void)_updateCornerRadiiIfNecessaryWithTopRadius:(double)radius useDeviceCorners:(BOOL)corners;
+- (void)setImageForCorners:(id)corners;
+- (void)transitionToStyle:(int64_t)style isSplit:(BOOL)split;
+- (void)updateCorners:(unint64_t)corners;
+- (void)updateCornersWithCornerRadii:(CACornerRadii *)radii;
 @end
 
 @implementation UIKBBackdropView
 
-- (void)_updateCornerRadiiIfNecessaryWithTopRadius:(double)a3 useDeviceCorners:(BOOL)a4
+- (void)_updateCornerRadiiIfNecessaryWithTopRadius:(double)radius useDeviceCorners:(BOOL)corners
 {
-  v6 = self;
-  sub_188DA52B8(a4, a3);
+  selfCopy = self;
+  sub_188DA52B8(corners, radius);
 }
 
-- (void)_applyGlassBackground:(BOOL)a3
+- (void)_applyGlassBackground:(BOOL)background
 {
-  v4 = self;
-  sub_188EAA448(a3);
+  selfCopy = self;
+  sub_188EAA448(background);
 }
 
-- (void)_applyGlassBackgroundToSubview:(id)a3
+- (void)_applyGlassBackgroundToSubview:(id)subview
 {
-  v5 = a3;
-  v6 = self;
-  sub_188EAA6FC(a3);
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_188EAA6FC(subview);
 }
 
-- (UIKBBackdropView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (UIKBBackdropView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = +[UIKBRenderConfig backdropStyleForStyle:quality:](UIKBRenderConfig, "backdropStyleForStyle:quality:", a4, +[UIKBRenderFactory _graphicsQuality]);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = +[UIKBRenderConfig backdropStyleForStyle:quality:](UIKBRenderConfig, "backdropStyleForStyle:quality:", style, +[UIKBRenderFactory _graphicsQuality]);
   v19.receiver = self;
   v19.super_class = UIKBBackdropView;
-  v10 = [(UIVisualEffectView *)&v19 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIVisualEffectView *)&v19 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(UIVisualEffectView *)v10 _setGroupName:@"UIKBBackdropGroupName"];
+    [(UIVisualEffectView *)height _setGroupName:@"UIKBBackdropGroupName"];
     v12 = *MEMORY[0x1E69795C8];
-    v13 = [(UIVisualEffectView *)v11 _captureGroup];
-    [v13 setGroupNamespace:v12];
+    _captureGroup = [(UIVisualEffectView *)v11 _captureGroup];
+    [_captureGroup setGroupNamespace:v12];
 
-    v14 = [(UIView *)v11 _inheritedRenderConfig];
-    v15 = _UIKBEffectsForStyle(v9, v14);
+    _inheritedRenderConfig = [(UIView *)v11 _inheritedRenderConfig];
+    v15 = _UIKBEffectsForStyle(v9, _inheritedRenderConfig);
     [(UIVisualEffectView *)v11 setBackgroundEffects:v15];
 
     v16 = +[UIColor systemBackgroundColor];
@@ -62,16 +62,16 @@
   return v11;
 }
 
-- (void)transitionToStyle:(int64_t)a3 isSplit:(BOOL)a4
+- (void)transitionToStyle:(int64_t)style isSplit:(BOOL)split
 {
-  if (a3 != 3908)
+  if (style != 3908)
   {
     goto LABEL_5;
   }
 
   v7 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v8 = [v7 preferencesActions];
-  if (![v8 colorAdaptiveKeyboardBackdropEnabled] || _AXSEnhanceBackgroundContrastEnabled())
+  preferencesActions = [v7 preferencesActions];
+  if (![preferencesActions colorAdaptiveKeyboardBackdropEnabled] || _AXSEnhanceBackgroundContrastEnabled())
   {
 
     goto LABEL_5;
@@ -82,22 +82,22 @@
   if (v10)
   {
 LABEL_5:
-    if (!a4)
+    if (!split)
     {
-      v12 = [(UIView *)self _inheritedRenderConfig];
-      v9 = _UIKBEffectsForStyle(a3, v12);
+      _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+      v9 = _UIKBEffectsForStyle(style, _inheritedRenderConfig);
       [(UIVisualEffectView *)self setBackgroundEffects:v9];
     }
 
     return;
   }
 
-  v11 = [(UIKBBackdropView *)self isAssistantBackground];
+  isAssistantBackground = [(UIKBBackdropView *)self isAssistantBackground];
 
-  [(UIKBBackdropView *)self _applyGlassBackground:v11];
+  [(UIKBBackdropView *)self _applyGlassBackground:isAssistantBackground];
 }
 
-- (id)_generateCornerContentsImage:(unint64_t)a3
+- (id)_generateCornerContentsImage:(unint64_t)image
 {
   v4 = UIKBCornerRadius();
   v10 = *MEMORY[0x1E695EFF8];
@@ -111,7 +111,7 @@ LABEL_5:
   v11 = v4 + v4;
   v12 = v4 + v4;
   v13 = v4;
-  v14 = a3;
+  imageCopy = image;
   v7 = [(UIGraphicsImageRenderer *)v6 imageWithActions:v9];
 
   return v7;
@@ -131,49 +131,49 @@ void __49__UIKBBackdropView__generateCornerContentsImage___block_invoke(uint64_t
   CGContextRestoreGState(v3);
 }
 
-- (void)updateCorners:(unint64_t)a3
+- (void)updateCorners:(unint64_t)corners
 {
-  v3 = a3;
+  cornersCopy = corners;
   v7 = [(UIKBBackdropView *)self _generateCornerContentsImage:?];
   v5 = [_UIVisualEffectViewCornerMask imageCornerMaskWithImage:v7 radius:UIKBCornerRadius()];
-  v6 = [v5 cornerMaskAppliedToCorners:v3 & 0xF];
+  v6 = [v5 cornerMaskAppliedToCorners:cornersCopy & 0xF];
   [(UIVisualEffectView *)self _setCornerMask:v6];
 }
 
-- (void)updateCornersWithCornerRadii:(CACornerRadii *)a3
+- (void)updateCornersWithCornerRadii:(CACornerRadii *)radii
 {
-  maxXMaxY = a3->maxXMaxY;
-  v7[0] = a3->minXMaxY;
+  maxXMaxY = radii->maxXMaxY;
+  v7[0] = radii->minXMaxY;
   v7[1] = maxXMaxY;
-  minXMinY = a3->minXMinY;
-  v7[2] = a3->maxXMinY;
+  minXMinY = radii->minXMinY;
+  v7[2] = radii->maxXMinY;
   v7[3] = minXMinY;
   v6 = [_UIVisualEffectViewCornerMask cornerMaskWithCornerRadii:v7 continuous:1];
   [(UIVisualEffectView *)self _setCornerMask:v6];
 }
 
-- (void)setImageForCorners:(id)a3
+- (void)setImageForCorners:(id)corners
 {
-  v5 = a3;
-  if (self->_imageForCorners != v5)
+  cornersCopy = corners;
+  if (self->_imageForCorners != cornersCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_imageForCorners, a3);
+    v9 = cornersCopy;
+    objc_storeStrong(&self->_imageForCorners, corners);
     imageForCorners = self->_imageForCorners;
     [(UIVisualEffectView *)self _cornerRadius];
     v7 = [_UIVisualEffectViewCornerMask imageCornerMaskWithImage:imageForCorners radius:?];
     v8 = [v7 cornerMaskEffectingEdges:1];
     [(UIVisualEffectView *)self _setCornerMask:v8];
 
-    v5 = v9;
+    cornersCopy = v9;
   }
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
-  v4 = [a3 backdropStyle];
+  backdropStyle = [config backdropStyle];
 
-  [(UIKBBackdropView *)self transitionToStyle:v4];
+  [(UIKBBackdropView *)self transitionToStyle:backdropStyle];
 }
 
 @end

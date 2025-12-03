@@ -1,13 +1,13 @@
 @interface CKDPZoneDeleteRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneDeleteRequest
@@ -69,74 +69,74 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     userPurge = self->_userPurge;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_lastMissingManateeIdentityErrorDate)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_ancestryEtag)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = v4;
+  v9 = toCopy;
   if (zoneIdentifier)
   {
-    objc_msgSend_setZoneIdentifier_(v4, v5, zoneIdentifier);
-    v4 = v9;
+    objc_msgSend_setZoneIdentifier_(toCopy, v5, zoneIdentifier);
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    v4[32] = self->_userPurge;
-    v4[36] |= 1u;
+    toCopy[32] = self->_userPurge;
+    toCopy[36] |= 1u;
   }
 
   lastMissingManateeIdentityErrorDate = self->_lastMissingManateeIdentityErrorDate;
   if (lastMissingManateeIdentityErrorDate)
   {
     objc_msgSend_setLastMissingManateeIdentityErrorDate_(v9, v5, lastMissingManateeIdentityErrorDate);
-    v4 = v9;
+    toCopy = v9;
   }
 
   ancestryEtag = self->_ancestryEtag;
   if (ancestryEtag)
   {
     objc_msgSend_setAncestryEtag_(v9, v5, ancestryEtag);
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
@@ -146,28 +146,28 @@
     *(v10 + 36) |= 1u;
   }
 
-  v15 = objc_msgSend_copyWithZone_(self->_lastMissingManateeIdentityErrorDate, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_lastMissingManateeIdentityErrorDate, v14, zone);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_ancestryEtag, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_ancestryEtag, v17, zone);
   v19 = *(v10 + 8);
   *(v10 + 8) = v18;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (zoneIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(zoneIdentifier, v7, v9))
@@ -176,18 +176,18 @@
     }
   }
 
-  v10 = *(v4 + 36);
+  v10 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_11;
     }
 
-    v10 = *(v4 + 32);
+    v10 = *(equalCopy + 32);
     if (self->_userPurge)
     {
-      if (v4[4])
+      if (equalCopy[4])
       {
         goto LABEL_6;
       }
@@ -205,14 +205,14 @@ LABEL_11:
 
 LABEL_6:
   lastMissingManateeIdentityErrorDate = self->_lastMissingManateeIdentityErrorDate;
-  v12 = v4[2];
+  v12 = equalCopy[2];
   if (lastMissingManateeIdentityErrorDate | v12 && !objc_msgSend_isEqual_(lastMissingManateeIdentityErrorDate, v7, v12))
   {
     goto LABEL_11;
   }
 
   ancestryEtag = self->_ancestryEtag;
-  v14 = v4[1];
+  v14 = equalCopy[1];
   if (ancestryEtag | v14)
   {
     isEqual = objc_msgSend_isEqual_(ancestryEtag, v7, v14);
@@ -246,12 +246,12 @@ LABEL_12:
   return v8 ^ v9 ^ objc_msgSend_hash(self->_ancestryEtag, v10, v11);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   zoneIdentifier = self->_zoneIdentifier;
-  v6 = *(v4 + 3);
-  v11 = v4;
+  v6 = *(fromCopy + 3);
+  v11 = fromCopy;
   if (zoneIdentifier)
   {
     if (!v6)
@@ -259,7 +259,7 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(zoneIdentifier, v4, v6);
+    objc_msgSend_mergeFrom_(zoneIdentifier, fromCopy, v6);
   }
 
   else
@@ -269,19 +269,19 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    objc_msgSend_setZoneIdentifier_(self, v4, v6);
+    objc_msgSend_setZoneIdentifier_(self, fromCopy, v6);
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_userPurge = *(v4 + 32);
+    self->_userPurge = *(fromCopy + 32);
     *&self->_has |= 1u;
   }
 
   lastMissingManateeIdentityErrorDate = self->_lastMissingManateeIdentityErrorDate;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (lastMissingManateeIdentityErrorDate)
   {
     if (!v8)
@@ -289,7 +289,7 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    objc_msgSend_mergeFrom_(lastMissingManateeIdentityErrorDate, v4, v8);
+    objc_msgSend_mergeFrom_(lastMissingManateeIdentityErrorDate, fromCopy, v8);
   }
 
   else
@@ -299,24 +299,24 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    objc_msgSend_setLastMissingManateeIdentityErrorDate_(self, v4, v8);
+    objc_msgSend_setLastMissingManateeIdentityErrorDate_(self, fromCopy, v8);
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_15:
   ancestryEtag = self->_ancestryEtag;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   if (ancestryEtag)
   {
     if (v10)
     {
-      objc_msgSend_mergeFrom_(ancestryEtag, v4, v10);
+      objc_msgSend_mergeFrom_(ancestryEtag, fromCopy, v10);
     }
   }
 
   else if (v10)
   {
-    objc_msgSend_setAncestryEtag_(self, v4, v10);
+    objc_msgSend_setAncestryEtag_(self, fromCopy, v10);
   }
 
   MEMORY[0x2821F96F8]();

@@ -1,23 +1,23 @@
 @interface GKVoiceChatDictionary
-+ (BOOL)validateCancel:(id)a3;
-+ (BOOL)validateDictionary:(id)a3;
-+ (BOOL)validateFocus:(id)a3;
-+ (BOOL)validateInvite:(id)a3;
-+ (BOOL)validateReply:(id)a3;
-+ (id)dictionaryFromData:(id)a3;
++ (BOOL)validateCancel:(id)cancel;
++ (BOOL)validateDictionary:(id)dictionary;
++ (BOOL)validateFocus:(id)focus;
++ (BOOL)validateInvite:(id)invite;
++ (BOOL)validateReply:(id)reply;
++ (id)dictionaryFromData:(id)data;
 - (BOOL)isFocus;
-- (BOOL)matchesResponse:(id)a3;
-- (GKVoiceChatDictionary)initWithCoder:(id)a3;
+- (BOOL)matchesResponse:(id)response;
+- (GKVoiceChatDictionary)initWithCoder:(id)coder;
 - (id)cancelDictionary;
-- (id)setLocalVCPartyID:(id)a3;
-- (id)setRemoteVCPartyID:(id)a3;
+- (id)setLocalVCPartyID:(id)d;
+- (id)setRemoteVCPartyID:(id)d;
 - (int64_t)nonce;
 - (unint64_t)response;
 - (unsigned)originalCallID;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFromParticipantID:(id)a3;
-- (void)setNonce:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFromParticipantID:(id)d;
+- (void)setNonce:(int64_t)nonce;
 @end
 
 @implementation GKVoiceChatDictionary
@@ -42,18 +42,18 @@
   }
 }
 
-+ (id)dictionaryFromData:(id)a3
++ (id)dictionaryFromData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"GKVoiceChatDictionary", @"NSMutableDictionary", @"NSDictionary", @"NSObject", @"NSString", @"NSData", @"NSNumber", @"NSValue", 0}];
-  v6 = [objc_alloc(MEMORY[0x277CCAD88]) initForReadingWithData:a3];
+  v6 = [objc_alloc(MEMORY[0x277CCAD88]) initForReadingWithData:data];
   [v6 _setAllowedClasses:v5];
-  v7 = [v6 decodeObject];
+  decodeObject = [v6 decodeObject];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a1 validateDictionary:v7])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [self validateDictionary:decodeObject])
   {
-    result = v7;
+    result = decodeObject;
   }
 
   else
@@ -66,22 +66,22 @@
   return result;
 }
 
-+ (BOOL)validateDictionary:(id)a3
++ (BOOL)validateDictionary:(id)dictionary
 {
-  v3 = *(a3 + 2);
+  v3 = *(dictionary + 2);
   if (v3 > 257)
   {
     if (v3 != 258)
     {
       if (v3 == 259)
       {
-        return [a1 validateFocus:?];
+        return [self validateFocus:?];
       }
 
       return 0;
     }
 
-    return [a1 validateCancel:?];
+    return [self validateCancel:?];
   }
 
   else
@@ -90,20 +90,20 @@
     {
       if (v3 == 257)
       {
-        return [a1 validateReply:?];
+        return [self validateReply:?];
       }
 
       return 0;
     }
 
-    return [a1 validateInvite:?];
+    return [self validateInvite:?];
   }
 }
 
-+ (BOOL)validateInvite:(id)a3
++ (BOOL)validateInvite:(id)invite
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([a3 type] == 256)
+  if ([invite type] == 256)
   {
     v13 = 0u;
     v14 = 0u;
@@ -123,7 +123,7 @@ LABEL_4:
           objc_enumerationMutation(&unk_28619C0D8);
         }
 
-        v8 = [*(a3 + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
+        v8 = [*(invite + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
         if (!v8)
         {
           break;
@@ -158,10 +158,10 @@ LABEL_4:
   return v8;
 }
 
-+ (BOOL)validateReply:(id)a3
++ (BOOL)validateReply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([a3 type] == 257)
+  if ([reply type] == 257)
   {
     v13 = 0u;
     v14 = 0u;
@@ -181,7 +181,7 @@ LABEL_4:
           objc_enumerationMutation(&unk_28619C0F0);
         }
 
-        v8 = [*(a3 + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
+        v8 = [*(reply + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
         if (!v8)
         {
           break;
@@ -216,10 +216,10 @@ LABEL_4:
   return v8;
 }
 
-+ (BOOL)validateCancel:(id)a3
++ (BOOL)validateCancel:(id)cancel
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([a3 type] == 258)
+  if ([cancel type] == 258)
   {
     v13 = 0u;
     v14 = 0u;
@@ -239,7 +239,7 @@ LABEL_4:
           objc_enumerationMutation(&unk_28619C108);
         }
 
-        v8 = [*(a3 + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
+        v8 = [*(cancel + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
         if (!v8)
         {
           break;
@@ -274,10 +274,10 @@ LABEL_4:
   return v8;
 }
 
-+ (BOOL)validateFocus:(id)a3
++ (BOOL)validateFocus:(id)focus
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([a3 type] == 259)
+  if ([focus type] == 259)
   {
     v13 = 0u;
     v14 = 0u;
@@ -297,7 +297,7 @@ LABEL_4:
           objc_enumerationMutation(&unk_28619C120);
         }
 
-        v8 = [*(a3 + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
+        v8 = [*(focus + 1) objectForKeyedSubscript:*(*(&v11 + 1) + 8 * v7)];
         if (!v8)
         {
           break;
@@ -345,17 +345,17 @@ LABEL_4:
   return v3;
 }
 
-- (BOOL)matchesResponse:(id)a3
+- (BOOL)matchesResponse:(id)response
 {
-  if (self->type != 256 || !-[GKVoiceChatDictionary matchesNonce:](self, "matchesNonce:", [a3 nonce]) || objc_msgSend(a3, "type") != 257)
+  if (self->type != 256 || !-[GKVoiceChatDictionary matchesNonce:](self, "matchesNonce:", [response nonce]) || objc_msgSend(response, "type") != 257)
   {
     return 0;
   }
 
-  v5 = [(GKVoiceChatDictionary *)self participantID];
-  v6 = [a3 fromParticipantID];
+  participantID = [(GKVoiceChatDictionary *)self participantID];
+  fromParticipantID = [response fromParticipantID];
 
-  return [v5 isEqualToString:v6];
+  return [participantID isEqualToString:fromParticipantID];
 }
 
 - (unint64_t)response
@@ -370,11 +370,11 @@ LABEL_4:
   return [v4 integerValue];
 }
 
-- (void)setFromParticipantID:(id)a3
+- (void)setFromParticipantID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    [(NSMutableDictionary *)self->actualDictionary setObject:a3 forKeyedSubscript:@"fromParticipantID"];
+    [(NSMutableDictionary *)self->actualDictionary setObject:d forKeyedSubscript:@"fromParticipantID"];
   }
 }
 
@@ -385,9 +385,9 @@ LABEL_4:
   return [v2 integerValue];
 }
 
-- (void)setNonce:(int64_t)a3
+- (void)setNonce:(int64_t)nonce
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:nonce];
   actualDictionary = self->actualDictionary;
 
   [(NSMutableDictionary *)actualDictionary setObject:v4 forKeyedSubscript:@"nonce"];
@@ -400,37 +400,37 @@ LABEL_4:
   return [v2 BOOLValue];
 }
 
-- (id)setLocalVCPartyID:(id)a3
+- (id)setLocalVCPartyID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   [(NSMutableDictionary *)self->actualDictionary setObject:v4 forKeyedSubscript:@"localVCPartyID"];
 
   return 0;
 }
 
-- (id)setRemoteVCPartyID:(id)a3
+- (id)setRemoteVCPartyID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   [(NSMutableDictionary *)self->actualDictionary setObject:v4 forKeyedSubscript:@"remoteVCPartyID"];
 
   return 0;
 }
 
-- (GKVoiceChatDictionary)initWithCoder:(id)a3
+- (GKVoiceChatDictionary)initWithCoder:(id)coder
 {
-  self->actualDictionary = [a3 decodeObject];
+  self->actualDictionary = [coder decodeObject];
   self->orignalCallID = -1;
   v6 = 0;
-  [a3 decodeValueOfObjCType:"I" at:&v6 size:4];
+  [coder decodeValueOfObjCType:"I" at:&v6 size:4];
   self->type = v6;
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->actualDictionary];
+  [coder encodeObject:self->actualDictionary];
 
-  [a3 encodeValueOfObjCType:"I" at:&self->type];
+  [coder encodeValueOfObjCType:"I" at:&self->type];
 }
 
 + (void)dictionaryFromData:(uint64_t)a3 .cold.1(uint64_t a1, uint8_t *buf, uint64_t a3, os_log_t log)

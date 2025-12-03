@@ -29,7 +29,7 @@
 - (id)dictionaryByMergingWith:()Merge
 {
   v4 = a3;
-  v5 = [objc_opt_class() dictionaryByMerging:a1 with:v4];
+  v5 = [objc_opt_class() dictionaryByMerging:self with:v4];
 
   return v5;
 }

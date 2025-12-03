@@ -6,14 +6,14 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(EKUIDeleteAlertController *)self presentingViewController];
+  presentingViewController = [(EKUIDeleteAlertController *)self presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
-    v4 = [(EKUIDeleteAlertController *)self presentingViewController];
-    v5 = [v4 supportedInterfaceOrientations];
+    presentingViewController2 = [(EKUIDeleteAlertController *)self presentingViewController];
+    supportedInterfaceOrientations = [presentingViewController2 supportedInterfaceOrientations];
 
-    return v5;
+    return supportedInterfaceOrientations;
   }
 
   else

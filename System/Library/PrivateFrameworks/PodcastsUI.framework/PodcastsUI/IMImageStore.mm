@@ -2,52 +2,52 @@
 + (id)defaultStore;
 + (unint64_t)_memorySize;
 - (BOOL)disableMemoryCache;
-- (BOOL)hasItemForKey:(id)a3;
-- (BOOL)hasItemForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5;
+- (BOOL)hasItemForKey:(id)key;
+- (BOOL)hasItemForKey:(id)key size:(CGSize)size modifier:(id)modifier;
 - (BOOL)isEmpty;
 - (IMImageStore)init;
-- (IMImageStore)initWithName:(id)a3;
-- (IMImageStore)initWithName:(id)a3 basePath:(id)a4 maxImageDimensionInPixels:(double)a5 maxConcurrentOperations:(unint64_t)a6 alternativeSizeBlock:(id)a7;
-- (id)_createModifiedImageFromSourceKey:(id)a3 newImageKey:(id)a4 modifier:(id)a5 size:(CGSize)a6 resizeOptions:(int)a7;
-- (id)_createScaledImageFromSourceKey:(id)a3 newImageKey:(id)a4 size:(CGSize)a5 resizeOptions:(int)a6;
-- (id)_keyForSize:(CGSize)a3 baseKey:(id)a4 modifier:(id)a5;
-- (id)_loadDiskCacheImageForKey:(id)a3 expectImageExists:(BOOL)a4;
-- (id)_performImagingTransactionNamed:(id)a3 block:(id)a4;
+- (IMImageStore)initWithName:(id)name;
+- (IMImageStore)initWithName:(id)name basePath:(id)path maxImageDimensionInPixels:(double)pixels maxConcurrentOperations:(unint64_t)operations alternativeSizeBlock:(id)block;
+- (id)_createModifiedImageFromSourceKey:(id)key newImageKey:(id)imageKey modifier:(id)modifier size:(CGSize)size resizeOptions:(int)options;
+- (id)_createScaledImageFromSourceKey:(id)key newImageKey:(id)imageKey size:(CGSize)size resizeOptions:(int)options;
+- (id)_keyForSize:(CGSize)size baseKey:(id)key modifier:(id)modifier;
+- (id)_loadDiskCacheImageForKey:(id)key expectImageExists:(BOOL)exists;
+- (id)_performImagingTransactionNamed:(id)named block:(id)block;
 - (id)fullName;
-- (id)imageForKey:(id)a3;
-- (id)imageForKey:(id)a3 size:(CGSize)a4;
-- (id)imageForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5;
-- (id)imageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6;
-- (id)imageInMemoryForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5;
-- (id)imageUrlForKey:(id)a3;
-- (void)_addImage:(id)a3 toMemoryCacheWithKey:(id)a4;
-- (void)addImage:(id)a3 forKey:(id)a4 persist:(BOOL)a5 discardTransparency:(BOOL)a6;
-- (void)addImagesWithSourceUrl:(id)a3 forKeys:(id)a4 removeOldItems:(BOOL)a5 discardTransparency:(BOOL)a6 completion:(id)a7;
-- (void)asyncImageForKey:(id)a3 completionHandler:(id)a4;
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 completionHandler:(id)a5;
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5 completionHandler:(id)a6;
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6 completionHandler:(id)a7;
-- (void)asyncImageForKey:(id)a3 squareDimension:(double)a4 cacheKeyModifier:(id)a5 completionHandler:(id)a6;
-- (void)asyncImageURLForKey:(id)a3 completionHandler:(id)a4;
-- (void)asyncImageURLForKey:(id)a3 squareDimension:(double)a4 cacheKeyModifier:(id)a5 completionHandler:(id)a6;
+- (id)imageForKey:(id)key;
+- (id)imageForKey:(id)key size:(CGSize)size;
+- (id)imageForKey:(id)key size:(CGSize)size modifier:(id)modifier;
+- (id)imageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier;
+- (id)imageInMemoryForKey:(id)key size:(CGSize)size modifier:(id)modifier;
+- (id)imageUrlForKey:(id)key;
+- (void)_addImage:(id)image toMemoryCacheWithKey:(id)key;
+- (void)addImage:(id)image forKey:(id)key persist:(BOOL)persist discardTransparency:(BOOL)transparency;
+- (void)addImagesWithSourceUrl:(id)url forKeys:(id)keys removeOldItems:(BOOL)items discardTransparency:(BOOL)transparency completion:(id)completion;
+- (void)asyncImageForKey:(id)key completionHandler:(id)handler;
+- (void)asyncImageForKey:(id)key size:(CGSize)size completionHandler:(id)handler;
+- (void)asyncImageForKey:(id)key size:(CGSize)size modifier:(id)modifier completionHandler:(id)handler;
+- (void)asyncImageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier completionHandler:(id)handler;
+- (void)asyncImageForKey:(id)key squareDimension:(double)dimension cacheKeyModifier:(id)modifier completionHandler:(id)handler;
+- (void)asyncImageURLForKey:(id)key completionHandler:(id)handler;
+- (void)asyncImageURLForKey:(id)key squareDimension:(double)dimension cacheKeyModifier:(id)modifier completionHandler:(id)handler;
 - (void)clearCache;
 - (void)configureMemoryCache;
-- (void)invalidateImageAtURL:(id)a3;
-- (void)invalidateImageForKey:(id)a3;
+- (void)invalidateImageAtURL:(id)l;
+- (void)invalidateImageForKey:(id)key;
 - (void)memoryWarning;
-- (void)onQueueInvalidateImageForKey:(id)a3;
-- (void)performWhenURLAvailableForImageForKey:(id)a3 block:(id)a4;
-- (void)removeItemForKey:(id)a3;
-- (void)removeItemsWithPrefx:(id)a3;
-- (void)setDisableMemoryCache:(BOOL)a3;
+- (void)onQueueInvalidateImageForKey:(id)key;
+- (void)performWhenURLAvailableForImageForKey:(id)key block:(id)block;
+- (void)removeItemForKey:(id)key;
+- (void)removeItemsWithPrefx:(id)prefx;
+- (void)setDisableMemoryCache:(BOOL)cache;
 @end
 
 @implementation IMImageStore
 
 - (IMImageStore)init
 {
-  v3 = [objc_opt_class() defaultName];
-  v4 = [(IMImageStore *)self initWithName:v3];
+  defaultName = [objc_opt_class() defaultName];
+  v4 = [(IMImageStore *)self initWithName:defaultName];
 
   return v4;
 }
@@ -58,20 +58,20 @@
   memoryCache = self->_memoryCache;
   self->_memoryCache = v3;
 
-  v5 = [(IMImageStore *)self fullName];
-  v6 = [(IMImageStore *)self memoryCache];
-  [v6 setName:v5];
+  fullName = [(IMImageStore *)self fullName];
+  memoryCache = [(IMImageStore *)self memoryCache];
+  [memoryCache setName:fullName];
 
   v7 = +[IMImageStore _memorySize];
-  v8 = [(IMImageStore *)self memoryCache];
-  [v8 setTotalCostLimit:v7];
+  memoryCache2 = [(IMImageStore *)self memoryCache];
+  [memoryCache2 setTotalCostLimit:v7];
 }
 
 - (id)fullName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(IMImageStore *)self name];
-  v4 = [v2 stringWithFormat:@"IMImageStore-%@", v3];
+  name = [(IMImageStore *)self name];
+  v4 = [v2 stringWithFormat:@"IMImageStore-%@", name];
 
   return v4;
 }
@@ -95,7 +95,7 @@
   block[1] = 3221225472;
   block[2] = __28__IMImageStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore_onceToken != -1)
   {
     dispatch_once(&defaultStore_onceToken, block);
@@ -113,88 +113,88 @@ uint64_t __28__IMImageStore_defaultStore__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (IMImageStore)initWithName:(id)a3
+- (IMImageStore)initWithName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultBasePath];
+  nameCopy = name;
+  defaultBasePath = [objc_opt_class() defaultBasePath];
   [objc_opt_class() defaultMaxImageDimensionInPixels];
   v7 = v6;
-  v8 = [objc_opt_class() defaultMaxConcurrentOperations];
-  v9 = [objc_opt_class() defaultAlternativeSizeBlock];
-  v10 = [(IMImageStore *)self initWithName:v4 basePath:v5 maxImageDimensionInPixels:v8 maxConcurrentOperations:v9 alternativeSizeBlock:v7];
+  defaultMaxConcurrentOperations = [objc_opt_class() defaultMaxConcurrentOperations];
+  defaultAlternativeSizeBlock = [objc_opt_class() defaultAlternativeSizeBlock];
+  v10 = [(IMImageStore *)self initWithName:nameCopy basePath:defaultBasePath maxImageDimensionInPixels:defaultMaxConcurrentOperations maxConcurrentOperations:defaultAlternativeSizeBlock alternativeSizeBlock:v7];
 
   return v10;
 }
 
-- (IMImageStore)initWithName:(id)a3 basePath:(id)a4 maxImageDimensionInPixels:(double)a5 maxConcurrentOperations:(unint64_t)a6 alternativeSizeBlock:(id)a7
+- (IMImageStore)initWithName:(id)name basePath:(id)path maxImageDimensionInPixels:(double)pixels maxConcurrentOperations:(unint64_t)operations alternativeSizeBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  nameCopy = name;
+  pathCopy = path;
+  blockCopy = block;
   v33.receiver = self;
   v33.super_class = IMImageStore;
   v15 = [(IMImageStore *)&v33 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v16;
 
     [(IMImageStore *)v15 configureMemoryCache];
     v18 = [IMImageDiskCache alloc];
-    v19 = [(IMImageStore *)v15 fullName];
-    v20 = [v13 stringByAppendingPathComponent:v19];
-    v21 = [(IMImageDiskCache *)v18 initWithBasePath:v20 maxImageDimensionInPixels:a5];
+    fullName = [(IMImageStore *)v15 fullName];
+    v20 = [pathCopy stringByAppendingPathComponent:fullName];
+    v21 = [(IMImageDiskCache *)v18 initWithBasePath:v20 maxImageDimensionInPixels:pixels];
     diskCache = v15->_diskCache;
     v15->_diskCache = v21;
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v23 addObserver:v15 selector:sel_memoryWarning name:*MEMORY[0x277D3DA68] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v15 selector:sel_memoryWarning name:*MEMORY[0x277D3DA68] object:0];
 
     v24 = objc_opt_new();
     [(IMImageStore *)v15 setFetchOperationQueue:v24];
 
-    v25 = [(IMImageStore *)v15 fetchOperationQueue];
-    [v25 setMaxConcurrentOperationCount:a6];
+    fetchOperationQueue = [(IMImageStore *)v15 fetchOperationQueue];
+    [fetchOperationQueue setMaxConcurrentOperationCount:operations];
 
     v26 = dispatch_get_global_queue(0, 0);
-    v27 = [(IMImageStore *)v15 fetchOperationQueue];
-    [v27 setUnderlyingQueue:v26];
+    fetchOperationQueue2 = [(IMImageStore *)v15 fetchOperationQueue];
+    [fetchOperationQueue2 setUnderlyingQueue:v26];
 
-    v28 = [(IMImageStore *)v15 fetchOperationQueue];
-    [v28 setName:@"com.apple.podcasts.IMImageStore"];
+    fetchOperationQueue3 = [(IMImageStore *)v15 fetchOperationQueue];
+    [fetchOperationQueue3 setName:@"com.apple.podcasts.IMImageStore"];
 
-    v29 = [(IMImageStore *)v15 fetchOperationQueue];
-    [v29 setSuspended:0];
+    fetchOperationQueue4 = [(IMImageStore *)v15 fetchOperationQueue];
+    [fetchOperationQueue4 setSuspended:0];
 
-    v30 = _Block_copy(v14);
+    v30 = _Block_copy(blockCopy);
     alternativeSize = v15->_alternativeSize;
     v15->_alternativeSize = v30;
 
-    [(IMImageStore *)v15 setMaxImageDimensionInPixels:a5];
+    [(IMImageStore *)v15 setMaxImageDimensionInPixels:pixels];
   }
 
   return v15;
 }
 
-- (void)setDisableMemoryCache:(BOOL)a3
+- (void)setDisableMemoryCache:(BOOL)cache
 {
-  v3 = a3;
-  v5 = [(IMImageStore *)self memoryCache];
+  cacheCopy = cache;
+  memoryCache = [(IMImageStore *)self memoryCache];
 
-  if (v3)
+  if (cacheCopy)
   {
-    if (v5)
+    if (memoryCache)
     {
-      v6 = [(IMImageStore *)self memoryCache];
-      [v6 removeAllObjects];
+      memoryCache2 = [(IMImageStore *)self memoryCache];
+      [memoryCache2 removeAllObjects];
 
       memoryCache = self->_memoryCache;
       self->_memoryCache = 0;
     }
   }
 
-  else if (!v5)
+  else if (!memoryCache)
   {
 
     [(IMImageStore *)self configureMemoryCache];
@@ -203,86 +203,86 @@ uint64_t __28__IMImageStore_defaultStore__block_invoke(uint64_t a1)
 
 - (BOOL)disableMemoryCache
 {
-  v2 = [(IMImageStore *)self memoryCache];
-  v3 = v2 == 0;
+  memoryCache = [(IMImageStore *)self memoryCache];
+  v3 = memoryCache == 0;
 
   return v3;
 }
 
-- (void)addImage:(id)a3 forKey:(id)a4 persist:(BOOL)a5 discardTransparency:(BOOL)a6
+- (void)addImage:(id)image forKey:(id)key persist:(BOOL)persist discardTransparency:(BOOL)transparency
 {
-  v6 = a6;
-  v19 = a3;
-  v10 = a4;
-  v11 = v19;
-  v12 = v10;
-  if (v19 && v10)
+  transparencyCopy = transparency;
+  imageCopy = image;
+  keyCopy = key;
+  v11 = imageCopy;
+  v12 = keyCopy;
+  if (imageCopy && keyCopy)
   {
-    if (!a5)
+    if (!persist)
     {
-      if (v6)
+      if (transparencyCopy)
       {
-        v17 = [MEMORY[0x277D75348] whiteColor];
-        v18 = [v19 im_imageWithBackgroundColor:v17];
+        whiteColor = [MEMORY[0x277D75348] whiteColor];
+        v18 = [imageCopy im_imageWithBackgroundColor:whiteColor];
 
         v11 = v18;
       }
 
-      v15 = self;
+      selfCopy2 = self;
       v16 = v11;
-      v19 = v11;
+      imageCopy = v11;
       goto LABEL_10;
     }
 
-    v13 = [(IMImageStore *)self diskCache];
-    v14 = [v13 addImage:v19 forKey:v12];
+    diskCache = [(IMImageStore *)self diskCache];
+    v14 = [diskCache addImage:imageCopy forKey:v12];
 
-    if ((v14 & 1) == 0 && !v6)
+    if ((v14 & 1) == 0 && !transparencyCopy)
     {
-      v15 = self;
-      v16 = v19;
+      selfCopy2 = self;
+      v16 = imageCopy;
 LABEL_10:
-      [(IMImageStore *)v15 _addImage:v16 toMemoryCacheWithKey:v12];
+      [(IMImageStore *)selfCopy2 _addImage:v16 toMemoryCacheWithKey:v12];
     }
   }
 }
 
-- (void)addImagesWithSourceUrl:(id)a3 forKeys:(id)a4 removeOldItems:(BOOL)a5 discardTransparency:(BOOL)a6 completion:(id)a7
+- (void)addImagesWithSourceUrl:(id)url forKeys:(id)keys removeOldItems:(BOOL)items discardTransparency:(BOOL)transparency completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
+  transparencyCopy = transparency;
+  itemsCopy = items;
   v49 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
+  urlCopy = url;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__IMImageStore_addImagesWithSourceUrl_forKeys_removeOldItems_discardTransparency_completion___block_invoke;
   aBlock[3] = &unk_2782BD8D0;
-  v14 = v13;
+  v14 = completionCopy;
   v39 = v14;
-  v15 = a4;
+  keysCopy = keys;
   v16 = _Block_copy(aBlock);
-  v17 = [v15 objectsPassingTest:&__block_literal_global_30];
+  v17 = [keysCopy objectsPassingTest:&__block_literal_global_30];
 
-  v18 = [MEMORY[0x277D3DA88] imageCache];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  imageCache = [MEMORY[0x277D3DA88] imageCache];
+  if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v42 = v12;
+    v42 = urlCopy;
     v43 = 2112;
     v44 = v17;
     v45 = 1024;
-    v46 = v9;
+    v46 = itemsCopy;
     v47 = 1024;
-    v48 = v8;
-    _os_log_impl(&dword_21B365000, v18, OS_LOG_TYPE_DEFAULT, "[Store] addImagesWithSourceUrl: got store-image request (fileUrl=%@, keys=%@, removeOldItem=%d, discardTransparency=%d", buf, 0x22u);
+    v48 = transparencyCopy;
+    _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_DEFAULT, "[Store] addImagesWithSourceUrl: got store-image request (fileUrl=%@, keys=%@, removeOldItem=%d, discardTransparency=%d", buf, 0x22u);
   }
 
-  if (v12 && [v17 count])
+  if (urlCopy && [v17 count])
   {
-    if (v9)
+    if (itemsCopy)
     {
-      v29 = v8;
+      v29 = transparencyCopy;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -311,42 +311,42 @@ LABEL_10:
         while (v21);
       }
 
-      v8 = v29;
+      transparencyCopy = v29;
     }
 
-    v24 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    imageCache2 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v42 = v12;
+      v42 = urlCopy;
       v43 = 2112;
       v44 = v17;
-      _os_log_impl(&dword_21B365000, v24, OS_LOG_TYPE_DEFAULT, "[Store] addImagesWithSourceUrl: adding to disk-cache (fileUrl = %@, keys=%@)", buf, 0x16u);
+      _os_log_impl(&dword_21B365000, imageCache2, OS_LOG_TYPE_DEFAULT, "[Store] addImagesWithSourceUrl: adding to disk-cache (fileUrl = %@, keys=%@)", buf, 0x16u);
     }
 
-    v25 = [(IMImageStore *)self diskCache];
-    v26 = [v17 anyObject];
-    v27 = [(IMImageStore *)self requireSquareImages:v26];
+    diskCache = [(IMImageStore *)self diskCache];
+    anyObject = [v17 anyObject];
+    v27 = [(IMImageStore *)self requireSquareImages:anyObject];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __93__IMImageStore_addImagesWithSourceUrl_forKeys_removeOldItems_discardTransparency_completion___block_invoke_32;
     v30[3] = &unk_2782BDB10;
-    v31 = v12;
+    v31 = urlCopy;
     v32 = v17;
     v33 = v16;
-    [v25 addImagesWithSourceUrl:v31 forKeys:v32 discardTransparency:v8 enforceSquare:v27 completion:v30];
+    [diskCache addImagesWithSourceUrl:v31 forKeys:v32 discardTransparency:transparencyCopy enforceSquare:v27 completion:v30];
   }
 
   else
   {
-    v28 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    imageCache3 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v42 = v12;
+      v42 = urlCopy;
       v43 = 2112;
       v44 = v17;
-      _os_log_impl(&dword_21B365000, v28, OS_LOG_TYPE_ERROR, "[Store] addImagesWithSourceUrl: invalid requests (fileUrl = %@, validKeys=%@), bailing.", buf, 0x16u);
+      _os_log_impl(&dword_21B365000, imageCache3, OS_LOG_TYPE_ERROR, "[Store] addImagesWithSourceUrl: invalid requests (fileUrl = %@, validKeys=%@), bailing.", buf, 0x16u);
     }
 
     (*(v16 + 2))(v16, 0);
@@ -382,17 +382,17 @@ uint64_t __93__IMImageStore_addImagesWithSourceUrl_forKeys_removeOldItems_discar
   return (*(a1[6] + 16))();
 }
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v5 = [(IMImageStore *)self memoryCache];
-    v6 = [v5 objectForKey:v4];
+    memoryCache = [(IMImageStore *)self memoryCache];
+    v6 = [memoryCache objectForKey:keyCopy];
 
     if (!v6)
     {
-      v6 = [(IMImageStore *)self _loadDiskCacheImageForKey:v4 expectImageExists:0];
+      v6 = [(IMImageStore *)self _loadDiskCacheImageForKey:keyCopy expectImageExists:0];
     }
   }
 
@@ -404,35 +404,35 @@ uint64_t __93__IMImageStore_addImagesWithSourceUrl_forKeys_removeOldItems_discar
   return v6;
 }
 
-- (id)imageForKey:(id)a3 size:(CGSize)a4
+- (id)imageForKey:(id)key size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = -[IMImageStore imageForKey:size:resizeOptions:](self, "imageForKey:size:resizeOptions:", v7, [objc_opt_class() defaultImageResizeOptions], width, height);
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  v8 = -[IMImageStore imageForKey:size:resizeOptions:](self, "imageForKey:size:resizeOptions:", keyCopy, [objc_opt_class() defaultImageResizeOptions], width, height);
 
   return v8;
 }
 
-- (id)imageForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5
+- (id)imageForKey:(id)key size:(CGSize)size modifier:(id)modifier
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = -[IMImageStore imageForKey:size:resizeOptions:modifier:](self, "imageForKey:size:resizeOptions:modifier:", v8, [objc_opt_class() defaultImageResizeOptions], 0, width, height);
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  v9 = -[IMImageStore imageForKey:size:resizeOptions:modifier:](self, "imageForKey:size:resizeOptions:modifier:", keyCopy, [objc_opt_class() defaultImageResizeOptions], 0, width, height);
 
   return v9;
 }
 
-- (id)imageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6
+- (id)imageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier
 {
-  v7 = *&a5;
-  height = a4.height;
-  width = a4.width;
+  v7 = *&options;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  if (![v11 length])
+  keyCopy = key;
+  modifierCopy = modifier;
+  if (![keyCopy length])
   {
 LABEL_10:
     v15 = 0;
@@ -441,53 +441,53 @@ LABEL_10:
 
   if (width < 0.00000011920929 || height < 0.00000011920929)
   {
-    v14 = [MEMORY[0x277D3DA88] defaultCategory];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    defaultCategory = [MEMORY[0x277D3DA88] defaultCategory];
+    if (os_log_type_enabled(defaultCategory, OS_LOG_TYPE_ERROR))
     {
       v27 = 134218240;
       v28 = width;
       v29 = 2048;
       v30 = height;
-      _os_log_impl(&dword_21B365000, v14, OS_LOG_TYPE_ERROR, "Invalid arguments. Size must be non-zero in both dimensions. (width: %f, height: %f)", &v27, 0x16u);
+      _os_log_impl(&dword_21B365000, defaultCategory, OS_LOG_TYPE_ERROR, "Invalid arguments. Size must be non-zero in both dimensions. (width: %f, height: %f)", &v27, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  v16 = [(IMImageStore *)self _keyForSize:v11 baseKey:v12 modifier:width, height];
-  v17 = [(IMImageStore *)self imageForKey:v16];
+  height = [(IMImageStore *)self _keyForSize:keyCopy baseKey:modifierCopy modifier:width, height];
+  v17 = [(IMImageStore *)self imageForKey:height];
   if (!v17)
   {
-    v19 = [(IMImageStore *)self alternativeSize];
+    alternativeSize = [(IMImageStore *)self alternativeSize];
     [(IMImageStore *)self maxImageDimensionInPixels];
-    v21 = v19[2](v19, width, height, v20);
+    v21 = alternativeSize[2](alternativeSize, width, height, v20);
     v23 = v22;
 
     if (width != v21 || height != v23)
     {
-      v25 = [(IMImageStore *)self _keyForSize:v11 baseKey:v12 modifier:v21, v23];
+      v25 = [(IMImageStore *)self _keyForSize:keyCopy baseKey:modifierCopy modifier:v21, v23];
 
       v26 = [(IMImageStore *)self imageForKey:v25];
       if (v26)
       {
         v15 = v26;
-        v16 = v25;
+        height = v25;
         goto LABEL_13;
       }
 
-      v16 = v25;
+      height = v25;
       height = v23;
       width = v21;
     }
 
-    if ([v12 hasModifications])
+    if ([modifierCopy hasModifications])
     {
-      [(IMImageStore *)self _createModifiedImageFromSourceKey:v11 newImageKey:v16 modifier:v12 size:v7 resizeOptions:width, height];
+      [(IMImageStore *)self _createModifiedImageFromSourceKey:keyCopy newImageKey:height modifier:modifierCopy size:v7 resizeOptions:width, height];
     }
 
     else
     {
-      [(IMImageStore *)self _createScaledImageFromSourceKey:v11 newImageKey:v16 size:v7 resizeOptions:width, height];
+      [(IMImageStore *)self _createScaledImageFromSourceKey:keyCopy newImageKey:height size:v7 resizeOptions:width, height];
     }
     v17 = ;
   }
@@ -500,25 +500,25 @@ LABEL_14:
   return v15;
 }
 
-- (id)_createModifiedImageFromSourceKey:(id)a3 newImageKey:(id)a4 modifier:(id)a5 size:(CGSize)a6 resizeOptions:(int)a7
+- (id)_createModifiedImageFromSourceKey:(id)key newImageKey:(id)imageKey modifier:(id)modifier size:(CGSize)size resizeOptions:(int)options
 {
-  v7 = *&a7;
-  height = a6.height;
-  width = a6.width;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(IMImageStore *)self imageForKey:a3 size:v7 resizeOptions:width, height];
+  v7 = *&options;
+  height = size.height;
+  width = size.width;
+  imageKeyCopy = imageKey;
+  modifierCopy = modifier;
+  height = [(IMImageStore *)self imageForKey:key size:v7 resizeOptions:width, height];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __90__IMImageStore__createModifiedImageFromSourceKey_newImageKey_modifier_size_resizeOptions___block_invoke;
   v21[3] = &unk_2782BDB38;
-  v22 = v15;
-  v23 = v14;
-  v24 = self;
-  v25 = v13;
-  v16 = v13;
-  v17 = v14;
-  v18 = v15;
+  v22 = height;
+  v23 = modifierCopy;
+  selfCopy = self;
+  v25 = imageKeyCopy;
+  v16 = imageKeyCopy;
+  v17 = modifierCopy;
+  v18 = height;
   v19 = [(IMImageStore *)self _performImagingTransactionNamed:@"image blur" block:v21];
 
   return v19;
@@ -543,24 +543,24 @@ id __90__IMImageStore__createModifiedImageFromSourceKey_newImageKey_modifier_siz
   return v2;
 }
 
-- (id)_createScaledImageFromSourceKey:(id)a3 newImageKey:(id)a4 size:(CGSize)a5 resizeOptions:(int)a6
+- (id)_createScaledImageFromSourceKey:(id)key newImageKey:(id)imageKey size:(CGSize)size resizeOptions:(int)options
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  imageKeyCopy = imageKey;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __79__IMImageStore__createScaledImageFromSourceKey_newImageKey_size_resizeOptions___block_invoke;
   v17[3] = &unk_2782BDB60;
   v17[4] = self;
-  v18 = v11;
+  v18 = keyCopy;
   v20 = width;
   v21 = height;
-  v19 = v12;
-  v22 = a6;
-  v13 = v12;
-  v14 = v11;
+  v19 = imageKeyCopy;
+  optionsCopy = options;
+  v13 = imageKeyCopy;
+  v14 = keyCopy;
   v15 = [(IMImageStore *)self _performImagingTransactionNamed:@"image resize" block:v17];
 
   return v15;
@@ -610,48 +610,48 @@ id __79__IMImageStore__createScaledImageFromSourceKey_newImageKey_size_resizeOpt
   return v8;
 }
 
-- (id)_performImagingTransactionNamed:(id)a3 block:(id)a4
+- (id)_performImagingTransactionNamed:(id)named block:(id)block
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  namedCopy = named;
+  v6 = namedCopy;
+  if (block)
   {
     v7 = @"unknown transaction";
-    if (v5)
+    if (namedCopy)
     {
-      v7 = v5;
+      v7 = namedCopy;
     }
 
     v8 = v7;
-    v9 = a4;
+    blockCopy = block;
 
     [(__CFString *)v8 UTF8String];
     v10 = os_transaction_create();
-    a4 = v9[2](v9);
+    block = blockCopy[2](blockCopy);
 
     v6 = v8;
   }
 
-  return a4;
+  return block;
 }
 
-- (id)imageInMemoryForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5
+- (id)imageInMemoryForKey:(id)key size:(CGSize)size modifier:(id)modifier
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  keyCopy = key;
+  modifierCopy = modifier;
   if (width < 0.00000011920929 || height < 0.00000011920929)
   {
-    v12 = [MEMORY[0x277D3DA88] defaultCategory];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    defaultCategory = [MEMORY[0x277D3DA88] defaultCategory];
+    if (os_log_type_enabled(defaultCategory, OS_LOG_TYPE_ERROR))
     {
       v22 = 134218240;
       v23 = width;
       v24 = 2048;
       v25 = height;
-      _os_log_impl(&dword_21B365000, v12, OS_LOG_TYPE_ERROR, "Invalid arguments. Size must be non-zero in both dimensions. (width: %f, height: %f)", &v22, 0x16u);
+      _os_log_impl(&dword_21B365000, defaultCategory, OS_LOG_TYPE_ERROR, "Invalid arguments. Size must be non-zero in both dimensions. (width: %f, height: %f)", &v22, 0x16u);
     }
 
     v20 = 0;
@@ -659,46 +659,46 @@ id __79__IMImageStore__createScaledImageFromSourceKey_newImageKey_size_resizeOpt
 
   else
   {
-    v13 = [(IMImageStore *)self alternativeSize];
+    alternativeSize = [(IMImageStore *)self alternativeSize];
     [(IMImageStore *)self maxImageDimensionInPixels];
-    v15 = v13[2](v13, width, height, v14);
+    v15 = alternativeSize[2](alternativeSize, width, height, v14);
     v17 = v16;
 
-    v18 = [(IMImageStore *)self _keyForSize:v9 baseKey:v10 modifier:v15, v17];
-    v19 = [(IMImageStore *)self memoryCache];
-    v20 = [v19 objectForKey:v18];
+    v18 = [(IMImageStore *)self _keyForSize:keyCopy baseKey:modifierCopy modifier:v15, v17];
+    memoryCache = [(IMImageStore *)self memoryCache];
+    v20 = [memoryCache objectForKey:v18];
   }
 
   return v20;
 }
 
-- (id)imageUrlForKey:(id)a3
+- (id)imageUrlForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IMImageStore *)self diskCache];
-  v6 = [v5 imageUrlForKey:v4];
+  keyCopy = key;
+  diskCache = [(IMImageStore *)self diskCache];
+  v6 = [diskCache imageUrlForKey:keyCopy];
 
   return v6;
 }
 
-- (void)asyncImageForKey:(id)a3 completionHandler:(id)a4
+- (void)asyncImageForKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(IMImageStore *)self fetchOperationQueue];
+  fetchOperationQueue = [(IMImageStore *)self fetchOperationQueue];
   v9 = MEMORY[0x277CCA8C8];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __51__IMImageStore_asyncImageForKey_completionHandler___block_invoke;
   v16 = &unk_2782BDBB0;
   objc_copyWeak(&v19, &location);
-  v10 = v6;
+  v10 = keyCopy;
   v17 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v18 = v11;
   v12 = [v9 blockOperationWithBlock:&v13];
-  [v8 addOperation:{v12, v13, v14, v15, v16}];
+  [fetchOperationQueue addOperation:{v12, v13, v14, v15, v16}];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -721,51 +721,51 @@ void __51__IMImageStore_asyncImageForKey_completionHandler___block_invoke(id *a1
   }
 }
 
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 completionHandler:(id)a5
+- (void)asyncImageForKey:(id)key size:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a5;
-  v10 = a3;
-  -[IMImageStore asyncImageForKey:size:resizeOptions:modifier:completionHandler:](self, "asyncImageForKey:size:resizeOptions:modifier:completionHandler:", v10, [objc_opt_class() defaultImageResizeOptions], 0, v9, width, height);
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  keyCopy = key;
+  -[IMImageStore asyncImageForKey:size:resizeOptions:modifier:completionHandler:](self, "asyncImageForKey:size:resizeOptions:modifier:completionHandler:", keyCopy, [objc_opt_class() defaultImageResizeOptions], 0, handlerCopy, width, height);
 }
 
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5 completionHandler:(id)a6
+- (void)asyncImageForKey:(id)key size:(CGSize)size modifier:(id)modifier completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  -[IMImageStore asyncImageForKey:size:resizeOptions:modifier:completionHandler:](self, "asyncImageForKey:size:resizeOptions:modifier:completionHandler:", v13, [objc_opt_class() defaultImageResizeOptions], v12, v11, width, height);
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  modifierCopy = modifier;
+  keyCopy = key;
+  -[IMImageStore asyncImageForKey:size:resizeOptions:modifier:completionHandler:](self, "asyncImageForKey:size:resizeOptions:modifier:completionHandler:", keyCopy, [objc_opt_class() defaultImageResizeOptions], modifierCopy, handlerCopy, width, height);
 }
 
-- (void)asyncImageForKey:(id)a3 size:(CGSize)a4 resizeOptions:(int)a5 modifier:(id)a6 completionHandler:(id)a7
+- (void)asyncImageForKey:(id)key size:(CGSize)size resizeOptions:(int)options modifier:(id)modifier completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  modifierCopy = modifier;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v16 = [(IMImageStore *)self fetchOperationQueue];
+  fetchOperationQueue = [(IMImageStore *)self fetchOperationQueue];
   v17 = MEMORY[0x277CCA8C8];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __79__IMImageStore_asyncImageForKey_size_resizeOptions_modifier_completionHandler___block_invoke;
   v25 = &unk_2782BDBD8;
   objc_copyWeak(v29, &location);
-  v18 = v13;
+  v18 = keyCopy;
   v26 = v18;
   v29[1] = *&width;
   v29[2] = *&height;
-  v30 = a5;
-  v19 = v14;
+  optionsCopy = options;
+  v19 = modifierCopy;
   v27 = v19;
-  v20 = v15;
+  v20 = handlerCopy;
   v28 = v20;
   v21 = [v17 blockOperationWithBlock:&v22];
-  [v16 addOperation:{v21, v22, v23, v24, v25}];
+  [fetchOperationQueue addOperation:{v21, v22, v23, v24, v25}];
 
   objc_destroyWeak(v29);
   objc_destroyWeak(&location);
@@ -788,16 +788,16 @@ void __79__IMImageStore_asyncImageForKey_size_resizeOptions_modifier_completionH
   }
 }
 
-- (void)asyncImageForKey:(id)a3 squareDimension:(double)a4 cacheKeyModifier:(id)a5 completionHandler:(id)a6
+- (void)asyncImageForKey:(id)key squareDimension:(double)dimension cacheKeyModifier:(id)modifier completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__IMImageStore_asyncImageForKey_squareDimension_cacheKeyModifier_completionHandler___block_invoke;
   v12[3] = &unk_2782BDC00;
-  v13 = v10;
-  v11 = v10;
-  [(IMImageStore *)self asyncImageURLForKey:a3 squareDimension:a5 cacheKeyModifier:v12 completionHandler:a4];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(IMImageStore *)self asyncImageURLForKey:key squareDimension:modifier cacheKeyModifier:v12 completionHandler:dimension];
 }
 
 void __84__IMImageStore_asyncImageForKey_squareDimension_cacheKeyModifier_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -814,45 +814,45 @@ void __84__IMImageStore_asyncImageForKey_squareDimension_cacheKeyModifier_comple
   }
 }
 
-- (void)asyncImageURLForKey:(id)a3 squareDimension:(double)a4 cacheKeyModifier:(id)a5 completionHandler:(id)a6
+- (void)asyncImageURLForKey:(id)key squareDimension:(double)dimension cacheKeyModifier:(id)modifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  modifierCopy = modifier;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__IMImageStore_asyncImageURLForKey_squareDimension_cacheKeyModifier_completionHandler___block_invoke;
   aBlock[3] = &unk_2782BDC28;
-  v13 = v12;
+  v13 = handlerCopy;
   v33 = v13;
-  v14 = v10;
+  v14 = keyCopy;
   v32 = v14;
   v15 = _Block_copy(aBlock);
-  v16 = [(IMImageStore *)self _keyForSize:v14 baseKey:0 modifier:a4, a4];
-  v17 = v16;
-  if ([v11 length])
+  dimension = [(IMImageStore *)self _keyForSize:v14 baseKey:0 modifier:dimension, dimension];
+  modifierCopy = dimension;
+  if ([modifierCopy length])
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v16, v11];
+    modifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", dimension, modifierCopy];
   }
 
-  v18 = [(IMImageStore *)self fetchOperationQueue];
+  fetchOperationQueue = [(IMImageStore *)self fetchOperationQueue];
   v19 = MEMORY[0x277CCA8C8];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __87__IMImageStore_asyncImageURLForKey_squareDimension_cacheKeyModifier_completionHandler___block_invoke_2;
   v25[3] = &unk_2782BDC78;
   v25[4] = self;
-  v26 = v16;
+  v26 = dimension;
   v28 = v14;
   v29 = v15;
-  v27 = v17;
-  v30 = a4;
+  v27 = modifierCopy;
+  dimensionCopy = dimension;
   v20 = v14;
-  v21 = v17;
+  v21 = modifierCopy;
   v22 = v15;
-  v23 = v16;
+  v23 = dimension;
   v24 = [v19 blockOperationWithBlock:v25];
-  [v18 addOperation:v24];
+  [fetchOperationQueue addOperation:v24];
 }
 
 uint64_t __87__IMImageStore_asyncImageURLForKey_squareDimension_cacheKeyModifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -944,29 +944,29 @@ void __87__IMImageStore_asyncImageURLForKey_squareDimension_cacheKeyModifier_com
   (*(a1[5] + 16))();
 }
 
-- (void)asyncImageURLForKey:(id)a3 completionHandler:(id)a4
+- (void)asyncImageURLForKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3042000000;
   v17[3] = __Block_byref_object_copy__52;
   v17[4] = __Block_byref_object_dispose__53;
   objc_initWeak(&v18, self);
-  v8 = [(IMImageStore *)self fetchOperationQueue];
+  fetchOperationQueue = [(IMImageStore *)self fetchOperationQueue];
   v9 = MEMORY[0x277CCA8C8];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__IMImageStore_asyncImageURLForKey_completionHandler___block_invoke;
   v13[3] = &unk_2782BDCA0;
   v16 = v17;
-  v10 = v6;
+  v10 = keyCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = handlerCopy;
   v15 = v11;
   v12 = [v9 blockOperationWithBlock:v13];
-  [v8 addOperation:v12];
+  [fetchOperationQueue addOperation:v12];
 
   _Block_object_dispose(v17, 8);
   objc_destroyWeak(&v18);
@@ -987,28 +987,28 @@ void __54__IMImageStore_asyncImageURLForKey_completionHandler___block_invoke(voi
 
 - (void)clearCache
 {
-  v3 = [(IMImageStore *)self memoryCache];
-  [v3 removeAllObjects];
+  memoryCache = [(IMImageStore *)self memoryCache];
+  [memoryCache removeAllObjects];
 
-  v4 = [(IMImageStore *)self diskCache];
-  [v4 clearCache];
+  diskCache = [(IMImageStore *)self diskCache];
+  [diskCache clearCache];
 }
 
-- (BOOL)hasItemForKey:(id)a3 size:(CGSize)a4 modifier:(id)a5
+- (BOOL)hasItemForKey:(id)key size:(CGSize)size modifier:(id)modifier
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16 = *MEMORY[0x277D85DE8];
-  if (a4.width < 0.00000011920929 || a4.height < 0.00000011920929)
+  if (size.width < 0.00000011920929 || size.height < 0.00000011920929)
   {
-    v8 = [MEMORY[0x277D3DA88] defaultCategory];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    defaultCategory = [MEMORY[0x277D3DA88] defaultCategory];
+    if (os_log_type_enabled(defaultCategory, OS_LOG_TYPE_ERROR))
     {
       v12 = 134218240;
       v13 = width;
       v14 = 2048;
       v15 = height;
-      _os_log_impl(&dword_21B365000, v8, OS_LOG_TYPE_ERROR, "Invalid arguments. Size must be non-zero in both dimensions. (width: %f, height: %f)", &v12, 0x16u);
+      _os_log_impl(&dword_21B365000, defaultCategory, OS_LOG_TYPE_ERROR, "Invalid arguments. Size must be non-zero in both dimensions. (width: %f, height: %f)", &v12, 0x16u);
     }
 
     return 0;
@@ -1016,21 +1016,21 @@ void __54__IMImageStore_asyncImageURLForKey_completionHandler___block_invoke(voi
 
   else
   {
-    v9 = self;
-    v10 = [(IMImageStore *)self _keyForSize:a3 baseKey:a5 modifier:a4.width, a4.height];
-    LOBYTE(v9) = [(IMImageStore *)v9 hasItemForKey:v10];
+    selfCopy = self;
+    v10 = [(IMImageStore *)self _keyForSize:key baseKey:modifier modifier:size.width, size.height];
+    LOBYTE(selfCopy) = [(IMImageStore *)selfCopy hasItemForKey:v10];
 
-    return v9;
+    return selfCopy;
   }
 }
 
-- (BOOL)hasItemForKey:(id)a3
+- (BOOL)hasItemForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
-    v5 = [(IMImageStore *)self memoryCache];
-    v6 = [v5 objectForKey:v4];
+    memoryCache = [(IMImageStore *)self memoryCache];
+    v6 = [memoryCache objectForKey:keyCopy];
     if (v6)
     {
       v7 = 1;
@@ -1038,8 +1038,8 @@ void __54__IMImageStore_asyncImageURLForKey_completionHandler___block_invoke(voi
 
     else
     {
-      v8 = [(IMImageStore *)self diskCache];
-      v7 = [v8 hasItemForKey:v4];
+      diskCache = [(IMImageStore *)self diskCache];
+      v7 = [diskCache hasItemForKey:keyCopy];
     }
   }
 
@@ -1051,99 +1051,99 @@ void __54__IMImageStore_asyncImageURLForKey_completionHandler___block_invoke(voi
   return v7;
 }
 
-- (void)removeItemsWithPrefx:(id)a3
+- (void)removeItemsWithPrefx:(id)prefx
 {
-  v6 = a3;
-  if ([v6 length])
+  prefxCopy = prefx;
+  if ([prefxCopy length])
   {
-    v4 = [(IMImageStore *)self memoryCache];
-    [v4 removeObjectsForKeyWithPrefix:v6];
+    memoryCache = [(IMImageStore *)self memoryCache];
+    [memoryCache removeObjectsForKeyWithPrefix:prefxCopy];
 
-    v5 = [(IMImageStore *)self diskCache];
-    [v5 removeItemsWithPrefx:v6];
+    diskCache = [(IMImageStore *)self diskCache];
+    [diskCache removeItemsWithPrefx:prefxCopy];
   }
 }
 
-- (void)removeItemForKey:(id)a3
+- (void)removeItemForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IMImageStore *)self memoryCache];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  memoryCache = [(IMImageStore *)self memoryCache];
+  [memoryCache removeObjectForKey:keyCopy];
 
-  v6 = [(IMImageStore *)self diskCache];
-  [v6 removeItemForKey:v4];
+  diskCache = [(IMImageStore *)self diskCache];
+  [diskCache removeItemForKey:keyCopy];
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(IMImageStore *)self diskCache];
-  v3 = [v2 isEmpty];
+  diskCache = [(IMImageStore *)self diskCache];
+  isEmpty = [diskCache isEmpty];
 
-  return v3;
+  return isEmpty;
 }
 
-- (id)_keyForSize:(CGSize)a3 baseKey:(id)a4 modifier:(id)a5
+- (id)_keyForSize:(CGSize)size baseKey:(id)key modifier:(id)modifier
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  if ([v9 length])
+  keyCopy = key;
+  modifierCopy = modifier;
+  if ([keyCopy length])
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-{%f, %f}", v9, *&width, *&height];
-    if (![v10 hasModifications])
+    defaultCategory2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-{%f, %f}", keyCopy, *&width, *&height];
+    if (![modifierCopy hasModifications])
     {
 LABEL_5:
-      v11 = v11;
-      v14 = v11;
+      defaultCategory2 = defaultCategory2;
+      v14 = defaultCategory2;
       goto LABEL_13;
     }
 
-    v12 = [v10 modificationCacheKey];
-    if ([v12 length])
+    modificationCacheKey = [modifierCopy modificationCacheKey];
+    if ([modificationCacheKey length])
     {
-      v13 = [v11 stringByAppendingFormat:@"-%@", v12];
+      v13 = [defaultCategory2 stringByAppendingFormat:@"-%@", modificationCacheKey];
 
-      v11 = v13;
+      defaultCategory2 = v13;
       goto LABEL_5;
     }
 
-    v15 = [MEMORY[0x277D3DA88] defaultCategory];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    defaultCategory = [MEMORY[0x277D3DA88] defaultCategory];
+    if (os_log_type_enabled(defaultCategory, OS_LOG_TYPE_ERROR))
     {
       v29.width = width;
       v29.height = height;
       v16 = NSStringFromCGSize(v29);
       *buf = 138413058;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
       v21 = v16;
       v22 = 2112;
-      v23 = v9;
+      v23 = keyCopy;
       v24 = 2112;
-      v25 = v10;
-      _os_log_impl(&dword_21B365000, v15, OS_LOG_TYPE_ERROR, "Invalid modifier cache key in call to [%@ _keyForSize:%@]", buf, 0x2Au);
+      v25 = modifierCopy;
+      _os_log_impl(&dword_21B365000, defaultCategory, OS_LOG_TYPE_ERROR, "Invalid modifier cache key in call to [%@ _keyForSize:%@]", buf, 0x2Au);
     }
 
     goto LABEL_11;
   }
 
-  v11 = [MEMORY[0x277D3DA88] defaultCategory];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+  defaultCategory2 = [MEMORY[0x277D3DA88] defaultCategory];
+  if (os_log_type_enabled(defaultCategory2, OS_LOG_TYPE_ERROR))
   {
     v28.width = width;
     v28.height = height;
-    v12 = NSStringFromCGSize(v28);
+    modificationCacheKey = NSStringFromCGSize(v28);
     *buf = 138413058;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
-    v21 = v12;
+    v21 = modificationCacheKey;
     v22 = 2112;
-    v23 = v9;
+    v23 = keyCopy;
     v24 = 2112;
-    v25 = v10;
-    _os_log_impl(&dword_21B365000, v11, OS_LOG_TYPE_ERROR, "Invalid baseKey encountered in call to [%@ _keyForSize:%@]", buf, 0x2Au);
+    v25 = modifierCopy;
+    _os_log_impl(&dword_21B365000, defaultCategory2, OS_LOG_TYPE_ERROR, "Invalid baseKey encountered in call to [%@ _keyForSize:%@]", buf, 0x2Au);
 LABEL_11:
   }
 
@@ -1155,73 +1155,73 @@ LABEL_13:
 
 - (void)memoryWarning
 {
-  v2 = [(IMImageStore *)self memoryCache];
-  [v2 removeAllObjects];
+  memoryCache = [(IMImageStore *)self memoryCache];
+  [memoryCache removeAllObjects];
 }
 
-- (void)_addImage:(id)a3 toMemoryCacheWithKey:(id)a4
+- (void)_addImage:(id)image toMemoryCacheWithKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
+  imageCopy = image;
+  keyCopy = key;
   if (![(IMImageStore *)self disableMemoryCache])
   {
-    v7 = v12;
-    v8 = [v12 CGImage];
-    BytesPerRow = CGImageGetBytesPerRow(v8);
-    v10 = CGImageGetHeight(v8) * BytesPerRow;
-    v11 = [(IMImageStore *)self memoryCache];
-    [v11 setObject:v12 forKey:v6 cost:v10];
+    v7 = imageCopy;
+    cGImage = [imageCopy CGImage];
+    BytesPerRow = CGImageGetBytesPerRow(cGImage);
+    v10 = CGImageGetHeight(cGImage) * BytesPerRow;
+    memoryCache = [(IMImageStore *)self memoryCache];
+    [memoryCache setObject:imageCopy forKey:keyCopy cost:v10];
   }
 }
 
-- (id)_loadDiskCacheImageForKey:(id)a3 expectImageExists:(BOOL)a4
+- (id)_loadDiskCacheImageForKey:(id)key expectImageExists:(BOOL)exists
 {
-  v4 = a4;
+  existsCopy = exists;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(IMImageStore *)self diskCache];
-  v8 = [v7 imageForKey:v6];
+  keyCopy = key;
+  diskCache = [(IMImageStore *)self diskCache];
+  v8 = [diskCache imageForKey:keyCopy];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    imageCache = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v6;
-      _os_log_impl(&dword_21B365000, v9, OS_LOG_TYPE_DEFAULT, "_loadDiskCacheImageForKey: successfully loaded image forKey: %@", &v12, 0xCu);
+      v13 = keyCopy;
+      _os_log_impl(&dword_21B365000, imageCache, OS_LOG_TYPE_DEFAULT, "_loadDiskCacheImageForKey: successfully loaded image forKey: %@", &v12, 0xCu);
     }
 
-    [(IMImageStore *)self _addImage:v8 toMemoryCacheWithKey:v6];
+    [(IMImageStore *)self _addImage:v8 toMemoryCacheWithKey:keyCopy];
   }
 
-  else if (v4)
+  else if (existsCopy)
   {
-    v10 = [MEMORY[0x277D3DA88] imageCache];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    imageCache2 = [MEMORY[0x277D3DA88] imageCache];
+    if (os_log_type_enabled(imageCache2, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v6;
-      _os_log_impl(&dword_21B365000, v10, OS_LOG_TYPE_ERROR, "_loadDiskCacheImageForKey: failed to load image forKey: %@", &v12, 0xCu);
+      v13 = keyCopy;
+      _os_log_impl(&dword_21B365000, imageCache2, OS_LOG_TYPE_ERROR, "_loadDiskCacheImageForKey: failed to load image forKey: %@", &v12, 0xCu);
     }
   }
 
   return v8;
 }
 
-- (void)performWhenURLAvailableForImageForKey:(id)a3 block:(id)a4
+- (void)performWhenURLAvailableForImageForKey:(id)key block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__IMImageStore_performWhenURLAvailableForImageForKey_block___block_invoke;
   aBlock[3] = &unk_2782BDC00;
-  v8 = v7;
+  v8 = blockCopy;
   v19 = v8;
   v9 = _Block_copy(aBlock);
   objc_initWeak(&location, self);
-  v10 = [(IMImageStore *)self diskCache];
+  diskCache = [(IMImageStore *)self diskCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__IMImageStore_performWhenURLAvailableForImageForKey_block___block_invoke_2;
@@ -1229,9 +1229,9 @@ LABEL_13:
   objc_copyWeak(&v16, &location);
   v11 = v9;
   v15 = v11;
-  v12 = v6;
+  v12 = keyCopy;
   v14 = v12;
-  [v10 performWhenURLAvailableForImageForKey:v12 block:v13];
+  [diskCache performWhenURLAvailableForImageForKey:v12 block:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -1266,19 +1266,19 @@ void __60__IMImageStore_performWhenURLAvailableForImageForKey_block___block_invo
   }
 }
 
-- (void)invalidateImageForKey:(id)a3
+- (void)invalidateImageForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v5 = [(IMImageStore *)self fetchOperationQueue];
+  fetchOperationQueue = [(IMImageStore *)self fetchOperationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__IMImageStore_invalidateImageForKey___block_invoke;
   v7[3] = &unk_2782BDCF0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = keyCopy;
   v8 = v6;
-  [v5 addOperationWithBlock:v7];
+  [fetchOperationQueue addOperationWithBlock:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1290,11 +1290,11 @@ void __38__IMImageStore_invalidateImageForKey___block_invoke(uint64_t a1)
   [WeakRetained onQueueInvalidateImageForKey:*(a1 + 32)];
 }
 
-- (void)onQueueInvalidateImageForKey:(id)a3
+- (void)onQueueInvalidateImageForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IMImageStore *)self diskCache];
-  v7 = [v5 imageUrlForKey:v4];
+  keyCopy = key;
+  diskCache = [(IMImageStore *)self diskCache];
+  v7 = [diskCache imageUrlForKey:keyCopy];
 
   v6 = v7;
   if (v7)
@@ -1304,12 +1304,12 @@ void __38__IMImageStore_invalidateImageForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)invalidateImageAtURL:(id)a3
+- (void)invalidateImageAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 URLByAppendingPathExtension:@"invalidated"];
-  v5 = [MEMORY[0x277CBEA90] data];
-  [v5 writeToURL:v4 atomically:0];
+  lCopy = l;
+  v4 = [lCopy URLByAppendingPathExtension:@"invalidated"];
+  data = [MEMORY[0x277CBEA90] data];
+  [data writeToURL:v4 atomically:0];
 }
 
 @end

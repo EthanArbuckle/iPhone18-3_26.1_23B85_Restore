@@ -1,6 +1,6 @@
 @interface BKAudiobookNowPlayingFullscreenTouchViewController
-- (BOOL)sliderIsProgressSlider:(id)a3;
-- (CGRect)alternateAccessibilityFrameFor:(id)a3;
+- (BOOL)sliderIsProgressSlider:(id)slider;
+- (CGRect)alternateAccessibilityFrameFor:(id)for;
 - (CGRect)transitionCoverFrame;
 - (_TtC13BookAnalytics9BATracker)ba_analyticsTracker;
 - (double)coverCornerRadius;
@@ -13,28 +13,28 @@
 - (id)transitionCoverImagePlayControl;
 - (id)transitionCurrentCoverImage;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)ba_setAnalyticsTracker:(id)a3;
-- (void)beginTracking:(id)a3;
-- (void)didTapSessionIndicator:(id)a3;
-- (void)endTracking:(id)a3;
-- (void)fadeOutHUD:(id)a3;
-- (void)fineScrubSpeedChanged:(id)a3;
+- (void)ba_setAnalyticsTracker:(id)tracker;
+- (void)beginTracking:(id)tracking;
+- (void)didTapSessionIndicator:(id)indicator;
+- (void)endTracking:(id)tracking;
+- (void)fadeOutHUD:(id)d;
+- (void)fineScrubSpeedChanged:(id)changed;
 - (void)loadView;
 - (void)resetPlaybackSpeed;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BKAudiobookNowPlayingFullscreenTouchViewController
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_100274880();
-  [(BKAudiobookNowPlayingFullscreenTouchViewController *)v3 setView:v2];
+  [(BKAudiobookNowPlayingFullscreenTouchViewController *)selfCopy setView:v2];
 }
 
 - (void)viewDidLoad
@@ -49,31 +49,31 @@
   sub_100278F14();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  AudiobookNowPlayingFullscreenTouchViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  AudiobookNowPlayingFullscreenTouchViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(BKAudiobookNowPlayingTouchViewController *)&v6 viewDidAppear:v3];
+  [(BKAudiobookNowPlayingTouchViewController *)&v6 viewDidAppear:appearCopy];
   v5 = sub_100274880();
   [*&v5[OBJC_IVAR____TtC5Books38AudiobookNowPlayingFullscreenTouchView_primaryTitleMarqueeView] setMarqueeEnabled:1 withOptions:{0, v6.receiver, v6.super_class}];
   [*&v5[OBJC_IVAR____TtC5Books38AudiobookNowPlayingFullscreenTouchView_secondaryTitleMarqueeView] setMarqueeEnabled:1 withOptions:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(BKAudiobookNowPlayingFullscreenTouchViewController *)&v7 viewDidDisappear:v3];
+  [(BKAudiobookNowPlayingFullscreenTouchViewController *)&v7 viewDidDisappear:disappearCopy];
   v5 = sub_100411508();
   if (v5)
   {
@@ -94,11 +94,11 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(BKAudiobookNowPlayingFullscreenTouchViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(BKAudiobookNowPlayingFullscreenTouchViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -111,7 +111,7 @@
 
 - (id)createMiniViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10041240C();
   AudiobookNowPlayingTouchViewController.assetViewControllerDelegate.getter();
   AudiobookNowPlayingTouchViewController.assetViewControllerDelegate.setter();
@@ -123,35 +123,35 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(BKAudiobookNowPlayingFullscreenTouchViewController *)&v4 ba_analyticsTracker];
+  ba_analyticsTracker = [(BKAudiobookNowPlayingFullscreenTouchViewController *)&v4 ba_analyticsTracker];
 
-  return v2;
+  return ba_analyticsTracker;
 }
 
-- (void)ba_setAnalyticsTracker:(id)a3
+- (void)ba_setAnalyticsTracker:(id)tracker
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  trackerCopy = tracker;
   v5 = v6.receiver;
-  [(BKAudiobookNowPlayingFullscreenTouchViewController *)&v6 ba_setAnalyticsTracker:v4];
+  [(BKAudiobookNowPlayingFullscreenTouchViewController *)&v6 ba_setAnalyticsTracker:trackerCopy];
   sub_100279D80();
 }
 
 - (id)transitionCurrentCoverImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100274880();
   v4 = *&v3[OBJC_IVAR____TtC5Books38AudiobookNowPlayingFullscreenTouchView_artworkImageView];
 
-  v5 = [v4 image];
+  image = [v4 image];
 
-  return v5;
+  return image;
 }
 
 - (CGRect)transitionCoverFrame
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AudiobookNowPlayingFullscreenTouchViewController.transitionCoverFrame()();
   v5 = v4;
   v7 = v6;
@@ -170,7 +170,7 @@
 
 - (id)transitionBackgroundImageView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100274880();
   v4 = sub_100395DD8();
 
@@ -179,7 +179,7 @@
 
 - (id)transitionControlsViews
 {
-  v2 = self;
+  selfCopy = self;
   AudiobookNowPlayingFullscreenTouchViewController.transitionControlsViews()();
 
   v3.super.isa = sub_1007A25D4().super.isa;
@@ -189,14 +189,14 @@
 
 - (double)coverCornerRadius
 {
-  v2 = self;
+  selfCopy = self;
 
   return 10.0;
 }
 
 - (id)transitionCoverImagePlayControl
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100274880();
 
   v4 = *&v3[OBJC_IVAR____TtC5Books38AudiobookNowPlayingFullscreenTouchView_artworkImageView];
@@ -205,49 +205,49 @@
   return v4;
 }
 
-- (void)fadeOutHUD:(id)a3
+- (void)fadeOutHUD:(id)d
 {
-  v4 = a3;
-  v5 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_100282570();
 }
 
-- (void)beginTracking:(id)a3
+- (void)beginTracking:(id)tracking
 {
-  v4 = a3;
-  v5 = self;
-  AudiobookNowPlayingFullscreenTouchViewController.beginTracking(_:)(v4);
+  trackingCopy = tracking;
+  selfCopy = self;
+  AudiobookNowPlayingFullscreenTouchViewController.beginTracking(_:)(trackingCopy);
 }
 
-- (void)endTracking:(id)a3
+- (void)endTracking:(id)tracking
 {
-  v4 = a3;
-  v5 = self;
+  trackingCopy = tracking;
+  selfCopy = self;
   _s5Books48AudiobookNowPlayingFullscreenTouchViewControllerC11endTrackingyySo14IMCustomSliderCF_0();
 }
 
-- (void)fineScrubSpeedChanged:(id)a3
+- (void)fineScrubSpeedChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  AudiobookNowPlayingFullscreenTouchViewController.fineScrubSpeedChanged(_:)(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  AudiobookNowPlayingFullscreenTouchViewController.fineScrubSpeedChanged(_:)(changedCopy);
 }
 
-- (BOOL)sliderIsProgressSlider:(id)a3
+- (BOOL)sliderIsProgressSlider:(id)slider
 {
-  v4 = a3;
-  v5 = self;
+  sliderCopy = slider;
+  selfCopy = self;
   v6 = sub_100274880();
 
   v7 = *&v6[OBJC_IVAR____TtC5Books38AudiobookNowPlayingFullscreenTouchView_progressSlider];
-  return v7 == v4;
+  return v7 == sliderCopy;
 }
 
 - (double)playedInterval
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_10079B9A4();
 
   return v5;
@@ -255,22 +255,22 @@
 
 - (double)durationOfCurrentChapter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AudiobookNowPlayingFullscreenTouchViewController.durationOfCurrentChapter.getter();
 
   return v3;
 }
 
-- (void)didTapSessionIndicator:(id)a3
+- (void)didTapSessionIndicator:(id)indicator
 {
-  v4 = a3;
-  v5 = self;
-  AudiobookNowPlayingFullscreenTouchViewController.didTapSessionIndicator(_:)(v4);
+  indicatorCopy = indicator;
+  selfCopy = self;
+  AudiobookNowPlayingFullscreenTouchViewController.didTapSessionIndicator(_:)(indicatorCopy);
 }
 
 - (id)accessibleDescriptionOfSessionIndicatorPosition
 {
-  v2 = self;
+  selfCopy = self;
   object = AudiobookNowPlayingFullscreenTouchViewController.accessibleDescriptionOfSessionIndicatorPosition()().value._object;
 
   if (object)
@@ -286,11 +286,11 @@
   return v4;
 }
 
-- (CGRect)alternateAccessibilityFrameFor:(id)a3
+- (CGRect)alternateAccessibilityFrameFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = AudiobookNowPlayingFullscreenTouchViewController.alternateAccessibilityFrame(for:)(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = AudiobookNowPlayingFullscreenTouchViewController.alternateAccessibilityFrame(for:)(forCopy);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -309,11 +309,11 @@
 - (void)resetPlaybackSpeed
 {
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR___BKAudiobookNowPlayingTouchViewController_eventHandler);
-  v6 = self;
+  selfCopy = self;
   [v2 playbackRate];
   if (*&v3 == 1.0)
   {
-    v4 = v6;
+    v4 = selfCopy;
   }
 
   else

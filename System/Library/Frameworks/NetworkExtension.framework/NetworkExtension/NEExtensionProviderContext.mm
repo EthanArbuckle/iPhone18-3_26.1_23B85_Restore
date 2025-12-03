@@ -1,44 +1,44 @@
 @interface NEExtensionProviderContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (NEExtensionProviderContext)initWithProvider:(id)a3;
+- (NEExtensionProviderContext)initWithProvider:(id)provider;
 - (NSString)description;
 - (id)_principalObject;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)completeSession;
-- (void)createWithCompletionHandler:(id)a3;
+- (void)createWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)displayMessage:(id)a3 message:(id)a4 completionHandler:(id)a5;
+- (void)displayMessage:(id)message message:(id)a4 completionHandler:(id)handler;
 - (void)dispose;
 - (void)dropProvider;
 - (void)hostContext;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setConfiguration:(id)a3 extensionIdentifier:(id)a4;
-- (void)setDescription:(uint64_t)a1;
-- (void)sleepWithCompletionHandler:(id)a3;
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)startedWithError:(id)a3;
-- (void)stopWithReason:(int)a3;
-- (void)validateWithCompletionHandler:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setConfiguration:(id)configuration extensionIdentifier:(id)identifier;
+- (void)setDescription:(uint64_t)description;
+- (void)sleepWithCompletionHandler:(id)handler;
+- (void)startWithOptions:(id)options completionHandler:(id)handler;
+- (void)startedWithError:(id)error;
+- (void)stopWithReason:(int)reason;
+- (void)validateWithCompletionHandler:(id)handler;
 - (void)wake;
 @end
 
 @implementation NEExtensionProviderContext
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(NEExtensionProviderContext *)self _principalObject];
-  [v13 observerHelperHandler:v12 ofObject:v11 change:v10 context:a6];
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  [_principalObject observerHelperHandler:pathCopy ofObject:objectCopy change:changeCopy context:context];
 }
 
-- (void)validateWithCompletionHandler:(id)a3
+- (void)validateWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEExtensionProviderContext *)self _principalObject];
+  handlerCopy = handler;
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
   [(NEExtensionProviderContext *)self requiredProviderSuperClass];
   if (objc_opt_isKindOfClass())
   {
@@ -58,20 +58,20 @@
     }
   }
 
-  v4[2](v4, v6);
+  handlerCopy[2](handlerCopy, v6);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopWithReason:(int)a3
+- (void)stopWithReason:(int)reason
 {
-  if (a3 == 40)
+  if (reason == 40)
   {
     v4 = 3;
     goto LABEL_5;
   }
 
-  if (a3 == 6)
+  if (reason == 6)
   {
     v4 = 2;
 LABEL_5:
@@ -85,11 +85,11 @@ LABEL_7:
   [(NEExtensionProviderContext *)self cancelWithError:v5];
 }
 
-- (void)startWithOptions:(id)a3 completionHandler:(id)a4
+- (void)startWithOptions:(id)options completionHandler:(id)handler
 {
   if (self)
   {
-    objc_setProperty_atomic_copy(self, a2, a4, 56);
+    objc_setProperty_atomic_copy(self, a2, handler, 56);
   }
 }
 
@@ -102,7 +102,7 @@ LABEL_7:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v5 = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_INFO, "%@: disposing", &v5, 0xCu);
     }
 
@@ -117,12 +117,12 @@ LABEL_7:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createWithCompletionHandler:(id)a3
+- (void)createWithCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 objectForInfoDictionaryKey:@"NetworkExtension"];
+  handlerCopy = handler;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v6 = [mainBundle objectForInfoDictionaryKey:@"NetworkExtension"];
 
   if ((isa_nsdictionary(v6) & 1) == 0)
   {
@@ -139,9 +139,9 @@ LABEL_26:
     goto LABEL_11;
   }
 
-  v7 = [(NEExtensionProviderContext *)self extensionPoint];
+  extensionPoint = [(NEExtensionProviderContext *)self extensionPoint];
 
-  if (v7)
+  if (extensionPoint)
   {
     v8 = [v6 objectForKeyedSubscript:@"NEProviderClasses"];
     if ((isa_nsdictionary(v8) & 1) == 0)
@@ -154,12 +154,12 @@ LABEL_26:
         _os_log_error_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_ERROR, "%@ dictionary is missing from Info.plist", buf, 0xCu);
       }
 
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_20;
     }
 
-    v9 = [(NEExtensionProviderContext *)self extensionPoint];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    extensionPoint2 = [(NEExtensionProviderContext *)self extensionPoint];
+    v10 = [v8 objectForKeyedSubscript:extensionPoint2];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)v10 length])
@@ -179,7 +179,7 @@ LABEL_26:
         transaction = self->_transaction;
         self->_transaction = v16;
 
-        v4[2](v4, 1);
+        handlerCopy[2](handlerCopy, 1);
 LABEL_19:
 
 LABEL_20:
@@ -200,14 +200,14 @@ LABEL_20:
       v21 = ne_log_obj();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v24 = [(NEExtensionProviderContext *)self extensionPoint];
+        extensionPoint3 = [(NEExtensionProviderContext *)self extensionPoint];
         *buf = 138412290;
-        v26 = v24;
+        v26 = extensionPoint3;
         _os_log_error_impl(&dword_1BA83C000, v21, OS_LOG_TYPE_ERROR, "NetworkExtension Info.plist dictionary does not contain a NEProvider class for extension point %@", buf, 0xCu);
       }
     }
 
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_19;
   }
 
@@ -221,28 +221,28 @@ LABEL_20:
 
 LABEL_11:
 
-  v4[2](v4, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_21:
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)displayMessage:(id)a3 message:(id)a4 completionHandler:(id)a5
+- (void)displayMessage:(id)message message:(id)a4 completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = a4;
-  v10 = a3;
+  messageCopy = message;
   v11 = ne_log_obj();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_DEBUG, "%@: display message", &v15, 0xCu);
   }
 
-  v13 = [(NEExtensionProviderContext *)self hostContext];
-  [v13 displayMessage:v10 message:v9 completionHandler:v8];
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext displayMessage:messageCopy message:v9 completionHandler:handlerCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -251,21 +251,21 @@ LABEL_21:
 {
   if (self)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = self[3];
     if (!v4)
     {
-      v5 = objc_getProperty(self, a2, 64, 1);
-      if (!v5)
+      _auxiliaryConnection = objc_getProperty(self, a2, 64, 1);
+      if (!_auxiliaryConnection)
       {
-        v5 = [v3 _auxiliaryConnection];
+        _auxiliaryConnection = [selfCopy _auxiliaryConnection];
       }
 
-      v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_77];
-      v7 = v3[3];
-      v3[3] = v6;
+      v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_77];
+      v7 = selfCopy[3];
+      selfCopy[3] = v6;
 
-      if (!v3[3])
+      if (!selfCopy[3])
       {
         v8 = ne_log_obj();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -275,7 +275,7 @@ LABEL_21:
         }
       }
 
-      v4 = v3[3];
+      v4 = selfCopy[3];
     }
 
     self = v4;
@@ -300,25 +300,25 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startedWithError:(id)a3
+- (void)startedWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v5 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
       v13 = 138412546;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = v12;
+      v16 = localizedDescription;
       _os_log_error_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_ERROR, "%@: Started with error %@", &v13, 0x16u);
     }
 
-    v8 = [(NEExtensionProviderContext *)self hostContext];
-    [v8 startedWithError:v5];
+    hostContext = [(NEExtensionProviderContext *)self hostContext];
+    [hostContext startedWithError:errorCopy];
 
     if (self)
     {
@@ -328,46 +328,46 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
 
   else
   {
-    v10 = [(NEExtensionProviderContext *)self hostContext];
-    [v10 startedWithError:0];
+    hostContext2 = [(NEExtensionProviderContext *)self hostContext];
+    [hostContext2 startedWithError:0];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  errorCopy = error;
   if (self && objc_getProperty(self, v4, 56, 1))
   {
     v6 = ne_log_obj();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v5;
+      v14 = errorCopy;
       _os_log_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_INFO, "%@: Calling stop completion handler with error %@", &v11, 0x16u);
     }
 
     Property = objc_getProperty(self, v7, 56, 1);
-    Property[2](Property, v5);
+    Property[2](Property, errorCopy);
     objc_setProperty_atomic_copy(self, v9, 0, 56);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConfiguration:(id)a3 extensionIdentifier:(id)a4
+- (void)setConfiguration:(id)configuration extensionIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   if (nelog_is_info_logging_enabled())
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Extension %@]", v7];
-    [(NEExtensionProviderContext *)self setDescription:v8];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Extension %@]", identifierCopy];
+    [(NEExtensionProviderContext *)self setDescription:identifierCopy];
   }
 
   if (nelog_is_debug_logging_enabled())
@@ -376,9 +376,9 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
-      v17 = v6;
+      v17 = configurationCopy;
       _os_log_debug_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_DEBUG, "%@: Setting configuration to %@", buf, 0x16u);
     }
   }
@@ -389,29 +389,29 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_INFO, "%@: Setting configuration", buf, 0xCu);
     }
   }
 
   if (self)
   {
-    objc_setProperty_atomic(self, v10, v6, 48);
+    objc_setProperty_atomic(self, v10, configurationCopy, 48);
   }
 
-  v11 = [(NEExtensionProviderContext *)self _principalObject];
-  v12 = [v6 applicationName];
-  [v11 setAppName:v12];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  applicationName = [configurationCopy applicationName];
+  [_principalObject setAppName:applicationName];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDescription:(uint64_t)a1
+- (void)setDescription:(uint64_t)description
 {
   v4 = a2;
-  if (a1)
+  if (description)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((description + 32), a2);
   }
 }
 
@@ -422,30 +422,30 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_INFO, "%@: Calling wake", &v6, 0xCu);
   }
 
-  v4 = [(NEExtensionProviderContext *)self _principalObject];
-  [v4 wake];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  [_principalObject wake];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sleepWithCompletionHandler:(id)a3
+- (void)sleepWithCompletionHandler:(id)handler
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_INFO, "%@: Calling sleepWithCompletionHandler:", &v8, 0xCu);
   }
 
-  v6 = [(NEExtensionProviderContext *)self _principalObject];
-  [v6 sleepWithCompletionHandler:v4];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  [_principalObject sleepWithCompletionHandler:handlerCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -485,7 +485,7 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
 {
   if (self && self->_isDisposed)
   {
-    v4 = 0;
+    _principalObject = 0;
   }
 
   else
@@ -495,18 +495,18 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
     provider = self->_provider;
     if (provider)
     {
-      v4 = provider;
+      _principalObject = provider;
     }
 
     else
     {
       v7.receiver = self;
       v7.super_class = NEExtensionProviderContext;
-      v4 = [(NEExtensionProviderContext *)&v7 _principalObject];
+      _principalObject = [(NEExtensionProviderContext *)&v7 _principalObject];
     }
   }
 
-  return v4;
+  return _principalObject;
 }
 
 - (NSString)description
@@ -534,7 +534,7 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEFAULT, "%@: Deallocating", buf, 0xCu);
   }
 
@@ -551,16 +551,16 @@ void __41__NEExtensionProviderContext_hostContext__block_invoke(uint64_t a1, voi
   MEMORY[0x1EEE66BB8]();
 }
 
-- (NEExtensionProviderContext)initWithProvider:(id)a3
+- (NEExtensionProviderContext)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = NEExtensionProviderContext;
   v6 = [(NEExtensionProviderContext *)&v8 init];
   if (v6)
   {
-    [v5 beginRequestWithExtensionContext:v6];
-    objc_storeStrong(&v6->_provider, a3);
+    [providerCopy beginRequestWithExtensionContext:v6];
+    objc_storeStrong(&v6->_provider, provider);
   }
 
   return v6;

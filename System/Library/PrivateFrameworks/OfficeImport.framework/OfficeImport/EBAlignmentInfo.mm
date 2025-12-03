@@ -1,28 +1,28 @@
 @interface EBAlignmentInfo
-+ (XlDXfAlign)xlDXfAlignFromEDAlignmentInfo:(id)a3;
-+ (id)edAlignmentInfoFromXlDXfAlign:(XlDXfAlign *)a3;
-+ (id)edAlignmentInfoFromXlGraphicsInfo:(void *)a3;
-+ (id)edAlignmentInfoFromXlXf:(XlXf *)a3;
-+ (int)convertEDHorizontalAlignmentEnumToXl:(int)a3;
-+ (int)convertEDVerticalAlignmentEnumToXl:(int)a3;
-+ (int)convertXlHorizAlignEnumToED:(int)a3;
-+ (int)convertXlVertAlignEnumToED:(int)a3;
-+ (void)writeAlignmentInfo:(id)a3 toXlGraphicsInfo:(void *)a4;
-+ (void)writeAlignmentInfo:(id)a3 toXlXf:(XlXf *)a4;
++ (XlDXfAlign)xlDXfAlignFromEDAlignmentInfo:(id)info;
++ (id)edAlignmentInfoFromXlDXfAlign:(XlDXfAlign *)align;
++ (id)edAlignmentInfoFromXlGraphicsInfo:(void *)info;
++ (id)edAlignmentInfoFromXlXf:(XlXf *)xf;
++ (int)convertEDHorizontalAlignmentEnumToXl:(int)xl;
++ (int)convertEDVerticalAlignmentEnumToXl:(int)xl;
++ (int)convertXlHorizAlignEnumToED:(int)d;
++ (int)convertXlVertAlignEnumToED:(int)d;
++ (void)writeAlignmentInfo:(id)info toXlGraphicsInfo:(void *)graphicsInfo;
++ (void)writeAlignmentInfo:(id)info toXlXf:(XlXf *)xf;
 @end
 
 @implementation EBAlignmentInfo
 
-+ (id)edAlignmentInfoFromXlXf:(XlXf *)a3
++ (id)edAlignmentInfoFromXlXf:(XlXf *)xf
 {
-  if (a3)
+  if (xf)
   {
     v5 = +[EDAlignmentInfo alignmentInfo];
-    [v5 setHorizontalAlignment:{objc_msgSend(a1, "convertXlHorizAlignEnumToED:", a3->var5)}];
-    [v5 setVerticalAlignment:{objc_msgSend(a1, "convertXlVertAlignEnumToED:", a3->var6)}];
-    [v5 setIndent:a3->var8];
-    [v5 setTextWrapped:a3->var28];
-    [v5 setTextRotation:a3->var7];
+    [v5 setHorizontalAlignment:{objc_msgSend(self, "convertXlHorizAlignEnumToED:", xf->var5)}];
+    [v5 setVerticalAlignment:{objc_msgSend(self, "convertXlVertAlignEnumToED:", xf->var6)}];
+    [v5 setIndent:xf->var8];
+    [v5 setTextWrapped:xf->var28];
+    [v5 setTextRotation:xf->var7];
   }
 
   else
@@ -33,16 +33,16 @@
   return v5;
 }
 
-+ (id)edAlignmentInfoFromXlDXfAlign:(XlDXfAlign *)a3
++ (id)edAlignmentInfoFromXlDXfAlign:(XlDXfAlign *)align
 {
-  if (a3)
+  if (align)
   {
     v5 = +[EDAlignmentInfo alignmentInfo];
-    [v5 setHorizontalAlignment:{objc_msgSend(a1, "convertXlHorizAlignEnumToED:", a3->var0)}];
-    [v5 setVerticalAlignment:{objc_msgSend(a1, "convertXlVertAlignEnumToED:", a3->var1)}];
-    [v5 setIndent:a3->var2];
-    [v5 setTextWrapped:a3->var4];
-    [v5 setTextRotation:a3->var3];
+    [v5 setHorizontalAlignment:{objc_msgSend(self, "convertXlHorizAlignEnumToED:", align->var0)}];
+    [v5 setVerticalAlignment:{objc_msgSend(self, "convertXlVertAlignEnumToED:", align->var1)}];
+    [v5 setIndent:align->var2];
+    [v5 setTextWrapped:align->var4];
+    [v5 setTextRotation:align->var3];
   }
 
   else
@@ -53,14 +53,14 @@
   return v5;
 }
 
-+ (id)edAlignmentInfoFromXlGraphicsInfo:(void *)a3
++ (id)edAlignmentInfoFromXlGraphicsInfo:(void *)info
 {
-  if (a3)
+  if (info)
   {
     v5 = +[EDAlignmentInfo alignmentInfo];
-    [v5 setHorizontalAlignment:{objc_msgSend(a1, "convertXlHorizAlignEnumToED:", *(a3 + 18))}];
-    [v5 setVerticalAlignment:{objc_msgSend(a1, "convertXlVertAlignEnumToED:", *(a3 + 17))}];
-    [v5 setTextRotation:*(a3 + 16)];
+    [v5 setHorizontalAlignment:{objc_msgSend(self, "convertXlHorizAlignEnumToED:", *(info + 18))}];
+    [v5 setVerticalAlignment:{objc_msgSend(self, "convertXlVertAlignEnumToED:", *(info + 17))}];
+    [v5 setTextRotation:*(info + 16)];
   }
 
   else
@@ -71,39 +71,39 @@
   return v5;
 }
 
-+ (void)writeAlignmentInfo:(id)a3 toXlXf:(XlXf *)a4
++ (void)writeAlignmentInfo:(id)info toXlXf:(XlXf *)xf
 {
-  v6 = a3;
-  if (a4)
+  infoCopy = info;
+  if (xf)
   {
-    a4->var34 = 0;
-    if (v6)
+    xf->var34 = 0;
+    if (infoCopy)
     {
-      v8 = v6;
-      if ([v6 isHorizontalAlignOverridden])
+      v8 = infoCopy;
+      if ([infoCopy isHorizontalAlignOverridden])
       {
-        v7 = 1;
+        isVerticalAlignOverridden = 1;
       }
 
       else
       {
-        v7 = [v8 isVerticalAlignOverridden];
+        isVerticalAlignOverridden = [v8 isVerticalAlignOverridden];
       }
 
-      a4->var34 = v7;
-      a4->var5 = [a1 convertEDHorizontalAlignmentEnumToXl:{objc_msgSend(v8, "horizontalAlignment")}];
-      a4->var6 = [a1 convertEDVerticalAlignmentEnumToXl:{objc_msgSend(v8, "verticalAlignment")}];
-      a4->var8 = [v8 indent];
-      a4->var28 = [v8 isTextWrapped];
-      a4->var7 = [v8 textRotation];
-      v6 = v8;
+      xf->var34 = isVerticalAlignOverridden;
+      xf->var5 = [self convertEDHorizontalAlignmentEnumToXl:{objc_msgSend(v8, "horizontalAlignment")}];
+      xf->var6 = [self convertEDVerticalAlignmentEnumToXl:{objc_msgSend(v8, "verticalAlignment")}];
+      xf->var8 = [v8 indent];
+      xf->var28 = [v8 isTextWrapped];
+      xf->var7 = [v8 textRotation];
+      infoCopy = v8;
     }
   }
 }
 
-+ (XlDXfAlign)xlDXfAlignFromEDAlignmentInfo:(id)a3
++ (XlDXfAlign)xlDXfAlignFromEDAlignmentInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     operator new();
   }
@@ -111,67 +111,67 @@
   return 0;
 }
 
-+ (void)writeAlignmentInfo:(id)a3 toXlGraphicsInfo:(void *)a4
++ (void)writeAlignmentInfo:(id)info toXlGraphicsInfo:(void *)graphicsInfo
 {
-  v6 = a3;
-  if (v6 && a4)
+  infoCopy = info;
+  if (infoCopy && graphicsInfo)
   {
-    v7 = v6;
-    *(a4 + 18) = [a1 convertEDHorizontalAlignmentEnumToXl:{objc_msgSend(v6, "horizontalAlignment")}];
-    *(a4 + 17) = [a1 convertEDVerticalAlignmentEnumToXl:{objc_msgSend(v7, "verticalAlignment")}];
-    v6 = v7;
+    v7 = infoCopy;
+    *(graphicsInfo + 18) = [self convertEDHorizontalAlignmentEnumToXl:{objc_msgSend(infoCopy, "horizontalAlignment")}];
+    *(graphicsInfo + 17) = [self convertEDVerticalAlignmentEnumToXl:{objc_msgSend(v7, "verticalAlignment")}];
+    infoCopy = v7;
   }
 }
 
-+ (int)convertXlHorizAlignEnumToED:(int)a3
++ (int)convertXlHorizAlignEnumToED:(int)d
 {
-  if ((a3 - 1) >= 7)
+  if ((d - 1) >= 7)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-+ (int)convertXlVertAlignEnumToED:(int)a3
++ (int)convertXlVertAlignEnumToED:(int)d
 {
-  if ((a3 - 1) >= 4)
+  if ((d - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-+ (int)convertEDHorizontalAlignmentEnumToXl:(int)a3
++ (int)convertEDHorizontalAlignmentEnumToXl:(int)xl
 {
-  if ((a3 - 1) >= 7)
+  if ((xl - 1) >= 7)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return xl;
   }
 }
 
-+ (int)convertEDVerticalAlignmentEnumToXl:(int)a3
++ (int)convertEDVerticalAlignmentEnumToXl:(int)xl
 {
-  if ((a3 - 1) >= 4)
+  if ((xl - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return xl;
   }
 }
 

@@ -14,24 +14,24 @@
   v16.receiver = self;
   v16.super_class = _TSF_TSDgPTPFDPtPPort;
   [(_TSF_TSDgPTPNetworkPort *)&v16 updateProperties];
-  v3 = [(_TSF_TSDgPTPFDPtPPort *)self _statistics];
-  v4 = [(_TSF_TSDgPTPFDPtPPort *)self _localPDelayLogMeanInterval];
-  v5 = [(_TSF_TSDgPTPFDPtPPort *)self _remotePDelayLogMeanInterval];
-  v6 = [(_TSF_TSDgPTPFDPtPPort *)self _multipleRemotes];
-  v7 = [(_TSF_TSDgPTPFDPtPPort *)self _measuringPDelay];
-  v8 = [(_TSF_TSDgPTPPort *)self propertyUpdateQueue];
+  _statistics = [(_TSF_TSDgPTPFDPtPPort *)self _statistics];
+  _localPDelayLogMeanInterval = [(_TSF_TSDgPTPFDPtPPort *)self _localPDelayLogMeanInterval];
+  _remotePDelayLogMeanInterval = [(_TSF_TSDgPTPFDPtPPort *)self _remotePDelayLogMeanInterval];
+  _multipleRemotes = [(_TSF_TSDgPTPFDPtPPort *)self _multipleRemotes];
+  _measuringPDelay = [(_TSF_TSDgPTPFDPtPPort *)self _measuringPDelay];
+  propertyUpdateQueue = [(_TSF_TSDgPTPPort *)self propertyUpdateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41___TSF_TSDgPTPFDPtPPort_updateProperties__block_invoke;
   block[3] = &unk_279DBD8E8;
-  v12 = v4;
-  v13 = v5;
-  v14 = v6;
-  v15 = v7;
+  v12 = _localPDelayLogMeanInterval;
+  v13 = _remotePDelayLogMeanInterval;
+  v14 = _multipleRemotes;
+  v15 = _measuringPDelay;
   block[4] = self;
-  v11 = v3;
-  v9 = v3;
-  dispatch_async(v8, block);
+  v11 = _statistics;
+  v9 = _statistics;
+  dispatch_async(propertyUpdateQueue, block);
 }
 
 - (id)_statistics
@@ -43,74 +43,74 @@
 
 - (char)_localPDelayLogMeanInterval
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"LocalPDelayLogMeanInterval"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"LocalPDelayLogMeanInterval"];
 
   if (v3)
   {
-    v4 = [v3 charValue];
+    charValue = [v3 charValue];
   }
 
   else
   {
-    v4 = 0;
+    charValue = 0;
   }
 
-  return v4;
+  return charValue;
 }
 
 - (char)_remotePDelayLogMeanInterval
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"RemotePDelayLogMeanInterval"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"RemotePDelayLogMeanInterval"];
 
   if (v3)
   {
-    v4 = [v3 charValue];
+    charValue = [v3 charValue];
   }
 
   else
   {
-    v4 = 0;
+    charValue = 0;
   }
 
-  return v4;
+  return charValue;
 }
 
 - (BOOL)_multipleRemotes
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"MultipleRemotes"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"MultipleRemotes"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)_measuringPDelay
 {
-  v2 = [(_TSF_TSDgPTPPort *)self service];
-  v3 = [v2 iodPropertyForKey:@"MeasuringPDelay"];
+  service = [(_TSF_TSDgPTPPort *)self service];
+  v3 = [service iodPropertyForKey:@"MeasuringPDelay"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

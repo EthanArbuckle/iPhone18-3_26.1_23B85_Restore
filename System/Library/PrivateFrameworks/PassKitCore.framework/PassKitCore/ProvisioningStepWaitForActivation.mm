@@ -1,14 +1,14 @@
 @interface ProvisioningStepWaitForActivation
-- (void)passLibraryDidChangeWithNotification:(id)a3;
+- (void)passLibraryDidChangeWithNotification:(id)notification;
 @end
 
 @implementation ProvisioningStepWaitForActivation
 
-- (void)passLibraryDidChangeWithNotification:(id)a3
+- (void)passLibraryDidChangeWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_1AD4C341C(v3);
+  sub_1AD4C341C(notificationCopy);
 }
 
 @end

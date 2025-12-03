@@ -8,10 +8,10 @@
 
 + (NSAssertionHandler)currentHandler
 {
-  v2 = [+[NSThread currentThread](NSThread threadDictionary];
-  v3 = [(NSMutableDictionary *)v2 objectForKey:@"NSAssertionHandler"];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
+  v3 = [(NSMutableDictionary *)threadDictionary objectForKey:@"NSAssertionHandler"];
   v4 = v3;
-  if (v2)
+  if (threadDictionary)
   {
     v5 = v3 == 0;
   }
@@ -24,7 +24,7 @@
   if (v5)
   {
     v4 = [objc_allocWithZone(NSAssertionHandler) init];
-    [(NSMutableDictionary *)v2 setObject:v4 forKey:@"NSAssertionHandler"];
+    [(NSMutableDictionary *)threadDictionary setObject:v4 forKey:@"NSAssertionHandler"];
   }
 
   return v4;

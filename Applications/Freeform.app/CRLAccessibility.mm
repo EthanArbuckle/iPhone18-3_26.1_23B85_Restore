@@ -4,26 +4,26 @@
 + (BOOL)isVoiceOverOrSwitchControlEnabled;
 + (BOOL)shouldRemoveMovementAnimations;
 + (id)sharedInstance;
-- (BOOL)isFocusedElementAccessibleDescendantOfElement:(id)a3;
+- (BOOL)isFocusedElementAccessibleDescendantOfElement:(id)element;
 - (BOOL)isQuickSpeakEnabled;
 - (CGRect)_keyboardFrame;
 - (CGRect)keyboardFrame;
 - (id)canvasViewDescription;
 - (id)canvasViewHelp;
-- (void)_keyboardWasShown:(id)a3;
-- (void)_keyboardWillBeHidden:(id)a3;
-- (void)addExtraSafeCategoryNamesToCollection:(id)a3;
-- (void)addSafeCategoryNamesToCollection:(id)a3;
+- (void)_keyboardWasShown:(id)shown;
+- (void)_keyboardWillBeHidden:(id)hidden;
+- (void)addExtraSafeCategoryNamesToCollection:(id)collection;
+- (void)addSafeCategoryNamesToCollection:(id)collection;
 - (void)dealloc;
-- (void)handlePostingAnnouncement:(id)a3 sender:(id)a4 priority:(int)a5 sound:(id)a6;
+- (void)handlePostingAnnouncement:(id)announcement sender:(id)sender priority:(int)priority sound:(id)sound;
 - (void)loadAccessibilitySupport;
 - (void)loadExtraAccessibilitySupport;
 - (void)loadQuickSpeakSupport;
 - (void)performExtraValidation;
 - (void)performValidation;
-- (void)preventFocusingCanvasResponderElementOnScreenChangeForInterval:(double)a3;
-- (void)setFirstElementForUpcomingPageTurn:(id)a3;
-- (void)setFirstElementForUpcomingScreenChange:(id)a3;
+- (void)preventFocusingCanvasResponderElementOnScreenChangeForInterval:(double)interval;
+- (void)setFirstElementForUpcomingPageTurn:(id)turn;
+- (void)setFirstElementForUpcomingScreenChange:(id)change;
 - (void)unloadExtraAccessibilitySupport;
 @end
 
@@ -39,15 +39,15 @@
   return result;
 }
 
-- (void)_keyboardWasShown:(id)a3
+- (void)_keyboardWasShown:(id)shown
 {
   [(CRLAccessibility *)self _setKeyboardVisible:1];
-  [objc_msgSend(objc_msgSend(a3 "userInfo")];
+  [objc_msgSend(objc_msgSend(shown "userInfo")];
 
   [(CRLAccessibility *)self _setKeyboardFrame:?];
 }
 
-- (void)_keyboardWillBeHidden:(id)a3
+- (void)_keyboardWillBeHidden:(id)hidden
 {
   [(CRLAccessibility *)self _setKeyboardVisible:0];
   y = CGRectNull.origin.y;
@@ -111,44 +111,44 @@
   __CRLAccessibilityValidateInstanceMethodComplete(@"UIScrollView", @"_setContentOffset:duration:animationCurve:", "v", v172, v173, v174, v175, v176, "{CGPoint=dd}");
 }
 
-- (void)addExtraSafeCategoryNamesToCollection:(id)a3
+- (void)addExtraSafeCategoryNamesToCollection:(id)collection
 {
-  [a3 addObject:@"CRLNSObjectAccessibility_iOS"];
-  [a3 addObject:@"CRLUIApplicationAccessibility"];
-  [a3 addObject:@"CRLUIButtonAccessibility"];
-  [a3 addObject:@"CRLUICollectionViewCellAccessibility"];
-  [a3 addObject:@"CRLUILabelAccessibility"];
-  [a3 addObject:@"CRLUILayoutContainerViewAccessibility"];
-  [a3 addObject:@"CRLUIMenuControllerAccessibility"];
-  [a3 addObject:@"CRLUINavigationItemAccessibility"];
-  [a3 addObject:@"CRLUIPageControlAccessibility"];
-  [a3 addObject:@"CRLUIAccessibilityPickerComponentAccessibility"];
-  [a3 addObject:@"CRLUIReferenceLibraryViewControllerAccessibility"];
-  [a3 addObject:@"CRLUIScrollViewAccessibility"];
-  [a3 addObject:@"CRLUISliderAccessibility"];
-  [a3 addObject:@"CRLUITableViewCellAccessibility"];
-  [a3 addObject:@"CRLUITextEffectsRemoteViewAccessibility"];
-  [a3 addObject:@"CRLUIViewAccessibility"];
-  [a3 addObject:@"CRLUIViewControllerAccessibility"];
-  [a3 addObject:@"CRLUIWindowAccessibility"];
-  [a3 addObject:@"CRLiOSBoardViewControllerAccessibility"];
-  [a3 addObject:@"CRLToolsChooserViewControllerAccessibility"];
-  [a3 addObject:@"CRLShapeLayoutAccessibility"];
-  [a3 addObject:@"CRLCheckableTableViewCellAccessibility"];
-  [a3 addObject:@"CRLDisclosureTableViewCellAccessibility"];
-  [a3 addObject:@"CRLDoubleSegmentedControlTableViewCellAccessibility"];
-  [a3 addObject:@"CRLiOSCanvasViewControllerAccessibility"];
-  [a3 addObject:@"CRLSegmentedControlTableViewCellAccessibility"];
-  [a3 addObject:@"CRLSwitchTableViewCellAccessibility"];
-  [a3 addObject:@"CRLTickedSliderAccessibility"];
-  [a3 addObject:@"CRLTextInputResponderAccessibility"];
-  [a3 addObject:@"CRLScrollViewAccessibility"];
-  [a3 addObject:@"CRLEditableTextViewCellAccessibility"];
-  [a3 addObject:@"CRLPopoverBasedViewControllerAccessibility"];
-  [a3 addObject:@"CRLStepperAccessibility"];
-  [a3 addObject:@"CRLNavigationControllerAccessibility"];
+  [collection addObject:@"CRLNSObjectAccessibility_iOS"];
+  [collection addObject:@"CRLUIApplicationAccessibility"];
+  [collection addObject:@"CRLUIButtonAccessibility"];
+  [collection addObject:@"CRLUICollectionViewCellAccessibility"];
+  [collection addObject:@"CRLUILabelAccessibility"];
+  [collection addObject:@"CRLUILayoutContainerViewAccessibility"];
+  [collection addObject:@"CRLUIMenuControllerAccessibility"];
+  [collection addObject:@"CRLUINavigationItemAccessibility"];
+  [collection addObject:@"CRLUIPageControlAccessibility"];
+  [collection addObject:@"CRLUIAccessibilityPickerComponentAccessibility"];
+  [collection addObject:@"CRLUIReferenceLibraryViewControllerAccessibility"];
+  [collection addObject:@"CRLUIScrollViewAccessibility"];
+  [collection addObject:@"CRLUISliderAccessibility"];
+  [collection addObject:@"CRLUITableViewCellAccessibility"];
+  [collection addObject:@"CRLUITextEffectsRemoteViewAccessibility"];
+  [collection addObject:@"CRLUIViewAccessibility"];
+  [collection addObject:@"CRLUIViewControllerAccessibility"];
+  [collection addObject:@"CRLUIWindowAccessibility"];
+  [collection addObject:@"CRLiOSBoardViewControllerAccessibility"];
+  [collection addObject:@"CRLToolsChooserViewControllerAccessibility"];
+  [collection addObject:@"CRLShapeLayoutAccessibility"];
+  [collection addObject:@"CRLCheckableTableViewCellAccessibility"];
+  [collection addObject:@"CRLDisclosureTableViewCellAccessibility"];
+  [collection addObject:@"CRLDoubleSegmentedControlTableViewCellAccessibility"];
+  [collection addObject:@"CRLiOSCanvasViewControllerAccessibility"];
+  [collection addObject:@"CRLSegmentedControlTableViewCellAccessibility"];
+  [collection addObject:@"CRLSwitchTableViewCellAccessibility"];
+  [collection addObject:@"CRLTickedSliderAccessibility"];
+  [collection addObject:@"CRLTextInputResponderAccessibility"];
+  [collection addObject:@"CRLScrollViewAccessibility"];
+  [collection addObject:@"CRLEditableTextViewCellAccessibility"];
+  [collection addObject:@"CRLPopoverBasedViewControllerAccessibility"];
+  [collection addObject:@"CRLStepperAccessibility"];
+  [collection addObject:@"CRLNavigationControllerAccessibility"];
 
-  [a3 addObject:@"CRLSegmentedControlAccessibility"];
+  [collection addObject:@"CRLSegmentedControlAccessibility"];
 }
 
 - (void)loadExtraAccessibilitySupport
@@ -172,21 +172,21 @@
   [(CRLAccessibility *)self _setKeyboardFrame:CGRectNull.origin.x, y, width, height];
 }
 
-- (void)handlePostingAnnouncement:(id)a3 sender:(id)a4 priority:(int)a5 sound:(id)a6
+- (void)handlePostingAnnouncement:(id)announcement sender:(id)sender priority:(int)priority sound:(id)sound
 {
-  v7 = *&a5;
-  if (![(CRLAccessibility *)self announcementsSuspended:a3])
+  v7 = *&priority;
+  if (![(CRLAccessibility *)self announcementsSuspended:announcement])
   {
-    if (a6)
+    if (sound)
     {
-      UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, a6);
+      UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, sound);
     }
 
-    if ([a3 length])
+    if ([announcement length])
     {
       if (v7 == 5)
       {
-        argument = a3;
+        argument = announcement;
       }
 
       else
@@ -194,7 +194,7 @@
         v16 = [[NSNumber alloc] initWithInt:v7];
         v17 = [[NSDictionary alloc] initWithObjectsAndKeys:{v16, @"UIAccessibilityTokenAnnouncementPriority", 0}];
 
-        argument = [[NSAttributedString alloc] initWithString:a3 attributes:v17];
+        argument = [[NSAttributedString alloc] initWithString:announcement attributes:v17];
       }
 
       UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, argument);
@@ -203,7 +203,7 @@
     else
     {
       ShouldPerformValidationChecks = CRLAccessibilityShouldPerformValidationChecks();
-      if (!a6)
+      if (!sound)
       {
         if (ShouldPerformValidationChecks)
         {
@@ -234,17 +234,17 @@
 
 - (BOOL)isQuickSpeakEnabled
 {
-  v3 = [(CRLAccessibility *)self quickSpeakSupportLoaded];
-  if (v3)
+  quickSpeakSupportLoaded = [(CRLAccessibility *)self quickSpeakSupportLoaded];
+  if (quickSpeakSupportLoaded)
   {
-    v4 = [(CRLAccessibility *)self shouldFakeQuickSpeakAlwaysSpeaking];
+    shouldFakeQuickSpeakAlwaysSpeaking = [(CRLAccessibility *)self shouldFakeQuickSpeakAlwaysSpeaking];
     [(CRLAccessibility *)self setShouldFakeQuickSpeakAlwaysSpeaking:1];
     v5 = [(CRLAccessibility *)self crlaxBoolValueForKey:@"_accessibilityShouldShowPauseBubble"];
-    [(CRLAccessibility *)self setShouldFakeQuickSpeakAlwaysSpeaking:v4];
-    LOBYTE(v3) = v5;
+    [(CRLAccessibility *)self setShouldFakeQuickSpeakAlwaysSpeaking:shouldFakeQuickSpeakAlwaysSpeaking];
+    LOBYTE(quickSpeakSupportLoaded) = v5;
   }
 
-  return v3;
+  return quickSpeakSupportLoaded;
 }
 
 - (CGRect)keyboardFrame
@@ -257,10 +257,10 @@
   return result;
 }
 
-- (BOOL)isFocusedElementAccessibleDescendantOfElement:(id)a3
+- (BOOL)isFocusedElementAccessibleDescendantOfElement:(id)element
 {
   v9 = 0;
-  v4 = [a3 crlaxValueForKey:@"_accessibleSubviews"];
+  v4 = [element crlaxValueForKey:@"_accessibleSubviews"];
   v5 = objc_opt_class();
   v6 = __CRLAccessibilityCastAsClass(v5, v4, 1, &v9);
   if (v9 == 1)
@@ -269,7 +269,7 @@
   }
 
   v7 = v6;
-  if (+[CRLAccessibility currentlyFocusedElement]== a3)
+  if (+[CRLAccessibility currentlyFocusedElement]== element)
   {
     return 1;
   }
@@ -280,11 +280,11 @@
   }
 }
 
-- (void)setFirstElementForUpcomingScreenChange:(id)a3
+- (void)setFirstElementForUpcomingScreenChange:(id)change
 {
-  if ([(CRLAccessibility *)self cachedFirstElementForUpcomingScreenChange]!= a3)
+  if ([(CRLAccessibility *)self cachedFirstElementForUpcomingScreenChange]!= change)
   {
-    [(CRLAccessibility *)self setCachedFirstElementForUpcomingScreenChange:a3];
+    [(CRLAccessibility *)self setCachedFirstElementForUpcomingScreenChange:change];
     [(CRLAccessibility *)self setFirstElementForUpcomingScreenChangeResetCount:[(CRLAccessibility *)self firstElementForUpcomingScreenChangeResetCount]+ 1];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -295,11 +295,11 @@
   }
 }
 
-- (void)setFirstElementForUpcomingPageTurn:(id)a3
+- (void)setFirstElementForUpcomingPageTurn:(id)turn
 {
-  if ([(CRLAccessibility *)self cachedFirstElementForUpcomingPageTurn]!= a3)
+  if ([(CRLAccessibility *)self cachedFirstElementForUpcomingPageTurn]!= turn)
   {
-    [(CRLAccessibility *)self setCachedFirstElementForUpcomingPageTurn:a3];
+    [(CRLAccessibility *)self setCachedFirstElementForUpcomingPageTurn:turn];
     [(CRLAccessibility *)self setFirstElementForUpcomingPageTurnResetCount:[(CRLAccessibility *)self firstElementForUpcomingPageTurnResetCount]+ 1];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -310,7 +310,7 @@
   }
 }
 
-- (void)preventFocusingCanvasResponderElementOnScreenChangeForInterval:(double)a3
+- (void)preventFocusingCanvasResponderElementOnScreenChangeForInterval:(double)interval
 {
   if (!qword_101A34FA8)
   {
@@ -324,7 +324,7 @@
   v5[2] = sub_100440408;
   v5[3] = &unk_1018632F0;
   v5[4] = self;
-  [qword_101A34FA8 afterDelay:v5 processBlock:a3];
+  [qword_101A34FA8 afterDelay:v5 processBlock:interval];
 }
 
 + (id)sharedInstance
@@ -333,7 +333,7 @@
   block[1] = 3221225472;
   block[2] = sub_10047ECF8;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A35028 != -1)
   {
     dispatch_once(&qword_101A35028, block);
@@ -359,8 +359,8 @@
 + (BOOL)isUsingAccessibilityTextSize
 {
   v2 = +[UITraitCollection currentTraitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -474,88 +474,88 @@
   }
 }
 
-- (void)addSafeCategoryNamesToCollection:(id)a3
+- (void)addSafeCategoryNamesToCollection:(id)collection
 {
-  v3 = a3;
-  [v3 addObject:@"CRLCALayerAccessibility"];
-  [v3 addObject:@"CRLFindReplaceControllerAccessibility"];
-  [v3 addObject:@"CRLInteractiveCanvasControllerAccessibility"];
-  [v3 addObject:@"CRLUndoManagerAccessibility"];
-  [v3 addObject:@"CRLAngleGradientFillAccessibility"];
-  [v3 addObject:@"CRLAudioRepAccessibility"];
-  [v3 addObject:@"CRLBoardItemAccessibility"];
-  [v3 addObject:@"CRLMovieItemAccessibility"];
-  [v3 addObject:@"CRLBoardItemSelectionAccessibility"];
-  [v3 addObject:@"CRLBrushStrokeAccessibility"];
-  [v3 addObject:@"CRLCalligraphyStrokeAccessibility"];
-  [v3 addObject:@"CRLCanvasAccessibility"];
-  [v3 addObject:@"CRLCanvasEditorHelperAccessibility"];
-  [v3 addObject:@"CRLCanvasInteractiveCanvasControllerAccessibility"];
-  [v3 addObject:@"CRLCanvasKnobAccessibility"];
-  [v3 addObject:@"CRLCanvasLayerAccessibility"];
-  [v3 addObject:@"CRLCanvasLayoutAccessibility"];
-  [v3 addObject:@"CRLCanvasLayoutGeometryAccessibility"];
-  [v3 addObject:@"CRLCanvasMovieKnobAccessibility"];
-  [v3 addObject:@"CRLCanvasRepAccessibility"];
-  [v3 addObject:@"CRLUnknownRepAccessibility"];
-  [v3 addObject:@"CRLCanvasKnobTrackerAccessibility"];
-  [v3 addObject:@"CRLCanvasResizeKnobTrackerAccessibility"];
-  [v3 addObject:@"CRLShapeControlKnobTrackerAccessibility"];
-  [v3 addObject:@"CRLShapeConnectionLineKnobTrackerAccessibility"];
-  [v3 addObject:@"CRLConnectionLineKnobTrackerAccessibility"];
-  [v3 addObject:@"CRLShapeLineSegmentKnobTrackerAccessibility"];
-  [v3 addObject:@"CRLCanvasViewAccessibility"];
-  [v3 addObject:@"CRLColorFillAccessibility"];
-  [v3 addObject:@"CRLConnectionLinePathSourceAccessibility"];
-  [v3 addObject:@"CRLConnectionLineRepAccessibility"];
-  [v3 addObject:@"CRLConnectionLineAbstractLayoutAccessibility"];
-  [v3 addObject:@"CRLContainerRepAccessibility"];
-  [v3 addObject:@"CRLDropShadowAccessibility"];
-  [v3 addObject:@"CRLEditorControllerAccessibility"];
-  [v3 addObject:@"CRLFillAccessibility"];
-  [v3 addObject:@"CRLFreehandDrawingRepAccessibility"];
-  [v3 addObject:@"CRLGradientFillAccessibility"];
-  [v3 addObject:@"CRLGradientFillStopAccessibility"];
-  [v3 addObject:@"CRLGroupItemAccessibility"];
-  [v3 addObject:@"CRLGroupRepAccessibility"];
-  [v3 addObject:@"CRLImageFillAccessibility"];
-  [v3 addObject:@"CRLImageItemAccessibility"];
-  [v3 addObject:@"CRLImageLayoutAccessibility"];
-  [v3 addObject:@"CRLImageRepAccessibility"];
-  [v3 addObject:@"CRLItemGeometryAccessibility"];
-  [v3 addObject:@"CRLKeyboardMovementManipulatorAccessibility"];
-  [v3 addObject:@"CRLLineEndAccessibility"];
-  [v3 addObject:@"CRLMovieItemAccessibility"];
-  [v3 addObject:@"CRLMovieRepAccessibility"];
-  [v3 addObject:@"CRLPathSourceAccessibility"];
-  [v3 addObject:@"CRLScalarPathSourceAccessibility"];
-  [v3 addObject:@"CRLShadowAccessibility"];
-  [v3 addObject:@"CRLShapeItemAccessibility"];
-  [v3 addObject:@"CRLShapeRepAccessibility"];
-  [v3 addObject:@"CRLSmartStrokeAccessibility"];
-  [v3 addObject:@"CRLStrokeAccessibility"];
-  [v3 addObject:@"CRLStrokePatternAccessibility"];
-  [v3 addObject:@"CRLAVPlayerControllerAccessibility"];
-  [v3 addObject:@"CRLRulerUnitsAccessibility"];
-  [v3 addObject:@"CRLSelectionPathAccessibility"];
-  [v3 addObject:@"CRLSubselectionAccessibility"];
-  [v3 addObject:@"CRLColumnAccessibility"];
-  [v3 addObject:@"CRLHyperlinkFieldAccessibility"];
-  [v3 addObject:@"CRLLineSpacingAccessibility"];
-  [v3 addObject:@"CRLTabsAccessibility"];
-  [v3 addObject:@"CRLTextEditorAccessibility"];
-  [v3 addObject:@"CRLTextInteractiveCanvasControllerAccessibility"];
-  [v3 addObject:@"CRLTextLayoutAccessibility"];
-  [v3 addObject:@"CRLTextRepAccessibility"];
-  [v3 addObject:@"CRLWPAttachmentAccessibility"];
-  [v3 addObject:@"CRLWPSearchReferenceAccessibility"];
-  [v3 addObject:@"CRLWPSelectionAccessibility"];
-  [v3 addObject:@"CRLWPShapeItemAccessibility"];
-  [v3 addObject:@"CRLWPShapeRepAccessibility"];
-  [v3 addObject:@"CRLWPSmartFieldAccessibility"];
-  [v3 addObject:@"CRLWPStorageAccessibility"];
-  [v3 addObject:@"CRLBezierPathAccessibility"];
-  [v3 addObject:@"CRLColorAccessibility"];
+  collectionCopy = collection;
+  [collectionCopy addObject:@"CRLCALayerAccessibility"];
+  [collectionCopy addObject:@"CRLFindReplaceControllerAccessibility"];
+  [collectionCopy addObject:@"CRLInteractiveCanvasControllerAccessibility"];
+  [collectionCopy addObject:@"CRLUndoManagerAccessibility"];
+  [collectionCopy addObject:@"CRLAngleGradientFillAccessibility"];
+  [collectionCopy addObject:@"CRLAudioRepAccessibility"];
+  [collectionCopy addObject:@"CRLBoardItemAccessibility"];
+  [collectionCopy addObject:@"CRLMovieItemAccessibility"];
+  [collectionCopy addObject:@"CRLBoardItemSelectionAccessibility"];
+  [collectionCopy addObject:@"CRLBrushStrokeAccessibility"];
+  [collectionCopy addObject:@"CRLCalligraphyStrokeAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasEditorHelperAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasInteractiveCanvasControllerAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasKnobAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasLayerAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasLayoutAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasLayoutGeometryAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasMovieKnobAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasRepAccessibility"];
+  [collectionCopy addObject:@"CRLUnknownRepAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasKnobTrackerAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasResizeKnobTrackerAccessibility"];
+  [collectionCopy addObject:@"CRLShapeControlKnobTrackerAccessibility"];
+  [collectionCopy addObject:@"CRLShapeConnectionLineKnobTrackerAccessibility"];
+  [collectionCopy addObject:@"CRLConnectionLineKnobTrackerAccessibility"];
+  [collectionCopy addObject:@"CRLShapeLineSegmentKnobTrackerAccessibility"];
+  [collectionCopy addObject:@"CRLCanvasViewAccessibility"];
+  [collectionCopy addObject:@"CRLColorFillAccessibility"];
+  [collectionCopy addObject:@"CRLConnectionLinePathSourceAccessibility"];
+  [collectionCopy addObject:@"CRLConnectionLineRepAccessibility"];
+  [collectionCopy addObject:@"CRLConnectionLineAbstractLayoutAccessibility"];
+  [collectionCopy addObject:@"CRLContainerRepAccessibility"];
+  [collectionCopy addObject:@"CRLDropShadowAccessibility"];
+  [collectionCopy addObject:@"CRLEditorControllerAccessibility"];
+  [collectionCopy addObject:@"CRLFillAccessibility"];
+  [collectionCopy addObject:@"CRLFreehandDrawingRepAccessibility"];
+  [collectionCopy addObject:@"CRLGradientFillAccessibility"];
+  [collectionCopy addObject:@"CRLGradientFillStopAccessibility"];
+  [collectionCopy addObject:@"CRLGroupItemAccessibility"];
+  [collectionCopy addObject:@"CRLGroupRepAccessibility"];
+  [collectionCopy addObject:@"CRLImageFillAccessibility"];
+  [collectionCopy addObject:@"CRLImageItemAccessibility"];
+  [collectionCopy addObject:@"CRLImageLayoutAccessibility"];
+  [collectionCopy addObject:@"CRLImageRepAccessibility"];
+  [collectionCopy addObject:@"CRLItemGeometryAccessibility"];
+  [collectionCopy addObject:@"CRLKeyboardMovementManipulatorAccessibility"];
+  [collectionCopy addObject:@"CRLLineEndAccessibility"];
+  [collectionCopy addObject:@"CRLMovieItemAccessibility"];
+  [collectionCopy addObject:@"CRLMovieRepAccessibility"];
+  [collectionCopy addObject:@"CRLPathSourceAccessibility"];
+  [collectionCopy addObject:@"CRLScalarPathSourceAccessibility"];
+  [collectionCopy addObject:@"CRLShadowAccessibility"];
+  [collectionCopy addObject:@"CRLShapeItemAccessibility"];
+  [collectionCopy addObject:@"CRLShapeRepAccessibility"];
+  [collectionCopy addObject:@"CRLSmartStrokeAccessibility"];
+  [collectionCopy addObject:@"CRLStrokeAccessibility"];
+  [collectionCopy addObject:@"CRLStrokePatternAccessibility"];
+  [collectionCopy addObject:@"CRLAVPlayerControllerAccessibility"];
+  [collectionCopy addObject:@"CRLRulerUnitsAccessibility"];
+  [collectionCopy addObject:@"CRLSelectionPathAccessibility"];
+  [collectionCopy addObject:@"CRLSubselectionAccessibility"];
+  [collectionCopy addObject:@"CRLColumnAccessibility"];
+  [collectionCopy addObject:@"CRLHyperlinkFieldAccessibility"];
+  [collectionCopy addObject:@"CRLLineSpacingAccessibility"];
+  [collectionCopy addObject:@"CRLTabsAccessibility"];
+  [collectionCopy addObject:@"CRLTextEditorAccessibility"];
+  [collectionCopy addObject:@"CRLTextInteractiveCanvasControllerAccessibility"];
+  [collectionCopy addObject:@"CRLTextLayoutAccessibility"];
+  [collectionCopy addObject:@"CRLTextRepAccessibility"];
+  [collectionCopy addObject:@"CRLWPAttachmentAccessibility"];
+  [collectionCopy addObject:@"CRLWPSearchReferenceAccessibility"];
+  [collectionCopy addObject:@"CRLWPSelectionAccessibility"];
+  [collectionCopy addObject:@"CRLWPShapeItemAccessibility"];
+  [collectionCopy addObject:@"CRLWPShapeRepAccessibility"];
+  [collectionCopy addObject:@"CRLWPSmartFieldAccessibility"];
+  [collectionCopy addObject:@"CRLWPStorageAccessibility"];
+  [collectionCopy addObject:@"CRLBezierPathAccessibility"];
+  [collectionCopy addObject:@"CRLColorAccessibility"];
 }
 
 - (void)loadAccessibilitySupport

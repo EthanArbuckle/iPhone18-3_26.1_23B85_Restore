@@ -1,12 +1,12 @@
 @interface AVSystemRemotePoolOutputDeviceCommunicationChannelManager
 + (id)sharedSystemRemotePool;
 + (id)sharedSystemRemotePoolImpl;
-- (AVSystemRemotePoolOutputDeviceCommunicationChannelManager)initWithDeviceID:(id)a3;
+- (AVSystemRemotePoolOutputDeviceCommunicationChannelManager)initWithDeviceID:(id)d;
 - (id)_initializeIfNeededAndGetSystemRemotePool;
-- (void)_didCloseCommChannelWithUUID:(__CFString *)a3 forDeviceWithID:(__CFString *)a4;
-- (void)_didReceiveData:(__CFData *)a3 fromDeviceWithID:(__CFString *)a4 fromChannelWithUUID:(__CFString *)a5;
+- (void)_didCloseCommChannelWithUUID:(__CFString *)d forDeviceWithID:(__CFString *)iD;
+- (void)_didReceiveData:(__CFData *)data fromDeviceWithID:(__CFString *)d fromChannelWithUUID:(__CFString *)iD;
 - (void)dealloc;
-- (void)openCommunicationChannelWithOptions:(id)a3 completionHandler:(id)a4;
+- (void)openCommunicationChannelWithOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation AVSystemRemotePoolOutputDeviceCommunicationChannelManager
@@ -131,13 +131,13 @@ void *__102__AVSystemRemotePoolOutputDeviceCommunicationChannelManager__initiali
   return result;
 }
 
-- (void)openCommunicationChannelWithOptions:(id)a3 completionHandler:(id)a4
+- (void)openCommunicationChannelWithOptions:(id)options completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [(AVSystemRemotePoolOutputDeviceCommunicationChannelManager *)self parentOutputDevice];
-  v8 = [a3 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionCancelIfAuthRequired"];
-  v9 = [a3 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionCorrelationID"];
-  v10 = [a3 objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionInitiator"];
+  parentOutputDevice = [(AVSystemRemotePoolOutputDeviceCommunicationChannelManager *)self parentOutputDevice];
+  v8 = [options objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionCancelIfAuthRequired"];
+  v9 = [options objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionCorrelationID"];
+  v10 = [options objectForKeyedSubscript:@"AVOutputDeviceCommunicationChannelOptionInitiator"];
   if (dword_1ED6F6B68)
   {
     v22 = 0;
@@ -147,14 +147,14 @@ void *__102__AVSystemRemotePoolOutputDeviceCommunicationChannelManager__initiali
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if (v7 && (v12 = [(AVSystemRemotePoolOutputDeviceCommunicationChannelManager *)self _initializeIfNeededAndGetSystemRemotePool]) != 0)
+  if (parentOutputDevice && (v12 = [(AVSystemRemotePoolOutputDeviceCommunicationChannelManager *)self _initializeIfNeededAndGetSystemRemotePool]) != 0)
   {
     v13 = v12;
-    v14 = [MEMORY[0x1E695DF90] dictionary];
-    v15 = v14;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v15 = dictionary;
     if (v9)
     {
-      [v14 setObject:v9 forKeyedSubscript:@"AVOutputContextAddOutputDeviceOptionCorrelationID"];
+      [dictionary setObject:v9 forKeyedSubscript:@"AVOutputContextAddOutputDeviceOptionCorrelationID"];
     }
 
     if (v10)
@@ -171,18 +171,18 @@ void *__102__AVSystemRemotePoolOutputDeviceCommunicationChannelManager__initiali
     v20[1] = 3221225472;
     v20[2] = __115__AVSystemRemotePoolOutputDeviceCommunicationChannelManager_openCommunicationChannelWithOptions_completionHandler___block_invoke;
     v20[3] = &unk_1E794EF08;
-    v20[4] = a3;
+    v20[4] = options;
     v20[5] = v9;
     v20[6] = v13;
     v20[7] = self;
-    v20[8] = a4;
-    [v13 addOutputDevice:v7 options:v15 completionHandler:v20];
+    v20[8] = handler;
+    [v13 addOutputDevice:parentOutputDevice options:v15 completionHandler:v20];
   }
 
   else
   {
     v16 = AVLocalizedError(@"AVFoundationErrorDomain", -11800, 0);
-    (*(a4 + 2))(a4, 0, v16, 0);
+    (*(handler + 2))(handler, 0, v16, 0);
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -356,7 +356,7 @@ void __115__AVSystemRemotePoolOutputDeviceCommunicationChannelManager_openCommun
   }
 }
 
-- (void)_didReceiveData:(__CFData *)a3 fromDeviceWithID:(__CFString *)a4 fromChannelWithUUID:(__CFString *)a5
+- (void)_didReceiveData:(__CFData *)data fromDeviceWithID:(__CFString *)d fromChannelWithUUID:(__CFString *)iD
 {
   v21 = *MEMORY[0x1E69E9840];
   v15 = 0;
@@ -365,7 +365,7 @@ void __115__AVSystemRemotePoolOutputDeviceCommunicationChannelManager_openCommun
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  if (a5 && [(NSString *)self->_deviceID isEqualToString:a4])
+  if (iD && [(NSString *)self->_deviceID isEqualToString:d])
   {
     ivarAccessQueue = self->_ivarAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -374,7 +374,7 @@ void __115__AVSystemRemotePoolOutputDeviceCommunicationChannelManager_openCommun
     block[3] = &unk_1E794EA40;
     block[4] = self;
     block[5] = &v15;
-    block[6] = a5;
+    block[6] = iD;
     av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
     if (dword_1ED6F6B68)
     {
@@ -384,7 +384,7 @@ void __115__AVSystemRemotePoolOutputDeviceCommunicationChannelManager_openCommun
     }
 
     v10 = [(AVSystemRemotePoolOutputDeviceCommunicationChannelManager *)self parentOutputDevice:v12];
-    [(AVOutputDevice *)v10 communicationChannelManager:self didReceiveData:a3 fromCommunicationChannel:v16[5]];
+    [(AVOutputDevice *)v10 communicationChannelManager:self didReceiveData:data fromCommunicationChannel:v16[5]];
   }
 
   _Block_object_dispose(&v15, 8);
@@ -420,7 +420,7 @@ void __114__AVSystemRemotePoolOutputDeviceCommunicationChannelManager__didReceiv
   }
 }
 
-- (void)_didCloseCommChannelWithUUID:(__CFString *)a3 forDeviceWithID:(__CFString *)a4
+- (void)_didCloseCommChannelWithUUID:(__CFString *)d forDeviceWithID:(__CFString *)iD
 {
   v19 = *MEMORY[0x1E69E9840];
   v13 = 0;
@@ -429,7 +429,7 @@ void __114__AVSystemRemotePoolOutputDeviceCommunicationChannelManager__didReceiv
   v16 = __Block_byref_object_copy__6;
   v17 = __Block_byref_object_dispose__6;
   v18 = 0;
-  if (a3 && [(NSString *)self->_deviceID isEqualToString:a4])
+  if (d && [(NSString *)self->_deviceID isEqualToString:iD])
   {
     ivarAccessQueue = self->_ivarAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -438,7 +438,7 @@ void __114__AVSystemRemotePoolOutputDeviceCommunicationChannelManager__didReceiv
     block[3] = &unk_1E794EA40;
     block[4] = self;
     block[5] = &v13;
-    block[6] = a3;
+    block[6] = d;
     av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
     if (dword_1ED6F6B68)
     {
@@ -489,12 +489,12 @@ void __106__AVSystemRemotePoolOutputDeviceCommunicationChannelManager__didCloseC
   }
 }
 
-- (AVSystemRemotePoolOutputDeviceCommunicationChannelManager)initWithDeviceID:(id)a3
+- (AVSystemRemotePoolOutputDeviceCommunicationChannelManager)initWithDeviceID:(id)d
 {
   v8.receiver = self;
   v8.super_class = AVSystemRemotePoolOutputDeviceCommunicationChannelManager;
   v4 = [(AVSystemRemotePoolOutputDeviceCommunicationChannelManager *)&v8 init];
-  if (v4 && (v5 = [a3 copy], (v4->_deviceID = v5) != 0))
+  if (v4 && (v5 = [d copy], (v4->_deviceID = v5) != 0))
   {
     v4->_outputContext = 0;
     v4->_ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.device-comm-channel-manager");

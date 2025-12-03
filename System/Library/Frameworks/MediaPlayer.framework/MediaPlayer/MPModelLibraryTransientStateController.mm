@@ -1,23 +1,23 @@
 @interface MPModelLibraryTransientStateController
 + (id)sharedDeviceLibraryController;
 - (MPModelLibraryTransientStateController)init;
-- (id)registerTransientAddState:(int64_t)a3 forModelObjects:(id)a4 relatedModelObjects:(id)a5;
-- (id)registerTransientFavoriteState:(int64_t)a3 forModelObjects:(id)a4 relatedModelObjects:(id)a5;
-- (id)registerTransientKeepLocalState:(int64_t)a3 forModelObjects:(id)a4 relatedModelObjects:(id)a5;
-- (id)registerTransientPinnedState:(int64_t)a3 defaultAction:(int64_t)a4 forModelObjects:(id)a5 relatedModelObjects:(id)a6;
-- (int64_t)transientAddStateForModelObject:(id)a3;
-- (int64_t)transientDefaultActionForModelObject:(id)a3;
-- (int64_t)transientFavoriteStateForModelObject:(id)a3;
-- (int64_t)transientKeepLocalStateForModelObject:(id)a3;
-- (int64_t)transientPinnedStateForModelObject:(id)a3;
-- (void)performDeleteEntityChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5;
-- (void)performFavoriteStateChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5;
-- (void)performImportChangeDependentOperationsWithImportedObjects:(id)a3;
-- (void)performKeepLocalChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5;
-- (void)performLibraryImportChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5;
-- (void)performLibraryPinChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5;
-- (void)performPlaylistEditChangeRequest:(id)a3 localPersistenceResponseHandler:(id)a4 completeResponseHandler:(id)a5;
-- (void)unregisterTransientState:(id)a3;
+- (id)registerTransientAddState:(int64_t)state forModelObjects:(id)objects relatedModelObjects:(id)modelObjects;
+- (id)registerTransientFavoriteState:(int64_t)state forModelObjects:(id)objects relatedModelObjects:(id)modelObjects;
+- (id)registerTransientKeepLocalState:(int64_t)state forModelObjects:(id)objects relatedModelObjects:(id)modelObjects;
+- (id)registerTransientPinnedState:(int64_t)state defaultAction:(int64_t)action forModelObjects:(id)objects relatedModelObjects:(id)modelObjects;
+- (int64_t)transientAddStateForModelObject:(id)object;
+- (int64_t)transientDefaultActionForModelObject:(id)object;
+- (int64_t)transientFavoriteStateForModelObject:(id)object;
+- (int64_t)transientKeepLocalStateForModelObject:(id)object;
+- (int64_t)transientPinnedStateForModelObject:(id)object;
+- (void)performDeleteEntityChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion;
+- (void)performFavoriteStateChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion;
+- (void)performImportChangeDependentOperationsWithImportedObjects:(id)objects;
+- (void)performKeepLocalChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion;
+- (void)performLibraryImportChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion;
+- (void)performLibraryPinChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion;
+- (void)performPlaylistEditChangeRequest:(id)request localPersistenceResponseHandler:(id)handler completeResponseHandler:(id)responseHandler;
+- (void)unregisterTransientState:(id)state;
 @end
 
 @implementation MPModelLibraryTransientStateController
@@ -68,16 +68,16 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
   return v2;
 }
 
-- (void)performImportChangeDependentOperationsWithImportedObjects:(id)a3
+- (void)performImportChangeDependentOperationsWithImportedObjects:(id)objects
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v30 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v36 = self;
+  selfCopy = self;
   obj = self->_importChangeDependentOperations;
   v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v41 objects:v52 count:16];
   if (v5)
@@ -85,7 +85,7 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
     v6 = v5;
     v7 = *v42;
     v31 = *v42;
-    v32 = v4;
+    v32 = objectsCopy;
     do
     {
       v8 = 0;
@@ -99,20 +99,20 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
 
         v9 = *(*(&v41 + 1) + 8 * v8);
         v10 = objc_opt_respondsToSelector();
-        if (v4)
+        if (objectsCopy)
         {
           if (v10)
           {
-            v11 = [v9 modelObject];
+            modelObject = [v9 modelObject];
 
-            if (v11)
+            if (modelObject)
             {
               v35 = v8;
               v39 = 0u;
               v40 = 0u;
               v37 = 0u;
               v38 = 0u;
-              v12 = v4;
+              v12 = objectsCopy;
               v13 = [v12 countByEnumeratingWithState:&v37 objects:v51 count:16];
               if (v13)
               {
@@ -128,20 +128,20 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
                     }
 
                     v17 = *(*(&v37 + 1) + 8 * i);
-                    v18 = [v17 identifiers];
-                    v19 = [v9 modelObject];
-                    v20 = [v19 identifiers];
-                    v21 = [v18 intersectsSet:v20];
+                    identifiers = [v17 identifiers];
+                    modelObject2 = [v9 modelObject];
+                    identifiers2 = [modelObject2 identifiers];
+                    v21 = [identifiers intersectsSet:identifiers2];
 
                     if (v21)
                     {
                       v22 = os_log_create("com.apple.amp.mediaplayer", "Default");
                       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                       {
-                        v23 = [v17 identifiers];
-                        v24 = [v23 description];
+                        identifiers3 = [v17 identifiers];
+                        v24 = [identifiers3 description];
                         *buf = 138543874;
-                        v46 = v36;
+                        v46 = selfCopy;
                         v47 = 2114;
                         v48 = v24;
                         v49 = 2114;
@@ -149,8 +149,8 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
                         _os_log_impl(&dword_1A238D000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating model object with library identifiers=%{public}@ for import change dependent operation=%{public}@", buf, 0x20u);
                       }
 
-                      v25 = [v17 identifiers];
-                      [v9 updateModelObjectWithLibraryIdentifiers:v25];
+                      identifiers4 = [v17 identifiers];
+                      [v9 updateModelObjectWithLibraryIdentifiers:identifiers4];
                     }
                   }
 
@@ -161,7 +161,7 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
               }
 
               v7 = v31;
-              v4 = v32;
+              objectsCopy = v32;
               v6 = v33;
               v8 = v35;
             }
@@ -170,14 +170,14 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
 
         if (![v9 isValid])
         {
-          v28 = os_log_create("com.apple.amp.mediaplayer", "Default");
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+          underlyingLibraryOperation = os_log_create("com.apple.amp.mediaplayer", "Default");
+          if (os_log_type_enabled(underlyingLibraryOperation, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v46 = v36;
+            v46 = selfCopy;
             v47 = 2114;
             v48 = v9;
-            _os_log_impl(&dword_1A238D000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing invalid import change dependent operation=%{public}@ from queue", buf, 0x16u);
+            _os_log_impl(&dword_1A238D000, underlyingLibraryOperation, OS_LOG_TYPE_DEFAULT, "%{public}@ Removing invalid import change dependent operation=%{public}@ from queue", buf, 0x16u);
           }
 
           goto LABEL_28;
@@ -189,15 +189,15 @@ void __71__MPModelLibraryTransientStateController_sharedDeviceLibraryController_
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v46 = v36;
+            v46 = selfCopy;
             v47 = 2114;
             v48 = v9;
             _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing import change dependent operation=%{public}@", buf, 0x16u);
           }
 
-          operationQueue = v36->_operationQueue;
-          v28 = [v9 underlyingLibraryOperation];
-          [(NSOperationQueue *)operationQueue addOperation:v28];
+          operationQueue = selfCopy->_operationQueue;
+          underlyingLibraryOperation = [v9 underlyingLibraryOperation];
+          [(NSOperationQueue *)operationQueue addOperation:underlyingLibraryOperation];
 LABEL_28:
 
           goto LABEL_30;
@@ -215,21 +215,21 @@ LABEL_30:
     while (v6);
   }
 
-  importChangeDependentOperations = v36->_importChangeDependentOperations;
-  v36->_importChangeDependentOperations = v30;
+  importChangeDependentOperations = selfCopy->_importChangeDependentOperations;
+  selfCopy->_importChangeDependentOperations = v30;
 }
 
-- (void)performPlaylistEditChangeRequest:(id)a3 localPersistenceResponseHandler:(id)a4 completeResponseHandler:(id)a5
+- (void)performPlaylistEditChangeRequest:(id)request localPersistenceResponseHandler:(id)handler completeResponseHandler:(id)responseHandler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  responseHandlerCopy = responseHandler;
+  if (requestCopy)
   {
-    v11 = [v8 newOperationWithLocalPersistenceResponseHandler:v9 completeResponseHandler:v10];
-    v12 = [v8 playlist];
-    if (v12 && (v13 = -[MPModelLibraryTransientStateController transientAddStateForModelObject:](self, "transientAddStateForModelObject:", v12), [v12 identifiers], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "library"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "persistentID"), v15, v14, !v16) && v13 == 1)
+    v11 = [requestCopy newOperationWithLocalPersistenceResponseHandler:handlerCopy completeResponseHandler:responseHandlerCopy];
+    playlist = [requestCopy playlist];
+    if (playlist && (v13 = -[MPModelLibraryTransientStateController transientAddStateForModelObject:](self, "transientAddStateForModelObject:", playlist), [playlist identifiers], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "library"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "persistentID"), v15, v14, !v16) && v13 == 1)
     {
       if (!self->_importChangeDependentOperations)
       {
@@ -245,11 +245,11 @@ LABEL_30:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543874;
-        v22 = self;
+        selfCopy = self;
         v23 = 2114;
         v24 = v19;
         v25 = 2114;
-        v26 = v12;
+        v26 = playlist;
         _os_log_impl(&dword_1A238D000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Enqueueing import change dependent operation=%{public}@ for playlist=%{public}@", &v21, 0x20u);
       }
 
@@ -264,30 +264,30 @@ LABEL_30:
 
   else
   {
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
-    if (v10)
+    if (responseHandlerCopy)
     {
-      (*(v10 + 2))(v10, 0, 0);
+      (*(responseHandlerCopy + 2))(responseHandlerCopy, 0, 0);
     }
   }
 }
 
-- (void)performLibraryPinChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5
+- (void)performLibraryPinChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  requestCopy = request;
+  objectsCopy = objects;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (requestCopy)
   {
-    v12 = [v8 operation];
-    if ((v12 - 2) >= 2)
+    operation = [requestCopy operation];
+    if ((operation - 2) >= 2)
     {
-      if (v12 == 1)
+      if (operation == 1)
       {
         v13 = 1;
         v14 = 2;
@@ -295,7 +295,7 @@ LABEL_30:
 
       else
       {
-        if (!v12)
+        if (!operation)
         {
           goto LABEL_5;
         }
@@ -305,9 +305,9 @@ LABEL_30:
       }
 
 LABEL_10:
-      v15 = [v8 defaultAction];
-      v16 = v15;
-      if (v15 == 3 || v15 == 2 || v15 == 1)
+      defaultAction = [requestCopy defaultAction];
+      v16 = defaultAction;
+      if (defaultAction == 3 || defaultAction == 2 || defaultAction == 1)
       {
         v17 = 1;
       }
@@ -318,9 +318,9 @@ LABEL_10:
         v16 = 0;
       }
 
-      v18 = [v8 entity];
+      entity = [requestCopy entity];
       v19 = 0;
-      if (v18)
+      if (entity)
       {
         v20 = v13;
       }
@@ -334,8 +334,8 @@ LABEL_10:
       {
         v21 = objc_alloc_init(MPMutableSectionedCollection);
         [(MPMutableSectionedCollection *)v21 appendSection:&stru_1F149ECA8];
-        [(MPMutableSectionedCollection *)v21 appendItem:v18];
-        v19 = [(MPModelLibraryTransientStateController *)self registerTransientPinnedState:v14 defaultAction:v16 forModelObjects:v21 relatedModelObjects:v9];
+        [(MPMutableSectionedCollection *)v21 appendItem:entity];
+        v19 = [(MPModelLibraryTransientStateController *)self registerTransientPinnedState:v14 defaultAction:v16 forModelObjects:v21 relatedModelObjects:objectsCopy];
       }
 
       v24[0] = MEMORY[0x1E69E9820];
@@ -343,10 +343,10 @@ LABEL_10:
       v24[2] = __108__MPModelLibraryTransientStateController_performLibraryPinChangeRequest_withRelatedModelObjects_completion___block_invoke;
       v24[3] = &unk_1E7680198;
       v25 = v19;
-      v26 = self;
+      selfCopy = self;
       v27 = v11;
       v22 = v19;
-      v23 = [v8 newOperationWithResponseHandler:v24];
+      v23 = [requestCopy newOperationWithResponseHandler:v24];
       [(NSOperationQueue *)self->_operationQueue addOperation:v23];
 
       goto LABEL_22;
@@ -358,9 +358,9 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_22:
@@ -390,26 +390,26 @@ void __108__MPModelLibraryTransientStateController_performLibraryPinChangeReques
   }
 }
 
-- (void)performFavoriteStateChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5
+- (void)performFavoriteStateChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 requestAction];
-  v12 = [v11 changeRequestAction];
+  requestCopy = request;
+  objectsCopy = objects;
+  completionCopy = completion;
+  requestAction = [requestCopy requestAction];
+  changeRequestAction = [requestAction changeRequestAction];
 
   v13 = 0;
   v14 = 1;
-  if (v12 <= 1)
+  if (changeRequestAction <= 1)
   {
-    if (!v12)
+    if (!changeRequestAction)
     {
       v14 = 0;
       v13 = 3;
       goto LABEL_10;
     }
 
-    if (v12 != 1)
+    if (changeRequestAction != 1)
     {
       goto LABEL_10;
     }
@@ -417,14 +417,14 @@ void __108__MPModelLibraryTransientStateController_performLibraryPinChangeReques
     goto LABEL_7;
   }
 
-  if (v12 == 2)
+  if (changeRequestAction == 2)
   {
     v14 = 0;
     v13 = 2;
     goto LABEL_10;
   }
 
-  if (v12 == 3)
+  if (changeRequestAction == 3)
   {
 LABEL_7:
     v14 = 0;
@@ -432,16 +432,16 @@ LABEL_7:
   }
 
 LABEL_10:
-  v15 = [v8 modelObject];
-  if (!v8)
+  modelObject = [requestCopy modelObject];
+  if (!requestCopy)
   {
     goto LABEL_18;
   }
 
-  v16 = [v8 requestAction];
-  if (v16)
+  requestAction2 = [requestCopy requestAction];
+  if (requestAction2)
   {
-    v17 = v15 == 0;
+    v17 = modelObject == 0;
   }
 
   else
@@ -458,27 +458,27 @@ LABEL_10:
   {
     v19 = objc_alloc_init(MPMutableSectionedCollection);
     [(MPMutableSectionedCollection *)v19 appendSection:&stru_1F149ECA8];
-    [(MPMutableSectionedCollection *)v19 appendItem:v15];
-    v20 = [(MPModelLibraryTransientStateController *)self registerTransientFavoriteState:v13 forModelObjects:v19 relatedModelObjects:v9];
+    [(MPMutableSectionedCollection *)v19 appendItem:modelObject];
+    v20 = [(MPModelLibraryTransientStateController *)self registerTransientFavoriteState:v13 forModelObjects:v19 relatedModelObjects:objectsCopy];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __111__MPModelLibraryTransientStateController_performFavoriteStateChangeRequest_withRelatedModelObjects_completion___block_invoke;
     v23[3] = &unk_1E7680198;
     v24 = v20;
-    v25 = self;
-    v26 = v10;
+    selfCopy = self;
+    v26 = completionCopy;
     v21 = v20;
-    v22 = [v8 newOperationWithResponseHandler:v23];
+    v22 = [requestCopy newOperationWithResponseHandler:v23];
     [(NSOperationQueue *)self->_operationQueue addOperation:v22];
   }
 
   else
   {
 LABEL_18:
-    if (v10)
+    if (completionCopy)
     {
       v18 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPModelLibraryFavoriteEntityChangeRequestErrorDomain" code:2 debugDescription:@"Invalid request to favorite entity"];
-      (*(v10 + 2))(v10, v18);
+      (*(completionCopy + 2))(completionCopy, v18);
     }
   }
 }
@@ -507,22 +507,22 @@ void __111__MPModelLibraryTransientStateController_performFavoriteStateChangeReq
   }
 }
 
-- (void)performKeepLocalChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5
+- (void)performKeepLocalChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  requestCopy = request;
+  objectsCopy = objects;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (requestCopy)
   {
-    v12 = [v8 enableState];
+    enableState = [requestCopy enableState];
     v13 = 0;
     v14 = 0;
-    if (v12 > 1)
+    if (enableState > 1)
     {
-      if (v12 != 2)
+      if (enableState != 2)
       {
-        if (v12 == 3)
+        if (enableState == 3)
         {
           v14 = 1;
           v13 = 4;
@@ -534,25 +534,25 @@ void __111__MPModelLibraryTransientStateController_performFavoriteStateChangeReq
 
     else
     {
-      if (v12 == -1)
+      if (enableState == -1)
       {
         v14 = 1;
         v13 = 3;
         goto LABEL_13;
       }
 
-      if (v12 != 1)
+      if (enableState != 1)
       {
 LABEL_13:
-        v15 = [v8 modelObject];
-        v16 = v15;
+        modelObject = [requestCopy modelObject];
+        v16 = modelObject;
         v17 = 0;
-        if (v14 && v15)
+        if (v14 && modelObject)
         {
           v18 = objc_alloc_init(MPMutableSectionedCollection);
           [(MPMutableSectionedCollection *)v18 appendSection:&stru_1F149ECA8];
           [(MPMutableSectionedCollection *)v18 appendItem:v16];
-          v17 = [(MPModelLibraryTransientStateController *)self registerTransientKeepLocalState:v13 forModelObjects:v18 relatedModelObjects:v9];
+          v17 = [(MPModelLibraryTransientStateController *)self registerTransientKeepLocalState:v13 forModelObjects:v18 relatedModelObjects:objectsCopy];
         }
 
         v21[0] = MEMORY[0x1E69E9820];
@@ -560,10 +560,10 @@ LABEL_13:
         v21[2] = __107__MPModelLibraryTransientStateController_performKeepLocalChangeRequest_withRelatedModelObjects_completion___block_invoke;
         v21[3] = &unk_1E7680198;
         v22 = v17;
-        v23 = self;
+        selfCopy = self;
         v24 = v11;
         v19 = v17;
-        v20 = [v8 newOperationWithResponseHandler:v21];
+        v20 = [requestCopy newOperationWithResponseHandler:v21];
         [(NSOperationQueue *)self->_operationQueue addOperation:v20];
 
         goto LABEL_17;
@@ -571,13 +571,13 @@ LABEL_13:
     }
 
     v14 = 1;
-    v13 = v12;
+    v13 = enableState;
     goto LABEL_13;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_17:
@@ -607,27 +607,27 @@ void __107__MPModelLibraryTransientStateController_performKeepLocalChangeRequest
   }
 }
 
-- (void)performLibraryImportChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5
+- (void)performLibraryImportChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  requestCopy = request;
+  objectsCopy = objects;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (requestCopy)
   {
-    if ([v8 shouldLibraryAdd])
+    if ([requestCopy shouldLibraryAdd])
     {
-      v12 = [v8 modelObjects];
-      v13 = [(MPModelLibraryTransientStateController *)self registerTransientAddState:1 forModelObjects:v12 relatedModelObjects:v9];
+      modelObjects = [requestCopy modelObjects];
+      v13 = [(MPModelLibraryTransientStateController *)self registerTransientAddState:1 forModelObjects:modelObjects relatedModelObjects:objectsCopy];
 
       v14 = os_log_create("com.apple.amp.mediaplayer", "Default");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v26 = self;
+        selfCopy = self;
         v27 = 2114;
-        v28 = v8;
+        v28 = requestCopy;
         v29 = 2114;
         v30 = v13;
         _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding %{public}@ to library with token=%{public}@", buf, 0x20u);
@@ -643,21 +643,21 @@ void __107__MPModelLibraryTransientStateController_performKeepLocalChangeRequest
     v18 = 3221225472;
     v19 = __111__MPModelLibraryTransientStateController_performLibraryImportChangeRequest_withRelatedModelObjects_completion___block_invoke;
     v20 = &unk_1E767AAB0;
-    v21 = self;
-    v22 = v8;
+    selfCopy2 = self;
+    v22 = requestCopy;
     v15 = v13;
     v23 = v15;
     v24 = v11;
     v16 = [v22 newOperationWithResponseHandler:&v17];
     if (v16)
     {
-      [(NSOperationQueue *)self->_operationQueue addOperation:v16, v17, v18, v19, v20, v21, v22, v23];
+      [(NSOperationQueue *)self->_operationQueue addOperation:v16, v17, v18, v19, v20, selfCopy2, v22, v23];
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -770,21 +770,21 @@ void __111__MPModelLibraryTransientStateController_performLibraryImportChangeReq
   }
 }
 
-- (void)performDeleteEntityChangeRequest:(id)a3 withRelatedModelObjects:(id)a4 completion:(id)a5
+- (void)performDeleteEntityChangeRequest:(id)request withRelatedModelObjects:(id)objects completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  requestCopy = request;
+  objectsCopy = objects;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (requestCopy)
   {
-    v12 = [v8 modelObject];
-    if (v12)
+    modelObject = [requestCopy modelObject];
+    if (modelObject)
     {
       v13 = objc_alloc_init(MPMutableSectionedCollection);
       [(MPMutableSectionedCollection *)v13 appendSection:&stru_1F149ECA8];
-      [(MPMutableSectionedCollection *)v13 appendItem:v12];
-      v14 = [(MPModelLibraryTransientStateController *)self registerTransientAddState:2 forModelObjects:v13 relatedModelObjects:v9];
+      [(MPMutableSectionedCollection *)v13 appendItem:modelObject];
+      v14 = [(MPModelLibraryTransientStateController *)self registerTransientAddState:2 forModelObjects:v13 relatedModelObjects:objectsCopy];
     }
 
     else
@@ -798,18 +798,18 @@ void __111__MPModelLibraryTransientStateController_performLibraryImportChangeReq
     v17[3] = &unk_1E7680198;
     v15 = v14;
     v18 = v15;
-    v19 = self;
+    selfCopy = self;
     v20 = v11;
-    v16 = [v8 newOperationWithResponseHandler:v17];
+    v16 = [requestCopy newOperationWithResponseHandler:v17];
     if (v16)
     {
       [(NSOperationQueue *)self->_operationQueue addOperation:v16];
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -837,11 +837,11 @@ void __110__MPModelLibraryTransientStateController_performDeleteEntityChangeRequ
   }
 }
 
-- (int64_t)transientDefaultActionForModelObject:(id)a3
+- (int64_t)transientDefaultActionForModelObject:(id)object
 {
-  v4 = [a3 identifiers];
-  v5 = v4;
-  if (v4)
+  identifiers = [object identifiers];
+  v5 = identifiers;
+  if (identifiers)
   {
     v12 = 0;
     v13 = &v12;
@@ -853,7 +853,7 @@ void __110__MPModelLibraryTransientStateController_performDeleteEntityChangeRequ
     block[2] = __79__MPModelLibraryTransientStateController_transientDefaultActionForModelObject___block_invoke;
     block[3] = &unk_1E7681330;
     block[4] = self;
-    v10 = v4;
+    v10 = identifiers;
     v11 = &v12;
     dispatch_sync(accessQueue, block);
     v7 = v13[3];
@@ -974,11 +974,11 @@ uint64_t __79__MPModelLibraryTransientStateController_transientDefaultActionForM
   return result;
 }
 
-- (int64_t)transientPinnedStateForModelObject:(id)a3
+- (int64_t)transientPinnedStateForModelObject:(id)object
 {
-  v4 = [a3 identifiers];
-  v5 = v4;
-  if (v4)
+  identifiers = [object identifiers];
+  v5 = identifiers;
+  if (identifiers)
   {
     v12 = 0;
     v13 = &v12;
@@ -990,7 +990,7 @@ uint64_t __79__MPModelLibraryTransientStateController_transientDefaultActionForM
     block[2] = __77__MPModelLibraryTransientStateController_transientPinnedStateForModelObject___block_invoke;
     block[3] = &unk_1E7681330;
     block[4] = self;
-    v10 = v4;
+    v10 = identifiers;
     v11 = &v12;
     dispatch_sync(accessQueue, block);
     v7 = v13[3];
@@ -1111,11 +1111,11 @@ uint64_t __77__MPModelLibraryTransientStateController_transientPinnedStateForMod
   return result;
 }
 
-- (int64_t)transientFavoriteStateForModelObject:(id)a3
+- (int64_t)transientFavoriteStateForModelObject:(id)object
 {
-  v4 = [a3 identifiers];
-  v5 = v4;
-  if (v4)
+  identifiers = [object identifiers];
+  v5 = identifiers;
+  if (identifiers)
   {
     v12 = 0;
     v13 = &v12;
@@ -1127,7 +1127,7 @@ uint64_t __77__MPModelLibraryTransientStateController_transientPinnedStateForMod
     block[2] = __79__MPModelLibraryTransientStateController_transientFavoriteStateForModelObject___block_invoke;
     block[3] = &unk_1E7681330;
     block[4] = self;
-    v10 = v4;
+    v10 = identifiers;
     v11 = &v12;
     dispatch_sync(accessQueue, block);
     v7 = v13[3];
@@ -1248,11 +1248,11 @@ uint64_t __79__MPModelLibraryTransientStateController_transientFavoriteStateForM
   return result;
 }
 
-- (int64_t)transientKeepLocalStateForModelObject:(id)a3
+- (int64_t)transientKeepLocalStateForModelObject:(id)object
 {
-  v4 = [a3 identifiers];
-  v5 = v4;
-  if (v4)
+  identifiers = [object identifiers];
+  v5 = identifiers;
+  if (identifiers)
   {
     v12 = 0;
     v13 = &v12;
@@ -1264,7 +1264,7 @@ uint64_t __79__MPModelLibraryTransientStateController_transientFavoriteStateForM
     block[2] = __80__MPModelLibraryTransientStateController_transientKeepLocalStateForModelObject___block_invoke;
     block[3] = &unk_1E7681330;
     block[4] = self;
-    v10 = v4;
+    v10 = identifiers;
     v11 = &v12;
     dispatch_sync(accessQueue, block);
     v7 = v13[3];
@@ -1385,11 +1385,11 @@ uint64_t __80__MPModelLibraryTransientStateController_transientKeepLocalStateFor
   return result;
 }
 
-- (int64_t)transientAddStateForModelObject:(id)a3
+- (int64_t)transientAddStateForModelObject:(id)object
 {
-  v4 = [a3 identifiers];
-  v5 = v4;
-  if (v4)
+  identifiers = [object identifiers];
+  v5 = identifiers;
+  if (identifiers)
   {
     v12 = 0;
     v13 = &v12;
@@ -1401,7 +1401,7 @@ uint64_t __80__MPModelLibraryTransientStateController_transientKeepLocalStateFor
     block[2] = __74__MPModelLibraryTransientStateController_transientAddStateForModelObject___block_invoke;
     block[3] = &unk_1E7681330;
     block[4] = self;
-    v10 = v4;
+    v10 = identifiers;
     v11 = &v12;
     dispatch_sync(accessQueue, block);
     v7 = v13[3];
@@ -1522,17 +1522,17 @@ uint64_t __74__MPModelLibraryTransientStateController_transientAddStateForModelO
   return result;
 }
 
-- (void)unregisterTransientState:(id)a3
+- (void)unregisterTransientState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MPModelLibraryTransientStateController_unregisterTransientState___block_invoke;
   block[3] = &unk_1E76823C0;
   block[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = stateCopy;
+  v6 = stateCopy;
   dispatch_barrier_sync(accessQueue, block);
   notificationQueue = self->_notificationQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1589,10 +1589,10 @@ void __67__MPModelLibraryTransientStateController_unregisterTransientState___blo
   }
 }
 
-- (id)registerTransientPinnedState:(int64_t)a3 defaultAction:(int64_t)a4 forModelObjects:(id)a5 relatedModelObjects:(id)a6
+- (id)registerTransientPinnedState:(int64_t)state defaultAction:(int64_t)action forModelObjects:(id)objects relatedModelObjects:(id)modelObjects
 {
-  v10 = a5;
-  v11 = a6;
+  objectsCopy = objects;
+  modelObjectsCopy = modelObjects;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1604,14 +1604,14 @@ void __67__MPModelLibraryTransientStateController_unregisterTransientState___blo
   block[1] = 3221225472;
   block[2] = __121__MPModelLibraryTransientStateController_registerTransientPinnedState_defaultAction_forModelObjects_relatedModelObjects___block_invoke;
   block[3] = &unk_1E767AA38;
-  v24 = a3;
-  v25 = a4;
-  v20 = v10;
-  v21 = v11;
-  v22 = self;
+  stateCopy = state;
+  actionCopy = action;
+  v20 = objectsCopy;
+  v21 = modelObjectsCopy;
+  selfCopy = self;
   v23 = &v26;
-  v13 = v11;
-  v14 = v10;
+  v13 = modelObjectsCopy;
+  v14 = objectsCopy;
   dispatch_barrier_sync(accessQueue, block);
   notificationQueue = self->_notificationQueue;
   v18[0] = MEMORY[0x1E69E9820];
@@ -1660,10 +1660,10 @@ void __121__MPModelLibraryTransientStateController_registerTransientPinnedState_
   [v2 postNotificationName:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (id)registerTransientFavoriteState:(int64_t)a3 forModelObjects:(id)a4 relatedModelObjects:(id)a5
+- (id)registerTransientFavoriteState:(int64_t)state forModelObjects:(id)objects relatedModelObjects:(id)modelObjects
 {
-  v8 = a4;
-  v9 = a5;
+  objectsCopy = objects;
+  modelObjectsCopy = modelObjects;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1676,12 +1676,12 @@ void __121__MPModelLibraryTransientStateController_registerTransientPinnedState_
   block[2] = __109__MPModelLibraryTransientStateController_registerTransientFavoriteState_forModelObjects_relatedModelObjects___block_invoke;
   block[3] = &unk_1E767CA58;
   v21 = &v23;
-  v22 = a3;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v11 = v9;
-  v12 = v8;
+  stateCopy = state;
+  v18 = objectsCopy;
+  v19 = modelObjectsCopy;
+  selfCopy = self;
+  v11 = modelObjectsCopy;
+  v12 = objectsCopy;
   dispatch_barrier_sync(accessQueue, block);
   notificationQueue = self->_notificationQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -1729,10 +1729,10 @@ void __109__MPModelLibraryTransientStateController_registerTransientFavoriteStat
   [v2 postNotificationName:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (id)registerTransientKeepLocalState:(int64_t)a3 forModelObjects:(id)a4 relatedModelObjects:(id)a5
+- (id)registerTransientKeepLocalState:(int64_t)state forModelObjects:(id)objects relatedModelObjects:(id)modelObjects
 {
-  v8 = a4;
-  v9 = a5;
+  objectsCopy = objects;
+  modelObjectsCopy = modelObjects;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1745,12 +1745,12 @@ void __109__MPModelLibraryTransientStateController_registerTransientFavoriteStat
   block[2] = __110__MPModelLibraryTransientStateController_registerTransientKeepLocalState_forModelObjects_relatedModelObjects___block_invoke;
   block[3] = &unk_1E767CA58;
   v21 = &v23;
-  v22 = a3;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v11 = v9;
-  v12 = v8;
+  stateCopy = state;
+  v18 = objectsCopy;
+  v19 = modelObjectsCopy;
+  selfCopy = self;
+  v11 = modelObjectsCopy;
+  v12 = objectsCopy;
   dispatch_barrier_sync(accessQueue, block);
   notificationQueue = self->_notificationQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -1798,10 +1798,10 @@ void __110__MPModelLibraryTransientStateController_registerTransientKeepLocalSta
   [v2 postNotificationName:@"MPModelLibraryTransientStateControllerDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (id)registerTransientAddState:(int64_t)a3 forModelObjects:(id)a4 relatedModelObjects:(id)a5
+- (id)registerTransientAddState:(int64_t)state forModelObjects:(id)objects relatedModelObjects:(id)modelObjects
 {
-  v8 = a4;
-  v9 = a5;
+  objectsCopy = objects;
+  modelObjectsCopy = modelObjects;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1814,12 +1814,12 @@ void __110__MPModelLibraryTransientStateController_registerTransientKeepLocalSta
   block[2] = __104__MPModelLibraryTransientStateController_registerTransientAddState_forModelObjects_relatedModelObjects___block_invoke;
   block[3] = &unk_1E767CA58;
   v21 = &v23;
-  v22 = a3;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v11 = v9;
-  v12 = v8;
+  stateCopy = state;
+  v18 = objectsCopy;
+  v19 = modelObjectsCopy;
+  selfCopy = self;
+  v11 = modelObjectsCopy;
+  v12 = objectsCopy;
   dispatch_barrier_sync(accessQueue, block);
   notificationQueue = self->_notificationQueue;
   v16[0] = MEMORY[0x1E69E9820];

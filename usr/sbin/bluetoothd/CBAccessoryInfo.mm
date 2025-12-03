@@ -1,6 +1,6 @@
 @interface CBAccessoryInfo
 - (id)description;
-- (void)_powerSourceUpdateWithPartID:(const char *)a3;
+- (void)_powerSourceUpdateWithPartID:(const char *)d;
 - (void)powerSourceRemove;
 - (void)powerSourceUpdate;
 @end
@@ -10,7 +10,7 @@
 - (id)description
 {
   objc_opt_class();
-  v3 = [(CBDevice *)self->_cbDevice identifier];
+  identifier = [(CBDevice *)self->_cbDevice identifier];
   v4 = NSPrintF_safe();
 
   return v4;
@@ -108,27 +108,27 @@
   self->_powerSourceDetailsCase = 0;
 }
 
-- (void)_powerSourceUpdateWithPartID:(const char *)a3
+- (void)_powerSourceUpdateWithPartID:(const char *)d
 {
   v5 = self->_cbDevice;
-  v6 = [(CBDevice *)v5 identifier];
-  if (v6)
+  identifier = [(CBDevice *)v5 identifier];
+  if (identifier)
   {
-    v7 = [(CBDevice *)v5 proximityPairingProductID];
-    v8 = [(CBDevice *)v5 proximityPairingProductID];
-    v96 = self;
-    if (v8 == 8213)
+    proximityPairingProductID = [(CBDevice *)v5 proximityPairingProductID];
+    proximityPairingProductID2 = [(CBDevice *)v5 proximityPairingProductID];
+    selfCopy = self;
+    if (proximityPairingProductID2 == 8213)
     {
       v9 = 8212;
     }
 
     else
     {
-      v9 = v7;
+      v9 = proximityPairingProductID;
     }
 
-    v10 = [(CBDevice *)v5 proximityPairingProductID];
-    if (v10 == 8216)
+    proximityPairingProductID3 = [(CBDevice *)v5 proximityPairingProductID];
+    if (proximityPairingProductID3 == 8216)
     {
       LODWORD(v11) = 8228;
     }
@@ -138,32 +138,32 @@
       LODWORD(v11) = v9;
     }
 
-    v12 = [(CBDevice *)v5 proximityPairingProductID];
-    if (v12 == 8220)
+    proximityPairingProductID4 = [(CBDevice *)v5 proximityPairingProductID];
+    if (proximityPairingProductID4 == 8220)
     {
       LODWORD(v11) = 8219;
     }
 
-    v13 = [(CBDevice *)v5 proximityPairingProductID];
-    v11 = v13 == 8233 ? 8231 : v11;
-    v14 = v13 == 8233 || v12 == 8220;
-    v15 = v14 || v10 == 8216;
-    if (v15 || v8 == 8213)
+    proximityPairingProductID5 = [(CBDevice *)v5 proximityPairingProductID];
+    v11 = proximityPairingProductID5 == 8233 ? 8231 : v11;
+    v14 = proximityPairingProductID5 == 8233 || proximityPairingProductID4 == 8220;
+    v15 = v14 || proximityPairingProductID3 == 8216;
+    if (v15 || proximityPairingProductID2 == 8213)
     {
-      if (!strcmp(a3, "Left"))
+      if (!strcmp(d, "Left"))
       {
         [(CBDevice *)v5 batteryLevelLeft];
         v18 = v17;
-        v19 = [(CBDevice *)v5 batteryStateLeft];
+        batteryStateLeft = [(CBDevice *)v5 batteryStateLeft];
         v20 = 24;
         v21 = 16;
       }
 
       else
       {
-        if (strcmp(a3, "Right"))
+        if (strcmp(d, "Right"))
         {
-          if (strcmp(a3, "Case"))
+          if (strcmp(d, "Case"))
           {
             if (dword_100B50958 <= 90 && (dword_100B50958 != -1 || _LogCategory_Initialize()))
             {
@@ -175,11 +175,11 @@
 
           [(CBDevice *)v5 batteryLevelCase];
           v18 = v40;
-          v19 = [(CBDevice *)v5 batteryStateCase];
+          batteryStateLeft = [(CBDevice *)v5 batteryStateCase];
           v20 = 56;
           v21 = 48;
           v23 = "Audio Battery Case";
-          if (!v19)
+          if (!batteryStateLeft)
           {
             goto LABEL_61;
           }
@@ -189,13 +189,13 @@
 
         [(CBDevice *)v5 batteryLevelRight];
         v18 = v22;
-        v19 = [(CBDevice *)v5 batteryStateRight];
+        batteryStateLeft = [(CBDevice *)v5 batteryStateRight];
         v20 = 40;
         v21 = 32;
       }
 
       v23 = "Headset";
-      if (!v19)
+      if (!batteryStateLeft)
       {
 LABEL_61:
         if (*(&self->super.isa + v20))
@@ -230,10 +230,10 @@ LABEL_33:
         v26 = [NSString stringWithUTF8String:v23];
         sub_10003F060();
 
-        [(objc_class *)v24 setObject:v6 forKeyedSubscript:@"Accessory Identifier"];
+        [(objc_class *)v24 setObject:identifier forKeyedSubscript:@"Accessory Identifier"];
         [(objc_class *)v24 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Is Present"];
         [(objc_class *)v24 setObject:&off_100B33420 forKeyedSubscript:@"Max Capacity"];
-        v27 = [NSString stringWithUTF8String:a3];
+        v27 = [NSString stringWithUTF8String:d];
         sub_10003F060();
 
         v28 = [NSNumber numberWithUnsignedInt:v11];
@@ -245,23 +245,23 @@ LABEL_33:
         v29 = [NSNumber numberWithUnsignedChar:[(CBDevice *)v5 vendorIDSource]];
         sub_10003F060();
 
-        v30 = [(CBDevice *)v5 btAddressData];
+        btAddressData = [(CBDevice *)v5 btAddressData];
         v31 = CUPrintNSDataAddress();
         [(objc_class *)v24 setObject:v31 forKeyedSubscript:@"Group Identifier"];
       }
 
-      v32 = strcmp(a3, "Case");
+      v32 = strcmp(d, "Case");
       v33 = [(objc_class *)v24 objectForKeyedSubscript:@"Name"];
       if (v32)
       {
-        v34 = [self->_primaryCBDevice name];
+        name = [self->_primaryCBDevice name];
         goto LABEL_80;
       }
 
-      v35 = [(CBDevice *)v5 proximityPairingProductID];
+      proximityPairingProductID6 = [(CBDevice *)v5 proximityPairingProductID];
       if (!(!v14 & v36))
       {
-        switch(v35)
+        switch(proximityPairingProductID6)
         {
           case 800:
             goto LABEL_73;
@@ -284,16 +284,16 @@ LABEL_33:
         }
       }
 
-      switch(v35)
+      switch(proximityPairingProductID6)
       {
         case 0:
-          v34 = 0;
+          name = 0;
 LABEL_80:
-          v94 = v6;
-          if (v34)
+          v94 = identifier;
+          if (name)
           {
             v44 = v33;
-            v45 = v34;
+            v45 = name;
             v46 = v45;
             if (v44 == v45)
             {
@@ -346,7 +346,7 @@ LABEL_88:
             {
 LABEL_100:
               v55 = @"Battery Power";
-              if (v19 == 1)
+              if (batteryStateLeft == 1)
               {
                 v55 = @"AC Power";
               }
@@ -356,7 +356,7 @@ LABEL_100:
               v58 = v56;
               v59 = v57;
               v60 = v59;
-              v91 = v34;
+              v91 = name;
               v92 = v33;
               if (v58 == v59)
               {
@@ -371,7 +371,7 @@ LABEL_100:
                 if (v61)
                 {
 LABEL_109:
-                  if (v19 == 1)
+                  if (batteryStateLeft == 1)
                   {
                     v62 = &__kCFBooleanTrue;
                   }
@@ -417,11 +417,11 @@ LABEL_119:
                       if (v72 == v73)
                       {
 
-                        v75 = v96;
+                        v75 = selfCopy;
                         goto LABEL_129;
                       }
 
-                      v75 = v96;
+                      v75 = selfCopy;
                       if (v73)
                       {
                         v76 = [v72 isEqual:v73];
@@ -468,7 +468,7 @@ LABEL_138:
                               }
                             }
 
-                            v6 = v94;
+                            identifier = v94;
                             goto LABEL_151;
                           }
 
@@ -587,16 +587,16 @@ LABEL_76:
           v39 = @"apple_airpods_case";
           break;
         default:
-          v38 = [CBProductInfo productInfoWithProductID:v35];
-          v43 = [v38 productName];
+          v38 = [CBProductInfo productInfoWithProductID:proximityPairingProductID6];
+          productName = [v38 productName];
 LABEL_79:
-          v34 = v43;
+          name = productName;
 
           goto LABEL_80;
       }
 
 LABEL_78:
-      v43 = [v37 localizedStringForKey:v39 value:&stru_100B0F9E0 table:@"CBLocalizable"];
+      productName = [v37 localizedStringForKey:v39 value:&stru_100B0F9E0 table:@"CBLocalizable"];
       goto LABEL_79;
     }
   }

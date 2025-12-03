@@ -2,8 +2,8 @@
 - (NSString)term;
 - (_TtC26SensitiveContentAnalysisML28SCMLPeopleDetectionAttribute)init;
 - (unsigned)gender;
-- (void)setGender:(unsigned int)a3;
-- (void)setTerm:(id)a3;
+- (void)setGender:(unsigned int)gender;
+- (void)setTerm:(id)term;
 @end
 
 @implementation SCMLPeopleDetectionAttribute
@@ -20,7 +20,7 @@
   return v5;
 }
 
-- (void)setTerm:(id)a3
+- (void)setTerm:(id)term
 {
   v4 = sub_1B8AF0668();
   v6 = v5;
@@ -38,11 +38,11 @@
   return *(self + v3);
 }
 
-- (void)setGender:(unsigned int)a3
+- (void)setGender:(unsigned int)gender
 {
   v5 = OBJC_IVAR____TtC26SensitiveContentAnalysisML28SCMLPeopleDetectionAttribute_gender;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = gender;
 }
 
 - (_TtC26SensitiveContentAnalysisML28SCMLPeopleDetectionAttribute)init

@@ -1,18 +1,18 @@
 @interface _NSNotifyingWrapperMutableSet
-- (_NSNotifyingWrapperMutableSet)initWithContainer:(id)a3 key:(id)a4 mutableSet:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NSNotifyingWrapperMutableSet)initWithContainer:(id)container key:(id)key mutableSet:(id)set;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionWithLocale:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (id)descriptionWithLocale:(id)locale;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
 - (void)dealloc;
-- (void)intersectSet:(id)a3;
-- (void)minusSet:(id)a3;
+- (void)intersectSet:(id)set;
+- (void)minusSet:(id)set;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)setSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)removeObject:(id)object;
+- (void)setSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation _NSNotifyingWrapperMutableSet
@@ -28,22 +28,22 @@
   [(_NSNotifyingWrapperMutableSet *)&v3 dealloc];
 }
 
-- (_NSNotifyingWrapperMutableSet)initWithContainer:(id)a3 key:(id)a4 mutableSet:(id)a5
+- (_NSNotifyingWrapperMutableSet)initWithContainer:(id)container key:(id)key mutableSet:(id)set
 {
   v10.receiver = self;
   v10.super_class = _NSNotifyingWrapperMutableSet;
   v8 = [(_NSNotifyingWrapperMutableSet *)&v10 init];
   if (v8)
   {
-    v8->_container = a3;
-    v8->_key = [a4 copy];
-    v8->_mutableSet = a5;
+    v8->_container = container;
+    v8->_key = [key copy];
+    v8->_mutableSet = set;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
   mutableSet = self->_mutableSet;
@@ -51,7 +51,7 @@
   return [v4 initWithSet:mutableSet copyItems:0];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E695DFA8]);
   mutableSet = self->_mutableSet;
@@ -68,50 +68,50 @@
   return v4;
 }
 
-- (id)descriptionWithLocale:(id)a3
+- (id)descriptionWithLocale:(id)locale
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(NSMutableSet *)self->_mutableSet descriptionWithLocale:a3];
+  v6 = [(NSMutableSet *)self->_mutableSet descriptionWithLocale:locale];
   objc_autoreleasePoolPop(v5);
 
   return v6;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v5 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v5 count:1];
+  objectCopy = object;
+  v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&objectCopy count:1];
   [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:1 usingObjects:v4];
-  [(NSMutableSet *)self->_mutableSet addObject:v5];
+  [(NSMutableSet *)self->_mutableSet addObject:objectCopy];
   [(NSManagedObject *)self->_container didChangeValueForKey:self->_key withSetMutation:1 usingObjects:v4];
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:a3];
+  v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:array];
   [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:1 usingObjects:v5];
-  [(NSMutableSet *)self->_mutableSet addObjectsFromArray:a3];
+  [(NSMutableSet *)self->_mutableSet addObjectsFromArray:array];
   [(NSManagedObject *)self->_container didChangeValueForKey:self->_key withSetMutation:1 usingObjects:v5];
 }
 
-- (void)intersectSet:(id)a3
+- (void)intersectSet:(id)set
 {
-  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:3 usingObjects:a3];
-  [(NSMutableSet *)self->_mutableSet intersectSet:a3];
+  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:3 usingObjects:set];
+  [(NSMutableSet *)self->_mutableSet intersectSet:set];
   container = self->_container;
   key = self->_key;
 
-  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:3 usingObjects:a3];
+  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:3 usingObjects:set];
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
-  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:2 usingObjects:a3];
-  [(NSMutableSet *)self->_mutableSet minusSet:a3];
+  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:2 usingObjects:set];
+  [(NSMutableSet *)self->_mutableSet minusSet:set];
   container = self->_container;
   key = self->_key;
 
-  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:2 usingObjects:a3];
+  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:2 usingObjects:set];
 }
 
 - (void)removeAllObjects
@@ -125,33 +125,33 @@
   [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:3 usingObjects:v3];
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v5 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v5 count:1];
+  objectCopy = object;
+  v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&objectCopy count:1];
   [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:2 usingObjects:v4];
-  [(NSMutableSet *)self->_mutableSet removeObject:v5];
+  [(NSMutableSet *)self->_mutableSet removeObject:objectCopy];
   [(NSManagedObject *)self->_container didChangeValueForKey:self->_key withSetMutation:2 usingObjects:v4];
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
-  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:4 usingObjects:a3];
-  [(NSMutableSet *)self->_mutableSet setSet:a3];
+  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:4 usingObjects:set];
+  [(NSMutableSet *)self->_mutableSet setSet:set];
   container = self->_container;
   key = self->_key;
 
-  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:4 usingObjects:a3];
+  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:4 usingObjects:set];
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
-  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:1 usingObjects:a3];
-  [(NSMutableSet *)self->_mutableSet unionSet:a3];
+  [(NSManagedObject *)self->_container willChangeValueForKey:self->_key withSetMutation:1 usingObjects:set];
+  [(NSMutableSet *)self->_mutableSet unionSet:set];
   container = self->_container;
   key = self->_key;
 
-  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:1 usingObjects:a3];
+  [(NSManagedObject *)container didChangeValueForKey:key withSetMutation:1 usingObjects:set];
 }
 
 @end

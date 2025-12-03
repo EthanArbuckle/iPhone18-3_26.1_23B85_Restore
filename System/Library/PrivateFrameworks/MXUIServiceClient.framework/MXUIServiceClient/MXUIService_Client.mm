@@ -1,11 +1,11 @@
 @interface MXUIService_Client
 + (id)sharedInstance;
-- (BOOL)dismissBannerWithUUID:(id)a3 withResponse:(id)a4;
+- (BOOL)dismissBannerWithUUID:(id)d withResponse:(id)response;
 - (BOOL)recreateConnectionIfNecessary;
 - (MXUIService_Client)init;
-- (id)promptForDisconnectedBanner:(id)a3 withIconType:(int)a4 callbackHandler:(id)a5;
-- (id)promptForUndoBanner:(id)a3 withIconType:(int)a4 callbackHandler:(id)a5;
-- (void)showInputDeviceReplacementPillForConnectedDevice:(id)a3 replacedDevice:(id)a4;
+- (id)promptForDisconnectedBanner:(id)banner withIconType:(int)type callbackHandler:(id)handler;
+- (id)promptForUndoBanner:(id)banner withIconType:(int)type callbackHandler:(id)handler;
+- (void)showInputDeviceReplacementPillForConnectedDevice:(id)device replacedDevice:(id)replacedDevice;
 @end
 
 @implementation MXUIService_Client
@@ -77,7 +77,7 @@ LABEL_9:
   return 0;
 }
 
-- (id)promptForUndoBanner:(id)a3 withIconType:(int)a4 callbackHandler:(id)a5
+- (id)promptForUndoBanner:(id)banner withIconType:(int)type callbackHandler:(id)handler
 {
   OUTLINED_FUNCTION_7();
   v32 = *MEMORY[0x277D85DE8];
@@ -87,11 +87,11 @@ LABEL_9:
   if ([v10 remoteTargetWithLaunchingAssertionAttributes:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v31, 1)}] && (v11 = objc_alloc_init(MEMORY[0x277CBEB38])) != 0 && (v12 = v11, (v13 = objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v5)) != 0))
   {
     v14 = v13;
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = v15;
-    if (v15)
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v16 = uUID;
+    if (uUID)
     {
-      [v12 setValue:objc_msgSend(v15 forKey:{"UUIDString"), @"UUID"}];
+      [v12 setValue:objc_msgSend(uUID forKey:{"UUIDString"), @"UUID"}];
       [v12 setValue:v6 forKey:@"HeadsetString"];
       [v12 setValue:v14 forKey:@"ConnectionType"];
       OUTLINED_FUNCTION_0();
@@ -120,7 +120,7 @@ LABEL_9:
   return v16;
 }
 
-- (id)promptForDisconnectedBanner:(id)a3 withIconType:(int)a4 callbackHandler:(id)a5
+- (id)promptForDisconnectedBanner:(id)banner withIconType:(int)type callbackHandler:(id)handler
 {
   OUTLINED_FUNCTION_7();
   v32 = *MEMORY[0x277D85DE8];
@@ -130,11 +130,11 @@ LABEL_9:
   if ([v10 remoteTargetWithLaunchingAssertionAttributes:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v31, 1)}] && (v11 = objc_alloc_init(MEMORY[0x277CBEB38])) != 0 && (v12 = v11, (v13 = objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", v5)) != 0))
   {
     v14 = v13;
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = v15;
-    if (v15)
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v16 = uUID;
+    if (uUID)
     {
-      [v12 setValue:objc_msgSend(v15 forKey:{"UUIDString"), @"UUID"}];
+      [v12 setValue:objc_msgSend(uUID forKey:{"UUIDString"), @"UUID"}];
       [v12 setValue:v6 forKey:@"HeadsetString"];
       [v12 setValue:v14 forKey:@"ConnectionType"];
       OUTLINED_FUNCTION_0();
@@ -163,10 +163,10 @@ LABEL_9:
   return v16;
 }
 
-- (BOOL)dismissBannerWithUUID:(id)a3 withResponse:(id)a4
+- (BOOL)dismissBannerWithUUID:(id)d withResponse:(id)response
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
     [(MXUIService_Client *)self recreateConnectionIfNecessary];
     connection = self->_connection;
@@ -174,7 +174,7 @@ LABEL_9:
     v8 = -[BSServiceConnectionClient remoteTargetWithLaunchingAssertionAttributes:](connection, "remoteTargetWithLaunchingAssertionAttributes:", [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1]);
     if (v8)
     {
-      [v8 dismissBannerWithUUID:a3 withResponse:a4];
+      [v8 dismissBannerWithUUID:d withResponse:response];
       LOBYTE(v8) = 1;
     }
   }
@@ -188,10 +188,10 @@ LABEL_9:
   return v8;
 }
 
-- (void)showInputDeviceReplacementPillForConnectedDevice:(id)a3 replacedDevice:(id)a4
+- (void)showInputDeviceReplacementPillForConnectedDevice:(id)device replacedDevice:(id)replacedDevice
 {
   v13[22] = *MEMORY[0x277D85DE8];
-  if (a3 && a4 && ([a3 isEqualToString:a4] & 1) == 0)
+  if (device && replacedDevice && ([device isEqualToString:replacedDevice] & 1) == 0)
   {
     if (dword_27F8F0490)
     {
@@ -206,7 +206,7 @@ LABEL_9:
     v9 = -[BSServiceConnectionClient remoteTargetWithLaunchingAssertionAttributes:](connection, "remoteTargetWithLaunchingAssertionAttributes:", [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1]);
     if (v9)
     {
-      [v9 showInputDeviceReplacementPillForConnectedDevice:a3 replacedDevice:a4];
+      [v9 showInputDeviceReplacementPillForConnectedDevice:device replacedDevice:replacedDevice];
     }
   }
 

@@ -2,7 +2,7 @@
 + (Class)layerClass;
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation PillButton
@@ -16,23 +16,23 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7E74A04();
 }
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7FBD414();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D7FBD528(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1D7FBD528(color);
 }
 
 @end

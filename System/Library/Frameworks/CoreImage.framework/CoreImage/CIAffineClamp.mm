@@ -89,8 +89,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v4 = [(NSValue *)inputTransform objCType];
-  if (strcmp(v4, "{CGAffineTransform=dddddd}") && strcmp(v4, "{?=dddddd}"))
+  objCType = [(NSValue *)inputTransform objCType];
+  if (strcmp(objCType, "{CGAffineTransform=dddddd}") && strcmp(objCType, "{?=dddddd}"))
   {
 LABEL_20:
     v17 = ci_logger_filter();

@@ -31,7 +31,7 @@
   v9[1] = 3221225472;
   v9[2] = __52__MTWidgetUtilities_timeZonesForCurrentClockWidgets__block_invoke;
   v9[3] = &unk_1E7B0C7E8;
-  v11 = a1;
+  selfCopy = self;
   v7 = v6;
   v10 = v7;
   [v5 allConfiguredWidgetsWithCompletion:v9];
@@ -217,7 +217,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = a1;
+    *&buf[4] = self;
     *&buf[12] = 2112;
     *&buf[14] = @"com.apple.mobiletimer.WorldClockWidget";
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ reloading widget timeline for %{bundleIdentifier}@", buf, 0x16u);

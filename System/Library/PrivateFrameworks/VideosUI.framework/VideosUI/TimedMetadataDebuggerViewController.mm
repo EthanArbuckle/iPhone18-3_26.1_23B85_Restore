@@ -1,31 +1,31 @@
 @interface TimedMetadataDebuggerViewController
-- (_TtC8VideosUI35TimedMetadataDebuggerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI35TimedMetadataDebuggerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)observeCurrentVendor;
 - (void)stopObserving;
 @end
 
 @implementation TimedMetadataDebuggerViewController
 
-- (_TtC8VideosUI35TimedMetadataDebuggerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI35TimedMetadataDebuggerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E3B9CAA8();
 }
 
 - (void)observeCurrentVendor
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B9CB00();
 }
 
 - (void)stopObserving
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3B9CB4C();
 }
 

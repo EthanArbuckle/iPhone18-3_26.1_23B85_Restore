@@ -1,77 +1,77 @@
 @interface ODXLayoutObjectList
-+ (void)readChildNode:(_xmlNode *)a3 toList:(id)a4 state:(id)a5;
-+ (void)readNode:(_xmlNode *)a3 toList:(id)a4 state:(id)a5;
++ (void)readChildNode:(_xmlNode *)node toList:(id)list state:(id)state;
++ (void)readNode:(_xmlNode *)node toList:(id)list state:(id)state;
 @end
 
 @implementation ODXLayoutObjectList
 
-+ (void)readNode:(_xmlNode *)a3 toList:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node toList:(id)list state:(id)state
 {
-  v10 = a4;
-  v8 = a5;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  listCopy = list;
+  stateCopy = state;
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE)
     {
-      [a1 readChildNode:i toList:v10 state:v8];
+      [self readChildNode:i toList:listCopy state:stateCopy];
     }
   }
 }
 
-+ (void)readChildNode:(_xmlNode *)a3 toList:(id)a4 state:(id)a5
++ (void)readChildNode:(_xmlNode *)node toList:(id)list state:(id)state
 {
-  v19 = a4;
-  v7 = a5;
-  v8 = [v7 ODXDiagramNamespace];
-  HasName = CXNodeHasName(a3, v8, "alg");
+  listCopy = list;
+  stateCopy = state;
+  oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+  HasName = CXNodeHasName(node, oDXDiagramNamespace, "alg");
 
   if (HasName)
   {
     v10 = objc_alloc_init(ODDAlgorithm);
-    [v19 addChild:v10];
-    [ODXAlgorithm readNode:a3 toAlgorithm:v10];
+    [listCopy addChild:v10];
+    [ODXAlgorithm readNode:node toAlgorithm:v10];
   }
 
   else
   {
-    v11 = [v7 ODXDiagramNamespace];
-    v12 = CXNodeHasName(a3, v11, "shape");
+    oDXDiagramNamespace2 = [stateCopy ODXDiagramNamespace];
+    v12 = CXNodeHasName(node, oDXDiagramNamespace2, "shape");
 
     if (v12)
     {
       v10 = objc_alloc_init(ODDShape);
-      [v19 addChild:v10];
-      [ODXShape readNode:a3 toShape:v10 state:v7];
+      [listCopy addChild:v10];
+      [ODXShape readNode:node toShape:v10 state:stateCopy];
     }
 
     else
     {
-      v13 = [v7 ODXDiagramNamespace];
-      v14 = CXNodeHasName(a3, v13, "forEach");
+      oDXDiagramNamespace3 = [stateCopy ODXDiagramNamespace];
+      v14 = CXNodeHasName(node, oDXDiagramNamespace3, "forEach");
 
       if (v14)
       {
         v10 = objc_alloc_init(ODDForEach);
-        [v19 addChild:v10];
-        [ODXForEach readNode:a3 toForEach:v10 state:v7];
+        [listCopy addChild:v10];
+        [ODXForEach readNode:node toForEach:v10 state:stateCopy];
       }
 
       else
       {
-        v15 = [v7 ODXDiagramNamespace];
-        v16 = CXNodeHasName(a3, v15, "layoutNode");
+        oDXDiagramNamespace4 = [stateCopy ODXDiagramNamespace];
+        v16 = CXNodeHasName(node, oDXDiagramNamespace4, "layoutNode");
 
         if (v16)
         {
           v10 = objc_alloc_init(ODDLayoutNode);
-          [v19 addChild:v10];
-          [ODXLayoutNode readNode:a3 toLayoutNode:v10 state:v7];
+          [listCopy addChild:v10];
+          [ODXLayoutNode readNode:node toLayoutNode:v10 state:stateCopy];
         }
 
         else
         {
-          v17 = [v7 ODXDiagramNamespace];
-          v18 = CXNodeHasName(a3, v17, "choose");
+          oDXDiagramNamespace5 = [stateCopy ODXDiagramNamespace];
+          v18 = CXNodeHasName(node, oDXDiagramNamespace5, "choose");
 
           if (!v18)
           {
@@ -79,8 +79,8 @@
           }
 
           v10 = objc_alloc_init(ODDChoose);
-          [v19 addChild:v10];
-          [ODXChoose readNode:a3 toChoose:v10 state:v7];
+          [listCopy addChild:v10];
+          [ODXChoose readNode:node toChoose:v10 state:stateCopy];
         }
       }
     }

@@ -1,20 +1,20 @@
 @interface MCActionGroup
 + (id)actionGroup;
 - (MCActionGroup)init;
-- (MCActionGroup)initWithImprint:(id)a3;
+- (MCActionGroup)initWithImprint:(id)imprint;
 - (NSArray)actions;
-- (id)actionAtIndex:(unint64_t)a3;
+- (id)actionAtIndex:(unint64_t)index;
 - (id)description;
 - (id)imprint;
 - (unint64_t)countOfActions;
-- (void)_copySelfToSnapshot:(id)a3;
-- (void)addAction:(id)a3;
-- (void)addActions:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
+- (void)addAction:(id)action;
+- (void)addActions:(id)actions;
 - (void)demolish;
-- (void)insertAction:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertActions:(id)a3 atIndex:(unint64_t)a4;
-- (void)moveActionsAtIndices:(id)a3 toIndex:(unint64_t)a4;
-- (void)removeActionsAtIndices:(id)a3;
+- (void)insertAction:(id)action atIndex:(unint64_t)index;
+- (void)insertActions:(id)actions atIndex:(unint64_t)index;
+- (void)moveActionsAtIndices:(id)indices toIndex:(unint64_t)index;
+- (void)removeActionsAtIndices:(id)indices;
 - (void)removeAllActions;
 @end
 
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (MCActionGroup)initWithImprint:(id)a3
+- (MCActionGroup)initWithImprint:(id)imprint
 {
   v16.receiver = self;
   v16.super_class = MCActionGroup;
   v4 = [(MCAction *)&v16 initWithImprint:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"actions"];
+    v5 = [imprint objectForKey:@"actions"];
     if (v5)
     {
       v6 = v5;
@@ -128,16 +128,16 @@
 {
   v15.receiver = self;
   v15.super_class = MCActionGroup;
-  v3 = [(MCAction *)&v15 imprint];
-  v4 = [(MCActionGroup *)self actions];
-  if ([(NSArray *)v4 count])
+  imprint = [(MCAction *)&v15 imprint];
+  actions = [(MCActionGroup *)self actions];
+  if ([(NSArray *)actions count])
   {
     v5 = +[NSMutableArray array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    v6 = [(NSArray *)actions countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -149,7 +149,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(actions);
           }
 
           [v5 addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * v9), "imprint")}];
@@ -157,23 +157,23 @@
         }
 
         while (v7 != v9);
-        v7 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+        v7 = [(NSArray *)actions countByEnumeratingWithState:&v11 objects:v16 count:16];
       }
 
       while (v7);
     }
 
-    [v3 setObject:v5 forKey:@"actions"];
+    [imprint setObject:v5 forKey:@"actions"];
   }
 
-  return v3;
+  return imprint;
 }
 
 - (NSArray)actions
 {
-  v3 = [(MCAction *)self isSnapshot];
+  isSnapshot = [(MCAction *)self isSnapshot];
   actions = self->_actions;
-  if ((v3 & 1) == 0)
+  if ((isSnapshot & 1) == 0)
   {
     objc_sync_enter(self->_actions);
     v5 = [NSArray arrayWithArray:self->_actions];
@@ -186,9 +186,9 @@
 
 - (unint64_t)countOfActions
 {
-  v3 = [(MCAction *)self isSnapshot];
+  isSnapshot = [(MCAction *)self isSnapshot];
   actions = self->_actions;
-  if (v3)
+  if (isSnapshot)
   {
     v5 = self->_actions;
 
@@ -204,62 +204,62 @@
   }
 }
 
-- (id)actionAtIndex:(unint64_t)a3
+- (id)actionAtIndex:(unint64_t)index
 {
-  v5 = [(MCAction *)self isSnapshot];
+  isSnapshot = [(MCAction *)self isSnapshot];
   actions = self->_actions;
-  if (v5)
+  if (isSnapshot)
   {
     v7 = self->_actions;
 
-    return [(NSMutableArray *)v7 objectAtIndex:a3];
+    return [(NSMutableArray *)v7 objectAtIndex:index];
   }
 
   else
   {
     objc_sync_enter(self->_actions);
-    v9 = [(NSMutableArray *)self->_actions objectAtIndex:a3];
+    v9 = [(NSMutableArray *)self->_actions objectAtIndex:index];
     objc_sync_exit(actions);
     return v9;
   }
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = [NSArray arrayWithObject:a3];
-  v5 = [(MCActionGroup *)self countOfActions];
+  v4 = [NSArray arrayWithObject:action];
+  countOfActions = [(MCActionGroup *)self countOfActions];
 
-  [(MCActionGroup *)self insertActions:v4 atIndex:v5];
+  [(MCActionGroup *)self insertActions:v4 atIndex:countOfActions];
 }
 
-- (void)addActions:(id)a3
+- (void)addActions:(id)actions
 {
-  v5 = [(MCActionGroup *)self countOfActions];
+  countOfActions = [(MCActionGroup *)self countOfActions];
 
-  [(MCActionGroup *)self insertActions:a3 atIndex:v5];
+  [(MCActionGroup *)self insertActions:actions atIndex:countOfActions];
 }
 
-- (void)insertAction:(id)a3 atIndex:(unint64_t)a4
+- (void)insertAction:(id)action atIndex:(unint64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:action];
 
-  [(MCActionGroup *)self insertActions:v6 atIndex:a4];
+  [(MCActionGroup *)self insertActions:v6 atIndex:index];
 }
 
-- (void)insertActions:(id)a3 atIndex:(unint64_t)a4
+- (void)insertActions:(id)actions atIndex:(unint64_t)index
 {
   actions = self->_actions;
   objc_sync_enter(actions);
-  -[NSMutableArray insertObjects:atIndexes:](self->_actions, "insertObjects:atIndexes:", a3, +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", a4, [a3 count]));
+  -[NSMutableArray insertObjects:atIndexes:](self->_actions, "insertObjects:atIndexes:", actions, +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", index, [actions count]));
 
   objc_sync_exit(actions);
 }
 
-- (void)removeActionsAtIndices:(id)a3
+- (void)removeActionsAtIndices:(id)indices
 {
   actions = self->_actions;
   objc_sync_enter(actions);
-  [(NSMutableArray *)self->_actions removeObjectsAtIndexes:a3];
+  [(NSMutableArray *)self->_actions removeObjectsAtIndexes:indices];
 
   objc_sync_exit(actions);
 }
@@ -273,18 +273,18 @@
   objc_sync_exit(actions);
 }
 
-- (void)moveActionsAtIndices:(id)a3 toIndex:(unint64_t)a4
+- (void)moveActionsAtIndices:(id)indices toIndex:(unint64_t)index
 {
   actions = self->_actions;
   objc_sync_enter(actions);
-  v8 = [(NSMutableArray *)self->_actions objectsAtIndexes:a3];
-  [(NSMutableArray *)self->_actions removeObjectsAtIndexes:a3];
-  -[NSMutableArray insertObjects:atIndexes:](self->_actions, "insertObjects:atIndexes:", v8, +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", a4, [a3 count]));
+  v8 = [(NSMutableArray *)self->_actions objectsAtIndexes:indices];
+  [(NSMutableArray *)self->_actions removeObjectsAtIndexes:indices];
+  -[NSMutableArray insertObjects:atIndexes:](self->_actions, "insertObjects:atIndexes:", v8, +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", index, [indices count]));
 
   objc_sync_exit(actions);
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   v14.receiver = self;
   v14.super_class = MCActionGroup;
@@ -293,8 +293,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(MCActionGroup *)self actions];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  actions = [(MCActionGroup *)self actions];
+  v6 = [(NSArray *)actions countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -306,15 +306,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
-        [*(a3 + 3) addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v9), "snapshot")}];
+        [*(snapshot + 3) addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v9), "snapshot")}];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [(NSArray *)actions countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);

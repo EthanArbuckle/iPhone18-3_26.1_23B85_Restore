@@ -1,47 +1,47 @@
 @interface MSMessageExtensionUtilities
-+ (id)isValidCustomAcknowledgementPayload:(id)a3;
-+ (id)isValidMediaPayload:(id)a3;
-+ (id)isValidMessagePayload:(id)a3;
-+ (id)isValidSticker:(id)a3;
++ (id)isValidCustomAcknowledgementPayload:(id)payload;
++ (id)isValidMediaPayload:(id)payload;
++ (id)isValidMessagePayload:(id)payload;
++ (id)isValidSticker:(id)sticker;
 @end
 
 @implementation MSMessageExtensionUtilities
 
-+ (id)isValidSticker:(id)a3
++ (id)isValidSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [v4 mediaURL];
-  if (v5 || ([v4 stickerRepresentations], v5 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v5, "count")))
+  stickerCopy = sticker;
+  mediaURL = [stickerCopy mediaURL];
+  if (mediaURL || ([stickerCopy stickerRepresentations], mediaURL = objc_claimAutoreleasedReturnValue(), !objc_msgSend(mediaURL, "count")))
   {
 
     goto LABEL_3;
   }
 
-  v25 = [v4 stickerStoreIdentifier];
+  stickerStoreIdentifier = [stickerCopy stickerStoreIdentifier];
 
-  if (!v25)
+  if (!stickerStoreIdentifier)
   {
 LABEL_3:
-    v6 = [v4 mediaURL];
-    if (v6)
+    mediaURL2 = [stickerCopy mediaURL];
+    if (mediaURL2)
     {
-      v7 = v6;
-      v8 = [v4 mediaURL];
-      if ([v8 isFileURL])
+      v7 = mediaURL2;
+      mediaURL3 = [stickerCopy mediaURL];
+      if ([mediaURL3 isFileURL])
       {
         v9 = +[NSFileManager defaultManager];
-        v10 = [v4 mediaURL];
-        v11 = [v10 path];
-        v12 = [v9 fileExistsAtPath:v11];
+        mediaURL4 = [stickerCopy mediaURL];
+        path = [mediaURL4 path];
+        v12 = [v9 fileExistsAtPath:path];
 
         if (v12)
         {
-          v13 = [v4 mediaURL];
-          v14 = [v13 path];
+          mediaURL5 = [stickerCopy mediaURL];
+          path2 = [mediaURL5 path];
 
           v15 = +[NSFileManager defaultManager];
           v32 = 0;
-          v16 = [v15 attributesOfItemAtPath:v14 error:&v32];
+          v16 = [v15 attributesOfItemAtPath:path2 error:&v32];
           v17 = v32;
 
           if (v17 || !v16)
@@ -53,12 +53,12 @@ LABEL_3:
           {
             v18 = [v16 objectForKey:NSFileSize];
             v19 = v18;
-            if (v18 && (v20 = [v18 unsignedIntegerValue], v20 <= objc_msgSend(a1, "_maxStickerFileSize")) && (v21 = objc_msgSend(v19, "unsignedIntegerValue"), v21 > objc_msgSend(a1, "_minStickerFileSize")))
+            if (v18 && (v20 = [v18 unsignedIntegerValue], v20 <= objc_msgSend(self, "_maxStickerFileSize")) && (v21 = objc_msgSend(v19, "unsignedIntegerValue"), v21 > objc_msgSend(self, "_minStickerFileSize")))
             {
-              v22 = [v14 pathExtension];
-              if (v22)
+              pathExtension = [path2 pathExtension];
+              if (pathExtension)
               {
-                PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, v22, 0);
+                PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, 0);
                 if (UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeGIF) || UTTypeConformsTo(PreferredIdentifierForTag, kUTTypePNG) || UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeJPEG) || UTTypeConformsTo(PreferredIdentifierForTag, kIMUTTypeHEIFStandard))
                 {
                   v24 = 0;
@@ -95,13 +95,13 @@ LABEL_3:
     goto LABEL_36;
   }
 
-  v26 = [v4 stickerRepresentations];
-  v14 = [v26 firstObject];
+  stickerRepresentations = [stickerCopy stickerRepresentations];
+  path2 = [stickerRepresentations firstObject];
 
-  v27 = [v14 data];
-  v28 = [v27 length];
+  data = [path2 data];
+  v28 = [data length];
 
-  if (v28 > [a1 _maxStickerFileSize] || v28 <= objc_msgSend(a1, "_minStickerFileSize"))
+  if (v28 > [self _maxStickerFileSize] || v28 <= objc_msgSend(self, "_minStickerFileSize"))
   {
     v30 = 6;
 LABEL_30:
@@ -109,8 +109,8 @@ LABEL_30:
     goto LABEL_35;
   }
 
-  v29 = [v14 type];
-  if (!UTTypeConformsTo(v29, kUTTypeGIF) && !UTTypeConformsTo(v29, kUTTypePNG) && !UTTypeConformsTo(v29, kUTTypeJPEG) && !UTTypeConformsTo(v29, kIMUTTypeHEIFStandard))
+  type = [path2 type];
+  if (!UTTypeConformsTo(type, kUTTypeGIF) && !UTTypeConformsTo(type, kUTTypePNG) && !UTTypeConformsTo(type, kUTTypeJPEG) && !UTTypeConformsTo(type, kIMUTTypeHEIFStandard))
   {
     v30 = 7;
     goto LABEL_30;
@@ -124,20 +124,20 @@ LABEL_36:
   return v24;
 }
 
-+ (id)isValidMediaPayload:(id)a3
++ (id)isValidMediaPayload:(id)payload
 {
-  v3 = [a3 mediaURL];
-  v4 = v3;
-  if (!v3)
+  mediaURL = [payload mediaURL];
+  v4 = mediaURL;
+  if (!mediaURL)
   {
     goto LABEL_4;
   }
 
-  if ([v3 isFileURL])
+  if ([mediaURL isFileURL])
   {
     v5 = +[NSFileManager defaultManager];
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6];
+    path = [v4 path];
+    v7 = [v5 fileExistsAtPath:path];
 
     if (v7)
     {
@@ -160,14 +160,14 @@ LABEL_8:
   return v8;
 }
 
-+ (id)isValidMessagePayload:(id)a3
++ (id)isValidMessagePayload:(id)payload
 {
-  v4 = [a3 URL];
-  v5 = [v4 absoluteString];
-  v6 = [v5 length];
-  v7 = [a1 _maxAppMessageURLength];
+  v4 = [payload URL];
+  absoluteString = [v4 absoluteString];
+  v6 = [absoluteString length];
+  _maxAppMessageURLength = [self _maxAppMessageURLength];
 
-  if (v6 <= v7)
+  if (v6 <= _maxAppMessageURLength)
   {
     v8 = 0;
   }
@@ -180,14 +180,14 @@ LABEL_8:
   return v8;
 }
 
-+ (id)isValidCustomAcknowledgementPayload:(id)a3
++ (id)isValidCustomAcknowledgementPayload:(id)payload
 {
-  v4 = [a3 URL];
-  v5 = [v4 absoluteString];
-  v6 = [v5 length];
-  v7 = [a1 _maxAppMessageURLength];
+  v4 = [payload URL];
+  absoluteString = [v4 absoluteString];
+  v6 = [absoluteString length];
+  _maxAppMessageURLength = [self _maxAppMessageURLength];
 
-  if (v6 <= v7)
+  if (v6 <= _maxAppMessageURLength)
   {
     v8 = 0;
   }

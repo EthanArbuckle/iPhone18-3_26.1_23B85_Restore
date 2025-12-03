@@ -1,15 +1,15 @@
 @interface WaitOnHoldViewComposer
-- (id)composeWithCall:(id)a3 waitOnHoldService:(id)a4;
+- (id)composeWithCall:(id)call waitOnHoldService:(id)service;
 @end
 
 @implementation WaitOnHoldViewComposer
 
-- (id)composeWithCall:(id)a3 waitOnHoldService:(id)a4
+- (id)composeWithCall:(id)call waitOnHoldService:(id)service
 {
-  v6 = a3;
+  callCopy = call;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = WaitOnHoldViewComposer.compose(with:waitOnHoldServiceProvider:)(v6, a4);
+  selfCopy = self;
+  v8 = WaitOnHoldViewComposer.compose(with:waitOnHoldServiceProvider:)(callCopy, service);
 
   swift_unknownObjectRelease();
 

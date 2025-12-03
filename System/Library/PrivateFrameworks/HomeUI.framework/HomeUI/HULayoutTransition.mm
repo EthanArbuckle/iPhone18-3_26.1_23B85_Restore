@@ -1,32 +1,32 @@
 @interface HULayoutTransition
 - (HULayoutTransition)init;
-- (HULayoutTransition)initWithView:(id)a3 setupBlock:(id)a4 transitionBlock:(id)a5 completionBlock:(id)a6;
+- (HULayoutTransition)initWithView:(id)view setupBlock:(id)block transitionBlock:(id)transitionBlock completionBlock:(id)completionBlock;
 - (void)completeTransition;
 - (void)executeTransition;
-- (void)setupTransitionWithFromState:(id)a3 toState:(id)a4;
+- (void)setupTransitionWithFromState:(id)state toState:(id)toState;
 @end
 
 @implementation HULayoutTransition
 
 - (HULayoutTransition)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithView_setupBlock_transitionBlock_completionBlock_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HULayoutTransition.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HULayoutTransition init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULayoutTransition.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HULayoutTransition init]", v5}];
 
   return 0;
 }
 
-- (HULayoutTransition)initWithView:(id)a3 setupBlock:(id)a4 transitionBlock:(id)a5 completionBlock:(id)a6
+- (HULayoutTransition)initWithView:(id)view setupBlock:(id)block transitionBlock:(id)transitionBlock completionBlock:(id)completionBlock
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v13)
+  viewCopy = view;
+  blockCopy = block;
+  transitionBlockCopy = transitionBlock;
+  completionBlockCopy = completionBlock;
+  if (!blockCopy)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"HULayoutTransition.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"setupBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HULayoutTransition.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"setupBlock"}];
   }
 
   v26.receiver = self;
@@ -35,16 +35,16 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_view, a3);
-    v18 = _Block_copy(v13);
+    objc_storeStrong(&v16->_view, view);
+    v18 = _Block_copy(blockCopy);
     setupBlock = v17->_setupBlock;
     v17->_setupBlock = v18;
 
-    v20 = _Block_copy(v14);
+    v20 = _Block_copy(transitionBlockCopy);
     transitionBlock = v17->_transitionBlock;
     v17->_transitionBlock = v20;
 
-    v22 = _Block_copy(v15);
+    v22 = _Block_copy(completionBlockCopy);
     completionBlock = v17->_completionBlock;
     v17->_completionBlock = v22;
 
@@ -54,10 +54,10 @@
   return v17;
 }
 
-- (void)setupTransitionWithFromState:(id)a3 toState:(id)a4
+- (void)setupTransitionWithFromState:(id)state toState:(id)toState
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  toStateCopy = toState;
   if ([(HULayoutTransition *)self phase])
   {
     NSLog(&cfstr_AttemptingToSe_0.isa);
@@ -65,8 +65,8 @@
 
   else
   {
-    [(HULayoutTransition *)self setFromState:v6];
-    [(HULayoutTransition *)self setToState:v7];
+    [(HULayoutTransition *)self setFromState:stateCopy];
+    [(HULayoutTransition *)self setToState:toStateCopy];
     [(HULayoutTransition *)self setPhase:1];
     v8 = MEMORY[0x277D75D18];
     v9[0] = MEMORY[0x277D85DD0];
@@ -74,8 +74,8 @@
     v9[2] = __59__HULayoutTransition_setupTransitionWithFromState_toState___block_invoke;
     v9[3] = &unk_277DB8810;
     v9[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = stateCopy;
+    v11 = toStateCopy;
     [v8 performWithoutAnimation:v9];
   }
 }
@@ -102,16 +102,16 @@ void __59__HULayoutTransition_setupTransitionWithFromState_toState___block_invok
   if ([(HULayoutTransition *)self phase]== 1)
   {
     [(HULayoutTransition *)self setPhase:2];
-    v3 = [(HULayoutTransition *)self transitionBlock];
-    v4 = [(HULayoutTransition *)self fromState];
-    v5 = [(HULayoutTransition *)self toState];
-    (v3)[2](v3, v4, v5);
+    transitionBlock = [(HULayoutTransition *)self transitionBlock];
+    fromState = [(HULayoutTransition *)self fromState];
+    toState = [(HULayoutTransition *)self toState];
+    (transitionBlock)[2](transitionBlock, fromState, toState);
 
-    v6 = [(HULayoutTransition *)self view];
-    [v6 updateConstraintsIfNeeded];
+    view = [(HULayoutTransition *)self view];
+    [view updateConstraintsIfNeeded];
 
-    v7 = [(HULayoutTransition *)self view];
-    [v7 layoutIfNeeded];
+    view2 = [(HULayoutTransition *)self view];
+    [view2 layoutIfNeeded];
   }
 
   else
@@ -125,14 +125,14 @@ void __59__HULayoutTransition_setupTransitionWithFromState_toState___block_invok
   if ([(HULayoutTransition *)self phase]== 2)
   {
     [(HULayoutTransition *)self setPhase:3];
-    v3 = [(HULayoutTransition *)self completionBlock];
+    completionBlock = [(HULayoutTransition *)self completionBlock];
 
-    if (v3)
+    if (completionBlock)
     {
-      v6 = [(HULayoutTransition *)self completionBlock];
-      v4 = [(HULayoutTransition *)self fromState];
-      v5 = [(HULayoutTransition *)self toState];
-      v6[2](v6, v4, v5);
+      completionBlock2 = [(HULayoutTransition *)self completionBlock];
+      fromState = [(HULayoutTransition *)self fromState];
+      toState = [(HULayoutTransition *)self toState];
+      completionBlock2[2](completionBlock2, fromState, toState);
     }
   }
 

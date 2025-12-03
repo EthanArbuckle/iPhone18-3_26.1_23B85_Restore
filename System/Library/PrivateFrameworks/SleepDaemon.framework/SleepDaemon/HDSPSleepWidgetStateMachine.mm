@@ -1,28 +1,28 @@
 @interface HDSPSleepWidgetStateMachine
 - (BOOL)inUnscheduledSleepMode;
 - (BOOL)isOnboarded;
-- (HDSPSleepWidgetStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPSleepWidgetStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (NSDate)currentDate;
 - (id)allStates;
 - (unint64_t)sleepScheduleState;
 - (void)significantTimeChangeOccurred;
-- (void)sleepScheduleModelDidChange:(id)a3;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3;
-- (void)sleepWidgetStateDidChange:(int64_t)a3 previousState:(int64_t)a4;
+- (void)sleepScheduleModelDidChange:(id)change;
+- (void)sleepScheduleStateDidChange:(unint64_t)change;
+- (void)sleepWidgetStateDidChange:(int64_t)change previousState:(int64_t)state;
 @end
 
 @implementation HDSPSleepWidgetStateMachine
 
-- (HDSPSleepWidgetStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPSleepWidgetStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v43[8] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v43[0] = objc_opt_class();
   v43[1] = objc_opt_class();
   v43[2] = objc_opt_class();
@@ -36,7 +36,7 @@
 
   v42.receiver = self;
   v42.super_class = HDSPSleepWidgetStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v42 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v42 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -72,9 +72,9 @@
     notOnboardedState = v20->_notOnboardedState;
     v20->_notOnboardedState = v35;
 
-    v37 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v38 = v37;
-    if (!v37)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v38 = persistedState;
+    if (!persistedState)
     {
       v38 = v20->_disabledState;
     }
@@ -109,74 +109,74 @@
   return v6;
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3
+- (void)sleepScheduleStateDidChange:(unint64_t)change
 {
-  v4 = [(HKSPStateMachine *)self currentState];
-  [v4 sleepScheduleStateDidChange:a3];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleStateDidChange:change];
 }
 
-- (void)sleepScheduleModelDidChange:(id)a3
+- (void)sleepScheduleModelDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HKSPStateMachine *)self currentState];
-  [v5 sleepScheduleModelDidChange:v4];
+  changeCopy = change;
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState sleepScheduleModelDidChange:changeCopy];
 }
 
 - (void)significantTimeChangeOccurred
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 significantTimeChangeOccurred];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState significantTimeChangeOccurred];
 }
 
-- (void)sleepWidgetStateDidChange:(int64_t)a3 previousState:(int64_t)a4
+- (void)sleepWidgetStateDidChange:(int64_t)change previousState:(int64_t)state
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __71__HDSPSleepWidgetStateMachine_sleepWidgetStateDidChange_previousState___block_invoke;
   v4[3] = &__block_descriptor_48_e47_v16__0___HDSPSleepWidgetStateMachineDelegate__8l;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = change;
+  v4[5] = state;
   [(HKSPStateMachine *)self notifyDelegateWithBlock:v4];
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleModel];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
 
-  return v3;
+  return sleepScheduleModel;
 }
 
 - (unint64_t)sleepScheduleState
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleState];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleState = [infoProvider sleepScheduleState];
 
-  return v3;
+  return sleepScheduleState;
 }
 
 - (BOOL)inUnscheduledSleepMode
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 inUnscheduledSleepMode];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  inUnscheduledSleepMode = [infoProvider inUnscheduledSleepMode];
 
-  return v3;
+  return inUnscheduledSleepMode;
 }
 
 - (BOOL)isOnboarded
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isOnboarded];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isOnboarded = [infoProvider isOnboarded];
 
-  return v3;
+  return isOnboarded;
 }
 
 @end

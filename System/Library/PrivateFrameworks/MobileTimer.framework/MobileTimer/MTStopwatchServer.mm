@@ -1,34 +1,34 @@
 @interface MTStopwatchServer
 - (BOOL)_isSystemReady;
 - (MTStopwatchServer)init;
-- (MTStopwatchServer)initWithStorage:(id)a3;
+- (MTStopwatchServer)initWithStorage:(id)storage;
 - (id)_systemNotReadyError;
 - (void)_systemNotReadyError;
-- (void)createStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)deleteStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)didAddLap:(id)a3 forStopwatch:(id)a4 source:(id)a5;
-- (void)didAddLap:(id)a3 forStopwatch:(id)a4 withCompletion:(id)a5;
-- (void)didClearAllLapsForStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)didClearAllLapsForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5;
-- (void)didCreateStopWatch:(id)a3 source:(id)a4;
-- (void)didDeleteStopwatch:(id)a3 source:(id)a4;
-- (void)didLapLapTimerForStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)didLapLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5;
-- (void)didPauseLapTimerForStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)didPauseLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5;
-- (void)didResetLapTimerForStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)didResetLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5;
-- (void)didResumeLapTimerForStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)didResumeLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5;
-- (void)didStartLapTimerForStopwatch:(id)a3 withCompletion:(id)a4;
-- (void)didStartLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5;
-- (void)didUpdateStopwatch:(id)a3 source:(id)a4;
-- (void)getStopwatchesWithCompletion:(id)a3;
+- (void)createStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)deleteStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didAddLap:(id)lap forStopwatch:(id)stopwatch source:(id)source;
+- (void)didAddLap:(id)lap forStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didClearAllLapsForStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didClearAllLapsForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source;
+- (void)didCreateStopWatch:(id)watch source:(id)source;
+- (void)didDeleteStopwatch:(id)stopwatch source:(id)source;
+- (void)didLapLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didLapLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source;
+- (void)didPauseLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didPauseLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source;
+- (void)didResetLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didResetLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source;
+- (void)didResumeLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didResumeLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source;
+- (void)didStartLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion;
+- (void)didStartLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source;
+- (void)didUpdateStopwatch:(id)stopwatch source:(id)source;
+- (void)getStopwatchesWithCompletion:(id)completion;
 - (void)handleSystemReady;
 - (void)startListening;
 - (void)stopListening;
 - (void)testStopwatchWrite;
-- (void)updateStopwatch:(id)a3 withCompletion:(id)a4;
+- (void)updateStopwatch:(id)stopwatch withCompletion:(id)completion;
 @end
 
 @implementation MTStopwatchServer
@@ -59,24 +59,24 @@
   return v6;
 }
 
-- (MTStopwatchServer)initWithStorage:(id)a3
+- (MTStopwatchServer)initWithStorage:(id)storage
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storageCopy = storage;
   v16.receiver = self;
   v16.super_class = MTStopwatchServer;
   v5 = [(MTStopwatchServer *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    [(MTStopwatchServer *)v5 setStorage:v4];
+    [(MTStopwatchServer *)v5 setStorage:storageCopy];
     v7 = MTLogForCategory(5);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
       v18 = v6;
       v19 = 2114;
-      v20 = v4;
+      v20 = storageCopy;
       _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_INFO, "%{public}@ initialized with storage: %{public}@ ", buf, 0x16u);
     }
 
@@ -91,7 +91,7 @@
     v13 = dispatch_queue_create("com.apple.mobiletimer.stopwatchserver.serializer", 0);
     [(MTStopwatchServer *)v6 setSerializerQueue:v13];
 
-    [v4 registerObserver:v6];
+    [storageCopy registerObserver:v6];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -105,7 +105,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@ startListening", &v5, 0xCu);
   }
 
@@ -120,7 +120,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@ stopListening", &v5, 0xCu);
   }
 
@@ -135,17 +135,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@ handleSystemReady", buf, 0xCu);
   }
 
-  v4 = [(MTStopwatchServer *)self serializerQueue];
+  serializerQueue = [(MTStopwatchServer *)self serializerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__MTStopwatchServer_handleSystemReady__block_invoke;
   block[3] = &unk_1E7B0C9D8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(serializerQueue, block);
 
   v5 = *MEMORY[0x1E69E9840];
 }
@@ -165,17 +165,17 @@ void __38__MTStopwatchServer_handleSystemReady__block_invoke(uint64_t a1)
   v3 = objc_alloc_init(MTStopwatch);
   v4 = [(MTStopwatch *)v3 mutableCopy];
 
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v4 setStartDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  [v4 setStartDate:date];
 
-  v6 = [(MTStopwatchServer *)self storage];
+  storage = [(MTStopwatchServer *)self storage];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__MTStopwatchServer_testStopwatchWrite__block_invoke;
   v8[3] = &unk_1E7B0D658;
   v8[4] = self;
-  v7 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-  [v6 createStopWatch:v4 withCompletion:v8 source:v7];
+  currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+  [storage createStopWatch:v4 withCompletion:v8 source:currentClient];
 }
 
 void __39__MTStopwatchServer_testStopwatchWrite__block_invoke(uint64_t a1, void *a2)
@@ -205,23 +205,23 @@ void __39__MTStopwatchServer_testStopwatchWrite__block_invoke(uint64_t a1, void 
 
 - (BOOL)_isSystemReady
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MTStopwatchServer *)self serializerQueue];
+  serializerQueue = [(MTStopwatchServer *)self serializerQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __35__MTStopwatchServer__isSystemReady__block_invoke;
   v5[3] = &unk_1E7B0CAC0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serializerQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)_systemNotReadyError
@@ -237,31 +237,31 @@ void __39__MTStopwatchServer_testStopwatchWrite__block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (void)getStopwatchesWithCompletion:(id)a3
+- (void)getStopwatchesWithCompletion:(id)completion
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory(5);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_INFO, "%{public}@ getStopwatchesWithCompletion", &v8, 0xCu);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v6 = [(MTStopwatchServer *)self storage];
-    [v6 getStopwatchesWitchCompletion:v4];
+    storage = [(MTStopwatchServer *)self storage];
+    [storage getStopwatchesWitchCompletion:completionCopy];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v6 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v4[2](v4, 0, v6);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, 0, storage);
     goto LABEL_7;
   }
 
@@ -270,36 +270,36 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createStopwatch:(id)a3 withCompletion:(id)a4
+- (void)createStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 identifier];
+    identifier = [stopwatchCopy identifier];
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v9;
+    v16 = identifier;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ createStopwatch with id: %{public}@", &v13, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v10 = [(MTStopwatchServer *)self storage];
-    v11 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v10 createStopWatch:v6 withCompletion:v7 source:v11];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage createStopWatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v10);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -308,36 +308,36 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateStopwatch:(id)a3 withCompletion:(id)a4
+- (void)updateStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 identifier];
+    identifier = [stopwatchCopy identifier];
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v9;
+    v16 = identifier;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ updateStopwatch with id: %{public}@", &v13, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v10 = [(MTStopwatchServer *)self storage];
-    v11 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v10 updateStopwatch:v6 withCompletion:v7 source:v11];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage updateStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v10);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -346,36 +346,36 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteStopwatch:(id)a3 withCompletion:(id)a4
+- (void)deleteStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 identifier];
+    identifier = [stopwatchCopy identifier];
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v9;
+    v16 = identifier;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ deleteStopwatch with id: %{public}@", &v13, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v10 = [(MTStopwatchServer *)self storage];
-    v11 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v10 deleteStopwatch:v6 withCompletion:v7 source:v11];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage deleteStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v10);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -384,38 +384,38 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didAddLap:(id)a3 forStopwatch:(id)a4 withCompletion:(id)a5
+- (void)didAddLap:(id)lap forStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lapCopy = lap;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v11 = MTLogForCategory(5);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v8;
+    v18 = lapCopy;
     v19 = 2114;
-    v20 = v9;
+    v20 = stopwatchCopy;
     _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_INFO, "%{public}@ didAddLap lap: %{public}@ for stopwatch: %{public}@", &v15, 0x20u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v12 = [(MTStopwatchServer *)self storage];
-    v13 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v12 didAddLap:v8 forStopwatch:v9 withCompletion:v10 source:v13];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage didAddLap:lapCopy forStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v12 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v10[2](v10, v12);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -424,35 +424,35 @@ LABEL_8:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didClearAllLapsForStopwatch:(id)a3 withCompletion:(id)a4
+- (void)didClearAllLapsForStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = stopwatchCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ didClearAllLapsForStopwatch for stopwatch: %{public}@", &v12, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v9 = [(MTStopwatchServer *)self storage];
-    v10 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v9 didClearAllLapsForStopwatch:v6 withCompletion:v7 source:v10];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage didClearAllLapsForStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v9);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -461,35 +461,35 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didStartLapTimerForStopwatch:(id)a3 withCompletion:(id)a4
+- (void)didStartLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = stopwatchCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ didStartLapTimerForStopwatch for stopwatch: %{public}@", &v12, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v9 = [(MTStopwatchServer *)self storage];
-    v10 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v9 didStartLapTimerForStopwatch:v6 withCompletion:v7 source:v10];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage didStartLapTimerForStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v9);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -498,35 +498,35 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didPauseLapTimerForStopwatch:(id)a3 withCompletion:(id)a4
+- (void)didPauseLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = stopwatchCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ didPauseLapTimerForStopwatch for stopwatch: %{public}@", &v12, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v9 = [(MTStopwatchServer *)self storage];
-    v10 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v9 didPauseLapTimerForStopwatch:v6 withCompletion:v7 source:v10];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage didPauseLapTimerForStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v9);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -535,35 +535,35 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didLapLapTimerForStopwatch:(id)a3 withCompletion:(id)a4
+- (void)didLapLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = stopwatchCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ didLapLapTimerForStopwatch for stopwatch: %{public}@", &v12, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v9 = [(MTStopwatchServer *)self storage];
-    v10 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v9 didLapLapTimerForStopwatch:v6 withCompletion:v7 source:v10];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage didLapLapTimerForStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v9);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -572,35 +572,35 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didResetLapTimerForStopwatch:(id)a3 withCompletion:(id)a4
+- (void)didResetLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = stopwatchCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ didResetLapTimerForStopwatch for stopwatch: %{public}@", &v12, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v9 = [(MTStopwatchServer *)self storage];
-    v10 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v9 didResetLapTimerForStopwatch:v6 withCompletion:v7 source:v10];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage didResetLapTimerForStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v9);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -609,35 +609,35 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didResumeLapTimerForStopwatch:(id)a3 withCompletion:(id)a4
+- (void)didResumeLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stopwatchCopy = stopwatch;
+  completionCopy = completion;
   v8 = MTLogForCategory(5);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = stopwatchCopy;
     _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ didResumeLapTimerForStopwatch for stopwatch: %{public}@", &v12, 0x16u);
   }
 
   if ([(MTStopwatchServer *)self _isSystemReady])
   {
-    v9 = [(MTStopwatchServer *)self storage];
-    v10 = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
-    [v9 didResumeLapTimerForStopwatch:v6 withCompletion:v7 source:v10];
+    storage = [(MTStopwatchServer *)self storage];
+    currentClient = [(MTXPCConnectionListenerProvider *)self->_connectionListenerProvider currentClient];
+    [storage didResumeLapTimerForStopwatch:stopwatchCopy withCompletion:completionCopy source:currentClient];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(MTStopwatchServer *)self _systemNotReadyError];
-    v7[2](v7, v9);
+    storage = [(MTStopwatchServer *)self _systemNotReadyError];
+    completionCopy[2](completionCopy, storage);
     goto LABEL_7;
   }
 
@@ -646,147 +646,147 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCreateStopWatch:(id)a3 source:(id)a4
+- (void)didCreateStopWatch:(id)watch source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTStopwatchServer *)self connectionListenerProvider];
+  watchCopy = watch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__MTStopwatchServer_didCreateStopWatch_source___block_invoke;
   v10[3] = &unk_1E7B0FAF0;
-  v11 = v6;
-  v9 = v6;
-  [v8 performBlockOnAllClients:v10 excludingClient:v7];
+  v11 = watchCopy;
+  v9 = watchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v10 excludingClient:sourceCopy];
 }
 
-- (void)didDeleteStopwatch:(id)a3 source:(id)a4
+- (void)didDeleteStopwatch:(id)stopwatch source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__MTStopwatchServer_didDeleteStopwatch_source___block_invoke;
   v10[3] = &unk_1E7B0FAF0;
-  v11 = v6;
-  v9 = v6;
-  [v8 performBlockOnAllClients:v10 excludingClient:v7];
+  v11 = stopwatchCopy;
+  v9 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v10 excludingClient:sourceCopy];
 }
 
-- (void)didUpdateStopwatch:(id)a3 source:(id)a4
+- (void)didUpdateStopwatch:(id)stopwatch source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__MTStopwatchServer_didUpdateStopwatch_source___block_invoke;
   v10[3] = &unk_1E7B0FAF0;
-  v11 = v6;
-  v9 = v6;
-  [v8 performBlockOnAllClients:v10 excludingClient:v7];
+  v11 = stopwatchCopy;
+  v9 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v10 excludingClient:sourceCopy];
 }
 
-- (void)didAddLap:(id)a3 forStopwatch:(id)a4 source:(id)a5
+- (void)didAddLap:(id)lap forStopwatch:(id)stopwatch source:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MTStopwatchServer *)self connectionListenerProvider];
+  lapCopy = lap;
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __51__MTStopwatchServer_didAddLap_forStopwatch_source___block_invoke;
   v14[3] = &unk_1E7B0FB18;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v11 performBlockOnAllClients:v14 excludingClient:v10];
+  v15 = lapCopy;
+  v16 = stopwatchCopy;
+  v12 = stopwatchCopy;
+  v13 = lapCopy;
+  [connectionListenerProvider performBlockOnAllClients:v14 excludingClient:sourceCopy];
 }
 
-- (void)didClearAllLapsForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5
+- (void)didClearAllLapsForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__MTStopwatchServer_didClearAllLapsForStopwatch_withCompletion_source___block_invoke;
   v11[3] = &unk_1E7B0FAF0;
-  v12 = v7;
-  v10 = v7;
-  [v9 performBlockOnAllClients:v11 excludingClient:v8];
+  v12 = stopwatchCopy;
+  v10 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v11 excludingClient:sourceCopy];
 }
 
-- (void)didStartLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5
+- (void)didStartLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__MTStopwatchServer_didStartLapTimerForStopwatch_withCompletion_source___block_invoke;
   v11[3] = &unk_1E7B0FAF0;
-  v12 = v7;
-  v10 = v7;
-  [v9 performBlockOnAllClients:v11 excludingClient:v8];
+  v12 = stopwatchCopy;
+  v10 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v11 excludingClient:sourceCopy];
 }
 
-- (void)didPauseLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5
+- (void)didPauseLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__MTStopwatchServer_didPauseLapTimerForStopwatch_withCompletion_source___block_invoke;
   v11[3] = &unk_1E7B0FAF0;
-  v12 = v7;
-  v10 = v7;
-  [v9 performBlockOnAllClients:v11 excludingClient:v8];
+  v12 = stopwatchCopy;
+  v10 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v11 excludingClient:sourceCopy];
 }
 
-- (void)didLapLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5
+- (void)didLapLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__MTStopwatchServer_didLapLapTimerForStopwatch_withCompletion_source___block_invoke;
   v11[3] = &unk_1E7B0FAF0;
-  v12 = v7;
-  v10 = v7;
-  [v9 performBlockOnAllClients:v11 excludingClient:v8];
+  v12 = stopwatchCopy;
+  v10 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v11 excludingClient:sourceCopy];
 }
 
-- (void)didResetLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5
+- (void)didResetLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__MTStopwatchServer_didResetLapTimerForStopwatch_withCompletion_source___block_invoke;
   v11[3] = &unk_1E7B0FAF0;
-  v12 = v7;
-  v10 = v7;
-  [v9 performBlockOnAllClients:v11 excludingClient:v8];
+  v12 = stopwatchCopy;
+  v10 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v11 excludingClient:sourceCopy];
 }
 
-- (void)didResumeLapTimerForStopwatch:(id)a3 withCompletion:(id)a4 source:(id)a5
+- (void)didResumeLapTimerForStopwatch:(id)stopwatch withCompletion:(id)completion source:(id)source
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MTStopwatchServer *)self connectionListenerProvider];
+  stopwatchCopy = stopwatch;
+  sourceCopy = source;
+  connectionListenerProvider = [(MTStopwatchServer *)self connectionListenerProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__MTStopwatchServer_didResumeLapTimerForStopwatch_withCompletion_source___block_invoke;
   v11[3] = &unk_1E7B0FAF0;
-  v12 = v7;
-  v10 = v7;
-  [v9 performBlockOnAllClients:v11 excludingClient:v8];
+  v12 = stopwatchCopy;
+  v10 = stopwatchCopy;
+  [connectionListenerProvider performBlockOnAllClients:v11 excludingClient:sourceCopy];
 }
 
 void __39__MTStopwatchServer_testStopwatchWrite__block_invoke_cold_1(uint64_t a1, uint64_t a2, os_log_t log)
@@ -805,7 +805,7 @@ void __39__MTStopwatchServer_testStopwatchWrite__block_invoke_cold_1(uint64_t a1
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B1F9F000, a2, OS_LOG_TYPE_ERROR, "%{public}@ System isn't ready...", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

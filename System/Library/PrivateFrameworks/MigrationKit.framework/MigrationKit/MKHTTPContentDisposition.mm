@@ -1,13 +1,13 @@
 @interface MKHTTPContentDisposition
-- (MKHTTPContentDisposition)initWithHeaderValue:(id)a3;
+- (MKHTTPContentDisposition)initWithHeaderValue:(id)value;
 @end
 
 @implementation MKHTTPContentDisposition
 
-- (MKHTTPContentDisposition)initWithHeaderValue:(id)a3
+- (MKHTTPContentDisposition)initWithHeaderValue:(id)value
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   v40.receiver = self;
   v40.super_class = MKHTTPContentDisposition;
   v5 = [(MKHTTPContentDisposition *)&v40 init];
@@ -15,9 +15,9 @@
   if (v5)
   {
     v31 = v5;
-    v33 = v4;
+    v33 = valueCopy;
     v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v4 componentsSeparatedByString:@";"];
+    [valueCopy componentsSeparatedByString:@";"];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -41,21 +41,21 @@
           if ([v11 count] == 2)
           {
             v12 = [v11 objectAtIndexedSubscript:0];
-            v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-            v14 = [v12 stringByTrimmingCharactersInSet:v13];
+            whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+            v14 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
             v15 = [v11 objectAtIndexedSubscript:1];
-            v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-            v17 = [v15 stringByTrimmingCharactersInSet:v16];
+            whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+            v17 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
             if ([v17 length] >= 2)
             {
-              v18 = [v14 lowercaseString];
+              lowercaseString = [v14 lowercaseString];
 
               v19 = [v17 substringWithRange:{1, objc_msgSend(v17, "length") - 2}];
 
-              [v34 setObject:v19 forKey:v18];
-              v14 = v18;
+              [v34 setObject:v19 forKey:lowercaseString];
+              v14 = lowercaseString;
               v17 = v19;
             }
           }
@@ -72,21 +72,21 @@
 
     v20 = [v34 objectForKeyedSubscript:{@"filename", v31}];
     v21 = [v20 stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-    v22 = [v21 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v21 stringByRemovingPercentEncoding];
     v6 = v32;
-    [(MKHTTPContentDisposition *)v32 setFilename:v22];
+    [(MKHTTPContentDisposition *)v32 setFilename:stringByRemovingPercentEncoding];
 
     v23 = [v34 objectForKeyedSubscript:@"folder"];
     v24 = [v23 stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-    v25 = [v24 stringByRemovingPercentEncoding];
-    [(MKHTTPContentDisposition *)v32 setFolder:v25];
+    stringByRemovingPercentEncoding2 = [v24 stringByRemovingPercentEncoding];
+    [(MKHTTPContentDisposition *)v32 setFolder:stringByRemovingPercentEncoding2];
 
     v26 = [v34 objectForKeyedSubscript:@"original_filename"];
     v27 = [v26 stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-    v28 = [v27 stringByRemovingPercentEncoding];
-    [(MKHTTPContentDisposition *)v32 setOriginalFilename:v28];
+    stringByRemovingPercentEncoding3 = [v27 stringByRemovingPercentEncoding];
+    [(MKHTTPContentDisposition *)v32 setOriginalFilename:stringByRemovingPercentEncoding3];
 
-    v4 = v33;
+    valueCopy = v33;
   }
 
   v29 = *MEMORY[0x277D85DE8];

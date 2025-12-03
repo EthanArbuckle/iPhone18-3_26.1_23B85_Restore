@@ -1,16 +1,16 @@
 @interface PKDASessionManager
-- (PKDASessionManager)initWithQueue:(id)a3 sessionCreationBlock:(id)a4;
+- (PKDASessionManager)initWithQueue:(id)queue sessionCreationBlock:(id)block;
 - (void)createSession;
-- (void)performBlockWithSession:(id)a3;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
+- (void)performBlockWithSession:(id)session;
+- (void)session:(id)session didChangeState:(unint64_t)state;
 @end
 
 @implementation PKDASessionManager
 
-- (PKDASessionManager)initWithQueue:(id)a3 sessionCreationBlock:(id)a4
+- (PKDASessionManager)initWithQueue:(id)queue sessionCreationBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = PKDASessionManager;
   v9 = [(PKDASessionManager *)&v17 init];
@@ -20,12 +20,12 @@
     dispatchGroup = v9->_dispatchGroup;
     v9->_dispatchGroup = v10;
 
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     workItems = v9->_workItems;
     v9->_workItems = v12;
 
-    v14 = _Block_copy(v8);
+    v14 = _Block_copy(blockCopy);
     sessionCreationBlock = v9->_sessionCreationBlock;
     v9->_sessionCreationBlock = v14;
   }
@@ -33,17 +33,17 @@
   return v9;
 }
 
-- (void)performBlockWithSession:(id)a3
+- (void)performBlockWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PKDASessionManager_performBlockWithSession___block_invoke;
   v7[3] = &unk_1E79C4A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sessionCopy;
+  v6 = sessionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -108,18 +108,18 @@ uint64_t __35__PKDASessionManager_createSession__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 24) endSession];
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
+  sessionCopy = session;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__PKDASessionManager_session_didChangeState___block_invoke;
   block[3] = &unk_1E79CBF50;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  stateCopy = state;
+  v10 = sessionCopy;
+  v8 = sessionCopy;
   dispatch_async(queue, block);
 }
 

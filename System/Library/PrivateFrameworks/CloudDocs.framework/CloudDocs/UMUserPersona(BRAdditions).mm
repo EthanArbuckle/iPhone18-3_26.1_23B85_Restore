@@ -9,13 +9,13 @@
 - (__CFString)br_personaID
 {
   v2 = @"__defaultPersonaID__";
-  if ([a1 isDataSeparatedPersona])
+  if ([self isDataSeparatedPersona])
   {
-    v3 = [a1 userPersonaUniqueString];
-    v4 = v3;
-    if (v3)
+    userPersonaUniqueString = [self userPersonaUniqueString];
+    v4 = userPersonaUniqueString;
+    if (userPersonaUniqueString)
     {
-      v5 = v3;
+      v5 = userPersonaUniqueString;
     }
 
     else
@@ -32,12 +32,12 @@
 - (id)br_generateAndRestorePersonaContextWithPersonaUniqueString:()BRAdditions
 {
   v4 = a3;
-  v5 = [a1 generateAndRestorePersonaContextWithPersonaUniqueString:v4];
+  v5 = [self generateAndRestorePersonaContextWithPersonaUniqueString:v4];
 
   if (v5)
   {
     [MEMORY[0x1E696AF00] sleepForTimeInterval:0.2];
-    v6 = [a1 generateAndRestorePersonaContextWithPersonaUniqueString:v4];
+    v6 = [self generateAndRestorePersonaContextWithPersonaUniqueString:v4];
   }
 
   else
@@ -51,12 +51,12 @@
 - (id)br_restorePersonaWithSavedPersonaContext:()BRAdditions
 {
   v4 = a3;
-  v5 = [a1 restorePersonaWithSavedPersonaContext:v4];
+  v5 = [self restorePersonaWithSavedPersonaContext:v4];
 
   if (v5)
   {
     [MEMORY[0x1E696AF00] sleepForTimeInterval:0.2];
-    v6 = [a1 restorePersonaWithSavedPersonaContext:v4];
+    v6 = [self restorePersonaWithSavedPersonaContext:v4];
   }
 
   else

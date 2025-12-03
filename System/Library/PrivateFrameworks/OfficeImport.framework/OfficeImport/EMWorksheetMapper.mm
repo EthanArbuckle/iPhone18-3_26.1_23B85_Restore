@@ -1,23 +1,23 @@
 @interface EMWorksheetMapper
-- (BOOL)isCellNonEmpty:(EDCellHeader *)a3 state:(id)a4;
+- (BOOL)isCellNonEmpty:(EDCellHeader *)empty state:(id)state;
 - (BOOL)isVisible;
-- (CGSize)preprocessDrawableSizeWithState:(id)a3;
-- (CGSize)preprocessSizeWithState:(id)a3;
-- (EMWorksheetMapper)initWithEDWorksheet:(id)a3 parent:(id)a4;
+- (CGSize)preprocessDrawableSizeWithState:(id)state;
+- (CGSize)preprocessSizeWithState:(id)state;
+- (EMWorksheetMapper)initWithEDWorksheet:(id)worksheet parent:(id)parent;
 - (double)defaultColumnWidth;
 - (id)columnWidthConvertor;
-- (int)preprocessHeightWithState:(id)a3;
-- (int)preprocessWidthWithState:(id)a3;
-- (void)_initWithState:(id)a3;
-- (void)countRowsAndColumnsWithState:(id)a3;
+- (int)preprocessHeightWithState:(id)state;
+- (int)preprocessWidthWithState:(id)state;
+- (void)_initWithState:(id)state;
+- (void)countRowsAndColumnsWithState:(id)state;
 - (void)dealloc;
-- (void)forceRecountForTesting:(id)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapColumnInfosAt:(id)a3 withState:(id)a4;
-- (void)mapDrawablesAt:(id)a3 withState:(id)a4;
-- (void)mapTableAt:(id)a3 withState:(id)a4;
-- (void)mapWorksheetClassesAtTableNode:(id)a3;
-- (void)readHyperlinksWithState:(id)a3;
+- (void)forceRecountForTesting:(id)testing;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapColumnInfosAt:(id)at withState:(id)state;
+- (void)mapDrawablesAt:(id)at withState:(id)state;
+- (void)mapTableAt:(id)at withState:(id)state;
+- (void)mapWorksheetClassesAtTableNode:(id)node;
+- (void)readHyperlinksWithState:(id)state;
 - (void)setRowGrid;
 @end
 
@@ -27,7 +27,7 @@
 {
   if ((self->mMaxPopulatedRow & 0x8000000000000000) == 0)
   {
-    v10 = [(EDWorksheet *)self->edWorksheet rowBlocks];
+    rowBlocks = [(EDWorksheet *)self->edWorksheet rowBlocks];
     self->mRowGrid = smalloc_typed(self->mMaxPopulatedRow + 1, 8uLL, 0x100004000313F17uLL);
     if ((self->mMaxPopulatedRow & 0x8000000000000000) == 0)
     {
@@ -36,15 +36,15 @@
       v5 = 1;
       do
       {
-        v6 = [v10 rowBlockForRowNumber:v5 - 1 currentRowBlock:v4 createIfNil:0];
+        v6 = [rowBlocks rowBlockForRowNumber:v5 - 1 currentRowBlock:v4 createIfNil:0];
 
         v7 = [v6 rowInfoWithRowNumber:v5 - 1];
-        if (!v7 || (v8 = *(v7 + 20)) == 0)
+        if (!v7 || (defaultRowHeight = *(v7 + 20)) == 0)
         {
-          v8 = [(EDWorksheet *)self->edWorksheet defaultRowHeight];
+          defaultRowHeight = [(EDWorksheet *)self->edWorksheet defaultRowHeight];
         }
 
-        self->mRowGrid[v3] = v8;
+        self->mRowGrid[v3] = defaultRowHeight;
         v3 = v5;
         v9 = self->mMaxPopulatedRow < v5++;
         v4 = v6;
@@ -66,12 +66,12 @@
 
     v6 = self->mColumnWidthConvertor;
     WeakRetained = objc_loadWeakRetained(&self->super.super.mParent);
-    v8 = [WeakRetained document];
-    v9 = [v8 resources];
-    v10 = [v9 styles];
-    v11 = [v10 defaultWorkbookStyle];
-    v12 = [v11 font];
-    [(ECColumnWidthConvertor *)v6 setupWithEDFont:v12 state:0];
+    document = [WeakRetained document];
+    resources = [document resources];
+    styles = [resources styles];
+    defaultWorkbookStyle = [styles defaultWorkbookStyle];
+    font = [defaultWorkbookStyle font];
+    [(ECColumnWidthConvertor *)v6 setupWithEDFont:font state:0];
 
     mColumnWidthConvertor = self->mColumnWidthConvertor;
   }
@@ -86,24 +86,24 @@
     return 0;
   }
 
-  v4 = [(EDWorksheet *)self->edWorksheet rowBlocks];
-  if ([v4 rowBlockCount])
+  rowBlocks = [(EDWorksheet *)self->edWorksheet rowBlocks];
+  if ([rowBlocks rowBlockCount])
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(EDWorksheet *)self->edWorksheet columnInfos];
-    if ([v5 count])
+    columnInfos = [(EDWorksheet *)self->edWorksheet columnInfos];
+    if ([columnInfos count])
     {
       v3 = 1;
     }
 
     else
     {
-      v6 = [(EDWorksheet *)self->edWorksheet maxCellReferencedInFormulas];
-      v3 = v6 != 0;
+      maxCellReferencedInFormulas = [(EDWorksheet *)self->edWorksheet maxCellReferencedInFormulas];
+      v3 = maxCellReferencedInFormulas != 0;
     }
   }
 
@@ -137,13 +137,13 @@
   return result;
 }
 
-- (EMWorksheetMapper)initWithEDWorksheet:(id)a3 parent:(id)a4
+- (EMWorksheetMapper)initWithEDWorksheet:(id)worksheet parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  worksheetCopy = worksheet;
+  parentCopy = parent;
   v14.receiver = self;
   v14.super_class = EMWorksheetMapper;
-  v9 = [(CMMapper *)&v14 initWithParent:v8];
+  v9 = [(CMMapper *)&v14 initWithParent:parentCopy];
   v10 = v9;
   if (v9)
   {
@@ -151,7 +151,7 @@
     v9->mWidth = 0;
     v9->mMaxPopulatedColumn = -1;
     v9->mMaxPopulatedRow = -1;
-    objc_storeStrong(&v9->edWorksheet, a3);
+    objc_storeStrong(&v9->edWorksheet, worksheet);
     v11 = objc_alloc_init(CMStyle);
     mStyle = v10->mStyle;
     v10->mStyle = v11;
@@ -160,12 +160,12 @@
   return v10;
 }
 
-- (void)_initWithState:(id)a3
+- (void)_initWithState:(id)state
 {
-  v6 = a3;
+  stateCopy = state;
   if (self->mMaxPopulatedRow < 0 && self->mMaxPopulatedColumn < 0 && !self->mColumnGrid)
   {
-    [(EMWorksheetMapper *)self countRowsAndColumnsWithState:v6];
+    [(EMWorksheetMapper *)self countRowsAndColumnsWithState:stateCopy];
     mMaxPopulatedColumn = self->mMaxPopulatedColumn;
     if (mMaxPopulatedColumn > 0x4000)
     {
@@ -182,45 +182,45 @@
   }
 }
 
-- (void)readHyperlinksWithState:(id)a3
+- (void)readHyperlinksWithState:(id)state
 {
-  v12 = a3;
-  v4 = [(EDWorksheet *)self->edWorksheet hyperlinks];
-  v5 = [v4 count];
+  stateCopy = state;
+  hyperlinks = [(EDWorksheet *)self->edWorksheet hyperlinks];
+  v5 = [hyperlinks count];
 
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v7 = [(EDWorksheet *)self->edWorksheet hyperlinks];
-      v8 = [v7 objectAtIndex:i];
+      hyperlinks2 = [(EDWorksheet *)self->edWorksheet hyperlinks];
+      v8 = [hyperlinks2 objectAtIndex:i];
 
-      v9 = [v8 reference];
-      v10 = [v9 firstRow];
-      v11 = [v8 reference];
-      [v12 setHyperlink:v8 forRow:v10 column:{objc_msgSend(v11, "firstColumn")}];
+      reference = [v8 reference];
+      firstRow = [reference firstRow];
+      reference2 = [v8 reference];
+      [stateCopy setHyperlink:v8 forRow:firstRow column:{objc_msgSend(reference2, "firstColumn")}];
     }
   }
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v8 = a3;
-  v6 = a4;
-  [(EMWorksheetMapper *)self _initWithState:v6];
+  atCopy = at;
+  stateCopy = state;
+  [(EMWorksheetMapper *)self _initWithState:stateCopy];
   v7 = [OIXMLElement elementWithType:3];
-  [(EMWorksheetMapper *)self readHyperlinksWithState:v6];
-  [(EMWorksheetMapper *)self mapTableAt:v7 withState:v6];
-  [(EMWorksheetMapper *)self mapDrawablesAt:v7 withState:v6];
+  [(EMWorksheetMapper *)self readHyperlinksWithState:stateCopy];
+  [(EMWorksheetMapper *)self mapTableAt:v7 withState:stateCopy];
+  [(EMWorksheetMapper *)self mapDrawablesAt:v7 withState:stateCopy];
   if ([v7 childrenCount] >= 1)
   {
-    [v8 addChild:v7];
+    [atCopy addChild:v7];
   }
 }
 
-- (int)preprocessWidthWithState:(id)a3
+- (int)preprocessWidthWithState:(id)state
 {
-  [(EMWorksheetMapper *)self _initWithState:a3];
+  [(EMWorksheetMapper *)self _initWithState:state];
   if (!self->mColumnGrid)
   {
     return 0;
@@ -228,8 +228,8 @@
 
   [(EDWorksheet *)self->edWorksheet defaultColumnWidth];
   v5 = v4;
-  v35 = [(EDWorksheet *)self->edWorksheet columnInfos];
-  v6 = [v35 count];
+  columnInfos = [(EDWorksheet *)self->edWorksheet columnInfos];
+  v6 = [columnInfos count];
   if (v6)
   {
     v34 = v6;
@@ -238,24 +238,24 @@
     v9 = 0.0;
     while (v8 <= SLODWORD(self->mMaxPopulatedColumn))
     {
-      v10 = [v35 objectAtIndex:v7];
+      v10 = [columnInfos objectAtIndex:v7];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 range];
-        v13 = [v12 firstColumn];
-        v14 = [v12 lastColumn];
-        if (v13 < 0 || (v15 = v14, v14 < 0) || self->mMaxPopulatedColumn < v13)
+        range = [v10 range];
+        firstColumn = [range firstColumn];
+        lastColumn = [range lastColumn];
+        if (firstColumn < 0 || (v15 = lastColumn, lastColumn < 0) || self->mMaxPopulatedColumn < firstColumn)
         {
 
           break;
         }
 
-        if (v8 + 1 < v13)
+        if (v8 + 1 < firstColumn)
         {
-          v16 = [[EMColumnInfoMapper alloc] initWithDefaultWidth:v13 + ~v8 span:self parent:v5];
+          v16 = [[EMColumnInfoMapper alloc] initWithDefaultWidth:firstColumn + ~v8 span:self parent:v5];
           [(EMColumnInfoMapper *)v16 columnWidth];
-          v18 = ~v8 + v13;
+          v18 = ~v8 + firstColumn;
           v19 = &self->mColumnGrid[v8 + 1];
           do
           {
@@ -275,11 +275,11 @@
           v20 = v22;
         }
 
-        if (v13 <= v15)
+        if (firstColumn <= v15)
         {
           mMaxPopulatedColumn = self->mMaxPopulatedColumn;
-          v24 = v13 - 1;
-          v25 = v13;
+          v24 = firstColumn - 1;
+          v25 = firstColumn;
           do
           {
             if (mMaxPopulatedColumn < v25)
@@ -346,12 +346,12 @@ LABEL_27:
   return v26;
 }
 
-- (int)preprocessHeightWithState:(id)a3
+- (int)preprocessHeightWithState:(id)state
 {
-  [(EMWorksheetMapper *)self _initWithState:a3];
-  v4 = [(EDWorksheet *)self->edWorksheet rowBlocks];
-  v5 = [v4 maxPopulatedRow];
-  if (v5 == -1)
+  [(EMWorksheetMapper *)self _initWithState:state];
+  rowBlocks = [(EDWorksheet *)self->edWorksheet rowBlocks];
+  maxPopulatedRow = [rowBlocks maxPopulatedRow];
+  if (maxPopulatedRow == -1)
   {
     v8 = 0;
   }
@@ -365,7 +365,7 @@ LABEL_27:
     do
     {
       v10 = v7;
-      v7 = [v4 rowBlockForRowNumber:v6 currentRowBlock:v7 createIfNil:0];
+      v7 = [rowBlocks rowBlockForRowNumber:v6 currentRowBlock:v7 createIfNil:0];
 
       if (v7)
       {
@@ -398,7 +398,7 @@ LABEL_27:
         }
       }
 
-      v16 = v6 == v5;
+      v16 = v6 == maxPopulatedRow;
       v6 = (v6 + 1);
     }
 
@@ -408,14 +408,14 @@ LABEL_27:
   return v8;
 }
 
-- (CGSize)preprocessDrawableSizeWithState:(id)a3
+- (CGSize)preprocessDrawableSizeWithState:(id)state
 {
   v5 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  v6 = [(EDSheet *)self->edWorksheet drawableCount];
-  if (v6)
+  drawableCount = [(EDSheet *)self->edWorksheet drawableCount];
+  if (drawableCount)
   {
-    v7 = v6;
+    v7 = drawableCount;
     for (i = 0; i != v7; ++i)
     {
       v9 = [(EDSheet *)self->edWorksheet drawableAtIndex:i];
@@ -441,12 +441,12 @@ LABEL_27:
   return result;
 }
 
-- (CGSize)preprocessSizeWithState:(id)a3
+- (CGSize)preprocessSizeWithState:(id)state
 {
-  v4 = a3;
-  v5 = [(EMWorksheetMapper *)self preprocessWidthWithState:v4];
-  v6 = [(EMWorksheetMapper *)self preprocessHeightWithState:v4];
-  [(EMWorksheetMapper *)self preprocessDrawableSizeWithState:v4];
+  stateCopy = state;
+  v5 = [(EMWorksheetMapper *)self preprocessWidthWithState:stateCopy];
+  v6 = [(EMWorksheetMapper *)self preprocessHeightWithState:stateCopy];
+  [(EMWorksheetMapper *)self preprocessDrawableSizeWithState:stateCopy];
   if (v7 < v5)
   {
     v7 = v5;
@@ -509,19 +509,19 @@ LABEL_27:
   return result;
 }
 
-- (void)countRowsAndColumnsWithState:(id)a3
+- (void)countRowsAndColumnsWithState:(id)state
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   if (self->mMaxPopulatedRow < 0 && self->mMaxPopulatedColumn < 0)
   {
-    v5 = [(EDWorksheet *)self->edWorksheet rowBlocks];
+    rowBlocks = [(EDWorksheet *)self->edWorksheet rowBlocks];
     self->mMaxPopulatedColumn = 0;
-    v6 = [v5 maxPopulatedRow];
+    maxPopulatedRow = [rowBlocks maxPopulatedRow];
     self->mMaxPopulatedRow = 0;
-    v30 = [(EDWorksheet *)self->edWorksheet mergedCells];
-    v34 = (v6 + 1);
-    if (v6 == -1)
+    mergedCells = [(EDWorksheet *)self->edWorksheet mergedCells];
+    v34 = (maxPopulatedRow + 1);
+    if (maxPopulatedRow == -1)
     {
       v7 = 0;
     }
@@ -534,7 +534,7 @@ LABEL_27:
       {
         v9 = v7;
         v10 = v8;
-        v7 = [v5 rowBlockForRowNumber:? currentRowBlock:? createIfNil:?];
+        v7 = [rowBlocks rowBlockForRowNumber:? currentRowBlock:? createIfNil:?];
 
         if (v7)
         {
@@ -552,7 +552,7 @@ LABEL_27:
                 {
                   v14 = [v7 cellAtIndex:v13 rowInfo:v12];
                   v15 = columnNumberForEDCell(v14);
-                  if (![(EMWorksheetMapper *)self isCellNonEmpty:v14 state:v4])
+                  if (![(EMWorksheetMapper *)self isCellNonEmpty:v14 state:stateCopy])
                   {
                     break;
                   }
@@ -604,7 +604,7 @@ LABEL_21:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v30;
+    obj = mergedCells;
     v18 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v18)
     {
@@ -624,7 +624,7 @@ LABEL_21:
           {
             for (j = [v20 firstRow]; j <= objc_msgSend(v20, "lastRow"); ++j)
             {
-              v22 = [v5 rowBlockForRowNumber:j currentRowBlock:v7 createIfNil:0];
+              v22 = [rowBlocks rowBlockForRowNumber:j currentRowBlock:v7 createIfNil:0];
 
               v7 = v22;
               if (v22)
@@ -635,21 +635,21 @@ LABEL_21:
                 {
                   if (*(v23 + 8))
                   {
-                    v25 = [v20 firstColumn];
-                    while (v25 <= [v20 lastColumn])
+                    firstColumn = [v20 firstColumn];
+                    while (firstColumn <= [v20 lastColumn])
                     {
-                      v26 = -[EMWorksheetMapper isCellNonEmpty:state:](self, "isCellNonEmpty:state:", [v7 cellAtIndex:v25 rowInfo:v24], v4);
-                      v25 = (v25 + 1);
+                      v26 = -[EMWorksheetMapper isCellNonEmpty:state:](self, "isCellNonEmpty:state:", [v7 cellAtIndex:firstColumn rowInfo:v24], stateCopy);
+                      firstColumn = (firstColumn + 1);
                       if (v26)
                       {
-                        v27 = [v20 lastColumn];
-                        v28 = self->mMaxPopulatedColumn;
-                        if (v28 < v27)
+                        lastColumn = [v20 lastColumn];
+                        lastColumn2 = self->mMaxPopulatedColumn;
+                        if (lastColumn2 < lastColumn)
                         {
-                          v28 = [v20 lastColumn];
+                          lastColumn2 = [v20 lastColumn];
                         }
 
-                        self->mMaxPopulatedColumn = v28;
+                        self->mMaxPopulatedColumn = lastColumn2;
                         v29 = self->mMaxPopulatedRow;
                         if (v29 <= j)
                         {
@@ -675,20 +675,20 @@ LABEL_21:
   }
 }
 
-- (BOOL)isCellNonEmpty:(EDCellHeader *)a3 state:(id)a4
+- (BOOL)isCellNonEmpty:(EDCellHeader *)empty state:(id)state
 {
-  v5 = a4;
-  v6 = typeForEDCell(a3);
+  stateCopy = state;
+  v6 = typeForEDCell(empty);
   if (v6)
   {
     if (v6 == 3)
     {
-      v7 = [v5 document];
-      v8 = [v7 resources];
-      v9 = stringValueForEDCell(a3, v8);
+      document = [stateCopy document];
+      resources = [document resources];
+      v9 = stringValueForEDCell(empty, resources);
 
-      v10 = [v9 string];
-      v11 = [v10 length] == 0;
+      string = [v9 string];
+      v11 = [string length] == 0;
     }
 
     else
@@ -702,32 +702,32 @@ LABEL_21:
     v11 = 1;
   }
 
-  v12 = [v5 cellStyleWrapperForIndex:styleIndexForEDCell(a3)];
+  v12 = [stateCopy cellStyleWrapperForIndex:styleIndexForEDCell(empty)];
   v13 = v12;
   if (v11)
   {
-    v14 = [v12 isVisible];
+    isVisible = [v12 isVisible];
   }
 
   else
   {
-    v14 = 1;
+    isVisible = 1;
   }
 
-  return v14;
+  return isVisible;
 }
 
-- (void)mapColumnInfosAt:(id)a3 withState:(id)a4
+- (void)mapColumnInfosAt:(id)at withState:(id)state
 {
-  v39 = a3;
-  v38 = a4;
+  atCopy = at;
+  stateCopy = state;
   if ((self->mMaxPopulatedColumn & 0x8000000000000000) == 0)
   {
     [(EDWorksheet *)self->edWorksheet defaultColumnWidth];
     v7 = v6;
-    v8 = [(EDWorksheet *)self->edWorksheet columnInfos];
-    v36 = v8;
-    v9 = [v8 count];
+    columnInfos = [(EDWorksheet *)self->edWorksheet columnInfos];
+    v36 = columnInfos;
+    v9 = [columnInfos count];
     if (v9)
     {
       v37 = v9;
@@ -736,27 +736,27 @@ LABEL_21:
       v12 = 0.0;
       while (v11 < SLODWORD(self->mMaxPopulatedColumn))
       {
-        v13 = [v8 objectAtIndex:v10];
+        v13 = [columnInfos objectAtIndex:v10];
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 range];
-          v16 = [v15 firstColumn];
-          v17 = [v15 lastColumn];
-          if (v16 < 0 || (v18 = v17, v17 < 0) || self->mMaxPopulatedColumn < v16 || !self->mColumnGrid)
+          range = [v13 range];
+          firstColumn = [range firstColumn];
+          lastColumn = [range lastColumn];
+          if (firstColumn < 0 || (v18 = lastColumn, lastColumn < 0) || self->mMaxPopulatedColumn < firstColumn || !self->mColumnGrid)
           {
 
             v18 = v11;
-            v8 = v36;
+            columnInfos = v36;
             goto LABEL_27;
           }
 
-          if (v11 + 1 < v16)
+          if (v11 + 1 < firstColumn)
           {
-            v19 = [[EMColumnInfoMapper alloc] initWithDefaultWidth:v16 + ~v11 span:self parent:v7];
-            [(EMColumnInfoMapper *)v19 mapAt:v39 withState:v38];
+            v19 = [[EMColumnInfoMapper alloc] initWithDefaultWidth:firstColumn + ~v11 span:self parent:v7];
+            [(EMColumnInfoMapper *)v19 mapAt:atCopy withState:stateCopy];
             [(EMColumnInfoMapper *)v19 columnWidth];
-            v21 = ~v11 + v16;
+            v21 = ~v11 + firstColumn;
             v22 = &self->mColumnGrid[v11 + 1];
             do
             {
@@ -772,16 +772,16 @@ LABEL_21:
           if (([v14 isHidden] & 1) == 0)
           {
             v24 = [[EMColumnInfoMapper alloc] initWithEDColumnInfo:v14 maxSpan:self->mMaxPopulatedColumn - v11 parent:self];
-            [(EMColumnInfoMapper *)v24 mapAt:v39 withState:v38];
+            [(EMColumnInfoMapper *)v24 mapAt:atCopy withState:stateCopy];
             [(EMColumnInfoMapper *)v24 columnWidth];
             v23 = v25;
           }
 
-          if (v16 <= v18)
+          if (firstColumn <= v18)
           {
             mMaxPopulatedColumn = self->mMaxPopulatedColumn;
-            v27 = v16 - 1;
-            v28 = v16;
+            v27 = firstColumn - 1;
+            v28 = firstColumn;
             do
             {
               if (mMaxPopulatedColumn < v28)
@@ -799,7 +799,7 @@ LABEL_21:
           }
 
           v11 = v18;
-          v8 = v36;
+          columnInfos = v36;
         }
 
         else
@@ -826,7 +826,7 @@ LABEL_27:
     if (v18 < SLODWORD(self->mMaxPopulatedColumn) && self->mColumnGrid)
     {
       v29 = [[EMColumnInfoMapper alloc] initWithDefaultWidth:self->mMaxPopulatedColumn - v18 span:self parent:v7];
-      [(EMColumnInfoMapper *)v29 mapAt:v39 withState:v38];
+      [(EMColumnInfoMapper *)v29 mapAt:atCopy withState:stateCopy];
       [(EMColumnInfoMapper *)v29 columnWidth];
       v31 = self->mMaxPopulatedColumn;
       v32 = (v18 + 1);
@@ -851,9 +851,9 @@ LABEL_27:
   }
 }
 
-- (void)mapWorksheetClassesAtTableNode:(id)a3
+- (void)mapWorksheetClassesAtTableNode:(id)node
 {
-  v7 = a3;
+  nodeCopy = node;
   if ([(EDSheet *)self->edWorksheet isDisplayGridlines])
   {
     v4 = [&unk_286F6D6F8 arrayByAddingObject:@"showGridlines"];
@@ -867,21 +867,21 @@ LABEL_27:
   v5 = [v4 componentsJoinedByString:@" "];
   v6 = [OIXMLAttribute attributeWithName:@"class" stringValue:v5];
 
-  [v7 addAttribute:v6];
+  [nodeCopy addAttribute:v6];
 }
 
-- (void)mapDrawablesAt:(id)a3 withState:(id)a4
+- (void)mapDrawablesAt:(id)at withState:(id)state
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(EDSheet *)self->edWorksheet drawableCount];
-  if (v7)
+  atCopy = at;
+  stateCopy = state;
+  drawableCount = [(EDSheet *)self->edWorksheet drawableCount];
+  if (drawableCount)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != drawableCount; ++i)
     {
       v9 = [(EDSheet *)self->edWorksheet drawableAtIndex:i];
       v10 = [[EMDrawableMapper alloc] initWithOADDrawable:v9 parent:self];
-      [(EMDrawableMapper *)v10 mapAt:v17 withState:v6];
+      [(EMDrawableMapper *)v10 mapAt:atCopy withState:stateCopy];
       [(CMDrawableMapper *)v10 box];
       v15 = (v13 + v14);
       if (self->mWidth < v15)
@@ -898,21 +898,21 @@ LABEL_27:
   }
 }
 
-- (void)mapTableAt:(id)a3 withState:(id)a4
+- (void)mapTableAt:(id)at withState:(id)state
 {
-  v24 = a3;
-  v6 = a4;
-  v25 = v6;
+  atCopy = at;
+  stateCopy = state;
+  v25 = stateCopy;
   if ([(EMWorksheetMapper *)self isVisible])
   {
-    v27 = [(EDWorksheet *)self->edWorksheet rowBlocks];
+    rowBlocks = [(EDWorksheet *)self->edWorksheet rowBlocks];
     if ((self->mMaxPopulatedRow & 0x8000000000000000) == 0)
     {
       v7 = [OIXMLElement elementWithType:18];
-      [v24 addChild:v7];
-      [(EMWorksheetMapper *)self mapColumnInfosAt:v7 withState:v6];
-      v8 = [(CMStyle *)self->mStyle cssStyleString];
-      v9 = [OIXMLAttribute attributeWithName:@"style" stringValue:v8];
+      [atCopy addChild:v7];
+      [(EMWorksheetMapper *)self mapColumnInfosAt:v7 withState:stateCopy];
+      cssStyleString = [(CMStyle *)self->mStyle cssStyleString];
+      v9 = [OIXMLAttribute attributeWithName:@"style" stringValue:cssStyleString];
 
       [v7 addAttribute:v9];
       [(EMWorksheetMapper *)self mapWorksheetClassesAtTableNode:v7];
@@ -924,7 +924,7 @@ LABEL_27:
         v12 = -1;
         do
         {
-          v13 = [v27 rowBlockForRowNumber:v10 currentRowBlock:v11 createIfNil:{0, v23}];
+          v13 = [rowBlocks rowBlockForRowNumber:v10 currentRowBlock:v11 createIfNil:{0, v23}];
 
           if (v13)
           {
@@ -955,10 +955,10 @@ LABEL_27:
               v18 = [[EMRowMapper alloc] initWithEDRowBlock:v13 rowInfo:v15 parent:self];
               LOWORD(v19) = *(v15 + 20);
               self->mHeight = (v19 / 20.0 + self->mHeight);
-              v6 = v25;
+              stateCopy = v25;
               [(EMRowMapper *)v18 mapAt:v7 withState:v25];
-              v20 = [v25 isThumbnail];
-              v21 = v10 > 0xC8 ? v20 : 0;
+              isThumbnail = [v25 isThumbnail];
+              v21 = v10 > 0xC8 ? isThumbnail : 0;
 
               v12 = v26;
               if (v21)
@@ -984,11 +984,11 @@ LABEL_27:
   }
 }
 
-- (void)forceRecountForTesting:(id)a3
+- (void)forceRecountForTesting:(id)testing
 {
   self->mMaxPopulatedColumn = -1;
   self->mMaxPopulatedRow = -1;
-  [(EMWorksheetMapper *)self countRowsAndColumnsWithState:a3];
+  [(EMWorksheetMapper *)self countRowsAndColumnsWithState:testing];
 }
 
 @end

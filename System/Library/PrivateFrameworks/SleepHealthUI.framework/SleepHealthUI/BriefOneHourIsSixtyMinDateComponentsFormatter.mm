@@ -1,7 +1,7 @@
 @interface BriefOneHourIsSixtyMinDateComponentsFormatter
 - (_TtC13SleepHealthUI45BriefOneHourIsSixtyMinDateComponentsFormatter)init;
-- (_TtC13SleepHealthUI45BriefOneHourIsSixtyMinDateComponentsFormatter)initWithCoder:(id)a3;
-- (id)stringFromTimeInterval:(double)a3;
+- (_TtC13SleepHealthUI45BriefOneHourIsSixtyMinDateComponentsFormatter)initWithCoder:(id)coder;
+- (id)stringFromTimeInterval:(double)interval;
 @end
 
 @implementation BriefOneHourIsSixtyMinDateComponentsFormatter
@@ -17,16 +17,16 @@
   return v2;
 }
 
-- (_TtC13SleepHealthUI45BriefOneHourIsSixtyMinDateComponentsFormatter)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI45BriefOneHourIsSixtyMinDateComponentsFormatter)initWithCoder:(id)coder
 {
   result = sub_269D9B100();
   __break(1u);
   return result;
 }
 
-- (id)stringFromTimeInterval:(double)a3
+- (id)stringFromTimeInterval:(double)interval
 {
-  if (a3 > 3600.0)
+  if (interval > 3600.0)
   {
     v4 = 96;
   }
@@ -36,11 +36,11 @@
     v4 = 64;
   }
 
-  v5 = self;
-  [(NSDateComponentsFormatter *)v5 setAllowedUnits:v4];
-  v10.receiver = v5;
+  selfCopy = self;
+  [(NSDateComponentsFormatter *)selfCopy setAllowedUnits:v4];
+  v10.receiver = selfCopy;
   v10.super_class = type metadata accessor for BriefOneHourIsSixtyMinDateComponentsFormatter();
-  v6 = [(ForceDoubleZerosDateComponentsFormatter *)&v10 stringFromTimeInterval:a3];
+  v6 = [(ForceDoubleZerosDateComponentsFormatter *)&v10 stringFromTimeInterval:interval];
   if (v6)
   {
     v7 = v6;

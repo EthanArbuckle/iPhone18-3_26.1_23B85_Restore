@@ -1,6 +1,6 @@
 @interface ATXScreenUnlockUpdateSource
 - (ATXScreenUnlockUpdateSource)init;
-- (ATXScreenUnlockUpdateSource)initWithContextHelper:(id)a3 predictionContextBuilder:(id)a4;
+- (ATXScreenUnlockUpdateSource)initWithContextHelper:(id)helper predictionContextBuilder:(id)builder;
 - (ATXUpdatePredictionsDelegate)delegate;
 - (void)_handleScreenUnlockEvent;
 - (void)_listenForScreenUnlock;
@@ -17,18 +17,18 @@
   return v5;
 }
 
-- (ATXScreenUnlockUpdateSource)initWithContextHelper:(id)a3 predictionContextBuilder:(id)a4
+- (ATXScreenUnlockUpdateSource)initWithContextHelper:(id)helper predictionContextBuilder:(id)builder
 {
-  v7 = a3;
-  v8 = a4;
+  helperCopy = helper;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = ATXScreenUnlockUpdateSource;
   v9 = [(ATXScreenUnlockUpdateSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contextHelper, a3);
-    objc_storeStrong(&v10->_predictionContextBuilder, a4);
+    objc_storeStrong(&v9->_contextHelper, helper);
+    objc_storeStrong(&v10->_predictionContextBuilder, builder);
   }
 
   [(ATXScreenUnlockUpdateSource *)v10 _listenForScreenUnlock];
@@ -45,11 +45,11 @@
   v11 = &unk_27859B260;
   objc_copyWeak(&v12, &location);
   v3 = _Block_copy(&v8);
-  v4 = [MEMORY[0x277CFE338] keyPathForDeviceLockStatus];
-  v5 = [MEMORY[0x277CFE360] predicateForKeyPath:v4 equalToValue:&unk_283A57230];
+  keyPathForDeviceLockStatus = [MEMORY[0x277CFE338] keyPathForDeviceLockStatus];
+  v5 = [MEMORY[0x277CFE360] predicateForKeyPath:keyPathForDeviceLockStatus equalToValue:&unk_283A57230];
   v6 = [MEMORY[0x277CFE350] localWakingRegistrationWithIdentifier:@"com.apple.duetexpertd.ATXScreenUnlockUpdateSource" contextualPredicate:v5 clientIdentifier:@"com.apple.duetexpertd.cdidentifier" callback:v3];
-  v7 = [(ATXCoreDuetContextHelper *)self->_contextHelper context];
-  [v7 registerCallback:v6];
+  context = [(ATXCoreDuetContextHelper *)self->_contextHelper context];
+  [context registerCallback:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -84,7 +84,7 @@ void __53__ATXScreenUnlockUpdateSource__listenForScreenUnlock__block_invoke(uint
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tryUpdatePredictionsDefaultIntervalWithReason:7];
 
-  v7 = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder updateContextStreamAndReturnPredictionContextForCurrentContext];
+  updateContextStreamAndReturnPredictionContextForCurrentContext = [(ATXPredictionContextBuilderProtocol *)self->_predictionContextBuilder updateContextStreamAndReturnPredictionContextForCurrentContext];
   v8 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,14 +1,14 @@
 @interface CARSettingsCellSpecifierWrapperPanel
-+ (id)panelWrappingCellSpecifier:(id)a3;
++ (id)panelWrappingCellSpecifier:(id)specifier;
 @end
 
 @implementation CARSettingsCellSpecifierWrapperPanel
 
-+ (id)panelWrappingCellSpecifier:(id)a3
++ (id)panelWrappingCellSpecifier:(id)specifier
 {
-  v3 = a3;
+  specifierCopy = specifier;
   v4 = objc_opt_new();
-  [v4 setWrappedSpecifier:v3];
+  [v4 setWrappedSpecifier:specifierCopy];
 
   return v4;
 }

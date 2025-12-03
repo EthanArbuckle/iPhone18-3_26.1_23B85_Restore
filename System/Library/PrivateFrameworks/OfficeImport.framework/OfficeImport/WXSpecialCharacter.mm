@@ -1,15 +1,15 @@
 @interface WXSpecialCharacter
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXSpecialCharacter
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = [v7 WXMainNamespace];
-  v9 = OCXFindChild(a3, v8, "separator");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v9 = OCXFindChild(from, wXMainNamespace, "separator");
 
   if (v9)
   {
@@ -18,8 +18,8 @@
 
   else
   {
-    v11 = [v7 WXMainNamespace];
-    v12 = OCXFindChild(a3, v11, "continuationSeparator");
+    wXMainNamespace2 = [stateCopy WXMainNamespace];
+    v12 = OCXFindChild(from, wXMainNamespace2, "continuationSeparator");
 
     if (v12)
     {
@@ -32,7 +32,7 @@
     }
   }
 
-  [v13 setCharacterType:v10];
+  [toCopy setCharacterType:v10];
 }
 
 @end

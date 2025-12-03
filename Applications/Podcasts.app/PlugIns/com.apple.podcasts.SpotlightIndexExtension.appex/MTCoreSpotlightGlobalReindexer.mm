@@ -1,21 +1,21 @@
 @interface MTCoreSpotlightGlobalReindexer
-- (BOOL)collectNextBatch:(id)a3;
-- (MTCoreSpotlightGlobalReindexer)initWithStartingIndexPath:(id)a3;
-- (id)_entitiesByRemovingAlreadyProcessedFrom:(id)a3;
+- (BOOL)collectNextBatch:(id)batch;
+- (MTCoreSpotlightGlobalReindexer)initWithStartingIndexPath:(id)path;
+- (id)_entitiesByRemovingAlreadyProcessedFrom:(id)from;
 - (id)description;
 - (id)nextBatch;
 - (void)cancel;
-- (void)markUpdateUnnecessaryForObjectIDs:(id)a3;
+- (void)markUpdateUnnecessaryForObjectIDs:(id)ds;
 - (void)reset;
-- (void)setCanceled:(BOOL)a3;
-- (void)setCurrentFetchRequest:(id)a3;
+- (void)setCanceled:(BOOL)canceled;
+- (void)setCurrentFetchRequest:(id)request;
 @end
 
 @implementation MTCoreSpotlightGlobalReindexer
 
-- (MTCoreSpotlightGlobalReindexer)initWithStartingIndexPath:(id)a3
+- (MTCoreSpotlightGlobalReindexer)initWithStartingIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = MTCoreSpotlightGlobalReindexer;
   v5 = [(MTCoreSpotlightGlobalReindexer *)&v15 init];
@@ -44,11 +44,11 @@
     v5->_indexAllCompletions = v7;
 
     [(MTCoreSpotlightGlobalReindexer *)v5 reset];
-    if (v4)
+    if (pathCopy)
     {
-      v5->_nextIndexPath.object = [MTCoreSpotlightUtil objectTypeForIndexPath:v4];
-      v5->_nextIndexPath.batch = [MTCoreSpotlightUtil batchForIndexPath:v4];
-      v5->_indexInCurrentBatch = [MTCoreSpotlightUtil indexInBatchForIndexPath:v4];
+      v5->_nextIndexPath.object = [MTCoreSpotlightUtil objectTypeForIndexPath:pathCopy];
+      v5->_nextIndexPath.batch = [MTCoreSpotlightUtil batchForIndexPath:pathCopy];
+      v5->_indexInCurrentBatch = [MTCoreSpotlightUtil indexInBatchForIndexPath:pathCopy];
     }
 
     v9 = +[NSMutableSet set];
@@ -92,18 +92,18 @@
   return v8;
 }
 
-- (void)setCurrentFetchRequest:(id)a3
+- (void)setCurrentFetchRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   currentFetchRequest = self->_currentFetchRequest;
   p_currentFetchRequest = &self->_currentFetchRequest;
-  if (currentFetchRequest != v5)
+  if (currentFetchRequest != requestCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_currentFetchRequest, a3);
+    v8 = requestCopy;
+    objc_storeStrong(p_currentFetchRequest, request);
     [(NSFetchRequest *)*p_currentFetchRequest setFetchLimit:50000];
     [(NSFetchRequest *)*p_currentFetchRequest setResultType:1];
-    v5 = v8;
+    requestCopy = v8;
   }
 }
 
@@ -118,8 +118,8 @@
   else
   {
     v5 = 50000 * self->_nextIndexPath.batch;
-    v6 = [(MTCoreSpotlightGlobalReindexer *)self currentFetchRequest];
-    [v6 setFetchOffset:v5];
+    currentFetchRequest = [(MTCoreSpotlightGlobalReindexer *)self currentFetchRequest];
+    [currentFetchRequest setFetchOffset:v5];
 
     v18 = 0;
     v19 = &v18;
@@ -133,7 +133,7 @@
     v15 = sub_1000020F8;
     v16 = sub_100002108;
     v17 = 0;
-    v7 = [(MTCoreSpotlightGlobalReindexer *)self context];
+    context = [(MTCoreSpotlightGlobalReindexer *)self context];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100002110;
@@ -141,7 +141,7 @@
     v11[4] = self;
     v11[5] = &v12;
     v11[6] = &v18;
-    [v7 performBlockAndWait:v11];
+    [context performBlockAndWait:v11];
 
     v8 = v13[5];
     if (!v8)
@@ -153,7 +153,7 @@
     if ([v8 count])
     {
       ++self->_nextIndexPath.batch;
-      v9 = v13[5];
+      nextBatch = v13[5];
     }
 
     else
@@ -164,10 +164,10 @@
       v10 = [MTCoreSpotlightUtil fetchRequestForIndexType:?];
       [(MTCoreSpotlightGlobalReindexer *)self setCurrentFetchRequest:v10];
 
-      v9 = [(MTCoreSpotlightGlobalReindexer *)self nextBatch];
+      nextBatch = [(MTCoreSpotlightGlobalReindexer *)self nextBatch];
     }
 
-    v3 = v9;
+    v3 = nextBatch;
     _Block_object_dispose(&v12, 8);
 
     _Block_object_dispose(&v18, 8);
@@ -176,23 +176,23 @@
   return v3;
 }
 
-- (BOOL)collectNextBatch:(id)a3
+- (BOOL)collectNextBatch:(id)batch
 {
-  v4 = a3;
-  v5 = [(MTCoreSpotlightGlobalReindexer *)self nextBatch];
-  if ([v5 count])
+  batchCopy = batch;
+  nextBatch = [(MTCoreSpotlightGlobalReindexer *)self nextBatch];
+  if ([nextBatch count])
   {
-    v6 = [(MTCoreSpotlightGlobalReindexer *)self context];
+    context = [(MTCoreSpotlightGlobalReindexer *)self context];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_100002344;
     v14 = &unk_100014510;
-    v18 = v4;
-    v15 = self;
-    v7 = v5;
+    v18 = batchCopy;
+    selfCopy = self;
+    v7 = nextBatch;
     v16 = v7;
-    v17 = v6;
-    v8 = v6;
+    v17 = context;
+    v8 = context;
     [v8 performBlockAndWait:&v11];
     v9 = [v7 count] != 0;
   }
@@ -203,7 +203,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Indexing] *** batch processing - no more entities for processing [%@]", buf, 0xCu);
     }
 
@@ -220,10 +220,10 @@
   [(MTCoreSpotlightGlobalReindexer *)self setFinished:1];
 }
 
-- (void)setCanceled:(BOOL)a3
+- (void)setCanceled:(BOOL)canceled
 {
-  self->_canceled = a3;
-  if (a3)
+  self->_canceled = canceled;
+  if (canceled)
   {
     [(MTCoreSpotlightGlobalReindexer *)self setFinished:1];
   }
@@ -245,24 +245,24 @@
   [(MTCoreSpotlightGlobalReindexer *)self setFinished:0];
 }
 
-- (void)markUpdateUnnecessaryForObjectIDs:(id)a3
+- (void)markUpdateUnnecessaryForObjectIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     [(NSMutableSet *)self->_externallyProcessedMOIDs addObjectsFromArray:?];
   }
 }
 
-- (id)_entitiesByRemovingAlreadyProcessedFrom:(id)a3
+- (id)_entitiesByRemovingAlreadyProcessedFrom:(id)from
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002860;
   v9[3] = &unk_100014538;
   v9[4] = self;
-  v3 = a3;
-  v4 = [v3 mt_filter:v9];
-  v5 = [v3 count];
+  fromCopy = from;
+  v4 = [fromCopy mt_filter:v9];
+  v5 = [fromCopy count];
 
   v6 = v5 - [v4 count];
   if (v6 >= 1)

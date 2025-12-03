@@ -1,10 +1,10 @@
 @interface RMModelAppManagedDeclaration_Attributes
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithAssociatedDomains:(id)a3 associatedDomainsEnableDirectDownloads:(id)a4 cellularSliceUUID:(id)a5 contentFilterUUID:(id)a6 dnsProxyUUID:(id)a7 hideable:(id)a8 lockable:(id)a9 relayUUID:(id)a10 tapToPayScreenLock:(id)a11 VPNUUID:(id)a12;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildWithAssociatedDomains:(id)domains associatedDomainsEnableDirectDownloads:(id)downloads cellularSliceUUID:(id)d contentFilterUUID:(id)iD dnsProxyUUID:(id)uID hideable:(id)hideable lockable:(id)lockable relayUUID:(id)self0 tapToPayScreenLock:(id)self1 VPNUUID:(id)self2;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAppManagedDeclaration_Attributes
@@ -31,25 +31,25 @@
   return v4;
 }
 
-+ (id)buildWithAssociatedDomains:(id)a3 associatedDomainsEnableDirectDownloads:(id)a4 cellularSliceUUID:(id)a5 contentFilterUUID:(id)a6 dnsProxyUUID:(id)a7 hideable:(id)a8 lockable:(id)a9 relayUUID:(id)a10 tapToPayScreenLock:(id)a11 VPNUUID:(id)a12
++ (id)buildWithAssociatedDomains:(id)domains associatedDomainsEnableDirectDownloads:(id)downloads cellularSliceUUID:(id)d contentFilterUUID:(id)iD dnsProxyUUID:(id)uID hideable:(id)hideable lockable:(id)lockable relayUUID:(id)self0 tapToPayScreenLock:(id)self1 VPNUUID:(id)self2
 {
-  v36 = a12;
-  v18 = a11;
-  v34 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
+  nUUIDCopy = nUUID;
+  lockCopy = lock;
+  uUIDCopy = uUID;
+  lockableCopy = lockable;
+  hideableCopy = hideable;
+  uIDCopy = uID;
+  iDCopy = iD;
+  dCopy = d;
+  downloadsCopy = downloads;
+  domainsCopy = domains;
   v26 = objc_opt_new();
-  [v26 setPayloadAssociatedDomains:v25];
+  [v26 setPayloadAssociatedDomains:domainsCopy];
 
   v27 = MEMORY[0x277CBEC28];
-  if (v24)
+  if (downloadsCopy)
   {
-    v28 = v24;
+    v28 = downloadsCopy;
   }
 
   else
@@ -57,16 +57,16 @@
     v28 = MEMORY[0x277CBEC28];
   }
 
-  [v26 setPayloadAssociatedDomainsEnableDirectDownloads:{v28, v34}];
+  [v26 setPayloadAssociatedDomainsEnableDirectDownloads:{v28, uUIDCopy}];
 
-  [v26 setPayloadCellularSliceUUID:v23];
-  [v26 setPayloadContentFilterUUID:v22];
+  [v26 setPayloadCellularSliceUUID:dCopy];
+  [v26 setPayloadContentFilterUUID:iDCopy];
 
-  [v26 setPayloadDNSProxyUUID:v21];
+  [v26 setPayloadDNSProxyUUID:uIDCopy];
   v29 = MEMORY[0x277CBEC38];
-  if (v20)
+  if (hideableCopy)
   {
-    v30 = v20;
+    v30 = hideableCopy;
   }
 
   else
@@ -76,9 +76,9 @@
 
   [v26 setPayloadHideable:v30];
 
-  if (v19)
+  if (lockableCopy)
   {
-    v31 = v19;
+    v31 = lockableCopy;
   }
 
   else
@@ -89,9 +89,9 @@
   [v26 setPayloadLockable:v31];
 
   [v26 setPayloadRelayUUID:v35];
-  if (v18)
+  if (lockCopy)
   {
-    v32 = v18;
+    v32 = lockCopy;
   }
 
   else
@@ -101,7 +101,7 @@
 
   [v26 setPayloadTapToPayScreenLock:v32];
 
-  [v26 setPayloadVPNUUID:v36];
+  [v26 setPayloadVPNUUID:nUUIDCopy];
 
   return v26;
 }
@@ -113,12 +113,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAppManagedDeclaration_Attributes allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -126,55 +126,55 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"AssociatedDomains" forKeyPath:@"payloadAssociatedDomains" validator:&__block_literal_global_477 isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"AssociatedDomainsEnableDirectDownloads" forKeyPath:@"payloadAssociatedDomainsEnableDirectDownloads" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"CellularSliceUUID" forKeyPath:@"payloadCellularSliceUUID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ContentFilterUUID" forKeyPath:@"payloadContentFilterUUID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"DNSProxyUUID" forKeyPath:@"payloadDNSProxyUUID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Hideable" forKeyPath:@"payloadHideable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Lockable" forKeyPath:@"payloadLockable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"RelayUUID" forKeyPath:@"payloadRelayUUID" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"TapToPayScreenLock" forKeyPath:@"payloadTapToPayScreenLock" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"VPNUUID" forKeyPath:@"payloadVPNUUID" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"AssociatedDomains" forKeyPath:@"payloadAssociatedDomains" validator:&__block_literal_global_477 isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"AssociatedDomainsEnableDirectDownloads" forKeyPath:@"payloadAssociatedDomainsEnableDirectDownloads" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"CellularSliceUUID" forKeyPath:@"payloadCellularSliceUUID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ContentFilterUUID" forKeyPath:@"payloadContentFilterUUID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DNSProxyUUID" forKeyPath:@"payloadDNSProxyUUID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Hideable" forKeyPath:@"payloadHideable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Lockable" forKeyPath:@"payloadLockable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"RelayUUID" forKeyPath:@"payloadRelayUUID" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"TapToPayScreenLock" forKeyPath:@"payloadTapToPayScreenLock" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VPNUUID" forKeyPath:@"payloadVPNUUID" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAppManagedDeclaration_Attributes *)self payloadAssociatedDomains];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"AssociatedDomains" value:v5 itemSerializer:&__block_literal_global_508 isRequired:0 defaultValue:0];
+  payloadAssociatedDomains = [(RMModelAppManagedDeclaration_Attributes *)self payloadAssociatedDomains];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"AssociatedDomains" value:payloadAssociatedDomains itemSerializer:&__block_literal_global_508 isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelAppManagedDeclaration_Attributes *)self payloadAssociatedDomainsEnableDirectDownloads];
+  payloadAssociatedDomainsEnableDirectDownloads = [(RMModelAppManagedDeclaration_Attributes *)self payloadAssociatedDomainsEnableDirectDownloads];
   v7 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AssociatedDomainsEnableDirectDownloads" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AssociatedDomainsEnableDirectDownloads" value:payloadAssociatedDomainsEnableDirectDownloads isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v8 = [(RMModelAppManagedDeclaration_Attributes *)self payloadCellularSliceUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CellularSliceUUID" value:v8 isRequired:0 defaultValue:0];
+  payloadCellularSliceUUID = [(RMModelAppManagedDeclaration_Attributes *)self payloadCellularSliceUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CellularSliceUUID" value:payloadCellularSliceUUID isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelAppManagedDeclaration_Attributes *)self payloadContentFilterUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ContentFilterUUID" value:v9 isRequired:0 defaultValue:0];
+  payloadContentFilterUUID = [(RMModelAppManagedDeclaration_Attributes *)self payloadContentFilterUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ContentFilterUUID" value:payloadContentFilterUUID isRequired:0 defaultValue:0];
 
-  v10 = [(RMModelAppManagedDeclaration_Attributes *)self payloadDNSProxyUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DNSProxyUUID" value:v10 isRequired:0 defaultValue:0];
+  payloadDNSProxyUUID = [(RMModelAppManagedDeclaration_Attributes *)self payloadDNSProxyUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DNSProxyUUID" value:payloadDNSProxyUUID isRequired:0 defaultValue:0];
 
-  v11 = [(RMModelAppManagedDeclaration_Attributes *)self payloadHideable];
+  payloadHideable = [(RMModelAppManagedDeclaration_Attributes *)self payloadHideable];
   v12 = MEMORY[0x277CBEC38];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Hideable" value:v11 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Hideable" value:payloadHideable isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v13 = [(RMModelAppManagedDeclaration_Attributes *)self payloadLockable];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Lockable" value:v13 isRequired:0 defaultValue:v12];
+  payloadLockable = [(RMModelAppManagedDeclaration_Attributes *)self payloadLockable];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Lockable" value:payloadLockable isRequired:0 defaultValue:v12];
 
-  v14 = [(RMModelAppManagedDeclaration_Attributes *)self payloadRelayUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"RelayUUID" value:v14 isRequired:0 defaultValue:0];
+  payloadRelayUUID = [(RMModelAppManagedDeclaration_Attributes *)self payloadRelayUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"RelayUUID" value:payloadRelayUUID isRequired:0 defaultValue:0];
 
-  v15 = [(RMModelAppManagedDeclaration_Attributes *)self payloadTapToPayScreenLock];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"TapToPayScreenLock" value:v15 isRequired:0 defaultValue:v7];
+  payloadTapToPayScreenLock = [(RMModelAppManagedDeclaration_Attributes *)self payloadTapToPayScreenLock];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"TapToPayScreenLock" value:payloadTapToPayScreenLock isRequired:0 defaultValue:v7];
 
-  v16 = [(RMModelAppManagedDeclaration_Attributes *)self payloadVPNUUID];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VPNUUID" value:v16 isRequired:0 defaultValue:0];
+  payloadVPNUUID = [(RMModelAppManagedDeclaration_Attributes *)self payloadVPNUUID];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VPNUUID" value:payloadVPNUUID isRequired:0 defaultValue:0];
 
   v17 = [v4 copy];
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26.receiver = self;
   v26.super_class = RMModelAppManagedDeclaration_Attributes;
-  v4 = [(RMModelPayloadBase *)&v26 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v26 copyWithZone:zone];
   v5 = [(NSArray *)self->_payloadAssociatedDomains copy];
   v6 = v4[2];
   v4[2] = v5;

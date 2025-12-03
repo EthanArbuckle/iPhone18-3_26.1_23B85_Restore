@@ -15,15 +15,15 @@
   v11 = __Block_byref_object_copy__25;
   v12 = __Block_byref_object_dispose__25;
   v13 = 0;
-  v2 = [a1 attachment];
-  v3 = [v2 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__ICAttachmentSystemPaperModel_UI__imageForActivityItem__block_invoke;
   v7[3] = &unk_1E8468FA8;
-  v7[4] = a1;
+  v7[4] = self;
   v7[5] = &v8;
-  [v3 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   if (v9[5])
   {
@@ -44,8 +44,8 @@
 - (ICAttachmentSystemPaperActivityItemSource)activityItem
 {
   v2 = [ICAttachmentSystemPaperActivityItemSource alloc];
-  v3 = [a1 attachment];
-  v4 = [(ICAttachmentActivityItemSource *)v2 initWithAttachment:v3];
+  attachment = [self attachment];
+  v4 = [(ICAttachmentActivityItemSource *)v2 initWithAttachment:attachment];
 
   return v4;
 }
@@ -53,11 +53,11 @@
 - (id)activityItems
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 activityItem];
-  v3 = v2;
-  if (v2)
+  activityItem = [self activityItem];
+  v3 = activityItem;
+  if (activityItem)
   {
-    v10[0] = v2;
+    v10[0] = activityItem;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
 
@@ -67,8 +67,8 @@
   }
 
   v5 = [ICAttachmentActivityItemSource alloc];
-  v6 = [a1 attachment];
-  v7 = [(ICAttachmentActivityItemSource *)v5 initWithAttachment:v6];
+  attachment = [self attachment];
+  v7 = [(ICAttachmentActivityItemSource *)v5 initWithAttachment:attachment];
   v8 = [v4 arrayByAddingObject:v7];
 
   return v8;
@@ -76,9 +76,9 @@
 
 - (void)drawPreviewInRect:()UI
 {
-  v10 = [MEMORY[0x1E69B7678] currentInfo];
-  v11 = [a1 attachment];
-  v12 = [ICSystemPaperImageGenerator imageGeneratorWithPaperAttachment:v11];
+  currentInfo = [MEMORY[0x1E69B7678] currentInfo];
+  attachment = [self attachment];
+  v12 = [ICSystemPaperImageGenerator imageGeneratorWithPaperAttachment:attachment];
 
   [v12 setSixChannelBlendingEnabled:0];
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -104,7 +104,7 @@
   v27 = a3;
   v28 = a4;
   v29 = a5;
-  v23[4] = a1;
+  v23[4] = self;
   v25 = &v34;
   v18 = v12;
   v24 = v18;
@@ -112,15 +112,15 @@
   v31 = y;
   v32 = width;
   v33 = height;
-  [v10 performAsDefaultAppearance:v23];
+  [currentInfo performAsDefaultAppearance:v23];
   if ((v35[3] & 1) == 0)
   {
-    v19 = [a1 attachment];
-    v20 = [v19 fallbackImageData];
+    attachment2 = [self attachment];
+    fallbackImageData = [attachment2 fallbackImageData];
 
-    if (v20)
+    if (fallbackImageData)
     {
-      v21 = [MEMORY[0x1E69DCAB8] ic_imageWithData:v20];
+      v21 = [MEMORY[0x1E69DCAB8] ic_imageWithData:fallbackImageData];
       v22 = [ICAttachmentPreviewImageLoader orientedImage:v21 withBackground:0];
 
       [v22 drawInRect:{a2, a3, a4, a5}];

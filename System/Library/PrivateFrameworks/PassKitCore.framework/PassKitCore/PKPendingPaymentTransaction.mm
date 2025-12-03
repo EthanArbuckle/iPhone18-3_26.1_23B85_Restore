@@ -1,23 +1,23 @@
 @interface PKPendingPaymentTransaction
-- (PKPendingPaymentTransaction)initWithTransaction:(id)a3 pass:(id)a4 paymentApplication:(id)a5;
+- (PKPendingPaymentTransaction)initWithTransaction:(id)transaction pass:(id)pass paymentApplication:(id)application;
 @end
 
 @implementation PKPendingPaymentTransaction
 
-- (PKPendingPaymentTransaction)initWithTransaction:(id)a3 pass:(id)a4 paymentApplication:(id)a5
+- (PKPendingPaymentTransaction)initWithTransaction:(id)transaction pass:(id)pass paymentApplication:(id)application
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  transactionCopy = transaction;
+  passCopy = pass;
+  applicationCopy = application;
   v15.receiver = self;
   v15.super_class = PKPendingPaymentTransaction;
   v12 = [(PKPendingPaymentTransaction *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_transaction, a3);
-    objc_storeStrong(&v13->_pass, a4);
-    objc_storeStrong(&v13->_paymentApplication, a5);
+    objc_storeStrong(&v12->_transaction, transaction);
+    objc_storeStrong(&v13->_pass, pass);
+    objc_storeStrong(&v13->_paymentApplication, application);
   }
 
   return v13;

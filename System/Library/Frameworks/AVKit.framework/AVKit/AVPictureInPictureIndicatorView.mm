@@ -2,74 +2,74 @@
 - (void)_addIndicatorLayerIfNeeded;
 - (void)_updateGeometry;
 - (void)didMoveToWindow;
-- (void)layoutSublayersOfLayer:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCustomMessage:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
+- (void)setBackgroundColor:(id)color;
+- (void)setCustomMessage:(id)message;
 @end
 
 @implementation AVPictureInPictureIndicatorView
 
 - (void)_addIndicatorLayerIfNeeded
 {
-  v3 = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
-  if (!v3)
+  pipIndicatorLayer = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
+  if (!pipIndicatorLayer)
   {
-    v4 = [(AVPictureInPictureIndicatorView *)self window];
+    window = [(AVPictureInPictureIndicatorView *)self window];
 
-    if (!v4)
+    if (!window)
     {
       return;
     }
 
     v5 = MEMORY[0x1E69DCAB8];
     v6 = AVBundle();
-    v7 = [(AVPictureInPictureIndicatorView *)self window];
-    v8 = [v7 traitCollection];
-    v23 = [v5 imageNamed:@"PictureInPictureIndicatorLarge" inBundle:v6 compatibleWithTraitCollection:v8];
+    window2 = [(AVPictureInPictureIndicatorView *)self window];
+    traitCollection = [window2 traitCollection];
+    v23 = [v5 imageNamed:@"PictureInPictureIndicatorLarge" inBundle:v6 compatibleWithTraitCollection:traitCollection];
 
-    v9 = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
-    v10 = [v23 _flatImageWithColor:v9];
+    aV_indicatorForegroundColor = [MEMORY[0x1E69DC888] AV_indicatorForegroundColor];
+    v10 = [v23 _flatImageWithColor:aV_indicatorForegroundColor];
 
     v11 = [AVPictureInPictureIndicatorLayer alloc];
-    v12 = [(AVPictureInPictureIndicatorView *)self window];
-    v13 = [v12 traitCollection];
-    [v13 displayScale];
+    window3 = [(AVPictureInPictureIndicatorView *)self window];
+    traitCollection2 = [window3 traitCollection];
+    [traitCollection2 displayScale];
     v15 = v14;
-    v16 = [v10 CGImage];
-    v17 = [(AVPictureInPictureIndicatorLayer *)v11 initWithDisplayScale:v16 placeholderImage:0 opaque:v15 videoRectWhenPIPBegan:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+    cGImage = [v10 CGImage];
+    v17 = [(AVPictureInPictureIndicatorLayer *)v11 initWithDisplayScale:cGImage placeholderImage:0 opaque:v15 videoRectWhenPIPBegan:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
 
     [(AVPictureInPictureIndicatorView *)self setPipIndicatorLayer:v17];
-    v18 = [(AVPictureInPictureIndicatorView *)self customMessage];
+    customMessage = [(AVPictureInPictureIndicatorView *)self customMessage];
 
-    if (v18)
+    if (customMessage)
     {
-      v19 = [(AVPictureInPictureIndicatorView *)self customMessage];
-      v20 = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
-      [v20 setCustomText:v19];
+      customMessage2 = [(AVPictureInPictureIndicatorView *)self customMessage];
+      pipIndicatorLayer2 = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
+      [pipIndicatorLayer2 setCustomText:customMessage2];
     }
 
-    v21 = [(AVPictureInPictureIndicatorView *)self layer];
-    v22 = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
-    [v21 addSublayer:v22];
+    layer = [(AVPictureInPictureIndicatorView *)self layer];
+    pipIndicatorLayer3 = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
+    [layer addSublayer:pipIndicatorLayer3];
 
-    v3 = v23;
+    pipIndicatorLayer = v23;
   }
 }
 
 - (void)_updateGeometry
 {
-  v2 = self;
+  selfCopy = self;
   v47 = *MEMORY[0x1E69E9840];
   [(AVPictureInPictureIndicatorView *)self _addIndicatorLayerIfNeeded];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v3 = [(AVPictureInPictureIndicatorView *)v2 layer];
-  v4 = [v3 animationKeys];
+  layer = [(AVPictureInPictureIndicatorView *)selfCopy layer];
+  animationKeys = [layer animationKeys];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  obj = animationKeys;
+  v5 = [animationKeys countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v5)
   {
     v6 = v5;
@@ -86,25 +86,25 @@
         }
 
         v9 = *(*(&v41 + 1) + 8 * v8);
-        v10 = [(AVPictureInPictureIndicatorView *)v2 layer];
-        v11 = [v10 animationForKey:v9];
+        layer2 = [(AVPictureInPictureIndicatorView *)selfCopy layer];
+        v11 = [layer2 animationForKey:v9];
 
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && (([v9 containsString:@"position"] & 1) != 0 || objc_msgSend(v9, "containsString:", @"bounds.origin")))
         {
           v12 = v7;
-          v13 = [(AVPictureInPictureIndicatorView *)v2 pipIndicatorLayer];
-          [v13 addAnimation:v11 forKey:v9];
+          pipIndicatorLayer = [(AVPictureInPictureIndicatorView *)selfCopy pipIndicatorLayer];
+          [pipIndicatorLayer addAnimation:v11 forKey:v9];
 
           v39 = 0u;
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v14 = v2;
-          v15 = [(AVPictureInPictureIndicatorView *)v2 pipIndicatorLayer];
-          v16 = [v15 sublayers];
+          v14 = selfCopy;
+          pipIndicatorLayer2 = [(AVPictureInPictureIndicatorView *)selfCopy pipIndicatorLayer];
+          sublayers = [pipIndicatorLayer2 sublayers];
 
-          v17 = [v16 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          v17 = [sublayers countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v17)
           {
             v18 = v17;
@@ -116,14 +116,14 @@
               {
                 if (*v38 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(sublayers);
                 }
 
                 [*(*(&v37 + 1) + 8 * v20++) addAnimation:v11 forKey:v9];
               }
 
               while (v18 != v20);
-              v18 = [v16 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v18 = [sublayers countByEnumeratingWithState:&v37 objects:v45 count:16];
             }
 
             while (v18);
@@ -131,7 +131,7 @@
 
           v7 = v12;
           v6 = v35;
-          v2 = v14;
+          selfCopy = v14;
         }
 
         ++v8;
@@ -144,51 +144,51 @@
     while (v6);
   }
 
-  [(AVPictureInPictureIndicatorView *)v2 bounds];
+  [(AVPictureInPictureIndicatorView *)selfCopy bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(AVPictureInPictureIndicatorView *)v2 pipIndicatorLayer];
-  [v29 setBounds:{v22, v24, v26, v28}];
+  pipIndicatorLayer3 = [(AVPictureInPictureIndicatorView *)selfCopy pipIndicatorLayer];
+  [pipIndicatorLayer3 setBounds:{v22, v24, v26, v28}];
 
-  [(AVPictureInPictureIndicatorView *)v2 bounds];
+  [(AVPictureInPictureIndicatorView *)selfCopy bounds];
   UIRectGetCenter();
   v31 = v30;
   v33 = v32;
-  v34 = [(AVPictureInPictureIndicatorView *)v2 pipIndicatorLayer];
-  [v34 setPosition:{v31, v33}];
+  pipIndicatorLayer4 = [(AVPictureInPictureIndicatorView *)selfCopy pipIndicatorLayer];
+  [pipIndicatorLayer4 setPosition:{v31, v33}];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v8.receiver = self;
   v8.super_class = AVPictureInPictureIndicatorView;
-  v4 = a3;
-  [(AVPictureInPictureIndicatorView *)&v8 setBackgroundColor:v4];
-  v5 = v4;
-  v6 = [v5 CGColor];
+  colorCopy = color;
+  [(AVPictureInPictureIndicatorView *)&v8 setBackgroundColor:colorCopy];
+  v5 = colorCopy;
+  cGColor = [v5 CGColor];
 
-  v7 = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
-  [v7 setBackgroundColor:v6];
+  pipIndicatorLayer = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
+  [pipIndicatorLayer setBackgroundColor:cGColor];
 }
 
-- (void)setCustomMessage:(id)a3
+- (void)setCustomMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  messageCopy = message;
+  v5 = [messageCopy copy];
   customMessage = self->_customMessage;
   self->_customMessage = v5;
 
-  v7 = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
-  [v7 setCustomText:v4];
+  pipIndicatorLayer = [(AVPictureInPictureIndicatorView *)self pipIndicatorLayer];
+  [pipIndicatorLayer setCustomText:messageCopy];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = AVPictureInPictureIndicatorView;
-  [(AVPictureInPictureIndicatorView *)&v4 layoutSublayersOfLayer:a3];
+  [(AVPictureInPictureIndicatorView *)&v4 layoutSublayersOfLayer:layer];
   [(AVPictureInPictureIndicatorView *)self _updateGeometry];
 }
 

@@ -1,55 +1,55 @@
 @interface PKTrustedDeviceEnrollmentInfo
-- (PKTrustedDeviceEnrollmentInfo)initWithCoder:(id)a3;
+- (PKTrustedDeviceEnrollmentInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTrustedDeviceEnrollmentInfo
 
-- (PKTrustedDeviceEnrollmentInfo)initWithCoder:(id)a3
+- (PKTrustedDeviceEnrollmentInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKTrustedDeviceEnrollmentInfo;
   v5 = [(PKTrustedDeviceEnrollmentInfo *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceSerialNumber"];
     deviceSerialNumber = v5->_deviceSerialNumber;
     v5->_deviceSerialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceUDID"];
     deviceUDID = v5->_deviceUDID;
     v5->_deviceUDID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
     productType = v5->_productType;
     v5->_productType = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
     secureElementIdentifier = v5->_secureElementIdentifier;
     v5->_secureElementIdentifier = v14;
 
-    v5->_supportsAccessExpressMode = [v4 decodeBoolForKey:@"supportsAccessExpressMode"];
+    v5->_supportsAccessExpressMode = [coderCopy decodeBoolForKey:@"supportsAccessExpressMode"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceName = self->_deviceName;
-  v5 = a3;
-  [v5 encodeObject:deviceName forKey:@"deviceName"];
-  [v5 encodeObject:self->_deviceSerialNumber forKey:@"deviceSerialNumber"];
-  [v5 encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
-  [v5 encodeObject:self->_productType forKey:@"productType"];
-  [v5 encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
-  [v5 encodeBool:self->_supportsAccessExpressMode forKey:@"supportsAccessExpressMode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
+  [coderCopy encodeObject:self->_deviceSerialNumber forKey:@"deviceSerialNumber"];
+  [coderCopy encodeObject:self->_deviceUDID forKey:@"deviceUDID"];
+  [coderCopy encodeObject:self->_productType forKey:@"productType"];
+  [coderCopy encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
+  [coderCopy encodeBool:self->_supportsAccessExpressMode forKey:@"supportsAccessExpressMode"];
 }
 
 - (id)description

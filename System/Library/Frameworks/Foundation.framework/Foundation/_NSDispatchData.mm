@@ -1,11 +1,11 @@
 @interface _NSDispatchData
-- (id)subdataWithRange:(_NSRange)a3;
+- (id)subdataWithRange:(_NSRange)range;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateByteRangesUsingBlock:(id)a3;
-- (void)getBytes:(void *)a3;
-- (void)getBytes:(void *)a3 length:(unint64_t)a4;
-- (void)getBytes:(void *)a3 range:(_NSRange)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateByteRangesUsingBlock:(id)block;
+- (void)getBytes:(void *)bytes;
+- (void)getBytes:(void *)bytes length:(unint64_t)length;
+- (void)getBytes:(void *)bytes range:(_NSRange)range;
 @end
 
 @implementation _NSDispatchData
@@ -45,42 +45,42 @@
   return v5;
 }
 
-- (void)getBytes:(void *)a3
+- (void)getBytes:(void *)bytes
 {
   size = dispatch_data_get_size(&self->super.super);
 
-  [(_NSDispatchData *)self getBytes:a3 range:0, size];
+  [(_NSDispatchData *)self getBytes:bytes range:0, size];
 }
 
-- (void)getBytes:(void *)a3 length:(unint64_t)a4
+- (void)getBytes:(void *)bytes length:(unint64_t)length
 {
-  v4 = a4;
-  if ([(NSData *)self length]< a4)
+  lengthCopy = length;
+  if ([(NSData *)self length]< length)
   {
-    v4 = [(NSData *)self length];
+    lengthCopy = [(NSData *)self length];
   }
 
-  [(_NSDispatchData *)self getBytes:a3 range:0, v4];
+  [(_NSDispatchData *)self getBytes:bytes range:0, lengthCopy];
 }
 
-- (void)enumerateByteRangesUsingBlock:(id)a3
+- (void)enumerateByteRangesUsingBlock:(id)block
 {
   v3[5] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __49___NSDispatchData_enumerateByteRangesUsingBlock___block_invoke;
   v3[3] = &unk_1E69FAB20;
-  v3[4] = a3;
+  v3[4] = block;
   dispatch_data_apply(&self->super.super, v3);
 }
 
-- (void)getBytes:(void *)a3 range:(_NSRange)a4
+- (void)getBytes:(void *)bytes range:(_NSRange)range
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v9 = [(NSData *)self length];
     if (__CFADD__(length, location))
     {
@@ -97,7 +97,7 @@
         v16[0] = 0;
         v16[1] = v16;
         v16[2] = 0x2020000000;
-        v16[3] = a3;
+        v16[3] = bytes;
         applier[0] = MEMORY[0x1E69E9820];
         applier[1] = 3221225472;
         applier[2] = __34___NSDispatchData_getBytes_range___block_invoke;
@@ -121,12 +121,12 @@
   }
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v7 = [(NSData *)self length];
     if (__CFADD__(length, location))
     {
@@ -160,14 +160,14 @@
   return [v10 data];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     if (objc_opt_isKindOfClass())
     {
       v5 = xpc_data_create_with_dispatch_data(&self->super.super);
-      [a3 encodeXPCObject:v5 forKey:@"NS.xpcdata"];
+      [coder encodeXPCObject:v5 forKey:@"NS.xpcdata"];
 
       xpc_release(v5);
     }
@@ -177,16 +177,16 @@
       v6 = [(NSData *)self length];
       if ([(NSData *)self _isCompact])
       {
-        v7 = [(NSData *)self bytes];
+        bytes = [(NSData *)self bytes];
 
-        [a3 encodeBytes:v7 length:v6 forKey:@"NS.bytes"];
+        [coder encodeBytes:bytes length:v6 forKey:@"NS.bytes"];
       }
 
       else
       {
         v8 = malloc_type_malloc(v6, 0x55DED7EAuLL);
         [(_NSDispatchData *)self getBytes:v8 length:v6];
-        [a3 encodeBytes:v8 length:v6 forKey:@"NS.bytes"];
+        [coder encodeBytes:v8 length:v6 forKey:@"NS.bytes"];
 
         free(v8);
       }
@@ -196,7 +196,7 @@
   else
   {
 
-    [a3 encodeDataObject:self];
+    [coder encodeDataObject:self];
   }
 }
 

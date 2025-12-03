@@ -1,15 +1,15 @@
 @interface RTTripClusterScheduleMO
-+ (id)managedObjectWithTripClusterSchedule:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripClusterSchedule:(id)schedule inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripClusterScheduleMO
 
-+ (id)managedObjectWithTripClusterSchedule:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripClusterSchedule:(id)schedule inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  scheduleCopy = schedule;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!scheduleCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -25,14 +25,14 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTTripClusterScheduleMO alloc] initWithContext:v6];
-    v9 = [v5 clusterID];
-    [(RTTripClusterScheduleMO *)v8 setClusterID:v9];
+    v8 = [[RTTripClusterScheduleMO alloc] initWithContext:contextCopy];
+    clusterID = [scheduleCopy clusterID];
+    [(RTTripClusterScheduleMO *)v8 setClusterID:clusterID];
 
-    -[RTTripClusterScheduleMO setTimeID:](v8, "setTimeID:", [v5 timeID]);
-    -[RTTripClusterScheduleMO setCount:](v8, "setCount:", [v5 count]);
+    -[RTTripClusterScheduleMO setTimeID:](v8, "setTimeID:", [scheduleCopy timeID]);
+    -[RTTripClusterScheduleMO setCount:](v8, "setCount:", [scheduleCopy count]);
     goto LABEL_8;
   }
 

@@ -1,12 +1,12 @@
 @interface TRISignedAssetURL
 + (id)allReferencedCKRecordKeys;
-+ (id)assetURLFromCKRecord:(id)a3 assetId:(id *)a4;
-+ (id)assetURLWithUrl:(id)a3 signature:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAssetURL:(id)a3;
-- (TRISignedAssetURL)initWithUrl:(id)a3 signature:(id)a4;
-- (id)copyWithReplacementSignature:(id)a3;
-- (id)copyWithReplacementUrl:(id)a3;
++ (id)assetURLFromCKRecord:(id)record assetId:(id *)id;
++ (id)assetURLWithUrl:(id)url signature:(id)signature;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAssetURL:(id)l;
+- (TRISignedAssetURL)initWithUrl:(id)url signature:(id)signature;
+- (id)copyWithReplacementSignature:(id)signature;
+- (id)copyWithReplacementUrl:(id)url;
 - (id)description;
 @end
 
@@ -27,24 +27,24 @@
   return v4;
 }
 
-+ (id)assetURLFromCKRecord:(id)a3 assetId:(id *)a4
++ (id)assetURLFromCKRecord:(id)record assetId:(id *)id
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 values];
-  v9 = v8;
-  if (v8)
+  recordCopy = record;
+  values = [recordCopy values];
+  v9 = values;
+  if (values)
   {
-    v10 = [v8 triStringValueForField:*MEMORY[0x277D73888] isNestedValue:0];
+    v10 = [values triStringValueForField:*MEMORY[0x277D73888] isNestedValue:0];
     v11 = v10;
     if (!v10 || ![v10 length])
     {
       v12 = TRILogCategory_Server();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        v20 = [v7 recordID];
+        recordID = [recordCopy recordID];
         *buf = 138412290;
-        v39 = v20;
+        v39 = recordID;
         _os_log_fault_impl(&dword_26F567000, v12, OS_LOG_TYPE_FAULT, "Asset in CloudKit record %@ has missing or corrupt assetId.", buf, 0xCu);
       }
 
@@ -55,28 +55,28 @@
     v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277D73880]];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v13 = TRILogCategory_Server();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+      fileURL = TRILogCategory_Server();
+      if (os_log_type_enabled(fileURL, OS_LOG_TYPE_FAULT))
       {
-        v24 = [v7 recordID];
+        recordID2 = [recordCopy recordID];
         *buf = 138543618;
         v39 = v11;
         v40 = 2112;
-        v41 = v24;
-        _os_log_fault_impl(&dword_26F567000, v13, OS_LOG_TYPE_FAULT, "Asset %{public}@ in CloudKit record %@ has missing or corrupt asset.", buf, 0x16u);
+        v41 = recordID2;
+        _os_log_fault_impl(&dword_26F567000, fileURL, OS_LOG_TYPE_FAULT, "Asset %{public}@ in CloudKit record %@ has missing or corrupt asset.", buf, 0x16u);
       }
 
       v19 = 0;
       goto LABEL_40;
     }
 
-    v13 = [v12 fileURL];
-    if (!v13)
+    fileURL = [v12 fileURL];
+    if (!fileURL)
     {
       v14 = TRILogCategory_Server();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
-        [v7 recordID];
+        [recordCopy recordID];
         v31 = v30 = v14;
         *buf = 138543618;
         v39 = v11;
@@ -102,21 +102,21 @@
         if (v37)
         {
           v36 = v14;
-          v17 = [v13 path];
-          if (!v17)
+          path = [fileURL path];
+          if (!path)
           {
-            v35 = [MEMORY[0x277CCA890] currentHandler];
-            [v35 handleFailureInMethod:a2 object:a1 file:@"TRISignedAssetURL+CloudKit.m" lineNumber:83 description:{@"Expression was unexpectedly nil/false: %@", @"assetURL.path"}];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"TRISignedAssetURL+CloudKit.m" lineNumber:83 description:{@"Expression was unexpectedly nil/false: %@", @"assetURL.path"}];
           }
 
-          v18 = [v37 validateBase64Signature:v36 forFile:v17];
+          v18 = [v37 validateBase64Signature:v36 forFile:path];
 
           if (v18)
           {
 
-            objc_storeStrong(a4, v11);
+            objc_storeStrong(id, v11);
             v14 = v36;
-            v19 = [[TRISignedAssetURL alloc] initWithUrl:v13 signature:v36];
+            v19 = [[TRISignedAssetURL alloc] initWithUrl:fileURL signature:v36];
 LABEL_38:
 
 LABEL_39:
@@ -129,11 +129,11 @@ LABEL_41:
           v25 = TRILogCategory_Server();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
           {
-            v34 = [v7 recordID];
+            recordID3 = [recordCopy recordID];
             *buf = 138543618;
             v39 = v11;
             v40 = 2112;
-            v41 = v34;
+            v41 = recordID3;
             _os_log_fault_impl(&dword_26F567000, v25, OS_LOG_TYPE_FAULT, "Asset %{public}@ from CloudKit record %@ has an invalid signature.", buf, 0x16u);
           }
 
@@ -145,7 +145,7 @@ LABEL_41:
           v25 = TRILogCategory_Server();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
           {
-            [v7 recordID];
+            [recordCopy recordID];
             v27 = v26 = v14;
             *buf = 138543618;
             v39 = v11;
@@ -163,7 +163,7 @@ LABEL_41:
         v23 = TRILogCategory_Server();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
         {
-          [v7 recordID];
+          [recordCopy recordID];
           v33 = v32 = v14;
           *buf = 138543618;
           v39 = v11;
@@ -183,11 +183,11 @@ LABEL_41:
       v16 = TRILogCategory_Server();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
-        v22 = [v7 recordID];
+        recordID4 = [recordCopy recordID];
         *buf = 138543618;
         v39 = v11;
         v40 = 2112;
-        v41 = v22;
+        v41 = recordID4;
         _os_log_fault_impl(&dword_26F567000, v16, OS_LOG_TYPE_FAULT, "Asset %{public}@ in CloudKit record %@ has missing or corrupt asset signature.", buf, 0x16u);
 
         v14 = 0;
@@ -201,9 +201,9 @@ LABEL_41:
   v11 = TRILogCategory_Server();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
   {
-    v21 = [v7 recordID];
+    recordID5 = [recordCopy recordID];
     *buf = 138412290;
-    v39 = v21;
+    v39 = recordID5;
     _os_log_fault_impl(&dword_26F567000, v11, OS_LOG_TYPE_FAULT, "Could not create Asset artifact from CloudKit record %@.", buf, 0xCu);
   }
 
@@ -215,14 +215,14 @@ LABEL_42:
   return v19;
 }
 
-- (TRISignedAssetURL)initWithUrl:(id)a3 signature:(id)a4
+- (TRISignedAssetURL)initWithUrl:(id)url signature:(id)signature
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  urlCopy = url;
+  signatureCopy = signature;
+  v10 = signatureCopy;
+  if (urlCopy)
   {
-    if (v9)
+    if (signatureCopy)
     {
       goto LABEL_3;
     }
@@ -230,8 +230,8 @@ LABEL_42:
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:965 description:{@"Invalid parameter not satisfying: %@", @"url != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:965 description:{@"Invalid parameter not satisfying: %@", @"url != nil"}];
 
     if (v10)
     {
@@ -239,8 +239,8 @@ LABEL_42:
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:966 description:{@"Invalid parameter not satisfying: %@", @"signature != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:966 description:{@"Invalid parameter not satisfying: %@", @"signature != nil"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -249,49 +249,49 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_url, a3);
-    objc_storeStrong(&v12->_signature, a4);
+    objc_storeStrong(&v11->_url, url);
+    objc_storeStrong(&v12->_signature, signature);
   }
 
   return v12;
 }
 
-+ (id)assetURLWithUrl:(id)a3 signature:(id)a4
++ (id)assetURLWithUrl:(id)url signature:(id)signature
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithUrl:v7 signature:v6];
+  signatureCopy = signature;
+  urlCopy = url;
+  v8 = [[self alloc] initWithUrl:urlCopy signature:signatureCopy];
 
   return v8;
 }
 
-- (id)copyWithReplacementUrl:(id)a3
+- (id)copyWithReplacementUrl:(id)url
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithUrl:v4 signature:self->_signature];
+  urlCopy = url;
+  v5 = [objc_alloc(objc_opt_class()) initWithUrl:urlCopy signature:self->_signature];
 
   return v5;
 }
 
-- (id)copyWithReplacementSignature:(id)a3
+- (id)copyWithReplacementSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithUrl:self->_url signature:v4];
+  signatureCopy = signature;
+  v5 = [objc_alloc(objc_opt_class()) initWithUrl:self->_url signature:signatureCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToAssetURL:(id)a3
+- (BOOL)isEqualToAssetURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (!lCopy)
   {
     goto LABEL_8;
   }
 
   v6 = self->_url == 0;
-  v7 = [v4 url];
+  v7 = [lCopy url];
   v8 = v7 != 0;
 
   if (v6 == v8)
@@ -312,8 +312,8 @@ LABEL_3:
   }
 
   v12 = self->_signature == 0;
-  v13 = [v5 signature];
-  v14 = v13 != 0;
+  signature = [v5 signature];
+  v14 = signature != 0;
 
   if (v12 == v14)
   {
@@ -326,8 +326,8 @@ LABEL_8:
     signature = self->_signature;
     if (signature)
     {
-      v16 = [v5 signature];
-      v17 = [(NSString *)signature isEqual:v16];
+      signature2 = [v5 signature];
+      v17 = [(NSString *)signature isEqual:signature2];
     }
 
     else
@@ -339,18 +339,18 @@ LABEL_8:
   return v17 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRISignedAssetURL *)self isEqualToAssetURL:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRISignedAssetURL *)self isEqualToAssetURL:v5];
   }
 
   return v6;

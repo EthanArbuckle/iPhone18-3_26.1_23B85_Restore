@@ -1,16 +1,16 @@
 @interface MagazineSectionBarViewController
-- (_TtC7NewsUI232MagazineSectionBarViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI232MagazineSectionBarViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI232MagazineSectionBarViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI232MagazineSectionBarViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)deselect;
-- (void)startTraversingWithDirection:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)startTraversingWithDirection:(int64_t)direction;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation MagazineSectionBarViewController
 
-- (_TtC7NewsUI232MagazineSectionBarViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI232MagazineSectionBarViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI232MagazineSectionBarViewController_isBeingUsedAsPlugin) = 0;
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC7NewsUI232MagazineSectionBarViewController_pluggableDelegate) = 0;
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC7NewsUI232MagazineSectionBarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI232MagazineSectionBarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -33,36 +33,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2197D2B44();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2197D2F44();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(MagazineSectionBarViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(MagazineSectionBarViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_2197D4690();
 }
 
-- (void)startTraversingWithDirection:(int64_t)a3
+- (void)startTraversingWithDirection:(int64_t)direction
 {
-  v3 = self;
+  selfCopy = self;
   sub_219BE8684();
 }
 
 - (void)deselect
 {
-  v3 = self;
+  selfCopy = self;
   sub_219BE8664();
   v2 = sub_219BE7BC4();
 

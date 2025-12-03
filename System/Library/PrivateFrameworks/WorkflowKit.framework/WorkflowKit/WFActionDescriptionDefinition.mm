@@ -1,24 +1,24 @@
 @interface WFActionDescriptionDefinition
-- (WFActionDescriptionDefinition)initWithDictionary:(id)a3;
-- (id)definitionByAddingEntriesInDictionary:(id)a3;
-- (id)objectForKey:(id)a3;
+- (WFActionDescriptionDefinition)initWithDictionary:(id)dictionary;
+- (id)definitionByAddingEntriesInDictionary:(id)dictionary;
+- (id)objectForKey:(id)key;
 @end
 
 @implementation WFActionDescriptionDefinition
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   if (self)
   {
     self = self->_definition;
   }
 
-  return [(WFActionDescriptionDefinition *)self objectForKey:a3];
+  return [(WFActionDescriptionDefinition *)self objectForKey:key];
 }
 
-- (id)definitionByAddingEntriesInDictionary:(id)a3
+- (id)definitionByAddingEntriesInDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [WFActionDescriptionDefinition alloc];
   if (self)
   {
@@ -30,20 +30,20 @@
     definition = 0;
   }
 
-  v7 = [(NSDictionary *)definition if_dictionaryByAddingEntriesFromDictionary:v4];
+  v7 = [(NSDictionary *)definition if_dictionaryByAddingEntriesFromDictionary:dictionaryCopy];
 
   v8 = [(WFActionDescriptionDefinition *)v5 initWithDictionary:v7];
 
   return v8;
 }
 
-- (WFActionDescriptionDefinition)initWithDictionary:(id)a3
+- (WFActionDescriptionDefinition)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFActionDefinition.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFActionDefinition.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
   }
 
   v12.receiver = self;
@@ -51,7 +51,7 @@
   v6 = [(WFActionDescriptionDefinition *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [dictionaryCopy copy];
     definition = v6->_definition;
     v6->_definition = v7;
 

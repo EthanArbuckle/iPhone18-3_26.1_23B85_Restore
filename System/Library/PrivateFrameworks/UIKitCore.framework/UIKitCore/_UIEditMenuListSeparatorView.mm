@@ -1,34 +1,34 @@
 @interface _UIEditMenuListSeparatorView
-- (_UIEditMenuListSeparatorView)initWithFrame:(CGRect)a3;
+- (_UIEditMenuListSeparatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIEditMenuListSeparatorView
 
-- (_UIEditMenuListSeparatorView)initWithFrame:(CGRect)a3
+- (_UIEditMenuListSeparatorView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = _UIEditMenuListSeparatorView;
-  v3 = [(UICollectionReusableView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 traitCollection];
-    v6 = _UIEditMenuGetPlatformMetrics([v5 userInterfaceIdiom]);
+    traitCollection = [(UIView *)v3 traitCollection];
+    v6 = _UIEditMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
     v7 = [UIVisualEffectView alloc];
-    v8 = [v6 separatorEffect];
-    v9 = [(UIVisualEffectView *)v7 initWithEffect:v8];
+    separatorEffect = [v6 separatorEffect];
+    v9 = [(UIVisualEffectView *)v7 initWithEffect:separatorEffect];
 
-    v10 = [v6 separatorEffectColor];
-    v11 = [(UIVisualEffectView *)v9 contentView];
-    [v11 setBackgroundColor:v10];
+    separatorEffectColor = [v6 separatorEffectColor];
+    contentView = [(UIVisualEffectView *)v9 contentView];
+    [contentView setBackgroundColor:separatorEffectColor];
 
-    v12 = [(UIVisualEffectView *)v9 contentView];
-    v13 = [v12 layer];
-    [v13 setAllowsEdgeAntialiasing:1];
+    contentView2 = [(UIVisualEffectView *)v9 contentView];
+    layer = [contentView2 layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
-    v14 = [(UIVisualEffectView *)v9 contentView];
-    [v14 setClipsToBounds:0];
+    contentView3 = [(UIVisualEffectView *)v9 contentView];
+    [contentView3 setClipsToBounds:0];
 
     [(UIView *)v4 addSubview:v9];
     separatorView = v4->_separatorView;
@@ -43,9 +43,9 @@
   v18.receiver = self;
   v18.super_class = _UIEditMenuListSeparatorView;
   [(UIView *)&v18 layoutSubviews];
-  v3 = [(_UIEditMenuListSeparatorView *)self separatorView];
-  v4 = [(UIView *)self traitCollection];
-  v5 = _UIEditMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+  separatorView = [(_UIEditMenuListSeparatorView *)self separatorView];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = _UIEditMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
   [v5 additionalSeparatorInsets];
   v7 = v6;
   v9 = v8;
@@ -61,7 +61,7 @@
     v17 = v17 - (v7 + v11);
   }
 
-  [v3 setFrame:{v14, v15, v16, v17}];
+  [separatorView setFrame:{v14, v15, v16, v17}];
 }
 
 @end

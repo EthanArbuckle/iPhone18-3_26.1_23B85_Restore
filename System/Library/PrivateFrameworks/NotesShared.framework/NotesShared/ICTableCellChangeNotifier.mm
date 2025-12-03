@@ -1,8 +1,8 @@
 @interface ICTableCellChangeNotifier
 - (ICTableCellChangeNotifier)init;
-- (void)addObserver:(id)a3;
-- (void)notifyOfChangeAtColumnID:(id)a3 rowID:(id)a4 delta:(int64_t)a5;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)notifyOfChangeAtColumnID:(id)d rowID:(id)iD delta:(int64_t)delta;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ICTableCellChangeNotifier
@@ -14,39 +14,39 @@
   v2 = [(ICTableCellChangeNotifier *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ICTableCellChangeNotifier *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(ICTableCellChangeNotifier *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ICTableCellChangeNotifier *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(ICTableCellChangeNotifier *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)notifyOfChangeAtColumnID:(id)a3 rowID:(id)a4 delta:(int64_t)a5
+- (void)notifyOfChangeAtColumnID:(id)d rowID:(id)iD delta:(int64_t)delta
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [(ICTableCellChangeNotifier *)self observers];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  observers = [(ICTableCellChangeNotifier *)self observers];
+  v11 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -58,14 +58,14 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(observers);
         }
 
-        [*(*(&v15 + 1) + 8 * v14++) tableValueDidChangeAtColumnID:v8 rowID:v9 delta:a5];
+        [*(*(&v15 + 1) + 8 * v14++) tableValueDidChangeAtColumnID:dCopy rowID:iDCopy delta:delta];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [observers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);

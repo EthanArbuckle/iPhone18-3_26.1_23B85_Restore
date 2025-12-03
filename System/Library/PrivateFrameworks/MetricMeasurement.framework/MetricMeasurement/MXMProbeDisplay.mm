@@ -2,9 +2,9 @@
 + (MXMDisplayDescriptor)mainDescriptor;
 + (NSArray)descriptors;
 + (id)probe;
-+ (id)probeWithDescriptor:(id)a3;
++ (id)probeWithDescriptor:(id)descriptor;
 - (MXMProbeDisplay)init;
-- (MXMProbeDisplay)initWithDescriptor:(id)a3;
+- (MXMProbeDisplay)initWithDescriptor:(id)descriptor;
 - (void)_beginUpdates;
 - (void)_stopUpdates;
 @end
@@ -19,13 +19,13 @@
   v9 = __Block_byref_object_copy__0;
   v10 = __Block_byref_object_dispose__0;
   v11 = 0;
-  v2 = [a1 descriptors];
+  descriptors = [self descriptors];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __33__MXMProbeDisplay_mainDescriptor__block_invoke;
   v5[3] = &unk_2798C95C8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [descriptors enumerateObjectsUsingBlock:v5];
 
   WeakRetained = objc_loadWeakRetained(v7 + 5);
   _Block_object_dispose(&v6, 8);
@@ -53,43 +53,43 @@ void __33__MXMProbeDisplay_mainDescriptor__block_invoke(uint64_t a1, void *a2, u
 
 + (id)probe
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)probeWithDescriptor:(id)a3
++ (id)probeWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  descriptorCopy = descriptor;
+  v5 = [[self alloc] initWithDescriptor:descriptorCopy];
 
   return v5;
 }
 
 - (MXMProbeDisplay)init
 {
-  v3 = [objc_opt_class() mainDescriptor];
+  selfCopy = [objc_opt_class() mainDescriptor];
 
-  if (v3)
+  if (selfCopy)
   {
-    v4 = [objc_opt_class() mainDescriptor];
-    self = [(MXMProbeDisplay *)self initWithDescriptor:v4];
+    mainDescriptor = [objc_opt_class() mainDescriptor];
+    self = [(MXMProbeDisplay *)self initWithDescriptor:mainDescriptor];
 
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (MXMProbeDisplay)initWithDescriptor:(id)a3
+- (MXMProbeDisplay)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v13.receiver = self;
   v13.super_class = MXMProbeDisplay;
   v6 = [(MXMProbe *)&v13 init];
   if (v6)
   {
-    if (!v5)
+    if (!descriptorCopy)
     {
       [(MXMProbeDisplay *)a2 initWithDescriptor:v6];
     }
@@ -101,8 +101,8 @@ void __33__MXMProbeDisplay_mainDescriptor__block_invoke(uint64_t a1, void *a2, u
     }
 
     v7 = [MXMDisplayProbe_iphoneOS_Internal alloc];
-    v8 = [(MXMProbe *)v6 updateQueue];
-    v9 = [(MXMDisplayProbe_iphoneOS_Internal *)v7 initPrivateWithDescriptor:v5 queue:v8];
+    updateQueue = [(MXMProbe *)v6 updateQueue];
+    v9 = [(MXMDisplayProbe_iphoneOS_Internal *)v7 initPrivateWithDescriptor:descriptorCopy queue:updateQueue];
     impl = v6->_impl;
     v6->_impl = v9;
 

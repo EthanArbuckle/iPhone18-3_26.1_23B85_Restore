@@ -2,23 +2,23 @@
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
 - (id)stickersHostViewController;
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
-- (void)addStickerAnimationDidFinishWithCompletion:(id)a3;
-- (void)addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4;
-- (void)addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4;
-- (void)addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
-- (void)animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4;
-- (void)appPresenterCardDidDismiss:(id)a3;
-- (void)appPresenterDidDismissFullscreenModal:(id)a3;
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion;
+- (void)addStickerAnimationDidFinishWithCompletion:(id)completion;
+- (void)addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler;
+- (void)addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds;
+- (void)addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion;
+- (void)animatedStickerCreationProgressChanged:(id)changed progress:(double)progress;
+- (void)appPresenterCardDidDismiss:(id)dismiss;
+- (void)appPresenterDidDismissFullscreenModal:(id)modal;
 - (void)didRemoveStickerPreview;
-- (void)didSelectAppWithBundleIdentifier:(id)a3;
+- (void)didSelectAppWithBundleIdentifier:(id)identifier;
 - (void)dismiss;
-- (void)presentPopoverAtWindowLocation:(CGRect)a3 completion:(id)a4;
-- (void)requestStageSticker:(id)a3;
-- (void)updateCompactCardHeight:(double)a3;
-- (void)updatePopoverWindowLocation:(CGRect)a3 completion:(id)a4;
+- (void)presentPopoverAtWindowLocation:(CGRect)location completion:(id)completion;
+- (void)requestStageSticker:(id)sticker;
+- (void)updateCompactCardHeight:(double)height;
+- (void)updatePopoverWindowLocation:(CGRect)location completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation StickersAppCardViewController
@@ -39,117 +39,117 @@
   [(IMAAppPresenter *)self->_appPresenter setDelegate:self];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = StickersAppCardViewController;
-  v7 = a4;
-  [(StickersAppCardViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(StickersAppCardViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000032A4;
   v8[3] = &unk_100010618;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 - (void)dismiss
 {
   self->_isPresentingStandaloneFullscreenModal = 0;
-  v2 = [(StickersAppCardViewController *)self _remoteViewControllerProxy];
-  [v2 dismissCard];
+  _remoteViewControllerProxy = [(StickersAppCardViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismissCard];
 }
 
-- (void)requestStageSticker:(id)a3
+- (void)requestStageSticker:(id)sticker
 {
-  v4 = a3;
+  stickerCopy = sticker;
   v5 = sub_100007044();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 stickerIdentifier];
+    stickerIdentifier = [stickerCopy stickerIdentifier];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = stickerIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Staging sticker with identifier %@", &buf, 0xCu);
   }
 
-  v7 = [(StickersAppCardViewController *)self _remoteViewControllerProxy];
-  v8 = [v4 representations];
-  if (!v8)
+  _remoteViewControllerProxy = [(StickersAppCardViewController *)self _remoteViewControllerProxy];
+  representations = [stickerCopy representations];
+  if (!representations)
   {
-    v9 = [v4 fileURL];
-    v10 = v9 == 0;
+    fileURL = [stickerCopy fileURL];
+    v10 = fileURL == 0;
 
     if (v10)
     {
-      v8 = 0;
+      representations = 0;
     }
 
     else
     {
-      v11 = [v4 fileURL];
-      v8 = [MSSticker _stickerRepresentationsForImageFileURL:v11];
+      fileURL2 = [stickerCopy fileURL];
+      representations = [MSSticker _stickerRepresentationsForImageFileURL:fileURL2];
     }
   }
 
-  v12 = [v4 stickerIdentifier];
-  if (!v12)
+  stickerIdentifier2 = [stickerCopy stickerIdentifier];
+  if (!stickerIdentifier2)
   {
-    v13 = [v4 fileURL];
-    v14 = [v13 lastPathComponent];
-    v15 = v14;
-    if (v14)
+    fileURL3 = [stickerCopy fileURL];
+    lastPathComponent = [fileURL3 lastPathComponent];
+    v15 = lastPathComponent;
+    if (lastPathComponent)
     {
-      v12 = v14;
+      stickerIdentifier2 = lastPathComponent;
     }
 
     else
     {
       v16 = +[NSUUID UUID];
-      v12 = [v16 UUIDString];
+      stickerIdentifier2 = [v16 UUIDString];
     }
   }
 
   v17 = objc_opt_new();
-  [v17 setIdentifier:v12];
-  [v17 setRepresentations:v8];
-  v18 = [v4 stickerName];
-  [v17 setName:v18];
+  [v17 setIdentifier:stickerIdentifier2];
+  [v17 setRepresentations:representations];
+  stickerName = [stickerCopy stickerName];
+  [v17 setName:stickerName];
 
-  v19 = [v4 stickerEffectType];
-  v20 = v19;
-  if (!v19)
+  stickerEffectType = [stickerCopy stickerEffectType];
+  v20 = stickerEffectType;
+  if (!stickerEffectType)
   {
-    v19 = &off_100010A70;
+    stickerEffectType = &off_100010A70;
   }
 
-  [v17 setEffectType:{objc_msgSend(v19, "intValue")}];
+  [v17 setEffectType:{objc_msgSend(stickerEffectType, "intValue")}];
 
-  v21 = [v4 externalURI];
-  [v17 setExternalURI:v21];
+  externalURI = [stickerCopy externalURI];
+  [v17 setExternalURI:externalURI];
 
-  v22 = [v4 accessibilityLabel];
-  [v17 setAccessibilityLabel:v22];
+  accessibilityLabel = [stickerCopy accessibilityLabel];
+  [v17 setAccessibilityLabel:accessibilityLabel];
 
-  v23 = [v4 metadata];
-  [v17 setMetadata:v23];
+  metadata = [stickerCopy metadata];
+  [v17 setMetadata:metadata];
 
-  v24 = [v4 ckAttributionInfo];
-  [v17 setAttributionInfo:v24];
+  ckAttributionInfo = [stickerCopy ckAttributionInfo];
+  [v17 setAttributionInfo:ckAttributionInfo];
 
-  [v7 stageSticker:v17];
+  [_remoteViewControllerProxy stageSticker:v17];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100003778;
   v31[3] = &unk_100010640;
-  v25 = v4;
+  v25 = stickerCopy;
   v32 = v25;
-  v26 = v12;
+  v26 = stickerIdentifier2;
   v33 = v26;
-  v27 = v8;
+  v27 = representations;
   v34 = v27;
-  [v7 remoteHandlesRecentsStickerDonationWithCompletionHandler:v31];
+  [_remoteViewControllerProxy remoteHandlesRecentsStickerDonationWithCompletionHandler:v31];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2050000000;
@@ -170,72 +170,72 @@
   _Block_object_dispose(&v35, 8);
   if (objc_opt_respondsToSelector())
   {
-    v30 = [(StickersAppCardViewController *)self _hostApplicationBundleIdentifier];
-    [v28 trackStickerSentFromHostBundleIdentifier:v30];
+    _hostApplicationBundleIdentifier = [(StickersAppCardViewController *)self _hostApplicationBundleIdentifier];
+    [v28 trackStickerSentFromHostBundleIdentifier:_hostApplicationBundleIdentifier];
   }
 }
 
-- (void)updateCompactCardHeight:(double)a3
+- (void)updateCompactCardHeight:(double)height
 {
-  if (self->_compactHeight != a3)
+  if (self->_compactHeight != height)
   {
-    v5 = [(StickersAppCardViewController *)self appPresenter];
-    [v5 setCompactHeight:a3];
-    if (self->_compactHeight < a3)
+    appPresenter = [(StickersAppCardViewController *)self appPresenter];
+    [appPresenter setCompactHeight:height];
+    if (self->_compactHeight < height)
     {
-      [v5 updateAppFrameForRotation];
+      [appPresenter updateAppFrameForRotation];
     }
 
-    self->_compactHeight = a3;
+    self->_compactHeight = height;
   }
 }
 
-- (void)presentPopoverAtWindowLocation:(CGRect)a3 completion:(id)a4
+- (void)presentPopoverAtWindowLocation:(CGRect)location completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = location.size.height;
+  width = location.size.width;
+  y = location.origin.y;
+  x = location.origin.x;
+  completionCopy = completion;
   v10 = IMStickersExtensionIdentifier();
   v13 = IMBalloonExtensionIDWithSuffix();
 
   appPresenter = self->_appPresenter;
-  v12 = [(StickersAppCardViewController *)self view];
-  [(IMAAppPresenter *)appPresenter presentPopoverAppWithBundleIdentifier:v13 sourceRect:v12 inView:v9 completion:x, y, width, height];
+  view = [(StickersAppCardViewController *)self view];
+  [(IMAAppPresenter *)appPresenter presentPopoverAppWithBundleIdentifier:v13 sourceRect:view inView:completionCopy completion:x, y, width, height];
 }
 
-- (void)updatePopoverWindowLocation:(CGRect)a3 completion:(id)a4
+- (void)updatePopoverWindowLocation:(CGRect)location completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = location.size.height;
+  width = location.size.width;
+  y = location.origin.y;
+  x = location.origin.x;
   appPresenter = self->_appPresenter;
-  v10 = a4;
-  v11 = [(StickersAppCardViewController *)self view];
-  [(IMAAppPresenter *)appPresenter updatePopoverWindowLocation:v11 inView:v10 completion:x, y, width, height];
+  completionCopy = completion;
+  view = [(StickersAppCardViewController *)self view];
+  [(IMAAppPresenter *)appPresenter updatePopoverWindowLocation:view inView:completionCopy completion:x, y, width, height];
 }
 
-- (void)animatedStickerCreationProgressChanged:(id)a3 progress:(double)a4
+- (void)animatedStickerCreationProgressChanged:(id)changed progress:(double)progress
 {
-  v6 = a3;
-  v7 = [(StickersAppCardViewController *)self stickersHostViewController];
-  [v7 _animatedStickerCreationProgressChanged:v6 progress:a4];
+  changedCopy = changed;
+  stickersHostViewController = [(StickersAppCardViewController *)self stickersHostViewController];
+  [stickersHostViewController _animatedStickerCreationProgressChanged:changedCopy progress:progress];
 }
 
-- (void)addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4
+- (void)addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(StickersAppCardViewController *)self stickersHostViewController];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  representationsCopy = representations;
+  handlerCopy = handler;
+  stickersHostViewController = [(StickersAppCardViewController *)self stickersHostViewController];
+  if (stickersHostViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    objc_initWeak(&location, v8);
+    objc_initWeak(&location, stickersHostViewController);
     v9 = sub_100007044();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 count];
+      v10 = [representationsCopy count];
       *buf = 134217984;
       v18 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Adding sticker to store with %lu representations", buf, 0xCu);
@@ -247,14 +247,14 @@
     v13[3] = &unk_100010668;
     objc_copyWeak(&v15, &location);
     v13[4] = self;
-    v14 = v7;
-    [v8 _addStickerToStoreWithRepresentations:v6 completionHandler:v13];
+    v14 = handlerCopy;
+    [stickersHostViewController _addStickerToStoreWithRepresentations:representationsCopy completionHandler:v13];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     v11 = sub_100007044();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -263,32 +263,32 @@
     }
 
     v12 = [NSError errorWithDomain:IMAErrorDomain code:1 userInfo:0];
-    (*(v7 + 2))(v7, v12, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
+    (*(handlerCopy + 2))(handlerCopy, v12, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
   }
 }
 
-- (void)addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4
+- (void)addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(StickersAppCardViewController *)self stickersHostViewController];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  representationsCopy = representations;
+  dsCopy = ds;
+  stickersHostViewController = [(StickersAppCardViewController *)self stickersHostViewController];
+  if (stickersHostViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    objc_initWeak(&location, v8);
+    objc_initWeak(&location, stickersHostViewController);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100004228;
     v11[3] = &unk_100010690;
     objc_copyWeak(&v13, &location);
     v11[4] = self;
-    v12 = v7;
-    [v8 _addStickerToStoreWithRepresentations:v6 completionWithStickerIDs:v11];
+    v12 = dsCopy;
+    [stickersHostViewController _addStickerToStoreWithRepresentations:representationsCopy completionWithStickerIDs:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (dsCopy)
   {
     v9 = sub_100007044();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -297,34 +297,34 @@
     }
 
     v10 = [NSError errorWithDomain:IMAErrorDomain code:1 userInfo:0];
-    (*(v7 + 2))(v7, 0, v10, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
+    (*(dsCopy + 2))(dsCopy, 0, v10, CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height);
   }
 }
 
-- (void)addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  v13 = [(StickersAppCardViewController *)self stickersHostViewController];
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  representationsCopy = representations;
+  completionCopy = completion;
+  stickersHostViewController = [(StickersAppCardViewController *)self stickersHostViewController];
+  if (stickersHostViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000044F8;
     v16[3] = &unk_1000106B8;
-    v17 = v12;
-    [v13 _addStickerToStoreWithRepresentations:v11 sourceRect:v16 completion:{x, y, width, height}];
+    v17 = completionCopy;
+    [stickersHostViewController _addStickerToStoreWithRepresentations:representationsCopy sourceRect:v16 completion:{x, y, width, height}];
     v14 = v17;
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v15 = sub_100007044();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -333,37 +333,37 @@ LABEL_8:
     }
 
     v14 = [NSError errorWithDomain:IMAErrorDomain code:1 userInfo:0];
-    (*(v12 + 2))(v12, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
     goto LABEL_8;
   }
 
 LABEL_9:
 }
 
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  v13 = [(StickersAppCardViewController *)self stickersHostViewController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stickerCopy = sticker;
+  completionCopy = completion;
+  stickersHostViewController = [(StickersAppCardViewController *)self stickersHostViewController];
   if (objc_opt_respondsToSelector())
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000046F8;
     v16[3] = &unk_1000106B8;
-    v17 = v12;
-    [v13 _addStickerToStoreWithUISticker:v11 sourceRect:v16 completion:{x, y, width, height}];
+    v17 = completionCopy;
+    [stickersHostViewController _addStickerToStoreWithUISticker:stickerCopy sourceRect:v16 completion:{x, y, width, height}];
     v14 = v17;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v15 = sub_100007044();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -372,34 +372,34 @@ LABEL_7:
     }
 
     v14 = [NSError errorWithDomain:IMAErrorDomain code:1 userInfo:0];
-    (*(v12 + 2))(v12, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)addStickerAnimationDidFinishWithCompletion:(id)a3
+- (void)addStickerAnimationDidFinishWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(StickersAppCardViewController *)self stickersHostViewController];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  completionCopy = completion;
+  stickersHostViewController = [(StickersAppCardViewController *)self stickersHostViewController];
+  if (stickersHostViewController && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 _addStickerAnimationDidFinishWithCompletion:v5];
+    [stickersHostViewController _addStickerAnimationDidFinishWithCompletion:completionCopy];
   }
 
   else
   {
-    v5[2]();
+    completionCopy[2]();
   }
 }
 
 - (void)didRemoveStickerPreview
 {
-  v2 = [(StickersAppCardViewController *)self stickersHostViewController];
-  if (v2)
+  stickersHostViewController = [(StickersAppCardViewController *)self stickersHostViewController];
+  if (stickersHostViewController)
   {
-    v3 = v2;
+    v3 = stickersHostViewController;
     if (objc_opt_respondsToSelector())
     {
       [v3 _didRemoveStickerPreview];
@@ -409,9 +409,9 @@ LABEL_8:
   _objc_release_x2();
 }
 
-- (void)didSelectAppWithBundleIdentifier:(id)a3
+- (void)didSelectAppWithBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     [(ImmediatePanGestureRecognizer *)self->_dismissalGestureTracker setEnabled:1];
   }
@@ -422,7 +422,7 @@ LABEL_8:
   }
 }
 
-- (void)appPresenterDidDismissFullscreenModal:(id)a3
+- (void)appPresenterDidDismissFullscreenModal:(id)modal
 {
   if (self->_isPresentingStandaloneFullscreenModal)
   {
@@ -430,9 +430,9 @@ LABEL_8:
   }
 }
 
-- (void)appPresenterCardDidDismiss:(id)a3
+- (void)appPresenterCardDidDismiss:(id)dismiss
 {
-  v11 = a3;
+  dismissCopy = dismiss;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -451,8 +451,8 @@ LABEL_8:
 
   v13 = v12;
   _Block_object_dispose(&v17, 8);
-  v14 = [v12 sharedInstance];
-  if (([v14 stickerDragActiveInCurrentProcess] & 1) == 0)
+  sharedInstance = [v12 sharedInstance];
+  if (([sharedInstance stickerDragActiveInCurrentProcess] & 1) == 0)
   {
     [(StickersAppCardViewController *)self dismiss];
   }
@@ -488,24 +488,24 @@ LABEL_8:
   appPresenter = self->_appPresenter;
   if (v3)
   {
-    v5 = [(IMAAppPresenter *)appPresenter currentStickerViewController];
+    currentStickerViewController = [(IMAAppPresenter *)appPresenter currentStickerViewController];
   }
 
   else
   {
-    v6 = [(IMAAppPresenter *)appPresenter currentAppViewController];
-    if ([v6 conformsToProtocol:&OBJC_PROTOCOL___IMAStickerViewController])
+    currentAppViewController = [(IMAAppPresenter *)appPresenter currentAppViewController];
+    if ([currentAppViewController conformsToProtocol:&OBJC_PROTOCOL___IMAStickerViewController])
     {
-      v5 = v6;
+      currentStickerViewController = currentAppViewController;
     }
 
     else
     {
-      v5 = 0;
+      currentStickerViewController = 0;
     }
   }
 
-  return v5;
+  return currentStickerViewController;
 }
 
 @end

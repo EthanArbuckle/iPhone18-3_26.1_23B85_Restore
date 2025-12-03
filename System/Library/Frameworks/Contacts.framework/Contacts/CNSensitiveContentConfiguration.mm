@@ -1,15 +1,15 @@
 @interface CNSensitiveContentConfiguration
-+ (CNSensitiveContentConfiguration)configurationWithOverride:(int64_t)a3;
++ (CNSensitiveContentConfiguration)configurationWithOverride:(int64_t)override;
 + (id)log;
-- (BOOL)isEqual:(id)a3;
-- (CNSensitiveContentConfiguration)initWithCoder:(id)a3;
-- (CNSensitiveContentConfiguration)initWithDataRepresentation:(id)a3;
-- (CNSensitiveContentConfiguration)initWithSensitiveContentOverride:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNSensitiveContentConfiguration)initWithCoder:(id)coder;
+- (CNSensitiveContentConfiguration)initWithDataRepresentation:(id)representation;
+- (CNSensitiveContentConfiguration)initWithSensitiveContentOverride:(int64_t)override;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
-- (id)updatedWithOverride:(int64_t)a3;
+- (id)updatedWithOverride:(int64_t)override;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNSensitiveContentConfiguration
@@ -35,14 +35,14 @@ uint64_t __38__CNSensitiveContentConfiguration_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (CNSensitiveContentConfiguration)configurationWithOverride:(int64_t)a3
++ (CNSensitiveContentConfiguration)configurationWithOverride:(int64_t)override
 {
-  v3 = [[a1 alloc] initWithSensitiveContentOverride:a3];
+  v3 = [[self alloc] initWithSensitiveContentOverride:override];
 
   return v3;
 }
 
-- (CNSensitiveContentConfiguration)initWithSensitiveContentOverride:(int64_t)a3
+- (CNSensitiveContentConfiguration)initWithSensitiveContentOverride:(int64_t)override
 {
   v8.receiver = self;
   v8.super_class = CNSensitiveContentConfiguration;
@@ -50,22 +50,22 @@ uint64_t __38__CNSensitiveContentConfiguration_log__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_override = a3;
+    v4->_override = override;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CNSensitiveContentConfiguration)initWithDataRepresentation:(id)a3
+- (CNSensitiveContentConfiguration)initWithDataRepresentation:(id)representation
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (representation)
   {
     v4 = MEMORY[0x1E696ACD0];
-    v5 = a3;
+    representationCopy = representation;
     v11 = 0;
-    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v11];
+    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v11];
 
     v7 = v11;
     if (v6)
@@ -118,10 +118,10 @@ uint64_t __38__CNSensitiveContentConfiguration_log__block_invoke()
   return v2;
 }
 
-- (CNSensitiveContentConfiguration)initWithCoder:(id)a3
+- (CNSensitiveContentConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"version"];
   if (v5 >= 2)
   {
     v7 = v5;
@@ -131,44 +131,44 @@ uint64_t __38__CNSensitiveContentConfiguration_log__block_invoke()
       [(CNSensitiveContentConfiguration *)v7 initWithCoder:v8];
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    self = -[CNSensitiveContentConfiguration initWithSensitiveContentOverride:](self, "initWithSensitiveContentOverride:", [v4 decodeIntegerForKey:@"override"]);
-    v6 = self;
+    self = -[CNSensitiveContentConfiguration initWithSensitiveContentOverride:](self, "initWithSensitiveContentOverride:", [coderCopy decodeIntegerForKey:@"override"]);
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CNSensitiveContentConfiguration override](self forKey:{"override"), @"override"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CNSensitiveContentConfiguration override](self forKey:{"override"), @"override"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNSensitiveContentConfiguration alloc];
-  v5 = [(CNSensitiveContentConfiguration *)self override];
+  override = [(CNSensitiveContentConfiguration *)self override];
 
-  return [(CNSensitiveContentConfiguration *)v4 initWithSensitiveContentOverride:v5];
+  return [(CNSensitiveContentConfiguration *)v4 initWithSensitiveContentOverride:override];
 }
 
-- (id)updatedWithOverride:(int64_t)a3
+- (id)updatedWithOverride:(int64_t)override
 {
   v4 = [(CNSensitiveContentConfiguration *)self copy];
-  [v4 setOverride:a3];
+  [v4 setOverride:override];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -178,8 +178,8 @@ uint64_t __38__CNSensitiveContentConfiguration_log__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CNSensitiveContentConfiguration *)self override];
-      v6 = v5 == [(CNSensitiveContentConfiguration *)v4 override];
+      override = [(CNSensitiveContentConfiguration *)self override];
+      v6 = override == [(CNSensitiveContentConfiguration *)equalCopy override];
     }
 
     else
@@ -193,15 +193,15 @@ uint64_t __38__CNSensitiveContentConfiguration_log__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(CNSensitiveContentConfiguration *)self override];
-  if (v2 >= 0)
+  override = [(CNSensitiveContentConfiguration *)self override];
+  if (override >= 0)
   {
-    v3 = v2;
+    v3 = override;
   }
 
   else
   {
-    v3 = -v2;
+    v3 = -override;
   }
 
   return v3 + 527;

@@ -1,32 +1,32 @@
 @interface PKTransactionReceiptRequest
-- (PKTransactionReceiptRequest)initWithReceiptProviderURL:(id)a3 authorizationToken:(id)a4 signature:(id)a5 receiptIdentifier:(id)a6;
+- (PKTransactionReceiptRequest)initWithReceiptProviderURL:(id)l authorizationToken:(id)token signature:(id)signature receiptIdentifier:(id)identifier;
 - (id)_urlRequest;
 @end
 
 @implementation PKTransactionReceiptRequest
 
-- (PKTransactionReceiptRequest)initWithReceiptProviderURL:(id)a3 authorizationToken:(id)a4 signature:(id)a5 receiptIdentifier:(id)a6
+- (PKTransactionReceiptRequest)initWithReceiptProviderURL:(id)l authorizationToken:(id)token signature:(id)signature receiptIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  tokenCopy = token;
+  signatureCopy = signature;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = PKTransactionReceiptRequest;
   v15 = [(PKOverlayableWebServiceRequest *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_receiptProviderURL, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_receiptProviderURL, l);
+    v17 = [tokenCopy copy];
     authorizationToken = v16->_authorizationToken;
     v16->_authorizationToken = v17;
 
-    v19 = [v13 copy];
+    v19 = [signatureCopy copy];
     signature = v16->_signature;
     v16->_signature = v19;
 
-    v21 = [v14 copy];
+    v21 = [identifierCopy copy];
     receiptIdentifier = v16->_receiptIdentifier;
     v16->_receiptIdentifier = v21;
   }
@@ -37,8 +37,8 @@
 - (id)_urlRequest
 {
   v3 = [MEMORY[0x1E696AF20] componentsWithURL:self->_receiptProviderURL resolvingAgainstBaseURL:0];
-  v4 = [v3 queryItems];
-  v5 = [v4 mutableCopy];
+  queryItems = [v3 queryItems];
+  v5 = [queryItems mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -67,8 +67,8 @@
   signature = self->_signature;
   if (signature)
   {
-    v12 = [(NSData *)signature URLBase64EncodedString];
-    v13 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"signature" value:v12];
+    uRLBase64EncodedString = [(NSData *)signature URLBase64EncodedString];
+    v13 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"signature" value:uRLBase64EncodedString];
     [v8 addObject:v13];
   }
 

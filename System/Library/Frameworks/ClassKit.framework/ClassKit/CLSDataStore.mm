@@ -6,14 +6,14 @@
 + (BOOL)isUIClient;
 + (CLSCurrentUser)currentUser;
 + (CLSDataStore)shared;
-+ (id)handoutGraphFromHandout:(id)a3;
-+ (id)handoutSubgraphContainingAsset:(id)a3;
++ (id)handoutGraphFromHandout:(id)handout;
++ (id)handoutSubgraphContainingAsset:(id)asset;
 + (id)newDatastore;
-- (BOOL)isAllowedToInsertObject:(id)a3;
+- (BOOL)isAllowedToInsertObject:(id)object;
 - (BOOL)isAppClient;
 - (BOOL)isDashboardAPIEnabled;
 - (BOOL)isPrivateSearchAPIEnabled;
-- (BOOL)isRemovedObject:(id)a3;
+- (BOOL)isRemovedObject:(id)object;
 - (BOOL)isSearchAPIEnabled;
 - (BOOL)isUIClient;
 - (CLSActivity)runningActivity;
@@ -23,136 +23,136 @@
 - (CLSContext)mainAppContext;
 - (CLSCurrentUser)cachedCurrentUser;
 - (CLSDataStore)init;
-- (CLSDataStore)initWithEndpoint:(id)a3;
-- (id)_addObject:(id)a3;
-- (id)_arrangeObjectsIfNeeded:(id)a3;
-- (id)_filterObjectsBeingSavedFromObjects:(id)a3;
+- (CLSDataStore)initWithEndpoint:(id)endpoint;
+- (id)_addObject:(id)object;
+- (id)_arrangeObjectsIfNeeded:(id)needed;
+- (id)_filterObjectsBeingSavedFromObjects:(id)objects;
 - (id)_modifiedObjects;
-- (id)_validateObjects:(id)a3;
-- (id)addObject:(id)a3;
+- (id)_validateObjects:(id)objects;
+- (id)addObject:(id)object;
 - (id)allContexts;
 - (id)appIdentifier;
 - (id)cachedMainAppContext;
 - (id)currentUser;
-- (id)dataServer:(id)a3;
+- (id)dataServer:(id)server;
 - (id)delegate;
-- (id)objectWithObjectID:(id)a3;
-- (id)orphanedAssets:(id *)a3;
+- (id)objectWithObjectID:(id)d;
+- (id)orphanedAssets:(id *)assets;
 - (id)runningActivities;
-- (id)serverInternalState:(unint64_t)a3 error:(id *)a4;
-- (id)syncDataServer:(id)a3;
-- (id)syncFetchContextsForContextIDs:(id)a3;
-- (id)syncFetchProgressReportingCapabilitiesForContextID:(id)a3;
-- (id)syncFetchThumbnailBlobForContext:(id)a3;
-- (id)syncUtilityServer:(id)a3;
-- (id)uploadAsset:(id)a3;
-- (id)utilityServer:(id)a3;
+- (id)serverInternalState:(unint64_t)state error:(id *)error;
+- (id)syncDataServer:(id)server;
+- (id)syncFetchContextsForContextIDs:(id)ds;
+- (id)syncFetchProgressReportingCapabilitiesForContextID:(id)d;
+- (id)syncFetchThumbnailBlobForContext:(id)context;
+- (id)syncUtilityServer:(id)server;
+- (id)uploadAsset:(id)asset;
+- (id)utilityServer:(id)server;
 - (unint64_t)serverSyncStatus;
-- (void)_classesForCurrentUserWithRole:(unint64_t)a3 completion:(id)a4;
+- (void)_classesForCurrentUserWithRole:(unint64_t)role completion:(id)completion;
 - (void)_createMainAppContext;
-- (void)_fetchHandoutAttachmentForDocumentURL:(id)a3 completion:(id)a4;
+- (void)_fetchHandoutAttachmentForDocumentURL:(id)l completion:(id)completion;
 - (void)_generatePartialTimeIntervalsForRunningActivities;
 - (void)_reconnect;
 - (void)_reenableObservers;
 - (void)_refreshMainAppContext;
 - (void)_registerForAccountChangedDarwinNotification;
 - (void)_save;
-- (void)_saveObjects:(id)a3 completion:(id)a4;
-- (void)_validateAndCreateHandoutAssignedItemFor:(id)a3 completion:(id)a4;
-- (void)addRunningActivitiesObject:(id)a3;
-- (void)addSurveyAnswerItem:(id)a3;
-- (void)adminRequestorForEmail:(id)a3 completion:(id)a4;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)awaitExecuteQuery:(id)a3 completion:(id)a4;
-- (void)canSearchRostersWithCompletion:(id)a3;
-- (void)childrenOfAdminRequestID:(id)a3 completion:(id)a4;
-- (void)classesForPersonID:(id)a3 role:(unint64_t)a4 completion:(id)a5;
-- (void)cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)a3 completion:(id)a4;
-- (void)cloudKitUrlSuitableForOpeningForAsset:(id)a3 completion:(id)a4;
-- (void)cloudKitUrlSuitableForStreamingAsset:(id)a3 completion:(id)a4;
-- (void)collaborationStatesForObjectWithID:(id)a3 classID:(id)a4 forOwnersWithRole:(unint64_t)a5 completion:(id)a6;
-- (void)collaborationStatesForObjectWithID:(id)a3 ownerPersonID:(id)a4 completion:(id)a5;
+- (void)_saveObjects:(id)objects completion:(id)completion;
+- (void)_validateAndCreateHandoutAssignedItemFor:(id)for completion:(id)completion;
+- (void)addRunningActivitiesObject:(id)object;
+- (void)addSurveyAnswerItem:(id)item;
+- (void)adminRequestorForEmail:(id)email completion:(id)completion;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationWillResignActive:(id)active;
+- (void)awaitExecuteQuery:(id)query completion:(id)completion;
+- (void)canSearchRostersWithCompletion:(id)completion;
+- (void)childrenOfAdminRequestID:(id)d completion:(id)completion;
+- (void)classesForPersonID:(id)d role:(unint64_t)role completion:(id)completion;
+- (void)cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)asset completion:(id)completion;
+- (void)cloudKitUrlSuitableForOpeningForAsset:(id)asset completion:(id)completion;
+- (void)cloudKitUrlSuitableForStreamingAsset:(id)asset completion:(id)completion;
+- (void)collaborationStatesForObjectWithID:(id)d classID:(id)iD forOwnersWithRole:(unint64_t)role completion:(id)completion;
+- (void)collaborationStatesForObjectWithID:(id)d ownerPersonID:(id)iD completion:(id)completion;
 - (void)completeAllAssignedActivitiesMatching:(NSArray *)contextPath;
-- (void)contextsMatchingIdentifier:(id)a3 completion:(id)a4;
+- (void)contextsMatchingIdentifier:(id)identifier completion:(id)completion;
 - (void)contextsMatchingIdentifierPath:(NSArray *)identifierPath completion:(void *)completion;
-- (void)contextsMatchingIdentifierPath:(id)a3 parentContext:(id)a4 completion:(id)a5;
+- (void)contextsMatchingIdentifierPath:(id)path parentContext:(id)context completion:(id)completion;
 - (void)contextsMatchingPredicate:(NSPredicate *)predicate completion:(void *)completion;
-- (void)createShareIfNeededForURL:(id)a3 completion:(id)a4;
-- (void)currentUserIsStudent:(id)a3;
-- (void)currentUserWithCompletion:(id)a3;
-- (void)currentUserWithServer:(id)a3 completion:(id)a4;
+- (void)createShareIfNeededForURL:(id)l completion:(id)completion;
+- (void)currentUserIsStudent:(id)student;
+- (void)currentUserWithCompletion:(id)completion;
+- (void)currentUserWithServer:(id)server completion:(id)completion;
 - (void)dealloc;
-- (void)deleteAdminRequestID:(id)a3 completion:(id)a4;
-- (void)deleteArchivedCollectionObjects:(id)a3 withCompletion:(id)a4;
-- (void)deleteBackingStoreForAsset:(id)a3 completion:(id)a4;
-- (void)deregisterDataObserver:(id)a3;
-- (void)developerModeChanged:(id)a3;
+- (void)deleteAdminRequestID:(id)d completion:(id)completion;
+- (void)deleteArchivedCollectionObjects:(id)objects withCompletion:(id)completion;
+- (void)deleteBackingStoreForAsset:(id)asset completion:(id)completion;
+- (void)deregisterDataObserver:(id)observer;
+- (void)developerModeChanged:(id)changed;
 - (void)faultMainAppContext;
 - (void)fetchActivityForURL:(NSURL *)url completion:(void *)completion;
-- (void)fetchAndCompleteAllAssignedActivitiesForContextPath:(id)a3 withCompletion:(id)a4;
-- (void)fetchAppBasedAssignmentUsage:(id)a3 completion:(id)a4;
-- (void)fetchAssignedItemFor:(id)a3 completion:(id)a4;
-- (void)fetchCollectionItemsWithCompletion:(id)a3;
-- (void)fetchCollectionsWithCompletion:(id)a3;
-- (void)fetchReportsWithPredicate:(id)a3 completion:(id)a4;
-- (void)fetchSurveyAnswers:(id)a3 responderIDs:(id)a4 completion:(id)a5;
-- (void)fetchTransparencyMessageInfoForAttachmentID:(id)a3 withCompletion:(id)a4;
-- (void)fetchTransparencyMessageInfoWithCompletion:(id)a3;
-- (void)getCurrentUseriCloudQuotaInfoWithCompletion:(id)a3;
-- (void)handoutAttachmentForDocumentURL:(id)a3 completion:(id)a4;
-- (void)instructedClassesWithCompletion:(id)a3;
-- (void)markObjectAsDeleted:(id)a3;
-- (void)membersOfGroupWithIdentifier:(id)a3 completion:(id)a4;
-- (void)objectsMatching:(id)a3 completion:(id)a4;
-- (void)personsInClassWithClassID:(id)a3 role:(unint64_t)a4 completion:(id)a5;
-- (void)presentTransparencyMessageForHandoutAssignedItemInfo:(id)a3;
-- (void)presentTransparencyMessageInfo:(id)a3;
-- (void)pruneDeletedObjectsWithCompletion:(id)a3;
-- (void)publishAdminRequests:(id)a3 withRequestor:(id)a4 adminRequestAccounts:(id)a5 completion:(id)a6;
-- (void)publishAnswersForSurvey:(id)a3 completion:(id)a4;
-- (void)publishCollaborationStateChanges:(id)a3 completion:(id)a4;
-- (void)publishHandout:(id)a3 completion:(id)a4;
-- (void)refreshAuthTreeForAttachment:(id)a3 withCompletion:(id)a4;
-- (void)refreshAuthTreeWithCompletion:(id)a3;
+- (void)fetchAndCompleteAllAssignedActivitiesForContextPath:(id)path withCompletion:(id)completion;
+- (void)fetchAppBasedAssignmentUsage:(id)usage completion:(id)completion;
+- (void)fetchAssignedItemFor:(id)for completion:(id)completion;
+- (void)fetchCollectionItemsWithCompletion:(id)completion;
+- (void)fetchCollectionsWithCompletion:(id)completion;
+- (void)fetchReportsWithPredicate:(id)predicate completion:(id)completion;
+- (void)fetchSurveyAnswers:(id)answers responderIDs:(id)ds completion:(id)completion;
+- (void)fetchTransparencyMessageInfoForAttachmentID:(id)d withCompletion:(id)completion;
+- (void)fetchTransparencyMessageInfoWithCompletion:(id)completion;
+- (void)getCurrentUseriCloudQuotaInfoWithCompletion:(id)completion;
+- (void)handoutAttachmentForDocumentURL:(id)l completion:(id)completion;
+- (void)instructedClassesWithCompletion:(id)completion;
+- (void)markObjectAsDeleted:(id)deleted;
+- (void)membersOfGroupWithIdentifier:(id)identifier completion:(id)completion;
+- (void)objectsMatching:(id)matching completion:(id)completion;
+- (void)personsInClassWithClassID:(id)d role:(unint64_t)role completion:(id)completion;
+- (void)presentTransparencyMessageForHandoutAssignedItemInfo:(id)info;
+- (void)presentTransparencyMessageInfo:(id)info;
+- (void)pruneDeletedObjectsWithCompletion:(id)completion;
+- (void)publishAdminRequests:(id)requests withRequestor:(id)requestor adminRequestAccounts:(id)accounts completion:(id)completion;
+- (void)publishAnswersForSurvey:(id)survey completion:(id)completion;
+- (void)publishCollaborationStateChanges:(id)changes completion:(id)completion;
+- (void)publishHandout:(id)handout completion:(id)completion;
+- (void)refreshAuthTreeForAttachment:(id)attachment withCompletion:(id)completion;
+- (void)refreshAuthTreeWithCompletion:(id)completion;
 - (void)refreshMainAppContext;
-- (void)registerDataObserver:(id)a3;
-- (void)relayRequestWithData:(id)a3 requestType:(unint64_t)a4 completion:(id)a5;
-- (void)removeActivityWithObjectID:(id)a3;
-- (void)removeAsset:(id)a3;
-- (void)removeClass:(id)a3 completion:(id)a4;
-- (void)removeCollection:(id)a3;
-- (void)removeContextWithObjectID:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)removeObjectWithObjectID:(id)a3 class:(Class)a4;
-- (void)removeRunningActivitiesObject:(id)a3;
-- (void)removeSurveyAnswerItem:(id)a3;
-- (void)renewCredentialsWithCompletion:(id)a3;
-- (void)repairHandoutAttachments:(id)a3 completion:(id)a4;
+- (void)registerDataObserver:(id)observer;
+- (void)relayRequestWithData:(id)data requestType:(unint64_t)type completion:(id)completion;
+- (void)removeActivityWithObjectID:(id)d;
+- (void)removeAsset:(id)asset;
+- (void)removeClass:(id)class completion:(id)completion;
+- (void)removeCollection:(id)collection;
+- (void)removeContextWithObjectID:(id)d;
+- (void)removeObject:(id)object;
+- (void)removeObjectWithObjectID:(id)d class:(Class)class;
+- (void)removeRunningActivitiesObject:(id)object;
+- (void)removeSurveyAnswerItem:(id)item;
+- (void)renewCredentialsWithCompletion:(id)completion;
+- (void)repairHandoutAttachments:(id)attachments completion:(id)completion;
 - (void)reset;
-- (void)saveClass:(id)a3 completion:(id)a4;
-- (void)saveInsightEvents:(id)a3 completion:(id)a4;
-- (void)saveObjects:(id)a3 completion:(id)a4;
+- (void)saveClass:(id)class completion:(id)completion;
+- (void)saveInsightEvents:(id)events completion:(id)completion;
+- (void)saveObjects:(id)objects completion:(id)completion;
 - (void)saveWithCompletion:(void *)completion;
-- (void)setCachedCurrentUser:(id)a3;
-- (void)shouldPerformSearchAPIOperation:(id)a3 completion:(id)a4;
-- (void)shouldSyncTeacherBrowsedContextsWithCompletion:(id)a3;
-- (void)startActivity:(id)a3 activityType:(int)a4 bundleID:(id)a5 completion:(id)a6;
-- (void)startActivityFailed:(id)a3 activityType:(int)a4 completion:(id)a5;
-- (void)studentActivityForAttachmentsWithIDs:(id)a3 completion:(id)a4;
-- (void)submittableURLByCurrentUser:(id)a3 completion:(id)a4;
-- (void)syncDeleteProgressReportingCapabilitiesForContextID:(id)a3;
-- (void)syncDeleteThumbnailBlobForContext:(id)a3;
-- (void)syncFetchWithCompletion:(id)a3;
-- (void)syncServerConfigWithCompletion:(id)a3;
-- (void)triggerProgressTransparencyMessageForAttachmentID:(id)a3;
-- (void)triggerUserNotificationHandoutAssigned:(id)a3 completion:(id)a4;
-- (void)triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)a3 completion:(id)a4;
-- (void)triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)a3 studentName:(id)a4 completion:(id)a5;
-- (void)triggerUserNotificationRevisionRequested:(id)a3 completion:(id)a4;
-- (void)urlSuitableForOpeningForExpectedURL:(id)a3 itemID:(id)a4 ownerName:(id)a5 zoneName:(id)a6 completion:(id)a7;
+- (void)setCachedCurrentUser:(id)user;
+- (void)shouldPerformSearchAPIOperation:(id)operation completion:(id)completion;
+- (void)shouldSyncTeacherBrowsedContextsWithCompletion:(id)completion;
+- (void)startActivity:(id)activity activityType:(int)type bundleID:(id)d completion:(id)completion;
+- (void)startActivityFailed:(id)failed activityType:(int)type completion:(id)completion;
+- (void)studentActivityForAttachmentsWithIDs:(id)ds completion:(id)completion;
+- (void)submittableURLByCurrentUser:(id)user completion:(id)completion;
+- (void)syncDeleteProgressReportingCapabilitiesForContextID:(id)d;
+- (void)syncDeleteThumbnailBlobForContext:(id)context;
+- (void)syncFetchWithCompletion:(id)completion;
+- (void)syncServerConfigWithCompletion:(id)completion;
+- (void)triggerProgressTransparencyMessageForAttachmentID:(id)d;
+- (void)triggerUserNotificationHandoutAssigned:(id)assigned completion:(id)completion;
+- (void)triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)date completion:(id)completion;
+- (void)triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)date completion:(id)completion;
+- (void)triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)date completion:(id)completion;
+- (void)triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)d studentName:(id)name completion:(id)completion;
+- (void)triggerUserNotificationRevisionRequested:(id)requested completion:(id)completion;
+- (void)urlSuitableForOpeningForExpectedURL:(id)l itemID:(id)d ownerName:(id)name zoneName:(id)zoneName completion:(id)completion;
 @end
 
 @implementation CLSDataStore
@@ -198,7 +198,7 @@
   block[1] = 3221225472;
   block[2] = sub_236FADDB0;
   block[3] = &unk_278A17960;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B2A3F8 != -1)
   {
     dispatch_once(&qword_280B2A3F8, block);
@@ -211,7 +211,7 @@
 
 + (id)newDatastore
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
 
   return objc_msgSend_initWithEndpoint_(v2, v3, 0);
 }
@@ -254,9 +254,9 @@
   return objc_msgSend_isUIClient(v2, v3, v4);
 }
 
-- (BOOL)isAllowedToInsertObject:(id)a3
+- (BOOL)isAllowedToInsertObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = CLSDashboardClasses();
   v6 = objc_opt_class();
   v8 = objc_msgSend_containsObject_(v5, v7, v6);
@@ -282,9 +282,9 @@
   objc_exception_throw(v11);
 }
 
-- (CLSDataStore)initWithEndpoint:(id)a3
+- (CLSDataStore)initWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v83.receiver = self;
   v83.super_class = CLSDataStore;
   v5 = [(CLSDataStore *)&v83 init];
@@ -319,7 +319,7 @@
 
     v26 = objc_opt_class();
     v29 = objc_msgSend_endpointClass(v26, v27, v28);
-    v31 = objc_msgSend_instanceForEndpoint_(v29, v30, v4);
+    v31 = objc_msgSend_instanceForEndpoint_(v29, v30, endpointCopy);
     endpointConnection = v6->_endpointConnection;
     v6->_endpointConnection = v31;
 
@@ -535,80 +535,80 @@
   return v4;
 }
 
-- (void)setCachedCurrentUser:(id)a3
+- (void)setCachedCurrentUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   objc_msgSend_lock(self, v5, v6);
   cachedCurrentUser = self->_cachedCurrentUser;
-  self->_cachedCurrentUser = v4;
+  self->_cachedCurrentUser = userCopy;
 
   objc_msgSend_unlock(self, v8, v9);
 }
 
-- (void)awaitExecuteQuery:(id)a3 completion:(id)a4
+- (void)awaitExecuteQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &unk_284A07E88);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_236FAF658;
   v19[3] = &unk_278A18550;
-  v20 = v7;
+  v20 = completionCopy;
   v21 = v8;
   v9 = v8;
-  v10 = v7;
-  objc_msgSend_setCompletion_(v6, v11, v19);
+  v10 = completionCopy;
+  objc_msgSend_setCompletion_(queryCopy, v11, v19);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_236FAF6A4;
   v17[3] = &unk_278A18528;
-  v18 = v6;
-  v12 = v6;
+  v18 = queryCopy;
+  v12 = queryCopy;
   v14 = objc_msgSend_syncDataServer_(self, v13, v17);
   objc_msgSend_dataServer_executeQuery_issueServerRequest_(self, v15, v14, v12, 1);
   v16 = dispatch_time(0, 60000000000);
   dispatch_block_wait(v9, v16);
 }
 
-- (void)fetchCollectionsWithCompletion:(id)a3
+- (void)fetchCollectionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FAF7B8;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_dataServer_(self, v6, v9);
   objc_msgSend_remote_fetchCollectionsWithCompletion_(v7, v8, v5);
 }
 
-- (void)fetchCollectionItemsWithCompletion:(id)a3
+- (void)fetchCollectionItemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FAF878;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_dataServer_(self, v6, v9);
   objc_msgSend_remote_fetchCollectionItemsWithCompletion_(v7, v8, v5);
 }
 
-- (void)deleteArchivedCollectionObjects:(id)a3 withCompletion:(id)a4
+- (void)deleteArchivedCollectionObjects:(id)objects withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FAF954;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  objectsCopy = objects;
   v10 = objc_msgSend_dataServer_(self, v9, v12);
-  objc_msgSend_remote_deleteCollectionRelatedObjectsWithCompletion_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_deleteCollectionRelatedObjectsWithCompletion_completion_(v10, v11, objectsCopy, v7);
 }
 
 - (id)cachedMainAppContext
@@ -767,34 +767,34 @@
   return v12;
 }
 
-- (void)contextsMatchingIdentifier:(id)a3 completion:(id)a4
+- (void)contextsMatchingIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_length(v6, v8, v9))
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (objc_msgSend_length(identifierCopy, v8, v9))
   {
     v11 = objc_opt_class();
-    v13 = objc_msgSend_predicateForObjectsWithIdentifier_(CLSQuery, v12, v6);
+    v13 = objc_msgSend_predicateForObjectsWithIdentifier_(CLSQuery, v12, identifierCopy);
     v20 = 0;
     v15 = objc_msgSend_queryWithObjectType_predicate_error_(CLSQuery, v14, v11, v13, &v20);
     v16 = v20;
 
     if (v15)
     {
-      objc_msgSend_setCompletion_(v15, v17, v7);
+      objc_msgSend_setCompletion_(v15, v17, completionCopy);
       objc_msgSend_executeQuery_(self, v18, v15);
     }
 
     else
     {
-      v7[2](v7, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
   }
 
   else
   {
     v19 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v10, 2, @"No identifier specified.");
-    v7[2](v7, 0, v19);
+    completionCopy[2](completionCopy, 0, v19);
   }
 }
 
@@ -820,9 +820,9 @@
   }
 }
 
-- (id)syncFetchContextsForContextIDs:(id)a3
+- (id)syncFetchContextsForContextIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -834,7 +834,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_236FB03B0;
   v11[3] = &unk_278A185C8;
-  v7 = v4;
+  v7 = dsCopy;
   v12 = v7;
   v13 = &v14;
   objc_msgSend_remote_fetchContextsForContextIDs_completion_(v6, v8, v7, v11);
@@ -845,9 +845,9 @@
   return v9;
 }
 
-- (id)syncFetchThumbnailBlobForContext:(id)a3
+- (id)syncFetchThumbnailBlobForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -855,7 +855,7 @@
   v18 = sub_236FB0038;
   v19 = 0;
   v6 = objc_msgSend_syncDataServer_(self, v5, 0);
-  v9 = objc_msgSend_objectID(v4, v7, v8);
+  v9 = objc_msgSend_objectID(contextCopy, v7, v8);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_236FB0618;
@@ -869,23 +869,23 @@
   return v11;
 }
 
-- (void)syncDeleteThumbnailBlobForContext:(id)a3
+- (void)syncDeleteThumbnailBlobForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6 = objc_msgSend_syncDataServer_(self, v5, 0);
-  v9 = objc_msgSend_objectID(v4, v7, v8);
+  v9 = objc_msgSend_objectID(contextCopy, v7, v8);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB06F8;
   v12[3] = &unk_278A18618;
-  v13 = v4;
-  v10 = v4;
+  v13 = contextCopy;
+  v10 = contextCopy;
   objc_msgSend_remote_deleteThumbnailBlobForContextID_completion_(v6, v11, v9, v12);
 }
 
-- (id)syncFetchProgressReportingCapabilitiesForContextID:(id)a3
+- (id)syncFetchProgressReportingCapabilitiesForContextID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -898,7 +898,7 @@
   v10[2] = sub_236FB0948;
   v10[3] = &unk_278A185A0;
   v10[4] = &v11;
-  objc_msgSend_remote_fetchProgressReportingCapabilitiesForContextID_completion_(v6, v7, v4, v10);
+  objc_msgSend_remote_fetchProgressReportingCapabilitiesForContextID_completion_(v6, v7, dCopy, v10);
   v8 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -906,16 +906,16 @@
   return v8;
 }
 
-- (void)syncDeleteProgressReportingCapabilitiesForContextID:(id)a3
+- (void)syncDeleteProgressReportingCapabilitiesForContextID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6 = objc_msgSend_syncDataServer_(self, v5, 0);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FB0A0C;
   v9[3] = &unk_278A18618;
-  v10 = v4;
-  v7 = v4;
+  v10 = dCopy;
+  v7 = dCopy;
   objc_msgSend_remote_deleteProgressReportingCapabilitiesForContextID_completion_(v6, v8, v7, v9);
 }
 
@@ -938,7 +938,7 @@
   return v4;
 }
 
-- (id)serverInternalState:(unint64_t)a3 error:(id *)a4
+- (id)serverInternalState:(unint64_t)state error:(id *)error
 {
   v20 = 0;
   v21 = &v20;
@@ -946,7 +946,7 @@
   v23 = sub_236FB0028;
   v24 = sub_236FB0038;
   v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  if (a3)
+  if (state)
   {
     v8 = objc_msgSend_syncDataServer_(self, v7, 0);
     v14 = 0;
@@ -961,11 +961,11 @@
     v13[3] = &unk_278A18640;
     v13[4] = &v14;
     v13[5] = &v20;
-    v13[6] = a3;
+    v13[6] = state;
     objc_msgSend_remote_getServerInternalStateInfoWithCompletion_(v8, v9, v13);
     if (v15[5])
     {
-      objc_msgSend_cls_assignError_fromError_(MEMORY[0x277CCA9B8], v10, a4);
+      objc_msgSend_cls_assignError_fromError_(MEMORY[0x277CCA9B8], v10, error);
       v11 = 0;
     }
 
@@ -979,7 +979,7 @@
 
   else
   {
-    objc_msgSend_cls_assignError_code_format_(MEMORY[0x277CCA9B8], v7, a4, 2, @"options cannot equal CLSServerInternalStateInfoNone");
+    objc_msgSend_cls_assignError_code_format_(MEMORY[0x277CCA9B8], v7, error, 2, @"options cannot equal CLSServerInternalStateInfoNone");
     v11 = 0;
   }
 
@@ -1077,11 +1077,11 @@
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAndCompleteAllAssignedActivitiesForContextPath:(id)a3 withCompletion:(id)a4
+- (void)fetchAndCompleteAllAssignedActivitiesForContextPath:(id)path withCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   if (qword_280B2A720 != -1)
   {
     dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -1091,7 +1091,7 @@
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = pathCopy;
     _os_log_impl(&dword_236F71000, v8, OS_LOG_TYPE_DEFAULT, "CLSDataStore fetchAllAssignedActivitiesForContextPath called for contextpath: %@", buf, 0xCu);
   }
 
@@ -1099,10 +1099,10 @@
   v14[1] = 3221225472;
   v14[2] = sub_236FB1780;
   v14[3] = &unk_278A17BC0;
-  v15 = v7;
-  v9 = v7;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v11 = objc_msgSend_dataServer_(self, v10, v14);
-  objc_msgSend_remote_fetchAndCompleteActiveAssignedActivitiesForContextPath_withCompletion_(v11, v12, v6, v9);
+  objc_msgSend_remote_fetchAndCompleteActiveAssignedActivitiesForContextPath_withCompletion_(v11, v12, pathCopy, v9);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -1157,11 +1157,11 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchHandoutAttachmentForDocumentURL:(id)a3 completion:(id)a4
+- (void)_fetchHandoutAttachmentForDocumentURL:(id)l completion:(id)completion
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if (qword_280B2A720 != -1)
   {
     dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -1171,7 +1171,7 @@ LABEL_12:
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(location[0]) = 138412290;
-    *(location + 4) = v6;
+    *(location + 4) = lCopy;
     _os_log_debug_impl(&dword_236F71000, v8, OS_LOG_TYPE_DEBUG, "CLSDataStore _fetchHandoutAttachmentForDocumentURL called for url: %@", location, 0xCu);
   }
 
@@ -1179,7 +1179,7 @@ LABEL_12:
   v18[1] = 3221225472;
   v18[2] = sub_236FB1E30;
   v18[3] = &unk_278A17BC0;
-  v9 = v7;
+  v9 = completionCopy;
   v19 = v9;
   v11 = objc_msgSend_dataServer_(self, v10, v18);
   objc_initWeak(location, self);
@@ -1190,7 +1190,7 @@ LABEL_12:
   v12 = v9;
   v16 = v12;
   objc_copyWeak(&v17, location);
-  objc_msgSend_remote_fetchHandoutAttachmentForDocumentURL_withCompletion_(v11, v13, v6, v15);
+  objc_msgSend_remote_fetchHandoutAttachmentForDocumentURL_withCompletion_(v11, v13, lCopy, v15);
   objc_destroyWeak(&v17);
 
   objc_destroyWeak(location);
@@ -1301,16 +1301,16 @@ LABEL_12:
   return v4;
 }
 
-- (void)refreshAuthTreeWithCompletion:(id)a3
+- (void)refreshAuthTreeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v6 = objc_msgSend_dataServer_(self, v5, v4);
+  v6 = objc_msgSend_dataServer_(self, v5, completionCopy);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FB2B30;
   v9[3] = &unk_278A187A8;
-  v7 = v4;
+  v7 = completionCopy;
   v10 = v7;
   objc_copyWeak(&v11, &location);
   objc_msgSend_remote_authTreeWithCompletion_(v6, v8, v9);
@@ -1319,38 +1319,38 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)refreshAuthTreeForAttachment:(id)a3 withCompletion:(id)a4
+- (void)refreshAuthTreeForAttachment:(id)attachment withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attachmentCopy = attachment;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v9 = objc_msgSend_dataServer_(self, v8, v7);
+  v9 = objc_msgSend_dataServer_(self, v8, completionCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB2D48;
   v12[3] = &unk_278A187A8;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
   objc_copyWeak(&v14, &location);
-  objc_msgSend_remote_authTreeForAttachment_withCompletion_(v9, v11, v6, v12);
+  objc_msgSend_remote_authTreeForAttachment_withCompletion_(v9, v11, attachmentCopy, v12);
   objc_destroyWeak(&v14);
 
   objc_destroyWeak(&location);
 }
 
-- (void)saveObjects:(id)a3 completion:(id)a4
+- (void)saveObjects:(id)objects completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_236FB2F50;
   v11[3] = &unk_278A187D0;
-  v8 = v7;
+  v8 = completionCopy;
   v13 = v8;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = objectsCopy;
   v12 = v9;
   objc_msgSend_refreshAuthTreeWithCompletion_(self, v10, v11);
 
@@ -1358,15 +1358,15 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)_saveObjects:(id)a3 completion:(id)a4
+- (void)_saveObjects:(id)objects completion:(id)completion
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  completionCopy = completion;
   v8 = objc_opt_new();
   val = self;
-  v43 = v6;
-  v10 = objc_msgSend__filterObjectsBeingSavedFromObjects_(self, v9, v6);
+  v43 = objectsCopy;
+  v10 = objc_msgSend__filterObjectsBeingSavedFromObjects_(self, v9, objectsCopy);
   v62[0] = 0;
   v62[1] = v62;
   v62[2] = 0x3042000000;
@@ -1384,7 +1384,7 @@ LABEL_12:
   v50[2] = sub_236FB35D8;
   v50[3] = &unk_278A187F8;
   v54 = v62;
-  v44 = v7;
+  v44 = completionCopy;
   v53 = v44;
   v55 = &v56;
   v11 = v10;
@@ -1447,19 +1447,19 @@ LABEL_12:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_filterObjectsBeingSavedFromObjects:(id)a3
+- (id)_filterObjectsBeingSavedFromObjects:(id)objects
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectsCopy = objects;
   objc_msgSend_lock(self, v5, v6);
-  v31 = self;
+  selfCopy = self;
   v7 = self->_objectGenerationsByID;
   v32 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = v4;
+  v8 = objectsCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v33, v39, 16);
   if (v10)
   {
@@ -1515,20 +1515,20 @@ LABEL_12:
     while (v13);
   }
 
-  objc_msgSend_unlock(v31, v27, v28);
+  objc_msgSend_unlock(selfCopy, v27, v28);
   v29 = *MEMORY[0x277D85DE8];
 
   return v32;
 }
 
-- (id)_arrangeObjectsIfNeeded:(id)a3
+- (id)_arrangeObjectsIfNeeded:(id)needed
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   objc_msgSend_lock(self, v5, v6);
   v7 = objc_opt_new();
-  v34 = v4;
-  objc_msgSend__cls_filter_(v4, v8, &unk_284A07EE8);
+  v34 = neededCopy;
+  objc_msgSend__cls_filter_(neededCopy, v8, &unk_284A07EE8);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -1658,17 +1658,17 @@ LABEL_12:
   return v8;
 }
 
-- (id)_validateObjects:(id)a3
+- (id)_validateObjects:(id)objects
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectsCopy = objects;
   objc_msgSend_lock(self, v5, v6);
   v9 = objc_msgSend_appIdentifier(self, v7, v8);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = v4;
+  v10 = objectsCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v31, v35, 16);
   if (v12)
   {
@@ -1720,51 +1720,51 @@ LABEL_11:
   return v24;
 }
 
-- (id)objectWithObjectID:(id)a3
+- (id)objectWithObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_msgSend_lock(self, v5, v6);
   v9 = objc_msgSend_graph(self, v7, v8);
-  v11 = objc_msgSend_vertexWithVertexID_(v9, v10, v4);
+  v11 = objc_msgSend_vertexWithVertexID_(v9, v10, dCopy);
 
   objc_msgSend_unlock(self, v12, v13);
 
   return v11;
 }
 
-- (id)addObject:(id)a3
+- (id)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_msgSend_lock(self, v5, v6);
-  v8 = objc_msgSend__addObject_(self, v7, v4);
+  v8 = objc_msgSend__addObject_(self, v7, objectCopy);
 
   objc_msgSend_unlock(self, v9, v10);
 
   return v8;
 }
 
-- (id)_addObject:(id)a3
+- (id)_addObject:(id)object
 {
-  v4 = a3;
-  v7 = objc_msgSend_dataStore(v4, v5, v6);
+  objectCopy = object;
+  v7 = objc_msgSend_dataStore(objectCopy, v5, v6);
   v9 = v7;
   if (v7 == self)
   {
-    v10 = v4;
+    v10 = objectCopy;
     goto LABEL_22;
   }
 
   if (v7)
   {
-    objc_msgSend_cls_createErrorWithCode_errorObject_format_(MEMORY[0x277CCA9B8], v8, 3, v4, @"Cannot add objects from other data stores.");
+    objc_msgSend_cls_createErrorWithCode_errorObject_format_(MEMORY[0x277CCA9B8], v8, 3, objectCopy, @"Cannot add objects from other data stores.");
   }
 
   else
   {
-    if (objc_msgSend_isAllowedToInsertObject_(self, v8, v4))
+    if (objc_msgSend_isAllowedToInsertObject_(self, v8, objectCopy))
     {
 LABEL_9:
-      v14 = objc_msgSend_objectID(v4, v11, v12);
+      v14 = objc_msgSend_objectID(objectCopy, v11, v12);
       v16 = objc_msgSend_objectForKey_(self->_deletedObjectsByID, v15, v14);
       if (v16)
       {
@@ -1777,28 +1777,28 @@ LABEL_9:
         v20 = objc_msgSend_graph(self, v17, v18);
         v22 = objc_msgSend_vertexWithVertexID_(v20, v21, v14);
         v19 = v22;
-        if (!v22 || v22 == v4)
+        if (!v22 || v22 == objectCopy)
         {
-          v29 = objc_msgSend_parentObjectID(v4, v23, v24);
+          v29 = objc_msgSend_parentObjectID(objectCopy, v23, v24);
           if (v29 && (objc_msgSend_vertexWithVertexID_(v20, v28, v29), (v30 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v31 = v30;
-            objc_msgSend_addChild_(v30, v28, v4);
+            objc_msgSend_addChild_(v30, v28, objectCopy);
           }
 
           else
           {
-            objc_msgSend_addVertex_(v20, v28, v4);
+            objc_msgSend_addVertex_(v20, v28, objectCopy);
           }
 
-          objc_msgSend_setDataStore_(v4, v32, self);
-          v10 = v4;
+          objc_msgSend_setDataStore_(objectCopy, v32, self);
+          v10 = objectCopy;
         }
 
         else
         {
           isModified = objc_msgSend_isModified(v22, v23, v24);
-          objc_msgSend_mergeWithObject_(v19, v26, v4);
+          objc_msgSend_mergeWithObject_(v19, v26, objectCopy);
           objc_msgSend_setModified_(v19, v27, isModified);
           v10 = v19;
         }
@@ -1807,7 +1807,7 @@ LABEL_9:
       goto LABEL_21;
     }
 
-    objc_msgSend_cls_createErrorWithCode_errorObject_format_(MEMORY[0x277CCA9B8], v11, 3, v4, @"Not allowed to add objects of this kind to data store.");
+    objc_msgSend_cls_createErrorWithCode_errorObject_format_(MEMORY[0x277CCA9B8], v11, 3, objectCopy, @"Not allowed to add objects of this kind to data store.");
   }
   v13 = ;
   if (!v13)
@@ -1825,23 +1825,23 @@ LABEL_22:
   return v10;
 }
 
-- (void)removeObjectWithObjectID:(id)a3 class:(Class)a4
+- (void)removeObjectWithObjectID:(id)d class:(Class)class
 {
-  v11 = a3;
-  v8 = objc_msgSend_objectWithObjectID_(self, v6, v11);
+  dCopy = d;
+  v8 = objc_msgSend_objectWithObjectID_(self, v6, dCopy);
   if (!v8)
   {
-    v9 = [a4 alloc];
-    v8 = objc_msgSend_initWithDeletedObjectID_(v9, v10, v11);
+    v9 = [class alloc];
+    v8 = objc_msgSend_initWithDeletedObjectID_(v9, v10, dCopy);
   }
 
   objc_msgSend_removeObject_(self, v7, v8);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v9 = a3;
-  v7 = objc_msgSend_parent(v9, v4, v5);
+  objectCopy = object;
+  v7 = objc_msgSend_parent(objectCopy, v4, v5);
   if (v7)
   {
     objc_opt_class();
@@ -1852,27 +1852,27 @@ LABEL_22:
 
     else
     {
-      objc_msgSend_removeChild_(v7, v8, v9);
+      objc_msgSend_removeChild_(v7, v8, objectCopy);
     }
   }
 
   else
   {
-    objc_msgSend_markObjectAsDeleted_(self, v6, v9);
+    objc_msgSend_markObjectAsDeleted_(self, v6, objectCopy);
   }
 }
 
-- (void)markObjectAsDeleted:(id)a3
+- (void)markObjectAsDeleted:(id)deleted
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deletedCopy = deleted;
   objc_msgSend_lock(self, v5, v6);
   deletedObjectsByID = self->_deletedObjectsByID;
-  v10 = objc_msgSend_objectID(v4, v8, v9);
-  objc_msgSend_setObject_forKey_(deletedObjectsByID, v11, v4, v10);
+  v10 = objc_msgSend_objectID(deletedCopy, v8, v9);
+  objc_msgSend_setObject_forKey_(deletedObjectsByID, v11, deletedCopy, v10);
 
   v12 = objc_alloc(MEMORY[0x277CBEB18]);
-  v14 = objc_msgSend_initWithObjects_(v12, v13, v4, 0);
+  v14 = objc_msgSend_initWithObjects_(v12, v13, deletedCopy, 0);
   v17 = objc_msgSend_graph(self, v15, v16);
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
@@ -1880,9 +1880,9 @@ LABEL_22:
   v41[3] = &unk_278A18860;
   v18 = v14;
   v42 = v18;
-  objc_msgSend_traverseStartingAtVertex_enumerationBlock_(v17, v19, v4, v41);
+  objc_msgSend_traverseStartingAtVertex_enumerationBlock_(v17, v19, deletedCopy, v41);
 
-  objc_msgSend_setDeleted_(v4, v20, 1);
+  objc_msgSend_setDeleted_(deletedCopy, v20, 1);
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
@@ -1923,18 +1923,18 @@ LABEL_22:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isRemovedObject:(id)a3
+- (BOOL)isRemovedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_msgSend_lock(self, v5, v6);
   deletedObjectsByID = self->_deletedObjectsByID;
-  v10 = objc_msgSend_objectID(v4, v8, v9);
+  v10 = objc_msgSend_objectID(objectCopy, v8, v9);
 
   v12 = objc_msgSend_objectForKey_(deletedObjectsByID, v11, v10);
-  LOBYTE(v4) = v12 != 0;
+  LOBYTE(objectCopy) = v12 != 0;
 
   objc_msgSend_unlock(self, v13, v14);
-  return v4;
+  return objectCopy;
 }
 
 - (void)_generatePartialTimeIntervalsForRunningActivities
@@ -1949,23 +1949,23 @@ LABEL_22:
   objc_msgSend_unlock(self, v6, v7);
 }
 
-+ (id)handoutGraphFromHandout:(id)a3
++ (id)handoutGraphFromHandout:(id)handout
 {
   v99 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handoutCopy = handout;
   v4 = objc_opt_new();
-  objc_msgSend_addObject_(v4, v5, v3);
-  v8 = objc_msgSend_recipients(v3, v6, v7);
+  objc_msgSend_addObject_(v4, v5, handoutCopy);
+  v8 = objc_msgSend_recipients(handoutCopy, v6, v7);
   objc_msgSend_addObjectsFromArray_(v4, v9, v8);
 
-  v12 = objc_msgSend_assets(v3, v10, v11);
+  v12 = objc_msgSend_assets(handoutCopy, v10, v11);
   objc_msgSend_addObjectsFromArray_(v4, v13, v12);
 
   v94 = 0u;
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  obj = objc_msgSend_attachments(v3, v14, v15);
+  obj = objc_msgSend_attachments(handoutCopy, v14, v15);
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v16, &v92, v98, 16);
   if (v17)
   {
@@ -1973,7 +1973,7 @@ LABEL_22:
     v20 = *v93;
     v21 = &selRef_vertexCount;
     v75 = *v93;
-    v76 = v3;
+    v76 = handoutCopy;
     do
     {
       v22 = 0;
@@ -2081,7 +2081,7 @@ LABEL_22:
             }
 
             v20 = v75;
-            v3 = v76;
+            handoutCopy = v76;
             v19 = v77;
             v23 = v80;
             v22 = v81;
@@ -2101,11 +2101,11 @@ LABEL_22:
     while (v19);
   }
 
-  v68 = objc_msgSend_schedule(v3, v66, v67);
+  v68 = objc_msgSend_schedule(handoutCopy, v66, v67);
 
   if (v68)
   {
-    v71 = objc_msgSend_schedule(v3, v69, v70);
+    v71 = objc_msgSend_schedule(handoutCopy, v69, v70);
     objc_msgSend_addObject_(v4, v72, v71);
   }
 
@@ -2114,23 +2114,23 @@ LABEL_22:
   return v4;
 }
 
-- (void)removeContextWithObjectID:(id)a3
+- (void)removeContextWithObjectID:(id)d
 {
-  v8 = a3;
-  if (objc_msgSend_length(v8, v4, v5))
+  dCopy = d;
+  if (objc_msgSend_length(dCopy, v4, v5))
   {
     v6 = objc_opt_class();
-    objc_msgSend_removeObjectWithObjectID_class_(self, v7, v8, v6);
+    objc_msgSend_removeObjectWithObjectID_class_(self, v7, dCopy, v6);
   }
 }
 
-- (void)removeActivityWithObjectID:(id)a3
+- (void)removeActivityWithObjectID:(id)d
 {
-  v8 = a3;
-  if (objc_msgSend_length(v8, v4, v5))
+  dCopy = d;
+  if (objc_msgSend_length(dCopy, v4, v5))
   {
     v6 = objc_opt_class();
-    objc_msgSend_removeObjectWithObjectID_class_(self, v7, v8, v6);
+    objc_msgSend_removeObjectWithObjectID_class_(self, v7, dCopy, v6);
   }
 }
 
@@ -2176,20 +2176,20 @@ LABEL_5:
 LABEL_8:
 }
 
-- (void)contextsMatchingIdentifierPath:(id)a3 parentContext:(id)a4 completion:(id)a5
+- (void)contextsMatchingIdentifierPath:(id)path parentContext:(id)context completion:(id)completion
 {
   v76 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v8 = a4;
-  v9 = a5;
+  pathCopy = path;
+  contextCopy = context;
+  completionCopy = completion;
   v73[0] = MEMORY[0x277D85DD0];
   v73[1] = 3221225472;
   v73[2] = sub_236FB5618;
   v73[3] = &unk_278A18888;
-  v54 = v9;
+  v54 = completionCopy;
   v74 = v54;
   v10 = MEMORY[0x2383C3E80](v73);
-  if (objc_msgSend_count(v55, v11, v12))
+  if (objc_msgSend_count(pathCopy, v11, v12))
   {
     objc_msgSend_lock(self, v13, v14);
     v15 = objc_opt_new();
@@ -2197,7 +2197,7 @@ LABEL_8:
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v16 = v55;
+    v16 = pathCopy;
     v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v69, v75, 16);
     if (v19)
     {
@@ -2211,13 +2211,13 @@ LABEL_8:
             objc_enumerationMutation(v16);
           }
 
-          v23 = objc_msgSend_childContextWithIdentifier_(v8, v18, *(*(&v69 + 1) + 8 * i));
+          v23 = objc_msgSend_childContextWithIdentifier_(contextCopy, v18, *(*(&v69 + 1) + 8 * i));
           if (v23)
           {
             objc_msgSend_addObject_(v15, v22, v23);
             v24 = v23;
 
-            v8 = v24;
+            contextCopy = v24;
           }
         }
 
@@ -2263,18 +2263,18 @@ LABEL_8:
       v65[4] = sub_236FB35D0;
       objc_initWeak(&v66, self);
       v46 = objc_msgSend_delegate(self, v44, v45);
-      v49 = objc_msgSend_objectID(v8, v47, v48);
+      v49 = objc_msgSend_objectID(contextCopy, v47, v48);
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
       v56[2] = sub_236FB5734;
       v56[3] = &unk_278A188D8;
       v64 = v65;
       v63 = v32;
-      v57 = v8;
+      v57 = contextCopy;
       v50 = v43;
       v58 = v50;
       v59 = v15;
-      v60 = self;
+      selfCopy = self;
       v61 = v16;
       v51 = v46;
       v62 = v51;
@@ -2293,38 +2293,38 @@ LABEL_8:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataServer:(id)a3
+- (id)dataServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v7 = objc_msgSend_endpointConnection(self, v5, v6);
-  v9 = objc_msgSend_dataServer_(v7, v8, v4);
+  v9 = objc_msgSend_dataServer_(v7, v8, serverCopy);
 
   return v9;
 }
 
-- (id)syncDataServer:(id)a3
+- (id)syncDataServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v7 = objc_msgSend_endpointConnection(self, v5, v6);
-  v9 = objc_msgSend_syncDataServer_(v7, v8, v4);
+  v9 = objc_msgSend_syncDataServer_(v7, v8, serverCopy);
 
   return v9;
 }
 
-- (id)utilityServer:(id)a3
+- (id)utilityServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v7 = objc_msgSend_endpointConnection(self, v5, v6);
-  v9 = objc_msgSend_utilityServer_(v7, v8, v4);
+  v9 = objc_msgSend_utilityServer_(v7, v8, serverCopy);
 
   return v9;
 }
 
-- (id)syncUtilityServer:(id)a3
+- (id)syncUtilityServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v7 = objc_msgSend_endpointConnection(self, v5, v6);
-  v9 = objc_msgSend_syncUtilityServer_(v7, v8, v4);
+  v9 = objc_msgSend_syncUtilityServer_(v7, v8, serverCopy);
 
   return v9;
 }
@@ -2362,12 +2362,12 @@ LABEL_8:
   return v6;
 }
 
-- (void)addRunningActivitiesObject:(id)a3
+- (void)addRunningActivitiesObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v17 = v4;
+    v17 = objectCopy;
     objc_msgSend_lock(self, v5, v6);
     if ((objc_msgSend_containsObject_(self->_runningActivities, v7, v17) & 1) == 0)
     {
@@ -2389,16 +2389,16 @@ LABEL_8:
     }
 
     objc_msgSend_unlock(self, v8, v9);
-    v4 = v17;
+    objectCopy = v17;
   }
 }
 
-- (void)removeRunningActivitiesObject:(id)a3
+- (void)removeRunningActivitiesObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v14 = v4;
+    v14 = objectCopy;
     objc_msgSend_lock(self, v5, v6);
     if (objc_msgSend_containsObject_(self->_runningActivities, v7, v14))
     {
@@ -2410,11 +2410,11 @@ LABEL_8:
     }
 
     objc_msgSend_unlock(self, v8, v9);
-    v4 = v14;
+    objectCopy = v14;
   }
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   v23 = *MEMORY[0x277D85DE8];
   if (qword_280B2A720 != -1)
@@ -2464,7 +2464,7 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   v23 = *MEMORY[0x277D85DE8];
   if (qword_280B2A720 != -1)
@@ -2543,19 +2543,19 @@ LABEL_8:
   return isEqualToString;
 }
 
-- (void)triggerProgressTransparencyMessageForAttachmentID:(id)a3
+- (void)triggerProgressTransparencyMessageForAttachmentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (objc_msgSend_isAppClient(self, v5, v6))
   {
-    if (objc_msgSend_length(v4, v7, v8))
+    if (objc_msgSend_length(dCopy, v7, v8))
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = sub_236FB69C4;
       v11[3] = &unk_278A18928;
       v11[4] = self;
-      objc_msgSend_fetchTransparencyMessageInfoForAttachmentID_withCompletion_(self, v9, v4, v11);
+      objc_msgSend_fetchTransparencyMessageInfoForAttachmentID_withCompletion_(self, v9, dCopy, v11);
     }
 
     else
@@ -2570,25 +2570,25 @@ LABEL_8:
   }
 }
 
-- (void)presentTransparencyMessageInfo:(id)a3
+- (void)presentTransparencyMessageInfo:(id)info
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"showModal");
+  infoCopy = info;
+  v6 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v5, @"showModal");
   v9 = objc_msgSend_BOOLValue(v6, v7, v8);
 
   if (v9)
   {
     v11 = sub_236FB6C60();
     v14 = objc_msgSend_shared(v11, v12, v13);
-    objc_msgSend_showPrivacyModalViewWithInfo_(v14, v15, v4);
+    objc_msgSend_showPrivacyModalViewWithInfo_(v14, v15, infoCopy);
   }
 
   else
   {
-    v14 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"classNames");
-    v17 = objc_msgSend_objectForKeyedSubscript_(v4, v16, @"localizedTitle");
-    v19 = objc_msgSend_objectForKeyedSubscript_(v4, v18, @"localizedMessageFormat");
+    v14 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v10, @"classNames");
+    v17 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v16, @"localizedTitle");
+    v19 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v18, @"localizedMessageFormat");
     if (objc_msgSend_count(v14, v20, v21) && v17 && v19)
     {
       v23 = objc_msgSend_localizedStringByJoiningStrings_(MEMORY[0x277CCAAF0], v22, v14);
@@ -2629,28 +2629,28 @@ LABEL_8:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentTransparencyMessageForHandoutAssignedItemInfo:(id)a3
+- (void)presentTransparencyMessageForHandoutAssignedItemInfo:(id)info
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"showModal");
+  infoCopy = info;
+  v6 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v5, @"showModal");
   v9 = objc_msgSend_BOOLValue(v6, v7, v8);
 
   if (v9)
   {
     v11 = sub_236FB6C60();
     v32 = objc_msgSend_shared(v11, v12, v13);
-    objc_msgSend_showPrivacyModalViewWithInfo_(v32, v14, v4);
+    objc_msgSend_showPrivacyModalViewWithInfo_(v32, v14, infoCopy);
 
     v15 = *MEMORY[0x277D85DE8];
   }
 
   else
   {
-    v16 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"classNames");
-    v18 = objc_msgSend_objectForKeyedSubscript_(v4, v17, @"attachmentTitle");
-    v20 = objc_msgSend_objectForKeyedSubscript_(v4, v19, @"localizedTitle");
-    v22 = objc_msgSend_objectForKeyedSubscript_(v4, v21, @"localizedMessageFormat");
+    v16 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v10, @"classNames");
+    v18 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v17, @"attachmentTitle");
+    v20 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v19, @"localizedTitle");
+    v22 = objc_msgSend_objectForKeyedSubscript_(infoCopy, v21, @"localizedMessageFormat");
 
     if (v16 && v18 && v20 && v22)
     {
@@ -2687,47 +2687,47 @@ LABEL_8:
   }
 }
 
-- (void)fetchTransparencyMessageInfoWithCompletion:(id)a3
+- (void)fetchTransparencyMessageInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FB7218;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_dataServer_(self, v6, v9);
   objc_msgSend_remote_fetchTransparencyMessageInfoWithCompletion_(v7, v8, v5);
 }
 
-- (void)fetchTransparencyMessageInfoForAttachmentID:(id)a3 withCompletion:(id)a4
+- (void)fetchTransparencyMessageInfoForAttachmentID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB72F4;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  dCopy = d;
   v10 = objc_msgSend_dataServer_(self, v9, v12);
-  objc_msgSend_remote_fetchTransparencyMessageInfoForAttachmentID_withCompletion_(v10, v11, v8, v7);
+  objc_msgSend_remote_fetchTransparencyMessageInfoForAttachmentID_withCompletion_(v10, v11, dCopy, v7);
 }
 
-- (void)shouldSyncTeacherBrowsedContextsWithCompletion:(id)a3
+- (void)shouldSyncTeacherBrowsedContextsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FB73B4;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_dataServer_(self, v6, v9);
   objc_msgSend_remote_shouldSyncTeacherBrowsedContextsWithCompletion_(v7, v8, v5);
 }
 
-- (void)developerModeChanged:(id)a3
+- (void)developerModeChanged:(id)changed
 {
   v28 = *MEMORY[0x277D85DE8];
   if (qword_280B2A720 != -1)
@@ -2868,9 +2868,9 @@ LABEL_8:
   return v8;
 }
 
-- (void)currentUserWithCompletion:(id)a3
+- (void)currentUserWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (objc_msgSend_isDashboardAPIEnabled(self, v5, v6))
   {
     v9 = objc_msgSend_cachedCurrentUser(self, v7, v8);
@@ -2897,7 +2897,7 @@ LABEL_8:
       block[2] = sub_236FB7BD0;
       block[3] = &unk_278A17C80;
       v16 = &v25;
-      v25 = v4;
+      v25 = completionCopy;
       v24 = v9;
       dispatch_async(v15, block);
 
@@ -2911,7 +2911,7 @@ LABEL_8:
       v21[2] = sub_236FB7BE8;
       v21[3] = &unk_278A17BC0;
       v16 = &v22;
-      v18 = v4;
+      v18 = completionCopy;
       v22 = v18;
       v17 = objc_msgSend_dataServer_(self, v19, v21);
       objc_msgSend_currentUserWithServer_completion_(self, v20, v17, v18);
@@ -2921,14 +2921,14 @@ LABEL_8:
   else
   {
     v9 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v7, 4, @"Not Authorized");
-    (*(v4 + 2))(v4, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 
-- (void)currentUserWithServer:(id)a3 completion:(id)a4
+- (void)currentUserWithServer:(id)server completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if (qword_280B2A720 != -1)
   {
@@ -2946,25 +2946,25 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = sub_236FB7D60;
   v11[3] = &unk_278A18978;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   objc_copyWeak(&v13, &location);
-  objc_msgSend_remote_currentUserWithCompletion_(v6, v10, v11);
+  objc_msgSend_remote_currentUserWithCompletion_(serverCopy, v10, v11);
   objc_destroyWeak(&v13);
 
   objc_destroyWeak(&location);
 }
 
-- (void)getCurrentUseriCloudQuotaInfoWithCompletion:(id)a3
+- (void)getCurrentUseriCloudQuotaInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (objc_msgSend_isDashboardAPIEnabled(self, v5, v6))
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_236FB804C;
     v15[3] = &unk_278A17BC0;
-    v8 = v4;
+    v8 = completionCopy;
     v16 = v8;
     v10 = objc_msgSend_dataServer_(self, v9, v15);
     v13[0] = MEMORY[0x277D85DD0];
@@ -2978,15 +2978,15 @@ LABEL_8:
   else
   {
     v12 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v7, 4, @"Not Authorized");
-    (*(v4 + 2))(v4, 0, 0, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v12);
   }
 }
 
-- (void)registerDataObserver:(id)a3
+- (void)registerDataObserver:(id)observer
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_dataStore(v4, v5, v6);
+  observerCopy = observer;
+  v7 = objc_msgSend_dataStore(observerCopy, v5, v6);
   v10 = v7;
   if (v7 != self)
   {
@@ -3001,7 +3001,7 @@ LABEL_8:
       if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v34 = v4;
+        v34 = observerCopy;
         _os_log_impl(&dword_236F71000, v11, OS_LOG_TYPE_INFO, "Refusing to register observer belonging to different data store; %@", buf, 0xCu);
       }
     }
@@ -3009,14 +3009,14 @@ LABEL_8:
     else
     {
       objc_msgSend_lock(self, v8, v9);
-      objc_msgSend_addObject_(self->_dataObservers, v12, v4);
-      objc_msgSend_setDataStore_(v4, v13, self);
+      objc_msgSend_addObject_(self->_dataObservers, v12, observerCopy);
+      objc_msgSend_setDataStore_(observerCopy, v13, self);
       objc_msgSend_unlock(self, v14, v15);
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = sub_236FB8280;
       v31[3] = &unk_278A18528;
-      v16 = v4;
+      v16 = observerCopy;
       v32 = v16;
       v17 = MEMORY[0x2383C3E80](v31);
       v19 = objc_msgSend_dataServer_(self, v18, v17);
@@ -3030,12 +3030,12 @@ LABEL_8:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterDataObserver:(id)a3
+- (void)deregisterDataObserver:(id)observer
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = self->_dataObservers;
-  v10 = objc_msgSend_dataStore(v4, v6, v7);
+  v10 = objc_msgSend_dataStore(observerCopy, v6, v7);
   if (!v10)
   {
     if (qword_280B2A720 != -1)
@@ -3047,7 +3047,7 @@ LABEL_8:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = observerCopy;
       _os_log_impl(&dword_236F71000, v11, OS_LOG_TYPE_INFO, "Refusing to deregister non registered observer: %@;", buf, 0xCu);
     }
   }
@@ -3055,15 +3055,15 @@ LABEL_8:
   if (v10 == self)
   {
     objc_msgSend_lock(self, v8, v9);
-    objc_msgSend_setDataStore_(v4, v13, 0);
-    objc_msgSend_removeObject_(v5, v14, v4);
+    objc_msgSend_setDataStore_(observerCopy, v13, 0);
+    objc_msgSend_removeObject_(v5, v14, observerCopy);
     objc_msgSend_unlock(self, v15, v16);
-    v19 = objc_msgSend_observerID(v4, v17, v18);
+    v19 = objc_msgSend_observerID(observerCopy, v17, v18);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = sub_236FB86A4;
     v27[3] = &unk_278A18528;
-    v20 = v4;
+    v20 = observerCopy;
     v28 = v20;
     v22 = objc_msgSend_dataServer_(self, v21, v27);
     v25[0] = MEMORY[0x277D85DD0];
@@ -3085,7 +3085,7 @@ LABEL_8:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v4;
+      v30 = observerCopy;
       _os_log_impl(&dword_236F71000, v12, OS_LOG_TYPE_INFO, "Refusing to deregister observer belonging to different data store; %@", buf, 0xCu);
     }
   }
@@ -3093,14 +3093,14 @@ LABEL_8:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pruneDeletedObjectsWithCompletion:(id)a3
+- (void)pruneDeletedObjectsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_236FB8A1C;
   v20[3] = &unk_278A17BC0;
-  v5 = v4;
+  v5 = completionCopy;
   v21 = v5;
   v7 = objc_msgSend_dataServer_(self, v6, v20);
   objc_msgSend_lock(self, v8, v9);
@@ -3125,150 +3125,150 @@ LABEL_8:
   objc_destroyWeak(&v19);
 }
 
-- (void)syncFetchWithCompletion:(id)a3
+- (void)syncFetchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FB8CD8;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_utilityServer_(self, v6, v9);
   objc_msgSend_remote_syncFetchWithCompletion_(v7, v8, v5);
 }
 
-- (void)syncServerConfigWithCompletion:(id)a3
+- (void)syncServerConfigWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FB8D98;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_utilityServer_(self, v6, v9);
   objc_msgSend_remote_syncBootstrapWithCompletion_(v7, v8, v5);
 }
 
-- (void)fetchReportsWithPredicate:(id)a3 completion:(id)a4
+- (void)fetchReportsWithPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB8E74;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  predicateCopy = predicate;
   v10 = objc_msgSend_utilityServer_(self, v9, v12);
-  objc_msgSend_remote_fetchReportsWithPredicate_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_fetchReportsWithPredicate_completion_(v10, v11, predicateCopy, v7);
 }
 
-- (void)triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)a3 completion:(id)a4
+- (void)triggerUserNotificationReviewDueHandoutsWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend_dataServer_(self, v8, v6);
+  completionCopy = completion;
+  dateCopy = date;
+  v9 = objc_msgSend_dataServer_(self, v8, completionCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB9028;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v10 = v6;
-  objc_msgSend_remote_triggerUserNotificationReviewDueHandoutsWithReferenceDate_completion_(v9, v11, v7, v12);
+  v13 = completionCopy;
+  v10 = completionCopy;
+  objc_msgSend_remote_triggerUserNotificationReviewDueHandoutsWithReferenceDate_completion_(v9, v11, dateCopy, v12);
 }
 
-- (void)triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)a3 completion:(id)a4
+- (void)triggerUserNotificationHandoutPastDueSummaryWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend_dataServer_(self, v8, v6);
+  completionCopy = completion;
+  dateCopy = date;
+  v9 = objc_msgSend_dataServer_(self, v8, completionCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB9104;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v10 = v6;
-  objc_msgSend_remote_triggerUserNotificationHandoutPastDueSummaryWithReferenceDate_completion_(v9, v11, v7, v12);
+  v13 = completionCopy;
+  v10 = completionCopy;
+  objc_msgSend_remote_triggerUserNotificationHandoutPastDueSummaryWithReferenceDate_completion_(v9, v11, dateCopy, v12);
 }
 
-- (void)triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)a3 completion:(id)a4
+- (void)triggerUserNotificationHandoutDueSoonWithReferenceDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend_dataServer_(self, v8, v6);
+  completionCopy = completion;
+  dateCopy = date;
+  v9 = objc_msgSend_dataServer_(self, v8, completionCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB91E0;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v10 = v6;
-  objc_msgSend_remote_triggerUserNotificationHandoutDueSoonWithReferenceDate_completion_(v9, v11, v7, v12);
+  v13 = completionCopy;
+  v10 = completionCopy;
+  objc_msgSend_remote_triggerUserNotificationHandoutDueSoonWithReferenceDate_completion_(v9, v11, dateCopy, v12);
 }
 
-- (void)triggerUserNotificationRevisionRequested:(id)a3 completion:(id)a4
+- (void)triggerUserNotificationRevisionRequested:(id)requested completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend_dataServer_(self, v8, v6);
+  completionCopy = completion;
+  requestedCopy = requested;
+  v9 = objc_msgSend_dataServer_(self, v8, completionCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB92BC;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v10 = v6;
-  objc_msgSend_remote_triggerUserNotificationRevisionRequestedWithAttachmentID_completion_(v9, v11, v7, v12);
+  v13 = completionCopy;
+  v10 = completionCopy;
+  objc_msgSend_remote_triggerUserNotificationRevisionRequestedWithAttachmentID_completion_(v9, v11, requestedCopy, v12);
 }
 
-- (void)triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)a3 studentName:(id)a4 completion:(id)a5
+- (void)triggerUserNotificationRevisedSubmissionWithAttachmentID:(id)d studentName:(id)name completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = objc_msgSend_dataServer_(self, v11, v8);
+  completionCopy = completion;
+  nameCopy = name;
+  dCopy = d;
+  v12 = objc_msgSend_dataServer_(self, v11, completionCopy);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236FB93B4;
   v15[3] = &unk_278A17BC0;
-  v16 = v8;
-  v13 = v8;
-  objc_msgSend_remote_triggerUserNotificationRevisedSubmissionWithAttachmentID_studentName_completion_(v12, v14, v10, v9, v15);
+  v16 = completionCopy;
+  v13 = completionCopy;
+  objc_msgSend_remote_triggerUserNotificationRevisedSubmissionWithAttachmentID_studentName_completion_(v12, v14, dCopy, nameCopy, v15);
 }
 
-- (void)triggerUserNotificationHandoutAssigned:(id)a3 completion:(id)a4
+- (void)triggerUserNotificationHandoutAssigned:(id)assigned completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend_dataServer_(self, v8, v6);
+  completionCopy = completion;
+  assignedCopy = assigned;
+  v9 = objc_msgSend_dataServer_(self, v8, completionCopy);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FB9490;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v10 = v6;
-  objc_msgSend_remote_triggerUserNotificationHandoutAssignedWithHandoutID_completion_(v9, v11, v7, v12);
+  v13 = completionCopy;
+  v10 = completionCopy;
+  objc_msgSend_remote_triggerUserNotificationHandoutAssignedWithHandoutID_completion_(v9, v11, assignedCopy, v12);
 }
 
-- (void)renewCredentialsWithCompletion:(id)a3
+- (void)renewCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_236FB9560;
   v10[3] = &unk_278A17BC0;
-  v11 = v4;
-  v5 = v4;
+  v11 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2383C3E80](v10);
   v8 = objc_msgSend_utilityServer_(self, v7, v6);
   objc_msgSend_remote_renewCredentialsWithCompletion_(v8, v9, v5);
 }
 
-+ (id)handoutSubgraphContainingAsset:(id)a3
++ (id)handoutSubgraphContainingAsset:(id)asset
 {
-  v3 = a3;
-  v6 = objc_msgSend_parent(v3, v4, v5);
-  v10 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], v7, v3);
+  assetCopy = asset;
+  v6 = objc_msgSend_parent(assetCopy, v4, v5);
+  v10 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], v7, assetCopy);
   if (v6)
   {
     do
@@ -3300,12 +3300,12 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (void)fetchAssignedItemFor:(id)a3 completion:(id)a4
+- (void)fetchAssignedItemFor:(id)for completion:(id)completion
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = a4;
-  if (!v6 || !objc_msgSend_length(v6, v7, v8))
+  forCopy = for;
+  completionCopy = completion;
+  if (!forCopy || !objc_msgSend_length(forCopy, v7, v8))
   {
     if (qword_280B2A720 != -1)
     {
@@ -3343,7 +3343,7 @@ LABEL_8:
 
 LABEL_10:
       v18 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v17, 4, @"Not Authorized");
-      v9[2](v9, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
 
       goto LABEL_11;
     }
@@ -3360,8 +3360,8 @@ LABEL_10:
   v24[2] = sub_236FB9AB0;
   v24[3] = &unk_278A18A68;
   v27 = buf;
-  v26 = v9;
-  v25 = v6;
+  v26 = completionCopy;
+  v25 = forCopy;
   objc_msgSend_refreshAuthTreeForAttachment_withCompletion_(self, v15, v25, v24);
 
   _Block_object_dispose(buf, 8);
@@ -3371,11 +3371,11 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_validateAndCreateHandoutAssignedItemFor:(id)a3 completion:(id)a4
+- (void)_validateAndCreateHandoutAssignedItemFor:(id)for completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  completionCopy = completion;
   if (qword_280B2A720 != -1)
   {
     dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -3385,7 +3385,7 @@ LABEL_11:
   if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = forCopy;
     _os_log_debug_impl(&dword_236F71000, v8, OS_LOG_TYPE_DEBUG, "CLSDataStore _validateAndCreateHandoutAssignedItemFor called for handoutAttachmentID: %@", buf, 0xCu);
   }
 
@@ -3393,20 +3393,20 @@ LABEL_11:
   v14[1] = 3221225472;
   v14[2] = sub_236FBA1CC;
   v14[3] = &unk_278A17BC0;
-  v15 = v7;
-  v9 = v7;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v11 = objc_msgSend_dataServer_(self, v10, v14);
-  objc_msgSend_remote_validateAndCreateHandoutAssignedItem_withCompletion_(v11, v12, v6, v9);
+  objc_msgSend_remote_validateAndCreateHandoutAssignedItem_withCompletion_(v11, v12, forCopy, v9);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishHandout:(id)a3 completion:(id)a4
+- (void)publishHandout:(id)handout completion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v27 = a4;
-  objc_msgSend_handoutGraphFromHandout_(CLSDataStore, v6, v5);
+  handoutCopy = handout;
+  completionCopy = completion;
+  objc_msgSend_handoutGraphFromHandout_(CLSDataStore, v6, handoutCopy);
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -3464,7 +3464,7 @@ LABEL_11:
   v30[1] = 3221225472;
   v30[2] = sub_236FBA698;
   v30[3] = &unk_278A18AB8;
-  v18 = v27;
+  v18 = completionCopy;
   v31 = v18;
   v19 = MEMORY[0x2383C3E80](v30);
   v28[0] = MEMORY[0x277D85DD0];
@@ -3491,16 +3491,16 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)repairHandoutAttachments:(id)a3 completion:(id)a4
+- (void)repairHandoutAttachments:(id)attachments completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_236FBA9C8;
   v25[3] = &unk_278A18AB8;
-  v7 = v6;
+  v7 = completionCopy;
   v26 = v7;
-  v8 = a3;
+  attachmentsCopy = attachments;
   v9 = MEMORY[0x2383C3E80](v25);
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -3510,7 +3510,7 @@ LABEL_11:
   v24 = v10;
   v12 = objc_msgSend_dataServer_(self, v11, v23);
   v14 = objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v13, @"type = %d OR type = %d", 2, 4);
-  v16 = objc_msgSend_filteredArrayUsingPredicate_(v8, v15, v14);
+  v16 = objc_msgSend_filteredArrayUsingPredicate_(attachmentsCopy, v15, v14);
 
   if (objc_msgSend_count(v16, v17, v18))
   {
@@ -3529,87 +3529,87 @@ LABEL_11:
   }
 }
 
-- (void)handoutAttachmentForDocumentURL:(id)a3 completion:(id)a4
+- (void)handoutAttachmentForDocumentURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if (objc_msgSend_isUIClient(self, v8, v9) & 1) != 0 || (objc_msgSend_isDashboardAPIEnabled(self, v10, v11))
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_236FBAC84;
     v15[3] = &unk_278A18AE0;
-    v16 = v7;
-    objc_msgSend__fetchHandoutAttachmentForDocumentURL_completion_(self, v13, v6, v15);
+    v16 = completionCopy;
+    objc_msgSend__fetchHandoutAttachmentForDocumentURL_completion_(self, v13, lCopy, v15);
   }
 
   else
   {
     v14 = objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v12, 4, @"Use of API not allowed.");
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
-- (void)removeCollection:(id)a3
+- (void)removeCollection:(id)collection
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_type(v4, v5, v6) == 2 || objc_msgSend_type(v4, v7, v8) == 5)
+  collectionCopy = collection;
+  if (objc_msgSend_type(collectionCopy, v5, v6) == 2 || objc_msgSend_type(collectionCopy, v7, v8) == 5)
   {
-    v12[0] = v4;
+    v12[0] = collectionCopy;
     v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v12, 1);
     objc_msgSend_deleteArchivedCollectionObjects_withCompletion_(self, v10, v9, &unk_284A07F88);
   }
 
   else
   {
-    objc_msgSend_removeObject_(self, v7, v4);
+    objc_msgSend_removeObject_(self, v7, collectionCopy);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_classesForCurrentUserWithRole:(unint64_t)a3 completion:(id)a4
+- (void)_classesForCurrentUserWithRole:(unint64_t)role completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FBAE44;
   v9[3] = &unk_278A18B28;
   v9[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v7 = v6;
+  v10 = completionCopy;
+  roleCopy = role;
+  v7 = completionCopy;
   objc_msgSend_currentUserWithCompletion_(self, v8, v9);
 }
 
-- (void)instructedClassesWithCompletion:(id)a3
+- (void)instructedClassesWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   if (objc_msgSend_isDashboardAPIEnabled(self, v4, v5))
   {
-    objc_msgSend__classesForCurrentUserWithRole_completion_(self, v6, 2, v7);
+    objc_msgSend__classesForCurrentUserWithRole_completion_(self, v6, 2, completionCopy);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)personsInClassWithClassID:(id)a3 role:(unint64_t)a4 completion:(id)a5
+- (void)personsInClassWithClassID:(id)d role:(unint64_t)role completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_236FBB0AC;
   v13[3] = &unk_278A18B78;
-  v10 = v9;
+  v10 = completionCopy;
   v15 = v10;
-  v16[1] = a4;
-  v11 = v8;
+  v16[1] = role;
+  v11 = dCopy;
   v14 = v11;
   objc_copyWeak(v16, &location);
   objc_msgSend_currentUserWithCompletion_(self, v12, v13);
@@ -3618,22 +3618,22 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)classesForPersonID:(id)a3 role:(unint64_t)a4 completion:(id)a5
+- (void)classesForPersonID:(id)d role:(unint64_t)role completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10 = objc_opt_class();
   v11 = MEMORY[0x277CCAC30];
-  v13 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v12, a4);
-  v15 = objc_msgSend_predicateWithFormat_(v11, v14, @"personID == %@ && %K = %@", v8, @"roles", v13);
+  v13 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v12, role);
+  v15 = objc_msgSend_predicateWithFormat_(v11, v14, @"personID == %@ && %K = %@", dCopy, @"roles", v13);
   v24 = 0;
   v17 = objc_msgSend_queryWithObjectType_predicate_error_(CLSQuery, v16, v10, v15, &v24);
   v18 = v24;
 
   if (v18)
   {
-    v9[2](v9, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 
   else
@@ -3642,7 +3642,7 @@ LABEL_11:
     v21[1] = 3221225472;
     v21[2] = sub_236FBB6B4;
     v21[3] = &unk_278A18BA0;
-    v22 = v9;
+    v22 = completionCopy;
     objc_copyWeak(&v23, &location);
     objc_msgSend_setCompletion_(v17, v19, v21);
     objc_msgSend_executeQuery_(self, v20, v17);
@@ -3652,17 +3652,17 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)saveClass:(id)a3 completion:(id)a4
+- (void)saveClass:(id)class completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  classCopy = class;
+  completionCopy = completion;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = sub_236FBBC7C;
   v38[3] = &unk_278A18BC8;
-  v8 = v6;
+  v8 = classCopy;
   v39 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v40 = v9;
   v10 = MEMORY[0x2383C3E80](v38);
   v36[0] = MEMORY[0x277D85DD0];
@@ -3709,18 +3709,18 @@ LABEL_11:
   _Block_object_dispose(v34, 8);
 }
 
-- (void)removeClass:(id)a3 completion:(id)a4
+- (void)removeClass:(id)class completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  classCopy = class;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_236FBC2E4;
   v18[3] = &unk_278A18BC8;
-  v19 = v6;
-  v20 = v7;
-  v8 = v7;
-  v9 = v6;
+  v19 = classCopy;
+  v20 = completionCopy;
+  v8 = completionCopy;
+  v9 = classCopy;
   v10 = MEMORY[0x2383C3E80](v18);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -3733,7 +3733,7 @@ LABEL_11:
   objc_msgSend_remote_publishClass_membersToInsert_membersToDelete_completion_(v13, v15, v9, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8], v11);
 }
 
-- (id)orphanedAssets:(id *)a3
+- (id)orphanedAssets:(id *)assets
 {
   v4 = objc_msgSend_syncDataServer_(self, a2, 0);
   v17 = 0;
@@ -3760,9 +3760,9 @@ LABEL_11:
   {
     v7 = v6;
     v8 = 0;
-    if (a3)
+    if (assets)
     {
-      *a3 = v7;
+      *assets = v7;
     }
   }
 
@@ -3778,54 +3778,54 @@ LABEL_11:
   return v8;
 }
 
-- (void)removeAsset:(id)a3
+- (void)removeAsset:(id)asset
 {
-  v7 = a3;
+  assetCopy = asset;
   if (objc_msgSend_isDashboardAPIEnabled(self, v4, v5))
   {
-    objc_msgSend_removeObject_(self, v6, v7);
+    objc_msgSend_removeObject_(self, v6, assetCopy);
   }
 }
 
-- (void)studentActivityForAttachmentsWithIDs:(id)a3 completion:(id)a4
+- (void)studentActivityForAttachmentsWithIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FBC798;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  dsCopy = ds;
   v10 = objc_msgSend_dataServer_(self, v9, v12);
-  objc_msgSend_remote_studentActivityForAttachmentsWithIDs_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_studentActivityForAttachmentsWithIDs_completion_(v10, v11, dsCopy, v7);
 }
 
-- (void)addSurveyAnswerItem:(id)a3
+- (void)addSurveyAnswerItem:(id)item
 {
-  v7 = a3;
-  objc_msgSend_setAction_(v7, v4, 1);
-  v6 = objc_msgSend_addObject_(self, v5, v7);
+  itemCopy = item;
+  objc_msgSend_setAction_(itemCopy, v4, 1);
+  v6 = objc_msgSend_addObject_(self, v5, itemCopy);
 }
 
-- (void)removeSurveyAnswerItem:(id)a3
+- (void)removeSurveyAnswerItem:(id)item
 {
-  v7 = a3;
-  objc_msgSend_setState_(v7, v4, 1);
-  objc_msgSend_setAction_(v7, v5, 3);
-  objc_msgSend_removeObject_(self, v6, v7);
+  itemCopy = item;
+  objc_msgSend_setState_(itemCopy, v4, 1);
+  objc_msgSend_setAction_(itemCopy, v5, 3);
+  objc_msgSend_removeObject_(self, v6, itemCopy);
 }
 
-- (void)startActivity:(id)a3 activityType:(int)a4 bundleID:(id)a5 completion:(id)a6
+- (void)startActivity:(id)activity activityType:(int)type bundleID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  activityCopy = activity;
+  dCopy = d;
+  completionCopy = completion;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = sub_236FBCA84;
   v32[3] = &unk_278A17BC0;
-  v13 = v12;
+  v13 = completionCopy;
   v33 = v13;
   v15 = objc_msgSend_dataServer_(self, v14, v32);
   v18 = objc_msgSend_currentUser(self, v16, v17);
@@ -3845,7 +3845,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (!v11 || !v10 || (a4 & 0xFFFFFFFD) != 1)
+  if (!dCopy || !activityCopy || (type & 0xFFFFFFFD) != 1)
   {
     objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v24, 307, @"Invalid input");
     goto LABEL_10;
@@ -3857,23 +3857,23 @@ LABEL_11:
   v27[3] = &unk_278A18C40;
   v30 = v13;
   v28 = v15;
-  v29 = v11;
-  v31 = a4;
-  objc_msgSend_fetchAssignedItemFor_completion_(self, v25, v10, v27);
+  v29 = dCopy;
+  typeCopy = type;
+  objc_msgSend_fetchAssignedItemFor_completion_(self, v25, activityCopy, v27);
 
   v26 = v30;
 LABEL_11:
 }
 
-- (void)startActivityFailed:(id)a3 activityType:(int)a4 completion:(id)a5
+- (void)startActivityFailed:(id)failed activityType:(int)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  failedCopy = failed;
+  completionCopy = completion;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = sub_236FBCE44;
   v23[3] = &unk_278A17BC0;
-  v10 = v9;
+  v10 = completionCopy;
   v24 = v10;
   v12 = objc_msgSend_dataServer_(self, v11, v23);
   v15 = objc_msgSend_currentUser(self, v13, v14);
@@ -3894,30 +3894,30 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (!v8 || a4 != 3)
+  if (!failedCopy || type != 3)
   {
     objc_msgSend_cls_createErrorWithCode_description_(MEMORY[0x277CCA9B8], v21, 2, @"Invalid argument, nil attachmentID or incorrect attachment type");
     goto LABEL_9;
   }
 
-  objc_msgSend_remote_startActivityFailed_completion_(v12, v21, v8, v10);
+  objc_msgSend_remote_startActivityFailed_completion_(v12, v21, failedCopy, v10);
 LABEL_10:
 }
 
-- (void)fetchAppBasedAssignmentUsage:(id)a3 completion:(id)a4
+- (void)fetchAppBasedAssignmentUsage:(id)usage completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  usageCopy = usage;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236FBCF70;
   v15[3] = &unk_278A17BC0;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
   v10 = objc_msgSend_dataServer_(self, v9, v15);
   if (objc_msgSend_isDashboardAPIEnabled(self, v11, v12))
   {
-    objc_msgSend_remote_fetchAppBasedAssignmentUsage_completion_(v10, v13, v6, v8);
+    objc_msgSend_remote_fetchAppBasedAssignmentUsage_completion_(v10, v13, usageCopy, v8);
   }
 
   else
@@ -3927,20 +3927,20 @@ LABEL_10:
   }
 }
 
-- (void)submittableURLByCurrentUser:(id)a3 completion:(id)a4
+- (void)submittableURLByCurrentUser:(id)user completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236FBD09C;
   v15[3] = &unk_278A17BC0;
-  v8 = v7;
+  v8 = completionCopy;
   v16 = v8;
   v10 = objc_msgSend_dataServer_(self, v9, v15);
   if (objc_msgSend_isUIClient(self, v11, v12))
   {
-    objc_msgSend_remote_submittableURLByCurrentUser_completion_(v10, v13, v6, v8);
+    objc_msgSend_remote_submittableURLByCurrentUser_completion_(v10, v13, userCopy, v8);
   }
 
   else
@@ -3950,14 +3950,14 @@ LABEL_10:
   }
 }
 
-- (void)currentUserIsStudent:(id)a3
+- (void)currentUserIsStudent:(id)student
 {
-  v4 = a3;
+  studentCopy = student;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FBD1B4;
   v12[3] = &unk_278A17BC0;
-  v5 = v4;
+  v5 = studentCopy;
   v13 = v5;
   v7 = objc_msgSend_dataServer_(self, v6, v12);
   if (objc_msgSend_isUIClient(self, v8, v9))
@@ -3972,40 +3972,40 @@ LABEL_10:
   }
 }
 
-- (void)canSearchRostersWithCompletion:(id)a3
+- (void)canSearchRostersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FBD274;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_dataServer_(self, v6, v9);
   objc_msgSend_remote_canSearchRostersWithCompletion_(v7, v8, v5);
 }
 
-- (void)shouldPerformSearchAPIOperation:(id)a3 completion:(id)a4
+- (void)shouldPerformSearchAPIOperation:(id)operation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  completionCopy = completion;
   v8 = sub_236FBD360();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_236FBD3B4;
   block[3] = &unk_278A18C68;
-  v12 = v6;
-  v13 = v7;
+  v12 = operationCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = operationCopy;
+  v10 = completionCopy;
   dispatch_async(v8, block);
 }
 
-- (void)objectsMatching:(id)a3 completion:(id)a4
+- (void)objectsMatching:(id)matching completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  matchingCopy = matching;
+  completionCopy = completion;
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x2020000000;
@@ -4022,7 +4022,7 @@ LABEL_10:
   v26[3] = &unk_278A18C90;
   v26[4] = self;
   v28 = v31;
-  v8 = v7;
+  v8 = completionCopy;
   v27 = v8;
   v9 = MEMORY[0x2383C3E80](v26);
   v10 = dispatch_time(0, 2700000000);
@@ -4045,7 +4045,7 @@ LABEL_10:
   objc_copyWeak(&v20, &location);
   v13 = v12;
   v18 = v13;
-  v14 = v6;
+  v14 = matchingCopy;
   v17 = v14;
   v19 = v29;
   objc_msgSend_shouldPerformSearchAPIOperation_completion_(self, v15, v14, v16);
@@ -4057,11 +4057,11 @@ LABEL_10:
   _Block_object_dispose(v31, 8);
 }
 
-- (void)membersOfGroupWithIdentifier:(id)a3 completion:(id)a4
+- (void)membersOfGroupWithIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (qword_280B2A720 != -1)
   {
     dispatch_once(&qword_280B2A720, &unk_284A07B28);
@@ -4071,77 +4071,77 @@ LABEL_10:
   if (os_log_type_enabled(CLSLogSearch, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = identifierCopy;
     _os_log_debug_impl(&dword_236F71000, v8, OS_LOG_TYPE_DEBUG, "Query for members of CLSClass/CLSGroup: %@", buf, 0xCu);
   }
 
   v9 = [CLSSearchSpecification alloc];
   v11 = objc_msgSend_initWithOptions_behaviors_(v9, v10, 1, 1);
-  v17 = v6;
+  v17 = identifierCopy;
   v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v12, &v17, 1);
   objc_msgSend_requireClassMemberRole_forClassIDs_(v11, v14, 3, v13);
 
-  objc_msgSend_objectsMatching_completion_(self, v15, v11, v7);
+  objc_msgSend_objectsMatching_completion_(self, v15, v11, completionCopy);
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collaborationStatesForObjectWithID:(id)a3 ownerPersonID:(id)a4 completion:(id)a5
+- (void)collaborationStatesForObjectWithID:(id)d ownerPersonID:(id)iD completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_236FBDFAC;
   v16[3] = &unk_278A17BC0;
-  v11 = v10;
+  v11 = completionCopy;
   v17 = v11;
   v13 = objc_msgSend_dataServer_(self, v12, v16);
   v15 = v13;
   if (v13)
   {
-    objc_msgSend_remote_collaborationStatesForObjectWithID_ownerPersonID_completion_(v13, v14, v8, v9, v11);
+    objc_msgSend_remote_collaborationStatesForObjectWithID_ownerPersonID_completion_(v13, v14, dCopy, iDCopy, v11);
   }
 }
 
-- (void)collaborationStatesForObjectWithID:(id)a3 classID:(id)a4 forOwnersWithRole:(unint64_t)a5 completion:(id)a6
+- (void)collaborationStatesForObjectWithID:(id)d classID:(id)iD forOwnersWithRole:(unint64_t)role completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_236FBE0B4;
   v18[3] = &unk_278A17BC0;
-  v13 = v12;
+  v13 = completionCopy;
   v19 = v13;
   v15 = objc_msgSend_dataServer_(self, v14, v18);
   v17 = v15;
   if (v15)
   {
-    objc_msgSend_remote_collaborationStatesForObjectWithID_classID_forOwnersWithRole_completion_(v15, v16, v10, v11, a5, v13);
+    objc_msgSend_remote_collaborationStatesForObjectWithID_classID_forOwnersWithRole_completion_(v15, v16, dCopy, iDCopy, role, v13);
   }
 }
 
-- (void)publishCollaborationStateChanges:(id)a3 completion:(id)a4
+- (void)publishCollaborationStateChanges:(id)changes completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  completionCopy = completion;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = sub_236FBE2DC;
   v31[3] = &unk_278A17BC0;
-  v8 = v7;
+  v8 = completionCopy;
   v32 = v8;
   v10 = objc_msgSend_dataServer_(self, v9, v31);
-  if (objc_msgSend_count(v6, v11, v12))
+  if (objc_msgSend_count(changesCopy, v11, v12))
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v13 = v6;
+    v13 = changesCopy;
     v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v27, v33, 16);
     if (v15)
     {
@@ -4192,34 +4192,34 @@ LABEL_13:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishAdminRequests:(id)a3 withRequestor:(id)a4 adminRequestAccounts:(id)a5 completion:(id)a6
+- (void)publishAdminRequests:(id)requests withRequestor:(id)requestor adminRequestAccounts:(id)accounts completion:(id)completion
 {
   v71 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestsCopy = requests;
+  requestorCopy = requestor;
+  accountsCopy = accounts;
+  completionCopy = completion;
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = sub_236FBE688;
   v68[3] = &unk_278A17BC0;
-  v14 = v13;
+  v14 = completionCopy;
   v69 = v14;
   v16 = objc_msgSend_dataServer_(self, v15, v68);
-  if (objc_msgSend_count(v10, v17, v18))
+  if (objc_msgSend_count(requestsCopy, v17, v18))
   {
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    obj = v10;
+    obj = requestsCopy;
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v20, &v64, v70, 16);
     if (v21)
     {
       v24 = v21;
       v63 = *v65;
-      v59 = v12;
-      v60 = v10;
+      v59 = accountsCopy;
+      v60 = requestsCopy;
       v57 = v16;
       v58 = v14;
       do
@@ -4234,7 +4234,7 @@ LABEL_13:
 
           v26 = *(*(&v64 + 1) + 8 * v25);
           v27 = objc_msgSend_requestorID(v26, v22, v23);
-          if (v27 || (objc_msgSend_objectID(v11, v22, v23), (v62 = objc_claimAutoreleasedReturnValue()) != 0))
+          if (v27 || (objc_msgSend_objectID(requestorCopy, v22, v23), (v62 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v28 = objc_msgSend_requestorID(v26, v22, v23);
             if (!v28)
@@ -4243,7 +4243,7 @@ LABEL_13:
             }
 
             v31 = v28;
-            v32 = objc_msgSend_objectID(v11, v29, v30);
+            v32 = objc_msgSend_objectID(requestorCopy, v29, v30);
             if (!v32)
             {
 
@@ -4257,23 +4257,23 @@ LABEL_25:
               v46 = MEMORY[0x277CCA9B8];
               v47 = MEMORY[0x277CCACA8];
               v48 = objc_msgSend_requestorID(v26, v22, v23);
-              v51 = objc_msgSend_objectID(v11, v49, v50);
+              v51 = objc_msgSend_objectID(requestorCopy, v49, v50);
               v53 = objc_msgSend_stringWithFormat_(v47, v52, @"Invalid RequestorID. (got:%@, expected:%@)", v48, v51);
               v55 = objc_msgSend_cls_createErrorWithCode_description_(v46, v54, 2, v53);
 
               v14 = v58;
               (*(v58 + 2))(v58, 0, v55);
 
-              v12 = v59;
-              v10 = v60;
+              accountsCopy = v59;
+              requestsCopy = v60;
               v16 = v57;
               goto LABEL_26;
             }
 
             v35 = v32;
             v36 = objc_msgSend_requestorID(v26, v33, v34);
-            v37 = v11;
-            v40 = objc_msgSend_objectID(v11, v38, v39);
+            v37 = requestorCopy;
+            v40 = objc_msgSend_objectID(requestorCopy, v38, v39);
             isEqualToString = objc_msgSend_isEqualToString_(v36, v41, v40);
 
             if (v27)
@@ -4284,7 +4284,7 @@ LABEL_25:
             {
             }
 
-            v11 = v37;
+            requestorCopy = v37;
             if ((isEqualToString & 1) == 0)
             {
               goto LABEL_25;
@@ -4302,8 +4302,8 @@ LABEL_25:
         while (v24 != v25);
         v43 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v22, &v64, v70, 16);
         v24 = v43;
-        v12 = v59;
-        v10 = v60;
+        accountsCopy = v59;
+        requestsCopy = v60;
         v16 = v57;
         v14 = v58;
       }
@@ -4311,7 +4311,7 @@ LABEL_25:
       while (v43);
     }
 
-    objc_msgSend_remote_publishAdminRequests_withRequestor_adminRequestAccounts_completion_(v16, v44, obj, v11, v12, v14);
+    objc_msgSend_remote_publishAdminRequests_withRequestor_adminRequestAccounts_completion_(v16, v44, obj, requestorCopy, accountsCopy, v14);
   }
 
   else
@@ -4325,19 +4325,19 @@ LABEL_26:
   v56 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adminRequestorForEmail:(id)a3 completion:(id)a4
+- (void)adminRequestorForEmail:(id)email completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  emailCopy = email;
+  completionCopy = completion;
   v8 = objc_opt_class();
-  v10 = objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v9, @"email == %@", v6);
+  v10 = objc_msgSend_predicateWithFormat_(MEMORY[0x277CCAC30], v9, @"email == %@", emailCopy);
   v19 = 0;
   v12 = objc_msgSend_queryWithObjectType_predicate_error_(CLSQuery, v11, v8, v10, &v19);
   v13 = v19;
 
   if (v13)
   {
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   else
@@ -4346,26 +4346,26 @@ LABEL_26:
     v16[1] = 3221225472;
     v16[2] = sub_236FBE800;
     v16[3] = &unk_278A18B50;
-    v18 = v7;
-    v17 = v6;
+    v18 = completionCopy;
+    v17 = emailCopy;
     objc_msgSend_setCompletion_(v12, v14, v16);
     objc_msgSend_executeQuery_(self, v15, v12);
   }
 }
 
-- (void)childrenOfAdminRequestID:(id)a3 completion:(id)a4
+- (void)childrenOfAdminRequestID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_opt_class();
-  v10 = objc_msgSend_predicateForObjectsWithParentObjectID_(CLSDataObserver, v9, v6);
+  v10 = objc_msgSend_predicateForObjectsWithParentObjectID_(CLSDataObserver, v9, dCopy);
   v23 = 0;
   v12 = objc_msgSend_queryWithObjectType_predicate_error_(CLSQuery, v11, v8, v10, &v23);
   v13 = v23;
 
   if (v13)
   {
-    v7[2](v7, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   else
@@ -4381,7 +4381,7 @@ LABEL_26:
     v16[1] = 3221225472;
     v16[2] = sub_236FBEAC4;
     v16[3] = &unk_278A18D30;
-    v17 = v7;
+    v17 = completionCopy;
     objc_copyWeak(&v19, &location);
     v18 = v20;
     objc_msgSend_setCompletion_(v12, v14, v16);
@@ -4393,49 +4393,49 @@ LABEL_26:
   }
 }
 
-- (void)deleteAdminRequestID:(id)a3 completion:(id)a4
+- (void)deleteAdminRequestID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FBEF14;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  dCopy = d;
   v10 = objc_msgSend_dataServer_(self, v9, v12);
-  objc_msgSend_remote_deleteAdminRequestID_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_deleteAdminRequestID_completion_(v10, v11, dCopy, v7);
 }
 
-- (void)publishAnswersForSurvey:(id)a3 completion:(id)a4
+- (void)publishAnswersForSurvey:(id)survey completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FBEFF0;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  surveyCopy = survey;
   v10 = objc_msgSend_dataServer_(self, v9, v12);
-  objc_msgSend_remote_publishSurveyAnswers_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_publishSurveyAnswers_completion_(v10, v11, surveyCopy, v7);
 }
 
-- (void)fetchSurveyAnswers:(id)a3 responderIDs:(id)a4 completion:(id)a5
+- (void)fetchSurveyAnswers:(id)answers responderIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  answersCopy = answers;
+  dsCopy = ds;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_236FBF120;
   v16[3] = &unk_278A17BC0;
-  v11 = v10;
+  v11 = completionCopy;
   v17 = v11;
   v15 = objc_msgSend_dataServer_(self, v12, v16);
-  if (v8 && objc_msgSend_count(v8, v13, v14) || v9 && objc_msgSend_count(v9, v13, v14))
+  if (answersCopy && objc_msgSend_count(answersCopy, v13, v14) || dsCopy && objc_msgSend_count(dsCopy, v13, v14))
   {
-    objc_msgSend_remote_fetchSurveyAnswer_responderIDs_completion_(v15, v13, v8, v9, v11);
+    objc_msgSend_remote_fetchSurveyAnswer_responderIDs_completion_(v15, v13, answersCopy, dsCopy, v11);
   }
 
   else
@@ -4444,18 +4444,18 @@ LABEL_26:
   }
 }
 
-- (void)relayRequestWithData:(id)a3 requestType:(unint64_t)a4 completion:(id)a5
+- (void)relayRequestWithData:(id)data requestType:(unint64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v11 = v9;
-  if (a4 == 1)
+  dataCopy = data;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (type == 1)
   {
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = sub_236FBF448;
     v47[3] = &unk_278A17BC0;
-    v12 = v9;
+    v12 = completionCopy;
     v48 = v12;
     v14 = objc_msgSend_dataServer_(self, v13, v47);
     v15 = MEMORY[0x277CBEBC0];
@@ -4486,7 +4486,7 @@ LABEL_26:
         v43 = v38;
         v44 = v26;
         v39 = MEMORY[0x2383C3E80](v42);
-        objc_msgSend_remote_relayRequestWithData_requestType_fileHandle_completion_(v14, v40, v8, 1, v38, v39);
+        objc_msgSend_remote_relayRequestWithData_requestType_fileHandle_completion_(v14, v40, dataCopy, 1, v38, v39);
       }
 
       else
@@ -4509,33 +4509,33 @@ LABEL_26:
   }
 }
 
-- (void)saveInsightEvents:(id)a3 completion:(id)a4
+- (void)saveInsightEvents:(id)events completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FBF794;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  eventsCopy = events;
   v10 = objc_msgSend_dataServer_(self, v9, v12);
-  objc_msgSend_remote_saveInsightEvents_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_saveInsightEvents_completion_(v10, v11, eventsCopy, v7);
 }
 
-- (void)urlSuitableForOpeningForExpectedURL:(id)a3 itemID:(id)a4 ownerName:(id)a5 zoneName:(id)a6 completion:(id)a7
+- (void)urlSuitableForOpeningForExpectedURL:(id)l itemID:(id)d ownerName:(id)name zoneName:(id)zoneName completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = sub_236FC1284;
   v24[3] = &unk_278A17BC0;
-  v13 = v12;
+  v13 = completionCopy;
   v25 = v13;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  zoneNameCopy = zoneName;
+  nameCopy = name;
+  dCopy = d;
+  lCopy = l;
   v19 = objc_msgSend_utilityServer_(self, v18, v24);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -4543,19 +4543,19 @@ LABEL_26:
   v22[3] = &unk_278A18DC0;
   v23 = v13;
   v20 = v13;
-  objc_msgSend_remote_urlSuitableForOpeningForExpectedURL_itemID_ownerName_zoneName_completion_(v19, v21, v17, v16, v15, v14, v22);
+  objc_msgSend_remote_urlSuitableForOpeningForExpectedURL_itemID_ownerName_zoneName_completion_(v19, v21, lCopy, dCopy, nameCopy, zoneNameCopy, v22);
 }
 
-- (void)cloudKitUrlSuitableForOpeningForAsset:(id)a3 completion:(id)a4
+- (void)cloudKitUrlSuitableForOpeningForAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236FC1458;
   v15[3] = &unk_278A17BC0;
-  v7 = v6;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = a3;
+  assetCopy = asset;
   v10 = objc_msgSend_utilityServer_(self, v9, v15);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -4563,19 +4563,19 @@ LABEL_26:
   v13[3] = &unk_278A18DC0;
   v14 = v7;
   v11 = v7;
-  objc_msgSend_remote_cloudKitUrlSuitableForOpeningForAsset_downloadObserver_completion_(v10, v12, v8, v8, v13);
+  objc_msgSend_remote_cloudKitUrlSuitableForOpeningForAsset_downloadObserver_completion_(v10, v12, assetCopy, assetCopy, v13);
 }
 
-- (void)cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)a3 completion:(id)a4
+- (void)cloudKitThumbnailUrlSuitableForOpeningForAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236FC1628;
   v15[3] = &unk_278A17BC0;
-  v7 = v6;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = a3;
+  assetCopy = asset;
   v10 = objc_msgSend_utilityServer_(self, v9, v15);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -4583,19 +4583,19 @@ LABEL_26:
   v13[3] = &unk_278A18DC0;
   v14 = v7;
   v11 = v7;
-  objc_msgSend_remote_cloudKitThumbnailUrlSuitableForOpeningForAsset_completion_(v10, v12, v8, v13);
+  objc_msgSend_remote_cloudKitThumbnailUrlSuitableForOpeningForAsset_completion_(v10, v12, assetCopy, v13);
 }
 
-- (void)cloudKitUrlSuitableForStreamingAsset:(id)a3 completion:(id)a4
+- (void)cloudKitUrlSuitableForStreamingAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236FC17FC;
   v15[3] = &unk_278A17BC0;
-  v7 = v6;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = a3;
+  assetCopy = asset;
   v10 = objc_msgSend_utilityServer_(self, v9, v15);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -4603,19 +4603,19 @@ LABEL_26:
   v13[3] = &unk_278A18DE8;
   v14 = v7;
   v11 = v7;
-  objc_msgSend_remote_cloudKitUrlSuitableForStreamingAsset_downloadObserver_completion_(v10, v12, v8, v8, v13);
+  objc_msgSend_remote_cloudKitUrlSuitableForStreamingAsset_downloadObserver_completion_(v10, v12, assetCopy, assetCopy, v13);
 }
 
-- (void)deleteBackingStoreForAsset:(id)a3 completion:(id)a4
+- (void)deleteBackingStoreForAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_236FC1948;
   v15[3] = &unk_278A17BC0;
-  v7 = v6;
+  v7 = completionCopy;
   v16 = v7;
-  v8 = a3;
+  assetCopy = asset;
   v10 = objc_msgSend_utilityServer_(self, v9, v15);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -4623,26 +4623,26 @@ LABEL_26:
   v13[3] = &unk_278A18AB8;
   v14 = v7;
   v11 = v7;
-  objc_msgSend_remote_deleteBackingStoreForAsset_completion_(v10, v12, v8, v13);
+  objc_msgSend_remote_deleteBackingStoreForAsset_completion_(v10, v12, assetCopy, v13);
 }
 
-- (void)createShareIfNeededForURL:(id)a3 completion:(id)a4
+- (void)createShareIfNeededForURL:(id)l completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FC1A3C;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  lCopy = l;
   v10 = objc_msgSend_utilityServer_(self, v9, v12);
-  objc_msgSend_remote_createShareIfNeededForURL_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_createShareIfNeededForURL_completion_(v10, v11, lCopy, v7);
 }
 
-- (id)uploadAsset:(id)a3
+- (id)uploadAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v6 = objc_msgSend_syncUtilityServer_(self, v5, &unk_284A07928);
   v12 = 0;
   v13 = &v12;
@@ -4656,7 +4656,7 @@ LABEL_26:
   v11[2] = sub_236FC1C94;
   v11[3] = &unk_278A18E10;
   v11[4] = &v12;
-  objc_msgSend_remote_uploadAsset_createThumbnailIfNeeded_uploadObserver_completion_(v6, v8, v4, v7 ^ 1u, v4, v11);
+  objc_msgSend_remote_uploadAsset_createThumbnailIfNeeded_uploadObserver_completion_(v6, v8, assetCopy, v7 ^ 1u, assetCopy, v11);
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
 

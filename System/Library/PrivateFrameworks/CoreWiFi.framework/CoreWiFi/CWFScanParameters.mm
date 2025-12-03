@@ -1,70 +1,70 @@
 @interface CWFScanParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScanParameters:(id)a3;
-- (CWFScanParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScanParameters:(id)parameters;
+- (CWFScanParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation CWFScanParameters
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [v3 appendFormat:@"channels=%@, ", self->_channels];
-  v4 = [(NSString *)self->_SSID redactedForWiFi];
-  [v3 appendFormat:@"SSID=%@, ", v4];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"channels=%@, ", self->_channels];
+  redactedForWiFi = [(NSString *)self->_SSID redactedForWiFi];
+  [string appendFormat:@"SSID=%@, ", redactedForWiFi];
 
-  v5 = [(NSString *)self->_BSSID redactedForWiFi];
-  [v3 appendFormat:@"BSSID=%@, ", v5];
+  redactedForWiFi2 = [(NSString *)self->_BSSID redactedForWiFi];
+  [string appendFormat:@"BSSID=%@, ", redactedForWiFi2];
 
-  [v3 appendFormat:@"shortSSID=%lu, ", self->_shortSSID];
+  [string appendFormat:@"shortSSID=%lu, ", self->_shortSSID];
   v6 = [(NSArray *)self->_SSIDList componentsJoinedByString:@", "];
-  v7 = [v6 redactedForWiFi];
-  [v3 appendFormat:@"SSIDList=[%@], ", v7];
+  redactedForWiFi3 = [v6 redactedForWiFi];
+  [string appendFormat:@"SSIDList=[%@], ", redactedForWiFi3];
 
-  [v3 appendFormat:@"numberOfScans=%lu, ", self->_numberOfScans];
-  [v3 appendFormat:@"restTime=%lu, ", self->_restTime];
-  [v3 appendFormat:@"dwellTime=%lu, ", self->_dwellTime];
-  [v3 appendFormat:@"acceptableCacheAge=%lu, ", self->_acceptableCacheAge];
-  [v3 appendFormat:@"BSSType=%u, ", self->_BSSType];
-  [v3 appendFormat:@"PHYMode=%u, ", self->_PHYMode];
-  [v3 appendFormat:@"scanType=%u, ", self->_scanType];
-  [v3 appendFormat:@"minRSSI=%ld, ", self->_minimumRSSI];
-  [v3 appendFormat:@"maxAge=%lu, ", self->_maximumAge];
-  [v3 appendFormat:@"minTimestamp=%llu, ", self->_minimumTimestamp];
-  [v3 appendFormat:@"scanFlags=0x%x, ", self->_scanFlags];
-  [v3 appendFormat:@"merge=%d, ", self->_mergeScanResults];
-  [v3 appendFormat:@"includeHidden=%d, ", self->_includeHiddenNetworks];
-  [v3 appendFormat:@"includeProperties=%@, ", self->_includeProperties];
-  [v3 appendFormat:@"includeScanResults=%@, ", self->_includeScanResults];
-  [v3 appendFormat:@"includeMatchingKnownNetworks=%d, ", self->_includeMatchingKnownNetworkProfiles];
-  [v3 appendFormat:@"ANQPElementIDList=%@, ", self->_ANQPElementIDListForPasspointScanResults];
-  [v3 appendFormat:@"acceptableANQPCacheAge=%lu, ", self->_acceptableANQPCacheAgeForPasspointScanResults];
-  [v3 appendFormat:@"maxANQPAge=%lu, ", self->_maximumANQPAgeForPasspointScanResults];
-  [v3 appendFormat:@"exclude6GChannels=%d, ", self->_exclude6GChannels];
-  [v3 appendFormat:@"matchNetworkNamePrefix=%@, ", self->_matchNetworkNamePrefix];
-  [v3 appendFormat:@"filterPredicate=%@, ", self->_filterPredicate];
-  [v3 appendFormat:@"includeBeaconCache=%d, ", self->_includeBeaconCacheResults];
-  [v3 appendFormat:@"includeBackgroundCache=%d, ", self->_includeBackgroundScanCacheResults];
-  [v3 appendFormat:@"sortByAutoJoinPreference=%d", self->_sortByAutoJoinPreference];
-  [v3 appendFormat:@"addScanDurationToMaxAge=%d, ", self->_addScanDurationToMaxAge];
+  [string appendFormat:@"numberOfScans=%lu, ", self->_numberOfScans];
+  [string appendFormat:@"restTime=%lu, ", self->_restTime];
+  [string appendFormat:@"dwellTime=%lu, ", self->_dwellTime];
+  [string appendFormat:@"acceptableCacheAge=%lu, ", self->_acceptableCacheAge];
+  [string appendFormat:@"BSSType=%u, ", self->_BSSType];
+  [string appendFormat:@"PHYMode=%u, ", self->_PHYMode];
+  [string appendFormat:@"scanType=%u, ", self->_scanType];
+  [string appendFormat:@"minRSSI=%ld, ", self->_minimumRSSI];
+  [string appendFormat:@"maxAge=%lu, ", self->_maximumAge];
+  [string appendFormat:@"minTimestamp=%llu, ", self->_minimumTimestamp];
+  [string appendFormat:@"scanFlags=0x%x, ", self->_scanFlags];
+  [string appendFormat:@"merge=%d, ", self->_mergeScanResults];
+  [string appendFormat:@"includeHidden=%d, ", self->_includeHiddenNetworks];
+  [string appendFormat:@"includeProperties=%@, ", self->_includeProperties];
+  [string appendFormat:@"includeScanResults=%@, ", self->_includeScanResults];
+  [string appendFormat:@"includeMatchingKnownNetworks=%d, ", self->_includeMatchingKnownNetworkProfiles];
+  [string appendFormat:@"ANQPElementIDList=%@, ", self->_ANQPElementIDListForPasspointScanResults];
+  [string appendFormat:@"acceptableANQPCacheAge=%lu, ", self->_acceptableANQPCacheAgeForPasspointScanResults];
+  [string appendFormat:@"maxANQPAge=%lu, ", self->_maximumANQPAgeForPasspointScanResults];
+  [string appendFormat:@"exclude6GChannels=%d, ", self->_exclude6GChannels];
+  [string appendFormat:@"matchNetworkNamePrefix=%@, ", self->_matchNetworkNamePrefix];
+  [string appendFormat:@"filterPredicate=%@, ", self->_filterPredicate];
+  [string appendFormat:@"includeBeaconCache=%d, ", self->_includeBeaconCacheResults];
+  [string appendFormat:@"includeBackgroundCache=%d, ", self->_includeBackgroundScanCacheResults];
+  [string appendFormat:@"sortByAutoJoinPreference=%d", self->_sortByAutoJoinPreference];
+  [string appendFormat:@"addScanDurationToMaxAge=%d, ", self->_addScanDurationToMaxAge];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqualToScanParameters:(id)a3
+- (BOOL)isEqualToScanParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   channels = self->_channels;
-  v7 = [v5 channels];
-  if (channels != v7)
+  channels = [parametersCopy channels];
+  if (channels != channels)
   {
-    if (!self->_channels || ([v5 channels], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_channels || ([parametersCopy channels], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_66;
@@ -72,8 +72,8 @@
 
     v3 = v8;
     v9 = self->_channels;
-    v10 = [v5 channels];
-    if (![(NSArray *)v9 isEqual:v10])
+    channels2 = [parametersCopy channels];
+    if (![(NSArray *)v9 isEqual:channels2])
     {
       v11 = 0;
 LABEL_65:
@@ -81,12 +81,12 @@ LABEL_65:
       goto LABEL_66;
     }
 
-    v98 = v10;
+    v98 = channels2;
   }
 
   SSID = self->_SSID;
-  v13 = [v5 SSID];
-  if (SSID != v13)
+  sSID = [parametersCopy SSID];
+  if (SSID != sSID)
   {
     if (!self->_SSID)
     {
@@ -94,18 +94,18 @@ LABEL_65:
       goto LABEL_64;
     }
 
-    v14 = [v5 SSID];
-    if (!v14)
+    sSID2 = [parametersCopy SSID];
+    if (!sSID2)
     {
       goto LABEL_33;
     }
 
-    v15 = v14;
+    v15 = sSID2;
     v16 = self->_SSID;
-    v17 = [v5 SSID];
+    sSID3 = [parametersCopy SSID];
     v18 = v16;
-    v19 = v17;
-    if (([(NSString *)v18 isEqual:v17]& 1) == 0)
+    v19 = sSID3;
+    if (([(NSString *)v18 isEqual:sSID3]& 1) == 0)
     {
 
       goto LABEL_28;
@@ -116,11 +116,11 @@ LABEL_65:
   }
 
   BSSID = self->_BSSID;
-  v21 = [v5 BSSID];
-  if (BSSID == v21)
+  bSSID = [parametersCopy BSSID];
+  if (BSSID == bSSID)
   {
     shortSSID = self->_shortSSID;
-    if (shortSSID == [v5 shortSSID])
+    if (shortSSID == [parametersCopy shortSSID])
     {
       goto LABEL_21;
     }
@@ -135,24 +135,24 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v22 = [v5 BSSID];
-  if (!v22)
+  bSSID2 = [parametersCopy BSSID];
+  if (!bSSID2)
   {
     goto LABEL_31;
   }
 
-  v95 = v22;
+  v95 = bSSID2;
   v23 = self->_BSSID;
-  v24 = [v5 BSSID];
+  bSSID3 = [parametersCopy BSSID];
   v25 = v23;
-  v26 = v24;
-  if (([(NSString *)v25 isEqual:v24]& 1) == 0)
+  v26 = bSSID3;
+  if (([(NSString *)v25 isEqual:bSSID3]& 1) == 0)
   {
 
 LABEL_30:
 LABEL_31:
 
-    if (SSID != v13)
+    if (SSID != sSID)
     {
     }
 
@@ -161,15 +161,15 @@ LABEL_31:
 
   v93 = v26;
   v27 = self->_shortSSID;
-  if (v27 == [v5 shortSSID])
+  if (v27 == [parametersCopy shortSSID])
   {
 LABEL_21:
     SSIDList = self->_SSIDList;
-    v30 = [v5 SSIDList];
-    if (SSIDList == v30)
+    sSIDList = [parametersCopy SSIDList];
+    if (SSIDList == sSIDList)
     {
       v92 = SSIDList;
-      v94 = v30;
+      v94 = sSIDList;
       goto LABEL_37;
     }
 
@@ -179,58 +179,58 @@ LABEL_21:
       goto LABEL_60;
     }
 
-    v94 = v30;
-    v31 = [v5 SSIDList];
-    if (v31)
+    v94 = sSIDList;
+    sSIDList2 = [parametersCopy SSIDList];
+    if (sSIDList2)
     {
-      v91 = v31;
+      v91 = sSIDList2;
       v92 = SSIDList;
       v32 = self->_SSIDList;
-      v33 = [v5 SSIDList];
+      sSIDList3 = [parametersCopy SSIDList];
       v34 = v32;
-      v35 = v33;
-      if (([(NSArray *)v34 isEqual:v33]& 1) != 0)
+      v35 = sSIDList3;
+      if (([(NSArray *)v34 isEqual:sSIDList3]& 1) != 0)
       {
         v90 = v35;
 LABEL_37:
         numberOfScans = self->_numberOfScans;
-        if (numberOfScans != [v5 numberOfScans])
+        if (numberOfScans != [parametersCopy numberOfScans])
         {
           goto LABEL_56;
         }
 
         restTime = self->_restTime;
-        if (restTime != [v5 restTime])
+        if (restTime != [parametersCopy restTime])
         {
           goto LABEL_56;
         }
 
         dwellTime = self->_dwellTime;
-        if (dwellTime != [v5 dwellTime])
+        if (dwellTime != [parametersCopy dwellTime])
         {
           goto LABEL_56;
         }
 
         acceptableCacheAge = self->_acceptableCacheAge;
-        if (acceptableCacheAge != [v5 acceptableCacheAge])
+        if (acceptableCacheAge != [parametersCopy acceptableCacheAge])
         {
           goto LABEL_56;
         }
 
         BSSType = self->_BSSType;
-        if (BSSType != [v5 BSSType])
+        if (BSSType != [parametersCopy BSSType])
         {
           goto LABEL_56;
         }
 
         PHYMode = self->_PHYMode;
-        if (PHYMode != [v5 PHYMode])
+        if (PHYMode != [parametersCopy PHYMode])
         {
           goto LABEL_56;
         }
 
         scanType = self->_scanType;
-        if (scanType != [v5 scanType] || (minimumRSSI = self->_minimumRSSI, minimumRSSI != objc_msgSend(v5, "minimumRSSI")) || (maximumAge = self->_maximumAge, maximumAge != objc_msgSend(v5, "maximumAge")) || (minimumTimestamp = self->_minimumTimestamp, minimumTimestamp != objc_msgSend(v5, "minimumTimestamp")) || (mergeScanResults = self->_mergeScanResults, mergeScanResults != objc_msgSend(v5, "mergeScanResults")) || (includeHiddenNetworks = self->_includeHiddenNetworks, includeHiddenNetworks != objc_msgSend(v5, "includeHiddenNetworks")) || (addScanDurationToMaxAge = self->_addScanDurationToMaxAge, addScanDurationToMaxAge != objc_msgSend(v5, "addScanDurationToMaxAge")) || (scanFlags = self->_scanFlags, scanFlags != objc_msgSend(v5, "scanFlags")))
+        if (scanType != [parametersCopy scanType] || (minimumRSSI = self->_minimumRSSI, minimumRSSI != objc_msgSend(parametersCopy, "minimumRSSI")) || (maximumAge = self->_maximumAge, maximumAge != objc_msgSend(parametersCopy, "maximumAge")) || (minimumTimestamp = self->_minimumTimestamp, minimumTimestamp != objc_msgSend(parametersCopy, "minimumTimestamp")) || (mergeScanResults = self->_mergeScanResults, mergeScanResults != objc_msgSend(parametersCopy, "mergeScanResults")) || (includeHiddenNetworks = self->_includeHiddenNetworks, includeHiddenNetworks != objc_msgSend(parametersCopy, "includeHiddenNetworks")) || (addScanDurationToMaxAge = self->_addScanDurationToMaxAge, addScanDurationToMaxAge != objc_msgSend(parametersCopy, "addScanDurationToMaxAge")) || (scanFlags = self->_scanFlags, scanFlags != objc_msgSend(parametersCopy, "scanFlags")))
         {
 LABEL_56:
           v52 = 0;
@@ -239,7 +239,7 @@ LABEL_56:
         }
 
         includeProperties = self->_includeProperties;
-        [v5 includeProperties];
+        [parametersCopy includeProperties];
         v89 = v88 = includeProperties;
         if (includeProperties != v89)
         {
@@ -250,17 +250,17 @@ LABEL_113:
 
             v11 = v52;
 LABEL_57:
-            v30 = v94;
+            sSIDList = v94;
             if (v92 != v94)
             {
 
-              v30 = v94;
+              sSIDList = v94;
               v11 = v52;
             }
 
 LABEL_60:
 
-            if (BSSID == v21)
+            if (BSSID == bSSID)
             {
               goto LABEL_62;
             }
@@ -268,14 +268,14 @@ LABEL_60:
             goto LABEL_61;
           }
 
-          v86 = [v5 includeProperties];
-          if (!v86)
+          includeProperties = [parametersCopy includeProperties];
+          if (!includeProperties)
           {
             goto LABEL_89;
           }
 
           v51 = self->_includeProperties;
-          v84 = [v5 includeProperties];
+          includeProperties2 = [parametersCopy includeProperties];
           if (([(NSSet *)v51 isEqual:?]& 1) == 0)
           {
             goto LABEL_88;
@@ -283,9 +283,9 @@ LABEL_60:
         }
 
         includeScanResults = self->_includeScanResults;
-        v87 = [v5 includeScanResults];
+        includeScanResults = [parametersCopy includeScanResults];
         v85 = includeScanResults;
-        if (includeScanResults != v87)
+        if (includeScanResults != includeScanResults)
         {
           if (!self->_includeScanResults)
           {
@@ -299,14 +299,14 @@ LABEL_111:
             goto LABEL_113;
           }
 
-          v83 = [v5 includeScanResults];
-          if (!v83)
+          includeScanResults2 = [parametersCopy includeScanResults];
+          if (!includeScanResults2)
           {
             goto LABEL_87;
           }
 
           v56 = self->_includeScanResults;
-          v82 = [v5 includeScanResults];
+          includeScanResults3 = [parametersCopy includeScanResults];
           if (([(NSArray *)v56 isEqual:?]& 1) == 0)
           {
 LABEL_86:
@@ -323,7 +323,7 @@ LABEL_89:
             {
             }
 
-            if (BSSID == v21)
+            if (BSSID == bSSID)
             {
               goto LABEL_31;
             }
@@ -333,14 +333,14 @@ LABEL_89:
         }
 
         includeMatchingKnownNetworkProfiles = self->_includeMatchingKnownNetworkProfiles;
-        if (includeMatchingKnownNetworkProfiles != [v5 includeMatchingKnownNetworkProfiles])
+        if (includeMatchingKnownNetworkProfiles != [parametersCopy includeMatchingKnownNetworkProfiles])
         {
           v52 = 0;
           goto LABEL_109;
         }
 
         ANQPElementIDListForPasspointScanResults = self->_ANQPElementIDListForPasspointScanResults;
-        [v5 ANQPElementIDListForPasspointScanResults];
+        [parametersCopy ANQPElementIDListForPasspointScanResults];
         v81 = v80 = ANQPElementIDListForPasspointScanResults;
         if (ANQPElementIDListForPasspointScanResults != v81)
         {
@@ -350,21 +350,21 @@ LABEL_89:
 LABEL_108:
 
 LABEL_109:
-            if (v85 != v87)
+            if (v85 != includeScanResults)
             {
             }
 
             goto LABEL_111;
           }
 
-          v79 = [v5 ANQPElementIDListForPasspointScanResults];
-          if (!v79)
+          aNQPElementIDListForPasspointScanResults = [parametersCopy ANQPElementIDListForPasspointScanResults];
+          if (!aNQPElementIDListForPasspointScanResults)
           {
             goto LABEL_85;
           }
 
           v59 = self->_ANQPElementIDListForPasspointScanResults;
-          v78 = [v5 ANQPElementIDListForPasspointScanResults];
+          aNQPElementIDListForPasspointScanResults2 = [parametersCopy ANQPElementIDListForPasspointScanResults];
           if (([(NSArray *)v59 isEqual:?]& 1) == 0)
           {
             goto LABEL_84;
@@ -372,14 +372,14 @@ LABEL_109:
         }
 
         acceptableANQPCacheAgeForPasspointScanResults = self->_acceptableANQPCacheAgeForPasspointScanResults;
-        if (acceptableANQPCacheAgeForPasspointScanResults != [v5 acceptableANQPCacheAgeForPasspointScanResults] || (maximumANQPAgeForPasspointScanResults = self->_maximumANQPAgeForPasspointScanResults, maximumANQPAgeForPasspointScanResults != objc_msgSend(v5, "maximumANQPAgeForPasspointScanResults")) || (exclude6GChannels = self->_exclude6GChannels, exclude6GChannels != objc_msgSend(v5, "exclude6GChannels")))
+        if (acceptableANQPCacheAgeForPasspointScanResults != [parametersCopy acceptableANQPCacheAgeForPasspointScanResults] || (maximumANQPAgeForPasspointScanResults = self->_maximumANQPAgeForPasspointScanResults, maximumANQPAgeForPasspointScanResults != objc_msgSend(parametersCopy, "maximumANQPAgeForPasspointScanResults")) || (exclude6GChannels = self->_exclude6GChannels, exclude6GChannels != objc_msgSend(parametersCopy, "exclude6GChannels")))
         {
           v52 = 0;
           goto LABEL_105;
         }
 
         matchNetworkNamePrefix = self->_matchNetworkNamePrefix;
-        [v5 matchNetworkNamePrefix];
+        [parametersCopy matchNetworkNamePrefix];
         v77 = v76 = matchNetworkNamePrefix;
         if (matchNetworkNamePrefix != v77)
         {
@@ -396,8 +396,8 @@ LABEL_105:
             goto LABEL_108;
           }
 
-          v74 = [v5 matchNetworkNamePrefix];
-          if (!v74)
+          matchNetworkNamePrefix = [parametersCopy matchNetworkNamePrefix];
+          if (!matchNetworkNamePrefix)
           {
             v11 = 0;
 LABEL_134:
@@ -406,7 +406,7 @@ LABEL_134:
             {
             }
 
-            if (v85 != v87)
+            if (v85 != includeScanResults)
             {
             }
 
@@ -418,17 +418,17 @@ LABEL_134:
             {
             }
 
-            if (BSSID != v21)
+            if (BSSID != bSSID)
             {
             }
 
-            if (SSID != v13)
+            if (SSID != sSID)
             {
             }
 
 LABEL_34:
-            v10 = v98;
-            if (channels == v7)
+            channels2 = v98;
+            if (channels == channels)
             {
               goto LABEL_66;
             }
@@ -437,7 +437,7 @@ LABEL_34:
           }
 
           v64 = self->_matchNetworkNamePrefix;
-          v72 = [v5 matchNetworkNamePrefix];
+          matchNetworkNamePrefix2 = [parametersCopy matchNetworkNamePrefix];
           if (([(NSString *)v64 isEqual:?]& 1) == 0)
           {
 
@@ -445,7 +445,7 @@ LABEL_34:
             {
 LABEL_85:
 
-              if (v85 == v87)
+              if (v85 == includeScanResults)
               {
                 goto LABEL_87;
               }
@@ -460,17 +460,17 @@ LABEL_84:
         }
 
         filterPredicate = self->_filterPredicate;
-        v75 = [v5 filterPredicate];
+        filterPredicate = [parametersCopy filterPredicate];
         v73 = filterPredicate;
-        if (filterPredicate != v75)
+        if (filterPredicate != filterPredicate)
         {
           if (!self->_filterPredicate)
           {
             goto LABEL_128;
           }
 
-          v71 = [v5 filterPredicate];
-          if (!v71)
+          filterPredicate2 = [parametersCopy filterPredicate];
+          if (!filterPredicate2)
           {
 LABEL_127:
 
@@ -479,7 +479,7 @@ LABEL_127:
           }
 
           v66 = self->_filterPredicate;
-          v70 = [v5 filterPredicate];
+          filterPredicate3 = [parametersCopy filterPredicate];
           if (![(NSPredicate *)v66 isEqual:?])
           {
             v11 = 0;
@@ -488,15 +488,15 @@ LABEL_127:
         }
 
         includeBeaconCacheResults = self->_includeBeaconCacheResults;
-        if (includeBeaconCacheResults == [v5 includeBeaconCacheResults])
+        if (includeBeaconCacheResults == [parametersCopy includeBeaconCacheResults])
         {
           includeBackgroundScanCacheResults = self->_includeBackgroundScanCacheResults;
-          if (includeBackgroundScanCacheResults == [v5 includeBackgroundScanCacheResults])
+          if (includeBackgroundScanCacheResults == [parametersCopy includeBackgroundScanCacheResults])
           {
             sortByAutoJoinPreference = self->_sortByAutoJoinPreference;
-            v11 = sortByAutoJoinPreference == [v5 sortByAutoJoinPreference];
+            v11 = sortByAutoJoinPreference == [parametersCopy sortByAutoJoinPreference];
             v52 = v11;
-            if (v73 != v75)
+            if (v73 != filterPredicate)
             {
 LABEL_123:
 
@@ -511,7 +511,7 @@ LABEL_123:
           }
         }
 
-        if (v73 != v75)
+        if (v73 != filterPredicate)
         {
 
           goto LABEL_127;
@@ -530,7 +530,7 @@ LABEL_130:
       }
 
       v54 = v93;
-      if (BSSID == v21)
+      if (BSSID == bSSID)
       {
         goto LABEL_71;
       }
@@ -539,12 +539,12 @@ LABEL_130:
     else
     {
 
-      if (BSSID == v21)
+      if (BSSID == bSSID)
       {
 LABEL_71:
 
         v15 = v97;
-        if (SSID == v13)
+        if (SSID == sSID)
         {
           goto LABEL_33;
         }
@@ -566,14 +566,14 @@ LABEL_33:
 LABEL_61:
 
 LABEL_62:
-  if (SSID != v13)
+  if (SSID != sSID)
   {
   }
 
 LABEL_64:
-  v10 = v98;
+  channels2 = v98;
 
-  if (channels != v7)
+  if (channels != channels)
   {
     goto LABEL_65;
   }
@@ -583,18 +583,18 @@ LABEL_66:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFScanParameters *)self isEqualToScanParameters:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFScanParameters *)self isEqualToScanParameters:v5];
   }
 
   return v6;
@@ -638,7 +638,7 @@ LABEL_66:
   return v15 ^ v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFScanParameters allocWithZone:?]];
   [(CWFScanParameters *)v4 setSSID:self->_SSID];
@@ -675,154 +675,154 @@ LABEL_66:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   SSID = self->_SSID;
-  v14 = a3;
-  [v14 encodeObject:SSID forKey:@"_SSID"];
-  [v14 encodeObject:self->_BSSID forKey:@"_BSSID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:SSID forKey:@"_SSID"];
+  [coderCopy encodeObject:self->_BSSID forKey:@"_BSSID"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_shortSSID];
-  [v14 encodeObject:v5 forKey:@"_shortSSID"];
+  [coderCopy encodeObject:v5 forKey:@"_shortSSID"];
 
-  [v14 encodeObject:self->_SSIDList forKey:@"_SSIDList"];
-  [v14 encodeObject:self->_channels forKey:@"_channels"];
-  [v14 encodeInteger:self->_scanType forKey:@"_scanType"];
-  [v14 encodeInteger:self->_PHYMode forKey:@"_PHYMode"];
-  [v14 encodeInteger:self->_BSSType forKey:@"_BSSType"];
-  [v14 encodeInteger:self->_minimumRSSI forKey:@"_minimumRSSI"];
+  [coderCopy encodeObject:self->_SSIDList forKey:@"_SSIDList"];
+  [coderCopy encodeObject:self->_channels forKey:@"_channels"];
+  [coderCopy encodeInteger:self->_scanType forKey:@"_scanType"];
+  [coderCopy encodeInteger:self->_PHYMode forKey:@"_PHYMode"];
+  [coderCopy encodeInteger:self->_BSSType forKey:@"_BSSType"];
+  [coderCopy encodeInteger:self->_minimumRSSI forKey:@"_minimumRSSI"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_maximumAge];
-  [v14 encodeObject:v6 forKey:@"_maximumAge"];
+  [coderCopy encodeObject:v6 forKey:@"_maximumAge"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_minimumTimestamp];
-  [v14 encodeObject:v7 forKey:@"_minimumTimestamp"];
+  [coderCopy encodeObject:v7 forKey:@"_minimumTimestamp"];
 
-  [v14 encodeBool:self->_includeHiddenNetworks forKey:@"_includeHiddenNetworks"];
-  [v14 encodeBool:self->_addScanDurationToMaxAge forKey:@"_addScanDurationToMaxAge"];
-  [v14 encodeBool:self->_mergeScanResults forKey:@"_mergeScanResults"];
+  [coderCopy encodeBool:self->_includeHiddenNetworks forKey:@"_includeHiddenNetworks"];
+  [coderCopy encodeBool:self->_addScanDurationToMaxAge forKey:@"_addScanDurationToMaxAge"];
+  [coderCopy encodeBool:self->_mergeScanResults forKey:@"_mergeScanResults"];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_restTime];
-  [v14 encodeObject:v8 forKey:@"_restTime"];
+  [coderCopy encodeObject:v8 forKey:@"_restTime"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_dwellTime];
-  [v14 encodeObject:v9 forKey:@"_dwellTime"];
+  [coderCopy encodeObject:v9 forKey:@"_dwellTime"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_numberOfScans];
-  [v14 encodeObject:v10 forKey:@"_numberOfScans"];
+  [coderCopy encodeObject:v10 forKey:@"_numberOfScans"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_acceptableCacheAge];
-  [v14 encodeObject:v11 forKey:@"_acceptableCacheAge"];
+  [coderCopy encodeObject:v11 forKey:@"_acceptableCacheAge"];
 
-  [v14 encodeInteger:self->_scanFlags forKey:@"_scanFlags"];
-  [v14 encodeObject:self->_includeProperties forKey:@"_includeProperties"];
-  [v14 encodeObject:self->_includeScanResults forKey:@"_includeScanResults"];
-  [v14 encodeBool:self->_includeMatchingKnownNetworkProfiles forKey:@"_includeMatchingKnownNetworkProfiles"];
-  [v14 encodeObject:self->_ANQPElementIDListForPasspointScanResults forKey:@"_ANQPElementIDListForPasspointScanResults"];
+  [coderCopy encodeInteger:self->_scanFlags forKey:@"_scanFlags"];
+  [coderCopy encodeObject:self->_includeProperties forKey:@"_includeProperties"];
+  [coderCopy encodeObject:self->_includeScanResults forKey:@"_includeScanResults"];
+  [coderCopy encodeBool:self->_includeMatchingKnownNetworkProfiles forKey:@"_includeMatchingKnownNetworkProfiles"];
+  [coderCopy encodeObject:self->_ANQPElementIDListForPasspointScanResults forKey:@"_ANQPElementIDListForPasspointScanResults"];
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_acceptableANQPCacheAgeForPasspointScanResults];
-  [v14 encodeObject:v12 forKey:@"_acceptableANQPCacheAgeForPasspointScanResults"];
+  [coderCopy encodeObject:v12 forKey:@"_acceptableANQPCacheAgeForPasspointScanResults"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_maximumANQPAgeForPasspointScanResults];
-  [v14 encodeObject:v13 forKey:@"_maximumANQPAgeForPasspointScanResults"];
+  [coderCopy encodeObject:v13 forKey:@"_maximumANQPAgeForPasspointScanResults"];
 
-  [v14 encodeBool:self->_exclude6GChannels forKey:@"_exclude6GChannels"];
-  [v14 encodeObject:self->_matchNetworkNamePrefix forKey:@"_matchNetworkNamePrefix"];
-  [v14 encodeObject:self->_filterPredicate forKey:@"_filterPredicate"];
-  [v14 encodeBool:self->_includeBeaconCacheResults forKey:@"_includeBeaconCacheResults"];
-  [v14 encodeBool:self->_includeBackgroundScanCacheResults forKey:@"_includeBackgroundScanCacheResults"];
-  [v14 encodeBool:self->_sortByAutoJoinPreference forKey:@"_sortByAutoJoinPreference"];
+  [coderCopy encodeBool:self->_exclude6GChannels forKey:@"_exclude6GChannels"];
+  [coderCopy encodeObject:self->_matchNetworkNamePrefix forKey:@"_matchNetworkNamePrefix"];
+  [coderCopy encodeObject:self->_filterPredicate forKey:@"_filterPredicate"];
+  [coderCopy encodeBool:self->_includeBeaconCacheResults forKey:@"_includeBeaconCacheResults"];
+  [coderCopy encodeBool:self->_includeBackgroundScanCacheResults forKey:@"_includeBackgroundScanCacheResults"];
+  [coderCopy encodeBool:self->_sortByAutoJoinPreference forKey:@"_sortByAutoJoinPreference"];
 }
 
-- (CWFScanParameters)initWithCoder:(id)a3
+- (CWFScanParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = CWFScanParameters;
   v5 = [(CWFScanParameters *)&v49 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_SSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_SSID"];
     SSID = v5->_SSID;
     v5->_SSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_BSSID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_BSSID"];
     BSSID = v5->_BSSID;
     v5->_BSSID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_shortSSID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_shortSSID"];
     v5->_shortSSID = [v10 unsignedIntegerValue];
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_SSIDList"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_SSIDList"];
     SSIDList = v5->_SSIDList;
     v5->_SSIDList = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_channels"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_channels"];
     channels = v5->_channels;
     v5->_channels = v19;
 
-    v5->_scanType = [v4 decodeIntegerForKey:@"_scanType"];
-    v5->_BSSType = [v4 decodeIntegerForKey:@"_BSSType"];
-    v5->_PHYMode = [v4 decodeIntegerForKey:@"_PHYMode"];
-    v5->_minimumRSSI = [v4 decodeIntegerForKey:@"_minimumRSSI"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maximumAge"];
+    v5->_scanType = [coderCopy decodeIntegerForKey:@"_scanType"];
+    v5->_BSSType = [coderCopy decodeIntegerForKey:@"_BSSType"];
+    v5->_PHYMode = [coderCopy decodeIntegerForKey:@"_PHYMode"];
+    v5->_minimumRSSI = [coderCopy decodeIntegerForKey:@"_minimumRSSI"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maximumAge"];
     v5->_maximumAge = [v21 unsignedIntegerValue];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_minimumTimestamp"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_minimumTimestamp"];
     v5->_minimumTimestamp = [v22 unsignedLongLongValue];
 
-    v5->_includeHiddenNetworks = [v4 decodeBoolForKey:@"_includeHiddenNetworks"];
-    v5->_addScanDurationToMaxAge = [v4 decodeBoolForKey:@"_addScanDurationToMaxAge"];
-    v5->_mergeScanResults = [v4 decodeBoolForKey:@"_mergeScanResults"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_restTime"];
+    v5->_includeHiddenNetworks = [coderCopy decodeBoolForKey:@"_includeHiddenNetworks"];
+    v5->_addScanDurationToMaxAge = [coderCopy decodeBoolForKey:@"_addScanDurationToMaxAge"];
+    v5->_mergeScanResults = [coderCopy decodeBoolForKey:@"_mergeScanResults"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_restTime"];
     v5->_restTime = [v23 unsignedIntegerValue];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dwellTime"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dwellTime"];
     v5->_dwellTime = [v24 unsignedIntegerValue];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfScans"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfScans"];
     v5->_numberOfScans = [v25 unsignedIntegerValue];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_acceptableCacheAge"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_acceptableCacheAge"];
     v5->_acceptableCacheAge = [v26 unsignedIntegerValue];
 
-    v5->_scanFlags = [v4 decodeIntegerForKey:@"_scanFlags"];
+    v5->_scanFlags = [coderCopy decodeIntegerForKey:@"_scanFlags"];
     v27 = MEMORY[0x1E695DFD8];
     v28 = objc_opt_class();
     v29 = [v27 setWithObjects:{v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"_includeProperties"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"_includeProperties"];
     includeProperties = v5->_includeProperties;
     v5->_includeProperties = v30;
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"_includeScanResults"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"_includeScanResults"];
     includeScanResults = v5->_includeScanResults;
     v5->_includeScanResults = v35;
 
-    v5->_includeMatchingKnownNetworkProfiles = [v4 decodeBoolForKey:@"_includeMatchingKnownNetworkProfiles"];
+    v5->_includeMatchingKnownNetworkProfiles = [coderCopy decodeBoolForKey:@"_includeMatchingKnownNetworkProfiles"];
     v37 = MEMORY[0x1E695DFD8];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"_ANQPElementIDListForPasspointScanResults"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"_ANQPElementIDListForPasspointScanResults"];
     ANQPElementIDListForPasspointScanResults = v5->_ANQPElementIDListForPasspointScanResults;
     v5->_ANQPElementIDListForPasspointScanResults = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_acceptableANQPCacheAgeForPasspointScanResults"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_acceptableANQPCacheAgeForPasspointScanResults"];
     v5->_acceptableANQPCacheAgeForPasspointScanResults = [v42 unsignedIntegerValue];
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_maximumANQPAgeForPasspointScanResults"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_maximumANQPAgeForPasspointScanResults"];
     v5->_maximumANQPAgeForPasspointScanResults = [v43 unsignedIntegerValue];
 
-    v5->_exclude6GChannels = [v4 decodeBoolForKey:@"_exclude6GChannels"];
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_matchNetworkNamePrefix"];
+    v5->_exclude6GChannels = [coderCopy decodeBoolForKey:@"_exclude6GChannels"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_matchNetworkNamePrefix"];
     matchNetworkNamePrefix = v5->_matchNetworkNamePrefix;
     v5->_matchNetworkNamePrefix = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_filterPredicate"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_filterPredicate"];
     filterPredicate = v5->_filterPredicate;
     v5->_filterPredicate = v46;
 
@@ -832,28 +832,28 @@ LABEL_66:
       [(NSPredicate *)v5->_filterPredicate allowEvaluation];
     }
 
-    v5->_includeBeaconCacheResults = [v4 decodeBoolForKey:@"_includeBeaconCacheResults"];
-    v5->_includeBackgroundScanCacheResults = [v4 decodeBoolForKey:@"_includeBackgroundScanCacheResults"];
-    v5->_sortByAutoJoinPreference = [v4 decodeBoolForKey:@"_sortByAutoJoinPreference"];
+    v5->_includeBeaconCacheResults = [coderCopy decodeBoolForKey:@"_includeBeaconCacheResults"];
+    v5->_includeBackgroundScanCacheResults = [coderCopy decodeBoolForKey:@"_includeBackgroundScanCacheResults"];
+    v5->_sortByAutoJoinPreference = [coderCopy decodeBoolForKey:@"_sortByAutoJoinPreference"];
   }
 
   return v5;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v4 = [a3 expressionType];
-  if (v4 <= 0x13 && ((1 << v4) & 0x8001C) != 0)
+  expressionType = [expression expressionType];
+  if (expressionType <= 0x13 && ((1 << expressionType) & 0x8001C) != 0)
   {
 
     MEMORY[0x1EEE66B58](self, sel_setInvalidPredicate_);
   }
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
-  v4 = [a3 operatorType];
-  if (v4 == 11 || v4 == 6)
+  operatorType = [operator operatorType];
+  if (operatorType == 11 || operatorType == 6)
   {
 
     MEMORY[0x1EEE66B58](self, sel_setInvalidPredicate_);

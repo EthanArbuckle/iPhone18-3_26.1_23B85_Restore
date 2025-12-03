@@ -42,7 +42,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaIoFileDescriptor alloc];
     v2->descriptor_ = -1;

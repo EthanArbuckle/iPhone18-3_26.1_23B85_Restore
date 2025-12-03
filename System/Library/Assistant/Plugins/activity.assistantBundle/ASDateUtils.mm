@@ -1,19 +1,19 @@
 @interface ASDateUtils
-+ (id)eventEndDateFromDate:(id)a3;
-+ (id)eventStartDateFromDate:(id)a3;
-+ (id)predicateForEventsWithDateRangeFromDate:(id)a3 toDate:(id)a4;
-+ (id)subtractDays:(int64_t)a3 fromDate:(id)a4;
++ (id)eventEndDateFromDate:(id)date;
++ (id)eventStartDateFromDate:(id)date;
++ (id)predicateForEventsWithDateRangeFromDate:(id)date toDate:(id)toDate;
++ (id)subtractDays:(int64_t)days fromDate:(id)date;
 @end
 
 @implementation ASDateUtils
 
-+ (id)eventStartDateFromDate:(id)a3
++ (id)eventStartDateFromDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy)
   {
-    v5 = v3;
+    v5 = dateCopy;
   }
 
   else
@@ -26,13 +26,13 @@
   return v6;
 }
 
-+ (id)eventEndDateFromDate:(id)a3
++ (id)eventEndDateFromDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy)
   {
-    v5 = v3;
+    v5 = dateCopy;
   }
 
   else
@@ -45,20 +45,20 @@
   return v6;
 }
 
-+ (id)predicateForEventsWithDateRangeFromDate:(id)a3 toDate:(id)a4
++ (id)predicateForEventsWithDateRangeFromDate:(id)date toDate:(id)toDate
 {
-  v5 = a3;
-  v6 = a4;
-  if (!(v5 | v6))
+  dateCopy = date;
+  toDateCopy = toDate;
+  if (!(dateCopy | toDateCopy))
   {
     v8 = [NSPredicate predicateWithValue:1];
     v7 = 0;
-    v5 = 0;
+    dateCopy = 0;
     goto LABEL_15;
   }
 
-  v7 = v6;
-  if (!v5)
+  v7 = toDateCopy;
+  if (!dateCopy)
   {
     v9 = AFSiriLogContextService;
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEFAULT))
@@ -68,7 +68,7 @@
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%s No start date specified. Defaulting to [NSDate distantPast]", &v12, 0xCu);
     }
 
-    v5 = +[NSDate distantPast];
+    dateCopy = +[NSDate distantPast];
     if (v7)
     {
       goto LABEL_12;
@@ -77,7 +77,7 @@
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!toDateCopy)
   {
 LABEL_9:
     v10 = AFSiriLogContextService;
@@ -92,14 +92,14 @@ LABEL_9:
   }
 
 LABEL_12:
-  if ([v7 compare:v5] == -1)
+  if ([v7 compare:dateCopy] == -1)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [_DKQuery predicateForEventsWithStartInDateRangeFrom:v5 to:v7];
+    v8 = [_DKQuery predicateForEventsWithStartInDateRangeFrom:dateCopy to:v7];
   }
 
 LABEL_15:
@@ -107,13 +107,13 @@ LABEL_15:
   return v8;
 }
 
-+ (id)subtractDays:(int64_t)a3 fromDate:(id)a4
++ (id)subtractDays:(int64_t)days fromDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v6 = objc_alloc_init(NSDateComponents);
-  [v6 setDay:-a3];
+  [v6 setDay:-days];
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 dateByAddingComponents:v6 toDate:v5 options:0];
+  v8 = [v7 dateByAddingComponents:v6 toDate:dateCopy options:0];
 
   return v8;
 }

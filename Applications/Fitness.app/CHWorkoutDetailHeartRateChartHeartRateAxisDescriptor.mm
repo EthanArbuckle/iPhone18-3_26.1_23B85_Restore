@@ -2,8 +2,8 @@
 - (CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor)init;
 - (id)_createAverageHeartRateLabel;
 - (id)axisSubLabels;
-- (void)setAverageHeartRate:(id)a3;
-- (void)setSubAxisSpacing:(id)a3;
+- (void)setAverageHeartRate:(id)rate;
+- (void)setSubAxisSpacing:(id)spacing;
 @end
 
 @implementation CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor
@@ -23,19 +23,19 @@
   return v2;
 }
 
-- (void)setSubAxisSpacing:(id)a3
+- (void)setSubAxisSpacing:(id)spacing
 {
   v5.receiver = self;
   v5.super_class = CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor;
-  [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)&v5 setSubAxisSpacing:a3];
+  [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)&v5 setSubAxisSpacing:spacing];
   averageHeartRateLabel = self->_averageHeartRateLabel;
   self->_averageHeartRateLabel = 0;
 }
 
-- (void)setAverageHeartRate:(id)a3
+- (void)setAverageHeartRate:(id)rate
 {
-  objc_storeStrong(&self->_averageHeartRate, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_averageHeartRate, rate);
+  rateCopy = rate;
   averageHeartRateLabel = self->_averageHeartRateLabel;
   self->_averageHeartRateLabel = 0;
 }
@@ -45,9 +45,9 @@
   averageHeartRateLabel = self->_averageHeartRateLabel;
   if (!averageHeartRateLabel)
   {
-    v4 = [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)self _createAverageHeartRateLabel];
+    _createAverageHeartRateLabel = [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)self _createAverageHeartRateLabel];
     v5 = self->_averageHeartRateLabel;
-    self->_averageHeartRateLabel = v4;
+    self->_averageHeartRateLabel = _createAverageHeartRateLabel;
 
     averageHeartRateLabel = self->_averageHeartRateLabel;
   }
@@ -60,13 +60,13 @@
 
 - (id)_createAverageHeartRateLabel
 {
-  v3 = [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)self minValue];
+  minValue = [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)self minValue];
   v4 = objc_alloc_init(FIUIChartAxisLabel);
-  [v4 setLocation:v3];
-  v5 = [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)self highlightedSubLabelColor];
-  [v4 setLabelColor:v5];
+  [v4 setLocation:minValue];
+  highlightedSubLabelColor = [(CHWorkoutDetailHeartRateChartHeartRateAxisDescriptor *)self highlightedSubLabelColor];
+  [v4 setLabelColor:highlightedSubLabelColor];
 
-  if (v3 && (averageHeartRate = self->_averageHeartRate) != 0)
+  if (minValue && (averageHeartRate = self->_averageHeartRate) != 0)
   {
     formattingManager = self->_formattingManager;
     [(NSNumber *)averageHeartRate doubleValue];

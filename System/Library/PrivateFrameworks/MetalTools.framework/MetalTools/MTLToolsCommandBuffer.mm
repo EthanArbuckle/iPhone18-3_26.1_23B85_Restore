@@ -1,13 +1,13 @@
 @interface MTLToolsCommandBuffer
-+ (id)unwrapMTLComputePassDescriptorInternal:(id)a3;
-- (BOOL)addRetainedObject:(id)a3;
++ (id)unwrapMTLComputePassDescriptorInternal:(id)internal;
+- (BOOL)addRetainedObject:(id)object;
 - (BOOL)commitAndWaitUntilSubmitted;
-- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)a3;
+- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)deadline;
 - (BOOL)isProfilingEnabled;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)retainedReferences;
 - (MTLLogContainer)logs;
-- (MTLToolsCommandBuffer)initWithCommandBuffer:(id)a3 parent:(id)a4 descriptor:(id)a5;
+- (MTLToolsCommandBuffer)initWithCommandBuffer:(id)buffer parent:(id)parent descriptor:(id)descriptor;
 - (NSDictionary)profilingResults;
 - (NSError)error;
 - (NSMutableDictionary)userDictionary;
@@ -18,85 +18,85 @@
 - (double)kernelStartTime;
 - (id).cxx_construct;
 - (id)accelerationStructureCommandEncoder;
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3;
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor;
 - (id)blitCommandEncoder;
-- (id)blitCommandEncoderWithDescriptor:(id)a3;
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor;
 - (id)computeCommandEncoder;
-- (id)computeCommandEncoderWithDescriptor:(id)a3;
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3;
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor;
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type;
 - (id)debugCommandEncoder;
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3;
-- (id)renderCommandEncoderWithDescriptor:(id)a3;
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor;
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor;
 - (id)resourceStateCommandEncoder;
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3;
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5;
-- (id)unwrapMTLAccelerationStructurePassDescriptor:(id)a3;
-- (id)unwrapMTLBlitPassDescriptor:(id)a3;
-- (id)unwrapMTLRenderPassDescriptor:(id)a3;
-- (id)unwrapMTLResourceStatePassDescriptor:(id)a3;
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor;
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
+- (id)unwrapMTLAccelerationStructurePassDescriptor:(id)descriptor;
+- (id)unwrapMTLBlitPassDescriptor:(id)descriptor;
+- (id)unwrapMTLRenderPassDescriptor:(id)descriptor;
+- (id)unwrapMTLResourceStatePassDescriptor:(id)descriptor;
 - (unint64_t)errorOptions;
 - (unint64_t)getListIndex;
 - (unint64_t)globalTraceObjectID;
 - (unint64_t)protectionOptions;
 - (unint64_t)status;
-- (void)__waitUntilCompletedAsync:(id)a3;
-- (void)__waitUntilScheduledAsync:(id)a3;
-- (void)addCompletedHandler:(id)a3;
-- (void)addPurgedHeap:(id)a3;
-- (void)addPurgedResource:(id)a3;
-- (void)addScheduledHandler:(id)a3;
-- (void)addSynchronizationNotification:(id)a3;
+- (void)__waitUntilCompletedAsync:(id)async;
+- (void)__waitUntilScheduledAsync:(id)async;
+- (void)addCompletedHandler:(id)handler;
+- (void)addPurgedHeap:(id)heap;
+- (void)addPurgedResource:(id)resource;
+- (void)addScheduledHandler:(id)handler;
+- (void)addSynchronizationNotification:(id)notification;
 - (void)clearRetainedObjects;
 - (void)commit;
 - (void)commitAndHold;
-- (void)commitWithDeadline:(unint64_t)a3;
+- (void)commitWithDeadline:(unint64_t)deadline;
 - (void)dealloc;
-- (void)debugBufferContentsWithLength:(unint64_t *)a3;
-- (void)dropResourceGroups:(const void *)a3 count:(unint64_t)a4;
-- (void)encodeCacheHintFinalize:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5;
-- (void)encodeCacheHintTag:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5;
-- (void)encodeConditionalAbortEvent:(id)a3;
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 value:(unint64_t)a5 forIndex:(unint64_t)a6;
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 values:(const unint64_t *)a5 indices:(const unint64_t *)a6 count:(unint64_t)a7;
-- (void)encodeDashboardTagForResourceGroup:(id)a3;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4;
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4 agentMask:(unint64_t)a5;
-- (void)encodeSignalEventScheduled:(id)a3 value:(unint64_t)a4;
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)debugBufferContentsWithLength:(unint64_t *)length;
+- (void)dropResourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeCacheHintFinalize:(unint64_t)finalize resourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeCacheHintTag:(unint64_t)tag resourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)encodeConditionalAbortEvent:(id)event;
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard value:(unint64_t)value forIndex:(unint64_t)index;
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard values:(const unint64_t *)values indices:(const unint64_t *)indices count:(unint64_t)count;
+- (void)encodeDashboardTagForResourceGroup:(id)group;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value;
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value agentMask:(unint64_t)mask;
+- (void)encodeSignalEventScheduled:(id)scheduled value:(unint64_t)value;
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value;
 - (void)enqueue;
 - (void)invokeCompletedHandlers;
 - (void)invokeScheduledHandlers;
 - (void)popDebugGroup;
 - (void)preCommit;
 - (void)preCompletionHandlers;
-- (void)presentDrawable:(id)a3;
-- (void)presentDrawable:(id)a3 afterMinimumDuration:(double)a4;
-- (void)presentDrawable:(id)a3 atTime:(double)a4;
-- (void)presentDrawable:(id)a3 options:(id)a4;
-- (void)pushDebugGroup:(id)a3;
-- (void)retainObjectsFromRenderPassDescriptor:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setLogs:(id)a3;
-- (void)setProtectionOptions:(unint64_t)a3;
-- (void)setResourceGroups:(const void *)a3 count:(unint64_t)a4;
-- (void)useInternalResidencySet:(id)a3;
-- (void)useInternalResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
+- (void)presentDrawable:(id)drawable;
+- (void)presentDrawable:(id)drawable afterMinimumDuration:(double)duration;
+- (void)presentDrawable:(id)drawable atTime:(double)time;
+- (void)presentDrawable:(id)drawable options:(id)options;
+- (void)pushDebugGroup:(id)group;
+- (void)retainObjectsFromRenderPassDescriptor:(id)descriptor;
+- (void)setLabel:(id)label;
+- (void)setLogs:(id)logs;
+- (void)setProtectionOptions:(unint64_t)options;
+- (void)setResourceGroups:(const void *)groups count:(unint64_t)count;
+- (void)useInternalResidencySet:(id)set;
+- (void)useInternalResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
 - (void)waitUntilCompleted;
 - (void)waitUntilScheduled;
 @end
 
 @implementation MTLToolsCommandBuffer
 
-- (MTLToolsCommandBuffer)initWithCommandBuffer:(id)a3 parent:(id)a4 descriptor:(id)a5
+- (MTLToolsCommandBuffer)initWithCommandBuffer:(id)buffer parent:(id)parent descriptor:(id)descriptor
 {
   v9.receiver = self;
   v9.super_class = MTLToolsCommandBuffer;
-  v6 = [(MTLToolsObject *)&v9 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsObject *)&v9 initWithBaseObject:buffer parent:parent];
   v7 = v6;
   if (v6)
   {
@@ -108,7 +108,7 @@
 
     *(v7 + 12) = 0;
     *(v7 + 14) = [*(v7 + 1) snapshotPerfSampleHandlerAndStatEnabled:v7 + 120 forCommandBuffer:{-[MTLToolsObject originalObject](v7, "originalObject")}];
-    *(v7 + 16) = [a5 deadlineProfile];
+    *(v7 + 16) = [descriptor deadlineProfile];
   }
 
   return v7;
@@ -183,10 +183,10 @@
   [(MTLToolsCommandBuffer *)self postCompletionHandlers];
 }
 
-- (BOOL)addRetainedObject:(id)a3
+- (BOOL)addRetainedObject:(id)object
 {
   v4 = *(self + 17);
-  if (a3)
+  if (object)
   {
     v5 = v4 == 0;
   }
@@ -215,7 +215,7 @@
       v4 = *(self + 17);
     }
 
-    [v4 addObject:a3];
+    [v4 addObject:object];
     if (v8)
     {
       os_unfair_lock_unlock(v8);
@@ -303,153 +303,153 @@
 - (void)commit
 {
   [(MTLToolsCommandBuffer *)self preCommit];
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v3 commit];
+  [baseObject commit];
 }
 
 - (void)commitAndHold
 {
   [(MTLToolsCommandBuffer *)self preCommit];
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v3 commitAndHold];
+  [baseObject commitAndHold];
 }
 
 - (BOOL)commitAndWaitUntilSubmitted
 {
   [(MTLToolsCommandBuffer *)self preCommit];
-  v3 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v3 commitAndWaitUntilSubmitted];
+  return [baseObject commitAndWaitUntilSubmitted];
 }
 
 - (id)debugCommandEncoder
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 debugCommandEncoder];
+  return [baseObject debugCommandEncoder];
 }
 
 - (MTLLogContainer)logs
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 logs];
+  return [baseObject logs];
 }
 
-- (void)setLogs:(id)a3
+- (void)setLogs:(id)logs
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLogs:a3];
+  [baseObject setLogs:logs];
 }
 
 - (BOOL)retainedReferences
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 retainedReferences];
+  return [baseObject retainedReferences];
 }
 
 - (double)GPUStartTime
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 GPUStartTime];
+  [baseObject GPUStartTime];
   return result;
 }
 
 - (double)GPUEndTime
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 GPUEndTime];
+  [baseObject GPUEndTime];
   return result;
 }
 
 - (unint64_t)globalTraceObjectID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 globalTraceObjectID];
+  return [baseObject globalTraceObjectID];
 }
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (void)enqueue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 enqueue];
+  [baseObject enqueue];
 }
 
-- (void)presentDrawable:(id)a3
+- (void)presentDrawable:(id)drawable
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 presentDrawable:a3];
+  [baseObject presentDrawable:drawable];
 }
 
-- (void)presentDrawable:(id)a3 atTime:(double)a4
+- (void)presentDrawable:(id)drawable atTime:(double)time
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 presentDrawable:a3 atTime:a4];
+  [baseObject presentDrawable:drawable atTime:time];
 }
 
-- (void)presentDrawable:(id)a3 afterMinimumDuration:(double)a4
+- (void)presentDrawable:(id)drawable afterMinimumDuration:(double)duration
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 presentDrawable:a3 afterMinimumDuration:a4];
+  [baseObject presentDrawable:drawable afterMinimumDuration:duration];
 }
 
-- (void)presentDrawable:(id)a3 options:(id)a4
+- (void)presentDrawable:(id)drawable options:(id)options
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 presentDrawable:a3 options:a4];
+  [baseObject presentDrawable:drawable options:options];
 }
 
 - (void)waitUntilScheduled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 waitUntilScheduled];
+  [baseObject waitUntilScheduled];
 }
 
 - (void)waitUntilCompleted
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 waitUntilCompleted];
+  [baseObject waitUntilCompleted];
 }
 
 - (unint64_t)status
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 status];
+  return [baseObject status];
 }
 
 - (NSError)error
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 error];
+  return [baseObject error];
 }
 
 - (id)blitCommandEncoder
@@ -530,72 +530,72 @@
 
 - (double)kernelStartTime
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 kernelStartTime];
+  [baseObject kernelStartTime];
   return result;
 }
 
 - (double)kernelEndTime
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 kernelEndTime];
+  [baseObject kernelEndTime];
   return result;
 }
 
-- (void)debugBufferContentsWithLength:(unint64_t *)a3
+- (void)debugBufferContentsWithLength:(unint64_t *)length
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 debugBufferContentsWithLength:a3];
+  return [baseObject debugBufferContentsWithLength:length];
 }
 
-- (void)pushDebugGroup:(id)a3
+- (void)pushDebugGroup:(id)group
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 pushDebugGroup:a3];
+  [baseObject pushDebugGroup:group];
 }
 
 - (void)popDebugGroup
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 popDebugGroup];
+  [baseObject popDebugGroup];
 }
 
-- (void)encodeDashboardTagForResourceGroup:(id)a3
+- (void)encodeDashboardTagForResourceGroup:(id)group
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [group baseObject];
 
-  [v4 encodeDashboardTagForResourceGroup:v5];
+  [baseObject encodeDashboardTagForResourceGroup:baseObject2];
 }
 
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 value:(unint64_t)a5 forIndex:(unint64_t)a6
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard value:(unint64_t)value forIndex:(unint64_t)index
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [group baseObject];
 
-  [v10 encodeDashboardFinalizeForResourceGroup:v11 dashboard:a4 value:a5 forIndex:a6];
+  [baseObject encodeDashboardFinalizeForResourceGroup:baseObject2 dashboard:dashboard value:value forIndex:index];
 }
 
-- (void)encodeDashboardFinalizeForResourceGroup:(id)a3 dashboard:(unint64_t)a4 values:(const unint64_t *)a5 indices:(const unint64_t *)a6 count:(unint64_t)a7
+- (void)encodeDashboardFinalizeForResourceGroup:(id)group dashboard:(unint64_t)dashboard values:(const unint64_t *)values indices:(const unint64_t *)indices count:(unint64_t)count
 {
-  v12 = [(MTLToolsObject *)self baseObject];
-  v13 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [group baseObject];
 
-  [v12 encodeDashboardFinalizeForResourceGroup:v13 dashboard:a4 values:a5 indices:a6 count:a7];
+  [baseObject encodeDashboardFinalizeForResourceGroup:baseObject2 dashboard:dashboard values:values indices:indices count:count];
 }
 
-- (id)unwrapMTLRenderPassDescriptor:(id)a3
+- (id)unwrapMTLRenderPassDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
+  v4 = [descriptor copy];
   [v4 setVisibilityResultBuffer:{objc_msgSend(objc_msgSend(v4, "visibilityResultBuffer"), "baseObject")}];
-  v5 = [a3 _descriptorPrivate];
+  _descriptorPrivate = [descriptor _descriptorPrivate];
   v6 = 0;
-  v7 = *v5;
+  v7 = *_descriptorPrivate;
   do
   {
     v8 = [v7 _descriptorAtIndex:v6];
@@ -627,7 +627,7 @@
   }
 
   v14 = 0;
-  v15 = *(v5 + 176);
+  v15 = *(_descriptorPrivate + 176);
   do
   {
     [objc_msgSend(objc_msgSend(v4 "sampleBufferAttachments")];
@@ -635,17 +635,17 @@
   }
 
   while (v14 != 4);
-  [v4 setRasterizationRateMap:{objc_msgSend(*(v5 + 168), "baseObject")}];
+  [v4 setRasterizationRateMap:{objc_msgSend(*(_descriptorPrivate + 168), "baseObject")}];
 
   return v4;
 }
 
-+ (id)unwrapMTLComputePassDescriptorInternal:(id)a3
++ (id)unwrapMTLComputePassDescriptorInternal:(id)internal
 {
-  v4 = [a3 copy];
-  v5 = [a3 _descriptorPrivate];
+  v4 = [internal copy];
+  _descriptorPrivate = [internal _descriptorPrivate];
   v6 = 0;
-  v7 = *(v5 + 8);
+  v7 = *(_descriptorPrivate + 8);
   do
   {
     [objc_msgSend(objc_msgSend(v4 "sampleBufferAttachments")];
@@ -657,12 +657,12 @@
   return v4;
 }
 
-- (id)unwrapMTLBlitPassDescriptor:(id)a3
+- (id)unwrapMTLBlitPassDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
-  v5 = [a3 _descriptorPrivate];
+  v4 = [descriptor copy];
+  _descriptorPrivate = [descriptor _descriptorPrivate];
   v6 = 0;
-  v7 = *v5;
+  v7 = *_descriptorPrivate;
   do
   {
     [objc_msgSend(objc_msgSend(v4 "sampleBufferAttachments")];
@@ -674,12 +674,12 @@
   return v4;
 }
 
-- (id)unwrapMTLResourceStatePassDescriptor:(id)a3
+- (id)unwrapMTLResourceStatePassDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
-  v5 = [a3 _descriptorPrivate];
+  v4 = [descriptor copy];
+  _descriptorPrivate = [descriptor _descriptorPrivate];
   v6 = 0;
-  v7 = *v5;
+  v7 = *_descriptorPrivate;
   do
   {
     [objc_msgSend(objc_msgSend(v4 "sampleBufferAttachments")];
@@ -691,34 +691,34 @@
   return v4;
 }
 
-- (void)addScheduledHandler:(id)a3
+- (void)addScheduledHandler:(id)handler
 {
   *(self + 9) |= 4u;
   [-[MTLToolsObject baseObject](self "baseObject")];
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   os_unfair_lock_lock(self + 12);
   std::vector<void({block_pointer})(objc_object  {objcproto16MTLCommandBuffer}*),std::allocator<void ()(objc_object  {objcproto16MTLCommandBuffer}*)>>::push_back[abi:ne200100](self + 56, &v5);
   os_unfair_lock_unlock(self + 12);
 }
 
-- (void)addCompletedHandler:(id)a3
+- (void)addCompletedHandler:(id)handler
 {
   *(self + 9) |= 2u;
   [-[MTLToolsObject baseObject](self "baseObject")];
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   os_unfair_lock_lock(self + 12);
   std::vector<void({block_pointer})(objc_object  {objcproto16MTLCommandBuffer}*),std::allocator<void ()(objc_object  {objcproto16MTLCommandBuffer}*)>>::push_back[abi:ne200100](self + 80, &v5);
   os_unfair_lock_unlock(self + 12);
 }
 
-- (id)renderCommandEncoderWithDescriptor:(id)a3
+- (id)renderCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = [(MTLToolsCommandBuffer *)self unwrapMTLRenderPassDescriptor:?];
   v6 = objc_autoreleasePoolPush();
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v7)
   {
-    v8 = [[MTLToolsRenderCommandEncoder alloc] initWithRenderCommandEncoder:v7 parent:self descriptor:a3];
+    v8 = [[MTLToolsRenderCommandEncoder alloc] initWithRenderCommandEncoder:v7 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v6);
 
     return v8;
@@ -731,14 +731,14 @@
   }
 }
 
-- (id)parallelRenderCommandEncoderWithDescriptor:(id)a3
+- (id)parallelRenderCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = [(MTLToolsCommandBuffer *)self unwrapMTLRenderPassDescriptor:?];
   v6 = objc_autoreleasePoolPush();
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v7)
   {
-    v8 = [[MTLToolsParallelRenderCommandEncoder alloc] initWithParallelRenderCommandEncoder:v7 parent:self descriptor:a3];
+    v8 = [[MTLToolsParallelRenderCommandEncoder alloc] initWithParallelRenderCommandEncoder:v7 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v6);
 
     return v8;
@@ -751,15 +751,15 @@
   }
 }
 
-- (id)sampledRenderCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledRenderCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [(MTLToolsCommandBuffer *)self unwrapMTLRenderPassDescriptor:a3];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v10 = [(MTLToolsCommandBuffer *)self unwrapMTLRenderPassDescriptor:descriptor];
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 sampledRenderCommandEncoderWithDescriptor:v10 programInfoBuffer:a4 capacity:a5];
+  v12 = [baseObject sampledRenderCommandEncoderWithDescriptor:v10 programInfoBuffer:buffer capacity:capacity];
   if (v12)
   {
-    v13 = [[MTLToolsRenderCommandEncoder alloc] initWithRenderCommandEncoder:v12 parent:self descriptor:a3];
+    v13 = [[MTLToolsRenderCommandEncoder alloc] initWithRenderCommandEncoder:v12 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v11);
 
     return v13;
@@ -772,11 +772,11 @@
   }
 }
 
-- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledComputeCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v7 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 sampledComputeCommandEncoderWithProgramInfoBuffer:a3 capacity:a4];
+  v9 = [baseObject sampledComputeCommandEncoderWithProgramInfoBuffer:buffer capacity:capacity];
   if (v9)
   {
     v10 = [[MTLToolsComputeCommandEncoder alloc] initWithComputeCommandEncoder:v9 parent:self descriptor:0];
@@ -792,25 +792,25 @@
   }
 }
 
-- (id)computeCommandEncoderWithDispatchType:(unint64_t)a3
+- (id)computeCommandEncoderWithDispatchType:(unint64_t)type
 {
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v6 = objc_autoreleasePoolPush();
-  v7 = -[MTLToolsComputeCommandEncoder initWithComputeCommandEncoder:parent:descriptor:]([MTLToolsComputeCommandEncoder alloc], "initWithComputeCommandEncoder:parent:descriptor:", [v5 computeCommandEncoderWithDispatchType:a3], self, 0);
+  v7 = -[MTLToolsComputeCommandEncoder initWithComputeCommandEncoder:parent:descriptor:]([MTLToolsComputeCommandEncoder alloc], "initWithComputeCommandEncoder:parent:descriptor:", [baseObject computeCommandEncoderWithDispatchType:type], self, 0);
   objc_autoreleasePoolPop(v6);
 
   return v7;
 }
 
-- (id)computeCommandEncoderWithDescriptor:(id)a3
+- (id)computeCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = [(MTLToolsCommandBuffer *)self unwrapMTLComputePassDescriptor:?];
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v7 = objc_autoreleasePoolPush();
-  v8 = [v6 computeCommandEncoderWithDescriptor:v5];
+  v8 = [baseObject computeCommandEncoderWithDescriptor:v5];
   if (v8)
   {
-    v9 = [[MTLToolsComputeCommandEncoder alloc] initWithComputeCommandEncoder:v8 parent:self descriptor:a3];
+    v9 = [[MTLToolsComputeCommandEncoder alloc] initWithComputeCommandEncoder:v8 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v7);
 
     return v9;
@@ -823,15 +823,15 @@
   }
 }
 
-- (id)sampledComputeCommandEncoderWithDescriptor:(id)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDescriptor:(id)descriptor programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [(MTLToolsCommandBuffer *)self unwrapMTLComputePassDescriptor:a3];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v10 = [(MTLToolsCommandBuffer *)self unwrapMTLComputePassDescriptor:descriptor];
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 sampledComputeCommandEncoderWithDescriptor:v10 programInfoBuffer:a4 capacity:a5];
+  v12 = [baseObject sampledComputeCommandEncoderWithDescriptor:v10 programInfoBuffer:buffer capacity:capacity];
   if (v12)
   {
-    v13 = [[MTLToolsComputeCommandEncoder alloc] initWithComputeCommandEncoder:v12 parent:self descriptor:a3];
+    v13 = [[MTLToolsComputeCommandEncoder alloc] initWithComputeCommandEncoder:v12 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v11);
 
     return v13;
@@ -844,15 +844,15 @@
   }
 }
 
-- (id)blitCommandEncoderWithDescriptor:(id)a3
+- (id)blitCommandEncoderWithDescriptor:(id)descriptor
 {
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [(MTLToolsCommandBuffer *)self unwrapMTLBlitPassDescriptor:a3];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v6 = [(MTLToolsCommandBuffer *)self unwrapMTLBlitPassDescriptor:descriptor];
   v7 = objc_autoreleasePoolPush();
-  v8 = [v5 blitCommandEncoderWithDescriptor:v6];
+  v8 = [baseObject blitCommandEncoderWithDescriptor:v6];
   if (v8)
   {
-    v9 = [[MTLToolsBlitCommandEncoder alloc] initWithBlitCommandEncoder:v8 parent:self descriptor:a3];
+    v9 = [[MTLToolsBlitCommandEncoder alloc] initWithBlitCommandEncoder:v8 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v7);
 
     return v9;
@@ -865,15 +865,15 @@
   }
 }
 
-- (id)resourceStateCommandEncoderWithDescriptor:(id)a3
+- (id)resourceStateCommandEncoderWithDescriptor:(id)descriptor
 {
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [(MTLToolsCommandBuffer *)self unwrapMTLResourceStatePassDescriptor:a3];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v6 = [(MTLToolsCommandBuffer *)self unwrapMTLResourceStatePassDescriptor:descriptor];
   v7 = objc_autoreleasePoolPush();
-  v8 = [v5 resourceStateCommandEncoderWithDescriptor:v6];
+  v8 = [baseObject resourceStateCommandEncoderWithDescriptor:v6];
   if (v8)
   {
-    v9 = [[MTLToolsResourceStateCommandEncoder alloc] initWithResourceStateCommandEncoder:v8 parent:self descriptor:a3];
+    v9 = [[MTLToolsResourceStateCommandEncoder alloc] initWithResourceStateCommandEncoder:v8 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v7);
 
     return v9;
@@ -886,54 +886,54 @@
   }
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value
 {
   [(MTLToolsCommandBuffer *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v7 encodeSignalEvent:v8 value:a4];
+  [baseObject encodeSignalEvent:baseObject2 value:value];
 }
 
-- (void)encodeWaitForEvent:(id)a3 value:(unint64_t)a4
+- (void)encodeWaitForEvent:(id)event value:(unint64_t)value
 {
   [(MTLToolsCommandBuffer *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v7 encodeWaitForEvent:v8 value:a4];
+  [baseObject encodeWaitForEvent:baseObject2 value:value];
 }
 
-- (void)encodeSignalEvent:(id)a3 value:(unint64_t)a4 agentMask:(unint64_t)a5
+- (void)encodeSignalEvent:(id)event value:(unint64_t)value agentMask:(unint64_t)mask
 {
   [(MTLToolsCommandBuffer *)self addRetainedObject:?];
-  v9 = [(MTLToolsObject *)self baseObject];
-  v10 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v9 encodeSignalEvent:v10 value:a4 agentMask:a5];
+  [baseObject encodeSignalEvent:baseObject2 value:value agentMask:mask];
 }
 
-- (void)encodeConditionalAbortEvent:(id)a3
+- (void)encodeConditionalAbortEvent:(id)event
 {
   [(MTLToolsCommandBuffer *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v5 encodeConditionalAbortEvent:v6];
+  [baseObject encodeConditionalAbortEvent:baseObject2];
 }
 
-- (void)encodeSignalEventScheduled:(id)a3 value:(unint64_t)a4
+- (void)encodeSignalEventScheduled:(id)scheduled value:(unint64_t)value
 {
   [(MTLToolsCommandBuffer *)self addRetainedObject:?];
-  v7 = [(MTLToolsObject *)self baseObject];
-  v8 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [scheduled baseObject];
 
-  [v7 encodeSignalEventScheduled:v8 value:a4];
+  [baseObject encodeSignalEventScheduled:baseObject2 value:value];
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_encodeSignalEventScheduled_value_ == a3)
+  if (sel_encodeSignalEventScheduled_value_ == selector)
   {
     [(MTLToolsObject *)self baseObject];
     v3 = objc_opt_respondsToSelector();
@@ -943,33 +943,33 @@
   {
     v5.receiver = self;
     v5.super_class = MTLToolsCommandBuffer;
-    v3 = [(MTLToolsCommandBuffer *)&v5 respondsToSelector:a3];
+    v3 = [(MTLToolsCommandBuffer *)&v5 respondsToSelector:selector];
   }
 
   return v3 & 1;
 }
 
-- (void)addPurgedResource:(id)a3
+- (void)addPurgedResource:(id)resource
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [resource baseObject];
 
-  [v4 addPurgedResource:v5];
+  [baseObject addPurgedResource:baseObject2];
 }
 
-- (void)addPurgedHeap:(id)a3
+- (void)addPurgedHeap:(id)heap
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [heap baseObject];
 
-  [v4 addPurgedHeap:v5];
+  [baseObject addPurgedHeap:baseObject2];
 }
 
-- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)a3 programInfoBuffer:(id *)a4 capacity:(unint64_t)a5
+- (id)sampledComputeCommandEncoderWithDispatchType:(unint64_t)type programInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
-  v9 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
   v10 = objc_autoreleasePoolPush();
-  v11 = [v9 sampledComputeCommandEncoderWithDispatchType:a3 programInfoBuffer:a4 capacity:a5];
+  v11 = [baseObject sampledComputeCommandEncoderWithDispatchType:type programInfoBuffer:buffer capacity:capacity];
   if (v11)
   {
     v12 = [[MTLToolsComputeCommandEncoder alloc] initWithComputeCommandEncoder:v11 parent:self descriptor:0];
@@ -987,157 +987,157 @@
 
 - (BOOL)isProfilingEnabled
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 isProfilingEnabled];
+  return [baseObject isProfilingEnabled];
 }
 
 - (NSDictionary)profilingResults
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 profilingResults];
+  return [baseObject profilingResults];
 }
 
 - (NSMutableDictionary)userDictionary
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 userDictionary];
+  return [baseObject userDictionary];
 }
 
 - (unint64_t)getListIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getListIndex];
+  return [baseObject getListIndex];
 }
 
-- (void)addSynchronizationNotification:(id)a3
+- (void)addSynchronizationNotification:(id)notification
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 addSynchronizationNotification:a3];
+  [baseObject addSynchronizationNotification:notification];
 }
 
-- (void)setResourceGroups:(const void *)a3 count:(unint64_t)a4
+- (void)setResourceGroups:(const void *)groups count:(unint64_t)count
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = v12 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a4)
+  v6 = v12 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (count)
   {
-    v7 = a3;
-    v8 = a4;
-    v9 = (v12 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
+    groupsCopy = groups;
+    countCopy = count;
+    v9 = (v12 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v10 = *v7++;
+      v10 = *groupsCopy++;
       *v9++ = [v10 baseObject];
-      --v8;
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   [-[MTLToolsObject baseObject](self baseObject];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dropResourceGroups:(const void *)a3 count:(unint64_t)a4
+- (void)dropResourceGroups:(const void *)groups count:(unint64_t)count
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = v12 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a4)
+  v6 = v12 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (count)
   {
-    v7 = a3;
-    v8 = a4;
-    v9 = (v12 - ((8 * a4 + 15) & 0xFFFFFFFFFFFFFFF0));
+    groupsCopy = groups;
+    countCopy = count;
+    v9 = (v12 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v10 = *v7++;
+      v10 = *groupsCopy++;
       *v9++ = [v10 baseObject];
-      --v8;
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   [-[MTLToolsObject baseObject](self baseObject];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeCacheHintTag:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5
+- (void)encodeCacheHintTag:(unint64_t)tag resourceGroups:(const void *)groups count:(unint64_t)count
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = v14 - ((8 * a5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a5)
+  v8 = v14 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (count)
   {
-    v9 = a4;
-    v10 = a5;
-    v11 = (v14 - ((8 * a5 + 15) & 0xFFFFFFFFFFFFFFF0));
+    groupsCopy = groups;
+    countCopy = count;
+    v11 = (v14 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v12 = *v9++;
+      v12 = *groupsCopy++;
       *v11++ = [v12 baseObject];
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
   [-[MTLToolsObject baseObject](self baseObject];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeCacheHintFinalize:(unint64_t)a3 resourceGroups:(const void *)a4 count:(unint64_t)a5
+- (void)encodeCacheHintFinalize:(unint64_t)finalize resourceGroups:(const void *)groups count:(unint64_t)count
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = v14 - ((8 * a5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a5)
+  v8 = v14 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (count)
   {
-    v9 = a4;
-    v10 = a5;
-    v11 = (v14 - ((8 * a5 + 15) & 0xFFFFFFFFFFFFFFF0));
+    groupsCopy = groups;
+    countCopy = count;
+    v11 = (v14 - ((8 * count + 15) & 0xFFFFFFFFFFFFFFF0));
     do
     {
-      v12 = *v9++;
+      v12 = *groupsCopy++;
       *v11++ = [v12 baseObject];
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
   [-[MTLToolsObject baseObject](self baseObject];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setProtectionOptions:(unint64_t)a3
+- (void)setProtectionOptions:(unint64_t)options
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setProtectionOptions:a3];
+  [baseObject setProtectionOptions:options];
 }
 
 - (unint64_t)protectionOptions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 protectionOptions];
+  return [baseObject protectionOptions];
 }
 
 - (unint64_t)errorOptions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 errorOptions];
+  return [baseObject errorOptions];
 }
 
-- (void)retainObjectsFromRenderPassDescriptor:(id)a3
+- (void)retainObjectsFromRenderPassDescriptor:(id)descriptor
 {
   for (i = 0; i != 10; ++i)
   {
-    v6 = [objc_msgSend(a3 "colorAttachments")];
+    v6 = [objc_msgSend(descriptor "colorAttachments")];
     if (v6)
     {
       v7 = v6;
@@ -1146,32 +1146,32 @@
     }
   }
 
-  -[MTLToolsCommandBuffer addRetainedObject:](self, "addRetainedObject:", [a3 visibilityResultBuffer]);
-  -[MTLToolsCommandBuffer addRetainedObject:](self, "addRetainedObject:", [a3 rasterizationRateMap]);
+  -[MTLToolsCommandBuffer addRetainedObject:](self, "addRetainedObject:", [descriptor visibilityResultBuffer]);
+  -[MTLToolsCommandBuffer addRetainedObject:](self, "addRetainedObject:", [descriptor rasterizationRateMap]);
   for (j = 0; j != 4; ++j)
   {
-    -[MTLToolsCommandBuffer addRetainedObject:](self, "addRetainedObject:", [objc_msgSend(objc_msgSend(a3 "sampleBufferAttachments")]);
+    -[MTLToolsCommandBuffer addRetainedObject:](self, "addRetainedObject:", [objc_msgSend(objc_msgSend(descriptor "sampleBufferAttachments")]);
   }
 }
 
-- (void)commitWithDeadline:(unint64_t)a3
+- (void)commitWithDeadline:(unint64_t)deadline
 {
   [(MTLToolsCommandBuffer *)self preCommit];
-  v5 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v5 commitWithDeadline:a3];
+  [baseObject commitWithDeadline:deadline];
 }
 
-- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)a3
+- (BOOL)commitAndWaitUntilSubmittedWithDeadline:(unint64_t)deadline
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 commitAndWaitUntilSubmittedWithDeadline:a3];
+  return [baseObject commitAndWaitUntilSubmittedWithDeadline:deadline];
 }
 
-- (id)unwrapMTLAccelerationStructurePassDescriptor:(id)a3
+- (id)unwrapMTLAccelerationStructurePassDescriptor:(id)descriptor
 {
-  v4 = [a3 copy];
+  v4 = [descriptor copy];
   for (i = 0; i != 4; ++i)
   {
     [objc_msgSend(objc_msgSend(v4 "sampleBufferAttachments")];
@@ -1180,14 +1180,14 @@
   return v4;
 }
 
-- (id)accelerationStructureCommandEncoderWithDescriptor:(id)a3
+- (id)accelerationStructureCommandEncoderWithDescriptor:(id)descriptor
 {
   v5 = [(MTLToolsCommandBuffer *)self unwrapMTLAccelerationStructurePassDescriptor:?];
   v6 = objc_autoreleasePoolPush();
   v7 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v7)
   {
-    v8 = [[MTLToolsAccelerationStructureCommandEncoder alloc] initWithAccelerationStructureCommandEncoder:v7 parent:self descriptor:a3];
+    v8 = [[MTLToolsAccelerationStructureCommandEncoder alloc] initWithAccelerationStructureCommandEncoder:v7 parent:self descriptor:descriptor];
     objc_autoreleasePoolPop(v6);
 
     return v8;
@@ -1200,33 +1200,33 @@
   }
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
   [(MTLToolsCommandBuffer *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [set baseObject];
 
-  [v5 useResidencySet:v6];
+  [baseObject useResidencySet:baseObject2];
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(MTLToolsCommandBuffer *)self addRetainedObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(MTLToolsCommandBuffer *)self addRetainedObject:sets[v7]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 useResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 useResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -1234,33 +1234,33 @@
   }
 }
 
-- (void)useInternalResidencySet:(id)a3
+- (void)useInternalResidencySet:(id)set
 {
   [(MTLToolsCommandBuffer *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [set baseObject];
 
-  [v5 useInternalResidencySet:v6];
+  [baseObject useInternalResidencySet:baseObject2];
 }
 
-- (void)useInternalResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useInternalResidencySets:(const void *)sets count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      [(MTLToolsCommandBuffer *)self addRetainedObject:a3[v7]];
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      [(MTLToolsCommandBuffer *)self addRetainedObject:sets[v7]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 useInternalResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 useInternalResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -1268,18 +1268,18 @@
   }
 }
 
-- (void)__waitUntilScheduledAsync:(id)a3
+- (void)__waitUntilScheduledAsync:(id)async
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 __waitUntilScheduledAsync:a3];
+  [baseObject __waitUntilScheduledAsync:async];
 }
 
-- (void)__waitUntilCompletedAsync:(id)a3
+- (void)__waitUntilCompletedAsync:(id)async
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 __waitUntilCompletedAsync:a3];
+  [baseObject __waitUntilCompletedAsync:async];
 }
 
 - (id).cxx_construct

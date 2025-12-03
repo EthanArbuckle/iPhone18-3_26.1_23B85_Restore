@@ -1,15 +1,15 @@
 @interface MLULookupItem
-- (BOOL)_resolveAttachments:(id)a3 currentAttachmentIndex:(unint64_t)a4;
-- (BOOL)_resolveText:(id)a3 focusRange:(_NSRange)a4;
-- (BOOL)_resolveURL:(id)a3 DDResult:(__DDResult *)a4 focusRange:(_NSRange)a5;
+- (BOOL)_resolveAttachments:(id)attachments currentAttachmentIndex:(unint64_t)index;
+- (BOOL)_resolveText:(id)text focusRange:(_NSRange)range;
+- (BOOL)_resolveURL:(id)l DDResult:(__DDResult *)result focusRange:(_NSRange)range;
 - (BOOL)resolve;
-- (MLULookupItem)initWithAttachments:(id)a3 currentAttachment:(unint64_t)a4;
-- (MLULookupItem)initWithURL:(id)a3 dataDetectorsResult:(__DDResult *)a4 text:(id)a5 range:(_NSRange)a6;
+- (MLULookupItem)initWithAttachments:(id)attachments currentAttachment:(unint64_t)attachment;
+- (MLULookupItem)initWithURL:(id)l dataDetectorsResult:(__DDResult *)result text:(id)text range:(_NSRange)range;
 - (_NSRange)proposedRange;
 - (id)viewControllerToPresent;
 - (unint64_t)commitType;
 - (void)commit;
-- (void)commitWithTransitionForPreviewViewController:(id)a3 inViewController:(id)a4 completion:(id)a5;
+- (void)commitWithTransitionForPreviewViewController:(id)controller inViewController:(id)viewController completion:(id)completion;
 - (void)dealloc;
 @end
 
@@ -29,58 +29,58 @@
   [(MLULookupItem *)&v4 dealloc];
 }
 
-- (MLULookupItem)initWithAttachments:(id)a3 currentAttachment:(unint64_t)a4
+- (MLULookupItem)initWithAttachments:(id)attachments currentAttachment:(unint64_t)attachment
 {
-  v6 = a3;
+  attachmentsCopy = attachments;
   v11.receiver = self;
   v11.super_class = MLULookupItem;
   v7 = [(MLULookupItem *)&v11 init];
   if (v7)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL || [v6 count] <= a4)
+    if (attachment == 0x7FFFFFFFFFFFFFFFLL || [attachmentsCopy count] <= attachment)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [MLULookupItem initWithAttachments:v6 currentAttachment:a4];
+        [MLULookupItem initWithAttachments:attachmentsCopy currentAttachment:attachment];
       }
 
       attachments = v7->_attachments;
       v7->_attachments = 0;
-      a4 = 0x7FFFFFFFFFFFFFFFLL;
+      attachment = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v8 = v6;
+      v8 = attachmentsCopy;
       attachments = v7->_attachments;
       v7->_attachments = v8;
     }
 
-    v7->_currentAttachmentIndex = a4;
+    v7->_currentAttachmentIndex = attachment;
   }
 
   return v7;
 }
 
-- (MLULookupItem)initWithURL:(id)a3 dataDetectorsResult:(__DDResult *)a4 text:(id)a5 range:(_NSRange)a6
+- (MLULookupItem)initWithURL:(id)l dataDetectorsResult:(__DDResult *)result text:(id)text range:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a3;
-  v13 = a5;
+  length = range.length;
+  location = range.location;
+  lCopy = l;
+  textCopy = text;
   v16.receiver = self;
   v16.super_class = MLULookupItem;
   v14 = [(MLULookupItem *)&v16 init];
   if (v14)
   {
-    if (a4)
+    if (result)
     {
-      CFRetain(a4);
-      v14->_ddResult = a4;
+      CFRetain(result);
+      v14->_ddResult = result;
     }
 
-    objc_storeStrong(&v14->_url, a3);
-    objc_storeStrong(&v14->_text, a5);
+    objc_storeStrong(&v14->_url, l);
+    objc_storeStrong(&v14->_text, text);
     v14->_focusRange.location = location;
     v14->_focusRange.length = length;
     v14->_proposedRange.location = location;
@@ -90,13 +90,13 @@
   return v14;
 }
 
-- (BOOL)_resolveAttachments:(id)a3 currentAttachmentIndex:(unint64_t)a4
+- (BOOL)_resolveAttachments:(id)attachments currentAttachmentIndex:(unint64_t)index
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  attachmentsCopy = attachments;
+  v7 = [attachmentsCopy objectAtIndexedSubscript:index];
   v8 = MEMORY[0x277CDAA58];
-  v9 = [v6 objectAtIndexedSubscript:a4];
+  v9 = [attachmentsCopy objectAtIndexedSubscript:index];
   v10 = [v8 canPreviewItem:v9];
 
   if (v10)
@@ -107,7 +107,7 @@
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = v6;
+    v12 = attachmentsCopy;
     v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
@@ -151,13 +151,13 @@
   return v10;
 }
 
-- (BOOL)_resolveURL:(id)a3 DDResult:(__DDResult *)a4 focusRange:(_NSRange)a5
+- (BOOL)_resolveURL:(id)l DDResult:(__DDResult *)result focusRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
-  v10 = [(MLULookupItem *)self documentProperties];
-  v11 = [MLULookupItemContent contentWithURL:v9 result:a4 documentProperties:v10];
+  length = range.length;
+  location = range.location;
+  lCopy = l;
+  documentProperties = [(MLULookupItem *)self documentProperties];
+  v11 = [MLULookupItemContent contentWithURL:lCopy result:result documentProperties:documentProperties];
 
   if (v11)
   {
@@ -172,11 +172,11 @@
   return v11 != 0;
 }
 
-- (BOOL)_resolveText:(id)a3 focusRange:(_NSRange)a4
+- (BOOL)_resolveText:(id)text focusRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   if (![(NSString *)self->_text length])
   {
     v21 = 0;
@@ -233,7 +233,7 @@ LABEL_18:
   }
 
 LABEL_19:
-  v22 = [MLULookupItemContent contentWithText:v7 range:location, length];
+  v22 = [MLULookupItemContent contentWithText:textCopy range:location, length];
   v21 = v22 != 0;
   if (v22)
   {
@@ -303,56 +303,56 @@ LABEL_7:
 
 - (id)viewControllerToPresent
 {
-  v2 = [(MLULookupItem *)self previewContent];
-  v3 = [v2 previewViewController];
+  previewContent = [(MLULookupItem *)self previewContent];
+  previewViewController = [previewContent previewViewController];
 
-  return v3;
+  return previewViewController;
 }
 
 - (void)commit
 {
-  v5 = [(MLULookupItem *)self previewContent];
-  v3 = [(MLULookupItem *)self viewControllerToPresent];
-  v4 = [v3 presentingViewController];
-  [v5 commitPreviewInController:v4];
+  previewContent = [(MLULookupItem *)self previewContent];
+  viewControllerToPresent = [(MLULookupItem *)self viewControllerToPresent];
+  presentingViewController = [viewControllerToPresent presentingViewController];
+  [previewContent commitPreviewInController:presentingViewController];
 }
 
 - (unint64_t)commitType
 {
-  v2 = [(MLULookupItem *)self previewContent];
-  v3 = [v2 commitType];
+  previewContent = [(MLULookupItem *)self previewContent];
+  commitType = [previewContent commitType];
 
-  return v3;
+  return commitType;
 }
 
-- (void)commitWithTransitionForPreviewViewController:(id)a3 inViewController:(id)a4 completion:(id)a5
+- (void)commitWithTransitionForPreviewViewController:(id)controller inViewController:(id)viewController completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v43 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
   [(MLULookupItem *)self commit];
-  v10 = [v9 view];
-  v11 = [v10 window];
+  view = [viewControllerCopy view];
+  window = [view window];
 
   v12 = objc_alloc(MEMORY[0x277D75D18]);
-  [v11 bounds];
+  [window bounds];
   v13 = [v12 initWithFrame:?];
   v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.0];
   [v13 setBackgroundColor:v14];
 
   [v13 setUserInteractionEnabled:0];
-  [v11 addSubview:v13];
+  [window addSubview:v13];
   v15 = [MLUBlurryView alloc];
-  [v11 bounds];
+  [window bounds];
   v16 = [(MLUBlurryView *)v15 initWithFrame:?];
   [(MLUBlurryView *)v16 setUserInteractionEnabled:0];
-  [v11 addSubview:v16];
-  v17 = [v8 view];
-  v44 = v9;
-  v45 = v8;
+  [window addSubview:v16];
+  view2 = [controllerCopy view];
+  v44 = viewControllerCopy;
+  v45 = controllerCopy;
   v42 = v13;
-  if (v17)
+  if (view2)
   {
     do
     {
@@ -365,27 +365,27 @@ LABEL_7:
         break;
       }
 
-      v21 = [v17 superview];
+      superview = [view2 superview];
 
-      v17 = v21;
+      view2 = superview;
     }
 
-    while (v21);
+    while (superview);
   }
 
   v57 = 0u;
   v58 = 0u;
   v56 = 0u;
   v55 = 0u;
-  v22 = [v17 superview];
-  v23 = [v22 superview];
-  v24 = [v23 subviews];
+  superview2 = [view2 superview];
+  v22Superview = [superview2 superview];
+  subviews = [v22Superview subviews];
 
-  v25 = [v24 countByEnumeratingWithState:&v55 objects:v59 count:16];
+  v25 = [subviews countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v25)
   {
     v26 = v25;
-    v41 = v11;
+    v41 = window;
     v27 = *v56;
     while (2)
     {
@@ -393,7 +393,7 @@ LABEL_7:
       {
         if (*v56 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(subviews);
         }
 
         v29 = *(*(&v55 + 1) + 8 * i);
@@ -408,7 +408,7 @@ LABEL_7:
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v55 objects:v59 count:16];
+      v26 = [subviews countByEnumeratingWithState:&v55 objects:v59 count:16];
       if (v26)
       {
         continue;
@@ -419,7 +419,7 @@ LABEL_7:
 
     v33 = 0;
 LABEL_14:
-    v11 = v41;
+    window = v41;
   }
 
   else
@@ -427,9 +427,9 @@ LABEL_14:
     v33 = 0;
   }
 
-  v34 = [v17 snapshotViewAfterScreenUpdates:0];
+  v34 = [view2 snapshotViewAfterScreenUpdates:0];
   [(MLUBlurryView *)v16 addSubview:v34];
-  [v17 setHidden:1];
+  [view2 setHidden:1];
   [v33 setHidden:1];
   v35 = MEMORY[0x277D75D18];
   v51[0] = MEMORY[0x277D85DD0];
@@ -446,11 +446,11 @@ LABEL_14:
   v47 = v53;
   v48 = v52;
   v49 = v54;
-  v50 = v43;
+  v50 = completionCopy;
   v36 = v53;
   v37 = v52;
   v38 = v54;
-  v39 = v43;
+  v39 = completionCopy;
   [v35 animateKeyframesWithDuration:0 delay:v51 options:v46 animations:0.4 completion:0.0];
 
   v40 = *MEMORY[0x277D85DE8];

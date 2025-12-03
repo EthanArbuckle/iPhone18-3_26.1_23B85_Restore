@@ -2,15 +2,15 @@
 - (NSSet)selectedNetworks;
 - (NSString)searchString;
 - (_TtC4Maps26ChargingNetworksDataSource)init;
-- (_TtC4Maps26ChargingNetworksDataSource)initWithExcludedNetworks:(id)a3 context:(int64_t)a4 delegate:(id)a5;
-- (id)indexPathForNetwork:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)availableNetworksDidChangeForProvider:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)setSelectedNetworks:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (_TtC4Maps26ChargingNetworksDataSource)initWithExcludedNetworks:(id)networks context:(int64_t)context delegate:(id)delegate;
+- (id)indexPathForNetwork:(id)network;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)availableNetworksDidChangeForProvider:(id)provider;
+- (void)setSearchString:(id)string;
+- (void)setSelectedNetworks:(id)networks;
+- (void)updateSearchResultsForSearchController:(id)controller;
 @end
 
 @implementation ChargingNetworksDataSource
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -47,7 +47,7 @@
   v6 = (self + OBJC_IVAR____TtC4Maps26ChargingNetworksDataSource_searchString);
   *v6 = v4;
   v6[1] = v5;
-  v7 = self;
+  selfCopy = self;
 
   sub_1002992A0();
 }
@@ -63,7 +63,7 @@
   return v2.super.isa;
 }
 
-- (void)setSelectedNetworks:(id)a3
+- (void)setSelectedNetworks:(id)networks
 {
   sub_100014C84(0, &unk_101917480);
   sub_10029BDD8();
@@ -73,29 +73,29 @@
   *(self + v5) = v4;
 }
 
-- (_TtC4Maps26ChargingNetworksDataSource)initWithExcludedNetworks:(id)a3 context:(int64_t)a4 delegate:(id)a5
+- (_TtC4Maps26ChargingNetworksDataSource)initWithExcludedNetworks:(id)networks context:(int64_t)context delegate:(id)delegate
 {
-  v7 = a3;
-  if (a3)
+  networksCopy = networks;
+  if (networks)
   {
     sub_100014C84(0, &unk_101917480);
     sub_10029BDD8();
-    v7 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
+    networksCopy = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   swift_unknownObjectRetain();
 
-  return sub_100524D10(v7, a4, a5, self);
+  return sub_100524D10(networksCopy, context, delegate, self);
 }
 
-- (id)indexPathForNetwork:(id)a3
+- (id)indexPathForNetwork:(id)network
 {
   v5 = sub_1000CE6B8(&qword_1019174A0);
   __chkstk_darwin(v5 - 8);
   v7 = &v16 - v6;
-  v8 = a3;
-  v9 = self;
-  sub_100299ED8(v8, v7);
+  networkCopy = network;
+  selfCopy = self;
+  sub_100299ED8(networkCopy, v7);
 
   v10 = type metadata accessor for IndexPath();
   v11 = *(v10 - 8);
@@ -118,11 +118,11 @@
   return result;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_10029A3E4(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10029A3E4(viewCopy, section);
   v9 = v8;
 
   if (v9)
@@ -138,43 +138,43 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_10029A61C(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_10029A61C(viewCopy, section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10029AA90(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10029AA90(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)availableNetworksDidChangeForProvider:(id)a3
+- (void)availableNetworksDidChangeForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = self;
-  sub_10029B41C(v4);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_10029B41C(providerCopy);
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_10029BBEC(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10029BBEC(controllerCopy);
 }
 
 @end

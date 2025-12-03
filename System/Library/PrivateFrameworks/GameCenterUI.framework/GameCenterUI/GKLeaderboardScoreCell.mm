@@ -3,15 +3,15 @@
 + (id)highRankNib;
 + (id)lowRankNib;
 - (GKLeaderboardScoreActionDelegate)delegate;
-- (id)cellBackgroundColor:(BOOL)a3;
+- (id)cellBackgroundColor:(BOOL)color;
 - (void)awakeFromNib;
 - (void)prepareForReuse;
-- (void)setEntry:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLineVisible:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setupForLeaderboardEntry:(id)a3;
-- (void)updateLayerMask:(id)a3;
+- (void)setEntry:(id)entry;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLineVisible:(BOOL)visible;
+- (void)setSelected:(BOOL)selected;
+- (void)setupForLeaderboardEntry:(id)entry;
+- (void)updateLayerMask:(id)mask;
 @end
 
 @implementation GKLeaderboardScoreCell
@@ -44,47 +44,47 @@
   v17.receiver = self;
   v17.super_class = GKLeaderboardScoreCell;
   [(GKFocusHighlightingCollectionViewCell *)&v17 awakeFromNib];
-  v3 = [(GKLeaderboardScoreCell *)self playerView];
-  [v3 setUseDarkerPlaceholder:1];
+  playerView = [(GKLeaderboardScoreCell *)self playerView];
+  [playerView setUseDarkerPlaceholder:1];
 
-  v4 = [(GKLeaderboardScoreCell *)self playerView];
-  [v4 setAvatarSize:0x10000];
+  playerView2 = [(GKLeaderboardScoreCell *)self playerView];
+  [playerView2 setAvatarSize:0x10000];
 
-  v5 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v6 = [v5 secondaryLabelCompositingFilter];
-  v7 = [(GKLeaderboardScoreCell *)self scoreLabel];
-  v8 = [v7 layer];
-  [v8 setCompositingFilter:v6];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  secondaryLabelCompositingFilter = [mEMORY[0x277D0C8C8] secondaryLabelCompositingFilter];
+  scoreLabel = [(GKLeaderboardScoreCell *)self scoreLabel];
+  layer = [scoreLabel layer];
+  [layer setCompositingFilter:secondaryLabelCompositingFilter];
 
-  v9 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v10 = [v9 secondaryLabelCompositingFilter];
-  v11 = [(GKLeaderboardScoreCell *)self rankLabel];
-  v12 = [v11 layer];
-  [v12 setCompositingFilter:v10];
+  mEMORY[0x277D0C8C8]2 = [MEMORY[0x277D0C8C8] sharedTheme];
+  secondaryLabelCompositingFilter2 = [mEMORY[0x277D0C8C8]2 secondaryLabelCompositingFilter];
+  rankLabel = [(GKLeaderboardScoreCell *)self rankLabel];
+  layer2 = [rankLabel layer];
+  [layer2 setCompositingFilter:secondaryLabelCompositingFilter2];
 
-  v13 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v14 = [v13 secondaryLabelCompositingFilter];
-  v15 = [(GKLeaderboardScoreCell *)self subtitleLabel];
-  v16 = [v15 layer];
-  [v16 setCompositingFilter:v14];
+  mEMORY[0x277D0C8C8]3 = [MEMORY[0x277D0C8C8] sharedTheme];
+  secondaryLabelCompositingFilter3 = [mEMORY[0x277D0C8C8]3 secondaryLabelCompositingFilter];
+  subtitleLabel = [(GKLeaderboardScoreCell *)self subtitleLabel];
+  layer3 = [subtitleLabel layer];
+  [layer3 setCompositingFilter:secondaryLabelCompositingFilter3];
 }
 
-- (void)setEntry:(id)a3
+- (void)setEntry:(id)entry
 {
-  v7 = a3;
-  if (self->_entry != v7)
+  entryCopy = entry;
+  if (self->_entry != entryCopy)
   {
-    objc_storeStrong(&self->_entry, a3);
+    objc_storeStrong(&self->_entry, entry);
 LABEL_3:
-    [(GKLeaderboardScoreCell *)self setupForLeaderboardEntry:v7];
-    v5 = v7;
+    [(GKLeaderboardScoreCell *)self setupForLeaderboardEntry:entryCopy];
+    v5 = entryCopy;
     goto LABEL_5;
   }
 
-  v6 = [(GKDashboardPlayerPhotoView *)self->_playerView player];
+  player = [(GKDashboardPlayerPhotoView *)self->_playerView player];
 
-  v5 = v7;
-  if (!v6)
+  v5 = entryCopy;
+  if (!player)
   {
     goto LABEL_3;
   }
@@ -92,14 +92,14 @@ LABEL_3:
 LABEL_5:
 }
 
-- (id)cellBackgroundColor:(BOOL)a3
+- (id)cellBackgroundColor:(BOOL)color
 {
   if (*MEMORY[0x277D0C258] == 1)
   {
-    if (a3)
+    if (color)
     {
-      v3 = [MEMORY[0x277D75348] whiteColor];
-      v4 = [v3 colorWithAlphaComponent:0.05];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v4 = [whiteColor colorWithAlphaComponent:0.05];
 
       goto LABEL_8;
     }
@@ -107,130 +107,130 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!color)
   {
 LABEL_6:
-    v5 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x277D75348] tertiarySystemFillColor];
+  clearColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
 LABEL_7:
-  v4 = v5;
+  v4 = clearColor;
 LABEL_8:
 
   return v4;
 }
 
-- (void)setupForLeaderboardEntry:(id)a3
+- (void)setupForLeaderboardEntry:(id)entry
 {
-  v36 = a3;
-  v5 = [v36 player];
-  -[GKLeaderboardScoreCell setIsLocalPlayerScore:](self, "setIsLocalPlayerScore:", [v5 isLocalPlayer]);
+  entryCopy = entry;
+  player = [entryCopy player];
+  -[GKLeaderboardScoreCell setIsLocalPlayerScore:](self, "setIsLocalPlayerScore:", [player isLocalPlayer]);
   v6 = [(GKLeaderboardScoreCell *)self cellBackgroundColor:[(GKLeaderboardScoreCell *)self isLocalPlayerScore]];
-  v7 = [v6 CGColor];
-  v8 = [(GKLeaderboardScoreCell *)self layer];
-  [v8 setBackgroundColor:v7];
+  cGColor = [v6 CGColor];
+  layer = [(GKLeaderboardScoreCell *)self layer];
+  [layer setBackgroundColor:cGColor];
 
-  v9 = [(GKLeaderboardScoreCell *)self monogramColorView];
-  [v9 setHidden:0];
+  monogramColorView = [(GKLeaderboardScoreCell *)self monogramColorView];
+  [monogramColorView setHidden:0];
 
-  v10 = [(GKLeaderboardScoreCell *)self playerView];
-  [v10 setPlayer:v5];
+  playerView = [(GKLeaderboardScoreCell *)self playerView];
+  [playerView setPlayer:player];
 
-  v11 = [(GKLeaderboardScoreCell *)self playerView];
-  [v11 setUserInteractionEnabled:0];
+  playerView2 = [(GKLeaderboardScoreCell *)self playerView];
+  [playerView2 setUserInteractionEnabled:0];
 
-  v12 = [v5 displayNameWithOptions:0];
-  v13 = [(GKLeaderboardScoreCell *)self nameLabel];
-  [v13 setText:v12];
+  v12 = [player displayNameWithOptions:0];
+  nameLabel = [(GKLeaderboardScoreCell *)self nameLabel];
+  [nameLabel setText:v12];
 
-  v14 = [v36 formattedScore];
-  v15 = [(GKLeaderboardScoreCell *)self scoreLabel];
-  [v15 setText:v14];
+  formattedScore = [entryCopy formattedScore];
+  scoreLabel = [(GKLeaderboardScoreCell *)self scoreLabel];
+  [scoreLabel setText:formattedScore];
 
-  v16 = [v36 rank];
-  v17 = [MEMORY[0x277D75348] labelColor];
-  v18 = v17;
-  if (v16 < 100)
+  rank = [entryCopy rank];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v18 = labelColor;
+  if (rank < 100)
   {
-    v26 = [(GKLeaderboardScoreCell *)self rankLabel];
-    [v26 setTextColor:v18];
+    rankLabel = [(GKLeaderboardScoreCell *)self rankLabel];
+    [rankLabel setTextColor:v18];
 
-    [v36 rank];
+    [entryCopy rank];
     v22 = GKFormattedStringWithGroupingFromInteger();
-    v23 = [(GKLeaderboardScoreCell *)self rankLabel];
-    [v23 setText:v22];
+    rankLabel2 = [(GKLeaderboardScoreCell *)self rankLabel];
+    [rankLabel2 setText:v22];
   }
 
   else
   {
-    v19 = [v17 colorWithAlphaComponent:0.5];
-    v20 = [(GKLeaderboardScoreCell *)self rankLabel];
-    [v20 setTextColor:v19];
+    v19 = [labelColor colorWithAlphaComponent:0.5];
+    rankLabel3 = [(GKLeaderboardScoreCell *)self rankLabel];
+    [rankLabel3 setTextColor:v19];
 
     v21 = MEMORY[0x277CCACA8];
     v22 = GKGameCenterUIFrameworkBundle();
-    v23 = GKGetLocalizedStringFromTableInBundle();
-    [v36 rank];
-    v3 = GKFormattedStringWithGroupingFromInteger();
-    v24 = [v21 stringWithFormat:v23, v3];
-    v25 = [(GKLeaderboardScoreCell *)self rankLabel];
-    [v25 setText:v24];
+    rankLabel2 = GKGetLocalizedStringFromTableInBundle();
+    [entryCopy rank];
+    contact = GKFormattedStringWithGroupingFromInteger();
+    v24 = [v21 stringWithFormat:rankLabel2, contact];
+    rankLabel4 = [(GKLeaderboardScoreCell *)self rankLabel];
+    [rankLabel4 setText:v24];
   }
 
-  v27 = [(GKLeaderboardScoreCell *)self isLocalPlayerScore];
-  v28 = v27;
-  if (v27)
+  isLocalPlayerScore = [(GKLeaderboardScoreCell *)self isLocalPlayerScore];
+  v28 = isLocalPlayerScore;
+  if (isLocalPlayerScore)
   {
-    v29 = GKGameCenterUIFrameworkBundle();
+    internal = GKGameCenterUIFrameworkBundle();
     GKGetLocalizedStringFromTableInBundle();
   }
 
   else
   {
-    v29 = [v5 internal];
-    v3 = [v29 contact];
-    [v3 _gkCompositeName];
+    internal = [player internal];
+    contact = [internal contact];
+    [contact _gkCompositeName];
   }
   v30 = ;
-  v31 = [(GKLeaderboardScoreCell *)self subtitleLabel];
-  [v31 setText:v30];
+  subtitleLabel = [(GKLeaderboardScoreCell *)self subtitleLabel];
+  [subtitleLabel setText:v30];
 
   if (!v28)
   {
 
-    v30 = v3;
+    v30 = contact;
   }
 
-  v32 = [(GKLeaderboardScoreCell *)self subtitleLabel];
-  v33 = [v32 text];
-  v34 = [v33 length] == 0;
-  v35 = [(GKLeaderboardScoreCell *)self subtitleLabel];
-  [v35 setHidden:v34];
+  subtitleLabel2 = [(GKLeaderboardScoreCell *)self subtitleLabel];
+  text = [subtitleLabel2 text];
+  v34 = [text length] == 0;
+  subtitleLabel3 = [(GKLeaderboardScoreCell *)self subtitleLabel];
+  [subtitleLabel3 setHidden:v34];
 }
 
-- (void)updateLayerMask:(id)a3
+- (void)updateLayerMask:(id)mask
 {
   v3 = MEMORY[0x277D75208];
-  v4 = a3;
-  [v4 bounds];
+  maskCopy = mask;
+  [maskCopy bounds];
   v8 = [v3 bezierPathWithRoundedRect:12 byRoundingCorners:? cornerRadii:?];
-  v5 = [MEMORY[0x277CD9F90] layer];
-  [v4 bounds];
-  [v5 setFrame:?];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [maskCopy bounds];
+  [layer setFrame:?];
   v6 = v8;
-  [v5 setPath:{objc_msgSend(v8, "CGPath")}];
-  v7 = [v4 layer];
+  [layer setPath:{objc_msgSend(v8, "CGPath")}];
+  layer2 = [maskCopy layer];
 
-  [v7 setMask:v5];
+  [layer2 setMask:layer];
 }
 
-- (void)setLineVisible:(BOOL)a3
+- (void)setLineVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(GKLeaderboardScoreCell *)self topLine];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  topLine = [(GKLeaderboardScoreCell *)self topLine];
+  [topLine setHidden:!visibleCopy];
 }
 
 - (void)prepareForReuse
@@ -238,15 +238,15 @@ LABEL_8:
   v6.receiver = self;
   v6.super_class = GKLeaderboardScoreCell;
   [(GKLeaderboardScoreCell *)&v6 prepareForReuse];
-  v3 = [(GKLeaderboardScoreCell *)self playerView];
-  [v3 setPlayer:0];
+  playerView = [(GKLeaderboardScoreCell *)self playerView];
+  [playerView setPlayer:0];
 
   v4 = [(GKLeaderboardScoreCell *)self cellBackgroundColor:0];
-  v5 = [(GKLeaderboardScoreCell *)self contentView];
-  [v5 setBackgroundColor:v4];
+  contentView = [(GKLeaderboardScoreCell *)self contentView];
+  [contentView setBackgroundColor:v4];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = GKLeaderboardScoreCell;
@@ -256,7 +256,7 @@ LABEL_8:
   v5[2] = __41__GKLeaderboardScoreCell_setHighlighted___block_invoke;
   v5[3] = &unk_27966A890;
   v5[4] = self;
-  v6 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0 completion:0.05];
 }
 
@@ -277,16 +277,16 @@ void __41__GKLeaderboardScoreCell_setHighlighted___block_invoke(uint64_t a1)
   [v3 setOpacity:v2];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = GKLeaderboardScoreCell;
   [(GKLeaderboardScoreCell *)&v8 setSelected:?];
-  v5 = [(GKLeaderboardScoreCell *)self layer];
-  [v5 setBackgroundColor:0];
+  layer = [(GKLeaderboardScoreCell *)self layer];
+  [layer setBackgroundColor:0];
 
-  if (v3)
+  if (selectedCopy)
   {
     [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
@@ -296,8 +296,8 @@ void __41__GKLeaderboardScoreCell_setHighlighted___block_invoke(uint64_t a1)
     [(GKLeaderboardScoreCell *)self cellBackgroundColor:[(GKLeaderboardScoreCell *)self isLocalPlayerScore]];
   }
   v6 = ;
-  v7 = [(GKLeaderboardScoreCell *)self contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [(GKLeaderboardScoreCell *)self contentView];
+  [contentView setBackgroundColor:v6];
 }
 
 - (GKLeaderboardScoreActionDelegate)delegate

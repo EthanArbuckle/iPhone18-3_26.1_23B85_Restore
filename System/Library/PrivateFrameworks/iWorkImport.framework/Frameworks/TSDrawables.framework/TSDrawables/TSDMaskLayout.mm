@@ -2,8 +2,8 @@
 - (CGRect)p_cachedTightPathBounds;
 - (CGRect)p_cachedTightPathBoundsNoScale;
 - (CGRect)pathBounds;
-- (TSDMaskLayout)initWithInfo:(id)a3;
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3;
+- (TSDMaskLayout)initWithInfo:(id)info;
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
 - (id)infoGeometry;
@@ -16,17 +16,17 @@
 - (void)p_calculateTightPathBoundsIfNecessary;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)p_setDynamicInfoGeometry:(id)a3;
-- (void)setPathScale:(double)a3;
+- (void)p_setDynamicInfoGeometry:(id)geometry;
+- (void)setPathScale:(double)scale;
 @end
 
 @implementation TSDMaskLayout
 
-- (TSDMaskLayout)initWithInfo:(id)a3
+- (TSDMaskLayout)initWithInfo:(id)info
 {
   v9.receiver = self;
   v9.super_class = TSDMaskLayout;
-  v3 = [(TSDLayout *)&v9 initWithInfo:a3];
+  v3 = [(TSDLayout *)&v9 initWithInfo:info];
   v6 = v3;
   if (v3)
   {
@@ -99,9 +99,9 @@
   return v28;
 }
 
-- (id)computeInfoGeometryFromPureLayoutGeometry:(id)a3
+- (id)computeInfoGeometryFromPureLayoutGeometry:(id)geometry
 {
-  v4 = a3;
+  geometryCopy = geometry;
   v7 = objc_msgSend_originalGeometry(self, v5, v6);
   v10 = v7;
   if (v7)
@@ -160,9 +160,9 @@ LABEL_12:
   CGAffineTransformConcat(&v39, &t1, &t2);
 
   memset(&t1, 0, sizeof(t1));
-  if (v4)
+  if (geometryCopy)
   {
-    objc_msgSend_fullTransform(v4, v31, v32);
+    objc_msgSend_fullTransform(geometryCopy, v31, v32);
   }
 
   else
@@ -245,11 +245,11 @@ LABEL_12:
   return v4;
 }
 
-- (void)setPathScale:(double)a3
+- (void)setPathScale:(double)scale
 {
-  if (self->mPathScale != a3)
+  if (self->mPathScale != scale)
   {
-    self->mPathScale = a3;
+    self->mPathScale = scale;
     objc_msgSend_invalidatePath(self, a2, v3);
     v9 = objc_msgSend_geometry(self, v6, v7);
     objc_msgSend_setGeometry_(self, v8, v9);
@@ -375,10 +375,10 @@ LABEL_12:
   objc_msgSend_scaleToNaturalSize_(v38, v41, v42);
 }
 
-- (void)p_setDynamicInfoGeometry:(id)a3
+- (void)p_setDynamicInfoGeometry:(id)geometry
 {
-  objc_storeStrong(&self->mDynamicInfoGeometry, a3);
-  v5 = a3;
+  objc_storeStrong(&self->mDynamicInfoGeometry, geometry);
+  geometryCopy = geometry;
   v8 = objc_msgSend_maskInfo(self, v6, v7);
   v11 = objc_msgSend_pathSource(v8, v9, v10);
   v14 = objc_msgSend_copy(v11, v12, v13);

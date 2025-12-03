@@ -1,30 +1,30 @@
 @interface AVTGroupDialMaskingView
-- (AVTGroupDialMaskingView)initWithFrame:(CGRect)a3;
+- (AVTGroupDialMaskingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AVTGroupDialMaskingView
 
-- (AVTGroupDialMaskingView)initWithFrame:(CGRect)a3
+- (AVTGroupDialMaskingView)initWithFrame:(CGRect)frame
 {
   v14[4] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = AVTGroupDialMaskingView;
-  v3 = [(AVTGroupDialMaskingView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTGroupDialMaskingView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     maskLayer = v3->_maskLayer;
-    v3->_maskLayer = v4;
+    v3->_maskLayer = layer;
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v14[0] = [v6 CGColor];
-    v7 = [MEMORY[0x1E69DC888] blackColor];
-    v14[1] = [v7 CGColor];
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    v14[2] = [v8 CGColor];
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    v14[3] = [v9 CGColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v14[0] = [clearColor CGColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v14[1] = [blackColor CGColor];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    v14[2] = [blackColor2 CGColor];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    v14[3] = [clearColor2 CGColor];
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:4];
     [(CAGradientLayer *)v3->_maskLayer setColors:v10];
 
@@ -34,8 +34,8 @@
     [(AVTGroupDialMaskingView *)v3 bounds];
     v16 = CGRectInset(v15, 15.0, 0.0);
     [(CAGradientLayer *)v3->_maskLayer setFrame:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
-    v11 = [(AVTGroupDialMaskingView *)v3 layer];
-    [v11 addSublayer:v3->_maskLayer];
+    layer2 = [(AVTGroupDialMaskingView *)v3 layer];
+    [layer2 addSublayer:v3->_maskLayer];
 
     [(AVTGroupDialMaskingView *)v3 setUserInteractionEnabled:0];
   }

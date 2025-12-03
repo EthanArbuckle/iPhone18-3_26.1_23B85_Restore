@@ -1,6 +1,6 @@
 @interface UIFocusDebugger
-+ (id)_ancestryForEnvironment:(id)a3;
-+ (id)_statusForFocusSystem:(id)a3 includeDeferralTarget:(BOOL)a4;
++ (id)_ancestryForEnvironment:(id)environment;
++ (id)_statusForFocusSystem:(id)system includeDeferralTarget:(BOOL)target;
 + (id)_verboseStatus;
 + (id)checkFocusabilityForItem:(id)item;
 + (id)focusGroupsForEnvironment:(id)environment;
@@ -19,14 +19,14 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"It looks like you are calling a UIFocusDebugger method outside of lldb. That is not allowed."];
   }
 
-  v2 = [MEMORY[0x1E696AD60] string];
-  [v2 appendString:@"\nFocus Debugging Utilities:"];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendString:@"\nFocus Debugging Utilities:"];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __23__UIFocusDebugger_help__block_invoke;
   aBlock[3] = &unk_1E7108788;
-  v8 = v2;
-  v3 = v2;
+  v8 = string;
+  v3 = string;
   v4 = _Block_copy(aBlock);
   v4[2](v4, @"Status", @"po UIFocusDebugger.status()", @"po [UIFocusDebugger status]", @"Outputs information for the currently focused item.");
   v4[2](v4, @"Diagnosing Focusability Issues", @"po UIFocusDebugger.checkFocusability(for: <item reference>)", @"po [UIFocusDebugger checkFocusabilityForItem:<item reference>]", @"Outputs a diagnosis of the specified item's focusability, including any known issues that may be preventing focusability.");
@@ -56,7 +56,7 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"It looks like you are calling a UIFocusDebugger method outside of lldb. That is not allowed."];
   }
 
-  v3 = [off_1E70ECC58 rootNode];
+  rootNode = [off_1E70ECC58 rootNode];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -77,12 +77,12 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 _hostFocusSystem];
+        _hostFocusSystem = [v9 _hostFocusSystem];
 
-        if (!v10)
+        if (!_hostFocusSystem)
         {
-          v11 = [a1 _statusForFocusSystem:v9 includeDeferralTarget:0];
-          [v3 addMessage:v11];
+          v11 = [self _statusForFocusSystem:v9 includeDeferralTarget:0];
+          [rootNode addMessage:v11];
         }
       }
 
@@ -92,7 +92,7 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
     while (v6);
   }
 
-  return v3;
+  return rootNode;
 }
 
 + (id)_verboseStatus
@@ -103,7 +103,7 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"It looks like you are calling a UIFocusDebugger method outside of lldb. That is not allowed."];
   }
 
-  v3 = [off_1E70ECC58 rootNode];
+  rootNode = [off_1E70ECC58 rootNode];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -123,8 +123,8 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
           objc_enumerationMutation(v4);
         }
 
-        v9 = [a1 _statusForFocusSystem:*(*(&v11 + 1) + 8 * i) includeDeferralTarget:1];
-        [v3 addMessage:v9];
+        v9 = [self _statusForFocusSystem:*(*(&v11 + 1) + 8 * i) includeDeferralTarget:1];
+        [rootNode addMessage:v9];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -133,20 +133,20 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
     while (v6);
   }
 
-  return v3;
+  return rootNode;
 }
 
-+ (id)_statusForFocusSystem:(id)a3 includeDeferralTarget:(BOOL)a4
++ (id)_statusForFocusSystem:(id)system includeDeferralTarget:(BOOL)target
 {
-  v4 = a4;
-  v5 = a3;
+  targetCopy = target;
+  systemCopy = system;
   if ((_UIKitProcessIsBeingDebugged() & 1) == 0 && dyld_program_sdk_at_least())
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"It looks like you are calling a UIFocusDebugger method outside of lldb. That is not allowed."];
   }
 
-  v6 = [v5 focusedItem];
-  v7 = v5;
+  focusedItem = [systemCopy focusedItem];
+  v7 = systemCopy;
   if (v7)
   {
     v8 = MEMORY[0x1E696AEC0];
@@ -162,9 +162,9 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
 
   v12 = [off_1E70ECC58 messageWithStyle:0 string:v11];
 
-  v13 = [v7 _isEnabled];
+  _isEnabled = [v7 _isEnabled];
   v14 = @"NO";
-  if (v13)
+  if (_isEnabled)
   {
     v14 = @"YES";
   }
@@ -172,7 +172,7 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
   v15 = [off_1E70ECC50 messageWithFormat:@"enabled: %@", v14];
   [v12 addMessage:v15];
 
-  v16 = v6;
+  v16 = focusedItem;
   if (v16)
   {
     v17 = MEMORY[0x1E696AEC0];
@@ -189,7 +189,7 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
   v21 = [off_1E70ECC50 messageWithFormat:@"focused item: %@", v20];
   [v12 addMessage:v21];
 
-  if (v4)
+  if (targetCopy)
   {
     v22 = [v7 valueForKeyPath:@"_deferredFocusUpdateTarget"];
     if (v22)
@@ -217,8 +217,8 @@ void __23__UIFocusDebugger_help__block_invoke(uint64_t a1, uint64_t a2, void *a3
   v5 = item;
   if (!v5)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"UIFocusDebugger.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"item"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusDebugger.m" lineNumber:173 description:{@"Invalid parameter not satisfying: %@", @"item"}];
   }
 
   v6 = [UIFocusSystem focusSystemForEnvironment:v5];
@@ -231,17 +231,17 @@ LABEL_16:
     goto LABEL_26;
   }
 
-  v8 = [v6 focusedItem];
+  focusedItem = [v6 focusedItem];
 
-  if (v8 == v5)
+  if (focusedItem == v5)
   {
     v21 = @"This item is currently focused.";
     goto LABEL_16;
   }
 
   v9 = objc_alloc_init(_UIDebugIssueReport);
-  v10 = [v5 canBecomeFocused];
-  if ((v10 & 1) == 0)
+  canBecomeFocused = [v5 canBecomeFocused];
+  if ((canBecomeFocused & 1) == 0)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0 || (-[_UIDebugIssueReport issues](v9, "issues"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, objc_msgSend(v5, "_diagnoseFocusabilityForReport:", v9), -[_UIDebugIssueReport issues](v9, "issues"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12 == v14))
     {
@@ -255,12 +255,12 @@ LABEL_16:
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(_UIDebugIssueReport *)v9 issues];
-      v18 = [v17 count];
+      issues = [(_UIDebugIssueReport *)v9 issues];
+      v18 = [issues count];
 
       [v5 _diagnoseFocusInteractionEligibilityForReport:v9];
-      v19 = [(_UIDebugIssueReport *)v9 issues];
-      v20 = v18 != [v19 count];
+      issues2 = [(_UIDebugIssueReport *)v9 issues];
+      v20 = v18 != [issues2 count];
     }
 
     else
@@ -270,8 +270,8 @@ LABEL_16:
 
     if (((IsEligibleForFocusInteraction | v20) & 1) == 0)
     {
-      v23 = [_UIDebugIssue issueWithDescription:@"This item is not eligible for focus, but the reason is unknown."];
-      [(_UIDebugIssueReport *)v9 addIssue:v23];
+      _focusMapContainer = [_UIDebugIssue issueWithDescription:@"This item is not eligible for focus, but the reason is unknown."];
+      [(_UIDebugIssueReport *)v9 addIssue:_focusMapContainer];
 LABEL_24:
 
       goto LABEL_25;
@@ -283,12 +283,12 @@ LABEL_24:
     v20 = 0;
   }
 
-  if (((v20 | v10 ^ 1) & 1) == 0)
+  if (((v20 | canBecomeFocused ^ 1) & 1) == 0)
   {
-    v23 = [v7 _focusMapContainer];
-    if (v23)
+    _focusMapContainer = [v7 _focusMapContainer];
+    if (_focusMapContainer)
     {
-      v24 = [[_UIFocusMap alloc] initWithFocusSystem:v7 rootContainer:v23 coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
+      v24 = [[_UIFocusMap alloc] initWithFocusSystem:v7 rootContainer:_focusMapContainer coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
       [(_UIFocusMap *)v24 diagnoseFocusabilityForItem:v5 report:v9];
     }
 
@@ -317,8 +317,8 @@ LABEL_26:
 
   if (!v5)
   {
-    v52 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v52 handleFailureInMethod:a2 object:a1 file:@"UIFocusDebugger.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusDebugger.m" lineNumber:245 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
   v6 = [UIFocusSystem focusSystemForEnvironment:v5];
@@ -337,13 +337,13 @@ LABEL_26:
   [v7 _setValidationReport:v9];
 
   v10 = objc_alloc_init(_UIDebugLogReport);
-  v11 = [v7 previouslyFocusedItem];
-  if (v11)
+  previouslyFocusedItem = [v7 previouslyFocusedItem];
+  if (previouslyFocusedItem)
   {
     v12 = MEMORY[0x1E696AEC0];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v12 stringWithFormat:@"<%@: %p>", v14, v11];
+    v15 = [v12 stringWithFormat:@"<%@: %p>", v14, previouslyFocusedItem];
 
     v16 = [v12 stringWithFormat:@"(%@ is currently focused)", v15];
   }
@@ -367,7 +367,7 @@ LABEL_26:
     v22 = @"(nil)";
   }
 
-  v55 = v11;
+  v55 = previouslyFocusedItem;
 
   v53 = v16;
   [(_UIDebugLogReport *)v10 addMessageWithFormat:@"Simulating a fake focus update request from %@... %@", v22, v16];
@@ -375,8 +375,8 @@ LABEL_26:
   [(_UIDebugLogReport *)v10 addLineBreak];
   v23 = objc_alloc_init(_UIDebugIssueReport);
   [v6 _debug_isEnvironmentEligibleForFocusUpdate:v18 debugReport:v23];
-  v24 = [(_UIDebugIssueReport *)v23 issues];
-  v25 = [v24 count];
+  issues = [(_UIDebugIssueReport *)v23 issues];
+  v25 = [issues count];
 
   if (v25)
   {
@@ -388,23 +388,23 @@ LABEL_26:
     [(_UIDebugLogReport *)v10 addLineBreak];
   }
 
-  v28 = [v7 nextFocusedItem];
+  nextFocusedItem = [v7 nextFocusedItem];
   v29 = +[(_UIDebugReportFormatter *)_UIDebugLogReportFormatter];
-  v30 = [v7 _preferredFocusReport];
-  v31 = [v29 stringFromReport:v30];
+  _preferredFocusReport = [v7 _preferredFocusReport];
+  v31 = [v29 stringFromReport:_preferredFocusReport];
   [(_UIDebugLogReport *)v10 addMessage:v31];
 
   v32 = [v7 _isValidInFocusSystem:v6];
-  v33 = [v7 _validationReport];
-  v34 = [v33 issues];
-  v35 = [v34 count];
+  _validationReport = [v7 _validationReport];
+  issues2 = [_validationReport issues];
+  v35 = [issues2 count];
 
   if (v35)
   {
     [(_UIDebugLogReport *)v10 addLineBreak];
     v36 = +[UIFocusUpdateContext _defaultValidationReportFormatter];
-    v37 = [v7 _validationReport];
-    v38 = [v36 stringFromReport:v37];
+    _validationReport2 = [v7 _validationReport];
+    v38 = [v36 stringFromReport:_validationReport2];
     [(_UIDebugLogReport *)v10 addMessage:v38];
   }
 
@@ -412,12 +412,12 @@ LABEL_26:
   [(_UIDebugLogReport *)v10 addLineBreak];
   if (!v32)
   {
-    if (v28 == v55)
+    if (nextFocusedItem == v55)
     {
       if (v55)
       {
         v45 = MEMORY[0x1E696AEC0];
-        v46 = v28;
+        v46 = nextFocusedItem;
         v47 = objc_opt_class();
         v48 = NSStringFromClass(v47);
         v43 = [v45 stringWithFormat:@"<%@: %p>", v48, v46];
@@ -439,14 +439,14 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!v28)
+  if (!nextFocusedItem)
   {
     v44 = @"Simulated Result: Successfully updated focus to nil.";
     goto LABEL_28;
   }
 
   v39 = MEMORY[0x1E696AEC0];
-  v40 = v28;
+  v40 = nextFocusedItem;
   v41 = objc_opt_class();
   v42 = NSStringFromClass(v41);
   v43 = [v39 stringWithFormat:@"<%@: %p>", v42, v40];
@@ -465,18 +465,18 @@ LABEL_30:
   return v17;
 }
 
-+ (id)_ancestryForEnvironment:(id)a3
++ (id)_ancestryForEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   if ((_UIKitProcessIsBeingDebugged() & 1) == 0 && dyld_program_sdk_at_least())
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"It looks like you are calling a UIFocusDebugger method outside of lldb. That is not allowed."];
   }
 
-  if (!v5)
+  if (!environmentCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"UIFocusDebugger.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusDebugger.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
   v6 = objc_alloc_init(_UIDebugLogReport);
@@ -485,8 +485,8 @@ LABEL_30:
   v14[2] = __43__UIFocusDebugger__ancestryForEnvironment___block_invoke;
   v14[3] = &unk_1E71087B0;
   v15 = v6;
-  v16 = v5;
-  v7 = v5;
+  v16 = environmentCopy;
+  v7 = environmentCopy;
   v8 = v6;
   _UIFocusEnvironmentEnumerateAncestorEnvironments(v7, v14);
   v9 = +[(_UIDebugReportFormatter *)_UIDebugLogReportFormatter];
@@ -538,16 +538,16 @@ void __43__UIFocusDebugger__ancestryForEnvironment___block_invoke(uint64_t a1, v
   v6 = [[_UIFocusMovementInfo alloc] initWithHeading:16 linearHeading:0 isInitial:1 shouldLoadScrollableContainer:0 looping:1 groupFilter:2 inputType:5];
   [(_UIFocusMovementRequest *)v5 setMovementInfo:v6];
 
-  v7 = [v4 _movementPerformer];
-  v8 = [v7 contextForFocusMovement:v5];
+  _movementPerformer = [v4 _movementPerformer];
+  v8 = [_movementPerformer contextForFocusMovement:v5];
 
   v9 = objc_opt_new();
   v10 = [off_1E70ECC50 messageWithStyle:1 string:@"Focus Group Hierarchy:"];
   [v9 addMessage:v10];
 
-  v11 = [v8 _focusMapSearchInfo];
-  v12 = [v11 focusGroupMap];
-  v13 = [v12 focusGroups];
+  _focusMapSearchInfo = [v8 _focusMapSearchInfo];
+  focusGroupMap = [_focusMapSearchInfo focusGroupMap];
+  focusGroups = [focusGroupMap focusGroups];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -560,10 +560,10 @@ void __43__UIFocusDebugger__ancestryForEnvironment___block_invoke(uint64_t a1, v
   v17[3] = &unk_1E7108800;
   v18 = v20;
   v14 = v20;
-  __recursePreOrderDepthFirstTraversal(v13, sel_childGroups, 0, v19, v17);
-  v15 = [v14 rootNode];
+  __recursePreOrderDepthFirstTraversal(focusGroups, sel_childGroups, 0, v19, v17);
+  rootNode = [v14 rootNode];
 
-  return v15;
+  return rootNode;
 }
 
 uint64_t __45__UIFocusDebugger_focusGroupsForEnvironment___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -605,17 +605,17 @@ id *__45__UIFocusDebugger_focusGroupsForEnvironment___block_invoke_2(id *result,
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"It looks like you are calling a UIFocusDebugger method outside of lldb. That is not allowed."];
   }
 
-  v4 = [off_1E70ECC58 rootNode];
+  rootNode = [off_1E70ECC58 rootNode];
   v5 = [UIFocusSystem focusSystemForEnvironment:v3];
   if (v5)
   {
     v6 = [off_1E70ECC50 messageWithStyle:1 string:@"Preferred focus environments:"];
-    [v4 addMessage:v6];
+    [rootNode addMessage:v6];
 
     v7 = objc_opt_new();
     v8 = [[_UIFocusEnvironmentPreferenceEnumerator alloc] initWithEnumerationMode:1];
     [(_UIFocusEnvironmentPreferenceEnumerator *)v8 setAllowsInferringPreferences:0];
-    [(_UIFocusEnvironmentPreferenceEnumerator *)v8 setDebugLog:v4];
+    [(_UIFocusEnvironmentPreferenceEnumerator *)v8 setDebugLog:rootNode];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__UIFocusDebugger_preferredFocusEnvironmentsForEnvironment___block_invoke;
@@ -629,10 +629,10 @@ id *__45__UIFocusDebugger_focusGroupsForEnvironment___block_invoke_2(id *result,
   else
   {
     v8 = [off_1E70ECC50 messageWithStyle:4 string:@"The environment is not connected to a focus system."];
-    [v4 addMessage:v8];
+    [rootNode addMessage:v8];
   }
 
-  return v4;
+  return rootNode;
 }
 
 void __60__UIFocusDebugger_preferredFocusEnvironmentsForEnvironment___block_invoke(uint64_t a1, void *a2, void *a3)

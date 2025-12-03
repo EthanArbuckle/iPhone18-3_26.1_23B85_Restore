@@ -1,74 +1,74 @@
 @interface IDSEncryptionComponent
-- (BOOL)_shouldAutoBugCaptureForECError:(id)a3;
-- (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)a3;
-- (IDSEncryptionComponent)initWithEncryptionController:(id)a3 pinnedIdentityController:(id)a4;
-- (id)runIndividuallyWithInput:(id)a3;
-- (void)_shouldDisableEncryption:(id)a3 UserDefaultKey:(id)a4;
+- (BOOL)_shouldAutoBugCaptureForECError:(id)error;
+- (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)failure;
+- (IDSEncryptionComponent)initWithEncryptionController:(id)controller pinnedIdentityController:(id)identityController;
+- (id)runIndividuallyWithInput:(id)input;
+- (void)_shouldDisableEncryption:(id)encryption UserDefaultKey:(id)key;
 @end
 
 @implementation IDSEncryptionComponent
 
-- (IDSEncryptionComponent)initWithEncryptionController:(id)a3 pinnedIdentityController:(id)a4
+- (IDSEncryptionComponent)initWithEncryptionController:(id)controller pinnedIdentityController:(id)identityController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  identityControllerCopy = identityController;
   v12.receiver = self;
   v12.super_class = IDSEncryptionComponent;
   v9 = [(IDSEncryptionComponent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_encryptionController, a3);
-    objc_storeStrong(&v10->_pinnedIdentityController, a4);
+    objc_storeStrong(&v9->_encryptionController, controller);
+    objc_storeStrong(&v10->_pinnedIdentityController, identityController);
   }
 
   return v10;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v4 = a3;
-  v5 = [v4 messageToSend];
-  v6 = [v5 sendMetric];
+  inputCopy = input;
+  messageToSend = [inputCopy messageToSend];
+  sendMetric = [messageToSend sendMetric];
 
-  v7 = [(IDSEncryptionComponent *)self currentServerTime];
-  [v7 currentServerTimeInterval];
+  currentServerTime = [(IDSEncryptionComponent *)self currentServerTime];
+  [currentServerTime currentServerTimeInterval];
   v8 = [NSNumber numberWithDouble:?];
   v9 = +[_TtC17identityservicesd27IDSCloudTelemetryMetricKeys outgoingEncryptStartKey];
-  v122 = v6;
-  [v6 addEntry:v8 forKey:v9];
+  v122 = sendMetric;
+  [sendMetric addEntry:v8 forKey:v9];
 
   [(IDSEncryptionComponent *)self _shouldDisableSecondaryEncryption];
   [(IDSEncryptionComponent *)self _shouldDisableEchnidaEncryption];
   v10 = objc_alloc_init(NSMutableDictionary);
-  v146 = [v4 dataToEncrypt];
-  v127 = [v4 attributes];
-  v11 = [v4 isScheduled];
-  v12 = [v4 service];
-  v13 = [v4 messageToSend];
-  v14 = [v13 messageBody];
-  v132 = [v14 objectForKey:IDSCommandKey];
+  dataToEncrypt = [inputCopy dataToEncrypt];
+  attributes = [inputCopy attributes];
+  isScheduled = [inputCopy isScheduled];
+  service = [inputCopy service];
+  messageToSend2 = [inputCopy messageToSend];
+  messageBody = [messageToSend2 messageBody];
+  v132 = [messageBody objectForKey:IDSCommandKey];
 
   v125 = objc_alloc_init(NSMutableDictionary);
-  v15 = [(IDSEncryptionComponent *)self serviceController];
-  v144 = v12;
-  v16 = [v15 serviceWithIdentifier:v12];
+  serviceController = [(IDSEncryptionComponent *)self serviceController];
+  v144 = service;
+  v16 = [serviceController serviceWithIdentifier:service];
 
   v121 = v16;
-  v137 = [v16 requiresPinnedIdentity];
+  requiresPinnedIdentity = [v16 requiresPinnedIdentity];
   v172 = 0u;
   v173 = 0u;
   v174 = 0u;
   v175 = 0u;
-  v150 = v4;
-  obj = [v4 endpoints];
+  v150 = inputCopy;
+  obj = [inputCopy endpoints];
   v136 = [obj countByEnumeratingWithState:&v172 objects:v184 count:16];
   if (!v136)
   {
     goto LABEL_94;
   }
 
-  v134 = v11;
+  v134 = isScheduled;
   v135 = *v173;
   v124 = IDSSendErrorDomain;
   v133 = v10;
@@ -83,7 +83,7 @@
       }
 
       v18 = *(*(&v172 + 1) + 8 * v17);
-      if (v137 && ![(IDSPinnedIdentityController *)self->_pinnedIdentityController foundPersistedIdentityForEndpoint:*(*(&v172 + 1) + 8 * v17) forService:v144])
+      if (requiresPinnedIdentity && ![(IDSPinnedIdentityController *)self->_pinnedIdentityController foundPersistedIdentityForEndpoint:*(*(&v172 + 1) + 8 * v17) forService:v144])
       {
         v118 = [[NSError alloc] initWithDomain:v124 code:39 userInfo:0];
         v117 = [CUTUnsafePromise failedPromiseWithError:v118];
@@ -94,20 +94,20 @@
       v148 = v17;
       v171 = 2;
       v19 = [IDSCryptionContext alloc];
-      v20 = [v150 guid];
-      v21 = [v150 fromID];
-      v22 = [IDSURI URIWithPrefixedURI:v21];
+      guid = [v150 guid];
+      fromID = [v150 fromID];
+      v22 = [IDSURI URIWithPrefixedURI:fromID];
       v23 = [IDSPushHandler sharedInstanceWithPortName:@"com.apple.identityservicesd.aps"];
-      v24 = [v23 pushToken];
-      v25 = [IDSPushToken pushTokenWithData:v24];
+      pushToken = [v23 pushToken];
+      v25 = [IDSPushToken pushTokenWithData:pushToken];
       v26 = [v18 URI];
       v153 = v18;
-      v27 = [v18 pushTokenObject];
-      v28 = [(IDSCryptionContext *)v19 initWithGuid:v20 sendingURI:v22 sendingPushToken:v25 receivingURI:v26 receivingPushToken:v27 service:v144];
+      pushTokenObject = [v18 pushTokenObject];
+      v28 = [(IDSCryptionContext *)v19 initWithGuid:guid sendingURI:v22 sendingPushToken:v25 receivingURI:v26 receivingPushToken:pushTokenObject service:v144];
 
       v29 = v28;
       [(IDSCryptionContext *)v28 setMessageType:v134];
-      if (!v146)
+      if (!dataToEncrypt)
       {
         v37 = 0;
         v38 = 0;
@@ -119,37 +119,37 @@
       }
 
       [(IDSCryptionContext *)v28 setMessageType:[(IDSEncryptionComponent *)self messageTypeForCommand:v132]];
-      v30 = [v150 encryptionType];
-      if (v30 < 2)
+      encryptionType = [v150 encryptionType];
+      if (encryptionType < 2)
       {
         encryptionController = self->_encryptionController;
         v168 = 0;
         v167 = 0;
         v42 = v28;
         v31 = v153;
-        v33 = [(IDSEncryptionController *)encryptionController publicKeyEncryptData:v146 encryptionContext:v42 forceSizeOptimizations:0 resetState:0 withEncryptedAttributes:v127 toEndpoint:v153 usedEncryptionType:&v171 priority:300 metadata:&v168 error:&v167];
+        v33 = [(IDSEncryptionController *)encryptionController publicKeyEncryptData:dataToEncrypt encryptionContext:v42 forceSizeOptimizations:0 resetState:0 withEncryptedAttributes:attributes toEndpoint:v153 usedEncryptionType:&v171 priority:300 metadata:&v168 error:&v167];
         v35 = v168;
         v34 = v167;
         goto LABEL_18;
       }
 
       v31 = v153;
-      if (v30 == 3)
+      if (encryptionType == 3)
       {
         v43 = self->_encryptionController;
         v169 = 0;
-        v33 = [(IDSEncryptionController *)v43 offGridKeyDistributionEncryptData:v146 encryptionContext:v29 toEndpoint:v153 priority:300 error:&v169];
+        v33 = [(IDSEncryptionController *)v43 offGridKeyDistributionEncryptData:dataToEncrypt encryptionContext:v29 toEndpoint:v153 priority:300 error:&v169];
         v34 = v169;
         v35 = 0;
         v36 = 6;
         goto LABEL_16;
       }
 
-      if (v30 == 2)
+      if (encryptionType == 2)
       {
         v32 = self->_encryptionController;
         v170 = 0;
-        v33 = [(IDSEncryptionController *)v32 legacyPublicKeyEncryptData:v146 withEncryptedAttributes:v127 toEndpoint:v153 priority:300 error:&v170];
+        v33 = [(IDSEncryptionController *)v32 legacyPublicKeyEncryptData:dataToEncrypt withEncryptedAttributes:attributes toEndpoint:v153 priority:300 error:&v170];
         v34 = v170;
         v35 = 0;
         v36 = 1;
@@ -228,8 +228,8 @@ LABEL_18:
         v46 = +[IDSFoundationLog delivery];
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
-          v47 = [v150 guid];
-          v48 = [v153 pushToken];
+          guid2 = [v150 guid];
+          pushToken2 = [v153 pushToken];
           v49 = [v153 URI];
           [v49 prefixedURI];
           v50 = v129 = v33;
@@ -239,7 +239,7 @@ LABEL_18:
           v54 = IDSEncryptionTypeStringFromEncryptionType();
 
           *buf = 138413058;
-          v177 = v47;
+          v177 = guid2;
           v178 = 2112;
           v179 = v52;
           v35 = v51;
@@ -255,7 +255,7 @@ LABEL_18:
 
         v55 = self->_encryptionController;
         v166 = 0;
-        v56 = [(IDSEncryptionController *)v55 legacyPublicKeyEncryptData:v146 withEncryptedAttributes:v127 toEndpoint:v31 priority:300 error:&v166];
+        v56 = [(IDSEncryptionController *)v55 legacyPublicKeyEncryptData:dataToEncrypt withEncryptedAttributes:attributes toEndpoint:v31 priority:300 error:&v166];
         v57 = v166;
 
         v171 = 1;
@@ -282,14 +282,14 @@ LABEL_18:
 
       v65 = v62;
       v142 = v35;
-      v141 = [v35 additionalEncryptionResult];
-      v66 = [v141 objectForKey:&off_100C3C760];
+      additionalEncryptionResult = [v35 additionalEncryptionResult];
+      v66 = [additionalEncryptionResult objectForKey:&off_100C3C760];
       v67 = v66;
       v68 = v67;
       if (![v67 code])
       {
-        v69 = [v67 domain];
-        v70 = [v69 isEqualToString:@"com.apple.messageprotection"];
+        domain = [v67 domain];
+        v70 = [domain isEqualToString:@"com.apple.messageprotection"];
 
         v34 = v147;
         v68 = v67;
@@ -336,20 +336,20 @@ LABEL_18:
       {
         if (v145 && v61)
         {
-          v76 = [v139 domain];
-          v77 = [v139 code];
-          v78 = [v130 domain];
-          v120 = v77;
+          domain2 = [v139 domain];
+          code = [v139 code];
+          domain3 = [v130 domain];
+          v120 = code;
           v72 = v145;
-          v79 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"EC (%@:%ld) and Legacy (%@:%ld)", v76, v120, v78, [v130 code]);
+          v79 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"EC (%@:%ld) and Legacy (%@:%ld)", domain2, v120, domain3, [v130 code]);
 
           goto LABEL_67;
         }
 
         if (v145)
         {
-          v76 = [v139 domain];
-          +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"EC (%@:%ld)", v76, [v139 code]);
+          domain2 = [v139 domain];
+          +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"EC (%@:%ld)", domain2, [v139 code]);
           v79 = LABEL_66:;
 LABEL_67:
         }
@@ -358,8 +358,8 @@ LABEL_67:
         {
           if (v61)
           {
-            v76 = [v130 domain];
-            +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Legacy (%@:%ld)", v76, [v130 code]);
+            domain2 = [v130 domain];
+            +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Legacy (%@:%ld)", domain2, [v130 code]);
             goto LABEL_66;
           }
 
@@ -382,8 +382,8 @@ LABEL_67:
 
       if (v68)
       {
-        v80 = [v74 domain];
-        v81 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Secondary (%@:%ld)", v80, [v74 code]);
+        domain4 = [v74 domain];
+        v81 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Secondary (%@:%ld)", domain4, [v74 code]);
 
         v156[0] = _NSConcreteStackBlock;
         v156[1] = 3221225472;
@@ -425,8 +425,8 @@ LABEL_72:
         v85 = +[IDSFoundationLog delivery];
         if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
         {
-          v86 = [v150 guid];
-          v87 = [v31 pushToken];
+          guid3 = [v150 guid];
+          pushToken3 = [v31 pushToken];
           v88 = [v31 URI];
           [v88 prefixedURI];
           v89 = v126 = v61;
@@ -436,7 +436,7 @@ LABEL_72:
           v92 = IDSEncryptionTypeStringFromEncryptionType();
 
           *buf = 138413058;
-          v177 = v86;
+          v177 = guid3;
           v178 = 2112;
           v179 = v90;
           v31 = v153;
@@ -494,8 +494,8 @@ LABEL_83:
       {
         v101 = v34;
         v102 = [v40 URI];
-        v103 = [v40 pushTokenObject];
-        v104 = [v102 URIByAddingPushToken:v103];
+        pushTokenObject2 = [v40 pushTokenObject];
+        v104 = [v102 URIByAddingPushToken:pushTokenObject2];
 
         if (v104)
         {
@@ -531,14 +531,14 @@ LABEL_94:
   v107 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v107, OS_LOG_TYPE_DEFAULT))
   {
-    v108 = [v150 guid];
+    guid4 = [v150 guid];
     *buf = 138412290;
-    v177 = v108;
+    v177 = guid4;
     _os_log_impl(&_mh_execute_header, v107, OS_LOG_TYPE_DEFAULT, "GUID %@ finished encryption", buf, 0xCu);
   }
 
-  v109 = [(IDSEncryptionComponent *)self currentServerTime];
-  [v109 currentServerTimeInterval];
+  currentServerTime2 = [(IDSEncryptionComponent *)self currentServerTime];
+  [currentServerTime2 currentServerTimeInterval];
   v110 = [NSNumber numberWithDouble:?];
   v111 = +[_TtC17identityservicesd27IDSCloudTelemetryMetricKeys outgoingEncryptEndKey];
   [v122 addEntry:v110 forKey:v111];
@@ -546,8 +546,8 @@ LABEL_94:
   v112 = v125;
   if ([v125 count])
   {
-    v113 = [v150 guid];
-    v114 = [v113 copy];
+    guid5 = [v150 guid];
+    v114 = [guid5 copy];
 
     [v125 debugDescription];
     v155 = v154 = v114;
@@ -565,9 +565,9 @@ LABEL_102:
   return v117;
 }
 
-- (BOOL)_shouldAutoBugCaptureForECError:(id)a3
+- (BOOL)_shouldAutoBugCaptureForECError:(id)error
 {
-  if (a3)
+  if (error)
   {
     return ![(IDSEncryptionComponent *)self _shouldIgnoreAutoBugCaptureForECFailure:?];
   }
@@ -578,13 +578,13 @@ LABEL_102:
   }
 }
 
-- (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)a3
+- (BOOL)_shouldIgnoreAutoBugCaptureForECFailure:(id)failure
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:IDSEncryptionErrorDomain])
+  failureCopy = failure;
+  domain = [failureCopy domain];
+  if ([domain isEqualToString:IDSEncryptionErrorDomain])
   {
-    v5 = [v3 code] == 13;
+    v5 = [failureCopy code] == 13;
   }
 
   else
@@ -595,23 +595,23 @@ LABEL_102:
   return v5;
 }
 
-- (void)_shouldDisableEncryption:(id)a3 UserDefaultKey:(id)a4
+- (void)_shouldDisableEncryption:(id)encryption UserDefaultKey:(id)key
 {
-  v10 = a4;
-  v5 = a3;
+  keyCopy = key;
+  encryptionCopy = encryption;
   v6 = [IDSServerBag sharedInstanceForBagType:1];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:encryptionCopy];
 
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
       v9 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.ids"];
-      if (v8 != [v9 BOOLForKey:v10])
+      if (bOOLValue != [v9 BOOLForKey:keyCopy])
       {
-        [v9 setBool:v8 forKey:v10];
+        [v9 setBool:bOOLValue forKey:keyCopy];
       }
     }
   }

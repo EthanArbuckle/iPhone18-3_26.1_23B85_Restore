@@ -1,15 +1,15 @@
 @interface SceneDelegate
 - (_TtC13HealthENBuddy13SceneDelegate)init;
-- (void)setWindow:(id)a3;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC13HealthENBuddy13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC13HealthENBuddy13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC13HealthENBuddy13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
 - (_TtC13HealthENBuddy13SceneDelegate)init

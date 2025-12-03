@@ -1,16 +1,16 @@
 @interface CHIndexableContentQuery
-- (CHIndexableContentQuery)initWithRecognitionSession:(id)a3;
+- (CHIndexableContentQuery)initWithRecognitionSession:(id)session;
 - (CHRecognitionSessionIndexableContent)indexableContent;
 - (void)q_updateQueryResult;
 @end
 
 @implementation CHIndexableContentQuery
 
-- (CHIndexableContentQuery)initWithRecognitionSession:(id)a3
+- (CHIndexableContentQuery)initWithRecognitionSession:(id)session
 {
   v10.receiver = self;
   v10.super_class = CHIndexableContentQuery;
-  result = [(CHQuery *)&v10 initWithRecognitionSession:a3];
+  result = [(CHQuery *)&v10 initWithRecognitionSession:session];
   if (result)
   {
     v9 = result;
@@ -83,7 +83,7 @@
   v31 = objc_msgSend_string(MEMORY[0x1E696AD60], v26, v27, v28, v29, v30);
   v233 = objc_msgSend_string(MEMORY[0x1E696AD60], v32, v33, v34, v35, v36);
   v42 = objc_msgSend_strokeGroupingResult(v237, v37, v38, v39, v40, v41);
-  v232 = self;
+  selfCopy = self;
   v48 = objc_msgSend_recognitionSession(self, v43, v44, v45, v46, v47);
   v54 = objc_msgSend_strokeGroupOrdering(v48, v49, v50, v51, v52, v53);
   v58 = objc_msgSend_strokeGroupsSortedBy_textGroupsOnly_(v42, v55, v54, 1, v56, v57);
@@ -178,7 +178,7 @@
           goto LABEL_45;
         }
 
-        v130 = objc_msgSend_recognitionSession(v232, v125, v126, v127, v128, v129);
+        v130 = objc_msgSend_recognitionSession(selfCopy, v125, v126, v127, v128, v129);
         v133 = objc_msgSend_mathTranscriptionWithEvaluationResultForStrokeGroup_outStrokeIdentifiers_outStrokes_(v130, v131, v236, 0, 0, v132);
 
         v124 = objc_msgSend_textTranscriptionForLatex_(CHTokenizedMathResult, v134, v133, v135, v136, v137);
@@ -229,7 +229,7 @@ LABEL_21:
   if (!v181)
   {
 
-    p_isa = &v232->super.super.isa;
+    p_isa = &selfCopy->super.super.isa;
     if (qword_1EA84DC48 == -1)
     {
       goto LABEL_53;
@@ -252,7 +252,7 @@ LABEL_21:
     v181->_presentableTextRepresentation = v197;
   }
 
-  p_isa = &v232->super.super.isa;
+  p_isa = &selfCopy->super.super.isa;
   if (qword_1EA84DC48 != -1)
   {
 LABEL_69:

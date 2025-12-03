@@ -1,7 +1,7 @@
 @interface ATXBackgroundSaver
-- (ATXBackgroundSaver)initWithQueue:(id)a3 block:(id)a4;
+- (ATXBackgroundSaver)initWithQueue:(id)queue block:(id)block;
 - (void)_cancelSaveTimer;
-- (void)_cancelSaveTimerWithLockWitness:(id)a3;
+- (void)_cancelSaveTimerWithLockWitness:(id)witness;
 - (void)_saveImmediatelyOnSigterm;
 - (void)dealloc;
 - (void)handleSigterm;
@@ -78,9 +78,9 @@ void __34__ATXBackgroundSaver_scheduleSave__block_invoke(uint64_t a1, void *a2)
 {
   if (!self->_sigtermListener)
   {
-    v4 = [MEMORY[0x277CEBCD8] sharedInstance];
+    mEMORY[0x277CEBCD8] = [MEMORY[0x277CEBCD8] sharedInstance];
     sigtermListener = self->_sigtermListener;
-    self->_sigtermListener = v4;
+    self->_sigtermListener = mEMORY[0x277CEBCD8];
 
     v6 = self->_sigtermListener;
 
@@ -88,18 +88,18 @@ void __34__ATXBackgroundSaver_scheduleSave__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (ATXBackgroundSaver)initWithQueue:(id)a3 block:(id)a4
+- (ATXBackgroundSaver)initWithQueue:(id)queue block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = ATXBackgroundSaver;
   v9 = [(ATXBackgroundSaver *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_queue, queue);
+    v11 = [blockCopy copy];
     block = v10->_block;
     v10->_block = v11;
 
@@ -168,15 +168,15 @@ id __45__ATXBackgroundSaver_scheduleSaveImmediately__block_invoke(uint64_t a1)
   return objc_opt_self();
 }
 
-- (void)_cancelSaveTimerWithLockWitness:(id)a3
+- (void)_cancelSaveTimerWithLockWitness:(id)witness
 {
-  v3 = *(a3 + 1);
+  v3 = *(witness + 1);
   if (v3)
   {
-    v5 = a3;
+    witnessCopy = witness;
     dispatch_source_cancel(v3);
-    v6 = *(a3 + 1);
-    *(a3 + 1) = 0;
+    v6 = *(witness + 1);
+    *(witness + 1) = 0;
   }
 }
 

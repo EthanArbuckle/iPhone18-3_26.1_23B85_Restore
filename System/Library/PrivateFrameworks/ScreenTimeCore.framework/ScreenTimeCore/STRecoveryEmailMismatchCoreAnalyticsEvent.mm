@@ -1,16 +1,16 @@
 @interface STRecoveryEmailMismatchCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STRecoveryEmailMismatchCoreAnalyticsEvent)initWithRecoveryEmailMismatched:(BOOL)a3;
+- (STRecoveryEmailMismatchCoreAnalyticsEvent)initWithRecoveryEmailMismatched:(BOOL)mismatched;
 @end
 
 @implementation STRecoveryEmailMismatchCoreAnalyticsEvent
 
-- (STRecoveryEmailMismatchCoreAnalyticsEvent)initWithRecoveryEmailMismatched:(BOOL)a3
+- (STRecoveryEmailMismatchCoreAnalyticsEvent)initWithRecoveryEmailMismatched:(BOOL)mismatched
 {
   v5.receiver = self;
   v5.super_class = STRecoveryEmailMismatchCoreAnalyticsEvent;
   result = [(STRecoveryEmailMismatchCoreAnalyticsEvent *)&v5 init];
-  result->_isRecoveryEmailMismatched = a3;
+  result->_isRecoveryEmailMismatched = mismatched;
   return result;
 }
 

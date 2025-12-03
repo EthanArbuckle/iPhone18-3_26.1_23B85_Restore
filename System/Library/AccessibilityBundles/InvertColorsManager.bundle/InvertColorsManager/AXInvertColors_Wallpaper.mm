@@ -1,15 +1,15 @@
 @interface AXInvertColors_Wallpaper
-+ (void)installCategories:(id)a3;
++ (void)installCategories:(id)categories;
 @end
 
 @implementation AXInvertColors_Wallpaper
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"WallpaperControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"WallpaperMagicTableCategoryButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"WallpaperPhotoCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"WallpaperControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"WallpaperMagicTableCategoryButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"WallpaperPhotoCellInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

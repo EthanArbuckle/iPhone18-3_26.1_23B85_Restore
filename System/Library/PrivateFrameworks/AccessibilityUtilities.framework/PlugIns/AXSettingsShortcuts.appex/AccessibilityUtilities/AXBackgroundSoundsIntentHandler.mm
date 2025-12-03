@@ -1,76 +1,76 @@
 @interface AXBackgroundSoundsIntentHandler
-- (void)handleSetBackgroundSound:(id)a3 completion:(id)a4;
-- (void)handleSetBackgroundSoundTimer:(id)a3 completion:(id)a4;
-- (void)handleSetBackgroundSoundVolume:(id)a3 completion:(id)a4;
-- (void)handleToggleBackgroundSounds:(id)a3 completion:(id)a4;
-- (void)handleToggleBackgroundSoundsTimer:(id)a3 completion:(id)a4;
-- (void)provideBackgroundSoundOptionsCollectionForSetBackgroundSound:(id)a3 withCompletion:(id)a4;
-- (void)resolveAlwaysForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveBackgroundSoundForSetBackgroundSound:(id)a3 withCompletion:(id)a4;
-- (void)resolveDurationForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveDurationForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4;
-- (void)resolveEndIntervalForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveIntervalForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveOperationForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4;
-- (void)resolveOperationForToggleBackgroundSoundsTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveSettingForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4;
-- (void)resolveStateForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4;
-- (void)resolveStateForToggleBackgroundSoundsTimer:(id)a3 withCompletion:(id)a4;
-- (void)resolveVolumeTypeForSetBackgroundSoundVolume:(id)a3 withCompletion:(id)a4;
-- (void)resolveVolumeValueForSetBackgroundSoundVolume:(id)a3 withCompletion:(id)a4;
+- (void)handleSetBackgroundSound:(id)sound completion:(id)completion;
+- (void)handleSetBackgroundSoundTimer:(id)timer completion:(id)completion;
+- (void)handleSetBackgroundSoundVolume:(id)volume completion:(id)completion;
+- (void)handleToggleBackgroundSounds:(id)sounds completion:(id)completion;
+- (void)handleToggleBackgroundSoundsTimer:(id)timer completion:(id)completion;
+- (void)provideBackgroundSoundOptionsCollectionForSetBackgroundSound:(id)sound withCompletion:(id)completion;
+- (void)resolveAlwaysForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveBackgroundSoundForSetBackgroundSound:(id)sound withCompletion:(id)completion;
+- (void)resolveDurationForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveDurationForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion;
+- (void)resolveEndIntervalForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveIntervalForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveOperationForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion;
+- (void)resolveOperationForToggleBackgroundSoundsTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveSettingForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion;
+- (void)resolveStateForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion;
+- (void)resolveStateForToggleBackgroundSoundsTimer:(id)timer withCompletion:(id)completion;
+- (void)resolveVolumeTypeForSetBackgroundSoundVolume:(id)volume withCompletion:(id)completion;
+- (void)resolveVolumeValueForSetBackgroundSoundVolume:(id)volume withCompletion:(id)completion;
 @end
 
 @implementation AXBackgroundSoundsIntentHandler
 
-- (void)handleToggleBackgroundSounds:(id)a3 completion:(id)a4
+- (void)handleToggleBackgroundSounds:(id)sounds completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if ([(__CFString *)v5 operation]== 1 && ![(__CFString *)v5 state])
+  soundsCopy = sounds;
+  completionCopy = completion;
+  if ([(__CFString *)soundsCopy operation]== 1 && ![(__CFString *)soundsCopy state])
   {
     v19 = AXLogSiriShortcuts();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D80C(v5, v19);
+      sub_10000D80C(soundsCopy, v19);
     }
 
     v22 = 5;
     goto LABEL_29;
   }
 
-  v7 = [(__CFString *)v5 setting];
+  setting = [(__CFString *)soundsCopy setting];
   v8 = +[HUComfortSoundsSettings sharedInstance];
   v9 = v8;
-  if (v7 == 1)
+  if (setting == 1)
   {
-    v10 = [v8 comfortSoundsEnabled];
+    comfortSoundsEnabled = [v8 comfortSoundsEnabled];
   }
 
   else
   {
-    v10 = [v8 mixesWithMedia];
+    comfortSoundsEnabled = [v8 mixesWithMedia];
   }
 
-  v11 = v10;
+  v11 = comfortSoundsEnabled;
 
   v12 = v11 ^ 1;
   v13 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v30 = 138412290;
-    v31 = v5;
+    v31 = soundsCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Handling ToggleBackgroundSounds intent %@", &v30, 0xCu);
   }
 
-  if ([(__CFString *)v5 operation]== 1)
+  if ([(__CFString *)soundsCopy operation]== 1)
   {
-    v14 = [(__CFString *)v5 state];
-    v12 = v14 == 1;
+    state = [(__CFString *)soundsCopy state];
+    v12 = state == 1;
     v15 = AXLogSiriShortcuts();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = @"NO";
-      if (v14 == 1)
+      if (state == 1)
       {
         v16 = @"YES";
       }
@@ -81,7 +81,7 @@
     }
   }
 
-  if ([(__CFString *)v5 setting]== 1)
+  if ([(__CFString *)soundsCopy setting]== 1)
   {
     v17 = +[HUComfortSoundsSettings sharedInstance];
     [v17 setComfortSoundsEnabled:v12];
@@ -90,7 +90,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([(__CFString *)v5 setting]== 2)
+  if ([(__CFString *)soundsCopy setting]== 2)
   {
     v17 = +[HUComfortSoundsSettings sharedInstance];
     [v17 setMixesWithMedia:v12];
@@ -103,26 +103,26 @@ LABEL_19:
     goto LABEL_30;
   }
 
-  v18 = [(__CFString *)v5 duration];
-  if (!v18)
+  duration = [(__CFString *)soundsCopy duration];
+  if (!duration)
   {
     goto LABEL_30;
   }
 
-  v19 = v18;
-  v20 = [(__CFString *)v5 duration];
-  [v20 doubleValue];
+  v19 = duration;
+  duration2 = [(__CFString *)soundsCopy duration];
+  [duration2 doubleValue];
   if (v21 >= 60.0)
   {
-    v23 = [(__CFString *)v5 duration];
-    [v23 doubleValue];
+    duration3 = [(__CFString *)soundsCopy duration];
+    [duration3 doubleValue];
     v25 = v24;
 
     if (v25 < 86400.0)
     {
       v26 = +[HUComfortSoundsSettings sharedInstance];
-      v27 = [(__CFString *)v5 duration];
-      [v27 doubleValue];
+      duration4 = [(__CFString *)soundsCopy duration];
+      [duration4 doubleValue];
       [v26 setTimerDurationInSeconds:?];
 
       v28 = +[HUComfortSoundsSettings sharedInstance];
@@ -144,52 +144,52 @@ LABEL_29:
 
 LABEL_31:
   v29 = [[AXToggleBackgroundSoundsIntentResponse alloc] initWithCode:v22 userActivity:0];
-  v6[2](v6, v29);
+  completionCopy[2](completionCopy, v29);
 }
 
-- (void)resolveOperationForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4
+- (void)resolveOperationForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [a3 operation]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [sounds operation]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveStateForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4
+- (void)resolveStateForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [a3 state]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [sounds state]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveSettingForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4
+- (void)resolveSettingForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXBackgroundSoundsSettingResolutionResult successWithResolvedBackgroundSoundsSetting:](AXBackgroundSoundsSettingResolutionResult, "successWithResolvedBackgroundSoundsSetting:", [a3 setting]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXBackgroundSoundsSettingResolutionResult successWithResolvedBackgroundSoundsSetting:](AXBackgroundSoundsSettingResolutionResult, "successWithResolvedBackgroundSoundsSetting:", [sounds setting]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveDurationForToggleBackgroundSounds:(id)a3 withCompletion:(id)a4
+- (void)resolveDurationForToggleBackgroundSounds:(id)sounds withCompletion:(id)completion
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = [v15 duration];
-  if (v6)
+  soundsCopy = sounds;
+  completionCopy = completion;
+  duration = [soundsCopy duration];
+  if (duration)
   {
-    v7 = v6;
-    v8 = [v15 duration];
-    [v8 doubleValue];
+    v7 = duration;
+    duration2 = [soundsCopy duration];
+    [duration2 doubleValue];
     if (v9 >= 60.0)
     {
-      v10 = [v15 duration];
-      [v10 doubleValue];
+      duration3 = [soundsCopy duration];
+      [duration3 doubleValue];
       v12 = v11;
 
       if (v12 < 86400.0)
       {
-        v13 = [v15 duration];
-        [v13 doubleValue];
+        duration4 = [soundsCopy duration];
+        [duration4 doubleValue];
         v14 = [INTimeIntervalResolutionResult successWithResolvedTimeInterval:?];
-        v5[2](v5, v14);
+        completionCopy[2](completionCopy, v14);
 
         goto LABEL_7;
       }
@@ -200,20 +200,20 @@ LABEL_31:
     }
   }
 
-  v13 = +[INTimeIntervalResolutionResult notRequired];
-  v5[2](v5, v13);
+  duration4 = +[INTimeIntervalResolutionResult notRequired];
+  completionCopy[2](completionCopy, duration4);
 LABEL_7:
 }
 
-- (void)handleSetBackgroundSoundVolume:(id)a3 completion:(id)a4
+- (void)handleSetBackgroundSoundVolume:(id)volume completion:(id)completion
 {
-  v11 = a3;
-  v5 = a4;
-  v6 = [v11 volumeValue];
-  [v6 doubleValue];
+  volumeCopy = volume;
+  completionCopy = completion;
+  volumeValue = [volumeCopy volumeValue];
+  [volumeValue doubleValue];
   v8 = v7 / 100.0;
 
-  if ([v11 volumeType] == 1)
+  if ([volumeCopy volumeType] == 1)
   {
     v9 = +[HUComfortSoundsSettings sharedInstance];
     [v9 setRelativeVolume:v8];
@@ -221,7 +221,7 @@ LABEL_7:
 
   else
   {
-    if ([v11 volumeType] != 2)
+    if ([volumeCopy volumeType] != 2)
     {
       goto LABEL_6;
     }
@@ -232,34 +232,34 @@ LABEL_7:
 
 LABEL_6:
   v10 = [[AXSetBackgroundSoundVolumeIntentResponse alloc] initWithCode:4 userActivity:0];
-  v5[2](v5, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)resolveVolumeTypeForSetBackgroundSoundVolume:(id)a3 withCompletion:(id)a4
+- (void)resolveVolumeTypeForSetBackgroundSoundVolume:(id)volume withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXBackgroundSoundsVolumeResolutionResult successWithResolvedBackgroundSoundsVolume:](AXBackgroundSoundsVolumeResolutionResult, "successWithResolvedBackgroundSoundsVolume:", [a3 volumeType]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXBackgroundSoundsVolumeResolutionResult successWithResolvedBackgroundSoundsVolume:](AXBackgroundSoundsVolumeResolutionResult, "successWithResolvedBackgroundSoundsVolume:", [volume volumeType]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveVolumeValueForSetBackgroundSoundVolume:(id)a3 withCompletion:(id)a4
+- (void)resolveVolumeValueForSetBackgroundSoundVolume:(id)volume withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 volumeValue];
-  [v8 doubleValue];
+  completionCopy = completion;
+  volumeValue = [volume volumeValue];
+  [volumeValue doubleValue];
   v7 = [AXSetBackgroundSoundVolumeVolumeValueResolutionResult successWithResolvedValue:?];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)handleSetBackgroundSoundTimer:(id)a3 completion:(id)a4
+- (void)handleSetBackgroundSoundTimer:(id)timer completion:(id)completion
 {
-  v19 = a3;
-  v5 = a4;
-  if ([v19 interval] == 1)
+  timerCopy = timer;
+  completionCopy = completion;
+  if ([timerCopy interval] == 1)
   {
     v6 = +[NSCalendar currentCalendar];
-    v7 = [v19 endInterval];
-    v8 = [v6 dateFromComponents:v7];
+    endInterval = [timerCopy endInterval];
+    v8 = [v6 dateFromComponents:endInterval];
     [v8 timeIntervalSinceReferenceDate];
     v10 = v9;
 
@@ -270,14 +270,14 @@ LABEL_6:
 
   else
   {
-    if ([v19 interval] != 2)
+    if ([timerCopy interval] != 2)
     {
       goto LABEL_6;
     }
 
     v11 = +[HUComfortSoundsSettings sharedInstance];
-    v13 = [v19 duration];
-    [v13 doubleValue];
+    duration = [timerCopy duration];
+    [duration doubleValue];
     [v11 setTimerDurationInSeconds:?];
 
     v12 = 1;
@@ -288,111 +288,111 @@ LABEL_6:
 
 LABEL_6:
   v15 = +[HUComfortSoundsSettings sharedInstance];
-  v16 = [v19 always];
-  [v15 setTimerOnlyOnFirstSession:{objc_msgSend(v16, "BOOLValue") ^ 1}];
+  always = [timerCopy always];
+  [v15 setTimerOnlyOnFirstSession:{objc_msgSend(always, "BOOLValue") ^ 1}];
 
   v17 = +[HUComfortSoundsSettings sharedInstance];
   [v17 setTimerEnabled:1];
 
   v18 = [[AXSetBackgroundSoundTimerIntentResponse alloc] initWithCode:4 userActivity:0];
-  v5[2](v5, v18);
+  completionCopy[2](completionCopy, v18);
 }
 
-- (void)resolveIntervalForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveIntervalForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXBackgroundSoundsTimerResolutionResult successWithResolvedBackgroundSoundsTimer:](AXBackgroundSoundsTimerResolutionResult, "successWithResolvedBackgroundSoundsTimer:", [a3 interval]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXBackgroundSoundsTimerResolutionResult successWithResolvedBackgroundSoundsTimer:](AXBackgroundSoundsTimerResolutionResult, "successWithResolvedBackgroundSoundsTimer:", [timer interval]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveDurationForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveDurationForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion
 {
-  v16 = a3;
-  v5 = a4;
-  v6 = [v16 duration];
+  timerCopy = timer;
+  completionCopy = completion;
+  duration = [timerCopy duration];
 
-  if (!v6)
+  if (!duration)
   {
     v10 = +[AXSetBackgroundSoundTimerDurationResolutionResult needsValue];
     goto LABEL_5;
   }
 
-  v7 = [v16 duration];
-  [v7 doubleValue];
+  duration2 = [timerCopy duration];
+  [duration2 doubleValue];
   v9 = v8;
 
   if (v9 < 60.0)
   {
     v10 = [AXSetBackgroundSoundTimerDurationResolutionResult unsupportedForReason:2];
 LABEL_5:
-    v11 = v10;
-    v5[2](v5, v10);
+    duration4 = v10;
+    completionCopy[2](completionCopy, v10);
     goto LABEL_6;
   }
 
-  v12 = [v16 duration];
-  [v12 doubleValue];
+  duration3 = [timerCopy duration];
+  [duration3 doubleValue];
   v14 = v13;
 
   if (v14 >= 86400.0)
   {
-    v11 = [AXSetBackgroundSoundTimerDurationResolutionResult unsupportedForReason:1];
-    v5[2](v5, v11);
+    duration4 = [AXSetBackgroundSoundTimerDurationResolutionResult unsupportedForReason:1];
+    completionCopy[2](completionCopy, duration4);
   }
 
   else
   {
-    v11 = [v16 duration];
-    [v11 doubleValue];
+    duration4 = [timerCopy duration];
+    [duration4 doubleValue];
     v15 = [AXSetBackgroundSoundTimerDurationResolutionResult successWithResolvedTimeInterval:?];
-    v5[2](v5, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
 LABEL_6:
 }
 
-- (void)resolveEndIntervalForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveEndIntervalForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 endInterval];
+  timerCopy = timer;
+  completionCopy = completion;
+  endInterval = [timerCopy endInterval];
 
-  if (v6)
+  if (endInterval)
   {
-    v7 = [v9 endInterval];
-    v8 = [INDateComponentsResolutionResult successWithResolvedDateComponents:v7];
-    v5[2](v5, v8);
+    endInterval2 = [timerCopy endInterval];
+    v8 = [INDateComponentsResolutionResult successWithResolvedDateComponents:endInterval2];
+    completionCopy[2](completionCopy, v8);
 
-    v5 = v8;
+    completionCopy = v8;
   }
 
   else
   {
-    v7 = +[INDateComponentsResolutionResult needsValue];
-    v5[2](v5, v7);
+    endInterval2 = +[INDateComponentsResolutionResult needsValue];
+    completionCopy[2](completionCopy, endInterval2);
   }
 }
 
-- (void)resolveAlwaysForSetBackgroundSoundTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveAlwaysForSetBackgroundSoundTimer:(id)timer withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 always];
-  v7 = +[INBooleanResolutionResult successWithResolvedValue:](INBooleanResolutionResult, "successWithResolvedValue:", [v8 BOOLValue]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  always = [timer always];
+  v7 = +[INBooleanResolutionResult successWithResolvedValue:](INBooleanResolutionResult, "successWithResolvedValue:", [always BOOLValue]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)handleSetBackgroundSound:(id)a3 completion:(id)a4
+- (void)handleSetBackgroundSound:(id)sound completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 backgroundSound];
+  soundCopy = sound;
+  completionCopy = completion;
+  backgroundSound = [soundCopy backgroundSound];
   v8 = 1;
   while (1)
   {
     v9 = [HUComfortSound defaultComfortSoundForGroup:v8];
-    v10 = [(AXSetBackgroundSoundIntentResponse *)v9 name];
-    v11 = [v7 identifier];
-    v12 = [v10 isEqualToString:v11];
+    name = [(AXSetBackgroundSoundIntentResponse *)v9 name];
+    identifier = [backgroundSound identifier];
+    v12 = [name isEqualToString:identifier];
 
     if (v12)
     {
@@ -411,7 +411,7 @@ LABEL_6:
     [v13 setSelectedComfortSound:v9];
 
     v14 = [[AXSetBackgroundSoundIntentResponse alloc] initWithCode:4 userActivity:0];
-    v6[2](v6, v14);
+    completionCopy[2](completionCopy, v14);
 
     goto LABEL_10;
   }
@@ -421,52 +421,52 @@ LABEL_7:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v5;
+    v17 = soundCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "SetBackgroundSoundIntentHandler: Comfort sound type was unknown: %@", &v16, 0xCu);
   }
 
   v9 = [[AXSetBackgroundSoundIntentResponse alloc] initWithCode:5 userActivity:0];
-  v6[2](v6, v9);
+  completionCopy[2](completionCopy, v9);
 LABEL_10:
 }
 
-- (void)provideBackgroundSoundOptionsCollectionForSetBackgroundSound:(id)a3 withCompletion:(id)a4
+- (void)provideBackgroundSoundOptionsCollectionForSetBackgroundSound:(id)sound withCompletion:(id)completion
 {
-  v12 = a4;
+  completionCopy = completion;
   v4 = objc_opt_new();
   for (i = 1; i != 17; ++i)
   {
     v6 = [HUComfortSound defaultComfortSoundForGroup:i];
     v7 = [AXBackgroundSound alloc];
-    v8 = [v6 name];
-    v9 = [v6 localizedName];
-    v10 = [(AXBackgroundSound *)v7 initWithIdentifier:v8 displayString:v9];
+    name = [v6 name];
+    localizedName = [v6 localizedName];
+    v10 = [(AXBackgroundSound *)v7 initWithIdentifier:name displayString:localizedName];
 
     [v4 addObject:v10];
   }
 
   v11 = [[INObjectCollection alloc] initWithItems:v4];
-  v12[2](v12, v11, 0);
+  completionCopy[2](completionCopy, v11, 0);
 }
 
-- (void)resolveBackgroundSoundForSetBackgroundSound:(id)a3 withCompletion:(id)a4
+- (void)resolveBackgroundSoundForSetBackgroundSound:(id)sound withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 backgroundSound];
-  v7 = [AXBackgroundSoundResolutionResult successWithResolvedBackgroundSound:v8];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  backgroundSound = [sound backgroundSound];
+  v7 = [AXBackgroundSoundResolutionResult successWithResolvedBackgroundSound:backgroundSound];
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)handleToggleBackgroundSoundsTimer:(id)a3 completion:(id)a4
+- (void)handleToggleBackgroundSoundsTimer:(id)timer completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  timerCopy = timer;
+  completionCopy = completion;
   v7 = sub_1000066D8();
   v8 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v13 = 138543874;
-    v14 = v5;
+    v14 = timerCopy;
     v15 = 1024;
     v16 = v7 ^ 1;
     v17 = 1024;
@@ -474,14 +474,14 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, " intent: %{public}@ %i %i", &v13, 0x18u);
   }
 
-  if ([v5 operation] != 1)
+  if ([timerCopy operation] != 1)
   {
     v9 = v7 ^ 1;
     goto LABEL_9;
   }
 
-  v9 = [v5 state] == 1;
-  if ([v5 state])
+  v9 = [timerCopy state] == 1;
+  if ([timerCopy state])
   {
 LABEL_9:
     v10 = +[HUComfortSoundsSettings sharedInstance];
@@ -493,28 +493,28 @@ LABEL_9:
   v10 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_10000D80C(v5, v10);
+    sub_10000D80C(timerCopy, v10);
   }
 
   v11 = 5;
 LABEL_10:
 
   v12 = [[AXToggleBackgroundSoundsTimerIntentResponse alloc] initWithCode:v11 userActivity:0];
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)resolveOperationForToggleBackgroundSoundsTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveOperationForToggleBackgroundSoundsTimer:(id)timer withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [a3 operation]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [timer operation]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveStateForToggleBackgroundSoundsTimer:(id)a3 withCompletion:(id)a4
+- (void)resolveStateForToggleBackgroundSoundsTimer:(id)timer withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [a3 state]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [timer state]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
 @end

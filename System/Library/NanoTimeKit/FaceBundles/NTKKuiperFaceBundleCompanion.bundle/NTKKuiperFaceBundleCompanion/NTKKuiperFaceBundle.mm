@@ -1,37 +1,37 @@
 @interface NTKKuiperFaceBundle
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
 - (id)galleryTitle;
-- (id)heroFacesForDevice:(id)a3;
+- (id)heroFacesForDevice:(id)device;
 @end
 
 @implementation NTKKuiperFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKKuiperFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKKuiperFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = NTKKuiperFaceBundle;
-  v3 = [(NTKKuiperFaceBundle *)&v5 galleryFacesForDevice:a3];
+  v3 = [(NTKKuiperFaceBundle *)&v5 galleryFacesForDevice:device];
   [v3 enumerateObjectsUsingBlock:&stru_107E8];
 
   return v3;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_10F50;
     v5[1] = &off_10FB0;
@@ -48,21 +48,21 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ([v4 isRunningNapiliGMOrLater])
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v13[0] = ntk_seasons_spring2022_green5;
     v13[1] = ntk_standard_lightPurple;
     v6 = [NSArray arrayWithObjects:v13 count:2];
     [v5 addObjectsFromArray:v6];
 
-    v7 = [(NTKKuiperFaceBundle *)self defaultFaceForDevice:v4];
+    v7 = [(NTKKuiperFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v8 = [v7 defaultOptionForCustomEditMode:10 slot:0];
-    v9 = [v8 fullname];
-    v10 = [v9 isEqualToString:ntk_seasons_spring2022_blue2];
+    fullname = [v8 fullname];
+    v10 = [fullname isEqualToString:ntk_seasons_spring2022_blue2];
 
     if (v10)
     {
@@ -71,25 +71,25 @@
 
     else
     {
-      v11 = [v8 fullname];
-      [v5 addObject:v11];
+      fullname2 = [v8 fullname];
+      [v5 addObject:fullname2];
     }
   }
 
   return v5;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3887189377])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3887189377])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKKuiperFaceBundle *)self defaultFaceForDevice:v4];
+    v6 = [(NTKKuiperFaceBundle *)self defaultFaceForDevice:deviceCopy];
     v7 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v6 priority:600];
     v9 = v7;
     v5 = [NSArray arrayWithObjects:&v9 count:1];

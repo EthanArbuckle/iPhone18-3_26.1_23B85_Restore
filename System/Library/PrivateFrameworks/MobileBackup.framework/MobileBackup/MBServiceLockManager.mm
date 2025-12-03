@@ -1,14 +1,14 @@
 @interface MBServiceLockManager
-- (BOOL)_reacquireLockWithError:(id *)a3;
-- (BOOL)reacquireLockWithError:(id *)a3;
-- (MBServiceLockManager)initWithAccount:(id)a3 backupUDID:(id)a4 type:(int)a5 delegate:(id)a6;
+- (BOOL)_reacquireLockWithError:(id *)error;
+- (BOOL)reacquireLockWithError:(id *)error;
+- (MBServiceLockManager)initWithAccount:(id)account backupUDID:(id)d type:(int)type delegate:(id)delegate;
 - (double)_holdLock;
 - (double)_releaseLock;
 - (double)renewInterval;
 - (double)retryInterval;
 - (double)timeout;
 - (void)_releaseLockAndScheduleRetries;
-- (void)_scheduleTimerWithInterval:(double)a3;
+- (void)_scheduleTimerWithInterval:(double)interval;
 - (void)_timerFired;
 - (void)dealloc;
 - (void)releaseLockAsync;
@@ -20,19 +20,19 @@
 
 @implementation MBServiceLockManager
 
-- (MBServiceLockManager)initWithAccount:(id)a3 backupUDID:(id)a4 type:(int)a5 delegate:(id)a6
+- (MBServiceLockManager)initWithAccount:(id)account backupUDID:(id)d type:(int)type delegate:(id)delegate
 {
   v16.receiver = self;
   v16.super_class = MBServiceLockManager;
   v10 = [(MBServiceLockManager *)&v16 init];
   if (v10)
   {
-    v10->_account = a3;
-    v10->_service = [[MBService alloc] initWithAccount:a3];
-    v11 = a4;
-    v10->_type = a5;
-    v10->_backupUDID = v11;
-    v10->_delegate = a6;
+    v10->_account = account;
+    v10->_service = [[MBService alloc] initWithAccount:account];
+    dCopy = d;
+    v10->_type = type;
+    v10->_backupUDID = dCopy;
+    v10->_delegate = delegate;
     v12 = objc_opt_class();
     Name = class_getName(v12);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -148,7 +148,7 @@
   dispatch_async(queue, block);
 }
 
-- (BOOL)_reacquireLockWithError:(id *)a3
+- (BOOL)_reacquireLockWithError:(id *)error
 {
   v15 = 0;
   v5 = MBGetDefaultLog();
@@ -162,7 +162,7 @@
   v6 = [(MBService *)self->_service lockForBackupUDID:self->_backupUDID];
   if (!v6)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -172,14 +172,14 @@ LABEL_16:
     v13 = [MBError errorWithCode:306 format:v12];
     result = 0;
 LABEL_17:
-    *a3 = v13;
+    *error = v13;
     return result;
   }
 
   v7 = v6;
   if ([v6 state] != 1)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -190,7 +190,7 @@ LABEL_17:
 
   if ([v7 type] != 1)
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -216,7 +216,7 @@ LABEL_17:
       _MBLog();
     }
 
-    if (a3)
+    if (error)
     {
       result = 0;
       v13 = v15;
@@ -236,7 +236,7 @@ LABEL_17:
   return 1;
 }
 
-- (BOOL)reacquireLockWithError:(id *)a3
+- (BOOL)reacquireLockWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -258,9 +258,9 @@ LABEL_17:
   block[6] = &v10;
   dispatch_sync(queue, block);
   v5 = v11[5];
-  if (a3)
+  if (error)
   {
-    *a3 = v5;
+    *error = v5;
   }
 
   v6 = v5;
@@ -325,11 +325,11 @@ LABEL_17:
   }
 }
 
-- (void)_scheduleTimerWithInterval:(double)a3
+- (void)_scheduleTimerWithInterval:(double)interval
 {
   [(PCPersistentTimer *)self->_timer invalidate];
 
-  v5 = [[PCPersistentTimer alloc] initWithTimeInterval:@"MobileBackupLockRenew" serviceIdentifier:self target:"_timerFired" selector:0 userInfo:a3];
+  v5 = [[PCPersistentTimer alloc] initWithTimeInterval:@"MobileBackupLockRenew" serviceIdentifier:self target:"_timerFired" selector:0 userInfo:interval];
   self->_timer = v5;
   [(PCPersistentTimer *)v5 setDisableSystemWaking:self->_type == 0];
   [(PCPersistentTimer *)self->_timer scheduleInRunLoop:+[NSRunLoop mainRunLoop]];
@@ -337,7 +337,7 @@ LABEL_17:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v8 = a3;
+    intervalCopy = interval;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Scheduled MBS lock timer in %0.1f s", buf, 0xCu);
     _MBLog();
   }

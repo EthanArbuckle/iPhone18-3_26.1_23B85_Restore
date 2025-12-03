@@ -1,28 +1,28 @@
 @interface GKPlayerPickerViewController
 - (GKPlayerPickerDelegate)delegate;
-- (GKPlayerPickerViewController)initWithContext:(id)a3;
-- (GKPlayerPickerViewController)initWithMatch:(id)a3 maxPlayers:(int64_t)a4;
-- (id)_initWithMaxPlayers:(int64_t)a3 excludedPlayers:(id)a4;
+- (GKPlayerPickerViewController)initWithContext:(id)context;
+- (GKPlayerPickerViewController)initWithMatch:(id)match maxPlayers:(int64_t)players;
+- (id)_initWithMaxPlayers:(int64_t)players excludedPlayers:(id)excludedPlayers;
 - (void)internalPlayerPickerDidCancel;
-- (void)internalPlayerPickerDidPickPlayers:(id)a3;
-- (void)matchmakerViewController:(id)a3 didFailWithError:(id)a4;
+- (void)internalPlayerPickerDidPickPlayers:(id)players;
+- (void)matchmakerViewController:(id)controller didFailWithError:(id)error;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKPlayerPickerViewController
 
-- (GKPlayerPickerViewController)initWithContext:(id)a3
+- (GKPlayerPickerViewController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = GKPlayerPickerViewController;
   v6 = [(GKPlayerPickerViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
-    v8 = [[GKMatchmakerViewController alloc] initWithPlayerPickerDelegate:v7 andPlayerPickerContext:v5];
+    objc_storeStrong(&v6->_context, context);
+    v8 = [[GKMatchmakerViewController alloc] initWithPlayerPickerDelegate:v7 andPlayerPickerContext:contextCopy];
     matchmakerVC = v7->_matchmakerVC;
     v7->_matchmakerVC = v8;
 
@@ -32,13 +32,13 @@
   return v7;
 }
 
-- (id)_initWithMaxPlayers:(int64_t)a3 excludedPlayers:(id)a4
+- (id)_initWithMaxPlayers:(int64_t)players excludedPlayers:(id)excludedPlayers
 {
   v6 = MEMORY[0x277D0C8A0];
-  v7 = a4;
+  excludedPlayersCopy = excludedPlayers;
   v8 = objc_alloc_init(v6);
-  [v8 setMaxPlayers:a3];
-  [v8 setExcludedPlayers:v7];
+  [v8 setMaxPlayers:players];
+  [v8 setExcludedPlayers:excludedPlayersCopy];
 
   [v8 setPickerOrigin:0];
   v9 = [(GKPlayerPickerViewController *)self initWithContext:v8];
@@ -46,21 +46,21 @@
   return v9;
 }
 
-- (GKPlayerPickerViewController)initWithMatch:(id)a3 maxPlayers:(int64_t)a4
+- (GKPlayerPickerViewController)initWithMatch:(id)match maxPlayers:(int64_t)players
 {
-  v6 = a3;
+  matchCopy = match;
   v7 = objc_alloc_init(MEMORY[0x277D0C8A0]);
-  [v7 setMaxPlayers:a4];
+  [v7 setMaxPlayers:players];
   [v7 setPickerOrigin:2];
-  v8 = [v6 players];
+  players = [matchCopy players];
 
-  if (v8)
+  if (players)
   {
-    v9 = [v6 players];
-    [v7 setExcludedPlayers:v9];
+    players2 = [matchCopy players];
+    [v7 setExcludedPlayers:players2];
   }
 
-  [v7 setMatch:v6];
+  [v7 setMatch:matchCopy];
   v10 = [(GKPlayerPickerViewController *)self initWithContext:v7];
 
   return v10;
@@ -71,46 +71,46 @@
   v14.receiver = self;
   v14.super_class = GKPlayerPickerViewController;
   [(GKPlayerPickerViewController *)&v14 viewDidLoad];
-  v3 = [(GKPlayerPickerViewController *)self context];
-  v4 = [v3 maxPlayers];
+  context = [(GKPlayerPickerViewController *)self context];
+  maxPlayers = [context maxPlayers];
 
-  if (v4 <= 0)
+  if (maxPlayers <= 0)
   {
-    v11 = [(GKPlayerPickerViewController *)self view];
-    v12 = [v11 layer];
-    [v12 setOpacity:0.0];
+    view = [(GKPlayerPickerViewController *)self view];
+    layer = [view layer];
+    [layer setOpacity:0.0];
   }
 
   else
   {
-    v5 = [(GKPlayerPickerViewController *)self matchmakerVC];
-    [(GKPlayerPickerViewController *)self addChildViewController:v5];
+    matchmakerVC = [(GKPlayerPickerViewController *)self matchmakerVC];
+    [(GKPlayerPickerViewController *)self addChildViewController:matchmakerVC];
 
-    v6 = [(GKPlayerPickerViewController *)self view];
-    v7 = [(GKPlayerPickerViewController *)self matchmakerVC];
-    v8 = [v7 view];
-    [v6 addSubview:v8];
+    view2 = [(GKPlayerPickerViewController *)self view];
+    matchmakerVC2 = [(GKPlayerPickerViewController *)self matchmakerVC];
+    view3 = [matchmakerVC2 view];
+    [view2 addSubview:view3];
 
-    v9 = [(GKPlayerPickerViewController *)self matchmakerVC];
-    [v9 didMoveToParentViewController:self];
+    matchmakerVC3 = [(GKPlayerPickerViewController *)self matchmakerVC];
+    [matchmakerVC3 didMoveToParentViewController:self];
 
     v10 = MEMORY[0x277CCAAD0];
-    v11 = [(GKPlayerPickerViewController *)self matchmakerVC];
-    v12 = [v11 view];
-    v13 = [(GKPlayerPickerViewController *)self view];
-    [v10 _gkInstallEdgeConstraintsForView:v12 containedWithinParentView:v13];
+    view = [(GKPlayerPickerViewController *)self matchmakerVC];
+    layer = [view view];
+    view4 = [(GKPlayerPickerViewController *)self view];
+    [v10 _gkInstallEdgeConstraintsForView:layer containedWithinParentView:view4];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = GKPlayerPickerViewController;
-  [(GKPlayerPickerViewController *)&v7 viewWillAppear:a3];
-  v4 = [(GKPlayerPickerViewController *)self context];
-  v5 = [v4 maxPlayers];
+  [(GKPlayerPickerViewController *)&v7 viewWillAppear:appear];
+  context = [(GKPlayerPickerViewController *)self context];
+  maxPlayers = [context maxPlayers];
 
-  if (v5 <= 0)
+  if (maxPlayers <= 0)
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -126,22 +126,22 @@
   }
 }
 
-- (void)internalPlayerPickerDidPickPlayers:(id)a3
+- (void)internalPlayerPickerDidPickPlayers:(id)players
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKPlayerPickerViewController *)self context];
-  v6 = [v5 match];
+  playersCopy = players;
+  context = [(GKPlayerPickerViewController *)self context];
+  match = [context match];
 
-  if (v6)
+  if (match)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:playersCopy];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v37 = v4;
-    v8 = v4;
+    v37 = playersCopy;
+    v8 = playersCopy;
     v9 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v9)
     {
@@ -158,8 +158,8 @@
           }
 
           v13 = *(*(&v40 + 1) + 8 * v12);
-          v14 = [(GKPlayerPickerViewController *)self matchmaker];
-          [v14 cancelPendingInviteToPlayer:v13];
+          matchmaker = [(GKPlayerPickerViewController *)self matchmaker];
+          [matchmaker cancelPendingInviteToPlayer:v13];
 
           ++v12;
         }
@@ -173,44 +173,44 @@
 
     v15 = objc_alloc_init(MEMORY[0x277D0C148]);
     [v15 setRecipients:v7];
-    v35 = [(GKPlayerPickerViewController *)self context];
-    v34 = [v35 match];
-    [v34 players];
+    context2 = [(GKPlayerPickerViewController *)self context];
+    match2 = [context2 match];
+    [match2 players];
     v16 = v36 = v7;
     v17 = [v16 count];
-    v18 = [(GKPlayerPickerViewController *)self context];
-    v19 = [v18 match];
-    v20 = [v19 expectedPlayerCount];
-    v21 = [(GKPlayerPickerViewController *)self matchmaker];
-    v22 = [v21 allInvitedInvitees];
-    [v15 setMinPlayers:{v17 + v20 + objc_msgSend(v22, "count") + 1}];
+    context3 = [(GKPlayerPickerViewController *)self context];
+    match3 = [context3 match];
+    expectedPlayerCount = [match3 expectedPlayerCount];
+    matchmaker2 = [(GKPlayerPickerViewController *)self matchmaker];
+    allInvitedInvitees = [matchmaker2 allInvitedInvitees];
+    [v15 setMinPlayers:{v17 + expectedPlayerCount + objc_msgSend(allInvitedInvitees, "count") + 1}];
 
     [v15 setMaxPlayers:{objc_msgSend(v8, "count") + objc_msgSend(v15, "minPlayers")}];
-    v23 = [(GKPlayerPickerViewController *)self matchmaker];
-    v24 = [(GKPlayerPickerViewController *)self context];
-    v25 = [v24 match];
+    matchmaker3 = [(GKPlayerPickerViewController *)self matchmaker];
+    context4 = [(GKPlayerPickerViewController *)self context];
+    match4 = [context4 match];
     v38[0] = MEMORY[0x277D85DD0];
     v38[1] = 3221225472;
     v38[2] = __67__GKPlayerPickerViewController_internalPlayerPickerDidPickPlayers___block_invoke;
     v38[3] = &unk_279669D38;
     v39 = v15;
     v26 = v15;
-    [v23 addPlayersToMatch:v25 matchRequest:v26 completionHandler:v38];
+    [matchmaker3 addPlayersToMatch:match4 matchRequest:v26 completionHandler:v38];
 
-    v4 = v37;
+    playersCopy = v37;
   }
 
-  v27 = [(GKPlayerPickerViewController *)self delegate];
+  delegate = [(GKPlayerPickerViewController *)self delegate];
 
-  if (v27)
+  if (delegate)
   {
-    v28 = [(GKPlayerPickerViewController *)self delegate];
+    delegate2 = [(GKPlayerPickerViewController *)self delegate];
     v29 = objc_opt_respondsToSelector();
 
     if (v29)
     {
-      v30 = [(GKPlayerPickerViewController *)self delegate];
-      [v30 playerPickerViewController:self didPickPlayers:v4];
+      delegate3 = [(GKPlayerPickerViewController *)self delegate];
+      [delegate3 playerPickerViewController:self didPickPlayers:playersCopy];
     }
 
     else
@@ -240,8 +240,8 @@
     }
   }
 
-  v33 = [(GKPlayerPickerViewController *)self matchmaker];
-  [v33 stopBrowsingForNearbyPlayers];
+  matchmaker4 = [(GKPlayerPickerViewController *)self matchmaker];
+  [matchmaker4 stopBrowsingForNearbyPlayers];
 }
 
 void __67__GKPlayerPickerViewController_internalPlayerPickerDidPickPlayers___block_invoke(uint64_t a1, void *a2)
@@ -261,17 +261,17 @@ void __67__GKPlayerPickerViewController_internalPlayerPickerDidPickPlayers___blo
 
 - (void)internalPlayerPickerDidCancel
 {
-  v3 = [(GKPlayerPickerViewController *)self delegate];
+  delegate = [(GKPlayerPickerViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(GKPlayerPickerViewController *)self delegate];
+    delegate2 = [(GKPlayerPickerViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(GKPlayerPickerViewController *)self delegate];
-      [v6 playerPickerViewControllerWasCancelled:self];
+      delegate3 = [(GKPlayerPickerViewController *)self delegate];
+      [delegate3 playerPickerViewControllerWasCancelled:self];
     }
 
     else
@@ -301,14 +301,14 @@ void __67__GKPlayerPickerViewController_internalPlayerPickerDidPickPlayers___blo
     }
   }
 
-  v9 = [(GKPlayerPickerViewController *)self matchmaker];
-  [v9 stopBrowsingForNearbyPlayers];
+  matchmaker = [(GKPlayerPickerViewController *)self matchmaker];
+  [matchmaker stopBrowsingForNearbyPlayers];
 }
 
-- (void)matchmakerViewController:(id)a3 didFailWithError:(id)a4
+- (void)matchmakerViewController:(id)controller didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   if (!*MEMORY[0x277D0C2A0])
   {
     v7 = GKOSLoggers();

@@ -1,19 +1,19 @@
 @interface SBSceneSnapshotDataProvider
 - (BOOL)hasProtectedContent;
-- (SBSceneSnapshotDataProvider)initWithSceneSnapshot:(id)a3 scaleFactor:(double)a4;
-- (id)IOSurfaceForFormat:(int64_t)a3;
+- (SBSceneSnapshotDataProvider)initWithSceneSnapshot:(id)snapshot scaleFactor:(double)factor;
+- (id)IOSurfaceForFormat:(int64_t)format;
 - (id)fallbackSnapshotDataProvider;
-- (id)fetchImageForFormat:(int64_t)a3;
+- (id)fetchImageForFormat:(int64_t)format;
 - (void)_invalidateSnapshotData;
 - (void)invalidateImage;
 @end
 
 @implementation SBSceneSnapshotDataProvider
 
-- (SBSceneSnapshotDataProvider)initWithSceneSnapshot:(id)a3 scaleFactor:(double)a4
+- (SBSceneSnapshotDataProvider)initWithSceneSnapshot:(id)snapshot scaleFactor:(double)factor
 {
-  v8 = a3;
-  if (!v8)
+  snapshotCopy = snapshot;
+  if (!snapshotCopy)
   {
     [SBSceneSnapshotDataProvider initWithSceneSnapshot:a2 scaleFactor:self];
   }
@@ -24,55 +24,55 @@
   v10 = v9;
   if (v9)
   {
-    v9->_scaleFactor = a4;
-    objc_storeStrong(&v9->_snapshot, a3);
+    v9->_scaleFactor = factor;
+    objc_storeStrong(&v9->_snapshot, snapshot);
     v11 = objc_alloc_init(SBSnapshotDataProviderContext);
     context = v10->_context;
     v10->_context = v11;
 
     v13 = v10->_context;
-    v14 = [v8 scene];
-    v15 = [v14 identifier];
-    [(SBSnapshotDataProviderContext *)v13 setSceneID:v15];
+    scene = [snapshotCopy scene];
+    identifier = [scene identifier];
+    [(SBSnapshotDataProviderContext *)v13 setSceneID:identifier];
 
     v16 = v10->_context;
-    v17 = [v8 configuration];
-    [v17 scale];
+    configuration = [snapshotCopy configuration];
+    [configuration scale];
     [(XBSnapshotDataProviderContext *)v16 setScale:?];
 
     v18 = v10->_context;
-    v19 = [v8 configuration];
-    -[XBSnapshotDataProviderContext setOpaque:](v18, "setOpaque:", [v19 isOpaque]);
+    configuration2 = [snapshotCopy configuration];
+    -[XBSnapshotDataProviderContext setOpaque:](v18, "setOpaque:", [configuration2 isOpaque]);
   }
 
   return v10;
 }
 
-- (id)IOSurfaceForFormat:(int64_t)a3
+- (id)IOSurfaceForFormat:(int64_t)format
 {
-  v5 = [(FBSceneSnapshot *)self->_snapshot IOSurface];
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v5 && (BSFloatIsOne() & 1) == 0)
+  iOSurface = [(FBSceneSnapshot *)self->_snapshot IOSurface];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (iOSurface && (BSFloatIsOne() & 1) == 0)
   {
-    processedSurface = v6->_processedSurface;
+    processedSurface = selfCopy->_processedSurface;
     if (!processedSurface)
     {
-      v8 = SBCreateScaledIOSurface(v5, (a3 - 1) < 2, v6->_scaleFactor);
-      v9 = v6->_processedSurface;
-      v6->_processedSurface = v8;
+      v8 = SBCreateScaledIOSurface(iOSurface, (format - 1) < 2, selfCopy->_scaleFactor);
+      v9 = selfCopy->_processedSurface;
+      selfCopy->_processedSurface = v8;
 
-      processedSurface = v6->_processedSurface;
+      processedSurface = selfCopy->_processedSurface;
     }
 
     v10 = processedSurface;
 
-    v5 = v10;
+    iOSurface = v10;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return iOSurface;
 }
 
 - (id)fallbackSnapshotDataProvider
@@ -107,7 +107,7 @@
   return hasProtectedContent & 1;
 }
 
-- (id)fetchImageForFormat:(int64_t)a3
+- (id)fetchImageForFormat:(int64_t)format
 {
   v35 = *MEMORY[0x277D85DE8];
   cachedImage = self->_cachedImage;
@@ -116,17 +116,17 @@
     v6 = [(SBSceneSnapshotDataProvider *)self IOSurfaceForFormat:?];
     if (v6)
     {
-      v7 = [(SBSceneSnapshotDataProvider *)self hasProtectedContent];
+      hasProtectedContent = [(SBSceneSnapshotDataProvider *)self hasProtectedContent];
       [(XBSnapshotDataProviderContext *)self->_context scale];
-      v9 = SBCreateUIImageFromIOSurfaceResizingIfNecessary(v6, 0, v7, [(XBSnapshotDataProviderContext *)self->_context isOpaque], (a3 - 1) < 2, v8, 1.0);
+      v9 = SBCreateUIImageFromIOSurfaceResizingIfNecessary(v6, 0, hasProtectedContent, [(XBSnapshotDataProviderContext *)self->_context isOpaque], (format - 1) < 2, v8, 1.0);
     }
 
     else
     {
       v12 = MEMORY[0x277D755B8];
-      v13 = [(FBSceneSnapshot *)self->_snapshot CGImage];
+      cGImage = [(FBSceneSnapshot *)self->_snapshot CGImage];
       [(XBSnapshotDataProviderContext *)self->_context scale];
-      v9 = [v12 imageWithCGImage:v13 scale:0 orientation:?];
+      v9 = [v12 imageWithCGImage:cGImage scale:0 orientation:?];
       if (v9 && (BSFloatIsOne() & 1) == 0)
       {
         memset(&v33, 0, sizeof(v33));
@@ -145,13 +145,13 @@
           v28 = SBLogSceneSnapshots();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [(SBSnapshotDataProviderContext *)self->_context sceneID];
+            sceneID = [(SBSnapshotDataProviderContext *)self->_context sceneID];
             [(UIImage *)v9 size];
             v30 = NSStringFromSize(v38);
             scaleFactor = self->_scaleFactor;
             [(XBSnapshotDataProviderContext *)self->_context scale];
             *v34 = 138544386;
-            *&v34[4] = v29;
+            *&v34[4] = sceneID;
             *&v34[12] = 2048;
             *&v34[14] = v9;
             *&v34[22] = 2114;

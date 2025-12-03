@@ -1,32 +1,32 @@
 @interface MapDataSubscriptionInfo
-- (BOOL)isEqual:(id)a3;
-- (MapDataSubscriptionInfo)initWithSubscription:(id)a3 state:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MapDataSubscriptionInfo)initWithSubscription:(id)subscription state:(id)state;
 - (unint64_t)hash;
 @end
 
 @implementation MapDataSubscriptionInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(MapDataSubscriptionInfo *)v5 subscription];
-    v7 = [(MapDataSubscriptionInfo *)self subscription];
-    if (v6 == v7)
+    subscription = [(MapDataSubscriptionInfo *)v5 subscription];
+    subscription2 = [(MapDataSubscriptionInfo *)self subscription];
+    if (subscription == subscription2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 isEqual:v7];
+      v8 = [subscription isEqual:subscription2];
     }
   }
 
@@ -40,24 +40,24 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MapDataSubscriptionInfo *)self subscription];
-  v3 = [v2 hash];
+  subscription = [(MapDataSubscriptionInfo *)self subscription];
+  v3 = [subscription hash];
 
   return v3;
 }
 
-- (MapDataSubscriptionInfo)initWithSubscription:(id)a3 state:(id)a4
+- (MapDataSubscriptionInfo)initWithSubscription:(id)subscription state:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  subscriptionCopy = subscription;
+  stateCopy = state;
   v13.receiver = self;
   v13.super_class = MapDataSubscriptionInfo;
   v9 = [(MapDataSubscriptionInfo *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_subscription, a3);
-    objc_storeStrong(&v10->_state, a4);
+    objc_storeStrong(&v9->_subscription, subscription);
+    objc_storeStrong(&v10->_state, state);
     v11 = v10;
   }
 

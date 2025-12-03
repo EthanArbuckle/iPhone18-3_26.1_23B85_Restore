@@ -1,6 +1,6 @@
 @interface AssetResultsScrollPositionManager
 - (_TtC12PhotosUICoreP33_6550EC013705D4178B218B443D955D0033AssetResultsScrollPositionManager)init;
-- (void)photosDataSource:(id)a3 didChange:(id)a4;
+- (void)photosDataSource:(id)source didChange:(id)change;
 @end
 
 @implementation AssetResultsScrollPositionManager
@@ -17,11 +17,11 @@
   return [(AssetResultsScrollPositionManager *)&v5 init];
 }
 
-- (void)photosDataSource:(id)a3 didChange:(id)a4
+- (void)photosDataSource:(id)source didChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  sourceCopy = source;
+  changeCopy = change;
+  selfCopy = self;
   sub_1A466A698();
 }
 

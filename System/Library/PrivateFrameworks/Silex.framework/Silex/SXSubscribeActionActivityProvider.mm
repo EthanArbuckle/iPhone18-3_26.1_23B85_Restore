@@ -1,31 +1,31 @@
 @interface SXSubscribeActionActivityProvider
 - (SXActionManager)actionManager;
-- (SXSubscribeActionActivityProvider)initWithHandler:(id)a3 viewControllerPresenting:(id)a4 actionManager:(id)a5;
-- (id)activityGroupForAction:(id)a3;
+- (SXSubscribeActionActivityProvider)initWithHandler:(id)handler viewControllerPresenting:(id)presenting actionManager:(id)manager;
+- (id)activityGroupForAction:(id)action;
 @end
 
 @implementation SXSubscribeActionActivityProvider
 
-- (SXSubscribeActionActivityProvider)initWithHandler:(id)a3 viewControllerPresenting:(id)a4 actionManager:(id)a5
+- (SXSubscribeActionActivityProvider)initWithHandler:(id)handler viewControllerPresenting:(id)presenting actionManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handlerCopy = handler;
+  presentingCopy = presenting;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = SXSubscribeActionActivityProvider;
   v12 = [(SXSubscribeActionActivityProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_handler, a3);
-    objc_storeStrong(&v13->_viewControllerPresenting, a4);
-    objc_storeWeak(&v13->_actionManager, v11);
+    objc_storeStrong(&v12->_handler, handler);
+    objc_storeStrong(&v13->_viewControllerPresenting, presenting);
+    objc_storeWeak(&v13->_actionManager, managerCopy);
   }
 
   return v13;
 }
 
-- (id)activityGroupForAction:(id)a3
+- (id)activityGroupForAction:(id)action
 {
   v4 = [[SXActionActivityGroup alloc] initWithTitle:0];
   v5 = [SXBlockActionActivity alloc];

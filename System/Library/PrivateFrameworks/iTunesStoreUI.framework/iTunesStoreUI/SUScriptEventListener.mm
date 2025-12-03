@@ -3,9 +3,9 @@
 - (NSString)name;
 - (SUScriptEventListener)init;
 - (WebScriptObject)callback;
-- (void)setCallback:(id)a3;
-- (void)setName:(id)a3;
-- (void)setShouldUseCapture:(BOOL)a3;
+- (void)setCallback:(id)callback;
+- (void)setName:(id)name;
+- (void)setShouldUseCapture:(BOOL)capture;
 @end
 
 @implementation SUScriptEventListener
@@ -45,25 +45,25 @@
   return v3;
 }
 
-- (void)setCallback:(id)a3
+- (void)setCallback:(id)callback
 {
-  v5 = a3;
+  callbackCopy = callback;
   [(NSLock *)self->_lock lock];
-  if (self->_callback != v5)
+  if (self->_callback != callbackCopy)
   {
-    objc_storeStrong(&self->_callback, a3);
+    objc_storeStrong(&self->_callback, callback);
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   [(NSLock *)self->_lock lock];
-  if (self->_name != v6)
+  if (self->_name != nameCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)nameCopy copy];
     name = self->_name;
     self->_name = v4;
   }
@@ -71,10 +71,10 @@
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setShouldUseCapture:(BOOL)a3
+- (void)setShouldUseCapture:(BOOL)capture
 {
   [(NSLock *)self->_lock lock];
-  self->_useCapture = a3;
+  self->_useCapture = capture;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];

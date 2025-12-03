@@ -1,5 +1,5 @@
 @interface ADCoreBluetoothDevice
-- (ADCoreBluetoothDevice)initWithIdentifier:(id)a3 name:(id)a4 RSSI:(id)a5 state:(id)a6;
+- (ADCoreBluetoothDevice)initWithIdentifier:(id)identifier name:(id)name RSSI:(id)i state:(id)state;
 - (id)dictionaryRepresentation;
 @end
 
@@ -27,22 +27,22 @@
   return v4;
 }
 
-- (ADCoreBluetoothDevice)initWithIdentifier:(id)a3 name:(id)a4 RSSI:(id)a5 state:(id)a6
+- (ADCoreBluetoothDevice)initWithIdentifier:(id)identifier name:(id)name RSSI:(id)i state:(id)state
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  iCopy = i;
+  stateCopy = state;
   v18.receiver = self;
   v18.super_class = ADCoreBluetoothDevice;
   v15 = [(ADCoreBluetoothDevice *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_name, a4);
-    objc_storeStrong(&v16->_RSSI, a5);
-    objc_storeStrong(&v16->_state, a6);
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_name, name);
+    objc_storeStrong(&v16->_RSSI, i);
+    objc_storeStrong(&v16->_state, state);
   }
 
   return v16;

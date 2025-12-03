@@ -1,28 +1,28 @@
 @interface FAHealthKitSoftLinking
 + (BOOL)isMedicalIDViewControllerSupportedOnDevice;
-- (FAHealthKitSoftLinking)initWithFamilyCircle:(id)a3;
+- (FAHealthKitSoftLinking)initWithFamilyCircle:(id)circle;
 - (void)_startEmergencyContactsChangeObserver;
 - (void)_stopEmergencyContactsChangeObserver;
 - (void)dealloc;
 - (void)dismissMedicalID;
-- (void)emergencyContactFlow:(id)a3 didSelectContact:(id)a4;
-- (void)fetchLastModifiedDate:(id)a3 completionHandler:(id)a4;
-- (void)fetchMedicalIDData:(id)a3 completionHandler:(id)a4;
-- (void)presentMedicalIDViewController:(id)a3;
+- (void)emergencyContactFlow:(id)flow didSelectContact:(id)contact;
+- (void)fetchLastModifiedDate:(id)date completionHandler:(id)handler;
+- (void)fetchMedicalIDData:(id)data completionHandler:(id)handler;
+- (void)presentMedicalIDViewController:(id)controller;
 @end
 
 @implementation FAHealthKitSoftLinking
 
-- (FAHealthKitSoftLinking)initWithFamilyCircle:(id)a3
+- (FAHealthKitSoftLinking)initWithFamilyCircle:(id)circle
 {
-  v5 = a3;
+  circleCopy = circle;
   v21.receiver = self;
   v21.super_class = FAHealthKitSoftLinking;
   v6 = [(FAHealthKitSoftLinking *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_familyCircle, a3);
+    objc_storeStrong(&v6->_familyCircle, circle);
     v27 = 0;
     v28 = &v27;
     v29 = 0x2050000000;
@@ -103,9 +103,9 @@
   [(FAHealthKitSoftLinking *)&v3 dealloc];
 }
 
-- (void)presentMedicalIDViewController:(id)a3
+- (void)presentMedicalIDViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -124,8 +124,8 @@
 
   v6 = v5;
   _Block_object_dispose(&v20, 8);
-  v7 = [v5 standardConfiguration];
-  [v7 setEntryPoint:1];
+  standardConfiguration = [v5 standardConfiguration];
+  [standardConfiguration setEntryPoint:1];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2050000000;
@@ -144,28 +144,28 @@
 
   v9 = v8;
   _Block_object_dispose(&v20, 8);
-  v10 = [[v8 alloc] initWithHealthStore:self->_healthStore medicalIDData:0 displayConfiguration:v7];
+  v10 = [[v8 alloc] initWithHealthStore:self->_healthStore medicalIDData:0 displayConfiguration:standardConfiguration];
   medicalIDViewController = self->_medicalIDViewController;
   self->_medicalIDViewController = v10;
 
   v12 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:self->_medicalIDViewController];
   [v12 setModalInPresentation:1];
   v13 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel_dismissMedicalID];
-  v14 = [(MIUIMedicalIDViewController *)self->_medicalIDViewController navigationItem];
-  [v14 setRightBarButtonItem:v13];
+  navigationItem = [(MIUIMedicalIDViewController *)self->_medicalIDViewController navigationItem];
+  [navigationItem setRightBarButtonItem:v13];
 
-  [v4 presentViewController:v12 animated:1 completion:0];
+  [controllerCopy presentViewController:v12 animated:1 completion:0];
 }
 
 - (void)dismissMedicalID
 {
-  v3 = [(MIUIMedicalIDViewController *)self->_medicalIDViewController navigationController];
+  navigationController = [(MIUIMedicalIDViewController *)self->_medicalIDViewController navigationController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__FAHealthKitSoftLinking_dismissMedicalID__block_invoke;
   v4[3] = &unk_2782F29E8;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [navigationController dismissViewControllerAnimated:1 completion:v4];
 }
 
 uint64_t __42__FAHealthKitSoftLinking_dismissMedicalID__block_invoke(uint64_t a1)
@@ -203,11 +203,11 @@ void __42__FAHealthKitSoftLinking_dismissMedicalID__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)fetchMedicalIDData:(id)a3 completionHandler:(id)a4
+- (void)fetchMedicalIDData:(id)data completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_familyCircle, a3);
+  dataCopy = data;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_familyCircle, data);
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x3032000000;
@@ -232,8 +232,8 @@ void __42__FAHealthKitSoftLinking_dismissMedicalID__block_invoke_2(uint64_t a1, 
   v20 = __63__FAHealthKitSoftLinking_fetchMedicalIDData_completionHandler___block_invoke;
   v21 = &unk_2782F30D0;
   v25 = v38;
-  v22 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = dataCopy;
   v23 = v11;
   v26 = &v34;
   v27 = &v28;
@@ -251,12 +251,12 @@ void __42__FAHealthKitSoftLinking_dismissMedicalID__block_invoke_2(uint64_t a1, 
 
     v35[3] = 0;
     v15 = objc_alloc(MEMORY[0x277CCA9B8]);
-    v16 = [v15 initWithDomain:@"com.apple.FAHealthKitSoftLinking" code:-1001 userInfo:{&unk_282DC0718, v18, v19, v20, v21, v22, v23}];
+    v16 = [v15 initWithDomain:@"com.apple.FAHealthKitSoftLinking" code:-1001 userInfo:{&unk_282DC0718, v18, v19, v20, v21, selfCopy, v23}];
     v17 = v29[5];
     v29[5] = v16;
   }
 
-  v8[2](v8, v35[3], v29[5]);
+  handlerCopy[2](handlerCopy, v35[3], v29[5]);
 
   _Block_object_dispose(&v28, 8);
   _Block_object_dispose(&v34, 8);
@@ -405,25 +405,25 @@ LABEL_33:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emergencyContactFlow:(id)a3 didSelectContact:(id)a4
+- (void)emergencyContactFlow:(id)flow didSelectContact:(id)contact
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  contactCopy = contact;
   if (([getSOSUtilitiesClass() isAllowedToMessageSOSContacts] & 1) == 0)
   {
     [getSOSUtilitiesClass() setAllowedToMessageSOSContacts:1];
   }
 
-  v6 = [(_HKMedicalIDData *)self->_medicalIDData emergencyContacts];
-  if (v6)
+  emergencyContacts = [(_HKMedicalIDData *)self->_medicalIDData emergencyContacts];
+  if (emergencyContacts)
   {
-    v7 = [(_HKMedicalIDData *)self->_medicalIDData emergencyContacts];
-    v8 = [v7 arrayByAddingObject:v5];
+    emergencyContacts2 = [(_HKMedicalIDData *)self->_medicalIDData emergencyContacts];
+    v8 = [emergencyContacts2 arrayByAddingObject:contactCopy];
   }
 
   else
   {
-    v10[0] = v5;
+    v10[0] = contactCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   }
 
@@ -431,17 +431,17 @@ LABEL_33:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchLastModifiedDate:(id)a3 completionHandler:(id)a4
+- (void)fetchLastModifiedDate:(id)date completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   familyCircle = self->_familyCircle;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__FAHealthKitSoftLinking_fetchLastModifiedDate_completionHandler___block_invoke;
   v8[3] = &unk_2782F30F8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(FAHealthKitSoftLinking *)self fetchMedicalIDData:familyCircle completionHandler:v8];
 }
 
@@ -511,10 +511,10 @@ void __66__FAHealthKitSoftLinking_fetchLastModifiedDate_completionHandler___bloc
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 shared];
-  v5 = [v4 isMedicalIDAvailable];
+  shared = [v2 shared];
+  isMedicalIDAvailable = [shared isMedicalIDAvailable];
 
-  return v5;
+  return isMedicalIDAvailable;
 }
 
 void __42__FAHealthKitSoftLinking_dismissMedicalID__block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

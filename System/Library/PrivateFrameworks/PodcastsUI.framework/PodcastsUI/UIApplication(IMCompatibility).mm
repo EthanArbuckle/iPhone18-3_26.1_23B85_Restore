@@ -8,17 +8,17 @@
 + (id)applicationCacheDirectory
 {
   v0 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v1 = [v0 lastObject];
+  lastObject = [v0 lastObject];
 
-  return v1;
+  return lastObject;
 }
 
 + (id)applicationDocumentsDirectory
 {
   v0 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-  v1 = [v0 lastObject];
+  lastObject = [v0 lastObject];
 
-  return v1;
+  return lastObject;
 }
 
 @end

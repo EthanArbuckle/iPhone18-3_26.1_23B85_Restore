@@ -15,117 +15,117 @@
   [v5 setObject:@"http://schema.org/TrainReservation" forKeyedSubscript:@"@type"];
   v6 = objc_opt_new();
   [v6 setObject:@"http://schema.org/TrainTrip" forKeyedSubscript:@"@type"];
-  v7 = [v3 trainTrip];
-  v8 = [v7 tripDuration];
-  v9 = [v8 startDateComponents];
+  trainTrip = [v3 trainTrip];
+  tripDuration = [trainTrip tripDuration];
+  startDateComponents = [tripDuration startDateComponents];
 
-  if (v9)
+  if (startDateComponents)
   {
-    v10 = [v3 trainTrip];
-    v11 = [v10 tripDuration];
-    v12 = [v11 startDateComponents];
-    v13 = [v12 schema];
-    [v6 setObject:v13 forKeyedSubscript:@"departureTime"];
+    trainTrip2 = [v3 trainTrip];
+    tripDuration2 = [trainTrip2 tripDuration];
+    startDateComponents2 = [tripDuration2 startDateComponents];
+    schema = [startDateComponents2 schema];
+    [v6 setObject:schema forKeyedSubscript:@"departureTime"];
   }
 
-  v14 = [v3 trainTrip];
-  v15 = [v14 tripDuration];
-  v16 = [v15 endDateComponents];
+  trainTrip3 = [v3 trainTrip];
+  tripDuration3 = [trainTrip3 tripDuration];
+  endDateComponents = [tripDuration3 endDateComponents];
 
-  if (v16)
+  if (endDateComponents)
   {
-    v17 = [v3 trainTrip];
-    v18 = [v17 tripDuration];
-    v19 = [v18 endDateComponents];
-    v20 = [v19 schema];
-    [v6 setObject:v20 forKeyedSubscript:@"arrivalTime"];
+    trainTrip4 = [v3 trainTrip];
+    tripDuration4 = [trainTrip4 tripDuration];
+    endDateComponents2 = [tripDuration4 endDateComponents];
+    schema2 = [endDateComponents2 schema];
+    [v6 setObject:schema2 forKeyedSubscript:@"arrivalTime"];
   }
 
-  v21 = [v3 trainTrip];
-  v22 = [v21 departurePlatform];
+  trainTrip5 = [v3 trainTrip];
+  departurePlatform = [trainTrip5 departurePlatform];
 
-  if (v22)
+  if (departurePlatform)
   {
-    v23 = [v3 trainTrip];
-    v24 = [v23 departurePlatform];
-    [v6 setObject:v24 forKeyedSubscript:@"departurePlatform"];
+    trainTrip6 = [v3 trainTrip];
+    departurePlatform2 = [trainTrip6 departurePlatform];
+    [v6 setObject:departurePlatform2 forKeyedSubscript:@"departurePlatform"];
   }
 
-  v25 = [v3 trainTrip];
-  v26 = [v25 arrivalPlatform];
+  trainTrip7 = [v3 trainTrip];
+  arrivalPlatform = [trainTrip7 arrivalPlatform];
 
-  if (v26)
+  if (arrivalPlatform)
   {
-    v27 = [v3 trainTrip];
-    v28 = [v27 arrivalPlatform];
-    [v6 setObject:v28 forKeyedSubscript:@"arrivalPlatform"];
+    trainTrip8 = [v3 trainTrip];
+    arrivalPlatform2 = [trainTrip8 arrivalPlatform];
+    [v6 setObject:arrivalPlatform2 forKeyedSubscript:@"arrivalPlatform"];
   }
 
-  v29 = [v3 trainTrip];
-  v30 = [v29 trainName];
+  trainTrip9 = [v3 trainTrip];
+  trainName = [trainTrip9 trainName];
 
-  if (v30)
+  if (trainName)
   {
-    v31 = [v3 trainTrip];
-    v32 = [v31 trainName];
-    [v6 setObject:v32 forKeyedSubscript:@"trainName"];
+    trainTrip10 = [v3 trainTrip];
+    trainName2 = [trainTrip10 trainName];
+    [v6 setObject:trainName2 forKeyedSubscript:@"trainName"];
   }
 
-  v33 = [v3 trainTrip];
-  v34 = [v33 trainNumber];
+  trainTrip11 = [v3 trainTrip];
+  trainNumber = [trainTrip11 trainNumber];
 
-  if (v34)
+  if (trainNumber)
   {
-    v35 = [v3 trainTrip];
-    v36 = [v35 trainNumber];
-    [v6 setObject:v36 forKeyedSubscript:@"trainNumber"];
+    trainTrip12 = [v3 trainTrip];
+    trainNumber2 = [trainTrip12 trainNumber];
+    [v6 setObject:trainNumber2 forKeyedSubscript:@"trainNumber"];
   }
 
-  v37 = [v3 trainTrip];
-  v38 = [v37 departureStationLocation];
-  v39 = [v38 name];
+  trainTrip13 = [v3 trainTrip];
+  departureStationLocation = [trainTrip13 departureStationLocation];
+  name = [departureStationLocation name];
 
-  if (v39)
+  if (name)
   {
     v62[1] = @"name";
     v63[0] = @"http://schema.org/TrainStation";
     v62[0] = @"@type";
-    v40 = [v3 trainTrip];
-    v41 = [v40 departureStationLocation];
-    v42 = [v41 name];
-    v63[1] = v42;
+    trainTrip14 = [v3 trainTrip];
+    departureStationLocation2 = [trainTrip14 departureStationLocation];
+    name2 = [departureStationLocation2 name];
+    v63[1] = name2;
     v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:2];
     [v6 setObject:v43 forKeyedSubscript:@"departureStation"];
   }
 
-  v44 = [v3 trainTrip];
-  v45 = [v44 arrivalStationLocation];
-  v46 = [v45 name];
+  trainTrip15 = [v3 trainTrip];
+  arrivalStationLocation = [trainTrip15 arrivalStationLocation];
+  name3 = [arrivalStationLocation name];
 
-  if (v46)
+  if (name3)
   {
     v60[1] = @"name";
     v61[0] = @"http://schema.org/TrainStation";
     v60[0] = @"@type";
-    v47 = [v3 trainTrip];
-    v48 = [v47 arrivalStationLocation];
-    v49 = [v48 name];
-    v61[1] = v49;
+    trainTrip16 = [v3 trainTrip];
+    arrivalStationLocation2 = [trainTrip16 arrivalStationLocation];
+    name4 = [arrivalStationLocation2 name];
+    v61[1] = name4;
     v50 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:2];
     [v6 setObject:v50 forKeyedSubscript:@"arrivalStation"];
   }
 
-  v51 = [v3 trainTrip];
-  v52 = [v51 provider];
+  trainTrip17 = [v3 trainTrip];
+  provider = [trainTrip17 provider];
 
-  if (v52)
+  if (provider)
   {
     v58[1] = @"name";
     v59[0] = @"http://schema.org/Organization";
     v58[0] = @"@type";
-    v53 = [v3 trainTrip];
-    v54 = [v53 provider];
-    v59[1] = v54;
+    trainTrip18 = [v3 trainTrip];
+    provider2 = [trainTrip18 provider];
+    v59[1] = provider2;
     v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2];
     [v6 setObject:v55 forKeyedSubscript:@"provider"];
   }
@@ -185,8 +185,8 @@
 
   v23 = objc_alloc(MEMORY[0x277CD4188]);
   v24 = objc_opt_new();
-  v25 = [v24 UUIDString];
-  v26 = [v23 initWithVocabularyIdentifier:v25 spokenPhrase:@"Train" pronunciationHint:0];
+  uUIDString = [v24 UUIDString];
+  v26 = [v23 initWithVocabularyIdentifier:uUIDString spokenPhrase:@"Train" pronunciationHint:0];
 
   v27 = [objc_alloc(MEMORY[0x277CD4270]) initWithItemReference:v26 reservationNumber:v38 bookingTime:v37 reservationStatus:v34 reservationHolderName:v36 actions:0 URL:v35 reservedSeat:0 trainTrip:v32];
 

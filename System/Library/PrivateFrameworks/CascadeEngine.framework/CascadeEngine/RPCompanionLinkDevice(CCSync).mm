@@ -6,8 +6,8 @@
 
 - (id)CC_companionLinkDeviceIdentifier
 {
-  v1 = [a1 idsDeviceIdentifier];
-  v2 = [v1 copy];
+  idsDeviceIdentifier = [self idsDeviceIdentifier];
+  v2 = [idsDeviceIdentifier copy];
 
   return v2;
 }

@@ -1,41 +1,41 @@
 @interface NUMemoryProviderCacheNode
-- (id)_evaluateImage:(id *)a3;
+- (id)_evaluateImage:(id *)image;
 - (id)colorSpace;
 - (id)pixelFormat;
 @end
 
 @implementation NUMemoryProviderCacheNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v5 = [(NUCacheNode *)self inputNode];
-  v6 = [v5 outputImage:a3];
+  inputNode = [(NUCacheNode *)self inputNode];
+  v6 = [inputNode outputImage:image];
 
   if (v6)
   {
     v7 = [[NUProcessorCache alloc] initWithImage:v6];
     [(NUProcessorCache *)v7 setLabel:@"NUMemoryProviderCacheNode"];
-    v8 = [(NUMemoryProviderCacheNode *)self colorSpace];
-    [(NUProcessorCache *)v7 setColorSpace:v8];
+    colorSpace = [(NUMemoryProviderCacheNode *)self colorSpace];
+    [(NUProcessorCache *)v7 setColorSpace:colorSpace];
 
-    v9 = [(NUMemoryProviderCacheNode *)self pixelFormat];
-    [(NUProcessorCache *)v7 setPixelFormat:v9];
+    pixelFormat = [(NUMemoryProviderCacheNode *)self pixelFormat];
+    [(NUProcessorCache *)v7 setPixelFormat:pixelFormat];
 
-    v10 = [(NUProcessorCache *)v7 outputImage];
+    outputImage = [(NUProcessorCache *)v7 outputImage];
   }
 
   else
   {
-    v10 = 0;
+    outputImage = 0;
   }
 
-  return v10;
+  return outputImage;
 }
 
 - (id)pixelFormat
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"pixelFormat"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"pixelFormat"];
   v4 = v3;
   if (v3)
   {
@@ -54,8 +54,8 @@
 
 - (id)colorSpace
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"colorSpace"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"colorSpace"];
   v4 = v3;
   if (v3)
   {

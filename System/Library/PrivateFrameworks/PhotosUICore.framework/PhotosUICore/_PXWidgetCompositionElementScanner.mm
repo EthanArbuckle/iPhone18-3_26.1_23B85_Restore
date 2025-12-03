@@ -1,18 +1,18 @@
 @interface _PXWidgetCompositionElementScanner
-- (BOOL)_wantsEdgeToEdgeLayoutForElement:(id)a3;
+- (BOOL)_wantsEdgeToEdgeLayoutForElement:(id)element;
 - (BOOL)isAtEnd;
-- (BOOL)scanRow:(id *)a3;
-- (void)enumerateElementsUsingBlock:(id)a3;
+- (BOOL)scanRow:(id *)row;
+- (void)enumerateElementsUsingBlock:(id)block;
 @end
 
 @implementation _PXWidgetCompositionElementScanner
 
-- (void)enumerateElementsUsingBlock:(id)a3
+- (void)enumerateElementsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_PXWidgetCompositionElementScanner *)self elements];
+  blockCopy = block;
+  elements = [(_PXWidgetCompositionElementScanner *)self elements];
   v6 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{self->_scannedRowRange.location, self->_scannedRowRange.length}];
-  v7 = [v5 objectsAtIndexes:v6];
+  v7 = [elements objectsAtIndexes:v6];
 
   v25[0] = 0;
   v25[1] = v25;
@@ -33,7 +33,7 @@
       v15[4] = self;
       v17 = v25;
       v18 = v19;
-      v16 = v4;
+      v16 = blockCopy;
       [v7 enumerateObjectsUsingBlock:v15];
 
       _Block_object_dispose(v19, 8);
@@ -62,22 +62,22 @@
     v20[3] = &unk_1E7738248;
     v23 = v14;
     v22 = v25;
-    v21 = v4;
+    v21 = blockCopy;
     [v7 enumerateObjectsUsingBlock:v20];
   }
 
   _Block_object_dispose(v25, 8);
 }
 
-- (BOOL)_wantsEdgeToEdgeLayoutForElement:(id)a3
+- (BOOL)_wantsEdgeToEdgeLayoutForElement:(id)element
 {
-  v4 = a3;
-  v5 = [(_PXWidgetCompositionElementScanner *)self wantsEdgeToEdgeLayoutBlock];
+  elementCopy = element;
+  wantsEdgeToEdgeLayoutBlock = [(_PXWidgetCompositionElementScanner *)self wantsEdgeToEdgeLayoutBlock];
 
-  if (v5)
+  if (wantsEdgeToEdgeLayoutBlock)
   {
-    v6 = [(_PXWidgetCompositionElementScanner *)self wantsEdgeToEdgeLayoutBlock];
-    v7 = (v6)[2](v6, v4);
+    wantsEdgeToEdgeLayoutBlock2 = [(_PXWidgetCompositionElementScanner *)self wantsEdgeToEdgeLayoutBlock];
+    v7 = (wantsEdgeToEdgeLayoutBlock2)[2](wantsEdgeToEdgeLayoutBlock2, elementCopy);
   }
 
   else
@@ -88,28 +88,28 @@
   return v7;
 }
 
-- (BOOL)scanRow:(id *)a3
+- (BOOL)scanRow:(id *)row
 {
   self->_scannedRowRange.location = self->_scanLocation;
   self->_scannedRowRange.length = 0;
   if (![(_PXWidgetCompositionElementScanner *)self isAtEnd])
   {
-    v5 = [(_PXWidgetCompositionElementScanner *)self elements];
+    elements = [(_PXWidgetCompositionElementScanner *)self elements];
     self->_scannedRowRange.length = 1;
-    v6 = [v5 objectAtIndexedSubscript:self->_scannedRowRange.location];
+    v6 = [elements objectAtIndexedSubscript:self->_scannedRowRange.location];
     if (![(_PXWidgetCompositionElementScanner *)self _wantsEdgeToEdgeLayoutForElement:v6])
     {
-      v7 = [v5 count];
-      v8 = [(_PXWidgetCompositionElementScanner *)self maximumNumberOfColumns];
+      v7 = [elements count];
+      maximumNumberOfColumns = [(_PXWidgetCompositionElementScanner *)self maximumNumberOfColumns];
       length = self->_scannedRowRange.length;
       if (length + self->_scannedRowRange.location < v7)
       {
-        v10 = v8;
-        if (length < v8)
+        v10 = maximumNumberOfColumns;
+        if (length < maximumNumberOfColumns)
         {
           while (1)
           {
-            v11 = [v5 objectAtIndexedSubscript:?];
+            v11 = [elements objectAtIndexedSubscript:?];
             if ([(_PXWidgetCompositionElementScanner *)self _wantsEdgeToEdgeLayoutForElement:v11])
             {
               break;
@@ -134,10 +134,10 @@ LABEL_13:
   if (v14)
   {
     self->_scanLocation = self->_scannedRowRange.location + v14;
-    if (a3)
+    if (row)
     {
-      v15 = self;
-      *a3 = self;
+      selfCopy = self;
+      *row = self;
     }
   }
 
@@ -147,8 +147,8 @@ LABEL_13:
 - (BOOL)isAtEnd
 {
   scanLocation = self->_scanLocation;
-  v3 = [(_PXWidgetCompositionElementScanner *)self elements];
-  LOBYTE(scanLocation) = scanLocation >= [v3 count];
+  elements = [(_PXWidgetCompositionElementScanner *)self elements];
+  LOBYTE(scanLocation) = scanLocation >= [elements count];
 
   return scanLocation;
 }

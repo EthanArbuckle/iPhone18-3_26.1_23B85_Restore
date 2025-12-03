@@ -1,6 +1,6 @@
 @interface AchievementCard
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (NSDate)accessibilityAchievementCompletedDate;
 - (_TtC12GameCenterUI16AchievementBadge)accessibilityBadge;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilitySubtitleLabel;
@@ -14,21 +14,21 @@
 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
-  v2 = self;
+  selfCopy = self;
   AchievementCard._dynamicUserInterfaceTraitDidChange()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AchievementCard.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = AchievementCard.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_24E27B6E8();
   v8 = v7;
   v10 = v9;
@@ -100,7 +100,7 @@
 
 - (void)didTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E27A1A0();
 }
 

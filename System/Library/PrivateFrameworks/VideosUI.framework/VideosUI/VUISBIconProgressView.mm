@@ -1,35 +1,35 @@
 @interface VUISBIconProgressView
-+ (id)_pieImageAtFraction:(double)a3;
++ (id)_pieImageAtFraction:(double)fraction;
 + (id)_pieImagesMemoryPool;
 - (CGRect)circleBoundingRect;
-- (VUISBIconProgressView)initWithFrame:(CGRect)a3;
+- (VUISBIconProgressView)initWithFrame:(CGRect)frame;
 - (id)_maskImage;
 - (void)_clearDisplayLink;
-- (void)_clearTransitionIfComplete:(id *)a3;
-- (void)_drawIncomingCircleWithCenter:(CGPoint)a3;
-- (void)_drawOutgoingCircleWithCenter:(CGPoint)a3;
-- (void)_drawPauseUIWithCenter:(CGPoint)a3;
-- (void)_drawPieWithCenter:(CGPoint)a3;
+- (void)_clearTransitionIfComplete:(id *)complete;
+- (void)_drawIncomingCircleWithCenter:(CGPoint)center;
+- (void)_drawOutgoingCircleWithCenter:(CGPoint)center;
+- (void)_drawPauseUIWithCenter:(CGPoint)center;
+- (void)_drawPieWithCenter:(CGPoint)center;
 - (void)_ensureDisplayLink;
-- (void)_onDisplayLink:(id)a3;
-- (void)_updateFractionTransitionAnimated:(BOOL)a3;
-- (void)_updatePausedTransitionAnimated:(BOOL)a3;
-- (void)_updateStateTransitionAnimated:(BOOL)a3;
-- (void)_updateTransitionsAnimated:(BOOL)a3;
+- (void)_onDisplayLink:(id)link;
+- (void)_updateFractionTransitionAnimated:(BOOL)animated;
+- (void)_updatePausedTransitionAnimated:(BOOL)animated;
+- (void)_updateStateTransitionAnimated:(BOOL)animated;
+- (void)_updateTransitionsAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setCanAnimate:(BOOL)a3;
-- (void)setOverlayImage:(id)a3;
-- (void)setState:(int64_t)a3 paused:(BOOL)a4 fractionLoaded:(double)a5 animated:(BOOL)a6;
+- (void)drawRect:(CGRect)rect;
+- (void)setCanAnimate:(BOOL)animate;
+- (void)setOverlayImage:(id)image;
+- (void)setState:(int64_t)state paused:(BOOL)paused fractionLoaded:(double)loaded animated:(BOOL)animated;
 @end
 
 @implementation VUISBIconProgressView
 
-- (VUISBIconProgressView)initWithFrame:(CGRect)a3
+- (VUISBIconProgressView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VUISBIconProgressView;
-  v3 = [(VUISBIconProgressView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUISBIconProgressView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,18 +50,18 @@
   [(VUISBIconProgressView *)&v3 dealloc];
 }
 
-- (void)setState:(int64_t)a3 paused:(BOOL)a4 fractionLoaded:(double)a5 animated:(BOOL)a6
+- (void)setState:(int64_t)state paused:(BOOL)paused fractionLoaded:(double)loaded animated:(BOOL)animated
 {
-  self->_modelState = a3;
-  self->_modelPaused = a4;
-  self->_modelFraction = a5;
-  [(VUISBIconProgressView *)self _updateTransitionsAnimated:a6];
+  self->_modelState = state;
+  self->_modelPaused = paused;
+  self->_modelFraction = loaded;
+  [(VUISBIconProgressView *)self _updateTransitionsAnimated:animated];
 }
 
-- (void)setCanAnimate:(BOOL)a3
+- (void)setCanAnimate:(BOOL)animate
 {
-  self->_canAnimate = a3;
-  if (!a3)
+  self->_canAnimate = animate;
+  if (!animate)
   {
     [(VUISBIconProgressView *)self _clearDisplayLink];
 
@@ -69,21 +69,21 @@
   }
 }
 
-- (void)setOverlayImage:(id)a3
+- (void)setOverlayImage:(id)image
 {
-  if (self->_overlayImage != a3)
+  if (self->_overlayImage != image)
   {
 
     self->_maskImage = 0;
-    self->_overlayImage = a3;
+    self->_overlayImage = image;
 
     [(VUISBIconProgressView *)self setNeedsDisplay];
   }
 }
 
-- (void)_updateTransitionsAnimated:(BOOL)a3
+- (void)_updateTransitionsAnimated:(BOOL)animated
 {
-  v4 = self->_canAnimate && a3;
+  v4 = self->_canAnimate && animated;
   [(VUISBIconProgressView *)self _clearTransitionIfComplete:&self->_activePausedTransition];
   [(VUISBIconProgressView *)self _clearTransitionIfComplete:&self->_activeStateTransition];
   [(VUISBIconProgressView *)self _updatePausedTransitionAnimated:v4];
@@ -95,8 +95,8 @@
 
   [(VUISBIconProgressView *)self _clearTransitionIfComplete:&self->_activeFractionTransition];
   [(VUISBIconProgressView *)self _updateFractionTransitionAnimated:v4];
-  v5 = [(VUISBIconProgressView *)self _hasActiveTransitions];
-  if (v5 && v4)
+  _hasActiveTransitions = [(VUISBIconProgressView *)self _hasActiveTransitions];
+  if (_hasActiveTransitions && v4)
   {
 
     [(VUISBIconProgressView *)self _ensureDisplayLink];
@@ -104,7 +104,7 @@
 
   else
   {
-    v6 = v5;
+    v6 = _hasActiveTransitions;
     [(VUISBIconProgressView *)self _clearDisplayLink];
     if (v6)
     {
@@ -117,7 +117,7 @@
   }
 }
 
-- (void)_updatePausedTransitionAnimated:(BOOL)a3
+- (void)_updatePausedTransitionAnimated:(BOOL)animated
 {
   activePausedTransition = self->_activePausedTransition;
   if (activePausedTransition)
@@ -133,13 +133,13 @@
   }
 }
 
-- (void)_updateStateTransitionAnimated:(BOOL)a3
+- (void)_updateStateTransitionAnimated:(BOOL)animated
 {
   if (!self->_activeStateTransition)
   {
     displayedState = self->_displayedState;
     modelState = self->_modelState;
-    if (displayedState != modelState && (!a3 || !self->_activePausedTransition && !self->_displayingPaused))
+    if (displayedState != modelState && (!animated || !self->_activePausedTransition && !self->_displayingPaused))
     {
       if (displayedState == 2)
       {
@@ -173,9 +173,9 @@
   }
 }
 
-- (void)_updateFractionTransitionAnimated:(BOOL)a3
+- (void)_updateFractionTransitionAnimated:(BOOL)animated
 {
-  if (a3 && (self->_activePausedTransition || self->_activeStateTransition || self->_displayedState != 2 || self->_displayingPaused))
+  if (animated && (self->_activePausedTransition || self->_activeStateTransition || self->_displayedState != 2 || self->_displayingPaused))
   {
 
     self->_activeFractionTransition = 0;
@@ -185,7 +185,7 @@
   {
     modelFraction = self->_modelFraction;
     displayedFraction = self->_displayedFraction;
-    if (vabdd_f64(modelFraction, displayedFraction) >= 2.22044605e-16 && (!a3 || displayedFraction - modelFraction <= 0.00000011920929))
+    if (vabdd_f64(modelFraction, displayedFraction) >= 2.22044605e-16 && (!animated || displayedFraction - modelFraction <= 0.00000011920929))
     {
       activeFractionTransition = self->_activeFractionTransition;
       if (activeFractionTransition)
@@ -202,16 +202,16 @@
   }
 }
 
-- (void)_clearTransitionIfComplete:(id *)a3
+- (void)_clearTransitionIfComplete:(id *)complete
 {
-  if ([*a3 isCompleteWithView:self])
+  if ([*complete isCompleteWithView:self])
   {
 
-    *a3 = 0;
+    *complete = 0;
   }
 }
 
-- (void)_onDisplayLink:(id)a3
+- (void)_onDisplayLink:(id)link
 {
   Current = CFAbsoluteTimeGetCurrent();
   v5 = Current - self->_lastUpdate;
@@ -239,10 +239,10 @@
     self->_displayLink = v3;
     [(CADisplayLink *)v3 setPreferredFramesPerSecond:30];
     displayLink = self->_displayLink;
-    v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
     v6 = *MEMORY[0x1E695DA28];
 
-    [(CADisplayLink *)displayLink addToRunLoop:v5 forMode:v6];
+    [(CADisplayLink *)displayLink addToRunLoop:mainRunLoop forMode:v6];
   }
 }
 
@@ -253,7 +253,7 @@
   self->_displayLink = 0;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (fabs(self->_backgroundAlpha) >= 2.22044605e-16)
   {
@@ -331,19 +331,19 @@ uint64_t __45__VUISBIconProgressView__pieImagesMemoryPool__block_invoke()
   return result;
 }
 
-+ (id)_pieImageAtFraction:(double)a3
++ (id)_pieImageAtFraction:(double)fraction
 {
   if (_pieImageAtFraction__onceToken != -1)
   {
     +[VUISBIconProgressView _pieImageAtFraction:];
   }
 
-  LODWORD(v3) = vcvtad_u64_f64(a3 * 100.0);
+  LODWORD(v3) = vcvtad_u64_f64(fraction * 100.0);
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
   v7 = [_pieImageAtFraction__pieImageCache objectForKey:v6];
   if (!v7)
   {
-    v8 = [a1 _pieImagesMemoryPool];
+    _pieImagesMemoryPool = [self _pieImagesMemoryPool];
     v9 = MEMORY[0x1E69DCAB8];
     [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
     v12[0] = MEMORY[0x1E69E9820];
@@ -352,8 +352,8 @@ uint64_t __45__VUISBIconProgressView__pieImagesMemoryPool__block_invoke()
     v12[3] = &__block_descriptor_72_e5_v8__0l;
     v13 = vdupq_n_s64(0x4053800000000000uLL);
     v14 = xmmword_1E4296D50;
-    v15 = a3;
-    v7 = [v9 vui_imageFromContextWithSize:0 scale:v8 type:v12 pool:78.0 drawing:{78.0, v10}];
+    fractionCopy = fraction;
+    v7 = [v9 vui_imageFromContextWithSize:0 scale:_pieImagesMemoryPool type:v12 pool:78.0 drawing:{78.0, v10}];
     if (v7)
     {
       [_pieImageAtFraction__pieImageCache setObject:v7 forKey:v6];
@@ -398,10 +398,10 @@ uint64_t __45__VUISBIconProgressView__pieImageAtFraction___block_invoke_2(CGFloa
   return result;
 }
 
-- (void)_drawPieWithCenter:(CGPoint)a3
+- (void)_drawPieWithCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v5 = [objc_opt_class() _pieImageAtFraction:self->_displayedFraction];
   [v5 size];
   v7 = v6;
@@ -412,10 +412,10 @@ uint64_t __45__VUISBIconProgressView__pieImageAtFraction___block_invoke_2(CGFloa
   [v5 drawInRect:17 blendMode:v10 alpha:{v11, v7, v9, 1.0}];
 }
 
-- (void)_drawOutgoingCircleWithCenter:(CGPoint)a3
+- (void)_drawOutgoingCircleWithCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   if (self->_overlayImage)
@@ -433,12 +433,12 @@ uint64_t __45__VUISBIconProgressView__pieImageAtFraction___block_invoke_2(CGFloa
       self->_maskImage = maskImage;
     }
 
-    v20 = [(UIImage *)maskImage CGImage];
+    cGImage = [(UIImage *)maskImage CGImage];
     v22.origin.x = v8;
     v22.origin.y = v10;
     v22.size.width = v12;
     v22.size.height = v14;
-    CGContextClipToMask(CurrentContext, v22, v20);
+    CGContextClipToMask(CurrentContext, v22, cGImage);
   }
 
   [objc_msgSend(MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:{self->_foregroundAlpha * 0.2), "set"}];
@@ -447,10 +447,10 @@ uint64_t __45__VUISBIconProgressView__pieImageAtFraction___block_invoke_2(CGFloa
   CGContextRestoreGState(CurrentContext);
 }
 
-- (void)_drawIncomingCircleWithCenter:(CGPoint)a3
+- (void)_drawIncomingCircleWithCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [objc_msgSend(MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:{0.2), "set"}];
   v6 = self->_circleRadiusFraction * 36.0;
   v7 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:x startAngle:y endAngle:v6 clockwise:{0.0, 6.28318531}];
@@ -466,11 +466,11 @@ uint64_t __45__VUISBIconProgressView__pieImageAtFraction___block_invoke_2(CGFloa
   [v8 strokeWithBlendMode:17 alpha:1.0];
 }
 
-- (void)_drawPauseUIWithCenter:(CGPoint)a3
+- (void)_drawPauseUIWithCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:a3.x startAngle:a3.y endAngle:self->_pauseRadiusFraction * 13.0 clockwise:{0.0, 6.28318531}];
+  y = center.y;
+  x = center.x;
+  v5 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:center.x startAngle:center.y endAngle:self->_pauseRadiusFraction * 13.0 clockwise:{0.0, 6.28318531}];
   [v5 addClip];
   [objc_msgSend(MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:{0.7), "set"}];
   [v5 fillWithBlendMode:17 alpha:1.0];

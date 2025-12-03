@@ -1,56 +1,56 @@
 @interface CloudBookmark
-+ (id)_decodedSyncDataInData:(id)a3;
-+ (id)cloudBookmarkForReparentedItemWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6;
-+ (id)cloudBookmarkToMigrateItemWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6;
-+ (id)cloudBookmarkWithAddedRecord:(id)a3 configuration:(id)a4 inDatabase:(void *)a5 databaseAccessor:(id)a6 updater:(id)a7;
-+ (id)cloudBookmarkWithChange:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5;
-+ (id)cloudBookmarkWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6;
-+ (id)positionForItemWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5;
-+ (void)applyPendingReferences:(id)a3 toItemWithRecordName:(id)a4 inDatabase:(void *)a5 databaseAccessor:(id)a6 updater:(id)a7;
-+ (void)updateSyncDataGenerationsWithChange:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5;
-- (BOOL)_canApplyValue:(id)a3 withGeneration:(id)a4 toAttribute:(id)a5 updater:(id)a6;
-- (BOOL)_updateRecordWithChange:(void *)a3 updater:(id)a4;
-- (BOOL)_updateRecordWithMissingAttributesWithUpdater:(id)a3;
-- (BOOL)isDuplicateOfBookmark:(id)a3;
-- (id)_createParentFolderReferenceWithRecordName:(id)a3 updater:(id)a4;
-- (id)_createRecordIDWithName:(id)a3 updater:(id)a4;
-- (id)_createRecordWithRecordName:(id)a3 updater:(id)a4;
-- (id)_generateIdentityHashUsingUpdater:(id)a3;
-- (id)_initWithAddedRecord:(id)a3 configuration:(id)a4 forItem:(void *)a5 databaseAccessor:(id)a6 updater:(id)a7;
-- (id)_initWithChange:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5;
-- (id)_initWithConfiguration:(id)a3 deleteChange:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6;
-- (id)_initWithItem:(void *)a3 configuration:(id)a4 databaseAccessor:(id)a5;
-- (id)_initWithItem:(void *)a3 configuration:(id)a4 syncData:(id)a5 databaseAccessor:(id)a6;
-- (id)_initWithItemToMigrate:(void *)a3 configuration:(id)a4 databaseAccessor:(id)a5 updater:(id)a6;
-- (id)_initWithReparentedItem:(void *)a3 configuration:(id)a4 databaseAccessor:(id)a5 updater:(id)a6;
-- (id)_modifiedOrLocalIdentityHashWithUpdater:(id)a3;
-- (id)_modifiedOrLocalParentReferenceWithUpdater:(id)a3;
-- (id)_transformedModifiedOrLocalValueForKey:(id)a3 isEncrypted:(BOOL *)a4;
-- (id)modifiedOrLocalValueForKey:(id)a3;
-- (unint64_t)_resultByMergingMinimumAPIVersionWithRecord:(id)a3;
-- (unint64_t)_resultByMergingParentAndPositionWithRecord:(id)a3 usingUpdater:(id)a4;
-- (unint64_t)_resultByMergingStateWithRecord:(id)a3 shouldContinueMerge:(BOOL *)a4;
++ (id)_decodedSyncDataInData:(id)data;
++ (id)cloudBookmarkForReparentedItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater;
++ (id)cloudBookmarkToMigrateItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater;
++ (id)cloudBookmarkWithAddedRecord:(id)record configuration:(id)configuration inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater;
++ (id)cloudBookmarkWithChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater;
++ (id)cloudBookmarkWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater;
++ (id)positionForItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor;
++ (void)applyPendingReferences:(id)references toItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater;
++ (void)updateSyncDataGenerationsWithChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater;
+- (BOOL)_canApplyValue:(id)value withGeneration:(id)generation toAttribute:(id)attribute updater:(id)updater;
+- (BOOL)_updateRecordWithChange:(void *)change updater:(id)updater;
+- (BOOL)_updateRecordWithMissingAttributesWithUpdater:(id)updater;
+- (BOOL)isDuplicateOfBookmark:(id)bookmark;
+- (id)_createParentFolderReferenceWithRecordName:(id)name updater:(id)updater;
+- (id)_createRecordIDWithName:(id)name updater:(id)updater;
+- (id)_createRecordWithRecordName:(id)name updater:(id)updater;
+- (id)_generateIdentityHashUsingUpdater:(id)updater;
+- (id)_initWithAddedRecord:(id)record configuration:(id)configuration forItem:(void *)item databaseAccessor:(id)accessor updater:(id)updater;
+- (id)_initWithChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater;
+- (id)_initWithConfiguration:(id)configuration deleteChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater;
+- (id)_initWithItem:(void *)item configuration:(id)configuration databaseAccessor:(id)accessor;
+- (id)_initWithItem:(void *)item configuration:(id)configuration syncData:(id)data databaseAccessor:(id)accessor;
+- (id)_initWithItemToMigrate:(void *)migrate configuration:(id)configuration databaseAccessor:(id)accessor updater:(id)updater;
+- (id)_initWithReparentedItem:(void *)item configuration:(id)configuration databaseAccessor:(id)accessor updater:(id)updater;
+- (id)_modifiedOrLocalIdentityHashWithUpdater:(id)updater;
+- (id)_modifiedOrLocalParentReferenceWithUpdater:(id)updater;
+- (id)_transformedModifiedOrLocalValueForKey:(id)key isEncrypted:(BOOL *)encrypted;
+- (id)modifiedOrLocalValueForKey:(id)key;
+- (unint64_t)_resultByMergingMinimumAPIVersionWithRecord:(id)record;
+- (unint64_t)_resultByMergingParentAndPositionWithRecord:(id)record usingUpdater:(id)updater;
+- (unint64_t)_resultByMergingStateWithRecord:(id)record shouldContinueMerge:(BOOL *)merge;
 - (unint64_t)duplicateHash;
-- (unint64_t)resultFromMergingRecord:(id)a3 usingUpdater:(id)a4 isLocalUpdateOnly:(BOOL)a5;
-- (void)_applyPendingReferences:(id)a3;
-- (void)_loadAttributesForKnownKeysIntoEmptyItemUsingRemoteRecord:(id)a3 updater:(id)a4;
-- (void)_updateGenerationsForAttributeKeys:(id)a3 withDeviceIdentifier:(id)a4;
-- (void)_updateGenerationsForChange:(void *)a3 withDeviceIdentifier:(id)a4;
-- (void)_updateRecordParentAndPositionWithUpdater:(id)a3;
-- (void)_updateRecordWithModifiedAttributes:(id)a3 updater:(id)a4;
+- (unint64_t)resultFromMergingRecord:(id)record usingUpdater:(id)updater isLocalUpdateOnly:(BOOL)only;
+- (void)_applyPendingReferences:(id)references;
+- (void)_loadAttributesForKnownKeysIntoEmptyItemUsingRemoteRecord:(id)record updater:(id)updater;
+- (void)_updateGenerationsForAttributeKeys:(id)keys withDeviceIdentifier:(id)identifier;
+- (void)_updateGenerationsForChange:(void *)change withDeviceIdentifier:(id)identifier;
+- (void)_updateRecordParentAndPositionWithUpdater:(id)updater;
+- (void)_updateRecordWithModifiedAttributes:(id)attributes updater:(id)updater;
 - (void)dealloc;
-- (void)saveAssetsIfNeededWithUpdater:(id)a3;
-- (void)updateLocalItemWithUpdater:(id)a3;
+- (void)saveAssetsIfNeededWithUpdater:(id)updater;
+- (void)updateLocalItemWithUpdater:(id)updater;
 @end
 
 @implementation CloudBookmark
 
-+ (id)positionForItemWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5
++ (id)positionForItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor
 {
-  v7 = a3;
-  v8 = a5;
+  nameCopy = name;
+  accessorCopy = accessor;
   v9 = objc_autoreleasePoolPush();
-  if ([v7 isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark])
+  if ([nameCopy isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark])
   {
     v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -61,11 +61,11 @@
 
   else
   {
-    v11 = [v8 copyItemWithServerId:v7 database:a4];
+    v11 = [accessorCopy copyItemWithServerId:nameCopy database:database];
     if (v11)
     {
       v12 = v11;
-      v13 = [v8 copySyncDataWithItem:v11];
+      v13 = [accessorCopy copySyncDataWithItem:v11];
       v14 = [WBBookmarkSyncData positionFromContentsOfData:v13];
 
       CFRelease(v12);
@@ -80,12 +80,12 @@ LABEL_7:
   return v14;
 }
 
-+ (id)cloudBookmarkWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6
++ (id)cloudBookmarkWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 copyItemWithServerId:v10 database:a4];
+  nameCopy = name;
+  accessorCopy = accessor;
+  updaterCopy = updater;
+  v13 = [accessorCopy copyItemWithServerId:nameCopy database:database];
   if (v13)
   {
     v14 = v13;
@@ -96,20 +96,20 @@ LABEL_7:
     v40[3] = &unk_1001321B8;
     v40[4] = v14;
     [v15 setHandler:v40];
-    v16 = [v11 copySyncDataWithItem:v14];
+    v16 = [accessorCopy copySyncDataWithItem:v14];
     v17 = [WBBookmarkSyncData syncDataWithContentsOfData:v16];
 
     if (v17)
     {
-      v18 = [v12 itemConfigurations];
+      itemConfigurations = [updaterCopy itemConfigurations];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_10001C5C4;
       v37[3] = &unk_1001321E0;
       v39 = v14;
-      v19 = v11;
+      v19 = accessorCopy;
       v38 = v19;
-      v20 = [v18 safari_firstObjectPassingTest:v37];
+      v20 = [itemConfigurations safari_firstObjectPassingTest:v37];
 
       v21 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       v22 = v21;
@@ -118,16 +118,16 @@ LABEL_7:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v23 = v22;
-          v36 = a1;
+          selfCopy = self;
           v24 = [v19 copyServerIdWithItem:v14];
           *buf = 138543362;
           v42 = v24;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Creating CloudBookmark to update locally with record name: %{public}@", buf, 0xCu);
 
-          a1 = v36;
+          self = selfCopy;
         }
 
-        v25 = [[a1 alloc] _initWithItem:v14 configuration:v20 syncData:v17 databaseAccessor:v19];
+        v25 = [[self alloc] _initWithItem:v14 configuration:v20 syncData:v17 databaseAccessor:v19];
       }
 
       else
@@ -147,7 +147,7 @@ LABEL_7:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v42 = v10;
+        v42 = nameCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Item with record name does not have sync data: %{public}@", buf, 0xCu);
       }
 
@@ -161,7 +161,7 @@ LABEL_7:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v42 = v10;
+      v42 = nameCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Unknown item with record name: %{public}@", buf, 0xCu);
     }
 
@@ -171,12 +171,12 @@ LABEL_7:
   return v25;
 }
 
-+ (id)cloudBookmarkForReparentedItemWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6
++ (id)cloudBookmarkForReparentedItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 copyItemWithServerId:v10 database:a4];
+  nameCopy = name;
+  accessorCopy = accessor;
+  updaterCopy = updater;
+  v13 = [accessorCopy copyItemWithServerId:nameCopy database:database];
   if (v13)
   {
     v14 = v13;
@@ -187,19 +187,19 @@ LABEL_7:
     v26[3] = &unk_1001321B8;
     v26[4] = v14;
     [v15 setHandler:v26];
-    v16 = [v12 itemConfigurations];
+    itemConfigurations = [updaterCopy itemConfigurations];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10001C7E8;
     v23[3] = &unk_1001321E0;
     v25 = v14;
-    v17 = v11;
+    v17 = accessorCopy;
     v24 = v17;
-    v18 = [v16 safari_firstObjectPassingTest:v23];
+    v18 = [itemConfigurations safari_firstObjectPassingTest:v23];
 
     if (v18)
     {
-      v19 = [[a1 alloc] _initWithReparentedItem:v14 configuration:v18 databaseAccessor:v17 updater:v12];
+      v19 = [[self alloc] _initWithReparentedItem:v14 configuration:v18 databaseAccessor:v17 updater:updaterCopy];
     }
 
     else
@@ -228,12 +228,12 @@ LABEL_7:
   return v19;
 }
 
-+ (id)cloudBookmarkToMigrateItemWithRecordName:(id)a3 inDatabase:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6
++ (id)cloudBookmarkToMigrateItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 copyItemWithServerId:v10 database:a4];
+  nameCopy = name;
+  accessorCopy = accessor;
+  updaterCopy = updater;
+  v13 = [accessorCopy copyItemWithServerId:nameCopy database:database];
   if (v13)
   {
     v14 = v13;
@@ -244,19 +244,19 @@ LABEL_7:
     v26[3] = &unk_1001321B8;
     v26[4] = v14;
     [v15 setHandler:v26];
-    v16 = [v12 itemConfigurations];
+    itemConfigurations = [updaterCopy itemConfigurations];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10001CA0C;
     v23[3] = &unk_1001321E0;
     v25 = v14;
-    v17 = v11;
+    v17 = accessorCopy;
     v24 = v17;
-    v18 = [v16 safari_firstObjectPassingTest:v23];
+    v18 = [itemConfigurations safari_firstObjectPassingTest:v23];
 
     if (v18)
     {
-      v19 = [[a1 alloc] _initWithItemToMigrate:v14 configuration:v18 databaseAccessor:v17 updater:v12];
+      v19 = [[self alloc] _initWithItemToMigrate:v14 configuration:v18 databaseAccessor:v17 updater:updaterCopy];
     }
 
     else
@@ -285,28 +285,28 @@ LABEL_7:
   return v19;
 }
 
-+ (void)updateSyncDataGenerationsWithChange:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5
++ (void)updateSyncDataGenerationsWithChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 changeTypeForChange:a3];
-  v11 = [v9 deviceIdentifier];
+  accessorCopy = accessor;
+  updaterCopy = updater;
+  v10 = [accessorCopy changeTypeForChange:change];
+  deviceIdentifier = [updaterCopy deviceIdentifier];
   if (v10 == 2)
   {
-    v12 = [v8 copyServerIdWithChange:a3];
+    v12 = [accessorCopy copyServerIdWithChange:change];
     if ([v12 length])
     {
-      v13 = [v8 copyDeletedBookmarkSyncDataWithChange:a3];
+      v13 = [accessorCopy copyDeletedBookmarkSyncDataWithChange:change];
       v14 = [WBBookmarkSyncData syncDataWithContentsOfData:v13];
 
       if (v14)
       {
-        v15 = [v14 record];
+        record = [v14 record];
 
-        if (v15)
+        if (record)
         {
           [v14 clearAllGenerationsExceptState];
-          [v14 incrementGenerationForKey:@"Deleted" withDeviceIdentifier:v11];
+          [v14 incrementGenerationForKey:@"Deleted" withDeviceIdentifier:deviceIdentifier];
           v16 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
@@ -319,8 +319,8 @@ LABEL_7:
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Updating state generation of deleted record with name: %{public}@, generation: %{public}@", buf, 0x16u);
           }
 
-          v19 = [v14 encodedBookmarkSyncData];
-          [v8 setDeletedBookmarkSyncData:v19 change:a3];
+          encodedBookmarkSyncData = [v14 encodedBookmarkSyncData];
+          [accessorCopy setDeletedBookmarkSyncData:encodedBookmarkSyncData change:change];
         }
 
         else
@@ -364,25 +364,25 @@ LABEL_7:
 
   else
   {
-    v21 = [v9 itemConfigurations];
+    itemConfigurations = [updaterCopy itemConfigurations];
     v32 = _NSConcreteStackBlock;
     v33 = 3221225472;
     v34 = sub_10001CDD4;
     v35 = &unk_1001321E0;
-    v37 = a3;
-    v22 = v8;
+    changeCopy = change;
+    v22 = accessorCopy;
     v36 = v22;
-    v23 = [v21 safari_firstObjectPassingTest:&v32];
+    v23 = [itemConfigurations safari_firstObjectPassingTest:&v32];
 
     if (v23)
     {
-      v24 = [v22 copyChangedItemWithChange:{a3, v32, v33, v34, v35}];
+      v24 = [v22 copyChangedItemWithChange:{change, v32, v33, v34, v35}];
       if (v24)
       {
         v25 = v24;
-        v26 = [[a1 alloc] _initWithItem:v24 configuration:v23 databaseAccessor:v22];
-        [v26 _updateGenerationsForChange:a3 withDeviceIdentifier:v11];
-        [v26 updateLocalItemWithUpdater:v9];
+        v26 = [[self alloc] _initWithItem:v24 configuration:v23 databaseAccessor:v22];
+        [v26 _updateGenerationsForChange:change withDeviceIdentifier:deviceIdentifier];
+        [v26 updateLocalItemWithUpdater:updaterCopy];
         CFRelease(v25);
       }
 
@@ -391,7 +391,7 @@ LABEL_7:
         v31 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          sub_100022B10(v31, a3, v22);
+          sub_100022B10(v31, change, v22);
         }
       }
     }
@@ -407,36 +407,36 @@ LABEL_7:
   }
 }
 
-+ (id)cloudBookmarkWithChange:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5
++ (id)cloudBookmarkWithChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] _initWithChange:a3 databaseAccessor:v9 updater:v8];
+  updaterCopy = updater;
+  accessorCopy = accessor;
+  v10 = [[self alloc] _initWithChange:change databaseAccessor:accessorCopy updater:updaterCopy];
 
   return v10;
 }
 
-+ (id)cloudBookmarkWithAddedRecord:(id)a3 configuration:(id)a4 inDatabase:(void *)a5 databaseAccessor:(id)a6 updater:(id)a7
++ (id)cloudBookmarkWithAddedRecord:(id)record configuration:(id)configuration inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 safari_recordName];
-  v17 = [v14 copyItemWithServerId:v16 database:a5];
+  recordCopy = record;
+  configurationCopy = configuration;
+  accessorCopy = accessor;
+  updaterCopy = updater;
+  safari_recordName = [recordCopy safari_recordName];
+  v17 = [accessorCopy copyItemWithServerId:safari_recordName database:database];
   v18 = v17;
   if (v17)
   {
     CFAutorelease(v17);
   }
 
-  v19 = [v13 itemType];
-  if (v19 == 1)
+  itemType = [configurationCopy itemType];
+  if (itemType == 1)
   {
-    v30 = [v13 itemSubtype];
+    itemSubtype = [configurationCopy itemSubtype];
     if (v18)
     {
-      if ([v14 itemTypeWithItem:v18] != 1)
+      if ([accessorCopy itemTypeWithItem:v18] != 1)
       {
         v31 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -451,7 +451,7 @@ LABEL_7:
         }
       }
 
-      if ([v14 folderTypeWithFolder:v18] == v30)
+      if ([accessorCopy folderTypeWithFolder:v18] == itemSubtype)
       {
         goto LABEL_34;
       }
@@ -460,13 +460,13 @@ LABEL_7:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         v42 = v33;
-        v43 = sub_10001D49C(v30);
+        v43 = sub_10001D49C(itemSubtype);
         v44 = 138543874;
         v45 = v43;
         v46 = 2048;
         v47 = v18;
         v48 = 2048;
-        v49 = [v14 bookmarkTypeWithBookmark:v18];
+        v49 = [accessorCopy bookmarkTypeWithBookmark:v18];
         _os_log_error_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "Expecting %{public}@ folder type for local folder item %p, but got %ld", &v44, 0x20u);
       }
 
@@ -477,8 +477,8 @@ LABEL_7:
       }
 
       v26 = v34;
-      v27 = sub_10001D49C(v30);
-      v35 = [v14 bookmarkTypeWithBookmark:v18];
+      v27 = sub_10001D49C(itemSubtype);
+      v35 = [accessorCopy bookmarkTypeWithBookmark:v18];
       v44 = 138543875;
       v45 = v27;
       v46 = 2113;
@@ -490,22 +490,22 @@ LABEL_27:
       _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, v29, &v44, 0x20u);
 
 LABEL_34:
-      v37 = [[a1 alloc] _initWithAddedRecord:v12 configuration:v13 forItem:v18 databaseAccessor:v14 updater:v15];
+      v37 = [[self alloc] _initWithAddedRecord:recordCopy configuration:configurationCopy forItem:v18 databaseAccessor:accessorCopy updater:updaterCopy];
       goto LABEL_35;
     }
 
-    v38 = [v14 createFolderWithType:v30 database:a5];
+    v38 = [accessorCopy createFolderWithType:itemSubtype database:database];
 LABEL_33:
     v18 = CFAutorelease(v38);
     goto LABEL_34;
   }
 
-  if (!v19)
+  if (!itemType)
   {
-    v20 = [v13 itemSubtype];
+    itemSubtype2 = [configurationCopy itemSubtype];
     if (v18)
     {
-      if ([v14 itemTypeWithItem:v18])
+      if ([accessorCopy itemTypeWithItem:v18])
       {
         v21 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -520,8 +520,8 @@ LABEL_33:
         }
       }
 
-      v23 = [v14 bookmarkTypeWithBookmark:v18];
-      if (v23 == [v13 itemSubtype])
+      v23 = [accessorCopy bookmarkTypeWithBookmark:v18];
+      if (v23 == [configurationCopy itemSubtype])
       {
         goto LABEL_34;
       }
@@ -530,13 +530,13 @@ LABEL_33:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v40 = v24;
-        v41 = sub_10001D42C(v20);
+        v41 = sub_10001D42C(itemSubtype2);
         v44 = 138543874;
         v45 = v41;
         v46 = 2048;
         v47 = v18;
         v48 = 2048;
-        v49 = [v14 bookmarkTypeWithBookmark:v18];
+        v49 = [accessorCopy bookmarkTypeWithBookmark:v18];
         _os_log_error_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "Expecting %{public}@ type for local bookmark item %p, but got %ld", &v44, 0x20u);
       }
 
@@ -547,8 +547,8 @@ LABEL_33:
       }
 
       v26 = v25;
-      v27 = sub_10001D42C(v20);
-      v28 = [v14 bookmarkTypeWithBookmark:v18];
+      v27 = sub_10001D42C(itemSubtype2);
+      v28 = [accessorCopy bookmarkTypeWithBookmark:v18];
       v44 = 138543875;
       v45 = v27;
       v46 = 2113;
@@ -559,7 +559,7 @@ LABEL_33:
       goto LABEL_27;
     }
 
-    v38 = [v14 createBookmarkWithType:v20 database:a5];
+    v38 = [accessorCopy createBookmarkWithType:itemSubtype2 database:database];
     goto LABEL_33;
   }
 
@@ -575,14 +575,14 @@ LABEL_35:
   return v37;
 }
 
-+ (void)applyPendingReferences:(id)a3 toItemWithRecordName:(id)a4 inDatabase:(void *)a5 databaseAccessor:(id)a6 updater:(id)a7
++ (void)applyPendingReferences:(id)references toItemWithRecordName:(id)name inDatabase:(void *)database databaseAccessor:(id)accessor updater:(id)updater
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  referencesCopy = references;
+  nameCopy = name;
+  accessorCopy = accessor;
+  updaterCopy = updater;
   v16 = objc_autoreleasePoolPush();
-  if ([v13 isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark])
+  if ([nameCopy isEqualToString:WBSCloudBookmarkListRecordNameTopBookmark])
   {
     v17 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -593,7 +593,7 @@ LABEL_35:
 
   else
   {
-    v18 = [v14 copyItemWithServerId:v13 database:a5];
+    v18 = [accessorCopy copyItemWithServerId:nameCopy database:database];
     if (v18)
     {
       v19 = v18;
@@ -604,21 +604,21 @@ LABEL_35:
       v30[4] = v18;
       v26 = objc_alloc_init(WBSScopeExitHandler);
       [v26 setHandler:v30];
-      v20 = [v15 itemConfigurations];
+      itemConfigurations = [updaterCopy itemConfigurations];
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_10001D778;
       v27[3] = &unk_1001321E0;
       v29 = v19;
-      v21 = v14;
+      v21 = accessorCopy;
       v28 = v21;
-      v22 = [v20 safari_firstObjectPassingTest:v27];
+      v22 = [itemConfigurations safari_firstObjectPassingTest:v27];
 
       if (v22)
       {
-        v23 = [[a1 alloc] _initWithItem:v19 configuration:v22 databaseAccessor:v21];
-        [v23 _applyPendingReferences:v12];
-        [v23 updateLocalItemWithUpdater:v15];
+        v23 = [[self alloc] _initWithItem:v19 configuration:v22 databaseAccessor:v21];
+        [v23 _applyPendingReferences:referencesCopy];
+        [v23 updateLocalItemWithUpdater:updaterCopy];
       }
 
       else
@@ -644,27 +644,27 @@ LABEL_35:
   objc_autoreleasePoolPop(v16);
 }
 
-- (id)_initWithItem:(void *)a3 configuration:(id)a4 databaseAccessor:(id)a5
+- (id)_initWithItem:(void *)item configuration:(id)configuration databaseAccessor:(id)accessor
 {
-  v8 = a5;
-  v9 = a4;
+  accessorCopy = accessor;
+  configurationCopy = configuration;
   v10 = objc_opt_class();
-  v11 = [v8 copySyncDataWithItem:a3];
+  v11 = [accessorCopy copySyncDataWithItem:item];
   v12 = [v10 _decodedSyncDataInData:v11];
-  v13 = [(CloudBookmark *)self _initWithItem:a3 configuration:v9 syncData:v12 databaseAccessor:v8];
+  v13 = [(CloudBookmark *)self _initWithItem:item configuration:configurationCopy syncData:v12 databaseAccessor:accessorCopy];
 
   return v13;
 }
 
-- (id)_initWithReparentedItem:(void *)a3 configuration:(id)a4 databaseAccessor:(id)a5 updater:(id)a6
+- (id)_initWithReparentedItem:(void *)item configuration:(id)configuration databaseAccessor:(id)accessor updater:(id)updater
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  updaterCopy = updater;
+  accessorCopy = accessor;
+  configurationCopy = configuration;
   v13 = objc_opt_class();
-  v14 = [v11 copySyncDataWithItem:a3];
+  v14 = [accessorCopy copySyncDataWithItem:item];
   v15 = [v13 _decodedSyncDataInData:v14];
-  v16 = [(CloudBookmark *)self _initWithItem:a3 configuration:v12 syncData:v15 databaseAccessor:v11];
+  v16 = [(CloudBookmark *)self _initWithItem:item configuration:configurationCopy syncData:v15 databaseAccessor:accessorCopy];
 
   if (!v16)
   {
@@ -695,39 +695,39 @@ LABEL_8:
   }
 
   v21 = v16[1];
-  v22 = [v10 deviceIdentifier];
-  [v21 incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:v22];
+  deviceIdentifier = [updaterCopy deviceIdentifier];
+  [v21 incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:deviceIdentifier];
 
-  [v16 _updateRecordParentAndPositionWithUpdater:v10];
+  [v16 _updateRecordParentAndPositionWithUpdater:updaterCopy];
   v23 = v16;
 LABEL_9:
 
   return v23;
 }
 
-- (id)_initWithChange:(void *)a3 databaseAccessor:(id)a4 updater:(id)a5
+- (id)_initWithChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 itemConfigurations];
+  accessorCopy = accessor;
+  updaterCopy = updater;
+  itemConfigurations = [updaterCopy itemConfigurations];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_10001DD94;
   v34[3] = &unk_1001321E0;
-  v36 = a3;
-  v11 = v8;
+  changeCopy = change;
+  v11 = accessorCopy;
   v35 = v11;
-  v12 = [v10 safari_firstObjectPassingTest:v34];
+  v12 = [itemConfigurations safari_firstObjectPassingTest:v34];
 
   if (v12)
   {
-    v13 = [v11 changeTypeForChange:a3];
+    v13 = [v11 changeTypeForChange:change];
     if (v13 == 2)
     {
-      v14 = [v11 copyServerIdWithChange:a3];
+      v14 = [v11 copyServerIdWithChange:change];
       if ([v14 length])
       {
-        v15 = [(CloudBookmark *)self _initWithConfiguration:v12 deleteChange:a3 databaseAccessor:v11 updater:v9];
+        v15 = [(CloudBookmark *)self _initWithConfiguration:v12 deleteChange:change databaseAccessor:v11 updater:updaterCopy];
         self = v15;
 LABEL_25:
         v28 = v15;
@@ -744,7 +744,7 @@ LABEL_25:
     }
 
     v17 = v13;
-    v18 = [v11 copyChangedItemWithChange:a3];
+    v18 = [v11 copyChangedItemWithChange:change];
     if (v18)
     {
       v19 = v18;
@@ -764,7 +764,7 @@ LABEL_25:
       {
         if (!self->_record)
         {
-          v23 = [(CloudBookmark *)self _createRecordWithRecordName:self->_recordName updater:v9];
+          v23 = [(CloudBookmark *)self _createRecordWithRecordName:self->_recordName updater:updaterCopy];
           record = self->_record;
           self->_record = v23;
 
@@ -788,17 +788,17 @@ LABEL_25:
           }
         }
 
-        if ([(CloudBookmark *)self _updateRecordWithChange:a3 updater:v9])
+        if ([(CloudBookmark *)self _updateRecordWithChange:change updater:updaterCopy])
         {
-          v31 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v31 = 0;
+          selfCopy = 0;
         }
 
-        v15 = v31;
+        v15 = selfCopy;
         goto LABEL_25;
       }
 
@@ -812,7 +812,7 @@ LABEL_26:
     v29 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      sub_100022B10(v29, a3, v11);
+      sub_100022B10(v29, change, v11);
     }
   }
 
@@ -831,11 +831,11 @@ LABEL_27:
   return v28;
 }
 
-- (id)_initWithConfiguration:(id)a3 deleteChange:(void *)a4 databaseAccessor:(id)a5 updater:(id)a6
+- (id)_initWithConfiguration:(id)configuration deleteChange:(void *)change databaseAccessor:(id)accessor updater:(id)updater
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 copyServerIdWithChange:a4];
+  configurationCopy = configuration;
+  accessorCopy = accessor;
+  v11 = [accessorCopy copyServerIdWithChange:change];
   p_recordName = &self->_recordName;
   recordName = self->_recordName;
   self->_recordName = v11;
@@ -853,12 +853,12 @@ LABEL_27:
 
   if (![CKRecord safari_folderTypeForRecordName:*p_recordName])
   {
-    v18 = [v10 copyDeletedBookmarkSyncDataWithChange:a4];
+    v18 = [accessorCopy copyDeletedBookmarkSyncDataWithChange:change];
     v19 = [WBBookmarkSyncData syncDataWithContentsOfData:v18];
 
-    v20 = [v19 record];
+    record = [v19 record];
 
-    if (!v20)
+    if (!record)
     {
       v27 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -866,16 +866,16 @@ LABEL_27:
         sub_100023514(&self->_recordName);
       }
 
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_21;
     }
 
-    v21 = [v19 record];
-    v22 = [v21 safari_recordName];
+    record2 = [v19 record];
+    safari_recordName = [record2 safari_recordName];
 
-    if ([v22 isEqualToString:*p_recordName])
+    if ([safari_recordName isEqualToString:*p_recordName])
     {
-      v23 = [(CloudBookmark *)self _initWithItem:0 configuration:v9 syncData:v19 databaseAccessor:v10];
+      v23 = [(CloudBookmark *)self _initWithItem:0 configuration:configurationCopy syncData:v19 databaseAccessor:accessorCopy];
       self = v23;
       if (v23)
       {
@@ -896,7 +896,7 @@ LABEL_27:
 
         self = self;
 
-        v17 = self;
+        selfCopy = self;
         goto LABEL_20;
       }
     }
@@ -910,7 +910,7 @@ LABEL_27:
       }
     }
 
-    v17 = 0;
+    selfCopy = 0;
 LABEL_20:
 
 LABEL_21:
@@ -927,17 +927,17 @@ LABEL_21:
   }
 
 LABEL_7:
-  v17 = 0;
+  selfCopy = 0;
 LABEL_22:
 
-  return v17;
+  return selfCopy;
 }
 
-- (id)_initWithItem:(void *)a3 configuration:(id)a4 syncData:(id)a5 databaseAccessor:(id)a6
+- (id)_initWithItem:(void *)item configuration:(id)configuration syncData:(id)data databaseAccessor:(id)accessor
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  dataCopy = data;
+  accessorCopy = accessor;
   v32.receiver = self;
   v32.super_class = CloudBookmark;
   v14 = [(CloudBookmark *)&v32 init];
@@ -947,19 +947,19 @@ LABEL_22:
     goto LABEL_11;
   }
 
-  objc_storeStrong(&v14->_configuration, a4);
-  objc_storeStrong(&v15->_databaseAccessor, a6);
-  if (a3)
+  objc_storeStrong(&v14->_configuration, configuration);
+  objc_storeStrong(&v15->_databaseAccessor, accessor);
+  if (item)
   {
-    v16 = [v13 copyServerIdWithItem:a3];
+    v16 = [accessorCopy copyServerIdWithItem:item];
     recordName = v15->_recordName;
     v15->_recordName = v16;
 
     if ([(NSString *)v15->_recordName length])
     {
-      v18 = CFRetain(a3);
+      v18 = CFRetain(item);
       v15->_item = v18;
-      v19 = [v13 copyParentServerIdWithItem:v18];
+      v19 = [accessorCopy copyParentServerIdWithItem:v18];
       v20 = [v19 copy];
       v21 = v20;
       if (v20)
@@ -989,10 +989,10 @@ LABEL_11:
   }
 
 LABEL_8:
-  objc_storeStrong(&v15->_syncData, a5);
-  v23 = [v12 record];
+  objc_storeStrong(&v15->_syncData, data);
+  record = [dataCopy record];
   record = v15->_record;
-  v15->_record = v23;
+  v15->_record = record;
 
   v25 = +[NSMutableDictionary dictionary];
   remotelyModifiedAttributes = v15->_remotelyModifiedAttributes;
@@ -1008,12 +1008,12 @@ LABEL_12:
   return v29;
 }
 
-- (id)_initWithAddedRecord:(id)a3 configuration:(id)a4 forItem:(void *)a5 databaseAccessor:(id)a6 updater:(id)a7
+- (id)_initWithAddedRecord:(id)record configuration:(id)configuration forItem:(void *)item databaseAccessor:(id)accessor updater:(id)updater
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  recordCopy = record;
+  configurationCopy = configuration;
+  accessorCopy = accessor;
+  updaterCopy = updater;
   v62.receiver = self;
   v62.super_class = CloudBookmark;
   v17 = [(CloudBookmark *)&v62 init];
@@ -1025,11 +1025,11 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v17->_configuration, a4);
-  objc_storeStrong(&v18->_databaseAccessor, a6);
-  objc_storeStrong(&v18->_record, a3);
-  v19 = [(CKRecord *)v18->_record safari_recordName];
-  v20 = [v19 copy];
+  objc_storeStrong(&v17->_configuration, configuration);
+  objc_storeStrong(&v18->_databaseAccessor, accessor);
+  objc_storeStrong(&v18->_record, record);
+  safari_recordName = [(CKRecord *)v18->_record safari_recordName];
+  v20 = [safari_recordName copy];
   recordName = v18->_recordName;
   v18->_recordName = v20;
 
@@ -1044,8 +1044,8 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v18->_item = CFRetain(a5);
-  [(WBSBookmarkDBAccess *)v18->_databaseAccessor setServerId:v18->_recordName item:a5];
+  v18->_item = CFRetain(item);
+  [(WBSBookmarkDBAccess *)v18->_databaseAccessor setServerId:v18->_recordName item:item];
   v22 = +[NSMutableDictionary dictionary];
   remotelyModifiedAttributes = v18->_remotelyModifiedAttributes;
   v18->_remotelyModifiedAttributes = v22;
@@ -1063,14 +1063,14 @@ LABEL_8:
   if ([v28 isValid])
   {
     v29 = [(CKRecord *)v18->_record objectForKeyedSubscript:@"ParentFolder"];
-    v30 = [v29 recordID];
-    v31 = [v30 recordName];
-    v32 = [v31 copy];
+    recordID = [v29 recordID];
+    recordName = [recordID recordName];
+    v32 = [recordName copy];
     parentRecordName = v18->_parentRecordName;
     v18->_parentRecordName = v32;
 
     record = v18->_record;
-    v35 = [v14 valueTransformerForAttributeKey:@"Position"];
+    v35 = [configurationCopy valueTransformerForAttributeKey:@"Position"];
     v36 = [(CKRecord *)record safari_positionDictionaryRepresentationUsingValueTransformer:v35];
     [(WBBookmarkSyncData *)v18->_syncData setPositionDictionaryRepresentation:v36];
 
@@ -1080,25 +1080,25 @@ LABEL_8:
     {
       log = v37;
       v38 = objc_opt_class();
-      v39 = v14;
-      v40 = v15;
+      v39 = configurationCopy;
+      v40 = accessorCopy;
       v41 = v28;
-      v42 = v13;
+      v42 = recordCopy;
       v44 = v18->_recordName;
       v43 = v18->_parentRecordName;
-      v45 = [(CloudBookmark *)v18 position];
+      position = [(CloudBookmark *)v18 position];
       *buf = 138544130;
       v64 = v38;
       v65 = 2114;
       v66 = v44;
       v67 = 2114;
       v68 = v43;
-      v13 = v42;
+      recordCopy = v42;
       v28 = v41;
-      v15 = v40;
-      v14 = v39;
+      accessorCopy = v40;
+      configurationCopy = v39;
       v69 = 2114;
-      v70 = v45;
+      v70 = position;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Creating %{public}@ record with name %{public}@ to add locally with parent: %{public}@ and position: %{public}@", buf, 0x2Au);
     }
   }
@@ -1157,34 +1157,34 @@ LABEL_8:
     [(WBBookmarkSyncData *)v18->_syncData setGeneration:v59 forKey:@"MinimumAPIVersion"];
   }
 
-  [(CloudBookmark *)v18 _loadAttributesForKnownKeysIntoEmptyItemUsingRemoteRecord:v18->_record updater:v16];
-  [(CloudBookmark *)v18 updateLocalItemWithUpdater:v16];
+  [(CloudBookmark *)v18 _loadAttributesForKnownKeysIntoEmptyItemUsingRemoteRecord:v18->_record updater:updaterCopy];
+  [(CloudBookmark *)v18 updateLocalItemWithUpdater:updaterCopy];
   v47 = v18;
 
 LABEL_21:
   return v47;
 }
 
-- (id)_initWithItemToMigrate:(void *)a3 configuration:(id)a4 databaseAccessor:(id)a5 updater:(id)a6
+- (id)_initWithItemToMigrate:(void *)migrate configuration:(id)configuration databaseAccessor:(id)accessor updater:(id)updater
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  accessorCopy = accessor;
+  updaterCopy = updater;
   v56.receiver = self;
   v56.super_class = CloudBookmark;
   v14 = [(CloudBookmark *)&v56 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_configuration, a4);
-    objc_storeStrong(&v15->_databaseAccessor, a5);
-    v16 = [(WBSBookmarkDBAccess *)v15->_databaseAccessor copyServerIdWithItem:a3];
+    objc_storeStrong(&v14->_configuration, configuration);
+    objc_storeStrong(&v15->_databaseAccessor, accessor);
+    v16 = [(WBSBookmarkDBAccess *)v15->_databaseAccessor copyServerIdWithItem:migrate];
     recordName = v15->_recordName;
     v15->_recordName = v16;
 
     if ([(NSString *)v15->_recordName length])
     {
-      v18 = CFRetain(a3);
+      v18 = CFRetain(migrate);
       v15->_item = v18;
       v19 = [(WBSBookmarkDBAccess *)v15->_databaseAccessor copyParentServerIdWithItem:v18];
       v20 = [v19 copy];
@@ -1209,14 +1209,14 @@ LABEL_21:
       remotelyModifiedAssetAttributes = v15->_remotelyModifiedAssetAttributes;
       v15->_remotelyModifiedAssetAttributes = v25;
 
-      v27 = [(WBSBookmarkDBAccess *)v15->_databaseAccessor copySyncDataWithItem:a3];
+      v27 = [(WBSBookmarkDBAccess *)v15->_databaseAccessor copySyncDataWithItem:migrate];
       v28 = [WBBookmarkSyncData syncDataWithContentsOfData:v27];
       syncData = v15->_syncData;
       v15->_syncData = v28;
 
-      v30 = [(WBBookmarkSyncData *)v15->_syncData record];
+      record = [(WBBookmarkSyncData *)v15->_syncData record];
       record = v15->_record;
-      v15->_record = v30;
+      v15->_record = record;
 
       v32 = v15->_record;
       v33 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -1235,7 +1235,7 @@ LABEL_21:
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Creating %{public}@ to migrate record unknown to the server with name: %{public}@", buf, 0x16u);
         }
 
-        v47 = [(CloudBookmark *)v15 _createRecordWithRecordName:v15->_recordName updater:v13];
+        v47 = [(CloudBookmark *)v15 _createRecordWithRecordName:v15->_recordName updater:updaterCopy];
         v48 = v15->_record;
         v15->_record = v47;
 
@@ -1244,14 +1244,14 @@ LABEL_21:
         v15->_syncData = v49;
 
         [(WBBookmarkSyncData *)v15->_syncData setRecord:v15->_record];
-        v38 = [v12 copyAttributesWithItem:a3];
-        v51 = [v13 deviceIdentifier];
-        [(WBBookmarkSyncData *)v15->_syncData incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:v51];
-        v52 = [v38 allKeys];
-        [(CloudBookmark *)v15 _updateGenerationsForAttributeKeys:v52 withDeviceIdentifier:v51];
+        deviceIdentifier2 = [accessorCopy copyAttributesWithItem:migrate];
+        deviceIdentifier = [updaterCopy deviceIdentifier];
+        [(WBBookmarkSyncData *)v15->_syncData incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:deviceIdentifier];
+        allKeys = [deviceIdentifier2 allKeys];
+        [(CloudBookmark *)v15 _updateGenerationsForAttributeKeys:allKeys withDeviceIdentifier:deviceIdentifier];
 
-        [(CloudBookmark *)v15 _updateRecordParentAndPositionWithUpdater:v13];
-        [(CloudBookmark *)v15 _updateRecordWithModifiedAttributes:v38 updater:v13];
+        [(CloudBookmark *)v15 _updateRecordParentAndPositionWithUpdater:updaterCopy];
+        [(CloudBookmark *)v15 _updateRecordWithModifiedAttributes:deviceIdentifier2 updater:updaterCopy];
         v43 = v15;
 
         goto LABEL_24;
@@ -1269,10 +1269,10 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Creating %{public}@ to complement saved record with name: %{public}@", buf, 0x16u);
       }
 
-      v38 = [v13 deviceIdentifier];
-      v39 = [(CloudBookmark *)v15 _updateRecordWithMissingAttributesWithUpdater:v13];
-      v40 = [(WBBookmarkSyncData *)v15->_syncData position];
-      if (v40)
+      deviceIdentifier2 = [updaterCopy deviceIdentifier];
+      v39 = [(CloudBookmark *)v15 _updateRecordWithMissingAttributesWithUpdater:updaterCopy];
+      position = [(WBBookmarkSyncData *)v15->_syncData position];
+      if (position)
       {
       }
 
@@ -1284,8 +1284,8 @@ LABEL_21:
           sub_1000236C4(&v15->_recordName);
         }
 
-        [(WBBookmarkSyncData *)v15->_syncData incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:v38];
-        [(CloudBookmark *)v15 _updateRecordParentAndPositionWithUpdater:v13];
+        [(WBBookmarkSyncData *)v15->_syncData incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:deviceIdentifier2];
+        [(CloudBookmark *)v15 _updateRecordParentAndPositionWithUpdater:updaterCopy];
         v53 = v15;
         goto LABEL_23;
       }
@@ -1339,12 +1339,12 @@ LABEL_25:
   [(CloudBookmark *)&v4 dealloc];
 }
 
-- (BOOL)_updateRecordWithChange:(void *)a3 updater:(id)a4
+- (BOOL)_updateRecordWithChange:(void *)change updater:(id)updater
 {
-  v6 = a4;
-  if ([(WBSBookmarkDBAccess *)self->_databaseAccessor changeTypeForChange:a3])
+  updaterCopy = updater;
+  if ([(WBSBookmarkDBAccess *)self->_databaseAccessor changeTypeForChange:change])
   {
-    v7 = [(WBSBookmarkDBAccess *)self->_databaseAccessor changeIsMoveChange:a3];
+    v7 = [(WBSBookmarkDBAccess *)self->_databaseAccessor changeIsMoveChange:change];
   }
 
   else
@@ -1352,7 +1352,7 @@ LABEL_25:
     v7 = 1;
   }
 
-  v8 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyModifiedAttributesWithChange:a3];
+  v8 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyModifiedAttributesWithChange:change];
   v9 = WBBookmarkSyncModifiedAttributesForKeys() | v7 & 1;
   v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1360,7 +1360,7 @@ LABEL_25:
     v11 = v10;
     v12 = objc_opt_class();
     recordName = self->_recordName;
-    v14 = sub_10001CE58(a3, self->_databaseAccessor);
+    v14 = sub_10001CE58(change, self->_databaseAccessor);
     v15 = WBDescriptionForBookmarkSyncModifiedAttributes();
     v22 = 138544130;
     v23 = v12;
@@ -1373,12 +1373,12 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Preparing %{public}@ record with name: %{public}@ for change of type %{public}@ to save to the server with updated keys: <%{public}@>", &v22, 0x2Au);
   }
 
-  v16 = [(WBBookmarkSyncData *)self->_syncData modifiedAttributeMask];
-  if (v9 != v16)
+  modifiedAttributeMask = [(WBBookmarkSyncData *)self->_syncData modifiedAttributeMask];
+  if (v9 != modifiedAttributeMask)
   {
-    v17 = v16 ^ v9;
-    v18 = (v16 ^ v9) & v9;
-    if ((v17 & v16) != 0 && (v19 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0(), os_log_type_enabled(v19, OS_LOG_TYPE_ERROR)))
+    v17 = modifiedAttributeMask ^ v9;
+    v18 = (modifiedAttributeMask ^ v9) & v9;
+    if ((v17 & modifiedAttributeMask) != 0 && (v19 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0(), os_log_type_enabled(v19, OS_LOG_TYPE_ERROR)))
     {
       sub_100023804(v19);
       if (!v18)
@@ -1402,48 +1402,48 @@ LABEL_25:
 LABEL_12:
   if (v7)
   {
-    [(CloudBookmark *)self _updateRecordParentAndPositionWithUpdater:v6];
+    [(CloudBookmark *)self _updateRecordParentAndPositionWithUpdater:updaterCopy];
   }
 
   if ([v8 count])
   {
-    [(CloudBookmark *)self _updateRecordWithModifiedAttributes:v8 updater:v6];
+    [(CloudBookmark *)self _updateRecordWithModifiedAttributes:v8 updater:updaterCopy];
     v7 = 1;
   }
 
   return v7 & 1;
 }
 
-- (id)_createRecordIDWithName:(id)a3 updater:(id)a4
+- (id)_createRecordIDWithName:(id)name updater:(id)updater
 {
-  v5 = a4;
-  v6 = a3;
+  updaterCopy = updater;
+  nameCopy = name;
   v7 = [CKRecordID alloc];
-  v8 = [v5 bookmarksRecordZoneID];
+  bookmarksRecordZoneID = [updaterCopy bookmarksRecordZoneID];
 
-  v9 = [v7 initWithRecordName:v6 zoneID:v8];
+  v9 = [v7 initWithRecordName:nameCopy zoneID:bookmarksRecordZoneID];
 
   return v9;
 }
 
-- (id)_createRecordWithRecordName:(id)a3 updater:(id)a4
+- (id)_createRecordWithRecordName:(id)name updater:(id)updater
 {
-  v6 = a4;
-  v7 = a3;
+  updaterCopy = updater;
+  nameCopy = name;
   v8 = [CKRecord alloc];
-  v9 = [(CloudBookmarkItemConfiguration *)self->_configuration recordType];
-  v10 = [(CloudBookmark *)self _createRecordIDWithName:v7 updater:v6];
+  recordType = [(CloudBookmarkItemConfiguration *)self->_configuration recordType];
+  v10 = [(CloudBookmark *)self _createRecordIDWithName:nameCopy updater:updaterCopy];
 
-  v11 = [v8 initWithRecordType:v9 recordID:v10];
+  v11 = [v8 initWithRecordType:recordType recordID:v10];
 
   return v11;
 }
 
-- (id)_createParentFolderReferenceWithRecordName:(id)a3 updater:(id)a4
+- (id)_createParentFolderReferenceWithRecordName:(id)name updater:(id)updater
 {
-  v5 = a4;
+  updaterCopy = updater;
   v6 = [CKReference alloc];
-  v7 = [(CloudBookmark *)self _createRecordIDWithName:self->_parentRecordName updater:v5];
+  v7 = [(CloudBookmark *)self _createRecordIDWithName:self->_parentRecordName updater:updaterCopy];
 
   v8 = [v6 initWithRecordID:v7 action:0];
 
@@ -1452,15 +1452,15 @@ LABEL_12:
 
 - (unint64_t)duplicateHash
 {
-  v3 = [(CloudBookmark *)self parentRecordName];
-  v4 = [v3 hash];
+  parentRecordName = [(CloudBookmark *)self parentRecordName];
+  v4 = [parentRecordName hash];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CloudBookmarkItemConfiguration *)self->_configuration identityHashKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  identityHashKeys = [(CloudBookmarkItemConfiguration *)self->_configuration identityHashKeys];
+  v6 = [identityHashKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1472,7 +1472,7 @@ LABEL_12:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(identityHashKeys);
         }
 
         v10 = [(CloudBookmark *)self modifiedOrLocalValueForKey:*(*(&v12 + 1) + 8 * v9)];
@@ -1482,7 +1482,7 @@ LABEL_12:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [identityHashKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1491,21 +1491,21 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)isDuplicateOfBookmark:(id)a3
+- (BOOL)isDuplicateOfBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   configuration = self->_configuration;
-  v6 = [v4 configuration];
-  LODWORD(configuration) = [(CloudBookmarkItemConfiguration *)configuration isEqual:v6];
+  configuration = [bookmarkCopy configuration];
+  LODWORD(configuration) = [(CloudBookmarkItemConfiguration *)configuration isEqual:configuration];
 
-  if (configuration && (-[CloudBookmark parentRecordName](self, "parentRecordName"), v7 = objc_claimAutoreleasedReturnValue(), [v4 parentRecordName], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
+  if (configuration && (-[CloudBookmark parentRecordName](self, "parentRecordName"), v7 = objc_claimAutoreleasedReturnValue(), [bookmarkCopy parentRecordName], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v9))
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [(CloudBookmarkItemConfiguration *)self->_configuration identityHashKeys];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    identityHashKeys = [(CloudBookmarkItemConfiguration *)self->_configuration identityHashKeys];
+    v11 = [identityHashKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1516,12 +1516,12 @@ LABEL_12:
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(identityHashKeys);
           }
 
           v15 = *(*(&v21 + 1) + 8 * i);
           v16 = [(CloudBookmark *)self modifiedOrLocalValueForKey:v15];
-          v17 = [v4 modifiedOrLocalValueForKey:v15];
+          v17 = [bookmarkCopy modifiedOrLocalValueForKey:v15];
           v18 = [v16 isEqual:v17];
 
           if (!v18)
@@ -1531,7 +1531,7 @@ LABEL_12:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [identityHashKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v12)
         {
           continue;
@@ -1553,28 +1553,28 @@ LABEL_14:
   return v19;
 }
 
-- (id)modifiedOrLocalValueForKey:(id)a3
+- (id)modifiedOrLocalValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKRecord *)self->_record changedKeys];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  changedKeys = [(CKRecord *)self->_record changedKeys];
+  v6 = [changedKeys containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:v4];
-    v8 = [v7 attributeRequiresEncryption];
+    v7 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:keyCopy];
+    attributeRequiresEncryption = [v7 attributeRequiresEncryption];
     record = self->_record;
-    if (v8)
+    if (attributeRequiresEncryption)
     {
-      v10 = [(CKRecord *)record safari_encryptedValues];
-      v11 = [v10 objectForKeyedSubscript:v4];
+      safari_encryptedValues = [(CKRecord *)record safari_encryptedValues];
+      v11 = [safari_encryptedValues objectForKeyedSubscript:keyCopy];
       v12 = [v7 reverseTransformedValue:v11];
     }
 
     else
     {
-      v10 = [(CKRecord *)record objectForKeyedSubscript:v4];
-      v12 = [v7 reverseTransformedValue:v10];
+      safari_encryptedValues = [(CKRecord *)record objectForKeyedSubscript:keyCopy];
+      v12 = [v7 reverseTransformedValue:safari_encryptedValues];
     }
   }
 
@@ -1590,7 +1590,7 @@ LABEL_14:
         sub_100023934(self);
       }
 
-      v12 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:v4 item:self->_item];
+      v12 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:keyCopy item:self->_item];
     }
 
     else
@@ -1607,28 +1607,28 @@ LABEL_14:
   return v12;
 }
 
-- (id)_transformedModifiedOrLocalValueForKey:(id)a3 isEncrypted:(BOOL *)a4
+- (id)_transformedModifiedOrLocalValueForKey:(id)key isEncrypted:(BOOL *)encrypted
 {
-  v6 = a3;
-  v7 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:v6];
-  *a4 = [v7 attributeRequiresEncryption];
-  v8 = [(CKRecord *)self->_record changedKeys];
-  v9 = [v8 containsObject:v6];
+  keyCopy = key;
+  v7 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:keyCopy];
+  *encrypted = [v7 attributeRequiresEncryption];
+  changedKeys = [(CKRecord *)self->_record changedKeys];
+  v9 = [changedKeys containsObject:keyCopy];
 
   if (v9)
   {
     record = self->_record;
-    if (*a4)
+    if (*encrypted)
     {
-      v11 = [(CKRecord *)record safari_encryptedValues];
-      v12 = [v11 objectForKeyedSubscript:v6];
+      safari_encryptedValues = [(CKRecord *)record safari_encryptedValues];
+      v12 = [safari_encryptedValues objectForKeyedSubscript:keyCopy];
 LABEL_8:
       v16 = v12;
 
       goto LABEL_13;
     }
 
-    v16 = [(CKRecord *)record objectForKeyedSubscript:v6];
+    v16 = [(CKRecord *)record objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -1643,8 +1643,8 @@ LABEL_8:
         sub_100023A04(self);
       }
 
-      v11 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:v6 item:self->_item];
-      v12 = [v7 transformedValue:v11];
+      safari_encryptedValues = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyValueForKey:keyCopy item:self->_item];
+      v12 = [v7 transformedValue:safari_encryptedValues];
       goto LABEL_8;
     }
 
@@ -1661,11 +1661,11 @@ LABEL_13:
   return v16;
 }
 
-- (id)_modifiedOrLocalParentReferenceWithUpdater:(id)a3
+- (id)_modifiedOrLocalParentReferenceWithUpdater:(id)updater
 {
-  v4 = a3;
-  v5 = [(CKRecord *)self->_record changedKeys];
-  v6 = [v5 containsObject:@"Position"];
+  updaterCopy = updater;
+  changedKeys = [(CKRecord *)self->_record changedKeys];
+  v6 = [changedKeys containsObject:@"Position"];
 
   if (v6)
   {
@@ -1685,7 +1685,7 @@ LABEL_7:
       sub_100023AD4(self);
     }
 
-    v7 = [(CloudBookmark *)self _createParentFolderReferenceWithRecordName:self->_parentRecordName updater:v4];
+    v7 = [(CloudBookmark *)self _createParentFolderReferenceWithRecordName:self->_parentRecordName updater:updaterCopy];
     goto LABEL_7;
   }
 
@@ -1700,11 +1700,11 @@ LABEL_8:
   return v11;
 }
 
-- (id)_modifiedOrLocalIdentityHashWithUpdater:(id)a3
+- (id)_modifiedOrLocalIdentityHashWithUpdater:(id)updater
 {
-  v4 = a3;
-  v5 = [(CKRecord *)self->_record changedKeys];
-  v6 = [v5 containsObject:@"IdentityHash"];
+  updaterCopy = updater;
+  changedKeys = [(CKRecord *)self->_record changedKeys];
+  v6 = [changedKeys containsObject:@"IdentityHash"];
 
   if (v6)
   {
@@ -1724,7 +1724,7 @@ LABEL_7:
       sub_100023BA4(self);
     }
 
-    v7 = [(CloudBookmark *)self _generateIdentityHashUsingUpdater:v4];
+    v7 = [(CloudBookmark *)self _generateIdentityHashUsingUpdater:updaterCopy];
     goto LABEL_7;
   }
 
@@ -1739,16 +1739,16 @@ LABEL_8:
   return v11;
 }
 
-- (id)_generateIdentityHashUsingUpdater:(id)a3
+- (id)_generateIdentityHashUsingUpdater:(id)updater
 {
-  v16 = a3;
+  updaterCopy = updater;
   v4 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(CloudBookmarkItemConfiguration *)self->_configuration identityHashKeys];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  identityHashKeys = [(CloudBookmarkItemConfiguration *)self->_configuration identityHashKeys];
+  v6 = [identityHashKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1759,7 +1759,7 @@ LABEL_8:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(identityHashKeys);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -1777,20 +1777,20 @@ LABEL_8:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [identityHashKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [v16 generateIdentityHashWithComponents:v4];
+  v14 = [updaterCopy generateIdentityHashWithComponents:v4];
 
   return v14;
 }
 
-+ (id)_decodedSyncDataInData:(id)a3
++ (id)_decodedSyncDataInData:(id)data
 {
-  v3 = [WBBookmarkSyncData syncDataWithContentsOfData:a3];
+  v3 = [WBBookmarkSyncData syncDataWithContentsOfData:data];
   v4 = v3;
   if (v3)
   {
@@ -1807,9 +1807,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)updateLocalItemWithUpdater:(id)a3
+- (void)updateLocalItemWithUpdater:(id)updater
 {
-  v4 = a3;
+  updaterCopy = updater;
   if (self->_item)
   {
     v5 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -1830,36 +1830,36 @@ LABEL_8:
     [(NSMutableDictionary *)self->_remotelyModifiedAttributes removeAllObjects];
     if (![(CloudBookmarkItemConfiguration *)self->_configuration itemType]&& [(CloudBookmarkItemConfiguration *)self->_configuration itemSubtype]== 1)
     {
-      [v4 readingListBookmarkDidUpdate];
+      [updaterCopy readingListBookmarkDidUpdate];
     }
   }
 }
 
-- (void)saveAssetsIfNeededWithUpdater:(id)a3
+- (void)saveAssetsIfNeededWithUpdater:(id)updater
 {
-  v4 = a3;
+  updaterCopy = updater;
   remotelyModifiedAssetAttributes = self->_remotelyModifiedAssetAttributes;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001FB54;
   v7[3] = &unk_100132230;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updaterCopy;
+  v6 = updaterCopy;
   [(NSMutableDictionary *)remotelyModifiedAssetAttributes enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)_loadAttributesForKnownKeysIntoEmptyItemUsingRemoteRecord:(id)a3 updater:(id)a4
+- (void)_loadAttributesForKnownKeysIntoEmptyItemUsingRemoteRecord:(id)record updater:(id)updater
 {
-  v26 = a3;
-  v28 = a4;
-  v6 = [(CloudBookmarkItemConfiguration *)self->_configuration knownKeys];
+  recordCopy = record;
+  updaterCopy = updater;
+  knownKeys = [(CloudBookmarkItemConfiguration *)self->_configuration knownKeys];
   v7 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    v9 = [v6 allObjects];
-    v10 = [v9 componentsJoinedByString:{@", "}];
+    allObjects = [knownKeys allObjects];
+    v10 = [allObjects componentsJoinedByString:{@", "}];
     recordName = self->_recordName;
     *buf = 138543618;
     v36 = v10;
@@ -1872,9 +1872,9 @@ LABEL_8:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = knownKeys;
   v12 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
-  v13 = v26;
+  v13 = recordCopy;
   if (v12)
   {
     v14 = v12;
@@ -1890,15 +1890,15 @@ LABEL_8:
         }
 
         v17 = *(*(&v30 + 1) + 8 * i);
-        v18 = [(CloudBookmarkItemConfiguration *)self->_configuration generationKeyForKey:v17, v26];
-        v19 = [v13 safari_generationForKey:v18];
+        recordCopy = [(CloudBookmarkItemConfiguration *)self->_configuration generationKeyForKey:v17, recordCopy];
+        v19 = [v13 safari_generationForKey:recordCopy];
         if ([v19 isValid])
         {
           v20 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:v17];
           if ([v20 attributeRequiresEncryption])
           {
-            v21 = [v13 safari_encryptedValues];
-            v22 = [v21 objectForKeyedSubscript:v17];
+            safari_encryptedValues = [v13 safari_encryptedValues];
+            v22 = [safari_encryptedValues objectForKeyedSubscript:v17];
 
             v15 = v27;
           }
@@ -1908,10 +1908,10 @@ LABEL_8:
             v22 = [v13 objectForKeyedSubscript:v17];
           }
 
-          if ([(CloudBookmark *)self _canApplyValue:v22 withGeneration:v19 toAttribute:v17 updater:v28])
+          if ([(CloudBookmark *)self _canApplyValue:v22 withGeneration:v19 toAttribute:v17 updater:updaterCopy])
           {
-            v23 = [objc_opt_class() transformedValueClass];
-            v24 = [v23 isEqual:objc_opt_class()];
+            transformedValueClass = [objc_opt_class() transformedValueClass];
+            v24 = [transformedValueClass isEqual:objc_opt_class()];
             v25 = [v20 reverseTransformedValueOrNull:v22];
             if (v24)
             {
@@ -1922,10 +1922,10 @@ LABEL_8:
             {
               [(NSMutableDictionary *)self->_remotelyModifiedAttributes setObject:v25 forKeyedSubscript:v17];
 
-              [(WBBookmarkSyncData *)self->_syncData setGeneration:v19 forKey:v18];
+              [(WBBookmarkSyncData *)self->_syncData setGeneration:v19 forKey:recordCopy];
             }
 
-            v13 = v26;
+            v13 = recordCopy;
             v15 = v27;
           }
         }
@@ -1938,19 +1938,19 @@ LABEL_8:
   }
 }
 
-- (void)_updateGenerationsForChange:(void *)a3 withDeviceIdentifier:(id)a4
+- (void)_updateGenerationsForChange:(void *)change withDeviceIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(WBSBookmarkDBAccess *)self->_databaseAccessor changeTypeForChange:a3];
-  v8 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyModifiedAttributesWithChange:a3];
-  v9 = [v8 allKeys];
+  identifierCopy = identifier;
+  v7 = [(WBSBookmarkDBAccess *)self->_databaseAccessor changeTypeForChange:change];
+  v8 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyModifiedAttributesWithChange:change];
+  allKeys = [v8 allKeys];
 
   v10 = WBBookmarkSyncModifiedAttributesForKeys();
-  v11 = [(WBBookmarkSyncData *)self->_syncData modifiedAttributeMask];
-  if (!v7 || [(WBSBookmarkDBAccess *)self->_databaseAccessor changeIsMoveChange:a3])
+  modifiedAttributeMask = [(WBBookmarkSyncData *)self->_syncData modifiedAttributeMask];
+  if (!v7 || [(WBSBookmarkDBAccess *)self->_databaseAccessor changeIsMoveChange:change])
   {
     v10 |= 1uLL;
-    [(WBBookmarkSyncData *)self->_syncData incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:v6];
+    [(WBBookmarkSyncData *)self->_syncData incrementGenerationForKey:@"ParentAndPosition" withDeviceIdentifier:identifierCopy];
   }
 
   v12 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -1959,7 +1959,7 @@ LABEL_8:
     databaseAccessor = self->_databaseAccessor;
     recordName = self->_recordName;
     v15 = v12;
-    v16 = sub_10001CE58(a3, databaseAccessor);
+    v16 = sub_10001CE58(change, databaseAccessor);
     v17 = WBDescriptionForBookmarkSyncModifiedAttributes();
     v19 = 138543874;
     v20 = recordName;
@@ -1970,7 +1970,7 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Update generations of record %{public}@ with change of type %{public}@, updated keys <%{public}@>", &v19, 0x20u);
   }
 
-  if ((v11 & ~v10) != 0)
+  if ((modifiedAttributeMask & ~v10) != 0)
   {
     v18 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1979,20 +1979,20 @@ LABEL_8:
     }
   }
 
-  [(WBBookmarkSyncData *)self->_syncData setModifiedAttributeMask:v10 | v11];
-  [(CloudBookmark *)self _updateGenerationsForAttributeKeys:v9 withDeviceIdentifier:v6];
+  [(WBBookmarkSyncData *)self->_syncData setModifiedAttributeMask:v10 | modifiedAttributeMask];
+  [(CloudBookmark *)self _updateGenerationsForAttributeKeys:allKeys withDeviceIdentifier:identifierCopy];
 }
 
-- (void)_updateGenerationsForAttributeKeys:(id)a3 withDeviceIdentifier:(id)a4
+- (void)_updateGenerationsForAttributeKeys:(id)keys withDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  identifierCopy = identifier;
   v8 = +[NSMutableSet set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v6;
+  v9 = keysCopy;
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
@@ -2012,7 +2012,7 @@ LABEL_8:
         if (([v8 containsObject:v14] & 1) == 0)
         {
           [v8 addObject:v14];
-          [(WBBookmarkSyncData *)self->_syncData incrementGenerationForKey:v14 withDeviceIdentifier:v7];
+          [(WBBookmarkSyncData *)self->_syncData incrementGenerationForKey:v14 withDeviceIdentifier:identifierCopy];
         }
 
         v13 = v13 + 1;
@@ -2026,21 +2026,21 @@ LABEL_8:
   }
 }
 
-- (void)_updateRecordParentAndPositionWithUpdater:(id)a3
+- (void)_updateRecordParentAndPositionWithUpdater:(id)updater
 {
   parentRecordName = self->_parentRecordName;
-  v5 = a3;
-  v6 = [(CloudBookmark *)self _createParentFolderReferenceWithRecordName:parentRecordName updater:v5];
+  updaterCopy = updater;
+  v6 = [(CloudBookmark *)self _createParentFolderReferenceWithRecordName:parentRecordName updater:updaterCopy];
   [(CKRecord *)self->_record setObject:v6 forKeyedSubscript:@"ParentFolder"];
 
   p_recordName = &self->_recordName;
-  v8 = [v5 positionForCloudBookmarkWithRecordName:self->_recordName];
+  v8 = [updaterCopy positionForCloudBookmarkWithRecordName:self->_recordName];
 
   [(WBBookmarkSyncData *)self->_syncData setPosition:v8];
-  v9 = [(WBBookmarkSyncData *)self->_syncData positionDictionaryRepresentation];
+  positionDictionaryRepresentation = [(WBBookmarkSyncData *)self->_syncData positionDictionaryRepresentation];
   record = self->_record;
   v11 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:@"Position"];
-  [(CKRecord *)record safari_setPositionDictionaryRepresentation:v9 usingValueTransformer:v11];
+  [(CKRecord *)record safari_setPositionDictionaryRepresentation:positionDictionaryRepresentation usingValueTransformer:v11];
 
   v12 = [(WBBookmarkSyncData *)self->_syncData generationForKey:@"ParentAndPosition"];
   [(CKRecord *)self->_record safari_setGeneration:v12 forKey:@"ParentAndPosition"];
@@ -2070,16 +2070,16 @@ LABEL_8:
   }
 }
 
-- (void)_updateRecordWithModifiedAttributes:(id)a3 updater:(id)a4
+- (void)_updateRecordWithModifiedAttributes:(id)attributes updater:(id)updater
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  updaterCopy = updater;
   v8 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v6 allKeys];
-    v11 = [v10 componentsJoinedByString:{@", "}];
+    allKeys = [attributesCopy allKeys];
+    v11 = [allKeys componentsJoinedByString:{@", "}];
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Updating locally modified attributes <%{public}@>", &buf, 0xCu);
@@ -2095,32 +2095,32 @@ LABEL_8:
   v19[3] = &unk_100132258;
   v19[4] = self;
   v19[5] = &buf;
-  [v6 enumerateKeysAndObjectsUsingBlock:v19];
-  v12 = [(WBBookmarkSyncData *)self->_syncData minimumAPIVersion];
-  v13 = [(CloudBookmark *)self _computeMinimumSyncAPIVersion];
-  if (v13 != v12)
+  [attributesCopy enumerateKeysAndObjectsUsingBlock:v19];
+  minimumAPIVersion = [(WBBookmarkSyncData *)self->_syncData minimumAPIVersion];
+  _computeMinimumSyncAPIVersion = [(CloudBookmark *)self _computeMinimumSyncAPIVersion];
+  if (_computeMinimumSyncAPIVersion != minimumAPIVersion)
   {
-    [(CKRecord *)self->_record safari_setMinimumAPIVersion:v13];
+    [(CKRecord *)self->_record safari_setMinimumAPIVersion:_computeMinimumSyncAPIVersion];
     record = self->_record;
     v15 = [(WBBookmarkSyncData *)self->_syncData generationForKey:@"MinimumAPIVersion"];
-    v16 = [v7 deviceIdentifier];
-    v17 = [v15 incrementedGenerationWithDeviceIdentifier:v16];
+    deviceIdentifier = [updaterCopy deviceIdentifier];
+    v17 = [v15 incrementedGenerationWithDeviceIdentifier:deviceIdentifier];
     [(CKRecord *)record safari_setGeneration:v17 forKey:@"MinimumAPIVersion"];
   }
 
   if (*(*(&buf + 1) + 24) == 1)
   {
-    v18 = [(CloudBookmark *)self _generateIdentityHashUsingUpdater:v7];
+    v18 = [(CloudBookmark *)self _generateIdentityHashUsingUpdater:updaterCopy];
     [(CKRecord *)self->_record setObject:v18 forKeyedSubscript:@"IdentityHash"];
   }
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (BOOL)_updateRecordWithMissingAttributesWithUpdater:(id)a3
+- (BOOL)_updateRecordWithMissingAttributesWithUpdater:(id)updater
 {
-  v4 = a3;
-  v5 = [v4 deviceIdentifier];
+  updaterCopy = updater;
+  deviceIdentifier = [updaterCopy deviceIdentifier];
   v6 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copyAttributesWithItem:self->_item];
   v7 = +[NSMutableSet set];
   v8 = [(CloudBookmarkItemConfiguration *)self->_configuration canSaveIdentityHashAttributesInDictionary:v6];
@@ -2143,19 +2143,19 @@ LABEL_8:
   v17 = 3221225472;
   v18 = sub_100020C44;
   v19 = &unk_1001322A8;
-  v20 = self;
+  selfCopy = self;
   v10 = v7;
   v21 = v10;
   v11 = v9;
   v25 = v8;
   v23 = v11;
   v24 = &v26;
-  v12 = v5;
+  v12 = deviceIdentifier;
   v22 = v12;
   [v6 enumerateKeysAndObjectsUsingBlock:&v16];
   if (*(v27 + 24) == 1)
   {
-    v13 = [(CloudBookmark *)self _modifiedOrLocalIdentityHashWithUpdater:v4, v16, v17, v18, v19, v20, v21];
+    v13 = [(CloudBookmark *)self _modifiedOrLocalIdentityHashWithUpdater:updaterCopy, v16, v17, v18, v19, selfCopy, v21];
     [(CKRecord *)self->_record setObject:v13 forKeyedSubscript:@"IdentityHash"];
   }
 
@@ -2167,16 +2167,16 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)_canApplyValue:(id)a3 withGeneration:(id)a4 toAttribute:(id)a5 updater:(id)a6
+- (BOOL)_canApplyValue:(id)value withGeneration:(id)generation toAttribute:(id)attribute updater:(id)updater
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  valueCopy = value;
+  generationCopy = generation;
+  attributeCopy = attribute;
+  updaterCopy = updater;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v13 shouldApplyReference:v10 withGeneration:v11 toAttribute:v12 inRecordWithName:self->_recordName];
+    v14 = [updaterCopy shouldApplyReference:valueCopy withGeneration:generationCopy toAttribute:attributeCopy inRecordWithName:self->_recordName];
   }
 
   else
@@ -2187,22 +2187,22 @@ LABEL_8:
   return v14;
 }
 
-- (void)_applyPendingReferences:(id)a3
+- (void)_applyPendingReferences:(id)references
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100020EEC;
   v3[3] = &unk_1001322D0;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [references enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (unint64_t)resultFromMergingRecord:(id)a3 usingUpdater:(id)a4 isLocalUpdateOnly:(BOOL)a5
+- (unint64_t)resultFromMergingRecord:(id)record usingUpdater:(id)updater isLocalUpdateOnly:(BOOL)only
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = a3;
-  v53 = a4;
+  onlyCopy = only;
+  recordCopy = record;
+  recordCopy2 = record;
+  updaterCopy = updater;
   v10 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2212,18 +2212,18 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Will merge local and remote records. Record name: %{public}@", buf, 0xCu);
   }
 
-  v12 = [(CloudBookmark *)self _resultByMergingMinimumAPIVersionWithRecord:v9];
+  v12 = [(CloudBookmark *)self _resultByMergingMinimumAPIVersionWithRecord:recordCopy2];
   if (v12 != 8)
   {
     v68 = 0;
-    v12 |= [(CloudBookmark *)self _resultByMergingStateWithRecord:v9 shouldContinueMerge:&v68];
+    v12 |= [(CloudBookmark *)self _resultByMergingStateWithRecord:recordCopy2 shouldContinueMerge:&v68];
     if (v68)
     {
-      v13 = [(CloudBookmark *)self _resultByMergingParentAndPositionWithRecord:v9 usingUpdater:v53];
-      if (v5)
+      v13 = [(CloudBookmark *)self _resultByMergingParentAndPositionWithRecord:recordCopy2 usingUpdater:updaterCopy];
+      if (onlyCopy)
       {
-        v58 = [(WBBookmarkSyncData *)self->_syncData modifiedAttributeMask];
-        if (v58)
+        modifiedAttributeMask = [(WBBookmarkSyncData *)self->_syncData modifiedAttributeMask];
+        if (modifiedAttributeMask)
         {
           if (v13)
           {
@@ -2236,17 +2236,17 @@ LABEL_8:
 
           else
           {
-            v58 &= ~1uLL;
+            modifiedAttributeMask &= ~1uLL;
           }
         }
       }
 
       else
       {
-        v58 = 0;
+        modifiedAttributeMask = 0;
       }
 
-      v54 = v5;
+      v54 = onlyCopy;
       v18 = v13 | v12;
       v19 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -2260,16 +2260,16 @@ LABEL_8:
       v65 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v20 = [(CloudBookmarkItemConfiguration *)self->_configuration knownKeys];
-      v60 = [v20 countByEnumeratingWithState:&v64 objects:v75 count:16];
+      knownKeys = [(CloudBookmarkItemConfiguration *)self->_configuration knownKeys];
+      v60 = [knownKeys countByEnumeratingWithState:&v64 objects:v75 count:16];
       if (v60)
       {
         v56 = v18;
-        v49 = v7;
+        v49 = recordCopy;
         v55 = 0;
         v59 = *v65;
-        v51 = v9;
-        obj = v20;
+        v51 = recordCopy2;
+        obj = knownKeys;
         do
         {
           for (i = 0; i != v60; i = i + 1)
@@ -2280,7 +2280,7 @@ LABEL_8:
             }
 
             v22 = *(*(&v64 + 1) + 8 * i);
-            if (v5)
+            if (onlyCopy)
             {
               v23 = *(*(&v64 + 1) + 8 * i);
               v24 = WBBookmarkSyncModifiedAttributesForKey();
@@ -2293,7 +2293,7 @@ LABEL_8:
 
             v25 = [(CloudBookmarkItemConfiguration *)self->_configuration generationKeyForKey:v22];
             v26 = [(WBBookmarkSyncData *)self->_syncData generationForKey:v25];
-            v27 = [v9 safari_generationForKey:v25];
+            v27 = [recordCopy2 safari_generationForKey:v25];
             v28 = [v26 compare:v27];
             if (v28 == -1)
             {
@@ -2312,22 +2312,22 @@ LABEL_8:
               v35 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:v22];
               if ([v35 attributeRequiresEncryption])
               {
-                v36 = [v9 safari_encryptedValues];
-                v37 = [v36 objectForKeyedSubscript:v22];
+                safari_encryptedValues = [recordCopy2 safari_encryptedValues];
+                v37 = [safari_encryptedValues objectForKeyedSubscript:v22];
               }
 
               else
               {
-                v37 = [v9 objectForKeyedSubscript:v22];
+                v37 = [recordCopy2 objectForKeyedSubscript:v22];
               }
 
-              if ([(CloudBookmark *)self _canApplyValue:v37 withGeneration:v27 toAttribute:v22 updater:v53])
+              if ([(CloudBookmark *)self _canApplyValue:v37 withGeneration:v27 toAttribute:v22 updater:updaterCopy])
               {
-                v58 &= ~v24;
-                v38 = [objc_opt_class() transformedValueClass];
-                LODWORD(v38) = [v38 isEqual:objc_opt_class()];
+                modifiedAttributeMask &= ~v24;
+                transformedValueClass = [objc_opt_class() transformedValueClass];
+                LODWORD(transformedValueClass) = [transformedValueClass isEqual:objc_opt_class()];
                 v39 = [v35 reverseTransformedValueOrNull:v37];
-                if (v38)
+                if (transformedValueClass)
                 {
                   [(NSMutableDictionary *)self->_remotelyModifiedAssetAttributes setObject:v39 forKeyedSubscript:v22];
                 }
@@ -2340,9 +2340,9 @@ LABEL_8:
                 }
               }
 
-              v5 = v54;
+              onlyCopy = v54;
 
-              v9 = v51;
+              recordCopy2 = v51;
             }
 
             else if (v28 == 1)
@@ -2359,7 +2359,7 @@ LABEL_8:
                 _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "Copy local value into remote record for key: %{public}@ with local generation: %{public}@, remote generation: %{public}@", buf, 0x20u);
               }
 
-              if ((v24 & v58) != 0)
+              if ((v24 & modifiedAttributeMask) != 0)
               {
                 v31 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -2374,15 +2374,15 @@ LABEL_8:
               v32 = [(CloudBookmark *)self _transformedModifiedOrLocalValueForKey:v22 isEncrypted:buf];
               if (buf[0] == 1)
               {
-                v33 = [v9 safari_encryptedValues];
-                [v33 setObject:v32 forKeyedSubscript:v22];
+                safari_encryptedValues2 = [recordCopy2 safari_encryptedValues];
+                [safari_encryptedValues2 setObject:v32 forKeyedSubscript:v22];
 
-                v5 = v54;
+                onlyCopy = v54;
               }
 
               else
               {
-                [v9 setObject:v32 forKeyedSubscript:v22];
+                [recordCopy2 setObject:v32 forKeyedSubscript:v22];
               }
 
               [v52 setObject:v26 forKeyedSubscript:v25];
@@ -2404,11 +2404,11 @@ LABEL_8:
                 _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "No merging needed for key: %@ with local generation: %@, remote generation: %@", buf, 0x20u);
               }
 
-              if ((v24 & v58) != 0)
+              if ((v24 & modifiedAttributeMask) != 0)
               {
                 if ([v27 isValid])
                 {
-                  v58 &= ~v24;
+                  modifiedAttributeMask &= ~v24;
                 }
 
                 else
@@ -2432,21 +2432,21 @@ LABEL_8:
 
         if ((v55 & 1) == 0)
         {
-          v7 = v49;
+          recordCopy = v49;
           v18 = v56;
           goto LABEL_60;
         }
 
         v41 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
-        v7 = v49;
+        recordCopy = v49;
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "Update IdentityHash on remote record.", buf, 2u);
         }
 
-        v20 = [(CloudBookmark *)self _modifiedOrLocalIdentityHashWithUpdater:v53];
-        [v9 setObject:v20 forKeyedSubscript:@"IdentityHash"];
+        knownKeys = [(CloudBookmark *)self _modifiedOrLocalIdentityHashWithUpdater:updaterCopy];
+        [recordCopy2 setObject:knownKeys forKeyedSubscript:@"IdentityHash"];
         v18 = v56;
       }
 
@@ -2467,14 +2467,14 @@ LABEL_60:
       v61[1] = 3221225472;
       v61[2] = sub_100021A10;
       v61[3] = &unk_1001322F8;
-      v62 = v9;
+      v62 = recordCopy2;
       [v52 enumerateKeysAndObjectsUsingBlock:v61];
       if (v54)
       {
-        [(WBBookmarkSyncData *)self->_syncData setModifiedAttributeMask:v58];
+        [(WBBookmarkSyncData *)self->_syncData setModifiedAttributeMask:modifiedAttributeMask];
       }
 
-      objc_storeStrong(&self->_record, v7);
+      objc_storeStrong(&self->_record, recordCopy);
       [(WBBookmarkSyncData *)self->_syncData setRecord:self->_record];
       v12 = v18 | 2;
       v43 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -2506,7 +2506,7 @@ LABEL_60:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Did finish merging local and remote records with record name: %{public}@ due to state changes. Result: %{public}@", buf, 0x16u);
     }
 
-    objc_storeStrong(&self->_record, v7);
+    objc_storeStrong(&self->_record, recordCopy);
     [(WBBookmarkSyncData *)self->_syncData setRecord:self->_record];
   }
 
@@ -2515,12 +2515,12 @@ LABEL_67:
   return v12;
 }
 
-- (unint64_t)_resultByMergingParentAndPositionWithRecord:(id)a3 usingUpdater:(id)a4
+- (unint64_t)_resultByMergingParentAndPositionWithRecord:(id)record usingUpdater:(id)updater
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  updaterCopy = updater;
   v9 = [(WBBookmarkSyncData *)self->_syncData generationForKey:@"ParentAndPosition"];
-  v10 = [v7 safari_generationForKey:@"ParentAndPosition"];
+  v10 = [recordCopy safari_generationForKey:@"ParentAndPosition"];
   v11 = [v9 compare:v10];
   if (v11 == -1)
   {
@@ -2538,14 +2538,14 @@ LABEL_67:
     }
 
     v20 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:@"Position"];
-    v21 = [v7 safari_positionDictionaryRepresentationUsingValueTransformer:v20];
+    v21 = [recordCopy safari_positionDictionaryRepresentationUsingValueTransformer:v20];
     [(WBBookmarkSyncData *)self->_syncData setPositionDictionaryRepresentation:v21];
 
     [(WBBookmarkSyncData *)self->_syncData setGeneration:v10 forKey:@"ParentAndPosition"];
-    v22 = [v7 objectForKeyedSubscript:@"ParentFolder"];
-    v23 = [v22 recordID];
-    v24 = [v23 recordName];
-    v25 = [v24 copy];
+    v22 = [recordCopy objectForKeyedSubscript:@"ParentFolder"];
+    recordID = [v22 recordID];
+    recordName = [recordID recordName];
+    v25 = [recordName copy];
     parentRecordName = self->_parentRecordName;
     self->_parentRecordName = v25;
 
@@ -2567,13 +2567,13 @@ LABEL_67:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Merging parent and position into remote record for record Name: %{public}@, local generation: %{public}@, remote generation: %{public}@", &v28, 0x20u);
     }
 
-    v15 = [(CloudBookmark *)self _modifiedOrLocalParentReferenceWithUpdater:v8];
-    v16 = [(WBBookmarkSyncData *)self->_syncData positionDictionaryRepresentation];
+    v15 = [(CloudBookmark *)self _modifiedOrLocalParentReferenceWithUpdater:updaterCopy];
+    positionDictionaryRepresentation = [(WBBookmarkSyncData *)self->_syncData positionDictionaryRepresentation];
     v17 = [(CloudBookmarkItemConfiguration *)self->_configuration valueTransformerForAttributeKey:@"Position"];
-    [v7 safari_setPositionDictionaryRepresentation:v16 usingValueTransformer:v17];
+    [recordCopy safari_setPositionDictionaryRepresentation:positionDictionaryRepresentation usingValueTransformer:v17];
 
-    [v7 setObject:v15 forKeyedSubscript:@"ParentFolder"];
-    [v7 safari_setGeneration:v9 forKey:@"ParentAndPosition"];
+    [recordCopy setObject:v15 forKeyedSubscript:@"ParentFolder"];
+    [recordCopy safari_setGeneration:v9 forKey:@"ParentAndPosition"];
 
     v4 = 1;
   }
@@ -2592,15 +2592,15 @@ LABEL_67:
   return v4;
 }
 
-- (unint64_t)_resultByMergingMinimumAPIVersionWithRecord:(id)a3
+- (unint64_t)_resultByMergingMinimumAPIVersionWithRecord:(id)record
 {
-  v5 = a3;
-  v6 = [v5 safari_minimumAPIVersion];
-  if (v6 <= 4)
+  recordCopy = record;
+  safari_minimumAPIVersion = [recordCopy safari_minimumAPIVersion];
+  if (safari_minimumAPIVersion <= 4)
   {
-    v9 = [(WBBookmarkSyncData *)self->_syncData minimumAPIVersion];
+    minimumAPIVersion = [(WBBookmarkSyncData *)self->_syncData minimumAPIVersion];
     v10 = [(WBBookmarkSyncData *)self->_syncData generationForKey:@"MinimumAPIVersion"];
-    v11 = [v5 safari_generationForKey:@"MinimumAPIVersion"];
+    v11 = [recordCopy safari_generationForKey:@"MinimumAPIVersion"];
     v12 = [v10 compare:v11];
     if (v12 == -1)
     {
@@ -2617,7 +2617,7 @@ LABEL_67:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Merging minimum API version into local record for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@", &v19, 0x20u);
       }
 
-      [(WBBookmarkSyncData *)self->_syncData setMinimumAPIVersion:v6];
+      [(WBBookmarkSyncData *)self->_syncData setMinimumAPIVersion:safari_minimumAPIVersion];
       [(WBBookmarkSyncData *)self->_syncData setGeneration:v11 forKey:@"MinimumAPIVersion"];
       v3 = 2;
     }
@@ -2637,15 +2637,15 @@ LABEL_67:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Merging minimum API version into remote record for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@", &v19, 0x20u);
       }
 
-      [v5 safari_setMinimumAPIVersion:v9];
-      [v5 safari_setGeneration:v10 forKey:@"MinimumAPIVersion"];
+      [recordCopy safari_setMinimumAPIVersion:minimumAPIVersion];
+      [recordCopy safari_setGeneration:v10 forKey:@"MinimumAPIVersion"];
       v3 = 1;
     }
 
     else if (!v12)
     {
       v13 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
-      if (v9 == v6)
+      if (minimumAPIVersion == safari_minimumAPIVersion)
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
@@ -2671,7 +2671,7 @@ LABEL_67:
       v19 = 138543874;
       v20 = v8;
       v21 = 2048;
-      v22 = v6;
+      v22 = safari_minimumAPIVersion;
       v23 = 2048;
       v24 = 4;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Did finish merging local and remote records with record name: %{public}@. Local record will be deleted because its minimum API version %zd is higher than the API version %zd supported by this client.", &v19, 0x20u);
@@ -2683,14 +2683,14 @@ LABEL_67:
   return v3;
 }
 
-- (unint64_t)_resultByMergingStateWithRecord:(id)a3 shouldContinueMerge:(BOOL *)a4
+- (unint64_t)_resultByMergingStateWithRecord:(id)record shouldContinueMerge:(BOOL *)merge
 {
-  v6 = a3;
+  recordCopy = record;
   v7 = [(WBBookmarkSyncData *)self->_syncData generationForKey:@"Deleted"];
-  v8 = [v6 safari_generationForKey:@"Deleted"];
+  v8 = [recordCopy safari_generationForKey:@"Deleted"];
   v9 = [v7 compare:v8];
-  v10 = [(CloudBookmark *)self state];
-  if (v10 == [v6 safari_state])
+  state = [(CloudBookmark *)self state];
+  if (state == [recordCopy safari_state])
   {
     goto LABEL_2;
   }
@@ -2698,7 +2698,7 @@ LABEL_67:
   if (v9 == -1)
   {
 LABEL_11:
-    if (v10 == 1)
+    if (state == 1)
     {
       item = self->_item;
       v17 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -2713,11 +2713,11 @@ LABEL_11:
           *&v36[12] = 2114;
           *&v36[14] = v7;
           *&v36[22] = 2114;
-          v37 = v8;
+          safari_state = v8;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Server previously told us the record was deleted, now it is undeleted. Mark the record %{public}@ as moved and continue merging: local generation: %{public}@, remote generation: %{public}@", v36, 0x20u);
         }
 
-        *a4 = 1;
+        *merge = 1;
         [(CloudBookmark *)self setState:0];
         [(WBBookmarkSyncData *)self->_syncData setGeneration:v8 forKey:@"Deleted"];
         self = 4;
@@ -2733,11 +2733,11 @@ LABEL_11:
           *&v36[12] = 2114;
           *&v36[14] = v7;
           *&v36[22] = 2114;
-          v37 = v8;
+          safari_state = v8;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Local record needs to be undeleted for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@", v36, 0x20u);
         }
 
-        *a4 = 0;
+        *merge = 0;
         self = 16;
       }
     }
@@ -2753,11 +2753,11 @@ LABEL_11:
         *&v36[12] = 2114;
         *&v36[14] = v7;
         *&v36[22] = 2114;
-        v37 = v8;
+        safari_state = v8;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Local record needs to be deleted for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@", v36, 0x20u);
       }
 
-      *a4 = 1;
+      *merge = 1;
       [(CloudBookmark *)self setState:1];
       [(WBBookmarkSyncData *)self->_syncData setGeneration:v8 forKey:@"Deleted"];
       self = 8;
@@ -2770,7 +2770,7 @@ LABEL_11:
   {
     v21 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_INFO);
-    if (v10 == 1)
+    if (state == 1)
     {
       if (v22)
       {
@@ -2780,13 +2780,13 @@ LABEL_11:
         *&v36[12] = 2114;
         *&v36[14] = v7;
         *&v36[22] = 2114;
-        v37 = v8;
+        safari_state = v8;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Remote record needs to be deleted for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@", v36, 0x20u);
       }
 
-      *a4 = 0;
+      *merge = 0;
       self = 1;
-      v24 = v6;
+      v24 = recordCopy;
       v25 = 1;
     }
 
@@ -2800,18 +2800,18 @@ LABEL_11:
         *&v36[12] = 2114;
         *&v36[14] = v7;
         *&v36[22] = 2114;
-        v37 = v8;
+        safari_state = v8;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Remote record needs to be undeleted for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@", v36, 0x20u);
       }
 
       self = 1;
-      *a4 = 1;
-      v24 = v6;
+      *merge = 1;
+      v24 = recordCopy;
       v25 = 0;
     }
 
     [v24 safari_setState:v25];
-    [v6 safari_setGeneration:v7 forKey:@"Deleted"];
+    [recordCopy safari_setGeneration:v7 forKey:@"Deleted"];
     goto LABEL_45;
   }
 
@@ -2826,7 +2826,7 @@ LABEL_11:
       *&v36[12] = 2114;
       *&v36[14] = v7;
       *&v36[22] = 2048;
-      v37 = [v6 safari_state];
+      safari_state = [recordCopy safari_state];
       v38 = 2114;
       v39 = v8;
       _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Local and remote state generations are equal even though their states are different. Local Deleted: %ld, generation: %{public}@, Remote Deleted %ld, generation: %{public}@", v36, 0x2Au);
@@ -2836,9 +2836,9 @@ LABEL_11:
   }
 
 LABEL_2:
-  if (v10 == 1)
+  if (state == 1)
   {
-    *a4 = 0;
+    *merge = 0;
     v11 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     v12 = v11;
     if (v9 == 1)
@@ -2851,7 +2851,7 @@ LABEL_2:
         *&v36[12] = 2114;
         *&v36[14] = v7;
         *&v36[22] = 2114;
-        v37 = v8;
+        safari_state = v8;
         v14 = "Both local and remote records are deleted but remote record state generation needs to be updated for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@";
 LABEL_33:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v14, v36, 0x20u);
@@ -2869,14 +2869,14 @@ LABEL_33:
       *&v36[12] = 2114;
       *&v36[14] = v7;
       *&v36[22] = 2114;
-      v37 = v8;
+      safari_state = v8;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Both remote and local records are deleted and remote generation does not need to be updated for record name: %{public}@, local generation: %{public}@, remote generation: %{public}@", v36, 0x20u);
     }
 
     goto LABEL_23;
   }
 
-  *a4 = 1;
+  *merge = 1;
   if (v9 == -1)
   {
     v29 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -2888,7 +2888,7 @@ LABEL_33:
       *&v36[12] = 2114;
       *&v36[14] = v7;
       *&v36[22] = 2114;
-      v37 = v8;
+      safari_state = v8;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Updating local state generation for record Name: %{public}@, local state generation: %{public}@, remote state generation: %{public}@", v36, 0x20u);
     }
 
@@ -2909,13 +2909,13 @@ LABEL_33:
         *&v36[12] = 2114;
         *&v36[14] = v7;
         *&v36[22] = 2114;
-        v37 = v8;
+        safari_state = v8;
         v14 = "Updating remote state generation for record Name: %{public}@, local state generation: %{public}@, remote state generation: %{public}@";
         goto LABEL_33;
       }
 
 LABEL_34:
-      [v6 safari_setGeneration:v7 forKey:{@"Deleted", *v36, *&v36[16], v37}];
+      [recordCopy safari_setGeneration:v7 forKey:{@"Deleted", *v36, *&v36[16], safari_state}];
       self = 1;
       goto LABEL_45;
     }

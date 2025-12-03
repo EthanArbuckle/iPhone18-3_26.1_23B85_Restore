@@ -5,7 +5,7 @@
 - (EshColor)shadowColor;
 - (EshColor)strokeBgColor;
 - (EshColor)strokeFgColor;
-- (OABShapeBaseManager)initWithShapeBase:(void *)a3 shapeType:(int)a4 masterShape:(EshShape *)a5;
+- (OABShapeBaseManager)initWithShapeBase:(void *)base shapeType:(int)type masterShape:(EshShape *)shape;
 - (const)strokeCustomDash;
 - (id)strokeFillBlipName;
 - (int)shadowAlpha;
@@ -532,14 +532,14 @@
   return mMasterManager;
 }
 
-- (OABShapeBaseManager)initWithShapeBase:(void *)a3 shapeType:(int)a4 masterShape:(EshShape *)a5
+- (OABShapeBaseManager)initWithShapeBase:(void *)base shapeType:(int)type masterShape:(EshShape *)shape
 {
   v7.receiver = self;
   v7.super_class = OABShapeBaseManager;
-  result = [(OABFillPropertiesManager *)&v7 initWithFill:a3 + 296 shapeType:*&a4 masterShape:a5];
+  result = [(OABFillPropertiesManager *)&v7 initWithFill:base + 296 shapeType:*&type masterShape:shape];
   if (result)
   {
-    result->mShapeBase = a3;
+    result->mShapeBase = base;
   }
 
   return result;

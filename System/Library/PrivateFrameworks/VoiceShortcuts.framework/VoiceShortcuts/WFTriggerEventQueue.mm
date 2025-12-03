@@ -1,43 +1,43 @@
 @interface WFTriggerEventQueue
-+ (BOOL)shouldRunTrigger:(id)a3 forEvent:(id)a4 runEvents:(id)a5 error:(id *)a6;
-+ (double)rateLimitingTimeoutForTrigger:(id)a3 runEvents:(id)a4 numFailures:(unint64_t)a5;
-- (BOOL)deleteTriggerEvent:(id)a3 error:(id *)a4;
-- (BOOL)isTriggerEventStale:(id)a3;
-- (BOOL)shouldRunEmailOrMessageTrigger:(id)a3 forEvent:(id)a4 runEvents:(id)a5 error:(id *)a6;
-- (WFTriggerEventQueue)initWithDatabaseProvider:(id)a3 notificationManager:(id)a4 notificationScheduler:(id)a5;
-- (WFTriggerEventQueue)initWithDatabaseProvider:(id)a3 notificationManager:(id)a4 notificationScheduler:(id)a5 triggerBootManager:(id)a6;
-- (id)configuredTriggerForIdentifier:(id)a3 workflowReference:(id *)a4 error:(id *)a5;
-- (id)databaseWithError:(id *)a3;
-- (id)nextTriggerEventWithError:(id *)a3;
++ (BOOL)shouldRunTrigger:(id)trigger forEvent:(id)event runEvents:(id)events error:(id *)error;
++ (double)rateLimitingTimeoutForTrigger:(id)trigger runEvents:(id)events numFailures:(unint64_t)failures;
+- (BOOL)deleteTriggerEvent:(id)event error:(id *)error;
+- (BOOL)isTriggerEventStale:(id)stale;
+- (BOOL)shouldRunEmailOrMessageTrigger:(id)trigger forEvent:(id)event runEvents:(id)events error:(id *)error;
+- (WFTriggerEventQueue)initWithDatabaseProvider:(id)provider notificationManager:(id)manager notificationScheduler:(id)scheduler;
+- (WFTriggerEventQueue)initWithDatabaseProvider:(id)provider notificationManager:(id)manager notificationScheduler:(id)scheduler triggerBootManager:(id)bootManager;
+- (id)configuredTriggerForIdentifier:(id)identifier workflowReference:(id *)reference error:(id *)error;
+- (id)databaseWithError:(id *)error;
+- (id)nextTriggerEventWithError:(id *)error;
 - (unint64_t)numberOfEventsInQueue;
-- (void)clearWithCompletionHandler:(id)a3;
-- (void)deactivateEphemeralTriggerIfNeeded:(id)a3 completion:(id)a4;
-- (void)didFinishRunningWithError:(id)a3 cancelled:(BOOL)a4 trigger:(id)a5 runEvent:(id)a6;
-- (void)disableTriggersWithIdentifiers:(id)a3;
-- (void)enqueueTriggerWithIdentifier:(id)a3 eventInfo:(id)a4 force:(BOOL)a5 completion:(id)a6;
-- (void)handleRemovedIgnoredNotifications:(id)a3;
-- (void)notificationManager:(id)a3 didDismissTriggerWithIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5;
-- (void)notificationManager:(id)a3 didFailToPostActionRequiredNotificationWithTriggerIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5;
-- (void)notificationManager:(id)a3 didRequestDisablementOfTriggersWithIdentifiers:(id)a4;
-- (void)notificationManager:(id)a3 receivedConfirmationToRunTriggerWithIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5;
-- (void)notificationManager:(id)a3 receivedContinuePotentialLoopForTriggerWithIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5;
-- (void)notificationManager:(id)a3 receivedStopPotentialLoopForTriggerWithIdentifier:(id)a4;
-- (void)removeAllStaleTriggerEventsIgnoringValidIDs:(id)a3;
-- (void)removePendingTriggerEventsWithEventIDs:(id)a3;
+- (void)clearWithCompletionHandler:(id)handler;
+- (void)deactivateEphemeralTriggerIfNeeded:(id)needed completion:(id)completion;
+- (void)didFinishRunningWithError:(id)error cancelled:(BOOL)cancelled trigger:(id)trigger runEvent:(id)event;
+- (void)disableTriggersWithIdentifiers:(id)identifiers;
+- (void)enqueueTriggerWithIdentifier:(id)identifier eventInfo:(id)info force:(BOOL)force completion:(id)completion;
+- (void)handleRemovedIgnoredNotifications:(id)notifications;
+- (void)notificationManager:(id)manager didDismissTriggerWithIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds;
+- (void)notificationManager:(id)manager didFailToPostActionRequiredNotificationWithTriggerIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds;
+- (void)notificationManager:(id)manager didRequestDisablementOfTriggersWithIdentifiers:(id)identifiers;
+- (void)notificationManager:(id)manager receivedConfirmationToRunTriggerWithIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds;
+- (void)notificationManager:(id)manager receivedContinuePotentialLoopForTriggerWithIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds;
+- (void)notificationManager:(id)manager receivedStopPotentialLoopForTriggerWithIdentifier:(id)identifier;
+- (void)removeAllStaleTriggerEventsIgnoringValidIDs:(id)ds;
+- (void)removePendingTriggerEventsWithEventIDs:(id)ds;
 - (void)resume;
-- (void)resumeWithConfiguredTrigger:(id)a3 workflowReference:(id)a4 eventInfo:(id)a5;
-- (void)runWithConfiguredTrigger:(id)a3 workflowReference:(id)a4 eventInfo:(id)a5;
-- (void)sendRateLimitEncounteredNotificationForTrigger:(id)a3;
-- (void)setConfirmedForTriggerEventIDs:(id)a3 error:(id *)a4;
+- (void)resumeWithConfiguredTrigger:(id)trigger workflowReference:(id)reference eventInfo:(id)info;
+- (void)runWithConfiguredTrigger:(id)trigger workflowReference:(id)reference eventInfo:(id)info;
+- (void)sendRateLimitEncounteredNotificationForTrigger:(id)trigger;
+- (void)setConfirmedForTriggerEventIDs:(id)ds error:(id *)error;
 @end
 
 @implementation WFTriggerEventQueue
 
-- (void)deactivateEphemeralTriggerIfNeeded:(id)a3 completion:(id)a4
+- (void)deactivateEphemeralTriggerIfNeeded:(id)needed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (_os_feature_enabled_impl() && ([v6 shouldRecur] & 1) == 0)
+  neededCopy = needed;
+  completionCopy = completion;
+  if (_os_feature_enabled_impl() && ([neededCopy shouldRecur] & 1) == 0)
   {
     v23 = 0;
     v8 = [(WFTriggerEventQueue *)self databaseWithError:&v23];
@@ -46,33 +46,33 @@
     if (v8)
     {
       v22 = v9;
-      v11 = [v8 recordWithDescriptor:v6 error:&v22];
+      v11 = [v8 recordWithDescriptor:neededCopy error:&v22];
       v12 = v22;
 
       if (v11)
       {
         [v11 setEnabled:0];
         v21 = v12;
-        v13 = [v8 saveRecord:v11 withDescriptor:v6 error:&v21];
+        v13 = [v8 saveRecord:v11 withDescriptor:neededCopy error:&v21];
         v14 = v21;
 
         if (v13)
         {
-          v15 = [MEMORY[0x277D79D98] standardClient];
-          v16 = [v6 identifier];
-          v17 = [v6 trigger];
-          v18 = [objc_opt_class() triggerBacking];
+          standardClient = [MEMORY[0x277D79D98] standardClient];
+          identifier = [neededCopy identifier];
+          trigger = [neededCopy trigger];
+          triggerBacking = [objc_opt_class() triggerBacking];
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
           v19[2] = __69__WFTriggerEventQueue_deactivateEphemeralTriggerIfNeeded_completion___block_invoke;
           v19[3] = &unk_2788FEF20;
-          v20 = v7;
-          [v15 unregisterTriggerWithIdentifier:v16 triggerBacking:v18 completion:v19];
+          v20 = completionCopy;
+          [standardClient unregisterTriggerWithIdentifier:identifier triggerBacking:triggerBacking completion:v19];
         }
 
         else
         {
-          (*(v7 + 2))(v7, 0, v14);
+          (*(completionCopy + 2))(completionCopy, 0, v14);
         }
 
         v12 = v14;
@@ -80,7 +80,7 @@
 
       else
       {
-        (*(v7 + 2))(v7, 0, v12);
+        (*(completionCopy + 2))(completionCopy, 0, v12);
       }
 
       v10 = v12;
@@ -88,35 +88,35 @@
 
     else
     {
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
     }
   }
 }
 
-- (void)didFinishRunningWithError:(id)a3 cancelled:(BOOL)a4 trigger:(id)a5 runEvent:(id)a6
+- (void)didFinishRunningWithError:(id)error cancelled:(BOOL)cancelled trigger:(id)trigger runEvent:(id)event
 {
-  v8 = a4;
+  cancelledCopy = cancelled;
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  errorCopy = error;
+  triggerCopy = trigger;
+  eventCopy = event;
   v13 = getWFTriggersLogObject();
-  v14 = v13;
-  if (v10)
+  notificationManager = v13;
+  if (errorCopy)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315394;
       v25 = "[WFTriggerEventQueue didFinishRunningWithError:cancelled:trigger:runEvent:]";
       v26 = 2112;
-      v27 = v10;
-      _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_ERROR, "%s Finished running with error: %@", buf, 0x16u);
+      v27 = errorCopy;
+      _os_log_impl(&dword_23103C000, notificationManager, OS_LOG_TYPE_ERROR, "%s Finished running with error: %@", buf, 0x16u);
     }
 
-    v14 = [(WFTriggerEventQueue *)self notificationManager];
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v15 UUIDString];
-    [v14 postNotificationThatTrigger:v11 failedWithError:v10 notificationRequestIdentifier:v16];
+    notificationManager = [(WFTriggerEventQueue *)self notificationManager];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [notificationManager postNotificationThatTrigger:triggerCopy failedWithError:errorCopy notificationRequestIdentifier:uUIDString];
 
     v17 = 2;
   }
@@ -128,23 +128,23 @@
       *buf = 136315394;
       v25 = "[WFTriggerEventQueue didFinishRunningWithError:cancelled:trigger:runEvent:]";
       v26 = 1024;
-      LODWORD(v27) = v8;
-      _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_DEBUG, "%s Finished running workflow in background extension (cancelled: %d)", buf, 0x12u);
+      LODWORD(v27) = cancelledCopy;
+      _os_log_impl(&dword_23103C000, notificationManager, OS_LOG_TYPE_DEBUG, "%s Finished running workflow in background extension (cancelled: %d)", buf, 0x12u);
     }
 
     v17 = 1;
   }
 
-  v18 = [(WFTriggerEventQueue *)self queue];
+  queue = [(WFTriggerEventQueue *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__WFTriggerEventQueue_didFinishRunningWithError_cancelled_trigger_runEvent___block_invoke;
   block[3] = &unk_2788FEF70;
   block[4] = self;
-  v22 = v12;
+  v22 = eventCopy;
   v23 = v17;
-  v19 = v12;
-  dispatch_async(v18, block);
+  v19 = eventCopy;
+  dispatch_async(queue, block);
 
   [(WFTriggerEventQueue *)self resume];
   v20 = *MEMORY[0x277D85DE8];
@@ -181,47 +181,47 @@ void __76__WFTriggerEventQueue_didFinishRunningWithError_cancelled_trigger_runEv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendRateLimitEncounteredNotificationForTrigger:(id)a3
+- (void)sendRateLimitEncounteredNotificationForTrigger:(id)trigger
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  triggerCopy = trigger;
   v12 = objc_alloc_init(v4);
   v6 = WFLocalizedString(@"Last attempt to run your Shortcut failed. Please wait before trying again.");
   [v12 setObject:v6 forKeyedSubscript:*MEMORY[0x277CCA450]];
 
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7D008] code:6004 userInfo:v12];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v5 identifier];
-  v10 = [v8 stringWithFormat:@"%@-rate-limit-error", v9];
+  identifier = [triggerCopy identifier];
+  v10 = [v8 stringWithFormat:@"%@-rate-limit-error", identifier];
 
-  v11 = [(WFTriggerEventQueue *)self notificationManager];
-  [v11 postNotificationThatTrigger:v5 failedWithError:v7 notificationRequestIdentifier:v10];
+  notificationManager = [(WFTriggerEventQueue *)self notificationManager];
+  [notificationManager postNotificationThatTrigger:triggerCopy failedWithError:v7 notificationRequestIdentifier:v10];
 }
 
-- (void)notificationManager:(id)a3 didRequestDisablementOfTriggersWithIdentifiers:(id)a4
+- (void)notificationManager:(id)manager didRequestDisablementOfTriggersWithIdentifiers:(id)identifiers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifiersCopy = identifiers;
   v6 = getWFTriggerNotificationsLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v13 = "[WFTriggerEventQueue notificationManager:didRequestDisablementOfTriggersWithIdentifiers:]";
     v14 = 2114;
-    v15 = v5;
+    v15 = identifiersCopy;
     _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s Disabling triggers with identifiers: %{public}@", buf, 0x16u);
   }
 
-  if ([v5 count])
+  if ([identifiersCopy count])
   {
-    v7 = [(WFTriggerEventQueue *)self queue];
+    queue = [(WFTriggerEventQueue *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __90__WFTriggerEventQueue_notificationManager_didRequestDisablementOfTriggersWithIdentifiers___block_invoke;
     v10[3] = &unk_2788FFFC0;
     v10[4] = self;
-    v11 = v5;
-    dispatch_async(v7, v10);
+    v11 = identifiersCopy;
+    dispatch_async(queue, v10);
   }
 
   else
@@ -238,31 +238,31 @@ void __76__WFTriggerEventQueue_didFinishRunningWithError_cancelled_trigger_runEv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationManager:(id)a3 didFailToPostActionRequiredNotificationWithTriggerIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5
+- (void)notificationManager:(id)manager didFailToPostActionRequiredNotificationWithTriggerIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  dsCopy = ds;
   v9 = getWFTriggersLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v16 = "[WFTriggerEventQueue notificationManager:didFailToPostActionRequiredNotificationWithTriggerIdentifier:pendingTriggerEventIDs:]";
     v17 = 2114;
-    v18 = v7;
+    v18 = identifierCopy;
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEBUG, "%s Failed to post notifciation prompt for trigger with identifier: %{public}@", buf, 0x16u);
   }
 
-  if ([v8 count])
+  if ([dsCopy count])
   {
-    v10 = [(WFTriggerEventQueue *)self queue];
+    queue = [(WFTriggerEventQueue *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __127__WFTriggerEventQueue_notificationManager_didFailToPostActionRequiredNotificationWithTriggerIdentifier_pendingTriggerEventIDs___block_invoke;
     v13[3] = &unk_2788FFFC0;
     v13[4] = self;
-    v14 = v8;
-    dispatch_async(v10, v13);
+    v14 = dsCopy;
+    dispatch_async(queue, v13);
   }
 
   else
@@ -279,31 +279,31 @@ void __76__WFTriggerEventQueue_didFinishRunningWithError_cancelled_trigger_runEv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationManager:(id)a3 didDismissTriggerWithIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5
+- (void)notificationManager:(id)manager didDismissTriggerWithIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  dsCopy = ds;
   v9 = getWFTriggersLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v16 = "[WFTriggerEventQueue notificationManager:didDismissTriggerWithIdentifier:pendingTriggerEventIDs:]";
     v17 = 2114;
-    v18 = v7;
+    v18 = identifierCopy;
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEBUG, "%s User dismissed notification prompt for trigger with identifier: %{public}@", buf, 0x16u);
   }
 
-  if ([v8 count])
+  if ([dsCopy count])
   {
-    v10 = [(WFTriggerEventQueue *)self queue];
+    queue = [(WFTriggerEventQueue *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __98__WFTriggerEventQueue_notificationManager_didDismissTriggerWithIdentifier_pendingTriggerEventIDs___block_invoke;
     v13[3] = &unk_2788FFFC0;
     v13[4] = self;
-    v14 = v8;
-    dispatch_async(v10, v13);
+    v14 = dsCopy;
+    dispatch_async(queue, v13);
   }
 
   else
@@ -320,20 +320,20 @@ void __76__WFTriggerEventQueue_didFinishRunningWithError_cancelled_trigger_runEv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationManager:(id)a3 receivedStopPotentialLoopForTriggerWithIdentifier:(id)a4
+- (void)notificationManager:(id)manager receivedStopPotentialLoopForTriggerWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = [(WFTriggerEventQueue *)self queue];
+    queue = [(WFTriggerEventQueue *)self queue];
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __93__WFTriggerEventQueue_notificationManager_receivedStopPotentialLoopForTriggerWithIdentifier___block_invoke;
     v12 = &unk_2788FFFC0;
-    v13 = self;
-    v14 = v5;
-    dispatch_async(v6, &v9);
+    selfCopy = self;
+    v14 = identifierCopy;
+    dispatch_async(queue, &v9);
 
     [(WFTriggerEventQueue *)self resume:v9];
   }
@@ -387,24 +387,24 @@ void __93__WFTriggerEventQueue_notificationManager_receivedStopPotentialLoopForT
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationManager:(id)a3 receivedContinuePotentialLoopForTriggerWithIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5
+- (void)notificationManager:(id)manager receivedContinuePotentialLoopForTriggerWithIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  identifierCopy = identifier;
+  dsCopy = ds;
+  if (identifierCopy)
   {
-    v9 = [(WFTriggerEventQueue *)self queue];
+    queue = [(WFTriggerEventQueue *)self queue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __120__WFTriggerEventQueue_notificationManager_receivedContinuePotentialLoopForTriggerWithIdentifier_pendingTriggerEventIDs___block_invoke_2;
     v14[3] = &unk_2788FFFC0;
     v14[4] = self;
     v10 = &v15;
-    v15 = v7;
+    v15 = identifierCopy;
     v11 = v14;
 LABEL_7:
-    dispatch_async(v9, v11);
+    dispatch_async(queue, v11);
 
     goto LABEL_8;
   }
@@ -417,16 +417,16 @@ LABEL_7:
     _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_DEBUG, "%s Failed to continue loop for trigger because recieved confirmation with no trigger identifier", buf, 0xCu);
   }
 
-  if ([v8 count])
+  if ([dsCopy count])
   {
-    v9 = [(WFTriggerEventQueue *)self queue];
+    queue = [(WFTriggerEventQueue *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __120__WFTriggerEventQueue_notificationManager_receivedContinuePotentialLoopForTriggerWithIdentifier_pendingTriggerEventIDs___block_invoke;
     block[3] = &unk_2788FFFC0;
     block[4] = self;
     v10 = &v17;
-    v17 = v8;
+    v17 = dsCopy;
     v11 = block;
     goto LABEL_7;
   }
@@ -488,27 +488,27 @@ void __120__WFTriggerEventQueue_notificationManager_receivedContinuePotentialLoo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationManager:(id)a3 receivedConfirmationToRunTriggerWithIdentifier:(id)a4 pendingTriggerEventIDs:(id)a5
+- (void)notificationManager:(id)manager receivedConfirmationToRunTriggerWithIdentifier:(id)identifier pendingTriggerEventIDs:(id)ds
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  managerCopy = manager;
+  identifierCopy = identifier;
+  dsCopy = ds;
+  v11 = dsCopy;
+  if (identifierCopy)
   {
-    v12 = [v10 count];
-    v13 = [(WFTriggerEventQueue *)self queue];
+    v12 = [dsCopy count];
+    queue = [(WFTriggerEventQueue *)self queue];
     if (v12)
     {
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __113__WFTriggerEventQueue_notificationManager_receivedConfirmationToRunTriggerWithIdentifier_pendingTriggerEventIDs___block_invoke_239;
       v21 = &unk_2788FFFC0;
-      v22 = self;
+      selfCopy = self;
       v14 = &v23;
       v23 = v11;
-      dispatch_async(v13, &v18);
+      dispatch_async(queue, &v18);
 
       [(WFTriggerEventQueue *)self resume:v18];
 LABEL_10:
@@ -522,10 +522,10 @@ LABEL_10:
     block[3] = &unk_2788FFFC0;
     block[4] = self;
     v14 = &v25;
-    v25 = v9;
+    v25 = identifierCopy;
     v16 = block;
 LABEL_9:
-    dispatch_async(v13, v16);
+    dispatch_async(queue, v16);
 
     goto LABEL_10;
   }
@@ -540,7 +540,7 @@ LABEL_9:
 
   if ([v11 count])
   {
-    v13 = [(WFTriggerEventQueue *)self queue];
+    queue = [(WFTriggerEventQueue *)self queue];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __113__WFTriggerEventQueue_notificationManager_receivedConfirmationToRunTriggerWithIdentifier_pendingTriggerEventIDs___block_invoke;
@@ -624,12 +624,12 @@ void __113__WFTriggerEventQueue_notificationManager_receivedConfirmationToRunTri
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableTriggersWithIdentifiers:(id)a3
+- (void)disableTriggersWithIdentifiers:(id)identifiers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifiersCopy = identifiers;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v10 = 0;
   v6 = [(WFTriggerEventQueue *)self databaseWithError:&v10];
@@ -637,7 +637,7 @@ void __113__WFTriggerEventQueue_notificationManager_receivedConfirmationToRunTri
   if (v6)
   {
     v8 = [objc_alloc(MEMORY[0x277D7C988]) initWithDatabase:v6];
-    [v8 disableTriggersWithIdentifiers:v4];
+    [v8 disableTriggersWithIdentifiers:identifiersCopy];
   }
 
   else
@@ -656,26 +656,26 @@ void __113__WFTriggerEventQueue_notificationManager_receivedConfirmationToRunTri
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isTriggerEventStale:(id)a3
+- (BOOL)isTriggerEventStale:(id)stale
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v4 dateCreated];
+  staleCopy = stale;
+  currentCalendar = [v3 currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  dateCreated = [staleCopy dateCreated];
 
-  v8 = [v5 components:16 fromDate:v7 toDate:v6 options:0];
+  v8 = [currentCalendar components:16 fromDate:dateCreated toDate:date options:0];
 
-  LOBYTE(v7) = [v8 day] > 6;
-  return v7;
+  LOBYTE(dateCreated) = [v8 day] > 6;
+  return dateCreated;
 }
 
-- (void)removeAllStaleTriggerEventsIgnoringValidIDs:(id)a3
+- (void)removeAllStaleTriggerEventsIgnoringValidIDs:(id)ds
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v35 = 0;
   v6 = [(WFTriggerEventQueue *)self databaseWithError:&v35];
@@ -685,14 +685,14 @@ void __113__WFTriggerEventQueue_notificationManager_receivedConfirmationToRunTri
   {
     v28 = v7;
     v29 = v6;
-    v9 = [v6 allSortedTriggerEvents];
-    v10 = [v9 descriptors];
+    allSortedTriggerEvents = [v6 allSortedTriggerEvents];
+    descriptors = [allSortedTriggerEvents descriptors];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v10;
+    v11 = descriptors;
     v12 = [v11 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (!v12)
     {
@@ -711,8 +711,8 @@ void __113__WFTriggerEventQueue_notificationManager_receivedConfirmationToRunTri
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
-        v17 = [v16 identifier];
-        if ([v4 containsObject:v17])
+        identifier = [v16 identifier];
+        if ([dsCopy containsObject:identifier])
         {
 
 LABEL_15:
@@ -722,11 +722,11 @@ LABEL_15:
             goto LABEL_19;
           }
 
-          v23 = [v16 identifier];
+          identifier2 = [v16 identifier];
           *buf = 136315394;
           v38 = "[WFTriggerEventQueue removeAllStaleTriggerEventsIgnoringValidIDs:]";
           v39 = 2114;
-          v40 = v23;
+          v40 = identifier2;
           v24 = v22;
           v25 = OS_LOG_TYPE_DEFAULT;
           v26 = "%s Trigger event is valid with id: %{public}@";
@@ -745,11 +745,11 @@ LABEL_17:
         v19 = getWFTriggersLogObject();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v16 identifier];
+          identifier3 = [v16 identifier];
           *buf = 136315394;
           v38 = "[WFTriggerEventQueue removeAllStaleTriggerEventsIgnoringValidIDs:]";
           v39 = 2114;
-          v40 = v20;
+          v40 = identifier3;
           _os_log_impl(&dword_23103C000, v19, OS_LOG_TYPE_DEFAULT, "%s Removing stale trigger event with id: %{public}@", buf, 0x16u);
         }
 
@@ -758,14 +758,14 @@ LABEL_17:
         v22 = v30;
         if (!v21)
         {
-          v23 = getWFTriggersLogObject();
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+          identifier2 = getWFTriggersLogObject();
+          if (os_log_type_enabled(identifier2, OS_LOG_TYPE_ERROR))
           {
             *buf = 136315394;
             v38 = "[WFTriggerEventQueue removeAllStaleTriggerEventsIgnoringValidIDs:]";
             v39 = 2114;
             v40 = v22;
-            v24 = v23;
+            v24 = identifier2;
             v25 = OS_LOG_TYPE_ERROR;
             v26 = "%s Could not delete trigger notification with error %{public}@";
             goto LABEL_17;
@@ -804,10 +804,10 @@ LABEL_24:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemovedIgnoredNotifications:(id)a3
+- (void)handleRemovedIgnoredNotifications:(id)notifications
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationsCopy = notifications;
   v5 = getWFTriggersLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -816,15 +816,15 @@ LABEL_24:
     _os_log_impl(&dword_23103C000, v5, OS_LOG_TYPE_DEBUG, "%s Removing all trigger events", buf, 0xCu);
   }
 
-  v6 = [(WFTriggerEventQueue *)self queue];
+  queue = [(WFTriggerEventQueue *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__WFTriggerEventQueue_handleRemovedIgnoredNotifications___block_invoke;
   v9[3] = &unk_2788FFFC0;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = notificationsCopy;
+  selfCopy = self;
+  v7 = notificationsCopy;
+  dispatch_async(queue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -853,16 +853,16 @@ void __57__WFTriggerEventQueue_handleRemovedIgnoredNotifications___block_invoke_
   [*(a1 + 32) addObjectsFromArray:v5];
 }
 
-- (BOOL)shouldRunEmailOrMessageTrigger:(id)a3 forEvent:(id)a4 runEvents:(id)a5 error:(id *)a6
+- (BOOL)shouldRunEmailOrMessageTrigger:(id)trigger forEvent:(id)event runEvents:(id)events error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v8);
+  eventCopy = event;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(WFTriggerEventQueue *)self numberOfEventsInQueue]< 0xC9)
   {
-    v9 = [v7 objectForKey:@"NewValue"];
+    v9 = [eventCopy objectForKey:@"NewValue"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       if ([v9 count]< 0xB)
@@ -913,12 +913,12 @@ LABEL_14:
   return v11;
 }
 
-- (void)removePendingTriggerEventsWithEventIDs:(id)a3
+- (void)removePendingTriggerEventsWithEventIDs:(id)ds
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = getWFTriggersLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -926,7 +926,7 @@ LABEL_14:
     *buf = 136315394;
     v34 = "[WFTriggerEventQueue removePendingTriggerEventsWithEventIDs:]";
     v35 = 2114;
-    v36 = v4;
+    v36 = dsCopy;
     _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEBUG, "%s Attempting to remove pending trigger events with identifiers %{public}@", buf, 0x16u);
   }
 
@@ -939,13 +939,13 @@ LABEL_14:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = v4;
+    v9 = dsCopy;
     v10 = [v9 countByEnumeratingWithState:&v28 objects:v39 count:16];
     if (v10)
     {
       v11 = v10;
       v25 = v8;
-      v26 = v4;
+      v26 = dsCopy;
       v12 = *v29;
       while (1)
       {
@@ -1007,7 +1007,7 @@ LABEL_15:
         if (!v11)
         {
           v8 = v25;
-          v4 = v26;
+          dsCopy = v26;
           break;
         }
       }
@@ -1030,12 +1030,12 @@ LABEL_15:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConfirmedForTriggerEventIDs:(id)a3 error:(id *)a4
+- (void)setConfirmedForTriggerEventIDs:(id)ds error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v7);
+  dsCopy = ds;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = getWFTriggersLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1043,7 +1043,7 @@ LABEL_15:
     *buf = 136315394;
     v32 = "[WFTriggerEventQueue setConfirmedForTriggerEventIDs:error:]";
     v33 = 2114;
-    v34 = v6;
+    v34 = dsCopy;
     _os_log_impl(&dword_23103C000, v8, OS_LOG_TYPE_DEBUG, "%s Attempting to mark trigger events as confirmed with ids: %{public}@", buf, 0x16u);
   }
 
@@ -1056,13 +1056,13 @@ LABEL_15:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v6;
+    v11 = dsCopy;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v37 count:16];
     if (v12)
     {
       v13 = v12;
       v23 = v10;
-      v24 = v6;
+      v24 = dsCopy;
       v14 = *v27;
       do
       {
@@ -1099,7 +1099,7 @@ LABEL_15:
 
       while (v13);
       v10 = v23;
-      v6 = v24;
+      dsCopy = v24;
     }
   }
 
@@ -1107,36 +1107,36 @@ LABEL_15:
   {
     v20 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:1004 underlyingError:v10 reason:@"Unable to load database"];
     v11 = v20;
-    if (a4)
+    if (error)
     {
       v21 = v20;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)configuredTriggerForIdentifier:(id)a3 workflowReference:(id *)a4 error:(id *)a5
+- (id)configuredTriggerForIdentifier:(id)identifier workflowReference:(id *)reference error:(id *)error
 {
-  v8 = a3;
-  v9 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v9);
+  identifierCopy = identifier;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v25 = 0;
   v10 = [(WFTriggerEventQueue *)self databaseWithError:&v25];
   v11 = v25;
   if (v10)
   {
-    v12 = [v10 configuredTriggerForTriggerID:v8];
+    v12 = [v10 configuredTriggerForTriggerID:identifierCopy];
     if (v12)
     {
       v13 = v12;
-      v14 = [v12 workflowID];
+      workflowID = [v12 workflowID];
 
-      if (v14)
+      if (workflowID)
       {
-        if (!a4 || ([v13 workflowID], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "referenceForWorkflowID:", v15), *a4 = objc_claimAutoreleasedReturnValue(), v15, *a4))
+        if (!reference || ([v13 workflowID], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "referenceForWorkflowID:", v15), *reference = objc_claimAutoreleasedReturnValue(), v15, *reference))
         {
           v13 = v13;
           v16 = v13;
@@ -1144,33 +1144,33 @@ LABEL_15:
         }
 
         v21 = MEMORY[0x277CCA9B8];
-        v22 = [v13 workflowID];
-        v23 = [v21 vc_voiceShortcutErrorWithCode:6001 reason:{@"Couldn't find workflow (%@) for trigger with identifier: %@", v22, v8}];
-        if (a5)
+        workflowID2 = [v13 workflowID];
+        v23 = [v21 vc_voiceShortcutErrorWithCode:6001 reason:{@"Couldn't find workflow (%@) for trigger with identifier: %@", workflowID2, identifierCopy}];
+        if (error)
         {
           v23 = v23;
-          *a5 = v23;
+          *error = v23;
         }
       }
 
       else
       {
-        v20 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:6001 reason:{@"Missing workflow identifier for trigger with identifier: %@", v8}];
-        if (a5)
+        v20 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:6001 reason:{@"Missing workflow identifier for trigger with identifier: %@", identifierCopy}];
+        if (error)
         {
           v20 = v20;
-          *a5 = v20;
+          *error = v20;
         }
       }
     }
 
     else
     {
-      v19 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:6003 reason:{@"Could not find trigger with identifier: %@", v8}];
-      if (a5)
+      v19 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:6003 reason:{@"Could not find trigger with identifier: %@", identifierCopy}];
+      if (error)
       {
         v19 = v19;
-        *a5 = v19;
+        *error = v19;
       }
 
       v13 = 0;
@@ -1181,11 +1181,11 @@ LABEL_15:
   {
     v17 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:1004 underlyingError:v11 reason:@"Unable to load database"];
     v13 = v17;
-    if (a5)
+    if (error)
     {
       v18 = v17;
       v16 = 0;
-      *a5 = v13;
+      *error = v13;
       goto LABEL_19;
     }
   }
@@ -1196,23 +1196,23 @@ LABEL_19:
   return v16;
 }
 
-- (id)nextTriggerEventWithError:(id *)a3
+- (id)nextTriggerEventWithError:(id *)error
 {
-  v5 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v14 = 0;
   v6 = [(WFTriggerEventQueue *)self databaseWithError:&v14];
   v7 = v14;
   if (v6)
   {
-    v8 = [v6 runnableSortedTriggerEvents];
-    v9 = [v8 descriptors];
-    v10 = [v9 firstObject];
+    runnableSortedTriggerEvents = [v6 runnableSortedTriggerEvents];
+    descriptors = [runnableSortedTriggerEvents descriptors];
+    firstObject = [descriptors firstObject];
 
-    if (v10)
+    if (firstObject)
     {
-      v11 = v10;
+      v11 = firstObject;
       v12 = v11;
       goto LABEL_8;
     }
@@ -1223,11 +1223,11 @@ LABEL_19:
   else
   {
     v11 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:1004 underlyingError:v7 reason:@"Unable to load database"];
-    if (a3)
+    if (error)
     {
       v11 = v11;
       v12 = 0;
-      *a3 = v11;
+      *error = v11;
       goto LABEL_8;
     }
   }
@@ -1238,12 +1238,12 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)deleteTriggerEvent:(id)a3 error:(id *)a4
+- (BOOL)deleteTriggerEvent:(id)event error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v7);
+  eventCopy = event;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v16 = 0;
   v8 = [(WFTriggerEventQueue *)self databaseWithError:&v16];
@@ -1253,24 +1253,24 @@ LABEL_8:
     v10 = getWFTriggersLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 identifier];
+      identifier = [eventCopy identifier];
       *buf = 136315394;
       v18 = "[WFTriggerEventQueue deleteTriggerEvent:error:]";
       v19 = 2114;
-      v20 = v11;
+      v20 = identifier;
       _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_DEFAULT, "%s Removing trigger event with identifier: %{public}@", buf, 0x16u);
     }
 
-    v12 = [v8 deleteReference:v6 error:a4];
+    v12 = [v8 deleteReference:eventCopy error:error];
   }
 
   else
   {
     v13 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:1004 underlyingError:v9 reason:@"Unable to load database"];
-    if (a4)
+    if (error)
     {
       v13 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     v12 = 0;
@@ -1282,45 +1282,45 @@ LABEL_8:
 
 - (unint64_t)numberOfEventsInQueue
 {
-  v3 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [(WFTriggerEventQueue *)self databaseWithError:0];
-  v5 = [v4 allSortedTriggerEvents];
-  v6 = [v5 count];
+  allSortedTriggerEvents = [v4 allSortedTriggerEvents];
+  v6 = [allSortedTriggerEvents count];
 
   return v6;
 }
 
-- (id)databaseWithError:(id *)a3
+- (id)databaseWithError:(id *)error
 {
-  v5 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(WFTriggerEventQueue *)self databaseProvider];
-  v7 = [v6 databaseWithError:a3];
+  databaseProvider = [(WFTriggerEventQueue *)self databaseProvider];
+  v7 = [databaseProvider databaseWithError:error];
 
   return v7;
 }
 
-- (void)enqueueTriggerWithIdentifier:(id)a3 eventInfo:(id)a4 force:(BOOL)a5 completion:(id)a6
+- (void)enqueueTriggerWithIdentifier:(id)identifier eventInfo:(id)info force:(BOOL)force completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(WFTriggerEventQueue *)self queue];
+  identifierCopy = identifier;
+  infoCopy = info;
+  completionCopy = completion;
+  queue = [(WFTriggerEventQueue *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __79__WFTriggerEventQueue_enqueueTriggerWithIdentifier_eventInfo_force_completion___block_invoke;
   v16[3] = &unk_2788FF468;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = identifierCopy;
+  v18 = infoCopy;
+  v19 = completionCopy;
+  v13 = infoCopy;
+  v14 = completionCopy;
+  v15 = identifierCopy;
+  dispatch_async(queue, v16);
 }
 
 void __79__WFTriggerEventQueue_enqueueTriggerWithIdentifier_eventInfo_force_completion___block_invoke(uint64_t a1)
@@ -1631,57 +1631,57 @@ LABEL_61:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runWithConfiguredTrigger:(id)a3 workflowReference:(id)a4 eventInfo:(id)a5
+- (void)runWithConfiguredTrigger:(id)trigger workflowReference:(id)reference eventInfo:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v11);
+  triggerCopy = trigger;
+  referenceCopy = reference;
+  infoCopy = info;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(WFTriggerEventQueue *)self triggerBootManager];
-  [v12 willRunAutomations];
+  triggerBootManager = [(WFTriggerEventQueue *)self triggerBootManager];
+  [triggerBootManager willRunAutomations];
 
-  v13 = [(WFTriggerEventQueue *)self triggerEventRunner];
-  v14 = [v8 workflowID];
-  v15 = [v13 isRunningWorkflowWithIdentifier:v14];
+  triggerEventRunner = [(WFTriggerEventQueue *)self triggerEventRunner];
+  workflowID = [triggerCopy workflowID];
+  v15 = [triggerEventRunner isRunningWorkflowWithIdentifier:workflowID];
 
   if (v15)
   {
     v16 = getWFTriggersLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      v17 = [v8 workflowID];
+      workflowID2 = [triggerCopy workflowID];
       *buf = 136315394;
       v30 = "[WFTriggerEventQueue runWithConfiguredTrigger:workflowReference:eventInfo:]";
       v31 = 2114;
-      v32 = v17;
+      v32 = workflowID2;
       _os_log_impl(&dword_23103C000, v16, OS_LOG_TYPE_FAULT, "%s Attempted to run trigger while triggerEventRunner is running with workflow id: %{public}@.", buf, 0x16u);
     }
 
     goto LABEL_18;
   }
 
-  if ([v8 shouldPrompt])
+  if ([triggerCopy shouldPrompt])
   {
     goto LABEL_16;
   }
 
-  v18 = [v8 trigger];
-  v19 = [objc_opt_class() isAllowedToRunAutomatically];
+  trigger = [triggerCopy trigger];
+  isAllowedToRunAutomatically = [objc_opt_class() isAllowedToRunAutomatically];
 
-  if (!v19)
+  if (!isAllowedToRunAutomatically)
   {
     goto LABEL_16;
   }
 
-  if (([v8 shouldNotify] & 1) != 0 || (objc_msgSend(v8, "trigger"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(objc_opt_class(), "requiresNotification"), v20, v21))
+  if (([triggerCopy shouldNotify] & 1) != 0 || (objc_msgSend(triggerCopy, "trigger"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(objc_opt_class(), "requiresNotification"), v20, v21))
   {
-    v22 = [(WFTriggerEventQueue *)self notificationManager];
+    notificationManager = [(WFTriggerEventQueue *)self notificationManager];
     v28 = 0;
-    v23 = [v22 postNotificationOfType:1 forTrigger:v8 workflowReference:v9 removeDeliveredNotifications:1 pendingTriggerEventIDs:0 actionIcons:0 error:&v28];
-    v24 = v28;
+    v23 = [notificationManager postNotificationOfType:1 forTrigger:triggerCopy workflowReference:referenceCopy removeDeliveredNotifications:1 pendingTriggerEventIDs:0 actionIcons:0 error:&v28];
+    notificationScheduler = v28;
 
     if ((v23 & 1) == 0)
     {
@@ -1691,7 +1691,7 @@ LABEL_61:
         *buf = 136315394;
         v30 = "[WFTriggerEventQueue runWithConfiguredTrigger:workflowReference:eventInfo:]";
         v31 = 2114;
-        v32 = v24;
+        v32 = notificationScheduler;
         _os_log_impl(&dword_23103C000, v25, OS_LOG_TYPE_ERROR, "%s Failed to post notification alert due to error: %{public}@", buf, 0x16u);
       }
 
@@ -1701,22 +1701,22 @@ LABEL_61:
 
   else
   {
-    if ([v8 notificationLevel] > 2)
+    if ([triggerCopy notificationLevel] > 2)
     {
       goto LABEL_16;
     }
 
-    v24 = [(WFTriggerEventQueue *)self notificationScheduler];
-    [v24 scheduleTriggerForNotifications:v8];
+    notificationScheduler = [(WFTriggerEventQueue *)self notificationScheduler];
+    [notificationScheduler scheduleTriggerForNotifications:triggerCopy];
   }
 
 LABEL_16:
-  v26 = [(WFTriggerEventQueue *)self triggerEventRunner];
-  [v26 startRunningWorkflow:v9 forTrigger:v8 eventInfo:v10];
+  triggerEventRunner2 = [(WFTriggerEventQueue *)self triggerEventRunner];
+  [triggerEventRunner2 startRunningWorkflow:referenceCopy forTrigger:triggerCopy eventInfo:infoCopy];
 
   if (_os_feature_enabled_impl())
   {
-    [(WFTriggerEventQueue *)self deactivateEphemeralTriggerIfNeeded:v8 completion:&__block_literal_global_3088];
+    [(WFTriggerEventQueue *)self deactivateEphemeralTriggerIfNeeded:triggerCopy completion:&__block_literal_global_3088];
   }
 
 LABEL_18:
@@ -1744,46 +1744,46 @@ void __76__WFTriggerEventQueue_runWithConfiguredTrigger_workflowReference_eventI
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resumeWithConfiguredTrigger:(id)a3 workflowReference:(id)a4 eventInfo:(id)a5
+- (void)resumeWithConfiguredTrigger:(id)trigger workflowReference:(id)reference eventInfo:(id)info
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFTriggerEventQueue *)self queue];
-  dispatch_assert_queue_V2(v11);
+  triggerCopy = trigger;
+  referenceCopy = reference;
+  infoCopy = info;
+  queue = [(WFTriggerEventQueue *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = getWFTriggersLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v8 identifier];
+    identifier = [triggerCopy identifier];
     *buf = 136315394;
     v26 = "[WFTriggerEventQueue resumeWithConfiguredTrigger:workflowReference:eventInfo:]";
     v27 = 2114;
-    v28 = v13;
+    v28 = identifier;
     _os_log_impl(&dword_23103C000, v12, OS_LOG_TYPE_DEFAULT, "%s 🤖 Resuming trigger with id: %{public}@", buf, 0x16u);
   }
 
-  v14 = [(WFTriggerEventQueue *)self triggerEventRunner];
-  v15 = [v8 workflowID];
-  if ([v14 isRunningWorkflowWithIdentifier:v15])
+  triggerEventRunner = [(WFTriggerEventQueue *)self triggerEventRunner];
+  workflowID = [triggerCopy workflowID];
+  if ([triggerEventRunner isRunningWorkflowWithIdentifier:workflowID])
   {
     goto LABEL_8;
   }
 
-  v16 = [(WFTriggerEventQueue *)self triggerBootManager];
-  if (([v16 canRunAutomations] & 1) == 0)
+  triggerBootManager = [(WFTriggerEventQueue *)self triggerBootManager];
+  if (([triggerBootManager canRunAutomations] & 1) == 0)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [v8 potentialLoopDetected];
+  potentialLoopDetected = [triggerCopy potentialLoopDetected];
 
-  if ((v17 & 1) == 0)
+  if ((potentialLoopDetected & 1) == 0)
   {
-    [(WFTriggerEventQueue *)self runWithConfiguredTrigger:v8 workflowReference:v9 eventInfo:v10];
+    [(WFTriggerEventQueue *)self runWithConfiguredTrigger:triggerCopy workflowReference:referenceCopy eventInfo:infoCopy];
     goto LABEL_16;
   }
 
@@ -1791,16 +1791,16 @@ LABEL_9:
   v18 = getWFTriggersLogObject();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v8 workflowID];
+    workflowID2 = [triggerCopy workflowID];
     *buf = 136315394;
     v26 = "[WFTriggerEventQueue resumeWithConfiguredTrigger:workflowReference:eventInfo:]";
     v27 = 2114;
-    v28 = v19;
+    v28 = workflowID2;
     _os_log_impl(&dword_23103C000, v18, OS_LOG_TYPE_DEFAULT, "%s 🤖 Persisting to database because triggerEventRunner is running workflow with id: %{public}@", buf, 0x16u);
   }
 
   v24 = 0;
-  v20 = -[WFTriggerEventQueue triggerEventForConfiguredTrigger:eventInfo:confirmed:paused:error:](self, "triggerEventForConfiguredTrigger:eventInfo:confirmed:paused:error:", v8, v10, 1, [v8 potentialLoopDetected], &v24);
+  v20 = -[WFTriggerEventQueue triggerEventForConfiguredTrigger:eventInfo:confirmed:paused:error:](self, "triggerEventForConfiguredTrigger:eventInfo:confirmed:paused:error:", triggerCopy, infoCopy, 1, [triggerCopy potentialLoopDetected], &v24);
   v21 = v24;
 
   if (!v20)
@@ -1811,7 +1811,7 @@ LABEL_9:
       *buf = 136315650;
       v26 = "[WFTriggerEventQueue resumeWithConfiguredTrigger:workflowReference:eventInfo:]";
       v27 = 2112;
-      v28 = v8;
+      v28 = triggerCopy;
       v29 = 2114;
       v30 = v21;
       _os_log_impl(&dword_23103C000, v22, OS_LOG_TYPE_ERROR, "%s Failed to create trigger events for trigger %@: %{public}@", buf, 0x20u);
@@ -1822,18 +1822,18 @@ LABEL_16:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearWithCompletionHandler:(id)a3
+- (void)clearWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFTriggerEventQueue *)self queue];
+  handlerCopy = handler;
+  queue = [(WFTriggerEventQueue *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__WFTriggerEventQueue_clearWithCompletionHandler___block_invoke;
   v7[3] = &unk_2788FF680;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __50__WFTriggerEventQueue_clearWithCompletionHandler___block_invoke(uint64_t a1)
@@ -1970,13 +1970,13 @@ LABEL_17:
 
 - (void)resume
 {
-  v3 = [(WFTriggerEventQueue *)self queue];
+  queue = [(WFTriggerEventQueue *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__WFTriggerEventQueue_resume__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __29__WFTriggerEventQueue_resume__block_invoke(uint64_t a1)
@@ -2142,15 +2142,15 @@ LABEL_33:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (WFTriggerEventQueue)initWithDatabaseProvider:(id)a3 notificationManager:(id)a4 notificationScheduler:(id)a5
+- (WFTriggerEventQueue)initWithDatabaseProvider:(id)provider notificationManager:(id)manager notificationScheduler:(id)scheduler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  providerCopy = provider;
+  managerCopy = manager;
+  schedulerCopy = scheduler;
+  if (!providerCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFTriggerEventQueue.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerEventQueue.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
   }
 
   v24.receiver = self;
@@ -2159,11 +2159,11 @@ LABEL_33:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_databaseProvider, a3);
-    objc_storeStrong(&v14->_notificationManager, a4);
-    objc_storeStrong(&v14->_notificationScheduler, a5);
+    objc_storeStrong(&v13->_databaseProvider, provider);
+    objc_storeStrong(&v14->_notificationManager, manager);
+    objc_storeStrong(&v14->_notificationScheduler, scheduler);
     [(WFTriggerUserNotificationManager *)v14->_notificationManager setDelegate:v14];
-    v15 = [[WFTriggerEventRunner alloc] initWithDatabaseProvider:v10 delegate:v14];
+    v15 = [[WFTriggerEventRunner alloc] initWithDatabaseProvider:providerCopy delegate:v14];
     triggerEventRunner = v14->_triggerEventRunner;
     v14->_triggerEventRunner = v15;
 
@@ -2180,45 +2180,45 @@ LABEL_33:
   return v14;
 }
 
-- (WFTriggerEventQueue)initWithDatabaseProvider:(id)a3 notificationManager:(id)a4 notificationScheduler:(id)a5 triggerBootManager:(id)a6
+- (WFTriggerEventQueue)initWithDatabaseProvider:(id)provider notificationManager:(id)manager notificationScheduler:(id)scheduler triggerBootManager:(id)bootManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  providerCopy = provider;
+  managerCopy = manager;
+  schedulerCopy = scheduler;
+  bootManagerCopy = bootManager;
+  if (!providerCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFTriggerEventQueue.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerEventQueue.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"databaseProvider"}];
   }
 
-  v15 = [(WFTriggerEventQueue *)self initWithDatabaseProvider:v11 notificationManager:v12 notificationScheduler:v13];
+  v15 = [(WFTriggerEventQueue *)self initWithDatabaseProvider:providerCopy notificationManager:managerCopy notificationScheduler:schedulerCopy];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_triggerBootManager, a6);
+    objc_storeStrong(&v15->_triggerBootManager, bootManager);
     v17 = v16;
   }
 
   return v16;
 }
 
-+ (double)rateLimitingTimeoutForTrigger:(id)a3 runEvents:(id)a4 numFailures:(unint64_t)a5
++ (double)rateLimitingTimeoutForTrigger:(id)trigger runEvents:(id)events numFailures:(unint64_t)failures
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8 && [v8 count])
+  triggerCopy = trigger;
+  eventsCopy = events;
+  v9 = eventsCopy;
+  if (eventsCopy && [eventsCopy count])
   {
-    if (a5 > 5)
+    if (failures > 5)
     {
       v10 = 120.0;
     }
 
     else
     {
-      v10 = dbl_231166958[a5];
+      v10 = dbl_231166958[failures];
     }
   }
 
@@ -2230,7 +2230,7 @@ LABEL_33:
       v14 = 136315394;
       v15 = "+[WFTriggerEventQueue rateLimitingTimeoutForTrigger:runEvents:numFailures:]";
       v16 = 2112;
-      v17 = v7;
+      v17 = triggerCopy;
       _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_INFO, "%s No recent runs for trigger (%@); running it", &v14, 0x16u);
     }
 
@@ -2241,44 +2241,44 @@ LABEL_33:
   return v10;
 }
 
-+ (BOOL)shouldRunTrigger:(id)a3 forEvent:(id)a4 runEvents:(id)a5 error:(id *)a6
++ (BOOL)shouldRunTrigger:(id)trigger forEvent:(id)event runEvents:(id)events error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  triggerCopy = trigger;
+  eventCopy = event;
+  eventsCopy = events;
+  if (!triggerCopy)
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
-    [v45 handleFailureInMethod:a2 object:a1 file:@"WFTriggerEventQueue.m" lineNumber:577 description:{@"Invalid parameter not satisfying: %@", @"trigger"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTriggerEventQueue.m" lineNumber:577 description:{@"Invalid parameter not satisfying: %@", @"trigger"}];
   }
 
-  if (([v11 isEnabled]& 1) != 0)
+  if (([triggerCopy isEnabled]& 1) != 0)
   {
-    if ([v11 shouldPrompt])
+    if ([triggerCopy shouldPrompt])
     {
-      v14 = getWFTriggersLogObject();
+      firstObject = getWFTriggersLogObject();
       v15 = 1;
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
       {
         *buf = 136315138;
         v53 = "+[WFTriggerEventQueue shouldRunTrigger:forEvent:runEvents:error:]";
         v16 = "%s Don't bother rate-limiting prompt automations; the user is doing that when they press Run";
-        v17 = v14;
+        v17 = firstObject;
         v18 = 12;
 LABEL_25:
         _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_INFO, v16, buf, v18);
       }
     }
 
-    else if ([v13 count])
+    else if ([eventsCopy count])
     {
-      v47 = v12;
+      v47 = eventCopy;
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v22 = v13;
+      v22 = eventsCopy;
       v23 = [v22 countByEnumeratingWithState:&v48 objects:buf count:16];
       if (v23)
       {
@@ -2325,15 +2325,15 @@ LABEL_25:
 
 LABEL_27:
 
-      [a1 rateLimitingTimeoutForTrigger:v11 runEvents:v22 numFailures:v25];
+      [self rateLimitingTimeoutForTrigger:triggerCopy runEvents:v22 numFailures:v25];
       v30 = v29;
-      v14 = [v22 firstObject];
-      v31 = [v14 date];
-      v32 = [v31 dateByAddingTimeInterval:v30];
+      firstObject = [v22 firstObject];
+      date = [firstObject date];
+      v32 = [date dateByAddingTimeInterval:v30];
 
-      v33 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v46 = v32;
-      v34 = [v32 compare:v33];
+      v34 = [v32 compare:date2];
 
       v15 = v34 != 1;
       if (v34 == 1)
@@ -2352,9 +2352,9 @@ LABEL_36:
             }
 
             v37 = [v22 objectAtIndexedSubscript:v36];
-            v38 = [v37 outcome];
+            outcome = [v37 outcome];
 
-            if (v38 == 2)
+            if (outcome == 2)
             {
               break;
             }
@@ -2376,8 +2376,8 @@ LABEL_36:
         }
 
 LABEL_39:
-        v12 = v47;
-        v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"Not running trigger (%@) for event (%@) due to rate-limiting with timeout=%0.0f and root cause: %@", v11, v47, *&v30, v40];
+        eventCopy = v47;
+        v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"Not running trigger (%@) for event (%@) due to rate-limiting with timeout=%0.0f and root cause: %@", triggerCopy, v47, *&v30, v40];
         v41 = getWFTriggersLogObject();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
@@ -2389,10 +2389,10 @@ LABEL_39:
         }
 
         v42 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:v39 reason:{@"%@", v35}];
-        if (a6)
+        if (error)
         {
           v42 = v42;
-          *a6 = v42;
+          *error = v42;
         }
       }
 
@@ -2404,26 +2404,26 @@ LABEL_39:
           *buf = 136315394;
           v53 = "+[WFTriggerEventQueue shouldRunTrigger:forEvent:runEvents:error:]";
           v54 = 2112;
-          v55 = v11;
+          v55 = triggerCopy;
           _os_log_impl(&dword_23103C000, v35, OS_LOG_TYPE_INFO, "%s No rate-limiting checks applied; running trigger (%@)", buf, 0x16u);
         }
 
-        v12 = v47;
+        eventCopy = v47;
       }
     }
 
     else
     {
-      v14 = getWFTriggersLogObject();
+      firstObject = getWFTriggersLogObject();
       v15 = 1;
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v53 = "+[WFTriggerEventQueue shouldRunTrigger:forEvent:runEvents:error:]";
         v54 = 2112;
-        v55 = v11;
+        v55 = triggerCopy;
         v16 = "%s No recent runs for trigger (%@); running it";
-        v17 = v14;
+        v17 = firstObject;
         v18 = 22;
         goto LABEL_25;
       }
@@ -2438,17 +2438,17 @@ LABEL_39:
       *buf = 136315394;
       v53 = "+[WFTriggerEventQueue shouldRunTrigger:forEvent:runEvents:error:]";
       v54 = 2112;
-      v55 = v11;
+      v55 = triggerCopy;
       _os_log_impl(&dword_23103C000, v19, OS_LOG_TYPE_INFO, "%s Trigger (%@) is disabled; not running it", buf, 0x16u);
     }
 
     v20 = [MEMORY[0x277CCA9B8] vc_voiceShortcutErrorWithCode:6005 reason:@"Automation disabled"];
-    v14 = v20;
-    if (a6)
+    firstObject = v20;
+    if (error)
     {
       v21 = v20;
       v15 = 0;
-      *a6 = v14;
+      *error = firstObject;
     }
 
     else

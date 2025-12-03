@@ -1,11 +1,11 @@
 @interface VCTransportSessionProxy
-- (VCTransportSessionProxy)initWithTransportSessionID:(unsigned int)a3;
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4;
+- (VCTransportSessionProxy)initWithTransportSessionID:(unsigned int)d;
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type;
 @end
 
 @implementation VCTransportSessionProxy
 
-- (VCTransportSessionProxy)initWithTransportSessionID:(unsigned int)a3
+- (VCTransportSessionProxy)initWithTransportSessionID:(unsigned int)d
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -13,9 +13,9 @@
   result = [(VCTransportSession *)&v5 initWithNotificationQueue:0 reportingAgent:0];
   if (result)
   {
-    if (a3)
+    if (d)
     {
-      *(&result->super._shouldIgnoreConnectionRefusedError + 2) = a3;
+      *(&result->super._shouldIgnoreConnectionRefusedError + 2) = d;
     }
 
     else
@@ -28,14 +28,14 @@
   return result;
 }
 
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = -2144665599;
   v16 = -1;
-  if (a3)
+  if (d)
   {
-    v7 = [VCTransportSession vtpPacketTypeForStreamType:*&a4];
+    v7 = [VCTransportSession vtpPacketTypeForStreamType:*&type];
     if (v7)
     {
       v4 = VCCreateVFDForIDS(v7, 43, &v16);
@@ -43,7 +43,7 @@
       {
         if (VTP_SetTransportSessionID(v16, *(&self->super._shouldIgnoreConnectionRefusedError + 2)) != -1)
         {
-          *a3 = v16;
+          *d = v16;
           v16 = -1;
           goto LABEL_6;
         }

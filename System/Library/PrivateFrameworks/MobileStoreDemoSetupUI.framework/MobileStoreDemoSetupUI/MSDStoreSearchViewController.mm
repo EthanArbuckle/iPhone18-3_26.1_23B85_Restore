@@ -1,19 +1,19 @@
 @interface MSDStoreSearchViewController
 - (MSDStoreSearchViewController)init;
-- (id)_searchStoreWithText:(id)a3;
-- (void)_help:(id)a3;
+- (id)_searchStoreWithText:(id)text;
+- (void)_help:(id)_help;
 - (void)_lockSheetDetent;
 - (void)_showSheet;
 - (void)_unlockSheetDetent;
-- (void)_updateViewWithSearchText:(id)a3;
-- (void)didAssignStore:(id)a3 forViewController:(id)a4;
-- (void)didDeselectStore:(id)a3 forViewController:(id)a4;
-- (void)didDeselectStores:(id)a3 forViewController:(id)a4;
-- (void)didDismissStoreListView:(id)a3 forViewController:(id)a4;
-- (void)didSelectNoStoreForViewController:(id)a3;
-- (void)didSelectStore:(id)a3 forViewController:(id)a4;
-- (void)didSelectStores:(id)a3 forViewController:(id)a4;
-- (void)userLocationDidChange:(id)a3;
+- (void)_updateViewWithSearchText:(id)text;
+- (void)didAssignStore:(id)store forViewController:(id)controller;
+- (void)didDeselectStore:(id)store forViewController:(id)controller;
+- (void)didDeselectStores:(id)stores forViewController:(id)controller;
+- (void)didDismissStoreListView:(id)view forViewController:(id)controller;
+- (void)didSelectNoStoreForViewController:(id)controller;
+- (void)didSelectStore:(id)store forViewController:(id)controller;
+- (void)didSelectStores:(id)stores forViewController:(id)controller;
+- (void)userLocationDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -29,8 +29,8 @@
   {
     [(MSDStoreSearchViewController *)v2 setUserLocation:0];
     [(MSDStoreSearchViewController *)v3 setSelectedStore:0];
-    v4 = [MEMORY[0x277D29520] sharedInstance];
-    [(MSDStoreSearchViewController *)v3 setDevice:v4];
+    mEMORY[0x277D29520] = [MEMORY[0x277D29520] sharedInstance];
+    [(MSDStoreSearchViewController *)v3 setDevice:mEMORY[0x277D29520]];
 
     v5 = dispatch_queue_create("com.apple.msdstoresearch", 0);
     [(MSDStoreSearchViewController *)v3 setUpdateQueue:v5];
@@ -40,8 +40,8 @@
 
     [(MSDStoreSearchViewController *)v3 setCustomDetentIdentifier:@"customMedium"];
     v7 = MEMORY[0x277D75A28];
-    v8 = [(MSDStoreSearchViewController *)v3 customDetentIdentifier];
-    v9 = [v7 _detentWithIdentifier:v8 resolutionContextBlock:&__block_literal_global_4];
+    customDetentIdentifier = [(MSDStoreSearchViewController *)v3 customDetentIdentifier];
+    v9 = [v7 _detentWithIdentifier:customDetentIdentifier resolutionContextBlock:&__block_literal_global_4];
     [(MSDStoreSearchViewController *)v3 setCustomDetent:v9];
 
     v10 = [[MSDMapViewController alloc] initWithDelegate:v3];
@@ -51,12 +51,12 @@
     [(MSDStoreSearchViewController *)v3 setSearchResultViewController:v11];
 
     v12 = objc_alloc(MEMORY[0x277D757A0]);
-    v13 = [(MSDStoreSearchViewController *)v3 searchResultViewController];
-    v14 = [v12 initWithRootViewController:v13];
+    searchResultViewController = [(MSDStoreSearchViewController *)v3 searchResultViewController];
+    v14 = [v12 initWithRootViewController:searchResultViewController];
     [(MSDStoreSearchViewController *)v3 setSheetContentViewController:v14];
 
-    v15 = [(MSDStoreSearchViewController *)v3 sheetContentViewController];
-    [v15 setNavigationBarHidden:1];
+    sheetContentViewController = [(MSDStoreSearchViewController *)v3 sheetContentViewController];
+    [sheetContentViewController setNavigationBarHidden:1];
   }
 
   return v3;
@@ -68,87 +68,87 @@
   v44.receiver = self;
   v44.super_class = MSDStoreSearchViewController;
   [(MSDStoreSearchViewController *)&v44 viewDidLoad];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v7 = v6;
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     [MEMORY[0x277D37610] preferredContentSize];
     v7 = v8;
   }
 
-  v9 = [(MSDStoreSearchViewController *)self mapViewController];
-  v10 = [v9 mapView];
-  [v10 setLayoutMargins:{0.0, 0.0, v7 * 0.4, 0.0}];
+  mapViewController = [(MSDStoreSearchViewController *)self mapViewController];
+  mapView = [mapViewController mapView];
+  [mapView setLayoutMargins:{0.0, 0.0, v7 * 0.4, 0.0}];
 
-  v11 = [(MSDStoreSearchViewController *)self mapViewController];
-  [(MSDStoreSearchViewController *)self addChildViewController:v11];
+  mapViewController2 = [(MSDStoreSearchViewController *)self mapViewController];
+  [(MSDStoreSearchViewController *)self addChildViewController:mapViewController2];
 
-  v12 = [(MSDStoreSearchViewController *)self mapViewController];
-  v13 = [v12 view];
+  mapViewController3 = [(MSDStoreSearchViewController *)self mapViewController];
+  view = [mapViewController3 view];
 
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [(MSDStoreSearchViewController *)self view];
-  [v14 addSubview:v13];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(MSDStoreSearchViewController *)self view];
+  [view2 addSubview:view];
 
-  v41 = [v13 topAnchor];
-  v42 = [(MSDStoreSearchViewController *)self view];
-  v40 = [v42 safeAreaLayoutGuide];
-  v39 = [v40 topAnchor];
-  v38 = [v41 constraintEqualToAnchor:v39];
+  topAnchor = [view topAnchor];
+  view3 = [(MSDStoreSearchViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[0] = v38;
-  v36 = [v13 bottomAnchor];
-  v37 = [(MSDStoreSearchViewController *)self view];
-  v35 = [v37 safeAreaLayoutGuide];
-  v34 = [v35 bottomAnchor];
-  v33 = [v36 constraintEqualToAnchor:v34];
+  bottomAnchor = [view bottomAnchor];
+  view4 = [(MSDStoreSearchViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[1] = v33;
-  v43 = v13;
-  v31 = [v13 leftAnchor];
-  v15 = [(MSDStoreSearchViewController *)self view];
-  v16 = [v15 safeAreaLayoutGuide];
-  v17 = [v16 leftAnchor];
-  v18 = [v31 constraintEqualToAnchor:v17];
+  v43 = view;
+  leftAnchor = [view leftAnchor];
+  view5 = [(MSDStoreSearchViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide3 leftAnchor];
+  v18 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v45[2] = v18;
-  v19 = [v13 rightAnchor];
-  v20 = [(MSDStoreSearchViewController *)self view];
-  v21 = [v20 safeAreaLayoutGuide];
-  v22 = [v21 rightAnchor];
-  v23 = [v19 constraintEqualToAnchor:v22];
+  rightAnchor = [view rightAnchor];
+  view6 = [(MSDStoreSearchViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide4 rightAnchor];
+  v23 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v45[3] = v23;
   v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:4];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v32];
-  v24 = [(MSDStoreSearchViewController *)self mapViewController];
-  [v24 didMoveToParentViewController:self];
+  mapViewController4 = [(MSDStoreSearchViewController *)self mapViewController];
+  [mapViewController4 didMoveToParentViewController:self];
 
   v25 = MEMORY[0x277D75220];
   v26 = [MEMORY[0x277D755B8] systemImageNamed:@"questionmark.circle"];
   v27 = [v25 systemButtonWithImage:v26 target:self action:sel__help_];
 
   v28 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v27];
-  v29 = [(MSDStoreSearchViewController *)self navigationItem];
-  [v29 setRightBarButtonItem:v28];
+  navigationItem = [(MSDStoreSearchViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v28];
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didSelectStore:(id)a3 forViewController:(id)a4
+- (void)didSelectStore:(id)store forViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(MSDStoreSearchViewController *)self updateQueue];
+  storeCopy = store;
+  updateQueue = [(MSDStoreSearchViewController *)self updateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__MSDStoreSearchViewController_didSelectStore_forViewController___block_invoke;
   v8[3] = &unk_2798F1D60;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = storeCopy;
+  v7 = storeCopy;
+  dispatch_async(updateQueue, v8);
 }
 
 void __65__MSDStoreSearchViewController_didSelectStore_forViewController___block_invoke(uint64_t a1)
@@ -175,18 +175,18 @@ void __65__MSDStoreSearchViewController_didSelectStore_forViewController___block
   [v2 zoomToStore:*(a1 + 40)];
 }
 
-- (void)didDeselectStore:(id)a3 forViewController:(id)a4
+- (void)didDeselectStore:(id)store forViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(MSDStoreSearchViewController *)self updateQueue];
+  storeCopy = store;
+  updateQueue = [(MSDStoreSearchViewController *)self updateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__MSDStoreSearchViewController_didDeselectStore_forViewController___block_invoke;
   v8[3] = &unk_2798F1D60;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = storeCopy;
+  v7 = storeCopy;
+  dispatch_async(updateQueue, v8);
 }
 
 void __67__MSDStoreSearchViewController_didDeselectStore_forViewController___block_invoke(uint64_t a1)
@@ -224,15 +224,15 @@ void __67__MSDStoreSearchViewController_didDeselectStore_forViewController___blo
   }
 }
 
-- (void)didAssignStore:(id)a3 forViewController:(id)a4
+- (void)didAssignStore:(id)store forViewController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  storeCopy = store;
   v6 = defaultLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v5;
+    v12 = storeCopy;
     _os_log_impl(&dword_259BCA000, v6, OS_LOG_TYPE_DEFAULT, "User selected store with store ID: %{public}@", buf, 0xCu);
   }
 
@@ -241,8 +241,8 @@ void __67__MSDStoreSearchViewController_didDeselectStore_forViewController___blo
   v9[2] = __65__MSDStoreSearchViewController_didAssignStore_forViewController___block_invoke;
   v9[3] = &unk_2798F1D60;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = storeCopy;
+  v7 = storeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -258,7 +258,7 @@ void __65__MSDStoreSearchViewController_didAssignStore_forViewController___block
   [v4 setupCompleteWithStoreID:v3];
 }
 
-- (void)didSelectNoStoreForViewController:(id)a3
+- (void)didSelectNoStoreForViewController:(id)controller
 {
   v3 = defaultLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -272,9 +272,9 @@ void __65__MSDStoreSearchViewController_didAssignStore_forViewController___block
   [v5 pushViewController:v4 andRemoveTopmostView:0];
 }
 
-- (void)didDismissStoreListView:(id)a3 forViewController:(id)a4
+- (void)didDismissStoreListView:(id)view forViewController:(id)controller
 {
-  v5 = [(MSDStoreSearchViewController *)self updateQueue:a3];
+  v5 = [(MSDStoreSearchViewController *)self updateQueue:view];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__MSDStoreSearchViewController_didDismissStoreListView_forViewController___block_invoke;
@@ -299,20 +299,20 @@ void __74__MSDStoreSearchViewController_didDismissStoreListView_forViewControlle
   [v1 deselectAnnotation];
 }
 
-- (void)didSelectStores:(id)a3 forViewController:(id)a4
+- (void)didSelectStores:(id)stores forViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  storesCopy = stores;
+  controllerCopy = controller;
+  if (storesCopy && [storesCopy count])
   {
-    v8 = [(MSDStoreSearchViewController *)self updateQueue];
+    updateQueue = [(MSDStoreSearchViewController *)self updateQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__MSDStoreSearchViewController_didSelectStores_forViewController___block_invoke;
     v9[3] = &unk_2798F1D60;
-    v10 = v6;
-    v11 = self;
-    dispatch_async(v8, v9);
+    v10 = storesCopy;
+    selfCopy = self;
+    dispatch_async(updateQueue, v9);
   }
 }
 
@@ -361,20 +361,20 @@ void __66__MSDStoreSearchViewController_didSelectStores_forViewController___bloc
   [v2 showStoreList:*(a1 + 40) inDisplayMode:2];
 }
 
-- (void)didDeselectStores:(id)a3 forViewController:(id)a4
+- (void)didDeselectStores:(id)stores forViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  storesCopy = stores;
+  controllerCopy = controller;
+  if (storesCopy && [storesCopy count])
   {
-    v8 = [(MSDStoreSearchViewController *)self updateQueue];
+    updateQueue = [(MSDStoreSearchViewController *)self updateQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __68__MSDStoreSearchViewController_didDeselectStores_forViewController___block_invoke;
     v9[3] = &unk_2798F1D60;
-    v10 = v6;
-    v11 = self;
-    dispatch_async(v8, v9);
+    v10 = storesCopy;
+    selfCopy = self;
+    dispatch_async(updateQueue, v9);
   }
 }
 
@@ -416,21 +416,21 @@ void __68__MSDStoreSearchViewController_didDeselectStores_forViewController___bl
   [v2 dismissAllTopViews];
 }
 
-- (void)userLocationDidChange:(id)a3
+- (void)userLocationDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [(MSDStoreSearchViewController *)self userLocation];
-  [(MSDStoreSearchViewController *)self setUserLocation:v4];
+  changeCopy = change;
+  userLocation = [(MSDStoreSearchViewController *)self userLocation];
+  [(MSDStoreSearchViewController *)self setUserLocation:changeCopy];
 
-  v5 = v6;
-  if (!v6)
+  v5 = userLocation;
+  if (!userLocation)
   {
     [(MSDStoreSearchViewController *)self _updateViewWithSearchText:0];
     v5 = 0;
   }
 }
 
-- (void)_help:(id)a3
+- (void)_help:(id)_help
 {
   v3 = defaultLogHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -447,32 +447,32 @@ void __68__MSDStoreSearchViewController_didDeselectStores_forViewController___bl
 - (void)_showSheet
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v3 = [(MSDStoreSearchViewController *)self sheetContentViewController];
-  [v3 setModalPresentationStyle:2];
+  sheetContentViewController = [(MSDStoreSearchViewController *)self sheetContentViewController];
+  [sheetContentViewController setModalPresentationStyle:2];
 
   [MEMORY[0x277D37610] preferredContentSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(MSDStoreSearchViewController *)self sheetContentViewController];
-  [v8 setPreferredContentSize:{v5, v7}];
+  sheetContentViewController2 = [(MSDStoreSearchViewController *)self sheetContentViewController];
+  [sheetContentViewController2 setPreferredContentSize:{v5, v7}];
 
-  v9 = [(MSDStoreSearchViewController *)self sheetContentViewController];
-  v10 = [v9 sheetPresentationController];
+  sheetContentViewController3 = [(MSDStoreSearchViewController *)self sheetContentViewController];
+  sheetPresentationController = [sheetContentViewController3 sheetPresentationController];
 
-  [v10 setPrefersGrabberVisible:1];
-  v11 = [(MSDStoreSearchViewController *)self customDetent];
-  v17[0] = v11;
-  v12 = [MEMORY[0x277D75A28] largeDetent];
-  v17[1] = v12;
+  [sheetPresentationController setPrefersGrabberVisible:1];
+  customDetent = [(MSDStoreSearchViewController *)self customDetent];
+  v17[0] = customDetent;
+  largeDetent = [MEMORY[0x277D75A28] largeDetent];
+  v17[1] = largeDetent;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-  [v10 setDetents:v13];
+  [sheetPresentationController setDetents:v13];
 
-  v14 = [(MSDStoreSearchViewController *)self customDetentIdentifier];
-  [v10 setLargestUndimmedDetentIdentifier:v14];
+  customDetentIdentifier = [(MSDStoreSearchViewController *)self customDetentIdentifier];
+  [sheetPresentationController setLargestUndimmedDetentIdentifier:customDetentIdentifier];
 
-  [v10 setDelegate:self];
-  v15 = [(MSDStoreSearchViewController *)self sheetContentViewController];
-  [(MSDStoreSearchViewController *)self presentViewController:v15 animated:1 completion:0];
+  [sheetPresentationController setDelegate:self];
+  sheetContentViewController4 = [(MSDStoreSearchViewController *)self sheetContentViewController];
+  [(MSDStoreSearchViewController *)self presentViewController:sheetContentViewController4 animated:1 completion:0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -480,13 +480,13 @@ void __68__MSDStoreSearchViewController_didDeselectStores_forViewController___bl
 - (void)_lockSheetDetent
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MSDStoreSearchViewController *)self sheetContentViewController];
-  v4 = [v3 sheetPresentationController];
+  sheetContentViewController = [(MSDStoreSearchViewController *)self sheetContentViewController];
+  sheetPresentationController = [sheetContentViewController sheetPresentationController];
 
-  v5 = [(MSDStoreSearchViewController *)self customDetent];
-  v8[0] = v5;
+  customDetent = [(MSDStoreSearchViewController *)self customDetent];
+  v8[0] = customDetent;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  [v4 setDetents:v6];
+  [sheetPresentationController setDetents:v6];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -494,32 +494,32 @@ void __68__MSDStoreSearchViewController_didDeselectStores_forViewController___bl
 - (void)_unlockSheetDetent
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = [(MSDStoreSearchViewController *)self sheetContentViewController];
-  v4 = [v3 sheetPresentationController];
+  sheetContentViewController = [(MSDStoreSearchViewController *)self sheetContentViewController];
+  sheetPresentationController = [sheetContentViewController sheetPresentationController];
 
-  v5 = [(MSDStoreSearchViewController *)self customDetent];
-  v9[0] = v5;
-  v6 = [MEMORY[0x277D75A28] largeDetent];
-  v9[1] = v6;
+  customDetent = [(MSDStoreSearchViewController *)self customDetent];
+  v9[0] = customDetent;
+  largeDetent = [MEMORY[0x277D75A28] largeDetent];
+  v9[1] = largeDetent;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
-  [v4 setDetents:v7];
+  [sheetPresentationController setDetents:v7];
 
-  [v4 _setIndexOfCurrentDetent:0];
+  [sheetPresentationController _setIndexOfCurrentDetent:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateViewWithSearchText:(id)a3
+- (void)_updateViewWithSearchText:(id)text
 {
-  v4 = a3;
-  v5 = [(MSDStoreSearchViewController *)self updateQueue];
+  textCopy = text;
+  updateQueue = [(MSDStoreSearchViewController *)self updateQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__MSDStoreSearchViewController__updateViewWithSearchText___block_invoke;
   v7[3] = &unk_2798F1D60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = textCopy;
+  v6 = textCopy;
+  dispatch_async(updateQueue, v7);
 }
 
 void __58__MSDStoreSearchViewController__updateViewWithSearchText___block_invoke(uint64_t a1)
@@ -560,10 +560,10 @@ void __58__MSDStoreSearchViewController__updateViewWithSearchText___block_invoke
   [v4 showStoreList:*(a1 + 40) inDisplayMode:v3];
 }
 
-- (id)_searchStoreWithText:(id)a3
+- (id)_searchStoreWithText:(id)text
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -578,24 +578,24 @@ void __58__MSDStoreSearchViewController__updateViewWithSearchText___block_invoke
   v27 = dispatch_semaphore_create(0);
   v5 = objc_opt_new();
   v6 = v5;
-  if (v4)
+  if (textCopy)
   {
-    [v5 setObject:v4 forKey:*MEMORY[0x277D29570]];
+    [v5 setObject:textCopy forKey:*MEMORY[0x277D29570]];
   }
 
-  v7 = [(MSDStoreSearchViewController *)self userLocation];
+  userLocation = [(MSDStoreSearchViewController *)self userLocation];
 
-  if (v7)
+  if (userLocation)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(MSDStoreSearchViewController *)self userLocation];
-    [v9 coordinate];
+    userLocation2 = [(MSDStoreSearchViewController *)self userLocation];
+    [userLocation2 coordinate];
     v10 = [v8 numberWithDouble:?];
     [v6 setObject:v10 forKey:*MEMORY[0x277D29560]];
 
     v11 = MEMORY[0x277CCABB0];
-    v12 = [(MSDStoreSearchViewController *)self userLocation];
-    [v12 coordinate];
+    userLocation3 = [(MSDStoreSearchViewController *)self userLocation];
+    [userLocation3 coordinate];
     v14 = [v11 numberWithDouble:v13];
     [v6 setObject:v14 forKey:*MEMORY[0x277D29568]];
   }
@@ -608,14 +608,14 @@ void __58__MSDStoreSearchViewController__updateViewWithSearchText___block_invoke
     _os_log_impl(&dword_259BCA000, v15, OS_LOG_TYPE_DEFAULT, "Searching for stores with options: %{public}@", buf, 0xCu);
   }
 
-  v16 = [(MSDStoreSearchViewController *)self device];
+  device = [(MSDStoreSearchViewController *)self device];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __53__MSDStoreSearchViewController__searchStoreWithText___block_invoke;
   v21[3] = &unk_2798F1EB8;
   v21[4] = &v28;
   v21[5] = &v22;
-  [v16 searchStoreWithOptions:v6 completion:v21];
+  [device searchStoreWithOptions:v6 completion:v21];
 
   v17 = defaultLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))

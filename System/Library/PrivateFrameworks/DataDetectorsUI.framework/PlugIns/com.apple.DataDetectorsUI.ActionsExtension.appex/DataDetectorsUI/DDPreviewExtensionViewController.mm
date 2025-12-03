@@ -1,56 +1,56 @@
 @interface DDPreviewExtensionViewController
-- (void)addViewController:(id)a3;
-- (void)prepareViewControllerWithContext:(id)a3 completionHandler:(id)a4;
+- (void)addViewController:(id)controller;
+- (void)prepareViewControllerWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation DDPreviewExtensionViewController
 
-- (void)prepareViewControllerWithContext:(id)a3 completionHandler:(id)a4
+- (void)prepareViewControllerWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 actionClass];
-  v9 = NSClassFromString(v8);
+  contextCopy = context;
+  handlerCopy = handler;
+  actionClass = [contextCopy actionClass];
+  v9 = NSClassFromString(actionClass);
 
   if (v9)
   {
-    v10 = [(DDPreviewExtensionViewController *)self _hostApplicationBundleIdentifier];
-    [v6 setHostApplicationIdentifier:v10];
+    _hostApplicationBundleIdentifier = [(DDPreviewExtensionViewController *)self _hostApplicationBundleIdentifier];
+    [contextCopy setHostApplicationIdentifier:_hostApplicationBundleIdentifier];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003470;
     block[3] = &unk_100008490;
-    v13 = [[v9 alloc] initWithContext:v6];
-    v14 = self;
-    v15 = v7;
+    v13 = [[v9 alloc] initWithContext:contextCopy];
+    selfCopy = self;
+    v15 = handlerCopy;
     v11 = v13;
     dispatch_async(&_dispatch_main_q, block);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0.0, 0.0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0.0, 0.0);
   }
 }
 
-- (void)addViewController:(id)a3
+- (void)addViewController:(id)controller
 {
-  v4 = a3;
-  [(DDPreviewExtensionViewController *)self addChildViewController:v4];
-  v5 = [(DDPreviewExtensionViewController *)self view];
-  v6 = [v4 view];
+  controllerCopy = controller;
+  [(DDPreviewExtensionViewController *)self addChildViewController:controllerCopy];
+  view = [(DDPreviewExtensionViewController *)self view];
+  view2 = [controllerCopy view];
 
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:v6];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:view2];
   v10 = @"v";
-  v11 = v6;
+  v11 = view2;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[v]|" options:0 metrics:0 views:v7];
-  [v5 addConstraints:v8];
+  [view addConstraints:v8];
 
   v9 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[v]|" options:0 metrics:0 views:v7];
-  [v5 addConstraints:v9];
+  [view addConstraints:v9];
 }
 
 @end

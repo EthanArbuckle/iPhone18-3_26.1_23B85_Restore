@@ -1,27 +1,27 @@
 @interface PFCloudKitImportRecordsWorkItem
-- (BOOL)applyAccumulatedChangesToStore:(id)a3 inManagedObjectContext:(id)a4 withStoreMonitor:(id)a5 madeChanges:(BOOL *)a6 error:(id *)a7;
-- (BOOL)checkForActiveImportOperationInStore:(void *)a3 inManagedObjectContext:(uint64_t *)a4 error:;
-- (BOOL)commitMetadataChangesWithContext:(id)a3 forStore:(id)a4 error:(id *)a5;
+- (BOOL)applyAccumulatedChangesToStore:(id)store inManagedObjectContext:(id)context withStoreMonitor:(id)monitor madeChanges:(BOOL *)changes error:(id *)error;
+- (BOOL)checkForActiveImportOperationInStore:(void *)store inManagedObjectContext:(uint64_t *)context error:;
+- (BOOL)commitMetadataChangesWithContext:(id)context forStore:(id)store error:(id *)error;
 - (NSString)description;
-- (PFCloudKitImportRecordsWorkItem)initWithOptions:(id)a3 request:(id)a4;
-- (id)cloudKitSerializer:(id)a3 safeSaveURLForAsset:(id)a4;
-- (void)addDeletedRecordID:(uint64_t)a3 ofType:;
-- (void)addUpdatedRecord:(id)a3;
-- (void)checkAndApplyChangesIfNeeded:(uint64_t)a1;
+- (PFCloudKitImportRecordsWorkItem)initWithOptions:(id)options request:(id)request;
+- (id)cloudKitSerializer:(id)serializer safeSaveURLForAsset:(id)asset;
+- (void)addDeletedRecordID:(uint64_t)d ofType:;
+- (void)addUpdatedRecord:(id)record;
+- (void)checkAndApplyChangesIfNeeded:(uint64_t)needed;
 - (void)dealloc;
-- (void)doWorkForStore:(id)a3 inMonitor:(id)a4 completion:(id)a5;
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4;
-- (void)fetchOperationFinishedWithError:(uint64_t)a3 completion:;
+- (void)doWorkForStore:(id)store inMonitor:(id)monitor completion:(id)completion;
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion;
+- (void)fetchOperationFinishedWithError:(uint64_t)error completion:;
 - (void)removeDownloadedAssetFiles;
 @end
 
 @implementation PFCloudKitImportRecordsWorkItem
 
-- (PFCloudKitImportRecordsWorkItem)initWithOptions:(id)a3 request:(id)a4
+- (PFCloudKitImportRecordsWorkItem)initWithOptions:(id)options request:(id)request
 {
   v11.receiver = self;
   v11.super_class = PFCloudKitImportRecordsWorkItem;
-  v5 = [(PFCloudKitImporterWorkItem *)&v11 initWithOptions:a3 request:a4];
+  v5 = [(PFCloudKitImporterWorkItem *)&v11 initWithOptions:options request:request];
   if (v5)
   {
     v5->_importOperationIdentifier = objc_alloc_init(MEMORY[0x1E696AFB0]);
@@ -36,9 +36,9 @@
     v5->_encounteredErrors = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5->_failedRelationships = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = [PFCloudKitFetchedRecordBytesMetric alloc];
-    if (a3)
+    if (options)
     {
-      v7 = *(a3 + 3);
+      v7 = *(options + 3);
     }
 
     else
@@ -48,9 +48,9 @@
 
     v5->_fetchedRecordBytesMetric = -[PFCloudKitSizeMetric initWithContainerIdentifier:](v6, "initWithContainerIdentifier:", [v7 containerIdentifier]);
     v8 = [PFCloudKitFetchedAssetBytesMetric alloc];
-    if (a3)
+    if (options)
     {
-      v9 = *(a3 + 3);
+      v9 = *(options + 3);
     }
 
     else
@@ -108,26 +108,26 @@
     request = 0;
   }
 
-  v8 = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
+  request = [v4 initWithFormat:@"<%@: %p - %@>", v6, self, request];
   objc_autoreleasePoolPop(v3);
 
-  return v8;
+  return request;
 }
 
-- (void)doWorkForStore:(id)a3 inMonitor:(id)a4 completion:(id)a5
+- (void)doWorkForStore:(id)store inMonitor:(id)monitor completion:(id)completion
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = [(PFCloudKitStoreMonitor *)a4 newBackgroundContextForMonitoredCoordinator];
+  newBackgroundContextForMonitoredCoordinator = [(PFCloudKitStoreMonitor *)monitor newBackgroundContextForMonitoredCoordinator];
   if (self && (request = self->super._request) != 0 && (([(CKSchedulerActivity *)request->super._schedulerActivity shouldDefer]& 1) != 0 || request->super._deferredByBackgroundTimeout))
   {
-    if (a5)
+    if (completion)
     {
       v10 = MEMORY[0x1E696ABC0];
       v15 = *MEMORY[0x1E696A588];
       v16[0] = @"The request was aborted because it was deferred by the system.";
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      v12 = -[PFCloudKitImportRecordsWorkItem createMirroringResultForRequest:storeIdentifier:success:madeChanges:error:](self, "createMirroringResultForRequest:storeIdentifier:success:madeChanges:error:", self->super._request, [a3 identifier], 0, 0, objc_msgSend(v10, "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 134419, v11));
-      (*(a5 + 2))(a5, v12);
+      v12 = -[PFCloudKitImportRecordsWorkItem createMirroringResultForRequest:storeIdentifier:success:madeChanges:error:](self, "createMirroringResultForRequest:storeIdentifier:success:madeChanges:error:", self->super._request, [store identifier], 0, 0, objc_msgSend(v10, "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 134419, v11));
+      (*(completion + 2))(completion, v12);
     }
   }
 
@@ -137,11 +137,11 @@
     v14[1] = 3221225472;
     v14[2] = __71__PFCloudKitImportRecordsWorkItem_doWorkForStore_inMonitor_completion___block_invoke;
     v14[3] = &unk_1E6EC19D8;
-    v14[4] = v8;
+    v14[4] = newBackgroundContextForMonitoredCoordinator;
     v14[5] = self;
-    v14[6] = a3;
-    [(NSManagedObjectContext *)v8 performBlockAndWait:v14];
-    [(PFCloudKitImportRecordsWorkItem *)self executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:v8 completion:a5];
+    v14[6] = store;
+    [(NSManagedObjectContext *)newBackgroundContextForMonitoredCoordinator performBlockAndWait:v14];
+    [(PFCloudKitImportRecordsWorkItem *)self executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:newBackgroundContextForMonitoredCoordinator completion:completion];
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -189,7 +189,7 @@ void __71__PFCloudKitImportRecordsWorkItem_doWorkForStore_inMonitor_completion__
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)a3 completion:(id)a4
+- (void)executeImportOperationsAndAccumulateRecordsWithManagedObjectContext:(id)context completion:(id)completion
 {
   objc_opt_class();
 
@@ -552,17 +552,17 @@ LABEL_21:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)checkForActiveImportOperationInStore:(void *)a3 inManagedObjectContext:(uint64_t *)a4 error:
+- (BOOL)checkForActiveImportOperationInStore:(void *)store inManagedObjectContext:(uint64_t *)context error:
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v8 = 0;
     goto LABEL_12;
   }
 
   v15 = 0;
-  v6 = [NSCKImportOperation fetchOperationWithIdentifier:a2 fromStore:a3 inManagedObjectContext:&v15 error:?];
+  v6 = [NSCKImportOperation fetchOperationWithIdentifier:a2 fromStore:store inManagedObjectContext:&v15 error:?];
   v7 = v15;
   v8 = v6 != 0;
   if (v6 | v15)
@@ -583,15 +583,15 @@ LABEL_21:
     v9 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A250];
     v20 = *MEMORY[0x1E696A588];
-    v21[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"The request '%@' was cancelled because it conflicted with another active import operation.", *(a1 + 16)];
+    v21[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"The request '%@' was cancelled because it conflicted with another active import operation.", *(self + 16)];
     v7 = [v9 errorWithDomain:v10 code:134407 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v21, &v20, 1)}];
     v15 = v7;
     if (v7)
     {
 LABEL_5:
-      if (a4)
+      if (context)
       {
-        *a4 = v7;
+        *context = v7;
       }
 
       goto LABEL_12;
@@ -623,7 +623,7 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)applyAccumulatedChangesToStore:(id)a3 inManagedObjectContext:(id)a4 withStoreMonitor:(id)a5 madeChanges:(BOOL *)a6 error:(id *)a7
+- (BOOL)applyAccumulatedChangesToStore:(id)store inManagedObjectContext:(id)context withStoreMonitor:(id)monitor madeChanges:(BOOL *)changes error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
   v38 = 0;
@@ -642,7 +642,7 @@ LABEL_12:
   v33 = 0;
   if ([(NSMutableArray *)self->_updatedRecords count]|| [(NSMutableDictionary *)self->_recordTypeToDeletedRecordID count]|| [(NSMutableArray *)self->_unknownItemRecordIDs count]|| [(NSMutableDictionary *)self->_updatedShares count])
   {
-    if (a5 && (*(a5 + 21) & 1) != 0)
+    if (monitor && (*(monitor + 21) & 1) != 0)
     {
       *(v39 + 24) = 0;
       v13 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -659,13 +659,13 @@ LABEL_12:
       v27[1] = 3221225472;
       v27[2] = __124__PFCloudKitImportRecordsWorkItem_applyAccumulatedChangesToStore_inManagedObjectContext_withStoreMonitor_madeChanges_error___block_invoke;
       v27[3] = &unk_1E6EC1AA0;
-      v27[4] = a3;
-      v27[5] = a4;
+      v27[4] = store;
+      v27[5] = context;
       v27[6] = self;
       v27[7] = &v28;
       v27[8] = &v34;
       v27[9] = &v38;
-      [a4 performBlockAndWait:v27];
+      [context performBlockAndWait:v27];
       if (*(v39 + 24) == 1)
       {
         v16 = objc_autoreleasePoolPush();
@@ -704,15 +704,15 @@ LABEL_12:
     *(v35 + 24) = 0;
   }
 
-  *a6 = *(v35 + 24);
+  *changes = *(v35 + 24);
   if ((v39[3] & 1) == 0)
   {
     v24 = v29[5];
     if (v24)
     {
-      if (a7)
+      if (error)
       {
-        *a7 = v24;
+        *error = v24;
       }
     }
 
@@ -1328,16 +1328,16 @@ LABEL_76:
 - (void)removeDownloadedAssetFiles
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v21 = 0;
-    v2 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v3 = [*(a1 + 24) allValues];
-    v4 = [v3 countByEnumeratingWithState:&v17 objects:v30 count:16];
+    allValues = [*(self + 24) allValues];
+    v4 = [allValues countByEnumeratingWithState:&v17 objects:v30 count:16];
     if (v4)
     {
       v6 = v4;
@@ -1351,11 +1351,11 @@ LABEL_76:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          if (([v2 removeItemAtURL:v10 error:{&v21, v16}] & 1) == 0 && (!objc_msgSend(objc_msgSend(v21, "domain"), "isEqualToString:", v8) || objc_msgSend(v21, "code") != 4))
+          if (([defaultManager removeItemAtURL:v10 error:{&v21, v16}] & 1) == 0 && (!objc_msgSend(objc_msgSend(v21, "domain"), "isEqualToString:", v8) || objc_msgSend(v21, "code") != 4))
           {
             v11 = objc_autoreleasePoolPush();
             Stream = __PFCloudKitLoggingGetStream();
@@ -1387,7 +1387,7 @@ LABEL_76:
           }
         }
 
-        v6 = [v3 countByEnumeratingWithState:&v17 objects:v30 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v17 objects:v30 count:16];
       }
 
       while (v6);
@@ -1397,11 +1397,11 @@ LABEL_76:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)commitMetadataChangesWithContext:(id)a3 forStore:(id)a4 error:(id *)a5
+- (BOOL)commitMetadataChangesWithContext:(id)context forStore:(id)store error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v19 = 0;
-  if (![NSCKImportOperation purgeFinishedImportOperationsInStore:a4 withManagedObjectContext:a3 error:&v19])
+  if (![NSCKImportOperation purgeFinishedImportOperationsInStore:store withManagedObjectContext:context error:&v19])
   {
     v9 = objc_autoreleasePoolPush();
     Stream = __PFCloudKitLoggingGetStream();
@@ -1431,7 +1431,7 @@ LABEL_76:
     goto LABEL_14;
   }
 
-  v7 = [a3 save:&v19];
+  v7 = [context save:&v19];
   LOBYTE(v8) = 1;
   if ((v7 & 1) != 0 || !v19)
   {
@@ -1468,10 +1468,10 @@ LABEL_15:
   objc_autoreleasePoolPop(v9);
   if (v19)
   {
-    if (a5)
+    if (error)
     {
       LOBYTE(v8) = 0;
-      *a5 = v19;
+      *error = v19;
       goto LABEL_23;
     }
 
@@ -1507,40 +1507,40 @@ LABEL_23:
   return v8;
 }
 
-- (void)addUpdatedRecord:(id)a3
+- (void)addUpdatedRecord:(id)record
 {
   v50 = *MEMORY[0x1E69E9840];
   if (![(NSMutableArray *)self->_encounteredErrors count])
   {
     v5 = self->super._options;
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [a3 recordType];
-    if ([v7 isEqualToString:getCloudKitCKRecordTypeShare()])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    recordType = [record recordType];
+    if ([recordType isEqualToString:getCloudKitCKRecordTypeShare()])
     {
-      -[NSMutableDictionary setObject:forKey:](self->_updatedShares, "setObject:forKey:", a3, [objc_msgSend(a3 "recordID")]);
+      -[NSMutableDictionary setObject:forKey:](self->_updatedShares, "setObject:forKey:", record, [objc_msgSend(record "recordID")]);
     }
 
     else
     {
-      [(NSMutableArray *)self->_updatedRecords addObject:a3];
-      -[NSMutableArray addObject:](self->_allRecordIDs, "addObject:", [a3 recordID]);
+      [(NSMutableArray *)self->_updatedRecords addObject:record];
+      -[NSMutableArray addObject:](self->_allRecordIDs, "addObject:", [record recordID]);
     }
 
-    self->_totalOperationBytes += [a3 size];
-    self->_currentOperationBytes += [a3 size];
+    self->_totalOperationBytes += [record size];
+    self->_currentOperationBytes += [record size];
     ++self->_countUpdatedRecords;
-    -[PFCloudKitSizeMetric addByteSize:](self->_fetchedRecordBytesMetric, [a3 size]);
+    -[PFCloudKitSizeMetric addByteSize:](self->_fetchedRecordBytesMetric, [record size]);
     if (v5)
     {
       options = v5->_options;
     }
 
-    v29 = a3;
+    recordCopy = record;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [PFCloudKitSerializer assetsOnRecord:a3 withOptions:?];
+    obj = [PFCloudKitSerializer assetsOnRecord:record withOptions:?];
     v9 = [obj countByEnumeratingWithState:&v33 objects:v49 count:16];
     if (v9)
     {
@@ -1569,7 +1569,7 @@ LABEL_23:
 
           v14 = -[NSURL URLByAppendingPathComponent:isDirectory:](assetStorageURL, "URLByAppendingPathComponent:isDirectory:", [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")], 0);
           v32 = 0;
-          if (![v6 moveItemAtURL:objc_msgSend(v12 toURL:"fileURL") error:{v14, &v32}])
+          if (![defaultManager moveItemAtURL:objc_msgSend(v12 toURL:"fileURL") error:{v14, &v32}])
           {
             v17 = objc_autoreleasePoolPush();
             Stream = __PFCloudKitLoggingGetStream();
@@ -1600,7 +1600,7 @@ LABEL_23:
             v45 = 2112;
             v46 = v32;
             v47 = 2112;
-            v48 = v29;
+            v48 = recordCopy;
             v21 = v20;
             v22 = v19;
             v23 = "CoreData+CloudKit: %s(%d): Failed to copy asset to URL: %@\n%@\n%@\n%@";
@@ -1608,7 +1608,7 @@ LABEL_23:
           }
 
           -[NSMutableDictionary setObject:forKey:](self->_assetPathToSafeSaveURL, "setObject:forKey:", v14, [objc_msgSend(v12 "fileURL")]);
-          v15 = [v6 attributesOfItemAtPath:-[NSURL path](v14 error:{"path"), &v32}];
+          v15 = [defaultManager attributesOfItemAtPath:-[NSURL path](v14 error:{"path"), &v32}];
           if (v15)
           {
             v16 = v15;
@@ -1644,7 +1644,7 @@ LABEL_23:
             v45 = 2112;
             v46 = v32;
             v47 = 2112;
-            v48 = v29;
+            v48 = recordCopy;
             v21 = v26;
             v22 = v25;
             v23 = "CoreData+CloudKit: %s(%d): Failed to read attributes of asset file at URL: %@\n%@\n%@\n%@";
@@ -1673,15 +1673,15 @@ LABEL_29:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkAndApplyChangesIfNeeded:(uint64_t)a1
+- (void)checkAndApplyChangesIfNeeded:(uint64_t)needed
 {
-  if (a1)
+  if (needed)
   {
-    v4 = *(a1 + 8);
+    v4 = *(needed + 8);
     v5 = v4 ? *(v4 + 24) : 0;
-    if ([objc_msgSend(v5 "operationMemoryThresholdBytes")] && ((v7 = *(a1 + 8)) == 0 ? (v8 = 0) : (v8 = *(v7 + 24)), v6 = *(a1 + 128), v6 >= objc_msgSend(objc_msgSend(v8, "operationMemoryThresholdBytes"), "unsignedIntegerValue")) || *(a1 + 128) > 0xA00000uLL || (v11 = objc_msgSend(*(a1 + 80), "count"), a2) || v11 >= 0x1F5)
+    if ([objc_msgSend(v5 "operationMemoryThresholdBytes")] && ((v7 = *(needed + 8)) == 0 ? (v8 = 0) : (v8 = *(v7 + 24)), v6 = *(needed + 128), v6 >= objc_msgSend(objc_msgSend(v8, "operationMemoryThresholdBytes"), "unsignedIntegerValue")) || *(needed + 128) > 0xA00000uLL || (v11 = objc_msgSend(*(needed + 80), "count"), a2) || v11 >= 0x1F5)
     {
-      v9 = *(a1 + 8);
+      v9 = *(needed + 8);
       if (v9)
       {
         v10 = *(v9 + 32);
@@ -1696,38 +1696,38 @@ LABEL_29:
       v12[1] = 3221225472;
       v12[2] = __64__PFCloudKitImportRecordsWorkItem_checkAndApplyChangesIfNeeded___block_invoke;
       v12[3] = &unk_1E6EC1600;
-      v12[4] = a1;
+      v12[4] = needed;
       v12[5] = a2;
       dispatch_sync(v10, v12);
     }
   }
 }
 
-- (void)addDeletedRecordID:(uint64_t)a3 ofType:
+- (void)addDeletedRecordID:(uint64_t)d ofType:
 {
-  if (a1 && ![*(a1 + 88) count])
+  if (self && ![*(self + 88) count])
   {
-    v6 = [*(a1 + 72) objectForKey:a3];
+    v6 = [*(self + 72) objectForKey:d];
     if (!v6)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [*(a1 + 72) setObject:v6 forKey:a3];
+      [*(self + 72) setObject:v6 forKey:d];
     }
 
     [v6 addObject:a2];
 
-    [*(a1 + 80) addObject:a2];
-    ++*(a1 + 144);
+    [*(self + 80) addObject:a2];
+    ++*(self + 144);
 
-    [(PFCloudKitImportRecordsWorkItem *)a1 checkAndApplyChangesIfNeeded:?];
+    [(PFCloudKitImportRecordsWorkItem *)self checkAndApplyChangesIfNeeded:?];
   }
 }
 
-- (void)fetchOperationFinishedWithError:(uint64_t)a3 completion:
+- (void)fetchOperationFinishedWithError:(uint64_t)error completion:
 {
-  if (a1)
+  if (self)
   {
-    isa = *(a1 + 8);
+    isa = *(self + 8);
     if (isa)
     {
       isa = isa[4].isa;
@@ -1737,9 +1737,9 @@ LABEL_29:
     block[1] = 3221225472;
     block[2] = __78__PFCloudKitImportRecordsWorkItem_fetchOperationFinishedWithError_completion___block_invoke;
     block[3] = &unk_1E6EC34A0;
-    block[4] = a1;
+    block[4] = self;
     block[5] = a2;
-    block[6] = a3;
+    block[6] = error;
     dispatch_async(isa, block);
   }
 }
@@ -2543,12 +2543,12 @@ LABEL_12:
   [v9 addObject:a2];
 }
 
-- (id)cloudKitSerializer:(id)a3 safeSaveURLForAsset:(id)a4
+- (id)cloudKitSerializer:(id)serializer safeSaveURLForAsset:(id)asset
 {
   assetPathToSafeSaveURL = self->_assetPathToSafeSaveURL;
-  v5 = [objc_msgSend(a4 fileURL];
+  fileURL = [objc_msgSend(asset fileURL];
 
-  return [(NSMutableDictionary *)assetPathToSafeSaveURL objectForKey:v5];
+  return [(NSMutableDictionary *)assetPathToSafeSaveURL objectForKey:fileURL];
 }
 
 @end

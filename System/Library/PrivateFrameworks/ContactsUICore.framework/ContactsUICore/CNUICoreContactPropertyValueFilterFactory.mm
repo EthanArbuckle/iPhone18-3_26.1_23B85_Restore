@@ -3,7 +3,7 @@
 + (CNUICoreContactPropertyValueFilter)noteFilter;
 + (CNUICoreContactPropertyValueFilter)photoFilter;
 + (CNUICoreContactPropertyValueFilter)relationshipsFilter;
-+ (id)aggregatePropertyValueFilterWithValueFilters:(id)a3;
++ (id)aggregatePropertyValueFilterWithValueFilters:(id)filters;
 @end
 
 @implementation CNUICoreContactPropertyValueFilterFactory
@@ -36,10 +36,10 @@
   return v2;
 }
 
-+ (id)aggregatePropertyValueFilterWithValueFilters:(id)a3
++ (id)aggregatePropertyValueFilterWithValueFilters:(id)filters
 {
-  v3 = a3;
-  v4 = [[CNUICoreContactAggregateValueFilter alloc] initWithValueFilters:v3];
+  filtersCopy = filters;
+  v4 = [[CNUICoreContactAggregateValueFilter alloc] initWithValueFilters:filtersCopy];
 
   return v4;
 }

@@ -1,23 +1,23 @@
 @interface PGWrapperMusicForArtistCacher
-+ (void)cacheMusicForMomentsInPhotoLibrary:(id)a3 graphManager:(id)a4 forceCaching:(BOOL)a5 progressReporter:(id)a6 completionHandler:(id)a7;
++ (void)cacheMusicForMomentsInPhotoLibrary:(id)library graphManager:(id)manager forceCaching:(BOOL)caching progressReporter:(id)reporter completionHandler:(id)handler;
 - (PGWrapperMusicForArtistCacher)init;
 @end
 
 @implementation PGWrapperMusicForArtistCacher
 
-+ (void)cacheMusicForMomentsInPhotoLibrary:(id)a3 graphManager:(id)a4 forceCaching:(BOOL)a5 progressReporter:(id)a6 completionHandler:(id)a7
++ (void)cacheMusicForMomentsInPhotoLibrary:(id)library graphManager:(id)manager forceCaching:(BOOL)caching progressReporter:(id)reporter completionHandler:(id)handler
 {
-  v8 = a5;
-  v11 = _Block_copy(a7);
+  cachingCopy = caching;
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   ObjCClassMetadata = swift_getObjCClassMetadata();
 
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  libraryCopy = library;
+  managerCopy = manager;
+  reporterCopy = reporter;
   _Block_copy(v11);
-  sub_22F3AC4A4(v14, v15, v8, 50, v16, ObjCClassMetadata, sub_22F1E088C, v12);
+  sub_22F3AC4A4(libraryCopy, managerCopy, cachingCopy, 50, reporterCopy, ObjCClassMetadata, sub_22F1E088C, v12);
 
   _Block_release(v11);
 }

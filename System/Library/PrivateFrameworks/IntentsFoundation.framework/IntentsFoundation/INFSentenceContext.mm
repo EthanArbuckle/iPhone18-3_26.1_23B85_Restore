@@ -1,27 +1,27 @@
 @interface INFSentenceContext
 + (id)sentenceContext;
-- (id)combinedWithContext:(id)a3;
+- (id)combinedWithContext:(id)context;
 @end
 
 @implementation INFSentenceContext
 
-- (id)combinedWithContext:(id)a3
+- (id)combinedWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[INFSentenceContext sentenceContext];
   [v5 setNumber:self->_number];
   [v5 setGender:self->_gender];
-  v6 = [v4 number];
+  number = [contextCopy number];
 
-  if (v6)
+  if (number)
   {
-    v7 = [v4 number];
-    [v5 setNumber:v7];
+    number2 = [contextCopy number];
+    [v5 setNumber:number2];
   }
 
-  if ([v4 gender])
+  if ([contextCopy gender])
   {
-    [v5 setGender:{objc_msgSend(v4, "gender")}];
+    [v5 setGender:{objc_msgSend(contextCopy, "gender")}];
   }
 
   return v5;
@@ -29,7 +29,7 @@
 
 + (id)sentenceContext
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }

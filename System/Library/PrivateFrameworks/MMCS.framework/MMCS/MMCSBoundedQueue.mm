@@ -1,15 +1,15 @@
 @interface MMCSBoundedQueue
-- (MMCSBoundedQueue)initWithUpperBound:(unint64_t)a3;
+- (MMCSBoundedQueue)initWithUpperBound:(unint64_t)bound;
 - (unint64_t)_sync_aggregateByteCount;
-- (void)addData:(id)a3;
+- (void)addData:(id)data;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeNextDataWithBlock:(id)a3;
+- (void)removeNextDataWithBlock:(id)block;
 @end
 
 @implementation MMCSBoundedQueue
 
-- (MMCSBoundedQueue)initWithUpperBound:(unint64_t)a3
+- (MMCSBoundedQueue)initWithUpperBound:(unint64_t)bound
 {
   v8.receiver = self;
   v8.super_class = MMCSBoundedQueue;
@@ -21,7 +21,7 @@
     v4->_entries = v5;
 
     v4->_boundsExceeded = dispatch_semaphore_create(0);
-    v4->_bytesUpperBound = a3;
+    v4->_bytesUpperBound = bound;
     v4->_isValid = 1;
   }
 
@@ -62,26 +62,26 @@ uint64_t __44__MMCSBoundedQueue__sync_aggregateByteCount__block_invoke(uint64_t 
   return result;
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (self->_isValid)
   {
     while (1)
     {
       v5 = self->_entries;
       objc_sync_enter(v5);
-      v6 = [(MMCSBoundedQueue *)self _sync_aggregateByteCount];
+      _sync_aggregateByteCount = [(MMCSBoundedQueue *)self _sync_aggregateByteCount];
       objc_sync_exit(v5);
 
       bytesUpperBound = self->_bytesUpperBound;
-      v8 = [v4 length];
+      v8 = [dataCopy length];
       bytesErrorLevel = self->_bytesErrorLevel;
       if (bytesErrorLevel)
       {
-        v10 = v8 + v6;
-        if (v8 + v6 > bytesErrorLevel)
+        v10 = v8 + _sync_aggregateByteCount;
+        if (v8 + _sync_aggregateByteCount > bytesErrorLevel)
         {
           v11 = mmcs_logging_logger_default();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -96,7 +96,7 @@ uint64_t __44__MMCSBoundedQueue__sync_aggregateByteCount__block_invoke(uint64_t 
         }
       }
 
-      if (v6 <= bytesUpperBound)
+      if (_sync_aggregateByteCount <= bytesUpperBound)
       {
         break;
       }
@@ -112,7 +112,7 @@ uint64_t __44__MMCSBoundedQueue__sync_aggregateByteCount__block_invoke(uint64_t 
     {
       v13 = self->_entries;
       objc_sync_enter(v13);
-      [(NSMutableArray *)self->_entries addObject:v4];
+      [(NSMutableArray *)self->_entries addObject:dataCopy];
       objc_sync_exit(v13);
     }
   }
@@ -122,38 +122,38 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNextDataWithBlock:(id)a3
+- (void)removeNextDataWithBlock:(id)block
 {
-  v10 = a3;
-  if (!v10)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MMCSBoundedQueue removeNextDataWithBlock:];
   }
 
   v4 = self->_entries;
   objc_sync_enter(v4);
-  v5 = [(NSMutableArray *)self->_entries firstObject];
+  firstObject = [(NSMutableArray *)self->_entries firstObject];
   objc_sync_exit(v4);
 
-  if (v5)
+  if (firstObject)
   {
-    v10[2](v10, v5);
+    blockCopy[2](blockCopy, firstObject);
     v6 = self->_entries;
     objc_sync_enter(v6);
-    v7 = [(NSMutableArray *)self->_entries firstObject];
-    if (v7 != v5)
+    firstObject2 = [(NSMutableArray *)self->_entries firstObject];
+    if (firstObject2 != firstObject)
     {
       __assert_rtn("[MMCSBoundedQueue removeNextDataWithBlock:]", "MMCSBoundedQueue.m", 91, "[_entries firstObject] == firstData");
     }
 
-    v8 = [(MMCSBoundedQueue *)self _sync_isFull];
+    _sync_isFull = [(MMCSBoundedQueue *)self _sync_isFull];
     [(NSMutableArray *)self->_entries removeObjectAtIndex:0];
-    if (v8)
+    if (_sync_isFull)
     {
-      v9 = [(MMCSBoundedQueue *)self _sync_isFull];
+      _sync_isFull2 = [(MMCSBoundedQueue *)self _sync_isFull];
       objc_sync_exit(v6);
 
-      if (!v9)
+      if (!_sync_isFull2)
       {
         dispatch_semaphore_signal(self->_boundsExceeded);
       }

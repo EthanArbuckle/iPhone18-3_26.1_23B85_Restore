@@ -1,35 +1,35 @@
 @interface VNLensSmudgeObservation
-+ (id)observationForOriginatingRequestSpecifier:(id)a3 confidence:(float)a4 error:(id *)a5;
-- (id)_initWithOriginatingRequestSpecifier:(id)a3 confidence:(float)a4;
++ (id)observationForOriginatingRequestSpecifier:(id)specifier confidence:(float)confidence error:(id *)error;
+- (id)_initWithOriginatingRequestSpecifier:(id)specifier confidence:(float)confidence;
 @end
 
 @implementation VNLensSmudgeObservation
 
-- (id)_initWithOriginatingRequestSpecifier:(id)a3 confidence:(float)a4
+- (id)_initWithOriginatingRequestSpecifier:(id)specifier confidence:(float)confidence
 {
-  v6 = a3;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = VNLensSmudgeObservation;
-  v7 = [(VNObservation *)&v11 initWithOriginatingRequestSpecifier:v6];
+  v7 = [(VNObservation *)&v11 initWithOriginatingRequestSpecifier:specifierCopy];
   v9 = v7;
   if (v7)
   {
-    *&v8 = a4;
+    *&v8 = confidence;
     [(VNObservation *)v7 setConfidence:v8];
   }
 
   return v9;
 }
 
-+ (id)observationForOriginatingRequestSpecifier:(id)a3 confidence:(float)a4 error:(id *)a5
++ (id)observationForOriginatingRequestSpecifier:(id)specifier confidence:(float)confidence error:(id *)error
 {
-  v8 = a3;
-  *&v9 = a4;
-  if ([VNValidationUtilities validateVNConfidenceRange:a5 error:v9])
+  specifierCopy = specifier;
+  *&v9 = confidence;
+  if ([VNValidationUtilities validateVNConfidenceRange:error error:v9])
   {
-    v10 = [a1 alloc];
-    *&v11 = a4;
-    v12 = [v10 _initWithOriginatingRequestSpecifier:v8 confidence:v11];
+    v10 = [self alloc];
+    *&v11 = confidence;
+    v12 = [v10 _initWithOriginatingRequestSpecifier:specifierCopy confidence:v11];
   }
 
   else

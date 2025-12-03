@@ -1,37 +1,37 @@
 @interface AFUIAdapter
-+ (BOOL)responderAcceptsText:(id)a3;
-+ (CGRect)areaForASPFromTextField:(id)a3;
++ (BOOL)responderAcceptsText:(id)text;
++ (CGRect)areaForASPFromTextField:(id)field;
 + (id)firstResponderForInput;
-+ (id)gatherRespondersFromResponder:(id)a3;
-+ (id)placeholderTextForResponder:(id)a3;
-+ (id)presentedRootViewControllerForResponder:(id)a3;
-+ (id)textFromResponder:(id)a3;
-+ (id)textInputRespondersFromResponders:(id)a3 currentResponder:(id)a4 indexOfCurrent:(unint64_t *)a5;
-+ (id)textSignalsForResponder:(id)a3;
-+ (void)addTemporaryTextColorToTextField:(id)a3;
-+ (void)configureField:(id)a3 withASPForegroundView:(id)a4 withASPBackgroundView:(id)a5;
-+ (void)enumerateSignUpSignalsFromButton:(id)a3 block:(id)a4;
-+ (void)enumerateSignUpSignalsFromNavBarItem:(id)a3 block:(id)a4;
-+ (void)enumerateSignUpSignalsFromViewController:(id)a3 block:(id)a4;
-+ (void)enumerateSignUpSignalsFromViewControllerForResponder:(id)a3 block:(id)a4 viewControllerOut:(id *)a5;
-+ (void)enumerateSignupSignalsFromAccessibility:(id)a3 block:(id)a4;
-+ (void)removeTemporaryTextColorFromTextField:(id)a3;
-+ (void)setText:(id)a3 forResponder:(id)a4;
++ (id)gatherRespondersFromResponder:(id)responder;
++ (id)placeholderTextForResponder:(id)responder;
++ (id)presentedRootViewControllerForResponder:(id)responder;
++ (id)textFromResponder:(id)responder;
++ (id)textInputRespondersFromResponders:(id)responders currentResponder:(id)responder indexOfCurrent:(unint64_t *)current;
++ (id)textSignalsForResponder:(id)responder;
++ (void)addTemporaryTextColorToTextField:(id)field;
++ (void)configureField:(id)field withASPForegroundView:(id)view withASPBackgroundView:(id)backgroundView;
++ (void)enumerateSignUpSignalsFromButton:(id)button block:(id)block;
++ (void)enumerateSignUpSignalsFromNavBarItem:(id)item block:(id)block;
++ (void)enumerateSignUpSignalsFromViewController:(id)controller block:(id)block;
++ (void)enumerateSignUpSignalsFromViewControllerForResponder:(id)responder block:(id)block viewControllerOut:(id *)out;
++ (void)enumerateSignupSignalsFromAccessibility:(id)accessibility block:(id)block;
++ (void)removeTemporaryTextColorFromTextField:(id)field;
++ (void)setText:(id)text forResponder:(id)responder;
 @end
 
 @implementation AFUIAdapter
 
 + (id)firstResponderForInput
 {
-  v2 = [MEMORY[0x1E69DCBE0] activeInstance];
-  v3 = [v2 delegateAsResponder];
+  activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+  delegateAsResponder = [activeInstance delegateAsResponder];
 
-  return v3;
+  return delegateAsResponder;
 }
 
-+ (BOOL)responderAcceptsText:(id)a3
++ (BOOL)responderAcceptsText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     v4 = 1;
@@ -45,31 +45,31 @@
   return v4 & 1;
 }
 
-+ (id)presentedRootViewControllerForResponder:(id)a3
++ (id)presentedRootViewControllerForResponder:(id)responder
 {
-  v3 = [a3 _responderWindow];
-  v4 = [v3 rootViewController];
-  v5 = [v4 presentedViewController];
+  _responderWindow = [responder _responderWindow];
+  rootViewController = [_responderWindow rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  return v5;
+  return presentedViewController;
 }
 
-+ (id)gatherRespondersFromResponder:(id)a3
++ (id)gatherRespondersFromResponder:(id)responder
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v3 _gatherKeyResponders:v4 indexOfSelf:0 visibilityTest:&__block_literal_global_8 passingTest:&__block_literal_global_11 subviewsTest:&__block_literal_global_283];
-  if ([v4 count] >= 3)
+  responderCopy = responder;
+  array = [MEMORY[0x1E695DF70] array];
+  [responderCopy _gatherKeyResponders:array indexOfSelf:0 visibilityTest:&__block_literal_global_8 passingTest:&__block_literal_global_11 subviewsTest:&__block_literal_global_283];
+  if ([array count] >= 3)
   {
-    v46 = v3;
+    v46 = responderCopy;
     [MEMORY[0x1E695DF70] array];
-    v48 = v47 = v4;
+    v48 = v47 = array;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v5 = v4;
+    v5 = array;
     v6 = [v5 countByEnumeratingWithState:&v49 objects:v53 count:16];
     if (v6)
     {
@@ -98,20 +98,20 @@
               v15 = v14;
               v17 = v16;
               v19 = v18;
-              v20 = [v11 window];
-              v21 = [v11 window];
-              v22 = [v21 windowScene];
-              v23 = [v22 coordinateSpace];
-              [v20 convertRect:v23 toCoordinateSpace:{v13, v15, v17, v19}];
+              window = [v11 window];
+              window2 = [v11 window];
+              windowScene = [window2 windowScene];
+              coordinateSpace = [windowScene coordinateSpace];
+              [window convertRect:coordinateSpace toCoordinateSpace:{v13, v15, v17, v19}];
               v25 = v24;
               v27 = v26;
               v29 = v28;
               v31 = v30;
 
-              v32 = [v11 window];
-              v33 = [v32 windowScene];
-              v34 = [v33 coordinateSpace];
-              [v34 bounds];
+              window3 = [v11 window];
+              windowScene2 = [window3 windowScene];
+              coordinateSpace2 = [windowScene2 coordinateSpace];
+              [coordinateSpace2 bounds];
               v60.origin.x = v35;
               v60.origin.y = v36;
               v60.size.width = v37;
@@ -150,13 +150,13 @@
       [v5 removeObjectsInArray:v48];
     }
 
-    v3 = v46;
-    v4 = v47;
+    responderCopy = v46;
+    array = v47;
   }
 
   v44 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return array;
 }
 
 BOOL __45__AFUIAdapter_gatherRespondersFromResponder___block_invoke(uint64_t a1, void *a2)
@@ -287,22 +287,22 @@ BOOL __45__AFUIAdapter_gatherRespondersFromResponder___block_invoke_3(uint64_t a
   return v3;
 }
 
-+ (id)textInputRespondersFromResponders:(id)a3 currentResponder:(id)a4 indexOfCurrent:(unint64_t *)a5
++ (id)textInputRespondersFromResponders:(id)responders currentResponder:(id)responder indexOfCurrent:(unint64_t *)current
 {
-  v7 = a4;
+  responderCopy = responder;
   v8 = MEMORY[0x1E695DF70];
-  v9 = a3;
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  respondersCopy = responders;
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(respondersCopy, "count")}];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __81__AFUIAdapter_textInputRespondersFromResponders_currentResponder_indexOfCurrent___block_invoke;
   v16[3] = &unk_1E8424720;
-  v17 = v7;
-  v19 = a5;
+  v17 = responderCopy;
+  currentCopy = current;
   v11 = v10;
   v18 = v11;
-  v12 = v7;
-  [v9 enumerateObjectsUsingBlock:v16];
+  v12 = responderCopy;
+  [respondersCopy enumerateObjectsUsingBlock:v16];
 
   v13 = v18;
   v14 = v11;
@@ -328,9 +328,9 @@ void __81__AFUIAdapter_textInputRespondersFromResponders_currentResponder_indexO
   }
 }
 
-+ (id)textSignalsForResponder:(id)a3
++ (id)textSignalsForResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   v5 = objc_opt_class();
   if (AFUIResponderIsExemptFromDetectionHints(v5))
   {
@@ -343,31 +343,31 @@ void __81__AFUIAdapter_textInputRespondersFromResponders_currentResponder_indexO
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v8 = [v4 _viewControllerForAncestor];
+      _viewControllerForAncestor = [responderCopy _viewControllerForAncestor];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [v8 performSelector:sel_textField];
+        v9 = [_viewControllerForAncestor performSelector:sel_textField];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 placeholder];
-          v11 = [MEMORY[0x1E696AAE8] _processLocalizedString:v10];
+          placeholder = [v9 placeholder];
+          v11 = [MEMORY[0x1E696AAE8] _processLocalizedString:placeholder];
           [v7 addObjectsFromArray:v11];
         }
       }
     }
 
     v12 = MEMORY[0x1E696AAE8];
-    v13 = [v4 accessibilityHint];
-    v14 = [v12 _processLocalizedString:v13];
+    accessibilityHint = [responderCopy accessibilityHint];
+    v14 = [v12 _processLocalizedString:accessibilityHint];
     [v7 addObjectsFromArray:v14];
 
     v15 = MEMORY[0x1E696AAE8];
-    v16 = [v4 accessibilityLabel];
-    v17 = [v15 _processLocalizedString:v16];
+    accessibilityLabel = [responderCopy accessibilityLabel];
+    v17 = [v15 _processLocalizedString:accessibilityLabel];
     [v7 addObjectsFromArray:v17];
 
-    v18 = [a1 placeholderTextForResponder:v4];
+    v18 = [self placeholderTextForResponder:responderCopy];
     if (v18)
     {
       v19 = [MEMORY[0x1E696AAE8] _processLocalizedString:v18];
@@ -380,12 +380,12 @@ void __81__AFUIAdapter_textInputRespondersFromResponders_currentResponder_indexO
   return v6;
 }
 
-+ (id)placeholderTextForResponder:(id)a3
++ (id)placeholderTextForResponder:(id)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 performSelector:sel_placeholder];
+    v4 = [responderCopy performSelector:sel_placeholder];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -399,76 +399,76 @@ LABEL_5:
   return v4;
 }
 
-+ (void)addTemporaryTextColorToTextField:(id)a3
++ (void)addTemporaryTextColorToTextField:(id)field
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 textLayoutController];
-  v5 = [v4 documentRange];
+  fieldCopy = field;
+  textLayoutController = [fieldCopy textLayoutController];
+  documentRange = [textLayoutController documentRange];
   v10[0] = *MEMORY[0x1E69DB650];
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  v11[0] = v6;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v11[0] = blackColor;
   v10[1] = *MEMORY[0x1E69DB600];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  v11[1] = v7;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v11[1] = clearColor;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  [v4 addRenderingAttributes:v8 forRange:v5];
+  [textLayoutController addRenderingAttributes:v8 forRange:documentRange];
 
-  [v3 setNeedsDisplay];
+  [fieldCopy setNeedsDisplay];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeTemporaryTextColorFromTextField:(id)a3
++ (void)removeTemporaryTextColorFromTextField:(id)field
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 textLayoutController];
-  v5 = [v4 documentRange];
+  fieldCopy = field;
+  textLayoutController = [fieldCopy textLayoutController];
+  documentRange = [textLayoutController documentRange];
   v6 = *MEMORY[0x1E69DB600];
   v9[0] = *MEMORY[0x1E69DB650];
   v9[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-  [v4 removeRenderingAttributes:v7 forRange:v5];
+  [textLayoutController removeRenderingAttributes:v7 forRange:documentRange];
 
-  [v3 setNeedsDisplay];
+  [fieldCopy setNeedsDisplay];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)textFromResponder:(id)a3
++ (id)textFromResponder:(id)responder
 {
-  v3 = a3;
+  responderCopy = responder;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 text];
+    text = [responderCopy text];
   }
 
   else
   {
-    v4 = 0;
+    text = 0;
   }
 
-  return v4;
+  return text;
 }
 
-+ (void)setText:(id)a3 forResponder:(id)a4
++ (void)setText:(id)text forResponder:(id)responder
 {
-  v6 = a3;
-  v5 = a4;
+  textCopy = text;
+  responderCopy = responder;
   if (objc_opt_respondsToSelector())
   {
-    [v5 setText:v6];
+    [responderCopy setText:textCopy];
   }
 }
 
-+ (CGRect)areaForASPFromTextField:(id)a3
++ (CGRect)areaForASPFromTextField:(id)field
 {
-  v3 = a3;
-  [v3 frame];
-  v4 = [v3 rightView];
-  [v4 bounds];
-  v5 = [v3 leftView];
+  fieldCopy = field;
+  [fieldCopy frame];
+  rightView = [fieldCopy rightView];
+  [rightView bounds];
+  leftView = [fieldCopy leftView];
 
-  [v5 bounds];
+  [leftView bounds];
   UIRectInset();
   v7 = v6;
   v9 = v8;
@@ -486,11 +486,11 @@ LABEL_5:
   return result;
 }
 
-+ (void)configureField:(id)a3 withASPForegroundView:(id)a4 withASPBackgroundView:(id)a5
++ (void)configureField:(id)field withASPForegroundView:(id)view withASPBackgroundView:(id)backgroundView
 {
-  v7 = a5;
-  v8 = a4;
-  v12 = a3;
+  backgroundViewCopy = backgroundView;
+  viewCopy = view;
+  fieldCopy = field;
   if (dyld_program_sdk_at_least())
   {
     v9 = 3;
@@ -501,7 +501,7 @@ LABEL_5:
     v9 = 1;
   }
 
-  if (v8)
+  if (viewCopy)
   {
     v10 = v9;
   }
@@ -511,10 +511,10 @@ LABEL_5:
     v10 = 0;
   }
 
-  [v12 _setContentCoverViewMode:v10];
-  [v12 _setContentCoverView:v8];
+  [fieldCopy _setContentCoverViewMode:v10];
+  [fieldCopy _setContentCoverView:viewCopy];
 
-  if (v7)
+  if (backgroundViewCopy)
   {
     v11 = v9;
   }
@@ -524,28 +524,28 @@ LABEL_5:
     v11 = 0;
   }
 
-  [v12 _setBackgroundCoverViewMode:v11];
-  [v12 _setBackgroundCoverView:v7];
+  [fieldCopy _setBackgroundCoverViewMode:v11];
+  [fieldCopy _setBackgroundCoverView:backgroundViewCopy];
 }
 
-+ (void)enumerateSignUpSignalsFromButton:(id)a3 block:(id)a4
++ (void)enumerateSignUpSignalsFromButton:(id)button block:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  buttonCopy = button;
+  blockCopy = block;
   v34 = 0;
-  v7 = [v5 titleForState:{objc_msgSend(v5, "state")}];
-  if (!v7)
+  text = [buttonCopy titleForState:{objc_msgSend(buttonCopy, "state")}];
+  if (!text)
   {
-    v8 = [v5 titleLabel];
-    v7 = [v8 text];
+    titleLabel = [buttonCopy titleLabel];
+    text = [titleLabel text];
   }
 
-  v6[2](v6, v7, &v34);
+  blockCopy[2](blockCopy, text, &v34);
   if ((v34 & 1) == 0)
   {
-    v23 = v7;
-    [v5 allTargets];
+    v23 = text;
+    [buttonCopy allTargets];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -564,7 +564,7 @@ LABEL_6:
           objc_enumerationMutation(obj);
         }
 
-        v13 = [v5 actionsForTarget:*(*(&v30 + 1) + 8 * v12) forControlEvent:64];
+        v13 = [buttonCopy actionsForTarget:*(*(&v30 + 1) + 8 * v12) forControlEvent:64];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -584,7 +584,7 @@ LABEL_11:
               objc_enumerationMutation(v14);
             }
 
-            v6[2](v6, *(*(&v26 + 1) + 8 * v18), &v34);
+            blockCopy[2](blockCopy, *(*(&v26 + 1) + 8 * v18), &v34);
             if (v34)
             {
               break;
@@ -622,17 +622,17 @@ LABEL_11:
       }
     }
 
-    v7 = v23;
+    text = v23;
     if ((v34 & 1) == 0 && [v23 length])
     {
-      v20 = [MEMORY[0x1E696AAE8] mainBundle];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
       v25 = 0;
-      [v20 _searchForLocalizedString:v23 foundKey:&v25 foundTable:0];
+      [mainBundle _searchForLocalizedString:v23 foundKey:&v25 foundTable:0];
       v21 = v25;
 
       if (v21)
       {
-        v6[2](v6, v21, &v34);
+        blockCopy[2](blockCopy, v21, &v34);
       }
     }
   }
@@ -640,33 +640,33 @@ LABEL_11:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)enumerateSignUpSignalsFromViewControllerForResponder:(id)a3 block:(id)a4 viewControllerOut:(id *)a5
++ (void)enumerateSignUpSignalsFromViewControllerForResponder:(id)responder block:(id)block viewControllerOut:(id *)out
 {
-  v11 = a3;
-  v8 = a4;
+  responderCopy = responder;
+  blockCopy = block;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && [v11 isFirstResponder] && (objc_opt_respondsToSelector())
+  if (objc_opt_isKindOfClass() & 1) != 0 && [responderCopy isFirstResponder] && (objc_opt_respondsToSelector())
   {
-    v9 = [v11 _viewControllerForAncestor];
-    [a1 enumerateSignUpSignalsFromViewController:v9 block:v8];
-    v10 = v9;
-    *a5 = v9;
+    _viewControllerForAncestor = [responderCopy _viewControllerForAncestor];
+    [self enumerateSignUpSignalsFromViewController:_viewControllerForAncestor block:blockCopy];
+    v10 = _viewControllerForAncestor;
+    *out = _viewControllerForAncestor;
   }
 }
 
-+ (void)enumerateSignUpSignalsFromViewController:(id)a3 block:(id)a4
++ (void)enumerateSignUpSignalsFromViewController:(id)controller block:(id)block
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  blockCopy = block;
   v24 = 0;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v7[2](v7, v9, &v24);
+  blockCopy[2](blockCopy, v9, &v24);
 
   if ((v24 & 1) == 0)
   {
-    [v6 childViewControllers];
+    [controllerCopy childViewControllers];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -691,7 +691,7 @@ LABEL_11:
           {
             v16 = objc_opt_class();
             v17 = NSStringFromClass(v16);
-            v7[2](v7, v17, &v24);
+            blockCopy[2](blockCopy, v17, &v24);
 
             if (v24)
             {
@@ -701,7 +701,7 @@ LABEL_11:
 
           else
           {
-            [a1 enumerateSignUpSignalsFromViewController:v15 block:v7];
+            [self enumerateSignUpSignalsFromViewController:v15 block:blockCopy];
           }
 
           ++v14;
@@ -721,58 +721,58 @@ LABEL_16:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)enumerateSignUpSignalsFromNavBarItem:(id)a3 block:(id)a4
++ (void)enumerateSignUpSignalsFromNavBarItem:(id)item block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  blockCopy = block;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v19 = 0;
-    v7 = [v5 navigationBar];
-    v8 = [v7 topItem];
-    v9 = [v8 rightBarButtonItem];
+    navigationBar = [itemCopy navigationBar];
+    topItem = [navigationBar topItem];
+    rightBarButtonItem = [topItem rightBarButtonItem];
 
-    v10 = [v9 customView];
-    if (v10)
+    customView = [rightBarButtonItem customView];
+    if (customView)
     {
-      v11 = v10;
-      v12 = [v9 customView];
+      v11 = customView;
+      customView2 = [rightBarButtonItem customView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v14 = [v9 customView];
-        v15 = [v14 titleForState:0];
+        customView3 = [rightBarButtonItem customView];
+        title = [customView3 titleForState:0];
 
-        if (v15)
+        if (title)
         {
           goto LABEL_18;
         }
       }
     }
 
-    v15 = [v9 title];
+    title = [rightBarButtonItem title];
 
-    if (v15)
+    if (title)
     {
-      v15 = [v9 title];
-      if (v15)
+      title = [rightBarButtonItem title];
+      if (title)
       {
 LABEL_18:
-        if (([v5 isNavigationBarHidden] & 1) != 0 || !objc_msgSend(v15, "length") || (v6[2](v6, v15, &v19), (v19 & 1) == 0))
+        if (([itemCopy isNavigationBarHidden] & 1) != 0 || !objc_msgSend(title, "length") || (blockCopy[2](blockCopy, title, &v19), (v19 & 1) == 0))
         {
-          if ([v15 length])
+          if ([title length])
           {
-            v16 = [MEMORY[0x1E696AAE8] mainBundle];
+            mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
             v18 = 0;
-            [v16 _searchForLocalizedString:v15 foundKey:&v18 foundTable:0];
+            [mainBundle _searchForLocalizedString:title foundKey:&v18 foundTable:0];
             v17 = v18;
 
             if (v17)
             {
-              v6[2](v6, v17, &v19);
+              blockCopy[2](blockCopy, v17, &v19);
             }
           }
         }
@@ -781,15 +781,15 @@ LABEL_18:
   }
 }
 
-+ (void)enumerateSignupSignalsFromAccessibility:(id)a3 block:(id)a4
++ (void)enumerateSignupSignalsFromAccessibility:(id)accessibility block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  accessibilityCopy = accessibility;
+  blockCopy = block;
   v11 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = accessibilityCopy;
   }
 
   else
@@ -797,18 +797,18 @@ LABEL_18:
     v7 = 0;
   }
 
-  v8 = [v7 accessibilityHint];
-  v6[2](v6, v8, &v11);
+  accessibilityHint = [v7 accessibilityHint];
+  blockCopy[2](blockCopy, accessibilityHint, &v11);
 
   if ((v11 & 1) == 0)
   {
-    v9 = [v7 accessibilityLabel];
-    v6[2](v6, v9, &v11);
+    accessibilityLabel = [v7 accessibilityLabel];
+    blockCopy[2](blockCopy, accessibilityLabel, &v11);
 
     if ((v11 & 1) == 0)
     {
-      v10 = [v7 accessibilityIdentifier];
-      v6[2](v6, v10, &v11);
+      accessibilityIdentifier = [v7 accessibilityIdentifier];
+      blockCopy[2](blockCopy, accessibilityIdentifier, &v11);
     }
   }
 }

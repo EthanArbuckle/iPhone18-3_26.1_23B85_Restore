@@ -1,25 +1,25 @@
 @interface PKSpotlightBaseDocumentProcessor
-- (id)convertPkPassToDictionary:(id)a3;
-- (id)extractAttributeByExactMatch:(id)a3 attributeKeyMap:(id)a4;
-- (id)normalize:(id)a3;
-- (id)processDocument:(id)a3;
-- (void)populateResults:(id)a3 matchDocumentResults:(id)a4;
-- (void)processFieldBuckets:(id)a3 intoDictionary:(id)a4 duplicateKeys:(id)a5;
+- (id)convertPkPassToDictionary:(id)dictionary;
+- (id)extractAttributeByExactMatch:(id)match attributeKeyMap:(id)map;
+- (id)normalize:(id)normalize;
+- (id)processDocument:(id)document;
+- (void)populateResults:(id)results matchDocumentResults:(id)documentResults;
+- (void)processFieldBuckets:(id)buckets intoDictionary:(id)dictionary duplicateKeys:(id)keys;
 @end
 
 @implementation PKSpotlightBaseDocumentProcessor
 
-- (void)populateResults:(id)a3 matchDocumentResults:(id)a4
+- (void)populateResults:(id)results matchDocumentResults:(id)documentResults
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKSpotlightBaseDocumentProcessor *)self multiValuedSearchableAttributes];
+  resultsCopy = results;
+  documentResultsCopy = documentResults;
+  multiValuedSearchableAttributes = [(PKSpotlightBaseDocumentProcessor *)self multiValuedSearchableAttributes];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v7;
+  v9 = documentResultsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v10)
   {
@@ -35,25 +35,25 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 matchingValue];
+        matchingValue = [v14 matchingValue];
 
-        if (v15)
+        if (matchingValue)
         {
-          v16 = [v14 matchingValue];
-          v17 = [v14 mdSearchableItemAttribute];
-          if (v8 && [v8 containsObject:v17])
+          matchingValue2 = [v14 matchingValue];
+          mdSearchableItemAttribute = [v14 mdSearchableItemAttribute];
+          if (multiValuedSearchableAttributes && [multiValuedSearchableAttributes containsObject:mdSearchableItemAttribute])
           {
-            v18 = [v16 value];
-            v24 = v18;
-            v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-            [v6 setObject:v19 forKey:v17];
+            value = [matchingValue2 value];
+            v24 = value;
+            mdSearchableItemAttribute2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
+            [resultsCopy setObject:mdSearchableItemAttribute2 forKey:mdSearchableItemAttribute];
           }
 
           else
           {
-            v18 = [v16 value];
-            v19 = [v14 mdSearchableItemAttribute];
-            [v6 safelySetObject:v18 forKey:v19];
+            value = [matchingValue2 value];
+            mdSearchableItemAttribute2 = [v14 mdSearchableItemAttribute];
+            [resultsCopy safelySetObject:value forKey:mdSearchableItemAttribute2];
           }
         }
       }
@@ -65,33 +65,33 @@
   }
 }
 
-- (id)normalize:(id)a3
+- (id)normalize:(id)normalize
 {
-  if (a3)
+  if (normalize)
   {
-    v4 = [a3 lowercaseString];
+    lowercaseString = [normalize lowercaseString];
   }
 
   else
   {
-    v4 = 0;
+    lowercaseString = 0;
   }
 
-  return v4;
+  return lowercaseString;
 }
 
-- (void)processFieldBuckets:(id)a3 intoDictionary:(id)a4 duplicateKeys:(id)a5
+- (void)processFieldBuckets:(id)buckets intoDictionary:(id)dictionary duplicateKeys:(id)keys
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v28 = a5;
+  bucketsCopy = buckets;
+  dictionaryCopy = dictionary;
+  keysCopy = keys;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v8;
-  v26 = [v8 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  obj = bucketsCopy;
+  v26 = [bucketsCopy countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v26)
   {
     v25 = *v34;
@@ -127,21 +127,21 @@
               }
 
               v17 = *(*(&v29 + 1) + 8 * i);
-              v18 = [v17 label];
-              v19 = [(PKSpotlightBaseDocumentProcessor *)self normalize:v18];
+              label = [v17 label];
+              v19 = [(PKSpotlightBaseDocumentProcessor *)self normalize:label];
 
               if ([v19 length])
               {
-                v20 = [v9 objectForKeyedSubscript:v19];
+                v20 = [dictionaryCopy objectForKeyedSubscript:v19];
 
                 if (v20)
                 {
-                  [v28 addObject:v19];
+                  [keysCopy addObject:v19];
                 }
 
                 else
                 {
-                  [v9 setObject:v17 forKeyedSubscript:v19];
+                  [dictionaryCopy setObject:v17 forKeyedSubscript:v19];
                 }
               }
 
@@ -150,16 +150,16 @@
 
               if ([v22 length])
               {
-                v23 = [v9 objectForKeyedSubscript:v22];
+                v23 = [dictionaryCopy objectForKeyedSubscript:v22];
 
                 if (v23)
                 {
-                  [v28 addObject:v22];
+                  [keysCopy addObject:v22];
                 }
 
                 else
                 {
-                  [v9 setObject:v17 forKeyedSubscript:v22];
+                  [dictionaryCopy setObject:v17 forKeyedSubscript:v22];
                 }
               }
             }
@@ -181,39 +181,39 @@
   }
 }
 
-- (id)convertPkPassToDictionary:(id)a3
+- (id)convertPkPassToDictionary:(id)dictionary
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = objc_alloc_init(v4);
   v7 = objc_opt_new();
-  v8 = [v5 frontFieldBuckets];
-  [(PKSpotlightBaseDocumentProcessor *)self processFieldBuckets:v8 intoDictionary:v6 duplicateKeys:v7];
+  frontFieldBuckets = [dictionaryCopy frontFieldBuckets];
+  [(PKSpotlightBaseDocumentProcessor *)self processFieldBuckets:frontFieldBuckets intoDictionary:v6 duplicateKeys:v7];
 
-  v9 = [v5 backFieldBuckets];
+  backFieldBuckets = [dictionaryCopy backFieldBuckets];
 
-  [(PKSpotlightBaseDocumentProcessor *)self processFieldBuckets:v9 intoDictionary:v6 duplicateKeys:v7];
+  [(PKSpotlightBaseDocumentProcessor *)self processFieldBuckets:backFieldBuckets intoDictionary:v6 duplicateKeys:v7];
   if ([v7 count])
   {
-    v10 = [v7 allObjects];
-    [v6 removeObjectsForKeys:v10];
+    allObjects = [v7 allObjects];
+    [v6 removeObjectsForKeys:allObjects];
   }
 
   return v6;
 }
 
-- (id)extractAttributeByExactMatch:(id)a3 attributeKeyMap:(id)a4
+- (id)extractAttributeByExactMatch:(id)match attributeKeyMap:(id)map
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  matchCopy = match;
+  mapCopy = map;
   v26 = objc_opt_new();
   v7 = objc_opt_new();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = v6;
+  v8 = mapCopy;
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
@@ -256,12 +256,12 @@
                 }
 
                 v20 = *(*(&v30 + 1) + 8 * i);
-                v21 = [v5 valueForKey:v20];
+                v21 = [matchCopy valueForKey:v20];
 
                 if (v21)
                 {
                   v22 = [PKSpotlightDocumentMatchingResult alloc];
-                  v23 = [v5 objectForKeyedSubscript:v20];
+                  v23 = [matchCopy objectForKeyedSubscript:v20];
                   v24 = [(PKSpotlightDocumentMatchingResult *)v22 initWithMatchingInfos:v20 matchingValue:v23 mdSearchableItemAttribute:v13 statusCode:0];
 
                   [v26 addObject:v24];
@@ -303,19 +303,19 @@ LABEL_17:
   return v26;
 }
 
-- (id)processDocument:(id)a3
+- (id)processDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v5 = objc_opt_new();
-  v6 = [(PKSpotlightBaseDocumentProcessor *)self extractAttributesFromPKPass:v4];
+  v6 = [(PKSpotlightBaseDocumentProcessor *)self extractAttributesFromPKPass:documentCopy];
   [v5 addEntriesFromDictionary:v6];
 
-  v7 = [(PKSpotlightBaseDocumentProcessor *)self attributeKeyMapForDonation:v4];
+  v7 = [(PKSpotlightBaseDocumentProcessor *)self attributeKeyMapForDonation:documentCopy];
   v8 = v7;
   if (v7 && [v7 count])
   {
     v9 = objc_opt_new();
-    v10 = [(PKSpotlightBaseDocumentProcessor *)self convertPkPassToDictionary:v4];
+    v10 = [(PKSpotlightBaseDocumentProcessor *)self convertPkPassToDictionary:documentCopy];
     v11 = [(PKSpotlightBaseDocumentProcessor *)self extractAttributeByExactMatch:v10 attributeKeyMap:v8];
     [v9 addObjectsFromArray:v11];
 

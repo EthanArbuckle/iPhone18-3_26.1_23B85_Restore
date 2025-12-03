@@ -1,48 +1,48 @@
 @interface PSISuggestionQueryUtilities
-+ (BOOL)groupIsValidForSuggestionGeneration:(id)a3 suggestionType:(unint64_t)a4 allowedIndexCategories:(id)a5 suggestionQuery:(id)a6;
-+ (BOOL)groupWithAssetCountMeetsAssetMatchThreshold:(unint64_t)a3 assetSearchResultsCount:(unint64_t)a4;
-+ (BOOL)isEligibleIndexCategory:(unint64_t)a3 forSuggestionWithType:(unint64_t)a4;
-+ (BOOL)rangeExists:(_NSRange)a3 forString:(id)a4;
-+ (BOOL)suggestionCategoriesPairingIsValid:(unint64_t)a3 otherCategory:(unint64_t)a4;
-+ (id)_dateFilterFromStartDateComponents:(id)a3 endDateComponents:(id)a4;
-+ (id)_filterGroups:(id)a3 forExcludedIndexCategories:(id)a4 forRestrictedIndexCategories:(id)a5;
++ (BOOL)groupIsValidForSuggestionGeneration:(id)generation suggestionType:(unint64_t)type allowedIndexCategories:(id)categories suggestionQuery:(id)query;
++ (BOOL)groupWithAssetCountMeetsAssetMatchThreshold:(unint64_t)threshold assetSearchResultsCount:(unint64_t)count;
++ (BOOL)isEligibleIndexCategory:(unint64_t)category forSuggestionWithType:(unint64_t)type;
++ (BOOL)rangeExists:(_NSRange)exists forString:(id)string;
++ (BOOL)suggestionCategoriesPairingIsValid:(unint64_t)valid otherCategory:(unint64_t)category;
++ (id)_dateFilterFromStartDateComponents:(id)components endDateComponents:(id)dateComponents;
++ (id)_filterGroups:(id)groups forExcludedIndexCategories:(id)categories forRestrictedIndexCategories:(id)indexCategories;
 + (id)allowedIndexCategoriesForPairedLocationPrimarySuggestions;
 + (id)allowedIndexCategoriesForPairedLocationSecondarySuggestions;
-+ (id)dedupedSuggestionComponentsFromSuggestionComponentsMap:(id)a3;
++ (id)dedupedSuggestionComponentsFromSuggestionComponentsMap:(id)map;
 + (id)excludedLocationCategoriesForPairedLocationPrimarySuggestions;
-+ (id)mapKeyForSuggestionComponent:(id)a3;
-+ (id)searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:(id)a3;
-+ (id)sortLocationSuggestions:(id)a3;
-+ (id)suggestionCandidatesByContentStringFromSuggestionComponents:(id)a3;
-+ (id)suggestionCandidatesByIndexCategoryFromSuggestionComponents:(id)a3 suggestionType:(unint64_t)a4;
-+ (id)suggestionCandidatesBySuggestionCategoriesTypeFromSuggestionComponents:(id)a3 assetIds:(__CFArray *)a4 collectionIds:(__CFArray *)a5 wantsSuggestionCounts:(BOOL)a6;
-+ (id)suggestionComponentForCompletionSuggestionDateComponents:(id)a3 rangeOfCompletionSuggestionDateComponentsInSearchText:(_NSRange)a4 searchQueryAssetIds:(__CFArray *)a5 suggestionQuery:(id)a6 photosEntityStore:(id)a7;
-+ (id)suggestionComponentFromGroup:(id)a3 completionText:(id)a4 suggestionQuery:(id)a5 suggestionOptions:(id)a6 matchRange:(_NSRange)a7 requiresScopedUUIDs:(BOOL)a8 generateAssetSuggestions:(BOOL)a9 generateCollectionSuggestions:(BOOL)a10 searchQueryAssetIds:(__CFArray *)a11 searchQueryCollectionIds:(__CFArray *)a12;
-+ (id)suggestionGroupsForSearchText:(id)a3 requireExactMatches:(BOOL)a4 leadingAnchored:(BOOL)a5 restrictedIndexCategories:(id)a6 excludedIndexCategories:(id)a7 suggestionResultTypes:(unint64_t)a8 psiQueryDelegate:(id)a9;
-+ (unint64_t)_matchTypeForCompletionSuggestionText:(id)a3 matchRange:(_NSRange)a4 completionTexts:(id)a5;
-+ (unint64_t)locationPairingScore:(id)a3 otherLocationSuggestion:(id)a4;
-+ (unint64_t)scoreForLocationSuggestionStringLength:(id)a3;
-+ (unint64_t)suggestionPairingTypeForSuggestionOptions:(id)a3;
-+ (void)_categorizeCompletionTexts:(id)a3 completion:(id)a4;
++ (id)mapKeyForSuggestionComponent:(id)component;
++ (id)searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:(id)set;
++ (id)sortLocationSuggestions:(id)suggestions;
++ (id)suggestionCandidatesByContentStringFromSuggestionComponents:(id)components;
++ (id)suggestionCandidatesByIndexCategoryFromSuggestionComponents:(id)components suggestionType:(unint64_t)type;
++ (id)suggestionCandidatesBySuggestionCategoriesTypeFromSuggestionComponents:(id)components assetIds:(__CFArray *)ids collectionIds:(__CFArray *)collectionIds wantsSuggestionCounts:(BOOL)counts;
++ (id)suggestionComponentForCompletionSuggestionDateComponents:(id)components rangeOfCompletionSuggestionDateComponentsInSearchText:(_NSRange)text searchQueryAssetIds:(__CFArray *)ids suggestionQuery:(id)query photosEntityStore:(id)store;
++ (id)suggestionComponentFromGroup:(id)group completionText:(id)text suggestionQuery:(id)query suggestionOptions:(id)options matchRange:(_NSRange)range requiresScopedUUIDs:(BOOL)ds generateAssetSuggestions:(BOOL)suggestions generateCollectionSuggestions:(BOOL)self0 searchQueryAssetIds:(__CFArray *)self1 searchQueryCollectionIds:(__CFArray *)self2;
++ (id)suggestionGroupsForSearchText:(id)text requireExactMatches:(BOOL)matches leadingAnchored:(BOOL)anchored restrictedIndexCategories:(id)categories excludedIndexCategories:(id)indexCategories suggestionResultTypes:(unint64_t)types psiQueryDelegate:(id)delegate;
++ (unint64_t)_matchTypeForCompletionSuggestionText:(id)text matchRange:(_NSRange)range completionTexts:(id)texts;
++ (unint64_t)locationPairingScore:(id)score otherLocationSuggestion:(id)suggestion;
++ (unint64_t)scoreForLocationSuggestionStringLength:(id)length;
++ (unint64_t)suggestionPairingTypeForSuggestionOptions:(id)options;
++ (void)_categorizeCompletionTexts:(id)texts completion:(id)completion;
 @end
 
 @implementation PSISuggestionQueryUtilities
 
-+ (BOOL)suggestionCategoriesPairingIsValid:(unint64_t)a3 otherCategory:(unint64_t)a4
++ (BOOL)suggestionCategoriesPairingIsValid:(unint64_t)valid otherCategory:(unint64_t)category
 {
-  if (a3 == 11 && a4 == 10 || a3 == 10 && a4 == 11 || a3 == 13 && a4 == 12)
+  if (valid == 11 && category == 10 || valid == 10 && category == 11 || valid == 13 && category == 12)
   {
     return 0;
   }
 
-  return a3 != 12 || a4 != 13;
+  return valid != 12 || category != 13;
 }
 
-+ (id)sortLocationSuggestions:(id)a3
++ (id)sortLocationSuggestions:(id)suggestions
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEB0];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = [[v3 alloc] initWithKey:@"score" ascending:0];
   v6 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"matchedAssetsCount" ascending:0];
   v7 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"contentString" ascending:1];
@@ -50,33 +50,33 @@
   v11[1] = v6;
   v11[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:3];
-  v9 = [v4 sortedArrayUsingDescriptors:v8];
+  v9 = [suggestionsCopy sortedArrayUsingDescriptors:v8];
 
   return v9;
 }
 
-+ (unint64_t)locationPairingScore:(id)a3 otherLocationSuggestion:(id)a4
++ (unint64_t)locationPairingScore:(id)score otherLocationSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 suggestionComponents];
-  v9 = [v8 firstObject];
-  v10 = [v9 indexCategory];
+  scoreCopy = score;
+  suggestionCopy = suggestion;
+  suggestionComponents = [scoreCopy suggestionComponents];
+  firstObject = [suggestionComponents firstObject];
+  indexCategory = [firstObject indexCategory];
 
-  v11 = [v7 suggestionComponents];
-  v12 = [v11 firstObject];
-  v13 = [v12 indexCategory];
+  suggestionComponents2 = [suggestionCopy suggestionComponents];
+  firstObject2 = [suggestionComponents2 firstObject];
+  indexCategory2 = [firstObject2 indexCategory];
 
   v14 = +[PSISuggestionQueryUtilities allowedIndexCategoriesForPairedLocationPrimarySuggestions];
   v15 = +[PSISuggestionQueryUtilities allowedIndexCategoriesForPairedLocationSecondarySuggestions];
-  if (v10 == v13 || ([a1 suggestionCategoriesPairingIsValid:v10 otherCategory:v13] & 1) != 0)
+  if (indexCategory == indexCategory2 || ([self suggestionCategoriesPairingIsValid:indexCategory otherCategory:indexCategory2] & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (v10 < v13)
+  if (indexCategory < indexCategory2)
   {
-    if ([v14 containsIndex:v10] && (objc_msgSend(v15, "containsIndex:", v13) & 1) != 0)
+    if ([v14 containsIndex:indexCategory] && (objc_msgSend(v15, "containsIndex:", indexCategory2) & 1) != 0)
     {
       goto LABEL_11;
     }
@@ -86,33 +86,33 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (![v14 containsIndex:v13] || !objc_msgSend(v15, "containsIndex:", v10))
+  if (![v14 containsIndex:indexCategory2] || !objc_msgSend(v15, "containsIndex:", indexCategory))
   {
     goto LABEL_3;
   }
 
 LABEL_11:
-  if ((v10 - v13) >= 0)
+  if ((indexCategory - indexCategory2) >= 0)
   {
-    v18 = v10 - v13;
+    v18 = indexCategory - indexCategory2;
   }
 
   else
   {
-    v18 = v13 - v10;
+    v18 = indexCategory2 - indexCategory;
   }
 
-  v19 = [v6 suggestionComponents];
-  v20 = [v19 firstObject];
-  v21 = [v20 group];
+  suggestionComponents3 = [scoreCopy suggestionComponents];
+  firstObject3 = [suggestionComponents3 firstObject];
+  group = [firstObject3 group];
 
-  v22 = [v7 suggestionComponents];
-  v23 = [v22 firstObject];
-  v24 = [v23 group];
+  suggestionComponents4 = [suggestionCopy suggestionComponents];
+  firstObject4 = [suggestionComponents4 firstObject];
+  group2 = [firstObject4 group];
 
-  if ([v21 assetIds])
+  if ([group assetIds])
   {
-    v25 = CFArrayGetCount([v21 assetIds]) == 0;
+    v25 = CFArrayGetCount([group assetIds]) == 0;
   }
 
   else
@@ -120,10 +120,10 @@ LABEL_11:
     v25 = 1;
   }
 
-  if ([v24 assetIds] && (!CFArrayGetCount(objc_msgSend(v24, "assetIds")) ? (v26 = 1) : (v26 = v25), (v26 & 1) == 0))
+  if ([group2 assetIds] && (!CFArrayGetCount(objc_msgSend(group2, "assetIds")) ? (v26 = 1) : (v26 = v25), (v26 & 1) == 0))
   {
-    theArray = CFArrayCreateCopy(0, [v21 assetIds]);
-    +[PLScopedSearchUtilities intersectSortedArray:withOtherSortedArray:intersectionLimit:](PLScopedSearchUtilities, "intersectSortedArray:withOtherSortedArray:intersectionLimit:", &theArray, [v24 assetIds], 100);
+    theArray = CFArrayCreateCopy(0, [group assetIds]);
+    +[PLScopedSearchUtilities intersectSortedArray:withOtherSortedArray:intersectionLimit:](PLScopedSearchUtilities, "intersectSortedArray:withOtherSortedArray:intersectionLimit:", &theArray, [group2 assetIds], 100);
     Count = CFArrayGetCount(theArray);
     CFRelease(theArray);
     if (Count)
@@ -140,11 +140,11 @@ LABEL_11:
         v29 = 5.0;
       }
 
-      v30 = [v6 contentString];
-      v31 = [PSISuggestionQueryUtilities scoreForLocationSuggestionStringLength:v30];
+      contentString = [scoreCopy contentString];
+      v31 = [PSISuggestionQueryUtilities scoreForLocationSuggestionStringLength:contentString];
 
-      v32 = [v7 contentString];
-      v33 = [PSISuggestionQueryUtilities scoreForLocationSuggestionStringLength:v32];
+      contentString2 = [suggestionCopy contentString];
+      v33 = [PSISuggestionQueryUtilities scoreForLocationSuggestionStringLength:contentString2];
 
       Count = (v29 + v27 * 0.3 + v31 * 0.1 + v33 * 0.1);
     }
@@ -159,9 +159,9 @@ LABEL_4:
   return Count;
 }
 
-+ (unint64_t)scoreForLocationSuggestionStringLength:(id)a3
++ (unint64_t)scoreForLocationSuggestionStringLength:(id)length
 {
-  result = [a3 length];
+  result = [length length];
   if (result)
   {
     if (result >= 6)
@@ -244,11 +244,11 @@ LABEL_4:
 
 + (id)excludedLocationCategoriesForPairedLocationPrimarySuggestions
 {
-  v2 = [a1 allowedIndexCategoriesForPairedLocationPrimarySuggestions];
+  allowedIndexCategoriesForPairedLocationPrimarySuggestions = [self allowedIndexCategoriesForPairedLocationPrimarySuggestions];
   v3 = PLSearchIndexCategoriesForPLSearchSuggestionCategoriesType(1);
   v4 = [v3 mutableCopy];
 
-  [v4 removeIndexes:v2];
+  [v4 removeIndexes:allowedIndexCategoriesForPairedLocationPrimarySuggestions];
   v5 = [v4 copy];
 
   return v5;
@@ -287,23 +287,23 @@ LABEL_4:
   return v3;
 }
 
-+ (unint64_t)suggestionPairingTypeForSuggestionOptions:(id)a3
++ (unint64_t)suggestionPairingTypeForSuggestionOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = 0;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if ([v3 wantsPairedSuggestions])
+  if ([optionsCopy wantsPairedSuggestions])
   {
-    v5 = [v3 suggestionCategories];
+    suggestionCategories = [optionsCopy suggestionCategories];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __73__PSISuggestionQueryUtilities_suggestionPairingTypeForSuggestionOptions___block_invoke;
     v7[3] = &unk_1E756C420;
     v7[4] = &v8;
-    [v5 enumerateIndexesUsingBlock:v7];
+    [suggestionCategories enumerateIndexesUsingBlock:v7];
 
     v4 = v9[3];
   }
@@ -323,20 +323,20 @@ uint64_t __73__PSISuggestionQueryUtilities_suggestionPairingTypeForSuggestionOpt
   return result;
 }
 
-+ (id)_filterGroups:(id)a3 forExcludedIndexCategories:(id)a4 forRestrictedIndexCategories:(id)a5
++ (id)_filterGroups:(id)groups forExcludedIndexCategories:(id)categories forRestrictedIndexCategories:(id)indexCategories
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count] || objc_msgSend(v9, "count"))
+  groupsCopy = groups;
+  categoriesCopy = categories;
+  indexCategoriesCopy = indexCategories;
+  if ([categoriesCopy count] || objc_msgSend(indexCategoriesCopy, "count"))
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = v7;
+    v11 = groupsCopy;
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
@@ -352,7 +352,7 @@ uint64_t __73__PSISuggestionQueryUtilities_suggestionPairingTypeForSuggestionOpt
           }
 
           v16 = *(*(&v19 + 1) + 8 * i);
-          if ((![v8 count] || (objc_msgSend(v8, "containsIndex:", objc_msgSend(v16, "category")) & 1) == 0) && (!objc_msgSend(v9, "count") || objc_msgSend(v9, "containsIndex:", objc_msgSend(v16, "category"))))
+          if ((![categoriesCopy count] || (objc_msgSend(categoriesCopy, "containsIndex:", objc_msgSend(v16, "category")) & 1) == 0) && (!objc_msgSend(indexCategoriesCopy, "count") || objc_msgSend(indexCategoriesCopy, "containsIndex:", objc_msgSend(v16, "category"))))
           {
             [v10 addObject:v16];
           }
@@ -369,24 +369,24 @@ uint64_t __73__PSISuggestionQueryUtilities_suggestionPairingTypeForSuggestionOpt
 
   else
   {
-    v17 = v7;
+    v17 = groupsCopy;
   }
 
   return v17;
 }
 
-+ (void)_categorizeCompletionTexts:(id)a3 completion:(id)a4
++ (void)_categorizeCompletionTexts:(id)texts completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  textsCopy = texts;
+  completionCopy = completion;
+  if ([textsCopy count])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v7 = v5;
+    v7 = textsCopy;
     v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v8)
     {
@@ -459,25 +459,25 @@ uint64_t __73__PSISuggestionQueryUtilities_suggestionPairingTypeForSuggestionOpt
       }
 
       v23 = [v16 copy];
-      v6[2](v6, v10, v23);
+      completionCopy[2](completionCopy, v10, v23);
     }
 
     else
     {
-      v6[2](v6, v10, 0);
+      completionCopy[2](completionCopy, v10, 0);
     }
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-+ (id)searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:(id)a3
++ (id)searchIndexCategoriesIndexSetFromPLSearchSuggestionCategoriesTypeIndexSet:(id)set
 {
   v3 = MEMORY[0x1E696AD50];
-  v4 = a3;
+  setCopy = set;
   v5 = objc_alloc_init(v3);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -485,7 +485,7 @@ uint64_t __73__PSISuggestionQueryUtilities_suggestionPairingTypeForSuggestionOpt
   v9[3] = &unk_1E7576338;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateIndexesUsingBlock:v9];
+  [setCopy enumerateIndexesUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -499,13 +499,13 @@ void __105__PSISuggestionQueryUtilities_searchIndexCategoriesIndexSetFromPLSearc
   [v2 addIndexes:v3];
 }
 
-+ (unint64_t)_matchTypeForCompletionSuggestionText:(id)a3 matchRange:(_NSRange)a4 completionTexts:(id)a5
++ (unint64_t)_matchTypeForCompletionSuggestionText:(id)text matchRange:(_NSRange)range completionTexts:(id)texts
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  textCopy = text;
+  textsCopy = texts;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -524,23 +524,23 @@ void __105__PSISuggestionQueryUtilities_searchIndexCategoriesIndexSetFromPLSearc
   v19[3] = &unk_1E756C3F8;
   v19[4] = &v26;
   v19[5] = &v20;
-  [a1 _categorizeCompletionTexts:v10 completion:v19];
+  [self _categorizeCompletionTexts:textsCopy completion:v19];
   if (![v27[5] length])
   {
     v11 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v33 = v10;
+      v33 = textsCopy;
       v34 = 2112;
-      v35 = v9;
+      v35 = textCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Unexpected nil full completion text for completion texts: %@, unable to determine match type for suggestion: %@", buf, 0x16u);
     }
 
     goto LABEL_15;
   }
 
-  if (([a1 rangeExists:location forString:{length, v27[5]}] & 1) == 0)
+  if (([self rangeExists:location forString:{length, v27[5]}] & 1) == 0)
   {
     v11 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -554,7 +554,7 @@ void __105__PSISuggestionQueryUtilities_searchIndexCategoriesIndexSetFromPLSearc
       v34 = 2112;
       v35 = v17;
       v36 = 2112;
-      v37 = v9;
+      v37 = textCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Out of bound match range %@ detected for full completion text: %@, unable to determine match type for suggestion: %@", buf, 0x20u);
     }
 
@@ -564,9 +564,9 @@ void __105__PSISuggestionQueryUtilities_searchIndexCategoriesIndexSetFromPLSearc
   v11 = [v27[5] substringWithRange:{location, length}];
   if ([v11 isEqualToString:v27[5]])
   {
-    v12 = [v9 localizedLowercaseString];
-    v13 = [v27[5] localizedLowercaseString];
-    v14 = [v12 hasPrefix:v13];
+    localizedLowercaseString = [textCopy localizedLowercaseString];
+    localizedLowercaseString2 = [v27[5] localizedLowercaseString];
+    v14 = [localizedLowercaseString hasPrefix:localizedLowercaseString2];
 
     if (v14)
     {
@@ -588,7 +588,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v9 hasPrefix:v11])
+  if ([textCopy hasPrefix:v11])
   {
     v15 = 2;
   }
@@ -620,11 +620,11 @@ void __96__PSISuggestionQueryUtilities__matchTypeForCompletionSuggestionText_mat
   *(v9 + 40) = v6;
 }
 
-+ (id)_dateFilterFromStartDateComponents:(id)a3 endDateComponents:(id)a4
++ (id)_dateFilterFromStartDateComponents:(id)components endDateComponents:(id)dateComponents
 {
-  v5 = a3;
-  v6 = a4;
-  if (!(v5 | v6))
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  if (!(componentsCopy | dateComponentsCopy))
   {
     v8 = PLSearchBackendQueryGetLog();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -644,10 +644,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [v5 day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v5, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v5, "year") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v5, "era") == 0x7FFFFFFFFFFFFFFFLL;
-  if ([v6 day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v6, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(v6, "year") == 0x7FFFFFFFFFFFFFFFLL)
+  v7 = [componentsCopy day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "year") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(componentsCopy, "era") == 0x7FFFFFFFFFFFFFFFLL;
+  if ([dateComponentsCopy day] == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(dateComponentsCopy, "month") == 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(dateComponentsCopy, "year") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [v6 era];
+    v12 = [dateComponentsCopy era];
     if (v12 == 0x7FFFFFFFFFFFFFFFLL && v7)
     {
       v8 = PLSearchBackendQueryGetLog();
@@ -666,32 +666,32 @@ LABEL_8:
     {
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (!v5)
+        if (!componentsCopy)
         {
           goto LABEL_10;
         }
 
-        v14 = [[PSIDateFilter alloc] initWithStartDateComponents:v5];
+        v14 = [[PSIDateFilter alloc] initWithStartDateComponents:componentsCopy];
         goto LABEL_35;
       }
 
 LABEL_28:
       v15 = [PSIDateFilter alloc];
-      if (v5 && v6)
+      if (componentsCopy && dateComponentsCopy)
       {
-        v14 = [(PSIDateFilter *)v15 initWithStartDateComponents:v5 endDateComponents:v6];
+        v14 = [(PSIDateFilter *)v15 initWithStartDateComponents:componentsCopy endDateComponents:dateComponentsCopy];
       }
 
       else
       {
-        if (v5)
+        if (componentsCopy)
         {
-          v16 = v5;
+          v16 = componentsCopy;
         }
 
         else
         {
-          v16 = v6;
+          v16 = dateComponentsCopy;
         }
 
         v14 = [(PSIDateFilter *)v15 initWithSingleDateComponents:v16];
@@ -706,12 +706,12 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (!v6)
+  if (!dateComponentsCopy)
   {
     goto LABEL_10;
   }
 
-  v14 = [[PSIDateFilter alloc] initWithEndDateComponents:v6];
+  v14 = [[PSIDateFilter alloc] initWithEndDateComponents:dateComponentsCopy];
 LABEL_35:
   v11 = v14;
 LABEL_36:
@@ -719,29 +719,29 @@ LABEL_36:
   return v11;
 }
 
-+ (id)mapKeyForSuggestionComponent:(id)a3
++ (id)mapKeyForSuggestionComponent:(id)component
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 contentString];
-  v6 = [v4 indexCategory];
-  v7 = [v4 lookupIdentifier];
+  componentCopy = component;
+  contentString = [componentCopy contentString];
+  indexCategory = [componentCopy indexCategory];
+  lookupIdentifier = [componentCopy lookupIdentifier];
 
   v8 = &stru_1F0F06D80;
-  if (v7)
+  if (lookupIdentifier)
   {
-    v8 = v7;
+    v8 = lookupIdentifier;
   }
 
-  v9 = [v3 stringWithFormat:@"%@-%tu-%@", v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"%@-%tu-%@", contentString, indexCategory, v8];
 
   return v9;
 }
 
-+ (id)dedupedSuggestionComponentsFromSuggestionComponentsMap:(id)a3
++ (id)dedupedSuggestionComponentsFromSuggestionComponentsMap:(id)map
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_alloc_init(v3);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -749,7 +749,7 @@ LABEL_36:
   v9[3] = &unk_1E7576760;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -781,20 +781,20 @@ void __86__PSISuggestionQueryUtilities_dedupedSuggestionComponentsFromSuggestion
   }
 }
 
-+ (id)suggestionComponentForCompletionSuggestionDateComponents:(id)a3 rangeOfCompletionSuggestionDateComponentsInSearchText:(_NSRange)a4 searchQueryAssetIds:(__CFArray *)a5 suggestionQuery:(id)a6 photosEntityStore:(id)a7
++ (id)suggestionComponentForCompletionSuggestionDateComponents:(id)components rangeOfCompletionSuggestionDateComponentsInSearchText:(_NSRange)text searchQueryAssetIds:(__CFArray *)ids suggestionQuery:(id)query photosEntityStore:(id)store
 {
-  length = a4.length;
-  location = a4.location;
+  length = text.length;
+  location = text.location;
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v12 count];
-  if (v14 && v13 && a5 && v15 && location != 0x7FFFFFFFFFFFFFFFLL)
+  componentsCopy = components;
+  queryCopy = query;
+  storeCopy = store;
+  v15 = [componentsCopy count];
+  if (storeCopy && queryCopy && ids && v15 && location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v12 count])
+    if ([componentsCopy count])
     {
-      v16 = [v12 objectAtIndexedSubscript:0];
+      v16 = [componentsCopy objectAtIndexedSubscript:0];
     }
 
     else
@@ -802,36 +802,36 @@ void __86__PSISuggestionQueryUtilities_dedupedSuggestionComponentsFromSuggestion
       v16 = 0;
     }
 
-    if ([v12 count] < 2)
+    if ([componentsCopy count] < 2)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = [v12 objectAtIndexedSubscript:1];
+      v18 = [componentsCopy objectAtIndexedSubscript:1];
     }
 
     v33 = v18;
     v19 = [PSISuggestionQueryUtilities _dateFilterFromStartDateComponents:v16 endDateComponents:v18];
-    v20 = [v13 originalSearchText];
-    v21 = [v20 string];
+    originalSearchText = [queryCopy originalSearchText];
+    string = [originalSearchText string];
     v32 = length;
-    v22 = [v21 substringWithRange:{location, length}];
+    v22 = [string substringWithRange:{location, length}];
 
     v23 = [[PSIGroup alloc] initWithContentString:v22 lookupIdentifier:0 category:1102 score:0.0];
-    if (v19 && (v24 = CFArrayGetCount(a5)) != 0)
+    if (v19 && (v24 = CFArrayGetCount(ids)) != 0)
     {
       v25 = v24;
       v31 = v23;
-      v26 = [v14 assetIdsWithDateFilter:v19];
+      v26 = [storeCopy assetIdsWithDateFilter:v19];
       *buf = v26;
-      if (v26 && (v27 = v26, CFArrayGetCount(v26) >= 1) && (CFRetain(v27), [PLScopedSearchUtilities intersectSortedArray:buf withOtherSortedArray:a5 intersectionLimit:0], Count = CFArrayGetCount(*buf), Count - 1 < v25))
+      if (v26 && (v27 = v26, CFArrayGetCount(v26) >= 1) && (CFRetain(v27), [PLScopedSearchUtilities intersectSortedArray:buf withOtherSortedArray:ids intersectionLimit:0], Count = CFArrayGetCount(*buf), Count - 1 < v25))
       {
         v29 = Count;
         [(PSIGroup *)v31 updateWithIntersectedIds:*buf searchResultType:1];
         v23 = v31;
-        v17 = [[PLSearchSuggestionComponent alloc] initWithGroup:v31 matchedAssetsCount:v29 matchedCollectionsCount:0 suggestionType:1 completionSuggestionDateComponents:v12 matchedText:v22 matchRangeOfSearchText:location matchType:v32, 1];
+        v17 = [[PLSearchSuggestionComponent alloc] initWithGroup:v31 matchedAssetsCount:v29 matchedCollectionsCount:0 suggestionType:1 completionSuggestionDateComponents:componentsCopy matchedText:v22 matchRangeOfSearchText:location matchType:v32, 1];
       }
 
       else
@@ -853,9 +853,9 @@ void __86__PSISuggestionQueryUtilities_dedupedSuggestionComponentsFromSuggestion
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = componentsCopy;
       v35 = 2112;
-      v36 = v13;
+      v36 = queryCopy;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Unable to generate component from date components: %@ for suggestion query: %@", buf, 0x16u);
     }
 
@@ -865,32 +865,32 @@ void __86__PSISuggestionQueryUtilities_dedupedSuggestionComponentsFromSuggestion
   return v17;
 }
 
-+ (id)suggestionComponentFromGroup:(id)a3 completionText:(id)a4 suggestionQuery:(id)a5 suggestionOptions:(id)a6 matchRange:(_NSRange)a7 requiresScopedUUIDs:(BOOL)a8 generateAssetSuggestions:(BOOL)a9 generateCollectionSuggestions:(BOOL)a10 searchQueryAssetIds:(__CFArray *)a11 searchQueryCollectionIds:(__CFArray *)a12
++ (id)suggestionComponentFromGroup:(id)group completionText:(id)text suggestionQuery:(id)query suggestionOptions:(id)options matchRange:(_NSRange)range requiresScopedUUIDs:(BOOL)ds generateAssetSuggestions:(BOOL)suggestions generateCollectionSuggestions:(BOOL)self0 searchQueryAssetIds:(__CFArray *)self1 searchQueryCollectionIds:(__CFArray *)self2
 {
-  length = a7.length;
-  location = a7.location;
-  v16 = a9;
+  length = range.length;
+  location = range.location;
+  suggestionsCopy = suggestions;
   v46 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = v19;
-  if (v17 && v19)
+  groupCopy = group;
+  textCopy = text;
+  queryCopy = query;
+  v20 = queryCopy;
+  if (groupCopy && queryCopy)
   {
     v41 = length;
     v21 = 0;
-    if (![PSISuggestionQueryUtilities groupIsValidForSuggestionGeneration:v17 suggestionType:1 allowedIndexCategories:0 suggestionQuery:v19])
+    if (![PSISuggestionQueryUtilities groupIsValidForSuggestionGeneration:groupCopy suggestionType:1 allowedIndexCategories:0 suggestionQuery:queryCopy])
     {
       goto LABEL_57;
     }
 
-    if (a11)
+    if (ids)
     {
-      Count = CFArrayGetCount(a11);
-      if (a12)
+      Count = CFArrayGetCount(ids);
+      if (collectionIds)
       {
 LABEL_6:
-        v22 = CFArrayGetCount(a12);
+        v22 = CFArrayGetCount(collectionIds);
         goto LABEL_12;
       }
     }
@@ -898,7 +898,7 @@ LABEL_6:
     else
     {
       Count = 0;
-      if (a12)
+      if (collectionIds)
       {
         goto LABEL_6;
       }
@@ -906,9 +906,9 @@ LABEL_6:
 
     v22 = 0;
 LABEL_12:
-    if ([v17 assetIds])
+    if ([groupCopy assetIds])
     {
-      v39 = CFArrayGetCount([v17 assetIds]) != 0;
+      v39 = CFArrayGetCount([groupCopy assetIds]) != 0;
     }
 
     else
@@ -916,9 +916,9 @@ LABEL_12:
       v39 = 0;
     }
 
-    if ([v17 collectionIds])
+    if ([groupCopy collectionIds])
     {
-      v40 = CFArrayGetCount([v17 collectionIds]) != 0;
+      v40 = CFArrayGetCount([groupCopy collectionIds]) != 0;
     }
 
     else
@@ -926,7 +926,7 @@ LABEL_12:
       v40 = 0;
     }
 
-    if ([v17 intersectedAssetIds] && CFArrayGetCount(objc_msgSend(v17, "intersectedAssetIds")))
+    if ([groupCopy intersectedAssetIds] && CFArrayGetCount(objc_msgSend(groupCopy, "intersectedAssetIds")))
     {
       v37 = location;
       v24 = PLSearchBackendQueryGetLog();
@@ -935,7 +935,7 @@ LABEL_12:
         [v20 formattedSearchText];
         v25 = v36 = v22;
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = groupCopy;
         v44 = 2112;
         v45 = v25;
         _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Erroneous group with non-zero intersected assetIds: %@ for query: %@.", buf, 0x16u);
@@ -946,60 +946,60 @@ LABEL_12:
       location = v37;
     }
 
-    Copy = [v17 assetIds];
+    Copy = [groupCopy assetIds];
     if (Copy)
     {
-      Copy = CFArrayCreateCopy(0, [v17 assetIds]);
+      Copy = CFArrayCreateCopy(0, [groupCopy assetIds]);
     }
 
     *buf = Copy;
-    if (a9)
+    if (suggestions)
     {
-      if (a8)
+      if (ds)
       {
-        [PLScopedSearchUtilities intersectSortedArray:buf withOtherSortedArray:a11 intersectionLimit:0];
-        v16 = 0;
-        if (a11 && *buf)
+        [PLScopedSearchUtilities intersectSortedArray:buf withOtherSortedArray:ids intersectionLimit:0];
+        suggestionsCopy = 0;
+        if (ids && *buf)
         {
           if (CFArrayGetCount(*buf) - 1 >= Count)
           {
-            v16 = 0;
+            suggestionsCopy = 0;
           }
 
           else
           {
-            [v17 resetIntersectedIds];
-            v16 = 1;
-            [v17 updateWithIntersectedIds:*buf searchResultType:1];
+            [groupCopy resetIntersectedIds];
+            suggestionsCopy = 1;
+            [groupCopy updateWithIntersectedIds:*buf searchResultType:1];
           }
         }
       }
 
       else
       {
-        v16 = [v17 assetIds] != 0 && v39;
+        suggestionsCopy = [groupCopy assetIds] != 0 && v39;
       }
     }
 
-    v27 = [v17 collectionIds];
-    if (v27)
+    collectionIds = [groupCopy collectionIds];
+    if (collectionIds)
     {
-      v27 = CFArrayCreateCopy(0, [v17 collectionIds]);
+      collectionIds = CFArrayCreateCopy(0, [groupCopy collectionIds]);
     }
 
-    theArray = v27;
-    if (a10)
+    theArray = collectionIds;
+    if (collectionSuggestions)
     {
-      if (a8)
+      if (ds)
       {
-        [PLScopedSearchUtilities intersectSortedArray:&theArray withOtherSortedArray:a12 intersectionLimit:0];
+        [PLScopedSearchUtilities intersectSortedArray:&theArray withOtherSortedArray:collectionIds intersectionLimit:0];
         v28 = 0;
-        if (a12 && theArray)
+        if (collectionIds && theArray)
         {
           if (CFArrayGetCount(theArray) - 1 < v22)
           {
-            [v17 resetIntersectedIds];
-            [v17 updateWithIntersectedIds:theArray searchResultType:2];
+            [groupCopy resetIntersectedIds];
+            [groupCopy updateWithIntersectedIds:theArray searchResultType:2];
             v28 = 1;
             goto LABEL_43;
           }
@@ -1010,11 +1010,11 @@ LABEL_12:
 
       else
       {
-        v28 = [v17 collectionIds] != 0 && v40;
+        v28 = [groupCopy collectionIds] != 0 && v40;
       }
 
 LABEL_42:
-      if ((v16 | v28) != 1)
+      if ((suggestionsCopy | v28) != 1)
       {
         v21 = 0;
 LABEL_53:
@@ -1035,9 +1035,9 @@ LABEL_53:
 LABEL_43:
       if (_os_feature_enabled_impl())
       {
-        v29 = [v17 contentString];
-        v30 = [v20 completionSuggestionTexts];
-        v31 = [PSISuggestionQueryUtilities _matchTypeForCompletionSuggestionText:v29 matchRange:location completionTexts:v41, v30];
+        contentString = [groupCopy contentString];
+        completionSuggestionTexts = [v20 completionSuggestionTexts];
+        v31 = [PSISuggestionQueryUtilities _matchTypeForCompletionSuggestionText:contentString matchRange:location completionTexts:v41, completionSuggestionTexts];
       }
 
       else
@@ -1046,7 +1046,7 @@ LABEL_43:
       }
 
       v32 = [PLSearchSuggestionComponent alloc];
-      if (v16)
+      if (suggestionsCopy)
       {
         v33 = CFArrayGetCount(*buf);
         if (!v28)
@@ -1054,7 +1054,7 @@ LABEL_43:
 LABEL_49:
           v34 = 0;
 LABEL_52:
-          v21 = [(PLSearchSuggestionComponent *)v32 initWithGroup:v17 matchedAssetsCount:v33 matchedCollectionsCount:v34 suggestionType:1 completionSuggestionDateComponents:0 matchedText:v18 matchRangeOfSearchText:location matchType:v41, v31];
+          v21 = [(PLSearchSuggestionComponent *)v32 initWithGroup:groupCopy matchedAssetsCount:v33 matchedCollectionsCount:v34 suggestionType:1 completionSuggestionDateComponents:0 matchedText:textCopy matchRangeOfSearchText:location matchType:v41, v31];
           goto LABEL_53;
         }
       }
@@ -1081,7 +1081,7 @@ LABEL_40:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    *&buf[4] = v17;
+    *&buf[4] = groupCopy;
     v44 = 2112;
     v45 = v20;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Unable to generate component from group: %@ for suggestion query: %@", buf, 0x16u);
@@ -1093,17 +1093,17 @@ LABEL_57:
   return v21;
 }
 
-+ (id)suggestionGroupsForSearchText:(id)a3 requireExactMatches:(BOOL)a4 leadingAnchored:(BOOL)a5 restrictedIndexCategories:(id)a6 excludedIndexCategories:(id)a7 suggestionResultTypes:(unint64_t)a8 psiQueryDelegate:(id)a9
++ (id)suggestionGroupsForSearchText:(id)text requireExactMatches:(BOOL)matches leadingAnchored:(BOOL)anchored restrictedIndexCategories:(id)categories excludedIndexCategories:(id)indexCategories suggestionResultTypes:(unint64_t)types psiQueryDelegate:(id)delegate
 {
-  v12 = a5;
-  v13 = a4;
+  anchoredCopy = anchored;
+  matchesCopy = matches;
   v41 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  v19 = [v15 length];
-  if (v18)
+  textCopy = text;
+  categoriesCopy = categories;
+  indexCategoriesCopy = indexCategories;
+  delegateCopy = delegate;
+  v19 = [textCopy length];
+  if (delegateCopy)
   {
     v20 = v19 == 0;
   }
@@ -1119,7 +1119,7 @@ LABEL_57:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v38 = v15;
+      v38 = textCopy;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Unable to fetch groups for search text: %@", buf, 0xCu);
     }
 
@@ -1128,142 +1128,142 @@ LABEL_57:
 
   else
   {
-    v35 = a1;
-    v22 = [v15 lowercaseString];
-    v36 = v13;
-    v23 = [PSITokenizer fts5StringFromString:v22 useWildcard:!v13 leadingAnchored:v12 orderInsensitive:0];
+    selfCopy = self;
+    lowercaseString = [textCopy lowercaseString];
+    v36 = matchesCopy;
+    v23 = [PSITokenizer fts5StringFromString:lowercaseString useWildcard:!matchesCopy leadingAnchored:anchoredCopy orderInsensitive:0];
 
-    v24 = [v18 groupIdsMatchingFTSString:v23 categories:0 textIsSearchable:1];
+    v24 = [delegateCopy groupIdsMatchingFTSString:v23 categories:0 textIsSearchable:1];
     v25 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
       v38 = [v24 count];
       v39 = 2112;
-      v40 = v15;
+      v40 = textCopy;
       _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "Found %tu groups for suggestion text: %@.", buf, 0x16u);
     }
 
     v34 = v24;
     v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v24, 0}];
-    v28 = [v18 groupArraysFromGroupIdSets:v27 dateFilter:0 searchResultTypes:a8 progressBlock:&__block_literal_global_42904];
-    [v18 resetGroupsCache];
-    v29 = [v28 firstObject];
-    v30 = v16;
-    v31 = [v35 _filterGroups:v29 forExcludedIndexCategories:v17 forRestrictedIndexCategories:v16];
+    v28 = [delegateCopy groupArraysFromGroupIdSets:v27 dateFilter:0 searchResultTypes:types progressBlock:&__block_literal_global_42904];
+    [delegateCopy resetGroupsCache];
+    firstObject = [v28 firstObject];
+    v30 = categoriesCopy;
+    v31 = [selfCopy _filterGroups:firstObject forExcludedIndexCategories:indexCategoriesCopy forRestrictedIndexCategories:categoriesCopy];
 
     v21 = [PLScopedSearchUtilities removeSynonymsOfOtherGroupsInGroups:v31];
 
     if (v36)
     {
-      v32 = [PLScopedSearchUtilities removeGroupsWithNonExactMatchTextFromGroups:v21 searchText:v15];
+      v32 = [PLScopedSearchUtilities removeGroupsWithNonExactMatchTextFromGroups:v21 searchText:textCopy];
 
       v21 = v32;
     }
 
-    v16 = v30;
+    categoriesCopy = v30;
   }
 
   return v21;
 }
 
-+ (BOOL)rangeExists:(_NSRange)a3 forString:(id)a4
++ (BOOL)rangeExists:(_NSRange)exists forString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
+  length = exists.length;
+  location = exists.location;
+  stringCopy = string;
   v7 = 0;
-  if ([v6 length] && location != 0x7FFFFFFFFFFFFFFFLL)
+  if ([stringCopy length] && location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = location <= [v6 length] && location + length <= objc_msgSend(v6, "length");
+    v7 = location <= [stringCopy length] && location + length <= objc_msgSend(stringCopy, "length");
   }
 
   return v7;
 }
 
-+ (BOOL)groupWithAssetCountMeetsAssetMatchThreshold:(unint64_t)a3 assetSearchResultsCount:(unint64_t)a4
++ (BOOL)groupWithAssetCountMeetsAssetMatchThreshold:(unint64_t)threshold assetSearchResultsCount:(unint64_t)count
 {
   v4 = 0;
-  if (a3 && a4)
+  if (threshold && count)
   {
-    v5 = (a3 / a4) * 100.0;
+    v5 = (threshold / count) * 100.0;
     return v5 <= 65.0 && v5 >= 15.0;
   }
 
   return v4;
 }
 
-+ (BOOL)isEligibleIndexCategory:(unint64_t)a3 forSuggestionWithType:(unint64_t)a4
++ (BOOL)isEligibleIndexCategory:(unint64_t)category forSuggestionWithType:(unint64_t)type
 {
   result = 1;
-  if (a3 <= 1500)
+  if (category <= 1500)
   {
-    if (a3 <= 1101)
+    if (category <= 1101)
     {
-      if (a3 > 0xE)
+      if (category > 0xE)
       {
         goto LABEL_13;
       }
 
-      if (((1 << a3) & 0x53C4) != 0)
+      if (((1 << category) & 0x53C4) != 0)
       {
-        return a4 != 2;
+        return type != 2;
       }
 
-      if (((1 << a3) & 0x2801) == 0)
+      if (((1 << category) & 0x2801) == 0)
       {
 LABEL_13:
-        if (a3 - 1003 >= 6)
+        if (category - 1003 >= 6)
         {
-          if (a3 - 1009 >= 2)
+          if (category - 1009 >= 2)
           {
             return result;
           }
 
-          return a4 != 2;
+          return type != 2;
         }
       }
 
       return 0;
     }
 
-    if (a3 > 1300)
+    if (category > 1300)
     {
-      if (a3 - 1301 > 0x1E)
+      if (category - 1301 > 0x1E)
       {
         goto LABEL_32;
       }
 
-      if (((1 << (a3 - 21)) & 0x40180001) != 0)
+      if (((1 << (category - 21)) & 0x40180001) != 0)
       {
-        return a4 != 2;
+        return type != 2;
       }
 
-      if (a3 != 1310)
+      if (category != 1310)
       {
 LABEL_32:
-        if (a3 - 1400 >= 3)
+        if (category - 1400 >= 3)
         {
           return result;
         }
 
-        return a4 != 2;
+        return type != 2;
       }
 
       return 0;
     }
 
-    if (a3 - 1200 < 6)
+    if (category - 1200 < 6)
     {
-      return a4 != 2;
+      return type != 2;
     }
 
-    if (a3 - 1102 > 7)
+    if (category - 1102 > 7)
     {
       return result;
     }
 
-    v5 = 1 << (a3 - 78);
+    v5 = 1 << (category - 78);
     v6 = 201;
 LABEL_22:
     if ((v5 & v6) == 0)
@@ -1271,49 +1271,49 @@ LABEL_22:
       return result;
     }
 
-    return a4 != 2;
+    return type != 2;
   }
 
-  if (a3 <= 1899)
+  if (category <= 1899)
   {
-    if (a3 > 1600)
+    if (category > 1600)
     {
-      if (a3 != 1601 && a3 != 1611 && a3 != 1803)
+      if (category != 1601 && category != 1611 && category != 1803)
       {
         return result;
       }
 
-      return a4 != 2;
+      return type != 2;
     }
 
-    if (a3 - 1501 > 0x28)
+    if (category - 1501 > 0x28)
     {
       return result;
     }
 
-    v5 = 1 << (a3 + 35);
+    v5 = 1 << (category + 35);
     v6 = 0x18060180601;
     goto LABEL_22;
   }
 
-  if (a3 > 2399)
+  if (category > 2399)
   {
-    if (a3 <= 2699)
+    if (category <= 2699)
     {
-      if (a3 - 2400 >= 2 && a3 != 2501 && a3 != 2601)
+      if (category - 2400 >= 2 && category != 2501 && category != 2601)
       {
         return result;
       }
 
-      return a4 != 2;
+      return type != 2;
     }
 
-    if (a3 - 2900 < 2)
+    if (category - 2900 < 2)
     {
-      return a4 != 2;
+      return type != 2;
     }
 
-    if (a3 != 2700 && a3 != 2800)
+    if (category != 2700 && category != 2800)
     {
       return result;
     }
@@ -1321,48 +1321,48 @@ LABEL_22:
     return 0;
   }
 
-  if (a3 - 1900 <= 0x14 && ((1 << (a3 - 108)) & 0x1F7FFD) != 0 || a3 == 2100 || a3 == 2300)
+  if (category - 1900 <= 0x14 && ((1 << (category - 108)) & 0x1F7FFD) != 0 || category == 2100 || category == 2300)
   {
-    return a4 != 2;
+    return type != 2;
   }
 
   return result;
 }
 
-+ (BOOL)groupIsValidForSuggestionGeneration:(id)a3 suggestionType:(unint64_t)a4 allowedIndexCategories:(id)a5 suggestionQuery:(id)a6
++ (BOOL)groupIsValidForSuggestionGeneration:(id)generation suggestionType:(unint64_t)type allowedIndexCategories:(id)categories suggestionQuery:(id)query
 {
   v70 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 contentString];
-  v13 = [v12 length];
+  generationCopy = generation;
+  categoriesCopy = categories;
+  queryCopy = query;
+  contentString = [generationCopy contentString];
+  v13 = [contentString length];
 
-  v14 = [v10 count];
-  v15 = [v9 category];
+  v14 = [categoriesCopy count];
+  category = [generationCopy category];
   if (v14)
   {
-    v16 = [v10 containsIndex:v15];
+    v16 = [categoriesCopy containsIndex:category];
   }
 
   else
   {
-    if (!PLSearchIndexCategoryIsEligibleForSuggestion(v15))
+    if (!PLSearchIndexCategoryIsEligibleForSuggestion(category))
     {
       v17 = 0;
       goto LABEL_6;
     }
 
-    v16 = +[PSISuggestionQueryUtilities isEligibleIndexCategory:forSuggestionWithType:](PSISuggestionQueryUtilities, "isEligibleIndexCategory:forSuggestionWithType:", [v9 category], a4);
+    v16 = +[PSISuggestionQueryUtilities isEligibleIndexCategory:forSuggestionWithType:](PSISuggestionQueryUtilities, "isEligibleIndexCategory:forSuggestionWithType:", [generationCopy category], type);
   }
 
   v17 = v16;
 LABEL_6:
-  v52 = v10;
-  if ([v9 category] == 1203 || objc_msgSend(v9, "category") == 1204 || objc_msgSend(v9, "category") == 1205)
+  v52 = categoriesCopy;
+  if ([generationCopy category] == 1203 || objc_msgSend(generationCopy, "category") == 1204 || objc_msgSend(generationCopy, "category") == 1205)
   {
-    v18 = [v9 contentString];
-    v51 = [v18 length] < 3;
+    contentString2 = [generationCopy contentString];
+    v51 = [contentString2 length] < 3;
   }
 
   else
@@ -1374,14 +1374,14 @@ LABEL_6:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v19 = [v11 suggestionComponents];
-  v20 = [v19 countByEnumeratingWithState:&v58 objects:v69 count:16];
-  v53 = v11;
+  suggestionComponents = [queryCopy suggestionComponents];
+  v20 = [suggestionComponents countByEnumeratingWithState:&v58 objects:v69 count:16];
+  v53 = queryCopy;
   if (v20)
   {
     v21 = v20;
     v22 = v13;
-    v23 = a4;
+    typeCopy = type;
     v24 = v17;
     v25 = *v59;
     while (2)
@@ -1390,18 +1390,18 @@ LABEL_6:
       {
         if (*v59 != v25)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(suggestionComponents);
         }
 
-        v27 = [*(*(&v58 + 1) + 8 * i) psiGroupId];
-        if (v27 == [v9 groupId])
+        psiGroupId = [*(*(&v58 + 1) + 8 * i) psiGroupId];
+        if (psiGroupId == [generationCopy groupId])
         {
           v28 = 0;
           goto LABEL_20;
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v58 objects:v69 count:16];
+      v21 = [suggestionComponents countByEnumeratingWithState:&v58 objects:v69 count:16];
       if (v21)
       {
         continue;
@@ -1413,7 +1413,7 @@ LABEL_6:
     v28 = 1;
 LABEL_20:
     v17 = v24;
-    a4 = v23;
+    type = typeCopy;
     v13 = v22;
   }
 
@@ -1422,10 +1422,10 @@ LABEL_20:
     v28 = 1;
   }
 
-  v29 = [v11 suggestionOptions];
-  v30 = [v29 minMatchPercentForCategoriesType:{PLSearchSuggestionCategoriesTypeForSearchIndexCategory(objc_msgSend(v9, "category"))}];
+  suggestionOptions = [queryCopy suggestionOptions];
+  v30 = [suggestionOptions minMatchPercentForCategoriesType:{PLSearchSuggestionCategoriesTypeForSearchIndexCategory(objc_msgSend(generationCopy, "category"))}];
   v31 = 1;
-  v32 = a4 - 1;
+  v32 = type - 1;
   if (!v32)
   {
     v33 = v30;
@@ -1436,8 +1436,8 @@ LABEL_20:
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v35 = [v11 completionSuggestionTexts];
-      v36 = [v35 countByEnumeratingWithState:&v54 objects:v68 count:16];
+      completionSuggestionTexts = [queryCopy completionSuggestionTexts];
+      v36 = [completionSuggestionTexts countByEnumeratingWithState:&v54 objects:v68 count:16];
       if (v36)
       {
         v37 = v36;
@@ -1450,12 +1450,12 @@ LABEL_20:
           {
             if (*v55 != v38)
             {
-              objc_enumerationMutation(v35);
+              objc_enumerationMutation(completionSuggestionTexts);
             }
 
             v40 = [*(*(&v54 + 1) + 8 * j) length];
-            v41 = [v9 contentString];
-            v42 = ((v40 / [v41 length]) * 100.0);
+            contentString3 = [generationCopy contentString];
+            v42 = ((v40 / [contentString3 length]) * 100.0);
 
             if (v33 <= v42)
             {
@@ -1464,7 +1464,7 @@ LABEL_20:
             }
           }
 
-          v37 = [v35 countByEnumeratingWithState:&v54 objects:v68 count:16];
+          v37 = [completionSuggestionTexts countByEnumeratingWithState:&v54 objects:v68 count:16];
           if (v37)
           {
             continue;
@@ -1506,13 +1506,13 @@ LABEL_34:
       }
 
       v46 = v45;
-      v47 = [v53 formattedSearchText];
+      formattedSearchText = [v53 formattedSearchText];
       *buf = 138412802;
-      v63 = v9;
+      v63 = generationCopy;
       v64 = 2112;
       v65 = v46;
       v66 = 2112;
-      v67 = v47;
+      v67 = formattedSearchText;
       _os_log_impl(&dword_19BF1F000, v44, OS_LOG_TYPE_INFO, "Group is invalid for suggestion of type for query: %@, %@, %@.", buf, 0x20u);
     }
   }
@@ -1520,19 +1520,19 @@ LABEL_34:
   return v43;
 }
 
-+ (id)suggestionCandidatesByIndexCategoryFromSuggestionComponents:(id)a3 suggestionType:(unint64_t)a4
++ (id)suggestionCandidatesByIndexCategoryFromSuggestionComponents:(id)components suggestionType:(unint64_t)type
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
+  componentsCopy = components;
   v7 = objc_alloc_init(v5);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __106__PSISuggestionQueryUtilities_suggestionCandidatesByIndexCategoryFromSuggestionComponents_suggestionType___block_invoke;
   v14 = &unk_1E756C3D0;
   v15 = v7;
-  v16 = a4;
+  typeCopy = type;
   v8 = v7;
-  [v6 enumerateObjectsUsingBlock:&v11];
+  [componentsCopy enumerateObjectsUsingBlock:&v11];
 
   v9 = [v8 copy];
 
@@ -1572,10 +1572,10 @@ void __106__PSISuggestionQueryUtilities_suggestionCandidatesByIndexCategoryFromS
   [*(a1 + 32) setObject:v17 forKeyedSubscript:v4];
 }
 
-+ (id)suggestionCandidatesByContentStringFromSuggestionComponents:(id)a3
++ (id)suggestionCandidatesByContentStringFromSuggestionComponents:(id)components
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  componentsCopy = components;
   v5 = objc_alloc_init(v3);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1583,7 +1583,7 @@ void __106__PSISuggestionQueryUtilities_suggestionCandidatesByIndexCategoryFromS
   v9[3] = &unk_1E756C358;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [componentsCopy enumerateObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 
@@ -1613,10 +1613,10 @@ void __91__PSISuggestionQueryUtilities_suggestionCandidatesByContentStringFromSu
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v9];
 }
 
-+ (id)suggestionCandidatesBySuggestionCategoriesTypeFromSuggestionComponents:(id)a3 assetIds:(__CFArray *)a4 collectionIds:(__CFArray *)a5 wantsSuggestionCounts:(BOOL)a6
++ (id)suggestionCandidatesBySuggestionCategoriesTypeFromSuggestionComponents:(id)components assetIds:(__CFArray *)ids collectionIds:(__CFArray *)collectionIds wantsSuggestionCounts:(BOOL)counts
 {
-  v9 = a3;
-  if ([v9 count])
+  componentsCopy = components;
+  if ([componentsCopy count])
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v21[0] = MEMORY[0x1E69E9820];
@@ -1625,15 +1625,15 @@ void __91__PSISuggestionQueryUtilities_suggestionCandidatesByContentStringFromSu
     v21[3] = &unk_1E756C358;
     v22 = v10;
     v11 = v10;
-    [v9 enumerateObjectsUsingBlock:v21];
+    [componentsCopy enumerateObjectsUsingBlock:v21];
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __147__PSISuggestionQueryUtilities_suggestionCandidatesBySuggestionCategoriesTypeFromSuggestionComponents_assetIds_collectionIds_wantsSuggestionCounts___block_invoke_2;
     v16[3] = &unk_1E756C3A8;
-    v20 = a6;
-    v18 = a4;
-    v19 = a5;
+    countsCopy = counts;
+    idsCopy = ids;
+    collectionIdsCopy = collectionIds;
     v17 = v12;
     v13 = v12;
     [v11 enumerateKeysAndObjectsUsingBlock:v16];

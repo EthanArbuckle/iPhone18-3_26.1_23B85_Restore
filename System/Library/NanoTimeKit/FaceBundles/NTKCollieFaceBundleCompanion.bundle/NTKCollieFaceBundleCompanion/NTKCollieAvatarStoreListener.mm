@@ -8,8 +8,8 @@
 
 + (NTKCollieAvatarStoreListener)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_33288);
   if (!WeakRetained)
   {
@@ -17,7 +17,7 @@
     objc_storeWeak(&qword_33288, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }

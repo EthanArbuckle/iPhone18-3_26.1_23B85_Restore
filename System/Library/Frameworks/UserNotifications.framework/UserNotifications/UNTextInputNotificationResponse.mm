@@ -1,39 +1,39 @@
 @interface UNTextInputNotificationResponse
-+ (UNTextInputNotificationResponse)responseWithNotification:(id)a3 actionIdentifier:(id)a4 originIdentifier:(id)a5 targetConnectionEndpoint:(id)a6 targetSceneIdentifier:(id)a7 userText:(id)a8;
-- (BOOL)isEqual:(id)a3;
++ (UNTextInputNotificationResponse)responseWithNotification:(id)notification actionIdentifier:(id)identifier originIdentifier:(id)originIdentifier targetConnectionEndpoint:(id)endpoint targetSceneIdentifier:(id)sceneIdentifier userText:(id)text;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (UNTextInputNotificationResponse)initWithCoder:(id)a3;
-- (UNTextInputNotificationResponse)initWithXPCDictionary:(id)a3;
-- (id)_initWithNotification:(id)a3 actionIdentifier:(id)a4 originIdentifier:(id)a5 targetConnectionEndpoint:(id)a6 targetSceneIdentifier:(id)a7 userText:(id)a8;
+- (UNTextInputNotificationResponse)initWithCoder:(id)coder;
+- (UNTextInputNotificationResponse)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithNotification:(id)notification actionIdentifier:(id)identifier originIdentifier:(id)originIdentifier targetConnectionEndpoint:(id)endpoint targetSceneIdentifier:(id)sceneIdentifier userText:(id)text;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation UNTextInputNotificationResponse
 
-+ (UNTextInputNotificationResponse)responseWithNotification:(id)a3 actionIdentifier:(id)a4 originIdentifier:(id)a5 targetConnectionEndpoint:(id)a6 targetSceneIdentifier:(id)a7 userText:(id)a8
++ (UNTextInputNotificationResponse)responseWithNotification:(id)notification actionIdentifier:(id)identifier originIdentifier:(id)originIdentifier targetConnectionEndpoint:(id)endpoint targetSceneIdentifier:(id)sceneIdentifier userText:(id)text
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] _initWithNotification:v19 actionIdentifier:v18 originIdentifier:v17 targetConnectionEndpoint:v16 targetSceneIdentifier:v15 userText:v14];
+  textCopy = text;
+  sceneIdentifierCopy = sceneIdentifier;
+  endpointCopy = endpoint;
+  originIdentifierCopy = originIdentifier;
+  identifierCopy = identifier;
+  notificationCopy = notification;
+  v20 = [[self alloc] _initWithNotification:notificationCopy actionIdentifier:identifierCopy originIdentifier:originIdentifierCopy targetConnectionEndpoint:endpointCopy targetSceneIdentifier:sceneIdentifierCopy userText:textCopy];
 
   return v20;
 }
 
-- (id)_initWithNotification:(id)a3 actionIdentifier:(id)a4 originIdentifier:(id)a5 targetConnectionEndpoint:(id)a6 targetSceneIdentifier:(id)a7 userText:(id)a8
+- (id)_initWithNotification:(id)notification actionIdentifier:(id)identifier originIdentifier:(id)originIdentifier targetConnectionEndpoint:(id)endpoint targetSceneIdentifier:(id)sceneIdentifier userText:(id)text
 {
-  v13 = a8;
+  textCopy = text;
   v18.receiver = self;
   v18.super_class = UNTextInputNotificationResponse;
-  v14 = [(UNNotificationResponse *)&v18 _initWithNotification:a3 actionIdentifier:a4 originIdentifier:a5 targetConnectionEndpoint:a6 targetSceneIdentifier:0];
+  v14 = [(UNNotificationResponse *)&v18 _initWithNotification:notification actionIdentifier:identifier originIdentifier:originIdentifier targetConnectionEndpoint:endpoint targetSceneIdentifier:0];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [textCopy copy];
     v16 = v14[6];
     v14[6] = v15;
   }
@@ -46,25 +46,25 @@
   v7.receiver = self;
   v7.super_class = UNTextInputNotificationResponse;
   v3 = [(UNNotificationResponse *)&v7 hash];
-  v4 = [(UNTextInputNotificationResponse *)self userText];
-  v5 = [v4 hash];
+  userText = [(UNTextInputNotificationResponse *)self userText];
+  v5 = [userText hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = UNTextInputNotificationResponse;
-  if ([(UNNotificationResponse *)&v9 isEqual:v4])
+  if ([(UNNotificationResponse *)&v9 isEqual:equalCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(UNTextInputNotificationResponse *)self userText];
-      v6 = [v4 userText];
-      v7 = UNEqualObjects(v5, v6);
+      userText = [(UNTextInputNotificationResponse *)self userText];
+      userText2 = [equalCopy userText];
+      v7 = UNEqualObjects(userText, userText2);
     }
 
     else
@@ -85,77 +85,77 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UNNotificationResponse *)self actionIdentifier];
-  v6 = [(UNTextInputNotificationResponse *)self userText];
-  v7 = [(UNNotificationResponse *)self notification];
-  v8 = [v3 stringWithFormat:@"<%@: %p actionIdentifier: %@, userText: %@, notification: %@>", v4, self, v5, v6, v7];;
+  actionIdentifier = [(UNNotificationResponse *)self actionIdentifier];
+  userText = [(UNTextInputNotificationResponse *)self userText];
+  notification = [(UNNotificationResponse *)self notification];
+  v8 = [v3 stringWithFormat:@"<%@: %p actionIdentifier: %@, userText: %@, notification: %@>", v4, self, actionIdentifier, userText, notification];;
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UNNotificationResponse *)self notification];
-  [v4 encodeObject:v5 forKey:@"notification"];
+  coderCopy = coder;
+  notification = [(UNNotificationResponse *)self notification];
+  [coderCopy encodeObject:notification forKey:@"notification"];
 
-  v6 = [(UNNotificationResponse *)self actionIdentifier];
-  [v4 encodeObject:v6 forKey:@"actionIdentifier"];
+  actionIdentifier = [(UNNotificationResponse *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v7 = [(UNTextInputNotificationResponse *)self userText];
-  [v4 encodeObject:v7 forKey:@"userText"];
+  userText = [(UNTextInputNotificationResponse *)self userText];
+  [coderCopy encodeObject:userText forKey:@"userText"];
 
-  v8 = [(UNNotificationResponse *)self originIdentifier];
-  [v4 encodeObject:v8 forKey:@"originIdentifier"];
+  originIdentifier = [(UNNotificationResponse *)self originIdentifier];
+  [coderCopy encodeObject:originIdentifier forKey:@"originIdentifier"];
 
-  v9 = [(UNNotificationResponse *)self targetConnectionEndpoint];
-  [v4 encodeObject:v9 forKey:@"targetConnectionEndpoint"];
+  targetConnectionEndpoint = [(UNNotificationResponse *)self targetConnectionEndpoint];
+  [coderCopy encodeObject:targetConnectionEndpoint forKey:@"targetConnectionEndpoint"];
 
-  v10 = [(UNNotificationResponse *)self targetSceneIdentifier];
-  [v4 encodeObject:v10 forKey:@"targetSceneIdentifier"];
+  targetSceneIdentifier = [(UNNotificationResponse *)self targetSceneIdentifier];
+  [coderCopy encodeObject:targetSceneIdentifier forKey:@"targetSceneIdentifier"];
 }
 
-- (UNTextInputNotificationResponse)initWithCoder:(id)a3
+- (UNTextInputNotificationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userText"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originIdentifier"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetConnectionEndpoint"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetSceneIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notification"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userText"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetConnectionEndpoint"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetSceneIdentifier"];
 
   v11 = [(UNTextInputNotificationResponse *)self _initWithNotification:v5 actionIdentifier:v6 originIdentifier:v8 targetConnectionEndpoint:v9 targetSceneIdentifier:v10 userText:v7];
   return v11;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(UNNotificationResponse *)self actionIdentifier];
+  dictionaryCopy = dictionary;
+  actionIdentifier = [(UNNotificationResponse *)self actionIdentifier];
   BSSerializeNSSecureEncodableObjectToXPCDictionaryWithKey();
 
-  v6 = [(UNNotificationResponse *)self originIdentifier];
+  originIdentifier = [(UNNotificationResponse *)self originIdentifier];
   BSSerializeNSSecureEncodableObjectToXPCDictionaryWithKey();
 
-  v7 = [(UNTextInputNotificationResponse *)self userText];
+  userText = [(UNTextInputNotificationResponse *)self userText];
   BSSerializeNSSecureEncodableObjectToXPCDictionaryWithKey();
 
-  v8 = [(UNNotificationResponse *)self notification];
+  notification = [(UNNotificationResponse *)self notification];
   BSSerializeNSSecureEncodableObjectToXPCDictionaryWithKey();
 
-  v9 = [(UNNotificationResponse *)self targetSceneIdentifier];
+  targetSceneIdentifier = [(UNNotificationResponse *)self targetSceneIdentifier];
   BSSerializeNSSecureEncodableObjectToXPCDictionaryWithKey();
 
-  v11 = [MEMORY[0x1E698E7A8] coderWithMessage:v4];
+  v11 = [MEMORY[0x1E698E7A8] coderWithMessage:dictionaryCopy];
 
-  v10 = [(UNNotificationResponse *)self targetConnectionEndpoint];
-  [v11 encodeObject:v10 forKey:@"targetConnectionEndpoint"];
+  targetConnectionEndpoint = [(UNNotificationResponse *)self targetConnectionEndpoint];
+  [v11 encodeObject:targetConnectionEndpoint forKey:@"targetConnectionEndpoint"];
 }
 
-- (UNTextInputNotificationResponse)initWithXPCDictionary:(id)a3
+- (UNTextInputNotificationResponse)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v5 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
   objc_opt_class();
@@ -166,7 +166,7 @@
   v8 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
   objc_opt_class();
   v9 = BSDeserializeNSSecureEncodableObjectOfClassFromXPCDictionaryWithKey();
-  v10 = [MEMORY[0x1E698E7A8] coderWithMessage:v4];
+  v10 = [MEMORY[0x1E698E7A8] coderWithMessage:dictionaryCopy];
 
   v11 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"targetConnectionEndpoint"];
   v12 = [(UNTextInputNotificationResponse *)self _initWithNotification:v8 actionIdentifier:v5 originIdentifier:v6 targetConnectionEndpoint:v11 targetSceneIdentifier:v9 userText:v7];

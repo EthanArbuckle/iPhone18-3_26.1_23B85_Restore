@@ -1,7 +1,7 @@
 @interface CSCameraExtensionViewController
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)secureCaptureSceneViewController:(id)a3 requestsSceneReactivation:(id)a4;
-- (CSCameraExtensionViewController)initWithCaptureApplication:(id)a3 launchType:(unint64_t)a4;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)secureCaptureSceneViewController:(id)controller requestsSceneReactivation:(id)reactivation;
+- (CSCameraExtensionViewController)initWithCaptureApplication:(id)application launchType:(unint64_t)type;
 - (CSCameraExtensionViewControllerDelegate)delegate;
 - (CSCoverSheetViewController)coverSheetViewController;
 - (CSDismissableModalViewController)modalPresenter;
@@ -12,48 +12,48 @@
 - (int64_t)_effectiveContentMode;
 - (void)_applyHostableEntityContentMode;
 - (void)_createHostViewController;
-- (void)_showHostViewControllerViewIfNeededAnimated:(BOOL)a3;
-- (void)_updateDisplayLayoutElementForActivation:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)applicationLaunchTransitionDidCompleteWithError:(id)a3;
+- (void)_showHostViewControllerViewIfNeededAnimated:(BOOL)animated;
+- (void)_updateDisplayLayoutElementForActivation:(id)activation;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)applicationLaunchTransitionDidCompleteWithError:(id)error;
 - (void)dealloc;
 - (void)dismiss;
 - (void)invalidate;
 - (void)prepareForApplicationLaunchTransition;
-- (void)secureCaptureSceneViewController:(id)a3 didCreateScene:(id)a4;
-- (void)secureCaptureSceneViewController:(id)a3 didDestroyScene:(id)a4;
-- (void)secureCaptureSceneViewController:(id)a3 didSetIdleTimerDisabled:(BOOL)a4;
-- (void)secureCaptureSceneViewController:(id)a3 requestsLaunchAfterTransitionCompletionWithAction:(id)a4 completion:(id)a5;
-- (void)secureCaptureSceneViewController:(id)a3 requestsLaunchWithAction:(id)a4 completion:(id)a5;
-- (void)secureCaptureSceneViewController:(id)a3 sceneContentStateDidChange:(id)a4;
-- (void)setActionsToDeliverToHostableEntity:(id)a3;
-- (void)setHostableEntityContentMode:(int64_t)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)secureCaptureSceneViewController:(id)controller didCreateScene:(id)scene;
+- (void)secureCaptureSceneViewController:(id)controller didDestroyScene:(id)scene;
+- (void)secureCaptureSceneViewController:(id)controller didSetIdleTimerDisabled:(BOOL)disabled;
+- (void)secureCaptureSceneViewController:(id)controller requestsLaunchAfterTransitionCompletionWithAction:(id)action completion:(id)completion;
+- (void)secureCaptureSceneViewController:(id)controller requestsLaunchWithAction:(id)action completion:(id)completion;
+- (void)secureCaptureSceneViewController:(id)controller sceneContentStateDidChange:(id)change;
+- (void)setActionsToDeliverToHostableEntity:(id)entity;
+- (void)setHostableEntityContentMode:(int64_t)mode;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation CSCameraExtensionViewController
 
-- (CSCameraExtensionViewController)initWithCaptureApplication:(id)a3 launchType:(unint64_t)a4
+- (CSCameraExtensionViewController)initWithCaptureApplication:(id)application launchType:(unint64_t)type
 {
-  v7 = a3;
+  applicationCopy = application;
   v14.receiver = self;
   v14.super_class = CSCameraExtensionViewController;
   v8 = [(CSCameraExtensionViewController *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_captureApplication, a3);
+    objc_storeStrong(&v8->_captureApplication, application);
     v9->_reactivationAllowed = 1;
-    v9->_launchType = a4;
+    v9->_launchType = type;
     v10 = +[CSLockScreenDomain rootSettings];
-    v11 = [v10 cameraExtensionSettings];
+    cameraExtensionSettings = [v10 cameraExtensionSettings];
     cameraExtensionSettings = v9->_cameraExtensionSettings;
-    v9->_cameraExtensionSettings = v11;
+    v9->_cameraExtensionSettings = cameraExtensionSettings;
   }
 
   return v9;
@@ -75,15 +75,15 @@
   v13.receiver = self;
   v13.super_class = CSCameraExtensionViewController;
   [(CSCoverSheetViewControllerBase *)&v13 viewWillLayoutSubviews];
-  v3 = [(CSCameraExtensionViewController *)self view];
-  [v3 bounds];
+  view = [(CSCameraExtensionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SESecureCaptureSceneViewController *)self->_hostViewController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(SESecureCaptureSceneViewController *)self->_hostViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)viewDidLoad
@@ -91,16 +91,16 @@
   v5.receiver = self;
   v5.super_class = CSCameraExtensionViewController;
   [(CSCoverSheetViewControllerBase *)&v5 viewDidLoad];
-  v3 = [(CSCameraExtensionViewController *)self view];
-  v4 = [MEMORY[0x277D75348] blackColor];
-  [v3 setBackgroundColor:v4];
+  view = [(CSCameraExtensionViewController *)self view];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [view setBackgroundColor:blackColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSCameraExtensionViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillAppear:appear];
   if (!self->_hostViewController)
   {
     [(CSCameraExtensionViewController *)self _createHostViewController];
@@ -109,23 +109,23 @@
   [(CSCameraExtensionViewController *)self _applyHostableEntityContentMode];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSCameraExtensionViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidDisappear:disappear];
   [(CSCameraExtensionViewController *)self _applyHostableEntityContentMode];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v5 = a3;
+  windowCopy = window;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__CSCameraExtensionViewController_viewDidMoveToWindow_shouldAppearOrDisappear___block_invoke;
   v7[3] = &unk_27838B720;
-  v8 = v5;
-  v6 = v5;
+  v8 = windowCopy;
+  v6 = windowCopy;
   [(CSCoverSheetViewControllerBase *)self updateDisplayLayoutElementWithBuilder:v7];
 }
 
@@ -137,42 +137,42 @@ void __79__CSCameraExtensionViewController_viewDidMoveToWindow_shouldAppearOrDis
   [v4 setLevel:v3];
 }
 
-- (void)secureCaptureSceneViewController:(id)a3 didSetIdleTimerDisabled:(BOOL)a4
+- (void)secureCaptureSceneViewController:(id)controller didSetIdleTimerDisabled:(BOOL)disabled
 {
-  v5 = [CSAction actionWithType:3, a4];
-  [(CSCoverSheetViewControllerBase *)self sendAction:v5];
+  disabled = [CSAction actionWithType:3, disabled];
+  [(CSCoverSheetViewControllerBase *)self sendAction:disabled];
 }
 
-- (void)secureCaptureSceneViewController:(id)a3 requestsLaunchWithAction:(id)a4 completion:(id)a5
+- (void)secureCaptureSceneViewController:(id)controller requestsLaunchWithAction:(id)action completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained cameraExtensionViewController:self requestsLaunchWithAction:v8 completion:v7];
+  [WeakRetained cameraExtensionViewController:self requestsLaunchWithAction:actionCopy completion:completionCopy];
 }
 
-- (void)secureCaptureSceneViewController:(id)a3 requestsLaunchAfterTransitionCompletionWithAction:(id)a4 completion:(id)a5
+- (void)secureCaptureSceneViewController:(id)controller requestsLaunchAfterTransitionCompletionWithAction:(id)action completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained cameraExtensionViewController:self requestsLaunchAfterTransitionCompletionWithAction:v8 completion:v7];
+  [WeakRetained cameraExtensionViewController:self requestsLaunchAfterTransitionCompletionWithAction:actionCopy completion:completionCopy];
 }
 
-- (void)secureCaptureSceneViewController:(id)a3 didCreateScene:(id)a4
+- (void)secureCaptureSceneViewController:(id)controller didCreateScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(CSCameraExtensionViewController *)self delegate];
-  [v6 cameraExtensionViewController:self didCreateScene:v5];
+  sceneCopy = scene;
+  delegate = [(CSCameraExtensionViewController *)self delegate];
+  [delegate cameraExtensionViewController:self didCreateScene:sceneCopy];
 
   v7 = [(CSCoverSheetViewControllerBase *)self isDisappeared]^ 1;
 
   [(CSCameraExtensionViewController *)self _showHostViewControllerViewIfNeededAnimated:v7];
 }
 
-- (void)secureCaptureSceneViewController:(id)a3 sceneContentStateDidChange:(id)a4
+- (void)secureCaptureSceneViewController:(id)controller sceneContentStateDidChange:(id)change
 {
-  if ([a4 contentState] == 2)
+  if ([change contentState] == 2)
   {
     v5 = [(CSCoverSheetViewControllerBase *)self isDisappeared]^ 1;
 
@@ -180,7 +180,7 @@ void __79__CSCameraExtensionViewController_viewDidMoveToWindow_shouldAppearOrDis
   }
 }
 
-- (BOOL)secureCaptureSceneViewController:(id)a3 requestsSceneReactivation:(id)a4
+- (BOOL)secureCaptureSceneViewController:(id)controller requestsSceneReactivation:(id)reactivation
 {
   reactivationAllowed = self->_reactivationAllowed;
   if (reactivationAllowed)
@@ -210,11 +210,11 @@ void __94__CSCameraExtensionViewController_secureCaptureSceneViewController_requ
   [v1 reactivateWithLaunchActions:v3];
 }
 
-- (void)secureCaptureSceneViewController:(id)a3 didDestroyScene:(id)a4
+- (void)secureCaptureSceneViewController:(id)controller didDestroyScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(CSCameraExtensionViewController *)self delegate];
-  [v6 cameraExtensionViewController:self didDestroyScene:v5];
+  sceneCopy = scene;
+  delegate = [(CSCameraExtensionViewController *)self delegate];
+  [delegate cameraExtensionViewController:self didDestroyScene:sceneCopy];
 }
 
 - (void)invalidate
@@ -227,15 +227,15 @@ void __94__CSCameraExtensionViewController_secureCaptureSceneViewController_requ
 
 - (id)_newDisplayLayoutElement
 {
-  v2 = [(LCSCaptureApplicationDescribing *)self->_captureApplication extension];
-  v3 = [v2 bundleIdentifier];
+  extension = [(LCSCaptureApplicationDescribing *)self->_captureApplication extension];
+  bundleIdentifier = [extension bundleIdentifier];
 
-  if (v3)
+  if (bundleIdentifier)
   {
-    v4 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:v3];
+    v4 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:bundleIdentifier];
     [v4 setFillsDisplayBounds:1];
     [v4 setLayoutRole:6];
-    [v4 setBundleIdentifier:v3];
+    [v4 setBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -246,13 +246,13 @@ void __94__CSCameraExtensionViewController_secureCaptureSceneViewController_requ
   return v4;
 }
 
-- (void)_updateDisplayLayoutElementForActivation:(id)a3
+- (void)_updateDisplayLayoutElementForActivation:(id)activation
 {
   v5.receiver = self;
   v5.super_class = CSCameraExtensionViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 _updateDisplayLayoutElementForActivation:v4];
-  [v4 sb_setTransitioning:{(-[CSCameraExtensionViewController _appearState](self, "_appearState", v5.receiver, v5.super_class) & 0xFFFFFFFD) == 1}];
+  activationCopy = activation;
+  [(CSCoverSheetViewControllerBase *)&v5 _updateDisplayLayoutElementForActivation:activationCopy];
+  [activationCopy sb_setTransitioning:{(-[CSCameraExtensionViewController _appearState](self, "_appearState", v5.receiver, v5.super_class) & 0xFFFFFFFD) == 1}];
 }
 
 - (void)dismiss
@@ -277,40 +277,40 @@ void __94__CSCameraExtensionViewController_secureCaptureSceneViewController_requ
   }
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v17.receiver = self;
   v17.super_class = CSCameraExtensionViewController;
-  v3 = a3;
-  [(CSCoverSheetViewControllerBase *)&v17 aggregateAppearance:v3];
+  appearanceCopy = appearance;
+  [(CSCoverSheetViewControllerBase *)&v17 aggregateAppearance:appearanceCopy];
   v4 = objc_opt_new();
   v5 = [v4 priority:{40, v17.receiver, v17.super_class}];
   v6 = [v5 fakeStatusBar:1];
   v7 = [v6 fakeStatusBarLevel:&unk_28307A388];
-  [v3 addComponent:v7];
+  [appearanceCopy addComponent:v7];
 
   v8 = +[CSComponent homeAffordance];
   v9 = [v8 priority:40];
   v10 = [v9 hidden:1];
-  [v3 addComponent:v10];
+  [appearanceCopy addComponent:v10];
 
   v11 = objc_opt_new();
   v12 = [v11 priority:40];
   v13 = [v12 hidden:1];
-  [v3 addComponent:v13];
+  [appearanceCopy addComponent:v13];
 
   v14 = +[CSComponent dateView];
   v15 = [v14 priority:40];
   v16 = [v15 hidden:1];
-  [v3 addComponent:v16];
+  [appearanceCopy addComponent:v16];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v9.receiver = self;
   v9.super_class = CSCameraExtensionViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v9 aggregateBehavior:v4];
+  behaviorCopy = behavior;
+  [(CSCoverSheetViewControllerBase *)&v9 aggregateBehavior:behaviorCopy];
   v5 = [(SESecureCaptureSceneViewController *)self->_hostViewController requestsIdleTimerDisabled:v9.receiver];
   if (v5)
   {
@@ -342,30 +342,30 @@ void __94__CSCameraExtensionViewController_secureCaptureSceneViewController_requ
     v8 = 2;
   }
 
-  [v4 setIdleTimerMode:v6];
-  [v4 setIdleTimerDuration:v7];
-  [v4 setIdleWarnMode:v8];
+  [behaviorCopy setIdleTimerMode:v6];
+  [behaviorCopy setIdleTimerDuration:v7];
+  [behaviorCopy setIdleWarnMode:v8];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = CSCameraExtensionViewController;
-  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, v4) || ([v4 isConsumable] & 1) == 0)
+  if (!-[CSCoverSheetViewControllerBase handleEvent:](&v10, sel_handleEvent_, eventCopy) || ([eventCopy isConsumable] & 1) == 0)
   {
-    v6 = [v4 type];
-    if (v6 == 10)
+    type = [eventCopy type];
+    if (type == 10)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 3;
     }
 
     else
     {
-      if (v6 != 11)
+      if (type != 11)
       {
-        if (v6 == 25)
+        if (type == 25)
         {
           [(CSCameraExtensionViewController *)self dismiss];
         }
@@ -373,39 +373,39 @@ void __94__CSCameraExtensionViewController_secureCaptureSceneViewController_requ
         goto LABEL_11;
       }
 
-      v7 = self;
+      selfCopy2 = self;
       v8 = 2;
     }
 
-    [(CSCameraExtensionViewController *)v7 setHostableEntityContentMode:v8];
+    [(CSCameraExtensionViewController *)selfCopy2 setHostableEntityContentMode:v8];
 LABEL_11:
-    v5 = 0;
+    isConsumable = 0;
     goto LABEL_12;
   }
 
-  v5 = [v4 isConsumable];
+  isConsumable = [eventCopy isConsumable];
 LABEL_12:
 
-  return v5;
+  return isConsumable;
 }
 
-- (void)setHostableEntityContentMode:(int64_t)a3
+- (void)setHostableEntityContentMode:(int64_t)mode
 {
-  if (self->_hostableEntityContentMode != a3)
+  if (self->_hostableEntityContentMode != mode)
   {
-    self->_hostableEntityContentMode = a3;
+    self->_hostableEntityContentMode = mode;
     [(CSCameraExtensionViewController *)self _applyHostableEntityContentMode];
   }
 }
 
-- (void)setActionsToDeliverToHostableEntity:(id)a3
+- (void)setActionsToDeliverToHostableEntity:(id)entity
 {
-  v6 = a3;
+  entityCopy = entity;
   if ((BSEqualSets() & 1) == 0)
   {
     [(CSCameraExtensionViewController *)self bs_removeChildViewController:self->_hostViewController];
     [(SESecureCaptureSceneViewController *)self->_hostViewController invalidate];
-    v4 = [v6 copy];
+    v4 = [entityCopy copy];
     actionsToDeliverToHostableEntity = self->_actionsToDeliverToHostableEntity;
     self->_actionsToDeliverToHostableEntity = v4;
 
@@ -418,16 +418,16 @@ LABEL_12:
 
 - (SBSwitcherIconZooming)iconZoomingView
 {
-  v3 = [(CSCameraExtensionViewController *)self coverSheetViewController];
-  v4 = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
-  v5 = [v3 bestIconViewForApplicationBundleIdentifier:v4];
+  coverSheetViewController = [(CSCameraExtensionViewController *)self coverSheetViewController];
+  bundleIdentifier = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
+  v5 = [coverSheetViewController bestIconViewForApplicationBundleIdentifier:bundleIdentifier];
 
   return v5;
 }
 
 - (int64_t)_effectiveContentMode
 {
-  v3 = [(CSCoverSheetViewControllerBase *)self isDisappeared];
+  isDisappeared = [(CSCoverSheetViewControllerBase *)self isDisappeared];
   if (self->_hostableEntityContentMode <= 1)
   {
     hostableEntityContentMode = 1;
@@ -438,7 +438,7 @@ LABEL_12:
     hostableEntityContentMode = self->_hostableEntityContentMode;
   }
 
-  if (v3)
+  if (isDisappeared)
   {
     return hostableEntityContentMode;
   }
@@ -451,8 +451,8 @@ LABEL_12:
 
 - (void)_applyHostableEntityContentMode
 {
-  v3 = [(CSCameraExtensionViewController *)self _effectiveContentMode];
-  if (v3 == 2)
+  _effectiveContentMode = [(CSCameraExtensionViewController *)self _effectiveContentMode];
+  if (_effectiveContentMode == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -469,8 +469,8 @@ LABEL_12:
 
     if (self->_hostViewController && ![(CSCameraExtensionViewController *)self isLaunchMonitoringRequested]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [(SESecureCaptureSceneViewController *)self->_hostViewController _scene];
-      [WeakRetained cameraExtensionViewController:self requestsLaunchMonitoringForScene:v5];
+      _scene = [(SESecureCaptureSceneViewController *)self->_hostViewController _scene];
+      [WeakRetained cameraExtensionViewController:self requestsLaunchMonitoringForScene:_scene];
 
       self->_launchMonitoringRequested = 1;
     }
@@ -478,7 +478,7 @@ LABEL_12:
 
   else
   {
-    if (v3 == 3)
+    if (_effectiveContentMode == 3)
     {
       v4 = 2;
     }
@@ -515,9 +515,9 @@ LABEL_12:
 - (void)_createHostViewController
 {
   v3 = objc_alloc(MEMORY[0x277D4C8E0]);
-  v4 = [(LCSCaptureApplicationDescribing *)self->_captureApplication extension];
-  v5 = [(CSCameraExtensionViewController *)self _launchActions];
-  v6 = [v3 initWithProvider:v4 launchActions:v5];
+  extension = [(LCSCaptureApplicationDescribing *)self->_captureApplication extension];
+  _launchActions = [(CSCameraExtensionViewController *)self _launchActions];
+  v6 = [v3 initWithProvider:extension launchActions:_launchActions];
   hostViewController = self->_hostViewController;
   self->_hostViewController = v6;
 
@@ -525,8 +525,8 @@ LABEL_12:
   self->_actionsToDeliverToHostableEntity = 0;
 
   [(SESecureCaptureSceneViewController *)self->_hostViewController setDelegate:self];
-  v9 = [(SESecureCaptureSceneViewController *)self->_hostViewController view];
-  [v9 setAlpha:0.0];
+  view = [(SESecureCaptureSceneViewController *)self->_hostViewController view];
+  [view setAlpha:0.0];
 
   [(CSCameraExtensionViewController *)self bs_addChildViewController:self->_hostViewController];
   [(CSCameraExtensionViewController *)self _applyHostableEntityContentMode];
@@ -534,23 +534,23 @@ LABEL_12:
   [(CSCameraExtensionViewController *)self _showHostViewControllerViewIfNeededAnimated:0];
 }
 
-- (void)_showHostViewControllerViewIfNeededAnimated:(BOOL)a3
+- (void)_showHostViewControllerViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SESecureCaptureSceneViewController *)self->_hostViewController view];
-  v6 = [(SESecureCaptureSceneViewController *)self->_hostViewController _scene];
-  [v5 alpha];
-  if (BSFloatIsZero() && [v6 contentState] == 2)
+  animatedCopy = animated;
+  view = [(SESecureCaptureSceneViewController *)self->_hostViewController view];
+  _scene = [(SESecureCaptureSceneViewController *)self->_hostViewController _scene];
+  [view alpha];
+  if (BSFloatIsZero() && [_scene contentState] == 2)
   {
-    if (v3)
+    if (animatedCopy)
     {
-      v7 = [(CSCameraExtensionSettings *)self->_cameraExtensionSettings captureExtensionLaunchFadeInSettings];
-      v8 = [v7 BSAnimationSettings];
+      captureExtensionLaunchFadeInSettings = [(CSCameraExtensionSettings *)self->_cameraExtensionSettings captureExtensionLaunchFadeInSettings];
+      bSAnimationSettings = [captureExtensionLaunchFadeInSettings BSAnimationSettings];
     }
 
     else
     {
-      v8 = 0;
+      bSAnimationSettings = 0;
     }
 
     v9 = MEMORY[0x277CF0D38];
@@ -558,8 +558,8 @@ LABEL_12:
     v10[1] = 3221225472;
     v10[2] = __79__CSCameraExtensionViewController__showHostViewControllerViewIfNeededAnimated___block_invoke;
     v10[3] = &unk_27838B770;
-    v11 = v5;
-    [v9 animateWithSettings:v8 actions:v10];
+    v11 = view;
+    [v9 animateWithSettings:bSAnimationSettings actions:v10];
   }
 }
 
@@ -569,26 +569,26 @@ LABEL_12:
   v3 = SBLogDashBoard();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
+    bundleIdentifier = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
     v5 = 138412290;
-    v6 = v4;
+    v6 = bundleIdentifier;
     _os_log_impl(&dword_21EB05000, v3, OS_LOG_TYPE_DEFAULT, "Prepare for application launch transition to %@", &v5, 0xCu);
   }
 
   [(CSCameraExtensionViewController *)self setHostableEntityContentMode:3];
 }
 
-- (void)applicationLaunchTransitionDidCompleteWithError:(id)a3
+- (void)applicationLaunchTransitionDidCompleteWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = SBLogDashBoard();
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(CSCameraExtensionViewController *)self applicationLaunchTransitionDidCompleteWithError:v4, v6];
+      [(CSCameraExtensionViewController *)self applicationLaunchTransitionDidCompleteWithError:errorCopy, v6];
     }
 
     [(CSCameraExtensionViewController *)self setHostableEntityContentMode:2];
@@ -598,9 +598,9 @@ LABEL_12:
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
+      bundleIdentifier = [(LCSCaptureApplicationDescribing *)self->_captureApplication bundleIdentifier];
       v8 = 138412290;
-      v9 = v7;
+      v9 = bundleIdentifier;
       _os_log_impl(&dword_21EB05000, v6, OS_LOG_TYPE_DEFAULT, "Capture application launch transition to %@ completed successfully", &v8, 0xCu);
     }
   }

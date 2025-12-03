@@ -1,16 +1,16 @@
 @interface _UITextFormattingDeferredColorPickingDelegate
 - (UIResponderStandardEditActions)editResponder;
 - (void)_removeAssociatedDelegate;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)colorPickerViewControllerDidFinish:(id)a3;
-- (void)setEditResponder:(id)a3;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)colorPickerViewControllerDidFinish:(id)finish;
+- (void)setEditResponder:(id)responder;
 @end
 
 @implementation _UITextFormattingDeferredColorPickingDelegate
 
-- (void)setEditResponder:(id)a3
+- (void)setEditResponder:(id)responder
 {
-  obj = a3;
+  obj = responder;
   objc_setAssociatedObject(obj, &_UITextFormattingDeferredColorPickingDelegateIdentifier, self, 1);
   objc_storeWeak(&self->_editResponder, obj);
 }
@@ -26,30 +26,30 @@
   }
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (!a5)
+  if (!continuously)
   {
     v11 = *off_1E70EC920;
-    v12[0] = a4;
+    v12[0] = color;
     v6 = MEMORY[0x1E695DF20];
-    v7 = a4;
+    colorCopy = color;
     v8 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-    v9 = [(_UITextFormattingDeferredColorPickingDelegate *)self editResponder];
+    editResponder = [(_UITextFormattingDeferredColorPickingDelegate *)self editResponder];
 
-    if (v9)
+    if (editResponder)
     {
-      v10 = [(_UITextFormattingDeferredColorPickingDelegate *)self editResponder];
-      SendUpdatesToEditResponder(v8, v10);
+      editResponder2 = [(_UITextFormattingDeferredColorPickingDelegate *)self editResponder];
+      SendUpdatesToEditResponder(v8, editResponder2);
     }
   }
 }
 
-- (void)colorPickerViewControllerDidFinish:(id)a3
+- (void)colorPickerViewControllerDidFinish:(id)finish
 {
-  [a3 dismissViewControllerAnimated:1 completion:0];
+  [finish dismissViewControllerAnimated:1 completion:0];
 
   [(_UITextFormattingDeferredColorPickingDelegate *)self _removeAssociatedDelegate];
 }

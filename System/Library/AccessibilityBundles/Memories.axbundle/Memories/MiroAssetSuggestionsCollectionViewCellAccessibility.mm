@@ -1,5 +1,5 @@
 @interface MiroAssetSuggestionsCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityPhotoDescription;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation MiroAssetSuggestionsCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MiroAssetSuggestionsCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MiroAssetSuggestionsCollectionViewCell" hasInstanceMethod:@"configureWithAsset: selected:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MiroAssetSuggestionsCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MiroAssetSuggestionsCollectionViewCell" hasInstanceMethod:@"configureWithAsset: selected:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -30,18 +30,18 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(MiroAssetSuggestionsCollectionViewCellAccessibility *)self _axPHAsset];
-  v3 = [v2 accessibilityLabel];
+  _axPHAsset = [(MiroAssetSuggestionsCollectionViewCellAccessibility *)self _axPHAsset];
+  accessibilityLabel = [_axPHAsset accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)_accessibilityPhotoDescription
 {
-  v2 = [(MiroAssetSuggestionsCollectionViewCellAccessibility *)self _axPHAsset];
-  v3 = [v2 _accessibilityPhotoDescription];
+  _axPHAsset = [(MiroAssetSuggestionsCollectionViewCellAccessibility *)self _axPHAsset];
+  _accessibilityPhotoDescription = [_axPHAsset _accessibilityPhotoDescription];
 
-  return v3;
+  return _accessibilityPhotoDescription;
 }
 
 @end

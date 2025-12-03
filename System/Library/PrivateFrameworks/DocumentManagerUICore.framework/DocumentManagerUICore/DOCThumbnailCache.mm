@@ -12,9 +12,9 @@
   v2 = [(DOCThumbnailCache *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     cachedThumbnailNodes = v2->_cachedThumbnailNodes;
-    v2->_cachedThumbnailNodes = v3;
+    v2->_cachedThumbnailNodes = strongToWeakObjectsMapTable;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEA78]);
     recentlyUsedNodes = v2->_recentlyUsedNodes;
@@ -29,8 +29,8 @@
 
 - (void)clear
 {
-  v2 = [(DOCThumbnailCache *)self recentlyUsedNodes];
-  [v2 removeAllObjects];
+  recentlyUsedNodes = [(DOCThumbnailCache *)self recentlyUsedNodes];
+  [recentlyUsedNodes removeAllObjects];
 }
 
 @end

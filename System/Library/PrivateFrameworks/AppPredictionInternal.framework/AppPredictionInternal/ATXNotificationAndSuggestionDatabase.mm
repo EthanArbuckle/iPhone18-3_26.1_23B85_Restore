@@ -1,58 +1,58 @@
 @interface ATXNotificationAndSuggestionDatabase
 - (ATXNotificationAndSuggestionDatabase)init;
 - (ATXNotificationAndSuggestionDatastorePerfMetrics)notificationAndSuggestionDatastorePerfMetrics;
-- (BOOL)_anyColumnWithNameFromColumnNames:(id)a3 existsOnTable:(id)a4;
-- (BOOL)_hasColumnOnTable:(id)a3 named:(id)a4;
-- (BOOL)_hasIndexNamed:(id)a3;
-- (BOOL)_runMigrationSteps:(id)a3;
-- (BOOL)hasSuggestionBeenShownForEntityId:(id)a3 suggestionType:(int64_t)a4 scope:(int64_t)a5 sinceTimestamp:(double)a6;
+- (BOOL)_anyColumnWithNameFromColumnNames:(id)names existsOnTable:(id)table;
+- (BOOL)_hasColumnOnTable:(id)table named:(id)named;
+- (BOOL)_hasIndexNamed:(id)named;
+- (BOOL)_runMigrationSteps:(id)steps;
+- (BOOL)hasSuggestionBeenShownForEntityId:(id)id suggestionType:(int64_t)type scope:(int64_t)scope sinceTimestamp:(double)timestamp;
 - (BOOL)migrate;
 - (double)receiveTimeStampOfFirstNotification;
-- (id)_countNotificationsPerAppWithFilters:(id)a3 stmtBinder:(id)a4;
-- (id)_makeNotificationTelemetryQueryResultFromDatabaseResult:(id)a3 queryTimeInterval:(double)a4;
+- (id)_countNotificationsPerAppWithFilters:(id)filters stmtBinder:(id)binder;
+- (id)_makeNotificationTelemetryQueryResultFromDatabaseResult:(id)result queryTimeInterval:(double)interval;
 - (id)allBundleIdsOfNotificationsOnLockscreen;
-- (id)allNotificationsBetweenStartTimestamp:(id)a3 endTimestamp:(id)a4 limit:(unint64_t)a5;
-- (id)allNotificationsFromBundleId:(id)a3 sinceTimestamp:(double)a4;
-- (id)appSortedByNumOfNotificationsSinceTimestamp:(double)a3;
+- (id)allNotificationsBetweenStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp limit:(unint64_t)limit;
+- (id)allNotificationsFromBundleId:(id)id sinceTimestamp:(double)timestamp;
+- (id)appSortedByNumOfNotificationsSinceTimestamp:(double)timestamp;
 - (id)currentActiveSuggestions;
 - (id)deleteAllData;
-- (id)engagementStatusOfActiveAndProminentAndMessageNotificationsSinceTimestamp:(double)a3;
-- (id)engagementStatusOfActiveAndProminentNotificationsSinceTimestamp:(double)a3;
-- (id)engagementStatusOfActiveAndProminentNotificationsWithUrgency:(int64_t)a3 sinceTimestamp:(double)a4;
-- (id)feedbackHistoriesForKeys:(id)a3;
-- (id)getBookmarkDataFromName:(id)a3;
-- (id)getSmartPauseFeaturesForBundleIds:(id)a3 sinceTimestamp:(double)a4 positiveEngagementEnums:(id)a5;
-- (id)getTopOfNonProminentStackNotificationsWithLimit:(unint64_t)a3;
-- (id)getTopOfProminentStackNotificationsWithLimit:(unint64_t)a3;
-- (id)messageNotificationsPerAppFromStartTime:(double)a3 toEndTime:(double)a4;
-- (id)metricsForSuggestionsSinceCompletionTimestamp:(double)a3;
+- (id)engagementStatusOfActiveAndProminentAndMessageNotificationsSinceTimestamp:(double)timestamp;
+- (id)engagementStatusOfActiveAndProminentNotificationsSinceTimestamp:(double)timestamp;
+- (id)engagementStatusOfActiveAndProminentNotificationsWithUrgency:(int64_t)urgency sinceTimestamp:(double)timestamp;
+- (id)feedbackHistoriesForKeys:(id)keys;
+- (id)getBookmarkDataFromName:(id)name;
+- (id)getSmartPauseFeaturesForBundleIds:(id)ids sinceTimestamp:(double)timestamp positiveEngagementEnums:(id)enums;
+- (id)getTopOfNonProminentStackNotificationsWithLimit:(unint64_t)limit;
+- (id)getTopOfProminentStackNotificationsWithLimit:(unint64_t)limit;
+- (id)messageNotificationsPerAppFromStartTime:(double)time toEndTime:(double)endTime;
+- (id)metricsForSuggestionsSinceCompletionTimestamp:(double)timestamp;
 - (id)mostRecentActiveNotifications;
-- (id)notificationsReceivedPerBundleIdSinceDate:(id)a3;
-- (id)numProminentActiveNotificationsByGroupingColumn:(id)a3;
-- (id)pruneNotificationsBeforeTimestamp:(double)a3;
-- (id)pruneSuggestionsBeforeTimestamp:(double)a3;
-- (id)resolutionsForNotifications:(id)a3;
-- (id)suggestionEventTypeShownForEntityId:(id)a3 suggestionType:(int64_t)a4 scope:(int64_t)a5 sinceTimestamp:(double)a6;
-- (id)telemetryDataForNotificationWithBundleId:(id)a3 notificationId:(id)a4 recordTimestamp:(double)a5;
-- (id)telemetryDataForNotificationsFromTimestamp:(double)a3 endTimestamp:(double)a4;
-- (id)timeSensitiveNonmessageNotificationsPerAppFromStartTime:(double)a3 toEndTime:(double)a4;
-- (id)totalNotificationsPerAppFromStartTime:(double)a3 toEndTime:(double)a4;
+- (id)notificationsReceivedPerBundleIdSinceDate:(id)date;
+- (id)numProminentActiveNotificationsByGroupingColumn:(id)column;
+- (id)pruneNotificationsBeforeTimestamp:(double)timestamp;
+- (id)pruneSuggestionsBeforeTimestamp:(double)timestamp;
+- (id)resolutionsForNotifications:(id)notifications;
+- (id)suggestionEventTypeShownForEntityId:(id)id suggestionType:(int64_t)type scope:(int64_t)scope sinceTimestamp:(double)timestamp;
+- (id)telemetryDataForNotificationWithBundleId:(id)id notificationId:(id)notificationId recordTimestamp:(double)timestamp;
+- (id)telemetryDataForNotificationsFromTimestamp:(double)timestamp endTimestamp:(double)endTimestamp;
+- (id)timeSensitiveNonmessageNotificationsPerAppFromStartTime:(double)time toEndTime:(double)endTime;
+- (id)totalNotificationsPerAppFromStartTime:(double)time toEndTime:(double)endTime;
 - (id)vacuumDatabase;
-- (void)_pruneNotificationsBasedOnHardLimitsForBundleId:(id)a3 XPCActivity:(id)a4;
+- (void)_pruneNotificationsBasedOnHardLimitsForBundleId:(id)id XPCActivity:(id)activity;
 - (void)analyze;
-- (void)insertNotificationFromEvent:(id)a3 deliveryMethod:(int64_t)a4 modeIdentifier:(id)a5 deliveryReason:(id)a6;
-- (void)insertSuggestion:(id)a3;
-- (void)numberOfActiveNotificationsWithCompletionHandler:(id)a3;
-- (void)prepAndRunQuery:(id)a3 batchSize:(int64_t)a4 XPCActivity:(id)a5 onPrep:(id)a6 onRow:(id)a7 onError:(id)a8;
-- (void)pruneNotificationsBasedOnHardLimitsWithXPCActivity:(id)a3;
-- (void)pruneSuggestionsBasedOnHardLimitsWithXPCActivity:(id)a3;
+- (void)insertNotificationFromEvent:(id)event deliveryMethod:(int64_t)method modeIdentifier:(id)identifier deliveryReason:(id)reason;
+- (void)insertSuggestion:(id)suggestion;
+- (void)numberOfActiveNotificationsWithCompletionHandler:(id)handler;
+- (void)prepAndRunQuery:(id)query batchSize:(int64_t)size XPCActivity:(id)activity onPrep:(id)prep onRow:(id)row onError:(id)error;
+- (void)pruneNotificationsBasedOnHardLimitsWithXPCActivity:(id)activity;
+- (void)pruneSuggestionsBasedOnHardLimitsWithXPCActivity:(id)activity;
 - (void)setAllNotificationsToClearedExceptProminent;
 - (void)setAllNotificationsToModified;
-- (void)setBookmarkData:(id)a3 forName:(id)a4;
-- (void)updateNotificationFromEvent:(id)a3;
-- (void)updateNotificationUIForNotifications:(id)a3 nextUI:(unint64_t)a4;
-- (void)updateNotificationsWithNextAppLaunchDate:(id)a3 receivedDateAfter:(id)a4 forBundleId:(id)a5;
-- (void)updateSuggestionFromEvent:(id)a3;
+- (void)setBookmarkData:(id)data forName:(id)name;
+- (void)updateNotificationFromEvent:(id)event;
+- (void)updateNotificationUIForNotifications:(id)notifications nextUI:(unint64_t)i;
+- (void)updateNotificationsWithNextAppLaunchDate:(id)date receivedDateAfter:(id)after forBundleId:(id)id;
+- (void)updateSuggestionFromEvent:(id)event;
 @end
 
 @implementation ATXNotificationAndSuggestionDatabase
@@ -65,9 +65,9 @@
   v4 = [(ATXAbstractVersionedDatabase *)&v8 initWithDbPath:v3];
   if (v4)
   {
-    v5 = [MEMORY[0x277CEB710] sharedInstance];
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     mobileAssetConstants = v4->_mobileAssetConstants;
-    v4->_mobileAssetConstants = v5;
+    v4->_mobileAssetConstants = mEMORY[0x277CEB710];
   }
 
   return v4;
@@ -76,10 +76,10 @@
 - (BOOL)migrate
 {
   v47[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ATXAbstractVersionedDatabase *)self currentSchemaVersion];
-  if (v3 != [(ATXNotificationAndSuggestionDatabase *)self latestVersion])
+  currentSchemaVersion = [(ATXAbstractVersionedDatabase *)self currentSchemaVersion];
+  if (currentSchemaVersion != [(ATXNotificationAndSuggestionDatabase *)self latestVersion])
   {
-    switch(v3)
+    switch(currentSchemaVersion)
     {
       case 0:
         v47[0] = @"CREATE TABLE IF NOT EXISTS notifications( uuid TEXT PRIMARY KEY,   receiveTimestamp REAL NOT NULL,   deliveryMethod INTEGER NOT NULL,   urgency INTEGER NOT NULL,   bundleId TEXT,   threadId TEXT,   contactId TEXT,   isGroupMessage INTEGER NOT NULL,   isMessage INTEGER NOT NULL,   latestOutcome INTEGER,   latestOutcomeTimestamp REAL,   isProminent INTEGER NOT NULL,   isActive INTEGER NOT NULL) WITHOUT ROWID";
@@ -328,7 +328,7 @@ LABEL_31:
   return result;
 }
 
-- (BOOL)_runMigrationSteps:(id)a3
+- (BOOL)_runMigrationSteps:(id)steps
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0;
@@ -339,7 +339,7 @@ LABEL_31:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = a3;
+  obj = steps;
   v4 = [obj countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v4)
   {
@@ -396,26 +396,26 @@ uint64_t __59__ATXNotificationAndSuggestionDatabase__runMigrationSteps___block_i
   return *v5;
 }
 
-- (BOOL)_hasColumnOnTable:(id)a3 named:(id)a4
+- (BOOL)_hasColumnOnTable:(id)table named:(id)named
 {
-  v6 = a4;
-  v7 = a3;
+  namedCopy = named;
+  tableCopy = table;
   v8 = [(ATXAbstractVersionedDatabase *)self db];
-  v9 = [v8 hasColumnOnTable:v7 named:v6];
+  v9 = [v8 hasColumnOnTable:tableCopy named:namedCopy];
 
   return v9;
 }
 
-- (BOOL)_anyColumnWithNameFromColumnNames:(id)a3 existsOnTable:(id)a4
+- (BOOL)_anyColumnWithNameFromColumnNames:(id)names existsOnTable:(id)table
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  namesCopy = names;
+  tableCopy = table;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v6;
+  v8 = namesCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -432,7 +432,7 @@ uint64_t __59__ATXNotificationAndSuggestionDatabase__runMigrationSteps___block_i
 
         v13 = *(*(&v18 + 1) + 8 * i);
         v14 = [(ATXAbstractVersionedDatabase *)self db];
-        LOBYTE(v13) = [v14 hasColumnOnTable:v7 named:v13];
+        LOBYTE(v13) = [v14 hasColumnOnTable:tableCopy named:v13];
 
         if (v13)
         {
@@ -458,18 +458,18 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_hasIndexNamed:(id)a3
+- (BOOL)_hasIndexNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v5 = [(ATXAbstractVersionedDatabase *)self db];
-  v6 = [v5 hasIndexNamed:v4];
+  v6 = [v5 hasIndexNamed:namedCopy];
 
   return v6;
 }
 
-- (id)getBookmarkDataFromName:(id)a3
+- (id)getBookmarkDataFromName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -482,9 +482,9 @@ LABEL_11:
   v9[2] = __64__ATXNotificationAndSuggestionDatabase_getBookmarkDataFromName___block_invoke;
   v9[3] = &unk_2785987E0;
   v9[4] = self;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync_notxn_0(queue, v9);
   v7 = v13[5];
 
@@ -537,20 +537,20 @@ uint64_t __64__ATXNotificationAndSuggestionDatabase_getBookmarkDataFromName___bl
   return *v5;
 }
 
-- (void)setBookmarkData:(id)a3 forName:(id)a4
+- (void)setBookmarkData:(id)data forName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  nameCopy = name;
   queue = self->super._queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__ATXNotificationAndSuggestionDatabase_setBookmarkData_forName___block_invoke;
   v11[3] = &unk_278597828;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = nameCopy;
+  v13 = dataCopy;
+  v9 = dataCopy;
+  v10 = nameCopy;
   dispatch_sync_notxn_0(queue, v11);
 }
 
@@ -594,24 +594,24 @@ uint64_t __64__ATXNotificationAndSuggestionDatabase_setBookmarkData_forName___bl
   return *v5;
 }
 
-- (void)insertNotificationFromEvent:(id)a3 deliveryMethod:(int64_t)a4 modeIdentifier:(id)a5 deliveryReason:(id)a6
+- (void)insertNotificationFromEvent:(id)event deliveryMethod:(int64_t)method modeIdentifier:(id)identifier deliveryReason:(id)reason
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  eventCopy = event;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   queue = self->super._queue;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __113__ATXNotificationAndSuggestionDatabase_insertNotificationFromEvent_deliveryMethod_modeIdentifier_deliveryReason___block_invoke;
   v17[3] = &unk_278599D90;
   v17[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = eventCopy;
+  v20 = reasonCopy;
+  methodCopy = method;
+  v19 = identifierCopy;
+  v14 = reasonCopy;
+  v15 = identifierCopy;
+  v16 = eventCopy;
   dispatch_sync_notxn_0(queue, v17);
 }
 
@@ -767,17 +767,17 @@ uint64_t __113__ATXNotificationAndSuggestionDatabase_insertNotificationFromEvent
   return *v5;
 }
 
-- (void)updateNotificationFromEvent:(id)a3
+- (void)updateNotificationFromEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 eventType] == 5)
+  eventCopy = event;
+  if ([eventCopy eventType] == 5)
   {
-    v5 = [v4 notification];
-    v6 = [v5 uuid];
+    notification = [eventCopy notification];
+    uuid = [notification uuid];
 
-    v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
+    v7 = [MEMORY[0x277CBEB98] setWithObject:uuid];
     v8 = [(ATXNotificationAndSuggestionDatabase *)self resolutionsForNotifications:v7];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v9 = [v8 objectForKeyedSubscript:uuid];
 
     if (v9)
     {
@@ -795,9 +795,9 @@ uint64_t __113__ATXNotificationAndSuggestionDatabase_insertNotificationFromEvent
     v10 = 0;
   }
 
-  v11 = [v4 eventType];
+  eventType = [eventCopy eventType];
   queue = self->super._queue;
-  if (v11 == 19)
+  if (eventType == 19)
   {
     v13 = v17;
     v17[0] = MEMORY[0x277D85DD0];
@@ -818,8 +818,8 @@ uint64_t __113__ATXNotificationAndSuggestionDatabase_insertNotificationFromEvent
     v16 = v10;
   }
 
-  v13[5] = v4;
-  v14 = v4;
+  v13[5] = eventCopy;
+  v14 = eventCopy;
   dispatch_sync_notxn_0(queue, v13);
 }
 
@@ -918,23 +918,23 @@ uint64_t __68__ATXNotificationAndSuggestionDatabase_updateNotificationFromEvent_
   return *v5;
 }
 
-- (void)updateNotificationsWithNextAppLaunchDate:(id)a3 receivedDateAfter:(id)a4 forBundleId:(id)a5
+- (void)updateNotificationsWithNextAppLaunchDate:(id)date receivedDateAfter:(id)after forBundleId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  afterCopy = after;
+  idCopy = id;
   queue = self->super._queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__ATXNotificationAndSuggestionDatabase_updateNotificationsWithNextAppLaunchDate_receivedDateAfter_forBundleId___block_invoke;
   v15[3] = &unk_2785978C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dateCopy;
+  v17 = afterCopy;
+  v18 = idCopy;
+  v12 = idCopy;
+  v13 = afterCopy;
+  v14 = dateCopy;
   dispatch_sync_notxn_0(queue, v15);
 }
 
@@ -975,18 +975,18 @@ uint64_t __111__ATXNotificationAndSuggestionDatabase_updateNotificationsWithNext
   return *v4;
 }
 
-- (void)updateNotificationUIForNotifications:(id)a3 nextUI:(unint64_t)a4
+- (void)updateNotificationUIForNotifications:(id)notifications nextUI:(unint64_t)i
 {
-  v6 = a3;
+  notificationsCopy = notifications;
   queue = self->super._queue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__ATXNotificationAndSuggestionDatabase_updateNotificationUIForNotifications_nextUI___block_invoke;
   v9[3] = &unk_278599E28;
-  v10 = v6;
-  v11 = a4;
+  v10 = notificationsCopy;
+  iCopy = i;
   v9[4] = self;
-  v8 = v6;
+  v8 = notificationsCopy;
   dispatch_sync_notxn_0(queue, v9);
 }
 
@@ -1034,17 +1034,17 @@ uint64_t __84__ATXNotificationAndSuggestionDatabase_updateNotificationUIForNotif
   return *v4;
 }
 
-- (void)insertSuggestion:(id)a3
+- (void)insertSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   queue = self->super._queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ATXNotificationAndSuggestionDatabase_insertSuggestion___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = suggestionCopy;
+  v6 = suggestionCopy;
   dispatch_sync_notxn_0(queue, v7);
 }
 
@@ -1112,17 +1112,17 @@ uint64_t __57__ATXNotificationAndSuggestionDatabase_insertSuggestion___block_inv
   return *v5;
 }
 
-- (void)updateSuggestionFromEvent:(id)a3
+- (void)updateSuggestionFromEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->super._queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__ATXNotificationAndSuggestionDatabase_updateSuggestionFromEvent___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_sync_notxn_0(queue, v7);
 }
 
@@ -1181,9 +1181,9 @@ uint64_t __66__ATXNotificationAndSuggestionDatabase_updateSuggestionFromEvent___
   return *v5;
 }
 
-- (BOOL)hasSuggestionBeenShownForEntityId:(id)a3 suggestionType:(int64_t)a4 scope:(int64_t)a5 sinceTimestamp:(double)a6
+- (BOOL)hasSuggestionBeenShownForEntityId:(id)id suggestionType:(int64_t)type scope:(int64_t)scope sinceTimestamp:(double)timestamp
 {
-  v11 = a3;
+  idCopy = id;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1193,19 +1193,19 @@ uint64_t __66__ATXNotificationAndSuggestionDatabase_updateSuggestionFromEvent___
   v15[1] = 3221225472;
   v15[2] = __110__ATXNotificationAndSuggestionDatabase_hasSuggestionBeenShownForEntityId_suggestionType_scope_sinceTimestamp___block_invoke;
   v15[3] = &unk_278599EA0;
-  v18 = a4;
-  v19 = a5;
+  typeCopy = type;
+  scopeCopy = scope;
   v15[4] = self;
-  v16 = v11;
-  v20 = a6;
+  v16 = idCopy;
+  timestampCopy = timestamp;
   v17 = &v22;
   v21 = a2;
-  v13 = v11;
+  v13 = idCopy;
   dispatch_sync_notxn_0(queue, v15);
-  LOBYTE(a4) = *(v23 + 24);
+  LOBYTE(type) = *(v23 + 24);
 
   _Block_object_dispose(&v22, 8);
-  return a4;
+  return type;
 }
 
 void __110__ATXNotificationAndSuggestionDatabase_hasSuggestionBeenShownForEntityId_suggestionType_scope_sinceTimestamp___block_invoke(uint64_t a1)
@@ -1257,9 +1257,9 @@ uint64_t __110__ATXNotificationAndSuggestionDatabase_hasSuggestionBeenShownForEn
   return *v4;
 }
 
-- (id)suggestionEventTypeShownForEntityId:(id)a3 suggestionType:(int64_t)a4 scope:(int64_t)a5 sinceTimestamp:(double)a6
+- (id)suggestionEventTypeShownForEntityId:(id)id suggestionType:(int64_t)type scope:(int64_t)scope sinceTimestamp:(double)timestamp
 {
-  v11 = a3;
+  idCopy = id;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1271,14 +1271,14 @@ uint64_t __110__ATXNotificationAndSuggestionDatabase_hasSuggestionBeenShownForEn
   v16[1] = 3221225472;
   v16[2] = __112__ATXNotificationAndSuggestionDatabase_suggestionEventTypeShownForEntityId_suggestionType_scope_sinceTimestamp___block_invoke;
   v16[3] = &unk_278599EA0;
-  v19 = a4;
-  v20 = a5;
+  typeCopy = type;
+  scopeCopy = scope;
   v16[4] = self;
-  v17 = v11;
-  v21 = a6;
+  v17 = idCopy;
+  timestampCopy = timestamp;
   v18 = &v23;
   v22 = a2;
-  v13 = v11;
+  v13 = idCopy;
   dispatch_sync_notxn_0(queue, v16);
   v14 = v24[5];
 
@@ -1351,7 +1351,7 @@ uint64_t __112__ATXNotificationAndSuggestionDatabase_suggestionEventTypeShownFor
   return *v4;
 }
 
-- (id)engagementStatusOfActiveAndProminentNotificationsWithUrgency:(int64_t)a3 sinceTimestamp:(double)a4
+- (id)engagementStatusOfActiveAndProminentNotificationsWithUrgency:(int64_t)urgency sinceTimestamp:(double)timestamp
 {
   v25[0] = 0;
   v25[1] = v25;
@@ -1389,14 +1389,14 @@ uint64_t __112__ATXNotificationAndSuggestionDatabase_suggestionEventTypeShownFor
   v12[1] = 3221225472;
   v12[2] = __116__ATXNotificationAndSuggestionDatabase_engagementStatusOfActiveAndProminentNotificationsWithUrgency_sinceTimestamp___block_invoke;
   v12[3] = &unk_278599F30;
-  *&v12[10] = a4;
+  *&v12[10] = timestamp;
   v12[4] = self;
   v12[5] = v25;
   v12[6] = v23;
   v12[7] = v21;
   v12[8] = v19;
   v12[9] = &v13;
-  v12[11] = a3;
+  v12[11] = urgency;
   v12[12] = a2;
   dispatch_sync_notxn_0(queue, v12);
   v10 = v14[5];
@@ -1497,7 +1497,7 @@ uint64_t __116__ATXNotificationAndSuggestionDatabase_engagementStatusOfActiveAnd
   return *v4;
 }
 
-- (id)engagementStatusOfActiveAndProminentAndMessageNotificationsSinceTimestamp:(double)a3
+- (id)engagementStatusOfActiveAndProminentAndMessageNotificationsSinceTimestamp:(double)timestamp
 {
   v25[0] = 0;
   v25[1] = v25;
@@ -1541,7 +1541,7 @@ uint64_t __116__ATXNotificationAndSuggestionDatabase_engagementStatusOfActiveAnd
   v10[1] = 3221225472;
   v10[2] = __114__ATXNotificationAndSuggestionDatabase_engagementStatusOfActiveAndProminentAndMessageNotificationsSinceTimestamp___block_invoke;
   v10[3] = &unk_278599FA0;
-  *&v10[11] = a3;
+  *&v10[11] = timestamp;
   v10[4] = self;
   v10[5] = v25;
   v10[6] = v23;
@@ -1658,7 +1658,7 @@ uint64_t __114__ATXNotificationAndSuggestionDatabase_engagementStatusOfActiveAnd
   return *v4;
 }
 
-- (id)engagementStatusOfActiveAndProminentNotificationsSinceTimestamp:(double)a3
+- (id)engagementStatusOfActiveAndProminentNotificationsSinceTimestamp:(double)timestamp
 {
   v25[0] = 0;
   v25[1] = v25;
@@ -1702,7 +1702,7 @@ uint64_t __114__ATXNotificationAndSuggestionDatabase_engagementStatusOfActiveAnd
   v10[1] = 3221225472;
   v10[2] = __104__ATXNotificationAndSuggestionDatabase_engagementStatusOfActiveAndProminentNotificationsSinceTimestamp___block_invoke;
   v10[3] = &unk_278599FA0;
-  *&v10[11] = a3;
+  *&v10[11] = timestamp;
   v10[4] = self;
   v10[5] = v25;
   v10[6] = v23;
@@ -1933,11 +1933,11 @@ uint64_t __69__ATXNotificationAndSuggestionDatabase_mostRecentActiveNotification
   return *v4;
 }
 
-- (id)numProminentActiveNotificationsByGroupingColumn:(id)a3
+- (id)numProminentActiveNotificationsByGroupingColumn:(id)column
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithFormat:@"    SELECT %@ as groupVal, uuid, MAX(receiveTimestamp), COUNT(*) as groupCount     FROM notifications     WHERE isActive=1 AND isProminent=1 AND groupVal IS NOT NULL     GROUP BY groupVal    LIMIT 1000    ", v6];
+  columnCopy = column;
+  columnCopy = [[v5 alloc] initWithFormat:@"    SELECT %@ as groupVal, uuid, MAX(receiveTimestamp), COUNT(*) as groupCount     FROM notifications     WHERE isActive=1 AND isProminent=1 AND groupVal IS NOT NULL     GROUP BY groupVal    LIMIT 1000    ", columnCopy];
 
   v8 = objc_opt_new();
   queue = self->super._queue;
@@ -1946,11 +1946,11 @@ uint64_t __69__ATXNotificationAndSuggestionDatabase_mostRecentActiveNotification
   v15[2] = __88__ATXNotificationAndSuggestionDatabase_numProminentActiveNotificationsByGroupingColumn___block_invoke;
   v15[3] = &unk_278599FF0;
   v15[4] = self;
-  v16 = v7;
+  v16 = columnCopy;
   v10 = v8;
   v17 = v10;
   v18 = a2;
-  v11 = v7;
+  v11 = columnCopy;
   dispatch_sync_notxn_0(queue, v15);
   v12 = v17;
   v13 = v10;
@@ -2006,18 +2006,18 @@ uint64_t __88__ATXNotificationAndSuggestionDatabase_numProminentActiveNotificati
   return *v4;
 }
 
-- (void)numberOfActiveNotificationsWithCompletionHandler:(id)a3
+- (void)numberOfActiveNotificationsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   queue = self->super._queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__ATXNotificationAndSuggestionDatabase_numberOfActiveNotificationsWithCompletionHandler___block_invoke;
   block[3] = &unk_278598318;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -2261,7 +2261,7 @@ uint64_t __64__ATXNotificationAndSuggestionDatabase_currentActiveSuggestions__bl
   return *v4;
 }
 
-- (id)getTopOfProminentStackNotificationsWithLimit:(unint64_t)a3
+- (id)getTopOfProminentStackNotificationsWithLimit:(unint64_t)limit
 {
   v6 = objc_opt_new();
   queue = self->super._queue;
@@ -2270,7 +2270,7 @@ uint64_t __64__ATXNotificationAndSuggestionDatabase_currentActiveSuggestions__bl
   v12[2] = __85__ATXNotificationAndSuggestionDatabase_getTopOfProminentStackNotificationsWithLimit___block_invoke;
   v12[3] = &unk_27859A060;
   v12[4] = self;
-  v14 = a3;
+  limitCopy = limit;
   v8 = v6;
   v13 = v8;
   v15 = a2;
@@ -2351,7 +2351,7 @@ uint64_t __85__ATXNotificationAndSuggestionDatabase_getTopOfProminentStackNotifi
   return *v4;
 }
 
-- (id)getTopOfNonProminentStackNotificationsWithLimit:(unint64_t)a3
+- (id)getTopOfNonProminentStackNotificationsWithLimit:(unint64_t)limit
 {
   v6 = objc_opt_new();
   queue = self->super._queue;
@@ -2360,7 +2360,7 @@ uint64_t __85__ATXNotificationAndSuggestionDatabase_getTopOfProminentStackNotifi
   v12[2] = __88__ATXNotificationAndSuggestionDatabase_getTopOfNonProminentStackNotificationsWithLimit___block_invoke;
   v12[3] = &unk_27859A060;
   v12[4] = self;
-  v14 = a3;
+  limitCopy = limit;
   v8 = v6;
   v13 = v8;
   v15 = a2;
@@ -2441,15 +2441,15 @@ uint64_t __88__ATXNotificationAndSuggestionDatabase_getTopOfNonProminentStackNot
   return *v4;
 }
 
-- (id)getSmartPauseFeaturesForBundleIds:(id)a3 sinceTimestamp:(double)a4 positiveEngagementEnums:(id)a5
+- (id)getSmartPauseFeaturesForBundleIds:(id)ids sinceTimestamp:(double)timestamp positiveEngagementEnums:(id)enums
 {
-  v9 = a5;
-  v10 = a3;
+  enumsCopy = enums;
+  idsCopy = ids;
   v11 = objc_opt_new();
   v12 = MEMORY[0x277CBEBF8];
-  if (v9)
+  if (enumsCopy)
   {
-    v13 = v9;
+    v13 = enumsCopy;
   }
 
   else
@@ -2459,9 +2459,9 @@ uint64_t __88__ATXNotificationAndSuggestionDatabase_getTopOfNonProminentStackNot
 
   v14 = v13;
 
-  if (v10)
+  if (idsCopy)
   {
-    v15 = v10;
+    v15 = idsCopy;
   }
 
   else
@@ -2487,7 +2487,7 @@ uint64_t __88__ATXNotificationAndSuggestionDatabase_getTopOfNonProminentStackNot
   v36 = v20;
   v37 = v22;
   v38 = v24 + -604800.0;
-  v39 = a4;
+  timestampCopy = timestamp;
   v31[4] = self;
   v32 = v14;
   v33 = v16;
@@ -2579,10 +2579,10 @@ uint64_t __113__ATXNotificationAndSuggestionDatabase_getSmartPauseFeaturesForBun
   return *v4;
 }
 
-- (id)allNotificationsBetweenStartTimestamp:(id)a3 endTimestamp:(id)a4 limit:(unint64_t)a5
+- (id)allNotificationsBetweenStartTimestamp:(id)timestamp endTimestamp:(id)endTimestamp limit:(unint64_t)limit
 {
-  v9 = a3;
-  v10 = a4;
+  timestampCopy = timestamp;
+  endTimestampCopy = endTimestamp;
   v11 = objc_opt_new();
   queue = self->super._queue;
   v19[0] = MEMORY[0x277D85DD0];
@@ -2590,14 +2590,14 @@ uint64_t __113__ATXNotificationAndSuggestionDatabase_getSmartPauseFeaturesForBun
   v19[2] = __97__ATXNotificationAndSuggestionDatabase_allNotificationsBetweenStartTimestamp_endTimestamp_limit___block_invoke;
   v19[3] = &unk_27859A100;
   v19[4] = self;
-  v20 = v9;
-  v21 = v10;
-  v23 = a5;
+  v20 = timestampCopy;
+  v21 = endTimestampCopy;
+  limitCopy = limit;
   v13 = v11;
   v22 = v13;
   v24 = a2;
-  v14 = v10;
-  v15 = v9;
+  v14 = endTimestampCopy;
+  v15 = timestampCopy;
   dispatch_sync_notxn_0(queue, v19);
   v16 = v22;
   v17 = v13;
@@ -2696,9 +2696,9 @@ uint64_t __97__ATXNotificationAndSuggestionDatabase_allNotificationsBetweenStart
   return *v4;
 }
 
-- (id)notificationsReceivedPerBundleIdSinceDate:(id)a3
+- (id)notificationsReceivedPerBundleIdSinceDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = objc_opt_new();
   queue = self->super._queue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -2706,11 +2706,11 @@ uint64_t __97__ATXNotificationAndSuggestionDatabase_allNotificationsBetweenStart
   v13[2] = __82__ATXNotificationAndSuggestionDatabase_notificationsReceivedPerBundleIdSinceDate___block_invoke;
   v13[3] = &unk_278599FF0;
   v13[4] = self;
-  v14 = v5;
+  v14 = dateCopy;
   v8 = v6;
   v15 = v8;
   v16 = a2;
-  v9 = v5;
+  v9 = dateCopy;
   dispatch_sync_notxn_0(queue, v13);
   v10 = v15;
   v11 = v8;
@@ -2774,10 +2774,10 @@ uint64_t __82__ATXNotificationAndSuggestionDatabase_notificationsReceivedPerBund
   return *v4;
 }
 
-- (id)resolutionsForNotifications:(id)a3
+- (id)resolutionsForNotifications:(id)notifications
 {
-  v5 = [a3 allObjects];
-  v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_225];
+  allObjects = [notifications allObjects];
+  v6 = [allObjects _pas_mappedArrayWithTransform:&__block_literal_global_225];
   v7 = v6;
   v8 = MEMORY[0x277CBEBF8];
   if (v6)
@@ -2868,10 +2868,10 @@ uint64_t __68__ATXNotificationAndSuggestionDatabase_resolutionsForNotifications_
   return *v4;
 }
 
-- (id)_countNotificationsPerAppWithFilters:(id)a3 stmtBinder:(id)a4
+- (id)_countNotificationsPerAppWithFilters:(id)filters stmtBinder:(id)binder
 {
-  v7 = a4;
-  v8 = [a3 componentsJoinedByString:@" AND "];
+  binderCopy = binder;
+  v8 = [filters componentsJoinedByString:@" AND "];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT bundleId, COUNT(*) AS numNotifications FROM notifications WHERE %@ GROUP BY bundleId LIMIT :numRowsLimit", v8];
   v10 = objc_opt_new();
   queue = self->super._queue;
@@ -2881,11 +2881,11 @@ uint64_t __68__ATXNotificationAndSuggestionDatabase_resolutionsForNotifications_
   v18[3] = &unk_27859A150;
   v18[4] = self;
   v19 = v9;
-  v21 = v7;
+  v21 = binderCopy;
   v12 = v10;
   v20 = v12;
   v22 = a2;
-  v13 = v7;
+  v13 = binderCopy;
   v14 = v9;
   dispatch_sync_notxn_0(queue, v18);
   v15 = v20;
@@ -2950,14 +2950,14 @@ uint64_t __88__ATXNotificationAndSuggestionDatabase__countNotificationsPerAppWit
   return *v4;
 }
 
-- (id)messageNotificationsPerAppFromStartTime:(double)a3 toEndTime:(double)a4
+- (id)messageNotificationsPerAppFromStartTime:(double)time toEndTime:(double)endTime
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__ATXNotificationAndSuggestionDatabase_messageNotificationsPerAppFromStartTime_toEndTime___block_invoke;
   v8[3] = &__block_descriptor_48_e29_v16__0___PASSqliteStatement_8l;
-  *&v8[4] = a3;
-  *&v8[5] = a4;
+  *&v8[4] = time;
+  *&v8[5] = endTime;
   v5 = _Block_copy(v8);
   v6 = [(ATXNotificationAndSuggestionDatabase *)self _countNotificationsPerAppWithFilters:&unk_283A57DD0 stmtBinder:v5];
 
@@ -2972,14 +2972,14 @@ void __90__ATXNotificationAndSuggestionDatabase_messageNotificationsPerAppFromSt
   [v4 bindNamedParam:":endTime" toDouble:*(a1 + 40)];
 }
 
-- (id)timeSensitiveNonmessageNotificationsPerAppFromStartTime:(double)a3 toEndTime:(double)a4
+- (id)timeSensitiveNonmessageNotificationsPerAppFromStartTime:(double)time toEndTime:(double)endTime
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __106__ATXNotificationAndSuggestionDatabase_timeSensitiveNonmessageNotificationsPerAppFromStartTime_toEndTime___block_invoke;
   v8[3] = &__block_descriptor_48_e29_v16__0___PASSqliteStatement_8l;
-  *&v8[4] = a3;
-  *&v8[5] = a4;
+  *&v8[4] = time;
+  *&v8[5] = endTime;
   v5 = _Block_copy(v8);
   v6 = [(ATXNotificationAndSuggestionDatabase *)self _countNotificationsPerAppWithFilters:&unk_283A57DE8 stmtBinder:v5];
 
@@ -2995,14 +2995,14 @@ void __106__ATXNotificationAndSuggestionDatabase_timeSensitiveNonmessageNotifica
   [v4 bindNamedParam:":timeSensitiveUrgency" toInt64:1];
 }
 
-- (id)totalNotificationsPerAppFromStartTime:(double)a3 toEndTime:(double)a4
+- (id)totalNotificationsPerAppFromStartTime:(double)time toEndTime:(double)endTime
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__ATXNotificationAndSuggestionDatabase_totalNotificationsPerAppFromStartTime_toEndTime___block_invoke;
   v8[3] = &__block_descriptor_48_e29_v16__0___PASSqliteStatement_8l;
-  *&v8[4] = a3;
-  *&v8[5] = a4;
+  *&v8[4] = time;
+  *&v8[5] = endTime;
   v5 = _Block_copy(v8);
   v6 = [(ATXNotificationAndSuggestionDatabase *)self _countNotificationsPerAppWithFilters:&unk_283A57E00 stmtBinder:v5];
 
@@ -3017,7 +3017,7 @@ void __88__ATXNotificationAndSuggestionDatabase_totalNotificationsPerAppFromStar
   [v4 bindNamedParam:":endTime" toDouble:*(a1 + 40)];
 }
 
-- (id)appSortedByNumOfNotificationsSinceTimestamp:(double)a3
+- (id)appSortedByNumOfNotificationsSinceTimestamp:(double)timestamp
 {
   v6 = objc_opt_new();
   queue = self->super._queue;
@@ -3026,7 +3026,7 @@ void __88__ATXNotificationAndSuggestionDatabase_totalNotificationsPerAppFromStar
   v12[2] = __84__ATXNotificationAndSuggestionDatabase_appSortedByNumOfNotificationsSinceTimestamp___block_invoke;
   v12[3] = &unk_27859A060;
   v12[4] = self;
-  v14 = a3;
+  timestampCopy = timestamp;
   v8 = v6;
   v13 = v8;
   v15 = a2;
@@ -3150,21 +3150,21 @@ uint64_t __75__ATXNotificationAndSuggestionDatabase_receiveTimeStampOfFirstNotif
   return *v4;
 }
 
-- (id)allNotificationsFromBundleId:(id)a3 sinceTimestamp:(double)a4
+- (id)allNotificationsFromBundleId:(id)id sinceTimestamp:(double)timestamp
 {
-  v6 = a3;
+  idCopy = id;
   v7 = objc_opt_new();
   queue = self->super._queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__ATXNotificationAndSuggestionDatabase_allNotificationsFromBundleId_sinceTimestamp___block_invoke;
   v14[3] = &unk_278599FF0;
-  v17 = a4;
+  timestampCopy = timestamp;
   v14[4] = self;
-  v15 = v6;
+  v15 = idCopy;
   v9 = v7;
   v16 = v9;
-  v10 = v6;
+  v10 = idCopy;
   dispatch_sync_notxn_0(queue, v14);
   v11 = v16;
   v12 = v9;
@@ -3421,7 +3421,7 @@ uint64_t __53__ATXNotificationAndSuggestionDatabase_deleteAllData__block_invoke_
   return *v8;
 }
 
-- (id)pruneNotificationsBeforeTimestamp:(double)a3
+- (id)pruneNotificationsBeforeTimestamp:(double)timestamp
 {
   v7 = 0;
   v8 = &v7;
@@ -3434,7 +3434,7 @@ uint64_t __53__ATXNotificationAndSuggestionDatabase_deleteAllData__block_invoke_
   v6[1] = 3221225472;
   v6[2] = __74__ATXNotificationAndSuggestionDatabase_pruneNotificationsBeforeTimestamp___block_invoke;
   v6[3] = &unk_27859A178;
-  *&v6[6] = a3;
+  *&v6[6] = timestamp;
   v6[4] = self;
   v6[5] = &v7;
   v6[7] = a2;
@@ -3493,7 +3493,7 @@ uint64_t __74__ATXNotificationAndSuggestionDatabase_pruneNotificationsBeforeTime
   return *v8;
 }
 
-- (id)pruneSuggestionsBeforeTimestamp:(double)a3
+- (id)pruneSuggestionsBeforeTimestamp:(double)timestamp
 {
   v7 = 0;
   v8 = &v7;
@@ -3506,7 +3506,7 @@ uint64_t __74__ATXNotificationAndSuggestionDatabase_pruneNotificationsBeforeTime
   v6[1] = 3221225472;
   v6[2] = __72__ATXNotificationAndSuggestionDatabase_pruneSuggestionsBeforeTimestamp___block_invoke;
   v6[3] = &unk_27859A178;
-  *&v6[6] = a3;
+  *&v6[6] = timestamp;
   v6[4] = self;
   v6[5] = &v7;
   v6[7] = a2;
@@ -3553,17 +3553,17 @@ uint64_t __72__ATXNotificationAndSuggestionDatabase_pruneSuggestionsBeforeTimest
   return *v8;
 }
 
-- (void)pruneNotificationsBasedOnHardLimitsWithXPCActivity:(id)a3
+- (void)pruneNotificationsBasedOnHardLimitsWithXPCActivity:(id)activity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   queue = self->super._queue;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __91__ATXNotificationAndSuggestionDatabase_pruneNotificationsBasedOnHardLimitsWithXPCActivity___block_invoke;
   v12 = &unk_278596C10;
-  v13 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = activityCopy;
   v14 = v6;
   dispatch_sync_notxn_0(queue, &v9);
   if ([v6 didDefer])
@@ -3777,18 +3777,18 @@ uint64_t __91__ATXNotificationAndSuggestionDatabase_pruneNotificationsBasedOnHar
   return *v4;
 }
 
-- (void)prepAndRunQuery:(id)a3 batchSize:(int64_t)a4 XPCActivity:(id)a5 onPrep:(id)a6 onRow:(id)a7 onError:(id)a8
+- (void)prepAndRunQuery:(id)query batchSize:(int64_t)size XPCActivity:(id)activity onPrep:(id)prep onRow:(id)row onError:(id)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v35 = a5;
-  v12 = a6;
-  v13 = a7;
-  v39 = a8;
+  queryCopy = query;
+  activityCopy = activity;
+  prepCopy = prep;
+  rowCopy = row;
+  errorCopy = error;
   v14 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXNotificationAndSuggestionDatabase *)a4 prepAndRunQuery:v14 batchSize:v15 XPCActivity:v16 onPrep:v17 onRow:v18 onError:v19, v20];
+    [(ATXNotificationAndSuggestionDatabase *)size prepAndRunQuery:v14 batchSize:v15 XPCActivity:v16 onPrep:v17 onRow:v18 onError:v19, v20];
   }
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
@@ -3806,17 +3806,17 @@ uint64_t __91__ATXNotificationAndSuggestionDatabase_pruneNotificationsBasedOnHar
     v43[1] = 3221225472;
     v43[2] = __99__ATXNotificationAndSuggestionDatabase_prepAndRunQuery_batchSize_XPCActivity_onPrep_onRow_onError___block_invoke;
     v43[3] = &unk_27859A1C8;
-    v26 = v12;
+    v26 = prepCopy;
     v44 = v26;
-    v45 = a4;
+    sizeCopy = size;
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __99__ATXNotificationAndSuggestionDatabase_prepAndRunQuery_batchSize_XPCActivity_onPrep_onRow_onError___block_invoke_2;
     v40[3] = &unk_27859A1F0;
-    v27 = v13;
+    v27 = rowCopy;
     v41 = v27;
     v42 = v50;
-    [v25 prepAndRunQuery:v38 onPrep:v43 onRow:v40 onError:v39];
+    [v25 prepAndRunQuery:queryCopy onPrep:v43 onRow:v40 onError:errorCopy];
 
     if (!*(*&v50[8] + 24))
     {
@@ -3841,7 +3841,7 @@ uint64_t __91__ATXNotificationAndSuggestionDatabase_pruneNotificationsBasedOnHar
     }
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    if (v29 - v22 > 5.0 && [v35 didDefer])
+    if (v29 - v22 > 5.0 && [activityCopy didDefer])
     {
       v31 = __atxlog_handle_notification_management();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -3870,7 +3870,7 @@ LABEL_18:
     *v50 = 136315394;
     *&v50[4] = "[ATXNotificationAndSuggestionDatabase prepAndRunQuery:batchSize:XPCActivity:onPrep:onRow:onError:]";
     *&v50[12] = 2048;
-    *&v50[14] = 1000 * a4;
+    *&v50[14] = 1000 * size;
     _os_log_impl(&dword_2263AA000, v32, OS_LOG_TYPE_DEFAULT, "%s: Reached maximum number of rows to delete: %ld", v50, 0x16u);
   }
 
@@ -3904,30 +3904,30 @@ uint64_t __99__ATXNotificationAndSuggestionDatabase_prepAndRunQuery_batchSize_XP
   return *MEMORY[0x277D42690];
 }
 
-- (void)_pruneNotificationsBasedOnHardLimitsForBundleId:(id)a3 XPCActivity:(id)a4
+- (void)_pruneNotificationsBasedOnHardLimitsForBundleId:(id)id XPCActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  activityCopy = activity;
   v8 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [ATXNotificationAndSuggestionDatabase _pruneNotificationsBasedOnHardLimitsForBundleId:XPCActivity:];
   }
 
-  v9 = [(ATXNotificationManagementMAConstants *)self->_mobileAssetConstants ATXNotificationAndSuggestionDatabase_pruningBatchSize];
+  aTXNotificationAndSuggestionDatabase_pruningBatchSize = [(ATXNotificationManagementMAConstants *)self->_mobileAssetConstants ATXNotificationAndSuggestionDatabase_pruningBatchSize];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __100__ATXNotificationAndSuggestionDatabase__pruneNotificationsBasedOnHardLimitsForBundleId_XPCActivity___block_invoke;
   v14[3] = &unk_278598718;
-  v15 = v6;
-  v16 = self;
+  v15 = idCopy;
+  selfCopy = self;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __100__ATXNotificationAndSuggestionDatabase__pruneNotificationsBasedOnHardLimitsForBundleId_XPCActivity___block_invoke_2;
   v12[3] = &unk_2785987B8;
   v10 = v15;
   v13 = v10;
-  [(ATXNotificationAndSuggestionDatabase *)self prepAndRunQuery:@"DELETE FROM notifications WHERE bundleId = :bundleId RETURNING 1 ORDER BY receiveTimestamp DESC LIMIT :batchSize OFFSET :maxNumberOfNotificationsPerApp " batchSize:v9 XPCActivity:v7 onPrep:v14 onRow:0 onError:v12];
+  [(ATXNotificationAndSuggestionDatabase *)self prepAndRunQuery:@"DELETE FROM notifications WHERE bundleId = :bundleId RETURNING 1 ORDER BY receiveTimestamp DESC LIMIT :batchSize OFFSET :maxNumberOfNotificationsPerApp " batchSize:aTXNotificationAndSuggestionDatabase_pruningBatchSize XPCActivity:activityCopy onPrep:v14 onRow:0 onError:v12];
 
   v11 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -3957,17 +3957,17 @@ uint64_t __100__ATXNotificationAndSuggestionDatabase__pruneNotificationsBasedOnH
   return *v5;
 }
 
-- (void)pruneSuggestionsBasedOnHardLimitsWithXPCActivity:(id)a3
+- (void)pruneSuggestionsBasedOnHardLimitsWithXPCActivity:(id)activity
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   queue = self->super._queue;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __89__ATXNotificationAndSuggestionDatabase_pruneSuggestionsBasedOnHardLimitsWithXPCActivity___block_invoke;
   v12 = &unk_278596C10;
-  v13 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = activityCopy;
   v14 = v6;
   dispatch_sync_notxn_0(queue, &v9);
   if ([v6 didDefer])
@@ -4231,7 +4231,7 @@ uint64_t __54__ATXNotificationAndSuggestionDatabase_vacuumDatabase__block_invoke
   return *v8;
 }
 
-- (id)metricsForSuggestionsSinceCompletionTimestamp:(double)a3
+- (id)metricsForSuggestionsSinceCompletionTimestamp:(double)timestamp
 {
   v6 = objc_opt_new();
   queue = self->super._queue;
@@ -4240,7 +4240,7 @@ uint64_t __54__ATXNotificationAndSuggestionDatabase_vacuumDatabase__block_invoke
   v12[2] = __86__ATXNotificationAndSuggestionDatabase_metricsForSuggestionsSinceCompletionTimestamp___block_invoke;
   v12[3] = &unk_27859A060;
   v12[4] = self;
-  v14 = a3;
+  timestampCopy = timestamp;
   v8 = v6;
   v13 = v8;
   v15 = a2;
@@ -4367,14 +4367,14 @@ void __85__ATXNotificationAndSuggestionDatabase_notificationAndSuggestionDatasto
   *(v5 + 40) = v4;
 }
 
-- (id)feedbackHistoriesForKeys:(id)a3
+- (id)feedbackHistoriesForKeys:(id)keys
 {
-  v5 = a3;
+  keysCopy = keys;
   v6 = objc_opt_new();
   v7 = MEMORY[0x277CBEBF8];
-  if (v5)
+  if (keysCopy)
   {
-    v7 = v5;
+    v7 = keysCopy;
   }
 
   v8 = v7;
@@ -4457,109 +4457,109 @@ uint64_t __65__ATXNotificationAndSuggestionDatabase_feedbackHistoriesForKeys___b
   return *v4;
 }
 
-- (id)_makeNotificationTelemetryQueryResultFromDatabaseResult:(id)a3 queryTimeInterval:(double)a4
+- (id)_makeNotificationTelemetryQueryResultFromDatabaseResult:(id)result queryTimeInterval:(double)interval
 {
-  v5 = a3;
+  resultCopy = result;
   v6 = objc_opt_new();
   v7 = objc_alloc(MEMORY[0x277CCAD78]);
-  v8 = [v5 getNSStringForColumnAlias:"uuid"];
+  v8 = [resultCopy getNSStringForColumnAlias:"uuid"];
   v9 = [v7 initWithUUIDString:v8];
   [v6 setNotificationUUID:v9];
 
   v10 = MEMORY[0x277CBEAA8];
-  [v5 getDoubleForColumnAlias:"receiveTimestamp"];
+  [resultCopy getDoubleForColumnAlias:"receiveTimestamp"];
   v11 = [v10 dateWithTimeIntervalSinceReferenceDate:?];
   [v6 setReceiveTimestamp:v11];
 
-  [v6 setDeliveryMethod:{objc_msgSend(v5, "getIntegerForColumnAlias:", "deliveryMethod")}];
-  [v6 setUrgency:{objc_msgSend(v5, "getIntegerForColumnAlias:", "urgency")}];
-  v12 = [v5 getNSStringForColumnAlias:"bundleId"];
+  [v6 setDeliveryMethod:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "deliveryMethod")}];
+  [v6 setUrgency:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "urgency")}];
+  v12 = [resultCopy getNSStringForColumnAlias:"bundleId"];
   [v6 setBundleId:v12];
 
-  v13 = [v5 getInt64AsNSNumberForColumnAlias:"isMessage"];
+  v13 = [resultCopy getInt64AsNSNumberForColumnAlias:"isMessage"];
   [v6 setIsMessage:{objc_msgSend(v13, "BOOLValue")}];
 
-  [v5 getIntegerForColumnAlias:"deliveryReason"];
+  [resultCopy getIntegerForColumnAlias:"deliveryReason"];
   v14 = ATXUserNotificationDeliveryReasonToString();
   [v6 setDestinationReason:v14];
 
-  if ([v5 isNullForColumnAlias:"firstUI"])
+  if ([resultCopy isNullForColumnAlias:"firstUI"])
   {
     [v6 setOriginalDestination:@"Unknown"];
   }
 
   else
   {
-    [v5 getIntegerForColumnAlias:"firstUI"];
+    [resultCopy getIntegerForColumnAlias:"firstUI"];
     v15 = ATXNotificationDeliveryUIToString();
     [v6 setOriginalDestination:v15];
   }
 
-  if ([v5 isNullForColumnAlias:"mostRecentUI"])
+  if ([resultCopy isNullForColumnAlias:"mostRecentUI"])
   {
     [v6 setFinalDestination:@"Unknown"];
   }
 
   else
   {
-    [v5 getIntegerForColumnAlias:"mostRecentUI"];
+    [resultCopy getIntegerForColumnAlias:"mostRecentUI"];
     v16 = ATXNotificationDeliveryUIToString();
     [v6 setFinalDestination:v16];
   }
 
-  v17 = [v5 getNSStringForColumnAlias:"receivedMode"];
+  v17 = [resultCopy getNSStringForColumnAlias:"receivedMode"];
   [v6 setReceiveModeIdentifier:v17];
 
   v18 = MEMORY[0x277CBEAA8];
-  [v5 getDoubleForColumnAlias:"latestOutcomeTimestamp"];
+  [resultCopy getDoubleForColumnAlias:"latestOutcomeTimestamp"];
   v19 = [v18 dateWithTimeIntervalSinceReferenceDate:?];
-  v20 = [v5 getInt64ForColumnAlias:"numExpansions"];
-  v21 = [v5 getIntegerForColumnAlias:"latestOutcome"];
-  [v6 setBodyLength:{objc_msgSend(v5, "getIntegerForColumnAlias:", "notificationBodyLength")}];
-  [v6 setTitleLength:{objc_msgSend(v5, "getIntegerForColumnAlias:", "notificationTitleLength")}];
-  [v6 setSubtitleLength:{objc_msgSend(v5, "getIntegerForColumnAlias:", "notificationSubtitleLength")}];
-  [v6 setSummaryLength:{objc_msgSend(v5, "getIntegerForColumnAlias:", "summaryLength")}];
-  v22 = [v5 getInt64AsNSNumberForColumnAlias:"isSummarized"];
+  v20 = [resultCopy getInt64ForColumnAlias:"numExpansions"];
+  v21 = [resultCopy getIntegerForColumnAlias:"latestOutcome"];
+  [v6 setBodyLength:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "notificationBodyLength")}];
+  [v6 setTitleLength:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "notificationTitleLength")}];
+  [v6 setSubtitleLength:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "notificationSubtitleLength")}];
+  [v6 setSummaryLength:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "summaryLength")}];
+  v22 = [resultCopy getInt64AsNSNumberForColumnAlias:"isSummarized"];
   [v6 setIsSummarized:{objc_msgSend(v22, "BOOLValue")}];
 
-  v23 = [v5 getInt64AsNSNumberForColumnAlias:"isPartOfStack"];
+  v23 = [resultCopy getInt64AsNSNumberForColumnAlias:"isPartOfStack"];
   [v6 setIsPartOfStack:{objc_msgSend(v23, "BOOLValue")}];
 
-  v24 = [v5 getInt64AsNSNumberForColumnAlias:"isStackSummary"];
+  v24 = [resultCopy getInt64AsNSNumberForColumnAlias:"isStackSummary"];
   [v6 setIsStackSummary:{objc_msgSend(v24, "BOOLValue")}];
 
-  v25 = [v5 getInt64AsNSNumberForColumnAlias:"isDeliveredInPrioritySection"];
+  v25 = [resultCopy getInt64AsNSNumberForColumnAlias:"isDeliveredInPrioritySection"];
   [v6 setIsDeliveredInPrioritySection:{objc_msgSend(v25, "BOOLValue")}];
 
-  [v6 setNumberOfNotificationsInStack:{objc_msgSend(v5, "getIntegerForColumnAlias:", "numberOfNotificationsInStack")}];
-  [v6 setNotificationPriorityStatus:{objc_msgSend(v5, "getIntegerForColumnAlias:", "notificationPriorityStatus")}];
-  [v6 setNotificationSummaryStatus:{objc_msgSend(v5, "getIntegerForColumnAlias:", "notificationSummaryStatus")}];
-  v26 = [v5 getInt64AsNSNumberForColumnAlias:"isPriorityNotificationEnabled"];
+  [v6 setNumberOfNotificationsInStack:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "numberOfNotificationsInStack")}];
+  [v6 setNotificationPriorityStatus:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "notificationPriorityStatus")}];
+  [v6 setNotificationSummaryStatus:{objc_msgSend(resultCopy, "getIntegerForColumnAlias:", "notificationSummaryStatus")}];
+  v26 = [resultCopy getInt64AsNSNumberForColumnAlias:"isPriorityNotificationEnabled"];
   [v6 setIsPriorityNotificationEnabled:{objc_msgSend(v26, "BOOLValue")}];
 
-  v27 = [v5 getInt64AsNSNumberForColumnAlias:"isNotificationSummaryEnabled"];
+  v27 = [resultCopy getInt64AsNSNumberForColumnAlias:"isNotificationSummaryEnabled"];
   [v6 setIsNotificationSummaryEnabled:{objc_msgSend(v27, "BOOLValue")}];
 
   v28 = ATXUserNotificationResolutionTypeForNotificationEventType(v21);
   v29 = [ATXUserNotificationResolution alloc];
-  v30 = [v6 notificationUUID];
-  v31 = [(ATXUserNotificationResolution *)v29 initWithNotificationUUID:v30 numExpansions:v20 resolutionType:v28 resolutionTimestamp:v19];
+  notificationUUID = [v6 notificationUUID];
+  v31 = [(ATXUserNotificationResolution *)v29 initWithNotificationUUID:notificationUUID numExpansions:v20 resolutionType:v28 resolutionTimestamp:v19];
 
   [v6 setResolution:v31];
-  if (([v5 isNullForColumnAlias:"nextAppLaunchTimestamp"] & 1) == 0)
+  if (([resultCopy isNullForColumnAlias:"nextAppLaunchTimestamp"] & 1) == 0)
   {
     v32 = MEMORY[0x277CBEAA8];
-    [v5 getDoubleForColumnAlias:"nextAppLaunchTimestamp"];
+    [resultCopy getDoubleForColumnAlias:"nextAppLaunchTimestamp"];
     v33 = [v32 dateWithTimeIntervalSinceReferenceDate:?];
     [v6 setNextAppLaunchTimestamp:v33];
   }
 
-  [v6 setQueryTimeInterval:a4];
+  [v6 setQueryTimeInterval:interval];
 
   return v6;
 }
 
-- (id)telemetryDataForNotificationsFromTimestamp:(double)a3 endTimestamp:(double)a4
+- (id)telemetryDataForNotificationsFromTimestamp:(double)timestamp endTimestamp:(double)endTimestamp
 {
   v8 = objc_opt_new();
   queue = self->super._queue;
@@ -4568,11 +4568,11 @@ uint64_t __65__ATXNotificationAndSuggestionDatabase_feedbackHistoriesForKeys___b
   v14[2] = __96__ATXNotificationAndSuggestionDatabase_telemetryDataForNotificationsFromTimestamp_endTimestamp___block_invoke;
   v14[3] = &unk_27859A240;
   v14[4] = self;
-  v16 = a3;
-  v17 = a4;
+  timestampCopy = timestamp;
+  endTimestampCopy = endTimestamp;
   v10 = v8;
   v15 = v10;
-  v18 = a4 - a3;
+  v18 = endTimestamp - timestamp;
   v19 = a2;
   dispatch_sync_notxn_0(queue, v14);
   v11 = v15;
@@ -4636,10 +4636,10 @@ uint64_t __96__ATXNotificationAndSuggestionDatabase_telemetryDataForNotification
   return *v4;
 }
 
-- (id)telemetryDataForNotificationWithBundleId:(id)a3 notificationId:(id)a4 recordTimestamp:(double)a5
+- (id)telemetryDataForNotificationWithBundleId:(id)id notificationId:(id)notificationId recordTimestamp:(double)timestamp
 {
-  v9 = a3;
-  v10 = a4;
+  idCopy = id;
+  notificationIdCopy = notificationId;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -4652,13 +4652,13 @@ uint64_t __96__ATXNotificationAndSuggestionDatabase_telemetryDataForNotification
   v16[2] = __112__ATXNotificationAndSuggestionDatabase_telemetryDataForNotificationWithBundleId_notificationId_recordTimestamp___block_invoke;
   v16[3] = &unk_27859A290;
   v16[4] = self;
-  v17 = v9;
-  v20 = a5;
-  v18 = v10;
+  v17 = idCopy;
+  timestampCopy = timestamp;
+  v18 = notificationIdCopy;
   v19 = &v22;
   v21 = a2;
-  v12 = v10;
-  v13 = v9;
+  v12 = notificationIdCopy;
+  v13 = idCopy;
   dispatch_sync_notxn_0(queue, v16);
   v14 = v23[5];
 

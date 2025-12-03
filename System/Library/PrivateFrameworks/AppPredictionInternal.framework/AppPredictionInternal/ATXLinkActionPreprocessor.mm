@@ -1,21 +1,21 @@
 @interface ATXLinkActionPreprocessor
-- (id)preprocessedSuggestionsUpdatingLinkActions:(id)a3;
-- (id)updatedLinkActionSuggestion:(id)a3;
-- (id)updatedLinkActionSuggestion:(id)a3 actionContainer:(id)a4 basedOnReversedPublisher:(id)a5;
+- (id)preprocessedSuggestionsUpdatingLinkActions:(id)actions;
+- (id)updatedLinkActionSuggestion:(id)suggestion;
+- (id)updatedLinkActionSuggestion:(id)suggestion actionContainer:(id)container basedOnReversedPublisher:(id)publisher;
 @end
 
 @implementation ATXLinkActionPreprocessor
 
-- (id)preprocessedSuggestionsUpdatingLinkActions:(id)a3
+- (id)preprocessedSuggestionsUpdatingLinkActions:(id)actions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionsCopy = actions;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = actionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -31,10 +31,10 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 executableSpecification];
-        v13 = [v12 executableType];
+        executableSpecification = [v11 executableSpecification];
+        executableType = [executableSpecification executableType];
 
-        if (v13 == 10)
+        if (executableType == 10)
         {
           v14 = [(ATXLinkActionPreprocessor *)self updatedLinkActionSuggestion:v11];
           if (v14)
@@ -60,22 +60,22 @@
   return v5;
 }
 
-- (id)updatedLinkActionSuggestion:(id)a3
+- (id)updatedLinkActionSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 executableSpecification];
-  v6 = [v5 executableObject];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableObject = [executableSpecification executableObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 executableSpecification];
-    v9 = [v8 executableObject];
+    executableSpecification2 = [suggestionCopy executableSpecification];
+    executableObject2 = [executableSpecification2 executableObject];
 
-    v10 = [v9 bundleId];
+    bundleId = [executableObject2 bundleId];
     v16 = 0;
-    v11 = [ATXLinkTranscriptUtil linkTranscriptPublisherForBundleId:v10 fromDate:0 toDate:0 maxEvents:0 reversed:1 error:&v16];
+    v11 = [ATXLinkTranscriptUtil linkTranscriptPublisherForBundleId:bundleId fromDate:0 toDate:0 maxEvents:0 reversed:1 error:&v16];
     v12 = v16;
 
     if (v12)
@@ -83,7 +83,7 @@
       v13 = __atxlog_handle_blending();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [ATXLinkActionPreprocessor updatedLinkActionSuggestion:v9];
+        [ATXLinkActionPreprocessor updatedLinkActionSuggestion:executableObject2];
       }
 
       v14 = 0;
@@ -91,16 +91,16 @@
 
     else
     {
-      v14 = [(ATXLinkActionPreprocessor *)self updatedLinkActionSuggestion:v4 actionContainer:v9 basedOnReversedPublisher:v11];
+      v14 = [(ATXLinkActionPreprocessor *)self updatedLinkActionSuggestion:suggestionCopy actionContainer:executableObject2 basedOnReversedPublisher:v11];
     }
   }
 
   else
   {
-    v9 = __atxlog_handle_blending();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    executableObject2 = __atxlog_handle_blending();
+    if (os_log_type_enabled(executableObject2, OS_LOG_TYPE_ERROR))
     {
-      [ATXLinkActionPreprocessor updatedLinkActionSuggestion:v4];
+      [ATXLinkActionPreprocessor updatedLinkActionSuggestion:suggestionCopy];
     }
 
     v14 = 0;
@@ -109,11 +109,11 @@
   return v14;
 }
 
-- (id)updatedLinkActionSuggestion:(id)a3 actionContainer:(id)a4 basedOnReversedPublisher:(id)a5
+- (id)updatedLinkActionSuggestion:(id)suggestion actionContainer:(id)container basedOnReversedPublisher:(id)publisher
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  suggestionCopy = suggestion;
+  containerCopy = container;
+  publisherCopy = publisher;
   v52 = 0;
   v53 = &v52;
   v54 = 0x3032000000;
@@ -130,52 +130,52 @@
   v44[1] = 3221225472;
   v44[2] = __98__ATXLinkActionPreprocessor_updatedLinkActionSuggestion_actionContainer_basedOnReversedPublisher___block_invoke;
   v44[3] = &unk_278596E58;
-  v45 = v7;
+  v45 = suggestionCopy;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __98__ATXLinkActionPreprocessor_updatedLinkActionSuggestion_actionContainer_basedOnReversedPublisher___block_invoke_16;
   v39[3] = &unk_2785A1DA0;
   v42 = &v46;
-  v10 = v8;
+  v10 = containerCopy;
   v40 = v10;
   v11 = v45;
   v41 = v11;
   v43 = &v52;
-  v12 = [v9 drivableSinkWithBookmark:0 completion:v44 shouldContinue:v39];
+  v12 = [publisherCopy drivableSinkWithBookmark:0 completion:v44 shouldContinue:v39];
   if (v53[5])
   {
-    v13 = [v11 executableSpecification];
+    executableSpecification = [v11 executableSpecification];
     v14 = objc_alloc(MEMORY[0x277D42080]);
     v15 = v47[5];
-    v16 = [v13 executableDescription];
-    v17 = [v13 executableIdentifier];
-    v36 = [v14 initWithExecutableObject:v15 executableDescription:v16 executableIdentifier:v17 suggestionExecutableType:{-[NSObject executableType](v13, "executableType")}];
+    executableDescription = [executableSpecification executableDescription];
+    executableIdentifier = [executableSpecification executableIdentifier];
+    v36 = [v14 initWithExecutableObject:v15 executableDescription:executableDescription executableIdentifier:executableIdentifier suggestionExecutableType:{-[NSObject executableType](executableSpecification, "executableType")}];
     v33 = v10;
-    v34 = v9;
+    v34 = publisherCopy;
 
-    v18 = [v11 uiSpecification];
+    uiSpecification = [v11 uiSpecification];
     v35 = objc_alloc(MEMORY[0x277D420A0]);
-    v38 = [v53[5] title];
-    v37 = [v38 atx_efficientLocalizedString];
-    v19 = [v53[5] subtitle];
-    v20 = [v19 atx_efficientLocalizedString];
-    v21 = [v18 reason];
-    v22 = [v18 preferredLayoutConfigs];
-    v23 = [v18 allowedOnLockscreen];
-    v24 = [v18 allowedOnHomeScreen];
-    LOBYTE(v15) = [v18 allowedOnSpotlight];
-    BYTE1(v32) = [v18 shouldClearOnEngagement];
+    title = [v53[5] title];
+    atx_efficientLocalizedString = [title atx_efficientLocalizedString];
+    subtitle = [v53[5] subtitle];
+    atx_efficientLocalizedString2 = [subtitle atx_efficientLocalizedString];
+    reason = [uiSpecification reason];
+    preferredLayoutConfigs = [uiSpecification preferredLayoutConfigs];
+    allowedOnLockscreen = [uiSpecification allowedOnLockscreen];
+    allowedOnHomeScreen = [uiSpecification allowedOnHomeScreen];
+    LOBYTE(v15) = [uiSpecification allowedOnSpotlight];
+    BYTE1(v32) = [uiSpecification shouldClearOnEngagement];
     LOBYTE(v32) = v15;
-    v25 = [v35 initWithTitle:v37 subtitle:v20 predictionReason:v21 preferredLayoutConfigs:v22 allowedOnLockscreen:v23 allowedOnHomeScreen:v24 allowedOnSpotlight:v32 shouldClearOnEngagement:objc_msgSend(v18 predictionReasons:"predictionReasons")];
+    v25 = [v35 initWithTitle:atx_efficientLocalizedString subtitle:atx_efficientLocalizedString2 predictionReason:reason preferredLayoutConfigs:preferredLayoutConfigs allowedOnLockscreen:allowedOnLockscreen allowedOnHomeScreen:allowedOnHomeScreen allowedOnSpotlight:v32 shouldClearOnEngagement:objc_msgSend(uiSpecification predictionReasons:"predictionReasons")];
 
     v26 = objc_alloc(MEMORY[0x277D42068]);
-    v27 = [v11 clientModelSpecification];
-    v28 = [v11 scoreSpecification];
-    v29 = [v26 initWithClientModelSpecification:v27 executableSpecification:v36 uiSpecification:v25 scoreSpecification:v28];
+    clientModelSpecification = [v11 clientModelSpecification];
+    scoreSpecification = [v11 scoreSpecification];
+    v29 = [v26 initWithClientModelSpecification:clientModelSpecification executableSpecification:v36 uiSpecification:v25 scoreSpecification:scoreSpecification];
 
     v10 = v33;
-    v9 = v34;
-    v30 = v13;
+    publisherCopy = v34;
+    v30 = executableSpecification;
   }
 
   else

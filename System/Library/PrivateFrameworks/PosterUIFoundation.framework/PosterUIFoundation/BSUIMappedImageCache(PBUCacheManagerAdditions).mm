@@ -10,8 +10,8 @@
   v7 = a3;
   value = [[_BSUIMappedImageCacheCanary alloc] initWithCacheManager:v7 key:v6];
 
-  objc_setAssociatedObject(a1, @"pbuiMappedImageCacheCanary", value, 1);
-  objc_setAssociatedObject(a1, @"pbuiMappedImageCacheKey", v6, 3);
+  objc_setAssociatedObject(self, @"pbuiMappedImageCacheCanary", value, 1);
+  objc_setAssociatedObject(self, @"pbuiMappedImageCacheKey", v6, 3);
 }
 
 @end

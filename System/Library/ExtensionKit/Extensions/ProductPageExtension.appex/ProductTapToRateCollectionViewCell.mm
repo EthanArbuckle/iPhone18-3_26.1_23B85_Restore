@@ -1,12 +1,12 @@
 @interface ProductTapToRateCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC20ProductPageExtension34ProductTapToRateCollectionViewCell)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC20ProductPageExtension34ProductTapToRateCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductTapToRateCollectionViewCell
 
-- (_TtC20ProductPageExtension34ProductTapToRateCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension34ProductTapToRateCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension34ProductTapToRateCollectionViewCell_productTapToRateView;
   type metadata accessor for ProductTapToRateView();
@@ -18,19 +18,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100352400();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_100469230(width);
   v7 = v6;
-  v8 = [*(&v4->super.super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension34ProductTapToRateCollectionViewCell_separatorView) isHidden];
+  isHidden = [*(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension34ProductTapToRateCollectionViewCell_separatorView) isHidden];
 
-  if (v8)
+  if (isHidden)
   {
     v9 = v7;
   }

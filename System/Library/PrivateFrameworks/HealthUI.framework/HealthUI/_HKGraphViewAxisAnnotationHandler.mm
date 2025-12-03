@@ -1,8 +1,8 @@
 @interface _HKGraphViewAxisAnnotationHandler
 - (_HKGraphViewAxisAnnotationHandler)init;
-- (int64_t)applyAnnotationForSeries:(id)a3;
+- (int64_t)applyAnnotationForSeries:(id)series;
 - (void)_forceClearAxisAnnotations;
-- (void)addAxisAnnotation:(id)a3 forSeries:(id)a4 modelCoordinate:(id)a5;
+- (void)addAxisAnnotation:(id)annotation forSeries:(id)series modelCoordinate:(id)coordinate;
 - (void)startAnnotationSequence;
 @end
 
@@ -44,11 +44,11 @@
   self->_seriesToAnnotations = 0;
 }
 
-- (void)addAxisAnnotation:(id)a3 forSeries:(id)a4 modelCoordinate:(id)a5
+- (void)addAxisAnnotation:(id)annotation forSeries:(id)series modelCoordinate:(id)coordinate
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  annotationCopy = annotation;
+  seriesCopy = series;
+  coordinateCopy = coordinate;
   seriesToAnnotations = self->_seriesToAnnotations;
   if (!seriesToAnnotations)
   {
@@ -59,23 +59,23 @@
     seriesToAnnotations = self->_seriesToAnnotations;
   }
 
-  v13 = [(NSMapTable *)seriesToAnnotations objectForKey:v8];
+  v13 = [(NSMapTable *)seriesToAnnotations objectForKey:seriesCopy];
   if (!v13)
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMapTable *)self->_seriesToAnnotations setObject:v13 forKey:v8];
+    [(NSMapTable *)self->_seriesToAnnotations setObject:v13 forKey:seriesCopy];
   }
 
   v14 = objc_alloc_init(_HKGraphViewAnnotationEntry);
-  [(_HKGraphViewAnnotationEntry *)v14 setAnnotation:v15];
-  [(_HKGraphViewAnnotationEntry *)v14 setModelCoordinate:v9];
+  [(_HKGraphViewAnnotationEntry *)v14 setAnnotation:annotationCopy];
+  [(_HKGraphViewAnnotationEntry *)v14 setModelCoordinate:coordinateCopy];
   [v13 addObject:v14];
 }
 
-- (int64_t)applyAnnotationForSeries:(id)a3
+- (int64_t)applyAnnotationForSeries:(id)series
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  seriesCopy = series;
   if (self->_seriesToAnnotations)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -83,8 +83,8 @@
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v32 = v4;
-    obj = v4;
+    v32 = seriesCopy;
+    obj = seriesCopy;
     v6 = [obj countByEnumeratingWithState:&v49 objects:v56 count:16];
     if (v6)
     {
@@ -99,10 +99,10 @@
             objc_enumerationMutation(obj);
           }
 
-          v10 = [*(*(&v49 + 1) + 8 * i) yAxis];
-          if (([v5 containsObject:v10] & 1) == 0)
+          yAxis = [*(*(&v49 + 1) + 8 * i) yAxis];
+          if (([v5 containsObject:yAxis] & 1) == 0)
           {
-            [v5 addObject:v10];
+            [v5 addObject:yAxis];
           }
         }
 
@@ -152,9 +152,9 @@
                 }
 
                 v19 = *(*(&v41 + 1) + 8 * k);
-                v20 = [v19 yAxis];
+                yAxis2 = [v19 yAxis];
 
-                if (v20 == v12)
+                if (yAxis2 == v12)
                 {
                   v21 = [(NSMapTable *)self->_seriesToAnnotations objectForKey:v19];
                   [v13 addObjectsFromArray:v21];
@@ -188,9 +188,9 @@
                 }
 
                 v27 = *(*(&v37 + 1) + 8 * m);
-                v28 = [v27 annotation];
-                v29 = [v27 modelCoordinate];
-                [v12 addAxisAnnotation:v28 modelCoordinate:v29];
+                annotation = [v27 annotation];
+                modelCoordinate = [v27 modelCoordinate];
+                [v12 addAxisAnnotation:annotation modelCoordinate:modelCoordinate];
               }
 
               v24 = [v22 countByEnumeratingWithState:&v37 objects:v53 count:16];
@@ -207,7 +207,7 @@
     }
 
     v30 = 1;
-    v4 = v32;
+    seriesCopy = v32;
   }
 
   else if (self->_clearedPreviousAnnotations)
@@ -249,8 +249,8 @@
             objc_enumerationMutation(v3);
           }
 
-          v8 = [*(*(&v9 + 1) + 8 * v7) yAxis];
-          [v8 clearAnnotations];
+          yAxis = [*(*(&v9 + 1) + 8 * v7) yAxis];
+          [yAxis clearAnnotations];
 
           ++v7;
         }

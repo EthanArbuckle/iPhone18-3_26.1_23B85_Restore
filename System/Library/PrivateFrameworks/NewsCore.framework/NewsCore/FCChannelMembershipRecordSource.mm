@@ -1,6 +1,6 @@
 @interface FCChannelMembershipRecordSource
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCChannelMembershipRecordSource
@@ -26,24 +26,24 @@ uint64_t __53__FCChannelMembershipRecordSource_nonLocalizableKeys__block_invoke_
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v5 = MEMORY[0x1E69B6DE8];
-  v6 = a4;
-  v7 = a3;
+  baseCopy = base;
+  recordCopy = record;
   v8 = objc_alloc_init(v5);
-  [v8 setBase:v6];
+  [v8 setBase:baseCopy];
 
-  v9 = [v7 objectForKeyedSubscript:@"channelTagID"];
+  v9 = [recordCopy objectForKeyedSubscript:@"channelTagID"];
   [v8 setChannelID:v9];
 
-  v10 = [v7 objectForKeyedSubscript:@"canAccessDrafts"];
+  v10 = [recordCopy objectForKeyedSubscript:@"canAccessDrafts"];
   [v8 setCanAccessDrafts:{objc_msgSend(v10, "BOOLValue")}];
 
-  v11 = [v7 objectForKeyedSubscript:@"draftsArticleListID"];
+  v11 = [recordCopy objectForKeyedSubscript:@"draftsArticleListID"];
   [v8 setDraftArticleListID:v11];
 
-  v12 = [v7 objectForKeyedSubscript:@"draftsIssueListID"];
+  v12 = [recordCopy objectForKeyedSubscript:@"draftsIssueListID"];
 
   [v8 setDraftIssueListID:v12];
 

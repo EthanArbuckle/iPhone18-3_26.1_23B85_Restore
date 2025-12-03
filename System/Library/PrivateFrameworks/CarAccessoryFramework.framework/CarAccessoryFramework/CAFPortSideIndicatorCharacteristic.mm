@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFPortSideIndicatorCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFPortSideIndicatorCharacteristic *)self portSideIndicatorValue];
+  portSideIndicatorValue = [(CAFPortSideIndicatorCharacteristic *)self portSideIndicatorValue];
 
-  return NSStringFromPortSideIndicator(v2);
+  return NSStringFromPortSideIndicator(portSideIndicatorValue);
 }
 
 @end

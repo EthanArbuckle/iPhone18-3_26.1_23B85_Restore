@@ -1,12 +1,12 @@
 @interface ICNotesCloudContextDelegate
 - (ICNotesCloudContextDelegate)init;
 - (ICNotesCloudContextDelegateAlertProvider)alertProvider;
-- (void)cloudContext:(id)a3 didExceedQuotaForRecordID:(id)a4 accountID:(id)a5;
-- (void)cloudContext:(id)a3 didPushRecordID:(id)a4 accountID:(id)a5;
-- (void)currentInAppMessageDidChange:(id)a3;
+- (void)cloudContext:(id)context didExceedQuotaForRecordID:(id)d accountID:(id)iD;
+- (void)cloudContext:(id)context didPushRecordID:(id)d accountID:(id)iD;
+- (void)currentInAppMessageDidChange:(id)change;
 - (void)handleManageStorageDeleteAlertIfNecessary;
 - (void)registerForICQAppNotificationsIfNecessary;
-- (void)registerForSyncMessagesWithAlertProvider:(id)a3;
+- (void)registerForSyncMessagesWithAlertProvider:(id)provider;
 @end
 
 @implementation ICNotesCloudContextDelegate
@@ -24,9 +24,9 @@
   return result;
 }
 
-- (void)registerForSyncMessagesWithAlertProvider:(id)a3
+- (void)registerForSyncMessagesWithAlertProvider:(id)provider
 {
-  [(ICNotesCloudContextDelegate *)self setAlertProvider:a3];
+  [(ICNotesCloudContextDelegate *)self setAlertProvider:provider];
 
   [(ICNotesCloudContextDelegate *)self registerForICQAppNotificationsIfNecessary];
 }
@@ -36,10 +36,10 @@
   if (+[ICAccount isCloudKitAccountAvailable](ICAccount, "isCloudKitAccountAvailable") && (+[ICDeviceSupport isRunningUnitTests]& 1) == 0)
   {
     v4 = sub_1004E9F5C(v3);
-    v6 = [*(v5 + 32) shared];
+    shared = [*(v5 + 32) shared];
     v7 = ICNotesAppBundleIdentifier();
     v9 = sub_1004E9ECC(v8);
-    [v6 observeUpdatesForBundleID:v7 placement:{**(v10 + 24), v9}];
+    [shared observeUpdatesForBundleID:v7 placement:{**(v10 + 24), v9}];
 
     v14 = +[NSNotificationCenter defaultCenter];
     v12 = sub_1004E9DAC(v11);
@@ -47,25 +47,25 @@
   }
 }
 
-- (void)cloudContext:(id)a3 didExceedQuotaForRecordID:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context didExceedQuotaForRecordID:(id)d accountID:(id)iD
 {
   v6.receiver = self;
   v6.super_class = ICNotesCloudContextDelegate;
-  [(ICNotesBaseCloudContextDelegate *)&v6 cloudContext:a3 didExceedQuotaForRecordID:a4 accountID:a5];
+  [(ICNotesBaseCloudContextDelegate *)&v6 cloudContext:context didExceedQuotaForRecordID:d accountID:iD];
   [(ICNotesCloudContextDelegate *)self handleManageStorageDeleteAlertIfNecessary];
 }
 
-- (void)cloudContext:(id)a3 didPushRecordID:(id)a4 accountID:(id)a5
+- (void)cloudContext:(id)context didPushRecordID:(id)d accountID:(id)iD
 {
   v6.receiver = self;
   v6.super_class = ICNotesCloudContextDelegate;
-  [(ICNotesBaseCloudContextDelegate *)&v6 cloudContext:a3 didPushRecordID:a4 accountID:a5];
+  [(ICNotesBaseCloudContextDelegate *)&v6 cloudContext:context didPushRecordID:d accountID:iD];
   [(ICNotesCloudContextDelegate *)self handleManageStorageDeleteAlertIfNecessary];
 }
 
-- (void)currentInAppMessageDidChange:(id)a3
+- (void)currentInAppMessageDidChange:(id)change
 {
-  v4 = [a3 userInfo];
+  userInfo = [change userInfo];
   v6 = sub_1004E9DD0(v5);
   v9 = [v8 objectForKeyedSubscript:{**(v7 + 4064), v6}];
 
@@ -78,8 +78,8 @@
 
 - (void)handleManageStorageDeleteAlertIfNecessary
 {
-  v3 = [(ICNotesCloudContextDelegate *)self syncMessage];
-  v4 = [v3 reason];
+  syncMessage = [(ICNotesCloudContextDelegate *)self syncMessage];
+  reason = [syncMessage reason];
   v6 = sub_1004E9E18(v5);
   v9 = [v8 isEqualToString:{**(v7 + 4080), v6}];
 
@@ -87,32 +87,32 @@
   {
     if (![(ICNotesCloudContextDelegate *)self manageStorageAlertShown])
     {
-      v10 = [(ICNotesCloudContextDelegate *)self alertProvider];
-      if (v10)
+      alertProvider = [(ICNotesCloudContextDelegate *)self alertProvider];
+      if (alertProvider)
       {
-        v11 = v10;
-        v12 = [v3 actions];
-        v13 = [v12 count];
+        v11 = alertProvider;
+        actions = [syncMessage actions];
+        v13 = [actions count];
 
         if (v13)
         {
           [(ICNotesCloudContextDelegate *)self setManageStorageAlertShown:1];
-          v14 = [v3 actions];
-          v15 = [v14 objectAtIndexedSubscript:0];
+          actions2 = [syncMessage actions];
+          v15 = [actions2 objectAtIndexedSubscript:0];
 
-          v16 = [(ICNotesCloudContextDelegate *)self alertProvider];
-          v17 = [v3 title];
-          v18 = [v3 subTitle];
-          v19 = [v15 title];
-          v20 = [v3 dismissAction];
-          v21 = [v20 title];
+          alertProvider2 = [(ICNotesCloudContextDelegate *)self alertProvider];
+          title = [syncMessage title];
+          subTitle = [syncMessage subTitle];
+          title2 = [v15 title];
+          dismissAction = [syncMessage dismissAction];
+          title3 = [dismissAction title];
           v23[0] = _NSConcreteStackBlock;
           v23[1] = 3221225472;
           v23[2] = sub_10009F2E4;
           v23[3] = &unk_1006469F0;
           v24 = v15;
           v22 = v15;
-          [v16 alertWithTitle:v17 message:v18 cancelButtonTitle:v19 defaultButtonTitle:v21 actionHandler:v23];
+          [alertProvider2 alertWithTitle:title message:subTitle cancelButtonTitle:title2 defaultButtonTitle:title3 actionHandler:v23];
         }
       }
     }

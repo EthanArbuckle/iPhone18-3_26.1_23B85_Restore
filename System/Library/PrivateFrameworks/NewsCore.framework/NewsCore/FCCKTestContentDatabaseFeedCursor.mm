@@ -1,45 +1,45 @@
 @interface FCCKTestContentDatabaseFeedCursor
-- (FCCKTestContentDatabaseFeedCursor)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FCCKTestContentDatabaseFeedCursor)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCCKTestContentDatabaseFeedCursor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FCCKTestContentDatabaseFeedCursor allocWithZone:?]];
-  v5 = [(FCCKTestContentDatabaseFeedCursor *)self order];
-  [(FCCKTestContentDatabaseFeedCursor *)v4 setOrder:v5];
+  order = [(FCCKTestContentDatabaseFeedCursor *)self order];
+  [(FCCKTestContentDatabaseFeedCursor *)v4 setOrder:order];
 
-  v6 = [(FCCKTestContentDatabaseFeedCursor *)self subOrder];
-  [(FCCKTestContentDatabaseFeedCursor *)v4 setSubOrder:v6];
+  subOrder = [(FCCKTestContentDatabaseFeedCursor *)self subOrder];
+  [(FCCKTestContentDatabaseFeedCursor *)v4 setSubOrder:subOrder];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCCKTestContentDatabaseFeedCursor *)self order];
-  [v4 encodeObject:v5 forKey:@"order"];
+  coderCopy = coder;
+  order = [(FCCKTestContentDatabaseFeedCursor *)self order];
+  [coderCopy encodeObject:order forKey:@"order"];
 
-  v6 = [(FCCKTestContentDatabaseFeedCursor *)self subOrder];
-  [v4 encodeObject:v6 forKey:@"subOrder"];
+  subOrder = [(FCCKTestContentDatabaseFeedCursor *)self subOrder];
+  [coderCopy encodeObject:subOrder forKey:@"subOrder"];
 }
 
-- (FCCKTestContentDatabaseFeedCursor)initWithCoder:(id)a3
+- (FCCKTestContentDatabaseFeedCursor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FCCKTestContentDatabaseFeedCursor;
   v5 = [(FCCKTestContentDatabaseFeedCursor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"order"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"order"];
     [(FCCKTestContentDatabaseFeedCursor *)v5 setOrder:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subOrder"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subOrder"];
     [(FCCKTestContentDatabaseFeedCursor *)v5 setSubOrder:v7];
   }
 

@@ -1,21 +1,21 @@
 @interface SSRVoiceProfileManagerXPCService
 - (SSRVoiceProfileManagerXPCService)init;
-- (void)importVoiceProfile:(id)a3 appDomain:(id)a4 withSharedUserId:(id)a5 withPersonaId:(id)a6 withLocale:(id)a7 withAsset:(id)a8 trainWithPayload:(BOOL)a9 withCompletion:(id)a10;
-- (void)markSATEnrollmentSuccessForVoiceProfile:(id)a3 completion:(id)a4;
+- (void)importVoiceProfile:(id)profile appDomain:(id)domain withSharedUserId:(id)id withPersonaId:(id)personaId withLocale:(id)locale withAsset:(id)asset trainWithPayload:(BOOL)payload withCompletion:(id)self0;
+- (void)markSATEnrollmentSuccessForVoiceProfile:(id)profile completion:(id)completion;
 @end
 
 @implementation SSRVoiceProfileManagerXPCService
 
-- (void)importVoiceProfile:(id)a3 appDomain:(id)a4 withSharedUserId:(id)a5 withPersonaId:(id)a6 withLocale:(id)a7 withAsset:(id)a8 trainWithPayload:(BOOL)a9 withCompletion:(id)a10
+- (void)importVoiceProfile:(id)profile appDomain:(id)domain withSharedUserId:(id)id withPersonaId:(id)personaId withLocale:(id)locale withAsset:(id)asset trainWithPayload:(BOOL)payload withCompletion:(id)self0
 {
   v74[2] = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
+  profileCopy = profile;
+  domainCopy = domain;
+  idCopy = id;
+  personaIdCopy = personaId;
+  localeCopy = locale;
+  assetCopy = asset;
+  completionCopy = completion;
   v21 = MEMORY[0x277D01970];
   v22 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -29,20 +29,20 @@
   v63[1] = 3221225472;
   v63[2] = __149__SSRVoiceProfileManagerXPCService_importVoiceProfile_appDomain_withSharedUserId_withPersonaId_withLocale_withAsset_trainWithPayload_withCompletion___block_invoke;
   v63[3] = &unk_278579690;
-  v23 = v20;
+  v23 = completionCopy;
   v64 = v23;
   v24 = MEMORY[0x22AA71400](v63);
-  v53 = v15;
-  v25 = [[SSRVoiceProfile alloc] initNewVoiceProfileWithLocale:v18 withAppDomain:v15];
-  v52 = v16;
-  [v25 setSharedSiriProfileId:v16];
-  [v25 setPersonaId:v17];
-  if (v19)
+  v53 = domainCopy;
+  v25 = [[SSRVoiceProfile alloc] initNewVoiceProfileWithLocale:localeCopy withAppDomain:domainCopy];
+  v52 = idCopy;
+  [v25 setSharedSiriProfileId:idCopy];
+  [v25 setPersonaId:personaIdCopy];
+  if (assetCopy)
   {
     v73[0] = @"SSRVoiceRetrainingVoiceProfile";
     v73[1] = @"SSRVoiceRetrainingAsset";
     v74[0] = v25;
-    v74[1] = v19;
+    v74[1] = assetCopy;
     v26 = MEMORY[0x277CBEAC0];
     v27 = v74;
     v28 = v73;
@@ -61,7 +61,7 @@
 
   v30 = [v26 dictionaryWithObjects:v27 forKeys:v28 count:v29];
   v31 = v30;
-  if (a9)
+  if (payload)
   {
     v32 = [v30 mutableCopy];
     [v32 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SSRVoiceRetrainingPayloadProfile"];
@@ -91,12 +91,12 @@
 
   else
   {
-    v50 = v17;
+    v50 = personaIdCopy;
     v49 = +[SSRVoiceProfileManager sharedInstance];
     [MEMORY[0x277CCAA00] defaultManager];
     v39 = v38 = v21;
     v61 = 0;
-    v51 = [v39 subpathsOfDirectoryAtPath:v54 error:&v61];
+    v51 = [v39 subpathsOfDirectoryAtPath:profileCopy error:&v61];
     v36 = v61;
 
     v40 = *v38;
@@ -109,17 +109,17 @@
       _os_log_impl(&dword_225E12000, v40, OS_LOG_TYPE_DEFAULT, "%s fileList - %@", buf, 0x16u);
     }
 
-    v48 = v18;
+    v48 = localeCopy;
     if (v36)
     {
       v41 = *MEMORY[0x277D01970];
-      v17 = v50;
+      personaIdCopy = v50;
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315650;
         v66 = "[SSRVoiceProfileManagerXPCService importVoiceProfile:appDomain:withSharedUserId:withPersonaId:withLocale:withAsset:trainWithPayload:withCompletion:]";
         v67 = 2112;
-        v68 = v54;
+        v68 = profileCopy;
         v69 = 2112;
         v70 = v36;
         _os_log_impl(&dword_225E12000, v41, OS_LOG_TYPE_DEFAULT, "%s ERR: Fetching contents of %@ failed with error - %@", buf, 0x20u);
@@ -137,12 +137,12 @@
       v58[1] = 3221225472;
       v58[2] = __149__SSRVoiceProfileManagerXPCService_importVoiceProfile_appDomain_withSharedUserId_withPersonaId_withLocale_withAsset_trainWithPayload_withCompletion___block_invoke_10;
       v58[3] = &unk_2785796D0;
-      v59 = v54;
+      v59 = profileCopy;
       v44 = v43;
       v60 = v44;
       [v51 enumerateObjectsUsingBlock:v58];
       v45 = *MEMORY[0x277D01970];
-      v17 = v50;
+      personaIdCopy = v50;
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
@@ -164,7 +164,7 @@
       v23 = v47;
     }
 
-    v18 = v48;
+    localeCopy = v48;
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -258,11 +258,11 @@ void __149__SSRVoiceProfileManagerXPCService_importVoiceProfile_appDomain_withSh
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markSATEnrollmentSuccessForVoiceProfile:(id)a3 completion:(id)a4
+- (void)markSATEnrollmentSuccessForVoiceProfile:(id)profile completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   v7 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
@@ -275,10 +275,10 @@ void __149__SSRVoiceProfileManagerXPCService_importVoiceProfile_appDomain_withSh
   v15[1] = 3221225472;
   v15[2] = __87__SSRVoiceProfileManagerXPCService_markSATEnrollmentSuccessForVoiceProfile_completion___block_invoke;
   v15[3] = &unk_278579668;
-  v8 = v6;
+  v8 = completionCopy;
   v16 = v8;
   v9 = MEMORY[0x22AA71400](v15);
-  if (!v5)
+  if (!profileCopy)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERR: Voice Profile sent as nil - Bailing out"];
     v11 = MEMORY[0x277CCA9B8];

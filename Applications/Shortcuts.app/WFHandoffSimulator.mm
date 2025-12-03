@@ -1,20 +1,20 @@
 @interface WFHandoffSimulator
-+ (id)URLForContinuingWorkflowWithState:(id)a3 fromSource:(id)a4;
-+ (id)URLForSimulatingHandoffWithActivityType:(id)a3 userInfo:(id)a4 webpageURL:(id)a5 fromSource:(id)a6;
-+ (id)temporaryFileURLBySerializingUserInfo:(id)a3;
-+ (id)userActivityForContinuingWorkflowWithState:(id)a3 fromSource:(id)a4;
-+ (void)deserializeUserInfoAtURL:(id)a3 completionHandler:(id)a4;
-+ (void)getStateForContinuingWorkflowFromUserActivityUserInfo:(id)a3 completionHandler:(id)a4;
-+ (void)registerHandoffURLRequestHandler:(id)a3;
++ (id)URLForContinuingWorkflowWithState:(id)state fromSource:(id)source;
++ (id)URLForSimulatingHandoffWithActivityType:(id)type userInfo:(id)info webpageURL:(id)l fromSource:(id)source;
++ (id)temporaryFileURLBySerializingUserInfo:(id)info;
++ (id)userActivityForContinuingWorkflowWithState:(id)state fromSource:(id)source;
++ (void)deserializeUserInfoAtURL:(id)l completionHandler:(id)handler;
++ (void)getStateForContinuingWorkflowFromUserActivityUserInfo:(id)info completionHandler:(id)handler;
++ (void)registerHandoffURLRequestHandler:(id)handler;
 @end
 
 @implementation WFHandoffSimulator
 
-+ (void)getStateForContinuingWorkflowFromUserActivityUserInfo:(id)a3 completionHandler:(id)a4
++ (void)getStateForContinuingWorkflowFromUserActivityUserInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:WFHandoffSourceKey];
+  infoCopy = info;
+  handlerCopy = handler;
+  v8 = [infoCopy objectForKey:WFHandoffSourceKey];
   v9 = v8;
   v10 = WFWorkflowRunSourceHandoff;
   if (v8)
@@ -24,12 +24,12 @@
 
   v11 = v10;
 
-  v12 = [v6 objectForKey:WFHandoffWorkflowControllerStateKey];
-  v13 = [v6 objectForKey:WFHandoffWorkflowControllerStateDataKey];
+  v12 = [infoCopy objectForKey:WFHandoffWorkflowControllerStateKey];
+  v13 = [infoCopy objectForKey:WFHandoffWorkflowControllerStateDataKey];
   v14 = v13;
   if (v12)
   {
-    v7[2](v7, v12, v11);
+    handlerCopy[2](handlerCopy, v12, v11);
   }
 
   else if (v13)
@@ -39,42 +39,42 @@
     v21[1] = 3221225472;
     v21[2] = sub_1000B5748;
     v21[3] = &unk_1000F4238;
-    v23 = v7;
+    v23 = handlerCopy;
     v22 = v11;
     v16 = [NSKeyedUnarchiver wf_securelyUnarchiveObjectWithData:v14 allowedClasses:v15 completionHandler:v21];
   }
 
   else
   {
-    v17 = [v6 objectForKey:@"userInfoURL"];
+    v17 = [infoCopy objectForKey:@"userInfoURL"];
     v18 = [NSURL URLWithString:v17];
 
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000B575C;
     v19[3] = &unk_1000F4260;
-    v20 = v7;
-    [a1 deserializeUserInfoAtURL:v18 completionHandler:v19];
+    v20 = handlerCopy;
+    [self deserializeUserInfoAtURL:v18 completionHandler:v19];
   }
 }
 
-+ (id)userActivityForContinuingWorkflowWithState:(id)a3 fromSource:(id)a4
++ (id)userActivityForContinuingWorkflowWithState:(id)state fromSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  sourceCopy = source;
   v17[0] = WFHandoffWorkflowControllerStateKey;
   v17[1] = WFHandoffSourceKey;
-  v18[0] = v6;
-  v18[1] = v7;
+  v18[0] = stateCopy;
+  v18[1] = sourceCopy;
   v8 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
-  v9 = [a1 temporaryFileURLBySerializingUserInfo:v8];
+  v9 = [self temporaryFileURLBySerializingUserInfo:v8];
   if (v9)
   {
     v10 = [NSUserActivity alloc];
     v11 = [v10 initWithActivityType:WFHandoffContinueWorkflowActivityType];
     v15 = @"userInfoURL";
-    v12 = [v9 absoluteString];
-    v16 = v12;
+    absoluteString = [v9 absoluteString];
+    v16 = absoluteString;
     v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     [v11 setUserInfo:v13];
   }
@@ -87,14 +87,14 @@
   return v11;
 }
 
-+ (void)deserializeUserInfoAtURL:(id)a3 completionHandler:(id)a4
++ (void)deserializeUserInfoAtURL:(id)l completionHandler:(id)handler
 {
-  v19 = a3;
-  v5 = a4;
-  if ([v19 isFileURL] && (+[WFTemporaryFileManager sharedAppGroupDirectoryURL](WFTemporaryFileManager, "sharedAppGroupDirectoryURL"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v19, "wf_isContainedByDirectoryAtURL:", v6), v6, (v7 & 1) != 0))
+  lCopy = l;
+  handlerCopy = handler;
+  if ([lCopy isFileURL] && (+[WFTemporaryFileManager sharedAppGroupDirectoryURL](WFTemporaryFileManager, "sharedAppGroupDirectoryURL"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(lCopy, "wf_isContainedByDirectoryAtURL:", v6), v6, (v7 & 1) != 0))
   {
     v8 = [WFFileType typeWithUTType:UTTypePropertyList];
-    v9 = [WFFileRepresentation fileWithURL:v19 options:1 ofType:v8];
+    v9 = [WFFileRepresentation fileWithURL:lCopy options:1 ofType:v8];
 
     v10 = objc_opt_class();
     v11 = objc_opt_class();
@@ -106,24 +106,24 @@
 
     [v16 addObject:objc_opt_class()];
     [v16 addObject:objc_opt_class()];
-    v17 = [v9 mappedData];
-    v18 = [NSKeyedUnarchiver wf_securelyUnarchiveObjectWithData:v17 allowedClasses:v16 completionHandler:v5];
+    mappedData = [v9 mappedData];
+    v18 = [NSKeyedUnarchiver wf_securelyUnarchiveObjectWithData:mappedData allowedClasses:v16 completionHandler:handlerCopy];
   }
 
   else
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-+ (id)temporaryFileURLBySerializingUserInfo:(id)a3
++ (id)temporaryFileURLBySerializingUserInfo:(id)info
 {
-  v3 = [NSKeyedArchiver wf_securelyArchivedDataWithRootObject:a3 deletionResponsibility:1];
+  v3 = [NSKeyedArchiver wf_securelyArchivedDataWithRootObject:info deletionResponsibility:1];
   v4 = [WFTemporaryFileManager proposedSharedTemporaryFileURLForFilename:@"URLHandoffUserInfo.plist"];
-  v5 = [v4 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [v4 URLByDeletingLastPathComponent];
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  path = [uRLByDeletingLastPathComponent path];
+  v8 = [v6 fileExistsAtPath:path];
 
   if (v8)
   {
@@ -134,7 +134,7 @@
   {
     v10 = +[NSFileManager defaultManager];
     v16 = 0;
-    [v10 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v16];
+    [v10 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v16];
     v9 = v16;
   }
 
@@ -151,69 +151,69 @@
   return v13;
 }
 
-+ (id)URLForContinuingWorkflowWithState:(id)a3 fromSource:(id)a4
++ (id)URLForContinuingWorkflowWithState:(id)state fromSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8)
+  stateCopy = state;
+  sourceCopy = source;
+  v9 = sourceCopy;
+  if (!stateCopy || !sourceCopy)
   {
     v13 = +[NSAssertionHandler currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"WFHandoffSimulator.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"state && handoffSource"}];
+    [v13 handleFailureInMethod:a2 object:self file:@"WFHandoffSimulator.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"state && handoffSource"}];
   }
 
   v14[0] = WFHandoffWorkflowControllerStateKey;
   v14[1] = WFHandoffSourceKey;
-  v15[0] = v7;
+  v15[0] = stateCopy;
   v15[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
-  v11 = [a1 URLForSimulatingHandoffWithActivityType:WFHandoffContinueWorkflowActivityType userInfo:v10 webpageURL:0 fromSource:v9];
+  v11 = [self URLForSimulatingHandoffWithActivityType:WFHandoffContinueWorkflowActivityType userInfo:v10 webpageURL:0 fromSource:v9];
 
   return v11;
 }
 
-+ (id)URLForSimulatingHandoffWithActivityType:(id)a3 userInfo:(id)a4 webpageURL:(id)a5 fromSource:(id)a6
++ (id)URLForSimulatingHandoffWithActivityType:(id)type userInfo:(id)info webpageURL:(id)l fromSource:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (!v12 || !v14)
+  typeCopy = type;
+  infoCopy = info;
+  lCopy = l;
+  sourceCopy = source;
+  v15 = sourceCopy;
+  if (!infoCopy || !sourceCopy)
   {
     v27 = +[NSAssertionHandler currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"WFHandoffSimulator.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"userInfo && handoffSource"}];
+    [v27 handleFailureInMethod:a2 object:self file:@"WFHandoffSimulator.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"userInfo && handoffSource"}];
   }
 
-  v16 = [v11 isEqualToString:NSUserActivityTypeBrowsingWeb];
-  if (v13 && v16)
+  v16 = [typeCopy isEqualToString:NSUserActivityTypeBrowsingWeb];
+  if (lCopy && v16)
   {
-    v17 = v13;
+    v17 = lCopy;
     goto LABEL_13;
   }
 
   v18 = objc_opt_new();
-  v19 = [NSURLQueryItem queryItemWithName:@"type" value:v11];
+  v19 = [NSURLQueryItem queryItemWithName:@"type" value:typeCopy];
   [v18 addObject:v19];
 
-  if (!v12)
+  if (!infoCopy)
   {
     goto LABEL_9;
   }
 
-  v20 = [a1 temporaryFileURLBySerializingUserInfo:v12];
+  v20 = [self temporaryFileURLBySerializingUserInfo:infoCopy];
   v17 = v20;
   if (v20)
   {
-    v21 = [v20 absoluteString];
-    v22 = [NSURLQueryItem queryItemWithName:@"userInfoURL" value:v21];
+    absoluteString = [v20 absoluteString];
+    v22 = [NSURLQueryItem queryItemWithName:@"userInfoURL" value:absoluteString];
     [v18 addObject:v22];
 
 LABEL_9:
-    if (v13)
+    if (lCopy)
     {
-      v23 = [v13 absoluteString];
-      v24 = [NSURLQueryItem queryItemWithName:@"webpageURL" value:v23];
+      absoluteString2 = [lCopy absoluteString];
+      v24 = [NSURLQueryItem queryItemWithName:@"webpageURL" value:absoluteString2];
       [v18 addObject:v24];
     }
 
@@ -229,13 +229,13 @@ LABEL_13:
   return v17;
 }
 
-+ (void)registerHandoffURLRequestHandler:(id)a3
++ (void)registerHandoffURLRequestHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = +[NSAssertionHandler currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFHandoffSimulator.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    [v8 handleFailureInMethod:a2 object:self file:@"WFHandoffSimulator.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v6 = +[WFInterchangeManager sharedManager];
@@ -243,9 +243,9 @@ LABEL_13:
   v9[1] = 3221225472;
   v9[2] = sub_1000B61AC;
   v9[3] = &unk_1000F4210;
-  v10 = v5;
-  v11 = a1;
-  v7 = v5;
+  v10 = handlerCopy;
+  selfCopy = self;
+  v7 = handlerCopy;
   [v6 registerHandler:v9 forIncomingRequestsWithAction:@"continue-user-activity" scheme:0];
 }
 

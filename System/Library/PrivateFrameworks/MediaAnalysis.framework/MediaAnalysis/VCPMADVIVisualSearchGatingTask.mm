@@ -1,28 +1,28 @@
 @interface VCPMADVIVisualSearchGatingTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADVIVisualSearchGatingTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (id)createQueryContextWithError:(id *)a3;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADVIVisualSearchGatingTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (id)createQueryContextWithError:(id *)error;
 - (int)run;
 - (void)cancel;
-- (void)storeResults:(id)a3;
+- (void)storeResults:(id)results;
 @end
 
 @implementation VCPMADVIVisualSearchGatingTask
 
-- (VCPMADVIVisualSearchGatingTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADVIVisualSearchGatingTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v17.receiver = self;
   v17.super_class = VCPMADVIVisualSearchGatingTask;
   v12 = [(VCPMADVIVisualSearchGatingTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
     v14 = dispatch_queue_create("VCPMADVIVisualSearchGatingTask", 0);
     cancelQueue = v13->_cancelQueue;
     v13->_cancelQueue = v14;
@@ -31,15 +31,15 @@
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -81,147 +81,147 @@ uint64_t __40__VCPMADVIVisualSearchGatingTask_cancel__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)createQueryContextWithError:(id *)a3
+- (id)createQueryContextWithError:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(MADVIVisualSearchGatingRequest *)self->_request queryID];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  queryID = [(MADVIVisualSearchGatingRequest *)self->_request queryID];
 
-  if (v6)
+  if (queryID)
   {
-    v7 = [(MADVIVisualSearchGatingRequest *)self->_request queryID];
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69E0510]];
+    queryID2 = [(MADVIVisualSearchGatingRequest *)self->_request queryID];
+    [dictionary setObject:queryID2 forKeyedSubscript:*MEMORY[0x1E69E0510]];
   }
 
-  v8 = [(MADVIVisualSearchGatingRequest *)self->_request location];
+  location = [(MADVIVisualSearchGatingRequest *)self->_request location];
 
   v9 = MEMORY[0x1E69E0500];
-  if (v8)
+  if (location)
   {
-    v10 = [(MADVIVisualSearchGatingRequest *)self->_request location];
-    [v5 setObject:v10 forKeyedSubscript:*v9];
+    location2 = [(MADVIVisualSearchGatingRequest *)self->_request location];
+    [dictionary setObject:location2 forKeyedSubscript:*v9];
   }
 
-  v11 = [(MADVIVisualSearchGatingRequest *)self->_request imageType];
+  imageType = [(MADVIVisualSearchGatingRequest *)self->_request imageType];
 
   v12 = MEMORY[0x1E69E04F0];
-  if (v11)
+  if (imageType)
   {
-    v13 = [(MADVIVisualSearchGatingRequest *)self->_request imageType];
-    [v5 setObject:v13 forKeyedSubscript:*v12];
+    imageType2 = [(MADVIVisualSearchGatingRequest *)self->_request imageType];
+    [dictionary setObject:imageType2 forKeyedSubscript:*v12];
   }
 
-  v14 = [(MADVIVisualSearchGatingRequest *)self->_request featureIdentifier];
+  featureIdentifier = [(MADVIVisualSearchGatingRequest *)self->_request featureIdentifier];
 
-  if (v14)
+  if (featureIdentifier)
   {
-    v15 = [(MADVIVisualSearchGatingRequest *)self->_request featureIdentifier];
-    [v5 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69E04E8]];
+    featureIdentifier2 = [(MADVIVisualSearchGatingRequest *)self->_request featureIdentifier];
+    [dictionary setObject:featureIdentifier2 forKeyedSubscript:*MEMORY[0x1E69E04E8]];
   }
 
-  v16 = [(VCPMADServiceImageAsset *)self->_imageAsset location];
+  location3 = [(VCPMADServiceImageAsset *)self->_imageAsset location];
 
-  if (v16)
+  if (location3)
   {
-    v17 = [(VCPMADServiceImageAsset *)self->_imageAsset location];
-    [v5 setObject:v17 forKeyedSubscript:*v9];
+    location4 = [(VCPMADServiceImageAsset *)self->_imageAsset location];
+    [dictionary setObject:location4 forKeyedSubscript:*v9];
   }
 
   if ([(VCPMADServiceImageAsset *)self->_imageAsset isScreenshot])
   {
-    [v5 setObject:&unk_1F49BD9D8 forKeyedSubscript:*v12];
+    [dictionary setObject:&unk_1F49BD9D8 forKeyedSubscript:*v12];
   }
 
-  v18 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
+  clientBundleID = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
 
-  if (v18)
+  if (clientBundleID)
   {
-    v19 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
-    [v5 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69E04D0]];
+    clientBundleID2 = [(VCPMADServiceImageAsset *)self->_imageAsset clientBundleID];
+    [dictionary setObject:clientBundleID2 forKeyedSubscript:*MEMORY[0x1E69E04D0]];
   }
 
   preferredMetalDevice = self->_preferredMetalDevice;
   if (preferredMetalDevice)
   {
-    [v5 setObject:preferredMetalDevice forKeyedSubscript:*MEMORY[0x1E69E0508]];
+    [dictionary setObject:preferredMetalDevice forKeyedSubscript:*MEMORY[0x1E69E0508]];
   }
 
-  v21 = [(MADVIVisualSearchGatingRequest *)self->_request imageURL];
+  imageURL = [(MADVIVisualSearchGatingRequest *)self->_request imageURL];
 
   v22 = MEMORY[0x1E69E04F8];
-  if (v21)
+  if (imageURL)
   {
-    [v5 setObject:@"<redacted>" forKeyedSubscript:*MEMORY[0x1E69E04F8]];
+    [dictionary setObject:@"<redacted>" forKeyedSubscript:*MEMORY[0x1E69E04F8]];
   }
 
-  v23 = [(MADVIVisualSearchGatingRequest *)self->_request referralURL];
+  referralURL = [(MADVIVisualSearchGatingRequest *)self->_request referralURL];
 
   v24 = MEMORY[0x1E69E0518];
-  if (v23)
+  if (referralURL)
   {
-    [v5 setObject:@"<redacted>" forKeyedSubscript:*MEMORY[0x1E69E0518]];
+    [dictionary setObject:@"<redacted>" forKeyedSubscript:*MEMORY[0x1E69E0518]];
   }
 
-  v25 = [(MADVIVisualSearchGatingRequest *)self->_request engagementSuggestionType];
+  engagementSuggestionType = [(MADVIVisualSearchGatingRequest *)self->_request engagementSuggestionType];
 
-  if (v25)
+  if (engagementSuggestionType)
   {
-    v26 = [(MADVIVisualSearchGatingRequest *)self->_request engagementSuggestionType];
-    [v5 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69E04E0]];
+    engagementSuggestionType2 = [(MADVIVisualSearchGatingRequest *)self->_request engagementSuggestionType];
+    [dictionary setObject:engagementSuggestionType2 forKeyedSubscript:*MEMORY[0x1E69E04E0]];
   }
 
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v39 = v5;
+    v39 = dictionary;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Query context: %@", buf, 0xCu);
   }
 
-  v27 = [(MADVIVisualSearchGatingRequest *)self->_request imageURL];
-  v28 = v27 == 0;
+  imageURL2 = [(MADVIVisualSearchGatingRequest *)self->_request imageURL];
+  v28 = imageURL2 == 0;
 
   if (!v28)
   {
-    v29 = [(MADVIVisualSearchGatingRequest *)self->_request imageURL];
-    [v5 setObject:v29 forKeyedSubscript:*v22];
+    imageURL3 = [(MADVIVisualSearchGatingRequest *)self->_request imageURL];
+    [dictionary setObject:imageURL3 forKeyedSubscript:*v22];
   }
 
-  v30 = [(MADVIVisualSearchGatingRequest *)self->_request referralURL];
-  v31 = v30 == 0;
+  referralURL2 = [(MADVIVisualSearchGatingRequest *)self->_request referralURL];
+  v31 = referralURL2 == 0;
 
   if (!v31)
   {
-    v32 = [(MADVIVisualSearchGatingRequest *)self->_request referralURL];
-    [v5 setObject:v32 forKeyedSubscript:*v24];
+    referralURL3 = [(MADVIVisualSearchGatingRequest *)self->_request referralURL];
+    [dictionary setObject:referralURL3 forKeyedSubscript:*v24];
   }
 
   v37 = 0;
-  v33 = [MEMORY[0x1E69E0470] contextWithDictionary:v5 error:&v37];
+  v33 = [MEMORY[0x1E69E0470] contextWithDictionary:dictionary error:&v37];
   v34 = v37;
   v35 = v37;
-  if (a3)
+  if (error)
   {
-    objc_storeStrong(a3, v34);
+    objc_storeStrong(error, v34);
   }
 
   return v33;
 }
 
-- (void)storeResults:(id)a3
+- (void)storeResults:(id)results
 {
-  v31 = self;
+  selfCopy = self;
   v52 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v35 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v3 = [v32 visualUnderstanding];
-  v4 = [v3 imageRegions];
+  visualUnderstanding = [resultsCopy visualUnderstanding];
+  imageRegions = [visualUnderstanding imageRegions];
 
-  obj = v4;
-  v36 = [v4 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  obj = imageRegions;
+  v36 = [imageRegions countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v36)
   {
     v34 = *v46;
@@ -236,18 +236,18 @@ uint64_t __40__VCPMADVIVisualSearchGatingTask_cancel__block_invoke(uint64_t a1)
         }
 
         v5 = *(*(&v45 + 1) + 8 * v38);
-        v40 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v43 = 0u;
         v44 = 0u;
         v41 = 0u;
         v42 = 0u;
         v37 = v5;
-        v6 = [v5 domainInfo];
-        v7 = [v6 countByEnumeratingWithState:&v41 objects:v50 count:16];
+        domainInfo = [v5 domainInfo];
+        v7 = [domainInfo countByEnumeratingWithState:&v41 objects:v50 count:16];
         if (v7)
         {
           v8 = *v42;
-          v39 = v6;
+          v39 = domainInfo;
           do
           {
             v9 = 0;
@@ -260,23 +260,23 @@ uint64_t __40__VCPMADVIVisualSearchGatingTask_cancel__block_invoke(uint64_t a1)
 
               v10 = *(*(&v41 + 1) + 8 * v9);
               v11 = objc_alloc(MEMORY[0x1E69AE478]);
-              v12 = [v10 domainKey];
-              v13 = [v10 labelName];
-              v14 = [v10 glyphName];
-              v15 = [v10 hasFocalPoint];
+              domainKey = [v10 domainKey];
+              labelName = [v10 labelName];
+              glyphName = [v10 glyphName];
+              hasFocalPoint = [v10 hasFocalPoint];
               [v10 focalPoint];
               v17 = v16;
               v19 = v18;
-              v20 = [v10 displayLabel];
-              v21 = [v10 displayMessage];
-              v22 = [v11 initWithDomain:v12 label:v13 glyphName:v14 hasFocalPoint:v15 focalPoint:v20 displayLabel:v21 displayMessage:{v17, v19}];
-              [v40 addObject:v22];
+              displayLabel = [v10 displayLabel];
+              displayMessage = [v10 displayMessage];
+              v22 = [v11 initWithDomain:domainKey label:labelName glyphName:glyphName hasFocalPoint:hasFocalPoint focalPoint:displayLabel displayLabel:displayMessage displayMessage:{v17, v19}];
+              [array2 addObject:v22];
 
               ++v9;
             }
 
             while (v7 != v9);
-            v6 = v39;
+            domainInfo = v39;
             v7 = [v39 countByEnumeratingWithState:&v41 objects:v50 count:16];
           }
 
@@ -285,8 +285,8 @@ uint64_t __40__VCPMADVIVisualSearchGatingTask_cancel__block_invoke(uint64_t a1)
 
         v23 = objc_alloc(MEMORY[0x1E69AE490]);
         [v37 regionOfInterest];
-        v24 = [v23 initWithNormalizedBoundingBox:v40 andDomains:?];
-        [v35 addObject:v24];
+        v24 = [v23 initWithNormalizedBoundingBox:array2 andDomains:?];
+        [array addObject:v24];
 
         ++v38;
       }
@@ -298,11 +298,11 @@ uint64_t __40__VCPMADVIVisualSearchGatingTask_cancel__block_invoke(uint64_t a1)
     while (v36);
   }
 
-  request = v31->_request;
+  request = selfCopy->_request;
   v26 = objc_alloc(MEMORY[0x1E69AE488]);
-  v27 = [v32 visualUnderstanding];
-  v28 = [v27 payload];
-  v29 = [v26 initWithResultItems:v35 andPayload:v28];
+  visualUnderstanding2 = [resultsCopy visualUnderstanding];
+  payload = [visualUnderstanding2 payload];
+  v29 = [v26 initWithResultItems:array andPayload:payload];
   v49 = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
   [(MADVIVisualSearchGatingRequest *)request setResults:v30];
@@ -327,8 +327,8 @@ uint64_t __40__VCPMADVIVisualSearchGatingTask_cancel__block_invoke(uint64_t a1)
 
     request = self->_request;
     v4 = objc_alloc(MEMORY[0x1E69AE488]);
-    v5 = [v4 initWithResultItems:MEMORY[0x1E695E0F0] andPayload:0];
-    v60[0] = v5;
+    cachedParseData = [v4 initWithResultItems:MEMORY[0x1E695E0F0] andPayload:0];
+    v60[0] = cachedParseData;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:1];
     [(MADVIVisualSearchGatingRequest *)request setResults:v6];
 
@@ -339,8 +339,8 @@ LABEL_9:
 
   if (VCPPhotosParseCachingEnabled() && [(VCPMADServiceImageAsset *)self->_imageAsset hasCachedParseData])
   {
-    v5 = [(VCPMADServiceImageAsset *)self->_imageAsset cachedParseData];
-    if (!v5)
+    cachedParseData = [(VCPMADServiceImageAsset *)self->_imageAsset cachedParseData];
+    if (!cachedParseData)
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -350,8 +350,8 @@ LABEL_9:
 
       v8 = self->_request;
       v9 = objc_alloc(MEMORY[0x1E69AE488]);
-      v5 = [v9 initWithResultItems:MEMORY[0x1E695E0F0] andPayload:0];
-      v59 = v5;
+      cachedParseData = [v9 initWithResultItems:MEMORY[0x1E695E0F0] andPayload:0];
+      v59 = cachedParseData;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v59 count:1];
       [(MADVIVisualSearchGatingRequest *)v8 setResults:v10];
 
@@ -361,7 +361,7 @@ LABEL_9:
 
   else
   {
-    v5 = 0;
+    cachedParseData = 0;
   }
 
   v51 = 0;
@@ -384,14 +384,14 @@ LABEL_9:
     v37 = [v12 initWithImageLoader:v36 imageSize:?];
     v38 = [(VCPMADServiceImageAsset *)self->_imageAsset vcp_annotationWithTypes:7];
     v13 = VIAllVisualSearchDomains();
-    v14 = [(MADVIVisualSearchGatingRequest *)self->_request domains];
-    v15 = [v14 count] == 0;
+    domains = [(MADVIVisualSearchGatingRequest *)self->_request domains];
+    v15 = [domains count] == 0;
 
     if (!v15)
     {
       v16 = MEMORY[0x1E695DFD8];
-      v17 = [(MADVIVisualSearchGatingRequest *)self->_request domains];
-      v18 = [v16 setWithArray:v17];
+      domains2 = [(MADVIVisualSearchGatingRequest *)self->_request domains];
+      v18 = [v16 setWithArray:domains2];
 
       v13 = v18;
     }
@@ -419,7 +419,7 @@ LABEL_9:
     v41 = v26;
     v27 = v19;
     v42 = v27;
-    v43 = v5;
+    v43 = cachedParseData;
     p_buf = &buf;
     dispatch_sync(cancelQueue, block);
     dispatch_group_wait(v25, 0xFFFFFFFFFFFFFFFFLL);

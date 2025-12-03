@@ -1,19 +1,19 @@
 @interface PGFeatureExtractorDurationInSecond
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorDurationInSecond
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  [a3 duration];
+  [entity duration];
   v6 = v5;
   v7 = MEMORY[0x277D22C40];
-  v8 = [(PGFeatureExtractorDurationInSecond *)self featureLength];
+  featureLength = [(PGFeatureExtractorDurationInSecond *)self featureLength];
   *&v9 = v6;
 
-  return [v7 vectorRepeatingFloat:v8 count:v9];
+  return [v7 vectorRepeatingFloat:featureLength count:v9];
 }
 
 - (id)featureNames

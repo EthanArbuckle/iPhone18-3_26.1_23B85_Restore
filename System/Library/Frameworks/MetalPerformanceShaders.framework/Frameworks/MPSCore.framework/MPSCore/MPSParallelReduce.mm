@@ -1,17 +1,17 @@
 @interface MPSParallelReduce
-- (MPSParallelReduce)initWithCoder:(id)a3 device:(id)a4;
-- (MPSParallelReduce)initWithDevice:(id)a3;
-- (MPSParallelReduce)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5;
-- (MPSParallelReduce)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5 reduceOp:(int)a6;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)initPrivateWithDevice:(id)a3;
-- (void)encodeToCommandBuffer:(id)a3 sourceBuffer:(id)a4 sourceOffset:(unint64_t)a5 destinationBuffer:(id)a6 destinationOffset:(unint64_t)a7 numEntries:(unint64_t)a8;
-- (void)encodeWithCoder:(id)a3;
+- (MPSParallelReduce)initWithCoder:(id)coder device:(id)device;
+- (MPSParallelReduce)initWithDevice:(id)device;
+- (MPSParallelReduce)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType;
+- (MPSParallelReduce)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType reduceOp:(int)op;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)initPrivateWithDevice:(id)device;
+- (void)encodeToCommandBuffer:(id)buffer sourceBuffer:(id)sourceBuffer sourceOffset:(unint64_t)offset destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)destinationOffset numEntries:(unint64_t)entries;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSParallelReduce
 
-- (MPSParallelReduce)initWithDevice:(id)a3
+- (MPSParallelReduce)initWithDevice:(id)device
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -21,14 +21,14 @@
   return 0;
 }
 
-- (id)initPrivateWithDevice:(id)a3
+- (id)initPrivateWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSParallelReduce;
-  return [(MPSKernel *)&v4 initWithDevice:a3];
+  return [(MPSKernel *)&v4 initWithDevice:device];
 }
 
-- (MPSParallelReduce)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5
+- (MPSParallelReduce)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -38,16 +38,16 @@
   return 0;
 }
 
-- (MPSParallelReduce)initWithDevice:(id)a3 sourceDataType:(unsigned int)a4 destinationDataType:(unsigned int)a5 reduceOp:(int)a6
+- (MPSParallelReduce)initWithDevice:(id)device sourceDataType:(unsigned int)type destinationDataType:(unsigned int)dataType reduceOp:(int)op
 {
-  result = objc_msgSend_initPrivateWithDevice_(self, a2, a3, *&a4, *&a5);
+  result = objc_msgSend_initPrivateWithDevice_(self, a2, device, *&type, *&dataType);
   if (result)
   {
-    if (a4 > 268435487)
+    if (type > 268435487)
     {
-      if (a4 - 536870920 <= 0x18 && ((1 << (a4 - 8)) & 0x1000101) != 0)
+      if (type - 536870920 <= 0x18 && ((1 << (type - 8)) & 0x1000101) != 0)
       {
-        if (a5 != 536870944)
+        if (dataType != 536870944)
         {
           v10 = result;
           if (MTLReportFailureTypeEnabled())
@@ -61,7 +61,7 @@
         goto LABEL_20;
       }
 
-      if (a4 != 268435488)
+      if (type != 268435488)
       {
 LABEL_14:
         v10 = result;
@@ -81,9 +81,9 @@ LABEL_16:
 
     else
     {
-      if (a4 <= 0x20 && ((1 << a4) & 0x100010100) != 0)
+      if (type <= 0x20 && ((1 << type) & 0x100010100) != 0)
       {
-        if (a5 != 32)
+        if (dataType != 32)
         {
           v10 = result;
           if (MTLReportFailureTypeEnabled())
@@ -95,22 +95,22 @@ LABEL_16:
         }
 
 LABEL_20:
-        result->_sourceDataType = a4;
-        if (a4 > 536870919)
+        result->_sourceDataType = type;
+        if (type > 536870919)
         {
-          if (a4 != 536870944)
+          if (type != 536870944)
           {
-            if (a4 == 536870928)
+            if (type == 536870928)
             {
               v12 = 88;
-              if ((a6 - 3) > 1)
+              if ((op - 3) > 1)
               {
-                v14 = 5 * a6 + 2;
+                v14 = 5 * op + 2;
               }
 
               else
               {
-                if (a6 == 4)
+                if (op == 4)
                 {
                   v18 = 12;
                 }
@@ -128,17 +128,17 @@ LABEL_20:
               goto LABEL_57;
             }
 
-            if (a4 == 536870920)
+            if (type == 536870920)
             {
               v12 = 88;
-              if ((a6 - 3) > 1)
+              if ((op - 3) > 1)
               {
-                v14 = 5 * a6 + 1;
+                v14 = 5 * op + 1;
               }
 
               else
               {
-                if (a6 == 4)
+                if (op == 4)
                 {
                   v15 = 11;
                 }
@@ -160,19 +160,19 @@ LABEL_20:
           }
         }
 
-        else if (a4 != 32)
+        else if (type != 32)
         {
-          if (a4 == 268435472)
+          if (type == 268435472)
           {
             v12 = 88;
-            if ((a6 - 3) > 1)
+            if ((op - 3) > 1)
             {
-              v14 = 5 * a6 + 4;
+              v14 = 5 * op + 4;
             }
 
             else
             {
-              if (a6 == 4)
+              if (op == 4)
               {
                 v17 = 14;
               }
@@ -190,17 +190,17 @@ LABEL_20:
             goto LABEL_57;
           }
 
-          if (a4 == 268435488)
+          if (type == 268435488)
           {
             v12 = 88;
-            if ((a6 - 3) > 1)
+            if ((op - 3) > 1)
             {
-              v14 = 5 * a6 + 5;
+              v14 = 5 * op + 5;
             }
 
             else
             {
-              if (a6 == 4)
+              if (op == 4)
               {
                 v13 = 15;
               }
@@ -220,20 +220,20 @@ LABEL_57:
           }
 
 LABEL_58:
-          result->_destinationDataType = a5;
-          result->_reduceOp = a6;
+          result->_destinationDataType = dataType;
+          result->_reduceOp = op;
           return result;
         }
 
         v12 = 88;
-        if ((a6 - 3) > 1)
+        if ((op - 3) > 1)
         {
-          v14 = 5 * a6 + 3;
+          v14 = 5 * op + 3;
         }
 
         else
         {
-          if (a6 == 4)
+          if (op == 4)
           {
             v16 = 13;
           }
@@ -251,13 +251,13 @@ LABEL_58:
         goto LABEL_57;
       }
 
-      if (a4 != 268435472)
+      if (type != 268435472)
       {
         goto LABEL_14;
       }
     }
 
-    if (a5 != 268435488)
+    if (dataType != 268435488)
     {
       v10 = result;
       if (!MTLReportFailureTypeEnabled())
@@ -274,11 +274,11 @@ LABEL_58:
   return result;
 }
 
-- (MPSParallelReduce)initWithCoder:(id)a3 device:(id)a4
+- (MPSParallelReduce)initWithCoder:(id)coder device:(id)device
 {
   v24.receiver = self;
   v24.super_class = MPSParallelReduce;
-  v5 = [(MPSKernel *)&v24 initWithCoder:a3 device:a4];
+  v5 = [(MPSKernel *)&v24 initWithCoder:coder device:device];
   v9 = v5;
   if (!v5)
   {
@@ -287,11 +287,11 @@ LABEL_58:
 
   if (*(&v5->super._fileVersion.var0 + 1) << 16 == 0x10000)
   {
-    v5->_sourceDataType = objc_msgSend_decodeInt32ForKey_(a3, v6, @"MPSParallelReduce.sourceDataType", v7, v8);
-    v9->_destinationDataType = objc_msgSend_decodeInt32ForKey_(a3, v10, @"MPSParallelReduce.destinationDataType", v11, v12);
-    v9->_reduceOp = objc_msgSend_decodeInt32ForKey_(a3, v13, @"MPSParallelReduce.op", v14, v15);
-    v9->_kernelID = objc_msgSend_decodeInt32ForKey_(a3, v16, @"MPSParallelReduce.kernelID", v17, v18);
-    v9->_argkernelID = objc_msgSend_decodeInt32ForKey_(a3, v19, @"MPSParallelReduce.argkernelID", v20, v21);
+    v5->_sourceDataType = objc_msgSend_decodeInt32ForKey_(coder, v6, @"MPSParallelReduce.sourceDataType", v7, v8);
+    v9->_destinationDataType = objc_msgSend_decodeInt32ForKey_(coder, v10, @"MPSParallelReduce.destinationDataType", v11, v12);
+    v9->_reduceOp = objc_msgSend_decodeInt32ForKey_(coder, v13, @"MPSParallelReduce.op", v14, v15);
+    v9->_kernelID = objc_msgSend_decodeInt32ForKey_(coder, v16, @"MPSParallelReduce.kernelID", v17, v18);
+    v9->_argkernelID = objc_msgSend_decodeInt32ForKey_(coder, v19, @"MPSParallelReduce.argkernelID", v20, v21);
     return v9;
   }
 
@@ -305,24 +305,24 @@ LABEL_58:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super._fileVersion.var0 + 1) = 1;
   v15.receiver = self;
   v15.super_class = MPSParallelReduce;
   [(MPSKernel *)&v15 encodeWithCoder:?];
-  objc_msgSend_encodeInt32_forKey_(a3, v5, self->_sourceDataType, @"MPSParallelReduce.sourceDataType", v6);
-  objc_msgSend_encodeInt32_forKey_(a3, v7, self->_destinationDataType, @"MPSParallelReduce.destinationDataType", v8);
-  objc_msgSend_encodeInt32_forKey_(a3, v9, self->_reduceOp, @"MPSParallelReduce.op", v10);
-  objc_msgSend_encodeInt32_forKey_(a3, v11, self->_kernelID, @"MPSParallelReduce.kernelID", v12);
-  objc_msgSend_encodeInt32_forKey_(a3, v13, self->_argkernelID, @"MPSParallelReduce.argkernelID", v14);
+  objc_msgSend_encodeInt32_forKey_(coder, v5, self->_sourceDataType, @"MPSParallelReduce.sourceDataType", v6);
+  objc_msgSend_encodeInt32_forKey_(coder, v7, self->_destinationDataType, @"MPSParallelReduce.destinationDataType", v8);
+  objc_msgSend_encodeInt32_forKey_(coder, v9, self->_reduceOp, @"MPSParallelReduce.op", v10);
+  objc_msgSend_encodeInt32_forKey_(coder, v11, self->_kernelID, @"MPSParallelReduce.kernelID", v12);
+  objc_msgSend_encodeInt32_forKey_(coder, v13, self->_argkernelID, @"MPSParallelReduce.argkernelID", v14);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSParallelReduce;
-  result = [(MPSKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 24) = self->_sourceDataType;
@@ -335,18 +335,18 @@ LABEL_58:
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceBuffer:(id)a4 sourceOffset:(unint64_t)a5 destinationBuffer:(id)a6 destinationOffset:(unint64_t)a7 numEntries:(unint64_t)a8
+- (void)encodeToCommandBuffer:(id)buffer sourceBuffer:(id)sourceBuffer sourceOffset:(unint64_t)offset destinationBuffer:(id)destinationBuffer destinationOffset:(unint64_t)destinationOffset numEntries:(unint64_t)entries
 {
   if ((self->super._options & 1) == 0)
   {
-    if (!a4 && MTLReportFailureTypeEnabled())
+    if (!sourceBuffer && MTLReportFailureTypeEnabled())
     {
       v70 = objc_opt_class();
       v72 = NSStringFromClass(v70);
       MTLReportFailure();
     }
 
-    if (!a6 && MTLReportFailureTypeEnabled())
+    if (!destinationBuffer && MTLReportFailureTypeEnabled())
     {
       v71 = objc_opt_class();
       v72 = NSStringFromClass(v71);
@@ -354,12 +354,12 @@ LABEL_58:
     }
   }
 
-  v84 = a8;
-  MPSAutoCache::MPSAutoCache(&v83, a3, 0, a4, a5);
+  entriesCopy = entries;
+  MPSAutoCache::MPSAutoCache(&v83, buffer, 0, sourceBuffer, offset);
   v14 = [MPSComputeEncoder alloc];
-  v20 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v14, v15, a3, 0, v16);
+  v20 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v14, v15, buffer, 0, v16);
   v81 = v20;
-  v82 = self;
+  selfCopy = self;
   if ((self->super._options & 0x18) != 0)
   {
     label = self->super._label;
@@ -370,7 +370,7 @@ LABEL_58:
   }
 
   ComputeState = MPSLibrary::GetComputeState(self->super._library, 0x15u, xmmword_22E37D448, 1, 0, 0, 0);
-  v73 = a7;
+  destinationOffsetCopy = destinationOffset;
   objc_msgSend_maxTotalThreadsPerThreadgroup(ComputeState, v27, v28, v29, v30);
   if ((*(self->super._device + 369) & 0x400) != 0)
   {
@@ -396,18 +396,18 @@ LABEL_58:
   v36 = 8 * v34;
   v37 = 8 * v34 - 1;
   v75 = v35;
-  v38 = (v37 + a8) >> v35;
+  v38 = (v37 + entries) >> v35;
   TempBuffer = MPSAutoCache::GetTempBuffer(&v83, 4 * v38, 0);
   v41 = MPSAutoCache::GetTempBuffer(&v83, 4 * v38, 0);
-  if (8 * v34 >= a8)
+  if (8 * v34 >= entries)
   {
-    TempBuffer = a6;
+    TempBuffer = destinationBuffer;
   }
 
-  objc_msgSend_setBuffer_offset_atIndex_(v20, v40, a4, a5, 0);
-  if (v36 >= a8)
+  objc_msgSend_setBuffer_offset_atIndex_(v20, v40, sourceBuffer, offset, 0);
+  if (v36 >= entries)
   {
-    objc_msgSend_setBuffer_offset_atIndex_(v20, v42, TempBuffer, v73, 1);
+    objc_msgSend_setBuffer_offset_atIndex_(v20, v42, TempBuffer, destinationOffsetCopy, 1);
   }
 
   else
@@ -415,7 +415,7 @@ LABEL_58:
     objc_msgSend_setBuffer_offset_atIndex_(v20, v42, TempBuffer, 0, 1);
   }
 
-  objc_msgSend_setBytes_length_atIndex_(v20, v43, &v84, 8, 2);
+  objc_msgSend_setBytes_length_atIndex_(v20, v43, &entriesCopy, 8, 2);
   objc_msgSend_setThreadgroupMemoryLength_atIndex_(v20, v44, 32 * v34, 0, v45);
   v79 = v38;
   v80 = vdupq_n_s64(1uLL);
@@ -426,7 +426,7 @@ LABEL_58:
   if (v38 <= v36)
   {
     v52 = TempBuffer;
-    v59 = v73;
+    v59 = destinationOffsetCopy;
     if (v38 < 2)
     {
       goto LABEL_25;
@@ -435,7 +435,7 @@ LABEL_58:
 LABEL_24:
     objc_msgSend_setBuffer_offset_atIndex_(v20, v48, v52, 0, 0);
     v20 = v81;
-    objc_msgSend_setBuffer_offset_atIndex_(v81, v60, a6, v59, 1);
+    objc_msgSend_setBuffer_offset_atIndex_(v81, v60, destinationBuffer, v59, 1);
     objc_msgSend_setBytes_length_atIndex_(v20, v61, &v76, 8, 2);
     objc_msgSend_setThreadgroupMemoryLength_atIndex_(v20, v62, 32 * v34, 0, v63);
     v79 = (v38 + v37) >> v75;
@@ -466,7 +466,7 @@ LABEL_24:
   }
 
   while (v38 > v36);
-  v59 = v73;
+  v59 = destinationOffsetCopy;
   if (v38 >= 2)
   {
     goto LABEL_24;

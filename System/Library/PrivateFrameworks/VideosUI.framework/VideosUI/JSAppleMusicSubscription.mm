@@ -1,20 +1,20 @@
 @interface JSAppleMusicSubscription
 - (void)musicSubscriptionStatusHasChanged;
-- (void)refreshAppleMusicSubscriptionStatusWithJsCallback:(id)a3;
+- (void)refreshAppleMusicSubscriptionStatusWithJsCallback:(id)callback;
 @end
 
 @implementation JSAppleMusicSubscription
 
-- (void)refreshAppleMusicSubscriptionStatusWithJsCallback:(id)a3
+- (void)refreshAppleMusicSubscriptionStatusWithJsCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E3E97EAC(v4);
+  callbackCopy = callback;
+  selfCopy = self;
+  sub_1E3E97EAC(callbackCopy);
 }
 
 - (void)musicSubscriptionStatusHasChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3E98620();
 }
 

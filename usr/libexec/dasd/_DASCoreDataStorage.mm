@@ -1,33 +1,33 @@
 @interface _DASCoreDataStorage
-+ (BOOL)createDatabaseDirectory:(id)a3 error:(id *)a4;
-- (BOOL)deleteDatabaseForPSC:(id)a3 protectionClass:(id)a4 obliterate:(BOOL)a5;
-- (BOOL)deleteStorageFor:(id)a3 obliterate:(BOOL)a4;
++ (BOOL)createDatabaseDirectory:(id)directory error:(id *)error;
+- (BOOL)deleteDatabaseForPSC:(id)c protectionClass:(id)class obliterate:(BOOL)obliterate;
+- (BOOL)deleteStorageFor:(id)for obliterate:(BOOL)obliterate;
 - (NSManagedObjectModel)managedObjectModel;
-- (_DASCoreDataStorage)initWithDirectory:(id)a3 databaseName:(id)a4 modelURL:(id)a5 readOnly:(BOOL)a6;
-- (id)mocForProtectionClass:(id)a3;
-- (id)persistentStoreCoordinatorFor:(id)a3;
-- (void)handleDataProtectionChangeFor:(id)a3 willBeAvailable:(BOOL)a4;
-- (void)invalidateManagedObjectContextFor:(id)a3;
-- (void)invalidatePersistentStoreCoordinatorFor:(id)a3;
+- (_DASCoreDataStorage)initWithDirectory:(id)directory databaseName:(id)name modelURL:(id)l readOnly:(BOOL)only;
+- (id)mocForProtectionClass:(id)class;
+- (id)persistentStoreCoordinatorFor:(id)for;
+- (void)handleDataProtectionChangeFor:(id)for willBeAvailable:(BOOL)available;
+- (void)invalidateManagedObjectContextFor:(id)for;
+- (void)invalidatePersistentStoreCoordinatorFor:(id)for;
 @end
 
 @implementation _DASCoreDataStorage
 
-- (_DASCoreDataStorage)initWithDirectory:(id)a3 databaseName:(id)a4 modelURL:(id)a5 readOnly:(BOOL)a6
+- (_DASCoreDataStorage)initWithDirectory:(id)directory databaseName:(id)name modelURL:(id)l readOnly:(BOOL)only
 {
-  v34 = a3;
-  v35 = a4;
-  v36 = a5;
+  directoryCopy = directory;
+  nameCopy = name;
+  lCopy = l;
   v40.receiver = self;
   v40.super_class = _DASCoreDataStorage;
   v11 = [(_DASCoreDataStorage *)&v40 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_databaseDirectory, a3);
-    objc_storeStrong(&v12->_databaseName, a4);
-    objc_storeStrong(&v12->_modelURL, a5);
-    v12->_readOnly = a6;
+    objc_storeStrong(&v11->_databaseDirectory, directory);
+    objc_storeStrong(&v12->_databaseName, name);
+    objc_storeStrong(&v12->_modelURL, l);
+    v12->_readOnly = only;
     v13 = dispatch_queue_create("_DASCoreDataStore.mocQueue", 0);
     mocQueue = v12->_mocQueue;
     v12->_mocQueue = v13;
@@ -82,41 +82,41 @@
   return v12;
 }
 
-- (void)handleDataProtectionChangeFor:(id)a3 willBeAvailable:(BOOL)a4
+- (void)handleDataProtectionChangeFor:(id)for willBeAvailable:(BOOL)available
 {
-  if (!a4)
+  if (!available)
   {
-    v6 = a3;
-    [(_DASCoreDataStorage *)self invalidateManagedObjectContextFor:v6];
-    [(_DASCoreDataStorage *)self invalidatePersistentStoreCoordinatorFor:v6];
+    forCopy = for;
+    [(_DASCoreDataStorage *)self invalidateManagedObjectContextFor:forCopy];
+    [(_DASCoreDataStorage *)self invalidatePersistentStoreCoordinatorFor:forCopy];
   }
 }
 
-- (void)invalidateManagedObjectContextFor:(id)a3
+- (void)invalidateManagedObjectContextFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   mocQueue = self->_mocQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002F3E8;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = forCopy;
+  v6 = forCopy;
   dispatch_sync(mocQueue, v7);
 }
 
-- (void)invalidatePersistentStoreCoordinatorFor:(id)a3
+- (void)invalidatePersistentStoreCoordinatorFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   pscQueue = self->_pscQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002F580;
   v7[3] = &unk_1001B56E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = forCopy;
+  v6 = forCopy;
   dispatch_sync(pscQueue, v7);
 }
 
@@ -147,10 +147,10 @@ LABEL_5:
   return v6;
 }
 
-- (id)persistentStoreCoordinatorFor:(id)a3
+- (id)persistentStoreCoordinatorFor:(id)for
 {
-  v4 = a3;
-  v5 = [(_DASDataProtectionStateMonitor *)self->_dataProtectionMonitor isDataAvailableFor:v4];
+  forCopy = for;
+  v5 = [(_DASDataProtectionStateMonitor *)self->_dataProtectionMonitor isDataAvailableFor:forCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -168,7 +168,7 @@ LABEL_5:
   block[3] = &unk_1001B5DE8;
   v12 = &v19;
   block[4] = self;
-  v7 = v4;
+  v7 = forCopy;
   v14 = v5;
   v11 = v7;
   v13 = &v15;
@@ -190,10 +190,10 @@ LABEL_5:
   return v8;
 }
 
-- (id)mocForProtectionClass:(id)a3
+- (id)mocForProtectionClass:(id)class
 {
-  v4 = a3;
-  v5 = [(_DASDataProtectionStateMonitor *)self->_dataProtectionMonitor isDataAvailableFor:v4];
+  classCopy = class;
+  v5 = [(_DASDataProtectionStateMonitor *)self->_dataProtectionMonitor isDataAvailableFor:classCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -211,7 +211,7 @@ LABEL_5:
   block[3] = &unk_1001B5DE8;
   v12 = &v19;
   block[4] = self;
-  v7 = v4;
+  v7 = classCopy;
   v14 = v5;
   v11 = v7;
   v13 = &v15;
@@ -233,18 +233,18 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)deleteDatabaseForPSC:(id)a3 protectionClass:(id)a4 obliterate:(BOOL)a5
+- (BOOL)deleteDatabaseForPSC:(id)c protectionClass:(id)class obliterate:(BOOL)obliterate
 {
   readOnly = self->_readOnly;
   if (!readOnly)
   {
-    v6 = a5;
+    obliterateCopy = obliterate;
     paths = self->_paths;
-    v9 = a3;
-    v10 = [(NSDictionary *)paths objectForKeyedSubscript:a4];
+    cCopy = c;
+    v10 = [(NSDictionary *)paths objectForKeyedSubscript:class];
     v11 = [NSURL fileURLWithPath:v10];
 
-    if (v6)
+    if (obliterateCopy)
     {
       v19[0] = NSPersistentStoreUnlinkDestroyOption;
       v19[1] = NSPersistentStoreForceDestroyOption;
@@ -265,15 +265,15 @@ LABEL_5:
     }
 
     v15 = [NSDictionary dictionaryWithObjects:v12 forKeys:v13 count:v14];
-    [v9 _destroyPersistentStoreAtURL:v11 withType:NSSQLiteStoreType options:v15 error:0];
+    [cCopy _destroyPersistentStoreAtURL:v11 withType:NSSQLiteStoreType options:v15 error:0];
   }
 
   return !readOnly;
 }
 
-- (BOOL)deleteStorageFor:(id)a3 obliterate:(BOOL)a4
+- (BOOL)deleteStorageFor:(id)for obliterate:(BOOL)obliterate
 {
-  v6 = a3;
+  forCopy = for;
   if (self->_readOnly)
   {
     v7 = 0;
@@ -281,10 +281,10 @@ LABEL_5:
 
   else
   {
-    v8 = [(_DASCoreDataStorage *)self mocForProtectionClass:v6];
+    v8 = [(_DASCoreDataStorage *)self mocForProtectionClass:forCopy];
     if (v8)
     {
-      v9 = [(_DASCoreDataStorage *)self persistentStoreCoordinatorFor:v6];
+      v9 = [(_DASCoreDataStorage *)self persistentStoreCoordinatorFor:forCopy];
       if (v9)
       {
         v16 = 0;
@@ -296,10 +296,10 @@ LABEL_5:
         v11[2] = sub_1000302F0;
         v11[3] = &unk_1001B5E10;
         v11[4] = self;
-        v12 = v6;
+        v12 = forCopy;
         v14 = &v16;
         v13 = v9;
-        v15 = a4;
+        obliterateCopy = obliterate;
         [v8 performWithOptions:4 andBlock:v11];
         v7 = *(v17 + 24);
 
@@ -321,14 +321,14 @@ LABEL_5:
   return v7 & 1;
 }
 
-+ (BOOL)createDatabaseDirectory:(id)a3 error:(id *)a4
++ (BOOL)createDatabaseDirectory:(id)directory error:(id *)error
 {
-  v5 = a3;
+  directoryCopy = directory;
   v6 = +[NSFileManager defaultManager];
-  v7 = [NSURL fileURLWithPath:v5 isDirectory:1];
+  v7 = [NSURL fileURLWithPath:directoryCopy isDirectory:1];
 
-  LOBYTE(a4) = [v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:a4];
-  return a4;
+  LOBYTE(error) = [v6 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:error];
+  return error;
 }
 
 @end

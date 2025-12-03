@@ -1,13 +1,13 @@
 @interface StatusBarSafeAreaView
-- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithCoder:(id)a3;
-- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithCoder:(id)coder;
+- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithNibName:(id)name bundle:(id)bundle;
 - (uint64_t)viewSafeAreaInsetsDidChange;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
 @end
 
 @implementation StatusBarSafeAreaView
 
-- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithCoder:(id)a3
+- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC19ContactlessReaderUI21StatusBarSafeAreaView_safeRect);
   *v3 = 0u;
@@ -24,18 +24,18 @@
   return result;
 }
 
-- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19ContactlessReaderUI21StatusBarSafeAreaView)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  if (a3)
+  if (view)
   {
-    [a3 layoutSubviews];
+    [view layoutSubviews];
   }
 
   else

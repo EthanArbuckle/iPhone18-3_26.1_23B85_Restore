@@ -1,26 +1,26 @@
 @interface PXCuratedLibraryAssetsDataSourceManager
 - (BOOL)forceAccurateAllSectionsIfNeeded;
-- (BOOL)forceAccurateSection:(int64_t)a3 andSectionsBeforeAndAfter:(int64_t)a4;
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3;
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3 inZoomLevel:(int64_t)a4;
+- (BOOL)forceAccurateSection:(int64_t)section andSectionsBeforeAndAfter:(int64_t)after;
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed;
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed inZoomLevel:(int64_t)level;
 - (BOOL)forceAllPhotosAccurateIfNeeded;
 - (PXAssetsDataSourceManager)currentAssetsDataSourceManager;
 - (PXCuratedLibraryAssetsDataSourceManager)init;
-- (PXCuratedLibraryAssetsDataSourceManager)initWithConfiguration:(id)a3;
+- (PXCuratedLibraryAssetsDataSourceManager)initWithConfiguration:(id)configuration;
 - (PXCuratedLibraryAssetsDataSourceManagerDelegate)delegate;
 - (PXPhotoKitAssetsDataSourceManager)currentPhotoKitAssetsDataSourceManager;
-- (id)_photosDataSourceForZoomLevel:(int64_t)a3;
-- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)a3 withParentAssetCollectionReference:(id)a4;
-- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)a3 withParentAssetCollectionReference:(id)a4 assetCollectionReferenceWithSameKeyAssetAsParent:(id *)a5;
-- (id)assetsInAssetCollection:(id)a3;
-- (id)dataSourceForZoomLevel:(int64_t)a3;
-- (id)dataSourceManagerForZoomLevel:(int64_t)a3;
-- (id)firstAssetCollectionReferenceInDataSourceForZoomLevel:(int64_t)a3 withParent:(id)a4;
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4;
-- (id)visualPositionsChangeDetailsFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4;
-- (int64_t)transitionTypeFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4;
-- (unint64_t)libraryStateForZoomLevel:(int64_t)a3;
-- (void)_enumeratePhotoKitDataDataSourceManagers:(id)a3;
+- (id)_photosDataSourceForZoomLevel:(int64_t)level;
+- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)level withParentAssetCollectionReference:(id)reference;
+- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)level withParentAssetCollectionReference:(id)reference assetCollectionReferenceWithSameKeyAssetAsParent:(id *)parent;
+- (id)assetsInAssetCollection:(id)collection;
+- (id)dataSourceForZoomLevel:(int64_t)level;
+- (id)dataSourceManagerForZoomLevel:(int64_t)level;
+- (id)firstAssetCollectionReferenceInDataSourceForZoomLevel:(int64_t)level withParent:(id)parent;
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier;
+- (id)visualPositionsChangeDetailsFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier;
+- (int64_t)transitionTypeFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier;
+- (unint64_t)libraryStateForZoomLevel:(int64_t)level;
+- (void)_enumeratePhotoKitDataDataSourceManagers:(id)managers;
 - (void)_invalidateCuration;
 - (void)_invalidateDataSource;
 - (void)_invalidateDataSourceManagers;
@@ -33,19 +33,19 @@
 - (void)_updatePropertiesDerivedFromZoomLevel;
 - (void)didPerformChanges;
 - (void)loadIfNeeded;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3;
-- (void)setAllPhotosFilterPredicate:(id)a3;
-- (void)setAllPhotosSortDescriptors:(id)a3;
-- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)a3;
-- (void)setCanLoadData:(BOOL)a3;
-- (void)setCurationEnabled:(BOOL)a3 forAssetCollection:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setLibraryFilter:(int64_t)a3;
-- (void)setTransientKeyAsset:(id)a3 forAssetCollection:(id)a4 zoomLevel:(int64_t)a5;
-- (void)setWantsCuration:(BOOL)a3;
-- (void)setZoomLevel:(int64_t)a3;
-- (void)setZoomLevelForCurrentDataSourceManager:(int64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading;
+- (void)setAllPhotosFilterPredicate:(id)predicate;
+- (void)setAllPhotosSortDescriptors:(id)descriptors;
+- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)assets;
+- (void)setCanLoadData:(BOOL)data;
+- (void)setCurationEnabled:(BOOL)enabled forAssetCollection:(id)collection;
+- (void)setDelegate:(id)delegate;
+- (void)setLibraryFilter:(int64_t)filter;
+- (void)setTransientKeyAsset:(id)asset forAssetCollection:(id)collection zoomLevel:(int64_t)level;
+- (void)setWantsCuration:(BOOL)curation;
+- (void)setZoomLevel:(int64_t)level;
+- (void)setZoomLevelForCurrentDataSourceManager:(int64_t)manager;
 @end
 
 @implementation PXCuratedLibraryAssetsDataSourceManager
@@ -73,20 +73,20 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
 
 - (void)_invalidateDataSourceManagers
 {
-  v2 = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDataSourceManagers];
+  updater = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDataSourceManagers];
 }
 
 - (void)_invalidatePropertiesDerivedFromZoomLevel
 {
-  v2 = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePropertiesDerivedFromZoomLevel];
+  updater = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePropertiesDerivedFromZoomLevel];
 }
 
 - (void)_invalidateDataSourceProperties
 {
-  v2 = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDataSourceProperties];
+  updater = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDataSourceProperties];
 }
 
 - (void)didPerformChanges
@@ -94,8 +94,8 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryAssetsDataSourceManager;
   [(PXCuratedLibraryAssetsDataSourceManager *)&v4 didPerformChanges];
-  v3 = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_updateDataSourceManagers
@@ -104,15 +104,15 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
   if ([(PXCuratedLibraryAssetsDataSourceManager *)self canLoadData])
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v27 = [(PXCuratedLibraryAssetsDataSourceManager *)self libraryFilter];
+    libraryFilter = [(PXCuratedLibraryAssetsDataSourceManager *)self libraryFilter];
     for (i = 1; i != 5; ++i)
     {
-      v5 = [(PXCuratedLibraryAssetsDataSourceManager *)self configuration];
-      v6 = [v5 configurationForZoomLevel:i];
+      configuration = [(PXCuratedLibraryAssetsDataSourceManager *)self configuration];
+      v6 = [configuration configurationForZoomLevel:i];
 
-      v7 = [v6 assetsDataSourceManager];
+      assetsDataSourceManager = [v6 assetsDataSourceManager];
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:i];
-      [v3 setObject:v7 forKeyedSubscript:v8];
+      [v3 setObject:assetsDataSourceManager forKeyedSubscript:v8];
 
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
@@ -120,15 +120,15 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
       v39[3] = &unk_1E774A6E0;
       v39[4] = self;
       v39[5] = i;
-      [v7 performChanges:v39];
+      [assetsDataSourceManager performChanges:v39];
     }
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v9 = [(NSDictionary *)self->_dataSourceManagerByZoomLevel objectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    objectEnumerator = [(NSDictionary *)self->_dataSourceManagerByZoomLevel objectEnumerator];
+    v10 = [objectEnumerator countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v10)
     {
       v11 = v10;
@@ -140,14 +140,14 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
         {
           if (*v36 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v35 + 1) + 8 * v13++) unregisterChangeObserver:self context:PXZoomLevelDataSourceManagerObservationContext];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v35 objects:v41 count:16];
+        v11 = [objectEnumerator countByEnumeratingWithState:&v35 objects:v41 count:16];
       }
 
       while (v11);
@@ -165,14 +165,14 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
     v34[1] = 3221225472;
     v34[2] = __68__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceManagers__block_invoke_2;
     v34[3] = &__block_descriptor_40_e46_v24__0q8__PXPhotoKitAssetsDataSourceManager_16l;
-    v34[4] = v27;
+    v34[4] = libraryFilter;
     [(PXCuratedLibraryAssetsDataSourceManager *)self _enumeratePhotoKitDataDataSourceManagers:v34];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = [(NSDictionary *)self->_dataSourceManagerByZoomLevel objectEnumerator];
-    v18 = [v17 countByEnumeratingWithState:&v30 objects:v40 count:16];
+    objectEnumerator2 = [(NSDictionary *)self->_dataSourceManagerByZoomLevel objectEnumerator];
+    v18 = [objectEnumerator2 countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v18)
     {
       v19 = v18;
@@ -184,26 +184,26 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
         {
           if (*v31 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
           [*(*(&v30 + 1) + 8 * v21++) registerChangeObserver:self context:PXZoomLevelDataSourceManagerObservationContext];
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v30 objects:v40 count:16];
+        v19 = [objectEnumerator2 countByEnumeratingWithState:&v30 objects:v40 count:16];
       }
 
       while (v19);
     }
 
-    v22 = [(PXCuratedLibraryAssetsDataSourceManagerConfiguration *)self->_configuration photoLibrary];
-    v23 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v22];
+    photoLibrary = [(PXCuratedLibraryAssetsDataSourceManagerConfiguration *)self->_configuration photoLibrary];
+    v23 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:photoLibrary];
     v24 = self->_contentSyndicationConfigurationProvider;
     self->_contentSyndicationConfigurationProvider = v23;
 
     [(PXContentSyndicationConfigurationProvider *)self->_contentSyndicationConfigurationProvider registerChangeObserver:self context:PXContentSyndicationConfigurationObservationContext_246500];
-    v25 = [off_1E7721858 sharedScheduler];
+    sharedScheduler = [off_1E7721858 sharedScheduler];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __68__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceManagers__block_invoke_3;
@@ -211,7 +211,7 @@ uint64_t __55__PXCuratedLibraryAssetsDataSourceManager_loadIfNeeded__block_invok
     v28[4] = self;
     v29 = v3;
     v26 = v3;
-    [v25 scheduleTaskAfterCATransactionCommits:v28];
+    [sharedScheduler scheduleTaskAfterCATransactionCommits:v28];
 
     [(PXCuratedLibraryAssetsDataSourceManager *)self _invalidateDataSource];
   }
@@ -230,8 +230,8 @@ void __68__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceManagers__bl
 
 - (void)_invalidateDataSource
 {
-  v2 = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDataSource];
+  updater = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDataSource];
 }
 
 - (void)_updateDataSourceProperties
@@ -310,8 +310,8 @@ void __70__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceProperties__
 
 - (void)_invalidateCuration
 {
-  v2 = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCuration];
+  updater = [(PXCuratedLibraryAssetsDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCuration];
 }
 
 - (void)_updateCuration
@@ -324,8 +324,8 @@ void __70__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceProperties__
 
   else
   {
-    v6 = [(PXCuratedLibraryAssetsDataSourceManager *)self delegate];
-    v8 = [v6 visibleAssetCollectionsFromCuratedLibraryAssetsDataSourceManager:self];
+    delegate = [(PXCuratedLibraryAssetsDataSourceManager *)self delegate];
+    v8 = [delegate visibleAssetCollectionsFromCuratedLibraryAssetsDataSourceManager:self];
   }
 
   v7 = [(PXCuratedLibraryAssetsDataSourceManager *)self _photosDataSourceForZoomLevel:3];
@@ -344,10 +344,10 @@ void __70__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceProperties__
   v121 = *MEMORY[0x1E69E9840];
   if ([(PXCuratedLibraryAssetsDataSourceManager *)self canLoadData])
   {
-    v4 = [(PXCuratedLibraryAssetsDataSourceManager *)self zoomLevelForCurrentDataSourceManager];
-    v5 = [(PXCuratedLibraryAssetsDataSourceManager *)self currentDataSourceZoomLevel];
-    [(PXCuratedLibraryAssetsDataSourceManager *)self setCurrentDataSourceZoomLevel:v4];
-    if (v4 == 4 && (v5 | 4) != 4)
+    zoomLevelForCurrentDataSourceManager = [(PXCuratedLibraryAssetsDataSourceManager *)self zoomLevelForCurrentDataSourceManager];
+    currentDataSourceZoomLevel = [(PXCuratedLibraryAssetsDataSourceManager *)self currentDataSourceZoomLevel];
+    [(PXCuratedLibraryAssetsDataSourceManager *)self setCurrentDataSourceZoomLevel:zoomLevelForCurrentDataSourceManager];
+    if (zoomLevelForCurrentDataSourceManager == 4 && (currentDataSourceZoomLevel | 4) != 4)
     {
       isForcingSections = self->_isForcingSections;
       self->_isForcingSections = 1;
@@ -360,27 +360,27 @@ void __70__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceProperties__
     }
 
     dataSourceManagerByZoomLevel = self->_dataSourceManagerByZoomLevel;
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:zoomLevelForCurrentDataSourceManager];
     v9 = [(NSDictionary *)dataSourceManagerByZoomLevel objectForKeyedSubscript:v8];
 
     if (!v9)
     {
-      v51 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v51 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:549 description:{@"missing data source manager for zoom level %li", v4}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:549 description:{@"missing data source manager for zoom level %li", zoomLevelForCurrentDataSourceManager}];
     }
 
-    v10 = [(PXCuratedLibraryAssetsDataSourceManager *)self currentDataSource];
-    v11 = [v9 dataSource];
-    [(PXCuratedLibraryAssetsDataSourceManager *)self setCurrentDataSource:v11];
-    if (v10 == v11 || ([v10 isEqual:v11] & 1) != 0)
+    currentDataSource = [(PXCuratedLibraryAssetsDataSourceManager *)self currentDataSource];
+    dataSource = [v9 dataSource];
+    [(PXCuratedLibraryAssetsDataSourceManager *)self setCurrentDataSource:dataSource];
+    if (currentDataSource == dataSource || ([currentDataSource isEqual:dataSource] & 1) != 0)
     {
       goto LABEL_133;
     }
 
-    if (v5 == v4)
+    if (currentDataSourceZoomLevel == zoomLevelForCurrentDataSourceManager)
     {
-      v12 = [v9 changeHistory];
-      v13 = [v12 changeDetailsFromDataSourceIdentifier:objc_msgSend(v10 toDataSourceIdentifier:{"identifier"), objc_msgSend(v11, "identifier")}];
+      changeHistory = [v9 changeHistory];
+      v13 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(currentDataSource toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource, "identifier")}];
 
       v14 = 0;
       v15 = 0;
@@ -393,9 +393,9 @@ LABEL_132:
       v94 = v13;
       v95 = v15;
       v98 = v14;
-      v96 = v10;
-      v11 = v11;
-      v97 = v11;
+      v96 = currentDataSource;
+      dataSource = dataSource;
+      v97 = dataSource;
       v69 = v13;
       v70 = v15;
       [(PXCuratedLibraryAssetsDataSourceManager *)self performChanges:v93];
@@ -405,18 +405,18 @@ LABEL_133:
     }
 
     v14 = 0;
-    if (v4 == 4 || v5 == 4)
+    if (zoomLevelForCurrentDataSourceManager == 4 || currentDataSourceZoomLevel == 4)
     {
       v15 = 0;
       v13 = 0;
       goto LABEL_132;
     }
 
-    v90 = [(PXCuratedLibraryAssetsDataSourceManager *)self delegate];
+    delegate = [(PXCuratedLibraryAssetsDataSourceManager *)self delegate];
     p_delegateRespondsTo = &self->_delegateRespondsTo;
     if (self->_delegateRespondsTo.willTransitionFromZoomLevelToZoomLevel)
     {
-      [v90 curatedLibraryAssetsDataSourceManager:self willTransitionFromZoomLevel:v5 toZoomLevel:v4];
+      [delegate curatedLibraryAssetsDataSourceManager:self willTransitionFromZoomLevel:currentDataSourceZoomLevel toZoomLevel:zoomLevelForCurrentDataSourceManager];
     }
 
     if (!self->_delegateRespondsTo.dominantAssetCollectionReferenceForZoomLevel)
@@ -427,14 +427,14 @@ LABEL_133:
 LABEL_129:
       if (p_delegateRespondsTo->didTransitionFromZoomLevelToZoomLevel)
       {
-        [v90 curatedLibraryAssetsDataSourceManager:self didTransitionFromZoomLevel:v5 toZoomLevel:v4];
+        [delegate curatedLibraryAssetsDataSourceManager:self didTransitionFromZoomLevel:currentDataSourceZoomLevel toZoomLevel:zoomLevelForCurrentDataSourceManager];
       }
 
       v14 = v89;
       goto LABEL_132;
     }
 
-    v87 = [v90 curatedLibraryAssetsDataSourceManager:self dominantAssetCollectionReferenceForZoomLevel:v5];
+    v87 = [delegate curatedLibraryAssetsDataSourceManager:self dominantAssetCollectionReferenceForZoomLevel:currentDataSourceZoomLevel];
     if (!v87)
     {
       v89 = 0;
@@ -445,10 +445,10 @@ LABEL_128:
       goto LABEL_129;
     }
 
-    if (!self->_delegateRespondsTo.dominantAssetCollectionReferenceForZoomLevel || ([v90 curatedLibraryAssetsDataSourceManager:self dominantAssetCollectionReferenceForZoomLevel:v4], (oslog = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_delegateRespondsTo.dominantAssetCollectionReferenceForZoomLevel || ([delegate curatedLibraryAssetsDataSourceManager:self dominantAssetCollectionReferenceForZoomLevel:zoomLevelForCurrentDataSourceManager], (oslog = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v17 = [(PXCuratedLibraryAssetsDataSourceManager *)self configuration];
-      oslog = [v17 keyAssetCollectionReferenceInDataSource:v11 zoomLevel:v4 matchingAssetCollectionReference:v87 fromDataSource:v10 zoomLevel:v5];
+      configuration = [(PXCuratedLibraryAssetsDataSourceManager *)self configuration];
+      oslog = [configuration keyAssetCollectionReferenceInDataSource:dataSource zoomLevel:zoomLevelForCurrentDataSourceManager matchingAssetCollectionReference:v87 fromDataSource:currentDataSource zoomLevel:currentDataSourceZoomLevel];
 
       if (!oslog)
       {
@@ -458,7 +458,7 @@ LABEL_128:
           *buf = 138412546;
           *&buf[4] = v87;
           *&buf[12] = 2048;
-          *&buf[14] = v4;
+          *&buf[14] = zoomLevelForCurrentDataSourceManager;
           _os_log_impl(&dword_1A3C1C000, oslog, OS_LOG_TYPE_DEFAULT, "Couldn't find a match for %@ in zoom level %li. Transitions might not work as expected.", buf, 0x16u);
         }
 
@@ -470,16 +470,16 @@ LABEL_128:
     }
 
     memset(buf, 0, 32);
-    if (v10)
+    if (currentDataSource)
     {
-      [v10 indexPathForAssetCollectionReference:v87];
+      [currentDataSource indexPathForAssetCollectionReference:v87];
     }
 
     v113 = 0u;
     v114 = 0u;
-    if (v11)
+    if (dataSource)
     {
-      [v11 indexPathForAssetCollectionReference:oslog];
+      [dataSource indexPathForAssetCollectionReference:oslog];
       v18 = v113;
     }
 
@@ -498,18 +498,18 @@ LABEL_127:
       goto LABEL_128;
     }
 
-    v79 = [v10 numberOfSections];
-    v81 = [v11 numberOfSections];
+    numberOfSections = [currentDataSource numberOfSections];
+    numberOfSections2 = [dataSource numberOfSections];
     v91 = *&buf[8];
     v84 = *(&v113 + 1);
-    if (!self->_delegateRespondsTo.transitionTypeFromZoomLevelToZoomLevel || (v89 = [v90 curatedLibraryAssetsDataSourceManager:self transitionTypeFromZoomLevel:v5 toZoomLevel:v4]) == 0)
+    if (!self->_delegateRespondsTo.transitionTypeFromZoomLevelToZoomLevel || (v89 = [delegate curatedLibraryAssetsDataSourceManager:self transitionTypeFromZoomLevel:currentDataSourceZoomLevel toZoomLevel:zoomLevelForCurrentDataSourceManager]) == 0)
     {
       PXAssertGetLog();
     }
 
     v19 = self->_isForcingSections;
     self->_isForcingSections = 1;
-    if (v5)
+    if (currentDataSourceZoomLevel)
     {
       v20 = 5;
     }
@@ -533,62 +533,62 @@ LABEL_127:
     [v9 performChanges:v112];
     if (v117[24] == 1)
     {
-      v88 = [v9 dataSource];
+      dataSource2 = [v9 dataSource];
 
-      [(PXCuratedLibraryAssetsDataSourceManager *)self setCurrentDataSource:v88];
-      if ([v88 numberOfSections] != v81)
+      [(PXCuratedLibraryAssetsDataSourceManager *)self setCurrentDataSource:dataSource2];
+      if ([dataSource2 numberOfSections] != numberOfSections2)
       {
-        v21 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v21 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:608 description:{@"Faulting in section:%ld +- %ld should not change the number of sections:%ld != %ld", v84, v20, v81, objc_msgSend(v88, "numberOfSections")}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:608 description:{@"Faulting in section:%ld +- %ld should not change the number of sections:%ld != %ld", v84, v20, numberOfSections2, objc_msgSend(dataSource2, "numberOfSections")}];
       }
     }
 
     else
     {
-      v88 = v11;
+      dataSource2 = dataSource;
     }
 
     v22 = oslog;
     self->_isForcingSections = v19;
-    v76 = __60__PXCuratedLibraryAssetsDataSourceManager__updateDataSource__block_invoke_2(v10, v5, v91);
-    v75 = __60__PXCuratedLibraryAssetsDataSourceManager__updateDataSource__block_invoke_2(v88, v4, v84);
-    if (v5 >= v4)
+    v76 = __60__PXCuratedLibraryAssetsDataSourceManager__updateDataSource__block_invoke_2(currentDataSource, currentDataSourceZoomLevel, v91);
+    v75 = __60__PXCuratedLibraryAssetsDataSourceManager__updateDataSource__block_invoke_2(dataSource2, zoomLevelForCurrentDataSourceManager, v84);
+    if (currentDataSourceZoomLevel >= zoomLevelForCurrentDataSourceManager)
     {
-      v23 = v4;
+      v23 = zoomLevelForCurrentDataSourceManager;
     }
 
     else
     {
-      v23 = v5;
+      v23 = currentDataSourceZoomLevel;
     }
 
-    if (v5 <= v4)
+    if (currentDataSourceZoomLevel <= zoomLevelForCurrentDataSourceManager)
     {
-      v24 = v4;
+      v24 = zoomLevelForCurrentDataSourceManager;
     }
 
     else
     {
-      v24 = v5;
+      v24 = currentDataSourceZoomLevel;
     }
 
     if (v23 != 2 || v24 != 3)
     {
-      if (v5 == 1 && v4 == 2)
+      if (currentDataSourceZoomLevel == 1 && zoomLevelForCurrentDataSourceManager == 2)
       {
         v36 = 1;
       }
 
       else
       {
-        v38 = v5 == 2 && v4 == 1;
+        v38 = currentDataSourceZoomLevel == 2 && zoomLevelForCurrentDataSourceManager == 1;
         v36 = v38 << 63 >> 63;
       }
 
       goto LABEL_103;
     }
 
-    if (v5 == 2)
+    if (currentDataSourceZoomLevel == 2)
     {
       v25 = v87;
     }
@@ -598,23 +598,23 @@ LABEL_127:
       v25 = oslog;
     }
 
-    if (v5 != 2)
+    if (currentDataSourceZoomLevel != 2)
     {
       v22 = v87;
     }
 
     v26 = v25;
     v27 = v22;
-    v28 = [v26 assetCollection];
+    assetCollection = [v26 assetCollection];
     v73 = v26;
     v77 = v27;
-    v29 = [v27 keyAssetReference];
-    v30 = [v29 asset];
-    v31 = [v30 creationDate];
+    keyAssetReference = [v27 keyAssetReference];
+    asset = [keyAssetReference asset];
+    creationDate = [asset creationDate];
 
-    if (PXCuratedLibraryAssetsCollectionRepresentsChapterHeader(v28, 2))
+    if (PXCuratedLibraryAssetsCollectionRepresentsChapterHeader(assetCollection, 2))
     {
-      if (v5 != 2 || *&buf[8] + 1 >= v79)
+      if (currentDataSourceZoomLevel != 2 || *&buf[8] + 1 >= numberOfSections)
       {
         goto LABEL_75;
       }
@@ -623,27 +623,27 @@ LABEL_127:
       v32.f64[0] = NAN;
       v32.f64[1] = NAN;
       v111 = vnegq_f64(v32);
-      v33 = [v10 assetCollectionAtSectionIndexPath:&v110];
-      v34 = [oslog assetCollection];
-      v35 = [v33 isEqual:v34];
+      v33 = [currentDataSource assetCollectionAtSectionIndexPath:&v110];
+      assetCollection2 = [oslog assetCollection];
+      v35 = [v33 isEqual:assetCollection2];
     }
 
     else
     {
-      v39 = [v28 startDate];
-      v40 = [v28 endDate];
-      v35 = [v31 px_isBetweenDate:v39 andDate:v40];
+      startDate = [assetCollection startDate];
+      endDate = [assetCollection endDate];
+      v35 = [creationDate px_isBetweenDate:startDate andDate:endDate];
     }
 
     if ((v35 & 1) == 0)
     {
-      v42 = [v28 startDate];
-      [v31 timeIntervalSinceDate:v42];
+      startDate2 = [assetCollection startDate];
+      [creationDate timeIntervalSinceDate:startDate2];
       v44 = v43;
       v45 = v43 >= 0.0;
 
-      v41 = v31;
-      if (v5 == 2)
+      v41 = creationDate;
+      if (currentDataSourceZoomLevel == 2)
       {
         v46 = [v76 containsIndex:v91];
         v47 = -1;
@@ -669,7 +669,7 @@ LABEL_127:
             v52 = v45;
           }
 
-          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:v79 anchorInserted:v52 indexBeforeChanges:v47 + v91 headerIndexesBeforeChanges:v76 countAfterChanges:v81 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75];
+          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:numberOfSections anchorInserted:v52 indexBeforeChanges:v47 + v91 headerIndexesBeforeChanges:v76 countAfterChanges:numberOfSections2 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75];
         }
 
         else
@@ -680,7 +680,7 @@ LABEL_127:
           }
 
           LOBYTE(v71) = 1;
-          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:v79 anchorIndexBeforeChanges:v47 + v91 headerIndexesBeforeChanges:v76 countAfterChanges:v81 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75 reloadAllIncludingAnchor:v71];
+          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:numberOfSections anchorIndexBeforeChanges:v47 + v91 headerIndexesBeforeChanges:v76 countAfterChanges:numberOfSections2 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75 reloadAllIncludingAnchor:v71];
         }
       }
 
@@ -710,7 +710,7 @@ LABEL_127:
             v53 = v45;
           }
 
-          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:v79 anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:v81 anchorRemoved:v53 indexAfterChanges:v50 + v84 headerIndexesAfterChanges:v75];
+          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:numberOfSections anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:numberOfSections2 anchorRemoved:v53 indexAfterChanges:v50 + v84 headerIndexesAfterChanges:v75];
         }
 
         else
@@ -721,7 +721,7 @@ LABEL_127:
           }
 
           LOBYTE(v71) = 1;
-          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:v79 anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:v81 anchorIndexAfterChanges:v50 + v84 headerIndexesAfterChanges:v75 reloadAllIncludingAnchor:v71];
+          v48 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:numberOfSections anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:numberOfSections2 anchorIndexAfterChanges:v50 + v84 headerIndexesAfterChanges:v75 reloadAllIncludingAnchor:v71];
         }
       }
 
@@ -730,7 +730,7 @@ LABEL_127:
     }
 
 LABEL_75:
-    v41 = v31;
+    v41 = creationDate;
 LABEL_76:
     v15 = 0;
 LABEL_101:
@@ -744,7 +744,7 @@ LABEL_101:
 LABEL_103:
     if (v89 == 1)
     {
-      v54 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:v79 anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:v81 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75 anchorFan:v36 anchorReload:0];
+      v54 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:numberOfSections anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:numberOfSections2 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75 anchorFan:v36 anchorReload:0];
     }
 
     else
@@ -755,17 +755,17 @@ LABEL_103:
 LABEL_109:
         v92 = [v15 arrayChangeDetailsWithItemsChanged:1];
         v55 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v56 = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
-        v57 = [v92 changedIndexes];
+        changeDetailsWithNoIncrementalChanges = [off_1E7721450 changeDetailsWithNoIncrementalChanges];
+        changedIndexes = [v92 changedIndexes];
         v107[0] = MEMORY[0x1E69E9820];
         v107[1] = 3221225472;
         v107[2] = __60__PXCuratedLibraryAssetsDataSourceManager__updateDataSource__block_invoke_4;
         v107[3] = &unk_1E774A7B8;
         v78 = v55;
         v108 = v78;
-        v74 = v56;
+        v74 = changeDetailsWithNoIncrementalChanges;
         v109 = v74;
-        [v57 enumerateIndexesUsingBlock:v107];
+        [changedIndexes enumerateIndexesUsingBlock:v107];
 
         v58 = v84 - 1;
         v59 = 3;
@@ -777,17 +777,17 @@ LABEL_109:
           v61 = [v92 indexAfterRevertingChangesFromIndex:v58];
           if (v61 <= 0x7FFFFFFFFFFFFFFELL)
           {
-            v62 = [v10 numberOfSections];
-            if ((v58 & 0x8000000000000000) == 0 && v61 < v62 && v58 < [v88 numberOfSections])
+            numberOfSections3 = [currentDataSource numberOfSections];
+            if ((v58 & 0x8000000000000000) == 0 && v61 < numberOfSections3 && v58 < [dataSource2 numberOfSections])
             {
               v110 = 0u;
               v111 = 0u;
-              v105[0] = [v10 identifier];
+              v105[0] = [currentDataSource identifier];
               v105[1] = v61;
               v106 = v85;
-              if (v10)
+              if (currentDataSource)
               {
-                [v10 keyAssetIndexPathForSectionIndexPath:v105];
+                [currentDataSource keyAssetIndexPathForSectionIndexPath:v105];
                 v63 = 0uLL;
               }
 
@@ -800,12 +800,12 @@ LABEL_109:
 
               v103 = v63;
               v104 = v63;
-              v101[0] = [v88 identifier];
+              v101[0] = [dataSource2 identifier];
               v101[1] = v58;
               v102 = v85;
-              if (v88)
+              if (dataSource2)
               {
-                [v88 keyAssetIndexPathForSectionIndexPath:v101];
+                [dataSource2 keyAssetIndexPathForSectionIndexPath:v101];
                 v64 = v103;
               }
 
@@ -820,15 +820,15 @@ LABEL_109:
               {
                 v99 = v110;
                 v100 = v111;
-                v80 = [v10 assetAtItemIndexPath:&v99];
+                v80 = [currentDataSource assetAtItemIndexPath:&v99];
                 v99 = v103;
                 v100 = v104;
-                v82 = [v88 assetAtItemIndexPath:&v99];
+                v82 = [dataSource2 assetAtItemIndexPath:&v99];
                 if ([v80 isEqual:v82])
                 {
                   v72 = v111.f64[0];
-                  v65 = [v10 numberOfItemsInSection:*(&v110 + 1)];
-                  v66 = [off_1E7721450 changeDetailsWithOldKeyItemIndex:*&v72 oldCount:v65 newKeyItemIndex:*&v104.f64[0] newCount:{objc_msgSend(v88, "numberOfItemsInSection:", *(&v103 + 1))}];
+                  v65 = [currentDataSource numberOfItemsInSection:*(&v110 + 1)];
+                  v66 = [off_1E7721450 changeDetailsWithOldKeyItemIndex:*&v72 oldCount:v65 newKeyItemIndex:*&v104.f64[0] newCount:{objc_msgSend(dataSource2, "numberOfItemsInSection:", *(&v103 + 1))}];
                   v67 = [MEMORY[0x1E696AD98] numberWithInteger:v58];
                   [v78 setObject:v66 forKeyedSubscript:v67];
                 }
@@ -841,17 +841,17 @@ LABEL_109:
         }
 
         while (v59);
-        v68 = [[off_1E77218B0 alloc] initWithFromDataSourceIdentifier:objc_msgSend(v10 toDataSourceIdentifier:"identifier") sectionChanges:objc_msgSend(v88 itemChangeDetailsBySection:"identifier") subitemChangeDetailsByItemBySection:{v92, v78, 0}];
+        v68 = [[off_1E77218B0 alloc] initWithFromDataSourceIdentifier:objc_msgSend(currentDataSource toDataSourceIdentifier:"identifier") sectionChanges:objc_msgSend(dataSource2 itemChangeDetailsBySection:"identifier") subitemChangeDetailsByItemBySection:{v92, v78, 0}];
         v115 = v68;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v115 count:1];
 
         _Block_object_dispose(v116, 8);
-        v11 = v88;
+        dataSource = dataSource2;
         goto LABEL_127;
       }
 
       LOBYTE(v71) = 0;
-      v54 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:v79 anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:v81 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75 reloadAllIncludingAnchor:v71];
+      v54 = [PXVisualPositionsChangeDetails changeDetailsWithCountBeforeChanges:numberOfSections anchorIndexBeforeChanges:v91 headerIndexesBeforeChanges:v76 countAfterChanges:numberOfSections2 anchorIndexAfterChanges:v84 headerIndexesAfterChanges:v75 reloadAllIncludingAnchor:v71];
     }
 
     v15 = v54;
@@ -900,19 +900,19 @@ void __68__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceManagers__bl
   [v4 scheduleMainQueueTask:v6];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXZoomLevelDataSourceManagerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXZoomLevelDataSourceManagerObservationContext == context)
   {
-    if ((v6 & 1) != 0 && !self->_isForcingSections)
+    if ((changeCopy & 1) != 0 && !self->_isForcingSections)
     {
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __72__PXCuratedLibraryAssetsDataSourceManager_observable_didChange_context___block_invoke;
       v20 = &unk_1E774A5F0;
-      v21 = self;
+      selfCopy = self;
       v10 = &v17;
       goto LABEL_5;
     }
@@ -920,24 +920,24 @@ void __68__PXCuratedLibraryAssetsDataSourceManager__updateDataSourceManagers__bl
 
   else
   {
-    if (PXContentSyndicationConfigurationObservationContext_246500 != a5)
+    if (PXContentSyndicationConfigurationObservationContext_246500 != context)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:808 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:808 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 5) != 0)
+    if ((changeCopy & 5) != 0)
     {
       v12 = MEMORY[0x1E69E9820];
       v13 = 3221225472;
       v14 = __72__PXCuratedLibraryAssetsDataSourceManager_observable_didChange_context___block_invoke_2;
       v15 = &unk_1E774A5F0;
-      v16 = self;
+      selfCopy2 = self;
       v10 = &v12;
 LABEL_5:
-      [(PXCuratedLibraryAssetsDataSourceManager *)self performChanges:v10, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21];
+      [(PXCuratedLibraryAssetsDataSourceManager *)self performChanges:v10, v12, v13, v14, v15, selfCopy2, v17, v18, v19, v20, selfCopy];
     }
   }
 }
@@ -1005,10 +1005,10 @@ void __60__PXCuratedLibraryAssetsDataSourceManager__updateDataSource__block_invo
   [v3 setObject:v2 forKeyedSubscript:v4];
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  loadingCopy = loading;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1020,7 +1020,7 @@ void __60__PXCuratedLibraryAssetsDataSourceManager__updateDataSource__block_invo
   v5[2] = __84__PXCuratedLibraryAssetsDataSourceManager_resumeChangeDeliveryAndBackgroundLoading___block_invoke;
   v5[3] = &unk_1E774C200;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [loadingCopy enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __84__PXCuratedLibraryAssetsDataSourceManager_resumeChangeDeliveryAndBackgroundLoading___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1036,20 +1036,20 @@ void __84__PXCuratedLibraryAssetsDataSourceManager_resumeChangeDeliveryAndBackgr
   [v6 performChanges:v8];
 }
 
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   dataSourceManagerByZoomLevel = self->_dataSourceManagerByZoomLevel;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__PXCuratedLibraryAssetsDataSourceManager_pauseChangeDeliveryWithTimeout_identifier___block_invoke;
   v14[3] = &unk_1E774A690;
-  v17 = a3;
-  v15 = v6;
+  timeoutCopy = timeout;
+  v15 = identifierCopy;
   v9 = v7;
   v16 = v9;
-  v10 = v6;
+  v10 = identifierCopy;
   [(NSDictionary *)dataSourceManagerByZoomLevel enumerateKeysAndObjectsUsingBlock:v14];
   v11 = v16;
   v12 = v9;
@@ -1078,20 +1078,20 @@ void __85__PXCuratedLibraryAssetsDataSourceManager_pauseChangeDeliveryWithTimeou
   [*(a1 + 40) setObject:v3 forKeyedSubscript:*(a1 + 48)];
 }
 
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3 inZoomLevel:(int64_t)a4
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed inZoomLevel:(int64_t)level
 {
-  v6 = a3;
+  neededCopy = needed;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v7 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceManagerForZoomLevel:a4];
+  v7 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceManagerForZoomLevel:level];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSectionsIfNeeded_inZoomLevel___block_invoke;
   v10[3] = &unk_1E774A640;
   v12 = &v13;
-  v8 = v6;
+  v8 = neededCopy;
   v11 = v8;
   [v7 performChanges:v10];
   LOBYTE(self) = *(v14 + 24);
@@ -1118,8 +1118,8 @@ uint64_t __85__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSectionsIfNe
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSDictionary *)self->_dataSourceManagerByZoomLevel objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+  objectEnumerator = [(NSDictionary *)self->_dataSourceManagerByZoomLevel objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v18 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -1129,7 +1129,7 @@ uint64_t __85__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSectionsIfNe
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
@@ -1141,7 +1141,7 @@ uint64_t __85__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSectionsIfNe
         [v6 performChanges:v9];
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v18 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v18 count:16];
     }
 
     while (v3);
@@ -1163,9 +1163,9 @@ uint64_t __75__PXCuratedLibraryAssetsDataSourceManager_forceAccurateAllSectionsI
   return result;
 }
 
-- (BOOL)forceAccurateSection:(int64_t)a3 andSectionsBeforeAndAfter:(int64_t)a4
+- (BOOL)forceAccurateSection:(int64_t)section andSectionsBeforeAndAfter:(int64_t)after
 {
-  v6 = [(PXCuratedLibraryAssetsDataSourceManager *)self currentAssetsDataSourceManager];
+  currentAssetsDataSourceManager = [(PXCuratedLibraryAssetsDataSourceManager *)self currentAssetsDataSourceManager];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -1175,13 +1175,13 @@ uint64_t __75__PXCuratedLibraryAssetsDataSourceManager_forceAccurateAllSectionsI
   v8[2] = __90__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSection_andSectionsBeforeAndAfter___block_invoke;
   v8[3] = &unk_1E774A618;
   v8[4] = &v9;
-  v8[5] = a3;
-  v8[6] = a4;
-  [v6 performChanges:v8];
-  LOBYTE(a4) = *(v10 + 24);
+  v8[5] = section;
+  v8[6] = after;
+  [currentAssetsDataSourceManager performChanges:v8];
+  LOBYTE(after) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
 
-  return a4;
+  return after;
 }
 
 uint64_t __90__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSection_andSectionsBeforeAndAfter___block_invoke(void *a1, void *a2)
@@ -1191,49 +1191,49 @@ uint64_t __90__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSection_andS
   return result;
 }
 
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed
 {
-  v4 = a3;
-  LOBYTE(self) = [(PXCuratedLibraryAssetsDataSourceManager *)self forceAccurateSectionsIfNeeded:v4 inZoomLevel:[(PXCuratedLibraryAssetsDataSourceManager *)self currentDataSourceZoomLevel]];
+  neededCopy = needed;
+  LOBYTE(self) = [(PXCuratedLibraryAssetsDataSourceManager *)self forceAccurateSectionsIfNeeded:neededCopy inZoomLevel:[(PXCuratedLibraryAssetsDataSourceManager *)self currentDataSourceZoomLevel]];
 
   return self;
 }
 
-- (void)setTransientKeyAsset:(id)a3 forAssetCollection:(id)a4 zoomLevel:(int64_t)a5
+- (void)setTransientKeyAsset:(id)asset forAssetCollection:(id)collection zoomLevel:(int64_t)level
 {
-  v11 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  collectionCopy = collection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [(PXCuratedLibraryAssetsDataSourceManager *)self _photosDataSourceForZoomLevel:a5];
-    [v10 setKeyAsset:v11 forAssetCollection:v9];
+    v9 = collectionCopy;
+    v10 = [(PXCuratedLibraryAssetsDataSourceManager *)self _photosDataSourceForZoomLevel:level];
+    [v10 setKeyAsset:assetCopy forAssetCollection:v9];
   }
 }
 
-- (id)firstAssetCollectionReferenceInDataSourceForZoomLevel:(int64_t)a3 withParent:(id)a4
+- (id)firstAssetCollectionReferenceInDataSourceForZoomLevel:(int64_t)level withParent:(id)parent
 {
-  v4 = [(PXCuratedLibraryAssetsDataSourceManager *)self assetCollectionReferencesInDataSourceForZoomLevel:a3 withParentAssetCollectionReference:a4];
-  v5 = [v4 firstObject];
+  v4 = [(PXCuratedLibraryAssetsDataSourceManager *)self assetCollectionReferencesInDataSourceForZoomLevel:level withParentAssetCollectionReference:parent];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)a3 withParentAssetCollectionReference:(id)a4 assetCollectionReferenceWithSameKeyAssetAsParent:(id *)a5
+- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)level withParentAssetCollectionReference:(id)reference assetCollectionReferenceWithSameKeyAssetAsParent:(id *)parent
 {
-  v8 = a4;
-  v9 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceForZoomLevel:a3];
-  v10 = [v9 assetCollectionReferencesWithParentAssetCollectionReference:v8 assetCollectionReferenceWithSameKeyAssetAsParent:a5];
+  referenceCopy = reference;
+  v9 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceForZoomLevel:level];
+  v10 = [v9 assetCollectionReferencesWithParentAssetCollectionReference:referenceCopy assetCollectionReferenceWithSameKeyAssetAsParent:parent];
 
   return v10;
 }
 
-- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)a3 withParentAssetCollectionReference:(id)a4
+- (id)assetCollectionReferencesInDataSourceForZoomLevel:(int64_t)level withParentAssetCollectionReference:(id)reference
 {
-  v6 = a4;
-  v7 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceForZoomLevel:a3];
-  v8 = [v7 assetCollectionReferencesWithParentAssetCollectionReference:v6];
+  referenceCopy = reference;
+  v7 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceForZoomLevel:level];
+  v8 = [v7 assetCollectionReferencesWithParentAssetCollectionReference:referenceCopy];
 
   return v8;
 }
@@ -1245,10 +1245,10 @@ uint64_t __90__PXCuratedLibraryAssetsDataSourceManager_forceAccurateSection_andS
   v12 = 0x2020000000;
   v13 = 0;
   v2 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceManagerForZoomLevel:4];
-  v3 = [v2 dataSource];
-  v4 = [v3 areAllSectionsConsideredAccurate];
+  dataSource = [v2 dataSource];
+  areAllSectionsConsideredAccurate = [dataSource areAllSectionsConsideredAccurate];
 
-  if ((v4 & 1) == 0)
+  if ((areAllSectionsConsideredAccurate & 1) == 0)
   {
     v5 = PLCuratedLibraryGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1309,29 +1309,29 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
   return v4;
 }
 
-- (id)_photosDataSourceForZoomLevel:(int64_t)a3
+- (id)_photosDataSourceForZoomLevel:(int64_t)level
 {
   dataSourceManagerByZoomLevel = self->_dataSourceManagerByZoomLevel;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:level];
   v5 = [(NSDictionary *)dataSourceManagerByZoomLevel objectForKeyedSubscript:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 photosDataSource];
+    photosDataSource = [v5 photosDataSource];
   }
 
   else
   {
-    v6 = 0;
+    photosDataSource = 0;
   }
 
-  return v6;
+  return photosDataSource;
 }
 
-- (void)_enumeratePhotoKitDataDataSourceManagers:(id)a3
+- (void)_enumeratePhotoKitDataDataSourceManagers:(id)managers
 {
-  v8 = a3;
+  managersCopy = managers;
   for (i = 1; i != 5; ++i)
   {
     dataSourceManagerByZoomLevel = self->_dataSourceManagerByZoomLevel;
@@ -1341,37 +1341,37 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8[2](v8, i, v7);
+      managersCopy[2](managersCopy, i, v7);
     }
   }
 }
 
-- (unint64_t)libraryStateForZoomLevel:(int64_t)a3
+- (unint64_t)libraryStateForZoomLevel:(int64_t)level
 {
   dataSourceManagerByZoomLevel = self->_dataSourceManagerByZoomLevel;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v7 = [(NSDictionary *)dataSourceManagerByZoomLevel objectForKeyedSubscript:v6];
-  v8 = [v7 dataSource];
+  dataSource = [v7 dataSource];
 
-  v9 = [(PXCuratedLibraryAssetsDataSourceManager *)self _photosDataSourceForZoomLevel:a3];
-  v10 = [v9 isBackgroundFetching];
-  if (v8 && [v8 containsAnyItems])
+  v9 = [(PXCuratedLibraryAssetsDataSourceManager *)self _photosDataSourceForZoomLevel:level];
+  isBackgroundFetching = [v9 isBackgroundFetching];
+  if (dataSource && [dataSource containsAnyItems])
   {
-    v10 |= 2uLL;
+    isBackgroundFetching |= 2uLL;
   }
 
-  return v10;
+  return isBackgroundFetching;
 }
 
-- (id)dataSourceForZoomLevel:(int64_t)a3
+- (id)dataSourceForZoomLevel:(int64_t)level
 {
-  v3 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceManagerForZoomLevel:a3];
-  v4 = [v3 dataSource];
+  v3 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceManagerForZoomLevel:level];
+  dataSource = [v3 dataSource];
 
-  return v4;
+  return dataSource;
 }
 
-- (id)dataSourceManagerForZoomLevel:(int64_t)a3
+- (id)dataSourceManagerForZoomLevel:(int64_t)level
 {
   dataSourceManagerByZoomLevel = self->_dataSourceManagerByZoomLevel;
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -1379,33 +1379,33 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
 
   if (!v8)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:225 description:{@"missing data source manager for zoom level %li", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:225 description:{@"missing data source manager for zoom level %li", level}];
   }
 
   return v8;
 }
 
-- (void)setLibraryFilter:(int64_t)a3
+- (void)setLibraryFilter:(int64_t)filter
 {
-  if (self->_libraryFilter != a3)
+  if (self->_libraryFilter != filter)
   {
-    self->_libraryFilter = a3;
+    self->_libraryFilter = filter;
     [(PXCuratedLibraryAssetsDataSourceManager *)self _invalidateDataSourceProperties];
   }
 }
 
-- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)a3
+- (void)setCanIncludeUnsavedSyndicatedAssets:(BOOL)assets
 {
-  if (self->_canIncludeUnsavedSyndicatedAssets != a3)
+  if (self->_canIncludeUnsavedSyndicatedAssets != assets)
   {
-    self->_canIncludeUnsavedSyndicatedAssets = a3;
+    self->_canIncludeUnsavedSyndicatedAssets = assets;
     v8 = [(PXCuratedLibraryAssetsDataSourceManager *)self _photosDataSourceForZoomLevel:4];
     [v8 setCanIncludeUnsavedSyndicatedAssets:self->_canIncludeUnsavedSyndicatedAssets];
     v4 = +[PXContentSyndicationSettings sharedInstance];
-    v5 = [v4 enableFilteringCuratedGridsForContentSyndication];
+    enableFilteringCuratedGridsForContentSyndication = [v4 enableFilteringCuratedGridsForContentSyndication];
 
-    if (v5)
+    if (enableFilteringCuratedGridsForContentSyndication)
     {
       for (i = 1; i != 4; ++i)
       {
@@ -1418,14 +1418,14 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
   }
 }
 
-- (void)setAllPhotosSortDescriptors:(id)a3
+- (void)setAllPhotosSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allPhotosSortDescriptors != v4)
+  descriptorsCopy = descriptors;
+  v5 = descriptorsCopy;
+  if (self->_allPhotosSortDescriptors != descriptorsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = descriptorsCopy;
+    v6 = [(NSArray *)descriptorsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1440,14 +1440,14 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
   }
 }
 
-- (void)setAllPhotosFilterPredicate:(id)a3
+- (void)setAllPhotosFilterPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allPhotosFilterPredicate != v4)
+  predicateCopy = predicate;
+  v5 = predicateCopy;
+  if (self->_allPhotosFilterPredicate != predicateCopy)
   {
-    v9 = v4;
-    v6 = [(NSPredicate *)v4 isEqual:?];
+    v9 = predicateCopy;
+    v6 = [(NSPredicate *)predicateCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1462,20 +1462,20 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
   }
 }
 
-- (void)setZoomLevel:(int64_t)a3
+- (void)setZoomLevel:(int64_t)level
 {
-  if (self->_zoomLevel != a3)
+  if (self->_zoomLevel != level)
   {
-    self->_zoomLevel = a3;
+    self->_zoomLevel = level;
     [(PXCuratedLibraryAssetsDataSourceManager *)self signalChange:2];
 
     [(PXCuratedLibraryAssetsDataSourceManager *)self _invalidatePropertiesDerivedFromZoomLevel];
   }
 }
 
-- (int64_t)transitionTypeFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4
+- (int64_t)transitionTypeFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier
 {
-  if ([(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeFromDataSourceIdentifier]!= a3 || [(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeToDataSourceIdentifier]!= a4)
+  if ([(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeFromDataSourceIdentifier]!= identifier || [(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeToDataSourceIdentifier]!= sourceIdentifier)
   {
     return 0;
   }
@@ -1483,43 +1483,43 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
   return [(PXCuratedLibraryAssetsDataSourceManager *)self lastTransitionType];
 }
 
-- (id)visualPositionsChangeDetailsFromDataSourceIdentifier:(int64_t)a3 toDataSourceIdentifier:(int64_t)a4
+- (id)visualPositionsChangeDetailsFromDataSourceIdentifier:(int64_t)identifier toDataSourceIdentifier:(int64_t)sourceIdentifier
 {
-  if ([(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeFromDataSourceIdentifier]== a3 && [(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeToDataSourceIdentifier]== a4)
+  if ([(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeFromDataSourceIdentifier]== identifier && [(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeToDataSourceIdentifier]== sourceIdentifier)
   {
-    v6 = [(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeDetails];
+    lastVisualPositionsChangeDetails = [(PXCuratedLibraryAssetsDataSourceManager *)self lastVisualPositionsChangeDetails];
   }
 
   else
   {
-    v6 = 0;
+    lastVisualPositionsChangeDetails = 0;
   }
 
-  return v6;
+  return lastVisualPositionsChangeDetails;
 }
 
-- (id)assetsInAssetCollection:(id)a3
+- (id)assetsInAssetCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = [(PXCuratedLibraryAssetsDataSourceManager *)self dataSourceManagerForZoomLevel:3];
-  v6 = [v5 dataSource];
+  dataSource = [v5 dataSource];
 
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (dataSource && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7 = [off_1E7721488 alloc];
     v8 = *(off_1E7722228 + 1);
     v13 = *off_1E7722228;
     v14 = v8;
-    v9 = [v7 initWithAssetCollection:v4 keyAssetReference:0 indexPath:&v13];
+    v9 = [v7 initWithAssetCollection:collectionCopy keyAssetReference:0 indexPath:&v13];
     v13 = 0u;
     v14 = 0u;
-    [v6 indexPathForAssetCollectionReference:v9];
+    [dataSource indexPathForAssetCollectionReference:v9];
     v10 = 0;
     if (v13 != *off_1E7721F68)
     {
       v12[0] = v13;
       v12[1] = v14;
-      v10 = [v6 assetsInSectionIndexPath:v12];
+      v10 = [dataSource assetsInSectionIndexPath:v12];
     }
   }
 
@@ -1531,48 +1531,48 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
   return v10;
 }
 
-- (void)setCurationEnabled:(BOOL)a3 forAssetCollection:(id)a4
+- (void)setCurationEnabled:(BOOL)enabled forAssetCollection:(id)collection
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  collectionCopy = collection;
   v7 = [(PXCuratedLibraryAssetsDataSourceManager *)self _photosDataSourceForZoomLevel:3];
-  [v7 setWantsCuration:v4 forAssetCollection:v6];
+  [v7 setWantsCuration:enabledCopy forAssetCollection:collectionCopy];
 }
 
-- (void)setWantsCuration:(BOOL)a3
+- (void)setWantsCuration:(BOOL)curation
 {
-  if (self->_wantsCuration != a3)
+  if (self->_wantsCuration != curation)
   {
-    self->_wantsCuration = a3;
+    self->_wantsCuration = curation;
     [(PXCuratedLibraryAssetsDataSourceManager *)self _invalidateCuration];
 
     [(PXCuratedLibraryAssetsDataSourceManager *)self _invalidateDataSource];
   }
 }
 
-- (void)setZoomLevelForCurrentDataSourceManager:(int64_t)a3
+- (void)setZoomLevelForCurrentDataSourceManager:(int64_t)manager
 {
-  if (self->_zoomLevelForCurrentDataSourceManager != a3)
+  if (self->_zoomLevelForCurrentDataSourceManager != manager)
   {
-    self->_zoomLevelForCurrentDataSourceManager = a3;
+    self->_zoomLevelForCurrentDataSourceManager = manager;
     [(PXCuratedLibraryAssetsDataSourceManager *)self _invalidateDataSource];
   }
 }
 
-- (void)setCanLoadData:(BOOL)a3
+- (void)setCanLoadData:(BOOL)data
 {
-  if (self->_canLoadData != a3)
+  if (self->_canLoadData != data)
   {
-    self->_canLoadData = a3;
+    self->_canLoadData = data;
     [(PXCuratedLibraryAssetsDataSourceManager *)self _invalidateDataSourceManagers];
 
     [(PXCuratedLibraryAssetsDataSourceManager *)self signalChange:8];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1588,17 +1588,17 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
   }
 }
 
-- (PXCuratedLibraryAssetsDataSourceManager)initWithConfiguration:(id)a3
+- (PXCuratedLibraryAssetsDataSourceManager)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PXCuratedLibraryAssetsDataSourceManager;
   v6 = [(PXSectionedDataSourceManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
-    v7->_enableDays = [v5 enableDays];
+    objc_storeStrong(&v6->_configuration, configuration);
+    v7->_enableDays = [configurationCopy enableDays];
     v7->_libraryFilter = 0;
     v8 = [[off_1E7721940 alloc] initWithTarget:v7 needsUpdateSelector:sel_setNeedsUpdate];
     updater = v7->_updater;
@@ -1616,8 +1616,8 @@ uint64_t __73__PXCuratedLibraryAssetsDataSourceManager_forceAllPhotosAccurateIfN
 
 - (PXCuratedLibraryAssetsDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:69 description:{@"%s is not available as initializer", "-[PXCuratedLibraryAssetsDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryAssetsDataSourceManager.m" lineNumber:69 description:{@"%s is not available as initializer", "-[PXCuratedLibraryAssetsDataSourceManager init]"}];
 
   abort();
 }

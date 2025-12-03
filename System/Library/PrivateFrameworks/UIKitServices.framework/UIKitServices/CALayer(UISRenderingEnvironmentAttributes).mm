@@ -8,15 +8,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 _uis_provideRenderingAttributes];
+    _uis_provideRenderingAttributes = [self _uis_provideRenderingAttributes];
   }
 
   else
   {
-    v2 = 0;
+    _uis_provideRenderingAttributes = 0;
   }
 
-  return v2;
+  return _uis_provideRenderingAttributes;
 }
 
 @end

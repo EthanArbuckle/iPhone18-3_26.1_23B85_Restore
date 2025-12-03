@@ -2,15 +2,15 @@
 + (id)log;
 - (BOOL)_hasCustomDomain;
 - (BOOL)_hasIcloudMailConfigured;
-- (BOOL)_mailDataclassChangeForSpecifier:(id)a3;
+- (BOOL)_mailDataclassChangeForSpecifier:(id)specifier;
 - (id)_byodSpecifier;
 - (id)_iCloudMailSettingSpecifiers;
 - (id)_tobleroneMailSwitchSpecifier;
 - (id)specifiers;
-- (void)_iCloudMailSettingSpecifierTapped:(id)a3;
-- (void)dataclassSwitchStateDidChange:(id)a3 withSpecifier:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)icloudMailCreationNeedsViewUpdate:(id)a3 withAccount:(id)a4;
+- (void)_iCloudMailSettingSpecifierTapped:(id)tapped;
+- (void)dataclassSwitchStateDidChange:(id)change withSpecifier:(id)specifier;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)icloudMailCreationNeedsViewUpdate:(id)update withAccount:(id)account;
 - (void)viewDidLoad;
 @end
 
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_6D06C;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6610 != -1)
   {
     dispatch_once(&qword_D6610, block);
@@ -50,9 +50,9 @@
     userInfoDictionary = self->_userInfoDictionary;
     if (!userInfoDictionary)
     {
-      v7 = [*&self->ACUIDataclassConfigurationViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+      userInfo = [*&self->ACUIDataclassConfigurationViewController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
       v8 = self->_userInfoDictionary;
-      self->_userInfoDictionary = v7;
+      self->_userInfoDictionary = userInfo;
 
       [(NSMutableDictionary *)self->_userInfoDictionary setValue:&__kCFBooleanTrue forKey:@"hideMailDataclass"];
       [(NSMutableDictionary *)self->_userInfoDictionary setValue:&__kCFBooleanTrue forKey:@"MailDetailViewWithBackKey"];
@@ -60,9 +60,9 @@
     }
 
     v9 = [(NSMutableDictionary *)userInfoDictionary objectForKey:ACUIAccountKey];
-    v10 = [v9 parentAccount];
+    parentAccount = [v9 parentAccount];
     appleAccount = self->_appleAccount;
-    self->_appleAccount = v10;
+    self->_appleAccount = parentAccount;
 
     if (!self->_appleAccount)
     {
@@ -76,19 +76,19 @@
       self->_accountManager = v12;
     }
 
-    v14 = [(ICloudMailAccountController *)self _tobleroneMailSwitchSpecifier];
-    [v5 addObjectsFromArray:v14];
+    _tobleroneMailSwitchSpecifier = [(ICloudMailAccountController *)self _tobleroneMailSwitchSpecifier];
+    [v5 addObjectsFromArray:_tobleroneMailSwitchSpecifier];
 
     if ([(ICloudMailAccountController *)self _hasIcloudMailConfigured])
     {
       if ([(ICloudMailAccountController *)self _hasCustomDomain])
       {
-        v15 = [(ICloudMailAccountController *)self _byodSpecifier];
-        [v5 addObjectsFromArray:v15];
+        _byodSpecifier = [(ICloudMailAccountController *)self _byodSpecifier];
+        [v5 addObjectsFromArray:_byodSpecifier];
       }
 
-      v16 = [(ICloudMailAccountController *)self _iCloudMailSettingSpecifiers];
-      [v5 addObjectsFromArray:v16];
+      _iCloudMailSettingSpecifiers = [(ICloudMailAccountController *)self _iCloudMailSettingSpecifiers];
+      [v5 addObjectsFromArray:_iCloudMailSettingSpecifiers];
     }
 
     v17 = *&self->ACUIDataclassConfigurationViewController_opaque[v3];
@@ -150,11 +150,11 @@
   [v6 setProperty:v8 forKey:PSTitleKey];
 
   v9 = objc_alloc_init(AADeviceInfo);
-  v10 = [v9 deviceClass];
-  v11 = [v10 uppercaseString];
+  deviceClass = [v9 deviceClass];
+  uppercaseString = [deviceClass uppercaseString];
 
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [@"MAIL_CARD_SUBTEXT_" stringByAppendingString:v11];
+  v13 = [@"MAIL_CARD_SUBTEXT_" stringByAppendingString:uppercaseString];
   v14 = [v12 localizedStringForKey:v13 value:&stru_B9FC8 table:@"AccountPreferences"];
 
   [v6 setProperty:v14 forKey:PSTableCellSubtitleTextKey];
@@ -173,7 +173,7 @@
   v20 = [(ICloudMailAccountController *)self specifierForDataclass:ACAccountDataclassMail];
   [v20 removePropertyForKey:v19];
   v21 = [NSBundle bundleForClass:objc_opt_class()];
-  v22 = [@"MAIL_DATACLASS_SWITCH_TEXT_" stringByAppendingString:v11];
+  v22 = [@"MAIL_DATACLASS_SWITCH_TEXT_" stringByAppendingString:uppercaseString];
   v23 = [v21 localizedStringForKey:v22 value:&stru_B9FC8 table:@"AccountPreferences"];
 
   [v20 setName:v23];
@@ -182,30 +182,30 @@
   return v27;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = +[ICloudMailAccountController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v6;
+    v26 = lCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "handleURL with dicttionary: %@.", buf, 0xCu);
   }
 
-  v9 = [v6 objectForKey:@"domain"];
+  v9 = [lCopy objectForKey:@"domain"];
   if ([(ICloudMailAccountController *)self _hasIcloudMailConfigured])
   {
     if (!v9)
     {
       v22.receiver = self;
       v22.super_class = ICloudMailAccountController;
-      [(ICloudMailAccountController *)&v22 handleURL:v6 withCompletion:v7];
+      [(ICloudMailAccountController *)&v22 handleURL:lCopy withCompletion:completionCopy];
       goto LABEL_10;
     }
 
-    v10 = [v6 objectForKey:@"domainState"];
+    v10 = [lCopy objectForKey:@"domainState"];
     byodSpecifierProviderAdapter = self->_byodSpecifierProviderAdapter;
     if (!byodSpecifierProviderAdapter)
     {
@@ -220,7 +220,7 @@
     v23[1] = 3221225472;
     v23[2] = sub_6DEE4;
     v23[3] = &unk_B8ED8;
-    v24 = v7;
+    v24 = completionCopy;
     [(BYODSpecifierProviderAdapter *)byodSpecifierProviderAdapter loadDomain:v9 withState:v10 completion:v23];
     v14 = v24;
   }
@@ -246,55 +246,55 @@
 LABEL_10:
 }
 
-- (void)_iCloudMailSettingSpecifierTapped:(id)a3
+- (void)_iCloudMailSettingSpecifierTapped:(id)tapped
 {
-  v6 = a3;
+  tappedCopy = tapped;
   v4 = objc_alloc_init(PSSetupController);
   v5 = objc_alloc_init(AccountPSDetailController);
-  [(AccountPSDetailController *)v5 setSpecifier:v6];
+  [(AccountPSDetailController *)v5 setSpecifier:tappedCopy];
   [(AccountPSDetailController *)v5 setParentController:v4];
   [(AccountPSDetailController *)v5 setRootController:v4];
   [v4 showController:v5];
   [v4 setParentController:self];
-  [v4 setSpecifier:v6];
+  [v4 setSpecifier:tappedCopy];
   [v4 setModalPresentationStyle:2];
   [(ICloudMailAccountController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)dataclassSwitchStateDidChange:(id)a3 withSpecifier:(id)a4
+- (void)dataclassSwitchStateDidChange:(id)change withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 BOOLValue] || -[ICloudMailAccountController _mailDataclassChangeForSpecifier:](self, "_mailDataclassChangeForSpecifier:", v7))
+  changeCopy = change;
+  specifierCopy = specifier;
+  if (![changeCopy BOOLValue] || -[ICloudMailAccountController _mailDataclassChangeForSpecifier:](self, "_mailDataclassChangeForSpecifier:", specifierCopy))
   {
     v8 = +[ICloudMailAccountController log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v11 = [v6 BOOLValue];
+      bOOLValue = [changeCopy BOOLValue];
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Mail Dataclass Switch Changed To %{BOOL}d", buf, 8u);
     }
 
     v9.receiver = self;
     v9.super_class = ICloudMailAccountController;
-    [(ICloudMailAccountController *)&v9 dataclassSwitchStateDidChange:v6 withSpecifier:v7];
+    [(ICloudMailAccountController *)&v9 dataclassSwitchStateDidChange:changeCopy withSpecifier:specifierCopy];
   }
 }
 
-- (BOOL)_mailDataclassChangeForSpecifier:(id)a3
+- (BOOL)_mailDataclassChangeForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 acui_dataclass];
-  if (([v5 isEqualToString:ACAccountDataclassMail] & 1) == 0)
+  specifierCopy = specifier;
+  acui_dataclass = [specifierCopy acui_dataclass];
+  if (([acui_dataclass isEqualToString:ACAccountDataclassMail] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(ICloudMailAccountController *)self appleAccount];
-  v7 = [v6 aa_needsEmailConfiguration];
+  appleAccount = [(ICloudMailAccountController *)self appleAccount];
+  aa_needsEmailConfiguration = [appleAccount aa_needsEmailConfiguration];
 
-  if (!v7)
+  if (!aa_needsEmailConfiguration)
   {
 LABEL_7:
     v14 = 1;
@@ -306,8 +306,8 @@ LABEL_7:
   {
     v9 = [ICloudMailCreator alloc];
     appleAccount = self->_appleAccount;
-    v11 = [(ACAccount *)appleAccount accountStore];
-    v12 = [(ICloudMailCreator *)v9 initWithViewController:self appleAccount:appleAccount accountStore:v11];
+    accountStore = [(ACAccount *)appleAccount accountStore];
+    v12 = [(ICloudMailCreator *)v9 initWithViewController:self appleAccount:appleAccount accountStore:accountStore];
     v13 = self->_icloudMailCreator;
     self->_icloudMailCreator = v12;
 
@@ -329,12 +329,12 @@ LABEL_8:
   {
     v4 = [(ACAccount *)appleAccount propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
     v5 = [v4 objectForKeyedSubscript:@"customDomainEnabled"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   v7 = +[ICloudMailAccountController log];
@@ -344,11 +344,11 @@ LABEL_8:
     v10 = 134218240;
     v11 = v8;
     v12 = 1024;
-    v13 = v6;
+    v13 = bOOLValue;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Parent account: %p, Custom Domain enabled: %{BOOL}d", &v10, 0x12u);
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)_hasIcloudMailConfigured
@@ -358,16 +358,16 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(ACAccount *)self->_appleAccount aa_childMailAccount];
-  v4 = v3 != 0;
+  aa_childMailAccount = [(ACAccount *)self->_appleAccount aa_childMailAccount];
+  v4 = aa_childMailAccount != 0;
 
   return v4;
 }
 
-- (void)icloudMailCreationNeedsViewUpdate:(id)a3 withAccount:(id)a4
+- (void)icloudMailCreationNeedsViewUpdate:(id)update withAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  accountCopy = account;
   if (self)
   {
     v8 = +[ICloudMailAccountController log];
@@ -377,10 +377,10 @@ LABEL_8:
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Updating iCloud mail specifiers", buf, 2u);
     }
 
-    v9 = [v7 aa_childMailAccount];
-    if (v9)
+    aa_childMailAccount = [accountCopy aa_childMailAccount];
+    if (aa_childMailAccount)
     {
-      [(NSMutableDictionary *)self->_userInfoDictionary setValue:v9 forKey:ACUIAccountKey];
+      [(NSMutableDictionary *)self->_userInfoDictionary setValue:aa_childMailAccount forKey:ACUIAccountKey];
     }
 
     [(ICloudMailAccountController *)self reloadSpecifiers];
@@ -388,11 +388,11 @@ LABEL_8:
 
   else
   {
-    v9 = +[ICloudMailAccountController log];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    aa_childMailAccount = +[ICloudMailAccountController log];
+    if (os_log_type_enabled(aa_childMailAccount, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "No self. cannot update view for mail account create", v10, 2u);
+      _os_log_impl(&dword_0, aa_childMailAccount, OS_LOG_TYPE_DEFAULT, "No self. cannot update view for mail account create", v10, 2u);
     }
   }
 }

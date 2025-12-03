@@ -1,11 +1,11 @@
 @interface HMIVideoFrameSampler
 - (HMIVideoFrameSamplerDelegate)delegate;
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation HMIVideoFrameSampler
 
-- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)handleSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];

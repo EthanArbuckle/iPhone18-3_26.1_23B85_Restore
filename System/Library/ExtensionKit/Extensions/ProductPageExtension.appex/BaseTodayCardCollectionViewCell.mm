@@ -1,5 +1,5 @@
 @interface BaseTodayCardCollectionViewCell
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003DDB1C();
 }
 
@@ -26,13 +26,13 @@
   swift_weakAssign();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1003DE354(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1003DE354(event, x, y);
 
   return v10;
 }

@@ -1,94 +1,94 @@
 @interface TUITextEffectsGenerator
-- (BOOL)_endsWithWhitespace:(id)a3;
-- (BOOL)shouldGenerateCandidateForContext:(id)a3;
-- (TUITextEffectsGenerator)initWithLocale:(id)a3;
+- (BOOL)_endsWithWhitespace:(id)whitespace;
+- (BOOL)shouldGenerateCandidateForContext:(id)context;
+- (TUITextEffectsGenerator)initWithLocale:(id)locale;
 - (id)_keyboardPrimaryLanguageLocale;
 - (id)supportedTextEffectNames;
-- (void)_generateCandidatesForContextText:(id)a3 typedText:(id)a4 usesCandidateSelection:(BOOL)a5 completion:(id)a6;
+- (void)_generateCandidatesForContextText:(id)text typedText:(id)typedText usesCandidateSelection:(BOOL)selection completion:(id)completion;
 - (void)_updateTESLocaleDataIfNeeded;
-- (void)generateCandidatesWithContext:(id)a3 completion:(id)a4;
-- (void)peekAtCandidates:(id)a3 forContext:(id)a4;
-- (void)syncToKeyboardState:(id)a3;
+- (void)generateCandidatesWithContext:(id)context completion:(id)completion;
+- (void)peekAtCandidates:(id)candidates forContext:(id)context;
+- (void)syncToKeyboardState:(id)state;
 @end
 
 @implementation TUITextEffectsGenerator
 
 - (void)_updateTESLocaleDataIfNeeded
 {
-  v3 = [(TUITextEffectsGenerator *)self _keyboardPrimaryLanguageLocale];
+  _keyboardPrimaryLanguageLocale = [(TUITextEffectsGenerator *)self _keyboardPrimaryLanguageLocale];
   p_locale = &self->_locale;
-  if (self->_locale != v3)
+  if (self->_locale != _keyboardPrimaryLanguageLocale)
   {
-    v7 = v3;
-    objc_storeStrong(p_locale, v3);
+    v7 = _keyboardPrimaryLanguageLocale;
+    objc_storeStrong(p_locale, _keyboardPrimaryLanguageLocale);
     v5 = [objc_alloc(MEMORY[0x1E699BB18]) initWithLocale:self->_locale];
     localeData = self->_localeData;
     self->_localeData = v5;
 
-    v3 = v7;
+    _keyboardPrimaryLanguageLocale = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_locale, v3);
+  MEMORY[0x1EEE66BB8](p_locale, _keyboardPrimaryLanguageLocale);
 }
 
 - (id)_keyboardPrimaryLanguageLocale
 {
-  v2 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v3 = [v2 currentInputMode];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
 
-  v4 = [v3 primaryLanguage];
-  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v4];
+  primaryLanguage = [currentInputMode primaryLanguage];
+  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:primaryLanguage];
 
   return v5;
 }
 
-- (void)peekAtCandidates:(id)a3 forContext:(id)a4
+- (void)peekAtCandidates:(id)candidates forContext:(id)context
 {
-  v22 = a3;
-  v6 = a4;
-  if ([v22 candidateSourceType] || (objc_msgSend(v22, "candidateResultSet"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "candidates"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v9, !v11))
+  candidatesCopy = candidates;
+  contextCopy = context;
+  if ([candidatesCopy candidateSourceType] || (objc_msgSend(candidatesCopy, "candidateResultSet"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "candidates"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v9, !v11))
   {
-    v7 = 0;
-    v8 = 0;
+    delayedGenerationContext = 0;
+    resultsCallback = 0;
   }
 
   else
   {
-    v12 = self;
-    objc_sync_enter(v12);
-    v7 = [(TUITextEffectsGenerator *)v12 delayedGenerationContext];
-    v8 = [(TUITextEffectsGenerator *)v12 resultsCallback];
-    objc_sync_exit(v12);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    delayedGenerationContext = [(TUITextEffectsGenerator *)selfCopy delayedGenerationContext];
+    resultsCallback = [(TUITextEffectsGenerator *)selfCopy resultsCallback];
+    objc_sync_exit(selfCopy);
 
-    v13 = [v7 requestToken];
-    v14 = [v6 requestToken];
-    v15 = [v13 isSameRequestAs:v14];
+    requestToken = [delayedGenerationContext requestToken];
+    requestToken2 = [contextCopy requestToken];
+    v15 = [requestToken isSameRequestAs:requestToken2];
 
     if (v15)
     {
-      v16 = [v22 candidateResultSet];
-      v17 = [v16 firstCandidate];
-      v18 = [v17 candidate];
-      v19 = [v7 keyboardState];
-      v20 = [v19 documentState];
-      v21 = [v20 contextBeforeInput];
-      [(TUITextEffectsGenerator *)v12 _generateCandidatesForContextText:v18 typedText:v21 usesCandidateSelection:1 completion:v8];
+      candidateResultSet = [candidatesCopy candidateResultSet];
+      firstCandidate = [candidateResultSet firstCandidate];
+      candidate = [firstCandidate candidate];
+      keyboardState = [delayedGenerationContext keyboardState];
+      documentState = [keyboardState documentState];
+      contextBeforeInput = [documentState contextBeforeInput];
+      [(TUITextEffectsGenerator *)selfCopy _generateCandidatesForContextText:candidate typedText:contextBeforeInput usesCandidateSelection:1 completion:resultsCallback];
     }
   }
 }
 
-- (void)syncToKeyboardState:(id)a3
+- (void)syncToKeyboardState:(id)state
 {
-  v9 = a3;
-  v4 = [v9 textInputTraits];
+  stateCopy = state;
+  textInputTraits = [stateCopy textInputTraits];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v9 textInputTraits];
-    v7 = [v6 allowsTextAnimationsType];
+    textInputTraits2 = [stateCopy textInputTraits];
+    allowsTextAnimationsType = [textInputTraits2 allowsTextAnimationsType];
 
-    v8 = v7 == 2;
+    v8 = allowsTextAnimationsType == 2;
   }
 
   else
@@ -108,13 +108,13 @@
   return v3;
 }
 
-- (BOOL)_endsWithWhitespace:(id)a3
+- (BOOL)_endsWithWhitespace:(id)whitespace
 {
-  v3 = a3;
-  if ([v3 length])
+  whitespaceCopy = whitespace;
+  if ([whitespaceCopy length])
   {
-    v4 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v5 = [v4 longCharacterIsMember:{objc_msgSend(v3, "_lastLongCharacter")}];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v5 = [whitespaceAndNewlineCharacterSet longCharacterIsMember:{objc_msgSend(whitespaceCopy, "_lastLongCharacter")}];
   }
 
   else
@@ -125,13 +125,13 @@
   return v5;
 }
 
-- (void)_generateCandidatesForContextText:(id)a3 typedText:(id)a4 usesCandidateSelection:(BOOL)a5 completion:(id)a6
+- (void)_generateCandidatesForContextText:(id)text typedText:(id)typedText usesCandidateSelection:(BOOL)selection completion:(id)completion
 {
-  v7 = a5;
+  selectionCopy = selection;
   v58[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  textCopy = text;
+  typedTextCopy = typedText;
+  completionCopy = completion;
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -154,21 +154,21 @@
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  v13 = [(TUITextEffectsGenerator *)self localeData];
-  v14 = [v10 length];
+  localeData = [(TUITextEffectsGenerator *)self localeData];
+  v14 = [textCopy length];
   v29 = MEMORY[0x1E69E9820];
   v30 = 3221225472;
   v31 = __105__TUITextEffectsGenerator__generateCandidatesForContextText_typedText_usesCandidateSelection_completion___block_invoke;
   v32 = &unk_1E72D7E70;
-  v15 = v10;
+  v15 = textCopy;
   v33 = v15;
   v35 = &v51;
-  v16 = v11;
+  v16 = typedTextCopy;
   v34 = v16;
   v36 = v49;
   v37 = &v43;
   v38 = &v39;
-  [v13 enumerateTextEffectCandidatesInString:v15 searchRange:0 options:v14 usingBlock:{6, &v29}];
+  [localeData enumerateTextEffectCandidatesInString:v15 searchRange:0 options:v14 usingBlock:{6, &v29}];
 
   if (v52[5] && v44[5])
   {
@@ -194,7 +194,7 @@
 
     v24 = [v20 listWithCorrections:v21 predictions:v22 emojiList:0 inlineCompletions:0];
 
-    if (v7)
+    if (selectionCopy)
     {
       v25 = MEMORY[0x1E69D95E8];
       v57 = v18;
@@ -202,20 +202,20 @@
       v27 = [v25 setWithCandidates:v26];
 
       v28 = [_TUIKeyboardCandidateContainer forSourceType:3 withKeyboardCandidateResultSet:v27];
-      v12[2](v12, v28);
+      completionCopy[2](completionCopy, v28);
     }
 
     else
     {
       v27 = [_TUIKeyboardCandidateContainer forSourceType:3 withAutocorrectionList:v24];
-      v12[2](v12, v27);
+      completionCopy[2](completionCopy, v27);
     }
   }
 
   else
   {
     v18 = [_TUIKeyboardCandidateContainer forSourceType:3, v29, v30, v31, v32, v33];
-    v12[2](v12, v18);
+    completionCopy[2](completionCopy, v18);
   }
 
   _Block_object_dispose(&v39, 8);
@@ -255,40 +255,40 @@ void __105__TUITextEffectsGenerator__generateCandidatesForContextText_typedText_
   }
 }
 
-- (void)generateCandidatesWithContext:(id)a3 completion:(id)a4
+- (void)generateCandidatesWithContext:(id)context completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 keyboardState];
-  v8 = [v7 documentState];
-  v9 = [v8 contextBeforeInput];
+  contextCopy = context;
+  completionCopy = completion;
+  keyboardState = [contextCopy keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  if ([v13 usesCandidateSelection] && (objc_msgSend(v7, "inputForMarkedText"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
+  if ([contextCopy usesCandidateSelection] && (objc_msgSend(keyboardState, "inputForMarkedText"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
   {
-    [(TUITextEffectsGenerator *)self setDelayedGenerationContext:v13];
-    [(TUITextEffectsGenerator *)self setResultsCallback:v6];
+    [(TUITextEffectsGenerator *)self setDelayedGenerationContext:contextCopy];
+    [(TUITextEffectsGenerator *)self setResultsCallback:completionCopy];
   }
 
   else
   {
     [(TUITextEffectsGenerator *)self setDelayedGenerationContext:0];
     [(TUITextEffectsGenerator *)self setResultsCallback:0];
-    if (-[TUITextEffectsGenerator shouldGenerateCandidateForContext:](self, "shouldGenerateCandidateForContext:", v13) && [v9 length] && !-[TUITextEffectsGenerator _endsWithWhitespace:](self, "_endsWithWhitespace:", v9))
+    if (-[TUITextEffectsGenerator shouldGenerateCandidateForContext:](self, "shouldGenerateCandidateForContext:", contextCopy) && [contextBeforeInput length] && !-[TUITextEffectsGenerator _endsWithWhitespace:](self, "_endsWithWhitespace:", contextBeforeInput))
     {
-      -[TUITextEffectsGenerator _generateCandidatesForContextText:typedText:usesCandidateSelection:completion:](self, "_generateCandidatesForContextText:typedText:usesCandidateSelection:completion:", v9, v9, [v13 usesCandidateSelection], v6);
+      -[TUITextEffectsGenerator _generateCandidatesForContextText:typedText:usesCandidateSelection:completion:](self, "_generateCandidatesForContextText:typedText:usesCandidateSelection:completion:", contextBeforeInput, contextBeforeInput, [contextCopy usesCandidateSelection], completionCopy);
     }
 
     else
     {
       v12 = [_TUIKeyboardCandidateContainer forSourceType:3];
-      v6[2](v6, v12);
+      completionCopy[2](completionCopy, v12);
     }
   }
 }
 
-- (BOOL)shouldGenerateCandidateForContext:(id)a3
+- (BOOL)shouldGenerateCandidateForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -303,7 +303,7 @@ void __105__TUITextEffectsGenerator__generateCandidatesForContextText_typedText_
     dispatch_once(&shouldGenerateCandidateForContext__onceToken_9870, block);
   }
 
-  v5 = (![v4 usesCandidateSelection] || *(v9 + 24) == 1) && -[TUITextEffectsGenerator enabled](self, "enabled");
+  v5 = (![contextCopy usesCandidateSelection] || *(v9 + 24) == 1) && -[TUITextEffectsGenerator enabled](self, "enabled");
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -316,15 +316,15 @@ uint64_t __61__TUITextEffectsGenerator_shouldGenerateCandidateForContext___block
   return result;
 }
 
-- (TUITextEffectsGenerator)initWithLocale:(id)a3
+- (TUITextEffectsGenerator)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = TUITextEffectsGenerator;
   v5 = [(TUITextEffectsGenerator *)&v11 init];
   locale = v5->_locale;
-  v5->_locale = v4;
-  v7 = v4;
+  v5->_locale = localeCopy;
+  v7 = localeCopy;
 
   v8 = [MEMORY[0x1E699BB18] localeDataWithLocale:v5->_locale];
   localeData = v5->_localeData;

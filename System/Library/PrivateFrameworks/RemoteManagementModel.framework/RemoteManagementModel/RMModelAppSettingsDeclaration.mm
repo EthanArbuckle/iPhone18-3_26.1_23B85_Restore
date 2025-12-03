@@ -1,14 +1,14 @@
 @interface RMModelAppSettingsDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3 marketplaces:(id)a4;
-+ (id)combineConfigurations:(id)a3;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier marketplaces:(id)marketplaces;
++ (id)combineConfigurations:(id)configurations;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelAppSettingsDeclaration
@@ -33,46 +33,46 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 marketplaces:(id)a4
++ (id)buildWithIdentifier:(id)identifier marketplaces:(id)marketplaces
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  marketplacesCopy = marketplaces;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.app.settings"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadMarketplaces:v6];
+  [v7 setPayloadMarketplaces:marketplacesCopy];
 
   [v7 updateServerToken];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.configuration.app.settings"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -80,16 +80,16 @@
   return v4;
 }
 
-+ (id)combineConfigurations:(id)a3
++ (id)combineConfigurations:(id)configurations
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = configurationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -146,12 +146,12 @@
   return v10;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
   v8 = MEMORY[0x277CBEB58];
-  v9 = a3;
-  v10 = [v9 allKeys];
-  v11 = [v8 setWithArray:v10];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v8 setWithArray:allKeys];
 
   v12 = +[RMModelAppSettingsDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -159,43 +159,43 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  LOWORD(v15) = a4;
-  LOBYTE(self) = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v9 usingKey:@"Marketplaces" forKeyPath:@"payloadMarketplaces" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v15 error:a5];
+  LOWORD(v15) = type;
+  LOBYTE(self) = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"Marketplaces" forKeyPath:@"payloadMarketplaces" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v15 error:error];
 
   return self;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelAppSettingsDeclaration *)self payloadMarketplaces];
+  payloadMarketplaces = [(RMModelAppSettingsDeclaration *)self payloadMarketplaces];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__RMModelAppSettingsDeclaration_serializePayloadWithType___block_invoke;
   v9[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v10 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Marketplaces" value:v6 dictSerializer:v9 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"Marketplaces" value:payloadMarketplaces dictSerializer:v9 isRequired:0 defaultValue:0];
 
   v7 = [v5 copy];
 
   return v7;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
-  v4 = a3;
-  v7 = [(RMModelAppSettingsDeclaration *)self payloadMarketplaces];
-  v5 = [v4 payloadMarketplaces];
+  otherCopy = other;
+  payloadMarketplaces = [(RMModelAppSettingsDeclaration *)self payloadMarketplaces];
+  payloadMarketplaces2 = [otherCopy payloadMarketplaces];
 
-  v6 = [RMModelConfigurationBase combineDictionary:v7 other:v5];
+  v6 = [RMModelConfigurationBase combineDictionary:payloadMarketplaces other:payloadMarketplaces2];
   [(RMModelAppSettingsDeclaration *)self setPayloadMarketplaces:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelAppSettingsDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:zone];
   v5 = [(RMModelAppSettingsDeclaration_Marketplaces *)self->_payloadMarketplaces copy];
   v6 = v4[6];
   v4[6] = v5;

@@ -1,20 +1,20 @@
 @interface BSServiceDispatchQueue
-+ (BSServiceDispatchQueue)queueWithName:(id)a3;
-+ (BSServiceDispatchQueue)queueWithName:(id)a3 serviceQuality:(id)a4;
-+ (BSServiceDispatchQueue)queueWithName:(id)a3 serviceQuality:(id)a4 targetQueue:(id)a5;
-+ (BSServiceDispatchQueue)queueWithName:(id)a3 targetQueue:(id)a4;
-+ (id)_queueOfDispatchQueue:(uint64_t)a1;
-+ (id)_queueWithDispatchQueue:(uint64_t)a1;
++ (BSServiceDispatchQueue)queueWithName:(id)name;
++ (BSServiceDispatchQueue)queueWithName:(id)name serviceQuality:(id)quality;
++ (BSServiceDispatchQueue)queueWithName:(id)name serviceQuality:(id)quality targetQueue:(id)queue;
++ (BSServiceDispatchQueue)queueWithName:(id)name targetQueue:(id)queue;
++ (id)_queueOfDispatchQueue:(uint64_t)queue;
++ (id)_queueWithDispatchQueue:(uint64_t)queue;
 + (id)mainQueue;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_BYTE)_initWithQueue:(uint64_t)a3 asUserInteractive:(int)a4 shouldAssociate:;
-- (void)_performAsync:(id)a3 withHandoff:(id)a4;
-- (void)_xpcReplyQueue_performReply:(id)a3;
+- (_BYTE)_initWithQueue:(uint64_t)queue asUserInteractive:(int)interactive shouldAssociate:;
+- (void)_performAsync:(id)async withHandoff:(id)handoff;
+- (void)_xpcReplyQueue_performReply:(id)reply;
 - (void)assertBarrierOnQueue;
-- (void)performAfter:(double)a3 withBlock:(id)a4;
-- (void)performAsync:(id)a3;
-- (void)performAsyncAndWait:(id)a3;
+- (void)performAfter:(double)after withBlock:(id)block;
+- (void)performAsync:(id)async;
+- (void)performAsyncAndWait:(id)wait;
 @end
 
 @implementation BSServiceDispatchQueue
@@ -68,42 +68,42 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   v7 = MEMORY[0x1E69E96A0];
 }
 
-- (_BYTE)_initWithQueue:(uint64_t)a3 asUserInteractive:(int)a4 shouldAssociate:
+- (_BYTE)_initWithQueue:(uint64_t)queue asUserInteractive:(int)interactive shouldAssociate:
 {
   v8 = a2;
-  if (a1)
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = BSServiceQueue;
     v9 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
-      *(v9 + 1) = a3;
+      *(v9 + 1) = queue;
       objc_storeStrong(v9 + 2, a2);
-      if (a4)
+      if (interactive)
       {
-        a1[25] = 1;
-        v10 = [MEMORY[0x1E698E7B8] referenceWithObject:a1];
+        self[25] = 1;
+        v10 = [MEMORY[0x1E698E7B8] referenceWithObject:self];
         objc_setAssociatedObject(v8, "BSServiceDispatchQueueReference", v10, 1);
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)_queueOfDispatchQueue:(uint64_t)a1
++ (id)_queueOfDispatchQueue:(uint64_t)queue
 {
   v2 = a2;
   objc_opt_self();
   v3 = objc_getAssociatedObject(v2, "BSServiceDispatchQueueReference");
-  v4 = [v3 object];
+  object = [v3 object];
 
-  return v4;
+  return object;
 }
 
-+ (id)_queueWithDispatchQueue:(uint64_t)a1
++ (id)_queueWithDispatchQueue:(uint64_t)queue
 {
   v26 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -156,12 +156,12 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   return v5;
 }
 
-+ (BSServiceDispatchQueue)queueWithName:(id)a3
++ (BSServiceDispatchQueue)queueWithName:(id)name
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  nameCopy = name;
   v6 = MEMORY[0x1E696AEC0];
-  if (!v5)
+  if (!nameCopy)
   {
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
@@ -177,7 +177,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v32 = 2114;
       v33 = v18;
       v34 = 2048;
-      v35 = a1;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"BSServiceQueue.m";
       v38 = 1024;
@@ -198,13 +198,13 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [v5 classForCoder];
-    if (!v21)
+    classForCoder = [nameCopy classForCoder];
+    if (!classForCoder)
     {
-      v21 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v22 = NSStringFromClass(v21);
+    v22 = NSStringFromClass(classForCoder);
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
     v25 = [v20 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"name", v22, v24];
@@ -219,7 +219,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v32 = 2114;
       v33 = v28;
       v34 = 2048;
-      v35 = a1;
+      selfCopy2 = self;
       v36 = 2114;
       v37 = @"BSServiceQueue.m";
       v38 = 1024;
@@ -236,7 +236,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A852C9CLL);
   }
 
-  v7 = [MEMORY[0x1E698E698] serial];
+  serial = [MEMORY[0x1E698E698] serial];
   v8 = BSDispatchQueueCreate();
   v9 = [BSServiceDispatchQueue alloc];
   v10 = [(BSServiceDispatchQueue *)v9 _initWithQueue:v8 asUserInteractive:*MEMORY[0x1E695E4C0] shouldAssociate:1];
@@ -246,12 +246,12 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   return v10;
 }
 
-+ (BSServiceDispatchQueue)queueWithName:(id)a3 targetQueue:(id)a4
++ (BSServiceDispatchQueue)queueWithName:(id)name targetQueue:(id)queue
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  nameCopy = name;
+  queueCopy = queue;
+  v9 = nameCopy;
   v10 = MEMORY[0x1E696AEC0];
   if (!v9)
   {
@@ -269,7 +269,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v42 = 2114;
       v43 = v23;
       v44 = 2048;
-      v45 = a1;
+      selfCopy3 = self;
       v46 = 2114;
       v47 = @"BSServiceQueue.m";
       v48 = 1024;
@@ -290,13 +290,13 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v25 = MEMORY[0x1E696AEC0];
-    v26 = [v9 classForCoder];
-    if (!v26)
+    classForCoder = [v9 classForCoder];
+    if (!classForCoder)
     {
-      v26 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v27 = NSStringFromClass(v26);
+    v27 = NSStringFromClass(classForCoder);
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
     v30 = [v25 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"name", v27, v29];
@@ -311,7 +311,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v42 = 2114;
       v43 = v33;
       v44 = 2048;
-      v45 = a1;
+      selfCopy3 = self;
       v46 = 2114;
       v47 = @"BSServiceQueue.m";
       v48 = 1024;
@@ -328,7 +328,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A8530D4);
   }
 
-  if (!v8)
+  if (!queueCopy)
   {
     v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"targetQueue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -341,7 +341,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v42 = 2114;
       v43 = v38;
       v44 = 2048;
-      v45 = a1;
+      selfCopy3 = self;
       v46 = 2114;
       v47 = @"BSServiceQueue.m";
       v48 = 1024;
@@ -358,8 +358,8 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A8531D4);
   }
 
-  v11 = [MEMORY[0x1E698E698] serial];
-  v12 = [v11 targetQueue:v8];
+  serial = [MEMORY[0x1E698E698] serial];
+  v12 = [serial targetQueue:queueCopy];
 
   v13 = BSDispatchQueueCreate();
   v14 = [BSServiceDispatchQueue alloc];
@@ -370,12 +370,12 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   return v15;
 }
 
-+ (BSServiceDispatchQueue)queueWithName:(id)a3 serviceQuality:(id)a4
++ (BSServiceDispatchQueue)queueWithName:(id)name serviceQuality:(id)quality
 {
   v69 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  nameCopy = name;
+  qualityCopy = quality;
+  v9 = nameCopy;
   v10 = MEMORY[0x1E696AEC0];
   if (!v9)
   {
@@ -393,7 +393,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v59 = 2114;
       v60 = v27;
       v61 = 2048;
-      v62 = a1;
+      selfCopy4 = self;
       v63 = 2114;
       v64 = @"BSServiceQueue.m";
       v65 = 1024;
@@ -414,13 +414,13 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v29 = MEMORY[0x1E696AEC0];
-    v30 = [v9 classForCoder];
-    if (!v30)
+    classForCoder = [v9 classForCoder];
+    if (!classForCoder)
     {
-      v30 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v31 = NSStringFromClass(v30);
+    v31 = NSStringFromClass(classForCoder);
     v32 = objc_opt_class();
     v33 = NSStringFromClass(v32);
     v34 = [v29 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"name", v31, v33];
@@ -435,7 +435,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v59 = 2114;
       v60 = v37;
       v61 = 2048;
-      v62 = a1;
+      selfCopy4 = self;
       v63 = 2114;
       v64 = @"BSServiceQueue.m";
       v65 = 1024;
@@ -452,7 +452,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A8536A4);
   }
 
-  v11 = v8;
+  v11 = qualityCopy;
   if (!v11)
   {
     v39 = MEMORY[0x1E696AEC0];
@@ -470,7 +470,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v59 = 2114;
       v60 = v45;
       v61 = 2048;
-      v62 = a1;
+      selfCopy4 = self;
       v63 = 2114;
       v64 = @"BSServiceQueue.m";
       v65 = 1024;
@@ -491,13 +491,13 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v47 = MEMORY[0x1E696AEC0];
-    v48 = [v11 classForCoder];
-    if (!v48)
+    classForCoder2 = [v11 classForCoder];
+    if (!classForCoder2)
     {
-      v48 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v49 = NSStringFromClass(v48);
+    v49 = NSStringFromClass(classForCoder2);
     v50 = objc_opt_class();
     v51 = NSStringFromClass(v50);
     v52 = [v47 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"serviceQuality", v49, v51];
@@ -512,7 +512,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v59 = 2114;
       v60 = v55;
       v61 = 2048;
-      v62 = a1;
+      selfCopy4 = self;
       v63 = 2114;
       v64 = @"BSServiceQueue.m";
       v65 = 1024;
@@ -529,14 +529,14 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A853908);
   }
 
-  v12 = [MEMORY[0x1E698E698] serial];
-  v13 = [v12 serviceClass:objc_msgSend(v11 relativePriority:{"serviceClass"), objc_msgSend(v11, "relativePriority")}];
+  serial = [MEMORY[0x1E698E698] serial];
+  v13 = [serial serviceClass:objc_msgSend(v11 relativePriority:{"serviceClass"), objc_msgSend(v11, "relativePriority")}];
 
   v14 = BSDispatchQueueCreate();
-  v15 = [v11 serviceClass];
+  serviceClass = [v11 serviceClass];
   v16 = [BSServiceDispatchQueue alloc];
   v17 = *MEMORY[0x1E695E4D0];
-  if (v15 == 33)
+  if (serviceClass == 33)
   {
     v18 = *MEMORY[0x1E695E4D0];
   }
@@ -553,13 +553,13 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   return v19;
 }
 
-+ (BSServiceDispatchQueue)queueWithName:(id)a3 serviceQuality:(id)a4 targetQueue:(id)a5
++ (BSServiceDispatchQueue)queueWithName:(id)name serviceQuality:(id)quality targetQueue:(id)queue
 {
   v78 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  nameCopy = name;
+  qualityCopy = quality;
+  queueCopy = queue;
+  v12 = nameCopy;
   v13 = MEMORY[0x1E696AEC0];
   if (!v12)
   {
@@ -577,7 +577,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v68 = 2114;
       v69 = v31;
       v70 = 2048;
-      v71 = a1;
+      selfCopy5 = self;
       v72 = 2114;
       v73 = @"BSServiceQueue.m";
       v74 = 1024;
@@ -598,13 +598,13 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v33 = MEMORY[0x1E696AEC0];
-    v34 = [v12 classForCoder];
-    if (!v34)
+    classForCoder = [v12 classForCoder];
+    if (!classForCoder)
     {
-      v34 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v35 = NSStringFromClass(v34);
+    v35 = NSStringFromClass(classForCoder);
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
     v38 = [v33 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"name", v35, v37];
@@ -619,7 +619,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v68 = 2114;
       v69 = v41;
       v70 = 2048;
-      v71 = a1;
+      selfCopy5 = self;
       v72 = 2114;
       v73 = @"BSServiceQueue.m";
       v74 = 1024;
@@ -636,7 +636,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A853E54);
   }
 
-  v14 = v10;
+  v14 = qualityCopy;
   if (!v14)
   {
     v43 = MEMORY[0x1E696AEC0];
@@ -654,7 +654,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v68 = 2114;
       v69 = v49;
       v70 = 2048;
-      v71 = a1;
+      selfCopy5 = self;
       v72 = 2114;
       v73 = @"BSServiceQueue.m";
       v74 = 1024;
@@ -675,13 +675,13 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v51 = MEMORY[0x1E696AEC0];
-    v52 = [v14 classForCoder];
-    if (!v52)
+    classForCoder2 = [v14 classForCoder];
+    if (!classForCoder2)
     {
-      v52 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v53 = NSStringFromClass(v52);
+    v53 = NSStringFromClass(classForCoder2);
     v54 = objc_opt_class();
     v55 = NSStringFromClass(v54);
     v56 = [v51 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"serviceQuality", v53, v55];
@@ -696,7 +696,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v68 = 2114;
       v69 = v59;
       v70 = 2048;
-      v71 = a1;
+      selfCopy5 = self;
       v72 = 2114;
       v73 = @"BSServiceQueue.m";
       v74 = 1024;
@@ -713,7 +713,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A8540B8);
   }
 
-  if (!v11)
+  if (!queueCopy)
   {
     v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"targetQueue"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -726,7 +726,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v68 = 2114;
       v69 = v64;
       v70 = 2048;
-      v71 = a1;
+      selfCopy5 = self;
       v72 = 2114;
       v73 = @"BSServiceQueue.m";
       v74 = 1024;
@@ -743,16 +743,16 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A8541B8);
   }
 
-  v15 = [MEMORY[0x1E698E698] serial];
-  v16 = [v15 targetQueue:v11];
+  serial = [MEMORY[0x1E698E698] serial];
+  v16 = [serial targetQueue:queueCopy];
 
   v17 = [v16 serviceClass:objc_msgSend(v14 relativePriority:{"serviceClass"), objc_msgSend(v14, "relativePriority")}];
 
   v18 = BSDispatchQueueCreate();
-  v19 = [v14 serviceClass];
+  serviceClass = [v14 serviceClass];
   v20 = [BSServiceDispatchQueue alloc];
   v21 = *MEMORY[0x1E695E4D0];
-  if (v19 == 33)
+  if (serviceClass == 33)
   {
     v22 = *MEMORY[0x1E695E4D0];
   }
@@ -769,11 +769,11 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   return v23;
 }
 
-- (void)performAsyncAndWait:(id)a3
+- (void)performAsyncAndWait:(id)wait
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  waitCopy = wait;
+  if (!waitCopy)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"block"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -786,7 +786,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
       v15 = 2114;
       v16 = v10;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSServiceQueue.m";
       v21 = 1024;
@@ -803,19 +803,19 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     JUMPOUT(0x19A8544A4);
   }
 
-  v12 = v5;
-  dispatch_async_and_wait(self->_queue, v5);
+  v12 = waitCopy;
+  dispatch_async_and_wait(self->_queue, waitCopy);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performAsync:(id)a3 withHandoff:(id)a4
+- (void)_performAsync:(id)async withHandoff:(id)handoff
 {
-  block = a3;
-  v6 = a4;
+  block = async;
+  handoffCopy = handoff;
   if (block)
   {
     queue = self->_queue;
-    if (v6)
+    if (handoffCopy)
     {
       xpc_dictionary_handoff_reply();
     }
@@ -827,39 +827,39 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   }
 }
 
-- (void)_xpcReplyQueue_performReply:(id)a3
+- (void)_xpcReplyQueue_performReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(BSServiceDispatchQueue *)self assertBarrierOnQueue];
-  if (v4)
+  if (replyCopy)
   {
-    v4[2]();
+    replyCopy[2]();
   }
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  if (a3)
+  if (async)
   {
-    dispatch_async(self->_queue, a3);
+    dispatch_async(self->_queue, async);
   }
 }
 
-- (void)performAfter:(double)a3 withBlock:(id)a4
+- (void)performAfter:(double)after withBlock:(id)block
 {
-  if (a4)
+  if (block)
   {
-    v5 = (a3 * 1000000000.0);
-    block = a4;
+    v5 = (after * 1000000000.0);
+    block = block;
     v6 = dispatch_time(0, v5);
     dispatch_after(v6, self->_queue, block);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -867,7 +867,7 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && !self->_isAssociated && !v4->_isAssociated && [(OS_dispatch_queue *)self->_queue isEqual:v4->_queue]&& self->_main == v4->_main;
+    v6 = v5 == objc_opt_class() && !self->_isAssociated && !equalCopy->_isAssociated && [(OS_dispatch_queue *)self->_queue isEqual:equalCopy->_queue]&& self->_main == equalCopy->_main;
   }
 
   return v6;
@@ -887,9 +887,9 @@ void __35__BSServiceDispatchQueue_mainQueue__block_invoke()
     v5 = [v3 appendQueue:self->_queue withName:@"queue"];
   }
 
-  v6 = [v4 build];
+  build = [v4 build];
 
-  return v6;
+  return build;
 }
 
 @end

@@ -17,7 +17,7 @@
   v10 = 0;
   if ([v6 scanHexInt:&v10])
   {
-    v8 = [a1 colorWithRed:BYTE2(v10) / 255.0 green:BYTE1(v10) / 255.0 blue:v10 / 255.0 alpha:1.0];
+    v8 = [self colorWithRed:BYTE2(v10) / 255.0 green:BYTE1(v10) / 255.0 blue:v10 / 255.0 alpha:1.0];
   }
 
   else
@@ -33,7 +33,7 @@
   v4 = 0.0;
   v5 = 0.0;
   v3 = 0.0;
-  [a1 getRed:&v5 green:&v4 blue:&v3 alpha:0];
+  [self getRed:&v5 green:&v4 blue:&v3 alpha:0];
   v1 = [MEMORY[0x277CCACA8] stringWithFormat:@"#%X%X%X", (v5 * 255.0), (v4 * 255.0), (v3 * 255.0)];
 
   return v1;

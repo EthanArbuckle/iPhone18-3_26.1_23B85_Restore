@@ -1,6 +1,6 @@
 @interface PLClientChangePublisher
-- (PLClientChangePublisher)initWithAssetsdClient:(id)a3;
-- (id)publishChangeEvent:(id)a3 delayedSaveActionsDetail:(id)a4 debugEvent:(id)a5 transaction:(id)a6;
+- (PLClientChangePublisher)initWithAssetsdClient:(id)client;
+- (id)publishChangeEvent:(id)event delayedSaveActionsDetail:(id)detail debugEvent:(id)debugEvent transaction:(id)transaction;
 - (void)pauseLaunchEventNotifications;
 - (void)unpauseLaunchEventNotifications;
 @end
@@ -27,17 +27,17 @@
   }
 }
 
-- (id)publishChangeEvent:(id)a3 delayedSaveActionsDetail:(id)a4 debugEvent:(id)a5 transaction:(id)a6
+- (id)publishChangeEvent:(id)event delayedSaveActionsDetail:(id)detail debugEvent:(id)debugEvent transaction:(id)transaction
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
+  detailCopy = detail;
+  transactionCopy = transaction;
   v11 = MEMORY[0x1E69BF338];
-  v12 = a3;
-  v13 = [[v11 alloc] initWithXPCObject:v12];
+  eventCopy = event;
+  v13 = [[v11 alloc] initWithXPCObject:eventCopy];
 
-  v14 = [(PLAssetsdClient *)self->_assetsdClient libraryClient];
-  if (!v14)
+  libraryClient = [(PLAssetsdClient *)self->_assetsdClient libraryClient];
+  if (!libraryClient)
   {
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -53,9 +53,9 @@
   v19[1] = 3221225472;
   v19[2] = __94__PLClientChangePublisher_publishChangeEvent_delayedSaveActionsDetail_debugEvent_transaction___block_invoke;
   v19[3] = &unk_1E7575FA8;
-  v17 = v10;
+  v17 = transactionCopy;
   v20 = v17;
-  [v14 publishRemoteChangeEvent:v13 delayedSaveActionsDetail:v9 completionHandler:v19];
+  [libraryClient publishRemoteChangeEvent:v13 delayedSaveActionsDetail:detailCopy completionHandler:v19];
 
   return v17;
 }
@@ -78,16 +78,16 @@ void __94__PLClientChangePublisher_publishChangeEvent_delayedSaveActionsDetail_d
   [*(a1 + 32) completeTransaction];
 }
 
-- (PLClientChangePublisher)initWithAssetsdClient:(id)a3
+- (PLClientChangePublisher)initWithAssetsdClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v10.receiver = self;
   v10.super_class = PLClientChangePublisher;
   v6 = [(PLClientChangePublisher *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetsdClient, a3);
+    objc_storeStrong(&v6->_assetsdClient, client);
     v8 = v7;
   }
 

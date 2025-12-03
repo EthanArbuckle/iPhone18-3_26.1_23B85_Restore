@@ -1,24 +1,24 @@
 @interface TCDumpBlob
-- (TCDumpBlob)initWithSize_:(unint64_t)a3;
-- (void)fromBinary:(__sFILE *)a3 toXml:(_xmlNode *)a4 state:(id)a5;
+- (TCDumpBlob)initWithSize_:(unint64_t)size_;
+- (void)fromBinary:(__sFILE *)binary toXml:(_xmlNode *)xml state:(id)state;
 @end
 
 @implementation TCDumpBlob
 
-- (TCDumpBlob)initWithSize_:(unint64_t)a3
+- (TCDumpBlob)initWithSize_:(unint64_t)size_
 {
   v5.receiver = self;
   v5.super_class = TCDumpBlob;
   result = [(TCDumpType *)&v5 init];
   if (result)
   {
-    result->mSize = a3;
+    result->mSize = size_;
   }
 
   return result;
 }
 
-- (void)fromBinary:(__sFILE *)a3 toXml:(_xmlNode *)a4 state:(id)a5
+- (void)fromBinary:(__sFILE *)binary toXml:(_xmlNode *)xml state:(id)state
 {
   v32 = *MEMORY[0x277D85DE8];
   mSize = self->mSize;
@@ -38,7 +38,7 @@
         v8 = mSize - v6;
       }
 
-      if (fread(__ptr, 1uLL, v8, a3) != v8)
+      if (fread(__ptr, 1uLL, v8, binary) != v8)
       {
         v9 = [*(v7 + 3240) stringWithUTF8String:"-[TCDumpBlob fromBinary:toXml:state:]"];
         v10 = [*(v7 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/Common/Utilities/TCDump.mm"];
@@ -48,7 +48,7 @@
       }
 
       v11 = xmlNewNode(0, "row");
-      xmlAddChild(a4, v11);
+      xmlAddChild(xml, v11);
       [*(v7 + 3240) stringWithFormat:@"%04lX", v6];
       v28 = v12 = v7;
       sfaxmlSetNSStringNoNsProp(v11, "offset", v28);

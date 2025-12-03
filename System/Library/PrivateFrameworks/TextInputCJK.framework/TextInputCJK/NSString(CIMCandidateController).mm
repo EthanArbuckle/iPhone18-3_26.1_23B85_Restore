@@ -8,24 +8,24 @@
 - (uint64_t)traditionalChineseZhuyinCompare:()CIMCandidateController
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = GetCurrentLocale();
-  v7 = [a1 compare:v4 options:512 range:0 locale:{v5, v6}];
+  v7 = [self compare:v4 options:512 range:0 locale:{v5, v6}];
 
-  v8 = [a1 length];
+  v8 = [self length];
   if (v8)
   {
     v9 = v8;
     if (v8 == [v4 length])
     {
       v10 = v9 - 1;
-      v11 = [a1 substringToIndex:v10];
+      v11 = [self substringToIndex:v10];
       v12 = [v4 substringToIndex:v10];
       v13 = [v11 isEqualToString:v12];
 
       if (v13)
       {
-        v14 = [a1 substringFromIndex:v10];
+        v14 = [self substringFromIndex:v10];
         v15 = [v4 substringFromIndex:v10];
         v16 = 0;
         while (1)
@@ -62,9 +62,9 @@ LABEL_11:
 - (uint64_t)chinesePinyinCompare:()CIMCandidateController
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = GetCurrentLocale();
-  v7 = [a1 compare:v4 options:512 range:0 locale:{v5, v6}];
+  v7 = [self compare:v4 options:512 range:0 locale:{v5, v6}];
 
   return v7;
 }

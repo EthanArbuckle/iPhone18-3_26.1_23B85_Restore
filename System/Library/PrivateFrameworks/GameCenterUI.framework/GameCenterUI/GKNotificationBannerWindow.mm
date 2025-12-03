@@ -1,17 +1,17 @@
 @interface GKNotificationBannerWindow
 + (id)bannerWindow;
 + (id)queue;
-+ (void)enqueBanner:(id)a3;
++ (void)enqueBanner:(id)banner;
 - (BOOL)_canBecomeKeyWindow;
 - (BOOL)isSemaphoreValid;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (GKNotificationBannerWindow)init;
-- (void)_hideBanner:(id)a3 quickly:(BOOL)a4;
-- (void)_showBanner:(id)a3;
+- (void)_hideBanner:(id)banner quickly:(BOOL)quickly;
+- (void)_showBanner:(id)banner;
 - (void)dealloc;
-- (void)handlePan:(id)a3;
-- (void)handleSingleTap:(id)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)handlePan:(id)pan;
+- (void)handleSingleTap:(id)tap;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation GKNotificationBannerWindow
@@ -36,10 +36,10 @@
 {
   if (GKApplicationLinkedOnOrAfter())
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v26.receiver = self;
     v26.super_class = GKNotificationBannerWindow;
-    v4 = -[GKNotificationBannerWindow _initWithOrientation:](&v26, sel__initWithOrientation_, [v3 interfaceOrientation]);
+    v4 = -[GKNotificationBannerWindow _initWithOrientation:](&v26, sel__initWithOrientation_, [mEMORY[0x277D75128] interfaceOrientation]);
 
     if (!v4)
     {
@@ -58,8 +58,8 @@
     }
   }
 
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -81,21 +81,21 @@
   bannerSemaphore = v4->_bannerSemaphore;
   v4->_bannerSemaphore = v17;
 
-  v19 = [MEMORY[0x277D75128] sharedApplication];
-  v20 = [v19 _appAdoptsUISceneLifecycle];
+  mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+  _appAdoptsUISceneLifecycle = [mEMORY[0x277D75128]2 _appAdoptsUISceneLifecycle];
 
-  if (v20)
+  if (_appAdoptsUISceneLifecycle)
   {
-    v21 = [MEMORY[0x277D75128] sharedApplication];
-    v22 = [v21 keyWindow];
-    v23 = [v22 windowScene];
-    [(GKNotificationBannerWindow *)v4 setWindowScene:v23];
+    mEMORY[0x277D75128]3 = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128]3 keyWindow];
+    windowScene = [keyWindow windowScene];
+    [(GKNotificationBannerWindow *)v4 setWindowScene:windowScene];
   }
 
   else
   {
-    v21 = [MEMORY[0x277D759A0] mainScreen];
-    [(GKNotificationBannerWindow *)v4 setScreen:v21];
+    mEMORY[0x277D75128]3 = [MEMORY[0x277D759A0] mainScreen];
+    [(GKNotificationBannerWindow *)v4 setScreen:mEMORY[0x277D75128]3];
   }
 
   return v4;
@@ -103,62 +103,62 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKNotificationBannerWindow;
   [(GKNotificationBannerWindow *)&v4 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(GKNotificationBannerWindow *)self currentBannerViewController];
-  v9 = [v8 windowPointInside:v7 withEvent:{x, y}];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  currentBannerViewController = [(GKNotificationBannerWindow *)self currentBannerViewController];
+  v9 = [currentBannerViewController windowPointInside:eventCopy withEvent:{x, y}];
 
   return v9;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKNotificationBannerWindow *)self currentBannerViewController];
-  [v8 windowTouchesEnded:v7 withEvent:v6];
+  eventCopy = event;
+  endedCopy = ended;
+  currentBannerViewController = [(GKNotificationBannerWindow *)self currentBannerViewController];
+  [currentBannerViewController windowTouchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)handleSingleTap:(id)a3
+- (void)handleSingleTap:(id)tap
 {
-  v4 = a3;
-  v5 = [(GKNotificationBannerWindow *)self currentBannerViewController];
-  [v5 handleWindowSingleTap:v4];
+  tapCopy = tap;
+  currentBannerViewController = [(GKNotificationBannerWindow *)self currentBannerViewController];
+  [currentBannerViewController handleWindowSingleTap:tapCopy];
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [(GKNotificationBannerWindow *)self currentBannerViewController];
-  [v5 handleWindowPan:v4];
+  panCopy = pan;
+  currentBannerViewController = [(GKNotificationBannerWindow *)self currentBannerViewController];
+  [currentBannerViewController handleWindowPan:panCopy];
 }
 
-- (void)_showBanner:(id)a3
+- (void)_showBanner:(id)banner
 {
-  v4 = a3;
-  v5 = [(GKNotificationBannerWindow *)self currentBannerViewController];
-  [v5 addBannerView:v4];
+  bannerCopy = banner;
+  currentBannerViewController = [(GKNotificationBannerWindow *)self currentBannerViewController];
+  [currentBannerViewController addBannerView:bannerCopy];
 
-  v6 = [(GKNotificationBannerWindow *)self currentBannerViewController];
-  [v6 showCurrentBanner];
+  currentBannerViewController2 = [(GKNotificationBannerWindow *)self currentBannerViewController];
+  [currentBannerViewController2 showCurrentBanner];
 }
 
-- (void)_hideBanner:(id)a3 quickly:(BOOL)a4
+- (void)_hideBanner:(id)banner quickly:(BOOL)quickly
 {
-  v4 = a4;
-  v5 = [(GKNotificationBannerWindow *)self currentBannerViewController];
-  [v5 hideBannerQuickly:v4];
+  quicklyCopy = quickly;
+  currentBannerViewController = [(GKNotificationBannerWindow *)self currentBannerViewController];
+  [currentBannerViewController hideBannerQuickly:quicklyCopy];
 }
 
 - (BOOL)isSemaphoreValid
@@ -209,16 +209,16 @@ void __35__GKNotificationBannerWindow_queue__block_invoke()
   queue_sQueue = v0;
 }
 
-+ (void)enqueBanner:(id)a3
++ (void)enqueBanner:(id)banner
 {
-  v4 = a3;
+  bannerCopy = banner;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__GKNotificationBannerWindow_enqueBanner___block_invoke;
   v6[3] = &unk_27966B9C8;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
+  v7 = bannerCopy;
+  selfCopy = self;
+  v5 = bannerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

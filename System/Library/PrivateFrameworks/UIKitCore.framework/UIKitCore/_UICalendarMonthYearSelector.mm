@@ -1,7 +1,7 @@
 @interface _UICalendarMonthYearSelector
-- (_UICalendarMonthYearSelector)initWithDataModel:(id)a3;
+- (_UICalendarMonthYearSelector)initWithDataModel:(id)model;
 - (_UICalendarMonthYearSelectorDelegate)delegate;
-- (void)_didSelectDate:(id)a3;
+- (void)_didSelectDate:(id)date;
 - (void)_setupViewHierarchy;
 - (void)didUpdateCalendar;
 - (void)didUpdateLocale;
@@ -9,21 +9,21 @@
 - (void)didUpdateVisibleMonth;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)setSelectedMonth:(id)a3 animated:(BOOL)a4;
+- (void)setSelectedMonth:(id)month animated:(BOOL)animated;
 @end
 
 @implementation _UICalendarMonthYearSelector
 
-- (_UICalendarMonthYearSelector)initWithDataModel:(id)a3
+- (_UICalendarMonthYearSelector)initWithDataModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _UICalendarMonthYearSelector;
   v6 = [(UIView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataModel, a3);
+    objc_storeStrong(&v6->_dataModel, model);
     [(_UICalendarMonthYearSelector *)v7 _setupViewHierarchy];
   }
 
@@ -37,26 +37,26 @@
   [(UIDatePicker *)v3 setPreferredDatePickerStyle:1];
   [(UIDatePicker *)v3 setDatePickerMode:4];
   [(UIDatePicker *)v3 _setSelectionBarIgnoresInset:1];
-  v4 = [(_UICalendarDataModel *)self->_dataModel calendar];
-  [(UIDatePicker *)v3 setCalendar:v4];
+  calendar = [(_UICalendarDataModel *)self->_dataModel calendar];
+  [(UIDatePicker *)v3 setCalendar:calendar];
 
-  v5 = [(_UICalendarDataModel *)self->_dataModel locale];
-  [(UIDatePicker *)v3 setLocale:v5];
+  locale = [(_UICalendarDataModel *)self->_dataModel locale];
+  [(UIDatePicker *)v3 setLocale:locale];
 
-  v6 = [(_UICalendarDataModel *)self->_dataModel timeZone];
-  [(UIDatePicker *)v3 setTimeZone:v6];
+  timeZone = [(_UICalendarDataModel *)self->_dataModel timeZone];
+  [(UIDatePicker *)v3 setTimeZone:timeZone];
 
-  v7 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-  v8 = [v7 startDate];
-  [(UIDatePicker *)v3 setMinimumDate:v8];
+  availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  startDate = [availableDateRange startDate];
+  [(UIDatePicker *)v3 setMinimumDate:startDate];
 
-  v9 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-  v10 = [v9 endDate];
-  [(UIDatePicker *)v3 setMaximumDate:v10];
+  availableDateRange2 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  endDate = [availableDateRange2 endDate];
+  [(UIDatePicker *)v3 setMaximumDate:endDate];
 
-  v11 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  v12 = [v11 date];
-  [(UIDatePicker *)v3 setDate:v12];
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  date = [visibleMonth date];
+  [(UIDatePicker *)v3 setDate:date];
 
   [(UIControl *)v3 addTarget:self action:sel__didSelectDate_ forControlEvents:4096];
   [(UIView *)self addSubview:v3];
@@ -92,57 +92,57 @@
 
 - (void)didUpdateCalendar
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel calendar];
-  [(UIDatePicker *)self->_datePicker setCalendar:v3];
+  calendar = [(_UICalendarDataModel *)self->_dataModel calendar];
+  [(UIDatePicker *)self->_datePicker setCalendar:calendar];
 }
 
 - (void)didUpdateLocale
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel locale];
-  [(UIDatePicker *)self->_datePicker setLocale:v3];
+  locale = [(_UICalendarDataModel *)self->_dataModel locale];
+  [(UIDatePicker *)self->_datePicker setLocale:locale];
 }
 
 - (void)didUpdateTimeZone
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel timeZone];
-  [(UIDatePicker *)self->_datePicker setTimeZone:v3];
+  timeZone = [(_UICalendarDataModel *)self->_dataModel timeZone];
+  [(UIDatePicker *)self->_datePicker setTimeZone:timeZone];
 }
 
 - (void)didUpdateVisibleMonth
 {
-  v3 = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
-  [(_UICalendarMonthYearSelector *)self setSelectedMonth:v3];
+  visibleMonth = [(_UICalendarDataModel *)self->_dataModel visibleMonth];
+  [(_UICalendarMonthYearSelector *)self setSelectedMonth:visibleMonth];
 }
 
-- (void)setSelectedMonth:(id)a3 animated:(BOOL)a4
+- (void)setSelectedMonth:(id)month animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  v7 = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
-  v8 = [v7 _ui_containsMonth:v12];
+  animatedCopy = animated;
+  monthCopy = month;
+  availableDateRange = [(_UICalendarDataModel *)self->_dataModel availableDateRange];
+  v8 = [availableDateRange _ui_containsMonth:monthCopy];
 
   if ((v8 & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UICalendarMonthYearSelector.m" lineNumber:96 description:@"Unable to set a selected month that is before the minimum or after the maximum date."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICalendarMonthYearSelector.m" lineNumber:96 description:@"Unable to set a selected month that is before the minimum or after the maximum date."];
   }
 
   datePicker = self->_datePicker;
-  v10 = [v12 date];
-  [(UIDatePicker *)datePicker setDate:v10 animated:v4];
+  date = [monthCopy date];
+  [(UIDatePicker *)datePicker setDate:date animated:animatedCopy];
 }
 
-- (void)_didSelectDate:(id)a3
+- (void)_didSelectDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = [_UIDatePickerCalendarMonth alloc];
-  v6 = [v4 date];
+  date = [dateCopy date];
 
-  v7 = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
-  v9 = [(_UIDatePickerCalendarDateComponent *)v5 initWithDate:v6 calendar:v7];
+  effectiveCalendar = [(_UICalendarDataModel *)self->_dataModel effectiveCalendar];
+  v9 = [(_UIDatePickerCalendarDateComponent *)v5 initWithDate:date calendar:effectiveCalendar];
 
-  v8 = [(_UICalendarMonthYearSelector *)self delegate];
-  [v8 monthYearSelector:self didSelectMonth:v9];
+  delegate = [(_UICalendarMonthYearSelector *)self delegate];
+  [delegate monthYearSelector:self didSelectMonth:v9];
 }
 
 - (_UICalendarMonthYearSelectorDelegate)delegate

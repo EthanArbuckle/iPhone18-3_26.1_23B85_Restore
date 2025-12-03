@@ -1,25 +1,25 @@
 @interface _EARTextNormalization
-- (_EARTextNormalization)initWithModelRoot:(id)a3;
-- (_EARTextNormalization)initWithModelRoot:(id)a3 mungeRuleFile:(id)a4;
-- (_EARTextNormalization)initWithModelRoot:(id)a3 mungeRules:(id)a4;
-- (_EARTextNormalization)initWithMungeRules:(id)a3;
-- (_EARTextNormalization)initWithNcsRoot:(id)a3;
-- (_EARTextNormalization)initWithNcsRoot:(id)a3 mungeRuleFile:(id)a4;
-- (_EARTextNormalization)initWithNcsRoot:(id)a3 mungeRules:(id)a4;
-- (id)munge:(id)a3;
-- (id)normalize:(id)a3;
-- (id)tokenize:(id)a3;
+- (_EARTextNormalization)initWithModelRoot:(id)root;
+- (_EARTextNormalization)initWithModelRoot:(id)root mungeRuleFile:(id)file;
+- (_EARTextNormalization)initWithModelRoot:(id)root mungeRules:(id)rules;
+- (_EARTextNormalization)initWithMungeRules:(id)rules;
+- (_EARTextNormalization)initWithNcsRoot:(id)root;
+- (_EARTextNormalization)initWithNcsRoot:(id)root mungeRuleFile:(id)file;
+- (_EARTextNormalization)initWithNcsRoot:(id)root mungeRules:(id)rules;
+- (id)munge:(id)munge;
+- (id)normalize:(id)normalize;
+- (id)tokenize:(id)tokenize;
 @end
 
 @implementation _EARTextNormalization
 
-- (_EARTextNormalization)initWithNcsRoot:(id)a3 mungeRuleFile:(id)a4
+- (_EARTextNormalization)initWithNcsRoot:(id)root mungeRuleFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  rootCopy = root;
+  fileCopy = file;
+  if (rootCopy)
   {
-    v8 = [_EARQuasarTokenizer extractModelRootFromNcsRoot:v6];
+    v8 = [_EARQuasarTokenizer extractModelRootFromNcsRoot:rootCopy];
   }
 
   else
@@ -27,18 +27,18 @@
     v8 = 0;
   }
 
-  v9 = [(_EARTextNormalization *)self initWithModelRoot:v8 mungeRuleFile:v7];
+  v9 = [(_EARTextNormalization *)self initWithModelRoot:v8 mungeRuleFile:fileCopy];
 
   return v9;
 }
 
-- (_EARTextNormalization)initWithNcsRoot:(id)a3 mungeRules:(id)a4
+- (_EARTextNormalization)initWithNcsRoot:(id)root mungeRules:(id)rules
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  rootCopy = root;
+  rulesCopy = rules;
+  if (rootCopy)
   {
-    v8 = [_EARQuasarTokenizer extractModelRootFromNcsRoot:v6];
+    v8 = [_EARQuasarTokenizer extractModelRootFromNcsRoot:rootCopy];
   }
 
   else
@@ -46,38 +46,38 @@
     v8 = 0;
   }
 
-  v9 = [(_EARTextNormalization *)self initWithModelRoot:v8 mungeRules:v7];
+  v9 = [(_EARTextNormalization *)self initWithModelRoot:v8 mungeRules:rulesCopy];
 
   return v9;
 }
 
-- (_EARTextNormalization)initWithNcsRoot:(id)a3
+- (_EARTextNormalization)initWithNcsRoot:(id)root
 {
-  v4 = [_EARQuasarTokenizer extractModelRootFromNcsRoot:a3];
+  v4 = [_EARQuasarTokenizer extractModelRootFromNcsRoot:root];
   v5 = [(_EARTextNormalization *)self initWithModelRoot:v4];
 
   return v5;
 }
 
-- (_EARTextNormalization)initWithModelRoot:(id)a3 mungeRuleFile:(id)a4
+- (_EARTextNormalization)initWithModelRoot:(id)root mungeRuleFile:(id)file
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  fileCopy = file;
   v12.receiver = self;
   v12.super_class = _EARTextNormalization;
   v8 = [(_EARTextNormalization *)&v12 init];
   if (v8)
   {
-    if (v6)
+    if (rootCopy)
     {
-      v9 = [[_EARQuasarTokenizer alloc] initWithModelRoot:v6];
+      v9 = [[_EARQuasarTokenizer alloc] initWithModelRoot:rootCopy];
       tokenizer = v8->_tokenizer;
       v8->_tokenizer = &v9->super;
     }
 
-    if (v7)
+    if (fileCopy)
     {
-      [v7 ear_toString];
+      [fileCopy ear_toString];
       operator new();
     }
   }
@@ -85,22 +85,22 @@
   return v8;
 }
 
-- (_EARTextNormalization)initWithModelRoot:(id)a3 mungeRules:(id)a4
+- (_EARTextNormalization)initWithModelRoot:(id)root mungeRules:(id)rules
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  rulesCopy = rules;
   v14.receiver = self;
   v14.super_class = _EARTextNormalization;
   v8 = [(_EARTextNormalization *)&v14 init];
   if (v8)
   {
-    v9 = [[_EARQuasarTokenizer alloc] initWithModelRoot:v6];
+    v9 = [[_EARQuasarTokenizer alloc] initWithModelRoot:rootCopy];
     tokenizer = v8->_tokenizer;
     v8->_tokenizer = &v9->super;
 
-    if (v7)
+    if (rulesCopy)
     {
-      [v7 ear_toString];
+      [rulesCopy ear_toString];
     }
 
     else
@@ -120,15 +120,15 @@
   return 0;
 }
 
-- (_EARTextNormalization)initWithModelRoot:(id)a3
+- (_EARTextNormalization)initWithModelRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v9.receiver = self;
   v9.super_class = _EARTextNormalization;
   v5 = [(_EARTextNormalization *)&v9 init];
   if (v5)
   {
-    v6 = [[_EARQuasarTokenizer alloc] initWithModelRoot:v4];
+    v6 = [[_EARQuasarTokenizer alloc] initWithModelRoot:rootCopy];
     tokenizer = v5->_tokenizer;
     v5->_tokenizer = &v6->super;
   }
@@ -136,16 +136,16 @@
   return v5;
 }
 
-- (_EARTextNormalization)initWithMungeRules:(id)a3
+- (_EARTextNormalization)initWithMungeRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   v8.receiver = self;
   v8.super_class = _EARTextNormalization;
   if ([(_EARTextNormalization *)&v8 init])
   {
-    if (v4)
+    if (rulesCopy)
     {
-      [v4 ear_toString];
+      [rulesCopy ear_toString];
     }
 
     else
@@ -165,12 +165,12 @@
   return 0;
 }
 
-- (id)normalize:(id)a3
+- (id)normalize:(id)normalize
 {
-  v4 = a3;
+  normalizeCopy = normalize;
   if (self->_tokenizer)
   {
-    v5 = [(_EARTextNormalization *)self tokenize:v4];
+    v5 = [(_EARTextNormalization *)self tokenize:normalizeCopy];
     if (!v5)
     {
       goto LABEL_7;
@@ -179,8 +179,8 @@
 
   else
   {
-    v6 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v5 = [v4 componentsSeparatedByCharactersInSet:v6];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v5 = [normalizeCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
     if (!v5)
     {
@@ -202,14 +202,14 @@ LABEL_8:
   return v8;
 }
 
-- (id)tokenize:(id)a3
+- (id)tokenize:(id)tokenize
 {
-  v3 = [(_EARTokenizer *)self->_tokenizer tokenize:a3];
+  v3 = [(_EARTokenizer *)self->_tokenizer tokenize:tokenize];
 
   return v3;
 }
 
-- (id)munge:(id)a3
+- (id)munge:(id)munge
 {
   v31[16] = *MEMORY[0x1E69E9840];
   memset(&v23, 0, sizeof(v23));
@@ -217,7 +217,7 @@ LABEL_8:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
+  obj = munge;
   v3 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v3)
   {

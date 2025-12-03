@@ -5,8 +5,8 @@
 - (void)_detectIfStationary;
 - (void)dealloc;
 - (void)init;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setDirectionalMotionDetectionEnabled:(BOOL)a3;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setDirectionalMotionDetectionEnabled:(BOOL)enabled;
 @end
 
 @implementation BWDeviceMotionActivityDetector
@@ -41,7 +41,7 @@
 
 - (void)_detectIfStationary
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -49,44 +49,44 @@
   FigSimpleMutexCheckIsLockedOnThisThread();
   v95 = 0u;
   v96 = 0u;
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   if (!v2 || (v2 = *(v2 + 8)) == 0)
   {
 LABEL_6:
-    if (*(a1 + 28) == 1)
+    if (*(self + 28) == 1)
     {
       if (v2)
       {
-        v3 = *(a1 + 8);
+        v3 = *(self + 8);
         if (v3)
         {
-          v4 = [(BWRingBuffer *)*(v3 + 8) lastElement];
-          if (v4)
+          lastElement = [(BWRingBuffer *)*(v3 + 8) lastElement];
+          if (lastElement)
           {
-            v5 = *v4;
-            v6 = v4[1];
-            *(a1 + 72) = v4[2];
-            *(a1 + 56) = v6;
-            *(a1 + 40) = v5;
+            v5 = *lastElement;
+            v6 = lastElement[1];
+            *(self + 72) = lastElement[2];
+            *(self + 56) = v6;
+            *(self + 40) = v5;
           }
         }
       }
 
       else
       {
-        if (*(a1 + 48) == 0.0)
+        if (*(self + 48) == 0.0)
         {
           LOBYTE(v2) = 0;
           goto LABEL_18;
         }
 
-        v7 = *(a1 + 8);
-        if (!v7 || (v8 = [(BWRingBuffer *)*(v7 + 8) lastElement]) == 0 || (v9 = FigMotionMultiplyByInverseOfQuaternion((v8 + 16), (a1 + 56)), v10 = acos(v9), (v10 + v10) * 57.2957795 >= *(a1 + 32)))
+        v7 = *(self + 8);
+        if (!v7 || (v8 = [(BWRingBuffer *)*(v7 + 8) lastElement]) == 0 || (v9 = FigMotionMultiplyByInverseOfQuaternion((v8 + 16), (self + 56)), v10 = acos(v9), (v10 + v10) * 57.2957795 >= *(self + 32)))
         {
           LOBYTE(v2) = 0;
-          *(a1 + 72) = 0u;
-          *(a1 + 56) = 0u;
-          *(a1 + 40) = 0u;
+          *(self + 72) = 0u;
+          *(self + 56) = 0u;
+          *(self + 40) = 0u;
           goto LABEL_18;
         }
       }
@@ -95,7 +95,7 @@ LABEL_6:
     }
 
 LABEL_18:
-    *(a1 + 24) = v2 & 1;
+    *(self + 24) = v2 & 1;
     return;
   }
 
@@ -106,15 +106,15 @@ LABEL_18:
 
   mach_absolute_time();
   v11 = (FigHostTimeToNanoseconds() / 1000) / 1000000.0;
-  v12 = *(a1 + 8);
+  v12 = *(self + 8);
   if (v11 - *([(BWRingBuffer *)v12[1] lastElement]+ 8) > 1.0 || [(BWMotionSampleRingBuffer *)v12 duration]< 0.5)
   {
     goto LABEL_5;
   }
 
-  if (*(a1 + 25) != 1)
+  if (*(self + 25) != 1)
   {
-    LOBYTE(v2) = *(a1 + 24);
+    LOBYTE(v2) = *(self + 24);
     goto LABEL_6;
   }
 
@@ -172,7 +172,7 @@ LABEL_5:
         *&v70[1] = v36;
         *(&v70[1] + 1) = v37;
         FigMotionRotationRateFromDeltaQuaternion(v70, &v85, v33 - v28);
-        if (v38)
+        if (lastElement2)
         {
           v23 = 1;
           goto LABEL_37;
@@ -180,7 +180,7 @@ LABEL_5:
 
         v46 = vmul_f32(*(&v85 + 4), *(&v85 + 4));
         v47 = ((*&v85 * *&v85) + v46.f32[0]) + v46.f32[1];
-        if (*(a1 + 26) == 1)
+        if (*(self + 26) == 1)
         {
           v27 = v27 + *&v85;
           v26 = vadd_f32(v26, *(&v85 + 4));
@@ -204,8 +204,8 @@ LABEL_5:
 
       else
       {
-        v38 = [(BWRingBuffer *)*(*(a1 + 8) + 8) lastElement];
-        v23 = *(v38 + 8) - v33 < 1.0;
+        lastElement2 = [(BWRingBuffer *)*(*(self + 8) + 8) lastElement];
+        v23 = *(lastElement2 + 8) - v33 < 1.0;
       }
 
       v95 = *v73;
@@ -216,7 +216,7 @@ LABEL_37:
     }
 
     while (v22 != v31);
-    v49 = OUTLINED_FUNCTION_0_83(v38, v39, v40, v41, v42, v43, v44, v45, v67, v69, *&v70[0], *(&v70[0] + 1), *&v70[1], *(&v70[1] + 1), *v71, *&v71[8], *&v71[16], v72, *v73, *&v73[8], *&v73[16], *&v73[24], v74, *(&v74 + 1), v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, *(&v85 + 1), *type, *&type[8], v87, *(&v87 + 1), v88, *(&v88 + 1), v89, *(&v89 + 1), v90);
+    v49 = OUTLINED_FUNCTION_0_83(lastElement2, v39, v40, v41, v42, v43, v44, v45, v67, v69, *&v70[0], *(&v70[0] + 1), *&v70[1], *(&v70[1] + 1), *v71, *&v71[8], *&v71[16], v72, *v73, *&v73[8], *&v73[16], *&v73[24], v74, *(&v74 + 1), v75, v76, v77, v78, v79, v80, v81, v82, v83, v84, v85, *(&v85 + 1), *type, *&type[8], v87, *(&v87 + 1), v88, *(&v88 + 1), v89, *(&v89 + 1), v90);
     v22 = v49;
   }
 
@@ -227,7 +227,7 @@ LABEL_37:
   }
 
   *v50.i32 = v24;
-  if (*(a1 + 26) == 1)
+  if (*(self + 26) == 1)
   {
     v51 = vdiv_f32(v26, vdup_lane_s32(v50, 0));
     v52 = v29 / *v50.i32;
@@ -260,12 +260,12 @@ LABEL_37:
     goto LABEL_6;
   }
 
-  *(a1 + 24) = 0;
-  v56 = [(BWRingBuffer *)*(*(a1 + 8) + 8) lastElement];
-  v58 = v56[2];
-  v57 = v56[3];
-  v60 = v56[4];
-  v59 = v56[5];
+  *(self + 24) = 0;
+  lastElement3 = [(BWRingBuffer *)*(*(self + 8) + 8) lastElement];
+  v58 = lastElement3[2];
+  v57 = lastElement3[3];
+  v60 = lastElement3[4];
+  v59 = lastElement3[5];
   FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
   LODWORD(v88) = 0;
   type[0] = OS_LOG_TYPE_DEFAULT;
@@ -319,9 +319,9 @@ LABEL_37:
   [(BWDeviceMotionActivityDetector *)&v3 dealloc];
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v4 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (v4)
   {
     v5 = v4;
@@ -365,13 +365,13 @@ LABEL_37:
   return directionalMotionDetectionEnabled;
 }
 
-- (void)setDirectionalMotionDetectionEnabled:(BOOL)a3
+- (void)setDirectionalMotionDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   FigSimpleMutexLock();
-  if (self->_directionalMotionDetectionEnabled != v3)
+  if (self->_directionalMotionDetectionEnabled != enabledCopy)
   {
-    self->_directionalMotionDetectionEnabled = v3;
+    self->_directionalMotionDetectionEnabled = enabledCopy;
     self->_directionalMotionDetectionAngularRotationThreshold = 2.0;
     *&self->_directionalMotionDetectionReferenceDirection.doingBiasEstimation = 0u;
     *&self->_directionalMotionDetectionReferenceDirection.quaternion.w = 0u;
@@ -383,17 +383,17 @@ LABEL_37:
 
 - (void)init
 {
-  v3 = a1;
-  a1[2] = FigSimpleMutexCreate();
+  selfCopy = self;
+  self[2] = FigSimpleMutexCreate();
   v4 = [[BWMotionSampleRingBuffer alloc] initWithMaxDuration:?];
-  v3[1] = v4;
+  selfCopy[1] = v4;
   if (!v4)
   {
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  *a2 = v3;
+  *a2 = selfCopy;
 }
 
 @end

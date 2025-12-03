@@ -1,24 +1,24 @@
 @interface DEDCloudKitExtensionsUtil
-+ (id)copyFiles:(id)a3 toDirectory:(id)a4;
-+ (id)getAllFilesInSessionDirectoryForSessionID:(id)a3;
-+ (id)getCompletedExtensionFromAllExtensions:(id)a3;
-+ (id)getOutputDirectories:(id)a3 withProcessingMap:(id)a4 progressHandler:(id)a5;
-+ (id)getVerifiedExtensionDirectoriesFromCompletedExtensions:(id)a3 forSession:(id)a4;
-+ (void)updateELSSnapshotStatus:(unint64_t)a3;
++ (id)copyFiles:(id)files toDirectory:(id)directory;
++ (id)getAllFilesInSessionDirectoryForSessionID:(id)d;
++ (id)getCompletedExtensionFromAllExtensions:(id)extensions;
++ (id)getOutputDirectories:(id)directories withProcessingMap:(id)map progressHandler:(id)handler;
++ (id)getVerifiedExtensionDirectoriesFromCompletedExtensions:(id)extensions forSession:(id)session;
++ (void)updateELSSnapshotStatus:(unint64_t)status;
 @end
 
 @implementation DEDCloudKitExtensionsUtil
 
-+ (id)getCompletedExtensionFromAllExtensions:(id)a3
++ (id)getCompletedExtensionFromAllExtensions:(id)extensions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  extensionsCopy = extensions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = extensionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -33,8 +33,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) stringValue];
-        [v4 addObject:v10];
+        stringValue = [*(*(&v13 + 1) + 8 * i) stringValue];
+        [v4 addObject:stringValue];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -48,15 +48,15 @@
   return v4;
 }
 
-+ (id)getVerifiedExtensionDirectoriesFromCompletedExtensions:(id)a3 forSession:(id)a4
++ (id)getVerifiedExtensionDirectoriesFromCompletedExtensions:(id)extensions forSession:(id)session
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  extensionsCopy = extensions;
+  sessionCopy = session;
   v7 = objc_opt_new();
-  v22 = v6;
-  v8 = [v6 identifier];
-  v9 = [v7 directoryForBugSessionIdentifier:v8];
+  v22 = sessionCopy;
+  identifier = [sessionCopy identifier];
+  v9 = [v7 directoryForBugSessionIdentifier:identifier];
 
   v21 = v9;
   v10 = [MEMORY[0x277D051E0] lsDir:v9];
@@ -82,15 +82,15 @@
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v17 lastPathComponent];
-        if ([v5 containsObject:v18] && (objc_msgSend(MEMORY[0x277D051E0], "isValidDirectory:", v17) & 1) != 0)
+        lastPathComponent = [v17 lastPathComponent];
+        if ([extensionsCopy containsObject:lastPathComponent] && (objc_msgSend(MEMORY[0x277D051E0], "isValidDirectory:", v17) & 1) != 0)
         {
-          [v23 setValue:v17 forKey:v18];
+          [v23 setValue:v17 forKey:lastPathComponent];
         }
 
         else
         {
-          [MEMORY[0x277D07730] createLoggingEventWith:v15 postfix:v18];
+          [MEMORY[0x277D07730] createLoggingEventWith:v15 postfix:lastPathComponent];
         }
       }
 
@@ -105,24 +105,24 @@
   return v23;
 }
 
-+ (id)getOutputDirectories:(id)a3 withProcessingMap:(id)a4 progressHandler:(id)a5
++ (id)getOutputDirectories:(id)directories withProcessingMap:(id)map progressHandler:(id)handler
 {
   v53 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  v30 = a4;
-  v27 = a5;
+  directoriesCopy = directories;
+  mapCopy = map;
+  handlerCopy = handler;
   v7 = +[DEDConfiguration sharedInstance];
   v25 = os_log_create([v7 loggingSubsystem], "ded-cloudkit-finisher");
 
-  v26 = [MEMORY[0x277CBEB38] dictionary];
-  if (v27)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (handlerCopy)
   {
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v28;
-    v31 = [obj countByEnumeratingWithState:&v47 objects:v52 count:{16, v25, v26}];
+    obj = directoriesCopy;
+    v31 = [obj countByEnumeratingWithState:&v47 objects:v52 count:{16, v25, dictionary}];
     if (v31)
     {
       v8 = 0;
@@ -138,7 +138,7 @@
 
           v10 = *(*(&v47 + 1) + 8 * i);
           v34 = [obj objectForKey:v10];
-          v33 = [v30 objectForKey:v10];
+          v33 = [mapCopy objectForKey:v10];
           v11 = [v33 objectForKey:@"package"];
           if ([v11 isEqualToString:@"parent-directory"])
           {
@@ -208,17 +208,17 @@
   v35[1] = 3221225472;
   v35[2] = __84__DEDCloudKitExtensionsUtil_getOutputDirectories_withProcessingMap_progressHandler___block_invoke;
   v35[3] = &unk_278F671B8;
-  v17 = v30;
+  v17 = mapCopy;
   v36 = v17;
   v18 = v25;
   v37 = v18;
-  v19 = v27;
+  v19 = handlerCopy;
   v39 = v19;
   v40 = v42;
   v41 = v8;
-  v20 = v26;
+  v20 = dictionary;
   v38 = v20;
-  [v28 enumerateKeysAndObjectsUsingBlock:v35];
+  [directoriesCopy enumerateKeysAndObjectsUsingBlock:v35];
   v21 = v38;
   v22 = v20;
 
@@ -423,23 +423,23 @@ LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateELSSnapshotStatus:(unint64_t)a3
++ (void)updateELSSnapshotStatus:(unint64_t)status
 {
-  v4 = [MEMORY[0x277D07738] sharedManager];
-  v6 = [v4 snapshot];
+  mEMORY[0x277D07738] = [MEMORY[0x277D07738] sharedManager];
+  snapshot = [mEMORY[0x277D07738] snapshot];
 
-  [v6 setStatus:a3];
+  [snapshot setStatus:status];
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277D076B8], 0}];
-  [v6 refreshKeyPaths:v5];
+  [snapshot refreshKeyPaths:v5];
 }
 
-+ (id)getAllFilesInSessionDirectoryForSessionID:(id)a3
++ (id)getAllFilesInSessionDirectoryForSessionID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_opt_new();
-  v6 = [v5 directoryForBugSessionIdentifier:v3];
+  v6 = [v5 directoryForBugSessionIdentifier:dCopy];
 
   v7 = [MEMORY[0x277D051E0] lsDir:v6];
   v15 = 0u;
@@ -478,16 +478,16 @@ LABEL_21:
   return v4;
 }
 
-+ (id)copyFiles:(id)a3 toDirectory:(id)a4
++ (id)copyFiles:(id)files toDirectory:(id)directory
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  filesCopy = files;
+  directoryCopy = directory;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [filesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -499,21 +499,21 @@ LABEL_21:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(filesCopy);
         }
 
-        [MEMORY[0x277D051E0] copyFile:*(*(&v13 + 1) + 8 * v10++) toDir:v6];
+        [MEMORY[0x277D051E0] copyFile:*(*(&v13 + 1) + 8 * v10++) toDir:directoryCopy];
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [filesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v6;
+  return directoryCopy;
 }
 
 @end

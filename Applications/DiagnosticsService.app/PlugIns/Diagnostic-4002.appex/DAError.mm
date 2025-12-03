@@ -1,15 +1,15 @@
 @interface DAError
-+ (BOOL)setError:(id *)a3 withCode:(int)a4 format:(id)a5;
++ (BOOL)setError:(id *)error withCode:(int)code format:(id)format;
 @end
 
 @implementation DAError
 
-+ (BOOL)setError:(id *)a3 withCode:(int)a4 format:(id)a5
++ (BOOL)setError:(id *)error withCode:(int)code format:(id)format
 {
-  v7 = a5;
-  if (v7)
+  formatCopy = format;
+  if (formatCopy)
   {
-    v8 = [[NSString alloc] initWithFormat:v7 arguments:&v17];
+    v8 = [[NSString alloc] initWithFormat:formatCopy arguments:&v17];
   }
 
   else
@@ -24,14 +24,14 @@
     [v9 setObject:v8 forKeyedSubscript:NSLocalizedDescriptionKey];
   }
 
-  v11 = [NSError errorWithDomain:@"com.apple.FieldDiagnostics" code:a4 userInfo:v10];
+  v11 = [NSError errorWithDomain:@"com.apple.FieldDiagnostics" code:code userInfo:v10];
   v12 = v11;
-  if (a3)
+  if (error)
   {
-    if (!*a3)
+    if (!*error)
     {
       v15 = v11;
-      *a3 = v12;
+      *error = v12;
       v14 = 1;
       goto LABEL_14;
     }

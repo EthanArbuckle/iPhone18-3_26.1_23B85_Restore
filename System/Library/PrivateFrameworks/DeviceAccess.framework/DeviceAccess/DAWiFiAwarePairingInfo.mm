@@ -1,13 +1,13 @@
 @interface DAWiFiAwarePairingInfo
-- (DAWiFiAwarePairingInfo)initWithWiFiAwareIdentifier:(unint64_t)a3 pairingType:(int64_t)a4;
-- (DAWiFiAwarePairingInfo)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (DAWiFiAwarePairingInfo)initWithWiFiAwareIdentifier:(unint64_t)identifier pairingType:(int64_t)type;
+- (DAWiFiAwarePairingInfo)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DAWiFiAwarePairingInfo
 
-- (DAWiFiAwarePairingInfo)initWithWiFiAwareIdentifier:(unint64_t)a3 pairingType:(int64_t)a4
+- (DAWiFiAwarePairingInfo)initWithWiFiAwareIdentifier:(unint64_t)identifier pairingType:(int64_t)type
 {
   v11.receiver = self;
   v11.super_class = DAWiFiAwarePairingInfo;
@@ -16,8 +16,8 @@
   if (v6)
   {
     v6->_accept = 0;
-    v6->_wifiAwareIdentifier = a3;
-    v6->_pairingType = a4;
+    v6->_wifiAwareIdentifier = identifier;
+    v6->_pairingType = type;
     passkey = v6->_passkey;
     v6->_passkey = 0;
 
@@ -27,21 +27,21 @@
   return v7;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_accept)
   {
-    xpc_dictionary_set_BOOL(v4, "wFPA", 1);
+    xpc_dictionary_set_BOOL(objectCopy, "wFPA", 1);
   }
 
   passkey = self->_passkey;
   xdict = v5;
-  v7 = [(NSString *)passkey UTF8String];
-  if (v7)
+  uTF8String = [(NSString *)passkey UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(xdict, "wFPk", v7);
+    xpc_dictionary_set_string(xdict, "wFPk", uTF8String);
   }
 
   pairingType = self->_pairingType;
@@ -57,9 +57,9 @@
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -98,9 +98,9 @@
   return v10;
 }
 
-- (DAWiFiAwarePairingInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (DAWiFiAwarePairingInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  v5 = a3;
+  objectCopy = object;
   if (!self || !CUXPCDecodeBool() || !CUXPCDecodeNSString())
   {
     goto LABEL_12;
@@ -126,16 +126,16 @@
     }
 
 LABEL_12:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   self->_wifiAwareIdentifier = 0;
 LABEL_10:
-  v8 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v8;
+  return selfCopy;
 }
 
 @end

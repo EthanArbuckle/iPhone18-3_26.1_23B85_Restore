@@ -1,35 +1,35 @@
 @interface MKCatalystButton
-+ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)a3 isbuttonEnabled:(BOOL)a4;
-+ (id)buttonWithType:(int64_t)a3;
++ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)mode isbuttonEnabled:(BOOL)enabled;
++ (id)buttonWithType:(int64_t)type;
 + (id)catalystButton;
 - (CAGradientLayer)gradientLayer;
 - (CALayer)extraShadowLayer;
 - (CGSize)_maps_intrinsicContentSize;
 - (CGSize)intrinsicContentSize;
 - (_MKPlaceActionButtonController)buttonController;
-- (id)_attributedStringForSubTitle:(id)a3 controlState:(unint64_t)a4;
-- (id)_attributedStringForTitle:(id)a3 controlState:(unint64_t)a4;
-- (id)_attributedStringWithTitle:(id)a3 subtitle:(id)a4 controlState:(unint64_t)a5;
+- (id)_attributedStringForSubTitle:(id)title controlState:(unint64_t)state;
+- (id)_attributedStringForTitle:(id)title controlState:(unint64_t)state;
+- (id)_attributedStringWithTitle:(id)title subtitle:(id)subtitle controlState:(unint64_t)state;
 - (void)_updateColors;
-- (void)applyBorder:(BOOL)a3;
-- (void)buttonSelected:(id)a3;
+- (void)applyBorder:(BOOL)border;
+- (void)buttonSelected:(id)selected;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)placeActionButtonControllerTextDidChange:(id)a3;
-- (void)setButtonController:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setPrimaryTitle:(id)a3;
-- (void)setPrimaryTitle:(id)a3 subtitle:(id)a4;
+- (void)placeActionButtonControllerTextDidChange:(id)change;
+- (void)setButtonController:(id)controller;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setPrimaryTitle:(id)title;
+- (void)setPrimaryTitle:(id)title subtitle:(id)subtitle;
 @end
 
 @implementation MKCatalystButton
 
-+ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)a3 isbuttonEnabled:(BOOL)a4
++ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)mode isbuttonEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (mode)
   {
-    if (a4)
+    if (enabled)
     {
       v4 = 0.2;
     }
@@ -42,7 +42,7 @@
     v5 = 1.0;
   }
 
-  else if (a4)
+  else if (enabled)
   {
     v5 = 1.0;
     v4 = 0.5;
@@ -55,9 +55,9 @@
   }
 
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:v5 alpha:v4];
-  v7 = [v6 CGColor];
+  cGColor = [v6 CGColor];
 
-  return v7;
+  return cGColor;
 }
 
 + (id)catalystButton
@@ -65,11 +65,11 @@
   v2 = [MKCatalystButton buttonWithType:0];
   [v2 setContentHorizontalAlignment:4];
   [v2 setContentEdgeInsets:{5.0, 10.0, 7.0, 10.0}];
-  v3 = [v2 titleLabel];
-  [v3 setLineBreakMode:0];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setLineBreakMode:0];
 
-  v4 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-  v5 = [v2 registerForTraitChanges:v4 withAction:sel_traitEnvironment_didChangeTraitCollection_];
+  systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+  v5 = [v2 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_traitEnvironment_didChangeTraitCollection_];
 
   return v2;
 }
@@ -84,16 +84,16 @@
 - (void)_updateColors
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v4 = [MEMORY[0x1E69DC888] systemRedColor];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
   if (([(MKCatalystButton *)self isHighlighted]& 1) != 0)
   {
-    v47[0] = [v4 CGColor];
-    v47[1] = [v4 CGColor];
+    v47[0] = [systemRedColor CGColor];
+    v47[1] = [systemRedColor CGColor];
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
-    v6 = [(MKCatalystButton *)self gradientLayer];
-    [v6 setColors:v5];
+    gradientLayer = [(MKCatalystButton *)self gradientLayer];
+    [gradientLayer setColors:v5];
   }
 
   else
@@ -102,17 +102,17 @@
     v45 = 0.0;
     v42 = 0;
     v43 = 0.0;
-    [v4 getHue:&v45 saturation:&v44 brightness:&v43 alpha:&v42];
+    [systemRedColor getHue:&v45 saturation:&v44 brightness:&v43 alpha:&v42];
     v5 = [MEMORY[0x1E69DC888] colorWithHue:v45 saturation:v44 brightness:v43 + 0.1 alpha:1.0];
     v48[0] = [v5 CGColor];
-    v48[1] = [v4 CGColor];
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
-    v7 = [(MKCatalystButton *)self gradientLayer];
-    [v7 setColors:v6];
+    v48[1] = [systemRedColor CGColor];
+    gradientLayer = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
+    gradientLayer2 = [(MKCatalystButton *)self gradientLayer];
+    [gradientLayer2 setColors:gradientLayer];
   }
 
-  v8 = [(MKCatalystButton *)self traitCollection];
-  if ([v8 activeAppearance])
+  traitCollection = [(MKCatalystButton *)self traitCollection];
+  if ([traitCollection activeAppearance])
   {
     if ([(MKCatalystButton *)self isPrimaryButton])
     {
@@ -130,31 +130,31 @@
     v9 = 1;
   }
 
-  v10 = [(MKCatalystButton *)self gradientLayer];
-  [v10 setHidden:v9];
+  gradientLayer3 = [(MKCatalystButton *)self gradientLayer];
+  [gradientLayer3 setHidden:v9];
 
   v11 = objc_opt_class();
-  v12 = [(MKCatalystButton *)self traitCollection];
-  v13 = [v11 extraShadowLayerBackgroundColorWithDarkMode:objc_msgSend(v12 isbuttonEnabled:{"userInterfaceStyle") == 2, -[MKCatalystButton isEnabled](self, "isEnabled")}];
-  v14 = [(MKCatalystButton *)self extraShadowLayer];
-  [v14 setBackgroundColor:v13];
+  traitCollection2 = [(MKCatalystButton *)self traitCollection];
+  v13 = [v11 extraShadowLayerBackgroundColorWithDarkMode:objc_msgSend(traitCollection2 isbuttonEnabled:{"userInterfaceStyle") == 2, -[MKCatalystButton isEnabled](self, "isEnabled")}];
+  extraShadowLayer = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer setBackgroundColor:v13];
 
-  [MEMORY[0x1E6979518] setDisableActions:v3];
-  v15 = [MEMORY[0x1E69DC888] labelColor];
-  v16 = [v15 colorWithAlphaComponent:0.07];
-  v17 = [v16 CGColor];
-  v18 = [(MKCatalystButton *)self extraShadowLayer];
-  [v18 setBorderColor:v17];
+  [MEMORY[0x1E6979518] setDisableActions:disableActions];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v16 = [labelColor colorWithAlphaComponent:0.07];
+  cGColor = [v16 CGColor];
+  extraShadowLayer2 = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer2 setBorderColor:cGColor];
 
-  v19 = [MEMORY[0x1E69DC888] blackColor];
-  v20 = [v19 CGColor];
-  v21 = [(MKCatalystButton *)self extraShadowLayer];
-  [v21 setShadowColor:v20];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor2 = [blackColor CGColor];
+  extraShadowLayer3 = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer3 setShadowColor:cGColor2];
 
-  v22 = [MEMORY[0x1E69DC888] blackColor];
-  v23 = [v22 CGColor];
-  v24 = [(MKCatalystButton *)self layer];
-  [v24 setShadowColor:v23];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  cGColor3 = [blackColor2 CGColor];
+  layer = [(MKCatalystButton *)self layer];
+  [layer setShadowColor:cGColor3];
 
   v40 = 0u;
   v41 = 0u;
@@ -174,11 +174,11 @@
           objc_enumerationMutation(&unk_1F16122E8);
         }
 
-        v29 = [*(*(&v38 + 1) + 8 * i) unsignedIntegerValue];
-        v30 = [(MKCatalystButton *)self title];
-        v31 = [(MKCatalystButton *)self subTitle];
-        v32 = [(MKCatalystButton *)self _attributedStringWithTitle:v30 subtitle:v31 controlState:v29];
-        [(MKCatalystButton *)self setAttributedTitle:v32 forState:v29];
+        unsignedIntegerValue = [*(*(&v38 + 1) + 8 * i) unsignedIntegerValue];
+        title = [(MKCatalystButton *)self title];
+        subTitle = [(MKCatalystButton *)self subTitle];
+        v32 = [(MKCatalystButton *)self _attributedStringWithTitle:title subtitle:subTitle controlState:unsignedIntegerValue];
+        [(MKCatalystButton *)self setAttributedTitle:v32 forState:unsignedIntegerValue];
       }
 
       v26 = [&unk_1F16122E8 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -187,12 +187,12 @@
     while (v26);
   }
 
-  v33 = [(MKCatalystButton *)self subTitle];
-  v34 = [(MKCatalystButton *)self titleLabel];
-  [v34 setLineBreakMode:4 * (v33 == 0)];
+  subTitle2 = [(MKCatalystButton *)self subTitle];
+  titleLabel = [(MKCatalystButton *)self titleLabel];
+  [titleLabel setLineBreakMode:4 * (subTitle2 == 0)];
 
-  v35 = [(MKCatalystButton *)self subTitle];
-  if (v35)
+  subTitle3 = [(MKCatalystButton *)self subTitle];
+  if (subTitle3)
   {
     v36 = 2;
   }
@@ -202,67 +202,67 @@
     v36 = 1;
   }
 
-  v37 = [(MKCatalystButton *)self titleLabel];
-  [v37 setNumberOfLines:v36];
+  titleLabel2 = [(MKCatalystButton *)self titleLabel];
+  [titleLabel2 setNumberOfLines:v36];
 }
 
-- (id)_attributedStringForSubTitle:(id)a3 controlState:(unint64_t)a4
+- (id)_attributedStringForSubTitle:(id)title controlState:(unint64_t)state
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69DC888];
-  v7 = a3;
-  v8 = [v6 secondaryLabelColor];
-  v9 = v8;
-  if (a4 <= 1)
+  titleCopy = title;
+  secondaryLabelColor = [v6 secondaryLabelColor];
+  v9 = secondaryLabelColor;
+  if (state <= 1)
   {
-    if (!a4)
+    if (!state)
     {
-      v11 = [(MKCatalystButton *)self traitCollection];
-      if (![v11 activeAppearance])
+      traitCollection = [(MKCatalystButton *)self traitCollection];
+      if (![traitCollection activeAppearance])
       {
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v12 = [(MKCatalystButton *)self isPrimaryButton];
+      isPrimaryButton = [(MKCatalystButton *)self isPrimaryButton];
 
-      if (v12)
+      if (isPrimaryButton)
       {
-        v10 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.850000024];
+        whiteColor = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.850000024];
         goto LABEL_13;
       }
 
       goto LABEL_15;
     }
 
-    if (a4 != 1)
+    if (state != 1)
     {
       goto LABEL_15;
     }
 
 LABEL_8:
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_13;
   }
 
-  switch(a4)
+  switch(state)
   {
     case 0xFF0000uLL:
-      v10 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+      whiteColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
       goto LABEL_13;
     case 4uLL:
       goto LABEL_8;
     case 2uLL:
-      v10 = [v8 colorWithAlphaComponent:0.3];
+      whiteColor = [secondaryLabelColor colorWithAlphaComponent:0.3];
 LABEL_13:
-      v11 = v9;
-      v9 = v10;
+      traitCollection = v9;
+      v9 = whiteColor;
       goto LABEL_14;
   }
 
 LABEL_15:
-  v13 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v7];
+  v13 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:titleCopy];
 
   [v13 removeAttribute:*MEMORY[0x1E69DB688] range:{0, objc_msgSend(v13, "length")}];
   v14 = *MEMORY[0x1E69DB650];
@@ -287,78 +287,78 @@ LABEL_15:
   return v13;
 }
 
-- (id)_attributedStringForTitle:(id)a3 controlState:(unint64_t)a4
+- (id)_attributedStringForTitle:(id)title controlState:(unint64_t)state
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!title)
   {
     v11 = 0;
     goto LABEL_17;
   }
 
   v6 = MEMORY[0x1E69DC888];
-  v7 = a3;
-  v8 = [v6 labelColor];
-  v9 = v8;
-  if (a4 <= 3)
+  titleCopy = title;
+  labelColor = [v6 labelColor];
+  v9 = labelColor;
+  if (state <= 3)
   {
-    if (a4 != 1)
+    if (state != 1)
     {
-      if (a4 != 2)
+      if (state != 2)
       {
         goto LABEL_12;
       }
 
-      v10 = [v8 colorWithAlphaComponent:0.3];
+      whiteColor = [labelColor colorWithAlphaComponent:0.3];
       goto LABEL_11;
     }
 
     goto LABEL_10;
   }
 
-  if (a4 == 4)
+  if (state == 4)
   {
 LABEL_10:
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_11;
   }
 
-  if (a4 != 16711680)
+  if (state != 16711680)
   {
     goto LABEL_12;
   }
 
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  whiteColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
 LABEL_11:
-  v12 = v10;
+  v12 = whiteColor;
 
   v9 = v12;
 LABEL_12:
-  v13 = [(MKCatalystButton *)self traitCollection];
-  if (![v13 activeAppearance])
+  traitCollection = [(MKCatalystButton *)self traitCollection];
+  if (![traitCollection activeAppearance])
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v14 = [(MKCatalystButton *)self isPrimaryButton];
+  isPrimaryButton = [(MKCatalystButton *)self isPrimaryButton];
 
-  if (v14)
+  if (isPrimaryButton)
   {
     [MEMORY[0x1E69DC888] whiteColor];
-    v9 = v13 = v9;
+    v9 = traitCollection = v9;
     goto LABEL_15;
   }
 
 LABEL_16:
-  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v7];
+  v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:titleCopy];
 
   [v11 removeAttribute:*MEMORY[0x1E69DB688] range:{0, objc_msgSend(v11, "length")}];
   v18[0] = *MEMORY[0x1E69DB648];
-  v15 = [objc_opt_class() titleFont];
+  titleFont = [objc_opt_class() titleFont];
   v18[1] = *MEMORY[0x1E69DB650];
-  v19[0] = v15;
+  v19[0] = titleFont;
   v19[1] = v9;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
   [v11 addAttributes:v16 range:{0, objc_msgSend(v11, "length")}];
@@ -368,30 +368,30 @@ LABEL_17:
   return v11;
 }
 
-- (id)_attributedStringWithTitle:(id)a3 subtitle:(id)a4 controlState:(unint64_t)a5
+- (id)_attributedStringWithTitle:(id)title subtitle:(id)subtitle controlState:(unint64_t)state
 {
-  v8 = a4;
-  if (v8)
+  subtitleCopy = subtitle;
+  if (subtitleCopy)
   {
     v9 = MEMORY[0x1E696AD40];
-    v10 = a3;
-    v11 = objc_alloc_init(v9);
-    v12 = [(MKCatalystButton *)self _attributedStringForTitle:v10 controlState:a5];
+    titleCopy = title;
+    titleCopy2 = objc_alloc_init(v9);
+    v12 = [(MKCatalystButton *)self _attributedStringForTitle:titleCopy controlState:state];
 
-    [v11 appendAttributedString:v12];
+    [titleCopy2 appendAttributedString:v12];
     v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
-    [v11 appendAttributedString:v13];
+    [titleCopy2 appendAttributedString:v13];
 
-    v14 = [(MKCatalystButton *)self _attributedStringForSubTitle:v8 controlState:a5];
-    [v11 appendAttributedString:v14];
+    v14 = [(MKCatalystButton *)self _attributedStringForSubTitle:subtitleCopy controlState:state];
+    [titleCopy2 appendAttributedString:v14];
 
-    v15 = [v11 copy];
+    v15 = [titleCopy2 copy];
   }
 
   else
   {
-    v11 = a3;
-    v15 = [(MKCatalystButton *)self _attributedStringForTitle:v11 controlState:a5];
+    titleCopy2 = title;
+    v15 = [(MKCatalystButton *)self _attributedStringForTitle:titleCopy2 controlState:state];
   }
 
   v16 = v15;
@@ -399,34 +399,34 @@ LABEL_17:
   return v16;
 }
 
-- (void)placeActionButtonControllerTextDidChange:(id)a3
+- (void)placeActionButtonControllerTextDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_buttonController);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == changeCopy)
   {
     v9 = objc_loadWeakRetained(&self->_buttonController);
-    v6 = [v9 buttonTitle];
+    buttonTitle = [v9 buttonTitle];
     v7 = objc_loadWeakRetained(&self->_buttonController);
-    v8 = [v7 buttonSubTitle];
-    [(MKCatalystButton *)self setPrimaryTitle:v6 subtitle:v8];
+    buttonSubTitle = [v7 buttonSubTitle];
+    [(MKCatalystButton *)self setPrimaryTitle:buttonTitle subtitle:buttonSubTitle];
   }
 }
 
-- (void)setPrimaryTitle:(id)a3 subtitle:(id)a4
+- (void)setPrimaryTitle:(id)title subtitle:(id)subtitle
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  if (titleCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v9];
+    v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy];
     [(MKCatalystButton *)self setTitle:v7];
 
-    if (v6)
+    if (subtitleCopy)
     {
 LABEL_3:
-      v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6];
+      v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:subtitleCopy];
       [(MKCatalystButton *)self setSubTitle:v8];
 
       goto LABEL_6;
@@ -436,7 +436,7 @@ LABEL_3:
   else
   {
     [(MKCatalystButton *)self setTitle:0];
-    if (v6)
+    if (subtitleCopy)
     {
       goto LABEL_3;
     }
@@ -447,16 +447,16 @@ LABEL_6:
   [(MKCatalystButton *)self _updateColors];
 }
 
-- (void)setPrimaryTitle:(id)a3
+- (void)setPrimaryTitle:(id)title
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (titleCopy)
   {
-    v20 = self;
-    v6 = [v4 string];
-    v7 = [v6 componentsSeparatedByString:@"\n"];
+    selfCopy = self;
+    string = [titleCopy string];
+    v7 = [string componentsSeparatedByString:@"\n"];
 
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
     v21 = 0u;
@@ -500,7 +500,7 @@ LABEL_6:
         v18 = [v8 objectAtIndexedSubscript:1];
       }
 
-      self = v20;
+      self = selfCopy;
       if (![v18 length])
       {
         v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
@@ -513,7 +513,7 @@ LABEL_6:
     {
       v18 = 0;
       v17 = 0;
-      self = v20;
+      self = selfCopy;
     }
   }
 
@@ -528,19 +528,19 @@ LABEL_6:
   [(MKCatalystButton *)self _updateColors];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = MKCatalystButton;
-  [(MKCatalystButton *)&v4 setEnabled:a3];
+  [(MKCatalystButton *)&v4 setEnabled:enabled];
   [(MKCatalystButton *)self _updateColors];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = MKCatalystButton;
-  [(MKCatalystButton *)&v4 setHighlighted:a3];
+  [(MKCatalystButton *)&v4 setHighlighted:highlighted];
   [(MKCatalystButton *)self _updateColors];
 }
 
@@ -549,15 +549,15 @@ LABEL_6:
   gradientLayer = self->_gradientLayer;
   if (!gradientLayer)
   {
-    v4 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     v5 = self->_gradientLayer;
-    self->_gradientLayer = v4;
+    self->_gradientLayer = layer;
 
     [(CAGradientLayer *)self->_gradientLayer setHidden:1];
-    v6 = [(MKCatalystButton *)self layer];
+    layer2 = [(MKCatalystButton *)self layer];
     v7 = self->_gradientLayer;
-    v8 = [(MKCatalystButton *)self extraShadowLayer];
-    [v6 insertSublayer:v7 above:v8];
+    extraShadowLayer = [(MKCatalystButton *)self extraShadowLayer];
+    [layer2 insertSublayer:v7 above:extraShadowLayer];
 
     [(CAGradientLayer *)self->_gradientLayer setActions:0];
     gradientLayer = self->_gradientLayer;
@@ -571,12 +571,12 @@ LABEL_6:
   extraShadowLayer = self->_extraShadowLayer;
   if (!extraShadowLayer)
   {
-    v4 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v5 = self->_extraShadowLayer;
-    self->_extraShadowLayer = v4;
+    self->_extraShadowLayer = layer;
 
-    v6 = [(MKCatalystButton *)self layer];
-    [v6 insertSublayer:self->_extraShadowLayer atIndex:0];
+    layer2 = [(MKCatalystButton *)self layer];
+    [layer2 insertSublayer:self->_extraShadowLayer atIndex:0];
 
     [(CALayer *)self->_extraShadowLayer setActions:0];
     extraShadowLayer = self->_extraShadowLayer;
@@ -585,9 +585,9 @@ LABEL_6:
   return extraShadowLayer;
 }
 
-- (void)setButtonController:(id)a3
+- (void)setButtonController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_buttonController);
 
   if (WeakRetained != obj)
@@ -596,10 +596,10 @@ LABEL_6:
     [obj setDelegate:self];
 
     v6 = objc_loadWeakRetained(&self->_buttonController);
-    v7 = [v6 buttonTitle];
+    buttonTitle = [v6 buttonTitle];
     v8 = objc_loadWeakRetained(&self->_buttonController);
-    v9 = [v8 buttonSubTitle];
-    [(MKCatalystButton *)self setPrimaryTitle:v7 subtitle:v9];
+    buttonSubTitle = [v8 buttonSubTitle];
+    [(MKCatalystButton *)self setPrimaryTitle:buttonTitle subtitle:buttonSubTitle];
 
     [(MKCatalystButton *)self addTarget:self action:sel_buttonSelected_ forControlEvents:64];
     v10 = objc_loadWeakRetained(&self->_buttonController);
@@ -607,73 +607,73 @@ LABEL_6:
   }
 }
 
-- (void)applyBorder:(BOOL)a3
+- (void)applyBorder:(BOOL)border
 {
-  v5 = a3;
-  if (a3)
+  borderCopy = border;
+  if (border)
   {
-    v3 = [(MKCatalystButton *)self titleLabel];
-    v4 = [v3 textColor];
-    v7 = [v4 CGColor];
+    titleLabel = [(MKCatalystButton *)self titleLabel];
+    textColor = [titleLabel textColor];
+    cGColor = [textColor CGColor];
   }
 
   else
   {
-    v7 = 0;
+    cGColor = 0;
   }
 
-  v8 = [(MKCatalystButton *)self extraShadowLayer];
-  [v8 setBorderColor:v7];
+  extraShadowLayer = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer setBorderColor:cGColor];
 
   v9 = 0.0;
-  if (v5)
+  if (borderCopy)
   {
 
     v9 = 1.0;
   }
 
-  v10 = [(MKCatalystButton *)self extraShadowLayer];
-  [v10 setBorderWidth:v9];
+  extraShadowLayer2 = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer2 setBorderWidth:v9];
 
-  if (v5)
+  if (borderCopy)
   {
-    v10 = [(MKCatalystButton *)self titleLabel];
-    v4 = [v10 textColor];
-    v11 = [v4 CGColor];
+    extraShadowLayer2 = [(MKCatalystButton *)self titleLabel];
+    textColor = [extraShadowLayer2 textColor];
+    cGColor2 = [textColor CGColor];
   }
 
   else
   {
-    v11 = 0;
+    cGColor2 = 0;
   }
 
-  v12 = [(MKCatalystButton *)self gradientLayer];
-  [v12 setBorderColor:v11];
+  gradientLayer = [(MKCatalystButton *)self gradientLayer];
+  [gradientLayer setBorderColor:cGColor2];
 
-  if (v5)
+  if (borderCopy)
   {
   }
 
-  v13 = [(MKCatalystButton *)self gradientLayer];
-  [v13 setBorderWidth:v9];
+  gradientLayer2 = [(MKCatalystButton *)self gradientLayer];
+  [gradientLayer2 setBorderWidth:v9];
 }
 
-- (void)buttonSelected:(id)a3
+- (void)buttonSelected:(id)selected
 {
-  v8 = a3;
-  v4 = [(MKCatalystButton *)self buttonController];
+  selectedCopy = selected;
+  buttonController = [(MKCatalystButton *)self buttonController];
 
-  if (v4)
+  if (buttonController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_buttonController);
-    v6 = [WeakRetained buttonSelectedBlock];
+    buttonSelectedBlock = [WeakRetained buttonSelectedBlock];
 
-    if (v6)
+    if (buttonSelectedBlock)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v8;
+        v7 = selectedCopy;
       }
 
       else
@@ -681,7 +681,7 @@ LABEL_6:
         v7 = 0;
       }
 
-      (v6)[2](v6, v7);
+      (buttonSelectedBlock)[2](buttonSelectedBlock, v7);
     }
   }
 }
@@ -691,51 +691,51 @@ LABEL_6:
   v33.receiver = self;
   v33.super_class = MKCatalystButton;
   [(MKCatalystButton *)&v33 layoutSubviews];
-  v3 = [MEMORY[0x1E6979518] disableActions];
+  disableActions = [MEMORY[0x1E6979518] disableActions];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(MKCatalystButton *)self bounds];
   v4 = round(CGRectGetHeight(v34) * 0.189999998);
-  v5 = [(MKCatalystButton *)self layer];
-  [v5 setMasksToBounds:0];
+  layer = [(MKCatalystButton *)self layer];
+  [layer setMasksToBounds:0];
 
-  v6 = [(MKCatalystButton *)self layer];
-  [v6 bounds];
+  layer2 = [(MKCatalystButton *)self layer];
+  [layer2 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(MKCatalystButton *)self extraShadowLayer];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  extraShadowLayer = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer setFrame:{v8, v10, v12, v14}];
 
-  v16 = [(MKCatalystButton *)self extraShadowLayer];
-  [v16 setMasksToBounds:0];
+  extraShadowLayer2 = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer2 setMasksToBounds:0];
 
-  v17 = [(MKCatalystButton *)self extraShadowLayer];
-  [v17 setCornerRadius:v4];
+  extraShadowLayer3 = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer3 setCornerRadius:v4];
 
   v18 = *MEMORY[0x1E69796E8];
-  v19 = [(MKCatalystButton *)self extraShadowLayer];
-  [v19 setCornerCurve:v18];
+  extraShadowLayer4 = [(MKCatalystButton *)self extraShadowLayer];
+  [extraShadowLayer4 setCornerCurve:v18];
 
-  v20 = [(MKCatalystButton *)self layer];
-  [v20 bounds];
+  layer3 = [(MKCatalystButton *)self layer];
+  [layer3 bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(MKCatalystButton *)self gradientLayer];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  gradientLayer = [(MKCatalystButton *)self gradientLayer];
+  [gradientLayer setFrame:{v22, v24, v26, v28}];
 
-  v30 = [(MKCatalystButton *)self gradientLayer];
-  [v30 setCornerRadius:v4];
+  gradientLayer2 = [(MKCatalystButton *)self gradientLayer];
+  [gradientLayer2 setCornerRadius:v4];
 
-  v31 = [(MKCatalystButton *)self gradientLayer];
-  [v31 setCornerCurve:v18];
+  gradientLayer3 = [(MKCatalystButton *)self gradientLayer];
+  [gradientLayer3 setCornerCurve:v18];
 
-  v32 = [(MKCatalystButton *)self gradientLayer];
-  [v32 setMasksToBounds:1];
+  gradientLayer4 = [(MKCatalystButton *)self gradientLayer];
+  [gradientLayer4 setMasksToBounds:1];
 
-  [MEMORY[0x1E6979518] setDisableActions:v3];
+  [MEMORY[0x1E6979518] setDisableActions:disableActions];
 }
 
 - (CGSize)_maps_intrinsicContentSize
@@ -744,8 +744,8 @@ LABEL_6:
   v10.super_class = MKCatalystButton;
   [(MKCatalystButton *)&v10 intrinsicContentSize];
   v4 = v3;
-  v5 = [(MKCatalystButton *)self subTitle];
-  if (v5)
+  subTitle = [(MKCatalystButton *)self subTitle];
+  if (subTitle)
   {
     [(MKCatalystButton *)self tallHeight];
   }
@@ -766,10 +766,10 @@ LABEL_6:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(MKCatalystButton *)self subTitle];
+  subTitle = [(MKCatalystButton *)self subTitle];
 
   v4 = *MEMORY[0x1E69DE788];
-  if (v3)
+  if (subTitle)
   {
     [(MKCatalystButton *)self tallHeight];
   }
@@ -794,11 +794,11 @@ LABEL_6:
   [(MKCatalystButton *)self _updateColors];
 }
 
-+ (id)buttonWithType:(int64_t)a3
++ (id)buttonWithType:(int64_t)type
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MKCatalystButton;
-  v3 = objc_msgSendSuper2(&v6, sel_buttonWithType_, a3);
+  v3 = objc_msgSendSuper2(&v6, sel_buttonWithType_, type);
   v4 = v3;
   if (v3)
   {

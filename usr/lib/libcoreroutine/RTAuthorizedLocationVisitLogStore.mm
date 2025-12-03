@@ -1,32 +1,32 @@
 @interface RTAuthorizedLocationVisitLogStore
-- (BOOL)setTrustedTimeRecentAvailability:(BOOL)a3;
+- (BOOL)setTrustedTimeRecentAvailability:(BOOL)availability;
 - (BOOL)wasTrustedTimeRecentlyAvailable;
-- (RTAuthorizedLocationVisitLogStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
+- (RTAuthorizedLocationVisitLogStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
 - (int64_t)getEraseInstallRetroRegistrationStatus;
-- (void)_deleteVisitLogWithUUID:(id)a3 handler:(id)a4;
-- (void)_fetchVisitLogWithUUID:(id)a3 handler:(id)a4;
-- (void)_fetchVisitLogsWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgeVisitLogsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)_storeVisitLog:(id)a3 handler:(id)a4;
-- (void)_updateVisitLogDistantFutureFlagWithStatus:(int64_t)a3 TrustedTimeAvailability:(BOOL)a4 isRetroRegistration:(BOOL)a5;
-- (void)deleteVisitLogWithUUID:(id)a3 handler:(id)a4;
-- (void)fetchVisitLogWithUUID:(id)a3 handler:(id)a4;
-- (void)fetchVisitLogsWithOptions:(id)a3 handler:(id)a4;
-- (void)purgeVisitLogsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)purgeVisitLogsPredating:(id)a3 handler:(id)a4;
-- (void)setEraseInstallRetroRegistrationStatus:(int64_t)a3;
-- (void)storeVisitLog:(id)a3 handler:(id)a4;
+- (void)_deleteVisitLogWithUUID:(id)d handler:(id)handler;
+- (void)_fetchVisitLogWithUUID:(id)d handler:(id)handler;
+- (void)_fetchVisitLogsWithOptions:(id)options handler:(id)handler;
+- (void)_purgeVisitLogsOnDateInterval:(id)interval handler:(id)handler;
+- (void)_storeVisitLog:(id)log handler:(id)handler;
+- (void)_updateVisitLogDistantFutureFlagWithStatus:(int64_t)status TrustedTimeAvailability:(BOOL)availability isRetroRegistration:(BOOL)registration;
+- (void)deleteVisitLogWithUUID:(id)d handler:(id)handler;
+- (void)fetchVisitLogWithUUID:(id)d handler:(id)handler;
+- (void)fetchVisitLogsWithOptions:(id)options handler:(id)handler;
+- (void)purgeVisitLogsOnDateInterval:(id)interval handler:(id)handler;
+- (void)purgeVisitLogsPredating:(id)predating handler:(id)handler;
+- (void)setEraseInstallRetroRegistrationStatus:(int64_t)status;
+- (void)storeVisitLog:(id)log handler:(id)handler;
 @end
 
 @implementation RTAuthorizedLocationVisitLogStore
 
-- (RTAuthorizedLocationVisitLogStore)initWithPersistenceManager:(id)a3
+- (RTAuthorizedLocationVisitLogStore)initWithPersistenceManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = RTAuthorizedLocationVisitLogStore;
-  v4 = [(RTStore *)&v10 initWithPersistenceManager:a3];
+  v4 = [(RTStore *)&v10 initWithPersistenceManager:manager];
   if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -46,12 +46,12 @@
   return v4;
 }
 
-- (void)_fetchVisitLogsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchVisitLogsWithOptions:(id)options handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -73,9 +73,9 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __72__RTAuthorizedLocationVisitLogStore__fetchVisitLogsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v18 = v7;
+    v18 = optionsCopy;
     v20 = a2;
-    v10 = v8;
+    v10 = handlerCopy;
     v19 = v10;
     v11 = _Block_copy(aBlock);
     v15[0] = MEMORY[0x277D85DD0];
@@ -207,29 +207,29 @@ void __72__RTAuthorizedLocationVisitLogStore__fetchVisitLogsWithOptions_handler_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchVisitLogsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchVisitLogsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__RTAuthorizedLocationVisitLogStore_fetchVisitLogsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchVisitLogWithUUID:(id)a3 handler:(id)a4
+- (void)_fetchVisitLogWithUUID:(id)d handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -251,9 +251,9 @@ void __72__RTAuthorizedLocationVisitLogStore__fetchVisitLogsWithOptions_handler_
     aBlock[1] = 3221225472;
     aBlock[2] = __68__RTAuthorizedLocationVisitLogStore__fetchVisitLogWithUUID_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v18 = v7;
+    v18 = dCopy;
     v20 = a2;
-    v10 = v8;
+    v10 = handlerCopy;
     v19 = v10;
     v11 = _Block_copy(aBlock);
     v15[0] = MEMORY[0x277D85DD0];
@@ -356,28 +356,28 @@ void __68__RTAuthorizedLocationVisitLogStore__fetchVisitLogWithUUID_handler___bl
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchVisitLogWithUUID:(id)a3 handler:(id)a4
+- (void)fetchVisitLogWithUUID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RTAuthorizedLocationVisitLogStore_fetchVisitLogWithUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storeVisitLog:(id)a3 handler:(id)a4
+- (void)_storeVisitLog:(id)log handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  logCopy = log;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -386,7 +386,7 @@ void __68__RTAuthorizedLocationVisitLogStore__fetchVisitLogWithUUID_handler___bl
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = NSStringFromSelector(a2);
-      v14 = [v7 description];
+      v14 = [logCopy description];
       *buf = 138412802;
       v17 = v12;
       v18 = 2112;
@@ -397,43 +397,43 @@ void __68__RTAuthorizedLocationVisitLogStore__fetchVisitLogWithUUID_handler___bl
     }
   }
 
-  v15 = v7;
+  v15 = logCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
-  [(RTStore *)self storeWritableObjects:v10 handler:v8];
+  [(RTStore *)self storeWritableObjects:v10 handler:handlerCopy];
 }
 
-- (void)storeVisitLog:(id)a3 handler:(id)a4
+- (void)storeVisitLog:(id)log handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  logCopy = log;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__RTAuthorizedLocationVisitLogStore_storeVisitLog_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = logCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = logCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)purgeVisitLogsPredating:(id)a3 handler:(id)a4
+- (void)purgeVisitLogsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__RTAuthorizedLocationVisitLogStore_purgeVisitLogsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
 void __69__RTAuthorizedLocationVisitLogStore_purgeVisitLogsPredating_handler___block_invoke(uint64_t a1)
@@ -445,12 +445,12 @@ void __69__RTAuthorizedLocationVisitLogStore_purgeVisitLogsPredating_handler___b
   [v3 _purgeVisitLogsOnDateInterval:v4 handler:*(a1 + 48)];
 }
 
-- (void)_purgeVisitLogsOnDateInterval:(id)a3 handler:(id)a4
+- (void)_purgeVisitLogsOnDateInterval:(id)interval handler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  intervalCopy = interval;
+  handlerCopy = handler;
+  if (!intervalCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -479,15 +479,15 @@ void __69__RTAuthorizedLocationVisitLogStore_purgeVisitLogsPredating_handler___b
     }
   }
 
-  if (v7)
+  if (intervalCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __75__RTAuthorizedLocationVisitLogStore__purgeVisitLogsOnDateInterval_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v21 = v7;
-    v22 = self;
-    v11 = v8;
+    v21 = intervalCopy;
+    selfCopy = self;
+    v11 = handlerCopy;
     v23 = v11;
     v12 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v12 contextType:0 errorHandler:v11];
@@ -504,9 +504,9 @@ void __69__RTAuthorizedLocationVisitLogStore_purgeVisitLogsPredating_handler___b
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v13 = [v14 errorWithDomain:v15 code:7 userInfo:v16];
 
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, v13);
+      (*(handlerCopy + 2))(handlerCopy, v13);
     }
   }
 }
@@ -536,29 +536,29 @@ void __75__RTAuthorizedLocationVisitLogStore__purgeVisitLogsOnDateInterval_handl
   [*(a1 + 40) executeDeleteRequests:v4 context:v3 handler:*(a1 + 48)];
 }
 
-- (void)purgeVisitLogsOnDateInterval:(id)a3 handler:(id)a4
+- (void)purgeVisitLogsOnDateInterval:(id)interval handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__RTAuthorizedLocationVisitLogStore_purgeVisitLogsOnDateInterval_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = intervalCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteVisitLogWithUUID:(id)a3 handler:(id)a4
+- (void)_deleteVisitLogWithUUID:(id)d handler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -593,23 +593,23 @@ void __75__RTAuthorizedLocationVisitLogStore__purgeVisitLogsOnDateInterval_handl
   v40 = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
 
-  if (v7)
+  if (dCopy)
   {
     if (v12)
     {
-      v13 = [v12 allKeys];
-      if ([v13 count])
+      allKeys = [v12 allKeys];
+      if ([allKeys count])
       {
         v25 = MEMORY[0x277D85DD0];
         v26 = 3221225472;
         v27 = __69__RTAuthorizedLocationVisitLogStore__deleteVisitLogWithUUID_handler___block_invoke;
         v28 = &unk_2788C7F10;
-        v13 = v13;
-        v29 = v13;
+        allKeys = allKeys;
+        v29 = allKeys;
         v30 = v12;
-        v31 = v7;
-        v32 = self;
-        v14 = v8;
+        v31 = dCopy;
+        selfCopy = self;
+        v14 = handlerCopy;
         v33 = v14;
         v15 = _Block_copy(&v25);
         [(RTStore *)self _performBlock:v15 contextType:0 errorHandler:v14, v25, v26, v27, v28];
@@ -639,11 +639,11 @@ void __75__RTAuthorizedLocationVisitLogStore__purgeVisitLogsOnDateInterval_handl
   }
 
   v21 = [v18 dictionaryWithObjects:v19 forKeys:v20 count:1];
-  v13 = [v16 errorWithDomain:v17 code:7 userInfo:v21];
+  allKeys = [v16 errorWithDomain:v17 code:7 userInfo:v21];
 
-  if (v8)
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, v13);
+    (*(handlerCopy + 2))(handlerCopy, allKeys);
   }
 
 LABEL_17:
@@ -726,24 +726,24 @@ void __69__RTAuthorizedLocationVisitLogStore__deleteVisitLogWithUUID_handler___b
   [*(a1 + 56) executeDeleteRequests:v3 context:v14 handler:*(a1 + 64)];
 }
 
-- (void)deleteVisitLogWithUUID:(id)a3 handler:(id)a4
+- (void)deleteVisitLogWithUUID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RTAuthorizedLocationVisitLogStore_deleteVisitLogWithUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -753,39 +753,39 @@ void __69__RTAuthorizedLocationVisitLogStore__deleteVisitLogWithUUID_handler___b
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;
 }
 
-- (void)_updateVisitLogDistantFutureFlagWithStatus:(int64_t)a3 TrustedTimeAvailability:(BOOL)a4 isRetroRegistration:(BOOL)a5
+- (void)_updateVisitLogDistantFutureFlagWithStatus:(int64_t)status TrustedTimeAvailability:(BOOL)availability isRetroRegistration:(BOOL)registration
 {
   v86 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (status == 1)
   {
-    v57 = a4;
-    v60 = a5;
+    availabilityCopy2 = availability;
+    registrationCopy2 = registration;
     v6 = @"00001111-2222-3333-4444-555566667777";
     goto LABEL_5;
   }
 
-  if (a3 == 2)
+  if (status == 2)
   {
-    v57 = a4;
-    v60 = a5;
+    availabilityCopy2 = availability;
+    registrationCopy2 = registration;
     v6 = @"11112222-3333-4444-5555-666677778888";
 LABEL_5:
     oslog = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
     v7 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v8 = [MEMORY[0x277CBEAA8] distantFuture];
-    v62 = [v7 initWithTimeInterval:v8 sinceDate:-120.0];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v62 = [v7 initWithTimeInterval:distantFuture sinceDate:-120.0];
 
-    v63 = [MEMORY[0x277CBEAA8] distantFuture];
-    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v62 endDate:v63];
+    distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+    v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v62 endDate:distantFuture2];
     v10 = dispatch_semaphore_create(0);
     *v80 = 0;
     *&v80[8] = v80;
@@ -814,11 +814,11 @@ LABEL_5:
       v18 = v17;
       v19 = objc_opt_new();
       v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_28];
-      v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v22 = [v21 filteredArrayUsingPredicate:v20];
-      v23 = [v22 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+      firstObject = [v22 firstObject];
 
-      [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+      [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
       v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
@@ -842,10 +842,10 @@ LABEL_5:
 
     objc_storeStrong(v13, v12);
     v29 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v30 = [MEMORY[0x277CBEAA8] distantFuture];
-    v31 = [v29 initWithTimeInterval:v30 sinceDate:-60.0];
+    distantFuture3 = [MEMORY[0x277CBEAA8] distantFuture];
+    v31 = [v29 initWithTimeInterval:distantFuture3 sinceDate:-60.0];
 
-    v61 = [RTAuthorizedLocationVisitLog encodeTimeSourceWithValue:v31 isTrusted:v57 isRetroRegistration:v60];
+    v61 = [RTAuthorizedLocationVisitLog encodeTimeSourceWithValue:v31 isTrusted:availabilityCopy2 isRetroRegistration:registrationCopy2];
 
     v32 = [[RTAuthorizedLocationVisitLog alloc] initWithVisitIdentifier:oslog registrationDate:v61 locationTechnologyAvailability:0];
     v33 = dispatch_semaphore_create(0);
@@ -879,11 +879,11 @@ LABEL_5:
       v42 = v41;
       v43 = objc_opt_new();
       v44 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_28];
-      v45 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v46 = [v45 filteredArrayUsingPredicate:v44];
-      v47 = [v46 firstObject];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v46 = [callStackSymbols2 filteredArrayUsingPredicate:v44];
+      firstObject2 = [v46 firstObject];
 
-      [v43 submitToCoreAnalytics:v47 type:1 duration:v42];
+      [v43 submitToCoreAnalytics:firstObject2 type:1 duration:v42];
       v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
       {
@@ -968,11 +968,11 @@ void __124__RTAuthorizedLocationVisitLogStore__updateVisitLogDistantFutureFlagWi
   v4 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"00001111-2222-3333-4444-555566667777"];
   v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"11112222-3333-4444-5555-666677778888"];
   v6 = objc_alloc(MEMORY[0x277CBEAA8]);
-  v7 = [MEMORY[0x277CBEAA8] distantFuture];
-  v35 = [v6 initWithTimeInterval:v7 sinceDate:-120.0];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v35 = [v6 initWithTimeInterval:distantFuture sinceDate:-120.0];
 
-  v36 = [MEMORY[0x277CBEAA8] distantFuture];
-  v33 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v35 endDate:v36];
+  distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+  v33 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v35 endDate:distantFuture2];
   v8 = [[RTAuthorizedLocationVisitLogFetchOptions alloc] initWithAscending:0 dateInterval:v33 limit:&unk_28459CEB8];
   v51 = 0;
   v52 = &v51;
@@ -992,7 +992,7 @@ void __124__RTAuthorizedLocationVisitLogStore__updateVisitLogDistantFutureFlagWi
   v42 = &v45;
   v31 = v4;
   v38 = v31;
-  v39 = self;
+  selfCopy = self;
   v43 = &v51;
   v44 = a2;
   v32 = v5;
@@ -1013,11 +1013,11 @@ void __124__RTAuthorizedLocationVisitLogStore__updateVisitLogDistantFutureFlagWi
     v18 = v17;
     v19 = objc_opt_new();
     v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_28];
-    v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v22 = [v21 filteredArrayUsingPredicate:v20];
-    v23 = [v22 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+    firstObject = [v22 firstObject];
 
-    [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+    [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
@@ -1137,7 +1137,7 @@ LABEL_11:
   dispatch_semaphore_signal(*(a1 + 56));
 }
 
-- (void)setEraseInstallRetroRegistrationStatus:(int64_t)a3
+- (void)setEraseInstallRetroRegistrationStatus:(int64_t)status
 {
   v16 = *MEMORY[0x277D85DE8];
   v6 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
@@ -1151,11 +1151,11 @@ LABEL_11:
     v12 = 2112;
     v13 = v9;
     v14 = 1024;
-    v15 = a3;
+    statusCopy = status;
     _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@, setting status, %d.", &v10, 0x1Cu);
   }
 
-  [(RTAuthorizedLocationVisitLogStore *)self _updateVisitLogDistantFutureFlagWithStatus:a3 TrustedTimeAvailability:0 isRetroRegistration:1];
+  [(RTAuthorizedLocationVisitLogStore *)self _updateVisitLogDistantFutureFlagWithStatus:status TrustedTimeAvailability:0 isRetroRegistration:1];
 }
 
 - (BOOL)wasTrustedTimeRecentlyAvailable
@@ -1163,11 +1163,11 @@ LABEL_11:
   v67[1] = *MEMORY[0x277D85DE8];
   v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"11112222-3333-4444-5555-666677778888"];
   v3 = objc_alloc(MEMORY[0x277CBEAA8]);
-  v4 = [MEMORY[0x277CBEAA8] distantFuture];
-  v40 = [v3 initWithTimeInterval:v4 sinceDate:-120.0];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v40 = [v3 initWithTimeInterval:distantFuture sinceDate:-120.0];
 
-  v41 = [MEMORY[0x277CBEAA8] distantFuture];
-  v35 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v40 endDate:v41];
+  distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+  v35 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v40 endDate:distantFuture2];
   v5 = [[RTAuthorizedLocationVisitLogFetchOptions alloc] initWithAscending:0 dateInterval:v35 limit:&unk_28459CEB8];
   v56 = 0;
   v57 = &v56;
@@ -1189,7 +1189,7 @@ LABEL_11:
   v47 = &v50;
   v34 = v2;
   v44 = v34;
-  v45 = self;
+  selfCopy = self;
   v48 = &v56;
   v49 = a2;
   v7 = v6;
@@ -1208,11 +1208,11 @@ LABEL_11:
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_28];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -1240,12 +1240,12 @@ LABEL_11:
   {
     LOBYTE(v67[0]) = 0;
     v42 = 0;
-    v26 = [v25 registrationDate];
-    v27 = [RTAuthorizedLocationVisitLog decodeTimeSourceWithValue:v26 isRetroRegistration:v67 isTrusted:&v42];
+    registrationDate = [v25 registrationDate];
+    v27 = [RTAuthorizedLocationVisitLog decodeTimeSourceWithValue:registrationDate isRetroRegistration:v67 isTrusted:&v42];
 
-    LODWORD(v26) = v42;
+    LODWORD(registrationDate) = v42;
     v28 = _rt_log_facility_get_os_log(RTLogFacilityAuthorizedLocation);
-    v29 = v27 & v26;
+    v29 = v27 & registrationDate;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v31 = objc_opt_class();
@@ -1332,16 +1332,16 @@ LABEL_7:
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (BOOL)setTrustedTimeRecentAvailability:(BOOL)a3
+- (BOOL)setTrustedTimeRecentAvailability:(BOOL)availability
 {
-  v3 = a3;
-  v5 = [(RTAuthorizedLocationVisitLogStore *)self getEraseInstallRetroRegistrationStatus];
-  if (v5 == 2)
+  availabilityCopy = availability;
+  getEraseInstallRetroRegistrationStatus = [(RTAuthorizedLocationVisitLogStore *)self getEraseInstallRetroRegistrationStatus];
+  if (getEraseInstallRetroRegistrationStatus == 2)
   {
-    [(RTAuthorizedLocationVisitLogStore *)self _updateVisitLogDistantFutureFlagWithStatus:2 TrustedTimeAvailability:v3 isRetroRegistration:0];
+    [(RTAuthorizedLocationVisitLogStore *)self _updateVisitLogDistantFutureFlagWithStatus:2 TrustedTimeAvailability:availabilityCopy isRetroRegistration:0];
   }
 
-  return v5 == 2;
+  return getEraseInstallRetroRegistrationStatus == 2;
 }
 
 @end

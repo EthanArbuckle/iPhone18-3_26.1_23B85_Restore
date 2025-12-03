@@ -1,26 +1,26 @@
 @interface CLEEDMitigation
-+ (const)sourceAsString:(int64_t)a3;
-+ (id)newMitigationFromDict:(id)a3;
-- (BOOL)anyChangeToNewRequestsComparedTo:(id)a3;
-- (BOOL)needsRequestStateUpdateComparedTo:(id)a3;
-- (BOOL)updateIfDifferentFrom:(id)a3;
-- (BOOL)updateWorseMitigationsFrom:(id)a3;
-- (CLEEDMitigation)initWithCoder:(id)a3;
-- (CLEEDMitigation)initWithStreamingAllowed:(BOOL)a3 framerateFps:(int64_t)a4 bitrateKbps:(int64_t)a5 dropStreaming:(BOOL)a6 uploadAllowed:(BOOL)a7 uploadMitigation:(int64_t)a8 source:(int64_t)a9;
-- (const)toCLEEDUploadMitigationString:(int64_t)a3;
++ (const)sourceAsString:(int64_t)string;
++ (id)newMitigationFromDict:(id)dict;
+- (BOOL)anyChangeToNewRequestsComparedTo:(id)to;
+- (BOOL)needsRequestStateUpdateComparedTo:(id)to;
+- (BOOL)updateIfDifferentFrom:(id)from;
+- (BOOL)updateWorseMitigationsFrom:(id)from;
+- (CLEEDMitigation)initWithCoder:(id)coder;
+- (CLEEDMitigation)initWithStreamingAllowed:(BOOL)allowed framerateFps:(int64_t)fps bitrateKbps:(int64_t)kbps dropStreaming:(BOOL)streaming uploadAllowed:(BOOL)uploadAllowed uploadMitigation:(int64_t)mitigation source:(int64_t)source;
+- (const)toCLEEDUploadMitigationString:(int64_t)string;
 - (id)description;
 - (id)newMitigationDict;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLEEDMitigation
 
-- (CLEEDMitigation)initWithStreamingAllowed:(BOOL)a3 framerateFps:(int64_t)a4 bitrateKbps:(int64_t)a5 dropStreaming:(BOOL)a6 uploadAllowed:(BOOL)a7 uploadMitigation:(int64_t)a8 source:(int64_t)a9
+- (CLEEDMitigation)initWithStreamingAllowed:(BOOL)allowed framerateFps:(int64_t)fps bitrateKbps:(int64_t)kbps dropStreaming:(BOOL)streaming uploadAllowed:(BOOL)uploadAllowed uploadMitigation:(int64_t)mitigation source:(int64_t)source
 {
-  v10 = a7;
-  v11 = a6;
-  v12 = a3;
+  uploadAllowedCopy = uploadAllowed;
+  streamingCopy = streaming;
+  allowedCopy = allowed;
   v62 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
   {
@@ -30,8 +30,8 @@
   v13 = qword_1EAFE4718;
   if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = v12;
-    if (v12)
+    v14 = allowedCopy;
+    if (allowedCopy)
     {
       v15 = "YES";
     }
@@ -41,8 +41,8 @@
       v15 = "NO";
     }
 
-    v16 = v11;
-    if (v11)
+    v16 = streamingCopy;
+    if (streamingCopy)
     {
       v17 = "YES";
     }
@@ -52,8 +52,8 @@
       v17 = "NO";
     }
 
-    v18 = v10;
-    if (v10)
+    v18 = uploadAllowedCopy;
+    if (uploadAllowedCopy)
     {
       v19 = "YES";
     }
@@ -67,19 +67,19 @@
     v49 = "[CLEEDMitigation initWithStreamingAllowed:framerateFps:bitrateKbps:dropStreaming:uploadAllowed:uploadMitigation:source:]";
     v50 = 2082;
     v51 = v15;
-    v12 = v14;
+    allowedCopy = v14;
     v52 = 2050;
-    v53 = a4;
+    fpsCopy = fps;
     v54 = 2082;
     v55 = v17;
-    v11 = v16;
+    streamingCopy = v16;
     v56 = 2082;
     v57 = v19;
-    v10 = v18;
+    uploadAllowedCopy = v18;
     v58 = 2050;
-    v59 = a8;
+    mitigationCopy = mitigation;
     v60 = 2082;
-    v61 = [CLEEDMitigation sourceAsString:a9];
+    v61 = [CLEEDMitigation sourceAsString:source];
     _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s[streamingAllowed:%{public}s,fps:%{public}ld,dropStreaming:%{public}s,uploadAllowed:%{public}s,uploadMitigation:%{public}ld,source:%{public}s]", buf, 0x48u);
   }
 
@@ -92,8 +92,8 @@
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
     }
 
-    v21 = v12;
-    if (v12)
+    v21 = allowedCopy;
+    if (allowedCopy)
     {
       v22 = "YES";
     }
@@ -103,8 +103,8 @@
       v22 = "NO";
     }
 
-    v23 = v11;
-    if (v11)
+    v23 = streamingCopy;
+    if (streamingCopy)
     {
       v24 = "YES";
     }
@@ -114,8 +114,8 @@
       v24 = "NO";
     }
 
-    v25 = v10;
-    if (v10)
+    v25 = uploadAllowedCopy;
+    if (uploadAllowedCopy)
     {
       v26 = "YES";
     }
@@ -130,15 +130,15 @@
     v36 = 2082;
     v37 = v22;
     v38 = 2050;
-    v39 = a4;
+    fpsCopy2 = fps;
     v40 = 2082;
     v41 = v24;
     v42 = 2082;
     v43 = v26;
     v44 = 2050;
-    v45 = a8;
+    mitigationCopy2 = mitigation;
     v46 = 2082;
-    v47 = [CLEEDMitigation sourceAsString:a9];
+    v47 = [CLEEDMitigation sourceAsString:source];
     v27 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation initWithStreamingAllowed:framerateFps:bitrateKbps:dropStreaming:uploadAllowed:uploadMitigation:source:]", "CoreLocation: %s\n", v27);
     if (v27 != buf)
@@ -146,9 +146,9 @@
       free(v27);
     }
 
-    LOBYTE(v11) = v23;
-    LOBYTE(v10) = v25;
-    LOBYTE(v12) = v21;
+    LOBYTE(streamingCopy) = v23;
+    LOBYTE(uploadAllowedCopy) = v25;
+    LOBYTE(allowedCopy) = v21;
   }
 
   v33.receiver = self;
@@ -156,13 +156,13 @@
   result = [(CLEEDMitigation *)&v33 init];
   if (result)
   {
-    result->_newStreamingAllowed = v12;
-    result->_newUploadAllowed = v10;
-    result->_streamingFPS = a4;
-    result->_streamingBitrate = a5;
-    result->_dropStreaming = v11;
-    result->_uploadMigitation = a8;
-    result->_source = a9;
+    result->_newStreamingAllowed = allowedCopy;
+    result->_newUploadAllowed = uploadAllowedCopy;
+    result->_streamingFPS = fps;
+    result->_streamingBitrate = kbps;
+    result->_dropStreaming = streamingCopy;
+    result->_uploadMigitation = mitigation;
+    result->_source = source;
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -176,7 +176,7 @@
   [(CLEEDMitigation *)&v2 dealloc];
 }
 
-- (BOOL)anyChangeToNewRequestsComparedTo:(id)a3
+- (BOOL)anyChangeToNewRequestsComparedTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -190,7 +190,7 @@
     *buf = 136446466;
     v13 = "[CLEEDMitigation anyChangeToNewRequestsComparedTo:]";
     v14 = 2114;
-    v15 = a3;
+    toCopy = to;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEBUG, "#EED2CXFW,%{public}s,other:%{public}@", buf, 0x16u);
   }
 
@@ -211,13 +211,13 @@
     }
   }
 
-  if (a3)
+  if (to)
   {
-    v8 = [(CLEEDMitigation *)self newUploadAllowed];
-    if (v8 == [a3 newUploadAllowed])
+    newUploadAllowed = [(CLEEDMitigation *)self newUploadAllowed];
+    if (newUploadAllowed == [to newUploadAllowed])
     {
-      v10 = [(CLEEDMitigation *)self newStreamingAllowed];
-      result = v10 ^ [a3 newStreamingAllowed];
+      newStreamingAllowed = [(CLEEDMitigation *)self newStreamingAllowed];
+      result = newStreamingAllowed ^ [to newStreamingAllowed];
     }
 
     else
@@ -235,7 +235,7 @@
   return result;
 }
 
-- (BOOL)updateWorseMitigationsFrom:(id)a3
+- (BOOL)updateWorseMitigationsFrom:(id)from
 {
   v60 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -249,7 +249,7 @@
     *buf = 136446466;
     v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
     v56 = 2114;
-    v57 = a3;
+    fromCopy = from;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEBUG, "#EED2CXFW,%{public}s, incomingMitigation:%{public}@", buf, 0x16u);
   }
 
@@ -270,12 +270,12 @@
     }
   }
 
-  if (!a3)
+  if (!from)
   {
     goto LABEL_136;
   }
 
-  if (!-[CLEEDMitigation newStreamingAllowed](self, "newStreamingAllowed") || (v8 = -[CLEEDMitigation newStreamingAllowed](self, "newStreamingAllowed"), v8 == [a3 newStreamingAllowed]))
+  if (!-[CLEEDMitigation newStreamingAllowed](self, "newStreamingAllowed") || (v8 = -[CLEEDMitigation newStreamingAllowed](self, "newStreamingAllowed"), v8 == [from newStreamingAllowed]))
   {
     v15 = 0;
   }
@@ -300,9 +300,9 @@
         v10 = "NO";
       }
 
-      v11 = [a3 newStreamingAllowed];
+      newStreamingAllowed = [from newStreamingAllowed];
       *buf = 136446722;
-      if (v11)
+      if (newStreamingAllowed)
       {
         v12 = "YES";
       }
@@ -314,7 +314,7 @@
 
       v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
       v56 = 2082;
-      v57 = v10;
+      fromCopy = v10;
       v58 = 2082;
       v59 = v12;
       _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, newStreamingAllowed[%{public}s->%{public}s]", buf, 0x20u);
@@ -330,7 +330,7 @@
       }
 
       [(CLEEDMitigation *)self newStreamingAllowed];
-      [a3 newStreamingAllowed];
+      [from newStreamingAllowed];
       v14 = _os_log_send_and_compose_impl();
       sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateWorseMitigationsFrom:]", "CoreLocation: %s\n", v14);
       if (v14 != buf)
@@ -339,14 +339,14 @@
       }
     }
 
-    -[CLEEDMitigation setNewStreamingAllowed:](self, "setNewStreamingAllowed:", [a3 newStreamingAllowed]);
+    -[CLEEDMitigation setNewStreamingAllowed:](self, "setNewStreamingAllowed:", [from newStreamingAllowed]);
     v15 = 1;
   }
 
   if (![(CLEEDMitigation *)self dropStreaming])
   {
-    v16 = [(CLEEDMitigation *)self dropStreaming];
-    if (v16 != [a3 dropStreaming])
+    dropStreaming = [(CLEEDMitigation *)self dropStreaming];
+    if (dropStreaming != [from dropStreaming])
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -366,7 +366,7 @@
           v18 = "NO";
         }
 
-        if ([a3 dropStreaming])
+        if ([from dropStreaming])
         {
           v19 = "YES";
         }
@@ -379,7 +379,7 @@
         *buf = 136446722;
         v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
         v56 = 2082;
-        v57 = v18;
+        fromCopy = v18;
         v58 = 2082;
         v59 = v19;
         _os_log_impl(&dword_19B873000, v17, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, dropStreaming[%{public}s->%{public}s]", buf, 0x20u);
@@ -395,7 +395,7 @@
         }
 
         [(CLEEDMitigation *)self dropStreaming];
-        [a3 dropStreaming];
+        [from dropStreaming];
         v21 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateWorseMitigationsFrom:]", "CoreLocation: %s\n", v21);
         if (v21 != buf)
@@ -404,13 +404,13 @@
         }
       }
 
-      -[CLEEDMitigation setDropStreaming:](self, "setDropStreaming:", [a3 dropStreaming]);
+      -[CLEEDMitigation setDropStreaming:](self, "setDropStreaming:", [from dropStreaming]);
       v15 = 1;
     }
   }
 
-  v22 = [a3 streamingFPS];
-  if (v22 < [(CLEEDMitigation *)self streamingFPS])
+  streamingFPS = [from streamingFPS];
+  if (streamingFPS < [(CLEEDMitigation *)self streamingFPS])
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -420,14 +420,14 @@
     v23 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(CLEEDMitigation *)self streamingFPS];
-      v25 = [a3 streamingFPS];
+      streamingFPS2 = [(CLEEDMitigation *)self streamingFPS];
+      streamingFPS3 = [from streamingFPS];
       *buf = 136446722;
       v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
       v56 = 2050;
-      v57 = v24;
+      fromCopy = streamingFPS2;
       v58 = 2050;
-      v59 = v25;
+      v59 = streamingFPS3;
       _os_log_impl(&dword_19B873000, v23, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, streamingFPS[%{public}ld->%{public}ld]", buf, 0x20u);
     }
 
@@ -441,7 +441,7 @@
       }
 
       [(CLEEDMitigation *)self streamingFPS];
-      [a3 streamingFPS];
+      [from streamingFPS];
       v27 = _os_log_send_and_compose_impl();
       sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateWorseMitigationsFrom:]", "CoreLocation: %s\n", v27);
       if (v27 != buf)
@@ -450,12 +450,12 @@
       }
     }
 
-    -[CLEEDMitigation setStreamingFPS:](self, "setStreamingFPS:", [a3 streamingFPS]);
+    -[CLEEDMitigation setStreamingFPS:](self, "setStreamingFPS:", [from streamingFPS]);
     v15 = 1;
   }
 
-  v28 = [a3 streamingBitrate];
-  if (v28 < [(CLEEDMitigation *)self streamingBitrate])
+  streamingBitrate = [from streamingBitrate];
+  if (streamingBitrate < [(CLEEDMitigation *)self streamingBitrate])
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -465,14 +465,14 @@
     v29 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(CLEEDMitigation *)self streamingBitrate];
-      v31 = [a3 streamingBitrate];
+      streamingBitrate2 = [(CLEEDMitigation *)self streamingBitrate];
+      streamingBitrate3 = [from streamingBitrate];
       *buf = 136446722;
       v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
       v56 = 2050;
-      v57 = v30;
+      fromCopy = streamingBitrate2;
       v58 = 2050;
-      v59 = v31;
+      v59 = streamingBitrate3;
       _os_log_impl(&dword_19B873000, v29, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, streamingBitrate[%{public}ld->%{public}ld]", buf, 0x20u);
     }
 
@@ -486,7 +486,7 @@
       }
 
       [(CLEEDMitigation *)self streamingBitrate];
-      [a3 streamingBitrate];
+      [from streamingBitrate];
       v33 = _os_log_send_and_compose_impl();
       sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateWorseMitigationsFrom:]", "CoreLocation: %s\n", v33);
       if (v33 != buf)
@@ -495,14 +495,14 @@
       }
     }
 
-    -[CLEEDMitigation setStreamingBitrate:](self, "setStreamingBitrate:", [a3 streamingBitrate]);
+    -[CLEEDMitigation setStreamingBitrate:](self, "setStreamingBitrate:", [from streamingBitrate]);
     v15 = 1;
   }
 
   if ([(CLEEDMitigation *)self newUploadAllowed])
   {
-    v34 = [(CLEEDMitigation *)self newUploadAllowed];
-    if (v34 != [a3 newUploadAllowed])
+    newUploadAllowed = [(CLEEDMitigation *)self newUploadAllowed];
+    if (newUploadAllowed != [from newUploadAllowed])
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -522,9 +522,9 @@
           v36 = "NO";
         }
 
-        v37 = [a3 newUploadAllowed];
+        newUploadAllowed2 = [from newUploadAllowed];
         *buf = 136446722;
-        if (v37)
+        if (newUploadAllowed2)
         {
           v38 = "YES";
         }
@@ -536,7 +536,7 @@
 
         v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
         v56 = 2082;
-        v57 = v36;
+        fromCopy = v36;
         v58 = 2082;
         v59 = v38;
         _os_log_impl(&dword_19B873000, v35, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, newUploadAllowed[%{public}s->%{public}s]", buf, 0x20u);
@@ -552,7 +552,7 @@
         }
 
         [(CLEEDMitigation *)self newUploadAllowed];
-        [a3 newUploadAllowed];
+        [from newUploadAllowed];
         v40 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateWorseMitigationsFrom:]", "CoreLocation: %s\n", v40);
         if (v40 != buf)
@@ -561,7 +561,7 @@
         }
       }
 
-      -[CLEEDMitigation setNewUploadAllowed:](self, "setNewUploadAllowed:", [a3 newUploadAllowed]);
+      -[CLEEDMitigation setNewUploadAllowed:](self, "setNewUploadAllowed:", [from newUploadAllowed]);
       v15 = 1;
     }
   }
@@ -571,16 +571,16 @@
     goto LABEL_134;
   }
 
-  v41 = [(CLEEDMitigation *)self uploadMigitation];
-  if (v41 == [a3 uploadMigitation])
+  uploadMigitation = [(CLEEDMitigation *)self uploadMigitation];
+  if (uploadMigitation == [from uploadMigitation])
   {
     goto LABEL_134;
   }
 
-  v42 = [(CLEEDMitigation *)self uploadMigitation];
-  if (v42 == 1)
+  uploadMigitation2 = [(CLEEDMitigation *)self uploadMigitation];
+  if (uploadMigitation2 == 1)
   {
-    if ([a3 uploadMigitation] == 2)
+    if ([from uploadMigitation] == 2)
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -591,11 +591,11 @@
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
         v48 = [(CLEEDMitigation *)self toCLEEDUploadMitigationString:[(CLEEDMitigation *)self uploadMigitation]];
-        v49 = [a3 toCLEEDUploadMitigationString:{objc_msgSend(a3, "uploadMigitation")}];
+        v49 = [from toCLEEDUploadMitigationString:{objc_msgSend(from, "uploadMigitation")}];
         *buf = 136446722;
         v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
         v56 = 2082;
-        v57 = v48;
+        fromCopy = v48;
         v58 = 2082;
         v59 = v49;
         _os_log_impl(&dword_19B873000, v47, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, uploadMitigation[%{public}s->%{public}s]", buf, 0x20u);
@@ -619,7 +619,7 @@
     goto LABEL_134;
   }
 
-  if (v42 || ([a3 uploadMigitation] - 1) > 1)
+  if (uploadMigitation2 || ([from uploadMigitation] - 1) > 1)
   {
 LABEL_134:
     if (v15)
@@ -641,11 +641,11 @@ LABEL_136:
   if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
   {
     v44 = [(CLEEDMitigation *)self toCLEEDUploadMitigationString:[(CLEEDMitigation *)self uploadMigitation]];
-    v45 = [a3 toCLEEDUploadMitigationString:{objc_msgSend(a3, "uploadMigitation")}];
+    v45 = [from toCLEEDUploadMitigationString:{objc_msgSend(from, "uploadMigitation")}];
     *buf = 136446722;
     v55 = "[CLEEDMitigation updateWorseMitigationsFrom:]";
     v56 = 2082;
-    v57 = v44;
+    fromCopy = v44;
     v58 = 2082;
     v59 = v45;
     _os_log_impl(&dword_19B873000, v43, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, uploadMitigation[%{public}s->%{public}s]", buf, 0x20u);
@@ -666,7 +666,7 @@ LABEL_138:
 
 LABEL_131:
   [(CLEEDMitigation *)self toCLEEDUploadMitigationString:[(CLEEDMitigation *)self uploadMigitation]];
-  [a3 toCLEEDUploadMitigationString:{objc_msgSend(a3, "uploadMigitation")}];
+  [from toCLEEDUploadMitigationString:{objc_msgSend(from, "uploadMigitation")}];
   v51 = _os_log_send_and_compose_impl();
   sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateWorseMitigationsFrom:]", "CoreLocation: %s\n", v51);
   if (v51 != buf)
@@ -675,16 +675,16 @@ LABEL_131:
   }
 
 LABEL_133:
-  -[CLEEDMitigation setUploadMigitation:](self, "setUploadMigitation:", [a3 uploadMigitation]);
+  -[CLEEDMitigation setUploadMigitation:](self, "setUploadMigitation:", [from uploadMigitation]);
 LABEL_135:
-  -[CLEEDMitigation setSource:](self, "setSource:", [a3 source]);
+  -[CLEEDMitigation setSource:](self, "setSource:", [from source]);
   result = 1;
 LABEL_137:
   v53 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)updateIfDifferentFrom:(id)a3
+- (BOOL)updateIfDifferentFrom:(id)from
 {
   v56 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -698,7 +698,7 @@ LABEL_137:
     *buf = 136446466;
     v51 = "[CLEEDMitigation updateIfDifferentFrom:]";
     v52 = 2114;
-    v53 = a3;
+    fromCopy = from;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEBUG, "#EED2CXFW,%{public}s, incomingMitigation:%{public}@", buf, 0x16u);
   }
 
@@ -719,10 +719,10 @@ LABEL_137:
     }
   }
 
-  if (a3)
+  if (from)
   {
-    v8 = [(CLEEDMitigation *)self newStreamingAllowed];
-    v9 = v8 ^ [a3 newStreamingAllowed];
+    newStreamingAllowed = [(CLEEDMitigation *)self newStreamingAllowed];
+    v9 = newStreamingAllowed ^ [from newStreamingAllowed];
     if (v9 == 1)
     {
       if (qword_1EAFE46E0 != -1)
@@ -743,9 +743,9 @@ LABEL_137:
           v11 = "NO";
         }
 
-        v12 = [a3 newStreamingAllowed];
+        newStreamingAllowed2 = [from newStreamingAllowed];
         *buf = 136446722;
-        if (v12)
+        if (newStreamingAllowed2)
         {
           v13 = "YES";
         }
@@ -757,7 +757,7 @@ LABEL_137:
 
         v51 = "[CLEEDMitigation updateIfDifferentFrom:]";
         v52 = 2082;
-        v53 = v11;
+        fromCopy = v11;
         v54 = 2082;
         v55 = v13;
         _os_log_impl(&dword_19B873000, v10, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, newStreamingAllowed[%{public}s->%{public}s]", buf, 0x20u);
@@ -773,7 +773,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self newStreamingAllowed];
-        [a3 newStreamingAllowed];
+        [from newStreamingAllowed];
         v15 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateIfDifferentFrom:]", "CoreLocation: %s\n", v15);
         if (v15 != buf)
@@ -782,11 +782,11 @@ LABEL_137:
         }
       }
 
-      -[CLEEDMitigation setNewStreamingAllowed:](self, "setNewStreamingAllowed:", [a3 newStreamingAllowed]);
+      -[CLEEDMitigation setNewStreamingAllowed:](self, "setNewStreamingAllowed:", [from newStreamingAllowed]);
     }
 
-    v16 = [(CLEEDMitigation *)self dropStreaming];
-    if (v16 != [a3 dropStreaming])
+    dropStreaming = [(CLEEDMitigation *)self dropStreaming];
+    if (dropStreaming != [from dropStreaming])
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -806,9 +806,9 @@ LABEL_137:
           v18 = "NO";
         }
 
-        v19 = [a3 dropStreaming];
+        dropStreaming2 = [from dropStreaming];
         *buf = 136446722;
-        if (v19)
+        if (dropStreaming2)
         {
           v20 = "YES";
         }
@@ -820,7 +820,7 @@ LABEL_137:
 
         v51 = "[CLEEDMitigation updateIfDifferentFrom:]";
         v52 = 2082;
-        v53 = v18;
+        fromCopy = v18;
         v54 = 2082;
         v55 = v20;
         _os_log_impl(&dword_19B873000, v17, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, dropStreaming[%{public}s->%{public}s]", buf, 0x20u);
@@ -836,7 +836,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self dropStreaming];
-        [a3 dropStreaming];
+        [from dropStreaming];
         v22 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateIfDifferentFrom:]", "CoreLocation: %s\n", v22);
         if (v22 != buf)
@@ -845,12 +845,12 @@ LABEL_137:
         }
       }
 
-      -[CLEEDMitigation setDropStreaming:](self, "setDropStreaming:", [a3 dropStreaming]);
+      -[CLEEDMitigation setDropStreaming:](self, "setDropStreaming:", [from dropStreaming]);
       LOBYTE(v9) = 1;
     }
 
-    v23 = [a3 streamingFPS];
-    if (v23 != [(CLEEDMitigation *)self streamingFPS])
+    streamingFPS = [from streamingFPS];
+    if (streamingFPS != [(CLEEDMitigation *)self streamingFPS])
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -860,14 +860,14 @@ LABEL_137:
       v24 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(CLEEDMitigation *)self streamingFPS];
-        v26 = [a3 streamingFPS];
+        streamingFPS2 = [(CLEEDMitigation *)self streamingFPS];
+        streamingFPS3 = [from streamingFPS];
         *buf = 136446722;
         v51 = "[CLEEDMitigation updateIfDifferentFrom:]";
         v52 = 2050;
-        v53 = v25;
+        fromCopy = streamingFPS2;
         v54 = 2050;
-        v55 = v26;
+        v55 = streamingFPS3;
         _os_log_impl(&dword_19B873000, v24, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, streamingFPS[%{public}ld->%{public}ld]", buf, 0x20u);
       }
 
@@ -881,7 +881,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self streamingFPS];
-        [a3 streamingFPS];
+        [from streamingFPS];
         v28 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateIfDifferentFrom:]", "CoreLocation: %s\n", v28);
         if (v28 != buf)
@@ -890,12 +890,12 @@ LABEL_137:
         }
       }
 
-      -[CLEEDMitigation setStreamingFPS:](self, "setStreamingFPS:", [a3 streamingFPS]);
+      -[CLEEDMitigation setStreamingFPS:](self, "setStreamingFPS:", [from streamingFPS]);
       LOBYTE(v9) = 1;
     }
 
-    v29 = [a3 streamingBitrate];
-    if (v29 != [(CLEEDMitigation *)self streamingBitrate])
+    streamingBitrate = [from streamingBitrate];
+    if (streamingBitrate != [(CLEEDMitigation *)self streamingBitrate])
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -905,14 +905,14 @@ LABEL_137:
       v30 = qword_1EAFE4718;
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [(CLEEDMitigation *)self streamingBitrate];
-        v32 = [a3 streamingBitrate];
+        streamingBitrate2 = [(CLEEDMitigation *)self streamingBitrate];
+        streamingBitrate3 = [from streamingBitrate];
         *buf = 136446722;
         v51 = "[CLEEDMitigation updateIfDifferentFrom:]";
         v52 = 2050;
-        v53 = v31;
+        fromCopy = streamingBitrate2;
         v54 = 2050;
-        v55 = v32;
+        v55 = streamingBitrate3;
         _os_log_impl(&dword_19B873000, v30, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, streamingBitrate[%{public}ld->%{public}ld]", buf, 0x20u);
       }
 
@@ -926,7 +926,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self streamingBitrate];
-        [a3 streamingBitrate];
+        [from streamingBitrate];
         v34 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateIfDifferentFrom:]", "CoreLocation: %s\n", v34);
         if (v34 != buf)
@@ -935,12 +935,12 @@ LABEL_137:
         }
       }
 
-      -[CLEEDMitigation setStreamingBitrate:](self, "setStreamingBitrate:", [a3 streamingBitrate]);
+      -[CLEEDMitigation setStreamingBitrate:](self, "setStreamingBitrate:", [from streamingBitrate]);
       LOBYTE(v9) = 1;
     }
 
-    v35 = [(CLEEDMitigation *)self newUploadAllowed];
-    if (v35 != [a3 newUploadAllowed])
+    newUploadAllowed = [(CLEEDMitigation *)self newUploadAllowed];
+    if (newUploadAllowed != [from newUploadAllowed])
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -960,9 +960,9 @@ LABEL_137:
           v37 = "NO";
         }
 
-        v38 = [a3 newUploadAllowed];
+        newUploadAllowed2 = [from newUploadAllowed];
         *buf = 136446722;
-        if (v38)
+        if (newUploadAllowed2)
         {
           v39 = "YES";
         }
@@ -974,7 +974,7 @@ LABEL_137:
 
         v51 = "[CLEEDMitigation updateIfDifferentFrom:]";
         v52 = 2082;
-        v53 = v37;
+        fromCopy = v37;
         v54 = 2082;
         v55 = v39;
         _os_log_impl(&dword_19B873000, v36, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, newUploadAllowed[%{public}s->%{public}s]", buf, 0x20u);
@@ -990,7 +990,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self newUploadAllowed];
-        [a3 newUploadAllowed];
+        [from newUploadAllowed];
         v41 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateIfDifferentFrom:]", "CoreLocation: %s\n", v41);
         if (v41 != buf)
@@ -999,12 +999,12 @@ LABEL_137:
         }
       }
 
-      -[CLEEDMitigation setNewUploadAllowed:](self, "setNewUploadAllowed:", [a3 newUploadAllowed]);
+      -[CLEEDMitigation setNewUploadAllowed:](self, "setNewUploadAllowed:", [from newUploadAllowed]);
       LOBYTE(v9) = 1;
     }
 
-    v42 = [(CLEEDMitigation *)self uploadMigitation];
-    if (v42 != [a3 uploadMigitation])
+    uploadMigitation = [(CLEEDMitigation *)self uploadMigitation];
+    if (uploadMigitation != [from uploadMigitation])
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -1015,11 +1015,11 @@ LABEL_137:
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
         v44 = [(CLEEDMitigation *)self toCLEEDUploadMitigationString:[(CLEEDMitigation *)self uploadMigitation]];
-        v45 = [a3 toCLEEDUploadMitigationString:{objc_msgSend(a3, "uploadMigitation")}];
+        v45 = [from toCLEEDUploadMitigationString:{objc_msgSend(from, "uploadMigitation")}];
         *buf = 136446722;
         v51 = "[CLEEDMitigation updateIfDifferentFrom:]";
         v52 = 2082;
-        v53 = v44;
+        fromCopy = v44;
         v54 = 2082;
         v55 = v45;
         _os_log_impl(&dword_19B873000, v43, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, uploadMitigation[%{public}s->%{public}s]", buf, 0x20u);
@@ -1035,7 +1035,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self toCLEEDUploadMitigationString:[(CLEEDMitigation *)self uploadMigitation]];
-        [a3 toCLEEDUploadMitigationString:{objc_msgSend(a3, "uploadMigitation")}];
+        [from toCLEEDUploadMitigationString:{objc_msgSend(from, "uploadMigitation")}];
         v47 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation updateIfDifferentFrom:]", "CoreLocation: %s\n", v47);
         if (v47 != buf)
@@ -1044,11 +1044,11 @@ LABEL_137:
         }
       }
 
-      -[CLEEDMitigation setUploadMigitation:](self, "setUploadMigitation:", [a3 uploadMigitation]);
+      -[CLEEDMitigation setUploadMigitation:](self, "setUploadMigitation:", [from uploadMigitation]);
       LOBYTE(v9) = 1;
     }
 
-    -[CLEEDMitigation setSource:](self, "setSource:", [a3 source]);
+    -[CLEEDMitigation setSource:](self, "setSource:", [from source]);
   }
 
   else
@@ -1060,7 +1060,7 @@ LABEL_137:
   return v9;
 }
 
-- (BOOL)needsRequestStateUpdateComparedTo:(id)a3
+- (BOOL)needsRequestStateUpdateComparedTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -1074,7 +1074,7 @@ LABEL_137:
     *buf = 136446466;
     v25 = "[CLEEDMitigation needsRequestStateUpdateComparedTo:]";
     v26 = 2114;
-    v27 = a3;
+    toCopy = to;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEBUG, "#EED2CXFW,%{public}s, incomingMitigation:%{public}@", buf, 0x16u);
   }
 
@@ -1095,10 +1095,10 @@ LABEL_137:
     }
   }
 
-  if (a3)
+  if (to)
   {
-    v8 = [(CLEEDMitigation *)self dropStreaming];
-    if (v8 == [a3 dropStreaming] || !objc_msgSend(a3, "dropStreaming"))
+    dropStreaming = [(CLEEDMitigation *)self dropStreaming];
+    if (dropStreaming == [to dropStreaming] || !objc_msgSend(to, "dropStreaming"))
     {
       v15 = 0;
     }
@@ -1123,9 +1123,9 @@ LABEL_137:
           v10 = "NO";
         }
 
-        v11 = [a3 dropStreaming];
+        dropStreaming2 = [to dropStreaming];
         *buf = 136446722;
-        if (v11)
+        if (dropStreaming2)
         {
           v12 = "YES";
         }
@@ -1137,7 +1137,7 @@ LABEL_137:
 
         v25 = "[CLEEDMitigation needsRequestStateUpdateComparedTo:]";
         v26 = 2082;
-        v27 = v10;
+        toCopy = v10;
         v28 = 2082;
         v29 = v12;
         _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, dropStreaming[%{public}s->%{public}s]", buf, 0x20u);
@@ -1153,7 +1153,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self dropStreaming];
-        [a3 dropStreaming];
+        [to dropStreaming];
         v14 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation needsRequestStateUpdateComparedTo:]", "CoreLocation: %s\n", v14);
         if (v14 != buf)
@@ -1165,8 +1165,8 @@ LABEL_137:
       v15 = 1;
     }
 
-    v16 = [(CLEEDMitigation *)self uploadMigitation];
-    if (v16 != [a3 uploadMigitation] && objc_msgSend(a3, "uploadMigitation") == 1)
+    uploadMigitation = [(CLEEDMitigation *)self uploadMigitation];
+    if (uploadMigitation != [to uploadMigitation] && objc_msgSend(to, "uploadMigitation") == 1)
     {
       if (qword_1EAFE46E0 != -1)
       {
@@ -1177,11 +1177,11 @@ LABEL_137:
       if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
       {
         v18 = [(CLEEDMitigation *)self toCLEEDUploadMitigationString:[(CLEEDMitigation *)self uploadMigitation]];
-        v19 = [a3 toCLEEDUploadMitigationString:{objc_msgSend(a3, "uploadMigitation")}];
+        v19 = [to toCLEEDUploadMitigationString:{objc_msgSend(to, "uploadMigitation")}];
         *buf = 136446722;
         v25 = "[CLEEDMitigation needsRequestStateUpdateComparedTo:]";
         v26 = 2082;
-        v27 = v18;
+        toCopy = v18;
         v28 = 2082;
         v29 = v19;
         _os_log_impl(&dword_19B873000, v17, OS_LOG_TYPE_DEFAULT, "#EED2CXFW,%{public}s, uploadMitigation[%{public}s->%{public}s]", buf, 0x20u);
@@ -1197,7 +1197,7 @@ LABEL_137:
         }
 
         [(CLEEDMitigation *)self toCLEEDUploadMitigationString:[(CLEEDMitigation *)self uploadMigitation]];
-        [a3 toCLEEDUploadMitigationString:{objc_msgSend(a3, "uploadMigitation")}];
+        [to toCLEEDUploadMitigationString:{objc_msgSend(to, "uploadMigitation")}];
         v21 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "[CLEEDMitigation needsRequestStateUpdateComparedTo:]", "CoreLocation: %s\n", v21);
         if (v21 != buf)
@@ -1219,15 +1219,15 @@ LABEL_137:
   return v15;
 }
 
-- (const)toCLEEDUploadMitigationString:(int64_t)a3
+- (const)toCLEEDUploadMitigationString:(int64_t)string
 {
   v3 = "None";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = "Delay";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return "Drop";
   }
@@ -1251,8 +1251,8 @@ LABEL_137:
     v4 = "NO";
   }
 
-  v5 = [(CLEEDMitigation *)self streamingFPS];
-  v6 = [(CLEEDMitigation *)self streamingBitrate];
+  streamingFPS = [(CLEEDMitigation *)self streamingFPS];
+  streamingBitrate = [(CLEEDMitigation *)self streamingBitrate];
   if ([(CLEEDMitigation *)self dropStreaming])
   {
     v7 = "YES";
@@ -1273,36 +1273,36 @@ LABEL_137:
     v8 = "NO";
   }
 
-  return [v3 stringWithFormat:@"[streamingAllowed:%s, fps:%ld, Kbps:%ld, dropStreaming:%s, uploadAllowed:%s, uploadMitigation:%s, source:%s]", v4, v5, v6, v7, v8, -[CLEEDMitigation toCLEEDUploadMitigationString:](self, "toCLEEDUploadMitigationString:", -[CLEEDMitigation uploadMigitation](self, "uploadMigitation")), +[CLEEDMitigation sourceAsString:](CLEEDMitigation, "sourceAsString:", -[CLEEDMitigation source](self, "source"))];
+  return [v3 stringWithFormat:@"[streamingAllowed:%s, fps:%ld, Kbps:%ld, dropStreaming:%s, uploadAllowed:%s, uploadMitigation:%s, source:%s]", v4, streamingFPS, streamingBitrate, v7, v8, -[CLEEDMitigation toCLEEDUploadMitigationString:](self, "toCLEEDUploadMitigationString:", -[CLEEDMitigation uploadMigitation](self, "uploadMigitation")), +[CLEEDMitigation sourceAsString:](CLEEDMitigation, "sourceAsString:", -[CLEEDMitigation source](self, "source"))];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeBool:self->_newStreamingAllowed forKey:@"newStreamingAllowed"];
-  [a3 encodeInteger:self->_streamingFPS forKey:@"streamingFPS"];
-  [a3 encodeInteger:self->_streamingBitrate forKey:@"bitrateBPS"];
-  [a3 encodeBool:self->_dropStreaming forKey:@"dropStreaming"];
-  [a3 encodeBool:self->_newUploadAllowed forKey:@"newUploadAllowed"];
-  [a3 encodeInteger:self->_uploadMigitation forKey:@"uploadMigitation"];
+  [coder encodeBool:self->_newStreamingAllowed forKey:@"newStreamingAllowed"];
+  [coder encodeInteger:self->_streamingFPS forKey:@"streamingFPS"];
+  [coder encodeInteger:self->_streamingBitrate forKey:@"bitrateBPS"];
+  [coder encodeBool:self->_dropStreaming forKey:@"dropStreaming"];
+  [coder encodeBool:self->_newUploadAllowed forKey:@"newUploadAllowed"];
+  [coder encodeInteger:self->_uploadMigitation forKey:@"uploadMigitation"];
   source = self->_source;
 
-  [a3 encodeInteger:source forKey:@"MitigationSource"];
+  [coder encodeInteger:source forKey:@"MitigationSource"];
 }
 
-- (CLEEDMitigation)initWithCoder:(id)a3
+- (CLEEDMitigation)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLEEDMitigation;
   v4 = [(CLEEDMitigation *)&v6 init];
   if (v4)
   {
-    v4->_newStreamingAllowed = [a3 decodeBoolForKey:@"newStreamingAllowed"];
-    v4->_dropStreaming = [a3 decodeBoolForKey:@"dropStreaming"];
-    v4->_streamingFPS = [a3 decodeIntegerForKey:@"streamingFPS"];
-    v4->_streamingBitrate = [a3 decodeIntegerForKey:@"bitrateBPS"];
-    v4->_newUploadAllowed = [a3 decodeBoolForKey:@"newUploadAllowed"];
-    v4->_uploadMigitation = [a3 decodeIntegerForKey:@"uploadMigitation"];
-    v4->_source = [a3 decodeIntegerForKey:@"MitigationSource"];
+    v4->_newStreamingAllowed = [coder decodeBoolForKey:@"newStreamingAllowed"];
+    v4->_dropStreaming = [coder decodeBoolForKey:@"dropStreaming"];
+    v4->_streamingFPS = [coder decodeIntegerForKey:@"streamingFPS"];
+    v4->_streamingBitrate = [coder decodeIntegerForKey:@"bitrateBPS"];
+    v4->_newUploadAllowed = [coder decodeBoolForKey:@"newUploadAllowed"];
+    v4->_uploadMigitation = [coder decodeIntegerForKey:@"uploadMigitation"];
+    v4->_source = [coder decodeIntegerForKey:@"MitigationSource"];
   }
 
   return v4;
@@ -1360,19 +1360,19 @@ LABEL_137:
   return v3;
 }
 
-+ (id)newMitigationFromDict:(id)a3
++ (id)newMitigationFromDict:(id)dict
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(CLEEDMitigation);
   if (v4)
   {
-    -[CLEEDMitigation setSource:](v4, "setSource:", [objc_msgSend(a3 valueForKey:{@"MitigationSource", "intValue"}]);
-    -[CLEEDMitigation setUploadMigitation:](v4, "setUploadMigitation:", [objc_msgSend(a3 valueForKey:{@"uploadMigitation", "intValue"}]);
-    -[CLEEDMitigation setStreamingFPS:](v4, "setStreamingFPS:", [objc_msgSend(a3 valueForKey:{@"streamingFPS", "integerValue"}]);
-    -[CLEEDMitigation setStreamingBitrate:](v4, "setStreamingBitrate:", [objc_msgSend(a3 valueForKey:{@"bitrateBPS", "integerValue"}]);
-    -[CLEEDMitigation setNewUploadAllowed:](v4, "setNewUploadAllowed:", [objc_msgSend(a3 valueForKey:{@"newUploadAllowed", "BOOLValue"}]);
-    -[CLEEDMitigation setNewStreamingAllowed:](v4, "setNewStreamingAllowed:", [objc_msgSend(a3 valueForKey:{@"newStreamingAllowed", "BOOLValue"}]);
-    -[CLEEDMitigation setDropStreaming:](v4, "setDropStreaming:", [objc_msgSend(a3 valueForKey:{@"dropStreaming", "BOOLValue"}]);
+    -[CLEEDMitigation setSource:](v4, "setSource:", [objc_msgSend(dict valueForKey:{@"MitigationSource", "intValue"}]);
+    -[CLEEDMitigation setUploadMigitation:](v4, "setUploadMigitation:", [objc_msgSend(dict valueForKey:{@"uploadMigitation", "intValue"}]);
+    -[CLEEDMitigation setStreamingFPS:](v4, "setStreamingFPS:", [objc_msgSend(dict valueForKey:{@"streamingFPS", "integerValue"}]);
+    -[CLEEDMitigation setStreamingBitrate:](v4, "setStreamingBitrate:", [objc_msgSend(dict valueForKey:{@"bitrateBPS", "integerValue"}]);
+    -[CLEEDMitigation setNewUploadAllowed:](v4, "setNewUploadAllowed:", [objc_msgSend(dict valueForKey:{@"newUploadAllowed", "BOOLValue"}]);
+    -[CLEEDMitigation setNewStreamingAllowed:](v4, "setNewStreamingAllowed:", [objc_msgSend(dict valueForKey:{@"newStreamingAllowed", "BOOLValue"}]);
+    -[CLEEDMitigation setDropStreaming:](v4, "setDropStreaming:", [objc_msgSend(dict valueForKey:{@"dropStreaming", "BOOLValue"}]);
   }
 
   else
@@ -1412,16 +1412,16 @@ LABEL_137:
   return v4;
 }
 
-+ (const)sourceAsString:(int64_t)a3
++ (const)sourceAsString:(int64_t)string
 {
-  if ((a3 - 1) > 3)
+  if ((string - 1) > 3)
   {
     return "NotSet";
   }
 
   else
   {
-    return off_1E753D570[a3 - 1];
+    return off_1E753D570[string - 1];
   }
 }
 

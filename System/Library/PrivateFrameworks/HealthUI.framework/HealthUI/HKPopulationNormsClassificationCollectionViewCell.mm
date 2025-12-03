@@ -1,21 +1,21 @@
 @interface HKPopulationNormsClassificationCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HKPopulationNormsClassificationCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HKPopulationNormsClassificationCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_setupFonts;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSoftHighlightState:(BOOL)a3;
-- (void)setTitle:(id)a3 classificationIdentifier:(id)a4 highlighted:(BOOL)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSoftHighlightState:(BOOL)state;
+- (void)setTitle:(id)title classificationIdentifier:(id)identifier highlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKPopulationNormsClassificationCollectionViewCell
 
-- (HKPopulationNormsClassificationCollectionViewCell)initWithFrame:(CGRect)a3
+- (HKPopulationNormsClassificationCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HKPopulationNormsClassificationCollectionViewCell;
-  v3 = [(HKPopulationNormsClassificationCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKPopulationNormsClassificationCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -29,15 +29,15 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3 classificationIdentifier:(id)a4 highlighted:(BOOL)a5
+- (void)setTitle:(id)title classificationIdentifier:(id)identifier highlighted:(BOOL)highlighted
 {
-  v5 = a5;
+  highlightedCopy = highlighted;
   v13[4] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  self->_isHighlighted = v5;
-  v9 = a3;
-  [(HKPopulationNormsClassificationCollectionViewCell *)self setSoftHighlightState:v5];
-  if (v5)
+  identifierCopy = identifier;
+  self->_isHighlighted = highlightedCopy;
+  titleCopy = title;
+  [(HKPopulationNormsClassificationCollectionViewCell *)self setSoftHighlightState:highlightedCopy];
+  if (highlightedCopy)
   {
     [MEMORY[0x1E69DC888] systemWhiteColor];
   }
@@ -49,14 +49,14 @@
   v10 = ;
   [(UILabel *)self->_classificationLabel setTextColor:v10];
 
-  [(UILabel *)self->_classificationLabel setText:v9];
+  [(UILabel *)self->_classificationLabel setText:titleCopy];
   [(UILabel *)self->_classificationLabel setTextAlignment:1];
-  if (v8)
+  if (identifierCopy)
   {
     v13[0] = @"Cell";
     v13[1] = @"PopulationNorms";
     v13[2] = @"Classification";
-    v13[3] = v8;
+    v13[3] = identifierCopy;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:4];
     v12 = HKUIJoinStringsForAutomationIdentifier(v11);
     [(HKPopulationNormsClassificationCollectionViewCell *)self setAccessibilityIdentifier:v12];
@@ -70,20 +70,20 @@
   [(UILabel *)self->_classificationLabel sizeToFit];
 }
 
-- (void)setSoftHighlightState:(BOOL)a3
+- (void)setSoftHighlightState:(BOOL)state
 {
-  if (self->_isHighlighted || a3)
+  if (self->_isHighlighted || state)
   {
-    v4 = [(HKPopulationNormsClassificationCollectionViewCell *)self highlightColor];
+    highlightColor = [(HKPopulationNormsClassificationCollectionViewCell *)self highlightColor];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] hk_populationChartLevelBackgroundColor];
+    highlightColor = [MEMORY[0x1E69DC888] hk_populationChartLevelBackgroundColor];
   }
 
-  v5 = v4;
-  [(HKPopulationNormsClassificationCollectionViewCell *)self setBackgroundColor:v4];
+  v5 = highlightColor;
+  [(HKPopulationNormsClassificationCollectionViewCell *)self setBackgroundColor:highlightColor];
 }
 
 - (void)prepareForReuse
@@ -102,26 +102,26 @@
   [(HKPopulationNormsClassificationCollectionViewCell *)self frame];
   Height = CGRectGetHeight(v8);
   v4 = HKUIFloorToScreenScale(Height * 0.5);
-  v5 = [(HKPopulationNormsClassificationCollectionViewCell *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(HKPopulationNormsClassificationCollectionViewCell *)self layer];
+  [layer setCornerRadius:v4];
 
-  v6 = [(HKPopulationNormsClassificationCollectionViewCell *)self layer];
-  [v6 setMasksToBounds:1];
+  layer2 = [(HKPopulationNormsClassificationCollectionViewCell *)self layer];
+  [layer2 setMasksToBounds:1];
 
   [(HKPopulationNormsClassificationCollectionViewCell *)self bounds];
   v10 = CGRectInset(v9, 12.0, 6.0);
   [(UILabel *)self->_classificationLabel setFrame:v10.origin.x, v10.origin.y, v10.size.width, v10.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = a3.width + -24.0;
+  v3 = fits.width + -24.0;
   if (v3 < 90.0)
   {
     v3 = 90.0;
   }
 
-  [(UILabel *)self->_classificationLabel sizeThatFits:v3, a3.height];
+  [(UILabel *)self->_classificationLabel sizeThatFits:v3, fits.height];
   v6 = fmax(v4 + 24.0, 90.0);
   v7 = fmax(v5 + 12.0, 28.0);
   result.height = v7;
@@ -129,18 +129,18 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKPopulationNormsClassificationCollectionViewCell;
-  [(HKPopulationNormsClassificationCollectionViewCell *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKPopulationNormsClassificationCollectionViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKPopulationNormsClassificationCollectionViewCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKPopulationNormsClassificationCollectionViewCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

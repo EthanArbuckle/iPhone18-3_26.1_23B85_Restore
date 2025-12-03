@@ -1,14 +1,14 @@
 @interface objcPanicPatternInfo
-- (objcPanicPatternInfo)initWithPatternInfo:(id)a3;
-- (objcPanicPatternInfo)initWithSwiftPanicPatternInfo:(id)a3;
+- (objcPanicPatternInfo)initWithPatternInfo:(id)info;
+- (objcPanicPatternInfo)initWithSwiftPanicPatternInfo:(id)info;
 @end
 
 @implementation objcPanicPatternInfo
 
-- (objcPanicPatternInfo)initWithPatternInfo:(id)a3
+- (objcPanicPatternInfo)initWithPatternInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[_SwiftPanicPatternInfo alloc] initWithPatternInfo:v4];
+  infoCopy = info;
+  v5 = [[_SwiftPanicPatternInfo alloc] initWithPatternInfo:infoCopy];
 
   swiftPanicPatternInfo = self->_swiftPanicPatternInfo;
   self->_swiftPanicPatternInfo = v5;
@@ -16,16 +16,16 @@
   return self;
 }
 
-- (objcPanicPatternInfo)initWithSwiftPanicPatternInfo:(id)a3
+- (objcPanicPatternInfo)initWithSwiftPanicPatternInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = objcPanicPatternInfo;
   v6 = [(objcPanicPatternInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_swiftPanicPatternInfo, a3);
+    objc_storeStrong(&v6->_swiftPanicPatternInfo, info);
   }
 
   return v7;

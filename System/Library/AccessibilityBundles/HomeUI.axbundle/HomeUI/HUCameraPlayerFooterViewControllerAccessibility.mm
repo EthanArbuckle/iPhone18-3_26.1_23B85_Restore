@@ -1,16 +1,16 @@
 @interface HUCameraPlayerFooterViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCameraPlayerFooterViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUCameraPlayerFooterViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HUCameraPlayerFooterViewController" hasInstanceMethod:@"liveButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUCameraPlayerFooterViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HUCameraPlayerFooterViewController" hasInstanceMethod:@"liveButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

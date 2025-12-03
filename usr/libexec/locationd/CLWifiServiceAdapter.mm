@@ -1,38 +1,38 @@
 @interface CLWifiServiceAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)syncgetAssociatedNetwork:(void *)a3;
-- (BOOL)syncgetHostedNetwork:(void *)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)syncgetAssociatedNetwork:(void *)network;
+- (BOOL)syncgetHostedNetwork:(void *)network;
 - (BOOL)syncgetIsAssociated;
 - (BOOL)syncgetIsAvailable;
 - (BOOL)syncgetIsSimulationEnabled;
 - (BOOL)syncgetIsWifiPowered;
-- (BOOL)syncgetIsWifiPoweredWithStatus:(BOOL *)a3;
-- (BOOL)syncgetSetAutoJoin:(BOOL)a3;
-- (BOOL)syncgetStartScanWithParameters:(id)a3;
-- (BOOL)syncgetStartScanWithType:(char)a3 lowPriority:(BOOL)a4 lowLatency:(BOOL)a5 passive:(BOOL)a6 requester:(const char *)a7 channels:(const void *)a8;
-- (BOOL)syncgetStartScanWithType:(char)a3 lowPriority:(BOOL)a4 passive:(BOOL)a5 requester:(const char *)a6;
+- (BOOL)syncgetIsWifiPoweredWithStatus:(BOOL *)status;
+- (BOOL)syncgetSetAutoJoin:(BOOL)join;
+- (BOOL)syncgetStartScanWithParameters:(id)parameters;
+- (BOOL)syncgetStartScanWithType:(char)type lowPriority:(BOOL)priority lowLatency:(BOOL)latency passive:(BOOL)passive requester:(const char *)requester channels:(const void *)channels;
+- (BOOL)syncgetStartScanWithType:(char)type lowPriority:(BOOL)priority passive:(BOOL)passive requester:(const char *)requester;
 - (CLWifiServiceAdapter)init;
 - (id)syncgetBackgroundScanCacheResult;
 - (id)syncgetScanResult;
 - (id)syncgetScanStats;
 - (void)adaptee;
 - (void)beginService;
-- (void)clearExitAndEntryScanNetworks:(BOOL)a3;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)clearExitAndEntryScanNetworks:(BOOL)networks;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)fetchIsAssociatedWithReply:(id)a3;
-- (void)fetchIsWifiAvailableWithReply:(id)a3;
-- (void)fetchScanResultWithReply:(id)a3;
-- (void)programEntryScanNetworks:(id)a3 andExitScanNetworks:(id)a4;
-- (void)setBackgroundExitScanCount:(int)a3;
-- (void)setEntryScanNetworks:(id)a3 andExitScanNetworks:(id)a4;
-- (void)setQuiesceWifi:(BOOL)a3;
-- (void)setScannerEntryScanNetworks:(id)a3;
-- (void)setScannerExitScanNetworks:(id)a3;
-- (void)setWifiPower:(BOOL)a3;
-- (void)startScanWithType:(char)a3 lowPriority:(BOOL)a4 passive:(BOOL)a5 requester:(id)a6;
+- (void)fetchIsAssociatedWithReply:(id)reply;
+- (void)fetchIsWifiAvailableWithReply:(id)reply;
+- (void)fetchScanResultWithReply:(id)reply;
+- (void)programEntryScanNetworks:(id)networks andExitScanNetworks:(id)scanNetworks;
+- (void)setBackgroundExitScanCount:(int)count;
+- (void)setEntryScanNetworks:(id)networks andExitScanNetworks:(id)scanNetworks;
+- (void)setQuiesceWifi:(BOOL)wifi;
+- (void)setScannerEntryScanNetworks:(id)networks;
+- (void)setScannerExitScanNetworks:(id)networks;
+- (void)setWifiPower:(BOOL)power;
+- (void)startScanWithType:(char)type lowPriority:(BOOL)priority passive:(BOOL)passive requester:(id)requester;
 @end
 
 @implementation CLWifiServiceAdapter
@@ -51,8 +51,8 @@
 {
   v7 = 0u;
   v8 = 0u;
-  v2 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(*v2 + 224))(v2, &v7 + 8, &v7);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(*adaptee + 224))(adaptee, &v7 + 8, &v7);
   v5 = v7;
   memset(v6, 0, sizeof(v6));
   sub_100288650(v6, *(&v7 + 1), v8, 0x2E8BA2E8BA2E8BA3 * ((v8 - *(&v7 + 1)) >> 3));
@@ -64,12 +64,12 @@
   return v3;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -106,66 +106,66 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLWifiServiceAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLWifiServiceAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)fetchIsAssociatedWithReply:(id)a3
+- (void)fetchIsAssociatedWithReply:(id)reply
 {
   v4 = sub_1000ECA98([(CLWifiServiceAdapter *)self adaptee]);
-  v5 = *(a3 + 2);
+  v5 = *(reply + 2);
 
-  v5(a3, v4);
+  v5(reply, v4);
 }
 
 - (BOOL)syncgetIsAssociated
 {
-  v2 = [(CLWifiServiceAdapter *)self adaptee];
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
 
-  return sub_1000ECA98(v2);
+  return sub_1000ECA98(adaptee);
 }
 
-- (void)fetchIsWifiAvailableWithReply:(id)a3
+- (void)fetchIsWifiAvailableWithReply:(id)reply
 {
   v6 = 0;
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
-  v5 = (*(*v4 + 216))(v4, &v6);
-  (*(a3 + 2))(a3, (v5 & v6));
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  v5 = (*(*adaptee + 216))(adaptee, &v6);
+  (*(reply + 2))(reply, (v5 & v6));
 }
 
 - (BOOL)syncgetIsWifiPowered
 {
   v5 = 0;
-  v2 = [(CLWifiServiceAdapter *)self adaptee];
-  v3 = (*(*v2 + 216))(v2, &v5);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  v3 = (*(*adaptee + 216))(adaptee, &v5);
   return v3 & v5;
 }
 
-- (BOOL)syncgetIsWifiPoweredWithStatus:(BOOL *)a3
+- (BOOL)syncgetIsWifiPoweredWithStatus:(BOOL *)status
 {
   v6 = 0;
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
-  *a3 = (*(*v4 + 216))(v4, &v6);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  *status = (*(*adaptee + 216))(adaptee, &v6);
   return v6;
 }
 
 - (BOOL)syncgetIsAvailable
 {
-  v2 = [(CLWifiServiceAdapter *)self adaptee];
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
 
-  return sub_10058D5A0(v2);
+  return sub_10058D5A0(adaptee);
 }
 
 - (BOOL)syncgetIsSimulationEnabled
@@ -175,46 +175,46 @@
   return v2();
 }
 
-- (void)programEntryScanNetworks:(id)a3 andExitScanNetworks:(id)a4
+- (void)programEntryScanNetworks:(id)networks andExitScanNetworks:(id)scanNetworks
 {
-  v6 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(a3 + 2))(v8, a3);
-  (*(a4 + 2))(v7, a4);
-  sub_10058D738(v6, v8, v7);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(networks + 2))(v8, networks);
+  (*(scanNetworks + 2))(v7, scanNetworks);
+  sub_10058D738(adaptee, v8, v7);
   v9 = v7;
   sub_1000B96B4(&v9);
   v7[0] = v8;
   sub_1000B96B4(v7);
 }
 
-- (void)setEntryScanNetworks:(id)a3 andExitScanNetworks:(id)a4
+- (void)setEntryScanNetworks:(id)networks andExitScanNetworks:(id)scanNetworks
 {
-  v7 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(a4 + 2))(v9, a4);
-  sub_10058D9D0(v7, v9);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(scanNetworks + 2))(v9, scanNetworks);
+  sub_10058D9D0(adaptee, v9);
   v10 = v9;
   sub_1000B96B4(&v10);
-  v8 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(a3 + 2))(v9, a3);
-  sub_10058DAB0(v8, v9);
+  adaptee2 = [(CLWifiServiceAdapter *)self adaptee];
+  (*(networks + 2))(v9, networks);
+  sub_10058DAB0(adaptee2, v9);
   v10 = v9;
   sub_1000B96B4(&v10);
 }
 
-- (void)setScannerEntryScanNetworks:(id)a3
+- (void)setScannerEntryScanNetworks:(id)networks
 {
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_10058DAB0(v4, v5);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(networks + 2))(v5, networks);
+  sub_10058DAB0(adaptee, v5);
   v6 = v5;
   sub_1000B96B4(&v6);
 }
 
-- (void)setScannerExitScanNetworks:(id)a3
+- (void)setScannerExitScanNetworks:(id)networks
 {
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_10058D9D0(v4, v5);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(networks + 2))(v5, networks);
+  sub_10058D9D0(adaptee, v5);
   v6 = v5;
   sub_1000B96B4(&v6);
 }
@@ -241,8 +241,8 @@
 {
   v7 = 0u;
   v8 = 0u;
-  v2 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(*v2 + 240))(v2, &v7 + 8, &v7);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(*adaptee + 240))(adaptee, &v7 + 8, &v7);
   v5 = v7;
   memset(v6, 0, sizeof(v6));
   sub_100288650(v6, *(&v7 + 1), v8, 0x2E8BA2E8BA2E8BA3 * ((v8 - *(&v7 + 1)) >> 3));
@@ -254,37 +254,37 @@
   return v3;
 }
 
-- (void)fetchScanResultWithReply:(id)a3
+- (void)fetchScanResultWithReply:(id)reply
 {
   v8 = 0u;
   v9 = 0u;
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(*v4 + 224))(v4, &v8 + 8, &v8);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(*adaptee + 224))(adaptee, &v8 + 8, &v8);
   v6 = v8;
   memset(v7, 0, sizeof(v7));
   sub_100288650(v7, *(&v8 + 1), v9, 0x2E8BA2E8BA2E8BA3 * ((v9 - *(&v8 + 1)) >> 3));
   v5 = sub_1002E6DD0(&v6);
-  (*(a3 + 2))(a3, v5);
+  (*(reply + 2))(reply, v5);
   v10 = v7;
   sub_1000B96B4(&v10);
   v10 = &v8 + 1;
   sub_1000B96B4(&v10);
 }
 
-- (BOOL)syncgetAssociatedNetwork:(void *)a3
+- (BOOL)syncgetAssociatedNetwork:(void *)network
 {
   sub_1002E1CB0([(CLWifiServiceAdapter *)self adaptee], &v8);
   v4 = v14;
   v5 = v14;
   if (v14)
   {
-    *a3 = v8;
-    std::string::operator=((a3 + 8), &__p);
+    *network = v8;
+    std::string::operator=((network + 8), &__p);
     v6 = v11;
-    *(a3 + 2) = v10;
-    *(a3 + 3) = v6;
-    *(a3 + 4) = v12;
-    *(a3 + 10) = v13;
+    *(network + 2) = v10;
+    *(network + 3) = v6;
+    *(network + 4) = v12;
+    *(network + 10) = v13;
     v5 = v14;
   }
 
@@ -296,15 +296,15 @@
   return v4;
 }
 
-- (BOOL)syncgetHostedNetwork:(void *)a3
+- (BOOL)syncgetHostedNetwork:(void *)network
 {
   sub_10058E150([(CLWifiServiceAdapter *)self adaptee], &__p);
   v4 = v9;
   v5 = v9;
   if (v9)
   {
-    std::string::operator=(a3, &__p);
-    *(a3 + 24) = v8;
+    std::string::operator=(network, &__p);
+    *(network + 24) = v8;
     v5 = v9;
   }
 
@@ -316,24 +316,24 @@
   return v4;
 }
 
-- (void)clearExitAndEntryScanNetworks:(BOOL)a3
+- (void)clearExitAndEntryScanNetworks:(BOOL)networks
 {
-  v3 = a3;
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
+  networksCopy = networks;
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
 
-  sub_10058E2FC(v4, v3);
+  sub_10058E2FC(adaptee, networksCopy);
 }
 
-- (BOOL)syncgetStartScanWithType:(char)a3 lowPriority:(BOOL)a4 passive:(BOOL)a5 requester:(const char *)a6
+- (BOOL)syncgetStartScanWithType:(char)type lowPriority:(BOOL)priority passive:(BOOL)passive requester:(const char *)requester
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CLWifiServiceAdapter *)self adaptee];
-  sub_10000EC00(v15, a6);
+  passiveCopy = passive;
+  priorityCopy = priority;
+  typeCopy = type;
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  sub_10000EC00(v15, requester);
   LOBYTE(__p[0]) = 0;
   v14 = 0;
-  v11 = (*(*v10 + 256))(v10, v9, v8, 0, v7, v15, __p);
+  v11 = (*(*adaptee + 256))(adaptee, typeCopy, priorityCopy, 0, passiveCopy, v15, __p);
   if (v14 == 1 && __p[0])
   {
     __p[1] = __p[0];
@@ -348,16 +348,16 @@
   return v11;
 }
 
-- (void)startScanWithType:(char)a3 lowPriority:(BOOL)a4 passive:(BOOL)a5 requester:(id)a6
+- (void)startScanWithType:(char)type lowPriority:(BOOL)priority passive:(BOOL)passive requester:(id)requester
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CLWifiServiceAdapter *)self adaptee];
-  sub_10000EC00(v13, [a6 UTF8String]);
+  passiveCopy = passive;
+  priorityCopy = priority;
+  typeCopy = type;
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  sub_10000EC00(v13, [requester UTF8String]);
   LOBYTE(__p[0]) = 0;
   v12 = 0;
-  (*(*v10 + 256))(v10, v9, v8, 0, v7, v13, __p);
+  (*(*adaptee + 256))(adaptee, typeCopy, priorityCopy, 0, passiveCopy, v13, __p);
   if (v12 == 1 && __p[0])
   {
     __p[1] = __p[0];
@@ -370,15 +370,15 @@
   }
 }
 
-- (BOOL)syncgetStartScanWithType:(char)a3 lowPriority:(BOOL)a4 lowLatency:(BOOL)a5 passive:(BOOL)a6 requester:(const char *)a7 channels:(const void *)a8
+- (BOOL)syncgetStartScanWithType:(char)type lowPriority:(BOOL)priority lowLatency:(BOOL)latency passive:(BOOL)passive requester:(const char *)requester channels:(const void *)channels
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CLWifiServiceAdapter *)self adaptee];
-  sub_10000EC00(__p, a7);
-  v15 = (*(*v14 + 256))(v14, v13, v12, v11, v10, __p, a8);
+  passiveCopy = passive;
+  latencyCopy = latency;
+  priorityCopy = priority;
+  typeCopy = type;
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  sub_10000EC00(__p, requester);
+  v15 = (*(*adaptee + 256))(adaptee, typeCopy, priorityCopy, latencyCopy, passiveCopy, __p, channels);
   if (v18 < 0)
   {
     operator delete(__p[0]);
@@ -387,11 +387,11 @@
   return v15;
 }
 
-- (BOOL)syncgetStartScanWithParameters:(id)a3
+- (BOOL)syncgetStartScanWithParameters:(id)parameters
 {
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
-  (*(a3 + 2))(v7, a3);
-  v5 = sub_1002DB54C(v4, v7);
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
+  (*(parameters + 2))(v7, parameters);
+  v5 = sub_1002DB54C(adaptee, v7);
   if (v11 < 0)
   {
     operator delete(__p);
@@ -406,35 +406,35 @@
   return v5;
 }
 
-- (void)setQuiesceWifi:(BOOL)a3
+- (void)setQuiesceWifi:(BOOL)wifi
 {
-  v3 = a3;
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
+  wifiCopy = wifi;
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
 
-  sub_10058E7FC(v4, v3);
+  sub_10058E7FC(adaptee, wifiCopy);
 }
 
-- (void)setWifiPower:(BOOL)a3
+- (void)setWifiPower:(BOOL)power
 {
-  v3 = a3;
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
+  powerCopy = power;
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
 
-  sub_10058F2CC(v4, v3);
+  sub_10058F2CC(adaptee, powerCopy);
 }
 
-- (void)setBackgroundExitScanCount:(int)a3
+- (void)setBackgroundExitScanCount:(int)count
 {
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
 
-  sub_10058F690(v4, a3);
+  sub_10058F690(adaptee, count);
 }
 
-- (BOOL)syncgetSetAutoJoin:(BOOL)a3
+- (BOOL)syncgetSetAutoJoin:(BOOL)join
 {
-  v3 = a3;
-  v4 = [(CLWifiServiceAdapter *)self adaptee];
+  joinCopy = join;
+  adaptee = [(CLWifiServiceAdapter *)self adaptee];
 
-  return sub_10058F934(v4, v3);
+  return sub_10058F934(adaptee, joinCopy);
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface CRLFreehandDrawingRepTrifurcationContainer
-- (CGAffineTransform)transformForMiddleRenderable:(SEL)a3;
-- (CRLFreehandDrawingRepTrifurcationContainer)initWithDelegate:(id)a3 backReps:(id)a4 middleReps:(id)a5 frontReps:(id)a6;
+- (CGAffineTransform)transformForMiddleRenderable:(SEL)renderable;
+- (CRLFreehandDrawingRepTrifurcationContainer)initWithDelegate:(id)delegate backReps:(id)reps middleReps:(id)middleReps frontReps:(id)frontReps;
 - (id)p_createRenderable;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)p_captureInitialGeometry;
 - (void)tearDown;
 @end
 
 @implementation CRLFreehandDrawingRepTrifurcationContainer
 
-- (CRLFreehandDrawingRepTrifurcationContainer)initWithDelegate:(id)a3 backReps:(id)a4 middleReps:(id)a5 frontReps:(id)a6
+- (CRLFreehandDrawingRepTrifurcationContainer)initWithDelegate:(id)delegate backReps:(id)reps middleReps:(id)middleReps frontReps:(id)frontReps
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  repsCopy = reps;
+  middleRepsCopy = middleReps;
+  frontRepsCopy = frontReps;
   v35.receiver = self;
   v35.super_class = CRLFreehandDrawingRepTrifurcationContainer;
   v14 = [(CRLFreehandDrawingRepTrifurcationContainer *)&v35 init];
   if (v14)
   {
-    v34 = v11;
-    if (!v10)
+    v34 = repsCopy;
+    if (!delegateCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -49,11 +49,11 @@
       v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingRep.m"];
       [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:134 isFatal:0 description:"invalid nil value for '%{public}s'", "delegate"];
 
-      v11 = v34;
+      repsCopy = v34;
     }
 
-    objc_storeWeak(&v14->_delegate, v10);
-    if (!v11)
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    if (!repsCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -81,11 +81,11 @@
       v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingRep.m"];
       [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:137 isFatal:0 description:"invalid nil value for '%{public}s'", "backReps"];
 
-      v11 = v34;
+      repsCopy = v34;
     }
 
-    objc_storeStrong(&v14->_backReps, a4);
-    if (!v12)
+    objc_storeStrong(&v14->_backReps, reps);
+    if (!middleRepsCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -113,11 +113,11 @@
       v23 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingRep.m"];
       [CRLAssertionHandler handleFailureInFunction:v22 file:v23 lineNumber:139 isFatal:0 description:"invalid nil value for '%{public}s'", "middleReps"];
 
-      v11 = v34;
+      repsCopy = v34;
     }
 
-    objc_storeStrong(&v14->_middleReps, a5);
-    if (!v13)
+    objc_storeStrong(&v14->_middleReps, middleReps);
+    if (!frontRepsCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -145,22 +145,22 @@
       v26 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingRep.m"];
       [CRLAssertionHandler handleFailureInFunction:v25 file:v26 lineNumber:141 isFatal:0 description:"invalid nil value for '%{public}s'", "frontReps"];
 
-      v11 = v34;
+      repsCopy = v34;
     }
 
-    objc_storeStrong(&v14->_frontReps, a6);
+    objc_storeStrong(&v14->_frontReps, frontReps);
     v14->_freehandDrawingInitialUnscaledCanvasFrameOrigin = CGPointZero;
-    v27 = [(CRLFreehandDrawingRepTrifurcationContainer *)v14 p_createRenderable];
+    p_createRenderable = [(CRLFreehandDrawingRepTrifurcationContainer *)v14 p_createRenderable];
     backRenderable = v14->_backRenderable;
-    v14->_backRenderable = v27;
+    v14->_backRenderable = p_createRenderable;
 
-    v29 = [(CRLFreehandDrawingRepTrifurcationContainer *)v14 p_createRenderable];
+    p_createRenderable2 = [(CRLFreehandDrawingRepTrifurcationContainer *)v14 p_createRenderable];
     middleRenderable = v14->_middleRenderable;
-    v14->_middleRenderable = v29;
+    v14->_middleRenderable = p_createRenderable2;
 
-    v31 = [(CRLFreehandDrawingRepTrifurcationContainer *)v14 p_createRenderable];
+    p_createRenderable3 = [(CRLFreehandDrawingRepTrifurcationContainer *)v14 p_createRenderable];
     frontRenderable = v14->_frontRenderable;
-    v14->_frontRenderable = v31;
+    v14->_frontRenderable = p_createRenderable3;
 
     [(CRLFreehandDrawingRepTrifurcationContainer *)v14 p_captureInitialGeometry];
   }
@@ -238,13 +238,13 @@
     if ([(NSArray *)self->_middleReps count])
     {
       v11 = [(NSArray *)self->_middleReps objectAtIndexedSubscript:0];
-      v12 = [v11 shapeLayout];
+      shapeLayout = [v11 shapeLayout];
       anchorShapeLayoutForTransform = self->_anchorShapeLayoutForTransform;
-      self->_anchorShapeLayoutForTransform = v12;
+      self->_anchorShapeLayoutForTransform = shapeLayout;
 
-      v14 = [(CRLCanvasAbstractLayout *)self->_anchorShapeLayoutForTransform geometryInRoot];
+      geometryInRoot = [(CRLCanvasAbstractLayout *)self->_anchorShapeLayoutForTransform geometryInRoot];
       anchorShapeLayoutGeometryInRootAtRenderTime = self->_anchorShapeLayoutGeometryInRootAtRenderTime;
-      self->_anchorShapeLayoutGeometryInRootAtRenderTime = v14;
+      self->_anchorShapeLayoutGeometryInRootAtRenderTime = geometryInRoot;
     }
   }
 }
@@ -277,7 +277,7 @@
   self->_anchorShapeLayoutGeometryInRootAtRenderTime = 0;
 }
 
-- (CGAffineTransform)transformForMiddleRenderable:(SEL)a3
+- (CGAffineTransform)transformForMiddleRenderable:(SEL)renderable
 {
   v4 = a4;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -333,11 +333,11 @@
       {
         [(CRLCanvasLayoutGeometry *)anchorShapeLayoutGeometryInRootAtRenderTime transform];
         CGAffineTransformInvert(&t1, &v40);
-        v16 = [(CRLCanvasAbstractLayout *)self->_anchorShapeLayoutForTransform geometryInRoot];
-        v17 = v16;
-        if (v16)
+        geometryInRoot = [(CRLCanvasAbstractLayout *)self->_anchorShapeLayoutForTransform geometryInRoot];
+        v17 = geometryInRoot;
+        if (geometryInRoot)
         {
-          [v16 transform];
+          [geometryInRoot transform];
         }
 
         else
@@ -432,30 +432,30 @@ LABEL_40:
   return CGAffineTransformMakeTranslation(retstr, v36, v37);
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = a3;
-  v7 = [(CRLCanvasRenderable *)self->_backRenderable layer];
+  layerCopy = layer;
+  layer = [(CRLCanvasRenderable *)self->_backRenderable layer];
 
-  if (v7 == v6)
+  if (layer == layerCopy)
   {
     v10 = 48;
   }
 
   else
   {
-    v8 = [(CRLCanvasRenderable *)self->_middleRenderable layer];
+    layer2 = [(CRLCanvasRenderable *)self->_middleRenderable layer];
 
-    if (v8 == v6)
+    if (layer2 == layerCopy)
     {
       v10 = 56;
     }
 
     else
     {
-      v9 = [(CRLCanvasRenderable *)self->_frontRenderable layer];
+      layer3 = [(CRLCanvasRenderable *)self->_frontRenderable layer];
 
-      if (v9 != v6)
+      if (layer3 != layerCopy)
       {
         goto LABEL_19;
       }
@@ -500,7 +500,7 @@ LABEL_40:
     }
 
     v17 = objc_loadWeakRetained(&self->_delegate);
-    [v17 drawShapeReps:v12 intoContext:a4 forLayer:v6 inTrifurcationContainer:self];
+    [v17 drawShapeReps:v12 intoContext:context forLayer:layerCopy inTrifurcationContainer:self];
     goto LABEL_28;
   }
 
@@ -513,7 +513,7 @@ LABEL_19:
 
   if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
   {
-    sub_10133BB70(v6, v18);
+    sub_10133BB70(layerCopy, v18);
   }
 
   if (qword_101AD5A10 != -1)
@@ -529,7 +529,7 @@ LABEL_19:
 
   v12 = [NSString stringWithUTF8String:"[CRLFreehandDrawingRepTrifurcationContainer drawLayer:inContext:]"];
   v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLFreehandDrawingRep.m"];
-  [CRLAssertionHandler handleFailureInFunction:v12 file:v17 lineNumber:260 isFatal:0 description:"Should not ask to draw unknown layer (%@).", v6];
+  [CRLAssertionHandler handleFailureInFunction:v12 file:v17 lineNumber:260 isFatal:0 description:"Should not ask to draw unknown layer (%@).", layerCopy];
 LABEL_28:
 }
 

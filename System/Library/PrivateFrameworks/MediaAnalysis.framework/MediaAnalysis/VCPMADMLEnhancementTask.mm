@@ -1,42 +1,42 @@
 @interface VCPMADMLEnhancementTask
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-- (VCPMADMLEnhancementTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
+- (VCPMADMLEnhancementTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (id).cxx_construct;
-- (int)convertPixelFormat:(__CVBuffer *)a3;
+- (int)convertPixelFormat:(__CVBuffer *)format;
 - (int)createModel;
 - (int)run;
 @end
 
 @implementation VCPMADMLEnhancementTask
 
-- (VCPMADMLEnhancementTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADMLEnhancementTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v15.receiver = self;
   v15.super_class = VCPMADMLEnhancementTask;
   v12 = [(VCPMADMLEnhancementTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
   }
 
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -60,10 +60,10 @@
   return v11;
 }
 
-- (int)convertPixelFormat:(__CVBuffer *)a3
+- (int)convertPixelFormat:(__CVBuffer *)format
 {
   v22[4] = *MEMORY[0x1E69E9840];
-  v5 = *a3;
+  v5 = *format;
   cf = 0;
   pixelBuffer = v5;
   p_pixelBufferPool = &self->_pixelBufferPool;
@@ -127,7 +127,7 @@ LABEL_2:
           }
 
           v10 = 0;
-          *a3 = v11;
+          *format = v11;
         }
       }
     }
@@ -145,9 +145,9 @@ LABEL_2:
   v4 = [v3 retrieveAssetLocalURL:6];
   if (v4)
   {
-    v5 = [(MADMLEnhancementRequest *)self->_request uuid];
+    uuid = [(MADMLEnhancementRequest *)self->_request uuid];
 
-    if (!v5)
+    if (!uuid)
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -203,8 +203,8 @@ LABEL_44:
       }
 
       v33 = v8;
-      v19 = [(MADMLEnhancementRequest *)self->_request uuid];
-      v8 = [v8 objectForKey:v19];
+      uuid2 = [(MADMLEnhancementRequest *)self->_request uuid];
+      v8 = [v8 objectForKey:uuid2];
 
       if (v8)
       {
@@ -227,14 +227,14 @@ LABEL_44:
             {
               v24 = self->_modelName;
               v32 = self->_modelVersion;
-              v25 = [(MADMLEnhancementRequest *)self->_request uuid];
+              uuid3 = [(MADMLEnhancementRequest *)self->_request uuid];
               *buf = 138412802;
               v36 = v24;
               v37 = 2112;
               v38 = v32;
               v39 = 2112;
-              v40 = v25;
-              v26 = v25;
+              v40 = uuid3;
+              v26 = uuid3;
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[VCPMADMLEnhancementTask] Creating %@ (%@) for %@", buf, 0x20u);
             }
 
@@ -276,13 +276,13 @@ LABEL_21:
           {
             v30 = self->_modelName;
             v29 = self->_modelVersion;
-            v31 = [(MADMLEnhancementRequest *)self->_request uuid];
+            uuid4 = [(MADMLEnhancementRequest *)self->_request uuid];
             *buf = 138412802;
             v36 = v30;
             v37 = 2112;
             v38 = v29;
             v39 = 2112;
-            v40 = v31;
+            v40 = uuid4;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VCPMADMLEnhancementTask] Unable to retrieve %@ (%@) for %@", buf, 0x20u);
           }
 
@@ -302,9 +302,9 @@ LABEL_21:
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v28 = [(MADMLEnhancementRequest *)self->_request uuid];
+          uuid5 = [(MADMLEnhancementRequest *)self->_request uuid];
           *buf = 138412290;
-          v36 = v28;
+          v36 = uuid5;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[VCPMADMLEnhancementTask] No model registered for target %@", buf, 0xCu);
         }
 
@@ -355,8 +355,8 @@ LABEL_45:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "VCPMADMLEnhancementModelCreation", "", &buf, 2u);
   }
 
-  v11 = [(VCPMADMLEnhancementTask *)self createModel];
-  if (!v11)
+  createModel = [(VCPMADMLEnhancementTask *)self createModel];
+  if (!createModel)
   {
     v12 = VCPSignPostLog();
     v13 = v12;
@@ -384,7 +384,7 @@ LABEL_45:
       }
 
 LABEL_19:
-      v11 = 0;
+      createModel = 0;
       goto LABEL_20;
     }
 
@@ -438,9 +438,9 @@ LABEL_19:
       p_outputPixelBufferPool->value_ = 0;
     }
 
-    v11 = CVPixelBufferPoolCreate(0, 0, v40, &self->_outputPixelBufferPool.value_);
+    createModel = CVPixelBufferPoolCreate(0, 0, v40, &self->_outputPixelBufferPool.value_);
 
-    if (!v11)
+    if (!createModel)
     {
 LABEL_24:
       v58 = mach_absolute_time();
@@ -454,13 +454,13 @@ LABEL_24:
       {
         modelName = self->_modelName;
         modelVersion = self->_modelVersion;
-        v28 = [(MADMLEnhancementRequest *)self->_request uuid];
+        uuid = [(MADMLEnhancementRequest *)self->_request uuid];
         LODWORD(buf.data) = 138412802;
         *(&buf.data + 4) = modelName;
         WORD2(buf.height) = 2112;
         *(&buf.height + 6) = modelVersion;
         HIWORD(buf.width) = 2112;
-        buf.rowBytes = v28;
+        buf.rowBytes = uuid;
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v25, OS_SIGNPOST_INTERVAL_BEGIN, spid, "VCPMADMLEnhancementModelExecution", "%@-%@ (%@)", &buf, 0x20u);
       }
 
@@ -475,9 +475,9 @@ LABEL_24:
       unlockFlags = 1;
       if (pixelBuffer)
       {
-        v11 = CVPixelBufferLockBaseAddress(pixelBuffer, 1uLL);
-        v65 = v11;
-        if (!v11 || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (LODWORD(buf.data) = 134218240, *(&buf.data + 4) = v66, WORD2(buf.height) = 1024, *(&buf.height + 6) = v11, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (v11 = v65) == 0))
+        createModel = CVPixelBufferLockBaseAddress(pixelBuffer, 1uLL);
+        v65 = createModel;
+        if (!createModel || os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR) && (LODWORD(buf.data) = 134218240, *(&buf.data + 4) = v66, WORD2(buf.height) = 1024, *(&buf.height + 6) = createModel, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", &buf, 0x12u), (createModel = v65) == 0))
         {
           buf.data = CVPixelBufferGetBaseAddress(pixelBuffer);
           buf.height = CVPixelBufferGetHeight(pixelBuffer);
@@ -487,13 +487,13 @@ LABEL_24:
           v31 = CVPixelBufferPoolCreatePixelBuffer(0, p_outputPixelBufferPool->value_, &pixelBufferOut);
           if (v31)
           {
-            v11 = 0;
+            createModel = 0;
             v37 = 16;
             goto LABEL_57;
           }
 
           CVPixelBufferLock::CVPixelBufferLock(v63, pixelBufferOut, 0);
-          v11 = v63[0];
+          createModel = v63[0];
           if (v63[0])
           {
             v31 = 0;
@@ -508,20 +508,20 @@ LABEL_24:
             v31 = vImageScale_ARGB8888(&buf, &dest, 0, 0x20u);
             if (v31)
             {
-              v11 = 0;
+              createModel = 0;
               v37 = 16;
               goto LABEL_56;
             }
 
-            v11 = CVPixelBufferLock::Unlock(v63);
-            if (!v11)
+            createModel = CVPixelBufferLock::Unlock(v63);
+            if (!createModel)
             {
-              v11 = CVPixelBufferLock::Unlock(&v65);
-              if (!v11)
+              createModel = CVPixelBufferLock::Unlock(&v65);
+              if (!createModel)
               {
                 CVPixelBufferRelease(pixelBuffer);
                 v37 = 0;
-                v11 = 0;
+                createModel = 0;
                 pixelBuffer = pixelBufferOut;
                 goto LABEL_56;
               }
@@ -608,18 +608,18 @@ LABEL_65:
           v76 = vbslq_s8(vceqzq_s64(*&self->_modelName), vdupq_n_s64(@"Unknown"), *&self->_modelName);
           v74[3] = @"AssetSubtype";
           v74[4] = @"Client";
-          v46 = [(MADMLEnhancementRequest *)self->_request uuid];
-          if (v46)
+          uuid2 = [(MADMLEnhancementRequest *)self->_request uuid];
+          if (uuid2)
           {
-            v47 = [(MADMLEnhancementRequest *)self->_request uuid];
+            uuid3 = [(MADMLEnhancementRequest *)self->_request uuid];
           }
 
           else
           {
-            v47 = @"Unknown";
+            uuid3 = @"Unknown";
           }
 
-          v77 = v47;
+          v77 = uuid3;
           v74[5] = @"QueuedTime";
           v48 = [MEMORY[0x1E696AD98] numberWithDouble:((v14 - v5) * numer) / v2 / 1000000.0];
           v78 = v48;
@@ -631,7 +631,7 @@ LABEL_65:
           v80 = v50;
           v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:8];
 
-          if (v46)
+          if (uuid2)
           {
           }
 
@@ -666,14 +666,14 @@ LABEL_65:
           [VCPVideoCNNAnalyzer copyImage:withChannels:settling:];
         }
 
-        v11 = -50;
+        createModel = -50;
       }
     }
   }
 
 LABEL_20:
   CF<__CVBuffer *>::~CF(&cf);
-  return v11;
+  return createModel;
 }
 
 - (id).cxx_construct

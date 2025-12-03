@@ -1,24 +1,24 @@
 @interface PPMediaPlayerResponse
-- (BOOL)isEqualToResponse:(id)a3;
+- (BOOL)isEqualToResponse:(id)response;
 @end
 
 @implementation PPMediaPlayerResponse
 
-- (BOOL)isEqualToResponse:(id)a3
+- (BOOL)isEqualToResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(PPMediaPlayerResponse *)self title];
-  v6 = [v4 title];
-  if (v5 | v6)
+  responseCopy = response;
+  title = [(PPMediaPlayerResponse *)self title];
+  title2 = [responseCopy title];
+  if (title | title2)
   {
-    v11 = v6;
+    v11 = title2;
     LOBYTE(v12) = 0;
-    if (!v5 || !v6)
+    if (!title || !title2)
     {
       goto LABEL_26;
     }
 
-    v12 = [v5 isEqualToString:v6];
+    v12 = [title isEqualToString:title2];
 
     if (!v12)
     {
@@ -26,18 +26,18 @@
     }
   }
 
-  v5 = [(PPMediaPlayerResponse *)self artist];
-  v7 = [v4 artist];
-  if (v5 | v7)
+  title = [(PPMediaPlayerResponse *)self artist];
+  artist = [responseCopy artist];
+  if (title | artist)
   {
-    v11 = v7;
+    v11 = artist;
     LOBYTE(v12) = 0;
-    if (!v5 || !v7)
+    if (!title || !artist)
     {
       goto LABEL_26;
     }
 
-    v12 = [v5 isEqualToString:v7];
+    v12 = [title isEqualToString:artist];
 
     if (!v12)
     {
@@ -45,18 +45,18 @@
     }
   }
 
-  v5 = [(PPMediaPlayerResponse *)self album];
-  v8 = [v4 album];
-  if (v5 | v8)
+  title = [(PPMediaPlayerResponse *)self album];
+  album = [responseCopy album];
+  if (title | album)
   {
-    v11 = v8;
+    v11 = album;
     LOBYTE(v12) = 0;
-    if (!v5 || !v8)
+    if (!title || !album)
     {
       goto LABEL_26;
     }
 
-    v12 = [v5 isEqualToString:v8];
+    v12 = [title isEqualToString:album];
 
     if (!v12)
     {
@@ -64,38 +64,38 @@
     }
   }
 
-  v5 = [(PPMediaPlayerResponse *)self bundleID];
-  v9 = [v4 bundleID];
-  if (!(v5 | v9))
+  title = [(PPMediaPlayerResponse *)self bundleID];
+  bundleID = [responseCopy bundleID];
+  if (!(title | bundleID))
   {
 LABEL_5:
-    v5 = [(PPMediaPlayerResponse *)self playerID];
-    v10 = [v4 playerID];
-    if (v5 | v10)
+    title = [(PPMediaPlayerResponse *)self playerID];
+    playerID = [responseCopy playerID];
+    if (title | playerID)
     {
-      v11 = v10;
+      v11 = playerID;
       LOBYTE(v12) = 0;
-      if (v5 && v10)
+      if (title && playerID)
       {
-        LOBYTE(v12) = [v5 isEqualToString:v10];
+        LOBYTE(v12) = [title isEqualToString:playerID];
       }
     }
 
     else
     {
       v11 = 0;
-      v5 = 0;
+      title = 0;
       LOBYTE(v12) = 1;
     }
 
     goto LABEL_26;
   }
 
-  v11 = v9;
+  v11 = bundleID;
   LOBYTE(v12) = 0;
-  if (v5 && v9)
+  if (title && bundleID)
   {
-    v12 = [v5 isEqualToString:v9];
+    v12 = [title isEqualToString:bundleID];
 
     if (!v12)
     {

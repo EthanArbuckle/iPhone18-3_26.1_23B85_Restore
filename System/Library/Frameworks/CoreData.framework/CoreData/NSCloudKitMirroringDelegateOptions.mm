@@ -1,12 +1,12 @@
 @interface NSCloudKitMirroringDelegateOptions
 - (NSCloudKitMirroringDelegateOptions)init;
-- (NSCloudKitMirroringDelegateOptions)initWithCloudKitContainerOptions:(id)a3;
-- (NSCloudKitMirroringDelegateOptions)initWithContainerIdentifier:(id)a3;
+- (NSCloudKitMirroringDelegateOptions)initWithCloudKitContainerOptions:(id)options;
+- (NSCloudKitMirroringDelegateOptions)initWithContainerIdentifier:(id)identifier;
 - (id)copy;
 - (id)description;
 - (void)dealloc;
-- (void)setActivityVouchers:(id)a3;
-- (void)setInitializeSchema:(BOOL)a3;
+- (void)setActivityVouchers:(id)vouchers;
+- (void)setInitializeSchema:(BOOL)schema;
 @end
 
 @implementation NSCloudKitMirroringDelegateOptions
@@ -98,45 +98,45 @@
   [(NSCloudKitMirroringDelegateOptions *)&v3 dealloc];
 }
 
-- (NSCloudKitMirroringDelegateOptions)initWithContainerIdentifier:(id)a3
+- (NSCloudKitMirroringDelegateOptions)initWithContainerIdentifier:(id)identifier
 {
   v4 = [(NSCloudKitMirroringDelegateOptions *)self init];
   if (v4)
   {
-    v4->_containerIdentifier = a3;
+    v4->_containerIdentifier = identifier;
   }
 
   return v4;
 }
 
-- (NSCloudKitMirroringDelegateOptions)initWithCloudKitContainerOptions:(id)a3
+- (NSCloudKitMirroringDelegateOptions)initWithCloudKitContainerOptions:(id)options
 {
-  v4 = -[NSCloudKitMirroringDelegateOptions initWithContainerIdentifier:](self, "initWithContainerIdentifier:", [a3 containerIdentifier]);
+  v4 = -[NSCloudKitMirroringDelegateOptions initWithContainerIdentifier:](self, "initWithContainerIdentifier:", [options containerIdentifier]);
   v5 = v4;
   if (v4)
   {
     v4->_automaticallyScheduleImportAndExportOperations = 1;
-    v4->_useDeviceToDeviceEncryption = [a3 useDeviceToDeviceEncryption];
-    v5->_apsConnectionMachServiceName = [a3 apsConnectionMachServiceName];
-    v5->_databaseScope = [a3 databaseScope];
-    v5->_containerOptions = [a3 containerOptions];
-    v5->_operationMemoryThresholdBytes = [a3 operationMemoryThresholdBytes];
-    v5->_automaticallyDownloadFileBackedFutures = [a3 automaticallyDownloadFileBackedFutures];
-    v5->_ckAssetThresholdBytes = [a3 ckAssetThresholdBytes];
+    v4->_useDeviceToDeviceEncryption = [options useDeviceToDeviceEncryption];
+    v5->_apsConnectionMachServiceName = [options apsConnectionMachServiceName];
+    v5->_databaseScope = [options databaseScope];
+    v5->_containerOptions = [options containerOptions];
+    v5->_operationMemoryThresholdBytes = [options operationMemoryThresholdBytes];
+    v5->_automaticallyDownloadFileBackedFutures = [options automaticallyDownloadFileBackedFutures];
+    v5->_ckAssetThresholdBytes = [options ckAssetThresholdBytes];
     v6 = objc_autoreleasePoolPush();
-    objc_storeWeak(&v5->_progressProvider, [a3 progressProvider]);
-    if ([a3 testContainerOverride])
+    objc_storeWeak(&v5->_progressProvider, [options progressProvider]);
+    if ([options testContainerOverride])
     {
 
-      v5->_containerProvider = -[PFStaticCloudKitContainerProvider initWithContainer:]([PFStaticCloudKitContainerProvider alloc], "initWithContainer:", [a3 testContainerOverride]);
+      v5->_containerProvider = -[PFStaticCloudKitContainerProvider initWithContainer:]([PFStaticCloudKitContainerProvider alloc], "initWithContainer:", [options testContainerOverride]);
       v5->_bypassDasdRateLimiting = 1;
     }
 
     objc_autoreleasePoolPop(v6);
-    if ([objc_msgSend(a3 "activityVouchers")])
+    if ([objc_msgSend(options "activityVouchers")])
     {
 
-      v5->_activityVouchers = [a3 activityVouchers];
+      v5->_activityVouchers = [options activityVouchers];
     }
   }
 
@@ -158,15 +158,15 @@
   [v4 appendFormat:@" containerIdentifier:%@", containerIdentifier];
   if ((softLinkCKDatabaseScopeString[0])(self->_databaseScope))
   {
-    v6 = (softLinkCKDatabaseScopeString[0])(self->_databaseScope);
+    null = (softLinkCKDatabaseScopeString[0])(self->_databaseScope);
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v4 appendFormat:@" databaseScope:%@", v6];
+  [v4 appendFormat:@" databaseScope:%@", null];
   ckAssetThresholdBytes = self->_ckAssetThresholdBytes;
   if (!ckAssetThresholdBytes)
   {
@@ -373,9 +373,9 @@
   return v31;
 }
 
-- (void)setInitializeSchema:(BOOL)a3
+- (void)setInitializeSchema:(BOOL)schema
 {
-  self->_initializeSchema = a3;
+  self->_initializeSchema = schema;
   LogStream = _PFLogGetLogStream(17);
   if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
   {
@@ -391,15 +391,15 @@
   }
 }
 
-- (void)setActivityVouchers:(id)a3
+- (void)setActivityVouchers:(id)vouchers
 {
   activityVouchers = self->_activityVouchers;
-  if (activityVouchers != a3)
+  if (activityVouchers != vouchers)
   {
-    if (a3)
+    if (vouchers)
     {
 
-      v6 = a3;
+      vouchersCopy = vouchers;
     }
 
     else
@@ -409,10 +409,10 @@
         return;
       }
 
-      v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
+      vouchersCopy = objc_alloc_init(MEMORY[0x1E695DEC8]);
     }
 
-    self->_activityVouchers = v6;
+    self->_activityVouchers = vouchersCopy;
   }
 }
 

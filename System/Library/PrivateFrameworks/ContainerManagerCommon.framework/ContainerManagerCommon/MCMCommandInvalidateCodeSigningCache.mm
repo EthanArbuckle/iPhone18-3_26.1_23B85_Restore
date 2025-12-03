@@ -26,15 +26,15 @@
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [gCodeSigningMapping invalidateCodeSigningInfoForAppsWithoutDataContainer];
-  if (v4 == 1)
+  invalidateCodeSigningInfoForAppsWithoutDataContainer = [gCodeSigningMapping invalidateCodeSigningInfoForAppsWithoutDataContainer];
+  if (invalidateCodeSigningInfoForAppsWithoutDataContainer == 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [[MCMError alloc] initWithErrorType:v4];
+    v5 = [[MCMError alloc] initWithErrorType:invalidateCodeSigningInfoForAppsWithoutDataContainer];
   }
 
   v6 = container_log_handle_for_category();
@@ -56,8 +56,8 @@
   }
 
   v8 = v7;
-  v9 = [(MCMCommand *)self resultPromise];
-  [v9 completeWithResult:v8];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v8];
 
   objc_autoreleasePoolPop(v3);
   v10 = *MEMORY[0x1E69E9840];
@@ -66,12 +66,12 @@
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToAccessCodesignMapping];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToAccessCodesignMapping = [clientIdentity isAllowedToAccessCodesignMapping];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToAccessCodesignMapping;
 }
 
 @end

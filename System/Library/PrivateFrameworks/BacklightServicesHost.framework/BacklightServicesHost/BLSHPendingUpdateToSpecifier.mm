@@ -1,20 +1,20 @@
 @interface BLSHPendingUpdateToSpecifier
-- (BLSHPendingUpdateToSpecifier)initWithSpecifier:(id)a3;
+- (BLSHPendingUpdateToSpecifier)initWithSpecifier:(id)specifier;
 - (NSString)description;
 @end
 
 @implementation BLSHPendingUpdateToSpecifier
 
-- (BLSHPendingUpdateToSpecifier)initWithSpecifier:(id)a3
+- (BLSHPendingUpdateToSpecifier)initWithSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = BLSHPendingUpdateToSpecifier;
   v6 = [(BLSHPendingUpdateToSpecifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specifier, a3);
+    objc_storeStrong(&v6->_specifier, specifier);
   }
 
   return v7;
@@ -26,9 +26,9 @@
   v4 = [v3 appendBool:-[BLSHPendingUpdateToSpecifier isStarted](self withName:{"isStarted"), @"started"}];
   v5 = [v3 appendBool:-[BLSHPendingUpdateToSpecifier isCompleted](self withName:{"isCompleted"), @"completed"}];
   v6 = [v3 appendObject:self->_specifier withName:@"specifier"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

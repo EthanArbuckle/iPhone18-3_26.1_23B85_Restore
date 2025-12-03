@@ -1,22 +1,22 @@
 @interface EQKitMathMLTernaryNode
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLTernaryNode)initWithFirst:(id)a3 second:(id)a4 third:(id)a5;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (EQKitMathMLTernaryNode)initWithFirst:(id)first second:(id)second third:(id)third;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLTernaryNode
 
-- (EQKitMathMLTernaryNode)initWithFirst:(id)a3 second:(id)a4 third:(id)a5
+- (EQKitMathMLTernaryNode)initWithFirst:(id)first second:(id)second third:(id)third
 {
   v16.receiver = self;
   v16.super_class = EQKitMathMLTernaryNode;
   v8 = [(EQKitMathMLTernaryNode *)&v16 init];
   if (v8)
   {
-    v8->mFirst = a3;
-    v8->mSecond = a4;
-    v8->mThird = a5;
+    v8->mFirst = first;
+    v8->mSecond = second;
+    v8->mThird = third;
     objc_msgSend_setParent_(v8->mFirst, v9, v8, v10);
     objc_msgSend_setParent_(v8->mSecond, v11, v8, v12);
     objc_msgSend_setParent_(v8->mThird, v13, v8, v14);
@@ -32,9 +32,9 @@
   [(EQKitMathMLTernaryNode *)&v3 dealloc];
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v7 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, a2, a3, a4);
+  v7 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, a2, node, parser);
   if (objc_msgSend_count(v7, v8, v9, v10) == 3)
   {
     v13 = objc_msgSend_objectAtIndex_(v7, v11, 0, v12);
@@ -46,7 +46,7 @@
 
   else
   {
-    objc_msgSend_reportError_withNode_(a4, v11, 5, a3);
+    objc_msgSend_reportError_withNode_(parser, v11, 5, node);
 
     return 0;
   }

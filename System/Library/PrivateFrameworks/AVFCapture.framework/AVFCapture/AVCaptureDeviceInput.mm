@@ -2,9 +2,9 @@
 + (AVCaptureDeviceInput)deviceInputWithDevice:(AVCaptureDevice *)device error:(NSError *)outError;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)activeExternalSyncVideoFrameDuration;
 - (AVCaptureDeviceInput)initWithDevice:(AVCaptureDevice *)device error:(NSError *)outError;
-- (BOOL)_authorizedToUseDeviceAndRequestIfNecessary:(id)a3;
-- (BOOL)_isSpatialVideoCaptureEnabledOnMFO:(id)a3;
-- (BOOL)isMultichannelAudioModeSupported:(int64_t)a3;
+- (BOOL)_authorizedToUseDeviceAndRequestIfNecessary:(id)necessary;
+- (BOOL)_isSpatialVideoCaptureEnabledOnMFO:(id)o;
+- (BOOL)isMultichannelAudioModeSupported:(int64_t)supported;
 - (CMTime)videoMinFrameDurationOverride;
 - (NSArray)portsWithMediaType:(AVMediaType)mediaType sourceDeviceType:(AVCaptureDeviceType)sourceDeviceType sourceDevicePosition:(AVCaptureDevicePosition)sourceDevicePosition;
 - (OpaqueCMClock)clock;
@@ -15,49 +15,49 @@
 - (id)remoteIOOutputFormat;
 - (id)sensitiveContentAnalyzerXPCObject;
 - (id)videoDevice;
-- (int64_t)_audioCaptureModeForMultichannelAudioMode:(int64_t)a3;
+- (int64_t)_audioCaptureModeForMultichannelAudioMode:(int64_t)mode;
 - (void)_applyActiveExternalSyncVideoFrameDuration;
 - (void)_applyActiveLockedVideoFrameDuration;
 - (void)_applyVideoMinFrameDurationOverride;
-- (void)_bumpChangeSeedForFirstPortWithMediaType:(id)a3;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
-- (void)_resetActiveLockedVideoFrameDurationWithFormatChanged:(BOOL)a3;
+- (void)_bumpChangeSeedForFirstPortWithMediaType:(id)type;
+- (void)_handleNotification:(id)notification payload:(id)payload;
+- (void)_resetActiveLockedVideoFrameDurationWithFormatChanged:(BOOL)changed;
 - (void)_resetCinematicVideoCaptureSupported;
 - (void)_resetPortraitLightingEffectStrength;
 - (void)_resetSimulatedAperture;
 - (void)_resetVideoMinFrameDurationOverride;
-- (void)_setGenlockSignalCompensationDelay:(id *)a3;
-- (void)_sourceFormatDidChange:(opaqueCMFormatDescription *)a3;
+- (void)_setGenlockSignalCompensationDelay:(id *)delay;
+- (void)_sourceFormatDidChange:(opaqueCMFormatDescription *)change;
 - (void)_updateExternalSyncSupported;
 - (void)_updateLockedVideoFrameDurationSupported;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)followExternalSyncDevice:(id)a3 videoFrameDuration:(id *)a4 delegate:(id)a5;
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActiveLockedVideoFrameDuration:(id *)a3;
-- (void)setAudioCaptureMode:(int64_t)a3;
-- (void)setBackgroundBlurAllowed:(BOOL)a3;
-- (void)setBackgroundReplacementAllowed:(BOOL)a3;
-- (void)setBuiltInMicrophoneStereoAudioCaptureEnabled:(BOOL)a3;
-- (void)setCameraCalibrationDataDeliveryEnabled:(BOOL)a3;
-- (void)setCenterStageAllowed:(BOOL)a3;
-- (void)setCinematicVideoCaptureEnabled:(BOOL)a3;
-- (void)setMaxGainOverride:(float)a3;
-- (void)setMultichannelAudioMode:(int64_t)a3;
-- (void)setPortraitLightingEffectStrength:(float)a3;
-- (void)setReactionEffectsAllowed:(BOOL)a3;
-- (void)setRemoteIOOutputFormat:(id)a3;
-- (void)setSensitiveContentAnalyzerEnabled:(BOOL)a3;
-- (void)setSensitiveContentAnalyzerXPCObject:(id)a3;
-- (void)setSession:(id)a3;
-- (void)setSimulatedAperture:(float)a3;
-- (void)setStudioLightingAllowed:(BOOL)a3;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)followExternalSyncDevice:(id)device videoFrameDuration:(id *)duration delegate:(id)delegate;
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActiveLockedVideoFrameDuration:(id *)duration;
+- (void)setAudioCaptureMode:(int64_t)mode;
+- (void)setBackgroundBlurAllowed:(BOOL)allowed;
+- (void)setBackgroundReplacementAllowed:(BOOL)allowed;
+- (void)setBuiltInMicrophoneStereoAudioCaptureEnabled:(BOOL)enabled;
+- (void)setCameraCalibrationDataDeliveryEnabled:(BOOL)enabled;
+- (void)setCenterStageAllowed:(BOOL)allowed;
+- (void)setCinematicVideoCaptureEnabled:(BOOL)enabled;
+- (void)setMaxGainOverride:(float)override;
+- (void)setMultichannelAudioMode:(int64_t)mode;
+- (void)setPortraitLightingEffectStrength:(float)strength;
+- (void)setReactionEffectsAllowed:(BOOL)allowed;
+- (void)setRemoteIOOutputFormat:(id)format;
+- (void)setSensitiveContentAnalyzerEnabled:(BOOL)enabled;
+- (void)setSensitiveContentAnalyzerXPCObject:(id)object;
+- (void)setSession:(id)session;
+- (void)setSimulatedAperture:(float)aperture;
+- (void)setStudioLightingAllowed:(BOOL)allowed;
 - (void)setUnifiedAutoExposureDefaultsEnabled:(BOOL)unifiedAutoExposureDefaultsEnabled;
 - (void)setVideoMinFrameDurationOverride:(CMTime *)videoMinFrameDurationOverride;
-- (void)setVisionDataDeliveryEnabled:(BOOL)a3;
-- (void)setWindNoiseRemovalEnabled:(BOOL)a3;
+- (void)setVisionDataDeliveryEnabled:(BOOL)enabled;
+- (void)setWindNoiseRemovalEnabled:(BOOL)enabled;
 - (void)unfollowExternalSyncDevice;
 - (void)updateSupportedProperties;
 @end
@@ -68,14 +68,14 @@
 {
   if (!self->_internal->ports)
   {
-    v3 = [(AVCaptureDeviceInput *)self device];
-    if (v3)
+    device = [(AVCaptureDeviceInput *)self device];
+    if (device)
     {
-      v4 = v3;
+      v4 = device;
       v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-      v6 = [(AVCaptureDevice *)v4 deviceType];
-      v7 = [(AVCaptureDevice *)v4 position];
-      if ([(NSString *)v6 isEqual:@"AVCaptureDeviceTypeMicrophone"])
+      deviceType = [(AVCaptureDevice *)v4 deviceType];
+      position = [(AVCaptureDevice *)v4 position];
+      if ([(NSString *)deviceType isEqual:@"AVCaptureDeviceTypeMicrophone"])
       {
         [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, *MEMORY[0x1E69875A0], 0, 1, @"AVCaptureDeviceTypeMicrophone", 0)}];
         if ([(AVCaptureDevice *)v4 hasMediaType:AVMediaTypeForMetadataObjects()])
@@ -84,8 +84,8 @@
           v33 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v8 = [(AVCaptureDevice *)v4 availableBoxedMetadataFormatDescriptions];
-          v9 = [v8 countByEnumeratingWithState:&v30 objects:v29 count:16];
+          availableBoxedMetadataFormatDescriptions = [(AVCaptureDevice *)v4 availableBoxedMetadataFormatDescriptions];
+          v9 = [availableBoxedMetadataFormatDescriptions countByEnumeratingWithState:&v30 objects:v29 count:16];
           if (v9)
           {
             v10 = v9;
@@ -97,13 +97,13 @@
               {
                 if (*v31 != v11)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(availableBoxedMetadataFormatDescriptions);
                 }
 
-                [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v12, *(*(&v30 + 1) + 8 * i), 1, v6, v7)}];
+                [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v12, *(*(&v30 + 1) + 8 * i), 1, deviceType, position)}];
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v30 objects:v29 count:16];
+              v10 = [availableBoxedMetadataFormatDescriptions countByEnumeratingWithState:&v30 objects:v29 count:16];
             }
 
             while (v10);
@@ -116,12 +116,12 @@
         v15 = *MEMORY[0x1E6987608];
         if ([(AVCaptureDevice *)v4 hasMediaType:*MEMORY[0x1E6987608]])
         {
-          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v15, 0, 1, v6, v7)}];
+          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v15, 0, 1, deviceType, position)}];
         }
 
         if ([(AVCaptureDevice *)v4 hasMediaType:AVMediaTypeForMetadataObjects()])
         {
-          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, AVMediaTypeForMetadataObjects(), 0, 1, v6, v7)}];
+          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, AVMediaTypeForMetadataObjects(), 0, 1, deviceType, position)}];
         }
 
         if (AVMediaTypeMetadataObjectAndAVMediaTypeMetadataAreDefined())
@@ -133,8 +133,8 @@
             v28 = 0u;
             v25 = 0u;
             v26 = 0u;
-            v17 = [(AVCaptureDevice *)v4 availableBoxedMetadataFormatDescriptions];
-            v18 = [v17 countByEnumeratingWithState:&v25 objects:v24 count:16];
+            availableBoxedMetadataFormatDescriptions2 = [(AVCaptureDevice *)v4 availableBoxedMetadataFormatDescriptions];
+            v18 = [availableBoxedMetadataFormatDescriptions2 countByEnumeratingWithState:&v25 objects:v24 count:16];
             if (v18)
             {
               v19 = v18;
@@ -145,13 +145,13 @@
                 {
                   if (*v26 != v20)
                   {
-                    objc_enumerationMutation(v17);
+                    objc_enumerationMutation(availableBoxedMetadataFormatDescriptions2);
                   }
 
-                  [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v16, *(*(&v25 + 1) + 8 * j), 1, v6, v7)}];
+                  [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v16, *(*(&v25 + 1) + 8 * j), 1, deviceType, position)}];
                 }
 
-                v19 = [v17 countByEnumeratingWithState:&v25 objects:v24 count:16];
+                v19 = [availableBoxedMetadataFormatDescriptions2 countByEnumeratingWithState:&v25 objects:v24 count:16];
               }
 
               while (v19);
@@ -162,12 +162,12 @@
         v22 = *MEMORY[0x1E69875C0];
         if ([(AVCaptureDevice *)v4 hasMediaType:*MEMORY[0x1E69875C0]])
         {
-          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v22, 0, 1, v6, v7)}];
+          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, v22, 0, 1, deviceType, position)}];
         }
 
         if ([(AVCaptureDevice *)v4 hasMediaType:@"pcld"])
         {
-          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, @"pcld", 0, 1, v6, v7)}];
+          [v5 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", self, @"pcld", 0, 1, deviceType, position)}];
         }
       }
 
@@ -187,9 +187,9 @@
 
 - (OpaqueCMClock)clock
 {
-  v2 = [(AVCaptureDeviceInput *)self device];
+  device = [(AVCaptureDeviceInput *)self device];
 
-  return [(AVCaptureDevice *)v2 deviceClock];
+  return [(AVCaptureDevice *)device deviceClock];
 }
 
 - (id)description
@@ -201,17 +201,17 @@
 
 - (id)videoDevice
 {
-  v3 = [(AVCaptureDeviceInput *)self device];
-  if ([(AVCaptureDevice *)v3 hasMediaType:*MEMORY[0x1E69875A0]])
+  device = [(AVCaptureDeviceInput *)self device];
+  if ([(AVCaptureDevice *)device hasMediaType:*MEMORY[0x1E69875A0]])
   {
     return 0;
   }
 
-  v5 = [(AVCaptureDeviceInput *)self device];
-  if (![(AVCaptureDevice *)v5 hasMediaType:*MEMORY[0x1E6987608]])
+  device2 = [(AVCaptureDeviceInput *)self device];
+  if (![(AVCaptureDevice *)device2 hasMediaType:*MEMORY[0x1E6987608]])
   {
-    v6 = [(AVCaptureDeviceInput *)self device];
-    if (![(AVCaptureDevice *)v6 hasMediaType:*MEMORY[0x1E69875D8]])
+    device3 = [(AVCaptureDeviceInput *)self device];
+    if (![(AVCaptureDevice *)device3 hasMediaType:*MEMORY[0x1E69875D8]])
     {
       return 0;
     }
@@ -227,10 +227,10 @@
   simulatedAperture = internal->simulatedAperture;
   [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)device activeFormat] minSimulatedAperture];
   v7 = v6;
-  v8 = [(AVCaptureDevice *)device activeFormat];
+  activeFormat = [(AVCaptureDevice *)device activeFormat];
   if (v7 <= 0.0)
   {
-    [(AVCaptureDeviceFormat *)v8 defaultSimulatedAperture];
+    [(AVCaptureDeviceFormat *)activeFormat defaultSimulatedAperture];
     v10 = 0.0;
     if (v12 <= 0.0)
     {
@@ -240,7 +240,7 @@
     goto LABEL_6;
   }
 
-  [(AVCaptureDeviceFormat *)v8 minSimulatedAperture];
+  [(AVCaptureDeviceFormat *)activeFormat minSimulatedAperture];
   if (simulatedAperture < v9 || ([(AVCaptureDeviceFormat *)[(AVCaptureDevice *)device activeFormat] maxSimulatedAperture], v10 = simulatedAperture, simulatedAperture > v11))
   {
 LABEL_6:
@@ -282,9 +282,9 @@ LABEL_7:
 
 - (void)_resetCinematicVideoCaptureSupported
 {
-  v3 = [(AVCaptureDevice *)self->_internal->device activeFormat];
+  activeFormat = [(AVCaptureDevice *)self->_internal->device activeFormat];
   cinematicVideoCaptureSupported = self->_internal->cinematicVideoCaptureSupported;
-  v5 = (((LODWORD(self->_internal->activeExternalSyncVideoFrameDuration.value) | HIDWORD(self->_internal->activeLockedVideoFrameDuration.value)) & 1) == 0) & [(AVCaptureDeviceFormat *)v3 isCinematicVideoCaptureSupported];
+  v5 = (((LODWORD(self->_internal->activeExternalSyncVideoFrameDuration.value) | HIDWORD(self->_internal->activeLockedVideoFrameDuration.value)) & 1) == 0) & [(AVCaptureDeviceFormat *)activeFormat isCinematicVideoCaptureSupported];
   if (cinematicVideoCaptureSupported != v5)
   {
     [(AVCaptureDeviceInput *)self willChangeValueForKey:@"cinematicVideoCaptureSupported"];
@@ -327,22 +327,22 @@ LABEL_7:
 - (void)_applyVideoMinFrameDurationOverride
 {
   [[(AVCaptureDeviceInput *)self device] lockForConfiguration:0];
-  v3 = [(AVCaptureDeviceInput *)self device];
+  device = [(AVCaptureDeviceInput *)self device];
   internal = self->_internal;
   v5 = *(&internal->simulatedAperture + 1);
   v6 = *&internal->videoMinFrameDurationOverride.flags;
-  [(AVCaptureDevice *)v3 setVideoMinFrameDurationOverride:&v5 forOwner:self];
+  [(AVCaptureDevice *)device setVideoMinFrameDurationOverride:&v5 forOwner:self];
   [[(AVCaptureDeviceInput *)self device] unlockForConfiguration];
 }
 
 - (void)_applyActiveLockedVideoFrameDuration
 {
   [[(AVCaptureDeviceInput *)self device] lockForConfiguration:0];
-  v3 = [(AVCaptureDeviceInput *)self device];
+  device = [(AVCaptureDeviceInput *)self device];
   internal = self->_internal;
   v5 = *&internal->lockedVideoFrameDurationSupported;
   v6 = *&internal->activeLockedVideoFrameDuration.timescale;
-  [(AVCaptureDevice *)v3 setActiveLockedVideoFrameDuration:&v5 forOwner:self];
+  [(AVCaptureDevice *)device setActiveLockedVideoFrameDuration:&v5 forOwner:self];
   [[(AVCaptureDeviceInput *)self device] unlockForConfiguration];
 }
 
@@ -353,11 +353,11 @@ LABEL_7:
   {
     v34 = [MEMORY[0x1E695DF70] arrayWithArray:{-[AVCaptureDeviceInput ports](self, "ports")}];
     BoolAnswer = AVGestaltGetBoolAnswer(@"AVGQCaptureSessionSupportsMultiCamCapture");
-    v5 = self;
-    v6 = [(AVCaptureDeviceInput *)self device];
+    selfCopy = self;
+    device = [(AVCaptureDeviceInput *)self device];
     if (BoolAnswer)
     {
-      v7 = v6 == 0;
+      v7 = device == 0;
     }
 
     else
@@ -367,24 +367,24 @@ LABEL_7:
 
     if (!v7)
     {
-      v8 = v6;
-      v9 = [(AVCaptureDevice *)v6 deviceType];
-      v10 = [(AVCaptureDevice *)v8 position];
-      v11 = [(NSString *)v9 isEqual:@"AVCaptureDeviceTypeMicrophone"];
+      v8 = device;
+      deviceType = [(AVCaptureDevice *)device deviceType];
+      position = [(AVCaptureDevice *)v8 position];
+      v11 = [(NSString *)deviceType isEqual:@"AVCaptureDeviceTypeMicrophone"];
       v32 = v8;
       if (v11)
       {
         v12 = *MEMORY[0x1E69875A0];
-        [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", v5, *MEMORY[0x1E69875A0], 0, 1, v9, 1)}];
-        [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", v5, v12, 0, 1, v9, 2)}];
+        [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", selfCopy, *MEMORY[0x1E69875A0], 0, 1, deviceType, 1)}];
+        [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", selfCopy, v12, 0, 1, deviceType, 2)}];
         if ([(AVCaptureDevice *)v8 hasMediaType:*MEMORY[0x1E69875D0]])
         {
           v48 = 0u;
           v49 = 0u;
           v46 = 0u;
           v47 = 0u;
-          v13 = [(AVCaptureDevice *)v8 availableBoxedMetadataFormatDescriptions];
-          v14 = [v13 countByEnumeratingWithState:&v46 objects:v45 count:16];
+          availableBoxedMetadataFormatDescriptions = [(AVCaptureDevice *)v8 availableBoxedMetadataFormatDescriptions];
+          v14 = [availableBoxedMetadataFormatDescriptions countByEnumeratingWithState:&v46 objects:v45 count:16];
           if (v14)
           {
             v15 = v14;
@@ -396,13 +396,13 @@ LABEL_7:
               {
                 if (*v47 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(availableBoxedMetadataFormatDescriptions);
                 }
 
-                [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", v5, v17, *(*(&v46 + 1) + 8 * i), 1, v9, v10)}];
+                [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", selfCopy, v17, *(*(&v46 + 1) + 8 * i), 1, deviceType, position)}];
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v46 objects:v45 count:16];
+              v15 = [availableBoxedMetadataFormatDescriptions countByEnumeratingWithState:&v46 objects:v45 count:16];
             }
 
             while (v15);
@@ -428,7 +428,7 @@ LABEL_7:
             do
             {
               v20 = 0;
-              v21 = v5;
+              v21 = selfCopy;
               do
               {
                 if (*v42 != v29)
@@ -456,8 +456,8 @@ LABEL_7:
                     v39 = 0u;
                     v36 = 0u;
                     v37 = 0u;
-                    v23 = [(AVCaptureDevice *)v32 availableBoxedMetadataFormatDescriptions];
-                    v24 = [v23 countByEnumeratingWithState:&v36 objects:v35 count:16];
+                    availableBoxedMetadataFormatDescriptions2 = [(AVCaptureDevice *)v32 availableBoxedMetadataFormatDescriptions];
+                    v24 = [availableBoxedMetadataFormatDescriptions2 countByEnumeratingWithState:&v36 objects:v35 count:16];
                     if (v24)
                     {
                       v25 = v24;
@@ -468,14 +468,14 @@ LABEL_7:
                         {
                           if (*v37 != v26)
                           {
-                            objc_enumerationMutation(v23);
+                            objc_enumerationMutation(availableBoxedMetadataFormatDescriptions2);
                           }
 
-                          v21 = v5;
-                          [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", v5, v19, *(*(&v36 + 1) + 8 * j), 1, objc_msgSend(v22, "deviceType"), objc_msgSend(v22, "position"))}];
+                          v21 = selfCopy;
+                          [v34 addObject:{+[AVCaptureInputPort portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:](AVCaptureInputPort, "portWithInput:mediaType:formatDescription:enabled:sourceDeviceType:sourceDevicePosition:", selfCopy, v19, *(*(&v36 + 1) + 8 * j), 1, objc_msgSend(v22, "deviceType"), objc_msgSend(v22, "position"))}];
                         }
 
-                        v25 = [v23 countByEnumeratingWithState:&v36 objects:v35 count:16];
+                        v25 = [availableBoxedMetadataFormatDescriptions2 countByEnumeratingWithState:&v36 objects:v35 count:16];
                       }
 
                       while (v25);
@@ -497,8 +497,8 @@ LABEL_7:
       }
     }
 
-    v5->_internal->multiCamPorts = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v34];
-    return v5->_internal->multiCamPorts;
+    selfCopy->_internal->multiCamPorts = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v34];
+    return selfCopy->_internal->multiCamPorts;
   }
 
   return result;
@@ -515,53 +515,53 @@ LABEL_7:
 {
   v34.receiver = self;
   v34.super_class = AVCaptureDeviceInput;
-  v6 = [(AVCaptureInput *)&v34 initSubclass];
-  if (v6)
+  initSubclass = [(AVCaptureInput *)&v34 initSubclass];
+  if (initSubclass)
   {
     v7 = objc_alloc_init(AVCaptureDeviceInputInternal);
-    v6->_internal = v7;
+    initSubclass->_internal = v7;
     if (v7)
     {
       if (device)
       {
-        if ([(AVCaptureDeviceInput *)v6 _authorizedToUseDeviceAndRequestIfNecessary:device])
+        if ([(AVCaptureDeviceInput *)initSubclass _authorizedToUseDeviceAndRequestIfNecessary:device])
         {
           v8 = device;
-          v6->_internal->device = device;
-          *&v6->_internal->sensitiveContentAnalyzerEnabled = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v6];
-          v9 = [MEMORY[0x1E6987FA0] sharedKVODispatcher];
-          v6->_internal->weakReference = [v9 startObservingValueAtKeyPath:@"open" ofObject:device options:0 usingBlock:{objc_msgSend(MEMORY[0x1E6988078], "observationBlockForWeakObserver:passedToBlock:", v6, &__block_literal_global_11)}];
-          [(AVCaptureDeviceInput *)v6 willChangeValueForKey:@"notReadyError"];
-          BYTE1(v6->_internal->sensitiveContentAnalyzerXPCObject) = 1;
-          [(AVCaptureDeviceInput *)v6 didChangeValueForKey:@"notReadyError"];
+          initSubclass->_internal->device = device;
+          *&initSubclass->_internal->sensitiveContentAnalyzerEnabled = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
+          mEMORY[0x1E6987FA0] = [MEMORY[0x1E6987FA0] sharedKVODispatcher];
+          initSubclass->_internal->weakReference = [mEMORY[0x1E6987FA0] startObservingValueAtKeyPath:@"open" ofObject:device options:0 usingBlock:{objc_msgSend(MEMORY[0x1E6988078], "observationBlockForWeakObserver:passedToBlock:", initSubclass, &__block_literal_global_11)}];
+          [(AVCaptureDeviceInput *)initSubclass willChangeValueForKey:@"notReadyError"];
+          BYTE1(initSubclass->_internal->sensitiveContentAnalyzerXPCObject) = 1;
+          [(AVCaptureDeviceInput *)initSubclass didChangeValueForKey:@"notReadyError"];
           [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)device activeFormat] defaultSimulatedAperture];
-          v6->_internal->simulatedAperture = v10;
-          internal = v6->_internal;
+          initSubclass->_internal->simulatedAperture = v10;
+          internal = initSubclass->_internal;
           v12 = MEMORY[0x1E6960C70];
           v13 = *(MEMORY[0x1E6960C70] + 16);
           *&internal->videoMinFrameDurationOverride.flags = v13;
           v23 = *v12;
           *(&internal->simulatedAperture + 1) = *v12;
           [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)device activeFormat] defaultPortraitLightingEffectStrength];
-          HIDWORD(v6->_internal->sensitiveContentAnalyzerXPCObject) = v14;
+          HIDWORD(initSubclass->_internal->sensitiveContentAnalyzerXPCObject) = v14;
           [(AVCaptureDevice *)device minSupportedLockedVideoFrameDuration];
-          BYTE4(v6->_internal->videoMinFrameDurationOverride.epoch) = v25 & 1;
-          v15 = v6->_internal;
+          BYTE4(initSubclass->_internal->videoMinFrameDurationOverride.epoch) = v25 & 1;
+          v15 = initSubclass->_internal;
           *&v15->activeLockedVideoFrameDuration.timescale = v13;
           *&v15->lockedVideoFrameDurationSupported = v23;
           [(AVCaptureDevice *)device minSupportedExternalSyncFrameDuration];
-          LOBYTE(v6->_internal->activeLockedVideoFrameDuration.epoch) = v24 & 1;
-          v16 = v6->_internal;
+          LOBYTE(initSubclass->_internal->activeLockedVideoFrameDuration.epoch) = v24 & 1;
+          v16 = initSubclass->_internal;
           *(&v16->activeExternalSyncVideoFrameDuration.value + 4) = v13;
           *(&v16->activeLockedVideoFrameDuration.epoch + 4) = v23;
-          BYTE4(v6->_internal->activeVideoExternalSyncDevice) = 1;
-          BYTE5(v6->_internal->activeVideoExternalSyncDevice) = 1;
-          BYTE6(v6->_internal->activeVideoExternalSyncDevice) = 1;
-          HIBYTE(v6->_internal->activeVideoExternalSyncDevice) = 1;
-          LOBYTE(v6->_internal->maxGainOverride) = 1;
-          v6->_internal->cinematicVideoCaptureSupported = [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)device activeFormat] isCinematicVideoCaptureSupported];
-          LOBYTE(v6->_internal->sensitiveContentAnalyzerXPCObject) = 1;
-          [(AVCaptureDevice *)device addObserver:v6 forKeyPath:@"variableFrameRateVideoCaptureEnabled" options:7 context:AVCaptureDeviceVFREnabledChangedContext];
+          BYTE4(initSubclass->_internal->activeVideoExternalSyncDevice) = 1;
+          BYTE5(initSubclass->_internal->activeVideoExternalSyncDevice) = 1;
+          BYTE6(initSubclass->_internal->activeVideoExternalSyncDevice) = 1;
+          HIBYTE(initSubclass->_internal->activeVideoExternalSyncDevice) = 1;
+          LOBYTE(initSubclass->_internal->maxGainOverride) = 1;
+          initSubclass->_internal->cinematicVideoCaptureSupported = [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)device activeFormat] isCinematicVideoCaptureSupported];
+          LOBYTE(initSubclass->_internal->sensitiveContentAnalyzerXPCObject) = 1;
+          [(AVCaptureDevice *)device addObserver:initSubclass forKeyPath:@"variableFrameRateVideoCaptureEnabled" options:7 context:AVCaptureDeviceVFREnabledChangedContext];
           goto LABEL_6;
         }
 
@@ -606,9 +606,9 @@ LABEL_7:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
       if (outError)
       {
-        v6 = 0;
+        initSubclass = 0;
         *outError = v17;
-        return v6;
+        return initSubclass;
       }
     }
 
@@ -625,7 +625,7 @@ LABEL_6:
     *outError = 0;
   }
 
-  return v6;
+  return initSubclass;
 }
 
 uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t a1, void *a2)
@@ -635,7 +635,7 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
   return [a2 didChangeValueForKey:@"notReadyError"];
 }
 
-- (void)handleChangedActiveFormat:(id)a3 forDevice:(id)a4
+- (void)handleChangedActiveFormat:(id)format forDevice:(id)device
 {
   [(AVCaptureDeviceInput *)self _resetSimulatedAperture];
   [(AVCaptureDeviceInput *)self _resetPortraitLightingEffectStrength];
@@ -644,15 +644,15 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
   [(AVCaptureDeviceInput *)self unfollowExternalSyncDevice];
   v7.receiver = self;
   v7.super_class = AVCaptureDeviceInput;
-  [(AVCaptureInput *)&v7 handleChangedActiveFormat:a3 forDevice:a4];
+  [(AVCaptureInput *)&v7 handleChangedActiveFormat:format forDevice:device];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (AVCaptureSessionRunningChangedContext == a6)
+  if (AVCaptureSessionRunningChangedContext == context)
   {
-    v8 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A500], a4), "BOOLValue"}];
-    v9 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}];
+    v8 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A500], object), "BOOLValue"}];
+    v9 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "BOOLValue"}];
     if (v8 != v9)
     {
       v10 = v9;
@@ -674,10 +674,10 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
     }
   }
 
-  else if (AVCaptureDeviceVFREnabledChangedContext == a6)
+  else if (AVCaptureDeviceVFREnabledChangedContext == context)
   {
 
-    [(AVCaptureDeviceInput *)self updateSupportedProperties:a3];
+    [(AVCaptureDeviceInput *)self updateSupportedProperties:path];
   }
 }
 
@@ -710,23 +710,23 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
   }
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   if ([(AVCaptureInput *)self session])
   {
-    v5 = [(AVCaptureInput *)self session];
-    [v5 removeObserver:self forKeyPath:@"running" context:AVCaptureSessionRunningChangedContext];
+    session = [(AVCaptureInput *)self session];
+    [session removeObserver:self forKeyPath:@"running" context:AVCaptureSessionRunningChangedContext];
     [(AVCaptureDeviceInput *)self _resetVideoMinFrameDurationOverride];
     [(AVCaptureDeviceInput *)self _resetActiveLockedVideoFrameDurationWithFormatChanged:0];
     [(AVCaptureDeviceInput *)self updateSupportedProperties];
   }
 
-  if (a3)
+  if (session)
   {
-    [a3 addObserver:self forKeyPath:@"running" options:7 context:AVCaptureSessionRunningChangedContext];
-    v6 = [(AVCaptureDeviceInput *)self device];
+    [session addObserver:self forKeyPath:@"running" options:7 context:AVCaptureSessionRunningChangedContext];
+    device = [(AVCaptureDeviceInput *)self device];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(a3 "sessionVideoCaptureDevices")] >= 2 && -[AVCaptureDevice hasMediaType:](v6, "hasMediaType:", *MEMORY[0x1E69875A0]) && !-[AVCaptureDeviceInput audioCaptureMode](self, "audioCaptureMode"))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(session "sessionVideoCaptureDevices")] >= 2 && -[AVCaptureDevice hasMediaType:](device, "hasMediaType:", *MEMORY[0x1E69875A0]) && !-[AVCaptureDeviceInput audioCaptureMode](self, "audioCaptureMode"))
     {
       [(AVCaptureDeviceInput *)self setAudioCaptureMode:6];
     }
@@ -734,25 +734,25 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
 
   v7.receiver = self;
   v7.super_class = AVCaptureDeviceInput;
-  [(AVCaptureInput *)&v7 setSession:a3];
+  [(AVCaptureInput *)&v7 setSession:session];
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
-  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "addListenerWithWeakReference:callback:name:object:flags:", *&self->_internal->sensitiveContentAnalyzerEnabled, di_notificationHandler, *MEMORY[0x1E698FE50], a3, 0}];
+  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "addListenerWithWeakReference:callback:name:object:flags:", *&self->_internal->sensitiveContentAnalyzerEnabled, di_notificationHandler, *MEMORY[0x1E698FE50], session, 0}];
   v5.receiver = self;
   v5.super_class = AVCaptureDeviceInput;
-  [(AVCaptureInput *)&v5 attachSafelyToFigCaptureSession:a3];
+  [(AVCaptureInput *)&v5 attachSafelyToFigCaptureSession:session];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
-  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "removeListenerWithWeakReference:callback:name:object:", *&self->_internal->sensitiveContentAnalyzerEnabled, di_notificationHandler, *MEMORY[0x1E698FE50], a3}];
+  [objc_msgSend(MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:{CMNotificationCenterGetDefaultLocalCenter()), "removeListenerWithWeakReference:callback:name:object:", *&self->_internal->sensitiveContentAnalyzerEnabled, di_notificationHandler, *MEMORY[0x1E698FE50], session}];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   v9 = __58__AVCaptureDeviceInput_detachSafelyFromFigCaptureSession___block_invoke;
   v10 = &unk_1E786EC08;
-  v11 = self;
+  selfCopy = self;
   if ([-[AVCaptureInput session](self "session")])
   {
     Main = CFRunLoopGetMain();
@@ -768,7 +768,7 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
 
   v7.receiver = self;
   v7.super_class = AVCaptureDeviceInput;
-  [(AVCaptureInput *)&v7 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureInput *)&v7 detachSafelyFromFigCaptureSession:session];
 }
 
 - (id)notReadyError
@@ -778,8 +778,8 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
     return 0;
   }
 
-  v4 = [(AVCaptureDeviceInput *)self device];
-  if ([(AVCaptureDevice *)v4 isConnected])
+  device = [(AVCaptureDeviceInput *)self device];
+  if ([(AVCaptureDevice *)device isConnected])
   {
     if ([-[AVCaptureInput session](self "session")])
     {
@@ -792,7 +792,7 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
       if (os_log_type_enabled(getCameraCaptureLegacyLog_cameraCaptureLegacyLog_2, OS_LOG_TYPE_DEFAULT))
       {
         v6 = 138412290;
-        v7 = [(AVCaptureDevice *)v4 description];
+        v7 = [(AVCaptureDevice *)device description];
         _os_log_impl(&dword_1A917C000, v5, OS_LOG_TYPE_DEFAULT, "*** AVCaptureDeviceInput warning: The device %@ was closed while still being used in a capture session. Make sure that the session is not running before closing any devices it is using. To remove a device from a session while the session is still running, remove the device input before closing the device.", &v6, 0xCu);
       }
     }
@@ -801,7 +801,7 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
   else
   {
     v8 = *MEMORY[0x1E69873D8];
-    v9 = v4;
+    v9 = device;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   }
 
@@ -810,13 +810,13 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
 
 - (NSArray)portsWithMediaType:(AVMediaType)mediaType sourceDeviceType:(AVCaptureDeviceType)sourceDeviceType sourceDevicePosition:(AVCaptureDevicePosition)sourceDevicePosition
 {
-  v19 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [(AVCaptureDeviceInput *)self multiCamPorts];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  multiCamPorts = [(AVCaptureDeviceInput *)self multiCamPorts];
+  v10 = [multiCamPorts countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -829,26 +829,26 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(multiCamPorts);
         }
 
         v15 = *(*(&v21 + 1) + 8 * v14);
         if ((!mediaType || [objc_msgSend(*(*(&v21 + 1) + 8 * v14) "mediaType")]) && (!sourceDeviceType || objc_msgSend(objc_msgSend(v15, "sourceDeviceType"), "isEqual:", sourceDeviceType)))
         {
           v16 = [(NSString *)mediaType isEqual:v13];
-          v17 = sourceDevicePosition;
+          sourceDevicePosition = sourceDevicePosition;
           if (sourceDevicePosition == AVCaptureDevicePositionUnspecified)
           {
-            v17 = AVCaptureDevicePositionUnspecified;
+            sourceDevicePosition = AVCaptureDevicePositionUnspecified;
             if ((v16 & 1) == 0)
             {
-              v17 = [v15 sourceDevicePosition];
+              sourceDevicePosition = [v15 sourceDevicePosition];
             }
           }
 
-          if ([v15 sourceDevicePosition] == v17)
+          if ([v15 sourceDevicePosition] == sourceDevicePosition)
           {
-            [v19 addObject:v15];
+            [array addObject:v15];
           }
         }
 
@@ -856,13 +856,13 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
       }
 
       while (v11 != v14);
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v20 count:16];
+      v11 = [multiCamPorts countByEnumeratingWithState:&v21 objects:v20 count:16];
     }
 
     while (v11);
   }
 
-  return [MEMORY[0x1E695DEC8] arrayWithArray:v19];
+  return [MEMORY[0x1E695DEC8] arrayWithArray:array];
 }
 
 - (void)setVideoMinFrameDurationOverride:(CMTime *)videoMinFrameDurationOverride
@@ -889,23 +889,23 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
 {
   [[(AVCaptureDeviceInput *)self device] lockForConfiguration:0];
   [[(AVCaptureDeviceInput *)self device] resetVideoMinFrameDurationOverrideForOwner:self];
-  v3 = [(AVCaptureDeviceInput *)self device];
+  device = [(AVCaptureDeviceInput *)self device];
 
-  [(AVCaptureDevice *)v3 unlockForConfiguration];
+  [(AVCaptureDevice *)device unlockForConfiguration];
 }
 
-- (BOOL)_isSpatialVideoCaptureEnabledOnMFO:(id)a3
+- (BOOL)_isSpatialVideoCaptureEnabledOnMFO:(id)o
 {
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [a3 connections];
+  obj = [o connections];
   v4 = [obj countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
-    v17 = 0;
+    isSpatialVideoCaptureEnabled = 0;
     v18 = *v26;
     do
     {
@@ -921,8 +921,8 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v8 = [v7 inputPorts];
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        inputPorts = [v7 inputPorts];
+        v9 = [inputPorts countByEnumeratingWithState:&v20 objects:v19 count:16];
         if (v9)
         {
           v10 = v9;
@@ -933,7 +933,7 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
             {
               if (*v21 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(inputPorts);
               }
 
               v13 = *(*(&v20 + 1) + 8 * j);
@@ -941,12 +941,12 @@ uint64_t __45__AVCaptureDeviceInput_initWithDevice_error___block_invoke(uint64_t
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 input] == self)
               {
-                v17 = [a3 isSpatialVideoCaptureEnabled];
+                isSpatialVideoCaptureEnabled = [o isSpatialVideoCaptureEnabled];
                 goto LABEL_17;
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v20 objects:v19 count:16];
+            v10 = [inputPorts countByEnumeratingWithState:&v20 objects:v19 count:16];
             if (v10)
             {
               continue;
@@ -968,10 +968,10 @@ LABEL_17:
 
   else
   {
-    v17 = 0;
+    isSpatialVideoCaptureEnabled = 0;
   }
 
-  return v17 & 1;
+  return isSpatialVideoCaptureEnabled & 1;
 }
 
 - (void)updateSupportedProperties
@@ -985,10 +985,10 @@ LABEL_17:
 
 - (void)_updateLockedVideoFrameDurationSupported
 {
-  v3 = [(AVCaptureDeviceInput *)self device];
-  if (v3)
+  device = [(AVCaptureDeviceInput *)self device];
+  if (device)
   {
-    [(AVCaptureDevice *)v3 minSupportedLockedVideoFrameDuration];
+    [(AVCaptureDevice *)device minSupportedLockedVideoFrameDuration];
     v4 = HIDWORD(v33);
   }
 
@@ -1000,10 +1000,10 @@ LABEL_17:
     v34 = 0;
   }
 
-  v5 = [[(AVCaptureDeviceInput *)self device] isVariableFrameRateVideoCaptureEnabled];
+  isVariableFrameRateVideoCaptureEnabled = [[(AVCaptureDeviceInput *)self device] isVariableFrameRateVideoCaptureEnabled];
   v28 = 0u;
   v29 = 0u;
-  v6 = (![(AVCaptureDeviceInput *)self isCinematicVideoCaptureEnabled]&& !v5) & v4;
+  v6 = (![(AVCaptureDeviceInput *)self isCinematicVideoCaptureEnabled]&& !isVariableFrameRateVideoCaptureEnabled) & v4;
   v30 = 0u;
   v31 = 0u;
   v7 = [-[AVCaptureInput session](self "session")];
@@ -1095,7 +1095,7 @@ LABEL_17:
   }
 }
 
-- (void)setActiveLockedVideoFrameDuration:(id *)a3
+- (void)setActiveLockedVideoFrameDuration:(id *)duration
 {
   if (![(AVCaptureDeviceInput *)self isLockedVideoFrameDurationSupported])
   {
@@ -1112,8 +1112,8 @@ LABEL_12:
     return;
   }
 
-  v5 = [(AVCaptureDeviceInput *)self device];
-  if (!v5)
+  device = [(AVCaptureDeviceInput *)self device];
+  if (!device)
   {
     v15 = 0;
     v16 = 0;
@@ -1121,7 +1121,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  [(AVCaptureDevice *)v5 minSupportedLockedVideoFrameDuration];
+  [(AVCaptureDevice *)device minSupportedLockedVideoFrameDuration];
   if ((v16 & 0x100000000) == 0)
   {
 LABEL_8:
@@ -1130,10 +1130,10 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v6 = [(AVCaptureDeviceInput *)self device];
-  if (v6)
+  device2 = [(AVCaptureDeviceInput *)self device];
+  if (device2)
   {
-    [(AVCaptureDevice *)v6 minSupportedLockedVideoFrameDuration];
+    [(AVCaptureDevice *)device2 minSupportedLockedVideoFrameDuration];
   }
 
   else
@@ -1141,7 +1141,7 @@ LABEL_8:
     memset(&time1, 0, sizeof(time1));
   }
 
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2) >= 1)
   {
     v7 = MEMORY[0x1E695DF30];
@@ -1161,14 +1161,14 @@ LABEL_8:
   }
 
   time1 = *&self->_internal->lockedVideoFrameDurationSupported;
-  time2 = *a3;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2))
   {
     internal = self->_internal;
-    v11 = *&a3->var0;
-    *&internal->activeLockedVideoFrameDuration.timescale = a3->var3;
+    v11 = *&duration->var0;
+    *&internal->activeLockedVideoFrameDuration.timescale = duration->var3;
     *&internal->lockedVideoFrameDurationSupported = v11;
-    if ((a3->var2 & 1) == 0)
+    if ((duration->var2 & 1) == 0)
     {
       [[(AVCaptureDeviceInput *)self device] resetDeviceClockAndInputPortsToHostClock];
     }
@@ -1183,10 +1183,10 @@ LABEL_8:
   }
 }
 
-- (void)_resetActiveLockedVideoFrameDurationWithFormatChanged:(BOOL)a3
+- (void)_resetActiveLockedVideoFrameDurationWithFormatChanged:(BOOL)changed
 {
-  v3 = a3;
-  if ((self->_internal->activeLockedVideoFrameDuration.value & 0x100000000) != 0 && a3)
+  changedCopy = changed;
+  if ((self->_internal->activeLockedVideoFrameDuration.value & 0x100000000) != 0 && changed)
   {
     [(AVCaptureDeviceInput *)self willChangeValueForKey:@"activeLockedVideoFrameDuration"];
   }
@@ -1195,7 +1195,7 @@ LABEL_8:
   [[(AVCaptureDeviceInput *)self device] resetActiveLockedVideoFrameDurationForOwner:self];
   [[(AVCaptureDeviceInput *)self device] unlockForConfiguration];
   internal = self->_internal;
-  if ((internal->activeLockedVideoFrameDuration.value & 0x100000000) != 0 && v3)
+  if ((internal->activeLockedVideoFrameDuration.value & 0x100000000) != 0 && changedCopy)
   {
     v6 = MEMORY[0x1E6960C70];
     *&internal->lockedVideoFrameDurationSupported = *MEMORY[0x1E6960C70];
@@ -1209,10 +1209,10 @@ LABEL_8:
 
 - (void)_updateExternalSyncSupported
 {
-  v3 = [(AVCaptureDeviceInput *)self device];
-  if (v3)
+  device = [(AVCaptureDeviceInput *)self device];
+  if (device)
   {
-    [(AVCaptureDevice *)v3 minSupportedExternalSyncFrameDuration];
+    [(AVCaptureDevice *)device minSupportedExternalSyncFrameDuration];
     v4 = HIDWORD(v34);
   }
 
@@ -1224,10 +1224,10 @@ LABEL_8:
     v35 = 0;
   }
 
-  v5 = [[(AVCaptureDeviceInput *)self device] isVariableFrameRateVideoCaptureEnabled];
+  isVariableFrameRateVideoCaptureEnabled = [[(AVCaptureDeviceInput *)self device] isVariableFrameRateVideoCaptureEnabled];
   v29 = 0u;
   v30 = 0u;
-  v6 = (![(AVCaptureDeviceInput *)self isCinematicVideoCaptureEnabled]&& !v5) & v4;
+  v6 = (![(AVCaptureDeviceInput *)self isCinematicVideoCaptureEnabled]&& !isVariableFrameRateVideoCaptureEnabled) & v4;
   v31 = 0u;
   v32 = 0u;
   v7 = [-[AVCaptureInput session](self "session")];
@@ -1315,10 +1315,10 @@ LABEL_8:
   }
 }
 
-- (void)followExternalSyncDevice:(id)a3 videoFrameDuration:(id *)a4 delegate:(id)a5
+- (void)followExternalSyncDevice:(id)device videoFrameDuration:(id *)duration delegate:(id)delegate
 {
-  v9 = [(AVCaptureDeviceInput *)self device];
-  if (!v9)
+  device = [(AVCaptureDeviceInput *)self device];
+  if (!device)
   {
     v19 = 0;
     v20 = 0;
@@ -1326,7 +1326,7 @@ LABEL_8:
     goto LABEL_6;
   }
 
-  [(AVCaptureDevice *)v9 minSupportedExternalSyncFrameDuration];
+  [(AVCaptureDevice *)device minSupportedExternalSyncFrameDuration];
   if ((v20 & 0x100000000) == 0)
   {
 LABEL_6:
@@ -1343,10 +1343,10 @@ LABEL_10:
     return;
   }
 
-  v10 = [(AVCaptureDeviceInput *)self device];
-  if (v10)
+  device2 = [(AVCaptureDeviceInput *)self device];
+  if (device2)
   {
-    [(AVCaptureDevice *)v10 minSupportedExternalSyncFrameDuration];
+    [(AVCaptureDevice *)device2 minSupportedExternalSyncFrameDuration];
   }
 
   else
@@ -1354,7 +1354,7 @@ LABEL_10:
     memset(&time1, 0, sizeof(time1));
   }
 
-  time2 = *a4;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2) >= 1)
   {
     v11 = MEMORY[0x1E695DF30];
@@ -1373,7 +1373,7 @@ LABEL_10:
     }
   }
 
-  if ([a3 status] != 1)
+  if ([device status] != 1)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
@@ -1388,17 +1388,17 @@ LABEL_10:
   }
 
   time1 = *(&self->_internal->activeLockedVideoFrameDuration.epoch + 4);
-  time2 = *a4;
+  time2 = *duration;
   if (CMTimeCompare(&time1, &time2))
   {
-    [(AVCaptureDevice *)self->_internal->device setActiveSyncDevice:a3];
-    self->_internal->activeExternalSyncVideoFrameDuration.epoch = a3;
-    [self->_internal->activeExternalSyncVideoFrameDuration.epoch _setDelegate:a5];
+    [(AVCaptureDevice *)self->_internal->device setActiveSyncDevice:device];
+    self->_internal->activeExternalSyncVideoFrameDuration.epoch = device;
+    [self->_internal->activeExternalSyncVideoFrameDuration.epoch _setDelegate:delegate];
     internal = self->_internal;
-    v15 = *&a4->var0;
-    *(&internal->activeExternalSyncVideoFrameDuration.value + 4) = a4->var3;
+    v15 = *&duration->var0;
+    *(&internal->activeExternalSyncVideoFrameDuration.value + 4) = duration->var3;
     *(&internal->activeLockedVideoFrameDuration.epoch + 4) = v15;
-    [a3 handleFollowForDevice:self withSessionRunning:{objc_msgSend(-[AVCaptureInput session](self, "session"), "isRunning")}];
+    [device handleFollowForDevice:self withSessionRunning:{objc_msgSend(-[AVCaptureInput session](self, "session"), "isRunning")}];
     [(AVCaptureDeviceInput *)self _resetCinematicVideoCaptureSupported];
     [(AVCaptureDeviceInput *)self _updateLockedVideoFrameDurationSupported];
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:*MEMORY[0x1E6987608]];
@@ -1426,36 +1426,36 @@ LABEL_10:
   }
 }
 
-- (void)_setGenlockSignalCompensationDelay:(id *)a3
+- (void)_setGenlockSignalCompensationDelay:(id *)delay
 {
-  v5 = [(AVCaptureDeviceInput *)self device];
+  device = [(AVCaptureDeviceInput *)self device];
   epoch = self->_internal->activeExternalSyncVideoFrameDuration.epoch;
-  v7 = *a3;
-  [(AVCaptureDevice *)v5 setActiveExternalSyncSignalCompensationDelay:&v7 withExternalSyncDevice:epoch];
+  v7 = *delay;
+  [(AVCaptureDevice *)device setActiveExternalSyncSignalCompensationDelay:&v7 withExternalSyncDevice:epoch];
 }
 
 - (void)_applyActiveExternalSyncVideoFrameDuration
 {
   [[(AVCaptureDeviceInput *)self device] lockForConfiguration:0];
-  v3 = [(AVCaptureDeviceInput *)self device];
+  device = [(AVCaptureDeviceInput *)self device];
   internal = self->_internal;
   epoch = internal->activeExternalSyncVideoFrameDuration.epoch;
   v6 = *(&internal->activeLockedVideoFrameDuration.epoch + 4);
   v7 = *(&internal->activeExternalSyncVideoFrameDuration.value + 4);
-  [(AVCaptureDevice *)v3 setActiveExternalSyncVideoFrameDuration:&v6 withExternalSyncDevice:epoch forOwner:self];
+  [(AVCaptureDevice *)device setActiveExternalSyncVideoFrameDuration:&v6 withExternalSyncDevice:epoch forOwner:self];
   [[(AVCaptureDeviceInput *)self device] unlockForConfiguration];
 }
 
-- (void)setMaxGainOverride:(float)a3
+- (void)setMaxGainOverride:(float)override
 {
   if ([(AVCaptureDeviceInput *)self isMaxGainOverrideSupported])
   {
-    if (a3 == 0.0 || (a3 >= 1.0 ? (v5 = a3 > 256.0) : (v5 = 1), !v5))
+    if (override == 0.0 || (override >= 1.0 ? (v5 = override > 256.0) : (v5 = 1), !v5))
     {
       internal = self->_internal;
-      if (*&internal->activeVideoExternalSyncDevice != a3)
+      if (*&internal->activeVideoExternalSyncDevice != override)
       {
-        *&internal->activeVideoExternalSyncDevice = a3;
+        *&internal->activeVideoExternalSyncDevice = override;
         v10 = *MEMORY[0x1E6987608];
 
         [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:v10];
@@ -1483,10 +1483,10 @@ LABEL_10:
   NSLog(&cfstr_SuppressingExc.isa, v8);
 }
 
-- (BOOL)_authorizedToUseDeviceAndRequestIfNecessary:(id)a3
+- (BOOL)_authorizedToUseDeviceAndRequestIfNecessary:(id)necessary
 {
   v4 = *MEMORY[0x1E69875A0];
-  if ([a3 hasMediaType:*MEMORY[0x1E69875A0]])
+  if ([necessary hasMediaType:*MEMORY[0x1E69875A0]])
   {
     [MEMORY[0x1E6958460] sharedInstance];
   }
@@ -1494,13 +1494,13 @@ LABEL_10:
   else
   {
     v4 = *MEMORY[0x1E6987608];
-    if (([a3 hasMediaType:*MEMORY[0x1E6987608]] & 1) == 0)
+    if (([necessary hasMediaType:*MEMORY[0x1E6987608]] & 1) == 0)
     {
       v4 = @"pcld";
-      if (([a3 hasMediaType:@"pcld"] & 1) == 0)
+      if (([necessary hasMediaType:@"pcld"] & 1) == 0)
       {
         v4 = *MEMORY[0x1E69875D8];
-        v5 = [a3 hasMediaType:*MEMORY[0x1E69875D8]];
+        v5 = [necessary hasMediaType:*MEMORY[0x1E69875D8]];
         if (!v5)
         {
           return v5;
@@ -1525,22 +1525,22 @@ LABEL_10:
   return v5;
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
   v7 = [objc_msgSend(-[AVCaptureDeviceInput ports](self "ports")];
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", v7}] && objc_msgSend(a3, "isEqualToString:", *MEMORY[0x1E698FE50]))
+  if ([objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", v7}] && objc_msgSend(notification, "isEqualToString:", *MEMORY[0x1E698FE50]))
   {
-    v8 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FC48]];
+    v8 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FC48]];
 
     [(AVCaptureDeviceInput *)self _sourceFormatDidChange:v8];
   }
 }
 
-- (void)_sourceFormatDidChange:(opaqueCMFormatDescription *)a3
+- (void)_sourceFormatDidChange:(opaqueCMFormatDescription *)change
 {
-  if (a3)
+  if (change)
   {
-    MediaType = CMFormatDescriptionGetMediaType(a3);
+    MediaType = CMFormatDescriptionGetMediaType(change);
   }
 
   else
@@ -1552,8 +1552,8 @@ LABEL_10:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(AVCaptureDeviceInput *)self multiCamPorts];
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v19 count:16];
+  multiCamPorts = [(AVCaptureDeviceInput *)self multiCamPorts];
+  v7 = [multiCamPorts countByEnumeratingWithState:&v20 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1566,12 +1566,12 @@ LABEL_10:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(multiCamPorts);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = [objc_msgSend(v13 "mediaType")];
-        if (a3)
+        if (change)
         {
           if (MediaType == 1986618469)
           {
@@ -1586,9 +1586,9 @@ LABEL_10:
           if ((v15 & 1) != 0 || ([objc_msgSend(v13 "mediaType")] ? (v16 = MediaType == 1936684398) : (v16 = 0), v16))
           {
             v17 = v13;
-            v18 = a3;
+            changeCopy = change;
 LABEL_23:
-            [v17 _setFormatDescription:v18];
+            [v17 _setFormatDescription:changeCopy];
             continue;
           }
         }
@@ -1596,26 +1596,26 @@ LABEL_23:
         else if ((v14 & 1) != 0 || [objc_msgSend(v13 "mediaType")])
         {
           v17 = v13;
-          v18 = 0;
+          changeCopy = 0;
           goto LABEL_23;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v19 count:16];
+      v8 = [multiCamPorts countByEnumeratingWithState:&v20 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_bumpChangeSeedForFirstPortWithMediaType:(id)a3
+- (void)_bumpChangeSeedForFirstPortWithMediaType:(id)type
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(AVCaptureDeviceInput *)self ports];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  ports = [(AVCaptureDeviceInput *)self ports];
+  v5 = [ports countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1626,7 +1626,7 @@ LABEL_23:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(ports);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1637,7 +1637,7 @@ LABEL_23:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [ports countByEnumeratingWithState:&v11 objects:v10 count:16];
       if (v6)
       {
         continue;
@@ -1648,10 +1648,10 @@ LABEL_23:
   }
 }
 
-- (void)setBuiltInMicrophoneStereoAudioCaptureEnabled:(BOOL)a3
+- (void)setBuiltInMicrophoneStereoAudioCaptureEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureDeviceInput *)self isBuiltInMicrophoneStereoAudioCaptureSupported])
+  enabledCopy = enabled;
+  if (enabled && ![(AVCaptureDeviceInput *)self isBuiltInMicrophoneStereoAudioCaptureSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1665,13 +1665,13 @@ LABEL_23:
   else
   {
 
-    [(AVCaptureDeviceInput *)self setAudioCaptureMode:v3];
+    [(AVCaptureDeviceInput *)self setAudioCaptureMode:enabledCopy];
   }
 }
 
-- (void)setAudioCaptureMode:(int64_t)a3
+- (void)setAudioCaptureMode:(int64_t)mode
 {
-  if (a3 >= 8)
+  if (mode >= 8)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
@@ -1682,9 +1682,9 @@ LABEL_23:
     if ([(AVCaptureDeviceInput *)self isAudioCaptureModeSupported:?])
     {
       internal = self->_internal;
-      if (internal->audioCaptureMode != a3)
+      if (internal->audioCaptureMode != mode)
       {
-        internal->audioCaptureMode = a3;
+        internal->audioCaptureMode = mode;
         v6 = *MEMORY[0x1E69875A0];
 
         [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:v6];
@@ -1706,9 +1706,9 @@ LABEL_23:
   NSLog(&cfstr_SuppressingExc.isa, v9);
 }
 
-- (void)setMultichannelAudioMode:(int64_t)a3
+- (void)setMultichannelAudioMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
@@ -1719,9 +1719,9 @@ LABEL_23:
     if ([(AVCaptureDeviceInput *)self isMultichannelAudioModeSupported:?])
     {
       internal = self->_internal;
-      if (internal->multichannelAudioMode != a3)
+      if (internal->multichannelAudioMode != mode)
       {
-        internal->multichannelAudioMode = a3;
+        internal->multichannelAudioMode = mode;
         v6 = [(AVCaptureDeviceInput *)self _audioCaptureModeForMultichannelAudioMode:self->_internal->multichannelAudioMode];
 
         [(AVCaptureDeviceInput *)self setAudioCaptureMode:v6];
@@ -1743,24 +1743,24 @@ LABEL_23:
   NSLog(&cfstr_SuppressingExc.isa, v9);
 }
 
-- (int64_t)_audioCaptureModeForMultichannelAudioMode:(int64_t)a3
+- (int64_t)_audioCaptureModeForMultichannelAudioMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (mode == 2);
   }
 }
 
-- (void)setWindNoiseRemovalEnabled:(BOOL)a3
+- (void)setWindNoiseRemovalEnabled:(BOOL)enabled
 {
   if ([(AVCaptureDeviceInput *)self isWindNoiseRemovalSupported])
   {
-    self->_internal->windNoiseRemovalEnabled = a3;
+    self->_internal->windNoiseRemovalEnabled = enabled;
   }
 
   else
@@ -1782,15 +1782,15 @@ LABEL_23:
   return v2;
 }
 
-- (void)setRemoteIOOutputFormat:(id)a3
+- (void)setRemoteIOOutputFormat:(id)format
 {
-  if (!a3)
+  if (!format)
   {
 LABEL_5:
-    if (([(AVCallbackCancellation *)self->_internal->deviceOpenCallbackInvoker isEqual:a3]& 1) == 0)
+    if (([(AVCallbackCancellation *)self->_internal->deviceOpenCallbackInvoker isEqual:format]& 1) == 0)
     {
 
-      self->_internal->deviceOpenCallbackInvoker = a3;
+      self->_internal->deviceOpenCallbackInvoker = format;
       v6 = *MEMORY[0x1E69875A0];
 
       [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:v6];
@@ -1801,10 +1801,10 @@ LABEL_5:
 
   if (AVCaptureClientHasEntitlement(AVCaptureEntitlementAudioFormatOverride))
   {
-    if (*([a3 streamDescription] + 8) == 1819304813)
+    if (*([format streamDescription] + 8) == 1819304813)
     {
-      v5 = [objc_msgSend(a3 "channelLayout")];
-      if (v5 == [a3 channelCount])
+      v5 = [objc_msgSend(format "channelLayout")];
+      if (v5 == [format channelCount])
       {
         goto LABEL_5;
       }
@@ -1835,10 +1835,10 @@ LABEL_5:
   NSLog(&cfstr_SuppressingExc.isa, v9);
 }
 
-- (void)setCinematicVideoCaptureEnabled:(BOOL)a3
+- (void)setCinematicVideoCaptureEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureDeviceInput *)self isCinematicVideoCaptureSupported])
+  enabledCopy = enabled;
+  if (enabled && ![(AVCaptureDeviceInput *)self isCinematicVideoCaptureSupported])
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1852,9 +1852,9 @@ LABEL_5:
   else
   {
     internal = self->_internal;
-    if (internal->cinematicVideoCaptureEnabled != v3)
+    if (internal->cinematicVideoCaptureEnabled != enabledCopy)
     {
-      internal->cinematicVideoCaptureEnabled = v3;
+      internal->cinematicVideoCaptureEnabled = enabledCopy;
       [(AVCaptureDeviceInput *)self updateSupportedProperties];
       v6 = *MEMORY[0x1E6987608];
 
@@ -1863,18 +1863,18 @@ LABEL_5:
   }
 }
 
-- (void)setVisionDataDeliveryEnabled:(BOOL)a3
+- (void)setVisionDataDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] isVisionDataDeliverySupported])
   {
     internal = self->_internal;
-    if (internal->visionDataDeliveryEnabled == v3)
+    if (internal->visionDataDeliveryEnabled == enabledCopy)
     {
       return;
     }
 
-    internal->visionDataDeliveryEnabled = v3;
+    internal->visionDataDeliveryEnabled = enabledCopy;
     if (!self->_internal->ports)
     {
       [(AVCaptureDeviceInput *)self ports];
@@ -1882,19 +1882,19 @@ LABEL_5:
 
     v6 = self->_internal;
     ports = v6->ports;
-    if (v3)
+    if (enabledCopy)
     {
       if ([(NSArray *)[(AVCaptureDevice *)v6->device constituentDevices] count]< 2)
       {
-        v7 = [(AVCaptureDevice *)self->_internal->device deviceType];
+        deviceType = [(AVCaptureDevice *)self->_internal->device deviceType];
       }
 
       else
       {
-        v7 = @"AVCaptureDeviceTypeBuiltInWideAngleCamera";
+        deviceType = @"AVCaptureDeviceTypeBuiltInWideAngleCamera";
       }
 
-      v9 = [(NSArray *)ports arrayByAddingObject:[AVCaptureInputPort portWithInput:self mediaType:@"visn" formatDescription:0 enabled:1 sourceDeviceType:v7 sourceDevicePosition:[(AVCaptureDevice *)self->_internal->device position]]];
+      v9 = [(NSArray *)ports arrayByAddingObject:[AVCaptureInputPort portWithInput:self mediaType:@"visn" formatDescription:0 enabled:1 sourceDeviceType:deviceType sourceDevicePosition:[(AVCaptureDevice *)self->_internal->device position]]];
     }
 
     else
@@ -1922,15 +1922,15 @@ LABEL_5:
   }
 }
 
-- (void)setCameraCalibrationDataDeliveryEnabled:(BOOL)a3
+- (void)setCameraCalibrationDataDeliveryEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] isCameraCalibrationDataDeliverySupported])
   {
     internal = self->_internal;
-    if (internal->cameraCalibrationDataDeliveryEnabled != v3)
+    if (internal->cameraCalibrationDataDeliveryEnabled != enabledCopy)
     {
-      internal->cameraCalibrationDataDeliveryEnabled = v3;
+      internal->cameraCalibrationDataDeliveryEnabled = enabledCopy;
       multiCamPorts = self->_internal->multiCamPorts;
       if (!multiCamPorts)
       {
@@ -1941,7 +1941,7 @@ LABEL_5:
       v7 = [MEMORY[0x1E695DF70] arrayWithArray:multiCamPorts];
       v8 = v7;
       v15 = multiCamPorts;
-      if (v3)
+      if (enabledCopy)
       {
         v9 = [MEMORY[0x1E695DF70] arrayWithObject:{-[AVCaptureDeviceInput device](self, "device")}];
         if ([(NSArray *)[[(AVCaptureDeviceInput *)self device] constituentDevices] count]>= 2)
@@ -2019,7 +2019,7 @@ uint64_t __64__AVCaptureDeviceInput_setCameraCalibrationDataDeliveryEnabled___bl
   return [v2 isEqualToString:@"cacd"];
 }
 
-- (void)setSimulatedAperture:(float)a3
+- (void)setSimulatedAperture:(float)aperture
 {
   [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] minSimulatedAperture];
   if (v5 <= 0.0)
@@ -2030,7 +2030,7 @@ uint64_t __64__AVCaptureDeviceInput_setCameraCalibrationDataDeliveryEnabled___bl
   }
 
   [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] minSimulatedAperture];
-  if (v6 > a3 || ([(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] maxSimulatedAperture], v7 < a3))
+  if (v6 > aperture || ([(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] maxSimulatedAperture], v7 < aperture))
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695DA20];
@@ -2098,27 +2098,27 @@ LABEL_6:
     }
   }
 
-  if (self->_internal->simulatedAperture != a3)
+  if (self->_internal->simulatedAperture != aperture)
   {
     [(AVCaptureDeviceInput *)self willChangeValueForKey:@"simulatedAperture"];
-    self->_internal->simulatedAperture = a3;
+    self->_internal->simulatedAperture = aperture;
     [(AVCaptureDeviceInput *)self didChangeValueForKey:@"simulatedAperture"];
-    v18 = [(AVCaptureDeviceInput *)self device];
+    device = [(AVCaptureDeviceInput *)self device];
     *&v19 = self->_internal->simulatedAperture;
-    [(AVCaptureDevice *)v18 _setSimulatedAperture:v19];
+    [(AVCaptureDevice *)device _setSimulatedAperture:v19];
   }
 }
 
-- (void)setPortraitLightingEffectStrength:(float)a3
+- (void)setPortraitLightingEffectStrength:(float)strength
 {
   [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] minPortraitLightingEffectStrength];
   [(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] minPortraitLightingEffectStrength];
-  if (v5 <= a3 && ([(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] maxPortraitLightingEffectStrength], v6 >= a3))
+  if (v5 <= strength && ([(AVCaptureDeviceFormat *)[(AVCaptureDevice *)self->_internal->device activeFormat] maxPortraitLightingEffectStrength], v6 >= strength))
   {
-    if (*(&self->_internal->sensitiveContentAnalyzerXPCObject + 1) != a3)
+    if (*(&self->_internal->sensitiveContentAnalyzerXPCObject + 1) != strength)
     {
       [(AVCaptureDeviceInput *)self willChangeValueForKey:@"portraitLightingEffectStrength"];
-      *(&self->_internal->sensitiveContentAnalyzerXPCObject + 1) = a3;
+      *(&self->_internal->sensitiveContentAnalyzerXPCObject + 1) = strength;
 
       [(AVCaptureDeviceInput *)self didChangeValueForKey:@"portraitLightingEffectStrength"];
     }
@@ -2136,87 +2136,87 @@ LABEL_6:
   }
 }
 
-- (void)setCenterStageAllowed:(BOOL)a3
+- (void)setCenterStageAllowed:(BOOL)allowed
 {
   internal = self->_internal;
-  if (BYTE4(internal->activeVideoExternalSyncDevice) != a3)
+  if (BYTE4(internal->activeVideoExternalSyncDevice) != allowed)
   {
-    BYTE4(internal->activeVideoExternalSyncDevice) = a3;
+    BYTE4(internal->activeVideoExternalSyncDevice) = allowed;
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:*MEMORY[0x1E6987608]];
   }
 }
 
-- (void)setBackgroundBlurAllowed:(BOOL)a3
+- (void)setBackgroundBlurAllowed:(BOOL)allowed
 {
   internal = self->_internal;
-  if (BYTE5(internal->activeVideoExternalSyncDevice) != a3)
+  if (BYTE5(internal->activeVideoExternalSyncDevice) != allowed)
   {
-    BYTE5(internal->activeVideoExternalSyncDevice) = a3;
+    BYTE5(internal->activeVideoExternalSyncDevice) = allowed;
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:*MEMORY[0x1E6987608]];
   }
 }
 
-- (void)setStudioLightingAllowed:(BOOL)a3
+- (void)setStudioLightingAllowed:(BOOL)allowed
 {
   internal = self->_internal;
-  if (BYTE6(internal->activeVideoExternalSyncDevice) != a3)
+  if (BYTE6(internal->activeVideoExternalSyncDevice) != allowed)
   {
-    BYTE6(internal->activeVideoExternalSyncDevice) = a3;
+    BYTE6(internal->activeVideoExternalSyncDevice) = allowed;
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:*MEMORY[0x1E6987608]];
   }
 }
 
-- (void)setReactionEffectsAllowed:(BOOL)a3
+- (void)setReactionEffectsAllowed:(BOOL)allowed
 {
   internal = self->_internal;
-  if (HIBYTE(internal->activeVideoExternalSyncDevice) != a3)
+  if (HIBYTE(internal->activeVideoExternalSyncDevice) != allowed)
   {
-    HIBYTE(internal->activeVideoExternalSyncDevice) = a3;
+    HIBYTE(internal->activeVideoExternalSyncDevice) = allowed;
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:*MEMORY[0x1E6987608]];
   }
 }
 
-- (void)setBackgroundReplacementAllowed:(BOOL)a3
+- (void)setBackgroundReplacementAllowed:(BOOL)allowed
 {
   internal = self->_internal;
-  if (LOBYTE(internal->maxGainOverride) != a3)
+  if (LOBYTE(internal->maxGainOverride) != allowed)
   {
-    LOBYTE(internal->maxGainOverride) = a3;
+    LOBYTE(internal->maxGainOverride) = allowed;
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:*MEMORY[0x1E6987608]];
   }
 }
 
-- (void)setSensitiveContentAnalyzerXPCObject:(id)a3
+- (void)setSensitiveContentAnalyzerXPCObject:(id)object
 {
   v3 = *&self->_internal->backgroundReplacementAllowed;
-  if (v3 != a3)
+  if (v3 != object)
   {
 
-    *&self->_internal->backgroundReplacementAllowed = a3;
+    *&self->_internal->backgroundReplacementAllowed = object;
     v6 = *MEMORY[0x1E6987608];
 
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:v6];
   }
 }
 
-- (void)setSensitiveContentAnalyzerEnabled:(BOOL)a3
+- (void)setSensitiveContentAnalyzerEnabled:(BOOL)enabled
 {
   internal = self->_internal;
-  if (LOBYTE(internal->sensitiveContentAnalyzerXPCObject) != a3)
+  if (LOBYTE(internal->sensitiveContentAnalyzerXPCObject) != enabled)
   {
-    LOBYTE(internal->sensitiveContentAnalyzerXPCObject) = a3;
+    LOBYTE(internal->sensitiveContentAnalyzerXPCObject) = enabled;
     [(AVCaptureDeviceInput *)self _bumpChangeSeedForFirstPortWithMediaType:*MEMORY[0x1E6987608]];
   }
 }
 
-- (BOOL)isMultichannelAudioModeSupported:(int64_t)a3
+- (BOOL)isMultichannelAudioModeSupported:(int64_t)supported
 {
-  if (a3 > 2 || -[AVCaptureInput session](self, "session") && ([-[AVCaptureInput session](self "session")] & 1) != 0)
+  if (supported > 2 || -[AVCaptureInput session](self, "session") && ([-[AVCaptureInput session](self "session")] & 1) != 0)
   {
     return 0;
   }
 
-  v5 = [(AVCaptureDeviceInput *)self _audioCaptureModeForMultichannelAudioMode:a3];
+  v5 = [(AVCaptureDeviceInput *)self _audioCaptureModeForMultichannelAudioMode:supported];
   device = self->_internal->device;
 
   return [(AVCaptureDevice *)device isAudioCaptureModeSupported:v5];

@@ -6,8 +6,8 @@
 - (void)_buildAndUpdateDescription;
 - (void)_updateAppearance;
 - (void)beginAnimatingActivityIndicator;
-- (void)endAnimatingActivityIndicatorWithError:(id)a3;
-- (void)setViewModel:(id)a3;
+- (void)endAnimatingActivityIndicatorWithError:(id)error;
+- (void)setViewModel:(id)model;
 - (void)setupSubviews;
 @end
 
@@ -22,48 +22,48 @@
 
 - (void)_attributionTapped
 {
-  v3 = [(MUPlacePhotoGalleryAttributionView *)self delegate];
-  [v3 attributionViewDidTapAttributionPunchout:self];
+  delegate = [(MUPlacePhotoGalleryAttributionView *)self delegate];
+  [delegate attributionViewDidTapAttributionPunchout:self];
 }
 
-- (void)endAnimatingActivityIndicatorWithError:(id)a3
+- (void)endAnimatingActivityIndicatorWithError:(id)error
 {
-  v4 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-  v6 = [v4 configuration];
+  accessoryButton = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+  configuration = [accessoryButton configuration];
 
-  [v6 setShowsActivityIndicator:0];
-  v5 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-  [v5 setConfiguration:v6];
+  [configuration setShowsActivityIndicator:0];
+  accessoryButton2 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+  [accessoryButton2 setConfiguration:configuration];
 }
 
 - (void)beginAnimatingActivityIndicator
 {
-  v3 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-  v5 = [v3 configuration];
+  accessoryButton = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+  configuration = [accessoryButton configuration];
 
-  [v5 setShowsActivityIndicator:1];
-  v4 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-  [v4 setConfiguration:v5];
+  [configuration setShowsActivityIndicator:1];
+  accessoryButton2 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+  [accessoryButton2 setConfiguration:configuration];
 }
 
 - (void)_accessoryViewTapped
 {
-  v3 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel accessoryStyle];
-  if (v3 == 2)
+  accessoryStyle = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel accessoryStyle];
+  if (accessoryStyle == 2)
   {
-    v4 = [(MUPlacePhotoGalleryAttributionView *)self delegate];
-    [v4 attributionViewDidTapReportAnIssue:self];
+    delegate = [(MUPlacePhotoGalleryAttributionView *)self delegate];
+    [delegate attributionViewDidTapReportAnIssue:self];
   }
 
   else
   {
-    if (v3 != 1)
+    if (accessoryStyle != 1)
     {
       return;
     }
 
-    v4 = [(MUPlacePhotoGalleryAttributionView *)self delegate];
-    [v4 attributionViewDidTapAttributionPunchout:self];
+    delegate = [(MUPlacePhotoGalleryAttributionView *)self delegate];
+    [delegate attributionViewDidTapAttributionPunchout:self];
   }
 }
 
@@ -71,16 +71,16 @@
 {
   v39[2] = *MEMORY[0x1E69E9840];
   [(MUPlacePhotoGalleryAttributionView *)self _buildAndUpdateDescription];
-  v3 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v4 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel accessoryStyle];
-  if (v4 == 3)
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  accessoryStyle = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel accessoryStyle];
+  if (accessoryStyle == 3)
   {
     v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"ellipsis.circle"];
     v13 = MEMORY[0x1E69DCAD8];
     v14 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     v15 = [v13 configurationWithFont:v14 scale:3];
     v16 = [v12 imageWithConfiguration:v15];
-    [v3 setImage:v16];
+    [plainButtonConfiguration setImage:v16];
 
     objc_initWeak(&location, self);
     v17 = MEMORY[0x1E69DC628];
@@ -107,11 +107,11 @@
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:{2, v31, v32, v33, v34}];
     v25 = [v23 menuWithChildren:v24];
 
-    v26 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-    [v26 setMenu:v25];
+    accessoryButton = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+    [accessoryButton setMenu:v25];
 
-    v27 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-    [v27 setShowsMenuAsPrimaryAction:1];
+    accessoryButton2 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+    [accessoryButton2 setShowsMenuAsPrimaryAction:1];
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(&v37);
@@ -119,35 +119,35 @@
     goto LABEL_7;
   }
 
-  if (v4 == 2)
+  if (accessoryStyle == 2)
   {
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.bubble"];
     v8 = MEMORY[0x1E69DCAD8];
     v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     v10 = [v8 configurationWithFont:v9 scale:3];
     v11 = [v7 imageWithConfiguration:v10];
-    [v3 setImage:v11];
+    [plainButtonConfiguration setImage:v11];
 
     goto LABEL_7;
   }
 
-  if (v4)
+  if (accessoryStyle)
   {
 LABEL_7:
     v6 = 0;
     goto LABEL_8;
   }
 
-  v5 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-  [v5 setImage:0 forState:0];
+  accessoryButton3 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+  [accessoryButton3 setImage:0 forState:0];
 
   v6 = 1;
 LABEL_8:
-  v28 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-  [v28 setConfiguration:v3];
+  accessoryButton4 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+  [accessoryButton4 setConfiguration:plainButtonConfiguration];
 
-  v29 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
-  [v29 setHidden:v6];
+  accessoryButton5 = [(MUPlacePhotoGalleryAttributionView *)self accessoryButton];
+  [accessoryButton5 setHidden:v6];
 
   v30 = *MEMORY[0x1E69E9840];
 }
@@ -178,12 +178,12 @@ void __55__MUPlacePhotoGalleryAttributionView__updateAppearance__block_invoke_2(
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if (([(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPlacePhotoGalleryAttributionView *)self _updateAppearance];
   }
 }
@@ -191,13 +191,13 @@ void __55__MUPlacePhotoGalleryAttributionView__updateAppearance__block_invoke_2(
 - (void)_buildAndUpdateDescription
 {
   v95[2] = *MEMORY[0x1E69E9840];
-  v3 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel caption];
-  v4 = [v3 length];
-  v5 = [(MUPlacePhotoGalleryAttributionView *)self captionLabel];
-  v6 = v5;
+  caption = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel caption];
+  v4 = [caption length];
+  captionLabel = [(MUPlacePhotoGalleryAttributionView *)self captionLabel];
+  v6 = captionLabel;
   v7 = v4 == 0;
   v8 = v4 == 0;
-  v87 = v3;
+  v87 = caption;
   if (v7)
   {
     v9 = 0;
@@ -205,7 +205,7 @@ void __55__MUPlacePhotoGalleryAttributionView__updateAppearance__block_invoke_2(
 
   else
   {
-    v9 = v3;
+    v9 = caption;
   }
 
   if (v7)
@@ -218,54 +218,54 @@ void __55__MUPlacePhotoGalleryAttributionView__updateAppearance__block_invoke_2(
     v10 = 8.0;
   }
 
-  [v5 setText:v9];
+  [captionLabel setText:v9];
 
-  v11 = [(MUPlacePhotoGalleryAttributionView *)self captionLabel];
-  [v11 setHidden:v8];
+  captionLabel2 = [(MUPlacePhotoGalleryAttributionView *)self captionLabel];
+  [captionLabel2 setHidden:v8];
 
-  v12 = [(MUPlacePhotoGalleryAttributionView *)self captionToPrimaryLabelConstraint];
-  [v12 setConstant:v10];
+  captionToPrimaryLabelConstraint = [(MUPlacePhotoGalleryAttributionView *)self captionToPrimaryLabelConstraint];
+  [captionToPrimaryLabelConstraint setConstant:v10];
 
   v93 = *MEMORY[0x1E69DB648];
   v13 = v93;
-  v14 = [MEMORY[0x1E696F200] sharedManager];
-  v15 = [v14 subtitleFont];
-  v95[0] = v15;
+  mEMORY[0x1E696F200] = [MEMORY[0x1E696F200] sharedManager];
+  subtitleFont = [mEMORY[0x1E696F200] subtitleFont];
+  v95[0] = subtitleFont;
   v94 = *MEMORY[0x1E69DB650];
   v16 = v94;
-  v17 = [MEMORY[0x1E69DC888] labelColor];
-  v95[1] = v17;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v95[1] = labelColor;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v95 forKeys:&v93 count:2];
 
   v91 = v13;
-  v19 = [MEMORY[0x1E696F200] sharedManager];
-  v20 = [v19 subtitleFont];
+  mEMORY[0x1E696F200]2 = [MEMORY[0x1E696F200] sharedManager];
+  subtitleFont2 = [mEMORY[0x1E696F200]2 subtitleFont];
   v21 = *MEMORY[0x1E69DB980];
-  v22 = [v20 _mapkit_fontWithWeight:*MEMORY[0x1E69DB980]];
+  v22 = [subtitleFont2 _mapkit_fontWithWeight:*MEMORY[0x1E69DB980]];
   v92 = v22;
   v86 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
 
   v89[0] = v13;
-  v23 = [MEMORY[0x1E696F200] sharedManager];
-  v24 = [v23 subtitleFont];
-  v25 = [v24 _mapkit_fontWithWeight:v21];
+  mEMORY[0x1E696F200]3 = [MEMORY[0x1E696F200] sharedManager];
+  subtitleFont3 = [mEMORY[0x1E696F200]3 subtitleFont];
+  v25 = [subtitleFont3 _mapkit_fontWithWeight:v21];
   v26 = *MEMORY[0x1E69DB670];
   v90[0] = v25;
   v90[1] = &stru_1F44CA030;
   v89[1] = v26;
   v89[2] = v16;
-  v27 = [MEMORY[0x1E69DC888] linkColor];
-  v90[2] = v27;
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
+  v90[2] = linkColor;
   v88 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:3];
 
-  v28 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel titleText];
-  v29 = [v28 length];
+  titleText = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel titleText];
+  v29 = [titleText length];
 
   if (v29)
   {
     v30 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v31 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel titleText];
-    v32 = [v30 initWithString:v31 attributes:v18];
+    titleText2 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel titleText];
+    v32 = [v30 initWithString:titleText2 attributes:v18];
     v33 = 1;
     v34 = v86;
 LABEL_9:
@@ -273,26 +273,26 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v41 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel attributionType];
+  attributionType = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel attributionType];
   v32 = 0;
   v33 = 1;
   v34 = v86;
-  if (v41 > 2)
+  if (attributionType > 2)
   {
-    if (v41 == 3)
+    if (attributionType == 3)
     {
-      v31 = _MULocalizedStringFromThisBundle(@"From %@ (Owner) [Business Owner Photo Attribution");
-      v78 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel placeName];
-      v32 = MUHighlightedAttributionString(v31, v18, v78, v86);
+      titleText2 = _MULocalizedStringFromThisBundle(@"From %@ (Owner) [Business Owner Photo Attribution");
+      placeName = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel placeName];
+      v32 = MUHighlightedAttributionString(titleText2, v18, placeName, v86);
 
       v33 = 0;
       goto LABEL_9;
     }
 
-    if (v41 == 4)
+    if (attributionType == 4)
     {
-      v58 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel authorName];
-      v59 = [v58 length];
+      authorName = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel authorName];
+      v59 = [authorName length];
 
       if (v59)
       {
@@ -302,38 +302,38 @@ LABEL_9:
 
       v79 = @"[No Photo Credit - Full Screen Gallery] From a Visitor (You)";
 LABEL_45:
-      v31 = _MULocalizedStringFromThisBundle(v79);
-      v32 = MUHighlightedAttributionString(v31, v18, 0, 0);
+      titleText2 = _MULocalizedStringFromThisBundle(v79);
+      v32 = MUHighlightedAttributionString(titleText2, v18, 0, 0);
       goto LABEL_9;
     }
   }
 
-  else if (v41 == 1)
+  else if (attributionType == 1)
   {
-    v61 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel vendorName];
-    v62 = [v61 length];
+    vendorName = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel vendorName];
+    v62 = [vendorName length];
 
     if (v62)
     {
-      v31 = _MULocalizedStringFromThisBundle(@"From Vendor [Vendor Photo Attribution]");
-      v84 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v31 attributes:v18];
-      v63 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel supportsPunchOut];
+      titleText2 = _MULocalizedStringFromThisBundle(@"From Vendor [Vendor Photo Attribution]");
+      v84 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleText2 attributes:v18];
+      supportsPunchOut = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel supportsPunchOut];
       v64 = v88;
-      if (!v63)
+      if (!supportsPunchOut)
       {
         v64 = v86;
       }
 
       v65 = v64;
       v66 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v67 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel vendorName];
+      vendorName2 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel vendorName];
       v85 = v65;
-      v83 = [v66 initWithString:v67 attributes:v65];
+      v83 = [v66 initWithString:vendorName2 attributes:v65];
 
       v68 = MEMORY[0x1E69DCAD8];
-      v69 = [MEMORY[0x1E696F200] sharedManager];
-      v70 = [v69 subtitleFont];
-      v71 = [v70 _mapkit_fontWithWeight:v21];
+      mEMORY[0x1E696F200]4 = [MEMORY[0x1E696F200] sharedManager];
+      subtitleFont4 = [mEMORY[0x1E696F200]4 subtitleFont];
+      v71 = [subtitleFont4 _mapkit_fontWithWeight:v21];
       v72 = [v68 configurationWithFont:v71 scale:1];
 
       v73 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
@@ -366,18 +366,18 @@ LABEL_45:
     v32 = 0;
   }
 
-  else if (v41 == 2)
+  else if (attributionType == 2)
   {
-    v42 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel authorName];
-    v43 = [v42 length];
+    authorName2 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel authorName];
+    v43 = [authorName2 length];
 
     if (v43)
     {
       v44 = @"From %@ [Public Attribution]";
 LABEL_36:
-      v31 = _MULocalizedStringFromThisBundle(v44);
-      v60 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel authorName];
-      v32 = MUHighlightedAttributionString(v31, v18, v60, v86);
+      titleText2 = _MULocalizedStringFromThisBundle(v44);
+      authorName3 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel authorName];
+      v32 = MUHighlightedAttributionString(titleText2, v18, authorName3, v86);
 
       goto LABEL_9;
     }
@@ -387,35 +387,35 @@ LABEL_36:
   }
 
 LABEL_10:
-  v35 = [(MUPlacePhotoGalleryAttributionView *)self primaryLabel];
-  [v35 setAttributedText:v32];
+  primaryLabel = [(MUPlacePhotoGalleryAttributionView *)self primaryLabel];
+  [primaryLabel setAttributedText:v32];
 
-  v36 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel subtitleText];
-  v37 = [v36 length];
+  subtitleText = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel subtitleText];
+  v37 = [subtitleText length];
 
   if (v37)
   {
     v38 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v39 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel subtitleText];
-    v40 = [v38 initWithString:v39];
+    subtitleText2 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel subtitleText];
+    v40 = [v38 initWithString:subtitleText2];
   }
 
   else
   {
-    v39 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel placeName];
+    subtitleText2 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel placeName];
     if (_buildAndUpdateDescription_s_onceToken != -1)
     {
       dispatch_once(&_buildAndUpdateDescription_s_onceToken, &__block_literal_global_11041);
     }
 
     v45 = _buildAndUpdateDescription_s_dateFormatter;
-    v46 = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel photoDate];
-    v47 = [v45 stringFromDate:v46];
+    photoDate = [(MUPlacePhotoGalleryAttributionViewModel *)self->_viewModel photoDate];
+    v47 = [v45 stringFromDate:photoDate];
 
     v48 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-    if (v33 && [v39 length])
+    if (v33 && [subtitleText2 length])
     {
-      [v48 addObject:v39];
+      [v48 addObject:subtitleText2];
     }
 
     if ([v48 count] && objc_msgSend(v47, "length"))
@@ -446,11 +446,11 @@ LABEL_10:
     v54 = 0;
   }
 
-  v55 = [(MUPlacePhotoGalleryAttributionView *)self secondaryLabel];
-  [v55 setAttributedText:v54];
+  secondaryLabel = [(MUPlacePhotoGalleryAttributionView *)self secondaryLabel];
+  [secondaryLabel setAttributedText:v54];
 
-  v56 = [(MUPlacePhotoGalleryAttributionView *)self secondaryLabel];
-  [v56 setHidden:v53];
+  secondaryLabel2 = [(MUPlacePhotoGalleryAttributionView *)self secondaryLabel];
+  [secondaryLabel2 setHidden:v53];
 
   v57 = *MEMORY[0x1E69E9840];
 }
@@ -513,8 +513,8 @@ void __64__MUPlacePhotoGalleryAttributionView__buildAndUpdateDescription__block_
   [(UILabel *)self->_captionLabel setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)self->_captionLabel setHidden:1];
   [(UILabel *)self->_captionLabel setAccessibilityIdentifier:@"CaptionLabel"];
-  v11 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v11 addSubview:self->_captionLabel];
+  contentView = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView addSubview:self->_captionLabel];
 
   v12 = [[MULinkView alloc] initWithLabelColor:0 linkColor:0];
   primaryLabel = self->_primaryLabel;
@@ -529,25 +529,25 @@ void __64__MUPlacePhotoGalleryAttributionView__buildAndUpdateDescription__block_
   v88[3] = &unk_1E821BAA0;
   objc_copyWeak(&v89, &location);
   [(MULinkView *)v14 setSelectionBlock:v88];
-  v15 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v15 addSubview:self->_primaryLabel];
+  contentView2 = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView2 addSubview:self->_primaryLabel];
 
   v16 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   secondaryLabel = self->_secondaryLabel;
   self->_secondaryLabel = v16;
 
   [(UILabel *)self->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_secondaryLabel setBackgroundColor:v18];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_secondaryLabel setBackgroundColor:clearColor];
 
   [(UILabel *)self->_secondaryLabel setNumberOfLines:0];
   [(UILabel *)self->_secondaryLabel setHidden:1];
-  v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_secondaryLabel setTextColor:v19];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_secondaryLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_secondaryLabel setAccessibilityIdentifier:@"SecondaryLabel"];
-  v20 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v20 addSubview:self->_secondaryLabel];
+  contentView3 = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView3 addSubview:self->_secondaryLabel];
 
   v21 = [MEMORY[0x1E69DC738] buttonWithType:0];
   accessoryButton = self->_accessoryButton;
@@ -563,82 +563,82 @@ void __64__MUPlacePhotoGalleryAttributionView__buildAndUpdateDescription__block_
   LODWORD(v25) = 1144750080;
   [(UIButton *)self->_accessoryButton setContentHuggingPriority:1 forAxis:v25];
   [(UIButton *)self->_accessoryButton _mapkit_setTarget:self action:sel__accessoryViewTapped];
-  v26 = [(UIVisualEffectView *)self->_effectView contentView];
-  [v26 addSubview:self->_accessoryButton];
+  contentView4 = [(UIVisualEffectView *)self->_effectView contentView];
+  [contentView4 addSubview:self->_accessoryButton];
 
-  v87 = [(UIVisualEffectView *)self->_effectView safeAreaLayoutGuide];
-  v27 = [(MULinkView *)self->_primaryLabel topAnchor];
-  v28 = [(UILabel *)self->_captionLabel bottomAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:0.0];
+  safeAreaLayoutGuide = [(UIVisualEffectView *)self->_effectView safeAreaLayoutGuide];
+  topAnchor = [(MULinkView *)self->_primaryLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_captionLabel bottomAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:0.0];
   captionToPrimaryLabelConstraint = self->_captionToPrimaryLabelConstraint;
   self->_captionToPrimaryLabelConstraint = v29;
 
   v46 = MEMORY[0x1E696ACD8];
-  v86 = [(UILabel *)self->_captionLabel leadingAnchor];
-  v85 = [v87 leadingAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85 constant:16.0];
+  leadingAnchor = [(UILabel *)self->_captionLabel leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v84 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v92[0] = v84;
-  v83 = [(UILabel *)self->_captionLabel topAnchor];
-  v82 = [(UIVisualEffectView *)self->_effectView topAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82 constant:14.0];
+  topAnchor2 = [(UILabel *)self->_captionLabel topAnchor];
+  topAnchor3 = [(UIVisualEffectView *)self->_effectView topAnchor];
+  v81 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:14.0];
   v92[1] = v81;
-  v80 = [(UILabel *)self->_captionLabel trailingAnchor];
-  v79 = [(UIButton *)self->_accessoryButton leadingAnchor];
-  v78 = [v80 constraintLessThanOrEqualToAnchor:v79];
+  trailingAnchor = [(UILabel *)self->_captionLabel trailingAnchor];
+  leadingAnchor3 = [(UIButton *)self->_accessoryButton leadingAnchor];
+  v78 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3];
   v31 = self->_captionToPrimaryLabelConstraint;
   v92[2] = v78;
   v92[3] = v31;
-  v77 = [(MULinkView *)self->_primaryLabel leadingAnchor];
-  v76 = [v87 leadingAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76 constant:16.0];
+  leadingAnchor4 = [(MULinkView *)self->_primaryLabel leadingAnchor];
+  leadingAnchor5 = [safeAreaLayoutGuide leadingAnchor];
+  v75 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:16.0];
   v92[4] = v75;
-  v74 = [(MULinkView *)self->_primaryLabel trailingAnchor];
-  v73 = [(UIButton *)self->_accessoryButton leadingAnchor];
-  v72 = [v74 constraintLessThanOrEqualToAnchor:v73];
+  trailingAnchor2 = [(MULinkView *)self->_primaryLabel trailingAnchor];
+  leadingAnchor6 = [(UIButton *)self->_accessoryButton leadingAnchor];
+  v72 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor6];
   v92[5] = v72;
-  v71 = [(UILabel *)self->_secondaryLabel leadingAnchor];
-  v70 = [(MULinkView *)self->_primaryLabel leadingAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  leadingAnchor7 = [(UILabel *)self->_secondaryLabel leadingAnchor];
+  leadingAnchor8 = [(MULinkView *)self->_primaryLabel leadingAnchor];
+  v69 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v92[6] = v69;
-  v68 = [(UILabel *)self->_secondaryLabel topAnchor];
-  v67 = [(MULinkView *)self->_primaryLabel bottomAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67];
+  topAnchor4 = [(UILabel *)self->_secondaryLabel topAnchor];
+  bottomAnchor2 = [(MULinkView *)self->_primaryLabel bottomAnchor];
+  v66 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2];
   v92[7] = v66;
-  v65 = [(UILabel *)self->_secondaryLabel bottomAnchor];
-  v64 = [(MUPlacePhotoGalleryAttributionView *)self bottomAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64 constant:-39.0];
+  bottomAnchor3 = [(UILabel *)self->_secondaryLabel bottomAnchor];
+  bottomAnchor4 = [(MUPlacePhotoGalleryAttributionView *)self bottomAnchor];
+  v63 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-39.0];
   v92[8] = v63;
-  v62 = [(UIButton *)self->_accessoryButton trailingAnchor];
-  v61 = [v87 trailingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:-16.0];
+  trailingAnchor3 = [(UIButton *)self->_accessoryButton trailingAnchor];
+  trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+  v60 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v92[9] = v60;
-  v59 = [(UIButton *)self->_accessoryButton topAnchor];
-  v58 = [v87 topAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58 constant:8.0];
+  topAnchor5 = [(UIButton *)self->_accessoryButton topAnchor];
+  topAnchor6 = [safeAreaLayoutGuide topAnchor];
+  v57 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:8.0];
   v92[10] = v57;
-  v56 = [(UIButton *)self->_accessoryButton bottomAnchor];
-  v55 = [(MUPlacePhotoGalleryAttributionView *)self bottomAnchor];
-  v54 = [v56 constraintLessThanOrEqualToAnchor:v55];
+  bottomAnchor5 = [(UIButton *)self->_accessoryButton bottomAnchor];
+  bottomAnchor6 = [(MUPlacePhotoGalleryAttributionView *)self bottomAnchor];
+  v54 = [bottomAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor6];
   v92[11] = v54;
-  v53 = [(UIButton *)self->_accessoryButton leadingAnchor];
-  v52 = [(UILabel *)self->_secondaryLabel trailingAnchor];
-  v51 = [v53 constraintGreaterThanOrEqualToAnchor:v52];
+  leadingAnchor9 = [(UIButton *)self->_accessoryButton leadingAnchor];
+  trailingAnchor5 = [(UILabel *)self->_secondaryLabel trailingAnchor];
+  v51 = [leadingAnchor9 constraintGreaterThanOrEqualToAnchor:trailingAnchor5];
   v92[12] = v51;
-  v50 = [(UIVisualEffectView *)self->_effectView leadingAnchor];
-  v49 = [(MUPlacePhotoGalleryAttributionView *)self leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  leadingAnchor10 = [(UIVisualEffectView *)self->_effectView leadingAnchor];
+  leadingAnchor11 = [(MUPlacePhotoGalleryAttributionView *)self leadingAnchor];
+  v48 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v92[13] = v48;
-  v47 = [(UIVisualEffectView *)self->_effectView trailingAnchor];
-  v32 = [(MUPlacePhotoGalleryAttributionView *)self trailingAnchor];
-  v33 = [v47 constraintEqualToAnchor:v32];
+  trailingAnchor6 = [(UIVisualEffectView *)self->_effectView trailingAnchor];
+  trailingAnchor7 = [(MUPlacePhotoGalleryAttributionView *)self trailingAnchor];
+  v33 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v92[14] = v33;
-  v34 = [(UIVisualEffectView *)self->_effectView topAnchor];
-  v35 = [(MUPlacePhotoGalleryAttributionView *)self topAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  topAnchor7 = [(UIVisualEffectView *)self->_effectView topAnchor];
+  topAnchor8 = [(MUPlacePhotoGalleryAttributionView *)self topAnchor];
+  v36 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v92[15] = v36;
-  v37 = [(UIVisualEffectView *)self->_effectView bottomAnchor];
-  v38 = [(MUPlacePhotoGalleryAttributionView *)self bottomAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  bottomAnchor7 = [(UIVisualEffectView *)self->_effectView bottomAnchor];
+  bottomAnchor8 = [(MUPlacePhotoGalleryAttributionView *)self bottomAnchor];
+  v39 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v92[16] = v39;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:17];
   [v46 activateConstraints:v40];
@@ -672,8 +672,8 @@ void __51__MUPlacePhotoGalleryAttributionView_setupSubviews__block_invoke(uint64
   v2 = [(MUPlacePhotoGalleryAttributionView *)&v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(MUPlacePhotoGalleryAttributionView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MUPlacePhotoGalleryAttributionView *)v2 setBackgroundColor:clearColor];
 
     [(MUPlacePhotoGalleryAttributionView *)v2 setAccessibilityIdentifier:@"PlacePhotoGalleryAttributionView"];
     [(MUPlacePhotoGalleryAttributionView *)v2 setupSubviews];

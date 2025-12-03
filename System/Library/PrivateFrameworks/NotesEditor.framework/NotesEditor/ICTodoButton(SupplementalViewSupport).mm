@@ -6,12 +6,12 @@
 
 - (id)viewIdentifier
 {
-  v1 = [a1 trackedParagraph];
-  v2 = [v1 paragraph];
-  v3 = [v2 todoTrackingUUID];
-  v4 = [v3 UUIDString];
+  trackedParagraph = [self trackedParagraph];
+  paragraph = [trackedParagraph paragraph];
+  todoTrackingUUID = [paragraph todoTrackingUUID];
+  uUIDString = [todoTrackingUUID UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 @end

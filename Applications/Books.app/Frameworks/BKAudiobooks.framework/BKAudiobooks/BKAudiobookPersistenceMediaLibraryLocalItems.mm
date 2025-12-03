@@ -1,16 +1,16 @@
 @interface BKAudiobookPersistenceMediaLibraryLocalItems
-- (id)_mediaQueryFromAudiobook:(id)a3;
+- (id)_mediaQueryFromAudiobook:(id)audiobook;
 @end
 
 @implementation BKAudiobookPersistenceMediaLibraryLocalItems
 
-- (id)_mediaQueryFromAudiobook:(id)a3
+- (id)_mediaQueryFromAudiobook:(id)audiobook
 {
   v10.receiver = self;
   v10.super_class = BKAudiobookPersistenceMediaLibraryLocalItems;
-  v4 = a3;
-  v5 = [(BKAudiobookPersistenceMediaLibrary *)&v10 _mediaQueryFromAudiobook:v4];
-  v6 = [(BKAudiobookPersistenceMediaLibrary *)self _storeIDFromAudiobook:v4, v10.receiver, v10.super_class];
+  audiobookCopy = audiobook;
+  v5 = [(BKAudiobookPersistenceMediaLibrary *)&v10 _mediaQueryFromAudiobook:audiobookCopy];
+  v6 = [(BKAudiobookPersistenceMediaLibrary *)self _storeIDFromAudiobook:audiobookCopy, v10.receiver, v10.super_class];
 
   v7 = [MPMediaPropertyPredicate predicateWithValue:&__kCFBooleanFalse forProperty:MPMediaItemPropertyIsCloudItem];
   [v5 addFilterPredicate:v7];

@@ -7,11 +7,11 @@
 - (id)initWithData:()RTPredictedContextManagerExtensions
 {
   v3 = a3;
-  v4 = a1;
+  selfCopy = self;
   if (a3)
   {
-    v4 = [a1 initWithUUIDBytes:{objc_msgSend(a3, "bytes")}];
-    v3 = v4;
+    selfCopy = [self initWithUUIDBytes:{objc_msgSend(a3, "bytes")}];
+    v3 = selfCopy;
   }
 
   return v3;

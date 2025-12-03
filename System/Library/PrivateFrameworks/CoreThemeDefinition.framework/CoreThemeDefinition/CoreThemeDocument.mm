@@ -1,195 +1,195 @@
 @interface CoreThemeDocument
 + (BOOL)defaultAllowsExtendedRangePixelFormats;
-+ (id)_imageAssetURLsByCopyingFileURLs:(id)a3 toManagedLocationAtURL:(id)a4 error:(id *)a5;
++ (id)_imageAssetURLsByCopyingFileURLs:(id)ls toManagedLocationAtURL:(id)l error:(id *)error;
 + (id)_sharedDocumentList;
-+ (id)createConfiguredDocumentAtURL:(id)a3 error:(id *)a4;
-+ (id)createConfiguredDocumentAtURL:(id)a3 targetPlatform:(int64_t)a4 error:(id *)a5;
-+ (id)dataModelNameForVersion:(int64_t)a3;
-+ (id)defaultThemeBitSourceURLForDocumentURL:(id)a3;
-+ (id)migrateDocumentAtURL:(id)a3 ofType:(id)a4 error:(id *)a5;
-+ (int)shouldConvertColorsFromColorSpaceWithIdentifier:(unint64_t)a3 toIdentifier:(unint64_t)a4 error:(id *)a5;
++ (id)createConfiguredDocumentAtURL:(id)l error:(id *)error;
++ (id)createConfiguredDocumentAtURL:(id)l targetPlatform:(int64_t)platform error:(id *)error;
++ (id)dataModelNameForVersion:(int64_t)version;
++ (id)defaultThemeBitSourceURLForDocumentURL:(id)l;
++ (id)migrateDocumentAtURL:(id)l ofType:(id)type error:(id *)error;
++ (int)shouldConvertColorsFromColorSpaceWithIdentifier:(unint64_t)identifier toIdentifier:(unint64_t)toIdentifier error:(id *)error;
 + (int64_t)dataModelVersion;
-+ (int64_t)dataModelVersionFromMetadata:(id)a3;
-+ (int64_t)targetPlatformForMOC:(id)a3;
-+ (void)_addThemeDocument:(id)a3;
++ (int64_t)dataModelVersionFromMetadata:(id)metadata;
++ (int64_t)targetPlatformForMOC:(id)c;
++ (void)_addThemeDocument:(id)document;
 + (void)initialize;
-- (BOOL)_canremoveKeyAttribte:(unsigned __int16)a3;
-- (BOOL)_matchesAllExceptGamut:(id)a3 andKeySpec:(id)a4;
-- (BOOL)_production:(id)a3 containsScale:(unsigned int)a4 andIdiom:(unsigned int)a5 andSubtype:(unsigned int)a6;
-- (BOOL)_testRenditionForP3:(id)a3;
-- (BOOL)_updateRenditionPackings:(id)a3 error:(id *)a4;
+- (BOOL)_canremoveKeyAttribte:(unsigned __int16)attribte;
+- (BOOL)_matchesAllExceptGamut:(id)gamut andKeySpec:(id)spec;
+- (BOOL)_production:(id)_production containsScale:(unsigned int)scale andIdiom:(unsigned int)idiom andSubtype:(unsigned int)subtype;
+- (BOOL)_testRenditionForP3:(id)p3;
+- (BOOL)_updateRenditionPackings:(id)packings error:(id *)error;
 - (BOOL)allowsExtendedRangePixelFormats;
-- (BOOL)buildModelError:(id *)a3;
-- (BOOL)canImportNamedAssetImportInfo:(id)a3;
-- (BOOL)checkCompatibilityOfDocumentAtURL:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (BOOL)configurePersistentStoreCoordinatorForURL:(id)a3 ofType:(id)a4 modelConfiguration:(id)a5 storeOptions:(id)a6 error:(id *)a7;
-- (BOOL)createCustomArtworkProductionsForCustomAssets:(id)a3 withImportInfos:(id)a4 error:(id *)a5;
-- (BOOL)createPSDReferenceArtworkForRenditionGroup:(id)a3 atDestination:(id)a4 error:(id *)a5;
-- (BOOL)customizationExistsForSchemaDefinition:(id)a3;
-- (BOOL)customizeSchemaEffectDefinition:(id)a3 shouldReplaceExisting:(BOOL)a4 error:(id *)a5;
-- (BOOL)needToCreateForwardstopFor2018DeploymentVariant:(id)a3 withCompressionTypes:(id)a4;
-- (BOOL)needToCreateForwardstopFor2019DeploymentVariant:(id)a3 withCompressionTypes:(id)a4;
-- (BOOL)readFromURL:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (BOOL)renameThemeBitSourceFolderTo:(id)a3 error:(id *)a4;
+- (BOOL)buildModelError:(id *)error;
+- (BOOL)canImportNamedAssetImportInfo:(id)info;
+- (BOOL)checkCompatibilityOfDocumentAtURL:(id)l ofType:(id)type error:(id *)error;
+- (BOOL)configurePersistentStoreCoordinatorForURL:(id)l ofType:(id)type modelConfiguration:(id)configuration storeOptions:(id)options error:(id *)error;
+- (BOOL)createCustomArtworkProductionsForCustomAssets:(id)assets withImportInfos:(id)infos error:(id *)error;
+- (BOOL)createPSDReferenceArtworkForRenditionGroup:(id)group atDestination:(id)destination error:(id *)error;
+- (BOOL)customizationExistsForSchemaDefinition:(id)definition;
+- (BOOL)customizeSchemaEffectDefinition:(id)definition shouldReplaceExisting:(BOOL)existing error:(id *)error;
+- (BOOL)needToCreateForwardstopFor2018DeploymentVariant:(id)variant withCompressionTypes:(id)types;
+- (BOOL)needToCreateForwardstopFor2019DeploymentVariant:(id)variant withCompressionTypes:(id)types;
+- (BOOL)readFromURL:(id)l ofType:(id)type error:(id *)error;
+- (BOOL)renameThemeBitSourceFolderTo:(id)to error:(id *)error;
 - (BOOL)shouldAllowHevcCompression;
 - (BOOL)shouldCreate2018ForwardstopForLossless;
-- (BOOL)shouldGenerateDisplayGamut:(unsigned int)a3;
-- (BOOL)shouldGenerateScale:(unsigned int)a3;
-- (CGColorSpace)createCGColorSpaceWithIdentifier:(unint64_t)a3;
+- (BOOL)shouldGenerateDisplayGamut:(unsigned int)gamut;
+- (BOOL)shouldGenerateScale:(unsigned int)scale;
+- (CGColorSpace)createCGColorSpaceWithIdentifier:(unint64_t)identifier;
 - (CoreThemeDocument)init;
-- (CoreThemeDocument)initWithContentsOfURL:(id)a3 ofType:(id)a4 error:(id *)a5;
-- (CoreThemeDocument)initWithType:(id)a3 error:(id *)a4;
-- (CoreThemeDocument)initWithType:(id)a3 targetPlatform:(int64_t)a4 error:(id *)a5;
+- (CoreThemeDocument)initWithContentsOfURL:(id)l ofType:(id)type error:(id *)error;
+- (CoreThemeDocument)initWithType:(id)type error:(id *)error;
+- (CoreThemeDocument)initWithType:(id)type targetPlatform:(int64_t)platform error:(id *)error;
 - (NSURL)themeBitSourceURL;
 - (NSUUID)uuid;
 - (TDCatalogGlobals)catalogGlobals;
 - (const)renditionKeyFormat;
 - (const)untrimmedRenditionKeyFormat;
-- (id)_addAssetsAtFileURLs:(id)a3 createProductions:(BOOL)a4 referenceFiles:(BOOL)a5 bitSource:(id)a6 customInfos:(id)a7 sortedCustomInfos:(id *)a8;
-- (id)_addAssetsFromCustomAssetInfos:(id)a3 bitSource:(id)a4 error:(id *)a5;
-- (id)_cachedConstantsForEntity:(id)a3;
-- (id)_createNamedElementWithIdentifier:(int64_t)a3;
+- (id)_addAssetsAtFileURLs:(id)ls createProductions:(BOOL)productions referenceFiles:(BOOL)files bitSource:(id)source customInfos:(id)infos sortedCustomInfos:(id *)customInfos;
+- (id)_addAssetsFromCustomAssetInfos:(id)infos bitSource:(id)source error:(id *)error;
+- (id)_cachedConstantsForEntity:(id)entity;
+- (id)_createNamedElementWithIdentifier:(int64_t)identifier;
 - (id)_createNamedElementWithNextAvailableIdentifier;
-- (id)_createPhotoshopElementProductionWithAsset:(id)a3;
-- (id)_customizedSchemaDefinitionsForEntity:(id)a3;
+- (id)_createPhotoshopElementProductionWithAsset:(id)asset;
+- (id)_customizedSchemaDefinitionsForEntity:(id)entity;
 - (id)_genericPartDefinition;
-- (id)_iconLayerStackFromLayerStackRendition:(id)a3 withName:(id)a4 matchingAppearance:(id)a5 fallbackAppearance:(id)a6 error:(id *)a7;
-- (id)_namedColorFromColorRendition:(id)a3;
-- (id)_namedGradientFromGradientRendition:(id)a3 matchingAppearance:(id)a4 fallbackAppearance:(id)a5;
+- (id)_iconLayerStackFromLayerStackRendition:(id)rendition withName:(id)name matchingAppearance:(id)appearance fallbackAppearance:(id)fallbackAppearance error:(id *)error;
+- (id)_namedColorFromColorRendition:(id)rendition;
+- (id)_namedGradientFromGradientRendition:(id)rendition matchingAppearance:(id)appearance fallbackAppearance:(id)fallbackAppearance;
 - (id)_namedImageEffectPartDefinition;
 - (id)_namedImagePartDefinition;
 - (id)_namedTextEffectPartDefinition;
-- (id)_predicateForRenditionKeySpec:(id)a3;
-- (id)_renditionInSet:(id)a3 matchingAppearance:(id)a4;
-- (id)_sizeIndexesByNameFromNamedAssetImportInfos:(id)a3;
-- (id)_themeBitSource:(id *)a3;
-- (id)_themeBitSourceForReferencedFilesAtURLs:(id)a3 createIfNecessary:(BOOL)a4;
-- (id)allObjectsForEntity:(id)a3 withSortDescriptors:(id)a4;
-- (id)appearanceWithIdentifier:(int64_t)a3;
-- (id)appearanceWithIdentifier:(int64_t)a3 name:(id)a4 createIfNeeded:(BOOL)a5;
+- (id)_predicateForRenditionKeySpec:(id)spec;
+- (id)_renditionInSet:(id)set matchingAppearance:(id)appearance;
+- (id)_sizeIndexesByNameFromNamedAssetImportInfos:(id)infos;
+- (id)_themeBitSource:(id *)source;
+- (id)_themeBitSourceForReferencedFilesAtURLs:(id)ls createIfNecessary:(BOOL)necessary;
+- (id)allObjectsForEntity:(id)entity withSortDescriptors:(id)descriptors;
+- (id)appearanceWithIdentifier:(int64_t)identifier;
+- (id)appearanceWithIdentifier:(int64_t)identifier name:(id)name createIfNeeded:(BOOL)needed;
 - (id)artworkFormat;
-- (id)assetAtFileURL:(id)a3;
-- (id)assetAtPath:(id)a3;
+- (id)assetAtFileURL:(id)l;
+- (id)assetAtPath:(id)path;
 - (id)compressionTypes;
-- (id)constantWithName:(id)a3 forIdentifier:(int64_t)a4;
-- (id)createAssetWithName:(id)a3 inCategory:(id)a4 forThemeBitSource:(id)a5;
-- (id)createEffectStyleProductionForPartDefinition:(id)a3 withNameIdentifier:(id)a4;
-- (id)createElementProductionWithAsset:(id)a3;
-- (id)createNamedColorProductionsForImportInfos:(id)a3 error:(id *)a4;
-- (id)createNamedEffectProductionWithName:(id)a3 isText:(BOOL)a4;
-- (id)createNamedGradientProductionsForImportInfos:(id)a3 error:(id *)a4;
-- (id)createProductionWithRenditionGroup:(id)a3 forPartDefinition:(id)a4 artworkFormat:(id)a5 nameElement:(id)a6 shouldReplaceExisting:(BOOL)a7 error:(id *)a8;
-- (id)createReferencePNGForSchemaRendition:(id)a3 withPartDefinition:(id)a4 atLocation:(id)a5 error:(id *)a6;
-- (id)createTextStyleProductionsForImportInfos:(id)a3 error:(id *)a4;
-- (id)defaultBaseFileNameForSchemaRendition:(id)a3 withPartDefinition:(id)a4;
-- (id)defaultPNGFileNameForSchemaRendition:(id)a3 withPartDefinition:(id)a4;
-- (id)defaultPathComponentsForPartDefinition:(id)a3;
+- (id)constantWithName:(id)name forIdentifier:(int64_t)identifier;
+- (id)createAssetWithName:(id)name inCategory:(id)category forThemeBitSource:(id)source;
+- (id)createEffectStyleProductionForPartDefinition:(id)definition withNameIdentifier:(id)identifier;
+- (id)createElementProductionWithAsset:(id)asset;
+- (id)createNamedColorProductionsForImportInfos:(id)infos error:(id *)error;
+- (id)createNamedEffectProductionWithName:(id)name isText:(BOOL)text;
+- (id)createNamedGradientProductionsForImportInfos:(id)infos error:(id *)error;
+- (id)createProductionWithRenditionGroup:(id)group forPartDefinition:(id)definition artworkFormat:(id)format nameElement:(id)element shouldReplaceExisting:(BOOL)existing error:(id *)error;
+- (id)createReferencePNGForSchemaRendition:(id)rendition withPartDefinition:(id)definition atLocation:(id)location error:(id *)error;
+- (id)createTextStyleProductionsForImportInfos:(id)infos error:(id *)error;
+- (id)defaultBaseFileNameForSchemaRendition:(id)rendition withPartDefinition:(id)definition;
+- (id)defaultPNGFileNameForSchemaRendition:(id)rendition withPartDefinition:(id)definition;
+- (id)defaultPathComponentsForPartDefinition:(id)definition;
 - (id)deploymentTargets;
 - (id)directions;
 - (id)displayGamuts;
-- (id)elementProductionsWithName:(id)a3;
+- (id)elementProductionsWithName:(id)name;
 - (id)featureSetClasses;
-- (id)folderNameFromRenditionKey:(id)a3 forPartDefinition:(id)a4;
+- (id)folderNameFromRenditionKey:(id)key forPartDefinition:(id)definition;
 - (id)glyphRenderingModes;
 - (id)glyphWeights;
 - (id)glyphsSizes;
 - (id)historian;
 - (id)idioms;
-- (id)localizationWithIdentifier:(int64_t)a3;
-- (id)localizationWithIdentifier:(int64_t)a3 name:(id)a4 createIfNeeded:(BOOL)a5;
+- (id)localizationWithIdentifier:(int64_t)identifier;
+- (id)localizationWithIdentifier:(int64_t)identifier name:(id)name createIfNeeded:(BOOL)needed;
 - (id)managedObjectModel;
-- (id)mappingForPhotoshopLayerIndex:(int64_t)a3 themeDrawingLayerIdentifier:(int64_t)a4;
-- (id)metadatumForKey:(id)a3;
-- (id)minimalDisplayNameForThemeConstant:(id)a3;
-- (id)namedArtworkProductionWithName:(id)a3;
+- (id)mappingForPhotoshopLayerIndex:(int64_t)index themeDrawingLayerIdentifier:(int64_t)identifier;
+- (id)metadatumForKey:(id)key;
+- (id)minimalDisplayNameForThemeConstant:(id)constant;
+- (id)namedArtworkProductionWithName:(id)name;
 - (id)namedArtworkProductions;
-- (id)namedEffectProductionWithName:(id)a3;
+- (id)namedEffectProductionWithName:(id)name;
 - (id)namedEffectProductions;
-- (id)namedElementWithName:(id)a3;
-- (id)namedElementsForElementDefinition:(id)a3;
-- (id)newObjectForEntity:(id)a3;
-- (id)objectsForEntity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5;
-- (id)objectsForEntity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6;
-- (id)objectsForEntity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5 withContext:(id)a6 error:(id *)a7;
-- (id)pathToAsset:(id)a3;
-- (id)persistentStoreTypeForFileType:(id)a3;
-- (id)psdImageRefForAsset:(id)a3;
+- (id)namedElementWithName:(id)name;
+- (id)namedElementsForElementDefinition:(id)definition;
+- (id)newObjectForEntity:(id)entity;
+- (id)objectsForEntity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors;
+- (id)objectsForEntity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error;
+- (id)objectsForEntity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors withContext:(id)context error:(id *)error;
+- (id)pathToAsset:(id)asset;
+- (id)persistentStoreTypeForFileType:(id)type;
+- (id)psdImageRefForAsset:(id)asset;
 - (id)relativePathToProductionData;
-- (id)renditionsMatchingRenditionKeySpec:(id)a3;
+- (id)renditionsMatchingRenditionKeySpec:(id)spec;
 - (id)rootPathForProductionData;
-- (id)schemaDefinitionWithElementID:(int64_t)a3;
-- (id)schemaPartDefinitionWithElementID:(int64_t)a3 partID:(int64_t)a4;
+- (id)schemaDefinitionWithElementID:(int64_t)d;
+- (id)schemaPartDefinitionWithElementID:(int64_t)d partID:(int64_t)iD;
 - (id)sizeClasses;
-- (id)slicesComputedForImageSize:(CGSize)a3 usingSliceInsets:(id)a4 resizableSliceSize:(CGSize)a5 withRenditionType:(int64_t)a6;
+- (id)slicesComputedForImageSize:(CGSize)size usingSliceInsets:(id)insets resizableSliceSize:(CGSize)sliceSize withRenditionType:(int64_t)type;
 - (id)textureFaces;
 - (id)themeBitSourceFolderName;
-- (id)themeConstant:(id)a3 withIdentifier:(int64_t)a4;
-- (id)updateAutomaticTexturesForCustomInfos:(id)a3 allTextureInfos:(id)a4;
-- (id)updateToEmbeddedSchemaVersion2AndReturnAlertString:(id *)a3;
-- (id)updatedVersionsMetadataFromMetadata:(id)a3;
+- (id)themeConstant:(id)constant withIdentifier:(int64_t)identifier;
+- (id)updateAutomaticTexturesForCustomInfos:(id)infos allTextureInfos:(id)textureInfos;
+- (id)updateToEmbeddedSchemaVersion2AndReturnAlertString:(id *)string;
+- (id)updatedVersionsMetadataFromMetadata:(id)metadata;
 - (int)renditionKeySemantics;
-- (int64_t)_compareFlattenedKeySpec1:(id)a3 toKeySpec2:(id)a4;
+- (int64_t)_compareFlattenedKeySpec1:(id)spec1 toKeySpec2:(id)spec2;
 - (int64_t)targetPlatform;
 - (uint64_t)_tidyUpLayerStacks;
 - (uint64_t)catalogGlobals;
 - (uint64_t)checksum;
 - (unint64_t)colorSpaceID;
-- (unint64_t)countForEntity:(id)a3 withPredicate:(id)a4;
-- (unint64_t)countOfRenditionsMatchingRenditionKeySpec:(id)a3;
-- (unint64_t)countOfRenditionsMatchingRenditionKeySpecs:(id)a3;
+- (unint64_t)countForEntity:(id)entity withPredicate:(id)predicate;
+- (unint64_t)countOfRenditionsMatchingRenditionKeySpec:(id)spec;
+- (unint64_t)countOfRenditionsMatchingRenditionKeySpecs:(id)specs;
 - (unsigned)checksum;
-- (void)_addLayerReference:(id)a3 toMutableIconLayerStack:(id)a4 matchingAppearance:(id)a5 fallbackAppearance:(id)a6 error:(id *)a7;
-- (void)_addLegacyIconAssetsForLayerStack:(id)a3 forAppearance:(id)a4 renderedAppearance:(unint64_t)a5 renderingMode:(id)a6 error:(id *)a7;
-- (void)_addLegacyIconAssetsForLayerStackProduction:(id)a3 withName:(id)a4 error:(id *)a5;
-- (void)_addResolvedLayerReferenceToFlattenedImageRendition:(id)a3 usingArtworkRendition:(id)a4 andLayerReference:(id)a5;
+- (void)_addLayerReference:(id)reference toMutableIconLayerStack:(id)stack matchingAppearance:(id)appearance fallbackAppearance:(id)fallbackAppearance error:(id *)error;
+- (void)_addLegacyIconAssetsForLayerStack:(id)stack forAppearance:(id)appearance renderedAppearance:(unint64_t)renderedAppearance renderingMode:(id)mode error:(id *)error;
+- (void)_addLegacyIconAssetsForLayerStackProduction:(id)production withName:(id)name error:(id *)error;
+- (void)_addResolvedLayerReferenceToFlattenedImageRendition:(id)rendition usingArtworkRendition:(id)artworkRendition andLayerReference:(id)reference;
 - (void)_automaticP3GenerationFromSRGB;
 - (void)_automaticSRGBGenerationFromP3;
 - (void)_backwardsCompatibilityPatchForLayoutDirection;
 - (void)_configureAfterFirstSave;
 - (void)_createForwardstopRenditions;
-- (void)_delete:(id)a3 withRendition:(id)a4;
+- (void)_delete:(id)_delete withRendition:(id)rendition;
 - (void)_generateWatchImages;
-- (void)_getFilename:(id *)a3 scaleFactor:(unsigned int *)a4 category:(id *)a5 bitSource:(id *)a6 forFileURL:(id)a7;
+- (void)_getFilename:(id *)filename scaleFactor:(unsigned int *)factor category:(id *)category bitSource:(id *)source forFileURL:(id)l;
 - (void)_groupPackableRenditions;
-- (void)_insertRendition:(id)a3 forKey:(id)a4;
+- (void)_insertRendition:(id)rendition forKey:(id)key;
 - (void)_makeRadiosityImages;
 - (void)_makeSolidLayerStackTextures;
-- (void)_normalizeRenditionKeySpec:(id)a3 forSchemaRendition:(id)a4;
+- (void)_normalizeRenditionKeySpec:(id)spec forSchemaRendition:(id)rendition;
 - (void)_optimizeForDeviceTraits;
 - (void)_processModelProductions;
-- (void)_removeRedundantPDFBasedRenditions:(id)a3;
-- (void)_removeRedundantPDFBasedRenditionsForAssets:(id)a3;
+- (void)_removeRedundantPDFBasedRenditions:(id)renditions;
+- (void)_removeRedundantPDFBasedRenditionsForAssets:(id)assets;
 - (void)_tidyUpLayerStacks;
 - (void)_tidyUpRecognitionImages;
 - (void)_updateDeviceTraits;
-- (void)_updateKeyFormatWithContext:(id)a3;
-- (void)addDeviceTraitForOptimization:(id)a3;
-- (void)addThemeBitSourceAtPath:(id)a3 createProductions:(BOOL)a4;
-- (void)changedObjectsNotification:(id)a3;
-- (void)convertColorsFromColorSpaceWithIdentifier:(unint64_t)a3 toIdentifier:(unint64_t)a4;
-- (void)createForwardstops:(id)a3 withCompressionTypes:(id)a4 withDeploymentTargets:(id)a5;
-- (void)createNamedRecognitionObjectsForAssets:(id)a3 customInfos:(id)a4 error:(id *)a5;
-- (void)createNamedRenditionGroupProductionsForImportInfos:(id)a3 error:(id *)a4;
+- (void)_updateKeyFormatWithContext:(id)context;
+- (void)addDeviceTraitForOptimization:(id)optimization;
+- (void)addThemeBitSourceAtPath:(id)path createProductions:(BOOL)productions;
+- (void)changedObjectsNotification:(id)notification;
+- (void)convertColorsFromColorSpaceWithIdentifier:(unint64_t)identifier toIdentifier:(unint64_t)toIdentifier;
+- (void)createForwardstops:(id)forwardstops withCompressionTypes:(id)types withDeploymentTargets:(id)targets;
+- (void)createNamedRecognitionObjectsForAssets:(id)assets customInfos:(id)infos error:(id *)error;
+- (void)createNamedRenditionGroupProductionsForImportInfos:(id)infos error:(id *)error;
 - (void)dealloc;
-- (void)deleteNamedAssets:(id)a3 shouldDeleteAssetFiles:(BOOL)a4 completionHandler:(id)a5;
-- (void)deleteObject:(id)a3;
-- (void)deleteObjects:(id)a3;
-- (void)exportCursorsToURL:(id)a3;
-- (void)importCursorsFromURL:(id)a3 getUnusedImportedCursors:(id *)a4 getUnupdatedCursors:(id *)a5;
-- (void)importCustomAssetsWithImportInfos:(id)a3 completionHandler:(id)a4;
-- (void)importNamedAssetsFromFileURLs:(id)a3 referenceFiles:(BOOL)a4 completionHandler:(id)a5;
-- (void)importNamedAssetsWithImportInfos:(id)a3 referenceFiles:(BOOL)a4 completionHandler:(id)a5;
-- (void)incrementallyPackRenditionsSinceDate:(id)a3 error:(id *)a4;
-- (void)packRenditionsError:(id *)a3;
+- (void)deleteNamedAssets:(id)assets shouldDeleteAssetFiles:(BOOL)files completionHandler:(id)handler;
+- (void)deleteObject:(id)object;
+- (void)deleteObjects:(id)objects;
+- (void)exportCursorsToURL:(id)l;
+- (void)importCursorsFromURL:(id)l getUnusedImportedCursors:(id *)cursors getUnupdatedCursors:(id *)unupdatedCursors;
+- (void)importCustomAssetsWithImportInfos:(id)infos completionHandler:(id)handler;
+- (void)importNamedAssetsFromFileURLs:(id)ls referenceFiles:(BOOL)files completionHandler:(id)handler;
+- (void)importNamedAssetsWithImportInfos:(id)infos referenceFiles:(BOOL)files completionHandler:(id)handler;
+- (void)incrementallyPackRenditionsSinceDate:(id)date error:(id *)error;
+- (void)packRenditionsError:(id *)error;
 - (void)primeArrayControllers;
 - (void)resetThemeConstants;
-- (void)setMetadatum:(id)a3 forKey:(id)a4;
-- (void)setMinimumDeploymentVersion:(id)a3;
-- (void)setOptimizeForDeviceTraits:(id)a3;
-- (void)setRelativePathToProductionData:(id)a3;
-- (void)setTargetPlatform:(int64_t)a3;
-- (void)setUuid:(id)a3;
-- (void)updateRenditionSpec:(id)a3;
+- (void)setMetadatum:(id)metadatum forKey:(id)key;
+- (void)setMinimumDeploymentVersion:(id)version;
+- (void)setOptimizeForDeviceTraits:(id)traits;
+- (void)setRelativePathToProductionData:(id)data;
+- (void)setTargetPlatform:(int64_t)platform;
+- (void)setUuid:(id)uuid;
+- (void)updateRenditionSpec:(id)spec;
 @end
 
 @implementation CoreThemeDocument
@@ -223,13 +223,13 @@
   }
 }
 
-- (void)setMinimumDeploymentVersion:(id)a3
+- (void)setMinimumDeploymentVersion:(id)version
 {
   minimumDeploymentVersion = self->_minimumDeploymentVersion;
-  if (minimumDeploymentVersion != a3)
+  if (minimumDeploymentVersion != version)
   {
 
-    v6 = [a3 copy];
+    v6 = [version copy];
     self->_minimumDeploymentVersion = v6;
     v7 = [(NSString *)v6 componentsSeparatedByString:@"."];
     v8 = [(NSArray *)v7 count];
@@ -264,9 +264,9 @@ LABEL_26:
             goto LABEL_27;
           }
 
-          v15 = [(CoreThemeDocument *)self targetPlatform];
+          targetPlatform = [(CoreThemeDocument *)self targetPlatform];
           majorVersion = self->_majorVersion;
-          if (v15 == 4)
+          if (targetPlatform == 4)
           {
             if (majorVersion >= 2)
             {
@@ -343,9 +343,9 @@ LABEL_27:
   [(CoreThemeDocument *)self _updateDeviceTraits];
 }
 
-- (void)setOptimizeForDeviceTraits:(id)a3
+- (void)setOptimizeForDeviceTraits:(id)traits
 {
-  if (a3)
+  if (traits)
   {
     [(CoreThemeDocument *)self addDeviceTraitForOptimization:?];
   }
@@ -356,9 +356,9 @@ LABEL_27:
   }
 }
 
-- (void)addDeviceTraitForOptimization:(id)a3
+- (void)addDeviceTraitForOptimization:(id)optimization
 {
-  if (a3)
+  if (optimization)
   {
     deviceTraits = self->_deviceTraits;
     if (!deviceTraits)
@@ -367,10 +367,10 @@ LABEL_27:
       self->_deviceTraits = deviceTraits;
     }
 
-    [(NSMutableArray *)deviceTraits addObject:a3];
-    if ([a3 dynamicDisplayModeValue] == 1)
+    [(NSMutableArray *)deviceTraits addObject:optimization];
+    if ([optimization dynamicDisplayModeValue] == 1)
     {
-      v6 = [a3 copyWithZone:{-[CoreThemeDocument zone](self, "zone")}];
+      v6 = [optimization copyWithZone:{-[CoreThemeDocument zone](self, "zone")}];
       [v6 setScale:1.0];
       [v6 setDisplayGamut:@"sRGB"];
       [(NSMutableArray *)self->_deviceTraits addObject:v6];
@@ -378,7 +378,7 @@ LABEL_27:
   }
 }
 
-- (BOOL)shouldGenerateScale:(unsigned int)a3
+- (BOOL)shouldGenerateScale:(unsigned int)scale
 {
   v18 = *MEMORY[0x277D85DE8];
   deviceTraits = self->_deviceTraits;
@@ -398,7 +398,7 @@ LABEL_11:
   {
     v6 = v5;
     v7 = *v14;
-    v8 = a3;
+    scaleCopy = scale;
 LABEL_4:
     v9 = 0;
     while (1)
@@ -409,7 +409,7 @@ LABEL_4:
       }
 
       [*(*(&v13 + 1) + 8 * v9) scale];
-      if (v10 == v8)
+      if (v10 == scaleCopy)
       {
         goto LABEL_11;
       }
@@ -433,7 +433,7 @@ LABEL_12:
   return v5;
 }
 
-- (void)updateRenditionSpec:(id)a3
+- (void)updateRenditionSpec:(id)spec
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -460,17 +460,17 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v5 = [(CoreThemeDocument *)self targetPlatform];
+  targetPlatform = [(CoreThemeDocument *)self targetPlatform];
   v6 = self->_majorVersion;
-  if (v5 != 4)
+  if (targetPlatform != 4)
   {
     if (v6 < 8 || (v11 = 1, v6 == 8) && self->_minorVersion < 0)
     {
       v11 = 0;
     }
 
-    [a3 setAllowsMultiPassEncoding:v11];
-    [a3 setAllowsOptimalRowbytesPacking:v11];
+    [spec setAllowsMultiPassEncoding:v11];
+    [spec setAllowsOptimalRowbytesPacking:v11];
     v12 = self->_majorVersion;
     if (v12 > 8)
     {
@@ -488,13 +488,13 @@ LABEL_16:
 
   v7 = v6 > 1;
 LABEL_18:
-  [a3 setAllowsMultiPassEncoding:v7];
+  [spec setAllowsMultiPassEncoding:v7];
 LABEL_19:
-  [a3 setAllowsOptimalRowbytesPacking:v7];
+  [spec setAllowsOptimalRowbytesPacking:v7];
 LABEL_20:
-  v10 = [(CoreThemeDocument *)self shouldSupportCompactCompression];
+  shouldSupportCompactCompression = [(CoreThemeDocument *)self shouldSupportCompactCompression];
 
-  [a3 setAllowsCompactCompression:v10];
+  [spec setAllowsCompactCompression:shouldSupportCompactCompression];
 }
 
 - (BOOL)shouldAllowHevcCompression
@@ -520,21 +520,21 @@ LABEL_20:
   }
 }
 
-- (void)changedObjectsNotification:(id)a3
+- (void)changedObjectsNotification:(id)notification
 {
-  if ([objc_msgSend(a3 "object")])
+  if ([objc_msgSend(notification "object")])
   {
-    v5 = [a3 userInfo];
-    v6 = [MEMORY[0x277CBEB18] array];
-    [v6 addObjectsFromArray:{objc_msgSend(objc_msgSend(v5, "objectForKey:", *MEMORY[0x277CBE188]), "allObjects")}];
-    [v6 addObjectsFromArray:{objc_msgSend(objc_msgSend(v5, "objectForKey:", *MEMORY[0x277CBE310]), "allObjects")}];
-    v7 = [(CoreThemeDocument *)self historian];
+    userInfo = [notification userInfo];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObjectsFromArray:{objc_msgSend(objc_msgSend(userInfo, "objectForKey:", *MEMORY[0x277CBE188]), "allObjects")}];
+    [array addObjectsFromArray:{objc_msgSend(objc_msgSend(userInfo, "objectForKey:", *MEMORY[0x277CBE310]), "allObjects")}];
+    historian = [(CoreThemeDocument *)self historian];
 
-    [v7 updateEntriesForManagedObjects:v6];
+    [historian updateEntriesForManagedObjects:array];
   }
 }
 
-- (id)_predicateForRenditionKeySpec:(id)a3
+- (id)_predicateForRenditionKeySpec:(id)spec
 {
   v21[29] = *MEMORY[0x277D85DE8];
   v4 = sel_part;
@@ -588,7 +588,7 @@ LABEL_20:
   v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:21];
   do
   {
-    [v8 addObject:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"keySpec.%K == %d", v5, objc_msgSend(a3, "performSelector:", v6))}];
+    [v8 addObject:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"keySpec.%K == %d", v5, objc_msgSend(spec, "performSelector:", v6))}];
     v5 = *(v7 - 1);
     v6 = *v7;
     v7 += 2;
@@ -601,7 +601,7 @@ LABEL_20:
     v10 = v21;
     do
     {
-      v11 = [a3 performSelector:v4];
+      v11 = [spec performSelector:v4];
       if (v11)
       {
         v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"keySpec.%K.identifier == %d", v9, objc_msgSend(v11, "identifier")];
@@ -627,38 +627,38 @@ LABEL_20:
   return v13;
 }
 
-- (void)_getFilename:(id *)a3 scaleFactor:(unsigned int *)a4 category:(id *)a5 bitSource:(id *)a6 forFileURL:(id)a7
+- (void)_getFilename:(id *)filename scaleFactor:(unsigned int *)factor category:(id *)category bitSource:(id *)source forFileURL:(id)l
 {
-  v13 = [a7 lastPathComponent];
-  v14 = [TDAsset scaleFactorFromImageFilename:v13];
+  lastPathComponent = [l lastPathComponent];
+  v14 = [TDAsset scaleFactorFromImageFilename:lastPathComponent];
   v15 = [-[CoreThemeDocument rootPathForProductionData](self "rootPathForProductionData")];
-  if (!(a5 | a6))
+  if (!(category | source))
   {
     goto LABEL_26;
   }
 
   v16 = v15;
-  v17 = [objc_msgSend(a7 "URLByStandardizingPath")];
+  v17 = [objc_msgSend(l "URLByStandardizingPath")];
   if ([v17 rangeOfString:v16 options:8])
   {
-    if (a5)
+    if (category)
     {
-      *a5 = 0;
+      *category = 0;
     }
 
-    if (a6)
+    if (source)
     {
-      *a6 = 0;
+      *source = 0;
     }
 
     goto LABEL_26;
   }
 
   v18 = [objc_msgSend(v17 substringFromIndex:{objc_msgSend(v16, "length") + (objc_msgSend(objc_msgSend(v16, "substringWithRange:", objc_msgSend(v16, "length") - 1, 1), "isEqualToString:", @"/", "stringByDeletingLastPathComponent"}];
-  v19 = [(__CFString *)v18 pathComponents];
-  if ((!-[CoreThemeDocument metadatumForKey:](self, "metadatumForKey:", @"hasNoBitSource") || -[CoreThemeDocument isCustomLook](self, "isCustomLook")) && [v19 count])
+  pathComponents = [(__CFString *)v18 pathComponents];
+  if ((!-[CoreThemeDocument metadatumForKey:](self, "metadatumForKey:", @"hasNoBitSource") || -[CoreThemeDocument isCustomLook](self, "isCustomLook")) && [pathComponents count])
   {
-    v20 = [v19 objectAtIndex:0];
+    v20 = [pathComponents objectAtIndex:0];
   }
 
   else
@@ -666,10 +666,10 @@ LABEL_20:
     v20 = &stru_28599CA78;
   }
 
-  if (-[__CFString length](v20, "length") && [v19 count] >= 2)
+  if (-[__CFString length](v20, "length") && [pathComponents count] >= 2)
   {
     v18 = [(__CFString *)v18 substringFromIndex:[(__CFString *)v20 length]+ 1];
-    if (!a6)
+    if (!source)
     {
       goto LABEL_24;
     }
@@ -682,7 +682,7 @@ LABEL_20:
       v18 = &stru_28599CA78;
     }
 
-    if (!a6)
+    if (!source)
     {
       goto LABEL_24;
     }
@@ -699,22 +699,22 @@ LABEL_20:
     v22 = 0;
   }
 
-  *a6 = v22;
+  *source = v22;
 LABEL_24:
-  if (a5)
+  if (category)
   {
-    *a5 = v18;
+    *category = v18;
   }
 
 LABEL_26:
-  if (a3)
+  if (filename)
   {
-    *a3 = v13;
+    *filename = lastPathComponent;
   }
 
-  if (a4)
+  if (factor)
   {
-    *a4 = v14;
+    *factor = v14;
   }
 }
 
@@ -735,12 +735,12 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   return result;
 }
 
-+ (void)_addThemeDocument:(id)a3
++ (void)_addThemeDocument:(id)document
 {
-  [a1 _sharedDocumentList];
+  [self _sharedDocumentList];
   v4 = sDocList;
 
-  [v4 addObject:a3];
+  [v4 addObject:document];
 }
 
 - (CoreThemeDocument)init
@@ -760,8 +760,8 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
     [(CoreThemeDocument *)v2 primeArrayControllers];
     v3 = [TDThreadMOCOrganizer alloc];
     v2->m_mocOrganizer = -[TDThreadMOCOrganizer initWithDocument:mainThread:](v3, "initWithDocument:mainThread:", v2, [MEMORY[0x277CCACC8] currentThread]);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_changedObjectsNotification_ name:*MEMORY[0x277CBE1B8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_changedObjectsNotification_ name:*MEMORY[0x277CBE1B8] object:0];
     -[CoreThemeDocument setTargetPlatform:](v2, "setTargetPlatform:", [objc_opt_class() defaultTargetPlatform]);
     v2->_majorVersion = 0x7FFFFFFF;
     v2->_minorVersion = 0x7FFFFFFF;
@@ -771,19 +771,19 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   return v2;
 }
 
-- (CoreThemeDocument)initWithType:(id)a3 targetPlatform:(int64_t)a4 error:(id *)a5
+- (CoreThemeDocument)initWithType:(id)type targetPlatform:(int64_t)platform error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = CoreThemeDocument;
-  v7 = [(TDPersistentDocument *)&v11 initWithType:a3 error:a5];
+  v7 = [(TDPersistentDocument *)&v11 initWithType:type error:error];
   v8 = v7;
   if (v7)
   {
     v7->_majorVersion = 0x7FFFFFFF;
     v7->_minorVersion = 0x7FFFFFFF;
     v7->_patchVersion = 0x7FFFFFFF;
-    v9 = [(CoreThemeDocument *)v7 buildModelError:a5];
-    [(CoreThemeDocument *)v8 setTargetPlatform:a4];
+    v9 = [(CoreThemeDocument *)v7 buildModelError:error];
+    [(CoreThemeDocument *)v8 setTargetPlatform:platform];
     if (!v9)
     {
 
@@ -794,18 +794,18 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   return v8;
 }
 
-- (CoreThemeDocument)initWithType:(id)a3 error:(id *)a4
+- (CoreThemeDocument)initWithType:(id)type error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = CoreThemeDocument;
-  v5 = [(TDPersistentDocument *)&v8 initWithType:a3 error:?];
+  v5 = [(TDPersistentDocument *)&v8 initWithType:type error:?];
   v6 = v5;
   if (v5)
   {
     v5->_majorVersion = 0x7FFFFFFF;
     v5->_minorVersion = 0x7FFFFFFF;
     v5->_patchVersion = 0x7FFFFFFF;
-    if (![(CoreThemeDocument *)v5 buildModelError:a4])
+    if (![(CoreThemeDocument *)v5 buildModelError:error])
     {
 
       return 0;
@@ -815,18 +815,18 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   return v6;
 }
 
-- (CoreThemeDocument)initWithContentsOfURL:(id)a3 ofType:(id)a4 error:(id *)a5
+- (CoreThemeDocument)initWithContentsOfURL:(id)l ofType:(id)type error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = CoreThemeDocument;
-  v6 = [(TDPersistentDocument *)&v9 initWithContentsOfURL:a3 ofType:a4 error:?];
+  v6 = [(TDPersistentDocument *)&v9 initWithContentsOfURL:l ofType:type error:?];
   v7 = v6;
   if (v6)
   {
     v6->_majorVersion = 0x7FFFFFFF;
     v6->_minorVersion = 0x7FFFFFFF;
     v6->_patchVersion = 0x7FFFFFFF;
-    if (![(CoreThemeDocument *)v6 buildModelError:a5])
+    if (![(CoreThemeDocument *)v6 buildModelError:error])
     {
 
       return 0;
@@ -836,21 +836,21 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   return v7;
 }
 
-+ (id)createConfiguredDocumentAtURL:(id)a3 error:(id *)a4
++ (id)createConfiguredDocumentAtURL:(id)l error:(id *)error
 {
-  v7 = [objc_opt_class() defaultTargetPlatform];
+  defaultTargetPlatform = [objc_opt_class() defaultTargetPlatform];
 
-  return [a1 createConfiguredDocumentAtURL:a3 targetPlatform:v7 error:a4];
+  return [self createConfiguredDocumentAtURL:l targetPlatform:defaultTargetPlatform error:error];
 }
 
-+ (id)createConfiguredDocumentAtURL:(id)a3 targetPlatform:(int64_t)a4 error:(id *)a5
++ (id)createConfiguredDocumentAtURL:(id)l targetPlatform:(int64_t)platform error:(id *)error
 {
-  v8 = [a1 alloc];
-  result = [v8 initWithType:CoreThemeDocumentFileType targetPlatform:a4 error:a5];
+  v8 = [self alloc];
+  result = [v8 initWithType:CoreThemeDocumentFileType targetPlatform:platform error:error];
   if (result)
   {
     v10 = result;
-    [result setFileURL:a3];
+    [result setFileURL:l];
     if ([objc_msgSend(v10 "managedObjectContext")])
     {
       [v10 _configureAfterFirstSave];
@@ -874,10 +874,10 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   return result;
 }
 
-+ (int64_t)dataModelVersionFromMetadata:(id)a3
++ (int64_t)dataModelVersionFromMetadata:(id)metadata
 {
-  v4 = [a3 objectForKey:@"CoreThemeDefinitionDataModelKey"];
-  v5 = [a3 objectForKey:@"NSProThemeDefinitionDataModelKey"];
+  v4 = [metadata objectForKey:@"CoreThemeDefinitionDataModelKey"];
+  v5 = [metadata objectForKey:@"NSProThemeDefinitionDataModelKey"];
   if (v4)
   {
     v5 = v4;
@@ -886,21 +886,21 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   return [v5 integerValue];
 }
 
-+ (id)migrateDocumentAtURL:(id)a3 ofType:(id)a4 error:(id *)a5
++ (id)migrateDocumentAtURL:(id)l ofType:(id)type error:(id *)error
 {
-  v8 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:*MEMORY[0x277CBE2E8] URL:a3 options:0 error:a5];
+  v8 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:*MEMORY[0x277CBE2E8] URL:l options:0 error:error];
   if (!v8)
   {
     return 0;
   }
 
-  v9 = -[CoreThemeDefinitionMigrator initWithURL:oldVersion:newVersion:]([CoreThemeDefinitionMigrator alloc], "initWithURL:oldVersion:newVersion:", a3, [a1 dataModelVersionFromMetadata:v8], objc_msgSend(a1, "dataModelVersion"));
+  v9 = -[CoreThemeDefinitionMigrator initWithURL:oldVersion:newVersion:]([CoreThemeDefinitionMigrator alloc], "initWithURL:oldVersion:newVersion:", l, [self dataModelVersionFromMetadata:v8], objc_msgSend(self, "dataModelVersion"));
   if (!v9)
   {
-    if (a5)
+    if (error)
     {
       v12 = 0;
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Unrecognized document format, migration failed", @"reason"}];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:1 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Unrecognized document format, migration failed", @"reason"}];
       return v12;
     }
 
@@ -908,12 +908,12 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
   }
 
   v10 = v9;
-  [a1 presentMigrationProgress];
-  if ([(CoreThemeDefinitionMigrator *)v10 migrateWithError:a5])
+  [self presentMigrationProgress];
+  if ([(CoreThemeDefinitionMigrator *)v10 migrateWithError:error])
   {
-    v11 = [(CoreThemeDefinitionMigrator *)v10 temporaryMigrationPath];
-    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v11];
-    NSLog(&cfstr_CreatedTempora.isa, v11);
+    temporaryMigrationPath = [(CoreThemeDefinitionMigrator *)v10 temporaryMigrationPath];
+    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:temporaryMigrationPath];
+    NSLog(&cfstr_CreatedTempora.isa, temporaryMigrationPath);
   }
 
   else
@@ -921,7 +921,7 @@ uint64_t __40__CoreThemeDocument__sharedDocumentList__block_invoke()
     v12 = 0;
   }
 
-  [a1 closeMigrationProgress];
+  [self closeMigrationProgress];
   return v12;
 }
 
@@ -952,21 +952,21 @@ uint64_t __28__CoreThemeDocument_dealloc__block_invoke(uint64_t a1, uint64_t a2)
   return [v3 removeItemAtURL:a2 error:0];
 }
 
-- (id)updateToEmbeddedSchemaVersion2AndReturnAlertString:(id *)a3
+- (id)updateToEmbeddedSchemaVersion2AndReturnAlertString:(id *)string
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = [(CoreThemeDocument *)self _namedTextEffectPartDefinition];
-  v23 = [(CoreThemeDocument *)self _namedImageEffectPartDefinition];
+  _namedTextEffectPartDefinition = [(CoreThemeDocument *)self _namedTextEffectPartDefinition];
+  _namedImageEffectPartDefinition = [(CoreThemeDocument *)self _namedImageEffectPartDefinition];
   v5 = [(CoreThemeDocument *)self partWithIdentifier:178];
-  v22 = [MEMORY[0x277CBEB18] array];
-  v21 = [MEMORY[0x277CBEB18] array];
-  v24 = v4;
-  v6 = self;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v24 = _namedTextEffectPartDefinition;
+  selfCopy = self;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"EffectStyleProduction", [MEMORY[0x277CCAC30] predicateWithFormat:@"partDefinition = %@", v4], 0);
+  obj = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"EffectStyleProduction", [MEMORY[0x277CCAC30] predicateWithFormat:@"partDefinition = %@", _namedTextEffectPartDefinition], 0);
   v7 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
@@ -983,13 +983,13 @@ uint64_t __28__CoreThemeDocument_dealloc__block_invoke(uint64_t a1, uint64_t a2)
 
         v11 = *(*(&v29 + 1) + 8 * i);
         [objc_msgSend(v11 "baseKeySpec")];
-        [v11 setPartDefinition:v23];
+        [v11 setPartDefinition:_namedImageEffectPartDefinition];
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v12 = [v11 renditions];
-        v13 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        renditions = [v11 renditions];
+        v13 = [renditions countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v13)
         {
           v14 = v13;
@@ -1000,21 +1000,21 @@ uint64_t __28__CoreThemeDocument_dealloc__block_invoke(uint64_t a1, uint64_t a2)
             {
               if (*v26 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(renditions);
               }
 
               [objc_msgSend(*(*(&v25 + 1) + 8 * j) "keySpec")];
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v14 = [renditions countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v14);
         }
 
-        v17 = -[CoreThemeDocument createEffectStyleProductionForPartDefinition:withNameIdentifier:](v6, "createEffectStyleProductionForPartDefinition:withNameIdentifier:", v24, [objc_msgSend(v11 "name")]);
-        [v22 addObject:{objc_msgSend(objc_msgSend(v11, "name"), "name")}];
-        [v21 addObject:v17];
+        v17 = -[CoreThemeDocument createEffectStyleProductionForPartDefinition:withNameIdentifier:](selfCopy, "createEffectStyleProductionForPartDefinition:withNameIdentifier:", v24, [objc_msgSend(v11 "name")]);
+        [array addObject:{objc_msgSend(objc_msgSend(v11, "name"), "name")}];
+        [array2 addObject:v17];
       }
 
       v8 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -1058,37 +1058,37 @@ uint64_t __28__CoreThemeDocument_dealloc__block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (id)_cachedConstantsForEntity:(id)a3
+- (id)_cachedConstantsForEntity:(id)entity
 {
   v5 = [(NSMutableDictionary *)self->cachedConstantArrays objectForKey:?];
   if (!v5)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"identifier" ascending:1];
-    v5 = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self, "allObjectsForEntity:withSortDescriptors:", a3, [MEMORY[0x277CBEA60] arrayWithObject:v6]);
+    v5 = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self, "allObjectsForEntity:withSortDescriptors:", entity, [MEMORY[0x277CBEA60] arrayWithObject:v6]);
 
     if (v5)
     {
-      [(NSMutableDictionary *)self->cachedConstantArrays setObject:v5 forKey:a3];
+      [(NSMutableDictionary *)self->cachedConstantArrays setObject:v5 forKey:entity];
     }
   }
 
   return v5;
 }
 
-- (id)themeConstant:(id)a3 withIdentifier:(int64_t)a4
+- (id)themeConstant:(id)constant withIdentifier:(int64_t)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a4 > 0xFFFFFFFE)
+  if (identifier > 0xFFFFFFFE)
   {
     goto LABEL_13;
   }
 
-  v4 = a4;
+  identifierCopy = identifier;
   v7 = [(CoreThemeDocument *)self _cachedConstantsForEntity:?];
   if (![v7 count])
   {
     v8 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"identifier" ascending:1];
-    v7 = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self, "allObjectsForEntity:withSortDescriptors:", a3, [MEMORY[0x277CBEA60] arrayWithObject:v8]);
+    v7 = -[CoreThemeDocument allObjectsForEntity:withSortDescriptors:](self, "allObjectsForEntity:withSortDescriptors:", constant, [MEMORY[0x277CBEA60] arrayWithObject:v8]);
   }
 
   v18 = 0u;
@@ -1110,7 +1110,7 @@ LABEL_6:
       }
 
       v13 = *(*(&v16 + 1) + 8 * v12);
-      if ([v13 identifier] == v4)
+      if ([v13 identifier] == identifierCopy)
       {
         break;
       }
@@ -1139,9 +1139,9 @@ LABEL_13:
   return v13;
 }
 
-- (id)constantWithName:(id)a3 forIdentifier:(int64_t)a4
+- (id)constantWithName:(id)name forIdentifier:(int64_t)identifier
 {
-  v6 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", a3, [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %ld", a4], 0);
+  v6 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", name, [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %ld", identifier], 0);
   if ([v6 count])
   {
 
@@ -1150,13 +1150,13 @@ LABEL_13:
 
   else
   {
-    v8 = [(CoreThemeDocument *)self newObjectForEntity:a3];
+    v8 = [(CoreThemeDocument *)self newObjectForEntity:name];
 
     return v8;
   }
 }
 
-- (id)psdImageRefForAsset:(id)a3
+- (id)psdImageRefForAsset:(id)asset
 {
   v3 = [-[CoreThemeDocument rootPathForProductionData](self "rootPathForProductionData")];
   if (![objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
@@ -1169,12 +1169,12 @@ LABEL_13:
   return v4;
 }
 
-- (id)appearanceWithIdentifier:(int64_t)a3
+- (id)appearanceWithIdentifier:(int64_t)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
   if (-[NSMutableSet containsObject:](self->_cachedUnknownAppearanceIds, "containsObject:", [MEMORY[0x277CCABB0] numberWithInteger:?]))
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
   else
@@ -1198,8 +1198,8 @@ LABEL_5:
           objc_enumerationMutation(cachedAppearances);
         }
 
-        v5 = *(*(&v14 + 1) + 8 * v10);
-        if ([v5 identifier] == a3)
+        firstObject = *(*(&v14 + 1) + 8 * v10);
+        if ([firstObject identifier] == identifier)
         {
           break;
         }
@@ -1216,47 +1216,47 @@ LABEL_5:
         }
       }
 
-      if (v5)
+      if (firstObject)
       {
         goto LABEL_17;
       }
     }
 
 LABEL_13:
-    v11 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"Appearance", [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %d", a3], 0);
+    v11 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"Appearance", [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %d", identifier], 0);
     if ([v11 count] >= 2)
     {
       [CoreThemeDocument appearanceWithIdentifier:];
     }
 
-    v5 = [v11 firstObject];
-    if (v5)
+    firstObject = [v11 firstObject];
+    if (firstObject)
     {
-      [(NSMutableArray *)self->_cachedAppearances addObject:v5];
+      [(NSMutableArray *)self->_cachedAppearances addObject:firstObject];
     }
   }
 
 LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
-  return v5;
+  return firstObject;
 }
 
-- (id)appearanceWithIdentifier:(int64_t)a3 name:(id)a4 createIfNeeded:(BOOL)a5
+- (id)appearanceWithIdentifier:(int64_t)identifier name:(id)name createIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v9 = [(CoreThemeDocument *)self appearanceWithIdentifier:?];
   if (v9)
   {
     v10 = v9;
-    if (!a4)
+    if (!name)
     {
       return v10;
     }
   }
 
-  else if (!a4 || !v5 || (v10 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", @"Appearance"), [v10 setIdentifier:a3], objc_msgSend(v10, "setName:", a4), -[NSMutableArray addObject:](self->_cachedAppearances, "addObject:", v10), v10, !v10))
+  else if (!name || !neededCopy || (v10 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", @"Appearance"), [v10 setIdentifier:identifier], objc_msgSend(v10, "setName:", name), -[NSMutableArray addObject:](self->_cachedAppearances, "addObject:", v10), v10, !v10))
   {
-    -[NSMutableSet addObject:](self->_cachedUnknownAppearanceIds, "addObject:", [MEMORY[0x277CCABB0] numberWithInteger:a3]);
+    -[NSMutableSet addObject:](self->_cachedUnknownAppearanceIds, "addObject:", [MEMORY[0x277CCABB0] numberWithInteger:identifier]);
     return 0;
   }
 
@@ -1268,12 +1268,12 @@ LABEL_17:
   return v10;
 }
 
-- (id)localizationWithIdentifier:(int64_t)a3
+- (id)localizationWithIdentifier:(int64_t)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
   if (-[NSMutableSet containsObject:](self->_cachedUnknownLocalizationIds, "containsObject:", [MEMORY[0x277CCABB0] numberWithInteger:?]))
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
   else
@@ -1297,8 +1297,8 @@ LABEL_5:
           objc_enumerationMutation(cachedLocalizations);
         }
 
-        v5 = *(*(&v14 + 1) + 8 * v10);
-        if ([v5 identifier] == a3)
+        firstObject = *(*(&v14 + 1) + 8 * v10);
+        if ([firstObject identifier] == identifier)
         {
           break;
         }
@@ -1315,47 +1315,47 @@ LABEL_5:
         }
       }
 
-      if (v5)
+      if (firstObject)
       {
         goto LABEL_17;
       }
     }
 
 LABEL_13:
-    v11 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"Localization", [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %d", a3], 0);
+    v11 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"Localization", [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier = %d", identifier], 0);
     if ([v11 count] >= 2)
     {
       [CoreThemeDocument localizationWithIdentifier:];
     }
 
-    v5 = [v11 firstObject];
-    if (v5)
+    firstObject = [v11 firstObject];
+    if (firstObject)
     {
-      [(NSMutableArray *)self->_cachedLocalizations addObject:v5];
+      [(NSMutableArray *)self->_cachedLocalizations addObject:firstObject];
     }
   }
 
 LABEL_17:
   v12 = *MEMORY[0x277D85DE8];
-  return v5;
+  return firstObject;
 }
 
-- (id)localizationWithIdentifier:(int64_t)a3 name:(id)a4 createIfNeeded:(BOOL)a5
+- (id)localizationWithIdentifier:(int64_t)identifier name:(id)name createIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v10 = [(CoreThemeDocument *)self localizationWithIdentifier:?];
   if (v10)
   {
     v11 = v10;
-    if (!a4)
+    if (!name)
     {
       return v11;
     }
   }
 
-  else if (!a4 || !v5 || (v11 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", @"Localization"), [v11 setIdentifier:a3], objc_msgSend(v11, "setName:", a4), -[NSMutableArray addObject:](self->_cachedLocalizations, "addObject:", v11), v11, !v11))
+  else if (!name || !neededCopy || (v11 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", @"Localization"), [v11 setIdentifier:identifier], objc_msgSend(v11, "setName:", name), -[NSMutableArray addObject:](self->_cachedLocalizations, "addObject:", v11), v11, !v11))
   {
-    -[NSMutableSet addObject:](self->_cachedUnknownLocalizationIds, "addObject:", [MEMORY[0x277CCABB0] numberWithInteger:a3]);
+    -[NSMutableSet addObject:](self->_cachedUnknownLocalizationIds, "addObject:", [MEMORY[0x277CCABB0] numberWithInteger:identifier]);
     return 0;
   }
 
@@ -1367,19 +1367,19 @@ LABEL_17:
   return v11;
 }
 
-- (id)mappingForPhotoshopLayerIndex:(int64_t)a3 themeDrawingLayerIdentifier:(int64_t)a4
+- (id)mappingForPhotoshopLayerIndex:(int64_t)index themeDrawingLayerIdentifier:(int64_t)identifier
 {
-  if (!a3)
+  if (!index)
   {
     return 0;
   }
 
-  v7 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"LayerMapping", [MEMORY[0x277CCAC30] predicateWithFormat:@"photoshopLayerIndex = %d AND themeDrawingLayer.identifier = %d", a3, a4], 0);
+  v7 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"LayerMapping", [MEMORY[0x277CCAC30] predicateWithFormat:@"photoshopLayerIndex = %d AND themeDrawingLayer.identifier = %d", index, identifier], 0);
   if (![v7 count])
   {
-    v10 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"ThemeDrawingLayer" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"identifier = %d", a4), 0), "objectAtIndex:", 0}];
+    v10 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"ThemeDrawingLayer" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"identifier = %d", identifier), 0), "objectAtIndex:", 0}];
     v9 = [(CoreThemeDocument *)self newObjectForEntity:@"LayerMapping"];
-    [v9 setPhotoshopLayerIndex:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", a3)}];
+    [v9 setPhotoshopLayerIndex:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", index)}];
     [v9 setThemeDrawingLayer:v10];
     return v9;
   }
@@ -1387,10 +1387,10 @@ LABEL_17:
   return [v7 objectAtIndex:0];
 }
 
-- (id)allObjectsForEntity:(id)a3 withSortDescriptors:(id)a4
+- (id)allObjectsForEntity:(id)entity withSortDescriptors:(id)descriptors
 {
   v6 = 0;
-  v4 = [(CoreThemeDocument *)self allObjectsForEntity:a3 withSortDescriptors:a4 error:&v6];
+  v4 = [(CoreThemeDocument *)self allObjectsForEntity:entity withSortDescriptors:descriptors error:&v6];
   if (v6)
   {
     [CoreThemeDocument allObjectsForEntity:withSortDescriptors:];
@@ -1399,10 +1399,10 @@ LABEL_17:
   return v4;
 }
 
-- (id)objectsForEntity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5
+- (id)objectsForEntity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors
 {
   v7 = 0;
-  v5 = [(CoreThemeDocument *)self objectsForEntity:a3 withPredicate:a4 sortDescriptors:a5 error:&v7];
+  v5 = [(CoreThemeDocument *)self objectsForEntity:entity withPredicate:predicate sortDescriptors:descriptors error:&v7];
   if (v7)
   {
     [CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:];
@@ -1411,39 +1411,39 @@ LABEL_17:
   return v5;
 }
 
-- (id)objectsForEntity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5 error:(id *)a6
+- (id)objectsForEntity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors error:(id *)error
 {
   v11 = [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")];
 
-  return [(CoreThemeDocument *)self objectsForEntity:a3 withPredicate:a4 sortDescriptors:a5 withContext:v11 error:a6];
+  return [(CoreThemeDocument *)self objectsForEntity:entity withPredicate:predicate sortDescriptors:descriptors withContext:v11 error:error];
 }
 
-- (id)objectsForEntity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5 withContext:(id)a6 error:(id *)a7
+- (id)objectsForEntity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors withContext:(id)context error:(id *)error
 {
   v13 = objc_alloc_init(MEMORY[0x277CBE428]);
-  [v13 setEntity:{objc_msgSend(objc_msgSend(-[CoreThemeDocument managedObjectModel](self, "managedObjectModel"), "entitiesByName"), "objectForKey:", a3)}];
-  if (a4)
+  [v13 setEntity:{objc_msgSend(objc_msgSend(-[CoreThemeDocument managedObjectModel](self, "managedObjectModel"), "entitiesByName"), "objectForKey:", entity)}];
+  if (predicate)
   {
-    [v13 setPredicate:a4];
+    [v13 setPredicate:predicate];
   }
 
-  if (a5)
+  if (descriptors)
   {
-    [v13 setSortDescriptors:a5];
+    [v13 setSortDescriptors:descriptors];
   }
 
-  v14 = [a6 executeFetchRequest:v13 error:a7];
+  v14 = [context executeFetchRequest:v13 error:error];
 
   return v14;
 }
 
-- (unint64_t)countForEntity:(id)a3 withPredicate:(id)a4
+- (unint64_t)countForEntity:(id)entity withPredicate:(id)predicate
 {
   v7 = objc_alloc_init(MEMORY[0x277CBE428]);
-  [v7 setEntity:{objc_msgSend(objc_msgSend(-[CoreThemeDocument managedObjectModel](self, "managedObjectModel"), "entitiesByName"), "objectForKey:", a3)}];
-  if (a4)
+  [v7 setEntity:{objc_msgSend(objc_msgSend(-[CoreThemeDocument managedObjectModel](self, "managedObjectModel"), "entitiesByName"), "objectForKey:", entity)}];
+  if (predicate)
   {
-    [v7 setPredicate:a4];
+    [v7 setPredicate:predicate];
   }
 
   v10 = 0;
@@ -1452,10 +1452,10 @@ LABEL_17:
   return v8;
 }
 
-- (id)newObjectForEntity:(id)a3
+- (id)newObjectForEntity:(id)entity
 {
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  if (v5 != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (currentThread != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
   {
     [CoreThemeDocument newObjectForEntity:];
   }
@@ -1470,62 +1470,62 @@ LABEL_17:
   return v7;
 }
 
-- (void)deleteObjects:(id)a3
+- (void)deleteObjects:(id)objects
 {
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  if (v5 != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (currentThread != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
   {
     [CoreThemeDocument deleteObjects:];
   }
 
-  v6 = [(TDPersistentDocument *)self managedObjectContext];
-  v7 = [a3 objectEnumerator];
-  v8 = [v7 nextObject];
-  if (v8)
+  managedObjectContext = [(TDPersistentDocument *)self managedObjectContext];
+  objectEnumerator = [objects objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v9 = v8;
+    nextObject2 = nextObject;
     do
     {
-      [v6 deleteObject:v9];
-      v9 = [v7 nextObject];
+      [managedObjectContext deleteObject:nextObject2];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v9);
+    while (nextObject2);
   }
 }
 
-- (void)deleteObject:(id)a3
+- (void)deleteObject:(id)object
 {
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  if (v5 != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (currentThread != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
   {
     [CoreThemeDocument deleteObject:];
   }
 
-  v6 = [(TDPersistentDocument *)self managedObjectContext];
+  managedObjectContext = [(TDPersistentDocument *)self managedObjectContext];
 
-  [v6 deleteObject:a3];
+  [managedObjectContext deleteObject:object];
 }
 
-- (id)minimalDisplayNameForThemeConstant:(id)a3
+- (id)minimalDisplayNameForThemeConstant:(id)constant
 {
-  v4 = [a3 displayName];
-  v5 = [a3 identifier];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d-", v5];
-  v7 = [v4 stringByReplacingOccurrencesOfString:@" " withString:&stru_28599CA78];
+  displayName = [constant displayName];
+  identifier = [constant identifier];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d-", identifier];
+  v7 = [displayName stringByReplacingOccurrencesOfString:@" " withString:&stru_28599CA78];
 
   return [v7 stringByReplacingOccurrencesOfString:v6 withString:&stru_28599CA78];
 }
 
-- (id)folderNameFromRenditionKey:(id)a3 forPartDefinition:(id)a4
+- (id)folderNameFromRenditionKey:(id)key forPartDefinition:(id)definition
 {
-  v7 = [a4 partFeatures];
-  v8 = [a4 element];
-  v9 = [objc_msgSend(v8 "displayName")];
-  if ([objc_msgSend(v8 "parts")] < 2)
+  partFeatures = [definition partFeatures];
+  element = [definition element];
+  v9 = [objc_msgSend(element "displayName")];
+  if ([objc_msgSend(element "parts")] < 2)
   {
     v10 = 0;
-    if ((v7 & 0x200) != 0)
+    if ((partFeatures & 0x200) != 0)
     {
       goto LABEL_3;
     }
@@ -1533,8 +1533,8 @@ LABEL_17:
 
   else
   {
-    v10 = [objc_msgSend(objc_msgSend(a4 "displayName")];
-    if ((v7 & 0x200) != 0)
+    v10 = [objc_msgSend(objc_msgSend(definition "displayName")];
+    if ((partFeatures & 0x200) != 0)
     {
 LABEL_3:
       v11 = 0;
@@ -1542,11 +1542,11 @@ LABEL_3:
     }
   }
 
-  v11 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument sizeWithIdentifier:](self, "sizeWithIdentifier:", [a3 themeSize]));
+  v11 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument sizeWithIdentifier:](self, "sizeWithIdentifier:", [key themeSize]));
 LABEL_6:
-  if ((v7 & 0x38) != 0)
+  if ((partFeatures & 0x38) != 0)
   {
-    v12 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", [a3 themeDirection]));
+    v12 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", [key themeDirection]));
   }
 
   else
@@ -1554,17 +1554,17 @@ LABEL_6:
     v12 = 0;
   }
 
-  if ((~v7 & 0x10004) != 0)
+  if ((~partFeatures & 0x10004) != 0)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument presentationStateWithIdentifier:](self, "presentationStateWithIdentifier:", [a3 themePresentationState]));
+    v13 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument presentationStateWithIdentifier:](self, "presentationStateWithIdentifier:", [key themePresentationState]));
   }
 
-  v14 = [a3 themeScale];
+  themeScale = [key themeScale];
   if (v10)
   {
     v9 = [v9 stringByAppendingFormat:@"_%@", v10];
@@ -1585,7 +1585,7 @@ LABEL_6:
     v9 = [v9 stringByAppendingFormat:@"_%@", v13];
   }
 
-  if (v14 != 2)
+  if (themeScale != 2)
   {
     return v9;
   }
@@ -1593,20 +1593,20 @@ LABEL_6:
   return [v9 stringByAppendingString:@"@2x"];
 }
 
-- (id)defaultPNGFileNameForSchemaRendition:(id)a3 withPartDefinition:(id)a4
+- (id)defaultPNGFileNameForSchemaRendition:(id)rendition withPartDefinition:(id)definition
 {
-  v4 = [(CoreThemeDocument *)self defaultBaseFileNameForSchemaRendition:a3 withPartDefinition:a4];
+  v4 = [(CoreThemeDocument *)self defaultBaseFileNameForSchemaRendition:rendition withPartDefinition:definition];
 
   return [v4 stringByAppendingPathExtension:@"png"];
 }
 
-- (id)defaultBaseFileNameForSchemaRendition:(id)a3 withPartDefinition:(id)a4
+- (id)defaultBaseFileNameForSchemaRendition:(id)rendition withPartDefinition:(id)definition
 {
-  v7 = [a4 partFeatures];
-  v8 = [objc_alloc(MEMORY[0x277D026C8]) initWithKeyList:{objc_msgSend(a3, "key")}];
-  v9 = [(CoreThemeDocument *)self folderNameFromRenditionKey:v8 forPartDefinition:a4];
-  v10 = [v8 themeScale];
-  if (v10 == 2)
+  partFeatures = [definition partFeatures];
+  v8 = [objc_alloc(MEMORY[0x277D026C8]) initWithKeyList:{objc_msgSend(rendition, "key")}];
+  v9 = [(CoreThemeDocument *)self folderNameFromRenditionKey:v8 forPartDefinition:definition];
+  themeScale = [v8 themeScale];
+  if (themeScale == 2)
   {
     v11 = @"@2x";
     v9 = [v9 stringByReplacingOccurrencesOfString:@"@2x" withString:&stru_28599CA78];
@@ -1617,7 +1617,7 @@ LABEL_6:
     v11 = 0;
   }
 
-  if ((*&v7 & 0x10004) == 4)
+  if ((*&partFeatures & 0x10004) == 4)
   {
     v12 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument presentationStateWithIdentifier:](self, "presentationStateWithIdentifier:", [v8 themePresentationState]));
   }
@@ -1633,12 +1633,12 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  if ((v7 & 0x1000) == 0)
+  if ((partFeatures & 0x1000) == 0)
   {
     v13 = -[CoreThemeDocument stateWithIdentifier:](self, "stateWithIdentifier:", [v8 themeState]);
 LABEL_11:
     v14 = [(CoreThemeDocument *)self minimalDisplayNameForThemeConstant:v13];
-    if ((v7 & 0x4000) == 0)
+    if ((partFeatures & 0x4000) == 0)
     {
       goto LABEL_12;
     }
@@ -1647,10 +1647,10 @@ LABEL_11:
   }
 
   v14 = 0;
-  if ((v7 & 0x4000) == 0)
+  if ((partFeatures & 0x4000) == 0)
   {
 LABEL_12:
-    if (v7)
+    if (partFeatures)
     {
       v15 = -[CoreThemeDocument minimalDisplayNameForThemeConstant:](self, "minimalDisplayNameForThemeConstant:", -[CoreThemeDocument valueWithIdentifier:](self, "valueWithIdentifier:", [v8 themeValue]));
       goto LABEL_17;
@@ -1667,14 +1667,14 @@ LABEL_19:
   }
 
 LABEL_15:
-  v16 = [a4 cuiPartDefinition];
-  v17 = [v8 themeDimension1];
-  if (v17 >= [objc_msgSend(MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self, "targetPlatform")), "dimensionDefinitionCountForPartDefinition:", v16}])
+  cuiPartDefinition = [definition cuiPartDefinition];
+  themeDimension1 = [v8 themeDimension1];
+  if (themeDimension1 >= [objc_msgSend(MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self, "targetPlatform")), "dimensionDefinitionCountForPartDefinition:", cuiPartDefinition}])
   {
     goto LABEL_19;
   }
 
-  v15 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithUTF8String:{*(v16 + 32 * v17 + 64)), "stringByReplacingOccurrencesOfString:withString:", @" ", &stru_28599CA78}];
+  v15 = [objc_msgSend(MEMORY[0x277CCACA8] stringWithUTF8String:{*(cuiPartDefinition + 32 * themeDimension1 + 64)), "stringByReplacingOccurrencesOfString:withString:", @" ", &stru_28599CA78}];
 LABEL_17:
   v18 = v15;
   if (v12)
@@ -1694,7 +1694,7 @@ LABEL_21:
     v9 = [v9 stringByAppendingFormat:@"_%@", v18];
   }
 
-  if (v10 == 2)
+  if (themeScale == 2)
   {
     v9 = [v9 stringByAppendingFormat:@"%@", v11];
   }
@@ -1702,20 +1702,20 @@ LABEL_21:
   return v9;
 }
 
-- (id)defaultPathComponentsForPartDefinition:(id)a3
+- (id)defaultPathComponentsForPartDefinition:(id)definition
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "element")];
-  v5 = [objc_msgSend(a3 "element")];
+  v4 = [objc_msgSend(objc_msgSend(definition "element")];
+  v5 = [objc_msgSend(definition "element")];
 
   return [v4 stringByAppendingPathComponent:v5];
 }
 
-- (id)createReferencePNGForSchemaRendition:(id)a3 withPartDefinition:(id)a4 atLocation:(id)a5 error:(id *)a6
+- (id)createReferencePNGForSchemaRendition:(id)rendition withPartDefinition:(id)definition atLocation:(id)location error:(id *)error
 {
-  v10 = [(CoreThemeDocument *)self defaultPNGFileNameForSchemaRendition:a3 withPartDefinition:a4];
-  if (a5)
+  v10 = [(CoreThemeDocument *)self defaultPNGFileNameForSchemaRendition:rendition withPartDefinition:definition];
+  if (location)
   {
-    v11 = [a5 URLByAppendingPathComponent:v10];
+    v11 = [location URLByAppendingPathComponent:v10];
     if (([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] & 1) == 0)
     {
       [(CoreThemeDocument *)self assetManagementDelegate];
@@ -1725,15 +1725,15 @@ LABEL_21:
       }
 
       v12 = CGImageDestinationCreateWithURL(v11, @"public.png", 1uLL, 0);
-      CGImageDestinationAddImage(v12, [objc_msgSend(a3 "referenceImage")], 0);
+      CGImageDestinationAddImage(v12, [objc_msgSend(rendition "referenceImage")], 0);
       v13 = CGImageDestinationFinalize(v12);
       CFRelease(v12);
       if (!v13)
       {
         v10 = 0;
-        if (a6)
+        if (error)
         {
-          *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Unable to write image", *MEMORY[0x277CCA450])}];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Unable to write image", *MEMORY[0x277CCA450])}];
         }
       }
     }
@@ -1742,7 +1742,7 @@ LABEL_21:
   return v10;
 }
 
-- (id)_themeBitSource:(id *)a3
+- (id)_themeBitSource:(id *)source
 {
   v4 = [(CoreThemeDocument *)self allObjectsForEntity:@"ThemeBitSource" withSortDescriptors:0];
   if ([v4 count])
@@ -1757,34 +1757,34 @@ LABEL_21:
 
   else
   {
-    if (a3)
+    if (source)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"No ThemeBitSource found", *MEMORY[0x277CCA450])}];
+      *source = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"No ThemeBitSource found", *MEMORY[0x277CCA450])}];
     }
 
     return 0;
   }
 }
 
-- (id)_themeBitSourceForReferencedFilesAtURLs:(id)a3 createIfNecessary:(BOOL)a4
+- (id)_themeBitSourceForReferencedFilesAtURLs:(id)ls createIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
+  necessaryCopy = necessary;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __79__CoreThemeDocument__themeBitSourceForReferencedFilesAtURLs_createIfNecessary___block_invoke;
   v19[3] = &unk_278EBB058;
   v19[4] = v7;
-  [a3 enumerateObjectsUsingBlock:v19];
+  [ls enumerateObjectsUsingBlock:v19];
   if ([objc_msgSend(objc_msgSend(v7 "lastObject")])
   {
     [v7 removeLastObject];
   }
 
-  v8 = [(NSURL *)[(TDPersistentDocument *)self fileURL] pathComponents];
-  UncommonItemInArrays = indexOfFirstUncommonItemInArrays(v7, v8);
+  pathComponents = [(NSURL *)[(TDPersistentDocument *)self fileURL] pathComponents];
+  UncommonItemInArrays = indexOfFirstUncommonItemInArrays(v7, pathComponents);
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [(NSArray *)v8 count];
+  v11 = [(NSArray *)pathComponents count];
   v12 = [v7 count];
   if (UncommonItemInArrays != 0x7FFFFFFFFFFFFFFFLL && UncommonItemInArrays < v11)
   {
@@ -1819,7 +1819,7 @@ LABEL_21:
     return [v16 objectAtIndex:0];
   }
 
-  if (!v4)
+  if (!necessaryCopy)
   {
     return 0;
   }
@@ -1861,42 +1861,42 @@ uint64_t __79__CoreThemeDocument__themeBitSourceForReferencedFilesAtURLs_createI
   return result;
 }
 
-- (BOOL)createPSDReferenceArtworkForRenditionGroup:(id)a3 atDestination:(id)a4 error:(id *)a5
+- (BOOL)createPSDReferenceArtworkForRenditionGroup:(id)group atDestination:(id)destination error:(id *)error
 {
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   [(CoreThemeDocument *)self assetManagementDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [(TDAssetManagementDelegate *)[(CoreThemeDocument *)self assetManagementDelegate] willCreateAssetAtURL:a4];
+    [(TDAssetManagementDelegate *)[(CoreThemeDocument *)self assetManagementDelegate] willCreateAssetAtURL:destination];
   }
 
-  if (([v8 fileExistsAtPath:{objc_msgSend(a4, "path")}] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:{objc_msgSend(destination, "path")}] & 1) == 0)
   {
     if ([objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")])
     {
-      v9 = [a3 mutablePSDImageRef];
+      mutablePSDImageRef = [group mutablePSDImageRef];
     }
 
     else
     {
-      v9 = [a3 mutablePSDImageRefColumnStyle];
+      mutablePSDImageRef = [group mutablePSDImageRefColumnStyle];
     }
 
-    [v9 saveToURL:a4 completionHandler:0];
+    [mutablePSDImageRef saveToURL:destination completionHandler:0];
   }
 
   return 1;
 }
 
-- (id)createProductionWithRenditionGroup:(id)a3 forPartDefinition:(id)a4 artworkFormat:(id)a5 nameElement:(id)a6 shouldReplaceExisting:(BOOL)a7 error:(id *)a8
+- (id)createProductionWithRenditionGroup:(id)group forPartDefinition:(id)definition artworkFormat:(id)format nameElement:(id)element shouldReplaceExisting:(BOOL)existing error:(id *)error
 {
-  v8 = a7;
+  existingCopy = existing;
   v232 = *MEMORY[0x277D85DE8];
-  v174 = [MEMORY[0x277CCAA00] defaultManager];
-  v195 = self;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  selfCopy = self;
   v11 = [(CoreThemeDocument *)self allObjectsForEntity:@"ElementProduction" withSortDescriptors:0];
-  v177 = a3;
-  [objc_msgSend(a3 "baseKey")];
+  groupCopy = group;
+  [objc_msgSend(group "baseKey")];
   v221 = 0u;
   v222 = 0u;
   v223 = 0u;
@@ -1935,7 +1935,7 @@ uint64_t __79__CoreThemeDocument__themeBitSourceForReferencedFilesAtURLs_createI
 
           if (v18)
           {
-            v21 = !v8;
+            v21 = !existingCopy;
           }
 
           else
@@ -1954,8 +1954,8 @@ uint64_t __79__CoreThemeDocument__themeBitSourceForReferencedFilesAtURLs_createI
 
           else
           {
-            [v17 deleteRenditionsInDocument:v195 shouldDeleteAssetFiles:1];
-            [(CoreThemeDocument *)v195 deleteObject:v17];
+            [v17 deleteRenditionsInDocument:selfCopy shouldDeleteAssetFiles:1];
+            [(CoreThemeDocument *)selfCopy deleteObject:v17];
             if (v19)
             {
               goto LABEL_22;
@@ -1976,31 +1976,31 @@ uint64_t __79__CoreThemeDocument__themeBitSourceForReferencedFilesAtURLs_createI
   }
 
 LABEL_22:
-  v22 = a4;
-  v23 = v195;
-  v24 = -[CoreThemeDocument allowMultipleInstancesOfElementID:](v195, "allowMultipleInstancesOfElementID:", [a4 elementID]);
+  definitionCopy3 = definition;
+  v23 = selfCopy;
+  v24 = -[CoreThemeDocument allowMultipleInstancesOfElementID:](selfCopy, "allowMultipleInstancesOfElementID:", [definition elementID]);
   if (v14 && !v24)
   {
     goto LABEL_159;
   }
 
-  if ([a5 isEqualToString:CoreThemeArtworkFormatPNG])
+  if ([format isEqualToString:CoreThemeArtworkFormatPNG])
   {
-    v14 = [(CoreThemeDocument *)v195 newObjectForEntity:@"SchemaElementProduction"];
+    v14 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"SchemaElementProduction"];
     [v14 setIsExcludedFromFilter:*MEMORY[0x277CBED10]];
-    v25 = v177;
-    v26 = [objc_msgSend(v177 "renditions")];
-    [v14 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](v195, "renditionTypeWithIdentifier:", objc_msgSend(v26, "type"))}];
-    [v14 setRenditionSubtype:{-[CoreThemeDocument renditionSubtypeWithIdentifier:](v195, "renditionSubtypeWithIdentifier:", objc_msgSend(v26, "subtype"))}];
-    v27 = [v26 slices];
-    if ([v27 count])
+    v25 = groupCopy;
+    v26 = [objc_msgSend(groupCopy "renditions")];
+    [v14 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](selfCopy, "renditionTypeWithIdentifier:", objc_msgSend(v26, "type"))}];
+    [v14 setRenditionSubtype:{-[CoreThemeDocument renditionSubtypeWithIdentifier:](selfCopy, "renditionSubtypeWithIdentifier:", objc_msgSend(v26, "subtype"))}];
+    slices = [v26 slices];
+    if ([slices count])
     {
-      v28 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v27, "count")}];
+      v28 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices, "count")}];
       v217 = 0u;
       v218 = 0u;
       v219 = 0u;
       v220 = 0u;
-      v29 = [v27 countByEnumeratingWithState:&v217 objects:v230 count:16];
+      v29 = [slices countByEnumeratingWithState:&v217 objects:v230 count:16];
       if (v29)
       {
         v30 = v29;
@@ -2011,7 +2011,7 @@ LABEL_22:
           {
             if (*v218 != v31)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(slices);
             }
 
             [*(*(&v217 + 1) + 8 * j) rectValue];
@@ -2019,40 +2019,40 @@ LABEL_22:
             v36 = v35;
             v38 = v37;
             v40 = v39;
-            v41 = [(CoreThemeDocument *)v195 newObjectForEntity:@"Slice"];
+            v41 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"Slice"];
             [v41 setSliceRect:{v34, v36, v38, v40}];
             [v28 addObject:v41];
           }
 
-          v30 = [v27 countByEnumeratingWithState:&v217 objects:v230 count:16];
+          v30 = [slices countByEnumeratingWithState:&v217 objects:v230 count:16];
         }
 
         while (v30);
       }
 
       [v14 setSlices:v28];
-      v25 = v177;
-      v22 = a4;
+      v25 = groupCopy;
+      definitionCopy3 = definition;
     }
 
-    v42 = [(CoreThemeDocument *)v195 newObjectForEntity:@"RenditionKeySpec"];
-    [v42 setAttributesFromRenditionKey:objc_msgSend(objc_msgSend(v25 withDocument:{"baseKey"), "keyList"), v195}];
+    v42 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"RenditionKeySpec"];
+    [v42 setAttributesFromRenditionKey:objc_msgSend(objc_msgSend(v25 withDocument:{"baseKey"), "keyList"), selfCopy}];
     [v14 setBaseKeySpec:v42];
 
-    [v14 setPartDefinition:v22];
+    [v14 setPartDefinition:definitionCopy3];
     obja = [v25 renditions];
-    v43 = [(CoreThemeDocument *)v195 defaultPathComponentsForPartDefinition:v22];
-    v44 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:{-[CoreThemeDocument rootPathForProductionData](v195, "rootPathForProductionData")}];
-    v45 = -[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](v195, "folderNameFromRenditionKey:forPartDefinition:", [v25 baseKey], v22);
+    v43 = [(CoreThemeDocument *)selfCopy defaultPathComponentsForPartDefinition:definitionCopy3];
+    v44 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:{-[CoreThemeDocument rootPathForProductionData](selfCopy, "rootPathForProductionData")}];
+    v45 = -[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](selfCopy, "folderNameFromRenditionKey:forPartDefinition:", [v25 baseKey], definitionCopy3);
     v46 = [v43 stringByAppendingPathComponent:v45];
     [v14 setFolderName:v45];
     [v14 setComment:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"From: %@", v45)}];
-    v47 = [(CoreThemeDocument *)v195 _themeBitSource:a8];
+    v47 = [(CoreThemeDocument *)selfCopy _themeBitSource:error];
     if (v47)
     {
       v48 = v47;
       v49 = [objc_msgSend(v44 URLByAppendingPathComponent:{objc_msgSend(v47, "name")), "URLByAppendingPathComponent:", v46}];
-      if ([v174 fileExistsAtPath:{objc_msgSend(v49, "path")}] & 1) != 0 || (v216 = 0, (objc_msgSend(v174, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v49, 1, 0, &v216)))
+      if ([defaultManager fileExistsAtPath:{objc_msgSend(v49, "path")}] & 1) != 0 || (v216 = 0, (objc_msgSend(defaultManager, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v49, 1, 0, &v216)))
       {
         v178 = [objc_msgSend(v25 "baseKey")];
         v212 = 0u;
@@ -2078,7 +2078,7 @@ LABEL_22:
 
               v54 = *(*(&v212 + 1) + 8 * k);
               v216 = 0;
-              v55 = [(CoreThemeDocument *)v23 createReferencePNGForSchemaRendition:v54 withPartDefinition:v22 atLocation:v49 error:&v216];
+              v55 = [(CoreThemeDocument *)v23 createReferencePNGForSchemaRendition:v54 withPartDefinition:definitionCopy3 atLocation:v49 error:&v216];
               if (v216)
               {
                 v56 = [objc_msgSend(v49 URLByAppendingPathComponent:{v55), "path"}];
@@ -2101,11 +2101,11 @@ LABEL_22:
                 [(CoreThemeDocument *)v23 assetManagementDelegate];
                 if (objc_opt_respondsToSelector())
                 {
-                  -[TDAssetManagementDelegate didCreateAsset:atURL:](-[CoreThemeDocument assetManagementDelegate](v195, "assetManagementDelegate"), "didCreateAsset:atURL:", v57, [v49 URLByAppendingPathComponent:v55]);
+                  -[TDAssetManagementDelegate didCreateAsset:atURL:](-[CoreThemeDocument assetManagementDelegate](selfCopy, "assetManagementDelegate"), "didCreateAsset:atURL:", v57, [v49 URLByAppendingPathComponent:v55]);
                 }
 
-                v23 = v195;
-                v22 = a4;
+                v23 = selfCopy;
+                definitionCopy3 = definition;
               }
             }
 
@@ -2121,12 +2121,12 @@ LABEL_158:
         goto LABEL_159;
       }
 
-      if (a8)
+      if (error)
       {
-        v117 = [v216 localizedDescription];
-        if (v117)
+        localizedDescription = [v216 localizedDescription];
+        if (localizedDescription)
         {
-          v118 = v117;
+          v118 = localizedDescription;
         }
 
         else
@@ -2137,119 +2137,119 @@ LABEL_158:
         v119 = MEMORY[0x277CCA9B8];
         v120 = *MEMORY[0x277CCA050];
         v121 = v14;
-        v122 = [v216 code];
+        code = [v216 code];
         v123 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"Couldn't create folder for reference assets.", *MEMORY[0x277CCA450], v118, *MEMORY[0x277CCA470], 0}];
-        v124 = v122;
+        v124 = code;
         v14 = v121;
-        *a8 = [v119 errorWithDomain:v120 code:v124 userInfo:v123];
+        *error = [v119 errorWithDomain:v120 code:v124 userInfo:v123];
       }
     }
 
-    v125 = v195;
+    v125 = selfCopy;
     goto LABEL_113;
   }
 
-  if (![a5 isEqualToString:CoreThemeArtworkFormatPSD])
+  if (![format isEqualToString:CoreThemeArtworkFormatPSD])
   {
-    if (![a5 isEqualToString:CoreThemeArtworkFormatCAAR])
+    if (![format isEqualToString:CoreThemeArtworkFormatCAAR])
     {
       goto LABEL_114;
     }
 
-    v81 = [(CoreThemeDocument *)v195 _themeBitSource:a8];
+    v81 = [(CoreThemeDocument *)selfCopy _themeBitSource:error];
     if (!v81)
     {
       goto LABEL_114;
     }
 
     v82 = v81;
-    v83 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:{-[CoreThemeDocument rootPathForProductionData](v195, "rootPathForProductionData")}];
-    v84 = [(CoreThemeDocument *)v195 defaultPathComponentsForPartDefinition:a4];
+    v83 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:{-[CoreThemeDocument rootPathForProductionData](selfCopy, "rootPathForProductionData")}];
+    v84 = [(CoreThemeDocument *)selfCopy defaultPathComponentsForPartDefinition:definition];
     v85 = [objc_msgSend(v83 URLByAppendingPathComponent:{objc_msgSend(v82, "name")), "URLByAppendingPathComponent:", v84}];
-    v86 = a4;
+    definitionCopy5 = definition;
     v87 = v85;
-    if (([v174 fileExistsAtPath:{objc_msgSend(v85, "path")}] & 1) == 0)
+    if (([defaultManager fileExistsAtPath:{objc_msgSend(v85, "path")}] & 1) == 0)
     {
       v216 = 0;
-      if (([v174 createDirectoryAtURL:v87 withIntermediateDirectories:1 attributes:0 error:&v216] & 1) == 0)
+      if (([defaultManager createDirectoryAtURL:v87 withIntermediateDirectories:1 attributes:0 error:&v216] & 1) == 0)
       {
         goto LABEL_117;
       }
 
-      v86 = a4;
+      definitionCopy5 = definition;
     }
 
-    v88 = -[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](v195, "folderNameFromRenditionKey:forPartDefinition:", [v177 baseKey], v86);
+    v88 = -[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](selfCopy, "folderNameFromRenditionKey:forPartDefinition:", [groupCopy baseKey], definitionCopy5);
     v89 = [v88 stringByAppendingPathExtension:@"caml"];
     v90 = [v87 URLByAppendingPathComponent:v89];
-    if (([v90 checkResourceIsReachableAndReturnError:a8] & 1) == 0)
+    if (([v90 checkResourceIsReachableAndReturnError:error] & 1) == 0)
     {
       v89 = [v88 stringByAppendingPathExtension:@"ca"];
       v90 = [v87 URLByAppendingPathComponent:v89];
     }
 
-    if (([v90 checkResourceIsReachableAndReturnError:a8] & 1) == 0)
+    if (([v90 checkResourceIsReachableAndReturnError:error] & 1) == 0)
     {
       v89 = [v88 stringByAppendingPathExtension:@"caar"];
       v90 = [v87 URLByAppendingPathComponent:v89];
     }
 
-    [(CoreThemeDocument *)v195 assetManagementDelegate];
+    [(CoreThemeDocument *)selfCopy assetManagementDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [(TDAssetManagementDelegate *)[(CoreThemeDocument *)v195 assetManagementDelegate] willCreateAssetAtURL:v90];
+      [(TDAssetManagementDelegate *)[(CoreThemeDocument *)selfCopy assetManagementDelegate] willCreateAssetAtURL:v90];
     }
 
-    v91 = [(CoreThemeDocument *)v195 newObjectForEntity:@"MicaAsset"];
+    v91 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"MicaAsset"];
     [v91 setCategory:v84];
     [v91 setName:v89];
-    [v91 setScaleFactor:{objc_msgSend(objc_msgSend(v177, "baseKey"), "themeScale")}];
+    [v91 setScaleFactor:{objc_msgSend(objc_msgSend(groupCopy, "baseKey"), "themeScale")}];
     [v91 setSource:v82];
-    [(CoreThemeDocument *)v195 assetManagementDelegate];
+    [(CoreThemeDocument *)selfCopy assetManagementDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [(TDAssetManagementDelegate *)[(CoreThemeDocument *)v195 assetManagementDelegate] didCreateAsset:v91 atURL:v90];
+      [(TDAssetManagementDelegate *)[(CoreThemeDocument *)selfCopy assetManagementDelegate] didCreateAsset:v91 atURL:v90];
     }
 
     v182 = v90;
-    v92 = [(CoreThemeDocument *)v195 newObjectForEntity:@"MicaElementProduction"];
+    v92 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"MicaElementProduction"];
     [v92 setAsset:v91];
-    [v92 setPartDefinition:a4];
+    [v92 setPartDefinition:definition];
     [v92 setComment:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Production for %@", objc_msgSend(v84, "stringByAppendingPathComponent:", v89))}];
     [v92 setIsExcludedFromFilter:*MEMORY[0x277CBED10]];
-    v93 = [objc_msgSend(v177 "renditions")];
-    [v92 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](v195, "renditionTypeWithIdentifier:", objc_msgSend(v93, "type"))}];
-    [v92 setRenditionSubtype:{-[CoreThemeDocument renditionSubtypeWithIdentifier:](v195, "renditionSubtypeWithIdentifier:", objc_msgSend(v93, "subtype"))}];
-    v94 = [(CoreThemeDocument *)v195 newObjectForEntity:@"RenditionKeySpec"];
-    [v94 setAttributesFromRenditionKey:objc_msgSend(objc_msgSend(v177 withDocument:{"baseKey"), "keyList"), v195}];
+    v93 = [objc_msgSend(groupCopy "renditions")];
+    [v92 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](selfCopy, "renditionTypeWithIdentifier:", objc_msgSend(v93, "type"))}];
+    [v92 setRenditionSubtype:{-[CoreThemeDocument renditionSubtypeWithIdentifier:](selfCopy, "renditionSubtypeWithIdentifier:", objc_msgSend(v93, "subtype"))}];
+    v94 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"RenditionKeySpec"];
+    [v94 setAttributesFromRenditionKey:objc_msgSend(objc_msgSend(groupCopy withDocument:{"baseKey"), "keyList"), selfCopy}];
     v194 = v92;
     [v92 setBaseKeySpec:v94];
 
-    v95 = [MEMORY[0x277CD9ED0] layer];
-    [v95 setName:@"rootLayer"];
-    objb = v95;
-    [v95 setFrame:{0.0, 0.0, 128.0, 128.0}];
-    v96 = [v177 schemaLayersAndLayerGroups];
-    v191 = [MEMORY[0x277CBEB18] array];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    [layer setName:@"rootLayer"];
+    objb = layer;
+    [layer setFrame:{0.0, 0.0, 128.0, 128.0}];
+    schemaLayersAndLayerGroups = [groupCopy schemaLayersAndLayerGroups];
+    array = [MEMORY[0x277CBEB18] array];
     v196 = 0u;
     v197 = 0u;
     v198 = 0u;
     v199 = 0u;
-    v97 = [v96 countByEnumeratingWithState:&v196 objects:v225 count:16];
+    v97 = [schemaLayersAndLayerGroups countByEnumeratingWithState:&v196 objects:v225 count:16];
     if (v97)
     {
       v98 = v97;
       v99 = 0x277D02000uLL;
       v100 = *v197;
       v101 = 0x277D02000uLL;
-      v102 = v95;
+      lastObject = layer;
       do
       {
         for (m = 0; m != v98; ++m)
         {
           if (*v197 != v100)
           {
-            objc_enumerationMutation(v96);
+            objc_enumerationMutation(schemaLayersAndLayerGroups);
           }
 
           v104 = *(*(&v196 + 1) + 8 * m);
@@ -2259,20 +2259,20 @@ LABEL_158:
           {
             if ([v104 isStart])
             {
-              v106 = [MEMORY[0x277CD9ED0] layer];
-              [v106 setName:{objc_msgSend(v104, "name")}];
-              [v102 addSublayer:v106];
-              [v191 addObject:v106];
-              v102 = v106;
+              layer2 = [MEMORY[0x277CD9ED0] layer];
+              [layer2 setName:{objc_msgSend(v104, "name")}];
+              [lastObject addSublayer:layer2];
+              [array addObject:layer2];
+              lastObject = layer2;
             }
 
             else
             {
-              [v191 removeLastObject];
-              v102 = objb;
-              if ([v191 count])
+              [array removeLastObject];
+              lastObject = objb;
+              if ([array count])
               {
-                v102 = [v191 lastObject];
+                lastObject = [array lastObject];
               }
             }
           }
@@ -2283,27 +2283,27 @@ LABEL_158:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v108 = [v104 rendition];
+              rendition = [v104 rendition];
               v109 = v100;
               v110 = v99;
-              v111 = v96;
+              v111 = schemaLayersAndLayerGroups;
               v112 = [(CoreThemeDocument *)v23 newObjectForEntity:@"MicaRenditionSpec"];
-              v113 = [v112 keySpec];
-              v114 = [v108 key];
-              v115 = v113;
-              v23 = v195;
-              [v115 setAttributesFromRenditionKey:v114 withDocument:v195];
-              -[CoreThemeDocument _normalizeRenditionKeySpec:forSchemaRendition:](v195, "_normalizeRenditionKeySpec:forSchemaRendition:", [v112 keySpec], v108);
+              keySpec = [v112 keySpec];
+              v114 = [rendition key];
+              v115 = keySpec;
+              v23 = selfCopy;
+              [v115 setAttributesFromRenditionKey:v114 withDocument:selfCopy];
+              -[CoreThemeDocument _normalizeRenditionKeySpec:forSchemaRendition:](selfCopy, "_normalizeRenditionKeySpec:forSchemaRendition:", [v112 keySpec], rendition);
               [v112 setProduction:v194];
-              [v112 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](v195, "renditionTypeWithIdentifier:", objc_msgSend(v108, "type"))}];
-              [v112 setLayerPath:{objc_msgSend(objc_msgSend(objc_msgSend(v191, "valueForKey:", @"name", "arrayByAddingObject:", objc_msgSend(v104, "name")), "componentsJoinedByString:", @"/"}];
-              v116 = [MEMORY[0x277CD9ED0] layer];
-              [v116 setName:{objc_msgSend(v104, "name")}];
-              [v102 bounds];
-              [v116 setFrame:?];
-              [v102 addSublayer:v116];
+              [v112 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](selfCopy, "renditionTypeWithIdentifier:", objc_msgSend(rendition, "type"))}];
+              [v112 setLayerPath:{objc_msgSend(objc_msgSend(objc_msgSend(array, "valueForKey:", @"name", "arrayByAddingObject:", objc_msgSend(v104, "name")), "componentsJoinedByString:", @"/"}];
+              layer3 = [MEMORY[0x277CD9ED0] layer];
+              [layer3 setName:{objc_msgSend(v104, "name")}];
+              [lastObject bounds];
+              [layer3 setFrame:?];
+              [lastObject addSublayer:layer3];
 
-              v96 = v111;
+              schemaLayersAndLayerGroups = v111;
               v99 = v110;
               v100 = v109;
               v101 = 0x277D02000;
@@ -2311,7 +2311,7 @@ LABEL_158:
           }
         }
 
-        v98 = [v96 countByEnumeratingWithState:&v196 objects:v225 count:16];
+        v98 = [schemaLayersAndLayerGroups countByEnumeratingWithState:&v196 objects:v225 count:16];
       }
 
       while (v98);
@@ -2322,28 +2322,28 @@ LABEL_158:
     goto LABEL_158;
   }
 
-  v59 = [(CoreThemeDocument *)v195 _themeBitSource:a8];
+  v59 = [(CoreThemeDocument *)selfCopy _themeBitSource:error];
   if (!v59)
   {
     goto LABEL_114;
   }
 
   v60 = v59;
-  v61 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:{-[CoreThemeDocument rootPathForProductionData](v195, "rootPathForProductionData")}];
-  v62 = [(CoreThemeDocument *)v195 defaultPathComponentsForPartDefinition:a4];
+  v61 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:{-[CoreThemeDocument rootPathForProductionData](selfCopy, "rootPathForProductionData")}];
+  v62 = [(CoreThemeDocument *)selfCopy defaultPathComponentsForPartDefinition:definition];
   v63 = [objc_msgSend(v61 URLByAppendingPathComponent:{objc_msgSend(v60, "name")), "URLByAppendingPathComponent:", v62}];
-  if (([v174 fileExistsAtPath:{objc_msgSend(v63, "path")}] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:{objc_msgSend(v63, "path")}] & 1) == 0)
   {
     v216 = 0;
-    if (([v174 createDirectoryAtURL:v63 withIntermediateDirectories:1 attributes:0 error:&v216] & 1) == 0)
+    if (([defaultManager createDirectoryAtURL:v63 withIntermediateDirectories:1 attributes:0 error:&v216] & 1) == 0)
     {
 LABEL_117:
-      if (a8)
+      if (error)
       {
-        v131 = [v216 localizedDescription];
-        if (v131)
+        localizedDescription2 = [v216 localizedDescription];
+        if (localizedDescription2)
         {
-          v132 = v131;
+          v132 = localizedDescription2;
         }
 
         else
@@ -2353,19 +2353,19 @@ LABEL_117:
 
         v133 = MEMORY[0x277CCA9B8];
         v134 = *MEMORY[0x277CCA050];
-        v135 = [v216 code];
-        *a8 = [v133 errorWithDomain:v134 code:v135 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", @"Couldn't create folder for reference assets.", *MEMORY[0x277CCA450], v132, *MEMORY[0x277CCA470], 0)}];
+        code2 = [v216 code];
+        *error = [v133 errorWithDomain:v134 code:code2 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", @"Couldn't create folder for reference assets.", *MEMORY[0x277CCA450], v132, *MEMORY[0x277CCA470], 0)}];
       }
 
       goto LABEL_114;
     }
   }
 
-  v64 = [-[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](v195 folderNameFromRenditionKey:objc_msgSend(v177 forPartDefinition:{"baseKey"), a4), "stringByAppendingPathExtension:", @"psd"}];
+  v64 = [-[CoreThemeDocument folderNameFromRenditionKey:forPartDefinition:](selfCopy folderNameFromRenditionKey:objc_msgSend(groupCopy forPartDefinition:{"baseKey"), definition), "stringByAppendingPathExtension:", @"psd"}];
   v65 = [v63 URLByAppendingPathComponent:v64];
-  if (![(CoreThemeDocument *)v195 createPSDReferenceArtworkForRenditionGroup:v177 atDestination:v65 error:a8])
+  if (![(CoreThemeDocument *)selfCopy createPSDReferenceArtworkForRenditionGroup:groupCopy atDestination:v65 error:error])
   {
-    if (a8)
+    if (error)
     {
       v126 = MEMORY[0x277CCA9B8];
       v127 = *MEMORY[0x277CCA050];
@@ -2373,38 +2373,38 @@ LABEL_117:
       v129 = [MEMORY[0x277CCACA8] stringWithFormat:@"Can't make reference PSD image. Filename: %@", v64];
       v130 = [v126 errorWithDomain:v127 code:0 userInfo:{objc_msgSend(v128, "dictionaryWithObject:forKey:", v129, *MEMORY[0x277CCA450])}];
       v14 = 0;
-      *a8 = v130;
+      *error = v130;
       goto LABEL_159;
     }
 
     goto LABEL_114;
   }
 
-  v66 = [(CoreThemeDocument *)v195 newObjectForEntity:@"PhotoshopAsset"];
+  v66 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"PhotoshopAsset"];
   [v66 setCategory:v62];
   [v66 setName:v64];
-  [v66 setScaleFactor:{objc_msgSend(objc_msgSend(v177, "baseKey"), "themeScale")}];
+  [v66 setScaleFactor:{objc_msgSend(objc_msgSend(groupCopy, "baseKey"), "themeScale")}];
   [v66 setSource:v60];
-  [(CoreThemeDocument *)v195 assetManagementDelegate];
+  [(CoreThemeDocument *)selfCopy assetManagementDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [(TDAssetManagementDelegate *)[(CoreThemeDocument *)v195 assetManagementDelegate] didCreateAsset:v66 atURL:v65];
+    [(TDAssetManagementDelegate *)[(CoreThemeDocument *)selfCopy assetManagementDelegate] didCreateAsset:v66 atURL:v65];
   }
 
-  v14 = [(CoreThemeDocument *)v195 newObjectForEntity:@"PhotoshopElementProduction"];
+  v14 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"PhotoshopElementProduction"];
   [v14 setAsset:v66];
-  [v14 setPartDefinition:a4];
+  [v14 setPartDefinition:definition];
   [v14 setComment:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Production for %@", objc_msgSend(v62, "stringByAppendingPathComponent:", v64))}];
   [v14 setIsExcludedFromFilter:*MEMORY[0x277CBED10]];
-  v67 = [objc_msgSend(v177 "renditions")];
-  [v14 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](v195, "renditionTypeWithIdentifier:", objc_msgSend(v67, "type"))}];
-  [v14 setRenditionSubtype:{-[CoreThemeDocument renditionSubtypeWithIdentifier:](v195, "renditionSubtypeWithIdentifier:", objc_msgSend(v67, "subtype"))}];
-  v68 = [(CoreThemeDocument *)v195 newObjectForEntity:@"RenditionKeySpec"];
-  [v68 setAttributesFromRenditionKey:objc_msgSend(objc_msgSend(v177 withDocument:{"baseKey"), "keyList"), v195}];
+  v67 = [objc_msgSend(groupCopy "renditions")];
+  [v14 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](selfCopy, "renditionTypeWithIdentifier:", objc_msgSend(v67, "type"))}];
+  [v14 setRenditionSubtype:{-[CoreThemeDocument renditionSubtypeWithIdentifier:](selfCopy, "renditionSubtypeWithIdentifier:", objc_msgSend(v67, "subtype"))}];
+  v68 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"RenditionKeySpec"];
+  [v68 setAttributesFromRenditionKey:objc_msgSend(objc_msgSend(groupCopy withDocument:{"baseKey"), "keyList"), selfCopy}];
   [v14 setBaseKeySpec:v68];
 
-  v69 = [a4 partFeatures];
-  if ((v69 & 0x8000) != 0)
+  partFeatures = [definition partFeatures];
+  if ((partFeatures & 0x8000) != 0)
   {
     v70 = 3;
   }
@@ -2414,7 +2414,7 @@ LABEL_117:
     v70 = 4;
   }
 
-  if ((v69 & 0x10004) == 4)
+  if ((partFeatures & 0x10004) == 4)
   {
     v71 = 1;
   }
@@ -2424,8 +2424,8 @@ LABEL_117:
     v71 = v70;
   }
 
-  [v14 setRowIterationType:{-[CoreThemeDocument iterationTypeWithIdentifier:](v195, "iterationTypeWithIdentifier:", v71)}];
-  if ((v69 & 0x4000) != 0)
+  [v14 setRowIterationType:{-[CoreThemeDocument iterationTypeWithIdentifier:](selfCopy, "iterationTypeWithIdentifier:", v71)}];
+  if ((partFeatures & 0x4000) != 0)
   {
     v72 = 2;
   }
@@ -2435,7 +2435,7 @@ LABEL_117:
     v72 = 4;
   }
 
-  if (v69)
+  if (partFeatures)
   {
     v73 = 0;
   }
@@ -2445,18 +2445,18 @@ LABEL_117:
     v73 = v72;
   }
 
-  [v14 setColumnIterationType:{-[CoreThemeDocument iterationTypeWithIdentifier:](v195, "iterationTypeWithIdentifier:", v73)}];
+  [v14 setColumnIterationType:{-[CoreThemeDocument iterationTypeWithIdentifier:](selfCopy, "iterationTypeWithIdentifier:", v73)}];
   v74 = [MEMORY[0x277CBEB58] set];
-  v75 = [objc_msgSend(a4 validStatesWithDocument:{v195), "count"}];
-  v190 = v69;
-  if ((v69 & 0x80) != 0)
+  v75 = [objc_msgSend(definition validStatesWithDocument:{selfCopy), "count"}];
+  v190 = partFeatures;
+  if ((partFeatures & 0x80) != 0)
   {
-    [v74 addObject:{-[CoreThemeDocument mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:](v195, "mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:", v75++, 3)}];
+    [v74 addObject:{-[CoreThemeDocument mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:](selfCopy, "mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:", v75++, 3)}];
   }
 
-  if ((v69 & 0x2000) != 0)
+  if ((partFeatures & 0x2000) != 0)
   {
-    [v74 addObject:{-[CoreThemeDocument mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:](v195, "mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:", v75, 2)}];
+    [v74 addObject:{-[CoreThemeDocument mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:](selfCopy, "mappingForPhotoshopLayerIndex:themeDrawingLayerIdentifier:", v75, 2)}];
   }
 
   if ([v74 count])
@@ -2468,8 +2468,8 @@ LABEL_117:
   {
     [v14 setRowCount:&unk_2859AC4D0];
     [v14 setColumnCount:&unk_2859AC4D0];
-    objc = [v177 schemaLayersAndLayerGroups];
-    v192 = [MEMORY[0x277CBEB18] array];
+    objc = [groupCopy schemaLayersAndLayerGroups];
+    array2 = [MEMORY[0x277CBEB18] array];
     v208 = 0u;
     v209 = 0u;
     v210 = 0u;
@@ -2479,7 +2479,7 @@ LABEL_117:
     {
       v137 = v136;
       v194 = v14;
-      v138 = 0;
+      lastObject2 = 0;
       v139 = *v209;
       v140 = 0x277D02000uLL;
       v179 = *v209;
@@ -2498,24 +2498,24 @@ LABEL_117:
           {
             if ([v142 isStart])
             {
-              v143 = [(CoreThemeDocument *)v195 newObjectForEntity:@"PhotoshopLayer"];
+              v143 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"PhotoshopLayer"];
               [v143 setName:{objc_msgSend(v142, "name")}];
-              [v143 setParentLayer:v138];
-              [v192 addObject:v143];
-              v138 = v143;
+              [v143 setParentLayer:lastObject2];
+              [array2 addObject:v143];
+              lastObject2 = v143;
             }
 
             else
             {
-              [v192 removeLastObject];
-              if ([v192 count])
+              [array2 removeLastObject];
+              if ([array2 count])
               {
-                v138 = [v192 lastObject];
+                lastObject2 = [array2 lastObject];
               }
 
               else
               {
-                v138 = 0;
+                lastObject2 = 0;
               }
             }
           }
@@ -2526,19 +2526,19 @@ LABEL_117:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v145 = [(CoreThemeDocument *)v195 newObjectForEntity:@"PhotoshopLayer"];
-              [v145 setParentLayer:v138];
+              v145 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"PhotoshopLayer"];
+              [v145 setParentLayer:lastObject2];
               [v145 setName:{objc_msgSend(v142, "name")}];
-              v146 = [v142 rendition];
-              v147 = [(CoreThemeDocument *)v195 newObjectForEntity:@"PhotoshopRenditionSpec"];
+              rendition2 = [v142 rendition];
+              v147 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"PhotoshopRenditionSpec"];
               [v147 setProduction:v194];
               [objc_msgSend(v147 "keySpec")];
               [objc_msgSend(v147 "keySpec")];
-              -[CoreThemeDocument _normalizeRenditionKeySpec:forSchemaRendition:](v195, "_normalizeRenditionKeySpec:forSchemaRendition:", [v147 keySpec], v146);
-              v148 = v146;
+              -[CoreThemeDocument _normalizeRenditionKeySpec:forSchemaRendition:](selfCopy, "_normalizeRenditionKeySpec:forSchemaRendition:", [v147 keySpec], rendition2);
+              v148 = rendition2;
               v140 = 0x277D02000;
               v139 = v179;
-              [v147 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](v195, "renditionTypeWithIdentifier:", objc_msgSend(v148, "type"))}];
+              [v147 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](selfCopy, "renditionTypeWithIdentifier:", objc_msgSend(v148, "type"))}];
               [v147 setPhotoshopLayer:v145];
             }
           }
@@ -2563,26 +2563,26 @@ LABEL_114:
   }
 
   v77 = v76;
-  v78 = [v67 rowSlices];
-  v79 = [v67 columnSlices];
+  rowSlices = [v67 rowSlices];
+  columnSlices = [v67 columnSlices];
   if ([(CTDPSDPreviewRef *)v77 sliceRowCount]< 1)
   {
-    v80 = 0;
+    sliceRowCount = 0;
   }
 
   else
   {
-    v80 = [(CTDPSDPreviewRef *)v77 sliceRowCount];
+    sliceRowCount = [(CTDPSDPreviewRef *)v77 sliceRowCount];
   }
 
   if ([(CTDPSDPreviewRef *)v77 sliceColumnCount]< 1)
   {
-    v149 = 0;
+    sliceColumnCount = 0;
   }
 
   else
   {
-    v149 = [(CTDPSDPreviewRef *)v77 sliceColumnCount];
+    sliceColumnCount = [(CTDPSDPreviewRef *)v77 sliceColumnCount];
   }
 
   if ([v67 type] == 6)
@@ -2593,9 +2593,9 @@ LABEL_114:
 
   else
   {
-    if (v80 < 1 || v149 < 1 || (v165 = v80 / v78, v80 % v78) || v149 % v79)
+    if (sliceRowCount < 1 || sliceColumnCount < 1 || (v165 = sliceRowCount / rowSlices, sliceRowCount % rowSlices) || sliceColumnCount % columnSlices)
     {
-      if (a8)
+      if (error)
       {
         v166 = MEMORY[0x277CCA9B8];
         v167 = *MEMORY[0x277CCA050];
@@ -2604,17 +2604,17 @@ LABEL_114:
         v170 = [MEMORY[0x277CCACA8] stringWithFormat:@"Reference PSD has wrong number of slices. Couldn't create production. Filename: %@", v64];
         v171 = v169;
         v14 = v168;
-        *a8 = [v166 errorWithDomain:v167 code:0 userInfo:{objc_msgSend(v171, "dictionaryWithObject:forKey:", v170, *MEMORY[0x277CCA450])}];
+        *error = [v166 errorWithDomain:v167 code:0 userInfo:{objc_msgSend(v171, "dictionaryWithObject:forKey:", v170, *MEMORY[0x277CCA450])}];
       }
 
-      -[CoreThemeDocument deleteObject:](v195, "deleteObject:", [v14 asset]);
-      v125 = v195;
+      -[CoreThemeDocument deleteObject:](selfCopy, "deleteObject:", [v14 asset]);
+      v125 = selfCopy;
 LABEL_113:
       [(CoreThemeDocument *)v125 deleteObject:v14];
       goto LABEL_114;
     }
 
-    v151 = (v149 / v79);
+    v151 = (sliceColumnCount / columnSlices);
     v150 = v165;
   }
 
@@ -2624,8 +2624,8 @@ LABEL_113:
   v205 = 0u;
   v206 = 0u;
   v207 = 0u;
-  v173 = [v177 themeSchemaLayers];
-  v180 = [v173 countByEnumeratingWithState:&v204 objects:v227 count:16];
+  themeSchemaLayers = [groupCopy themeSchemaLayers];
+  v180 = [themeSchemaLayers countByEnumeratingWithState:&v204 objects:v227 count:16];
   if (v180)
   {
     v194 = v14;
@@ -2637,7 +2637,7 @@ LABEL_113:
       {
         if (*v205 != v176)
         {
-          objc_enumerationMutation(v173);
+          objc_enumerationMutation(themeSchemaLayers);
         }
 
         v183 = v152;
@@ -2662,11 +2662,11 @@ LABEL_113:
               }
 
               v158 = *(*(&v200 + 1) + 8 * ii);
-              v159 = [(CoreThemeDocument *)v195 newObjectForEntity:@"PhotoshopRenditionSpec"];
+              v159 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"PhotoshopRenditionSpec"];
               [v159 setProduction:v194];
               [objc_msgSend(v159 "keySpec")];
-              -[CoreThemeDocument _normalizeRenditionKeySpec:forSchemaRendition:](v195, "_normalizeRenditionKeySpec:forSchemaRendition:", [v159 keySpec], v158);
-              [v159 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](v195, "renditionTypeWithIdentifier:", objc_msgSend(v158, "type"))}];
+              -[CoreThemeDocument _normalizeRenditionKeySpec:forSchemaRendition:](selfCopy, "_normalizeRenditionKeySpec:forSchemaRendition:", [v159 keySpec], v158);
+              [v159 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](selfCopy, "renditionTypeWithIdentifier:", objc_msgSend(v158, "type"))}];
               [v159 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithUnsignedInteger:", objc_msgSend(v153, "index")), @"layer"}];
               [v158 renditionCoordinatesForPartFeatures:v190];
               v161 = v160;
@@ -2684,7 +2684,7 @@ LABEL_113:
       }
 
       while (v183 + 1 != v180);
-      v180 = [v173 countByEnumeratingWithState:&v204 objects:v227 count:16];
+      v180 = [themeSchemaLayers countByEnumeratingWithState:&v204 objects:v227 count:16];
     }
 
     while (v180);
@@ -2696,44 +2696,44 @@ LABEL_159:
   return v14;
 }
 
-- (void)_normalizeRenditionKeySpec:(id)a3 forSchemaRendition:(id)a4
+- (void)_normalizeRenditionKeySpec:(id)spec forSchemaRendition:(id)rendition
 {
-  if (![a3 size])
+  if (![spec size])
   {
-    [a3 setSize:{-[CoreThemeDocument sizeWithIdentifier:](self, "sizeWithIdentifier:", 0)}];
+    [spec setSize:{-[CoreThemeDocument sizeWithIdentifier:](self, "sizeWithIdentifier:", 0)}];
   }
 
-  if (![a3 state])
+  if (![spec state])
   {
-    [a3 setState:{-[CoreThemeDocument stateWithIdentifier:](self, "stateWithIdentifier:", 0)}];
+    [spec setState:{-[CoreThemeDocument stateWithIdentifier:](self, "stateWithIdentifier:", 0)}];
   }
 
-  if (![a3 presentationState])
+  if (![spec presentationState])
   {
-    [a3 setPresentationState:{-[CoreThemeDocument presentationStateWithIdentifier:](self, "presentationStateWithIdentifier:", 0)}];
+    [spec setPresentationState:{-[CoreThemeDocument presentationStateWithIdentifier:](self, "presentationStateWithIdentifier:", 0)}];
   }
 
-  if (![a3 direction])
+  if (![spec direction])
   {
-    [a3 setDirection:{-[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", 0)}];
+    [spec setDirection:{-[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", 0)}];
   }
 
-  if (![a3 value])
+  if (![spec value])
   {
-    [a3 setValue:{-[CoreThemeDocument valueWithIdentifier:](self, "valueWithIdentifier:", 0)}];
+    [spec setValue:{-[CoreThemeDocument valueWithIdentifier:](self, "valueWithIdentifier:", 0)}];
   }
 
-  if (![a3 layer])
+  if (![spec layer])
   {
     v6 = [(CoreThemeDocument *)self drawingLayerWithIdentifier:0];
 
-    [a3 setLayer:v6];
+    [spec setLayer:v6];
   }
 }
 
-- (id)createEffectStyleProductionForPartDefinition:(id)a3 withNameIdentifier:(id)a4
+- (id)createEffectStyleProductionForPartDefinition:(id)definition withNameIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = @"NamedEffectProduction";
   }
@@ -2748,34 +2748,34 @@ LABEL_159:
   [v8 setRenditionType:{-[CoreThemeDocument renditionTypeWithIdentifier:](self, "renditionTypeWithIdentifier:", 7)}];
   v9 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
   v10 = [MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self, "targetPlatform")}];
-  [a3 element];
-  [v9 setAttributesFromRenditionKey:objc_msgSend(v10 withDocument:{"partDefinitionWithName:forElementDefinition:", objc_msgSend(a3, "name"), objc_msgSend(objc_opt_class(), "elementDefinitionWithName:withSchema:", objc_msgSend(objc_msgSend(a3, "element"), "name"), v10)) + 16, self}];
+  [definition element];
+  [v9 setAttributesFromRenditionKey:objc_msgSend(v10 withDocument:{"partDefinitionWithName:forElementDefinition:", objc_msgSend(definition, "name"), objc_msgSend(objc_opt_class(), "elementDefinitionWithName:withSchema:", objc_msgSend(objc_msgSend(definition, "element"), "name"), v10)) + 16, self}];
   [v8 setBaseKeySpec:v9];
 
-  if (a4)
+  if (identifier)
   {
     [objc_msgSend(v8 "baseKeySpec")];
   }
 
-  [v8 setComment:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"System Effect: %@ - %@", objc_msgSend(objc_msgSend(a3, "element"), "name"), objc_msgSend(a3, "name"))}];
-  [v8 setPartDefinition:a3];
+  [v8 setComment:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"System Effect: %@ - %@", objc_msgSend(objc_msgSend(definition, "element"), "name"), objc_msgSend(definition, "name"))}];
+  [v8 setPartDefinition:definition];
   [v8 generateRenditionsWithDocument:self];
 
   return v8;
 }
 
-- (id)namedEffectProductionWithName:(id)a3
+- (id)namedEffectProductionWithName:(id)name
 {
   v5 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"NamedEffectProduction"];
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"name.name = %@", a3];
+  name = [MEMORY[0x277CCAC30] predicateWithFormat:@"name.name = %@", name];
   v7 = [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")];
-  [v5 setPredicate:v6];
+  [v5 setPredicate:name];
   v10 = 0;
   v8 = [v7 executeFetchRequest:v5 error:&v10];
 
   if (v10)
   {
-    NSLog(&cfstr_UnableToLookup.isa, a3, [v10 localizedDescription]);
+    NSLog(&cfstr_UnableToLookup.isa, name, [v10 localizedDescription]);
     return 0;
   }
 
@@ -2817,20 +2817,20 @@ LABEL_159:
   return result;
 }
 
-- (id)createNamedEffectProductionWithName:(id)a3 isText:(BOOL)a4
+- (id)createNamedEffectProductionWithName:(id)name isText:(BOOL)text
 {
-  if (a4)
+  if (text)
   {
-    v6 = [(CoreThemeDocument *)self _namedTextEffectPartDefinition];
+    _namedTextEffectPartDefinition = [(CoreThemeDocument *)self _namedTextEffectPartDefinition];
   }
 
   else
   {
-    v6 = [(CoreThemeDocument *)self _namedImageEffectPartDefinition];
+    _namedTextEffectPartDefinition = [(CoreThemeDocument *)self _namedImageEffectPartDefinition];
   }
 
-  v7 = v6;
-  v8 = [(CoreThemeDocument *)self namedEffectProductionWithName:a3];
+  v7 = _namedTextEffectPartDefinition;
+  v8 = [(CoreThemeDocument *)self namedEffectProductionWithName:name];
   if (v8)
   {
     v9 = [objc_msgSend(v8 "name")];
@@ -2840,28 +2840,28 @@ LABEL_159:
 
   else
   {
-    v11 = [(CoreThemeDocument *)self _createNamedElementWithNextAvailableIdentifier];
-    v12 = -[CoreThemeDocument createEffectStyleProductionForPartDefinition:withNameIdentifier:](self, "createEffectStyleProductionForPartDefinition:withNameIdentifier:", v7, [v11 identifier]);
-    [v11 setName:a3];
-    [v11 setProduction:v12];
+    _createNamedElementWithNextAvailableIdentifier = [(CoreThemeDocument *)self _createNamedElementWithNextAvailableIdentifier];
+    v12 = -[CoreThemeDocument createEffectStyleProductionForPartDefinition:withNameIdentifier:](self, "createEffectStyleProductionForPartDefinition:withNameIdentifier:", v7, [_createNamedElementWithNextAvailableIdentifier identifier]);
+    [_createNamedElementWithNextAvailableIdentifier setName:name];
+    [_createNamedElementWithNextAvailableIdentifier setProduction:v12];
     return v12;
   }
 }
 
-- (id)_createPhotoshopElementProductionWithAsset:(id)a3
+- (id)_createPhotoshopElementProductionWithAsset:(id)asset
 {
   v5 = [(CoreThemeDocument *)self newObjectForEntity:@"PhotoshopElementProduction"];
-  [v5 setValue:a3 forKey:@"asset"];
+  [v5 setValue:asset forKey:@"asset"];
   [v5 setValue:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithBool:", 0), @"isExcludedFromFilter"}];
   [v5 setValue:-[CoreThemeDocument renditionTypeWithIdentifier:](self forKey:{"renditionTypeWithIdentifier:", 0), @"renditionType"}];
   v6 = [(CoreThemeDocument *)self iterationTypeWithIdentifier:4];
   [v5 setValue:v6 forKey:@"rowIterationType"];
   [v5 setValue:v6 forKey:@"columnIterationType"];
   v7 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
-  [v7 setScaleFactor:{objc_msgSend(a3, "scaleFactor")}];
+  [v7 setScaleFactor:{objc_msgSend(asset, "scaleFactor")}];
   [v5 setValue:v7 forKey:@"baseKeySpec"];
 
-  [v5 setValue:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"stringWithFormat:", @"From: %@/%@", objc_msgSend(a3, "category"), objc_msgSend(a3, "name")), @"comment"}];
+  [v5 setValue:objc_msgSend(MEMORY[0x277CCACA8] forKey:{"stringWithFormat:", @"From: %@/%@", objc_msgSend(asset, "category"), objc_msgSend(asset, "name")), @"comment"}];
   return v5;
 }
 
@@ -2916,35 +2916,35 @@ LABEL_2:
   return 0;
 }
 
-- (id)_createNamedElementWithIdentifier:(int64_t)a3
+- (id)_createNamedElementWithIdentifier:(int64_t)identifier
 {
   v5 = [(CoreThemeDocument *)self newObjectForEntity:@"NamedElement"];
-  [v5 setIdentifier:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", a3)}];
-  if (self->cachedMaxIdentifierInUse < a3)
+  [v5 setIdentifier:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", identifier)}];
+  if (self->cachedMaxIdentifierInUse < identifier)
   {
-    self->cachedMaxIdentifierInUse = a3;
+    self->cachedMaxIdentifierInUse = identifier;
   }
 
   return v5;
 }
 
-- (id)namedElementWithName:(id)a3
+- (id)namedElementWithName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
   v5 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"NamedElement"];
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"name = %@", a3];
-  v7 = [(TDPersistentDocument *)self managedObjectContext];
-  [v5 setPredicate:v6];
+  name = [MEMORY[0x277CCAC30] predicateWithFormat:@"name = %@", name];
+  managedObjectContext = [(TDPersistentDocument *)self managedObjectContext];
+  [v5 setPredicate:name];
   v10 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v10];
+  v8 = [managedObjectContext executeFetchRequest:v5 error:&v10];
 
   if (v10)
   {
-    NSLog(&cfstr_UnableToLookup_0.isa, a3, [v10 localizedDescription]);
+    NSLog(&cfstr_UnableToLookup_0.isa, name, [v10 localizedDescription]);
     return 0;
   }
 
@@ -2960,44 +2960,44 @@ LABEL_2:
   return result;
 }
 
-- (id)namedElementsForElementDefinition:(id)a3
+- (id)namedElementsForElementDefinition:(id)definition
 {
-  v3 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "parts")];
+  v3 = [objc_msgSend(objc_msgSend(objc_msgSend(definition "parts")];
 
   return [v3 allObjects];
 }
 
-- (id)elementProductionsWithName:(id)a3
+- (id)elementProductionsWithName:(id)name
 {
   v5 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"name" ascending:0];
   v6 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"ElementProduction"];
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"name.name = %@", a3];
+  name = [MEMORY[0x277CCAC30] predicateWithFormat:@"name.name = %@", name];
   [v6 setSortDescriptors:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObject:", v5)}];
-  [v6 setPredicate:v7];
+  [v6 setPredicate:name];
   v10 = 0;
   v8 = [objc_msgSend(-[CoreThemeDocument mocOrganizer](self "mocOrganizer")];
 
   if (v10)
   {
-    NSLog(&cfstr_UnableToLookup_1.isa, a3, [v10 localizedDescription]);
+    NSLog(&cfstr_UnableToLookup_1.isa, name, [v10 localizedDescription]);
     return 0;
   }
 
   return v8;
 }
 
-- (id)namedArtworkProductionWithName:(id)a3
+- (id)namedArtworkProductionWithName:(id)name
 {
   v5 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"NamedArtworkProduction"];
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"name.name = %@", a3];
+  name = [MEMORY[0x277CCAC30] predicateWithFormat:@"name.name = %@", name];
   v7 = [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")];
-  [v5 setPredicate:v6];
+  [v5 setPredicate:name];
   v10 = 0;
   v8 = [v7 executeFetchRequest:v5 error:&v10];
 
   if (v10)
   {
-    NSLog(&cfstr_UnableToLookup_1.isa, a3, [v10 localizedDescription]);
+    NSLog(&cfstr_UnableToLookup_1.isa, name, [v10 localizedDescription]);
     return 0;
   }
 
@@ -3013,33 +3013,33 @@ LABEL_2:
   return result;
 }
 
-- (id)slicesComputedForImageSize:(CGSize)a3 usingSliceInsets:(id)a4 resizableSliceSize:(CGSize)a5 withRenditionType:(int64_t)a6
+- (id)slicesComputedForImageSize:(CGSize)size usingSliceInsets:(id)insets resizableSliceSize:(CGSize)sliceSize withRenditionType:(int64_t)type
 {
   v6 = 0;
   v56 = *MEMORY[0x277D85DE8];
-  if (a3.width <= 0.0 || a3.height <= 0.0)
+  if (size.width <= 0.0 || size.height <= 0.0)
   {
     goto LABEL_60;
   }
 
-  var3 = a4.var3;
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  if (a4.var0 < 0.0 && a4.var2 < 0.0 && a4.var3 < 0.0 && a4.var1 < 0.0)
+  var3 = insets.var3;
+  var2 = insets.var2;
+  var1 = insets.var1;
+  var0 = insets.var0;
+  if (insets.var0 < 0.0 && insets.var2 < 0.0 && insets.var3 < 0.0 && insets.var1 < 0.0)
   {
 LABEL_59:
     v6 = 0;
     goto LABEL_60;
   }
 
-  width = a3.width;
-  height = a3.height;
-  if (a4.var0 >= 0.0 && a6 == 3 && a4.var2 >= 0.0 && a4.var1 >= 0.0 && a4.var3 >= 0.0)
+  width = size.width;
+  height = size.height;
+  if (insets.var0 >= 0.0 && type == 3 && insets.var2 >= 0.0 && insets.var1 >= 0.0 && insets.var3 >= 0.0)
   {
-    if (a5.width >= 1.0)
+    if (sliceSize.width >= 1.0)
     {
-      v14 = a5.width;
+      v14 = sliceSize.width;
     }
 
     else
@@ -3047,17 +3047,17 @@ LABEL_59:
       v14 = 1.0;
     }
 
-    v15 = width - (a4.var1 + a4.var3) - v14;
+    v15 = width - (insets.var1 + insets.var3) - v14;
     if (v15 < 0.0)
     {
       v15 = 0.0;
     }
 
     v16 = height;
-    v17 = height - (a4.var0 + var2);
-    if (a5.height >= 1.0)
+    v17 = height - (insets.var0 + var2);
+    if (sliceSize.height >= 1.0)
     {
-      v18 = a5.height;
+      v18 = sliceSize.height;
     }
 
     else
@@ -3071,7 +3071,7 @@ LABEL_59:
       v19 = 0.0;
     }
 
-    v20 = a4.var1 + v14 + v15;
+    v20 = insets.var1 + v14 + v15;
     if (width - v20 >= 0.0)
     {
       v21 = width - v20;
@@ -3110,11 +3110,11 @@ LABEL_59:
     goto LABEL_49;
   }
 
-  if (a6 == 1 && a4.var1 >= 0.0 && a4.var3 >= 0.0)
+  if (type == 1 && insets.var1 >= 0.0 && insets.var3 >= 0.0)
   {
-    if (a5.width >= 1.0)
+    if (sliceSize.width >= 1.0)
     {
-      v30 = a5.width;
+      v30 = sliceSize.width;
     }
 
     else
@@ -3122,9 +3122,9 @@ LABEL_59:
       v30 = 1.0;
     }
 
-    if (width - (a4.var1 + a4.var3) - v30 >= 0.0)
+    if (width - (insets.var1 + insets.var3) - v30 >= 0.0)
     {
-      v31 = width - (a4.var1 + a4.var3) - v30;
+      v31 = width - (insets.var1 + insets.var3) - v30;
     }
 
     else
@@ -3147,11 +3147,11 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  if (a4.var0 >= 0.0 && a6 == 2 && a4.var2 >= 0.0)
+  if (insets.var0 >= 0.0 && type == 2 && insets.var2 >= 0.0)
   {
-    if (a5.height >= 1.0)
+    if (sliceSize.height >= 1.0)
     {
-      v33 = a5.height;
+      v33 = sliceSize.height;
     }
 
     else
@@ -3159,9 +3159,9 @@ LABEL_49:
       v33 = 1.0;
     }
 
-    if (height - (a4.var0 + a4.var2) - v33 >= 0.0)
+    if (height - (insets.var0 + insets.var2) - v33 >= 0.0)
     {
-      v34 = height - (a4.var0 + a4.var2) - v33;
+      v34 = height - (insets.var0 + insets.var2) - v33;
     }
 
     else
@@ -3181,7 +3181,7 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  if (a6 > 0xC || ((1 << a6) & 0x1801) == 0)
+  if (type > 0xC || ((1 << type) & 0x1801) == 0)
   {
     v50 = +[TDLogger defaultLogger];
     [v50 logError:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Edge insets were specified but didn't match the rendition type"}];
@@ -3234,31 +3234,31 @@ LABEL_60:
   return v6;
 }
 
-- (id)createTextStyleProductionsForImportInfos:(id)a3 error:(id *)a4
+- (id)createTextStyleProductionsForImportInfos:(id)infos error:(id *)error
 {
-  if (![a3 count])
+  if (![infos count])
   {
     return 0;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v29 = [(CoreThemeDocument *)self elementWithIdentifier:85];
   v28 = [(CoreThemeDocument *)self partWithIdentifier:231];
   v27 = [(CoreThemeDocument *)self renditionTypeWithIdentifier:1015];
-  v26 = [(CoreThemeDocument *)self displayGamuts];
-  v25 = [(CoreThemeDocument *)self idioms];
-  v24 = [(CoreThemeDocument *)self sizeClasses];
-  v7 = [a3 sortedArrayUsingComparator:&__block_literal_global_605];
+  displayGamuts = [(CoreThemeDocument *)self displayGamuts];
+  idioms = [(CoreThemeDocument *)self idioms];
+  sizeClasses = [(CoreThemeDocument *)self sizeClasses];
+  v7 = [infos sortedArrayUsingComparator:&__block_literal_global_605];
   if ([v7 count])
   {
     v8 = 0;
-    v23 = v6;
+    v23 = array;
     do
     {
       v9 = [v7 objectAtIndex:v8];
-      v10 = [v6 lastObject];
-      v11 = [objc_msgSend(objc_msgSend(v10 "name")];
-      if (v10)
+      lastObject = [array lastObject];
+      v11 = [objc_msgSend(objc_msgSend(lastObject "name")];
+      if (lastObject)
       {
         v12 = v11;
       }
@@ -3273,18 +3273,18 @@ LABEL_60:
         goto LABEL_9;
       }
 
-      v10 = [(CoreThemeDocument *)self newObjectForEntity:@"TextStyleProduction"];
+      lastObject = [(CoreThemeDocument *)self newObjectForEntity:@"TextStyleProduction"];
       v13 = -[CoreThemeDocument _createNamedElementWithIdentifier:](self, "_createNamedElementWithIdentifier:", [v9 nameIdentifier]);
       [v13 setName:{objc_msgSend(v9, "name")}];
-      [v13 setProduction:v10];
-      [v10 setRenditionType:v27];
+      [v13 setProduction:lastObject];
+      [lastObject setRenditionType:v27];
       v14 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
       [v14 setElement:v29];
       [v14 setPart:v28];
       [v14 setNameIdentifier:{objc_msgSend(objc_msgSend(v13, "identifier"), "unsignedIntValue")}];
-      [v10 setBaseKeySpec:v14];
+      [lastObject setBaseKeySpec:v14];
 
-      if (v10)
+      if (lastObject)
       {
 LABEL_9:
         v15 = [(CoreThemeDocument *)self newObjectForEntity:@"TextStyleRenditionSpec"];
@@ -3300,27 +3300,27 @@ LABEL_9:
         *&v18 = v18;
         [v15 setMinPointSize:v18];
         [v15 setScalingStyle:{objc_msgSend(v9, "scalingStyle")}];
-        [v15 setProduction:v10];
+        [v15 setProduction:lastObject];
         [v15 setRenditionType:v27];
         v19 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
-        [v19 setNameIdentifier:{objc_msgSend(objc_msgSend(v10, "baseKeySpec"), "nameIdentifier")}];
+        [v19 setNameIdentifier:{objc_msgSend(objc_msgSend(lastObject, "baseKeySpec"), "nameIdentifier")}];
         [v19 setElement:v29];
         [v19 setPart:v28];
-        [v19 setGamut:{objc_msgSend(v26, "objectAtIndexedSubscript:", objc_msgSend(v9, "displayGamut"))}];
-        [v19 setIdiom:{objc_msgSend(v25, "objectAtIndex:", objc_msgSend(v9, "idiom"))}];
+        [v19 setGamut:{objc_msgSend(displayGamuts, "objectAtIndexedSubscript:", objc_msgSend(v9, "displayGamut"))}];
+        [v19 setIdiom:{objc_msgSend(idioms, "objectAtIndex:", objc_msgSend(v9, "idiom"))}];
         [v19 setSubtype:{objc_msgSend(v9, "subtype")}];
-        v20 = [v24 objectAtIndexedSubscript:{objc_msgSend(v9, "sizeClassHorizontal")}];
-        v21 = [v24 objectAtIndexedSubscript:{objc_msgSend(v9, "sizeClassVertical")}];
+        v20 = [sizeClasses objectAtIndexedSubscript:{objc_msgSend(v9, "sizeClassHorizontal")}];
+        v21 = [sizeClasses objectAtIndexedSubscript:{objc_msgSend(v9, "sizeClassVertical")}];
         [v19 setSizeClassHorizontal:v20];
         [v19 setSizeClassVertical:v21];
         [v19 setAppearance:{-[CoreThemeDocument appearanceWithIdentifier:name:createIfNeeded:](self, "appearanceWithIdentifier:name:createIfNeeded:", objc_msgSend(v9, "appearanceIdentifier"), objc_msgSend(v9, "appearanceName"), 1)}];
         [v19 setLocalization:{-[CoreThemeDocument localizationWithIdentifier:name:createIfNeeded:](self, "localizationWithIdentifier:name:createIfNeeded:", objc_msgSend(v9, "localizationIdentifier"), objc_msgSend(v9, "localizationName"), 1)}];
         [v15 setKeySpec:v19];
 
-        v6 = v23;
+        array = v23;
         if ((v12 & 1) == 0)
         {
-          [v23 addObject:v10];
+          [v23 addObject:lastObject];
         }
       }
 
@@ -3330,7 +3330,7 @@ LABEL_9:
     while (v8 < [v7 count]);
   }
 
-  return v6;
+  return array;
 }
 
 uint64_t __68__CoreThemeDocument_createTextStyleProductionsForImportInfos_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3341,20 +3341,20 @@ uint64_t __68__CoreThemeDocument_createTextStyleProductionsForImportInfos_error_
   return [v4 compare:v5];
 }
 
-- (id)createNamedColorProductionsForImportInfos:(id)a3 error:(id *)a4
+- (id)createNamedColorProductionsForImportInfos:(id)infos error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = [(CoreThemeDocument *)self elementWithIdentifier:85];
   v30 = [(CoreThemeDocument *)self partWithIdentifier:217];
   v29 = [(CoreThemeDocument *)self renditionTypeWithIdentifier:1009];
-  v28 = [(CoreThemeDocument *)self displayGamuts];
-  v27 = [(CoreThemeDocument *)self idioms];
-  v8 = [a3 sortedArrayUsingComparator:&__block_literal_global_613];
+  displayGamuts = [(CoreThemeDocument *)self displayGamuts];
+  idioms = [(CoreThemeDocument *)self idioms];
+  v8 = [infos sortedArrayUsingComparator:&__block_literal_global_613];
   if ([v8 count])
   {
     v9 = 0;
     v24 = v7;
-    v25 = v6;
+    v25 = array;
     v26 = v8;
     while (1)
     {
@@ -3364,9 +3364,9 @@ uint64_t __68__CoreThemeDocument_createTextStyleProductionsForImportInfos_error_
         [CoreThemeDocument createNamedColorProductionsForImportInfos:error:];
       }
 
-      v11 = [v6 lastObject];
-      v12 = [objc_msgSend(objc_msgSend(v11 "name")];
-      if (v11)
+      lastObject = [array lastObject];
+      v12 = [objc_msgSend(objc_msgSend(lastObject "name")];
+      if (lastObject)
       {
         v13 = v12;
       }
@@ -3378,31 +3378,31 @@ uint64_t __68__CoreThemeDocument_createTextStyleProductionsForImportInfos_error_
 
       if ((v13 & 1) == 0)
       {
-        v11 = [(CoreThemeDocument *)self newObjectForEntity:@"NamedColorProduction"];
+        lastObject = [(CoreThemeDocument *)self newObjectForEntity:@"NamedColorProduction"];
         v14 = -[CoreThemeDocument _createNamedElementWithIdentifier:](self, "_createNamedElementWithIdentifier:", [v10 nameIdentifier]);
         [v14 setName:{objc_msgSend(v10, "name")}];
-        [v14 setProduction:v11];
-        [v11 setRenditionType:v29];
+        [v14 setProduction:lastObject];
+        [lastObject setRenditionType:v29];
         v15 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
         [v15 setElement:v7];
         [v15 setPart:v30];
         [v15 setNameIdentifier:{objc_msgSend(objc_msgSend(v14, "identifier"), "unsignedIntValue")}];
-        [v11 setBaseKeySpec:v15];
+        [lastObject setBaseKeySpec:v15];
 
-        if (!v11)
+        if (!lastObject)
         {
           goto LABEL_22;
         }
       }
 
       v16 = [(CoreThemeDocument *)self newObjectForEntity:@"NamedColorRenditionSpec"];
-      v17 = [v10 colorComponents];
-      if ([v17 count] == 4)
+      colorComponents = [v10 colorComponents];
+      if ([colorComponents count] == 4)
       {
         break;
       }
 
-      if ([v17 count] == 2)
+      if ([colorComponents count] == 2)
       {
         v18 = 0;
         v19 = 0;
@@ -3413,28 +3413,28 @@ uint64_t __68__CoreThemeDocument_createTextStyleProductionsForImportInfos_error_
 LABEL_15:
       if ([v10 colorSpaceID])
       {
-        v21 = [v10 colorSpaceID];
+        colorSpaceID = [v10 colorSpaceID];
       }
 
       else
       {
-        v21 = 1;
+        colorSpaceID = 1;
       }
 
-      [v16 setColorSpaceID:v21];
+      [v16 setColorSpaceID:colorSpaceID];
       if ([objc_msgSend(v10 "systemColorName")])
       {
         [v16 setSystemColorName:{objc_msgSend(v10, "systemColorName")}];
       }
 
-      [v16 setProduction:v11];
+      [v16 setProduction:lastObject];
       [v16 setRenditionType:v29];
       v22 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
-      [v22 setNameIdentifier:{objc_msgSend(objc_msgSend(v11, "baseKeySpec"), "nameIdentifier")}];
+      [v22 setNameIdentifier:{objc_msgSend(objc_msgSend(lastObject, "baseKeySpec"), "nameIdentifier")}];
       [v22 setElement:v7];
       [v22 setPart:v30];
-      [v22 setGamut:{objc_msgSend(v28, "objectAtIndexedSubscript:", objc_msgSend(v10, "displayGamut"))}];
-      [v22 setIdiom:{objc_msgSend(v27, "objectAtIndex:", objc_msgSend(v10, "idiom"))}];
+      [v22 setGamut:{objc_msgSend(displayGamuts, "objectAtIndexedSubscript:", objc_msgSend(v10, "displayGamut"))}];
+      [v22 setIdiom:{objc_msgSend(idioms, "objectAtIndex:", objc_msgSend(v10, "idiom"))}];
       [v22 setSubtype:{objc_msgSend(v10, "subtype")}];
       [v22 setAppearance:{-[CoreThemeDocument appearanceWithIdentifier:name:createIfNeeded:](self, "appearanceWithIdentifier:name:createIfNeeded:", objc_msgSend(v10, "appearanceIdentifier"), objc_msgSend(v10, "appearanceName"), 1)}];
       [v22 setLocalization:{-[CoreThemeDocument localizationWithIdentifier:name:createIfNeeded:](self, "localizationWithIdentifier:name:createIfNeeded:", objc_msgSend(v10, "localizationIdentifier"), objc_msgSend(v10, "localizationName"), 1)}];
@@ -3443,13 +3443,13 @@ LABEL_15:
       v8 = v26;
       if ((v13 & 1) == 0)
       {
-        [v6 addObject:v11];
+        [array addObject:lastObject];
       }
 
 LABEL_22:
       if (++v9 >= [v8 count])
       {
-        return v6;
+        return array;
       }
     }
 
@@ -3457,20 +3457,20 @@ LABEL_22:
     v19 = 2;
     v20 = 3;
 LABEL_14:
-    [objc_msgSend(v17 objectAtIndex:{0), "doubleValue"}];
+    [objc_msgSend(colorComponents objectAtIndex:{0), "doubleValue"}];
     [v16 setRed:?];
-    [objc_msgSend(v17 objectAtIndex:{v18), "doubleValue"}];
+    [objc_msgSend(colorComponents objectAtIndex:{v18), "doubleValue"}];
     [v16 setGreen:?];
-    [objc_msgSend(v17 objectAtIndex:{v19), "doubleValue"}];
+    [objc_msgSend(colorComponents objectAtIndex:{v19), "doubleValue"}];
     [v16 setBlue:?];
-    [objc_msgSend(v17 objectAtIndex:{v20), "doubleValue"}];
+    [objc_msgSend(colorComponents objectAtIndex:{v20), "doubleValue"}];
     [v16 setAlpha:?];
     v7 = v24;
-    v6 = v25;
+    array = v25;
     goto LABEL_15;
   }
 
-  return v6;
+  return array;
 }
 
 uint64_t __69__CoreThemeDocument_createNamedColorProductionsForImportInfos_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3481,15 +3481,15 @@ uint64_t __69__CoreThemeDocument_createNamedColorProductionsForImportInfos_error
   return [v4 compare:v5];
 }
 
-- (id)createNamedGradientProductionsForImportInfos:(id)a3 error:(id *)a4
+- (id)createNamedGradientProductionsForImportInfos:(id)infos error:(id *)error
 {
-  v29 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v28 = [(CoreThemeDocument *)self elementWithIdentifier:85];
   v27 = [(CoreThemeDocument *)self partWithIdentifier:247];
   v26 = [(CoreThemeDocument *)self renditionTypeWithIdentifier:1021];
-  v25 = [(CoreThemeDocument *)self displayGamuts];
-  v24 = [(CoreThemeDocument *)self idioms];
-  v6 = [a3 sortedArrayUsingComparator:&__block_literal_global_624];
+  displayGamuts = [(CoreThemeDocument *)self displayGamuts];
+  idioms = [(CoreThemeDocument *)self idioms];
+  v6 = [infos sortedArrayUsingComparator:&__block_literal_global_624];
   if ([v6 count])
   {
     v7 = 0;
@@ -3508,9 +3508,9 @@ uint64_t __69__CoreThemeDocument_createNamedColorProductionsForImportInfos_error
         [CoreThemeDocument createNamedGradientProductionsForImportInfos:error:];
       }
 
-      v10 = [v29 lastObject];
-      v11 = [objc_msgSend(objc_msgSend(v10 "name")];
-      if (v10)
+      lastObject = [array lastObject];
+      v11 = [objc_msgSend(objc_msgSend(lastObject "name")];
+      if (lastObject)
       {
         v12 = v11;
       }
@@ -3525,18 +3525,18 @@ uint64_t __69__CoreThemeDocument_createNamedColorProductionsForImportInfos_error
         goto LABEL_12;
       }
 
-      v10 = [(CoreThemeDocument *)self newObjectForEntity:@"NamedGradientProduction"];
+      lastObject = [(CoreThemeDocument *)self newObjectForEntity:@"NamedGradientProduction"];
       v13 = -[CoreThemeDocument _createNamedElementWithIdentifier:](self, "_createNamedElementWithIdentifier:", [v8 nameIdentifier]);
       [v13 setName:{objc_msgSend(v8, "name")}];
-      [v13 setProduction:v10];
-      [v10 setRenditionType:v26];
+      [v13 setProduction:lastObject];
+      [lastObject setRenditionType:v26];
       v14 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
       [v14 setElement:v28];
       [v14 setPart:v27];
       [v14 setNameIdentifier:{objc_msgSend(objc_msgSend(v13, "identifier"), "unsignedIntValue")}];
-      [v10 setBaseKeySpec:v14];
+      [lastObject setBaseKeySpec:v14];
 
-      if (v10)
+      if (lastObject)
       {
 LABEL_12:
         v30 = v12;
@@ -3546,7 +3546,7 @@ LABEL_12:
         [v15 setGradientStartPoint:?];
         [v8 gradientEndPoint];
         [v15 setGradientEndPoint:?];
-        v16 = [MEMORY[0x277CBEB40] orderedSet];
+        orderedSet = [MEMORY[0x277CBEB40] orderedSet];
         v17 = [objc_msgSend(v8 "colorStops")];
         if (v17)
         {
@@ -3556,19 +3556,19 @@ LABEL_12:
             v20 = [(CoreThemeDocument *)self newObjectForEntity:@"ColorStop"];
             [v20 setStop:{objc_msgSend(objc_msgSend(v8, "colorStops"), "objectAtIndex:", i)}];
             [v20 setColorName:{objc_msgSend(objc_msgSend(v8, "colorNames"), "objectAtIndex:", i)}];
-            [v16 addObject:v20];
+            [orderedSet addObject:v20];
           }
         }
 
-        [v15 setColorStops:v16];
-        [v15 setProduction:v10];
+        [v15 setColorStops:orderedSet];
+        [v15 setProduction:lastObject];
         [v15 setRenditionType:v26];
         v21 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
-        [v21 setNameIdentifier:{objc_msgSend(objc_msgSend(v10, "baseKeySpec"), "nameIdentifier")}];
+        [v21 setNameIdentifier:{objc_msgSend(objc_msgSend(lastObject, "baseKeySpec"), "nameIdentifier")}];
         [v21 setElement:v28];
         [v21 setPart:v27];
-        [v21 setGamut:{objc_msgSend(v25, "objectAtIndexedSubscript:", objc_msgSend(v8, "displayGamut"))}];
-        [v21 setIdiom:{objc_msgSend(v24, "objectAtIndex:", objc_msgSend(v8, "idiom"))}];
+        [v21 setGamut:{objc_msgSend(displayGamuts, "objectAtIndexedSubscript:", objc_msgSend(v8, "displayGamut"))}];
+        [v21 setIdiom:{objc_msgSend(idioms, "objectAtIndex:", objc_msgSend(v8, "idiom"))}];
         [v21 setSubtype:{objc_msgSend(v8, "subtype")}];
         [v21 setAppearance:{-[CoreThemeDocument appearanceWithIdentifier:name:createIfNeeded:](self, "appearanceWithIdentifier:name:createIfNeeded:", objc_msgSend(v8, "appearanceIdentifier"), objc_msgSend(v8, "appearanceName"), 1)}];
         [v21 setLocalization:{-[CoreThemeDocument localizationWithIdentifier:name:createIfNeeded:](self, "localizationWithIdentifier:name:createIfNeeded:", objc_msgSend(v8, "localizationIdentifier"), objc_msgSend(v8, "localizationName"), 1)}];
@@ -3577,7 +3577,7 @@ LABEL_12:
         v6 = v23;
         if ((v30 & 1) == 0)
         {
-          [v29 addObject:v10];
+          [array addObject:lastObject];
         }
       }
 
@@ -3587,7 +3587,7 @@ LABEL_12:
     while (v7 < [v6 count]);
   }
 
-  return v29;
+  return array;
 }
 
 uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3598,14 +3598,14 @@ uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_er
   return [v4 compare:v5];
 }
 
-- (id)_sizeIndexesByNameFromNamedAssetImportInfos:(id)a3
+- (id)_sizeIndexesByNameFromNamedAssetImportInfos:(id)infos
 {
   v37 = *MEMORY[0x277D85DE8];
-  v31 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [a3 sortedArrayUsingComparator:&__block_literal_global_642];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = [infos sortedArrayUsingComparator:&__block_literal_global_642];
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [v6 count];
-  v7 = 0;
+  name = 0;
   v8 = 0;
   v9 = 0;
   do
@@ -3615,19 +3615,19 @@ uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_er
       v9 = [v6 objectAtIndex:v8];
     }
 
-    if (!v7)
+    if (!name)
     {
-      v7 = [v9 name];
+      name = [v9 name];
     }
 
-    if (![v7 isEqualToString:{objc_msgSend(v9, "name")}] || v8 == objc_msgSend(v6, "count"))
+    if (![name isEqualToString:{objc_msgSend(v9, "name")}] || v8 == objc_msgSend(v6, "count"))
     {
       if ([v28 count])
       {
         v10 = [v28 sortedArrayUsingComparator:&__block_literal_global_644];
-        if (v10 && v7)
+        if (v10 && name)
         {
-          [v31 setObject:v10 forKey:v7];
+          [dictionary setObject:v10 forKey:name];
         }
 
         else
@@ -3646,16 +3646,16 @@ uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_er
         v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
       }
 
-      v7 = [v9 name];
+      name = [v9 name];
     }
 
     if (v8 < [v6 count])
     {
-      v12 = [v9 iconSize];
-      if (v12)
+      iconSize = [v9 iconSize];
+      if (iconSize)
       {
-        v13 = v12;
-        if ([v28 indexOfObject:v12] == 0x7FFFFFFFFFFFFFFFLL)
+        v13 = iconSize;
+        if ([v28 indexOfObject:iconSize] == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v28 addObject:v13];
         }
@@ -3666,12 +3666,12 @@ uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_er
   }
 
   while (v8 <= [v6 count]);
-  v30 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [v31 allKeys];
+  obj = [dictionary allKeys];
   v14 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v14)
   {
@@ -3687,7 +3687,7 @@ uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_er
         }
 
         v18 = *(*(&v32 + 1) + 8 * i);
-        v19 = [v31 valueForKey:v18];
+        v19 = [dictionary valueForKey:v18];
         v20 = [MEMORY[0x277CBEB58] set];
         if ([v19 count])
         {
@@ -3707,7 +3707,7 @@ uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_er
           while (v21 < [v19 count]);
         }
 
-        [v30 setObject:v20 forKey:v18];
+        [dictionary2 setObject:v20 forKey:v18];
       }
 
       v15 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -3717,7 +3717,7 @@ uint64_t __72__CoreThemeDocument_createNamedGradientProductionsForImportInfos_er
   }
 
   v26 = *MEMORY[0x277D85DE8];
-  return v30;
+  return dictionary2;
 }
 
 uint64_t __65__CoreThemeDocument__sizeIndexesByNameFromNamedAssetImportInfos___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3746,14 +3746,14 @@ uint64_t __65__CoreThemeDocument__sizeIndexesByNameFromNamedAssetImportInfos___b
   }
 }
 
-- (BOOL)needToCreateForwardstopFor2018DeploymentVariant:(id)a3 withCompressionTypes:(id)a4
+- (BOOL)needToCreateForwardstopFor2018DeploymentVariant:(id)variant withCompressionTypes:(id)types
 {
   if (![(CoreThemeDocument *)self needToCreateForwardstopForPlatform])
   {
     return 0;
   }
 
-  if ([objc_msgSend(a3 "renditionType")])
+  if ([objc_msgSend(variant "renditionType")])
   {
     return 0;
   }
@@ -3764,22 +3764,22 @@ uint64_t __65__CoreThemeDocument__sizeIndexesByNameFromNamedAssetImportInfos___b
     return 0;
   }
 
-  [a3 production];
+  [variant production];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 0;
   }
 
-  [a3 production];
+  [variant production];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 0;
   }
 
-  v8 = [a3 compressionType];
-  if (v8 == [a4 objectAtIndex:3])
+  compressionType = [variant compressionType];
+  if (compressionType == [types objectAtIndex:3])
   {
 
     return [(CoreThemeDocument *)self shouldCreateForwardstopForLossy];
@@ -3787,11 +3787,11 @@ uint64_t __65__CoreThemeDocument__sizeIndexesByNameFromNamedAssetImportInfos___b
 
   else
   {
-    v9 = [a3 compressionType];
-    if (v9 != [a4 objectAtIndex:2])
+    compressionType2 = [variant compressionType];
+    if (compressionType2 != [types objectAtIndex:2])
     {
-      v10 = [a3 compressionType];
-      if (v10 != [a4 objectAtIndex:0])
+      compressionType3 = [variant compressionType];
+      if (compressionType3 != [types objectAtIndex:0])
       {
         return 0;
       }
@@ -3801,14 +3801,14 @@ uint64_t __65__CoreThemeDocument__sizeIndexesByNameFromNamedAssetImportInfos___b
   }
 }
 
-- (BOOL)needToCreateForwardstopFor2019DeploymentVariant:(id)a3 withCompressionTypes:(id)a4
+- (BOOL)needToCreateForwardstopFor2019DeploymentVariant:(id)variant withCompressionTypes:(id)types
 {
   if (![(CoreThemeDocument *)self needToCreateForwardstopForPlatform])
   {
     return 0;
   }
 
-  if ([objc_msgSend(a3 "renditionType")])
+  if ([objc_msgSend(variant "renditionType")])
   {
     return 0;
   }
@@ -3819,25 +3819,25 @@ uint64_t __65__CoreThemeDocument__sizeIndexesByNameFromNamedAssetImportInfos___b
     return 0;
   }
 
-  [a3 production];
+  [variant production];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 0;
   }
 
-  [a3 production];
+  [variant production];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 0;
   }
 
-  v7 = [a3 compressionType];
-  if (v7 != [a4 objectAtIndex:2])
+  compressionType = [variant compressionType];
+  if (compressionType != [types objectAtIndex:2])
   {
-    v8 = [a3 compressionType];
-    if (v8 != [a4 objectAtIndex:0])
+    compressionType2 = [variant compressionType];
+    if (compressionType2 != [types objectAtIndex:0])
     {
       return 0;
     }
@@ -3846,42 +3846,42 @@ uint64_t __65__CoreThemeDocument__sizeIndexesByNameFromNamedAssetImportInfos___b
   return [(CoreThemeDocument *)self shouldCreate2019ForwardstopForLossless];
 }
 
-- (void)createForwardstops:(id)a3 withCompressionTypes:(id)a4 withDeploymentTargets:(id)a5
+- (void)createForwardstops:(id)forwardstops withCompressionTypes:(id)types withDeploymentTargets:(id)targets
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(CoreThemeDocument *)self isArtworkRenditionEligibleForForwardstop:a3])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(CoreThemeDocument *)self isArtworkRenditionEligibleForForwardstop:forwardstops])
   {
     return;
   }
 
-  v9 = [(CoreThemeDocument *)self needToCreateForwardstopFor2018DeploymentVariant:a3 withCompressionTypes:a4];
-  v10 = [(CoreThemeDocument *)self needToCreateForwardstopFor2019DeploymentVariant:a3 withCompressionTypes:a4];
+  v9 = [(CoreThemeDocument *)self needToCreateForwardstopFor2018DeploymentVariant:forwardstops withCompressionTypes:types];
+  v10 = [(CoreThemeDocument *)self needToCreateForwardstopFor2019DeploymentVariant:forwardstops withCompressionTypes:types];
   if (v9)
   {
     v11 = [(CoreThemeDocument *)self newObjectForEntity:@"SimpleArtworkRenditionSpec"];
-    [objc_msgSend(a3 "keySpec")];
-    [a3 copyAttributesInto:v11];
+    [objc_msgSend(forwardstops "keySpec")];
+    [forwardstops copyAttributesInto:v11];
     [v11 setAllowsPaletteImageCompression:{-[CoreThemeDocument shouldAllowPaletteImageCompressionForDeploymentTarget:](self, "shouldAllowPaletteImageCompressionForDeploymentTarget:", 3)}];
     [v11 setAllowsDeepmapCompression:{-[CoreThemeDocument shouldAllowDeepmapCompressionForDeploymentTarget:](self, "shouldAllowDeepmapCompressionForDeploymentTarget:", 3)}];
     [v11 setAllowsHevcCompression:{-[CoreThemeDocument shouldAllowHevcCompressionForDeploymentTarget:](self, "shouldAllowHevcCompressionForDeploymentTarget:", 3)}];
-    [v11 setProduction:{objc_msgSend(a3, "production")}];
-    [v11 setAsset:{objc_msgSend(a3, "asset")}];
-    [v11 setSlices:{objc_msgSend(a3, "slices")}];
+    [v11 setProduction:{objc_msgSend(forwardstops, "production")}];
+    [v11 setAsset:{objc_msgSend(forwardstops, "asset")}];
+    [v11 setSlices:{objc_msgSend(forwardstops, "slices")}];
     [v11 resetToBaseKeySpec];
-    [objc_msgSend(a3 "keySpec")];
+    [objc_msgSend(forwardstops "keySpec")];
     [objc_msgSend(v11 "keySpec")];
 
     if (v10)
     {
       v13 = [(CoreThemeDocument *)self newObjectForEntity:@"SimpleArtworkRenditionSpec"];
-      [a3 copyAttributesInto:v13];
+      [forwardstops copyAttributesInto:v13];
 LABEL_9:
       [v13 setAllowsDeepmap2Compression:{-[CoreThemeDocument shouldAllowDeepmap2CompressionForDeploymentTarget:](self, "shouldAllowDeepmap2CompressionForDeploymentTarget:", 5)}];
-      [v13 setProduction:{objc_msgSend(a3, "production")}];
-      [v13 setAsset:{objc_msgSend(a3, "asset")}];
-      [v13 setSlices:{objc_msgSend(a3, "slices")}];
+      [v13 setProduction:{objc_msgSend(forwardstops, "production")}];
+      [v13 setAsset:{objc_msgSend(forwardstops, "asset")}];
+      [v13 setSlices:{objc_msgSend(forwardstops, "slices")}];
       [v13 resetToBaseKeySpec];
-      [objc_msgSend(a3 "keySpec")];
+      [objc_msgSend(forwardstops "keySpec")];
       [objc_msgSend(v13 "keySpec")];
 
       return;
@@ -3890,32 +3890,32 @@ LABEL_9:
 
   else
   {
-    [a3 setAllowsPaletteImageCompression:{-[CoreThemeDocument shouldAllowPaletteImageCompression](self, "shouldAllowPaletteImageCompression")}];
-    [a3 setAllowsHevcCompression:{-[CoreThemeDocument shouldAllowHevcCompression](self, "shouldAllowHevcCompression")}];
-    [a3 setAllowsDeepmapCompression:{-[CoreThemeDocument shouldAllowDeepmapCompression](self, "shouldAllowDeepmapCompression")}];
+    [forwardstops setAllowsPaletteImageCompression:{-[CoreThemeDocument shouldAllowPaletteImageCompression](self, "shouldAllowPaletteImageCompression")}];
+    [forwardstops setAllowsHevcCompression:{-[CoreThemeDocument shouldAllowHevcCompression](self, "shouldAllowHevcCompression")}];
+    [forwardstops setAllowsDeepmapCompression:{-[CoreThemeDocument shouldAllowDeepmapCompression](self, "shouldAllowDeepmapCompression")}];
     if (v10)
     {
       v13 = [(CoreThemeDocument *)self newObjectForEntity:@"SimpleArtworkRenditionSpec"];
-      [objc_msgSend(a3 "keySpec")];
-      [a3 copyAttributesInto:v13];
+      [objc_msgSend(forwardstops "keySpec")];
+      [forwardstops copyAttributesInto:v13];
       goto LABEL_9;
     }
   }
 
-  v12 = [(CoreThemeDocument *)self shouldAllowDeepmap2Compression];
+  shouldAllowDeepmap2Compression = [(CoreThemeDocument *)self shouldAllowDeepmap2Compression];
 
-  [a3 setAllowsDeepmap2Compression:v12];
+  [forwardstops setAllowsDeepmap2Compression:shouldAllowDeepmap2Compression];
 }
 
 - (id)compressionTypes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D02768] + 16))
   {
     v4 = MEMORY[0x277D02768];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument compressionTypeWithIdentifier:](self, "compressionTypeWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument compressionTypeWithIdentifier:](self, "compressionTypeWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -3923,18 +3923,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)deploymentTargets
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D02770] + 16))
   {
     v4 = MEMORY[0x277D02770];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument deploymentTargetWithIdentifier:](self, "deploymentTargetWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument deploymentTargetWithIdentifier:](self, "deploymentTargetWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -3942,18 +3942,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)idioms
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D027B0] + 16))
   {
     v4 = MEMORY[0x277D027B0];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument idiomWithIdentifier:](self, "idiomWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument idiomWithIdentifier:](self, "idiomWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -3961,18 +3961,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)displayGamuts
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D02780] + 16))
   {
     v4 = MEMORY[0x277D02780];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument displayGamutWithIdentifier:](self, "displayGamutWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument displayGamutWithIdentifier:](self, "displayGamutWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -3980,18 +3980,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)sizeClasses
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D027F8] + 16))
   {
     v4 = MEMORY[0x277D027F8];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument sizeClassWithIdentifier:](self, "sizeClassWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument sizeClassWithIdentifier:](self, "sizeClassWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -3999,18 +3999,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)featureSetClasses
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D027A0] + 16))
   {
     v4 = MEMORY[0x277D027A0];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument graphicsFeatureSetClassWithIdentifier:](self, "graphicsFeatureSetClassWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument graphicsFeatureSetClassWithIdentifier:](self, "graphicsFeatureSetClassWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -4018,18 +4018,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)directions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D02778] + 16))
   {
     v4 = MEMORY[0x277D02778];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -4037,18 +4037,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)textureFaces
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D027E0] + 16))
   {
     v4 = MEMORY[0x277D027E0];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument textureFaceWithIdentifier:](self, "textureFaceWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument textureFaceWithIdentifier:](self, "textureFaceWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -4056,18 +4056,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)glyphsSizes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D02810] + 16))
   {
     v4 = MEMORY[0x277D02810];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument glyphSizeWithIdentifier:](self, "glyphSizeWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument glyphSizeWithIdentifier:](self, "glyphSizeWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -4075,18 +4075,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)glyphWeights
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D02818] + 16))
   {
     v4 = MEMORY[0x277D02818];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument glyphWeightWithIdentifier:](self, "glyphWeightWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument glyphWeightWithIdentifier:](self, "glyphWeightWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -4094,18 +4094,18 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)glyphRenderingModes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (*(MEMORY[0x277D02808] + 16))
   {
     v4 = MEMORY[0x277D02808];
     do
     {
-      [v3 addObject:{-[CoreThemeDocument vectorGlyphRenderingModeWithIdentifier:](self, "vectorGlyphRenderingModeWithIdentifier:", *v4)}];
+      [array addObject:{-[CoreThemeDocument vectorGlyphRenderingModeWithIdentifier:](self, "vectorGlyphRenderingModeWithIdentifier:", *v4)}];
       v5 = v4[5];
       v4 += 3;
     }
@@ -4113,20 +4113,20 @@ LABEL_9:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)_createForwardstopRenditions
 {
   v3 = [(CoreThemeDocument *)self allObjectsForEntity:@"RenditionSpec" withSortDescriptors:0];
-  v4 = [(CoreThemeDocument *)self compressionTypes];
-  v5 = [(CoreThemeDocument *)self deploymentTargets];
+  compressionTypes = [(CoreThemeDocument *)self compressionTypes];
+  deploymentTargets = [(CoreThemeDocument *)self deploymentTargets];
   if ([v3 count])
   {
     v6 = 0;
     do
     {
-      -[CoreThemeDocument createForwardstops:withCompressionTypes:withDeploymentTargets:](self, "createForwardstops:withCompressionTypes:withDeploymentTargets:", [v3 objectAtIndex:v6++], v4, v5);
+      -[CoreThemeDocument createForwardstops:withCompressionTypes:withDeploymentTargets:](self, "createForwardstops:withCompressionTypes:withDeploymentTargets:", [v3 objectAtIndex:v6++], compressionTypes, deploymentTargets);
     }
 
     while (v6 < [v3 count]);
@@ -4156,11 +4156,11 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
   return result;
 }
 
-- (void)createNamedRecognitionObjectsForAssets:(id)a3 customInfos:(id)a4 error:(id *)a5
+- (void)createNamedRecognitionObjectsForAssets:(id)assets customInfos:(id)infos error:(id *)error
 {
-  v5 = a4;
+  infosCopy = infos;
   v57 = *MEMORY[0x277D85DE8];
-  v39 = [(CoreThemeDocument *)self elementWithIdentifier:85, a4, a5];
+  error = [(CoreThemeDocument *)self elementWithIdentifier:85, infos, error];
   v43 = [(CoreThemeDocument *)self partWithIdentifier:207];
   v42 = [(CoreThemeDocument *)self renditionTypeWithIdentifier:1014];
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -4193,21 +4193,21 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
   }
 
   v44 = [MEMORY[0x277CBEB18] arrayWithArray:{-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"RecognitionObjectProduction", 0, 0)}];
-  v14 = v39;
-  v13 = a3;
-  if ([v5 count])
+  v14 = error;
+  assetsCopy2 = assets;
+  if ([infosCopy count])
   {
     v15 = 0;
-    v38 = v5;
+    v38 = infosCopy;
     do
     {
       v45 = v15;
-      v16 = [v5 objectAtIndex:v15];
+      v16 = [infosCopy objectAtIndex:v15];
       v17 = [v44 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"name.name == %@", objc_msgSend(v16, "name"))}];
       if ([v17 firstObject] && (objc_msgSend(v17, "firstObject"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v18 = v16;
-        v19 = [v17 firstObject];
+        firstObject = [v17 firstObject];
       }
 
       else
@@ -4215,16 +4215,16 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
         v20 = [(CoreThemeDocument *)self newObjectForEntity:@"RecognitionObjectProduction"];
         if ([v16 nameIdentifier])
         {
-          v21 = -[CoreThemeDocument _createNamedElementWithIdentifier:](self, "_createNamedElementWithIdentifier:", [v16 nameIdentifier]);
+          _createNamedElementWithNextAvailableIdentifier = -[CoreThemeDocument _createNamedElementWithIdentifier:](self, "_createNamedElementWithIdentifier:", [v16 nameIdentifier]);
         }
 
         else
         {
-          v21 = [(CoreThemeDocument *)self _createNamedElementWithNextAvailableIdentifier];
+          _createNamedElementWithNextAvailableIdentifier = [(CoreThemeDocument *)self _createNamedElementWithNextAvailableIdentifier];
         }
 
-        v22 = v21;
-        [v21 setName:{objc_msgSend(v16, "name")}];
+        v22 = _createNamedElementWithNextAvailableIdentifier;
+        [_createNamedElementWithNextAvailableIdentifier setName:{objc_msgSend(v16, "name")}];
         [v22 setProduction:v20];
         v46 = v20;
         v23 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
@@ -4235,13 +4235,13 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
         [v46 setDateOfLastChange:{objc_msgSend(v16, "modificationDate")}];
         [v46 setRenditionType:v42];
 
-        v19 = v46;
+        firstObject = v46;
         [v44 addObject:v46];
         if (v16)
         {
-          v24 = [v16 tags];
+          tags = [v16 tags];
           v25 = v45;
-          if ([v24 count])
+          if ([tags count])
           {
             v41 = v16;
             v26 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -4249,7 +4249,7 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
             v48 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v27 = [v24 countByEnumeratingWithState:&v47 objects:v55 count:16];
+            v27 = [tags countByEnumeratingWithState:&v47 objects:v55 count:16];
             if (v27)
             {
               v28 = v27;
@@ -4260,7 +4260,7 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
                 {
                   if (*v48 != v29)
                   {
-                    objc_enumerationMutation(v24);
+                    objc_enumerationMutation(tags);
                   }
 
                   v31 = *(*(&v47 + 1) + 8 * j);
@@ -4285,28 +4285,28 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
                   [v26 addObject:v33];
                 }
 
-                v28 = [v24 countByEnumeratingWithState:&v47 objects:v55 count:16];
+                v28 = [tags countByEnumeratingWithState:&v47 objects:v55 count:16];
               }
 
               while (v28);
             }
 
             [v46 addTags:v26];
-            v34 = [v24 count];
+            v34 = [tags count];
             if (v34 != [v26 count])
             {
               [CoreThemeDocument createNamedRecognitionObjectsForAssets:customInfos:error:];
             }
 
-            v5 = v38;
-            v14 = v39;
-            v13 = a3;
+            infosCopy = v38;
+            v14 = error;
+            assetsCopy2 = assets;
             v16 = v41;
             v25 = v45;
           }
 
           v18 = v16;
-          v19 = v46;
+          firstObject = v46;
           if ([objc_msgSend(v16 "universalTypeIdentifier")])
           {
             [v46 setUniversalTypeIdentifier:{objc_msgSend(v16, "universalTypeIdentifier")}];
@@ -4321,39 +4321,39 @@ BOOL __91__CoreThemeDocument_createNamedArtworkProductionsForAssets_customInfos_
       v25 = v45;
 LABEL_37:
       v35 = [(CoreThemeDocument *)self newObjectForEntity:@"RecognitionObjectRenditionSpec"];
-      [v35 setAsset:{objc_msgSend(v13, "objectAtIndex:", v25)}];
-      [v35 setProduction:v19];
+      [v35 setAsset:{objc_msgSend(assetsCopy2, "objectAtIndex:", v25)}];
+      [v35 setProduction:firstObject];
       [v35 setVersion:{objc_msgSend(v18, "objectVersion")}];
       [v18 transformation];
       [v35 setReferenceOriginTransform:?];
       [v35 setPreserveForArchiveOnly:{objc_msgSend(v18, "preserveForArchiveOnly")}];
       [v35 resetToBaseKeySpec];
-      v36 = [v35 keySpec];
-      [v36 setIdiom:{-[CoreThemeDocument idiomWithIdentifier:](self, "idiomWithIdentifier:", objc_msgSend(v18, "idiom"))}];
-      [v36 setScaleFactor:{objc_msgSend(v18, "scaleFactor")}];
-      [v36 setSubtype:{objc_msgSend(v18, "subtype")}];
-      [v36 setGamut:{-[CoreThemeDocument displayGamutWithIdentifier:](self, "displayGamutWithIdentifier:", objc_msgSend(v18, "displayGamut"))}];
-      [v36 setSizeClassHorizontal:{-[CoreThemeDocument sizeClassWithIdentifier:](self, "sizeClassWithIdentifier:", objc_msgSend(v18, "sizeClassHorizontal"))}];
-      [v36 setSizeClassVertical:{-[CoreThemeDocument sizeClassWithIdentifier:](self, "sizeClassWithIdentifier:", objc_msgSend(v18, "sizeClassVertical"))}];
-      [v36 setMemoryClass:{objc_msgSend(v18, "memoryClass")}];
-      [v36 setDirection:{-[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", objc_msgSend(v18, "layoutDirection"))}];
-      [v36 setGraphicsFeatureSetClass:{-[CoreThemeDocument graphicsFeatureSetClassWithIdentifier:](self, "graphicsFeatureSetClassWithIdentifier:", objc_msgSend(v18, "graphicsFeatureSetClass"))}];
+      keySpec = [v35 keySpec];
+      [keySpec setIdiom:{-[CoreThemeDocument idiomWithIdentifier:](self, "idiomWithIdentifier:", objc_msgSend(v18, "idiom"))}];
+      [keySpec setScaleFactor:{objc_msgSend(v18, "scaleFactor")}];
+      [keySpec setSubtype:{objc_msgSend(v18, "subtype")}];
+      [keySpec setGamut:{-[CoreThemeDocument displayGamutWithIdentifier:](self, "displayGamutWithIdentifier:", objc_msgSend(v18, "displayGamut"))}];
+      [keySpec setSizeClassHorizontal:{-[CoreThemeDocument sizeClassWithIdentifier:](self, "sizeClassWithIdentifier:", objc_msgSend(v18, "sizeClassHorizontal"))}];
+      [keySpec setSizeClassVertical:{-[CoreThemeDocument sizeClassWithIdentifier:](self, "sizeClassWithIdentifier:", objc_msgSend(v18, "sizeClassVertical"))}];
+      [keySpec setMemoryClass:{objc_msgSend(v18, "memoryClass")}];
+      [keySpec setDirection:{-[CoreThemeDocument directionWithIdentifier:](self, "directionWithIdentifier:", objc_msgSend(v18, "layoutDirection"))}];
+      [keySpec setGraphicsFeatureSetClass:{-[CoreThemeDocument graphicsFeatureSetClassWithIdentifier:](self, "graphicsFeatureSetClassWithIdentifier:", objc_msgSend(v18, "graphicsFeatureSetClass"))}];
 
       v15 = v25 + 1;
     }
 
-    while (v15 < [v5 count]);
+    while (v15 < [infosCopy count]);
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addLegacyIconAssetsForLayerStackProduction:(id)a3 withName:(id)a4 error:(id *)a5
+- (void)_addLegacyIconAssetsForLayerStackProduction:(id)production withName:(id)name error:(id *)error
 {
-  v8 = [(CoreThemeDocument *)self targetPlatform];
+  targetPlatform = [(CoreThemeDocument *)self targetPlatform];
   v9 = @"UIAppearanceAny";
-  v24 = v8;
-  if (v8)
+  v24 = targetPlatform;
+  if (targetPlatform)
   {
     v10 = @"UIAppearanceLight";
   }
@@ -4364,7 +4364,7 @@ LABEL_37:
     v10 = @"NSAppearanceNameAqua";
   }
 
-  if (v8)
+  if (targetPlatform)
   {
     v11 = @"UIAppearanceDark";
   }
@@ -4378,54 +4378,54 @@ LABEL_37:
   v13 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"Appearance" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name == %@", v10), 0), "firstObject"}];
   v14 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"Appearance" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name == %@", v11), 0), "firstObject"}];
   v15 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"Appearance" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name == %@", @"ISAppearanceTintable", 0), "firstObject"}];
-  v16 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [a3 renditions], v13);
+  v16 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [production renditions], v13);
   if (v16)
   {
-    v17 = [(CoreThemeDocument *)self _iconLayerStackFromLayerStackRendition:v16 withName:a4 matchingAppearance:v13 fallbackAppearance:v12 error:a5];
-    -[CoreThemeDocument _addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:](self, "_addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:", v17, v12, 0, [MEMORY[0x277D1B180] color], a5);
+    v17 = [(CoreThemeDocument *)self _iconLayerStackFromLayerStackRendition:v16 withName:name matchingAppearance:v13 fallbackAppearance:v12 error:error];
+    -[CoreThemeDocument _addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:](self, "_addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:", v17, v12, 0, [MEMORY[0x277D1B180] color], error);
     if (v24 == 1)
     {
       v18 = v12;
-      v19 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [a3 renditions], v14);
-      if (v19 || (v19 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [a3 renditions], v12)) != 0)
+      v19 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [production renditions], v14);
+      if (v19 || (v19 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [production renditions], v12)) != 0)
       {
-        v20 = [(CoreThemeDocument *)self _iconLayerStackFromLayerStackRendition:v19 withName:a4 matchingAppearance:v14 fallbackAppearance:v12 error:a5];
-        -[CoreThemeDocument _addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:](self, "_addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:", v20, v14, 1, [MEMORY[0x277D1B180] color], a5);
+        v20 = [(CoreThemeDocument *)self _iconLayerStackFromLayerStackRendition:v19 withName:name matchingAppearance:v14 fallbackAppearance:v12 error:error];
+        -[CoreThemeDocument _addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:](self, "_addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:", v20, v14, 1, [MEMORY[0x277D1B180] color], error);
       }
 
-      v21 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [a3 renditions], v15);
-      if (v21 || (v21 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [a3 renditions], v18)) != 0)
+      v21 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [production renditions], v15);
+      if (v21 || (v21 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [production renditions], v18)) != 0)
       {
-        v22 = [(CoreThemeDocument *)self _iconLayerStackFromLayerStackRendition:v21 withName:a4 matchingAppearance:v15 fallbackAppearance:v18 error:a5];
+        v22 = [(CoreThemeDocument *)self _iconLayerStackFromLayerStackRendition:v21 withName:name matchingAppearance:v15 fallbackAppearance:v18 error:error];
         v23 = [MEMORY[0x277D1B180] tintWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
 
-        [(CoreThemeDocument *)self _addLegacyIconAssetsForLayerStack:v22 forAppearance:v15 renderedAppearance:1 renderingMode:v23 error:a5];
+        [(CoreThemeDocument *)self _addLegacyIconAssetsForLayerStack:v22 forAppearance:v15 renderedAppearance:1 renderingMode:v23 error:error];
       }
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreThemeDefinition" code:5 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", @"Failed to find a light mode icon rendition for layered icon production", *MEMORY[0x277CCA450], 0, 0)}];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreThemeDefinition" code:5 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", @"Failed to find a light mode icon rendition for layered icon production", *MEMORY[0x277CCA450], 0, 0)}];
   }
 }
 
-- (id)_iconLayerStackFromLayerStackRendition:(id)a3 withName:(id)a4 matchingAppearance:(id)a5 fallbackAppearance:(id)a6 error:(id *)a7
+- (id)_iconLayerStackFromLayerStackRendition:(id)rendition withName:(id)name matchingAppearance:(id)appearance fallbackAppearance:(id)fallbackAppearance error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (rendition)
   {
     [(CoreThemeDocument *)self targetPlatform];
     CUIMaxScaleForTargetPlatform();
     v13 = objc_alloc(MEMORY[0x277D026A0]);
-    [a3 canvasSize];
-    v14 = [v13 initWithName:a4 withSize:? atScale:?];
+    [rendition canvasSize];
+    v14 = [v13 initWithName:name withSize:? atScale:?];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = [a3 layerReferences];
-    v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    layerReferences = [rendition layerReferences];
+    v16 = [layerReferences countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
       v17 = v16;
@@ -4437,20 +4437,20 @@ LABEL_37:
         {
           if (*v23 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(layerReferences);
           }
 
-          [(CoreThemeDocument *)self _addLayerReference:*(*(&v22 + 1) + 8 * v19++) toMutableIconLayerStack:v14 matchingAppearance:a5 fallbackAppearance:a6 error:a7];
+          [(CoreThemeDocument *)self _addLayerReference:*(*(&v22 + 1) + 8 * v19++) toMutableIconLayerStack:v14 matchingAppearance:appearance fallbackAppearance:fallbackAppearance error:error];
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [layerReferences countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v17);
     }
 
-    [v14 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(a3, "keySpec"), "appearance"), "name")}];
+    [v14 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(rendition, "keySpec"), "appearance"), "name")}];
   }
 
   else
@@ -4463,22 +4463,22 @@ LABEL_37:
   return result;
 }
 
-- (id)_namedColorFromColorRendition:(id)a3
+- (id)_namedColorFromColorRendition:(id)rendition
 {
   components[4] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277D02688]);
-  v6 = -[CoreThemeDocument createCGColorSpaceWithIdentifier:](self, "createCGColorSpaceWithIdentifier:", [a3 colorSpaceID]);
-  [a3 red];
+  v6 = -[CoreThemeDocument createCGColorSpaceWithIdentifier:](self, "createCGColorSpaceWithIdentifier:", [rendition colorSpaceID]);
+  [rendition red];
   components[0] = v7;
-  [a3 green];
+  [rendition green];
   components[1] = v8;
-  [a3 blue];
+  [rendition blue];
   components[2] = v9;
-  [a3 alpha];
+  [rendition alpha];
   components[3] = v10;
   v11 = CGColorCreate(v6, components);
   [v5 setCGColor:v11];
-  [v5 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(a3, "keySpec"), "appearance"), "name")}];
+  [v5 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(rendition, "keySpec"), "appearance"), "name")}];
   CGColorRelease(v11);
   CGColorSpaceRelease(v6);
   result = v5;
@@ -4486,17 +4486,17 @@ LABEL_37:
   return result;
 }
 
-- (id)_namedGradientFromGradientRendition:(id)a3 matchingAppearance:(id)a4 fallbackAppearance:(id)a5
+- (id)_namedGradientFromGradientRendition:(id)rendition matchingAppearance:(id)appearance fallbackAppearance:(id)fallbackAppearance
 {
   v39 = *MEMORY[0x277D85DE8];
   v29 = objc_alloc_init(MEMORY[0x277D02690]);
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [a3 colorStops];
+  obj = [rendition colorStops];
   v9 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v9)
   {
@@ -4512,42 +4512,42 @@ LABEL_37:
         }
 
         v13 = *(*(&v33 + 1) + 8 * i);
-        v14 = [v13 colorName];
-        v15 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedColorProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", v14), 0), "firstObject"}];
+        colorName = [v13 colorName];
+        v15 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedColorProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", colorName), 0), "firstObject"}];
         v16 = [objc_msgSend(v15 "renditions")];
-        v17 = [v15 renditions];
+        renditions = [v15 renditions];
         if (v16 < 2)
         {
-          v20 = [v17 anyObject];
+          anyObject = [renditions anyObject];
         }
 
         else
         {
-          v18 = [(CoreThemeDocument *)self _renditionInSet:v17 matchingAppearance:a5];
-          v19 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v15 renditions], a4);
+          v18 = [(CoreThemeDocument *)self _renditionInSet:renditions matchingAppearance:fallbackAppearance];
+          v19 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v15 renditions], appearance);
           if (v19)
           {
-            v20 = v19;
+            anyObject = v19;
           }
 
           else
           {
-            v20 = v18;
+            anyObject = v18;
           }
         }
 
-        v21 = -[CoreThemeDocument createCGColorSpaceWithIdentifier:](self, "createCGColorSpaceWithIdentifier:", [v20 colorSpaceID]);
-        [v20 red];
+        v21 = -[CoreThemeDocument createCGColorSpaceWithIdentifier:](self, "createCGColorSpaceWithIdentifier:", [anyObject colorSpaceID]);
+        [anyObject red];
         components[0] = v22;
-        [v20 green];
+        [anyObject green];
         components[1] = v23;
-        [v20 blue];
+        [anyObject blue];
         components[2] = v24;
-        [v20 alpha];
+        [anyObject alpha];
         components[3] = v25;
         v26 = CGColorCreate(v21, components);
-        [v7 addObject:v26];
-        [v8 addObject:{objc_msgSend(v13, "stop")}];
+        [array addObject:v26];
+        [array2 addObject:{objc_msgSend(v13, "stop")}];
         CGColorRelease(v26);
         CGColorSpaceRelease(v21);
       }
@@ -4558,19 +4558,19 @@ LABEL_37:
     while (v10);
   }
 
-  [v29 setColors:v7 andStops:v8];
-  [v29 setGradientType:{objc_msgSend(objc_msgSend(a3, "gradientType"), "integerValue")}];
-  [v29 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(a3, "keySpec"), "appearance"), "name")}];
-  [a3 gradientStartPoint];
+  [v29 setColors:array andStops:array2];
+  [v29 setGradientType:{objc_msgSend(objc_msgSend(rendition, "gradientType"), "integerValue")}];
+  [v29 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(rendition, "keySpec"), "appearance"), "name")}];
+  [rendition gradientStartPoint];
   [v29 setGradientStartPoint:?];
-  [a3 gradientEndPoint];
+  [rendition gradientEndPoint];
   [v29 setGradientEndPoint:?];
   result = v29;
   v28 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (id)_renditionInSet:(id)a3 matchingAppearance:(id)a4
+- (id)_renditionInSet:(id)set matchingAppearance:(id)appearance
 {
   v7 = 0;
   v8 = &v7;
@@ -4582,9 +4582,9 @@ LABEL_37:
   v6[1] = 3221225472;
   v6[2] = __56__CoreThemeDocument__renditionInSet_matchingAppearance___block_invoke;
   v6[3] = &unk_278EBB0E8;
-  v6[4] = a4;
+  v6[4] = appearance;
   v6[5] = &v7;
-  [a3 enumerateObjectsUsingBlock:v6];
+  [set enumerateObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
   return v4;
@@ -4603,50 +4603,50 @@ uint64_t __56__CoreThemeDocument__renditionInSet_matchingAppearance___block_invo
   return result;
 }
 
-- (void)_addLayerReference:(id)a3 toMutableIconLayerStack:(id)a4 matchingAppearance:(id)a5 fallbackAppearance:(id)a6 error:(id *)a7
+- (void)_addLayerReference:(id)reference toMutableIconLayerStack:(id)stack matchingAppearance:(id)appearance fallbackAppearance:(id)fallbackAppearance error:(id *)error
 {
   v111 = *MEMORY[0x277D85DE8];
-  v10 = [a3 name];
-  [a3 frameRect];
+  name = [reference name];
+  [reference frameRect];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [objc_msgSend(a3 "opacity")];
+  [objc_msgSend(reference "opacity")];
   v20 = v19;
-  [objc_msgSend(a3 "translucency")];
+  [objc_msgSend(reference "translucency")];
   v22 = v21;
-  v95 = [objc_msgSend(a3 "blendMode")];
-  v23 = [a3 gradientOrColorName];
-  [a3 blurStrength];
+  v95 = [objc_msgSend(reference "blendMode")];
+  gradientOrColorName = [reference gradientOrColorName];
+  [reference blurStrength];
   v25 = v24;
-  v93 = [a3 hasSpecular];
-  v96 = [a3 hasLightingEffects];
-  v100 = [a3 gathersSpecularByElement];
-  v94 = [objc_msgSend(a3 "shadowStyle")];
-  [objc_msgSend(a3 "shadowOpacity")];
+  hasSpecular = [reference hasSpecular];
+  hasLightingEffects = [reference hasLightingEffects];
+  gathersSpecularByElement = [reference gathersSpecularByElement];
+  v94 = [objc_msgSend(reference "shadowStyle")];
+  [objc_msgSend(reference "shadowOpacity")];
   v27 = v26;
   [(CoreThemeDocument *)self targetPlatform];
   v92 = CUIMaxScaleForTargetPlatform();
-  v99 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedArtworkProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", v10), 0), "firstObject"}];
-  v28 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedColorProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", v10), 0), "firstObject"}];
-  v97 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedGradientProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", v10), 0), "firstObject"}];
-  v29 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"LayerStackProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", v10), 0), "firstObject"}];
-  v30 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedColorProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", v23), 0), "firstObject"}];
-  v31 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedGradientProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", v23), 0), "firstObject"}];
+  v99 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedArtworkProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", name), 0), "firstObject"}];
+  v28 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedColorProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", name), 0), "firstObject"}];
+  v97 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedGradientProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", name), 0), "firstObject"}];
+  v29 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"LayerStackProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", name), 0), "firstObject"}];
+  v30 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedColorProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", gradientOrColorName), 0), "firstObject"}];
+  v31 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self objectsForEntity:@"NamedGradientProduction" withPredicate:objc_msgSend(MEMORY[0x277CCAC30] sortDescriptors:{"predicateWithFormat:", @"name.name == %@", gradientOrColorName), 0), "firstObject"}];
   if (v28)
   {
-    if ([objc_msgSend(a5 "name")])
+    if ([objc_msgSend(appearance "name")])
     {
       v32 = 0;
     }
 
     else
     {
-      v32 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v28 renditions], a6);
+      v32 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v28 renditions], fallbackAppearance);
     }
 
-    v36 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v28 renditions], a5);
+    v36 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v28 renditions], appearance);
     if (v36)
     {
       v37 = v36;
@@ -4663,7 +4663,7 @@ uint64_t __56__CoreThemeDocument__renditionInSet_matchingAppearance___block_invo
 LABEL_28:
       v53 = *MEMORY[0x277D85DE8];
 
-      [a4 addLayer:v38];
+      [stack addLayer:v38];
       return;
     }
 
@@ -4671,20 +4671,20 @@ LABEL_28:
   }
 
   v33 = v30;
-  v34 = v23;
+  v34 = gradientOrColorName;
   if (v97)
   {
-    if ([objc_msgSend(a5 "name")])
+    if ([objc_msgSend(appearance "name")])
     {
       v35 = 0;
     }
 
     else
     {
-      v35 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v97 renditions], a6);
+      v35 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v97 renditions], fallbackAppearance);
     }
 
-    v51 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v97 renditions], a5);
+    v51 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v97 renditions], appearance);
     if (v51)
     {
       v52 = v51;
@@ -4697,7 +4697,7 @@ LABEL_28:
 
     if (v52)
     {
-      v38 = [(CoreThemeDocument *)self _namedGradientFromGradientRendition:v52 matchingAppearance:a5 fallbackAppearance:a5];
+      v38 = [(CoreThemeDocument *)self _namedGradientFromGradientRendition:v52 matchingAppearance:appearance fallbackAppearance:appearance];
       goto LABEL_28;
     }
 
@@ -4708,13 +4708,13 @@ LABEL_59:
 
   v98 = v31;
   v39 = v25;
-  v40 = a5;
+  appearanceCopy2 = appearance;
   if (!v99 || ![v99 isMemberOfClass:objc_opt_class()])
   {
     if (v29)
     {
-      v54 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v29 renditions], a6);
-      v55 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v29 renditions], a5);
+      v54 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v29 renditions], fallbackAppearance);
+      v55 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v29 renditions], appearance);
       if (v55)
       {
         v56 = v55;
@@ -4729,12 +4729,12 @@ LABEL_59:
       [v57 setOpacity:v20];
       [v57 setBlendMode:v95];
       [v57 setBlurStrength:v39];
-      [v57 setHasLightingEffects:v96];
-      [v57 setGathersSpecularByElement:v100];
+      [v57 setHasLightingEffects:hasLightingEffects];
+      [v57 setGathersSpecularByElement:gathersSpecularByElement];
       if (v33)
       {
-        v58 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], a6);
-        v59 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], a5);
+        v58 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], fallbackAppearance);
+        v59 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], appearance);
         if (v59)
         {
           v60 = v59;
@@ -4746,7 +4746,7 @@ LABEL_59:
         }
 
         v61 = [(CoreThemeDocument *)self _namedColorFromColorRendition:v60];
-        v62 = v93;
+        v62 = hasSpecular;
         v63 = v94;
         if (v61)
         {
@@ -4756,14 +4756,14 @@ LABEL_59:
 
       else
       {
-        v62 = v93;
+        v62 = hasSpecular;
         v63 = v94;
         if (v98)
         {
-          v64 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], a6);
-          v65 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], a5);
+          v64 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], fallbackAppearance);
+          v65 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], appearance);
           v66 = v65 ? v65 : v64;
-          v67 = [(CoreThemeDocument *)self _namedGradientFromGradientRendition:v66 matchingAppearance:a5 fallbackAppearance:a5];
+          v67 = [(CoreThemeDocument *)self _namedGradientFromGradientRendition:v66 matchingAppearance:appearance fallbackAppearance:appearance];
           if (v67)
           {
             [v57 setGradient:v67];
@@ -4780,9 +4780,9 @@ LABEL_59:
       v109 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v68 = [v56 layerReferences];
-      v69 = [v68 countByEnumeratingWithState:&v106 objects:v110 count:16];
-      v70 = a6;
+      layerReferences = [v56 layerReferences];
+      v69 = [layerReferences countByEnumeratingWithState:&v106 objects:v110 count:16];
+      fallbackAppearanceCopy2 = fallbackAppearance;
       if (v69)
       {
         v71 = v69;
@@ -4794,50 +4794,50 @@ LABEL_59:
           {
             if (*v107 != v72)
             {
-              objc_enumerationMutation(v68);
+              objc_enumerationMutation(layerReferences);
             }
 
             v74 = *(*(&v106 + 1) + 8 * i);
-            if (v74 == a3)
+            if (v74 == reference)
             {
-              v91 = [a3 name];
+              name2 = [reference name];
               _CUILog();
-              if (a7)
+              if (error)
               {
-                v75 = self;
-                v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"infinite recursion for layer group %@ in icon %@", objc_msgSend(a3, "name", v91), objc_msgSend(a4, "name")];
+                selfCopy = self;
+                v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"infinite recursion for layer group %@ in icon %@", objc_msgSend(reference, "name", name2), objc_msgSend(stack, "name")];
                 v77 = MEMORY[0x277CCA9B8];
                 v78 = CoreThemeDefinitionErrorDomain[0];
                 v79 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v76, v101, 0}];
                 v80 = v77;
                 v81 = v78;
-                self = v75;
-                v70 = a6;
-                v40 = a5;
-                *a7 = [v80 errorWithDomain:v81 code:201 userInfo:v79];
+                self = selfCopy;
+                fallbackAppearanceCopy2 = fallbackAppearance;
+                appearanceCopy2 = appearance;
+                *error = [v80 errorWithDomain:v81 code:201 userInfo:v79];
               }
             }
 
             else
             {
-              [(CoreThemeDocument *)self _addLayerReference:v74 toMutableIconLayerStack:v57 matchingAppearance:v40 fallbackAppearance:v70 error:a7];
+              [(CoreThemeDocument *)self _addLayerReference:v74 toMutableIconLayerStack:v57 matchingAppearance:appearanceCopy2 fallbackAppearance:fallbackAppearanceCopy2 error:error];
             }
           }
 
-          v71 = [v68 countByEnumeratingWithState:&v106 objects:v110 count:16];
+          v71 = [layerReferences countByEnumeratingWithState:&v106 objects:v110 count:16];
         }
 
         while (v71);
       }
 
-      [a4 addLayer:{v57, v91}];
+      [stack addLayer:{v57, name2}];
     }
 
     goto LABEL_59;
   }
 
-  v41 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v99 renditions], a6);
-  v42 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v99 renditions], a5);
+  v41 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v99 renditions], fallbackAppearance);
+  v42 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v99 renditions], appearance);
   if (v42)
   {
     v41 = v42;
@@ -4846,8 +4846,8 @@ LABEL_59:
   v43 = [objc_msgSend(v41 "asset")];
   if (v33)
   {
-    v44 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], a6);
-    v45 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], a5);
+    v44 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], fallbackAppearance);
+    v45 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v33 renditions], appearance);
     if (v45)
     {
       v46 = v45;
@@ -4860,18 +4860,18 @@ LABEL_59:
 
     v47 = [(CoreThemeDocument *)self _namedColorFromColorRendition:v46];
     v48 = 0;
-    v49 = v96;
+    v49 = hasLightingEffects;
     v50 = v34;
   }
 
   else
   {
-    v49 = v96;
-    v50 = v23;
+    v49 = hasLightingEffects;
+    v50 = gradientOrColorName;
     if (v98)
     {
-      v83 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], a6);
-      v84 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], a5);
+      v83 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], fallbackAppearance);
+      v84 = -[CoreThemeDocument _renditionInSet:matchingAppearance:](self, "_renditionInSet:matchingAppearance:", [v98 renditions], appearance);
       if (v84)
       {
         v85 = v84;
@@ -4882,7 +4882,7 @@ LABEL_59:
         v85 = v83;
       }
 
-      v48 = [(CoreThemeDocument *)self _namedGradientFromGradientRendition:v85 matchingAppearance:a5 fallbackAppearance:a5];
+      v48 = [(CoreThemeDocument *)self _namedGradientFromGradientRendition:v85 matchingAppearance:appearance fallbackAppearance:appearance];
     }
 
     else
@@ -4928,7 +4928,7 @@ LABEL_59:
 
         [v105 setBlendMode:v89];
         [v105 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(v41, "keySpec"), "appearance"), "name")}];
-        [a4 addLayer:v105];
+        [stack addLayer:v105];
         CGImageRelease(ImageAtIndex);
       }
     }
@@ -4958,35 +4958,35 @@ LABEL_59:
     }
 
     [v105 setAppearance:{objc_msgSend(objc_msgSend(objc_msgSend(v41, "keySpec"), "appearance"), "name")}];
-    [a4 addLayer:v105];
+    [stack addLayer:v105];
   }
 
   v90 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addLegacyIconAssetsForLayerStack:(id)a3 forAppearance:(id)a4 renderedAppearance:(unint64_t)a5 renderingMode:(id)a6 error:(id *)a7
+- (void)_addLegacyIconAssetsForLayerStack:(id)stack forAppearance:(id)appearance renderedAppearance:(unint64_t)renderedAppearance renderingMode:(id)mode error:(id *)error
 {
   v87[7] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!stack)
   {
     goto LABEL_50;
   }
 
-  v10 = [(CoreThemeDocument *)self targetPlatform];
+  targetPlatform = [(CoreThemeDocument *)self targetPlatform];
   v11 = 0;
-  v56 = self;
-  v57 = v10;
-  v55 = a7;
-  if (v10 > 1)
+  selfCopy = self;
+  v57 = targetPlatform;
+  errorCopy = error;
+  if (targetPlatform > 1)
   {
-    if (v10 > 3)
+    if (targetPlatform > 3)
     {
-      if (v10 == 4)
+      if (targetPlatform == 4)
       {
         v11 = 5;
       }
 
-      else if (v10 == 5)
+      else if (targetPlatform == 5)
       {
         v11 = 8;
       }
@@ -4994,7 +4994,7 @@ LABEL_59:
       goto LABEL_16;
     }
 
-    if (v10 == 2)
+    if (targetPlatform == 2)
     {
       v11 = 7;
       goto LABEL_16;
@@ -5003,7 +5003,7 @@ LABEL_59:
     goto LABEL_9;
   }
 
-  if (v10 == -1)
+  if (targetPlatform == -1)
   {
     v54 = -1;
     _CUILog();
@@ -5011,9 +5011,9 @@ LABEL_59:
     goto LABEL_16;
   }
 
-  if (v10)
+  if (targetPlatform)
   {
-    if (v10 != 1)
+    if (targetPlatform != 1)
     {
 LABEL_16:
       v70[0] = @"size";
@@ -5028,7 +5028,7 @@ LABEL_16:
     }
 
 LABEL_9:
-    v11 = v10;
+    v11 = targetPlatform;
     goto LABEL_16;
   }
 
@@ -5073,14 +5073,14 @@ LABEL_9:
   v14 = 7;
 LABEL_17:
   v15 = [v12 arrayWithObjects:v13 count:v14];
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   obj = v15;
   v17 = [v15 countByEnumeratingWithState:&v65 objects:v69 count:16];
-  v61 = v16;
+  v61 = array;
   if (v17)
   {
     v18 = v17;
@@ -5096,14 +5096,14 @@ LABEL_17:
 
         v21 = *(*(&v65 + 1) + 8 * i);
         [objc_msgSend(v21 objectForKey:{@"size", "sizeValue"}];
-        v24 = [a3 finalizedIconWithSize:objc_msgSend(objc_msgSend(v21 scale:"objectForKey:" deviceClass:@"scale" appearance:"unsignedIntegerValue") renderingMode:{v11, a5, a6, v22, v23}];
+        v24 = [stack finalizedIconWithSize:objc_msgSend(objc_msgSend(v21 scale:"objectForKey:" deviceClass:@"scale" appearance:"unsignedIntegerValue") renderingMode:{v11, renderedAppearance, mode, v22, v23}];
         if (v24)
         {
           v25 = v24;
           v26 = objc_alloc_init(MEMORY[0x277D1B178]);
           v27 = [v25 renderedLegacyCompatibleIconWithConfiguration:v26 forDeviceClass:v11];
 
-          v16 = v61;
+          array = v61;
           [v61 addObject:v27];
         }
       }
@@ -5114,30 +5114,30 @@ LABEL_17:
     while (v18);
   }
 
-  v28 = v56;
-  v29 = a4;
-  if ([v16 count])
+  v28 = selfCopy;
+  appearanceCopy2 = appearance;
+  if ([array count])
   {
     v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v58 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if ([v16 count])
+    if ([array count])
     {
       v31 = 0;
       while (1)
       {
-        v32 = [v16 objectAtIndex:v31];
-        v33 = -[CoreThemeDocument namedElementWithName:](v28, "namedElementWithName:", [a3 name]);
+        v32 = [array objectAtIndex:v31];
+        v33 = -[CoreThemeDocument namedElementWithName:](v28, "namedElementWithName:", [stack name]);
         v34 = [obj objectAtIndex:v31];
         [objc_msgSend(v34 objectForKey:{@"size", "sizeValue"}];
         v36 = v35;
         v38 = v37;
         v39 = [objc_msgSend(v34 objectForKey:{@"scale", "unsignedIntegerValue"}];
-        v40 = [objc_msgSend(a3 "name")];
-        v41 = [v29 name];
+        v40 = [objc_msgSend(stack "name")];
+        name = [appearanceCopy2 name];
         v42 = [MEMORY[0x277CBEBC0] fileURLWithPath:NSTemporaryDirectory()];
-        if (v41)
+        if (name)
         {
-          v43 = v41;
+          v43 = name;
         }
 
         else
@@ -5158,9 +5158,9 @@ LABEL_17:
         }
 
         [(NSMutableArray *)tempFilesToCleanup addObject:v44];
-        v16 = v61;
-        v29 = a4;
-        if (!a5 && (v36 >= 1024.0 || v38 >= 1024.0))
+        array = v61;
+        appearanceCopy2 = appearance;
+        if (!renderedAppearance && (v36 >= 1024.0 || v38 >= 1024.0))
         {
           appearanceIconFilesForName = v28->_appearanceIconFilesForName;
           if (!appearanceIconFilesForName)
@@ -5169,11 +5169,11 @@ LABEL_17:
             v28->_appearanceIconFilesForName = appearanceIconFilesForName;
           }
 
-          -[NSMutableDictionary setObject:forKey:](appearanceIconFilesForName, "setObject:forKey:", v44, [a3 name]);
+          -[NSMutableDictionary setObject:forKey:](appearanceIconFilesForName, "setObject:forKey:", v44, [stack name]);
         }
 
         v48 = objc_alloc_init(TDNamedAssetImportInfo);
-        -[TDNamedAssetImportInfo setName:](v48, "setName:", [a3 name]);
+        -[TDNamedAssetImportInfo setName:](v48, "setName:", [stack name]);
         -[TDNamedAssetImportInfo setNameIdentifier:](v48, "setNameIdentifier:", [objc_msgSend(v33 "identifier")]);
         if (v57 == 4)
         {
@@ -5194,17 +5194,17 @@ LABEL_17:
         [(TDNamedAssetImportInfo *)v48 setDisplayGamut:0];
         [(TDNamedAssetImportInfo *)v48 setScaleFactor:v39];
         -[TDNamedAssetImportInfo setModificationDate:](v48, "setModificationDate:", [MEMORY[0x277CBEAA8] date]);
-        -[TDNamedAssetImportInfo setAppearanceName:](v48, "setAppearanceName:", [a4 name]);
-        -[TDNamedAssetImportInfo setAppearanceIdentifier:](v48, "setAppearanceIdentifier:", [a4 identifier]);
+        -[TDNamedAssetImportInfo setAppearanceName:](v48, "setAppearanceName:", [appearance name]);
+        -[TDNamedAssetImportInfo setAppearanceIdentifier:](v48, "setAppearanceIdentifier:", [appearance identifier]);
         [v30 addObject:v48];
 
         v48 = objc_alloc_init(TDNamedAssetImportInfo);
-        -[TDNamedAssetImportInfo setName:](v48, "setName:", [a3 name]);
+        -[TDNamedAssetImportInfo setName:](v48, "setName:", [stack name]);
         -[TDNamedAssetImportInfo setNameIdentifier:](v48, "setNameIdentifier:", [objc_msgSend(v33 "identifier")]);
         [(TDNamedAssetImportInfo *)v48 setIdiom:2];
         [(TDNamedAssetImportInfo *)v48 setRenditionType:0];
         [(TDNamedAssetImportInfo *)v48 setFileURL:v44];
-        v28 = v56;
+        v28 = selfCopy;
         [v58 addObject:v44];
         v49 = MEMORY[0x277CCAE60];
 LABEL_46:
@@ -5212,8 +5212,8 @@ LABEL_46:
         [(TDNamedAssetImportInfo *)v48 setDisplayGamut:0];
         [(TDNamedAssetImportInfo *)v48 setScaleFactor:v39];
         -[TDNamedAssetImportInfo setModificationDate:](v48, "setModificationDate:", [MEMORY[0x277CBEAA8] date]);
-        -[TDNamedAssetImportInfo setAppearanceName:](v48, "setAppearanceName:", [a4 name]);
-        -[TDNamedAssetImportInfo setAppearanceIdentifier:](v48, "setAppearanceIdentifier:", [a4 identifier]);
+        -[TDNamedAssetImportInfo setAppearanceName:](v48, "setAppearanceName:", [appearance name]);
+        -[TDNamedAssetImportInfo setAppearanceIdentifier:](v48, "setAppearanceIdentifier:", [appearance identifier]);
         [v30 addObject:v48];
 
         if (++v31 >= [v61 count])
@@ -5233,38 +5233,38 @@ LABEL_45:
     }
 
 LABEL_47:
-    v64 = [MEMORY[0x277CBEA60] array];
-    v51 = [(CoreThemeDocument *)v28 _addAssetsAtFileURLs:v58 createProductions:0 referenceFiles:1 bitSource:[(CoreThemeDocument *)v28 _themeBitSourceForReferencedFilesAtURLs:v58 createIfNecessary:1] customInfos:v30 sortedCustomInfos:&v64];
+    array2 = [MEMORY[0x277CBEA60] array];
+    v51 = [(CoreThemeDocument *)v28 _addAssetsAtFileURLs:v58 createProductions:0 referenceFiles:1 bitSource:[(CoreThemeDocument *)v28 _themeBitSourceForReferencedFilesAtURLs:v58 createIfNecessary:1] customInfos:v30 sortedCustomInfos:&array2];
     v52 = [v51 count];
-    if (v52 != [v64 count])
+    if (v52 != [array2 count])
     {
       [CoreThemeDocument _addLegacyIconAssetsForLayerStack:forAppearance:renderedAppearance:renderingMode:error:];
     }
 
-    [(CoreThemeDocument *)v28 createNamedArtworkProductionsForAssets:v51 customInfos:v64 skipLastStep:1 error:v55];
+    [(CoreThemeDocument *)v28 createNamedArtworkProductionsForAssets:v51 customInfos:array2 skipLastStep:1 error:errorCopy];
   }
 
 LABEL_50:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateAutomaticTexturesForCustomInfos:(id)a3 allTextureInfos:(id)a4
+- (id)updateAutomaticTexturesForCustomInfos:(id)infos allTextureInfos:(id)textureInfos
 {
   v53 = *MEMORY[0x277D85DE8];
-  if ([a3 count])
+  if ([infos count])
   {
     v48 = 0;
-    v39 = [a4 mutableCopy];
+    v39 = [textureInfos mutableCopy];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v38 = [a3 countByEnumeratingWithState:&v44 objects:v50 count:16];
+    v38 = [infos countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v38)
     {
       v37 = *v45;
       v7 = *MEMORY[0x277CBEEE8];
-      obj = a3;
+      obj = infos;
       do
       {
         v8 = 0;
@@ -5280,8 +5280,8 @@ LABEL_50:
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v10 = [v9 textureInfos];
-          v11 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+          textureInfos = [v9 textureInfos];
+          v11 = [textureInfos countByEnumeratingWithState:&v40 objects:v49 count:16];
           if (v11)
           {
             v12 = v11;
@@ -5292,7 +5292,7 @@ LABEL_50:
               {
                 if (*v41 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(textureInfos);
                 }
 
                 v15 = *(*(&v40 + 1) + 8 * i);
@@ -5342,8 +5342,8 @@ LABEL_24:
                         v23 = 1;
                       }
 
-                      v24 = [(CoreThemeDocument *)self targetPlatform];
-                      if (v24 <= 5 && ((1 << v24) & 0x3A) != 0)
+                      targetPlatform = [(CoreThemeDocument *)self targetPlatform];
+                      if (targetPlatform <= 5 && ((1 << targetPlatform) & 0x3A) != 0)
                       {
                         if (v23 >= 1)
                         {
@@ -5413,7 +5413,7 @@ LABEL_32:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+              v12 = [textureInfos countByEnumeratingWithState:&v40 objects:v49 count:16];
               if (v12)
               {
                 continue;
@@ -5435,30 +5435,30 @@ LABEL_33:
       while (v33);
     }
 
-    a4 = v39;
+    textureInfos = v39;
   }
 
   v34 = *MEMORY[0x277D85DE8];
-  return a4;
+  return textureInfos;
 }
 
-+ (id)_imageAssetURLsByCopyingFileURLs:(id)a3 toManagedLocationAtURL:(id)a4 error:(id *)a5
++ (id)_imageAssetURLsByCopyingFileURLs:(id)ls toManagedLocationAtURL:(id)l error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [a4 URLByAppendingPathComponent:@"NamedImages"];
-  if (([v10 checkResourceIsReachableAndReturnError:0] & 1) != 0 || (v11 = objc_msgSend(v9, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v10, 1, 0, a5), result = 0, v11))
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(ls, "count")}];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [l URLByAppendingPathComponent:@"NamedImages"];
+  if (([v10 checkResourceIsReachableAndReturnError:0] & 1) != 0 || (v11 = objc_msgSend(defaultManager, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v10, 1, 0, error), result = 0, v11))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = [a3 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v13 = [ls countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
       v14 = v13;
-      v23 = a5;
+      errorCopy = error;
       v15 = *v26;
       v16 = *MEMORY[0x277CBEEE8];
       while (2)
@@ -5468,7 +5468,7 @@ LABEL_33:
         {
           if (*v26 != v15)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(ls);
           }
 
           v18 = *(*(&v25 + 1) + 8 * v17);
@@ -5482,11 +5482,11 @@ LABEL_33:
           {
             v24 = 0;
             v19 = [v10 URLByAppendingPathComponent:{objc_msgSend(v18, "lastPathComponent")}];
-            if ([v19 checkResourceIsReachableAndReturnError:&v24] && (NSLog(&cfstr_FileAlreadyExi.isa, v18), (objc_msgSend(v9, "removeItemAtURL:error:", v19, &v24) & 1) == 0) || (objc_msgSend(v9, "copyItemAtURL:toURL:error:", v18, v19, &v24) & 1) == 0)
+            if ([v19 checkResourceIsReachableAndReturnError:&v24] && (NSLog(&cfstr_FileAlreadyExi.isa, v18), (objc_msgSend(defaultManager, "removeItemAtURL:error:", v19, &v24) & 1) == 0) || (objc_msgSend(defaultManager, "copyItemAtURL:toURL:error:", v18, v19, &v24) & 1) == 0)
             {
-              if (v23)
+              if (errorCopy)
               {
-                *v23 = v24;
+                *errorCopy = v24;
               }
 
               result = 0;
@@ -5502,7 +5502,7 @@ LABEL_33:
         }
 
         while (v14 != v17);
-        v14 = [a3 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v14 = [ls countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v14)
         {
           continue;
@@ -5520,28 +5520,28 @@ LABEL_20:
   return result;
 }
 
-- (int64_t)_compareFlattenedKeySpec1:(id)a3 toKeySpec2:(id)a4
+- (int64_t)_compareFlattenedKeySpec1:(id)spec1 toKeySpec2:(id)spec2
 {
-  v6 = [a3 scaleFactor];
-  if (v6 != [a4 scaleFactor])
+  scaleFactor = [spec1 scaleFactor];
+  if (scaleFactor != [spec2 scaleFactor])
   {
     return -1;
   }
 
-  v7 = [a3 idiom];
-  if (v7 != [a4 idiom])
+  idiom = [spec1 idiom];
+  if (idiom != [spec2 idiom])
   {
     return -1;
   }
 
-  v8 = [a3 subtype];
-  if (v8 != [a4 subtype])
+  subtype = [spec1 subtype];
+  if (subtype != [spec2 subtype])
   {
     return -1;
   }
 
-  v9 = [a3 gamut];
-  if (v9 == [a4 gamut])
+  gamut = [spec1 gamut];
+  if (gamut == [spec2 gamut])
   {
     return 0;
   }
@@ -5552,19 +5552,19 @@ LABEL_20:
   }
 }
 
-- (void)_addResolvedLayerReferenceToFlattenedImageRendition:(id)a3 usingArtworkRendition:(id)a4 andLayerReference:(id)a5
+- (void)_addResolvedLayerReferenceToFlattenedImageRendition:(id)rendition usingArtworkRendition:(id)artworkRendition andLayerReference:(id)reference
 {
   v8 = [(CoreThemeDocument *)self newObjectForEntity:@"ResolvedImageLayerReference"];
-  [v8 setReference:a4];
-  [v8 setBlendMode:{objc_msgSend(a5, "blendMode")}];
-  [a5 frameRect];
+  [v8 setReference:artworkRendition];
+  [v8 setBlendMode:{objc_msgSend(reference, "blendMode")}];
+  [reference frameRect];
   [v8 setFrameRect:?];
-  [v8 setName:{objc_msgSend(a5, "name")}];
-  [v8 setOpacity:{objc_msgSend(a5, "opacity")}];
-  [a3 addLayerReferencesObject:v8];
-  v9 = [a4 asset];
+  [v8 setName:{objc_msgSend(reference, "name")}];
+  [v8 setOpacity:{objc_msgSend(reference, "opacity")}];
+  [rendition addLayerReferencesObject:v8];
+  asset = [artworkRendition asset];
 
-  [a3 setAsset:v9];
+  [rendition setAsset:asset];
 }
 
 - (void)_makeRadiosityImages
@@ -5593,10 +5593,10 @@ LABEL_20:
 
         v24 = v4;
         v5 = *(*(&v29 + 1) + 8 * v4);
-        v6 = [v5 flattenedImageProduction];
-        if (v6)
+        flattenedImageProduction = [v5 flattenedImageProduction];
+        if (flattenedImageProduction)
         {
-          v7 = v6;
+          v7 = flattenedImageProduction;
           v8 = [(CoreThemeDocument *)self newObjectForEntity:@"SimpleArtworkElementProduction"];
           [v8 setTemplateRenderingMode:{objc_msgSend(v7, "templateRenderingMode")}];
           v9 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
@@ -5610,8 +5610,8 @@ LABEL_20:
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v10 = [v7 renditions];
-          v11 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          renditions = [v7 renditions];
+          v11 = [renditions countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v11)
           {
             v12 = v11;
@@ -5622,7 +5622,7 @@ LABEL_20:
               {
                 if (*v26 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(renditions);
                 }
 
                 v15 = *(*(&v25 + 1) + 8 * i);
@@ -5647,7 +5647,7 @@ LABEL_20:
                 [v16 setHeight:{(objc_msgSend(v15, "height") + v18 * 2.0)}];
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v12 = [renditions countByEnumeratingWithState:&v25 objects:v33 count:16];
             }
 
             while (v12);
@@ -5670,10 +5670,10 @@ LABEL_20:
 - (void)_tidyUpLayerStacks
 {
   v173 = *MEMORY[0x277D85DE8];
-  v81 = [(CoreThemeDocument *)self idioms];
-  v80 = [(CoreThemeDocument *)self sizeClasses];
-  v93 = [(CoreThemeDocument *)self compressionTypes];
-  v92 = [(CoreThemeDocument *)self deploymentTargets];
+  idioms = [(CoreThemeDocument *)self idioms];
+  sizeClasses = [(CoreThemeDocument *)self sizeClasses];
+  compressionTypes = [(CoreThemeDocument *)self compressionTypes];
+  deploymentTargets = [(CoreThemeDocument *)self deploymentTargets];
   v3 = [(CoreThemeDocument *)self objectsForEntity:@"LayerStackProduction" withPredicate:0 sortDescriptors:0];
   v94 = [(CoreThemeDocument *)self partWithIdentifier:208];
   v75 = [(CoreThemeDocument *)self renditionTypeWithIdentifier:0];
@@ -5703,14 +5703,14 @@ LABEL_3:
       }
 
       v79 = v4;
-      v6 = [v5 renditions];
-      v86 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+      renditions = [v5 renditions];
+      v86 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(renditions, "count")}];
       v152 = 0u;
       v153 = 0u;
       v154 = 0u;
       v155 = 0u;
-      v7 = [v5 renditions];
-      v8 = [v7 countByEnumeratingWithState:&v152 objects:v171 count:16];
+      renditions2 = [v5 renditions];
+      v8 = [renditions2 countByEnumeratingWithState:&v152 objects:v171 count:16];
       if (v8)
       {
         v9 = v8;
@@ -5721,7 +5721,7 @@ LABEL_3:
           {
             if (*v153 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(renditions2);
             }
 
             v12 = *(*(&v152 + 1) + 8 * i);
@@ -5730,7 +5730,7 @@ LABEL_3:
             [v86 addObject:v13];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v152 objects:v171 count:16];
+          v9 = [renditions2 countByEnumeratingWithState:&v152 objects:v171 count:16];
         }
 
         while (v9);
@@ -5749,7 +5749,7 @@ LABEL_3:
             {
               if (v14 != v16)
               {
-                [v15 establishExclusionsWithHelper:objc_msgSend(v86 idioms:"objectAtIndex:" sizeClasses:{v16), v81, v80}];
+                [v15 establishExclusionsWithHelper:objc_msgSend(v86 idioms:"objectAtIndex:" sizeClasses:{v16), idioms, sizeClasses}];
               }
 
               ++v16;
@@ -5764,9 +5764,9 @@ LABEL_3:
         while (v14 < [v86 count]);
       }
 
-      v96 = [v5 name];
-      v95 = [v5 flattenedImageProduction];
-      if (v95)
+      name = [v5 name];
+      flattenedImageProduction = [v5 flattenedImageProduction];
+      if (flattenedImageProduction)
       {
         v87 = [objc_msgSend(v5 "flattenedImageProduction")];
       }
@@ -5780,7 +5780,7 @@ LABEL_3:
         [v18 setElement:{objc_msgSend(objc_msgSend(v5, "baseKeySpec"), "element")}];
         [v18 setPart:v94];
         [v17 setBaseKeySpec:v18];
-        v95 = v17;
+        flattenedImageProduction = v17;
         [v17 setRenditionType:v75];
         v87 = 0;
       }
@@ -5789,8 +5789,8 @@ LABEL_3:
       v151 = 0u;
       v148 = 0u;
       v149 = 0u;
-      v82 = [v5 renditions];
-      v84 = [v82 countByEnumeratingWithState:&v148 objects:v170 count:16];
+      renditions3 = [v5 renditions];
+      v84 = [renditions3 countByEnumeratingWithState:&v148 objects:v170 count:16];
       if (v84)
       {
         v83 = *v149;
@@ -5801,19 +5801,19 @@ LABEL_3:
           {
             if (*v149 != v83)
             {
-              objc_enumerationMutation(v82);
+              objc_enumerationMutation(renditions3);
             }
 
             v85 = v19;
             v20 = *(*(&v148 + 1) + 8 * v19);
-            v103 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             v144 = 0u;
             v145 = 0u;
             v146 = 0u;
             v147 = 0u;
             v97 = v20;
-            v101 = [v20 layerReferences];
-            v104 = [v101 countByEnumeratingWithState:&v144 objects:v169 count:16];
+            layerReferences = [v20 layerReferences];
+            v104 = [layerReferences countByEnumeratingWithState:&v144 objects:v169 count:16];
             if (v104)
             {
               v102 = *v145;
@@ -5824,7 +5824,7 @@ LABEL_3:
                 {
                   if (*v145 != v102)
                   {
-                    objc_enumerationMutation(v101);
+                    objc_enumerationMutation(layerReferences);
                   }
 
                   v106 = v21;
@@ -5853,7 +5853,7 @@ LABEL_3:
                         v137 = 0u;
                         v138 = 0u;
                         v139 = 0u;
-                        v29 = [v103 countByEnumeratingWithState:&v136 objects:v167 count:16];
+                        v29 = [array countByEnumeratingWithState:&v136 objects:v167 count:16];
                         if (v29)
                         {
                           v30 = v29;
@@ -5864,7 +5864,7 @@ LABEL_42:
                           {
                             if (*v137 != v31)
                             {
-                              objc_enumerationMutation(v103);
+                              objc_enumerationMutation(array);
                             }
 
                             if (!-[CoreThemeDocument _compareFlattenedKeySpec1:toKeySpec2:](self, "_compareFlattenedKeySpec1:toKeySpec2:", *(*(&v136 + 1) + 8 * v32), [v28 keySpec]))
@@ -5874,7 +5874,7 @@ LABEL_42:
 
                             if (v30 == ++v32)
                             {
-                              v30 = [v103 countByEnumeratingWithState:&v136 objects:v167 count:16];
+                              v30 = [array countByEnumeratingWithState:&v136 objects:v167 count:16];
                               if (v30)
                               {
                                 goto LABEL_42;
@@ -5888,7 +5888,7 @@ LABEL_42:
                         else
                         {
 LABEL_48:
-                          [v103 addObject:{objc_msgSend(v28, "keySpec")}];
+                          [array addObject:{objc_msgSend(v28, "keySpec")}];
                         }
                       }
 
@@ -5902,7 +5902,7 @@ LABEL_48:
                 }
 
                 while (v106 + 1 != v104);
-                v104 = [v101 countByEnumeratingWithState:&v144 objects:v169 count:16];
+                v104 = [layerReferences countByEnumeratingWithState:&v144 objects:v169 count:16];
               }
 
               while (v104);
@@ -5931,12 +5931,12 @@ LABEL_48:
                   {
                     if (v37)
                     {
-                      v38 = [MEMORY[0x277CBEB18] array];
+                      array2 = [MEMORY[0x277CBEB18] array];
                       v128 = 0u;
                       v129 = 0u;
                       v130 = 0u;
                       v131 = 0u;
-                      v39 = [v103 countByEnumeratingWithState:&v128 objects:v165 count:16];
+                      v39 = [array countByEnumeratingWithState:&v128 objects:v165 count:16];
                       if (v39)
                       {
                         v40 = v39;
@@ -5947,23 +5947,23 @@ LABEL_48:
                           {
                             if (*v129 != v41)
                             {
-                              objc_enumerationMutation(v103);
+                              objc_enumerationMutation(array);
                             }
 
                             v43 = *(*(&v128 + 1) + 8 * m);
                             if ([v37 allowKey:v43])
                             {
-                              [v38 addObject:v43];
+                              [array2 addObject:v43];
                             }
                           }
 
-                          v40 = [v103 countByEnumeratingWithState:&v128 objects:v165 count:16];
+                          v40 = [array countByEnumeratingWithState:&v128 objects:v165 count:16];
                         }
 
                         while (v40);
                       }
 
-                      v103 = v38;
+                      array = array2;
                     }
 
                     goto LABEL_73;
@@ -6004,7 +6004,7 @@ LABEL_73:
                   v121 = 0u;
                   v122 = 0u;
                   v123 = 0u;
-                  v49 = [v103 countByEnumeratingWithState:&v120 objects:v163 count:16];
+                  v49 = [array countByEnumeratingWithState:&v120 objects:v163 count:16];
                   if (v49)
                   {
                     v50 = v49;
@@ -6015,7 +6015,7 @@ LABEL_73:
                       {
                         if (*v121 != v51)
                         {
-                          objc_enumerationMutation(v103);
+                          objc_enumerationMutation(array);
                         }
 
                         v53 = *(*(&v120 + 1) + 8 * ii);
@@ -6026,12 +6026,12 @@ LABEL_73:
                           [v97 canvasSize];
                           [v48 setHeight:v55];
                           [objc_msgSend(v48 "keySpec")];
-                          [v103 removeObject:v53];
+                          [array removeObject:v53];
                           goto LABEL_88;
                         }
                       }
 
-                      v50 = [v103 countByEnumeratingWithState:&v120 objects:v163 count:16];
+                      v50 = [array countByEnumeratingWithState:&v120 objects:v163 count:16];
                       if (v50)
                       {
                         continue;
@@ -6056,7 +6056,7 @@ LABEL_88:
             v116 = 0u;
             v117 = 0u;
             v56 = v97;
-            v89 = [v103 countByEnumeratingWithState:&v116 objects:v162 count:16];
+            v89 = [array countByEnumeratingWithState:&v116 objects:v162 count:16];
             if (v89)
             {
               v88 = *v117;
@@ -6067,12 +6067,12 @@ LABEL_88:
                 {
                   if (*v117 != v88)
                   {
-                    objc_enumerationMutation(v103);
+                    objc_enumerationMutation(array);
                   }
 
                   v90 = v57;
                   v58 = *(*(&v116 + 1) + 8 * v57);
-                  for (jj = [v56 compressionType]; ; jj = objc_msgSend(v93, "objectAtIndexedSubscript:", 0))
+                  for (jj = [v56 compressionType]; ; jj = objc_msgSend(compressionTypes, "objectAtIndexedSubscript:", 0))
                   {
                     v60 = jj;
                     if (![v58 scaleFactor])
@@ -6082,13 +6082,13 @@ LABEL_88:
 
                     v98 = v60;
                     v61 = [(CoreThemeDocument *)self newObjectForEntity:@"FlattenedImageRenditionSpec"];
-                    v62 = [v56 layerReferences];
+                    layerReferences2 = [v56 layerReferences];
                     v112 = 0u;
                     v113 = 0u;
                     v114 = 0u;
                     v115 = 0u;
-                    v100 = v62;
-                    v107 = [v62 countByEnumeratingWithState:&v112 objects:v161 count:16];
+                    v100 = layerReferences2;
+                    v107 = [layerReferences2 countByEnumeratingWithState:&v112 objects:v161 count:16];
                     if (v107)
                     {
                       v105 = *v113;
@@ -6175,24 +6175,24 @@ LABEL_110:
                     [v73 setSubtype:{objc_msgSend(v58, "subtype")}];
                     [v73 setGamut:{objc_msgSend(v58, "gamut")}];
                     [v61 setCompressionType:v98];
-                    [v73 setElement:{objc_msgSend(objc_msgSend(v95, "baseKeySpec"), "element")}];
-                    [v73 setNameIdentifier:{objc_msgSend(objc_msgSend(v96, "identifier"), "unsignedIntValue")}];
+                    [v73 setElement:{objc_msgSend(objc_msgSend(flattenedImageProduction, "baseKeySpec"), "element")}];
+                    [v73 setNameIdentifier:{objc_msgSend(objc_msgSend(name, "identifier"), "unsignedIntValue")}];
                     [v61 setKeySpec:v73];
-                    [v61 setProduction:v95];
+                    [v61 setProduction:flattenedImageProduction];
                     if ([objc_msgSend(v61 "compressionType")] != 4 && objc_msgSend(objc_msgSend(v61, "compressionType"), "identifier") != 5)
                     {
                       break;
                     }
 
                     [v73 setGraphicsFeatureSetClass:v91];
-                    [v73 setTarget:{objc_msgSend(v92, "objectAtIndexedSubscript:", 1)}];
+                    [v73 setTarget:{objc_msgSend(deploymentTargets, "objectAtIndexedSubscript:", 1)}];
                   }
 
                   v57 = v90 + 1;
                 }
 
                 while (v90 + 1 != v89);
-                v89 = [v103 countByEnumeratingWithState:&v116 objects:v162 count:16];
+                v89 = [array countByEnumeratingWithState:&v116 objects:v162 count:16];
               }
 
               while (v89);
@@ -6202,7 +6202,7 @@ LABEL_110:
           }
 
           while (v85 + 1 != v84);
-          v84 = [v82 countByEnumeratingWithState:&v148 objects:v170 count:16];
+          v84 = [renditions3 countByEnumeratingWithState:&v148 objects:v170 count:16];
         }
 
         while (v84);
@@ -6255,8 +6255,8 @@ LABEL_110:
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v23 = [v3 contains];
-        v4 = [v23 countByEnumeratingWithState:&v34 objects:v44 count:16];
+        contains = [v3 contains];
+        v4 = [contains countByEnumeratingWithState:&v34 objects:v44 count:16];
         if (v4)
         {
           v5 = v4;
@@ -6267,7 +6267,7 @@ LABEL_110:
             {
               if (*v35 != v25)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(contains);
               }
 
               v7 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"NamedArtworkProduction", [MEMORY[0x277CCAC30] predicateWithFormat:@"name.name == %@", objc_msgSend(*(*(&v34 + 1) + 8 * i), "name")], 0);
@@ -6295,8 +6295,8 @@ LABEL_110:
                     v29 = 0u;
                     v26 = 0u;
                     v27 = 0u;
-                    v13 = [v12 renditions];
-                    v14 = [v13 countByEnumeratingWithState:&v26 objects:v42 count:16];
+                    renditions = [v12 renditions];
+                    v14 = [renditions countByEnumeratingWithState:&v26 objects:v42 count:16];
                     if (v14)
                     {
                       v15 = v14;
@@ -6307,13 +6307,13 @@ LABEL_110:
                         {
                           if (*v27 != v16)
                           {
-                            objc_enumerationMutation(v13);
+                            objc_enumerationMutation(renditions);
                           }
 
                           [*(*(&v26 + 1) + 8 * k) setMonochrome:1];
                         }
 
-                        v15 = [v13 countByEnumeratingWithState:&v26 objects:v42 count:16];
+                        v15 = [renditions countByEnumeratingWithState:&v26 objects:v42 count:16];
                       }
 
                       while (v15);
@@ -6327,7 +6327,7 @@ LABEL_110:
               }
             }
 
-            v5 = [v23 countByEnumeratingWithState:&v34 objects:v44 count:16];
+            v5 = [contains countByEnumeratingWithState:&v34 objects:v44 count:16];
           }
 
           while (v5);
@@ -6383,8 +6383,8 @@ LABEL_110:
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v38 = [v6 renditions];
-          v40 = [v38 countByEnumeratingWithState:&v63 objects:v73 count:16];
+          renditions = [v6 renditions];
+          v40 = [renditions countByEnumeratingWithState:&v63 objects:v73 count:16];
           if (v40)
           {
             v39 = *v64;
@@ -6395,7 +6395,7 @@ LABEL_110:
               {
                 if (*v64 != v39)
                 {
-                  objc_enumerationMutation(v38);
+                  objc_enumerationMutation(renditions);
                 }
 
                 v41 = v7;
@@ -6404,8 +6404,8 @@ LABEL_110:
                 v60 = 0u;
                 v61 = 0u;
                 v62 = 0u;
-                v42 = [v8 layerReferences];
-                v44 = [v42 countByEnumeratingWithState:&v59 objects:v72 count:16];
+                layerReferences = [v8 layerReferences];
+                v44 = [layerReferences countByEnumeratingWithState:&v59 objects:v72 count:16];
                 if (v44)
                 {
                   v43 = *v60;
@@ -6416,7 +6416,7 @@ LABEL_110:
                     {
                       if (*v60 != v43)
                       {
-                        objc_enumerationMutation(v42);
+                        objc_enumerationMutation(layerReferences);
                       }
 
                       v45 = v9;
@@ -6452,30 +6452,30 @@ LABEL_110:
                             v15 = [v52 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"name.identifier == %d", objc_msgSend(objc_msgSend(objc_msgSend(v12, "production"), "name"), "identifier"))}];
                             if ([v15 firstObject] && (objc_msgSend(v15, "firstObject"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                             {
-                              v16 = [v15 firstObject];
+                              firstObject = [v15 firstObject];
                             }
 
                             else
                             {
-                              v16 = [(CoreThemeDocument *)self newObjectForEntity:@"NamedTextureProduction"];
+                              firstObject = [(CoreThemeDocument *)self newObjectForEntity:@"NamedTextureProduction"];
                               v17 = [(CoreThemeDocument *)self newObjectForEntity:v4];
                               [objc_msgSend(v12 "keySpec")];
-                              [v16 setBaseKeySpec:v17];
-                              [objc_msgSend(v16 "baseKeySpec")];
-                              [v16 setName:{objc_msgSend(objc_msgSend(v12, "production"), "name")}];
-                              [v16 setTextureInterpretation:{-[CoreThemeDocument textureInterpretaitionWithIdentifier:](self, "textureInterpretaitionWithIdentifier:", 0)}];
-                              [v16 setRenditionType:v48];
-                              [v16 setRenditionSubtype:v47];
-                              [v16 setTags:{objc_msgSend(objc_msgSend(v12, "production"), "tags")}];
+                              [firstObject setBaseKeySpec:v17];
+                              [objc_msgSend(firstObject "baseKeySpec")];
+                              [firstObject setName:{objc_msgSend(objc_msgSend(v12, "production"), "name")}];
+                              [firstObject setTextureInterpretation:{-[CoreThemeDocument textureInterpretaitionWithIdentifier:](self, "textureInterpretaitionWithIdentifier:", 0)}];
+                              [firstObject setRenditionType:v48];
+                              [firstObject setRenditionSubtype:v47];
+                              [firstObject setTags:{objc_msgSend(objc_msgSend(v12, "production"), "tags")}];
 
-                              [v52 addObject:v16];
+                              [v52 addObject:firstObject];
                             }
 
                             v18 = -[CoreThemeDocument createAssetWithName:fileType:scaleFactor:inCategory:forThemeBitSource:](self, "createAssetWithName:fileType:scaleFactor:inCategory:forThemeBitSource:", [objc_msgSend(v12 "asset")], @"texture", objc_msgSend(objc_msgSend(v12, "asset"), "scaleFactor"), objc_msgSend(objc_msgSend(v12, "asset"), "category"), objc_msgSend(objc_msgSend(v12, "asset"), "source"));
                             v19 = [(CoreThemeDocument *)self newObjectForEntity:v4];
                             [objc_msgSend(v12 "keySpec")];
                             v20 = [(CoreThemeDocument *)self newObjectForEntity:@"TextureRenditionSpec"];
-                            [v20 setProduction:v16];
+                            [v20 setProduction:firstObject];
                             [v20 setPixelFormat:v14];
                             [v20 setCompressionType:{-[CoreThemeDocument compressionTypeWithIdentifier:](self, "compressionTypeWithIdentifier:", 0)}];
                             [v20 setCubeMap:0];
@@ -6490,7 +6490,7 @@ LABEL_110:
                             v21 = [(CoreThemeDocument *)self newObjectForEntity:v4];
                             [objc_msgSend(v12 "keySpec")];
                             v22 = [(CoreThemeDocument *)self newObjectForEntity:@"TextureRawRenditionSpec"];
-                            [v22 setProduction:v16];
+                            [v22 setProduction:firstObject];
                             [v18 addRenditionsObject:v22];
                             [v22 setAsset:v18];
                             [v22 setCompressionType:{-[CoreThemeDocument compressionTypeWithIdentifier:](self, "compressionTypeWithIdentifier:", 0)}];
@@ -6498,10 +6498,10 @@ LABEL_110:
                             v23 = v4;
                             [objc_msgSend(v22 "keySpec")];
                             v24 = [(CoreThemeDocument *)self partWithIdentifier:181];
-                            v25 = [v22 keySpec];
+                            keySpec = [v22 keySpec];
                             v26 = v24;
                             v4 = v23;
-                            [v25 setPart:v26];
+                            [keySpec setPart:v26];
                             [objc_msgSend(v22 "keySpec")];
                             [objc_msgSend(v22 "keySpec")];
                             [v22 setWidth:CGImageGetWidth(v13)];
@@ -6516,7 +6516,7 @@ LABEL_110:
                             v28 = [(CoreThemeDocument *)self newObjectForEntity:v23];
                             [objc_msgSend(v12 "keySpec")];
                             v29 = [(CoreThemeDocument *)self newObjectForEntity:@"TextureRenditionSpec"];
-                            [v29 setProduction:v16];
+                            [v29 setProduction:firstObject];
                             [v29 setPixelFormat:v53];
                             [v29 setCompressionType:{-[CoreThemeDocument compressionTypeWithIdentifier:](self, "compressionTypeWithIdentifier:", 0)}];
                             [v29 setCubeMap:0];
@@ -6531,7 +6531,7 @@ LABEL_110:
                             v30 = [(CoreThemeDocument *)self newObjectForEntity:v23];
                             [objc_msgSend(v12 "keySpec")];
                             v31 = [(CoreThemeDocument *)self newObjectForEntity:@"TextureRawRenditionSpec"];
-                            [v31 setProduction:v16];
+                            [v31 setProduction:firstObject];
                             [v18 addRenditionsObject:v31];
                             [v31 setAsset:v18];
                             [v31 setCompressionType:{-[CoreThemeDocument compressionTypeWithIdentifier:](self, "compressionTypeWithIdentifier:", 0)}];
@@ -6564,7 +6564,7 @@ LABEL_110:
                     }
 
                     while (v45 + 1 != v44);
-                    v44 = [v42 countByEnumeratingWithState:&v59 objects:v72 count:16];
+                    v44 = [layerReferences countByEnumeratingWithState:&v59 objects:v72 count:16];
                   }
 
                   while (v44);
@@ -6574,7 +6574,7 @@ LABEL_110:
               }
 
               while (v41 + 1 != v40);
-              v40 = [v38 countByEnumeratingWithState:&v63 objects:v73 count:16];
+              v40 = [renditions countByEnumeratingWithState:&v63 objects:v73 count:16];
             }
 
             while (v40);
@@ -6594,14 +6594,14 @@ LABEL_110:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createNamedRenditionGroupProductionsForImportInfos:(id)a3 error:(id *)a4
+- (void)createNamedRenditionGroupProductionsForImportInfos:(id)infos error:(id *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v48 = [(CoreThemeDocument *)self idioms:a3];
-  v47 = [(CoreThemeDocument *)self sizeClasses];
-  v46 = [(CoreThemeDocument *)self displayGamuts];
-  v45 = [(CoreThemeDocument *)self directions];
-  v44 = [(CoreThemeDocument *)self featureSetClasses];
+  v48 = [(CoreThemeDocument *)self idioms:infos];
+  sizeClasses = [(CoreThemeDocument *)self sizeClasses];
+  displayGamuts = [(CoreThemeDocument *)self displayGamuts];
+  directions = [(CoreThemeDocument *)self directions];
+  featureSetClasses = [(CoreThemeDocument *)self featureSetClasses];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v67 = 0u;
   v68 = 0u;
@@ -6640,7 +6640,7 @@ LABEL_110:
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v51 = [a3 countByEnumeratingWithState:&v63 objects:v73 count:16];
+  v51 = [infos countByEnumeratingWithState:&v63 objects:v73 count:16];
   if (v51)
   {
     v49 = *v64;
@@ -6650,7 +6650,7 @@ LABEL_110:
       {
         if (*v64 != v49)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(infos);
         }
 
         v12 = *(*(&v63 + 1) + 8 * j);
@@ -6679,8 +6679,8 @@ LABEL_110:
           v54 = j;
           if (v12)
           {
-            v17 = [v12 tags];
-            if ([v17 count])
+            tags = [v12 tags];
+            if ([tags count])
             {
               v39 = v14;
               v52 = v12;
@@ -6689,7 +6689,7 @@ LABEL_110:
               v60 = 0u;
               v61 = 0u;
               v62 = 0u;
-              v19 = [v17 countByEnumeratingWithState:&v59 objects:v72 count:16];
+              v19 = [tags countByEnumeratingWithState:&v59 objects:v72 count:16];
               if (v19)
               {
                 v20 = v19;
@@ -6700,7 +6700,7 @@ LABEL_110:
                   {
                     if (*v60 != v21)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(tags);
                     }
 
                     v23 = *(*(&v59 + 1) + 8 * k);
@@ -6725,7 +6725,7 @@ LABEL_110:
                     [v18 addObject:v25];
                   }
 
-                  v20 = [v17 countByEnumeratingWithState:&v59 objects:v72 count:16];
+                  v20 = [tags countByEnumeratingWithState:&v59 objects:v72 count:16];
                 }
 
                 while (v20);
@@ -6733,7 +6733,7 @@ LABEL_110:
 
               v14 = v39;
               [v39 addTags:v18];
-              v26 = [v17 count];
+              v26 = [tags count];
               if (v26 != [v18 count])
               {
                 [CoreThemeDocument createNamedRenditionGroupProductionsForImportInfos:error:];
@@ -6752,25 +6752,25 @@ LABEL_110:
           [v27 setProduction:v14];
           [v27 resetToBaseKeySpec];
           v53 = v27;
-          v28 = [v27 keySpec];
-          [v28 setIdiom:{objc_msgSend(v48, "objectAtIndexedSubscript:", objc_msgSend(v12, "idiom"))}];
-          [v28 setScaleFactor:{objc_msgSend(v12, "scaleFactor")}];
-          [v28 setSubtype:{objc_msgSend(v12, "subtype")}];
-          [v28 setGamut:{objc_msgSend(v46, "objectAtIndexedSubscript:", objc_msgSend(v12, "displayGamut"))}];
-          [v28 setSizeClassHorizontal:{objc_msgSend(v47, "objectAtIndexedSubscript:", objc_msgSend(v12, "sizeClassHorizontal"))}];
-          [v28 setSizeClassVertical:{objc_msgSend(v47, "objectAtIndexedSubscript:", objc_msgSend(v12, "sizeClassVertical"))}];
-          [v28 setMemoryClass:{objc_msgSend(v12, "memoryClass")}];
-          [v28 setDirection:{objc_msgSend(v45, "objectAtIndexedSubscript:", objc_msgSend(v12, "layoutDirection"))}];
-          [v28 setGraphicsFeatureSetClass:{objc_msgSend(v44, "objectAtIndexedSubscript:", objc_msgSend(v12, "graphicsFeatureSetClass"))}];
-          [v28 setAppearance:{-[CoreThemeDocument appearanceWithIdentifier:name:createIfNeeded:](self, "appearanceWithIdentifier:name:createIfNeeded:", objc_msgSend(v12, "appearanceIdentifier"), objc_msgSend(v12, "appearanceName"), 1)}];
-          [v28 setLocalization:{-[CoreThemeDocument localizationWithIdentifier:name:createIfNeeded:](self, "localizationWithIdentifier:name:createIfNeeded:", objc_msgSend(v12, "localizationIdentifier"), objc_msgSend(v12, "localizationName"), 1)}];
+          keySpec = [v27 keySpec];
+          [keySpec setIdiom:{objc_msgSend(v48, "objectAtIndexedSubscript:", objc_msgSend(v12, "idiom"))}];
+          [keySpec setScaleFactor:{objc_msgSend(v12, "scaleFactor")}];
+          [keySpec setSubtype:{objc_msgSend(v12, "subtype")}];
+          [keySpec setGamut:{objc_msgSend(displayGamuts, "objectAtIndexedSubscript:", objc_msgSend(v12, "displayGamut"))}];
+          [keySpec setSizeClassHorizontal:{objc_msgSend(sizeClasses, "objectAtIndexedSubscript:", objc_msgSend(v12, "sizeClassHorizontal"))}];
+          [keySpec setSizeClassVertical:{objc_msgSend(sizeClasses, "objectAtIndexedSubscript:", objc_msgSend(v12, "sizeClassVertical"))}];
+          [keySpec setMemoryClass:{objc_msgSend(v12, "memoryClass")}];
+          [keySpec setDirection:{objc_msgSend(directions, "objectAtIndexedSubscript:", objc_msgSend(v12, "layoutDirection"))}];
+          [keySpec setGraphicsFeatureSetClass:{objc_msgSend(featureSetClasses, "objectAtIndexedSubscript:", objc_msgSend(v12, "graphicsFeatureSetClass"))}];
+          [keySpec setAppearance:{-[CoreThemeDocument appearanceWithIdentifier:name:createIfNeeded:](self, "appearanceWithIdentifier:name:createIfNeeded:", objc_msgSend(v12, "appearanceIdentifier"), objc_msgSend(v12, "appearanceName"), 1)}];
+          [keySpec setLocalization:{-[CoreThemeDocument localizationWithIdentifier:name:createIfNeeded:](self, "localizationWithIdentifier:name:createIfNeeded:", objc_msgSend(v12, "localizationIdentifier"), objc_msgSend(v12, "localizationName"), 1)}];
           v29 = objc_alloc_init(MEMORY[0x277CBEB58]);
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v30 = [v12 containedImageNames];
-          v31 = [v30 countByEnumeratingWithState:&v55 objects:v71 count:16];
+          containedImageNames = [v12 containedImageNames];
+          v31 = [containedImageNames countByEnumeratingWithState:&v55 objects:v71 count:16];
           if (v31)
           {
             v32 = v31;
@@ -6781,7 +6781,7 @@ LABEL_110:
               {
                 if (*v56 != v33)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(containedImageNames);
                 }
 
                 v35 = *(*(&v55 + 1) + 8 * m);
@@ -6790,7 +6790,7 @@ LABEL_110:
                 [v29 addObject:v36];
               }
 
-              v32 = [v30 countByEnumeratingWithState:&v55 objects:v71 count:16];
+              v32 = [containedImageNames countByEnumeratingWithState:&v55 objects:v71 count:16];
             }
 
             while (v32);
@@ -6802,7 +6802,7 @@ LABEL_110:
         }
       }
 
-      v51 = [a3 countByEnumeratingWithState:&v63 objects:v73 count:16];
+      v51 = [infos countByEnumeratingWithState:&v63 objects:v73 count:16];
     }
 
     while (v51);
@@ -6811,15 +6811,15 @@ LABEL_110:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_production:(id)a3 containsScale:(unsigned int)a4 andIdiom:(unsigned int)a5 andSubtype:(unsigned int)a6
+- (BOOL)_production:(id)_production containsScale:(unsigned int)scale andIdiom:(unsigned int)idiom andSubtype:(unsigned int)subtype
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [a3 renditions];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  renditions = [_production renditions];
+  v10 = [renditions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -6831,11 +6831,11 @@ LABEL_110:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(renditions);
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        if ([objc_msgSend(v14 "keySpec")] == a4 && objc_msgSend(objc_msgSend(objc_msgSend(v14, "keySpec"), "idiom"), "identifier") == a5 && objc_msgSend(objc_msgSend(v14, "keySpec"), "subtype") == a6)
+        if ([objc_msgSend(v14 "keySpec")] == scale && objc_msgSend(objc_msgSend(objc_msgSend(v14, "keySpec"), "idiom"), "identifier") == idiom && objc_msgSend(objc_msgSend(v14, "keySpec"), "subtype") == subtype)
         {
           LOBYTE(v10) = 1;
           goto LABEL_13;
@@ -6845,7 +6845,7 @@ LABEL_110:
       }
 
       while (v11 != v13);
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [renditions countByEnumeratingWithState:&v17 objects:v21 count:16];
       v11 = v10;
       if (v10)
       {
@@ -6896,8 +6896,8 @@ LABEL_13:
           v175 = 0u;
           v176 = 0u;
           v139 = v6;
-          v7 = [v6 renditions];
-          v8 = [v7 countByEnumeratingWithState:&v173 objects:v189 count:16];
+          renditions = [v6 renditions];
+          v8 = [renditions countByEnumeratingWithState:&v173 objects:v189 count:16];
           if (v8)
           {
             v9 = v8;
@@ -6908,7 +6908,7 @@ LABEL_13:
               {
                 if (*v174 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(renditions);
                 }
 
                 v12 = *(*(&v173 + 1) + 8 * i);
@@ -6920,7 +6920,7 @@ LABEL_13:
                 }
               }
 
-              v9 = [v7 countByEnumeratingWithState:&v173 objects:v189 count:16];
+              v9 = [renditions countByEnumeratingWithState:&v173 objects:v189 count:16];
             }
 
             while (v9);
@@ -6947,20 +6947,20 @@ LABEL_13:
 
                 v138 = v15;
                 v16 = *(*(&v169 + 1) + 8 * v15);
-                v17 = [v16 entity];
-                v140 = v17;
+                entity = [v16 entity];
+                v140 = entity;
                 if (!-[CoreThemeDocument _production:containsScale:andIdiom:andSubtype:](self, "_production:containsScale:andIdiom:andSubtype:", v14, [objc_msgSend(v16 "keySpec")], 5, 320))
                 {
-                  v18 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [v17 name]);
-                  v19 = [v16 slices];
-                  if ([v19 count])
+                  v18 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [entity name]);
+                  slices = [v16 slices];
+                  if ([slices count])
                   {
-                    v20 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v19, "count")}];
+                    v20 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices, "count")}];
                     v165 = 0u;
                     v166 = 0u;
                     v167 = 0u;
                     v168 = 0u;
-                    v21 = [v19 countByEnumeratingWithState:&v165 objects:v187 count:16];
+                    v21 = [slices countByEnumeratingWithState:&v165 objects:v187 count:16];
                     if (v21)
                     {
                       v22 = v21;
@@ -6971,7 +6971,7 @@ LABEL_13:
                         {
                           if (*v166 != v23)
                           {
-                            objc_enumerationMutation(v19);
+                            objc_enumerationMutation(slices);
                           }
 
                           [*(*(&v165 + 1) + 8 * j) sliceRect];
@@ -6984,7 +6984,7 @@ LABEL_13:
                           [v20 addObject:v33];
                         }
 
-                        v22 = [v19 countByEnumeratingWithState:&v165 objects:v187 count:16];
+                        v22 = [slices countByEnumeratingWithState:&v165 objects:v187 count:16];
                       }
 
                       while (v22);
@@ -6992,7 +6992,7 @@ LABEL_13:
 
                     [v18 setSlices:v20];
                     v14 = v139;
-                    v17 = v140;
+                    entity = v140;
                   }
 
                   [v18 setAsset:{objc_msgSend(v16, "asset")}];
@@ -7006,16 +7006,16 @@ LABEL_13:
 
                 if (!-[CoreThemeDocument _production:containsScale:andIdiom:andSubtype:](self, "_production:containsScale:andIdiom:andSubtype:", v14, [objc_msgSend(v16 "keySpec")], 5, 384))
                 {
-                  v34 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [v17 name]);
-                  v35 = [v16 slices];
-                  if ([v35 count])
+                  v34 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [entity name]);
+                  slices2 = [v16 slices];
+                  if ([slices2 count])
                   {
-                    v36 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v35, "count")}];
+                    v36 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices2, "count")}];
                     v161 = 0u;
                     v162 = 0u;
                     v163 = 0u;
                     v164 = 0u;
-                    v37 = [v35 countByEnumeratingWithState:&v161 objects:v186 count:16];
+                    v37 = [slices2 countByEnumeratingWithState:&v161 objects:v186 count:16];
                     if (v37)
                     {
                       v38 = v37;
@@ -7026,7 +7026,7 @@ LABEL_13:
                         {
                           if (*v162 != v39)
                           {
-                            objc_enumerationMutation(v35);
+                            objc_enumerationMutation(slices2);
                           }
 
                           [*(*(&v161 + 1) + 8 * k) sliceRect];
@@ -7039,7 +7039,7 @@ LABEL_13:
                           [v36 addObject:v49];
                         }
 
-                        v38 = [v35 countByEnumeratingWithState:&v161 objects:v186 count:16];
+                        v38 = [slices2 countByEnumeratingWithState:&v161 objects:v186 count:16];
                       }
 
                       while (v38);
@@ -7047,7 +7047,7 @@ LABEL_13:
 
                     [v34 setSlices:v36];
                     v14 = v139;
-                    v17 = v140;
+                    entity = v140;
                   }
 
                   [v34 setAsset:{objc_msgSend(v16, "asset")}];
@@ -7061,16 +7061,16 @@ LABEL_13:
 
                 if (!-[CoreThemeDocument _production:containsScale:andIdiom:andSubtype:](self, "_production:containsScale:andIdiom:andSubtype:", v14, [objc_msgSend(v16 "keySpec")], 5, 340))
                 {
-                  v50 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [v17 name]);
-                  v51 = [v16 slices];
-                  if ([v51 count])
+                  v50 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [entity name]);
+                  slices3 = [v16 slices];
+                  if ([slices3 count])
                   {
-                    v52 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v51, "count")}];
+                    v52 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices3, "count")}];
                     v157 = 0u;
                     v158 = 0u;
                     v159 = 0u;
                     v160 = 0u;
-                    v53 = [v51 countByEnumeratingWithState:&v157 objects:v185 count:16];
+                    v53 = [slices3 countByEnumeratingWithState:&v157 objects:v185 count:16];
                     if (v53)
                     {
                       v54 = v53;
@@ -7081,7 +7081,7 @@ LABEL_13:
                         {
                           if (*v158 != v55)
                           {
-                            objc_enumerationMutation(v51);
+                            objc_enumerationMutation(slices3);
                           }
 
                           [*(*(&v157 + 1) + 8 * m) sliceRect];
@@ -7094,7 +7094,7 @@ LABEL_13:
                           [v52 addObject:v65];
                         }
 
-                        v54 = [v51 countByEnumeratingWithState:&v157 objects:v185 count:16];
+                        v54 = [slices3 countByEnumeratingWithState:&v157 objects:v185 count:16];
                       }
 
                       while (v54);
@@ -7102,7 +7102,7 @@ LABEL_13:
 
                     [v50 setSlices:v52];
                     v14 = v139;
-                    v17 = v140;
+                    entity = v140;
                   }
 
                   [v50 setAsset:{objc_msgSend(v16, "asset")}];
@@ -7116,16 +7116,16 @@ LABEL_13:
 
                 if (!-[CoreThemeDocument _production:containsScale:andIdiom:andSubtype:](self, "_production:containsScale:andIdiom:andSubtype:", v14, [objc_msgSend(v16 "keySpec")], 5, 390))
                 {
-                  v66 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [v17 name]);
-                  v67 = [v16 slices];
-                  if ([v67 count])
+                  v66 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [entity name]);
+                  slices4 = [v16 slices];
+                  if ([slices4 count])
                   {
-                    v68 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v67, "count")}];
+                    v68 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices4, "count")}];
                     v153 = 0u;
                     v154 = 0u;
                     v155 = 0u;
                     v156 = 0u;
-                    v69 = [v67 countByEnumeratingWithState:&v153 objects:v184 count:16];
+                    v69 = [slices4 countByEnumeratingWithState:&v153 objects:v184 count:16];
                     if (v69)
                     {
                       v70 = v69;
@@ -7136,7 +7136,7 @@ LABEL_13:
                         {
                           if (*v154 != v71)
                           {
-                            objc_enumerationMutation(v67);
+                            objc_enumerationMutation(slices4);
                           }
 
                           [*(*(&v153 + 1) + 8 * n) sliceRect];
@@ -7149,7 +7149,7 @@ LABEL_13:
                           [v68 addObject:v81];
                         }
 
-                        v70 = [v67 countByEnumeratingWithState:&v153 objects:v184 count:16];
+                        v70 = [slices4 countByEnumeratingWithState:&v153 objects:v184 count:16];
                       }
 
                       while (v70);
@@ -7157,7 +7157,7 @@ LABEL_13:
 
                     [v66 setSlices:v68];
                     v14 = v139;
-                    v17 = v140;
+                    entity = v140;
                   }
 
                   [v66 setAsset:{objc_msgSend(v16, "asset")}];
@@ -7171,16 +7171,16 @@ LABEL_13:
 
                 if (!-[CoreThemeDocument _production:containsScale:andIdiom:andSubtype:](self, "_production:containsScale:andIdiom:andSubtype:", v14, [objc_msgSend(v16 "keySpec")], 5, 430))
                 {
-                  v82 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [v17 name]);
-                  v83 = [v16 slices];
-                  if ([v83 count])
+                  v82 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [entity name]);
+                  slices5 = [v16 slices];
+                  if ([slices5 count])
                   {
-                    v84 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v83, "count")}];
+                    v84 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices5, "count")}];
                     v149 = 0u;
                     v150 = 0u;
                     v151 = 0u;
                     v152 = 0u;
-                    v85 = [v83 countByEnumeratingWithState:&v149 objects:v183 count:16];
+                    v85 = [slices5 countByEnumeratingWithState:&v149 objects:v183 count:16];
                     if (v85)
                     {
                       v86 = v85;
@@ -7191,7 +7191,7 @@ LABEL_13:
                         {
                           if (*v150 != v87)
                           {
-                            objc_enumerationMutation(v83);
+                            objc_enumerationMutation(slices5);
                           }
 
                           [*(*(&v149 + 1) + 8 * ii) sliceRect];
@@ -7204,7 +7204,7 @@ LABEL_13:
                           [v84 addObject:v97];
                         }
 
-                        v86 = [v83 countByEnumeratingWithState:&v149 objects:v183 count:16];
+                        v86 = [slices5 countByEnumeratingWithState:&v149 objects:v183 count:16];
                       }
 
                       while (v86);
@@ -7212,7 +7212,7 @@ LABEL_13:
 
                     [v82 setSlices:v84];
                     v14 = v139;
-                    v17 = v140;
+                    entity = v140;
                   }
 
                   [v82 setAsset:{objc_msgSend(v16, "asset")}];
@@ -7226,16 +7226,16 @@ LABEL_13:
 
                 if (!-[CoreThemeDocument _production:containsScale:andIdiom:andSubtype:](self, "_production:containsScale:andIdiom:andSubtype:", v14, [objc_msgSend(v16 "keySpec")], 5, 484))
                 {
-                  v98 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [v17 name]);
-                  v99 = [v16 slices];
-                  if ([v99 count])
+                  v98 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [entity name]);
+                  slices6 = [v16 slices];
+                  if ([slices6 count])
                   {
-                    v100 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v99, "count")}];
+                    v100 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices6, "count")}];
                     v145 = 0u;
                     v146 = 0u;
                     v147 = 0u;
                     v148 = 0u;
-                    v101 = [v99 countByEnumeratingWithState:&v145 objects:v182 count:16];
+                    v101 = [slices6 countByEnumeratingWithState:&v145 objects:v182 count:16];
                     if (v101)
                     {
                       v102 = v101;
@@ -7246,7 +7246,7 @@ LABEL_13:
                         {
                           if (*v146 != v103)
                           {
-                            objc_enumerationMutation(v99);
+                            objc_enumerationMutation(slices6);
                           }
 
                           [*(*(&v145 + 1) + 8 * jj) sliceRect];
@@ -7259,7 +7259,7 @@ LABEL_13:
                           [v100 addObject:v113];
                         }
 
-                        v102 = [v99 countByEnumeratingWithState:&v145 objects:v182 count:16];
+                        v102 = [slices6 countByEnumeratingWithState:&v145 objects:v182 count:16];
                       }
 
                       while (v102);
@@ -7267,7 +7267,7 @@ LABEL_13:
 
                     [v98 setSlices:v100];
                     v14 = v139;
-                    v17 = v140;
+                    entity = v140;
                   }
 
                   [v98 setAsset:{objc_msgSend(v16, "asset")}];
@@ -7281,16 +7281,16 @@ LABEL_13:
 
                 if (!-[CoreThemeDocument _production:containsScale:andIdiom:andSubtype:](self, "_production:containsScale:andIdiom:andSubtype:", v14, [objc_msgSend(v16 "keySpec")], 5, 502))
                 {
-                  v114 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [v17 name]);
-                  v115 = [v16 slices];
-                  if ([v115 count])
+                  v114 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [entity name]);
+                  slices7 = [v16 slices];
+                  if ([slices7 count])
                   {
-                    v116 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v115, "count")}];
+                    v116 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices7, "count")}];
                     v141 = 0u;
                     v142 = 0u;
                     v143 = 0u;
                     v144 = 0u;
-                    v117 = [v115 countByEnumeratingWithState:&v141 objects:v181 count:16];
+                    v117 = [slices7 countByEnumeratingWithState:&v141 objects:v181 count:16];
                     if (v117)
                     {
                       v118 = v117;
@@ -7301,7 +7301,7 @@ LABEL_13:
                         {
                           if (*v142 != v119)
                           {
-                            objc_enumerationMutation(v115);
+                            objc_enumerationMutation(slices7);
                           }
 
                           [*(*(&v141 + 1) + 8 * kk) sliceRect];
@@ -7314,7 +7314,7 @@ LABEL_13:
                           [v116 addObject:v129];
                         }
 
-                        v118 = [v115 countByEnumeratingWithState:&v141 objects:v181 count:16];
+                        v118 = [slices7 countByEnumeratingWithState:&v141 objects:v181 count:16];
                       }
 
                       while (v118);
@@ -7367,7 +7367,7 @@ LABEL_13:
     v4 = [(CoreThemeDocument *)self directionWithIdentifier:4];
     v40 = [(CoreThemeDocument *)self directionWithIdentifier:0];
     v5 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"SimpleArtworkRenditionSpec", [MEMORY[0x277CCAC30] predicateWithFormat:@"keySpec.direction == %@ OR keySpec.direction == %@", v3, v4], 0);
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
@@ -7386,10 +7386,10 @@ LABEL_13:
             objc_enumerationMutation(v5);
           }
 
-          v11 = [*(*(&v61 + 1) + 8 * i) production];
-          if (([v6 containsObject:v11] & 1) == 0)
+          production = [*(*(&v61 + 1) + 8 * i) production];
+          if (([array containsObject:production] & 1) == 0)
           {
-            [v6 addObject:v11];
+            [array addObject:production];
           }
         }
 
@@ -7404,11 +7404,11 @@ LABEL_13:
     v57 = 0u;
     v58 = 0u;
     v12 = v40;
-    v42 = [v6 countByEnumeratingWithState:&v57 objects:v68 count:16];
+    v42 = [array countByEnumeratingWithState:&v57 objects:v68 count:16];
     if (v42)
     {
       v41 = *v58;
-      v38 = v6;
+      v38 = array;
       v39 = v3;
       do
       {
@@ -7417,7 +7417,7 @@ LABEL_13:
         {
           if (*v58 != v41)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(array);
           }
 
           v14 = *(*(&v57 + 1) + 8 * v13);
@@ -7427,8 +7427,8 @@ LABEL_13:
           v56 = 0u;
           v43 = v13;
           v44 = v14;
-          v15 = [v14 renditions];
-          v16 = [v15 countByEnumeratingWithState:&v53 objects:v67 count:16];
+          renditions = [v14 renditions];
+          v16 = [renditions countByEnumeratingWithState:&v53 objects:v67 count:16];
           if (v16)
           {
             v17 = v16;
@@ -7439,7 +7439,7 @@ LABEL_18:
             {
               if (*v54 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(renditions);
               }
 
               v20 = *(*(&v53 + 1) + 8 * v19);
@@ -7450,7 +7450,7 @@ LABEL_18:
 
               if (v17 == ++v19)
               {
-                v17 = [v15 countByEnumeratingWithState:&v53 objects:v67 count:16];
+                v17 = [renditions countByEnumeratingWithState:&v53 objects:v67 count:16];
                 if (v17)
                 {
                   goto LABEL_18;
@@ -7469,8 +7469,8 @@ LABEL_25:
             v50 = 0u;
             v51 = 0u;
             v52 = 0u;
-            v22 = [v44 renditions];
-            v23 = [v22 countByEnumeratingWithState:&v49 objects:v66 count:16];
+            renditions2 = [v44 renditions];
+            v23 = [renditions2 countByEnumeratingWithState:&v49 objects:v66 count:16];
             if (v23)
             {
               v24 = v23;
@@ -7481,7 +7481,7 @@ LABEL_27:
               {
                 if (*v50 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(renditions2);
                 }
 
                 v27 = *(*(&v49 + 1) + 8 * v26);
@@ -7492,7 +7492,7 @@ LABEL_27:
 
                 if (v24 == ++v26)
                 {
-                  v24 = [v22 countByEnumeratingWithState:&v49 objects:v66 count:16];
+                  v24 = [renditions2 countByEnumeratingWithState:&v49 objects:v66 count:16];
                   if (v24)
                   {
                     goto LABEL_27;
@@ -7519,12 +7519,12 @@ LABEL_36:
             [v21 setOriginalImageSizeString:{objc_msgSend(objc_msgSend(v27, "originalImageSizeString"), "copy")}];
             [v21 setAsset:{objc_msgSend(v27, "asset")}];
             [v21 setCompressionType:{objc_msgSend(v27, "compressionType")}];
-            v28 = [v27 slices];
+            slices = [v27 slices];
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v29 = [v28 countByEnumeratingWithState:&v45 objects:v65 count:16];
+            v29 = [slices countByEnumeratingWithState:&v45 objects:v65 count:16];
             if (v29)
             {
               v30 = v29;
@@ -7535,7 +7535,7 @@ LABEL_36:
                 {
                   if (*v46 != v31)
                   {
-                    objc_enumerationMutation(v28);
+                    objc_enumerationMutation(slices);
                   }
 
                   v33 = *(*(&v45 + 1) + 8 * j);
@@ -7547,7 +7547,7 @@ LABEL_36:
                   [v34 setRendition:v21];
                 }
 
-                v30 = [v28 countByEnumeratingWithState:&v45 objects:v65 count:16];
+                v30 = [slices countByEnumeratingWithState:&v45 objects:v65 count:16];
               }
 
               while (v30);
@@ -7567,33 +7567,33 @@ LABEL_36:
             v35 = [(CoreThemeDocument *)self newObjectForEntity:@"RenditionKeySpec"];
             v12 = v40;
             [v35 setDirection:v40];
-            v36 = [v27 keySpec];
-            [v35 setDimension1:{objc_msgSend(v36, "dimension1")}];
-            [v35 setDimension2:{objc_msgSend(v36, "dimension2")}];
-            [v35 setMemoryClass:{objc_msgSend(v36, "memoryClass")}];
-            [v35 setNameIdentifier:{objc_msgSend(v36, "nameIdentifier")}];
-            [v35 setScaleFactor:{objc_msgSend(v36, "scaleFactor")}];
-            [v35 setSubtype:{objc_msgSend(v36, "subtype")}];
-            [v35 setElement:{objc_msgSend(v36, "element")}];
-            [v35 setGamut:{objc_msgSend(v36, "gamut")}];
-            [v35 setGraphicsFeatureSetClass:{objc_msgSend(v36, "graphicsFeatureSetClass")}];
-            [v35 setIdiom:{objc_msgSend(v36, "idiom")}];
-            [v35 setLayer:{objc_msgSend(v36, "layer")}];
-            [v35 setPart:{objc_msgSend(v36, "part")}];
-            [v35 setPresentationState:{objc_msgSend(v36, "presentationState")}];
-            [v35 setPreviousState:{objc_msgSend(v36, "previousState")}];
-            [v35 setSize:{objc_msgSend(v36, "size")}];
-            [v35 setSizeClassVertical:{objc_msgSend(v36, "sizeClassVertical")}];
-            [v35 setSizeClassHorizontal:{objc_msgSend(v36, "sizeClassHorizontal")}];
-            [v35 setState:{objc_msgSend(v36, "state")}];
-            [v35 setTarget:{objc_msgSend(v36, "target")}];
-            [v35 setValue:{objc_msgSend(v36, "value")}];
-            [v35 setGlyphSize:{objc_msgSend(v36, "glyphSize")}];
-            [v35 setGlyphWeight:{objc_msgSend(v36, "glyphWeight")}];
-            [v35 setAppearance:{objc_msgSend(v36, "appearance")}];
-            [v35 setLocalization:{objc_msgSend(v36, "localization")}];
+            keySpec = [v27 keySpec];
+            [v35 setDimension1:{objc_msgSend(keySpec, "dimension1")}];
+            [v35 setDimension2:{objc_msgSend(keySpec, "dimension2")}];
+            [v35 setMemoryClass:{objc_msgSend(keySpec, "memoryClass")}];
+            [v35 setNameIdentifier:{objc_msgSend(keySpec, "nameIdentifier")}];
+            [v35 setScaleFactor:{objc_msgSend(keySpec, "scaleFactor")}];
+            [v35 setSubtype:{objc_msgSend(keySpec, "subtype")}];
+            [v35 setElement:{objc_msgSend(keySpec, "element")}];
+            [v35 setGamut:{objc_msgSend(keySpec, "gamut")}];
+            [v35 setGraphicsFeatureSetClass:{objc_msgSend(keySpec, "graphicsFeatureSetClass")}];
+            [v35 setIdiom:{objc_msgSend(keySpec, "idiom")}];
+            [v35 setLayer:{objc_msgSend(keySpec, "layer")}];
+            [v35 setPart:{objc_msgSend(keySpec, "part")}];
+            [v35 setPresentationState:{objc_msgSend(keySpec, "presentationState")}];
+            [v35 setPreviousState:{objc_msgSend(keySpec, "previousState")}];
+            [v35 setSize:{objc_msgSend(keySpec, "size")}];
+            [v35 setSizeClassVertical:{objc_msgSend(keySpec, "sizeClassVertical")}];
+            [v35 setSizeClassHorizontal:{objc_msgSend(keySpec, "sizeClassHorizontal")}];
+            [v35 setState:{objc_msgSend(keySpec, "state")}];
+            [v35 setTarget:{objc_msgSend(keySpec, "target")}];
+            [v35 setValue:{objc_msgSend(keySpec, "value")}];
+            [v35 setGlyphSize:{objc_msgSend(keySpec, "glyphSize")}];
+            [v35 setGlyphWeight:{objc_msgSend(keySpec, "glyphWeight")}];
+            [v35 setAppearance:{objc_msgSend(keySpec, "appearance")}];
+            [v35 setLocalization:{objc_msgSend(keySpec, "localization")}];
             [v21 setKeySpec:v35];
-            v6 = v38;
+            array = v38;
             v3 = v39;
           }
 
@@ -7601,7 +7601,7 @@ LABEL_36:
         }
 
         while (v43 + 1 != v42);
-        v42 = [v6 countByEnumeratingWithState:&v57 objects:v68 count:16];
+        v42 = [array countByEnumeratingWithState:&v57 objects:v68 count:16];
       }
 
       while (v42);
@@ -7611,11 +7611,11 @@ LABEL_36:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)importNamedAssetsFromFileURLs:(id)a3 referenceFiles:(BOOL)a4 completionHandler:(id)a5
+- (void)importNamedAssetsFromFileURLs:(id)ls referenceFiles:(BOOL)files completionHandler:(id)handler
 {
-  if (a4)
+  if (files)
   {
-    v9 = [(CoreThemeDocument *)self _themeBitSourceForReferencedFilesAtURLs:a3 createIfNecessary:1];
+    v9 = [(CoreThemeDocument *)self _themeBitSourceForReferencedFilesAtURLs:ls createIfNecessary:1];
   }
 
   else
@@ -7633,20 +7633,20 @@ LABEL_36:
     v15[1] = 3221225472;
     v15[2] = __84__CoreThemeDocument_importNamedAssetsFromFileURLs_referenceFiles_completionHandler___block_invoke;
     v15[3] = &unk_278EBB158;
-    v16 = a4;
-    v15[4] = a3;
+    filesCopy = files;
+    v15[4] = ls;
     v15[5] = self;
     v15[7] = v10;
-    v15[8] = a5;
+    v15[8] = handler;
     v15[6] = v12;
     dispatch_async(global_queue, v15);
   }
 
-  else if (a5)
+  else if (handler)
   {
-    v14 = *(a5 + 2);
+    v14 = *(handler + 2);
 
-    v14(a5, 0, 0);
+    v14(handler, 0, 0);
   }
 }
 
@@ -7799,41 +7799,41 @@ uint64_t __84__CoreThemeDocument_importNamedAssetsFromFileURLs_referenceFiles_co
   return result;
 }
 
-- (BOOL)canImportNamedAssetImportInfo:(id)a3
+- (BOOL)canImportNamedAssetImportInfo:(id)info
 {
-  if ([a3 renditionType] != 1018 || (-[CoreThemeDocument targetPlatform](self, "targetPlatform"), LODWORD(v5) = CUISDFTexturesSupported(), v5))
+  if ([info renditionType] != 1018 || (-[CoreThemeDocument targetPlatform](self, "targetPlatform"), LODWORD(v5) = CUISDFTexturesSupported(), v5))
   {
-    if (!-[CoreThemeDocument featureEnabled:](self, "featureEnabled:", 19) || [a3 renditionType] < 0 || objc_msgSend(a3, "renditionType") > 5 || (v5 = objc_msgSend(objc_msgSend(objc_msgSend(a3, "fileURL"), "pathExtension"), "caseInsensitiveCompare:", @"HEIF")) != 0 && (v5 = objc_msgSend(objc_msgSend(objc_msgSend(a3, "fileURL"), "pathExtension"), "caseInsensitiveCompare:", @"HEIC")) != 0)
+    if (!-[CoreThemeDocument featureEnabled:](self, "featureEnabled:", 19) || [info renditionType] < 0 || objc_msgSend(info, "renditionType") > 5 || (v5 = objc_msgSend(objc_msgSend(objc_msgSend(info, "fileURL"), "pathExtension"), "caseInsensitiveCompare:", @"HEIF")) != 0 && (v5 = objc_msgSend(objc_msgSend(objc_msgSend(info, "fileURL"), "pathExtension"), "caseInsensitiveCompare:", @"HEIC")) != 0)
     {
       [(CoreThemeDocument *)self targetPlatform];
       v6 = CUIMaxScaleForTargetPlatform();
-      LOBYTE(v5) = -[CoreThemeDocument targetPlatform](self, "targetPlatform") == 4 && [a3 idiom] == 5 && objc_msgSend(a3, "scaleFactor") >= v6 || objc_msgSend(a3, "scaleFactor") <= v6;
+      LOBYTE(v5) = -[CoreThemeDocument targetPlatform](self, "targetPlatform") == 4 && [info idiom] == 5 && objc_msgSend(info, "scaleFactor") >= v6 || objc_msgSend(info, "scaleFactor") <= v6;
     }
   }
 
   return v5;
 }
 
-- (void)importNamedAssetsWithImportInfos:(id)a3 referenceFiles:(BOOL)a4 completionHandler:(id)a5
+- (void)importNamedAssetsWithImportInfos:(id)infos referenceFiles:(BOOL)files completionHandler:(id)handler
 {
-  v19 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v30 = [MEMORY[0x277CBEB18] array];
-  v27 = [MEMORY[0x277CBEB18] array];
-  v26 = [MEMORY[0x277CBEB18] array];
-  v25 = [MEMORY[0x277CBEB18] array];
-  v28 = [MEMORY[0x277CBEB18] array];
-  v17 = [MEMORY[0x277CBEB18] array];
-  v29 = [MEMORY[0x277CBEB18] array];
-  v18 = [MEMORY[0x277CBEB18] array];
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v24 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
-  v20 = [MEMORY[0x277CBEB18] array];
-  v23 = [MEMORY[0x277CBEB18] array];
+  filesCopy = files;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  array6 = [MEMORY[0x277CBEB18] array];
+  array7 = [MEMORY[0x277CBEB18] array];
+  array8 = [MEMORY[0x277CBEB18] array];
+  array9 = [MEMORY[0x277CBEB18] array];
+  array10 = [MEMORY[0x277CBEB18] array];
+  array11 = [MEMORY[0x277CBEB18] array];
+  array12 = [MEMORY[0x277CBEB18] array];
+  array13 = [MEMORY[0x277CBEB18] array];
+  array14 = [MEMORY[0x277CBEB18] array];
+  array15 = [MEMORY[0x277CBEB18] array];
+  array16 = [MEMORY[0x277CBEB18] array];
+  array17 = [MEMORY[0x277CBEB18] array];
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v44 = 0;
   v45 = &v44;
@@ -7842,19 +7842,19 @@ uint64_t __84__CoreThemeDocument_importNamedAssetsFromFileURLs_referenceFiles_co
   CUILogLogToStderr();
   self->_donotstoreDocumentChecksum = 1;
   *(v45 + 24) = 0;
-  v13 = [MEMORY[0x277CBEB18] array];
+  array18 = [MEMORY[0x277CBEB18] array];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke;
   v41[3] = &unk_278EBB1A8;
   v42 = vdupq_n_s64(0x404E000000000000uLL);
   v41[4] = self;
-  v41[5] = a3;
+  v41[5] = infos;
   v43 = vdupq_n_s64(0x4056800000000000uLL);
-  v41[6] = v13;
-  v41[7] = a5;
+  v41[6] = array18;
+  v41[7] = handler;
   v41[8] = &v44;
-  [a3 enumerateObjectsUsingBlock:v41];
+  [infos enumerateObjectsUsingBlock:v41];
   if (v45[3])
   {
     goto LABEL_13;
@@ -7865,20 +7865,20 @@ uint64_t __84__CoreThemeDocument_importNamedAssetsFromFileURLs_referenceFiles_co
   v40[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_3;
   v40[3] = &unk_278EBB1D0;
   v40[4] = self;
-  v40[5] = v10;
-  v40[6] = v30;
-  v40[7] = v27;
-  v40[8] = v26;
-  v40[9] = v25;
-  v40[10] = v29;
-  v40[11] = v11;
-  v40[12] = v28;
-  v40[13] = v24;
-  v40[14] = v23;
-  v40[15] = v8;
-  v40[16] = v9;
+  v40[5] = array13;
+  v40[6] = array2;
+  v40[7] = array3;
+  v40[8] = array4;
+  v40[9] = array5;
+  v40[10] = array8;
+  v40[11] = array15;
+  v40[12] = array6;
+  v40[13] = array14;
+  v40[14] = array17;
+  v40[15] = array;
+  v40[16] = array12;
   v40[17] = v12;
-  [v13 enumerateObjectsUsingBlock:v40];
+  [array18 enumerateObjectsUsingBlock:v40];
   if ([v12 count])
   {
     v39[0] = MEMORY[0x277D85DD0];
@@ -7886,14 +7886,14 @@ uint64_t __84__CoreThemeDocument_importNamedAssetsFromFileURLs_referenceFiles_co
     v39[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_4;
     v39[3] = &unk_278EBB1F8;
     v39[4] = v12;
-    [v8 enumerateObjectsUsingBlock:v39];
+    [array enumerateObjectsUsingBlock:v39];
   }
 
-  if ([v9 count])
+  if ([array12 count])
   {
-    if (a5)
+    if (handler)
     {
-      (*(a5 + 2))(a5, 0, [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreThemeDefinition" code:1 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Misconfigured TDNamedAssetInfo", *MEMORY[0x277CCA450])}]);
+      (*(handler + 2))(handler, 0, [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreThemeDefinition" code:1 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"Misconfigured TDNamedAssetInfo", *MEMORY[0x277CCA450])}]);
     }
 
     goto LABEL_13;
@@ -7903,44 +7903,44 @@ uint64_t __84__CoreThemeDocument_importNamedAssetsFromFileURLs_referenceFiles_co
   v38[1] = 3221225472;
   v38[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_5;
   v38[3] = &unk_278EBB1F8;
-  v38[4] = v21;
-  [v8 enumerateObjectsUsingBlock:v38];
+  v38[4] = array10;
+  [array enumerateObjectsUsingBlock:v38];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_6;
   v37[3] = &unk_278EBB1F8;
-  v37[4] = v22;
-  [v30 enumerateObjectsUsingBlock:v37];
+  v37[4] = array11;
+  [array2 enumerateObjectsUsingBlock:v37];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_7;
   v36[3] = &unk_278EBB1F8;
-  v36[4] = v22;
-  [v10 enumerateObjectsUsingBlock:v36];
+  v36[4] = array11;
+  [array13 enumerateObjectsUsingBlock:v36];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_8;
   v35[3] = &unk_278EBB1F8;
-  v35[4] = v18;
-  [v29 enumerateObjectsUsingBlock:v35];
+  v35[4] = array9;
+  [array8 enumerateObjectsUsingBlock:v35];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_9;
   v34[3] = &unk_278EBB1F8;
-  v34[4] = v20;
-  [v11 enumerateObjectsUsingBlock:v34];
+  v34[4] = array16;
+  [array15 enumerateObjectsUsingBlock:v34];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_10;
   v33[3] = &unk_278EBB1F8;
-  v33[4] = v17;
-  [v28 enumerateObjectsUsingBlock:v33];
-  if (v19)
+  v33[4] = array7;
+  [array6 enumerateObjectsUsingBlock:v33];
+  if (filesCopy)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v14 addObjectsFromArray:v21];
-    [v14 addObjectsFromArray:v22];
-    [v14 addObjectsFromArray:v20];
+    [v14 addObjectsFromArray:array10];
+    [v14 addObjectsFromArray:array11];
+    [v14 addObjectsFromArray:array16];
     v15 = [(CoreThemeDocument *)self _themeBitSourceForReferencedFilesAtURLs:v14 createIfNecessary:1];
 
     if (v15)
@@ -7951,24 +7951,24 @@ LABEL_9:
       block[1] = 3221225472;
       block[2] = __87__CoreThemeDocument_importNamedAssetsWithImportInfos_referenceFiles_completionHandler___block_invoke_11;
       block[3] = &unk_278EBB248;
-      v32 = v19;
-      block[4] = v21;
-      block[5] = v22;
-      block[6] = v20;
+      v32 = filesCopy;
+      block[4] = array10;
+      block[5] = array11;
+      block[6] = array16;
       block[7] = self;
       block[8] = v15;
-      block[9] = v8;
-      block[10] = v30;
-      block[11] = v11;
-      block[12] = v24;
-      block[13] = v28;
-      block[14] = v27;
-      block[15] = v26;
-      block[16] = v29;
-      block[17] = v25;
-      block[18] = v10;
-      block[19] = v23;
-      block[20] = a5;
+      block[9] = array;
+      block[10] = array2;
+      block[11] = array15;
+      block[12] = array14;
+      block[13] = array6;
+      block[14] = array3;
+      block[15] = array4;
+      block[16] = array8;
+      block[17] = array5;
+      block[18] = array13;
+      block[19] = array17;
+      block[20] = handler;
       dispatch_async(global_queue, block);
       goto LABEL_13;
     }
@@ -7983,9 +7983,9 @@ LABEL_9:
     }
   }
 
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0, 0);
+    (*(handler + 2))(handler, 0, 0);
   }
 
 LABEL_13:
@@ -8680,10 +8680,10 @@ LABEL_13:
   return result;
 }
 
-- (void)deleteNamedAssets:(id)a3 shouldDeleteAssetFiles:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteNamedAssets:(id)assets shouldDeleteAssetFiles:(BOOL)files completionHandler:(id)handler
 {
-  v25 = a5;
-  v5 = a4;
+  handlerCopy = handler;
+  filesCopy = files;
   v41 = *MEMORY[0x277D85DE8];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -8691,8 +8691,8 @@ LABEL_13:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = a3;
-  v29 = [a3 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  obj = assets;
+  v29 = [assets countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v29)
   {
     v28 = *v36;
@@ -8706,13 +8706,13 @@ LABEL_13:
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
-        [v8 addObject:{v11, v25}];
-        v12 = [v11 renditions];
+        [v8 addObject:{v11, handlerCopy}];
+        renditions = [v11 renditions];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v13 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v13 = [renditions countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v13)
         {
           v14 = v13;
@@ -8723,17 +8723,17 @@ LABEL_13:
             {
               if (*v32 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(renditions);
               }
 
               v17 = *(*(&v31 + 1) + 8 * j);
               [v8 addObject:v17];
-              v18 = [v17 asset];
-              if (v18)
+              asset = [v17 asset];
+              if (asset)
               {
-                v19 = v18;
-                [v8 addObject:v18];
-                if (v5)
+                v19 = asset;
+                [v8 addObject:asset];
+                if (filesCopy)
                 {
                   v20 = [v19 fileURLWithDocument:self];
                   if (v20)
@@ -8744,7 +8744,7 @@ LABEL_13:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
+            v14 = [renditions countByEnumeratingWithState:&v31 objects:v39 count:16];
           }
 
           while (v14);
@@ -8757,11 +8757,11 @@ LABEL_13:
     while (v29);
   }
 
-  v21 = [(TDPersistentDocument *)self undoManager];
-  if (v5)
+  undoManager = [(TDPersistentDocument *)self undoManager];
+  if (filesCopy)
   {
-    v22 = v21;
-    [v21 disableUndoRegistration];
+    v22 = undoManager;
+    [undoManager disableUndoRegistration];
     [(CoreThemeDocument *)self deleteObjects:v8];
 
     [v22 enableUndoRegistration];
@@ -8834,19 +8834,19 @@ uint64_t __80__CoreThemeDocument_deleteNamedAssets_shouldDeleteAssetFiles_comple
   return result;
 }
 
-- (id)_addAssetsFromCustomAssetInfos:(id)a3 bitSource:(id)a4 error:(id *)a5
+- (id)_addAssetsFromCustomAssetInfos:(id)infos bitSource:(id)source error:(id *)error
 {
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__CoreThemeDocument__addAssetsFromCustomAssetInfos_bitSource_error___block_invoke;
   v11[3] = &unk_278EBB298;
   v11[4] = self;
-  v11[5] = a4;
-  v11[6] = v9;
-  v11[7] = a5;
-  [a3 enumerateObjectsUsingBlock:v11];
-  return v9;
+  v11[5] = source;
+  v11[6] = array;
+  v11[7] = error;
+  [infos enumerateObjectsUsingBlock:v11];
+  return array;
 }
 
 uint64_t __68__CoreThemeDocument__addAssetsFromCustomAssetInfos_bitSource_error___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -8877,17 +8877,17 @@ uint64_t __68__CoreThemeDocument__addAssetsFromCustomAssetInfos_bitSource_error_
   return MEMORY[0x2821F9730](v11);
 }
 
-- (BOOL)createCustomArtworkProductionsForCustomAssets:(id)a3 withImportInfos:(id)a4 error:(id *)a5
+- (BOOL)createCustomArtworkProductionsForCustomAssets:(id)assets withImportInfos:(id)infos error:(id *)error
 {
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __89__CoreThemeDocument_createCustomArtworkProductionsForCustomAssets_withImportInfos_error___block_invoke;
   v10[3] = &unk_278EBB2C0;
-  v10[4] = a4;
+  v10[4] = infos;
   v10[5] = self;
-  v10[6] = v8;
-  [a3 enumerateObjectsUsingBlock:v10];
+  v10[6] = array;
+  [assets enumerateObjectsUsingBlock:v10];
   return 1;
 }
 
@@ -8950,7 +8950,7 @@ uint64_t __89__CoreThemeDocument_createCustomArtworkProductionsForCustomAssets_w
   return [v23 resetToBaseKeySpec];
 }
 
-- (void)importCustomAssetsWithImportInfos:(id)a3 completionHandler:(id)a4
+- (void)importCustomAssetsWithImportInfos:(id)infos completionHandler:(id)handler
 {
   v7 = [(CoreThemeDocument *)self _themeBitSource:0];
   if (v7)
@@ -8960,17 +8960,17 @@ uint64_t __89__CoreThemeDocument_createCustomArtworkProductionsForCustomAssets_w
     v9[2] = __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHandler___block_invoke;
     v9[3] = &unk_278EBB2E8;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = infos;
     v9[6] = v7;
-    v9[7] = a4;
+    v9[7] = handler;
     dispatch_async(MEMORY[0x277D85CD0], v9);
   }
 
-  else if (a4)
+  else if (handler)
   {
-    v8 = *(a4 + 2);
+    v8 = *(handler + 2);
 
-    v8(a4, 0, 0);
+    v8(handler, 0, 0);
   }
 }
 
@@ -9023,13 +9023,13 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
   return result;
 }
 
-- (id)createElementProductionWithAsset:(id)a3
+- (id)createElementProductionWithAsset:(id)asset
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [(CoreThemeDocument *)self _createPhotoshopElementProductionWithAsset:a3];
+    return [(CoreThemeDocument *)self _createPhotoshopElementProductionWithAsset:asset];
   }
 
   else
@@ -9044,27 +9044,27 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
   }
 }
 
-- (id)createAssetWithName:(id)a3 inCategory:(id)a4 forThemeBitSource:(id)a5
+- (id)createAssetWithName:(id)name inCategory:(id)category forThemeBitSource:(id)source
 {
   v9 = [TDAsset scaleFactorFromImageFilename:?];
 
-  return [(CoreThemeDocument *)self createAssetWithName:a3 scaleFactor:v9 inCategory:a4 forThemeBitSource:a5];
+  return [(CoreThemeDocument *)self createAssetWithName:name scaleFactor:v9 inCategory:category forThemeBitSource:source];
 }
 
-- (id)assetAtPath:(id)a3
+- (id)assetAtPath:(id)path
 {
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
 
   return [(CoreThemeDocument *)self assetAtFileURL:v4];
 }
 
-- (id)assetAtFileURL:(id)a3
+- (id)assetAtFileURL:(id)l
 {
   v12 = 0;
   v13 = 0;
   v11 = 0;
   v10 = 0;
-  [(CoreThemeDocument *)self _getFilename:&v13 scaleFactor:&v11 category:&v12 bitSource:&v10 forFileURL:a3];
+  [(CoreThemeDocument *)self _getFilename:&v13 scaleFactor:&v11 category:&v12 bitSource:&v10 forFileURL:l];
   if (v13)
   {
     v5 = v11 == 0;
@@ -9086,7 +9086,7 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
   {
     if ([v8 count] >= 2)
     {
-      NSLog(&cfstr_WarningFoundMu.isa, [a3 path]);
+      NSLog(&cfstr_WarningFoundMu.isa, [l path]);
     }
 
     return [v8 objectAtIndex:0];
@@ -9095,34 +9095,34 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
   return result;
 }
 
-- (id)_addAssetsAtFileURLs:(id)a3 createProductions:(BOOL)a4 referenceFiles:(BOOL)a5 bitSource:(id)a6 customInfos:(id)a7 sortedCustomInfos:(id *)a8
+- (id)_addAssetsAtFileURLs:(id)ls createProductions:(BOOL)productions referenceFiles:(BOOL)files bitSource:(id)source customInfos:(id)infos sortedCustomInfos:(id *)customInfos
 {
-  v11 = a5;
-  v12 = a4;
+  filesCopy = files;
+  productionsCopy = productions;
   v82 = *MEMORY[0x277D85DE8];
   v67 = [MEMORY[0x277CBEB18] arrayWithArray:{-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"Asset", 0, 0)}];
   v64 = [v67 count];
-  v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
-  v66 = [MEMORY[0x277CBEB18] array];
+  v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(ls, "count")}];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0;
-  if (v11)
+  if (filesCopy)
   {
-    v16 = [a6 fileURLWithDocument:self];
+    v16 = [source fileURLWithDocument:self];
   }
 
-  v17 = [v16 pathComponents];
+  pathComponents = [v16 pathComponents];
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referenceFiles_bitSource_customInfos_sortedCustomInfos___block_invoke;
   v78[3] = &unk_278EBB310;
-  v78[4] = a6;
-  v78[5] = a7;
-  v56 = self;
+  v78[4] = source;
+  v78[5] = infos;
+  selfCopy = self;
   v78[6] = self;
-  v78[7] = a3;
-  v79 = v11;
+  v78[7] = ls;
+  v79 = filesCopy;
   v78[8] = v16;
-  v78[9] = v17;
+  v78[9] = pathComponents;
   v78[10] = @"FilePDF";
   v78[11] = @"AssetName";
   v78[12] = @"Scale";
@@ -9130,9 +9130,9 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
   v78[14] = @"Category";
   v78[15] = @"FileBitSource";
   v78[17] = v15;
-  v78[18] = a8;
+  v78[18] = customInfos;
   v78[16] = @"CustomInfo";
-  [a3 enumerateObjectsUsingBlock:v78];
+  [ls enumerateObjectsUsingBlock:v78];
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referenceFiles_bitSource_customInfos_sortedCustomInfos___block_invoke_2;
@@ -9140,7 +9140,7 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
   v77[4] = @"AssetName";
   v18 = [v15 sortedArrayUsingComparator:v77];
   v19 = v18;
-  if (a8)
+  if (customInfos)
   {
     v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v18, "count")}];
     v73 = 0u;
@@ -9174,7 +9174,7 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
       while (v22);
     }
 
-    *a8 = [MEMORY[0x277CBEA60] arrayWithArray:v20];
+    *customInfos = [MEMORY[0x277CBEA60] arrayWithArray:v20];
   }
 
   v71 = 0u;
@@ -9188,8 +9188,8 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
     v60 = 0;
     v61 = *MEMORY[0x277CBEEE8];
     v62 = *v70;
-    v57 = !v12;
-    v26 = self;
+    v57 = !productionsCopy;
+    selfCopy2 = self;
     do
     {
       v27 = 0;
@@ -9228,9 +9228,9 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
             {
               if (v68)
               {
-                v37 = [v68 renditionType];
+                renditionType = [v68 renditionType];
                 v38 = @"imagestack";
-                if (v37 != 1002)
+                if (renditionType != 1002)
                 {
                   if ([v68 renditionType] == 1018)
                   {
@@ -9243,7 +9243,7 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
                   }
                 }
 
-                v39 = [(CoreThemeDocument *)v26 createAssetWithName:v29 fileType:v38 scaleFactor:v36 inCategory:v32 forThemeBitSource:v33];
+                v39 = [(CoreThemeDocument *)selfCopy2 createAssetWithName:v29 fileType:v38 scaleFactor:v36 inCategory:v32 forThemeBitSource:v33];
                 if ([v68 renditionType] == 1000 || objc_msgSend(v68, "renditionType") == 1014)
                 {
                   objc_opt_class();
@@ -9256,7 +9256,7 @@ uint64_t __73__CoreThemeDocument_importCustomAssetsWithImportInfos_completionHan
 
               else
               {
-                v39 = [(CoreThemeDocument *)v26 createAssetWithName:v29 fileType:@"png" scaleFactor:v36 inCategory:v32 forThemeBitSource:v33];
+                v39 = [(CoreThemeDocument *)selfCopy2 createAssetWithName:v29 fileType:@"png" scaleFactor:v36 inCategory:v32 forThemeBitSource:v33];
               }
 
               goto LABEL_62;
@@ -9280,7 +9280,7 @@ LABEL_41:
               }
             }
 
-            v39 = [(CoreThemeDocument *)v26 createAssetWithName:v29 fileType:@"png" scaleFactor:v44 inCategory:v32 forThemeBitSource:v33];
+            v39 = [(CoreThemeDocument *)selfCopy2 createAssetWithName:v29 fileType:@"png" scaleFactor:v44 inCategory:v32 forThemeBitSource:v33];
             [v39 setFileScaleFactor:v31];
 LABEL_62:
             [v67 addObject:v39];
@@ -9339,20 +9339,20 @@ LABEL_63:
 
         if (!v48)
         {
-          v26 = v56;
+          selfCopy2 = selfCopy;
           if (v47)
           {
             [v43 isEqualToString:v32];
           }
 
-          v39 = [(CoreThemeDocument *)v56 createAssetWithName:v65 fileType:@"png" scaleFactor:v40 inCategory:v32 forThemeBitSource:v58];
+          v39 = [(CoreThemeDocument *)selfCopy createAssetWithName:v65 fileType:@"png" scaleFactor:v40 inCategory:v32 forThemeBitSource:v58];
           [v39 setFileScaleFactor:v31];
           v59 = v39;
           v60 = v28;
           goto LABEL_63;
         }
 
-        v26 = v56;
+        selfCopy2 = selfCopy;
         if (!v47 || ([v43 isEqualToString:v32] & 1) == 0)
         {
           if (v68)
@@ -9362,7 +9362,7 @@ LABEL_63:
               v59 = v61;
               if ([v68 renditionType] != 1004)
               {
-                v52 = [(CoreThemeDocument *)v56 createAssetWithName:v65 fileType:@"png" scaleFactor:v40 inCategory:v32 forThemeBitSource:v58];
+                v52 = [(CoreThemeDocument *)selfCopy createAssetWithName:v65 fileType:@"png" scaleFactor:v40 inCategory:v32 forThemeBitSource:v58];
                 v59 = v52;
                 if ([v68 renditionType] == 1000 || objc_msgSend(v68, "renditionType") == 1014)
                 {
@@ -9377,14 +9377,14 @@ LABEL_63:
               goto LABEL_71;
             }
 
-            v49 = v56;
+            v49 = selfCopy;
             v50 = v65;
             v51 = @"imagestack";
           }
 
           else
           {
-            v49 = v56;
+            v49 = selfCopy;
             v50 = v65;
             v51 = @"png";
           }
@@ -9397,7 +9397,7 @@ LABEL_71:
         if (!v59)
         {
 LABEL_80:
-          v66 = 0;
+          array = 0;
           goto LABEL_81;
         }
 
@@ -9406,10 +9406,10 @@ LABEL_80:
 LABEL_64:
         if (v39 != v61 && (([v39 hasProduction] | v57) & 1) == 0)
         {
-          [(CoreThemeDocument *)v26 createElementProductionWithAsset:v39];
+          [(CoreThemeDocument *)selfCopy2 createElementProductionWithAsset:v39];
         }
 
-        [v66 addObject:v39];
+        [array addObject:v39];
         ++v27;
       }
 
@@ -9423,7 +9423,7 @@ LABEL_64:
 
 LABEL_81:
   v54 = *MEMORY[0x277D85DE8];
-  return v66;
+  return array;
 }
 
 uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referenceFiles_bitSource_customInfos_sortedCustomInfos___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -9636,7 +9636,7 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   return [v5 compare:v6];
 }
 
-- (id)metadatumForKey:(id)a3
+- (id)metadatumForKey:(id)key
 {
   v4 = [-[TDPersistentDocument managedObjectContext](self "managedObjectContext")];
   if (!v4)
@@ -9644,36 +9644,36 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
     [CoreThemeDocument metadatumForKey:];
   }
 
-  v5 = [v4 persistentStores];
-  v6 = v5;
-  if (!v5 || [v5 count] != 1)
+  persistentStores = [v4 persistentStores];
+  v6 = persistentStores;
+  if (!persistentStores || [persistentStores count] != 1)
   {
     [CoreThemeDocument metadatumForKey:];
   }
 
   v7 = [v4 metadataForPersistentStore:{objc_msgSend(v6, "objectAtIndex:", 0)}];
 
-  return [v7 objectForKey:a3];
+  return [v7 objectForKey:key];
 }
 
-- (void)setMetadatum:(id)a3 forKey:(id)a4
+- (void)setMetadatum:(id)metadatum forKey:(id)key
 {
-  v7 = [MEMORY[0x277CCACC8] currentThread];
-  if (v7 != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  if (currentThread != [-[CoreThemeDocument mocOrganizer](self "mocOrganizer")])
   {
     [CoreThemeDocument setMetadatum:forKey:];
   }
 
   v8 = [-[TDPersistentDocument managedObjectContext](self "managedObjectContext")];
-  v9 = [v8 persistentStores];
-  if ([v9 count] != 1)
+  persistentStores = [v8 persistentStores];
+  if ([persistentStores count] != 1)
   {
     [CoreThemeDocument setMetadatum:forKey:];
   }
 
-  v10 = [objc_msgSend(v8 metadataForPersistentStore:{objc_msgSend(v9, "objectAtIndex:", 0)), "mutableCopy"}];
-  [v10 setObject:a3 forKey:a4];
-  v11 = [v9 objectAtIndex:0];
+  v10 = [objc_msgSend(v8 metadataForPersistentStore:{objc_msgSend(persistentStores, "objectAtIndex:", 0)), "mutableCopy"}];
+  [v10 setObject:metadatum forKey:key];
+  v11 = [persistentStores objectAtIndex:0];
   if (([v11 isReadOnly] & 1) == 0)
   {
 
@@ -9681,23 +9681,23 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   }
 }
 
-- (id)pathToAsset:(id)a3
+- (id)pathToAsset:(id)asset
 {
-  v4 = [(CoreThemeDocument *)self rootPathForProductionData];
-  v5 = [a3 sourceRelativePath];
+  rootPathForProductionData = [(CoreThemeDocument *)self rootPathForProductionData];
+  sourceRelativePath = [asset sourceRelativePath];
 
-  return [v4 stringByAppendingPathComponent:v5];
+  return [rootPathForProductionData stringByAppendingPathComponent:sourceRelativePath];
 }
 
 - (id)rootPathForProductionData
 {
-  v3 = [(CoreThemeDocument *)self pathToRepresentedDocument];
-  if (!v3)
+  pathToRepresentedDocument = [(CoreThemeDocument *)self pathToRepresentedDocument];
+  if (!pathToRepresentedDocument)
   {
-    v3 = [(NSURL *)[(TDPersistentDocument *)self fileURL] path];
+    pathToRepresentedDocument = [(NSURL *)[(TDPersistentDocument *)self fileURL] path];
   }
 
-  v4 = [[(NSString *)v3 stringByDeletingLastPathComponent] stringByAppendingPathComponent:[(CoreThemeDocument *)self relativePathToProductionData]];
+  v4 = [[(NSString *)pathToRepresentedDocument stringByDeletingLastPathComponent] stringByAppendingPathComponent:[(CoreThemeDocument *)self relativePathToProductionData]];
 
   return [(NSString *)v4 td_stringByStandardizingPath];
 }
@@ -9721,46 +9721,46 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   return result;
 }
 
-- (void)setRelativePathToProductionData:(id)a3
+- (void)setRelativePathToProductionData:(id)data
 {
-  [(CoreThemeDocument *)self setMetadatum:a3 forKey:@"relativePathToProductionData"];
+  [(CoreThemeDocument *)self setMetadatum:data forKey:@"relativePathToProductionData"];
   relativePathToProductionData = self->_relativePathToProductionData;
-  if (relativePathToProductionData != a3)
+  if (relativePathToProductionData != data)
   {
 
-    self->_relativePathToProductionData = a3;
+    self->_relativePathToProductionData = data;
   }
 }
 
-- (id)renditionsMatchingRenditionKeySpec:(id)a3
+- (id)renditionsMatchingRenditionKeySpec:(id)spec
 {
-  v4 = [(CoreThemeDocument *)self _predicateForRenditionKeySpec:a3];
+  v4 = [(CoreThemeDocument *)self _predicateForRenditionKeySpec:spec];
 
   return [(CoreThemeDocument *)self objectsForEntity:@"RenditionSpec" withPredicate:v4 sortDescriptors:0];
 }
 
-- (unint64_t)countOfRenditionsMatchingRenditionKeySpec:(id)a3
+- (unint64_t)countOfRenditionsMatchingRenditionKeySpec:(id)spec
 {
-  v4 = [(CoreThemeDocument *)self _predicateForRenditionKeySpec:a3];
+  v4 = [(CoreThemeDocument *)self _predicateForRenditionKeySpec:spec];
 
   return [(CoreThemeDocument *)self countForEntity:@"RenditionSpec" withPredicate:v4];
 }
 
-- (unint64_t)countOfRenditionsMatchingRenditionKeySpecs:(id)a3
+- (unint64_t)countOfRenditionsMatchingRenditionKeySpecs:(id)specs
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [a3 objectEnumerator];
-  v7 = [v6 nextObject];
-  if (v7)
+  objectEnumerator = [specs objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    nextObject2 = nextObject;
     do
     {
-      [v5 addObject:{-[CoreThemeDocument _predicateForRenditionKeySpec:](self, "_predicateForRenditionKeySpec:", v8)}];
-      v8 = [v6 nextObject];
+      [v5 addObject:{-[CoreThemeDocument _predicateForRenditionKeySpec:](self, "_predicateForRenditionKeySpec:", nextObject2)}];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v8);
+    while (nextObject2);
   }
 
   v9 = -[CoreThemeDocument countForEntity:withPredicate:](self, "countForEntity:withPredicate:", @"RenditionSpec", [MEMORY[0x277CCA920] orPredicateWithSubpredicates:v5]);
@@ -9781,11 +9781,11 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   return result;
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v4 = [a3 UUIDString];
+  uUIDString = [uuid UUIDString];
 
-  [(CoreThemeDocument *)self setMetadatum:v4 forKey:@"uuid"];
+  [(CoreThemeDocument *)self setMetadatum:uUIDString forKey:@"uuid"];
 }
 
 - (unsigned)checksum
@@ -9822,9 +9822,9 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   return result;
 }
 
-- (void)setTargetPlatform:(int64_t)a3
+- (void)setTargetPlatform:(int64_t)platform
 {
-  v4 = [objc_opt_class() persistentStringForPlatform:a3];
+  v4 = [objc_opt_class() persistentStringForPlatform:platform];
   targetPlatform = self->_targetPlatform;
   if (v4 != targetPlatform)
   {
@@ -9842,10 +9842,10 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   {
     if ([(NSString *)self->_minimumDeploymentVersion length])
     {
-      v3 = [(CoreThemeDocument *)self targetPlatform];
+      targetPlatform = [(CoreThemeDocument *)self targetPlatform];
       if (!self->_deviceTraits)
       {
-        v4 = v3;
+        v4 = targetPlatform;
         v5 = objc_alloc(MEMORY[0x277CCACA8]);
         v6 = MEMORY[0x277D027B0];
         v7 = [v5 initWithUTF8String:*(MEMORY[0x277D027B0] + 64)];
@@ -9935,13 +9935,13 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   }
 }
 
-+ (int64_t)targetPlatformForMOC:(id)a3
++ (int64_t)targetPlatformForMOC:(id)c
 {
-  v3 = [a3 persistentStoreCoordinator];
-  v4 = [v3 persistentStores];
-  if ([v4 count])
+  persistentStoreCoordinator = [c persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  if ([persistentStores count])
   {
-    v5 = [objc_msgSend(v3 metadataForPersistentStore:{objc_msgSend(v4, "objectAtIndex:", 0)), "objectForKey:", @"targetPlatform"}];
+    v5 = [objc_msgSend(persistentStoreCoordinator metadataForPersistentStore:{objc_msgSend(persistentStores, "objectAtIndex:", 0)), "objectForKey:", @"targetPlatform"}];
 
     return [CoreThemeDocument platformForPersistentString:v5];
   }
@@ -9953,7 +9953,7 @@ uint64_t __115__CoreThemeDocument__addAssetsAtFileURLs_createProductions_referen
   }
 }
 
-- (BOOL)buildModelError:(id *)a3
+- (BOOL)buildModelError:(id *)error
 {
   v4 = [[TDThemeSchema alloc] initWithThemeDocument:self];
   if ([(TDPersistentDocument *)self fileURL])
@@ -10011,16 +10011,16 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
   return result;
 }
 
-+ (id)dataModelNameForVersion:(int64_t)a3
++ (id)dataModelNameForVersion:(int64_t)version
 {
-  if (a3 < 1)
+  if (version < 1)
   {
     return @"CoreThemeDefinition";
   }
 
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
+  version = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", version];
 
-  return [@"CoreThemeDefinition" stringByAppendingString:v4];
+  return [@"CoreThemeDefinition" stringByAppendingString:version];
 }
 
 + (BOOL)defaultAllowsExtendedRangePixelFormats
@@ -10048,9 +10048,9 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
   return [v2 unsignedIntegerValue];
 }
 
-+ (int)shouldConvertColorsFromColorSpaceWithIdentifier:(unint64_t)a3 toIdentifier:(unint64_t)a4 error:(id *)a5
++ (int)shouldConvertColorsFromColorSpaceWithIdentifier:(unint64_t)identifier toIdentifier:(unint64_t)toIdentifier error:(id *)error
 {
-  if (a3 > a4)
+  if (identifier > toIdentifier)
   {
     +[CoreThemeDocument shouldConvertColorsFromColorSpaceWithIdentifier:toIdentifier:error:];
   }
@@ -10058,16 +10058,16 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
   return 1;
 }
 
-- (CGColorSpace)createCGColorSpaceWithIdentifier:(unint64_t)a3
+- (CGColorSpace)createCGColorSpaceWithIdentifier:(unint64_t)identifier
 {
   v3 = MEMORY[0x277CBF458];
   v4 = MEMORY[0x277CBF3E0];
-  if (a3 != 3)
+  if (identifier != 3)
   {
     v4 = MEMORY[0x277CBF4B8];
   }
 
-  if (a3)
+  if (identifier)
   {
     v3 = v4;
   }
@@ -10075,13 +10075,13 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
   return CGColorSpaceCreateWithName(*v3);
 }
 
-- (void)convertColorsFromColorSpaceWithIdentifier:(unint64_t)a3 toIdentifier:(unint64_t)a4
+- (void)convertColorsFromColorSpaceWithIdentifier:(unint64_t)identifier toIdentifier:(unint64_t)toIdentifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = [(CoreThemeDocument *)self createCGColorSpaceWithIdentifier:a3];
-  v26 = a4;
-  v7 = [(CoreThemeDocument *)self createCGColorSpaceWithIdentifier:a4];
-  v27 = self;
+  v6 = [(CoreThemeDocument *)self createCGColorSpaceWithIdentifier:identifier];
+  toIdentifierCopy = toIdentifier;
+  v7 = [(CoreThemeDocument *)self createCGColorSpaceWithIdentifier:toIdentifier];
+  selfCopy = self;
   v8 = [(CoreThemeDocument *)self allObjectsForEntity:@"ColorDefinition" withSortDescriptors:0];
   v29 = 0u;
   v30 = 0u;
@@ -10132,13 +10132,13 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
 
   CGColorSpaceRelease(v6);
   CGColorSpaceRelease(v7);
-  -[CoreThemeDocument setMetadatum:forKey:](v27, "setMetadatum:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:v26], @"NSCoreThemeDefinitionColorSpaceKey");
+  -[CoreThemeDocument setMetadatum:forKey:](selfCopy, "setMetadatum:forKey:", [MEMORY[0x277CCABB0] numberWithInteger:toIdentifierCopy], @"NSCoreThemeDefinitionColorSpaceKey");
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canremoveKeyAttribte:(unsigned __int16)a3
+- (BOOL)_canremoveKeyAttribte:(unsigned __int16)attribte
 {
-  if (a3 == 12)
+  if (attribte == 12)
   {
     return 0;
   }
@@ -10155,11 +10155,11 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
     v6 = dword_247A49384[++v4];
   }
 
-  while (v6 != a3);
+  while (v6 != attribte);
   return v5 > 8;
 }
 
-- (void)_updateKeyFormatWithContext:(id)a3
+- (void)_updateKeyFormatWithContext:(id)context
 {
   v26 = 0;
   v4 = [-[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:withContext:error:](self objectsForEntity:@"RenditionKeySpec" withPredicate:0 sortDescriptors:0) withContext:"count" error:?];
@@ -10208,7 +10208,7 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
       [v15 setResultType:2];
 
       v26 = 0;
-      v21 = [a3 executeFetchRequest:v15 error:&v26];
+      v21 = [context executeFetchRequest:v15 error:&v26];
       if ([v21 count] == 1 && !objc_msgSend(objc_msgSend(objc_msgSend(v21, "firstObject"), "objectForKey:", v16), "integerValue"))
       {
         v22 = dword_247A493AC[v14];
@@ -10228,9 +10228,9 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
 
 - (const)untrimmedRenditionKeyFormat
 {
-  v2 = [(CoreThemeDocument *)self renditionKeySemantics];
+  renditionKeySemantics = [(CoreThemeDocument *)self renditionKeySemantics];
 
-  return MEMORY[0x2821574E0](v2, 17);
+  return MEMORY[0x2821574E0](renditionKeySemantics, 17);
 }
 
 - (const)renditionKeyFormat
@@ -10238,18 +10238,18 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
   result = self->_keyFormat;
   if (!result)
   {
-    v4 = [(CoreThemeDocument *)self untrimmedRenditionKeyFormat];
-    v5 = malloc_type_malloc(4 * v4->var2 + 12, 0x100004052888210uLL);
+    untrimmedRenditionKeyFormat = [(CoreThemeDocument *)self untrimmedRenditionKeyFormat];
+    v5 = malloc_type_malloc(4 * untrimmedRenditionKeyFormat->var2 + 12, 0x100004052888210uLL);
     self->_keyFormat = v5;
-    v5->var0 = v4->var0;
-    v5->var1 = v4->var1;
-    var2 = v4->var2;
+    v5->var0 = untrimmedRenditionKeyFormat->var0;
+    v5->var1 = untrimmedRenditionKeyFormat->var1;
+    var2 = untrimmedRenditionKeyFormat->var2;
     v5->var2 = var2;
     if (var2)
     {
       for (i = 0; i < var2; ++i)
       {
-        v5->var3[i] = v4->var3[i];
+        v5->var3[i] = untrimmedRenditionKeyFormat->var3[i];
       }
     }
 
@@ -10269,22 +10269,22 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
 
 - (int)renditionKeySemantics
 {
-  v2 = [(CoreThemeDocument *)self targetPlatform];
-  if ((v2 - 1) > 4)
+  targetPlatform = [(CoreThemeDocument *)self targetPlatform];
+  if ((targetPlatform - 1) > 4)
   {
     return 1;
   }
 
   else
   {
-    return dword_247A49410[v2 - 1];
+    return dword_247A49410[targetPlatform - 1];
   }
 }
 
-- (id)_customizedSchemaDefinitionsForEntity:(id)a3
+- (id)_customizedSchemaDefinitionsForEntity:(id)entity
 {
   v8 = 0;
-  v4 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:error:](self, "objectsForEntity:withPredicate:sortDescriptors:error:", a3, [MEMORY[0x277CCAC30] predicateWithValue:1], 0, &v8);
+  v4 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:error:](self, "objectsForEntity:withPredicate:sortDescriptors:error:", entity, [MEMORY[0x277CCAC30] predicateWithValue:1], 0, &v8);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__CoreThemeDocument__customizedSchemaDefinitionsForEntity___block_invoke;
@@ -10294,15 +10294,15 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
   return [MEMORY[0x277CBEB98] setWithArray:v5];
 }
 
-- (BOOL)customizationExistsForSchemaDefinition:(id)a3
+- (BOOL)customizationExistsForSchemaDefinition:(id)definition
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [a3 parts];
+  parts = [definition parts];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [parts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -10314,7 +10314,7 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(parts);
         }
 
         if ([objc_msgSend(*(*(&v10 + 1) + 8 * v7) "productions")])
@@ -10327,7 +10327,7 @@ uint64_t __37__CoreThemeDocument_dataModelVersion__block_invoke()
       }
 
       while (v5 != v7);
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [parts countByEnumeratingWithState:&v10 objects:v14 count:16];
       v5 = v4;
       if (v4)
       {
@@ -10343,15 +10343,15 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)customizeSchemaEffectDefinition:(id)a3 shouldReplaceExisting:(BOOL)a4 error:(id *)a5
+- (BOOL)customizeSchemaEffectDefinition:(id)definition shouldReplaceExisting:(BOOL)existing error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = [a3 parts];
+  parts = [definition parts];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v9 = [parts countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -10363,17 +10363,17 @@ LABEL_11:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(parts);
         }
 
         if (![(CoreThemeDocument *)self createEffectStyleProductionForPartDefinition:*(*(&v17 + 1) + 8 * v12)])
         {
-          if (a5)
+          if (error)
           {
-            v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to create production for effect definition: %@", objc_msgSend(a3, "name")];
+            v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to create production for effect definition: %@", objc_msgSend(definition, "name")];
             v15 = [MEMORY[0x277CCA9B8] errorWithDomain:CoreThemeDefinitionErrorDomain[0] code:0 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjectsAndKeys:", v14, *MEMORY[0x277CCA450], 0)}];
             result = 0;
-            *a5 = v15;
+            *error = v15;
           }
 
           else
@@ -10388,7 +10388,7 @@ LABEL_11:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [parts countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -10404,7 +10404,7 @@ LABEL_13:
   return result;
 }
 
-- (id)schemaDefinitionWithElementID:(int64_t)a3
+- (id)schemaDefinitionWithElementID:(int64_t)d
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = [(CoreThemeDocument *)self allObjectsForEntity:@"SchemaPartDefinition" withSortDescriptors:0];
@@ -10428,7 +10428,7 @@ LABEL_13:
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        if ([v9 elementID] == a3 && objc_msgSend(objc_msgSend(v9, "element"), "published"))
+        if ([v9 elementID] == d && objc_msgSend(objc_msgSend(v9, "element"), "published"))
         {
           result = [v9 element];
           goto LABEL_12;
@@ -10454,7 +10454,7 @@ LABEL_12:
   return result;
 }
 
-- (id)schemaPartDefinitionWithElementID:(int64_t)a3 partID:(int64_t)a4
+- (id)schemaPartDefinitionWithElementID:(int64_t)d partID:(int64_t)iD
 {
   v19 = *MEMORY[0x277D85DE8];
   v6 = [(CoreThemeDocument *)self allObjectsForEntity:@"SchemaPartDefinition" withSortDescriptors:0];
@@ -10477,7 +10477,7 @@ LABEL_3:
       }
 
       v11 = *(*(&v14 + 1) + 8 * v10);
-      if ([v11 elementID] == a3 && objc_msgSend(v11, "partID") == a4 && (objc_msgSend(objc_msgSend(v11, "element"), "published") & 1) != 0)
+      if ([v11 elementID] == d && objc_msgSend(v11, "partID") == iD && (objc_msgSend(objc_msgSend(v11, "element"), "published") & 1) != 0)
       {
         break;
       }
@@ -10521,7 +10521,7 @@ LABEL_11:
   return [v3 setWithArray:v2];
 }
 
-- (void)exportCursorsToURL:(id)a3
+- (void)exportCursorsToURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
   obj = [(CoreThemeDocument *)self allObjectsForEntity:@"CursorFacetDefinition" withSortDescriptors:0];
@@ -10556,42 +10556,42 @@ LABEL_11:
   }
 
   v13 = 0;
-  [objc_msgSend(MEMORY[0x277CCAC58] dataWithPropertyList:v12 format:100 options:200 error:{&v13), "writeToURL:atomically:", a3, 1}];
+  [objc_msgSend(MEMORY[0x277CCAC58] dataWithPropertyList:v12 format:100 options:200 error:{&v13), "writeToURL:atomically:", l, 1}];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)importCursorsFromURL:(id)a3 getUnusedImportedCursors:(id *)a4 getUnupdatedCursors:(id *)a5
+- (void)importCursorsFromURL:(id)l getUnusedImportedCursors:(id *)cursors getUnupdatedCursors:(id *)unupdatedCursors
 {
-  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3];
+  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l];
   v26 = 0;
   v27 = 0;
   v7 = [MEMORY[0x277CCAC58] propertyListWithData:v6 options:0 format:&v26 error:&v27];
   v8 = [(CoreThemeDocument *)self allObjectsForEntity:@"CursorFacetDefinition" withSortDescriptors:0];
   v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
-  v10 = [v8 objectEnumerator];
-  v11 = [v10 nextObject];
-  if (v11)
+  objectEnumerator = [v8 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v12 = v11;
+    nextObject2 = nextObject;
     do
     {
-      [v9 setObject:v12 forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%d", objc_msgSend(objc_msgSend(v12, "keySpec"), "dimension1"))}];
-      v12 = [v10 nextObject];
+      [v9 setObject:nextObject2 forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%d", objc_msgSend(objc_msgSend(nextObject2, "keySpec"), "dimension1"))}];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v12);
+    while (nextObject2);
   }
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = [v7 keyEnumerator];
-  v15 = [v14 nextObject];
-  if (v15)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  keyEnumerator = [v7 keyEnumerator];
+  nextObject3 = [keyEnumerator nextObject];
+  if (nextObject3)
   {
-    v16 = v15;
+    nextObject4 = nextObject3;
     do
     {
-      v17 = [v7 objectForKey:v16];
-      v18 = [v9 objectForKey:v16];
+      v17 = [v7 objectForKey:nextObject4];
+      v18 = [v9 objectForKey:nextObject4];
       if (v18)
       {
         v19 = v18;
@@ -10602,42 +10602,42 @@ LABEL_11:
 
       else
       {
-        [v13 setObject:v17 forKey:v16];
+        [dictionary setObject:v17 forKey:nextObject4];
       }
 
-      v16 = [v14 nextObject];
+      nextObject4 = [keyEnumerator nextObject];
     }
 
-    while (v16);
+    while (nextObject4);
   }
 
-  if (a4)
+  if (cursors)
   {
-    *a4 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v13];
+    *cursors = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
   }
 
-  if (a5)
+  if (unupdatedCursors)
   {
     v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-    v21 = [v9 keyEnumerator];
-    v22 = [v21 nextObject];
-    if (v22)
+    keyEnumerator2 = [v9 keyEnumerator];
+    nextObject5 = [keyEnumerator2 nextObject];
+    if (nextObject5)
     {
-      v23 = v22;
+      nextObject6 = nextObject5;
       do
       {
-        if (![v7 objectForKey:v23])
+        if (![v7 objectForKey:nextObject6])
         {
-          [v20 addObject:{objc_msgSend(v9, "objectForKey:", v23)}];
+          [v20 addObject:{objc_msgSend(v9, "objectForKey:", nextObject6)}];
         }
 
-        v23 = [v21 nextObject];
+        nextObject6 = [keyEnumerator2 nextObject];
       }
 
-      while (v23);
+      while (nextObject6);
     }
 
-    *a5 = [MEMORY[0x277CBEA60] arrayWithArray:v20];
+    *unupdatedCursors = [MEMORY[0x277CBEA60] arrayWithArray:v20];
   }
 }
 
@@ -10661,7 +10661,7 @@ LABEL_11:
 
     if (v6)
     {
-      v7 = [(CoreThemeDocument *)self newObjectForEntity:@"CatalogGlobals"];
+      firstObject = [(CoreThemeDocument *)self newObjectForEntity:@"CatalogGlobals"];
     }
 
     else
@@ -10671,10 +10671,10 @@ LABEL_11:
         [CoreThemeDocument catalogGlobals];
       }
 
-      v7 = [v4 firstObject];
+      firstObject = [v4 firstObject];
     }
 
-    catalogGlobals = v7;
+    catalogGlobals = firstObject;
     [(CoreThemeDocument *)self willChangeValueForKey:@"catalogGlobals"];
     self->_catalogGlobals = catalogGlobals;
     [(CoreThemeDocument *)self didChangeValueForKey:@"catalogGlobals"];
@@ -10683,10 +10683,10 @@ LABEL_11:
   return catalogGlobals;
 }
 
-- (id)persistentStoreTypeForFileType:(id)a3
+- (id)persistentStoreTypeForFileType:(id)type
 {
-  v4 = [a3 lowercaseString];
-  if (([v4 isEqualToString:CoreThemeDocumentFileType] & 1) == 0 && (objc_msgSend(objc_msgSend(a3, "lowercaseString"), "isEqualToString:", @"tdd") & 1) == 0)
+  lowercaseString = [type lowercaseString];
+  if (([lowercaseString isEqualToString:CoreThemeDocumentFileType] & 1) == 0 && (objc_msgSend(objc_msgSend(type, "lowercaseString"), "isEqualToString:", @"tdd") & 1) == 0)
   {
     [CoreThemeDocument persistentStoreTypeForFileType:];
   }
@@ -10694,24 +10694,24 @@ LABEL_11:
   return *MEMORY[0x277CBE2E8];
 }
 
-- (id)updatedVersionsMetadataFromMetadata:(id)a3
+- (id)updatedVersionsMetadataFromMetadata:(id)metadata
 {
   v5 = CUIThemeInfoVersion();
   v6 = +[CoreThemeDocument dataModelVersion];
   v7 = [objc_msgSend(MEMORY[0x277D026E0] schemaForPlatform:{-[CoreThemeDocument targetPlatform](self, "targetPlatform")), "schemaVersion"}];
-  v8 = [a3 objectForKey:@"uuid"];
-  v9 = [objc_msgSend(a3 objectForKey:{@"CoreThemeInfoVersion", "integerValue"}];
-  v10 = [objc_msgSend(a3 objectForKey:{@"CoreThemeDefinitionDataModelKey", "integerValue"}];
-  v11 = [objc_msgSend(a3 objectForKey:{@"CoreThemeSchemaVersion", "integerValue"}];
-  v12 = [objc_msgSend(a3 objectForKey:{@"targetPlatform", "isEqualToString:", self->_targetPlatform}];
+  v8 = [metadata objectForKey:@"uuid"];
+  v9 = [objc_msgSend(metadata objectForKey:{@"CoreThemeInfoVersion", "integerValue"}];
+  v10 = [objc_msgSend(metadata objectForKey:{@"CoreThemeDefinitionDataModelKey", "integerValue"}];
+  v11 = [objc_msgSend(metadata objectForKey:{@"CoreThemeSchemaVersion", "integerValue"}];
+  v12 = [objc_msgSend(metadata objectForKey:{@"targetPlatform", "isEqualToString:", self->_targetPlatform}];
   if (v8 && v9 == v5 && v10 == v6 && v11 == v7 && v12)
   {
     return 0;
   }
 
-  if (a3)
+  if (metadata)
   {
-    v14 = [a3 mutableCopy];
+    v14 = [metadata mutableCopy];
   }
 
   else
@@ -10738,20 +10738,20 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)configurePersistentStoreCoordinatorForURL:(id)a3 ofType:(id)a4 modelConfiguration:(id)a5 storeOptions:(id)a6 error:(id *)a7
+- (BOOL)configurePersistentStoreCoordinatorForURL:(id)l ofType:(id)type modelConfiguration:(id)configuration storeOptions:(id)options error:(id *)error
 {
-  v12 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a6];
+  v12 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:options];
   v13 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x277CBE1D8]];
   v14 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x277CBE178]];
   v21.receiver = self;
   v21.super_class = CoreThemeDocument;
-  v15 = [(TDPersistentDocument *)&v21 configurePersistentStoreCoordinatorForURL:a3 ofType:a4 modelConfiguration:a5 storeOptions:v12 error:a7];
+  v15 = [(TDPersistentDocument *)&v21 configurePersistentStoreCoordinatorForURL:l ofType:type modelConfiguration:configuration storeOptions:v12 error:error];
   v16 = [objc_msgSend(objc_msgSend(-[CoreThemeDocument mocOrganizer](self "mocOrganizer")];
-  v17 = [v16 metadata];
-  v18 = v17;
-  if (self->_updateVersionMetadataState == 1 || ![v17 objectForKey:@"uuid"])
+  metadata = [v16 metadata];
+  v18 = metadata;
+  if (self->_updateVersionMetadataState == 1 || ![metadata objectForKey:@"uuid"])
   {
     v19 = [(CoreThemeDocument *)self updatedVersionsMetadataFromMetadata:v18];
     if (v19)
@@ -10765,13 +10765,13 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)checkCompatibilityOfDocumentAtURL:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)checkCompatibilityOfDocumentAtURL:(id)l ofType:(id)type error:(id *)error
 {
-  v7 = [(CoreThemeDocument *)self persistentStoreTypeForFileType:a4];
-  v8 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v7 URL:a3 options:0 error:a5];
+  v7 = [(CoreThemeDocument *)self persistentStoreTypeForFileType:type];
+  v8 = [MEMORY[0x277CBE4D8] metadataForPersistentStoreOfType:v7 URL:l options:0 error:error];
   if (!v8)
   {
-    if (a5)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
       v12 = CoreThemeDefinitionErrorDomain[0];
@@ -10784,7 +10784,7 @@ LABEL_10:
 LABEL_11:
       v20 = [v17 errorWithDomain:v18 code:v19 userInfo:v16];
       result = 0;
-      *a5 = v20;
+      *error = v20;
       return result;
     }
 
@@ -10794,20 +10794,20 @@ LABEL_11:
   v9 = [v8 objectForKey:@"CoreThemeDefinitionDataModelKey"];
   if (v9)
   {
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
   v14 = +[CoreThemeDocument dataModelVersion];
-  if (v14 < v10)
+  if (v14 < integerValue)
   {
-    if (a5)
+    if (error)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"The theme definition document / UI catalog is too new for this code. You are trying to open a document that is version %ld and this code can only handle up to version %ld", v10, v14];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"The theme definition document / UI catalog is too new for this code. You are trying to open a document that is version %ld and this code can only handle up to version %ld", integerValue, v14];
       v11 = MEMORY[0x277CCA9B8];
       v12 = CoreThemeDefinitionErrorDomain[0];
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v15, *MEMORY[0x277CCA470], @"Update your CoreThemeDefinition framework and try again.", *MEMORY[0x277CCA498], 0}];
@@ -10817,9 +10817,9 @@ LABEL_11:
     return 0;
   }
 
-  if (v10 <= 22)
+  if (integerValue <= 22)
   {
-    if (a5)
+    if (error)
     {
       v22 = MEMORY[0x277CCA9B8];
       v23 = CoreThemeDefinitionErrorDomain[0];
@@ -10836,31 +10836,31 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)readFromURL:(id)a3 ofType:(id)a4 error:(id *)a5
+- (BOOL)readFromURL:(id)l ofType:(id)type error:(id *)error
 {
-  v9 = [a3 checkResourceIsReachableAndReturnError:a5];
+  v9 = [l checkResourceIsReachableAndReturnError:error];
   if (v9)
   {
-    v9 = [(CoreThemeDocument *)self checkCompatibilityOfDocumentAtURL:a3 ofType:a4 error:a5];
+    v9 = [(CoreThemeDocument *)self checkCompatibilityOfDocumentAtURL:l ofType:type error:error];
     if (v9)
     {
       v15.receiver = self;
       v15.super_class = CoreThemeDocument;
-      v9 = [(TDPersistentDocument *)&v15 readFromURL:a3 ofType:a4 error:a5];
+      v9 = [(TDPersistentDocument *)&v15 readFromURL:l ofType:type error:error];
       if (v9)
       {
-        v10 = [(CoreThemeDocument *)self colorSpaceID];
+        colorSpaceID = [(CoreThemeDocument *)self colorSpaceID];
         v11 = +[CoreThemeDocument standardColorSpaceID];
-        if (v11 > v10)
+        if (v11 > colorSpaceID)
         {
           v12 = v11;
-          v9 = [objc_opt_class() shouldConvertColorsFromColorSpaceWithIdentifier:v10 toIdentifier:v11 error:a5];
+          v9 = [objc_opt_class() shouldConvertColorsFromColorSpaceWithIdentifier:colorSpaceID toIdentifier:v11 error:error];
           if (!v9)
           {
             return v9;
           }
 
-          [(CoreThemeDocument *)self convertColorsFromColorSpaceWithIdentifier:v10 toIdentifier:v12];
+          [(CoreThemeDocument *)self convertColorsFromColorSpaceWithIdentifier:colorSpaceID toIdentifier:v12];
           [objc_opt_class() doneWithColorConversion];
         }
 
@@ -10901,9 +10901,9 @@ LABEL_11:
   [(CoreThemeDocument *)self _synchronousSave];
 }
 
-+ (id)defaultThemeBitSourceURLForDocumentURL:(id)a3
++ (id)defaultThemeBitSourceURLForDocumentURL:(id)l
 {
-  v4 = [objc_msgSend(objc_msgSend(a3 "path")];
+  v4 = [objc_msgSend(objc_msgSend(l "path")];
   if ([(__CFString *)v4 length])
   {
     v5 = v4;
@@ -10915,9 +10915,9 @@ LABEL_11:
   }
 
   v6 = [(__CFString *)v5 stringByAppendingString:@"-Artwork"];
-  v7 = [a3 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
 
-  return [v7 URLByAppendingPathComponent:v6];
+  return [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v6];
 }
 
 - (NSURL)themeBitSourceURL
@@ -10941,19 +10941,19 @@ LABEL_11:
   return [v2 lastPathComponent];
 }
 
-- (BOOL)renameThemeBitSourceFolderTo:(id)a3 error:(id *)a4
+- (BOOL)renameThemeBitSourceFolderTo:(id)to error:(id *)error
 {
-  v7 = [a3 isEqualToString:{-[CoreThemeDocument themeBitSourceFolderName](self, "themeBitSourceFolderName")}];
+  v7 = [to isEqualToString:{-[CoreThemeDocument themeBitSourceFolderName](self, "themeBitSourceFolderName")}];
   LOBYTE(v8) = 1;
-  if (a3)
+  if (to)
   {
     if ((v7 & 1) == 0)
     {
-      v9 = [(CoreThemeDocument *)self themeBitSourceURL];
-      v10 = [[(NSURL *)v9 URLByDeletingLastPathComponent] URLByAppendingPathComponent:a3];
+      themeBitSourceURL = [(CoreThemeDocument *)self themeBitSourceURL];
+      v10 = [[(NSURL *)themeBitSourceURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:to];
       if (-[NSURL checkResourceIsReachableAndReturnError:](v10, "checkResourceIsReachableAndReturnError:", 0) || (v8 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")]) != 0)
       {
-        [-[CoreThemeDocument _themeBitSource:](self _themeBitSource:{0), "setPath:", a3}];
+        [-[CoreThemeDocument _themeBitSource:](self _themeBitSource:{0), "setPath:", to}];
         LOBYTE(v8) = 1;
       }
     }
@@ -10962,14 +10962,14 @@ LABEL_11:
   return v8;
 }
 
-- (void)addThemeBitSourceAtPath:(id)a3 createProductions:(BOOL)a4
+- (void)addThemeBitSourceAtPath:(id)path createProductions:(BOOL)productions
 {
-  v5 = [a3 lastPathComponent];
+  lastPathComponent = [path lastPathComponent];
   v6 = -[TDThemeBitSource initWithEntity:insertIntoManagedObjectContext:]([TDThemeBitSource alloc], "initWithEntity:insertIntoManagedObjectContext:", [objc_msgSend(-[CoreThemeDocument managedObjectModel](self "managedObjectModel")], -[TDPersistentDocument managedObjectContext](self, "managedObjectContext"));
-  [(TDThemeBitSource *)v6 setPath:v5];
+  [(TDThemeBitSource *)v6 setPath:lastPathComponent];
 }
 
-- (void)_removeRedundantPDFBasedRenditionsForAssets:(id)a3
+- (void)_removeRedundantPDFBasedRenditionsForAssets:(id)assets
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_opt_class();
@@ -10978,7 +10978,7 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [assets countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -10990,7 +10990,7 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(assets);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -11003,7 +11003,7 @@ LABEL_11:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [assets countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -11014,7 +11014,7 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeRedundantPDFBasedRenditions:(id)a3
+- (void)_removeRedundantPDFBasedRenditions:(id)renditions
 {
   v84 = *MEMORY[0x277D85DE8];
   v48 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -11023,7 +11023,7 @@ LABEL_11:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v74 objects:v83 count:16];
+  v5 = [renditions countByEnumeratingWithState:&v74 objects:v83 count:16];
   if (v5)
   {
     v6 = v5;
@@ -11034,15 +11034,15 @@ LABEL_11:
       {
         if (*v75 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(renditions);
         }
 
-        v9 = [*(*(&v74 + 1) + 8 * i) keySpec];
-        v10 = [v9 key];
+        keySpec = [*(*(&v74 + 1) + 8 * i) keySpec];
+        v10 = [keySpec key];
         v11 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v10 length:4 * CUIRenditionKeyTokenCount()];
         if ([v48 containsObject:v11])
         {
-          v12 = [-[CoreThemeDocument renditionsMatchingRenditionKeySpec:](self renditionsMatchingRenditionKeySpec:{v9), "sortedArrayUsingComparator:", &__block_literal_global_1215}];
+          v12 = [-[CoreThemeDocument renditionsMatchingRenditionKeySpec:](self renditionsMatchingRenditionKeySpec:{keySpec), "sortedArrayUsingComparator:", &__block_literal_global_1215}];
           v13 = obj;
         }
 
@@ -11055,7 +11055,7 @@ LABEL_11:
         [v13 addObject:v12];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v74 objects:v83 count:16];
+      v6 = [renditions countByEnumeratingWithState:&v74 objects:v83 count:16];
     }
 
     while (v6);
@@ -11092,19 +11092,19 @@ LABEL_11:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(objc_msgSend(v19 "keySpec")] != 59)
             {
-              v20 = [v19 asset];
-              if (![objc_msgSend(objc_msgSend(v20 "name")] || !objc_msgSend(objc_msgSend(objc_msgSend(v20, "name"), "pathExtension"), "caseInsensitiveCompare:", @"SVG"))
+              asset = [v19 asset];
+              if (![objc_msgSend(objc_msgSend(asset "name")] || !objc_msgSend(objc_msgSend(objc_msgSend(asset, "name"), "pathExtension"), "caseInsensitiveCompare:", @"SVG"))
               {
                 [v53 addIndex:k];
               }
 
-              if (![objc_msgSend(objc_msgSend(v20 "name")])
+              if (![objc_msgSend(objc_msgSend(asset "name")])
               {
                 [v51 addIndex:k];
               }
 
-              v21 = [v20 fileScaleFactor];
-              if (v21 == [objc_msgSend(v19 "keySpec")])
+              fileScaleFactor = [asset fileScaleFactor];
+              if (fileScaleFactor == [objc_msgSend(v19 "keySpec")])
               {
                 [v17 addIndex:k];
               }
@@ -11117,11 +11117,11 @@ LABEL_11:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v24 = [v23 asset];
+              asset2 = [v23 asset];
               if ([objc_msgSend(v23 "keySpec")])
               {
-                v25 = [v24 fileScaleFactor];
-                if (v25 != [objc_msgSend(v23 "keySpec")] && (!objc_msgSend(v24, "fileScaleFactor") || HIDWORD(div(objc_msgSend(objc_msgSend(v23, "keySpec"), "scaleFactor"), objc_msgSend(v24, "fileScaleFactor")).quot) || objc_msgSend(v17, "count")))
+                fileScaleFactor2 = [asset2 fileScaleFactor];
+                if (fileScaleFactor2 != [objc_msgSend(v23 "keySpec")] && (!objc_msgSend(asset2, "fileScaleFactor") || HIDWORD(div(objc_msgSend(objc_msgSend(v23, "keySpec"), "scaleFactor"), objc_msgSend(asset2, "fileScaleFactor")).quot) || objc_msgSend(v17, "count")))
                 {
                   [v52 addIndex:m];
                 }
@@ -11278,30 +11278,30 @@ uint64_t __56__CoreThemeDocument__removeRedundantPDFBasedRenditions___block_invo
   }
 }
 
-- (void)_delete:(id)a3 withRendition:(id)a4
+- (void)_delete:(id)_delete withRendition:(id)rendition
 {
-  v7 = [a4 production];
+  production = [rendition production];
   [-[TDPersistentDocument managedObjectContext](self "managedObjectContext")];
-  v8 = [v7 renditions];
-  if ([v8 count] == 1 && objc_msgSend(v8, "containsObject:", a4))
+  renditions = [production renditions];
+  if ([renditions count] == 1 && objc_msgSend(renditions, "containsObject:", rendition))
   {
     [-[TDPersistentDocument managedObjectContext](self "managedObjectContext")];
   }
 
-  v9 = [a3 renditions];
-  if ([v9 count] == 1 && objc_msgSend(v9, "containsObject:", a4))
+  renditions2 = [_delete renditions];
+  if ([renditions2 count] == 1 && objc_msgSend(renditions2, "containsObject:", rendition))
   {
-    v10 = [(TDPersistentDocument *)self managedObjectContext];
+    managedObjectContext = [(TDPersistentDocument *)self managedObjectContext];
 
-    [v10 deleteObject:a3];
+    [managedObjectContext deleteObject:_delete];
   }
 }
 
-- (void)_insertRendition:(id)a3 forKey:(id)a4
+- (void)_insertRendition:(id)rendition forKey:(id)key
 {
   packableRenditions = self->_packableRenditions;
   objc_sync_enter(packableRenditions);
-  v8 = [(NSMutableDictionary *)self->_packableRenditions objectForKey:a4];
+  v8 = [(NSMutableDictionary *)self->_packableRenditions objectForKey:key];
   v9 = v8;
   if (v8)
   {
@@ -11309,7 +11309,7 @@ uint64_t __56__CoreThemeDocument__removeRedundantPDFBasedRenditions___block_invo
     v14[1] = 3221225472;
     v15 = __45__CoreThemeDocument__insertRendition_forKey___block_invoke;
     v16 = &unk_278EBB338;
-    v17 = self;
+    selfCopy = self;
     v10 = 0;
     v11 = [v8 count];
     if (v11)
@@ -11317,7 +11317,7 @@ uint64_t __56__CoreThemeDocument__removeRedundantPDFBasedRenditions___block_invo
       do
       {
         v12 = [v9 objectAtIndex:(v11 + v10) >> 1];
-        if (v15(v14, v12, a3) >= 0)
+        if (v15(v14, v12, rendition) >= 0)
         {
           v11 = (v11 + v10) >> 1;
         }
@@ -11331,15 +11331,15 @@ uint64_t __56__CoreThemeDocument__removeRedundantPDFBasedRenditions___block_invo
       while (v10 < v11);
     }
 
-    [v9 insertObject:a3 atIndex:v10];
+    [v9 insertObject:rendition atIndex:v10];
   }
 
   else
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB40]);
-    [(NSMutableDictionary *)self->_packableRenditions setObject:v13 forKey:a4];
+    [(NSMutableDictionary *)self->_packableRenditions setObject:v13 forKey:key];
 
-    [v13 addObject:a3];
+    [v13 addObject:rendition];
   }
 
   objc_sync_exit(packableRenditions);
@@ -11370,7 +11370,7 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
   return MEMORY[0x282157470](v13, v14, v15);
 }
 
-- (BOOL)_updateRenditionPackings:(id)a3 error:(id *)a4
+- (BOOL)_updateRenditionPackings:(id)packings error:(id *)error
 {
   v73 = *MEMORY[0x277D85DE8];
   if (!self->_packableRenditions)
@@ -11378,7 +11378,7 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
     self->_packableRenditions = objc_alloc_init(MEMORY[0x277CBEB38]);
   }
 
-  v49 = a4;
+  errorCopy = error;
   [(CoreThemeDocument *)self untrimmedRenditionKeyFormat];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (!CUIRenditionKeyHasIdentifier())
@@ -11390,7 +11390,7 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v68 objects:v72 count:16];
+  v7 = [packings countByEnumeratingWithState:&v68 objects:v72 count:16];
   if (v7)
   {
     v8 = v7;
@@ -11408,7 +11408,7 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
       {
         if (*v69 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(packings);
         }
 
         v13 = *(*(&v68 + 1) + 8 * v12);
@@ -11421,13 +11421,13 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
 
         if (([v13 updatePackingPropertiesWithDocument:self] & 1) == 0)
         {
-          if (v49)
+          if (errorCopy)
           {
             v44 = MEMORY[0x277CCA9B8];
             v45 = *MEMORY[0x277CCA050];
             v46 = MEMORY[0x277CBEAC0];
             v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to generate packing info for %@", objc_msgSend(objc_msgSend(v13, "production"), "relativePath")];
-            *v49 = [v44 errorWithDomain:v45 code:0 userInfo:{objc_msgSend(v46, "dictionaryWithObject:forKey:", v47, *MEMORY[0x277CCA450])}];
+            *errorCopy = [v44 errorWithDomain:v45 code:0 userInfo:{objc_msgSend(v46, "dictionaryWithObject:forKey:", v47, *MEMORY[0x277CCA450])}];
           }
 
           objc_autoreleasePoolPop(v15);
@@ -11439,13 +11439,13 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
         {
           v66 = v15;
           v65 = [objc_msgSend(v13 "keySpec")];
-          v16 = [v13 opaque];
-          v17 = [v13 monochrome];
+          opaque = [v13 opaque];
+          monochrome = [v13 monochrome];
           v64 = [objc_msgSend(objc_msgSend(v13 "keySpec")];
           v63 = [objc_msgSend(objc_msgSend(v13 "keySpec")];
           v62 = [objc_msgSend(objc_msgSend(v13 "keySpec")];
           v61 = [objc_msgSend(objc_msgSend(v13 "keySpec")];
-          v60 = [v13 preserveForArchiveOnly];
+          preserveForArchiveOnly = [v13 preserveForArchiveOnly];
           if (objc_opt_respondsToSelector())
           {
             v18 = [objc_msgSend(v13 "compressionType")];
@@ -11468,20 +11468,20 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
           }
 
           v20 = v14 == 0;
-          v21 = v20 & v17;
-          v22 = v20 & v16;
-          v23 = [(CoreThemeDocument *)self renditionKeySemantics];
-          v24 = [v13 keySpec];
-          if (v23 == 1)
+          v21 = v20 & monochrome;
+          v22 = v20 & opaque;
+          renditionKeySemantics = [(CoreThemeDocument *)self renditionKeySemantics];
+          keySpec = [v13 keySpec];
+          if (renditionKeySemantics == 1)
           {
-            v25 = [v24 presentationState];
+            presentationState = [keySpec presentationState];
             v26 = [objc_msgSend(v13 "keySpec")];
-            v27 = [MEMORY[0x277CCAB68] stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d", v65, v22, v21, objc_msgSend(v25, "identifier"), objc_msgSend(v26, "identifier"), 0, 0, v14, 0, 0, v64, v59, v63, v62, v61, v60];
+            v27 = [MEMORY[0x277CCAB68] stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d", v65, v22, v21, objc_msgSend(presentationState, "identifier"), objc_msgSend(v26, "identifier"), 0, 0, v14, 0, 0, v64, v59, v63, v62, v61, preserveForArchiveOnly];
           }
 
           else
           {
-            v54 = [v24 subtype];
+            subtype = [keySpec subtype];
             v28 = [objc_msgSend(v13 "keySpec")];
             v29 = [objc_msgSend(v13 "keySpec")];
             v53 = v22;
@@ -11491,12 +11491,12 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
             v32 = v6;
             v33 = [objc_msgSend(v13 "keySpec")];
             v51 = MEMORY[0x277CCAB68];
-            v34 = [v28 identifier];
-            v35 = [v29 identifier];
-            v36 = [v30 identifier];
+            identifier = [v28 identifier];
+            identifier2 = [v29 identifier];
+            identifier3 = [v30 identifier];
             v37 = v33;
             v6 = v32;
-            v27 = [v51 stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d", v65, v53, v52, v54, v34, v35, v36, v14, v31, objc_msgSend(v37, "identifier"), v64, v59, v63, v62, v61, v60];
+            v27 = [v51 stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d.%d", v65, v53, v52, subtype, identifier, identifier2, identifier3, v14, v31, objc_msgSend(v37, "identifier"), v64, v59, v63, v62, v61, preserveForArchiveOnly];
           }
 
           v38 = v27;
@@ -11538,7 +11538,7 @@ uint64_t __45__CoreThemeDocument__insertRendition_forKey___block_invoke(uint64_t
       }
 
       while (v8 != v12);
-      v8 = [a3 countByEnumeratingWithState:&v68 objects:v72 count:16];
+      v8 = [packings countByEnumeratingWithState:&v68 objects:v72 count:16];
       v10 = &selRef__persistentStoreCoordinator;
       if (v8)
       {
@@ -11566,21 +11566,21 @@ void __52__CoreThemeDocument__updateRenditionPackings_error___block_invoke(uint6
 - (void)_groupPackableRenditions
 {
   v181 = *MEMORY[0x277D85DE8];
-  v133 = [(CoreThemeDocument *)self displayGamuts];
-  v125 = [(CoreThemeDocument *)self featureSetClasses];
-  v124 = [(CoreThemeDocument *)self idioms];
+  displayGamuts = [(CoreThemeDocument *)self displayGamuts];
+  featureSetClasses = [(CoreThemeDocument *)self featureSetClasses];
+  idioms = [(CoreThemeDocument *)self idioms];
   v179[0] = [(CoreThemeDocument *)self sizeWithIdentifier:0];
   v179[1] = [(CoreThemeDocument *)self sizeWithIdentifier:1];
   v179[2] = [(CoreThemeDocument *)self sizeWithIdentifier:2];
   v179[3] = [(CoreThemeDocument *)self sizeWithIdentifier:3];
   v123 = [MEMORY[0x277CBEA60] arrayWithObjects:v179 count:4];
-  v122 = [(CoreThemeDocument *)self sizeClasses];
+  sizeClasses = [(CoreThemeDocument *)self sizeClasses];
   v178[0] = [(CoreThemeDocument *)self presentationStateWithIdentifier:0];
   v178[1] = [(CoreThemeDocument *)self presentationStateWithIdentifier:1];
   v178[2] = [(CoreThemeDocument *)self presentationStateWithIdentifier:2];
   v121 = [MEMORY[0x277CBEA60] arrayWithObjects:v178 count:3];
-  v132 = [(CoreThemeDocument *)self compressionTypes];
-  v131 = [(CoreThemeDocument *)self deploymentTargets];
+  compressionTypes = [(CoreThemeDocument *)self compressionTypes];
+  deploymentTargets = [(CoreThemeDocument *)self deploymentTargets];
   v130 = [(CoreThemeDocument *)self partWithIdentifier:181];
   v129 = [(CoreThemeDocument *)self renditionTypeWithIdentifier:1004];
   v134 = [(CoreThemeDocument *)self elementWithIdentifier:9];
@@ -11593,7 +11593,7 @@ void __52__CoreThemeDocument__updateRenditionPackings_error___block_invoke(uint6
   v169 = 0u;
   v170 = 0u;
   obj = [-[NSMutableDictionary allKeys](self->_packableRenditions "allKeys")];
-  v158 = self;
+  selfCopy = self;
   v143 = [obj countByEnumeratingWithState:&v167 objects:v177 count:16];
   if (v143)
   {
@@ -11611,7 +11611,7 @@ void __52__CoreThemeDocument__updateRenditionPackings_error___block_invoke(uint6
         v4 = *(*(&v167 + 1) + 8 * v3);
         v5 = [v4 componentsSeparatedByString:@"."];
         v154 = v4;
-        v6 = [(NSMutableDictionary *)v158->_packableRenditions objectForKey:v4];
+        v6 = [(NSMutableDictionary *)selfCopy->_packableRenditions objectForKey:v4];
         v7 = [v6 count];
         v8 = [objc_msgSend(v5 objectAtIndex:{7), "intValue"}];
         v9 = v8;
@@ -11666,8 +11666,8 @@ void __52__CoreThemeDocument__updateRenditionPackings_error___block_invoke(uint6
               {
                 v20 = v12 + v17;
                 v21 = [v6 objectAtIndex:v12 + v17];
-                v22 = [v21 width];
-                v19 = v19 + ([v21 height] * v22);
+                width = [v21 width];
+                v19 = v19 + ([v21 height] * width);
                 if (v19 >= v14)
                 {
                   break;
@@ -11680,33 +11680,33 @@ void __52__CoreThemeDocument__updateRenditionPackings_error___block_invoke(uint6
                 }
               }
 
-              v23 = [v6 array];
+              array = [v6 array];
               v24 = v7;
               v25 = objc_alloc_init(TDPacker);
               [(TDPacker *)v25 setSizeHandler:&__block_literal_global_1769];
-              v156 = v23;
-              -[TDPacker setObjectsToPack:](v25, "setObjectsToPack:", [v23 subarrayWithRange:{v12, v17}]);
+              v156 = array;
+              -[TDPacker setObjectsToPack:](v25, "setObjectsToPack:", [array subarrayWithRange:{v12, v17}]);
               [(TDPacker *)v25 pack];
               [(TDPacker *)v25 enclosingSize];
               v27 = v26;
               v29 = v28;
-              v30 = [(TDPacker *)v25 countOfEmptyNodes];
+              countOfEmptyNodes = [(TDPacker *)v25 countOfEmptyNodes];
 
               v7 = v24;
-              if (v20 + v30 >= v16)
+              if (v20 + countOfEmptyNodes >= v16)
               {
                 goto LABEL_22;
               }
 
               v31 = objc_alloc_init(TDPacker);
               [(TDPacker *)v31 setSizeHandler:&__block_literal_global_1769];
-              -[TDPacker setObjectsToPack:](v31, "setObjectsToPack:", [v156 subarrayWithRange:{v12, v30 + v17}]);
+              -[TDPacker setObjectsToPack:](v31, "setObjectsToPack:", [v156 subarrayWithRange:{v12, countOfEmptyNodes + v17}]);
               [(TDPacker *)v31 pack];
               [(TDPacker *)v31 enclosingSize];
               v33 = v32;
               v35 = v34;
 
-              v16 = v20 + v30;
+              v16 = v20 + countOfEmptyNodes;
               if (v35 * v33 != v29 * v27)
               {
 LABEL_22:
@@ -11752,17 +11752,17 @@ LABEL_30:
     while (v143);
   }
 
-  [(NSMutableDictionary *)v158->_packableRenditions removeObjectsForKeys:v151];
-  [(NSMutableDictionary *)v158->_packableRenditions addEntriesFromDictionary:v149];
+  [(NSMutableDictionary *)selfCopy->_packableRenditions removeObjectsForKeys:v151];
+  [(NSMutableDictionary *)selfCopy->_packableRenditions addEntriesFromDictionary:v149];
 
   v39 = objc_alloc_init(TDPacker);
   [(TDPacker *)v39 setSizeHandler:&__block_literal_global_1247];
-  v126 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableDictionary count](v158->_packableRenditions, "count")}];
+  v126 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableDictionary count](selfCopy->_packableRenditions, "count")}];
   v163 = 0u;
   v164 = 0u;
   v165 = 0u;
   v166 = 0u;
-  v127 = [-[NSMutableDictionary allKeys](v158->_packableRenditions "allKeys")];
+  v127 = [-[NSMutableDictionary allKeys](selfCopy->_packableRenditions "allKeys")];
   v138 = [v127 countByEnumeratingWithState:&v163 objects:v176 count:16];
   if (!v138)
   {
@@ -11786,7 +11786,7 @@ LABEL_30:
       }
 
       v42 = *(*(&v163 + 1) + 8 * v41);
-      v43 = [(NSMutableDictionary *)v158->_packableRenditions objectForKey:v42];
+      v43 = [(NSMutableDictionary *)selfCopy->_packableRenditions objectForKey:v42];
       v44 = [v43 count];
       -[TDPacker setObjectsToPack:](v39, "setObjectsToPack:", [v43 array]);
       [(TDPacker *)v39 pack];
@@ -11823,10 +11823,10 @@ LABEL_30:
       [v148 setObject:v53 forKey:v50];
       if ([v45 count])
       {
-        v54 = [(CoreThemeDocument *)v158 newObjectForEntity:@"PackedRenditionSpec"];
+        v54 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"PackedRenditionSpec"];
         [v54 setPackedRenditions:{objc_msgSend(MEMORY[0x277CBEB98], "setWithArray:", v45)}];
-        [v54 setCompressionType:{objc_msgSend(v132, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 11), "intValue"))}];
-        v55 = [(CoreThemeDocument *)v158 newObjectForEntity:@"RenditionKeySpec"];
+        [v54 setCompressionType:{objc_msgSend(compressionTypes, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 11), "intValue"))}];
+        v55 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"RenditionKeySpec"];
         v56 = [objc_msgSend(v49 objectAtIndex:{7), "intValue"}];
         v152 = v53;
         if (v56)
@@ -11836,21 +11836,21 @@ LABEL_30:
           [v55 setElement:v134];
           [v55 setNameIdentifier:v57];
           v144 = v57;
-          v58 = -[NSMutableDictionary objectForKey:](v158->_explicitlyPackedPackings, "objectForKey:", [MEMORY[0x277CCABB0] numberWithInteger:?]);
-          v59 = [(CoreThemeDocument *)v158 namedArtworkProductionWithName:v58];
+          v58 = -[NSMutableDictionary objectForKey:](selfCopy->_explicitlyPackedPackings, "objectForKey:", [MEMORY[0x277CCABB0] numberWithInteger:?]);
+          v59 = [(CoreThemeDocument *)selfCopy namedArtworkProductionWithName:v58];
           if (!v59)
           {
             v146 = v54;
-            v60 = [(CoreThemeDocument *)v158 newObjectForEntity:@"NamedArtworkProduction"];
+            v60 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"NamedArtworkProduction"];
             [v60 setTags:{objc_msgSend(objc_msgSend(objc_msgSend(v157, "firstObject"), "production"), "tags")}];
             v61 = v57;
             v62 = v55;
-            v63 = [(CoreThemeDocument *)v158 _createNamedElementWithIdentifier:v144];
+            v63 = [(CoreThemeDocument *)selfCopy _createNamedElementWithIdentifier:v144];
             [v63 setDateOfLastChange:{objc_msgSend(MEMORY[0x277CBEAA8], "date")}];
             [v63 setName:v58];
             [v60 setName:v63];
             v64 = v60;
-            v65 = [(CoreThemeDocument *)v158 newObjectForEntity:@"RenditionKeySpec"];
+            v65 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"RenditionKeySpec"];
             obja = v61;
             [v65 setNameIdentifier:v61];
             [v65 setElement:{objc_msgSend(v62, "element")}];
@@ -11859,9 +11859,9 @@ LABEL_30:
             v150 = v60;
             [v60 setBaseKeySpec:v65];
 
-            v120 = [(CoreThemeDocument *)v158 newObjectForEntity:@"ContentsRenditionSpec"];
+            v120 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"ContentsRenditionSpec"];
             v66 = objc_alloc_init(MEMORY[0x277CBEB58]);
-            v67 = -[NSMutableDictionary objectForKey:](v158->_explicitlyPackedContents, "objectForKey:", [MEMORY[0x277CCABB0] numberWithInteger:v144]);
+            v67 = -[NSMutableDictionary objectForKey:](selfCopy->_explicitlyPackedContents, "objectForKey:", [MEMORY[0x277CCABB0] numberWithInteger:v144]);
             v159 = 0u;
             v160 = 0u;
             v161 = 0u;
@@ -11881,7 +11881,7 @@ LABEL_30:
                   }
 
                   v72 = *(*(&v159 + 1) + 8 * j);
-                  v73 = [(CoreThemeDocument *)v158 newObjectForEntity:@"ContentsName"];
+                  v73 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"ContentsName"];
                   [v73 setName:v72];
                   [v66 addObject:v73];
                 }
@@ -11895,7 +11895,7 @@ LABEL_30:
             v74 = v120;
             [v120 setContains:v66];
 
-            v75 = [(CoreThemeDocument *)v158 newObjectForEntity:@"RenditionKeySpec"];
+            v75 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"RenditionKeySpec"];
             [v75 setNameIdentifier:obja];
             [v75 setElement:v134];
             [v75 setPart:v119];
@@ -11915,9 +11915,9 @@ LABEL_57:
           [v54 resetToBaseKeySpec];
           [v55 setScaleFactor:{objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 0), "intValue")}];
           [v55 setPart:v130];
-          v78 = [(CoreThemeDocument *)v158 renditionKeySemantics];
+          renditionKeySemantics = [(CoreThemeDocument *)selfCopy renditionKeySemantics];
           v79 = [objc_msgSend(v49 objectAtIndex:{3), "intValue"}];
-          if (v78 == 1)
+          if (renditionKeySemantics == 1)
           {
             [v55 setPresentationState:{objc_msgSend(v121, "objectAtIndexedSubscript:", v79)}];
             [v55 setSize:{objc_msgSend(v123, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 4), "intValue"))}];
@@ -11926,17 +11926,17 @@ LABEL_57:
           else
           {
             [v55 setSubtype:v79];
-            [v55 setIdiom:{objc_msgSend(v124, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 4), "intValue"))}];
-            [v55 setSizeClassHorizontal:{objc_msgSend(v122, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 5), "intValue"))}];
-            [v55 setSizeClassVertical:{objc_msgSend(v122, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 6), "intValue"))}];
+            [v55 setIdiom:{objc_msgSend(idioms, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 4), "intValue"))}];
+            [v55 setSizeClassHorizontal:{objc_msgSend(sizeClasses, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 5), "intValue"))}];
+            [v55 setSizeClassVertical:{objc_msgSend(sizeClasses, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 6), "intValue"))}];
             [v55 setMemoryClass:{objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 8), "intValue")}];
-            [v55 setGraphicsFeatureSetClass:{objc_msgSend(v125, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 9), "intValue"))}];
+            [v55 setGraphicsFeatureSetClass:{objc_msgSend(featureSetClasses, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 9), "intValue"))}];
           }
 
           v45 = v157;
-          [v55 setGamut:{objc_msgSend(v133, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 10), "intValue"))}];
+          [v55 setGamut:{objc_msgSend(displayGamuts, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 10), "intValue"))}];
           [v55 setDimension1:{objc_msgSend(v152, "intValue")}];
-          [v55 setTarget:{objc_msgSend(v131, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 12), "intValue"))}];
+          [v55 setTarget:{objc_msgSend(deploymentTargets, "objectAtIndexedSubscript:", objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 12), "intValue"))}];
           if ([objc_msgSend(v49 objectAtIndex:{13), "intValue"}])
           {
             if (v136 && (v80 = [v136 identifier], v81 = objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 13), "intValue"), v82 = v136, v81 == v80))
@@ -11946,7 +11946,7 @@ LABEL_57:
 
             else
             {
-              v82 = -[CoreThemeDocument appearanceWithIdentifier:](v158, "appearanceWithIdentifier:", [objc_msgSend(v49 objectAtIndex:{13), "intValue"}]);
+              v82 = -[CoreThemeDocument appearanceWithIdentifier:](selfCopy, "appearanceWithIdentifier:", [objc_msgSend(v49 objectAtIndex:{13), "intValue"}]);
               v83 = v55;
               v136 = v82;
             }
@@ -11968,7 +11968,7 @@ LABEL_57:
 
             else
             {
-              v86 = -[CoreThemeDocument localizationWithIdentifier:](v158, "localizationWithIdentifier:", [objc_msgSend(v49 objectAtIndex:{14), "intValue"}]);
+              v86 = -[CoreThemeDocument localizationWithIdentifier:](selfCopy, "localizationWithIdentifier:", [objc_msgSend(v49 objectAtIndex:{14), "intValue"}]);
               v87 = v55;
               v135 = v86;
             }
@@ -12014,18 +12014,18 @@ LABEL_57:
           [v54 setPreserveForArchiveOnly:{objc_msgSend(objc_msgSend(v49, "objectAtIndex:", 15), "intValue") != 0}];
           if (__coreThemeLoggingEnabled == 1)
           {
-            v93 = [v54 width];
-            v94 = [v54 height];
+            width2 = [v54 width];
+            height = [v54 height];
             v171 = 0u;
             v172 = 0u;
             v173 = 0u;
             v174 = 0u;
-            v95 = [v54 packedRenditions];
-            v96 = [v95 countByEnumeratingWithState:&v171 objects:v180 count:16];
+            packedRenditions = [v54 packedRenditions];
+            v96 = [packedRenditions countByEnumeratingWithState:&v171 objects:v180 count:16];
             if (v96)
             {
               v97 = v96;
-              v153 = v93;
+              v153 = width2;
               v147 = v54;
               v98 = 0;
               v99 = *v172;
@@ -12035,22 +12035,22 @@ LABEL_57:
                 {
                   if (*v172 != v99)
                   {
-                    objc_enumerationMutation(v95);
+                    objc_enumerationMutation(packedRenditions);
                   }
 
                   v101 = *(*(&v171 + 1) + 8 * k);
-                  v102 = [v101 width];
-                  v98 += [v101 height] * v102;
+                  width3 = [v101 width];
+                  v98 += [v101 height] * width3;
                 }
 
-                v97 = [v95 countByEnumeratingWithState:&v171 objects:v180 count:16];
+                v97 = [packedRenditions countByEnumeratingWithState:&v171 objects:v180 count:16];
               }
 
               while (v97);
               v103 = v98;
               v45 = v157;
               v54 = v147;
-              v93 = v153;
+              width2 = v153;
             }
 
             else
@@ -12058,7 +12058,7 @@ LABEL_57:
               v103 = 0.0;
             }
 
-            v104 = v103 / (v94 * v93);
+            v104 = v103 / (height * width2);
             NSLog(&cfstr_PackedRenditio.isa, [v54 renditionPackName], (v104 * 100.0));
             *&v105 = v104;
             [v126 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithFloat:", v105)}];
@@ -12068,10 +12068,10 @@ LABEL_57:
         }
 
         [v55 setElement:v134];
-        v76 = [(CoreThemeDocument *)v158 newObjectForEntity:@"ElementProduction"];
+        v76 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"ElementProduction"];
         [v76 setTags:{objc_msgSend(objc_msgSend(objc_msgSend(v45, "firstObject"), "production"), "tags")}];
         v77 = v76;
-        v74 = [(CoreThemeDocument *)v158 newObjectForEntity:@"RenditionKeySpec"];
+        v74 = [(CoreThemeDocument *)selfCopy newObjectForEntity:@"RenditionKeySpec"];
         [v74 setNameIdentifier:0];
         [v74 setElement:{objc_msgSend(v55, "element")}];
         [v74 setPart:{objc_msgSend(v55, "part")}];
@@ -12136,7 +12136,7 @@ double __45__CoreThemeDocument__groupPackableRenditions__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)packRenditionsError:(id *)a3
+- (void)packRenditionsError:(id *)error
 {
   if ([(CoreThemeDocument *)self featureEnabled:2])
   {
@@ -12146,19 +12146,19 @@ double __45__CoreThemeDocument__groupPackableRenditions__block_invoke(uint64_t a
       [(CoreThemeDocument *)self deleteObjects:v5];
     }
 
-    [(CoreThemeDocument *)self _updateRenditionPackings:[(CoreThemeDocument *)self allObjectsForEntity:@"RenditionSpec" withSortDescriptors:0] error:a3];
+    [(CoreThemeDocument *)self _updateRenditionPackings:[(CoreThemeDocument *)self allObjectsForEntity:@"RenditionSpec" withSortDescriptors:0] error:error];
 
     [(CoreThemeDocument *)self _groupPackableRenditions];
   }
 }
 
-- (void)incrementallyPackRenditionsSinceDate:(id)a3 error:(id *)a4
+- (void)incrementallyPackRenditionsSinceDate:(id)date error:(id *)error
 {
-  if (a3 && [(CoreThemeDocument *)self featureEnabled:2])
+  if (date && [(CoreThemeDocument *)self featureEnabled:2])
   {
-    v7 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"RenditionSpec", [MEMORY[0x277CCAC30] predicateWithFormat:@"production.dateOfLastChange > %@", a3], 0);
-    NSLog(&cfstr_FoundLuChanged.isa, [v7 count], a3, v7);
-    [(CoreThemeDocument *)self _updateRenditionPackings:v7 error:a4];
+    v7 = -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:](self, "objectsForEntity:withPredicate:sortDescriptors:", @"RenditionSpec", [MEMORY[0x277CCAC30] predicateWithFormat:@"production.dateOfLastChange > %@", date], 0);
+    NSLog(&cfstr_FoundLuChanged.isa, [v7 count], date, v7);
+    [(CoreThemeDocument *)self _updateRenditionPackings:v7 error:error];
 
     [(CoreThemeDocument *)self _groupPackableRenditions];
   }
@@ -12173,14 +12173,14 @@ double __45__CoreThemeDocument__groupPackableRenditions__block_invoke(uint64_t a
   }
 
   v117 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(TDDeviceTraits *)[(CoreThemeDocument *)self optimizeForDeviceTraits] hostedIdiomValues];
+  hostedIdiomValues = [(TDDeviceTraits *)[(CoreThemeDocument *)self optimizeForDeviceTraits] hostedIdiomValues];
   v122 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v118 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v119 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v131 = self;
+  selfCopy = self;
   v212 = 0u;
   v213 = 0u;
   v214 = 0u;
@@ -12228,8 +12228,8 @@ double __45__CoreThemeDocument__groupPackableRenditions__block_invoke(uint64_t a
       v210 = 0u;
       v209 = 0u;
       v208 = 0u;
-      v127 = [v8 renditions];
-      v143 = [v127 countByEnumeratingWithState:&v208 objects:v235 count:16];
+      renditions = [v8 renditions];
+      v143 = [renditions countByEnumeratingWithState:&v208 objects:v235 count:16];
       if (v143)
       {
         v9 = *v209;
@@ -12240,14 +12240,14 @@ double __45__CoreThemeDocument__groupPackableRenditions__block_invoke(uint64_t a
           {
             if (*v209 != v9)
             {
-              objc_enumerationMutation(v127);
+              objc_enumerationMutation(renditions);
             }
 
             v11 = *(*(&v208 + 1) + 8 * i);
             v12 = [objc_msgSend(objc_msgSend(v11 "keySpec")];
             v13 = [objc_msgSend(objc_msgSend(v11 "keySpec")];
             v14 = [objc_msgSend(objc_msgSend(v11 "keySpec")];
-            if (v3 && -[NSArray containsObject:](v3, "containsObject:", [MEMORY[0x277CCABB0] numberWithInteger:v12]) || v13 == 127 || v14 == 218)
+            if (hostedIdiomValues && -[NSArray containsObject:](hostedIdiomValues, "containsObject:", [MEMORY[0x277CCABB0] numberWithInteger:v12]) || v13 == 127 || v14 == 218)
             {
               v20 = v5;
             }
@@ -12265,20 +12265,20 @@ double __45__CoreThemeDocument__groupPackableRenditions__block_invoke(uint64_t a
               v132 = [objc_msgSend(objc_msgSend(v11 "keySpec")];
               v16 = [objc_msgSend(objc_msgSend(v11 "keySpec")];
               v17 = [objc_msgSend(v11 "keySpec")];
-              v18 = [v11 keySpec];
+              keySpec = [v11 keySpec];
               if (v15 == 220)
               {
-                v19 = [v139 stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d.%d", v136, v132, v16, v17, objc_msgSend(v18, "dimension2"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "appearance"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "localization"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphWeight"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphSize"), "identifier")];
+                v111 = [v139 stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d.%d", v136, v132, v16, v17, objc_msgSend(keySpec, "dimension2"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "appearance"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "localization"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphWeight"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphSize"), "identifier")];
               }
 
               else
               {
-                v19 = [v139 stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d", v136, v132, v16, v17, objc_msgSend(objc_msgSend(v18, "appearance"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "localization"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphWeight"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphSize"), "identifier"), v111];
+                v111 = [v139 stringWithFormat:@"%d.%d.%d.%d.%d.%d.%d.%d", v136, v132, v16, v17, objc_msgSend(objc_msgSend(keySpec, "appearance"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "localization"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphWeight"), "identifier"), objc_msgSend(objc_msgSend(objc_msgSend(v11, "keySpec"), "glyphSize"), "identifier"), v111];
               }
 
-              v21 = v19;
+              v21 = v111;
               v4 = v123;
-              v20 = [v123 objectForKey:v19];
+              v20 = [v123 objectForKey:v111];
               v9 = v125;
               if (!v20)
               {
@@ -12293,7 +12293,7 @@ double __45__CoreThemeDocument__groupPackableRenditions__block_invoke(uint64_t a
             [v20 addObject:v11];
           }
 
-          v143 = [v127 countByEnumeratingWithState:&v208 objects:v235 count:16];
+          v143 = [renditions countByEnumeratingWithState:&v208 objects:v235 count:16];
         }
 
         while (v143);
@@ -12335,8 +12335,8 @@ LABEL_39:
         v201 = 0u;
         v202 = 0u;
         v203 = 0u;
-        v124 = [(CoreThemeDocument *)v131 deviceTraitsUsedForOptimization];
-        v133 = [v124 countByEnumeratingWithState:&v200 objects:v233 count:16];
+        deviceTraitsUsedForOptimization = [(CoreThemeDocument *)selfCopy deviceTraitsUsedForOptimization];
+        v133 = [deviceTraitsUsedForOptimization countByEnumeratingWithState:&v200 objects:v233 count:16];
         if (v133)
         {
           v126 = *v201;
@@ -12346,13 +12346,13 @@ LABEL_39:
             {
               if (*v201 != v126)
               {
-                objc_enumerationMutation(v124);
+                objc_enumerationMutation(deviceTraitsUsedForOptimization);
               }
 
               v26 = *(*(&v200 + 1) + 8 * j);
               v144 = MEMORY[0x277D02670];
               [v26 scale];
-              v28 = [v144 bestMatchUsingObjects:v128 getAttributeValueUsing:&__block_literal_global_1271 scaleFactor:objc_msgSend(v26 deviceIdiom:"idiomValue") deviceSubtype:objc_msgSend(v26 displayGamut:"subtype") deploymentTarget:objc_msgSend(v26 layoutDirection:"displayGamutValue") sizeClassHorizontal:objc_msgSend(v26 sizeClassVertical:"deploymentTargetValue") memoryClass:v27 graphicsFeatureSetClass:5 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 platform:{objc_msgSend(v26, "memoryPerformanceClass"), objc_msgSend(v26, "graphicsFeatureSetClassValue"), objc_msgSend(v26, "graphicsFeatureSetFallbackValues"), objc_msgSend(v26, "subtypeFallbackValues"), -[CoreThemeDocument targetPlatform](v131, "targetPlatform")}];
+              v28 = [v144 bestMatchUsingObjects:v128 getAttributeValueUsing:&__block_literal_global_1271 scaleFactor:objc_msgSend(v26 deviceIdiom:"idiomValue") deviceSubtype:objc_msgSend(v26 displayGamut:"subtype") deploymentTarget:objc_msgSend(v26 layoutDirection:"displayGamutValue") sizeClassHorizontal:objc_msgSend(v26 sizeClassVertical:"deploymentTargetValue") memoryClass:v27 graphicsFeatureSetClass:5 graphicsFallBackOrder:0 deviceSubtypeFallBackOrder:0 platform:{objc_msgSend(v26, "memoryPerformanceClass"), objc_msgSend(v26, "graphicsFeatureSetClassValue"), objc_msgSend(v26, "graphicsFeatureSetFallbackValues"), objc_msgSend(v26, "subtypeFallbackValues"), -[CoreThemeDocument targetPlatform](selfCopy, "targetPlatform")}];
               if (v28)
               {
                 v29 = v28;
@@ -12361,7 +12361,7 @@ LABEL_39:
               }
             }
 
-            v133 = [v124 countByEnumeratingWithState:&v200 objects:v233 count:16];
+            v133 = [deviceTraitsUsedForOptimization countByEnumeratingWithState:&v200 objects:v233 count:16];
           }
 
           while (v133);
@@ -12393,13 +12393,13 @@ LABEL_39:
               v193 = 0u;
               v194 = 0u;
               v195 = 0u;
-              v33 = [v30 allObjects];
-              v145 = [MEMORY[0x277CBEB18] array];
+              allObjects = [v30 allObjects];
+              array = [MEMORY[0x277CBEB18] array];
               v216 = 0u;
               v217 = 0u;
               v218 = 0u;
               v219 = 0u;
-              v34 = [v33 countByEnumeratingWithState:&v216 objects:v237 count:16];
+              v34 = [allObjects countByEnumeratingWithState:&v216 objects:v237 count:16];
               if (v34)
               {
                 v35 = v34;
@@ -12410,7 +12410,7 @@ LABEL_39:
                   {
                     if (*v217 != v36)
                     {
-                      objc_enumerationMutation(v33);
+                      objc_enumerationMutation(allObjects);
                     }
 
                     v38 = *(*(&v216 + 1) + 8 * k);
@@ -12441,7 +12441,7 @@ LABEL_39:
                                     v47 = [objc_msgSend(objc_msgSend(v38 "keySpec")];
                                     if (v47 == [objc_msgSend(objc_msgSend(v32 "keySpec")])
                                     {
-                                      [v145 addObject:v38];
+                                      [array addObject:v38];
                                     }
                                   }
                                 }
@@ -12453,14 +12453,14 @@ LABEL_39:
                     }
                   }
 
-                  v35 = [v33 countByEnumeratingWithState:&v216 objects:v237 count:16];
+                  v35 = [allObjects countByEnumeratingWithState:&v216 objects:v237 count:16];
                 }
 
                 while (v35);
               }
 
-              v48 = v145;
-              if (![v145 count])
+              v48 = array;
+              if (![array count])
               {
                 v48 = 0;
               }
@@ -12528,7 +12528,7 @@ LABEL_39:
           while (v55);
         }
 
-        -[CoreThemeDocument deleteObjects:](v131, "deleteObjects:", [v30 allObjects]);
+        -[CoreThemeDocument deleteObjects:](selfCopy, "deleteObjects:", [v30 allObjects]);
         [v6 unionSet:v30];
 
         v23 = v121 + 1;
@@ -12560,7 +12560,7 @@ LABEL_39:
         }
 
         v62 = *(*(&v184 + 1) + 8 * ii);
-        -[CoreThemeDocument deleteObjects:](v131, "deleteObjects:", [objc_msgSend(v62 "renditions")]);
+        -[CoreThemeDocument deleteObjects:](selfCopy, "deleteObjects:", [objc_msgSend(v62 "renditions")]);
         [v62 setRenditions:{objc_msgSend(MEMORY[0x277CBEB98], "set")}];
       }
 
@@ -12593,8 +12593,8 @@ LABEL_39:
         v177 = 0u;
         v178 = 0u;
         v179 = 0u;
-        v66 = [v64 packedRenditions];
-        v67 = [v66 countByEnumeratingWithState:&v176 objects:v227 count:16];
+        packedRenditions = [v64 packedRenditions];
+        v67 = [packedRenditions countByEnumeratingWithState:&v176 objects:v227 count:16];
         if (v67)
         {
           v68 = v67;
@@ -12605,7 +12605,7 @@ LABEL_39:
             {
               if (*v177 != v69)
               {
-                objc_enumerationMutation(v66);
+                objc_enumerationMutation(packedRenditions);
               }
 
               v71 = *(*(&v176 + 1) + 8 * kk);
@@ -12615,7 +12615,7 @@ LABEL_39:
               }
             }
 
-            v68 = [v66 countByEnumeratingWithState:&v176 objects:v227 count:16];
+            v68 = [packedRenditions countByEnumeratingWithState:&v176 objects:v227 count:16];
           }
 
           while (v68);
@@ -12645,7 +12645,7 @@ LABEL_39:
   v173 = 0u;
   v174 = 0u;
   v175 = 0u;
-  v72 = [(CoreThemeDocument *)v131 allObjectsForEntity:@"Asset" withSortDescriptors:0];
+  v72 = [(CoreThemeDocument *)selfCopy allObjectsForEntity:@"Asset" withSortDescriptors:0];
   v73 = [v72 countByEnumeratingWithState:&v172 objects:v226 count:16];
   if (v73)
   {
@@ -12677,7 +12677,7 @@ LABEL_39:
   v171 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v78 = [(CoreThemeDocument *)v131 allObjectsForEntity:@"ElementProduction" withSortDescriptors:0];
+  v78 = [(CoreThemeDocument *)selfCopy allObjectsForEntity:@"ElementProduction" withSortDescriptors:0];
   v79 = [v78 countByEnumeratingWithState:&v168 objects:v225 count:16];
   if (v79)
   {
@@ -12705,8 +12705,8 @@ LABEL_39:
     while (v80);
   }
 
-  v84 = v131;
-  [(CoreThemeDocument *)v131 deleteObjects:v117];
+  v84 = selfCopy;
+  [(CoreThemeDocument *)selfCopy deleteObjects:v117];
 
   if ([v119 count])
   {
@@ -12730,13 +12730,13 @@ LABEL_39:
           }
 
           v138 = v86;
-          v87 = [*(*(&v164 + 1) + 8 * v86) flattenedImageProduction];
+          flattenedImageProduction = [*(*(&v164 + 1) + 8 * v86) flattenedImageProduction];
           v160 = 0u;
           v161 = 0u;
           v162 = 0u;
           v163 = 0u;
-          v142 = [v87 renditions];
-          v88 = [v142 countByEnumeratingWithState:&v160 objects:v223 count:16];
+          renditions2 = [flattenedImageProduction renditions];
+          v88 = [renditions2 countByEnumeratingWithState:&v160 objects:v223 count:16];
           if (v88)
           {
             v89 = v88;
@@ -12747,15 +12747,15 @@ LABEL_39:
               {
                 if (*v161 != v147)
                 {
-                  objc_enumerationMutation(v142);
+                  objc_enumerationMutation(renditions2);
                 }
 
-                v91 = [*(*(&v160 + 1) + 8 * i1) layerReferences];
+                layerReferences = [*(*(&v160 + 1) + 8 * i1) layerReferences];
                 v156 = 0u;
                 v157 = 0u;
                 v158 = 0u;
                 v159 = 0u;
-                v92 = [v91 countByEnumeratingWithState:&v156 objects:v222 count:16];
+                v92 = [layerReferences countByEnumeratingWithState:&v156 objects:v222 count:16];
                 if (v92)
                 {
                   v93 = v92;
@@ -12766,7 +12766,7 @@ LABEL_39:
                     {
                       if (*v157 != v94)
                       {
-                        objc_enumerationMutation(v91);
+                        objc_enumerationMutation(layerReferences);
                       }
 
                       v96 = *(*(&v156 + 1) + 8 * i2);
@@ -12776,14 +12776,14 @@ LABEL_39:
                       }
                     }
 
-                    v93 = [v91 countByEnumeratingWithState:&v156 objects:v222 count:16];
+                    v93 = [layerReferences countByEnumeratingWithState:&v156 objects:v222 count:16];
                   }
 
                   while (v93);
                 }
               }
 
-              v89 = [v142 countByEnumeratingWithState:&v160 objects:v223 count:16];
+              v89 = [renditions2 countByEnumeratingWithState:&v160 objects:v223 count:16];
             }
 
             while (v89);
@@ -12799,7 +12799,7 @@ LABEL_39:
       while (v135);
     }
 
-    [(CoreThemeDocument *)v131 deleteObjects:v85];
+    [(CoreThemeDocument *)selfCopy deleteObjects:v85];
 
     v97 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v152 = 0u;
@@ -12833,8 +12833,8 @@ LABEL_39:
       while (v99);
     }
 
-    v84 = v131;
-    [(CoreThemeDocument *)v131 deleteObjects:v97];
+    v84 = selfCopy;
+    [(CoreThemeDocument *)selfCopy deleteObjects:v97];
   }
 
   v103 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -12870,106 +12870,106 @@ LABEL_39:
     while (v106);
   }
 
-  [(CoreThemeDocument *)v131 deleteObjects:v103];
+  [(CoreThemeDocument *)selfCopy deleteObjects:v103];
 
 LABEL_185:
   v110 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_matchesAllExceptGamut:(id)a3 andKeySpec:(id)a4
+- (BOOL)_matchesAllExceptGamut:(id)gamut andKeySpec:(id)spec
 {
-  v6 = [a3 nameIdentifier];
-  if (v6 != [a4 nameIdentifier])
+  nameIdentifier = [gamut nameIdentifier];
+  if (nameIdentifier != [spec nameIdentifier])
   {
     return 0;
   }
 
-  v7 = [a3 dimension1];
-  if (v7 != [a4 dimension1])
+  dimension1 = [gamut dimension1];
+  if (dimension1 != [spec dimension1])
   {
     return 0;
   }
 
-  v8 = [a3 dimension2];
-  if (v8 != [a4 dimension2])
+  dimension2 = [gamut dimension2];
+  if (dimension2 != [spec dimension2])
   {
     return 0;
   }
 
-  v9 = [a3 scaleFactor];
-  if (v9 != [a4 scaleFactor])
+  scaleFactor = [gamut scaleFactor];
+  if (scaleFactor != [spec scaleFactor])
   {
     return 0;
   }
 
-  v10 = [a3 subtype];
-  if (v10 != [a4 subtype])
+  subtype = [gamut subtype];
+  if (subtype != [spec subtype])
   {
     return 0;
   }
 
-  v11 = [a3 memoryClass];
-  if (v11 != [a4 memoryClass])
+  memoryClass = [gamut memoryClass];
+  if (memoryClass != [spec memoryClass])
   {
     return 0;
   }
 
-  v12 = [objc_msgSend(a3 "state")];
-  if (v12 != [objc_msgSend(a4 "state")])
+  v12 = [objc_msgSend(gamut "state")];
+  if (v12 != [objc_msgSend(spec "state")])
   {
     return 0;
   }
 
-  v13 = [objc_msgSend(a3 "presentationState")];
-  if (v13 != [objc_msgSend(a4 "presentationState")])
+  v13 = [objc_msgSend(gamut "presentationState")];
+  if (v13 != [objc_msgSend(spec "presentationState")])
   {
     return 0;
   }
 
-  v14 = [objc_msgSend(a3 "value")];
-  if (v14 != [objc_msgSend(a4 "value")])
+  v14 = [objc_msgSend(gamut "value")];
+  if (v14 != [objc_msgSend(spec "value")])
   {
     return 0;
   }
 
-  v15 = [objc_msgSend(a3 "size")];
-  if (v15 != [objc_msgSend(a4 "size")])
+  v15 = [objc_msgSend(gamut "size")];
+  if (v15 != [objc_msgSend(spec "size")])
   {
     return 0;
   }
 
-  v16 = [objc_msgSend(a3 "direction")];
-  if (v16 != [objc_msgSend(a4 "direction")])
+  v16 = [objc_msgSend(gamut "direction")];
+  if (v16 != [objc_msgSend(spec "direction")])
   {
     return 0;
   }
 
-  v17 = [objc_msgSend(a3 "part")];
-  if (v17 != [objc_msgSend(a4 "part")])
+  v17 = [objc_msgSend(gamut "part")];
+  if (v17 != [objc_msgSend(spec "part")])
   {
     return 0;
   }
 
-  v18 = [objc_msgSend(a3 "element")];
-  if (v18 != [objc_msgSend(a4 "element")])
+  v18 = [objc_msgSend(gamut "element")];
+  if (v18 != [objc_msgSend(spec "element")])
   {
     return 0;
   }
 
-  v19 = [objc_msgSend(a3 "layer")];
-  if (v19 != [objc_msgSend(a4 "layer")])
+  v19 = [objc_msgSend(gamut "layer")];
+  if (v19 != [objc_msgSend(spec "layer")])
   {
     return 0;
   }
 
-  v20 = [objc_msgSend(a3 "previousState")];
-  if (v20 != [objc_msgSend(a4 "previousState")])
+  v20 = [objc_msgSend(gamut "previousState")];
+  if (v20 != [objc_msgSend(spec "previousState")])
   {
     return 0;
   }
 
-  v21 = [objc_msgSend(a3 "previousValue")];
-  if (v21 == [objc_msgSend(a4 "previousValue")] && (v22 = objc_msgSend(objc_msgSend(a3, "idiom"), "identifier"), v22 == objc_msgSend(objc_msgSend(a4, "idiom"), "identifier")) && (v23 = objc_msgSend(objc_msgSend(a3, "target"), "identifier"), v23 == objc_msgSend(objc_msgSend(a4, "target"), "identifier")) && (v24 = objc_msgSend(objc_msgSend(a3, "sizeClassHorizontal"), "identifier"), v24 == objc_msgSend(objc_msgSend(a4, "sizeClassHorizontal"), "identifier")) && (v25 = objc_msgSend(objc_msgSend(a3, "sizeClassVertical"), "identifier"), v25 == objc_msgSend(objc_msgSend(a4, "sizeClassVertical"), "identifier")) && (v26 = objc_msgSend(objc_msgSend(a3, "appearance"), "identifier"), v26 == objc_msgSend(objc_msgSend(a4, "appearance"), "identifier")) && (v27 = objc_msgSend(objc_msgSend(a3, "graphicsFeatureSetClass"), "identifier"), v27 == objc_msgSend(objc_msgSend(a4, "graphicsFeatureSetClass"), "identifier")))
+  v21 = [objc_msgSend(gamut "previousValue")];
+  if (v21 == [objc_msgSend(spec "previousValue")] && (v22 = objc_msgSend(objc_msgSend(gamut, "idiom"), "identifier"), v22 == objc_msgSend(objc_msgSend(spec, "idiom"), "identifier")) && (v23 = objc_msgSend(objc_msgSend(gamut, "target"), "identifier"), v23 == objc_msgSend(objc_msgSend(spec, "target"), "identifier")) && (v24 = objc_msgSend(objc_msgSend(gamut, "sizeClassHorizontal"), "identifier"), v24 == objc_msgSend(objc_msgSend(spec, "sizeClassHorizontal"), "identifier")) && (v25 = objc_msgSend(objc_msgSend(gamut, "sizeClassVertical"), "identifier"), v25 == objc_msgSend(objc_msgSend(spec, "sizeClassVertical"), "identifier")) && (v26 = objc_msgSend(objc_msgSend(gamut, "appearance"), "identifier"), v26 == objc_msgSend(objc_msgSend(spec, "appearance"), "identifier")) && (v27 = objc_msgSend(objc_msgSend(gamut, "graphicsFeatureSetClass"), "identifier"), v27 == objc_msgSend(objc_msgSend(spec, "graphicsFeatureSetClass"), "identifier")))
   {
     return 1;
   }
@@ -12980,7 +12980,7 @@ LABEL_185:
   }
 }
 
-- (BOOL)shouldGenerateDisplayGamut:(unsigned int)a3
+- (BOOL)shouldGenerateDisplayGamut:(unsigned int)gamut
 {
   v16 = *MEMORY[0x277D85DE8];
   deviceTraits = self->_deviceTraits;
@@ -13009,7 +13009,7 @@ LABEL_4:
         objc_enumerationMutation(deviceTraits);
       }
 
-      if ([*(*(&v11 + 1) + 8 * v8) displayGamutValue] == a3)
+      if ([*(*(&v11 + 1) + 8 * v8) displayGamutValue] == gamut)
       {
         goto LABEL_11;
       }
@@ -13116,15 +13116,15 @@ LABEL_12:
           if ((v41[3] & 1) == 0)
           {
             v34 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [objc_msgSend(v12 "entity")]);
-            v13 = [v12 slices];
-            if ([v13 count])
+            slices = [v12 slices];
+            if ([slices count])
             {
-              v14 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v13, "count")}];
+              v14 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices, "count")}];
               v37 = 0u;
               v38 = 0u;
               v35 = 0u;
               v36 = 0u;
-              v15 = [v13 countByEnumeratingWithState:&v35 objects:v53 count:16];
+              v15 = [slices countByEnumeratingWithState:&v35 objects:v53 count:16];
               if (v15)
               {
                 v16 = *v36;
@@ -13135,7 +13135,7 @@ LABEL_12:
                   {
                     if (*v36 != v16)
                     {
-                      objc_enumerationMutation(v13);
+                      objc_enumerationMutation(slices);
                     }
 
                     [*(*(&v35 + 1) + 8 * v17) sliceRect];
@@ -13150,7 +13150,7 @@ LABEL_12:
                   }
 
                   while (v15 != v17);
-                  v15 = [v13 countByEnumeratingWithState:&v35 objects:v53 count:16];
+                  v15 = [slices countByEnumeratingWithState:&v35 objects:v53 count:16];
                 }
 
                 while (v15);
@@ -13224,11 +13224,11 @@ uint64_t __51__CoreThemeDocument__automaticSRGBGenerationFromP3__block_invoke_2(
   return result;
 }
 
-- (BOOL)_testRenditionForP3:(id)a3
+- (BOOL)_testRenditionForP3:(id)p3
 {
   v8 = 0;
   v7 = 0;
-  v3 = [a3 _createImageRefWithURL:objc_msgSend(objc_msgSend(a3 andDocument:"asset") format:"fileURLWithDocument:" vectorBased:{self), self, &v8, &v7}];
+  v3 = [p3 _createImageRefWithURL:objc_msgSend(objc_msgSend(p3 andDocument:"asset") format:"fileURLWithDocument:" vectorBased:{self), self, &v8, &v7}];
   v4 = 0;
   if (v3)
   {
@@ -13305,16 +13305,16 @@ uint64_t __51__CoreThemeDocument__automaticSRGBGenerationFromP3__block_invoke_2(
 
           v11 = *(*(&v39 + 1) + 8 * j);
           v12 = -[CoreThemeDocument newObjectForEntity:](self, "newObjectForEntity:", [objc_msgSend(v11 "entity")]);
-          v13 = [v11 slices];
-          if ([v13 count])
+          slices = [v11 slices];
+          if ([slices count])
           {
             v34 = j;
-            v14 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v13, "count")}];
+            v14 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(slices, "count")}];
             v35 = 0u;
             v36 = 0u;
             v37 = 0u;
             v38 = 0u;
-            v15 = [v13 countByEnumeratingWithState:&v35 objects:v48 count:16];
+            v15 = [slices countByEnumeratingWithState:&v35 objects:v48 count:16];
             if (v15)
             {
               v16 = v15;
@@ -13325,7 +13325,7 @@ uint64_t __51__CoreThemeDocument__automaticSRGBGenerationFromP3__block_invoke_2(
                 {
                   if (*v36 != v17)
                   {
-                    objc_enumerationMutation(v13);
+                    objc_enumerationMutation(slices);
                   }
 
                   [*(*(&v35 + 1) + 8 * k) sliceRect];
@@ -13338,7 +13338,7 @@ uint64_t __51__CoreThemeDocument__automaticSRGBGenerationFromP3__block_invoke_2(
                   [v14 addObject:v27];
                 }
 
-                v16 = [v13 countByEnumeratingWithState:&v35 objects:v48 count:16];
+                v16 = [slices countByEnumeratingWithState:&v35 objects:v48 count:16];
               }
 
               while (v16);
@@ -13354,8 +13354,8 @@ uint64_t __51__CoreThemeDocument__automaticSRGBGenerationFromP3__block_invoke_2(
           [v11 copyAttributesInto:v12];
           [objc_msgSend(v11 "keySpec")];
           [objc_msgSend(v12 "keySpec")];
-          v28 = [v11 compressionType];
-          if (v28 == [(CoreThemeDocument *)self compressionTypeWithIdentifier:3])
+          compressionType = [v11 compressionType];
+          if (compressionType == [(CoreThemeDocument *)self compressionTypeWithIdentifier:3])
           {
             [v12 setAllowsHevcCompression:0];
             [v12 setCompressionType:{-[CoreThemeDocument compressionTypeWithIdentifier:](self, "compressionTypeWithIdentifier:", 2)}];

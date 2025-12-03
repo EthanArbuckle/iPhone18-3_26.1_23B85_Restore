@@ -1,28 +1,28 @@
 @interface ReportAProblemCategoryChooserViewController
 - (BOOL)showingPartialSearchResults;
 - (RAPCategoryChooserDelegate)chooserDelegate;
-- (ReportAProblemCategoryChooserViewController)initWithPresentationStyle:(int64_t)a3 selectedCategoryNames:(id)a4;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (id)categoryNameAtIndexPath:(id)a3;
+- (ReportAProblemCategoryChooserViewController)initWithPresentationStyle:(int64_t)style selectedCategoryNames:(id)names;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (id)categoryNameAtIndexPath:(id)path;
 - (id)searchBarDefaultPlaceholder;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_cancel;
-- (void)_captureUserAction:(int)a3;
-- (void)_categoryNameSelected:(id)a3;
+- (void)_captureUserAction:(int)action;
+- (void)_categoryNameSelected:(id)selected;
 - (void)_didTapOnRightBarButtonItem;
 - (void)_updateDoneBarButtonItem;
-- (void)_updateSearchResultsWithString:(id)a3;
-- (void)checkmarkTableViewCell:(id)a3 isSelected:(BOOL)a4;
+- (void)_updateSearchResultsWithString:(id)string;
+- (void)checkmarkTableViewCell:(id)cell isSelected:(BOOL)selected;
 - (void)fetchLocalizedCategories;
-- (void)macFooterViewBackButtonTapped:(id)a3;
+- (void)macFooterViewBackButtonTapped:(id)tapped;
 - (void)saveCategoryAndDismissIfNecessary;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateBarButtonItems;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)updateSelectedCategoryNames:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)updateSelectedCategoryNames:(id)names;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -35,77 +35,77 @@
   return WeakRetained;
 }
 
-- (void)checkmarkTableViewCell:(id)a3 isSelected:(BOOL)a4
+- (void)checkmarkTableViewCell:(id)cell isSelected:(BOOL)selected
 {
-  v8 = a3;
-  v5 = [v8 object];
+  cellCopy = cell;
+  object = [cellCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v8 object];
-    [(ReportAProblemCategoryChooserViewController *)self _categoryNameSelected:v7];
+    object2 = [cellCopy object];
+    [(ReportAProblemCategoryChooserViewController *)self _categoryNameSelected:object2];
   }
 }
 
-- (void)macFooterViewBackButtonTapped:(id)a3
+- (void)macFooterViewBackButtonTapped:(id)tapped
 {
-  v4 = [(ReportAProblemCategoryChooserViewController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(ReportAProblemCategoryChooserViewController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)_captureUserAction:(int)a3
+- (void)_captureUserAction:(int)action
 {
-  if (a3 != 17099)
+  if (action != 17099)
   {
-    v4 = *&a3;
-    v5 = [(ReportAProblemCategoryChooserViewController *)self analyticTarget];
+    v4 = *&action;
+    analyticTarget = [(ReportAProblemCategoryChooserViewController *)self analyticTarget];
 
-    [GEOAPPortal captureUserAction:v4 target:v5 value:0];
+    [GEOAPPortal captureUserAction:v4 target:analyticTarget value:0];
   }
 }
 
-- (void)_updateSearchResultsWithString:(id)a3
+- (void)_updateSearchResultsWithString:(id)string
 {
-  v10 = a3;
-  v4 = [(ReportAProblemCategoryChooserViewController *)self showingPartialSearchResults];
-  v5 = [(ReportAProblemCategoryChooserViewController *)self fullCategoryList];
-  v6 = v5;
-  if (v4)
+  stringCopy = string;
+  showingPartialSearchResults = [(ReportAProblemCategoryChooserViewController *)self showingPartialSearchResults];
+  fullCategoryList = [(ReportAProblemCategoryChooserViewController *)self fullCategoryList];
+  v6 = fullCategoryList;
+  if (showingPartialSearchResults)
   {
-    v7 = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@", v10];
-    v8 = [v6 filteredArrayUsingPredicate:v7];
+    stringCopy = [NSPredicate predicateWithFormat:@"SELF contains[cd] %@", stringCopy];
+    v8 = [v6 filteredArrayUsingPredicate:stringCopy];
     [(ReportAProblemCategoryChooserViewController *)self setPartialCategoryList:v8];
   }
 
   else
   {
-    v7 = [v5 copy];
-    [(ReportAProblemCategoryChooserViewController *)self setPartialCategoryList:v7];
+    stringCopy = [fullCategoryList copy];
+    [(ReportAProblemCategoryChooserViewController *)self setPartialCategoryList:stringCopy];
   }
 
-  v9 = [(ReportAProblemCategoryChooserViewController *)self tableView];
-  [v9 reloadData];
+  tableView = [(ReportAProblemCategoryChooserViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v5 = [a3 searchBar];
-  v4 = [v5 text];
-  [(ReportAProblemCategoryChooserViewController *)self _updateSearchResultsWithString:v4];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
+  [(ReportAProblemCategoryChooserViewController *)self _updateSearchResultsWithString:text];
 }
 
-- (void)_categoryNameSelected:(id)a3
+- (void)_categoryNameSelected:(id)selected
 {
-  v9 = a3;
-  v4 = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
-  v5 = [v4 containsObject:v9];
+  selectedCopy = selected;
+  selectedCategoryNames = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
+  v5 = [selectedCategoryNames containsObject:selectedCopy];
 
   if (v5)
   {
-    v6 = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
-    [v6 removeObject:v9];
+    selectedCategoryNames2 = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
+    [selectedCategoryNames2 removeObject:selectedCopy];
 
     [(ReportAProblemCategoryChooserViewController *)self _captureUserAction:10170];
   }
@@ -116,44 +116,44 @@
     if (v7 < GEOConfigGetUInteger())
     {
       [(ReportAProblemCategoryChooserViewController *)self _captureUserAction:10147];
-      v8 = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
-      [v8 addObject:v9];
+      selectedCategoryNames3 = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
+      [selectedCategoryNames3 addObject:selectedCopy];
     }
   }
 
   [(ReportAProblemCategoryChooserViewController *)self _updateDoneBarButtonItem];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
-  v9 = [v8 userInterfaceIdiom];
+  viewCopy = view;
+  pathCopy = path;
+  traitCollection = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v9 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    v10 = [(ReportAProblemCategoryChooserViewController *)self categoryNameAtIndexPath:v7];
+    v10 = [(ReportAProblemCategoryChooserViewController *)self categoryNameAtIndexPath:pathCopy];
     [(ReportAProblemCategoryChooserViewController *)self _categoryNameSelected:v10];
-    [v6 deselectRowAtIndexPath:v7 animated:0];
-    v12 = v7;
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
+    v12 = pathCopy;
     v11 = [NSArray arrayWithObjects:&v12 count:1];
-    [v6 reloadRowsAtIndexPaths:v11 withRowAnimation:100];
+    [viewCopy reloadRowsAtIndexPaths:v11 withRowAnimation:100];
   }
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v4 = [RAPFontManager regularTitleFont:a3];
+  v4 = [RAPFontManager regularTitleFont:view];
   [v4 _mapkit_scaledValueForValue:55.0];
   v6 = v5;
 
   return v6;
 }
 
-- (id)categoryNameAtIndexPath:(id)a3
+- (id)categoryNameAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(ReportAProblemCategoryChooserViewController *)self showingPartialSearchResults])
   {
     [(ReportAProblemCategoryChooserViewController *)self partialCategoryList];
@@ -164,7 +164,7 @@
     [(ReportAProblemCategoryChooserViewController *)self fullCategoryList];
   }
   v5 = ;
-  v6 = [v4 row];
+  v6 = [pathCopy row];
 
   v7 = [v5 objectAtIndexedSubscript:v6];
 
@@ -173,14 +173,14 @@
 
 - (BOOL)showingPartialSearchResults
 {
-  v2 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-  v3 = [v2 searchController];
+  navigationItem = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
 
-  if ([v3 isActive])
+  if ([searchController isActive])
   {
-    v4 = [v3 searchBar];
-    v5 = [v4 text];
-    v6 = [v5 length] != 0;
+    searchBar = [searchController searchBar];
+    text = [searchBar text];
+    v6 = [text length] != 0;
   }
 
   else
@@ -191,20 +191,20 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(ReportAProblemCategoryChooserViewController *)self categoryNameAtIndexPath:a4];
-  v8 = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
-  v9 = [v8 containsObject:v7];
+  viewCopy = view;
+  v7 = [(ReportAProblemCategoryChooserViewController *)self categoryNameAtIndexPath:path];
+  selectedCategoryNames = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
+  v9 = [selectedCategoryNames containsObject:v7];
 
-  v10 = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
-  v11 = [v10 userInterfaceIdiom];
+  traitCollection = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v11 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v12 = +[MacRAPCheckmarkCell identifier];
-    v13 = [v6 dequeueReusableCellWithIdentifier:v12];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v12];
 
     [v13 setChecked:v9];
     [v13 setDisplayText:v7];
@@ -215,7 +215,7 @@
   else
   {
     v14 = +[RAPCategorySearchTableViewCell identifier];
-    v13 = [v6 dequeueReusableCellWithIdentifier:v14];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v14];
 
     [v13 setChecked:v9];
     [v13 setDisplayText:v7];
@@ -224,9 +224,9 @@
   return v13;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(ReportAProblemCategoryChooserViewController *)self showingPartialSearchResults:a3])
+  if ([(ReportAProblemCategoryChooserViewController *)self showingPartialSearchResults:view])
   {
     [(ReportAProblemCategoryChooserViewController *)self partialCategoryList];
   }
@@ -241,10 +241,10 @@
   return v6;
 }
 
-- (void)updateSelectedCategoryNames:(id)a3
+- (void)updateSelectedCategoryNames:(id)names
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithArray:v4];
+  namesCopy = names;
+  v5 = [[NSMutableArray alloc] initWithArray:namesCopy];
 
   selectedCategoryNames = self->_selectedCategoryNames;
   self->_selectedCategoryNames = v5;
@@ -254,16 +254,16 @@
   self->_originalCategoryList = v7;
 
   [(ReportAProblemCategoryChooserViewController *)self _updateDoneBarButtonItem];
-  v9 = [(ReportAProblemCategoryChooserViewController *)self tableView];
-  [v9 reloadData];
+  tableView = [(ReportAProblemCategoryChooserViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-  v3 = [v5 searchController];
-  v4 = [v3 searchBar];
-  [v4 endEditing:1];
+  navigationItem = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  searchBar = [searchController searchBar];
+  [searchBar endEditing:1];
 }
 
 - (void)updateBarButtonItems
@@ -273,15 +273,15 @@
     if ([(ReportAProblemCategoryChooserViewController *)self presentationStyle]== 1)
     {
       v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancel"];
-      v4 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-      [v4 setLeftBarButtonItem:v3];
+      navigationItem = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:v3];
 
-      v5 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-      [v5 setHidesBackButton:1];
+      navigationItem2 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+      [navigationItem2 setHidesBackButton:1];
 
       v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_didTapOnRightBarButtonItem"];
-      v7 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-      [v7 setRightBarButtonItem:v6];
+      navigationItem3 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+      [navigationItem3 setRightBarButtonItem:v6];
 
       [(ReportAProblemCategoryChooserViewController *)self _updateDoneBarButtonItem];
     }
@@ -291,8 +291,8 @@
   {
     v10 = +[NSBundle mainBundle];
     v8 = [v10 localizedStringForKey:@"Back" value:@"localized string not found" table:0];
-    v9 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-    [v9 setBackButtonTitle:v8];
+    navigationItem4 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+    [navigationItem4 setBackButtonTitle:v8];
   }
 }
 
@@ -304,11 +304,11 @@
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = ReportAProblemCategoryChooserViewController;
-  [(ReportAProblemCategoryChooserViewController *)&v5 viewDidAppear:a3];
+  [(ReportAProblemCategoryChooserViewController *)&v5 viewDidAppear:appear];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100DCA7CC;
@@ -322,32 +322,32 @@
   v17.receiver = self;
   v17.super_class = ReportAProblemCategoryChooserViewController;
   [(ReportAProblemCategoryChooserViewController *)&v17 viewDidLoad];
-  v4 = [(ReportAProblemCategoryChooserViewController *)self tableView];
-  [v4 setDataSource:self];
+  tableView = [(ReportAProblemCategoryChooserViewController *)self tableView];
+  [tableView setDataSource:self];
 
-  v5 = [(ReportAProblemCategoryChooserViewController *)self tableView];
-  [v5 setKeyboardDismissMode:1];
+  tableView2 = [(ReportAProblemCategoryChooserViewController *)self tableView];
+  [tableView2 setKeyboardDismissMode:1];
 
-  v6 = [(ReportAProblemCategoryChooserViewController *)self tableView];
-  [v6 setRowHeight:UITableViewAutomaticDimension];
+  tableView3 = [(ReportAProblemCategoryChooserViewController *)self tableView];
+  [tableView3 setRowHeight:UITableViewAutomaticDimension];
 
-  v7 = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v9 = [(ReportAProblemCategoryChooserViewController *)self tableView];
-    [v9 setSeparatorStyle:0];
+    tableView4 = [(ReportAProblemCategoryChooserViewController *)self tableView];
+    [tableView4 setSeparatorStyle:0];
   }
 
   else
   {
-    v9 = [[UISearchController alloc] initWithSearchResultsController:0];
-    [v9 setSearchResultsUpdater:self];
-    [v9 setObscuresBackgroundDuringPresentation:0];
-    [v9 setHidesNavigationBarDuringPresentation:0];
-    v10 = [(ReportAProblemCategoryChooserViewController *)self fullCategoryList];
-    v11 = [v10 count];
+    tableView4 = [[UISearchController alloc] initWithSearchResultsController:0];
+    [tableView4 setSearchResultsUpdater:self];
+    [tableView4 setObscuresBackgroundDuringPresentation:0];
+    [tableView4 setHidesNavigationBarDuringPresentation:0];
+    fullCategoryList = [(ReportAProblemCategoryChooserViewController *)self fullCategoryList];
+    v11 = [fullCategoryList count];
     if (v11)
     {
       [(ReportAProblemCategoryChooserViewController *)self searchBarDefaultPlaceholder];
@@ -359,8 +359,8 @@
       [v2 localizedStringForKey:@"Loading Categories..." value:@"localized string not found" table:0];
     }
     v12 = ;
-    v13 = [v9 searchBar];
-    [v13 setPlaceholder:v12];
+    searchBar = [tableView4 searchBar];
+    [searchBar setPlaceholder:v12];
 
     if (!v11)
     {
@@ -368,54 +368,54 @@
       v12 = v2;
     }
 
-    v14 = [v9 searchBar];
-    [v14 setReturnKeyType:9];
+    searchBar2 = [tableView4 searchBar];
+    [searchBar2 setReturnKeyType:9];
 
-    [v9 setAutomaticallyShowsCancelButton:0];
-    v15 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-    [v15 setSearchController:v9];
+    [tableView4 setAutomaticallyShowsCancelButton:0];
+    navigationItem = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+    [navigationItem setSearchController:tableView4];
 
-    v16 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-    [v16 setHidesSearchBarWhenScrolling:0];
+    navigationItem2 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+    [navigationItem2 setHidesSearchBarWhenScrolling:0];
   }
 }
 
 - (void)_cancel
 {
-  v3 = [(ReportAProblemCategoryChooserViewController *)self chooserDelegate];
+  chooserDelegate = [(ReportAProblemCategoryChooserViewController *)self chooserDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ReportAProblemCategoryChooserViewController *)self chooserDelegate];
-    [v5 categoryChooserViewController:self categoriesDidNotChange:self->_originalCategoryList];
+    chooserDelegate2 = [(ReportAProblemCategoryChooserViewController *)self chooserDelegate];
+    [chooserDelegate2 categoryChooserViewController:self categoriesDidNotChange:self->_originalCategoryList];
   }
 
   [(ReportAProblemCategoryChooserViewController *)self _captureUserAction:10111];
-  v6 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-  v7 = [v6 searchController];
-  [v7 setActive:0];
+  navigationItem = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  [searchController setActive:0];
 
   [(ReportAProblemCategoryChooserViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)saveCategoryAndDismissIfNecessary
 {
-  v3 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-  v4 = [v3 searchController];
-  [v4 setActive:0];
+  navigationItem = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  [searchController setActive:0];
 
-  v5 = [(ReportAProblemCategoryChooserViewController *)self chooserDelegate];
-  v6 = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
-  [v5 categoryChooserViewController:self didReceiveSelectedCategories:v6];
+  chooserDelegate = [(ReportAProblemCategoryChooserViewController *)self chooserDelegate];
+  selectedCategoryNames = [(ReportAProblemCategoryChooserViewController *)self selectedCategoryNames];
+  [chooserDelegate categoryChooserViewController:self didReceiveSelectedCategories:selectedCategoryNames];
 
-  v7 = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [(ReportAProblemCategoryChooserViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v10 = [(ReportAProblemCategoryChooserViewController *)self navigationController];
-    v9 = [v10 popViewControllerAnimated:1];
+    navigationController = [(ReportAProblemCategoryChooserViewController *)self navigationController];
+    v9 = [navigationController popViewControllerAnimated:1];
   }
 
   else if ([(ReportAProblemCategoryChooserViewController *)self presentationStyle]== 1)
@@ -437,9 +437,9 @@
   v7 = [NSSet setWithArray:self->_originalCategoryList];
   v3 = [NSSet setWithArray:self->_selectedCategoryNames];
   v4 = [v7 isEqualToSet:v3];
-  v5 = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:v4 ^ 1];
+  navigationItem = [(ReportAProblemCategoryChooserViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v4 ^ 1];
 }
 
 - (void)fetchLocalizedCategories
@@ -455,22 +455,22 @@
   objc_destroyWeak(&location);
 }
 
-- (ReportAProblemCategoryChooserViewController)initWithPresentationStyle:(int64_t)a3 selectedCategoryNames:(id)a4
+- (ReportAProblemCategoryChooserViewController)initWithPresentationStyle:(int64_t)style selectedCategoryNames:(id)names
 {
-  v6 = a4;
+  namesCopy = names;
   v24.receiver = self;
   v24.super_class = ReportAProblemCategoryChooserViewController;
   v7 = [(ReportAProblemCategoryChooserViewController *)&v24 initWithStyle:0];
   v8 = v7;
   if (v7)
   {
-    v7->_presentationStyle = a3;
+    v7->_presentationStyle = style;
     [(ReportAProblemCategoryChooserViewController *)v7 updateBarButtonItems];
     v9 = [[UIColor alloc] initWithRed:0.984313726 green:0.23137255 blue:0.101960786 alpha:1.0];
     selectedTextColor = v8->_selectedTextColor;
     v8->_selectedTextColor = v9;
 
-    v11 = [[NSMutableArray alloc] initWithArray:v6];
+    v11 = [[NSMutableArray alloc] initWithArray:namesCopy];
     selectedCategoryNames = v8->_selectedCategoryNames;
     v8->_selectedCategoryNames = v11;
 
@@ -482,15 +482,15 @@
     v16 = [v15 localizedStringForKey:@"Select a Category" value:@"localized string not found" table:0];
     [(ReportAProblemCategoryChooserViewController *)v8 setTitle:v16];
 
-    v17 = [(ReportAProblemCategoryChooserViewController *)v8 tableView];
+    tableView = [(ReportAProblemCategoryChooserViewController *)v8 tableView];
     v18 = objc_opt_class();
     v19 = +[RAPCategorySearchTableViewCell identifier];
-    [v17 registerClass:v18 forCellReuseIdentifier:v19];
+    [tableView registerClass:v18 forCellReuseIdentifier:v19];
 
-    v20 = [(ReportAProblemCategoryChooserViewController *)v8 tableView];
+    tableView2 = [(ReportAProblemCategoryChooserViewController *)v8 tableView];
     v21 = objc_opt_class();
     v22 = +[MacRAPCheckmarkCell identifier];
-    [v20 registerClass:v21 forCellReuseIdentifier:v22];
+    [tableView2 registerClass:v21 forCellReuseIdentifier:v22];
 
     [(ReportAProblemCategoryChooserViewController *)v8 fetchLocalizedCategories];
   }

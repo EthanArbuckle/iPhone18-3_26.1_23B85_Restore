@@ -1,7 +1,7 @@
 @interface NWSAlgosConnectionScore
 + (id)connectionScore;
 - (NWSAlgosConnectionScore)init;
-- (void)addConnectionRow:(unint64_t)a3 ttfb:(double)a4 ttlb:(double)a5 basettfb:(double)a6 basettlb:(double)a7 weight:(double)a8 failed:(int)a9;
+- (void)addConnectionRow:(unint64_t)row ttfb:(double)ttfb ttlb:(double)ttlb basettfb:(double)basettfb basettlb:(double)basettlb weight:(double)weight failed:(int)failed;
 - (void)dealloc;
 @end
 
@@ -60,10 +60,10 @@
   [(NWSAlgosConnectionScore *)&v5 dealloc];
 }
 
-- (void)addConnectionRow:(unint64_t)a3 ttfb:(double)a4 ttlb:(double)a5 basettfb:(double)a6 basettlb:(double)a7 weight:(double)a8 failed:(int)a9
+- (void)addConnectionRow:(unint64_t)row ttfb:(double)ttfb ttlb:(double)ttlb basettfb:(double)basettfb basettlb:(double)basettlb weight:(double)weight failed:(int)failed
 {
   connectionData = self->connectionData;
-  AlgosScoreConnectionFrameRow::AlgosScoreConnectionFrameRow(v12, a3, a4, a5, a6, a7, a8, a9);
+  AlgosScoreConnectionFrameRow::AlgosScoreConnectionFrameRow(v12, row, ttfb, ttlb, basettfb, basettlb, weight, failed);
   v10 = connectionData[1];
   if (v10 >= connectionData[2])
   {

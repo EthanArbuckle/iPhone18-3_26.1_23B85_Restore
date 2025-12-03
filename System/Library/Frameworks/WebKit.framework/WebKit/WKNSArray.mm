@@ -1,6 +1,6 @@
 @interface WKNSArray
 - (RefPtr<API::Array,)_protectedArray;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)objectAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -31,7 +31,7 @@
   }
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   if (self)
   {
@@ -45,13 +45,13 @@
     v8 = 0;
   }
 
-  if (*(v4 + 28) <= a3)
+  if (*(v4 + 28) <= index)
   {
     __break(0xC471u);
     JUMPOUT(0x19D9FBD40);
   }
 
-  v5 = *(*(v4 + 16) + 8 * a3);
+  v5 = *(*(v4 + 16) + 8 * index);
   if (v5)
   {
     CFRetain(*(v5 + 8));

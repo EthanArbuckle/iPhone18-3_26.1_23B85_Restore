@@ -1,13 +1,13 @@
 @interface ICUserNotificationManager
 + (ICUserNotificationManager)sharedManager;
 - (ICUserNotificationManager)init;
-- (void)_handleCallbackForUserNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
-- (void)displayUserNotification:(__CFUserNotification *)a3 withCompletionHandler:(id)a4;
+- (void)_handleCallbackForUserNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags;
+- (void)displayUserNotification:(__CFUserNotification *)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation ICUserNotificationManager
 
-- (void)_handleCallbackForUserNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_handleCallbackForUserNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags
 {
   accessQueue = self->_accessQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -15,9 +15,9 @@
   v5[2] = __78__ICUserNotificationManager__handleCallbackForUserNotification_responseFlags___block_invoke;
   v5[3] = &unk_1E7BF72B0;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = notification;
   v5[6] = a2;
-  v5[7] = a4;
+  v5[7] = flags;
   dispatch_async(accessQueue, v5);
 }
 
@@ -50,18 +50,18 @@ void __78__ICUserNotificationManager__handleCallbackForUserNotification_response
   (*(v2 + 2))(v2, *(a1 + 40), 0);
 }
 
-- (void)displayUserNotification:(__CFUserNotification *)a3 withCompletionHandler:(id)a4
+- (void)displayUserNotification:(__CFUserNotification *)notification withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__ICUserNotificationManager_displayUserNotification_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7BF7288;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  notificationCopy = notification;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 

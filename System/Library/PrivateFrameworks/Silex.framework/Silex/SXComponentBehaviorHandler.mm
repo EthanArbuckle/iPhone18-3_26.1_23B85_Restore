@@ -1,50 +1,50 @@
 @interface SXComponentBehaviorHandler
-- (SXComponentBehaviorHandler)initWithComponentView:(id)a3 withBehavior:(id)a4;
+- (SXComponentBehaviorHandler)initWithComponentView:(id)view withBehavior:(id)behavior;
 - (UIView)behaviorView;
-- (void)destroyWithBehaviorController:(id)a3;
-- (void)setupWithBehaviorController:(id)a3;
+- (void)destroyWithBehaviorController:(id)controller;
+- (void)setupWithBehaviorController:(id)controller;
 @end
 
 @implementation SXComponentBehaviorHandler
 
-- (SXComponentBehaviorHandler)initWithComponentView:(id)a3 withBehavior:(id)a4
+- (SXComponentBehaviorHandler)initWithComponentView:(id)view withBehavior:(id)behavior
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  behaviorCopy = behavior;
   v12.receiver = self;
   v12.super_class = SXComponentBehaviorHandler;
   v9 = [(SXComponentBehaviorHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_componentView, a3);
-    objc_storeStrong(&v10->_behavior, a4);
+    objc_storeStrong(&v9->_componentView, view);
+    objc_storeStrong(&v10->_behavior, behavior);
   }
 
   return v10;
 }
 
-- (void)setupWithBehaviorController:(id)a3
+- (void)setupWithBehaviorController:(id)controller
 {
   self->_isSetup = 1;
   componentView = self->_componentView;
-  v4 = [(SXComponentBehaviorHandler *)self behavior];
-  [(SXComponentView *)componentView didApplyBehavior:v4];
+  behavior = [(SXComponentBehaviorHandler *)self behavior];
+  [(SXComponentView *)componentView didApplyBehavior:behavior];
 }
 
-- (void)destroyWithBehaviorController:(id)a3
+- (void)destroyWithBehaviorController:(id)controller
 {
-  v4 = [(SXComponentBehaviorHandler *)self componentView];
-  [v4 didApplyBehavior:0];
+  componentView = [(SXComponentBehaviorHandler *)self componentView];
+  [componentView didApplyBehavior:0];
 
   self->_isSetup = 0;
 }
 
 - (UIView)behaviorView
 {
-  v3 = [(SXComponentBehaviorHandler *)self componentView];
-  v4 = [(SXComponentBehaviorHandler *)self behavior];
-  v5 = [v3 contentViewForBehavior:v4];
+  componentView = [(SXComponentBehaviorHandler *)self componentView];
+  behavior = [(SXComponentBehaviorHandler *)self behavior];
+  v5 = [componentView contentViewForBehavior:behavior];
 
   return v5;
 }

@@ -1,16 +1,16 @@
 @interface CNPosterEditOptionsViewController
-- (CNPosterEditOptionsViewController)initWithContact:(id)a3 mode:(int64_t)a4;
+- (CNPosterEditOptionsViewController)initWithContact:(id)contact mode:(int64_t)mode;
 - (CNPosterEditOptionsViewControllerDelegate)delegate;
-- (id)finalizedCurrentAvatar:(id)a3 backedByRecents:(BOOL)a4;
+- (id)finalizedCurrentAvatar:(id)avatar backedByRecents:(BOOL)recents;
 - (id)finalizedPendingPoster;
-- (id)finalizedPoster:(id)a3;
+- (id)finalizedPoster:(id)poster;
 - (void)avatarPosterPairCollectionDidDeleteCurrentPosterPair;
 - (void)avatarPosterPairCollectionDidDeletePosterPair;
-- (void)avatarPosterPairCollectionDidEditPoster:(id)a3;
-- (void)avatarPosterPairCollectionDidLoadCurrentPairWithAvatar:(id)a3 poster:(id)a4 backedByRecents:(BOOL)a5;
-- (void)avatarPosterPairCollectionDidSelectAvatar:(id)a3 poster:(id)a4 selectionDidChange:(BOOL)a5 isShared:(BOOL)a6;
+- (void)avatarPosterPairCollectionDidEditPoster:(id)poster;
+- (void)avatarPosterPairCollectionDidLoadCurrentPairWithAvatar:(id)avatar poster:(id)poster backedByRecents:(BOOL)recents;
+- (void)avatarPosterPairCollectionDidSelectAvatar:(id)avatar poster:(id)poster selectionDidChange:(BOOL)change isShared:(BOOL)shared;
 - (void)avatarPosterPairCollectionDidSelectCreateNew;
-- (void)avatarPosterPairCollectionDidSelectEditAvatar:(id)a3;
+- (void)avatarPosterPairCollectionDidSelectEditAvatar:(id)avatar;
 - (void)posterEditOptionsDidCancel;
 - (void)posterEditOptionsDidTapDone;
 - (void)viewDidLoad;
@@ -25,12 +25,12 @@
   return WeakRetained;
 }
 
-- (id)finalizedPoster:(id)a3
+- (id)finalizedPoster:(id)poster
 {
-  v4 = a3;
-  if (v4 && (+[CNWallpaperConfigurationGenerator shared](_TtC10ContactsUI33CNWallpaperConfigurationGenerator, "shared"), v5 = objc_claimAutoreleasedReturnValue(), [v4 posterData], v6 = objc_claimAutoreleasedReturnValue(), -[CNPosterEditOptionsViewController contact](self, "contact"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isCleanStatePosterData:contact:", v6, v7), v7, v6, v5, (v8 & 1) == 0))
+  posterCopy = poster;
+  if (posterCopy && (+[CNWallpaperConfigurationGenerator shared](_TtC10ContactsUI33CNWallpaperConfigurationGenerator, "shared"), v5 = objc_claimAutoreleasedReturnValue(), [posterCopy posterData], v6 = objc_claimAutoreleasedReturnValue(), -[CNPosterEditOptionsViewController contact](self, "contact"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isCleanStatePosterData:contact:", v6, v7), v7, v6, v5, (v8 & 1) == 0))
   {
-    v9 = v4;
+    v9 = posterCopy;
   }
 
   else
@@ -41,19 +41,19 @@
   return v9;
 }
 
-- (id)finalizedCurrentAvatar:(id)a3 backedByRecents:(BOOL)a4
+- (id)finalizedCurrentAvatar:(id)avatar backedByRecents:(BOOL)recents
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  avatarCopy = avatar;
+  v6 = avatarCopy;
+  if (recents)
   {
-    v7 = v5;
+    v7 = avatarCopy;
   }
 
   else
   {
-    v8 = [v5 imageData];
-    v7 = [v6 copyWithNewImageData:v8];
+    imageData = [avatarCopy imageData];
+    v7 = [v6 copyWithNewImageData:imageData];
   }
 
   return v7;
@@ -61,112 +61,112 @@
 
 - (id)finalizedPendingPoster
 {
-  v3 = [(CNPosterEditOptionsViewController *)self pendingPoster];
-  v4 = [(CNPosterEditOptionsViewController *)self finalizedPoster:v3];
+  pendingPoster = [(CNPosterEditOptionsViewController *)self pendingPoster];
+  v4 = [(CNPosterEditOptionsViewController *)self finalizedPoster:pendingPoster];
 
   return v4;
 }
 
 - (void)posterEditOptionsDidTapDone
 {
-  v5 = [(CNPosterEditOptionsViewController *)self finalizedPendingPoster];
-  v3 = [(CNPosterEditOptionsViewController *)self delegate];
-  v4 = [(CNPosterEditOptionsViewController *)self pendingAvatar];
-  [v3 posterEditOptionsViewController:self didSelectAvatar:v4 poster:v5];
+  finalizedPendingPoster = [(CNPosterEditOptionsViewController *)self finalizedPendingPoster];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  pendingAvatar = [(CNPosterEditOptionsViewController *)self pendingAvatar];
+  [delegate posterEditOptionsViewController:self didSelectAvatar:pendingAvatar poster:finalizedPendingPoster];
 }
 
 - (void)posterEditOptionsDidCancel
 {
-  v3 = [(CNPosterEditOptionsViewController *)self delegate];
-  [v3 posterEditOptionsViewControllerDidCancel:self];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  [delegate posterEditOptionsViewControllerDidCancel:self];
 }
 
-- (void)avatarPosterPairCollectionDidSelectAvatar:(id)a3 poster:(id)a4 selectionDidChange:(BOOL)a5 isShared:(BOOL)a6
+- (void)avatarPosterPairCollectionDidSelectAvatar:(id)avatar poster:(id)poster selectionDidChange:(BOOL)change isShared:(BOOL)shared
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a4;
-  [(CNPosterEditOptionsViewController *)self setPendingAvatar:a3];
-  [(CNPosterEditOptionsViewController *)self setPendingPoster:v10];
+  sharedCopy = shared;
+  changeCopy = change;
+  posterCopy = poster;
+  [(CNPosterEditOptionsViewController *)self setPendingAvatar:avatar];
+  [(CNPosterEditOptionsViewController *)self setPendingPoster:posterCopy];
 
-  v11 = [(CNPosterEditOptionsViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  [v12 setEnabled:v7];
+  navigationItem = [(CNPosterEditOptionsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:changeCopy];
 
-  if (v6)
+  if (sharedCopy)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v20 = CNContactsUIBundle();
-    v14 = [v20 localizedStringForKey:@"SNAP_PHOTO_BANNER_SUBTITLE_%@" value:&stru_1F0CE7398 table:@"Localized"];
-    v15 = [(CNPosterEditOptionsViewController *)self contact];
-    v16 = [v15 posterName];
-    v17 = [v13 localizedStringWithFormat:v14, v16];
-    v18 = [v17 capitalizedString];
-    v19 = [(CNPosterEditOptionsViewController *)self navigationItem];
-    [v19 setTitle:v18];
+    navigationItem3 = CNContactsUIBundle();
+    v14 = [navigationItem3 localizedStringForKey:@"SNAP_PHOTO_BANNER_SUBTITLE_%@" value:&stru_1F0CE7398 table:@"Localized"];
+    contact = [(CNPosterEditOptionsViewController *)self contact];
+    posterName = [contact posterName];
+    v17 = [v13 localizedStringWithFormat:v14, posterName];
+    capitalizedString = [v17 capitalizedString];
+    navigationItem2 = [(CNPosterEditOptionsViewController *)self navigationItem];
+    [navigationItem2 setTitle:capitalizedString];
   }
 
   else
   {
-    v20 = [(CNPosterEditOptionsViewController *)self navigationItem];
-    [v20 setTitle:0];
+    navigationItem3 = [(CNPosterEditOptionsViewController *)self navigationItem];
+    [navigationItem3 setTitle:0];
   }
 }
 
 - (void)avatarPosterPairCollectionDidSelectCreateNew
 {
-  v3 = [(CNPosterEditOptionsViewController *)self delegate];
-  [v3 posterEditOptionsViewControllerDidSelectCreateNew:self];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  [delegate posterEditOptionsViewControllerDidSelectCreateNew:self];
 }
 
-- (void)avatarPosterPairCollectionDidEditPoster:(id)a3
+- (void)avatarPosterPairCollectionDidEditPoster:(id)poster
 {
-  v9 = a3;
-  v4 = [(CNPosterEditOptionsViewController *)self pendingPoster];
-  v5 = [(CNPosterEditOptionsViewController *)self pendingAvatar];
-  v6 = [CNAvatarPosterCarouselEditingContext contextWithExistingPoster:v4 existingAvatar:v5];
+  posterCopy = poster;
+  pendingPoster = [(CNPosterEditOptionsViewController *)self pendingPoster];
+  pendingAvatar = [(CNPosterEditOptionsViewController *)self pendingAvatar];
+  v6 = [CNAvatarPosterCarouselEditingContext contextWithExistingPoster:pendingPoster existingAvatar:pendingAvatar];
 
-  if (v9)
+  if (posterCopy)
   {
-    v7 = [CNAvatarPosterCarouselPendingPosterEdit pendingEditFromPosterConfiguration:v9];
+    v7 = [CNAvatarPosterCarouselPendingPosterEdit pendingEditFromPosterConfiguration:posterCopy];
     [v6 setPendingPosterEdit:v7];
   }
 
-  v8 = [(CNPosterEditOptionsViewController *)self delegate];
-  [v8 posterEditOptionsViewController:self didEditPosterWithContext:v6];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  [delegate posterEditOptionsViewController:self didEditPosterWithContext:v6];
 }
 
-- (void)avatarPosterPairCollectionDidSelectEditAvatar:(id)a3
+- (void)avatarPosterPairCollectionDidSelectEditAvatar:(id)avatar
 {
-  v4 = a3;
-  v5 = [(CNPosterEditOptionsViewController *)self pendingPoster];
-  v7 = [CNAvatarPosterCarouselEditingContext contextWithExistingPoster:v5 existingAvatar:v4];
+  avatarCopy = avatar;
+  pendingPoster = [(CNPosterEditOptionsViewController *)self pendingPoster];
+  v7 = [CNAvatarPosterCarouselEditingContext contextWithExistingPoster:pendingPoster existingAvatar:avatarCopy];
 
-  v6 = [(CNPosterEditOptionsViewController *)self delegate];
-  [v6 posterEditOptionsViewController:self didSelectEditAvatarWithContext:v7];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  [delegate posterEditOptionsViewController:self didSelectEditAvatarWithContext:v7];
 }
 
 - (void)avatarPosterPairCollectionDidDeletePosterPair
 {
-  v3 = [(CNPosterEditOptionsViewController *)self delegate];
-  [v3 posterEditOptionsViewControllerDidDeleteExistingPosterPair:self];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  [delegate posterEditOptionsViewControllerDidDeleteExistingPosterPair:self];
 }
 
 - (void)avatarPosterPairCollectionDidDeleteCurrentPosterPair
 {
-  v3 = [(CNPosterEditOptionsViewController *)self delegate];
-  [v3 posterEditOptionsViewControllerDidDeleteCurrentPosterPair:self];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  [delegate posterEditOptionsViewControllerDidDeleteCurrentPosterPair:self];
 }
 
-- (void)avatarPosterPairCollectionDidLoadCurrentPairWithAvatar:(id)a3 poster:(id)a4 backedByRecents:(BOOL)a5
+- (void)avatarPosterPairCollectionDidLoadCurrentPairWithAvatar:(id)avatar poster:(id)poster backedByRecents:(BOOL)recents
 {
-  v5 = a5;
-  v8 = a4;
-  v11 = [(CNPosterEditOptionsViewController *)self finalizedCurrentAvatar:a3 backedByRecents:v5];
-  v9 = [(CNPosterEditOptionsViewController *)self finalizedCurrentPoster:v8];
+  recentsCopy = recents;
+  posterCopy = poster;
+  v11 = [(CNPosterEditOptionsViewController *)self finalizedCurrentAvatar:avatar backedByRecents:recentsCopy];
+  v9 = [(CNPosterEditOptionsViewController *)self finalizedCurrentPoster:posterCopy];
 
-  v10 = [(CNPosterEditOptionsViewController *)self delegate];
-  [v10 posterEditOptionsViewController:self didLoadCurrentAvatar:v11 poster:v9 backedByRecents:v5];
+  delegate = [(CNPosterEditOptionsViewController *)self delegate];
+  [delegate posterEditOptionsViewController:self didLoadCurrentAvatar:v11 poster:v9 backedByRecents:recentsCopy];
 }
 
 - (void)viewDidLoad
@@ -175,112 +175,112 @@
   v45.receiver = self;
   v45.super_class = CNPosterEditOptionsViewController;
   [(CNPosterEditOptionsViewController *)&v45 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(CNPosterEditOptionsViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(CNPosterEditOptionsViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = [_TtC10ContactsUI49CNAvatarPosterPairCollectionViewControllerWrapper alloc];
-  v6 = [(CNPosterEditOptionsViewController *)self configuration];
-  v7 = [(CNPosterEditOptionsViewController *)self contact];
-  v8 = [(CNPosterEditOptionsViewController *)self contactForSharedProfile];
-  v9 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v5 initWithConfiguration:v6 contact:v7 contactForSharedProfile:v8 mode:[(CNPosterEditOptionsViewController *)self mode] delegate:self];
+  configuration = [(CNPosterEditOptionsViewController *)self configuration];
+  contact = [(CNPosterEditOptionsViewController *)self contact];
+  contactForSharedProfile = [(CNPosterEditOptionsViewController *)self contactForSharedProfile];
+  v9 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v5 initWithConfiguration:configuration contact:contact contactForSharedProfile:contactForSharedProfile mode:[(CNPosterEditOptionsViewController *)self mode] delegate:self];
 
   v10 = v9;
-  v11 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v9 viewController];
-  v12 = [v11 view];
+  viewController = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v9 viewController];
+  view2 = [viewController view];
 
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v10 viewController];
-  [v13 willMoveToParentViewController:self];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  viewController2 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v10 viewController];
+  [viewController2 willMoveToParentViewController:self];
 
   v44 = v10;
-  v14 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v10 viewController];
-  [(CNPosterEditOptionsViewController *)self addChildViewController:v14];
+  viewController3 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v10 viewController];
+  [(CNPosterEditOptionsViewController *)self addChildViewController:viewController3];
 
-  v15 = [(CNPosterEditOptionsViewController *)self view];
-  [v15 addSubview:v12];
+  view3 = [(CNPosterEditOptionsViewController *)self view];
+  [view3 addSubview:view2];
 
-  v16 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v10 viewController];
-  [v16 didMoveToParentViewController:self];
+  viewController4 = [(CNAvatarPosterPairCollectionViewControllerWrapper *)v10 viewController];
+  [viewController4 didMoveToParentViewController:self];
 
   v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_posterEditOptionsDidCancel];
-  v18 = [(CNPosterEditOptionsViewController *)self navigationItem];
-  [v18 setLeftBarButtonItem:v17];
+  navigationItem = [(CNPosterEditOptionsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v17];
 
   v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_posterEditOptionsDidTapDone];
-  v20 = [(CNPosterEditOptionsViewController *)self navigationItem];
-  [v20 setRightBarButtonItem:v19];
+  navigationItem2 = [(CNPosterEditOptionsViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v19];
 
-  v21 = [(CNPosterEditOptionsViewController *)self navigationItem];
-  v22 = [v21 rightBarButtonItem];
-  [v22 setEnabled:0];
+  navigationItem3 = [(CNPosterEditOptionsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
-  v23 = [(CNPosterEditOptionsViewController *)self navigationItem];
-  [v23 _setBackgroundHidden:1];
+  navigationItem4 = [(CNPosterEditOptionsViewController *)self navigationItem];
+  [navigationItem4 _setBackgroundHidden:1];
 
   v35 = MEMORY[0x1E696ACD8];
-  v24 = v12;
-  v42 = [v12 leadingAnchor];
-  v43 = [(CNPosterEditOptionsViewController *)self view];
-  v41 = [v43 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  v24 = view2;
+  leadingAnchor = [view2 leadingAnchor];
+  view4 = [(CNPosterEditOptionsViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v40;
-  v38 = [v12 trailingAnchor];
-  v39 = [(CNPosterEditOptionsViewController *)self view];
-  v36 = [v39 trailingAnchor];
-  v25 = [v38 constraintEqualToAnchor:v36];
+  trailingAnchor = [view2 trailingAnchor];
+  view5 = [(CNPosterEditOptionsViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[1] = v25;
-  v37 = v12;
-  v26 = [v12 topAnchor];
-  v27 = [(CNPosterEditOptionsViewController *)self view];
-  v28 = [v27 topAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  v37 = view2;
+  topAnchor = [view2 topAnchor];
+  view6 = [(CNPosterEditOptionsViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[2] = v29;
-  v30 = [v24 bottomAnchor];
-  v31 = [(CNPosterEditOptionsViewController *)self view];
-  v32 = [v31 bottomAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  bottomAnchor = [v24 bottomAnchor];
+  view7 = [(CNPosterEditOptionsViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[3] = v33;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
   [v35 activateConstraints:v34];
 }
 
-- (CNPosterEditOptionsViewController)initWithContact:(id)a3 mode:(int64_t)a4
+- (CNPosterEditOptionsViewController)initWithContact:(id)contact mode:(int64_t)mode
 {
-  v7 = a3;
+  contactCopy = contact;
   v22.receiver = self;
   v22.super_class = CNPosterEditOptionsViewController;
   v8 = [(CNPosterEditOptionsViewController *)&v22 init];
   if (v8)
   {
     v9 = [_TtC10ContactsUI31CNPosterEditorViewConfiguration alloc];
-    if (a4)
+    if (mode)
     {
-      v10 = [v7 wallpaper];
-      v11 = [v10 posterArchiveData];
-      v12 = [v7 posterName];
-      v13 = [(CNPosterEditorViewConfiguration *)v9 initWithPosterArchiveData:v11 displayName:v12];
+      wallpaper = [contactCopy wallpaper];
+      posterArchiveData = [wallpaper posterArchiveData];
+      posterName = [contactCopy posterName];
+      v13 = [(CNPosterEditorViewConfiguration *)v9 initWithPosterArchiveData:posterArchiveData displayName:posterName];
       configuration = v8->_configuration;
       v8->_configuration = v13;
     }
 
     else
     {
-      v10 = [v7 imageData];
-      v11 = [v7 posterName];
-      v15 = [(CNPosterEditorViewConfiguration *)v9 initWithImageData:v10 displayName:v11];
-      v12 = v8->_configuration;
+      wallpaper = [contactCopy imageData];
+      posterArchiveData = [contactCopy posterName];
+      v15 = [(CNPosterEditorViewConfiguration *)v9 initWithImageData:wallpaper displayName:posterArchiveData];
+      posterName = v8->_configuration;
       v8->_configuration = v15;
     }
 
-    objc_storeStrong(&v8->_contact, a3);
-    v16 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v17 = [v16 nicknameProvider];
-    v18 = [v17 nicknameAsContactForContact:v7];
+    objc_storeStrong(&v8->_contact, contact);
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    nicknameProvider = [currentEnvironment nicknameProvider];
+    v18 = [nicknameProvider nicknameAsContactForContact:contactCopy];
     contactForSharedProfile = v8->_contactForSharedProfile;
     v8->_contactForSharedProfile = v18;
 
-    v8->_mode = a4;
+    v8->_mode = mode;
     v20 = v8;
   }
 

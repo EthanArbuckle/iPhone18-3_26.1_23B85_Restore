@@ -1,42 +1,42 @@
 @interface PKEditPassesTableViewCell
 + (CGSize)imageSizeNeeded;
 + (UIEdgeInsets)separatorInset;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEditPassesTableViewCell)initWithReuseIdentifier:(id)a3 showImage:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEditPassesTableViewCell)initWithReuseIdentifier:(id)identifier showImage:(BOOL)image;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setImage:(id)a3 forPass:(id)a4;
+- (void)setImage:(id)image forPass:(id)pass;
 @end
 
 @implementation PKEditPassesTableViewCell
 
-- (PKEditPassesTableViewCell)initWithReuseIdentifier:(id)a3 showImage:(BOOL)a4
+- (PKEditPassesTableViewCell)initWithReuseIdentifier:(id)identifier showImage:(BOOL)image
 {
   v15.receiver = self;
   v15.super_class = PKEditPassesTableViewCell;
-  v5 = [(PKEditPassesTableViewCell *)&v15 initWithStyle:3 reuseIdentifier:a3];
+  v5 = [(PKEditPassesTableViewCell *)&v15 initWithStyle:3 reuseIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PKEditPassesTableViewCell *)v5 textLabel];
+    textLabel = [(PKEditPassesTableViewCell *)v5 textLabel];
     v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    [v7 setFont:v8];
+    [textLabel setFont:v8];
 
-    v9 = [MEMORY[0x1E69DC888] labelColor];
-    [v7 setTextColor:v9];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [textLabel setTextColor:labelColor];
 
-    v10 = [(PKEditPassesTableViewCell *)v6 detailTextLabel];
+    detailTextLabel = [(PKEditPassesTableViewCell *)v6 detailTextLabel];
     v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-    [v10 setFont:v11];
+    [detailTextLabel setFont:v11];
 
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v10 setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [detailTextLabel setTextColor:secondaryLabelColor];
 
-    v6->_showImage = a4;
-    v13 = [(PKEditPassesTableViewCell *)v6 imageView];
-    [v13 setContentMode:1];
-    [v13 setClipsToBounds:1];
-    [v13 setHidden:!v6->_showImage];
+    v6->_showImage = image;
+    imageView = [(PKEditPassesTableViewCell *)v6 imageView];
+    [imageView setContentMode:1];
+    [imageView setClipsToBounds:1];
+    [imageView setHidden:!v6->_showImage];
     [objc_opt_class() separatorInset];
     [(PKEditPassesTableViewCell *)v6 setSeparatorInset:?];
   }
@@ -49,31 +49,31 @@
   v55.receiver = self;
   v55.super_class = PKEditPassesTableViewCell;
   [(PKEditPassesTableViewCell *)&v55 layoutSubviews];
-  v3 = [(PKEditPassesTableViewCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKEditPassesTableViewCell *)self _shouldReverseLayoutDirection];
   if (!self->_showImage)
   {
     return;
   }
 
-  v4 = v3;
-  v5 = [(PKEditPassesTableViewCell *)self textLabel];
-  v6 = [(PKEditPassesTableViewCell *)self detailTextLabel];
-  v7 = [(PKEditPassesTableViewCell *)self imageView];
-  v8 = [(PKEditPassesTableViewCell *)self contentView];
-  [v8 layoutMargins];
+  v4 = _shouldReverseLayoutDirection;
+  textLabel = [(PKEditPassesTableViewCell *)self textLabel];
+  detailTextLabel = [(PKEditPassesTableViewCell *)self detailTextLabel];
+  imageView = [(PKEditPassesTableViewCell *)self imageView];
+  contentView = [(PKEditPassesTableViewCell *)self contentView];
+  [contentView layoutMargins];
   v10 = v9;
   v12 = v11;
-  [v8 bounds];
+  [contentView bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   rect = v19;
   v20 = v10 + v12;
-  v21 = [v7 image];
-  v22 = v21;
-  if (v21)
+  image = [imageView image];
+  v22 = image;
+  if (image)
   {
-    [v21 pkui_alignmentSize];
+    [image pkui_alignmentSize];
   }
 
   else
@@ -124,12 +124,12 @@ LABEL_12:
 
   v52 = v28;
   v53 = v29;
-  [v7 frameForAlignmentRect:{v36, v35, v32, v33}];
-  [v7 setFrame:?];
-  [v5 frame];
+  [imageView frameForAlignmentRect:{v36, v35, v32, v33}];
+  [imageView setFrame:?];
+  [textLabel frame];
   v38 = v37;
   v40 = v39;
-  [v6 frame];
+  [detailTextLabel frame];
   v42 = v41;
   v43 = v32;
   v45 = v44;
@@ -153,8 +153,8 @@ LABEL_12:
   }
 
   v51 = MaxX - v27;
-  [v5 setFrame:{v27, v38, MaxX - v27, v40}];
-  [v6 setFrame:{v27, v42, v51, v45}];
+  [textLabel setFrame:{v27, v38, MaxX - v27, v40}];
+  [detailTextLabel setFrame:{v27, v42, v51, v45}];
 }
 
 - (void)prepareForReuse
@@ -162,46 +162,46 @@ LABEL_12:
   v6.receiver = self;
   v6.super_class = PKEditPassesTableViewCell;
   [(PKEditPassesTableViewCell *)&v6 prepareForReuse];
-  v3 = [(PKEditPassesTableViewCell *)self textLabel];
-  [v3 setText:0];
+  textLabel = [(PKEditPassesTableViewCell *)self textLabel];
+  [textLabel setText:0];
 
-  v4 = [(PKEditPassesTableViewCell *)self detailTextLabel];
-  [v4 setText:0];
+  detailTextLabel = [(PKEditPassesTableViewCell *)self detailTextLabel];
+  [detailTextLabel setText:0];
 
   [(PKEditPassesTableViewCell *)self setPass:0];
-  v5 = [(PKEditPassesTableViewCell *)self imageView];
-  [v5 setImage:0];
-  [v5 setHidden:!self->_showImage];
+  imageView = [(PKEditPassesTableViewCell *)self imageView];
+  [imageView setImage:0];
+  [imageView setHidden:!self->_showImage];
 }
 
-- (void)setImage:(id)a3 forPass:(id)a4
+- (void)setImage:(id)image forPass:(id)pass
 {
-  v6 = a3;
+  imageCopy = image;
   if (self->_showImage)
   {
-    v11 = v6;
-    v7 = a4;
-    v8 = [(PKEditPassesTableViewCell *)self imageView];
-    v9 = [(PKPass *)self->_pass uniqueID];
-    v10 = [v7 uniqueID];
+    v11 = imageCopy;
+    passCopy = pass;
+    imageView = [(PKEditPassesTableViewCell *)self imageView];
+    uniqueID = [(PKPass *)self->_pass uniqueID];
+    uniqueID2 = [passCopy uniqueID];
 
-    LODWORD(v7) = [v9 isEqualToString:v10];
-    if (v7)
+    LODWORD(passCopy) = [uniqueID isEqualToString:uniqueID2];
+    if (passCopy)
     {
-      [v8 setImage:v11];
-      [v8 setAccessibilityIgnoresInvertColors:1];
+      [imageView setImage:v11];
+      [imageView setAccessibilityIgnoresInvertColors:1];
       [(PKEditPassesTableViewCell *)self setNeedsLayout];
     }
 
-    v6 = v11;
+    imageCopy = v11;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6.receiver = self;
   v6.super_class = PKEditPassesTableViewCell;
-  [(PKEditPassesTableViewCell *)&v6 sizeThatFits:a3.width, a3.height];
+  [(PKEditPassesTableViewCell *)&v6 sizeThatFits:fits.width, fits.height];
   v5 = fmax(v4, 64.0);
   result.height = v5;
   result.width = v3;
@@ -212,10 +212,10 @@ LABEL_12:
 {
   +[PKEditPassesTableViewCell height];
   v4 = v3;
-  v5 = [a1 needsFullPassImage];
+  needsFullPassImage = [self needsFullPassImage];
   v6 = v4 + -8.0;
   v7 = 80.0;
-  if (v5)
+  if (needsFullPassImage)
   {
     v7 = 36.0;
   }

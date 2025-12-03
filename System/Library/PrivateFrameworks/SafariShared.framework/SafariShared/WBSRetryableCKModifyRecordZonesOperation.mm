@@ -5,12 +5,12 @@
 - (id)modifyRecordZonesCompletionBlock;
 - (id)perRecordZoneDeleteBlock;
 - (id)perRecordZoneSaveBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setModifyRecordZonesCompletionBlock:(id)a3;
-- (void)setPerRecordZoneDeleteBlock:(id)a3;
-- (void)setPerRecordZoneSaveBlock:(id)a3;
-- (void)setRecordZoneIDsToDelete:(id)a3;
-- (void)setRecordZonesToSave:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setModifyRecordZonesCompletionBlock:(id)block;
+- (void)setPerRecordZoneDeleteBlock:(id)block;
+- (void)setPerRecordZoneSaveBlock:(id)block;
+- (void)setRecordZoneIDsToDelete:(id)delete;
+- (void)setRecordZonesToSave:(id)save;
 @end
 
 @implementation WBSRetryableCKModifyRecordZonesOperation
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (void)setRecordZonesToSave:(id)a3
+- (void)setRecordZonesToSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [saveCopy copy];
 
   recordZonesToSave = self->_recordZonesToSave;
   self->_recordZonesToSave = v5;
@@ -47,11 +47,11 @@
   return v3;
 }
 
-- (void)setRecordZoneIDsToDelete:(id)a3
+- (void)setRecordZoneIDsToDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [deleteCopy copy];
 
   recordZoneIDsToDelete = self->_recordZoneIDsToDelete;
   self->_recordZoneIDsToDelete = v5;
@@ -70,11 +70,11 @@
   return v3;
 }
 
-- (void)setPerRecordZoneSaveBlock:(id)a3
+- (void)setPerRecordZoneSaveBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordZoneSaveBlock = self->_perRecordZoneSaveBlock;
   self->_perRecordZoneSaveBlock = v5;
@@ -93,11 +93,11 @@
   return v3;
 }
 
-- (void)setPerRecordZoneDeleteBlock:(id)a3
+- (void)setPerRecordZoneDeleteBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perRecordZoneDeleteBlock = self->_perRecordZoneDeleteBlock;
   self->_perRecordZoneDeleteBlock = v5;
@@ -116,11 +116,11 @@
   return v3;
 }
 
-- (void)setModifyRecordZonesCompletionBlock:(id)a3
+- (void)setModifyRecordZonesCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   modifyRecordZonesCompletionBlock = self->_modifyRecordZonesCompletionBlock;
   self->_modifyRecordZonesCompletionBlock = v5;
@@ -137,20 +137,20 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = WBSRetryableCKModifyRecordZonesOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v12 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v12 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"recordZonesToSave"])
   {
-    [v4 setRecordZonesToSave:self->_recordZonesToSave];
+    [operationCopy setRecordZonesToSave:self->_recordZonesToSave];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"recordZoneIDsToDelete"])
   {
-    [v4 setRecordZoneIDsToDelete:self->_recordZoneIDsToDelete];
+    [operationCopy setRecordZoneIDsToDelete:self->_recordZoneIDsToDelete];
   }
 
   if (self->_perRecordZoneSaveBlock)
@@ -161,7 +161,7 @@
     v9[2] = __60__WBSRetryableCKModifyRecordZonesOperation__setUpOperation___block_invoke;
     v9[3] = &unk_1E7FC9FF0;
     objc_copyWeak(&v10, &location);
-    [v4 setPerRecordZoneSaveBlock:v9];
+    [operationCopy setPerRecordZoneSaveBlock:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -174,7 +174,7 @@
     v7[2] = __60__WBSRetryableCKModifyRecordZonesOperation__setUpOperation___block_invoke_3;
     v7[3] = &unk_1E7FCA108;
     objc_copyWeak(&v8, &location);
-    [v4 setPerRecordZoneDeleteBlock:v7];
+    [operationCopy setPerRecordZoneDeleteBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -185,7 +185,7 @@
   v5[2] = __60__WBSRetryableCKModifyRecordZonesOperation__setUpOperation___block_invoke_5;
   v5[3] = &unk_1E7FCA0E0;
   objc_copyWeak(&v6, &location);
-  [v4 setModifyRecordZonesCompletionBlock:v5];
+  [operationCopy setModifyRecordZonesCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

@@ -1,5 +1,5 @@
 @interface AVAssetClientURLRequestHelper
-- (AVAssetClientURLRequestHelper)initWithAsset:(id)a3;
+- (AVAssetClientURLRequestHelper)initWithAsset:(id)asset;
 - (OpaqueFigAsset)figAsset;
 - (void)dealloc;
 @end
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (AVAssetClientURLRequestHelper)initWithAsset:(id)a3
+- (AVAssetClientURLRequestHelper)initWithAsset:(id)asset
 {
   v6.receiver = self;
   v6.super_class = AVAssetClientURLRequestHelper;
@@ -32,7 +32,7 @@
   if (v4)
   {
     v4->_weakReferenceToSelf = [[AVWeakReference alloc] initWithReferencedObject:v4];
-    v4->_weakReferenceToAsset = [a3 _weakReference];
+    v4->_weakReferenceToAsset = [asset _weakReference];
   }
 
   return v4;

@@ -1,28 +1,28 @@
 @interface ICMutableUserIdentityProperties
-- (void)setAlternateDSID:(id)a3;
-- (void)setCarrierBundleDeviceIdentifier:(id)a3;
-- (void)setCloudLibraryStateReason:(id)a3;
-- (void)setDSID:(id)a3;
-- (void)setDelegateToken:(id)a3;
-- (void)setFirstName:(id)a3;
-- (void)setHomeUserIdentifiers:(id)a3;
-- (void)setICloudPersonID:(id)a3;
-- (void)setLastName:(id)a3;
-- (void)setMergeToCloudLibraryPreference:(id)a3;
-- (void)setPrivacyAcknowledgementVersions:(id)a3;
-- (void)setPrivateListeningEnabled:(id)a3;
-- (void)setPrivateListeningEnabledForHomeUsers:(id)a3;
-- (void)setStorefrontIdentifier:(id)a3;
-- (void)setUsername:(id)a3;
+- (void)setAlternateDSID:(id)d;
+- (void)setCarrierBundleDeviceIdentifier:(id)identifier;
+- (void)setCloudLibraryStateReason:(id)reason;
+- (void)setDSID:(id)d;
+- (void)setDelegateToken:(id)token;
+- (void)setFirstName:(id)name;
+- (void)setHomeUserIdentifiers:(id)identifiers;
+- (void)setICloudPersonID:(id)d;
+- (void)setLastName:(id)name;
+- (void)setMergeToCloudLibraryPreference:(id)preference;
+- (void)setPrivacyAcknowledgementVersions:(id)versions;
+- (void)setPrivateListeningEnabled:(id)enabled;
+- (void)setPrivateListeningEnabledForHomeUsers:(id)users;
+- (void)setStorefrontIdentifier:(id)identifier;
+- (void)setUsername:(id)username;
 @end
 
 @implementation ICMutableUserIdentityProperties
 
-- (void)setICloudPersonID:(id)a3
+- (void)setICloudPersonID:(id)d
 {
-  if (self->super._iCloudPersonID != a3)
+  if (self->super._iCloudPersonID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     iCloudPersonID = self->super._iCloudPersonID;
     self->super._iCloudPersonID = v5;
 
@@ -30,11 +30,11 @@
   }
 }
 
-- (void)setPrivacyAcknowledgementVersions:(id)a3
+- (void)setPrivacyAcknowledgementVersions:(id)versions
 {
-  if (self->super._privacyAcknowledgementVersions != a3)
+  if (self->super._privacyAcknowledgementVersions != versions)
   {
-    v5 = [a3 copy];
+    v5 = [versions copy];
     privacyAcknowledgementVersions = self->super._privacyAcknowledgementVersions;
     self->super._privacyAcknowledgementVersions = v5;
 
@@ -42,11 +42,11 @@
   }
 }
 
-- (void)setPrivateListeningEnabledForHomeUsers:(id)a3
+- (void)setPrivateListeningEnabledForHomeUsers:(id)users
 {
-  if (self->super._privateListeningEnabledForHomeUsers != a3)
+  if (self->super._privateListeningEnabledForHomeUsers != users)
   {
-    v5 = [a3 copy];
+    v5 = [users copy];
     privateListeningEnabledForHomeUsers = self->super._privateListeningEnabledForHomeUsers;
     self->super._privateListeningEnabledForHomeUsers = v5;
 
@@ -54,11 +54,11 @@
   }
 }
 
-- (void)setPrivateListeningEnabled:(id)a3
+- (void)setPrivateListeningEnabled:(id)enabled
 {
-  if (self->super._privateListeningEnabled != a3)
+  if (self->super._privateListeningEnabled != enabled)
   {
-    v5 = [a3 copy];
+    v5 = [enabled copy];
     privateListeningEnabled = self->super._privateListeningEnabled;
     self->super._privateListeningEnabled = v5;
 
@@ -66,11 +66,11 @@
   }
 }
 
-- (void)setCloudLibraryStateReason:(id)a3
+- (void)setCloudLibraryStateReason:(id)reason
 {
-  if (self->super._cloudLibraryStateReason != a3)
+  if (self->super._cloudLibraryStateReason != reason)
   {
-    v5 = [a3 copy];
+    v5 = [reason copy];
     cloudLibraryStateReason = self->super._cloudLibraryStateReason;
     self->super._cloudLibraryStateReason = v5;
 
@@ -78,11 +78,11 @@
   }
 }
 
-- (void)setHomeUserIdentifiers:(id)a3
+- (void)setHomeUserIdentifiers:(id)identifiers
 {
-  if (self->super._homeUserIdentifiers != a3)
+  if (self->super._homeUserIdentifiers != identifiers)
   {
-    v5 = [a3 copy];
+    v5 = [identifiers copy];
     homeUserIdentifiers = self->super._homeUserIdentifiers;
     self->super._homeUserIdentifiers = v5;
 
@@ -90,11 +90,11 @@
   }
 }
 
-- (void)setMergeToCloudLibraryPreference:(id)a3
+- (void)setMergeToCloudLibraryPreference:(id)preference
 {
-  if (self->super._mergeToCloudLibraryPreference != a3)
+  if (self->super._mergeToCloudLibraryPreference != preference)
   {
-    v5 = [a3 copy];
+    v5 = [preference copy];
     mergeToCloudLibraryPreference = self->super._mergeToCloudLibraryPreference;
     self->super._mergeToCloudLibraryPreference = v5;
 
@@ -102,11 +102,11 @@
   }
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  if (self->super._username != a3)
+  if (self->super._username != username)
   {
-    v5 = [a3 copy];
+    v5 = [username copy];
     username = self->super._username;
     self->super._username = v5;
 
@@ -114,11 +114,11 @@
   }
 }
 
-- (void)setStorefrontIdentifier:(id)a3
+- (void)setStorefrontIdentifier:(id)identifier
 {
-  if (self->super._storefrontIdentifier != a3)
+  if (self->super._storefrontIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     storefrontIdentifier = self->super._storefrontIdentifier;
     self->super._storefrontIdentifier = v5;
 
@@ -126,11 +126,11 @@
   }
 }
 
-- (void)setLastName:(id)a3
+- (void)setLastName:(id)name
 {
-  if (self->super._lastName != a3)
+  if (self->super._lastName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     lastName = self->super._lastName;
     self->super._lastName = v5;
 
@@ -138,11 +138,11 @@
   }
 }
 
-- (void)setFirstName:(id)a3
+- (void)setFirstName:(id)name
 {
-  if (self->super._firstName != a3)
+  if (self->super._firstName != name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     firstName = self->super._firstName;
     self->super._firstName = v5;
 
@@ -150,11 +150,11 @@
   }
 }
 
-- (void)setDSID:(id)a3
+- (void)setDSID:(id)d
 {
-  if (self->super._dsid != a3)
+  if (self->super._dsid != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     dsid = self->super._dsid;
     self->super._dsid = v5;
 
@@ -162,11 +162,11 @@
   }
 }
 
-- (void)setDelegateToken:(id)a3
+- (void)setDelegateToken:(id)token
 {
-  if (self->super._delegateToken != a3)
+  if (self->super._delegateToken != token)
   {
-    v5 = [a3 copy];
+    v5 = [token copy];
     delegateToken = self->super._delegateToken;
     self->super._delegateToken = v5;
 
@@ -174,11 +174,11 @@
   }
 }
 
-- (void)setCarrierBundleDeviceIdentifier:(id)a3
+- (void)setCarrierBundleDeviceIdentifier:(id)identifier
 {
-  if (self->super._carrierBundleDeviceIdentifier != a3)
+  if (self->super._carrierBundleDeviceIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     carrierBundleDeviceIdentifier = self->super._carrierBundleDeviceIdentifier;
     self->super._carrierBundleDeviceIdentifier = v5;
 
@@ -186,11 +186,11 @@
   }
 }
 
-- (void)setAlternateDSID:(id)a3
+- (void)setAlternateDSID:(id)d
 {
-  if (self->super._alternateDSID != a3)
+  if (self->super._alternateDSID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     alternateDSID = self->super._alternateDSID;
     self->super._alternateDSID = v5;
 

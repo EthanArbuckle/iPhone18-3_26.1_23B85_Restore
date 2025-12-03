@@ -41,57 +41,57 @@
 {
   v4 = MEMORY[0x1E699FC80];
   v5 = a3;
-  v13 = [v4 diffFromSettings:a1 toSettings:v5];
-  [v13 applyToMutableSettings:a1];
-  v6 = [v5 pui_role];
-  [a1 pui_setRole:v6];
+  v13 = [v4 diffFromSettings:self toSettings:v5];
+  [v13 applyToMutableSettings:self];
+  pui_role = [v5 pui_role];
+  [self pui_setRole:pui_role];
 
-  [a1 pui_setPreviewContent:{objc_msgSend(v5, "pui_previewContent")}];
-  [a1 pui_setContent:{objc_msgSend(v5, "pui_content")}];
-  v7 = [v5 pui_provider];
-  [a1 pui_setProvider:v7];
+  [self pui_setPreviewContent:{objc_msgSend(v5, "pui_previewContent")}];
+  [self pui_setContent:{objc_msgSend(v5, "pui_content")}];
+  pui_provider = [v5 pui_provider];
+  [self pui_setProvider:pui_provider];
 
-  v8 = [v5 pui_posterContents];
-  [a1 pui_setPosterContents:v8];
+  pui_posterContents = [v5 pui_posterContents];
+  [self pui_setPosterContents:pui_posterContents];
 
-  v9 = [v5 pui_previewIdentifier];
-  [a1 pui_setPreviewIdentifier:v9];
+  pui_previewIdentifier = [v5 pui_previewIdentifier];
+  [self pui_setPreviewIdentifier:pui_previewIdentifier];
 
-  [a1 pui_setUserInterfaceStyle:{objc_msgSend(v5, "pui_userInterfaceStyle")}];
-  [a1 pui_setDeviceOrientation:{objc_msgSend(v5, "pui_deviceOrientation")}];
-  [a1 pui_setWallpaperObscured:{objc_msgSend(v5, "pui_isWallpaperObscured")}];
-  [a1 pui_setExtensionUserInteractionEnabled:{objc_msgSend(v5, "pui_isExtensionUserInteractionEnabled")}];
-  [a1 pui_setSnapshot:{objc_msgSend(v5, "pui_isSnapshot")}];
-  [a1 pui_setFloatingLayerSnapshot:{objc_msgSend(v5, "pui_isFloatingLayerSnapshot")}];
-  [a1 pui_setSignificantEventsCounter:{objc_msgSend(v5, "pui_significantEventsCounter")}];
-  [a1 pui_setUserTapEventsCounter:{objc_msgSend(v5, "pui_userTapEventsCounter")}];
+  [self pui_setUserInterfaceStyle:{objc_msgSend(v5, "pui_userInterfaceStyle")}];
+  [self pui_setDeviceOrientation:{objc_msgSend(v5, "pui_deviceOrientation")}];
+  [self pui_setWallpaperObscured:{objc_msgSend(v5, "pui_isWallpaperObscured")}];
+  [self pui_setExtensionUserInteractionEnabled:{objc_msgSend(v5, "pui_isExtensionUserInteractionEnabled")}];
+  [self pui_setSnapshot:{objc_msgSend(v5, "pui_isSnapshot")}];
+  [self pui_setFloatingLayerSnapshot:{objc_msgSend(v5, "pui_isFloatingLayerSnapshot")}];
+  [self pui_setSignificantEventsCounter:{objc_msgSend(v5, "pui_significantEventsCounter")}];
+  [self pui_setUserTapEventsCounter:{objc_msgSend(v5, "pui_userTapEventsCounter")}];
   [v5 pui_userTapLocation];
-  [a1 pui_setUserTapEventWithLocation:?];
-  [a1 pui_setShowsHeaderElements:{objc_msgSend(v5, "pui_showsHeaderElements")}];
-  [a1 pui_setShowsComplications:{objc_msgSend(v5, "pui_showsComplications")}];
-  v10 = [v5 pui_sceneAttachments];
-  [a1 pui_setSceneAttachments:v10];
+  [self pui_setUserTapEventWithLocation:?];
+  [self pui_setShowsHeaderElements:{objc_msgSend(v5, "pui_showsHeaderElements")}];
+  [self pui_setShowsComplications:{objc_msgSend(v5, "pui_showsComplications")}];
+  pui_sceneAttachments = [v5 pui_sceneAttachments];
+  [self pui_setSceneAttachments:pui_sceneAttachments];
 
   [v5 pui_salientContentRectangle];
-  [a1 pui_setSalientContentRectangle:?];
-  v11 = [v5 pui_contentOcclusionRectangles];
-  [a1 pui_setContentOcclusionRectangles:v11];
+  [self pui_setSalientContentRectangle:?];
+  pui_contentOcclusionRectangles = [v5 pui_contentOcclusionRectangles];
+  [self pui_setContentOcclusionRectangles:pui_contentOcclusionRectangles];
 
-  [a1 pui_setShowingIdealizedTime:{objc_msgSend(v5, "pui_isShowingIdealizedTime")}];
-  v12 = [v5 pui_isIdle];
+  [self pui_setShowingIdealizedTime:{objc_msgSend(v5, "pui_isShowingIdealizedTime")}];
+  pui_isIdle = [v5 pui_isIdle];
 
-  [a1 pui_setIdle:v12];
+  [self pui_setIdle:pui_isIdle];
 }
 
 - (void)pui_applyOtherSettings:()PosterUIFoundation
 {
   v4 = MEMORY[0x1E698E770];
   v5 = a3;
-  v6 = [a1 otherSettings];
-  v8 = [v4 diffFromSettings:v6 toSettings:v5];
+  otherSettings = [self otherSettings];
+  v8 = [v4 diffFromSettings:otherSettings toSettings:v5];
 
-  v7 = [a1 otherSettings];
-  [v8 applyToSettings:v7];
+  otherSettings2 = [self otherSettings];
+  [v8 applyToSettings:otherSettings2];
 }
 
 - (void)pui_setRole:()PosterUIFoundation
@@ -106,13 +106,13 @@
     }
   }
 
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v6 = [v9 copy];
-  [v5 setObject:v6 forSetting:20462];
+  [otherSettings setObject:v6 forSetting:20462];
 
-  v7 = [a1 otherSettings];
+  otherSettings2 = [self otherSettings];
   v8 = [v9 copy];
-  [v7 setObject:v8 forSetting:20211529];
+  [otherSettings2 setObject:v8 forSetting:20211529];
 }
 
 - (void)pui_setProvider:()PosterUIFoundation
@@ -129,14 +129,14 @@
     [FBSMutableSceneSettings(PosterUIFoundation) pui_setProvider:a2];
   }
 
-  v5 = [a1 otherSettings];
-  [v5 setObject:v6 forSetting:20463];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v6 forSetting:20463];
 }
 
 - (void)pui_setInvalidated
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:1 forSetting:20464];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:1 forSetting:20464];
 }
 
 - (void)pui_setPreviewIdentifier:()PosterUIFoundation
@@ -151,23 +151,23 @@
     }
   }
 
-  v5 = [a1 otherSettings];
-  [v5 setObject:v6 forSetting:20465];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v6 forSetting:20465];
 }
 
 - (void)pui_setDeviceOrientation:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v6 forSetting:20466];
+  [otherSettings setObject:v6 forSetting:20466];
 
   v7 = objc_opt_class();
-  v8 = a1;
+  selfCopy = self;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = selfCopy;
     }
 
     else
@@ -203,76 +203,76 @@
     }
   }
 
-  v5 = [a1 otherSettings];
-  [v5 setObject:v6 forSetting:20467];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v6 forSetting:20467];
 }
 
 - (void)pui_setWallpaperObscured:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20468];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20468];
 }
 
 - (void)pui_setInvalidated:()PosterUIFoundation
 {
   v5 = a3;
-  [a1 pui_setInvalidated];
+  [self pui_setInvalidated];
   if (v5)
   {
-    v4 = [a1 otherSettings];
-    [v4 setObject:v5 forSetting:20469];
+    otherSettings = [self otherSettings];
+    [otherSettings setObject:v5 forSetting:20469];
   }
 }
 
 - (void)pui_setExtensionUserInteractionEnabled:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20470];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20470];
 }
 
 - (void)pui_setInlineComplicationConfigured:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20471];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20471];
 }
 
 - (void)pui_setComplicationRowConfigured:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20472];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20472];
 }
 
 - (void)pui_setComplicationSidebarConfigured:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20473];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20473];
 }
 
 - (void)pui_setShowsComplications:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20474];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20474];
 }
 
 - (void)pui_setShowsHeaderElements:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20475];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20475];
 }
 
 - (void)pui_setUserInterfaceStyle:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v6 forSetting:20476];
+  [otherSettings setObject:v6 forSetting:20476];
 
   v7 = objc_opt_class();
-  v8 = a1;
+  selfCopy = self;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = selfCopy;
     }
 
     else
@@ -298,95 +298,95 @@
 
 - (void)pui_setPosterBoundingShape:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20477];
+  [otherSettings setObject:v4 forSetting:20477];
 }
 
 - (void)pui_setComplicationRowAtBottom:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20478];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20478];
 }
 
 - (void)pui_setAdaptiveTimeDisabled:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20479];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20479];
 }
 
 - (void)pui_setSnapshot:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20487];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20487];
 }
 
 - (void)pui_setFloatingLayerSnapshot:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20488];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20488];
 }
 
 - (void)pui_setSignificantEventsCounter:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:20489];
+  [otherSettings setObject:v4 forSetting:20489];
 }
 
 - (void)pui_setUserTapEventWithLocation:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   *v7 = a2;
   *&v7[1] = a3;
   v6 = [MEMORY[0x1E696B098] valueWithBytes:v7 objCType:"{CGPoint=dd}"];
-  [v5 setObject:v6 forSetting:20490];
+  [otherSettings setObject:v6 forSetting:20490];
 }
 
 - (void)pui_setUserTapEventsCounter:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:20491];
+  [otherSettings setObject:v4 forSetting:20491];
 }
 
 - (void)pui_setMode:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20492];
+  [otherSettings setObject:v4 forSetting:20492];
 }
 
 - (void)pui_setContent:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:20493];
+  [otherSettings setObject:v4 forSetting:20493];
 }
 
 - (void)pui_setPreviewContent:()PosterUIFoundation
 {
-  v5 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:20494];
+  [otherSettings setObject:v4 forSetting:20494];
 }
 
 - (void)pui_setSalientContentRectangle:()PosterUIFoundation
 {
-  v9 = [a1 otherSettings];
+  otherSettings = [self otherSettings];
   *v11 = a2;
   *&v11[1] = a3;
   *&v11[2] = a4;
   *&v11[3] = a5;
   v10 = [MEMORY[0x1E696B098] valueWithBytes:v11 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v9 setObject:v10 forSetting:20496];
+  [otherSettings setObject:v10 forSetting:20496];
 }
 
 - (void)pui_setContentOcclusionRectangles:()PosterUIFoundation
 {
   v4 = a3;
-  v5 = [a1 otherSettings];
-  [v5 setObject:v4 forSetting:20497];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:v4 forSetting:20497];
 }
 
 - (void)pui_setSceneAttachments:()PosterUIFoundation
@@ -431,26 +431,26 @@
     while (v7);
   }
 
-  v12 = [a1 otherSettings];
-  [v12 setObject:empty forSetting:20495];
+  otherSettings = [self otherSettings];
+  [otherSettings setObject:empty forSetting:20495];
 }
 
 - (void)pui_setShowingIdealizedTime:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20498];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20498];
 }
 
 - (void)pui_setIdle:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20499];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20499];
 }
 
 - (void)pui_setEditorPreview:()PosterUIFoundation
 {
-  v1 = [a1 otherSettings];
-  [v1 setFlag:BSSettingFlagForBool() forSetting:20500];
+  otherSettings = [self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:20500];
 }
 
 - (void)pui_setRole:()PosterUIFoundation .cold.1(char *a1)

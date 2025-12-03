@@ -1,13 +1,13 @@
 @interface FMDLocationManagerProxy
 - (CLLocationManagerDelegate)delegate;
-- (FMDLocationManagerProxy)initWithLocationManager:(id)a3;
+- (FMDLocationManagerProxy)initWithLocationManager:(id)manager;
 - (FMDLocationManaging)locationManager;
 - (double)desiredAccuracy;
 - (double)distanceFilter;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setDesiredAccuracy:(double)a3;
-- (void)setDistanceFilter:(double)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDesiredAccuracy:(double)accuracy;
+- (void)setDistanceFilter:(double)filter;
 - (void)startMonitoringSignificantLocationChanges;
 - (void)startUpdatingLocation;
 - (void)stopMonitoringSignificantLocationChanges;
@@ -23,17 +23,17 @@
   return WeakRetained;
 }
 
-- (FMDLocationManagerProxy)initWithLocationManager:(id)a3
+- (FMDLocationManagerProxy)initWithLocationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FMDLocationManagerProxy;
   v5 = [(FMDLocationManagerProxy *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(FMDLocationManagerProxy *)v5 setLocationManager:v4];
-    v7 = [[FMWeakWrapper alloc] initWithObject:v4];
+    [(FMDLocationManagerProxy *)v5 setLocationManager:managerCopy];
+    v7 = [[FMWeakWrapper alloc] initWithObject:managerCopy];
     [(FMDLocationManagerProxy *)v6 setLocationManagerWeakWrapper:v7];
   }
 
@@ -42,13 +42,13 @@
 
 - (void)dealloc
 {
-  v3 = [(FMDLocationManagerProxy *)self proxyDeallocationBlock];
+  proxyDeallocationBlock = [(FMDLocationManagerProxy *)self proxyDeallocationBlock];
 
-  if (v3)
+  if (proxyDeallocationBlock)
   {
-    v4 = [(FMDLocationManagerProxy *)self proxyDeallocationBlock];
-    v5 = [(FMDLocationManagerProxy *)self locationManagerWeakWrapper];
-    (v4)[2](v4, v5);
+    proxyDeallocationBlock2 = [(FMDLocationManagerProxy *)self proxyDeallocationBlock];
+    locationManagerWeakWrapper = [(FMDLocationManagerProxy *)self locationManagerWeakWrapper];
+    (proxyDeallocationBlock2)[2](proxyDeallocationBlock2, locationManagerWeakWrapper);
   }
 
   v6.receiver = self;
@@ -58,32 +58,32 @@
 
 - (void)startUpdatingLocation
 {
-  v2 = [(FMDLocationManagerProxy *)self locationManager];
-  [v2 startUpdatingLocation];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager startUpdatingLocation];
 }
 
 - (void)stopUpdatingLocation
 {
-  v2 = [(FMDLocationManagerProxy *)self locationManager];
-  [v2 stopUpdatingLocation];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager stopUpdatingLocation];
 }
 
 - (void)startMonitoringSignificantLocationChanges
 {
-  v2 = [(FMDLocationManagerProxy *)self locationManager];
-  [v2 startMonitoringSignificantLocationChanges];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager startMonitoringSignificantLocationChanges];
 }
 
 - (void)stopMonitoringSignificantLocationChanges
 {
-  v2 = [(FMDLocationManagerProxy *)self locationManager];
-  [v2 stopMonitoringSignificantLocationChanges];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager stopMonitoringSignificantLocationChanges];
 }
 
 - (double)desiredAccuracy
 {
-  v2 = [(FMDLocationManagerProxy *)self locationManager];
-  [v2 desiredAccuracy];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager desiredAccuracy];
   v4 = v3;
 
   return v4;
@@ -91,38 +91,38 @@
 
 - (double)distanceFilter
 {
-  v2 = [(FMDLocationManagerProxy *)self locationManager];
-  [v2 distanceFilter];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager distanceFilter];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDistanceFilter:(double)a3
+- (void)setDistanceFilter:(double)filter
 {
-  v4 = [(FMDLocationManagerProxy *)self locationManager];
-  [v4 setDistanceFilter:a3];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager setDistanceFilter:filter];
 }
 
-- (void)setDesiredAccuracy:(double)a3
+- (void)setDesiredAccuracy:(double)accuracy
 {
-  v4 = [(FMDLocationManagerProxy *)self locationManager];
-  [v4 setDesiredAccuracy:a3];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager setDesiredAccuracy:accuracy];
 }
 
 - (CLLocationManagerDelegate)delegate
 {
-  v2 = [(FMDLocationManagerProxy *)self locationManager];
-  v3 = [v2 delegate];
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  delegate = [locationManager delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(FMDLocationManagerProxy *)self locationManager];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  locationManager = [(FMDLocationManagerProxy *)self locationManager];
+  [locationManager setDelegate:delegateCopy];
 }
 
 @end

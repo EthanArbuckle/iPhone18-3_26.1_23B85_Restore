@@ -19,8 +19,8 @@
 
 + (id)mt_allSupportedNotificationCategories
 {
-  v2 = [a1 mt_allSupportedLocalNotificationCategories];
-  v3 = [NSSet setWithArray:v2];
+  mt_allSupportedLocalNotificationCategories = [self mt_allSupportedLocalNotificationCategories];
+  v3 = [NSSet setWithArray:mt_allSupportedLocalNotificationCategories];
 
   return v3;
 }

@@ -1,22 +1,22 @@
 @interface LNAutoShortcutMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)a3 phraseTemplates:(id)a4 shortTitle:(id)a5 autoShortcutDescription:(id)a6 systemImageName:(id)a7 parameterPresentation:(id)a8 availabilityAnnotations:(id)a9;
-- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)a3 phraseTemplates:(id)a4 title:(id)a5 shortTitle:(id)a6 autoShortcutDescription:(id)a7 systemImageName:(id)a8;
-- (LNAutoShortcutMetadata)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)identifier phraseTemplates:(id)templates shortTitle:(id)title autoShortcutDescription:(id)description systemImageName:(id)name parameterPresentation:(id)presentation availabilityAnnotations:(id)annotations;
+- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)identifier phraseTemplates:(id)templates title:(id)title shortTitle:(id)shortTitle autoShortcutDescription:(id)description systemImageName:(id)name;
+- (LNAutoShortcutMetadata)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAutoShortcutMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -25,10 +25,10 @@ LABEL_69:
       goto LABEL_70;
     }
 
-    v7 = [(LNAutoShortcutMetadata *)self actionIdentifier];
-    v8 = [(LNAutoShortcutMetadata *)v6 actionIdentifier];
-    v9 = v7;
-    v10 = v8;
+    actionIdentifier = [(LNAutoShortcutMetadata *)self actionIdentifier];
+    actionIdentifier2 = [(LNAutoShortcutMetadata *)v6 actionIdentifier];
+    v9 = actionIdentifier;
+    v10 = actionIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -55,10 +55,10 @@ LABEL_68:
       }
     }
 
-    v16 = [(LNAutoShortcutMetadata *)self phraseTemplates];
-    v17 = [(LNAutoShortcutMetadata *)v6 phraseTemplates];
-    v14 = v16;
-    v18 = v17;
+    phraseTemplates = [(LNAutoShortcutMetadata *)self phraseTemplates];
+    phraseTemplates2 = [(LNAutoShortcutMetadata *)v6 phraseTemplates];
+    v14 = phraseTemplates;
+    v18 = phraseTemplates2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -85,10 +85,10 @@ LABEL_67:
       }
     }
 
-    v22 = [(LNAutoShortcutMetadata *)self title];
-    v23 = [(LNAutoShortcutMetadata *)v6 title];
-    v20 = v22;
-    v24 = v23;
+    title = [(LNAutoShortcutMetadata *)self title];
+    title2 = [(LNAutoShortcutMetadata *)v6 title];
+    v20 = title;
+    v24 = title2;
     v19 = v24;
     v65 = v20;
     if (v20 == v24)
@@ -113,10 +113,10 @@ LABEL_67:
     }
 
     v64 = v19;
-    v26 = [(LNAutoShortcutMetadata *)self shortTitle];
-    v27 = [(LNAutoShortcutMetadata *)v6 shortTitle];
-    v28 = v26;
-    v29 = v27;
+    shortTitle = [(LNAutoShortcutMetadata *)self shortTitle];
+    shortTitle2 = [(LNAutoShortcutMetadata *)v6 shortTitle];
+    v28 = shortTitle;
+    v29 = shortTitle2;
     v62 = v29;
     v63 = v28;
     if (v28 == v29)
@@ -160,10 +160,10 @@ LABEL_66:
       }
     }
 
-    v32 = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
-    v33 = [(LNAutoShortcutMetadata *)v6 autoShortcutDescription];
-    v28 = v32;
-    v34 = v33;
+    autoShortcutDescription = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
+    autoShortcutDescription2 = [(LNAutoShortcutMetadata *)v6 autoShortcutDescription];
+    v28 = autoShortcutDescription;
+    v34 = autoShortcutDescription2;
     v60 = v28;
     v61 = v34;
     if (v28 != v34)
@@ -186,10 +186,10 @@ LABEL_66:
           }
 
 LABEL_36:
-          v37 = [(LNAutoShortcutMetadata *)self systemImageName];
-          v38 = [(LNAutoShortcutMetadata *)v6 systemImageName];
-          v39 = v37;
-          v40 = v38;
+          systemImageName = [(LNAutoShortcutMetadata *)self systemImageName];
+          systemImageName2 = [(LNAutoShortcutMetadata *)v6 systemImageName];
+          v39 = systemImageName;
+          v40 = systemImageName2;
           v58 = v40;
           v59 = v39;
           if (v39 == v40)
@@ -228,10 +228,10 @@ LABEL_61:
             }
           }
 
-          v43 = [(LNAutoShortcutMetadata *)self parameterPresentation];
-          v44 = [(LNAutoShortcutMetadata *)v6 parameterPresentation];
-          v39 = v43;
-          v45 = v44;
+          parameterPresentation = [(LNAutoShortcutMetadata *)self parameterPresentation];
+          parameterPresentation2 = [(LNAutoShortcutMetadata *)v6 parameterPresentation];
+          v39 = parameterPresentation;
+          v45 = parameterPresentation2;
           v56 = v39;
           v57 = v45;
           if (v39 == v45)
@@ -270,10 +270,10 @@ LABEL_59:
             }
           }
 
-          v48 = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
-          v49 = [(LNAutoShortcutMetadata *)v6 availabilityAnnotations];
-          v50 = v48;
-          v51 = v49;
+          availabilityAnnotations = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
+          availabilityAnnotations2 = [(LNAutoShortcutMetadata *)v6 availabilityAnnotations];
+          v50 = availabilityAnnotations;
+          v51 = availabilityAnnotations2;
           v52 = v50;
           v53 = v50 == v51;
           v54 = v51;
@@ -330,22 +330,22 @@ LABEL_70:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAutoShortcutMetadata *)self actionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNAutoShortcutMetadata *)self phraseTemplates];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNAutoShortcutMetadata *)self title];
-  v8 = [v7 hash];
-  v9 = [(LNAutoShortcutMetadata *)self shortTitle];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
-  v12 = [v11 hash];
-  v13 = [(LNAutoShortcutMetadata *)self systemImageName];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(LNAutoShortcutMetadata *)self parameterPresentation];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
-  v18 = [v17 hash];
+  actionIdentifier = [(LNAutoShortcutMetadata *)self actionIdentifier];
+  v4 = [actionIdentifier hash];
+  phraseTemplates = [(LNAutoShortcutMetadata *)self phraseTemplates];
+  v6 = [phraseTemplates hash] ^ v4;
+  title = [(LNAutoShortcutMetadata *)self title];
+  v8 = [title hash];
+  shortTitle = [(LNAutoShortcutMetadata *)self shortTitle];
+  v10 = v6 ^ v8 ^ [shortTitle hash];
+  autoShortcutDescription = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
+  v12 = [autoShortcutDescription hash];
+  systemImageName = [(LNAutoShortcutMetadata *)self systemImageName];
+  v14 = v12 ^ [systemImageName hash];
+  parameterPresentation = [(LNAutoShortcutMetadata *)self parameterPresentation];
+  v16 = v10 ^ v14 ^ [parameterPresentation hash];
+  availabilityAnnotations = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
+  v18 = [availabilityAnnotations hash];
 
   return v16 ^ v18;
 }
@@ -355,75 +355,75 @@ LABEL_70:
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(LNAutoShortcutMetadata *)self actionIdentifier];
-  v6 = [(LNAutoShortcutMetadata *)self phraseTemplates];
-  v7 = [(LNAutoShortcutMetadata *)self title];
-  v8 = [(LNAutoShortcutMetadata *)self shortTitle];
-  v9 = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
-  v10 = [(LNAutoShortcutMetadata *)self systemImageName];
-  v11 = [(LNAutoShortcutMetadata *)self parameterPresentation];
-  v12 = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
-  v13 = [v15 stringWithFormat:@"<%@: %p, actionIdentifier: %@, phraseTemplates: %@, title: %@, shortTitle: %@, autoShortcutDescription: %@, systemImageName: %@, parameterPresentation: %@, availabilityAnnotation: %@>", v4, self, v5, v6, v7, v8, v9, v10, v11, v12];
+  actionIdentifier = [(LNAutoShortcutMetadata *)self actionIdentifier];
+  phraseTemplates = [(LNAutoShortcutMetadata *)self phraseTemplates];
+  title = [(LNAutoShortcutMetadata *)self title];
+  shortTitle = [(LNAutoShortcutMetadata *)self shortTitle];
+  autoShortcutDescription = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
+  systemImageName = [(LNAutoShortcutMetadata *)self systemImageName];
+  parameterPresentation = [(LNAutoShortcutMetadata *)self parameterPresentation];
+  availabilityAnnotations = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
+  v13 = [v15 stringWithFormat:@"<%@: %p, actionIdentifier: %@, phraseTemplates: %@, title: %@, shortTitle: %@, autoShortcutDescription: %@, systemImageName: %@, parameterPresentation: %@, availabilityAnnotation: %@>", v4, self, actionIdentifier, phraseTemplates, title, shortTitle, autoShortcutDescription, systemImageName, parameterPresentation, availabilityAnnotations];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAutoShortcutMetadata *)self actionIdentifier];
-  [v4 encodeObject:v5 forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  actionIdentifier = [(LNAutoShortcutMetadata *)self actionIdentifier];
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
 
-  v6 = [(LNAutoShortcutMetadata *)self phraseTemplates];
-  [v4 encodeObject:v6 forKey:@"phraseTemplates"];
+  phraseTemplates = [(LNAutoShortcutMetadata *)self phraseTemplates];
+  [coderCopy encodeObject:phraseTemplates forKey:@"phraseTemplates"];
 
-  v7 = [(LNAutoShortcutMetadata *)self title];
-  [v4 encodeObject:v7 forKey:@"title"];
+  title = [(LNAutoShortcutMetadata *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v8 = [(LNAutoShortcutMetadata *)self shortTitle];
-  [v4 encodeObject:v8 forKey:@"shortTitle"];
+  shortTitle = [(LNAutoShortcutMetadata *)self shortTitle];
+  [coderCopy encodeObject:shortTitle forKey:@"shortTitle"];
 
-  v9 = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
-  [v4 encodeObject:v9 forKey:@"autoShortcutDescription"];
+  autoShortcutDescription = [(LNAutoShortcutMetadata *)self autoShortcutDescription];
+  [coderCopy encodeObject:autoShortcutDescription forKey:@"autoShortcutDescription"];
 
-  v10 = [(LNAutoShortcutMetadata *)self systemImageName];
-  [v4 encodeObject:v10 forKey:@"systemImageName"];
+  systemImageName = [(LNAutoShortcutMetadata *)self systemImageName];
+  [coderCopy encodeObject:systemImageName forKey:@"systemImageName"];
 
-  v11 = [(LNAutoShortcutMetadata *)self parameterPresentation];
-  [v4 encodeObject:v11 forKey:@"parameterPresentation"];
+  parameterPresentation = [(LNAutoShortcutMetadata *)self parameterPresentation];
+  [coderCopy encodeObject:parameterPresentation forKey:@"parameterPresentation"];
 
-  v12 = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
-  [v4 encodeObject:v12 forKey:@"availabilityAnnotations"];
+  availabilityAnnotations = [(LNAutoShortcutMetadata *)self availabilityAnnotations];
+  [coderCopy encodeObject:availabilityAnnotations forKey:@"availabilityAnnotations"];
 }
 
-- (LNAutoShortcutMetadata)initWithCoder:(id)a3
+- (LNAutoShortcutMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"phraseTemplates"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"phraseTemplates"];
 
     if (v9)
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
       if (v10)
       {
-        v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortTitle"];
-        v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoShortcutDescription"];
-        v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
+        v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortTitle"];
+        v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoShortcutDescription"];
+        v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemImageName"];
         if (v12)
         {
-          [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterPresentation"];
+          [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterPresentation"];
           v13 = v22 = v11;
           v14 = MEMORY[0x1E695DFD8];
           v15 = objc_opt_class();
           v16 = objc_opt_class();
           v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-          v18 = [v4 decodeObjectOfClasses:v17 forKey:@"availabilityAnnotations"];
+          v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"availabilityAnnotations"];
 
           v19 = v22;
           v20 = [[LNAutoShortcutMetadata alloc] initWithActionIdentifier:v5 phraseTemplates:v9 shortTitle:v22 autoShortcutDescription:v23 systemImageName:v12 parameterPresentation:v13 availabilityAnnotations:v18];
@@ -456,18 +456,18 @@ LABEL_70:
   return v20;
 }
 
-- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)a3 phraseTemplates:(id)a4 shortTitle:(id)a5 autoShortcutDescription:(id)a6 systemImageName:(id)a7 parameterPresentation:(id)a8 availabilityAnnotations:(id)a9
+- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)identifier phraseTemplates:(id)templates shortTitle:(id)title autoShortcutDescription:(id)description systemImageName:(id)name parameterPresentation:(id)presentation availabilityAnnotations:(id)annotations
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (v16)
+  identifierCopy = identifier;
+  templatesCopy = templates;
+  titleCopy = title;
+  descriptionCopy = description;
+  nameCopy = name;
+  presentationCopy = presentation;
+  annotationsCopy = annotations;
+  if (identifierCopy)
   {
-    if (v17)
+    if (templatesCopy)
     {
       goto LABEL_3;
     }
@@ -475,17 +475,17 @@ LABEL_70:
 
   else
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutMetadata.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAutoShortcutMetadata.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"actionIdentifier"}];
 
-    if (v17)
+    if (templatesCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v41 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v41 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutMetadata.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"phraseTemplates"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutMetadata.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"phraseTemplates"}];
 
 LABEL_3:
   v42.receiver = self;
@@ -493,31 +493,31 @@ LABEL_3:
   v23 = [(LNAutoShortcutMetadata *)&v42 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [identifierCopy copy];
     actionIdentifier = v23->_actionIdentifier;
     v23->_actionIdentifier = v24;
 
-    v26 = [v17 copy];
+    v26 = [templatesCopy copy];
     phraseTemplates = v23->_phraseTemplates;
     v23->_phraseTemplates = v26;
 
-    v28 = [v18 copy];
+    v28 = [titleCopy copy];
     shortTitle = v23->_shortTitle;
     v23->_shortTitle = v28;
 
-    v30 = [v19 copy];
+    v30 = [descriptionCopy copy];
     autoShortcutDescription = v23->_autoShortcutDescription;
     v23->_autoShortcutDescription = v30;
 
-    v32 = [v20 copy];
+    v32 = [nameCopy copy];
     systemImageName = v23->_systemImageName;
     v23->_systemImageName = v32;
 
-    v34 = [v21 copy];
+    v34 = [presentationCopy copy];
     parameterPresentation = v23->_parameterPresentation;
     v23->_parameterPresentation = v34;
 
-    v36 = [v22 copy];
+    v36 = [annotationsCopy copy];
     availabilityAnnotations = v23->_availabilityAnnotations;
     v23->_availabilityAnnotations = v36;
 
@@ -527,16 +527,16 @@ LABEL_3:
   return v23;
 }
 
-- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)a3 phraseTemplates:(id)a4 title:(id)a5 shortTitle:(id)a6 autoShortcutDescription:(id)a7 systemImageName:(id)a8
+- (LNAutoShortcutMetadata)initWithActionIdentifier:(id)identifier phraseTemplates:(id)templates title:(id)title shortTitle:(id)shortTitle autoShortcutDescription:(id)description systemImageName:(id)name
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  if ([v13 length])
+  nameCopy = name;
+  descriptionCopy = description;
+  shortTitleCopy = shortTitle;
+  templatesCopy = templates;
+  identifierCopy = identifier;
+  if ([nameCopy length])
   {
-    v18 = v13;
+    v18 = nameCopy;
   }
 
   else
@@ -544,7 +544,7 @@ LABEL_3:
     v18 = 0;
   }
 
-  v19 = [(LNAutoShortcutMetadata *)self initWithActionIdentifier:v17 phraseTemplates:v16 shortTitle:v15 autoShortcutDescription:v14 systemImageName:v18];
+  v19 = [(LNAutoShortcutMetadata *)self initWithActionIdentifier:identifierCopy phraseTemplates:templatesCopy shortTitle:shortTitleCopy autoShortcutDescription:descriptionCopy systemImageName:v18];
 
   return v19;
 }

@@ -1,9 +1,9 @@
 @interface MTLFunctionStitchingGraph
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLFunctionStitchingGraph)init;
 - (MTLFunctionStitchingGraph)initWithFunctionName:(NSString *)functionName nodes:(NSArray *)nodes outputNode:(MTLFunctionStitchingFunctionNode *)outputNode attributes:(NSArray *)attributes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)setOutputNode:(MTLFunctionStitchingFunctionNode *)outputNode;
@@ -70,7 +70,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setFunctionName:self->_functionName];
@@ -87,9 +87,9 @@
   [(MTLFunctionStitchingGraph *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -97,19 +97,19 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       functionName = self->_functionName;
-      if (functionName == *(a3 + 1) || (v6 = [(NSString *)functionName isEqual:?]) != 0)
+      if (functionName == *(equal + 1) || (v6 = [(NSString *)functionName isEqual:?]) != 0)
       {
         outputNode = self->_outputNode;
-        if (outputNode == *(a3 + 3) || (v6 = [(MTLFunctionStitchingFunctionNode *)outputNode isEqual:?]) != 0)
+        if (outputNode == *(equal + 3) || (v6 = [(MTLFunctionStitchingFunctionNode *)outputNode isEqual:?]) != 0)
         {
-          v6 = MTLCompareArray(self->_nodes, *(a3 + 2), 1, 0);
+          v6 = MTLCompareArray(self->_nodes, *(equal + 2), 1, 0);
           if (v6)
           {
             attributes = self->_attributes;
-            v10 = *(a3 + 4);
+            v10 = *(equal + 4);
 
             LOBYTE(v6) = MTLCompareArray(attributes, v10, 1, 0);
           }
@@ -136,15 +136,15 @@
   return _MTLHashState(v4, 0x20uLL);
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v28 = self;
+  selfCopy = self;
   nodes = self->_nodes;
   v7 = [(NSArray *)nodes countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v7)
@@ -172,7 +172,7 @@
           v9 = objc_opt_new();
         }
 
-        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", a3 + 4)}];
+        [v9 appendString:{objc_msgSend(v12, "formattedDescription:", description + 4)}];
       }
 
       v8 = [(NSArray *)nodes countByEnumeratingWithState:&v34 objects:v40 count:16];
@@ -217,7 +217,7 @@
           v16 = objc_opt_new();
         }
 
-        [v16 appendString:{objc_msgSend(v19, "formattedDescription:", a3 + 4)}];
+        [v16 appendString:{objc_msgSend(v19, "formattedDescription:", description + 4)}];
       }
 
       v15 = [(NSArray *)attributes countByEnumeratingWithState:&v30 objects:v39 count:16];
@@ -232,12 +232,12 @@
   }
 
   v20 = MEMORY[0x1E696AEC0];
-  v29.receiver = v28;
+  v29.receiver = selfCopy;
   v29.super_class = MTLFunctionStitchingGraph;
   v21 = [(MTLFunctionStitchingGraph *)&v29 description];
   v38[0] = v5;
   v38[1] = @"functionName =";
-  v38[2] = v28->_functionName;
+  v38[2] = selfCopy->_functionName;
   v38[3] = v5;
   v22 = MEMORY[0x1E695E0F0];
   if (v9)
@@ -254,7 +254,7 @@
   v38[5] = v23;
   v38[6] = v5;
   v38[7] = @"outputNode =";
-  outputNode = v28->_outputNode;
+  outputNode = selfCopy->_outputNode;
   if (!outputNode)
   {
     outputNode = [MEMORY[0x1E695DFB0] null];

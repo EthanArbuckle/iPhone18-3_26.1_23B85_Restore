@@ -1,16 +1,16 @@
 @interface MusicPickerSheetContainerView
-- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithCoder:(id)a3;
-- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithFrame:(CGRect)a3;
+- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithCoder:(id)coder;
+- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MusicPickerSheetContainerView
 
-- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithFrame:(CGRect)a3
+- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_244257BB8();
   sub_244257BA8();
   sub_244257B68();
@@ -24,7 +24,7 @@
   return v7;
 }
 
-- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithCoder:(id)a3
+- (_TtC14ContinuitySing29MusicPickerSheetContainerView)initWithCoder:(id)coder
 {
   sub_244257BB8();
   sub_244257BA8();

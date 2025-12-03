@@ -1,45 +1,45 @@
 @interface CATXPCTransport
 + (id)new;
-- (BOOL)BOOLValueForEntitlement:(id)a3;
+- (BOOL)BOOLValueForEntitlement:(id)entitlement;
 - (CATXPCTransport)init;
-- (CATXPCTransport)initWithXPCConnection:(id)a3;
-- (id)operationToSendMessage:(id)a3;
+- (CATXPCTransport)initWithXPCConnection:(id)connection;
+- (id)operationToSendMessage:(id)message;
 - (void)dealloc;
 - (void)didInvalidate;
 - (void)invalidateConnection;
-- (void)processMessage:(id)a3 completion:(id)a4;
+- (void)processMessage:(id)message completion:(id)completion;
 - (void)resumeConnection;
 - (void)setUpConnection;
 - (void)suspendConnection;
 - (void)tearDownConnection;
-- (void)transportSendMessageOperation:(id)a3 processMessage:(id)a4;
+- (void)transportSendMessageOperation:(id)operation processMessage:(id)message;
 @end
 
 @implementation CATXPCTransport
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CATXPCTransport.m" lineNumber:109 description:{@"%@ cannot call %@", a1, v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATXPCTransport.m" lineNumber:109 description:{@"%@ cannot call %@", self, v5}];
 
   return 0;
 }
 
 - (CATXPCTransport)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CATXPCTransport.m" lineNumber:116 description:{@"%@ cannot call %@", v5, v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CATXPCTransport.m" lineNumber:116 description:{@"%@ cannot call %@", v5, v6}];
 
   return 0;
 }
 
-- (CATXPCTransport)initWithXPCConnection:(id)a3
+- (CATXPCTransport)initWithXPCConnection:(id)connection
 {
-  v6 = a3;
-  if (!v6)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [(CATXPCTransport *)a2 initWithXPCConnection:?];
   }
@@ -50,7 +50,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->mConnection, a3);
+    objc_storeStrong(&v7->mConnection, connection);
   }
 
   return v8;
@@ -58,25 +58,25 @@
 
 - (void)dealloc
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = NSStringFromSelector(a1);
-  [v5 handleFailureInMethod:a1 object:a2 file:@"CATXPCTransport.m" lineNumber:151 description:{@"%@ cannot call %@ when underlying connection has not been torn down.", a2, v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v4 = NSStringFromSelector(self);
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CATXPCTransport.m" lineNumber:151 description:{@"%@ cannot call %@ when underlying connection has not been torn down.", a2, v4}];
 }
 
-- (BOOL)BOOLValueForEntitlement:(id)a3
+- (BOOL)BOOLValueForEntitlement:(id)entitlement
 {
-  v3 = [(CATXPCTransport *)self valueForEntitlement:a3];
+  v3 = [(CATXPCTransport *)self valueForEntitlement:entitlement];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)resumeConnection
@@ -120,12 +120,12 @@
   }
 }
 
-- (id)operationToSendMessage:(id)a3
+- (id)operationToSendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_opt_new();
   [v5 setTransport:self];
-  [v5 setMessage:v4];
+  [v5 setMessage:messageCopy];
 
   return v5;
 }
@@ -138,43 +138,43 @@
   [(CATTransport *)&v3 didInvalidate];
 }
 
-- (void)processMessage:(id)a3 completion:(id)a4
+- (void)processMessage:(id)message completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v7 = objc_autoreleasePoolPush();
   v8 = CATGetCatalystQueue();
   CATAssertIsQueue(v8);
 
   v9 = objc_opt_new();
-  [v9 setBlock:v6];
-  [v10 setCat_assertion:v9];
-  [(CATTransport *)self didReceiveMessage:v10];
+  [v9 setBlock:completionCopy];
+  [messageCopy setCat_assertion:v9];
+  [(CATTransport *)self didReceiveMessage:messageCopy];
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)transportSendMessageOperation:(id)a3 processMessage:(id)a4
+- (void)transportSendMessageOperation:(id)operation processMessage:(id)message
 {
-  v11 = a4;
-  v6 = a3;
+  messageCopy = message;
+  operationCopy = operation;
   v7 = CATGetCatalystQueue();
   CATAssertIsQueue(v7);
 
-  v8 = [(NSXPCConnection *)self->mConnection remoteObjectProxy];
-  v9 = v8;
-  if (v8)
+  remoteObjectProxy = [(NSXPCConnection *)self->mConnection remoteObjectProxy];
+  v9 = remoteObjectProxy;
+  if (remoteObjectProxy)
   {
-    [v8 processMessage:v11 completion:&__block_literal_global_24];
-    [v6 didProcessMessage];
+    [remoteObjectProxy processMessage:messageCopy completion:&__block_literal_global_24];
+    [operationCopy didProcessMessage];
   }
 
   else
   {
     v10 = CATErrorWithCodeAndUserInfo(404, 0);
-    [v6 didFailWithError:v10];
+    [operationCopy didFailWithError:v10];
 
-    v6 = v10;
+    operationCopy = v10;
   }
 }
 

@@ -1,14 +1,14 @@
 @interface BWSinkNode
 - (BOOL)isActive;
-- (BWSinkNode)initWithSinkID:(id)a3;
+- (BWSinkNode)initWithSinkID:(id)d;
 - (NSString)currentStateDebugString;
 - (int64_t)liveConfigurationID;
 - (uint64_t)_setupSinkNodeStateMachine;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)notifyWhenConfigurationID:(int64_t)a3 becomesLive:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)notifyWhenConfigurationID:(int64_t)d becomesLive:(id)live;
 @end
 
 @implementation BWSinkNode
@@ -35,14 +35,14 @@
 - (BOOL)isActive
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(FigStateMachine *)self->_stateMachine currentState];
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3 != 1;
+  return currentState != 1;
 }
 
-- (BWSinkNode)initWithSinkID:(id)a3
+- (BWSinkNode)initWithSinkID:(id)d
 {
-  if (!a3)
+  if (!d)
   {
     [BWSinkNode initWithSinkID:];
   }
@@ -55,7 +55,7 @@
   {
     v5->_stateLock._os_unfair_lock_opaque = 0;
     [(BWSinkNode *)v5 _setupSinkNodeStateMachine];
-    v6->_sinkID = [a3 copy];
+    v6->_sinkID = [d copy];
     v6->_configurationHandlerLock = FigSimpleMutexCreate();
     v6->_configurationLiveHandlers = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6->_configurationLiveIDs = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -81,24 +81,24 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)notifyWhenConfigurationID:(int64_t)a3 becomesLive:(id)a4
+- (void)notifyWhenConfigurationID:(int64_t)d becomesLive:(id)live
 {
   FigSimpleMutexLock();
   liveConfigurationID = self->_liveConfigurationID;
-  if (liveConfigurationID >= a3)
+  if (liveConfigurationID >= d)
   {
     FigSimpleMutexUnlock();
-    v9 = *(a4 + 2);
+    v9 = *(live + 2);
 
-    v9(a4, liveConfigurationID);
+    v9(live, liveConfigurationID);
   }
 
   else
   {
-    v8 = [a4 copy];
+    v8 = [live copy];
     [(NSMutableArray *)self->_configurationLiveHandlers addObject:v8];
 
-    -[NSMutableArray addObject:](self->_configurationLiveIDs, "addObject:", [MEMORY[0x1E696AD98] numberWithLongLong:a3]);
+    -[NSMutableArray addObject:](self->_configurationLiveIDs, "addObject:", [MEMORY[0x1E696AD98] numberWithLongLong:d]);
 
     FigSimpleMutexUnlock();
   }
@@ -107,9 +107,9 @@
 - (NSString)currentStateDebugString
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(NSString *)[(FigStateMachine *)self->_stateMachine currentStateLabel] lowercaseString];
+  lowercaseString = [(NSString *)[(FigStateMachine *)self->_stateMachine currentStateLabel] lowercaseString];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3;
+  return lowercaseString;
 }
 
 - (int64_t)liveConfigurationID
@@ -120,9 +120,9 @@
   return liveConfigurationID;
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(BWNode *)self supportsConcurrentLiveInputCallbacks:a3])
+  if ([(BWNode *)self supportsConcurrentLiveInputCallbacks:d])
   {
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ supports concurrent live input callbacks, and BWSinkNode doesn't know how to manage the idle state for nodes with concurrent input callbacks", self];
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v25 userInfo:0]);
@@ -183,7 +183,7 @@
     liveConfigurationIDsByInputIndex = self->_liveConfigurationIDsByInputIndex;
   }
 
-  liveConfigurationIDsByInputIndex[[a5 index]] = a3;
+  liveConfigurationIDsByInputIndex[[input index]] = d;
   if ([(NSArray *)[(BWNode *)self inputs] count])
   {
     v16 = 0;
@@ -250,7 +250,7 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v4 = [(BWNode *)self allInputsHaveReachedState:0];
   os_unfair_lock_lock(&self->_stateLock);
@@ -298,12 +298,12 @@
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  v6 = [(BWNode *)self allInputsHaveReachedState:0, a4];
+  input = [(BWNode *)self allInputsHaveReachedState:0, input];
   os_unfair_lock_lock(&self->_stateLock);
   [(FigStateMachine *)self->_stateMachine transitionToState:8 fromState:4];
-  if (v6 && (v7 = [(FigStateMachine *)self->_stateMachine transitionToState:1 fromState:8], !a3) && v7)
+  if (input && (v7 = [(FigStateMachine *)self->_stateMachine transitionToState:1 fromState:8], !d) && v7)
   {
     handlersToCallWhenIdle = self->_handlersToCallWhenIdle;
     self->_handlersToCallWhenIdle = 0;

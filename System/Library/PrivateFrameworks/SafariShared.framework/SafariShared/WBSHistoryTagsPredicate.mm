@@ -1,51 +1,51 @@
 @interface WBSHistoryTagsPredicate
-- (WBSHistoryTagsPredicate)initWithCoder:(id)a3;
-- (WBSHistoryTagsPredicate)initWithStartDate:(id)a3 endDate:(id)a4 tagType:(unint64_t)a5;
-- (id)statementForDatabase:(id)a3 cache:(id)a4 fetchOptions:(unint64_t)a5 error:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
+- (WBSHistoryTagsPredicate)initWithCoder:(id)coder;
+- (WBSHistoryTagsPredicate)initWithStartDate:(id)date endDate:(id)endDate tagType:(unint64_t)type;
+- (id)statementForDatabase:(id)database cache:(id)cache fetchOptions:(unint64_t)options error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHistoryTagsPredicate
 
-- (WBSHistoryTagsPredicate)initWithStartDate:(id)a3 endDate:(id)a4 tagType:(unint64_t)a5
+- (WBSHistoryTagsPredicate)initWithStartDate:(id)date endDate:(id)endDate tagType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v15.receiver = self;
   v15.super_class = WBSHistoryTagsPredicate;
   v11 = [(WBSHistoryTagsPredicate *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_startDate, a3);
-    objc_storeStrong(&v12->_endDate, a4);
-    v12->_tagType = a5;
+    objc_storeStrong(&v11->_startDate, date);
+    objc_storeStrong(&v12->_endDate, endDate);
+    v12->_tagType = type;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (WBSHistoryTagsPredicate)initWithCoder:(id)a3
+- (WBSHistoryTagsPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = WBSHistoryTagsPredicate;
   v5 = [(WBSHistoryTagsPredicate *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v8;
 
-    v5->_tagType = [v4 decodeIntegerForKey:@"tagType"];
-    v5->_limit = [v4 decodeIntegerForKey:@"limit"];
-    v5->_minimumItemCount = [v4 decodeIntegerForKey:@"minimumItemCount"];
-    v10 = [v4 decodeIntegerForKey:@"sortOrder"];
+    v5->_tagType = [coderCopy decodeIntegerForKey:@"tagType"];
+    v5->_limit = [coderCopy decodeIntegerForKey:@"limit"];
+    v5->_minimumItemCount = [coderCopy decodeIntegerForKey:@"minimumItemCount"];
+    v10 = [coderCopy decodeIntegerForKey:@"sortOrder"];
     if (v10 >= 3)
     {
       v11 = 0;
@@ -60,7 +60,7 @@
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"identifiers"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"identifiers"];
 
     if (v15)
     {
@@ -73,26 +73,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeInteger:self->_tagType forKey:@"tagType"];
-  [v5 encodeInteger:self->_limit forKey:@"limit"];
-  [v5 encodeInteger:self->_minimumItemCount forKey:@"minimumItemCount"];
-  [v5 encodeInteger:self->_sortOrder forKey:@"sortOrder"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeInteger:self->_tagType forKey:@"tagType"];
+  [coderCopy encodeInteger:self->_limit forKey:@"limit"];
+  [coderCopy encodeInteger:self->_minimumItemCount forKey:@"minimumItemCount"];
+  [coderCopy encodeInteger:self->_sortOrder forKey:@"sortOrder"];
   identifiers = self->_identifiers;
   if (identifiers)
   {
-    [v5 encodeObject:identifiers forKey:@"identifiers"];
+    [coderCopy encodeObject:identifiers forKey:@"identifiers"];
   }
 }
 
-- (id)statementForDatabase:(id)a3 cache:(id)a4 fetchOptions:(unint64_t)a5 error:(id *)a6
+- (id)statementForDatabase:(id)database cache:(id)cache fetchOptions:(unint64_t)options error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  databaseCopy = database;
   v9 = [@"SELECT * FROM history_tags" mutableCopy];
   [v9 appendString:@" WHERE type & ? AND modification_timestamp > ? AND modification_timestamp < ? AND item_count >= ?"];
   if ([(NSSet *)self->_identifiers count])
@@ -127,7 +127,7 @@ LABEL_8:
     [v9 appendString:@" LIMIT ?"];
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:v8 query:v9];
+  v13 = [objc_alloc(MEMORY[0x1E69C89F0]) initWithDatabase:databaseCopy query:v9];
   [v13 bindInt64:self->_tagType atParameterIndex:1];
   [(NSDate *)self->_startDate timeIntervalSinceReferenceDate];
   [v13 bindDouble:2 atParameterIndex:?];
@@ -175,14 +175,14 @@ LABEL_8:
     [v13 bindInt64:limit atParameterIndex:v20];
   }
 
-  if (!a6 || v13)
+  if (!error || v13)
   {
     v22 = v13;
   }
 
   else
   {
-    *a6 = [v8 lastErrorWithMethodName:"-[WBSHistoryTagsPredicate statementForDatabase:cache:fetchOptions:error:]"];
+    *error = [databaseCopy lastErrorWithMethodName:"-[WBSHistoryTagsPredicate statementForDatabase:cache:fetchOptions:error:]"];
   }
 
   return v13;

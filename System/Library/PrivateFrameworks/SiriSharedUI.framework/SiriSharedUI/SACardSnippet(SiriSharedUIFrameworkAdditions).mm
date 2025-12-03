@@ -8,8 +8,8 @@
 - (id)siriui_card
 {
   v1 = MEMORY[0x277CF9450];
-  v2 = [a1 cardData];
-  v3 = [v1 cardForData:v2 messageName:@"searchfoundation.Card"];
+  cardData = [self cardData];
+  v3 = [v1 cardForData:cardData messageName:@"searchfoundation.Card"];
 
   return v3;
 }
@@ -17,8 +17,8 @@
 - (id)siriui_card_compact
 {
   v1 = MEMORY[0x277CF9450];
-  v2 = [a1 compactSizeCardData];
-  v3 = [v1 cardForData:v2 messageName:@"searchfoundation.Card"];
+  compactSizeCardData = [self compactSizeCardData];
+  v3 = [v1 cardForData:compactSizeCardData messageName:@"searchfoundation.Card"];
 
   return v3;
 }

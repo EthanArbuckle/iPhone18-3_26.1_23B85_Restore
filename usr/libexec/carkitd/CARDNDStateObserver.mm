@@ -2,28 +2,28 @@
 + (BOOL)observesVehicularReports;
 - (BOOL)isInLostMode;
 - (CARDNDStateDelegate)delegate;
-- (CARDNDStateObserver)initWithRadiosPreferences:(id)a3 vehicleStateClass:(Class)a4;
+- (CARDNDStateObserver)initWithRadiosPreferences:(id)preferences vehicleStateClass:(Class)class;
 - (Class)vehicleStateClass;
 - (NSDate)mostRecentVehicleBTConnectionDate;
 - (void)_checkVehicleState;
 - (void)airplaneModeChanged;
 - (void)dealloc;
-- (void)scheduleVehicleStateCheckWithDelay:(double)a3;
+- (void)scheduleVehicleStateCheckWithDelay:(double)delay;
 @end
 
 @implementation CARDNDStateObserver
 
-- (CARDNDStateObserver)initWithRadiosPreferences:(id)a3 vehicleStateClass:(Class)a4
+- (CARDNDStateObserver)initWithRadiosPreferences:(id)preferences vehicleStateClass:(Class)class
 {
-  v7 = a3;
+  preferencesCopy = preferences;
   v20.receiver = self;
   v20.super_class = CARDNDStateObserver;
   v8 = [(CARDNDStateObserver *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_vehicleStateClass, a4);
-    objc_storeStrong(&v9->_radiosPreferences, a3);
+    objc_storeWeak(&v8->_vehicleStateClass, class);
+    objc_storeStrong(&v9->_radiosPreferences, preferences);
     [(RadiosPreferences *)v9->_radiosPreferences setDelegate:v9];
     [(RadiosPreferences *)v9->_radiosPreferences refresh];
     v10 = objc_alloc_init(CXCallObserver);
@@ -64,8 +64,8 @@
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
   LocalCenter = CFNotificationCenterGetLocalCenter();
   CFNotificationCenterRemoveEveryObserver(LocalCenter, self);
-  v5 = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
-  [v5 invalidate];
+  vehicleStateCheckTimer = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
+  [vehicleStateCheckTimer invalidate];
 
   v6.receiver = self;
   v6.super_class = CARDNDStateObserver;
@@ -112,35 +112,35 @@ LABEL_8:
   v2 = +[FMDFMIPManager sharedInstance];
   if ([v2 lostModeIsActive])
   {
-    v3 = 1;
+    isManagedLostModeActive = 1;
   }
 
   else
   {
     v4 = +[FMDFMIPManager sharedInstance];
-    v3 = [v4 isManagedLostModeActive];
+    isManagedLostModeActive = [v4 isManagedLostModeActive];
   }
 
-  return v3;
+  return isManagedLostModeActive;
 }
 
 - (NSDate)mostRecentVehicleBTConnectionDate
 {
-  v2 = [(objc_class *)[(CARDNDStateObserver *)self vehicleStateClass] mostRecentVehicleConnection];
-  v3 = [v2 timeRange];
-  v4 = [v3 startDate];
+  mostRecentVehicleConnection = [(objc_class *)[(CARDNDStateObserver *)self vehicleStateClass] mostRecentVehicleConnection];
+  timeRange = [mostRecentVehicleConnection timeRange];
+  startDate = [timeRange startDate];
 
-  return v4;
+  return startDate;
 }
 
-- (void)scheduleVehicleStateCheckWithDelay:(double)a3
+- (void)scheduleVehicleStateCheckWithDelay:(double)delay
 {
-  v5 = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
+  vehicleStateCheckTimer = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
 
-  if (v5)
+  if (vehicleStateCheckTimer)
   {
-    v6 = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
-    [v6 invalidate];
+    vehicleStateCheckTimer2 = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
+    [vehicleStateCheckTimer2 invalidate];
 
     [(CARDNDStateObserver *)self setVehicleStateCheckTimer:0];
   }
@@ -148,28 +148,28 @@ LABEL_8:
   v7 = CarDNDWDLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [NSNumber numberWithDouble:a3];
+    v8 = [NSNumber numberWithDouble:delay];
     v13 = 138412290;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Scheduling vehicle state check after %@", &v13, 0xCu);
   }
 
-  v9 = [NSTimer timerWithTimeInterval:self target:"_checkVehicleState" selector:0 userInfo:0 repeats:a3];
+  v9 = [NSTimer timerWithTimeInterval:self target:"_checkVehicleState" selector:0 userInfo:0 repeats:delay];
   vehicleStateCheckTimer = self->_vehicleStateCheckTimer;
   self->_vehicleStateCheckTimer = v9;
 
   v11 = +[NSRunLoop mainRunLoop];
-  v12 = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
-  [v11 addTimer:v12 forMode:NSDefaultRunLoopMode];
+  vehicleStateCheckTimer3 = [(CARDNDStateObserver *)self vehicleStateCheckTimer];
+  [v11 addTimer:vehicleStateCheckTimer3 forMode:NSDefaultRunLoopMode];
 }
 
 - (void)airplaneModeChanged
 {
   [(RadiosPreferences *)self->_radiosPreferences refresh];
-  v3 = [(CARDNDStateObserver *)self isInAirplaneMode];
+  isInAirplaneMode = [(CARDNDStateObserver *)self isInAirplaneMode];
   v4 = CarDNDWDLogging();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isInAirplaneMode)
   {
     if (!v5)
     {
@@ -196,13 +196,13 @@ LABEL_8:
   _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, v6, v7, 2u);
 LABEL_7:
 
-  v8 = [(CARDNDStateObserver *)self delegate];
+  delegate = [(CARDNDStateObserver *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CARDNDStateObserver *)self delegate];
-    [v10 stateMachine:self receivedAirplaneMode:v3];
+    delegate2 = [(CARDNDStateObserver *)self delegate];
+    [delegate2 stateMachine:self receivedAirplaneMode:isInAirplaneMode];
   }
 }
 
@@ -213,85 +213,85 @@ LABEL_7:
     if (CRDeviceSupportsAutomaticDNDMotionTrigger())
     {
       WeakRetained = objc_loadWeakRetained(&self->_vehicleStateClass);
-      v4 = [WeakRetained vehicularState];
+      vehicularState = [WeakRetained vehicularState];
 
       v5 = objc_loadWeakRetained(&self->_vehicleStateClass);
-      v6 = [v5 vehicularHints];
+      vehicularHints = [v5 vehicularHints];
 
       v7 = objc_loadWeakRetained(&self->_vehicleStateClass);
-      v8 = [v7 vehicularOperatorState];
+      vehicularOperatorState = [v7 vehicularOperatorState];
     }
 
     else
     {
       if ([(CARDNDStateObserver *)self connected])
       {
-        v4 = 2;
+        vehicularState = 2;
       }
 
       else
       {
-        v4 = 1;
+        vehicularState = 1;
       }
 
-      v8 = 0;
+      vehicularOperatorState = 0;
       if ([(CARDNDStateObserver *)self connected])
       {
-        v6 = 16;
+        vehicularHints = 16;
       }
 
       else
       {
-        v6 = 0;
+        vehicularHints = 0;
       }
     }
 
     v9 = CarDNDWDLogging();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [NSNumber numberWithUnsignedInteger:v4];
+      v10 = [NSNumber numberWithUnsignedInteger:vehicularState];
       v20 = 138412290;
       v21 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fetched CM vehicle state: %@", &v20, 0xCu);
     }
 
-    if (v4)
+    if (vehicularState)
     {
       v11 = objc_loadWeakRetained(&self->_vehicleStateClass);
-      v12 = [v11 mostRecentVehicleConnection];
+      mostRecentVehicleConnection = [v11 mostRecentVehicleConnection];
 
-      v13 = [v12 deviceId];
+      deviceId = [mostRecentVehicleConnection deviceId];
       v14 = objc_opt_new();
-      [v14 setDeviceID:v13];
-      [v14 setVehicleState:v4];
-      [v14 setVehicularHints:v6];
-      [v14 setVehicleOperatorState:v8];
+      [v14 setDeviceID:deviceId];
+      [v14 setVehicleState:vehicularState];
+      [v14 setVehicularHints:vehicularHints];
+      [v14 setVehicleOperatorState:vehicularOperatorState];
       v15 = CarDNDWDLogging();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v14 vehicleStateDebugDescription];
+        vehicleStateDebugDescription = [v14 vehicleStateDebugDescription];
         v20 = 138543362;
-        v21 = v16;
+        v21 = vehicleStateDebugDescription;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Generated vehicle state %{public}@", &v20, 0xCu);
       }
 
-      v17 = [(CARDNDStateObserver *)self delegate];
+      delegate = [(CARDNDStateObserver *)self delegate];
       v18 = objc_opt_respondsToSelector();
 
       if (v18)
       {
-        v19 = [(CARDNDStateObserver *)self delegate];
-        [v19 stateMachine:self receivedVehicleState:v14];
+        delegate2 = [(CARDNDStateObserver *)self delegate];
+        [delegate2 stateMachine:self receivedVehicleState:v14];
       }
     }
 
     else
     {
-      v12 = CarDNDWDLogging();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      mostRecentVehicleConnection = CarDNDWDLogging();
+      if (os_log_type_enabled(mostRecentVehicleConnection, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v20) = 0;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Ignoring unknown vehicular state.", &v20, 2u);
+        _os_log_impl(&_mh_execute_header, mostRecentVehicleConnection, OS_LOG_TYPE_DEFAULT, "Ignoring unknown vehicular state.", &v20, 2u);
       }
     }
   }

@@ -1,9 +1,9 @@
 @interface PHASEXPCService
 + (id)sharedInstance;
-+ (id)sharedInstanceWithPlatform:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)sharedInstanceWithPlatform:(id)platform;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PHASEXPCService)init;
-- (PHASEXPCService)initWithXPCListener:(id)a3;
+- (PHASEXPCService)initWithXPCListener:(id)listener;
 - (unint64_t)newConnectionUID;
 - (void)resumeListener;
 @end
@@ -17,8 +17,8 @@
   if (!sPhaseService)
   {
     v3 = [PHASEXPCService alloc];
-    v4 = [MEMORY[0x277CCAE98] anonymousListener];
-    v5 = [(PHASEXPCService *)v3 initWithXPCListener:v4];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    v5 = [(PHASEXPCService *)v3 initWithXPCListener:anonymousListener];
     v6 = sPhaseService;
     sPhaseService = v5;
 
@@ -41,14 +41,14 @@
   return v2;
 }
 
-+ (id)sharedInstanceWithPlatform:(id)a3
++ (id)sharedInstanceWithPlatform:(id)platform
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  platformCopy = platform;
   v5 = sPhaseService;
   if (sPhaseService || (+[PHASEXPCService sharedInstance], v6 = objc_claimAutoreleasedReturnValue(), v7 = sPhaseService, sPhaseService = v6, v7, (v5 = sPhaseService) != 0))
   {
-    objc_storeStrong((v5 + 32), a3);
+    objc_storeStrong((v5 + 32), platform);
     v10 = **(Phase::Logger::GetInstance(v9) + 864);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -59,7 +59,7 @@
       v18 = 2048;
       v19 = sPhaseService;
       v20 = 2048;
-      v21 = v4;
+      v21 = platformCopy;
       _os_log_impl(&dword_23A302000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d xpcserver: set service@%p with platform@%p", &v14, 0x26u);
     }
 
@@ -91,15 +91,15 @@
   return 0;
 }
 
-- (PHASEXPCService)initWithXPCListener:(id)a3
+- (PHASEXPCService)initWithXPCListener:(id)listener
 {
-  v5 = a3;
-  if (!v5)
+  listenerCopy = listener;
+  if (!listenerCopy)
   {
     std::terminate();
   }
 
-  v6 = v5;
+  v6 = listenerCopy;
   v12.receiver = self;
   v12.super_class = PHASEXPCService;
   v7 = [(PHASEXPCService *)&v12 init];
@@ -111,7 +111,7 @@
     platform = v8->_platform;
     v8->_platform = 0;
 
-    objc_storeStrong(&v8->_mainListener, a3);
+    objc_storeStrong(&v8->_mainListener, listener);
     [(NSXPCListener *)v8->_mainListener setDelegate:v8];
     v10 = v8;
   }
@@ -130,7 +130,7 @@
     v6 = 1024;
     v7 = 147;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
     v11 = ihdYoUjk3kGK;
     _os_log_impl(&dword_23A302000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d xpcserver: service@%p (server pid %d) - resuming listener", &v4, 0x22u);
@@ -146,7 +146,7 @@
   return connectionUIDGenerator;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = **(Phase::Logger::GetInstance(self) + 864);

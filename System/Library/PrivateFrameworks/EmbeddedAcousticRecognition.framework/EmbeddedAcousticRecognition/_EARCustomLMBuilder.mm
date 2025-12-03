@@ -1,15 +1,15 @@
 @interface _EARCustomLMBuilder
-- (BOOL)getFstGrammar:(id)a3 overrideFolder:(id)a4 weight:(float)a5 errorOut:(id *)a6;
-- (_EARCustomLMBuilder)initWithConfiguration:(id)a3;
+- (BOOL)getFstGrammar:(id)grammar overrideFolder:(id)folder weight:(float)weight errorOut:(id *)out;
+- (_EARCustomLMBuilder)initWithConfiguration:(id)configuration;
 - (id).cxx_construct;
 @end
 
 @implementation _EARCustomLMBuilder
 
-- (_EARCustomLMBuilder)initWithConfiguration:(id)a3
+- (_EARCustomLMBuilder)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  [_EARQuasarTokenizer tokenizerWithModelRoot:v4];
+  configurationCopy = configuration;
+  [_EARQuasarTokenizer tokenizerWithModelRoot:configurationCopy];
   ptr = self->_tokenizer.__ptr_;
   self->_tokenizer.__ptr_ = __p;
   if (ptr)
@@ -17,7 +17,7 @@
     (*(*ptr + 8))(ptr);
   }
 
-  v6 = [v4 stringByAppendingPathComponent:{@"mini.json", 0}];
+  v6 = [configurationCopy stringByAppendingPathComponent:{@"mini.json", 0}];
   if (v6)
   {
     [v6 ear_toString];
@@ -26,12 +26,12 @@
   operator new();
 }
 
-- (BOOL)getFstGrammar:(id)a3 overrideFolder:(id)a4 weight:(float)a5 errorOut:(id *)a6
+- (BOOL)getFstGrammar:(id)grammar overrideFolder:(id)folder weight:(float)weight errorOut:(id *)out
 {
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v13 = a5;
-  v9 = [a3 mutableCopy];
+  folderCopy = folder;
+  weightCopy = weight;
+  v9 = [grammar mutableCopy];
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x4812000000;
@@ -45,9 +45,9 @@
   v11[3] = &unk_1E7C1A410;
   v11[4] = v12;
   [v9 enumerateObjectsUsingBlock:v11];
-  if (v8)
+  if (folderCopy)
   {
-    [v8 ear_toString];
+    [folderCopy ear_toString];
   }
 
   quasar::CustomLMBuilder::getFstGrammar();

@@ -1,7 +1,7 @@
 @interface UIPointerHoverEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIPointerHoverEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)settings;
 - (unint64_t)hash;
 - (unint64_t)options;
@@ -26,14 +26,14 @@
 
 - (unint64_t)options
 {
-  v3 = [(UIPointerHoverEffect *)self preferredTintMode];
+  preferredTintMode = [(UIPointerHoverEffect *)self preferredTintMode];
   v4 = 9;
-  if (v3 != UIPointerEffectTintModeUnderlay)
+  if (preferredTintMode != UIPointerEffectTintModeUnderlay)
   {
     v4 = 1;
   }
 
-  if (v3 == UIPointerEffectTintModeOverlay)
+  if (preferredTintMode == UIPointerEffectTintModeOverlay)
   {
     v5 = 5;
   }
@@ -72,16 +72,16 @@
 - (id)settings
 {
   v2 = +[_UIPointerSettingsDomain rootSettings];
-  v3 = [v2 hoverEffectSettings];
+  hoverEffectSettings = [v2 hoverEffectSettings];
 
-  return v3;
+  return hoverEffectSettings;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = UIPointerHoverEffect;
-  v4 = [(UIPointerEffect *)&v6 copyWithZone:a3];
+  v4 = [(UIPointerEffect *)&v6 copyWithZone:zone];
   [v4 setPreferredTintMode:{-[UIPointerHoverEffect preferredTintMode](self, "preferredTintMode")}];
   [v4 setPrefersScaledContent:{-[UIPointerHoverEffect prefersScaledContent](self, "prefersScaledContent")}];
   [v4 setPrefersShadow:{-[UIPointerHoverEffect prefersShadow](self, "prefersShadow")}];
@@ -90,19 +90,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = UIPointerHoverEffect;
-  if ([(UIPointerEffect *)&v13 isEqual:v4])
+  if ([(UIPointerEffect *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [v5 preferredTintMode];
-    if (v6 == -[UIPointerHoverEffect preferredTintMode](self, "preferredTintMode") && (v7 = [v5 prefersScaledContent], v7 == -[UIPointerHoverEffect prefersScaledContent](self, "prefersScaledContent")) && (v8 = objc_msgSend(v5, "prefersShadow"), v8 == -[UIPointerHoverEffect prefersShadow](self, "prefersShadow")) && (v9 = objc_msgSend(v5, "_tintViewTakesOnPointerShape"), v9 == -[UIPointerHoverEffect _tintViewTakesOnPointerShape](self, "_tintViewTakesOnPointerShape")))
+    v5 = equalCopy;
+    preferredTintMode = [v5 preferredTintMode];
+    if (preferredTintMode == -[UIPointerHoverEffect preferredTintMode](self, "preferredTintMode") && (v7 = [v5 prefersScaledContent], v7 == -[UIPointerHoverEffect prefersScaledContent](self, "prefersScaledContent")) && (v8 = objc_msgSend(v5, "prefersShadow"), v8 == -[UIPointerHoverEffect prefersShadow](self, "prefersShadow")) && (v9 = objc_msgSend(v5, "_tintViewTakesOnPointerShape"), v9 == -[UIPointerHoverEffect _tintViewTakesOnPointerShape](self, "_tintViewTakesOnPointerShape")))
     {
-      v12 = [v5 _tintViewUsesPointerMaterial];
-      v10 = v12 ^ [(UIPointerHoverEffect *)self _tintViewUsesPointerMaterial]^ 1;
+      _tintViewUsesPointerMaterial = [v5 _tintViewUsesPointerMaterial];
+      v10 = _tintViewUsesPointerMaterial ^ [(UIPointerHoverEffect *)self _tintViewUsesPointerMaterial]^ 1;
     }
 
     else
@@ -124,8 +124,8 @@
   v9.receiver = self;
   v9.super_class = UIPointerHoverEffect;
   v3 = [(UIPointerEffect *)&v9 hash];
-  v4 = [(UIPointerHoverEffect *)self preferredTintMode];
-  v5 = v4 ^ [(UIPointerHoverEffect *)self prefersScaledContent];
+  preferredTintMode = [(UIPointerHoverEffect *)self preferredTintMode];
+  v5 = preferredTintMode ^ [(UIPointerHoverEffect *)self prefersScaledContent];
   v6 = v5 ^ [(UIPointerHoverEffect *)self prefersShadow];
   v7 = v6 ^ [(UIPointerHoverEffect *)self _tintViewTakesOnPointerShape]^ v3;
   return v7 ^ [(UIPointerHoverEffect *)self _tintViewUsesPointerMaterial];

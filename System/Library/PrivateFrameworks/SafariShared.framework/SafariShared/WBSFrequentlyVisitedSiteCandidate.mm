@@ -1,35 +1,35 @@
 @interface WBSFrequentlyVisitedSiteCandidate
-- (WBSFrequentlyVisitedSiteCandidate)initWithURLString:(id)a3 title:(id)a4 score:(float)a5;
+- (WBSFrequentlyVisitedSiteCandidate)initWithURLString:(id)string title:(id)title score:(float)score;
 @end
 
 @implementation WBSFrequentlyVisitedSiteCandidate
 
-- (WBSFrequentlyVisitedSiteCandidate)initWithURLString:(id)a3 title:(id)a4 score:(float)a5
+- (WBSFrequentlyVisitedSiteCandidate)initWithURLString:(id)string title:(id)title score:(float)score
 {
-  v9 = a3;
-  v10 = a4;
+  stringCopy = string;
+  titleCopy = title;
   v20.receiver = self;
   v20.super_class = WBSFrequentlyVisitedSiteCandidate;
   v11 = [(WBSFrequentlyVisitedSiteCandidate *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_urlString, a3);
-    v12->_score = a5;
-    v13 = [v10 length];
+    objc_storeStrong(&v11->_urlString, string);
+    v12->_score = score;
+    v13 = [titleCopy length];
     if (v13)
     {
-      v14 = __67__WBSFrequentlyVisitedSiteCandidate_initWithURLString_title_score___block_invoke(v13, v10);
+      v14 = __67__WBSFrequentlyVisitedSiteCandidate_initWithURLString_title_score___block_invoke(v13, titleCopy);
       title = v12->_title;
       v12->_title = v14;
     }
 
     else
     {
-      title = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v9];
-      v16 = [(NSString *)title safari_userVisibleHostWithoutWWWSubdomain];
+      title = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:stringCopy];
+      safari_userVisibleHostWithoutWWWSubdomain = [(NSString *)title safari_userVisibleHostWithoutWWWSubdomain];
       v17 = v12->_title;
-      v12->_title = v16;
+      v12->_title = safari_userVisibleHostWithoutWWWSubdomain;
     }
 
     v18 = v12;

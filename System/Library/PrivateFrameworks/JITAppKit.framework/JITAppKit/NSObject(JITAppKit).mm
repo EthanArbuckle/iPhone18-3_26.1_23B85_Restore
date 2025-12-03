@@ -6,7 +6,7 @@
 
 + (id)jitappkit:()JITAppKit
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);

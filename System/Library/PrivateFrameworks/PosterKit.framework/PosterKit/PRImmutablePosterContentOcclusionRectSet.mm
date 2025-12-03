@@ -1,6 +1,6 @@
 @interface PRImmutablePosterContentOcclusionRectSet
 - (PRImmutablePosterContentOcclusionRectSet)init;
-- (PRImmutablePosterContentOcclusionRectSet)initWithNameToRectMap:(id)a3;
+- (PRImmutablePosterContentOcclusionRectSet)initWithNameToRectMap:(id)map;
 @end
 
 @implementation PRImmutablePosterContentOcclusionRectSet
@@ -12,24 +12,24 @@
   v2 = [(PRPosterContentOcclusionRectSet *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     nameToRectMap = v2->_nameToRectMap;
-    v2->_nameToRectMap = v3;
+    v2->_nameToRectMap = dictionary;
   }
 
   return v2;
 }
 
-- (PRImmutablePosterContentOcclusionRectSet)initWithNameToRectMap:(id)a3
+- (PRImmutablePosterContentOcclusionRectSet)initWithNameToRectMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = PRImmutablePosterContentOcclusionRectSet;
-  v6 = [(PRPosterContentOcclusionRectSet *)&v9 initWithNameToRectMap:v5];
+  v6 = [(PRPosterContentOcclusionRectSet *)&v9 initWithNameToRectMap:mapCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nameToRectMap, a3);
+    objc_storeStrong(&v6->_nameToRectMap, map);
   }
 
   return v7;

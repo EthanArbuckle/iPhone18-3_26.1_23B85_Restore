@@ -1,25 +1,25 @@
 @interface liveFilesSearchRequest
 - (int)startSearch;
-- (liveFilesSearchRequest)initWithVolume:(id)a3 withStartLocation:(id)a4 withSearchToken:(id)a5 withSearchCriteria:(id)a6 withProxy:(id)a7 andWithCallerID:(unint64_t)a8;
+- (liveFilesSearchRequest)initWithVolume:(id)volume withStartLocation:(id)location withSearchToken:(id)token withSearchCriteria:(id)criteria withProxy:(id)proxy andWithCallerID:(unint64_t)d;
 - (void)invalidateConnections;
 @end
 
 @implementation liveFilesSearchRequest
 
-- (liveFilesSearchRequest)initWithVolume:(id)a3 withStartLocation:(id)a4 withSearchToken:(id)a5 withSearchCriteria:(id)a6 withProxy:(id)a7 andWithCallerID:(unint64_t)a8
+- (liveFilesSearchRequest)initWithVolume:(id)volume withStartLocation:(id)location withSearchToken:(id)token withSearchCriteria:(id)criteria withProxy:(id)proxy andWithCallerID:(unint64_t)d
 {
-  v14 = a3;
-  v15 = a4;
-  v24 = a5;
-  v23 = a6;
-  v16 = a7;
+  volumeCopy = volume;
+  locationCopy = location;
+  tokenCopy = token;
+  criteriaCopy = criteria;
+  proxyCopy = proxy;
   v26.receiver = self;
   v26.super_class = liveFilesSearchRequest;
   v17 = [(liveFilesSearchRequest *)&v26 init];
   if (v17)
   {
     v25 = 0;
-    v18 = [v14 newConnectionIDOrError:&v25];
+    v18 = [volumeCopy newConnectionIDOrError:&v25];
     v21 = v25;
     v17->_searchLIClientID = v18;
     v19 = userfs_log_default;
@@ -30,12 +30,12 @@
 
     if (v17->_searchLIClientID)
     {
-      v17->_callerID = a8;
-      objc_storeStrong(&v17->_targetVolume, a3);
-      objc_storeStrong(&v17->_startLocation, a4);
-      objc_storeStrong(&v17->_searchToken, a5);
-      objc_storeStrong(&v17->_searchCriteria, a6);
-      objc_storeStrong(&v17->_resultsHandler, a7);
+      v17->_callerID = d;
+      objc_storeStrong(&v17->_targetVolume, volume);
+      objc_storeStrong(&v17->_startLocation, location);
+      objc_storeStrong(&v17->_searchToken, token);
+      objc_storeStrong(&v17->_searchCriteria, criteria);
+      objc_storeStrong(&v17->_resultsHandler, proxy);
       v17->_aborted = 0;
     }
 
@@ -51,16 +51,16 @@
 
 - (int)startSearch
 {
-  v3 = [(userFSVolume *)self->_targetVolume searchGroup];
-  dispatch_group_enter(v3);
+  searchGroup = [(userFSVolume *)self->_targetVolume searchGroup];
+  dispatch_group_enter(searchGroup);
 
-  v4 = [(userFSVolume *)self->_targetVolume SearchRequests];
+  searchRequests = [(userFSVolume *)self->_targetVolume SearchRequests];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100018EC4;
   block[3] = &unk_100038668;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(searchRequests, block);
 
   return 0;
 }

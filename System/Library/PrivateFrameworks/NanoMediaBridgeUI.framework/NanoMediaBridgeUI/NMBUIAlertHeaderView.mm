@@ -19,11 +19,11 @@
     [(UILabel *)v5 setFont:v6];
 
     [(UILabel *)v5 setAdjustsFontForContentSizeCategory:1];
-    v7 = [(NMBUIAlertHeaderView *)self tintColor];
-    [(UILabel *)v5 setTextColor:v7];
+    tintColor = [(NMBUIAlertHeaderView *)self tintColor];
+    [(UILabel *)v5 setTextColor:tintColor];
 
-    v8 = [(NMBUIAlertHeaderView *)self _contentStackView];
-    [v8 insertArrangedSubview:v5 atIndex:0];
+    _contentStackView = [(NMBUIAlertHeaderView *)self _contentStackView];
+    [_contentStackView insertArrangedSubview:v5 atIndex:0];
 
     v9 = self->_textLabel;
     self->_textLabel = v5;
@@ -45,16 +45,16 @@
     [(UILabel *)v5 setFont:v6];
 
     [(UILabel *)v5 setAdjustsFontForContentSizeCategory:1];
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v5 setTextColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v5 setTextColor:whiteColor];
 
     [(UILabel *)v5 setNumberOfLines:0];
-    v8 = [(NMBUIAlertHeaderView *)self _contentStackView];
-    v9 = [(NMBUIAlertHeaderView *)self _contentStackView];
-    v10 = [v9 arrangedSubviews];
-    v11 = [v10 count];
+    _contentStackView = [(NMBUIAlertHeaderView *)self _contentStackView];
+    _contentStackView2 = [(NMBUIAlertHeaderView *)self _contentStackView];
+    arrangedSubviews = [_contentStackView2 arrangedSubviews];
+    v11 = [arrangedSubviews count];
 
-    [v8 insertArrangedSubview:v5 atIndex:v11 != 0];
+    [_contentStackView insertArrangedSubview:v5 atIndex:v11 != 0];
     v12 = self->_detailTextLabel;
     self->_detailTextLabel = v5;
 
@@ -69,12 +69,12 @@
   v6.receiver = self;
   v6.super_class = NMBUIAlertHeaderView;
   [(NMBUIAlertHeaderView *)&v6 tintColorDidChange];
-  v3 = [(NMBUIAlertHeaderView *)self tintColor];
-  v4 = [v3 colorWithAlphaComponent:0.2];
+  tintColor = [(NMBUIAlertHeaderView *)self tintColor];
+  v4 = [tintColor colorWithAlphaComponent:0.2];
   [(UIView *)self->_backgroundView setBackgroundColor:v4];
 
-  v5 = [(NMBUIAlertHeaderView *)self tintColor];
-  [(UILabel *)self->_textLabel setTextColor:v5];
+  tintColor2 = [(NMBUIAlertHeaderView *)self tintColor];
+  [(UILabel *)self->_textLabel setTextColor:tintColor2];
 }
 
 - (id)_backgroundView
@@ -85,8 +85,8 @@
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v6 = [(NMBUIAlertHeaderView *)self tintColor];
-    v7 = [v6 colorWithAlphaComponent:0.2];
+    tintColor = [(NMBUIAlertHeaderView *)self tintColor];
+    v7 = [tintColor colorWithAlphaComponent:0.2];
     [(UIView *)v5 setBackgroundColor:v7];
 
     [(UIView *)v5 _setContinuousCornerRadius:10.0];
@@ -97,25 +97,25 @@
 
     [(UIView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     v20 = MEMORY[0x277CCAAD0];
-    v27 = [(UIView *)v9 leadingAnchor];
-    v28 = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
-    v26 = [v28 leadingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    leadingAnchor = [(UIView *)v9 leadingAnchor];
+    layoutMarginsGuide = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v29[0] = v25;
-    v23 = [(UIView *)v9 trailingAnchor];
-    v24 = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
-    v22 = [v24 trailingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    trailingAnchor = [(UIView *)v9 trailingAnchor];
+    layoutMarginsGuide2 = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v29[1] = v21;
-    v19 = [(UIView *)v9 topAnchor];
-    v10 = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
-    v11 = [v10 topAnchor];
-    v12 = [v19 constraintEqualToAnchor:v11];
+    topAnchor = [(UIView *)v9 topAnchor];
+    layoutMarginsGuide3 = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v29[2] = v12;
-    v13 = [(UIView *)v9 bottomAnchor];
-    v14 = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UIView *)v9 bottomAnchor];
+    layoutMarginsGuide4 = [(NMBUIAlertHeaderView *)self layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v29[3] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     [v20 activateConstraints:v17];
@@ -135,8 +135,8 @@
     v4 = objc_alloc(MEMORY[0x277D75A68]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(UIStackView *)v5 setAxis:1];
-    v6 = [(NMBUIAlertHeaderView *)self _backgroundView];
-    [v6 addSubview:v5];
+    _backgroundView = [(NMBUIAlertHeaderView *)self _backgroundView];
+    [_backgroundView addSubview:v5];
 
     v7 = self->_contentStackView;
     self->_contentStackView = v5;
@@ -144,25 +144,25 @@
 
     [(UIStackView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
     v20 = MEMORY[0x277CCAAD0];
-    v26 = [(UIStackView *)v8 leadingAnchor];
-    v27 = [(UIStackView *)v8 superview];
-    v25 = [v27 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25 constant:16.0];
+    leadingAnchor = [(UIStackView *)v8 leadingAnchor];
+    superview = [(UIStackView *)v8 superview];
+    leadingAnchor2 = [superview leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v28[0] = v24;
-    v22 = [(UIStackView *)v8 trailingAnchor];
-    v23 = [(UIStackView *)v8 superview];
-    v21 = [v23 trailingAnchor];
-    v19 = [v22 constraintEqualToAnchor:v21 constant:-16.0];
+    trailingAnchor = [(UIStackView *)v8 trailingAnchor];
+    superview2 = [(UIStackView *)v8 superview];
+    trailingAnchor2 = [superview2 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v28[1] = v19;
-    v17 = [(UIStackView *)v8 topAnchor];
-    v18 = [(UIStackView *)v8 superview];
-    v9 = [v18 topAnchor];
-    v10 = [v17 constraintEqualToAnchor:v9 constant:16.0];
+    topAnchor = [(UIStackView *)v8 topAnchor];
+    superview3 = [(UIStackView *)v8 superview];
+    topAnchor2 = [superview3 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     v28[2] = v10;
-    v11 = [(UIStackView *)v8 bottomAnchor];
-    v12 = [(UIStackView *)v8 superview];
-    v13 = [v12 bottomAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13 constant:-16.0];
+    bottomAnchor = [(UIStackView *)v8 bottomAnchor];
+    superview4 = [(UIStackView *)v8 superview];
+    bottomAnchor2 = [superview4 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     v28[3] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:4];
     [v20 activateConstraints:v15];

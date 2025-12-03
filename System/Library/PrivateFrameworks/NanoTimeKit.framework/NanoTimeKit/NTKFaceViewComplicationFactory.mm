@@ -2,43 +2,43 @@
 - (UIColor)foregroundColor;
 - (UIColor)platterColor;
 - (double)alpha;
-- (id)initForDevice:(id)a3;
-- (void)setAlpha:(double)a3 faceView:(id)a4;
-- (void)setForegroundColor:(id)a3 faceView:(id)a4;
-- (void)setPlatterColor:(id)a3 faceView:(id)a4;
+- (id)initForDevice:(id)device;
+- (void)setAlpha:(double)alpha faceView:(id)view;
+- (void)setForegroundColor:(id)color faceView:(id)view;
+- (void)setPlatterColor:(id)color faceView:(id)view;
 @end
 
 @implementation NTKFaceViewComplicationFactory
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKFaceViewComplicationFactory;
   v6 = [(NTKFaceViewComplicationFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_contentSpecificAnimationDuration = 0.45;
   }
 
   return v7;
 }
 
-- (void)setForegroundColor:(id)a3 faceView:(id)a4
+- (void)setForegroundColor:(id)color faceView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  if (([(UIColor *)self->_foregroundColor isEqual:v7]& 1) == 0)
+  colorCopy = color;
+  viewCopy = view;
+  if (([(UIColor *)self->_foregroundColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_foregroundColor, a3);
+    objc_storeStrong(&self->_foregroundColor, color);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __62__NTKFaceViewComplicationFactory_setForegroundColor_faceView___block_invoke;
     v9[3] = &unk_27877F148;
     v9[4] = self;
-    v10 = v8;
+    v10 = viewCopy;
     [v10 enumerateComplicationDisplayWrappersWithBlock:v9];
   }
 }
@@ -51,19 +51,19 @@ void __62__NTKFaceViewComplicationFactory_setForegroundColor_faceView___block_in
   [v5 configureComplicationView:v7 forSlot:v6 faceView:*(a1 + 40)];
 }
 
-- (void)setPlatterColor:(id)a3 faceView:(id)a4
+- (void)setPlatterColor:(id)color faceView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
-  if (([(UIColor *)self->_platterColor isEqual:v7]& 1) == 0)
+  colorCopy = color;
+  viewCopy = view;
+  if (([(UIColor *)self->_platterColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_platterColor, a3);
+    objc_storeStrong(&self->_platterColor, color);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59__NTKFaceViewComplicationFactory_setPlatterColor_faceView___block_invoke;
     v9[3] = &unk_27877F148;
     v9[4] = self;
-    v10 = v8;
+    v10 = viewCopy;
     [v10 enumerateComplicationDisplayWrappersWithBlock:v9];
   }
 }
@@ -76,19 +76,19 @@ void __59__NTKFaceViewComplicationFactory_setPlatterColor_faceView___block_invok
   [v5 configureComplicationView:v7 forSlot:v6 faceView:*(a1 + 40)];
 }
 
-- (void)setAlpha:(double)a3 faceView:(id)a4
+- (void)setAlpha:(double)alpha faceView:(id)view
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_alpha != a3)
+  viewCopy = view;
+  v7 = viewCopy;
+  if (self->_alpha != alpha)
   {
-    self->_alpha = a3;
+    self->_alpha = alpha;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __52__NTKFaceViewComplicationFactory_setAlpha_faceView___block_invoke;
     v8[3] = &unk_27877F148;
     v8[4] = self;
-    v9 = v6;
+    v9 = viewCopy;
     [v9 enumerateComplicationDisplayWrappersWithBlock:v8];
   }
 }

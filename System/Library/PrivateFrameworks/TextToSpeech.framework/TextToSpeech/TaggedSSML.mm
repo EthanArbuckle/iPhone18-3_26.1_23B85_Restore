@@ -1,7 +1,7 @@
 @interface TaggedSSML
 - (NSArray)ssmlSnippets;
 - (_TtC12TextToSpeech10TaggedSSML)init;
-- (void)setSsmlSnippets:(id)a3;
+- (void)setSsmlSnippets:(id)snippets;
 @end
 
 @implementation TaggedSSML
@@ -18,7 +18,7 @@
   return v5;
 }
 
-- (void)setSsmlSnippets:(id)a3
+- (void)setSsmlSnippets:(id)snippets
 {
   type metadata accessor for VoiceTaggedSSMLSnippet();
   v4 = sub_1A957C4C8();

@@ -1,8 +1,8 @@
 @interface HMDRemoteLoginInitiatorAuthentication
 + (id)logCategory;
-- (HMDRemoteLoginInitiatorAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6 delegate:(id)a7;
+- (HMDRemoteLoginInitiatorAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender delegate:(id)delegate;
 - (HMDRemoteLoginInitiatorAuthenticationDelegate)delegate;
-- (void)_handleAuthenticationResponse:(id)a3 error:(id)a4;
+- (void)_handleAuthenticationResponse:(id)response error:(id)error;
 - (void)authenticate;
 @end
 
@@ -15,37 +15,37 @@
   return WeakRetained;
 }
 
-- (void)_handleAuthenticationResponse:(id)a3 error:(id)a4
+- (void)_handleAuthenticationResponse:(id)response error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
-  if (v6)
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
-    v7 = v6;
+    v7 = errorCopy;
     v8 = 0;
   }
 
   else
   {
-    v9 = [HMDRemoteLoginAuthenticationResponse objWithDict:v16];
+    v9 = [HMDRemoteLoginAuthenticationResponse objWithDict:responseCopy];
     v8 = v9;
     if (v9 && ([v9 loggedInAccount], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      v11 = [v8 error];
+      error = [v8 error];
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
+      error = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
     }
 
-    v7 = v11;
+    v7 = error;
   }
 
-  v12 = [(HMDRemoteLoginInitiatorAuthentication *)self delegate];
-  if ([v12 conformsToProtocol:&unk_286680DD0])
+  delegate = [(HMDRemoteLoginInitiatorAuthentication *)self delegate];
+  if ([delegate conformsToProtocol:&unk_286680DD0])
   {
-    v13 = v12;
+    v13 = delegate;
   }
 
   else
@@ -57,8 +57,8 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v8 loggedInAccount];
-    [v14 didCompleteAuthentication:self error:v7 loggedInAccount:v15];
+    loggedInAccount = [v8 loggedInAccount];
+    [v14 didCompleteAuthentication:self error:v7 loggedInAccount:loggedInAccount];
   }
 }
 
@@ -75,16 +75,16 @@
   objc_exception_throw(v7);
 }
 
-- (HMDRemoteLoginInitiatorAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6 delegate:(id)a7
+- (HMDRemoteLoginInitiatorAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender delegate:(id)delegate
 {
-  v12 = a7;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = HMDRemoteLoginInitiatorAuthentication;
-  v13 = [(HMDRemoteLoginAuthentication *)&v16 initWithSessionID:a3 remoteDevice:a4 workQueue:a5 remoteMessageSender:a6];
+  v13 = [(HMDRemoteLoginAuthentication *)&v16 initWithSessionID:d remoteDevice:device workQueue:queue remoteMessageSender:sender];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v12);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v14;

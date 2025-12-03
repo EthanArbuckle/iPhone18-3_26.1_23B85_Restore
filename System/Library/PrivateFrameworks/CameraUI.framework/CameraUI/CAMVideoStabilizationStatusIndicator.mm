@@ -1,15 +1,15 @@
 @interface CAMVideoStabilizationStatusIndicator
-- (void)setVideoStabilizationMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)setVideoStabilizationMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMVideoStabilizationStatusIndicator
 
-- (void)setVideoStabilizationMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setVideoStabilizationMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_videoStabilizationMode != a3)
+  if (self->_videoStabilizationMode != mode)
   {
-    self->_videoStabilizationMode = a3;
-    [(CAMControlStatusIndicator *)self updateImageAnimated:a4];
+    self->_videoStabilizationMode = mode;
+    [(CAMControlStatusIndicator *)self updateImageAnimated:animated];
   }
 }
 

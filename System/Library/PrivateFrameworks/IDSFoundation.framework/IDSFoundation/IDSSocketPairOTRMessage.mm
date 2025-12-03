@@ -1,6 +1,6 @@
 @interface IDSSocketPairOTRMessage
-- (IDSSocketPairOTRMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4;
-- (IDSSocketPairOTRMessage)initWithVersion:(unsigned __int8)a3 encrypted:(BOOL)a4 shouldEncrypt:(BOOL)a5 protectionClass:(unsigned __int8)a6 streamID:(unsigned __int16)a7 priority:(unsigned __int16)a8 sequenceNumber:(unsigned int)a9 data:(id)a10;
+- (IDSSocketPairOTRMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data;
+- (IDSSocketPairOTRMessage)initWithVersion:(unsigned __int8)version encrypted:(BOOL)encrypted shouldEncrypt:(BOOL)encrypt protectionClass:(unsigned __int8)class streamID:(unsigned __int16)d priority:(unsigned __int16)priority sequenceNumber:(unsigned int)number data:(id)self0;
 - (NSData)data;
 - (id)_nonHeaderData;
 - (id)description;
@@ -8,13 +8,13 @@
 
 @implementation IDSSocketPairOTRMessage
 
-- (IDSSocketPairOTRMessage)initWithCommand:(unsigned __int8)a3 underlyingData:(id)a4
+- (IDSSocketPairOTRMessage)initWithCommand:(unsigned __int8)command underlyingData:(id)data
 {
-  v4 = a3;
-  v6 = a4;
+  commandCopy = command;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = IDSSocketPairOTRMessage;
-  v7 = [(IDSSocketPairMessage *)&v15 initWithCommand:v4 underlyingData:v6];
+  v7 = [(IDSSocketPairMessage *)&v15 initWithCommand:commandCopy underlyingData:dataCopy];
   v8 = v7;
   if (v7)
   {
@@ -22,22 +22,22 @@
     v14 = 0;
     v13 = 0;
     v12 = 0;
-    [v6 getBytes:&v14 range:{0, 1}];
+    [dataCopy getBytes:&v14 range:{0, 1}];
     v9 = v14;
     v8->_encrypted = v14 >> 7;
     v8->_shouldEncrypt = (v9 & 0x40) != 0;
     v8->_versionNumber = v9 & 0xF;
     ++v8->_offset;
-    [v6 getBytes:&v14 range:?];
+    [dataCopy getBytes:&v14 range:?];
     v10 = v14;
     v8->_protectionClass = v14 & 3;
     v8->_priority = 100 * (v10 >> 6);
     ++v8->_offset;
-    [v6 getBytes:&v13 range:?];
+    [dataCopy getBytes:&v13 range:?];
     v13 = bswap32(v13) >> 16;
     v8->_streamID = v13;
     v8->_offset += 2;
-    [v6 getBytes:&v12 range:?];
+    [dataCopy getBytes:&v12 range:?];
     v8->_sequenceNumber = bswap32(v12);
     v8->_offset += 4;
   }
@@ -45,23 +45,23 @@
   return v8;
 }
 
-- (IDSSocketPairOTRMessage)initWithVersion:(unsigned __int8)a3 encrypted:(BOOL)a4 shouldEncrypt:(BOOL)a5 protectionClass:(unsigned __int8)a6 streamID:(unsigned __int16)a7 priority:(unsigned __int16)a8 sequenceNumber:(unsigned int)a9 data:(id)a10
+- (IDSSocketPairOTRMessage)initWithVersion:(unsigned __int8)version encrypted:(BOOL)encrypted shouldEncrypt:(BOOL)encrypt protectionClass:(unsigned __int8)class streamID:(unsigned __int16)d priority:(unsigned __int16)priority sequenceNumber:(unsigned int)number data:(id)self0
 {
-  v17 = a10;
+  dataCopy = data;
   v21.receiver = self;
   v21.super_class = IDSSocketPairOTRMessage;
   v18 = [(IDSSocketPairOTRMessage *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_data, a10);
-    v19->_versionNumber = a3;
-    v19->_encrypted = a4;
-    v19->_shouldEncrypt = a5;
-    v19->_protectionClass = a6;
-    v19->_streamID = a7;
-    v19->_priority = a8;
-    v19->_sequenceNumber = a9;
+    objc_storeStrong(&v18->_data, data);
+    v19->_versionNumber = version;
+    v19->_encrypted = encrypted;
+    v19->_shouldEncrypt = encrypt;
+    v19->_protectionClass = class;
+    v19->_streamID = d;
+    v19->_priority = priority;
+    v19->_sequenceNumber = number;
   }
 
   return v19;
@@ -98,10 +98,10 @@
 
   else
   {
-    v5 = [(IDSSocketPairMessage *)self underlyingData];
+    underlyingData = [(IDSSocketPairMessage *)self underlyingData];
     offset = self->_offset;
-    v7 = [(IDSSocketPairMessage *)self _existingUnderlyingData];
-    v3 = [v5 subdataWithRangeNoCopy:{offset, objc_msgSend(v7, "length") - self->_offset}];
+    _existingUnderlyingData = [(IDSSocketPairMessage *)self _existingUnderlyingData];
+    v3 = [underlyingData subdataWithRangeNoCopy:{offset, objc_msgSend(_existingUnderlyingData, "length") - self->_offset}];
   }
 
   return v3;
@@ -131,13 +131,13 @@
   [v4 appendBytes:&v11 length:2];
   v12 = bswap32(self->_sequenceNumber);
   [v4 appendBytes:&v12 length:4];
-  v6 = [(IDSSocketPairOTRMessage *)self data];
-  v7 = [v6 length];
+  data = [(IDSSocketPairOTRMessage *)self data];
+  v7 = [data length];
 
   if (v7)
   {
-    v8 = [(IDSSocketPairOTRMessage *)self data];
-    [v4 appendData:v8];
+    data2 = [(IDSSocketPairOTRMessage *)self data];
+    [v4 appendData:data2];
   }
 
   return v4;

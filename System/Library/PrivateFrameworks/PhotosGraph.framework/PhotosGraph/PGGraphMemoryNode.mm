@@ -3,53 +3,53 @@
 + (MARelation)momentOfMemory;
 + (id)allMemoryTypeStrings;
 + (id)filter;
-+ (id)filterWithMemoryCategories:(id)a3;
-+ (id)filterWithMemoryCategory:(unint64_t)a3;
-+ (id)filterWithUniqueMemoryIdentifier:(id)a3;
-+ (id)filterWithUniqueMemoryIdentifierArray:(id)a3;
-+ (id)filterWithUniqueMemoryIdentifiers:(id)a3;
-+ (id)fullMemoryTypeStringWithMemoryCategorySubcategory:(unint64_t)a3 featureNodes:(id)a4;
-+ (id)fullyQualifiedMemoryTypeForMemoryType:(id)a3 withPrefix:(id)a4;
-+ (id)uniqueMemoryIdentifierWithMemoryLabel:(id)a3 featureNodes:(id)a4;
-- (BOOL)hasProperties:(id)a3;
++ (id)filterWithMemoryCategories:(id)categories;
++ (id)filterWithMemoryCategory:(unint64_t)category;
++ (id)filterWithUniqueMemoryIdentifier:(id)identifier;
++ (id)filterWithUniqueMemoryIdentifierArray:(id)array;
++ (id)filterWithUniqueMemoryIdentifiers:(id)identifiers;
++ (id)fullMemoryTypeStringWithMemoryCategorySubcategory:(unint64_t)subcategory featureNodes:(id)nodes;
++ (id)fullyQualifiedMemoryTypeForMemoryType:(id)type withPrefix:(id)prefix;
++ (id)uniqueMemoryIdentifierWithMemoryLabel:(id)label featureNodes:(id)nodes;
+- (BOOL)hasProperties:(id)properties;
 - (NSString)description;
 - (PGGraphFeatureNodeCollection)memoryFeatureNodes;
-- (PGGraphMemoryNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphMemoryNode)initWithLabel:(id)a3 memoryCategorySubcategory:(unint64_t)a4 uniqueMemoryIdentifier:(id)a5 generatedWithFallbackRequirements:(BOOL)a6;
+- (PGGraphMemoryNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphMemoryNode)initWithLabel:(id)label memoryCategorySubcategory:(unint64_t)subcategory uniqueMemoryIdentifier:(id)identifier generatedWithFallbackRequirements:(BOOL)requirements;
 - (PGGraphMemoryNodeCollection)collection;
 - (PGGraphMomentNodeCollection)memoryMomentNodes;
-- (id)memoryFeatureNodesInGraph:(id)a3;
+- (id)memoryFeatureNodesInGraph:(id)graph;
 - (id)propertyDictionary;
 @end
 
 @implementation PGGraphMemoryNode
 
-+ (id)fullyQualifiedMemoryTypeForMemoryType:(id)a3 withPrefix:(id)a4
++ (id)fullyQualifiedMemoryTypeForMemoryType:(id)type withPrefix:(id)prefix
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([(__CFString *)v6 length])
+  typeCopy = type;
+  prefixCopy = prefix;
+  if ([(__CFString *)prefixCopy length])
   {
-    v7 = v6;
+    v7 = prefixCopy;
   }
 
   else
   {
     v8 = +[PGLogging sharedLogging];
-    v9 = [v8 loggingConnection];
+    loggingConnection = [v8 loggingConnection];
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v5;
-      _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "[PGGraphMemoryNode] qualifier prefix for MemoryTypeString: %@ is nil", &v13, 0xCu);
+      v14 = typeCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGGraphMemoryNode] qualifier prefix for MemoryTypeString: %@ is nil", &v13, 0xCu);
     }
 
     v7 = @"Unknown";
   }
 
-  v10 = [(__CFString *)v7 stringByAppendingString:v5];
+  v10 = [(__CFString *)v7 stringByAppendingString:typeCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 
@@ -670,31 +670,31 @@
   return v2;
 }
 
-+ (id)fullMemoryTypeStringWithMemoryCategorySubcategory:(unint64_t)a3 featureNodes:(id)a4
++ (id)fullMemoryTypeStringWithMemoryCategorySubcategory:(unint64_t)subcategory featureNodes:(id)nodes
 {
-  v5 = a4;
-  v6 = PGStringForMemoryCategorySubcategory(a3);
-  if (a3 - 11001 >= 9)
+  nodesCopy = nodes;
+  v6 = PGStringForMemoryCategorySubcategory(subcategory);
+  if (subcategory - 11001 >= 9)
   {
-    if (a3 - 16001 >= 6)
+    if (subcategory - 16001 >= 6)
     {
       goto LABEL_6;
     }
 
-    v7 = [(PGGraphNodeCollection *)PGGraphSceneFeatureNodeCollection subsetInCollection:v5];
-    v8 = [v7 labels];
+    v7 = [(PGGraphNodeCollection *)PGGraphSceneFeatureNodeCollection subsetInCollection:nodesCopy];
+    labels = [v7 labels];
   }
 
   else
   {
-    v7 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:v5];
-    v8 = [v7 meaningLabels];
+    v7 = [(PGGraphNodeCollection *)PGGraphMeaningNodeCollection subsetInCollection:nodesCopy];
+    labels = [v7 meaningLabels];
   }
 
-  v9 = v8;
-  v10 = [v8 anyObject];
+  v9 = labels;
+  anyObject = [labels anyObject];
 
-  v11 = [objc_opt_class() fullyQualifiedMemoryTypeForMemoryType:v6 withPrefix:v10];
+  v11 = [objc_opt_class() fullyQualifiedMemoryTypeForMemoryType:v6 withPrefix:anyObject];
 
   v6 = v11;
 LABEL_6:
@@ -704,26 +704,26 @@ LABEL_6:
 
 - (PGGraphFeatureNodeCollection)memoryFeatureNodes
 {
-  v2 = [(PGGraphMemoryNode *)self collection];
-  v3 = [v2 featureNodes];
+  collection = [(PGGraphMemoryNode *)self collection];
+  featureNodes = [collection featureNodes];
 
-  return v3;
+  return featureNodes;
 }
 
-- (id)memoryFeatureNodesInGraph:(id)a3
+- (id)memoryFeatureNodesInGraph:(id)graph
 {
-  v3 = [(PGGraphMemoryNode *)self collection];
-  v4 = [v3 featureNodes];
+  collection = [(PGGraphMemoryNode *)self collection];
+  featureNodes = [collection featureNodes];
 
-  return v4;
+  return featureNodes;
 }
 
 - (PGGraphMomentNodeCollection)memoryMomentNodes
 {
-  v2 = [(PGGraphMemoryNode *)self collection];
-  v3 = [v2 momentNodes];
+  collection = [(PGGraphMemoryNode *)self collection];
+  momentNodes = [collection momentNodes];
 
-  return v3;
+  return momentNodes;
 }
 
 - (PGGraphMemoryNodeCollection)collection
@@ -756,11 +756,11 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"memid"];
     v7 = v6;
@@ -801,138 +801,138 @@ LABEL_11:
   return v10;
 }
 
-- (PGGraphMemoryNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphMemoryNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 objectForKeyedSubscript:@"memid"];
-  v10 = [v7 objectForKeyedSubscript:@"subcategory"];
-  v11 = [v10 unsignedIntegerValue];
+  propertiesCopy = properties;
+  labelCopy = label;
+  v9 = [propertiesCopy objectForKeyedSubscript:@"memid"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"subcategory"];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [v7 objectForKeyedSubscript:@"generatedWithFallbackRequirements"];
+  v12 = [propertiesCopy objectForKeyedSubscript:@"generatedWithFallbackRequirements"];
 
-  v13 = [v12 BOOLValue];
-  v14 = [(PGGraphMemoryNode *)self initWithLabel:v8 memoryCategorySubcategory:v11 uniqueMemoryIdentifier:v9 generatedWithFallbackRequirements:v13];
+  bOOLValue = [v12 BOOLValue];
+  v14 = [(PGGraphMemoryNode *)self initWithLabel:labelCopy memoryCategorySubcategory:unsignedIntegerValue uniqueMemoryIdentifier:v9 generatedWithFallbackRequirements:bOOLValue];
 
   return v14;
 }
 
-- (PGGraphMemoryNode)initWithLabel:(id)a3 memoryCategorySubcategory:(unint64_t)a4 uniqueMemoryIdentifier:(id)a5 generatedWithFallbackRequirements:(BOOL)a6
+- (PGGraphMemoryNode)initWithLabel:(id)label memoryCategorySubcategory:(unint64_t)subcategory uniqueMemoryIdentifier:(id)identifier generatedWithFallbackRequirements:(BOOL)requirements
 {
-  v10 = a3;
-  v11 = a5;
+  labelCopy = label;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = PGGraphMemoryNode;
   v12 = [(PGGraphNode *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [labelCopy copy];
     label = v12->_label;
     v12->_label = v13;
 
-    objc_storeStrong(&v12->_uniqueMemoryIdentifier, a5);
-    v12->_memoryCategorySubcategory = a4;
-    v12->_generatedWithFallbackRequirements = a6;
+    objc_storeStrong(&v12->_uniqueMemoryIdentifier, identifier);
+    v12->_memoryCategorySubcategory = subcategory;
+    v12->_generatedWithFallbackRequirements = requirements;
   }
 
   return v12;
 }
 
-+ (id)uniqueMemoryIdentifierWithMemoryLabel:(id)a3 featureNodes:(id)a4
++ (id)uniqueMemoryIdentifierWithMemoryLabel:(id)label featureNodes:(id)nodes
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 featureIdentifiers];
-  if ([v6 count])
+  labelCopy = label;
+  featureIdentifiers = [nodes featureIdentifiers];
+  if ([featureIdentifiers count])
   {
     v7 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:0];
     v15[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    v9 = [v6 sortedArrayUsingDescriptors:v8];
+    v9 = [featureIdentifiers sortedArrayUsingDescriptors:v8];
 
     v10 = MEMORY[0x277CCACA8];
     v11 = [v9 componentsJoinedByString:@"|"];
-    v12 = [v10 stringWithFormat:@"%@|%@", v5, v11];
+    labelCopy = [v10 stringWithFormat:@"%@|%@", labelCopy, v11];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v5];
+    labelCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", labelCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return labelCopy;
 }
 
 + (MARelation)momentOfMemory
 {
   v2 = +[PGGraphMemoryContainsAssetsFromEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MARelation)featureOfMemory
 {
   v2 = +[PGGraphMemoryFeaturesEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
-+ (id)filterWithUniqueMemoryIdentifierArray:(id)a3
++ (id)filterWithUniqueMemoryIdentifierArray:(id)array
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 filter];
+  arrayCopy = array;
+  filter = [self filter];
   v10 = @"memid";
-  v11[0] = v4;
+  v11[0] = arrayCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)filterWithUniqueMemoryIdentifiers:(id)a3
++ (id)filterWithUniqueMemoryIdentifiers:(id)identifiers
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 filter];
+  identifiersCopy = identifiers;
+  filter = [self filter];
   v10 = @"memid";
-  v11[0] = v4;
+  v11[0] = identifiersCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)filterWithUniqueMemoryIdentifier:(id)a3
++ (id)filterWithUniqueMemoryIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 filter];
+  identifierCopy = identifier;
+  filter = [self filter];
   v10 = @"memid";
-  v11[0] = v4;
+  v11[0] = identifierCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 filterBySettingProperties:v6];
+  v7 = [filter filterBySettingProperties:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-+ (id)filterWithMemoryCategories:(id)a3
++ (id)filterWithMemoryCategories:(id)categories
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = a3;
+  categoriesCopy = categories;
   v5 = objc_alloc_init(v3);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -940,7 +940,7 @@ LABEL_11:
   v10[3] = &unk_27888A200;
   v11 = v5;
   v6 = v5;
-  [v4 enumerateIndexesUsingBlock:v10];
+  [categoriesCopy enumerateIndexesUsingBlock:v10];
 
   v7 = objc_alloc(MEMORY[0x277D22C78]);
   v8 = [v7 initWithLabels:v6 domain:1100 properties:MEMORY[0x277CBEC10]];
@@ -974,9 +974,9 @@ void __48__PGGraphMemoryNode_filterWithMemoryCategories___block_invoke(uint64_t 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)filterWithMemoryCategory:(unint64_t)a3
++ (id)filterWithMemoryCategory:(unint64_t)category
 {
-  v3 = [PGGraphBuilder memoryLabelForCategory:a3];
+  v3 = [PGGraphBuilder memoryLabelForCategory:category];
   v4 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:v3 domain:1100];
 
   return v4;

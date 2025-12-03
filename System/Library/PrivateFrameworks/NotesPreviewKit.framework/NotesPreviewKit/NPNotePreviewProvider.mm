@@ -1,7 +1,7 @@
 @interface NPNotePreviewProvider
 + (NPNotePreviewProvider)shared;
-- (NPNotePreviewProvider)initWithNotePreviewProvider:(id)a3;
-- (id)previewForUserActivity:(id)a3 error:(id *)a4;
+- (NPNotePreviewProvider)initWithNotePreviewProvider:(id)provider;
+- (id)previewForUserActivity:(id)activity error:(id *)error;
 @end
 
 @implementation NPNotePreviewProvider
@@ -27,26 +27,26 @@ void __31__NPNotePreviewProvider_shared__block_invoke()
   shared_shared = v1;
 }
 
-- (NPNotePreviewProvider)initWithNotePreviewProvider:(id)a3
+- (NPNotePreviewProvider)initWithNotePreviewProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = NPNotePreviewProvider;
   v6 = [(NPNotePreviewProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_notePreviewProvider, a3);
+    objc_storeStrong(&v6->_notePreviewProvider, provider);
   }
 
   return v7;
 }
 
-- (id)previewForUserActivity:(id)a3 error:(id *)a4
+- (id)previewForUserActivity:(id)activity error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NPNotePreviewProvider *)self notePreviewProvider];
-  v8 = [v7 previewForUserActivity:v6 error:a4];
+  activityCopy = activity;
+  notePreviewProvider = [(NPNotePreviewProvider *)self notePreviewProvider];
+  v8 = [notePreviewProvider previewForUserActivity:activityCopy error:error];
 
   return v8;
 }

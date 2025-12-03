@@ -1,85 +1,85 @@
 @interface TSAWebVideoInfo
-+ (Class)drawableInfoSubclassForClass:(Class)a3 unarchiver:(id)a4;
-+ (id)p_defaultArchivedImageStyleWithContext:(id)a3;
++ (Class)drawableInfoSubclassForClass:(Class)class unarchiver:(id)unarchiver;
++ (id)p_defaultArchivedImageStyleWithContext:(id)context;
 - (NSURL)URL;
-- (TSAWebVideoInfo)initWithContext:(id)a3 geometry:(id)a4 URL:(id)a5 posterImageData:(id)a6;
-- (TSAWebVideoInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 URL:(id)a6 posterImageData:(id)a7;
+- (TSAWebVideoInfo)initWithContext:(id)context geometry:(id)geometry URL:(id)l posterImageData:(id)data;
+- (TSAWebVideoInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style URL:(id)l posterImageData:(id)data;
 - (id)animationFilters;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)p_attributedStringRepresentation;
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4;
-- (id)promisedDataForType:(id)a3;
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info;
+- (id)promisedDataForType:(id)type;
 - (id)typeName;
 - (id)typesToPromiseWhenCopyingSingleDrawable;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)didInitFromSOS;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)replaceReferencedStylesUsingBlock:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3;
-- (void)setAttribution:(id)a3;
-- (void)setPosterImageData:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)takeGeometryFromReplacedWebVideoInfo:(id)a3;
-- (void)takePropertiesFromReplacedWebVideoInfo:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)replaceReferencedStylesUsingBlock:(id)block;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size;
+- (void)setAttribution:(id)attribution;
+- (void)setPosterImageData:(id)data;
+- (void)setStyle:(id)style;
+- (void)takeGeometryFromReplacedWebVideoInfo:(id)info;
+- (void)takePropertiesFromReplacedWebVideoInfo:(id)info;
 @end
 
 @implementation TSAWebVideoInfo
 
-- (void)setPosterImageData:(id)a3
+- (void)setPosterImageData:(id)data
 {
-  v12 = a3;
-  if (self->_posterImageData != v12)
+  dataCopy = data;
+  if (self->_posterImageData != dataCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7);
     objc_msgSend_willRemoveReferenceToData_(self, v8, self->_posterImageData, v9);
-    objc_storeStrong(&self->_posterImageData, a3);
-    objc_msgSend_didAddReferenceToData_(self, v10, v12, v11);
+    objc_storeStrong(&self->_posterImageData, data);
+    objc_msgSend_didAddReferenceToData_(self, v10, dataCopy, v11);
   }
 }
 
-- (TSAWebVideoInfo)initWithContext:(id)a3 geometry:(id)a4 URL:(id)a5 posterImageData:(id)a6
+- (TSAWebVideoInfo)initWithContext:(id)context geometry:(id)geometry URL:(id)l posterImageData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  geometryCopy = geometry;
+  lCopy = l;
+  dataCopy = data;
   v14 = objc_opt_class();
-  v17 = objc_msgSend_p_defaultArchivedImageStyleWithContext_(v14, v15, v10, v16);
-  v19 = objc_msgSend_initWithContext_geometry_style_URL_posterImageData_(self, v18, v10, v11, v17, v12, v13);
+  v17 = objc_msgSend_p_defaultArchivedImageStyleWithContext_(v14, v15, contextCopy, v16);
+  v19 = objc_msgSend_initWithContext_geometry_style_URL_posterImageData_(self, v18, contextCopy, geometryCopy, v17, lCopy, dataCopy);
 
   return v19;
 }
 
-- (TSAWebVideoInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 URL:(id)a6 posterImageData:(id)a7
+- (TSAWebVideoInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style URL:(id)l posterImageData:(id)data
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  geometryCopy = geometry;
+  styleCopy = style;
+  lCopy = l;
+  dataCopy = data;
   v42.receiver = self;
   v42.super_class = TSAWebVideoInfo;
-  v17 = [(TSAWebVideoInfo *)&v42 initWithContext:v12 geometry:v13];
+  v17 = [(TSAWebVideoInfo *)&v42 initWithContext:contextCopy geometry:geometryCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_style, a5);
+    objc_storeStrong(&v17->_style, style);
     v19 = objc_alloc(MEMORY[0x277D802B0]);
-    v22 = objc_msgSend_initWithImageData_(v19, v20, v16, v21);
+    v22 = objc_msgSend_initWithImageData_(v19, v20, dataCopy, v21);
     objc_msgSend_naturalSize(v22, v23, v24, v25);
     v18->_archivedImageNaturalSize.width = v26;
     v18->_archivedImageNaturalSize.height = v27;
 
-    v31 = objc_msgSend_absoluteString(v15, v28, v29, v30);
+    v31 = objc_msgSend_absoluteString(lCopy, v28, v29, v30);
     v35 = objc_msgSend_copy(v31, v32, v33, v34);
     URLString = v18->_URLString;
     v18->_URLString = v35;
 
-    objc_msgSend_setPosterImageData_(v18, v37, v16, v38);
+    objc_msgSend_setPosterImageData_(v18, v37, dataCopy, v38);
     v18->_definedPosterImageData = v18->_posterImageData != 0;
     objc_msgSend_setAspectRatioLocked_(v18, v39, 1, v40);
   }
@@ -103,13 +103,13 @@
   return v6;
 }
 
-- (void)setAttribution:(id)a3
+- (void)setAttribution:(id)attribution
 {
-  v12 = a3;
-  if (self->_attribution != v12)
+  attributionCopy = attribution;
+  if (self->_attribution != attributionCopy)
   {
     objc_msgSend_willModify(self, v4, v5, v6);
-    v10 = objc_msgSend_copy(v12, v7, v8, v9);
+    v10 = objc_msgSend_copy(attributionCopy, v7, v8, v9);
     attribution = self->_attribution;
     self->_attribution = v10;
 
@@ -117,9 +117,9 @@
   }
 }
 
-- (void)takeGeometryFromReplacedWebVideoInfo:(id)a3
+- (void)takeGeometryFromReplacedWebVideoInfo:(id)info
 {
-  v5 = objc_msgSend_geometry(a3, a2, a3, v3);
+  v5 = objc_msgSend_geometry(info, a2, info, v3);
   v46 = objc_msgSend_mutableCopy(v5, v6, v7, v8);
 
   objc_msgSend_center(v46, v9, v10, v11);
@@ -148,21 +148,21 @@
   objc_msgSend_setGeometry_(self, v44, v46, v45);
 }
 
-- (void)takePropertiesFromReplacedWebVideoInfo:(id)a3
+- (void)takePropertiesFromReplacedWebVideoInfo:(id)info
 {
-  v99 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_context(self, v4, v5, v6);
-  objc_msgSend_takeGeometryFromReplacedWebVideoInfo_(self, v8, v99, v9);
-  v13 = objc_msgSend_style(v99, v10, v11, v12);
+  objc_msgSend_takeGeometryFromReplacedWebVideoInfo_(self, v8, infoCopy, v9);
+  v13 = objc_msgSend_style(infoCopy, v10, v11, v12);
   objc_msgSend_setStyle_(self, v14, v13, v15);
 
   if (objc_msgSend_supportsAttachedComments(self, v16, v17, v18))
   {
-    v22 = objc_msgSend_comment(v99, v19, v20, v21);
+    v22 = objc_msgSend_comment(infoCopy, v19, v20, v21);
 
     if (v22)
     {
-      v23 = objc_msgSend_comment(v99, v19, v20, v21);
+      v23 = objc_msgSend_comment(infoCopy, v19, v20, v21);
       v27 = objc_msgSend_storage(v23, v24, v25, v26);
 
       v28 = objc_alloc(MEMORY[0x277D80200]);
@@ -178,35 +178,35 @@
     }
   }
 
-  v52 = objc_msgSend_exteriorTextWrap(v99, v19, v20, v21);
+  v52 = objc_msgSend_exteriorTextWrap(infoCopy, v19, v20, v21);
   objc_msgSend_setExteriorTextWrap_(self, v53, v52, v54);
 
-  v58 = objc_msgSend_aspectRatioLocked(v99, v55, v56, v57);
+  v58 = objc_msgSend_aspectRatioLocked(infoCopy, v55, v56, v57);
   objc_msgSend_setAspectRatioLocked_(self, v59, v58, v60);
-  v64 = objc_msgSend_hyperlinkURL(v99, v61, v62, v63);
+  v64 = objc_msgSend_hyperlinkURL(infoCopy, v61, v62, v63);
   objc_msgSend_setHyperlinkURL_(self, v65, v64, v66);
 
   if (objc_msgSend_allowsTitle(self, v67, v68, v69))
   {
-    v73 = objc_msgSend_titleInfoIgnoringVisibility(v99, v70, v71, v72);
+    v73 = objc_msgSend_titleInfoIgnoringVisibility(infoCopy, v70, v71, v72);
     v77 = objc_msgSend_replicateForReinsertion(v73, v74, v75, v76);
     objc_msgSend_setTitle_(self, v78, v77, v79);
   }
 
-  v80 = objc_msgSend_titleHidden(v99, v70, v71, v72);
+  v80 = objc_msgSend_titleHidden(infoCopy, v70, v71, v72);
   objc_msgSend_setTitleHidden_(self, v81, v80, v82);
   if (objc_msgSend_allowsCaption(self, v83, v84, v85))
   {
-    v89 = objc_msgSend_captionInfoIgnoringVisibility(v99, v86, v87, v88);
+    v89 = objc_msgSend_captionInfoIgnoringVisibility(infoCopy, v86, v87, v88);
     v93 = objc_msgSend_replicateForReinsertion(v89, v90, v91, v92);
     objc_msgSend_setCaption_(self, v94, v93, v95);
   }
 
-  v96 = objc_msgSend_captionHidden(v99, v86, v87, v88);
+  v96 = objc_msgSend_captionHidden(infoCopy, v86, v87, v88);
   objc_msgSend_setCaptionHidden_(self, v97, v96, v98);
 }
 
-- (void)scaleDownSizeToFitWithinSize:(CGSize)a3
+- (void)scaleDownSizeToFitWithinSize:(CGSize)size
 {
   if (objc_msgSend_tsp_isInDocument(self, a2, v3, v4))
   {
@@ -257,12 +257,12 @@
   return v10;
 }
 
-- (id)promisedDataForType:(id)a3
+- (id)promisedDataForType:(id)type
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v8 = objc_msgSend_identifier(*MEMORY[0x277CE1E50], v5, v6, v7);
-  v11 = objc_msgSend_tsu_conformsToUTI_(v4, v9, v8, v10);
+  v11 = objc_msgSend_tsu_conformsToUTI_(typeCopy, v9, v8, v10);
 
   if (v11)
   {
@@ -277,7 +277,7 @@
   else
   {
     v24 = objc_msgSend_identifier(*MEMORY[0x277CE1E20], v12, v13, v14);
-    v27 = objc_msgSend_tsu_conformsToUTI_(v4, v25, v24, v26);
+    v27 = objc_msgSend_tsu_conformsToUTI_(typeCopy, v25, v24, v26);
 
     if (v27)
     {
@@ -309,28 +309,28 @@
   return v13;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_pushMappingContext_(v7, v8, self, v9);
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
+  objc_msgSend_pushMappingContext_(mapperCopy, v8, self, v9);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_27609287C;
   v16[3] = &unk_27A6AF678;
-  v10 = v7;
+  v10 = mapperCopy;
   v17 = v10;
   objc_msgSend_replaceReferencedStylesUsingBlock_(self, v11, v16, v12);
   v15.receiver = self;
   v15.super_class = TSAWebVideoInfo;
-  [(TSAWebVideoInfo *)&v15 adoptStylesheet:v6 withMapper:v10];
+  [(TSAWebVideoInfo *)&v15 adoptStylesheet:stylesheetCopy withMapper:v10];
   objc_msgSend_popMappingContext_(v10, v13, self, v14);
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v9 = a3;
-  if (self->_style != v9)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
     objc_msgSend_willModify(self, v4, v5, v6);
     objc_opt_class();
@@ -340,25 +340,25 @@
   }
 }
 
-- (id)pastedPropertyMapForStyle:(id)a3 tailLineEndInfo:(int)a4
+- (id)pastedPropertyMapForStyle:(id)style tailLineEndInfo:(int)info
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSAWebVideoInfo pastedPropertyMapForStyle:tailLineEndInfo:]", v7);
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAWebVideoInfo.mm", v10);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v12, v8, v11, 342, 0, "Styles should not be pasted on web videos.");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14, v15);
-  v19 = objc_msgSend_fullPropertyMap(v4, v16, v17, v18);
+  v19 = objc_msgSend_fullPropertyMap(styleCopy, v16, v17, v18);
   v23 = objc_msgSend_copy(v19, v20, v21, v22);
 
   return v23;
 }
 
-- (void)replaceReferencedStylesUsingBlock:(id)a3
+- (void)replaceReferencedStylesUsingBlock:(id)block
 {
-  v16 = a3;
-  v6 = v16[2](v16, self->_style);
+  blockCopy = block;
+  v6 = blockCopy[2](blockCopy, self->_style);
   if (v6)
   {
     objc_msgSend_setStyle_(self, v4, v6, v5);
@@ -388,17 +388,17 @@
   return v7;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   objc_opt_class();
   v11 = TSUDynamicCast();
   if (v11)
   {
     v12 = objc_msgSend_geometry(self, v8, v9, v10);
     v16 = objc_msgSend_geometry(v11, v13, v14, v15);
-    objc_msgSend_mixingTypeWithObject_context_(v12, v17, v16, v7);
+    objc_msgSend_mixingTypeWithObject_context_(v12, v17, v16, contextCopy);
     v18 = TSDMixingTypeBestFromMixingTypes();
 
     v22 = objc_msgSend_URL(self, v19, v20, v21);
@@ -444,9 +444,9 @@
   return v41;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
   v10 = objc_msgSend_geometry(self, v7, v8, v9);
@@ -462,53 +462,53 @@
   return v30;
 }
 
-+ (Class)drawableInfoSubclassForClass:(Class)a3 unarchiver:(id)a4
++ (Class)drawableInfoSubclassForClass:(Class)class unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (objc_opt_class() == a3)
+  unarchiverCopy = unarchiver;
+  if (objc_opt_class() == class)
   {
-    v7 = v6;
+    v7 = unarchiverCopy;
     v8 = MEMORY[0x277D80558];
     google::protobuf::internal::AssignDescriptors();
     v11 = objc_msgSend_messageWithDescriptor_(v7, v9, *(*(v8 + 88) + 672), v10);
 
     if (google::protobuf::internal::ExtensionSet::Has((v11 + 16)))
     {
-      a3 = a1;
+      class = self;
     }
   }
 
-  v12 = a3;
+  classCopy = class;
 
-  return a3;
+  return class;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v9 = a3;
+  unarchiverCopy = unarchiver;
   v4 = MEMORY[0x277D80558];
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v9, v5, *(*(v4 + 88) + 672), v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, *(*(v4 + 88) + 672), v6);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, v9);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v8, v7, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v8 = a3;
+  archiverCopy = archiver;
   v4 = MEMORY[0x277D80558];
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v8, v5, sub_276094000, *(*(v4 + 88) + 672));
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276094000, *(*(v4 + 88) + 672));
 
-  objc_msgSend_saveToArchive_archiver_(self, v7, v6, v8);
+  objc_msgSend_saveToArchive_archiver_(self, v7, v6, archiverCopy);
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 6))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 6))
   {
-    v7 = *(a3 + 6);
+    v7 = *(archive + 6);
   }
 
   else
@@ -518,7 +518,7 @@
 
   v45.receiver = self;
   v45.super_class = TSAWebVideoInfo;
-  [(TSAWebVideoInfo *)&v45 loadFromArchive:v7 unarchiver:v6];
+  [(TSAWebVideoInfo *)&v45 loadFromArchive:v7 unarchiver:unarchiverCopy];
   Message = google::protobuf::internal::ExtensionSet::GetMessage();
   v11 = *(Message + 16);
   if (v11)
@@ -533,7 +533,7 @@
 
   if ((v11 & 2) != 0)
   {
-    v17 = objc_msgSend_readDataReferenceMessage_(v6, v8, *(Message + 32), v9);
+    v17 = objc_msgSend_readDataReferenceMessage_(unarchiverCopy, v8, *(Message + 32), v9);
     posterImageData = self->_posterImageData;
     self->_posterImageData = v17;
   }
@@ -560,12 +560,12 @@
     v33 = objc_alloc(MEMORY[0x277D801C0]);
     if (*(Message + 40))
     {
-      v35 = objc_msgSend_initFromMessage_unarchiver_(v33, v34, *(Message + 40), v6);
+      v35 = objc_msgSend_initFromMessage_unarchiver_(v33, v34, *(Message + 40), unarchiverCopy);
     }
 
     else
     {
-      v35 = objc_msgSend_initFromMessage_unarchiver_(v33, v34, MEMORY[0x277D80480], v6);
+      v35 = objc_msgSend_initFromMessage_unarchiver_(v33, v34, MEMORY[0x277D80480], unarchiverCopy);
     }
 
     attribution = self->_attribution;
@@ -574,13 +574,13 @@
     self->_definedAttribution = 1;
   }
 
-  v37 = *(a3 + 8);
+  v37 = *(archive + 8);
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = sub_2760935B8;
   v44[3] = &unk_27A6AF6A0;
   v44[4] = self;
-  v38 = v6;
+  v38 = unarchiverCopy;
   v40 = objc_opt_class();
   if (v37)
   {
@@ -592,9 +592,9 @@
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v38, v39, MEMORY[0x277D80A18], v40, 0, v44);
   }
 
-  if (*(a3 + 13))
+  if (*(archive + 13))
   {
-    v41 = *(a3 + 13);
+    v41 = *(archive + 13);
   }
 
   else
@@ -607,20 +607,20 @@
   self->_archivedImageNaturalSize.height = v43;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = sub_276093B54;
   v62[3] = &unk_27A6AF6C8;
-  v65 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v63 = v7;
-  v64 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, a3, v62);
-  v10 = objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v7, v9, 300, a3);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 1, archive, v62);
+  v10 = objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForField_message_(v7, v9, 300, archive);
   TSA::WebVideoInfo::default_instance(v10);
   v14 = google::protobuf::internal::ExtensionSet::MutableMessage();
   URLString = self->_URLString;
@@ -682,51 +682,51 @@
     v26 = objc_msgSend_null(MEMORY[0x277D80828], v23, v24, v25);
   }
 
-  *(a3 + 10) |= 0x200u;
-  v27 = *(a3 + 15);
+  *(archive + 10) |= 0x200u;
+  v27 = *(archive + 15);
   if (!v27)
   {
-    v28 = *(a3 + 1);
+    v28 = *(archive + 1);
     if (v28)
     {
       v28 = *(v28 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v27 = MEMORY[0x277C95130](v28);
-    *(a3 + 15) = v27;
+    *(archive + 15) = v27;
   }
 
   objc_msgSend_setDataReference_message_(v7, v23, v26, v27);
   style = self->_style;
-  *(a3 + 10) |= 4u;
-  v31 = *(a3 + 8);
+  *(archive + 10) |= 4u;
+  v31 = *(archive + 8);
   if (!v31)
   {
-    v32 = *(a3 + 1);
+    v32 = *(archive + 1);
     if (v32)
     {
       v32 = *(v32 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v31 = MEMORY[0x277C951B0](v32);
-    *(a3 + 8) = v31;
+    *(archive + 8) = v31;
   }
 
   objc_msgSend_setStrongReference_message_(v7, v29, style, v31);
   width = self->_archivedImageNaturalSize.width;
   height = self->_archivedImageNaturalSize.height;
-  *(a3 + 10) |= 8u;
-  v35 = *(a3 + 9);
+  *(archive + 10) |= 8u;
+  v35 = *(archive + 9);
   if (!v35)
   {
-    v36 = *(a3 + 1);
+    v36 = *(archive + 1);
     if (v36)
     {
       v36 = *(v36 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v35 = MEMORY[0x277C95160](v36);
-    *(a3 + 9) = v35;
+    *(archive + 9) = v35;
   }
 
   v73.width = width;
@@ -734,18 +734,18 @@
   TSPCGSizeCopyToMessage(v73, v35);
   v37 = self->_archivedImageNaturalSize.width;
   v38 = self->_archivedImageNaturalSize.height;
-  *(a3 + 10) |= 0x80u;
-  v39 = *(a3 + 13);
+  *(archive + 10) |= 0x80u;
+  v39 = *(archive + 13);
   if (!v39)
   {
-    v40 = *(a3 + 1);
+    v40 = *(archive + 1);
     if (v40)
     {
       v40 = *(v40 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v39 = MEMORY[0x277C95160](v40);
-    *(a3 + 13) = v39;
+    *(archive + 13) = v39;
   }
 
   v74.width = v37;
@@ -775,7 +775,7 @@
         goto LABEL_40;
       }
 
-      v55 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(v7, v51, v49, *v54, a3);
+      v55 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(v7, v51, v49, *v54, archive);
       v56 = MEMORY[0x277D80558];
       google::protobuf::internal::AssignDescriptors();
       v58 = objc_msgSend_messageWithNewFunction_descriptor_(v55, v57, sub_276094000, *(*(v56 + 88) + 672));
@@ -815,11 +815,11 @@ LABEL_40:
   objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v7, v51, *v54, v49, @"TSAWebVideos");
 }
 
-+ (id)p_defaultArchivedImageStyleWithContext:(id)a3
++ (id)p_defaultArchivedImageStyleWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   objc_opt_class();
-  v7 = objc_msgSend_documentRoot(v3, v4, v5, v6);
+  v7 = objc_msgSend_documentRoot(contextCopy, v4, v5, v6);
   v11 = objc_msgSend_theme(v7, v8, v9, v10);
   v13 = objc_msgSend_presetOfKind_index_(v11, v12, *MEMORY[0x277D80B38], 0);
   v14 = TSUCheckedDynamicCast();

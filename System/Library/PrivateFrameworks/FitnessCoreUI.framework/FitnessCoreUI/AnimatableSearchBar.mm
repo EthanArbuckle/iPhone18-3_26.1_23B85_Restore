@@ -1,6 +1,6 @@
 @interface AnimatableSearchBar
-- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithFrame:(CGRect)a3;
+- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -16,16 +16,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_20C3DA96C();
 }
 
-- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -37,12 +37,12 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI19AnimatableSearchBar_isAnimating) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for AnimatableSearchBar();
-  v8 = [(AnimatableSearchBar *)&v10 initWithFrame:x, y, width, height];
+  height = [(AnimatableSearchBar *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
-- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI19AnimatableSearchBar)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -55,8 +55,8 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC13FitnessCoreUI19AnimatableSearchBar_isAnimating) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for AnimatableSearchBar();
-  v5 = a3;
-  v6 = [(AnimatableSearchBar *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(AnimatableSearchBar *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

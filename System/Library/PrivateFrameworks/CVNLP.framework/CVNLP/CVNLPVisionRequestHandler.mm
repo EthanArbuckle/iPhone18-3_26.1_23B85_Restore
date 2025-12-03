@@ -1,18 +1,18 @@
 @interface CVNLPVisionRequestHandler
-- (CVNLPVisionRequestHandler)initWithOptions:(id)a3 runTimeParams:(id)a4;
-- (id)classifyImage:(__CVBuffer *)a3;
+- (CVNLPVisionRequestHandler)initWithOptions:(id)options runTimeParams:(id)params;
+- (id)classifyImage:(__CVBuffer *)image;
 @end
 
 @implementation CVNLPVisionRequestHandler
 
-- (CVNLPVisionRequestHandler)initWithOptions:(id)a3 runTimeParams:(id)a4
+- (CVNLPVisionRequestHandler)initWithOptions:(id)options runTimeParams:(id)params
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  paramsCopy = params;
   v25.receiver = self;
   v25.super_class = CVNLPVisionRequestHandler;
-  v8 = [(CVNLPCaptionModelBase *)&v25 initWithOptions:v6 runTimeParams:v7];
+  v8 = [(CVNLPCaptionModelBase *)&v25 initWithOptions:optionsCopy runTimeParams:paramsCopy];
   if (!v8)
   {
     goto LABEL_21;
@@ -22,7 +22,7 @@
   v23[1] = 3221225472;
   v23[2] = sub_1D9DBEA0C;
   v23[3] = &unk_1E858E3F0;
-  v24 = v7;
+  v24 = paramsCopy;
   v9 = MEMORY[0x1DA741A60](v23);
   v31 = 0;
   v32 = &v31;
@@ -148,7 +148,7 @@ LABEL_21:
   return v8;
 }
 
-- (id)classifyImage:(__CVBuffer *)a3
+- (id)classifyImage:(__CVBuffer *)image
 {
   v19 = 0;
   v20 = &v19;
@@ -162,13 +162,13 @@ LABEL_21:
   v17[3] = sub_1D9DBED38;
   v17[4] = sub_1D9DBED48;
   v18 = 0;
-  v6 = objc_msgSend_perfResults(self, a2, a3, v3);
+  v6 = objc_msgSend_perfResults(self, a2, image, v3);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_1D9DBED50;
   v16[3] = &unk_1E858E418;
   v16[4] = v17;
-  v16[5] = a3;
+  v16[5] = image;
   objc_msgSend_run_block_(v6, v7, @"VisionRequestCreation", v16);
 
   v11 = objc_msgSend_perfResults(self, v8, v9, v10);

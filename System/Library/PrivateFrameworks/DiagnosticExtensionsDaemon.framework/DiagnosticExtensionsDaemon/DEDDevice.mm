@@ -1,37 +1,37 @@
 @interface DEDDevice
-+ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromArrayRepresentation:(SEL)a3;
++ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromArrayRepresentation:(SEL)representation;
 + (id)_currentDeviceId;
 + (id)archivedClasses;
-+ (id)arrayRepresentationForOperatingSystemVersion:(id *)a3;
++ (id)arrayRepresentationForOperatingSystemVersion:(id *)version;
 + (id)currentDevice;
 + (id)currentDeviceWithDaemonInfo;
-+ (id)deviceForSFDevice:(id)a3 andStatus:(int64_t)a4;
-+ (id)deviceForSFDevice:(id)a3 systemInfo:(id)a4 andStatus:(int64_t)a5;
-+ (id)deviceWithDictionary:(id)a3;
-+ (id)deviceWithIDSDevice:(id)a3 address:(id)a4;
++ (id)deviceForSFDevice:(id)device andStatus:(int64_t)status;
++ (id)deviceForSFDevice:(id)device systemInfo:(id)info andStatus:(int64_t)status;
++ (id)deviceWithDictionary:(id)dictionary;
++ (id)deviceWithIDSDevice:(id)device address:(id)address;
 + (id)nilSafeDevice;
-+ (int64_t)deviceTypeFromIDSDeviceType:(int64_t)a3;
-+ (int64_t)deviceTypeFromPlatform:(id)a3 deviceClass:(id)a4;
-- (BOOL)hasCapabilities:(id)a3;
++ (int64_t)deviceTypeFromIDSDeviceType:(int64_t)type;
++ (int64_t)deviceTypeFromPlatform:(id)platform deviceClass:(id)class;
+- (BOOL)hasCapabilities:(id)capabilities;
 - (BOOL)isCurrentDevice;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
-- (BOOL)isLikeDevice:(id)a3;
-- (BOOL)isMoreCompleteThan:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
+- (BOOL)isLikeDevice:(id)device;
+- (BOOL)isMoreCompleteThan:(id)than;
 - (BOOL)isTemporaryDevice;
-- (DEDDevice)initWithCoder:(id)a3;
+- (DEDDevice)initWithCoder:(id)coder;
 - (NSString)description;
 - (NSString)publicLogSafeIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hashingKey;
 - (id)hashingKeyForTempDevice;
 - (id)imageData;
-- (id)imageURLForDeviceClass:(id)a3 deviceModel:(id)a4 deviceColor:(id)a5 size:(int64_t)a6 variant:(int64_t)a7 scale:(float)a8;
-- (id)imageURLForScale:(float)a3;
+- (id)imageURLForDeviceClass:(id)class deviceModel:(id)model deviceColor:(id)color size:(int64_t)size variant:(int64_t)variant scale:(float)scale;
+- (id)imageURLForScale:(float)scale;
 - (id)publicLogDescription;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchIconImageDataForScale:(float)a3 completionCompletion:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchIconImageDataForScale:(float)scale completionCompletion:(id)completion;
 @end
 
 @implementation DEDDevice
@@ -45,152 +45,152 @@
   return [v2 setWithObjects:{v3, v4, v5, objc_opt_class(), 0}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DEDDevice *)self address];
-  [v4 encodeObject:v5 forKey:@"address"];
+  coderCopy = coder;
+  address = [(DEDDevice *)self address];
+  [coderCopy encodeObject:address forKey:@"address"];
 
   [(DEDDevice *)self operatingSystemVersion];
   v6 = [DEDDevice arrayRepresentationForOperatingSystemVersion:v31];
-  [v4 encodeObject:v6 forKey:@"operatingSystemVersion"];
+  [coderCopy encodeObject:v6 forKey:@"operatingSystemVersion"];
 
-  v7 = [(DEDDevice *)self build];
-  [v4 encodeObject:v7 forKey:@"build"];
+  build = [(DEDDevice *)self build];
+  [coderCopy encodeObject:build forKey:@"build"];
 
-  v8 = [(DEDDevice *)self color];
-  [v4 encodeObject:v8 forKey:@"color"];
+  color = [(DEDDevice *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v9 = [(DEDDevice *)self deviceClass];
-  [v4 encodeObject:v9 forKey:@"deviceClass"];
+  deviceClass = [(DEDDevice *)self deviceClass];
+  [coderCopy encodeObject:deviceClass forKey:@"deviceClass"];
 
-  v10 = [(DEDDevice *)self enclosureColor];
-  [v4 encodeObject:v10 forKey:@"enclosureColor"];
+  enclosureColor = [(DEDDevice *)self enclosureColor];
+  [coderCopy encodeObject:enclosureColor forKey:@"enclosureColor"];
 
-  v11 = [(DEDDevice *)self identifier];
-  [v4 encodeObject:v11 forKey:@"identifier"];
+  identifier = [(DEDDevice *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v12 = [(DEDDevice *)self model];
-  [v4 encodeObject:v12 forKey:@"model"];
+  model = [(DEDDevice *)self model];
+  [coderCopy encodeObject:model forKey:@"model"];
 
-  v13 = [(DEDDevice *)self name];
-  [v4 encodeObject:v13 forKey:@"name"];
+  name = [(DEDDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v14 = [(DEDDevice *)self productType];
-  [v4 encodeObject:v14 forKey:@"productType"];
+  productType = [(DEDDevice *)self productType];
+  [coderCopy encodeObject:productType forKey:@"productType"];
 
-  [v4 encodeInteger:-[DEDDevice status](self forKey:{"status"), @"status"}];
-  [v4 encodeInteger:-[DEDDevice transport](self forKey:{"transport"), @"transport"}];
-  v15 = [(DEDDevice *)self platform];
-  [v4 encodeObject:v15 forKey:@"platform"];
+  [coderCopy encodeInteger:-[DEDDevice status](self forKey:{"status"), @"status"}];
+  [coderCopy encodeInteger:-[DEDDevice transport](self forKey:{"transport"), @"transport"}];
+  platform = [(DEDDevice *)self platform];
+  [coderCopy encodeObject:platform forKey:@"platform"];
 
   v16 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DEDDevice deviceType](self, "deviceType")}];
-  [v4 encodeObject:v16 forKey:@"deviceType"];
+  [coderCopy encodeObject:v16 forKey:@"deviceType"];
 
-  [v4 encodeInteger:-[DEDDevice remoteTransport](self forKey:{"remoteTransport"), @"remoteTransport"}];
-  v17 = [(DEDDevice *)self capabilities];
-  v18 = [DEDCapability encodeCapabilitySet:v17];
-  [v4 encodeObject:v18 forKey:@"capabilities"];
+  [coderCopy encodeInteger:-[DEDDevice remoteTransport](self forKey:{"remoteTransport"), @"remoteTransport"}];
+  capabilities = [(DEDDevice *)self capabilities];
+  v18 = [DEDCapability encodeCapabilitySet:capabilities];
+  [coderCopy encodeObject:v18 forKey:@"capabilities"];
 
-  v19 = [(DEDDevice *)self hardwareCodename];
-  [v4 encodeObject:v19 forKey:@"hardwareCodename"];
+  hardwareCodename = [(DEDDevice *)self hardwareCodename];
+  [coderCopy encodeObject:hardwareCodename forKey:@"hardwareCodename"];
 
-  v20 = [(DEDDevice *)self serialNumber];
-  [v4 encodeObject:v20 forKey:@"serialNumber"];
+  serialNumber = [(DEDDevice *)self serialNumber];
+  [coderCopy encodeObject:serialNumber forKey:@"serialNumber"];
 
-  [v4 encodeInteger:-[DEDDevice homeButtonType](self forKey:{"homeButtonType"), @"homeButtonType"}];
-  v21 = [(DEDDevice *)self uniformTypeIdentifier];
-  [v4 encodeObject:v21 forKey:@"uniformTypeIdentifier"];
+  [coderCopy encodeInteger:-[DEDDevice homeButtonType](self forKey:{"homeButtonType"), @"homeButtonType"}];
+  uniformTypeIdentifier = [(DEDDevice *)self uniformTypeIdentifier];
+  [coderCopy encodeObject:uniformTypeIdentifier forKey:@"uniformTypeIdentifier"];
 
-  v22 = [(DEDDevice *)self idsIdentifier];
-  [v4 encodeObject:v22 forKey:@"idsIdentifier"];
+  idsIdentifier = [(DEDDevice *)self idsIdentifier];
+  [coderCopy encodeObject:idsIdentifier forKey:@"idsIdentifier"];
 
-  v23 = [(DEDDevice *)self companionDeviceIdentifier];
-  [v4 encodeObject:v23 forKey:@"companionDeviceIdentifier"];
+  companionDeviceIdentifier = [(DEDDevice *)self companionDeviceIdentifier];
+  [coderCopy encodeObject:companionDeviceIdentifier forKey:@"companionDeviceIdentifier"];
 
-  v24 = [(DEDDevice *)self homeTheaterSystemName];
-  [v4 encodeObject:v24 forKey:@"homeTheaterSystemName"];
+  homeTheaterSystemName = [(DEDDevice *)self homeTheaterSystemName];
+  [coderCopy encodeObject:homeTheaterSystemName forKey:@"homeTheaterSystemName"];
 
-  v25 = [(DEDDevice *)self homeTheaterSystemIdentifier];
-  [v4 encodeObject:v25 forKey:@"homeTheaterSystemIdentifier"];
+  homeTheaterSystemIdentifier = [(DEDDevice *)self homeTheaterSystemIdentifier];
+  [coderCopy encodeObject:homeTheaterSystemIdentifier forKey:@"homeTheaterSystemIdentifier"];
 
-  v26 = [(DEDDevice *)self mediaSystemName];
-  [v4 encodeObject:v26 forKey:@"mediaSystemName"];
+  mediaSystemName = [(DEDDevice *)self mediaSystemName];
+  [coderCopy encodeObject:mediaSystemName forKey:@"mediaSystemName"];
 
-  [v4 encodeInteger:-[DEDDevice mediaSystemRole](self forKey:{"mediaSystemRole"), @"mediaSystemRole"}];
-  v27 = [(DEDDevice *)self mediaSystemIdentifier];
-  [v4 encodeObject:v27 forKey:@"mediaSystemIdentifier"];
+  [coderCopy encodeInteger:-[DEDDevice mediaSystemRole](self forKey:{"mediaSystemRole"), @"mediaSystemRole"}];
+  mediaSystemIdentifier = [(DEDDevice *)self mediaSystemIdentifier];
+  [coderCopy encodeObject:mediaSystemIdentifier forKey:@"mediaSystemIdentifier"];
 
-  v28 = [(DEDDevice *)self mediaRemoteIdentifier];
-  [v4 encodeObject:v28 forKey:@"mediaRemoteIdentifier"];
+  mediaRemoteIdentifier = [(DEDDevice *)self mediaRemoteIdentifier];
+  [coderCopy encodeObject:mediaRemoteIdentifier forKey:@"mediaRemoteIdentifier"];
 
-  v29 = [(DEDDevice *)self homeKitIdentifier];
-  [v4 encodeObject:v29 forKey:@"homeKitIdentifier"];
+  homeKitIdentifier = [(DEDDevice *)self homeKitIdentifier];
+  [coderCopy encodeObject:homeKitIdentifier forKey:@"homeKitIdentifier"];
 
-  [v4 encodeBool:-[DEDDevice isHomeKitResident](self forKey:{"isHomeKitResident"), @"isHomeKitResident"}];
-  v30 = [(DEDDevice *)self bugSessions];
-  [v4 encodeObject:v30 forKey:@"bugSessions"];
+  [coderCopy encodeBool:-[DEDDevice isHomeKitResident](self forKey:{"isHomeKitResident"), @"isHomeKitResident"}];
+  bugSessions = [(DEDDevice *)self bugSessions];
+  [coderCopy encodeObject:bugSessions forKey:@"bugSessions"];
 }
 
-- (DEDDevice)initWithCoder:(id)a3
+- (DEDDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v61.receiver = self;
   v61.super_class = DEDDevice;
   v5 = [(DEDDevice *)&v61 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"operatingSystemVersion"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"operatingSystemVersion"];
     [DEDDevice operatingSystemVersionFromArrayRepresentation:v8];
     *(v5 + 264) = v59;
     *(v5 + 35) = v60;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"build"];
     v10 = *(v5 + 3);
     *(v5 + 3) = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
     v12 = *(v5 + 4);
     *(v5 + 4) = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceClass"];
     v14 = *(v5 + 5);
     *(v5 + 5) = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enclosureColor"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enclosureColor"];
     v16 = *(v5 + 6);
     *(v5 + 6) = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v18 = *(v5 + 7);
     *(v5 + 7) = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     v20 = *(v5 + 8);
     *(v5 + 8) = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     v22 = *(v5 + 9);
     *(v5 + 9) = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
     v24 = *(v5 + 10);
     *(v5 + 10) = v23;
 
-    *(v5 + 15) = [v4 decodeIntegerForKey:@"status"];
-    *(v5 + 16) = [v4 decodeIntegerForKey:@"transport"];
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
+    *(v5 + 15) = [coderCopy decodeIntegerForKey:@"status"];
+    *(v5 + 16) = [coderCopy decodeIntegerForKey:@"transport"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
     v26 = *(v5 + 11);
     *(v5 + 11) = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceType"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceType"];
     *(v5 + 12) = [v27 integerValue];
 
-    *(v5 + 17) = [v4 decodeIntegerForKey:@"remoteTransport"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
+    *(v5 + 17) = [coderCopy decodeIntegerForKey:@"remoteTransport"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
     if (v28)
     {
       [DEDCapability decodeCapabilitiesString:v28];
@@ -204,57 +204,57 @@
     v30 = *(v5 + 14);
     *(v5 + 14) = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hardwareCodename"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardwareCodename"];
     v32 = *(v5 + 19);
     *(v5 + 19) = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     v34 = *(v5 + 20);
     *(v5 + 20) = v33;
 
-    *(v5 + 21) = [v4 decodeIntegerForKey:@"homeButtonType"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniformTypeIdentifier"];
+    *(v5 + 21) = [coderCopy decodeIntegerForKey:@"homeButtonType"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniformTypeIdentifier"];
     v36 = *(v5 + 22);
     *(v5 + 22) = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
     v38 = *(v5 + 23);
     *(v5 + 23) = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionDeviceIdentifier"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionDeviceIdentifier"];
     v40 = *(v5 + 24);
     *(v5 + 24) = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeTheaterSystemName"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeTheaterSystemName"];
     v42 = *(v5 + 25);
     *(v5 + 25) = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeTheaterSystemIdentifier"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeTheaterSystemIdentifier"];
     v44 = *(v5 + 26);
     *(v5 + 26) = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaSystemName"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaSystemName"];
     v46 = *(v5 + 27);
     *(v5 + 27) = v45;
 
-    *(v5 + 28) = [v4 decodeIntegerForKey:@"mediaSystemRole"];
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaSystemIdentifier"];
+    *(v5 + 28) = [coderCopy decodeIntegerForKey:@"mediaSystemRole"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaSystemIdentifier"];
     v48 = *(v5 + 29);
     *(v5 + 29) = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaRemoteIdentifier"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaRemoteIdentifier"];
     v50 = *(v5 + 30);
     *(v5 + 30) = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeKitIdentifier"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeKitIdentifier"];
     v52 = *(v5 + 31);
     *(v5 + 31) = v51;
 
-    v5[8] = [v4 decodeBoolForKey:@"isHomeKitResident"];
+    v5[8] = [coderCopy decodeBoolForKey:@"isHomeKitResident"];
     v53 = MEMORY[0x277CBEB98];
     v54 = objc_opt_class();
     v55 = [v53 setWithObjects:{v54, objc_opt_class(), 0}];
-    v56 = [v4 decodeObjectOfClasses:v55 forKey:@"bugSessions"];
+    v56 = [coderCopy decodeObjectOfClasses:v55 forKey:@"bugSessions"];
     v57 = *(v5 + 13);
     *(v5 + 13) = v56;
   }
@@ -332,63 +332,63 @@
   return v2;
 }
 
-+ (id)deviceWithDictionary:(id)a3
++ (id)deviceWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"address"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"address"];
   v6 = stringIfNil(v5);
   [v4 setAddress:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"operatingSystemVersion"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"operatingSystemVersion"];
   [DEDDevice operatingSystemVersionFromArrayRepresentation:v7];
   v54 = v56;
   v55 = v57;
   [v4 setOperatingSystemVersion:&v54];
 
-  v8 = [v3 objectForKeyedSubscript:@"build"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"build"];
   v9 = stringIfNil(v8);
   [v4 setBuild:v9];
 
-  v10 = [v3 objectForKeyedSubscript:@"color"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"color"];
   v11 = stringIfNil(v10);
   [v4 setColor:v11];
 
-  v12 = [v3 objectForKeyedSubscript:@"deviceClass"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"deviceClass"];
   v13 = stringIfNil(v12);
   [v4 setDeviceClass:v13];
 
-  v14 = [v3 objectForKeyedSubscript:@"enclosureColor"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"enclosureColor"];
   v15 = stringIfNil(v14);
   [v4 setEnclosureColor:v15];
 
-  v16 = [v3 objectForKeyedSubscript:@"identifier"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
   v17 = stringIfNil(v16);
   [v4 setIdentifier:v17];
 
-  v18 = [v3 objectForKeyedSubscript:@"model"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"model"];
   v19 = stringIfNil(v18);
   [v4 setModel:v19];
 
-  v20 = [v3 objectForKeyedSubscript:@"name"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"name"];
   v21 = stringIfNil(v20);
   [v4 setName:v21];
 
-  v22 = [v3 objectForKeyedSubscript:@"productType"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"productType"];
   v23 = stringIfNil(v22);
   [v4 setProductType:v23];
 
-  v24 = [v3 objectForKeyedSubscript:@"status"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"status"];
   [v4 setStatus:{objc_msgSend(v24, "integerValue")}];
 
-  v25 = [v3 objectForKeyedSubscript:@"transport"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"transport"];
   [v4 setTransport:{objc_msgSend(v25, "integerValue")}];
 
-  v26 = [v3 objectForKeyedSubscript:@"platform"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
   v27 = stringIfNil(v26);
   [v4 setPlatform:v27];
 
-  v28 = [v3 objectForKeyedSubscript:@"deviceType"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
   v29 = v28;
   if (v28)
   {
@@ -397,15 +397,15 @@
 
   else
   {
-    v30 = [v4 platform];
-    v31 = [v4 deviceClass];
-    [v4 setDeviceType:{+[DEDDevice deviceTypeFromPlatform:deviceClass:](DEDDevice, "deviceTypeFromPlatform:deviceClass:", v30, v31)}];
+    platform = [v4 platform];
+    deviceClass = [v4 deviceClass];
+    [v4 setDeviceType:{+[DEDDevice deviceTypeFromPlatform:deviceClass:](DEDDevice, "deviceTypeFromPlatform:deviceClass:", platform, deviceClass)}];
   }
 
-  v32 = [v3 objectForKeyedSubscript:@"remoteTransport"];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"remoteTransport"];
   [v4 setRemoteTransport:{objc_msgSend(v32, "integerValue")}];
 
-  v33 = [v3 objectForKeyedSubscript:@"capabilities"];
+  v33 = [dictionaryCopy objectForKeyedSubscript:@"capabilities"];
   if (v33)
   {
     [DEDCapability decodeCapabilitiesString:v33];
@@ -418,54 +418,54 @@
   v34 = ;
   [v4 setCapabilities:v34];
 
-  v35 = [v3 objectForKeyedSubscript:@"hardwareCodename"];
+  v35 = [dictionaryCopy objectForKeyedSubscript:@"hardwareCodename"];
   [v4 setHardwareCodename:v35];
 
-  v36 = [v3 objectForKeyedSubscript:@"serialNumber"];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"serialNumber"];
   [v4 setSerialNumber:v36];
 
-  v37 = [v3 objectForKeyedSubscript:@"homeButtonType"];
+  v37 = [dictionaryCopy objectForKeyedSubscript:@"homeButtonType"];
   [v4 setHomeButtonType:{objc_msgSend(v37, "integerValue")}];
 
-  v38 = [v3 objectForKeyedSubscript:@"uniformTypeIdentifier"];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"uniformTypeIdentifier"];
   [v4 setUniformTypeIdentifier:v38];
 
-  v39 = [v3 objectForKeyedSubscript:@"idsIdentifier"];
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"idsIdentifier"];
   [v4 setIdsIdentifier:v39];
 
-  v40 = [v3 objectForKeyedSubscript:@"companionDeviceIdentifier"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"companionDeviceIdentifier"];
   [v4 setCompanionDeviceIdentifier:v40];
 
-  v41 = [v3 objectForKeyedSubscript:@"homeTheaterSystemName"];
+  v41 = [dictionaryCopy objectForKeyedSubscript:@"homeTheaterSystemName"];
   [v4 setHomeTheaterSystemName:v41];
 
-  v42 = [v3 objectForKeyedSubscript:@"homeTheaterSystemIdentifier"];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"homeTheaterSystemIdentifier"];
   [v4 setHomeTheaterSystemIdentifier:v42];
 
-  v43 = [v3 objectForKeyedSubscript:@"mediaSystemName"];
+  v43 = [dictionaryCopy objectForKeyedSubscript:@"mediaSystemName"];
   [v4 setMediaSystemName:v43];
 
-  v44 = [v3 objectForKeyedSubscript:@"mediaSystemRole"];
+  v44 = [dictionaryCopy objectForKeyedSubscript:@"mediaSystemRole"];
   [v4 setMediaSystemRole:{objc_msgSend(v44, "integerValue")}];
 
-  v45 = [v3 objectForKeyedSubscript:@"mediaSystemIdentifier"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"mediaSystemIdentifier"];
   [v4 setMediaSystemIdentifier:v45];
 
-  v46 = [v3 objectForKeyedSubscript:@"mediaRemoteIdentifier"];
+  v46 = [dictionaryCopy objectForKeyedSubscript:@"mediaRemoteIdentifier"];
   [v4 setMediaRemoteIdentifier:v46];
 
-  v47 = [v3 objectForKeyedSubscript:@"homeKitIdentifier"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"homeKitIdentifier"];
   [v4 setHomeKitIdentifier:v47];
 
-  v48 = [v3 objectForKeyedSubscript:@"isHomeKitResident"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"isHomeKitResident"];
   [v4 setIsHomeKitResident:{objc_msgSend(v48, "BOOLValue")}];
 
-  v49 = [v3 objectForKeyedSubscript:@"bugSessions"];
+  v49 = [dictionaryCopy objectForKeyedSubscript:@"bugSessions"];
 
   if (v49)
   {
     v50 = MEMORY[0x277CBEB98];
-    v51 = [v3 objectForKeyedSubscript:@"bugSessions"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"bugSessions"];
     v52 = [v50 setWithArray:v51];
     [v4 setBugSessions:v52];
   }
@@ -473,124 +473,124 @@
   return v4;
 }
 
-+ (id)deviceForSFDevice:(id)a3 andStatus:(int64_t)a4
++ (id)deviceForSFDevice:(id)device andStatus:(int64_t)status
 {
-  v5 = a3;
+  deviceCopy = device;
   v6 = +[DEDDevice nilSafeDevice];
   if (v6)
   {
-    v7 = [v5 identifier];
-    v8 = [v7 UUIDString];
-    v9 = stringIfNil(v8);
+    identifier = [deviceCopy identifier];
+    uUIDString = [identifier UUIDString];
+    v9 = stringIfNil(uUIDString);
     [v6 setIdentifier:v9];
 
-    v10 = [v5 identifier];
-    v11 = [v10 UUIDString];
-    v12 = stringIfNil(v11);
+    identifier2 = [deviceCopy identifier];
+    uUIDString2 = [identifier2 UUIDString];
+    v12 = stringIfNil(uUIDString2);
     [v6 setAddress:v12];
 
     [v6 setBuild:&stru_285B72378];
-    v13 = [v5 model];
-    v14 = [DEDUtils deviceClassForProductType:v13];
+    model = [deviceCopy model];
+    v14 = [DEDUtils deviceClassForProductType:model];
     [v6 setDeviceClass:v14];
 
-    v15 = [v5 name];
-    v16 = stringIfNil(v15);
+    name = [deviceCopy name];
+    v16 = stringIfNil(name);
     [v6 setName:v16];
 
-    v17 = [v5 model];
-    v18 = stringIfNil(v17);
+    model2 = [deviceCopy model];
+    v18 = stringIfNil(model2);
     [v6 setModel:v18];
 
-    [v6 setStatus:a4];
+    [v6 setStatus:status];
     [v6 setTransport:3];
     [v6 setRemoteTransport:3];
     v19 = +[DEDCapability defaultCapabilities];
     [v6 setCapabilities:v19];
 
-    [v6 setSfDevice:v5];
+    [v6 setSfDevice:deviceCopy];
   }
 
   return v6;
 }
 
-+ (id)deviceForSFDevice:(id)a3 systemInfo:(id)a4 andStatus:(int64_t)a5
++ (id)deviceForSFDevice:(id)device systemInfo:(id)info andStatus:(int64_t)status
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  infoCopy = info;
   v9 = +[DEDDevice nilSafeDevice];
   if (v9)
   {
-    v10 = [v7 identifier];
-    v11 = [v10 UUIDString];
-    v12 = stringIfNil(v11);
+    identifier = [deviceCopy identifier];
+    uUIDString = [identifier UUIDString];
+    v12 = stringIfNil(uUIDString);
     [v9 setIdentifier:v12];
 
-    v13 = [v7 identifier];
-    v14 = [v13 UUIDString];
-    v15 = stringIfNil(v14);
+    identifier2 = [deviceCopy identifier];
+    uUIDString2 = [identifier2 UUIDString];
+    v15 = stringIfNil(uUIDString2);
     [v9 setAddress:v15];
 
-    v16 = [v8 objectForKeyedSubscript:@"osBuild"];
+    v16 = [infoCopy objectForKeyedSubscript:@"osBuild"];
     v17 = stringIfNil(v16);
     [v9 setBuild:v17];
 
-    v18 = [v8 objectForKeyedSubscript:@"model"];
+    v18 = [infoCopy objectForKeyedSubscript:@"model"];
     v19 = [DEDUtils deviceClassForProductType:v18];
     [v9 setDeviceClass:v19];
 
-    v20 = [v8 objectForKeyedSubscript:@"name"];
+    v20 = [infoCopy objectForKeyedSubscript:@"name"];
     v21 = stringIfNil(v20);
     [v9 setName:v21];
 
-    v22 = [v7 model];
-    if (v22 && (v23 = v22, [v7 model], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "length"), v24, v23, v25))
+    model = [deviceCopy model];
+    if (model && (v23 = model, [deviceCopy model], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "length"), v24, v23, v25))
     {
-      v26 = [v7 model];
-      v27 = stringIfNil(v26);
+      model2 = [deviceCopy model];
+      v27 = stringIfNil(model2);
     }
 
     else
     {
-      v26 = [v8 objectForKeyedSubscript:@"model"];
-      v27 = [DEDUtils modelForProductType:v26];
+      model2 = [infoCopy objectForKeyedSubscript:@"model"];
+      v27 = [DEDUtils modelForProductType:model2];
     }
 
     v28 = v27;
     [v9 setModel:v27];
 
-    v29 = [v8 objectForKeyedSubscript:@"model"];
+    v29 = [infoCopy objectForKeyedSubscript:@"model"];
     v30 = stringIfNil(v29);
     [v9 setProductType:v30];
 
     [v9 setTransport:3];
     [v9 setRemoteTransport:3];
-    [v9 setStatus:a5];
+    [v9 setStatus:status];
     v31 = +[DEDCapability defaultCapabilities];
     [v9 setCapabilities:v31];
 
-    [v9 setSfDevice:v7];
+    [v9 setSfDevice:deviceCopy];
   }
 
   return v9;
 }
 
-+ (id)deviceWithIDSDevice:(id)a3 address:(id)a4
++ (id)deviceWithIDSDevice:(id)device address:(id)address
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  addressCopy = address;
   v7 = +[DEDDevice nilSafeDevice];
   if (v7)
   {
-    v8 = stringIfNil(v6);
+    v8 = stringIfNil(addressCopy);
     [v7 setIdentifier:v8];
 
-    v9 = stringIfNil(v6);
+    v9 = stringIfNil(addressCopy);
     [v7 setAddress:v9];
 
-    if (v5)
+    if (deviceCopy)
     {
-      [v5 operatingSystemVersion];
+      [deviceCopy operatingSystemVersion];
     }
 
     else
@@ -602,43 +602,43 @@
     v27 = v29;
     v28 = v30;
     [v7 setOperatingSystemVersion:&v27];
-    v10 = [v5 productBuildVersion];
-    v11 = stringIfNil(v10);
+    productBuildVersion = [deviceCopy productBuildVersion];
+    v11 = stringIfNil(productBuildVersion);
     [v7 setBuild:v11];
 
-    v12 = [v5 modelIdentifier];
-    v13 = [DEDUtils deviceClassForProductType:v12];
+    modelIdentifier = [deviceCopy modelIdentifier];
+    v13 = [DEDUtils deviceClassForProductType:modelIdentifier];
     [v7 setDeviceClass:v13];
 
-    v14 = [v5 deviceColor];
-    v15 = stringIfNil(v14);
+    deviceColor = [deviceCopy deviceColor];
+    v15 = stringIfNil(deviceColor);
     [v7 setColor:v15];
 
-    v16 = [v5 enclosureColor];
-    v17 = stringIfNil(v16);
+    enclosureColor = [deviceCopy enclosureColor];
+    v17 = stringIfNil(enclosureColor);
     [v7 setEnclosureColor:v17];
 
-    v18 = [v5 name];
-    v19 = stringIfNil(v18);
+    name = [deviceCopy name];
+    v19 = stringIfNil(name);
     [v7 setName:v19];
 
-    v20 = [v5 productName];
-    v21 = stringIfNil(v20);
+    productName = [deviceCopy productName];
+    v21 = stringIfNil(productName);
     [v7 setModel:v21];
 
-    v22 = [v5 modelIdentifier];
-    v23 = stringIfNil(v22);
+    modelIdentifier2 = [deviceCopy modelIdentifier];
+    v23 = stringIfNil(modelIdentifier2);
     [v7 setProductType:v23];
 
     [v7 setTransport:4];
-    [v7 setDeviceType:{+[DEDDevice deviceTypeFromIDSDeviceType:](DEDDevice, "deviceTypeFromIDSDeviceType:", objc_msgSend(v5, "deviceType"))}];
+    [v7 setDeviceType:{+[DEDDevice deviceTypeFromIDSDeviceType:](DEDDevice, "deviceTypeFromIDSDeviceType:", objc_msgSend(deviceCopy, "deviceType"))}];
     [v7 setRemoteTransport:4];
     [v7 setStatus:3];
     v24 = +[DEDCapability defaultCapabilities];
     [v7 setCapabilities:v24];
 
-    v25 = [v5 uniqueIDOverride];
-    [v7 setIdsIdentifier:v25];
+    uniqueIDOverride = [deviceCopy uniqueIDOverride];
+    [v7 setIdsIdentifier:uniqueIDOverride];
   }
 
   return v7;
@@ -646,125 +646,125 @@
 
 - (id)serialize
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(DEDDevice *)self address];
-  v5 = stringIfNil(v4);
-  [v3 setObject:v5 forKeyedSubscript:@"address"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  address = [(DEDDevice *)self address];
+  v5 = stringIfNil(address);
+  [dictionary setObject:v5 forKeyedSubscript:@"address"];
 
   [(DEDDevice *)self operatingSystemVersion];
   v6 = [DEDDevice arrayRepresentationForOperatingSystemVersion:v49];
-  [v3 setObject:v6 forKeyedSubscript:@"operatingSystemVersion"];
+  [dictionary setObject:v6 forKeyedSubscript:@"operatingSystemVersion"];
 
-  v7 = [(DEDDevice *)self build];
-  v8 = stringIfNil(v7);
-  [v3 setObject:v8 forKeyedSubscript:@"build"];
+  build = [(DEDDevice *)self build];
+  v8 = stringIfNil(build);
+  [dictionary setObject:v8 forKeyedSubscript:@"build"];
 
-  v9 = [(DEDDevice *)self color];
-  v10 = stringIfNil(v9);
-  [v3 setObject:v10 forKeyedSubscript:@"color"];
+  color = [(DEDDevice *)self color];
+  v10 = stringIfNil(color);
+  [dictionary setObject:v10 forKeyedSubscript:@"color"];
 
-  v11 = [(DEDDevice *)self deviceClass];
-  v12 = stringIfNil(v11);
-  [v3 setObject:v12 forKeyedSubscript:@"deviceClass"];
+  deviceClass = [(DEDDevice *)self deviceClass];
+  v12 = stringIfNil(deviceClass);
+  [dictionary setObject:v12 forKeyedSubscript:@"deviceClass"];
 
-  v13 = [(DEDDevice *)self enclosureColor];
-  v14 = stringIfNil(v13);
-  [v3 setObject:v14 forKeyedSubscript:@"enclosureColor"];
+  enclosureColor = [(DEDDevice *)self enclosureColor];
+  v14 = stringIfNil(enclosureColor);
+  [dictionary setObject:v14 forKeyedSubscript:@"enclosureColor"];
 
-  v15 = [(DEDDevice *)self identifier];
-  v16 = stringIfNil(v15);
-  [v3 setObject:v16 forKeyedSubscript:@"identifier"];
+  identifier = [(DEDDevice *)self identifier];
+  v16 = stringIfNil(identifier);
+  [dictionary setObject:v16 forKeyedSubscript:@"identifier"];
 
-  v17 = [(DEDDevice *)self model];
-  v18 = stringIfNil(v17);
-  [v3 setObject:v18 forKeyedSubscript:@"model"];
+  model = [(DEDDevice *)self model];
+  v18 = stringIfNil(model);
+  [dictionary setObject:v18 forKeyedSubscript:@"model"];
 
-  v19 = [(DEDDevice *)self name];
-  v20 = stringIfNil(v19);
-  [v3 setObject:v20 forKeyedSubscript:@"name"];
+  name = [(DEDDevice *)self name];
+  v20 = stringIfNil(name);
+  [dictionary setObject:v20 forKeyedSubscript:@"name"];
 
-  v21 = [(DEDDevice *)self productType];
-  v22 = stringIfNil(v21);
-  [v3 setObject:v22 forKeyedSubscript:@"productType"];
+  productType = [(DEDDevice *)self productType];
+  v22 = stringIfNil(productType);
+  [dictionary setObject:v22 forKeyedSubscript:@"productType"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DEDDevice status](self, "status")}];
-  [v3 setObject:v23 forKeyedSubscript:@"status"];
+  [dictionary setObject:v23 forKeyedSubscript:@"status"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DEDDevice transport](self, "transport")}];
-  [v3 setObject:v24 forKeyedSubscript:@"transport"];
+  [dictionary setObject:v24 forKeyedSubscript:@"transport"];
 
-  v25 = [(DEDDevice *)self platform];
-  v26 = stringIfNil(v25);
-  [v3 setObject:v26 forKeyedSubscript:@"platform"];
+  platform = [(DEDDevice *)self platform];
+  v26 = stringIfNil(platform);
+  [dictionary setObject:v26 forKeyedSubscript:@"platform"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DEDDevice deviceType](self, "deviceType")}];
-  [v3 setObject:v27 forKeyedSubscript:@"deviceType"];
+  [dictionary setObject:v27 forKeyedSubscript:@"deviceType"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DEDDevice remoteTransport](self, "remoteTransport")}];
-  [v3 setObject:v28 forKeyedSubscript:@"remoteTransport"];
+  [dictionary setObject:v28 forKeyedSubscript:@"remoteTransport"];
 
-  v29 = [(DEDDevice *)self capabilities];
-  v30 = [DEDCapability encodeCapabilitySet:v29];
-  [v3 setObject:v30 forKeyedSubscript:@"capabilities"];
+  capabilities = [(DEDDevice *)self capabilities];
+  v30 = [DEDCapability encodeCapabilitySet:capabilities];
+  [dictionary setObject:v30 forKeyedSubscript:@"capabilities"];
 
-  v31 = [(DEDDevice *)self hardwareCodename];
-  [v3 setObject:v31 forKeyedSubscript:@"hardwareCodename"];
+  hardwareCodename = [(DEDDevice *)self hardwareCodename];
+  [dictionary setObject:hardwareCodename forKeyedSubscript:@"hardwareCodename"];
 
-  v32 = [(DEDDevice *)self serialNumber];
-  [v3 setObject:v32 forKeyedSubscript:@"serialNumber"];
+  serialNumber = [(DEDDevice *)self serialNumber];
+  [dictionary setObject:serialNumber forKeyedSubscript:@"serialNumber"];
 
   v33 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DEDDevice homeButtonType](self, "homeButtonType")}];
-  [v3 setObject:v33 forKeyedSubscript:@"homeButtonType"];
+  [dictionary setObject:v33 forKeyedSubscript:@"homeButtonType"];
 
-  v34 = [(DEDDevice *)self uniformTypeIdentifier];
-  [v3 setObject:v34 forKeyedSubscript:@"uniformTypeIdentifier"];
+  uniformTypeIdentifier = [(DEDDevice *)self uniformTypeIdentifier];
+  [dictionary setObject:uniformTypeIdentifier forKeyedSubscript:@"uniformTypeIdentifier"];
 
-  v35 = [(DEDDevice *)self idsIdentifier];
-  [v3 setObject:v35 forKeyedSubscript:@"idsIdentifier"];
+  idsIdentifier = [(DEDDevice *)self idsIdentifier];
+  [dictionary setObject:idsIdentifier forKeyedSubscript:@"idsIdentifier"];
 
-  v36 = [(DEDDevice *)self companionDeviceIdentifier];
-  [v3 setObject:v36 forKeyedSubscript:@"companionDeviceIdentifier"];
+  companionDeviceIdentifier = [(DEDDevice *)self companionDeviceIdentifier];
+  [dictionary setObject:companionDeviceIdentifier forKeyedSubscript:@"companionDeviceIdentifier"];
 
-  v37 = [(DEDDevice *)self homeTheaterSystemName];
-  [v3 setObject:v37 forKeyedSubscript:@"homeTheaterSystemName"];
+  homeTheaterSystemName = [(DEDDevice *)self homeTheaterSystemName];
+  [dictionary setObject:homeTheaterSystemName forKeyedSubscript:@"homeTheaterSystemName"];
 
-  v38 = [(DEDDevice *)self homeTheaterSystemIdentifier];
-  [v3 setObject:v38 forKeyedSubscript:@"homeTheaterSystemIdentifier"];
+  homeTheaterSystemIdentifier = [(DEDDevice *)self homeTheaterSystemIdentifier];
+  [dictionary setObject:homeTheaterSystemIdentifier forKeyedSubscript:@"homeTheaterSystemIdentifier"];
 
-  v39 = [(DEDDevice *)self mediaSystemName];
-  [v3 setObject:v39 forKeyedSubscript:@"mediaSystemName"];
+  mediaSystemName = [(DEDDevice *)self mediaSystemName];
+  [dictionary setObject:mediaSystemName forKeyedSubscript:@"mediaSystemName"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DEDDevice mediaSystemRole](self, "mediaSystemRole")}];
-  [v3 setObject:v40 forKeyedSubscript:@"mediaSystemRole"];
+  [dictionary setObject:v40 forKeyedSubscript:@"mediaSystemRole"];
 
-  v41 = [(DEDDevice *)self mediaSystemIdentifier];
-  [v3 setObject:v41 forKeyedSubscript:@"mediaSystemIdentifier"];
+  mediaSystemIdentifier = [(DEDDevice *)self mediaSystemIdentifier];
+  [dictionary setObject:mediaSystemIdentifier forKeyedSubscript:@"mediaSystemIdentifier"];
 
-  v42 = [(DEDDevice *)self mediaRemoteIdentifier];
-  [v3 setObject:v42 forKeyedSubscript:@"mediaRemoteIdentifier"];
+  mediaRemoteIdentifier = [(DEDDevice *)self mediaRemoteIdentifier];
+  [dictionary setObject:mediaRemoteIdentifier forKeyedSubscript:@"mediaRemoteIdentifier"];
 
-  v43 = [(DEDDevice *)self homeKitIdentifier];
-  [v3 setObject:v43 forKeyedSubscript:@"homeKitIdentifier"];
+  homeKitIdentifier = [(DEDDevice *)self homeKitIdentifier];
+  [dictionary setObject:homeKitIdentifier forKeyedSubscript:@"homeKitIdentifier"];
 
   v44 = [MEMORY[0x277CCABB0] numberWithBool:{-[DEDDevice isHomeKitResident](self, "isHomeKitResident")}];
-  [v3 setObject:v44 forKeyedSubscript:@"isHomeKitResident"];
+  [dictionary setObject:v44 forKeyedSubscript:@"isHomeKitResident"];
 
-  v45 = [(DEDDevice *)self bugSessions];
+  bugSessions = [(DEDDevice *)self bugSessions];
 
-  if (v45)
+  if (bugSessions)
   {
-    v46 = [(DEDDevice *)self bugSessions];
-    v47 = [v46 allObjects];
-    [v3 setObject:v47 forKeyedSubscript:@"bugSessions"];
+    bugSessions2 = [(DEDDevice *)self bugSessions];
+    allObjects = [bugSessions2 allObjects];
+    [dictionary setObject:allObjects forKeyedSubscript:@"bugSessions"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(DEDDevice *)self serialize];
-  v4 = [DEDDevice deviceWithDictionary:v3];
+  serialize = [(DEDDevice *)self serialize];
+  v4 = [DEDDevice deviceWithDictionary:serialize];
 
   return v4;
 }
@@ -791,17 +791,17 @@ void __29__DEDDevice__currentDeviceId__block_invoke()
 
 - (BOOL)isCurrentDevice
 {
-  v2 = [(DEDDevice *)self identifier];
-  v3 = [objc_opt_class() _currentDeviceId];
-  v4 = [v2 isEqualToString:v3];
+  identifier = [(DEDDevice *)self identifier];
+  _currentDeviceId = [objc_opt_class() _currentDeviceId];
+  v4 = [identifier isEqualToString:_currentDeviceId];
 
   return v4;
 }
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(DEDDevice *)self platform];
+  string = [MEMORY[0x277CCAB68] string];
+  platform = [(DEDDevice *)self platform];
   v5 = [(DEDDevice *)self deviceType]- 1;
   if (v5 > 6)
   {
@@ -813,36 +813,36 @@ void __29__DEDDevice__currentDeviceId__block_invoke()
     v6 = off_278F65FD0[v5];
   }
 
-  v7 = [(DEDDevice *)self build];
-  v8 = [(DEDDevice *)self productType];
-  v9 = [(DEDDevice *)self status];
-  if ((v9 - 1) > 3)
+  build = [(DEDDevice *)self build];
+  productType = [(DEDDevice *)self productType];
+  status = [(DEDDevice *)self status];
+  if ((status - 1) > 3)
   {
     v10 = "Unknown";
   }
 
   else
   {
-    v10 = off_278F66008[v9 - 1];
+    v10 = off_278F66008[status - 1];
   }
 
-  [v3 appendFormat:@"\nDEDDevice: %@ %s %@ (%@) -- %s", v4, v6, v7, v8, v10];
+  [string appendFormat:@"\nDEDDevice: %@ %s %@ (%@) -- %s", platform, v6, build, productType, v10];
 
-  v11 = [(DEDDevice *)self transport];
-  if (v11 > 4)
+  transport = [(DEDDevice *)self transport];
+  if (transport > 4)
   {
     v12 = "Unknown";
   }
 
   else
   {
-    v12 = off_278F66028[v11];
+    v12 = off_278F66028[transport];
   }
 
-  v13 = [(DEDDevice *)self publicLogSafeIdentifier];
-  [v3 appendFormat:@"\n%s (%@)", v12, v13];
+  publicLogSafeIdentifier = [(DEDDevice *)self publicLogSafeIdentifier];
+  [string appendFormat:@"\n%s (%@)", v12, publicLogSafeIdentifier];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithString:v3];
+  v14 = [MEMORY[0x277CCACA8] stringWithString:string];
 
   return v14;
 }
@@ -850,27 +850,27 @@ void __29__DEDDevice__currentDeviceId__block_invoke()
 - (id)publicLogDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DEDDevice *)self productType];
-  v5 = [(DEDDevice *)self name];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  productType = [(DEDDevice *)self productType];
+  name = [(DEDDevice *)self name];
+  v6 = [v3 stringWithFormat:@"%@ - %@", productType, name];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(DEDDevice *)self isEqualToDevice:v4];
+    v5 = [(DEDDevice *)self isEqualToDevice:equalCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = DEDDevice;
-    v5 = [(DEDDevice *)&v8 isEqual:v4];
+    v5 = [(DEDDevice *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;
@@ -878,59 +878,59 @@ void __29__DEDDevice__currentDeviceId__block_invoke()
   return v6;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  if (self == a3)
+  if (self == device)
   {
     return 1;
   }
 
-  v4 = [a3 identifier];
-  v5 = [(DEDDevice *)self identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [device identifier];
+  identifier2 = [(DEDDevice *)self identifier];
+  v6 = [identifier isEqualToString:identifier2];
 
   return v6;
 }
 
 - (id)hashingKey
 {
-  v3 = [(DEDDevice *)self _hashingKey];
+  _hashingKey = [(DEDDevice *)self _hashingKey];
 
-  if (!v3)
+  if (!_hashingKey)
   {
     if ([(DEDDevice *)self isCurrentDevice])
     {
-      v4 = [(DEDDevice *)self identifier];
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i-%@", 1, v4];
+      identifier = [(DEDDevice *)self identifier];
+      _hashingKey2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i-%@", 1, identifier];
     }
 
     else
     {
-      v6 = [(DEDDevice *)self isTemporaryDevice];
-      v4 = [(DEDDevice *)self identifier];
-      v7 = [(DEDDevice *)self remoteTransport];
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i-%@", v7, v4];
-      if (v6)
+      isTemporaryDevice = [(DEDDevice *)self isTemporaryDevice];
+      identifier = [(DEDDevice *)self identifier];
+      remoteTransport = [(DEDDevice *)self remoteTransport];
+      _hashingKey2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i-%@", remoteTransport, identifier];
+      if (isTemporaryDevice)
       {
 
         goto LABEL_8;
       }
     }
 
-    [(DEDDevice *)self set_hashingKey:v5];
+    [(DEDDevice *)self set_hashingKey:_hashingKey2];
   }
 
-  v5 = [(DEDDevice *)self _hashingKey];
+  _hashingKey2 = [(DEDDevice *)self _hashingKey];
 LABEL_8:
 
-  return v5;
+  return _hashingKey2;
 }
 
-- (BOOL)isLikeDevice:(id)a3
+- (BOOL)isLikeDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 deviceClass];
-  if (![v5 length])
+  deviceCopy = device;
+  deviceClass = [deviceCopy deviceClass];
+  if (![deviceClass length])
   {
     v13 = 0;
 LABEL_13:
@@ -938,28 +938,28 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = [v4 name];
-  if (![v6 length])
+  name = [deviceCopy name];
+  if (![name length])
   {
     goto LABEL_8;
   }
 
-  v7 = [v4 build];
-  v8 = [v7 length];
+  build = [deviceCopy build];
+  v8 = [build length];
 
   if (v8)
   {
-    v5 = [(DEDDevice *)self deviceClass];
-    v6 = [v4 deviceClass];
-    if ([v5 isEqualToString:v6])
+    deviceClass = [(DEDDevice *)self deviceClass];
+    name = [deviceCopy deviceClass];
+    if ([deviceClass isEqualToString:name])
     {
-      v9 = [(DEDDevice *)self name];
-      v10 = [v4 name];
-      if ([v9 isEqualToString:v10])
+      name2 = [(DEDDevice *)self name];
+      name3 = [deviceCopy name];
+      if ([name2 isEqualToString:name3])
       {
-        v11 = [(DEDDevice *)self build];
-        v12 = [v4 build];
-        v13 = [v11 isEqualToString:v12];
+        build2 = [(DEDDevice *)self build];
+        build3 = [deviceCopy build];
+        v13 = [build2 isEqualToString:build3];
       }
 
       else
@@ -983,17 +983,17 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)isMoreCompleteThan:(id)a3
+- (BOOL)isMoreCompleteThan:(id)than
 {
-  v4 = a3;
-  v5 = [(DEDDevice *)self isTemporaryDevice];
-  LODWORD(v6) = [v4 isTemporaryDevice];
-  if (v5 == v6)
+  thanCopy = than;
+  isTemporaryDevice = [(DEDDevice *)self isTemporaryDevice];
+  LODWORD(v6) = [thanCopy isTemporaryDevice];
+  if (isTemporaryDevice == v6)
   {
-    v7 = [(DEDDevice *)self serialize];
-    v6 = __32__DEDDevice_isMoreCompleteThan___block_invoke(v7, v7);
-    v8 = [v4 serialize];
-    LOBYTE(v6) = v6 > __32__DEDDevice_isMoreCompleteThan___block_invoke(v8, v8);
+    serialize = [(DEDDevice *)self serialize];
+    v6 = __32__DEDDevice_isMoreCompleteThan___block_invoke(serialize, serialize);
+    serialize2 = [thanCopy serialize];
+    LOBYTE(v6) = v6 > __32__DEDDevice_isMoreCompleteThan___block_invoke(serialize2, serialize2);
   }
 
   return v6;
@@ -1075,11 +1075,11 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
   return v2;
 }
 
-- (BOOL)hasCapabilities:(id)a3
+- (BOOL)hasCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [(DEDDevice *)self capabilities];
-  v6 = [v4 isSubsetOfSet:v5];
+  capabilitiesCopy = capabilities;
+  capabilities = [(DEDDevice *)self capabilities];
+  v6 = [capabilitiesCopy isSubsetOfSet:capabilities];
 
   return v6;
 }
@@ -1088,31 +1088,31 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
 {
   if ([(DEDDevice *)self status]== 3 && ([(DEDDevice *)self transport]== 4 || [(DEDDevice *)self remoteTransport]== 4))
   {
-    v3 = [(DEDDevice *)self idsIdentifier];
+    idsIdentifier = [(DEDDevice *)self idsIdentifier];
   }
 
   else
   {
-    v3 = [(DEDDevice *)self identifier];
+    idsIdentifier = [(DEDDevice *)self identifier];
   }
 
-  return v3;
+  return idsIdentifier;
 }
 
 - (BOOL)isTemporaryDevice
 {
-  v3 = [(DEDDevice *)self identifier];
-  v4 = [(DEDDevice *)self address];
-  v5 = [v3 isEqualToString:v4];
+  identifier = [(DEDDevice *)self identifier];
+  address = [(DEDDevice *)self address];
+  v5 = [identifier isEqualToString:address];
 
   return v5;
 }
 
 - (id)hashingKeyForTempDevice
 {
-  v3 = [(DEDDevice *)self address];
-  v4 = [(DEDDevice *)self remoteTransport];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i-%@", v4, v3];
+  address = [(DEDDevice *)self address];
+  remoteTransport = [(DEDDevice *)self remoteTransport];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i-%@", remoteTransport, address];
 
   return v5;
 }
@@ -1141,9 +1141,9 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
   v7 = IDSCopyLocalDeviceUniqueID();
   [v2 setIdsIdentifier:v7];
 
-  v8 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v9 = [v8 getActivePairedDevice];
-  v10 = [v9 valueForProperty:*MEMORY[0x277D2BC30]];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
+  v10 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC30]];
 
   if (v10)
   {
@@ -1152,49 +1152,49 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
   }
 
   v12 = +[DEDHomeKitManager sharedInstance];
-  v13 = [v12 homeTheaterSystemName];
-  [v2 setHomeTheaterSystemName:v13];
+  homeTheaterSystemName = [v12 homeTheaterSystemName];
+  [v2 setHomeTheaterSystemName:homeTheaterSystemName];
 
   v14 = +[DEDHomeKitManager sharedInstance];
-  v15 = [v14 homeTheaterSystemIdentifier];
-  [v2 setHomeTheaterSystemIdentifier:v15];
+  homeTheaterSystemIdentifier = [v14 homeTheaterSystemIdentifier];
+  [v2 setHomeTheaterSystemIdentifier:homeTheaterSystemIdentifier];
 
   v16 = +[DEDRapportManager sharedInstance];
-  v17 = [v16 mediaSystemName];
-  [v2 setMediaSystemName:v17];
+  mediaSystemName = [v16 mediaSystemName];
+  [v2 setMediaSystemName:mediaSystemName];
 
   v18 = +[DEDRapportManager sharedInstance];
   [v2 setMediaSystemRole:{objc_msgSend(v18, "mediaSystemRole")}];
 
   v19 = +[DEDRapportManager sharedInstance];
-  v20 = [v19 mediaSystemIdentifier];
-  [v2 setMediaSystemIdentifier:v20];
+  mediaSystemIdentifier = [v19 mediaSystemIdentifier];
+  [v2 setMediaSystemIdentifier:mediaSystemIdentifier];
 
   v21 = +[DEDRapportManager sharedInstance];
-  v22 = [v21 mediaRemoteIdentifier];
-  [v2 setMediaRemoteIdentifier:v22];
+  mediaRemoteIdentifier = [v21 mediaRemoteIdentifier];
+  [v2 setMediaRemoteIdentifier:mediaRemoteIdentifier];
 
   v23 = +[DEDHomeKitManager sharedInstance];
-  v24 = [v23 homeKitIdentifier];
-  [v2 setHomeKitIdentifier:v24];
+  homeKitIdentifier = [v23 homeKitIdentifier];
+  [v2 setHomeKitIdentifier:homeKitIdentifier];
 
   v25 = +[DEDHomeKitManager sharedInstance];
   [v2 setIsHomeKitResident:{objc_msgSend(v25, "isHomeKitResident")}];
 
   v26 = +[DEDPersistence sharedInstance];
-  v27 = [v26 bugSessionIdentifiers];
-  [v2 setBugSessions:v27];
+  bugSessionIdentifiers = [v26 bugSessionIdentifiers];
+  [v2 setBugSessions:bugSessionIdentifiers];
 
   return v2;
 }
 
-+ (id)arrayRepresentationForOperatingSystemVersion:(id *)a3
++ (id)arrayRepresentationForOperatingSystemVersion:(id *)version
 {
   v10[3] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3->var0];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{a3->var1, v4}];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:version->var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{version->var1, v4}];
   v10[1] = v5;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3->var2];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:version->var2];
   v10[2] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:3];
 
@@ -1203,7 +1203,7 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
   return v7;
 }
 
-+ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromArrayRepresentation:(SEL)a3
++ ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionFromArrayRepresentation:(SEL)representation
 {
   v5 = a4;
   if (v5 && (v11 = v5, v6 = [v5 count] > 2, v5 = v11, v6))
@@ -1228,31 +1228,31 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
   return result;
 }
 
-+ (int64_t)deviceTypeFromIDSDeviceType:(int64_t)a3
++ (int64_t)deviceTypeFromIDSDeviceType:(int64_t)type
 {
-  if ((a3 - 1) > 8)
+  if ((type - 1) > 8)
   {
     return 0;
   }
 
   else
   {
-    return qword_248B52FD8[a3 - 1];
+    return qword_248B52FD8[type - 1];
   }
 }
 
-+ (int64_t)deviceTypeFromPlatform:(id)a3 deviceClass:(id)a4
++ (int64_t)deviceTypeFromPlatform:(id)platform deviceClass:(id)class
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"macos"])
+  platformCopy = platform;
+  classCopy = class;
+  if ([platformCopy isEqualToString:@"macos"])
   {
     v7 = 1;
   }
 
-  else if ([v5 isEqualToString:@"ios"])
+  else if ([platformCopy isEqualToString:@"ios"])
   {
-    if ([v6 isEqualToString:@"iPad"])
+    if ([classCopy isEqualToString:@"iPad"])
     {
       v7 = 3;
     }
@@ -1263,22 +1263,22 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
     }
   }
 
-  else if ([v5 isEqualToString:@"tvos"])
+  else if ([platformCopy isEqualToString:@"tvos"])
   {
     v7 = 4;
   }
 
-  else if ([v5 isEqualToString:@"watchos"])
+  else if ([platformCopy isEqualToString:@"watchos"])
   {
     v7 = 5;
   }
 
-  else if ([v5 isEqualToString:@"homepod"])
+  else if ([platformCopy isEqualToString:@"homepod"])
   {
     v7 = 6;
   }
 
-  else if ([v5 isEqualToString:@"visionos"])
+  else if ([platformCopy isEqualToString:@"visionos"])
   {
     v7 = 7;
   }
@@ -1291,20 +1291,20 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
   return v7;
 }
 
-- (void)fetchIconImageDataForScale:(float)a3 completionCompletion:(id)a4
+- (void)fetchIconImageDataForScale:(float)scale completionCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(DEDDevice *)self imageData];
+  completionCopy = completion;
+  imageData = [(DEDDevice *)self imageData];
 
-  if (v7)
+  if (imageData)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__DEDDevice_UI__fetchIconImageDataForScale_completionCompletion___block_invoke;
     block[3] = &unk_278F653F8;
     block[4] = self;
-    v16 = v6;
-    v8 = v6;
+    v16 = completionCopy;
+    v8 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v9 = v16;
   }
@@ -1316,10 +1316,10 @@ uint64_t __32__DEDDevice_isMoreCompleteThan___block_invoke(uint64_t a1, void *a2
     v12[1] = 3221225472;
     v12[2] = __65__DEDDevice_UI__fetchIconImageDataForScale_completionCompletion___block_invoke_2;
     v12[3] = &unk_278F66578;
-    v14 = a3;
+    scaleCopy = scale;
     v12[4] = self;
-    v13 = v6;
-    v11 = v6;
+    v13 = completionCopy;
+    v11 = completionCopy;
     dispatch_async(v10, v12);
 
     v9 = v13;
@@ -1363,15 +1363,15 @@ void __65__DEDDevice_UI__fetchIconImageDataForScale_completionCompletion___block
 
 - (id)imageData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DEDDevice *)v2 identifier];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  identifier = [(DEDDevice *)selfCopy identifier];
 
-  if (v3)
+  if (identifier)
   {
     v4 = +[DEDImageResourceManager sharedInstance];
-    v5 = [(DEDDevice *)v2 identifier];
-    v6 = [v4 cachedImageFromKey:v5];
+    identifier2 = [(DEDDevice *)selfCopy identifier];
+    v6 = [v4 cachedImageFromKey:identifier2];
   }
 
   else
@@ -1379,18 +1379,18 @@ void __65__DEDDevice_UI__fetchIconImageDataForScale_completionCompletion___block
     v6 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)imageURLForScale:(float)a3
+- (id)imageURLForScale:(float)scale
 {
-  v5 = [(DEDDevice *)self color];
-  if ([v5 length])
+  color = [(DEDDevice *)self color];
+  if ([color length])
   {
-    v6 = [(DEDDevice *)self enclosureColor];
-    v7 = [v6 length];
+    enclosureColor = [(DEDDevice *)self enclosureColor];
+    v7 = [enclosureColor length];
 
     if (!v7)
     {
@@ -1399,33 +1399,33 @@ void __65__DEDDevice_UI__fetchIconImageDataForScale_completionCompletion___block
     }
 
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(DEDDevice *)self color];
-    v10 = [(DEDDevice *)self enclosureColor];
-    v5 = [v8 stringWithFormat:@"%@-%@", v9, v10];
+    color2 = [(DEDDevice *)self color];
+    enclosureColor2 = [(DEDDevice *)self enclosureColor];
+    color = [v8 stringWithFormat:@"%@-%@", color2, enclosureColor2];
 
-    v11 = [(DEDDevice *)self color];
-    if ([v11 isEqualToString:@"unknown"])
+    color3 = [(DEDDevice *)self color];
+    if ([color3 isEqualToString:@"unknown"])
     {
     }
 
     else
     {
-      v13 = [(DEDDevice *)self enclosureColor];
-      v14 = [v13 isEqualToString:@"unknown"];
+      enclosureColor3 = [(DEDDevice *)self enclosureColor];
+      v14 = [enclosureColor3 isEqualToString:@"unknown"];
 
       if ((v14 & 1) == 0)
       {
-        v20 = [(DEDDevice *)self enclosureColor];
-        v21 = [v20 intValue];
+        enclosureColor4 = [(DEDDevice *)self enclosureColor];
+        intValue = [enclosureColor4 intValue];
 
-        if (v21)
+        if (intValue)
         {
-          [MEMORY[0x277CCACA8] stringWithFormat:@"%@-0", v5];
+          [MEMORY[0x277CCACA8] stringWithFormat:@"%@-0", color];
         }
 
         else
         {
-          [v5 stringByReplacingOccurrencesOfString:@"#" withString:&stru_285B72378];
+          [color stringByReplacingOccurrencesOfString:@"#" withString:&stru_285B72378];
         }
         v12 = ;
         goto LABEL_8;
@@ -1437,84 +1437,84 @@ void __65__DEDDevice_UI__fetchIconImageDataForScale_completionCompletion___block
 LABEL_8:
 
 LABEL_9:
-  v15 = [(DEDDevice *)self deviceClass];
-  v16 = [(DEDDevice *)self productType];
-  *&v17 = a3;
-  v18 = [(DEDDevice *)self imageURLForDeviceClass:v15 deviceModel:v16 deviceColor:v12 size:0 variant:0 scale:v17];
+  deviceClass = [(DEDDevice *)self deviceClass];
+  productType = [(DEDDevice *)self productType];
+  *&v17 = scale;
+  v18 = [(DEDDevice *)self imageURLForDeviceClass:deviceClass deviceModel:productType deviceColor:v12 size:0 variant:0 scale:v17];
 
   return v18;
 }
 
-- (id)imageURLForDeviceClass:(id)a3 deviceModel:(id)a4 deviceColor:(id)a5 size:(int64_t)a6 variant:(int64_t)a7 scale:(float)a8
+- (id)imageURLForDeviceClass:(id)class deviceModel:(id)model deviceColor:(id)color size:(int64_t)size variant:(int64_t)variant scale:(float)scale
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  classCopy = class;
+  modelCopy = model;
+  colorCopy = color;
   v16 = [MEMORY[0x277CBEBC0] URLWithString:@"https://statici.icloud.com/fmipmobile/deviceImages-9.0/"];
-  v17 = [v16 absoluteString];
-  v18 = [v17 mutableCopy];
+  absoluteString = [v16 absoluteString];
+  v18 = [absoluteString mutableCopy];
 
-  if (a6 > 2)
+  if (size > 2)
   {
     v19 = @"nolocation-ipad";
   }
 
   else
   {
-    v19 = off_278F66598[a6];
+    v19 = off_278F66598[size];
   }
 
-  if ([(__CFString *)v13 isEqualToString:@"AudioAccessory"])
+  if ([(__CFString *)classCopy isEqualToString:@"AudioAccessory"])
   {
 
-    v13 = @"HomePod";
+    classCopy = @"HomePod";
   }
 
-  v20 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-  v21 = [(__CFString *)v13 stringByAddingPercentEncodingWithAllowedCharacters:v20];
+  uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+  v21 = [(__CFString *)classCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   [v18 appendFormat:@"%@/", v21];
 
-  v22 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-  v23 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:v22];
+  uRLPathAllowedCharacterSet2 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+  v23 = [modelCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
   [v18 appendFormat:@"%@", v23];
 
-  if (v15 && [v15 length])
+  if (colorCopy && [colorCopy length])
   {
-    v24 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-    v25 = [v15 stringByAddingPercentEncodingWithAllowedCharacters:v24];
+    uRLPathAllowedCharacterSet3 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+    v25 = [colorCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet3];
     [v18 appendFormat:@"-%@", v25];
   }
 
   [v18 appendString:@"/"];
-  if ((a7 - 1) > 2)
+  if ((variant - 1) > 2)
   {
     v26 = @"online";
   }
 
   else
   {
-    v26 = off_278F665B0[a7 - 1];
+    v26 = off_278F665B0[variant - 1];
   }
 
-  if (a8 <= 1.0)
+  if (scale <= 1.0)
   {
-    v27 = &stru_285B72378;
+    scale = &stru_285B72378;
   }
 
   else
   {
-    v27 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"__%.0fx", a8];
+    scale = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"__%.0fx", scale];
   }
 
-  if ([(__CFString *)v13 isEqualToString:@"RealityDevice"])
+  if ([(__CFString *)classCopy isEqualToString:@"RealityDevice"])
   {
-    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://appleid.cdn-apple.com/static/deviceImages-12.0/RealityDevice/%@/online-sourcelist%@.png", v14, v27];
+    v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://appleid.cdn-apple.com/static/deviceImages-12.0/RealityDevice/%@/online-sourcelist%@.png", modelCopy, scale];
     v29 = [MEMORY[0x277CBEBC0] URLWithString:v28];
   }
 
   else
   {
-    [v18 appendFormat:@"%@-%@%@.png", v26, v19, v27];
+    [v18 appendFormat:@"%@-%@%@.png", v26, v19, scale];
     v29 = [MEMORY[0x277CBEBC0] URLWithString:v18];
   }
 

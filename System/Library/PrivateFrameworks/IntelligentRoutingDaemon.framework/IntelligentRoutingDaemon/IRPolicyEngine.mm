@@ -1,25 +1,25 @@
 @interface IRPolicyEngine
-- (BOOL)shouldAskForLowLatencyMiLo:(id)a3 historyEventsContainer:(id)a4;
-- (BOOL)shouldRejectEvent:(id)a3 withHistoryEventsContainer:(id)a4 withSystemState:(id)a5 forCandidate:(id)a6 date:(id)a7;
-- (BOOL)updateBundlesWithSignificantInteractionForEvent:(id)a3 candidatesContainer:(id)a4 historyEventsContainer:(id)a5;
-- (BOOL)updateContextWithDate:(id)a3 candidatesContainer:(id)a4 historyEventsContainer:(id)a5 systemState:(id)a6 miloProviderLslPredictionResults:(id)a7 nearbyDeviceContainer:(id)a8 fillInspection:(BOOL)a9;
-- (IRPolicyEngine)initWithServicePackage:(int64_t)a3;
+- (BOOL)shouldAskForLowLatencyMiLo:(id)lo historyEventsContainer:(id)container;
+- (BOOL)shouldRejectEvent:(id)event withHistoryEventsContainer:(id)container withSystemState:(id)state forCandidate:(id)candidate date:(id)date;
+- (BOOL)updateBundlesWithSignificantInteractionForEvent:(id)event candidatesContainer:(id)container historyEventsContainer:(id)eventsContainer;
+- (BOOL)updateContextWithDate:(id)date candidatesContainer:(id)container historyEventsContainer:(id)eventsContainer systemState:(id)state miloProviderLslPredictionResults:(id)results nearbyDeviceContainer:(id)deviceContainer fillInspection:(BOOL)inspection;
+- (IRPolicyEngine)initWithServicePackage:(int64_t)package;
 - (NSDictionary)contexts;
 - (NSDictionary)policyInspections;
-- (id)_lastEventsStringFromHistoryContainer:(id)a3 candidatesContainer:(id)a4 miloResults:(id)a5;
+- (id)_lastEventsStringFromHistoryContainer:(id)container candidatesContainer:(id)candidatesContainer miloResults:(id)results;
 @end
 
 @implementation IRPolicyEngine
 
 - (NSDictionary)contexts
 {
-  v2 = [(IRPolicyEngine *)self servicePackageAdapter];
-  v3 = [v2 contexts];
+  servicePackageAdapter = [(IRPolicyEngine *)self servicePackageAdapter];
+  contexts = [servicePackageAdapter contexts];
 
-  return v3;
+  return contexts;
 }
 
-- (IRPolicyEngine)initWithServicePackage:(int64_t)a3
+- (IRPolicyEngine)initWithServicePackage:(int64_t)package
 {
   v9.receiver = self;
   v9.super_class = IRPolicyEngine;
@@ -27,8 +27,8 @@
   v5 = v4;
   if (v4)
   {
-    [(IRPolicyEngine *)v4 setServicePackage:a3];
-    v6 = IRCreateServicePackageAdapter(a3);
+    [(IRPolicyEngine *)v4 setServicePackage:package];
+    v6 = IRCreateServicePackageAdapter(package);
     [(IRPolicyEngine *)v5 setServicePackageAdapter:v6];
 
     v7 = objc_opt_new();
@@ -38,23 +38,23 @@
   return v5;
 }
 
-- (BOOL)updateBundlesWithSignificantInteractionForEvent:(id)a3 candidatesContainer:(id)a4 historyEventsContainer:(id)a5
+- (BOOL)updateBundlesWithSignificantInteractionForEvent:(id)event candidatesContainer:(id)container historyEventsContainer:(id)eventsContainer
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && (-[IRPolicyEngine servicePackageAdapter](self, "servicePackageAdapter"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 shouldConsiderEventForSignificantBundles:v8], v11, !v12))
+  eventCopy = event;
+  containerCopy = container;
+  eventsContainerCopy = eventsContainer;
+  if (eventCopy && (-[IRPolicyEngine servicePackageAdapter](self, "servicePackageAdapter"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 shouldConsiderEventForSignificantBundles:eventCopy], v11, !v12))
   {
     v17 = 0;
   }
 
   else
   {
-    v13 = [(IRPolicyEngine *)self servicePackageAdapter];
-    v14 = [v13 getSignificantBundlesWithCandidates:v9 fromHistory:v10];
+    servicePackageAdapter = [(IRPolicyEngine *)self servicePackageAdapter];
+    v14 = [servicePackageAdapter getSignificantBundlesWithCandidates:containerCopy fromHistory:eventsContainerCopy];
 
-    v15 = [(IRPolicyEngine *)self bundlesWithSignificantInteraction];
-    v16 = [v15 isEqual:v14];
+    bundlesWithSignificantInteraction = [(IRPolicyEngine *)self bundlesWithSignificantInteraction];
+    v16 = [bundlesWithSignificantInteraction isEqual:v14];
 
     if ((v16 & 1) == 0)
     {
@@ -67,107 +67,107 @@
   return v17;
 }
 
-- (BOOL)updateContextWithDate:(id)a3 candidatesContainer:(id)a4 historyEventsContainer:(id)a5 systemState:(id)a6 miloProviderLslPredictionResults:(id)a7 nearbyDeviceContainer:(id)a8 fillInspection:(BOOL)a9
+- (BOOL)updateContextWithDate:(id)date candidatesContainer:(id)container historyEventsContainer:(id)eventsContainer systemState:(id)state miloProviderLslPredictionResults:(id)results nearbyDeviceContainer:(id)deviceContainer fillInspection:(BOOL)inspection
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  v21 = [(IRPolicyEngine *)self servicePackageAdapter];
-  v22 = [v21 filterHistory:v18 withCandidatesContainer:v19];
+  deviceContainerCopy = deviceContainer;
+  resultsCopy = results;
+  stateCopy = state;
+  eventsContainerCopy = eventsContainer;
+  containerCopy = container;
+  dateCopy = date;
+  servicePackageAdapter = [(IRPolicyEngine *)self servicePackageAdapter];
+  v22 = [servicePackageAdapter filterHistory:eventsContainerCopy withCandidatesContainer:containerCopy];
 
-  v23 = [(IRPolicyEngine *)self _lastEventsStringFromHistoryContainer:v22 candidatesContainer:v19 miloResults:v16];
+  v23 = [(IRPolicyEngine *)self _lastEventsStringFromHistoryContainer:v22 candidatesContainer:containerCopy miloResults:resultsCopy];
   [(IRPolicyEngine *)self setLastEventsString:v23];
 
-  v24 = [(IRPolicyEngine *)self servicePackageAdapter];
-  v25 = [v24 generateClassificationsWithCandiatesContainer:v19 systemState:v17 historyEventsContainer:v22 miloPrediction:v16 nearbyDeviceContainer:v15 fillInspection:a9 date:v20];
+  servicePackageAdapter2 = [(IRPolicyEngine *)self servicePackageAdapter];
+  v25 = [servicePackageAdapter2 generateClassificationsWithCandiatesContainer:containerCopy systemState:stateCopy historyEventsContainer:v22 miloPrediction:resultsCopy nearbyDeviceContainer:deviceContainerCopy fillInspection:inspection date:dateCopy];
 
   return v25;
 }
 
-- (BOOL)shouldRejectEvent:(id)a3 withHistoryEventsContainer:(id)a4 withSystemState:(id)a5 forCandidate:(id)a6 date:(id)a7
+- (BOOL)shouldRejectEvent:(id)event withHistoryEventsContainer:(id)container withSystemState:(id)state forCandidate:(id)candidate date:(id)date
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(IRPolicyEngine *)self servicePackageAdapter];
-  v18 = [v17 shouldRejectEvent:v16 withHistoryEventsContainer:v15 withSystemState:v14 forCandidate:v13 date:v12];
+  dateCopy = date;
+  candidateCopy = candidate;
+  stateCopy = state;
+  containerCopy = container;
+  eventCopy = event;
+  servicePackageAdapter = [(IRPolicyEngine *)self servicePackageAdapter];
+  v18 = [servicePackageAdapter shouldRejectEvent:eventCopy withHistoryEventsContainer:containerCopy withSystemState:stateCopy forCandidate:candidateCopy date:dateCopy];
 
   return v18;
 }
 
 - (NSDictionary)policyInspections
 {
-  v2 = [(IRPolicyEngine *)self servicePackageAdapter];
-  v3 = [v2 policyInspections];
+  servicePackageAdapter = [(IRPolicyEngine *)self servicePackageAdapter];
+  policyInspections = [servicePackageAdapter policyInspections];
 
-  return v3;
+  return policyInspections;
 }
 
-- (BOOL)shouldAskForLowLatencyMiLo:(id)a3 historyEventsContainer:(id)a4
+- (BOOL)shouldAskForLowLatencyMiLo:(id)lo historyEventsContainer:(id)container
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IRPolicyEngine *)self servicePackageAdapter];
-  v9 = [v6 historyEvents];
+  containerCopy = container;
+  loCopy = lo;
+  servicePackageAdapter = [(IRPolicyEngine *)self servicePackageAdapter];
+  historyEvents = [containerCopy historyEvents];
 
-  LOBYTE(v6) = [v8 shouldAskForLowLatencyMiLo:v7 historyEventsAsc:v9];
-  return v6;
+  LOBYTE(containerCopy) = [servicePackageAdapter shouldAskForLowLatencyMiLo:loCopy historyEventsAsc:historyEvents];
+  return containerCopy;
 }
 
-- (id)_lastEventsStringFromHistoryContainer:(id)a3 candidatesContainer:(id)a4 miloResults:(id)a5
+- (id)_lastEventsStringFromHistoryContainer:(id)container candidatesContainer:(id)candidatesContainer miloResults:(id)results
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  candidatesContainerCopy = candidatesContainer;
+  resultsCopy = results;
   v11 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v11 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v12 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v12 setNumberStyle:1];
   [v12 setMaximumFractionDigits:2];
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [v8 historyEvents];
-  if ([v14 count] < 0xF)
+  array = [MEMORY[0x277CBEB18] array];
+  historyEvents = [containerCopy historyEvents];
+  if ([historyEvents count] < 0xF)
   {
     v16 = 0;
   }
 
   else
   {
-    v15 = [v8 historyEvents];
-    v16 = [v15 count] - 15;
+    historyEvents2 = [containerCopy historyEvents];
+    v16 = [historyEvents2 count] - 15;
   }
 
-  v17 = [v8 historyEvents];
+  historyEvents3 = [containerCopy historyEvents];
   v27 = MEMORY[0x277D85DD0];
   v28 = 3221225472;
   v29 = __88__IRPolicyEngine__lastEventsStringFromHistoryContainer_candidatesContainer_miloResults___block_invoke;
   v30 = &unk_2797E1F98;
-  v36 = v13;
+  v36 = array;
   v37 = v16;
   v31 = v11;
   v32 = v12;
-  v33 = v10;
-  v34 = self;
-  v35 = v9;
-  v18 = v13;
-  v19 = v9;
-  v20 = v10;
+  v33 = resultsCopy;
+  selfCopy = self;
+  v35 = candidatesContainerCopy;
+  v18 = array;
+  v19 = candidatesContainerCopy;
+  v20 = resultsCopy;
   v21 = v12;
   v22 = v11;
-  [v17 enumerateObjectsWithOptions:2 usingBlock:&v27];
+  [historyEvents3 enumerateObjectsWithOptions:2 usingBlock:&v27];
 
   v23 = [MEMORY[0x277CF0C00] builderWithObject:0];
   v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Last %@ events", &unk_2867690A0, v27, v28, v29, v30];
   [v23 appendArraySection:v18 withName:v24 multilinePrefix:0 skipIfEmpty:0];
 
-  v25 = [v23 build];
+  build = [v23 build];
 
-  return v25;
+  return build;
 }
 
 void __88__IRPolicyEngine__lastEventsStringFromHistoryContainer_candidatesContainer_miloResults___block_invoke(uint64_t a1, void *a2, unint64_t a3, _BYTE *a4)

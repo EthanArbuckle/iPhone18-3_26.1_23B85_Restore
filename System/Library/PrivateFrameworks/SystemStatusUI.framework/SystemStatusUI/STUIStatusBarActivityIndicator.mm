@@ -1,14 +1,14 @@
 @interface STUIStatusBarActivityIndicator
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)applyStyleAttributes:(id)a3;
+- (void)applyStyleAttributes:(id)attributes;
 @end
 
 @implementation STUIStatusBarActivityIndicator
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = [a3 imageTintColor];
-  [(STUIStatusBarActivityIndicator *)self setColor:v4];
+  imageTintColor = [attributes imageTintColor];
+  [(STUIStatusBarActivityIndicator *)self setColor:imageTintColor];
 }
 
 - (UIEdgeInsets)alignmentRectInsets

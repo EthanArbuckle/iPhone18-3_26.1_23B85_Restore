@@ -70,9 +70,9 @@
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Importing pre-multihoming config: %{public}@", buf, 0x2Cu);
       }
 
-      v18 = [v7 allKeys];
-      v19 = [v18 lastObject];
-      sub_100035CA4(v2, v7, v19);
+      allKeys = [v7 allKeys];
+      lastObject = [allKeys lastObject];
+      sub_100035CA4(v2, v7, lastObject);
 
       [v5 removeObjectForKey:@"TrustedServiceManagerURL"];
     }
@@ -143,9 +143,9 @@
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Importing post-multihoming config: %{public}@", buf, 0x2Cu);
         }
 
-        v32 = [v21 allKeys];
-        v33 = [v32 lastObject];
-        sub_100035CA4(v2, v21, v33);
+        allKeys2 = [v21 allKeys];
+        lastObject2 = [allKeys2 lastObject];
+        sub_100035CA4(v2, v21, lastObject2);
 
         v34 = [v20 dictionaryForKey:@"AidTopicMap"];
         *v218 = 0;
@@ -233,15 +233,15 @@
 
       if (!v47)
       {
-        v48 = [v46 allKeys];
-        v49 = [v48 lastObject];
+        allKeys3 = [v46 allKeys];
+        lastObject3 = [allKeys3 lastObject];
 
         objc_opt_class();
-        LOBYTE(v48) = objc_opt_isKindOfClass();
+        LOBYTE(allKeys3) = objc_opt_isKindOfClass();
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
         v50 = NFLogGetLogger();
         v51 = v50;
-        if (v48)
+        if (allKeys3)
         {
           if (v50)
           {
@@ -256,7 +256,7 @@
             }
 
             v2 = p_isa;
-            v51(5, "%c[%{public}s %{public}s]:%i Found server registration but missing primary topic assignment, assuming %{public}@ as primary.", v54, v182, v194, 296, v49);
+            v51(5, "%c[%{public}s %{public}s]:%i Found server registration but missing primary topic assignment, assuming %{public}@ as primary.", v54, v182, v194, 296, lastObject3);
           }
 
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -285,11 +285,11 @@
             *&v227[28] = 1024;
             *&v227[30] = 296;
             *&v227[34] = 2114;
-            *&v227[36] = v49;
+            *&v227[36] = lastObject3;
             _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Found server registration but missing primary topic assignment, assuming %{public}@ as primary.", v227, 0x2Cu);
           }
 
-          [(NSUserDefaults *)v2->_ud setObject:v49 forKey:@"PrimaryRegionTopic"];
+          [(NSUserDefaults *)v2->_ud setObject:lastObject3 forKey:@"PrimaryRegionTopic"];
         }
 
         else
@@ -600,11 +600,11 @@
               if ((objc_opt_isKindOfClass() & 1) != 0 && [v131 step] != 2)
               {
                 v132 = v131;
-                v133 = [v132 step];
+                step = [v132 step];
                 dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
                 v134 = NFLogGetLogger();
                 v135 = v134;
-                if (v133 == 1)
+                if (step == 1)
                 {
                   if (v134)
                   {

@@ -1,7 +1,7 @@
 @interface CMContinuityCaptureUserNotificationCenter
 + (id)sharedInstance;
 + (void)invalidate;
-- (CMContinuityCaptureUserNotificationCenter)initWithQueue:(id)a3;
+- (CMContinuityCaptureUserNotificationCenter)initWithQueue:(id)queue;
 - (id)description;
 @end
 
@@ -51,7 +51,7 @@ void __59__CMContinuityCaptureUserNotificationCenter_sharedInstance__block_invok
   return v6;
 }
 
-- (CMContinuityCaptureUserNotificationCenter)initWithQueue:(id)a3
+- (CMContinuityCaptureUserNotificationCenter)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = CMContinuityCaptureUserNotificationCenter;

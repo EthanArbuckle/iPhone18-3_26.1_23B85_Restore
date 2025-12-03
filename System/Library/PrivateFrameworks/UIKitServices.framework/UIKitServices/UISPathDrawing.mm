@@ -1,45 +1,45 @@
 @interface UISPathDrawing
 - (CGRect)alignmentRect;
 - (CGSize)drawingSize;
-- (UISPathDrawing)initWithRoundedRectSize:(CGSize)a3 cornerRadii:(double)a4[4] fillColor:(CGColor *)a5;
-- (UISPathDrawing)initWithType:(int64_t)a3 path:(CGPath *)a4 size:(CGSize)a5 fillColor:(CGColor *)a6;
+- (UISPathDrawing)initWithRoundedRectSize:(CGSize)size cornerRadii:(double)radii[4] fillColor:(CGColor *)color;
+- (UISPathDrawing)initWithType:(int64_t)type path:(CGPath *)path size:(CGSize)size fillColor:(CGColor *)color;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation UISPathDrawing
 
-- (UISPathDrawing)initWithType:(int64_t)a3 path:(CGPath *)a4 size:(CGSize)a5 fillColor:(CGColor *)a6
+- (UISPathDrawing)initWithType:(int64_t)type path:(CGPath *)path size:(CGSize)size fillColor:(CGColor *)color
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = UISPathDrawing;
   v11 = [(UISPathDrawing *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    v11->_path = CGPathRetain(a4);
+    v11->_type = type;
+    v11->_path = CGPathRetain(path);
     v12->_size.width = width;
     v12->_size.height = height;
-    v12->_fillColor = CGColorRetain(a6);
+    v12->_fillColor = CGColorRetain(color);
   }
 
   return v12;
 }
 
-- (UISPathDrawing)initWithRoundedRectSize:(CGSize)a3 cornerRadii:(double)a4[4] fillColor:(CGColor *)a5
+- (UISPathDrawing)initWithRoundedRectSize:(CGSize)size cornerRadii:(double)radii[4] fillColor:(CGColor *)color
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v22 = *MEMORY[0x1E69E9840];
-  v10 = *a4;
-  v9 = *(a4 + 1);
-  v11 = a4[1];
-  if (*a4 != v11 || v11 != *&v9 || *&v9 != a4[3])
+  v10 = *radii;
+  v9 = *(radii + 1);
+  v11 = radii[1];
+  if (*radii != v11 || v11 != *&v9 || *&v9 != radii[3])
   {
-    v14 = *a4;
+    v14 = *radii;
     v15 = &v21;
     vst2q_f64(v15, *&v10);
     v15 += 4;
@@ -53,19 +53,19 @@ LABEL_12:
 
   if (*&v10 != 0.0)
   {
-    v23.size.width = a3.width;
-    v23.size.height = a3.height;
+    v23.size.width = size.width;
+    v23.size.height = size.height;
     v23.origin.x = *MEMORY[0x1E695EFF8];
     v23.origin.y = *(MEMORY[0x1E695EFF8] + 8);
-    v17 = CGPathCreateWithRoundedRect(v23, *&v10, *a4, 0);
+    v17 = CGPathCreateWithRoundedRect(v23, *&v10, *radii, 0);
     goto LABEL_12;
   }
 
   v18 = 0;
 LABEL_13:
-  v19 = [(UISPathDrawing *)self initWithType:2 * (v18 != 0) path:v18 size:a5 fillColor:width, height];
+  height = [(UISPathDrawing *)self initWithType:2 * (v18 != 0) path:v18 size:color fillColor:width, height];
   CGPathRelease(v18);
-  return v19;
+  return height;
 }
 
 - (void)dealloc
@@ -99,23 +99,23 @@ LABEL_13:
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  CGContextSetFillColorWithColor(a3, self->_fillColor);
+  y = point.y;
+  x = point.x;
+  CGContextSetFillColorWithColor(context, self->_fillColor);
   type = self->_type;
   switch(type)
   {
     case 2:
       if (x != *MEMORY[0x1E695EFF8] || y != *(MEMORY[0x1E695EFF8] + 8))
       {
-        CGContextTranslateCTM(a3, x, y);
+        CGContextTranslateCTM(context, x, y);
       }
 
-      CGContextAddPath(a3, self->_path);
+      CGContextAddPath(context, self->_path);
 
-      CGContextFillPath(a3);
+      CGContextFillPath(context);
       break;
     case 1:
       width = self->_size.width;
@@ -123,7 +123,7 @@ LABEL_13:
       v15 = x;
       v16 = y;
 
-      CGContextFillEllipseInRect(a3, *&v15);
+      CGContextFillEllipseInRect(context, *&v15);
       break;
     case 0:
       v9 = self->_size.width;
@@ -131,7 +131,7 @@ LABEL_13:
       v11 = x;
       v12 = y;
 
-      CGContextFillRect(a3, *&v11);
+      CGContextFillRect(context, *&v11);
       break;
   }
 }

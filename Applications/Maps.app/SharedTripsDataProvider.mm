@@ -1,8 +1,8 @@
 @interface SharedTripsDataProvider
 - (GEOObserverHashTable)observers;
-- (SharedTripsDataProvider)initWithCombineAllTrips:(BOOL)a3;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
-- (void)setActive:(BOOL)a3;
+- (SharedTripsDataProvider)initWithCombineAllTrips:(BOOL)trips;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation SharedTripsDataProvider
@@ -22,16 +22,16 @@
   return observers;
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
   if (self->_active)
   {
-    v3 = a3;
+    observersCopy = observers;
     self->_hasInitialData = 1;
     v6 = +[MSPSharedTripService sharedInstance];
-    v7 = [v6 receivedTrips];
+    receivedTrips = [v6 receivedTrips];
     sharedTrips = self->_sharedTrips;
-    self->_sharedTrips = v7;
+    self->_sharedTrips = receivedTrips;
 
     v9 = objc_alloc_init(NSMutableArray);
     if ([(NSArray *)self->_sharedTrips count])
@@ -45,7 +45,7 @@
       else
       {
         v26 = a2;
-        v27 = v3;
+        v27 = observersCopy;
         v30 = 0u;
         v31 = 0u;
         v28 = 0u;
@@ -81,7 +81,7 @@
           while (v13);
         }
 
-        v3 = v27;
+        observersCopy = v27;
         a2 = v26;
       }
     }
@@ -97,7 +97,7 @@
       v22 = NSStringFromClass(v21);
       v23 = NSStringFromSelector(a2);
       v24 = @"NO";
-      if (v3)
+      if (observersCopy)
       {
         v24 = @"YES";
       }
@@ -112,22 +112,22 @@
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%@ %@%@", buf, 0x20u);
     }
 
-    if (v3)
+    if (observersCopy)
     {
       [(GEOObserverHashTable *)self->_observers homeDataProvidingObjectDidUpdate:self];
     }
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v5 = +[MSPSharedTripService sharedInstance];
     v6 = v5;
-    if (v3)
+    if (activeCopy)
     {
       [v5 addReceivingObserver:self];
 
@@ -141,7 +141,7 @@
   }
 }
 
-- (SharedTripsDataProvider)initWithCombineAllTrips:(BOOL)a3
+- (SharedTripsDataProvider)initWithCombineAllTrips:(BOOL)trips
 {
   v8.receiver = self;
   v8.super_class = SharedTripsDataProvider;
@@ -149,7 +149,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_combineAllTrips = a3;
+    v4->_combineAllTrips = trips;
     sharedTripSummaries = v4->_sharedTripSummaries;
     v4->_sharedTripSummaries = &__NSArray0__struct;
   }

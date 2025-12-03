@@ -1,36 +1,36 @@
 @interface FHSmartCompoundFeatureRankedValue
-- (BOOL)isEqual:(id)a3;
-- (FHSmartCompoundFeatureRankedValue)initWithCoder:(id)a3;
-- (FHSmartCompoundFeatureRankedValue)initWithLabelAndIntegerRank:(id)a3 featureRank:(int64_t)a4;
-- (FHSmartCompoundFeatureRankedValue)initWithLabelAndRank:(id)a3 featureRank:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (FHSmartCompoundFeatureRankedValue)initWithCoder:(id)coder;
+- (FHSmartCompoundFeatureRankedValue)initWithLabelAndIntegerRank:(id)rank featureRank:(int64_t)featureRank;
+- (FHSmartCompoundFeatureRankedValue)initWithLabelAndRank:(id)rank featureRank:(id)featureRank;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHSmartCompoundFeatureRankedValue
 
-- (FHSmartCompoundFeatureRankedValue)initWithLabelAndRank:(id)a3 featureRank:(id)a4
+- (FHSmartCompoundFeatureRankedValue)initWithLabelAndRank:(id)rank featureRank:(id)featureRank
 {
-  v7 = a3;
-  v8 = a4;
+  rankCopy = rank;
+  featureRankCopy = featureRank;
   v9 = [(FHSmartCompoundFeatureRankedValue *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_featureLabel, a3);
-    objc_storeStrong(&v10->_featureRank, a4);
+    objc_storeStrong(&v9->_featureLabel, rank);
+    objc_storeStrong(&v10->_featureRank, featureRank);
   }
 
   return v10;
 }
 
-- (FHSmartCompoundFeatureRankedValue)initWithLabelAndIntegerRank:(id)a3 featureRank:(int64_t)a4
+- (FHSmartCompoundFeatureRankedValue)initWithLabelAndIntegerRank:(id)rank featureRank:(int64_t)featureRank
 {
   v6 = MEMORY[0x277CCA980];
   v7 = MEMORY[0x277CCABB0];
-  v8 = a3;
-  v9 = [v7 numberWithInteger:a4];
+  rankCopy = rank;
+  v9 = [v7 numberWithInteger:featureRank];
   v10 = v9;
   if (v9)
   {
@@ -45,41 +45,41 @@
   }
 
   v11 = [v6 decimalNumberWithDecimal:v14];
-  v12 = [(FHSmartCompoundFeatureRankedValue *)self initWithLabelAndRank:v8 featureRank:v11];
+  v12 = [(FHSmartCompoundFeatureRankedValue *)self initWithLabelAndRank:rankCopy featureRank:v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     featureLabel = self->_featureLabel;
-    v7 = [(FHSmartCompoundFeatureRankedValue *)v5 featureLabel];
-    if ([(NSString *)featureLabel isEqual:v7])
+    featureLabel = [(FHSmartCompoundFeatureRankedValue *)v5 featureLabel];
+    if ([(NSString *)featureLabel isEqual:featureLabel])
     {
       featureRank = self->_featureRank;
-      v9 = [(FHSmartCompoundFeatureRankedValue *)v5 featureRank];
-      if ([(NSDecimalNumber *)featureRank isEqual:v9])
+      featureRank = [(FHSmartCompoundFeatureRankedValue *)v5 featureRank];
+      if ([(NSDecimalNumber *)featureRank isEqual:featureRank])
       {
-        v10 = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
-        v11 = [(FHSmartCompoundFeatureRankedValue *)v5 eventIdentifiers];
-        if (FHEqualObjects(v10, v11))
+        eventIdentifiers = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
+        eventIdentifiers2 = [(FHSmartCompoundFeatureRankedValue *)v5 eventIdentifiers];
+        if (FHEqualObjects(eventIdentifiers, eventIdentifiers2))
         {
-          v12 = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
-          v13 = [(FHSmartCompoundFeatureRankedValue *)v5 eventStartDate];
-          if (FHEqualObjects(v12, v13))
+          eventStartDate = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
+          eventStartDate2 = [(FHSmartCompoundFeatureRankedValue *)v5 eventStartDate];
+          if (FHEqualObjects(eventStartDate, eventStartDate2))
           {
-            v14 = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
-            v15 = [(FHSmartCompoundFeatureRankedValue *)v5 eventEndDate];
-            v16 = FHEqualObjects(v14, v15);
+            eventEndDate = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
+            eventEndDate2 = [(FHSmartCompoundFeatureRankedValue *)v5 eventEndDate];
+            v16 = FHEqualObjects(eventEndDate, eventEndDate2);
           }
 
           else
@@ -118,14 +118,14 @@
 {
   v3 = [(NSString *)self->_featureLabel hash];
   v4 = self->_featureRank + 32 * v3 - v3;
-  v5 = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  eventIdentifiers = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
+  v6 = [eventIdentifiers hash] - v4 + 32 * v4;
 
-  v7 = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  eventStartDate = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
+  v8 = [eventStartDate hash] - v6 + 32 * v6;
 
-  v9 = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  eventEndDate = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
+  v10 = [eventEndDate hash] - v8 + 32 * v8;
 
   return v10 + 28629151;
 }
@@ -136,69 +136,69 @@
   [v3 appendFormat:@"%@, ", self->_featureLabel];
   [(NSDecimalNumber *)self->_featureRank doubleValue];
   [v3 appendFormat:@"%f", v4];
-  v5 = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
+  eventIdentifiers = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
 
-  if (v5)
+  if (eventIdentifiers)
   {
-    v6 = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
-    [v3 appendFormat:@"Event identifiers: %@", v6];
+    eventIdentifiers2 = [(FHSmartCompoundFeatureRankedValue *)self eventIdentifiers];
+    [v3 appendFormat:@"Event identifiers: %@", eventIdentifiers2];
   }
 
-  v7 = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
+  eventStartDate = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
 
-  if (v7)
+  if (eventStartDate)
   {
-    v8 = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
-    [v3 appendFormat:@"Event start date: %@", v8];
+    eventStartDate2 = [(FHSmartCompoundFeatureRankedValue *)self eventStartDate];
+    [v3 appendFormat:@"Event start date: %@", eventStartDate2];
   }
 
-  v9 = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
+  eventEndDate = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
 
-  if (v9)
+  if (eventEndDate)
   {
-    v10 = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
-    [v3 appendFormat:@"Event end date:%@", v10];
+    eventEndDate2 = [(FHSmartCompoundFeatureRankedValue *)self eventEndDate];
+    [v3 appendFormat:@"Event end date:%@", eventEndDate2];
   }
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   featureLabel = self->_featureLabel;
-  v5 = a3;
-  [v5 encodeObject:featureLabel forKey:@"featureLabel"];
-  [v5 encodeObject:self->_featureRank forKey:@"featureRank"];
-  [v5 encodeObject:self->_eventIdentifiers forKey:@"eventIdentifiers"];
-  [v5 encodeObject:self->_eventStartDate forKey:@"eventStartDate"];
-  [v5 encodeObject:self->_eventEndDate forKey:@"eventEndDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:featureLabel forKey:@"featureLabel"];
+  [coderCopy encodeObject:self->_featureRank forKey:@"featureRank"];
+  [coderCopy encodeObject:self->_eventIdentifiers forKey:@"eventIdentifiers"];
+  [coderCopy encodeObject:self->_eventStartDate forKey:@"eventStartDate"];
+  [coderCopy encodeObject:self->_eventEndDate forKey:@"eventEndDate"];
 }
 
-- (FHSmartCompoundFeatureRankedValue)initWithCoder:(id)a3
+- (FHSmartCompoundFeatureRankedValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = FHSmartCompoundFeatureRankedValue;
   v5 = [(FHSmartCompoundFeatureRankedValue *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureLabel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureLabel"];
     featureLabel = v5->_featureLabel;
     v5->_featureLabel = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureRank"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureRank"];
     featureRank = v5->_featureRank;
     v5->_featureRank = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifiers"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventIdentifiers"];
     eventIdentifiers = v5->_eventIdentifiers;
     v5->_eventIdentifiers = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventStartDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventStartDate"];
     eventStartDate = v5->_eventStartDate;
     v5->_eventStartDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventEndDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventEndDate"];
     eventEndDate = v5->_eventEndDate;
     v5->_eventEndDate = v14;
   }

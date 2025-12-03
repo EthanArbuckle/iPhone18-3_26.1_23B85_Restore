@@ -1,5 +1,5 @@
 @interface _AFVoiceIdScoreCardMutation
-- (_AFVoiceIdScoreCardMutation)initWithBase:(id)a3;
+- (_AFVoiceIdScoreCardMutation)initWithBase:(id)base;
 - (id)getConfidentScoreThreshold;
 - (id)getDeltaScoreThreshold;
 - (id)getHighScoreThreshold;
@@ -34,60 +34,60 @@
 {
   if ((*&self->_mutationFlags & 0x1000) != 0)
   {
-    v2 = self->_deltaScoreThreshold;
+    deltaScoreThreshold = self->_deltaScoreThreshold;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base deltaScoreThreshold];
+    deltaScoreThreshold = [(AFVoiceIdScoreCard *)self->_base deltaScoreThreshold];
   }
 
-  return v2;
+  return deltaScoreThreshold;
 }
 
 - (id)getConfidentScoreThreshold
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_confidentScoreThreshold;
+    confidentScoreThreshold = self->_confidentScoreThreshold;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base confidentScoreThreshold];
+    confidentScoreThreshold = [(AFVoiceIdScoreCard *)self->_base confidentScoreThreshold];
   }
 
-  return v2;
+  return confidentScoreThreshold;
 }
 
 - (id)getHighScoreThreshold
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_highScoreThreshold;
+    highScoreThreshold = self->_highScoreThreshold;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base highScoreThreshold];
+    highScoreThreshold = [(AFVoiceIdScoreCard *)self->_base highScoreThreshold];
   }
 
-  return v2;
+  return highScoreThreshold;
 }
 
 - (id)getLowScoreThreshold
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_lowScoreThreshold;
+    lowScoreThreshold = self->_lowScoreThreshold;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base lowScoreThreshold];
+    lowScoreThreshold = [(AFVoiceIdScoreCard *)self->_base lowScoreThreshold];
   }
 
-  return v2;
+  return lowScoreThreshold;
 }
 
 - (int64_t)getUserIdentityClassification
@@ -107,117 +107,117 @@
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_userClassified;
+    userClassified = self->_userClassified;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base userClassified];
+    userClassified = [(AFVoiceIdScoreCard *)self->_base userClassified];
   }
 
-  return v2;
+  return userClassified;
 }
 
 - (id)getSpIdAssetVersion
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_spIdAssetVersion;
+    spIdAssetVersion = self->_spIdAssetVersion;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base spIdAssetVersion];
+    spIdAssetVersion = [(AFVoiceIdScoreCard *)self->_base spIdAssetVersion];
   }
 
-  return v2;
+  return spIdAssetVersion;
 }
 
 - (id)getSpIdScoreThresholdingType
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_spIdScoreThresholdingType;
+    spIdScoreThresholdingType = self->_spIdScoreThresholdingType;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base spIdScoreThresholdingType];
+    spIdScoreThresholdingType = [(AFVoiceIdScoreCard *)self->_base spIdScoreThresholdingType];
   }
 
-  return v2;
+  return spIdScoreThresholdingType;
 }
 
 - (id)getSpIdUserScoresVersion
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_spIdUserScoresVersion;
+    spIdUserScoresVersion = self->_spIdUserScoresVersion;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base spIdUserScoresVersion];
+    spIdUserScoresVersion = [(AFVoiceIdScoreCard *)self->_base spIdUserScoresVersion];
   }
 
-  return v2;
+  return spIdUserScoresVersion;
 }
 
 - (id)getSpIdKnownUserScores
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_spIdKnownUserScores;
+    spIdKnownUserScores = self->_spIdKnownUserScores;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base spIdKnownUserScores];
+    spIdKnownUserScores = [(AFVoiceIdScoreCard *)self->_base spIdKnownUserScores];
   }
 
-  return v2;
+  return spIdKnownUserScores;
 }
 
 - (id)getSpIdUnknownUserScore
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_spIdUnknownUserScore;
+    spIdUnknownUserScore = self->_spIdUnknownUserScore;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base spIdUnknownUserScore];
+    spIdUnknownUserScore = [(AFVoiceIdScoreCard *)self->_base spIdUnknownUserScore];
   }
 
-  return v2;
+  return spIdUnknownUserScore;
 }
 
 - (id)getSpIdAudioProcessedDuration
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_spIdAudioProcessedDuration;
+    spIdAudioProcessedDuration = self->_spIdAudioProcessedDuration;
   }
 
   else
   {
-    v2 = [(AFVoiceIdScoreCard *)self->_base spIdAudioProcessedDuration];
+    spIdAudioProcessedDuration = [(AFVoiceIdScoreCard *)self->_base spIdAudioProcessedDuration];
   }
 
-  return v2;
+  return spIdAudioProcessedDuration;
 }
 
-- (_AFVoiceIdScoreCardMutation)initWithBase:(id)a3
+- (_AFVoiceIdScoreCardMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFVoiceIdScoreCardMutation;
   v6 = [(_AFVoiceIdScoreCardMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

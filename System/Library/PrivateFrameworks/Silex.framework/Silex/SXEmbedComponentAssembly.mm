@@ -1,46 +1,46 @@
 @interface SXEmbedComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXEmbedComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_68];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_68];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_14];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_14];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_11];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_11];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_152_0];
+  publicContainer2 = [registryCopy publicContainer];
+  v11 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_152_0];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_155];
+  publicContainer3 = [registryCopy publicContainer];
+  v13 = [publicContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_155];
   v14 = [v13 inScope:2];
 
-  v15 = [v3 privateContainer];
-  v16 = [v15 registerProtocol:&unk_1F540E588 factory:&__block_literal_global_160_0];
+  privateContainer = [registryCopy privateContainer];
+  v16 = [privateContainer registerProtocol:&unk_1F540E588 factory:&__block_literal_global_160_0];
 
-  v17 = [v3 publicContainer];
-  v18 = [v17 registerClass:objc_opt_class() factory:&__block_literal_global_172];
+  publicContainer4 = [registryCopy publicContainer];
+  v18 = [publicContainer4 registerClass:objc_opt_class() factory:&__block_literal_global_172];
   v19 = [v18 inScope:2];
 
-  v20 = [v3 publicContainer];
-  v21 = [v20 registerProtocol:&unk_1F53E40B8 factory:&__block_literal_global_174];
+  publicContainer5 = [registryCopy publicContainer];
+  v21 = [publicContainer5 registerProtocol:&unk_1F53E40B8 factory:&__block_literal_global_174];
 
-  v22 = [v3 publicContainer];
-  v23 = [v22 registerProtocol:&unk_1F53DD6C0 factory:&__block_literal_global_177];
+  publicContainer6 = [registryCopy publicContainer];
+  v23 = [publicContainer6 registerProtocol:&unk_1F53DD6C0 factory:&__block_literal_global_177];
 
-  v25 = [v3 privateContainer];
+  privateContainer2 = [registryCopy privateContainer];
 
-  v24 = [v25 registerProtocol:&unk_1F5422960 factory:&__block_literal_global_184_0];
+  v24 = [privateContainer2 registerProtocol:&unk_1F5422960 factory:&__block_literal_global_184_0];
 }
 
 void __43__SXEmbedComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

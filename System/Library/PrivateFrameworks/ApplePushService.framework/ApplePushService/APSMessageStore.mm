@@ -1,34 +1,34 @@
 @interface APSMessageStore
 + (id)sharedInstance;
 - (APSMessageStore)init;
-- (id)_onQueueIncomingMessagesFromRecords:(__CFArray *)a3;
-- (id)_onQueueSubscribedChannelsForRecord:(_APSChannelRecordStruct *)a3;
-- (id)_onQueueSubscribedChannelsForRecords:(__CFArray *)a3;
+- (id)_onQueueIncomingMessagesFromRecords:(__CFArray *)records;
+- (id)_onQueueSubscribedChannelsForRecord:(_APSChannelRecordStruct *)record;
+- (id)_onQueueSubscribedChannelsForRecords:(__CFArray *)records;
 - (id)allRegisteredChannels;
-- (id)allRegisteredChannelsForEnvironment:(id)a3 userName:(id)a4;
-- (id)allRegisteredChannelsForTopic:(id)a3 environment:(id)a4 userName:(id)a5;
-- (id)incomingMessagesForTopic:(id)a3 priority:(int64_t)a4 environment:(id)a5 pushTokens:(id)a6;
-- (id)lookupChannelWithChannelID:(id)a3 andPushTopic:(id)a4 environment:(id)a5 userName:(id)a6;
-- (id)pendingLowPriorityIncomingMessageTopicsForEnvironment:(id)a3 pushTokens:(id)a4;
-- (id)storeOutgoingMessage:(id)a3 environment:(id)a4;
+- (id)allRegisteredChannelsForEnvironment:(id)environment userName:(id)name;
+- (id)allRegisteredChannelsForTopic:(id)topic environment:(id)environment userName:(id)name;
+- (id)incomingMessagesForTopic:(id)topic priority:(int64_t)priority environment:(id)environment pushTokens:(id)tokens;
+- (id)lookupChannelWithChannelID:(id)d andPushTopic:(id)topic environment:(id)environment userName:(id)name;
+- (id)pendingLowPriorityIncomingMessageTopicsForEnvironment:(id)environment pushTokens:(id)tokens;
+- (id)storeOutgoingMessage:(id)message environment:(id)environment;
 - (void)__closeDatabase;
 - (void)_clearDatabaseCloseTimer;
-- (void)_onQueueDeleteLowPriorityIncomingMessagesForTopic:(id)a3 environment:(id)a4 pushTokens:(id)a5;
+- (void)_onQueueDeleteLowPriorityIncomingMessagesForTopic:(id)topic environment:(id)environment pushTokens:(id)tokens;
 - (void)_setDatabaseCloseTimer;
 - (void)closeDatabase;
-- (void)deleteChannelID:(id)a3 forTopic:(id)a4 environment:(id)a5 userName:(id)a6;
-- (void)deleteIncomingMessageWithGUID:(id)a3;
-- (void)deleteLowPriorityIncomingMessagesForTopic:(id)a3 environment:(id)a4 pushTokens:(id)a5;
-- (void)deleteOutgoingMessageWithGUID:(id)a3;
-- (void)deleteStaleIncomingLowPriorityMessagesForEnvironment:(id)a3;
-- (void)markMessageWithGUID:(id)a3 asSent:(BOOL)a4;
+- (void)deleteChannelID:(id)d forTopic:(id)topic environment:(id)environment userName:(id)name;
+- (void)deleteIncomingMessageWithGUID:(id)d;
+- (void)deleteLowPriorityIncomingMessagesForTopic:(id)topic environment:(id)environment pushTokens:(id)tokens;
+- (void)deleteOutgoingMessageWithGUID:(id)d;
+- (void)deleteStaleIncomingLowPriorityMessagesForEnvironment:(id)environment;
+- (void)markMessageWithGUID:(id)d asSent:(BOOL)sent;
 - (void)openDatabase;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 afterDelay:(double)a4;
-- (void)performBlock:(id)a3 waitUntilDone:(BOOL)a4;
-- (void)storeChannel:(id)a3;
-- (void)storeIncomingMessage:(id)a3 environment:(id)a4 completionBlock:(id)a5;
-- (void)updateChannel:(id)a3;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block afterDelay:(double)delay;
+- (void)performBlock:(id)block waitUntilDone:(BOOL)done;
+- (void)storeChannel:(id)channel;
+- (void)storeIncomingMessage:(id)message environment:(id)environment completionBlock:(id)block;
+- (void)updateChannel:(id)channel;
 @end
 
 @implementation APSMessageStore
@@ -110,72 +110,72 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100098EF4;
     v6[3] = &unk_100188728;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     sub_100014400(v6);
   }
 }
 
-- (void)performBlock:(id)a3 afterDelay:(double)a4
+- (void)performBlock:(id)block afterDelay:(double)delay
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  blockCopy = block;
+  v6 = blockCopy;
+  if (blockCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10009903C;
     v7[3] = &unk_100188728;
     v7[4] = self;
-    v8 = v5;
+    v8 = blockCopy;
     sub_1000B27CC(v7);
   }
 }
 
-- (void)performBlock:(id)a3 waitUntilDone:(BOOL)a4
+- (void)performBlock:(id)block waitUntilDone:(BOOL)done
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  blockCopy = block;
+  v6 = blockCopy;
+  if (blockCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100099184;
     v7[3] = &unk_100188728;
     v7[4] = self;
-    v8 = v5;
+    v8 = blockCopy;
     sub_100014400(v7);
   }
 }
 
-- (void)storeIncomingMessage:(id)a3 environment:(id)a4 completionBlock:(id)a5
+- (void)storeIncomingMessage:(id)message environment:(id)environment completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  environmentCopy = environment;
+  blockCopy = block;
   v11 = sub_10001B39C();
   if (+[APSLog shouldReduceLogging])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
-      v24 = v8;
+      v24 = messageCopy;
       v25 = 2112;
       v26 = v11;
       v27 = 2112;
-      v28 = v9;
+      v28 = environmentCopy;
       v12 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "%@ asked to store incoming message %@ with guid %@ environment %@", buf, 0x2Au);
@@ -185,13 +185,13 @@ LABEL_6:
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v8;
+    v24 = messageCopy;
     v25 = 2112;
     v26 = v11;
     v27 = 2112;
-    v28 = v9;
+    v28 = environmentCopy;
     v12 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
@@ -200,37 +200,37 @@ LABEL_6:
   v16[1] = 3221225472;
   v16[2] = sub_100099444;
   v16[3] = &unk_100187F18;
-  v17 = v8;
-  v18 = self;
-  v19 = v9;
+  v17 = messageCopy;
+  selfCopy3 = self;
+  v19 = environmentCopy;
   v20 = v11;
   v13 = v11;
-  v14 = v9;
-  v15 = v8;
+  v14 = environmentCopy;
+  v15 = messageCopy;
   [(APSMessageStore *)self performBlock:v16 waitUntilDone:1];
-  v10[2](v10, v13);
+  blockCopy[2](blockCopy, v13);
 }
 
-- (void)deleteIncomingMessageWithGUID:(id)a3
+- (void)deleteIncomingMessageWithGUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000996E4;
     v6[3] = &unk_100186D90;
-    v7 = v4;
+    v7 = dCopy;
     [(APSMessageStore *)self performBlock:v6];
   }
 }
 
-- (void)_onQueueDeleteLowPriorityIncomingMessagesForTopic:(id)a3 environment:(id)a4 pushTokens:(id)a5
+- (void)_onQueueDeleteLowPriorityIncomingMessagesForTopic:(id)topic environment:(id)environment pushTokens:(id)tokens
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  environmentCopy = environment;
+  tokensCopy = tokens;
   if (+[APSLog shouldReduceLogging])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -238,13 +238,13 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v11 = [v9 name];
+    name = [environmentCopy name];
     *buf = 138412802;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
-    v26 = v8;
+    v26 = topicCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = name;
     v12 = OS_LOG_TYPE_DEBUG;
   }
 
@@ -255,13 +255,13 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v11 = [v9 name];
+    name = [environmentCopy name];
     *buf = 138412802;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2112;
-    v26 = v8;
+    v26 = topicCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = name;
     v12 = OS_LOG_TYPE_DEFAULT;
   }
 
@@ -273,7 +273,7 @@ LABEL_7:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v13 = v10;
+  v13 = tokensCopy;
   v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
@@ -288,7 +288,7 @@ LABEL_7:
           objc_enumerationMutation(v13);
         }
 
-        sub_1000B6238(v8, 1, [v9 name], *(*(&v18 + 1) + 8 * i));
+        sub_1000B6238(topicCopy, 1, [environmentCopy name], *(*(&v18 + 1) + 8 * i));
       }
 
       v15 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -298,54 +298,54 @@ LABEL_7:
   }
 }
 
-- (void)deleteLowPriorityIncomingMessagesForTopic:(id)a3 environment:(id)a4 pushTokens:(id)a5
+- (void)deleteLowPriorityIncomingMessagesForTopic:(id)topic environment:(id)environment pushTokens:(id)tokens
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  topicCopy = topic;
+  environmentCopy = environment;
+  tokensCopy = tokens;
+  if (topicCopy)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100099A00;
     v11[3] = &unk_100187F18;
     v11[4] = self;
-    v12 = v8;
-    v13 = v9;
-    v14 = v10;
+    v12 = topicCopy;
+    v13 = environmentCopy;
+    v14 = tokensCopy;
     [(APSMessageStore *)self performBlock:v11];
   }
 }
 
-- (void)deleteStaleIncomingLowPriorityMessagesForEnvironment:(id)a3
+- (void)deleteStaleIncomingLowPriorityMessagesForEnvironment:(id)environment
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100099AA4;
   v5[3] = &unk_100186D90;
-  v6 = a3;
-  v4 = v6;
+  environmentCopy = environment;
+  v4 = environmentCopy;
   [(APSMessageStore *)self performBlock:v5];
 }
 
-- (id)pendingLowPriorityIncomingMessageTopicsForEnvironment:(id)a3 pushTokens:(id)a4
+- (id)pendingLowPriorityIncomingMessageTopicsForEnvironment:(id)environment pushTokens:(id)tokens
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  tokensCopy = tokens;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_100014064;
   v18 = sub_1000146C4;
   v19 = objc_alloc_init(NSMutableArray);
-  if (v6)
+  if (environmentCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100099C74;
     v10[3] = &unk_100188900;
-    v11 = v7;
-    v12 = v6;
+    v11 = tokensCopy;
+    v12 = environmentCopy;
     v13 = &v14;
     [(APSMessageStore *)self performBlock:v10 waitUntilDone:1];
   }
@@ -356,18 +356,18 @@ LABEL_7:
   return v8;
 }
 
-- (id)_onQueueIncomingMessagesFromRecords:(__CFArray *)a3
+- (id)_onQueueIncomingMessagesFromRecords:(__CFArray *)records
 {
-  if (a3 && (Count = CFArrayGetCount(a3)) != 0)
+  if (records && (Count = CFArrayGetCount(records)) != 0)
   {
     v5 = Count;
-    v6 = [[NSMutableArray alloc] initWithCapacity:CFArrayGetCount(a3)];
+    v6 = [[NSMutableArray alloc] initWithCapacity:CFArrayGetCount(records)];
     if (v5 >= 1)
     {
       for (i = 0; v5 != i; ++i)
       {
         v8 = objc_autoreleasePoolPush();
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+        ValueAtIndex = CFArrayGetValueAtIndex(records, i);
         v28 = 0;
         v29 = 0;
         v27 = 0;
@@ -415,7 +415,7 @@ LABEL_7:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138413058;
-            v31 = self;
+            selfCopy2 = self;
             v32 = 2112;
             v33 = v10;
             v34 = 2112;
@@ -431,7 +431,7 @@ LABEL_15:
         else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138413058;
-          v31 = self;
+          selfCopy2 = self;
           v32 = 2112;
           v33 = v10;
           v34 = 2112;
@@ -481,11 +481,11 @@ LABEL_16:
   return v6;
 }
 
-- (id)incomingMessagesForTopic:(id)a3 priority:(int64_t)a4 environment:(id)a5 pushTokens:(id)a6
+- (id)incomingMessagesForTopic:(id)topic priority:(int64_t)priority environment:(id)environment pushTokens:(id)tokens
 {
-  v21 = a3;
-  v10 = a5;
-  v11 = a6;
+  topicCopy = topic;
+  environmentCopy = environment;
+  tokensCopy = tokens;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -493,17 +493,17 @@ LABEL_16:
   v36 = sub_1000146C4;
   v37 = 0;
   v12 = objc_alloc_init(NSMutableArray);
-  if (v10)
+  if (environmentCopy)
   {
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_10009A3F4;
     v26[3] = &unk_100188928;
-    v31 = a4;
-    v27 = v21;
-    v29 = self;
+    priorityCopy = priority;
+    v27 = topicCopy;
+    selfCopy = self;
     v30 = &v32;
-    v28 = v10;
+    v28 = environmentCopy;
     [(APSMessageStore *)self performBlock:v26 waitUntilDone:1];
   }
 
@@ -526,10 +526,10 @@ LABEL_16:
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
-        if (v11)
+        if (tokensCopy)
         {
-          v18 = [*(*(&v22 + 1) + 8 * i) token];
-          v19 = [v11 containsObject:v18];
+          token = [*(*(&v22 + 1) + 8 * i) token];
+          v19 = [tokensCopy containsObject:token];
 
           if (!v19)
           {
@@ -551,23 +551,23 @@ LABEL_16:
   return v12;
 }
 
-- (id)storeOutgoingMessage:(id)a3 environment:(id)a4
+- (id)storeOutgoingMessage:(id)message environment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  environmentCopy = environment;
   v8 = sub_10001B39C();
   if (+[APSLog shouldReduceLogging])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v6;
+      v23 = messageCopy;
       v24 = 2112;
       v25 = v8;
       v26 = 2112;
-      v27 = v7;
+      v27 = environmentCopy;
       v9 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "%@ asked to store outgoing message %@ with guid %@ environment %@", buf, 0x2Au);
@@ -577,13 +577,13 @@ LABEL_6:
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2112;
-    v23 = v6;
+    v23 = messageCopy;
     v24 = 2112;
     v25 = v8;
     v26 = 2112;
-    v27 = v7;
+    v27 = environmentCopy;
     v9 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
@@ -592,12 +592,12 @@ LABEL_6:
   v16[1] = 3221225472;
   v16[2] = sub_10009A694;
   v16[3] = &unk_100186330;
-  v17 = v6;
+  v17 = messageCopy;
   v10 = v8;
   v18 = v10;
-  v19 = v7;
-  v11 = v7;
-  v12 = v6;
+  v19 = environmentCopy;
+  v11 = environmentCopy;
+  v12 = messageCopy;
   [(APSMessageStore *)self performBlock:v16];
   v13 = v19;
   v14 = v10;
@@ -605,9 +605,9 @@ LABEL_6:
   return v10;
 }
 
-- (void)deleteOutgoingMessageWithGUID:(id)a3
+- (void)deleteOutgoingMessageWithGUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (+[APSLog shouldReduceLogging])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -616,9 +616,9 @@ LABEL_6:
     }
 
     *buf = 138412546;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = dCopy;
     v5 = OS_LOG_TYPE_DEBUG;
   }
 
@@ -630,29 +630,29 @@ LABEL_6:
     }
 
     *buf = 138412546;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = dCopy;
     v5 = OS_LOG_TYPE_DEFAULT;
   }
 
   _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Removing outgoing message with guid %@", buf, 0x16u);
 LABEL_7:
-  if ([v4 length])
+  if ([dCopy length])
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10009AAA8;
     v6[3] = &unk_100186D90;
-    v7 = v4;
+    v7 = dCopy;
     [(APSMessageStore *)self performBlock:v6];
   }
 }
 
-- (void)markMessageWithGUID:(id)a3 asSent:(BOOL)a4
+- (void)markMessageWithGUID:(id)d asSent:(BOOL)sent
 {
-  v4 = a4;
-  v6 = a3;
+  sentCopy = sent;
+  dCopy = d;
   if (+[APSLog shouldReduceLogging])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -662,14 +662,14 @@ LABEL_7:
 
     v7 = @"NO";
     *buf = 138412802;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
-    if (v4)
+    if (sentCopy)
     {
       v7 = @"YES";
     }
 
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2112;
     v18 = v7;
     v8 = OS_LOG_TYPE_DEBUG;
@@ -684,14 +684,14 @@ LABEL_7:
 
     v9 = @"NO";
     *buf = 138412802;
-    v14 = self;
+    selfCopy2 = self;
     v15 = 2112;
-    if (v4)
+    if (sentCopy)
     {
       v9 = @"YES";
     }
 
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2112;
     v18 = v9;
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -699,29 +699,29 @@ LABEL_7:
 
   _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "%@ markMessageWithGUID: %@ asSent: %@", buf, 0x20u);
 LABEL_11:
-  if ([v6 length])
+  if ([dCopy length])
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10009AC88;
     v10[3] = &unk_100188700;
-    v11 = v6;
-    v12 = v4;
+    v11 = dCopy;
+    v12 = sentCopy;
     [(APSMessageStore *)self performBlock:v10];
   }
 }
 
-- (void)storeChannel:(id)a3
+- (void)storeChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   if (+[APSLog shouldReduceLogging])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
-      v12 = v4;
+      v12 = channelCopy;
       v5 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ asked to store global channel %@", buf, 0x16u);
@@ -731,9 +731,9 @@ LABEL_6:
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = channelCopy;
     v5 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
@@ -742,31 +742,31 @@ LABEL_6:
   v7[1] = 3221225472;
   v7[2] = sub_10009AEA4;
   v7[3] = &unk_100186D90;
-  v8 = v4;
-  v6 = v4;
+  v8 = channelCopy;
+  v6 = channelCopy;
   [(APSMessageStore *)self performBlock:v7 waitUntilDone:1];
 }
 
-- (void)deleteChannelID:(id)a3 forTopic:(id)a4 environment:(id)a5 userName:(id)a6
+- (void)deleteChannelID:(id)d forTopic:(id)topic environment:(id)environment userName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  topicCopy = topic;
+  environmentCopy = environment;
+  nameCopy = name;
   if (+[APSLog shouldReduceLogging])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413314;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = v10;
+      v27 = dCopy;
       v28 = 2112;
-      v29 = v11;
+      v29 = topicCopy;
       v30 = 2112;
-      v31 = v12;
+      v31 = environmentCopy;
       v32 = 2112;
-      v33 = v13;
+      v33 = nameCopy;
       v14 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "%@ Removing channelID %@ channelTopic %@ environment %@ tokenName %@", buf, 0x34u);
@@ -776,15 +776,15 @@ LABEL_6:
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2112;
-    v27 = v10;
+    v27 = dCopy;
     v28 = 2112;
-    v29 = v11;
+    v29 = topicCopy;
     v30 = 2112;
-    v31 = v12;
+    v31 = environmentCopy;
     v32 = 2112;
-    v33 = v13;
+    v33 = nameCopy;
     v14 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
@@ -793,38 +793,38 @@ LABEL_6:
   v19[1] = 3221225472;
   v19[2] = sub_10009B258;
   v19[3] = &unk_100187F18;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dCopy;
+  v21 = topicCopy;
+  v22 = environmentCopy;
+  v23 = nameCopy;
+  v15 = nameCopy;
+  v16 = environmentCopy;
+  v17 = topicCopy;
+  v18 = dCopy;
   [(APSMessageStore *)self performBlock:v19 waitUntilDone:1];
 }
 
-- (void)updateChannel:(id)a3
+- (void)updateChannel:(id)channel
 {
-  if (a3)
+  if (channel)
   {
-    v8 = a3;
-    v4 = [v8 channelID];
-    v5 = [v8 channelTopic];
-    v6 = [v8 environment];
-    v7 = [v8 tokenName];
-    [(APSMessageStore *)self deleteChannelID:v4 forTopic:v5 environment:v6 userName:v7];
+    channelCopy = channel;
+    channelID = [channelCopy channelID];
+    channelTopic = [channelCopy channelTopic];
+    environment = [channelCopy environment];
+    tokenName = [channelCopy tokenName];
+    [(APSMessageStore *)self deleteChannelID:channelID forTopic:channelTopic environment:environment userName:tokenName];
 
-    [(APSMessageStore *)self storeChannel:v8];
+    [(APSMessageStore *)self storeChannel:channelCopy];
   }
 }
 
-- (id)lookupChannelWithChannelID:(id)a3 andPushTopic:(id)a4 environment:(id)a5 userName:(id)a6
+- (id)lookupChannelWithChannelID:(id)d andPushTopic:(id)topic environment:(id)environment userName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  topicCopy = topic;
+  environmentCopy = environment;
+  nameCopy = name;
   if (+[APSLog shouldReduceLogging])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -833,15 +833,15 @@ LABEL_6:
     }
 
     *buf = 138413314;
-    v41 = self;
+    selfCopy5 = self;
     v42 = 2112;
-    v43 = v10;
+    v43 = dCopy;
     v44 = 2112;
-    v45 = v11;
+    v45 = topicCopy;
     v46 = 2112;
-    v47 = v12;
+    v47 = environmentCopy;
     v48 = 2112;
-    v49 = v13;
+    v49 = nameCopy;
     v14 = OS_LOG_TYPE_DEBUG;
   }
 
@@ -853,15 +853,15 @@ LABEL_6:
     }
 
     *buf = 138413314;
-    v41 = self;
+    selfCopy5 = self;
     v42 = 2112;
-    v43 = v10;
+    v43 = dCopy;
     v44 = 2112;
-    v45 = v11;
+    v45 = topicCopy;
     v46 = 2112;
-    v47 = v12;
+    v47 = environmentCopy;
     v48 = 2112;
-    v49 = v13;
+    v49 = nameCopy;
     v14 = OS_LOG_TYPE_DEFAULT;
   }
 
@@ -877,14 +877,14 @@ LABEL_7:
   v25 = 3221225472;
   v26 = sub_10009B718;
   v27 = &unk_100188970;
-  v15 = v10;
+  v15 = dCopy;
   v28 = v15;
-  v16 = v11;
+  v16 = topicCopy;
   v29 = v16;
-  v17 = v12;
+  v17 = environmentCopy;
   v30 = v17;
-  v18 = v13;
-  v32 = self;
+  v18 = nameCopy;
+  selfCopy3 = self;
   v33 = &v34;
   v31 = v18;
   [(APSMessageStore *)self performBlock:&v24 waitUntilDone:1];
@@ -897,7 +897,7 @@ LABEL_7:
 
     v19 = v35[5];
     *buf = 138413570;
-    v41 = self;
+    selfCopy5 = self;
     v42 = 2112;
     v43 = v19;
     v44 = 2112;
@@ -920,7 +920,7 @@ LABEL_7:
 
     v21 = v35[5];
     *buf = 138413570;
-    v41 = self;
+    selfCopy5 = self;
     v42 = 2112;
     v43 = v21;
     v44 = 2112;
@@ -943,11 +943,11 @@ LABEL_13:
   return v22;
 }
 
-- (id)allRegisteredChannelsForTopic:(id)a3 environment:(id)a4 userName:(id)a5
+- (id)allRegisteredChannelsForTopic:(id)topic environment:(id)environment userName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  environmentCopy = environment;
+  nameCopy = name;
   if (+[APSLog shouldReduceLogging])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -958,11 +958,11 @@ LABEL_13:
     *buf = 138413058;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = topicCopy;
     *&buf[22] = 2112;
-    v33 = v9;
+    v33 = environmentCopy;
     LOWORD(v34) = 2112;
-    *(&v34 + 2) = v10;
+    *(&v34 + 2) = nameCopy;
     v11 = OS_LOG_TYPE_DEBUG;
   }
 
@@ -976,11 +976,11 @@ LABEL_13:
     *buf = 138413058;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = topicCopy;
     *&buf[22] = 2112;
-    v33 = v9;
+    v33 = environmentCopy;
     LOWORD(v34) = 2112;
-    *(&v34 + 2) = v10;
+    *(&v34 + 2) = nameCopy;
     v11 = OS_LOG_TYPE_DEFAULT;
   }
 
@@ -996,12 +996,12 @@ LABEL_7:
   v20[1] = 3221225472;
   v20[2] = sub_10009BB04;
   v20[3] = &unk_100188998;
-  v12 = v8;
+  v12 = topicCopy;
   v21 = v12;
-  v13 = v9;
+  v13 = environmentCopy;
   v22 = v13;
-  v14 = v10;
-  v24 = self;
+  v14 = nameCopy;
+  selfCopy = self;
   v25 = buf;
   v23 = v14;
   [(APSMessageStore *)self performBlock:v20 waitUntilDone:1];
@@ -1014,7 +1014,7 @@ LABEL_7:
 
     v15 = *(*&buf[8] + 40);
     *v26 = 138412802;
-    v27 = self;
+    selfCopy3 = self;
     v28 = 2112;
     v29 = v12;
     v30 = 2112;
@@ -1031,7 +1031,7 @@ LABEL_7:
 
     v17 = *(*&buf[8] + 40);
     *v26 = 138412802;
-    v27 = self;
+    selfCopy3 = self;
     v28 = 2112;
     v29 = v12;
     v30 = 2112;
@@ -1048,10 +1048,10 @@ LABEL_13:
   return v18;
 }
 
-- (id)allRegisteredChannelsForEnvironment:(id)a3 userName:(id)a4
+- (id)allRegisteredChannelsForEnvironment:(id)environment userName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  nameCopy = name;
   if (+[APSLog shouldReduceLogging])
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -1062,9 +1062,9 @@ LABEL_13:
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = environmentCopy;
     *&buf[22] = 2112;
-    v19 = v7;
+    v19 = nameCopy;
     v8 = OS_LOG_TYPE_DEBUG;
   }
 
@@ -1078,9 +1078,9 @@ LABEL_13:
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = environmentCopy;
     *&buf[22] = 2112;
-    v19 = v7;
+    v19 = nameCopy;
     v8 = OS_LOG_TYPE_DEFAULT;
   }
 
@@ -1096,10 +1096,10 @@ LABEL_7:
   v13[1] = 3221225472;
   v13[2] = sub_10009BDD4;
   v13[3] = &unk_1001889C0;
-  v9 = v6;
+  v9 = environmentCopy;
   v14 = v9;
-  v10 = v7;
-  v16 = self;
+  v10 = nameCopy;
+  selfCopy = self;
   v17 = buf;
   v15 = v10;
   [(APSMessageStore *)self performBlock:v13 waitUntilDone:1];
@@ -1157,15 +1157,15 @@ LABEL_7:
   return v4;
 }
 
-- (id)_onQueueSubscribedChannelsForRecord:(_APSChannelRecordStruct *)a3
+- (id)_onQueueSubscribedChannelsForRecord:(_APSChannelRecordStruct *)record
 {
-  if (a3)
+  if (record)
   {
     Default = CFAllocatorGetDefault();
     Mutable = CFArrayCreateMutable(Default, 0, &kCFTypeArrayCallBacks);
-    CFArrayAppendValue(Mutable, a3);
+    CFArrayAppendValue(Mutable, record);
     v7 = [(APSMessageStore *)self _onQueueSubscribedChannelsForRecords:Mutable];
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     if (Mutable)
     {
       CFRelease(Mutable);
@@ -1174,18 +1174,18 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
-- (id)_onQueueSubscribedChannelsForRecords:(__CFArray *)a3
+- (id)_onQueueSubscribedChannelsForRecords:(__CFArray *)records
 {
   v4 = +[NSMutableArray array];
-  if (a3)
+  if (records)
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(records);
     if (Count)
     {
       v6 = Count;
@@ -1196,7 +1196,7 @@ LABEL_7:
         for (i = 0; v6 != i; ++i)
         {
           v9 = objc_autoreleasePoolPush();
-          ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+          ValueAtIndex = CFArrayGetValueAtIndex(records, i);
           cf = 0;
           v33 = 0;
           v30 = 0;
@@ -1222,7 +1222,7 @@ LABEL_7:
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v35 = self;
+                selfCopy2 = self;
                 v15 = OS_LOG_TYPE_DEBUG;
 LABEL_18:
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "%@ could not create PKGlobalChannel from mesage store", buf, 0xCu);
@@ -1232,7 +1232,7 @@ LABEL_18:
             else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v35 = self;
+              selfCopy2 = self;
               v15 = OS_LOG_TYPE_DEFAULT;
               goto LABEL_18;
             }

@@ -1,10 +1,10 @@
 @interface _MPCProtoRadioContentReferenceLibraryItemContentReference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoRadioContentReferenceLibraryItemContentReference
@@ -203,16 +203,16 @@ LABEL_27:
   return v33 ^ v34 ^ v32 ^ v31 ^ v30 ^ v3 ^ v7 ^ v8 ^ v12 ^ v13 ^ v17 ^ v21 ^ v22 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
   albumArtistName = self->_albumArtistName;
-  if (albumArtistName | *(v4 + 5))
+  if (albumArtistName | *(equalCopy + 5))
   {
     if (![(NSString *)albumArtistName isEqual:?])
     {
@@ -221,7 +221,7 @@ LABEL_27:
   }
 
   albumName = self->_albumName;
-  if (albumName | *(v4 + 7))
+  if (albumName | *(equalCopy + 7))
   {
     if (![(NSString *)albumName isEqual:?])
     {
@@ -230,7 +230,7 @@ LABEL_27:
   }
 
   artistName = self->_artistName;
-  if (artistName | *(v4 + 9))
+  if (artistName | *(equalCopy + 9))
   {
     if (![(NSString *)artistName isEqual:?])
     {
@@ -239,7 +239,7 @@ LABEL_27:
   }
 
   composerName = self->_composerName;
-  if (composerName | *(v4 + 10))
+  if (composerName | *(equalCopy + 10))
   {
     if (![(NSString *)composerName isEqual:?])
     {
@@ -248,10 +248,10 @@ LABEL_27:
   }
 
   has = self->_has;
-  v10 = *(v4 + 70);
+  v10 = *(equalCopy + 70);
   if ((has & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_contentType != *(v4 + 22))
+    if ((v10 & 0x40) == 0 || self->_contentType != *(equalCopy + 22))
     {
       goto LABEL_77;
     }
@@ -263,7 +263,7 @@ LABEL_27:
   }
 
   copyrightText = self->_copyrightText;
-  if (copyrightText | *(v4 + 12))
+  if (copyrightText | *(equalCopy + 12))
   {
     if (![(NSString *)copyrightText isEqual:?])
     {
@@ -271,12 +271,12 @@ LABEL_27:
     }
 
     has = self->_has;
-    v10 = *(v4 + 70);
+    v10 = *(equalCopy + 70);
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_albumDiscCount != *(v4 + 12))
+    if ((v10 & 0x10) == 0 || self->_albumDiscCount != *(equalCopy + 12))
     {
       goto LABEL_77;
     }
@@ -289,7 +289,7 @@ LABEL_27:
 
   if ((has & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_discNumber != *(v4 + 26))
+    if ((v10 & 0x80) == 0 || self->_discNumber != *(equalCopy + 26))
     {
       goto LABEL_77;
     }
@@ -302,7 +302,7 @@ LABEL_27:
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_fileSize != *(v4 + 3))
+    if ((v10 & 4) == 0 || self->_fileSize != *(equalCopy + 3))
     {
       goto LABEL_77;
     }
@@ -314,7 +314,7 @@ LABEL_27:
   }
 
   genreName = self->_genreName;
-  if (genreName | *(v4 + 14))
+  if (genreName | *(equalCopy + 14))
   {
     if (![(NSString *)genreName isEqual:?])
     {
@@ -322,7 +322,7 @@ LABEL_27:
     }
 
     has = self->_has;
-    v10 = *(v4 + 70);
+    v10 = *(equalCopy + 70);
   }
 
   if ((has & 0x400) != 0)
@@ -334,13 +334,13 @@ LABEL_27:
 
     if (self->_isCompilation)
     {
-      if ((*(v4 + 136) & 1) == 0)
+      if ((*(equalCopy + 136) & 1) == 0)
       {
         goto LABEL_77;
       }
     }
 
-    else if (*(v4 + 136))
+    else if (*(equalCopy + 136))
     {
       goto LABEL_77;
     }
@@ -353,7 +353,7 @@ LABEL_27:
 
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_duration != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_duration != *(equalCopy + 2))
     {
       goto LABEL_77;
     }
@@ -365,12 +365,12 @@ LABEL_27:
   }
 
   title = self->_title;
-  if (title | *(v4 + 15))
+  if (title | *(equalCopy + 15))
   {
     if ([(NSString *)title isEqual:?])
     {
       has = self->_has;
-      v10 = *(v4 + 70);
+      v10 = *(equalCopy + 70);
       goto LABEL_50;
     }
 
@@ -382,7 +382,7 @@ LABEL_77:
 LABEL_50:
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_storeAdamID != *(v4 + 4))
+    if ((v10 & 8) == 0 || self->_storeAdamID != *(equalCopy + 4))
     {
       goto LABEL_77;
     }
@@ -395,7 +395,7 @@ LABEL_50:
 
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_cloudID != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_cloudID != *(equalCopy + 1))
     {
       goto LABEL_77;
     }
@@ -408,7 +408,7 @@ LABEL_50:
 
   if ((has & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_albumTrackCount != *(v4 + 16))
+    if ((v10 & 0x20) == 0 || self->_albumTrackCount != *(equalCopy + 16))
     {
       goto LABEL_77;
     }
@@ -421,7 +421,7 @@ LABEL_50:
 
   if ((has & 0x100) != 0)
   {
-    if ((v10 & 0x100) == 0 || self->_trackNumber != *(v4 + 32))
+    if ((v10 & 0x100) == 0 || self->_trackNumber != *(equalCopy + 32))
     {
       goto LABEL_77;
     }
@@ -434,7 +434,7 @@ LABEL_50:
 
   if ((has & 0x200) != 0)
   {
-    if ((v10 & 0x200) == 0 || self->_year != *(v4 + 33))
+    if ((v10 & 0x200) == 0 || self->_year != *(equalCopy + 33))
     {
       goto LABEL_77;
     }
@@ -452,22 +452,22 @@ LABEL_78:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_albumArtistName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_albumArtistName copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_albumName copyWithZone:a3];
+  v8 = [(NSString *)self->_albumName copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_artistName copyWithZone:a3];
+  v10 = [(NSString *)self->_artistName copyWithZone:zone];
   v11 = *(v5 + 72);
   *(v5 + 72) = v10;
 
-  v12 = [(NSString *)self->_composerName copyWithZone:a3];
+  v12 = [(NSString *)self->_composerName copyWithZone:zone];
   v13 = *(v5 + 80);
   *(v5 + 80) = v12;
 
@@ -477,7 +477,7 @@ LABEL_78:
     *(v5 + 140) |= 0x40u;
   }
 
-  v14 = [(NSString *)self->_copyrightText copyWithZone:a3];
+  v14 = [(NSString *)self->_copyrightText copyWithZone:zone];
   v15 = *(v5 + 96);
   *(v5 + 96) = v14;
 
@@ -514,7 +514,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v17 = [(NSString *)self->_genreName copyWithZone:a3];
+  v17 = [(NSString *)self->_genreName copyWithZone:zone];
   v18 = *(v5 + 112);
   *(v5 + 112) = v17;
 
@@ -532,7 +532,7 @@ LABEL_7:
     *(v5 + 140) |= 2u;
   }
 
-  v20 = [(NSString *)self->_title copyWithZone:a3];
+  v20 = [(NSString *)self->_title copyWithZone:zone];
   v21 = *(v5 + 120);
   *(v5 + 120) = v20;
 
@@ -601,51 +601,51 @@ LABEL_16:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_albumArtistName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_albumName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_artistName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_composerName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_copyrightText)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -665,46 +665,46 @@ LABEL_15:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v8;
+  toCopy = v8;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_16:
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
 LABEL_17:
   if (self->_genreName)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   v6 = self->_has;
   if ((v6 & 0x400) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     v6 = self->_has;
   }
 
   if ((v6 & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   v7 = self->_has;
   if ((v7 & 8) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     v7 = self->_has;
     if ((v7 & 1) == 0)
     {
@@ -724,7 +724,7 @@ LABEL_27:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v8;
+  toCopy = v8;
   v7 = self->_has;
   if ((v7 & 0x20) == 0)
   {
@@ -739,7 +739,7 @@ LABEL_28:
 
 LABEL_39:
   PBDataWriterWriteInt32Field();
-  v4 = v8;
+  toCopy = v8;
   v7 = self->_has;
   if ((v7 & 0x100) == 0)
   {
@@ -754,12 +754,12 @@ LABEL_29:
 
 LABEL_40:
   PBDataWriterWriteInt32Field();
-  v4 = v8;
+  toCopy = v8;
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_30:
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
 LABEL_31:
@@ -767,12 +767,12 @@ LABEL_31:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   albumArtistName = self->_albumArtistName;
   if (albumArtistName)
   {
-    [v3 setObject:albumArtistName forKey:@"albumArtistName"];
+    [dictionary setObject:albumArtistName forKey:@"albumArtistName"];
   }
 
   albumName = self->_albumName;
@@ -944,8 +944,8 @@ LABEL_31:
   v8.receiver = self;
   v8.super_class = _MPCProtoRadioContentReferenceLibraryItemContentReference;
   v4 = [(_MPCProtoRadioContentReferenceLibraryItemContentReference *)&v8 description];
-  v5 = [(_MPCProtoRadioContentReferenceLibraryItemContentReference *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoRadioContentReferenceLibraryItemContentReference *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

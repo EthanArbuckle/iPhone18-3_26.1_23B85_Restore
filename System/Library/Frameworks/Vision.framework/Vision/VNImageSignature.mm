@@ -1,18 +1,18 @@
 @interface VNImageSignature
-- (BOOL)isEqual:(id)a3;
-- (VNImageSignature)initWithCoder:(id)a3;
-- (VNImageSignature)initWithImageBuffer:(id)a3 regionOfInterest:(CGRect)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (VNImageSignature)initWithCoder:(id)coder;
+- (VNImageSignature)initWithImageBuffer:(id)buffer regionOfInterest:(CGRect)interest error:(id *)error;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNImageSignature
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -20,7 +20,7 @@
   else
   {
     objc_opt_class();
-    v8 = (objc_opt_isKindOfClass() & 1) != 0 && (nPiRow = self->_signature.nPiRow, nPiRow == v4->_signature.nPiRow) && (nPiCol = self->_signature.nPiCol, nPiCol == v4->_signature.nPiCol) && (v7 = 4 * nPiRow, !memcmp(self->_signature.piRow, v4->_signature.piRow, 4 * nPiRow)) && !memcmp(self->_signature.piRowTable.sumTable, v4->_signature.piRowTable.sumTable, v7) && !memcmp(self->_signature.piRowTable.sumSqTable, v4->_signature.piRowTable.sumSqTable, v7) && !memcmp(self->_signature.piCol, v4->_signature.piCol, 4 * nPiCol) && !memcmp(self->_signature.piColTable.sumTable, v4->_signature.piColTable.sumTable, 4 * nPiCol) && memcmp(self->_signature.piColTable.sumSqTable, v4->_signature.piColTable.sumSqTable, 4 * nPiCol) == 0;
+    v8 = (objc_opt_isKindOfClass() & 1) != 0 && (nPiRow = self->_signature.nPiRow, nPiRow == equalCopy->_signature.nPiRow) && (nPiCol = self->_signature.nPiCol, nPiCol == equalCopy->_signature.nPiCol) && (v7 = 4 * nPiRow, !memcmp(self->_signature.piRow, equalCopy->_signature.piRow, 4 * nPiRow)) && !memcmp(self->_signature.piRowTable.sumTable, equalCopy->_signature.piRowTable.sumTable, v7) && !memcmp(self->_signature.piRowTable.sumSqTable, equalCopy->_signature.piRowTable.sumSqTable, v7) && !memcmp(self->_signature.piCol, equalCopy->_signature.piCol, 4 * nPiCol) && !memcmp(self->_signature.piColTable.sumTable, equalCopy->_signature.piColTable.sumTable, 4 * nPiCol) && memcmp(self->_signature.piColTable.sumSqTable, equalCopy->_signature.piColTable.sumSqTable, 4 * nPiCol) == 0;
   }
 
   return v8;
@@ -46,12 +46,12 @@
   [(VNImageSignature *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   piRow = self->_signature.piRow;
   nPiRow = self->_signature.nPiRow;
-  v7 = v4;
+  v7 = coderCopy;
   v8 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:piRow length:4 * nPiRow freeWhenDone:0];
   [v7 encodeObject:v8 forKey:@"rowProjections"];
 
@@ -86,10 +86,10 @@
   [v28 encodeObject:v27 forKey:@"colSumSq"];
 }
 
-- (VNImageSignature)initWithCoder:(id)a3
+- (VNImageSignature)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rowProjections"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rowProjections"];
   v6 = [v5 length];
   v7 = MEMORY[0x1E695D930];
   if ((v6 & 3) != 0)
@@ -97,7 +97,7 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"inconsistent row data"];
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colProjections"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colProjections"];
   v9 = [v8 length];
   if ((v9 & 3) != 0)
   {
@@ -110,7 +110,7 @@
   {
     memcpy(p_isa[1], [v5 bytes], v6);
     memcpy(p_isa[5], [v8 bytes], v9);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rowSum"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rowSum"];
 
     if ([v12 length] != v6)
     {
@@ -118,7 +118,7 @@
     }
 
     memcpy(p_isa[3], [v12 bytes], v6);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colSum"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colSum"];
 
     if ([v13 length] != v9)
     {
@@ -126,7 +126,7 @@
     }
 
     memcpy(p_isa[7], [v13 bytes], v9);
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rowSumSq"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rowSumSq"];
 
     if ([v5 length] != v6)
     {
@@ -134,7 +134,7 @@
     }
 
     memcpy(p_isa[4], [v5 bytes], v6);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colSumSq"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colSumSq"];
 
     if ([v8 length] != v9)
     {
@@ -153,7 +153,7 @@
   return v14;
 }
 
-- (VNImageSignature)initWithImageBuffer:(id)a3 regionOfInterest:(CGRect)a4 error:(id *)a5
+- (VNImageSignature)initWithImageBuffer:(id)buffer regionOfInterest:(CGRect)interest error:(id *)error
 {
   v5 = MEMORY[0x1EEE9AC00](self).n128_u64[0];
   v7 = v6;
@@ -173,18 +173,18 @@
     if (v19)
     {
       v19->_signature._memoryContainer = 0;
-      v21 = [v18 width];
-      v22 = [v18 height];
-      v23 = v21 & 0xFFFFFFFFFFFFFFFELL;
+      width = [v18 width];
+      height = [v18 height];
+      v23 = width & 0xFFFFFFFFFFFFFFFELL;
       v24 = 2;
-      if (v21 < 2)
+      if (width < 2)
       {
         v23 = 2;
       }
 
-      if (v22 >= 2)
+      if (height >= 2)
       {
-        v24 = v22 & 0xFFFFFFFFFFFFFFFELL;
+        v24 = height & 0xFFFFFFFFFFFFFFFELL;
       }
 
       v46.origin.x = v14 * v23;

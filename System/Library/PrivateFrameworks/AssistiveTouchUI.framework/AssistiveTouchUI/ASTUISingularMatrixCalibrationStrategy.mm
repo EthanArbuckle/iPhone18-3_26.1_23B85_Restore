@@ -1,8 +1,8 @@
 @interface ASTUISingularMatrixCalibrationStrategy
 - (ASTUISingularMatrixCalibrationStrategy)init;
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3;
-- (id)learnCalibrationForPoints:(id)a3;
-- (void)captureGazeEnrollmentPoint:(id)a3;
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point;
+- (id)learnCalibrationForPoints:(id)points;
+- (void)captureGazeEnrollmentPoint:(id)point;
 - (void)learnCalibration;
 @end
 
@@ -23,14 +23,14 @@
   return v2;
 }
 
-- (void)captureGazeEnrollmentPoint:(id)a3
+- (void)captureGazeEnrollmentPoint:(id)point
 {
   store = self->_store;
-  v4 = a3;
-  [v4 groundTruthPoint];
+  pointCopy = point;
+  [pointCopy groundTruthPoint];
   v6 = v5;
   v8 = v7;
-  [v4 predictedPoint];
+  [pointCopy predictedPoint];
   v10 = v9;
   v12 = v11;
 
@@ -39,27 +39,27 @@
 
 - (void)learnCalibration
 {
-  v3 = [(ASTUIGazeEnrollmentStore *)self->_store enrollmentPointToGazePointDict];
-  v4 = [(ASTUISingularMatrixCalibrationStrategy *)self learnCalibrationForPoints:v3];
+  enrollmentPointToGazePointDict = [(ASTUIGazeEnrollmentStore *)self->_store enrollmentPointToGazePointDict];
+  v4 = [(ASTUISingularMatrixCalibrationStrategy *)self learnCalibrationForPoints:enrollmentPointToGazePointDict];
 
   [(ASTUIGazeEnrollmentStore *)self->_store saveCalibratedArray:v4];
 }
 
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point
 {
   v5.receiver = self;
   v5.super_class = ASTUISingularMatrixCalibrationStrategy;
-  [(ASTUILinearMatrixCalibrationStrategy *)&v5 calibratedGazePointForGazePoint:a3.x, a3.y];
+  [(ASTUILinearMatrixCalibrationStrategy *)&v5 calibratedGazePointForGazePoint:point.x, point.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (id)learnCalibrationForPoints:(id)a3
+- (id)learnCalibrationForPoints:(id)points
 {
   v5.receiver = self;
   v5.super_class = ASTUISingularMatrixCalibrationStrategy;
-  v3 = [(ASTUILinearMatrixCalibrationStrategy *)&v5 learnCalibrationForPoints:a3];
+  v3 = [(ASTUILinearMatrixCalibrationStrategy *)&v5 learnCalibrationForPoints:points];
 
   return v3;
 }

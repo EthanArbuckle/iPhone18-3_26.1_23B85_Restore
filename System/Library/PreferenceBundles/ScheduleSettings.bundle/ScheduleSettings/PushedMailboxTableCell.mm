@@ -1,21 +1,21 @@
 @interface PushedMailboxTableCell
-+ (int)_cacheIndexForType:(int64_t)a3;
-- (PushedMailboxTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_setupMailFolderIconForImage:(id)a3;
++ (int)_cacheIndexForType:(int64_t)type;
+- (PushedMailboxTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_setupMailFolderIconForImage:(id)image;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setChecked:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setType:(int64_t)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation PushedMailboxTableCell
 
-+ (int)_cacheIndexForType:(int64_t)a3
++ (int)_cacheIndexForType:(int64_t)type
 {
   v3 = -3;
-  for (i = &_mailFolderImages; *i != a3; i += 3)
+  for (i = &_mailFolderImages; *i != type; i += 3)
   {
     v3 += 3;
     if (v3 >= 0x12)
@@ -27,11 +27,11 @@
   return v3 + 5;
 }
 
-- (PushedMailboxTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PushedMailboxTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PushedMailboxTableCell;
-  v4 = [(PushedMailboxTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PushedMailboxTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -50,7 +50,7 @@
   [(PushedMailboxTableCell *)&v3 dealloc];
 }
 
-- (void)_setupMailFolderIconForImage:(id)a3
+- (void)_setupMailFolderIconForImage:(id)image
 {
   mailboxIcon = self->_mailboxIcon;
   if (!mailboxIcon)
@@ -60,43 +60,43 @@
     mailboxIcon = self->_mailboxIcon;
   }
 
-  [(UIImageView *)mailboxIcon setImage:a3];
+  [(UIImageView *)mailboxIcon setImage:image];
   v6 = self->_mailboxIcon;
 
   [(UIImageView *)v6 sizeToFit];
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  v4 = [PushedMailboxTableCell _iconForType:a3 nested:self->_level != 0];
+  v4 = [PushedMailboxTableCell _iconForType:type nested:self->_level != 0];
 
   [(PushedMailboxTableCell *)self _setupMailFolderIconForImage:v4];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = PushedMailboxTableCell;
   [(PushedMailboxTableCell *)&v7 setEnabled:?];
   mailboxName = self->_mailboxName;
-  if (v3)
+  if (enabledCopy)
   {
-    v6 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] secondaryLabelColor];
+    labelColor = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  [(UILabel *)mailboxName setTextColor:v6];
+  [(UILabel *)mailboxName setTextColor:labelColor];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!checked)
   {
     v4 = 0;
     goto LABEL_5;
@@ -104,7 +104,7 @@
 
   if ([(PushedMailboxTableCell *)self isUserInteractionEnabled])
   {
-    self = v3;
+    self = selfCopy;
     v4 = 3;
 LABEL_5:
 
@@ -114,7 +114,7 @@ LABEL_5:
 
   v5 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
   v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
-  [(PushedMailboxTableCell *)v3 setAccessoryView:v6];
+  [(PushedMailboxTableCell *)selfCopy setAccessoryView:v6];
 }
 
 - (void)prepareForReuse

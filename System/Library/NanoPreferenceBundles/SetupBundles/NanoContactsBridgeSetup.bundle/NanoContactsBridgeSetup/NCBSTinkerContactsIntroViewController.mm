@@ -4,7 +4,7 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation NCBSTinkerContactsIntroViewController
@@ -25,24 +25,24 @@
 
 - (id)titleString
 {
-  v2 = [(NCBSTinkerContactsIntroViewController *)self miniFlowDelegate];
-  v3 = [v2 familyMemberFirstName];
+  miniFlowDelegate = [(NCBSTinkerContactsIntroViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v4 = NanoContactsBridgeSetupBundle();
   v5 = [v4 localizedStringForKey:@"TK_CONTACTS_INTRO_TITLE" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
-  v6 = [NSString stringWithFormat:v5, v3];
+  v6 = [NSString stringWithFormat:v5, familyMemberFirstName];
 
   return v6;
 }
 
 - (id)detailString
 {
-  v2 = [(NCBSTinkerContactsIntroViewController *)self miniFlowDelegate];
-  v3 = [v2 familyMemberFirstName];
+  miniFlowDelegate = [(NCBSTinkerContactsIntroViewController *)self miniFlowDelegate];
+  familyMemberFirstName = [miniFlowDelegate familyMemberFirstName];
 
   v4 = NanoContactsBridgeSetupBundle();
   v5 = [v4 localizedStringForKey:@"TK_CONTACTS_INTRO_DETAIL" value:&stru_1C900 table:@"NanoContactsBridgeSetup"];
-  v6 = [NSString stringWithFormat:v5, v3, v3];
+  v6 = [NSString stringWithFormat:v5, familyMemberFirstName, familyMemberFirstName];
 
   return v6;
 }
@@ -55,10 +55,10 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(NCBSTinkerContactsIntroViewController *)self miniFlowDelegate];
-  [v4 miniFlowStepComplete:self];
+  miniFlowDelegate = [(NCBSTinkerContactsIntroViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (NCBSBridgeSetupControllerDelegate)miniFlowDelegate

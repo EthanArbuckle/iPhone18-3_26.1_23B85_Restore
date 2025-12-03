@@ -1,20 +1,20 @@
 @interface AudioUnitFactory
 - (_TtC15KonaSynthesizer16AudioUnitFactory)init;
-- (id)createAudioUnitWithComponentDescription:(AudioComponentDescription *)a3 error:(id *)a4;
+- (id)createAudioUnitWithComponentDescription:(AudioComponentDescription *)description error:(id *)error;
 @end
 
 @implementation AudioUnitFactory
 
-- (id)createAudioUnitWithComponentDescription:(AudioComponentDescription *)a3 error:(id *)a4
+- (id)createAudioUnitWithComponentDescription:(AudioComponentDescription *)description error:(id *)error
 {
-  v5 = *&a3->componentType;
-  v6 = *&a3->componentManufacturer;
-  componentFlagsMask = a3->componentFlagsMask;
+  v5 = *&description->componentType;
+  v6 = *&description->componentManufacturer;
+  componentFlagsMask = description->componentFlagsMask;
   type metadata accessor for KonaSynthesizerAudioUnit();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_100001874(v5, v6, componentFlagsMask, 0);
-  v10 = *(&v8->super.isa + OBJC_IVAR____TtC15KonaSynthesizer16AudioUnitFactory_audioUnit);
-  *(&v8->super.isa + OBJC_IVAR____TtC15KonaSynthesizer16AudioUnitFactory_audioUnit) = v9;
+  v10 = *(&selfCopy->super.isa + OBJC_IVAR____TtC15KonaSynthesizer16AudioUnitFactory_audioUnit);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC15KonaSynthesizer16AudioUnitFactory_audioUnit) = v9;
   v11 = v9;
 
   v12 = v11;

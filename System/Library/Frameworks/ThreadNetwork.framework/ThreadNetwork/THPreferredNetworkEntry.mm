@@ -1,89 +1,89 @@
 @interface THPreferredNetworkEntry
-- (THPreferredNetworkEntry)initWithCoder:(id)a3;
-- (id)initPrefEntry:(id)a3 extendedPANID:(id)a4 ipv4Signature:(id)a5 ipv6Signature:(id)a6 wifiSSID:(id)a7 creationDate:(id)a8 lastModificationDate:(id)a9 credentialsRecord:(id)a10;
-- (void)encodeWithCoder:(id)a3;
+- (THPreferredNetworkEntry)initWithCoder:(id)coder;
+- (id)initPrefEntry:(id)entry extendedPANID:(id)d ipv4Signature:(id)signature ipv6Signature:(id)ipv6Signature wifiSSID:(id)iD creationDate:(id)date lastModificationDate:(id)modificationDate credentialsRecord:(id)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation THPreferredNetworkEntry
 
-- (id)initPrefEntry:(id)a3 extendedPANID:(id)a4 ipv4Signature:(id)a5 ipv6Signature:(id)a6 wifiSSID:(id)a7 creationDate:(id)a8 lastModificationDate:(id)a9 credentialsRecord:(id)a10
+- (id)initPrefEntry:(id)entry extendedPANID:(id)d ipv4Signature:(id)signature ipv6Signature:(id)ipv6Signature wifiSSID:(id)iD creationDate:(id)date lastModificationDate:(id)modificationDate credentialsRecord:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  obj = a8;
-  v23 = a8;
-  v17 = a9;
-  v18 = a10;
+  entryCopy = entry;
+  dCopy = d;
+  signatureCopy = signature;
+  ipv6SignatureCopy = ipv6Signature;
+  iDCopy = iD;
+  obj = date;
+  dateCopy = date;
+  modificationDateCopy = modificationDate;
+  recordCopy = record;
   v29.receiver = self;
   v29.super_class = THPreferredNetworkEntry;
   v19 = [(THPreferredNetworkEntry *)&v29 init];
   p_isa = &v19->super.isa;
   if (v19)
   {
-    objc_storeStrong(&v19->_networkName, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 6, a10);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
-    objc_storeStrong(p_isa + 5, a7);
+    objc_storeStrong(&v19->_networkName, entry);
+    objc_storeStrong(p_isa + 2, d);
+    objc_storeStrong(p_isa + 6, record);
+    objc_storeStrong(p_isa + 3, signature);
+    objc_storeStrong(p_isa + 4, ipv6Signature);
+    objc_storeStrong(p_isa + 5, iD);
     objc_storeStrong(p_isa + 7, obj);
-    objc_storeStrong(p_isa + 8, a9);
+    objc_storeStrong(p_isa + 8, modificationDate);
   }
 
   return p_isa;
 }
 
-- (THPreferredNetworkEntry)initWithCoder:(id)a3
+- (THPreferredNetworkEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"xp"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ipv4"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ipv6"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wifissid"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creds"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cr"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lm"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"xp"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ipv4"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ipv6"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wifissid"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creds"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cr"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lm"];
 
-  v13 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     self = [(THPreferredNetworkEntry *)self initPrefEntry:v5 extendedPANID:v6 ipv4Signature:v7 ipv6Signature:v8 wifiSSID:v9 creationDate:v11 lastModificationDate:v12 credentialsRecord:v10];
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(THPreferredNetworkEntry *)self networkName];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  networkName = [(THPreferredNetworkEntry *)self networkName];
+  [coderCopy encodeObject:networkName forKey:@"name"];
 
-  v6 = [(THPreferredNetworkEntry *)self extendedPANID];
-  [v4 encodeObject:v6 forKey:@"xp"];
+  extendedPANID = [(THPreferredNetworkEntry *)self extendedPANID];
+  [coderCopy encodeObject:extendedPANID forKey:@"xp"];
 
-  v7 = [(THPreferredNetworkEntry *)self ipv4Signature];
-  [v4 encodeObject:v7 forKey:@"ipv4"];
+  ipv4Signature = [(THPreferredNetworkEntry *)self ipv4Signature];
+  [coderCopy encodeObject:ipv4Signature forKey:@"ipv4"];
 
-  v8 = [(THPreferredNetworkEntry *)self ipv6Signature];
-  [v4 encodeObject:v8 forKey:@"ipv6"];
+  ipv6Signature = [(THPreferredNetworkEntry *)self ipv6Signature];
+  [coderCopy encodeObject:ipv6Signature forKey:@"ipv6"];
 
-  v9 = [(THPreferredNetworkEntry *)self wifiSSID];
-  [v4 encodeObject:v9 forKey:@"wifissid"];
+  wifiSSID = [(THPreferredNetworkEntry *)self wifiSSID];
+  [coderCopy encodeObject:wifiSSID forKey:@"wifissid"];
 
-  v10 = [(THPreferredNetworkEntry *)self credentialsRecord];
-  [v4 encodeObject:v10 forKey:@"creds"];
+  credentialsRecord = [(THPreferredNetworkEntry *)self credentialsRecord];
+  [coderCopy encodeObject:credentialsRecord forKey:@"creds"];
 
-  v11 = [(THPreferredNetworkEntry *)self creationDate];
-  [v4 encodeObject:v11 forKey:@"cr"];
+  creationDate = [(THPreferredNetworkEntry *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"cr"];
 
-  v12 = [(THPreferredNetworkEntry *)self lastModificationDate];
-  [v4 encodeObject:v12 forKey:@"lm"];
+  lastModificationDate = [(THPreferredNetworkEntry *)self lastModificationDate];
+  [coderCopy encodeObject:lastModificationDate forKey:@"lm"];
 }
 
 @end

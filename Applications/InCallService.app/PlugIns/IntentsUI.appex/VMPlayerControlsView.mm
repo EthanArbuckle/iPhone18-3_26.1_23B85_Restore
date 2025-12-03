@@ -1,22 +1,22 @@
 @interface VMPlayerControlsView
 - (VMPlayerControlsDelegate)delegate;
-- (VMPlayerControlsView)initWithCoder:(id)a3;
+- (VMPlayerControlsView)initWithCoder:(id)coder;
 - (double)duration;
 - (double)elapsedTime;
 - (void)commonInit;
 - (void)loadConstraints;
 - (void)loadSubviews;
-- (void)setDuration:(double)a3;
-- (void)setElapsedTime:(double)a3;
-- (void)setElapsedTime:(double)a3 animated:(BOOL)a4;
-- (void)setState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setStyle:(int64_t)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setDuration:(double)duration;
+- (void)setElapsedTime:(double)time;
+- (void)setElapsedTime:(double)time animated:(BOOL)animated;
+- (void)setState:(int64_t)state animated:(BOOL)animated;
+- (void)setStyle:(int64_t)style;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation VMPlayerControlsView
 
-- (VMPlayerControlsView)initWithCoder:(id)a3
+- (VMPlayerControlsView)initWithCoder:(id)coder
 {
   [(VMPlayerControlsView *)self doesNotRecognizeSelector:a2];
 
@@ -36,91 +36,91 @@
 
 - (double)duration
 {
-  v2 = [(VMPlayerControlsView *)self timelineSlider];
-  [v2 duration];
+  timelineSlider = [(VMPlayerControlsView *)self timelineSlider];
+  [timelineSlider duration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v5 = [(VMPlayerControlsView *)self timelineSlider];
-  [v5 duration];
+  timelineSlider = [(VMPlayerControlsView *)self timelineSlider];
+  [timelineSlider duration];
   v7 = v6;
 
-  if (v7 != a3)
+  if (v7 != duration)
   {
-    v8 = [(VMPlayerControlsView *)self timelineSlider];
-    [v8 setDuration:a3];
+    timelineSlider2 = [(VMPlayerControlsView *)self timelineSlider];
+    [timelineSlider2 setDuration:duration];
   }
 }
 
 - (double)elapsedTime
 {
-  v2 = [(VMPlayerControlsView *)self timelineSlider];
-  [v2 elapsedTime];
+  timelineSlider = [(VMPlayerControlsView *)self timelineSlider];
+  [timelineSlider elapsedTime];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
-  v4 = [(VMPlayerControlsView *)self timelineSlider];
-  [v4 setElapsedTime:a3];
+  timelineSlider = [(VMPlayerControlsView *)self timelineSlider];
+  [timelineSlider setElapsedTime:time];
 }
 
-- (void)setElapsedTime:(double)a3 animated:(BOOL)a4
+- (void)setElapsedTime:(double)time animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(VMPlayerControlsView *)self timelineSlider];
-  [v6 setElapsedTime:v4 animated:a3];
+  animatedCopy = animated;
+  timelineSlider = [(VMPlayerControlsView *)self timelineSlider];
+  [timelineSlider setElapsedTime:animatedCopy animated:time];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9.receiver = self;
   v9.super_class = VMPlayerControlsView;
   [(VMPlayerControlsView *)&v9 setUserInteractionEnabled:?];
-  if (self->_enabled != v3)
+  if (self->_enabled != enabledCopy)
   {
-    self->_enabled = v3;
+    self->_enabled = enabledCopy;
     v5 = +[UIColor systemGrayColor];
-    if (v3)
+    if (enabledCopy)
     {
       v6 = +[UIColor systemBlueColor];
 
       v5 = v6;
     }
 
-    v7 = [(VMPlayerControlsView *)self timelineSlider];
-    [v7 setUserInteractionEnabled:v3];
+    timelineSlider = [(VMPlayerControlsView *)self timelineSlider];
+    [timelineSlider setUserInteractionEnabled:enabledCopy];
 
-    v8 = [(VMPlayerControlsView *)self timelineSlider];
-    [v8 setTintColor:v5];
+    timelineSlider2 = [(VMPlayerControlsView *)self timelineSlider];
+    [timelineSlider2 setTintColor:v5];
   }
 }
 
-- (void)setState:(int64_t)a3 animated:(BOOL)a4
+- (void)setState:(int64_t)state animated:(BOOL)animated
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style == a3)
+  if (self->_style == style)
   {
     return;
   }
 
-  self->_style = a3;
+  self->_style = style;
   [(VMPlayerControlsView *)self unloadConstraints];
-  if (a3 == 1)
+  if (style == 1)
   {
     v8 = [VMPlayerControlButton buttonWithState:0];
     [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -133,18 +133,18 @@
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!style)
   {
-    v6 = [(VMPlayerControlsView *)self playPauseButton];
-    v7 = v6;
-    if (!v6)
+    playPauseButton = [(VMPlayerControlsView *)self playPauseButton];
+    v7 = playPauseButton;
+    if (!playPauseButton)
     {
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    [v6 removeFromSuperview];
+    [playPauseButton removeFromSuperview];
     v8 = 0;
 LABEL_7:
     [(VMPlayerControlsView *)self setPlayPauseButton:v8];
@@ -184,62 +184,62 @@ LABEL_9:
   if (![(VMPlayerControlsView *)self constraintsLoaded])
   {
     v3 = objc_alloc_init(NSMutableArray);
-    v4 = [(VMPlayerControlsView *)self isAccessiblityConstraintsEnabled];
-    v5 = [(VMPlayerControlsView *)self timelineSlider];
-    v6 = [v5 topAnchor];
-    v7 = [(VMPlayerControlsView *)self topAnchor];
-    if (v4)
+    isAccessiblityConstraintsEnabled = [(VMPlayerControlsView *)self isAccessiblityConstraintsEnabled];
+    timelineSlider = [(VMPlayerControlsView *)self timelineSlider];
+    topAnchor = [timelineSlider topAnchor];
+    topAnchor2 = [(VMPlayerControlsView *)self topAnchor];
+    if (isAccessiblityConstraintsEnabled)
     {
       [(VMPlayerControlsView *)self timelineSliderTopAnchorConstraintAccessibilityConstant];
-      [v6 constraintEqualToAnchor:v7 constant:?];
+      [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     }
 
     else
     {
-      [v6 constraintEqualToAnchor:v7];
+      [topAnchor constraintEqualToAnchor:topAnchor2];
     }
-    v8 = ;
+    slider = ;
 
-    [v3 addObject:v8];
-    v9 = [(VMPlayerControlsView *)self style];
-    if (v9 == 1)
+    [v3 addObject:slider];
+    style = [(VMPlayerControlsView *)self style];
+    if (style == 1)
     {
-      v14 = [(VMPlayerControlsView *)self playPauseButton];
-      v15 = [v14 leadingAnchor];
-      v16 = [(VMPlayerControlsView *)self leadingAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      playPauseButton = [(VMPlayerControlsView *)self playPauseButton];
+      leadingAnchor = [playPauseButton leadingAnchor];
+      leadingAnchor2 = [(VMPlayerControlsView *)self leadingAnchor];
+      v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
       [v3 addObject:v17];
-      v18 = [(VMPlayerControlsView *)self timelineSlider];
-      v19 = [v18 leadingAnchor];
-      v20 = [(VMPlayerControlsView *)self playPauseButton];
-      v21 = [v20 trailingAnchor];
-      v22 = [v19 constraintEqualToAnchor:v21 constant:16.0];
+      timelineSlider2 = [(VMPlayerControlsView *)self timelineSlider];
+      leadingAnchor3 = [timelineSlider2 leadingAnchor];
+      playPauseButton2 = [(VMPlayerControlsView *)self playPauseButton];
+      trailingAnchor = [playPauseButton2 trailingAnchor];
+      v22 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:16.0];
 
       [v3 addObject:v22];
-      v10 = [(VMPlayerControlsView *)self playPauseButton];
-      v11 = [v10 centerYAnchor];
-      v12 = [(VMPlayerControlsView *)self timelineSlider];
-      v8 = [v12 slider];
-      v23 = [v8 centerYAnchor];
-      v13 = [v11 constraintEqualToAnchor:v23];
+      playPauseButton3 = [(VMPlayerControlsView *)self playPauseButton];
+      centerYAnchor = [playPauseButton3 centerYAnchor];
+      timelineSlider3 = [(VMPlayerControlsView *)self timelineSlider];
+      slider = [timelineSlider3 slider];
+      centerYAnchor2 = [slider centerYAnchor];
+      v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     }
 
     else
     {
-      if (v9)
+      if (style)
       {
 LABEL_10:
-        v24 = [(VMPlayerControlsView *)self timelineSlider];
-        v25 = [v24 trailingAnchor];
-        v26 = [(VMPlayerControlsView *)self trailingAnchor];
-        v27 = [v25 constraintEqualToAnchor:v26];
+        timelineSlider4 = [(VMPlayerControlsView *)self timelineSlider];
+        trailingAnchor2 = [timelineSlider4 trailingAnchor];
+        trailingAnchor3 = [(VMPlayerControlsView *)self trailingAnchor];
+        v27 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
         [v3 addObject:v27];
 
-        v28 = [(VMPlayerControlsView *)self timelineSlider];
-        v29 = [v28 bottomAnchor];
-        v30 = [(VMPlayerControlsView *)self bottomAnchor];
-        v31 = [v29 constraintEqualToAnchor:v30];
+        timelineSlider5 = [(VMPlayerControlsView *)self timelineSlider];
+        bottomAnchor = [timelineSlider5 bottomAnchor];
+        bottomAnchor2 = [(VMPlayerControlsView *)self bottomAnchor];
+        v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         [v3 addObject:v31];
 
         [NSLayoutConstraint activateConstraints:v3];
@@ -248,14 +248,14 @@ LABEL_10:
         goto LABEL_11;
       }
 
-      v10 = [(VMPlayerControlsView *)self timelineSlider];
-      v11 = [v10 leadingAnchor];
-      v12 = [(VMPlayerControlsView *)self leadingAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      playPauseButton3 = [(VMPlayerControlsView *)self timelineSlider];
+      centerYAnchor = [playPauseButton3 leadingAnchor];
+      timelineSlider3 = [(VMPlayerControlsView *)self leadingAnchor];
+      v13 = [centerYAnchor constraintEqualToAnchor:timelineSlider3];
     }
 
     [v3 addObject:v13];
-    v8 = v13;
+    slider = v13;
     goto LABEL_10;
   }
 

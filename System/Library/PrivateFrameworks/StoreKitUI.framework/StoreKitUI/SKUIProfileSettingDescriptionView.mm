@@ -1,17 +1,17 @@
 @interface SKUIProfileSettingDescriptionView
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context;
 - (BOOL)hasDisclosureChevron;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SKUIProfileSettingDescriptionView
 
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -28,7 +28,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -49,7 +49,7 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -61,7 +61,7 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -86,10 +86,10 @@
   [v17 _scaledValueForValue:20.0];
   v23 = v21 + v22;
 
-  v24 = a3;
+  widthCopy = width;
   v25 = v23;
   result.height = v25;
-  result.width = v24;
+  result.width = widthCopy;
   return result;
 }
 
@@ -110,9 +110,9 @@
   return self->_hasDisclosureChevron;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -125,9 +125,9 @@
     }
   }
 
-  v15 = v6;
-  v16 = [v15 viewElement];
-  v17 = [v16 firstChildForElementType:29];
+  v15 = descriptionCopy;
+  viewElement = [v15 viewElement];
+  v17 = [viewElement firstChildForElementType:29];
   self->_hasDisclosureChevron = v17 != 0;
 
   if (!self->_handleLabel)
@@ -137,15 +137,15 @@
     self->_handleLabel = v18;
 
     v20 = self->_handleLabel;
-    v21 = [MEMORY[0x277D75348] grayColor];
-    [(UILabel *)v20 setColor:v21];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [(UILabel *)v20 setColor:grayColor];
 
     [(SKUIProfileSettingDescriptionView *)self addSubview:self->_handleLabel];
   }
 
-  v22 = [v15 handle];
-  v23 = v22;
-  if (v22 && [v22 length])
+  handle = [v15 handle];
+  v23 = handle;
+  if (handle && [handle length])
   {
     [(UILabel *)self->_handleLabel setHidden:0];
     v24 = self->_handleLabel;
@@ -166,15 +166,15 @@
     self->_nameLabel = v27;
 
     v29 = self->_nameLabel;
-    v30 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v29 setColor:v30];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v29 setColor:blackColor];
 
     [(SKUIProfileSettingDescriptionView *)self addSubview:self->_nameLabel];
     nameLabel = self->_nameLabel;
   }
 
-  v31 = [v15 name];
-  [(UILabel *)nameLabel setText:v31];
+  name = [v15 name];
+  [(UILabel *)nameLabel setText:name];
 
   imageView = self->_imageView;
   if (!imageView)
@@ -187,11 +187,11 @@
     imageView = self->_imageView;
   }
 
-  v35 = [v15 photo];
-  [(SKUIImageView *)imageView setImage:v35];
+  photo = [v15 photo];
+  [(SKUIImageView *)imageView setImage:photo];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {

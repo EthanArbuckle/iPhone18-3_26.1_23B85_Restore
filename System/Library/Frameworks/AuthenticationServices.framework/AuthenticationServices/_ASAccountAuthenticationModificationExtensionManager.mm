@@ -2,13 +2,13 @@
 + (id)sharedManager;
 - (_ASAccountAuthenticationModificationExtensionManager)init;
 - (void)_beginExtensionDiscovery;
-- (void)_buildDomainToExtensionDictionaryWithSharedWebCredentialsDatabaseEntries:(id)a3;
+- (void)_buildDomainToExtensionDictionaryWithSharedWebCredentialsDatabaseEntries:(id)entries;
 - (void)_endExtensionDiscovery;
-- (void)_notifyObservers:(id)a3;
-- (void)addChangeObserver:(id)a3;
+- (void)_notifyObservers:(id)observers;
+- (void)addChangeObserver:(id)observer;
 - (void)dealloc;
-- (void)extensionForDomain:(id)a3 completionHandler:(id)a4;
-- (void)removeChangeObserver:(id)a3;
+- (void)extensionForDomain:(id)domain completionHandler:(id)handler;
+- (void)removeChangeObserver:(id)observer;
 @end
 
 @implementation _ASAccountAuthenticationModificationExtensionManager
@@ -30,13 +30,13 @@
     v8 = *(v2 + 2);
     *(v2 + 2) = v7;
 
-    v9 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     v10 = *(v2 + 6);
-    *(v2 + 6) = v9;
+    *(v2 + 6) = orderedSet;
 
-    v11 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
     v12 = *(v2 + 8);
-    *(v2 + 8) = v11;
+    *(v2 + 8) = safari_browserDefaults;
 
     v13 = v2;
   }
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = __69___ASAccountAuthenticationModificationExtensionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -115,16 +115,16 @@
   }
 }
 
-- (void)_buildDomainToExtensionDictionaryWithSharedWebCredentialsDatabaseEntries:(id)a3
+- (void)_buildDomainToExtensionDictionaryWithSharedWebCredentialsDatabaseEntries:(id)entries
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  entriesCopy = entries;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v3;
+  v5 = entriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v6)
   {
@@ -142,16 +142,16 @@
 
         v10 = *(*(&v25 + 1) + 8 * i);
         v11 = MEMORY[0x1E69C8DE8];
-        v12 = [v10 domain];
-        v13 = [v11 domainByStrippingSubdomainWildcardPrefixIfNecessary:v12];
+        domain = [v10 domain];
+        v13 = [v11 domainByStrippingSubdomainWildcardPrefixIfNecessary:domain];
 
         if (([MEMORY[0x1E69C8DE8] domainIsProhibitedForSavingCredentials:v13] & 1) == 0)
         {
-          v14 = [v13 safari_highLevelDomainFromHost];
-          if (v14 && (![MEMORY[0x1E69C8DE8] highLevelDomainHasSuiteOfAssociatedApps:v14] || objc_msgSend(v10, "service") == 7))
+          safari_highLevelDomainFromHost = [v13 safari_highLevelDomainFromHost];
+          if (safari_highLevelDomainFromHost && (![MEMORY[0x1E69C8DE8] highLevelDomainHasSuiteOfAssociatedApps:safari_highLevelDomainFromHost] || objc_msgSend(v10, "service") == 7))
           {
             v24 = 0;
-            v15 = [v10 appID];
+            appID = [v10 appID];
             CPCopyBundleIdentifierAndTeamFromApplicationIdentifier();
 
             v16 = WBS_LOG_CHANNEL_PREFIXAccountAuthenticationModificationExtension();
@@ -177,19 +177,19 @@
   block[2] = __129___ASAccountAuthenticationModificationExtensionManager__buildDomainToExtensionDictionaryWithSharedWebCredentialsDatabaseEntries___block_invoke;
   block[3] = &unk_1E7AF76A8;
   block[4] = self;
-  v23 = v4;
-  v18 = v4;
+  v23 = dictionary;
+  v18 = dictionary;
   dispatch_async(dataConstructionQueue, block);
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extensionForDomain:(id)a3 completionHandler:(id)a4
+- (void)extensionForDomain:(id)domain completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  handlerCopy = handler;
   v8 = [(NSUserDefaults *)self->_mobileSafariUserDefaults BOOLForKey:@"EnableSFAppAccountAuthenticationModificationExtension"];
-  if (![v6 containsString:@"apple.com"] || v8)
+  if (![domainCopy containsString:@"apple.com"] || v8)
   {
     objc_initWeak(&location, self);
     readOnlyQueue = self->_readOnlyQueue;
@@ -198,8 +198,8 @@
     v10[2] = __93___ASAccountAuthenticationModificationExtensionManager_extensionForDomain_completionHandler___block_invoke;
     v10[3] = &unk_1E7AF7A58;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
-    v11 = v6;
+    v12 = handlerCopy;
+    v11 = domainCopy;
     dispatch_async(readOnlyQueue, v10);
 
     objc_destroyWeak(&v13);
@@ -208,48 +208,48 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)addChangeObserver:(id)a3
+- (void)addChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dataConstructionQueue = self->_dataConstructionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74___ASAccountAuthenticationModificationExtensionManager_addChangeObserver___block_invoke;
   v7[3] = &unk_1E7AF76A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(dataConstructionQueue, v7);
 }
 
-- (void)removeChangeObserver:(id)a3
+- (void)removeChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dataConstructionQueue = self->_dataConstructionQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77___ASAccountAuthenticationModificationExtensionManager_removeChangeObserver___block_invoke;
   v7[3] = &unk_1E7AF76A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(dataConstructionQueue, v7);
 }
 
-- (void)_notifyObservers:(id)a3
+- (void)_notifyObservers:(id)observers
 {
-  v4 = [a3 copy];
+  v4 = [observers copy];
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73___ASAccountAuthenticationModificationExtensionManager__notifyObservers___block_invoke;
   v7[3] = &unk_1E7AF76A8;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   dispatch_async(v5, v7);
 }

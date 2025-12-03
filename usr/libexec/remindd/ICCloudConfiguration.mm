@@ -1,19 +1,19 @@
 @interface ICCloudConfiguration
-+ (BOOL)isConfigurationValid:(id)a3;
++ (BOOL)isConfigurationValid:(id)valid;
 + (id)availableConfigurationURLs;
 + (id)cachedConfigurationURL;
 + (id)defaultConfigurationURL;
 + (id)sharedConfiguration;
-+ (void)setDefaultConfigurationURL:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
++ (void)setDefaultConfigurationURL:(id)l;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (ICCloudConfiguration)init;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)downloadConfigurationFromRemoteURL:(id)a3 completionHandler:(id)a4;
+- (id)valueForUndefinedKey:(id)key;
+- (void)downloadConfigurationFromRemoteURL:(id)l completionHandler:(id)handler;
 - (void)downloadRemoteConfiguration;
-- (void)loadConfigurationFromURL:(id)a3;
+- (void)loadConfigurationFromURL:(id)l;
 - (void)loadLocalConfigurationFile;
-- (void)setConfigurationFromDictionary:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setConfigurationFromDictionary:(id)dictionary;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation ICCloudConfiguration
@@ -54,9 +54,9 @@
   return v2;
 }
 
-+ (BOOL)isConfigurationValid:(id)a3
++ (BOOL)isConfigurationValid:(id)valid
 {
-  v3 = [a3 objectForKeyedSubscript:@"configurationVersion"];
+  v3 = [valid objectForKeyedSubscript:@"configurationVersion"];
   v4 = v3;
   if (!v3)
   {
@@ -92,30 +92,30 @@ LABEL_9:
 + (id)defaultConfigurationURL
 {
   v3 = objc_opt_new();
-  v4 = [v3 userDefaults];
-  v5 = [v4 stringForKey:@"CloudConfigurationPath"];
+  userDefaults = [v3 userDefaults];
+  v5 = [userDefaults stringForKey:@"CloudConfigurationPath"];
 
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [NSURL fileURLWithPath:v5];
-  if (([v6 checkResourceIsReachableAndReturnError:0] & 1) == 0)
+  firstObject = [NSURL fileURLWithPath:v5];
+  if (([firstObject checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
-    v7 = [a1 availableConfigurationURLs];
+    availableConfigurationURLs = [self availableConfigurationURLs];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1000A0FA8;
     v24[3] = &unk_1008DB680;
     v25 = v5;
-    v8 = [v7 ic_objectPassingTest:v24];
+    v8 = [availableConfigurationURLs ic_objectPassingTest:v24];
 
-    [a1 setDefaultConfigurationURL:v8];
-    v6 = v8;
+    [self setDefaultConfigurationURL:v8];
+    firstObject = v8;
   }
 
-  if (!v6)
+  if (!firstObject)
   {
 LABEL_5:
     v19 = v3;
@@ -123,8 +123,8 @@ LABEL_5:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [a1 availableConfigurationURLs];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    availableConfigurationURLs2 = [self availableConfigurationURLs];
+    v10 = [availableConfigurationURLs2 countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -135,12 +135,12 @@ LABEL_7:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(availableConfigurationURLs2);
         }
 
         v14 = *(*(&v20 + 1) + 8 * v13);
-        v15 = [v14 lastPathComponent];
-        v16 = [v15 containsString:@"Normal"];
+        lastPathComponent = [v14 lastPathComponent];
+        v16 = [lastPathComponent containsString:@"Normal"];
 
         if (v16)
         {
@@ -149,7 +149,7 @@ LABEL_7:
 
         if (v11 == ++v13)
         {
-          v11 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
+          v11 = [availableConfigurationURLs2 countByEnumeratingWithState:&v20 objects:v26 count:16];
           if (v11)
           {
             goto LABEL_7;
@@ -159,9 +159,9 @@ LABEL_7:
         }
       }
 
-      v6 = v14;
+      firstObject = v14;
 
-      if (v6)
+      if (firstObject)
       {
         goto LABEL_16;
       }
@@ -172,27 +172,27 @@ LABEL_7:
 LABEL_13:
     }
 
-    v17 = [a1 availableConfigurationURLs];
-    v6 = [v17 firstObject];
+    availableConfigurationURLs3 = [self availableConfigurationURLs];
+    firstObject = [availableConfigurationURLs3 firstObject];
 
 LABEL_16:
-    [a1 setDefaultConfigurationURL:v6];
+    [self setDefaultConfigurationURL:firstObject];
     v3 = v19;
   }
 
-  return v6;
+  return firstObject;
 }
 
-+ (void)setDefaultConfigurationURL:(id)a3
++ (void)setDefaultConfigurationURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v7 = objc_opt_new();
-  v4 = [v7 userDefaults];
-  v5 = [v3 path];
+  userDefaults = [v7 userDefaults];
+  path = [lCopy path];
 
-  [v4 setObject:v5 forKey:@"CloudConfigurationPath"];
-  v6 = [v7 userDefaults];
-  [v6 synchronize];
+  [userDefaults setObject:path forKey:@"CloudConfigurationPath"];
+  userDefaults2 = [v7 userDefaults];
+  [userDefaults2 synchronize];
 }
 
 + (id)cachedConfigurationURL
@@ -214,15 +214,15 @@ LABEL_16:
   if (!qword_1009529A8)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = [v3 resourceURL];
-    v5 = [v4 URLByAppendingPathComponent:@"CloudConfigurations" isDirectory:1];
+    resourceURL = [v3 resourceURL];
+    v5 = [resourceURL URLByAppendingPathComponent:@"CloudConfigurations" isDirectory:1];
 
     v6 = +[NSFileManager defaultManager];
     v7 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:0 options:5 errorHandler:0];
 
-    v8 = [v7 allObjects];
+    allObjects = [v7 allObjects];
     v9 = qword_1009529A8;
-    qword_1009529A8 = v8;
+    qword_1009529A8 = allObjects;
 
     v2 = qword_1009529A8;
   }
@@ -232,11 +232,11 @@ LABEL_16:
 
 - (void)loadLocalConfigurationFile
 {
-  v3 = [objc_opt_class() cachedConfigurationURL];
-  if (v3)
+  cachedConfigurationURL = [objc_opt_class() cachedConfigurationURL];
+  if (cachedConfigurationURL)
   {
-    v4 = [NSDictionary dictionaryWithContentsOfURL:v3];
-    if (v4)
+    defaultConfigurationURL = [NSDictionary dictionaryWithContentsOfURL:cachedConfigurationURL];
+    if (defaultConfigurationURL)
     {
       v5 = +[REMLog cloudkit];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -245,7 +245,7 @@ LABEL_16:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Checking cached configuration", buf, 2u);
       }
 
-      if ([objc_opt_class() isConfigurationValid:v4])
+      if ([objc_opt_class() isConfigurationValid:defaultConfigurationURL])
       {
         v6 = +[REMLog cloudkit];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -254,7 +254,7 @@ LABEL_16:
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Using cached remote configuration", v9, 2u);
         }
 
-        [(ICCloudConfiguration *)self setConfigurationFromDictionary:v4];
+        [(ICCloudConfiguration *)self setConfigurationFromDictionary:defaultConfigurationURL];
         goto LABEL_14;
       }
     }
@@ -262,8 +262,8 @@ LABEL_16:
 
   else
   {
-    v4 = +[REMLog cloudkit];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    defaultConfigurationURL = +[REMLog cloudkit];
+    if (os_log_type_enabled(defaultConfigurationURL, OS_LOG_TYPE_ERROR))
     {
       sub_1007655D4();
     }
@@ -276,8 +276,8 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Using default configuration", v8, 2u);
   }
 
-  v4 = [objc_opt_class() defaultConfigurationURL];
-  [(ICCloudConfiguration *)self loadConfigurationFromURL:v4];
+  defaultConfigurationURL = [objc_opt_class() defaultConfigurationURL];
+  [(ICCloudConfiguration *)self loadConfigurationFromURL:defaultConfigurationURL];
 LABEL_14:
 }
 
@@ -295,35 +295,35 @@ LABEL_14:
   [(ICCloudConfiguration *)self downloadConfigurationFromRemoteURL:v3 completionHandler:&stru_1008DB6C0];
 }
 
-- (void)downloadConfigurationFromRemoteURL:(id)a3 completionHandler:(id)a4
+- (void)downloadConfigurationFromRemoteURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCloudConfiguration *)self session];
+  handlerCopy = handler;
+  lCopy = l;
+  session = [(ICCloudConfiguration *)self session];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_1000A1648;
   v14 = &unk_1008DB6E8;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = [v8 dataTaskWithURL:v7 completionHandler:&v11];
+  selfCopy = self;
+  v16 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [session dataTaskWithURL:lCopy completionHandler:&v11];
 
   [v10 resume];
 }
 
-- (void)loadConfigurationFromURL:(id)a3
+- (void)loadConfigurationFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[REMLog cloudkit];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Loading cloud configuration {configurationURL: %{public}@}", &v8, 0xCu);
   }
 
-  v6 = [NSDictionary dictionaryWithContentsOfURL:v4];
+  v6 = [NSDictionary dictionaryWithContentsOfURL:lCopy];
   if (!v6)
   {
     v7 = +[REMLog cloudkit];
@@ -336,16 +336,16 @@ LABEL_14:
   [(ICCloudConfiguration *)self setConfigurationFromDictionary:v6];
 }
 
-- (void)setConfigurationFromDictionary:(id)a3
+- (void)setConfigurationFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[_ICCloudDefaultValuesConfigurationStorage sharedConfiguration];
   v5 = objc_alloc_init(_ICCloudConfigurationStorage);
-  v6 = [v3 objectForKeyedSubscript:@"minimumClientVersions"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"minimumClientVersions"];
   v7 = v6;
   if (v6 && ([v6 objectForKeyedSubscript:@"iOS"], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [v7 objectForKeyedSubscript:@"iOS"];
+    minimumClientVersion = [v7 objectForKeyedSubscript:@"iOS"];
   }
 
   else
@@ -356,13 +356,13 @@ LABEL_14:
       sub_100765910();
     }
 
-    v9 = [v4 minimumClientVersion];
+    minimumClientVersion = [v4 minimumClientVersion];
   }
 
-  v11 = v9;
-  [(_ICCloudConfigurationStorage *)v5 setMinimumClientVersion:v9];
+  v11 = minimumClientVersion;
+  [(_ICCloudConfigurationStorage *)v5 setMinimumClientVersion:minimumClientVersion];
 
-  v12 = [v3 objectForKeyedSubscript:@"throttlingPolicyResetIntervalSeconds"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"throttlingPolicyResetIntervalSeconds"];
   [v12 doubleValue];
   v14 = v13;
 
@@ -371,7 +371,7 @@ LABEL_14:
     v14 = 86400.0;
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"throttlingPolicy"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"throttlingPolicy"];
   v246 = v4;
   v245 = v7;
   v244 = v15;
@@ -379,8 +379,8 @@ LABEL_14:
   {
     v16 = v15;
     v239 = v5;
-    v241 = v3;
-    v17 = +[NSMutableArray array];
+    v241 = dictionaryCopy;
+    throttlingPolicy = +[NSMutableArray array];
     v251 = 0u;
     v252 = 0u;
     v253 = 0u;
@@ -402,14 +402,14 @@ LABEL_14:
 
           v22 = *(*(&v251 + 1) + 8 * i);
           v23 = [v22 objectForKeyedSubscript:@"count"];
-          v24 = [v23 unsignedIntegerValue];
+          unsignedIntegerValue = [v23 unsignedIntegerValue];
 
           v25 = [v22 objectForKeyedSubscript:@"intervalSeconds"];
           [v25 doubleValue];
           v27 = v26;
 
-          v28 = [[ICCloudThrottlingLevel alloc] initWithBatchInterval:v24 numberOfBatches:v27];
-          [v17 addObject:v28];
+          v28 = [[ICCloudThrottlingLevel alloc] initWithBatchInterval:unsignedIntegerValue numberOfBatches:v27];
+          [throttlingPolicy addObject:v28];
         }
 
         v19 = [obj countByEnumeratingWithState:&v251 objects:v255 count:16];
@@ -418,11 +418,11 @@ LABEL_14:
       while (v19);
     }
 
-    v29 = [[ICCloudThrottlingPolicy alloc] initWithThrottlingLevels:v17 resetInterval:v14];
+    v29 = [[ICCloudThrottlingPolicy alloc] initWithThrottlingLevels:throttlingPolicy resetInterval:v14];
     v5 = v239;
     [(_ICCloudConfigurationStorage *)v239 setThrottlingPolicy:v29];
 
-    v3 = v241;
+    dictionaryCopy = v241;
   }
 
   else
@@ -433,15 +433,15 @@ LABEL_14:
       sub_100765944();
     }
 
-    v17 = [v4 throttlingPolicy];
-    [(_ICCloudConfigurationStorage *)v5 setThrottlingPolicy:v17];
+    throttlingPolicy = [v4 throttlingPolicy];
+    [(_ICCloudConfigurationStorage *)v5 setThrottlingPolicy:throttlingPolicy];
   }
 
-  v31 = [v3 objectForKeyedSubscript:@"maxInlineAssetSizeBytes"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"maxInlineAssetSizeBytes"];
   obja = v31;
   if (v31)
   {
-    v32 = [v31 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v31 unsignedIntegerValue];
   }
 
   else
@@ -452,15 +452,15 @@ LABEL_14:
       sub_100765978();
     }
 
-    v32 = [v4 maxInlineAssetSizeBytes];
+    unsignedIntegerValue2 = [v4 maxInlineAssetSizeBytes];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setMaxInlineAssetSizeBytes:v32];
-  v34 = [v3 objectForKeyedSubscript:@"maxAttachmentsPerNote"];
+  [(_ICCloudConfigurationStorage *)v5 setMaxInlineAssetSizeBytes:unsignedIntegerValue2];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"maxAttachmentsPerNote"];
   v242 = v34;
   if (v34)
   {
-    v35 = [v34 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v34 unsignedIntegerValue];
   }
 
   else
@@ -471,15 +471,15 @@ LABEL_14:
       sub_1007659AC();
     }
 
-    v35 = [v4 maxAttachmentsPerNote];
+    unsignedIntegerValue3 = [v4 maxAttachmentsPerNote];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setMaxAttachmentsPerNote:v35];
-  v37 = [v3 objectForKeyedSubscript:@"maxSubAttachmentsPerAttachment"];
+  [(_ICCloudConfigurationStorage *)v5 setMaxAttachmentsPerNote:unsignedIntegerValue3];
+  v37 = [dictionaryCopy objectForKeyedSubscript:@"maxSubAttachmentsPerAttachment"];
   v240 = v37;
   if (v37)
   {
-    v38 = [v37 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v37 unsignedIntegerValue];
   }
 
   else
@@ -490,15 +490,15 @@ LABEL_14:
       sub_1007659E0();
     }
 
-    v38 = [v4 maxSubAttachmentsPerAttachment];
+    unsignedIntegerValue4 = [v4 maxSubAttachmentsPerAttachment];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setMaxSubAttachmentsPerAttachment:v38];
-  v40 = [v3 objectForKeyedSubscript:@"pollingIntervalSeconds"];
+  [(_ICCloudConfigurationStorage *)v5 setMaxSubAttachmentsPerAttachment:unsignedIntegerValue4];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"pollingIntervalSeconds"];
   v238 = v40;
   if (v40)
   {
-    v41 = [v40 unsignedIntegerValue];
+    unsignedIntegerValue5 = [v40 unsignedIntegerValue];
   }
 
   else
@@ -506,8 +506,8 @@ LABEL_14:
     [v4 pollingInterval];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setPollingInterval:v41];
-  v42 = [v3 objectForKeyedSubscript:@"maximumAttachmentSizeMB"];
+  [(_ICCloudConfigurationStorage *)v5 setPollingInterval:unsignedIntegerValue5];
+  v42 = [dictionaryCopy objectForKeyedSubscript:@"maximumAttachmentSizeMB"];
   v237 = v42;
   if (v42)
   {
@@ -522,59 +522,59 @@ LABEL_14:
       sub_100765A14();
     }
 
-    v44 = [v4 maximumAttachmentSizeMB];
-    [(_ICCloudConfigurationStorage *)v5 setMaximumAttachmentSizeMB:v44];
+    maximumAttachmentSizeMB = [v4 maximumAttachmentSizeMB];
+    [(_ICCloudConfigurationStorage *)v5 setMaximumAttachmentSizeMB:maximumAttachmentSizeMB];
   }
 
-  v45 = [v3 objectForKeyedSubscript:@"resultsLimitPerSyncOperation"];
+  v45 = [dictionaryCopy objectForKeyedSubscript:@"resultsLimitPerSyncOperation"];
   v236 = v45;
   if (v45)
   {
-    v46 = [v45 unsignedIntegerValue];
+    unsignedIntegerValue6 = [v45 unsignedIntegerValue];
   }
 
   else
   {
-    v46 = [v4 resultsLimitPerSyncOperation];
+    unsignedIntegerValue6 = [v4 resultsLimitPerSyncOperation];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setResultsLimitPerSyncOperation:v46];
+  [(_ICCloudConfigurationStorage *)v5 setResultsLimitPerSyncOperation:unsignedIntegerValue6];
   v47 = +[REMUserDefaults daemonUserDefaults];
-  v48 = [v47 cloudKitResultsLimitPerSyncOperation];
-  v49 = [v48 integerValue];
+  cloudKitResultsLimitPerSyncOperation = [v47 cloudKitResultsLimitPerSyncOperation];
+  integerValue = [cloudKitResultsLimitPerSyncOperation integerValue];
 
-  if (v49 >= 1)
+  if (integerValue >= 1)
   {
-    [(_ICCloudConfigurationStorage *)v5 setResultsLimitPerSyncOperation:v49];
+    [(_ICCloudConfigurationStorage *)v5 setResultsLimitPerSyncOperation:integerValue];
   }
 
-  v50 = [v3 objectForKeyedSubscript:@"fetchBatchSize"];
+  v50 = [dictionaryCopy objectForKeyedSubscript:@"fetchBatchSize"];
   v235 = v50;
   if (v50)
   {
-    v51 = [v50 unsignedIntegerValue];
+    unsignedIntegerValue7 = [v50 unsignedIntegerValue];
   }
 
   else
   {
-    v51 = [v4 fetchBatchSize];
+    unsignedIntegerValue7 = [v4 fetchBatchSize];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setFetchBatchSize:v51];
-  v52 = [v3 objectForKeyedSubscript:@"fetchCacheCountLimit"];
+  [(_ICCloudConfigurationStorage *)v5 setFetchBatchSize:unsignedIntegerValue7];
+  v52 = [dictionaryCopy objectForKeyedSubscript:@"fetchCacheCountLimit"];
   v234 = v52;
   if (v52)
   {
-    v53 = [v52 unsignedIntegerValue];
+    unsignedIntegerValue8 = [v52 unsignedIntegerValue];
   }
 
   else
   {
-    v53 = [v4 fetchCacheCountLimit];
+    unsignedIntegerValue8 = [v4 fetchCacheCountLimit];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setFetchCacheCountLimit:v53];
-  v54 = [v3 objectForKeyedSubscript:@"reachabilityChangeSyncThrottleInterval"];
+  [(_ICCloudConfigurationStorage *)v5 setFetchCacheCountLimit:unsignedIntegerValue8];
+  v54 = [dictionaryCopy objectForKeyedSubscript:@"reachabilityChangeSyncThrottleInterval"];
   v233 = v54;
   if (v54)
   {
@@ -587,7 +587,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setReachabilityChangeSyncThrottleInterval:?];
-  v55 = [v3 objectForKeyedSubscript:@"launchAndSignificantTimeChangePollThrottleIntervalV2"];
+  v55 = [dictionaryCopy objectForKeyedSubscript:@"launchAndSignificantTimeChangePollThrottleIntervalV2"];
   v232 = v55;
   if (v55)
   {
@@ -600,7 +600,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setLaunchAndSignificantTimeChangePollThrottleInterval:?];
-  v56 = [v3 objectForKeyedSubscript:@"cloudConfigurationDownloadThrottleInterval"];
+  v56 = [dictionaryCopy objectForKeyedSubscript:@"cloudConfigurationDownloadThrottleInterval"];
   v231 = v56;
   if (v56)
   {
@@ -613,7 +613,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setCloudConfigurationDownloadThrottleInterval:?];
-  v57 = [v3 objectForKeyedSubscript:@"persistedSubscriptionIDsValidityPeriod"];
+  v57 = [dictionaryCopy objectForKeyedSubscript:@"persistedSubscriptionIDsValidityPeriod"];
   v230 = v57;
   if (v57)
   {
@@ -626,7 +626,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setPersistedSubscriptionIDsValidityPeriod:?];
-  v58 = [v3 objectForKeyedSubscript:@"apsDebouncerDefaultInterval"];
+  v58 = [dictionaryCopy objectForKeyedSubscript:@"apsDebouncerDefaultInterval"];
   v229 = v58;
   if (v58)
   {
@@ -639,7 +639,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setApsDebouncerDefaultInterval:?];
-  v59 = [v3 objectForKeyedSubscript:@"apsDebouncerMigrationInProgressInterval"];
+  v59 = [dictionaryCopy objectForKeyedSubscript:@"apsDebouncerMigrationInProgressInterval"];
   v228 = v59;
   if (v59)
   {
@@ -652,7 +652,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setApsDebouncerMigrationInProgressInterval:?];
-  v60 = [v3 objectForKeyedSubscript:@"apsDebouncerWatchDefaultInterval"];
+  v60 = [dictionaryCopy objectForKeyedSubscript:@"apsDebouncerWatchDefaultInterval"];
   v227 = v60;
   if (v60)
   {
@@ -665,7 +665,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setApsDebouncerWatchDefaultInterval:?];
-  v61 = [v3 objectForKeyedSubscript:@"apsDebouncerWatchMigrationInProgressInterval"];
+  v61 = [dictionaryCopy objectForKeyedSubscript:@"apsDebouncerWatchMigrationInProgressInterval"];
   v226 = v61;
   if (v61)
   {
@@ -678,7 +678,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setApsDebouncerWatchMigrationInProgressInterval:?];
-  v62 = [v3 objectForKeyedSubscript:@"accountChangedDebouncerInterval"];
+  v62 = [dictionaryCopy objectForKeyedSubscript:@"accountChangedDebouncerInterval"];
   v225 = v62;
   if (v62)
   {
@@ -691,7 +691,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setAccountChangedDebouncerInterval:?];
-  v63 = [v3 objectForKeyedSubscript:@"mergeLocalObjectsInitialRetryInterval"];
+  v63 = [dictionaryCopy objectForKeyedSubscript:@"mergeLocalObjectsInitialRetryInterval"];
   v224 = v63;
   if (v63)
   {
@@ -704,20 +704,20 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setMergeLocalObjectsInitialRetryInterval:?];
-  v64 = [v3 objectForKeyedSubscript:@"mergeLocalObjectsMaximumRetryCount"];
+  v64 = [dictionaryCopy objectForKeyedSubscript:@"mergeLocalObjectsMaximumRetryCount"];
   v223 = v64;
   if (v64)
   {
-    v65 = [v64 unsignedIntegerValue];
+    unsignedIntegerValue9 = [v64 unsignedIntegerValue];
   }
 
   else
   {
-    v65 = [v4 mergeLocalObjectsMaximumRetryCount];
+    unsignedIntegerValue9 = [v4 mergeLocalObjectsMaximumRetryCount];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setMergeLocalObjectsMaximumRetryCount:v65];
-  v66 = [v3 objectForKeyedSubscript:@"mergeLocalObjectsRetryStartOverThrottleInterval"];
+  [(_ICCloudConfigurationStorage *)v5 setMergeLocalObjectsMaximumRetryCount:unsignedIntegerValue9];
+  v66 = [dictionaryCopy objectForKeyedSubscript:@"mergeLocalObjectsRetryStartOverThrottleInterval"];
   v222 = v66;
   if (v66)
   {
@@ -730,7 +730,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setMergeLocalObjectsRetryStartOverThrottleInterval:?];
-  v67 = [v3 objectForKeyedSubscript:@"extraneousAlarmsCleanUpTriggerReductionFactor"];
+  v67 = [dictionaryCopy objectForKeyedSubscript:@"extraneousAlarmsCleanUpTriggerReductionFactor"];
   v221 = v67;
   if (v67)
   {
@@ -739,37 +739,37 @@ LABEL_14:
 
   else
   {
-    v68 = [v4 extraneousAlarmsCleanUpTriggerReductionFactor];
-    [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsCleanUpTriggerReductionFactor:v68];
+    extraneousAlarmsCleanUpTriggerReductionFactor = [v4 extraneousAlarmsCleanUpTriggerReductionFactor];
+    [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsCleanUpTriggerReductionFactor:extraneousAlarmsCleanUpTriggerReductionFactor];
   }
 
-  v69 = [v3 objectForKeyedSubscript:@"extraneousAlarmsDeleteCountLimit"];
+  v69 = [dictionaryCopy objectForKeyedSubscript:@"extraneousAlarmsDeleteCountLimit"];
   v220 = v69;
   if (v69)
   {
-    v70 = [v69 unsignedIntValue];
+    unsignedIntValue = [v69 unsignedIntValue];
   }
 
   else
   {
-    v70 = [v4 extraneousAlarmsDeleteCountLimit];
+    unsignedIntValue = [v4 extraneousAlarmsDeleteCountLimit];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsDeleteCountLimit:v70];
-  v71 = [v3 objectForKeyedSubscript:@"extraneousAlarmsDeleteCountThreshold"];
+  [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsDeleteCountLimit:unsignedIntValue];
+  v71 = [dictionaryCopy objectForKeyedSubscript:@"extraneousAlarmsDeleteCountThreshold"];
   v219 = v71;
   if (v71)
   {
-    v72 = [v71 unsignedIntValue];
+    unsignedIntValue2 = [v71 unsignedIntValue];
   }
 
   else
   {
-    v72 = [v4 extraneousAlarmsDeleteCountThreshold];
+    unsignedIntValue2 = [v4 extraneousAlarmsDeleteCountThreshold];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsDeleteCountThreshold:v72];
-  v73 = [v3 objectForKeyedSubscript:@"extraneousAlarmsBackoffThrottleInterval"];
+  [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsDeleteCountThreshold:unsignedIntValue2];
+  v73 = [dictionaryCopy objectForKeyedSubscript:@"extraneousAlarmsBackoffThrottleInterval"];
   v218 = v73;
   if (v73)
   {
@@ -782,7 +782,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsBackoffThrottleInterval:?];
-  v74 = [v3 objectForKeyedSubscript:@"extraneousAlarmsThrottleInterval"];
+  v74 = [dictionaryCopy objectForKeyedSubscript:@"extraneousAlarmsThrottleInterval"];
   v217 = v74;
   if (v74)
   {
@@ -795,7 +795,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsThrottleInterval:?];
-  v75 = [v3 objectForKeyedSubscript:@"extraneousAlarmsCollectorDebounceInterval"];
+  v75 = [dictionaryCopy objectForKeyedSubscript:@"extraneousAlarmsCollectorDebounceInterval"];
   v216 = v75;
   if (v75)
   {
@@ -808,7 +808,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsCollectorDebounceInterval:?];
-  v76 = [v3 objectForKeyedSubscript:@"extraneousAlarmsCollectorThrottleInterval"];
+  v76 = [dictionaryCopy objectForKeyedSubscript:@"extraneousAlarmsCollectorThrottleInterval"];
   v215 = v76;
   if (v76)
   {
@@ -821,7 +821,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setExtraneousAlarmsCollectorThrottleInterval:?];
-  v77 = [v3 objectForKeyedSubscript:@"staledFileAttachmentCleanupDefaultThrottleInterval"];
+  v77 = [dictionaryCopy objectForKeyedSubscript:@"staledFileAttachmentCleanupDefaultThrottleInterval"];
   v214 = v77;
   if (v77)
   {
@@ -834,7 +834,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setStaledFileAttachmentCleanupDefaultThrottleInterval:?];
-  v78 = [v3 objectForKeyedSubscript:@"staledFileAttachmentCleanupBackoffThrottleInterval"];
+  v78 = [dictionaryCopy objectForKeyedSubscript:@"staledFileAttachmentCleanupBackoffThrottleInterval"];
   v213 = v78;
   if (v78)
   {
@@ -847,7 +847,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setStaledFileAttachmentCleanupBackoffThrottleInterval:?];
-  v79 = [v3 objectForKeyedSubscript:@"staledFileAttachmentCleanupRateReduceFactor"];
+  v79 = [dictionaryCopy objectForKeyedSubscript:@"staledFileAttachmentCleanupRateReduceFactor"];
   v212 = v79;
   if (v79)
   {
@@ -856,24 +856,24 @@ LABEL_14:
 
   else
   {
-    v80 = [v4 staledFileAttachmentCleanupRateReduceFactor];
-    [(_ICCloudConfigurationStorage *)v5 setStaledFileAttachmentCleanupRateReduceFactor:v80];
+    staledFileAttachmentCleanupRateReduceFactor = [v4 staledFileAttachmentCleanupRateReduceFactor];
+    [(_ICCloudConfigurationStorage *)v5 setStaledFileAttachmentCleanupRateReduceFactor:staledFileAttachmentCleanupRateReduceFactor];
   }
 
-  v81 = [v3 objectForKeyedSubscript:@"staledFileAttachmentCleanupPerRunDeleteLimit"];
+  v81 = [dictionaryCopy objectForKeyedSubscript:@"staledFileAttachmentCleanupPerRunDeleteLimit"];
   v211 = v81;
   if (v81)
   {
-    v82 = [v81 unsignedIntValue];
+    unsignedIntValue3 = [v81 unsignedIntValue];
   }
 
   else
   {
-    v82 = [v4 staledFileAttachmentCleanupPerRunDeleteLimit];
+    unsignedIntValue3 = [v4 staledFileAttachmentCleanupPerRunDeleteLimit];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setStaledFileAttachmentCleanupPerRunDeleteLimit:v82];
-  v83 = [v3 objectForKeyedSubscript:@"imageDeduplicationDefaultThrottleInterval"];
+  [(_ICCloudConfigurationStorage *)v5 setStaledFileAttachmentCleanupPerRunDeleteLimit:unsignedIntValue3];
+  v83 = [dictionaryCopy objectForKeyedSubscript:@"imageDeduplicationDefaultThrottleInterval"];
   v210 = v83;
   if (v83)
   {
@@ -886,7 +886,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setImageDeduplicationDefaultThrottleInterval:?];
-  v84 = [v3 objectForKeyedSubscript:@"imageDeduplicationBackoffThrottleInterval"];
+  v84 = [dictionaryCopy objectForKeyedSubscript:@"imageDeduplicationBackoffThrottleInterval"];
   v209 = v84;
   if (v84)
   {
@@ -899,7 +899,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setImageDeduplicationBackoffThrottleInterval:?];
-  v85 = [v3 objectForKeyedSubscript:@"imageDeduplicationRateReduceFactor"];
+  v85 = [dictionaryCopy objectForKeyedSubscript:@"imageDeduplicationRateReduceFactor"];
   v208 = v85;
   if (v85)
   {
@@ -908,24 +908,24 @@ LABEL_14:
 
   else
   {
-    v86 = [v4 imageDeduplicationRateReduceFactor];
-    [(_ICCloudConfigurationStorage *)v5 setImageDeduplicationRateReduceFactor:v86];
+    imageDeduplicationRateReduceFactor = [v4 imageDeduplicationRateReduceFactor];
+    [(_ICCloudConfigurationStorage *)v5 setImageDeduplicationRateReduceFactor:imageDeduplicationRateReduceFactor];
   }
 
-  v87 = [v3 objectForKeyedSubscript:@"imageDeduplicationApproximatePerRunDeleteLimit"];
+  v87 = [dictionaryCopy objectForKeyedSubscript:@"imageDeduplicationApproximatePerRunDeleteLimit"];
   v207 = v87;
   if (v87)
   {
-    v88 = [v87 unsignedIntValue];
+    unsignedIntValue4 = [v87 unsignedIntValue];
   }
 
   else
   {
-    v88 = [v4 imageDeduplicationApproximatePerRunDeleteLimit];
+    unsignedIntValue4 = [v4 imageDeduplicationApproximatePerRunDeleteLimit];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setImageDeduplicationApproximatePerRunDeleteLimit:v88];
-  v89 = [v3 objectForKeyedSubscript:@"savedImageDeduplicationDefaultThrottleInterval"];
+  [(_ICCloudConfigurationStorage *)v5 setImageDeduplicationApproximatePerRunDeleteLimit:unsignedIntValue4];
+  v89 = [dictionaryCopy objectForKeyedSubscript:@"savedImageDeduplicationDefaultThrottleInterval"];
   v206 = v89;
   if (v89)
   {
@@ -938,7 +938,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setSavedImageDeduplicationDefaultThrottleInterval:?];
-  v90 = [v3 objectForKeyedSubscript:@"savedImageDeduplicationBackoffThrottleInterval"];
+  v90 = [dictionaryCopy objectForKeyedSubscript:@"savedImageDeduplicationBackoffThrottleInterval"];
   v205 = v90;
   if (v90)
   {
@@ -951,7 +951,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setSavedImageDeduplicationBackoffThrottleInterval:?];
-  v91 = [v3 objectForKeyedSubscript:@"savedImageDeduplicationRateReduceFactor"];
+  v91 = [dictionaryCopy objectForKeyedSubscript:@"savedImageDeduplicationRateReduceFactor"];
   v204 = v91;
   if (v91)
   {
@@ -960,24 +960,24 @@ LABEL_14:
 
   else
   {
-    v92 = [v4 savedImageDeduplicationRateReduceFactor];
-    [(_ICCloudConfigurationStorage *)v5 setSavedImageDeduplicationRateReduceFactor:v92];
+    savedImageDeduplicationRateReduceFactor = [v4 savedImageDeduplicationRateReduceFactor];
+    [(_ICCloudConfigurationStorage *)v5 setSavedImageDeduplicationRateReduceFactor:savedImageDeduplicationRateReduceFactor];
   }
 
-  v93 = [v3 objectForKeyedSubscript:@"savedImageDeduplicationApproximatePerRunDeleteLimit"];
+  v93 = [dictionaryCopy objectForKeyedSubscript:@"savedImageDeduplicationApproximatePerRunDeleteLimit"];
   v203 = v93;
   if (v93)
   {
-    v94 = [v93 unsignedIntValue];
+    unsignedIntValue5 = [v93 unsignedIntValue];
   }
 
   else
   {
-    v94 = [v4 savedImageDeduplicationApproximatePerRunDeleteLimit];
+    unsignedIntValue5 = [v4 savedImageDeduplicationApproximatePerRunDeleteLimit];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setSavedImageDeduplicationApproximatePerRunDeleteLimit:v94];
-  v95 = [v3 objectForKeyedSubscript:@"suggestConversionToGroceryListDefaultThrottleInterval"];
+  [(_ICCloudConfigurationStorage *)v5 setSavedImageDeduplicationApproximatePerRunDeleteLimit:unsignedIntValue5];
+  v95 = [dictionaryCopy objectForKeyedSubscript:@"suggestConversionToGroceryListDefaultThrottleInterval"];
   v202 = v95;
   if (v95)
   {
@@ -990,7 +990,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setSuggestConversionToGroceryListDefaultThrottleInterval:?];
-  v96 = [v3 objectForKeyedSubscript:@"suggestConversionToGroceryListRateReduceFactor"];
+  v96 = [dictionaryCopy objectForKeyedSubscript:@"suggestConversionToGroceryListRateReduceFactor"];
   v201 = v96;
   if (v96)
   {
@@ -999,11 +999,11 @@ LABEL_14:
 
   else
   {
-    v97 = [v4 suggestConversionToGroceryListRateReduceFactor];
-    [(_ICCloudConfigurationStorage *)v5 setSuggestConversionToGroceryListRateReduceFactor:v97];
+    suggestConversionToGroceryListRateReduceFactor = [v4 suggestConversionToGroceryListRateReduceFactor];
+    [(_ICCloudConfigurationStorage *)v5 setSuggestConversionToGroceryListRateReduceFactor:suggestConversionToGroceryListRateReduceFactor];
   }
 
-  v98 = [v3 objectForKeyedSubscript:@"languageHypothesisThresholdForPrimaryLanguage"];
+  v98 = [dictionaryCopy objectForKeyedSubscript:@"languageHypothesisThresholdForPrimaryLanguage"];
   v200 = v98;
   if (v98)
   {
@@ -1012,11 +1012,11 @@ LABEL_14:
 
   else
   {
-    v99 = [v4 languageHypothesisThresholdForPrimaryLanguage];
-    [(_ICCloudConfigurationStorage *)v5 setLanguageHypothesisThresholdForPrimaryLanguage:v99];
+    languageHypothesisThresholdForPrimaryLanguage = [v4 languageHypothesisThresholdForPrimaryLanguage];
+    [(_ICCloudConfigurationStorage *)v5 setLanguageHypothesisThresholdForPrimaryLanguage:languageHypothesisThresholdForPrimaryLanguage];
   }
 
-  v100 = [v3 objectForKeyedSubscript:@"languageHypothesisThresholdForAdditionalLanguages"];
+  v100 = [dictionaryCopy objectForKeyedSubscript:@"languageHypothesisThresholdForAdditionalLanguages"];
   v199 = v100;
   if (v100)
   {
@@ -1025,11 +1025,11 @@ LABEL_14:
 
   else
   {
-    v101 = [v4 languageHypothesisThresholdForAdditionalLanguages];
-    [(_ICCloudConfigurationStorage *)v5 setLanguageHypothesisThresholdForAdditionalLanguages:v101];
+    languageHypothesisThresholdForAdditionalLanguages = [v4 languageHypothesisThresholdForAdditionalLanguages];
+    [(_ICCloudConfigurationStorage *)v5 setLanguageHypothesisThresholdForAdditionalLanguages:languageHypothesisThresholdForAdditionalLanguages];
   }
 
-  v102 = [v3 objectForKeyedSubscript:@"miniumumAutomaticLanguageConfidenceScoreAllowed"];
+  v102 = [dictionaryCopy objectForKeyedSubscript:@"miniumumAutomaticLanguageConfidenceScoreAllowed"];
   v198 = v102;
   if (v102)
   {
@@ -1038,11 +1038,11 @@ LABEL_14:
 
   else
   {
-    v103 = [v4 miniumumAutomaticLanguageConfidenceScoreAllowed];
-    [(_ICCloudConfigurationStorage *)v5 setMiniumumAutomaticLanguageConfidenceScoreAllowed:v103];
+    miniumumAutomaticLanguageConfidenceScoreAllowed = [v4 miniumumAutomaticLanguageConfidenceScoreAllowed];
+    [(_ICCloudConfigurationStorage *)v5 setMiniumumAutomaticLanguageConfidenceScoreAllowed:miniumumAutomaticLanguageConfidenceScoreAllowed];
   }
 
-  v104 = [v3 objectForKeyedSubscript:@"postAnalyticsDefaultThrottleInterval"];
+  v104 = [dictionaryCopy objectForKeyedSubscript:@"postAnalyticsDefaultThrottleInterval"];
   v197 = v104;
   if (v104)
   {
@@ -1055,7 +1055,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setPostAnalyticsDefaultThrottleInterval:?];
-  v105 = [v3 objectForKeyedSubscript:@"postAnalyticsRateReduceFactor"];
+  v105 = [dictionaryCopy objectForKeyedSubscript:@"postAnalyticsRateReduceFactor"];
   v196 = v105;
   if (v105)
   {
@@ -1064,11 +1064,11 @@ LABEL_14:
 
   else
   {
-    v106 = [v4 postAnalyticsRateReduceFactor];
-    [(_ICCloudConfigurationStorage *)v5 setPostAnalyticsRateReduceFactor:v106];
+    postAnalyticsRateReduceFactor = [v4 postAnalyticsRateReduceFactor];
+    [(_ICCloudConfigurationStorage *)v5 setPostAnalyticsRateReduceFactor:postAnalyticsRateReduceFactor];
   }
 
-  v107 = [v3 objectForKeyedSubscript:@"batchDeleteExpiredRemindersDefaultThrottleInterval"];
+  v107 = [dictionaryCopy objectForKeyedSubscript:@"batchDeleteExpiredRemindersDefaultThrottleInterval"];
   v195 = v107;
   if (v107)
   {
@@ -1081,7 +1081,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setBatchDeleteExpiredRemindersDefaultThrottleInterval:?];
-  v108 = [v3 objectForKeyedSubscript:@"batchDeleteExpiredRemindersRateReduceFactor"];
+  v108 = [dictionaryCopy objectForKeyedSubscript:@"batchDeleteExpiredRemindersRateReduceFactor"];
   v194 = v108;
   if (v108)
   {
@@ -1090,11 +1090,11 @@ LABEL_14:
 
   else
   {
-    v109 = [v4 batchDeleteExpiredRemindersRateReduceFactor];
-    [(_ICCloudConfigurationStorage *)v5 setBatchDeleteExpiredRemindersRateReduceFactor:v109];
+    batchDeleteExpiredRemindersRateReduceFactor = [v4 batchDeleteExpiredRemindersRateReduceFactor];
+    [(_ICCloudConfigurationStorage *)v5 setBatchDeleteExpiredRemindersRateReduceFactor:batchDeleteExpiredRemindersRateReduceFactor];
   }
 
-  v110 = [v3 objectForKeyedSubscript:@"batchDeleteExpiredRemindersMinimumDeletionTimeInterval"];
+  v110 = [dictionaryCopy objectForKeyedSubscript:@"batchDeleteExpiredRemindersMinimumDeletionTimeInterval"];
   v193 = v110;
   if (v110)
   {
@@ -1107,7 +1107,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setBatchDeleteExpiredRemindersMinimumDeletionTimeInterval:?];
-  v111 = [v3 objectForKeyedSubscript:@"minimumSearchTermLengthByBaseLanguage"];
+  v111 = [dictionaryCopy objectForKeyedSubscript:@"minimumSearchTermLengthByBaseLanguage"];
   v192 = v111;
   if (v111)
   {
@@ -1116,11 +1116,11 @@ LABEL_14:
 
   else
   {
-    v112 = [v4 minimumSearchTermLengthByBaseLanguage];
-    [(_ICCloudConfigurationStorage *)v5 setMinimumSearchTermLengthByBaseLanguage:v112];
+    minimumSearchTermLengthByBaseLanguage = [v4 minimumSearchTermLengthByBaseLanguage];
+    [(_ICCloudConfigurationStorage *)v5 setMinimumSearchTermLengthByBaseLanguage:minimumSearchTermLengthByBaseLanguage];
   }
 
-  v113 = [v3 objectForKeyedSubscript:@"autoCategorizationInternalInstallMinimumSupportedVersion"];
+  v113 = [dictionaryCopy objectForKeyedSubscript:@"autoCategorizationInternalInstallMinimumSupportedVersion"];
   v191 = v113;
   if (v113)
   {
@@ -1129,11 +1129,11 @@ LABEL_14:
 
   else
   {
-    v114 = [v4 autoCategorizationInternalInstallMinimumSupportedVersion];
-    [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationInternalInstallMinimumSupportedVersion:v114];
+    autoCategorizationInternalInstallMinimumSupportedVersion = [v4 autoCategorizationInternalInstallMinimumSupportedVersion];
+    [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationInternalInstallMinimumSupportedVersion:autoCategorizationInternalInstallMinimumSupportedVersion];
   }
 
-  v115 = [v3 objectForKeyedSubscript:@"autoCategorizationNonInternalInstallMinimumSupportedVersion"];
+  v115 = [dictionaryCopy objectForKeyedSubscript:@"autoCategorizationNonInternalInstallMinimumSupportedVersion"];
   v190 = v115;
   if (v115)
   {
@@ -1142,50 +1142,50 @@ LABEL_14:
 
   else
   {
-    v116 = [v4 autoCategorizationNonInternalInstallMinimumSupportedVersion];
-    [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationNonInternalInstallMinimumSupportedVersion:v116];
+    autoCategorizationNonInternalInstallMinimumSupportedVersion = [v4 autoCategorizationNonInternalInstallMinimumSupportedVersion];
+    [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationNonInternalInstallMinimumSupportedVersion:autoCategorizationNonInternalInstallMinimumSupportedVersion];
   }
 
-  v117 = [v3 objectForKeyedSubscript:@"autoCategorizationOutputParsingType"];
+  v117 = [dictionaryCopy objectForKeyedSubscript:@"autoCategorizationOutputParsingType"];
   v189 = v117;
   if (v117)
   {
-    v118 = [v117 unsignedIntValue];
+    unsignedIntValue6 = [v117 unsignedIntValue];
   }
 
   else
   {
-    v118 = [v4 autoCategorizationOutputParsingType];
+    unsignedIntValue6 = [v4 autoCategorizationOutputParsingType];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationOutputParsingType:v118];
-  v119 = [v3 objectForKeyedSubscript:@"autoCategorizationInputExcludeExistingSections"];
+  [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationOutputParsingType:unsignedIntValue6];
+  v119 = [dictionaryCopy objectForKeyedSubscript:@"autoCategorizationInputExcludeExistingSections"];
   v188 = v119;
   if (v119)
   {
-    v120 = [v119 BOOLValue];
+    bOOLValue = [v119 BOOLValue];
   }
 
   else
   {
-    v120 = [v4 autoCategorizationInputExcludeExistingSections];
+    bOOLValue = [v4 autoCategorizationInputExcludeExistingSections];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationInputExcludeExistingSections:v120];
-  v121 = [v3 objectForKeyedSubscript:@"autoCategorizationInputMaximumNumberOfRemindersPerBatch"];
+  [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationInputExcludeExistingSections:bOOLValue];
+  v121 = [dictionaryCopy objectForKeyedSubscript:@"autoCategorizationInputMaximumNumberOfRemindersPerBatch"];
   v187 = v121;
   if (v121)
   {
-    v122 = [v121 unsignedIntValue];
+    unsignedIntValue7 = [v121 unsignedIntValue];
   }
 
   else
   {
-    v122 = [v4 autoCategorizationInputMaximumNumberOfRemindersPerBatch];
+    unsignedIntValue7 = [v4 autoCategorizationInputMaximumNumberOfRemindersPerBatch];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationInputMaximumNumberOfRemindersPerBatch:v122];
-  v123 = [v3 objectForKeyedSubscript:@"intelligentExtractionsInternalInstallMinimumSupportedVersion"];
+  [(_ICCloudConfigurationStorage *)v5 setAutoCategorizationInputMaximumNumberOfRemindersPerBatch:unsignedIntValue7];
+  v123 = [dictionaryCopy objectForKeyedSubscript:@"intelligentExtractionsInternalInstallMinimumSupportedVersion"];
   v186 = v123;
   if (v123)
   {
@@ -1194,11 +1194,11 @@ LABEL_14:
 
   else
   {
-    v124 = [v4 intelligentExtractionsInternalInstallMinimumSupportedVersion];
-    [(_ICCloudConfigurationStorage *)v5 setIntelligentExtractionsInternalInstallMinimumSupportedVersion:v124];
+    intelligentExtractionsInternalInstallMinimumSupportedVersion = [v4 intelligentExtractionsInternalInstallMinimumSupportedVersion];
+    [(_ICCloudConfigurationStorage *)v5 setIntelligentExtractionsInternalInstallMinimumSupportedVersion:intelligentExtractionsInternalInstallMinimumSupportedVersion];
   }
 
-  v125 = [v3 objectForKeyedSubscript:@"intelligentExtractionsNonInternalInstallMinimumSupportedVersion"];
+  v125 = [dictionaryCopy objectForKeyedSubscript:@"intelligentExtractionsNonInternalInstallMinimumSupportedVersion"];
   v185 = v125;
   if (v125)
   {
@@ -1207,11 +1207,11 @@ LABEL_14:
 
   else
   {
-    v126 = [v4 intelligentExtractionsNonInternalInstallMinimumSupportedVersion];
-    [(_ICCloudConfigurationStorage *)v5 setIntelligentExtractionsNonInternalInstallMinimumSupportedVersion:v126];
+    intelligentExtractionsNonInternalInstallMinimumSupportedVersion = [v4 intelligentExtractionsNonInternalInstallMinimumSupportedVersion];
+    [(_ICCloudConfigurationStorage *)v5 setIntelligentExtractionsNonInternalInstallMinimumSupportedVersion:intelligentExtractionsNonInternalInstallMinimumSupportedVersion];
   }
 
-  v127 = [v3 objectForKeyedSubscript:@"intelligentExtractionsRecipeClassifierConfidenceScoreThreshold"];
+  v127 = [dictionaryCopy objectForKeyedSubscript:@"intelligentExtractionsRecipeClassifierConfidenceScoreThreshold"];
   v184 = v127;
   if (v127)
   {
@@ -1220,11 +1220,11 @@ LABEL_14:
 
   else
   {
-    v128 = [v4 intelligentExtractionsRecipeClassifierConfidenceScoreThreshold];
-    [(_ICCloudConfigurationStorage *)v5 setIntelligentExtractionsRecipeClassifierConfidenceScoreThreshold:v128];
+    intelligentExtractionsRecipeClassifierConfidenceScoreThreshold = [v4 intelligentExtractionsRecipeClassifierConfidenceScoreThreshold];
+    [(_ICCloudConfigurationStorage *)v5 setIntelligentExtractionsRecipeClassifierConfidenceScoreThreshold:intelligentExtractionsRecipeClassifierConfidenceScoreThreshold];
   }
 
-  v129 = [v3 objectForKeyedSubscript:@"cloudSchemaCatchUpSyncInitialRetryInterval"];
+  v129 = [dictionaryCopy objectForKeyedSubscript:@"cloudSchemaCatchUpSyncInitialRetryInterval"];
   v183 = v129;
   if (v129)
   {
@@ -1237,46 +1237,46 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setCloudSchemaCatchUpSyncInitialRetryInterval:?];
-  v130 = [v3 objectForKeyedSubscript:@"cloudSchemaCatchUpSyncMaximumRetryCount"];
+  v130 = [dictionaryCopy objectForKeyedSubscript:@"cloudSchemaCatchUpSyncMaximumRetryCount"];
   v182 = v130;
   if (v130)
   {
-    v131 = [v130 unsignedIntegerValue];
+    unsignedIntegerValue10 = [v130 unsignedIntegerValue];
   }
 
   else
   {
-    v131 = [v4 cloudSchemaCatchUpSyncMaximumRetryCount];
+    unsignedIntegerValue10 = [v4 cloudSchemaCatchUpSyncMaximumRetryCount];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setCloudSchemaCatchUpSyncMaximumRetryCount:v131];
-  v132 = [v3 objectForKeyedSubscript:@"fetchDatabaseChangesOperationPerScopePerAccountMaximumRetryCount"];
+  [(_ICCloudConfigurationStorage *)v5 setCloudSchemaCatchUpSyncMaximumRetryCount:unsignedIntegerValue10];
+  v132 = [dictionaryCopy objectForKeyedSubscript:@"fetchDatabaseChangesOperationPerScopePerAccountMaximumRetryCount"];
   v181 = v132;
   if (v132)
   {
-    v133 = [v132 unsignedIntegerValue];
+    unsignedIntegerValue11 = [v132 unsignedIntegerValue];
   }
 
   else
   {
-    v133 = [v4 fetchDatabaseChangesOperationPerScopePerAccountMaximumRetryCount];
+    unsignedIntegerValue11 = [v4 fetchDatabaseChangesOperationPerScopePerAccountMaximumRetryCount];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setFetchDatabaseChangesOperationPerScopePerAccountMaximumRetryCount:v133];
-  v134 = [v3 objectForKeyedSubscript:@"objectEffectiveVersionValidationFlushBatchSize"];
+  [(_ICCloudConfigurationStorage *)v5 setFetchDatabaseChangesOperationPerScopePerAccountMaximumRetryCount:unsignedIntegerValue11];
+  v134 = [dictionaryCopy objectForKeyedSubscript:@"objectEffectiveVersionValidationFlushBatchSize"];
   v180 = v134;
   if (v134)
   {
-    v135 = [v134 unsignedIntegerValue];
+    unsignedIntegerValue12 = [v134 unsignedIntegerValue];
   }
 
   else
   {
-    v135 = [v4 objectEffectiveVersionValidationFlushBatchSize];
+    unsignedIntegerValue12 = [v4 objectEffectiveVersionValidationFlushBatchSize];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setObjectEffectiveVersionValidationFlushBatchSize:v135];
-  v136 = [v3 objectForKeyedSubscript:@"suggestedAttributesTrainingOverrides"];
+  [(_ICCloudConfigurationStorage *)v5 setObjectEffectiveVersionValidationFlushBatchSize:unsignedIntegerValue12];
+  v136 = [dictionaryCopy objectForKeyedSubscript:@"suggestedAttributesTrainingOverrides"];
   v179 = v136;
   if (v136)
   {
@@ -1285,11 +1285,11 @@ LABEL_14:
 
   else
   {
-    v137 = [v4 suggestedAttributesTrainingOverrides];
-    [(_ICCloudConfigurationStorage *)v5 setSuggestedAttributesTrainingOverrides:v137];
+    suggestedAttributesTrainingOverrides = [v4 suggestedAttributesTrainingOverrides];
+    [(_ICCloudConfigurationStorage *)v5 setSuggestedAttributesTrainingOverrides:suggestedAttributesTrainingOverrides];
   }
 
-  v138 = [v3 objectForKeyedSubscript:@"suggestedAttributesHarvestingOverrides"];
+  v138 = [dictionaryCopy objectForKeyedSubscript:@"suggestedAttributesHarvestingOverrides"];
   v178 = v138;
   if (v138)
   {
@@ -1298,11 +1298,11 @@ LABEL_14:
 
   else
   {
-    v139 = [v4 suggestedAttributesHarvestingOverrides];
-    [(_ICCloudConfigurationStorage *)v5 setSuggestedAttributesHarvestingOverrides:v139];
+    suggestedAttributesHarvestingOverrides = [v4 suggestedAttributesHarvestingOverrides];
+    [(_ICCloudConfigurationStorage *)v5 setSuggestedAttributesHarvestingOverrides:suggestedAttributesHarvestingOverrides];
   }
 
-  v140 = [v3 objectForKeyedSubscript:@"suggestedAttributesAutoTrainingThrottleInterval"];
+  v140 = [dictionaryCopy objectForKeyedSubscript:@"suggestedAttributesAutoTrainingThrottleInterval"];
   v177 = v140;
   if (v140)
   {
@@ -1315,7 +1315,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setSuggestedAttributesAutoTrainingThrottleInterval:?];
-  v141 = [v3 objectForKeyedSubscript:@"manualSortHintClientSideExpiration"];
+  v141 = [dictionaryCopy objectForKeyedSubscript:@"manualSortHintClientSideExpiration"];
   v176 = v141;
   if (v141)
   {
@@ -1328,7 +1328,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setManualSortHintClientSideExpiration:?];
-  v142 = [v3 objectForKeyedSubscript:@"manualSortHintLastAccessedUpdatePolicy"];
+  v142 = [dictionaryCopy objectForKeyedSubscript:@"manualSortHintLastAccessedUpdatePolicy"];
   if ([v142 length])
   {
     [(_ICCloudConfigurationStorage *)v5 setManualSortHintLastAccessedUpdatePolicy:v142];
@@ -1336,11 +1336,11 @@ LABEL_14:
 
   else
   {
-    v143 = [v4 manualSortHintLastAccessedUpdatePolicy];
-    [(_ICCloudConfigurationStorage *)v5 setManualSortHintLastAccessedUpdatePolicy:v143];
+    manualSortHintLastAccessedUpdatePolicy = [v4 manualSortHintLastAccessedUpdatePolicy];
+    [(_ICCloudConfigurationStorage *)v5 setManualSortHintLastAccessedUpdatePolicy:manualSortHintLastAccessedUpdatePolicy];
   }
 
-  v144 = [v3 objectForKeyedSubscript:@"templatePublicLinkTTL"];
+  v144 = [dictionaryCopy objectForKeyedSubscript:@"templatePublicLinkTTL"];
   v174 = v144;
   if (v144)
   {
@@ -1353,7 +1353,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setTemplatePublicLinkTTL:?];
-  v145 = [v3 objectForKeyedSubscript:@"templatePublicLinkOperationTimeoutInterval"];
+  v145 = [dictionaryCopy objectForKeyedSubscript:@"templatePublicLinkOperationTimeoutInterval"];
   v173 = v145;
   if (v145)
   {
@@ -1366,20 +1366,20 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setTemplatePublicLinkOperationTimeoutInterval:?];
-  v146 = [v3 objectForKeyedSubscript:@"alarmIDsLimitPerReminder"];
+  v146 = [dictionaryCopy objectForKeyedSubscript:@"alarmIDsLimitPerReminder"];
   v172 = v146;
   if (v146)
   {
-    v147 = [v146 unsignedIntegerValue];
+    unsignedIntegerValue13 = [v146 unsignedIntegerValue];
   }
 
   else
   {
-    v147 = [v4 alarmIDsLimitPerReminder];
+    unsignedIntegerValue13 = [v4 alarmIDsLimitPerReminder];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setAlarmIDsLimitPerReminder:v147];
-  v148 = [v3 objectForKeyedSubscript:@"tapToRadarThrottlingInterval"];
+  [(_ICCloudConfigurationStorage *)v5 setAlarmIDsLimitPerReminder:unsignedIntegerValue13];
+  v148 = [dictionaryCopy objectForKeyedSubscript:@"tapToRadarThrottlingInterval"];
   v171 = v148;
   if (v148)
   {
@@ -1392,7 +1392,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setTapToRadarThrottlingInterval:?];
-  v149 = [v3 objectForKeyedSubscript:@"housekeepingActivityMinimumDelay"];
+  v149 = [dictionaryCopy objectForKeyedSubscript:@"housekeepingActivityMinimumDelay"];
   v170 = v149;
   if (v149)
   {
@@ -1405,33 +1405,33 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setHousekeepingActivityMinimumDelay:?];
-  v150 = [v3 objectForKeyedSubscript:@"appStoreReviewCreatedOrCompletedRemindersCountThreshold"];
+  v150 = [dictionaryCopy objectForKeyedSubscript:@"appStoreReviewCreatedOrCompletedRemindersCountThreshold"];
   v151 = v150;
   if (v150)
   {
-    v152 = [v150 unsignedIntegerValue];
+    unsignedIntegerValue14 = [v150 unsignedIntegerValue];
   }
 
   else
   {
-    v152 = [v4 appStoreReviewCreatedOrCompletedRemindersCountThreshold];
+    unsignedIntegerValue14 = [v4 appStoreReviewCreatedOrCompletedRemindersCountThreshold];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewCreatedOrCompletedRemindersCountThreshold:v152];
-  v153 = [v3 objectForKeyedSubscript:@"appStoreReviewNumberOfForegroundsThreshold"];
+  [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewCreatedOrCompletedRemindersCountThreshold:unsignedIntegerValue14];
+  v153 = [dictionaryCopy objectForKeyedSubscript:@"appStoreReviewNumberOfForegroundsThreshold"];
   v154 = v153;
   if (v153)
   {
-    v155 = [v153 unsignedIntegerValue];
+    unsignedIntegerValue15 = [v153 unsignedIntegerValue];
   }
 
   else
   {
-    v155 = [v4 appStoreReviewNumberOfForegroundsThreshold];
+    unsignedIntegerValue15 = [v4 appStoreReviewNumberOfForegroundsThreshold];
   }
 
-  [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewNumberOfForegroundsThreshold:v155];
-  v156 = [v3 objectForKeyedSubscript:@"appStoreReviewTimeIntervalOfInterest"];
+  [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewNumberOfForegroundsThreshold:unsignedIntegerValue15];
+  v156 = [dictionaryCopy objectForKeyedSubscript:@"appStoreReviewTimeIntervalOfInterest"];
   v157 = v156;
   if (v156)
   {
@@ -1444,7 +1444,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewTimeIntervalOfInterest:?];
-  v158 = [v3 objectForKeyedSubscript:@"appStoreReviewTimeIntervalSinceInitialForeground"];
+  v158 = [dictionaryCopy objectForKeyedSubscript:@"appStoreReviewTimeIntervalSinceInitialForeground"];
   v159 = v158;
   if (v158)
   {
@@ -1457,7 +1457,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewTimeIntervalSinceInitialForeground:?];
-  v160 = [v3 objectForKeyedSubscript:@"appStoreReviewTimeIntervalSinceLastPrompt"];
+  v160 = [dictionaryCopy objectForKeyedSubscript:@"appStoreReviewTimeIntervalSinceLastPrompt"];
   v161 = v160;
   v175 = v142;
   if (v160)
@@ -1471,7 +1471,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewTimeIntervalSinceLastPrompt:?];
-  v162 = [v3 objectForKeyedSubscript:@"appStoreReviewTimeIntervalSinceLastFetch"];
+  v162 = [dictionaryCopy objectForKeyedSubscript:@"appStoreReviewTimeIntervalSinceLastFetch"];
   v163 = v162;
   if (v162)
   {
@@ -1484,7 +1484,7 @@ LABEL_14:
   }
 
   [(_ICCloudConfigurationStorage *)v5 setAppStoreReviewTimeIntervalSinceLastFetch:?];
-  v164 = [v3 objectForKeyedSubscript:@"iCloudIsOffTimeIntervalSinceLastPrompt"];
+  v164 = [dictionaryCopy objectForKeyedSubscript:@"iCloudIsOffTimeIntervalSinceLastPrompt"];
   v165 = v164;
   if (v164)
   {
@@ -1510,16 +1510,16 @@ LABEL_14:
   dispatch_async(v168, block);
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICCloudConfiguration *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(ICCloudConfiguration *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = ICCloudConfiguration;
@@ -1530,19 +1530,19 @@ LABEL_14:
 
   else
   {
-    v5 = [(ICCloudConfiguration *)self storage];
+    storage = [(ICCloudConfiguration *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCloudConfiguration *)self storage];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  storage = [(ICCloudConfiguration *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface NAEndOfArticleModule
 - (NAEndOfArticleModule)init;
-- (id)createViewControllerFor:(id)a3 presentationOptions:(id)a4;
+- (id)createViewControllerFor:(id)for presentationOptions:(id)options;
 @end
 
 @implementation NAEndOfArticleModule
 
-- (id)createViewControllerFor:(id)a3 presentationOptions:(id)a4
+- (id)createViewControllerFor:(id)for presentationOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = EndOfArticleModule.createViewController(for:presentationOptions:)(v6, v7);
+  forCopy = for;
+  optionsCopy = options;
+  selfCopy = self;
+  v9 = EndOfArticleModule.createViewController(for:presentationOptions:)(forCopy, optionsCopy);
 
   return v9;
 }

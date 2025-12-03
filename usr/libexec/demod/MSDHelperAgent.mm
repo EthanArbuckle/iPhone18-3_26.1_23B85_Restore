@@ -1,40 +1,40 @@
 @interface MSDHelperAgent
 + (MSDHelperAgent)sharedInstance;
 - (BOOL)clearStagedDeviceAfterUpdateProcess;
-- (BOOL)cloneFile:(id)a3 to:(id)a4 expectingHash:(id)a5;
-- (BOOL)collectDemoLogsToFolder:(id)a3 ofType:(unint64_t)a4;
-- (BOOL)deleteNvram:(id)a3;
+- (BOOL)cloneFile:(id)file to:(id)to expectingHash:(id)hash;
+- (BOOL)collectDemoLogsToFolder:(id)folder ofType:(unint64_t)type;
+- (BOOL)deleteNvram:(id)nvram;
 - (BOOL)disableLaunchdServicesForWatch;
-- (BOOL)executeTestScriptOfIdentifier:(id)a3;
-- (BOOL)fileExistsAtPath:(id)a3;
-- (BOOL)manageDataVolume:(id)a3;
-- (BOOL)manageDemoVolume:(id)a3;
-- (BOOL)manageUserVolume:(id)a3 forUser:(id)a4;
+- (BOOL)executeTestScriptOfIdentifier:(id)identifier;
+- (BOOL)fileExistsAtPath:(id)path;
+- (BOOL)manageDataVolume:(id)volume;
+- (BOOL)manageDemoVolume:(id)volume;
+- (BOOL)manageUserVolume:(id)volume forUser:(id)user;
 - (BOOL)migratePreferencesFile;
-- (BOOL)moveStagingToFinal:(id)a3 finalPath:(id)a4;
-- (BOOL)moveStagingsToFinal:(id)a3 finalPath:(id)a4;
-- (BOOL)prepareWorkDirectory:(id)a3 writableByNonRoot:(BOOL)a4;
-- (BOOL)preserveBluetoothFileToShelter:(id)a3;
-- (BOOL)preserveSecondPartyAppDataToShelter:(id)a3 withReturnErrorMsg:(id *)a4;
+- (BOOL)moveStagingToFinal:(id)final finalPath:(id)path;
+- (BOOL)moveStagingsToFinal:(id)final finalPath:(id)path;
+- (BOOL)prepareWorkDirectory:(id)directory writableByNonRoot:(BOOL)root;
+- (BOOL)preserveBluetoothFileToShelter:(id)shelter;
+- (BOOL)preserveSecondPartyAppDataToShelter:(id)shelter withReturnErrorMsg:(id *)msg;
 - (BOOL)quitHelper;
 - (BOOL)reboot;
-- (BOOL)removeFileAtPath:(id)a3;
-- (BOOL)removeWorkDirectories:(id)a3;
-- (BOOL)removeWorkDirectory:(id)a3;
+- (BOOL)removeFileAtPath:(id)path;
+- (BOOL)removeWorkDirectories:(id)directories;
+- (BOOL)removeWorkDirectory:(id)directory;
 - (BOOL)restartBluetooth;
-- (BOOL)restoreAppDataAttributesUnder:(id)a3 containerType:(id)a4 identifier:(id)a5 manifestUID:(id)a6 deviceUID:(id)a7;
-- (BOOL)restoreBackupAttributesUnder:(id)a3 range:(_NSRange)a4 manifestUID:(id)a5 deviceUID:(id)a6;
-- (BOOL)setComputerNameAndHostname:(id)a3 encoding:(unsigned int)a4;
-- (BOOL)setPreferencesForKey:(id)a3 withValue:(id)a4 forApplication:(id)a5 andUser:(id)a6;
-- (BOOL)stageDeviceForUpdateProcess:(BOOL)a3;
+- (BOOL)restoreAppDataAttributesUnder:(id)under containerType:(id)type identifier:(id)identifier manifestUID:(id)d deviceUID:(id)iD;
+- (BOOL)restoreBackupAttributesUnder:(id)under range:(_NSRange)range manifestUID:(id)d deviceUID:(id)iD;
+- (BOOL)setComputerNameAndHostname:(id)hostname encoding:(unsigned int)encoding;
+- (BOOL)setPreferencesForKey:(id)key withValue:(id)value forApplication:(id)application andUser:(id)user;
+- (BOOL)stageDeviceForUpdateProcess:(BOOL)process;
 - (BOOL)switchToBackupFolder;
-- (BOOL)touchFile:(id)a3 fileAttributes:(id)a4;
+- (BOOL)touchFile:(id)file fileAttributes:(id)attributes;
 - (BOOL)updateSignedManifest;
-- (BOOL)writeNvram:(id)a3 withValue:(id)a4;
+- (BOOL)writeNvram:(id)nvram withValue:(id)value;
 - (MSDHelperAgent)init;
-- (id)createDeviceManifestForComponent:(id)a3 ofType:(id)a4 withRootPath:(id)a5 userHomePath:(id)a6 andSavePath:(id)a7;
-- (id)readPlistFile:(id)a3;
-- (id)sendXPCRequest:(id)a3;
+- (id)createDeviceManifestForComponent:(id)component ofType:(id)type withRootPath:(id)path userHomePath:(id)homePath andSavePath:(id)savePath;
+- (id)readPlistFile:(id)file;
+- (id)sendXPCRequest:(id)request;
 @end
 
 @implementation MSDHelperAgent
@@ -69,9 +69,9 @@ LABEL_7:
   mach_service = xpc_connection_create_mach_service("com.apple.mobilestoredemodhelper", 0, 0);
   [(MSDHelperAgent *)v2 setXpc_conn:mach_service];
 
-  v5 = [(MSDHelperAgent *)v2 xpc_conn];
+  xpc_conn = [(MSDHelperAgent *)v2 xpc_conn];
 
-  if (!v5)
+  if (!xpc_conn)
   {
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -82,11 +82,11 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = [(MSDHelperAgent *)v2 xpc_conn];
-  xpc_connection_set_event_handler(v6, &stru_10016C398);
+  xpc_conn2 = [(MSDHelperAgent *)v2 xpc_conn];
+  xpc_connection_set_event_handler(xpc_conn2, &stru_10016C398);
 
-  v7 = [(MSDHelperAgent *)v2 xpc_conn];
-  xpc_connection_resume(v7);
+  xpc_conn3 = [(MSDHelperAgent *)v2 xpc_conn];
+  xpc_connection_resume(xpc_conn3);
 
   v8 = v2;
 LABEL_8:
@@ -144,7 +144,7 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)stageDeviceForUpdateProcess:(BOOL)a3
+- (BOOL)stageDeviceForUpdateProcess:(BOOL)process
 {
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -155,7 +155,7 @@ LABEL_8:
   }
 
   v6 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_BOOL(v6, "ForBackgroundDownload", a3);
+  xpc_dictionary_set_BOOL(v6, "ForBackgroundDownload", process);
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v7, "command", "stageDeviceForUpdateProcess:");
   xpc_dictionary_set_value(v7, "payload", v6);
@@ -197,9 +197,9 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)prepareWorkDirectory:(id)a3 writableByNonRoot:(BOOL)a4
+- (BOOL)prepareWorkDirectory:(id)directory writableByNonRoot:(BOOL)root
 {
-  v6 = a3;
+  directoryCopy = directory;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -209,10 +209,10 @@ LABEL_8:
   }
 
   v8 = xpc_dictionary_create(0, 0, 0);
-  v9 = [v6 cStringUsingEncoding:4];
+  v9 = [directoryCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v8, "Path", v9);
-  xpc_dictionary_set_BOOL(v8, "WritableByNonRoot", a4);
+  xpc_dictionary_set_BOOL(v8, "WritableByNonRoot", root);
   v10 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v10, "command", "prepareWorkDirectory:");
   xpc_dictionary_set_value(v10, "payload", v8);
@@ -229,19 +229,19 @@ LABEL_8:
   return v13;
 }
 
-- (BOOL)removeWorkDirectory:(id)a3
+- (BOOL)removeWorkDirectory:(id)directory
 {
-  v7 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v7 count:1];
+  directoryCopy = directory;
+  directoryCopy2 = directory;
+  v5 = [NSArray arrayWithObjects:&directoryCopy count:1];
 
-  LOBYTE(self) = [(MSDHelperAgent *)self removeWorkDirectories:v5, v7];
+  LOBYTE(self) = [(MSDHelperAgent *)self removeWorkDirectories:v5, directoryCopy];
   return self;
 }
 
-- (BOOL)removeWorkDirectories:(id)a3
+- (BOOL)removeWorkDirectories:(id)directories
 {
-  v4 = a3;
+  directoriesCopy = directories;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -255,7 +255,7 @@ LABEL_8:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = directoriesCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -297,44 +297,44 @@ LABEL_8:
   return v17;
 }
 
-- (id)createDeviceManifestForComponent:(id)a3 ofType:(id)a4 withRootPath:(id)a5 userHomePath:(id)a6 andSavePath:(id)a7
+- (id)createDeviceManifestForComponent:(id)component ofType:(id)type withRootPath:(id)path userHomePath:(id)homePath andSavePath:(id)savePath
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  componentCopy = component;
+  typeCopy = type;
+  pathCopy = path;
+  homePathCopy = homePath;
+  savePathCopy = savePath;
   v17 = sub_100063A54();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v39 = "[MSDHelperAgent createDeviceManifestForComponent:ofType:withRootPath:userHomePath:andSavePath:]";
     v40 = 2114;
-    v41 = v12;
+    v41 = componentCopy;
     v42 = 2114;
-    v43 = v13;
+    v43 = typeCopy;
     v44 = 2114;
-    v45 = v14;
+    v45 = pathCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: entered for component: %{public}@ of type: %{public}@ root path: %{public}@", buf, 0x2Au);
   }
 
   v18 = +[NSFileManager defaultManager];
-  v19 = [v18 fileExistsAtPath:v16];
+  v19 = [v18 fileExistsAtPath:savePathCopy];
 
-  v35 = v15;
-  v36 = v16;
+  v35 = homePathCopy;
+  v36 = savePathCopy;
   if (v19)
   {
-    v33 = v14;
+    v33 = pathCopy;
     v20 = sub_100063A54();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v39 = v16;
+      v39 = savePathCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Device manifest already exists at path: %{public}@; Skipping XPC request.", buf, 0xCu);
     }
 
-    v21 = v12;
+    v21 = componentCopy;
 
     v22 = 0;
     v23 = 0;
@@ -343,21 +343,21 @@ LABEL_8:
   }
 
   v23 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v23, "ComponentID", [v12 cStringUsingEncoding:4]);
-  xpc_dictionary_set_string(v23, "ComponentType", [v13 cStringUsingEncoding:4]);
-  xpc_dictionary_set_string(v23, "RootPath", [v14 cStringUsingEncoding:4]);
-  xpc_dictionary_set_string(v23, "UserHomePath", [v15 cStringUsingEncoding:4]);
-  xpc_dictionary_set_string(v23, "SavePath", [v16 cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v23, "ComponentID", [componentCopy cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v23, "ComponentType", [typeCopy cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v23, "RootPath", [pathCopy cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v23, "UserHomePath", [homePathCopy cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v23, "SavePath", [savePathCopy cStringUsingEncoding:4]);
   v22 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v22, "command", "createDeviceManifest:");
   xpc_dictionary_set_value(v22, "payload", v23);
   v24 = [(MSDHelperAgent *)self sendXPCRequest:v22];
   if (xpc_dictionary_get_BOOL(v24, "result"))
   {
-    v33 = v14;
-    v21 = v12;
+    v33 = pathCopy;
+    v21 = componentCopy;
 LABEL_9:
-    v25 = [NSURL fileURLWithPath:v16, v33, v35];
+    v25 = [NSURL fileURLWithPath:savePathCopy, v33, v35];
     v37 = 0;
     v26 = [NSDictionary dictionaryWithContentsOfURL:v25 error:&v37];
     v27 = v37;
@@ -373,8 +373,8 @@ LABEL_9:
       v26 = objc_alloc_init(NSDictionary);
     }
 
-    v12 = v21;
-    v14 = v34;
+    componentCopy = v21;
+    pathCopy = v34;
     goto LABEL_17;
   }
 
@@ -387,7 +387,7 @@ LABEL_9:
   v26 = objc_alloc_init(NSDictionary);
 LABEL_17:
   v30 = [[MSDManifest alloc] initWithDictionary:v26];
-  [(MSDManifest *)v30 setRootPath:v14];
+  [(MSDManifest *)v30 setRootPath:pathCopy];
   v31 = sub_100063A54();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
@@ -399,9 +399,9 @@ LABEL_17:
   return v30;
 }
 
-- (BOOL)fileExistsAtPath:(id)a3
+- (BOOL)fileExistsAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -412,7 +412,7 @@ LABEL_17:
 
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "command", "fileExistsAtPath:");
-  v7 = [v4 cStringUsingEncoding:4];
+  v7 = [pathCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v6, "payload", v7);
   v8 = [(MSDHelperAgent *)self sendXPCRequest:v6];
@@ -428,9 +428,9 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)removeFileAtPath:(id)a3
+- (BOOL)removeFileAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -439,14 +439,14 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: entered.", &v8, 0xCu);
   }
 
-  v6 = [(MSDHelperAgent *)self removeWorkDirectory:v4];
+  v6 = [(MSDHelperAgent *)self removeWorkDirectory:pathCopy];
   return v6;
 }
 
-- (BOOL)touchFile:(id)a3 fileAttributes:(id)a4
+- (BOOL)touchFile:(id)file fileAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
+  attributesCopy = attributes;
+  fileCopy = file;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -456,12 +456,12 @@ LABEL_17:
   }
 
   v9 = xpc_dictionary_create(0, 0, 0);
-  v10 = [v7 cStringUsingEncoding:4];
+  v10 = [fileCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v9, "FilePath", v10);
-  v11 = [v6 objectForKey:@"FileOwnerName"];
-  v12 = [v6 objectForKey:@"FileGroupOwnerName"];
-  v13 = [v6 objectForKey:@"FilePosixPermissions"];
+  v11 = [attributesCopy objectForKey:@"FileOwnerName"];
+  v12 = [attributesCopy objectForKey:@"FileGroupOwnerName"];
+  v13 = [attributesCopy objectForKey:@"FilePosixPermissions"];
 
   if (v11)
   {
@@ -494,11 +494,11 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)cloneFile:(id)a3 to:(id)a4 expectingHash:(id)a5
+- (BOOL)cloneFile:(id)file to:(id)to expectingHash:(id)hash
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  fileCopy = file;
+  hashCopy = hash;
+  toCopy = to;
   v11 = sub_100063A54();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -506,13 +506,13 @@ LABEL_17:
   }
 
   v12 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v12, "FilePath", [v8 cStringUsingEncoding:4]);
-  v13 = [v10 cStringUsingEncoding:4];
+  xpc_dictionary_set_string(v12, "FilePath", [fileCopy cStringUsingEncoding:4]);
+  v13 = [toCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v12, "StatingPath", v13);
-  if (v9 && [v9 length])
+  if (hashCopy && [hashCopy length])
   {
-    xpc_dictionary_set_data(v12, "ExpectedHash", [v9 bytes], objc_msgSend(v9, "length"));
+    xpc_dictionary_set_data(v12, "ExpectedHash", [hashCopy bytes], objc_msgSend(hashCopy, "length"));
   }
 
   xpc_dictionary_set_BOOL(v12, "CorrectOwnership", 1);
@@ -523,7 +523,7 @@ LABEL_17:
   v16 = xpc_dictionary_get_BOOL(v15, "result");
   if (!v16)
   {
-    sub_1000E8778(v8);
+    sub_1000E8778(fileCopy);
   }
 
   v17 = sub_100063A54();
@@ -535,13 +535,13 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)restoreBackupAttributesUnder:(id)a3 range:(_NSRange)a4 manifestUID:(id)a5 deviceUID:(id)a6
+- (BOOL)restoreBackupAttributesUnder:(id)under range:(_NSRange)range manifestUID:(id)d deviceUID:(id)iD
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
+  length = range.length;
+  location = range.location;
+  iDCopy = iD;
+  dCopy = d;
+  underCopy = under;
   v14 = sub_100063A54();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -551,17 +551,17 @@ LABEL_17:
   }
 
   v15 = xpc_dictionary_create(0, 0, 0);
-  v16 = [v13 cStringUsingEncoding:4];
+  v16 = [underCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v15, "StagingRootPath", v16);
   xpc_dictionary_set_int64(v15, "Location", location);
   xpc_dictionary_set_int64(v15, "Length", length);
-  v17 = [v12 integerValue];
+  integerValue = [dCopy integerValue];
 
-  xpc_dictionary_set_int64(v15, "ManifestUID", v17);
-  v18 = [v11 integerValue];
+  xpc_dictionary_set_int64(v15, "ManifestUID", integerValue);
+  integerValue2 = [iDCopy integerValue];
 
-  xpc_dictionary_set_int64(v15, "DeviceUID", v18);
+  xpc_dictionary_set_int64(v15, "DeviceUID", integerValue2);
   v19 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v19, "command", "restoreBackupAttributes:");
   xpc_dictionary_set_value(v19, "payload", v15);
@@ -578,13 +578,13 @@ LABEL_17:
   return v22;
 }
 
-- (BOOL)restoreAppDataAttributesUnder:(id)a3 containerType:(id)a4 identifier:(id)a5 manifestUID:(id)a6 deviceUID:(id)a7
+- (BOOL)restoreAppDataAttributesUnder:(id)under containerType:(id)type identifier:(id)identifier manifestUID:(id)d deviceUID:(id)iD
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  iDCopy = iD;
+  dCopy = d;
+  identifierCopy = identifier;
+  typeCopy = type;
+  underCopy = under;
   v17 = sub_100063A54();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -594,21 +594,21 @@ LABEL_17:
   }
 
   v18 = xpc_dictionary_create(0, 0, 0);
-  v19 = [v16 cStringUsingEncoding:4];
+  v19 = [underCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v18, "StagingRootPath", v19);
-  v20 = [v15 cStringUsingEncoding:4];
+  v20 = [typeCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v18, "ContentType", v20);
-  v21 = [v14 cStringUsingEncoding:4];
+  v21 = [identifierCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v18, "Identifier", v21);
-  v22 = [v13 integerValue];
+  integerValue = [dCopy integerValue];
 
-  xpc_dictionary_set_int64(v18, "ManifestUID", v22);
-  v23 = [v12 integerValue];
+  xpc_dictionary_set_int64(v18, "ManifestUID", integerValue);
+  integerValue2 = [iDCopy integerValue];
 
-  xpc_dictionary_set_int64(v18, "DeviceUID", v23);
+  xpc_dictionary_set_int64(v18, "DeviceUID", integerValue2);
   v24 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v24, "command", "restoreAppDataAttributes:");
   xpc_dictionary_set_value(v24, "payload", v18);
@@ -625,9 +625,9 @@ LABEL_17:
   return v27;
 }
 
-- (BOOL)deleteNvram:(id)a3
+- (BOOL)deleteNvram:(id)nvram
 {
-  v4 = a3;
+  nvramCopy = nvram;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -638,7 +638,7 @@ LABEL_17:
 
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "command", "deleteNvram:");
-  v7 = [v4 cStringUsingEncoding:4];
+  v7 = [nvramCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v6, "payload", v7);
   v8 = [(MSDHelperAgent *)self sendXPCRequest:v6];
@@ -654,10 +654,10 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)writeNvram:(id)a3 withValue:(id)a4
+- (BOOL)writeNvram:(id)nvram withValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  nvramCopy = nvram;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -667,10 +667,10 @@ LABEL_17:
   }
 
   v9 = xpc_dictionary_create(0, 0, 0);
-  v10 = [v7 cStringUsingEncoding:4];
+  v10 = [nvramCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v9, "Name", v10);
-  v11 = [v6 cStringUsingEncoding:4];
+  v11 = [valueCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v9, "Value", v11);
   v12 = xpc_dictionary_create(0, 0, 0);
@@ -689,9 +689,9 @@ LABEL_17:
   return v15;
 }
 
-- (BOOL)manageDataVolume:(id)a3
+- (BOOL)manageDataVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -702,7 +702,7 @@ LABEL_17:
 
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "Target", "Data");
-  v7 = [v4 cStringUsingEncoding:4];
+  v7 = [volumeCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v6, "Operation", v7);
   v8 = xpc_dictionary_create(0, 0, 0);
@@ -721,9 +721,9 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)manageDemoVolume:(id)a3
+- (BOOL)manageDemoVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -734,7 +734,7 @@ LABEL_17:
 
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "Target", "Demo");
-  v7 = [v4 cStringUsingEncoding:4];
+  v7 = [volumeCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v6, "Operation", v7);
   v8 = xpc_dictionary_create(0, 0, 0);
@@ -753,10 +753,10 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)manageUserVolume:(id)a3 forUser:(id)a4
+- (BOOL)manageUserVolume:(id)volume forUser:(id)user
 {
-  v6 = a4;
-  v7 = a3;
+  userCopy = user;
+  volumeCopy = volume;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -767,10 +767,10 @@ LABEL_17:
 
   v9 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v9, "Target", "User");
-  v10 = [v7 cStringUsingEncoding:4];
+  v10 = [volumeCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v9, "Operation", v10);
-  v11 = [v6 cStringUsingEncoding:4];
+  v11 = [userCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v9, "UserName", v11);
   v12 = xpc_dictionary_create(0, 0, 0);
@@ -814,30 +814,30 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)moveStagingToFinal:(id)a3 finalPath:(id)a4
+- (BOOL)moveStagingToFinal:(id)final finalPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = a3;
-  v8 = [NSArray arrayWithObjects:&v10 count:1];
+  finalCopy = final;
+  pathCopy = path;
+  finalCopy2 = final;
+  v8 = [NSArray arrayWithObjects:&finalCopy count:1];
 
-  LOBYTE(v7) = [(MSDHelperAgent *)self moveStagingsToFinal:v8 finalPath:v6, v10];
-  return v7;
+  LOBYTE(finalCopy2) = [(MSDHelperAgent *)self moveStagingsToFinal:v8 finalPath:pathCopy, finalCopy];
+  return finalCopy2;
 }
 
-- (BOOL)moveStagingsToFinal:(id)a3 finalPath:(id)a4
+- (BOOL)moveStagingsToFinal:(id)final finalPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  finalCopy = final;
+  pathCopy = path;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v29 = "[MSDHelperAgent moveStagingsToFinal:finalPath:]";
     v30 = 2114;
-    v31 = v6;
+    v31 = finalCopy;
     v32 = 2114;
-    v33 = v7;
+    v33 = pathCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s entered.  stagingPaths:  %{public}@ - finalPath:  %{public}@", buf, 0x20u);
   }
 
@@ -846,7 +846,7 @@ LABEL_17:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v6;
+  v10 = finalCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -874,7 +874,7 @@ LABEL_17:
 
   v17 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_value(v17, "StagingPaths", v9);
-  xpc_dictionary_set_string(v17, "FinalPath", [v7 cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v17, "FinalPath", [pathCopy cStringUsingEncoding:4]);
   v18 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v18, "command", "moveStagingToFinal:");
   xpc_dictionary_set_value(v18, "payload", v17);
@@ -966,9 +966,9 @@ LABEL_17:
   return v8;
 }
 
-- (BOOL)collectDemoLogsToFolder:(id)a3 ofType:(unint64_t)a4
+- (BOOL)collectDemoLogsToFolder:(id)folder ofType:(unint64_t)type
 {
-  v6 = a3;
+  folderCopy = folder;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -978,10 +978,10 @@ LABEL_17:
   }
 
   v8 = xpc_dictionary_create(0, 0, 0);
-  v9 = [v6 cStringUsingEncoding:4];
+  v9 = [folderCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v8, "logFileDirectory", v9);
-  xpc_dictionary_set_uint64(v8, "logType", a4);
+  xpc_dictionary_set_uint64(v8, "logType", type);
   v10 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v10, "command", "collectDemoLogsToFolder:");
   xpc_dictionary_set_value(v10, "payload", v8);
@@ -998,21 +998,21 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)preserveBluetoothFileToShelter:(id)a3
+- (BOOL)preserveBluetoothFileToShelter:(id)shelter
 {
-  v4 = a3;
+  shelterCopy = shelter;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[MSDHelperAgent preserveBluetoothFileToShelter:]";
     v14 = 2114;
-    v15 = v4;
+    v15 = shelterCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s entered.  sourcePath:  %{public}@", &v12, 0x16u);
   }
 
   v6 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v6, "SourcePath", [v4 cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v6, "SourcePath", [shelterCopy cStringUsingEncoding:4]);
   v7 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v7, "command", "preserveBluetoothFileToShelter:");
   xpc_dictionary_set_value(v7, "payload", v6);
@@ -1054,24 +1054,24 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)setComputerNameAndHostname:(id)a3 encoding:(unsigned int)a4
+- (BOOL)setComputerNameAndHostname:(id)hostname encoding:(unsigned int)encoding
 {
-  v6 = a3;
+  hostnameCopy = hostname;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[MSDHelperAgent setComputerNameAndHostname:encoding:]";
     v16 = 2114;
-    v17 = v6;
+    v17 = hostnameCopy;
     v18 = 1026;
-    v19 = a4;
+    encodingCopy = encoding;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s:  entered - computerName:  %{public}@ - encoding:  %{public}x", &v14, 0x1Cu);
   }
 
   v8 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v8, "ComputerName", [v6 cStringUsingEncoding:4]);
-  xpc_dictionary_set_uint64(v8, "Encoding", a4);
+  xpc_dictionary_set_string(v8, "ComputerName", [hostnameCopy cStringUsingEncoding:4]);
+  xpc_dictionary_set_uint64(v8, "Encoding", encoding);
   v9 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v9, "command", "setComputerNameAndHostname:");
   xpc_dictionary_set_value(v9, "payload", v8);
@@ -1088,7 +1088,7 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)executeTestScriptOfIdentifier:(id)a3
+- (BOOL)executeTestScriptOfIdentifier:(id)identifier
 {
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -1099,9 +1099,9 @@ LABEL_17:
   return 0;
 }
 
-- (BOOL)preserveSecondPartyAppDataToShelter:(id)a3 withReturnErrorMsg:(id *)a4
+- (BOOL)preserveSecondPartyAppDataToShelter:(id)shelter withReturnErrorMsg:(id *)msg
 {
-  v6 = a3;
+  shelterCopy = shelter;
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1112,9 +1112,9 @@ LABEL_17:
 
   v8 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v8, "command", "preserveSecondPartyAppDataToShelter:outErrorDict:");
-  v9 = [v6 UTF8String];
+  uTF8String = [shelterCopy UTF8String];
 
-  xpc_dictionary_set_string(v8, "payload", v9);
+  xpc_dictionary_set_string(v8, "payload", uTF8String);
   v10 = [(MSDHelperAgent *)self sendXPCRequest:v8];
   v11 = sub_100063A54();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1126,48 +1126,48 @@ LABEL_17:
 
   v12 = xpc_dictionary_get_BOOL(v10, "result");
   v13 = v12;
-  if (a4 && !v12)
+  if (msg && !v12)
   {
     v14 = [NSDictionary dictionaryFromXPCDictionary:v10 withDataFromKey:"payload"];
     v15 = v14;
     if (v14)
     {
-      *a4 = [v14 objectForKey:@"ErrorMsg"];
+      *msg = [v14 objectForKey:@"ErrorMsg"];
     }
   }
 
   return v13;
 }
 
-- (BOOL)setPreferencesForKey:(id)a3 withValue:(id)a4 forApplication:(id)a5 andUser:(id)a6
+- (BOOL)setPreferencesForKey:(id)key withValue:(id)value forApplication:(id)application andUser:(id)user
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  valueCopy = value;
+  applicationCopy = application;
+  userCopy = user;
   v14 = sub_100063A54();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 136316162;
     v23 = "[MSDHelperAgent setPreferencesForKey:withValue:forApplication:andUser:]";
     v24 = 2114;
-    v25 = v10;
+    v25 = keyCopy;
     v26 = 2114;
-    v27 = v11;
+    v27 = valueCopy;
     v28 = 2114;
-    v29 = v12;
+    v29 = applicationCopy;
     v30 = 2114;
-    v31 = v13;
+    v31 = userCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: entered - key:  %{public}@ - value:  %{public}@ - appId:  %{public}@ - user:  %{public}@", &v22, 0x34u);
   }
 
   v15 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_string(v15, "Key", [v10 cStringUsingEncoding:4]);
-  v16 = [v11 createXPCDictionary];
-  xpc_dictionary_set_value(v15, "Value", v16);
+  xpc_dictionary_set_string(v15, "Key", [keyCopy cStringUsingEncoding:4]);
+  createXPCDictionary = [valueCopy createXPCDictionary];
+  xpc_dictionary_set_value(v15, "Value", createXPCDictionary);
 
-  xpc_dictionary_set_string(v15, "ApplicationId", [v12 cStringUsingEncoding:4]);
-  xpc_dictionary_set_string(v15, "UserName", [v13 cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v15, "ApplicationId", [applicationCopy cStringUsingEncoding:4]);
+  xpc_dictionary_set_string(v15, "UserName", [userCopy cStringUsingEncoding:4]);
   v17 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v17, "command", "setPreferences:");
   xpc_dictionary_set_value(v17, "payload", v15);
@@ -1186,24 +1186,24 @@ LABEL_17:
   return v19;
 }
 
-- (id)sendXPCRequest:(id)a3
+- (id)sendXPCRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(MSDHelperAgent *)self xpc_sema];
-  dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
+  requestCopy = request;
+  xpc_sema = [(MSDHelperAgent *)self xpc_sema];
+  dispatch_semaphore_wait(xpc_sema, 0xFFFFFFFFFFFFFFFFLL);
 
-  v6 = [(MSDHelperAgent *)self xpc_conn];
-  v7 = xpc_connection_send_message_with_reply_sync(v6, v4);
+  xpc_conn = [(MSDHelperAgent *)self xpc_conn];
+  v7 = xpc_connection_send_message_with_reply_sync(xpc_conn, requestCopy);
 
-  v8 = [(MSDHelperAgent *)self xpc_sema];
-  dispatch_semaphore_signal(v8);
+  xpc_sema2 = [(MSDHelperAgent *)self xpc_sema];
+  dispatch_semaphore_signal(xpc_sema2);
 
   return v7;
 }
 
-- (id)readPlistFile:(id)a3
+- (id)readPlistFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1214,7 +1214,7 @@ LABEL_17:
 
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "command", "readPlistFile:outContent:");
-  v7 = [v4 cStringUsingEncoding:4];
+  v7 = [fileCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v6, "payload", v7);
   v8 = [(MSDHelperAgent *)self sendXPCRequest:v6];

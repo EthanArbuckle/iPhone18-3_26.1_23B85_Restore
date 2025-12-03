@@ -1,25 +1,25 @@
 @interface HKMostRecentTimePeriodCurrentValueDataProvider
-- (id)_mostRecentValueQueryWithCompletion:(id)a3;
-- (id)_queryDateRangeFromSampleDate:(id)a3;
-- (id)fetchOperationWithCompletion:(id)a3;
-- (void)_dataProviderValueFromMostRecentSample:(id)a3 completion:(id)a4;
-- (void)_totalDurationFromDate:(id)a3 toDate:(id)a4 completion:(id)a5;
+- (id)_mostRecentValueQueryWithCompletion:(id)completion;
+- (id)_queryDateRangeFromSampleDate:(id)date;
+- (id)fetchOperationWithCompletion:(id)completion;
+- (void)_dataProviderValueFromMostRecentSample:(id)sample completion:(id)completion;
+- (void)_totalDurationFromDate:(id)date toDate:(id)toDate completion:(id)completion;
 @end
 
 @implementation HKMostRecentTimePeriodCurrentValueDataProvider
 
-- (id)fetchOperationWithCompletion:(id)a3
+- (id)fetchOperationWithCompletion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKValueDataProvider *)self healthStore];
+  completionCopy = completion;
+  healthStore = [(HKValueDataProvider *)self healthStore];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(HKValueDataProvider *)self displayType];
-  v8 = [v7 localization];
-  v9 = [v8 displayName];
-  v10 = [v6 stringWithFormat:@"MostRecentTimePeriod(%@)", v9];
+  displayType = [(HKValueDataProvider *)self displayType];
+  localization = [displayType localization];
+  displayName = [localization displayName];
+  v10 = [v6 stringWithFormat:@"MostRecentTimePeriod(%@)", displayName];
 
-  v11 = [[HKHealthQueryFetchOperation alloc] initWithHealthStore:v5 operationDescription:v10 completion:v4];
+  v11 = [[HKHealthQueryFetchOperation alloc] initWithHealthStore:healthStore operationDescription:v10 completion:completionCopy];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __79__HKMostRecentTimePeriodCurrentValueDataProvider_fetchOperationWithCompletion___block_invoke;
@@ -35,14 +35,14 @@
   return v12;
 }
 
-- (id)_mostRecentValueQueryWithCompletion:(id)a3
+- (id)_mostRecentValueQueryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKValueDataProvider *)self displayType];
-  v6 = [v5 sampleType];
+  completionCopy = completion;
+  displayType = [(HKValueDataProvider *)self displayType];
+  sampleType = [displayType sampleType];
 
-  v7 = [(HKValueDataProvider *)self displayType];
-  v8 = [v7 defaultValuePredicate];
+  displayType2 = [(HKValueDataProvider *)self displayType];
+  defaultValuePredicate = [displayType2 defaultValuePredicate];
 
   v9 = MEMORY[0x1E696C1C0];
   v13[0] = MEMORY[0x1E69E9820];
@@ -50,9 +50,9 @@
   v13[2] = __86__HKMostRecentTimePeriodCurrentValueDataProvider__mostRecentValueQueryWithCompletion___block_invoke;
   v13[3] = &unk_1E81B7C80;
   v13[4] = self;
-  v14 = v4;
-  v10 = v4;
-  v11 = [v9 queryForMostRecentSampleOfType:v6 predicate:v8 completion:v13];
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = [v9 queryForMostRecentSampleOfType:sampleType predicate:defaultValuePredicate completion:v13];
 
   return v11;
 }
@@ -70,20 +70,20 @@ uint64_t __86__HKMostRecentTimePeriodCurrentValueDataProvider__mostRecentValueQu
   }
 }
 
-- (id)_queryDateRangeFromSampleDate:(id)a3
+- (id)_queryDateRangeFromSampleDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKValueDataProvider *)self displayType];
-  v6 = [v5 hk_startOfDayTransform];
+  dateCopy = date;
+  displayType = [(HKValueDataProvider *)self displayType];
+  hk_startOfDayTransform = [displayType hk_startOfDayTransform];
 
-  v7 = HKStartOfRollingDayForDate(v4, v6);
+  v7 = HKStartOfRollingDayForDate(dateCopy, hk_startOfDayTransform);
 
   v8 = HKEndOfRollingDayWithStart(v7);
-  v9 = [(HKValueDataProvider *)self dateCache];
-  v10 = [v9 startOfRollingDay:v6];
+  dateCache = [(HKValueDataProvider *)self dateCache];
+  v10 = [dateCache startOfRollingDay:hk_startOfDayTransform];
 
-  v11 = [(HKValueDataProvider *)self dateCache];
-  v12 = [v11 endOfRollingDay:v6];
+  dateCache2 = [(HKValueDataProvider *)self dateCache];
+  v12 = [dateCache2 endOfRollingDay:hk_startOfDayTransform];
 
   v13 = HKUIObjectMin(v10, v7);
 
@@ -94,29 +94,29 @@ uint64_t __86__HKMostRecentTimePeriodCurrentValueDataProvider__mostRecentValueQu
   return v15;
 }
 
-- (void)_dataProviderValueFromMostRecentSample:(id)a3 completion:(id)a4
+- (void)_dataProviderValueFromMostRecentSample:(id)sample completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (sample)
   {
-    v7 = [a3 endDate];
-    v8 = [(HKMostRecentTimePeriodCurrentValueDataProvider *)self _queryDateRangeFromSampleDate:v7];
-    v9 = [(HKDataProviderNoDataCurrentValue *)v8 minValue];
-    v10 = [(HKDataProviderNoDataCurrentValue *)v8 maxValue];
+    endDate = [sample endDate];
+    v8 = [(HKMostRecentTimePeriodCurrentValueDataProvider *)self _queryDateRangeFromSampleDate:endDate];
+    minValue = [(HKDataProviderNoDataCurrentValue *)v8 minValue];
+    maxValue = [(HKDataProviderNoDataCurrentValue *)v8 maxValue];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __100__HKMostRecentTimePeriodCurrentValueDataProvider__dataProviderValueFromMostRecentSample_completion___block_invoke;
     v12[3] = &unk_1E81B81C0;
-    v13 = v7;
-    v14 = v6;
-    v11 = v7;
-    [(HKMostRecentTimePeriodCurrentValueDataProvider *)self _totalDurationFromDate:v9 toDate:v10 completion:v12];
+    v13 = endDate;
+    v14 = completionCopy;
+    v11 = endDate;
+    [(HKMostRecentTimePeriodCurrentValueDataProvider *)self _totalDurationFromDate:minValue toDate:maxValue completion:v12];
   }
 
   else
   {
     v8 = objc_alloc_init(HKDataProviderNoDataCurrentValue);
-    (*(v6 + 2))(v6, v8, 0);
+    (*(completionCopy + 2))(completionCopy, v8, 0);
   }
 }
 
@@ -138,38 +138,38 @@ void __100__HKMostRecentTimePeriodCurrentValueDataProvider__dataProviderValueFro
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_totalDurationFromDate:(id)a3 toDate:(id)a4 completion:(id)a5
+- (void)_totalDurationFromDate:(id)date toDate:(id)toDate completion:(id)completion
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  toDateCopy = toDate;
+  completionCopy = completion;
   v24 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:*MEMORY[0x1E696BE38] ascending:1];
-  v11 = [(HKValueDataProvider *)self displayType];
-  v25 = [v11 defaultValuePredicate];
+  displayType = [(HKValueDataProvider *)self displayType];
+  defaultValuePredicate = [displayType defaultValuePredicate];
 
-  v12 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:v8 endDate:v9 options:0];
+  v12 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:dateCopy endDate:toDateCopy options:0];
   v13 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v14 = [(HKValueDataProvider *)self displayType];
-  v15 = [v14 sampleType];
+  displayType2 = [(HKValueDataProvider *)self displayType];
+  sampleType = [displayType2 sampleType];
   v16 = v12;
-  v17 = HKUIPredicateMatchingPredicates(v25, v12);
+  v17 = HKUIPredicateMatchingPredicates(defaultValuePredicate, v12);
   v30[0] = v24;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __91__HKMostRecentTimePeriodCurrentValueDataProvider__totalDurationFromDate_toDate_completion___block_invoke;
   v26[3] = &unk_1E81B5A88;
-  v27 = v8;
-  v28 = v9;
-  v29 = v10;
-  v19 = v10;
-  v20 = v9;
-  v21 = v8;
-  v22 = [v13 initWithSampleType:v15 predicate:v17 limit:0 sortDescriptors:v18 resultsHandler:v26];
+  v27 = dateCopy;
+  v28 = toDateCopy;
+  v29 = completionCopy;
+  v19 = completionCopy;
+  v20 = toDateCopy;
+  v21 = dateCopy;
+  v22 = [v13 initWithSampleType:sampleType predicate:v17 limit:0 sortDescriptors:v18 resultsHandler:v26];
 
-  v23 = [(HKValueDataProvider *)self healthStore];
-  [v23 executeQuery:v22];
+  healthStore = [(HKValueDataProvider *)self healthStore];
+  [healthStore executeQuery:v22];
 }
 
 void __91__HKMostRecentTimePeriodCurrentValueDataProvider__totalDurationFromDate_toDate_completion___block_invoke(void *a1, uint64_t a2, uint64_t a3, void *a4)

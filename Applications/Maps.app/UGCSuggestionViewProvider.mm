@@ -3,17 +3,17 @@
 - (BOOL)_isNearbyLocation;
 - (BOOL)_isPinned;
 - (MUARPSuggestionViewModel)suggestionViewModelForWebPlacecard;
-- (UGCSuggestionViewProvider)initWithMapItem:(id)a3;
+- (UGCSuggestionViewProvider)initWithMapItem:(id)item;
 - (UGCSuggestionViewProviderDelegate)delegate;
 - (UIView)suggestionView;
 - (int64_t)_bestContentType;
 - (void)_checkForVisitAndPhotosIfNeeded;
-- (void)_didTapSuggestionViewWithOverallState:(int64_t)a3;
+- (void)_didTapSuggestionViewWithOverallState:(int64_t)state;
 - (void)_loadSuggestionViewIfNeeded;
 - (void)_reevaluateSuggestion;
-- (void)_setVisitStartDate:(id)a3 visitEndDate:(id)a4 hasNearbyPhotos:(BOOL)a5;
+- (void)_setVisitStartDate:(id)date visitEndDate:(id)endDate hasNearbyPhotos:(BOOL)photos;
 - (void)_unloadSuggestionView;
-- (void)setSubmissionStatus:(id)a3;
+- (void)setSubmissionStatus:(id)status;
 @end
 
 @implementation UGCSuggestionViewProvider
@@ -25,7 +25,7 @@
   return WeakRetained;
 }
 
-- (void)_didTapSuggestionViewWithOverallState:(int64_t)a3
+- (void)_didTapSuggestionViewWithOverallState:(int64_t)state
 {
   contentType = self->_contentType;
   if ((contentType - 2) >= 4)
@@ -35,14 +35,14 @@
       return;
     }
 
-    v6 = [(UGCSuggestionViewProvider *)self delegate];
-    [v6 suggestionViewProviderDidSelectAddPhotos:self];
+    delegate = [(UGCSuggestionViewProvider *)self delegate];
+    [delegate suggestionViewProviderDidSelectAddPhotos:self];
   }
 
   else
   {
-    v6 = [(UGCSuggestionViewProvider *)self delegate];
-    [v6 suggestionViewProviderDidSelectRateThisPlace:self overallState:a3];
+    delegate = [(UGCSuggestionViewProvider *)self delegate];
+    [delegate suggestionViewProviderDidSelectRateThisPlace:self overallState:state];
   }
 }
 
@@ -51,8 +51,8 @@
   v3 = +[MKLocationManager sharedLocationManager];
   if ([v3 isAuthorizedForPreciseLocation])
   {
-    v4 = [v3 lastLocation];
-    if (v4)
+    lastLocation = [v3 lastLocation];
+    if (lastLocation)
     {
       [(MKMapItem *)self->_mapItem _coordinate];
       v6 = 0;
@@ -65,7 +65,7 @@
         v11 = [v8 initWithLatitude:v10 longitude:?];
         GEOConfigGetDouble();
         v13 = v12;
-        [v4 distanceFromLocation:v11];
+        [lastLocation distanceFromLocation:v11];
         v6 = v14 < v13;
       }
     }
@@ -87,9 +87,9 @@
 - (BOOL)_isFavorite
 {
   v3 = +[ShortcutManager sharedManager];
-  v4 = [v3 meCard];
+  meCard = [v3 meCard];
 
-  v5 = [v4 _maps_shortcutIncludingHiddenForMapItem:self->_mapItem];
+  v5 = [meCard _maps_shortcutIncludingHiddenForMapItem:self->_mapItem];
   LOBYTE(self) = v5 != 0;
 
   return self;
@@ -97,24 +97,24 @@
 
 - (BOOL)_isPinned
 {
-  v2 = self;
-  v3 = [(UGCSuggestionViewProvider *)self delegate];
-  LOBYTE(v2) = [v3 suggestionViewProviderIsPlacePinned:v2];
+  selfCopy = self;
+  delegate = [(UGCSuggestionViewProvider *)self delegate];
+  LOBYTE(selfCopy) = [delegate suggestionViewProviderIsPlacePinned:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_setVisitStartDate:(id)a3 visitEndDate:(id)a4 hasNearbyPhotos:(BOOL)a5
+- (void)_setVisitStartDate:(id)date visitEndDate:(id)endDate hasNearbyPhotos:(BOOL)photos
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  photosCopy = photos;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (self->_isCheckingForVisitAndPhotos && !self->_didCheckForVisitAndPhotos)
   {
     v11 = sub_1007996E8();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      if (v9 | v10)
+      if (dateCopy | endDateCopy)
       {
         v12 = @"YES";
       }
@@ -125,7 +125,7 @@
       }
 
       v13 = v12;
-      if (v5)
+      if (photosCopy)
       {
         v14 = @"YES";
       }
@@ -147,9 +147,9 @@
     }
 
     *&self->_isCheckingForVisitAndPhotos = 256;
-    objc_storeStrong(&self->_visitStartDate, a3);
-    objc_storeStrong(&self->_visitEndDate, a4);
-    self->_hasNearbyPhotos = v5;
+    objc_storeStrong(&self->_visitStartDate, date);
+    objc_storeStrong(&self->_visitEndDate, endDate);
+    self->_hasNearbyPhotos = photosCopy;
     [(UGCSuggestionViewProvider *)self _reevaluateSuggestion];
   }
 }
@@ -176,21 +176,21 @@
     objc_copyWeak(&v19, buf);
     v5 = objc_retainBlock(v18);
     v6 = self->_mapItem;
-    v7 = [(UGCSuggestionViewProvider *)self _canAddPhotos];
+    _canAddPhotos = [(UGCSuggestionViewProvider *)self _canAddPhotos];
     UInteger = GEOConfigGetUInteger();
     v9 = MapsSuggestionsResourceDepotForMapsProcess();
-    v10 = [v9 oneUser];
-    v11 = [(MKMapItem *)v6 _geoMapItem];
+    oneUser = [v9 oneUser];
+    _geoMapItem = [(MKMapItem *)v6 _geoMapItem];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1007897A8;
     v14[3] = &unk_101628E80;
     v12 = v5;
     v16 = v12;
-    v17 = v7;
+    v17 = _canAddPhotos;
     v13 = v6;
     v15 = v13;
-    [v10 mostRecentVisitWithinDistance:v11 ofMapItem:v14 handler:UInteger];
+    [oneUser mostRecentVisitWithinDistance:_geoMapItem ofMapItem:v14 handler:UInteger];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(buf);
@@ -247,38 +247,38 @@
 {
   if (![(UGCSuggestionViewProvider *)self _canAddPhotos]&& ![(UGCSuggestionViewProvider *)self _canRate])
   {
-    v6 = sub_1007996E8();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    delegate = sub_1007996E8();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
     {
       mapItem = self->_mapItem;
       v8 = 138412290;
       v9[0] = mapItem;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Skipping generation of placecard suggestion for map item: %@", &v8, 0xCu);
+      _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_INFO, "Skipping generation of placecard suggestion for map item: %@", &v8, 0xCu);
     }
 
     goto LABEL_9;
   }
 
   [(UGCSuggestionViewProvider *)self _checkForVisitAndPhotosIfNeeded];
-  v3 = [(UGCSuggestionViewProvider *)self _bestContentType];
+  _bestContentType = [(UGCSuggestionViewProvider *)self _bestContentType];
   v4 = sub_1007996E8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = self->_mapItem;
     v8 = 67109378;
-    LODWORD(v9[0]) = v3;
+    LODWORD(v9[0]) = _bestContentType;
     WORD2(v9[0]) = 2112;
     *(v9 + 6) = v5;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Determined best placecard suggestion as %d for map item: %@", &v8, 0x12u);
   }
 
-  if (v3 != self->_contentType)
+  if (_bestContentType != self->_contentType)
   {
     [(UGCSuggestionViewProvider *)self _unloadSuggestionView];
-    self->_contentType = v3;
+    self->_contentType = _bestContentType;
     [(UGCSuggestionViewProvider *)self _loadSuggestionViewIfNeeded];
-    v6 = [(UGCSuggestionViewProvider *)self delegate];
-    [v6 suggestionViewProviderDidUpdateView:self];
+    delegate = [(UGCSuggestionViewProvider *)self delegate];
+    [delegate suggestionViewProviderDidUpdateView:self];
 LABEL_9:
   }
 }
@@ -286,13 +286,13 @@ LABEL_9:
 - (MUARPSuggestionViewModel)suggestionViewModelForWebPlacecard
 {
   [(UGCSuggestionViewProvider *)self _loadSuggestionViewIfNeeded];
-  v3 = [(UGCSuggestionView *)self->_suggestionView viewModel];
-  v4 = [v3 contentType];
+  viewModel = [(UGCSuggestionView *)self->_suggestionView viewModel];
+  contentType = [viewModel contentType];
 
   v5 = &stru_1016631F0;
-  if (v4 > 2)
+  if (contentType > 2)
   {
-    if (v4 == 3)
+    if (contentType == 3)
     {
       v12 = +[NSBundle mainBundle];
       v37 = [v12 localizedStringForKey:@"[UGC Web Placecard] Rate This Place" value:@"localized string not found" table:0];
@@ -303,11 +303,11 @@ LABEL_9:
       goto LABEL_13;
     }
 
-    if (v4 != 4)
+    if (contentType != 4)
     {
       v36 = &stru_1016631F0;
       v37 = &stru_1016631F0;
-      if (v4 == 5)
+      if (contentType == 5)
       {
         v10 = +[NSBundle mainBundle];
         v37 = [v10 localizedStringForKey:@"[UGC Web Placecard] Rate This Place" value:@"localized string not found" table:0];
@@ -320,39 +320,39 @@ LABEL_9:
 
 LABEL_15:
       v35 = [MUARPSuggestionViewModel alloc];
-      v14 = [(UGCSuggestionView *)self->_suggestionView viewModel];
-      v15 = [v14 contentType] - 2 < 4;
-      v16 = [(UGCSuggestionView *)self->_suggestionView viewModel];
-      v17 = [v16 contentType] == 1;
-      v18 = [(UGCSuggestionViewProvider *)self _canAddPhotos];
-      v19 = [(UGCSuggestionViewProvider *)self _hasNearbyPhotos];
-      v20 = [(UGCSuggestionViewProvider *)self _canRate];
-      v21 = [(UGCSuggestionViewProvider *)self _isPinned];
-      v22 = [(UGCSuggestionViewProvider *)self _hasVisited];
+      viewModel2 = [(UGCSuggestionView *)self->_suggestionView viewModel];
+      v15 = [viewModel2 contentType] - 2 < 4;
+      viewModel3 = [(UGCSuggestionView *)self->_suggestionView viewModel];
+      v17 = [viewModel3 contentType] == 1;
+      _canAddPhotos = [(UGCSuggestionViewProvider *)self _canAddPhotos];
+      _hasNearbyPhotos = [(UGCSuggestionViewProvider *)self _hasNearbyPhotos];
+      _canRate = [(UGCSuggestionViewProvider *)self _canRate];
+      _isPinned = [(UGCSuggestionViewProvider *)self _isPinned];
+      _hasVisited = [(UGCSuggestionViewProvider *)self _hasVisited];
       BYTE3(v34) = [(UGCSuggestionViewProvider *)self _isNearbyLocation];
-      BYTE2(v34) = v22;
-      BYTE1(v34) = v21;
-      LOBYTE(v34) = v20;
+      BYTE2(v34) = _hasVisited;
+      BYTE1(v34) = _isPinned;
+      LOBYTE(v34) = _canRate;
       v5 = v36;
       v23 = v37;
-      v11 = [v35 initWithTitle:v37 subtitle:v36 isRatingSuggestion:v15 isPhotoSuggestion:v17 canAddPhotos:v18 hasNearbyPhotos:v19 canRate:v34 isPinned:? hasVisited:? isNearbyLocation:?];
+      v11 = [v35 initWithTitle:v37 subtitle:v36 isRatingSuggestion:v15 isPhotoSuggestion:v17 canAddPhotos:_canAddPhotos hasNearbyPhotos:_hasNearbyPhotos canRate:v34 isPinned:? hasVisited:? isNearbyLocation:?];
 
       goto LABEL_16;
     }
 
-    v25 = [(UGCSuggestionView *)self->_suggestionView viewModel];
-    v26 = [v25 visitDate];
+    viewModel4 = [(UGCSuggestionView *)self->_suggestionView viewModel];
+    visitDate = [viewModel4 visitDate];
 
-    if (v26)
+    if (visitDate)
     {
       v8 = objc_alloc_init(NSRelativeDateTimeFormatter);
       [v8 setDateTimeStyle:1];
       [v8 setUnitsStyle:0];
       [v8 setFormattingContext:1];
-      v27 = [(UGCSuggestionView *)self->_suggestionView viewModel];
-      v28 = [v27 visitDate];
+      viewModel5 = [(UGCSuggestionView *)self->_suggestionView viewModel];
+      visitDate2 = [viewModel5 visitDate];
       v29 = +[NSDate date];
-      v30 = [v8 localizedStringForDate:v28 relativeToDate:v29];
+      v30 = [v8 localizedStringForDate:visitDate2 relativeToDate:v29];
 
       v31 = +[NSBundle mainBundle];
       v37 = [v31 localizedStringForKey:@"[UGC Web Placecard] Rate This Place" value:@"localized string not found" table:0];
@@ -370,9 +370,9 @@ LABEL_15:
 
   else
   {
-    if (v4)
+    if (contentType)
     {
-      if (v4 == 1)
+      if (contentType == 1)
       {
         v13 = +[NSBundle mainBundle];
         v37 = [v13 localizedStringForKey:@"[UGC Web Placecard] Add Your Photos to Maps" value:@"localized string not found" table:0];
@@ -385,7 +385,7 @@ LABEL_15:
 
       v36 = &stru_1016631F0;
       v37 = &stru_1016631F0;
-      if (v4 == 2)
+      if (contentType == 2)
       {
         v6 = +[NSBundle mainBundle];
         v37 = [v6 localizedStringForKey:@"[UGC Web Placecard] Rate This Place" value:@"localized string not found" table:0];
@@ -448,34 +448,34 @@ LABEL_16:
   self->_suggestionView = 0;
 }
 
-- (void)setSubmissionStatus:(id)a3
+- (void)setSubmissionStatus:(id)status
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_submissionStatus != v5)
+  statusCopy = status;
+  v6 = statusCopy;
+  if (self->_submissionStatus != statusCopy)
   {
-    v8 = v5;
-    v7 = [(MUPlaceCallToActionAppearance *)v5 isEqual:?];
+    v8 = statusCopy;
+    v7 = [(MUPlaceCallToActionAppearance *)statusCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_submissionStatus, a3);
+      objc_storeStrong(&self->_submissionStatus, status);
       [(UGCSuggestionViewProvider *)self _reevaluateSuggestion];
       v6 = v8;
     }
   }
 }
 
-- (UGCSuggestionViewProvider)initWithMapItem:(id)a3
+- (UGCSuggestionViewProvider)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = UGCSuggestionViewProvider;
   v6 = [(UGCSuggestionViewProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
     v8 = +[MUPlaceCallToActionAppearance userRecommendedLoadingAppearance];
     submissionStatus = v7->_submissionStatus;
     v7->_submissionStatus = v8;

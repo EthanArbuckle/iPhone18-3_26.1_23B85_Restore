@@ -1,12 +1,12 @@
 @interface GAXShapeSimplifier
-+ (id)smoothPathForFingerPath:(id)a3;
++ (id)smoothPathForFingerPath:(id)path;
 @end
 
 @implementation GAXShapeSimplifier
 
-+ (id)smoothPathForFingerPath:(id)a3
++ (id)smoothPathForFingerPath:(id)path
 {
-  v3 = [a3 copyBezierPathPointsExcludingControlPoints];
+  copyBezierPathPointsExcludingControlPoints = [path copyBezierPathPointsExcludingControlPoints];
   Count = AXCArrayGetCount();
   if (Count < 3)
   {
@@ -25,7 +25,7 @@
     {
       v79 = AXCArrayGetCount();
       v80 = v8;
-      v78 = v3;
+      v78 = copyBezierPathPointsExcludingControlPoints;
       _AXAssert();
     }
 
@@ -51,7 +51,7 @@
     {
       v79 = AXCArrayGetCount();
       v80 = i;
-      v78 = v3;
+      v78 = copyBezierPathPointsExcludingControlPoints;
       _AXAssert();
     }
 
@@ -77,7 +77,7 @@
     v15 += 16;
   }
 
-  CFRelease(v3);
+  CFRelease(copyBezierPathPointsExcludingControlPoints);
   AXCArraySort();
   v23 = AXCArrayCreate();
   if (!AXCArrayGetCount())
@@ -165,7 +165,7 @@ LABEL_42:
   CFRelease(v14);
   if (v29 >= 3)
   {
-    v3 = AXCArrayCreate();
+    copyBezierPathPointsExcludingControlPoints = AXCArrayCreate();
     v45 = 0;
     v46 = 0;
     for (k = 0; k != 3; ++k)
@@ -205,7 +205,7 @@ LABEL_42:
         {
           v79 = AXCArrayGetCount();
           v80 = v54 - 2;
-          v78 = v3;
+          v78 = copyBezierPathPointsExcludingControlPoints;
           _AXAssert();
         }
 
@@ -216,7 +216,7 @@ LABEL_42:
         {
           v79 = AXCArrayGetCount();
           v80 = v54 - 1;
-          v78 = v3;
+          v78 = copyBezierPathPointsExcludingControlPoints;
           _AXAssert();
         }
 
@@ -243,7 +243,7 @@ LABEL_42:
             {
               v79 = AXCArrayGetCount();
               v80 = v54 - 3;
-              v78 = v3;
+              v78 = copyBezierPathPointsExcludingControlPoints;
               _AXAssert();
             }
 
@@ -254,7 +254,7 @@ LABEL_42:
             {
               v79 = AXCArrayGetCount();
               v80 = v54 - 2;
-              v78 = v3;
+              v78 = copyBezierPathPointsExcludingControlPoints;
               _AXAssert();
             }
 
@@ -284,7 +284,7 @@ LABEL_42:
     {
       v79 = AXCArrayGetCount();
       v80 = 0;
-      v78 = v3;
+      v78 = copyBezierPathPointsExcludingControlPoints;
       _AXAssert();
     }
 
@@ -299,7 +299,7 @@ LABEL_42:
         {
           v79 = AXCArrayGetCount();
           v80 = m;
-          v78 = v3;
+          v78 = copyBezierPathPointsExcludingControlPoints;
           _AXAssert();
         }
 
@@ -315,11 +315,11 @@ LABEL_42:
   else
   {
     v5 = 0;
-    v3 = v23;
+    copyBezierPathPointsExcludingControlPoints = v23;
   }
 
 LABEL_86:
-  CFRelease(v3);
+  CFRelease(copyBezierPathPointsExcludingControlPoints);
 
   return v5;
 }

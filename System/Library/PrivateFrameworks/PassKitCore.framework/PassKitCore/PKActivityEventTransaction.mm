@@ -1,27 +1,27 @@
 @interface PKActivityEventTransaction
-- (BOOL)isEqualToActivityEvent:(id)a3;
-- (PKActivityEventTransaction)initWithTransaction:(id)a3 unread:(BOOL)a4;
+- (BOOL)isEqualToActivityEvent:(id)event;
+- (PKActivityEventTransaction)initWithTransaction:(id)transaction unread:(BOOL)unread;
 - (unint64_t)hash;
 @end
 
 @implementation PKActivityEventTransaction
 
-- (PKActivityEventTransaction)initWithTransaction:(id)a3 unread:(BOOL)a4
+- (PKActivityEventTransaction)initWithTransaction:(id)transaction unread:(BOOL)unread
 {
-  v4 = a4;
-  v7 = a3;
+  unreadCopy = unread;
+  transactionCopy = transaction;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v7 identifier];
-  v10 = [v8 stringWithFormat:@"transaction-%@", v9];
+  identifier = [transactionCopy identifier];
+  v10 = [v8 stringWithFormat:@"transaction-%@", identifier];
 
-  v11 = [v7 transactionDate];
+  transactionDate = [transactionCopy transactionDate];
   v15.receiver = self;
   v15.super_class = PKActivityEventTransaction;
-  v12 = [(PKActivityEvent *)&v15 initWithIdentifier:v10 date:v11 unread:v4];
+  v12 = [(PKActivityEvent *)&v15 initWithIdentifier:v10 date:transactionDate unread:unreadCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_transaction, a3);
+    objc_storeStrong(&v12->_transaction, transaction);
   }
 
   return v13;
@@ -35,13 +35,13 @@
   return [(PKPaymentTransaction *)self->_transaction hash]- v3 + 32 * v3;
 }
 
-- (BOOL)isEqualToActivityEvent:(id)a3
+- (BOOL)isEqualToActivityEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = eventCopy;
     v11.receiver = self;
     v11.super_class = PKActivityEventTransaction;
     if ([(PKActivityEvent *)&v11 isEqualToActivityEvent:v5])

@@ -1,21 +1,21 @@
 @interface CNiOSABContainersForTypePredicate
-- (CNiOSABContainersForTypePredicate)initWithCoder:(id)a3;
-- (CNiOSABContainersForTypePredicate)initWithType:(int64_t)a3 includingDisabledContainers:(BOOL)a4;
+- (CNiOSABContainersForTypePredicate)initWithCoder:(id)coder;
+- (CNiOSABContainersForTypePredicate)initWithType:(int64_t)type includingDisabledContainers:(BOOL)containers;
 - (NSString)description;
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (id)containersFromRecentsLibrary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error;
+- (id)containersFromRecentsLibrary:(id)library;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABContainersForTypePredicate
 
-- (id)containersFromRecentsLibrary:(id)a3
+- (id)containersFromRecentsLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if ([(CNiOSABContainersForTypePredicate *)self type]== 1004)
   {
-    v5 = [v4 domains];
-    v6 = [v4 containersForIdentifiers:v5];
+    domains = [libraryCopy domains];
+    v6 = [libraryCopy containersForIdentifiers:domains];
   }
 
   else
@@ -26,7 +26,7 @@
   return v6;
 }
 
-- (CNiOSABContainersForTypePredicate)initWithType:(int64_t)a3 includingDisabledContainers:(BOOL)a4
+- (CNiOSABContainersForTypePredicate)initWithType:(int64_t)type includingDisabledContainers:(BOOL)containers
 {
   v7 = MEMORY[0x1E696AE18];
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -38,52 +38,52 @@
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v10->_includeDisabledContainers = a4;
+    v10->_type = type;
+    v10->_includeDisabledContainers = containers;
     v12 = v10;
   }
 
   return v11;
 }
 
-- (CNiOSABContainersForTypePredicate)initWithCoder:(id)a3
+- (CNiOSABContainersForTypePredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CNiOSABContainersForTypePredicate;
-  v5 = [(CNPredicate *)&v8 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABContainersForTypePredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error
 {
   v6 = +[CNiOSABConstantsMapping CNToABSourceTypeConstantsMapping];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CNiOSABContainersForTypePredicate type](self, "type")}];
   v8 = [v6 mappedConstant:v7];
 
-  v9 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v8 == v9)
+  if (v8 == null)
   {
-    if (a4)
+    if (error)
     {
       [CNErrorFactory errorWithCode:400 userInfo:0];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -118,16 +118,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CNiOSABContainersForTypePredicate *)self type];
+  type = [(CNiOSABContainersForTypePredicate *)self type];
   v5 = [CNContainer descriptionForContainerType:[(CNiOSABContainersForTypePredicate *)self type]];
-  v6 = [v3 stringWithFormat:@"%ld(%@)", v4, v5];
+  v6 = [v3 stringWithFormat:@"%ld(%@)", type, v5];
 
   v7 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v8 = [v7 appendName:@"kind" object:@"-[CNContainer predicateForContainersWithType:]"];
   v9 = [v7 appendObject:v6 withName:@"type"];
-  v10 = [v7 build];
+  build = [v7 build];
 
-  return v10;
+  return build;
 }
 
 @end

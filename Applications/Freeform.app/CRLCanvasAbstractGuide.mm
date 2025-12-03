@@ -2,8 +2,8 @@
 - (CGRect)snappingObjectFrame;
 - (CRLCanvasAbstractGuide)init;
 - (void)dealloc;
-- (void)setGuideColor:(CGColor *)a3;
-- (void)setSnappingObjectFrame:(CGRect)a3;
+- (void)setGuideColor:(CGColor *)color;
+- (void)setSnappingObjectFrame:(CGRect)frame;
 @end
 
 @implementation CRLCanvasAbstractGuide
@@ -26,7 +26,7 @@
   return v2;
 }
 
-- (void)setGuideColor:(CGColor *)a3
+- (void)setGuideColor:(CGColor *)color
 {
   mGuideColor = self->mGuideColor;
   if (mGuideColor)
@@ -34,16 +34,16 @@
     CGColorRelease(mGuideColor);
   }
 
-  self->mGuideColor = CGColorRetain(a3);
+  self->mGuideColor = CGColorRetain(color);
 }
 
-- (void)setSnappingObjectFrame:(CGRect)a3
+- (void)setSnappingObjectFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!sub_10011EE4C(self->mSnappingObjectFrame.origin.x, self->mSnappingObjectFrame.origin.y, self->mSnappingObjectFrame.size.width, self->mSnappingObjectFrame.size.height, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!sub_10011EE4C(self->mSnappingObjectFrame.origin.x, self->mSnappingObjectFrame.origin.y, self->mSnappingObjectFrame.size.width, self->mSnappingObjectFrame.size.height, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height))
   {
     self->mSnappingObjectFrame.origin.x = x;
     self->mSnappingObjectFrame.origin.y = y;

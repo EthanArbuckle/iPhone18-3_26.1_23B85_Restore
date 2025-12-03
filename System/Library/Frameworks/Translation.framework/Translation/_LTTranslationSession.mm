@@ -1,30 +1,30 @@
 @interface _LTTranslationSession
-- (_LTTranslationSession)initWithTranslator:(id)a3 selfLoggingInvocationId:(id)a4;
-- (id)initForFutureServiceWithSessionID:(id)a3 selfLoggingInvocationId:(id)a4;
-- (void)_commonInitWithSuggestedSessionID:(id)a3;
-- (void)_ensureServiceConnection:(id)a3 useDedicatedTextMachPort:(BOOL)a4;
+- (_LTTranslationSession)initWithTranslator:(id)translator selfLoggingInvocationId:(id)id;
+- (id)initForFutureServiceWithSessionID:(id)d selfLoggingInvocationId:(id)id;
+- (void)_commonInitWithSuggestedSessionID:(id)d;
+- (void)_ensureServiceConnection:(id)connection useDedicatedTextMachPort:(BOOL)port;
 - (void)cancelPendingWork;
 - (void)markFirstParagraphComplete;
 - (void)markPageComplete;
 - (void)markProgressDone;
-- (void)paragraphTranslation:(id)a3 result:(id)a4 error:(id)a5;
-- (void)provideFeedback:(id)a3;
+- (void)paragraphTranslation:(id)translation result:(id)result error:(id)error;
+- (void)provideFeedback:(id)feedback;
 @end
 
 @implementation _LTTranslationSession
 
-- (_LTTranslationSession)initWithTranslator:(id)a3 selfLoggingInvocationId:(id)a4
+- (_LTTranslationSession)initWithTranslator:(id)translator selfLoggingInvocationId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  translatorCopy = translator;
+  idCopy = id;
   v13.receiver = self;
   v13.super_class = _LTTranslationSession;
   v9 = [(_LTTranslationSession *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_translator, a3);
-    objc_storeStrong(&v10->_logIdentifier, a4);
+    objc_storeStrong(&v9->_translator, translator);
+    objc_storeStrong(&v10->_logIdentifier, id);
     [(_LTTranslationSession *)v10 _commonInitWithSuggestedSessionID:0];
     v11 = v10;
   }
@@ -32,10 +32,10 @@
   return v10;
 }
 
-- (id)initForFutureServiceWithSessionID:(id)a3 selfLoggingInvocationId:(id)a4
+- (id)initForFutureServiceWithSessionID:(id)d selfLoggingInvocationId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = _LTTranslationSession;
   v8 = [(_LTTranslationSession *)&v12 init];
@@ -43,51 +43,51 @@
   if (v8)
   {
     v8->_waitingForService = 1;
-    objc_storeStrong(&v8->_logIdentifier, a4);
-    [(_LTTranslationSession *)v9 _commonInitWithSuggestedSessionID:v6];
+    objc_storeStrong(&v8->_logIdentifier, id);
+    [(_LTTranslationSession *)v9 _commonInitWithSuggestedSessionID:dCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)_commonInitWithSuggestedSessionID:(id)a3
+- (void)_commonInitWithSuggestedSessionID:(id)d
 {
-  v10 = a3;
+  dCopy = d;
   v4 = dispatch_queue_create("com.apple.translation.text", 0);
   translationQueue = self->_translationQueue;
   self->_translationQueue = v4;
 
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   outstandingRequests = self->_outstandingRequests;
-  self->_outstandingRequests = v6;
+  self->_outstandingRequests = dictionary;
 
-  if (v10)
+  if (dCopy)
   {
-    v8 = v10;
+    uUID = dCopy;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
   sessionID = self->_sessionID;
-  self->_sessionID = v8;
+  self->_sessionID = uUID;
 }
 
-- (void)_ensureServiceConnection:(id)a3 useDedicatedTextMachPort:(BOOL)a4
+- (void)_ensureServiceConnection:(id)connection useDedicatedTextMachPort:(BOOL)port
 {
-  v6 = a3;
+  connectionCopy = connection;
   translationQueue = self->_translationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __75___LTTranslationSession__ensureServiceConnection_useDedicatedTextMachPort___block_invoke;
   block[3] = &unk_278B6DC60;
-  v11 = a4;
+  portCopy = port;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = connectionCopy;
+  v8 = connectionCopy;
   dispatch_async(translationQueue, block);
 }
 
@@ -104,16 +104,16 @@
   objc_destroyWeak(&location);
 }
 
-- (void)provideFeedback:(id)a3
+- (void)provideFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41___LTTranslationSession_provideFeedback___block_invoke;
   v6[3] = &unk_278B6DD48;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = feedbackCopy;
   v7 = v5;
   [(_LTTranslationSession *)self _ensureServiceConnection:v6 useDedicatedTextMachPort:0];
 
@@ -163,17 +163,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)paragraphTranslation:(id)a3 result:(id)a4 error:(id)a5
+- (void)paragraphTranslation:(id)translation result:(id)result error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  translationCopy = translation;
+  resultCopy = result;
+  errorCopy = error;
   v11 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v23 = v8;
+    v23 = translationCopy;
     _os_log_impl(&dword_23AAF5000, v11, OS_LOG_TYPE_INFO, "Received translation result for %{public}@", buf, 0xCu);
   }
 
@@ -184,12 +184,12 @@
   v17[2] = __59___LTTranslationSession_paragraphTranslation_result_error___block_invoke;
   v17[3] = &unk_278B6D750;
   objc_copyWeak(&v21, buf);
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v18 = translationCopy;
+  v19 = resultCopy;
+  v20 = errorCopy;
+  v13 = errorCopy;
+  v14 = resultCopy;
+  v15 = translationCopy;
   dispatch_async(translationQueue, v17);
 
   objc_destroyWeak(&v21);

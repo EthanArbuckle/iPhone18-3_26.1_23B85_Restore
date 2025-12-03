@@ -1,26 +1,26 @@
 @interface HDCodableRoutinePredictedLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsModeOfTransportation:(id)a3;
-- (int)StringAsSourceType:(id)a3;
+- (int)StringAsModeOfTransportation:(id)transportation;
+- (int)StringAsSourceType:(id)type;
 - (int)modeOfTransportation;
 - (int)sourceType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasModeOfTransportation:(BOOL)a3;
-- (void)setHasNextEntryTime:(BOOL)a3;
-- (void)setHasSourceType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasModeOfTransportation:(BOOL)transportation;
+- (void)setHasNextEntryTime:(BOOL)time;
+- (void)setHasSourceType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRoutinePredictedLocation
 
-- (void)setHasNextEntryTime:(BOOL)a3
+- (void)setHasNextEntryTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)setHasModeOfTransportation:(BOOL)a3
+- (void)setHasModeOfTransportation:(BOOL)transportation
 {
-  if (a3)
+  if (transportation)
   {
     v3 = 4;
   }
@@ -61,20 +61,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsModeOfTransportation:(id)a3
+- (int)StringAsModeOfTransportation:(id)transportation
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownMode"])
+  transportationCopy = transportation;
+  if ([transportationCopy isEqualToString:@"UnknownMode"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"Walking"])
+  else if ([transportationCopy isEqualToString:@"Walking"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Driving"])
+  else if ([transportationCopy isEqualToString:@"Driving"])
   {
     v4 = 1;
   }
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setHasSourceType:(BOOL)a3
+- (void)setHasSourceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -115,35 +115,35 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsSourceType:(id)a3
+- (int)StringAsSourceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownSource"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UnknownSource"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Audio"])
+  else if ([typeCopy isEqualToString:@"Audio"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Bluetooth"])
+  else if ([typeCopy isEqualToString:@"Bluetooth"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutine"])
+  else if ([typeCopy isEqualToString:@"CoreRoutine"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"EventKit"])
+  else if ([typeCopy isEqualToString:@"EventKit"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LocationVisit"])
+  else if ([typeCopy isEqualToString:@"LocationVisit"])
   {
     v4 = 5;
   }
@@ -162,27 +162,27 @@
   v8.receiver = self;
   v8.super_class = HDCodableRoutinePredictedLocation;
   v4 = [(HDCodableRoutinePredictedLocation *)&v8 description];
-  v5 = [(HDCodableRoutinePredictedLocation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRoutinePredictedLocation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   locationOfInterest = self->_locationOfInterest;
   if (locationOfInterest)
   {
-    v5 = [(HDCodableRoutineLocation *)locationOfInterest dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"locationOfInterest"];
+    dictionaryRepresentation = [(HDCodableRoutineLocation *)locationOfInterest dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"locationOfInterest"];
   }
 
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_confidence];
-    [v3 setObject:v7 forKey:@"confidence"];
+    [dictionary setObject:v7 forKey:@"confidence"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -203,7 +203,7 @@ LABEL_5:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_nextEntryTime];
-  [v3 setObject:v8 forKey:@"nextEntryTime"];
+  [dictionary setObject:v8 forKey:@"nextEntryTime"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -229,7 +229,7 @@ LABEL_10:
     v10 = off_2786151B8[v9];
   }
 
-  [v3 setObject:v10 forKey:@"modeOfTransportation"];
+  [dictionary setObject:v10 forKey:@"modeOfTransportation"];
 
   if ((*&self->_has & 8) != 0)
   {
@@ -245,27 +245,27 @@ LABEL_14:
       v12 = off_2786151D0[sourceType];
     }
 
-    [v3 setObject:v12 forKey:@"sourceType"];
+    [dictionary setObject:v12 forKey:@"sourceType"];
   }
 
 LABEL_18:
   geoData = self->_geoData;
   if (geoData)
   {
-    [v3 setObject:geoData forKey:@"geoData"];
+    [dictionary setObject:geoData forKey:@"geoData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_locationOfInterest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -273,7 +273,7 @@ LABEL_18:
   {
     confidence = self->_confidence;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -294,7 +294,7 @@ LABEL_5:
 
   nextEntryTime = self->_nextEntryTime;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -310,38 +310,38 @@ LABEL_6:
 LABEL_15:
   modeOfTransportation = self->_modeOfTransportation;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     sourceType = self->_sourceType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
   if (self->_geoData)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_locationOfInterest)
   {
-    [v4 setLocationOfInterest:?];
-    v4 = v6;
+    [toCopy setLocationOfInterest:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_confidence;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_confidence;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -360,8 +360,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = *&self->_nextEntryTime;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 2) = *&self->_nextEntryTime;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -375,27 +375,27 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 10) = self->_modeOfTransportation;
-  *(v4 + 48) |= 4u;
+  *(toCopy + 10) = self->_modeOfTransportation;
+  *(toCopy + 48) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 11) = self->_sourceType;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 11) = self->_sourceType;
+    *(toCopy + 48) |= 8u;
   }
 
 LABEL_8:
   if (self->_geoData)
   {
     [v6 setGeoData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableRoutineLocation *)self->_locationOfInterest copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableRoutineLocation *)self->_locationOfInterest copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -447,23 +447,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSData *)self->_geoData copyWithZone:a3];
+  v9 = [(NSData *)self->_geoData copyWithZone:zone];
   v10 = *(v5 + 24);
   *(v5 + 24) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   locationOfInterest = self->_locationOfInterest;
-  if (locationOfInterest | *(v4 + 4))
+  if (locationOfInterest | *(equalCopy + 4))
   {
     if (![(HDCodableRoutineLocation *)locationOfInterest isEqual:?])
     {
@@ -471,16 +471,16 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_confidence != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_confidence != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_26:
     v8 = 0;
@@ -489,45 +489,45 @@ LABEL_26:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_nextEntryTime != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_nextEntryTime != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_modeOfTransportation != *(v4 + 10))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_modeOfTransportation != *(equalCopy + 10))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_sourceType != *(v4 + 11))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_sourceType != *(equalCopy + 11))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   geoData = self->_geoData;
-  if (geoData | *(v4 + 3))
+  if (geoData | *(equalCopy + 3))
   {
     v8 = [(NSData *)geoData isEqual:?];
   }
@@ -636,12 +636,12 @@ LABEL_19:
   return v6 ^ v3 ^ v10 ^ v14 ^ v15 ^ [(NSData *)self->_geoData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   locationOfInterest = self->_locationOfInterest;
-  v6 = *(v4 + 4);
-  v8 = v4;
+  v6 = *(fromCopy + 4);
+  v8 = fromCopy;
   if (locationOfInterest)
   {
     if (!v6)
@@ -662,14 +662,14 @@ LABEL_19:
     [(HDCodableRoutinePredictedLocation *)self setLocationOfInterest:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if (v7)
   {
-    self->_confidence = *(v4 + 1);
+    self->_confidence = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 48);
+    v7 = *(fromCopy + 48);
     if ((v7 & 2) == 0)
     {
 LABEL_9:
@@ -682,14 +682,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 48) & 2) == 0)
+  else if ((*(fromCopy + 48) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_nextEntryTime = *(v4 + 2);
+  self->_nextEntryTime = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 4) == 0)
   {
 LABEL_10:
@@ -702,17 +702,17 @@ LABEL_10:
   }
 
 LABEL_19:
-  self->_modeOfTransportation = *(v4 + 10);
+  self->_modeOfTransportation = *(fromCopy + 10);
   *&self->_has |= 4u;
-  if ((*(v4 + 48) & 8) != 0)
+  if ((*(fromCopy + 48) & 8) != 0)
   {
 LABEL_11:
-    self->_sourceType = *(v4 + 11);
+    self->_sourceType = *(fromCopy + 11);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCodableRoutinePredictedLocation *)self setGeoData:?];
   }

@@ -1,15 +1,15 @@
 @interface AMSUIWebConditionalButtonModel
-- (AMSUIWebConditionalButtonModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebConditionalButtonModel)initWithJSObject:(id)object context:(id)context;
 - (NSString)description;
 @end
 
 @implementation AMSUIWebConditionalButtonModel
 
-- (AMSUIWebConditionalButtonModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebConditionalButtonModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  objectCopy = object;
+  contextCopy = context;
+  if (!objectCopy)
   {
     goto LABEL_3;
   }
@@ -28,17 +28,17 @@
     goto LABEL_15;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"hideOnPush"];
+  v9 = [objectCopy objectForKeyedSubscript:@"hideOnPush"];
   v10 = (objc_opt_respondsToSelector() & 1) != 0 ? [v9 BOOLValue] : 0;
   self->_hideOnPush = v10;
-  v11 = [v6 objectForKeyedSubscript:@"hideOnModal"];
+  v11 = [objectCopy objectForKeyedSubscript:@"hideOnModal"];
   v12 = (objc_opt_respondsToSelector() & 1) != 0 ? [v11 BOOLValue] : 0;
   self->_hideOnModal = v12;
-  v13 = [v6 objectForKeyedSubscript:@"button"];
+  v13 = [objectCopy objectForKeyedSubscript:@"button"];
   objc_opt_class();
   v14 = (objc_opt_isKindOfClass() & 1) != 0 ? v13 : 0;
 
-  v15 = [[AMSUIWebButtonModel alloc] initWithJSObject:v14 context:v7];
+  v15 = [[AMSUIWebButtonModel alloc] initWithJSObject:v14 context:contextCopy];
   button = self->_button;
   self->_button = v15;
 
@@ -46,25 +46,25 @@
   if (!v17)
   {
 LABEL_3:
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
 LABEL_15:
     self = self;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)description
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v10[0] = @"button";
-  v3 = [(AMSUIWebConditionalButtonModel *)self button];
-  v11[0] = v3;
+  button = [(AMSUIWebConditionalButtonModel *)self button];
+  v11[0] = button;
   v10[1] = @"hideOnPush";
   if ([(AMSUIWebConditionalButtonModel *)self hideOnPush])
   {

@@ -1,18 +1,18 @@
 @interface NSManagedObjectContext
 - (BOOL)_gkSaveIfDirty;
-- (unint64_t)_gkCountObjectsFromRequest:(id)a3;
-- (void)_gkClearAllEntriesOfEntity:(id)a3;
-- (void)_gkDeleteObjects:(id)a3;
-- (void)_gkHandleFetchError:(id)a3;
+- (unint64_t)_gkCountObjectsFromRequest:(id)request;
+- (void)_gkClearAllEntriesOfEntity:(id)entity;
+- (void)_gkDeleteObjects:(id)objects;
+- (void)_gkHandleFetchError:(id)error;
 - (void)_gkSafeSave;
 @end
 
 @implementation NSManagedObjectContext
 
-- (void)_gkDeleteObjects:(id)a3
+- (void)_gkDeleteObjects:(id)objects
 {
-  v4 = a3;
-  if (v4)
+  objectsCopy = objects;
+  if (objectsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -21,7 +21,7 @@
       v13 = 0u;
       v10 = 0u;
       v11 = 0u;
-      v5 = v4;
+      v5 = objectsCopy;
       v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
@@ -82,8 +82,8 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[NSManagedObjectContext(GKAdditions) _gkSafeSave]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/NSManagedObjectContext+GKAdditions.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[NSManagedObjectContext(GKAdditions) _gkSafeSave]", [v7 UTF8String], 46);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[NSManagedObjectContext(GKAdditions) _gkSafeSave]", [lastPathComponent UTF8String], 46);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
@@ -123,10 +123,10 @@
   }
 }
 
-- (void)_gkClearAllEntriesOfEntity:(id)a3
+- (void)_gkClearAllEntriesOfEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [[NSFetchRequest alloc] initWithEntityName:v4];
+  entityCopy = entity;
+  v5 = [[NSFetchRequest alloc] initWithEntityName:entityCopy];
 
   v6 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:v5];
   v13 = 0;
@@ -161,10 +161,10 @@
   }
 }
 
-- (unint64_t)_gkCountObjectsFromRequest:(id)a3
+- (unint64_t)_gkCountObjectsFromRequest:(id)request
 {
   v10 = 0;
-  v3 = [(NSManagedObjectContext *)self countForFetchRequest:a3 error:&v10];
+  v3 = [(NSManagedObjectContext *)self countForFetchRequest:request error:&v10];
   v4 = v10;
   if (v4)
   {
@@ -197,9 +197,9 @@
   return v3;
 }
 
-- (void)_gkHandleFetchError:(id)a3
+- (void)_gkHandleFetchError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -210,7 +210,7 @@
     sub_100293884();
   }
 
-  if ([v4 isSQLiteFatalFileError])
+  if ([errorCopy isSQLiteFatalFileError])
   {
     [GKClientProxy removeManagedObjectContext:self];
     if (!os_log_GKGeneral)
@@ -222,7 +222,7 @@
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Triggered removal of doomed MOC: %@", &v8, 0xCu);
     }
   }

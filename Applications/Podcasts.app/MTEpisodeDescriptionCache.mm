@@ -4,20 +4,20 @@
 - (NSCache)episodeCache;
 - (id)createVideoGlyphAttributedString;
 - (id)dependantPropertyKeys;
-- (id)descriptionBodyTextForEpisode:(id)a3 html:(BOOL)a4 withAttributes:(id)a5;
-- (id)descriptionCacheForEpisodeUuid:(id)a3;
-- (id)descriptionFooterTextForEpisode:(id)a3 includesSeasonEpisodeType:(BOOL)a4 includesDuration:(BOOL)a5 includesPlayedIfPlayed:(BOOL)a6 hasBodyText:(BOOL)a7 unavailableReason:(int64_t)a8;
-- (id)descriptionForEpisode:(id)a3;
-- (id)descriptionForEpisode:(id)a3 options:(unint64_t)a4;
-- (id)descriptionKeyForOptions:(unint64_t)a3 unavailableReason:(int64_t)a4;
-- (id)descriptionPrefixTextForEpisode:(id)a3 options:(unint64_t)a4 trailingNewline:(BOOL)a5;
-- (id)descriptionPrefixTextForPlayerItem:(id)a3 options:(unint64_t)a4 trailingNewline:(BOOL)a5;
-- (id)descriptionTextForEpisode:(id)a3 options:(unint64_t)a4;
-- (id)metadataFooterForEpisode:(id)a3 includingSeasonEpisodeType:(BOOL)a4 includingDuration:(BOOL)a5 includingPlayedIfPlayed:(BOOL)a6;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
+- (id)descriptionBodyTextForEpisode:(id)episode html:(BOOL)html withAttributes:(id)attributes;
+- (id)descriptionCacheForEpisodeUuid:(id)uuid;
+- (id)descriptionFooterTextForEpisode:(id)episode includesSeasonEpisodeType:(BOOL)type includesDuration:(BOOL)duration includesPlayedIfPlayed:(BOOL)played hasBodyText:(BOOL)text unavailableReason:(int64_t)reason;
+- (id)descriptionForEpisode:(id)episode;
+- (id)descriptionForEpisode:(id)episode options:(unint64_t)options;
+- (id)descriptionKeyForOptions:(unint64_t)options unavailableReason:(int64_t)reason;
+- (id)descriptionPrefixTextForEpisode:(id)episode options:(unint64_t)options trailingNewline:(BOOL)newline;
+- (id)descriptionPrefixTextForPlayerItem:(id)item options:(unint64_t)options trailingNewline:(BOOL)newline;
+- (id)descriptionTextForEpisode:(id)episode options:(unint64_t)options;
+- (id)metadataFooterForEpisode:(id)episode includingSeasonEpisodeType:(BOOL)type includingDuration:(BOOL)duration includingPlayedIfPlayed:(BOOL)played;
+- (void)cache:(id)cache willEvictObject:(id)object;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateCacheForEpisode:(id)a3;
+- (void)updateCacheForEpisode:(id)episode;
 @end
 
 @implementation MTEpisodeDescriptionCache
@@ -46,34 +46,34 @@
   [(MTEpisodeDescriptionCache *)&v4 dealloc];
 }
 
-- (id)descriptionForEpisode:(id)a3
+- (id)descriptionForEpisode:(id)episode
 {
-  v4 = a3;
+  episodeCopy = episode;
   v5 = +[MTEpisodeLockup descriptionFont];
   v9 = NSFontAttributeName;
   v10 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v7 = [(MTEpisodeDescriptionCache *)self descriptionBodyTextForEpisode:v4 html:1 withAttributes:v6];
+  v7 = [(MTEpisodeDescriptionCache *)self descriptionBodyTextForEpisode:episodeCopy html:1 withAttributes:v6];
 
   return v7;
 }
 
-- (id)descriptionForEpisode:(id)a3 options:(unint64_t)a4
+- (id)descriptionForEpisode:(id)episode options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [v6 uuid];
-  v8 = [v7 length];
+  episodeCopy = episode;
+  uuid = [episodeCopy uuid];
+  v8 = [uuid length];
 
   if (v8)
   {
-    v9 = [v6 uuid];
-    [(MTEpisodeDescriptionCache *)self updateCacheForEpisode:v6];
-    v10 = [(MTEpisodeDescriptionCache *)self descriptionCacheForEpisodeUuid:v9];
-    v11 = -[MTEpisodeDescriptionCache descriptionKeyForOptions:unavailableReason:](self, "descriptionKeyForOptions:unavailableReason:", a4, [v6 reasonForNotPlayable]);
+    uuid2 = [episodeCopy uuid];
+    [(MTEpisodeDescriptionCache *)self updateCacheForEpisode:episodeCopy];
+    v10 = [(MTEpisodeDescriptionCache *)self descriptionCacheForEpisodeUuid:uuid2];
+    v11 = -[MTEpisodeDescriptionCache descriptionKeyForOptions:unavailableReason:](self, "descriptionKeyForOptions:unavailableReason:", options, [episodeCopy reasonForNotPlayable]);
     v12 = [v10 objectForKeyedSubscript:v11];
     if (!v12)
     {
-      v12 = [(MTEpisodeDescriptionCache *)self descriptionTextForEpisode:v6 options:a4];
+      v12 = [(MTEpisodeDescriptionCache *)self descriptionTextForEpisode:episodeCopy options:options];
       [v10 setObject:v12 forKey:v11];
     }
   }
@@ -86,20 +86,20 @@
   return v12;
 }
 
-- (id)metadataFooterForEpisode:(id)a3 includingSeasonEpisodeType:(BOOL)a4 includingDuration:(BOOL)a5 includingPlayedIfPlayed:(BOOL)a6
+- (id)metadataFooterForEpisode:(id)episode includingSeasonEpisodeType:(BOOL)type includingDuration:(BOOL)duration includingPlayedIfPlayed:(BOOL)played
 {
   v6 = 64;
-  if (a4)
+  if (type)
   {
     v6 = 320;
   }
 
-  if (a5)
+  if (duration)
   {
     v6 |= 0x200uLL;
   }
 
-  if (a6)
+  if (played)
   {
     v7 = v6 | 0x400;
   }
@@ -109,25 +109,25 @@
     v7 = v6;
   }
 
-  return [(MTEpisodeDescriptionCache *)self descriptionForEpisode:a3 options:v7];
+  return [(MTEpisodeDescriptionCache *)self descriptionForEpisode:episode options:v7];
 }
 
 - (void)invalidate
 {
-  v3 = [(MTEpisodeDescriptionCache *)self descriptionCache];
-  [v3 removeAllObjects];
+  descriptionCache = [(MTEpisodeDescriptionCache *)self descriptionCache];
+  [descriptionCache removeAllObjects];
 
-  v4 = [(MTEpisodeDescriptionCache *)self episodeCache];
-  [v4 removeAllObjects];
+  episodeCache = [(MTEpisodeDescriptionCache *)self episodeCache];
+  [episodeCache removeAllObjects];
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:kEpisodeUuid];
-  v8 = [(MTEpisodeDescriptionCache *)self episodeCache];
+  cacheCopy = cache;
+  v7 = [object objectForKeyedSubscript:kEpisodeUuid];
+  episodeCache = [(MTEpisodeDescriptionCache *)self episodeCache];
 
-  if (v8 == v6)
+  if (episodeCache == cacheCopy)
   {
     v10 = v13;
     v13[0] = _NSConcreteStackBlock;
@@ -136,9 +136,9 @@
     goto LABEL_5;
   }
 
-  v9 = [(MTEpisodeDescriptionCache *)self descriptionCache];
+  descriptionCache = [(MTEpisodeDescriptionCache *)self descriptionCache];
 
-  if (v9 == v6)
+  if (descriptionCache == cacheCopy)
   {
     v10 = v12;
     v12[0] = _NSConcreteStackBlock;
@@ -197,70 +197,70 @@ LABEL_5:
   return v3;
 }
 
-- (id)descriptionCacheForEpisodeUuid:(id)a3
+- (id)descriptionCacheForEpisodeUuid:(id)uuid
 {
-  v4 = a3;
-  v5 = [(MTEpisodeDescriptionCache *)self descriptionCache];
-  v6 = [v5 objectForKey:v4];
+  uuidCopy = uuid;
+  descriptionCache = [(MTEpisodeDescriptionCache *)self descriptionCache];
+  v6 = [descriptionCache objectForKey:uuidCopy];
 
   if (!v6)
   {
     v6 = objc_alloc_init(NSMutableDictionary);
-    [v6 setObject:v4 forKey:kEpisodeUuid];
-    v7 = [(MTEpisodeDescriptionCache *)self descriptionCache];
-    [v7 setObject:v6 forKey:v4];
+    [v6 setObject:uuidCopy forKey:kEpisodeUuid];
+    descriptionCache2 = [(MTEpisodeDescriptionCache *)self descriptionCache];
+    [descriptionCache2 setObject:v6 forKey:uuidCopy];
   }
 
   return v6;
 }
 
-- (id)descriptionKeyForOptions:(unint64_t)a3 unavailableReason:(int64_t)a4
+- (id)descriptionKeyForOptions:(unint64_t)options unavailableReason:(int64_t)reason
 {
-  if ((a3 & 0x80) != 0)
+  if ((options & 0x80) != 0)
   {
-    [NSString stringWithFormat:@"opt%lu-f-%lu", a4, a3, a4];
+    [NSString stringWithFormat:@"opt%lu-f-%lu", reason, options, reason];
   }
 
   else
   {
-    [NSString stringWithFormat:@"opt%lu-c", a4, a3, v6];
+    [NSString stringWithFormat:@"opt%lu-c", reason, options, v6];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)updateCacheForEpisode:(id)a3
+- (void)updateCacheForEpisode:(id)episode
 {
-  v13 = a3;
-  v4 = [(MTEpisodeDescriptionCache *)self episodeCache];
-  v5 = [v13 uuid];
-  v6 = [v4 objectForKey:v5];
+  episodeCopy = episode;
+  episodeCache = [(MTEpisodeDescriptionCache *)self episodeCache];
+  uuid = [episodeCopy uuid];
+  v6 = [episodeCache objectForKey:uuid];
 
-  v7 = [(MTEpisodeDescriptionCache *)self dependantPropertyKeys];
-  v8 = [v13 dictionaryWithValuesForKeys:v7];
+  dependantPropertyKeys = [(MTEpisodeDescriptionCache *)self dependantPropertyKeys];
+  v8 = [episodeCopy dictionaryWithValuesForKeys:dependantPropertyKeys];
 
   if (([v6 isEqualToDictionary:v8] & 1) == 0)
   {
-    v9 = [(MTEpisodeDescriptionCache *)self episodeCache];
-    v10 = [v13 uuid];
-    [v9 setObject:v8 forKey:v10];
+    episodeCache2 = [(MTEpisodeDescriptionCache *)self episodeCache];
+    uuid2 = [episodeCopy uuid];
+    [episodeCache2 setObject:v8 forKey:uuid2];
 
-    v11 = [(MTEpisodeDescriptionCache *)self descriptionCache];
-    v12 = [v13 uuid];
-    [v11 removeObjectForKey:v12];
+    descriptionCache = [(MTEpisodeDescriptionCache *)self descriptionCache];
+    uuid3 = [episodeCopy uuid];
+    [descriptionCache removeObjectForKey:uuid3];
   }
 }
 
-- (id)descriptionTextForEpisode:(id)a3 options:(unint64_t)a4
+- (id)descriptionTextForEpisode:(id)episode options:(unint64_t)options
 {
-  v6 = a3;
+  episodeCopy = episode;
   v7 = +[MTEpisodeLockup descriptionFont];
   v8 = v7;
-  if ((a4 & 0x10) == 0)
+  if ((options & 0x10) == 0)
   {
     v9 = 0;
-    if (a4)
+    if (options)
     {
       goto LABEL_3;
     }
@@ -273,15 +273,15 @@ LABEL_6:
   v18 = NSFontAttributeName;
   v19 = v7;
   v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-  v9 = [(MTEpisodeDescriptionCache *)self descriptionBodyTextForEpisode:v6 html:(a4 >> 5) & 1 withAttributes:v13];
+  v9 = [(MTEpisodeDescriptionCache *)self descriptionBodyTextForEpisode:episodeCopy html:(options >> 5) & 1 withAttributes:v13];
 
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v10 = -[MTEpisodeDescriptionCache descriptionPrefixTextForEpisode:options:trailingNewline:](self, "descriptionPrefixTextForEpisode:options:trailingNewline:", v6, a4, [v9 length] != 0);
+  v10 = -[MTEpisodeDescriptionCache descriptionPrefixTextForEpisode:options:trailingNewline:](self, "descriptionPrefixTextForEpisode:options:trailingNewline:", episodeCopy, options, [v9 length] != 0);
   v11 = objc_opt_new();
   v12 = v11;
   if (v10)
@@ -295,19 +295,19 @@ LABEL_7:
     [v12 appendAttributedString:v9];
   }
 
-  if ((a4 & 0x40) != 0)
+  if ((options & 0x40) != 0)
   {
-    if ((a4 & 0x80) != 0)
+    if ((options & 0x80) != 0)
     {
-      v14 = [v6 reasonForNotPlayable];
+      reasonForNotPlayable = [episodeCopy reasonForNotPlayable];
     }
 
     else
     {
-      v14 = 0;
+      reasonForNotPlayable = 0;
     }
 
-    v15 = -[MTEpisodeDescriptionCache descriptionFooterTextForEpisode:includesSeasonEpisodeType:includesDuration:includesPlayedIfPlayed:hasBodyText:unavailableReason:](self, "descriptionFooterTextForEpisode:includesSeasonEpisodeType:includesDuration:includesPlayedIfPlayed:hasBodyText:unavailableReason:", v6, (a4 >> 8) & 1, (a4 >> 9) & 1, (a4 >> 10) & 1, [v9 length] != 0, v14);
+    v15 = -[MTEpisodeDescriptionCache descriptionFooterTextForEpisode:includesSeasonEpisodeType:includesDuration:includesPlayedIfPlayed:hasBodyText:unavailableReason:](self, "descriptionFooterTextForEpisode:includesSeasonEpisodeType:includesDuration:includesPlayedIfPlayed:hasBodyText:unavailableReason:", episodeCopy, (options >> 8) & 1, (options >> 9) & 1, (options >> 10) & 1, [v9 length] != 0, reasonForNotPlayable);
     if (v15)
     {
       [v12 appendAttributedString:v15];
@@ -319,15 +319,15 @@ LABEL_7:
   return v16;
 }
 
-- (id)descriptionPrefixTextForEpisode:(id)a3 options:(unint64_t)a4 trailingNewline:(BOOL)a5
+- (id)descriptionPrefixTextForEpisode:(id)episode options:(unint64_t)options trailingNewline:(BOOL)newline
 {
-  v40 = a5;
-  v5 = a4;
-  v7 = a3;
+  newlineCopy = newline;
+  optionsCopy = options;
+  episodeCopy = episode;
   v8 = +[NSMutableArray array];
-  if ((v5 & 2) != 0 && ([v7 pubDate], v9 > 0.0))
+  if ((optionsCopy & 2) != 0 && ([episodeCopy pubDate], v9 > 0.0))
   {
-    [v7 pubDate];
+    [episodeCopy pubDate];
     v10 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   }
 
@@ -352,9 +352,9 @@ LABEL_7:
     [v8 addObject:v12];
   }
 
-  if ((v5 & 4) != 0 && [v7 isPartiallyPlayed])
+  if ((optionsCopy & 4) != 0 && [episodeCopy isPartiallyPlayed])
   {
-    v13 = +[MTEpisode timeRemainingStringForEpisode:abbreviated:](MTEpisode, "timeRemainingStringForEpisode:abbreviated:", v7, +[MTEpisodeLockup useLayoutForSkinnyPhones]);
+    v13 = +[MTEpisode timeRemainingStringForEpisode:abbreviated:](MTEpisode, "timeRemainingStringForEpisode:abbreviated:", episodeCopy, +[MTEpisodeLockup useLayoutForSkinnyPhones]);
   }
 
   else
@@ -364,21 +364,21 @@ LABEL_7:
 
   if (![v13 length])
   {
-    [v7 duration];
+    [episodeCopy duration];
     v15 = +[NSString prettyShortStringWithDuration:abbreviated:](NSString, "prettyShortStringWithDuration:abbreviated:", +[MTEpisodeLockup useLayoutForSkinnyPhones], v14);
 
     v13 = v15;
   }
 
-  v16 = [v7 isVideo];
-  if (v5 & 8) != 0 && (v16)
+  isVideo = [episodeCopy isVideo];
+  if (optionsCopy & 8) != 0 && (isVideo)
   {
-    v17 = [(MTEpisodeDescriptionCache *)self createVideoGlyphAttributedString];
+    createVideoGlyphAttributedString = [(MTEpisodeDescriptionCache *)self createVideoGlyphAttributedString];
     v18 = objc_opt_new();
     v19 = v18;
-    if (v17)
+    if (createVideoGlyphAttributedString)
     {
-      [v18 appendAttributedString:v17];
+      [v18 appendAttributedString:createVideoGlyphAttributedString];
     }
   }
 
@@ -396,7 +396,7 @@ LABEL_7:
   v39 = v13;
   v41 = v11;
   v42 = v10;
-  v43 = v7;
+  v43 = episodeCopy;
   if ([v19 length])
   {
     v21 = [v19 copy];
@@ -429,12 +429,12 @@ LABEL_7:
   v47 = v32;
   v33 = v28;
   v48 = v33;
-  v50 = v40;
+  v50 = newlineCopy;
   v34 = v29;
   v49 = v34;
   [v31 enumerateObjectsUsingBlock:v44];
   [v30 im_addAttribute:NSFontAttributeName value:v23];
-  if (v40 && [v30 length])
+  if (newlineCopy && [v30 length])
   {
     v35 = objc_alloc_init(NSMutableParagraphStyle);
     [v23 _leading];
@@ -455,13 +455,13 @@ LABEL_7:
   return v36;
 }
 
-- (id)descriptionFooterTextForEpisode:(id)a3 includesSeasonEpisodeType:(BOOL)a4 includesDuration:(BOOL)a5 includesPlayedIfPlayed:(BOOL)a6 hasBodyText:(BOOL)a7 unavailableReason:(int64_t)a8
+- (id)descriptionFooterTextForEpisode:(id)episode includesSeasonEpisodeType:(BOOL)type includesDuration:(BOOL)duration includesPlayedIfPlayed:(BOOL)played hasBodyText:(BOOL)text unavailableReason:(int64_t)reason
 {
-  v9 = a7;
-  v67 = a5;
-  v68 = a6;
-  v10 = a4;
-  v11 = a3;
+  textCopy = text;
+  durationCopy = duration;
+  playedCopy = played;
+  typeCopy = type;
+  episodeCopy = episode;
   v12 = objc_opt_new();
   v13 = +[MTEpisodeLockup metadataFooterFont];
   v14 = objc_opt_new();
@@ -469,14 +469,14 @@ LABEL_7:
   [v13 lineHeight];
   v72 = v14;
   [v14 setParagraphSpacingBefore:v15 * 0.5];
-  v16 = [v11 podcast];
-  v17 = [v16 title];
-  v18 = [MTEpisodeUnavailableUtil longStringForUnavailableReason:a8 podcastTitle:v17];
+  podcast = [episodeCopy podcast];
+  title = [podcast title];
+  v18 = [MTEpisodeUnavailableUtil longStringForUnavailableReason:reason podcastTitle:title];
 
   v69 = [v18 length];
   if (v69)
   {
-    if (v9)
+    if (textCopy)
     {
       v80 = NSParagraphStyleAttributeName;
       v81 = v72;
@@ -497,15 +497,15 @@ LABEL_7:
 
   v73 = objc_opt_new();
   v22 = &kPlaylistITunesPlaylistUuid_ptr;
-  if (v10)
+  if (typeCopy)
   {
-    v23 = v9;
-    v24 = [v11 seasonNumber];
-    v25 = [v11 episodeNumber];
-    v26 = [v11 episodeTypeResolvedValue];
-    if (v26 == 2)
+    v23 = textCopy;
+    seasonNumber = [episodeCopy seasonNumber];
+    episodeNumber = [episodeCopy episodeNumber];
+    episodeTypeResolvedValue = [episodeCopy episodeTypeResolvedValue];
+    if (episodeTypeResolvedValue == 2)
     {
-      if (v24 >= 1 && v25 >= 1)
+      if (seasonNumber >= 1 && episodeNumber >= 1)
       {
         v27 = +[NSBundle mainBundle];
         v28 = v27;
@@ -513,7 +513,7 @@ LABEL_7:
         goto LABEL_19;
       }
 
-      if (v24 >= 1)
+      if (seasonNumber >= 1)
       {
         v31 = +[NSBundle mainBundle];
         v28 = v31;
@@ -521,7 +521,7 @@ LABEL_7:
         goto LABEL_26;
       }
 
-      if (v25 >= 1)
+      if (episodeNumber >= 1)
       {
         v34 = +[NSBundle mainBundle];
         v28 = v34;
@@ -536,28 +536,28 @@ LABEL_7:
 
     else
     {
-      if (v26 != 1)
+      if (episodeTypeResolvedValue != 1)
       {
-        if (v26)
+        if (episodeTypeResolvedValue)
         {
           goto LABEL_37;
         }
 
-        if (v24 >= 1 && v25 >= 1)
+        if (seasonNumber >= 1 && episodeNumber >= 1)
         {
           v27 = +[NSBundle mainBundle];
           v28 = v27;
           v29 = @"EPISODE_AND_SEASON_NUMBER_FORMAT";
 LABEL_19:
           v30 = [v27 localizedStringForKey:v29 value:&stru_1004F3018 table:0];
-          v65 = v25;
+          v65 = episodeNumber;
 LABEL_27:
-          [NSString localizedStringWithFormat:v30, v24, v65];
+          [NSString localizedStringWithFormat:v30, seasonNumber, v65];
           v33 = LABEL_28:;
 
           v22 = &kPlaylistITunesPlaylistUuid_ptr;
 LABEL_29:
-          LOBYTE(v9) = v23;
+          LOBYTE(textCopy) = v23;
 
 LABEL_38:
           if ([v33 length])
@@ -568,7 +568,7 @@ LABEL_38:
           goto LABEL_41;
         }
 
-        if (v24 >= 1)
+        if (seasonNumber >= 1)
         {
           v31 = +[NSBundle mainBundle];
           v28 = v31;
@@ -576,11 +576,11 @@ LABEL_38:
           goto LABEL_26;
         }
 
-        if (v25 < 1)
+        if (episodeNumber < 1)
         {
 LABEL_37:
           v33 = 0;
-          LOBYTE(v9) = v23;
+          LOBYTE(textCopy) = v23;
           goto LABEL_38;
         }
 
@@ -589,11 +589,11 @@ LABEL_37:
         v35 = @"EPISODE_NUMBER_FORMAT";
 LABEL_36:
         v30 = [v34 localizedStringForKey:v35 value:&stru_1004F3018 table:0];
-        [NSString localizedStringWithFormat:v30, v25, v65];
+        [NSString localizedStringWithFormat:v30, episodeNumber, v65];
         goto LABEL_28;
       }
 
-      if (v24 >= 1 && v25 >= 1)
+      if (seasonNumber >= 1 && episodeNumber >= 1)
       {
         v27 = +[NSBundle mainBundle];
         v28 = v27;
@@ -601,7 +601,7 @@ LABEL_36:
         goto LABEL_19;
       }
 
-      if (v24 >= 1)
+      if (seasonNumber >= 1)
       {
         v31 = +[NSBundle mainBundle];
         v28 = v31;
@@ -611,7 +611,7 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      if (v25 >= 1)
+      if (episodeNumber >= 1)
       {
         v34 = +[NSBundle mainBundle];
         v28 = v34;
@@ -629,32 +629,32 @@ LABEL_26:
   }
 
 LABEL_41:
-  v36 = [v11 valueForKey:kEpisodePubDate];
-  v37 = [v36 verboseDisplayString];
+  v36 = [episodeCopy valueForKey:kEpisodePubDate];
+  verboseDisplayString = [v36 verboseDisplayString];
 
-  if (v37)
+  if (verboseDisplayString)
   {
-    [v73 addObject:v37];
+    [v73 addObject:verboseDisplayString];
   }
 
   v70 = v12;
-  if ([v11 byteSize] < 1)
+  if ([episodeCopy byteSize] < 1)
   {
     v38 = 0;
   }
 
   else
   {
-    v38 = +[NSString stringWithBytesize:](NSString, "stringWithBytesize:", [v11 byteSize]);
+    v38 = +[NSString stringWithBytesize:](NSString, "stringWithBytesize:", [episodeCopy byteSize]);
   }
 
-  v39 = [v22[115] mainBundle];
-  if ([v11 isAudio])
+  mainBundle = [v22[115] mainBundle];
+  if ([episodeCopy isAudio])
   {
     v40 = @"Audio";
   }
 
-  else if ([v11 isVideo])
+  else if ([episodeCopy isVideo])
   {
     v40 = @"Video";
   }
@@ -664,13 +664,13 @@ LABEL_41:
     v40 = @"Document";
   }
 
-  v41 = [v39 localizedStringForKey:v40 value:&stru_1004F3018 table:0];
+  v41 = [mainBundle localizedStringForKey:v40 value:&stru_1004F3018 table:0];
 
   v66 = v38;
   if ([v38 length])
   {
-    v42 = [v22[115] mainBundle];
-    v43 = [v42 localizedStringForKey:@"EPISODE_SIZE_ALT_FORMAT" value:&stru_1004F3018 table:0];
+    mainBundle2 = [v22[115] mainBundle];
+    v43 = [mainBundle2 localizedStringForKey:@"EPISODE_SIZE_ALT_FORMAT" value:&stru_1004F3018 table:0];
     v44 = [NSString localizedStringWithFormat:v43, v38, v41, v38];
   }
 
@@ -679,9 +679,9 @@ LABEL_41:
     v44 = v41;
   }
 
-  if (v67 && ([v11 duration], v45 >= 1.0))
+  if (durationCopy && ([episodeCopy duration], v45 >= 1.0))
   {
-    [v11 duration];
+    [episodeCopy duration];
     v46 = [NSString stringWithDuration:3 unitsStyle:0 includeTimeRemainingPhrase:?];
     if ([v46 length])
     {
@@ -703,26 +703,26 @@ LABEL_41:
     [v73 addObject:v44];
   }
 
-  if (v68)
+  if (playedCopy)
   {
-    v50 = [v11 playedText];
-    if ([v50 length])
+    playedText = [episodeCopy playedText];
+    if ([playedText length])
     {
-      [v73 addObject:v50];
+      [v73 addObject:playedText];
     }
   }
 
-  if ([v11 isDownloaded])
+  if ([episodeCopy isDownloaded])
   {
-    v51 = [v11 podcast];
-    v52 = [v51 deletePlayedEpisodesResolvedValue];
+    podcast2 = [episodeCopy podcast];
+    deletePlayedEpisodesResolvedValue = [podcast2 deletePlayedEpisodesResolvedValue];
 
-    if (v52)
+    if (deletePlayedEpisodesResolvedValue)
     {
-      v53 = [v11 podcastUuid];
-      v54 = [MTEpisode predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:v53 deletePlayedEpisodes:1];
+      podcastUuid = [episodeCopy podcastUuid];
+      v54 = [MTEpisode predicateForRecentlyPlayedEpisodesToBeDeletedOnPodcastUuid:podcastUuid deletePlayedEpisodes:1];
 
-      if ([v54 evaluateWithObject:v11])
+      if ([v54 evaluateWithObject:episodeCopy])
       {
         v55 = +[NSBundle mainBundle];
         v56 = [v55 localizedStringForKey:@"EPISODE_DETAIL_DOWNLOAD_WILL_BE_DELETED" value:&stru_1004F3018 table:0];
@@ -735,7 +735,7 @@ LABEL_41:
   v74[1] = 3221225472;
   v74[2] = sub_1000AEDC0;
   v74[3] = &unk_1004DACB0;
-  v78 = v9;
+  v78 = textCopy;
   v75 = v18;
   v76 = v72;
   v79 = v69 != 0;
@@ -764,17 +764,17 @@ LABEL_41:
   return v4;
 }
 
-- (id)descriptionBodyTextForEpisode:(id)a3 html:(BOOL)a4 withAttributes:(id)a5
+- (id)descriptionBodyTextForEpisode:(id)episode html:(BOOL)html withAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  if (v6 && [v7 itemDescriptionHasHTML])
+  htmlCopy = html;
+  episodeCopy = episode;
+  attributesCopy = attributes;
+  if (htmlCopy && [episodeCopy itemDescriptionHasHTML])
   {
-    v9 = [v7 lazyAttributedDescription];
-    v10 = [v9 mutableCopy];
+    lazyAttributedDescription = [episodeCopy lazyAttributedDescription];
+    v10 = [lazyAttributedDescription mutableCopy];
 
-    [v10 addAttributes:v8 range:{0, objc_msgSend(v10, "length")}];
+    [v10 addAttributes:attributesCopy range:{0, objc_msgSend(v10, "length")}];
     if ([v10 length])
     {
       v11 = [v10 copy];
@@ -785,33 +785,33 @@ LABEL_9:
     }
   }
 
-  v12 = [v7 itemDescriptionWithoutHTML];
-  v13 = [v12 length];
+  itemDescriptionWithoutHTML = [episodeCopy itemDescriptionWithoutHTML];
+  v13 = [itemDescriptionWithoutHTML length];
 
   if (v13)
   {
     v14 = [NSAttributedString alloc];
-    v15 = [v7 itemDescriptionWithoutHTML];
+    itemDescriptionWithoutHTML2 = [episodeCopy itemDescriptionWithoutHTML];
 LABEL_8:
-    v10 = v15;
-    v11 = [v14 initWithString:v15 attributes:v8];
+    v10 = itemDescriptionWithoutHTML2;
+    v11 = [v14 initWithString:itemDescriptionWithoutHTML2 attributes:attributesCopy];
     goto LABEL_9;
   }
 
-  if ([v7 itemDescriptionHasHTML])
+  if ([episodeCopy itemDescriptionHasHTML])
   {
     v16 = 0;
   }
 
   else
   {
-    v18 = [v7 itemDescription];
-    v16 = [v18 length];
+    itemDescription = [episodeCopy itemDescription];
+    v16 = [itemDescription length];
 
     if (v16)
     {
       v14 = [NSAttributedString alloc];
-      v15 = [v7 itemDescription];
+      itemDescriptionWithoutHTML2 = [episodeCopy itemDescription];
       goto LABEL_8;
     }
   }
@@ -821,30 +821,30 @@ LABEL_10:
   return v16;
 }
 
-- (id)descriptionPrefixTextForPlayerItem:(id)a3 options:(unint64_t)a4 trailingNewline:(BOOL)a5
+- (id)descriptionPrefixTextForPlayerItem:(id)item options:(unint64_t)options trailingNewline:(BOOL)newline
 {
-  v46 = a5;
-  v5 = a4;
-  v7 = a3;
+  newlineCopy = newline;
+  optionsCopy = options;
+  itemCopy = item;
   v8 = +[NSMutableArray array];
-  if ((v5 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
-    v9 = [v7 pubDate];
+    pubDate = [itemCopy pubDate];
   }
 
   else
   {
-    v9 = 0;
+    pubDate = 0;
   }
 
   if (+[MTEpisodeLockup useLayoutForSkinnyPhones])
   {
-    [v9 nanoFriendlyDisplayString];
+    [pubDate nanoFriendlyDisplayString];
   }
 
   else
   {
-    [v9 abbreviatedFriendlyDisplayString];
+    [pubDate abbreviatedFriendlyDisplayString];
   }
   v10 = ;
   if (v10)
@@ -853,7 +853,7 @@ LABEL_10:
     [v8 addObject:v11];
   }
 
-  if ((v5 & 4) != 0 && ([v7 playhead], v13 = v12, objc_msgSend(v7, "duration"), +[MTEpisode isPlayhead:resumableForDuration:](MTEpisode, "isPlayhead:resumableForDuration:", v13, v14)) && (objc_msgSend(v7, "duration"), v16 = v15, objc_msgSend(v7, "duration"), v18 = v16 - v17, v18 > 0.0))
+  if ((optionsCopy & 4) != 0 && ([itemCopy playhead], v13 = v12, objc_msgSend(itemCopy, "duration"), +[MTEpisode isPlayhead:resumableForDuration:](MTEpisode, "isPlayhead:resumableForDuration:", v13, v14)) && (objc_msgSend(itemCopy, "duration"), v16 = v15, objc_msgSend(itemCopy, "duration"), v18 = v16 - v17, v18 > 0.0))
   {
     v19 = +[NSString prettyShortStringWithDuration:includeTimeRemainingPhrase:abbreviated:](NSString, "prettyShortStringWithDuration:includeTimeRemainingPhrase:abbreviated:", 1, +[MTEpisodeLockup useLayoutForSkinnyPhones], v18);
   }
@@ -865,21 +865,21 @@ LABEL_10:
 
   if (![v19 length])
   {
-    [v7 duration];
+    [itemCopy duration];
     v21 = +[NSString prettyShortStringWithDuration:abbreviated:](NSString, "prettyShortStringWithDuration:abbreviated:", +[MTEpisodeLockup useLayoutForSkinnyPhones], v20);
 
     v19 = v21;
   }
 
-  v22 = [v7 isVideo];
-  if (v5 & 8) != 0 && (v22)
+  isVideo = [itemCopy isVideo];
+  if (optionsCopy & 8) != 0 && (isVideo)
   {
-    v23 = [(MTEpisodeDescriptionCache *)self createVideoGlyphAttributedString];
+    createVideoGlyphAttributedString = [(MTEpisodeDescriptionCache *)self createVideoGlyphAttributedString];
     v24 = objc_opt_new();
     v25 = v24;
-    if (v23)
+    if (createVideoGlyphAttributedString)
     {
-      [v24 appendAttributedString:v23];
+      [v24 appendAttributedString:createVideoGlyphAttributedString];
     }
   }
 
@@ -896,8 +896,8 @@ LABEL_10:
 
   v45 = v19;
   v47 = v10;
-  v48 = v9;
-  v49 = v7;
+  v48 = pubDate;
+  v49 = itemCopy;
   if ([v25 length])
   {
     v27 = [v25 copy];
@@ -930,12 +930,12 @@ LABEL_10:
   v53 = v38;
   v39 = v34;
   v54 = v39;
-  v56 = v46;
+  v56 = newlineCopy;
   v40 = v35;
   v55 = v40;
   [v37 enumerateObjectsUsingBlock:v50];
   [v36 im_addAttribute:NSFontAttributeName value:v29];
-  if (v46 && [v36 length])
+  if (newlineCopy && [v36 length])
   {
     v41 = objc_alloc_init(NSMutableParagraphStyle);
     [v29 _leading];

@@ -1,15 +1,15 @@
 @interface _PFResultObjectKeyEnumerator
-- (_PFResultObjectKeyEnumerator)initWithArray:(const void *)a3 forTarget:(id)a4 withReferenceValues:(unint64_t *)a5 andRange:(_NSRange)a6;
+- (_PFResultObjectKeyEnumerator)initWithArray:(const void *)array forTarget:(id)target withReferenceValues:(unint64_t *)values andRange:(_NSRange)range;
 - (id)nextObject;
 - (void)dealloc;
 @end
 
 @implementation _PFResultObjectKeyEnumerator
 
-- (_PFResultObjectKeyEnumerator)initWithArray:(const void *)a3 forTarget:(id)a4 withReferenceValues:(unint64_t *)a5 andRange:(_NSRange)a6
+- (_PFResultObjectKeyEnumerator)initWithArray:(const void *)array forTarget:(id)target withReferenceValues:(unint64_t *)values andRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
+  length = range.length;
+  location = range.location;
   v14.receiver = self;
   v14.super_class = _PFResultObjectKeyEnumerator;
   v11 = [(_PFResultObjectKeyEnumerator *)&v14 init];
@@ -27,9 +27,9 @@
 
     else
     {
-      v11->_target = a4;
-      v12->_keys = a3;
-      v12->_referenceItems = a5;
+      v11->_target = target;
+      v12->_keys = array;
+      v12->_referenceItems = values;
     }
 
     v12->_index = location;

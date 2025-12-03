@@ -1,12 +1,12 @@
 @interface PKFaceIDBannerHandleState
-+ (id)createForGlyphState:(int64_t)a3;
-- (PKFaceIDBannerHandleState)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForGlyphState:(int64_t)state;
+- (PKFaceIDBannerHandleState)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFaceIDBannerHandleState
 
-+ (id)createForGlyphState:(int64_t)a3
++ (id)createForGlyphState:(int64_t)state
 {
   result = [PKFaceIDBannerHandleState alloc];
   if (result)
@@ -20,31 +20,31 @@
     }
   }
 
-  *(result + 2) = a3;
+  *(result + 2) = state;
   return result;
 }
 
-- (PKFaceIDBannerHandleState)initWithCoder:(id)a3
+- (PKFaceIDBannerHandleState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKFaceIDBannerHandleState;
-  v5 = [(PKBannerHandleState *)&v7 initWithCoder:v4];
+  v5 = [(PKBannerHandleState *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_glyphState = [v4 decodeIntegerForKey:@"glyphState"];
+    v5->_glyphState = [coderCopy decodeIntegerForKey:@"glyphState"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKFaceIDBannerHandleState;
-  v4 = a3;
-  [(PKBannerHandleState *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_glyphState forKey:{@"glyphState", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKBannerHandleState *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_glyphState forKey:{@"glyphState", v5.receiver, v5.super_class}];
 }
 
 @end

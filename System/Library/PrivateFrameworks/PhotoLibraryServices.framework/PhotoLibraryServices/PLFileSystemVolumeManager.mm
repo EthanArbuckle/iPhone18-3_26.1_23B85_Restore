@@ -1,12 +1,12 @@
 @interface PLFileSystemVolumeManager
 + (id)sharedFileSystemVolumeManager;
 - (id)initSharedVolumeManager;
-- (id)volumeForURL:(id)a3 context:(id)a4;
+- (id)volumeForURL:(id)l context:(id)context;
 - (void)_updateMountedVolumeURLs;
 - (void)_updateOfflineStates;
 - (void)dealloc;
-- (void)registerPLFileSystemVolume:(id)a3;
-- (void)unregisterPLFileSystemVolume:(id)a3;
+- (void)registerPLFileSystemVolume:(id)volume;
+- (void)unregisterPLFileSystemVolume:(id)volume;
 @end
 
 @implementation PLFileSystemVolumeManager
@@ -19,7 +19,7 @@
   v22[0] = *MEMORY[0x1E695DEB8];
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v5 = [(NSFileManager *)self->_fileManager mountedVolumeURLsIncludingResourceValuesForKeys:v4 options:0];
-  v6 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)self->_mountedVolumeURLsByUuid removeAllObjects];
   v19 = 0u;
   v20 = 0u;
@@ -48,7 +48,7 @@
         v14 = [v12 objectForKeyedSubscript:v3];
         if (v14)
         {
-          [(NSMutableDictionary *)v6->_mountedVolumeURLsByUuid setObject:v11 forKeyedSubscript:v14];
+          [(NSMutableDictionary *)selfCopy->_mountedVolumeURLsByUuid setObject:v11 forKeyedSubscript:v14];
         }
 
         ++v10;
@@ -104,8 +104,8 @@
         v29 = 0u;
         v30 = 0u;
         v23 = v7;
-        v8 = [v7 allObjects];
-        v9 = [v8 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        allObjects = [v7 allObjects];
+        v9 = [allObjects countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v9)
         {
           v10 = v9;
@@ -116,7 +116,7 @@
             {
               if (*v28 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allObjects);
               }
 
               v13 = *(*(&v27 + 1) + 8 * i);
@@ -126,12 +126,12 @@
 
               if (v16)
               {
-                v17 = [v13 managedObjectContext];
+                managedObjectContext = [v13 managedObjectContext];
 
-                if (v16 != v17)
+                if (v16 != managedObjectContext)
                 {
-                  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-                  [v18 handleFailureInMethod:a2 object:self file:@"PLFileSystemVolumeManager.m" lineNumber:206 description:@"volume's MOC should match the one I stored"];
+                  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                  [currentHandler handleFailureInMethod:a2 object:self file:@"PLFileSystemVolumeManager.m" lineNumber:206 description:@"volume's MOC should match the one I stored"];
                 }
 
                 v25[0] = MEMORY[0x1E69E9820];
@@ -144,7 +144,7 @@
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v10 = [allObjects countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v10);
@@ -187,20 +187,20 @@ void __49__PLFileSystemVolumeManager__updateOfflineStates__block_invoke(uint64_t
   }
 }
 
-- (void)unregisterPLFileSystemVolume:(id)a3
+- (void)unregisterPLFileSystemVolume:(id)volume
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 volumeUuidString];
+  volumeCopy = volume;
+  volumeUuidString = [volumeCopy volumeUuidString];
   v6 = PLBackendGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = volumeUuidString;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Unregistering volume with uuid %@", buf, 0xCu);
   }
 
-  if (v5)
+  if (volumeUuidString)
   {
     synchronizationQueue = self->_synchronizationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -208,8 +208,8 @@ void __49__PLFileSystemVolumeManager__updateOfflineStates__block_invoke(uint64_t
     block[2] = __58__PLFileSystemVolumeManager_unregisterPLFileSystemVolume___block_invoke;
     block[3] = &unk_1E75761B8;
     block[4] = self;
-    v9 = v5;
-    v10 = v4;
+    v9 = volumeUuidString;
+    v10 = volumeCopy;
     dispatch_sync(synchronizationQueue, block);
   }
 }
@@ -227,28 +227,28 @@ void __58__PLFileSystemVolumeManager_unregisterPLFileSystemVolume___block_invoke
   [v2 removeObjectForKey:v3];
 }
 
-- (void)registerPLFileSystemVolume:(id)a3
+- (void)registerPLFileSystemVolume:(id)volume
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 volumeUuidString];
-  v6 = v5;
+  volumeCopy = volume;
+  volumeUuidString = [volumeCopy volumeUuidString];
+  v6 = volumeUuidString;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__7403;
   v24 = __Block_byref_object_dispose__7404;
   v25 = 0;
-  if (v5)
+  if (volumeUuidString)
   {
     synchronizationQueue = self->_synchronizationQueue;
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __56__PLFileSystemVolumeManager_registerPLFileSystemVolume___block_invoke;
     v15 = &unk_1E75778C0;
-    v16 = self;
-    v17 = v5;
-    v8 = v4;
+    selfCopy = self;
+    v17 = volumeUuidString;
+    v8 = volumeCopy;
     v18 = v8;
     v19 = &v20;
     dispatch_sync(synchronizationQueue, &v12);
@@ -263,7 +263,7 @@ void __58__PLFileSystemVolumeManager_unregisterPLFileSystemVolume___block_invoke
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Setting PLFileSystemVolume %p URL to %@", buf, 0x16u);
     }
 
-    [v8 setUrl:{v21[5], v12, v13, v14, v15, v16}];
+    [v8 setUrl:{v21[5], v12, v13, v14, v15, selfCopy}];
   }
 
   else
@@ -272,7 +272,7 @@ void __58__PLFileSystemVolumeManager_unregisterPLFileSystemVolume___block_invoke
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v27 = v4;
+      v27 = volumeCopy;
       v28 = 2114;
       v29 = 0;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Unable to register volume %{public}@ with uuid %{public}@", buf, 0x16u);
@@ -306,11 +306,11 @@ void __56__PLFileSystemVolumeManager_registerPLFileSystemVolume___block_invoke(u
   *(v7 + 40) = v6;
 }
 
-- (id)volumeForURL:(id)a3 context:(id)a4
+- (id)volumeForURL:(id)l context:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  contextCopy = context;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -320,7 +320,7 @@ void __56__PLFileSystemVolumeManager_registerPLFileSystemVolume___block_invoke(u
   v35 = 0;
   v8 = *MEMORY[0x1E695DEB8];
   v34 = 0;
-  v9 = [v6 getResourceValue:&v35 forKey:v8 error:&v34];
+  v9 = [lCopy getResourceValue:&v35 forKey:v8 error:&v34];
   v10 = v35;
   v11 = v34;
   if (v9)
@@ -333,7 +333,7 @@ void __56__PLFileSystemVolumeManager_registerPLFileSystemVolume___block_invoke(u
     block[4] = self;
     v13 = v10;
     v31 = v13;
-    v14 = v7;
+    v14 = contextCopy;
     v32 = v14;
     v33 = &v36;
     dispatch_sync(synchronizationQueue, block);
@@ -352,9 +352,9 @@ void __56__PLFileSystemVolumeManager_registerPLFileSystemVolume___block_invoke(u
       v17 = v15;
       v25 = v17;
       v29 = &v36;
-      v26 = v6;
+      v26 = lCopy;
       v27 = v13;
-      v28 = self;
+      selfCopy = self;
       [v24 performBlockAndWait:v23];
     }
   }
@@ -365,7 +365,7 @@ void __56__PLFileSystemVolumeManager_registerPLFileSystemVolume___block_invoke(u
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v43 = v6;
+      v43 = lCopy;
       v44 = 2112;
       v45 = v11;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Error getting volume UUID string for URL %@: %@", buf, 0x16u);
@@ -379,7 +379,7 @@ void __56__PLFileSystemVolumeManager_registerPLFileSystemVolume___block_invoke(u
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = v6;
+      v43 = lCopy;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Unable to find or create a PLFileSystemVolume for URL %@", buf, 0xCu);
     }
 
@@ -506,9 +506,9 @@ void __50__PLFileSystemVolumeManager_volumeForURL_context___block_invoke_2(uint6
     registeredFileSystemVolumesByUuid = v2->_registeredFileSystemVolumesByUuid;
     v2->_registeredFileSystemVolumesByUuid = v10;
 
-    v12 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     mocsByVolume = v2->_mocsByVolume;
-    v2->_mocsByVolume = v12;
+    v2->_mocsByVolume = strongToWeakObjectsMapTable;
 
     v14 = v2->_synchronizationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -528,7 +528,7 @@ void __50__PLFileSystemVolumeManager_volumeForURL_context___block_invoke_2(uint6
   block[1] = 3221225472;
   block[2] = __58__PLFileSystemVolumeManager_sharedFileSystemVolumeManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedFileSystemVolumeManager_onceToken != -1)
   {
     dispatch_once(&sharedFileSystemVolumeManager_onceToken, block);

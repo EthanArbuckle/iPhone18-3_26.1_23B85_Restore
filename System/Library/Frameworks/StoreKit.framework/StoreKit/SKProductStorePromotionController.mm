@@ -1,7 +1,7 @@
 @interface SKProductStorePromotionController
 + (SKProductStorePromotionController)defaultController;
 - (void)_clearPromotionInfo;
-- (void)_fetchProductsForPromotionOrder:(id)a3 completionHandler:(id)a4;
+- (void)_fetchProductsForPromotionOrder:(id)order completionHandler:(id)handler;
 - (void)fetchStorePromotionOrderWithCompletionHandler:(void *)completionHandler;
 - (void)fetchStorePromotionVisibilityForProduct:(SKProduct *)product completionHandler:(void *)completionHandler;
 - (void)updateStorePromotionOrder:(NSArray *)promotionOrder completionHandler:(void *)completionHandler;
@@ -15,7 +15,7 @@
   v3 = defaultController_defaultController;
   if (!defaultController_defaultController)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = defaultController_defaultController;
     defaultController_defaultController = v4;
 
@@ -31,9 +31,9 @@
   v6 = completionHandler;
   if (v6)
   {
-    v7 = [(SKProduct *)v5 productIdentifier];
+    productIdentifier = [(SKProduct *)v5 productIdentifier];
 
-    if (v7)
+    if (productIdentifier)
     {
       v8 = +[SKServiceBroker defaultBroker];
       v16[0] = MEMORY[0x1E69E9820];
@@ -45,8 +45,8 @@
       v10 = [v8 storeKitServiceWithErrorHandler:v16];
 
       v11 = MEMORY[0x1E695DFD8];
-      v12 = [(SKProduct *)v5 productIdentifier];
-      v13 = [v11 setWithObject:v12];
+      productIdentifier2 = [(SKProduct *)v5 productIdentifier];
+      v13 = [v11 setWithObject:productIdentifier2];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __95__SKProductStorePromotionController_fetchStorePromotionVisibilityForProduct_completionHandler___block_invoke_2;
@@ -114,9 +114,9 @@ void __95__SKProductStorePromotionController_fetchStorePromotionVisibilityForPro
   v25[1] = *MEMORY[0x1E69E9840];
   v7 = product;
   v8 = completionHandler;
-  v9 = [(SKProduct *)v7 productIdentifier];
+  productIdentifier = [(SKProduct *)v7 productIdentifier];
 
-  if (v9)
+  if (productIdentifier)
   {
     v10 = +[SKServiceBroker defaultBroker];
     v20[0] = MEMORY[0x1E69E9820];
@@ -128,8 +128,8 @@ void __95__SKProductStorePromotionController_fetchStorePromotionVisibilityForPro
     v12 = [v10 storeKitServiceWithErrorHandler:v20];
 
     v24 = 0x1F29BE000;
-    v13 = [(SKProduct *)v7 productIdentifier];
-    v22 = v13;
+    productIdentifier2 = [(SKProduct *)v7 productIdentifier];
+    v22 = productIdentifier2;
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:promotionVisibility];
     v23 = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
@@ -310,12 +310,12 @@ void __83__SKProductStorePromotionController_fetchStorePromotionOrderWithComplet
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 productIdentifier];
+        productIdentifier = [v13 productIdentifier];
 
-        if (v14)
+        if (productIdentifier)
         {
-          v15 = [v13 productIdentifier];
-          [v7 addObject:v15];
+          productIdentifier2 = [v13 productIdentifier];
+          [v7 addObject:productIdentifier2];
         }
       }
 
@@ -366,20 +366,20 @@ void __81__SKProductStorePromotionController_updateStorePromotionOrder_completio
   }
 }
 
-- (void)_fetchProductsForPromotionOrder:(id)a3 completionHandler:(id)a4
+- (void)_fetchProductsForPromotionOrder:(id)order completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  orderCopy = order;
+  handlerCopy = handler;
+  if ([orderCopy count])
   {
     v7 = [SKProductsRequest alloc];
-    v8 = [MEMORY[0x1E695DFD8] setWithArray:v5];
+    v8 = [MEMORY[0x1E695DFD8] setWithArray:orderCopy];
     v9 = [(SKProductsRequest *)v7 initWithProductIdentifiers:v8];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 componentsJoinedByString:{@", "}];
+      v10 = [orderCopy componentsJoinedByString:{@", "}];
       *buf = 138543618;
       v21 = v9;
       v22 = 2114;
@@ -392,9 +392,9 @@ void __81__SKProductStorePromotionController_updateStorePromotionOrder_completio
     v14[2] = __87__SKProductStorePromotionController__fetchProductsForPromotionOrder_completionHandler___block_invoke_10;
     v14[3] = &unk_1E7B27E98;
     v15 = v9;
-    v17 = v6;
-    v16 = v5;
-    v11 = v6;
+    v17 = handlerCopy;
+    v16 = orderCopy;
+    v11 = handlerCopy;
     v12 = v9;
     [(SKProductsRequest *)v12 _startWithCompletionHandler:v14];
   }
@@ -406,8 +406,8 @@ void __81__SKProductStorePromotionController_updateStorePromotionOrder_completio
     block[1] = 3221225472;
     block[2] = __87__SKProductStorePromotionController__fetchProductsForPromotionOrder_completionHandler___block_invoke;
     block[3] = &unk_1E7B27900;
-    v19 = v6;
-    v12 = v6;
+    v19 = handlerCopy;
+    v12 = handlerCopy;
     dispatch_async(v13, block);
 
     v11 = v19;

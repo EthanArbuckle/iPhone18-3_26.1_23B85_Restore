@@ -7,22 +7,22 @@
 
 - (void)handleVolumeIncrease
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
-  v5 = [v3 iconController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  v4 = [v5 iconManager];
-  [v4 relayout];
+  iconManager = [iconController iconManager];
+  [iconManager relayout];
 }
 
 - (void)handleVolumeDecrease
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
-  v5 = [v3 iconController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  v4 = [v5 iconManager];
-  [v4 relayout];
+  iconManager = [iconController iconManager];
+  [iconManager relayout];
 }
 
 @end

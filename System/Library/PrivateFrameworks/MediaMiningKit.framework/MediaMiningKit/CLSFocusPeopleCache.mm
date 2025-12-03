@@ -1,6 +1,6 @@
 @interface CLSFocusPeopleCache
 + (id)_personSortDescriptors;
-- (CLSFocusPeopleCache)initWithPhotoLibrary:(id)a3 maximumNumberOfPeople:(unint64_t)a4;
+- (CLSFocusPeopleCache)initWithPhotoLibrary:(id)library maximumNumberOfPeople:(unint64_t)people;
 - (PHPhotoLibrary)photoLibrary;
 - (id)_collectValidPersonLocalIdentifiers;
 - (void)invalidate;
@@ -20,16 +20,16 @@
   v24 = *MEMORY[0x277D85DE8];
   maximumNumberOfPeople = self->_maximumNumberOfPeople;
   WeakRetained = objc_loadWeakRetained(&self->_photoLibrary);
-  v4 = [WeakRetained librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [WeakRetained librarySpecificFetchOptions];
 
-  [v4 setPersonContext:1];
-  v5 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v4];
+  [librarySpecificFetchOptions setPersonContext:1];
+  v5 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
   v6 = v5;
   if (maximumNumberOfPeople && [v5 count] > maximumNumberOfPeople)
   {
-    v7 = [v6 fetchedObjects];
-    v8 = [objc_opt_class() _personSortDescriptors];
-    v9 = [v7 sortedArrayUsingDescriptors:v8];
+    fetchedObjects = [v6 fetchedObjects];
+    _personSortDescriptors = [objc_opt_class() _personSortDescriptors];
+    v9 = [fetchedObjects sortedArrayUsingDescriptors:_personSortDescriptors];
 
     v10 = [v9 subarrayWithRange:{0, maximumNumberOfPeople}];
   }
@@ -60,10 +60,10 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * i) localIdentifier];
-        if (v17)
+        localIdentifier = [*(*(&v19 + 1) + 8 * i) localIdentifier];
+        if (localIdentifier)
         {
-          [v11 addObject:v17];
+          [v11 addObject:localIdentifier];
         }
       }
 
@@ -86,20 +86,20 @@
   objc_sync_exit(obj);
 }
 
-- (CLSFocusPeopleCache)initWithPhotoLibrary:(id)a3 maximumNumberOfPeople:(unint64_t)a4
+- (CLSFocusPeopleCache)initWithPhotoLibrary:(id)library maximumNumberOfPeople:(unint64_t)people
 {
-  v6 = a3;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = CLSFocusPeopleCache;
   v7 = [(CLSFocusPeopleCache *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_photoLibrary, v6);
-    v8->_maximumNumberOfPeople = a4;
-    v9 = [(CLSFocusPeopleCache *)v8 _collectValidPersonLocalIdentifiers];
+    objc_storeWeak(&v7->_photoLibrary, libraryCopy);
+    v8->_maximumNumberOfPeople = people;
+    _collectValidPersonLocalIdentifiers = [(CLSFocusPeopleCache *)v8 _collectValidPersonLocalIdentifiers];
     personLocalIdentifiers = v8->_personLocalIdentifiers;
-    v8->_personLocalIdentifiers = v9;
+    v8->_personLocalIdentifiers = _collectValidPersonLocalIdentifiers;
   }
 
   return v8;

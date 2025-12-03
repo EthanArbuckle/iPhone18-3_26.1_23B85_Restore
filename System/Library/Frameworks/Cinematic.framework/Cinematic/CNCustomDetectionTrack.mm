@@ -29,9 +29,9 @@
 {
   if ([(CNCustomDetectionTrack *)self _integrityCheck])
   {
-    v3 = [(CNCustomDetectionTrack *)self _internalCustomTrack];
-    v4 = [v3 allDetections];
-    v5 = [CNDetection _copyDetectionsFromInternal:v4];
+    _internalCustomTrack = [(CNCustomDetectionTrack *)self _internalCustomTrack];
+    allDetections = [_internalCustomTrack allDetections];
+    v5 = [CNDetection _copyDetectionsFromInternal:allDetections];
   }
 
   else
@@ -44,7 +44,7 @@
 
 - (BOOL)_integrityCheck
 {
-  v3 = [(CNDetectionTrack *)self internalTrack];
+  internalTrack = [(CNDetectionTrack *)self internalTrack];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -65,7 +65,7 @@
   v14 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [a1 internalTrack];
+  internalTrack = [self internalTrack];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v10 = 138412546;

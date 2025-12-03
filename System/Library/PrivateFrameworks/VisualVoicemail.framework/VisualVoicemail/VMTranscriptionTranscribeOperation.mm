@@ -1,28 +1,28 @@
 @interface VMTranscriptionTranscribeOperation
 - (BOOL)processOnServer;
-- (VMTranscriptionTranscribeOperation)initWithSpeechRecognizer:(id)a3 speechURLRecognitionRequest:(id)a4;
+- (VMTranscriptionTranscribeOperation)initWithSpeechRecognizer:(id)recognizer speechURLRecognitionRequest:(id)request;
 - (void)cancel;
 - (void)main;
-- (void)setProcessOnServer:(BOOL)a3;
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4;
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4;
-- (void)speechRecognitionTask:(id)a3 didProcessAudioDuration:(double)a4;
-- (void)speechRecognitionTaskWasCancelled:(id)a3;
+- (void)setProcessOnServer:(BOOL)server;
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition;
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully;
+- (void)speechRecognitionTask:(id)task didProcessAudioDuration:(double)duration;
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled;
 @end
 
 @implementation VMTranscriptionTranscribeOperation
 
-- (VMTranscriptionTranscribeOperation)initWithSpeechRecognizer:(id)a3 speechURLRecognitionRequest:(id)a4
+- (VMTranscriptionTranscribeOperation)initWithSpeechRecognizer:(id)recognizer speechURLRecognitionRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = VMTranscriptionTranscribeOperation;
-  v7 = [(VMSpeechURLRecognitionRequestOperation *)&v10 initWithSpeechRecognizer:a3 speechURLRecognitionRequest:v6];
+  v7 = [(VMSpeechURLRecognitionRequestOperation *)&v10 initWithSpeechRecognizer:recognizer speechURLRecognitionRequest:requestCopy];
   v8 = v7;
   if (v7)
   {
     v7->_timeout = 60.0;
-    [v6 _setForceOfflineRecognition:1];
+    [requestCopy _setForceOfflineRecognition:1];
   }
 
   return v8;
@@ -37,7 +37,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cancelled transcribe operation %@.", buf, 0xCu);
   }
 }
@@ -48,32 +48,32 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = [(VMSpeechURLRecognitionRequestOperation *)self URL];
-    v5 = [(VMTranscriptionTranscribeOperation *)self queuePriority];
+    queuePriority = [(VMTranscriptionTranscribeOperation *)self queuePriority];
     v6 = +[MFPowerController sharedInstance];
-    v7 = [v6 isPluggedIn];
+    isPluggedIn = [v6 isPluggedIn];
     v8 = @" not";
     *buf = 138413058;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    if (v7)
+    if (isPluggedIn)
     {
       v8 = &stru_1000F0098;
     }
 
     *&buf[14] = v4;
     v31 = 2048;
-    v32 = v5;
+    v32 = queuePriority;
     v33 = 2112;
     v34 = v8;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting transcription operation %@ for %@. Priority is %ld and device is %@ charging.", buf, 0x2Au);
   }
 
-  v9 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationBeginCallback];
+  transcribeOperationBeginCallback = [(VMTranscriptionTranscribeOperation *)self transcribeOperationBeginCallback];
 
-  if (v9)
+  if (transcribeOperationBeginCallback)
   {
-    v10 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationBeginCallback];
-    v10[2]();
+    transcribeOperationBeginCallback2 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationBeginCallback];
+    transcribeOperationBeginCallback2[2]();
   }
 
   if ([(VMTranscriptionTranscribeOperation *)self isCancelled])
@@ -92,23 +92,23 @@
       v20 = dispatch_semaphore_create(0);
       [(VMTranscriptionTranscribeOperation *)self setSemaphore:v20];
 
-      v21 = [(VMSpeechRecognizerOperation *)self speechRecognizer];
-      v22 = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
-      v17 = [v21 recognitionTaskWithRequest:v22 delegate:self];
+      speechRecognizer = [(VMSpeechRecognizerOperation *)self speechRecognizer];
+      speechRecognitionRequest = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
+      transcribeOperationCompletion2 = [speechRecognizer recognitionTaskWithRequest:speechRecognitionRequest delegate:self];
 
       v23 = vm_vmd_log();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
+        speechRecognitionRequest2 = [(VMSpeechRecognitionRequestOperation *)self speechRecognitionRequest];
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = transcribeOperationCompletion2;
         *&buf[12] = 2112;
-        *&buf[14] = v24;
+        *&buf[14] = speechRecognitionRequest2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Created speech recognition task %@ with speech recognition request %@.", buf, 0x16u);
       }
 
-      v25 = [(VMTranscriptionTranscribeOperation *)self semaphore];
-      dispatch_semaphore_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
+      semaphore = [(VMTranscriptionTranscribeOperation *)self semaphore];
+      dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
 
       v15 = 0;
       goto LABEL_17;
@@ -126,12 +126,12 @@
 
   if (v15)
   {
-    v16 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
+    transcribeOperationCompletion = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
 
-    if (v16)
+    if (transcribeOperationCompletion)
     {
-      v17 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
-      (v17)[2](v17, 0, v15);
+      transcribeOperationCompletion2 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
+      (transcribeOperationCompletion2)[2](transcribeOperationCompletion2, 0, v15);
 LABEL_17:
     }
   }
@@ -139,93 +139,93 @@ LABEL_17:
 
 - (BOOL)processOnServer
 {
-  v2 = [(VMSpeechURLRecognitionRequestOperation *)self speechURLRecognitionRequest];
-  v3 = [v2 _forceOfflineRecognition];
+  speechURLRecognitionRequest = [(VMSpeechURLRecognitionRequestOperation *)self speechURLRecognitionRequest];
+  _forceOfflineRecognition = [speechURLRecognitionRequest _forceOfflineRecognition];
 
-  return v3 ^ 1;
+  return _forceOfflineRecognition ^ 1;
 }
 
-- (void)setProcessOnServer:(BOOL)a3
+- (void)setProcessOnServer:(BOOL)server
 {
-  v3 = a3;
-  v4 = [(VMSpeechURLRecognitionRequestOperation *)self speechURLRecognitionRequest];
-  [v4 _setForceOfflineRecognition:!v3];
+  serverCopy = server;
+  speechURLRecognitionRequest = [(VMSpeechURLRecognitionRequestOperation *)self speechURLRecognitionRequest];
+  [speechURLRecognitionRequest _setForceOfflineRecognition:!serverCopy];
 }
 
-- (void)speechRecognitionTaskWasCancelled:(id)a3
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
+  cancelledCopy = cancelled;
+  transcribeOperationCompletion = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
 
-  if (v5)
+  if (transcribeOperationCompletion)
   {
     v6 = vm_vmd_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = cancelledCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Speech task was cancelled %@ for operation, executing result block.", &v10, 0xCu);
     }
 
-    v7 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
-    v8 = [v4 error];
-    (v7)[2](v7, 0, v8);
+    transcribeOperationCompletion2 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
+    error = [cancelledCopy error];
+    (transcribeOperationCompletion2)[2](transcribeOperationCompletion2, 0, error);
   }
 
-  v9 = [(VMTranscriptionTranscribeOperation *)self semaphore];
-  dispatch_semaphore_signal(v9);
+  semaphore = [(VMTranscriptionTranscribeOperation *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition
 {
-  v9 = a4;
-  if ([v9 isFinal])
+  recognitionCopy = recognition;
+  if ([recognitionCopy isFinal])
   {
     v5 = [VMVoicemailTranscript alloc];
-    v6 = [v9 bestTranscription];
-    v7 = [v5 initWithTranscription:v6];
+    bestTranscription = [recognitionCopy bestTranscription];
+    v7 = [v5 initWithTranscription:bestTranscription];
     [(VMTranscriptionTranscribeOperation *)self setTranscript:v7];
 
-    v8 = [(VMTranscriptionTranscribeOperation *)self semaphore];
-    dispatch_semaphore_signal(v8);
+    semaphore = [(VMTranscriptionTranscribeOperation *)self semaphore];
+    dispatch_semaphore_signal(semaphore);
   }
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully
 {
-  v5 = a3;
+  taskCopy = task;
   [(VMTranscriptionTranscribeOperation *)self duration];
   v7 = v6;
-  v8 = [(VMTranscriptionTranscribeOperation *)self progress];
-  [v8 setCompletedUnitCount:v7];
+  progress = [(VMTranscriptionTranscribeOperation *)self progress];
+  [progress setCompletedUnitCount:v7];
 
-  v9 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
+  transcribeOperationCompletion = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
 
-  if (v9)
+  if (transcribeOperationCompletion)
   {
     v10 = vm_vmd_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Finished transcribe operation %@, executing result block.", &v15, 0xCu);
     }
 
-    v11 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
-    v12 = [(VMTranscriptionTranscribeOperation *)self transcript];
-    v13 = [v5 error];
-    (v11)[2](v11, v12, v13);
+    transcribeOperationCompletion2 = [(VMTranscriptionTranscribeOperation *)self transcribeOperationCompletion];
+    transcript = [(VMTranscriptionTranscribeOperation *)self transcript];
+    error = [taskCopy error];
+    (transcribeOperationCompletion2)[2](transcribeOperationCompletion2, transcript, error);
   }
 
-  v14 = [(VMTranscriptionTranscribeOperation *)self semaphore];
-  dispatch_semaphore_signal(v14);
+  semaphore = [(VMTranscriptionTranscribeOperation *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
-- (void)speechRecognitionTask:(id)a3 didProcessAudioDuration:(double)a4
+- (void)speechRecognitionTask:(id)task didProcessAudioDuration:(double)duration
 {
-  v4 = a4;
-  v5 = [(VMTranscriptionTranscribeOperation *)self progress];
-  [v5 setCompletedUnitCount:v4];
+  durationCopy = duration;
+  progress = [(VMTranscriptionTranscribeOperation *)self progress];
+  [progress setCompletedUnitCount:durationCopy];
 }
 
 @end

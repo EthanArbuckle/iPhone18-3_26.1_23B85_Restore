@@ -1,61 +1,61 @@
 @interface QLPUAnimationGroup
-+ (id)animationGroupWithAnimations:(id)a3;
-+ (void)popAnimationGroup:(id)a3;
-+ (void)pushAnimationGroup:(id)a3;
++ (id)animationGroupWithAnimations:(id)animations;
++ (void)popAnimationGroup:(id)group;
++ (void)pushAnimationGroup:(id)group;
 - (BOOL)isReadyToComplete;
 - (QLPUAnimationGroup)superAnimationGroup;
 - (double)elapsedTime;
 - (id)description;
-- (void)addSubAnimationGroup:(id)a3;
+- (void)addSubAnimationGroup:(id)group;
 - (void)complete;
 - (void)completeIfNeeded;
 - (void)dealloc;
 - (void)finishImmediately;
-- (void)setCompletionHandler:(id)a3;
-- (void)setElapsedTime:(double)a3;
-- (void)setSuperAnimationGroup:(id)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setElapsedTime:(double)time;
+- (void)setSuperAnimationGroup:(id)group;
 @end
 
 @implementation QLPUAnimationGroup
 
-+ (id)animationGroupWithAnimations:(id)a3
++ (id)animationGroupWithAnimations:(id)animations
 {
-  v3 = a3;
+  animationsCopy = animations;
   v4 = objc_alloc_init(QLPUAnimationGroup);
   [QLPUAnimationGroup pushAnimationGroup:v4];
-  v3[2](v3);
+  animationsCopy[2](animationsCopy);
 
   [QLPUAnimationGroup popAnimationGroup:v4];
 
   return v4;
 }
 
-+ (void)pushAnimationGroup:(id)a3
++ (void)pushAnimationGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   if (__rootAnimationGroup)
   {
-    [__currentAnimationGroup addSubAnimationGroup:v4];
+    [__currentAnimationGroup addSubAnimationGroup:groupCopy];
   }
 
   else
   {
-    objc_storeStrong(&__rootAnimationGroup, a3);
+    objc_storeStrong(&__rootAnimationGroup, group);
   }
 
   v5 = __currentAnimationGroup;
-  __currentAnimationGroup = v4;
+  __currentAnimationGroup = groupCopy;
 }
 
-+ (void)popAnimationGroup:(id)a3
++ (void)popAnimationGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 superAnimationGroup];
+  groupCopy = group;
+  superAnimationGroup = [groupCopy superAnimationGroup];
   v5 = __currentAnimationGroup;
-  __currentAnimationGroup = v4;
+  __currentAnimationGroup = superAnimationGroup;
 
   v6 = __rootAnimationGroup;
-  if (v6 == v3)
+  if (v6 == groupCopy)
   {
     __rootAnimationGroup = 0;
   }
@@ -117,12 +117,12 @@ void __29__QLPUAnimationGroup_dealloc__block_invoke(uint64_t a1)
 
 - (double)elapsedTime
 {
-  v2 = [(QLPUAnimationGroup *)self subAnimationGroups];
-  v3 = [v2 firstObject];
+  subAnimationGroups = [(QLPUAnimationGroup *)self subAnimationGroups];
+  firstObject = [subAnimationGroups firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 elapsedTime];
+    [firstObject elapsedTime];
     v5 = v4;
   }
 
@@ -134,15 +134,15 @@ void __29__QLPUAnimationGroup_dealloc__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(QLPUAnimationGroup *)self subAnimationGroups];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subAnimationGroups = [(QLPUAnimationGroup *)self subAnimationGroups];
+  v5 = [subAnimationGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -154,14 +154,14 @@ void __29__QLPUAnimationGroup_dealloc__block_invoke(uint64_t a1)
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subAnimationGroups);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) setElapsedTime:a3];
+        [*(*(&v10 + 1) + 8 * v8++) setElapsedTime:time];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [subAnimationGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -170,27 +170,27 @@ void __29__QLPUAnimationGroup_dealloc__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSubAnimationGroup:(id)a3
+- (void)addSubAnimationGroup:(id)group
 {
-  v8 = a3;
-  v4 = [(QLPUAnimationGroup *)self subAnimationGroups];
+  groupCopy = group;
+  subAnimationGroups = [(QLPUAnimationGroup *)self subAnimationGroups];
 
-  if (!v4)
+  if (!subAnimationGroups)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     subAnimationGroups = self->_subAnimationGroups;
-    self->_subAnimationGroups = v5;
+    self->_subAnimationGroups = array;
   }
 
-  v7 = [(QLPUAnimationGroup *)self subAnimationGroups];
-  [v7 addObject:v8];
+  subAnimationGroups2 = [(QLPUAnimationGroup *)self subAnimationGroups];
+  [subAnimationGroups2 addObject:groupCopy];
 
-  [v8 setSuperAnimationGroup:self];
+  [groupCopy setSuperAnimationGroup:self];
 }
 
-- (void)setSuperAnimationGroup:(id)a3
+- (void)setSuperAnimationGroup:(id)group
 {
-  obj = a3;
+  obj = group;
   WeakRetained = objc_loadWeakRetained(&self->_superAnimationGroup);
 
   v5 = obj;
@@ -210,21 +210,21 @@ void __29__QLPUAnimationGroup_dealloc__block_invoke(uint64_t a1)
 - (BOOL)isReadyToComplete
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(QLPUAnimationGroup *)self isPaused];
-  if (v3)
+  isPaused = [(QLPUAnimationGroup *)self isPaused];
+  if (isPaused)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = v3;
+    v5 = isPaused;
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(QLPUAnimationGroup *)self subAnimationGroups];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subAnimationGroups = [(QLPUAnimationGroup *)self subAnimationGroups];
+    v7 = [subAnimationGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -236,7 +236,7 @@ void __29__QLPUAnimationGroup_dealloc__block_invoke(uint64_t a1)
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subAnimationGroups);
           }
 
           if (![*(*(&v13 + 1) + 8 * i) isReadyToComplete])
@@ -246,7 +246,7 @@ void __29__QLPUAnimationGroup_dealloc__block_invoke(uint64_t a1)
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subAnimationGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -271,11 +271,11 @@ LABEL_14:
 - (void)completeIfNeeded
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(QLPUAnimationGroup *)self superAnimationGroup];
-  v4 = v3;
-  if (v3)
+  superAnimationGroup = [(QLPUAnimationGroup *)self superAnimationGroup];
+  v4 = superAnimationGroup;
+  if (superAnimationGroup)
   {
-    [v3 completeIfNeeded];
+    [superAnimationGroup completeIfNeeded];
   }
 
   else if ([(QLPUAnimationGroup *)self isReadyToComplete])
@@ -285,8 +285,8 @@ LABEL_14:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(QLPUAnimationGroup *)self subAnimationGroups];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subAnimationGroups = [(QLPUAnimationGroup *)self subAnimationGroups];
+    v6 = [subAnimationGroups countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -297,13 +297,13 @@ LABEL_14:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subAnimationGroups);
           }
 
           [*(*(&v11 + 1) + 8 * i) complete];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [subAnimationGroups countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -313,18 +313,18 @@ LABEL_14:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __43__QLPUAnimationGroup_setCompletionHandler___block_invoke;
     v9[3] = &unk_278B58460;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     v6 = [v9 copy];
     completionHandler = self->_completionHandler;
     self->_completionHandler = v6;
@@ -341,13 +341,13 @@ LABEL_14:
 
 - (void)complete
 {
-  v3 = [(QLPUAnimationGroup *)self completionHandler];
-  if (v3)
+  completionHandler = [(QLPUAnimationGroup *)self completionHandler];
+  if (completionHandler)
   {
-    v4 = v3;
+    v4 = completionHandler;
     [(QLPUAnimationGroup *)self setCompletionHandler:0];
     v4[2](v4);
-    v3 = v4;
+    completionHandler = v4;
   }
 }
 
@@ -358,8 +358,8 @@ LABEL_14:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(QLPUAnimationGroup *)self subAnimationGroups];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  subAnimationGroups = [(QLPUAnimationGroup *)self subAnimationGroups];
+  v3 = [subAnimationGroups countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -371,14 +371,14 @@ LABEL_14:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subAnimationGroups);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) finishImmediately];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [subAnimationGroups countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

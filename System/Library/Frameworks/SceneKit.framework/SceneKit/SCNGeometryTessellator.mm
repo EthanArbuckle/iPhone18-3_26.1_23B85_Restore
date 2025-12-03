@@ -1,13 +1,13 @@
 @interface SCNGeometryTessellator
-- ($FD31CB4CBA95066EF4C93929357FF4F2)_tessellatorValueForGeometry:(SEL)a3;
+- ($FD31CB4CBA95066EF4C93929357FF4F2)_tessellatorValueForGeometry:(SEL)geometry;
 - (SCNGeometryTessellator)init;
-- (SCNGeometryTessellator)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNGeometryTessellator)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeClient:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeClient:(id)client;
 - (void)setAdaptive:(BOOL)adaptive;
 - (void)setEdgeTessellationFactor:(CGFloat)edgeTessellationFactor;
 - (void)setInsideTessellationFactor:(CGFloat)insideTessellationFactor;
@@ -17,7 +17,7 @@
 - (void)setTessellationFactorScale:(CGFloat)tessellationFactorScale;
 - (void)setTessellationPartitionMode:(MTLTessellationPartitionMode)tessellationPartitionMode;
 - (void)tessellatorValueDidChange;
-- (void)tessellatorValueDidChangeForClient:(id)a3;
+- (void)tessellatorValueDidChangeForClient:(id)client;
 @end
 
 @implementation SCNGeometryTessellator
@@ -39,7 +39,7 @@
   return v2;
 }
 
-- (SCNGeometryTessellator)initWithCoder:(id)a3
+- (SCNGeometryTessellator)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = SCNGeometryTessellator;
@@ -47,39 +47,39 @@
   if (v4)
   {
     v4->_clients = CFSetCreateMutable(*MEMORY[0x277CBECE8], 0, 0);
-    [a3 decodeFloatForKey:@"tessellationFactorScale"];
+    [coder decodeFloatForKey:@"tessellationFactorScale"];
     v4->_tessellationFactorScale = v5;
-    [a3 decodeFloatForKey:@"maximumEdgeLength"];
+    [coder decodeFloatForKey:@"maximumEdgeLength"];
     v4->_maximumEdgeLength = v6;
-    [a3 decodeFloatForKey:@"edgeTessellationFactor"];
+    [coder decodeFloatForKey:@"edgeTessellationFactor"];
     v4->_edgeTessellationFactor = v7;
-    [a3 decodeFloatForKey:@"insideTessellationFactor"];
+    [coder decodeFloatForKey:@"insideTessellationFactor"];
     v4->_insideTessellationFactor = v8;
-    v4->_adaptive = [a3 decodeBoolForKey:@"adaptive"];
-    v4->_screenSpace = [a3 decodeBoolForKey:@"screenSpace"];
-    v4->_partitionMode = [a3 decodeIntegerForKey:@"tessellationPartitionMode"];
-    v4->_smoothingMode = [a3 decodeIntegerForKey:@"smoothingMode"];
+    v4->_adaptive = [coder decodeBoolForKey:@"adaptive"];
+    v4->_screenSpace = [coder decodeBoolForKey:@"screenSpace"];
+    v4->_partitionMode = [coder decodeIntegerForKey:@"tessellationPartitionMode"];
+    v4->_smoothingMode = [coder decodeIntegerForKey:@"smoothingMode"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *&v3 = self->_tessellationFactorScale;
-  [a3 encodeFloat:@"tessellationFactorScale" forKey:v3];
+  [coder encodeFloat:@"tessellationFactorScale" forKey:v3];
   *&v6 = self->_maximumEdgeLength;
-  [a3 encodeFloat:@"maximumEdgeLength" forKey:v6];
+  [coder encodeFloat:@"maximumEdgeLength" forKey:v6];
   *&v7 = self->_edgeTessellationFactor;
-  [a3 encodeFloat:@"edgeTessellationFactor" forKey:v7];
+  [coder encodeFloat:@"edgeTessellationFactor" forKey:v7];
   *&v8 = self->_insideTessellationFactor;
-  [a3 encodeFloat:@"insideTessellationFactor" forKey:v8];
-  [a3 encodeBool:self->_adaptive forKey:@"adaptive"];
-  [a3 encodeBool:self->_screenSpace forKey:@"screenSpace"];
-  [a3 encodeInteger:self->_partitionMode forKey:@"tessellationPartitionMode"];
+  [coder encodeFloat:@"insideTessellationFactor" forKey:v8];
+  [coder encodeBool:self->_adaptive forKey:@"adaptive"];
+  [coder encodeBool:self->_screenSpace forKey:@"screenSpace"];
+  [coder encodeInteger:self->_partitionMode forKey:@"tessellationPartitionMode"];
   smoothingMode = self->_smoothingMode;
 
-  [a3 encodeInteger:smoothingMode forKey:@"smoothingMode"];
+  [coder encodeInteger:smoothingMode forKey:@"smoothingMode"];
 }
 
 - (void)dealloc
@@ -117,24 +117,24 @@
   }
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   [(NSMutableSet *)self->_clients addObject:?];
 
-  [(SCNGeometryTessellator *)self tessellatorValueDidChangeForClient:a3];
+  [(SCNGeometryTessellator *)self tessellatorValueDidChangeForClient:client];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v5 = [a3 geometryRef];
-  v6 = [a3 sceneRef];
+  geometryRef = [client geometryRef];
+  sceneRef = [client sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SCNGeometryTessellator_removeClient___block_invoke;
   v7[3] = &__block_descriptor_40_e8_v16__0d8l;
-  v7[4] = v5;
-  [SCNTransaction postCommandWithContext:v6 object:a3 applyBlock:v7];
-  [(NSMutableSet *)self->_clients removeObject:a3];
+  v7[4] = geometryRef;
+  [SCNTransaction postCommandWithContext:sceneRef object:client applyBlock:v7];
+  [(NSMutableSet *)self->_clients removeObject:client];
 }
 
 void __39__SCNGeometryTessellator_removeClient___block_invoke(uint64_t a1)
@@ -176,9 +176,9 @@ void __39__SCNGeometryTessellator_removeClient___block_invoke(uint64_t a1)
   }
 }
 
-- ($FD31CB4CBA95066EF4C93929357FF4F2)_tessellatorValueForGeometry:(SEL)a3
+- ($FD31CB4CBA95066EF4C93929357FF4F2)_tessellatorValueForGeometry:(SEL)geometry
 {
-  v6 = [a4 tessellator];
+  tessellator = [a4 tessellator];
   *&retstr->var2 = 0;
   retstr->var4 = 0;
   *&retstr->var0 = 0;
@@ -187,9 +187,9 @@ void __39__SCNGeometryTessellator_removeClient___block_invoke(uint64_t a1)
     v7 = 4;
   }
 
-  else if ([v6 isAdaptive])
+  else if ([tessellator isAdaptive])
   {
-    if ([v6 isScreenSpace])
+    if ([tessellator isScreenSpace])
     {
       v7 = 2;
     }
@@ -206,7 +206,7 @@ void __39__SCNGeometryTessellator_removeClient___block_invoke(uint64_t a1)
   }
 
   retstr->var0 = v7;
-  [v6 tessellationFactorScale];
+  [tessellator tessellationFactorScale];
   if (v8 < 0.00100000005)
   {
     v8 = 0.00100000005;
@@ -214,16 +214,16 @@ void __39__SCNGeometryTessellator_removeClient___block_invoke(uint64_t a1)
 
   v9 = v8;
   retstr->var1 = v9;
-  retstr->var2 = [v6 tessellationPartitionMode];
-  retstr->var3 = [v6 smoothingMode];
+  retstr->var2 = [tessellator tessellationPartitionMode];
+  retstr->var3 = [tessellator smoothingMode];
   if (v7 <= 2u)
   {
     if (v7 == 1)
     {
-      [v6 edgeTessellationFactor];
+      [tessellator edgeTessellationFactor];
       *&v10 = v10;
       retstr->var4.var0.var0 = *&v10;
-      result = [v6 insideTessellationFactor];
+      result = [tessellator insideTessellationFactor];
       *&v12 = v12;
       retstr->var4.var0.var1 = *&v12;
       return result;
@@ -235,15 +235,15 @@ void __39__SCNGeometryTessellator_removeClient___block_invoke(uint64_t a1)
   if (v7 == 3)
   {
 LABEL_14:
-    result = [v6 maximumEdgeLength];
+    result = [tessellator maximumEdgeLength];
     *&v13 = v13;
     retstr->var4.var0.var0 = *&v13;
     return result;
   }
 
-  [v6 tessellationFactorScale];
+  [tessellator tessellationFactorScale];
   retstr->var4.var3.var0 = v14;
-  result = [v6 isScreenSpace];
+  result = [tessellator isScreenSpace];
   if (result)
   {
     v15 = 3;
@@ -258,24 +258,24 @@ LABEL_14:
   return result;
 }
 
-- (void)tessellatorValueDidChangeForClient:(id)a3
+- (void)tessellatorValueDidChangeForClient:(id)client
 {
   v8 = 0uLL;
   v9 = 0;
   if (self)
   {
-    [(SCNGeometryTessellator *)self _tessellatorValueForGeometry:a3];
+    [(SCNGeometryTessellator *)self _tessellatorValueForGeometry:client];
   }
 
-  v4 = [a3 sceneRef];
+  sceneRef = [client sceneRef];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__SCNGeometryTessellator_tessellatorValueDidChangeForClient___block_invoke;
   v5[3] = &unk_2783002D8;
-  v5[4] = a3;
+  v5[4] = client;
   v6 = v8;
   v7 = v9;
-  [SCNTransaction postCommandWithContext:v4 object:a3 applyBlock:v5];
+  [SCNTransaction postCommandWithContext:sceneRef object:client applyBlock:v5];
 }
 
 void __61__SCNGeometryTessellator_tessellatorValueDidChangeForClient___block_invoke(uint64_t a1)
@@ -286,7 +286,7 @@ void __61__SCNGeometryTessellator_tessellatorValueDidChangeForClient___block_inv
   C3DGeometrySetTessellator(v2, &v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SCNGeometryTessellator *)self tessellationFactorScale];

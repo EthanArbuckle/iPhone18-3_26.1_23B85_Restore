@@ -1,15 +1,15 @@
 @interface PKDashboardAuxiliaryPassInformationViewController
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (PKDashboardAuxiliaryPassInformationViewController)initWithItem:(id)a3 forPass:(id)a4;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (PKDashboardAuxiliaryPassInformationViewController)initWithItem:(id)item forPass:(id)pass;
 - (id)_barButtonItems;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_handleMessageButtonTapped;
 - (void)_handlePhoneButtonTapped;
 - (void)_showMapsDetailsViewController;
-- (void)_updateHeaderCellWithAnimationProgress:(id)a3;
-- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)a3;
-- (void)_updateNavigationBarIconWithLogoURL:(id)a3;
+- (void)_updateHeaderCellWithAnimationProgress:(id)progress;
+- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)appeared;
+- (void)_updateNavigationBarIconWithLogoURL:(id)l;
 - (void)dealloc;
 - (void)updateContent;
 - (void)viewDidLayoutSubviews;
@@ -19,12 +19,12 @@
 
 @implementation PKDashboardAuxiliaryPassInformationViewController
 
-- (PKDashboardAuxiliaryPassInformationViewController)initWithItem:(id)a3 forPass:(id)a4
+- (PKDashboardAuxiliaryPassInformationViewController)initWithItem:(id)item forPass:(id)pass
 {
   v24[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PKAuxiliaryPassInformationDataSource alloc] initWithItem:v7 forPass:v6];
+  passCopy = pass;
+  itemCopy = item;
+  v8 = [[PKAuxiliaryPassInformationDataSource alloc] initWithItem:itemCopy forPass:passCopy];
 
   v9 = objc_alloc_init(PKDashboardDetailHeaderItemPresenter);
   v10 = objc_alloc_init(PKDashboardTextActionItemPresenter);
@@ -41,20 +41,20 @@
 
   if (v14)
   {
-    v15 = [(PKDashboardAuxiliaryPassInformationViewController *)v14 navigationItem];
-    v16 = [(PKDashboardAuxiliaryPassInformationViewController *)v14 _barButtonItems];
-    [v15 setRightBarButtonItems:v16];
+    navigationItem = [(PKDashboardAuxiliaryPassInformationViewController *)v14 navigationItem];
+    _barButtonItems = [(PKDashboardAuxiliaryPassInformationViewController *)v14 _barButtonItems];
+    [navigationItem setRightBarButtonItems:_barButtonItems];
 
-    v17 = [v15 standardAppearance];
-    v18 = [v17 backgroundEffect];
-    [(PKDashboardDetailHeaderItemPresenter *)v9 setOverlayEffect:v18];
+    standardAppearance = [navigationItem standardAppearance];
+    backgroundEffect = [standardAppearance backgroundEffect];
+    [(PKDashboardDetailHeaderItemPresenter *)v9 setOverlayEffect:backgroundEffect];
 
-    v19 = [v17 shadowColor];
-    [(PKDashboardDetailHeaderItemPresenter *)v9 setShadowColor:v19];
+    shadowColor = [standardAppearance shadowColor];
+    [(PKDashboardDetailHeaderItemPresenter *)v9 setShadowColor:shadowColor];
 
-    v20 = [(PKAuxiliaryPassInformationDataSource *)v8 headerIndexPath];
+    headerIndexPath = [(PKAuxiliaryPassInformationDataSource *)v8 headerIndexPath];
     headerIndexPath = v14->_headerIndexPath;
-    v14->_headerIndexPath = v20;
+    v14->_headerIndexPath = headerIndexPath;
   }
 
   return v14;
@@ -80,25 +80,25 @@
   v5.receiver = self;
   v5.super_class = PKDashboardAuxiliaryPassInformationViewController;
   [(PKDashboardViewController *)&v5 viewDidLoad];
-  v3 = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
+  view = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
   v4 = +[PKDashboardViewController backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
-- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)a3
+- (void)_updateNavigationBarIconForNavigationBarAppeared:(BOOL)appeared
 {
-  v3 = a3;
+  appearedCopy = appeared;
   titleIconImageView = self->_titleIconImageView;
   if (titleIconImageView)
   {
     titleView = self->_titleView;
-    if (v3)
+    if (appearedCopy)
     {
       if (!titleView)
       {
-        v7 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationController];
-        v8 = [v7 navigationBar];
-        [v8 frame];
+        navigationController = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationController];
+        navigationBar = [navigationController navigationBar];
+        [navigationBar frame];
         v10 = v9;
 
         v11 = [[PKAnimatedNavigationBarTitleView alloc] initWithFrame:0.0, 0.0, v10, v10];
@@ -106,8 +106,8 @@
         self->_titleView = v11;
 
         [(PKAnimatedNavigationBarTitleView *)self->_titleView setMaxWidth:33.0];
-        v13 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
-        [v13 pkui_setCenterAlignedTitleView:self->_titleView];
+        navigationItem = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
+        [navigationItem pkui_setCenterAlignedTitleView:self->_titleView];
 
         titleView = self->_titleView;
         titleIconImageView = self->_titleIconImageView;
@@ -124,9 +124,9 @@
 
   else if (self->_titleText)
   {
-    v14 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
-    v16 = v14;
-    if (v3)
+    navigationItem2 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
+    v16 = navigationItem2;
+    if (appearedCopy)
     {
       titleText = self->_titleText;
     }
@@ -136,7 +136,7 @@
       titleText = 0;
     }
 
-    [v14 _setTitle:titleText animated:1];
+    [navigationItem2 _setTitle:titleText animated:1];
   }
 }
 
@@ -145,10 +145,10 @@
   v40.receiver = self;
   v40.super_class = PKDashboardAuxiliaryPassInformationViewController;
   [(PKDashboardAuxiliaryPassInformationViewController *)&v40 viewWillLayoutSubviews];
-  v3 = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
-  [v3 safeAreaInsets];
+  [collectionView safeAreaInsets];
   v8 = v7;
   v9 = MEMORY[0x1E69DDCE0];
   v10 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -167,7 +167,7 @@
   v14 = v9[3];
   v15 = *v9;
   v16 = self->_headerHeight - v8;
-  [v3 pkui_naturalRestingBounds];
+  [collectionView pkui_naturalRestingBounds];
   v18 = v5 - v17;
   v19 = v16 - (v5 - v17);
   if (v18 < 0.0)
@@ -175,16 +175,16 @@
     v16 = v19;
   }
 
-  [v3 verticalScrollIndicatorInsets];
+  [collectionView verticalScrollIndicatorInsets];
   if (v23 != v10 || (v20 == v16 ? (v24 = v22 == v14) : (v24 = 0), v24 ? (v25 = v21 == v13) : (v25 = 0), !v25))
   {
-    [v3 setVerticalScrollIndicatorInsets:{v16, v10, v13, v14}];
+    [collectionView setVerticalScrollIndicatorInsets:{v16, v10, v13, v14}];
   }
 
-  [v3 contentInset];
+  [collectionView contentInset];
   if (v29 != v10 || v26 != v15 || v28 != v14 || v27 != v13)
   {
-    [v3 setContentInset:{v15, v10, v13, v14}];
+    [collectionView setContentInset:{v15, v10, v13, v14}];
   }
 
   headerHeight = self->_headerHeight;
@@ -217,8 +217,8 @@ LABEL_37:
 LABEL_38:
   if (self->_headerIndexPath)
   {
-    v38 = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
-    v39 = [v38 cellForItemAtIndexPath:self->_headerIndexPath];
+    collectionView2 = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
+    v39 = [collectionView2 cellForItemAtIndexPath:self->_headerIndexPath];
 
     if (v39)
     {
@@ -236,14 +236,14 @@ LABEL_38:
   v15.receiver = self;
   v15.super_class = PKDashboardAuxiliaryPassInformationViewController;
   [(PKDashboardAuxiliaryPassInformationViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
-  [v3 bounds];
+  view = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
+  [view bounds];
   if (self->_footerContainer)
   {
     v7 = v4;
     v8 = v5;
     v9 = v6;
-    [v3 safeAreaInsets];
+    [view safeAreaInsets];
     v11 = v10;
     v13 = v8 - v10 - v12;
     [(PKDashboardViewControllerFooterContainer *)self->_footerContainer sizeThatFits:v13, v9];
@@ -256,22 +256,22 @@ LABEL_38:
   v45.receiver = self;
   v45.super_class = PKDashboardAuxiliaryPassInformationViewController;
   [(PKDashboardViewController *)&v45 updateContent];
-  v3 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
-  v4 = [v3 rightBarButtonItems];
-  v5 = [(PKDashboardAuxiliaryPassInformationViewController *)self _barButtonItems];
+  navigationItem = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  _barButtonItems = [(PKDashboardAuxiliaryPassInformationViewController *)self _barButtonItems];
   if ((PKEqualObjects() & 1) == 0)
   {
-    [v3 setRightBarButtonItems:v5 animated:1];
+    [navigationItem setRightBarButtonItems:_barButtonItems animated:1];
   }
 
-  v44 = v5;
-  v6 = [(PKDashboardViewController *)self dataSource];
-  v7 = [v6 merchant];
+  v44 = _barButtonItems;
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  merchant = [dataSource merchant];
   PKUIScreenScale();
   v8 = PKMapsIconForMerchant();
-  v9 = [v7 logoImageURL];
-  v10 = [v6 item];
-  v11 = v10;
+  logoImageURL = [merchant logoImageURL];
+  item = [dataSource item];
+  v11 = item;
   if (v8)
   {
     v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
@@ -281,21 +281,21 @@ LABEL_38:
     [(UIImageView *)self->_titleIconImageView setContentMode:1];
     [(UIImageView *)self->_titleIconImageView _setContinuousCornerRadius:3.0];
     [(UIImageView *)self->_titleIconImageView setClipsToBounds:1];
-    [(PKDashboardAuxiliaryPassInformationViewController *)self _updateNavigationBarIconWithLogoURL:v9];
+    [(PKDashboardAuxiliaryPassInformationViewController *)self _updateNavigationBarIconWithLogoURL:logoImageURL];
   }
 
   else
   {
-    v14 = [v10 title];
+    title = [item title];
     titleText = self->_titleText;
-    self->_titleText = v14;
+    self->_titleText = title;
   }
 
-  v43 = v9;
-  v16 = [v11 detailFooterLeadingTitle];
-  if (v16)
+  v43 = logoImageURL;
+  detailFooterLeadingTitle = [v11 detailFooterLeadingTitle];
+  if (detailFooterLeadingTitle)
   {
-    v40 = v4;
+    v40 = rightBarButtonItems;
     footer = self->_footer;
     if (!footer)
     {
@@ -310,8 +310,8 @@ LABEL_38:
 
       [(PKDashboardViewControllerFooterView *)self->_footer setDetailNumberOfLines:2];
       v25 = objc_alloc(MEMORY[0x1E69DD6C8]);
-      v26 = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
-      v27 = [v25 initWithScrollView:v26 edge:4 style:1];
+      collectionView = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
+      v27 = [v25 initWithScrollView:collectionView edge:4 style:1];
 
       [(PKDashboardViewControllerFooterView *)self->_footer addInteraction:v27];
       v28 = [[PKDashboardViewControllerFooterContainer alloc] initWithFrame:v19, v20, v21, v22];
@@ -319,30 +319,30 @@ LABEL_38:
       self->_footerContainer = v28;
 
       [(PKDashboardViewControllerFooterContainer *)self->_footerContainer setCurrentFooter:self->_footer];
-      v30 = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
-      [v30 addSubview:self->_footerContainer];
+      view = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
+      [view addSubview:self->_footerContainer];
 
       footer = self->_footer;
     }
 
     v31 = [(PKDashboardViewControllerFooterView *)footer leadingTitle:v40];
-    [v31 setText:v16];
+    [v31 setText:detailFooterLeadingTitle];
 
-    v32 = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
-    v33 = [v11 detailFooterLeadingText];
-    [v32 setText:v33];
+    leadingDetail = [(PKDashboardViewControllerFooterView *)self->_footer leadingDetail];
+    detailFooterLeadingText = [v11 detailFooterLeadingText];
+    [leadingDetail setText:detailFooterLeadingText];
 
-    v34 = [v11 detailFooterTrailingTitle];
-    v35 = [(PKDashboardViewControllerFooterView *)self->_footer trailingTitle];
-    [v35 setText:v34];
+    detailFooterTrailingTitle = [v11 detailFooterTrailingTitle];
+    trailingTitle = [(PKDashboardViewControllerFooterView *)self->_footer trailingTitle];
+    [trailingTitle setText:detailFooterTrailingTitle];
 
-    v36 = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
-    v37 = [v11 detailFooterTrailingText];
-    [v36 setText:v37];
+    trailingDetail = [(PKDashboardViewControllerFooterView *)self->_footer trailingDetail];
+    detailFooterTrailingText = [v11 detailFooterTrailingText];
+    [trailingDetail setText:detailFooterTrailingText];
 
     [(PKDashboardViewControllerFooterView *)self->_footer setNeedsLayout];
-    v4 = v41;
-    v3 = v42;
+    rightBarButtonItems = v41;
+    navigationItem = v42;
   }
 
   else
@@ -350,26 +350,26 @@ LABEL_38:
     [(PKDashboardViewControllerFooterContainer *)self->_footerContainer setCurrentFooter:0];
   }
 
-  v38 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
-  v39 = [v6 navigationBarTitle];
-  [v38 setBackButtonTitle:v39];
+  navigationItem2 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationItem];
+  navigationBarTitle = [dataSource navigationBarTitle];
+  [navigationItem2 setBackButtonTitle:navigationBarTitle];
 
-  [v38 setBackButtonDisplayMode:1];
+  [navigationItem2 setBackButtonDisplayMode:1];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a5;
+  pathCopy = path;
   v16.receiver = self;
   v16.super_class = PKDashboardAuxiliaryPassInformationViewController;
-  [(PKDashboardViewController *)&v16 collectionView:a3 layout:a4 sizeForItemAtIndexPath:v8];
+  [(PKDashboardViewController *)&v16 collectionView:view layout:layout sizeForItemAtIndexPath:pathCopy];
   v10 = v9;
   v12 = v11;
-  if (self->_headerIndexPath && [v8 isEqual:?] && self->_headerHeight != v12)
+  if (self->_headerIndexPath && [pathCopy isEqual:?] && self->_headerHeight != v12)
   {
     self->_headerHeight = v12;
-    v13 = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
-    [v13 setNeedsLayout];
+    view = [(PKDashboardAuxiliaryPassInformationViewController *)self view];
+    [view setNeedsLayout];
   }
 
   v14 = v10;
@@ -379,15 +379,15 @@ LABEL_38:
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PKDashboardAuxiliaryPassInformationViewController;
-  v7 = [(PKDashboardViewController *)&v9 collectionView:a3 cellForItemAtIndexPath:v6];
+  v7 = [(PKDashboardViewController *)&v9 collectionView:view cellForItemAtIndexPath:pathCopy];
   if (self->_headerIndexPath)
   {
-    if ([v6 isEqual:?])
+    if ([pathCopy isEqual:?])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -400,17 +400,17 @@ LABEL_38:
   return v7;
 }
 
-- (void)_updateHeaderCellWithAnimationProgress:(id)a3
+- (void)_updateHeaderCellWithAnimationProgress:(id)progress
 {
-  v13 = a3;
-  [v13 setOverlayAlpha:self->_headerAnimationProgress];
+  progressCopy = progress;
+  [progressCopy setOverlayAlpha:self->_headerAnimationProgress];
   if (self->_headerAnimationProgress >= 1.0)
   {
-    [v13 setOverlayAlpha:0.0];
+    [progressCopy setOverlayAlpha:0.0];
   }
 
-  v4 = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
-  v5 = v4;
+  collectionView = [(PKDashboardAuxiliaryPassInformationViewController *)self collectionView];
+  v5 = collectionView;
   if (self->_headerHeight <= 0.0)
   {
     v11 = 0;
@@ -418,11 +418,11 @@ LABEL_38:
 
   else
   {
-    [v4 contentOffset];
+    [collectionView contentOffset];
     v7 = v6;
     [v5 safeAreaInsets];
     v9 = v8;
-    [v13 topLabelWithRespectTo:v5];
+    [progressCopy topLabelWithRespectTo:v5];
     v11 = v7 <= v10 - v9;
   }
 
@@ -434,31 +434,31 @@ LABEL_38:
   if (self->_hideTopPocket != v11)
   {
     self->_hideTopPocket = v11;
-    v12 = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationController];
-    if (v12)
+    navigationController = [(PKDashboardAuxiliaryPassInformationViewController *)self navigationController];
+    if (navigationController)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v12 setNeedsNavigationBarUpdate];
+        [navigationController setNeedsNavigationBarUpdate];
       }
     }
   }
 }
 
-- (void)_updateNavigationBarIconWithLogoURL:(id)a3
+- (void)_updateNavigationBarIconWithLogoURL:(id)l
 {
-  if (a3)
+  if (l)
   {
     v4 = MEMORY[0x1E69B8A08];
-    v5 = a3;
-    v6 = [v4 sharedImageAssetDownloader];
+    lCopy = l;
+    sharedImageAssetDownloader = [v4 sharedImageAssetDownloader];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __89__PKDashboardAuxiliaryPassInformationViewController__updateNavigationBarIconWithLogoURL___block_invoke;
     v7[3] = &unk_1E8020570;
     v7[4] = self;
-    [v6 downloadFromUrl:v5 completionHandler:v7];
+    [sharedImageAssetDownloader downloadFromUrl:lCopy completionHandler:v7];
   }
 }
 
@@ -493,27 +493,27 @@ void __89__PKDashboardAuxiliaryPassInformationViewController__updateNavigationBa
 - (id)_barButtonItems
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v44 = [(PKDashboardViewController *)self dataSource];
-  v4 = [v44 merchant];
-  v5 = v4;
-  if (v4)
+  dataSource = [(PKDashboardViewController *)self dataSource];
+  merchant = [dataSource merchant];
+  v5 = merchant;
+  if (merchant)
   {
-    if ([v4 shouldIgnoreMapsMatches])
+    if ([merchant shouldIgnoreMapsMatches])
     {
       v6 = 0;
     }
 
     else
     {
-      v9 = [v5 mapsMerchant];
-      v6 = v9 != 0;
+      mapsMerchant = [v5 mapsMerchant];
+      v6 = mapsMerchant != 0;
     }
 
-    v10 = [v5 phoneNumber];
-    v8 = v10 != 0;
+    phoneNumber = [v5 phoneNumber];
+    v8 = phoneNumber != 0;
 
-    v11 = [v5 businessChatURL];
-    v7 = v11 != 0;
+    businessChatURL = [v5 businessChatURL];
+    v7 = businessChatURL != 0;
   }
 
   else
@@ -535,10 +535,10 @@ void __89__PKDashboardAuxiliaryPassInformationViewController__updateNavigationBa
     v13 = &OBJC_IVAR___PKFamilyMemberTransactionsViewController__contactResolver;
     if (!self->_detailsButton)
     {
-      v14 = [(PKDashboardViewController *)self dataSource];
-      v15 = [v14 merchant];
-      v16 = [v15 heroImageURL];
-      v43 = v14;
+      dataSource2 = [(PKDashboardViewController *)self dataSource];
+      merchant2 = [dataSource2 merchant];
+      heroImageURL = [merchant2 heroImageURL];
+      v43 = dataSource2;
 
       v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"info"];
       v18 = MEMORY[0x1E69DC628];
@@ -548,7 +548,7 @@ void __89__PKDashboardAuxiliaryPassInformationViewController__updateNavigationBa
       v49[3] = &unk_1E8010A60;
       objc_copyWeak(&v50, &location);
       v19 = [v18 actionWithHandler:v49];
-      v20 = __68__PKDashboardAuxiliaryPassInformationViewController__barButtonItems__block_invoke(v17, v16 == 0, v19);
+      v20 = __68__PKDashboardAuxiliaryPassInformationViewController__barButtonItems__block_invoke(v17, heroImageURL == 0, v19);
       detailsButton = self->_detailsButton;
       self->_detailsButton = v20;
 
@@ -682,17 +682,17 @@ void __68__PKDashboardAuxiliaryPassInformationViewController__barButtonItems__bl
 {
   if (PKStoreDemoModeEnabled())
   {
-    v5 = PKUIStoreDemoGatewayViewController();
-    [(PKDashboardAuxiliaryPassInformationViewController *)self presentViewController:v5 animated:1 completion:0];
+    dataSource = PKUIStoreDemoGatewayViewController();
+    [(PKDashboardAuxiliaryPassInformationViewController *)self presentViewController:dataSource animated:1 completion:0];
   }
 
   else
   {
-    v5 = [(PKDashboardViewController *)self dataSource];
-    v3 = [v5 merchant];
-    v4 = [v3 businessChatURL];
+    dataSource = [(PKDashboardViewController *)self dataSource];
+    merchant = [dataSource merchant];
+    businessChatURL = [merchant businessChatURL];
 
-    if (v4)
+    if (businessChatURL)
     {
       PKOpenURL();
     }
@@ -703,17 +703,17 @@ void __68__PKDashboardAuxiliaryPassInformationViewController__barButtonItems__bl
 {
   if (PKStoreDemoModeEnabled())
   {
-    v6 = PKUIStoreDemoGatewayViewController();
-    [(PKDashboardAuxiliaryPassInformationViewController *)self presentViewController:v6 animated:1 completion:0];
+    dataSource = PKUIStoreDemoGatewayViewController();
+    [(PKDashboardAuxiliaryPassInformationViewController *)self presentViewController:dataSource animated:1 completion:0];
   }
 
   else
   {
-    v6 = [(PKDashboardViewController *)self dataSource];
-    v3 = [v6 merchant];
-    v4 = [v3 phoneNumber];
+    dataSource = [(PKDashboardViewController *)self dataSource];
+    merchant = [dataSource merchant];
+    phoneNumber = [merchant phoneNumber];
 
-    if (v4)
+    if (phoneNumber)
     {
       v5 = PKTelephoneURLFromPhoneNumber();
       PKOpenURL();
@@ -726,12 +726,12 @@ void __68__PKDashboardAuxiliaryPassInformationViewController__barButtonItems__bl
   v23[1] = *MEMORY[0x1E69E9840];
   if (!self->_loadingMapsViewController)
   {
-    v3 = [(PKDashboardViewController *)self dataSource];
-    v4 = [v3 merchant];
-    v5 = [v4 mapsMerchant];
-    v6 = [v5 identifier];
+    dataSource = [(PKDashboardViewController *)self dataSource];
+    merchant = [dataSource merchant];
+    mapsMerchant = [merchant mapsMerchant];
+    identifier = [mapsMerchant identifier];
 
-    if (v6)
+    if (identifier)
     {
       self->_loadingMapsViewController = 1;
       loadingMapsTimer = self->_loadingMapsTimer;
@@ -759,7 +759,7 @@ void __68__PKDashboardAuxiliaryPassInformationViewController__barButtonItems__bl
       dispatch_source_set_event_handler(v13, handler);
       dispatch_resume(self->_loadingMapsTimer);
       v14 = objc_alloc_init(MEMORY[0x1E696F260]);
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v6];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
       v23[0] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
       [v14 _setMuids:v16];
@@ -771,7 +771,7 @@ void __68__PKDashboardAuxiliaryPassInformationViewController__barButtonItems__bl
       v18[3] = &unk_1E8021220;
       objc_copyWeak(v19, &location);
       v18[4] = self;
-      v19[1] = v6;
+      v19[1] = identifier;
       [v17 startWithCompletionHandler:v18];
       objc_destroyWeak(v19);
 

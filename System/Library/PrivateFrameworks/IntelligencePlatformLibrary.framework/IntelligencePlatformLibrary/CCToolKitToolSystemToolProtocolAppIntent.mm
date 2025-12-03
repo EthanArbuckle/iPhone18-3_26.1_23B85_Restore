@@ -1,24 +1,24 @@
 @interface CCToolKitToolSystemToolProtocolAppIntent
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolSystemToolProtocolAppIntent)initWithIntentTypeName:(id)a3 error:(id *)a4;
-- (CCToolKitToolSystemToolProtocolAppIntent)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolSystemToolProtocolAppIntent)initWithIntentTypeName:(id)name error:(id *)error;
+- (CCToolKitToolSystemToolProtocolAppIntent)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)intentTypeName;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolSystemToolProtocolAppIntent
 
-- (CCToolKitToolSystemToolProtocolAppIntent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolSystemToolProtocolAppIntent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"intentTypeName"];
-    v10 = [[CCToolKitToolSystemToolProtocolAppIntent alloc] initWithIntentTypeName:v9 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"intentTypeName"];
+    v10 = [[CCToolKitToolSystemToolProtocolAppIntent alloc] initWithIntentTypeName:v9 error:error];
   }
 
   else
@@ -35,8 +35,8 @@
   v3 = objc_opt_new();
   if (self->_intentTypeName)
   {
-    v4 = [(CCToolKitToolSystemToolProtocolAppIntent *)self intentTypeName];
-    [v3 setObject:v4 forKeyedSubscript:@"intentTypeName"];
+    intentTypeName = [(CCToolKitToolSystemToolProtocolAppIntent *)self intentTypeName];
+    [v3 setObject:intentTypeName forKeyedSubscript:@"intentTypeName"];
   }
 
   v5 = [v3 copy];
@@ -44,15 +44,15 @@
   return v5;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
   if (self->_intentTypeName)
   {
     v6 = MEMORY[0x1E69939F0];
-    v7 = a3;
+    blockCopy = block;
     v8 = [v6 alloc];
     v9 = [v8 initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_intentTypeName];
-    (*(a3 + 2))(v7, v9);
+    (*(block + 2))(blockCopy, v9);
   }
 }
 
@@ -63,10 +63,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -203,11 +203,11 @@ LABEL_34:
   return v30;
 }
 
-- (CCToolKitToolSystemToolProtocolAppIntent)initWithIntentTypeName:(id)a3 error:(id *)a4
+- (CCToolKitToolSystemToolProtocolAppIntent)initWithIntentTypeName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = objc_opt_new();
-  if (v6)
+  if (nameCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -215,7 +215,7 @@ LABEL_34:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
@@ -227,13 +227,13 @@ LABEL_34:
     v9 = 0;
   }
 
-  v10 = [v7 immutableData];
-  self = [(CCItemMessage *)self initWithData:v10 error:a4];
+  immutableData = [v7 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v11 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v11;
+  return selfCopy;
 }
 
 @end

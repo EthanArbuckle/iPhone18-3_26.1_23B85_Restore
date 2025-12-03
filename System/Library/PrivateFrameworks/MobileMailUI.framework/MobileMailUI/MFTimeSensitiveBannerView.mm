@@ -1,9 +1,9 @@
 @interface MFTimeSensitiveBannerView
 - (BOOL)showDescription;
 - (unint64_t)category;
-- (void)setCategory:(unint64_t)a3;
-- (void)setShowDescription:(BOOL)a3;
-- (void)updateWithCategory:(unint64_t)a3 showDescription:(BOOL)a4;
+- (void)setCategory:(unint64_t)category;
+- (void)setShowDescription:(BOOL)description;
+- (void)updateWithCategory:(unint64_t)category showDescription:(BOOL)description;
 @end
 
 @implementation MFTimeSensitiveBannerView
@@ -16,10 +16,10 @@
   return v4;
 }
 
-- (void)setCategory:(unint64_t)a3
+- (void)setCategory:(unint64_t)category
 {
   MEMORY[0x277D82BE0](self, a2);
-  sub_214A17490(a3);
+  sub_214A17490(category);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -31,7 +31,7 @@
   return sub_214A1A4B4() & 1;
 }
 
-- (void)setShowDescription:(BOOL)a3
+- (void)setShowDescription:(BOOL)description
 {
   MEMORY[0x277D82BE0](self, a2);
   v3 = sub_214A1A4C4();
@@ -39,11 +39,11 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)updateWithCategory:(unint64_t)a3 showDescription:(BOOL)a4
+- (void)updateWithCategory:(unint64_t)category showDescription:(BOOL)description
 {
   MEMORY[0x277D82BE0](self, a2);
   v4 = sub_214A1A4C4();
-  sub_214A17B78(a3, v4 & 1);
+  sub_214A17B78(category, v4 & 1);
   MEMORY[0x277D82BD8](self);
 }
 

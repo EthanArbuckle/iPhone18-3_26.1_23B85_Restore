@@ -1,20 +1,20 @@
 @interface _UITextEffectsWindowPlacer
 - (UITextEffectsWindow)owningWindow;
-- (id)initForOwningWindow:(id)a3;
+- (id)initForOwningWindow:(id)window;
 @end
 
 @implementation _UITextEffectsWindowPlacer
 
-- (id)initForOwningWindow:(id)a3
+- (id)initForOwningWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = _UITextEffectsWindowPlacer;
   v5 = [(_UITextEffectsWindowPlacer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owningWindow, v4);
+    objc_storeWeak(&v5->_owningWindow, windowCopy);
   }
 
   return v6;

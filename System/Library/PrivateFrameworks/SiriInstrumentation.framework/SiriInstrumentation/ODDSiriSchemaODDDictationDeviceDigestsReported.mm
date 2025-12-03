@@ -1,27 +1,27 @@
 @interface ODDSiriSchemaODDDictationDeviceDigestsReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addDigests:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDigests:(id)digests;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDictationDeviceDigestsReported
 
-- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = ODDSiriSchemaODDDictationDeviceDigestsReported;
   v5 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"fixedDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"fixedDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(ODDSiriSchemaODDDictationDeviceDigestsReported *)v5 setFixedDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"digests"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"digests"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDictationDeviceDigestsReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,10 +118,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_digests count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -141,16 +141,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -160,52 +160,52 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"digests"];
+    [dictionary setObject:array forKeyedSubscript:@"digests"];
   }
 
   if (self->_fixedDimensions)
   {
-    v12 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    fixedDimensions = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
+    dictionaryRepresentation2 = [fixedDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"fixedDimensions"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"fixedDimensions"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"fixedDimensions"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"fixedDimensions"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
-  v6 = [v4 fixedDimensions];
-  if ((v5 != 0) == (v6 == 0))
+  fixedDimensions = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
+  fixedDimensions2 = [equalCopy fixedDimensions];
+  if ((fixedDimensions != 0) == (fixedDimensions2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
-  if (v7)
+  fixedDimensions3 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
+  if (fixedDimensions3)
   {
-    v8 = v7;
-    v9 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
-    v10 = [v4 fixedDimensions];
-    v11 = [v9 isEqual:v10];
+    v8 = fixedDimensions3;
+    fixedDimensions4 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
+    fixedDimensions5 = [equalCopy fixedDimensions];
+    v11 = [fixedDimensions4 isEqual:fixedDimensions5];
 
     if (!v11)
     {
@@ -217,12 +217,12 @@
   {
   }
 
-  v5 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
-  v6 = [v4 digests];
-  if ((v5 != 0) != (v6 == 0))
+  fixedDimensions = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
+  fixedDimensions2 = [equalCopy digests];
+  if ((fixedDimensions != 0) != (fixedDimensions2 == 0))
   {
-    v12 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
-    if (!v12)
+    digests = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
+    if (!digests)
     {
 
 LABEL_15:
@@ -230,10 +230,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
-    v15 = [v4 digests];
-    v16 = [v14 isEqual:v15];
+    v13 = digests;
+    digests2 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
+    digests3 = [equalCopy digests];
+    v16 = [digests2 isEqual:digests3];
 
     if (v16)
     {
@@ -253,15 +253,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
+  toCopy = to;
+  fixedDimensions = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
 
-  if (v5)
+  if (fixedDimensions)
   {
-    v6 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
+    fixedDimensions2 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
     PBDataWriterWriteSubmessage();
   }
 
@@ -297,41 +297,41 @@ LABEL_13:
   }
 }
 
-- (void)addDigests:(id)a3
+- (void)addDigests:(id)digests
 {
-  v4 = a3;
+  digestsCopy = digests;
   digests = self->_digests;
-  v8 = v4;
+  v8 = digestsCopy;
   if (!digests)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_digests;
-    self->_digests = v6;
+    self->_digests = array;
 
-    v4 = v8;
+    digestsCopy = v8;
     digests = self->_digests;
   }
 
-  [(NSArray *)digests addObject:v4];
+  [(NSArray *)digests addObject:digestsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDDictationDeviceDigestsReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  fixedDimensions = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self fixedDimensions];
+  v7 = [fixedDimensions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self deleteFixedDimensions];
   }
 
-  v9 = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  digests = [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self digests];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:digests underConditions:policyCopy];
   [(ODDSiriSchemaODDDictationDeviceDigestsReported *)self setDigests:v10];
 
   return v5;

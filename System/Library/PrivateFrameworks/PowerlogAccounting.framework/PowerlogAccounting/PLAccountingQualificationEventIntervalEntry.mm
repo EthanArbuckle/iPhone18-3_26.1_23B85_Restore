@@ -1,8 +1,8 @@
 @interface PLAccountingQualificationEventIntervalEntry
 + (id)entryKey;
 + (void)load;
-- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)a3 withChildNodeIDs:(id)a4 withStartDate:(id)a5 withEndDate:(id)a6;
-- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withStartDate:(id)a5 withEndDate:(id)a6;
+- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)d withChildNodeIDs:(id)ds withStartDate:(id)date withEndDate:(id)endDate;
+- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withStartDate:(id)date withEndDate:(id)endDate;
 @end
 
 @implementation PLAccountingQualificationEventIntervalEntry
@@ -21,7 +21,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingQualificationEventIntervalEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -33,42 +33,42 @@ uint64_t __55__PLAccountingQualificationEventIntervalEntry_entryKey__block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)a3 withChildNodeNames:(id)a4 withStartDate:(id)a5 withEndDate:(id)a6
+- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)d withChildNodeNames:(id)names withStartDate:(id)date withEndDate:(id)endDate
 {
-  v7 = 0;
-  if (a5 && a6)
+  selfCopy = 0;
+  if (date && endDate)
   {
-    v11 = a4;
-    v12 = a3;
-    v13 = [PLAccountingRange rangeWithStartDate:a5 withEndDate:a6];
+    namesCopy = names;
+    dCopy = d;
+    v13 = [PLAccountingRange rangeWithStartDate:date withEndDate:endDate];
     v16.receiver = self;
     v16.super_class = PLAccountingQualificationEventIntervalEntry;
-    v14 = [(PLAccountingQualificationEventEntry *)&v16 initWithQualificationID:v12 withChildNodeNames:v11 withRange:v13];
+    v14 = [(PLAccountingQualificationEventEntry *)&v16 initWithQualificationID:dCopy withChildNodeNames:namesCopy withRange:v13];
 
     self = v14;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)a3 withChildNodeIDs:(id)a4 withStartDate:(id)a5 withEndDate:(id)a6
+- (PLAccountingQualificationEventIntervalEntry)initWithQualificationID:(id)d withChildNodeIDs:(id)ds withStartDate:(id)date withEndDate:(id)endDate
 {
-  v7 = 0;
-  if (a5 && a6)
+  selfCopy = 0;
+  if (date && endDate)
   {
-    v11 = a4;
-    v12 = a3;
-    v13 = [PLAccountingRange rangeWithStartDate:a5 withEndDate:a6];
+    dsCopy = ds;
+    dCopy = d;
+    v13 = [PLAccountingRange rangeWithStartDate:date withEndDate:endDate];
     v16.receiver = self;
     v16.super_class = PLAccountingQualificationEventIntervalEntry;
-    v14 = [(PLAccountingQualificationEventEntry *)&v16 initWithQualificationID:v12 withChildNodeIDs:v11 withRange:v13];
+    v14 = [(PLAccountingQualificationEventEntry *)&v16 initWithQualificationID:dCopy withChildNodeIDs:dsCopy withRange:v13];
 
     self = v14;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

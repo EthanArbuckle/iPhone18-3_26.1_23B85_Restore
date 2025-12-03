@@ -1,10 +1,10 @@
 @interface NCBSWorldCityDisplayListModel
 + (id)sharedInstance;
 - (NCBSWorldCityDisplayListModel)init;
-- (id)_cachedCityAtIndex:(unint64_t)a3;
-- (id)cityDisplayAbbreviationForIndex:(unint64_t)a3;
-- (id)cityDisplayNameForIndex:(unint64_t)a3;
-- (void)_fetchCitiesAndNotify:(BOOL)a3;
+- (id)_cachedCityAtIndex:(unint64_t)index;
+- (id)cityDisplayAbbreviationForIndex:(unint64_t)index;
+- (id)cityDisplayNameForIndex:(unint64_t)index;
+- (void)_fetchCitiesAndNotify:(BOOL)notify;
 - (void)_notifyClientsOfChange;
 - (void)dealloc;
 @end
@@ -56,26 +56,26 @@
   [(NCBSWorldCityDisplayListModel *)&v5 dealloc];
 }
 
-- (id)cityDisplayNameForIndex:(unint64_t)a3
+- (id)cityDisplayNameForIndex:(unint64_t)index
 {
-  v3 = [(NCBSWorldCityDisplayListModel *)self _cachedCityAtIndex:a3];
+  v3 = [(NCBSWorldCityDisplayListModel *)self _cachedCityAtIndex:index];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 name];
+    name = [v3 name];
   }
 
   else
   {
-    v5 = &stru_C6C0;
+    name = &stru_C6C0;
   }
 
-  return v5;
+  return name;
 }
 
-- (id)cityDisplayAbbreviationForIndex:(unint64_t)a3
+- (id)cityDisplayAbbreviationForIndex:(unint64_t)index
 {
-  v3 = [(NCBSWorldCityDisplayListModel *)self _cachedCityAtIndex:a3];
+  v3 = [(NCBSWorldCityDisplayListModel *)self _cachedCityAtIndex:index];
   if (v3)
   {
     v4 = NTKWorldClockCityAbbreviation();
@@ -89,31 +89,31 @@
   return v4;
 }
 
-- (void)_fetchCitiesAndNotify:(BOOL)a3
+- (void)_fetchCitiesAndNotify:(BOOL)notify
 {
-  v3 = a3;
+  notifyCopy = notify;
   v7 = +[WorldClockManager sharedManager];
   [v7 loadCities];
-  v5 = [v7 cities];
+  cities = [v7 cities];
   cachedCities = self->_cachedCities;
-  self->_cachedCities = v5;
+  self->_cachedCities = cities;
 
-  if (v3)
+  if (notifyCopy)
   {
     [(NCBSWorldCityDisplayListModel *)self _notifyClientsOfChange];
   }
 }
 
-- (id)_cachedCityAtIndex:(unint64_t)a3
+- (id)_cachedCityAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_cachedCities count]<= a3)
+  if ([(NSArray *)self->_cachedCities count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_cachedCities objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_cachedCities objectAtIndexedSubscript:index];
   }
 
   return v5;

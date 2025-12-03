@@ -2,8 +2,8 @@
 - (CGSize)_thumbnailSize;
 - (SDAirDropActivity)init;
 - (void)dealloc;
-- (void)prepareWithActivityItemData:(id)a3;
-- (void)startAccessingSecurityScopedResourcesInContext:(id)a3;
+- (void)prepareWithActivityItemData:(id)data;
+- (void)startAccessingSecurityScopedResourcesInContext:(id)context;
 - (void)stopAccessingSecurityScopedResources;
 @end
 
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (void)prepareWithActivityItemData:(id)a3
+- (void)prepareWithActivityItemData:(id)data
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 securityContexts];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  securityContexts = [data securityContexts];
+  v5 = [securityContexts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -58,7 +58,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(securityContexts);
         }
 
         [(SDAirDropActivity *)self startAccessingSecurityScopedResourcesInContext:*(*(&v9 + 1) + 8 * v8)];
@@ -66,20 +66,20 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [securityContexts countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)startAccessingSecurityScopedResourcesInContext:(id)a3
+- (void)startAccessingSecurityScopedResourcesInContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v4 = a3;
-    [v4 activate];
-    [(NSMutableArray *)self->_activeSecurityContexts addObject:v4];
+    contextCopy = context;
+    [contextCopy activate];
+    [(NSMutableArray *)self->_activeSecurityContexts addObject:contextCopy];
   }
 }
 

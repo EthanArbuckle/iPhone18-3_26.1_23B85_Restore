@@ -1,18 +1,18 @@
 @interface CLKTimeTextProvider
 + (CLKTimeTextProvider)textProviderWithDate:(NSDate *)date timeZone:(NSTimeZone *)timeZone;
 - (BOOL)_validate;
-- (BOOL)isEqual:(id)a3;
-- (CLKTimeTextProvider)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLKTimeTextProvider)initWithCoder:(id)coder;
 - (CLKTimeTextProvider)initWithDate:(NSDate *)date timeZone:(NSTimeZone *)timeZone;
 - (id)JSONObjectRepresentation;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4;
-- (id)_timeAttributedTextWithStyle:(id)a3 dropMinutes:(BOOL)a4 dropDesignator:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style;
+- (id)_timeAttributedTextWithStyle:(id)style dropMinutes:(BOOL)minutes dropDesignator:(BOOL)designator;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)_validate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKTimeTextProvider
@@ -23,11 +23,11 @@
   v7 = timeZone;
   v11.receiver = self;
   v11.super_class = CLKTimeTextProvider;
-  v8 = [(CLKTextProvider *)&v11 initPrivate];
-  v9 = v8;
-  if (v8)
+  initPrivate = [(CLKTextProvider *)&v11 initPrivate];
+  v9 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKTimeTextProvider *)v8 setDate:v6];
+    [(CLKTimeTextProvider *)initPrivate setDate:v6];
     [(CLKTimeTextProvider *)v9 setTimeZone:v7];
   }
 
@@ -38,17 +38,17 @@
 {
   v6 = timeZone;
   v7 = date;
-  v8 = [[a1 alloc] initWithDate:v7 timeZone:v6];
+  v8 = [[self alloc] initWithDate:v7 timeZone:v6];
 
   return v8;
 }
 
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style
 {
-  v6 = a4;
-  v7 = [(CLKTimeTextProvider *)self date];
+  styleCopy = style;
+  date = [(CLKTimeTextProvider *)self date];
 
-  if (v7)
+  if (date)
   {
     if (CLKCurrentLocaleIs24HourMode())
     {
@@ -57,18 +57,18 @@
 
     else
     {
-      v10 = [MEMORY[0x277CBEA80] currentCalendar];
-      v11 = [(CLKTimeTextProvider *)self date];
-      v12 = [v10 components:64 fromDate:v11];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      date2 = [(CLKTimeTextProvider *)self date];
+      v12 = [currentCalendar components:64 fromDate:date2];
       v8 = [v12 minute] == 0;
     }
 
     sizingFallbackBlocks = self->_sizingFallbackBlocks;
     if (!sizingFallbackBlocks)
     {
-      v14 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v15 = self->_sizingFallbackBlocks;
-      self->_sizingFallbackBlocks = v14;
+      self->_sizingFallbackBlocks = array;
 
       objc_initWeak(&location, self);
       if (!self->_disallowBothMinutesAndDesignator)
@@ -129,25 +129,25 @@
       sizingFallbackBlocks = self->_sizingFallbackBlocks;
     }
 
-    if ([(NSMutableArray *)sizingFallbackBlocks count]<= a3)
+    if ([(NSMutableArray *)sizingFallbackBlocks count]<= index)
     {
       v9 = 0;
     }
 
     else
     {
-      v28 = [(NSMutableArray *)self->_sizingFallbackBlocks objectAtIndexedSubscript:a3];
-      v9 = (v28)[2](v28, v6);
+      v28 = [(NSMutableArray *)self->_sizingFallbackBlocks objectAtIndexedSubscript:index];
+      v9 = (v28)[2](v28, styleCopy);
     }
 
-    if ([v6 shouldEmbedTintColors])
+    if ([styleCopy shouldEmbedTintColors])
     {
-      v29 = [(CLKTextProvider *)self tintColor];
+      tintColor = [(CLKTextProvider *)self tintColor];
 
-      if (v29)
+      if (tintColor)
       {
-        v30 = [(CLKTextProvider *)self tintColor];
-        v31 = [v9 _attributedStringWithForegroundColor:v30];
+        tintColor2 = [(CLKTextProvider *)self tintColor];
+        v31 = [v9 _attributedStringWithForegroundColor:tintColor2];
 
         v9 = v31;
       }
@@ -189,12 +189,12 @@ id __64__CLKTimeTextProvider__sessionAttributedTextForIndex_withStyle___block_in
   return v5;
 }
 
-- (id)_timeAttributedTextWithStyle:(id)a3 dropMinutes:(BOOL)a4 dropDesignator:(BOOL)a5
+- (id)_timeAttributedTextWithStyle:(id)style dropMinutes:(BOOL)minutes dropDesignator:(BOOL)designator
 {
-  v5 = a5;
-  v6 = a4;
+  designatorCopy = designator;
+  minutesCopy = minutes;
   v40[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  styleCopy = style;
   if (!self->_dateFormatter)
   {
     v9 = objc_opt_new();
@@ -208,43 +208,43 @@ id __64__CLKTimeTextProvider__sessionAttributedTextForIndex_withStyle___block_in
   }
 
   v11 = &_CLKNoMinutesTimeFormatTemplate;
-  if (!v6)
+  if (!minutesCopy)
   {
     v11 = _CLKStandardTimeFormatTemplate;
   }
 
   v12 = *v11;
   v13 = MEMORY[0x277CCA968];
-  v14 = [MEMORY[0x277CBEAF8] currentLocale];
-  v15 = [v13 dateFormatFromTemplate:v12 options:0 locale:v14];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v15 = [v13 dateFormatFromTemplate:v12 options:0 locale:currentLocale];
 
   v38 = 0;
-  v16 = [(CLKTextProvider *)self _timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:v15 andRemovingDesignator:v5 designatorExists:&v38];
+  v16 = [(CLKTextProvider *)self _timeFormatByRemovingWhitespaceAroundDesignatorOfTimeFormat:v15 andRemovingDesignator:designatorCopy designatorExists:&v38];
 
   [(NSDateFormatter *)self->_dateFormatter setDateFormat:v16];
-  v17 = [v8 font];
-  v18 = [(CLKTextProvider *)self fontFeatures];
+  font = [styleCopy font];
+  fontFeatures = [(CLKTextProvider *)self fontFeatures];
 
-  if (v18)
+  if (fontFeatures)
   {
-    v19 = [(CLKTextProvider *)self fontFeatures];
-    v20 = [v17 CLKFontByApplyingFeatureSettings:v19];
+    fontFeatures2 = [(CLKTextProvider *)self fontFeatures];
+    v20 = [font CLKFontByApplyingFeatureSettings:fontFeatures2];
 
-    v17 = v20;
+    font = v20;
   }
 
   v39 = *MEMORY[0x277D740A8];
-  v40[0] = v17;
+  v40[0] = font;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
   v22 = self->_dateFormatter;
-  v23 = [(CLKTimeTextProvider *)self date];
-  v24 = [(NSDateFormatter *)v22 _attributedStringWithFieldsFromDate:v23];
+  date = [(CLKTimeTextProvider *)self date];
+  v24 = [(NSDateFormatter *)v22 _attributedStringWithFieldsFromDate:date];
 
   v25 = objc_alloc(MEMORY[0x277CCAB48]);
-  v26 = [v24 string];
-  v27 = [v25 initWithString:v26 attributes:v21];
+  string = [v24 string];
+  v27 = [v25 initWithString:string attributes:v21];
 
-  if (v38 != 1 || v5)
+  if (v38 != 1 || designatorCopy)
   {
     v31 = v27;
   }
@@ -256,15 +256,15 @@ id __64__CLKTimeTextProvider__sessionAttributedTextForIndex_withStyle___block_in
     v34[1] = 3221225472;
     v34[2] = __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesignator___block_invoke;
     v34[3] = &unk_278A1E778;
-    v35 = v8;
-    v36 = self;
+    v35 = styleCopy;
+    selfCopy = self;
     v29 = v27;
     v37 = v29;
     [v24 enumerateAttributesInRange:0 options:v28 usingBlock:{0, v34}];
     v30 = v29;
   }
 
-  v32 = [v27 _attributedStringWithOtherAttributesFromStyle:v8];
+  v32 = [v27 _attributedStringWithOtherAttributesFromStyle:styleCopy];
 
   return v32;
 }
@@ -305,14 +305,14 @@ void __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesi
 {
   v7.receiver = self;
   v7.super_class = CLKTimeTextProvider;
-  v3 = [(CLKTextProvider *)&v7 _validate];
-  if (v3)
+  _validate = [(CLKTextProvider *)&v7 _validate];
+  if (_validate)
   {
-    v4 = [(CLKTimeTextProvider *)self date];
+    date = [(CLKTimeTextProvider *)self date];
 
-    if (v4)
+    if (date)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_validate) = 1;
     }
 
     else
@@ -323,11 +323,11 @@ void __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesi
         [(CLKTimeTextProvider *)self _validate];
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(_validate) = 0;
     }
   }
 
-  return v3;
+  return _validate;
 }
 
 - (id)description
@@ -339,16 +339,16 @@ void __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesi
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CLKTimeTextProvider;
-  v4 = [(CLKTextProvider *)&v8 copyWithZone:a3];
+  v4 = [(CLKTextProvider *)&v8 copyWithZone:zone];
   if (v4 != self)
   {
-    v5 = [(CLKTimeTextProvider *)self date];
+    date = [(CLKTimeTextProvider *)self date];
     date = v4->_date;
-    v4->_date = v5;
+    v4->_date = date;
 
     objc_storeStrong(&v4->_timeZone, self->_timeZone);
     v4->_disallowBothMinutesAndDesignator = self->_disallowBothMinutesAndDesignator;
@@ -358,15 +358,15 @@ void __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesi
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = CLKTimeTextProvider;
-  if ([(CLKTextProvider *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(CLKTextProvider *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(CLKTimeTextProvider *)self date];
-    v6 = CLKEqualObjects(v5, v4[19]) && CLKEqualObjects(self->_timeZone, v4[20]) && self->_prefersDesignatorToMinutes == *(v4 + 145) && self->_disallowBothMinutesAndDesignator == *(v4 + 144);
+    date = [(CLKTimeTextProvider *)self date];
+    v6 = CLKEqualObjects(date, equalCopy[19]) && CLKEqualObjects(self->_timeZone, equalCopy[20]) && self->_prefersDesignatorToMinutes == *(equalCopy + 145) && self->_disallowBothMinutesAndDesignator == *(equalCopy + 144);
   }
 
   else
@@ -382,8 +382,8 @@ void __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesi
   v12.receiver = self;
   v12.super_class = CLKTimeTextProvider;
   v3 = [(CLKTextProvider *)&v12 hash];
-  v4 = [(CLKTimeTextProvider *)self date];
-  v5 = v3 + [v4 hash] * 100.0;
+  date = [(CLKTimeTextProvider *)self date];
+  v5 = v3 + [date hash] * 100.0;
   v6 = [(NSTimeZone *)self->_timeZone hash];
   v7 = 0x408F400000000000;
   LOBYTE(v7) = self->_prefersDesignatorToMinutes;
@@ -395,57 +395,57 @@ void __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesi
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLKTimeTextProvider;
-  v4 = a3;
-  [(CLKTextProvider *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CLKTextProvider *)&v6 encodeWithCoder:coderCopy];
   v5 = [(CLKTimeTextProvider *)self date:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"_date"];
+  [coderCopy encodeObject:v5 forKey:@"_date"];
 
-  [v4 encodeObject:self->_timeZone forKey:@"_timeZone"];
-  [v4 encodeBool:self->_disallowBothMinutesAndDesignator forKey:@"_disallowBothMinutesAndDesignator"];
-  [v4 encodeBool:self->_prefersDesignatorToMinutes forKey:@"_prefersDesignatorToMinutes"];
+  [coderCopy encodeObject:self->_timeZone forKey:@"_timeZone"];
+  [coderCopy encodeBool:self->_disallowBothMinutesAndDesignator forKey:@"_disallowBothMinutesAndDesignator"];
+  [coderCopy encodeBool:self->_prefersDesignatorToMinutes forKey:@"_prefersDesignatorToMinutes"];
 }
 
-- (CLKTimeTextProvider)initWithCoder:(id)a3
+- (CLKTimeTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLKTimeTextProvider;
-  v5 = [(CLKTextProvider *)&v11 initWithCoder:v4];
+  v5 = [(CLKTextProvider *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeZone"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v8;
 
-    v5->_disallowBothMinutesAndDesignator = [v4 decodeBoolForKey:@"_disallowBothMinutesAndDesignator"];
-    v5->_prefersDesignatorToMinutes = [v4 decodeBoolForKey:@"_prefersDesignatorToMinutes"];
+    v5->_disallowBothMinutesAndDesignator = [coderCopy decodeBoolForKey:@"_disallowBothMinutesAndDesignator"];
+    v5->_prefersDesignatorToMinutes = [coderCopy decodeBoolForKey:@"_prefersDesignatorToMinutes"];
   }
 
   return v5;
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v13.receiver = self;
   v13.super_class = CLKTimeTextProvider;
-  v5 = [(CLKTextProvider *)&v13 _initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKTextProvider *)&v13 _initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"date"];
+    v6 = [representationCopy objectForKeyedSubscript:@"date"];
     v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithJSONObjectRepresentation:v6];
     v8 = v5[19];
     v5[19] = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"timeZone"];
+    v9 = [representationCopy objectForKeyedSubscript:@"timeZone"];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CBEBB0]) initWithJSONObjectRepresentation:v9];
@@ -461,15 +461,15 @@ void __79__CLKTimeTextProvider__timeAttributedTextWithStyle_dropMinutes_dropDesi
 {
   v8.receiver = self;
   v8.super_class = CLKTimeTextProvider;
-  v3 = [(CLKTextProvider *)&v8 JSONObjectRepresentation];
-  v4 = [(CLKTimeTextProvider *)self date];
-  v5 = [v4 JSONObjectRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"date"];
+  jSONObjectRepresentation = [(CLKTextProvider *)&v8 JSONObjectRepresentation];
+  date = [(CLKTimeTextProvider *)self date];
+  jSONObjectRepresentation2 = [date JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:jSONObjectRepresentation2 forKeyedSubscript:@"date"];
 
-  v6 = [(NSTimeZone *)self->_timeZone JSONObjectRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"timeZone"];
+  jSONObjectRepresentation3 = [(NSTimeZone *)self->_timeZone JSONObjectRepresentation];
+  [jSONObjectRepresentation setObject:jSONObjectRepresentation3 forKeyedSubscript:@"timeZone"];
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 - (void)_validate

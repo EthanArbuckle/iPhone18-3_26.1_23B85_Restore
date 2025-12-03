@@ -1,62 +1,62 @@
 @interface HMCameraBulletinBoardNotificationCondition
 + (id)shortDescription;
-+ (uint64_t)isDateComponentsComparisonPredicate:(uint64_t)a1;
-+ (uint64_t)isPresenceComparisonPredicate:(uint64_t)a1;
-+ (void)_updateCondition:(void *)a3 usingPredicate:;
++ (uint64_t)isDateComponentsComparisonPredicate:(uint64_t)predicate;
++ (uint64_t)isPresenceComparisonPredicate:(uint64_t)predicate;
++ (void)_updateCondition:(void *)condition usingPredicate:;
 - (HMCameraBulletinBoardNotificationCondition)init;
-- (HMCameraBulletinBoardNotificationCondition)initWithPredicate:(id)a3;
+- (HMCameraBulletinBoardNotificationCondition)initWithPredicate:(id)predicate;
 - (NSArray)attributeDescriptions;
 - (NSPredicate)predicate;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMCameraBulletinBoardNotificationCondition
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
+  array = [MEMORY[0x1E695DF70] array];
+  significantEventReasonCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
 
-  if (v4)
+  if (significantEventReasonCondition)
   {
     v5 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v6 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
-    v7 = [v5 initWithName:@"Significant Event Reason" value:v6];
-    [v3 addObject:v7];
+    significantEventReasonCondition2 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
+    v7 = [v5 initWithName:@"Significant Event Reason" value:significantEventReasonCondition2];
+    [array addObject:v7];
   }
 
-  v8 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
+  significantEventPersonFamiliarityCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
 
-  if (v8)
+  if (significantEventPersonFamiliarityCondition)
   {
     v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v10 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
-    v11 = [v9 initWithName:@"Person Familiarity" value:v10];
-    [v3 addObject:v11];
+    significantEventPersonFamiliarityCondition2 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
+    v11 = [v9 initWithName:@"Person Familiarity" value:significantEventPersonFamiliarityCondition2];
+    [array addObject:v11];
   }
 
-  v12 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
+  dateComponentsPredicate = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
 
-  if (v12)
+  if (dateComponentsPredicate)
   {
     v13 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v14 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
-    v15 = [v13 initWithName:@"Date Components" value:v14];
-    [v3 addObject:v15];
+    dateComponentsPredicate2 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
+    v15 = [v13 initWithName:@"Date Components" value:dateComponentsPredicate2];
+    [array addObject:v15];
   }
 
-  v16 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
+  presencePredicate = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
 
-  if (v16)
+  if (presencePredicate)
   {
     v17 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v18 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
-    v19 = [v17 initWithName:@"Presence" value:v18];
-    [v3 addObject:v19];
+    presencePredicate2 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
+    v19 = [v17 initWithName:@"Presence" value:presencePredicate2];
+    [array addObject:v19];
   }
 
-  v20 = [v3 copy];
+  v20 = [array copy];
 
   return v20;
 }
@@ -68,20 +68,20 @@
   return [v2 shortDescription];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HMMutableCameraBulletinBoardNotificationCondition);
-  v5 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventReasonCondition:v5];
+  significantEventReasonCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventReasonCondition:significantEventReasonCondition];
 
-  v6 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventPersonFamiliarityCondition:v6];
+  significantEventPersonFamiliarityCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventPersonFamiliarityCondition:significantEventPersonFamiliarityCondition];
 
-  v7 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setDateComponentsPredicate:v7];
+  dateComponentsPredicate = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setDateComponentsPredicate:dateComponentsPredicate];
 
-  v8 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setPresencePredicate:v8];
+  presencePredicate = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setPresencePredicate:presencePredicate];
 
   return v4;
 }
@@ -95,42 +95,42 @@
 
 - (NSPredicate)predicate
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
+  array = [MEMORY[0x1E695DF70] array];
+  significantEventReasonCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
 
-  if (v4)
+  if (significantEventReasonCondition)
   {
-    v5 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
-    v6 = [v5 predicate];
-    [v3 addObject:v6];
+    significantEventReasonCondition2 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
+    predicate = [significantEventReasonCondition2 predicate];
+    [array addObject:predicate];
   }
 
-  v7 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
+  significantEventPersonFamiliarityCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
 
-  if (v7)
+  if (significantEventPersonFamiliarityCondition)
   {
-    v8 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
-    v9 = [v8 predicate];
-    [v3 addObject:v9];
+    significantEventPersonFamiliarityCondition2 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
+    predicate2 = [significantEventPersonFamiliarityCondition2 predicate];
+    [array addObject:predicate2];
   }
 
-  v10 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
+  dateComponentsPredicate = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
 
-  if (v10)
+  if (dateComponentsPredicate)
   {
-    v11 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
-    [v3 addObject:v11];
+    dateComponentsPredicate2 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
+    [array addObject:dateComponentsPredicate2];
   }
 
-  v12 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
+  presencePredicate = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
 
-  if (v12)
+  if (presencePredicate)
   {
-    v13 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
-    [v3 addObject:v13];
+    presencePredicate2 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
+    [array addObject:presencePredicate2];
   }
 
-  v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v3];
+  v14 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
 
   return v14;
 }
@@ -142,12 +142,12 @@
   return [(HMCameraBulletinBoardNotificationCondition *)&v3 init];
 }
 
-- (HMCameraBulletinBoardNotificationCondition)initWithPredicate:(id)a3
+- (HMCameraBulletinBoardNotificationCondition)initWithPredicate:(id)predicate
 {
-  v4 = a3;
-  if (v4)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
-    v5 = v4;
+    v5 = predicateCopy;
     v6 = [(HMCameraBulletinBoardNotificationCondition *)self init];
     v7 = [(HMCameraBulletinBoardNotificationCondition *)v6 mutableCopy];
     [HMCameraBulletinBoardNotificationCondition _updateCondition:v7 usingPredicate:v5];
@@ -165,16 +165,16 @@
   return result;
 }
 
-+ (void)_updateCondition:(void *)a3 usingPredicate:
++ (void)_updateCondition:(void *)condition usingPredicate:
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = a2;
-  v5 = a3;
+  conditionCopy = condition;
   v6 = objc_opt_self();
-  v7 = [[HMCameraSignificantEventReasonNotificationCondition alloc] initWithPredicate:v5];
+  v7 = [[HMCameraSignificantEventReasonNotificationCondition alloc] initWithPredicate:conditionCopy];
   if (!v7)
   {
-    v8 = [[HMCameraSignificantEventPersonFamiliarityNotificationCondition alloc] initWithPredicate:v5];
+    v8 = [[HMCameraSignificantEventPersonFamiliarityNotificationCondition alloc] initWithPredicate:conditionCopy];
     if (v8)
     {
       [v4 setSignificantEventPersonFamiliarityCondition:v8];
@@ -183,7 +183,7 @@ LABEL_36:
       goto LABEL_37;
     }
 
-    v9 = v5;
+    v9 = conditionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -211,18 +211,18 @@ LABEL_36:
         v23 = 0;
       }
 
-      v24 = v23;
+      subpredicates2 = v23;
 
-      if (v24)
+      if (subpredicates2)
       {
-        if ([(HMCameraBulletinBoardNotificationCondition *)v6 isDateComponentsComparisonPredicate:v24])
+        if ([(HMCameraBulletinBoardNotificationCondition *)v6 isDateComponentsComparisonPredicate:subpredicates2])
         {
-          [v4 setDateComponentsPredicate:v24];
+          [v4 setDateComponentsPredicate:subpredicates2];
         }
 
-        else if ([(HMCameraBulletinBoardNotificationCondition *)v6 isPresenceComparisonPredicate:v24])
+        else if ([(HMCameraBulletinBoardNotificationCondition *)v6 isPresenceComparisonPredicate:subpredicates2])
         {
-          [v4 setPresencePredicate:v24];
+          [v4 setPresencePredicate:subpredicates2];
         }
       }
 
@@ -231,12 +231,12 @@ LABEL_36:
 
     v12 = v11;
     v31 = objc_opt_self();
-    v13 = [v12 subpredicates];
+    subpredicates = [v12 subpredicates];
 
-    if ([v13 count] == 2)
+    if ([subpredicates count] == 2)
     {
       v30 = v11;
-      v14 = [v13 objectAtIndexedSubscript:0];
+      v14 = [subpredicates objectAtIndexedSubscript:0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -250,7 +250,7 @@ LABEL_36:
 
       v16 = v15;
 
-      v17 = [v13 objectAtIndexedSubscript:1];
+      v17 = [subpredicates objectAtIndexedSubscript:1];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -289,8 +289,8 @@ LABEL_27:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v24 = [v12 subpredicates];
-    v25 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    subpredicates2 = [v12 subpredicates];
+    v25 = [subpredicates2 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v25)
     {
       v26 = v25;
@@ -301,13 +301,13 @@ LABEL_27:
         {
           if (*v33 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(subpredicates2);
           }
 
           [(HMCameraBulletinBoardNotificationCondition *)v6 _updateCondition:v4 usingPredicate:*(*(&v32 + 1) + 8 * i)];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v26 = [subpredicates2 countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v26);
@@ -324,20 +324,20 @@ LABEL_37:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-+ (uint64_t)isDateComponentsComparisonPredicate:(uint64_t)a1
++ (uint64_t)isDateComponentsComparisonPredicate:(uint64_t)predicate
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 rightExpression];
-  if ([v3 expressionType])
+  rightExpression = [v2 rightExpression];
+  if ([rightExpression expressionType])
   {
     isKindOfClass = 0;
   }
 
   else
   {
-    v5 = [v2 rightExpression];
-    v6 = [v5 constantValue];
+    rightExpression2 = [v2 rightExpression];
+    constantValue = [rightExpression2 constantValue];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -345,16 +345,16 @@ LABEL_37:
   return isKindOfClass & 1;
 }
 
-+ (uint64_t)isPresenceComparisonPredicate:(uint64_t)a1
++ (uint64_t)isPresenceComparisonPredicate:(uint64_t)predicate
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 leftExpression];
-  if ([v3 expressionType] == 3)
+  leftExpression = [v2 leftExpression];
+  if ([leftExpression expressionType] == 3)
   {
-    v4 = [v2 leftExpression];
-    v5 = [v4 keyPath];
-    v6 = [v5 isEqualToString:@"presence"];
+    leftExpression2 = [v2 leftExpression];
+    keyPath = [leftExpression2 keyPath];
+    v6 = [keyPath isEqualToString:@"presence"];
   }
 
   else

@@ -1,25 +1,25 @@
 @interface UIUDeduplicator
-- (id)addElementsForScreen:(id)a3 candidates:(id)a4 screenGroupID:(id)a5;
-- (id)identifyElements:(id)a3 elements:(id)a4;
-- (id)identifyImage:(id)a3 image:(CGImage *)a4;
-- (id)init:(int64_t)a3;
+- (id)addElementsForScreen:(id)screen candidates:(id)candidates screenGroupID:(id)d;
+- (id)identifyElements:(id)elements elements:(id)a4;
+- (id)identifyImage:(id)image image:(CGImage *)a4;
+- (id)init:(int64_t)init;
 - (void)setDebugMode;
 @end
 
 @implementation UIUDeduplicator
 
-- (id)init:(int64_t)a3
+- (id)init:(int64_t)init
 {
   v13.receiver = self;
   v13.super_class = UIUDeduplicator;
   v4 = [(UIUDeduplicator *)&v13 init];
-  if (a3 != 2)
+  if (init != 2)
   {
-    a3 = a3 == 1;
+    init = init == 1;
   }
 
   v12 = 0;
-  v5 = [[UIDeduplicatorCompat alloc] initWithPlatform:a3 error:&v12];
+  v5 = [[UIDeduplicatorCompat alloc] initWithPlatform:init error:&v12];
   v6 = v12;
   underlyingObject = v4->_underlyingObject;
   v4->_underlyingObject = v5;
@@ -52,12 +52,12 @@
   return v9;
 }
 
-- (id)identifyImage:(id)a3 image:(CGImage *)a4
+- (id)identifyImage:(id)image image:(CGImage *)a4
 {
-  v6 = a3;
-  v7 = [(UIUDeduplicator *)self underlyingObject];
+  imageCopy = image;
+  underlyingObject = [(UIUDeduplicator *)self underlyingObject];
   v12 = 0;
-  v8 = [v7 identifyScreenshotWithId:v6 image:a4 error:&v12];
+  v8 = [underlyingObject identifyScreenshotWithId:imageCopy image:a4 error:&v12];
   v9 = v12;
 
   if (v8 || !v9)
@@ -69,7 +69,7 @@
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [UIUDeduplicator identifyImage:v6 image:v9];
+      [UIUDeduplicator identifyImage:imageCopy image:v9];
     }
 
     v10 = 0;
@@ -78,21 +78,21 @@
   return v10;
 }
 
-- (id)identifyElements:(id)a3 elements:(id)a4
+- (id)identifyElements:(id)elements elements:(id)a4
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  elementsCopy = elements;
   v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v6 underlyingObject];
-  v10 = [(UIUDeduplicator *)self underlyingObject];
+  array = [MEMORY[0x277CBEB18] array];
+  underlyingObject = [elementsCopy underlyingObject];
+  underlyingObject2 = [(UIUDeduplicator *)self underlyingObject];
   v28 = 0;
-  v11 = [v10 identifyElementsWithScreenshot:v9 rectArray:v7 error:&v28];
+  v11 = [underlyingObject2 identifyElementsWithScreenshot:underlyingObject rectArray:v7 error:&v28];
   v12 = v28;
 
   if (v11 || !v12)
   {
-    v23 = v9;
+    v23 = underlyingObject;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -113,7 +113,7 @@
           }
 
           v21 = [[UIUDedupeElement alloc] initWithContents:*(*(&v24 + 1) + 8 * i)];
-          [v8 addObject:v21];
+          [array addObject:v21];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -122,18 +122,18 @@
       while (v18);
     }
 
-    v15 = v8;
-    v9 = v23;
+    v15 = array;
+    underlyingObject = v23;
   }
 
   else
   {
-    v13 = [v6 underlyingObject];
-    v14 = [v13 imageID];
+    underlyingObject3 = [elementsCopy underlyingObject];
+    imageID = [underlyingObject3 imageID];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [UIUDeduplicator identifyElements:v14 elements:v12];
+      [UIUDeduplicator identifyElements:imageID elements:v12];
     }
 
     v15 = MEMORY[0x277CBEBF8];
@@ -142,19 +142,19 @@
   return v15;
 }
 
-- (id)addElementsForScreen:(id)a3 candidates:(id)a4 screenGroupID:(id)a5
+- (id)addElementsForScreen:(id)screen candidates:(id)candidates screenGroupID:(id)d
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 underlyingObject];
-  v12 = [MEMORY[0x277CBEB18] array];
+  screenCopy = screen;
+  candidatesCopy = candidates;
+  dCopy = d;
+  underlyingObject = [screenCopy underlyingObject];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v9;
+  v13 = candidatesCopy;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
@@ -169,8 +169,8 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v27 + 1) + 8 * i) underlyingObject];
-        [v12 addObject:v18];
+        underlyingObject2 = [*(*(&v27 + 1) + 8 * i) underlyingObject];
+        [array addObject:underlyingObject2];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -179,9 +179,9 @@
     while (v15);
   }
 
-  v19 = [(UIUDeduplicator *)self underlyingObject];
+  underlyingObject3 = [(UIUDeduplicator *)self underlyingObject];
   v26 = 0;
-  v20 = [v19 addElementsForScreenWithTargetScreenshot:v11 candidateElements:v12 screenGroupID:v10 error:&v26];
+  v20 = [underlyingObject3 addElementsForScreenWithTargetScreenshot:underlyingObject candidateElements:array screenGroupID:dCopy error:&v26];
   v21 = v26;
 
   if (v20 || !v21)
@@ -191,12 +191,12 @@
 
   else
   {
-    v22 = [v8 underlyingObject];
-    v23 = [v22 imageID];
+    underlyingObject4 = [screenCopy underlyingObject];
+    imageID = [underlyingObject4 imageID];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [UIUDeduplicator addElementsForScreen:v23 candidates:v21 screenGroupID:?];
+      [UIUDeduplicator addElementsForScreen:imageID candidates:v21 screenGroupID:?];
     }
 
     v24 = 0;
@@ -207,8 +207,8 @@
 
 - (void)setDebugMode
 {
-  v2 = [(UIUDeduplicator *)self underlyingObject];
-  [v2 setDebugTo:1];
+  underlyingObject = [(UIUDeduplicator *)self underlyingObject];
+  [underlyingObject setDebugTo:1];
 }
 
 - (void)init:(void *)a1 .cold.1(void *a1)

@@ -1,35 +1,35 @@
 @interface APAttributionPayloadSerializer
-+ (id)deserializePayload:(id)a3 error:(id *)a4;
-+ (id)serializePayload:(id)a3 error:(id *)a4;
++ (id)deserializePayload:(id)payload error:(id *)error;
++ (id)serializePayload:(id)payload error:(id *)error;
 @end
 
 @implementation APAttributionPayloadSerializer
 
-+ (id)serializePayload:(id)a3 error:(id *)a4
++ (id)serializePayload:(id)payload error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  payloadCopy = payload;
+  v6 = payloadCopy;
+  if (!payloadCopy)
   {
     goto LABEL_11;
   }
 
-  v7 = [v5 header];
-  if (!v7)
+  header = [payloadCopy header];
+  if (!header)
   {
     goto LABEL_11;
   }
 
-  v8 = v7;
-  v9 = [v6 body];
-  if (!v9)
+  v8 = header;
+  body = [v6 body];
+  if (!body)
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v10 = v9;
+  v10 = body;
   v11 = [v6 url];
   if (!v11)
   {
@@ -40,64 +40,64 @@ LABEL_9:
 
   v12 = v11;
   v13 = [v6 url];
-  v14 = [v13 path];
-  if (!v14)
+  path = [v13 path];
+  if (!path)
   {
 
     goto LABEL_9;
   }
 
-  v15 = v14;
-  v16 = [v6 bundleID];
+  v15 = path;
+  bundleID = [v6 bundleID];
 
-  if (v16)
+  if (bundleID)
   {
     v17 = [NSMutableDictionary dictionaryWithCapacity:2];
-    v18 = [v6 header];
-    [v17 setObject:v18 forKey:@"header"];
+    header2 = [v6 header];
+    [v17 setObject:header2 forKey:@"header"];
 
-    v19 = [v6 body];
-    [v17 setObject:v19 forKey:@"body"];
+    body2 = [v6 body];
+    [v17 setObject:body2 forKey:@"body"];
 
     v20 = [v6 url];
-    v21 = [v20 path];
-    [v17 setObject:v21 forKey:@"url"];
+    path2 = [v20 path];
+    [v17 setObject:path2 forKey:@"url"];
 
-    v22 = [v6 bundleID];
-    [v17 setObject:v22 forKey:@"bundleID"];
+    bundleID2 = [v6 bundleID];
+    [v17 setObject:bundleID2 forKey:@"bundleID"];
 
-    a4 = [NSJSONSerialization dataWithJSONObject:v17 options:0 error:a4];
+    error = [NSJSONSerialization dataWithJSONObject:v17 options:0 error:error];
 
     goto LABEL_13;
   }
 
 LABEL_11:
-  if (a4)
+  if (error)
   {
     v25 = NSLocalizedDescriptionKey;
     v26 = @"error serializing payload one or more parameter is nil";
     v23 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.ap.adservices.attributionError" code:2 userInfo:v23];
+    *error = [NSError errorWithDomain:@"com.apple.ap.adservices.attributionError" code:2 userInfo:v23];
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_13:
 
-  return a4;
+  return error;
 }
 
-+ (id)deserializePayload:(id)a3 error:(id *)a4
++ (id)deserializePayload:(id)payload error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || ![v5 length])
+  payloadCopy = payload;
+  v6 = payloadCopy;
+  if (!payloadCopy || ![payloadCopy length])
   {
-    a4 = 0;
+    error = 0;
     goto LABEL_24;
   }
 
-  v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:a4];
+  v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:error];
   v8 = v7;
   if (!v7)
   {
@@ -106,7 +106,7 @@ LABEL_13:
 
   if ([v7 count] != 4)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -146,7 +146,7 @@ LABEL_18:
   if (!v15)
   {
 LABEL_19:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -164,7 +164,7 @@ LABEL_19:
 
   if ((isKindOfClass & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -182,7 +182,7 @@ LABEL_19:
 
   if ((v19 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -200,7 +200,7 @@ LABEL_19:
 
   if ((v21 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -218,7 +218,7 @@ LABEL_19:
 
   if ((v23 & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -229,10 +229,10 @@ LABEL_19:
     v31 = &v34;
 LABEL_21:
     v32 = [NSDictionary dictionaryWithObjects:v30 forKeys:v31 count:1];
-    *a4 = [NSError errorWithDomain:@"com.apple.ap.adservices.attributionError" code:2 userInfo:v32];
+    *error = [NSError errorWithDomain:@"com.apple.ap.adservices.attributionError" code:2 userInfo:v32];
 
 LABEL_22:
-    a4 = 0;
+    error = 0;
     goto LABEL_23;
   }
 
@@ -242,12 +242,12 @@ LABEL_22:
   v27 = [v8 objectForKeyedSubscript:@"bundleID"];
   v28 = [v8 objectForKeyedSubscript:@"header"];
   v29 = [v8 objectForKeyedSubscript:@"body"];
-  a4 = [(AttributionPayload *)v24 initWithURL:v26 bundleID:v27 header:v28 body:v29];
+  error = [(AttributionPayload *)v24 initWithURL:v26 bundleID:v27 header:v28 body:v29];
 
 LABEL_23:
 LABEL_24:
 
-  return a4;
+  return error;
 }
 
 @end

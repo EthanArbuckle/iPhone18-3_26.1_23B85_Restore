@@ -1,27 +1,27 @@
 @interface TFAppLockupView
 - (CGSize)displayedIconSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TFAppLockupView)initWithFrame:(CGRect)a3;
-- (void)_layoutLabelsInLayoutBounds:(CGRect)a3;
-- (void)_prepareForDisplayWithTraitCollection:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TFAppLockupView)initWithFrame:(CGRect)frame;
+- (void)_layoutLabelsInLayoutBounds:(CGRect)bounds;
+- (void)_prepareForDisplayWithTraitCollection:(id)collection;
 - (void)_styleSubviews;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setImage:(id)image animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TFAppLockupView
 
-- (TFAppLockupView)initWithFrame:(CGRect)a3
+- (TFAppLockupView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = TFAppLockupView;
-  v3 = [(TFAppLockupView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TFAppLockupView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [TFAppLockupViewSpecification alloc];
-    v5 = [(TFAppLockupView *)v3 traitCollection];
-    v6 = [(TFAppLockupViewSpecification *)v4 initWithTraitCollection:v5];
+    traitCollection = [(TFAppLockupView *)v3 traitCollection];
+    v6 = [(TFAppLockupViewSpecification *)v4 initWithTraitCollection:traitCollection];
     specification = v3->_specification;
     v3->_specification = v6;
 
@@ -51,8 +51,8 @@
 
     [(TFAppLockupView *)v3 addSubview:v3->_secondarySubtitleLabel];
     [(TFAppLockupView *)v3 _styleSubviews];
-    v21 = [(TFAppLockupView *)v3 traitCollection];
-    [(TFAppLockupView *)v3 _prepareForDisplayWithTraitCollection:v21];
+    traitCollection2 = [(TFAppLockupView *)v3 traitCollection];
+    [(TFAppLockupView *)v3 _prepareForDisplayWithTraitCollection:traitCollection2];
   }
 
   return v3;
@@ -60,88 +60,88 @@
 
 - (void)_styleSubviews
 {
-  v3 = [(TFAppLockupView *)self titleLabel];
-  v4 = [(TFAppLockupView *)self specification];
-  v5 = [v4 titleLabelFont];
-  [v3 setFont:v5];
+  titleLabel = [(TFAppLockupView *)self titleLabel];
+  specification = [(TFAppLockupView *)self specification];
+  titleLabelFont = [specification titleLabelFont];
+  [titleLabel setFont:titleLabelFont];
 
-  v6 = [(TFAppLockupView *)self titleLabel];
-  v7 = [(TFAppLockupView *)self specification];
-  v8 = [v7 titleTextColor];
-  [v6 setTextColor:v8];
+  titleLabel2 = [(TFAppLockupView *)self titleLabel];
+  specification2 = [(TFAppLockupView *)self specification];
+  titleTextColor = [specification2 titleTextColor];
+  [titleLabel2 setTextColor:titleTextColor];
 
-  v9 = [(TFAppLockupView *)self titleLabel];
-  [v9 setNumberOfLines:2];
+  titleLabel3 = [(TFAppLockupView *)self titleLabel];
+  [titleLabel3 setNumberOfLines:2];
 
-  v10 = [(TFAppLockupView *)self titleLabel];
-  [v10 setLineBreakMode:0];
+  titleLabel4 = [(TFAppLockupView *)self titleLabel];
+  [titleLabel4 setLineBreakMode:0];
 
-  v11 = [(TFAppLockupView *)self primarySubtitleLabel];
-  v12 = [(TFAppLockupView *)self specification];
-  v13 = [v12 subtitleLabelFont];
-  [v11 setFont:v13];
+  primarySubtitleLabel = [(TFAppLockupView *)self primarySubtitleLabel];
+  specification3 = [(TFAppLockupView *)self specification];
+  subtitleLabelFont = [specification3 subtitleLabelFont];
+  [primarySubtitleLabel setFont:subtitleLabelFont];
 
-  v14 = [(TFAppLockupView *)self primarySubtitleLabel];
-  v15 = [(TFAppLockupView *)self specification];
-  v16 = [v15 subtitleTextColor];
-  [v14 setTextColor:v16];
+  primarySubtitleLabel2 = [(TFAppLockupView *)self primarySubtitleLabel];
+  specification4 = [(TFAppLockupView *)self specification];
+  subtitleTextColor = [specification4 subtitleTextColor];
+  [primarySubtitleLabel2 setTextColor:subtitleTextColor];
 
-  v17 = [(TFAppLockupView *)self primarySubtitleLabel];
-  [v17 setNumberOfLines:1];
+  primarySubtitleLabel3 = [(TFAppLockupView *)self primarySubtitleLabel];
+  [primarySubtitleLabel3 setNumberOfLines:1];
 
-  v18 = [(TFAppLockupView *)self primarySubtitleLabel];
-  [v18 setLineBreakMode:4];
+  primarySubtitleLabel4 = [(TFAppLockupView *)self primarySubtitleLabel];
+  [primarySubtitleLabel4 setLineBreakMode:4];
 
-  v19 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  v20 = [(TFAppLockupView *)self specification];
-  v21 = [v20 subtitleLabelFont];
-  [v19 setFont:v21];
+  secondarySubtitleLabel = [(TFAppLockupView *)self secondarySubtitleLabel];
+  specification5 = [(TFAppLockupView *)self specification];
+  subtitleLabelFont2 = [specification5 subtitleLabelFont];
+  [secondarySubtitleLabel setFont:subtitleLabelFont2];
 
-  v22 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  v23 = [(TFAppLockupView *)self specification];
-  v24 = [v23 subtitleTextColor];
-  [v22 setTextColor:v24];
+  secondarySubtitleLabel2 = [(TFAppLockupView *)self secondarySubtitleLabel];
+  specification6 = [(TFAppLockupView *)self specification];
+  subtitleTextColor2 = [specification6 subtitleTextColor];
+  [secondarySubtitleLabel2 setTextColor:subtitleTextColor2];
 
-  v25 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  [v25 setNumberOfLines:1];
+  secondarySubtitleLabel3 = [(TFAppLockupView *)self secondarySubtitleLabel];
+  [secondarySubtitleLabel3 setNumberOfLines:1];
 
-  v26 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  [v26 setLineBreakMode:4];
+  secondarySubtitleLabel4 = [(TFAppLockupView *)self secondarySubtitleLabel];
+  [secondarySubtitleLabel4 setLineBreakMode:4];
 
-  v27 = [(TFAppLockupView *)self iconView];
-  v28 = [(TFAppLockupView *)self specification];
-  v29 = [v28 iconPlaceholderColor];
-  [v27 setBackgroundColor:v29];
+  iconView = [(TFAppLockupView *)self iconView];
+  specification7 = [(TFAppLockupView *)self specification];
+  iconPlaceholderColor = [specification7 iconPlaceholderColor];
+  [iconView setBackgroundColor:iconPlaceholderColor];
 
-  v30 = [(TFAppLockupView *)self iconView];
-  [v30 setClipsToBounds:1];
+  iconView2 = [(TFAppLockupView *)self iconView];
+  [iconView2 setClipsToBounds:1];
 
-  v31 = [(TFAppLockupView *)self iconView];
-  [v31 _setContinuousCornerRadius:24.0];
+  iconView3 = [(TFAppLockupView *)self iconView];
+  [iconView3 _setContinuousCornerRadius:24.0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TFAppLockupView *)self specification];
-  [v6 iconSize];
+  height = fits.height;
+  width = fits.width;
+  specification = [(TFAppLockupView *)self specification];
+  [specification iconSize];
   v8 = v7;
 
-  v9 = [(TFAppLockupView *)self specification];
-  [v9 paddingBetweenIconAndText];
+  specification2 = [(TFAppLockupView *)self specification];
+  [specification2 paddingBetweenIconAndText];
   v11 = width - v10 - v8;
 
-  v12 = [(TFAppLockupView *)self titleLabel];
-  [v12 sizeThatFits:{v11, height}];
+  titleLabel = [(TFAppLockupView *)self titleLabel];
+  [titleLabel sizeThatFits:{v11, height}];
   v14 = v13;
 
-  v15 = [(TFAppLockupView *)self primarySubtitleLabel];
-  [v15 sizeThatFits:{v11, height}];
+  primarySubtitleLabel = [(TFAppLockupView *)self primarySubtitleLabel];
+  [primarySubtitleLabel sizeThatFits:{v11, height}];
   v17 = v16;
 
-  v18 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  [v18 sizeThatFits:{v11, height}];
+  secondarySubtitleLabel = [(TFAppLockupView *)self secondarySubtitleLabel];
+  [secondarySubtitleLabel sizeThatFits:{v11, height}];
   v20 = v19;
 
   if (v14 + v17 + v20 >= v8)
@@ -160,13 +160,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = TFAppLockupView;
-  [(TFAppLockupView *)&v5 traitCollectionDidChange:a3];
-  v4 = [(TFAppLockupView *)self traitCollection];
-  [(TFAppLockupView *)self _prepareForDisplayWithTraitCollection:v4];
+  [(TFAppLockupView *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(TFAppLockupView *)self traitCollection];
+  [(TFAppLockupView *)self _prepareForDisplayWithTraitCollection:traitCollection];
 
   [(TFAppLockupView *)self setNeedsLayout];
 }
@@ -181,8 +181,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TFAppLockupView *)self specification];
-  [v11 iconSize];
+  specification = [(TFAppLockupView *)self specification];
+  [specification iconSize];
   v13 = v12;
   v15 = v14;
 
@@ -191,18 +191,18 @@
   v39.size.width = v8;
   v39.size.height = v10;
   Width = CGRectGetWidth(v39);
-  v16 = [(TFAppLockupView *)self specification];
-  [v16 paddingBetweenIconAndText];
+  specification2 = [(TFAppLockupView *)self specification];
+  [specification2 paddingBetweenIconAndText];
   v36 = v17;
 
-  v18 = [(TFAppLockupView *)self traitCollection];
-  v19 = [v18 layoutDirection];
+  traitCollection = [(TFAppLockupView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
   v20 = v4;
   v21 = v6;
   v22 = v8;
   v23 = v10;
-  if (v19 == 1)
+  if (layoutDirection == 1)
   {
     v24 = CGRectGetMaxX(*&v20) - v13;
     v40.origin.x = v4;
@@ -210,8 +210,8 @@
     v40.size.width = v8;
     v40.size.height = v10;
     MinY = CGRectGetMinY(v40);
-    v26 = [(TFAppLockupView *)self iconView];
-    [v26 setFrame:{v24, MinY, v13, v15}];
+    iconView = [(TFAppLockupView *)self iconView];
+    [iconView setFrame:{v24, MinY, v13, v15}];
 
     v41.origin.x = v4;
     v41.origin.y = v6;
@@ -238,16 +238,16 @@
     v44.size.width = v8;
     v44.size.height = v10;
     v31 = CGRectGetMinY(v44);
-    v32 = [(TFAppLockupView *)self iconView];
-    [v32 setFrame:{v30, v31, v13, v15}];
+    iconView2 = [(TFAppLockupView *)self iconView];
+    [iconView2 setFrame:{v30, v31, v13, v15}];
 
     v45.origin.x = v30;
     v45.origin.y = v31;
     v45.size.width = v13;
     v45.size.height = v15;
     MaxX = CGRectGetMaxX(v45);
-    v34 = [(TFAppLockupView *)self specification];
-    [v34 paddingBetweenIconAndText];
+    specification3 = [(TFAppLockupView *)self specification];
+    [specification3 paddingBetweenIconAndText];
     MinX = MaxX + v35;
     v46.origin.x = v30;
     v46.origin.y = v31;
@@ -264,36 +264,36 @@
   [(TFAppLockupView *)self _layoutLabelsInLayoutBounds:MinX, v28, Width - v36 - v13, Height, *&v36];
 }
 
-- (void)_layoutLabelsInLayoutBounds:(CGRect)a3
+- (void)_layoutLabelsInLayoutBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(TFAppLockupView *)self titleLabel];
-  [v8 sizeThatFits:{width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  titleLabel = [(TFAppLockupView *)self titleLabel];
+  [titleLabel sizeThatFits:{width, height}];
   v10 = v9;
   v59 = v9;
 
-  v11 = [(TFAppLockupView *)self primarySubtitleLabel];
-  [v11 sizeThatFits:{width, height}];
+  primarySubtitleLabel = [(TFAppLockupView *)self primarySubtitleLabel];
+  [primarySubtitleLabel sizeThatFits:{width, height}];
   v13 = v12;
 
-  v14 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  [v14 sizeThatFits:{width, height}];
+  secondarySubtitleLabel = [(TFAppLockupView *)self secondarySubtitleLabel];
+  [secondarySubtitleLabel sizeThatFits:{width, height}];
   v60 = v15;
 
-  v16 = [(TFAppLockupView *)self titleLabel];
-  [v16 _firstBaselineOffsetFromTop];
+  titleLabel2 = [(TFAppLockupView *)self titleLabel];
+  [titleLabel2 _firstBaselineOffsetFromTop];
   v18 = v17;
-  v19 = [(TFAppLockupView *)self specification];
-  [v19 titleLabelBaselineToFirstSubtitleLabelBaseline];
+  specification = [(TFAppLockupView *)self specification];
+  [specification titleLabelBaselineToFirstSubtitleLabelBaseline];
   v21 = v18 + v20;
-  v22 = [(TFAppLockupView *)self specification];
-  [v22 firstSubtitleLabelBaselineToSecondSubtitleLabelBaseline];
+  specification2 = [(TFAppLockupView *)self specification];
+  [specification2 firstSubtitleLabelBaselineToSecondSubtitleLabelBaseline];
   v24 = v21 + v23;
-  v25 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  [v25 _baselineOffsetFromBottom];
+  secondarySubtitleLabel2 = [(TFAppLockupView *)self secondarySubtitleLabel];
+  [secondarySubtitleLabel2 _baselineOffsetFromBottom];
   v27 = v24 + v26;
 
   v63.origin.x = x;
@@ -327,14 +327,14 @@
   v66.origin.y = v29;
   v66.size.height = v10;
   MaxY = CGRectGetMaxY(v66);
-  v31 = [(TFAppLockupView *)self titleLabel];
-  [v31 _baselineOffsetFromBottom];
+  titleLabel3 = [(TFAppLockupView *)self titleLabel];
+  [titleLabel3 _baselineOffsetFromBottom];
   v33 = MaxY - v32;
-  v34 = [(TFAppLockupView *)self specification];
-  [v34 titleLabelBaselineToFirstSubtitleLabelBaseline];
+  specification3 = [(TFAppLockupView *)self specification];
+  [specification3 titleLabelBaselineToFirstSubtitleLabelBaseline];
   v36 = v33 + v35;
-  v37 = [(TFAppLockupView *)self primarySubtitleLabel];
-  [v37 _firstBaselineOffsetFromTop];
+  primarySubtitleLabel2 = [(TFAppLockupView *)self primarySubtitleLabel];
+  [primarySubtitleLabel2 _firstBaselineOffsetFromTop];
   v55 = v36 - v38;
 
   v67.origin.x = x;
@@ -352,14 +352,14 @@
   v69.size.width = v39;
   v69.size.height = v13;
   v40 = CGRectGetMaxY(v69);
-  v41 = [(TFAppLockupView *)self primarySubtitleLabel];
-  [v41 _baselineOffsetFromBottom];
+  primarySubtitleLabel3 = [(TFAppLockupView *)self primarySubtitleLabel];
+  [primarySubtitleLabel3 _baselineOffsetFromBottom];
   v43 = v40 - v42;
-  v44 = [(TFAppLockupView *)self specification];
-  [v44 firstSubtitleLabelBaselineToSecondSubtitleLabelBaseline];
+  specification4 = [(TFAppLockupView *)self specification];
+  [specification4 firstSubtitleLabelBaselineToSecondSubtitleLabelBaseline];
   v46 = v43 + v45;
-  v47 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  [v47 _firstBaselineOffsetFromTop];
+  secondarySubtitleLabel3 = [(TFAppLockupView *)self secondarySubtitleLabel];
+  [secondarySubtitleLabel3 _firstBaselineOffsetFromTop];
   v49 = v46 - v48;
 
   v70.origin.x = x;
@@ -372,43 +372,43 @@
   v71.size.width = width;
   v71.size.height = height;
   v51 = CGRectGetWidth(v71);
-  v52 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  [v52 setFrame:{v50, v49, v51, *&v60}];
+  secondarySubtitleLabel4 = [(TFAppLockupView *)self secondarySubtitleLabel];
+  [secondarySubtitleLabel4 setFrame:{v50, v49, v51, *&v60}];
 
-  v53 = [(TFAppLockupView *)self titleLabel];
-  [v53 setFrame:{MinX, v58, v56, v59}];
+  titleLabel4 = [(TFAppLockupView *)self titleLabel];
+  [titleLabel4 setFrame:{MinX, v58, v56, v59}];
 
-  v61 = [(TFAppLockupView *)self primarySubtitleLabel];
-  [v61 setFrame:{v54, v55, v39, v13}];
+  primarySubtitleLabel4 = [(TFAppLockupView *)self primarySubtitleLabel];
+  [primarySubtitleLabel4 setFrame:{v54, v55, v39, v13}];
 }
 
-- (void)_prepareForDisplayWithTraitCollection:(id)a3
+- (void)_prepareForDisplayWithTraitCollection:(id)collection
 {
   v4 = [TFAppLockupViewSpecification alloc];
-  v5 = [(TFAppLockupView *)self traitCollection];
-  v6 = [(TFAppLockupViewSpecification *)v4 initWithTraitCollection:v5];
+  traitCollection = [(TFAppLockupView *)self traitCollection];
+  v6 = [(TFAppLockupViewSpecification *)v4 initWithTraitCollection:traitCollection];
   [(TFAppLockupView *)self setSpecification:v6];
 
-  v7 = [(TFAppLockupView *)self titleLabel];
-  v8 = [(TFAppLockupView *)self specification];
-  v9 = [v8 titleLabelFont];
-  [v7 setFont:v9];
+  titleLabel = [(TFAppLockupView *)self titleLabel];
+  specification = [(TFAppLockupView *)self specification];
+  titleLabelFont = [specification titleLabelFont];
+  [titleLabel setFont:titleLabelFont];
 
-  v10 = [(TFAppLockupView *)self primarySubtitleLabel];
-  v11 = [(TFAppLockupView *)self specification];
-  v12 = [v11 subtitleLabelFont];
-  [v10 setFont:v12];
+  primarySubtitleLabel = [(TFAppLockupView *)self primarySubtitleLabel];
+  specification2 = [(TFAppLockupView *)self specification];
+  subtitleLabelFont = [specification2 subtitleLabelFont];
+  [primarySubtitleLabel setFont:subtitleLabelFont];
 
-  v15 = [(TFAppLockupView *)self secondarySubtitleLabel];
-  v13 = [(TFAppLockupView *)self specification];
-  v14 = [v13 subtitleLabelFont];
-  [v15 setFont:v14];
+  secondarySubtitleLabel = [(TFAppLockupView *)self secondarySubtitleLabel];
+  specification3 = [(TFAppLockupView *)self specification];
+  subtitleLabelFont2 = [specification3 subtitleLabelFont];
+  [secondarySubtitleLabel setFont:subtitleLabelFont2];
 }
 
 - (CGSize)displayedIconSize
 {
-  v2 = [(TFAppLockupView *)self specification];
-  [v2 iconSize];
+  specification = [(TFAppLockupView *)self specification];
+  [specification iconSize];
   v4 = v3;
   v6 = v5;
 
@@ -419,24 +419,24 @@
   return result;
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(TFAppLockupView *)self iconView];
-  [v7 setImage:v6];
+  animatedCopy = animated;
+  imageCopy = image;
+  iconView = [(TFAppLockupView *)self iconView];
+  [iconView setImage:imageCopy];
 
-  if (v4)
+  if (animatedCopy)
   {
-    v11 = [MEMORY[0x277CDA000] animation];
-    [v11 setDuration:0.3];
+    animation = [MEMORY[0x277CDA000] animation];
+    [animation setDuration:0.3];
     v8 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-    [v11 setTimingFunction:v8];
+    [animation setTimingFunction:v8];
 
-    [v11 setType:*MEMORY[0x277CDA928]];
-    v9 = [(TFAppLockupView *)self iconView];
-    v10 = [v9 layer];
-    [v10 addAnimation:v11 forKey:0];
+    [animation setType:*MEMORY[0x277CDA928]];
+    iconView2 = [(TFAppLockupView *)self iconView];
+    layer = [iconView2 layer];
+    [layer addAnimation:animation forKey:0];
   }
 }
 

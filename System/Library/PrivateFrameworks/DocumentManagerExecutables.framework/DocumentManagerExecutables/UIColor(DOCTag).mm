@@ -13,13 +13,13 @@
   }
 
   v5 = [MEMORY[0x277D75348] _doc_underlyingColorForTagColor:a4];
-  v6 = [v5 colorWithAlphaComponent:a1];
+  v6 = [v5 colorWithAlphaComponent:self];
 
   if (v6 && UIAccessibilityIsInvertColorsEnabled())
   {
-    v7 = [v6 _doc_invertedColor];
+    _doc_invertedColor = [v6 _doc_invertedColor];
 
-    v6 = v7;
+    v6 = _doc_invertedColor;
   }
 
   return v6;

@@ -2,20 +2,20 @@
 + (id)sharedManager;
 - (HMLocalization)init;
 - (NSArray)stringTable;
-- (id)getLocalizedOrCustomString:(id)a3;
-- (id)getLocalizedString:(id)a3;
+- (id)getLocalizedOrCustomString:(id)string;
+- (id)getLocalizedString:(id)string;
 - (void)_updateLocalizedStrings;
-- (void)handleLocaleDidChange:(id)a3;
+- (void)handleLocaleDidChange:(id)change;
 @end
 
 @implementation HMLocalization
 
-- (id)getLocalizedOrCustomString:(id)a3
+- (id)getLocalizedOrCustomString:(id)string
 {
-  v4 = a3;
-  v5 = [(HMLocalization *)self getLocalizedString:v4];
+  stringCopy = string;
+  v5 = [(HMLocalization *)self getLocalizedString:stringCopy];
   v6 = v5;
-  if (!v5 || [v5 isEqualToString:v4])
+  if (!v5 || [v5 isEqualToString:stringCopy])
   {
     v7 = [(HMLocalization *)self getLocalizedString:@"CUSTOM"];
 
@@ -25,18 +25,18 @@
   return v6;
 }
 
-- (id)getLocalizedString:(id)a3
+- (id)getLocalizedString:(id)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(HMLocalization *)self stringTable];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    stringTable = [(HMLocalization *)self stringTable];
+    v6 = [stringTable countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -47,18 +47,18 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(stringTable);
           }
 
-          v10 = [(NSBundle *)self->_bundle localizedStringForKey:v4 value:&stru_1F0E92498 table:*(*(&v13 + 1) + 8 * i)];
-          if (![v4 isEqualToString:v10])
+          v10 = [(NSBundle *)self->_bundle localizedStringForKey:stringCopy value:&stru_1F0E92498 table:*(*(&v13 + 1) + 8 * i)];
+          if (![stringCopy isEqualToString:v10])
           {
 
             goto LABEL_13;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [stringTable countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -68,7 +68,7 @@
       }
     }
 
-    v10 = v4;
+    v10 = stringCopy;
   }
 
   else
@@ -85,7 +85,7 @@ LABEL_13:
 
 - (void)_updateLocalizedStrings
 {
-  v2 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AAE8];
   if (self)
@@ -93,9 +93,9 @@ LABEL_13:
     self = objc_getProperty(self, a2, 24, 1);
   }
 
-  v4 = [(HMLocalization *)self localizations];
-  v5 = [MEMORY[0x1E695DF58] preferredLanguages];
-  v6 = [v3 preferredLocalizationsFromArray:v4 forPreferences:v5];
+  localizations = [(HMLocalization *)self localizations];
+  preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+  v6 = [v3 preferredLocalizationsFromArray:localizations forPreferences:preferredLanguages];
 
   v7 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F0EFE0C8];
   v35 = 0u;
@@ -118,9 +118,9 @@ LABEL_13:
         }
 
         v12 = *(*(&v33 + 1) + 8 * v11);
-        if (v2)
+        if (selfCopy)
         {
-          Property = objc_getProperty(v2, v8, 24, 1);
+          Property = objc_getProperty(selfCopy, v8, 24, 1);
         }
 
         else
@@ -129,9 +129,9 @@ LABEL_13:
         }
 
         v15 = [Property pathsForResourcesOfType:@"strings" inDirectory:0 forLocalization:v12];
-        if (v2)
+        if (selfCopy)
         {
-          v16 = objc_getProperty(v2, v14, 24, 1);
+          v16 = objc_getProperty(selfCopy, v14, 24, 1);
         }
 
         else
@@ -160,12 +160,12 @@ LABEL_13:
                   objc_enumerationMutation(v19);
                 }
 
-                v23 = [*(*(&v29 + 1) + 8 * i) lastPathComponent];
-                v24 = [v23 stringByDeletingPathExtension];
+                lastPathComponent = [*(*(&v29 + 1) + 8 * i) lastPathComponent];
+                stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-                if (([v7 containsObject:v24] & 1) == 0)
+                if (([v7 containsObject:stringByDeletingPathExtension] & 1) == 0)
                 {
-                  [v7 addObject:v24];
+                  [v7 addObject:stringByDeletingPathExtension];
                 }
               }
 
@@ -197,14 +197,14 @@ LABEL_30:
 
   os_unfair_lock_lock_with_options();
   v25 = [v7 copy];
-  stringTable = v2->_stringTable;
-  v2->_stringTable = v25;
+  stringTable = selfCopy->_stringTable;
+  selfCopy->_stringTable = v25;
 
-  os_unfair_lock_unlock(&v2->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleLocaleDidChange:(id)a3
+- (void)handleLocaleDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -235,8 +235,8 @@ LABEL_30:
     v2->_bundle = v3;
 
     [(HMLocalization *)v2 _updateLocalizedStrings];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_handleLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleLocaleDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
   }
 
   return v2;
@@ -248,7 +248,7 @@ LABEL_30:
   block[1] = 3221225472;
   block[2] = __31__HMLocalization_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_62275 != -1)
   {
     dispatch_once(&sharedManager_onceToken_62275, block);

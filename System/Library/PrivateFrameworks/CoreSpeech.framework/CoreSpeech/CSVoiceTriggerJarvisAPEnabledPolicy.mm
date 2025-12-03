@@ -3,32 +3,32 @@
 - (CSVoiceTriggerJarvisAPEnabledPolicy)init;
 - (void)_addVoiceTriggerHearstAPEnabledPolicy;
 - (void)_subscribeEventMonitors;
-- (void)siriClientBehaviorMonitor:(id)a3 activatedAudioSessionWithReason:(unint64_t)a4;
-- (void)siriClientBehaviorMonitorAudioDeviceInfoUpdated:(id)a3;
-- (void)siriClientBehaviorMonitorReleasedAudioSession:(id)a3;
+- (void)siriClientBehaviorMonitor:(id)monitor activatedAudioSessionWithReason:(unint64_t)reason;
+- (void)siriClientBehaviorMonitorAudioDeviceInfoUpdated:(id)updated;
+- (void)siriClientBehaviorMonitorReleasedAudioSession:(id)session;
 @end
 
 @implementation CSVoiceTriggerJarvisAPEnabledPolicy
 
-- (void)siriClientBehaviorMonitorAudioDeviceInfoUpdated:(id)a3
+- (void)siriClientBehaviorMonitorAudioDeviceInfoUpdated:(id)updated
 {
-  v4 = [a3 recordDeviceInfo];
-  v5 = [v4 route];
-  [(CSVoiceTriggerJarvisAPEnabledPolicy *)self setClientRecordRoute:v5];
+  recordDeviceInfo = [updated recordDeviceInfo];
+  route = [recordDeviceInfo route];
+  [(CSVoiceTriggerJarvisAPEnabledPolicy *)self setClientRecordRoute:route];
 
   [(CSVoiceTriggerJarvisAPEnabledPolicy *)self notifyCallbackWithOption:0];
 }
 
-- (void)siriClientBehaviorMonitorReleasedAudioSession:(id)a3
+- (void)siriClientBehaviorMonitorReleasedAudioSession:(id)session
 {
   [(CSVoiceTriggerJarvisAPEnabledPolicy *)self setIsPlaybackAudioSessionActive:0];
 
   [(CSVoiceTriggerJarvisAPEnabledPolicy *)self notifyCallbackWithOption:0];
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 activatedAudioSessionWithReason:(unint64_t)a4
+- (void)siriClientBehaviorMonitor:(id)monitor activatedAudioSessionWithReason:(unint64_t)reason
 {
-  if (a4 - 3 <= 1)
+  if (reason - 3 <= 1)
   {
     [(CSVoiceTriggerJarvisAPEnabledPolicy *)self setIsPlaybackAudioSessionActive:1];
 

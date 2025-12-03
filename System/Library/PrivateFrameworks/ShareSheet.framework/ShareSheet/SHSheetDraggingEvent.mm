@@ -1,44 +1,44 @@
 @interface SHSheetDraggingEvent
-+ (id)eventForDraggingDidBeginWithRubberBandCoefficient:(double)a3 dismissible:(BOOL)a4 interruptedOffset:(CGPoint)a5;
-+ (id)eventForDraggingDidChangeWithTranslation:(CGPoint)a3 velocity:(CGPoint)a4 animateChange:(BOOL)a5 dismissible:(BOOL)a6;
++ (id)eventForDraggingDidBeginWithRubberBandCoefficient:(double)coefficient dismissible:(BOOL)dismissible interruptedOffset:(CGPoint)offset;
++ (id)eventForDraggingDidChangeWithTranslation:(CGPoint)translation velocity:(CGPoint)velocity animateChange:(BOOL)change dismissible:(BOOL)dismissible;
 + (id)eventForDraggingDidEnd;
 - (CGPoint)interruptedOffset;
 - (CGPoint)translation;
 - (CGPoint)velocity;
-- (SHSheetDraggingEvent)initWithBSXPCCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SHSheetDraggingEvent)initWithBSXPCCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SHSheetDraggingEvent
 
-+ (id)eventForDraggingDidBeginWithRubberBandCoefficient:(double)a3 dismissible:(BOOL)a4 interruptedOffset:(CGPoint)a5
++ (id)eventForDraggingDidBeginWithRubberBandCoefficient:(double)coefficient dismissible:(BOOL)dismissible interruptedOffset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4;
+  y = offset.y;
+  x = offset.x;
+  dismissibleCopy = dismissible;
   v9 = objc_alloc_init(SHSheetDraggingEvent);
   [(SHSheetDraggingEvent *)v9 setType:0];
-  [(SHSheetDraggingEvent *)v9 setRubberBandCoefficient:a3];
-  [(SHSheetDraggingEvent *)v9 setDismissible:v7];
+  [(SHSheetDraggingEvent *)v9 setRubberBandCoefficient:coefficient];
+  [(SHSheetDraggingEvent *)v9 setDismissible:dismissibleCopy];
   [(SHSheetDraggingEvent *)v9 setInterruptedOffset:x, y];
 
   return v9;
 }
 
-+ (id)eventForDraggingDidChangeWithTranslation:(CGPoint)a3 velocity:(CGPoint)a4 animateChange:(BOOL)a5 dismissible:(BOOL)a6
++ (id)eventForDraggingDidChangeWithTranslation:(CGPoint)translation velocity:(CGPoint)velocity animateChange:(BOOL)change dismissible:(BOOL)dismissible
 {
-  v6 = a6;
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  dismissibleCopy = dismissible;
+  changeCopy = change;
+  y = velocity.y;
+  x = velocity.x;
+  v10 = translation.y;
+  v11 = translation.x;
   v12 = objc_alloc_init(SHSheetDraggingEvent);
   [(SHSheetDraggingEvent *)v12 setType:1];
   [(SHSheetDraggingEvent *)v12 setTranslation:v11, v10];
   [(SHSheetDraggingEvent *)v12 setVelocity:x, y];
-  [(SHSheetDraggingEvent *)v12 setShouldAnimate:v7];
-  [(SHSheetDraggingEvent *)v12 setDismissible:v6];
+  [(SHSheetDraggingEvent *)v12 setShouldAnimate:changeCopy];
+  [(SHSheetDraggingEvent *)v12 setDismissible:dismissibleCopy];
 
   return v12;
 }
@@ -51,44 +51,44 @@
   return v2;
 }
 
-- (SHSheetDraggingEvent)initWithBSXPCCoder:(id)a3
+- (SHSheetDraggingEvent)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SHSheetDraggingEvent;
   v5 = [(SHSheetDraggingEvent *)&v7 init];
   if (v5)
   {
-    -[SHSheetDraggingEvent setType:](v5, "setType:", [v4 decodeInt64ForKey:@"type"]);
-    [v4 decodeDoubleForKey:@"rubberBandCoefficient"];
+    -[SHSheetDraggingEvent setType:](v5, "setType:", [coderCopy decodeInt64ForKey:@"type"]);
+    [coderCopy decodeDoubleForKey:@"rubberBandCoefficient"];
     [(SHSheetDraggingEvent *)v5 setRubberBandCoefficient:?];
-    [v4 decodeCGPointForKey:@"interruptedOffset"];
+    [coderCopy decodeCGPointForKey:@"interruptedOffset"];
     [(SHSheetDraggingEvent *)v5 setInterruptedOffset:?];
-    [v4 decodeCGPointForKey:@"translation"];
+    [coderCopy decodeCGPointForKey:@"translation"];
     [(SHSheetDraggingEvent *)v5 setTranslation:?];
-    [v4 decodeCGPointForKey:@"velocity"];
+    [coderCopy decodeCGPointForKey:@"velocity"];
     [(SHSheetDraggingEvent *)v5 setVelocity:?];
-    -[SHSheetDraggingEvent setDismissible:](v5, "setDismissible:", [v4 decodeBoolForKey:@"dismissible"]);
-    -[SHSheetDraggingEvent setShouldAnimate:](v5, "setShouldAnimate:", [v4 decodeBoolForKey:@"shouldAnimate"]);
+    -[SHSheetDraggingEvent setDismissible:](v5, "setDismissible:", [coderCopy decodeBoolForKey:@"dismissible"]);
+    -[SHSheetDraggingEvent setShouldAnimate:](v5, "setShouldAnimate:", [coderCopy decodeBoolForKey:@"shouldAnimate"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SHSheetDraggingEvent type](self forKey:{"type"), @"type"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SHSheetDraggingEvent type](self forKey:{"type"), @"type"}];
   [(SHSheetDraggingEvent *)self rubberBandCoefficient];
-  [v4 encodeDouble:@"rubberBandCoefficient" forKey:?];
+  [coderCopy encodeDouble:@"rubberBandCoefficient" forKey:?];
   [(SHSheetDraggingEvent *)self interruptedOffset];
-  [v4 encodeCGPoint:@"interruptedOffset" forKey:?];
+  [coderCopy encodeCGPoint:@"interruptedOffset" forKey:?];
   [(SHSheetDraggingEvent *)self translation];
-  [v4 encodeCGPoint:@"translation" forKey:?];
+  [coderCopy encodeCGPoint:@"translation" forKey:?];
   [(SHSheetDraggingEvent *)self velocity];
-  [v4 encodeCGPoint:@"velocity" forKey:?];
-  [v4 encodeBool:-[SHSheetDraggingEvent dismissible](self forKey:{"dismissible"), @"dismissible"}];
-  [v4 encodeBool:-[SHSheetDraggingEvent shouldAnimate](self forKey:{"shouldAnimate"), @"shouldAnimate"}];
+  [coderCopy encodeCGPoint:@"velocity" forKey:?];
+  [coderCopy encodeBool:-[SHSheetDraggingEvent dismissible](self forKey:{"dismissible"), @"dismissible"}];
+  [coderCopy encodeBool:-[SHSheetDraggingEvent shouldAnimate](self forKey:{"shouldAnimate"), @"shouldAnimate"}];
 }
 
 - (CGPoint)interruptedOffset

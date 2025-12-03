@@ -1,26 +1,26 @@
 @interface TRINaiveFactorLevelCache
-- (TRINaiveFactorLevelCache)initWithFactorLevels:(id)a3;
-- (void)enumerateFactorLevelsUsingBlock:(id)a3;
+- (TRINaiveFactorLevelCache)initWithFactorLevels:(id)levels;
+- (void)enumerateFactorLevelsUsingBlock:(id)block;
 @end
 
 @implementation TRINaiveFactorLevelCache
 
-- (TRINaiveFactorLevelCache)initWithFactorLevels:(id)a3
+- (TRINaiveFactorLevelCache)initWithFactorLevels:(id)levels
 {
-  v4 = a3;
+  levelsCopy = levels;
   v13.receiver = self;
   v13.super_class = TRINaiveFactorLevelCache;
   v5 = [(TRINaiveFactorLevelCache *)&v13 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(levelsCopy, "count")}];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __49__TRINaiveFactorLevelCache_initWithFactorLevels___block_invoke;
     v11[3] = &unk_27885E350;
     v7 = v6;
     v12 = v7;
-    [v4 enumerateObjectsUsingBlock:v11];
+    [levelsCopy enumerateObjectsUsingBlock:v11];
     factorLevels = v5->_factorLevels;
     v5->_factorLevels = v7;
     v9 = v7;
@@ -54,16 +54,16 @@ void __49__TRINaiveFactorLevelCache_initWithFactorLevels___block_invoke(uint64_t
 LABEL_6:
 }
 
-- (void)enumerateFactorLevelsUsingBlock:(id)a3
+- (void)enumerateFactorLevelsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   factorLevels = self->_factorLevels;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__TRINaiveFactorLevelCache_enumerateFactorLevelsUsingBlock___block_invoke;
   v7[3] = &unk_27885E378;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSDictionary *)factorLevels enumerateKeysAndObjectsUsingBlock:v7];
 }
 

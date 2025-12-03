@@ -12,10 +12,10 @@
   if (!menuItems)
   {
     v4 = [NSMutableArray arrayWithCapacity:3];
-    v5 = [(RAPMainQuestion *)self incidentMenuItems];
-    if ([v5 count])
+    incidentMenuItems = [(RAPMainQuestion *)self incidentMenuItems];
+    if ([incidentMenuItems count])
     {
-      [v4 addObject:v5];
+      [v4 addObject:incidentMenuItems];
     }
 
     v6 = [v4 copy];

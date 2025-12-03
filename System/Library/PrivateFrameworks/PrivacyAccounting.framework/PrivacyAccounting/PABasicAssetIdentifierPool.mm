@@ -1,28 +1,28 @@
 @interface PABasicAssetIdentifierPool
-- (PABasicAssetIdentifierPool)initWithMaxPoolSize:(unint64_t)a3 autoDrainInterval:(double)a4 onQueue:(id)a5 delegate:(id)a6;
-- (void)addAssetIdentifiers:(id)a3 accessEventCount:(unint64_t)a4;
+- (PABasicAssetIdentifierPool)initWithMaxPoolSize:(unint64_t)size autoDrainInterval:(double)interval onQueue:(id)queue delegate:(id)delegate;
+- (void)addAssetIdentifiers:(id)identifiers accessEventCount:(unint64_t)count;
 - (void)dealloc;
 - (void)drainPool;
 - (void)invalidate;
-- (void)setVisibilityState:(int64_t)a3;
+- (void)setVisibilityState:(int64_t)state;
 @end
 
 @implementation PABasicAssetIdentifierPool
 
-- (PABasicAssetIdentifierPool)initWithMaxPoolSize:(unint64_t)a3 autoDrainInterval:(double)a4 onQueue:(id)a5 delegate:(id)a6
+- (PABasicAssetIdentifierPool)initWithMaxPoolSize:(unint64_t)size autoDrainInterval:(double)interval onQueue:(id)queue delegate:(id)delegate
 {
-  v11 = a5;
-  v12 = a6;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PABasicAssetIdentifierPool;
   v13 = [(PABasicAssetIdentifierPool *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v12);
-    v14->_maxPoolSize = a3;
-    v14->_autoDrainInterval = a4;
-    objc_storeStrong(&v14->_queue, a5);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_maxPoolSize = size;
+    v14->_autoDrainInterval = interval;
+    objc_storeStrong(&v14->_queue, queue);
     v15 = v14;
   }
 
@@ -51,18 +51,18 @@
   self->_assetIdentifiers = 0;
 }
 
-- (void)addAssetIdentifiers:(id)a3 accessEventCount:(unint64_t)a4
+- (void)addAssetIdentifiers:(id)identifiers accessEventCount:(unint64_t)count
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  self->_eventCount += a4;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  self->_eventCount += count;
+  if ([identifiersCopy count])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = v6;
+    v7 = identifiersCopy;
     v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v8)
     {
@@ -182,7 +182,7 @@ void __67__PABasicAssetIdentifierPool_addAssetIdentifiers_accessEventCount___blo
   self->_drainTimer = 0;
 }
 
-- (void)setVisibilityState:(int64_t)a3
+- (void)setVisibilityState:(int64_t)state
 {
   if (self->_stateMonitoringEstablished)
   {
@@ -194,7 +194,7 @@ void __67__PABasicAssetIdentifierPool_addAssetIdentifiers_accessEventCount___blo
     self->_stateMonitoringEstablished = 1;
   }
 
-  self->_visibilityState = a3;
+  self->_visibilityState = state;
 }
 
 @end

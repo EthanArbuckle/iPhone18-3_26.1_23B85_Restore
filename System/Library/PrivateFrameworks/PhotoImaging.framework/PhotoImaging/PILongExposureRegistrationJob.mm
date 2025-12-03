@@ -1,18 +1,18 @@
 @interface PILongExposureRegistrationJob
 - ($721907E0E1CDE8B6CD3FA271A8B25860)guideExtent;
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode;
 - (id)result;
-- (void)setGuideExtent:(id *)a3;
+- (void)setGuideExtent:(id *)extent;
 @end
 
 @implementation PILongExposureRegistrationJob
 
-- (void)setGuideExtent:(id *)a3
+- (void)setGuideExtent:(id *)extent
 {
-  var1 = a3->var1;
-  self->_guideExtent.origin = a3->var0;
+  var1 = extent->var1;
+  self->_guideExtent.origin = extent->var0;
   self->_guideExtent.size = var1;
 }
 
@@ -27,8 +27,8 @@
 - (id)result
 {
   v3 = objc_alloc_init(_PILongExposureRegistrationResult);
-  v4 = [(PILongExposureRegistrationJob *)self observation];
-  [(_PILongExposureRegistrationResult *)v3 setObservation:v4];
+  observation = [(PILongExposureRegistrationJob *)self observation];
+  [(_PILongExposureRegistrationResult *)v3 setObservation:observation];
 
   [(PILongExposureRegistrationJob *)self guideExtent];
   v6[0] = v6[2];
@@ -38,11 +38,11 @@
   return v3;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v4 = &v107;
   v108 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v73 = NUAssertLogger_15869();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@
       _os_log_error_impl(&dword_1C7694000, v73, OS_LOG_TYPE_ERROR, "Fail: %{public}@", &v107, 0xCu);
     }
 
-    v42 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v76 = NUAssertLogger_15869();
     v77 = os_log_type_enabled(v76, OS_LOG_TYPE_ERROR);
@@ -61,11 +61,11 @@
     {
       if (v77)
       {
-        v79 = dispatch_get_specific(*v42);
+        v79 = dispatch_get_specific(*callStackSymbols);
         v80 = MEMORY[0x1E696AF00];
         v81 = v79;
-        v42 = [v80 callStackSymbols];
-        v82 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v80 callStackSymbols];
+        v82 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v107.a) = 138543618;
         *(&v107.a + 4) = v79;
         WORD2(v107.b) = 2114;
@@ -76,10 +76,10 @@
 
     else if (v77)
     {
-      v78 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v42 = [v78 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v107.a) = 138543362;
-      *(&v107.a + 4) = v42;
+      *(&v107.a + 4) = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v76, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v107, 0xCu);
     }
 
@@ -90,35 +90,35 @@
   v7 = [(NURenderJob *)self renderer:?];
   if (v7)
   {
-    v91 = a3;
+    renderCopy = render;
     v99 = v7;
-    v8 = [(PILongExposureRegistrationJob *)self stillImage];
-    v9 = [(NURenderJob *)self outputImage];
-    v10 = [(NURenderJob *)self outputGeometry];
-    [v10 renderScale];
+    stillImage = [(PILongExposureRegistrationJob *)self stillImage];
+    outputImage = [(NURenderJob *)self outputImage];
+    outputGeometry = [(NURenderJob *)self outputGeometry];
+    [outputGeometry renderScale];
 
     NUScaleInvert();
     NUScaleToDouble();
     memset(&v107, 0, sizeof(v107));
     CGAffineTransformMakeScale(&v107, v11, v11);
-    v95 = v9;
-    v12 = [v9 imageByClampingToExtent];
+    v95 = outputImage;
+    imageByClampingToExtent = [outputImage imageByClampingToExtent];
     v106 = v107;
-    v13 = [v12 imageByApplyingTransform:&v106];
+    v13 = [imageByClampingToExtent imageByApplyingTransform:&v106];
 
     v101 = 0u;
     v102 = 0u;
     [(PILongExposureRegistrationJob *)self guideExtent];
     v14 = +[PIAutoLoopKernels rgbToLumaKernel];
-    v15 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+    sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
     memset(&v106, 0, 32);
     NUPixelRectToCGRect();
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v96 = v8;
-    v24 = [v8 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v15, "CGColorSpace")}];
+    v96 = stillImage;
+    v24 = [stillImage imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(sRGBColorSpace, "CGColorSpace")}];
     v105 = v24;
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v105 count:1];
     v26 = [v14 applyWithExtent:v25 arguments:{v17, v19, v21, v23}];
@@ -129,9 +129,9 @@
     v30 = v29;
     v32 = v31;
     v34 = v33;
-    v92 = v15;
+    v92 = sRGBColorSpace;
     v94 = v13;
-    v35 = [v13 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(v15, "CGColorSpace")}];
+    v35 = [v13 imageByColorMatchingWorkingSpaceToColorSpace:{objc_msgSend(sRGBColorSpace, "CGColorSpace")}];
     v104 = v35;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v104 count:1];
     v93 = v14;
@@ -149,11 +149,11 @@
 
     v40 = [MEMORY[0x1E69B3D40] newPixelBufferOfSize:0 format:1278226488];
     v41 = [MEMORY[0x1E69B3D40] newPixelBufferOfSize:0 format:{0, 1278226488}];
-    v42 = v41;
+    callStackSymbols = v41;
     if (!v40 || !v41)
     {
       [MEMORY[0x1E69B3A48] failureError:@"Failed to allocate intermediate pixel buffer" object:self];
-      *v91 = v66 = 0;
+      *renderCopy = v66 = 0;
       v68 = v95;
       v3 = v96;
       v69 = v13;
@@ -168,8 +168,8 @@ LABEL_20:
     v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PILongExposureRegistrationJob-render-j%lld", -[NURenderJob jobNumber](self, "jobNumber")];
     [v43 setLabel:v44];
 
-    v88 = v42;
-    v45 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:{objc_msgSend(v42, "CVPixelBuffer")}];
+    v88 = callStackSymbols;
+    v45 = [objc_alloc(MEMORY[0x1E695F678]) initWithPixelBuffer:{objc_msgSend(callStackSymbols, "CVPixelBuffer")}];
     v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PILongExposureRegistrationJob-reference-j%lld", -[NURenderJob jobNumber](self, "jobNumber")];
     [v43 setLabel:v46];
 
@@ -179,21 +179,21 @@ LABEL_20:
     v47 = *MEMORY[0x1E69B38F8];
     v48 = *(MEMORY[0x1E69B38F8] + 8);
     v87 = v43;
-    v49 = [v99 renderImage:v97 rect:&v106 toDestination:v43 atPoint:*MEMORY[0x1E69B38F8] error:{v48, v91}];
+    v49 = [v99 renderImage:v97 rect:&v106 toDestination:v43 atPoint:*MEMORY[0x1E69B38F8] error:{v48, renderCopy}];
     memset(&v106, 0, 32);
     v90 = v45;
-    v50 = [v99 renderImage:v98 rect:&v106 toDestination:v45 atPoint:v47 error:{v48, v91}];
-    v51 = [(CGAffineTransform *)v49 waitUntilCompletedAndReturnError:v91];
-    if (!v51 || (v52 = v51, [v50 waitUntilCompletedAndReturnError:v91], v53 = objc_claimAutoreleasedReturnValue(), v53, v52, !v53))
+    v50 = [v99 renderImage:v98 rect:&v106 toDestination:v45 atPoint:v47 error:{v48, renderCopy}];
+    v51 = [(CGAffineTransform *)v49 waitUntilCompletedAndReturnError:renderCopy];
+    if (!v51 || (v52 = v51, [v50 waitUntilCompletedAndReturnError:renderCopy], v53 = objc_claimAutoreleasedReturnValue(), v53, v52, !v53))
     {
-      [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to render luma" object:self underlyingError:*v91];
-      *v91 = v66 = 0;
+      [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to render luma" object:self underlyingError:*renderCopy];
+      *renderCopy = v66 = 0;
       v68 = v95;
       v3 = v96;
       v69 = v94;
-      v15 = v92;
+      sRGBColorSpace = v92;
       v70 = v87;
-      v42 = v88;
+      callStackSymbols = v88;
 LABEL_19:
 
       v40 = v89;
@@ -202,46 +202,46 @@ LABEL_19:
 
     v85 = v50;
     v54 = objc_alloc(MEMORY[0x1E6984580]);
-    v55 = [v89 CVPixelBuffer];
+    cVPixelBuffer = [v89 CVPixelBuffer];
     v56 = MEMORY[0x1E695E0F8];
-    v57 = [v54 initWithTargetedCVPixelBuffer:v55 options:MEMORY[0x1E695E0F8]];
+    v57 = [v54 initWithTargetedCVPixelBuffer:cVPixelBuffer options:MEMORY[0x1E695E0F8]];
     v58 = objc_alloc(MEMORY[0x1E69845B8]);
-    v42 = v88;
-    v59 = [v88 CVPixelBuffer];
-    v60 = [MEMORY[0x1E69B3A58] sharedFactory];
-    v61 = [v60 visionSession];
-    v62 = [v58 initWithCVPixelBuffer:v59 options:v56 session:v61];
+    callStackSymbols = v88;
+    cVPixelBuffer2 = [v88 CVPixelBuffer];
+    mEMORY[0x1E69B3A58] = [MEMORY[0x1E69B3A58] sharedFactory];
+    visionSession = [mEMORY[0x1E69B3A58] visionSession];
+    v62 = [v58 initWithCVPixelBuffer:cVPixelBuffer2 options:v56 session:visionSession];
 
     v103 = v57;
     v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v103 count:1];
     v100 = 0;
-    LOBYTE(v61) = [v62 performRequests:v63 error:&v100];
+    LOBYTE(visionSession) = [v62 performRequests:v63 error:&v100];
     v86 = v100;
 
     v83 = v62;
     v84 = v57;
-    if (v61)
+    if (visionSession)
     {
-      v64 = [v57 results];
-      v65 = [v64 count];
+      results = [v57 results];
+      v65 = [results count];
       v66 = v65 == 1;
       v4 = v49;
       if (v65 == 1)
       {
-        v67 = [v64 objectAtIndexedSubscript:0];
+        v67 = [results objectAtIndexedSubscript:0];
         [(PILongExposureRegistrationJob *)self setObservation:v67];
       }
 
       else
       {
-        *v91 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Image registration failure (expected 1 observation)" object:self];
+        *renderCopy = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Image registration failure (expected 1 observation)" object:self];
       }
 
       v68 = v95;
       v3 = v96;
       v69 = v94;
 
-      v15 = v92;
+      sRGBColorSpace = v92;
       v14 = v93;
       v70 = v87;
 LABEL_18:
@@ -258,7 +258,7 @@ LABEL_18:
 LABEL_15:
       v69 = v94;
       v68 = v95;
-      v15 = v92;
+      sRGBColorSpace = v92;
       v14 = v93;
       v70 = v87;
       v71 = *MEMORY[0x1E69B3D88];
@@ -284,10 +284,10 @@ LABEL_21:
   return v66;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prepare)
   {
     v57 = NUAssertLogger_15869();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -334,7 +334,7 @@ LABEL_21:
     goto LABEL_39;
   }
 
-  v4 = a3;
+  prepareCopy = prepare;
   p_isa = &self->super.super.isa;
   v69.receiver = self;
   v69.super_class = PILongExposureRegistrationJob;
@@ -351,11 +351,11 @@ LABEL_21:
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:1];
     [v7 setPipelineFilters:v9];
 
-    v10 = [p_isa prepareNodeWithPipelineState:v7 error:v4];
+    v10 = [p_isa prepareNodeWithPipelineState:v7 error:prepareCopy];
     specific = [p_isa newRenderPipelineStateForEvaluationMode:1];
 
     [specific setScale:{*MEMORY[0x1E69B3918], *(MEMORY[0x1E69B3918] + 8)}];
-    v3 = [v10 nodeByReplayingAgainstCache:specific error:v4];
+    v3 = [v10 nodeByReplayingAgainstCache:specific error:prepareCopy];
 
     if (!v3)
     {
@@ -379,7 +379,7 @@ LABEL_8:
         _os_log_debug_impl(&dword_1C7694000, v45, OS_LOG_TYPE_DEBUG, "Still image node:\n%@", buf, 0xCu);
       }
 
-      v14 = [v3 outputImageGeometry:{v4, v63}];
+      v14 = [v3 outputImageGeometry:{prepareCopy, v63}];
       if (!v14)
       {
         goto LABEL_23;
@@ -400,11 +400,11 @@ LABEL_8:
         _os_log_debug_impl(&dword_1C7694000, v47, OS_LOG_TYPE_DEBUG, "Still image geometry:\n%@", buf, 0xCu);
       }
 
-      v16 = [v3 outputImage:v4];
+      v16 = [v3 outputImage:prepareCopy];
       [p_isa setStillImage:v16];
 
-      v17 = [p_isa stillImage];
-      LOBYTE(v16) = v17 == 0;
+      stillImage = [p_isa stillImage];
+      LOBYTE(v16) = stillImage == 0;
 
       if (v16)
       {
@@ -423,23 +423,23 @@ LABEL_23:
         if (os_log_type_enabled(*v12, OS_LOG_TYPE_DEBUG))
         {
           v49 = v18;
-          v50 = [p_isa stillImage];
-          v51 = [v50 debugDescription];
+          stillImage2 = [p_isa stillImage];
+          v51 = [stillImage2 debugDescription];
           *buf = 138412290;
           *&buf[4] = v51;
           _os_log_debug_impl(&dword_1C7694000, v49, OS_LOG_TYPE_DEBUG, "Still image:\n%@", buf, 0xCu);
         }
 
-        v19 = [p_isa prepareNode];
-        v67 = [v19 videoProperties:v4];
+        prepareNode = [p_isa prepareNode];
+        v67 = [prepareNode videoProperties:prepareCopy];
 
         if (v67)
         {
-          v20 = [p_isa registrationRequest];
-          v21 = v20;
-          if (v20)
+          registrationRequest = [p_isa registrationRequest];
+          v21 = registrationRequest;
+          if (registrationRequest)
           {
-            [v20 cleanAperture];
+            [registrationRequest cleanAperture];
           }
 
           else
@@ -453,17 +453,17 @@ LABEL_23:
           v27 = v26;
           v29 = v28;
 
-          v30 = [p_isa outputGeometry];
-          [v30 renderScale];
+          outputGeometry = [p_isa outputGeometry];
+          [outputGeometry renderScale];
 
-          v31 = [p_isa outputGeometry];
-          v32 = [v31 size];
+          outputGeometry2 = [p_isa outputGeometry];
+          v32 = [outputGeometry2 size];
           v65 = v33;
           v66 = v32;
 
-          v34 = [p_isa registrationRequest];
-          v35 = [v34 recipe];
-          v36 = PIAutoLoopRecipeForFlavor(v35, 3);
+          registrationRequest2 = [p_isa registrationRequest];
+          recipe = [registrationRequest2 recipe];
+          v36 = PIAutoLoopRecipeForFlavor(recipe, 3);
 
           CropRect = PIAutoLoopRecipeGetCropRect(v36);
           v39 = v38;
@@ -545,13 +545,13 @@ id __41__PILongExposureRegistrationJob_prepare___block_invoke(uint64_t a1, void 
   return v9;
 }
 
-- (id)newRenderPipelineStateForEvaluationMode:(int64_t)a3
+- (id)newRenderPipelineStateForEvaluationMode:(int64_t)mode
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PILongExposureRegistrationJob;
   v4 = [(NURenderJob *)&v8 newRenderPipelineStateForEvaluationMode:?];
-  if (!a3)
+  if (!mode)
   {
     v5 = [MEMORY[0x1E69B3C30] stopAtTagFilter:@"/AutoLoop/LongExposure"];
     v9[0] = v5;

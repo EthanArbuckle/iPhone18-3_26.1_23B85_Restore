@@ -2,25 +2,25 @@
 + (id)GroupActivitySession;
 + (id)configurationForGroupActivitySession;
 + (id)storeConfigurationForGroupActivitySession;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSharePlayLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"GroupActivitySession"])
+  if ([name isEqualToString:@"GroupActivitySession"])
   {
-    v4 = [a1 GroupActivitySession];
+    groupActivitySession = [self GroupActivitySession];
   }
 
   else
   {
-    v4 = 0;
+    groupActivitySession = 0;
   }
 
-  return v4;
+  return groupActivitySession;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForGroupActivitySession
 {
-  v3 = [a1 storeConfigurationForGroupActivitySession];
-  v4 = [a1 syncPolicyForGroupActivitySession];
+  storeConfigurationForGroupActivitySession = [self storeConfigurationForGroupActivitySession];
+  syncPolicyForGroupActivitySession = [self syncPolicyForGroupActivitySession];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C109D386-39DC-4C10-9E61-545C3963F811"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SharePlay.GroupActivitySession" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EBBB0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"SharePlay.GroupActivitySession" eventClass:objc_opt_class() storeConfig:storeConfigurationForGroupActivitySession syncPolicy:syncPolicyForGroupActivitySession legacyNames:&unk_1EF3EBBB0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)GroupActivitySession
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForGroupActivitySession];
+  configurationForGroupActivitySession = [self configurationForGroupActivitySession];
   v3 = +[BMSharePlayGroupActivitySession columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"SharePlay.GroupActivitySession" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SharePlay.GroupActivitySession" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"SharePlay.GroupActivitySession" schema:v9 configuration:configurationForGroupActivitySession];
 
   v11 = *MEMORY[0x1E69E9840];
 

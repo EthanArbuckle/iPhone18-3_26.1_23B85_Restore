@@ -1,6 +1,6 @@
 @interface ML3QuerySection
-- (BOOL)isEqual:(id)a3;
-- (ML3QuerySection)initWithRange:(_NSRange)a3 sectionIndex:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (ML3QuerySection)initWithRange:(_NSRange)range sectionIndex:(unint64_t)index;
 - (_NSRange)range;
 - (id)description;
 @end
@@ -16,11 +16,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_sectionIndex == v4[1] && self->_range.length == v4[3] && self->_range.location == v4[2];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_sectionIndex == equalCopy[1] && self->_range.length == equalCopy[3] && self->_range.location == equalCopy[2];
 
   return v5;
 }
@@ -37,10 +37,10 @@
   return v6;
 }
 
-- (ML3QuerySection)initWithRange:(_NSRange)a3 sectionIndex:(unint64_t)a4
+- (ML3QuerySection)initWithRange:(_NSRange)range sectionIndex:(unint64_t)index
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v8.receiver = self;
   v8.super_class = ML3QuerySection;
   result = [(ML3QuerySection *)&v8 init];
@@ -48,7 +48,7 @@
   {
     result->_range.location = location;
     result->_range.length = length;
-    result->_sectionIndex = a4;
+    result->_sectionIndex = index;
   }
 
   return result;

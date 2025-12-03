@@ -1,23 +1,23 @@
 @interface REMSmartListSectionStorage
-- (REMSmartListSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 smartListID:(id)a5 displayName:(id)a6;
+- (REMSmartListSectionStorage)initWithObjectID:(id)d accountID:(id)iD smartListID:(id)listID displayName:(id)name;
 - (id)cdKeyToStorageKeyMap;
-- (void)setSmartListID:(id)a3;
+- (void)setSmartListID:(id)d;
 @end
 
 @implementation REMSmartListSectionStorage
 
-- (void)setSmartListID:(id)a3
+- (void)setSmartListID:(id)d
 {
   v3.receiver = self;
   v3.super_class = REMSmartListSectionStorage;
-  [(REMBaseSectionStorage *)&v3 setParentID:a3];
+  [(REMBaseSectionStorage *)&v3 setParentID:d];
 }
 
-- (REMSmartListSectionStorage)initWithObjectID:(id)a3 accountID:(id)a4 smartListID:(id)a5 displayName:(id)a6
+- (REMSmartListSectionStorage)initWithObjectID:(id)d accountID:(id)iD smartListID:(id)listID displayName:(id)name
 {
   v7.receiver = self;
   v7.super_class = REMSmartListSectionStorage;
-  return [(REMBaseSectionStorage *)&v7 initWithObjectID:a3 accountID:a4 parentID:a5 displayName:a6];
+  return [(REMBaseSectionStorage *)&v7 initWithObjectID:d accountID:iD parentID:listID displayName:name];
 }
 
 - (id)cdKeyToStorageKeyMap

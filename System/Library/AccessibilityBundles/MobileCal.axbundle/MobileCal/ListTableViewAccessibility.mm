@@ -1,19 +1,19 @@
 @interface ListTableViewAccessibility
-- (id)_accessibilityFirstContainedElementForTechnology:(id)a3 honoringGroups:(BOOL)a4 shouldAlwaysScroll:(BOOL)a5;
+- (id)_accessibilityFirstContainedElementForTechnology:(id)technology honoringGroups:(BOOL)groups shouldAlwaysScroll:(BOOL)scroll;
 @end
 
 @implementation ListTableViewAccessibility
 
-- (id)_accessibilityFirstContainedElementForTechnology:(id)a3 honoringGroups:(BOOL)a4 shouldAlwaysScroll:(BOOL)a5
+- (id)_accessibilityFirstContainedElementForTechnology:(id)technology honoringGroups:(BOOL)groups shouldAlwaysScroll:(BOOL)scroll
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  scrollCopy = scroll;
+  groupsCopy = groups;
+  technologyCopy = technology;
   objc_opt_class();
   v8 = __UIAccessibilityCastAsClass();
-  v9 = [v8 visibleCells];
-  v10 = [v9 firstObject];
-  v11 = [v10 _accessibilityFirstContainedElementForTechnology:v7 honoringGroups:v6 shouldAlwaysScroll:v5];
+  visibleCells = [v8 visibleCells];
+  firstObject = [visibleCells firstObject];
+  v11 = [firstObject _accessibilityFirstContainedElementForTechnology:technologyCopy honoringGroups:groupsCopy shouldAlwaysScroll:scrollCopy];
 
   return v11;
 }

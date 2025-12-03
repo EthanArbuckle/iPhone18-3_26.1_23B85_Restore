@@ -1,35 +1,35 @@
 @interface HOIntentHandler
-+ (id)intentHandlerWithNavigator:(id)a3;
-+ (void)handleIntent:(id)a3 withNavigator:(id)a4;
-- (BOOL)_shouldHandleMostRecentCameraClipForFilter:(id)a3 timeRange:(id)a4;
-- (id)_serviceTypeFromFilter:(id)a3;
-- (id)entityOfType:(int64_t)a3 inEntities:(id)a4;
-- (void)handleConfigureIntent:(id)a3;
-- (void)handleShowHomeIntent:(id)a3;
-- (void)showHomeForFilter:(id)a3 withTimeRange:(id)a4;
-- (void)showRoomForFilter:(id)a3 withTimeRange:(id)a4;
-- (void)showServiceForFilter:(id)a3 withTimeRange:(id)a4;
++ (id)intentHandlerWithNavigator:(id)navigator;
++ (void)handleIntent:(id)intent withNavigator:(id)navigator;
+- (BOOL)_shouldHandleMostRecentCameraClipForFilter:(id)filter timeRange:(id)range;
+- (id)_serviceTypeFromFilter:(id)filter;
+- (id)entityOfType:(int64_t)type inEntities:(id)entities;
+- (void)handleConfigureIntent:(id)intent;
+- (void)handleShowHomeIntent:(id)intent;
+- (void)showHomeForFilter:(id)filter withTimeRange:(id)range;
+- (void)showRoomForFilter:(id)filter withTimeRange:(id)range;
+- (void)showServiceForFilter:(id)filter withTimeRange:(id)range;
 @end
 
 @implementation HOIntentHandler
 
-+ (id)intentHandlerWithNavigator:(id)a3
++ (id)intentHandlerWithNavigator:(id)navigator
 {
-  v3 = a3;
+  navigatorCopy = navigator;
   v4 = objc_opt_new();
-  [v4 setNavigator:v3];
+  [v4 setNavigator:navigatorCopy];
 
   return v4;
 }
 
-+ (void)handleIntent:(id)a3 withNavigator:(id)a4
++ (void)handleIntent:(id)intent withNavigator:(id)navigator
 {
-  v7 = a3;
-  v6 = [a1 intentHandlerWithNavigator:a4];
+  intentCopy = intent;
+  v6 = [self intentHandlerWithNavigator:navigator];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 handleConfigureIntent:v7];
+    [v6 handleConfigureIntent:intentCopy];
   }
 
   else
@@ -37,57 +37,57 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v6 handleShowHomeIntent:v7];
+      [v6 handleShowHomeIntent:intentCopy];
     }
   }
 }
 
-- (void)showServiceForFilter:(id)a3 withTimeRange:(id)a4
+- (void)showServiceForFilter:(id)filter withTimeRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 entityName];
-  v9 = [v8 description];
+  filterCopy = filter;
+  rangeCopy = range;
+  entityName = [filterCopy entityName];
+  name = [entityName description];
 
-  v10 = [v6 home];
-  v11 = [v10 description];
+  home = [filterCopy home];
+  v11 = [home description];
 
-  v12 = [v6 room];
-  v13 = [v12 description];
+  room = [filterCopy room];
+  v13 = [room description];
 
-  if (!v9)
+  if (!name)
   {
     v14 = +[HFHomeKitDispatcher sharedDispatcher];
-    v15 = [v14 home];
+    home2 = [v14 home];
 
-    v16 = [v15 hf_unitaryCameraProfile];
-    v17 = v16;
-    if (v16)
+    hf_unitaryCameraProfile = [home2 hf_unitaryCameraProfile];
+    v17 = hf_unitaryCameraProfile;
+    if (hf_unitaryCameraProfile)
     {
-      v18 = [v16 accessory];
-      v9 = [v18 name];
+      accessory = [hf_unitaryCameraProfile accessory];
+      name = [accessory name];
     }
 
     else
     {
-      v9 = 0;
+      name = 0;
     }
   }
 
-  v19 = [(HOIntentHandler *)self _serviceTypeFromFilter:v6];
+  v19 = [(HOIntentHandler *)self _serviceTypeFromFilter:filterCopy];
   if ([v19 isEqual:HMServiceTypeCameraControl])
   {
     v31 = v11;
     v20 = +[NSDate hf_sharedCalendar];
-    [v7 startDateComponents];
-    v22 = v21 = v7;
+    [rangeCopy startDateComponents];
+    v22 = v21 = rangeCopy;
     v23 = [v20 dateFromComponents:v22];
 
-    v24 = [v21 endDateComponents];
-    v25 = [v20 dateFromComponents:v24];
+    endDateComponents = [v21 endDateComponents];
+    v25 = [v20 dateFromComponents:endDateComponents];
 
     v32 = v21;
-    if ([(HOIntentHandler *)self _shouldHandleMostRecentCameraClipForFilter:v6 timeRange:v21])
+    if ([(HOIntentHandler *)self _shouldHandleMostRecentCameraClipForFilter:filterCopy timeRange:v21])
     {
       v26 = +[NSDate date];
 
@@ -95,7 +95,7 @@
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v34 = v9;
+        v34 = name;
         v35 = 2112;
         v36 = v26;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Adjusted camera:%@ startDate: %@", buf, 0x16u);
@@ -112,7 +112,7 @@
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      v34 = v9;
+      v34 = name;
       v35 = 2112;
       v36 = v26;
       v37 = 2112;
@@ -124,43 +124,43 @@
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Launch camera:%@, startDate:%@, endDate:%@, home:%@, room:%@", buf, 0x34u);
     }
 
-    v30 = [(HOIntentHandler *)self navigator];
-    [v30 showCameraWithName:v9 homeName:v31 startDate:v26 endDate:v25 roomName:v13];
+    navigator = [(HOIntentHandler *)self navigator];
+    [navigator showCameraWithName:name homeName:v31 startDate:v26 endDate:v25 roomName:v13];
 
-    v7 = v32;
+    rangeCopy = v32;
   }
 
   else
   {
-    v28 = [(HOIntentHandler *)self navigator];
-    [v28 showServiceWithName:v9 serviceType:v19 homeName:v11 roomName:v13];
+    navigator2 = [(HOIntentHandler *)self navigator];
+    [navigator2 showServiceWithName:name serviceType:v19 homeName:v11 roomName:v13];
   }
 }
 
-- (void)showRoomForFilter:(id)a3 withTimeRange:(id)a4
+- (void)showRoomForFilter:(id)filter withTimeRange:(id)range
 {
-  v6 = a4;
-  v7 = [a3 entityName];
-  v8 = [v7 description];
+  rangeCopy = range;
+  entityName = [filter entityName];
+  v8 = [entityName description];
 
   v9 = +[HFHomeKitDispatcher sharedDispatcher];
-  v10 = [v9 home];
+  home = [v9 home];
 
-  v11 = [v10 hf_roomWithName:v8];
-  v12 = [v11 hf_unitaryCameraProfile];
-  v13 = v12;
-  if (v12)
+  v11 = [home hf_roomWithName:v8];
+  hf_unitaryCameraProfile = [v11 hf_unitaryCameraProfile];
+  v13 = hf_unitaryCameraProfile;
+  if (hf_unitaryCameraProfile)
   {
-    v14 = [v12 accessory];
-    v15 = [v14 name];
+    accessory = [hf_unitaryCameraProfile accessory];
+    name = [accessory name];
 
     v16 = +[NSDate hf_sharedCalendar];
-    v17 = [v6 startDateComponents];
-    v18 = [v16 dateFromComponents:v17];
+    startDateComponents = [rangeCopy startDateComponents];
+    v18 = [v16 dateFromComponents:startDateComponents];
 
-    v26 = v6;
-    v19 = [v6 endDateComponents];
-    v20 = [v16 dateFromComponents:v19];
+    v26 = rangeCopy;
+    endDateComponents = [rangeCopy endDateComponents];
+    v20 = [v16 dateFromComponents:endDateComponents];
 
     v21 = HFLogForCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -168,7 +168,7 @@
       *buf = 138413058;
       v28 = v8;
       v29 = 2112;
-      v30 = v15;
+      v30 = name;
       v31 = 2112;
       v32 = v18;
       v33 = 2112;
@@ -176,34 +176,34 @@
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Displaying unitary camera in room:%@ with one camera:%@ startDate:%@ endDate:%@", buf, 0x2Au);
     }
 
-    v22 = [(HOIntentHandler *)self navigator];
-    v23 = [v10 name];
-    [v22 showCameraWithName:v15 homeName:v23 startDate:v18 endDate:v20 roomName:v8];
+    navigator = [(HOIntentHandler *)self navigator];
+    name2 = [home name];
+    [navigator showCameraWithName:name homeName:name2 startDate:v18 endDate:v20 roomName:v8];
 
-    v6 = v26;
+    rangeCopy = v26;
   }
 
   else
   {
-    v24 = [(HOIntentHandler *)self navigator];
-    v25 = [v24 showRoomWithName:v8];
+    navigator2 = [(HOIntentHandler *)self navigator];
+    v25 = [navigator2 showRoomWithName:v8];
   }
 }
 
-- (void)showHomeForFilter:(id)a3 withTimeRange:(id)a4
+- (void)showHomeForFilter:(id)filter withTimeRange:(id)range
 {
-  v5 = [a3 home];
-  v7 = [v5 description];
+  home = [filter home];
+  v7 = [home description];
 
-  v6 = [(HOIntentHandler *)self navigator];
-  [v6 showHomeForName:v7];
+  navigator = [(HOIntentHandler *)self navigator];
+  [navigator showHomeForName:v7];
 }
 
-- (void)handleShowHomeIntent:(id)a3
+- (void)handleShowHomeIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [v4 filters];
-  v6 = [v5 count];
+  intentCopy = intent;
+  filters = [intentCopy filters];
+  v6 = [filters count];
 
   v7 = HFLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -212,35 +212,35 @@
     if (v8)
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = intentCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handle intent: %@", &v12, 0xCu);
     }
 
-    v9 = [v4 filters];
-    v7 = [v9 objectAtIndexedSubscript:0];
+    filters2 = [intentCopy filters];
+    v7 = [filters2 objectAtIndexedSubscript:0];
 
-    v10 = [v7 entityType];
-    v11 = [v4 time];
-    if (v10 == 1)
+    entityType = [v7 entityType];
+    time = [intentCopy time];
+    if (entityType == 1)
     {
       goto LABEL_10;
     }
 
-    if (v10 == 3)
+    if (entityType == 3)
     {
-      [(HOIntentHandler *)self showRoomForFilter:v7 withTimeRange:v11];
+      [(HOIntentHandler *)self showRoomForFilter:v7 withTimeRange:time];
       goto LABEL_12;
     }
 
-    if (v10 != 7)
+    if (entityType != 7)
     {
 LABEL_10:
-      [(HOIntentHandler *)self showHomeForFilter:v7 withTimeRange:v11];
+      [(HOIntentHandler *)self showHomeForFilter:v7 withTimeRange:time];
     }
 
     else
     {
-      [(HOIntentHandler *)self showServiceForFilter:v7 withTimeRange:v11];
+      [(HOIntentHandler *)self showServiceForFilter:v7 withTimeRange:time];
     }
 
 LABEL_12:
@@ -251,39 +251,39 @@ LABEL_12:
   if (v8)
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = intentCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received Intent with missing filter : %@", &v12, 0xCu);
   }
 
 LABEL_13:
 }
 
-- (void)handleConfigureIntent:(id)a3
+- (void)handleConfigureIntent:(id)intent
 {
-  v4 = [a3 entities];
-  v5 = v4;
-  if (v4 && [v4 count])
+  entities = [intent entities];
+  v5 = entities;
+  if (entities && [entities count])
   {
     v6 = +[HFHomeKitDispatcher sharedDispatcher];
-    v7 = [v6 homeFuture];
+    homeFuture = [v6 homeFuture];
     v8 = [(HOIntentHandler *)self entityOfType:1 inEntities:v5];
     if (v8)
     {
-      v9 = [v6 allHomesFuture];
+      allHomesFuture = [v6 allHomesFuture];
       v31 = _NSConcreteStackBlock;
       v32 = 3221225472;
       v33 = sub_100045EFC;
       v34 = &unk_1000C3C00;
       v10 = v8;
       v35 = v10;
-      v11 = [v9 flatMap:&v31];
+      v11 = [allHomesFuture flatMap:&v31];
 
-      v12 = [(HOIntentHandler *)self navigator];
-      v13 = [v10 entityName];
-      v14 = [v13 description];
-      [v12 createOrShowHomeWithName:v14 home:v11];
+      navigator = [(HOIntentHandler *)self navigator];
+      entityName = [v10 entityName];
+      v14 = [entityName description];
+      [navigator createOrShowHomeWithName:v14 home:v11];
 
-      v7 = v11;
+      homeFuture = v11;
     }
 
     v15 = [(HOIntentHandler *)self entityOfType:3 inEntities:v5];
@@ -293,12 +293,12 @@ LABEL_13:
     v29 = v15;
     if (v15)
     {
-      v18 = [(HOIntentHandler *)self navigator];
-      v19 = [v15 entityName];
-      [v19 description];
+      navigator2 = [(HOIntentHandler *)self navigator];
+      entityName2 = [v15 entityName];
+      [entityName2 description];
       v20 = v8;
       v22 = v21 = v6;
-      v23 = [v18 createOrShowRoomWithName:v22 home:v7];
+      v23 = [navigator2 createOrShowRoomWithName:v22 home:homeFuture];
 
       v6 = v21;
       v8 = v20;
@@ -309,22 +309,22 @@ LABEL_13:
     v24 = [(HOIntentHandler *)self entityOfType:5 inEntities:v5, v29, v31, v32, v33, v34];
     if (v24)
     {
-      v25 = [(HOIntentHandler *)self navigator];
-      v26 = [v24 entityName];
-      v27 = [v26 description];
-      v28 = [v25 createOrEditActionSetWithName:v27 home:v7 switchToHomeTab:0];
+      navigator3 = [(HOIntentHandler *)self navigator];
+      entityName3 = [v24 entityName];
+      v27 = [entityName3 description];
+      v28 = [navigator3 createOrEditActionSetWithName:v27 home:homeFuture switchToHomeTab:0];
     }
   }
 }
 
-- (id)entityOfType:(int64_t)a3 inEntities:(id)a4
+- (id)entityOfType:(int64_t)type inEntities:(id)entities
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  entitiesCopy = entities;
+  v6 = [entitiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -335,18 +335,18 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entitiesCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 type] == a3)
+        if ([v10 type] == type)
         {
           v11 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [entitiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -362,9 +362,9 @@ LABEL_11:
   return v11;
 }
 
-- (id)_serviceTypeFromFilter:(id)a3
+- (id)_serviceTypeFromFilter:(id)filter
 {
-  v3 = [a3 deviceType] - 1;
+  v3 = [filter deviceType] - 1;
   if (v3 <= 0x2A && ((0x6EFFFFFFFFFuLL >> v3) & 1) != 0)
   {
     v4 = **(&off_1000C4380 + v3);
@@ -378,13 +378,13 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_shouldHandleMostRecentCameraClipForFilter:(id)a3 timeRange:(id)a4
+- (BOOL)_shouldHandleMostRecentCameraClipForFilter:(id)filter timeRange:(id)range
 {
-  v5 = a4;
-  if ([a3 deviceType] == 42)
+  rangeCopy = range;
+  if ([filter deviceType] == 42)
   {
-    v6 = [v5 startDateComponents];
-    v7 = v6 == 0;
+    startDateComponents = [rangeCopy startDateComponents];
+    v7 = startDateComponents == 0;
   }
 
   else

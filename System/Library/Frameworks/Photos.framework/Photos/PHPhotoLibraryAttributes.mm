@@ -1,6 +1,6 @@
 @interface PHPhotoLibraryAttributes
 - (BOOL)isCloudSyncEnabled;
-- (PHPhotoLibraryAttributes)initWithLibraryIdentifier:(id)a3 cplSettings:(id)a4;
+- (PHPhotoLibraryAttributes)initWithLibraryIdentifier:(id)identifier cplSettings:(id)settings;
 - (unsigned)cloudResourcePrefetchMode;
 @end
 
@@ -8,47 +8,47 @@
 
 - (unsigned)cloudResourcePrefetchMode
 {
-  v2 = [(PHPhotoLibraryAttributes *)self cplSettings];
-  v3 = [v2 prefetchMode];
+  cplSettings = [(PHPhotoLibraryAttributes *)self cplSettings];
+  prefetchMode = [cplSettings prefetchMode];
 
-  if (v3 == 1)
+  if (prefetchMode == 1)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 0;
+    return prefetchMode == 0;
   }
 }
 
 - (BOOL)isCloudSyncEnabled
 {
-  v2 = [(PHPhotoLibraryAttributes *)self cplSettings];
-  v3 = [v2 isICPLEnabled];
+  cplSettings = [(PHPhotoLibraryAttributes *)self cplSettings];
+  isICPLEnabled = [cplSettings isICPLEnabled];
 
-  return v3;
+  return isICPLEnabled;
 }
 
-- (PHPhotoLibraryAttributes)initWithLibraryIdentifier:(id)a3 cplSettings:(id)a4
+- (PHPhotoLibraryAttributes)initWithLibraryIdentifier:(id)identifier cplSettings:(id)settings
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  settingsCopy = settings;
   v16.receiver = self;
   v16.super_class = PHPhotoLibraryAttributes;
   v9 = [(PHPhotoLibraryAttributes *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pl_libraryIdentifier, a3);
-    objc_storeStrong(&v10->_cplSettings, a4);
-    v11 = [(PLPhotoLibraryIdentifier *)v10->_pl_libraryIdentifier name];
+    objc_storeStrong(&v9->_pl_libraryIdentifier, identifier);
+    objc_storeStrong(&v10->_cplSettings, settings);
+    name = [(PLPhotoLibraryIdentifier *)v10->_pl_libraryIdentifier name];
     name = v10->_name;
-    v10->_name = v11;
+    v10->_name = name;
 
-    v13 = [(PLPhotoLibraryIdentifier *)v10->_pl_libraryIdentifier userDescription];
+    userDescription = [(PLPhotoLibraryIdentifier *)v10->_pl_libraryIdentifier userDescription];
     userDescription = v10->_userDescription;
-    v10->_userDescription = v13;
+    v10->_userDescription = userDescription;
   }
 
   return v10;

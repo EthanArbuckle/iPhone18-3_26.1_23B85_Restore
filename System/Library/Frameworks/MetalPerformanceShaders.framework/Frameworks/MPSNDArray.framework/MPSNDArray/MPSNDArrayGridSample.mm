@@ -1,18 +1,18 @@
 @interface MPSNDArrayGridSample
-- (MPSNDArrayGridSample)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayGridSample)initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSNDArrayGridSample)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayGridSample)initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayGridSample
 
-- (MPSNDArrayGridSample)initWithDevice:(id)a3
+- (MPSNDArrayGridSample)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayGridSample;
-  result = [(MPSNDArrayBinaryKernel *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayBinaryKernel *)&v4 initWithDevice:device];
   result->super.super._encode = EncodeGridSample;
   result->super.super.super._encodeGradient = EncodeGridSampleGradient;
   result->super.super.super._encodeData = result;
@@ -27,25 +27,25 @@
   return result;
 }
 
-- (MPSNDArrayGridSample)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayGridSample)initWithCoder:(id)coder device:(id)device
 {
   v10.receiver = self;
   v10.super_class = MPSNDArrayGridSample;
-  result = [(MPSNDArrayBinaryKernel *)&v10 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayBinaryKernel *)&v10 initWithCoder:coder device:device];
   if (result)
   {
     result->super.super._encode = EncodeGridSample;
     result->super.super.super._encodeGradient = EncodeGridSampleGradient;
     result->super.super.super._encodeData = result;
     v6 = result;
-    result->_samplingMode = [a3 decodeIntegerForKey:@"MPSNDArrayGridSample.samplingMode"];
-    v6->_nearestMode = [a3 decodeIntegerForKey:@"MPSNDArrayGridSample.nearestMode"];
-    v6->_dataFormat = [a3 decodeIntegerForKey:@"MPSNDArrayGridSample.dataFormat"];
-    v6->_paddingMode = [a3 decodeIntegerForKey:@"MPSNDArrayGridSample.paddingMode"];
-    v6->_relativeCoordinates = [a3 decodeBoolForKey:@"MPSNDArrayGridSample.relativeCoords"];
-    v6->_normalizeCoordinates = [a3 decodeBoolForKey:@"MPSNDArrayGridSample.normalizeCoords"];
-    v6->_alignCorners = [a3 decodeBoolForKey:@"MPSNDArrayGridSample.alignCorners"];
-    [a3 decodeDoubleForKey:@"MPSNDArrayGridSample.constantValue"];
+    result->_samplingMode = [coder decodeIntegerForKey:@"MPSNDArrayGridSample.samplingMode"];
+    v6->_nearestMode = [coder decodeIntegerForKey:@"MPSNDArrayGridSample.nearestMode"];
+    v6->_dataFormat = [coder decodeIntegerForKey:@"MPSNDArrayGridSample.dataFormat"];
+    v6->_paddingMode = [coder decodeIntegerForKey:@"MPSNDArrayGridSample.paddingMode"];
+    v6->_relativeCoordinates = [coder decodeBoolForKey:@"MPSNDArrayGridSample.relativeCoords"];
+    v6->_normalizeCoordinates = [coder decodeBoolForKey:@"MPSNDArrayGridSample.normalizeCoords"];
+    v6->_alignCorners = [coder decodeBoolForKey:@"MPSNDArrayGridSample.alignCorners"];
+    [coder decodeDoubleForKey:@"MPSNDArrayGridSample.constantValue"];
     result = v6;
     v8 = v7 == 0.0;
     v9 = 0.0;
@@ -60,34 +60,34 @@
   return result;
 }
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state
 {
-  v4 = [a3 objectAtIndexedSubscript:{0, a4}];
+  v4 = [arrays objectAtIndexedSubscript:{0, state}];
 
   return [v4 descriptor];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v5.receiver = self;
   v5.super_class = MPSNDArrayGridSample;
   [(MPSNDArrayMultiaryBase *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:self->_samplingMode forKey:@"MPSNDArrayGridSample.samplingMode"];
-  [a3 encodeInteger:self->_nearestMode forKey:@"MPSNDArrayGridSample.nearestMode"];
-  [a3 encodeInteger:self->_dataFormat forKey:@"MPSNDArrayGridSample.dataFormat"];
-  [a3 encodeInteger:self->_paddingMode forKey:@"MPSNDArrayGridSample.paddingMode"];
-  [a3 encodeBool:self->_relativeCoordinates forKey:@"MPSNDArrayGridSample.relativeCoords"];
-  [a3 encodeBool:self->_normalizeCoordinates forKey:@"MPSNDArrayGridSample.normalizeCoords"];
-  [a3 encodeBool:self->_alignCorners forKey:@"MPSNDArrayGridSample.alignCorners"];
-  [a3 encodeDouble:@"MPSNDArrayGridSample.constantValue" forKey:self->_constantValue];
+  [coder encodeInteger:self->_samplingMode forKey:@"MPSNDArrayGridSample.samplingMode"];
+  [coder encodeInteger:self->_nearestMode forKey:@"MPSNDArrayGridSample.nearestMode"];
+  [coder encodeInteger:self->_dataFormat forKey:@"MPSNDArrayGridSample.dataFormat"];
+  [coder encodeInteger:self->_paddingMode forKey:@"MPSNDArrayGridSample.paddingMode"];
+  [coder encodeBool:self->_relativeCoordinates forKey:@"MPSNDArrayGridSample.relativeCoords"];
+  [coder encodeBool:self->_normalizeCoordinates forKey:@"MPSNDArrayGridSample.normalizeCoords"];
+  [coder encodeBool:self->_alignCorners forKey:@"MPSNDArrayGridSample.alignCorners"];
+  [coder encodeDouble:@"MPSNDArrayGridSample.constantValue" forKey:self->_constantValue];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayGridSample;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 36) = self->_samplingMode;

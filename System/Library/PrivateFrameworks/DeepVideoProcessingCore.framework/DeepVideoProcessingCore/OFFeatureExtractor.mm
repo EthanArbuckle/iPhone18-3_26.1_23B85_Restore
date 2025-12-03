@@ -1,21 +1,21 @@
 @interface OFFeatureExtractor
-- (BOOL)extractFeaturesFromImage:(__CVBuffer *)a3 toFeatures:(id *)a4 callback:(id)a5;
-- (OFFeatureExtractor)initWithMode:(int64_t)a3 revision:(int64_t)a4;
-- (void)getOutputTensorSize:(id *)a3 level:(unsigned int)a4;
+- (BOOL)extractFeaturesFromImage:(__CVBuffer *)image toFeatures:(id *)features callback:(id)callback;
+- (OFFeatureExtractor)initWithMode:(int64_t)mode revision:(int64_t)revision;
+- (void)getOutputTensorSize:(id *)size level:(unsigned int)level;
 - (void)setupNetworkModel;
 @end
 
 @implementation OFFeatureExtractor
 
-- (OFFeatureExtractor)initWithMode:(int64_t)a3 revision:(int64_t)a4
+- (OFFeatureExtractor)initWithMode:(int64_t)mode revision:(int64_t)revision
 {
   [(VEEspressoModel *)self setUsage:?];
-  [(OFFeatureExtractor *)self setRevision:a4];
+  [(OFFeatureExtractor *)self setRevision:revision];
   [(OFFeatureExtractor *)self setupNetworkModel];
   espresso_file = self->_espresso_file;
   v11.receiver = self;
   v11.super_class = OFFeatureExtractor;
-  v8 = [(VEEspressoModel *)&v11 initWithModelName:espresso_file usage:a3];
+  v8 = [(VEEspressoModel *)&v11 initWithModelName:espresso_file usage:mode];
   if (v8)
   {
     v8->_numLevels = [objc_opt_class() numLevels];
@@ -54,9 +54,9 @@
   }
 }
 
-- (BOOL)extractFeaturesFromImage:(__CVBuffer *)a3 toFeatures:(id *)a4 callback:(id)a5
+- (BOOL)extractFeaturesFromImage:(__CVBuffer *)image toFeatures:(id *)features callback:(id)callback
 {
-  v6 = a5;
+  callbackCopy = callback;
   if (espresso_network_bind_direct_cvpixelbuffer())
   {
     if ((global_logLevel & 0x10) != 0)
@@ -99,7 +99,7 @@ LABEL_5:
 
 LABEL_10:
   kdebug_trace();
-  v14 = v6;
+  v14 = callbackCopy;
   v10 = espresso_plan_submit();
   v8 = v10 == 0;
   if (v10)
@@ -132,7 +132,7 @@ uint64_t __67__OFFeatureExtractor_extractFeaturesFromImage_toFeatures_callback__
   return result;
 }
 
-- (void)getOutputTensorSize:(id *)a3 level:(unsigned int)a4
+- (void)getOutputTensorSize:(id *)size level:(unsigned int)level
 {
   v12 = *MEMORY[0x277D85DE8];
   v11[0] = xmmword_2487C3850;
@@ -143,7 +143,7 @@ uint64_t __67__OFFeatureExtractor_extractFeaturesFromImage_toFeatures_callback__
   getInputFrameSizeForUsage([(VEEspressoModel *)self usage], &v10, &v9);
   v7 = v9;
   v6 = v10;
-  v8 = a4 + 1;
+  v8 = level + 1;
   do
   {
     v6 = (v6 + 1) >> 1;
@@ -152,9 +152,9 @@ uint64_t __67__OFFeatureExtractor_extractFeaturesFromImage_toFeatures_callback__
   }
 
   while (v8);
-  a3->var0 = v6;
-  a3->var1 = v7;
-  a3->var2 = *(v11 + a4);
+  size->var0 = v6;
+  size->var1 = v7;
+  size->var2 = *(v11 + level);
 }
 
 - (void)extractFeaturesFromImage:(int)a1 toFeatures:(NSObject *)a2 callback:.cold.2(int a1, NSObject *a2)

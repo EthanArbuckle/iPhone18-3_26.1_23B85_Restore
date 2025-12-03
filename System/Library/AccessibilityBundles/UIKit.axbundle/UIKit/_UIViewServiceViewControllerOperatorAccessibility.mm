@@ -1,31 +1,31 @@
 @interface _UIViewServiceViewControllerOperatorAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityPostScreenChangedForChildViewController:(id)a3 isAddition:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityPostScreenChangedForChildViewController:(id)controller isAddition:(BOOL)addition;
 @end
 
 @implementation _UIViewServiceViewControllerOperatorAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:? isKindOfClass:?];
   [location[0] validateClass:@"_UIViewServiceViewControllerOperator" hasInstanceVariable:@"_localViewController" withType:"UIViewController"];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)accessibilityPostScreenChangedForChildViewController:(id)a3 isAddition:(BOOL)a4
+- (BOOL)accessibilityPostScreenChangedForChildViewController:(id)controller isAddition:(BOOL)addition
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
+  objc_storeStrong(location, controller);
+  additionCopy = addition;
   v11 = 0;
   objc_opt_class();
-  v6 = [(_UIViewServiceViewControllerOperatorAccessibility *)v15 safeValueForKey:@"_localViewController"];
+  v6 = [(_UIViewServiceViewControllerOperatorAccessibility *)selfCopy safeValueForKey:@"_localViewController"];
   v10 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v6);
   v9 = MEMORY[0x29EDC9748](v10);
@@ -33,15 +33,15 @@
   v12 = v9;
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v16 = [v12 accessibilityPostScreenChangedForChildViewController:location[0] isAddition:v13] & 1;
+    v16 = [v12 accessibilityPostScreenChangedForChildViewController:location[0] isAddition:additionCopy] & 1;
     v8 = 1;
   }
 
   else
   {
-    v7.receiver = v15;
+    v7.receiver = selfCopy;
     v7.super_class = _UIViewServiceViewControllerOperatorAccessibility;
-    v16 = [(_UIViewServiceViewControllerOperatorAccessibility *)&v7 accessibilityPostScreenChangedForChildViewController:location[0] isAddition:v13];
+    v16 = [(_UIViewServiceViewControllerOperatorAccessibility *)&v7 accessibilityPostScreenChangedForChildViewController:location[0] isAddition:additionCopy];
     v8 = 1;
   }
 

@@ -1,25 +1,25 @@
 @interface LiPersonDepthWriter
-+ (id)sharedDepthStencilStateWithDevice:(id)a3;
-+ (id)sharedRenderPipelineStateWithDevice:(id)a3 sampleCount:(int64_t)a4;
-- (LiPersonDepthWriter)initWithDevice:(id)a3 sampleCount:(int64_t)a4;
-- (id)renderPassDescriptorWithColorTexture:(id)a3 depthTexture:(id)a4;
-- (void)computeMatteTexCoordsWithMatteSize:(CGSize)a3 projectSize:(CGSize)a4 videoOrientation:(int)a5;
++ (id)sharedDepthStencilStateWithDevice:(id)device;
++ (id)sharedRenderPipelineStateWithDevice:(id)device sampleCount:(int64_t)count;
+- (LiPersonDepthWriter)initWithDevice:(id)device sampleCount:(int64_t)count;
+- (id)renderPassDescriptorWithColorTexture:(id)texture depthTexture:(id)depthTexture;
+- (void)computeMatteTexCoordsWithMatteSize:(CGSize)size projectSize:(CGSize)projectSize videoOrientation:(int)orientation;
 - (void)dealloc;
-- (void)drawWithDepthMap:(id)a3 matte:(id)a4 uniforms:(PersonDepthUniforms)a5 windowSize:(CGSize)a6 renderCommandEncoder:(id)a7;
-- (void)writeWithDepthMap:(id)a3 matte:(id)a4 depthTexture:(id)a5 colorTexture:(id)a6 uniforms:(PersonDepthUniforms)a7 windowSize:(CGSize)a8 commandBuffer:(id)a9;
+- (void)drawWithDepthMap:(id)map matte:(id)matte uniforms:(PersonDepthUniforms)uniforms windowSize:(CGSize)size renderCommandEncoder:(id)encoder;
+- (void)writeWithDepthMap:(id)map matte:(id)matte depthTexture:(id)texture colorTexture:(id)colorTexture uniforms:(PersonDepthUniforms)uniforms windowSize:(CGSize)size commandBuffer:(id)buffer;
 @end
 
 @implementation LiPersonDepthWriter
 
-- (LiPersonDepthWriter)initWithDevice:(id)a3 sampleCount:(int64_t)a4
+- (LiPersonDepthWriter)initWithDevice:(id)device sampleCount:(int64_t)count
 {
   v8.receiver = self;
   v8.super_class = LiPersonDepthWriter;
   v6 = [(LiPersonDepthWriter *)&v8 init];
   if (v6)
   {
-    v6->_device = a3;
-    v6->_sampleCount = a4;
+    v6->_device = device;
+    v6->_sampleCount = count;
   }
 
   return v6;
@@ -32,66 +32,66 @@
   [(LiPersonDepthWriter *)&v3 dealloc];
 }
 
-- (void)writeWithDepthMap:(id)a3 matte:(id)a4 depthTexture:(id)a5 colorTexture:(id)a6 uniforms:(PersonDepthUniforms)a7 windowSize:(CGSize)a8 commandBuffer:(id)a9
+- (void)writeWithDepthMap:(id)map matte:(id)matte depthTexture:(id)texture colorTexture:(id)colorTexture uniforms:(PersonDepthUniforms)uniforms windowSize:(CGSize)size commandBuffer:(id)buffer
 {
-  height = a8.height;
-  width = a8.width;
-  v11 = *&a7.var2;
-  v12 = *&a7.var0;
-  v16 = [a9 renderCommandEncoderWithDescriptor:{-[LiPersonDepthWriter renderPassDescriptorWithColorTexture:depthTexture:](self, "renderPassDescriptorWithColorTexture:depthTexture:", a6, a5)}];
-  [(LiPersonDepthWriter *)self drawWithDepthMap:a3 matte:a4 uniforms:v12 windowSize:v11 renderCommandEncoder:v16, width, height];
+  height = size.height;
+  width = size.width;
+  v11 = *&uniforms.var2;
+  v12 = *&uniforms.var0;
+  v16 = [buffer renderCommandEncoderWithDescriptor:{-[LiPersonDepthWriter renderPassDescriptorWithColorTexture:depthTexture:](self, "renderPassDescriptorWithColorTexture:depthTexture:", colorTexture, texture)}];
+  [(LiPersonDepthWriter *)self drawWithDepthMap:map matte:matte uniforms:v12 windowSize:v11 renderCommandEncoder:v16, width, height];
 
   [v16 endEncoding];
 }
 
-- (void)drawWithDepthMap:(id)a3 matte:(id)a4 uniforms:(PersonDepthUniforms)a5 windowSize:(CGSize)a6 renderCommandEncoder:(id)a7
+- (void)drawWithDepthMap:(id)map matte:(id)matte uniforms:(PersonDepthUniforms)uniforms windowSize:(CGSize)size renderCommandEncoder:(id)encoder
 {
-  -[LiPersonDepthWriter computeMatteTexCoordsWithMatteSize:projectSize:videoOrientation:](self, "computeMatteTexCoordsWithMatteSize:projectSize:videoOrientation:", a5.var3, [a4 width], objc_msgSend(a4, "height"), a6.width, a6.height);
-  [a7 setRenderPipelineState:{objc_msgSend(objc_opt_class(), "sharedRenderPipelineStateWithDevice:sampleCount:", self->_device, self->_sampleCount)}];
-  [a7 setDepthStencilState:{objc_msgSend(objc_opt_class(), "sharedDepthStencilStateWithDevice:", self->_device)}];
-  [a7 setVertexBytes:&vertices length:48 atIndex:0];
-  [a7 setVertexBytes:self->_matteTexCoords length:48 atIndex:1];
-  [a7 setFragmentTexture:a3 atIndex:0];
-  [a7 setFragmentTexture:a4 atIndex:1];
-  [a7 setFragmentBytes:&v11 length:16 atIndex:0];
-  [a7 drawPrimitives:3 vertexStart:0 vertexCount:6];
+  -[LiPersonDepthWriter computeMatteTexCoordsWithMatteSize:projectSize:videoOrientation:](self, "computeMatteTexCoordsWithMatteSize:projectSize:videoOrientation:", uniforms.var3, [matte width], objc_msgSend(matte, "height"), size.width, size.height);
+  [encoder setRenderPipelineState:{objc_msgSend(objc_opt_class(), "sharedRenderPipelineStateWithDevice:sampleCount:", self->_device, self->_sampleCount)}];
+  [encoder setDepthStencilState:{objc_msgSend(objc_opt_class(), "sharedDepthStencilStateWithDevice:", self->_device)}];
+  [encoder setVertexBytes:&vertices length:48 atIndex:0];
+  [encoder setVertexBytes:self->_matteTexCoords length:48 atIndex:1];
+  [encoder setFragmentTexture:map atIndex:0];
+  [encoder setFragmentTexture:matte atIndex:1];
+  [encoder setFragmentBytes:&v11 length:16 atIndex:0];
+  [encoder drawPrimitives:3 vertexStart:0 vertexCount:6];
 }
 
-- (void)computeMatteTexCoordsWithMatteSize:(CGSize)a3 projectSize:(CGSize)a4 videoOrientation:(int)a5
+- (void)computeMatteTexCoordsWithMatteSize:(CGSize)size projectSize:(CGSize)projectSize videoOrientation:(int)orientation
 {
-  v5 = a5 & 0xFFFFFFFE;
-  if ((a5 & 0xFFFFFFFE) == 2)
+  v5 = orientation & 0xFFFFFFFE;
+  if ((orientation & 0xFFFFFFFE) == 2)
   {
-    height = a3.height;
+    height = size.height;
   }
 
   else
   {
-    height = a3.width;
+    height = size.width;
   }
 
   if (v5 == 2)
   {
-    width = a3.width;
+    width = size.width;
   }
 
   else
   {
-    width = a3.height;
+    width = size.height;
   }
 
-  if (a4.width / a4.height >= width / height)
+  if (projectSize.width / projectSize.height >= width / height)
   {
-    v8 = width / a4.width;
+    v8 = width / projectSize.width;
   }
 
   else
   {
-    v8 = height / a4.height;
+    v8 = height / projectSize.height;
   }
 
-  v9 = a4.width * v8;
-  v10 = a4.height * v8;
+  v9 = projectSize.width * v8;
+  v10 = projectSize.height * v8;
   v11 = (width - v9) * 0.5;
   v12 = (height - v10) * 0.5;
   v13 = v10 + v12;
@@ -122,12 +122,12 @@
     v14 = v13;
   }
 
-  v17 = v14 / a3.width;
-  v18 = v12 / a3.height;
-  v19 = v16 / a3.width;
-  v20 = v15 / a3.height;
-  v21 = a5 & 0xFFFFFFFD;
-  if ((a5 & 0xFFFFFFFD) == 1)
+  v17 = v14 / size.width;
+  v18 = v12 / size.height;
+  v19 = v16 / size.width;
+  v20 = v15 / size.height;
+  v21 = orientation & 0xFFFFFFFD;
+  if ((orientation & 0xFFFFFFFD) == 1)
   {
     v22 = v17;
   }
@@ -200,14 +200,14 @@
   *&self->_matteTexCoords[40] = v30;
 }
 
-+ (id)sharedRenderPipelineStateWithDevice:(id)a3 sampleCount:(int64_t)a4
++ (id)sharedRenderPipelineStateWithDevice:(id)device sampleCount:(int64_t)count
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = *"";
   v5[2] = __71__LiPersonDepthWriter_sharedRenderPipelineStateWithDevice_sampleCount___block_invoke;
   v5[3] = &unk_279AA9C28;
-  v5[4] = a3;
-  v5[5] = a4;
+  v5[4] = device;
+  v5[5] = count;
   if (+[LiPersonDepthWriter sharedRenderPipelineStateWithDevice:sampleCount:]::onceToken != -1)
   {
     dispatch_once(&+[LiPersonDepthWriter sharedRenderPipelineStateWithDevice:sampleCount:]::onceToken, v5);
@@ -264,13 +264,13 @@ void __71__LiPersonDepthWriter_sharedRenderPipelineStateWithDevice_sampleCount__
   }
 }
 
-+ (id)sharedDepthStencilStateWithDevice:(id)a3
++ (id)sharedDepthStencilStateWithDevice:(id)device
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = *"";
   block[2] = __57__LiPersonDepthWriter_sharedDepthStencilStateWithDevice___block_invoke;
   block[3] = &unk_279AA8060;
-  block[4] = a3;
+  block[4] = device;
   if (+[LiPersonDepthWriter sharedDepthStencilStateWithDevice:]::onceToken != -1)
   {
     dispatch_once(&+[LiPersonDepthWriter sharedDepthStencilStateWithDevice:]::onceToken, block);
@@ -289,7 +289,7 @@ uint64_t __57__LiPersonDepthWriter_sharedDepthStencilStateWithDevice___block_inv
   return result;
 }
 
-- (id)renderPassDescriptorWithColorTexture:(id)a3 depthTexture:(id)a4
+- (id)renderPassDescriptorWithColorTexture:(id)texture depthTexture:(id)depthTexture
 {
   v6 = objc_alloc_init(MEMORY[0x277CD6F50]);
   [objc_msgSend(objc_msgSend(v6 "colorAttachments")];

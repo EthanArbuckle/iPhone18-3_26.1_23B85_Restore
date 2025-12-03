@@ -1,8 +1,8 @@
 @interface NTNewsTodayResultsSourceFetchHelper
 - (NTNewsTodayResultsSourceFetchHelper)init;
-- (NTNewsTodayResultsSourceFetchHelper)initWithSectionQueueDescriptors:(id)a3;
+- (NTNewsTodayResultsSourceFetchHelper)initWithSectionQueueDescriptors:(id)descriptors;
 - (id)sectionDescriptorsAtHeadsOfQueues;
-- (void)removeSectionDescriptors:(id)a3;
+- (void)removeSectionDescriptors:(id)descriptors;
 @end
 
 @implementation NTNewsTodayResultsSourceFetchHelper
@@ -33,11 +33,11 @@
   objc_exception_throw(v6);
 }
 
-- (NTNewsTodayResultsSourceFetchHelper)initWithSectionQueueDescriptors:(id)a3
+- (NTNewsTodayResultsSourceFetchHelper)initWithSectionQueueDescriptors:(id)descriptors
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorsCopy = descriptors;
+  if (!descriptorsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsSourceFetchHelper initWithSectionQueueDescriptors:];
   }
@@ -53,8 +53,8 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v21 = v4;
-    v8 = v4;
+    v21 = descriptorsCopy;
+    v8 = descriptorsCopy;
     v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v9)
     {
@@ -70,11 +70,11 @@
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 sectionDescriptors];
-          if ([v14 count])
+          sectionDescriptors = [v13 sectionDescriptors];
+          if ([sectionDescriptors count])
           {
             [(NSMutableArray *)v6 addObject:v13];
-            v15 = [v14 mutableCopy];
+            v15 = [sectionDescriptors mutableCopy];
             [(NSMutableDictionary *)v7 setObject:v15 forKeyedSubscript:v13];
           }
         }
@@ -92,7 +92,7 @@
     remainingSectionsBySectionQueueDescriptors = v5->_remainingSectionsBySectionQueueDescriptors;
     v5->_remainingSectionsBySectionQueueDescriptors = v7;
 
-    v4 = v21;
+    descriptorsCopy = v21;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -103,7 +103,7 @@
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(NTNewsTodayResultsSourceFetchHelper *)self sectionQueueDescriptors];
+  sectionQueueDescriptors = [(NTNewsTodayResultsSourceFetchHelper *)self sectionQueueDescriptors];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__NTNewsTodayResultsSourceFetchHelper_sectionDescriptorsAtHeadsOfQueues__block_invoke;
@@ -113,7 +113,7 @@
   v6 = v3;
   v13 = v6;
   v7 = v4;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [sectionQueueDescriptors enumerateObjectsUsingBlock:v11];
 
   v8 = v13;
   v9 = v6;
@@ -167,11 +167,11 @@ void __72__NTNewsTodayResultsSourceFetchHelper_sectionDescriptorsAtHeadsOfQueues
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSectionDescriptors:(id)a3
+- (void)removeSectionDescriptors:(id)descriptors
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  descriptorsCopy = descriptors;
+  if (!descriptorsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNewsTodayResultsSourceFetchHelper removeSectionDescriptors:];
   }
@@ -180,7 +180,7 @@ void __72__NTNewsTodayResultsSourceFetchHelper_sectionDescriptorsAtHeadsOfQueues
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = descriptorsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v31 count:16];
   if (v6)
   {
@@ -199,9 +199,9 @@ void __72__NTNewsTodayResultsSourceFetchHelper_sectionDescriptorsAtHeadsOfQueues
         v10 = *(*(&v19 + 1) + 8 * v9);
         objc_opt_class();
         v11 = FCCheckedDynamicCast();
-        v12 = [v11 parentSectionQueueDescriptor];
-        v13 = [(NTNewsTodayResultsSourceFetchHelper *)self remainingSectionsBySectionQueueDescriptors];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        parentSectionQueueDescriptor = [v11 parentSectionQueueDescriptor];
+        remainingSectionsBySectionQueueDescriptors = [(NTNewsTodayResultsSourceFetchHelper *)self remainingSectionsBySectionQueueDescriptors];
+        v14 = [remainingSectionsBySectionQueueDescriptors objectForKeyedSubscript:parentSectionQueueDescriptor];
 
         if (![v14 count] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -219,11 +219,11 @@ void __72__NTNewsTodayResultsSourceFetchHelper_sectionDescriptorsAtHeadsOfQueues
 
         if ([v14 count] == 1)
         {
-          v15 = [(NTNewsTodayResultsSourceFetchHelper *)self sectionQueueDescriptors];
-          [v15 removeObject:v12];
+          sectionQueueDescriptors = [(NTNewsTodayResultsSourceFetchHelper *)self sectionQueueDescriptors];
+          [sectionQueueDescriptors removeObject:parentSectionQueueDescriptor];
 
-          v16 = [(NTNewsTodayResultsSourceFetchHelper *)self remainingSectionsBySectionQueueDescriptors];
-          [v16 removeObjectForKey:v12];
+          remainingSectionsBySectionQueueDescriptors2 = [(NTNewsTodayResultsSourceFetchHelper *)self remainingSectionsBySectionQueueDescriptors];
+          [remainingSectionsBySectionQueueDescriptors2 removeObjectForKey:parentSectionQueueDescriptor];
         }
 
         else

@@ -1,21 +1,21 @@
 @interface _NFSecureElementLoggingSession
-+ (id)validateEntitlements:(id)a3;
-- (id)_getSecureElementWrapperForSEID:(id)a3;
-- (void)clearLogs:(unsigned __int8)a3 forSEID:(id)a4 completion:(id)a5;
-- (void)didStartSession:(id)a3;
-- (void)enableSMBLogging:(BOOL)a3 completion:(id)a4;
-- (void)getACLogWithCompletion:(id)a3;
-- (void)getAndClearAssertionLogsWithCompletion:(id)a3;
-- (void)getLogs:(unsigned __int8)a3 forSEID:(id)a4 completion:(id)a5;
-- (void)getSMBLogWithCompletion:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
+- (id)_getSecureElementWrapperForSEID:(id)d;
+- (void)clearLogs:(unsigned __int8)logs forSEID:(id)d completion:(id)completion;
+- (void)didStartSession:(id)session;
+- (void)enableSMBLogging:(BOOL)logging completion:(id)completion;
+- (void)getACLogWithCompletion:(id)completion;
+- (void)getAndClearAssertionLogsWithCompletion:(id)completion;
+- (void)getLogs:(unsigned __int8)logs forSEID:(id)d completion:(id)completion;
+- (void)getSMBLogWithCompletion:(id)completion;
 @end
 
 @implementation _NFSecureElementLoggingSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  v5 = a3;
-  if ([v5 seSessionAccess] & 1) != 0 || (objc_msgSend(v5, "seLoggingSessionAccess"))
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy seSessionAccess] & 1) != 0 || (objc_msgSend(entitlementsCopy, "seLoggingSessionAccess"))
   {
     v6 = 0;
   }
@@ -27,9 +27,9 @@
     if (Logger)
     {
       v8 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v12 = 45;
       if (isMetaClass)
@@ -44,7 +44,7 @@
     v13 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = object_getClass(a1);
+      v14 = object_getClass(self);
       if (class_isMetaClass(v14))
       {
         v15 = 43;
@@ -58,7 +58,7 @@
       *buf = 67109890;
       v27 = v15;
       v28 = 2082;
-      v29 = object_getClassName(a1);
+      v29 = object_getClassName(self);
       v30 = 2082;
       v31 = sel_getName(a2);
       v32 = 1024;
@@ -86,37 +86,37 @@
   return v6;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v9.receiver = self;
   v9.super_class = _NFSecureElementLoggingSession;
-  v4 = a3;
-  [(_NFXPCSession *)&v9 didStartSession:v4];
+  sessionCopy = session;
+  [(_NFXPCSession *)&v9 didStartSession:sessionCopy];
   v5 = [_NFHardwareManager sharedHardwareManager:v9.receiver];
-  v6 = [v5 secureElementWrapper];
+  secureElementWrapper = [v5 secureElementWrapper];
   embeddedSecureElementWrapper = self->_embeddedSecureElementWrapper;
-  self->_embeddedSecureElementWrapper = v6;
+  self->_embeddedSecureElementWrapper = secureElementWrapper;
 
-  v8 = [(_NFXPCSession *)self remoteObject];
-  [v8 didStartSession:v4];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didStartSession:sessionCopy];
 }
 
-- (id)_getSecureElementWrapperForSEID:(id)a3
+- (id)_getSecureElementWrapperForSEID:(id)d
 {
-  v5 = a3;
-  v6 = [(_NFSecureElementLoggingSession *)self embeddedSecureElementWrapper];
-  v7 = [v6 serialNumber];
-  if ([v7 isEqualToString:v5])
+  dCopy = d;
+  embeddedSecureElementWrapper = [(_NFSecureElementLoggingSession *)self embeddedSecureElementWrapper];
+  serialNumber = [embeddedSecureElementWrapper serialNumber];
+  if ([serialNumber isEqualToString:dCopy])
   {
 
 LABEL_4:
-    v11 = [(_NFSecureElementLoggingSession *)self embeddedSecureElementWrapper];
+    embeddedSecureElementWrapper2 = [(_NFSecureElementLoggingSession *)self embeddedSecureElementWrapper];
     goto LABEL_15;
   }
 
-  v8 = [(_NFSecureElementLoggingSession *)self embeddedSecureElementWrapper];
-  v9 = [v8 systemOSSerialNumber];
-  v10 = [v9 isEqualToString:v5];
+  embeddedSecureElementWrapper3 = [(_NFSecureElementLoggingSession *)self embeddedSecureElementWrapper];
+  systemOSSerialNumber = [embeddedSecureElementWrapper3 systemOSSerialNumber];
+  v10 = [systemOSSerialNumber isEqualToString:dCopy];
 
   if (v10)
   {
@@ -138,7 +138,7 @@ LABEL_4:
       v16 = 43;
     }
 
-    v13(3, "%c[%{public}s %{public}s]:%i Unknown secure element id: %{public}@", v16, ClassName, Name, 55, v5);
+    v13(3, "%c[%{public}s %{public}s]:%i Unknown secure element id: %{public}@", v16, ClassName, Name, 55, dCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -165,124 +165,124 @@ LABEL_4:
     v29 = 1024;
     v30 = 55;
     v31 = 2114;
-    v32 = v5;
+    v32 = dCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Unknown secure element id: %{public}@", buf, 0x2Cu);
   }
 
-  v11 = 0;
+  embeddedSecureElementWrapper2 = 0;
 LABEL_15:
 
-  return v11;
+  return embeddedSecureElementWrapper2;
 }
 
-- (void)getLogs:(unsigned __int8)a3 forSEID:(id)a4 completion:(id)a5
+- (void)getLogs:(unsigned __int8)logs forSEID:(id)d completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = _NFSecureElementLoggingSession;
-  v11 = [(_NFSession *)&v19 workQueue];
+  workQueue = [(_NFSession *)&v19 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002092D4;
   block[3] = &unk_100318AB8;
-  v16 = v10;
+  v16 = completionCopy;
   v17 = a2;
   block[4] = self;
-  v15 = v9;
-  v18 = a3;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v15 = dCopy;
+  logsCopy = logs;
+  v12 = dCopy;
+  v13 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)clearLogs:(unsigned __int8)a3 forSEID:(id)a4 completion:(id)a5
+- (void)clearLogs:(unsigned __int8)logs forSEID:(id)d completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = _NFSecureElementLoggingSession;
-  v11 = [(_NFSession *)&v19 workQueue];
+  workQueue = [(_NFSession *)&v19 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002098A4;
   block[3] = &unk_100318AB8;
-  v16 = v10;
+  v16 = completionCopy;
   v17 = a2;
   block[4] = self;
-  v15 = v9;
-  v18 = a3;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v15 = dCopy;
+  logsCopy = logs;
+  v12 = dCopy;
+  v13 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)getACLogWithCompletion:(id)a3
+- (void)getACLogWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFSecureElementLoggingSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100209E34;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)enableSMBLogging:(BOOL)a3 completion:(id)a4
+- (void)enableSMBLogging:(BOOL)logging completion:(id)completion
 {
-  v7 = a4;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _NFSecureElementLoggingSession;
-  v8 = [(_NFSession *)&v14 workQueue];
+  workQueue = [(_NFSession *)&v14 workQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10020A2F8;
   v10[3] = &unk_100316FA0;
-  v11 = v7;
+  v11 = completionCopy;
   v12 = a2;
   v10[4] = self;
-  v13 = a3;
-  v9 = v7;
-  dispatch_async(v8, v10);
+  loggingCopy = logging;
+  v9 = completionCopy;
+  dispatch_async(workQueue, v10);
 }
 
-- (void)getSMBLogWithCompletion:(id)a3
+- (void)getSMBLogWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFSecureElementLoggingSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10020AAF0;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)getAndClearAssertionLogsWithCompletion:(id)a3
+- (void)getAndClearAssertionLogsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9.receiver = self;
   v9.super_class = _NFSecureElementLoggingSession;
-  v5 = [(_NFSession *)&v9 workQueue];
+  workQueue = [(_NFSession *)&v9 workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10020B39C;
   v7[3] = &unk_100316700;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 @end

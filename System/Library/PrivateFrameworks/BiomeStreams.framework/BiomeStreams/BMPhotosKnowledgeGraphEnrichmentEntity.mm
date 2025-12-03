@@ -1,29 +1,29 @@
 @interface BMPhotosKnowledgeGraphEnrichmentEntity
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithCoder:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithName:(id)a3 score:(double)a4 language:(id)a5 category:(unsigned int)a6;
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProto:(id)a3;
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProtoData:(id)a3;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithCoder:(id)coder;
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithName:(id)name score:(double)score language:(id)language category:(unsigned int)category;
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProto:(id)proto;
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProtoData:(id)data;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMPhotosKnowledgeGraphEnrichmentEntity
 
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithName:(id)a3 score:(double)a4 language:(id)a5 category:(unsigned int)a6
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithName:(id)name score:(double)score language:(id)language category:(unsigned int)category
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (v11)
+  nameCopy = name;
+  languageCopy = language;
+  v13 = languageCopy;
+  if (nameCopy)
   {
-    if (v12)
+    if (languageCopy)
     {
       goto LABEL_3;
     }
@@ -46,21 +46,21 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    v15->_score = a4;
-    objc_storeStrong(&v15->_language, a5);
-    v15->_category = a6;
+    objc_storeStrong(&v14->_name, name);
+    v15->_score = score;
+    objc_storeStrong(&v15->_language, language);
+    v15->_category = category;
   }
 
   return v15;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -101,9 +101,9 @@ LABEL_3:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self jsonDict];
+  jsonDict = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -118,59 +118,59 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithCoder:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self proto];
-  v3 = [v2 data];
+  proto = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProto:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasName]&& [v5 hasScore]&& [v5 hasLanguage]&& ([v5 hasCategory]& 1) != 0)
       {
-        v6 = [v5 name];
+        name = [v5 name];
         [v5 score];
         v8 = v7;
-        v9 = [v5 language];
-        self = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self initWithName:v6 score:v9 language:[v5 category] category:v8];
+        language = [v5 language];
+        self = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self initWithName:name score:language language:[v5 category] category:v8];
 
-        v10 = self;
+        selfCopy = self;
 LABEL_15:
 
         goto LABEL_16;
@@ -192,45 +192,45 @@ LABEL_15:
       }
     }
 
-    v10 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProtoData:(id)a3
+- (BMPhotosKnowledgeGraphEnrichmentEntity)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBPhotosKnowledgeGraphEnrichmentEntity alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBPhotosKnowledgeGraphEnrichmentEntity alloc] initWithData:dataCopy];
 
     self = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self name];
-  [v3 setName:v4];
+  name = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self name];
+  [v3 setName:name];
 
   [(BMPhotosKnowledgeGraphEnrichmentEntity *)self score];
   [v3 setScore:?];
-  v5 = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self language];
-  [v3 setLanguage:v5];
+  language = [(BMPhotosKnowledgeGraphEnrichmentEntity *)self language];
+  [v3 setLanguage:language];
 
   [v3 setCategory:{-[BMPhotosKnowledgeGraphEnrichmentEntity category](self, "category")}];
 
@@ -246,20 +246,20 @@ LABEL_16:
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     name = self->_name;
-    v7 = [v5 name];
-    if (-[NSString isEqualToString:](name, "isEqualToString:", v7) && (score = self->_score, [v5 score], score == v9))
+    name = [v5 name];
+    if (-[NSString isEqualToString:](name, "isEqualToString:", name) && (score = self->_score, [v5 score], score == v9))
     {
       language = self->_language;
-      v11 = [v5 language];
-      if ([(NSString *)language isEqualToString:v11])
+      language = [v5 language];
+      if ([(NSString *)language isEqualToString:language])
       {
         category = self->_category;
         v13 = category == [v5 category];
@@ -285,18 +285,18 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_name && self->_language)
   {
     v7 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

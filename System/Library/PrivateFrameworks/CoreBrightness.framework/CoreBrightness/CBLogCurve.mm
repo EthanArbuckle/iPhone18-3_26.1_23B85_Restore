@@ -1,22 +1,22 @@
 @interface CBLogCurve
-+ (id)curveWithBase:(float)a3;
-- (float)interpolateProgress:(float)a3 from:(float)a4 toEnd:(float)a5;
++ (id)curveWithBase:(float)base;
+- (float)interpolateProgress:(float)progress from:(float)from toEnd:(float)end;
 @end
 
 @implementation CBLogCurve
 
-+ (id)curveWithBase:(float)a3
++ (id)curveWithBase:(float)base
 {
   v3 = [CBLogCurve alloc];
-  *&v4 = a3;
+  *&v4 = base;
   return [(CBLogCurve *)v3 initWithBase:v4];
 }
 
-- (float)interpolateProgress:(float)a3 from:(float)a4 toEnd:(float)a5
+- (float)interpolateProgress:(float)progress from:(float)from toEnd:(float)end
 {
-  v9 = clamp(a3, 0.0, 1.0);
-  v8 = log_base(self->_base, a4);
-  v5 = log_base(self->_base, a5);
+  v9 = clamp(progress, 0.0, 1.0);
+  v8 = log_base(self->_base, from);
+  v5 = log_base(self->_base, end);
   v10 = linear_interpolation(v9, 0.0, v8, 1.0, v5);
   base = self->_base;
 

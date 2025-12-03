@@ -1,14 +1,14 @@
 @interface SFReaderThemeButton
 - (id)focusEffect;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
+- (void)pressesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SFReaderThemeButton
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (SFShouldHandleSelectionForPresses())
   {
     [(SFReaderThemeButton *)self sendActionsForControlEvents:0x2000];
@@ -18,7 +18,7 @@
   {
     v8.receiver = self;
     v8.super_class = SFReaderThemeButton;
-    [(SFReaderThemeButton *)&v8 pressesBegan:v6 withEvent:v7];
+    [(SFReaderThemeButton *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 

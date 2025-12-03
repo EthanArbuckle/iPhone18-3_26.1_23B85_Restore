@@ -1,26 +1,26 @@
 @interface SISchemaTextToSpeechBegin
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaTextToSpeechBegin)initWithDictionary:(id)a3;
-- (SISchemaTextToSpeechBegin)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaTextToSpeechBegin)initWithDictionary:(id)dictionary;
+- (SISchemaTextToSpeechBegin)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaTextToSpeechBegin
 
-- (SISchemaTextToSpeechBegin)initWithDictionary:(id)a3
+- (SISchemaTextToSpeechBegin)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaTextToSpeechBegin;
   v5 = [(SISchemaTextToSpeechBegin *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"aceID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"aceID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(SISchemaTextToSpeechBegin *)v5 setAceID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"audioOutputRoute"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"audioOutputRoute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaTextToSpeechBegin setAudioOutputRoute:](v5, "setAudioOutputRoute:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hardwareInterfaceVendorID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hardwareInterfaceVendorID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SISchemaTextToSpeechBegin)initWithJSON:(id)a3
+- (SISchemaTextToSpeechBegin)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaTextToSpeechBegin *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaTextToSpeechBegin *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaTextToSpeechBegin *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,12 +85,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceID)
   {
-    v4 = [(SISchemaTextToSpeechBegin *)self aceID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aceID"];
+    aceID = [(SISchemaTextToSpeechBegin *)self aceID];
+    v5 = [aceID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aceID"];
   }
 
   if (*&self->_has)
@@ -106,28 +106,28 @@
       v7 = off_1E78E6558[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"audioOutputRoute"];
+    [dictionary setObject:v7 forKeyedSubscript:@"audioOutputRoute"];
   }
 
   if (self->_hardwareInterfaceVendorID)
   {
-    v8 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    hardwareInterfaceVendorID = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
+    dictionaryRepresentation = [hardwareInterfaceVendorID dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"hardwareInterfaceVendorID"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"hardwareInterfaceVendorID"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"hardwareInterfaceVendorID"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"hardwareInterfaceVendorID"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,28 +146,28 @@
   return v4 ^ v3 ^ [(SISchemaHardwareInterfaceIdentifier *)self->_hardwareInterfaceVendorID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(SISchemaTextToSpeechBegin *)self aceID];
-  v6 = [v4 aceID];
-  if ((v5 != 0) == (v6 == 0))
+  aceID = [(SISchemaTextToSpeechBegin *)self aceID];
+  aceID2 = [equalCopy aceID];
+  if ((aceID != 0) == (aceID2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(SISchemaTextToSpeechBegin *)self aceID];
-  if (v7)
+  aceID3 = [(SISchemaTextToSpeechBegin *)self aceID];
+  if (aceID3)
   {
-    v8 = v7;
-    v9 = [(SISchemaTextToSpeechBegin *)self aceID];
-    v10 = [v4 aceID];
-    v11 = [v9 isEqual:v10];
+    v8 = aceID3;
+    aceID4 = [(SISchemaTextToSpeechBegin *)self aceID];
+    aceID5 = [equalCopy aceID];
+    v11 = [aceID4 isEqual:aceID5];
 
     if (!v11)
     {
@@ -179,7 +179,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -187,18 +187,18 @@
   if (*&self->_has)
   {
     audioOutputRoute = self->_audioOutputRoute;
-    if (audioOutputRoute != [v4 audioOutputRoute])
+    if (audioOutputRoute != [equalCopy audioOutputRoute])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
-  v6 = [v4 hardwareInterfaceVendorID];
-  if ((v5 != 0) != (v6 == 0))
+  aceID = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
+  aceID2 = [equalCopy hardwareInterfaceVendorID];
+  if ((aceID != 0) != (aceID2 == 0))
   {
-    v13 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
-    if (!v13)
+    hardwareInterfaceVendorID = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
+    if (!hardwareInterfaceVendorID)
     {
 
 LABEL_18:
@@ -206,10 +206,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
-    v16 = [v4 hardwareInterfaceVendorID];
-    v17 = [v15 isEqual:v16];
+    v14 = hardwareInterfaceVendorID;
+    hardwareInterfaceVendorID2 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
+    hardwareInterfaceVendorID3 = [equalCopy hardwareInterfaceVendorID];
+    v17 = [hardwareInterfaceVendorID2 isEqual:hardwareInterfaceVendorID3];
 
     if (v17)
     {
@@ -229,12 +229,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaTextToSpeechBegin *)self aceID];
+  toCopy = to;
+  aceID = [(SISchemaTextToSpeechBegin *)self aceID];
 
-  if (v4)
+  if (aceID)
   {
     PBDataWriterWriteStringField();
   }
@@ -244,29 +244,29 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
+  hardwareInterfaceVendorID = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (hardwareInterfaceVendorID)
   {
-    v7 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
+    hardwareInterfaceVendorID2 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaTextToSpeechBegin;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaTextToSpeechBegin *)self hardwareInterfaceVendorID:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaTextToSpeechBegin *)self deleteHardwareInterfaceVendorID];
   }

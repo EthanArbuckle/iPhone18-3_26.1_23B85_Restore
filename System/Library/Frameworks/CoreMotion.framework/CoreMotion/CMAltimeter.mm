@@ -8,14 +8,14 @@
 - (id)initPrivate;
 - (void)dealloc;
 - (void)deallocPrivate;
-- (void)onFilteredPressure:(const Sample *)a3;
-- (void)queryElevationProfileFromDate:(id)a3 toDate:(id)a4 withBatchSize:(unint64_t)a5 withHandler:(id)a6;
-- (void)querySignificantElevationChangeFromDate:(id)a3 toDate:(id)a4 withHandler:(id)a5;
+- (void)onFilteredPressure:(const Sample *)pressure;
+- (void)queryElevationProfileFromDate:(id)date toDate:(id)toDate withBatchSize:(unint64_t)size withHandler:(id)handler;
+- (void)querySignificantElevationChangeFromDate:(id)date toDate:(id)toDate withHandler:(id)handler;
 - (void)startAbsoluteAltitudeUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMAbsoluteAltitudeHandler)handler;
-- (void)startCompanionRelativeElevationUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)startRelativeAltitudeUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
+- (void)startCompanionRelativeElevationUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)startRelativeAltitudeUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
 - (void)startRelativeAltitudeUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMAltitudeHandler)handler;
-- (void)startSignificantElevationUpdatesWithHandler:(id)a3;
+- (void)startSignificantElevationUpdatesWithHandler:(id)handler;
 - (void)stopRelativeAltitudeUpdates;
 - (void)stopRelativeAltitudeUpdatesPrivate;
 - (void)stopSignificantElevationUpdates;
@@ -25,12 +25,12 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5 = objc_msgSend_currentThread(MEMORY[0x1E696AF00], v3, v4);
     if (objc_msgSend_isMainThread(v5, v6, v7) && (objc_msgSend_isMultiThreaded(MEMORY[0x1E696AF00], v8, v9) & 1) == 0)
     {
-      objc_msgSend_detachNewThreadSelector_toTarget_withObject_(MEMORY[0x1E696AF00], v10, sel_dummySelector_, a1, 0);
+      objc_msgSend_detachNewThreadSelector_toTarget_withObject_(MEMORY[0x1E696AF00], v10, sel_dummySelector_, self, 0);
     }
 
     if (!qword_1ED71C900)
@@ -246,9 +246,9 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startSignificantElevationUpdatesWithHandler:(id)a3
+- (void)startSignificantElevationUpdatesWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v7, a2, self, @"CMAltimeter.mm", 984, @"Invalid parameter not satisfying: %@", @"handler");
@@ -259,7 +259,7 @@
   v8[2] = sub_19B77526C;
   v8[3] = &unk_1E7532B68;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v8);
 }
 
@@ -273,38 +273,38 @@
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)querySignificantElevationChangeFromDate:(id)a3 toDate:(id)a4 withHandler:(id)a5
+- (void)querySignificantElevationChangeFromDate:(id)date toDate:(id)toDate withHandler:(id)handler
 {
-  if (a3)
+  if (date)
   {
-    if (a4)
+    if (toDate)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CMAltimeter.mm", 1000, @"Invalid parameter not satisfying: %@", @"toDate");
-    if (a5)
+    if (handler)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMAltimeter.mm", 1001, @"Invalid parameter not satisfying: %@", @"handler");
     goto LABEL_4;
   }
 
   v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CMAltimeter.mm", 999, @"Invalid parameter not satisfying: %@", @"fromDate");
-  if (!a4)
+  if (!toDate)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!a5)
+  if (!handler)
   {
     goto LABEL_7;
   }
@@ -315,17 +315,17 @@ LABEL_4:
   v16[2] = sub_19B775460;
   v16[3] = &unk_1E7533678;
   v16[4] = self;
-  v16[5] = a3;
-  v16[6] = a4;
-  v16[7] = a5;
+  v16[5] = date;
+  v16[6] = toDate;
+  v16[7] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v16);
 }
 
-- (void)startRelativeAltitudeUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startRelativeAltitudeUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
-  if (a3)
+  if (queue)
   {
-    if (a4)
+    if (handler)
     {
       goto LABEL_3;
     }
@@ -335,30 +335,30 @@ LABEL_4:
   {
     v13 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v13, v14, a2, self, @"CMAltimeter.mm", 1016, @"Invalid parameter not satisfying: %@", @"queue");
-    if (a4)
+    if (handler)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+  v15 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, queue);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v15, v16, a2, self, @"CMAltimeter.mm", 1017, @"Invalid parameter not satisfying: %@", @"handler");
 LABEL_3:
   internal = self->_internal;
-  if (objc_msgSend_isRelativeAltitudeAvailable(CMAltimeter, a2, a3))
+  if (objc_msgSend_isRelativeAltitudeAvailable(CMAltimeter, a2, queue))
   {
     v9 = internal[3];
-    if (v9 != a3)
+    if (v9 != queue)
     {
 
-      internal[3] = a3;
+      internal[3] = queue;
     }
 
     v10 = internal[2];
-    if (v10 != a4)
+    if (v10 != handler)
     {
 
-      internal[2] = objc_msgSend_copy(a4, v11, v12);
+      internal[2] = objc_msgSend_copy(handler, v11, v12);
     }
 
     if (!internal[1])
@@ -441,7 +441,7 @@ LABEL_8:
   *(internal + 52) = 0;
 }
 
-- (void)onFilteredPressure:(const Sample *)a3
+- (void)onFilteredPressure:(const Sample *)pressure
 {
   __p[205] = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -453,7 +453,7 @@ LABEL_8:
     sub_19B420490((internal + 16), 1);
   }
 
-  sub_19B420408((internal + 16), &a3->acceleration.x);
+  sub_19B420408((internal + 16), &pressure->acceleration.x);
   v6 = *(internal + 9);
   if (*(internal + 10) == v6)
   {
@@ -487,7 +487,7 @@ LABEL_8:
     if ((internal[13] & 1) == 0)
     {
       *(internal + 52) = 1;
-      *(internal + 2) = *&a3->timestamp;
+      *(internal + 2) = *&pressure->timestamp;
       internal[12] = (1.0 - powf((v15 * 1000.0) / 101320.0, 0.19026)) * 44331.0;
     }
 
@@ -497,7 +497,7 @@ LABEL_8:
       v17 = [CMAltitudeData alloc];
       *&v18 = v15 * 1000.0;
       *&v19 = internal[12];
-      v22 = objc_msgSend_initWithAltitude_andTimestamp_atBaseAltitude_(v17, v20, v21, v18, a3->timestamp, v19);
+      v22 = objc_msgSend_initWithAltitude_andTimestamp_atBaseAltitude_(v17, v20, v21, v18, pressure->timestamp, v19);
       v24 = *(internal + 2);
       v23 = *(internal + 3);
       v56[0] = MEMORY[0x1E69E9820];
@@ -662,48 +662,48 @@ LABEL_8:
   return result;
 }
 
-- (void)startCompanionRelativeElevationUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startCompanionRelativeElevationUpdatesToQueue:(id)queue withHandler:(id)handler
 {
-  if (objc_msgSend_isCompanionRelativeElevationAvailable(CMAltimeter, a2, a3))
+  if (objc_msgSend_isCompanionRelativeElevationAvailable(CMAltimeter, a2, queue))
   {
     internal = self->_internal;
 
-    MEMORY[0x1EEE66B58](internal, sel__startCompanionRelativeElevationUpdatesToQueue_withHandler_, a3);
+    MEMORY[0x1EEE66B58](internal, sel__startCompanionRelativeElevationUpdatesToQueue_withHandler_, queue);
   }
 }
 
-- (void)queryElevationProfileFromDate:(id)a3 toDate:(id)a4 withBatchSize:(unint64_t)a5 withHandler:(id)a6
+- (void)queryElevationProfileFromDate:(id)date toDate:(id)toDate withBatchSize:(unint64_t)size withHandler:(id)handler
 {
-  if (a3)
+  if (date)
   {
-    if (a4)
+    if (toDate)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMAltimeter.mm", 1193, @"Invalid parameter not satisfying: %@", @"toDate");
-    if (a6)
+    if (handler)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v16 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v16 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v16, v17, a2, self, @"CMAltimeter.mm", 1194, @"Invalid parameter not satisfying: %@", @"handler");
     goto LABEL_4;
   }
 
   v12 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CMAltimeter.mm", 1192, @"Invalid parameter not satisfying: %@", @"fromDate");
-  if (!a4)
+  if (!toDate)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!a6)
+  if (!handler)
   {
     goto LABEL_7;
   }
@@ -714,10 +714,10 @@ LABEL_4:
   v18[2] = sub_19B776218;
   v18[3] = &unk_1E7535F38;
   v18[4] = self;
-  v18[5] = a3;
-  v18[7] = a6;
-  v18[8] = a5;
-  v18[6] = a4;
+  v18[5] = date;
+  v18[7] = handler;
+  v18[8] = size;
+  v18[6] = toDate;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v18);
 }
 

@@ -1,12 +1,12 @@
 @interface SimpleSession
-- (SimpleSession)initWithFlags:(unint64_t)a3;
-- (SimpleSession)initWithSessionCore:(id)a3;
+- (SimpleSession)initWithFlags:(unint64_t)flags;
+- (SimpleSession)initWithSessionCore:(id)core;
 - (void)dealloc;
 @end
 
 @implementation SimpleSession
 
-- (SimpleSession)initWithFlags:(unint64_t)a3
+- (SimpleSession)initWithFlags:(unint64_t)flags
 {
   v7.receiver = self;
   v7.super_class = SimpleSession;
@@ -18,13 +18,13 @@
   return v3;
 }
 
-- (SimpleSession)initWithSessionCore:(id)a3
+- (SimpleSession)initWithSessionCore:(id)core
 {
   v8.receiver = self;
   v8.super_class = SimpleSession;
-  v3 = a3;
+  coreCopy = core;
   v4 = [(SimpleSession *)&v8 init];
-  v5 = session_create_from_core(v3);
+  v5 = session_create_from_core(coreCopy);
 
   session = v4->_session;
   v4->_session = v5;

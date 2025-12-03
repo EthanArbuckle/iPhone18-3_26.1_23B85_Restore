@@ -1,38 +1,38 @@
 @interface AKToolbarViewController
-+ (id)_imageNameForToolbarButtonItemOfType:(unint64_t)a3;
-+ (id)alternateImageForToolbarButtonItemOfType:(unint64_t)a3;
-+ (id)imageForToolbarButtonItemOfType:(unint64_t)a3;
-+ (id)titleForToolbarButtonItemOfType:(unint64_t)a3;
++ (id)_imageNameForToolbarButtonItemOfType:(unint64_t)type;
++ (id)alternateImageForToolbarButtonItemOfType:(unint64_t)type;
++ (id)imageForToolbarButtonItemOfType:(unint64_t)type;
++ (id)titleForToolbarButtonItemOfType:(unint64_t)type;
 - (AKController)controller;
-- (AKToolbarViewController)initWithController:(id)a3;
+- (AKToolbarViewController)initWithController:(id)controller;
 @end
 
 @implementation AKToolbarViewController
 
-- (AKToolbarViewController)initWithController:(id)a3
+- (AKToolbarViewController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKToolbarViewController;
   v5 = [(AKToolbarViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AKToolbarViewController *)v5 setController:v4];
+    [(AKToolbarViewController *)v5 setController:controllerCopy];
     [(AKToolbarViewController *)v6 setMaxHDRGain:1.0];
   }
 
   return v6;
 }
 
-+ (id)titleForToolbarButtonItemOfType:(unint64_t)a3
++ (id)titleForToolbarButtonItemOfType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 <= 12)
+  if (type <= 12)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         v4 = +[AKController akBundle];
         v5 = v4;
@@ -41,7 +41,7 @@
 
       else
       {
-        if (a3 != 4)
+        if (type != 4)
         {
           goto LABEL_22;
         }
@@ -52,9 +52,9 @@
       }
     }
 
-    else if (a3)
+    else if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_22;
       }
@@ -74,9 +74,9 @@
     goto LABEL_20;
   }
 
-  if (a3 <= 17)
+  if (type <= 17)
   {
-    if (a3 == 13)
+    if (type == 13)
     {
       v4 = +[AKController akBundle];
       v5 = v4;
@@ -85,7 +85,7 @@
       goto LABEL_21;
     }
 
-    if (a3 != 17)
+    if (type != 17)
     {
       goto LABEL_22;
     }
@@ -93,7 +93,7 @@
 
   else
   {
-    if (a3 == 18)
+    if (type == 18)
     {
       v4 = +[AKController akBundle];
       v5 = v4;
@@ -101,9 +101,9 @@
       goto LABEL_20;
     }
 
-    if (a3 != 19)
+    if (type != 19)
     {
-      if (a3 != 20)
+      if (type != 20)
       {
         goto LABEL_22;
       }
@@ -128,22 +128,22 @@ LABEL_22:
   return v3;
 }
 
-+ (id)_imageNameForToolbarButtonItemOfType:(unint64_t)a3
++ (id)_imageNameForToolbarButtonItemOfType:(unint64_t)type
 {
-  if (a3 > 0x14)
+  if (type > 0x14)
   {
     return 0;
   }
 
   else
   {
-    return off_278C7C2E8[a3];
+    return off_278C7C2E8[type];
   }
 }
 
-+ (id)imageForToolbarButtonItemOfType:(unint64_t)a3
++ (id)imageForToolbarButtonItemOfType:(unint64_t)type
 {
-  v3 = [a1 _imageNameForToolbarButtonItemOfType:a3];
+  v3 = [self _imageNameForToolbarButtonItemOfType:type];
   if (v3)
   {
     v4 = MEMORY[0x277D755B8];
@@ -159,9 +159,9 @@ LABEL_22:
   return v6;
 }
 
-+ (id)alternateImageForToolbarButtonItemOfType:(unint64_t)a3
++ (id)alternateImageForToolbarButtonItemOfType:(unint64_t)type
 {
-  v3 = [a1 _imageNameForToolbarButtonItemOfType:a3];
+  v3 = [self _imageNameForToolbarButtonItemOfType:type];
   v4 = v3;
   if (v3)
   {

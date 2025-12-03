@@ -1,13 +1,13 @@
 @interface FMFLocatorDaemon
 + (id)sharedInstance;
 - (FMFLocatorDaemon)init;
-- (id)apsHandlerForEnvironment:(id)a3;
+- (id)apsHandlerForEnvironment:(id)environment;
 - (id)xpcDarwinEventHandlers;
 - (id)xpcDistributedEventHandlers;
 - (void)calculateFirstRunStatus;
 - (void)checkInAllAPSHandlers;
 - (void)startServiceProviders;
-- (void)startupWithCompletion:(id)a3;
+- (void)startupWithCompletion:(id)completion;
 - (void)waitForSpringBoard;
 @end
 
@@ -39,16 +39,16 @@
     v5 = objc_alloc_init(FMStateCapture);
     [(FMFLocatorDaemon *)v2 setStateCapture:v5];
 
-    v6 = [(FMFLocatorDaemon *)v2 stateCapture];
-    [v6 setStateCaptureBlock:&stru_10005D0D8];
+    stateCapture = [(FMFLocatorDaemon *)v2 stateCapture];
+    [stateCapture setStateCaptureBlock:&stru_10005D0D8];
   }
 
   return v2;
 }
 
-- (void)startupWithCompletion:(id)a3
+- (void)startupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (MGGetBoolAnswer())
   {
     [(FMFLocatorDaemon *)self waitForSpringBoard];
@@ -68,9 +68,9 @@
   if ([(FMFLocatorDaemon *)self isFirstRunAfterBoot])
   {
     v7 = objc_alloc_init(FMFLocatorMigrator);
-    v8 = [(FMFLocatorMigrator *)v7 performMigration];
+    performMigration = [(FMFLocatorMigrator *)v7 performMigration];
 
-    if ((v8 & 1) == 0)
+    if ((performMigration & 1) == 0)
     {
       v9 = sub_100002830();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -87,9 +87,9 @@
   v11 = +[SystemConfig sharedInstance];
   v12 = +[FMFAppStateObserver sharedInstance];
   v13 = +[FMSystemInfo sharedInstance];
-  v14 = [v13 isInternalBuild];
+  isInternalBuild = [v13 isInternalBuild];
 
-  if (v14)
+  if (isInternalBuild)
   {
     v15 = [(FMFLocatorDaemon *)self verifyLaunchEventsConfiguration:@"/System/Library/LaunchDaemons/com.apple.icloud.fmflocatord.plist" withExclusions:&__NSArray0__struct];
     if (v15)
@@ -112,8 +112,8 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v18 = [(FMFLocatorDaemon *)self apsHandlers];
-  v19 = [v18 countByEnumeratingWithState:&v41 objects:v47 count:16];
+  apsHandlers = [(FMFLocatorDaemon *)self apsHandlers];
+  v19 = [apsHandlers countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v19)
   {
     v20 = v19;
@@ -125,19 +125,19 @@
       {
         if (*v42 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(apsHandlers);
         }
 
         v23 = *(*(&v41 + 1) + 8 * v22);
-        v24 = [(FMFLocatorDaemon *)self apsHandlers];
-        v25 = [v24 objectForKeyedSubscript:v23];
+        apsHandlers2 = [(FMFLocatorDaemon *)self apsHandlers];
+        v25 = [apsHandlers2 objectForKeyedSubscript:v23];
 
         [v25 suspendRegistrations];
         v22 = v22 + 1;
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v20 = [apsHandlers countByEnumeratingWithState:&v41 objects:v47 count:16];
     }
 
     while (v20);
@@ -153,8 +153,8 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v28 = [(FMFLocatorDaemon *)self apsHandlers];
-  v29 = [v28 countByEnumeratingWithState:&v37 objects:v46 count:16];
+  apsHandlers3 = [(FMFLocatorDaemon *)self apsHandlers];
+  v29 = [apsHandlers3 countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v29)
   {
     v30 = v29;
@@ -166,19 +166,19 @@
       {
         if (*v38 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(apsHandlers3);
         }
 
         v33 = *(*(&v37 + 1) + 8 * v32);
-        v34 = [(FMFLocatorDaemon *)self apsHandlers];
-        v35 = [v34 objectForKeyedSubscript:v33];
+        apsHandlers4 = [(FMFLocatorDaemon *)self apsHandlers];
+        v35 = [apsHandlers4 objectForKeyedSubscript:v33];
 
         [v35 resumeRegistrations];
         v32 = v32 + 1;
       }
 
       while (v30 != v32);
-      v30 = [v28 countByEnumeratingWithState:&v37 objects:v46 count:16];
+      v30 = [apsHandlers3 countByEnumeratingWithState:&v37 objects:v46 count:16];
     }
 
     while (v30);
@@ -187,9 +187,9 @@
   v36 = +[XPCManager sharedInstance];
   [v36 initializeXPC];
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -207,25 +207,25 @@
   [v3 enumerateObjectsUsingBlock:v4];
 }
 
-- (id)apsHandlerForEnvironment:(id)a3
+- (id)apsHandlerForEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(FMFLocatorDaemon *)self apsHandlers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  environmentCopy = environment;
+  apsHandlers = [(FMFLocatorDaemon *)self apsHandlers];
+  v6 = [apsHandlers objectForKeyedSubscript:environmentCopy];
 
   if (!v6)
   {
     v7 = [FMAPSHandler alloc];
-    v8 = [@"com.apple.icloud.fmflocatord.aps-" stringByAppendingString:v4];
-    v6 = [v7 initWithEnvironmentName:v4 launchOnDemandPort:v8];
+    v8 = [@"com.apple.icloud.fmflocatord.aps-" stringByAppendingString:environmentCopy];
+    v6 = [v7 initWithEnvironmentName:environmentCopy launchOnDemandPort:v8];
 
     if (![(FMFLocatorDaemon *)self startupComplete])
     {
       [v6 suspendRegistrations];
     }
 
-    v9 = [(FMFLocatorDaemon *)self apsHandlers];
-    [v9 setObject:v6 forKeyedSubscript:v4];
+    apsHandlers2 = [(FMFLocatorDaemon *)self apsHandlers];
+    [apsHandlers2 setObject:v6 forKeyedSubscript:environmentCopy];
   }
 
   return v6;

@@ -6,9 +6,9 @@
 - (void)addHomeBullet;
 - (void)addUTAlerts;
 - (void)addWalletBullet;
-- (void)fetchAdditionalSharingWithCompletion:(id)a3;
+- (void)fetchAdditionalSharingWithCompletion:(id)completion;
 - (void)fetchCompleted;
-- (void)findMyAccessoryManager:(id)a3 didFetchStatusOfUTEnablementRequirementsWithStatus:(id)a4 withError:(id)a5;
+- (void)findMyAccessoryManager:(id)manager didFetchStatusOfUTEnablementRequirementsWithStatus:(id)status withError:(id)error;
 - (void)learnMorePressed;
 - (void)startContentSpinner;
 - (void)stopContentSpinner;
@@ -19,7 +19,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.DigitalSeparation", "DSCompletedController");
     v3 = DSLogAdditionalSharing;
@@ -43,8 +43,8 @@
   else
   {
     v6 = MEMORY[0x277D755D0];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    v3 = [v6 configurationWithHierarchicalColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v3 = [v6 configurationWithHierarchicalColor:systemBlueColor];
 
     v4 = DSUILocStringForKey(@"DEVICE_ACCOUNT_SECURITY_COMPLETE");
     v8 = DSUILocStringForKey(@"DEVICE_ACCOUNT_SECURITY_COMPLETE_DETAIL");
@@ -64,8 +64,8 @@
   [(DSOBWelcomeController *)&v12 viewDidLoad];
   v3 = [DSUIUtilities setUpLearnMoreButtonForController:self selector:sel_learnMorePressed];
   v4 = DSUILocStringForKey(@"DONE");
-  v5 = [(DSCompletedController *)self delegate];
-  v6 = [DSUIUtilities setUpBoldButtonForController:self title:v4 target:v5 selector:sel_pushNextPane];
+  delegate = [(DSCompletedController *)self delegate];
+  v6 = [DSUIUtilities setUpBoldButtonForController:self title:v4 target:delegate selector:sel_pushNextPane];
 
   v7 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   spinner = self->_spinner;
@@ -133,28 +133,28 @@ void __36__DSCompletedController_viewDidLoad__block_invoke(uint64_t a1)
   }
 }
 
-- (void)fetchAdditionalSharingWithCompletion:(id)a3
+- (void)fetchAdditionalSharingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_group_create();
   [(DSCompletedController *)self setFetchingGroup:v5];
 
-  v6 = [(DSCompletedController *)self fetchingGroup];
+  fetchingGroup = [(DSCompletedController *)self fetchingGroup];
   objc_initWeak(&location, self);
   v7 = objc_alloc_init(MEMORY[0x277D08280]);
-  dispatch_group_enter(v6);
+  dispatch_group_enter(fetchingGroup);
   [(DSCompletedController *)self startContentSpinner];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __62__DSCompletedController_fetchAdditionalSharingWithCompletion___block_invoke;
   v22[3] = &unk_278F75A78;
   objc_copyWeak(&v24, &location);
-  v8 = v6;
+  v8 = fetchingGroup;
   v23 = v8;
   [v7 startRequestWithCompletionHandler:v22];
   dispatch_group_enter(v8);
   v9 = MEMORY[0x277D38098];
-  v10 = [MEMORY[0x277D38170] sharedService];
+  mEMORY[0x277D38170] = [MEMORY[0x277D38170] sharedService];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__DSCompletedController_fetchAdditionalSharingWithCompletion___block_invoke_424;
@@ -162,7 +162,7 @@ void __36__DSCompletedController_viewDidLoad__block_invoke(uint64_t a1)
   objc_copyWeak(&v21, &location);
   v11 = v8;
   v20 = v11;
-  [v9 shouldShowWalletInDigitalSeparation:v10 withDeviceSpecificCompletion:v19];
+  [v9 shouldShowWalletInDigitalSeparation:mEMORY[0x277D38170] withDeviceSpecificCompletion:v19];
 
   dispatch_group_enter(v11);
   v12 = DSLogAdditionalSharing;
@@ -172,16 +172,16 @@ void __36__DSCompletedController_viewDidLoad__block_invoke(uint64_t a1)
     _os_log_impl(&dword_248C7E000, v12, OS_LOG_TYPE_INFO, "Fetching UT Enablement status", buf, 2u);
   }
 
-  v13 = [(DSCompletedController *)self accessoryManager];
-  [v13 fetchStatusOfUTEnablementRequirements];
+  accessoryManager = [(DSCompletedController *)self accessoryManager];
+  [accessoryManager fetchStatusOfUTEnablementRequirements];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__DSCompletedController_fetchAdditionalSharingWithCompletion___block_invoke_426;
   v15[3] = &unk_278F75AC8;
   objc_copyWeak(&v17, &location);
-  v16 = v4;
-  v14 = v4;
+  v16 = completionCopy;
+  v14 = completionCopy;
   dispatch_group_notify(v11, MEMORY[0x277D85CD0], v15);
 
   objc_destroyWeak(&v17);
@@ -324,64 +324,64 @@ uint64_t __62__DSCompletedController_fetchAdditionalSharingWithCompletion___bloc
 
 - (void)startContentSpinner
 {
-  v3 = [(DSCompletedController *)self contentView];
-  v4 = [(DSCompletedController *)self spinner];
-  [v3 addSubview:v4];
+  contentView = [(DSCompletedController *)self contentView];
+  spinner = [(DSCompletedController *)self spinner];
+  [contentView addSubview:spinner];
 
-  v5 = [(DSCompletedController *)self spinner];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  spinner2 = [(DSCompletedController *)self spinner];
+  [spinner2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(DSCompletedController *)self contentView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView2 = [(DSCompletedController *)self contentView];
+  [contentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(DSCompletedController *)self contentView];
-  v8 = [v7 heightAnchor];
-  v9 = [v8 constraintEqualToConstant:100.0];
+  contentView3 = [(DSCompletedController *)self contentView];
+  heightAnchor = [contentView3 heightAnchor];
+  v9 = [heightAnchor constraintEqualToConstant:100.0];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v9;
 
-  v11 = [(DSCompletedController *)self heightConstraint];
-  [v11 setActive:1];
+  heightConstraint = [(DSCompletedController *)self heightConstraint];
+  [heightConstraint setActive:1];
 
-  v12 = [(DSCompletedController *)self spinner];
-  v13 = [v12 centerXAnchor];
-  v14 = [(DSCompletedController *)self contentView];
-  v15 = [v14 centerXAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  spinner3 = [(DSCompletedController *)self spinner];
+  centerXAnchor = [spinner3 centerXAnchor];
+  contentView4 = [(DSCompletedController *)self contentView];
+  centerXAnchor2 = [contentView4 centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v16 setActive:1];
 
-  v17 = [(DSCompletedController *)self spinner];
-  [v17 startAnimating];
+  spinner4 = [(DSCompletedController *)self spinner];
+  [spinner4 startAnimating];
 }
 
 - (void)stopContentSpinner
 {
-  v3 = [(DSCompletedController *)self spinner];
-  [v3 stopAnimating];
+  spinner = [(DSCompletedController *)self spinner];
+  [spinner stopAnimating];
 
-  v4 = [(DSCompletedController *)self spinner];
-  [v4 removeFromSuperview];
+  spinner2 = [(DSCompletedController *)self spinner];
+  [spinner2 removeFromSuperview];
 
-  v5 = [(DSCompletedController *)self heightConstraint];
-  [v5 setActive:0];
+  heightConstraint = [(DSCompletedController *)self heightConstraint];
+  [heightConstraint setActive:0];
 }
 
 - (void)learnMorePressed
 {
   AnalyticsSendEventLazy();
-  v5 = [(DSCompletedController *)self delegate];
+  delegate = [(DSCompletedController *)self delegate];
   v3 = DSUIFeatureTable();
   v4 = DSUILocStringForKeyInTable(@"NAVIGATION_LEARN_MORE_URL", v3);
-  [v5 learnMorePressedForController:self withURL:v4];
+  [delegate learnMorePressedForController:self withURL:v4];
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFetchStatusOfUTEnablementRequirementsWithStatus:(id)a4 withError:(id)a5
+- (void)findMyAccessoryManager:(id)manager didFetchStatusOfUTEnablementRequirementsWithStatus:(id)status withError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10 && os_log_type_enabled(DSLogAdditionalSharing, OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  statusCopy = status;
+  errorCopy = error;
+  if (errorCopy && os_log_type_enabled(DSLogAdditionalSharing, OS_LOG_TYPE_ERROR))
   {
     [DSCompletedController findMyAccessoryManager:didFetchStatusOfUTEnablementRequirementsWithStatus:withError:];
   }
@@ -390,15 +390,15 @@ uint64_t __62__DSCompletedController_fetchAdditionalSharingWithCompletion___bloc
   if (os_log_type_enabled(DSLogAdditionalSharing, OS_LOG_TYPE_INFO))
   {
     v15 = 138543362;
-    v16 = v9;
+    v16 = statusCopy;
     _os_log_impl(&dword_248C7E000, v11, OS_LOG_TYPE_INFO, "Got UT EnablementStatus %{public}@", &v15, 0xCu);
   }
 
-  v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277CBFCE8]];
+  v12 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CBFCE8]];
   -[DSCompletedController setUTAlertsEnabled:](self, "setUTAlertsEnabled:", [v12 unsignedIntegerValue] == 1);
 
-  v13 = [(DSCompletedController *)self fetchingGroup];
-  dispatch_group_leave(v13);
+  fetchingGroup = [(DSCompletedController *)self fetchingGroup];
+  dispatch_group_leave(fetchingGroup);
 
   v14 = *MEMORY[0x277D85DE8];
 }

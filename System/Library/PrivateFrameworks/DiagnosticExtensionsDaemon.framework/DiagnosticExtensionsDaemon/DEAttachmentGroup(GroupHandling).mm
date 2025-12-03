@@ -7,9 +7,9 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 rootURL];
-  v4 = [a1 attachmentItems];
-  v5 = [v2 stringWithFormat:@"Group: (rootURL %@) (items %@)", v3, v4];
+  rootURL = [self rootURL];
+  attachmentItems = [self attachmentItems];
+  v5 = [v2 stringWithFormat:@"Group: (rootURL %@) (items %@)", rootURL, attachmentItems];
 
   return v5;
 }

@@ -1,22 +1,22 @@
 @interface SUUIJSModalDocumentController
 - (NSArray)documents;
-- (SUUIJSModalDocumentController)initWithAppContext:(id)a3 modalDocumentController:(id)a4;
+- (SUUIJSModalDocumentController)initWithAppContext:(id)context modalDocumentController:(id)controller;
 - (SUUIModalDocumentController)modalDocumentController;
-- (id)_adjustedOptionsWithOptions:(id)a3;
+- (id)_adjustedOptionsWithOptions:(id)options;
 - (void)popDocument;
-- (void)pushDocument:(id)a3 :(id)a4;
-- (void)replaceDocument:(id)a3 :(id)a4 :(id)a5;
+- (void)pushDocument:(id)document :(id)a4;
+- (void)replaceDocument:(id)document :(id)a4 :(id)a5;
 @end
 
 @implementation SUUIJSModalDocumentController
 
-- (SUUIJSModalDocumentController)initWithAppContext:(id)a3 modalDocumentController:(id)a4
+- (SUUIJSModalDocumentController)initWithAppContext:(id)context modalDocumentController:(id)controller
 {
-  v6 = a3;
-  objc_initWeak(&location, a4);
+  contextCopy = context;
+  objc_initWeak(&location, controller);
   v10.receiver = self;
   v10.super_class = SUUIJSModalDocumentController;
-  v7 = [(IKJSObject *)&v10 initWithAppContext:v6];
+  v7 = [(IKJSObject *)&v10 initWithAppContext:contextCopy];
   if (v7)
   {
     v8 = objc_loadWeakRetained(&location);
@@ -43,14 +43,14 @@
   v10 = __Block_byref_object_copy__102;
   v11 = __Block_byref_object_dispose__102;
   v12 = 0;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__SUUIJSModalDocumentController_documents__block_invoke;
   v6[3] = &unk_2798FB6A0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = [v8[5] valueForKey:@"jsDocument"];
   _Block_object_dispose(&v7, 8);
@@ -69,13 +69,13 @@ void __42__SUUIJSModalDocumentController_documents__block_invoke(uint64_t a1)
 
 - (void)popDocument
 {
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__SUUIJSModalDocumentController_popDocument__block_invoke;
   v4[3] = &unk_2798FA7C0;
   v4[4] = self;
-  [v3 evaluateDelegateBlockSync:v4];
+  [appContext evaluateDelegateBlockSync:v4];
 }
 
 void __44__SUUIJSModalDocumentController_popDocument__block_invoke(uint64_t a1)
@@ -84,14 +84,14 @@ void __44__SUUIJSModalDocumentController_popDocument__block_invoke(uint64_t a1)
   [WeakRetained popDocument];
 }
 
-- (void)pushDocument:(id)a3 :(id)a4
+- (void)pushDocument:(id)document :(id)a4
 {
-  v6 = a3;
+  documentCopy = document;
   v7 = a4;
-  v8 = [(IKJSObject *)self appContext];
-  if (v6 && [MEMORY[0x277D1B038] instancesRespondToSelector:sel_initWithAppContext_document_owner_])
+  appContext = [(IKJSObject *)self appContext];
+  if (documentCopy && [MEMORY[0x277D1B038] instancesRespondToSelector:sel_initWithAppContext_document_owner_])
   {
-    v9 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:v8 document:v6 owner:self];
+    v9 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:appContext document:documentCopy owner:self];
   }
 
   else
@@ -117,10 +117,10 @@ void __44__SUUIJSModalDocumentController_popDocument__block_invoke(uint64_t a1)
   v12 = v10;
   v16 = v12;
   v18 = &v19;
-  v13 = v8;
+  v13 = appContext;
   v17 = v13;
   [v13 evaluateDelegateBlockSync:v14];
-  [v6 setNavigationDocument:v20[5]];
+  [documentCopy setNavigationDocument:v20[5]];
 
   _Block_object_dispose(&v19, 8);
 }
@@ -142,15 +142,15 @@ void __47__SUUIJSModalDocumentController_pushDocument::__block_invoke(void *a1)
   }
 }
 
-- (void)replaceDocument:(id)a3 :(id)a4 :(id)a5
+- (void)replaceDocument:(id)document :(id)a4 :(id)a5
 {
-  v8 = a3;
+  documentCopy = document;
   v9 = a4;
   v10 = a5;
-  v11 = [(IKJSObject *)self appContext];
-  if (v8 && [MEMORY[0x277D1B038] instancesRespondToSelector:sel_initWithAppContext_document_owner_])
+  appContext = [(IKJSObject *)self appContext];
+  if (documentCopy && [MEMORY[0x277D1B038] instancesRespondToSelector:sel_initWithAppContext_document_owner_])
   {
-    v12 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:v11 document:v8 owner:self];
+    v12 = [objc_alloc(MEMORY[0x277D1B038]) initWithAppContext:appContext document:documentCopy owner:self];
   }
 
   else
@@ -185,7 +185,7 @@ void __47__SUUIJSModalDocumentController_pushDocument::__block_invoke(void *a1)
   v16 = v13;
   v21 = v16;
   v24 = &v25;
-  v17 = v11;
+  v17 = appContext;
   v22 = v17;
   [v17 evaluateDelegateBlockSync:v18];
   if (v32[5])
@@ -195,7 +195,7 @@ void __47__SUUIJSModalDocumentController_pushDocument::__block_invoke(void *a1)
 
   else
   {
-    [v8 setNavigationDocument:v26[5]];
+    [documentCopy setNavigationDocument:v26[5]];
   }
 
   _Block_object_dispose(&v25, 8);
@@ -281,11 +281,11 @@ LABEL_14:
   }
 }
 
-- (id)_adjustedOptionsWithOptions:(id)a3
+- (id)_adjustedOptionsWithOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKey:@"sourceElement"];
+  optionsCopy = options;
+  v4 = [optionsCopy mutableCopy];
+  v5 = [optionsCopy objectForKey:@"sourceElement"];
 
   if (v5)
   {

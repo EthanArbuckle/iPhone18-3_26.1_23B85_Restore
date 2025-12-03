@@ -3,10 +3,10 @@
 - (IMCollaborationNoticeController)init;
 - (id)listener;
 - (id)remoteDaemon;
-- (void)collaborationNoticesDidChangeForChatGUIDs:(id)a3;
-- (void)dismissNotice:(id)a3;
-- (void)fetchCollaborationNoticesForChatGUIDs:(id)a3 completionHandler:(id)a4;
-- (void)markAsViewedForNotice:(id)a3;
+- (void)collaborationNoticesDidChangeForChatGUIDs:(id)ds;
+- (void)dismissNotice:(id)notice;
+- (void)fetchCollaborationNoticesForChatGUIDs:(id)ds completionHandler:(id)handler;
+- (void)markAsViewedForNotice:(id)notice;
 @end
 
 @implementation IMCollaborationNoticeController
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (void)dismissNotice:(id)a3
+- (void)dismissNotice:(id)notice
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  noticeCopy = notice;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -50,59 +50,59 @@
       v11 = 136315394;
       v12 = "[IMCollaborationNoticeController dismissNotice:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = noticeCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "%s dismiss notice: %@", &v11, 0x16u);
     }
   }
 
   v8 = objc_msgSend_remoteDaemon(self, v5, v6);
-  objc_msgSend_dismissNotice_(v8, v9, v4);
+  objc_msgSend_dismissNotice_(v8, v9, noticeCopy);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)markAsViewedForNotice:(id)a3
+- (void)markAsViewedForNotice:(id)notice
 {
-  v15 = a3;
-  v6 = objc_msgSend_dateViewed(v15, v4, v5);
+  noticeCopy = notice;
+  v6 = objc_msgSend_dateViewed(noticeCopy, v4, v5);
 
   if (!v6)
   {
     v9 = objc_msgSend_date(MEMORY[0x1E695DF00], v7, v8);
-    objc_msgSend_setDateViewed_(v15, v10, v9);
+    objc_msgSend_setDateViewed_(noticeCopy, v10, v9);
 
     v13 = objc_msgSend_remoteDaemon(self, v11, v12);
-    objc_msgSend_updateNotice_(v13, v14, v15);
+    objc_msgSend_updateNotice_(v13, v14, noticeCopy);
   }
 }
 
-- (void)collaborationNoticesDidChangeForChatGUIDs:(id)a3
+- (void)collaborationNoticesDidChangeForChatGUIDs:(id)ds
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dsCopy = ds;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = dsCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Received notification of collaboration notice changes for guids: %@", &v10, 0xCu);
     }
   }
 
   v7 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v4, v5);
-  objc_msgSend___mainThreadPostNotificationName_object_(v7, v8, @"__kIMCollaborationNoticesDidChangeNotification", v3);
+  objc_msgSend___mainThreadPostNotificationName_object_(v7, v8, @"__kIMCollaborationNoticesDidChangeNotification", dsCopy);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCollaborationNoticesForChatGUIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchCollaborationNoticesForChatGUIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dsCopy = ds;
   v11 = objc_msgSend_remoteDaemon(self, v8, v9);
-  objc_msgSend_fetchCollaborationNoticesForChatGUIDs_reply_(v11, v10, v7, v6);
+  objc_msgSend_fetchCollaborationNoticesForChatGUIDs_reply_(v11, v10, dsCopy, handlerCopy);
 }
 
 - (id)remoteDaemon

@@ -1,18 +1,18 @@
 @interface PKPassPaymentPayStateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (PKPassPaymentPayStateViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (PKPassPaymentPayStateViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)emphasizeStateIfPossible:(int64_t)a3 withOverrideText:(id)a4;
+- (void)emphasizeStateIfPossible:(int64_t)possible withOverrideText:(id)text;
 @end
 
 @implementation PKPassPaymentPayStateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPassPaymentPayStateView" hasInstanceMethod:@"emphasizeStateIfPossible:withOverrideText:" withFullSignature:{"v", "q", "@", 0}];
-  [v3 validateClass:@"PKPassPaymentPayStateView" hasInstanceVariable:@"_label" withType:"UILabel"];
-  [v3 validateClass:@"PKPassPaymentPayStateView" hasInstanceMethod:@"_applyStatePreservingGlyphState: overridingText: animated: completionHandler:" withFullSignature:{"v", "B", "@", "B", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPassPaymentPayStateView" hasInstanceMethod:@"emphasizeStateIfPossible:withOverrideText:" withFullSignature:{"v", "q", "@", 0}];
+  [validationsCopy validateClass:@"PKPassPaymentPayStateView" hasInstanceVariable:@"_label" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPassPaymentPayStateView" hasInstanceMethod:@"_applyStatePreservingGlyphState: overridingText: animated: completionHandler:" withFullSignature:{"v", "B", "@", "B", "@?", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,31 +24,31 @@
   [v3 _setAccessibilityServesAsFirstElement:1];
 }
 
-- (PKPassPaymentPayStateViewAccessibility)initWithFrame:(CGRect)a3
+- (PKPassPaymentPayStateViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PKPassPaymentPayStateViewAccessibility;
-  v3 = [(PKPassPaymentPayStateViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPassPaymentPayStateViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PKPassPaymentPayStateViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }
 
-- (void)emphasizeStateIfPossible:(int64_t)a3 withOverrideText:(id)a4
+- (void)emphasizeStateIfPossible:(int64_t)possible withOverrideText:(id)text
 {
-  v6 = a4;
+  textCopy = text;
   v7 = [(PKPassPaymentPayStateViewAccessibility *)self safeValueForKey:@"_label"];
-  v8 = [v7 accessibilityLabel];
+  accessibilityLabel = [v7 accessibilityLabel];
 
   v11.receiver = self;
   v11.super_class = PKPassPaymentPayStateViewAccessibility;
-  [(PKPassPaymentPayStateViewAccessibility *)&v11 emphasizeStateIfPossible:a3 withOverrideText:v6];
+  [(PKPassPaymentPayStateViewAccessibility *)&v11 emphasizeStateIfPossible:possible withOverrideText:textCopy];
 
   v9 = [(PKPassPaymentPayStateViewAccessibility *)self safeValueForKey:@"_label"];
-  v10 = [v9 accessibilityLabel];
+  accessibilityLabel2 = [v9 accessibilityLabel];
 
-  if (([v10 isEqual:v8] & 1) == 0 && objc_msgSend(v8, "length") && objc_msgSend(v10, "length"))
+  if (([accessibilityLabel2 isEqual:accessibilityLabel] & 1) == 0 && objc_msgSend(accessibilityLabel, "length") && objc_msgSend(accessibilityLabel2, "length"))
   {
-    UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v10);
+    UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], accessibilityLabel2);
   }
 }
 

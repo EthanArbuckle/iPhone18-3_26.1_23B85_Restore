@@ -1,27 +1,27 @@
 @interface POMMESSchemaPOMMESFunctionPerformanceProfile
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDurationInMs:(BOOL)a3;
-- (void)setHasLineNumber:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDurationInMs:(BOOL)ms;
+- (void)setHasLineNumber:(BOOL)number;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESFunctionPerformanceProfile
 
-- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = POMMESSchemaPOMMESFunctionPerformanceProfile;
   v5 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startTimeIntervalSince2001InMs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startTimeIntervalSince2001InMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(POMMESSchemaPOMMESFunctionPerformanceProfile *)v5 setStartTimeIntervalSince2001InMs:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"durationInMs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"durationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(POMMESSchemaPOMMESFunctionPerformanceProfile *)v5 setDurationInMs:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"fileId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fileId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,14 +45,14 @@
       [(POMMESSchemaPOMMESFunctionPerformanceProfile *)v5 setFileId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"lineNumber"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"lineNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESFunctionPerformanceProfile setLineNumber:](v5, "setLineNumber:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"callingFunction"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"callingFunction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(POMMESSchemaPOMMESFunctionPerformanceProfile *)v5 setCallingFunction:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"measurementLabel"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"measurementLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,30 +74,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESFunctionPerformanceProfile)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -110,12 +110,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_callingFunction)
   {
-    v4 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"callingFunction"];
+    callingFunction = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
+    v5 = [callingFunction copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"callingFunction"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -123,27 +123,27 @@
     v6 = MEMORY[0x1E696AD98];
     [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self durationInMs];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"durationInMs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"durationInMs"];
   }
 
   if (self->_fileId)
   {
-    v8 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"fileId"];
+    fileId = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
+    v9 = [fileId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"fileId"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[POMMESSchemaPOMMESFunctionPerformanceProfile lineNumber](self, "lineNumber")}];
-    [v3 setObject:v10 forKeyedSubscript:@"lineNumber"];
+    [dictionary setObject:v10 forKeyedSubscript:@"lineNumber"];
   }
 
   if (self->_measurementLabel)
   {
-    v11 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"measurementLabel"];
+    measurementLabel = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
+    v12 = [measurementLabel copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"measurementLabel"];
   }
 
   if (*&self->_has)
@@ -151,12 +151,12 @@
     v13 = MEMORY[0x1E696AD98];
     [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self startTimeIntervalSince2001InMs];
     v14 = [v13 numberWithDouble:?];
-    [v3 setObject:v14 forKeyedSubscript:@"startTimeIntervalSince2001InMs"];
+    [dictionary setObject:v14 forKeyedSubscript:@"startTimeIntervalSince2001InMs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -244,16 +244,16 @@
   return v15 ^ v16 ^ [(NSString *)self->_measurementLabel hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v6 = v4[56];
+  v6 = equalCopy[56];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_27;
@@ -262,14 +262,14 @@
   if (*&has)
   {
     startTimeIntervalSince2001InMs = self->_startTimeIntervalSince2001InMs;
-    [v4 startTimeIntervalSince2001InMs];
+    [equalCopy startTimeIntervalSince2001InMs];
     if (startTimeIntervalSince2001InMs != v8)
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -281,27 +281,27 @@
   if (v9)
   {
     durationInMs = self->_durationInMs;
-    [v4 durationInMs];
+    [equalCopy durationInMs];
     if (durationInMs != v11)
     {
       goto LABEL_27;
     }
   }
 
-  v12 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
-  v13 = [v4 fileId];
-  if ((v12 != 0) == (v13 == 0))
+  fileId = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
+  fileId2 = [equalCopy fileId];
+  if ((fileId != 0) == (fileId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v14 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
-  if (v14)
+  fileId3 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
+  if (fileId3)
   {
-    v15 = v14;
-    v16 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
-    v17 = [v4 fileId];
-    v18 = [v16 isEqual:v17];
+    v15 = fileId3;
+    fileId4 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
+    fileId5 = [equalCopy fileId];
+    v18 = [fileId4 isEqual:fileId5];
 
     if (!v18)
     {
@@ -314,7 +314,7 @@
   }
 
   v19 = (*&self->_has >> 2) & 1;
-  if (v19 != ((v4[56] >> 2) & 1))
+  if (v19 != ((equalCopy[56] >> 2) & 1))
   {
     goto LABEL_27;
   }
@@ -322,26 +322,26 @@
   if (v19)
   {
     lineNumber = self->_lineNumber;
-    if (lineNumber != [v4 lineNumber])
+    if (lineNumber != [equalCopy lineNumber])
     {
       goto LABEL_27;
     }
   }
 
-  v12 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
-  v13 = [v4 callingFunction];
-  if ((v12 != 0) == (v13 == 0))
+  fileId = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
+  fileId2 = [equalCopy callingFunction];
+  if ((fileId != 0) == (fileId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v21 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
-  if (v21)
+  callingFunction = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
+  if (callingFunction)
   {
-    v22 = v21;
-    v23 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
-    v24 = [v4 callingFunction];
-    v25 = [v23 isEqual:v24];
+    v22 = callingFunction;
+    callingFunction2 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
+    callingFunction3 = [equalCopy callingFunction];
+    v25 = [callingFunction2 isEqual:callingFunction3];
 
     if (!v25)
     {
@@ -353,12 +353,12 @@
   {
   }
 
-  v12 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
-  v13 = [v4 measurementLabel];
-  if ((v12 != 0) != (v13 == 0))
+  fileId = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
+  fileId2 = [equalCopy measurementLabel];
+  if ((fileId != 0) != (fileId2 == 0))
   {
-    v26 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
-    if (!v26)
+    measurementLabel = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
+    if (!measurementLabel)
     {
 
 LABEL_30:
@@ -366,10 +366,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v27 = v26;
-    v28 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
-    v29 = [v4 measurementLabel];
-    v30 = [v28 isEqual:v29];
+    v27 = measurementLabel;
+    measurementLabel2 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
+    measurementLabel3 = [equalCopy measurementLabel];
+    v30 = [measurementLabel2 isEqual:measurementLabel3];
 
     if (v30)
     {
@@ -389,9 +389,9 @@ LABEL_28:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -404,9 +404,9 @@ LABEL_28:
     PBDataWriterWriteDoubleField();
   }
 
-  v5 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
+  fileId = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self fileId];
 
-  if (v5)
+  if (fileId)
   {
     PBDataWriterWriteStringField();
   }
@@ -416,26 +416,26 @@ LABEL_28:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
+  callingFunction = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self callingFunction];
 
-  if (v6)
+  if (callingFunction)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
+  measurementLabel = [(POMMESSchemaPOMMESFunctionPerformanceProfile *)self measurementLabel];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (measurementLabel)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setHasLineNumber:(BOOL)a3
+- (void)setHasLineNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 4;
   }
@@ -448,9 +448,9 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDurationInMs:(BOOL)a3
+- (void)setHasDurationInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }

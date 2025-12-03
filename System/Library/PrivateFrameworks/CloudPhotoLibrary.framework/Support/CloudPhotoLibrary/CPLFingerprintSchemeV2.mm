@@ -1,12 +1,12 @@
 @interface CPLFingerprintSchemeV2
-- (void)configureAssetTransferOptionsForCKAsset:(id)a3 scopeProvider:(id)a4;
+- (void)configureAssetTransferOptionsForCKAsset:(id)asset scopeProvider:(id)provider;
 @end
 
 @implementation CPLFingerprintSchemeV2
 
-- (void)configureAssetTransferOptionsForCKAsset:(id)a3 scopeProvider:(id)a4
+- (void)configureAssetTransferOptionsForCKAsset:(id)asset scopeProvider:(id)provider
 {
-  v7 = a3;
+  assetCopy = asset;
   v5 = objc_alloc_init(CKAssetTransferOptions);
   [v5 setUseMMCSEncryptionV2:&__kCFBooleanTrue];
   if (qword_1002C5358 != -1)
@@ -14,13 +14,13 @@
     sub_1001A3C4C();
   }
 
-  if ((byte_1002C5360 & 1) != 0 || ([v7 isReference] & 1) == 0)
+  if ((byte_1002C5360 & 1) != 0 || ([assetCopy isReference] & 1) == 0)
   {
-    v6 = [(CPLFingerprintSchemeV2 *)self boundaryKey];
-    [v7 setBoundaryKey:v6];
+    boundaryKey = [(CPLFingerprintSchemeV2 *)self boundaryKey];
+    [assetCopy setBoundaryKey:boundaryKey];
   }
 
-  [v7 setAssetTransferOptions:v5];
+  [assetCopy setAssetTransferOptions:v5];
 }
 
 @end

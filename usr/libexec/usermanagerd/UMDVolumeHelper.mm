@@ -1,21 +1,21 @@
 @interface UMDVolumeHelper
-- (BOOL)createVolumeWithSession:(id)a3 size:(int64_t)a4 userName:(id)a5 error:(int *)a6 forPersona:(BOOL)a7 userDataVolume:(BOOL)a8;
-- (BOOL)deleteVolumeWithSession:(id)a3 error:(int *)a4;
-- (BOOL)isVolumeMountedWithSession:(id)a3 fsid:(fsid *)a4;
-- (BOOL)mountVolumeWithSession:(id)a3 mountPath:(id)a4 error:(int *)a5 forPersona:(BOOL)a6;
-- (BOOL)unmountVolumeWithSession:(id)a3 mountPath:(id)a4 error:(int *)a5;
-- (BOOL)unmountVolumeWithSession:(id)a3 mountPath:(id)a4 error:(int *)a5 force:(BOOL)a6;
-- (void)createVolumeMountsDir:(id)a3;
+- (BOOL)createVolumeWithSession:(id)session size:(int64_t)size userName:(id)name error:(int *)error forPersona:(BOOL)persona userDataVolume:(BOOL)volume;
+- (BOOL)deleteVolumeWithSession:(id)session error:(int *)error;
+- (BOOL)isVolumeMountedWithSession:(id)session fsid:(fsid *)fsid;
+- (BOOL)mountVolumeWithSession:(id)session mountPath:(id)path error:(int *)error forPersona:(BOOL)persona;
+- (BOOL)unmountVolumeWithSession:(id)session mountPath:(id)path error:(int *)error;
+- (BOOL)unmountVolumeWithSession:(id)session mountPath:(id)path error:(int *)error force:(BOOL)force;
+- (void)createVolumeMountsDir:(id)dir;
 @end
 
 @implementation UMDVolumeHelper
 
-- (void)createVolumeMountsDir:(id)a3
+- (void)createVolumeMountsDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v5 = [(UMDVolumeHelper *)self se];
   v6 = sub_1000013A0(v5);
-  v7 = [v6 fileExistsAtPath:v4 isDirectory:0];
+  v7 = [v6 fileExistsAtPath:dirCopy isDirectory:0];
 
   if (v7)
   {
@@ -62,13 +62,13 @@ LABEL_38:
   {
     v11 = [(UMDVolumeHelper *)self se];
     v12 = sub_1000013A0(v11);
-    v13 = [v12 makePath:v4 mode:511 error:0];
+    v13 = [v12 makePath:dirCopy mode:511 error:0];
 
     if (v13)
     {
       v14 = [(UMDVolumeHelper *)self se];
       v15 = sub_1000013A0(v14);
-      v16 = [v15 chmodPath:v4 withMode:511 error:0];
+      v16 = [v15 chmodPath:dirCopy withMode:511 error:0];
 
       if (v16)
       {
@@ -163,24 +163,24 @@ LABEL_38:
   }
 }
 
-- (BOOL)unmountVolumeWithSession:(id)a3 mountPath:(id)a4 error:(int *)a5
+- (BOOL)unmountVolumeWithSession:(id)session mountPath:(id)path error:(int *)error
 {
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  pathCopy = path;
   v29 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v10 = v9;
+  v10 = pathCopy;
   v11 = v10;
   if (!v10)
   {
-    v11 = sub_100098ECC(v8, @"MKBUserSessionHomeDir");
+    v11 = sub_100098ECC(sessionCopy, @"MKBUserSessionHomeDir");
   }
 
-  if ([(UMDVolumeHelper *)self unmountVolumeWithSession:v8 mountPath:v10 error:&v29 force:0])
+  if ([(UMDVolumeHelper *)self unmountVolumeWithSession:sessionCopy mountPath:v10 error:&v29 force:0])
   {
     goto LABEL_18;
   }
@@ -226,7 +226,7 @@ LABEL_38:
     free(v16);
   }
 
-  if ([(UMDVolumeHelper *)self unmountVolumeWithSession:v8 mountPath:v10 error:&v29 force:1])
+  if ([(UMDVolumeHelper *)self unmountVolumeWithSession:sessionCopy mountPath:v10 error:&v29 force:1])
   {
 LABEL_18:
     if (qword_1000EB498 != -1)
@@ -315,53 +315,53 @@ LABEL_18:
     }
 
     v27 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v29;
+      *error = v29;
     }
   }
 
   return v27;
 }
 
-- (BOOL)createVolumeWithSession:(id)a3 size:(int64_t)a4 userName:(id)a5 error:(int *)a6 forPersona:(BOOL)a7 userDataVolume:(BOOL)a8
+- (BOOL)createVolumeWithSession:(id)session size:(int64_t)size userName:(id)name error:(int *)error forPersona:(BOOL)persona userDataVolume:(BOOL)volume
 {
-  v9 = a3;
-  v10 = a5;
+  sessionCopy = session;
+  nameCopy = name;
   result = _os_crash();
   __break(1u);
   return result;
 }
 
-- (BOOL)deleteVolumeWithSession:(id)a3 error:(int *)a4
+- (BOOL)deleteVolumeWithSession:(id)session error:(int *)error
 {
-  v4 = a3;
+  sessionCopy = session;
   result = _os_crash();
   __break(1u);
   return result;
 }
 
-- (BOOL)mountVolumeWithSession:(id)a3 mountPath:(id)a4 error:(int *)a5 forPersona:(BOOL)a6
+- (BOOL)mountVolumeWithSession:(id)session mountPath:(id)path error:(int *)error forPersona:(BOOL)persona
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  pathCopy = path;
   result = _os_crash();
   __break(1u);
   return result;
 }
 
-- (BOOL)unmountVolumeWithSession:(id)a3 mountPath:(id)a4 error:(int *)a5 force:(BOOL)a6
+- (BOOL)unmountVolumeWithSession:(id)session mountPath:(id)path error:(int *)error force:(BOOL)force
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  pathCopy = path;
   result = _os_crash();
   __break(1u);
   return result;
 }
 
-- (BOOL)isVolumeMountedWithSession:(id)a3 fsid:(fsid *)a4
+- (BOOL)isVolumeMountedWithSession:(id)session fsid:(fsid *)fsid
 {
-  v4 = a3;
+  sessionCopy = session;
   result = _os_crash();
   __break(1u);
   return result;

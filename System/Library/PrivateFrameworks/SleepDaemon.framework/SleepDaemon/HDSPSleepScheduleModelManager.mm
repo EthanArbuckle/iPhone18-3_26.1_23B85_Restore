@@ -1,70 +1,70 @@
 @interface HDSPSleepScheduleModelManager
-- (BOOL)_locked_saveSleepEventRecord:(id)a3 error:(id *)a4 preNotifyBlock:(id)a5;
-- (BOOL)_locked_saveSleepSchedule:(id)a3 error:(id *)a4;
-- (BOOL)_locked_saveSleepSettings:(id)a3 error:(id *)a4;
-- (BOOL)_locked_updateModelWithBlock:(id)a3 persistBlock:(id)a4 error:(id *)a5;
+- (BOOL)_locked_saveSleepEventRecord:(id)record error:(id *)error preNotifyBlock:(id)block;
+- (BOOL)_locked_saveSleepSchedule:(id)schedule error:(id *)error;
+- (BOOL)_locked_saveSleepSettings:(id)settings error:(id *)error;
+- (BOOL)_locked_updateModelWithBlock:(id)block persistBlock:(id)persistBlock error:(id *)error;
 - (BOOL)_shouldTurnOffSleepSchedule;
 - (BOOL)_shouldTurnOffWatchSleepFeatures;
-- (BOOL)removeSleepScheduleModelWithError:(id *)a3;
-- (BOOL)saveSleepEventRecord:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepEventRecord:(id)a3 error:(id *)a4 preNotifyBlock:(id)a5;
-- (BOOL)saveSleepSchedule:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepScheduleModel:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepSettings:(id)a3 error:(id *)a4;
+- (BOOL)removeSleepScheduleModelWithError:(id *)error;
+- (BOOL)saveSleepEventRecord:(id)record error:(id *)error;
+- (BOOL)saveSleepEventRecord:(id)record error:(id *)error preNotifyBlock:(id)block;
+- (BOOL)saveSleepSchedule:(id)schedule error:(id *)error;
+- (BOOL)saveSleepScheduleModel:(id)model error:(id *)error;
+- (BOOL)saveSleepSettings:(id)settings error:(id *)error;
 - (HDSPEnvironment)environment;
 - (HDSPSleepEventDelegate)sleepEventDelegate;
-- (HDSPSleepScheduleModelManager)initWithEnvironment:(id)a3;
+- (HDSPSleepScheduleModelManager)initWithEnvironment:(id)environment;
 - (HKSPSleepEventRecord)sleepEventRecord;
 - (HKSPSleepSchedule)sleepSchedule;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (HKSPSleepSettings)sleepSettings;
 - (NSString)providerIdentifier;
 - (NSString)sourceIdentifier;
-- (id)_earliestDateToScheduleEventsForDate:(id)a3;
-- (id)_loadSleepEventRecord:(id *)a3;
-- (id)_loadSleepSchedule:(id *)a3;
-- (id)_loadSleepScheduleModel:(id *)a3;
-- (id)_loadSleepSettings:(id *)a3;
-- (id)_locked_applyNecessaryChangesBeforeSaving:(id)a3;
-- (id)_locked_applyNecessaryChangesBeforeSavingSleepEventRecord:(id)a3;
-- (id)_locked_applyNecessaryChangesBeforeSavingSleepSchedule:(id)a3 validationResult:(id)a4;
-- (id)_locked_loadSleepEventRecord:(id *)a3;
-- (id)_locked_loadSleepSchedule:(id *)a3;
-- (id)_locked_loadSleepScheduleModel:(id *)a3;
-- (id)_locked_loadSleepSettings:(id *)a3;
+- (id)_earliestDateToScheduleEventsForDate:(id)date;
+- (id)_loadSleepEventRecord:(id *)record;
+- (id)_loadSleepSchedule:(id *)schedule;
+- (id)_loadSleepScheduleModel:(id *)model;
+- (id)_loadSleepSettings:(id *)settings;
+- (id)_locked_applyNecessaryChangesBeforeSaving:(id)saving;
+- (id)_locked_applyNecessaryChangesBeforeSavingSleepEventRecord:(id)record;
+- (id)_locked_applyNecessaryChangesBeforeSavingSleepSchedule:(id)schedule validationResult:(id)result;
+- (id)_locked_loadSleepEventRecord:(id *)record;
+- (id)_locked_loadSleepSchedule:(id *)schedule;
+- (id)_locked_loadSleepScheduleModel:(id *)model;
+- (id)_locked_loadSleepSettings:(id *)settings;
 - (id)_locked_removeSleepSchedule;
 - (id)_locked_resetSleepEventRecord;
 - (id)_locked_resetSleepSettings;
-- (id)_locked_saveSleepEventRecord:(id)a3;
-- (id)_locked_saveSleepSchedule:(id)a3;
-- (id)_locked_saveSleepSettings:(id)a3;
-- (id)_locked_setSleepEventRecord:(id)a3;
-- (id)_locked_setSleepSchedule:(id)a3;
-- (id)_locked_setSleepSettings:(id)a3;
-- (id)_locked_updateSleepEventRecord:(id)a3;
-- (id)_locked_updateSleepSchedule:(id)a3;
-- (id)_locked_updateSleepSettings:(id)a3;
-- (id)_locked_validateSleepSchedule:(id)a3 generateValidSchedule:(BOOL)a4;
+- (id)_locked_saveSleepEventRecord:(id)record;
+- (id)_locked_saveSleepSchedule:(id)schedule;
+- (id)_locked_saveSleepSettings:(id)settings;
+- (id)_locked_setSleepEventRecord:(id)record;
+- (id)_locked_setSleepSchedule:(id)schedule;
+- (id)_locked_setSleepSettings:(id)settings;
+- (id)_locked_updateSleepEventRecord:(id)record;
+- (id)_locked_updateSleepSchedule:(id)schedule;
+- (id)_locked_updateSleepSettings:(id)settings;
+- (id)_locked_validateSleepSchedule:(id)schedule generateValidSchedule:(BOOL)validSchedule;
 - (id)diagnosticDescription;
-- (id)upcomingEventsDueAfterDate:(id)a3;
-- (void)_locked_applyNecessaryEventRecordChangesBeforeSavingSleepSchedule:(id)a3 validationResult:(id)a4;
-- (void)_locked_applyNecessarySleepSettingsChangesBeforeSavingSleepEventRecord:(id)a3;
-- (void)_locked_notifyObserversForSleepEventRecordChange:(id)a3;
-- (void)_locked_notifyObserversForSleepScheduleChange:(id)a3;
-- (void)_locked_notifyObserversForSleepScheduleModelChange:(id)a3;
-- (void)_locked_notifyObserversForSleepSettingsChange:(id)a3;
+- (id)upcomingEventsDueAfterDate:(id)date;
+- (void)_locked_applyNecessaryEventRecordChangesBeforeSavingSleepSchedule:(id)schedule validationResult:(id)result;
+- (void)_locked_applyNecessarySleepSettingsChangesBeforeSavingSleepEventRecord:(id)record;
+- (void)_locked_notifyObserversForSleepEventRecordChange:(id)change;
+- (void)_locked_notifyObserversForSleepScheduleChange:(id)change;
+- (void)_locked_notifyObserversForSleepScheduleModelChange:(id)change;
+- (void)_locked_notifyObserversForSleepSettingsChange:(id)change;
 - (void)_turnOffSleepSchedule;
 - (void)_turnOffWatchSleepFeatures;
-- (void)addObserver:(id)a3;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)notifyObserversForSleepEventRecordChange:(id)a3;
-- (void)notifyObserversForSleepScheduleChange:(id)a3;
-- (void)notifyObserversForSleepSettingsChange:(id)a3;
-- (void)observedApplicationDidUninstall:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepStorageDidChangeExternally:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)notifyObserversForSleepEventRecordChange:(id)change;
+- (void)notifyObserversForSleepScheduleChange:(id)change;
+- (void)notifyObserversForSleepSettingsChange:(id)change;
+- (void)observedApplicationDidUninstall:(id)uninstall;
+- (void)removeObserver:(id)observer;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepStorageDidChangeExternally:(id)externally;
 @end
 
 @implementation HDSPSleepScheduleModelManager
@@ -131,10 +131,10 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSettings__block_invoke(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (HDSPSleepScheduleModelManager)initWithEnvironment:(id)a3
+- (HDSPSleepScheduleModelManager)initWithEnvironment:(id)environment
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v21.receiver = self;
   v21.super_class = HDSPSleepScheduleModelManager;
   v5 = [(HDSPSleepScheduleModelManager *)&v21 init];
@@ -152,19 +152,19 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSettings__block_invoke(uint64_
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeWeak(&v5->_environment, v4);
-    v9 = [v4 mutexGenerator];
-    v10 = v9[2]();
+    objc_storeWeak(&v5->_environment, environmentCopy);
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v10 = mutexGenerator[2]();
     mutexProvider = v5->_mutexProvider;
     v5->_mutexProvider = v10;
 
     v12 = objc_alloc(MEMORY[0x277D624A0]);
-    v13 = [v4 defaultCallbackScheduler];
-    v14 = [v12 initWithCallbackScheduler:v13];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v14 = [v12 initWithCallbackScheduler:defaultCallbackScheduler];
     observers = v5->_observers;
     v5->_observers = v14;
 
-    v16 = [[HDSPSleepScheduleModelChangeEvaluator alloc] initWithEnvironment:v4];
+    v16 = [[HDSPSleepScheduleModelChangeEvaluator alloc] initWithEnvironment:environmentCopy];
     changeEvaluator = v5->_changeEvaluator;
     v5->_changeEvaluator = v16;
 
@@ -175,52 +175,52 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSettings__block_invoke(uint64_
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(HKSPObserverSet *)self->_observers addObserver:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(HKSPObserverSet *)self->_observers removeObserver:?];
   }
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v11 = a3;
+  readyCopy = ready;
   changeEvaluator = self->_changeEvaluator;
   if (objc_opt_respondsToSelector())
   {
-    [(HDSPSleepScheduleModelChangeEvaluator *)self->_changeEvaluator environmentWillBecomeReady:v11];
+    [(HDSPSleepScheduleModelChangeEvaluator *)self->_changeEvaluator environmentWillBecomeReady:readyCopy];
   }
 
-  v5 = [v11 sleepScheduler];
-  [v5 addEventProvider:self];
+  sleepScheduler = [readyCopy sleepScheduler];
+  [sleepScheduler addEventProvider:self];
 
-  v6 = [v11 timeChangeListener];
-  [v6 addObserver:self];
+  timeChangeListener = [readyCopy timeChangeListener];
+  [timeChangeListener addObserver:self];
 
-  v7 = [v11 sleepStorage];
-  [v7 addObserver:self];
+  sleepStorage = [readyCopy sleepStorage];
+  [sleepStorage addObserver:self];
 
-  v8 = [v11 diagnostics];
-  [v8 addProvider:self];
+  diagnostics = [readyCopy diagnostics];
+  [diagnostics addProvider:self];
 
-  v9 = [v11 systemMonitor];
-  v10 = [v9 applicationWorkspaceMonitor];
-  [v10 addObserver:self];
+  systemMonitor = [readyCopy systemMonitor];
+  applicationWorkspaceMonitor = [systemMonitor applicationWorkspaceMonitor];
+  [applicationWorkspaceMonitor addObserver:self];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v12 = 0;
   v5 = [(HDSPSleepScheduleModelManager *)self _loadSleepScheduleModel:&v12];
   v6 = v12;
@@ -242,7 +242,7 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSettings__block_invoke(uint64_
   changeEvaluator = self->_changeEvaluator;
   if (objc_opt_respondsToSelector())
   {
-    [(HDSPSleepScheduleModelChangeEvaluator *)self->_changeEvaluator environmentDidBecomeReady:v4];
+    [(HDSPSleepScheduleModelChangeEvaluator *)self->_changeEvaluator environmentDidBecomeReady:readyCopy];
   }
 
   if ([(HDSPSleepScheduleModelManager *)self _shouldTurnOffWatchSleepFeatures])
@@ -258,7 +258,7 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSettings__block_invoke(uint64_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_loadSleepScheduleModel:(id *)a3
+- (id)_loadSleepScheduleModel:(id *)model
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -290,9 +290,9 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSettings__block_invoke(uint64_
   v10[5] = &v11;
   v10[6] = &buf;
   [(HDSPSleepScheduleModelManager *)self _withLock:v10];
-  if (a3)
+  if (model)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *model = *(*(&buf + 1) + 40);
   }
 
   v7 = v12[5];
@@ -316,7 +316,7 @@ void __57__HDSPSleepScheduleModelManager__loadSleepScheduleModel___block_invoke(
   *(v5 + 40) = v4;
 }
 
-- (id)_locked_loadSleepScheduleModel:(id *)a3
+- (id)_locked_loadSleepScheduleModel:(id *)model
 {
   v32 = *MEMORY[0x277D85DE8];
   v27 = 0;
@@ -374,7 +374,7 @@ void __57__HDSPSleepScheduleModelManager__loadSleepScheduleModel___block_invoke(
   }
 
   v14 = [MEMORY[0x277D62500] sleepScheduleModelWithSleepSchedule:v5 sleepSettings:v8 sleepEventRecord:v11];
-  if (a3)
+  if (model)
   {
     if (v9)
     {
@@ -396,7 +396,7 @@ void __57__HDSPSleepScheduleModelManager__loadSleepScheduleModel___block_invoke(
       v16 = v15;
     }
 
-    *a3 = v16;
+    *model = v16;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -404,12 +404,12 @@ void __57__HDSPSleepScheduleModelManager__loadSleepScheduleModel___block_invoke(
   return v14;
 }
 
-- (BOOL)saveSleepScheduleModel:(id)a3 error:(id *)a4
+- (BOOL)saveSleepScheduleModel:(id)model error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSPSleepScheduleModelManager *)self environment];
-  v8 = [v7 currentSource];
+  modelCopy = model;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentSource = [environment currentSource];
 
   v9 = HKSPLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -417,9 +417,9 @@ void __57__HDSPSleepScheduleModelManager__loadSleepScheduleModel___block_invoke(
     *buf = 138543874;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = modelCopy;
     *&buf[22] = 2114;
-    v26 = v8;
+    v26 = currentSource;
     v10 = *&buf[4];
     _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepScheduleModel: %{public}@ - %{public}@", buf, 0x20u);
   }
@@ -436,7 +436,7 @@ void __57__HDSPSleepScheduleModelManager__loadSleepScheduleModel___block_invoke(
   v28 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 dontNotify] ^ 1;
+    v11 = [currentSource dontNotify] ^ 1;
   }
 
   else
@@ -449,15 +449,15 @@ void __57__HDSPSleepScheduleModelManager__loadSleepScheduleModel___block_invoke(
   v16[2] = __62__HDSPSleepScheduleModelManager_saveSleepScheduleModel_error___block_invoke;
   v16[3] = &unk_279C7D0E0;
   v16[4] = self;
-  v12 = v6;
+  v12 = modelCopy;
   v17 = v12;
   v18 = &v21;
   v19 = buf;
   v20 = v11;
   [(HDSPSleepScheduleModelManager *)self _withLock:v16];
-  if (a4)
+  if (error)
   {
-    *a4 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v13 = *(v22 + 24);
@@ -558,11 +558,11 @@ void __62__HDSPSleepScheduleModelManager_saveSleepScheduleModel_error___block_in
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)removeSleepScheduleModelWithError:(id *)a3
+- (BOOL)removeSleepScheduleModelWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 currentSource];
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentSource = [environment currentSource];
 
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -570,7 +570,7 @@ void __62__HDSPSleepScheduleModelManager_saveSleepScheduleModel_error___block_in
     *buf = 138543618;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = currentSource;
     v8 = *&buf[4];
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] removeSleepScheduleModel %{public}@", buf, 0x16u);
   }
@@ -587,7 +587,7 @@ void __62__HDSPSleepScheduleModelManager_saveSleepScheduleModel_error___block_in
   v22 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 dontNotify] ^ 1;
+    v9 = [currentSource dontNotify] ^ 1;
   }
 
   else
@@ -604,9 +604,9 @@ void __62__HDSPSleepScheduleModelManager_saveSleepScheduleModel_error___block_in
   v13[6] = buf;
   v14 = v9;
   [(HDSPSleepScheduleModelManager *)self _withLock:v13];
-  if (a3)
+  if (error)
   {
-    *a3 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v10 = *(v16 + 24);
@@ -697,16 +697,16 @@ void __67__HDSPSleepScheduleModelManager_removeSleepScheduleModelWithError___blo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_locked_notifyObserversForSleepScheduleModelChange:(id)a3
+- (void)_locked_notifyObserversForSleepScheduleModelChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 currentContext];
-  v7 = v6;
-  if (v6)
+  changeCopy = change;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentContext = [environment currentContext];
+  v7 = currentContext;
+  if (currentContext)
   {
-    v8 = v6;
+    v8 = currentContext;
   }
 
   else
@@ -716,32 +716,32 @@ void __67__HDSPSleepScheduleModelManager_removeSleepScheduleModelWithError___blo
 
   v9 = v8;
 
-  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:v4];
+  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:changeCopy];
 
   v11 = HKSPLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [v10 source];
+    source = [v10 source];
     *buf = 138543618;
     v24 = v12;
     v25 = 2114;
-    v26 = v14;
+    v26 = source;
     _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] notifying observers for sleepScheduleModel changes from %{public}@", buf, 0x16u);
   }
 
-  v15 = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
+  _locked_sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
   observers = self->_observers;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __84__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepScheduleModelChange___block_invoke;
   v20[3] = &unk_279C7D130;
   v20[4] = self;
-  v21 = v15;
+  v21 = _locked_sleepScheduleModel;
   v22 = v10;
   v17 = v10;
-  v18 = v15;
+  v18 = _locked_sleepScheduleModel;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -839,7 +839,7 @@ uint64_t __51__HDSPSleepScheduleModelManager_sleepScheduleModel__block_invoke(ui
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_loadSleepSchedule:(id *)a3
+- (id)_loadSleepSchedule:(id *)schedule
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -871,9 +871,9 @@ uint64_t __51__HDSPSleepScheduleModelManager_sleepScheduleModel__block_invoke(ui
   v10[5] = &v11;
   v10[6] = &buf;
   [(HDSPSleepScheduleModelManager *)self _withLock:v10];
-  if (a3)
+  if (schedule)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *schedule = *(*(&buf + 1) + 40);
   }
 
   v7 = v12[5];
@@ -897,16 +897,16 @@ void __52__HDSPSleepScheduleModelManager__loadSleepSchedule___block_invoke(void 
   *(v5 + 40) = v4;
 }
 
-- (id)_locked_loadSleepSchedule:(id *)a3
+- (id)_locked_loadSleepSchedule:(id *)schedule
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 sleepStorage];
-  v7 = [v6 loadSleepSchedule:a3];
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  sleepStorage = [environment sleepStorage];
+  v7 = [sleepStorage loadSleepSchedule:schedule];
 
   v8 = [(HDSPSleepScheduleModelManager *)self _locked_validateSleepSchedule:v7 generateValidSchedule:1];
-  v9 = [v8 timelineResults];
-  v10 = [v9 validSleepSchedule];
+  timelineResults = [v8 timelineResults];
+  validSleepSchedule = [timelineResults validSleepSchedule];
 
   if (([v8 success] & 1) == 0)
   {
@@ -921,9 +921,9 @@ void __52__HDSPSleepScheduleModelManager__loadSleepSchedule___block_invoke(void 
       _os_log_error_impl(&dword_269B11000, v11, OS_LOG_TYPE_ERROR, "[%{public}@] persisted schedule invalid: %{public}@", &v29, 0x16u);
     }
 
-    v12 = HKSPLogForCategory();
-    v13 = os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
-    if (v10)
+    environment2 = HKSPLogForCategory();
+    v13 = os_log_type_enabled(environment2, OS_LOG_TYPE_ERROR);
+    if (validSleepSchedule)
     {
       if (v13)
       {
@@ -931,14 +931,14 @@ void __52__HDSPSleepScheduleModelManager__loadSleepSchedule___block_invoke(void 
         v29 = 138543618;
         v30 = v26;
         v31 = 2114;
-        v32 = v10;
+        v32 = validSleepSchedule;
         v27 = v26;
-        _os_log_error_impl(&dword_269B11000, v12, OS_LOG_TYPE_ERROR, "[%{public}@] persisting valid schedule: %{public}@", &v29, 0x16u);
+        _os_log_error_impl(&dword_269B11000, environment2, OS_LOG_TYPE_ERROR, "[%{public}@] persisting valid schedule: %{public}@", &v29, 0x16u);
       }
 
-      v12 = [(HDSPSleepScheduleModelManager *)self environment];
-      v14 = [v12 sleepStorage];
-      [v14 saveSleepSchedule:v10 error:a3];
+      environment2 = [(HDSPSleepScheduleModelManager *)self environment];
+      sleepStorage2 = [environment2 sleepStorage];
+      [sleepStorage2 saveSleepSchedule:validSleepSchedule error:schedule];
     }
 
     else
@@ -951,17 +951,17 @@ void __52__HDSPSleepScheduleModelManager__loadSleepSchedule___block_invoke(void 
       v28 = objc_opt_class();
       v29 = 138543362;
       v30 = v28;
-      v14 = v28;
-      _os_log_error_impl(&dword_269B11000, v12, OS_LOG_TYPE_ERROR, "[%{public}@] no valid schedule could be made", &v29, 0xCu);
+      sleepStorage2 = v28;
+      _os_log_error_impl(&dword_269B11000, environment2, OS_LOG_TYPE_ERROR, "[%{public}@] no valid schedule could be made", &v29, 0xCu);
     }
 
 LABEL_10:
-    v15 = v10;
+    v15 = validSleepSchedule;
 
     v7 = v15;
   }
 
-  v16 = *a3;
+  v16 = *schedule;
   v17 = HKSPLogForCategory();
   v18 = v17;
   if (v16)
@@ -972,7 +972,7 @@ LABEL_10:
     }
 
     v19 = objc_opt_class();
-    v20 = *a3;
+    v20 = *schedule;
     v29 = 138543618;
     v30 = v19;
     v31 = 2114;
@@ -1005,9 +1005,9 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)saveSleepSchedule:(id)a3 error:(id *)a4
+- (BOOL)saveSleepSchedule:(id)schedule error:(id *)error
 {
-  v6 = a3;
+  scheduleCopy = schedule;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1024,13 +1024,13 @@ LABEL_17:
   v10[3] = &unk_279C7D158;
   v12 = &v20;
   v10[4] = self;
-  v7 = v6;
+  v7 = scheduleCopy;
   v11 = v7;
   v13 = &v14;
   [(HDSPSleepScheduleModelManager *)self _withLock:v10];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v8 = *(v21 + 24);
@@ -1052,12 +1052,12 @@ void __57__HDSPSleepScheduleModelManager_saveSleepSchedule_error___block_invoke(
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)_locked_saveSleepSchedule:(id)a3 error:(id *)a4
+- (BOOL)_locked_saveSleepSchedule:(id)schedule error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSPSleepScheduleModelManager *)self environment];
-  v8 = [v7 currentSource];
+  scheduleCopy = schedule;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentSource = [environment currentSource];
 
   v9 = HKSPLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1065,19 +1065,19 @@ void __57__HDSPSleepScheduleModelManager_saveSleepSchedule_error___block_invoke(
     *v19 = 138543874;
     *&v19[4] = objc_opt_class();
     *&v19[12] = 2114;
-    *&v19[14] = v6;
+    *&v19[14] = scheduleCopy;
     *&v19[22] = 2114;
-    v20 = v8;
+    v20 = currentSource;
     v10 = *&v19[4];
     _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] saveSleepSchedule: %{public}@ - %{public}@", v19, 0x20u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 dontNotify];
-    v12 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSchedule:v6];
+    dontNotify = [currentSource dontNotify];
+    v12 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSchedule:scheduleCopy];
     v13 = v12;
-    if (v11)
+    if (dontNotify)
     {
       [v12 success];
       goto LABEL_10;
@@ -1086,32 +1086,32 @@ void __57__HDSPSleepScheduleModelManager_saveSleepSchedule_error___block_invoke(
 
   else
   {
-    v13 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSchedule:v6];
+    v13 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSchedule:scheduleCopy];
   }
 
-  v14 = [v13 shouldNotify];
-  if ([v13 success] && v14)
+  shouldNotify = [v13 shouldNotify];
+  if ([v13 success] && shouldNotify)
   {
-    v15 = [v13 changeEvaluation];
-    [(HDSPSleepScheduleModelManager *)self _locked_notifyObserversForSleepScheduleChange:v15];
+    changeEvaluation = [v13 changeEvaluation];
+    [(HDSPSleepScheduleModelManager *)self _locked_notifyObserversForSleepScheduleChange:changeEvaluation];
   }
 
 LABEL_10:
-  if (a4)
+  if (error)
   {
-    *a4 = [v13 error];
+    *error = [v13 error];
   }
 
-  v16 = [v13 success];
+  success = [v13 success];
 
   v17 = *MEMORY[0x277D85DE8];
-  return v16;
+  return success;
 }
 
-- (id)_locked_saveSleepSchedule:(id)a3
+- (id)_locked_saveSleepSchedule:(id)schedule
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scheduleCopy = schedule;
   sleepSchedule = self->_sleepSchedule;
   if (NAEqualObjects())
   {
@@ -1124,39 +1124,39 @@ LABEL_10:
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] no changes to save", &v12, 0xCu);
     }
 
-    v8 = +[HDSPSleepScheduleModelSaveResult emptyResult];
+    _locked_removeSleepSchedule = +[HDSPSleepScheduleModelSaveResult emptyResult];
   }
 
-  else if (v4)
+  else if (scheduleCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && self->_sleepSchedule)
     {
-      v8 = [(HDSPSleepScheduleModelManager *)self _locked_updateSleepSchedule:v4];
+      _locked_removeSleepSchedule = [(HDSPSleepScheduleModelManager *)self _locked_updateSleepSchedule:scheduleCopy];
     }
 
     else
     {
-      v8 = [(HDSPSleepScheduleModelManager *)self _locked_setSleepSchedule:v4];
+      _locked_removeSleepSchedule = [(HDSPSleepScheduleModelManager *)self _locked_setSleepSchedule:scheduleCopy];
     }
   }
 
   else
   {
-    v8 = [(HDSPSleepScheduleModelManager *)self _locked_removeSleepSchedule];
+    _locked_removeSleepSchedule = [(HDSPSleepScheduleModelManager *)self _locked_removeSleepSchedule];
   }
 
-  v9 = v8;
+  v9 = _locked_removeSleepSchedule;
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)_locked_setSleepSchedule:(id)a3
+- (id)_locked_setSleepSchedule:(id)schedule
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scheduleCopy = schedule;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1166,11 +1166,11 @@ LABEL_10:
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule was created", &buf, 0xCu);
   }
 
-  v7 = [(HDSPSleepScheduleModelManager *)self _locked_validateSleepSchedule:v4 generateValidSchedule:0];
+  v7 = [(HDSPSleepScheduleModelManager *)self _locked_validateSleepSchedule:scheduleCopy generateValidSchedule:0];
   if ([v7 success])
   {
-    v8 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:v4];
-    v9 = [v8 copy];
+    error = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:scheduleCopy];
+    v9 = [error copy];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v26 = 0x3032000000;
@@ -1212,8 +1212,8 @@ LABEL_10:
 
   else
   {
-    v8 = [v7 error];
-    v16 = [HDSPSleepScheduleModelSaveResult saveFailedWithError:v8];
+    error = [v7 error];
+    v16 = [HDSPSleepScheduleModelSaveResult saveFailedWithError:error];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1241,10 +1241,10 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSchedule___block_in
   return v6;
 }
 
-- (id)_locked_updateSleepSchedule:(id)a3
+- (id)_locked_updateSleepSchedule:(id)schedule
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scheduleCopy = schedule;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1254,7 +1254,7 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSchedule___block_in
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule was updated", buf, 0xCu);
   }
 
-  v7 = [v4 changeSet];
+  changeSet = [scheduleCopy changeSet];
   v8 = HKSPLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1262,7 +1262,7 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSchedule___block_in
     *buf = 138543618;
     *&buf[4] = v9;
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = changeSet;
     v10 = v9;
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] applying changes: %{public}@", buf, 0x16u);
   }
@@ -1292,8 +1292,8 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSchedule___block_in
     v24[2] = __61__HDSPSleepScheduleModelManager__locked_updateSleepSchedule___block_invoke_2;
     v24[3] = &unk_279C7D180;
     v24[4] = self;
-    v4 = v27;
-    v25 = v4;
+    scheduleCopy = v27;
+    v25 = scheduleCopy;
     v23 = 0;
     v14 = [(HDSPSleepScheduleModelManager *)self _locked_updateModelWithBlock:v26 persistBlock:v24 error:&v23];
     v15 = v23;
@@ -1315,8 +1315,8 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSchedule___block_in
 
   else
   {
-    v20 = [v12 error];
-    v19 = [HDSPSleepScheduleModelSaveResult saveFailedWithError:v20];
+    error = [v12 error];
+    v19 = [HDSPSleepScheduleModelSaveResult saveFailedWithError:error];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -1349,28 +1349,28 @@ uint64_t __61__HDSPSleepScheduleModelManager__locked_updateSleepSchedule___block
   return v7;
 }
 
-- (id)_locked_applyNecessaryChangesBeforeSavingSleepSchedule:(id)a3 validationResult:(id)a4
+- (id)_locked_applyNecessaryChangesBeforeSavingSleepSchedule:(id)schedule validationResult:(id)result
 {
-  v6 = a4;
-  v7 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:a3];
-  [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryEventRecordChangesBeforeSavingSleepSchedule:v7 validationResult:v6];
+  resultCopy = result;
+  v7 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:schedule];
+  [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryEventRecordChangesBeforeSavingSleepSchedule:v7 validationResult:resultCopy];
 
   return v7;
 }
 
-- (void)_locked_applyNecessaryEventRecordChangesBeforeSavingSleepSchedule:(id)a3 validationResult:(id)a4
+- (void)_locked_applyNecessaryEventRecordChangesBeforeSavingSleepSchedule:(id)schedule validationResult:(id)result
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
-  v9 = [v8 sleepEventRecord];
-  v10 = [v9 mutableCopy];
+  scheduleCopy = schedule;
+  resultCopy = result;
+  _locked_sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
+  sleepEventRecord = [_locked_sleepScheduleModel sleepEventRecord];
+  v10 = [sleepEventRecord mutableCopy];
 
-  v11 = [v7 timelineResults];
+  timelineResults = [resultCopy timelineResults];
 
-  LODWORD(v7) = [v11 snoozeFireDateNeedsReset];
-  if (v7)
+  LODWORD(resultCopy) = [timelineResults snoozeFireDateNeedsReset];
+  if (resultCopy)
   {
     v12 = HKSPLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1384,17 +1384,17 @@ uint64_t __61__HDSPSleepScheduleModelManager__locked_updateSleepSchedule___block
     [v10 setWakeUpAlarmSnoozedUntilDate:0];
   }
 
-  v14 = [v6 changeSet];
+  changeSet = [scheduleCopy changeSet];
   v15 = *MEMORY[0x277D620D0];
-  v16 = [v14 hasChangeForPropertyIdentifier:*MEMORY[0x277D620D0]];
+  v16 = [changeSet hasChangeForPropertyIdentifier:*MEMORY[0x277D620D0]];
 
   if (v16)
   {
-    v17 = [v6 changeSet];
-    v18 = [v17 originalValueForPropertyIdentifier:v15];
+    changeSet2 = [scheduleCopy changeSet];
+    v18 = [changeSet2 originalValueForPropertyIdentifier:v15];
 
-    v19 = [v6 changeSet];
-    v20 = [v19 changedValueForPropertyIdentifier:v15];
+    changeSet3 = [scheduleCopy changeSet];
+    v20 = [changeSet3 changedValueForPropertyIdentifier:v15];
 
     v65 = v18;
     if (!v18)
@@ -1404,14 +1404,14 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v21 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v22 = [v18 wakeUpComponents];
-    v64 = [v21 dateFromComponents:v22];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    wakeUpComponents = [v18 wakeUpComponents];
+    v64 = [hk_gregorianCalendar dateFromComponents:wakeUpComponents];
 
     if (v20)
     {
-      v23 = [v20 wakeUpComponents];
-      v63 = [v21 dateFromComponents:v23];
+      wakeUpComponents2 = [v20 wakeUpComponents];
+      v63 = [hk_gregorianCalendar dateFromComponents:wakeUpComponents2];
     }
 
     else
@@ -1419,22 +1419,22 @@ LABEL_37:
       v63 = 0;
     }
 
-    v24 = [(HDSPSleepScheduleModelManager *)self environment];
-    v25 = [v24 currentDateProvider];
-    v26 = v25[2]();
+    environment = [(HDSPSleepScheduleModelManager *)self environment];
+    currentDateProvider = [environment currentDateProvider];
+    v26 = currentDateProvider[2]();
 
-    v61 = v21;
-    v27 = [v21 isDate:v64 inSameDayAsDate:v26];
-    v28 = [v8 previousResolvedOccurrenceBeforeDate:v26];
-    v29 = [v28 wakeUpEvent];
-    v30 = [v29 dueDate];
+    v61 = hk_gregorianCalendar;
+    v27 = [hk_gregorianCalendar isDate:v64 inSameDayAsDate:v26];
+    v28 = [_locked_sleepScheduleModel previousResolvedOccurrenceBeforeDate:v26];
+    wakeUpEvent = [v28 wakeUpEvent];
+    dueDate = [wakeUpEvent dueDate];
 
     v60 = v28;
-    v31 = [v28 occurrence];
-    v62 = v30;
-    if ([v31 isSingleDayOverride])
+    occurrence = [v28 occurrence];
+    v62 = dueDate;
+    if ([occurrence isSingleDayOverride])
     {
-      v32 = [v30 hksp_isBeforeOrSameAsDate:v26];
+      v32 = [dueDate hksp_isBeforeOrSameAsDate:v26];
     }
 
     else
@@ -1505,25 +1505,25 @@ LABEL_29:
       if (v20)
       {
 LABEL_31:
-        [v10 setWakeUpOverriddenDate:v30];
+        [v10 setWakeUpOverriddenDate:dueDate];
         v43 = HKSPLogForCategory();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
           v44 = objc_opt_class();
           v45 = v44;
-          v46 = [v10 wakeUpOverriddenDate];
+          wakeUpOverriddenDate = [v10 wakeUpOverriddenDate];
           *buf = 138543618;
           v69 = v44;
           v70 = 2114;
-          v71 = v46;
+          v71 = wakeUpOverriddenDate;
           _os_log_impl(&dword_269B11000, v43, OS_LOG_TYPE_DEFAULT, "[%{public}@] set wakeUpOverriddenDate to %{public}@", buf, 0x16u);
         }
 
         v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v48 = [v10 wakeUpConfirmedUntilDate];
-        [v47 na_safeAddObject:v48];
+        wakeUpConfirmedUntilDate = [v10 wakeUpConfirmedUntilDate];
+        [v47 na_safeAddObject:wakeUpConfirmedUntilDate];
 
-        v49 = [v8 computeConfirmedWakeUpUntilDateForOverrideWakeUpDate:v64];
+        v49 = [_locked_sleepScheduleModel computeConfirmedWakeUpUntilDateForOverrideWakeUpDate:v64];
         [v47 na_safeAddObject:v49];
 
         v50 = [MEMORY[0x277CBEAA8] hksp_latestFromDates:v47];
@@ -1534,11 +1534,11 @@ LABEL_31:
         {
           v52 = objc_opt_class();
           v59 = v52;
-          v53 = [v10 wakeUpConfirmedUntilDate];
+          wakeUpConfirmedUntilDate2 = [v10 wakeUpConfirmedUntilDate];
           *buf = 138543618;
           v69 = v52;
           v70 = 2114;
-          v71 = v53;
+          v71 = wakeUpConfirmedUntilDate2;
           _os_log_impl(&dword_269B11000, v51, OS_LOG_TYPE_DEFAULT, "[%{public}@] set wakeUpConfirmedUntilDate to %{public}@", buf, 0x16u);
         }
 
@@ -1566,35 +1566,35 @@ LABEL_31:
   }
 
 LABEL_38:
-  v54 = [v10 changeSet];
-  v55 = [v54 changes];
-  v56 = [v55 count];
+  changeSet4 = [v10 changeSet];
+  changes = [changeSet4 changes];
+  v56 = [changes count];
 
   if (v56)
   {
-    v57 = [(HDSPSleepScheduleModelManager *)self environment];
+    environment2 = [(HDSPSleepScheduleModelManager *)self environment];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __116__HDSPSleepScheduleModelManager__locked_applyNecessaryEventRecordChangesBeforeSavingSleepSchedule_validationResult___block_invoke;
     v66[3] = &unk_279C7B2D0;
     v66[4] = self;
     v67 = v10;
-    [v57 perform:v66 withSource:self];
+    [environment2 perform:v66 withSource:self];
   }
 
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_locked_validateSleepSchedule:(id)a3 generateValidSchedule:(BOOL)a4
+- (id)_locked_validateSleepSchedule:(id)schedule generateValidSchedule:(BOOL)validSchedule
 {
-  v4 = a4;
+  validScheduleCopy = validSchedule;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 occurrences];
-  if ([v7 count])
+  scheduleCopy = schedule;
+  occurrences = [scheduleCopy occurrences];
+  if ([occurrences count])
   {
-    v8 = [v6 occurrences];
-    v9 = [v8 na_all:&__block_literal_global_30];
+    occurrences2 = [scheduleCopy occurrences];
+    v9 = [occurrences2 na_all:&__block_literal_global_30];
 
     if ((v9 & 1) == 0)
     {
@@ -1617,14 +1617,14 @@ LABEL_38:
   {
   }
 
-  v13 = [MEMORY[0x277D62500] sleepScheduleModelWithSleepSchedule:v6 sleepSettings:self->_sleepSettings sleepEventRecord:self->_sleepEventRecord];
+  v13 = [MEMORY[0x277D62500] sleepScheduleModelWithSleepSchedule:scheduleCopy sleepSettings:self->_sleepSettings sleepEventRecord:self->_sleepEventRecord];
   v14 = MEMORY[0x277D624E0];
-  v15 = [(HDSPSleepScheduleModelManager *)self environment];
-  v16 = [v15 currentDateProvider];
-  v17 = v16[2]();
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentDateProvider = [environment currentDateProvider];
+  v17 = currentDateProvider[2]();
   v18 = [v14 builderWithSleepScheduleModel:v13 date:v17];
 
-  if (v4)
+  if (validScheduleCopy)
   {
     v19 = 7;
   }
@@ -1635,8 +1635,8 @@ LABEL_38:
   }
 
   v11 = [v18 buildTimelineWithOptions:v19];
-  v20 = [v11 sleepScheduleInvalid];
-  if (v20)
+  sleepScheduleInvalid = [v11 sleepScheduleInvalid];
+  if (sleepScheduleInvalid)
   {
     v21 = [MEMORY[0x277CCA9B8] hksp_validationErrorWithReason:{objc_msgSend(v11, "sleepScheduleInvalidReason")}];
     v22 = HKSPLogForCategory();
@@ -1656,7 +1656,7 @@ LABEL_38:
     v21 = 0;
   }
 
-  v12 = [[HDSPSleepScheduleModelValidationResult alloc] initWithSuccess:v20 ^ 1u timelineResults:v11 error:v21];
+  v12 = [[HDSPSleepScheduleModelValidationResult alloc] initWithSuccess:sleepScheduleInvalid ^ 1u timelineResults:v11 error:v21];
 
 LABEL_16:
   v23 = *MEMORY[0x277D85DE8];
@@ -1676,8 +1676,8 @@ LABEL_16:
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep schedule was deleted", &buf, 0xCu);
   }
 
-  v5 = [(HDSPSleepScheduleModelManager *)self _locked_resetSleepEventRecord];
-  if ([v5 success])
+  _locked_resetSleepEventRecord = [(HDSPSleepScheduleModelManager *)self _locked_resetSleepEventRecord];
+  if ([_locked_resetSleepEventRecord success])
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1717,8 +1717,8 @@ LABEL_16:
 
   else
   {
-    v12 = [v5 error];
-    v11 = [HDSPSleepScheduleModelSaveResult saveFailedWithError:v12];
+    error = [_locked_resetSleepEventRecord error];
+    v11 = [HDSPSleepScheduleModelSaveResult saveFailedWithError:error];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1749,29 +1749,29 @@ uint64_t __60__HDSPSleepScheduleModelManager__locked_removeSleepSchedule__block_
   return v5;
 }
 
-- (void)notifyObserversForSleepScheduleChange:(id)a3
+- (void)notifyObserversForSleepScheduleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__HDSPSleepScheduleModelManager_notifyObserversForSleepScheduleChange___block_invoke;
   v6[3] = &unk_279C7B2D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(HDSPSleepScheduleModelManager *)self _withLock:v6];
 }
 
-- (void)_locked_notifyObserversForSleepScheduleChange:(id)a3
+- (void)_locked_notifyObserversForSleepScheduleChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 currentContext];
-  v7 = v6;
-  if (v6)
+  changeCopy = change;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentContext = [environment currentContext];
+  v7 = currentContext;
+  if (currentContext)
   {
-    v8 = v6;
+    v8 = currentContext;
   }
 
   else
@@ -1781,32 +1781,32 @@ uint64_t __60__HDSPSleepScheduleModelManager__locked_removeSleepSchedule__block_
 
   v9 = v8;
 
-  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:v4];
+  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:changeCopy];
 
   v11 = HKSPLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [v10 source];
+    source = [v10 source];
     *buf = 138543618;
     v24 = v12;
     v25 = 2114;
-    v26 = v14;
+    v26 = source;
     _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] notifying observers for sleepSchedule change from %{public}@", buf, 0x16u);
   }
 
-  v15 = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
+  _locked_sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
   observers = self->_observers;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __79__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepScheduleChange___block_invoke;
   v20[3] = &unk_279C7D130;
   v20[4] = self;
-  v21 = v15;
+  v21 = _locked_sleepScheduleModel;
   v22 = v10;
   v17 = v10;
-  v18 = v15;
+  v18 = _locked_sleepScheduleModel;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1883,7 +1883,7 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSchedule__block_invoke(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_loadSleepSettings:(id *)a3
+- (id)_loadSleepSettings:(id *)settings
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -1915,9 +1915,9 @@ uint64_t __46__HDSPSleepScheduleModelManager_sleepSchedule__block_invoke(uint64_
   v10[5] = &v11;
   v10[6] = &buf;
   [(HDSPSleepScheduleModelManager *)self _withLock:v10];
-  if (a3)
+  if (settings)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *settings = *(*(&buf + 1) + 40);
   }
 
   v7 = v12[5];
@@ -1941,14 +1941,14 @@ void __52__HDSPSleepScheduleModelManager__loadSleepSettings___block_invoke(void 
   *(v5 + 40) = v4;
 }
 
-- (id)_locked_loadSleepSettings:(id *)a3
+- (id)_locked_loadSleepSettings:(id *)settings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 sleepStorage];
-  v7 = [v6 loadSleepSettings:a3];
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  sleepStorage = [environment sleepStorage];
+  v7 = [sleepStorage loadSleepSettings:settings];
 
-  v8 = *a3;
+  v8 = *settings;
   v9 = HKSPLogForCategory();
   v10 = v9;
   if (v8)
@@ -1959,7 +1959,7 @@ void __52__HDSPSleepScheduleModelManager__loadSleepSettings___block_invoke(void 
     }
 
     v11 = objc_opt_class();
-    v12 = *a3;
+    v12 = *settings;
     v16 = 138543618;
     v17 = v11;
     v18 = 2114;
@@ -1990,9 +1990,9 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)saveSleepSettings:(id)a3 error:(id *)a4
+- (BOOL)saveSleepSettings:(id)settings error:(id *)error
 {
-  v6 = a3;
+  settingsCopy = settings;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2009,13 +2009,13 @@ LABEL_7:
   v10[3] = &unk_279C7D158;
   v12 = &v20;
   v10[4] = self;
-  v7 = v6;
+  v7 = settingsCopy;
   v11 = v7;
   v13 = &v14;
   [(HDSPSleepScheduleModelManager *)self _withLock:v10];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v8 = *(v21 + 24);
@@ -2037,12 +2037,12 @@ void __57__HDSPSleepScheduleModelManager_saveSleepSettings_error___block_invoke(
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)_locked_saveSleepSettings:(id)a3 error:(id *)a4
+- (BOOL)_locked_saveSleepSettings:(id)settings error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HDSPSleepScheduleModelManager *)self environment];
-  v8 = [v7 currentSource];
+  settingsCopy = settings;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentSource = [environment currentSource];
 
   v9 = HKSPLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2050,19 +2050,19 @@ void __57__HDSPSleepScheduleModelManager_saveSleepSettings_error___block_invoke(
     *v19 = 138543874;
     *&v19[4] = objc_opt_class();
     *&v19[12] = 2114;
-    *&v19[14] = v6;
+    *&v19[14] = settingsCopy;
     *&v19[22] = 2114;
-    v20 = v8;
+    v20 = currentSource;
     v10 = *&v19[4];
     _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] saveSleepSettings: %{public}@ - %{public}@", v19, 0x20u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v8 dontNotify];
-    v12 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSettings:v6];
+    dontNotify = [currentSource dontNotify];
+    v12 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSettings:settingsCopy];
     v13 = v12;
-    if (v11)
+    if (dontNotify)
     {
       [v12 success];
       goto LABEL_10;
@@ -2071,32 +2071,32 @@ void __57__HDSPSleepScheduleModelManager_saveSleepSettings_error___block_invoke(
 
   else
   {
-    v13 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSettings:v6];
+    v13 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepSettings:settingsCopy];
   }
 
-  v14 = [v13 shouldNotify];
-  if ([v13 success] && v14)
+  shouldNotify = [v13 shouldNotify];
+  if ([v13 success] && shouldNotify)
   {
-    v15 = [v13 changeEvaluation];
-    [(HDSPSleepScheduleModelManager *)self _locked_notifyObserversForSleepSettingsChange:v15];
+    changeEvaluation = [v13 changeEvaluation];
+    [(HDSPSleepScheduleModelManager *)self _locked_notifyObserversForSleepSettingsChange:changeEvaluation];
   }
 
 LABEL_10:
-  if (a4)
+  if (error)
   {
-    *a4 = [v13 error];
+    *error = [v13 error];
   }
 
-  v16 = [v13 success];
+  success = [v13 success];
 
   v17 = *MEMORY[0x277D85DE8];
-  return v16;
+  return success;
 }
 
-- (id)_locked_saveSleepSettings:(id)a3
+- (id)_locked_saveSleepSettings:(id)settings
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   sleepSettings = self->_sleepSettings;
   if (NAEqualObjects())
   {
@@ -2109,39 +2109,39 @@ LABEL_10:
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] no changes to save", &v12, 0xCu);
     }
 
-    v8 = +[HDSPSleepScheduleModelSaveResult emptyResult];
+    _locked_resetSleepSettings = +[HDSPSleepScheduleModelSaveResult emptyResult];
   }
 
-  else if (v4)
+  else if (settingsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && self->_sleepSettings)
     {
-      v8 = [(HDSPSleepScheduleModelManager *)self _locked_updateSleepSettings:v4];
+      _locked_resetSleepSettings = [(HDSPSleepScheduleModelManager *)self _locked_updateSleepSettings:settingsCopy];
     }
 
     else
     {
-      v8 = [(HDSPSleepScheduleModelManager *)self _locked_setSleepSettings:v4];
+      _locked_resetSleepSettings = [(HDSPSleepScheduleModelManager *)self _locked_setSleepSettings:settingsCopy];
     }
   }
 
   else
   {
-    v8 = [(HDSPSleepScheduleModelManager *)self _locked_resetSleepSettings];
+    _locked_resetSleepSettings = [(HDSPSleepScheduleModelManager *)self _locked_resetSleepSettings];
   }
 
-  v9 = v8;
+  v9 = _locked_resetSleepSettings;
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)_locked_setSleepSettings:(id)a3
+- (id)_locked_setSleepSettings:(id)settings
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2151,7 +2151,7 @@ LABEL_10:
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep settings were created", &buf, 0xCu);
   }
 
-  v7 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:v4];
+  v7 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:settingsCopy];
   v8 = [v7 copy];
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -2215,10 +2215,10 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSettings___block_in
   return v6;
 }
 
-- (id)_locked_updateSleepSettings:(id)a3
+- (id)_locked_updateSleepSettings:(id)settings
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2228,7 +2228,7 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSettings___block_in
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep settings were updated", buf, 0xCu);
   }
 
-  v7 = [v4 changeSet];
+  changeSet = [settingsCopy changeSet];
 
   v8 = HKSPLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2237,7 +2237,7 @@ uint64_t __58__HDSPSleepScheduleModelManager__locked_setSleepSettings___block_in
     *buf = 138543618;
     *&buf[4] = v9;
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = changeSet;
     v10 = v9;
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] applying changes: %{public}@", buf, 0x16u);
   }
@@ -2332,29 +2332,29 @@ uint64_t __61__HDSPSleepScheduleModelManager__locked_updateSleepSettings___block
   return v6;
 }
 
-- (void)notifyObserversForSleepSettingsChange:(id)a3
+- (void)notifyObserversForSleepSettingsChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__HDSPSleepScheduleModelManager_notifyObserversForSleepSettingsChange___block_invoke;
   v6[3] = &unk_279C7B2D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(HDSPSleepScheduleModelManager *)self _withLock:v6];
 }
 
-- (void)_locked_notifyObserversForSleepSettingsChange:(id)a3
+- (void)_locked_notifyObserversForSleepSettingsChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 currentContext];
-  v7 = v6;
-  if (v6)
+  changeCopy = change;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentContext = [environment currentContext];
+  v7 = currentContext;
+  if (currentContext)
   {
-    v8 = v6;
+    v8 = currentContext;
   }
 
   else
@@ -2364,32 +2364,32 @@ uint64_t __61__HDSPSleepScheduleModelManager__locked_updateSleepSettings___block
 
   v9 = v8;
 
-  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:v4];
+  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:changeCopy];
 
   v11 = HKSPLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [v10 source];
+    source = [v10 source];
     *buf = 138543618;
     v24 = v12;
     v25 = 2114;
-    v26 = v14;
+    v26 = source;
     _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] notifying observers for sleepSettings change from %{public}@", buf, 0x16u);
   }
 
-  v15 = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
+  _locked_sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
   observers = self->_observers;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __79__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepSettingsChange___block_invoke;
   v20[3] = &unk_279C7D130;
   v20[4] = self;
-  v21 = v15;
+  v21 = _locked_sleepScheduleModel;
   v22 = v10;
   v17 = v10;
-  v18 = v15;
+  v18 = _locked_sleepScheduleModel;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2435,7 +2435,7 @@ void __79__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepSettings
   }
 }
 
-- (id)_loadSleepEventRecord:(id *)a3
+- (id)_loadSleepEventRecord:(id *)record
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -2467,9 +2467,9 @@ void __79__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepSettings
   v10[5] = &v11;
   v10[6] = &buf;
   [(HDSPSleepScheduleModelManager *)self _withLock:v10];
-  if (a3)
+  if (record)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *record = *(*(&buf + 1) + 40);
   }
 
   v7 = v12[5];
@@ -2493,14 +2493,14 @@ void __55__HDSPSleepScheduleModelManager__loadSleepEventRecord___block_invoke(vo
   *(v5 + 40) = v4;
 }
 
-- (id)_locked_loadSleepEventRecord:(id *)a3
+- (id)_locked_loadSleepEventRecord:(id *)record
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 sleepStorage];
-  v7 = [v6 loadSleepEventRecord:a3];
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  sleepStorage = [environment sleepStorage];
+  v7 = [sleepStorage loadSleepEventRecord:record];
 
-  v8 = *a3;
+  v8 = *record;
   v9 = HKSPLogForCategory();
   v10 = v9;
   if (v8)
@@ -2511,7 +2511,7 @@ void __55__HDSPSleepScheduleModelManager__loadSleepEventRecord___block_invoke(vo
     }
 
     v11 = objc_opt_class();
-    v12 = *a3;
+    v12 = *record;
     v16 = 138543618;
     v17 = v11;
     v18 = 2114;
@@ -2542,9 +2542,9 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)saveSleepEventRecord:(id)a3 error:(id *)a4
+- (BOOL)saveSleepEventRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2561,13 +2561,13 @@ LABEL_7:
   v10[3] = &unk_279C7D158;
   v12 = &v20;
   v10[4] = self;
-  v7 = v6;
+  v7 = recordCopy;
   v11 = v7;
   v13 = &v14;
   [(HDSPSleepScheduleModelManager *)self _withLock:v10];
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v8 = *(v21 + 24);
@@ -2589,10 +2589,10 @@ void __60__HDSPSleepScheduleModelManager_saveSleepEventRecord_error___block_invo
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)saveSleepEventRecord:(id)a3 error:(id *)a4 preNotifyBlock:(id)a5
+- (BOOL)saveSleepEventRecord:(id)record error:(id *)error preNotifyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  recordCopy = record;
+  blockCopy = block;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -2609,15 +2609,15 @@ void __60__HDSPSleepScheduleModelManager_saveSleepEventRecord_error___block_invo
   v14[3] = &unk_279C7D210;
   v17 = &v25;
   v14[4] = self;
-  v10 = v8;
+  v10 = recordCopy;
   v15 = v10;
   v18 = &v19;
-  v11 = v9;
+  v11 = blockCopy;
   v16 = v11;
   [(HDSPSleepScheduleModelManager *)self _withLock:v14];
-  if (a4)
+  if (error)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   v12 = *(v26 + 24);
@@ -2640,13 +2640,13 @@ void __75__HDSPSleepScheduleModelManager_saveSleepEventRecord_error_preNotifyBlo
   *(*(a1[7] + 8) + 24) = v6;
 }
 
-- (BOOL)_locked_saveSleepEventRecord:(id)a3 error:(id *)a4 preNotifyBlock:(id)a5
+- (BOOL)_locked_saveSleepEventRecord:(id)record error:(id *)error preNotifyBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HDSPSleepScheduleModelManager *)self environment];
-  v11 = [v10 currentSource];
+  recordCopy = record;
+  blockCopy = block;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentSource = [environment currentSource];
 
   v12 = HKSPLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2654,55 +2654,55 @@ void __75__HDSPSleepScheduleModelManager_saveSleepEventRecord_error_preNotifyBlo
     *buf = 138543874;
     v29 = objc_opt_class();
     v30 = 2114;
-    v31 = v8;
+    v31 = recordCopy;
     v32 = 2114;
-    v33 = v11;
+    v33 = currentSource;
     v13 = v29;
     _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] saveSleepEventRecord: %{public}@ - %{public}@", buf, 0x20u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v11 dontNotify];
-    v15 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepEventRecord:v8];
-    if (v14)
+    dontNotify = [currentSource dontNotify];
+    v15 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepEventRecord:recordCopy];
+    if (dontNotify)
     {
-      v16 = 0;
+      shouldNotify = 0;
       goto LABEL_8;
     }
   }
 
   else
   {
-    v15 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepEventRecord:v8];
+    v15 = [(HDSPSleepScheduleModelManager *)self _locked_saveSleepEventRecord:recordCopy];
   }
 
-  v16 = [v15 shouldNotify];
+  shouldNotify = [v15 shouldNotify];
 LABEL_8:
   if ([v15 success])
   {
-    v17 = v9[2](v9);
-    if (v16)
+    v17 = blockCopy[2](blockCopy);
+    if (shouldNotify)
     {
       v22 = MEMORY[0x277D85DD0];
       v23 = 3221225472;
       v24 = __83__HDSPSleepScheduleModelManager__locked_saveSleepEventRecord_error_preNotifyBlock___block_invoke;
       v25 = &unk_279C7D238;
-      v26 = self;
+      selfCopy = self;
       v27 = v15;
       v18 = [v17 addCompletionBlock:&v22];
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [v15 error];
+    *error = [v15 error];
   }
 
-  v19 = [v15 success];
+  success = [v15 success];
 
   v20 = *MEMORY[0x277D85DE8];
-  return v19;
+  return success;
 }
 
 void __83__HDSPSleepScheduleModelManager__locked_saveSleepEventRecord_error_preNotifyBlock___block_invoke(uint64_t a1)
@@ -2712,10 +2712,10 @@ void __83__HDSPSleepScheduleModelManager__locked_saveSleepEventRecord_error_preN
   [v1 _locked_notifyObserversForSleepEventRecordChange:v2];
 }
 
-- (id)_locked_saveSleepEventRecord:(id)a3
+- (id)_locked_saveSleepEventRecord:(id)record
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   sleepEventRecord = self->_sleepEventRecord;
   if (NAEqualObjects())
   {
@@ -2728,39 +2728,39 @@ void __83__HDSPSleepScheduleModelManager__locked_saveSleepEventRecord_error_preN
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] no changes to save", &v12, 0xCu);
     }
 
-    v8 = +[HDSPSleepScheduleModelSaveResult emptyResult];
+    _locked_resetSleepEventRecord = +[HDSPSleepScheduleModelSaveResult emptyResult];
   }
 
-  else if (v4)
+  else if (recordCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && self->_sleepEventRecord)
     {
-      v8 = [(HDSPSleepScheduleModelManager *)self _locked_updateSleepEventRecord:v4];
+      _locked_resetSleepEventRecord = [(HDSPSleepScheduleModelManager *)self _locked_updateSleepEventRecord:recordCopy];
     }
 
     else
     {
-      v8 = [(HDSPSleepScheduleModelManager *)self _locked_setSleepEventRecord:v4];
+      _locked_resetSleepEventRecord = [(HDSPSleepScheduleModelManager *)self _locked_setSleepEventRecord:recordCopy];
     }
   }
 
   else
   {
-    v8 = [(HDSPSleepScheduleModelManager *)self _locked_resetSleepEventRecord];
+    _locked_resetSleepEventRecord = [(HDSPSleepScheduleModelManager *)self _locked_resetSleepEventRecord];
   }
 
-  v9 = v8;
+  v9 = _locked_resetSleepEventRecord;
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)_locked_updateSleepEventRecord:(id)a3
+- (id)_locked_updateSleepEventRecord:(id)record
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2770,7 +2770,7 @@ void __83__HDSPSleepScheduleModelManager__locked_saveSleepEventRecord_error_preN
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep event record was updated", buf, 0xCu);
   }
 
-  v7 = [v4 changeSet];
+  changeSet = [recordCopy changeSet];
 
   v8 = HKSPLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2779,7 +2779,7 @@ void __83__HDSPSleepScheduleModelManager__locked_saveSleepEventRecord_error_preN
     *buf = 138543618;
     *&buf[4] = v9;
     *&buf[12] = 2114;
-    *&buf[14] = v7;
+    *&buf[14] = changeSet;
     v10 = v9;
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] applying changes: %{public}@", buf, 0x16u);
   }
@@ -2854,28 +2854,28 @@ uint64_t __64__HDSPSleepScheduleModelManager__locked_updateSleepEventRecord___bl
   return v7;
 }
 
-- (id)_locked_applyNecessaryChangesBeforeSavingSleepEventRecord:(id)a3
+- (id)_locked_applyNecessaryChangesBeforeSavingSleepEventRecord:(id)record
 {
-  v4 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:a3];
+  v4 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:record];
   [(HDSPSleepScheduleModelManager *)self _locked_applyNecessarySleepSettingsChangesBeforeSavingSleepEventRecord:v4];
 
   return v4;
 }
 
-- (void)_locked_applyNecessarySleepSettingsChangesBeforeSavingSleepEventRecord:(id)a3
+- (void)_locked_applyNecessarySleepSettingsChangesBeforeSavingSleepEventRecord:(id)record
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
-  v6 = [v5 sleepSettings];
-  v7 = [v6 mutableCopy];
+  recordCopy = record;
+  _locked_sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
+  sleepSettings = [_locked_sleepScheduleModel sleepSettings];
+  v7 = [sleepSettings mutableCopy];
 
-  v8 = [v4 changeSet];
-  if ([v8 hasChangeForPropertyIdentifier:*MEMORY[0x277D62180]])
+  changeSet = [recordCopy changeSet];
+  if ([changeSet hasChangeForPropertyIdentifier:*MEMORY[0x277D62180]])
   {
-    v9 = [v4 isAnySleepCoachingOnboardingCompleted];
+    isAnySleepCoachingOnboardingCompleted = [recordCopy isAnySleepCoachingOnboardingCompleted];
 
-    if (v9)
+    if (isAnySleepCoachingOnboardingCompleted)
     {
       v10 = HKSPLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2894,12 +2894,12 @@ uint64_t __64__HDSPSleepScheduleModelManager__locked_updateSleepEventRecord___bl
   {
   }
 
-  v12 = [v4 changeSet];
-  if ([v12 hasChangeForPropertyIdentifier:*MEMORY[0x277D62308]])
+  changeSet2 = [recordCopy changeSet];
+  if ([changeSet2 hasChangeForPropertyIdentifier:*MEMORY[0x277D62308]])
   {
-    v13 = [v4 isAnySleepTrackingOnboardingCompleted];
+    isAnySleepTrackingOnboardingCompleted = [recordCopy isAnySleepTrackingOnboardingCompleted];
 
-    if (v13)
+    if (isAnySleepTrackingOnboardingCompleted)
     {
       v14 = HKSPLogForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2919,29 +2919,29 @@ uint64_t __64__HDSPSleepScheduleModelManager__locked_updateSleepEventRecord___bl
   {
   }
 
-  v17 = [v7 changeSet];
-  v18 = [v17 changes];
-  v19 = [v18 count];
+  changeSet3 = [v7 changeSet];
+  changes = [changeSet3 changes];
+  v19 = [changes count];
 
   if (v19)
   {
-    v20 = [(HDSPSleepScheduleModelManager *)self environment];
+    environment = [(HDSPSleepScheduleModelManager *)self environment];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __104__HDSPSleepScheduleModelManager__locked_applyNecessarySleepSettingsChangesBeforeSavingSleepEventRecord___block_invoke;
     v22[3] = &unk_279C7B2D0;
     v22[4] = self;
     v23 = v7;
-    [v20 perform:v22 withSource:self];
+    [environment perform:v22 withSource:self];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_locked_setSleepEventRecord:(id)a3
+- (id)_locked_setSleepEventRecord:(id)record
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2951,7 +2951,7 @@ uint64_t __64__HDSPSleepScheduleModelManager__locked_updateSleepEventRecord___bl
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep event record was created", &buf, 0xCu);
   }
 
-  v7 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:v4];
+  v7 = [(HDSPSleepScheduleModelManager *)self _locked_applyNecessaryChangesBeforeSaving:recordCopy];
   v8 = [v7 copy];
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -3035,19 +3035,19 @@ uint64_t __61__HDSPSleepScheduleModelManager__locked_setSleepEventRecord___block
   return v6;
 }
 
-- (BOOL)_locked_updateModelWithBlock:(id)a3 persistBlock:(id)a4 error:(id *)a5
+- (BOOL)_locked_updateModelWithBlock:(id)block persistBlock:(id)persistBlock error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  blockCopy = block;
   v15 = 0;
-  v8 = (*(a4 + 2))(a4, &v15);
+  v8 = (*(persistBlock + 2))(persistBlock, &v15);
   v9 = v15;
   if (v8)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = HKSPLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -3061,47 +3061,47 @@ uint64_t __61__HDSPSleepScheduleModelManager__locked_setSleepEventRecord___block
       _os_log_error_impl(&dword_269B11000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] save failed with error: %{public}@", buf, 0x16u);
     }
 
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D621B0] code:1 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D621B0] code:1 userInfo:0];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (id)_locked_applyNecessaryChangesBeforeSaving:(id)a3
+- (id)_locked_applyNecessaryChangesBeforeSaving:(id)saving
 {
-  v4 = [a3 mutableCopy];
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 currentDateProvider];
-  v7 = v6[2]();
+  v4 = [saving mutableCopy];
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentDateProvider = [environment currentDateProvider];
+  v7 = currentDateProvider[2]();
   [v4 setLastModifiedDate:v7];
 
   return v4;
 }
 
-- (void)notifyObserversForSleepEventRecordChange:(id)a3
+- (void)notifyObserversForSleepEventRecordChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__HDSPSleepScheduleModelManager_notifyObserversForSleepEventRecordChange___block_invoke;
   v6[3] = &unk_279C7B2D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(HDSPSleepScheduleModelManager *)self _withLock:v6];
 }
 
-- (void)_locked_notifyObserversForSleepEventRecordChange:(id)a3
+- (void)_locked_notifyObserversForSleepEventRecordChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
-  v6 = [v5 currentContext];
-  v7 = v6;
-  if (v6)
+  changeCopy = change;
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentContext = [environment currentContext];
+  v7 = currentContext;
+  if (currentContext)
   {
-    v8 = v6;
+    v8 = currentContext;
   }
 
   else
@@ -3111,32 +3111,32 @@ uint64_t __61__HDSPSleepScheduleModelManager__locked_setSleepEventRecord___block
 
   v9 = v8;
 
-  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:v4];
+  v10 = [(HDSPEnvironmentContext *)v9 contextByApplyingChangeEvaluation:changeCopy];
 
   v11 = HKSPLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [v10 source];
+    source = [v10 source];
     *buf = 138543618;
     v24 = v12;
     v25 = 2114;
-    v26 = v14;
+    v26 = source;
     _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] notifying observers for sleepEventRecord change from %{public}@", buf, 0x16u);
   }
 
-  v15 = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
+  _locked_sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self _locked_sleepScheduleModel];
   observers = self->_observers;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRecordChange___block_invoke;
   v20[3] = &unk_279C7D130;
   v20[4] = self;
-  v21 = v15;
+  v21 = _locked_sleepScheduleModel;
   v22 = v10;
   v17 = v10;
-  v18 = v15;
+  v18 = _locked_sleepScheduleModel;
   [(HKSPObserverSet *)observers enumerateObserversWithBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3189,29 +3189,29 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
   return NSStringFromClass(v2);
 }
 
-- (id)upcomingEventsDueAfterDate:(id)a3
+- (id)upcomingEventsDueAfterDate:(id)date
 {
-  v4 = [(HDSPSleepScheduleModelManager *)self _earliestDateToScheduleEventsForDate:a3];
-  v5 = [(HDSPSleepScheduleModelManager *)self sleepScheduleModel];
-  v6 = [v5 upcomingEventsDueAfterDate:v4];
+  v4 = [(HDSPSleepScheduleModelManager *)self _earliestDateToScheduleEventsForDate:date];
+  sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self sleepScheduleModel];
+  v6 = [sleepScheduleModel upcomingEventsDueAfterDate:v4];
 
   return v6;
 }
 
-- (id)_earliestDateToScheduleEventsForDate:(id)a3
+- (id)_earliestDateToScheduleEventsForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HDSPSleepScheduleModelManager *)self sleepEventRecord];
-  v6 = [v5 wakeUpAlarmDismissedDate];
+  dateCopy = date;
+  sleepEventRecord = [(HDSPSleepScheduleModelManager *)self sleepEventRecord];
+  wakeUpAlarmDismissedDate = [sleepEventRecord wakeUpAlarmDismissedDate];
 
-  if ([v6 hksp_isAfterDate:v4])
+  if ([wakeUpAlarmDismissedDate hksp_isAfterDate:dateCopy])
   {
-    v7 = v6;
+    v7 = wakeUpAlarmDismissedDate;
   }
 
   else
   {
-    v7 = v4;
+    v7 = dateCopy;
   }
 
   v8 = v7;
@@ -3219,10 +3219,10 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
   return v7;
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v62 = *MEMORY[0x277D85DE8];
-  v51 = a3;
+  detectedCopy = detected;
   v4 = HKSPLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -3232,21 +3232,21 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] significantTimeChangeDetected", buf, 0xCu);
   }
 
-  v6 = [(HDSPSleepScheduleModelManager *)self environment];
-  v7 = [v6 currentDateProvider];
-  v8 = v7[2]();
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
+  currentDateProvider = [environment currentDateProvider];
+  v8 = currentDateProvider[2]();
 
-  v9 = [(HDSPSleepScheduleModelManager *)self sleepSchedule];
-  v10 = [v9 mutableCopy];
+  sleepSchedule = [(HDSPSleepScheduleModelManager *)self sleepSchedule];
+  v10 = [sleepSchedule mutableCopy];
 
-  v11 = [(HDSPSleepScheduleModelManager *)self sleepSettings];
-  v12 = [v11 mutableCopy];
+  sleepSettings = [(HDSPSleepScheduleModelManager *)self sleepSettings];
+  v12 = [sleepSettings mutableCopy];
 
-  v13 = [(HDSPSleepScheduleModelManager *)self sleepEventRecord];
-  v14 = [v13 mutableCopy];
+  sleepEventRecord = [(HDSPSleepScheduleModelManager *)self sleepEventRecord];
+  v14 = [sleepEventRecord mutableCopy];
 
-  v15 = [v10 lastModifiedDate];
-  v16 = [v15 hksp_isAfterDate:v8];
+  lastModifiedDate = [v10 lastModifiedDate];
+  v16 = [lastModifiedDate hksp_isAfterDate:v8];
 
   if (v16)
   {
@@ -3263,8 +3263,8 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     [v10 setLastModifiedDate:v8];
   }
 
-  v20 = [v12 lastModifiedDate];
-  v21 = [v20 hksp_isAfterDate:v8];
+  lastModifiedDate2 = [v12 lastModifiedDate];
+  v21 = [lastModifiedDate2 hksp_isAfterDate:v8];
 
   if (v21)
   {
@@ -3281,8 +3281,8 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     [v12 setLastModifiedDate:v8];
   }
 
-  v25 = [v14 wakeUpEarlyNotificationConfirmedDate];
-  LODWORD(v26) = [v25 hksp_isAfterDate:v8];
+  wakeUpEarlyNotificationConfirmedDate = [v14 wakeUpEarlyNotificationConfirmedDate];
+  LODWORD(v26) = [wakeUpEarlyNotificationConfirmedDate hksp_isAfterDate:v8];
 
   if (v26)
   {
@@ -3300,8 +3300,8 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     [v14 setWakeUpConfirmedUntilDate:0];
   }
 
-  v30 = [v14 wakeUpOverriddenDate];
-  v31 = [v30 hksp_isAfterDate:v8];
+  wakeUpOverriddenDate = [v14 wakeUpOverriddenDate];
+  v31 = [wakeUpOverriddenDate hksp_isAfterDate:v8];
 
   if (v31)
   {
@@ -3320,8 +3320,8 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     LOBYTE(v26) = 1;
   }
 
-  v34 = [v14 lastModifiedDate];
-  v35 = [v34 hksp_isAfterDate:v8];
+  lastModifiedDate3 = [v14 lastModifiedDate];
+  v35 = [lastModifiedDate3 hksp_isAfterDate:v8];
 
   if (v35)
   {
@@ -3339,8 +3339,8 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     LOBYTE(v26) = 1;
   }
 
-  v38 = [v14 wakeUpAlarmDismissedDate];
-  v39 = [v38 hksp_isAfterDate:v8];
+  wakeUpAlarmDismissedDate = [v14 wakeUpAlarmDismissedDate];
+  v39 = [wakeUpAlarmDismissedDate hksp_isAfterDate:v8];
 
   if (v39)
   {
@@ -3358,8 +3358,8 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     LOBYTE(v26) = 1;
   }
 
-  v42 = [v14 goodMorningDismissedDate];
-  v43 = [v42 hksp_isAfterDate:v8];
+  goodMorningDismissedDate = [v14 goodMorningDismissedDate];
+  v43 = [goodMorningDismissedDate hksp_isAfterDate:v8];
 
   if (v43)
   {
@@ -3377,7 +3377,7 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
     LOBYTE(v26) = 1;
   }
 
-  v46 = [(HDSPSleepScheduleModelManager *)self environment];
+  environment2 = [(HDSPSleepScheduleModelManager *)self environment];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __63__HDSPSleepScheduleModelManager_significantTimeChangeDetected___block_invoke;
@@ -3392,7 +3392,7 @@ void __82__HDSPSleepScheduleModelManager__locked_notifyObserversForSleepEventRec
   v47 = v14;
   v48 = v12;
   v49 = v10;
-  [v46 perform:v53 withSource:v52];
+  [environment2 perform:v53 withSource:v52];
 
   v50 = *MEMORY[0x277D85DE8];
 }
@@ -3421,7 +3421,7 @@ uint64_t __63__HDSPSleepScheduleModelManager_significantTimeChangeDetected___blo
   return result;
 }
 
-- (void)observedApplicationDidUninstall:(id)a3
+- (void)observedApplicationDidUninstall:(id)uninstall
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -3449,12 +3449,12 @@ uint64_t __63__HDSPSleepScheduleModelManager_significantTimeChangeDetected___blo
 - (BOOL)_shouldTurnOffWatchSleepFeatures
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained behavior];
-  if ([v3 isAppleWatch])
+  behavior = [WeakRetained behavior];
+  if ([behavior isAppleWatch])
   {
-    v4 = [WeakRetained systemMonitor];
-    v5 = [v4 applicationWorkspaceMonitor];
-    v6 = [v5 isApplicationInstalled:*MEMORY[0x277D62090]] ^ 1;
+    systemMonitor = [WeakRetained systemMonitor];
+    applicationWorkspaceMonitor = [systemMonitor applicationWorkspaceMonitor];
+    v6 = [applicationWorkspaceMonitor isApplicationInstalled:*MEMORY[0x277D62090]] ^ 1;
   }
 
   else
@@ -3468,8 +3468,8 @@ uint64_t __63__HDSPSleepScheduleModelManager_significantTimeChangeDetected___blo
 - (void)_turnOffWatchSleepFeatures
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HDSPSleepScheduleModelManager *)self sleepSettings];
-  if ([v3 watchSleepFeaturesEnabled])
+  sleepSettings = [(HDSPSleepScheduleModelManager *)self sleepSettings];
+  if ([sleepSettings watchSleepFeaturesEnabled])
   {
     v4 = HKSPLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3480,9 +3480,9 @@ uint64_t __63__HDSPSleepScheduleModelManager_significantTimeChangeDetected___blo
       _os_log_impl(&dword_269B11000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] turning off watch sleep features since sleep app was removed", buf, 0xCu);
     }
 
-    v6 = [v3 mutableCopy];
+    v6 = [sleepSettings mutableCopy];
     [v6 setWatchSleepFeaturesEnabled:0];
-    v7 = [(HDSPSleepScheduleModelManager *)self environment];
+    environment = [(HDSPSleepScheduleModelManager *)self environment];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __59__HDSPSleepScheduleModelManager__turnOffWatchSleepFeatures__block_invoke;
@@ -3490,7 +3490,7 @@ uint64_t __63__HDSPSleepScheduleModelManager_significantTimeChangeDetected___blo
     v10[4] = self;
     v11 = v6;
     v8 = v6;
-    [v7 perform:v10 withSource:self];
+    [environment perform:v10 withSource:self];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -3526,17 +3526,17 @@ void __59__HDSPSleepScheduleModelManager__turnOffWatchSleepFeatures__block_invok
 - (BOOL)_shouldTurnOffSleepSchedule
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained behavior];
-  if ([v3 isAppleWatch])
+  behavior = [WeakRetained behavior];
+  if ([behavior isAppleWatch])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [WeakRetained systemMonitor];
-    v6 = [v5 applicationWorkspaceMonitor];
-    v4 = [v6 isApplicationInstalled:*MEMORY[0x277CCE3A8]] ^ 1;
+    systemMonitor = [WeakRetained systemMonitor];
+    applicationWorkspaceMonitor = [systemMonitor applicationWorkspaceMonitor];
+    v4 = [applicationWorkspaceMonitor isApplicationInstalled:*MEMORY[0x277CCE3A8]] ^ 1;
   }
 
   return v4;
@@ -3544,10 +3544,10 @@ void __59__HDSPSleepScheduleModelManager__turnOffWatchSleepFeatures__block_invok
 
 - (void)_turnOffSleepSchedule
 {
-  v3 = [(HDSPSleepScheduleModelManager *)self sleepSettings];
-  v4 = [v3 mutableCopy];
+  sleepSettings = [(HDSPSleepScheduleModelManager *)self sleepSettings];
+  v4 = [sleepSettings mutableCopy];
   [v4 setShareAcrossDevices:0];
-  v5 = [(HDSPSleepScheduleModelManager *)self environment];
+  environment = [(HDSPSleepScheduleModelManager *)self environment];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDSPSleepScheduleModelManager__turnOffSleepSchedule__block_invoke;
@@ -3555,7 +3555,7 @@ void __59__HDSPSleepScheduleModelManager__turnOffWatchSleepFeatures__block_invok
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  [v5 perform:v7 withSource:self];
+  [environment perform:v7 withSource:self];
 }
 
 void __54__HDSPSleepScheduleModelManager__turnOffSleepSchedule__block_invoke(uint64_t a1)
@@ -3619,10 +3619,10 @@ void __54__HDSPSleepScheduleModelManager__turnOffSleepSchedule__block_invoke(uin
   return NSStringFromClass(v2);
 }
 
-- (void)sleepStorageDidChangeExternally:(id)a3
+- (void)sleepStorageDidChangeExternally:(id)externally
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  externallyCopy = externally;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3637,8 +3637,8 @@ void __54__HDSPSleepScheduleModelManager__turnOffSleepSchedule__block_invoke(uin
   v9[2] = __65__HDSPSleepScheduleModelManager_sleepStorageDidChangeExternally___block_invoke;
   v9[3] = &unk_279C7B2D0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = externallyCopy;
+  v7 = externallyCopy;
   [(HDSPSleepScheduleModelManager *)self _withLock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -3693,8 +3693,8 @@ void __65__HDSPSleepScheduleModelManager_sleepStorageDidChangeExternally___block
 - (id)diagnosticDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDSPSleepScheduleModelManager *)self sleepScheduleModel];
-  v4 = [v2 stringWithFormat:@"Sleep Schedule Model: %@", v3];
+  sleepScheduleModel = [(HDSPSleepScheduleModelManager *)self sleepScheduleModel];
+  v4 = [v2 stringWithFormat:@"Sleep Schedule Model: %@", sleepScheduleModel];
 
   return v4;
 }

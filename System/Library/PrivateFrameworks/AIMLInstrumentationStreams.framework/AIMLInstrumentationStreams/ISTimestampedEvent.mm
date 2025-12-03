@@ -7,7 +7,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_23C5FDB40();
 
   v3 = sub_23C8716A4();

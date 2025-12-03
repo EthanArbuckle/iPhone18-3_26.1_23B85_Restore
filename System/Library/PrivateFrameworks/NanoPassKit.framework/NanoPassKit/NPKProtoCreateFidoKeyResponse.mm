@@ -1,12 +1,12 @@
 @interface NPKProtoCreateFidoKeyResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCreateFidoKeyResponse
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCreateFidoKeyResponse;
   v4 = [(NPKProtoCreateFidoKeyResponse *)&v8 description];
-  v5 = [(NPKProtoCreateFidoKeyResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCreateFidoKeyResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   fidoKey = self->_fidoKey;
   if (fidoKey)
   {
-    [v3 setObject:fidoKey forKey:@"fidoKey"];
+    [dictionary setObject:fidoKey forKey:@"fidoKey"];
   }
 
   fidoAttestation = self->_fidoAttestation;
@@ -54,93 +54,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_fidoKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_fidoAttestation)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_keyHash)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_fidoKey)
   {
-    [v4 setFidoKey:?];
-    v4 = v5;
+    [toCopy setFidoKey:?];
+    toCopy = v5;
   }
 
   if (self->_fidoAttestation)
   {
     [v5 setFidoAttestation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_errorData)
   {
     [v5 setErrorData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_keyHash)
   {
     [v5 setKeyHash:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_fidoKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_fidoKey copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSData *)self->_fidoAttestation copyWithZone:a3];
+  v8 = [(NSData *)self->_fidoAttestation copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSData *)self->_errorData copyWithZone:a3];
+  v10 = [(NSData *)self->_errorData copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSData *)self->_keyHash copyWithZone:a3];
+  v12 = [(NSData *)self->_keyHash copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((fidoKey = self->_fidoKey, !(fidoKey | v4[3])) || -[NSData isEqual:](fidoKey, "isEqual:")) && ((fidoAttestation = self->_fidoAttestation, !(fidoAttestation | v4[2])) || -[NSData isEqual:](fidoAttestation, "isEqual:")) && ((errorData = self->_errorData, !(errorData | v4[1])) || -[NSData isEqual:](errorData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((fidoKey = self->_fidoKey, !(fidoKey | equalCopy[3])) || -[NSData isEqual:](fidoKey, "isEqual:")) && ((fidoAttestation = self->_fidoAttestation, !(fidoAttestation | equalCopy[2])) || -[NSData isEqual:](fidoAttestation, "isEqual:")) && ((errorData = self->_errorData, !(errorData | equalCopy[1])) || -[NSData isEqual:](errorData, "isEqual:")))
   {
     keyHash = self->_keyHash;
-    if (keyHash | v4[4])
+    if (keyHash | equalCopy[4])
     {
       v9 = [(NSData *)keyHash isEqual:?];
     }
@@ -167,25 +167,25 @@
   return v4 ^ v5 ^ [(NSData *)self->_keyHash hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
     [(NPKProtoCreateFidoKeyResponse *)self setFidoKey:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoCreateFidoKeyResponse *)self setFidoAttestation:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoCreateFidoKeyResponse *)self setErrorData:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NPKProtoCreateFidoKeyResponse *)self setKeyHash:?];
   }

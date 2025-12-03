@@ -8,12 +8,12 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NURAWCameraSpaceProperties *)self xyzToCamera1];
-  v6 = [(_NURAWCameraSpaceProperties *)self xyzToCamera2];
+  xyzToCamera1 = [(_NURAWCameraSpaceProperties *)self xyzToCamera1];
+  xyzToCamera2 = [(_NURAWCameraSpaceProperties *)self xyzToCamera2];
   [(_NURAWCameraSpaceProperties *)self whiteValue];
   v8 = v7;
   [(_NURAWCameraSpaceProperties *)self whiteFactor];
-  v10 = [v3 stringWithFormat:@"<%@:%p> xyzToCamera1=%@ xyzToCamera2=%@ whiteValue=%f whiteFactor=%f", v4, self, v5, v6, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@:%p> xyzToCamera1=%@ xyzToCamera2=%@ whiteValue=%f whiteFactor=%f", v4, self, xyzToCamera1, xyzToCamera2, v8, v9];
 
   return v10;
 }

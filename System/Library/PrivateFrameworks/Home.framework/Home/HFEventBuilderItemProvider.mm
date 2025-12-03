@@ -1,31 +1,31 @@
 @interface HFEventBuilderItemProvider
-- (HFEventBuilderItemProvider)initWithEventBuilders:(id)a3 inHome:(id)a4;
-- (HFEventBuilderItemProvider)initWithTriggerBuilder:(id)a3;
+- (HFEventBuilderItemProvider)initWithEventBuilders:(id)builders inHome:(id)home;
+- (HFEventBuilderItemProvider)initWithTriggerBuilder:(id)builder;
 - (HFTriggerNaturalLanguageOptions)naturalLanguageOptions;
 - (NSSet)eventBuilders;
 - (id)_reloadItems;
-- (id)eventBuilderGroupsForEventBuilders:(id)a3;
+- (id)eventBuilderGroupsForEventBuilders:(id)builders;
 - (id)reloadBuilderGroups;
 - (id)reloadItems;
 - (unint64_t)nameType;
-- (void)setNameType:(unint64_t)a3;
+- (void)setNameType:(unint64_t)type;
 @end
 
 @implementation HFEventBuilderItemProvider
 
-- (HFEventBuilderItemProvider)initWithTriggerBuilder:(id)a3
+- (HFEventBuilderItemProvider)initWithTriggerBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = HFEventBuilderItemProvider;
   v6 = [(HFItemProvider *)&v12 init];
   if (v6)
   {
-    v7 = [v5 home];
+    home = [builderCopy home];
     home = v6->_home;
-    v6->_home = v7;
+    v6->_home = home;
 
-    objc_storeStrong(&v6->_triggerBuilder, a3);
+    objc_storeStrong(&v6->_triggerBuilder, builder);
     v9 = [MEMORY[0x277CBEB58] set];
     eventBuilderItems = v6->_eventBuilderItems;
     v6->_eventBuilderItems = v9;
@@ -34,18 +34,18 @@
   return v6;
 }
 
-- (HFEventBuilderItemProvider)initWithEventBuilders:(id)a3 inHome:(id)a4
+- (HFEventBuilderItemProvider)initWithEventBuilders:(id)builders inHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  buildersCopy = builders;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFEventBuilderItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
-    objc_storeStrong(&v10->_eventBuilders, a3);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_eventBuilders, builders);
     v11 = [MEMORY[0x277CBEB58] set];
     eventBuilderItems = v10->_eventBuilderItems;
     v10->_eventBuilderItems = v11;
@@ -60,9 +60,9 @@
   if (!eventBuilders)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(HFEventBuilderItemProvider *)self triggerBuilder];
-    v6 = [v5 eventBuilders];
-    v7 = [v4 setWithArray:v6];
+    triggerBuilder = [(HFEventBuilderItemProvider *)self triggerBuilder];
+    eventBuilders = [triggerBuilder eventBuilders];
+    v7 = [v4 setWithArray:eventBuilders];
     v8 = self->_eventBuilders;
     self->_eventBuilders = v7;
 
@@ -78,8 +78,8 @@
   if (!naturalLanguageOptions)
   {
     v4 = [HFTriggerNaturalLanguageOptions alloc];
-    v5 = [(HFEventBuilderItemProvider *)self home];
-    v6 = [(HFTriggerNaturalLanguageOptions *)v4 initWithHome:v5 nameType:2];
+    home = [(HFEventBuilderItemProvider *)self home];
+    v6 = [(HFTriggerNaturalLanguageOptions *)v4 initWithHome:home nameType:2];
     v7 = self->_naturalLanguageOptions;
     self->_naturalLanguageOptions = v6;
 
@@ -91,28 +91,28 @@
 
 - (unint64_t)nameType
 {
-  v2 = [(HFEventBuilderItemProvider *)self naturalLanguageOptions];
-  v3 = [v2 nameType];
+  naturalLanguageOptions = [(HFEventBuilderItemProvider *)self naturalLanguageOptions];
+  nameType = [naturalLanguageOptions nameType];
 
-  return v3;
+  return nameType;
 }
 
-- (void)setNameType:(unint64_t)a3
+- (void)setNameType:(unint64_t)type
 {
-  v4 = [(HFEventBuilderItemProvider *)self naturalLanguageOptions];
-  [v4 setNameType:a3];
+  naturalLanguageOptions = [(HFEventBuilderItemProvider *)self naturalLanguageOptions];
+  [naturalLanguageOptions setNameType:type];
 }
 
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HFEventBuilderItemProvider *)self _reloadItems];
+  _reloadItems = [(HFEventBuilderItemProvider *)self _reloadItems];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__HFEventBuilderItemProvider_reloadItems__block_invoke;
   v6[3] = &unk_277DF30B8;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 flatMap:v6];
+  v4 = [_reloadItems flatMap:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -139,14 +139,14 @@ id __41__HFEventBuilderItemProvider_reloadItems__block_invoke(uint64_t a1, void 
 
 - (id)_reloadItems
 {
-  v3 = [(HFEventBuilderItemProvider *)self reloadBuilderGroups];
-  v4 = [v3 allObjects];
+  reloadBuilderGroups = [(HFEventBuilderItemProvider *)self reloadBuilderGroups];
+  allObjects = [reloadBuilderGroups allObjects];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HFEventBuilderItemProvider__reloadItems__block_invoke_4;
   v7[3] = &unk_277DF9990;
   v7[4] = self;
-  v5 = [(HFItemProvider *)self reloadItemsWithObjects:v4 keyAdaptor:&__block_literal_global_80 itemAdaptor:&__block_literal_global_7_3 filter:&__block_literal_global_10_3 itemMap:v7];
+  v5 = [(HFItemProvider *)self reloadItemsWithObjects:allObjects keyAdaptor:&__block_literal_global_80 itemAdaptor:&__block_literal_global_7_3 filter:&__block_literal_global_10_3 itemMap:v7];
 
   return v5;
 }
@@ -186,11 +186,11 @@ id __42__HFEventBuilderItemProvider__reloadItems__block_invoke_4(uint64_t a1, vo
 
 - (id)reloadBuilderGroups
 {
-  v3 = [(HFEventBuilderItemProvider *)self lastUpdateEventBuilders];
-  v4 = v3;
-  if (v3)
+  lastUpdateEventBuilders = [(HFEventBuilderItemProvider *)self lastUpdateEventBuilders];
+  v4 = lastUpdateEventBuilders;
+  if (lastUpdateEventBuilders)
   {
-    v5 = v3;
+    v5 = lastUpdateEventBuilders;
   }
 
   else
@@ -200,17 +200,17 @@ id __42__HFEventBuilderItemProvider__reloadItems__block_invoke_4(uint64_t a1, vo
 
   v6 = v5;
 
-  v7 = [(HFEventBuilderItemProvider *)self eventBuilders];
-  v8 = [HFSetDiff diffFromSet:v6 toSet:v7];
+  eventBuilders = [(HFEventBuilderItemProvider *)self eventBuilders];
+  v8 = [HFSetDiff diffFromSet:v6 toSet:eventBuilders];
 
-  v9 = [(HFEventBuilderItemProvider *)self lastUpdateEventGroups];
+  lastUpdateEventGroups = [(HFEventBuilderItemProvider *)self lastUpdateEventGroups];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __49__HFEventBuilderItemProvider_reloadBuilderGroups__block_invoke;
   v24[3] = &unk_277DF99B8;
   v10 = v8;
   v25 = v10;
-  v11 = [v9 na_filter:v24];
+  v11 = [lastUpdateEventGroups na_filter:v24];
 
   v12 = [v11 mutableCopy];
   v13 = v12;
@@ -226,11 +226,11 @@ id __42__HFEventBuilderItemProvider__reloadItems__block_invoke_4(uint64_t a1, vo
 
   v15 = v14;
 
-  v16 = [v10 additions];
-  v17 = [v16 mutableCopy];
+  additions = [v10 additions];
+  v17 = [additions mutableCopy];
 
-  v18 = [v10 updates];
-  [v17 unionSet:v18];
+  updates = [v10 updates];
+  [v17 unionSet:updates];
 
   v19 = [(HFEventBuilderItemProvider *)self eventBuilderGroupsForEventBuilders:v17];
   [v15 unionSet:v19];
@@ -238,8 +238,8 @@ id __42__HFEventBuilderItemProvider__reloadItems__block_invoke_4(uint64_t a1, vo
   v20 = [v15 copy];
   [(HFEventBuilderItemProvider *)self setLastUpdateEventGroups:v20];
 
-  v21 = [(HFEventBuilderItemProvider *)self eventBuilders];
-  v22 = [v21 copy];
+  eventBuilders2 = [(HFEventBuilderItemProvider *)self eventBuilders];
+  v22 = [eventBuilders2 copy];
   [(HFEventBuilderItemProvider *)self setLastUpdateEventBuilders:v22];
 
   return v15;
@@ -275,21 +275,21 @@ uint64_t __49__HFEventBuilderItemProvider_reloadBuilderGroups__block_invoke(uint
   return v6;
 }
 
-- (id)eventBuilderGroupsForEventBuilders:(id)a3
+- (id)eventBuilderGroupsForEventBuilders:(id)builders
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  buildersCopy = builders;
   v6 = [v4 set];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __65__HFEventBuilderItemProvider_eventBuilderGroupsForEventBuilders___block_invoke;
   v21[3] = &unk_277DF9A08;
   v21[4] = self;
-  v22 = v7;
-  v8 = v7;
-  [v5 na_each:v21];
-  v9 = [v5 mutableCopy];
+  v22 = dictionary;
+  v8 = dictionary;
+  [buildersCopy na_each:v21];
+  v9 = [buildersCopy mutableCopy];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;

@@ -2,7 +2,7 @@
 + (MTForegroundSyncUtil)sharedInstance;
 - (NSDate)lastExpectedFeedsUpdateDate;
 - (void)feedUpdateAllPodcastsOnForeground;
-- (void)setLastExpectedFeedsUpdateDate:(id)a3;
+- (void)setLastExpectedFeedsUpdateDate:(id)date;
 - (void)startCloudSyncAfterPrivacy;
 - (void)syncEverythingIfNeeded;
 - (void)updatePlaybackSettingIfNeeded;
@@ -24,19 +24,19 @@
 
 - (void)updatePlaybackSettingIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   ForegroundSyncUtil.updatePlaybackSettingIfNeeded()();
 }
 
 - (void)feedUpdateAllPodcastsOnForeground
 {
-  v2 = self;
+  selfCopy = self;
   ForegroundSyncUtil.feedUpdateAllPodcastsOnForeground()();
 }
 
 - (void)syncEverythingIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   ForegroundSyncUtil.syncEverythingIfNeeded()();
 }
 
@@ -55,7 +55,7 @@
   return v8.super.isa;
 }
 
-- (void)setLastExpectedFeedsUpdateDate:(id)a3
+- (void)setLastExpectedFeedsUpdateDate:(id)date
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -65,14 +65,14 @@
   v8 = OBJC_IVAR___MTForegroundSyncUtil_lastExpectedFeedsUpdateDate;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
 
 - (void)startCloudSyncAfterPrivacy
 {
-  v2 = self;
+  selfCopy = self;
   ForegroundSyncUtil.startCloudSyncAfterPrivacy()();
 }
 

@@ -8,13 +8,13 @@
 
 - (uint64_t)row
 {
-  if ([a1 length] != 2)
+  if ([self length] != 2)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:a1 file:@"NSIndexPath+UIKitAdditions.m" lineNumber:32 description:@"Invalid index path for use with UITableView. Index paths passed to table view must contain exactly two indices specifying the section and row. Please use the category on NSIndexPath in NSIndexPath+UIKitAdditions.h if possible."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSIndexPath+UIKitAdditions.m" lineNumber:32 description:@"Invalid index path for use with UITableView. Index paths passed to table view must contain exactly two indices specifying the section and row. Please use the category on NSIndexPath in NSIndexPath+UIKitAdditions.h if possible."];
   }
 
-  return [a1 indexAtPosition:1];
+  return [self indexAtPosition:1];
 }
 
 + (id)indexPathForRow:()UIKitAdditions inSection:

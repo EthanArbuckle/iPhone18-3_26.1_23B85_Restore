@@ -1,7 +1,7 @@
 @interface PBReader
 - (BOOL)start;
 - (OCCEncryptionInfoReader)encryptionInfoReader;
-- (PBReader)initWithCancelDelegate:(id)a3;
+- (PBReader)initWithCancelDelegate:(id)delegate;
 - (id)read;
 - (void)dealloc;
 @end
@@ -10,38 +10,38 @@
 
 - (BOOL)start
 {
-  v3 = [(PBReader *)self pptReader];
-  if (v3)
+  pptReader = [(PBReader *)self pptReader];
+  if (pptReader)
   {
-    v4 = v3;
-    v5 = [(OCDReader *)self fileName];
+    v4 = pptReader;
+    fileName = [(OCDReader *)self fileName];
 
-    if (v5)
+    if (fileName)
     {
-      v6 = [(OCDReader *)self fileName];
-      v7 = fopen([v6 UTF8String], "rb");
+      fileName2 = [(OCDReader *)self fileName];
+      v7 = fopen([fileName2 UTF8String], "rb");
 
       if (v7)
       {
         [(OCBReader *)self setFile:v7];
         (*(*v4 + 16))(v4, [(OCBReader *)self file]);
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(pptReader) = 1;
+        return pptReader;
       }
 
       v11 = TCUnknownProblemMessage;
-      v12 = [(OCDReader *)self fileName];
-      [TCMessageException raise:v11, v12];
+      fileName3 = [(OCDReader *)self fileName];
+      [TCMessageException raise:v11, fileName3];
     }
 
     else
     {
-      v8 = [(OCDReader *)self data];
+      data = [(OCDReader *)self data];
 
-      if (v8)
+      if (data)
       {
-        v9 = [(OCDReader *)self data];
-        self->mBuffer = [v9 bytes];
+        data2 = [(OCDReader *)self data];
+        self->mBuffer = [data2 bytes];
 
         [(OCDReader *)self data];
         v10 = [objc_claimAutoreleasedReturnValue() length];
@@ -49,18 +49,18 @@
       }
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(pptReader) = 0;
   }
 
-  return v3;
+  return pptReader;
 }
 
 - (OCCEncryptionInfoReader)encryptionInfoReader
 {
-  v2 = [(PBReader *)self pptReader];
-  if (v2)
+  pptReader = [(PBReader *)self pptReader];
+  if (pptReader)
   {
-    return v2 + 3;
+    return pptReader + 3;
   }
 
   else
@@ -79,16 +79,16 @@
   [(OCDDocument *)v13 setGraphicStyleCache:v4];
 
   [(OCDDocument *)v13 setReader:self];
-  v5 = [(OCDReader *)self fileName];
-  v6 = [v5 pathExtension];
-  v7 = [v6 lowercaseString];
-  -[PDPresentation setIsAutoPlay:](v13, "setIsAutoPlay:", [v7 isEqualToString:@"pps"]);
+  fileName = [(OCDReader *)self fileName];
+  pathExtension = [fileName pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  -[PDPresentation setIsAutoPlay:](v13, "setIsAutoPlay:", [lowercaseString isEqualToString:@"pps"]);
 
-  v8 = [(PBReader *)self pptReader];
-  v9 = [(OCDReader *)self cancelDelegate];
-  v10 = [(OCDReader *)self isThumbnail];
-  v11 = [(OCDReader *)self delegate];
-  [PBPresentation readFrom:v8 to:v13 cancel:v9 asThumbnail:v10 delegate:v11];
+  pptReader = [(PBReader *)self pptReader];
+  cancelDelegate = [(OCDReader *)self cancelDelegate];
+  isThumbnail = [(OCDReader *)self isThumbnail];
+  delegate = [(OCDReader *)self delegate];
+  [PBPresentation readFrom:pptReader to:v13 cancel:cancelDelegate asThumbnail:isThumbnail delegate:delegate];
 
   objc_autoreleasePoolPop(v3);
 
@@ -108,12 +108,12 @@
   [(OCBReader *)&v4 dealloc];
 }
 
-- (PBReader)initWithCancelDelegate:(id)a3
+- (PBReader)initWithCancelDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6.receiver = self;
   v6.super_class = PBReader;
-  if ([(OCBReader *)&v6 initWithCancelDelegate:v4])
+  if ([(OCBReader *)&v6 initWithCancelDelegate:delegateCopy])
   {
     operator new();
   }

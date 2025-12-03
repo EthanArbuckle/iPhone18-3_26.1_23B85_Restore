@@ -1,21 +1,21 @@
 @interface ASDTIOPAudioVTModelCRCProperty
-+ (id)configDictForService:(id)a3;
-- (ASDTIOPAudioVTModelCRCProperty)initWithConfig:(id)a3;
-- (BOOL)retrieveUInt32Value:(unsigned int *)a3;
++ (id)configDictForService:(id)service;
+- (ASDTIOPAudioVTModelCRCProperty)initWithConfig:(id)config;
+- (BOOL)retrieveUInt32Value:(unsigned int *)value;
 @end
 
 @implementation ASDTIOPAudioVTModelCRCProperty
 
-+ (id)configDictForService:(id)a3
++ (id)configDictForService:(id)service
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEFC38];
   v9[0] = *MEMORY[0x277CEFC58];
   v9[1] = v3;
   v10[0] = @"ASDTIOPAudioVTModelCRCProperty";
-  v10[1] = a3;
+  v10[1] = service;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  serviceCopy = service;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -23,10 +23,10 @@
   return v6;
 }
 
-- (ASDTIOPAudioVTModelCRCProperty)initWithConfig:(id)a3
+- (ASDTIOPAudioVTModelCRCProperty)initWithConfig:(id)config
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:config];
   v5 = *MEMORY[0x277CEFC00];
   v11[0] = *MEMORY[0x277CEFC28];
   v11[1] = v5;
@@ -43,12 +43,12 @@
   return v7;
 }
 
-- (BOOL)retrieveUInt32Value:(unsigned int *)a3
+- (BOOL)retrieveUInt32Value:(unsigned int *)value
 {
-  v4 = [(ASDTIOPAudioVTProperty *)self vtDevice];
-  LOBYTE(a3) = [v4 getModelCRC:a3];
+  vtDevice = [(ASDTIOPAudioVTProperty *)self vtDevice];
+  LOBYTE(value) = [vtDevice getModelCRC:value];
 
-  return a3;
+  return value;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface NoOpBackupController
-- (void)sendDeviceIDToCloudKitWithCompletion:(id)a3;
-- (void)toggleiCloudBackupsIfNeeded:(id)a3;
+- (void)sendDeviceIDToCloudKitWithCompletion:(id)completion;
+- (void)toggleiCloudBackupsIfNeeded:(id)needed;
 @end
 
 @implementation NoOpBackupController
 
-- (void)toggleiCloudBackupsIfNeeded:(id)a3
+- (void)toggleiCloudBackupsIfNeeded:(id)needed
 {
-  if (a3)
+  if (needed)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(needed + 2))(needed, 0, 0);
   }
 }
 
-- (void)sendDeviceIDToCloudKitWithCompletion:(id)a3
+- (void)sendDeviceIDToCloudKitWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 

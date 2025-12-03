@@ -1,15 +1,15 @@
 @interface PGGraphInferredPersonEdge
 + (id)filter;
-- (id)initFromPersonNode:(id)a3 toInferredPersonNode:(id)a4;
+- (id)initFromPersonNode:(id)node toInferredPersonNode:(id)personNode;
 @end
 
 @implementation PGGraphInferredPersonEdge
 
-- (id)initFromPersonNode:(id)a3 toInferredPersonNode:(id)a4
+- (id)initFromPersonNode:(id)node toInferredPersonNode:(id)personNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphInferredPersonEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:personNode];
 }
 
 + (id)filter

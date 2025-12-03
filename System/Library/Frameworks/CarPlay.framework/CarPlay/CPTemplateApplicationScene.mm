@@ -2,26 +2,26 @@
 - (BOOL)_shouldCallAppDelegate;
 - (BOOL)_shouldCreateCarWindow;
 - (CGRect)_referenceBounds;
-- (CPTemplateApplicationScene)initWithSession:(id)a3 connectionOptions:(id)a4;
-- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)a3;
+- (CPTemplateApplicationScene)initWithSession:(id)session connectionOptions:(id)options;
+- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)orientation;
 - (UIScreen)_screen;
 - (UITraitCollection)_traitCollection;
 - (UITraitCollection)carTraitCollection;
-- (id)_allWindowsIncludingInternalWindows:(BOOL)a3 onlyVisibleWindows:(BOOL)a4;
-- (id)_fbsSceneLayerForWindow:(id)a3;
+- (id)_allWindowsIncludingInternalWindows:(BOOL)windows onlyVisibleWindows:(BOOL)visibleWindows;
+- (id)_fbsSceneLayerForWindow:(id)window;
 - (id)_frameRateLimit;
 - (id)_templateSettings;
 - (int64_t)_interfaceOrientation;
 - (int64_t)_mapStyle;
-- (void)_attachWindow:(id)a3;
+- (void)_attachWindow:(id)window;
 - (void)_deliverInterfaceControllerToDelegate;
-- (void)_detachWindow:(id)a3;
+- (void)_detachWindow:(id)window;
 - (void)_invalidate;
 - (void)_readySceneForConnection;
 - (void)_refreshTraitCollection;
 - (void)_updateContentStyle;
 - (void)_updateFrameRateLimit;
-- (void)_windowUpdatedVisibility:(id)a3;
+- (void)_windowUpdatedVisibility:(id)visibility;
 @end
 
 @implementation CPTemplateApplicationScene
@@ -32,8 +32,8 @@
   if (!screen)
   {
     v4 = MEMORY[0x277D759A0];
-    v5 = [(CPTemplateApplicationScene *)self _FBSScene];
-    v6 = [v4 _screenForScene:v5];
+    _FBSScene = [(CPTemplateApplicationScene *)self _FBSScene];
+    v6 = [v4 _screenForScene:_FBSScene];
     v7 = self->_screen;
     self->_screen = v6;
 
@@ -57,9 +57,9 @@
 
 - (CGRect)_referenceBounds
 {
-  v2 = [(CPTemplateApplicationScene *)self _FBSScene];
-  v3 = [v2 settings];
-  [v3 bounds];
+  _FBSScene = [(CPTemplateApplicationScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  [settings bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -76,30 +76,30 @@
   return result;
 }
 
-- (CPTemplateApplicationScene)initWithSession:(id)a3 connectionOptions:(id)a4
+- (CPTemplateApplicationScene)initWithSession:(id)session connectionOptions:(id)options
 {
   v62[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  optionsCopy = options;
   v60.receiver = self;
   v60.super_class = CPTemplateApplicationScene;
-  v8 = [(CPTemplateApplicationScene *)&v60 initWithSession:v6 connectionOptions:v7];
+  v8 = [(CPTemplateApplicationScene *)&v60 initWithSession:sessionCopy connectionOptions:optionsCopy];
   if (v8)
   {
-    v9 = [v7 _specification];
-    v10 = [v9 sceneSubstrateClass];
+    _specification = [optionsCopy _specification];
+    sceneSubstrateClass = [_specification sceneSubstrateClass];
 
     v11 = objc_alloc(MEMORY[0x277D75E90]);
-    v12 = [v10 alloc];
-    v13 = [(CPTemplateApplicationScene *)v8 _FBSScene];
-    v14 = [v12 initWithScene:v13];
+    v12 = [sceneSubstrateClass alloc];
+    _FBSScene = [(CPTemplateApplicationScene *)v8 _FBSScene];
+    v14 = [v12 initWithScene:_FBSScene];
     v15 = [v11 initWithSubstrate:v14];
     contextBinder = v8->_contextBinder;
     v8->_contextBinder = v15;
 
     [(_UIContextBinder *)v8->_contextBinder setContextCreationPolicyHolder:v8];
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    v18 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v19 = *MEMORY[0x277D76668];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
@@ -107,12 +107,12 @@
     v58[3] = &unk_278A10508;
     v20 = v8;
     v59 = v20;
-    v21 = [v17 addObserverForName:v19 object:0 queue:v18 usingBlock:v58];
+    v21 = [defaultCenter addObserverForName:v19 object:0 queue:mainQueue usingBlock:v58];
     didFinishLaunchingObserver = v20->_didFinishLaunchingObserver;
     v20->_didFinishLaunchingObserver = v21;
 
-    v23 = [MEMORY[0x277CCAB98] defaultCenter];
-    v24 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
     v25 = *MEMORY[0x277D76E70];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
@@ -120,7 +120,7 @@
     v56[3] = &unk_278A10508;
     v26 = v20;
     v57 = v26;
-    v27 = [v23 addObserverForName:v25 object:v26 queue:v24 usingBlock:v56];
+    v27 = [defaultCenter2 addObserverForName:v25 object:v26 queue:mainQueue2 usingBlock:v56];
     sceneWillConnectObserver = v26->_sceneWillConnectObserver;
     v26->_sceneWillConnectObserver = v27;
 
@@ -169,8 +169,8 @@
     v40 = [[CPTemplateUISceneSettingsDiffAction alloc] initWithInspectors:v32];
     [(CPTemplateApplicationScene *)v26 setSceneSettingsDiffAction:v40];
 
-    v41 = [(CPTemplateApplicationScene *)v26 sceneSettingsDiffAction];
-    v61 = v41;
+    sceneSettingsDiffAction = [(CPTemplateApplicationScene *)v26 sceneSettingsDiffAction];
+    v61 = sceneSettingsDiffAction;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
     [(CPTemplateApplicationScene *)v26 _registerSettingsDiffActionArray:v42 forKey:@"settingsObserver"];
 
@@ -263,7 +263,7 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
     _os_log_impl(&dword_236ED4000, v3, OS_LOG_TYPE_DEFAULT, "Template scene content style updated to %{public}@", &v11, 0xCu);
   }
 
-  v5 = [(CPTemplateApplicationScene *)self delegate];
+  delegate = [(CPTemplateApplicationScene *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -275,31 +275,31 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
       _os_log_impl(&dword_236ED4000, v7, OS_LOG_TYPE_DEFAULT, "Informing delegate of style update", &v11, 2u);
     }
 
-    v8 = [(CPTemplateApplicationScene *)self delegate];
-    [v8 contentStyleDidChange:self->_contentStyle];
+    delegate2 = [(CPTemplateApplicationScene *)self delegate];
+    [delegate2 contentStyleDidChange:self->_contentStyle];
   }
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"CPTemplateApplicationSceneContentStyleUpdated" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CPTemplateApplicationSceneContentStyleUpdated" object:self];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (int64_t)_mapStyle
 {
-  v2 = [(CPTemplateApplicationScene *)self _templateSettings];
-  v3 = [v2 mapStyle];
+  _templateSettings = [(CPTemplateApplicationScene *)self _templateSettings];
+  mapStyle = [_templateSettings mapStyle];
 
-  return v3;
+  return mapStyle;
 }
 
 - (void)_updateFrameRateLimit
 {
   v19 = *MEMORY[0x277D85DE8];
   self->_frameRateLimit = [(CPTemplateApplicationScene *)self _frameRateLimit];
-  v3 = [(CPTemplateApplicationScene *)self _templateSettings];
-  v4 = [v3 displayConfiguration];
-  v5 = [v4 CADisplay];
+  _templateSettings = [(CPTemplateApplicationScene *)self _templateSettings];
+  displayConfiguration = [_templateSettings displayConfiguration];
+  cADisplay = [displayConfiguration CADisplay];
 
   frameRateLimit = self->_frameRateLimit;
   if (frameRateLimit)
@@ -341,58 +341,58 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:{v10, *MEMORY[0x277CDA1A8]}];
   v16 = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  [v5 overrideDisplayTimings:v13];
+  [cADisplay overrideDisplayTimings:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_frameRateLimit
 {
-  v2 = [(CPTemplateApplicationScene *)self _templateSettings];
-  v3 = [v2 frameRateLimit];
+  _templateSettings = [(CPTemplateApplicationScene *)self _templateSettings];
+  frameRateLimit = [_templateSettings frameRateLimit];
 
-  return v3;
+  return frameRateLimit;
 }
 
 - (id)_templateSettings
 {
-  v3 = [(CPTemplateApplicationScene *)self _FBSScene];
-  v4 = [v3 settings];
+  _FBSScene = [(CPTemplateApplicationScene *)self _FBSScene];
+  settings = [_FBSScene settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(CPTemplateApplicationScene *)self _FBSScene];
-    v7 = [v6 settings];
+    _FBSScene2 = [(CPTemplateApplicationScene *)self _FBSScene];
+    settings2 = [_FBSScene2 settings];
   }
 
   else
   {
-    v7 = 0;
+    settings2 = 0;
   }
 
-  return v7;
+  return settings2;
 }
 
 - (int64_t)_interfaceOrientation
 {
-  v2 = [(CPTemplateApplicationScene *)self _FBSScene];
-  v3 = [v2 settings];
-  v4 = [v3 isUISubclass];
+  _FBSScene = [(CPTemplateApplicationScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  isUISubclass = [settings isUISubclass];
 
-  if (v4)
+  if (isUISubclass)
   {
-    v5 = [v2 settings];
-    v6 = [v5 interfaceOrientation];
+    settings2 = [_FBSScene settings];
+    interfaceOrientation = [settings2 interfaceOrientation];
   }
 
   else
   {
-    v6 = 1;
+    interfaceOrientation = 1;
   }
 
-  return v6;
+  return interfaceOrientation;
 }
 
 - (void)_refreshTraitCollection
@@ -400,17 +400,17 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
   v19[3] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceIdiom:3];
   v4 = MEMORY[0x277D75C80];
-  v5 = [(CPTemplateApplicationScene *)self _screen];
-  v6 = [v5 traitCollection];
-  [v6 displayScale];
+  _screen = [(CPTemplateApplicationScene *)self _screen];
+  traitCollection = [_screen traitCollection];
+  [traitCollection displayScale];
   v7 = [v4 traitCollectionWithDisplayScale:?];
 
   objc_opt_class();
-  v8 = [(CPTemplateApplicationScene *)self _FBSScene];
-  v9 = [v8 settings];
+  _FBSScene = [(CPTemplateApplicationScene *)self _FBSScene];
+  settings = [_FBSScene settings];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = settings;
   }
 
   else
@@ -421,15 +421,15 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
   v11 = MEMORY[0x277D75C80];
   if (v10)
   {
-    v12 = [v10 userInterfaceStyle];
+    userInterfaceStyle = [v10 userInterfaceStyle];
   }
 
   else
   {
-    v12 = 0;
+    userInterfaceStyle = 0;
   }
 
-  v13 = [v11 traitCollectionWithUserInterfaceStyle:v12];
+  v13 = [v11 traitCollectionWithUserInterfaceStyle:userInterfaceStyle];
   v14 = MEMORY[0x277D75C80];
   v19[0] = v3;
   v19[1] = v13;
@@ -442,53 +442,53 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_attachWindow:(id)a3
+- (void)_attachWindow:(id)window
 {
-  v5 = a3;
-  v4 = [v5 _windowHostingScene];
-  if (([v4 isEqual:self] & 1) == 0)
+  windowCopy = window;
+  _windowHostingScene = [windowCopy _windowHostingScene];
+  if (([_windowHostingScene isEqual:self] & 1) == 0)
   {
-    [v4 _detachWindow:v5];
-    [(CPTemplateApplicationScene *)self __captureWindow:v5];
-    [(_UIContextBinder *)self->_contextBinder enrollBindable:v5];
-    [v5 _didMoveFromScene:v4 toScene:self];
+    [_windowHostingScene _detachWindow:windowCopy];
+    [(CPTemplateApplicationScene *)self __captureWindow:windowCopy];
+    [(_UIContextBinder *)self->_contextBinder enrollBindable:windowCopy];
+    [windowCopy _didMoveFromScene:_windowHostingScene toScene:self];
   }
 
-  if (([v5 isHidden] & 1) == 0)
+  if (([windowCopy isHidden] & 1) == 0)
   {
-    [(_UIContextBinder *)self->_contextBinder attachBindable:v5];
+    [(_UIContextBinder *)self->_contextBinder attachBindable:windowCopy];
   }
 }
 
-- (void)_detachWindow:(id)a3
+- (void)_detachWindow:(id)window
 {
   contextBinder = self->_contextBinder;
-  v5 = a3;
-  [(_UIContextBinder *)contextBinder expellBindable:v5];
-  [(CPTemplateApplicationScene *)self __releaseWindow:v5];
+  windowCopy = window;
+  [(_UIContextBinder *)contextBinder expellBindable:windowCopy];
+  [(CPTemplateApplicationScene *)self __releaseWindow:windowCopy];
 }
 
-- (void)_windowUpdatedVisibility:(id)a3
+- (void)_windowUpdatedVisibility:(id)visibility
 {
-  v6 = a3;
-  v4 = [v6 isHidden];
+  visibilityCopy = visibility;
+  isHidden = [visibilityCopy isHidden];
   contextBinder = self->_contextBinder;
-  if (v4)
+  if (isHidden)
   {
-    [(_UIContextBinder *)contextBinder detachBindable:v6];
+    [(_UIContextBinder *)contextBinder detachBindable:visibilityCopy];
   }
 
   else
   {
-    [(_UIContextBinder *)contextBinder attachBindable:v6];
+    [(_UIContextBinder *)contextBinder attachBindable:visibilityCopy];
   }
 }
 
-- (id)_allWindowsIncludingInternalWindows:(BOOL)a3 onlyVisibleWindows:(BOOL)a4
+- (id)_allWindowsIncludingInternalWindows:(BOOL)windows onlyVisibleWindows:(BOOL)visibleWindows
 {
-  v4 = a3;
+  windowsCopy = windows;
   contextBinder = self->_contextBinder;
-  if (a4)
+  if (visibleWindows)
   {
     [(_UIContextBinder *)contextBinder attachedBindables];
   }
@@ -499,7 +499,7 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
   }
   v6 = ;
   v7 = v6;
-  if (v4)
+  if (windowsCopy)
   {
     v8 = v6;
   }
@@ -513,24 +513,24 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
   return v8;
 }
 
-- (id)_fbsSceneLayerForWindow:(id)a3
+- (id)_fbsSceneLayerForWindow:(id)window
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_UIContextBinder *)self->_contextBinder substrate];
-  v6 = [v5 scene];
+  windowCopy = window;
+  substrate = [(_UIContextBinder *)self->_contextBinder substrate];
+  scene = [substrate scene];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v6 clientSettings];
-  v8 = [v7 layers];
+  clientSettings = [scene clientSettings];
+  layers = [clientSettings layers];
 
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [layers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v10 = v9;
-    v19 = v5;
+    v19 = substrate;
     v11 = *v21;
     do
     {
@@ -538,7 +538,7 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(layers);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
@@ -546,23 +546,23 @@ void __64__CPTemplateApplicationScene_initWithSession_connectionOptions___block_
         if (objc_opt_isKindOfClass())
         {
           v14 = v13;
-          v15 = [v14 CAContext];
-          v16 = [v4 _boundContext];
+          cAContext = [v14 CAContext];
+          _boundContext = [windowCopy _boundContext];
 
-          if (v15 == v16)
+          if (cAContext == _boundContext)
           {
             goto LABEL_12;
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [layers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
     v14 = 0;
 LABEL_12:
-    v5 = v19;
+    substrate = v19;
   }
 
   else
@@ -575,16 +575,16 @@ LABEL_12:
   return v14;
 }
 
-- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)_safeAreaInsetsForInterfaceOrientation:(int64_t)orientation
 {
-  v3 = [(CPTemplateApplicationScene *)self _FBSScene];
-  v4 = [v3 settings];
-  v5 = [v4 isUISubclass];
+  _FBSScene = [(CPTemplateApplicationScene *)self _FBSScene];
+  settings = [_FBSScene settings];
+  isUISubclass = [settings isUISubclass];
 
-  if (v5)
+  if (isUISubclass)
   {
-    v6 = [v3 settings];
-    [v6 safeAreaInsetsPortrait];
+    settings2 = [_FBSScene settings];
+    [settings2 safeAreaInsetsPortrait];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -633,9 +633,9 @@ LABEL_12:
     [(CPWindow *)self->_carWindow makeKeyAndVisible];
   }
 
-  v13 = [[CPInterfaceController alloc] _init];
+  _init = [[CPInterfaceController alloc] _init];
   interfaceController = self->_interfaceController;
-  self->_interfaceController = v13;
+  self->_interfaceController = _init;
 
   [(CPInterfaceController *)self->_interfaceController setWindowProvider:self];
   [(CPInterfaceController *)self->_interfaceController _sceneConnect:self];
@@ -644,32 +644,32 @@ LABEL_12:
 - (void)_invalidate
 {
   [(CPInterfaceController *)self->_interfaceController _invalidate];
-  v3 = [(CPTemplateApplicationScene *)self delegate];
+  delegate = [(CPTemplateApplicationScene *)self delegate];
   if ([(CPTemplateApplicationScene *)self _shouldCreateCarWindow]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 templateApplicationScene:self didDisconnectInterfaceController:self->_interfaceController fromWindow:self->_carWindow];
+    [delegate templateApplicationScene:self didDisconnectInterfaceController:self->_interfaceController fromWindow:self->_carWindow];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v3 templateApplicationScene:self didDisconnectInterfaceController:self->_interfaceController];
+    [delegate templateApplicationScene:self didDisconnectInterfaceController:self->_interfaceController];
   }
 
   else if ([(CPTemplateApplicationScene *)self _shouldCallAppDelegate])
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 delegate];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    delegate2 = [mEMORY[0x277D75128] delegate];
 
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    [v5 application:v6 didDisconnectCarInterfaceController:self->_interfaceController fromWindow:self->_carWindow];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    [delegate2 application:mEMORY[0x277D75128]2 didDisconnectCarInterfaceController:self->_interfaceController fromWindow:self->_carWindow];
   }
 
   [(CPWindow *)self->_carWindow setHidden:1];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self->_sceneWillConnectObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_sceneWillConnectObserver];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self->_didFinishLaunchingObserver];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self->_didFinishLaunchingObserver];
 
   didFinishLaunchingObserver = self->_didFinishLaunchingObserver;
   self->_didFinishLaunchingObserver = 0;
@@ -719,8 +719,8 @@ uint64_t __52__CPTemplateApplicationScene__shouldCreateCarWindow__block_invoke()
 
 - (BOOL)_shouldCallAppDelegate
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 delegate];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  delegate = [mEMORY[0x277D75128] delegate];
 
   if ([(CPTemplateApplicationScene *)self _shouldCreateCarWindow]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -753,7 +753,7 @@ uint64_t __52__CPTemplateApplicationScene__shouldCreateCarWindow__block_invoke()
       _os_log_impl(&dword_236ED4000, v4, OS_LOG_TYPE_DEFAULT, "App ready to receive interface controller", buf, 2u);
     }
 
-    v5 = [(CPTemplateApplicationScene *)self delegate];
+    delegate = [(CPTemplateApplicationScene *)self delegate];
     if ([(CPTemplateApplicationScene *)self _shouldCreateCarWindow]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
       v6 = CarPlayFrameworkGeneralLogging();
@@ -763,9 +763,9 @@ uint64_t __52__CPTemplateApplicationScene__shouldCreateCarWindow__block_invoke()
         _os_log_impl(&dword_236ED4000, v6, OS_LOG_TYPE_DEFAULT, "App supports CPTemplateApplicationScene method with window", buf, 2u);
       }
 
-      v7 = [(CPTemplateApplicationScene *)self interfaceController];
-      v8 = [(CPTemplateApplicationScene *)self carWindow];
-      [v5 templateApplicationScene:self didConnectInterfaceController:v7 toWindow:v8];
+      interfaceController = [(CPTemplateApplicationScene *)self interfaceController];
+      carWindow = [(CPTemplateApplicationScene *)self carWindow];
+      [delegate templateApplicationScene:self didConnectInterfaceController:interfaceController toWindow:carWindow];
     }
 
     else
@@ -813,8 +813,8 @@ uint64_t __52__CPTemplateApplicationScene__shouldCreateCarWindow__block_invoke()
         _os_log_impl(&dword_236ED4000, v9, OS_LOG_TYPE_DEFAULT, "App supports CPTemplateApplicationScene method without window", buf, 2u);
       }
 
-      v7 = [(CPTemplateApplicationScene *)self interfaceController];
-      [v5 templateApplicationScene:self didConnectInterfaceController:v7];
+      interfaceController = [(CPTemplateApplicationScene *)self interfaceController];
+      [delegate templateApplicationScene:self didConnectInterfaceController:interfaceController];
     }
 
 LABEL_25:

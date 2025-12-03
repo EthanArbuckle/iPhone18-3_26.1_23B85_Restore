@@ -1,15 +1,15 @@
 @interface VSSpeechWordTimingInfo
-+ (id)utf16TimingInfoWithUTF8Range:(id)a3 withText:(id)a4;
-+ (id)wordTimingInfoFrom:(id)a3 timestamps:(id)a4;
-+ (unint64_t)extraBytesFromUTF8ToUTF16With:(const char *)a3 totalLength:(unint64_t)a4 begin:(unint64_t)a5 end:(unint64_t)a6;
-+ (void)adjustWordTimingInfo:(id)a3 forContext:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (VSSpeechWordTimingInfo)initWithCoder:(id)a3;
++ (id)utf16TimingInfoWithUTF8Range:(id)range withText:(id)text;
++ (id)wordTimingInfoFrom:(id)from timestamps:(id)timestamps;
++ (unint64_t)extraBytesFromUTF8ToUTF16With:(const char *)with totalLength:(unint64_t)length begin:(unint64_t)begin end:(unint64_t)end;
++ (void)adjustWordTimingInfo:(id)info forContext:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (VSSpeechWordTimingInfo)initWithCoder:(id)coder;
 - (_NSRange)textRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSSpeechWordTimingInfo
@@ -45,20 +45,20 @@
   return v7 - v6 + 32 * v6 + 29791;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     [v5 startTime];
     v7 = v6;
     [(VSSpeechWordTimingInfo *)self startTime];
     if (v7 == v8)
     {
-      v9 = [v5 textRange];
+      textRange = [v5 textRange];
       v11 = v10;
-      v14 = v9 == [(VSSpeechWordTimingInfo *)self textRange]&& v11 == v12;
+      v14 = textRange == [(VSSpeechWordTimingInfo *)self textRange]&& v11 == v12;
     }
 
     else
@@ -75,36 +75,36 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VSSpeechWordTimingInfo allocWithZone:?]];
   [(VSSpeechWordTimingInfo *)self startTime];
   [(VSSpeechWordTimingInfo *)v4 setStartTime:?];
-  v5 = [(VSSpeechWordTimingInfo *)self textRange];
-  [(VSSpeechWordTimingInfo *)v4 setTextRange:v5, v6];
+  textRange = [(VSSpeechWordTimingInfo *)self textRange];
+  [(VSSpeechWordTimingInfo *)v4 setTextRange:textRange, v6];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startTime = self->_startTime;
-  v5 = a3;
-  [v5 encodeDouble:@"_startTime" forKey:startTime];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_startTime" forKey:startTime];
   v6 = [MEMORY[0x277CCAE60] valueWithRange:{self->_textRange.location, self->_textRange.length}];
-  [v5 encodeObject:v6 forKey:@"_textRange"];
+  [coderCopy encodeObject:v6 forKey:@"_textRange"];
 }
 
-- (VSSpeechWordTimingInfo)initWithCoder:(id)a3
+- (VSSpeechWordTimingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = VSSpeechWordTimingInfo;
   v5 = [(VSSpeechWordTimingInfo *)&v10 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_startTime"];
+    [coderCopy decodeDoubleForKey:@"_startTime"];
     v5->_startTime = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_textRange"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_textRange"];
     v5->_textRange.location = [v7 rangeValue];
     v5->_textRange.length = v8;
   }
@@ -112,18 +112,18 @@
   return v5;
 }
 
-+ (void)adjustWordTimingInfo:(id)a3 forContext:(id)a4
++ (void)adjustWordTimingInfo:(id)info forContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCACA8] vs_markerStringForContext:a4];
+  infoCopy = info;
+  v6 = [MEMORY[0x277CCACA8] vs_markerStringForContext:context];
   v7 = [v6 length];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = infoCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -153,26 +153,26 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)utf16TimingInfoWithUTF8Range:(id)a3 withText:(id)a4
++ (id)utf16TimingInfoWithUTF8Range:(id)range withText:(id)text
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v33 = [MEMORY[0x277CBEB18] array];
-  v8 = [v7 UTF8String];
-  v9 = [v7 lengthOfBytesUsingEncoding:4];
+  rangeCopy = range;
+  textCopy = text;
+  array = [MEMORY[0x277CBEB18] array];
+  uTF8String = [textCopy UTF8String];
+  v9 = [textCopy lengthOfBytesUsingEncoding:4];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v6;
+  obj = rangeCopy;
   v32 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v32)
   {
     v10 = 0;
     v11 = 0;
     v31 = *v35;
-    v29 = v7;
+    v29 = textCopy;
     while (2)
     {
       for (i = 0; i != v32; ++i)
@@ -186,11 +186,11 @@
         v14 = objc_alloc_init(VSSpeechWordTimingInfo);
         [v13 startTime];
         [(VSSpeechWordTimingInfo *)v14 setStartTime:?];
-        v15 = [a1 extraBytesFromUTF8ToUTF16With:v8 totalLength:v9 begin:v10 end:{objc_msgSend(v13, "textRange")}];
-        if (v15 == -1 || (v16 = v15, v17 = [v13 textRange], v18 = objc_msgSend(v13, "textRange"), objc_msgSend(v13, "textRange"), v20 = objc_msgSend(a1, "extraBytesFromUTF8ToUTF16With:totalLength:begin:end:", v8, v9, v17, v19 + v18), v20 == -1))
+        v15 = [self extraBytesFromUTF8ToUTF16With:uTF8String totalLength:v9 begin:v10 end:{objc_msgSend(v13, "textRange")}];
+        if (v15 == -1 || (v16 = v15, v17 = [v13 textRange], v18 = objc_msgSend(v13, "textRange"), objc_msgSend(v13, "textRange"), v20 = objc_msgSend(self, "extraBytesFromUTF8ToUTF16With:totalLength:begin:end:", uTF8String, v9, v17, v19 + v18), v20 == -1))
         {
 
-          v7 = v29;
+          textCopy = v29;
           goto LABEL_12;
         }
 
@@ -200,13 +200,13 @@
         [v13 textRange];
         [(VSSpeechWordTimingInfo *)v14 setTextRange:v23, v24 - v21];
         v11 = v22 + v21;
-        [v33 addObject:v14];
-        v25 = [v13 textRange];
+        [array addObject:v14];
+        textRange = [v13 textRange];
         [v13 textRange];
-        v10 = v26 + v25;
+        v10 = v26 + textRange;
       }
 
-      v7 = v29;
+      textCopy = v29;
       v32 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v32)
       {
@@ -221,22 +221,22 @@ LABEL_12:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v33;
+  return array;
 }
 
-+ (unint64_t)extraBytesFromUTF8ToUTF16With:(const char *)a3 totalLength:(unint64_t)a4 begin:(unint64_t)a5 end:(unint64_t)a6
++ (unint64_t)extraBytesFromUTF8ToUTF16With:(const char *)with totalLength:(unint64_t)length begin:(unint64_t)begin end:(unint64_t)end
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a6 - a5;
-  if (a6 <= a5)
+  v6 = end - begin;
+  if (end <= begin)
   {
     result = 0;
   }
 
-  else if (a6 <= a4)
+  else if (end <= length)
   {
     result = 0;
-    v11 = &a3[a5];
+    v11 = &with[begin];
     do
     {
       v12 = *v11++;
@@ -279,9 +279,9 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v17 = 134218240;
-      v18 = a6;
+      endCopy = end;
       v19 = 2048;
-      v20 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_272850000, v9, OS_LOG_TYPE_ERROR, "Out of word boundary: %ld is greater than %ld", &v17, 0x16u);
     }
 
@@ -292,18 +292,18 @@ LABEL_12:
   return result;
 }
 
-+ (id)wordTimingInfoFrom:(id)a3 timestamps:(id)a4
++ (id)wordTimingInfoFrom:(id)from timestamps:(id)timestamps
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v8 = [MEMORY[0x277CBEB18] array];
+  fromCopy = from;
+  timestampsCopy = timestamps;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v6;
+  v9 = timestampsCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -323,27 +323,27 @@ LABEL_12:
         v16 = objc_alloc_init(VSSpeechWordTimingInfo);
         [v15 doubleValue];
         [(VSSpeechWordTimingInfo *)v16 setStartTime:?];
-        if (v12 >= [v5 length])
+        if (v12 >= [fromCopy length])
         {
 
           goto LABEL_18;
         }
 
-        for (j = v12; j < [v5 length]; ++j)
+        for (j = v12; j < [fromCopy length]; ++j)
         {
-          if (![v7 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", j)}])
+          if (![whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(fromCopy, "characterAtIndex:", j)}])
           {
             break;
           }
         }
 
         v12 = j;
-        if (j < [v5 length])
+        if (j < [fromCopy length])
         {
           v12 = j;
           do
           {
-            if ([v7 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v12)}])
+            if ([whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(fromCopy, "characterAtIndex:", v12)}])
             {
               break;
             }
@@ -351,11 +351,11 @@ LABEL_12:
             ++v12;
           }
 
-          while (v12 < [v5 length]);
+          while (v12 < [fromCopy length]);
         }
 
         [(VSSpeechWordTimingInfo *)v16 setTextRange:j, v12 - j];
-        [v8 addObject:v16];
+        [array addObject:v16];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -370,16 +370,16 @@ LABEL_12:
 
 LABEL_18:
 
-  v18 = [v8 lastObject];
-  v19 = [v18 textRange];
-  if (v19 + v20 < [v5 length])
+  lastObject = [array lastObject];
+  textRange = [lastObject textRange];
+  if (textRange + v20 < [fromCopy length])
   {
-    [v18 setTextRange:{objc_msgSend(v18, "textRange"), objc_msgSend(v5, "length") - objc_msgSend(v18, "textRange")}];
+    [lastObject setTextRange:{objc_msgSend(lastObject, "textRange"), objc_msgSend(fromCopy, "length") - objc_msgSend(lastObject, "textRange")}];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 @end

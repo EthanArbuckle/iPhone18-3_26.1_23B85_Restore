@@ -1,11 +1,11 @@
 @interface RideBookingDisabledApplicationsOutlineSection
 - (RideBookingOutlineController)parentDataSource;
-- (id)cellForItemAtIndexPath:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)cellForItemAtIndexPath:(id)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (void)configureWithRideBookingRideOptionState:(id)a3;
-- (void)ridesharingAppLargeIconTableViewCell:(id)a3 didSelectActionButton:(id)a4;
-- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)a3;
+- (void)configureWithRideBookingRideOptionState:(id)state;
+- (void)ridesharingAppLargeIconTableViewCell:(id)cell didSelectActionButton:(id)button;
+- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)command;
 @end
 
 @implementation RideBookingDisabledApplicationsOutlineSection
@@ -17,7 +17,7 @@
   return WeakRetained;
 }
 
-- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)a3
+- (void)ridesharingEnableAllAppsTableViewCellDidPerformEnableCommand:(id)command
 {
   GEOConfigSetBOOL();
   v4 = +[MKMapService sharedService];
@@ -28,8 +28,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  disabledApplicationsStatuses = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
+  v7 = [disabledApplicationsStatuses countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -40,20 +40,20 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(disabledApplicationsStatuses);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 application];
+        application = [v11 application];
 
-        if (v12)
+        if (application)
         {
-          v13 = [v11 application];
-          [v5 addObject:v13];
+          application2 = [v11 application];
+          [v5 addObject:application2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [disabledApplicationsStatuses countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -63,17 +63,17 @@
   [v14 enableRideBookingApplications:v5];
 }
 
-- (void)ridesharingAppLargeIconTableViewCell:(id)a3 didSelectActionButton:(id)a4
+- (void)ridesharingAppLargeIconTableViewCell:(id)cell didSelectActionButton:(id)button
 {
-  v5 = [a3 applicationIdentifer];
-  if (v5)
+  applicationIdentifer = [cell applicationIdentifer];
+  if (applicationIdentifer)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    disabledApplicationsStatuses = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
+    v7 = [disabledApplicationsStatuses countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v7)
     {
       v8 = v7;
@@ -84,13 +84,13 @@
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(disabledApplicationsStatuses);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [v11 application];
-          v13 = [v12 identifier];
-          v14 = [v13 isEqualToString:v5];
+          application = [v11 application];
+          identifier = [application identifier];
+          v14 = [identifier isEqualToString:applicationIdentifer];
 
           if (v14)
           {
@@ -98,8 +98,8 @@
             [v15 captureUserAction:14002 onTarget:304 eventValue:0];
 
             v16 = +[RideBookingAccessProxy coordinator];
-            v17 = [v11 application];
-            v23 = v17;
+            application2 = [v11 application];
+            v23 = application2;
             v18 = [NSArray arrayWithObjects:&v23 count:1];
             [v16 enableRideBookingApplications:v18];
 
@@ -107,7 +107,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v8 = [disabledApplicationsStatuses countByEnumeratingWithState:&v19 objects:v24 count:16];
         if (v8)
         {
           continue;
@@ -121,18 +121,18 @@ LABEL_12:
   }
 }
 
-- (void)configureWithRideBookingRideOptionState:(id)a3
+- (void)configureWithRideBookingRideOptionState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v3 rideOptionStatusMap];
-  v6 = [v5 allValues];
+  rideOptionStatusMap = [stateCopy rideOptionStatusMap];
+  allValues = [rideOptionStatusMap allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -144,14 +144,14 @@ LABEL_12:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 application];
-        v14 = [v13 enabled];
+        application = [v12 application];
+        enabled = [application enabled];
 
-        if (v14)
+        if (enabled)
         {
           v9 = 1;
         }
@@ -162,7 +162,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -173,8 +173,8 @@ LABEL_12:
     v9 = 0;
   }
 
-  v15 = [v3 installedSuggestions];
-  v16 = [RidesharingAppPreferenceManager sortedRideOptionStatuses:v4 withStoreOrdering:v15];
+  installedSuggestions = [stateCopy installedSuggestions];
+  v16 = [RidesharingAppPreferenceManager sortedRideOptionStatuses:v4 withStoreOrdering:installedSuggestions];
   [(RideBookingDisabledApplicationsOutlineSection *)self setDisabledApplicationsStatuses:v16];
 
   BOOL = GEOConfigGetBOOL();
@@ -186,32 +186,32 @@ LABEL_12:
   else
   {
     v18 = BOOL;
-    v19 = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
-    -[RideBookingDisabledApplicationsOutlineSection setShouldShowEnableAppsCell:](self, "setShouldShowEnableAppsCell:", ([v19 count] != 0) & (v18 ^ 1u));
+    disabledApplicationsStatuses = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
+    -[RideBookingDisabledApplicationsOutlineSection setShouldShowEnableAppsCell:](self, "setShouldShowEnableAppsCell:", ([disabledApplicationsStatuses count] != 0) & (v18 ^ 1u));
   }
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
-  v3 = [v2 count] != 0;
+  disabledApplicationsStatuses = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
+  v3 = [disabledApplicationsStatuses count] != 0;
 
   return v3;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
-  v5 = [v4 count];
+  disabledApplicationsStatuses = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
+  v5 = [disabledApplicationsStatuses count];
   v6 = v5 + [(RideBookingDisabledApplicationsOutlineSection *)self shouldShowEnableAppsCell];
 
   return v6;
 }
 
-- (id)cellForItemAtIndexPath:(id)a3
+- (id)cellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
+  pathCopy = path;
+  v5 = [pathCopy row];
   if (![(RideBookingDisabledApplicationsOutlineSection *)self shouldShowEnableAppsCell])
   {
     goto LABEL_4;
@@ -221,13 +221,13 @@ LABEL_12:
   {
     --v5;
 LABEL_4:
-    v6 = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
-    v7 = [v6 objectAtIndex:v5];
+    disabledApplicationsStatuses = [(RideBookingDisabledApplicationsOutlineSection *)self disabledApplicationsStatuses];
+    v7 = [disabledApplicationsStatuses objectAtIndex:v5];
 
     collectionView = self->super._collectionView;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v4];
+    v11 = [(UICollectionView *)collectionView dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
     [v11 setDelegate:self];
     v20[0] = _NSConcreteStackBlock;
@@ -237,7 +237,7 @@ LABEL_4:
     v12 = v11;
     v21 = v12;
     v22 = v7;
-    v23 = self;
+    selfCopy = self;
     v13 = v7;
     [UIView performWithoutAnimation:v20];
     v14 = v12;
@@ -248,7 +248,7 @@ LABEL_4:
   v16 = self->super._collectionView;
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
-  v19 = [(UICollectionView *)v16 dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:v4];
+  v19 = [(UICollectionView *)v16 dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:pathCopy];
 
   [v19 setDelegate:self];
   v24[0] = _NSConcreteStackBlock;

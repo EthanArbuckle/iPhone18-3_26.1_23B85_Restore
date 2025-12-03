@@ -1,5 +1,5 @@
 @interface APLogConfig
-+ (id)_createLogConfigWithBaseConfig:(id)a3 subystem:(id)a4 category:(id)a5;
++ (id)_createLogConfigWithBaseConfig:(id)config subystem:(id)subystem category:(id)category;
 + (id)sharedConfig;
 + (id)sharedDaemonConfig;
 + (id)sharedExtensionConfig;
@@ -8,11 +8,11 @@
 + (id)sharedSettingsConfig;
 + (id)sharedUIServiceConfig;
 - (APLogConfig)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OS_os_log)OSLogObject;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __27__APLogConfig_sharedConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConfig_ap_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedConfig_ap_once_token___COUNTER__, block);
@@ -63,7 +63,7 @@ uint64_t __27__APLogConfig_sharedConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__APLogConfig_sharedDaemonConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDaemonConfig_ap_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedDaemonConfig_ap_once_token___COUNTER__, block);
@@ -89,7 +89,7 @@ void __33__APLogConfig_sharedDaemonConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__APLogConfig_sharedExtensionConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedExtensionConfig_ap_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedExtensionConfig_ap_once_token___COUNTER__, block);
@@ -115,7 +115,7 @@ void __36__APLogConfig_sharedExtensionConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__APLogConfig_sharedFrameworkConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedFrameworkConfig_ap_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedFrameworkConfig_ap_once_token___COUNTER__, block);
@@ -141,7 +141,7 @@ void __36__APLogConfig_sharedFrameworkConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__APLogConfig_sharedSettingsConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSettingsConfig_ap_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedSettingsConfig_ap_once_token___COUNTER__, block);
@@ -167,7 +167,7 @@ void __35__APLogConfig_sharedSettingsConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __33__APLogConfig_sharedPluginConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPluginConfig_ap_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedPluginConfig_ap_once_token___COUNTER__, block);
@@ -193,7 +193,7 @@ void __33__APLogConfig_sharedPluginConfig__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__APLogConfig_sharedUIServiceConfig__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedUIServiceConfig_ap_once_token___COUNTER__ != -1)
   {
     dispatch_once(&sharedUIServiceConfig_ap_once_token___COUNTER__, block);
@@ -221,26 +221,26 @@ void __36__APLogConfig_sharedUIServiceConfig__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy_;
   v14 = __Block_byref_object_dispose_;
   v15 = 0;
-  v3 = [(APLogConfig *)self propertyAccessQueue];
+  propertyAccessQueue = [(APLogConfig *)self propertyAccessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__APLogConfig_OSLogObject__block_invoke;
   block[3] = &unk_278CC1660;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v3, block);
+  dispatch_sync(propertyAccessQueue, block);
 
   v4 = v11[5];
   if (!v4)
   {
-    v5 = [(APLogConfig *)self propertyAccessQueue];
+    propertyAccessQueue2 = [(APLogConfig *)self propertyAccessQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __26__APLogConfig_OSLogObject__block_invoke_2;
     v8[3] = &unk_278CC1660;
     v8[4] = self;
     v8[5] = &v10;
-    dispatch_barrier_sync(v5, v8);
+    dispatch_barrier_sync(propertyAccessQueue2, v8);
 
     v4 = v11[5];
   }
@@ -313,11 +313,11 @@ LABEL_5:
   v4 = [(APLogConfig *)&v9 description];
   v5 = [v3 stringWithFormat:@"%@: {\n", v4];
 
-  v6 = [(APLogConfig *)self category];
-  [v5 appendFormat:@"  category: %@\n", v6];
+  category = [(APLogConfig *)self category];
+  [v5 appendFormat:@"  category: %@\n", category];
 
-  v7 = [(APLogConfig *)self subsystem];
-  [v5 appendFormat:@"  subsystem: %@\n", v7];
+  subsystem = [(APLogConfig *)self subsystem];
+  [v5 appendFormat:@"  subsystem: %@\n", subsystem];
 
   [v5 appendString:@"}"];
 
@@ -326,18 +326,18 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v3 = [(APLogConfig *)self category];
-  v4 = [v3 hash];
-  v5 = [(APLogConfig *)self subsystem];
-  v6 = [v5 hash];
+  category = [(APLogConfig *)self category];
+  v4 = [category hash];
+  subsystem = [(APLogConfig *)self subsystem];
+  v6 = [subsystem hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_18;
@@ -346,14 +346,14 @@ LABEL_5:
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v8 = [(APLogConfig *)self category];
-    if (v8 || ([(APLogConfig *)v5 category], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    category = [(APLogConfig *)self category];
+    if (category || ([(APLogConfig *)equalCopy category], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v9 = [(APLogConfig *)self category];
-      v10 = [(APLogConfig *)v5 category];
-      v11 = [v9 isEqual:v10];
+      category2 = [(APLogConfig *)self category];
+      category3 = [(APLogConfig *)equalCopy category];
+      v11 = [category2 isEqual:category3];
 
-      if (v8)
+      if (category)
       {
 
         if (!v11)
@@ -372,14 +372,14 @@ LABEL_5:
       }
     }
 
-    v12 = [(APLogConfig *)self subsystem];
-    if (v12 || ([(APLogConfig *)v5 subsystem], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    subsystem = [(APLogConfig *)self subsystem];
+    if (subsystem || ([(APLogConfig *)equalCopy subsystem], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v13 = [(APLogConfig *)self subsystem];
-      v14 = [(APLogConfig *)v5 subsystem];
-      v7 = [v13 isEqual:v14];
+      subsystem2 = [(APLogConfig *)self subsystem];
+      subsystem3 = [(APLogConfig *)equalCopy subsystem];
+      v7 = [subsystem2 isEqual:subsystem3];
 
-      if (v12)
+      if (subsystem)
       {
 LABEL_17:
 
@@ -402,44 +402,44 @@ LABEL_18:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[APLogConfig allocWithZone:](APLogConfig init];
-  v6 = [(APLogConfig *)self category];
-  v7 = [v6 copyWithZone:a3];
+  category = [(APLogConfig *)self category];
+  v7 = [category copyWithZone:zone];
   category = v5->_category;
   v5->_category = v7;
 
-  v9 = [(APLogConfig *)self subsystem];
-  v10 = [v9 copyWithZone:a3];
+  subsystem = [(APLogConfig *)self subsystem];
+  v10 = [subsystem copyWithZone:zone];
   subsystem = v5->_subsystem;
   v5->_subsystem = v10;
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [(APLogConfig *)+[APMutableLogConfig allocWithZone:](APMutableLogConfig init];
-  v6 = [(APLogConfig *)self category];
-  v7 = [v6 copyWithZone:a3];
+  category = [(APLogConfig *)self category];
+  v7 = [category copyWithZone:zone];
   [(APLogConfig *)v5 setCategory:v7];
 
-  v8 = [(APLogConfig *)self subsystem];
-  v9 = [v8 copyWithZone:a3];
+  subsystem = [(APLogConfig *)self subsystem];
+  v9 = [subsystem copyWithZone:zone];
   [(APLogConfig *)v5 setSubsystem:v9];
 
   return v5;
 }
 
-+ (id)_createLogConfigWithBaseConfig:(id)a3 subystem:(id)a4 category:(id)a5
++ (id)_createLogConfigWithBaseConfig:(id)config subystem:(id)subystem category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  configCopy = config;
+  subystemCopy = subystem;
+  categoryCopy = category;
+  if (configCopy)
   {
-    v10 = [v7 mutableCopy];
+    v10 = [configCopy mutableCopy];
   }
 
   else
@@ -448,14 +448,14 @@ LABEL_18:
   }
 
   v11 = v10;
-  if (v8)
+  if (subystemCopy)
   {
-    [(APLogConfig *)v10 setSubsystem:v8];
+    [(APLogConfig *)v10 setSubsystem:subystemCopy];
   }
 
-  if (v9)
+  if (categoryCopy)
   {
-    [(APLogConfig *)v11 setCategory:v9];
+    [(APLogConfig *)v11 setCategory:categoryCopy];
   }
 
   v12 = [(APMutableLogConfig *)v11 copy];

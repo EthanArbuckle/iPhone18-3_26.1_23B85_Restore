@@ -6,21 +6,21 @@
 
 - (uint64_t)mpc_playlistEntryOccurrencePrefix
 {
-  v2 = [a1 universalStore];
-  v3 = [v2 universalCloudLibraryID];
-  v4 = [v3 length];
+  universalStore = [self universalStore];
+  universalCloudLibraryID = [universalStore universalCloudLibraryID];
+  v4 = [universalCloudLibraryID length];
 
   if (v4)
   {
-    v5 = [a1 universalStore];
-    if ([v5 subscriptionAdamID])
+    universalStore2 = [self universalStore];
+    if ([universalStore2 subscriptionAdamID])
     {
     }
 
     else
     {
-      v6 = [a1 universalStore];
-      [v6 adamID];
+      universalStore3 = [self universalStore];
+      [universalStore3 adamID];
     }
   }
 

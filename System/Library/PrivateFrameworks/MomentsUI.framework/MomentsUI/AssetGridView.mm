@@ -1,10 +1,10 @@
 @interface AssetGridView
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
 @end
 
 @implementation AssetGridView
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -16,7 +16,7 @@
   if (v10)
   {
     v11 = *((*MEMORY[0x277D85000] & *v10) + 0x138);
-    v12 = a4;
+    cellCopy = cell;
     v11();
   }
 

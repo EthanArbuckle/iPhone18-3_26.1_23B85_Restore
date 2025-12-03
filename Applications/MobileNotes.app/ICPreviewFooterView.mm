@@ -3,9 +3,9 @@
 - (UILabel)sharingLabel;
 - (UILabel)titleLabel;
 - (void)awakeFromNib;
-- (void)setContentsSubtitle:(id)a3;
-- (void)setSharingSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setContentsSubtitle:(id)subtitle;
+- (void)setSharingSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ICPreviewFooterView
@@ -15,71 +15,71 @@
   v20.receiver = self;
   v20.super_class = ICPreviewFooterView;
   [(ICPreviewFooterView *)&v20 awakeFromNib];
-  v3 = [(ICPreviewFooterView *)self titleLabel];
-  [v3 setText:0];
+  titleLabel = [(ICPreviewFooterView *)self titleLabel];
+  [titleLabel setText:0];
 
-  v4 = [(ICPreviewFooterView *)self titleLabel];
-  v5 = [v4 font];
-  v6 = [v5 ic_fontWithSingleLineA];
-  v7 = [(ICPreviewFooterView *)self titleLabel];
-  [v7 setFont:v6];
+  titleLabel2 = [(ICPreviewFooterView *)self titleLabel];
+  font = [titleLabel2 font];
+  ic_fontWithSingleLineA = [font ic_fontWithSingleLineA];
+  titleLabel3 = [(ICPreviewFooterView *)self titleLabel];
+  [titleLabel3 setFont:ic_fontWithSingleLineA];
 
-  v8 = [(ICPreviewFooterView *)self contentsLabel];
-  [v8 setText:0];
+  contentsLabel = [(ICPreviewFooterView *)self contentsLabel];
+  [contentsLabel setText:0];
 
-  v9 = [(ICPreviewFooterView *)self contentsLabel];
-  v10 = [v9 font];
-  v11 = [v10 ic_fontWithSingleLineA];
-  v12 = [(ICPreviewFooterView *)self contentsLabel];
-  [v12 setFont:v11];
+  contentsLabel2 = [(ICPreviewFooterView *)self contentsLabel];
+  font2 = [contentsLabel2 font];
+  ic_fontWithSingleLineA2 = [font2 ic_fontWithSingleLineA];
+  contentsLabel3 = [(ICPreviewFooterView *)self contentsLabel];
+  [contentsLabel3 setFont:ic_fontWithSingleLineA2];
 
-  v13 = [(ICPreviewFooterView *)self contentsLabel];
-  [v13 setHidden:1];
+  contentsLabel4 = [(ICPreviewFooterView *)self contentsLabel];
+  [contentsLabel4 setHidden:1];
 
-  v14 = [(ICPreviewFooterView *)self sharingLabel];
-  [v14 setText:0];
+  sharingLabel = [(ICPreviewFooterView *)self sharingLabel];
+  [sharingLabel setText:0];
 
-  v15 = [(ICPreviewFooterView *)self sharingLabel];
-  v16 = [v15 font];
-  v17 = [v16 ic_fontWithSingleLineA];
-  v18 = [(ICPreviewFooterView *)self sharingLabel];
-  [v18 setFont:v17];
+  sharingLabel2 = [(ICPreviewFooterView *)self sharingLabel];
+  font3 = [sharingLabel2 font];
+  ic_fontWithSingleLineA3 = [font3 ic_fontWithSingleLineA];
+  sharingLabel3 = [(ICPreviewFooterView *)self sharingLabel];
+  [sharingLabel3 setFont:ic_fontWithSingleLineA3];
 
-  v19 = [(ICPreviewFooterView *)self sharingLabel];
-  [v19 setHidden:1];
+  sharingLabel4 = [(ICPreviewFooterView *)self sharingLabel];
+  [sharingLabel4 setHidden:1];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  v6 = [(ICPreviewFooterView *)self titleLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  titleLabel = [(ICPreviewFooterView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v7 = [(ICPreviewFooterView *)self titleLabel];
-  [v7 setHidden:v5 == 0];
+  titleLabel2 = [(ICPreviewFooterView *)self titleLabel];
+  [titleLabel2 setHidden:titleCopy == 0];
 }
 
-- (void)setContentsSubtitle:(id)a3
+- (void)setContentsSubtitle:(id)subtitle
 {
-  objc_storeStrong(&self->_contentsSubtitle, a3);
-  v5 = a3;
-  v6 = [(ICPreviewFooterView *)self contentsLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_contentsSubtitle, subtitle);
+  subtitleCopy = subtitle;
+  contentsLabel = [(ICPreviewFooterView *)self contentsLabel];
+  [contentsLabel setText:subtitleCopy];
 
-  v7 = [(ICPreviewFooterView *)self contentsLabel];
-  [v7 setHidden:v5 == 0];
+  contentsLabel2 = [(ICPreviewFooterView *)self contentsLabel];
+  [contentsLabel2 setHidden:subtitleCopy == 0];
 }
 
-- (void)setSharingSubtitle:(id)a3
+- (void)setSharingSubtitle:(id)subtitle
 {
-  objc_storeStrong(&self->_sharingSubtitle, a3);
-  v5 = a3;
-  v6 = [(ICPreviewFooterView *)self sharingLabel];
-  [v6 setText:v5];
+  objc_storeStrong(&self->_sharingSubtitle, subtitle);
+  subtitleCopy = subtitle;
+  sharingLabel = [(ICPreviewFooterView *)self sharingLabel];
+  [sharingLabel setText:subtitleCopy];
 
-  v7 = [(ICPreviewFooterView *)self sharingLabel];
-  [v7 setHidden:v5 == 0];
+  sharingLabel2 = [(ICPreviewFooterView *)self sharingLabel];
+  [sharingLabel2 setHidden:subtitleCopy == 0];
 }
 
 - (UILabel)titleLabel

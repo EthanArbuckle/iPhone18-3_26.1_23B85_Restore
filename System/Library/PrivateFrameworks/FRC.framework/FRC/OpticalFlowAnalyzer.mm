@@ -1,50 +1,50 @@
 @interface OpticalFlowAnalyzer
-- ($599F175E452E455E49EC8439362DB023)analyzeBackwarpForward:(SEL)a3 backward:(__CVBuffer *)a4 flowResFirst:(__CVBuffer *)a5 flowResSecond:(__CVBuffer *)a6;
-- ($599F175E452E455E49EC8439362DB023)calcBackwarpStatisticsForwardLossTexture:(SEL)a3 backwardLossTexture:(id)a4 faceHandLegRectangles:(id)a5;
-- ($599F175E452E455E49EC8439362DB023)processBackwarpStats:(SEL)a3 blockWidth:(id *)a4 blockHeight:(unint64_t)a5 faceHandLegBoundingBoxBlocks:(unint64_t)a6;
-- ($E2C29196C7A5C696474C6955C5A9CE06)analyzeFlowRandomnessWithPrevFlowBackward:(__CVBuffer *)a3 forward:(__CVBuffer *)a4 lastFrameDuration:(id *)a5 lastNumberOfFrames:(unint64_t)a6 flowResFrame:(__CVBuffer *)a7;
-- ($E2C29196C7A5C696474C6955C5A9CE06)calcCrossFlowStatisticsPrevBackwardFlowTexture:(id)a3 forwardFlowTexture:(id)a4 frameTexture:(id)a5 flowScaleBuffer:(id)a6;
-- ($E2C29196C7A5C696474C6955C5A9CE06)processGPUOutputsRandomness:(id *)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5;
-- ($E2C29196C7A5C696474C6955C5A9CE06)safeThresholdWithtimeGap:(id *)a3 isDownsampled:(BOOL)a4;
-- ($F92E1B06C6614F01351795DC9F3D8716)analyzeOpticalFlowForward:(SEL)a3 backward:(__CVBuffer *)a4 flowResFrame:(__CVBuffer *)a5;
-- ($F92E1B06C6614F01351795DC9F3D8716)calcFlowStatisticsForwardFlowTexture:(SEL)a3 backwardFlowTexture:(id)a4 faceHandLegRectangles:(id)a5 frameTexture:(id)a6;
-- ($F92E1B06C6614F01351795DC9F3D8716)processGPUOutputs:(SEL)a3 blockWidth:(id *)a4 blockHeight:(unint64_t)a5 faceHandLegBoundingBoxBlocks:(unint64_t)a6;
-- (BOOL)checkSafetyByBlockConsistency:(id *)a3;
-- (BOOL)checkSafetyByScoreAndArea:(id *)a3;
-- (BOOL)checkSafetyByStripConsistency:(id *)a3;
+- ($599F175E452E455E49EC8439362DB023)analyzeBackwarpForward:(SEL)forward backward:(__CVBuffer *)backward flowResFirst:(__CVBuffer *)first flowResSecond:(__CVBuffer *)second;
+- ($599F175E452E455E49EC8439362DB023)calcBackwarpStatisticsForwardLossTexture:(SEL)texture backwardLossTexture:(id)lossTexture faceHandLegRectangles:(id)rectangles;
+- ($599F175E452E455E49EC8439362DB023)processBackwarpStats:(SEL)stats blockWidth:(id *)width blockHeight:(unint64_t)height faceHandLegBoundingBoxBlocks:(unint64_t)blocks;
+- ($E2C29196C7A5C696474C6955C5A9CE06)analyzeFlowRandomnessWithPrevFlowBackward:(__CVBuffer *)backward forward:(__CVBuffer *)forward lastFrameDuration:(id *)duration lastNumberOfFrames:(unint64_t)frames flowResFrame:(__CVBuffer *)frame;
+- ($E2C29196C7A5C696474C6955C5A9CE06)calcCrossFlowStatisticsPrevBackwardFlowTexture:(id)texture forwardFlowTexture:(id)flowTexture frameTexture:(id)frameTexture flowScaleBuffer:(id)buffer;
+- ($E2C29196C7A5C696474C6955C5A9CE06)processGPUOutputsRandomness:(id *)randomness blockWidth:(unint64_t)width blockHeight:(unint64_t)height;
+- ($E2C29196C7A5C696474C6955C5A9CE06)safeThresholdWithtimeGap:(id *)gap isDownsampled:(BOOL)downsampled;
+- ($F92E1B06C6614F01351795DC9F3D8716)analyzeOpticalFlowForward:(SEL)forward backward:(__CVBuffer *)backward flowResFrame:(__CVBuffer *)frame;
+- ($F92E1B06C6614F01351795DC9F3D8716)calcFlowStatisticsForwardFlowTexture:(SEL)texture backwardFlowTexture:(id)flowTexture faceHandLegRectangles:(id)rectangles frameTexture:(id)frameTexture;
+- ($F92E1B06C6614F01351795DC9F3D8716)processGPUOutputs:(SEL)outputs blockWidth:(id *)width blockHeight:(unint64_t)height faceHandLegBoundingBoxBlocks:(unint64_t)blocks;
+- (BOOL)checkSafetyByBlockConsistency:(id *)consistency;
+- (BOOL)checkSafetyByScoreAndArea:(id *)area;
+- (BOOL)checkSafetyByStripConsistency:(id *)consistency;
 - (BOOL)detectCameraRotation;
 - (FRCScaler)scaler;
 - (OpticalFlowAnalyzer)init;
-- (float)computeBackwarpConfidenceFromScore:(float)a3 scoreThreshold:(float)a4 scoreHighThreshold:(float)a5 areaRatio:(float)a6 areaRatioThreshold:(float)a7 areaRatioHighThreshold:(float)a8 large_area:(BOOL)a9;
-- (float)computeConsistencyConfidenceFromScore:(float)a3 scoreThreshold:(float)a4 areaRatio:(float)a5 areaRatioThreshold:(float)a6;
-- (id)extractFaceHandLegInfoFromBuffer:(__CVBuffer *)a3;
-- (id)findFaceHandLegBlocksFromRectangles:(id)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5;
-- (int)detectDominantDirectionInROI:(unsigned int *)a3;
+- (float)computeBackwarpConfidenceFromScore:(float)score scoreThreshold:(float)threshold scoreHighThreshold:(float)highThreshold areaRatio:(float)ratio areaRatioThreshold:(float)ratioThreshold areaRatioHighThreshold:(float)ratioHighThreshold large_area:(BOOL)large_area;
+- (float)computeConsistencyConfidenceFromScore:(float)score scoreThreshold:(float)threshold areaRatio:(float)ratio areaRatioThreshold:(float)ratioThreshold;
+- (id)extractFaceHandLegInfoFromBuffer:(__CVBuffer *)buffer;
+- (id)findFaceHandLegBlocksFromRectangles:(id)rectangles blockWidth:(unint64_t)width blockHeight:(unint64_t)height;
+- (int)detectDominantDirectionInROI:(unsigned int *)i;
 - (int64_t)detectSpecialMotion;
 - (unint64_t)gatingCause;
-- (void)analyzeAggregatedStatistics:(id *)a3;
+- (void)analyzeAggregatedStatistics:(id *)statistics;
 - (void)analyzeDeformation;
 - (void)analyzeMotionHistograms;
-- (void)calcMotionHistogramForwardFlowTexture:(id)a3 frameTexture:(id)a4;
-- (void)calcStripConsistency:(float *)a3 stripSize:(unint64_t)a4 numStrips:(unsigned int)a5;
-- (void)convertOctantDirectionHistogram:(int *)a3 toPerpendicularQuadrantHistogram:(unsigned int *)a4;
+- (void)calcMotionHistogramForwardFlowTexture:(id)texture frameTexture:(id)frameTexture;
+- (void)calcStripConsistency:(float *)consistency stripSize:(unint64_t)size numStrips:(unsigned int)strips;
+- (void)convertOctantDirectionHistogram:(int *)histogram toPerpendicularQuadrantHistogram:(unsigned int *)quadrantHistogram;
 - (void)dealloc;
 - (void)detectDominantDirection;
-- (void)isSafeToInterpolateForBackwarpGatingWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 flowResFirst:(__CVBuffer *)a5 flowResSecond:(__CVBuffer *)a6;
-- (void)isSafeToInterpolateForConsistencyGatingWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 flowResFrame:(__CVBuffer *)a5;
+- (void)isSafeToInterpolateForBackwarpGatingWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward flowResFirst:(__CVBuffer *)first flowResSecond:(__CVBuffer *)second;
+- (void)isSafeToInterpolateForConsistencyGatingWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward flowResFrame:(__CVBuffer *)frame;
 - (void)isSafeToInterpolateForDeformationGating;
-- (void)isSafeToInterpolateForRandomnessGatingWithPrevFlowBackward:(__CVBuffer *)a3 flowForward:(__CVBuffer *)a4 lastFrameDuration:(id *)a5 lastNumberOfFrames:(unint64_t)a6 flowResFrame:(__CVBuffer *)a7;
+- (void)isSafeToInterpolateForRandomnessGatingWithPrevFlowBackward:(__CVBuffer *)backward flowForward:(__CVBuffer *)forward lastFrameDuration:(id *)duration lastNumberOfFrames:(unint64_t)frames flowResFrame:(__CVBuffer *)frame;
 - (void)modulateGatingParametersFromMotionHistogramsAnalysis;
-- (void)modulateGatingParametersWithFlowForward:(__CVBuffer *)a3 flowResFrame:(__CVBuffer *)a4;
-- (void)prepareGatingFrameDropDetector:(id)a3 numberOfFrames:(unint64_t)a4 timeGap:(id *)a5 isContinuousDrops:(BOOL)a6 enableFlowAnalysis:(BOOL)a7 enableCrossFlowAnalysis:(BOOL)a8 cleanRectFirst:(CGRect)a9 cleanRectSecond:(CGRect)a10;
-- (void)printFaceHandLegRectangles:(id)a3;
+- (void)modulateGatingParametersWithFlowForward:(__CVBuffer *)forward flowResFrame:(__CVBuffer *)frame;
+- (void)prepareGatingFrameDropDetector:(id)detector numberOfFrames:(unint64_t)frames timeGap:(id *)gap isContinuousDrops:(BOOL)drops enableFlowAnalysis:(BOOL)analysis enableCrossFlowAnalysis:(BOOL)flowAnalysis cleanRectFirst:(CGRect)first cleanRectSecond:(CGRect)self0;
+- (void)printFaceHandLegRectangles:(id)rectangles;
 - (void)printSideHistograms;
-- (void)printStripScores:(id *)a3;
-- (void)processGPUOutputsHistograms:(id *)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5;
-- (void)processGPUOutputsHistogramsForDeformation:(id *)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5;
+- (void)printStripScores:(id *)scores;
+- (void)processGPUOutputsHistograms:(id *)histograms blockWidth:(unint64_t)width blockHeight:(unint64_t)height;
+- (void)processGPUOutputsHistogramsForDeformation:(id *)deformation blockWidth:(unint64_t)width blockHeight:(unint64_t)height;
 - (void)reset;
-- (void)runDetectionFromFirstBuffer:(__CVBuffer *)a3 secondBuffer:(__CVBuffer *)a4;
-- (void)runGatingWithPrevFlowBackward:(__CVBuffer *)a3 flowForward:(__CVBuffer *)a4 flowBackward:(__CVBuffer *)a5 lastFrameDuration:(id *)a6 lastNumberOfFrames:(unint64_t)a7 flowResFrame:(__CVBuffer *)a8 flowResFirst:(__CVBuffer *)a9 flowResSecond:(__CVBuffer *)a10;
+- (void)runDetectionFromFirstBuffer:(__CVBuffer *)buffer secondBuffer:(__CVBuffer *)secondBuffer;
+- (void)runGatingWithPrevFlowBackward:(__CVBuffer *)backward flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)flowBackward lastFrameDuration:(id *)duration lastNumberOfFrames:(unint64_t)frames flowResFrame:(__CVBuffer *)frame flowResFirst:(__CVBuffer *)first flowResSecond:(__CVBuffer *)self0;
 - (void)setDetectorsFromDefaults;
 - (void)setupMetal;
 - (void)updateGatingStats;
@@ -138,7 +138,7 @@
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   self->_isSmallDrops = 0;
   self->_isContinuousDrops = 0;
   self->_shouldRunFlowAnalysis = 0;
@@ -176,43 +176,43 @@
   v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:? options:? error:?];
   v4 = [v3 objectForKeyedSubscript:@"consistencyAreaThreshold"];
   [v4 floatValue];
-  v2->jsonConsistencyAreaThreshold = v5;
+  selfCopy->jsonConsistencyAreaThreshold = v5;
 
   v6 = [v3 objectForKeyedSubscript:@"consistencyROIAreaPercentageThreshold"];
   [v6 floatValue];
-  v2->jsonConsistencyROIAreaPercentageThreshold = v7;
+  selfCopy->jsonConsistencyROIAreaPercentageThreshold = v7;
 
   v8 = [v3 objectForKeyedSubscript:@"consistencyAreaPercentageThreshold"];
   [v8 floatValue];
-  v2->jsonConsistencyAreaPercentageThreshold = v9;
+  selfCopy->jsonConsistencyAreaPercentageThreshold = v9;
 
-  v2->jsonConsistencyFrameScoreThresholdOnDemand = 27.0;
-  v2->jsonConsistencyAreaPercentageThresholdOnDemand = 5.0;
+  selfCopy->jsonConsistencyFrameScoreThresholdOnDemand = 27.0;
+  selfCopy->jsonConsistencyAreaPercentageThresholdOnDemand = 5.0;
   v10 = -8;
-  v93 = v2;
+  v93 = selfCopy;
   do
   {
     v11 = [v3 objectForKeyedSubscript:@"consistencySafeThresholdsForDownsampled"];
     v12 = [v11 objectAtIndexedSubscript:v10 + 8];
     [v12 floatValue];
-    v2->jsonConsistencySafeThresholdsForDownsampled[0] = v13;
+    selfCopy->jsonConsistencySafeThresholdsForDownsampled[0] = v13;
 
     v14 = [v3 objectForKeyedSubscript:@"consistencySafeThresholdsForNonDownsampled"];
     v15 = [v14 objectAtIndexedSubscript:v10 + 8];
     [v15 floatValue];
-    v2->jsonConsistencySafeThresholdsForNonDownsampled[0] = v16;
+    selfCopy->jsonConsistencySafeThresholdsForNonDownsampled[0] = v16;
 
     v17 = [v3 objectForKeyedSubscript:@"consistencySafeThresholdsForDownsampledDelta"];
     v18 = [v17 objectAtIndexedSubscript:v10 + 8];
     [v18 floatValue];
-    v2->jsonConsistencySafeThresholdsForDownsampledDelta[0] = v19;
+    selfCopy->jsonConsistencySafeThresholdsForDownsampledDelta[0] = v19;
 
     v20 = [v3 objectForKeyedSubscript:@"consistencySafeThresholdsForNonDownsampledDelta"];
     v21 = [v20 objectAtIndexedSubscript:v10 + 8];
     [v21 floatValue];
-    v2->jsonConsistencySafeThresholdsForNonDownsampledDelta[0] = v22;
+    selfCopy->jsonConsistencySafeThresholdsForNonDownsampledDelta[0] = v22;
 
-    v2 = (v2 + 4);
+    selfCopy = (selfCopy + 4);
     v23 = __CFADD__(v10++, 1);
   }
 
@@ -403,24 +403,24 @@
   return 9;
 }
 
-- (void)prepareGatingFrameDropDetector:(id)a3 numberOfFrames:(unint64_t)a4 timeGap:(id *)a5 isContinuousDrops:(BOOL)a6 enableFlowAnalysis:(BOOL)a7 enableCrossFlowAnalysis:(BOOL)a8 cleanRectFirst:(CGRect)a9 cleanRectSecond:(CGRect)a10
+- (void)prepareGatingFrameDropDetector:(id)detector numberOfFrames:(unint64_t)frames timeGap:(id *)gap isContinuousDrops:(BOOL)drops enableFlowAnalysis:(BOOL)analysis enableCrossFlowAnalysis:(BOOL)flowAnalysis cleanRectFirst:(CGRect)first cleanRectSecond:(CGRect)self0
 {
-  v10 = a8;
-  v11 = a7;
-  width = a10.size.width;
-  height = a10.size.height;
-  v42 = a9.size.height;
-  x = a10.origin.x;
-  y = a9.origin.y;
-  v39 = a10.origin.y;
-  v40 = a9.origin.x;
-  v41 = a9.size.width;
-  v16 = a3;
-  self->_framesToInterpolate = a4;
-  var3 = a5->var3;
-  *&self->_timeGap.value = *&a5->var0;
+  flowAnalysisCopy = flowAnalysis;
+  analysisCopy = analysis;
+  width = second.size.width;
+  height = second.size.height;
+  v42 = first.size.height;
+  x = second.origin.x;
+  y = first.origin.y;
+  v39 = second.origin.y;
+  v40 = first.origin.x;
+  v41 = first.size.width;
+  detectorCopy = detector;
+  self->_framesToInterpolate = frames;
+  var3 = gap->var3;
+  *&self->_timeGap.value = *&gap->var0;
   self->_timeGap.epoch = var3;
-  self->_isContinuousDrops = a6;
+  self->_isContinuousDrops = drops;
   if (self->_framesToInterpolate < 2)
   {
     v18 = 0;
@@ -433,9 +433,9 @@
     v18 = CMTimeCompare(&time1, &time2) > 0 || self->_framesToInterpolate > 4;
   }
 
-  if ([v16 retimingRecipe])
+  if ([detectorCopy retimingRecipe])
   {
-    v19 = [v16 numberOfInsertionPoints] < 5;
+    v19 = [detectorCopy numberOfInsertionPoints] < 5;
   }
 
   else
@@ -444,9 +444,9 @@
   }
 
   self->_isSmallDrops = v19;
-  if (v11)
+  if (analysisCopy)
   {
-    if ([v16 numberOfInsertionPoints])
+    if ([detectorCopy numberOfInsertionPoints])
     {
       v20 = 1;
     }
@@ -463,7 +463,7 @@
   }
 
   self->_shouldRunFlowAnalysis = v20;
-  v21 = v10 && self->_isContinuousDrops && self->_useCase == 0;
+  v21 = flowAnalysisCopy && self->_isContinuousDrops && self->_useCase == 0;
   self->_shouldRunCrossFlowAnalysis = v21;
   if (!self->_shouldRunFlowAnalysis)
   {
@@ -516,29 +516,29 @@ LABEL_27:
 LABEL_30:
 }
 
-- (void)runGatingWithPrevFlowBackward:(__CVBuffer *)a3 flowForward:(__CVBuffer *)a4 flowBackward:(__CVBuffer *)a5 lastFrameDuration:(id *)a6 lastNumberOfFrames:(unint64_t)a7 flowResFrame:(__CVBuffer *)a8 flowResFirst:(__CVBuffer *)a9 flowResSecond:(__CVBuffer *)a10
+- (void)runGatingWithPrevFlowBackward:(__CVBuffer *)backward flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)flowBackward lastFrameDuration:(id *)duration lastNumberOfFrames:(unint64_t)frames flowResFrame:(__CVBuffer *)frame flowResFirst:(__CVBuffer *)first flowResSecond:(__CVBuffer *)self0
 {
-  [(OpticalFlowAnalyzer *)self modulateGatingParametersWithFlowForward:a4 flowResFrame:a8];
+  [(OpticalFlowAnalyzer *)self modulateGatingParametersWithFlowForward:forward flowResFrame:frame];
   if (self->_shouldRunCrossFlowAnalysis)
   {
     kdebug_trace();
-    v17 = *&a6->var0;
-    var3 = a6->var3;
-    [(OpticalFlowAnalyzer *)self isSafeToInterpolateForRandomnessGatingWithPrevFlowBackward:a3 flowForward:a4 lastFrameDuration:&v17 lastNumberOfFrames:a7 flowResFrame:a8];
+    v17 = *&duration->var0;
+    var3 = duration->var3;
+    [(OpticalFlowAnalyzer *)self isSafeToInterpolateForRandomnessGatingWithPrevFlowBackward:backward flowForward:forward lastFrameDuration:&v17 lastNumberOfFrames:frames flowResFrame:frame];
     kdebug_trace();
   }
 
   if (self->_shouldRunFlowAnalysis)
   {
     kdebug_trace();
-    [(OpticalFlowAnalyzer *)self isSafeToInterpolateForConsistencyGatingWithFlowForward:a4 flowBackward:a5 flowResFrame:a8];
-    [(OpticalFlowAnalyzer *)self isSafeToInterpolateForBackwarpGatingWithFlowForward:a4 flowBackward:a5 flowResFirst:a9 flowResSecond:a10];
+    [(OpticalFlowAnalyzer *)self isSafeToInterpolateForConsistencyGatingWithFlowForward:forward flowBackward:flowBackward flowResFrame:frame];
+    [(OpticalFlowAnalyzer *)self isSafeToInterpolateForBackwarpGatingWithFlowForward:forward flowBackward:flowBackward flowResFirst:first flowResSecond:second];
     [(OpticalFlowAnalyzer *)self isSafeToInterpolateForDeformationGating];
     kdebug_trace();
   }
 }
 
-- (void)isSafeToInterpolateForConsistencyGatingWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 flowResFrame:(__CVBuffer *)a5
+- (void)isSafeToInterpolateForConsistencyGatingWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward flowResFrame:(__CVBuffer *)frame
 {
   v55 = 0;
   *v53 = 0u;
@@ -555,7 +555,7 @@ LABEL_30:
   v44 = 0u;
   memset(v42, 0, sizeof(v42));
   v9 = objc_autoreleasePoolPush();
-  [(OpticalFlowAnalyzer *)self analyzeOpticalFlowForward:a3 backward:a4 flowResFrame:a5];
+  [(OpticalFlowAnalyzer *)self analyzeOpticalFlowForward:forward backward:backward flowResFrame:frame];
   objc_autoreleasePoolPop(v9);
   if (!self->_useCase && self->_isLargeRandomnessErr)
   {
@@ -789,27 +789,27 @@ LABEL_47:
   }
 }
 
-- (float)computeConsistencyConfidenceFromScore:(float)a3 scoreThreshold:(float)a4 areaRatio:(float)a5 areaRatioThreshold:(float)a6
+- (float)computeConsistencyConfidenceFromScore:(float)score scoreThreshold:(float)threshold areaRatio:(float)ratio areaRatioThreshold:(float)ratioThreshold
 {
   v8 = 1.5;
-  if (a5 < a6)
+  if (ratio < ratioThreshold)
   {
-    v8 = expf((1.0 - (a5 / a6)) * 15.0) * 1.5;
+    v8 = expf((1.0 - (ratio / ratioThreshold)) * 15.0) * 1.5;
   }
 
   v9 = 4.0;
-  if (a3 >= a4)
+  if (score >= threshold)
   {
     v9 = 1.0;
   }
 
-  return v8 / (expf(((a4 / a3) + -1.0) * v9) + 1.0);
+  return v8 / (expf(((threshold / score) + -1.0) * v9) + 1.0);
 }
 
-- ($F92E1B06C6614F01351795DC9F3D8716)analyzeOpticalFlowForward:(SEL)a3 backward:(__CVBuffer *)a4 flowResFrame:(__CVBuffer *)a5
+- ($F92E1B06C6614F01351795DC9F3D8716)analyzeOpticalFlowForward:(SEL)forward backward:(__CVBuffer *)backward flowResFrame:(__CVBuffer *)frame
 {
-  v10 = createTexturesFromCVPixelBuffer(a4, self->super._device, 1, 2uLL);
-  v11 = createTexturesFromCVPixelBuffer(a5, self->super._device, 1, 2uLL);
+  v10 = createTexturesFromCVPixelBuffer(backward, self->super._device, 1, 2uLL);
+  v11 = createTexturesFromCVPixelBuffer(frame, self->super._device, 1, 2uLL);
   v15 = createRGBATextureFromCVPixelBuffer(a6, self->super._device);
   v12 = [(NSArray *)self->_firstFaceHandLegRectangles arrayByAddingObjectsFromArray:self->_secondFaceHandLegRectangles];
   *&retstr->var0.var0 = 0u;
@@ -836,37 +836,37 @@ LABEL_47:
   return result;
 }
 
-- ($F92E1B06C6614F01351795DC9F3D8716)calcFlowStatisticsForwardFlowTexture:(SEL)a3 backwardFlowTexture:(id)a4 faceHandLegRectangles:(id)a5 frameTexture:(id)a6
+- ($F92E1B06C6614F01351795DC9F3D8716)calcFlowStatisticsForwardFlowTexture:(SEL)texture backwardFlowTexture:(id)flowTexture faceHandLegRectangles:(id)rectangles frameTexture:(id)frameTexture
 {
-  v23 = a6;
+  frameTextureCopy = frameTexture;
   v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = ([v14 width] + 7) >> 3;
-  v16 = ([v14 height] + 7) >> 3;
+  rectanglesCopy = rectangles;
+  flowTextureCopy = flowTexture;
+  v15 = ([flowTextureCopy width] + 7) >> 3;
+  v16 = ([flowTextureCopy height] + 7) >> 3;
   v17 = [(MTLDevice *)self->super._device newBufferWithLength:4 * v15 * v16 options:0];
-  v18 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v19 = [v18 computeCommandEncoder];
-  [v19 setComputePipelineState:self->_flowStatisticsKernel];
-  [v19 setTexture:v14 atIndex:0];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_flowStatisticsKernel];
+  [computeCommandEncoder setTexture:flowTextureCopy atIndex:0];
 
-  [v19 setTexture:v13 atIndex:1];
-  [v19 setTexture:v12 atIndex:2];
+  [computeCommandEncoder setTexture:rectanglesCopy atIndex:1];
+  [computeCommandEncoder setTexture:v12 atIndex:2];
 
-  [v19 setBuffer:v17 offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:v17 offset:0 atIndex:0];
   v26[0] = v15;
   v26[1] = v16;
   v26[2] = 1;
   v24 = vdupq_n_s64(8uLL);
   v25 = 1;
-  [v19 dispatchThreadgroups:v26 threadsPerThreadgroup:&v24];
-  [v19 endEncoding];
-  [v18 commit];
-  [v18 waitUntilCompleted];
-  v20 = [v17 contents];
-  if (v23)
+  [computeCommandEncoder dispatchThreadgroups:v26 threadsPerThreadgroup:&v24];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
+  contents = [v17 contents];
+  if (frameTextureCopy)
   {
-    v21 = [(OpticalFlowAnalyzer *)self findFaceHandLegBlocksFromRectangles:v23 blockWidth:v15 blockHeight:v16];
+    v21 = [(OpticalFlowAnalyzer *)self findFaceHandLegBlocksFromRectangles:frameTextureCopy blockWidth:v15 blockHeight:v16];
   }
 
   else
@@ -889,27 +889,27 @@ LABEL_47:
   *&retstr->var6 = 0u;
   *&retstr->var0.var0 = 0u;
   *&retstr->var0.var3 = 0u;
-  [(OpticalFlowAnalyzer *)self processGPUOutputs:v20 blockWidth:v15 blockHeight:v16 faceHandLegBoundingBoxBlocks:v21];
+  [(OpticalFlowAnalyzer *)self processGPUOutputs:contents blockWidth:v15 blockHeight:v16 faceHandLegBoundingBoxBlocks:v21];
 
   return result;
 }
 
-- (id)findFaceHandLegBlocksFromRectangles:(id)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5
+- (id)findFaceHandLegBlocksFromRectangles:(id)rectangles blockWidth:(unint64_t)width blockHeight:(unint64_t)height
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] array];
+  rectanglesCopy = rectangles;
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v7;
+  v9 = rectanglesCopy;
   v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v26;
-    v13 = a5;
+    heightCopy = height;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -921,8 +921,8 @@ LABEL_47:
 
         v15 = *(*(&v25 + 1) + 8 * i);
         [v15 boundingBox];
-        v22 = +[FRCFaceHandLegBlock faceHandLegBlockWithRect:numberOfBlocks:category:](FRCFaceHandLegBlock, "faceHandLegBlockWithRect:numberOfBlocks:category:", ((v18 * a4 + 0.5) + 1) * ((v19 * v13 + 0.5) + 1), [v15 category], (v16 * a4), ((1.0 - v17 - v19) * v13), v20, v21);
-        [v8 addObject:v22];
+        v22 = +[FRCFaceHandLegBlock faceHandLegBlockWithRect:numberOfBlocks:category:](FRCFaceHandLegBlock, "faceHandLegBlockWithRect:numberOfBlocks:category:", ((v18 * width + 0.5) + 1) * ((v19 * heightCopy + 0.5) + 1), [v15 category], (v16 * width), ((1.0 - v17 - v19) * heightCopy), v20, v21);
+        [array addObject:v22];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -933,30 +933,30 @@ LABEL_47:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
-- ($F92E1B06C6614F01351795DC9F3D8716)processGPUOutputs:(SEL)a3 blockWidth:(id *)a4 blockHeight:(unint64_t)a5 faceHandLegBoundingBoxBlocks:(unint64_t)a6
+- ($F92E1B06C6614F01351795DC9F3D8716)processGPUOutputs:(SEL)outputs blockWidth:(id *)width blockHeight:(unint64_t)height faceHandLegBoundingBoxBlocks:(unint64_t)blocks
 {
   v111 = a7;
-  v11 = (a5 + 1) >> 1;
-  v12 = (a6 + 1) >> 1;
-  v13 = (a5 + 11) / 0xC;
-  v14 = (a5 + 3) >> 2;
-  v15 = (a6 + 3) >> 2;
+  v11 = (height + 1) >> 1;
+  v12 = (blocks + 1) >> 1;
+  v13 = (height + 11) / 0xC;
+  v14 = (height + 3) >> 2;
+  v15 = (blocks + 3) >> 2;
   v16 = v15 * v14;
-  v79 = (a5 + 5) / 6;
+  v79 = (height + 5) / 6;
   v80 = v14;
   count = v12 * v79;
   v81 = v11;
-  v17 = (a6 + 5) / 6 * v11;
+  v17 = (blocks + 5) / 6 * v11;
   v18 = v15 * v13;
-  v19 = (a6 + 11) / 0xC;
+  v19 = (blocks + 11) / 0xC;
   v20 = v19 * v14;
   v106 = v13;
   v74 = v12 * v11;
   v75 = v19 * v13;
-  v78 = (a5 + 23) / 0x18;
+  v78 = (height + 23) / 0x18;
   v89 = malloc_type_calloc(v12 * v11, 4uLL, 0x100004052888210uLL);
   v73 = v16;
   v88 = malloc_type_calloc(v16, 4uLL, 0x100004052888210uLL);
@@ -966,10 +966,10 @@ LABEL_47:
   v86 = malloc_type_calloc(v18, 4uLL, 0x100004052888210uLL);
   v70 = v20;
   v21 = v20;
-  v22 = a5;
+  heightCopy = height;
   v84 = malloc_type_calloc(v21, 4uLL, 0x100004052888210uLL);
   v83 = malloc_type_calloc(v75, 4uLL, 0x100004052888210uLL);
-  v69 = (a6 + 23) / 0x18 * v78;
+  v69 = (blocks + 23) / 0x18 * v78;
   v82 = malloc_type_calloc(v69, 4uLL, 0x100004052888210uLL);
   v95 = malloc_type_calloc(0xCuLL, 4uLL, 0x100004052888210uLL);
   v94 = malloc_type_calloc(8uLL, 4uLL, 0x100004052888210uLL);
@@ -977,29 +977,29 @@ LABEL_47:
   v24 = malloc_type_calloc(v23, 4uLL, 0x100004052888210uLL);
   if (self->_visualizationEnabled)
   {
-    self->_consistencyMap = malloc_type_calloc(a6 * v22, 1uLL, 0x100004077774924uLL);
+    self->_consistencyMap = malloc_type_calloc(blocks * heightCopy, 1uLL, 0x100004077774924uLL);
   }
 
-  v93 = (a6 + 7) >> 3;
-  v96 = v22;
-  v97 = self;
+  v93 = (blocks + 7) >> 3;
+  v96 = heightCopy;
+  selfCopy = self;
   v72 = v18;
-  if (a6)
+  if (blocks)
   {
     v91 = v24;
     v68 = retstr;
     v107 = 0;
     v109 = 0;
     v25 = 0;
-    v77 = v22;
+    v77 = heightCopy;
     v26 = 0.0;
     v27 = 0.0;
     v28 = 0.0;
     v29 = 0.0;
-    v90 = a6;
+    blocksCopy = blocks;
     do
     {
-      if (v22)
+      if (heightCopy)
       {
         v30 = 0;
         p_cleanRectFlow8x8 = &self->_cleanRectFlow8x8;
@@ -1019,7 +1019,7 @@ LABEL_47:
           v113.y = v107;
           if (CGRectContainsPoint(*p_cleanRectFlow8x8, v113))
           {
-            var0 = a4[v30 + v104].var0;
+            var0 = width[v30 + v104].var0;
             if (self->_visualizationEnabled)
             {
               self->_consistencyMap[v30 + v104] = var0;
@@ -1056,8 +1056,8 @@ LABEL_47:
               }
 
               v91[v39] = var0 + v91[v39];
-              self = v97;
-              if ((v97->jsonConsistencyAreaThreshold * 64.0) / 5.0 < var0)
+              self = selfCopy;
+              if ((selfCopy->jsonConsistencyAreaThreshold * 64.0) / 5.0 < var0)
               {
                 v28 = v28 + 1.0;
               }
@@ -1068,7 +1068,7 @@ LABEL_47:
 LABEL_16:
               v29 = v29 + var0;
               ++v109;
-              self = v97;
+              self = selfCopy;
             }
 
             v42 = v30 >> 1;
@@ -1087,7 +1087,7 @@ LABEL_16:
             *(v35 + v45) = var0 + *(v35 + v45);
             v36 = &v82[v78 * (v107 / 0x18uLL)];
             *(v36 + (v44 & 0x3FFFFFFC)) = var0 + *(v36 + (v44 & 0x3FFFFFFC));
-            v22 = v96;
+            heightCopy = v96;
             v95[v30 / v106] = var0 + v95[v30 / v106];
             v94[v107 / v93] = var0 + v94[v107 / v93];
           }
@@ -1095,14 +1095,14 @@ LABEL_16:
           ++v30;
         }
 
-        while (v30 != v22);
+        while (v30 != heightCopy);
       }
 
-      a6 = v90;
+      blocks = blocksCopy;
       ++v107;
     }
 
-    while (v107 != v90);
+    while (v107 != blocksCopy);
     v108 = v28 * 100.0;
     v105 = v27 * 100.0;
     retstr = v68;
@@ -1138,9 +1138,9 @@ LABEL_16:
       v57 = [v56 numberOfBlocks] / v47;
 
       v58 = [v111 objectAtIndexedSubscript:i];
-      v59 = [v58 category];
+      category = [v58 category];
 
-      v60 = v59 == 2;
+      v60 = category == 2;
       v52 = v51;
       v61 = 128.0;
       if (!v60)
@@ -1171,8 +1171,8 @@ LABEL_16:
   v64 = v26 / (v25 << 6);
   v65 = log10(100.0 / v64) * 10.0;
   v66 = log10(100.0 / (v110 + ((1.0 - v49) * v63))) * 10.0;
-  [(OpticalFlowAnalyzer *)v97 calcStripConsistency:v95 stripSize:(a6 * v106) << 6 numStrips:12];
-  [(OpticalFlowAnalyzer *)v97 calcStripConsistency:v94 stripSize:(v96 * v93) << 6 numStrips:8];
+  [(OpticalFlowAnalyzer *)selfCopy calcStripConsistency:v95 stripSize:(blocks * v106) << 6 numStrips:12];
+  [(OpticalFlowAnalyzer *)selfCopy calcStripConsistency:v94 stripSize:(v96 * v93) << 6 numStrips:8];
   *&retstr->var2 = 0u;
   *&retstr->var6 = 0u;
   *&retstr->var0.var0 = 0u;
@@ -1209,15 +1209,15 @@ LABEL_16:
   return result;
 }
 
-- (void)calcStripConsistency:(float *)a3 stripSize:(unint64_t)a4 numStrips:(unsigned int)a5
+- (void)calcStripConsistency:(float *)consistency stripSize:(unint64_t)size numStrips:(unsigned int)strips
 {
-  if (a5)
+  if (strips)
   {
-    v6 = a4;
-    v7 = a5;
+    sizeCopy = size;
+    stripsCopy = strips;
     do
     {
-      v8 = *a3 / v6;
+      v8 = *consistency / sizeCopy;
       if (v8 == 0.0)
       {
         v9 = 100.0;
@@ -1228,24 +1228,24 @@ LABEL_16:
         v9 = log10(100.0 / v8) * 10.0;
       }
 
-      *a3++ = v9;
-      --v7;
+      *consistency++ = v9;
+      --stripsCopy;
     }
 
-    while (v7);
+    while (stripsCopy);
   }
 }
 
-- (void)analyzeAggregatedStatistics:(id *)a3
+- (void)analyzeAggregatedStatistics:(id *)statistics
 {
-  time = a3->var0;
+  time = statistics->var0;
   Seconds = CMTimeGetSeconds(&time);
-  var11 = a3->var11;
+  var11 = statistics->var11;
   v7 = 0.0;
   v8 = 0.0;
   if (var11)
   {
-    var12 = a3->var12;
+    var12 = statistics->var12;
     do
     {
       v10 = *var12 * 0.0039062;
@@ -1257,10 +1257,10 @@ LABEL_16:
     while (var11);
   }
 
-  var13 = a3->var13;
+  var13 = statistics->var13;
   if (var13)
   {
-    var14 = a3->var14;
+    var14 = statistics->var14;
     v7 = 0.0;
     do
     {
@@ -1273,12 +1273,12 @@ LABEL_16:
     while (var13);
   }
 
-  var17 = a3->var17;
+  var17 = statistics->var17;
   v15 = 0.0;
   v16 = 0.0;
   if (var17)
   {
-    var18 = a3->var18;
+    var18 = statistics->var18;
     v18 = 0.0;
     do
     {
@@ -1292,10 +1292,10 @@ LABEL_16:
     v16 = v18;
   }
 
-  var15 = a3->var15;
+  var15 = statistics->var15;
   if (var15)
   {
-    var16 = a3->var16;
+    var16 = statistics->var16;
     v22 = 0.0;
     do
     {
@@ -1309,12 +1309,12 @@ LABEL_16:
     v15 = v22;
   }
 
-  var21 = a3->var21;
+  var21 = statistics->var21;
   v25 = 0.0;
   v26 = 0.0;
   if (var21)
   {
-    var22 = a3->var22;
+    var22 = statistics->var22;
     v28 = 0.0;
     do
     {
@@ -1328,10 +1328,10 @@ LABEL_16:
     v26 = v28;
   }
 
-  var19 = a3->var19;
+  var19 = statistics->var19;
   if (var19)
   {
-    var20 = a3->var20;
+    var20 = statistics->var20;
     v32 = 0.0;
     do
     {
@@ -1345,12 +1345,12 @@ LABEL_16:
     v25 = v32;
   }
 
-  var23 = a3->var23;
+  var23 = statistics->var23;
   v35 = 0.0;
   v36 = 0.0;
   if (var23)
   {
-    var24 = a3->var24;
+    var24 = statistics->var24;
     do
     {
       v38 = *var24 / 9216.0;
@@ -1362,10 +1362,10 @@ LABEL_16:
     while (var23);
   }
 
-  var25 = a3->var25;
+  var25 = statistics->var25;
   if (var25)
   {
-    var26 = a3->var26;
+    var26 = statistics->var26;
     v35 = 0.0;
     do
     {
@@ -1379,30 +1379,30 @@ LABEL_16:
   }
 
   v42 = Seconds * 1000.0;
-  a3->var7 = v8;
-  a3->var8 = v7;
-  a3->var9 = v36;
-  a3->var10 = v35;
-  printf("[FlowAnalysis] Insert %ld frames, Duration: %6.2f msec, Error: %.3f, Score: %.3f, ROI_Score: %.3f, Area_Ratio: %.3f, ROI_Area_Ratio: %.3f, 16x16 Max: %.3f, 32x32 Max: %.3f, 48x16 Max: %.3f, 16x48 Max: %.3f, 96x32 Max: %.3f, 32x96 Max: %.3f, 96x96 Max: %.3f, 192x192 Max: %.3f\n", a3->var1, v42, a3->var2, a3->var3, a3->var4, a3->var5, a3->var6, v8, v7, v16, v15, v26, v25, v36, v35);
-  [(OpticalFlowAnalyzer *)self printStripScores:a3];
+  statistics->var7 = v8;
+  statistics->var8 = v7;
+  statistics->var9 = v36;
+  statistics->var10 = v35;
+  printf("[FlowAnalysis] Insert %ld frames, Duration: %6.2f msec, Error: %.3f, Score: %.3f, ROI_Score: %.3f, Area_Ratio: %.3f, ROI_Area_Ratio: %.3f, 16x16 Max: %.3f, 32x32 Max: %.3f, 48x16 Max: %.3f, 16x48 Max: %.3f, 96x32 Max: %.3f, 32x96 Max: %.3f, 96x96 Max: %.3f, 192x192 Max: %.3f\n", statistics->var1, v42, statistics->var2, statistics->var3, statistics->var4, statistics->var5, statistics->var6, v8, v7, v16, v15, v26, v25, v36, v35);
+  [(OpticalFlowAnalyzer *)self printStripScores:statistics];
   fflush(*MEMORY[0x277D85E08]);
 }
 
-- (void)printStripScores:(id *)a3
+- (void)printStripScores:(id *)scores
 {
   printf("[FlowAnalysis] Vertical Strip Score: ");
-  if (a3->var27)
+  if (scores->var27)
   {
     v4 = 0;
     v5 = 1;
     do
     {
-      printf("%.3f", a3->var28[v4]);
-      var27 = a3->var27;
+      printf("%.3f", scores->var28[v4]);
+      var27 = scores->var27;
       if (var27 - 1 != v4)
       {
         printf(", ");
-        var27 = a3->var27;
+        var27 = scores->var27;
       }
 
       v4 = v5;
@@ -1414,18 +1414,18 @@ LABEL_16:
 
   putchar(10);
   printf("[FlowAnalysis] Horizontal Strip Score: ");
-  if (a3->var29)
+  if (scores->var29)
   {
     v8 = 0;
     v9 = 1;
     do
     {
-      printf("%.3f", a3->var30[v8]);
-      var29 = a3->var29;
+      printf("%.3f", scores->var30[v8]);
+      var29 = scores->var29;
       if (var29 - 1 != v8)
       {
         printf(", ");
-        var29 = a3->var29;
+        var29 = scores->var29;
       }
 
       v8 = v9;
@@ -1438,7 +1438,7 @@ LABEL_16:
   putchar(10);
 }
 
-- (void)runDetectionFromFirstBuffer:(__CVBuffer *)a3 secondBuffer:(__CVBuffer *)a4
+- (void)runDetectionFromFirstBuffer:(__CVBuffer *)buffer secondBuffer:(__CVBuffer *)secondBuffer
 {
   firstFaceHandLegRectangles = self->_firstFaceHandLegRectangles;
   self->_firstFaceHandLegRectangles = 0;
@@ -1449,11 +1449,11 @@ LABEL_16:
   if (self->_shouldRunDetection)
   {
     kdebug_trace();
-    v9 = [(OpticalFlowAnalyzer *)self extractFaceHandLegInfoFromBuffer:a3];
+    v9 = [(OpticalFlowAnalyzer *)self extractFaceHandLegInfoFromBuffer:buffer];
     v10 = self->_firstFaceHandLegRectangles;
     self->_firstFaceHandLegRectangles = v9;
 
-    v11 = [(OpticalFlowAnalyzer *)self extractFaceHandLegInfoFromBuffer:a4];
+    v11 = [(OpticalFlowAnalyzer *)self extractFaceHandLegInfoFromBuffer:secondBuffer];
     v12 = self->_secondFaceHandLegRectangles;
     self->_secondFaceHandLegRectangles = v11;
 
@@ -1463,12 +1463,12 @@ LABEL_16:
   }
 }
 
-- (id)extractFaceHandLegInfoFromBuffer:(__CVBuffer *)a3
+- (id)extractFaceHandLegInfoFromBuffer:(__CVBuffer *)buffer
 {
-  v3 = a3;
+  bufferCopy = buffer;
   v133 = *MEMORY[0x277D85DE8];
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(v3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(bufferCopy);
   v7 = Height;
   if (Height < 0x438)
   {
@@ -1505,12 +1505,12 @@ LABEL_16:
   v88 = v7;
   v89 = Width;
   WeakRetained = objc_loadWeakRetained(&self->_scaler);
-  [WeakRetained downScaleFrameSource:v3 destination:donwsampledSourceBuffer rotate:self->_inputRotation waitForCompletion:0];
+  [WeakRetained downScaleFrameSource:bufferCopy destination:donwsampledSourceBuffer rotate:self->_inputRotation waitForCompletion:0];
 
-  v3 = donwsampledSourceBuffer;
+  bufferCopy = donwsampledSourceBuffer;
 LABEL_9:
-  v10 = [MEMORY[0x277CBEAC0] dictionary];
-  v11 = [objc_alloc(MEMORY[0x277CE2D50]) initWithCVPixelBuffer:v3 options:v10];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v11 = [objc_alloc(MEMORY[0x277CE2D50]) initWithCVPixelBuffer:bufferCopy options:dictionary];
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = objc_alloc_init(MEMORY[0x277CE2C88]);
@@ -1597,20 +1597,20 @@ LABEL_9:
 
   if (v24)
   {
-    v25 = [v96 results];
-    v26 = [v25 count];
+    results = [v96 results];
+    v26 = [results count];
 
     v86 = v16;
-    v87 = v10;
+    v87 = dictionary;
     if (v26)
     {
-      v27 = self;
-      v28 = [v96 results];
+      selfCopy = self;
+      results2 = [v96 results];
       v117 = 0u;
       v118 = 0u;
       v119 = 0u;
       v120 = 0u;
-      v29 = [v28 countByEnumeratingWithState:&v117 objects:v132 count:16];
+      v29 = [results2 countByEnumeratingWithState:&v117 objects:v132 count:16];
       if (v29)
       {
         v30 = v29;
@@ -1621,7 +1621,7 @@ LABEL_9:
           {
             if (*v118 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(results2);
             }
 
             v33 = *(*(&v117 + 1) + 8 * i);
@@ -1630,35 +1630,35 @@ LABEL_9:
             v37 = v36;
             v39 = v38;
             v41 = v40;
-            v42 = [v33 roll];
+            roll = [v33 roll];
             v43 = [v33 yaw];
-            v44 = [FRCFaceHandLegRectangle faceRectangleWithBoundingBox:v42 roll:v43 yaw:v35, v37, v39, v41];
+            v44 = [FRCFaceHandLegRectangle faceRectangleWithBoundingBox:roll roll:v43 yaw:v35, v37, v39, v41];
 
             [v12 addObject:v44];
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v117 objects:v132 count:16];
+          v30 = [results2 countByEnumeratingWithState:&v117 objects:v132 count:16];
         }
 
         while (v30);
       }
 
-      self = v27;
+      self = selfCopy;
       v16 = v86;
-      v10 = v87;
+      dictionary = v87;
     }
 
-    v45 = [v16 results];
-    v46 = [v45 count];
+    results3 = [v16 results];
+    v46 = [results3 count];
 
     if (v46)
     {
-      v47 = [v16 results];
+      results4 = [v16 results];
       v113 = 0u;
       v114 = 0u;
       v115 = 0u;
       v116 = 0u;
-      v48 = [v47 countByEnumeratingWithState:&v113 objects:v131 count:16];
+      v48 = [results4 countByEnumeratingWithState:&v113 objects:v131 count:16];
       if (v48)
       {
         v49 = v48;
@@ -1669,33 +1669,33 @@ LABEL_9:
           {
             if (*v114 != v50)
             {
-              objc_enumerationMutation(v47);
+              objc_enumerationMutation(results4);
             }
 
             v52 = [FRCFaceHandLegRectangle handRectangleWithObservation:*(*(&v113 + 1) + 8 * j)];
             [v12 addObject:v52];
           }
 
-          v49 = [v47 countByEnumeratingWithState:&v113 objects:v131 count:16];
+          v49 = [results4 countByEnumeratingWithState:&v113 objects:v131 count:16];
         }
 
         while (v49);
       }
     }
 
-    v53 = [v95 results];
-    v54 = [v53 count];
+    results5 = [v95 results];
+    v54 = [results5 count];
 
     if (v54)
     {
-      v85 = self;
+      selfCopy2 = self;
       v55 = objc_alloc_init(FRCBodyBoundingBoxDetector);
-      v56 = [v95 results];
+      results6 = [v95 results];
       v109 = 0u;
       v110 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v57 = [v56 countByEnumeratingWithState:&v109 objects:v130 count:16];
+      v57 = [results6 countByEnumeratingWithState:&v109 objects:v130 count:16];
       if (v57)
       {
         v59 = v57;
@@ -1706,16 +1706,16 @@ LABEL_9:
           {
             if (*v110 != v60)
             {
-              objc_enumerationMutation(v56);
+              objc_enumerationMutation(results6);
             }
 
             *&v58 = v89 / v88;
-            v62 = [(FRCBodyBoundingBoxDetector *)v55 createBodyRectanglesWithObservation:*(*(&v109 + 1) + 8 * k) frameAspectRatio:v58, v85];
+            selfCopy2 = [(FRCBodyBoundingBoxDetector *)v55 createBodyRectanglesWithObservation:*(*(&v109 + 1) + 8 * k) frameAspectRatio:v58, selfCopy2];
             v105 = 0u;
             v106 = 0u;
             v107 = 0u;
             v108 = 0u;
-            v63 = [v62 countByEnumeratingWithState:&v105 objects:v129 count:16];
+            v63 = [selfCopy2 countByEnumeratingWithState:&v105 objects:v129 count:16];
             if (v63)
             {
               v64 = v63;
@@ -1726,41 +1726,41 @@ LABEL_9:
                 {
                   if (*v106 != v65)
                   {
-                    objc_enumerationMutation(v62);
+                    objc_enumerationMutation(selfCopy2);
                   }
 
                   [v12 addObject:*(*(&v105 + 1) + 8 * m)];
                 }
 
-                v64 = [v62 countByEnumeratingWithState:&v105 objects:v129 count:16];
+                v64 = [selfCopy2 countByEnumeratingWithState:&v105 objects:v129 count:16];
               }
 
               while (v64);
             }
           }
 
-          v59 = [v56 countByEnumeratingWithState:&v109 objects:v130 count:16];
+          v59 = [results6 countByEnumeratingWithState:&v109 objects:v130 count:16];
         }
 
         while (v59);
       }
 
-      self = v85;
+      self = selfCopy2;
       v16 = v86;
-      v10 = v87;
+      dictionary = v87;
     }
 
-    v67 = [v94 results];
-    v68 = [v67 count];
+    results7 = [v94 results];
+    v68 = [results7 count];
 
     if (v68)
     {
-      v69 = [v94 results];
+      results8 = [v94 results];
       v101 = 0u;
       v102 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v70 = [v69 countByEnumeratingWithState:&v101 objects:v128 count:16];
+      v70 = [results8 countByEnumeratingWithState:&v101 objects:v128 count:16];
       if (v70)
       {
         v71 = v70;
@@ -1771,7 +1771,7 @@ LABEL_9:
           {
             if (*v102 != v72)
             {
-              objc_enumerationMutation(v69);
+              objc_enumerationMutation(results8);
             }
 
             [*(*(&v101 + 1) + 8 * n) boundingBox];
@@ -1779,24 +1779,24 @@ LABEL_9:
             [v12 addObject:v74];
           }
 
-          v71 = [v69 countByEnumeratingWithState:&v101 objects:v128 count:16];
+          v71 = [results8 countByEnumeratingWithState:&v101 objects:v128 count:16];
         }
 
         while (v71);
       }
     }
 
-    v75 = [v93 results];
-    v76 = [v75 count];
+    results9 = [v93 results];
+    v76 = [results9 count];
 
     if (v76)
     {
-      v77 = [v93 results];
+      results10 = [v93 results];
       v97 = 0u;
       v98 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v78 = [v77 countByEnumeratingWithState:&v97 objects:v127 count:16];
+      v78 = [results10 countByEnumeratingWithState:&v97 objects:v127 count:16];
       if (v78)
       {
         v79 = v78;
@@ -1807,7 +1807,7 @@ LABEL_9:
           {
             if (*v98 != v80)
             {
-              objc_enumerationMutation(v77);
+              objc_enumerationMutation(results10);
             }
 
             [*(*(&v97 + 1) + 8 * ii) boundingBox];
@@ -1815,7 +1815,7 @@ LABEL_9:
             [v12 addObject:v82];
           }
 
-          v79 = [v77 countByEnumeratingWithState:&v97 objects:v127 count:16];
+          v79 = [results10 countByEnumeratingWithState:&v97 objects:v127 count:16];
         }
 
         while (v79);
@@ -1829,16 +1829,16 @@ LABEL_9:
   return v12;
 }
 
-- (void)printFaceHandLegRectangles:(id)a3
+- (void)printFaceHandLegRectangles:(id)rectangles
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  NSLog(&cfstr_FlowanalysisFa.isa, [v3 count]);
+  rectanglesCopy = rectangles;
+  NSLog(&cfstr_FlowanalysisFa.isa, [rectanglesCopy count]);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v3;
+  v4 = rectanglesCopy;
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -1869,10 +1869,10 @@ LABEL_9:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)safeThresholdWithtimeGap:(id *)a3 isDownsampled:(BOOL)a4
+- ($E2C29196C7A5C696474C6955C5A9CE06)safeThresholdWithtimeGap:(id *)gap isDownsampled:(BOOL)downsampled
 {
-  v4 = a4;
-  v30 = *a3;
+  downsampledCopy = downsampled;
+  v30 = *gap;
   v6 = CMTimeGetSeconds(&v30) * 1000.0;
   useCase = self->_useCase;
   if (useCase == 1)
@@ -1902,7 +1902,7 @@ LABEL_9:
     }
 
     v23 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForNonDownsampledSloMo;
-    if (v4)
+    if (downsampledCopy)
     {
       v23 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForDownsampledSloMo;
     }
@@ -1940,7 +1940,7 @@ LABEL_9:
     }
 
     v29 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForNonDownsampledSloMo;
-    if (v4)
+    if (downsampledCopy)
     {
       v29 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForDownsampledSloMo;
     }
@@ -1960,13 +1960,13 @@ LABEL_30:
   v9 = 0.0;
   v10 = fmaxf(v8, 0.0);
   v11 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForNonDownsampled;
-  if (v4)
+  if (downsampledCopy)
   {
     v11 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForDownsampled;
   }
 
   v12 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForDownsampledDelta;
-  if (!v4)
+  if (!downsampledCopy)
   {
     v12 = &OBJC_IVAR___OpticalFlowAnalyzer_jsonConsistencySafeThresholdsForNonDownsampledDelta;
   }
@@ -1983,11 +1983,11 @@ LABEL_31:
   return result;
 }
 
-- (void)isSafeToInterpolateForRandomnessGatingWithPrevFlowBackward:(__CVBuffer *)a3 flowForward:(__CVBuffer *)a4 lastFrameDuration:(id *)a5 lastNumberOfFrames:(unint64_t)a6 flowResFrame:(__CVBuffer *)a7
+- (void)isSafeToInterpolateForRandomnessGatingWithPrevFlowBackward:(__CVBuffer *)backward flowForward:(__CVBuffer *)forward lastFrameDuration:(id *)duration lastNumberOfFrames:(unint64_t)frames flowResFrame:(__CVBuffer *)frame
 {
   v13 = objc_autoreleasePoolPush();
-  time1 = *a5;
-  [(OpticalFlowAnalyzer *)self analyzeFlowRandomnessWithPrevFlowBackward:a3 forward:a4 lastFrameDuration:&time1 lastNumberOfFrames:a6 flowResFrame:a7];
+  time1 = *duration;
+  [(OpticalFlowAnalyzer *)self analyzeFlowRandomnessWithPrevFlowBackward:backward forward:forward lastFrameDuration:&time1 lastNumberOfFrames:frames flowResFrame:frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -2022,7 +2022,7 @@ LABEL_9:
   v25 = 0;
   if (v15 >= self->jsonRandomnessErrThreshold && v19 >= self->jsonRandomnessAreaPercentageThresholdLow)
   {
-    time1 = *a5;
+    time1 = *duration;
     time2 = self->_timeGap;
     if (!CMTimeCompare(&time1, &time2) || (self->_motionHistogramsAnalysis.hasSpecialMotion - 3) > 1)
     {
@@ -2169,23 +2169,23 @@ LABEL_65:
   self->_prevFlowRandomnessArea = v19;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)analyzeFlowRandomnessWithPrevFlowBackward:(__CVBuffer *)a3 forward:(__CVBuffer *)a4 lastFrameDuration:(id *)a5 lastNumberOfFrames:(unint64_t)a6 flowResFrame:(__CVBuffer *)a7
+- ($E2C29196C7A5C696474C6955C5A9CE06)analyzeFlowRandomnessWithPrevFlowBackward:(__CVBuffer *)backward forward:(__CVBuffer *)forward lastFrameDuration:(id *)duration lastNumberOfFrames:(unint64_t)frames flowResFrame:(__CVBuffer *)frame
 {
-  v12 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 2uLL);
-  v13 = createTexturesFromCVPixelBuffer(a4, self->super._device, 1, 2uLL);
-  v14 = createRGBATextureFromCVPixelBuffer(a7, self->super._device);
+  v12 = createTexturesFromCVPixelBuffer(backward, self->super._device, 1, 2uLL);
+  v13 = createTexturesFromCVPixelBuffer(forward, self->super._device, 1, 2uLL);
+  v14 = createRGBATextureFromCVPixelBuffer(frame, self->super._device);
   v15 = [(MTLDevice *)self->super._device newBufferWithLength:8 options:0];
-  v16 = [v15 contents];
+  contents = [v15 contents];
   value = self->_timeGap.value;
-  v18 = fmin(a5->var0, value) / (fmin(a6, self->_framesToInterpolate) + 1.0);
+  v18 = fmin(duration->var0, value) / (fmin(frames, self->_framesToInterpolate) + 1.0);
   v19 = v18 + v18;
-  *v16 = v19 / a5->var0;
-  v16[1] = v19 / value;
+  *contents = v19 / duration->var0;
+  contents[1] = v19 / value;
   [(OpticalFlowAnalyzer *)self calcCrossFlowStatisticsPrevBackwardFlowTexture:v12 forwardFlowTexture:v13 frameTexture:v14 flowScaleBuffer:v15];
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  printf("[CrossFlowAnalysis] lastFrameDuration: %lld, currentFrameDuration: %lld, lastFramesToInterpolate: %ld, framesToInterpolate: %ld, Error: %.3f, Score: %.3f, Area: %.3f\n", a5->var0, self->_timeGap.value, a6, self->_framesToInterpolate, v20, v22, v24);
+  printf("[CrossFlowAnalysis] lastFrameDuration: %lld, currentFrameDuration: %lld, lastFramesToInterpolate: %ld, framesToInterpolate: %ld, Error: %.3f, Score: %.3f, Area: %.3f\n", duration->var0, self->_timeGap.value, frames, self->_framesToInterpolate, v20, v22, v24);
 
   v26 = v21;
   v27 = v23;
@@ -2196,34 +2196,34 @@ LABEL_65:
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)calcCrossFlowStatisticsPrevBackwardFlowTexture:(id)a3 forwardFlowTexture:(id)a4 frameTexture:(id)a5 flowScaleBuffer:(id)a6
+- ($E2C29196C7A5C696474C6955C5A9CE06)calcCrossFlowStatisticsPrevBackwardFlowTexture:(id)texture forwardFlowTexture:(id)flowTexture frameTexture:(id)frameTexture flowScaleBuffer:(id)buffer
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = ([v12 width] + 7) >> 3;
-  v15 = ([v12 height] + 7) >> 3;
+  bufferCopy = buffer;
+  frameTextureCopy = frameTexture;
+  flowTextureCopy = flowTexture;
+  textureCopy = texture;
+  v14 = ([flowTextureCopy width] + 7) >> 3;
+  v15 = ([flowTextureCopy height] + 7) >> 3;
   v16 = [(MTLDevice *)self->super._device newBufferWithLength:4 * v14 * v15 options:0];
-  v17 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v18 = [v17 computeCommandEncoder];
-  [v18 setComputePipelineState:self->_crossFlowStatisticsKernel];
-  [v18 setTexture:v13 atIndex:0];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_crossFlowStatisticsKernel];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v18 setTexture:v12 atIndex:1];
-  [v18 setTexture:v11 atIndex:2];
+  [computeCommandEncoder setTexture:flowTextureCopy atIndex:1];
+  [computeCommandEncoder setTexture:frameTextureCopy atIndex:2];
 
-  [v18 setBuffer:v10 offset:0 atIndex:0];
-  [v18 setBuffer:v16 offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:bufferCopy offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:v16 offset:0 atIndex:1];
   v30[0] = v14;
   v30[1] = v15;
   v30[2] = 1;
   v28 = vdupq_n_s64(8uLL);
   v29 = 1;
-  [v18 dispatchThreadgroups:v30 threadsPerThreadgroup:&v28];
-  [v18 endEncoding];
-  [v17 commit];
-  [v17 waitUntilCompleted];
+  [computeCommandEncoder dispatchThreadgroups:v30 threadsPerThreadgroup:&v28];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   -[OpticalFlowAnalyzer processGPUOutputsRandomness:blockWidth:blockHeight:](self, "processGPUOutputsRandomness:blockWidth:blockHeight:", [v16 contents], v14, v15);
   v20 = v19;
   v22 = v21;
@@ -2238,18 +2238,18 @@ LABEL_65:
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)processGPUOutputsRandomness:(id *)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5
+- ($E2C29196C7A5C696474C6955C5A9CE06)processGPUOutputsRandomness:(id *)randomness blockWidth:(unint64_t)width blockHeight:(unint64_t)height
 {
-  if (a5)
+  if (height)
   {
     v9 = 0;
     v10 = 0;
-    v19 = 4 * a4;
+    v19 = 4 * width;
     v11 = 0.0;
     v12 = 0.0;
     do
     {
-      if (a4)
+      if (width)
       {
         v13 = 0;
         do
@@ -2259,7 +2259,7 @@ LABEL_65:
           if (CGRectContainsPoint(self->_cleanRectFlow8x8, v20))
           {
             ++v10;
-            var0 = a3[v13].var0;
+            var0 = randomness[v13].var0;
             v11 = v11 + var0;
             if (var0 > (self->jsonRandomnessAreaThreshold * 64.0))
             {
@@ -2270,14 +2270,14 @@ LABEL_65:
           ++v13;
         }
 
-        while (a4 != v13);
+        while (width != v13);
       }
 
       ++v9;
-      a3 = (a3 + v19);
+      randomness = (randomness + v19);
     }
 
-    while (v9 != a5);
+    while (v9 != height);
     v15 = v12 * 100.0;
   }
 
@@ -2297,63 +2297,63 @@ LABEL_65:
   return result;
 }
 
-- (void)modulateGatingParametersWithFlowForward:(__CVBuffer *)a3 flowResFrame:(__CVBuffer *)a4
+- (void)modulateGatingParametersWithFlowForward:(__CVBuffer *)forward flowResFrame:(__CVBuffer *)frame
 {
-  v6 = createTexturesFromCVPixelBuffer(a3, self->super._device, 1, 2uLL);
-  v8 = createRGBATextureFromCVPixelBuffer(a4, self->super._device);
+  v6 = createTexturesFromCVPixelBuffer(forward, self->super._device, 1, 2uLL);
+  v8 = createRGBATextureFromCVPixelBuffer(frame, self->super._device);
   [(OpticalFlowAnalyzer *)self calcMotionHistogramForwardFlowTexture:v6 frameTexture:v8];
-  v7 = [v6 width];
-  self->_size = [v6 height] * v7;
+  width = [v6 width];
+  self->_size = [v6 height] * width;
   [(OpticalFlowAnalyzer *)self analyzeMotionHistograms];
   [(OpticalFlowAnalyzer *)self analyzeDeformation];
   [(OpticalFlowAnalyzer *)self modulateGatingParametersFromMotionHistogramsAnalysis];
   fflush(*MEMORY[0x277D85E08]);
 }
 
-- (void)calcMotionHistogramForwardFlowTexture:(id)a3 frameTexture:(id)a4
+- (void)calcMotionHistogramForwardFlowTexture:(id)texture frameTexture:(id)frameTexture
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = ([v7 width] + 7) >> 3;
-  v9 = ([v7 height] + 7) >> 3;
+  frameTextureCopy = frameTexture;
+  textureCopy = texture;
+  v8 = ([textureCopy width] + 7) >> 3;
+  v9 = ([textureCopy height] + 7) >> 3;
   v10 = [(MTLDevice *)self->super._device newBufferWithLength:(v8 * v9) << 6 options:0];
   v11 = [(MTLDevice *)self->super._device newBufferWithLength:(v8 * v9) << 6 options:0];
-  v12 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v13 = [v12 computeCommandEncoder];
-  [v13 setComputePipelineState:self->_motionHistogramsKernel];
-  [v13 setTexture:v7 atIndex:0];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_motionHistogramsKernel];
+  [computeCommandEncoder setTexture:textureCopy atIndex:0];
 
-  [v13 setTexture:v6 atIndex:1];
-  [v13 setBuffer:v10 offset:0 atIndex:0];
-  [v13 setBuffer:v11 offset:0 atIndex:1];
+  [computeCommandEncoder setTexture:frameTextureCopy atIndex:1];
+  [computeCommandEncoder setBuffer:v10 offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:v11 offset:0 atIndex:1];
   v18[0] = v8;
   v18[1] = v9;
   v18[2] = 1;
   v16 = vdupq_n_s64(8uLL);
   v17 = 1;
-  [v13 dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
-  [v13 endEncoding];
-  [v12 commit];
-  [v12 waitUntilCompleted];
-  v14 = [v10 contents];
-  v15 = [v11 contents];
-  [(OpticalFlowAnalyzer *)self processGPUOutputsHistograms:v14 blockWidth:v8 blockHeight:v9];
-  [(OpticalFlowAnalyzer *)self processGPUOutputsHistogramsForDeformation:v15 blockWidth:v8 blockHeight:v9];
+  [computeCommandEncoder dispatchThreadgroups:v18 threadsPerThreadgroup:&v16];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
+  contents = [v10 contents];
+  contents2 = [v11 contents];
+  [(OpticalFlowAnalyzer *)self processGPUOutputsHistograms:contents blockWidth:v8 blockHeight:v9];
+  [(OpticalFlowAnalyzer *)self processGPUOutputsHistogramsForDeformation:contents2 blockWidth:v8 blockHeight:v9];
   printf("[MotionHistograms] magnitude: [%d, %d, %d, %d, %d, %d, %d, %d] direction: [%d, %d, %d, %d, %d, %d, %d, %d] direction_top_left: [%d, %d, %d, %d] direction_top_right: [%d, %d, %d, %d] direction_bottom_left: [%d, %d, %d, %d] direction_bottom_right: [%d, %d, %d, %d]\n", self->_motionHistograms.frameMagnitude[0], self->_motionHistograms.frameMagnitude[1], self->_motionHistograms.frameMagnitude[2], self->_motionHistograms.frameMagnitude[3], self->_motionHistograms.frameMagnitude[4], self->_motionHistograms.frameMagnitude[5], self->_motionHistograms.frameMagnitude[6], self->_motionHistograms.frameMagnitude[7], self->_motionHistograms.frameDirection[0], self->_motionHistograms.frameDirection[1], self->_motionHistograms.frameDirection[2], self->_motionHistograms.frameDirection[3], self->_motionHistograms.frameDirection[4], self->_motionHistograms.frameDirection[5], self->_motionHistograms.frameDirection[6], self->_motionHistograms.frameDirection[7], self->_motionHistograms.topLeftDirection[0], self->_motionHistograms.topLeftDirection[1], self->_motionHistograms.topLeftDirection[2], self->_motionHistograms.topLeftDirection[3], self->_motionHistograms.topRightDirection[0], self->_motionHistograms.topRightDirection[1], self->_motionHistograms.topRightDirection[2], self->_motionHistograms.topRightDirection[3], self->_motionHistograms.bottomLeftDirection[0], self->_motionHistograms.bottomLeftDirection[1], self->_motionHistograms.bottomLeftDirection[2], self->_motionHistograms.bottomLeftDirection[3], self->_motionHistograms.bottomRightDirection[0], self->_motionHistograms.bottomRightDirection[1], self->_motionHistograms.bottomRightDirection[2], self->_motionHistograms.bottomRightDirection[3]);
 }
 
-- (void)convertOctantDirectionHistogram:(int *)a3 toPerpendicularQuadrantHistogram:(unsigned int *)a4
+- (void)convertOctantDirectionHistogram:(int *)histogram toPerpendicularQuadrantHistogram:(unsigned int *)quadrantHistogram
 {
-  v4 = a3 + 1;
+  v4 = histogram + 1;
   for (i = 2; i != 10; i += 2)
   {
     v6 = *v4;
     v4 += 2;
-    *a4++ += a3[i & 6] + v6;
+    *quadrantHistogram++ += histogram[i & 6] + v6;
   }
 }
 
-- (void)processGPUOutputsHistograms:(id *)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5
+- (void)processGPUOutputsHistograms:(id *)histograms blockWidth:(unint64_t)width blockHeight:(unint64_t)height
 {
   v47 = *MEMORY[0x277D85DE8];
   v46 = 0uLL;
@@ -2376,29 +2376,29 @@ LABEL_65:
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
-  if (a5)
+  if (height)
   {
     v7 = 0;
-    v8 = a4 / 5uLL;
-    v9 = a5 >> 1;
-    v10 = a4 >> 1;
-    v26 = a4 - v8;
+    v8 = width / 5uLL;
+    v9 = height >> 1;
+    v10 = width >> 1;
+    v26 = width - v8;
     v33 = 0uLL;
     v34 = 0uLL;
-    var1 = a3->var1;
-    v23 = a4 << 6;
+    var1 = histograms->var1;
+    v23 = width << 6;
     v31 = 0uLL;
     v32 = 0uLL;
     v28 = 0uLL;
     v27 = 0uLL;
     v25 = 0uLL;
     v22 = 0uLL;
-    while (!a4)
+    while (!width)
     {
 LABEL_32:
       ++v7;
       var1 = (var1 + v23);
-      if (v7 == a5)
+      if (v7 == height)
       {
         goto LABEL_33;
       }
@@ -2486,7 +2486,7 @@ LABEL_32:
 LABEL_26:
       v31 = vaddq_s32(v31, v15);
       v32 = vaddq_s32(v32, v16);
-      if (v7 < a5 / 5uLL)
+      if (v7 < height / 5uLL)
       {
         [(OpticalFlowAnalyzer *)self convertOctantDirectionHistogram:v13 toPerpendicularQuadrantHistogram:&v40];
         v37 = vaddq_s32(v37, *(v13 - 2));
@@ -2496,7 +2496,7 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      if (a5 - a5 / 5uLL < v7)
+      if (height - height / 5uLL < v7)
       {
         [(OpticalFlowAnalyzer *)self convertOctantDirectionHistogram:v13 toPerpendicularQuadrantHistogram:&v39];
         v35 = vaddq_s32(v35, *(v13 - 2));
@@ -2507,7 +2507,7 @@ LABEL_30:
 LABEL_31:
       ++v12;
       v13 += 16;
-      if (a4 == v12)
+      if (width == v12)
       {
         goto LABEL_32;
       }
@@ -2536,38 +2536,38 @@ LABEL_33:
   *self->_motionHistograms.topSideDirection = v40;
   *self->_motionHistograms.bottomSideDirection = v19;
   *self->_motionHistograms.bottomSideDirection = v39;
-  self->_motionHistograms.leftSideAverageMagnitude = [(OpticalFlowAnalyzer *)self averageMagnitude:&v43, a4, *&v22];
+  self->_motionHistograms.leftSideAverageMagnitude = [(OpticalFlowAnalyzer *)self averageMagnitude:&v43, width, *&v22];
   self->_motionHistograms.rightSideAverageMagnitude = [(OpticalFlowAnalyzer *)self averageMagnitude:&v41];
   self->_motionHistograms.topSideAverageMagnitude = [(OpticalFlowAnalyzer *)self averageMagnitude:&v37];
   self->_motionHistograms.bottomSideAverageMagnitude = [(OpticalFlowAnalyzer *)self averageMagnitude:&v35];
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processGPUOutputsHistogramsForDeformation:(id *)a3 blockWidth:(unint64_t)a4 blockHeight:(unint64_t)a5
+- (void)processGPUOutputsHistogramsForDeformation:(id *)deformation blockWidth:(unint64_t)width blockHeight:(unint64_t)height
 {
   v9 = malloc_type_calloc(4uLL, 4uLL, 0x100004052888210uLL);
   self->_deformationBlockRanges = v9;
-  *v9 = a4;
+  *v9 = width;
   v9[1] = -1;
-  v9[2] = a5;
+  v9[2] = height;
   v9[3] = -1;
   if (self->_visualizationEnabled)
   {
-    self->_deformationBinaryMap = malloc_type_calloc(a5 * a4, 1uLL, 0x100004077774924uLL);
+    self->_deformationBinaryMap = malloc_type_calloc(height * width, 1uLL, 0x100004077774924uLL);
   }
 
-  v10 = malloc_type_calloc(a5 * a4, 1uLL, 0x100004077774924uLL);
-  v11 = a4;
-  v45 = a4;
+  v10 = malloc_type_calloc(height * width, 1uLL, 0x100004077774924uLL);
+  widthCopy3 = width;
+  widthCopy2 = width;
   v42 = v10;
-  if (a5)
+  if (height)
   {
     v12 = 0;
-    v13 = &a3->var1[7];
+    v13 = &deformation->var1[7];
     v14 = v10;
     do
     {
-      if (a4)
+      if (width)
       {
         v15 = 0;
         v16 = v13;
@@ -2575,7 +2575,7 @@ LABEL_33:
         {
           v47.x = v15;
           v47.y = v12;
-          if (CGRectContainsPoint(self->_cleanRectFlow8x8, v47) && *(v16 - 15) >= 58 && (self->_useCase || v15 >= 5 && a5 - 5 > v12 && v12 >= 5 && a4 - 5 > v15))
+          if (CGRectContainsPoint(self->_cleanRectFlow8x8, v47) && *(v16 - 15) >= 58 && (self->_useCase || v15 >= 5 && height - 5 > v12 && v12 >= 5 && width - 5 > v15))
           {
             v18 = *(v16 - 7);
             v17 = *(v16 - 6);
@@ -2608,19 +2608,19 @@ LABEL_33:
           v16 += 16;
         }
 
-        while (a4 != v15);
+        while (width != v15);
       }
 
       ++v12;
-      v14 += a4;
-      v13 += 16 * a4;
+      v14 += width;
+      v13 += 16 * width;
     }
 
-    while (v12 != a5);
-    v44 = a5 - 1;
-    v11 = a4;
+    while (v12 != height);
+    v44 = height - 1;
+    widthCopy3 = width;
     v10 = v42;
-    if (a5 - 1 < 2)
+    if (height - 1 < 2)
     {
       v46 = 0;
       goto LABEL_48;
@@ -2633,12 +2633,12 @@ LABEL_33:
   }
 
   v46 = 0;
-  v43 = a4 - 1;
-  v26 = a4 - 2;
-  v27 = &v10[a4 + a4];
-  v28 = &v10[v11 - a4];
+  v43 = width - 1;
+  v26 = width - 2;
+  v27 = &v10[width + width];
+  v28 = &v10[widthCopy3 - width];
   v29 = 1;
-  v30 = &v10[a4];
+  v30 = &v10[width];
   do
   {
     if (v43 >= 2)
@@ -2675,7 +2675,7 @@ LABEL_33:
           ++v46;
           if (self->_visualizationEnabled)
           {
-            self->_deformationBinaryMap[v11 + 1 + v31] = -1;
+            self->_deformationBinaryMap[widthCopy3 + 1 + v31] = -1;
           }
         }
 
@@ -2686,10 +2686,10 @@ LABEL_33:
     }
 
     ++v29;
-    v30 += v45;
-    v27 += v45;
-    v28 += v45;
-    v11 += v45;
+    v30 += widthCopy2;
+    v27 += widthCopy2;
+    v28 += widthCopy2;
+    widthCopy3 += widthCopy2;
   }
 
   while (v29 != v44);
@@ -3095,19 +3095,19 @@ LABEL_43:
   return v20;
 }
 
-- (int)detectDominantDirectionInROI:(unsigned int *)a3
+- (int)detectDominantDirectionInROI:(unsigned int *)i
 {
-  v3 = a3[1];
-  v5 = a3[2];
-  v4 = a3[3];
-  v6 = v3 + *a3 + v5 + v4;
+  v3 = i[1];
+  v5 = i[2];
+  v4 = i[3];
+  v6 = v3 + *i + v5 + v4;
   if (v6 <= self->_size / 0x14)
   {
     return -1;
   }
 
   v7 = v6 + (v6 >> 31);
-  if (*a3 > (v3 + *a3 + v5 + v4) / 2)
+  if (*i > (v3 + *i + v5 + v4) / 2)
   {
     return 0;
   }
@@ -3366,16 +3366,16 @@ LABEL_46:
   return v8 == 2 && v7 == 0;
 }
 
-- (BOOL)checkSafetyByScoreAndArea:(id *)a3
+- (BOOL)checkSafetyByScoreAndArea:(id *)area
 {
-  var3 = a3->var3;
-  var5 = a3->var5;
+  var3 = area->var3;
+  var5 = area->var5;
   CMTimeMake(&time2, 80, 600);
-  var0 = a3->var0;
+  var0 = area->var0;
   if (CMTimeCompare(&var0, &time2) < 0 || !self->_hasDominantMovingLargeObjects)
   {
     CMTimeMake(&time2, 40, 600);
-    var0 = a3->var0;
+    var0 = area->var0;
     if (CMTimeCompare(&var0, &time2))
     {
       return 1;
@@ -3408,12 +3408,12 @@ LABEL_46:
   return var5 <= v9 || var5 >= 5.0;
 }
 
-- (BOOL)checkSafetyByStripConsistency:(id *)a3
+- (BOOL)checkSafetyByStripConsistency:(id *)consistency
 {
-  var5 = a3->var5;
-  var28 = a3->var28;
+  var5 = consistency->var5;
+  var28 = consistency->var28;
   v11 = *var28;
-  v12 = a3->var27 - 1;
+  v12 = consistency->var27 - 1;
   if (v12 >= 2)
   {
     v13 = 2;
@@ -3435,12 +3435,12 @@ LABEL_46:
   *&v4 = self->jsonConsistencyVerticalStripScoreThreshold;
   *&v6 = self->jsonConsistencyVerticalStripAreaPercentageThreshold;
   *&v3 = v11;
-  *&v5 = a3->var5;
+  *&v5 = consistency->var5;
   [(OpticalFlowAnalyzer *)self computeConsistencyConfidenceFromScore:v3 scoreThreshold:v4 areaRatio:v5 areaRatioThreshold:v6];
   v20 = *&v16;
   v21 = var5 <= self->jsonConsistencyVerticalStripAreaPercentageThreshold || v11 >= self->jsonConsistencyVerticalStripScoreThreshold;
-  var29 = a3->var29;
-  var30 = a3->var30;
+  var29 = consistency->var29;
+  var30 = consistency->var30;
   v24 = *var30;
   if (var29 >= 2)
   {
@@ -3480,21 +3480,21 @@ LABEL_46:
   return v21;
 }
 
-- (BOOL)checkSafetyByBlockConsistency:(id *)a3
+- (BOOL)checkSafetyByBlockConsistency:(id *)consistency
 {
   if (!self->_hasCameraMotion || !self->_hasDominantMovingLargeObjects || self->_hasDominantMovingSmallObjects || self->_hasStaticBackground)
   {
     return 1;
   }
 
-  var9 = a3->var9;
-  var10 = a3->var10;
+  var9 = consistency->var9;
+  var10 = consistency->var10;
   CMTimeMake(&time2, 80, 600);
-  var0 = a3->var0;
+  var0 = consistency->var0;
   if (CMTimeCompare(&var0, &time2) < 0)
   {
     CMTimeMake(&time2, 40, 600);
-    var0 = a3->var0;
+    var0 = consistency->var0;
     if (CMTimeCompare(&var0, &time2) || var9 <= 1.5 || var9 >= 2.6 || var10 <= 0.4)
     {
       return 1;
@@ -3539,12 +3539,12 @@ LABEL_46:
   }
 }
 
-- (void)isSafeToInterpolateForBackwarpGatingWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 flowResFirst:(__CVBuffer *)a5 flowResSecond:(__CVBuffer *)a6
+- (void)isSafeToInterpolateForBackwarpGatingWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward flowResFirst:(__CVBuffer *)first flowResSecond:(__CVBuffer *)second
 {
   if (self->_shouldRunBackwarpGating)
   {
     v11 = objc_autoreleasePoolPush();
-    [(OpticalFlowAnalyzer *)self analyzeBackwarpForward:a3 backward:a4 flowResFirst:a5 flowResSecond:a6];
+    [(OpticalFlowAnalyzer *)self analyzeBackwarpForward:forward backward:backward flowResFirst:first flowResSecond:second];
     objc_autoreleasePoolPop(v11);
     v18 = v37 == v38 ? 100.0 : v38;
     if (self->_useCase == 1)
@@ -3624,38 +3624,38 @@ LABEL_24:
   }
 }
 
-- (float)computeBackwarpConfidenceFromScore:(float)a3 scoreThreshold:(float)a4 scoreHighThreshold:(float)a5 areaRatio:(float)a6 areaRatioThreshold:(float)a7 areaRatioHighThreshold:(float)a8 large_area:(BOOL)a9
+- (float)computeBackwarpConfidenceFromScore:(float)score scoreThreshold:(float)threshold scoreHighThreshold:(float)highThreshold areaRatio:(float)ratio areaRatioThreshold:(float)ratioThreshold areaRatioHighThreshold:(float)ratioHighThreshold large_area:(BOOL)large_area
 {
-  if (a6 >= a7)
+  if (ratio >= ratioThreshold)
   {
     v11 = 1.0;
-    if (a6 >= a8 && a9)
+    if (ratio >= ratioHighThreshold && large_area)
     {
-      v11 = (exp(((a6 - a8) * 0.1 + 1.0) * ((a4 / fmaxf(a3, a5)) + -1.0)) + 1.0) * 0.5;
+      v11 = (exp(((ratio - ratioHighThreshold) * 0.1 + 1.0) * ((threshold / fmaxf(score, highThreshold)) + -1.0)) + 1.0) * 0.5;
     }
   }
 
   else
   {
-    v11 = expf((1.0 - (a6 / a7)) * 15.0);
+    v11 = expf((1.0 - (ratio / ratioThreshold)) * 15.0);
   }
 
   v13 = 4.0;
-  if (a3 >= a4)
+  if (score >= threshold)
   {
     v13 = 1.0;
   }
 
-  return v11 * 1.5 / (expf(((a4 / a3) + -1.0) * v13) + 1.0);
+  return v11 * 1.5 / (expf(((threshold / score) + -1.0) * v13) + 1.0);
 }
 
-- ($599F175E452E455E49EC8439362DB023)analyzeBackwarpForward:(SEL)a3 backward:(__CVBuffer *)a4 flowResFirst:(__CVBuffer *)a5 flowResSecond:(__CVBuffer *)a6
+- ($599F175E452E455E49EC8439362DB023)analyzeBackwarpForward:(SEL)forward backward:(__CVBuffer *)backward flowResFirst:(__CVBuffer *)first flowResSecond:(__CVBuffer *)second
 {
-  Width = CVPixelBufferGetWidth(a4);
-  v14 = CVPixelBufferGetHeight(a4) >> 1;
-  v15 = createTexturesFromCVPixelBuffer(a4, self->super._device, 1, 2uLL);
-  v16 = createTexturesFromCVPixelBuffer(a5, self->super._device, 1, 2uLL);
-  v17 = createTexturesFromCVPixelBuffer(a6, self->super._device, 1, 3uLL);
+  Width = CVPixelBufferGetWidth(backward);
+  v14 = CVPixelBufferGetHeight(backward) >> 1;
+  v15 = createTexturesFromCVPixelBuffer(backward, self->super._device, 1, 2uLL);
+  v16 = createTexturesFromCVPixelBuffer(first, self->super._device, 1, 2uLL);
+  v17 = createTexturesFromCVPixelBuffer(second, self->super._device, 1, 3uLL);
   v18 = createTexturesFromCVPixelBuffer(a7, self->super._device, 1, 3uLL);
   v19 = createTextures(self->super._device, Width, v14, 1, 1uLL);
   v20 = createTextures(self->super._device, Width, v14, 1, 1uLL);
@@ -3674,31 +3674,31 @@ LABEL_24:
   return result;
 }
 
-- ($599F175E452E455E49EC8439362DB023)calcBackwarpStatisticsForwardLossTexture:(SEL)a3 backwardLossTexture:(id)a4 faceHandLegRectangles:(id)a5
+- ($599F175E452E455E49EC8439362DB023)calcBackwarpStatisticsForwardLossTexture:(SEL)texture backwardLossTexture:(id)lossTexture faceHandLegRectangles:(id)rectangles
 {
   v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = ([v12 width] + 7) >> 3;
-  v14 = ([v12 height] + 7) >> 3;
+  rectanglesCopy = rectangles;
+  lossTextureCopy = lossTexture;
+  v13 = ([lossTextureCopy width] + 7) >> 3;
+  v14 = ([lossTextureCopy height] + 7) >> 3;
   v15 = [(MTLDevice *)self->super._device newBufferWithLength:4 * v13 * v14 options:0];
-  v16 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v17 = [v16 computeCommandEncoder];
-  [v17 setComputePipelineState:self->_backwarpStatisticsKernel];
-  [v17 setTexture:v12 atIndex:0];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_backwarpStatisticsKernel];
+  [computeCommandEncoder setTexture:lossTextureCopy atIndex:0];
 
-  [v17 setTexture:v11 atIndex:1];
-  [v17 setBuffer:v15 offset:0 atIndex:0];
+  [computeCommandEncoder setTexture:rectanglesCopy atIndex:1];
+  [computeCommandEncoder setBuffer:v15 offset:0 atIndex:0];
   v23[0] = v13;
   v23[1] = v14;
   v23[2] = 1;
   v21 = vdupq_n_s64(8uLL);
   v22 = 1;
-  [v17 dispatchThreadgroups:v23 threadsPerThreadgroup:&v21];
-  [v17 endEncoding];
-  [v16 commit];
-  [v16 waitUntilCompleted];
-  v18 = [v15 contents];
+  [computeCommandEncoder dispatchThreadgroups:v23 threadsPerThreadgroup:&v21];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
+  contents = [v15 contents];
   if (v10)
   {
     v19 = [(OpticalFlowAnalyzer *)self findFaceHandLegBlocksFromRectangles:v10 blockWidth:v13 blockHeight:v14];
@@ -3712,50 +3712,50 @@ LABEL_24:
   *&retstr->var0 = 0;
   *&retstr->var2 = 0;
   retstr->var4 = 0.0;
-  [(OpticalFlowAnalyzer *)self processBackwarpStats:v18 blockWidth:v13 blockHeight:v14 faceHandLegBoundingBoxBlocks:v19];
+  [(OpticalFlowAnalyzer *)self processBackwarpStats:contents blockWidth:v13 blockHeight:v14 faceHandLegBoundingBoxBlocks:v19];
 
   return result;
 }
 
-- ($599F175E452E455E49EC8439362DB023)processBackwarpStats:(SEL)a3 blockWidth:(id *)a4 blockHeight:(unint64_t)a5 faceHandLegBoundingBoxBlocks:(unint64_t)a6
+- ($599F175E452E455E49EC8439362DB023)processBackwarpStats:(SEL)stats blockWidth:(id *)width blockHeight:(unint64_t)height faceHandLegBoundingBoxBlocks:(unint64_t)blocks
 {
   v68 = a7;
   v11 = [v68 count];
   v12 = malloc_type_calloc(v11, 4uLL, 0x100004052888210uLL);
   v13 = malloc_type_calloc(4uLL, 4uLL, 0x100004052888210uLL);
   self->_backwarpBlockRanges = v13;
-  *v13 = a5;
+  *v13 = height;
   v13[1] = -1;
-  v13[2] = a6;
+  v13[2] = blocks;
   v13[3] = -1;
   if (self->_visualizationEnabled)
   {
-    self->_backwarpLossMap = malloc_type_calloc(a6 * a5, 1uLL, 0x100004077774924uLL);
+    self->_backwarpLossMap = malloc_type_calloc(blocks * height, 1uLL, 0x100004077774924uLL);
   }
 
   v14 = 0.0;
   v59 = 0.0;
-  if (a6)
+  if (blocks)
   {
     v58 = retstr;
     v15 = 0;
     v16 = 0;
     v17 = 0;
-    v60 = a5;
-    v61 = a6;
+    heightCopy = height;
+    blocksCopy = blocks;
     v18 = 0.0;
     v19 = 0.0;
     v20 = 0.0;
-    v62 = a5;
-    v63 = self;
+    heightCopy2 = height;
+    selfCopy = self;
     do
     {
-      if (a5)
+      if (height)
       {
         v21 = 0;
         p_cleanRectFlow8x8 = &self->_cleanRectFlow8x8;
         v23 = v15;
-        v66 = v15 * v60;
+        v66 = v15 * heightCopy;
         v24 = v20;
         v64 = v15;
         do
@@ -3764,7 +3764,7 @@ LABEL_24:
           v70.y = v23;
           if (CGRectContainsPoint(*p_cleanRectFlow8x8, v70))
           {
-            var0 = a4[v21 + v66].var0;
+            var0 = width[v21 + v66].var0;
             if (self->_visualizationEnabled)
             {
               self->_backwarpLossMap[v21 + v66] = var0;
@@ -3831,8 +3831,8 @@ LABEL_24:
               }
 
               v16 = v29;
-              a5 = v62;
-              self = v63;
+              height = heightCopy2;
+              self = selfCopy;
               v15 = v64;
             }
 
@@ -3851,13 +3851,13 @@ LABEL_24:
           v24 = v20;
         }
 
-        while (v21 != a5);
+        while (v21 != height);
       }
 
       ++v15;
     }
 
-    while (v15 != v61);
+    while (v15 != blocksCopy);
     v14 = v19 * 100.0;
     retstr = v58;
   }
@@ -3908,10 +3908,10 @@ LABEL_24:
       v48 = [v47 numberOfBlocks] / v16;
 
       v49 = [v68 objectAtIndexedSubscript:i];
-      v50 = [v49 category];
+      category = [v49 category];
 
       v51 = 128.0;
-      if (v50 != 2)
+      if (category != 2)
       {
         v51 = 64.0;
       }

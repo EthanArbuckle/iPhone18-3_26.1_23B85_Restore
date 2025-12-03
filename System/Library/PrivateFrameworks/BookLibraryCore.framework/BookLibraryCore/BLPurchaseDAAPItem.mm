@@ -1,41 +1,41 @@
 @interface BLPurchaseDAAPItem
 + (id)item;
-+ (id)itemWithItem:(id)a3;
-- (BLPurchaseDAAPItem)initWithCoder:(id)a3;
++ (id)itemWithItem:(id)item;
+- (BLPurchaseDAAPItem)initWithCoder:(id)coder;
 - (NSDate)expectedDate;
 - (NSDictionary)additionalInfo;
 - (NSNumber)hasVideo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (int)mediaKind;
 - (unint64_t)itemID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)freeze;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)thaw;
-- (void)updateItemWithDictionary:(id)a3;
-- (void)updateItemWithItem:(id)a3;
+- (void)updateItemWithDictionary:(id)dictionary;
+- (void)updateItemWithItem:(id)item;
 @end
 
 @implementation BLPurchaseDAAPItem
 
 + (id)item
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)itemWithItem:(id)a3
++ (id)itemWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [a1 item];
-  [v5 updateItemWithItem:v4];
+  itemCopy = item;
+  item = [self item];
+  [item updateItemWithItem:itemCopy];
 
-  return v5;
+  return item;
 }
 
 - (id)description
@@ -55,20 +55,20 @@
     }
 
     v32 = v5;
-    v34 = [(BLPurchaseDAAPItem *)self name];
+    name = [(BLPurchaseDAAPItem *)self name];
     v6 = [(BLPurchaseDAAPItem *)self valueForKey:@"isPlaying"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
     v8 = &stru_2853E2EC8;
     v9 = @"isPlaying, ";
-    if (!v7)
+    if (!bOOLValue)
     {
       v9 = &stru_2853E2EC8;
     }
 
     v31 = v9;
     v10 = [(BLPurchaseDAAPItem *)self valueForKey:@"selected"];
-    v11 = [v10 BOOLValue];
-    if (v11)
+    bOOLValue2 = [v10 BOOLValue];
+    if (bOOLValue2)
     {
       v12 = MEMORY[0x277CCACA8];
       v30 = [(BLPurchaseDAAPItem *)self valueForKey:@"volume"];
@@ -77,13 +77,13 @@
     }
 
     v22 = [(BLPurchaseDAAPItem *)self valueForKey:@"volume"];
-    v23 = [v22 BOOLValue];
+    bOOLValue3 = [v22 BOOLValue];
     v24 = [(BLPurchaseDAAPItem *)self valueForKey:@"hasPassword"];
-    v25 = [v24 BOOLValue];
+    bOOLValue4 = [v24 BOOLValue];
     v26 = [(BLPurchaseDAAPItem *)self valueForKey:@"macAddress"];
-    v27 = [v38 stringWithFormat:@"<%s: %p> %@: %@, %@%@supportsVolume:%d, locked:%d, macAddress:%@", ClassName, self, v32, v34, v31, v8, v23, v25, v26];
+    v27 = [v38 stringWithFormat:@"<%s: %p> %@: %@, %@%@supportsVolume:%d, locked:%d, macAddress:%@", ClassName, self, v32, name, v31, v8, bOOLValue3, bOOLValue4, v26];
 
-    if (v11)
+    if (bOOLValue2)
     {
     }
   }
@@ -93,12 +93,12 @@
     v39.receiver = self;
     v39.super_class = BLPurchaseDAAPItem;
     v37 = [(BLPurchaseDAAPItem *)&v39 description];
-    v14 = [(BLPurchaseDAAPItem *)self name];
-    v35 = [(BLPurchaseDAAPItem *)self itemID];
-    v15 = [(BLPurchaseDAAPItem *)self songalbum];
-    v16 = [(BLPurchaseDAAPItem *)self songartist];
-    v17 = [(BLPurchaseDAAPItem *)self containerItemID];
-    v18 = [(BLPurchaseDAAPItem *)self expectedDate];
+    name2 = [(BLPurchaseDAAPItem *)self name];
+    itemID = [(BLPurchaseDAAPItem *)self itemID];
+    songalbum = [(BLPurchaseDAAPItem *)self songalbum];
+    songartist = [(BLPurchaseDAAPItem *)self songartist];
+    containerItemID = [(BLPurchaseDAAPItem *)self containerItemID];
+    expectedDate = [(BLPurchaseDAAPItem *)self expectedDate];
     v19 = [(BLPurchaseDAAPItem *)self objectForKey:@"dmap.itemhidden"];
     v20 = [(BLPurchaseDAAPItem *)self valueForKey:@"booklets"];
     if (v20)
@@ -111,8 +111,8 @@
       v21 = MEMORY[0x277CBEBF8];
     }
 
-    v28 = [(BLPurchaseDAAPItem *)self additionalInfo];
-    v27 = [v38 stringWithFormat:@"%@ %@, %llu, %@, %@, containerItemID = %u, isPreorder = %u, isHidden = %@, Booklets = %@, additionalInfo = %@", v37, v14, v35, v15, v16, v17, v18 != 0, v19, v21, v28];
+    additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+    v27 = [v38 stringWithFormat:@"%@ %@, %llu, %@, %@, containerItemID = %u, isPreorder = %u, isHidden = %@, Booklets = %@, additionalInfo = %@", v37, name2, itemID, songalbum, songartist, containerItemID, expectedDate != 0, v19, v21, additionalInfo];
 
     if (v20)
     {
@@ -144,8 +144,8 @@
   {
     self->_isFrozen = 1;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = [(BLPurchaseDAAPItem *)self mutableInfo];
-    v6 = [v4 dictionaryWithDictionary:v5];
+    mutableInfo = [(BLPurchaseDAAPItem *)self mutableInfo];
+    v6 = [v4 dictionaryWithDictionary:mutableInfo];
     [(BLPurchaseDAAPItem *)self setFrozenInfo:v6];
 
     [(BLPurchaseDAAPItem *)self setMutableInfo:0];
@@ -158,8 +158,8 @@
   {
     self->_isFrozen = 0;
     v4 = MEMORY[0x277CBEB38];
-    v5 = [(BLPurchaseDAAPItem *)self frozenInfo];
-    v6 = [v4 dictionaryWithDictionary:v5];
+    frozenInfo = [(BLPurchaseDAAPItem *)self frozenInfo];
+    v6 = [v4 dictionaryWithDictionary:frozenInfo];
     [(BLPurchaseDAAPItem *)self setMutableInfo:v6];
 
     [(BLPurchaseDAAPItem *)self setFrozenInfo:0];
@@ -183,18 +183,18 @@
 
 - (int)mediaKind
 {
-  v3 = [(BLPurchaseDAAPItem *)self additionalInfo];
-  v4 = [v3 valueForKey:@"mediaKind"];
+  additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+  v4 = [additionalInfo valueForKey:@"mediaKind"];
 
   if (!v4)
   {
-    v5 = [(BLPurchaseDAAPItem *)self additionalInfo];
-    v4 = [v5 valueForKey:@"com.apple.itunes.mediakind"];
+    additionalInfo2 = [(BLPurchaseDAAPItem *)self additionalInfo];
+    v4 = [additionalInfo2 valueForKey:@"com.apple.itunes.mediakind"];
   }
 
-  v6 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  return v6;
+  return intValue;
 }
 
 - (unint64_t)itemID
@@ -202,8 +202,8 @@
   result = self->_itemID;
   if (!result)
   {
-    v4 = [(BLPurchaseDAAPItem *)self additionalInfo];
-    v5 = [v4 valueForKey:@"dmap.longitemid"];
+    additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+    v5 = [additionalInfo valueForKey:@"dmap.longitemid"];
     self->_itemID = [v5 unsignedLongLongValue];
 
     return self->_itemID;
@@ -214,52 +214,52 @@
 
 - (NSDate)expectedDate
 {
-  v2 = [(BLPurchaseDAAPItem *)self additionalInfo];
-  v3 = [v2 valueForKey:@"com.apple.itunes.preorder-expected-date"];
+  additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+  v3 = [additionalInfo valueForKey:@"com.apple.itunes.preorder-expected-date"];
 
   return v3;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(BLPurchaseDAAPItem *)self additionalInfo];
-  v4 = [v3 mutableCopy];
+  additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+  v4 = [additionalInfo mutableCopy];
 
   if (!v4)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   }
 
-  v5 = [(BLPurchaseDAAPItem *)self name];
+  name = [(BLPurchaseDAAPItem *)self name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(BLPurchaseDAAPItem *)self name];
-    [v4 setValue:v6 forKey:@"name"];
+    name2 = [(BLPurchaseDAAPItem *)self name];
+    [v4 setValue:name2 forKey:@"name"];
   }
 
-  v7 = [(BLPurchaseDAAPItem *)self songalbum];
+  songalbum = [(BLPurchaseDAAPItem *)self songalbum];
 
-  if (v7)
+  if (songalbum)
   {
-    v8 = [(BLPurchaseDAAPItem *)self songalbum];
-    [v4 setValue:v8 forKey:@"daap.songalbum"];
+    songalbum2 = [(BLPurchaseDAAPItem *)self songalbum];
+    [v4 setValue:songalbum2 forKey:@"daap.songalbum"];
   }
 
-  v9 = [(BLPurchaseDAAPItem *)self songartist];
+  songartist = [(BLPurchaseDAAPItem *)self songartist];
 
-  if (v9)
+  if (songartist)
   {
-    v10 = [(BLPurchaseDAAPItem *)self songartist];
-    [v4 setValue:v10 forKey:@"daap.songartist"];
+    songartist2 = [(BLPurchaseDAAPItem *)self songartist];
+    [v4 setValue:songartist2 forKey:@"daap.songartist"];
   }
 
-  v11 = [(BLPurchaseDAAPItem *)self songalbumartist];
+  songalbumartist = [(BLPurchaseDAAPItem *)self songalbumartist];
 
-  if (v11)
+  if (songalbumartist)
   {
-    v12 = [(BLPurchaseDAAPItem *)self songalbumartist];
-    [v4 setValue:v12 forKey:@"daap.songalbumartist"];
+    songalbumartist2 = [(BLPurchaseDAAPItem *)self songalbumartist];
+    [v4 setValue:songalbumartist2 forKey:@"daap.songalbumartist"];
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[BLPurchaseDAAPItem itemID](self, "itemID")}];
@@ -271,32 +271,32 @@
   v15 = [MEMORY[0x277CCABB0] numberWithInt:{-[BLPurchaseDAAPItem containerItemID](self, "containerItemID")}];
   [v4 setValue:v15 forKey:@"dmap.containeritemid"];
 
-  v16 = [(BLPurchaseDAAPItem *)self hasVideo];
-  [v4 setValue:v16 forKey:@"hasVideo"];
+  hasVideo = [(BLPurchaseDAAPItem *)self hasVideo];
+  [v4 setValue:hasVideo forKey:@"hasVideo"];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(BLPurchaseDAAPItem *)self name];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  name = [(BLPurchaseDAAPItem *)self name];
+  v6 = [name copy];
   [v4 setName:v6];
 
-  v7 = [(BLPurchaseDAAPItem *)self additionalInfo];
-  [v4 updateItemWithDictionary:v7];
+  additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+  [v4 updateItemWithDictionary:additionalInfo];
 
   return v4;
 }
 
-- (BLPurchaseDAAPItem)initWithCoder:(id)a3
+- (BLPurchaseDAAPItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BLPurchaseDAAPItem *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
@@ -305,125 +305,125 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"additionalInfo"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"additionalInfo"];
     [(BLPurchaseDAAPItem *)v5 updateItemWithDictionary:v13];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BLPurchaseDAAPItem *)self name];
-  [v4 encodeObject:v5 forKey:@"name"];
+  coderCopy = coder;
+  name = [(BLPurchaseDAAPItem *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v6 = [(BLPurchaseDAAPItem *)self additionalInfo];
-  [v4 encodeObject:v6 forKey:@"additionalInfo"];
+  additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+  [coderCopy encodeObject:additionalInfo forKey:@"additionalInfo"];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"daap.songartist"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"daap.songartist"])
   {
-    v5 = [(BLPurchaseDAAPItem *)self songartist];
+    songartist = [(BLPurchaseDAAPItem *)self songartist];
 LABEL_7:
-    v6 = v5;
+    v6 = songartist;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"daap.songalbumid"])
+  if ([keyCopy isEqualToString:@"daap.songalbumid"])
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", -[BLPurchaseDAAPItem songalbumid](self, "songalbumid")];
+    songartist = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", -[BLPurchaseDAAPItem songalbumid](self, "songalbumid")];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"daap.songalbum"])
+  if ([keyCopy isEqualToString:@"daap.songalbum"])
   {
-    v5 = [(BLPurchaseDAAPItem *)self songalbum];
+    songartist = [(BLPurchaseDAAPItem *)self songalbum];
     goto LABEL_7;
   }
 
-  v8 = [(BLPurchaseDAAPItem *)self additionalInfo];
-  v6 = [v8 objectForKey:v4];
+  additionalInfo = [(BLPurchaseDAAPItem *)self additionalInfo];
+  v6 = [additionalInfo objectForKey:keyCopy];
 
 LABEL_8:
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (!self->_isFrozen)
   {
-    v7 = [(BLPurchaseDAAPItem *)self mutableInfo];
-    if (v9)
+    mutableInfo = [(BLPurchaseDAAPItem *)self mutableInfo];
+    if (objectCopy)
     {
 
-      if (!v7)
+      if (!mutableInfo)
       {
-        v8 = [MEMORY[0x277CBEB38] dictionary];
-        [(BLPurchaseDAAPItem *)self setMutableInfo:v8];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [(BLPurchaseDAAPItem *)self setMutableInfo:dictionary];
       }
 
-      v7 = [(BLPurchaseDAAPItem *)self mutableInfo];
-      [v7 setObject:v9 forKey:v6];
+      mutableInfo = [(BLPurchaseDAAPItem *)self mutableInfo];
+      [mutableInfo setObject:objectCopy forKey:keyCopy];
     }
 
     else
     {
-      [v7 removeObjectForKey:v6];
+      [mutableInfo removeObjectForKey:keyCopy];
     }
   }
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v7 = a4;
-  v6 = a3;
-  [(BLPurchaseDAAPItem *)self willChangeValueForKey:v7];
-  [(BLPurchaseDAAPItem *)self setObject:v6 forKey:v7];
+  keyCopy = key;
+  valueCopy = value;
+  [(BLPurchaseDAAPItem *)self willChangeValueForKey:keyCopy];
+  [(BLPurchaseDAAPItem *)self setObject:valueCopy forKey:keyCopy];
 
-  [(BLPurchaseDAAPItem *)self didChangeValueForKey:v7];
+  [(BLPurchaseDAAPItem *)self didChangeValueForKey:keyCopy];
 }
 
-- (void)updateItemWithItem:(id)a3
+- (void)updateItemWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (!self->_isFrozen)
   {
-    v8 = v4;
-    v5 = [v4 name];
+    v8 = itemCopy;
+    name = [itemCopy name];
 
-    if (v5)
+    if (name)
     {
-      v6 = [v8 name];
-      [(BLPurchaseDAAPItem *)self setName:v6];
+      name2 = [v8 name];
+      [(BLPurchaseDAAPItem *)self setName:name2];
     }
 
-    v7 = [v8 additionalInfo];
-    [(BLPurchaseDAAPItem *)self updateItemWithDictionary:v7];
+    additionalInfo = [v8 additionalInfo];
+    [(BLPurchaseDAAPItem *)self updateItemWithDictionary:additionalInfo];
 
-    v4 = v8;
+    itemCopy = v8;
   }
 }
 
-- (void)updateItemWithDictionary:(id)a3
+- (void)updateItemWithDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
   if (!self->_isFrozen)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v4 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [dictionaryCopy allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -434,7 +434,7 @@ LABEL_8:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -442,7 +442,7 @@ LABEL_8:
           [(BLPurchaseDAAPItem *)self setValue:v12 forKey:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);

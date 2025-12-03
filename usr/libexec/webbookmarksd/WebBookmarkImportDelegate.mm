@@ -1,19 +1,19 @@
 @interface WebBookmarkImportDelegate
-- (WebBookmarkImportDelegate)initWithCoordinator:(id)a3;
+- (WebBookmarkImportDelegate)initWithCoordinator:(id)coordinator;
 - (id)_bookmarkFoldersStack;
-- (id)_existingBookmarkWithTitle:(id)a3 folder:(BOOL)a4;
-- (void)_addReadingListItemWithTitle:(id)a3 urlString:(id)a4 dateOfLastVisitIfReadingListItem:(id)a5;
-- (void)appendBookmarkWithTitle:(id)a3 urlString:(id)a4 dateOfLastVisitIfReadingListItem:(id)a5;
-- (void)beginAddingFolder:(id)a3 identifier:(id)a4;
+- (id)_existingBookmarkWithTitle:(id)title folder:(BOOL)folder;
+- (void)_addReadingListItemWithTitle:(id)title urlString:(id)string dateOfLastVisitIfReadingListItem:(id)item;
+- (void)appendBookmarkWithTitle:(id)title urlString:(id)string dateOfLastVisitIfReadingListItem:(id)item;
+- (void)beginAddingFolder:(id)folder identifier:(id)identifier;
 - (void)endAddingFolder;
-- (void)finishWithCompletionHandler:(id)a3;
+- (void)finishWithCompletionHandler:(id)handler;
 @end
 
 @implementation WebBookmarkImportDelegate
 
-- (WebBookmarkImportDelegate)initWithCoordinator:(id)a3
+- (WebBookmarkImportDelegate)initWithCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = WebBookmarkImportDelegate;
   v6 = [(WebBookmarkImportDelegate *)&v11 init];
@@ -23,17 +23,17 @@
     collection = v6->_collection;
     v6->_collection = v7;
 
-    objc_storeStrong(&v6->_coordinator, a3);
+    objc_storeStrong(&v6->_coordinator, coordinator);
     v9 = v6;
   }
 
   return v6;
 }
 
-- (void)beginAddingFolder:(id)a3 identifier:(id)a4
+- (void)beginAddingFolder:(id)folder identifier:(id)identifier
 {
-  v6 = a3;
-  if ([a4 isEqualToString:kBookmarksReadingListTitle])
+  folderCopy = folder;
+  if ([identifier isEqualToString:kBookmarksReadingListTitle])
   {
     self->_parsingReadingList = 1;
     ++self->_numberOfBookmarksImported;
@@ -41,9 +41,9 @@
 
   else
   {
-    if ([v6 length])
+    if ([folderCopy length])
     {
-      v7 = [WBSNetscapeBookmarkFileReader looksLikeChromeBookmarksBarTitle:v6];
+      v7 = [WBSNetscapeBookmarkFileReader looksLikeChromeBookmarksBarTitle:folderCopy];
       coordinator = self->_coordinator;
       ++self->_numberOfBookmarksImported;
       if (!v7)
@@ -53,7 +53,7 @@
         v11[2] = sub_100006B84;
         v11[3] = &unk_100029150;
         v11[4] = self;
-        v12 = v6;
+        v12 = folderCopy;
         [(WebBookmarksLockCoordinator *)coordinator accessBookmarkForWritingWithBlock:v11];
 
         goto LABEL_9;
@@ -85,14 +85,14 @@
 LABEL_9:
 }
 
-- (void)appendBookmarkWithTitle:(id)a3 urlString:(id)a4 dateOfLastVisitIfReadingListItem:(id)a5
+- (void)appendBookmarkWithTitle:(id)title urlString:(id)string dateOfLastVisitIfReadingListItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  stringCopy = string;
   ++self->_numberOfBookmarksImported;
   if (self->_parsingReadingList)
   {
-    [(WebBookmarkImportDelegate *)self _addReadingListItemWithTitle:v8 urlString:v9 dateOfLastVisitIfReadingListItem:a5];
+    [(WebBookmarkImportDelegate *)self _addReadingListItemWithTitle:titleCopy urlString:stringCopy dateOfLastVisitIfReadingListItem:item];
   }
 
   else
@@ -103,8 +103,8 @@ LABEL_9:
     v11[2] = sub_100006DA8;
     v11[3] = &unk_100029178;
     v11[4] = self;
-    v12 = v8;
-    v13 = v9;
+    v12 = titleCopy;
+    v13 = stringCopy;
     [(WebBookmarksLockCoordinator *)coordinator accessBookmarkForWritingWithBlock:v11];
   }
 }
@@ -130,57 +130,57 @@ LABEL_9:
   }
 }
 
-- (void)finishWithCompletionHandler:(id)a3
+- (void)finishWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   coordinator = self->_coordinator;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000702C;
   v7[3] = &unk_100028D20;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WebBookmarksLockCoordinator *)coordinator accessBookmarkForWritingWithBlock:v7];
 }
 
-- (id)_existingBookmarkWithTitle:(id)a3 folder:(BOOL)a4
+- (id)_existingBookmarkWithTitle:(id)title folder:(BOOL)folder
 {
-  v6 = a3;
+  titleCopy = title;
   collection = self->_collection;
-  v8 = [(WebBookmarkImportDelegate *)self _bookmarkFoldersStack];
-  v9 = [v8 lastObject];
-  v10 = -[WebBookmarkCollection listWithID:skipOffset:includeHidden:](collection, "listWithID:skipOffset:includeHidden:", [v9 identifier], 0, 1);
-  v11 = [v10 bookmarkArray];
+  _bookmarkFoldersStack = [(WebBookmarkImportDelegate *)self _bookmarkFoldersStack];
+  lastObject = [_bookmarkFoldersStack lastObject];
+  v10 = -[WebBookmarkCollection listWithID:skipOffset:includeHidden:](collection, "listWithID:skipOffset:includeHidden:", [lastObject identifier], 0, 1);
+  bookmarkArray = [v10 bookmarkArray];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007168;
   v15[3] = &unk_1000291A0;
-  v17 = a4;
-  v16 = v6;
-  v12 = v6;
-  v13 = [v11 safari_firstObjectPassingTest:v15];
+  folderCopy = folder;
+  v16 = titleCopy;
+  v12 = titleCopy;
+  v13 = [bookmarkArray safari_firstObjectPassingTest:v15];
 
   return v13;
 }
 
-- (void)_addReadingListItemWithTitle:(id)a3 urlString:(id)a4 dateOfLastVisitIfReadingListItem:(id)a5
+- (void)_addReadingListItemWithTitle:(id)title urlString:(id)string dateOfLastVisitIfReadingListItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  stringCopy = string;
+  itemCopy = item;
   coordinator = self->_coordinator;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000072C8;
   v15[3] = &unk_1000291C8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = stringCopy;
+  v17 = itemCopy;
+  v18 = titleCopy;
+  v12 = titleCopy;
+  v13 = itemCopy;
+  v14 = stringCopy;
   [(WebBookmarksLockCoordinator *)coordinator accessBookmarkForWritingWithBlock:v15];
 }
 
@@ -189,8 +189,8 @@ LABEL_9:
   stack = self->_stack;
   if (!stack)
   {
-    v4 = [(WebBookmarkCollection *)self->_collection rootBookmark];
-    v5 = [NSMutableArray arrayWithObject:v4];
+    rootBookmark = [(WebBookmarkCollection *)self->_collection rootBookmark];
+    v5 = [NSMutableArray arrayWithObject:rootBookmark];
     v6 = self->_stack;
     self->_stack = v5;
 

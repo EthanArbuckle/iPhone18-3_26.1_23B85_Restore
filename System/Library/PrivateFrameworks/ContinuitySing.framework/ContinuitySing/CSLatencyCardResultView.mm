@@ -1,15 +1,15 @@
 @interface CSLatencyCardResultView
-- (CSLatencyCardResultView)initWithLatency:(unint64_t)a3;
+- (CSLatencyCardResultView)initWithLatency:(unint64_t)latency;
 - (double)_progressBarOffset;
 - (id)_infoText;
 - (void)_updateView;
 - (void)layoutSubviews;
-- (void)updateWithLatency:(unint64_t)a3;
+- (void)updateWithLatency:(unint64_t)latency;
 @end
 
 @implementation CSLatencyCardResultView
 
-- (CSLatencyCardResultView)initWithLatency:(unint64_t)a3
+- (CSLatencyCardResultView)initWithLatency:(unint64_t)latency
 {
   v130.receiver = self;
   v130.super_class = CSLatencyCardResultView;
@@ -20,7 +20,7 @@
   v8 = [(CSLatencyCardResultView *)&v130 initWithFrame:*MEMORY[0x277CBF3A0], v5, v6, v7];
   if (v8)
   {
-    v9 = [[CSSegmentedValue alloc] initWithThresholds:&unk_2857A1780 value:a3];
+    v9 = [[CSSegmentedValue alloc] initWithThresholds:&unk_2857A1780 value:latency];
     segmentedLatency = v8->_segmentedLatency;
     v8->_segmentedLatency = v9;
 
@@ -30,8 +30,8 @@
     v8->_latencyLabel = v12;
 
     v14 = v8->_latencyLabel;
-    v15 = [MEMORY[0x277D75340] labelColor];
-    [(UILabel *)v14 setTextColor:v15];
+    labelColor = [MEMORY[0x277D75340] labelColor];
+    [(UILabel *)v14 setTextColor:labelColor];
 
     v16 = v8->_latencyLabel;
     v115 = *MEMORY[0x277D76948];
@@ -40,11 +40,11 @@
 
     v18 = [[CSPaddingView alloc] initWithWrappedView:v8->_latencyLabel];
     [(CSPaddingView *)v18 setHorizontalPadding:8.0];
-    v19 = [MEMORY[0x277D75340] systemBlueColor];
-    [(CSPaddingView *)v18 setBackgroundColor:v19];
+    systemBlueColor = [MEMORY[0x277D75340] systemBlueColor];
+    [(CSPaddingView *)v18 setBackgroundColor:systemBlueColor];
 
-    v20 = [(CSPaddingView *)v18 layer];
-    [v20 setCornerRadius:12.0];
+    layer = [(CSPaddingView *)v18 layer];
+    [layer setCornerRadius:12.0];
 
     [(CSPaddingView *)v18 setClipsToBounds:1];
     v21 = objc_alloc_init(CSTipTriangleView);
@@ -53,44 +53,44 @@
     [v22 addSubview:v21];
     [(CSPaddingView *)v18 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CSTipTriangleView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [(CSTipTriangleView *)v21 centerXAnchor];
-    v24 = [v22 leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    centerXAnchor = [(CSTipTriangleView *)v21 centerXAnchor];
+    leadingAnchor = [v22 leadingAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:leadingAnchor];
     latencyTipTriangleCenterXOffset = v8->_latencyTipTriangleCenterXOffset;
     v8->_latencyTipTriangleCenterXOffset = v25;
 
-    v27 = [(CSPaddingView *)v18 centerXAnchor];
-    v28 = [(CSTipTriangleView *)v21 centerXAnchor];
-    v123 = [v27 constraintEqualToAnchor:v28];
+    centerXAnchor2 = [(CSPaddingView *)v18 centerXAnchor];
+    centerXAnchor3 = [(CSTipTriangleView *)v21 centerXAnchor];
+    v123 = [centerXAnchor2 constraintEqualToAnchor:centerXAnchor3];
 
     LODWORD(v29) = 1132068864;
     [v123 setPriority:v29];
-    v30 = [(CSPaddingView *)v18 leadingAnchor];
-    v31 = [v22 leadingAnchor];
-    v32 = [v30 constraintGreaterThanOrEqualToAnchor:v31];
+    leadingAnchor2 = [(CSPaddingView *)v18 leadingAnchor];
+    leadingAnchor3 = [v22 leadingAnchor];
+    v32 = [leadingAnchor2 constraintGreaterThanOrEqualToAnchor:leadingAnchor3];
 
     LODWORD(v33) = 1144750080;
     [v32 setPriority:v33];
-    v34 = [(CSPaddingView *)v18 trailingAnchor];
-    v35 = [v22 trailingAnchor];
-    v36 = [v34 constraintLessThanOrEqualToAnchor:v35];
+    trailingAnchor = [(CSPaddingView *)v18 trailingAnchor];
+    trailingAnchor2 = [v22 trailingAnchor];
+    v36 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
 
     LODWORD(v37) = 1144750080;
     [v36 setPriority:v37];
-    v121 = [(CSPaddingView *)v18 heightAnchor];
-    v113 = [v121 constraintEqualToConstant:25.0];
+    heightAnchor = [(CSPaddingView *)v18 heightAnchor];
+    v113 = [heightAnchor constraintEqualToConstant:25.0];
     v129[0] = v113;
-    v111 = [(CSPaddingView *)v18 topAnchor];
-    v109 = [v22 topAnchor];
-    v107 = [v111 constraintEqualToAnchor:v109];
+    topAnchor = [(CSPaddingView *)v18 topAnchor];
+    topAnchor2 = [v22 topAnchor];
+    v107 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v129[1] = v107;
-    v105 = [(CSPaddingView *)v18 leadingAnchor];
-    v103 = [(CSTipTriangleView *)v21 leadingAnchor];
-    v101 = [v105 constraintLessThanOrEqualToAnchor:v103 constant:-17.0];
+    leadingAnchor4 = [(CSPaddingView *)v18 leadingAnchor];
+    leadingAnchor5 = [(CSTipTriangleView *)v21 leadingAnchor];
+    v101 = [leadingAnchor4 constraintLessThanOrEqualToAnchor:leadingAnchor5 constant:-17.0];
     v129[2] = v101;
-    v99 = [(CSPaddingView *)v18 trailingAnchor];
-    v97 = [(CSTipTriangleView *)v21 trailingAnchor];
-    v95 = [v99 constraintGreaterThanOrEqualToAnchor:v97 constant:17.0];
+    trailingAnchor3 = [(CSPaddingView *)v18 trailingAnchor];
+    trailingAnchor4 = [(CSTipTriangleView *)v21 trailingAnchor];
+    v95 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:17.0];
     v129[3] = v95;
     v129[4] = v123;
     v117 = v36;
@@ -98,22 +98,22 @@
     v129[5] = v32;
     v129[6] = v36;
     v129[7] = v8->_latencyTipTriangleCenterXOffset;
-    v93 = [(CSTipTriangleView *)v21 heightAnchor];
-    v92 = [v93 constraintEqualToConstant:5.0];
+    heightAnchor2 = [(CSTipTriangleView *)v21 heightAnchor];
+    v92 = [heightAnchor2 constraintEqualToConstant:5.0];
     v129[8] = v92;
-    v91 = [(CSTipTriangleView *)v21 widthAnchor];
-    v90 = [v91 constraintEqualToConstant:10.0];
+    widthAnchor = [(CSTipTriangleView *)v21 widthAnchor];
+    v90 = [widthAnchor constraintEqualToConstant:10.0];
     v129[9] = v90;
-    v38 = [(CSTipTriangleView *)v21 topAnchor];
+    topAnchor3 = [(CSTipTriangleView *)v21 topAnchor];
     v120 = v18;
-    v39 = [(CSPaddingView *)v18 bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    bottomAnchor = [(CSPaddingView *)v18 bottomAnchor];
+    v40 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v129[10] = v40;
     v119 = v21;
-    v41 = [(CSTipTriangleView *)v21 bottomAnchor];
+    bottomAnchor2 = [(CSTipTriangleView *)v21 bottomAnchor];
     v124 = v22;
-    v42 = [v22 bottomAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    bottomAnchor3 = [v22 bottomAnchor];
+    v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v129[11] = v43;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v129 count:12];
     [v11 addObjectsFromArray:v44];
@@ -125,19 +125,19 @@
       do
       {
         v47 = [objc_alloc(MEMORY[0x277D758F8]) initWithProgressViewStyle:1];
-        v48 = [MEMORY[0x277D75340] quaternarySystemFillColor];
-        [v47 setTrackTintColor:v48];
+        quaternarySystemFillColor = [MEMORY[0x277D75340] quaternarySystemFillColor];
+        [v47 setTrackTintColor:quaternarySystemFillColor];
 
-        v49 = [MEMORY[0x277D75340] systemBlueColor];
-        [v47 setProgressTintColor:v49];
+        systemBlueColor2 = [MEMORY[0x277D75340] systemBlueColor];
+        [v47 setProgressTintColor:systemBlueColor2];
 
         [(NSArray *)v45 addObject:v47];
-        v50 = [v47 widthAnchor];
-        v51 = [v50 constraintEqualToConstant:74.0];
+        widthAnchor2 = [v47 widthAnchor];
+        v51 = [widthAnchor2 constraintEqualToConstant:74.0];
         [v11 addObject:v51];
 
-        v52 = [v47 heightAnchor];
-        v53 = [v52 constraintEqualToConstant:6.0];
+        heightAnchor3 = [v47 heightAnchor];
+        v53 = [heightAnchor3 constraintEqualToConstant:6.0];
         [v11 addObject:v53];
 
         ++v46;
@@ -163,8 +163,8 @@
     [(UILabel *)v57 setFont:v58];
 
     v59 = v8->_infoLabel;
-    v60 = [MEMORY[0x277D75340] labelColor];
-    [(UILabel *)v59 setTextColor:v60];
+    labelColor2 = [MEMORY[0x277D75340] labelColor];
+    [(UILabel *)v59 setTextColor:labelColor2];
 
     [(UILabel *)v8->_infoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v8->_infoLabel setText:@"No Text here yet!"];
@@ -177,9 +177,9 @@
     v64 = [MEMORY[0x277D74300] preferredFontForTextStyle:v115];
     [v61 setFont:v64];
 
-    v65 = [MEMORY[0x277D75340] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x277D75340] secondaryLabelColor];
     v112 = v61;
-    [v61 setTextColor:v65];
+    [v61 setTextColor:secondaryLabelColor];
 
     v66 = objc_alloc_init(MEMORY[0x277D756C0]);
     v67 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -189,9 +189,9 @@
     v69 = [MEMORY[0x277D74300] preferredFontForTextStyle:v115];
     [v66 setFont:v69];
 
-    v70 = [MEMORY[0x277D75340] secondaryLabelColor];
+    secondaryLabelColor2 = [MEMORY[0x277D75340] secondaryLabelColor];
     v110 = v66;
-    [v66 setTextColor:v70];
+    [v66 setTextColor:secondaryLabelColor2];
 
     v71 = objc_alloc(MEMORY[0x277D75A70]);
     v128[0] = v61;
@@ -228,21 +228,21 @@
     [(CSLatencyCardResultView *)v8 addSubview:v81];
     [MEMORY[0x277CCAAD0] activateConstraints:v11];
     v94 = MEMORY[0x277CCAAD0];
-    v106 = [v81 topAnchor];
-    v104 = [(CSLatencyCardResultView *)v8 topAnchor];
-    v102 = [v106 constraintEqualToAnchor:v104];
+    topAnchor4 = [v81 topAnchor];
+    topAnchor5 = [(CSLatencyCardResultView *)v8 topAnchor];
+    v102 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     v125[0] = v102;
-    v100 = [v81 leadingAnchor];
-    v98 = [(CSLatencyCardResultView *)v8 leadingAnchor];
-    v96 = [v100 constraintEqualToAnchor:v98];
+    leadingAnchor6 = [v81 leadingAnchor];
+    leadingAnchor7 = [(CSLatencyCardResultView *)v8 leadingAnchor];
+    v96 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v125[1] = v96;
-    v82 = [v81 trailingAnchor];
-    v83 = [(CSLatencyCardResultView *)v8 trailingAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83];
+    trailingAnchor5 = [v81 trailingAnchor];
+    trailingAnchor6 = [(CSLatencyCardResultView *)v8 trailingAnchor];
+    v84 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v125[2] = v84;
-    v85 = [v81 bottomAnchor];
-    v86 = [(CSLatencyCardResultView *)v8 bottomAnchor];
-    v87 = [v85 constraintEqualToAnchor:v86];
+    bottomAnchor4 = [v81 bottomAnchor];
+    bottomAnchor5 = [(CSLatencyCardResultView *)v8 bottomAnchor];
+    v87 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v125[3] = v87;
     v88 = [MEMORY[0x277CBEA60] arrayWithObjects:v125 count:4];
     [v94 activateConstraints:v88];
@@ -253,9 +253,9 @@
   return v8;
 }
 
-- (void)updateWithLatency:(unint64_t)a3
+- (void)updateWithLatency:(unint64_t)latency
 {
-  [(CSSegmentedValue *)self->_segmentedLatency setValue:a3];
+  [(CSSegmentedValue *)self->_segmentedLatency setValue:latency];
 
   [(CSLatencyCardResultView *)self _updateView];
 }
@@ -300,10 +300,10 @@ void __41__CSLatencyCardResultView_layoutSubviews__block_invoke_2(uint64_t a1, v
   latencyTipTriangleCenterXOffset = self->_latencyTipTriangleCenterXOffset;
   [(CSLatencyCardResultView *)self _progressBarOffset];
   [(NSLayoutConstraint *)latencyTipTriangleCenterXOffset setConstant:?];
-  v7 = [(CSSegmentedValue *)self->_segmentedLatency segment];
-  if (v7)
+  segment = [(CSSegmentedValue *)self->_segmentedLatency segment];
+  if (segment)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != segment; ++i)
     {
       v9 = [(NSArray *)self->_progressBars objectAtIndexedSubscript:i];
       LODWORD(v10) = 1.0;
@@ -311,7 +311,7 @@ void __41__CSLatencyCardResultView_layoutSubviews__block_invoke_2(uint64_t a1, v
     }
   }
 
-  v11 = [(NSArray *)self->_progressBars objectAtIndexedSubscript:v7];
+  v11 = [(NSArray *)self->_progressBars objectAtIndexedSubscript:segment];
   [(CSSegmentedValue *)self->_segmentedLatency progressWithinSegment];
   *&v12 = v12;
   v13 = v11;
@@ -319,33 +319,33 @@ void __41__CSLatencyCardResultView_layoutSubviews__block_invoke_2(uint64_t a1, v
   {
     [v13 setProgress:v12];
 
-    if (++v7 >= [(CSSegmentedValue *)self->_segmentedLatency numberOfSegments])
+    if (++segment >= [(CSSegmentedValue *)self->_segmentedLatency numberOfSegments])
     {
       break;
     }
 
-    v13 = [(NSArray *)self->_progressBars objectAtIndexedSubscript:v7];
+    v13 = [(NSArray *)self->_progressBars objectAtIndexedSubscript:segment];
     v11 = v13;
     v12 = 0.0;
   }
 
   infoLabel = self->_infoLabel;
-  v15 = [(CSLatencyCardResultView *)self _infoText];
-  [(UILabel *)infoLabel setText:v15];
+  _infoText = [(CSLatencyCardResultView *)self _infoText];
+  [(UILabel *)infoLabel setText:_infoText];
 }
 
 - (id)_infoText
 {
-  v2 = [(CSSegmentedValue *)self->_segmentedLatency segment];
+  segment = [(CSSegmentedValue *)self->_segmentedLatency segment];
   v3 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
   v4 = v3;
   v5 = @"MEASUREMENT_POOR_RESULT";
-  if (v2 == 1)
+  if (segment == 1)
   {
     v5 = @"MEASUREMENT_MEDIUM_RESULT";
   }
 
-  if (v2)
+  if (segment)
   {
     v6 = v5;
   }

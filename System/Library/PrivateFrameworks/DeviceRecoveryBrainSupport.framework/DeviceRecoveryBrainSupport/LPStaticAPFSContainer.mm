@@ -1,5 +1,5 @@
 @interface LPStaticAPFSContainer
-+ (id)_containerWithPhysticalStoreRole:(int)a3;
++ (id)_containerWithPhysticalStoreRole:(int)role;
 + (id)allAPFSContainers;
 + (id)supportedContentTypes;
 - (id)physicalStores;
@@ -57,7 +57,7 @@
   return v10;
 }
 
-+ (id)_containerWithPhysticalStoreRole:(int)a3
++ (id)_containerWithPhysticalStoreRole:(int)role
 {
   v4 = +[LPStaticPartitionMedia primaryMedia];
   v5 = v4;
@@ -67,8 +67,8 @@
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v4 children];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    children = [v4 children];
+    v7 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -79,19 +79,19 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(children);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 role] == a3)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 role] == role)
           {
-            v12 = [v11 container];
+            container = [v11 container];
             goto LABEL_14;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v8)
         {
           continue;
@@ -101,7 +101,7 @@
       }
     }
 
-    v12 = 0;
+    container = 0;
 LABEL_14:
   }
 
@@ -112,10 +112,10 @@ LABEL_14:
     *v13 = 136315138;
     *(v13 + 4) = "+[LPStaticAPFSContainer _containerWithPhysticalStoreRole:]";
     _LPLogPack(1);
-    v12 = 0;
+    container = 0;
   }
 
-  return v12;
+  return container;
 }
 
 void __47__LPStaticAPFSContainer_volumesWithRole_group___block_invoke(uint64_t a1, uint64_t a2)
@@ -129,8 +129,8 @@ void __47__LPStaticAPFSContainer_volumesWithRole_group___block_invoke(uint64_t a
 
 - (id)physicalStores
 {
-  v3 = [(LPStaticMedia *)self BSDName];
-  [LPStaticMedia waitForIOMediaWithDevNode:v3];
+  bSDName = [(LPStaticMedia *)self BSDName];
+  [LPStaticMedia waitForIOMediaWithDevNode:bSDName];
 
   v4 = [NSMutableArray arrayWithCapacity:2];
   v17[1] = @"IOPropertyMatch";

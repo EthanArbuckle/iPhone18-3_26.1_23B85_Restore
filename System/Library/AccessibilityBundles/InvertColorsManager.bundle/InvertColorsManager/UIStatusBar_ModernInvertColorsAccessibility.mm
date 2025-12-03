@@ -4,40 +4,40 @@
 - (BOOL)accessibilityIgnoresInvertColors;
 - (void)_accessibilityLoadInvertColors;
 - (void)didMoveToWindow;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIStatusBar_ModernInvertColorsAccessibility
 
 - (void)_accessibilityLoadInvertColors
 {
-  v6 = self;
-  v2 = [(UIStatusBar_ModernInvertColorsAccessibility *)v6 window];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  selfCopy = self;
+  window = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy window];
+  traitCollection = [window traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (_AXSInvertColorsEnabled() && v4 == &dword_0 + 2)
+  if (_AXSInvertColorsEnabled() && userInterfaceStyle == &dword_0 + 2)
   {
-    if (([(UIStatusBar_ModernInvertColorsAccessibility *)v6 accessibilityInvertColorsIsolatedTree]& 1) != 0)
+    if (([(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy accessibilityInvertColorsIsolatedTree]& 1) != 0)
     {
       goto LABEL_8;
     }
 
-    [(UIStatusBar_ModernInvertColorsAccessibility *)v6 setAccessibilityInvertColorsIsolatedTree:1];
-    v5 = [(UIStatusBar_ModernInvertColorsAccessibility *)v6 layer];
-    [AXInvertColorsAppHelper applyInvertFilterToLayer:v5];
+    [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy setAccessibilityInvertColorsIsolatedTree:1];
+    layer = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy layer];
+    [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
   }
 
   else
   {
-    if ([(UIStatusBar_ModernInvertColorsAccessibility *)v6 _accessibilityAppliesInvertColors])
+    if ([(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy _accessibilityAppliesInvertColors])
     {
       goto LABEL_8;
     }
 
-    [(UIStatusBar_ModernInvertColorsAccessibility *)v6 setAccessibilityInvertColorsIsolatedTree:0];
-    v5 = [(UIStatusBar_ModernInvertColorsAccessibility *)v6 layer];
-    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v5];
+    [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy setAccessibilityInvertColorsIsolatedTree:0];
+    layer = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy layer];
+    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
   }
 
 LABEL_8:
@@ -45,11 +45,11 @@ LABEL_8:
   _objc_release_x1();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = UIStatusBar_ModernInvertColorsAccessibility;
-  [(UIStatusBar_ModernInvertColorsAccessibility *)&v4 traitCollectionDidChange:a3];
+  [(UIStatusBar_ModernInvertColorsAccessibility *)&v4 traitCollectionDidChange:change];
   [(UIStatusBar_ModernInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
@@ -63,18 +63,18 @@ LABEL_8:
 
 - (BOOL)_accessibilityAppliesInvertColors
 {
-  v2 = self;
-  v3 = [(UIStatusBar_ModernInvertColorsAccessibility *)v2 window];
+  selfCopy = self;
+  window = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy window];
   NSClassFromString(@"SBMainDisplaySceneLayoutWindow");
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     objc_opt_class();
-    v5 = [(UIStatusBar_ModernInvertColorsAccessibility *)v2 safeValueForKey:@"foregroundColor"];
+    v5 = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy safeValueForKey:@"foregroundColor"];
     v6 = __UIAccessibilityCastAsClass();
 
-    if ([(UIStatusBar_ModernInvertColorsAccessibility *)v2 accessibilityIgnoresInvertColors]&& [(UIStatusBar_ModernInvertColorsAccessibility *)v2 _accessibilityWindowHasInvertedApps])
+    if ([(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy accessibilityIgnoresInvertColors]&& [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy _accessibilityWindowHasInvertedApps])
     {
       LOBYTE(v7) = 1;
     }
@@ -89,7 +89,7 @@ LABEL_8:
 
       else
       {
-        v7 = ![(UIStatusBar_ModernInvertColorsAccessibility *)v2 _accessibilityWindowHasInvertedApps];
+        v7 = ![(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy _accessibilityWindowHasInvertedApps];
       }
     }
 
@@ -99,7 +99,7 @@ LABEL_8:
     }
   }
 
-  else if ([(UIStatusBar_ModernInvertColorsAccessibility *)v2 accessibilityIgnoresInvertColors])
+  else if ([(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy accessibilityIgnoresInvertColors])
   {
     LOBYTE(v7) = _AXSInvertColorsEnabled() != 0;
   }
@@ -114,12 +114,12 @@ LABEL_8:
 
 - (BOOL)accessibilityIgnoresInvertColors
 {
-  v2 = self;
-  v3 = [(UIStatusBar_ModernInvertColorsAccessibility *)v2 window];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  selfCopy = self;
+  window = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy window];
+  traitCollection = [window traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == &dword_0 + 2)
+  if (userInterfaceStyle == &dword_0 + 2)
   {
     LOBYTE(v6) = 0;
   }
@@ -127,7 +127,7 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    v7 = [(UIStatusBar_ModernInvertColorsAccessibility *)v2 safeValueForKey:@"foregroundColor"];
+    v7 = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy safeValueForKey:@"foregroundColor"];
     v8 = __UIAccessibilityCastAsClass();
 
     if (v8 || (+[UIApplication _isClassic]& 1) == 0)
@@ -148,13 +148,13 @@ LABEL_8:
 
 - (BOOL)_accessibilityWindowHasInvertedApps
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
-  v3 = [(UIStatusBar_ModernInvertColorsAccessibility *)v2 window];
+  window = [(UIStatusBar_ModernInvertColorsAccessibility *)selfCopy window];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
-  LOBYTE(v3) = [v4 _accessibilityWindowHasInvertedApps];
-  return v3;
+  LOBYTE(window) = [v4 _accessibilityWindowHasInvertedApps];
+  return window;
 }
 
 @end

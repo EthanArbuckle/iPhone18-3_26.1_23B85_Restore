@@ -1,22 +1,22 @@
 @interface SBSwitcherShelfViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SBSwitcherShelfViewControllerAccessibility)initWithShelf:(id)a3 dataSource:(id)a4 delegate:(id)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SBSwitcherShelfViewControllerAccessibility)initWithShelf:(id)shelf dataSource:(id)source delegate:(id)delegate;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSetupShelfSwitcherViewController;
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBSwitcherShelfViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBSwitcherShelfViewController" hasInstanceVariable:@"_contentViewController" withType:"SBFluidSwitcherViewController"];
-  [v3 validateClass:@"SBSwitcherShelfViewController" hasInstanceMethod:@"initWithShelf:dataSource:delegate:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"SBSwitcherShelfViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBSwitcherShelfViewController" conformsToProtocol:@"SBAttentionAwarenessClientDelegate"];
-  [v3 validateProtocol:@"SBAttentionAwarenessClientDelegate" hasRequiredInstanceMethod:@"clientDidResetForUserAttention:withEvent:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBSwitcherShelfViewController" hasInstanceVariable:@"_contentViewController" withType:"SBFluidSwitcherViewController"];
+  [validationsCopy validateClass:@"SBSwitcherShelfViewController" hasInstanceMethod:@"initWithShelf:dataSource:delegate:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBSwitcherShelfViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBSwitcherShelfViewController" conformsToProtocol:@"SBAttentionAwarenessClientDelegate"];
+  [validationsCopy validateProtocol:@"SBAttentionAwarenessClientDelegate" hasRequiredInstanceMethod:@"clientDidResetForUserAttention:withEvent:"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,20 +27,20 @@
   [(SBSwitcherShelfViewControllerAccessibility *)self _axSetupShelfSwitcherViewController];
 }
 
-- (SBSwitcherShelfViewControllerAccessibility)initWithShelf:(id)a3 dataSource:(id)a4 delegate:(id)a5
+- (SBSwitcherShelfViewControllerAccessibility)initWithShelf:(id)shelf dataSource:(id)source delegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = SBSwitcherShelfViewControllerAccessibility;
-  v5 = [(SBSwitcherShelfViewControllerAccessibility *)&v7 initWithShelf:a3 dataSource:a4 delegate:a5];
+  v5 = [(SBSwitcherShelfViewControllerAccessibility *)&v7 initWithShelf:shelf dataSource:source delegate:delegate];
   [(SBSwitcherShelfViewControllerAccessibility *)v5 _accessibilityLoadAccessibilityInformation];
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBSwitcherShelfViewControllerAccessibility;
-  [(SBSwitcherShelfViewControllerAccessibility *)&v4 viewWillAppear:a3];
+  [(SBSwitcherShelfViewControllerAccessibility *)&v4 viewWillAppear:appear];
   [(SBSwitcherShelfViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -53,15 +53,15 @@
   [v4 _setAXSwitcherType:&__block_literal_global_5];
 }
 
-- (void)clientDidResetForUserAttention:(id)a3 withEvent:(id)a4
+- (void)clientDidResetForUserAttention:(id)attention withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  attentionCopy = attention;
+  eventCopy = event;
   if (!UIAccessibilityIsVoiceOverRunning() && ([(SBSwitcherShelfViewControllerAccessibility *)self _accessibilityIsFKARunningForFocusItem]& 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = SBSwitcherShelfViewControllerAccessibility;
-    [(SBSwitcherShelfViewControllerAccessibility *)&v8 clientDidResetForUserAttention:v6 withEvent:v7];
+    [(SBSwitcherShelfViewControllerAccessibility *)&v8 clientDidResetForUserAttention:attentionCopy withEvent:eventCopy];
   }
 }
 

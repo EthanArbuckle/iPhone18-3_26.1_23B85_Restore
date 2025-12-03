@@ -1,25 +1,25 @@
 @interface PFSceneTaxonomy
-+ (__CFString)indexNameForIdentifier:(int)a3 forArchivePath:;
-+ (id)dataArchivePathForIdentifier:(void *)a3 bundle:;
++ (__CFString)indexNameForIdentifier:(int)identifier forArchivePath:;
++ (id)dataArchivePathForIdentifier:(void *)identifier bundle:;
 + (id)sharedTaxonomy;
 - (BOOL)loadOrCreateIndex;
 - (NSString)description;
 - (NSString)digest;
-- (PFSceneTaxonomy)initWithDataPath:(id)a3 identifier:(id)a4 localizationBundle:(id)a5 tableName:(id)a6 error:(id *)a7;
-- (PFSceneTaxonomy)initWithIdentifier:(id)a3 error:(id *)a4;
+- (PFSceneTaxonomy)initWithDataPath:(id)path identifier:(id)identifier localizationBundle:(id)bundle tableName:(id)name error:(id *)error;
+- (PFSceneTaxonomy)initWithIdentifier:(id)identifier error:(id *)error;
 - (PFSceneTaxonomy)initWithLatestTaxonomy;
 - (PFSceneTaxonomyNode)rootNode;
 - (char)magic;
 - (const)indexLabel;
 - (id)dataArchivePath;
 - (id)indexName;
-- (id)localizedStringForKey:(id)a3;
-- (id)nodeForExtendedSceneClassId:(unint64_t)a3;
-- (id)nodeForName:(id)a3;
-- (unint64_t)extendedSceneClassIdForName:(id)a3;
+- (id)localizedStringForKey:(id)key;
+- (id)nodeForExtendedSceneClassId:(unint64_t)id;
+- (id)nodeForName:(id)name;
+- (unint64_t)extendedSceneClassIdForName:(id)name;
 - (unint64_t)nodeCount;
-- (void)nodeRefForExtendedSceneClassId:(unint64_t)a3;
-- (void)nodeRefForName:(id)a3;
+- (void)nodeRefForExtendedSceneClassId:(unint64_t)id;
+- (void)nodeRefForName:(id)name;
 @end
 
 @implementation PFSceneTaxonomy
@@ -49,36 +49,36 @@
   dataPath = self->_dataPath;
   if (dataPath)
   {
-    v4 = [(NSString *)dataPath lastPathComponent];
-    v5 = [v4 stringByDeletingPathExtension];
+    lastPathComponent = [(NSString *)dataPath lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
   }
 
   else
   {
-    v5 = [PFSceneTaxonomy indexNameForIdentifier:0 forArchivePath:?];
+    stringByDeletingPathExtension = [PFSceneTaxonomy indexNameForIdentifier:0 forArchivePath:?];
   }
 
   if (self->_forceIndexed)
   {
-    v6 = [v5 stringByAppendingString:@"-forced"];
+    v6 = [stringByDeletingPathExtension stringByAppendingString:@"-forced"];
 
-    v5 = v6;
+    stringByDeletingPathExtension = v6;
   }
 
-  return v5;
+  return stringByDeletingPathExtension;
 }
 
 - (char)magic
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [a1 architectureHash];
-  v3 = [a1 dataArchivePath];
-  if (stat([v3 fileSystemRepresentation], &v12))
+  architectureHash = [self architectureHash];
+  dataArchivePath = [self dataArchivePath];
+  if (stat([dataArchivePath fileSystemRepresentation], &v12))
   {
     v4 = 0;
   }
@@ -99,10 +99,10 @@
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [a1 dataArchivePath];
+      dataArchivePath2 = [self dataArchivePath];
       v10 = *__error();
       *buf = 138543618;
-      v14 = v9;
+      v14 = dataArchivePath2;
       v15 = 1024;
       v16 = v10;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to get file metadata from dataArchivePath %{public}@: %d.", buf, 0x12u);
@@ -111,7 +111,7 @@
     v6 = 0;
   }
 
-  v11 = v2;
+  v11 = architectureHash;
   v7 = [PFSceneTaxonomy magic]::buffer;
   snprintf([PFSceneTaxonomy magic]::buffer, 0x50uLL, "%s%s%02x%08x%08x", "PFSceneTaxonomy", "02", 6, v11, v6);
   return v7;
@@ -123,7 +123,7 @@
   dataPath = self->_dataPath;
   if (dataPath)
   {
-    v3 = dataPath;
+    dataArchivePath = dataPath;
   }
 
   else
@@ -131,21 +131,21 @@
     localizationBundle = self->_localizationBundle;
     if (localizationBundle)
     {
-      v3 = [PFSceneTaxonomy dataArchivePathForIdentifier:localizationBundle bundle:?];
-      if (!v3)
+      dataArchivePath = [PFSceneTaxonomy dataArchivePathForIdentifier:localizationBundle bundle:?];
+      if (!dataArchivePath)
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v7 = [(PFSceneTaxonomy *)self indexName];
-          v8 = [(NSBundle *)self->_localizationBundle bundlePath];
+          indexName = [(PFSceneTaxonomy *)self indexName];
+          bundlePath = [(NSBundle *)self->_localizationBundle bundlePath];
           *buf = 138543618;
-          v11 = v7;
+          v11 = indexName;
           v12 = 2114;
-          v13 = v8;
+          v13 = bundlePath;
           _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Error finding %{public}@ data archive resource in bundle %{public}@.", buf, 0x16u);
         }
 
-        v3 = 0;
+        dataArchivePath = 0;
       }
     }
 
@@ -153,16 +153,16 @@
     {
       v9.receiver = self;
       v9.super_class = PFSceneTaxonomy;
-      v3 = [(PFCachingArchiveIndex *)&v9 dataArchivePath];
+      dataArchivePath = [(PFCachingArchiveIndex *)&v9 dataArchivePath];
     }
   }
 
-  return v3;
+  return dataArchivePath;
 }
 
-- (id)nodeForName:(id)a3
+- (id)nodeForName:(id)name
 {
-  v4 = [(PFSceneTaxonomy *)self nodeRefForName:a3];
+  v4 = [(PFSceneTaxonomy *)self nodeRefForName:name];
   if (v4)
   {
     v4 = [[PFSceneTaxonomyNode alloc] initWithNodeRef:v4 taxonomy:self];
@@ -171,9 +171,9 @@
   return v4;
 }
 
-- (id)nodeForExtendedSceneClassId:(unint64_t)a3
+- (id)nodeForExtendedSceneClassId:(unint64_t)id
 {
-  v4 = [(PFSceneTaxonomy *)self nodeRefForExtendedSceneClassId:a3];
+  v4 = [(PFSceneTaxonomy *)self nodeRefForExtendedSceneClassId:id];
   if (v4)
   {
     v4 = [[PFSceneTaxonomyNode alloc] initWithNodeRef:v4 taxonomy:self];
@@ -214,27 +214,27 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
   }
 }
 
-+ (id)dataArchivePathForIdentifier:(void *)a3 bundle:
++ (id)dataArchivePathForIdentifier:(void *)identifier bundle:
 {
   v4 = a2;
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_opt_self();
-  if (!v5)
+  if (!identifierCopy)
   {
-    v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
+    identifierCopy = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   }
 
   v7 = [(PFSceneTaxonomy *)v6 indexNameForIdentifier:v4 forArchivePath:1];
-  v8 = [v5 pathForResource:v7 ofType:@"bz2"];
+  v8 = [identifierCopy pathForResource:v7 ofType:@"bz2"];
 
   return v8;
 }
 
-+ (__CFString)indexNameForIdentifier:(int)a3 forArchivePath:
++ (__CFString)indexNameForIdentifier:(int)identifier forArchivePath:
 {
   v4 = a2;
   objc_opt_self();
-  if (!v4 && a3)
+  if (!v4 && identifier)
   {
     v4 = +[PFSceneTaxonomy latestTaxonomyIdentifier];
   }
@@ -266,12 +266,12 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
   }
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  if (v4 && (localizationBundle = self->_localizationBundle) != 0 && self->_tableName)
+  keyCopy = key;
+  if (keyCopy && (localizationBundle = self->_localizationBundle) != 0 && self->_tableName)
   {
-    v6 = [(NSBundle *)localizationBundle localizedStringForKey:v4 value:@"NO LOC" table:?];
+    v6 = [(NSBundle *)localizationBundle localizedStringForKey:keyCopy value:@"NO LOC" table:?];
     if ([@"NO LOC" isEqualToString:v6] & 1) != 0 || (objc_msgSend(@"NULL", "isEqualToString:", v6))
     {
       v7 = 0;
@@ -309,8 +309,8 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
     }
 
     v7 = *(self->_nameMap + 4);
-    v8 = [(PFSceneTaxonomy *)self digest];
-    v9 = [v3 stringWithFormat:@"<%@: %p> data:%@ tableName:%@, count:%lu, digest:%@", v4, self, dataPath, tableName, v7, v8];
+    digest = [(PFSceneTaxonomy *)self digest];
+    v9 = [v3 stringWithFormat:@"<%@: %p> data:%@ tableName:%@, count:%lu, digest:%@", v4, self, dataPath, tableName, v7, digest];
   }
 
   else
@@ -321,10 +321,10 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
   return v9;
 }
 
-- (unint64_t)extendedSceneClassIdForName:(id)a3
+- (unint64_t)extendedSceneClassIdForName:(id)name
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(PFSceneTaxonomy *)self nodeRefForName:a3];
+  v3 = [(PFSceneTaxonomy *)self nodeRefForName:name];
   if (v3)
   {
     return *v3;
@@ -340,14 +340,14 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
   return -1;
 }
 
-- (void)nodeRefForName:(id)a3
+- (void)nodeRefForName:(id)name
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFSceneTaxonomy *)self loadOrCreateIndex];
-  if (v4)
+  nameCopy = name;
+  loadOrCreateIndex = [(PFSceneTaxonomy *)self loadOrCreateIndex];
+  if (nameCopy)
   {
-    v6 = v5;
+    v6 = loadOrCreateIndex;
   }
 
   else
@@ -357,9 +357,9 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
 
   if (v6)
   {
-    if ([v4 length] >= 0x201)
+    if ([nameCopy length] >= 0x201)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"name must be %ld characters or less: %@", 512, v4}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"name must be %ld characters or less: %@", 512, nameCopy}];
     }
 
     boost::interprocess::basic_managed_heap_memory<char,boost::interprocess::rbtree_best_fit<boost::interprocess::null_mutex_family,boost::interprocess::offset_ptr<void,long,unsigned long,0ul>,0ul>,boost::interprocess::iset_index>::basic_managed_heap_memory(&v8);
@@ -368,15 +368,15 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
   return 0;
 }
 
-- (void)nodeRefForExtendedSceneClassId:(unint64_t)a3
+- (void)nodeRefForExtendedSceneClassId:(unint64_t)id
 {
-  v13 = a3;
+  idCopy = id;
   if (![(PFSceneTaxonomy *)self loadOrCreateIndex])
   {
     return 0;
   }
 
-  boost::unordered::detail::table<boost::unordered::detail::map<boost::interprocess::allocator<std::pair<unsigned long long const,boost::interprocess::offset_ptr<pf::SceneTaxonomyNode,long,unsigned long,0ul>>,boost::interprocess::segment_manager<char,boost::interprocess::rbtree_best_fit<boost::interprocess::null_mutex_family,boost::interprocess::offset_ptr<void,long,unsigned long,0ul>,0ul>,boost::interprocess::iset_index>>,unsigned long long,boost::interprocess::offset_ptr<pf::SceneTaxonomyNode,long,unsigned long,0ul>,boost::hash<unsigned long long>,std::equal_to<unsigned long long>>>::find_node_impl<unsigned long long,std::equal_to<unsigned long long>>(&v14, self->_sceneMap, a3, &v13);
+  boost::unordered::detail::table<boost::unordered::detail::map<boost::interprocess::allocator<std::pair<unsigned long long const,boost::interprocess::offset_ptr<pf::SceneTaxonomyNode,long,unsigned long,0ul>>,boost::interprocess::segment_manager<char,boost::interprocess::rbtree_best_fit<boost::interprocess::null_mutex_family,boost::interprocess::offset_ptr<void,long,unsigned long,0ul>,0ul>,boost::interprocess::iset_index>>,unsigned long long,boost::interprocess::offset_ptr<pf::SceneTaxonomyNode,long,unsigned long,0ul>,boost::hash<unsigned long long>,std::equal_to<unsigned long long>>>::find_node_impl<unsigned long long,std::equal_to<unsigned long long>>(&v14, self->_sceneMap, id, &idCopy);
   result = 0;
   v6 = &v14 - v12;
   if (v14 == 1)
@@ -432,14 +432,14 @@ void __48__PFSceneTaxonomy_Compatibility__sharedTaxonomy__block_invoke()
   }
 }
 
-- (PFSceneTaxonomy)initWithDataPath:(id)a3 identifier:(id)a4 localizationBundle:(id)a5 tableName:(id)a6 error:(id *)a7
+- (PFSceneTaxonomy)initWithDataPath:(id)path identifier:(id)identifier localizationBundle:(id)bundle tableName:(id)name error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v13)
+  pathCopy = path;
+  identifierCopy = identifier;
+  bundleCopy = bundle;
+  nameCopy = name;
+  if (!identifierCopy)
   {
 LABEL_4:
     v31.receiver = self;
@@ -449,21 +449,21 @@ LABEL_4:
     if (v17)
     {
       v19 = +[PFSceneTaxonomy latestTaxonomyIdentifier];
-      v20 = [v13 isEqualToString:v19];
+      v20 = [identifierCopy isEqualToString:v19];
 
       if ((v20 & 1) == 0)
       {
-        v21 = [v13 copy];
+        v21 = [identifierCopy copy];
         identifier = v17->_identifier;
         v17->_identifier = v21;
       }
 
-      v23 = [v12 copy];
+      v23 = [pathCopy copy];
       dataPath = v17->_dataPath;
       v17->_dataPath = v23;
 
-      objc_storeStrong(&v17->_localizationBundle, a5);
-      v25 = [v15 copy];
+      objc_storeStrong(&v17->_localizationBundle, bundle);
+      v25 = [nameCopy copy];
       tableName = v17->_tableName;
       v17->_tableName = v25;
 
@@ -474,8 +474,8 @@ LABEL_4:
 
       if (PFArchiveFileIsAppleInternal::isAppleInternal == 1)
       {
-        v27 = [MEMORY[0x1E695E000] standardUserDefaults];
-        v28 = [v27 BOOLForKey:@"PFDefaultSceneTaxonomyIsDenylistDisabled"];
+        standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+        v28 = [standardUserDefaults BOOLForKey:@"PFDefaultSceneTaxonomyIsDenylistDisabled"];
 
         if (v28)
         {
@@ -487,25 +487,25 @@ LABEL_4:
     goto LABEL_17;
   }
 
-  v16 = [PFSceneTaxonomy dataArchivePathForIdentifier:v13 bundle:v14];
+  v16 = [PFSceneTaxonomy dataArchivePathForIdentifier:identifierCopy bundle:bundleCopy];
   if (v16)
   {
 
     goto LABEL_4;
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:260 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:260 userInfo:0];
   }
 
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v30 = [v14 bundlePath];
+    bundlePath = [bundleCopy bundlePath];
     *buf = 138412546;
-    v33 = v13;
+    v33 = identifierCopy;
     v34 = 2112;
-    v35 = v30;
+    v35 = bundlePath;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "error reading scene taxonomy data archive with identifier %@ from %@", buf, 0x16u);
   }
 
@@ -515,10 +515,10 @@ LABEL_17:
   return v18;
 }
 
-- (PFSceneTaxonomy)initWithIdentifier:(id)a3 error:(id *)a4
+- (PFSceneTaxonomy)initWithIdentifier:(id)identifier error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -526,13 +526,13 @@ LABEL_17:
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Could not obtain the bundle containing the scene taxonomy", &v14, 2u);
   }
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v9 = [v8 stringForKey:@"PFSceneTaxonomyData"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v9 = [standardUserDefaults stringForKey:@"PFSceneTaxonomyData"];
 
   if ([v9 length])
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v10 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [defaultManager fileExistsAtPath:v9];
 
     if (!v11)
     {
@@ -573,7 +573,7 @@ LABEL_13:
   }
 
 LABEL_9:
-  v12 = [(PFSceneTaxonomy *)self initWithDataPath:v9 identifier:v6 localizationBundle:v7 tableName:@"scenetaxonomy" error:a4];
+  v12 = [(PFSceneTaxonomy *)self initWithDataPath:v9 identifier:identifierCopy localizationBundle:v7 tableName:@"scenetaxonomy" error:error];
 LABEL_14:
 
   return v12;

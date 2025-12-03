@@ -1,10 +1,10 @@
 @interface MFDiskFreeSpaceMonitor
 + (id)defaultMonitor;
 - (MFDiskFreeSpaceMonitor)init;
-- (unint64_t)_retrieveFreeSpaceStatus:(id *)a3;
+- (unint64_t)_retrieveFreeSpaceStatus:(id *)status;
 - (unint64_t)freeSpaceStatus;
-- (void)getFreeSpaceStatusWithCompletionHandler:(id)a3;
-- (void)setFreeSpaceStatus:(unint64_t)a3;
+- (void)getFreeSpaceStatusWithCompletionHandler:(id)handler;
+- (void)setFreeSpaceStatus:(unint64_t)status;
 @end
 
 @implementation MFDiskFreeSpaceMonitor
@@ -78,10 +78,10 @@
   return freeSpaceStatus;
 }
 
-- (void)setFreeSpaceStatus:(unint64_t)a3
+- (void)setFreeSpaceStatus:(unint64_t)status
 {
   [(NSLock *)self->_freeSpaceStatusLock lock];
-  if (self->_freeSpaceStatus == a3)
+  if (self->_freeSpaceStatus == status)
   {
     freeSpaceStatusLock = self->_freeSpaceStatusLock;
 
@@ -90,17 +90,17 @@
 
   else
   {
-    self->_freeSpaceStatus = a3;
+    self->_freeSpaceStatus = status;
     [(NSLock *)self->_freeSpaceStatusLock unlock];
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 postNotificationName:@"MFDiskFreeSpaceMonitorDidChangeNotification" object:self];
   }
 }
 
-- (unint64_t)_retrieveFreeSpaceStatus:(id *)a3
+- (unint64_t)_retrieveFreeSpaceStatus:(id *)status
 {
   dispatch_assert_queue_V2(self->_freeSpaceStatusQueue);
-  v5 = [MFDiskCacheUtilities systemSpaceWithError:a3];
+  v5 = [MFDiskCacheUtilities systemSpaceWithError:status];
   v6 = v5;
   if (v5)
   {
@@ -127,13 +127,13 @@
 
   else
   {
-    if (a3)
+    if (status)
     {
       v10 = MFLogGeneral();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [*a3 ef_publicDescription];
-        sub_10048B53C(v11, buf, v10);
+        ef_publicDescription = [*status ef_publicDescription];
+        sub_10048B53C(ef_publicDescription, buf, v10);
       }
     }
 
@@ -173,17 +173,17 @@
   return v9;
 }
 
-- (void)getFreeSpaceStatusWithCompletionHandler:(id)a3
+- (void)getFreeSpaceStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   freeSpaceStatusQueue = self->_freeSpaceStatusQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001C62AC;
   v7[3] = &unk_1006509B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(freeSpaceStatusQueue, v7);
 }
 

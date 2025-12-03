@@ -1,28 +1,28 @@
 @interface ClarityUIAppSetupController
-- (ClarityUIAppSetupController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 controller:(id)a6 identifier:(id)a7;
-- (ClarityUIAppSetupController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 dataSource:(id)a6;
+- (ClarityUIAppSetupController)initWithTitle:(id)title detailText:(id)text icon:(id)icon controller:(id)controller identifier:(id)identifier;
+- (ClarityUIAppSetupController)initWithTitle:(id)title detailText:(id)text icon:(id)icon dataSource:(id)source;
 - (ClarityUIAppSetupControllerDelegate)delegate;
 - (NSString)bundleIdentifier;
-- (void)cancelButtonTapped:(id)a3;
-- (void)nextButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)nextButtonTapped:(id)tapped;
 @end
 
 @implementation ClarityUIAppSetupController
 
-- (ClarityUIAppSetupController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 dataSource:(id)a6
+- (ClarityUIAppSetupController)initWithTitle:(id)title detailText:(id)text icon:(id)icon dataSource:(id)source
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[ClarityUISettingsListController alloc] initWithDataSource:v11];
+  sourceCopy = source;
+  iconCopy = icon;
+  textCopy = text;
+  titleCopy = title;
+  v15 = [[ClarityUISettingsListController alloc] initWithDataSource:sourceCopy];
   v19.receiver = self;
   v19.super_class = ClarityUIAppSetupController;
-  v16 = [(ClarityUIOnboardingSettingsWrapperController *)&v19 initWithTitle:v14 detailText:v13 icon:v12 controller:v15];
+  v16 = [(ClarityUIOnboardingSettingsWrapperController *)&v19 initWithTitle:titleCopy detailText:textCopy icon:iconCopy controller:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_dataSource, a6);
+    objc_storeStrong(&v16->_dataSource, source);
     identifier = v16->_identifier;
     v16->_identifier = 0;
   }
@@ -30,16 +30,16 @@
   return v16;
 }
 
-- (ClarityUIAppSetupController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 controller:(id)a6 identifier:(id)a7
+- (ClarityUIAppSetupController)initWithTitle:(id)title detailText:(id)text icon:(id)icon controller:(id)controller identifier:(id)identifier
 {
-  v13 = a7;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = ClarityUIAppSetupController;
-  v14 = [(ClarityUIOnboardingSettingsWrapperController *)&v17 initWithTitle:a3 detailText:a4 icon:a5 controller:a6];
+  v14 = [(ClarityUIOnboardingSettingsWrapperController *)&v17 initWithTitle:title detailText:text icon:icon controller:controller];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a7);
+    objc_storeStrong(&v14->_identifier, identifier);
   }
 
   return v15;
@@ -49,24 +49,24 @@
 {
   if (self->_dataSource)
   {
-    v2 = [(ClarityUISettingsDataSource *)self->_dataSource bundleIdentifier];
+    bundleIdentifier = [(ClarityUISettingsDataSource *)self->_dataSource bundleIdentifier];
   }
 
   else
   {
-    v2 = self->_identifier;
+    bundleIdentifier = self->_identifier;
   }
 
-  return v2;
+  return bundleIdentifier;
 }
 
-- (void)nextButtonTapped:(id)a3
+- (void)nextButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained nextButtonTappedForAppSetupController:self];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained cancelButtonTappedForAppSetupController:self];

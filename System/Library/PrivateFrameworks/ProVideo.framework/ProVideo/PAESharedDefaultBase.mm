@@ -1,54 +1,54 @@
 @interface PAESharedDefaultBase
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getCropRectFromImage:(id)a3 toImage:(id)a4 output:(void *)a5;
-- (BOOL)getHeliumImage:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParm:(int)a7 atTime:(id)a8;
-- (BOOL)getPoint:(void *)a3 fromParm:(unsigned int)a4 atTime:(id)a5 withImage:(id)a6;
-- (BOOL)smear:(HGRef<HGNode>)a3 fromImage:(id)a4 toImage:(id)a5 resultNode:(void *)a6;
-- (HGRef<HGNode>)changeDOD:(HGRef<HGNode>)a3 withRect:(const void *)a4;
-- (HGRef<HGNode>)cropFromImage:(id)a3 toImage:(id)a4;
-- (HGRef<HGNode>)smear:(HGRef<HGNode>)a3 fromImage:(id)a4 toImage:(id)a5;
-- (HGRef<HGNode>)transformFromImage:(id)a3 toImage:(id)a4 fit:(BOOL)a5;
-- (PAESharedDefaultBase)initWithAPIManager:(id)a3;
-- (PCMatrix44Tmpl<double>)getInversePixelTransformForImage:(SEL)a3;
-- (PCMatrix44Tmpl<double>)getPixelTransformForImage:(SEL)a3;
-- (PCRect<float>)getCropRectFromImage:(id)a3 toImage:(id)a4;
-- (PCRect<float>)getImageBoundary:(id)a3;
-- (PCVector2<double>)convertRelativeToImageCoordinates:(const void *)a3 withImage:(id)a4;
-- (PCVector2<double>)convertRelativeToPixelCoordinates:(const void *)a3 withImage:(id)a4;
-- (PCVector2<double>)getScaleForImage:(id)a3;
-- (double)frameFromFxTime:(id)a3 forPlugIn:(id)a4;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getCropRectFromImage:(id)image toImage:(id)toImage output:(void *)output;
+- (BOOL)getHeliumImage:(id *)image layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParm:(int)parm atTime:(id)time;
+- (BOOL)getPoint:(void *)point fromParm:(unsigned int)parm atTime:(id)time withImage:(id)image;
+- (BOOL)smear:(HGRef<HGNode>)smear fromImage:(id)image toImage:(id)toImage resultNode:(void *)node;
+- (HGRef<HGNode>)changeDOD:(HGRef<HGNode>)d withRect:(const void *)rect;
+- (HGRef<HGNode>)cropFromImage:(id)image toImage:(id)toImage;
+- (HGRef<HGNode>)smear:(HGRef<HGNode>)smear fromImage:(id)image toImage:(id)toImage;
+- (HGRef<HGNode>)transformFromImage:(id)image toImage:(id)toImage fit:(BOOL)fit;
+- (PAESharedDefaultBase)initWithAPIManager:(id)manager;
+- (PCMatrix44Tmpl<double>)getInversePixelTransformForImage:(SEL)image;
+- (PCMatrix44Tmpl<double>)getPixelTransformForImage:(SEL)image;
+- (PCRect<float>)getCropRectFromImage:(id)image toImage:(id)toImage;
+- (PCRect<float>)getImageBoundary:(id)boundary;
+- (PCVector2<double>)convertRelativeToImageCoordinates:(const void *)coordinates withImage:(id)image;
+- (PCVector2<double>)convertRelativeToPixelCoordinates:(const void *)coordinates withImage:(id)image;
+- (PCVector2<double>)getScaleForImage:(id)image;
+- (double)frameFromFxTime:(id)time forPlugIn:(id)in;
 - (double)frameRate;
-- (double)relativeShutterForAngle:(double)a3;
-- (double)secondsFromFxTime:(id)a3;
+- (double)relativeShutterForAngle:(double)angle;
+- (double)secondsFromFxTime:(id)time;
 - (float)getBlendingGamma;
-- (void)crop:(void *)a3 fromImage:(id)a4 toImage:(id)a5;
-- (void)crop:(void *)a3 withRect:(PCRect<float>)a4;
+- (void)crop:(void *)crop fromImage:(id)image toImage:(id)toImage;
+- (void)crop:(void *)crop withRect:(PCRect<float>)rect;
 - (void)dealloc;
-- (void)fxTime:(id *)a3 fromFrame:(double)a4 forPlugIn:(id)a5;
-- (void)transform:(void *)a3 fromImage:(id)a4 toImage:(id)a5 fit:(BOOL)a6;
+- (void)fxTime:(id *)time fromFrame:(double)frame forPlugIn:(id)in;
+- (void)transform:(void *)transform fromImage:(id)image toImage:(id)toImage fit:(BOOL)fit;
 @end
 
 @implementation PAESharedDefaultBase
 
-- (PAESharedDefaultBase)initWithAPIManager:(id)a3
+- (PAESharedDefaultBase)initWithAPIManager:(id)manager
 {
   v8.receiver = self;
   v8.super_class = PAESharedDefaultBase;
   v4 = [(PAESharedDefaultBase *)&v8 init];
-  v4->_apiManager = a3;
+  v4->_apiManager = manager;
   v5 = [[FxHostCapabilities alloc] initWithAPIManager:v4->_apiManager];
   v4->_upscalesFields = [(FxHostCapabilities *)v5 upscalesFields];
   if ([(FxHostCapabilities *)v5 hostIsFCP])
   {
-    v6 = 1;
+    hostIsFCE = 1;
   }
 
   else
   {
-    v6 = [(FxHostCapabilities *)v5 hostIsFCE];
+    hostIsFCE = [(FxHostCapabilities *)v5 hostIsFCE];
   }
 
-  v4->_hostIsFinalCutPro = v6;
+  v4->_hostIsFinalCutPro = hostIsFCE;
   v4->_hostIsVertigo = [-[FxHostCapabilities hostID](v5 "hostID")];
   return v4;
 }
@@ -60,14 +60,14 @@
   [(PAESharedDefaultBase *)&v2 dealloc];
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
+  *software = 0;
+  *hardware = 0;
   return 1;
 }
 
-- (HGRef<HGNode>)changeDOD:(HGRef<HGNode>)a3 withRect:(const void *)a4
+- (HGRef<HGNode>)changeDOD:(HGRef<HGNode>)d withRect:(const void *)rect
 {
   v7 = v4;
   v15[2] = *MEMORY[0x277D85DE8];
@@ -77,35 +77,35 @@
   v15[0] = 0;
   v15[1] = 0;
   HGTextureWrap::SetTextureBorderColor(v8, v15);
-  (*(*v8 + 120))(v8, 0, *a3.var0);
+  (*(*v8 + 120))(v8, 0, *d.var0);
   v10 = HGObject::operator new(0x1A0uLL);
   HGCrop::HGCrop(v10);
-  v11 = HGRectMake4i(*a4, *(a4 + 1), (*a4 + *(a4 + 2)), (*(a4 + 1) + *(a4 + 3)));
+  v11 = HGRectMake4i(*rect, *(rect + 1), (*rect + *(rect + 2)), (*(rect + 1) + *(rect + 3)));
   (*(*v10 + 96))(v10, 0, v11, SHIDWORD(v11), v12, v13);
   (*(*v10 + 120))(v10, 0, v8);
   *v7 = v10;
   return (*(*v8 + 24))(v8);
 }
 
-- (BOOL)getHeliumImage:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParm:(int)a7 atTime:(id)a8
+- (BOOL)getHeliumImage:(id *)image layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParm:(int)parm atTime:(id)time
 {
-  v9 = *&a7;
+  v9 = *&parm;
   v14 = [(PROAPIAccessing *)self->_apiManager apiForProtocol:&unk_28735E258];
   if (v14)
   {
     v15 = v14;
     if (objc_opt_respondsToSelector())
     {
-      v16 = *&a6->var2;
-      v18[0] = *&a6->var0.var0;
+      v16 = *&info->var2;
+      v18[0] = *&info->var0.var0;
       v18[1] = v16;
-      v18[2] = *&a6->var4;
-      LOBYTE(v14) = [v15 getHeliumImage:a3 layerOffsetX:a4 layerOffsetY:a5 requestInfo:v18 fromParm:v9 atTime:a8.var1];
+      v18[2] = *&info->var4;
+      LOBYTE(v14) = [v15 getHeliumImage:image layerOffsetX:x layerOffsetY:y requestInfo:v18 fromParm:v9 atTime:time.var1];
     }
 
     else
     {
-      *a3 = 0;
+      *image = 0;
       LOBYTE(v14) = 1;
     }
   }
@@ -113,20 +113,20 @@
   return v14;
 }
 
-- (PCMatrix44Tmpl<double>)getPixelTransformForImage:(SEL)a3
+- (PCMatrix44Tmpl<double>)getPixelTransformForImage:(SEL)image
 {
-  v5 = [a4 pixelTransform];
+  pixelTransform = [a4 pixelTransform];
 
-  FxMatrixToPCMatrix(v5, retstr);
+  FxMatrixToPCMatrix(pixelTransform, retstr);
   return result;
 }
 
-- (PCVector2<double>)getScaleForImage:(id)a3
+- (PCVector2<double>)getScaleForImage:(id)image
 {
   v4 = v3;
   if (self)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:image];
     v5 = v7;
     v6 = v8;
   }
@@ -144,7 +144,7 @@
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)getInversePixelTransformForImage:(SEL)a3
+- (PCMatrix44Tmpl<double>)getInversePixelTransformForImage:(SEL)image
 {
   if (self)
   {
@@ -169,26 +169,26 @@
   return PCMatrix44Tmpl<double>::planarInverseZ(retstr, v6, 0.0);
 }
 
-- (PCVector2<double>)convertRelativeToImageCoordinates:(const void *)a3 withImage:(id)a4
+- (PCVector2<double>)convertRelativeToImageCoordinates:(const void *)coordinates withImage:(id)image
 {
   v6 = v4;
-  [a4 bounds];
+  [image bounds];
   v9.f64[1] = v8;
   v10.f64[1] = v7;
-  v11 = vaddq_f64(v10, vmulq_f64(*a3, v9));
+  v11 = vaddq_f64(v10, vmulq_f64(*coordinates, v9));
   *v6 = v11;
   result.var0 = v11.f64[0];
   result.var1 = v7;
   return result;
 }
 
-- (PCVector2<double>)convertRelativeToPixelCoordinates:(const void *)a3 withImage:(id)a4
+- (PCVector2<double>)convertRelativeToPixelCoordinates:(const void *)coordinates withImage:(id)image
 {
   v5 = v4;
   if (self)
   {
-    [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:a3 withImage:?];
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self convertRelativeToImageCoordinates:coordinates withImage:?];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:image];
     v9 = *v5;
     v8 = v5[1];
     v11 = v28;
@@ -227,10 +227,10 @@
   return result;
 }
 
-- (PCRect<float>)getImageBoundary:(id)a3
+- (PCRect<float>)getImageBoundary:(id)boundary
 {
   v4 = v3;
-  [a3 bounds];
+  [boundary bounds];
   *&v7 = v7;
   *&v8 = v8;
   *v4 = LODWORD(v7);
@@ -246,17 +246,17 @@
   return result;
 }
 
-- (PCRect<float>)getCropRectFromImage:(id)a3 toImage:(id)a4
+- (PCRect<float>)getCropRectFromImage:(id)image toImage:(id)toImage
 {
   v7 = v4;
-  [a3 bounds];
+  [image bounds];
   v17.f64[0] = v8;
   v17.f64[1] = v9;
   v18.f64[0] = v10;
   v18.f64[1] = v11;
   if (self)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:toImage];
   }
 
   else
@@ -275,16 +275,16 @@
   return result;
 }
 
-- (BOOL)getCropRectFromImage:(id)a3 toImage:(id)a4 output:(void *)a5
+- (BOOL)getCropRectFromImage:(id)image toImage:(id)toImage output:(void *)output
 {
-  [a3 bounds];
+  [image bounds];
   v15.f64[0] = v8;
   v15.f64[1] = v9;
   v16.f64[0] = v10;
   v16.f64[1] = v11;
   if (self)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:toImage];
   }
 
   else
@@ -295,17 +295,17 @@
   v12 = PCMatrix44Tmpl<double>::transformRect<double>(v14, v15.f64, &v15);
   if (v12)
   {
-    *a5 = vcvt_hight_f32_f64(vcvt_f32_f64(v15), v16);
+    *output = vcvt_hight_f32_f64(vcvt_f32_f64(v15), v16);
   }
 
   return v12;
 }
 
-- (void)crop:(void *)a3 fromImage:(id)a4 toImage:(id)a5
+- (void)crop:(void *)crop fromImage:(id)image toImage:(id)toImage
 {
   if (self)
   {
-    [(PAESharedDefaultBase *)self getCropRectFromImage:a4 toImage:a5];
+    [(PAESharedDefaultBase *)self getCropRectFromImage:image toImage:toImage];
   }
 
   else
@@ -317,50 +317,50 @@
   v6 = HGObject::operator new(0x1A0uLL);
   HGCrop::HGCrop(v6);
   (*(*v6 + 96))(v6, 0, *&v8, *(&v8 + 1) + *(&v9 + 1), *&v8 + *&v9);
-  (*(*v6 + 120))(v6, 0, *a3);
-  v7 = *a3;
-  if (*a3 != v6)
+  (*(*v6 + 120))(v6, 0, *crop);
+  v7 = *crop;
+  if (*crop != v6)
   {
     if (v7)
     {
       (*(*v7 + 24))(v7);
     }
 
-    *a3 = v6;
+    *crop = v6;
     (*(*v6 + 16))(v6);
   }
 
   (*(*v6 + 24))(v6);
 }
 
-- (void)crop:(void *)a3 withRect:(PCRect<float>)a4
+- (void)crop:(void *)crop withRect:(PCRect<float>)rect
 {
   v5 = v4;
   v7 = HGObject::operator new(0x1A0uLL);
   HGCrop::HGCrop(v7);
   (*(*v7 + 96))(v7, 0, *v5, v5[1] + v5[3], *v5 + v5[2]);
-  (*(*v7 + 120))(v7, 0, *a3);
-  v8 = *a3;
-  if (*a3 != v7)
+  (*(*v7 + 120))(v7, 0, *crop);
+  v8 = *crop;
+  if (*crop != v7)
   {
     if (v8)
     {
       (*(*v8 + 24))(v8);
     }
 
-    *a3 = v7;
+    *crop = v7;
     (*(*v7 + 16))(v7);
   }
 
   (*(*v7 + 24))(v7);
 }
 
-- (HGRef<HGNode>)cropFromImage:(id)a3 toImage:(id)a4
+- (HGRef<HGNode>)cropFromImage:(id)image toImage:(id)toImage
 {
   v8 = v4;
-  if (a3)
+  if (image)
   {
-    [a3 heliumRef];
+    [image heliumRef];
   }
 
   else
@@ -368,23 +368,23 @@
     *v4 = 0;
   }
 
-  return [(PAESharedDefaultBase *)self crop:v8 fromImage:a3 toImage:a4];
+  return [(PAESharedDefaultBase *)self crop:v8 fromImage:image toImage:toImage];
 }
 
-- (HGRef<HGNode>)smear:(HGRef<HGNode>)a3 fromImage:(id)a4 toImage:(id)a5
+- (HGRef<HGNode>)smear:(HGRef<HGNode>)smear fromImage:(id)image toImage:(id)toImage
 {
   if (self)
   {
-    [(PAESharedDefaultBase *)self getCropRectFromImage:a4 toImage:a5];
+    [(PAESharedDefaultBase *)self getCropRectFromImage:image toImage:toImage];
   }
 
   Fx_smearToRect();
 }
 
-- (BOOL)smear:(HGRef<HGNode>)a3 fromImage:(id)a4 toImage:(id)a5 resultNode:(void *)a6
+- (BOOL)smear:(HGRef<HGNode>)smear fromImage:(id)image toImage:(id)toImage resultNode:(void *)node
 {
   v7 = xmmword_26084A5D0;
-  if ([(PAESharedDefaultBase *)self getCropRectFromImage:a4 toImage:a5 output:&v7])
+  if ([(PAESharedDefaultBase *)self getCropRectFromImage:image toImage:toImage output:&v7])
   {
     Fx_smearToRect();
   }
@@ -392,9 +392,9 @@
   return 0;
 }
 
-- (void)transform:(void *)a3 fromImage:(id)a4 toImage:(id)a5 fit:(BOOL)a6
+- (void)transform:(void *)transform fromImage:(id)image toImage:(id)toImage fit:(BOOL)fit
 {
-  v6 = a6;
+  fitCopy = fit;
   v38 = 0x3FF0000000000000;
   *v36 = 0x3FF0000000000000;
   v33 = 1.0;
@@ -405,13 +405,13 @@
   v35 = 0u;
   *&v36[8] = 0u;
   v37 = 0u;
-  [a5 bounds];
+  [toImage bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [a4 bounds];
-  if (v6)
+  [image bounds];
+  if (fitCopy)
   {
     v32 = 0u;
     v31 = 0u;
@@ -429,9 +429,9 @@
 
   if (self)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a5];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:toImage];
     PCMatrix44Tmpl<double>::operator*(v26, &v30, v27);
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:image];
   }
 
   else
@@ -442,10 +442,10 @@
   }
 
   PCMatrix44Tmpl<double>::operator*(v27, v25, v28);
-  FxSupport::makeHeliumXForm(v28, a3, 1, 0, &v29);
-  v23 = *a3;
+  FxSupport::makeHeliumXForm(v28, transform, 1, 0, &v29);
+  v23 = *transform;
   v24 = v29;
-  if (*a3 == v29)
+  if (*transform == v29)
   {
     if (v23)
     {
@@ -461,17 +461,17 @@
       v24 = v29;
     }
 
-    *a3 = v24;
+    *transform = v24;
   }
 }
 
-- (HGRef<HGNode>)transformFromImage:(id)a3 toImage:(id)a4 fit:(BOOL)a5
+- (HGRef<HGNode>)transformFromImage:(id)image toImage:(id)toImage fit:(BOOL)fit
 {
-  v6 = a5;
+  fitCopy = fit;
   v10 = v5;
-  if (a3)
+  if (image)
   {
-    [a3 heliumRef];
+    [image heliumRef];
   }
 
   else
@@ -479,10 +479,10 @@
     *v5 = 0;
   }
 
-  return [(PAESharedDefaultBase *)self transform:v10 fromImage:a3 toImage:a4 fit:v6];
+  return [(PAESharedDefaultBase *)self transform:v10 fromImage:image toImage:toImage fit:fitCopy];
 }
 
-- (BOOL)getPoint:(void *)a3 fromParm:(unsigned int)a4 atTime:(id)a5 withImage:(id)a6
+- (BOOL)getPoint:(void *)point fromParm:(unsigned int)parm atTime:(id)time withImage:(id)image
 {
   apiManager = self->_apiManager;
   if (!apiManager)
@@ -490,17 +490,17 @@
     return 0;
   }
 
-  v8 = *&a4;
-  v10 = [(PROAPIAccessing *)apiManager apiForProtocol:&unk_28735E258, *&a4, a5.var1, a6];
-  if (!v10)
+  v8 = *&parm;
+  image = [(PROAPIAccessing *)apiManager apiForProtocol:&unk_28735E258, *&parm, time.var1, image];
+  if (!image)
   {
     return 0;
   }
 
-  return [v10 getXValue:a3 YValue:a3 + 8 fromParm:v8 atFxTime:a5.var1];
+  return [image getXValue:point YValue:point + 8 fromParm:v8 atFxTime:time.var1];
 }
 
-- (double)relativeShutterForAngle:(double)a3
+- (double)relativeShutterForAngle:(double)angle
 {
   v5 = [(PROAPIAccessing *)self->_apiManager apiForProtocol:&unk_28735F060];
   if (!v5)
@@ -513,13 +513,13 @@
   v8 = &v9;
   [v5 durationFxTimeForEffect:&v8];
   [(PAESharedDefaultBase *)self frameFromFxTime:v8 forPlugIn:0];
-  return a3 / 360.0 / v6;
+  return angle / 360.0 / v6;
 }
 
-- (double)secondsFromFxTime:(id)a3
+- (double)secondsFromFxTime:(id)time
 {
-  v3 = *a3.var1;
-  v5.epoch = *(a3.var1 + 2);
+  v3 = *time.var1;
+  v5.epoch = *(time.var1 + 2);
   *&v5.value = v3;
   return CMTimeGetSeconds(&v5);
 }
@@ -537,22 +537,22 @@
   return v4 / [v3 timelineFpsDenominatorForEffect:0];
 }
 
-- (double)frameFromFxTime:(id)a3 forPlugIn:(id)a4
+- (double)frameFromFxTime:(id)time forPlugIn:(id)in
 {
-  [(PAESharedDefaultBase *)self secondsFromFxTime:a3.var1, a4];
+  [(PAESharedDefaultBase *)self secondsFromFxTime:time.var1, in];
   v6 = v5;
   [(PAESharedDefaultBase *)self frameRate];
   return v6 * v7;
 }
 
-- (void)fxTime:(id *)a3 fromFrame:(double)a4 forPlugIn:(id)a5
+- (void)fxTime:(id *)time fromFrame:(double)frame forPlugIn:(id)in
 {
   v8 = [(PROAPIAccessing *)self->_apiManager apiForProtocol:&unk_28735EBF0];
   if (v8)
   {
     memset(&v11, 0, sizeof(v11));
-    CMTimeMakeWithSeconds(&v11, a4 / ([v8 timelineFpsNumeratorForEffect:a5] / objc_msgSend(v8, "timelineFpsDenominatorForEffect:", a5)), 120000);
-    var1 = a3->var1;
+    CMTimeMakeWithSeconds(&v11, frame / ([v8 timelineFpsNumeratorForEffect:in] / objc_msgSend(v8, "timelineFpsDenominatorForEffect:", in)), 120000);
+    var1 = time->var1;
     v10 = *&v11.value;
     *(var1 + 2) = v11.epoch;
     *var1 = v10;

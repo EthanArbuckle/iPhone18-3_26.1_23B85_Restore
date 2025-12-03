@@ -1,123 +1,123 @@
 @interface MFMailboxFilterPickerViewModel
-- (BOOL)canDeselectRowAtIndexPath:(id)a3;
-- (MFMailboxFilterPickerViewModel)initWithFilterViewModel:(id)a3 delegate:(id)a4;
-- (MFMailboxFilterPickerViewModel)initWithProvider:(id)a3 selectedFilters:(id)a4 delegate:(id)a5;
+- (BOOL)canDeselectRowAtIndexPath:(id)path;
+- (MFMailboxFilterPickerViewModel)initWithFilterViewModel:(id)model delegate:(id)delegate;
+- (MFMailboxFilterPickerViewModel)initWithProvider:(id)provider selectedFilters:(id)filters delegate:(id)delegate;
 - (MFMailboxFilterPickerViewModelDelegate)delegate;
 - (NSArray)filters;
-- (id)filterAtIndexPath:(id)a3;
-- (id)filtersForGroupAtIndex:(int64_t)a3;
-- (id)groupAtIndex:(int64_t)a3;
-- (id)indexPathForFilter:(id)a3;
-- (id)indexPathsForFilters:(id)a3;
+- (id)filterAtIndexPath:(id)path;
+- (id)filtersForGroupAtIndex:(int64_t)index;
+- (id)groupAtIndex:(int64_t)index;
+- (id)indexPathForFilter:(id)filter;
+- (id)indexPathsForFilters:(id)filters;
 - (id)selected;
 - (id)selectedFilters;
-- (id)titleForSection:(int64_t)a3;
-- (int64_t)indexOfGroup:(id)a3;
+- (id)titleForSection:(int64_t)section;
+- (int64_t)indexOfGroup:(id)group;
 - (int64_t)numberOfFilterSection;
-- (int64_t)numberOfFiltersForSection:(int64_t)a3;
-- (int64_t)selectionTypeAtIndex:(id)a3;
-- (void)_notifyDelegateOfChangeAtIndexPath:(id)a3;
-- (void)deselectFilterAtIndexPath:(id)a3;
-- (void)selectFilterAtIndexPath:(id)a3;
+- (int64_t)numberOfFiltersForSection:(int64_t)section;
+- (int64_t)selectionTypeAtIndex:(id)index;
+- (void)_notifyDelegateOfChangeAtIndexPath:(id)path;
+- (void)deselectFilterAtIndexPath:(id)path;
+- (void)selectFilterAtIndexPath:(id)path;
 @end
 
 @implementation MFMailboxFilterPickerViewModel
 
-- (MFMailboxFilterPickerViewModel)initWithProvider:(id)a3 selectedFilters:(id)a4 delegate:(id)a5
+- (MFMailboxFilterPickerViewModel)initWithProvider:(id)provider selectedFilters:(id)filters delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  filtersCopy = filters;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = MFMailboxFilterPickerViewModel;
   v12 = [(MFMailboxFilterPickerViewModel *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_provider, a3);
-    v14 = [(MFMailboxFilterPickerViewModel *)v13 indexPathsForFilters:v10];
+    objc_storeStrong(&v12->_provider, provider);
+    v14 = [(MFMailboxFilterPickerViewModel *)v13 indexPathsForFilters:filtersCopy];
     v15 = [[NSMutableSet alloc] initWithArray:v14];
 
     selectedIndexPaths = v13->_selectedIndexPaths;
     v13->_selectedIndexPaths = v15;
 
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v13;
 }
 
-- (MFMailboxFilterPickerViewModel)initWithFilterViewModel:(id)a3 delegate:(id)a4
+- (MFMailboxFilterPickerViewModel)initWithFilterViewModel:(id)model delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 provider];
-  v9 = [v6 selectedFilters];
-  v10 = [(MFMailboxFilterPickerViewModel *)self initWithProvider:v8 selectedFilters:v9 delegate:v7];
+  modelCopy = model;
+  delegateCopy = delegate;
+  provider = [modelCopy provider];
+  selectedFilters = [modelCopy selectedFilters];
+  v10 = [(MFMailboxFilterPickerViewModel *)self initWithProvider:provider selectedFilters:selectedFilters delegate:delegateCopy];
 
   return v10;
 }
 
 - (NSArray)filters
 {
-  v2 = [(MFMailboxFilterPickerViewModel *)self provider];
-  v3 = [v2 allFilters];
+  provider = [(MFMailboxFilterPickerViewModel *)self provider];
+  allFilters = [provider allFilters];
 
-  return v3;
+  return allFilters;
 }
 
 - (int64_t)numberOfFilterSection
 {
-  v2 = [(MFMailboxFilterPickerViewModel *)self provider];
-  v3 = [v2 filtersGroups];
+  provider = [(MFMailboxFilterPickerViewModel *)self provider];
+  filtersGroups = [provider filtersGroups];
+  v4 = [filtersGroups count];
+
+  return v4;
+}
+
+- (int64_t)numberOfFiltersForSection:(int64_t)section
+{
+  v3 = [(MFMailboxFilterPickerViewModel *)self filtersForGroupAtIndex:section];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (int64_t)numberOfFiltersForSection:(int64_t)a3
+- (id)filtersForGroupAtIndex:(int64_t)index
 {
-  v3 = [(MFMailboxFilterPickerViewModel *)self filtersForGroupAtIndex:a3];
-  v4 = [v3 count];
+  v3 = [(MFMailboxFilterPickerViewModel *)self groupAtIndex:index];
+  filters = [v3 filters];
 
-  return v4;
+  return filters;
 }
 
-- (id)filtersForGroupAtIndex:(int64_t)a3
+- (id)groupAtIndex:(int64_t)index
 {
-  v3 = [(MFMailboxFilterPickerViewModel *)self groupAtIndex:a3];
-  v4 = [v3 filters];
-
-  return v4;
-}
-
-- (id)groupAtIndex:(int64_t)a3
-{
-  v4 = [(MFMailboxFilterPickerViewModel *)self provider];
-  v5 = [v4 filtersGroups];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  provider = [(MFMailboxFilterPickerViewModel *)self provider];
+  filtersGroups = [provider filtersGroups];
+  v6 = [filtersGroups objectAtIndexedSubscript:index];
 
   return v6;
 }
 
-- (int64_t)indexOfGroup:(id)a3
+- (int64_t)indexOfGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(MFMailboxFilterPickerViewModel *)self provider];
-  v6 = [v5 filtersGroups];
-  v7 = [v6 indexOfObject:v4];
+  groupCopy = group;
+  provider = [(MFMailboxFilterPickerViewModel *)self provider];
+  filtersGroups = [provider filtersGroups];
+  v7 = [filtersGroups indexOfObject:groupCopy];
 
   return v7;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
-  v3 = [(MFMailboxFilterPickerViewModel *)self groupAtIndex:a3];
-  v4 = [v3 name];
-  v5 = v4;
-  if (v4)
+  v3 = [(MFMailboxFilterPickerViewModel *)self groupAtIndex:section];
+  name = [v3 name];
+  v5 = name;
+  if (name)
   {
-    v6 = v4;
+    v6 = name;
   }
 
   else
@@ -130,23 +130,23 @@
   return v6;
 }
 
-- (id)filterAtIndexPath:(id)a3
+- (id)filterAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[MFMailboxFilterPickerViewModel filtersForGroupAtIndex:](self, "filtersForGroupAtIndex:", [v4 section]);
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+  pathCopy = path;
+  v5 = -[MFMailboxFilterPickerViewModel filtersForGroupAtIndex:](self, "filtersForGroupAtIndex:", [pathCopy section]);
+  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   return v6;
 }
 
-- (id)indexPathForFilter:(id)a3
+- (id)indexPathForFilter:(id)filter
 {
-  v5 = a3;
-  v6 = [(MFMailboxFilterPickerViewModel *)self provider];
-  v7 = [v6 groupContainingFilter:v5];
+  filterCopy = filter;
+  provider = [(MFMailboxFilterPickerViewModel *)self provider];
+  v7 = [provider groupContainingFilter:filterCopy];
 
   v8 = [(MFMailboxFilterPickerViewModel *)self indexOfGroup:v7];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (-[MFMailboxFilterPickerViewModel filtersForGroupAtIndex:](self, "filtersForGroupAtIndex:", v8), v11 = objc_claimAutoreleasedReturnValue(), v10 = [v11 indexOfObject:v5], v11, v10 == 0x7FFFFFFFFFFFFFFFLL))
+  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (-[MFMailboxFilterPickerViewModel filtersForGroupAtIndex:](self, "filtersForGroupAtIndex:", v8), v11 = objc_claimAutoreleasedReturnValue(), v10 = [v11 indexOfObject:filterCopy], v11, v10 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MFMailboxFilterPickerViewModel.m" lineNumber:96 description:@"It should always be possible to find the group and the filter index"];
@@ -159,22 +159,22 @@
   return v12;
 }
 
-- (id)indexPathsForFilters:(id)a3
+- (id)indexPathsForFilters:(id)filters
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001D7380;
   v5[3] = &unk_100654388;
   v5[4] = self;
-  v3 = [a3 ef_map:v5];
+  v3 = [filters ef_map:v5];
 
   return v3;
 }
 
-- (BOOL)canDeselectRowAtIndexPath:(id)a3
+- (BOOL)canDeselectRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[MFMailboxFilterPickerViewModel groupAtIndex:](self, "groupAtIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[MFMailboxFilterPickerViewModel groupAtIndex:](self, "groupAtIndex:", [pathCopy section]);
   if ([v5 selectionCardinality])
   {
     v6 = 1;
@@ -182,13 +182,13 @@
 
   else
   {
-    v7 = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
+    selectedIndexPaths = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1001D74D4;
     v10[3] = &unk_1006521F0;
-    v11 = v4;
-    v8 = [v7 ef_countObjectsPassingTest:v10];
+    v11 = pathCopy;
+    v8 = [selectedIndexPaths ef_countObjectsPassingTest:v10];
 
     v6 = v8 > 1;
   }
@@ -196,51 +196,51 @@
   return v6;
 }
 
-- (int64_t)selectionTypeAtIndex:(id)a3
+- (int64_t)selectionTypeAtIndex:(id)index
 {
-  v4 = a3;
-  v5 = -[MFMailboxFilterPickerViewModel groupAtIndex:](self, "groupAtIndex:", [v4 section]);
+  indexCopy = index;
+  v5 = -[MFMailboxFilterPickerViewModel groupAtIndex:](self, "groupAtIndex:", [indexCopy section]);
   v6 = [v5 combinator] == 0;
 
   return v6;
 }
 
-- (void)selectFilterAtIndexPath:(id)a3
+- (void)selectFilterAtIndexPath:(id)path
 {
-  v10 = a3;
-  if (!v10 || (v5 = [v10 row], -[MFMailboxFilterPickerViewModel filters](self, "filters"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
+  pathCopy = path;
+  if (!pathCopy || (v5 = [pathCopy row], -[MFMailboxFilterPickerViewModel filters](self, "filters"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"MFMailboxFilterPickerViewModel.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"indexPath && ((NSUInteger)indexPath.row < self.filters.count)"}];
   }
 
-  v9 = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
-  [v9 addObject:v10];
+  selectedIndexPaths = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
+  [selectedIndexPaths addObject:pathCopy];
 
-  [(MFMailboxFilterPickerViewModel *)self _notifyDelegateOfChangeAtIndexPath:v10];
+  [(MFMailboxFilterPickerViewModel *)self _notifyDelegateOfChangeAtIndexPath:pathCopy];
 }
 
-- (void)deselectFilterAtIndexPath:(id)a3
+- (void)deselectFilterAtIndexPath:(id)path
 {
-  v10 = a3;
-  if (!v10 || (v5 = [v10 row], -[MFMailboxFilterPickerViewModel filters](self, "filters"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
+  pathCopy = path;
+  if (!pathCopy || (v5 = [pathCopy row], -[MFMailboxFilterPickerViewModel filters](self, "filters"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5 >= v7))
   {
     v8 = +[NSAssertionHandler currentHandler];
     [v8 handleFailureInMethod:a2 object:self file:@"MFMailboxFilterPickerViewModel.m" lineNumber:143 description:{@"Invalid parameter not satisfying: %@", @"indexPath && ((NSUInteger)indexPath.row < self.filters.count)"}];
   }
 
-  v9 = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
-  [v9 removeObject:v10];
+  selectedIndexPaths = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
+  [selectedIndexPaths removeObject:pathCopy];
 
-  [(MFMailboxFilterPickerViewModel *)self _notifyDelegateOfChangeAtIndexPath:v10];
+  [(MFMailboxFilterPickerViewModel *)self _notifyDelegateOfChangeAtIndexPath:pathCopy];
 }
 
 - (id)selected
 {
-  v2 = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
-  v3 = [v2 allObjects];
+  selectedIndexPaths = [(MFMailboxFilterPickerViewModel *)self selectedIndexPaths];
+  allObjects = [selectedIndexPaths allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)selectedFilters
@@ -251,11 +251,11 @@
   v5 = NSStringFromSelector("row");
   v6 = [NSSortDescriptor sortDescriptorWithKey:v5 ascending:1];
 
-  v7 = [(MFMailboxFilterPickerViewModel *)self selected];
+  selected = [(MFMailboxFilterPickerViewModel *)self selected];
   v13[0] = v4;
   v13[1] = v6;
   v8 = [NSArray arrayWithObjects:v13 count:2];
-  v9 = [v7 sortedArrayUsingDescriptors:v8];
+  v9 = [selected sortedArrayUsingDescriptors:v8];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -267,13 +267,13 @@
   return v10;
 }
 
-- (void)_notifyDelegateOfChangeAtIndexPath:(id)a3
+- (void)_notifyDelegateOfChangeAtIndexPath:(id)path
 {
-  v5 = [(MFMailboxFilterPickerViewModel *)self filterAtIndexPath:a3];
+  v5 = [(MFMailboxFilterPickerViewModel *)self filterAtIndexPath:path];
   if ([v5 hasCriterionOfType:23])
   {
-    v4 = [(MFMailboxFilterPickerViewModel *)self delegate];
-    [v4 filterPickerViewModelDidChangeSelectedAccounts:self];
+    delegate = [(MFMailboxFilterPickerViewModel *)self delegate];
+    [delegate filterPickerViewModelDidChangeSelectedAccounts:self];
   }
 }
 

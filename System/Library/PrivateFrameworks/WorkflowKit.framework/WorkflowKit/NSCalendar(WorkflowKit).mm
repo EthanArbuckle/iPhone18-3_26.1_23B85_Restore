@@ -9,11 +9,11 @@
 - (id)wf_weekdays
 {
   v2 = MEMORY[0x1E695DFA8];
-  v3 = [a1 weekdaySymbols];
-  v4 = [v2 setWithCapacity:{objc_msgSend(v3, "count")}];
+  weekdaySymbols = [self weekdaySymbols];
+  v4 = [v2 setWithCapacity:{objc_msgSend(weekdaySymbols, "count")}];
 
-  v5 = [a1 weekdaySymbols];
-  v6 = [v5 count];
+  weekdaySymbols2 = [self weekdaySymbols];
+  v6 = [weekdaySymbols2 count];
 
   if (v6)
   {
@@ -24,8 +24,8 @@
       [v4 addObject:v8];
 
       ++v7;
-      v9 = [a1 weekdaySymbols];
-      v10 = [v9 count];
+      weekdaySymbols3 = [self weekdaySymbols];
+      v10 = [weekdaySymbols3 count];
     }
 
     while (v7 <= v10);
@@ -39,31 +39,31 @@
 - (id)wf_workweekDays
 {
   v2 = [MEMORY[0x1E695DFA8] set];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 weekdaySymbols];
-  v5 = [v4 count];
+  date = [MEMORY[0x1E695DF00] date];
+  weekdaySymbols = [self weekdaySymbols];
+  v5 = [weekdaySymbols count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      if (([a1 isDateInWeekend:v3] & 1) == 0)
+      if (([self isDateInWeekend:date] & 1) == 0)
       {
-        v7 = [a1 components:512 fromDate:v3];
-        v8 = [v7 weekday];
+        v7 = [self components:512 fromDate:date];
+        weekday = [v7 weekday];
 
-        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:weekday];
         [v2 addObject:v9];
       }
 
-      v10 = [a1 dateByAddingUnit:16 value:1 toDate:v3 options:0];
+      v10 = [self dateByAddingUnit:16 value:1 toDate:date options:0];
 
       ++v6;
-      v11 = [a1 weekdaySymbols];
-      v12 = [v11 count];
+      weekdaySymbols2 = [self weekdaySymbols];
+      v12 = [weekdaySymbols2 count];
 
-      v3 = v10;
+      date = v10;
     }
 
     while (v6 < v12);
@@ -71,7 +71,7 @@
 
   else
   {
-    v10 = v3;
+    v10 = date;
   }
 
   v13 = [v2 copy];
@@ -82,31 +82,31 @@
 - (id)wf_weekendDays
 {
   v2 = [MEMORY[0x1E695DFA8] set];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [a1 weekdaySymbols];
-  v5 = [v4 count];
+  date = [MEMORY[0x1E695DF00] date];
+  weekdaySymbols = [self weekdaySymbols];
+  v5 = [weekdaySymbols count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      if ([a1 isDateInWeekend:v3])
+      if ([self isDateInWeekend:date])
       {
-        v7 = [a1 components:512 fromDate:v3];
-        v8 = [v7 weekday];
+        v7 = [self components:512 fromDate:date];
+        weekday = [v7 weekday];
 
-        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
+        v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:weekday];
         [v2 addObject:v9];
       }
 
-      v10 = [a1 dateByAddingUnit:16 value:1 toDate:v3 options:0];
+      v10 = [self dateByAddingUnit:16 value:1 toDate:date options:0];
 
       ++v6;
-      v11 = [a1 weekdaySymbols];
-      v12 = [v11 count];
+      weekdaySymbols2 = [self weekdaySymbols];
+      v12 = [weekdaySymbols2 count];
 
-      v3 = v10;
+      date = v10;
     }
 
     while (v6 < v12);
@@ -114,7 +114,7 @@
 
   else
   {
-    v10 = v3;
+    v10 = date;
   }
 
   v13 = [v2 copy];

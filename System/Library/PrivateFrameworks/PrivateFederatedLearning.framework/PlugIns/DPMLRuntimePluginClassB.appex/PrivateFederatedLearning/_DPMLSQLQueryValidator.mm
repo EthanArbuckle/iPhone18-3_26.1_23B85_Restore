@@ -1,41 +1,41 @@
 @interface _DPMLSQLQueryValidator
-+ (id)isValidSQLQuery:(id)a3 forNamespaceID:(id)a4 possibleError:(id *)a5;
-+ (id)parseQueryPermissionList:(id)a3 error:(id *)a4;
-+ (id)sharedInstanceWithError:(id *)a3;
-- (_DPMLSQLQueryValidator)initWithAllowList:(id)a3 blockList:(id)a4;
++ (id)isValidSQLQuery:(id)query forNamespaceID:(id)d possibleError:(id *)error;
++ (id)parseQueryPermissionList:(id)list error:(id *)error;
++ (id)sharedInstanceWithError:(id *)error;
+- (_DPMLSQLQueryValidator)initWithAllowList:(id)list blockList:(id)blockList;
 @end
 
 @implementation _DPMLSQLQueryValidator
 
-- (_DPMLSQLQueryValidator)initWithAllowList:(id)a3 blockList:(id)a4
+- (_DPMLSQLQueryValidator)initWithAllowList:(id)list blockList:(id)blockList
 {
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  blockListCopy = blockList;
   v12.receiver = self;
   v12.super_class = _DPMLSQLQueryValidator;
   v9 = [(_DPMLSQLQueryValidator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_allowList, a3);
-    objc_storeStrong(&v10->_blockList, a4);
+    objc_storeStrong(&v9->_allowList, list);
+    objc_storeStrong(&v10->_blockList, blockList);
   }
 
   return v10;
 }
 
-+ (id)parseQueryPermissionList:(id)a3 error:(id *)a4
++ (id)parseQueryPermissionList:(id)list error:(id *)error
 {
-  v5 = a3;
-  v6 = [NSDictionary dictionaryWithContentsOfURL:v5];
+  listCopy = list;
+  v6 = [NSDictionary dictionaryWithContentsOfURL:listCopy];
   v7 = v6;
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v28 = [_DPMLRuntimeError errorWithCode:300 description:@"Cannot load allow-list from class bundle file"];
-      v29 = *a4;
-      *a4 = v28;
+      v29 = *error;
+      *error = v28;
     }
 
     v13 = 0;
@@ -49,8 +49,8 @@
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v9 = [v7 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v50 objects:v55 count:16];
+  allKeys = [v7 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (!v10)
   {
     v11 = 0;
@@ -60,13 +60,13 @@
     goto LABEL_24;
   }
 
-  v38 = a4;
+  errorCopy = error;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0;
   v15 = *v51;
-  v44 = v9;
+  v44 = allKeys;
   v36 = *v51;
 LABEL_4:
   v16 = 0;
@@ -76,7 +76,7 @@ LABEL_5:
   if (*v51 != v15)
   {
     v18 = v16;
-    objc_enumerationMutation(v9);
+    objc_enumerationMutation(allKeys);
     v16 = v18;
   }
 
@@ -104,7 +104,7 @@ LABEL_5:
     v22 = v21;
     v23 = *v47;
     v42 = v7;
-    v43 = v5;
+    v43 = listCopy;
     v41 = v8;
 LABEL_10:
     v24 = 0;
@@ -130,8 +130,8 @@ LABEL_10:
 
       if (!v13)
       {
-        v31 = v38;
-        if (v38)
+        v31 = errorCopy;
+        if (errorCopy)
         {
           v32 = [_DPMLRuntimeError errorWithCode:300 underlyingError:v14 description:@"Permission list has a malformed regex value"];
           v25 = 0;
@@ -150,7 +150,7 @@ LABEL_10:
       {
         v22 = [v11 countByEnumeratingWithState:&v46 objects:v54 count:16];
         v7 = v42;
-        v5 = v43;
+        listCopy = v43;
         v8 = v41;
         if (v22)
         {
@@ -163,7 +163,7 @@ LABEL_17:
         v16 = v40 + 1;
         v17 = v12;
         v15 = v36;
-        v9 = v44;
+        allKeys = v44;
         if ((v40 + 1) == v37)
         {
           v10 = [v44 countByEnumeratingWithState:&v50 objects:v55 count:16];
@@ -184,19 +184,19 @@ LABEL_24:
       }
     }
 
-    v31 = v38;
-    if (v38)
+    v31 = errorCopy;
+    if (errorCopy)
     {
       v32 = [_DPMLRuntimeError errorWithCode:300 description:@"Permission list value has a non-string item"];
       v14 = v26;
 LABEL_29:
       v7 = v42;
-      v9 = v44;
+      allKeys = v44;
       v33 = *v31;
       *v31 = v32;
 
       v13 = v25;
-      v5 = v43;
+      listCopy = v43;
       v8 = v41;
       goto LABEL_33;
     }
@@ -205,17 +205,17 @@ LABEL_29:
     v14 = v26;
 LABEL_32:
     v7 = v42;
-    v5 = v43;
+    listCopy = v43;
     v8 = v41;
-    v9 = v44;
+    allKeys = v44;
     goto LABEL_33;
   }
 
-  if (v38)
+  if (errorCopy)
   {
     v35 = [_DPMLRuntimeError errorWithCode:300 description:@"Permission list has a non-list value"];
-    v11 = *v38;
-    *v38 = v35;
+    v11 = *errorCopy;
+    *errorCopy = v35;
     v12 = v17;
 LABEL_33:
 
@@ -230,16 +230,16 @@ LABEL_36:
   return v30;
 }
 
-+ (id)sharedInstanceWithError:(id *)a3
++ (id)sharedInstanceWithError:(id *)error
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100014D24;
   block[3] = &unk_10002C5B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000395C0 == -1)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -248,10 +248,10 @@ LABEL_36:
   }
 
   dispatch_once(&qword_1000395C0, block);
-  if (a3)
+  if (error)
   {
 LABEL_3:
-    objc_storeStrong(a3, qword_1000395B8);
+    objc_storeStrong(error, qword_1000395B8);
   }
 
 LABEL_4:
@@ -260,14 +260,14 @@ LABEL_4:
   return v4;
 }
 
-+ (id)isValidSQLQuery:(id)a3 forNamespaceID:(id)a4 possibleError:(id *)a5
++ (id)isValidSQLQuery:(id)query forNamespaceID:(id)d possibleError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  dCopy = d;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![v7 length])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![queryCopy length])
   {
-    if (!a5)
+    if (!error)
     {
 LABEL_29:
       v25 = 0;
@@ -277,8 +277,8 @@ LABEL_29:
     v26 = @"SQL query needs to be a non-empty string";
 LABEL_28:
     v27 = [_DPMLRuntimeError errorWithCode:300 description:v26];
-    v28 = *a5;
-    *a5 = v27;
+    v28 = *error;
+    *error = v27;
 
     goto LABEL_29;
   }
@@ -286,7 +286,7 @@ LABEL_28:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -300,8 +300,8 @@ LABEL_28:
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 blockList];
-    v12 = [v11 objectForKey:v8];
+    blockList = [v9 blockList];
+    v12 = [blockList objectForKey:dCopy];
 
     if (v12)
     {
@@ -324,7 +324,7 @@ LABEL_28:
               objc_enumerationMutation(v13);
             }
 
-            if ([*(*(&v35 + 1) + 8 * i) numberOfMatchesInString:v7 options:4 range:{0, objc_msgSend(v7, "length")}])
+            if ([*(*(&v35 + 1) + 8 * i) numberOfMatchesInString:queryCopy options:4 range:{0, objc_msgSend(queryCopy, "length")}])
             {
               v25 = [NSNumber numberWithBool:0];
 
@@ -344,8 +344,8 @@ LABEL_28:
       }
     }
 
-    v18 = [v10 allowList];
-    v19 = [v18 objectForKey:v8];
+    allowList = [v10 allowList];
+    v19 = [allowList objectForKey:dCopy];
 
     if (v19)
     {
@@ -368,7 +368,7 @@ LABEL_28:
               objc_enumerationMutation(v20);
             }
 
-            if ([*(*(&v31 + 1) + 8 * j) numberOfMatchesInString:v7 options:4 range:{0, objc_msgSend(v7, "length", v31)}])
+            if ([*(*(&v31 + 1) + 8 * j) numberOfMatchesInString:queryCopy options:4 range:{0, objc_msgSend(queryCopy, "length", v31)}])
             {
               v25 = [NSNumber numberWithBool:1];
 
@@ -393,7 +393,7 @@ LABEL_39:
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_41;
@@ -401,8 +401,8 @@ LABEL_39:
 
     v30 = [_DPMLRuntimeError errorWithCode:300 underlyingError:v39 description:@"Cannot create SQL query validator"];
     v25 = 0;
-    v12 = *a5;
-    *a5 = v30;
+    v12 = *error;
+    *error = v30;
   }
 
 LABEL_40:

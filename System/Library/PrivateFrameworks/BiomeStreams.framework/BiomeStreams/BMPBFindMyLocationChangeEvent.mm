@@ -1,19 +1,19 @@
 @interface BMPBFindMyLocationChangeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActivityState:(id)a3;
-- (int)StringAsLocationChangeType:(id)a3;
+- (int)StringAsActivityState:(id)state;
+- (int)StringAsLocationChangeType:(id)type;
 - (int)activityState;
 - (int)locationChangeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActivityState:(BOOL)a3;
-- (void)setHasLocationChangeType:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActivityState:(BOOL)state;
+- (void)setHasLocationChangeType:(BOOL)type;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBFindMyLocationChangeEvent
@@ -31,9 +31,9 @@
   }
 }
 
-- (void)setHasLocationChangeType:(BOOL)a3
+- (void)setHasLocationChangeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -46,20 +46,20 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsLocationChangeType:(id)a3
+- (int)StringAsLocationChangeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Update"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Update"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"StartedSharing"])
+  else if ([typeCopy isEqualToString:@"StartedSharing"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"StoppedSharing"])
+  else if ([typeCopy isEqualToString:@"StoppedSharing"])
   {
     v4 = 2;
   }
@@ -85,9 +85,9 @@
   }
 }
 
-- (void)setHasActivityState:(BOOL)a3
+- (void)setHasActivityState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -100,35 +100,35 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsActivityState:(id)a3
+- (int)StringAsActivityState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Stationary"])
+  else if ([stateCopy isEqualToString:@"Stationary"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Walking"])
+  else if ([stateCopy isEqualToString:@"Walking"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Running"])
+  else if ([stateCopy isEqualToString:@"Running"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Cycling"])
+  else if ([stateCopy isEqualToString:@"Cycling"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Automotive"])
+  else if ([stateCopy isEqualToString:@"Automotive"])
   {
     v4 = 5;
   }
@@ -141,9 +141,9 @@
   return v4;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 2;
   }
@@ -162,20 +162,20 @@
   v8.receiver = self;
   v8.super_class = BMPBFindMyLocationChangeEvent;
   v4 = [(BMPBFindMyLocationChangeEvent *)&v8 description];
-  v5 = [(BMPBFindMyLocationChangeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBFindMyLocationChangeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   idsHandle = self->_idsHandle;
   if (idsHandle)
   {
-    [v3 setObject:idsHandle forKey:@"idsHandle"];
+    [dictionary setObject:idsHandle forKey:@"idsHandle"];
   }
 
   has = self->_has;
@@ -238,14 +238,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_idsHandle)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -253,7 +253,7 @@
   {
     locationChangeType = self->_locationChangeType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -274,7 +274,7 @@ LABEL_5:
 
   activityState = self->_activityState;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -290,38 +290,38 @@ LABEL_6:
 LABEL_15:
   latitude = self->_latitude;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
     longitude = self->_longitude;
     PBDataWriterWriteDoubleField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_idsHandle)
   {
-    [v4 setIdsHandle:?];
-    v4 = v6;
+    [toCopy setIdsHandle:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 10) = self->_locationChangeType;
-    *(v4 + 56) |= 8u;
+    *(toCopy + 10) = self->_locationChangeType;
+    *(toCopy + 56) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -340,8 +340,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 6) = self->_activityState;
-  *(v4 + 56) |= 4u;
+  *(toCopy + 6) = self->_activityState;
+  *(toCopy + 56) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -355,27 +355,27 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 1) = *&self->_latitude;
-  *(v4 + 56) |= 1u;
+  *(toCopy + 1) = *&self->_latitude;
+  *(toCopy + 56) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_7:
-    *(v4 + 2) = *&self->_longitude;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 2) = *&self->_longitude;
+    *(toCopy + 56) |= 2u;
   }
 
 LABEL_8:
   if (self->_name)
   {
     [v6 setName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idsHandle copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idsHandle copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -427,23 +427,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSString *)self->_name copyWithZone:a3];
+  v9 = [(NSString *)self->_name copyWithZone:zone];
   v10 = *(v5 + 48);
   *(v5 + 48) = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   idsHandle = self->_idsHandle;
-  if (idsHandle | *(v4 + 4))
+  if (idsHandle | *(equalCopy + 4))
   {
     if (![(NSString *)idsHandle isEqual:?])
     {
@@ -451,16 +451,16 @@ LABEL_6:
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_locationChangeType != *(v4 + 10))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_locationChangeType != *(equalCopy + 10))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
 LABEL_26:
     v8 = 0;
@@ -469,45 +469,45 @@ LABEL_26:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_activityState != *(v4 + 6))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_activityState != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_latitude != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_latitude != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_longitude != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_longitude != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_26;
   }
 
   name = self->_name;
-  if (name | *(v4 + 6))
+  if (name | *(equalCopy + 6))
   {
     v8 = [(NSString *)name isEqual:?];
   }
@@ -622,22 +622,22 @@ LABEL_11:
   return v6 ^ v3 ^ v7 ^ v11 ^ v12 ^ [(NSString *)self->_name hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(BMPBFindMyLocationChangeEvent *)self setIdsHandle:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 8) != 0)
   {
-    self->_locationChangeType = *(v4 + 10);
+    self->_locationChangeType = *(fromCopy + 10);
     *&self->_has |= 8u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -650,14 +650,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 56) & 4) == 0)
+  else if ((*(fromCopy + 56) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_activityState = *(v4 + 6);
+  self->_activityState = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -670,20 +670,20 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_latitude = *(v4 + 1);
+  self->_latitude = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 56) & 2) != 0)
+  if ((*(fromCopy + 56) & 2) != 0)
   {
 LABEL_7:
-    self->_longitude = *(v4 + 2);
+    self->_longitude = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_8:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBFindMyLocationChangeEvent *)self setName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

@@ -24,9 +24,9 @@
 {
   if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = NSStringFromClass(a3);
-    [v8 handleFailureInMethod:a2 object:a1 file:@"UIFontMetrics.m" lineNumber:132 description:{@"layoutMetrics of type %@ is not a subclass of _UIFontLayoutMetrics.", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFontMetrics.m" lineNumber:132 description:{@"layoutMetrics of type %@ is not a subclass of _UIFontLayoutMetrics.", v9}];
   }
 
   v6 = objc_alloc_init(a3);

@@ -1,6 +1,6 @@
 @interface BKMediaLibraryChangeCollector
-+ (void)logAssets:(id)a3 message:(id)a4;
-- (BKMediaLibraryChangeCollector)initWithAssetCache:(id)a3;
++ (void)logAssets:(id)assets message:(id)message;
+- (BKMediaLibraryChangeCollector)initWithAssetCache:(id)cache;
 - (void)finalizeChangeProcessing;
 @end
 
@@ -8,12 +8,12 @@
 
 - (void)finalizeChangeProcessing
 {
-  v3 = [(BKMediaLibraryChangeCollector *)self beforeChangesCacheIDSet];
-  v4 = [(BKMediaLibraryChangeCollector *)self afterChangesCacheIDSet];
-  [v3 minusSet:v4];
+  beforeChangesCacheIDSet = [(BKMediaLibraryChangeCollector *)self beforeChangesCacheIDSet];
+  afterChangesCacheIDSet = [(BKMediaLibraryChangeCollector *)self afterChangesCacheIDSet];
+  [beforeChangesCacheIDSet minusSet:afterChangesCacheIDSet];
 
-  v5 = [(BKMediaLibraryChangeCollector *)self beforeChangesCacheIDSet];
-  v6 = [NSSet setWithSet:v5];
+  beforeChangesCacheIDSet2 = [(BKMediaLibraryChangeCollector *)self beforeChangesCacheIDSet];
+  v6 = [NSSet setWithSet:beforeChangesCacheIDSet2];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -21,8 +21,8 @@
   v22[3] = &unk_100A0B518;
   v22[4] = self;
   [v6 enumerateObjectsUsingBlock:v22];
-  v7 = [(BKMediaLibraryChangeCollector *)self removed];
-  v8 = [v7 count];
+  removed = [(BKMediaLibraryChangeCollector *)self removed];
+  v8 = [removed count];
 
   if (v8)
   {
@@ -32,13 +32,13 @@
       sub_100794108(self);
     }
 
-    v10 = [(BKMediaLibraryChangeCollector *)self removed];
-    v11 = [v10 allValues];
-    [BKMediaLibraryChangeCollector logAssets:v11 message:@"removing"];
+    removed2 = [(BKMediaLibraryChangeCollector *)self removed];
+    allValues = [removed2 allValues];
+    [BKMediaLibraryChangeCollector logAssets:allValues message:@"removing"];
   }
 
-  v12 = [(BKMediaLibraryChangeCollector *)self added];
-  v13 = [v12 count];
+  added = [(BKMediaLibraryChangeCollector *)self added];
+  v13 = [added count];
 
   if (v13)
   {
@@ -48,13 +48,13 @@
       sub_1007941CC(self);
     }
 
-    v15 = [(BKMediaLibraryChangeCollector *)self added];
-    v16 = [v15 allValues];
-    [BKMediaLibraryChangeCollector logAssets:v16 message:@"adding"];
+    added2 = [(BKMediaLibraryChangeCollector *)self added];
+    allValues2 = [added2 allValues];
+    [BKMediaLibraryChangeCollector logAssets:allValues2 message:@"adding"];
   }
 
-  v17 = [(BKMediaLibraryChangeCollector *)self updated];
-  v18 = [v17 count];
+  updated = [(BKMediaLibraryChangeCollector *)self updated];
+  v18 = [updated count];
 
   if (v18)
   {
@@ -64,15 +64,15 @@
       sub_100794290(self);
     }
 
-    v20 = [(BKMediaLibraryChangeCollector *)self updated];
-    v21 = [v20 allValues];
-    [BKMediaLibraryChangeCollector logAssets:v21 message:@"updating"];
+    updated2 = [(BKMediaLibraryChangeCollector *)self updated];
+    allValues3 = [updated2 allValues];
+    [BKMediaLibraryChangeCollector logAssets:allValues3 message:@"updating"];
   }
 }
 
-- (BKMediaLibraryChangeCollector)initWithAssetCache:(id)a3
+- (BKMediaLibraryChangeCollector)initWithAssetCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v18.receiver = self;
   v18.super_class = BKMediaLibraryChangeCollector;
   v6 = [(BKMediaLibraryChangeCollector *)&v18 init];
@@ -90,10 +90,10 @@
     removed = v6->_removed;
     v6->_removed = v11;
 
-    objc_storeStrong(&v6->_assetCache, a3);
-    v13 = [v5 mutableCacheIDSet];
+    objc_storeStrong(&v6->_assetCache, cache);
+    mutableCacheIDSet = [cacheCopy mutableCacheIDSet];
     beforeChangesCacheIDSet = v6->_beforeChangesCacheIDSet;
-    v6->_beforeChangesCacheIDSet = v13;
+    v6->_beforeChangesCacheIDSet = mutableCacheIDSet;
 
     v15 = objc_opt_new();
     afterChangesCacheIDSet = v6->_afterChangesCacheIDSet;
@@ -103,15 +103,15 @@
   return v6;
 }
 
-+ (void)logAssets:(id)a3 message:(id)a4
++ (void)logAssets:(id)assets message:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  assetsCopy = assets;
+  messageCopy = message;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  v7 = [assetsCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -123,21 +123,21 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
         v12 = BKLibraryDataSourceMediaLibraryLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [v11 assetID];
-          v14 = [v11 title];
+          assetID = [v11 assetID];
+          title = [v11 title];
           *buf = 138543874;
-          v20 = v6;
+          v20 = messageCopy;
           v21 = 2112;
-          v22 = v13;
+          v22 = assetID;
           v23 = 2112;
-          v24 = v14;
+          v24 = title;
           _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}@ assetID: %@, title: %@", buf, 0x20u);
         }
 
@@ -145,7 +145,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v8 = [assetsCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v8);

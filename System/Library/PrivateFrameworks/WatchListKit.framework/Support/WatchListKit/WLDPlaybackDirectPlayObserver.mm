@@ -1,25 +1,25 @@
 @interface WLDPlaybackDirectPlayObserver
 - (BOOL)_getAppRunningState;
-- (WLDPlaybackDirectPlayObserver)initWithBundleID:(id)a3;
+- (WLDPlaybackDirectPlayObserver)initWithBundleID:(id)d;
 - (id)_identifier;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
-- (void)setAppIsRunning:(BOOL)a3;
+- (void)setAppIsRunning:(BOOL)running;
 @end
 
 @implementation WLDPlaybackDirectPlayObserver
 
-- (WLDPlaybackDirectPlayObserver)initWithBundleID:(id)a3
+- (WLDPlaybackDirectPlayObserver)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = WLDPlaybackDirectPlayObserver;
   v5 = [(WLDPlaybackDirectPlayObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(WLDPlaybackDirectPlayObserver *)v5 setBundleID:v4];
+    [(WLDPlaybackDirectPlayObserver *)v5 setBundleID:dCopy];
     [(WLDPlaybackDirectPlayObserver *)v6 setAppIsRunning:0];
     [(WLDPlaybackDirectPlayObserver *)v6 _startObserving];
   }
@@ -37,8 +37,8 @@
 
 - (void)_startObserving
 {
-  v3 = [(WLDPlaybackDirectPlayObserver *)self bundleID];
-  NSLog(@"WLDPlaybackDirectPlayObserver: Start Observing (%@)", v3);
+  bundleID = [(WLDPlaybackDirectPlayObserver *)self bundleID];
+  NSLog(@"WLDPlaybackDirectPlayObserver: Start Observing (%@)", bundleID);
 
   objc_initWeak(&location, self);
   [(WLDPlaybackDirectPlayObserver *)self bundleID];
@@ -48,7 +48,7 @@
   v4 = v6[3] = &unk_100045A20;
   v7 = v4;
   objc_copyWeak(&v9, &location);
-  v8 = self;
+  selfCopy = self;
   v5 = [RBSProcessMonitor monitorWithConfiguration:v6];
   [(WLDPlaybackDirectPlayObserver *)self setStateMonitor:v5];
 
@@ -99,22 +99,22 @@ void __48__WLDPlaybackDirectPlayObserver__startObserving__block_invoke_2(uint64_
 - (void)_stopObserving
 {
   NSLog(@"WLDPlaybackDirectPlayObserver: Stop Observing", a2);
-  v3 = [(WLDPlaybackDirectPlayObserver *)self stateMonitor];
-  [v3 invalidate];
+  stateMonitor = [(WLDPlaybackDirectPlayObserver *)self stateMonitor];
+  [stateMonitor invalidate];
 
   [(WLDPlaybackDirectPlayObserver *)self setStateMonitor:0];
 }
 
-- (void)setAppIsRunning:(BOOL)a3
+- (void)setAppIsRunning:(BOOL)running
 {
-  if (self->_appIsRunning != a3)
+  if (self->_appIsRunning != running)
   {
-    self->_appIsRunning = a3;
-    if (a3)
+    self->_appIsRunning = running;
+    if (running)
     {
       v4 = [WLKTransactionScope alloc];
-      v5 = [(WLDPlaybackDirectPlayObserver *)self _identifier];
-      v6 = [v4 initWithIdentifier:v5 delay:10.0];
+      _identifier = [(WLDPlaybackDirectPlayObserver *)self _identifier];
+      v6 = [v4 initWithIdentifier:_identifier delay:10.0];
 
       [(WLDPlaybackDirectPlayObserver *)self setTransaction:v6];
     }
@@ -124,9 +124,9 @@ void __48__WLDPlaybackDirectPlayObserver__startObserving__block_invoke_2(uint64_
       [(WLDPlaybackDirectPlayObserver *)self setTransaction:0];
     }
 
-    v7 = [(WLDPlaybackDirectPlayObserver *)self updateHandler];
+    updateHandler = [(WLDPlaybackDirectPlayObserver *)self updateHandler];
 
-    if (v7)
+    if (updateHandler)
     {
       v8 = *(self->_updateHandler + 2);
 
@@ -141,11 +141,11 @@ void __48__WLDPlaybackDirectPlayObserver__startObserving__block_invoke_2(uint64_
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(WLDPlaybackDirectPlayObserver *)self stateMonitor];
-  v4 = [v3 states];
+  stateMonitor = [(WLDPlaybackDirectPlayObserver *)self stateMonitor];
+  states = [stateMonitor states];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = states;
+  v5 = [states countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -160,11 +160,11 @@ LABEL_3:
       }
 
       v9 = *(*(&v19 + 1) + 8 * v8);
-      v10 = [v9 process];
-      v11 = [v10 bundle];
-      v12 = [v11 identifier];
-      v13 = [(WLDPlaybackDirectPlayObserver *)self bundleID];
-      v14 = [v12 isEqualToString:v13];
+      process = [v9 process];
+      bundle = [process bundle];
+      identifier = [bundle identifier];
+      bundleID = [(WLDPlaybackDirectPlayObserver *)self bundleID];
+      v14 = [identifier isEqualToString:bundleID];
 
       if (v14)
       {
@@ -183,14 +183,14 @@ LABEL_3:
       }
     }
 
-    v15 = v9;
+    bundleID2 = v9;
 
-    if (!v15)
+    if (!bundleID2)
     {
       goto LABEL_12;
     }
 
-    v16 = [v15 isRunning];
+    isRunning = [bundleID2 isRunning];
   }
 
   else
@@ -198,20 +198,20 @@ LABEL_3:
 LABEL_9:
 
 LABEL_12:
-    v15 = [(WLDPlaybackDirectPlayObserver *)self bundleID];
-    NSLog(@"WLDPlaybackDirectPlayObserver: No process state matching %@", v15);
-    v16 = 0;
+    bundleID2 = [(WLDPlaybackDirectPlayObserver *)self bundleID];
+    NSLog(@"WLDPlaybackDirectPlayObserver: No process state matching %@", bundleID2);
+    isRunning = 0;
   }
 
-  return v16;
+  return isRunning;
 }
 
 - (id)_identifier
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(WLDPlaybackDirectPlayObserver *)self bundleID];
-  v6 = [NSString stringWithFormat:@"%@-%@", v4, v5];
+  bundleID = [(WLDPlaybackDirectPlayObserver *)self bundleID];
+  v6 = [NSString stringWithFormat:@"%@-%@", v4, bundleID];
 
   return v6;
 }

@@ -1,32 +1,32 @@
 @interface SXExperiment
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3;
++ (id)jsonPropertyNameForObjCPropertyName:(id)name;
 @end
 
 @implementation SXExperiment
 
-+ (id)jsonPropertyNameForObjCPropertyName:(id)a3
++ (id)jsonPropertyNameForObjCPropertyName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"expirationDate"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"expirationDate"])
   {
     v5 = @"expiresAt";
   }
 
-  else if ([v4 isEqualToString:@"identifier"])
+  else if ([nameCopy isEqualToString:@"identifier"])
   {
     v5 = @"id";
   }
 
-  else if ([v4 isEqualToString:@"treatmentGroups"])
+  else if ([nameCopy isEqualToString:@"treatmentGroups"])
   {
     v5 = @"variants";
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___SXExperiment;
-    v5 = objc_msgSendSuper2(&v7, sel_jsonPropertyNameForObjCPropertyName_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_jsonPropertyNameForObjCPropertyName_, nameCopy);
   }
 
   return v5;

@@ -1,5 +1,5 @@
 @interface MCDPlayableItemsDataSource
-+ (id)requiredPlaylistEntryPropertiesForModelClass:(Class)a3;
++ (id)requiredPlaylistEntryPropertiesForModelClass:(Class)class;
 + (id)requiredPropertiesForSongs;
 - (id)requestItemProperties;
 @end
@@ -48,19 +48,19 @@
   return v11;
 }
 
-+ (id)requiredPlaylistEntryPropertiesForModelClass:(Class)a3
++ (id)requiredPlaylistEntryPropertiesForModelClass:(Class)class
 {
   v4 = +[MPPropertySet emptyPropertySet];
-  v5 = [(objc_class *)a3 requiredLibraryAddStatusObservationProperties];
-  v6 = [v4 propertySetByCombiningWithPropertySet:v5];
+  requiredLibraryAddStatusObservationProperties = [(objc_class *)class requiredLibraryAddStatusObservationProperties];
+  v6 = [v4 propertySetByCombiningWithPropertySet:requiredLibraryAddStatusObservationProperties];
 
-  v7 = [(objc_class *)a3 requiredLibraryRemovalProperties];
-  v8 = [v6 propertySetByCombiningWithPropertySet:v7];
+  requiredLibraryRemovalProperties = [(objc_class *)class requiredLibraryRemovalProperties];
+  v8 = [v6 propertySetByCombiningWithPropertySet:requiredLibraryRemovalProperties];
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v9 = [objc_opt_class() requiredPropertiesForSongs];
-    v10 = [v8 propertySetByCombiningWithPropertySet:v9];
+    requiredPropertiesForSongs = [objc_opt_class() requiredPropertiesForSongs];
+    v10 = [v8 propertySetByCombiningWithPropertySet:requiredPropertiesForSongs];
 
     v8 = v10;
   }

@@ -1,16 +1,16 @@
 @interface CRKKeyline
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CRKKeyline)initWithType:(int64_t)a3 direction:(int64_t)a4 visualEffectStyle:(unint64_t)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CRKKeyline)initWithType:(int64_t)type direction:(int64_t)direction visualEffectStyle:(unint64_t)style;
 - (double)_roundedKeylineThickness;
 - (double)defaultKeylineInsetForCurrentDevice;
-- (id)_keylineColorForVisualEffectStyle:(unint64_t)a3;
+- (id)_keylineColorForVisualEffectStyle:(unint64_t)style;
 - (void)layoutSubviews;
 @end
 
 @implementation CRKKeyline
 
-- (CRKKeyline)initWithType:(int64_t)a3 direction:(int64_t)a4 visualEffectStyle:(unint64_t)a5
+- (CRKKeyline)initWithType:(int64_t)type direction:(int64_t)direction visualEffectStyle:(unint64_t)style
 {
   v18.receiver = self;
   v18.super_class = CRKKeyline;
@@ -18,31 +18,31 @@
   v8 = *(MEMORY[0x277CBF3A0] + 8);
   v9 = *(MEMORY[0x277CBF3A0] + 16);
   v10 = *(MEMORY[0x277CBF3A0] + 24);
-  v11 = [(CRKKeyline *)&v18 initWithFrame:a3, a4, *MEMORY[0x277CBF3A0], v8, v9, v10];
+  v11 = [(CRKKeyline *)&v18 initWithFrame:type, direction, *MEMORY[0x277CBF3A0], v8, v9, v10];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
+    v11->_type = type;
     v13 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v7, v8, v9, v10}];
     keylineView = v12->_keylineView;
     v12->_keylineView = v13;
 
-    v12->_visualEffectStyle = a5;
+    v12->_visualEffectStyle = style;
     v15 = v12->_keylineView;
-    v16 = [(CRKKeyline *)v12 _keylineColorForVisualEffectStyle:a5];
+    v16 = [(CRKKeyline *)v12 _keylineColorForVisualEffectStyle:style];
     [(UIView *)v15 setBackgroundColor:v16];
 
-    [(UIView *)v12->_keylineView setHidden:a3 == 0];
+    [(UIView *)v12->_keylineView setHidden:type == 0];
     [(CRKKeyline *)v12 addSubview:v12->_keylineView];
   }
 
   return v12;
 }
 
-- (id)_keylineColorForVisualEffectStyle:(unint64_t)a3
+- (id)_keylineColorForVisualEffectStyle:(unint64_t)style
 {
   v3 = 0.0;
-  if (a3 == 1)
+  if (style == 1)
   {
     v3 = 1.0;
   }
@@ -52,8 +52,8 @@
 
 - (double)_roundedKeylineThickness
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   result = 1.0;
@@ -65,10 +65,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(CRKKeyline *)self _roundedKeylineThickness];
   direction = self->_direction;
   if (direction)
@@ -107,11 +107,11 @@
 
 - (double)defaultKeylineInsetForCurrentDevice
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 16.0;
-  if (v3 != 2)
+  if (userInterfaceIdiom != 2)
   {
     v5 = CRKIsLargeDevice();
     result = 16.0;

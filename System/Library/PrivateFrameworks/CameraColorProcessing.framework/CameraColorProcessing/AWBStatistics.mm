@@ -1,21 +1,21 @@
 @interface AWBStatistics
-+ (int)getTileStatsRegionWithMetadata:(id)a3 cropRectLTMInCoords:(CGRect)a4 ltmInDownsamplingRatio:(float)a5 tileStatsRegionLTMInCoordsDictOut:(id *)a6;
-- (AWBStatistics)initWithMetalContext:(id)a3;
-- (int)_adjustConfigToValidRectInBufferCoords:(id)a3 validRectInSensorReadoutCoords:(id)a4 regionOfInterestRectInBufferCoords:(id)a5;
++ (int)getTileStatsRegionWithMetadata:(id)metadata cropRectLTMInCoords:(CGRect)coords ltmInDownsamplingRatio:(float)ratio tileStatsRegionLTMInCoordsDictOut:(id *)out;
+- (AWBStatistics)initWithMetalContext:(id)context;
+- (int)_adjustConfigToValidRectInBufferCoords:(id)coords validRectInSensorReadoutCoords:(id)readoutCoords regionOfInterestRectInBufferCoords:(id)bufferCoords;
 - (int)_createShaders;
 - (int)_loadANSTNetwork;
 - (int)_purgeANSTNetwork;
-- (int)configWindowsV2:(id *)a3 metadata:(id)a4 tilesConfig:(id)a5 validRect:(id)a6 regionOfInterestRect:(id)a7;
-- (int)configWithModuleConfig:(id)a3 metadata:(id)a4 cameraInfo:(id)a5 awbParams:(id)a6;
-- (int)process:(id)a3 clipped:(id)a4 lscGainsTex:(id)a5 validRectInBufferCoords:(id)a6 validRectInSensorReadoutCoords:(id)a7 awbStatsBuffer:(id)a8 awbTileStatsConfig:(id *)a9 anstSkinMask:(id)a10 anstSkinMaskData:(id *)a11 skyMaskTex:(id)a12 skyMaskData:(id *)a13 regionOfInterestRectInBufferCoords:(id)a14 downsizeFactor:(unsigned int *)a15;
+- (int)configWindowsV2:(id *)v2 metadata:(id)metadata tilesConfig:(id)config validRect:(id)rect regionOfInterestRect:(id)interestRect;
+- (int)configWithModuleConfig:(id)config metadata:(id)metadata cameraInfo:(id)info awbParams:(id)params;
+- (int)process:(id)process clipped:(id)clipped lscGainsTex:(id)tex validRectInBufferCoords:(id)coords validRectInSensorReadoutCoords:(id)readoutCoords awbStatsBuffer:(id)buffer awbTileStatsConfig:(id *)config anstSkinMask:(id)self0 anstSkinMaskData:(id *)self1 skyMaskTex:(id)self2 skyMaskData:(id *)self3 regionOfInterestRectInBufferCoords:(id)self4 downsizeFactor:(unsigned int *)self5;
 - (uint64_t)_createShaders;
 @end
 
 @implementation AWBStatistics
 
-- (AWBStatistics)initWithMetalContext:(id)a3
+- (AWBStatistics)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -28,9 +28,9 @@
   v8 = v7;
   if (v7)
   {
-    if (v5)
+    if (contextCopy)
     {
-      objc_storeStrong(&v7->_metalContext, a3);
+      objc_storeStrong(&v7->_metalContext, context);
       if (![(AWBStatistics *)v8 _createShaders])
       {
         v9 = v8;
@@ -179,7 +179,7 @@ LABEL_11:
   if (self->_espressoContext)
   {
     v12 = 0;
-    v9 = 0;
+    path = 0;
     v6 = 0;
     v4 = 0;
     goto LABEL_12;
@@ -194,7 +194,7 @@ LABEL_11:
     FigDebugAssert3();
     v6 = 0;
     v12 = FigSignalErrorAtGM();
-    v9 = 0;
+    path = 0;
     goto LABEL_25;
   }
 
@@ -207,7 +207,7 @@ LABEL_11:
 LABEL_19:
     v6 = 0;
 LABEL_21:
-    v9 = 0;
+    path = 0;
     goto LABEL_25;
   }
 
@@ -218,7 +218,7 @@ LABEL_21:
   {
     v13 = v7;
     FigDebugAssert3();
-    v9 = 0;
+    path = 0;
     v15 = FigSignalErrorAtGM();
 LABEL_23:
     v12 = v15;
@@ -233,10 +233,10 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  v8 = [v6 assetURL];
-  v9 = [v8 path];
+  assetURL = [v6 assetURL];
+  path = [assetURL path];
 
-  if (!v9)
+  if (!path)
   {
     FigDebugAssert3();
     v13 = 0;
@@ -254,7 +254,7 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  [v9 UTF8String];
+  [path UTF8String];
   if (!espresso_plan_add_network() && !espresso_plan_build())
   {
     v12 = 0;
@@ -288,16 +288,16 @@ LABEL_13:
   return v12;
 }
 
-- (int)configWithModuleConfig:(id)a3 metadata:(id)a4 cameraInfo:(id)a5 awbParams:(id)a6
+- (int)configWithModuleConfig:(id)config metadata:(id)metadata cameraInfo:(id)info awbParams:(id)params
 {
-  v10 = a3;
-  v11 = a4;
-  v272 = a5;
-  v12 = a6;
-  v269 = v10;
-  v277 = v12;
-  v275 = v11;
-  if (!v10 || !v11 || !v272 || !v12)
+  configCopy = config;
+  metadataCopy = metadata;
+  infoCopy = info;
+  paramsCopy = params;
+  v269 = configCopy;
+  v277 = paramsCopy;
+  v275 = metadataCopy;
+  if (!configCopy || !metadataCopy || !infoCopy || !paramsCopy)
   {
     v235 = v247;
     LODWORD(v230) = 0;
@@ -315,39 +315,39 @@ LABEL_13:
     kdebug_trace();
   }
 
-  v278 = [v10 objectForKeyedSubscript:@"AutoWhiteBalance"];
-  v13 = [v277 firstPixel];
-  v14 = [v13 intValue];
+  v278 = [configCopy objectForKeyedSubscript:@"AutoWhiteBalance"];
+  firstPixel = [v277 firstPixel];
+  intValue = [firstPixel intValue];
 
-  v15 = [v277 cfaLayout];
-  v267 = [v15 intValue];
+  cfaLayout = [v277 cfaLayout];
+  intValue2 = [cfaLayout intValue];
 
-  v16 = [v277 digitalFlash];
+  digitalFlash = [v277 digitalFlash];
   digitalFlash = self->_digitalFlash;
-  self->_digitalFlash = v16;
+  self->_digitalFlash = digitalFlash;
 
-  v18 = [v277 skipDemosaic];
+  skipDemosaic = [v277 skipDemosaic];
   skipDemosaic = self->_skipDemosaic;
-  self->_skipDemosaic = v18;
+  self->_skipDemosaic = skipDemosaic;
 
-  v20 = [v277 lscMaxGain];
+  lscMaxGain = [v277 lscMaxGain];
   lscMaxGain = self->_lscMaxGain;
-  self->_lscMaxGain = v20;
+  self->_lscMaxGain = lscMaxGain;
 
-  v22 = [v277 lscModulationWeight];
+  lscModulationWeight = [v277 lscModulationWeight];
   lscModulationWeight = self->_lscModulationWeight;
-  self->_lscModulationWeight = v22;
+  self->_lscModulationWeight = lscModulationWeight;
 
-  v24 = [v277 faceAssistedBehaviorMode];
+  faceAssistedBehaviorMode = [v277 faceAssistedBehaviorMode];
   faceAssistedBehaviorMode = self->_faceAssistedBehaviorMode;
-  self->_faceAssistedBehaviorMode = v24;
+  self->_faceAssistedBehaviorMode = faceAssistedBehaviorMode;
 
-  v26 = [v277 downsizeFactor];
+  downsizeFactor = [v277 downsizeFactor];
   downsizeFactor = self->_downsizeFactor;
-  self->_downsizeFactor = v26;
+  self->_downsizeFactor = downsizeFactor;
 
   v28 = MEMORY[0x1E696AD98];
-  v29 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6990FD0]];
+  v29 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990FD0]];
   [v29 doubleValue];
   v30 = [v28 numberWithDouble:?];
 
@@ -378,7 +378,7 @@ LABEL_13:
     goto LABEL_229;
   }
 
-  v270 = [v272 objectForKeyedSubscript:*MEMORY[0x1E6990C50]];
+  v270 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6990C50]];
   if (!v270)
   {
     v235 = v247;
@@ -391,7 +391,7 @@ LABEL_13:
   }
 
   v35 = *MEMORY[0x1E6990F90];
-  v36 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6990F90]];
+  v36 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990F90]];
 
   if (!v36)
   {
@@ -406,9 +406,9 @@ LABEL_272:
   }
 
   v245 = [v278 objectForKeyedSubscript:@"CSC"];
-  [v11 objectForKeyedSubscript:v35];
-  v265 = v263 = v14;
-  v37 = [v265 intValue];
+  [metadataCopy objectForKeyedSubscript:v35];
+  v265 = v263 = intValue;
+  intValue3 = [v265 intValue];
   v38 = v245;
   v279 = v34;
   v280 = v270;
@@ -519,7 +519,7 @@ LABEL_24:
 LABEL_29:
 
       v89 = 0;
-      v90 = fmin(fmax(v37, 2500.0), 5000.0);
+      v90 = fmin(fmax(intValue3, 2500.0), 5000.0);
       v91 = *&self->_anon_7c[4];
       v92 = *&self->_anon_7c[20];
       v93 = *&self->_anon_7c[36];
@@ -608,7 +608,7 @@ LABEL_30:
   self->_awbStatCfg.ispDGain = v106 * 0.0039062;
 
   self->_awbStatCfg.firstPix = v263;
-  self->_awbStatCfg.layout = v267;
+  self->_awbStatCfg.layout = intValue2;
   v314.i8[0] = 0;
   v107 = [v278 objectForKeyedSubscript:@"Stats"];
   self->_awbStatCfg.greenAverage = [v107 cmi_intValueForKey:@"GreenAverage" defaultValue:0 found:&v314];
@@ -1423,7 +1423,7 @@ LABEL_275:
 
   else
   {
-    v205 = configLSC(&self->_anon_7c[1348], v273, v272, v267);
+    v205 = configLSC(&self->_anon_7c[1348], v273, infoCopy, intValue2);
     v89 = v205;
     if (v205)
     {
@@ -1450,11 +1450,11 @@ LABEL_275:
 
     if ([(NSNumber *)self->_faceAssistedBehaviorMode intValue]== 2 || [(NSNumber *)self->_faceAssistedBehaviorMode intValue]== 3)
     {
-      v209 = [(AWBStatistics *)self _loadANSTNetwork];
-      if (v209)
+      _loadANSTNetwork = [(AWBStatistics *)self _loadANSTNetwork];
+      if (_loadANSTNetwork)
       {
         v235 = v247;
-        LODWORD(v230) = v209;
+        LODWORD(v230) = _loadANSTNetwork;
         FigDebugAssert3();
         FigSignalErrorAtGM();
       }
@@ -1491,44 +1491,44 @@ LABEL_229:
 
     if (v212)
     {
-      v271 = [v277 imageTex];
-      v268 = [v277 clippedTex];
-      v213 = [v277 lscGainsTex];
-      v248 = v213 != 0;
-      v266 = v213;
-      v214 = [v277 skinMask];
-      v244 = v214 != 0;
-      v264 = v214;
-      v215 = [v277 skyMask];
-      v243 = v215 != 0;
-      v262 = v215;
-      v259 = [v277 firstPixel];
-      v241 = [v259 intValue] > 0;
-      v257 = [v277 cfaLayout];
-      v240 = [v257 intValue] > 0;
-      v255 = [v277 downsizeFactor];
-      v238 = [v255 intValue] > 0;
-      v253 = [v277 digitalFlash];
-      v237 = [v253 intValue];
-      v246 = [v277 skipDemosaic];
-      v236 = [v246 intValue];
-      v242 = [v277 lscMaxGain];
-      [v242 floatValue];
+      imageTex = [v277 imageTex];
+      clippedTex = [v277 clippedTex];
+      lscGainsTex = [v277 lscGainsTex];
+      v248 = lscGainsTex != 0;
+      v266 = lscGainsTex;
+      skinMask = [v277 skinMask];
+      v244 = skinMask != 0;
+      v264 = skinMask;
+      skyMask = [v277 skyMask];
+      v243 = skyMask != 0;
+      v262 = skyMask;
+      firstPixel2 = [v277 firstPixel];
+      v241 = [firstPixel2 intValue] > 0;
+      cfaLayout2 = [v277 cfaLayout];
+      v240 = [cfaLayout2 intValue] > 0;
+      downsizeFactor2 = [v277 downsizeFactor];
+      v238 = [downsizeFactor2 intValue] > 0;
+      digitalFlash2 = [v277 digitalFlash];
+      intValue4 = [digitalFlash2 intValue];
+      skipDemosaic2 = [v277 skipDemosaic];
+      intValue5 = [skipDemosaic2 intValue];
+      lscMaxGain2 = [v277 lscMaxGain];
+      [lscMaxGain2 floatValue];
       v217 = v216 > 0.0;
-      v239 = [v277 faceAssistedBehaviorMode];
-      v218 = [v239 intValue];
-      v219 = [v277 validRectInSensorReadoutCoords];
-      v220 = stringFromCGRectDictionaryRepresentation(v219);
-      v221 = [v277 validRectInBufferCoords];
-      v222 = stringFromCGRectDictionaryRepresentation(v221);
-      v223 = [v277 regionOfInterestRectInBufferCoords];
-      v224 = stringFromCGRectDictionaryRepresentation(v223);
+      faceAssistedBehaviorMode2 = [v277 faceAssistedBehaviorMode];
+      intValue6 = [faceAssistedBehaviorMode2 intValue];
+      validRectInSensorReadoutCoords = [v277 validRectInSensorReadoutCoords];
+      v220 = stringFromCGRectDictionaryRepresentation(validRectInSensorReadoutCoords);
+      validRectInBufferCoords = [v277 validRectInBufferCoords];
+      v222 = stringFromCGRectDictionaryRepresentation(validRectInBufferCoords);
+      regionOfInterestRectInBufferCoords = [v277 regionOfInterestRectInBufferCoords];
+      v224 = stringFromCGRectDictionaryRepresentation(regionOfInterestRectInBufferCoords);
       v282 = 136318978;
       v283 = "[AWBStatistics configWithModuleConfig:metadata:cameraInfo:awbParams:]";
       v284 = 1024;
-      v285 = v271 != 0;
+      v285 = imageTex != 0;
       v286 = 1024;
-      v287 = v268 != 0;
+      v287 = clippedTex != 0;
       v288 = 1024;
       v289 = v248;
       v290 = 1024;
@@ -1542,13 +1542,13 @@ LABEL_229:
       v298 = 1024;
       v299 = v238;
       v300 = 1024;
-      v301 = v237;
+      v301 = intValue4;
       v302 = 1024;
-      v303 = v236;
+      v303 = intValue5;
       v304 = 1024;
       v305 = v217;
       v306 = 1024;
-      v307 = v218;
+      v307 = intValue6;
       v308 = 2112;
       v309 = v220;
       v310 = 2112;
@@ -1575,23 +1575,23 @@ LABEL_229:
   return v89;
 }
 
-- (int)_adjustConfigToValidRectInBufferCoords:(id)a3 validRectInSensorReadoutCoords:(id)a4 regionOfInterestRectInBufferCoords:(id)a5
+- (int)_adjustConfigToValidRectInBufferCoords:(id)coords validRectInSensorReadoutCoords:(id)readoutCoords regionOfInterestRectInBufferCoords:(id)bufferCoords
 {
-  v8 = a3;
-  v9 = a4;
-  v54 = a5;
+  coordsCopy = coords;
+  readoutCoordsCopy = readoutCoords;
+  bufferCoordsCopy = bufferCoords;
   v10 = *(MEMORY[0x1E695F058] + 16);
   v63.origin = *MEMORY[0x1E695F058];
   v63.size = v10;
-  valid = _configStatsDownsizeRatioRuntimeWithValidRect(&self->_awbStatCfg, v8, [(NSNumber *)self->_downsizeFactor unsignedIntValue]);
+  valid = _configStatsDownsizeRatioRuntimeWithValidRect(&self->_awbStatCfg, coordsCopy, [(NSNumber *)self->_downsizeFactor unsignedIntValue]);
   if (valid)
   {
     FigDebugAssert3();
     goto LABEL_37;
   }
 
-  v12 = v8;
-  v13 = v9;
+  v12 = coordsCopy;
+  v13 = readoutCoordsCopy;
   memset(&rect, 0, sizeof(rect));
   memset(v55, 0, 32);
   if (CGRectMakeWithDictionaryRepresentation(v12, &rect) && ([v12 objectForKeyedSubscript:@"FullWidth"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "intValue"), v14, objc_msgSend(v12, "objectForKeyedSubscript:", @"FullHeight"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "intValue"), v16, v15) && v17 && (rect.size.width <= v15 ? (v18 = rect.size.height > v17) : (v18 = 1), !v18))
@@ -1643,7 +1643,7 @@ LABEL_17:
   }
 
 LABEL_25:
-  valid = _configStatsROIRuntimeWithRegionOfInterestRect(&self->_awbStatCfg, v12, v54, &v63);
+  valid = _configStatsROIRuntimeWithRegionOfInterestRect(&self->_awbStatCfg, v12, bufferCoordsCopy, &v63);
   if (valid)
   {
     goto LABEL_17;
@@ -1729,18 +1729,18 @@ LABEL_37:
 
     if (v44)
     {
-      v52 = v9;
-      v53 = v8;
-      v45 = [(NSNumber *)self->_downsizeFactor unsignedIntValue];
-      v46 = stringFromCGRectDictionaryRepresentation(v9);
-      v47 = stringFromCGRectDictionaryRepresentation(v8);
-      v48 = stringFromCGRectDictionaryRepresentation(v54);
+      v52 = readoutCoordsCopy;
+      v53 = coordsCopy;
+      unsignedIntValue = [(NSNumber *)self->_downsizeFactor unsignedIntValue];
+      v46 = stringFromCGRectDictionaryRepresentation(readoutCoordsCopy);
+      v47 = stringFromCGRectDictionaryRepresentation(coordsCopy);
+      v48 = stringFromCGRectDictionaryRepresentation(bufferCoordsCopy);
       DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v63);
       v50 = stringFromCGRectDictionaryRepresentation(DictionaryRepresentation);
       *v55 = 136316418;
       *&v55[4] = "[AWBStatistics _adjustConfigToValidRectInBufferCoords:validRectInSensorReadoutCoords:regionOfInterestRectInBufferCoords:]";
       *&v55[12] = 1024;
-      *&v55[14] = v45;
+      *&v55[14] = unsignedIntValue;
       *&v55[18] = 2112;
       *&v55[20] = v46;
       *&v55[28] = 2112;
@@ -1751,8 +1751,8 @@ LABEL_37:
       v59 = v50;
       _os_log_send_and_compose_impl();
 
-      v9 = v52;
-      v8 = v53;
+      readoutCoordsCopy = v52;
+      coordsCopy = v53;
     }
 
     fig_log_call_emit_and_clean_up_after_send_and_compose();
@@ -1761,17 +1761,17 @@ LABEL_37:
   return valid;
 }
 
-- (int)process:(id)a3 clipped:(id)a4 lscGainsTex:(id)a5 validRectInBufferCoords:(id)a6 validRectInSensorReadoutCoords:(id)a7 awbStatsBuffer:(id)a8 awbTileStatsConfig:(id *)a9 anstSkinMask:(id)a10 anstSkinMaskData:(id *)a11 skyMaskTex:(id)a12 skyMaskData:(id *)a13 regionOfInterestRectInBufferCoords:(id)a14 downsizeFactor:(unsigned int *)a15
+- (int)process:(id)process clipped:(id)clipped lscGainsTex:(id)tex validRectInBufferCoords:(id)coords validRectInSensorReadoutCoords:(id)readoutCoords awbStatsBuffer:(id)buffer awbTileStatsConfig:(id *)config anstSkinMask:(id)self0 anstSkinMaskData:(id *)self1 skyMaskTex:(id)self2 skyMaskData:(id *)self3 regionOfInterestRectInBufferCoords:(id)self4 downsizeFactor:(unsigned int *)self5
 {
-  v146 = a3;
-  v141 = a4;
-  v142 = a5;
-  v21 = a6;
-  v138 = a7;
-  v143 = a8;
-  v144 = a10;
-  v147 = a12;
-  v137 = a14;
+  processCopy = process;
+  clippedCopy = clipped;
+  texCopy = tex;
+  coordsCopy = coords;
+  readoutCoordsCopy = readoutCoords;
+  bufferCopy = buffer;
+  maskCopy = mask;
+  maskTexCopy = maskTex;
+  bufferCoordsCopy = bufferCoords;
   location = 0;
   v182 = 0;
   v22 = *MEMORY[0x1E6966020];
@@ -1779,7 +1779,7 @@ LABEL_37:
   v179[1] = v22;
   v180[0] = MEMORY[0x1E695E0F8];
   v180[1] = &unk_1F48E6198;
-  v139 = v21;
+  v139 = coordsCopy;
   pixelBufferAttributes = [MEMORY[0x1E695DF20] dictionaryWithObjects:v180 forKeys:v179 count:2];
   v177 = 0;
   pixelBufferOut = 0;
@@ -1793,13 +1793,13 @@ LABEL_37:
   v173 = 0u;
   v174 = 0u;
   v172 = 0u;
-  [v146 pixelFormat];
+  [processCopy pixelFormat];
   MTLPixelFormatGetInfo();
   v171 = 0;
   v23 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v23;
-  if (!CGRectMakeWithDictionaryRepresentation(v21, &rect))
+  if (!CGRectMakeWithDictionaryRepresentation(coordsCopy, &rect))
   {
     v133 = v134;
     LODWORD(v132) = 0;
@@ -1813,7 +1813,7 @@ LABEL_128:
     goto LABEL_129;
   }
 
-  v24 = [(AWBStatistics *)self _adjustConfigToValidRectInBufferCoords:v21 validRectInSensorReadoutCoords:v138 regionOfInterestRectInBufferCoords:v137];
+  v24 = [(AWBStatistics *)self _adjustConfigToValidRectInBufferCoords:coordsCopy validRectInSensorReadoutCoords:readoutCoordsCopy regionOfInterestRectInBufferCoords:bufferCoordsCopy];
   v25 = v24;
   if (v24)
   {
@@ -1832,11 +1832,11 @@ LABEL_128:
   downsizeRatio = self->_awbStatCfg.downsizeRatio;
   v27 = *&self->_anon_7c[1464] * downsizeRatio;
   v28 = *&self->_anon_7c[1466] * downsizeRatio;
-  a9->var0 = self->_anon_7c[1444];
+  config->var0 = self->_anon_7c[1444];
   v29 = vmulq_s32(*&self->_anon_7c[1448], vdupq_n_s32(downsizeRatio));
-  *&a9->var1 = v29;
-  a9->var5 = v27;
-  a9->var6 = v28;
+  *&config->var1 = v29;
+  config->var5 = v27;
+  config->var6 = v28;
   v30 = (*&self->_anon_7c[1456] - *&self->_anon_7c[1448]) / *&self->_anon_7c[1464];
   if (v30 >= 32)
   {
@@ -1854,8 +1854,8 @@ LABEL_128:
     v31 = (*&self->_anon_7c[1460] - *&self->_anon_7c[1452]) / *&self->_anon_7c[1466];
   }
 
-  *a15 = downsizeRatio;
-  if (v144)
+  *factor = downsizeRatio;
+  if (maskCopy)
   {
     LODWORD(v145) = [(NSNumber *)self->_faceAssistedBehaviorMode intValue]== 1;
   }
@@ -1888,7 +1888,7 @@ LABEL_18:
   v29.i64[0] = *&rect.size.width;
   v171 = rect.size.width < rect.size.height;
 LABEL_20:
-  if (v145 && ([v144 width] <= 0xFF && objc_msgSend(v144, "height") <= 0xBF || objc_msgSend(v144, "pixelFormat") != 25 && objc_msgSend(v144, "pixelFormat") != 55 && objc_msgSend(v144, "pixelFormat") != 10 && objc_msgSend(v144, "pixelFormat") != 20))
+  if (v145 && ([maskCopy width] <= 0xFF && objc_msgSend(maskCopy, "height") <= 0xBF || objc_msgSend(maskCopy, "pixelFormat") != 25 && objc_msgSend(maskCopy, "pixelFormat") != 55 && objc_msgSend(maskCopy, "pixelFormat") != 10 && objc_msgSend(maskCopy, "pixelFormat") != 20))
   {
     v133 = v134;
     LODWORD(v132) = 0;
@@ -1916,37 +1916,37 @@ LABEL_20:
     goto LABEL_128;
   }
 
-  v35 = [v33 desc];
-  [v35 setTextureType:2];
+  desc = [v33 desc];
+  [desc setTextureType:2];
 
-  v36 = [v34 desc];
-  [v36 setPixelFormat:113];
+  desc2 = [v34 desc];
+  [desc2 setPixelFormat:113];
 
-  v37 = [v146 width];
+  width = [processCopy width];
   v38 = self->_awbStatCfg.downsizeRatio;
-  v39 = [v34 desc];
-  [v39 setWidth:v37 / v38];
+  desc3 = [v34 desc];
+  [desc3 setWidth:width / v38];
 
-  v40 = [v146 height];
+  height = [processCopy height];
   v41 = self->_awbStatCfg.downsizeRatio;
-  v42 = [v34 desc];
-  [v42 setHeight:v40 / v41];
+  desc4 = [v34 desc];
+  [desc4 setHeight:height / v41];
 
-  v43 = [v34 desc];
-  [v43 setDepth:1];
+  desc5 = [v34 desc];
+  [desc5 setDepth:1];
 
-  v44 = [v34 desc];
-  [v44 setArrayLength:1];
+  desc6 = [v34 desc];
+  [desc6 setArrayLength:1];
 
-  v45 = [v34 desc];
-  [v45 setStorageMode:0];
+  desc7 = [v34 desc];
+  [desc7 setStorageMode:0];
 
-  v46 = [v34 desc];
-  [v46 setUsage:7];
+  desc8 = [v34 desc];
+  [desc8 setUsage:7];
 
   [v34 setLabel:0];
-  v47 = [(FigMetalContext *)self->_metalContext allocator];
-  v48 = [v47 newTextureWithDescriptor:v34];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  v48 = [allocator newTextureWithDescriptor:v34];
   v49 = v182;
   v182 = v48;
 
@@ -1968,10 +1968,10 @@ LABEL_129:
   }
 
 LABEL_32:
-  v50 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v51 = [v50 commandBuffer];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v51)
+  if (!commandBuffer)
   {
     v133 = v134;
     LODWORD(v132) = 0;
@@ -1980,20 +1980,20 @@ LABEL_32:
     goto LABEL_111;
   }
 
-  v148 = v51;
+  v148 = commandBuffer;
   if (*MEMORY[0x1E695FF58])
   {
-    v52 = [v51 commandQueue];
-    v53 = [v52 commandBuffer];
+    commandQueue2 = [commandBuffer commandQueue];
+    commandBuffer2 = [commandQueue2 commandBuffer];
 
-    [v53 setLabel:@"KTRACE_MTLCMDBUF"];
-    [v53 addCompletedHandler:&__block_literal_global_3];
-    [v53 commit];
-    [v51 addCompletedHandler:&__block_literal_global_102];
+    [commandBuffer2 setLabel:@"KTRACE_MTLCMDBUF"];
+    [commandBuffer2 addCompletedHandler:&__block_literal_global_3];
+    [commandBuffer2 commit];
+    [commandBuffer addCompletedHandler:&__block_literal_global_102];
   }
 
-  v54 = [v51 computeCommandEncoder];
-  if (!v54)
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     v133 = v134;
     LODWORD(v132) = 0;
@@ -2007,17 +2007,17 @@ LABEL_32:
   }
 
   v55 = DWORD2(v172);
-  v149 = v54;
-  [v54 setComputePipelineState:self->_resetMtlBufferPipelineState];
-  [v149 setBuffer:v143 offset:0 atIndex:1];
-  *&v165[0] = [v143 length] >> 2;
+  v149 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_resetMtlBufferPipelineState];
+  [v149 setBuffer:bufferCopy offset:0 atIndex:1];
+  *&v165[0] = [bufferCopy length] >> 2;
   *(v165 + 8) = vdupq_n_s64(1uLL);
   v150[0] = [(MTLComputePipelineState *)self->_resetMtlBufferPipelineState threadExecutionWidth];
   *&v150[1] = *(v165 + 8);
   [v149 dispatchThreads:v165 threadsPerThreadgroup:v150];
-  [v149 setTexture:v146 atIndex:0];
-  [v149 setTexture:v141 atIndex:1];
-  [v149 setTexture:v142 atIndex:2];
+  [v149 setTexture:processCopy atIndex:0];
+  [v149 setTexture:clippedCopy atIndex:1];
+  [v149 setTexture:texCopy atIndex:2];
   self->_anon_7c[2588] = [(NSNumber *)self->_skipDemosaic BOOLValue];
   *&self->_anon_7c[2592] = [(NSNumber *)self->_digitalFlash intValue];
   lscMaxGain = self->_lscMaxGain;
@@ -2053,23 +2053,23 @@ LABEL_32:
 
 LABEL_50:
     [v61 setComputePipelineState:self->_normTileStatsPipelineState];
-    v72 = [(MTLComputePipelineState *)self->_normTileStatsPipelineState threadExecutionWidth];
-    v73 = [(MTLComputePipelineState *)self->_normTileStatsPipelineState maxTotalThreadsPerThreadgroup];
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_normTileStatsPipelineState threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_normTileStatsPipelineState maxTotalThreadsPerThreadgroup];
     *&v165[0] = v135;
     *(&v165[0] + 1) = v31;
     *&v165[1] = 1;
-    v150[0] = v72;
-    v150[1] = v73 / v72;
+    v150[0] = threadExecutionWidth;
+    v150[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v150[2] = 1;
     [v149 dispatchThreads:v165 threadsPerThreadgroup:v150];
     [v149 setComputePipelineState:self->_normWindowStatsPipelineState];
-    v74 = [(MTLComputePipelineState *)self->_normWindowStatsPipelineState threadExecutionWidth];
+    threadExecutionWidth2 = [(MTLComputePipelineState *)self->_normWindowStatsPipelineState threadExecutionWidth];
     v75 = v149;
-    v76 = [(MTLComputePipelineState *)self->_normWindowStatsPipelineState maxTotalThreadsPerThreadgroup];
+    maxTotalThreadsPerThreadgroup2 = [(MTLComputePipelineState *)self->_normWindowStatsPipelineState maxTotalThreadsPerThreadgroup];
     v165[0] = xmmword_1C9332C60;
     *&v165[1] = 1;
-    v150[0] = v74;
-    v150[1] = v76 / v74;
+    v150[0] = threadExecutionWidth2;
+    v150[1] = maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2;
     v150[2] = 1;
     [v149 dispatchThreads:v165 threadsPerThreadgroup:v150];
     if (v145)
@@ -2078,51 +2078,51 @@ LABEL_50:
 
       if (v77)
       {
-        v78 = [v77 desc];
-        [v78 setTextureType:2];
+        desc9 = [v77 desc];
+        [desc9 setTextureType:2];
 
-        v79 = [v77 desc];
-        [v79 setPixelFormat:10];
+        desc10 = [v77 desc];
+        [desc10 setPixelFormat:10];
 
-        v80 = [v77 desc];
-        [v80 setWidth:256];
+        desc11 = [v77 desc];
+        [desc11 setWidth:256];
 
-        v81 = [v77 desc];
-        [v81 setHeight:192];
+        desc12 = [v77 desc];
+        [desc12 setHeight:192];
 
-        v82 = [v77 desc];
-        [v82 setDepth:1];
+        desc13 = [v77 desc];
+        [desc13 setDepth:1];
 
-        v83 = [v77 desc];
-        [v83 setArrayLength:1];
+        desc14 = [v77 desc];
+        [desc14 setArrayLength:1];
 
-        v84 = [v77 desc];
-        [v84 setUsage:7];
+        desc15 = [v77 desc];
+        [desc15 setUsage:7];
 
-        v85 = [v77 desc];
-        [v85 setStorageMode:0];
+        desc16 = [v77 desc];
+        [desc16 setStorageMode:0];
 
         [v77 setLabel:0];
-        v86 = [(FigMetalContext *)self->_metalContext allocator];
-        v87 = [v86 newTextureWithDescriptor:v77];
+        allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+        v87 = [allocator2 newTextureWithDescriptor:v77];
 
         if (v87)
         {
           [v149 setComputePipelineState:self->_resizeANSTPipelineState];
-          v88 = [(MTLComputePipelineState *)self->_resizeANSTPipelineState threadExecutionWidth];
+          threadExecutionWidth3 = [(MTLComputePipelineState *)self->_resizeANSTPipelineState threadExecutionWidth];
           v75 = v149;
-          v89 = [(MTLComputePipelineState *)self->_resizeANSTPipelineState maxTotalThreadsPerThreadgroup];
-          v90 = v89 / [(MTLComputePipelineState *)self->_resizeANSTPipelineState threadExecutionWidth];
-          [v149 setImageblockWidth:v88 height:v90];
-          [v149 setTexture:v144 atIndex:3];
+          maxTotalThreadsPerThreadgroup3 = [(MTLComputePipelineState *)self->_resizeANSTPipelineState maxTotalThreadsPerThreadgroup];
+          v90 = maxTotalThreadsPerThreadgroup3 / [(MTLComputePipelineState *)self->_resizeANSTPipelineState threadExecutionWidth];
+          [v149 setImageblockWidth:threadExecutionWidth3 height:v90];
+          [v149 setTexture:maskCopy atIndex:3];
           [v149 setTexture:v87 atIndex:4];
           [v149 setBytes:&v171 length:1 atIndex:2];
-          v91 = [v87 width];
-          v92 = [v87 height];
-          *&v165[0] = v91;
-          *(&v165[0] + 1) = v92;
+          width2 = [v87 width];
+          height2 = [v87 height];
+          *&v165[0] = width2;
+          *(&v165[0] + 1) = height2;
           *&v165[1] = 1;
-          v150[0] = v88;
+          v150[0] = threadExecutionWidth3;
           v150[1] = v90;
           v150[2] = 1;
           [v149 dispatchThreads:v165 threadsPerThreadgroup:v150];
@@ -2191,13 +2191,13 @@ LABEL_133:
       [v149 setTexture:v182 atIndex:5];
       [v149 setTexture:v94 atIndex:6];
       [v149 setBytes:&v171 length:1 atIndex:2];
-      v95 = [(MTLComputePipelineState *)self->_fitWbTmRGBToANSTInputPipelineState threadExecutionWidth];
+      threadExecutionWidth4 = [(MTLComputePipelineState *)self->_fitWbTmRGBToANSTInputPipelineState threadExecutionWidth];
       v75 = v149;
-      v96 = [(MTLComputePipelineState *)self->_fitWbTmRGBToANSTInputPipelineState maxTotalThreadsPerThreadgroup];
+      maxTotalThreadsPerThreadgroup4 = [(MTLComputePipelineState *)self->_fitWbTmRGBToANSTInputPipelineState maxTotalThreadsPerThreadgroup];
       v165[0] = xmmword_1C9332C70;
       *&v165[1] = 1;
-      v150[0] = v95;
-      v150[1] = v96 / v95;
+      v150[0] = threadExecutionWidth4;
+      v150[1] = maxTotalThreadsPerThreadgroup4 / threadExecutionWidth4;
       v150[2] = 1;
       [v149 dispatchThreads:v165 threadsPerThreadgroup:v150];
       v87 = 0;
@@ -2221,34 +2221,34 @@ LABEL_133:
   if (self->_awbStatCfg.layout != 3)
   {
     [v149 setComputePipelineState:self->_computeAWBStatsBayerFastPipelineState];
-    v67 = [(MTLComputePipelineState *)self->_computeAWBStatsBayerFastPipelineState threadExecutionWidth];
-    v68 = [(MTLComputePipelineState *)self->_computeAWBStatsBayerFastPipelineState maxTotalThreadsPerThreadgroup];
-    v69 = [v146 width];
+    threadExecutionWidth5 = [(MTLComputePipelineState *)self->_computeAWBStatsBayerFastPipelineState threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup5 = [(MTLComputePipelineState *)self->_computeAWBStatsBayerFastPipelineState maxTotalThreadsPerThreadgroup];
+    width3 = [processCopy width];
     v70 = self->_awbStatCfg.downsizeRatio;
-    v71 = [v146 height] / v70;
-    *&v165[0] = v69 / v70;
+    v71 = [processCopy height] / v70;
+    *&v165[0] = width3 / v70;
     *(&v165[0] + 1) = v71;
     *&v165[1] = 1;
-    v150[0] = v67;
-    v150[1] = v68 / v67;
+    v150[0] = threadExecutionWidth5;
+    v150[1] = maxTotalThreadsPerThreadgroup5 / threadExecutionWidth5;
     v150[2] = 1;
     [v149 dispatchThreads:v165 threadsPerThreadgroup:v150];
     goto LABEL_49;
   }
 
-  if ([v142 textureType] == 3)
+  if ([texCopy textureType] == 3)
   {
     [v149 setComputePipelineState:self->_computeAWBStatsQuadraFastPipelineState];
-    v62 = [(MTLComputePipelineState *)self->_computeAWBStatsQuadraFastPipelineState threadExecutionWidth];
-    v63 = [(MTLComputePipelineState *)self->_computeAWBStatsQuadraFastPipelineState maxTotalThreadsPerThreadgroup];
-    v64 = [v146 width];
+    threadExecutionWidth6 = [(MTLComputePipelineState *)self->_computeAWBStatsQuadraFastPipelineState threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup6 = [(MTLComputePipelineState *)self->_computeAWBStatsQuadraFastPipelineState maxTotalThreadsPerThreadgroup];
+    width4 = [processCopy width];
     v65 = self->_awbStatCfg.downsizeRatio;
-    v66 = [v146 height] / v65;
-    *&v165[0] = v64 / v65;
+    v66 = [processCopy height] / v65;
+    *&v165[0] = width4 / v65;
     *(&v165[0] + 1) = v66;
     *&v165[1] = 1;
-    v150[0] = v62;
-    v150[1] = v63 / v62;
+    v150[0] = threadExecutionWidth6;
+    v150[1] = maxTotalThreadsPerThreadgroup6 / threadExecutionWidth6;
     v150[2] = 1;
     [v149 dispatchThreads:v165 threadsPerThreadgroup:v150];
 LABEL_49:
@@ -2311,14 +2311,14 @@ LABEL_73:
   }
 
   objc_storeStrong(&location, v99);
-  v100 = v147;
+  v100 = maskTexCopy;
   if (location)
   {
     [location pixelFormat];
     v167 = 0;
     v166 = 0u;
     memset(v165, 0, sizeof(v165));
-    v101 = [location device];
+    device = [location device];
     MTLPixelFormatGetInfoForDevice();
 
     v102 = *(&v165[1] + 1);
@@ -2326,7 +2326,7 @@ LABEL_73:
     v104 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(location, "height") * v103}];
     v105 = v104;
     v136 = v25;
-    if (!v104 || (v106 = location, v107 = [v104 mutableBytes], v108 = objc_msgSend(location, "width"), v109 = objc_msgSend(location, "height"), memset(v150, 0, sizeof(v150)), v151 = v108, *&v152 = v109, *(&v152 + 1) = 1, objc_msgSend(v106, "getBytes:bytesPerRow:fromRegion:mipmapLevel:", v107, v103, v150, 0), !a11))
+    if (!v104 || (v106 = location, v107 = [v104 mutableBytes], v108 = objc_msgSend(location, "width"), v109 = objc_msgSend(location, "height"), memset(v150, 0, sizeof(v150)), v151 = v108, *&v152 = v109, *(&v152 + 1) = 1, objc_msgSend(v106, "getBytes:bytesPerRow:fromRegion:mipmapLevel:", v107, v103, v150, 0), !data))
     {
       FigDebugAssert3();
 
@@ -2335,9 +2335,9 @@ LABEL_73:
     }
 
     v110 = v105;
-    *a11 = v105;
+    *data = v105;
 
-    v100 = v147;
+    v100 = maskTexCopy;
     v25 = v136;
   }
 
@@ -2347,17 +2347,17 @@ LABEL_73:
     v167 = 0;
     v166 = 0u;
     memset(v165, 0, sizeof(v165));
-    v111 = [v100 device];
+    device2 = [v100 device];
     MTLPixelFormatGetInfoForDevice();
 
     v112 = *(&v165[1] + 1);
-    v113 = [v147 width] * v112;
-    v114 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(v147, "height") * v113}];
+    v113 = [maskTexCopy width] * v112;
+    v114 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(maskTexCopy, "height") * v113}];
     v115 = v114;
-    if (v114 && (v116 = [v114 mutableBytes], v117 = objc_msgSend(v147, "width"), v118 = objc_msgSend(v147, "height"), memset(v150, 0, sizeof(v150)), v151 = v117, *&v152 = v118, *(&v152 + 1) = 1, objc_msgSend(v147, "getBytes:bytesPerRow:fromRegion:mipmapLevel:", v116, v113, v150, 0), a13))
+    if (v114 && (v116 = [v114 mutableBytes], v117 = objc_msgSend(maskTexCopy, "width"), v118 = objc_msgSend(maskTexCopy, "height"), memset(v150, 0, sizeof(v150)), v151 = v117, *&v152 = v118, *(&v152 + 1) = 1, objc_msgSend(maskTexCopy, "getBytes:bytesPerRow:fromRegion:mipmapLevel:", v116, v113, v150, 0), maskData))
     {
       v119 = v115;
-      *a13 = v115;
+      *maskData = v115;
     }
 
     else
@@ -2407,15 +2407,15 @@ LABEL_85:
       }
 
       v127 = !v126;
-      *(&v150[1] + 6) = v146 != 0;
+      *(&v150[1] + 6) = processCopy != 0;
       WORD1(v150[2]) = 1024;
-      HIDWORD(v150[2]) = v141 != 0;
+      HIDWORD(v150[2]) = clippedCopy != 0;
       LOWORD(v151) = 1024;
-      *(&v151 + 2) = v142 != 0;
+      *(&v151 + 2) = texCopy != 0;
       HIWORD(v151) = 1024;
-      LODWORD(v152) = v144 != 0;
+      LODWORD(v152) = maskCopy != 0;
       WORD2(v152) = 1024;
-      *(&v152 + 6) = v147 != 0;
+      *(&v152 + 6) = maskTexCopy != 0;
       WORD5(v152) = 1024;
       HIDWORD(v152) = v145;
       v153 = 1024;
@@ -2507,18 +2507,18 @@ void __237__AWBStatistics_process_clipped_lscGainsTex_validRectInBufferCoords_va
   }
 }
 
-+ (int)getTileStatsRegionWithMetadata:(id)a3 cropRectLTMInCoords:(CGRect)a4 ltmInDownsamplingRatio:(float)a5 tileStatsRegionLTMInCoordsDictOut:(id *)a6
++ (int)getTileStatsRegionWithMetadata:(id)metadata cropRectLTMInCoords:(CGRect)coords ltmInDownsamplingRatio:(float)ratio tileStatsRegionLTMInCoordsDictOut:(id *)out
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = coords.size.height;
+  width = coords.size.width;
+  y = coords.origin.y;
+  x = coords.origin.x;
+  metadataCopy = metadata;
   v13 = *(MEMORY[0x1E695F058] + 16);
   v34.origin = *MEMORY[0x1E695F058];
   v34.size = v13;
-  v14 = [v12 cmi_unsignedIntValueForKey:*MEMORY[0x1E69910B0] defaultValue:1 found:0];
-  [v12 cmi_cgRectForKey:*MEMORY[0x1E6991100] defaultValue:0 found:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
+  v14 = [metadataCopy cmi_unsignedIntValueForKey:*MEMORY[0x1E69910B0] defaultValue:1 found:0];
+  [metadataCopy cmi_cgRectForKey:*MEMORY[0x1E6991100] defaultValue:0 found:{*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)}];
   if (!v14 || (v19 = v17, v20 = v18, CGRectIsNull(*&v15)))
   {
     v29 = 0;
@@ -2528,19 +2528,19 @@ void __237__AWBStatistics_process_clipped_lscGainsTex_validRectInBufferCoords_va
 
   else
   {
-    v21 = a5;
+    ratioCopy = ratio;
     v32[0] = @"X";
-    v22 = [MEMORY[0x1E696AD98] numberWithDouble:x * v21];
-    v33[0] = v22;
+    ratioCopy = [MEMORY[0x1E696AD98] numberWithDouble:x * ratioCopy];
+    v33[0] = ratioCopy;
     v32[1] = @"Y";
-    v23 = [MEMORY[0x1E696AD98] numberWithDouble:y * v21];
-    v33[1] = v23;
+    ratioCopy2 = [MEMORY[0x1E696AD98] numberWithDouble:y * ratioCopy];
+    v33[1] = ratioCopy2;
     v32[2] = @"Width";
-    v24 = [MEMORY[0x1E696AD98] numberWithDouble:width * v21];
-    v33[2] = v24;
+    ratioCopy3 = [MEMORY[0x1E696AD98] numberWithDouble:width * ratioCopy];
+    v33[2] = ratioCopy3;
     v32[3] = @"Height";
-    v25 = [MEMORY[0x1E696AD98] numberWithDouble:height * v21];
-    v33[3] = v25;
+    ratioCopy4 = [MEMORY[0x1E696AD98] numberWithDouble:height * ratioCopy];
+    v33[3] = ratioCopy4;
     v32[4] = @"FullWidth";
     v26 = v14;
     v27 = [MEMORY[0x1E696AD98] numberWithDouble:v19 / v14];
@@ -2560,24 +2560,24 @@ void __237__AWBStatistics_process_clipped_lscGainsTex_validRectInBufferCoords_va
     else
     {
       _configTilesRuntimeWithValidRect(&v36, &v34);
-      v40.origin.x = (8 * HIDWORD(v36)) / v21;
-      v40.origin.y = (8 * v37) / v21;
-      v40.size.width = (8 * ((v38 - HIDWORD(v36)) & ~((v38 - HIDWORD(v36)) >> 31))) / v21;
-      v40.size.height = (8 * ((v39 - v37) & ~((v39 - v37) >> 31))) / v21;
+      v40.origin.x = (8 * HIDWORD(v36)) / ratioCopy;
+      v40.origin.y = (8 * v37) / ratioCopy;
+      v40.size.width = (8 * ((v38 - HIDWORD(v36)) & ~((v38 - HIDWORD(v36)) >> 31))) / ratioCopy;
+      v40.size.height = (8 * ((v39 - v37) & ~((v39 - v37) >> 31))) / ratioCopy;
       valid = 0;
-      *a6 = CGRectCreateDictionaryRepresentation(v40);
+      *out = CGRectCreateDictionaryRepresentation(v40);
     }
   }
 
   return valid;
 }
 
-- (int)configWindowsV2:(id *)a3 metadata:(id)a4 tilesConfig:(id)a5 validRect:(id)a6 regionOfInterestRect:(id)a7
+- (int)configWindowsV2:(id *)v2 metadata:(id)metadata tilesConfig:(id)config validRect:(id)rect regionOfInterestRect:(id)interestRect
 {
-  v12 = a4;
-  v71 = a5;
-  v13 = a6;
-  dict = a7;
+  metadataCopy = metadata;
+  configCopy = config;
+  rectCopy = rect;
+  dict = interestRect;
   v14 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v14;
@@ -2588,15 +2588,15 @@ void __237__AWBStatistics_process_clipped_lscGainsTex_validRectInBufferCoords_va
   *&v78.a = *MEMORY[0x1E695EFD0];
   *&v78.c = v16;
   *&v78.tx = *(MEMORY[0x1E695EFD0] + 32);
-  v17 = [v12 objectForKeyedSubscript:*MEMORY[0x1E6991108]];
-  v18 = [v17 intValue];
+  v17 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6991108]];
+  intValue = [v17 intValue];
 
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  if (![v12 count])
+  if (![metadataCopy count])
   {
     FigDebugAssert3();
 LABEL_52:
@@ -2606,7 +2606,7 @@ LABEL_52:
     goto LABEL_42;
   }
 
-  if (!CGRectMakeWithDictionaryRepresentation(v13, &rect))
+  if (!CGRectMakeWithDictionaryRepresentation(rectCopy, &rect))
   {
     FigDebugAssert3();
     goto LABEL_52;
@@ -2637,9 +2637,9 @@ LABEL_52:
   }
 
 LABEL_9:
-  [(GeometryUtilities *)v12 getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:rect.origin.x validBufferRect:rect.origin.y, rect.size.width, rect.size.height];
+  [(GeometryUtilities *)metadataCopy getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:rect.origin.x validBufferRect:rect.origin.y, rect.size.width, rect.size.height];
   v78 = v77;
-  valid = _configStatsDownsizeRatioRuntimeWithValidRect(&self->_awbStatCfg, v13, [(NSNumber *)self->_downsizeFactor unsignedIntValue]);
+  valid = _configStatsDownsizeRatioRuntimeWithValidRect(&self->_awbStatCfg, rectCopy, [(NSNumber *)self->_downsizeFactor unsignedIntValue]);
   if (valid)
   {
     FigDebugAssert3();
@@ -2651,14 +2651,14 @@ LABEL_9:
   width = rect.size.width;
   height = rect.size.height;
   LOBYTE(v7) = self->_awbStatCfg.downsizeRatio;
-  [(GeometryUtilities *)v12 getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:rect.origin.x validBufferRect:rect.origin.y, rect.size.width, rect.size.height];
+  [(GeometryUtilities *)metadataCopy getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:rect.origin.x validBufferRect:rect.origin.y, rect.size.width, rect.size.height];
   v78 = v77;
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  v22 = [v12 objectForKeyedSubscript:{*MEMORY[0x1E6990FB8], v60, v61}];
+  v22 = [metadataCopy objectForKeyedSubscript:{*MEMORY[0x1E6990FB8], v60, v61}];
   v23 = v22;
   if (!v22)
   {
@@ -2684,14 +2684,14 @@ LABEL_37:
 
   v62 = v25;
   v63 = v23;
-  v65 = v12;
+  v65 = metadataCopy;
   v64 = v26;
   v27 = [v26 sortedArrayUsingComparator:&__block_literal_global_149];
   v28 = 0;
   v29 = width / v7;
   v30 = height / v7;
   v31 = *MEMORY[0x1E69910D8];
-  if (v18 == 2324)
+  if (intValue == 2324)
   {
     v32 = v15;
   }
@@ -2709,7 +2709,7 @@ LABEL_37:
   v67 = _Q2;
   v68 = v34;
   v40 = v33 / 10.0;
-  for (i = a3; ; ++i)
+  for (i = v2; ; ++i)
   {
     v42 = 2 * [v27 count];
     if (v42 >= 2)
@@ -2720,7 +2720,7 @@ LABEL_37:
     if (v42 <= v28)
     {
       valid = 0;
-      v12 = v65;
+      metadataCopy = v65;
       v25 = v62;
       v23 = v63;
       goto LABEL_39;
@@ -2742,7 +2742,7 @@ LABEL_35:
   v45 = [v43 objectForKeyedSubscript:v31];
   if (!CGRectMakeWithDictionaryRepresentation(v45, &v76))
   {
-    v12 = v65;
+    metadataCopy = v65;
     v25 = v62;
     FigDebugAssert3();
     valid = 0;
@@ -2795,7 +2795,7 @@ LABEL_33:
   }
 
   LOBYTE(v77.a) = 0;
-  a3->var1 = [v71 cmi_intValueForKey:@"Bitdepth" defaultValue:0 found:&v77] != 0;
+  v2->var1 = [configCopy cmi_intValueForKey:@"Bitdepth" defaultValue:0 found:&v77] != 0;
   if (LOBYTE(v77.a))
   {
     v53 = *&vcvt_s32_f32(vcvt_f32_f64(vaddq_f64(vaddq_f64(vmulq_f64(size, v67), origin), vcvtq_f64_f32(vmul_f32(v73, 0xBF000000BF000000))))) & 0xFFFFFFFCFFFFFFFCLL;
@@ -2816,7 +2816,7 @@ LABEL_33:
 
   FigDebugAssert3();
   valid = FigSignalErrorAtGM();
-  v12 = v65;
+  metadataCopy = v65;
   v25 = v62;
 LABEL_47:
 
@@ -2894,7 +2894,7 @@ LABEL_8:
   OUTLINED_FUNCTION_2_0();
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

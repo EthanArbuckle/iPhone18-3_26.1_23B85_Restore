@@ -1,14 +1,14 @@
 @interface PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionNoConfirmActionPerformer
-- (PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionNoConfirmActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5;
+- (PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionNoConfirmActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters;
 @end
 
 @implementation PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionNoConfirmActionPerformer
 
-- (PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionNoConfirmActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5
+- (PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionNoConfirmActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters
 {
   v8.receiver = self;
   v8.super_class = PXPhotoKitAssetCollectionContentSyndicationRemoveSuggestionNoConfirmActionPerformer;
-  v5 = [(PXAssetCollectionActionPerformer *)&v8 initWithActionType:a3 assetCollectionReference:a4 parameters:a5];
+  v5 = [(PXAssetCollectionActionPerformer *)&v8 initWithActionType:type assetCollectionReference:reference parameters:parameters];
   v6 = v5;
   if (v5)
   {

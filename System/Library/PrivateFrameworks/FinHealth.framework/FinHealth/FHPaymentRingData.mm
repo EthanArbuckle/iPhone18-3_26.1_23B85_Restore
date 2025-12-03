@@ -1,25 +1,25 @@
 @interface FHPaymentRingData
-- (BOOL)isEqual:(id)a3;
-- (FHPaymentRingData)initWithTransactionDate:(id)a3 transactionAmount:(id)a4 paymentAmountCategory:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (FHPaymentRingData)initWithTransactionDate:(id)date transactionAmount:(id)amount paymentAmountCategory:(unint64_t)category;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation FHPaymentRingData
 
-- (FHPaymentRingData)initWithTransactionDate:(id)a3 transactionAmount:(id)a4 paymentAmountCategory:(unint64_t)a5
+- (FHPaymentRingData)initWithTransactionDate:(id)date transactionAmount:(id)amount paymentAmountCategory:(unint64_t)category
 {
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  amountCopy = amount;
   v14.receiver = self;
   v14.super_class = FHPaymentRingData;
   v11 = [(FHPaymentRingData *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_transactionDate, a3);
-    objc_storeStrong(&v12->_transactionAmount, a4);
-    v12->_paymentAmountCategory = a5;
+    objc_storeStrong(&v11->_transactionDate, date);
+    objc_storeStrong(&v12->_transactionAmount, amount);
+    v12->_paymentAmountCategory = category;
   }
 
   return v12;
@@ -27,36 +27,36 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FHPaymentRingData *)self transactionAmount];
-  v4 = [v3 hash];
+  transactionAmount = [(FHPaymentRingData *)self transactionAmount];
+  v4 = [transactionAmount hash];
 
-  v5 = [(FHPaymentRingData *)self transactionDate];
-  v6 = 17 * (17 * v4 + [v5 hash]);
+  transactionDate = [(FHPaymentRingData *)self transactionDate];
+  v6 = 17 * (17 * v4 + [transactionDate hash]);
 
   return v6 + [(FHPaymentRingData *)self paymentAmountCategory]+ 4913;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(FHPaymentRingData *)self transactionDate];
-    v7 = [(FHPaymentRingData *)v5 transactionDate];
-    if ([v6 isEqual:v7])
+    transactionDate = [(FHPaymentRingData *)self transactionDate];
+    transactionDate2 = [(FHPaymentRingData *)v5 transactionDate];
+    if ([transactionDate isEqual:transactionDate2])
     {
-      v8 = [(FHPaymentRingData *)self transactionAmount];
-      v9 = [(FHPaymentRingData *)v5 transactionAmount];
-      if (v8 == v9)
+      transactionAmount = [(FHPaymentRingData *)self transactionAmount];
+      transactionAmount2 = [(FHPaymentRingData *)v5 transactionAmount];
+      if (transactionAmount == transactionAmount2)
       {
-        v11 = [(FHPaymentRingData *)self paymentAmountCategory];
-        v10 = v11 == [(FHPaymentRingData *)v5 paymentAmountCategory];
+        paymentAmountCategory = [(FHPaymentRingData *)self paymentAmountCategory];
+        v10 = paymentAmountCategory == [(FHPaymentRingData *)v5 paymentAmountCategory];
       }
 
       else

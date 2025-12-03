@@ -2,11 +2,11 @@
 - (CRLMutableBrushStrokeStorage)init;
 - (id)deepCopy;
 - (unint64_t)totalSectionCount;
-- (void)addPath:(id)a3 withBounds:(CGRect)a4 shouldSmooth:(BOOL)a5 forKey:(id)a6;
-- (void)addTextureIndex:(unint64_t)a3 forKey:(id)a4;
-- (void)setImage:(id)a3;
-- (void)setLineEnd:(id)a3 forKey:(id)a4;
-- (void)setOption:(id)a3 forKey:(id)a4;
+- (void)addPath:(id)path withBounds:(CGRect)bounds shouldSmooth:(BOOL)smooth forKey:(id)key;
+- (void)addTextureIndex:(unint64_t)index forKey:(id)key;
+- (void)setImage:(id)image;
+- (void)setLineEnd:(id)end forKey:(id)key;
+- (void)setOption:(id)option forKey:(id)key;
 @end
 
 @implementation CRLMutableBrushStrokeStorage
@@ -44,41 +44,41 @@
 
 - (unint64_t)totalSectionCount
 {
-  v2 = [(CRLMutableBrushStrokeStorage *)self paths];
-  v3 = [CRLImmutableBrushStrokeStorage p_totalSectionCountWithPaths:v2];
+  paths = [(CRLMutableBrushStrokeStorage *)self paths];
+  v3 = [CRLImmutableBrushStrokeStorage p_totalSectionCountWithPaths:paths];
 
   return v3;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = [a3 copy];
+  v4 = [image copy];
   image = self->_image;
   self->_image = v4;
 }
 
-- (void)addPath:(id)a3 withBounds:(CGRect)a4 shouldSmooth:(BOOL)a5 forKey:(id)a6
+- (void)addPath:(id)path withBounds:(CGRect)bounds shouldSmooth:(BOOL)smooth forKey:(id)key
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v24 = a3;
-  v13 = a6;
-  v14 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:v13];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  pathCopy = path;
+  keyCopy = key;
+  v14 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:keyCopy];
   if (!v14)
   {
     v14 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self->_paths setObject:v14 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_paths setObject:v14 forKeyedSubscript:keyCopy];
   }
 
-  v15 = [(NSMutableDictionary *)self->_bounds objectForKeyedSubscript:v13];
+  v15 = [(NSMutableDictionary *)self->_bounds objectForKeyedSubscript:keyCopy];
   if (v15)
   {
-    if (a5)
+    if (smooth)
     {
 LABEL_5:
-      v16 = [CRLMutableBrushStrokeStorage p_smoothPath:v24];
+      v16 = [CRLMutableBrushStrokeStorage p_smoothPath:pathCopy];
       goto LABEL_8;
     }
   }
@@ -86,76 +86,76 @@ LABEL_5:
   else
   {
     v15 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self->_bounds setObject:v15 forKeyedSubscript:v13];
-    if (a5)
+    [(NSMutableDictionary *)self->_bounds setObject:v15 forKeyedSubscript:keyCopy];
+    if (smooth)
     {
       goto LABEL_5;
     }
   }
 
-  v16 = [v24 copy];
+  v16 = [pathCopy copy];
 LABEL_8:
   v17 = v16;
-  v18 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:v13];
+  v18 = [(NSMutableDictionary *)self->_paths objectForKeyedSubscript:keyCopy];
   v19 = [CRLBrushStrokeStorageBezierPathContainer alloc];
-  v20 = [v24 copy];
+  v20 = [pathCopy copy];
   v21 = [(CRLBrushStrokeStorageBezierPathContainer *)v19 initWithOriginalPath:v20 pathWithPossibleSmoothing:v17];
   [v18 addObject:v21];
 
-  v22 = [(NSMutableDictionary *)self->_bounds objectForKeyedSubscript:v13];
-  v23 = [NSValue valueWithCGRect:x, y, width, height];
-  [v22 addObject:v23];
+  v22 = [(NSMutableDictionary *)self->_bounds objectForKeyedSubscript:keyCopy];
+  height = [NSValue valueWithCGRect:x, y, width, height];
+  [v22 addObject:height];
 }
 
-- (void)addTextureIndex:(unint64_t)a3 forKey:(id)a4
+- (void)addTextureIndex:(unint64_t)index forKey:(id)key
 {
-  v8 = a4;
+  keyCopy = key;
   v6 = [(NSMutableDictionary *)self->_textureIndices objectForKeyedSubscript:?];
   if (!v6)
   {
     v6 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self->_textureIndices setObject:v6 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_textureIndices setObject:v6 forKeyedSubscript:keyCopy];
   }
 
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  v7 = [NSNumber numberWithUnsignedInteger:index];
   [v6 addObject:v7];
 }
 
-- (void)setOption:(id)a3 forKey:(id)a4
+- (void)setOption:(id)option forKey:(id)key
 {
   options = self->_options;
-  v6 = a4;
-  v7 = [a3 copy];
-  [(NSMutableDictionary *)options setObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [option copy];
+  [(NSMutableDictionary *)options setObject:v7 forKey:keyCopy];
 }
 
-- (void)setLineEnd:(id)a3 forKey:(id)a4
+- (void)setLineEnd:(id)end forKey:(id)key
 {
   lineEnds = self->_lineEnds;
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  endCopy = end;
   v8 = [CRLLineEnd alloc];
-  v20 = [v7 path];
-  v9 = [v20 copy];
-  v10 = [v7 wrapPath];
-  v11 = [v10 copy];
-  [v7 endPoint];
+  path = [endCopy path];
+  v9 = [path copy];
+  wrapPath = [endCopy wrapPath];
+  v11 = [wrapPath copy];
+  [endCopy endPoint];
   v13 = v12;
   v15 = v14;
-  v16 = [v7 isFilled];
-  v17 = [v7 identifier];
-  v18 = [v7 lineJoin];
+  isFilled = [endCopy isFilled];
+  identifier = [endCopy identifier];
+  lineJoin = [endCopy lineJoin];
 
-  v19 = [(CRLLineEnd *)v8 initWithBezierPath:v9 wrapPath:v11 endPoint:v16 isFilled:v17 identifier:v18 lineJoin:v13, v15];
-  [(NSMutableDictionary *)lineEnds setObject:v19 forKey:v6];
+  v19 = [(CRLLineEnd *)v8 initWithBezierPath:v9 wrapPath:v11 endPoint:isFilled isFilled:identifier identifier:lineJoin lineJoin:v13, v15];
+  [(NSMutableDictionary *)lineEnds setObject:v19 forKey:keyCopy];
 }
 
 - (id)deepCopy
 {
   v2 = [[CRLImmutableBrushStrokeStorage alloc] initWithImage:self->_image paths:self->_paths bounds:self->_bounds textureIndices:self->_textureIndices options:self->_options lineEnds:self->_lineEnds];
-  v3 = [(CRLImmutableBrushStrokeStorage *)v2 deepCopy];
+  deepCopy = [(CRLImmutableBrushStrokeStorage *)v2 deepCopy];
 
-  return v3;
+  return deepCopy;
 }
 
 @end

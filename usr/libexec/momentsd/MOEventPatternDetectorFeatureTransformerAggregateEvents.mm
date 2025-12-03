@@ -1,7 +1,7 @@
 @interface MOEventPatternDetectorFeatureTransformerAggregateEvents
-- (BOOL)configure:(id)a3;
+- (BOOL)configure:(id)configure;
 - (MOEventPatternDetectorFeatureTransformerAggregateEvents)init;
-- (id)transformFeaturesFromEvents:(id)a3 withFeatures:(id)a4;
+- (id)transformFeaturesFromEvents:(id)events withFeatures:(id)features;
 @end
 
 @implementation MOEventPatternDetectorFeatureTransformerAggregateEvents
@@ -25,32 +25,32 @@
   return v3;
 }
 
-- (id)transformFeaturesFromEvents:(id)a3 withFeatures:(id)a4
+- (id)transformFeaturesFromEvents:(id)events withFeatures:(id)features
 {
-  v5 = a3;
-  v40 = a4;
+  eventsCopy = events;
+  featuresCopy = features;
   v36 = objc_opt_new();
   v39 = objc_opt_new();
   v38 = objc_opt_new();
-  if ([v5 count])
+  if ([eventsCopy count])
   {
     v6 = 0;
-    v37 = v5;
+    v37 = eventsCopy;
     do
     {
-      v7 = [v5 objectAtIndex:{v6, v36}];
-      v8 = [v40 objectAtIndex:v6];
+      v7 = [eventsCopy objectAtIndex:{v6, v36}];
+      v8 = [featuresCopy objectAtIndex:v6];
       if ([v7 count])
       {
         v41 = v6;
         v44 = objc_opt_new();
         v43 = objc_opt_new();
-        v9 = [v7 firstObject];
-        v10 = [v9 startDate];
-        v11 = [v10 dateByAddingTimeInterval:-10800.0];
+        firstObject = [v7 firstObject];
+        startDate = [firstObject startDate];
+        v11 = [startDate dateByAddingTimeInterval:-10800.0];
 
-        v12 = [v8 firstObject];
-        [v12 doubleValue];
+        firstObject2 = [v8 firstObject];
+        [firstObject2 doubleValue];
         v14 = v13;
 
         if ([v7 count])
@@ -65,14 +65,14 @@
 
             currentCalendar = self->_currentCalendar;
             v16 = [v7 objectAtIndex:v15 + 1];
-            v17 = [v16 endDate];
-            [v17 dateByAddingTimeInterval:-10800.0];
-            v18 = v9;
+            endDate = [v16 endDate];
+            [endDate dateByAddingTimeInterval:-10800.0];
+            v18 = firstObject;
             v20 = v19 = v8;
             v21 = [(NSCalendar *)currentCalendar isDate:v11 equalToDate:v20 toUnitGranularity:self->_aggregationWindow];
 
             v8 = v19;
-            v9 = v18;
+            firstObject = v18;
 
             if (v21)
             {
@@ -87,7 +87,7 @@
                 {
                   v33 = [v7 objectAtIndex:v15 + 1];
 
-                  v9 = v33;
+                  firstObject = v33;
                   v14 = v24;
                 }
               }
@@ -104,12 +104,12 @@ LABEL_12:
               v26 = [NSNumber numberWithDouble:v14];
               [v44 addObject:v26];
 
-              [v43 addObject:v9];
+              [v43 addObject:firstObject];
               if ([v7 count] > v15 + 1)
               {
                 v27 = [v7 objectAtIndex:v15 + 1];
-                v28 = [v27 startDate];
-                v29 = [v28 dateByAddingTimeInterval:-10800.0];
+                startDate2 = [v27 startDate];
+                v29 = [startDate2 dateByAddingTimeInterval:-10800.0];
 
                 v30 = [v7 objectAtIndex:v15 + 1];
 
@@ -117,7 +117,7 @@ LABEL_12:
                 [v31 doubleValue];
                 v14 = v32;
 
-                v9 = v30;
+                firstObject = v30;
                 v11 = v29;
               }
             }
@@ -131,14 +131,14 @@ LABEL_12:
         [v38 addObject:v44];
         [v39 addObject:v43];
 
-        v5 = v37;
+        eventsCopy = v37;
         v6 = v41;
       }
 
       ++v6;
     }
 
-    while ([v5 count] > v6);
+    while ([eventsCopy count] > v6);
   }
 
   v34 = v36;
@@ -148,17 +148,17 @@ LABEL_12:
   return v34;
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v5 = a3;
-  v6 = [v5 count];
+  configureCopy = configure;
+  v6 = [configureCopy count];
   if (v6)
   {
-    v7 = [v5 objectForKey:@"AggregationWindow"];
+    v7 = [configureCopy objectForKey:@"AggregationWindow"];
 
     if (v7)
     {
-      v8 = [v5 objectForKey:@"AggregationWindow"];
+      v8 = [configureCopy objectForKey:@"AggregationWindow"];
       self->_aggregationWindow = v8;
     }
 
@@ -171,7 +171,7 @@ LABEL_12:
       }
     }
 
-    v10 = [v5 objectForKey:@"AggregationType"];
+    v10 = [configureCopy objectForKey:@"AggregationType"];
 
     if (!v10)
     {
@@ -184,7 +184,7 @@ LABEL_12:
       goto LABEL_14;
     }
 
-    v11 = [v5 objectForKey:@"AggregationType"];
+    v11 = [configureCopy objectForKey:@"AggregationType"];
     self->_aggregationType = [v11 unsignedIntValue];
 
     if (self->_aggregationType >= 2)

@@ -1,31 +1,31 @@
 @interface DebugItem
-- (DebugItem)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5;
+- (DebugItem)initWithTitle:(id)title target:(id)target action:(SEL)action;
 - (SEL)action;
 - (void)dealloc;
 @end
 
 @implementation DebugItem
 
-- (DebugItem)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (DebugItem)initWithTitle:(id)title target:(id)target action:(SEL)action
 {
   v11.receiver = self;
   v11.super_class = DebugItem;
   v8 = [(DebugItem *)&v11 init];
   if (v8)
   {
-    v8->_title = [a3 copy];
-    v8->_target = a4;
-    if (a5)
+    v8->_title = [title copy];
+    v8->_target = target;
+    if (action)
     {
-      v9 = a5;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
   }
 
   return v8;

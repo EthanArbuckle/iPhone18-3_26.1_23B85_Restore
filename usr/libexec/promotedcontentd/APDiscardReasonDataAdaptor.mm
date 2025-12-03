@@ -7,11 +7,11 @@
 - (id)_biomeStream
 {
   v2 = BiomeLibrary();
-  v3 = [v2 AdPlatforms];
-  v4 = [v3 MarketplaceHealth];
-  v5 = [v4 DiscardReasons];
+  adPlatforms = [v2 AdPlatforms];
+  marketplaceHealth = [adPlatforms MarketplaceHealth];
+  discardReasons = [marketplaceHealth DiscardReasons];
 
-  return v5;
+  return discardReasons;
 }
 
 @end

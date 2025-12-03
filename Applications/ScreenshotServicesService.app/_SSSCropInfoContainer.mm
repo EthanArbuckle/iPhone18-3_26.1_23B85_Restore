@@ -1,6 +1,6 @@
 @interface _SSSCropInfoContainer
 - (SSSCropInfo)cropInfo;
-- (void)setCropInfo:(SSSCropInfo *)a3;
+- (void)setCropInfo:(SSSCropInfo *)info;
 @end
 
 @implementation _SSSCropInfoContainer
@@ -14,11 +14,11 @@
   return self;
 }
 
-- (void)setCropInfo:(SSSCropInfo *)a3
+- (void)setCropInfo:(SSSCropInfo *)info
 {
-  totalSize = a3->totalSize;
-  origin = a3->currentRect.origin;
-  self->_cropInfo.currentRect.size = a3->currentRect.size;
+  totalSize = info->totalSize;
+  origin = info->currentRect.origin;
+  self->_cropInfo.currentRect.size = info->currentRect.size;
   self->_cropInfo.currentRect.origin = origin;
   self->_cropInfo.totalSize = totalSize;
 }

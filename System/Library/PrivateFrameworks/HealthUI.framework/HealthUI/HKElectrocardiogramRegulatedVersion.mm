@@ -1,27 +1,27 @@
 @interface HKElectrocardiogramRegulatedVersion
-- (BOOL)_validateSourceVersion:(id)a3 algorithmVersion:(int64_t)a4;
-- (HKElectrocardiogramRegulatedVersion)initWithSourceVersion:(id)a3 algorithmVersion:(int64_t)a4;
-- (id)_updateVersionFromSourceVersion:(id)a3 algorithmVersion:(int64_t)a4;
+- (BOOL)_validateSourceVersion:(id)version algorithmVersion:(int64_t)algorithmVersion;
+- (HKElectrocardiogramRegulatedVersion)initWithSourceVersion:(id)version algorithmVersion:(int64_t)algorithmVersion;
+- (id)_updateVersionFromSourceVersion:(id)version algorithmVersion:(int64_t)algorithmVersion;
 @end
 
 @implementation HKElectrocardiogramRegulatedVersion
 
-- (HKElectrocardiogramRegulatedVersion)initWithSourceVersion:(id)a3 algorithmVersion:(int64_t)a4
+- (HKElectrocardiogramRegulatedVersion)initWithSourceVersion:(id)version algorithmVersion:(int64_t)algorithmVersion
 {
-  v6 = a3;
+  versionCopy = version;
   v15.receiver = self;
   v15.super_class = HKElectrocardiogramRegulatedVersion;
   v7 = [(HKElectrocardiogramRegulatedVersion *)&v15 init];
   v8 = v7;
   if (v7)
   {
-    if (![(HKElectrocardiogramRegulatedVersion *)v7 _validateSourceVersion:v6 algorithmVersion:a4])
+    if (![(HKElectrocardiogramRegulatedVersion *)v7 _validateSourceVersion:versionCopy algorithmVersion:algorithmVersion])
     {
       v13 = 0;
       goto LABEL_6;
     }
 
-    v9 = [(HKElectrocardiogramRegulatedVersion *)v8 _updateVersionFromSourceVersion:v6 algorithmVersion:a4];
+    v9 = [(HKElectrocardiogramRegulatedVersion *)v8 _updateVersionFromSourceVersion:versionCopy algorithmVersion:algorithmVersion];
     updateVersion = v8->_updateVersion;
     v8->_updateVersion = v9;
 
@@ -36,11 +36,11 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)_validateSourceVersion:(id)a3 algorithmVersion:(int64_t)a4
+- (BOOL)_validateSourceVersion:(id)version algorithmVersion:(int64_t)algorithmVersion
 {
-  if (a3)
+  if (version)
   {
-    v4 = a4 == 0;
+    v4 = algorithmVersion == 0;
   }
 
   else
@@ -51,13 +51,13 @@ LABEL_6:
   return !v4;
 }
 
-- (id)_updateVersionFromSourceVersion:(id)a3 algorithmVersion:(int64_t)a4
+- (id)_updateVersionFromSourceVersion:(id)version algorithmVersion:(int64_t)algorithmVersion
 {
   v7 = 0;
   v8 = 0;
   v9 = 0;
-  MEMORY[0x1C6930D80](&v7, a3, a2);
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld.%ld", a4, v8];
+  MEMORY[0x1C6930D80](&v7, version, a2);
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld.%ld", algorithmVersion, v8];
 
   return v5;
 }

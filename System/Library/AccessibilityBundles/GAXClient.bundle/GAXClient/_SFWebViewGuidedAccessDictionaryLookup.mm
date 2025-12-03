@@ -1,13 +1,13 @@
 @interface _SFWebViewGuidedAccessDictionaryLookup
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 @end
 
 @implementation _SFWebViewGuidedAccessDictionaryLookup
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (UIAccessibilityIsGuidedAccessEnabled() && ("_define:" != a3 ? (v7 = "_lookup:" == a3) : (v7 = 1), v7 && ![UIApp _guidedAccessDictionaryLookupAllowed]))
+  senderCopy = sender;
+  if (UIAccessibilityIsGuidedAccessEnabled() && ("_define:" != action ? (v7 = "_lookup:" == action) : (v7 = 1), v7 && ![UIApp _guidedAccessDictionaryLookupAllowed]))
   {
     v8 = 0;
   }
@@ -16,7 +16,7 @@
   {
     v10.receiver = self;
     v10.super_class = _SFWebViewGuidedAccessDictionaryLookup;
-    v8 = [(_SFWebViewGuidedAccessDictionaryLookup *)&v10 canPerformAction:a3 withSender:v6];
+    v8 = [(_SFWebViewGuidedAccessDictionaryLookup *)&v10 canPerformAction:action withSender:senderCopy];
   }
 
   return v8;

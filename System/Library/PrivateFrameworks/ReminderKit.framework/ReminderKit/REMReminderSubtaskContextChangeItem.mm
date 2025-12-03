@@ -1,76 +1,76 @@
 @interface REMReminderSubtaskContextChangeItem
-- (REMReminderSubtaskContextChangeItem)initWithReminderChangeItem:(id)a3;
+- (REMReminderSubtaskContextChangeItem)initWithReminderChangeItem:(id)item;
 - (id)_listChangeItem;
-- (void)addReminderChangeItem:(id)a3;
-- (void)insertReminderChangeItem:(id)a3 afterReminderChangeItem:(id)a4;
-- (void)insertReminderChangeItem:(id)a3 beforeReminderChangeItem:(id)a4;
-- (void)undeleteSubtaskWithID:(id)a3 usingUndo:(id)a4;
+- (void)addReminderChangeItem:(id)item;
+- (void)insertReminderChangeItem:(id)item afterReminderChangeItem:(id)changeItem;
+- (void)insertReminderChangeItem:(id)item beforeReminderChangeItem:(id)changeItem;
+- (void)undeleteSubtaskWithID:(id)d usingUndo:(id)undo;
 @end
 
 @implementation REMReminderSubtaskContextChangeItem
 
-- (REMReminderSubtaskContextChangeItem)initWithReminderChangeItem:(id)a3
+- (REMReminderSubtaskContextChangeItem)initWithReminderChangeItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = REMReminderSubtaskContextChangeItem;
   v6 = [(REMReminderSubtaskContextChangeItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reminderChangeItem, a3);
+    objc_storeStrong(&v6->_reminderChangeItem, item);
   }
 
   return v7;
 }
 
-- (void)addReminderChangeItem:(id)a3
+- (void)addReminderChangeItem:(id)item
 {
-  v4 = a3;
-  v6 = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
-  v5 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
-  [v6 insertReminderChangeItem:v4 adjacentToReminderChangeItem:0 isAfter:0 withParentReminderChangeItem:v5];
+  itemCopy = item;
+  _listChangeItem = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
+  reminderChangeItem = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
+  [_listChangeItem insertReminderChangeItem:itemCopy adjacentToReminderChangeItem:0 isAfter:0 withParentReminderChangeItem:reminderChangeItem];
 }
 
-- (void)insertReminderChangeItem:(id)a3 beforeReminderChangeItem:(id)a4
+- (void)insertReminderChangeItem:(id)item beforeReminderChangeItem:(id)changeItem
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
-  v8 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
-  [v9 insertReminderChangeItem:v7 adjacentToReminderChangeItem:v6 isAfter:0 withParentReminderChangeItem:v8];
+  changeItemCopy = changeItem;
+  itemCopy = item;
+  _listChangeItem = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
+  reminderChangeItem = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
+  [_listChangeItem insertReminderChangeItem:itemCopy adjacentToReminderChangeItem:changeItemCopy isAfter:0 withParentReminderChangeItem:reminderChangeItem];
 }
 
-- (void)insertReminderChangeItem:(id)a3 afterReminderChangeItem:(id)a4
+- (void)insertReminderChangeItem:(id)item afterReminderChangeItem:(id)changeItem
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
-  v8 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
-  [v9 insertReminderChangeItem:v7 adjacentToReminderChangeItem:v6 isAfter:1 withParentReminderChangeItem:v8];
+  changeItemCopy = changeItem;
+  itemCopy = item;
+  _listChangeItem = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
+  reminderChangeItem = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
+  [_listChangeItem insertReminderChangeItem:itemCopy adjacentToReminderChangeItem:changeItemCopy isAfter:1 withParentReminderChangeItem:reminderChangeItem];
 }
 
-- (void)undeleteSubtaskWithID:(id)a3 usingUndo:(id)a4
+- (void)undeleteSubtaskWithID:(id)d usingUndo:(id)undo
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
-  [v8 undeleteReminderWithID:v7 usingUndo:v6];
+  undoCopy = undo;
+  dCopy = d;
+  _listChangeItem = [(REMReminderSubtaskContextChangeItem *)self _listChangeItem];
+  [_listChangeItem undeleteReminderWithID:dCopy usingUndo:undoCopy];
 
-  v12 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
-  v9 = [v12 subtaskIDsToUndelete];
-  v10 = [v9 setByAddingObject:v7];
+  reminderChangeItem = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
+  subtaskIDsToUndelete = [reminderChangeItem subtaskIDsToUndelete];
+  v10 = [subtaskIDsToUndelete setByAddingObject:dCopy];
 
-  v11 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
-  [v11 setSubtaskIDsToUndelete:v10];
+  reminderChangeItem2 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
+  [reminderChangeItem2 setSubtaskIDsToUndelete:v10];
 }
 
 - (id)_listChangeItem
 {
-  v3 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
-  v4 = [v3 saveRequest];
-  v5 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
-  v6 = [v4 _updateListWithReminderChangeItem:v5];
+  reminderChangeItem = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
+  saveRequest = [reminderChangeItem saveRequest];
+  reminderChangeItem2 = [(REMReminderSubtaskContextChangeItem *)self reminderChangeItem];
+  v6 = [saveRequest _updateListWithReminderChangeItem:reminderChangeItem2];
 
   return v6;
 }

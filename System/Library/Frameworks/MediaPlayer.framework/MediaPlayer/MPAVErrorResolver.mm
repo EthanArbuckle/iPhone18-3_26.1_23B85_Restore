@@ -1,6 +1,6 @@
 @interface MPAVErrorResolver
 - (MPAVErrorResolverDelegate)delegate;
-- (void)sendDidResolveError:(id)a3 withResolution:(int64_t)a4;
+- (void)sendDidResolveError:(id)error withResolution:(int64_t)resolution;
 @end
 
 @implementation MPAVErrorResolver
@@ -12,13 +12,13 @@
   return WeakRetained;
 }
 
-- (void)sendDidResolveError:(id)a3 withResolution:(int64_t)a4
+- (void)sendDidResolveError:(id)error withResolution:(int64_t)resolution
 {
-  v7 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained errorResolver:self didResolveError:v7 withResolution:a4];
+    [WeakRetained errorResolver:self didResolveError:errorCopy withResolution:resolution];
   }
 }
 

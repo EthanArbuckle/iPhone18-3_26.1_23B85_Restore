@@ -1,28 +1,28 @@
 @interface TSAObject3DRep
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5;
-- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)a3;
-- (CGRect)imageDrawingHelperImageRect:(id)a3;
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context;
+- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)defeat;
+- (CGRect)imageDrawingHelperImageRect:(id)rect;
 - (TSAObject3DInfo)object3DInfo;
-- (TSAObject3DRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSAObject3DRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (double)opacity;
-- (id)imageDrawingHelperAdjustedImageData:(id)a3;
-- (id)imageDrawingHelperImageData:(id)a3;
-- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)a3;
-- (id)imageDrawingHelperThumbnailImageData:(id)a3;
+- (id)imageDrawingHelperAdjustedImageData:(id)data;
+- (id)imageDrawingHelperImageData:(id)data;
+- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)data;
+- (id)imageDrawingHelperThumbnailImageData:(id)data;
 - (id)object3DLayout;
 - (id)p_validatedImageProvider;
-- (id)textureForDescription:(id)a3;
-- (void)p_drawInContext:(CGContext *)a3 withOpacity:(BOOL)a4;
+- (id)textureForDescription:(id)description;
+- (void)p_drawInContext:(CGContext *)context withOpacity:(BOOL)opacity;
 - (void)willBeRemoved;
 @end
 
 @implementation TSAObject3DRep
 
-- (TSAObject3DRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSAObject3DRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v30.receiver = self;
   v30.super_class = TSAObject3DRep;
-  v4 = [(TSDRep *)&v30 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v30 initWithLayout:layout canvas:canvas];
   v8 = v4;
   if (v4)
   {
@@ -93,23 +93,23 @@
   return v12;
 }
 
-- (void)p_drawInContext:(CGContext *)a3 withOpacity:(BOOL)a4
+- (void)p_drawInContext:(CGContext *)context withOpacity:(BOOL)opacity
 {
-  v4 = a4;
-  v7 = objc_msgSend_object3DInfo(self, a2, a3, a4);
+  opacityCopy = opacity;
+  v7 = objc_msgSend_object3DInfo(self, a2, context, opacity);
   v43 = objc_msgSend_thumbnailImageData(v7, v8, v9, v10);
 
   v14 = objc_msgSend_sharedPool(MEMORY[0x277D802D0], v11, v12, v13);
   v16 = objc_msgSend_temporaryProviderForData_shouldValidate_(v14, v15, v43, 1);
 
-  CGContextSaveGState(a3);
-  if (v4 && (objc_msgSend_isError(v16, v17, v18, v19) & 1) == 0)
+  CGContextSaveGState(context);
+  if (opacityCopy && (objc_msgSend_isError(v16, v17, v18, v19) & 1) == 0)
   {
     objc_msgSend_opacity(self, v17, v18, v19);
     if (v20 < 1.0)
     {
       objc_msgSend_opacity(self, v17, v18, v19);
-      CGContextSetAlpha(a3, v21);
+      CGContextSetAlpha(context, v21);
     }
   }
 
@@ -132,14 +132,14 @@
     v36 = v42;
   }
 
-  objc_msgSend_drawImageInContext_rect_(v16, v37, a3, v38, v30, v32, v34, v36);
-  CGContextRestoreGState(a3);
+  objc_msgSend_drawImageInContext_rect_(v16, v37, context, v38, v30, v32, v34, v36);
+  CGContextRestoreGState(context);
 }
 
-- (id)textureForDescription:(id)a3
+- (id)textureForDescription:(id)description
 {
-  v4 = a3;
-  isMagicMove = objc_msgSend_isMagicMove(v4, v5, v6, v7);
+  descriptionCopy = description;
+  isMagicMove = objc_msgSend_isMagicMove(descriptionCopy, v5, v6, v7);
   memset(&v104, 0, sizeof(v104));
   v12 = objc_msgSend_layout(self, v9, v10, v11);
   v16 = v12;
@@ -194,7 +194,7 @@
   v92[2] = sub_2760BDE44;
   v92[3] = &unk_27A6B0498;
   v95 = v109;
-  v47 = v4;
+  v47 = descriptionCopy;
   v96 = x;
   v97 = y;
   v98 = width;
@@ -202,7 +202,7 @@
   v100 = v25;
   v101 = v104;
   v93 = v47;
-  v94 = self;
+  selfCopy = self;
   v48 = MEMORY[0x277C95D60](v92);
   v49 = objc_alloc_init(MEMORY[0x277D803E0]);
   objc_msgSend_setRep_(v49, v50, self, v51);
@@ -227,14 +227,14 @@
   return v49;
 }
 
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4 mixingTypeContext:(id)a5
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject mixingTypeContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v12 = objc_msgSend_object3DInfo(a3, v9, v10, v11);
-  v16 = objc_msgSend_object3DInfo(v8, v13, v14, v15);
+  contextCopy = context;
+  incomingObjectCopy = incomingObject;
+  v12 = objc_msgSend_object3DInfo(object, v9, v10, v11);
+  v16 = objc_msgSend_object3DInfo(incomingObjectCopy, v13, v14, v15);
 
-  v18 = objc_msgSend_mixingTypeWithObject_context_(v12, v17, v16, v7);
+  v18 = objc_msgSend_mixingTypeWithObject_context_(v12, v17, v16, contextCopy);
   v22 = 0.0;
   if (v18 >= 2)
   {
@@ -257,23 +257,23 @@
   return v22;
 }
 
-- (id)imageDrawingHelperImageData:(id)a3
+- (id)imageDrawingHelperImageData:(id)data
 {
-  v4 = objc_msgSend_object3DInfo(self, a2, a3, v3);
+  v4 = objc_msgSend_object3DInfo(self, a2, data, v3);
   v8 = objc_msgSend_thumbnailImageData(v4, v5, v6, v7);
 
   return v8;
 }
 
-- (id)imageDrawingHelperThumbnailImageData:(id)a3
+- (id)imageDrawingHelperThumbnailImageData:(id)data
 {
-  v4 = objc_msgSend_object3DInfo(self, a2, a3, v3);
+  v4 = objc_msgSend_object3DInfo(self, a2, data, v3);
   v8 = objc_msgSend_thumbnailImageData(v4, v5, v6, v7);
 
   return v8;
 }
 
-- (CGRect)imageDrawingHelperImageRect:(id)a3
+- (CGRect)imageDrawingHelperImageRect:(id)rect
 {
   objc_opt_class();
   v7 = objc_msgSend_layout(self, v4, v5, v6);
@@ -298,7 +298,7 @@
   return result;
 }
 
-- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)a3
+- (CGAffineTransform)imageDrawingHelperImageTransformInRootForAntialiasingDefeat:(SEL)defeat
 {
   objc_opt_class();
   v9 = objc_msgSend_layout(self, v6, v7, v8);
@@ -321,17 +321,17 @@
   return result;
 }
 
-- (id)imageDrawingHelperAdjustedImageData:(id)a3
+- (id)imageDrawingHelperAdjustedImageData:(id)data
 {
-  v4 = objc_msgSend_object3DInfo(self, a2, a3, v3);
+  v4 = objc_msgSend_object3DInfo(self, a2, data, v3);
   v8 = objc_msgSend_thumbnailImageData(v4, v5, v6, v7);
 
   return v8;
 }
 
-- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)a3
+- (id)imageDrawingHelperThumbnailAdjustedImageData:(id)data
 {
-  v4 = objc_msgSend_object3DInfo(self, a2, a3, v3);
+  v4 = objc_msgSend_object3DInfo(self, a2, data, v3);
   v8 = objc_msgSend_thumbnailImageData(v4, v5, v6, v7);
 
   return v8;

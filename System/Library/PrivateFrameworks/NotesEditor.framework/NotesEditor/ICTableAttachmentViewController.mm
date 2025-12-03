@@ -1,19 +1,19 @@
 @interface ICTableAttachmentViewController
 - (BOOL)acceptsKeystrokes;
-- (BOOL)allowsNewTextLength:(unint64_t)a3;
+- (BOOL)allowsNewTextLength:(unint64_t)length;
 - (BOOL)containedInNoteSelection;
 - (BOOL)isInResponderChain;
 - (BOOL)isNoteEditable;
-- (BOOL)makeSpaceToPasteSourceTable:(id)a3;
+- (BOOL)makeSpaceToPasteSourceTable:(id)table;
 - (BOOL)pasteCellRange;
 - (BOOL)updateAllColumnWidths;
 - (BOOL)updateEditedColumnWidths;
 - (CGPoint)currentDragGestureLocation;
 - (CGPoint)initialDragOffset;
 - (CGRect)editingViewport;
-- (CGRect)frameOfCellForColumnTextView:(id)a3 row:(id)a4;
+- (CGRect)frameOfCellForColumnTextView:(id)view row:(id)row;
 - (CGRect)proposedLineFragmentRect;
-- (CGRect)selectionFrameFromContentFrame:(CGRect)a3;
+- (CGRect)selectionFrameFromContentFrame:(CGRect)frame;
 - (CGRect)transitionViewport;
 - (CGRect)viewport;
 - (CGSize)intrinsicSize;
@@ -21,173 +21,173 @@
 - (ICLayoutManager)noteLayoutManager;
 - (ICTK2TextLayoutManager)noteTextLayoutManager;
 - (ICTable)table;
-- (ICTableAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5;
-- (ICTableAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 textLayoutManager:(id)a5;
+- (ICTableAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager;
+- (ICTableAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering textLayoutManager:(id)manager;
 - (NSUndoManager)undoManager;
-- (_NSRange)characterRangeForRange:(_NSRange)a3 inString:(id)a4 forLayoutManager:(id)a5;
-- (_NSRange)columnGlyphRangeForRange:(_NSRange)a3 inString:(id)a4 forLayoutManager:(id)a5;
-- (_NSRange)selectedRangeWithinRange:(_NSRange)a3 inFindableString:(id)a4;
+- (_NSRange)characterRangeForRange:(_NSRange)range inString:(id)string forLayoutManager:(id)manager;
+- (_NSRange)columnGlyphRangeForRange:(_NSRange)range inString:(id)string forLayoutManager:(id)manager;
+- (_NSRange)selectedRangeWithinRange:(_NSRange)range inFindableString:(id)string;
 - (double)availableWidth;
 - (id)account;
-- (id)attributedStringForTableSelectionInContext:(id)a3;
+- (id)attributedStringForTableSelectionInContext:(id)context;
 - (id)attributedStringFromPasteboard;
 - (id)customPasteboardDataForSelection;
-- (id)dataForSelectionOfType:(id)a3;
-- (id)dataForSelectionWithDocumentAttributes:(id)a3;
-- (id)dragSnapshotFromRect:(CGRect)a3 afterScreenUpdates:(BOOL)a4;
+- (id)dataForSelectionOfType:(id)type;
+- (id)dataForSelectionWithDocumentAttributes:(id)attributes;
+- (id)dragSnapshotFromRect:(CGRect)rect afterScreenUpdates:(BOOL)updates;
 - (id)icTableDataForSelection;
 - (id)icTableFromPasteboard;
-- (id)insertColumns:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (id)namedStylesForCurrentSelectionAndBIUS:(unint64_t *)a3 emphasisColorType:(int64_t *)a4;
+- (id)insertColumns:(unint64_t)columns atIndex:(unint64_t)index;
+- (id)namedStylesForCurrentSelectionAndBIUS:(unint64_t *)s emphasisColorType:(int64_t *)type;
 - (id)note;
 - (id)pasteboardItemsForSelection;
 - (id)plainTextDataForSelection;
-- (id)rectsForRange:(_NSRange)a3 inFindableString:(id)a4;
-- (id)viewForRange:(_NSRange)a3 inFindableString:(id)a4;
+- (id)rectsForRange:(_NSRange)range inFindableString:(id)string;
+- (id)viewForRange:(_NSRange)range inFindableString:(id)string;
 - (id)webArchiveDataForSelection;
 - (int64_t)textAlignmentForCurrentSelection;
 - (int64_t)textDirectionForCurrentSelection;
-- (unint64_t)cursorPositionForLocation:(CGPoint)a3 inTextView:(id)a4;
+- (unint64_t)cursorPositionForLocation:(CGPoint)location inTextView:(id)view;
 - (unint64_t)selectedStyleBIUS;
-- (void)addColumnAfterSelection:(id)a3;
-- (void)addColumnAtIndex:(unint64_t)a3;
-- (void)addColumnBeforeSelection:(id)a3;
-- (void)addColumnLeftOfSelection:(id)a3;
-- (void)addColumnRightOfSelection:(id)a3;
-- (void)addRowAboveSelection:(id)a3;
-- (void)addRowAtIndex:(unint64_t)a3;
-- (void)addRowBelowSelection:(id)a3;
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4;
+- (void)addColumnAfterSelection:(id)selection;
+- (void)addColumnAtIndex:(unint64_t)index;
+- (void)addColumnBeforeSelection:(id)selection;
+- (void)addColumnLeftOfSelection:(id)selection;
+- (void)addColumnRightOfSelection:(id)selection;
+- (void)addRowAboveSelection:(id)selection;
+- (void)addRowAtIndex:(unint64_t)index;
+- (void)addRowBelowSelection:(id)selection;
+- (void)addUndoCommandsForObject:(id)object block:(id)block;
 - (void)announceCellRangeSelectionChangeForAccessibilityIfNecessary;
-- (void)applyUndoGroup:(id)a3;
+- (void)applyUndoGroup:(id)group;
 - (void)beginEditing;
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 location:(unint64_t)a5;
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 textRange:(id)a5;
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 touchPoint:(CGPoint)a5;
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD location:(unint64_t)location;
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD textRange:(id)range;
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD touchPoint:(CGPoint)point;
 - (void)beginEditingInitialCell;
-- (void)beginEditingNoteAtOffset:(int64_t)a3;
-- (void)beginEditingSelectedRangeInTextView:(id)a3;
-- (void)cellRangeDragBeganOnView:(id)a3;
-- (void)cellRangeDraggedAtLocation:(CGPoint)a3;
-- (void)cleanDeletedColumn:(id)a3;
-- (void)cleanDeletedRow:(id)a3;
-- (void)convertTableToText:(id)a3;
-- (void)copyTable:(id)a3;
-- (void)cutSelection:(id)a3;
+- (void)beginEditingNoteAtOffset:(int64_t)offset;
+- (void)beginEditingSelectedRangeInTextView:(id)view;
+- (void)cellRangeDragBeganOnView:(id)view;
+- (void)cellRangeDraggedAtLocation:(CGPoint)location;
+- (void)cleanDeletedColumn:(id)column;
+- (void)cleanDeletedRow:(id)row;
+- (void)convertTableToText:(id)text;
+- (void)copyTable:(id)table;
+- (void)cutSelection:(id)selection;
 - (void)dealloc;
-- (void)deleteColumns:(id)a3;
-- (void)deleteRows:(id)a3;
-- (void)deleteSelectedColumns:(id)a3;
-- (void)deleteSelectedRows:(id)a3;
-- (void)deleteSelection:(id)a3;
+- (void)deleteColumns:(id)columns;
+- (void)deleteRows:(id)rows;
+- (void)deleteSelectedColumns:(id)columns;
+- (void)deleteSelectedRows:(id)rows;
+- (void)deleteSelection:(id)selection;
 - (void)deleteSelectionCellContents;
-- (void)deleteTable:(id)a3;
-- (void)didBeginEditingWithTextView:(id)a3;
-- (void)didPasteOrDropTextForTableColumnTextView:(id)a3;
-- (void)dragBeganOnColumnOrRow:(BOOL)a3 atLocation:(CGPoint)a4;
-- (void)dragEndedOnColumnOrRow:(BOOL)a3 atLocation:(CGPoint)a4;
-- (void)dragMovedOnColumnOrRow:(BOOL)a3 atLocation:(CGPoint)a4;
-- (void)drawCharactersInRange:(_NSRange)a3 inFindableString:(id)a4 forContentView:(id)a5;
-- (void)endCellEditingSessionWithTextView:(id)a3;
+- (void)deleteTable:(id)table;
+- (void)didBeginEditingWithTextView:(id)view;
+- (void)didPasteOrDropTextForTableColumnTextView:(id)view;
+- (void)dragBeganOnColumnOrRow:(BOOL)row atLocation:(CGPoint)location;
+- (void)dragEndedOnColumnOrRow:(BOOL)row atLocation:(CGPoint)location;
+- (void)dragMovedOnColumnOrRow:(BOOL)row atLocation:(CGPoint)location;
+- (void)drawCharactersInRange:(_NSRange)range inFindableString:(id)string forContentView:(id)view;
+- (void)endCellEditingSessionWithTextView:(id)view;
 - (void)endEditing;
-- (void)extendCellRangeSelectionInDirection:(unint64_t)a3 toEnd:(BOOL)a4;
+- (void)extendCellRangeSelectionInDirection:(unint64_t)direction toEnd:(BOOL)end;
 - (void)flashAuthorHighlightsIfNeeded;
 - (void)hideColumnRowButtons;
 - (void)initializeTableAccessibilityControllerIfNecessary;
 - (void)initializeTableLayout;
 - (void)loadView;
-- (void)moveCurrentColumnOrRow:(BOOL)a3 toIndex:(unint64_t)a4;
-- (void)moveDownCellAtLocation:(unint64_t)a3;
-- (void)moveIntoTableWithDirection:(unint64_t)a3;
+- (void)moveCurrentColumnOrRow:(BOOL)row toIndex:(unint64_t)index;
+- (void)moveDownCellAtLocation:(unint64_t)location;
+- (void)moveIntoTableWithDirection:(unint64_t)direction;
 - (void)moveLeftCell;
 - (void)moveNextCell;
-- (void)moveNextCellAtLocation:(unint64_t)a3;
-- (void)moveNextLineAtLocation:(unint64_t)a3;
+- (void)moveNextCellAtLocation:(unint64_t)location;
+- (void)moveNextLineAtLocation:(unint64_t)location;
 - (void)movePrevCell;
-- (void)movePrevCellAtLocation:(unint64_t)a3;
+- (void)movePrevCellAtLocation:(unint64_t)location;
 - (void)moveReturnCell;
 - (void)moveRightCell;
 - (void)moveShiftReturnCell;
-- (void)moveUpCellAtLocation:(unint64_t)a3;
-- (void)pasteIntoSelection:(id)a3;
-- (void)pasteTable:(id)a3 atColumnIndex:(unint64_t)a4 rowIndex:(unint64_t)a5 shouldSetSelectionToPastedRange:(BOOL)a6;
+- (void)moveUpCellAtLocation:(unint64_t)location;
+- (void)pasteIntoSelection:(id)selection;
+- (void)pasteTable:(id)table atColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex shouldSetSelectionToPastedRange:(BOOL)range;
 - (void)performInitialLayoutIfNeeded;
-- (void)postChangeNotification:(unint64_t)a3 columnOrRowUUIDs:(id)a4;
+- (void)postChangeNotification:(unint64_t)notification columnOrRowUUIDs:(id)ds;
 - (void)prepareForPrinting;
 - (void)redraw;
 - (void)redrawAndSave;
 - (void)removeFromParentViewController;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 inFindableString:(id)a5;
-- (void)reverseTableColumnDirection:(id)a3;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string inFindableString:(id)findableString;
+- (void)reverseTableColumnDirection:(id)direction;
 - (void)save;
 - (void)saveAfterDelay;
-- (void)saveAttachmentChangesInBackground:(BOOL)a3;
+- (void)saveAttachmentChangesInBackground:(BOOL)background;
 - (void)saveOnMainThread;
 - (void)saveOnMainThreadAfterDelay;
-- (void)scrollToRange:(_NSRange)a3 inFindableString:(id)a4;
-- (void)scrollToSelectionInTextView:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)scrollToRange:(_NSRange)range inFindableString:(id)string;
+- (void)scrollToSelectionInTextView:(id)view animated:(BOOL)animated completion:(id)completion;
 - (void)selectTable;
-- (void)selectionDidResignFirstResponder:(id)a3;
-- (void)selectionWillBecomeFirstResponder:(id)a3;
-- (void)setHidden:(BOOL)a3 forColumn:(id)a4;
-- (void)setHidden:(BOOL)a3 forRow:(id)a4;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlightPatternRegexFinder:(id)a3;
-- (void)setSelectedRange:(_NSRange)a3 inFindableString:(id)a4;
-- (void)setSelectionAlignment:(int64_t)a3;
-- (void)setSelectionBIUSStyle:(unint64_t)a3 toggleOn:(BOOL)a4 onValue:(id)a5;
-- (void)setSelectionBIUSStyle:(unint64_t)a3 toggleOn:(BOOL)a4 onValue:(id)a5 withSelection:(id)a6;
-- (void)setSelectionDirection:(int64_t)a3;
-- (void)setSelectionNamedStyle:(unsigned int)a3;
-- (void)setSelectionNamedStyle:(unsigned int)a3 withColumns:(id)a4 rows:(id)a5;
-- (void)setTypingAttributesForTextView:(id)a3;
-- (void)setupTableTextView:(id)a3;
+- (void)selectionDidResignFirstResponder:(id)responder;
+- (void)selectionWillBecomeFirstResponder:(id)responder;
+- (void)setHidden:(BOOL)hidden forColumn:(id)column;
+- (void)setHidden:(BOOL)hidden forRow:(id)row;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlightPatternRegexFinder:(id)finder;
+- (void)setSelectedRange:(_NSRange)range inFindableString:(id)string;
+- (void)setSelectionAlignment:(int64_t)alignment;
+- (void)setSelectionBIUSStyle:(unint64_t)style toggleOn:(BOOL)on onValue:(id)value;
+- (void)setSelectionBIUSStyle:(unint64_t)style toggleOn:(BOOL)on onValue:(id)value withSelection:(id)selection;
+- (void)setSelectionDirection:(int64_t)direction;
+- (void)setSelectionNamedStyle:(unsigned int)style;
+- (void)setSelectionNamedStyle:(unsigned int)style withColumns:(id)columns rows:(id)rows;
+- (void)setTypingAttributesForTextView:(id)view;
+- (void)setupTableTextView:(id)view;
 - (void)showColumnRowButtons;
 - (void)tableAttachmentDidChange;
-- (void)tableAttachmentProviderDidMergeTable:(id)a3;
-- (void)tableAttachmentProviderWillMergeTable:(id)a3;
-- (void)tableAttachmentViewControllerDidChange:(id)a3;
+- (void)tableAttachmentProviderDidMergeTable:(id)table;
+- (void)tableAttachmentProviderWillMergeTable:(id)table;
+- (void)tableAttachmentViewControllerDidChange:(id)change;
 - (void)tableAttachmentWillChange;
-- (void)tableAutoScroller:(id)a3 scrollOffsetDelta:(CGPoint)a4;
-- (void)tableDidInsertColumnID:(id)a3;
-- (void)tableDidPopulateCellAtColumnIndex:(unint64_t)a3 rowIndex:(unint64_t)a4;
-- (void)tableValueDidChangeAtColumnID:(id)a3 rowID:(id)a4 delta:(int64_t)a5;
-- (void)tableWillRemoveColumnID:(id)a3;
-- (void)tappedTableAtLocation:(CGPoint)a3;
+- (void)tableAutoScroller:(id)scroller scrollOffsetDelta:(CGPoint)delta;
+- (void)tableDidInsertColumnID:(id)d;
+- (void)tableDidPopulateCellAtColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex;
+- (void)tableValueDidChangeAtColumnID:(id)d rowID:(id)iD delta:(int64_t)delta;
+- (void)tableWillRemoveColumnID:(id)d;
+- (void)tappedTableAtLocation:(CGPoint)location;
 - (void)textRangeDragEnded;
-- (void)textRangeDraggedAtLocation:(CGPoint)a3;
-- (void)textStorage:(id)a3 didProcessEditing:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6;
-- (void)textStorage:(id)a3 didReplace:(id)a4 with:(id)a5;
-- (void)toggleBIUS:(unint64_t)a3 onValue:(id)a4;
-- (void)toggleTodoStyle:(id)a3;
+- (void)textRangeDraggedAtLocation:(CGPoint)location;
+- (void)textStorage:(id)storage didProcessEditing:(unint64_t)editing range:(_NSRange)range changeInLength:(int64_t)length;
+- (void)textStorage:(id)storage didReplace:(id)replace with:(id)with;
+- (void)toggleBIUS:(unint64_t)s onValue:(id)value;
+- (void)toggleTodoStyle:(id)style;
 - (void)updateAllColumnWidthsAndRedraw;
-- (void)updateAttachmentParagraphForWritingDirection:(int64_t)a3;
+- (void)updateAttachmentParagraphForWritingDirection:(int64_t)direction;
 - (void)updateAvailableWidth;
 - (void)updateButtonFrames;
-- (void)updateCellSizeAtColumn:(id)a3 row:(id)a4 immediateWidthUpdate:(BOOL)a5;
+- (void)updateCellSizeAtColumn:(id)column row:(id)row immediateWidthUpdate:(BOOL)update;
 - (void)updateChrome;
-- (void)updateColumnWidthForColumn:(id)a3;
+- (void)updateColumnWidthForColumn:(id)column;
 - (void)updateContentSize;
 - (void)updateEditedColumnWidthsAfterDelay;
-- (void)updateHeightCacheForColumn:(id)a3 row:(id)a4;
-- (void)updateTableCellsWithDirection:(int64_t)a3 columnIndexes:(id)a4 rowIndexes:(id)a5;
-- (void)updateTableColumnDirectionForWritingDirection:(int64_t)a3;
+- (void)updateHeightCacheForColumn:(id)column row:(id)row;
+- (void)updateTableCellsWithDirection:(int64_t)direction columnIndexes:(id)indexes rowIndexes:(id)rowIndexes;
+- (void)updateTableColumnDirectionForWritingDirection:(int64_t)direction;
 - (void)updateTiles;
-- (void)updateWidthsForChangeInColumn:(id)a3;
-- (void)willBeginEditingWithTextView:(id)a3;
+- (void)updateWidthsForChangeInColumn:(id)column;
+- (void)willBeginEditingWithTextView:(id)view;
 - (void)willFlashAuthorHighlights;
 - (void)zoomFactorOrInsetsDidChange;
 @end
 
 @implementation ICTableAttachmentViewController
 
-- (ICTableAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5
+- (ICTableAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager
 {
-  v5 = a4;
-  v8 = a5;
+  renderingCopy = rendering;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ICTableAttachmentViewController;
-  v9 = [(ICAttachmentViewController *)&v12 initWithTextAttachment:a3 forManualRendering:v5 layoutManager:v8];
+  v9 = [(ICAttachmentViewController *)&v12 initWithTextAttachment:attachment forManualRendering:renderingCopy layoutManager:managerCopy];
   if (v9)
   {
     objc_opt_class();
@@ -198,13 +198,13 @@
   return v9;
 }
 
-- (ICTableAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 textLayoutManager:(id)a5
+- (ICTableAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering textLayoutManager:(id)manager
 {
-  v5 = a4;
-  v8 = a5;
+  renderingCopy = rendering;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ICTableAttachmentViewController;
-  v9 = [(ICAttachmentViewController *)&v12 initWithTextAttachment:a3 forManualRendering:v5 textLayoutManager:v8];
+  v9 = [(ICAttachmentViewController *)&v12 initWithTextAttachment:attachment forManualRendering:renderingCopy textLayoutManager:managerCopy];
   if (v9)
   {
     objc_opt_class();
@@ -223,15 +223,15 @@
   if (!tableAttachmentProvider)
   {
     v4 = MEMORY[0x277D35FC8];
-    v5 = [(ICAttachmentViewController *)self attachment];
-    v6 = [v4 sharedProviderForAttachment:v5];
+    attachment = [(ICAttachmentViewController *)self attachment];
+    v6 = [v4 sharedProviderForAttachment:attachment];
     v7 = self->_tableAttachmentProvider;
     self->_tableAttachmentProvider = v6;
 
     [(ICTableAttachmentProvider *)self->_tableAttachmentProvider setDelegate:self];
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     coalescingUndoGroupForStringDelegate = self->_coalescingUndoGroupForStringDelegate;
-    self->_coalescingUndoGroupForStringDelegate = v8;
+    self->_coalescingUndoGroupForStringDelegate = weakToStrongObjectsMapTable;
 
     tableAttachmentProvider = self->_tableAttachmentProvider;
   }
@@ -251,26 +251,26 @@
     [(ICTableAttachmentViewController *)self updateAvailableWidth];
   }
 
-  v3 = [(ICTableAttachmentViewController *)self columnWidthCache];
-  [v3 sum];
+  columnWidthCache = [(ICTableAttachmentViewController *)self columnWidthCache];
+  [columnWidthCache sum];
   v5 = v4;
 
-  v6 = [(ICTableAttachmentViewController *)self rowHeightCache];
-  [v6 sum];
+  rowHeightCache = [(ICTableAttachmentViewController *)self rowHeightCache];
+  [rowHeightCache sum];
   v8 = v7;
 
   if (v5 == 0.0)
   {
-    v9 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-    v10 = [v9 columnWidthManager];
-    [v10 singleColumnTableWidth];
+    tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+    columnWidthManager = [tableLayoutManager columnWidthManager];
+    [columnWidthManager singleColumnTableWidth];
     v5 = v11;
   }
 
   if (v8 == 0.0)
   {
-    v12 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-    [v12 emptyCellHeight];
+    tableLayoutManager2 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+    [tableLayoutManager2 emptyCellHeight];
     v8 = v13;
   }
 
@@ -283,12 +283,12 @@
 
 - (NSUndoManager)undoManager
 {
-  v2 = [(ICAttachmentViewController *)self attachment];
-  v3 = [v2 note];
-  v4 = [v3 textStorage];
-  v5 = [v4 undoManager];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  textStorage = [note textStorage];
+  undoManager = [textStorage undoManager];
 
-  return v5;
+  return undoManager;
 }
 
 - (ICEditingTextView)noteTextView
@@ -296,19 +296,19 @@
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v3 = [(ICTableAttachmentViewController *)self noteTextLayoutManager];
-    v4 = [v3 textContainer];
-    v5 = ICCheckedDynamicCast();
+    noteTextLayoutManager = [(ICTableAttachmentViewController *)self noteTextLayoutManager];
+    textContainer = [noteTextLayoutManager textContainer];
+    noteLayoutManager = ICCheckedDynamicCast();
 
     objc_opt_class();
-    [v5 tk2TextView];
+    [noteLayoutManager tk2TextView];
   }
 
   else
   {
     objc_opt_class();
-    v5 = [(ICTableAttachmentViewController *)self noteLayoutManager];
-    [v5 textView];
+    noteLayoutManager = [(ICTableAttachmentViewController *)self noteLayoutManager];
+    [noteLayoutManager textView];
   }
   v6 = ;
   v7 = ICDynamicCast();
@@ -318,11 +318,11 @@
 
 - (BOOL)isNoteEditable
 {
-  v2 = [(ICAttachmentViewController *)self attachment];
-  v3 = [v2 note];
-  v4 = [v3 isEditable];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  isEditable = [note isEditable];
 
-  return v4;
+  return isEditable;
 }
 
 - (void)loadView
@@ -336,43 +336,43 @@
   }
 
   v3 = [ICTableScrollView alloc];
-  v4 = [(ICTableAttachmentViewController *)self view];
-  [v4 bounds];
+  view = [(ICTableAttachmentViewController *)self view];
+  [view bounds];
   v5 = [(ICTableScrollView *)v3 initWithFrame:?];
   [(ICTableAttachmentViewController *)self setScrollView:v5];
 
-  v6 = [(ICTableAttachmentViewController *)self view];
-  v7 = [(ICTableAttachmentViewController *)self scrollView];
-  [v6 addSubview:v7];
+  view2 = [(ICTableAttachmentViewController *)self view];
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  [view2 addSubview:scrollView];
 
   v8 = [ICTableContentView alloc];
   v9 = [(ICTableContentView *)v8 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   tableContentView = self->_tableContentView;
   self->_tableContentView = v9;
 
-  v11 = [(ICTableAttachmentViewController *)self scrollView];
-  v12 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v11 addSubview:v12];
+  scrollView2 = [(ICTableAttachmentViewController *)self scrollView];
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [scrollView2 addSubview:tableContentView];
 
   v13 = [ICTableClipView alloc];
-  v14 = [(ICTableAttachmentViewController *)self view];
-  [v14 bounds];
+  view3 = [(ICTableAttachmentViewController *)self view];
+  [view3 bounds];
   v15 = [(ICTableClipView *)v13 initWithFrame:0.0, -30.0];
   headerClipView = self->_headerClipView;
   self->_headerClipView = v15;
 
-  v17 = [(ICTableAttachmentViewController *)self view];
-  v18 = [(ICTableAttachmentViewController *)self headerClipView];
-  [v17 addSubview:v18];
+  view4 = [(ICTableAttachmentViewController *)self view];
+  headerClipView = [(ICTableAttachmentViewController *)self headerClipView];
+  [view4 addSubview:headerClipView];
 
   v19 = objc_alloc_init(MEMORY[0x277D36920]);
   tableSelection = self->_tableSelection;
   self->_tableSelection = v19;
 
   v21 = [ICTableTextViewManager alloc];
-  v22 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-  v23 = [(ICTableAttachmentViewController *)self tableContentView];
-  v24 = [(ICTableTextViewManager *)v21 initWithTableLayoutManager:v22 view:v23 cachedWidths:self->_columnWidthCache cachedRowHeights:self->_rowHeightCache cachedCellHeights:self->_cellHeightCache];
+  tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+  tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+  v24 = [(ICTableTextViewManager *)v21 initWithTableLayoutManager:tableLayoutManager view:tableContentView2 cachedWidths:self->_columnWidthCache cachedRowHeights:self->_rowHeightCache cachedCellHeights:self->_cellHeightCache];
   textViewManager = self->_textViewManager;
   self->_textViewManager = v24;
 
@@ -384,28 +384,28 @@
   self->_selectionHighlightView = v26;
 
   [(ICTableSelectionView *)self->_selectionHighlightView setDelegate:self];
-  v28 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v29 = *MEMORY[0x277D35DD0];
-  v30 = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
-  [v28 addObserver:self selector:sel_tableAttachmentProviderWillMergeTable_ name:v29 object:v30];
+  tableAttachmentProvider = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
+  [defaultCenter addObserver:self selector:sel_tableAttachmentProviderWillMergeTable_ name:v29 object:tableAttachmentProvider];
 
-  v31 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v32 = *MEMORY[0x277D35DC8];
-  v33 = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
-  [v31 addObserver:self selector:sel_tableAttachmentProviderDidMergeTable_ name:v32 object:v33];
+  tableAttachmentProvider2 = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
+  [defaultCenter2 addObserver:self selector:sel_tableAttachmentProviderDidMergeTable_ name:v32 object:tableAttachmentProvider2];
 
-  v34 = [MEMORY[0x277CCAB98] defaultCenter];
-  v35 = [(ICTableAttachmentViewController *)self table];
-  [v34 addObserver:self selector:sel_tableAttachmentViewControllerDidChange_ name:@"ICTableAttachmentViewControllerDidChangeNotification" object:v35];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  table = [(ICTableAttachmentViewController *)self table];
+  [defaultCenter3 addObserver:self selector:sel_tableAttachmentViewControllerDidChange_ name:@"ICTableAttachmentViewControllerDidChangeNotification" object:table];
 
-  v36 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
   v37 = *MEMORY[0x277D36668];
-  v38 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v36 addObserver:self selector:sel_tableAttachmentSelectionDidChange_ name:v37 object:v38];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  [defaultCenter4 addObserver:self selector:sel_tableAttachmentSelectionDidChange_ name:v37 object:tableSelection];
 
   v39 = [ICTableUndoTarget alloc];
-  v40 = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
-  v41 = [(ICTableUndoTarget *)v39 initWithProvider:v40 viewController:self];
+  tableAttachmentProvider3 = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
+  v41 = [(ICTableUndoTarget *)v39 initWithProvider:tableAttachmentProvider3 viewController:self];
   undoTarget = self->_undoTarget;
   self->_undoTarget = v41;
 
@@ -421,13 +421,13 @@
   endKnob = self->_endKnob;
   self->_endKnob = v47;
 
-  v49 = [(ICTableAttachmentViewController *)self view];
-  v50 = [v49 outsideViews];
-  [v50 addObject:self->_startKnob];
+  view5 = [(ICTableAttachmentViewController *)self view];
+  outsideViews = [view5 outsideViews];
+  [outsideViews addObject:self->_startKnob];
 
-  v51 = [(ICTableAttachmentViewController *)self view];
-  v52 = [v51 outsideViews];
-  [v52 addObject:self->_endKnob];
+  view6 = [(ICTableAttachmentViewController *)self view];
+  outsideViews2 = [view6 outsideViews];
+  [outsideViews2 addObject:self->_endKnob];
 
   v53 = [MEMORY[0x277CBEB58] set];
   columnsNeedingWidthUpdate = self->_columnsNeedingWidthUpdate;
@@ -446,12 +446,12 @@
 
 - (void)dealloc
 {
-  v3 = [(ICTableAttachmentProvider *)self->_tableAttachmentProvider table];
-  v4 = [v3 cellChangeNotifier];
-  [v4 removeObserver:self];
+  table = [(ICTableAttachmentProvider *)self->_tableAttachmentProvider table];
+  cellChangeNotifier = [table cellChangeNotifier];
+  [cellChangeNotifier removeObserver:self];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = ICTableAttachmentViewController;
@@ -460,8 +460,8 @@
 
 - (BOOL)isInResponderChain
 {
-  v2 = [(ICTableAttachmentViewController *)self tableSelection];
-  v3 = [v2 type] != 0;
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  v3 = [tableSelection type] != 0;
 
   return v3;
 }
@@ -477,16 +477,16 @@
 {
   if ([(ICTableAttachmentViewController *)self isViewLoaded])
   {
-    v3 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v3 restyleCells];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager restyleCells];
 
     [(ICTableAttachmentViewController *)self viewport];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v12 boundingRect];
+    textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager2 boundingRect];
     v25.origin.x = v13;
     v25.origin.y = v14;
     v25.size.width = v15;
@@ -505,12 +505,12 @@
 
     else
     {
-      v18 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-      v22 = [v18 columnWidthManager];
+      tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+      columnWidthManager = [tableLayoutManager columnWidthManager];
 
-      v19 = [(ICTableAttachmentViewController *)self textViewManager];
-      v20 = [v19 columnIDs];
-      v21 = [v22 invalidateWidthForColumns:v20];
+      textViewManager3 = [(ICTableAttachmentViewController *)self textViewManager];
+      columnIDs = [textViewManager3 columnIDs];
+      v21 = [columnWidthManager invalidateWidthForColumns:columnIDs];
     }
   }
 }
@@ -555,13 +555,13 @@
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v3 = [(ICTableAttachmentViewController *)self textViewManager];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __46__ICTableAttachmentViewController_updateTiles__block_invoke;
     v11[3] = &unk_2781ADEF8;
     v11[4] = &v12;
-    [v3 enumerateTextViewsWithBlock:v11];
+    [textViewManager enumerateTextViewsWithBlock:v11];
 
     if (*(v13 + 24) == 1)
     {
@@ -577,9 +577,9 @@
     {
       [(ICTableAttachmentViewController *)self setUpdatingTiles:1];
       [(ICTableAttachmentViewController *)self setShouldPreventUndoCommands:1];
-      v4 = [(ICTableAttachmentViewController *)self textViewManager];
+      textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
       [(ICTableAttachmentViewController *)self viewport];
-      [v4 updateTilesWithViewport:0 redrawAll:?];
+      [textViewManager2 updateTilesWithViewport:0 redrawAll:?];
       v6 = v5;
       v8 = v7;
 
@@ -616,14 +616,14 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
   [(ICTableAttachmentViewController *)self intrinsicSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v7 bounds];
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView bounds];
   v8 = TSDNearlyEqualSizes();
 
   if ((v8 & 1) == 0)
   {
     objc_opt_class();
-    v9 = [(ICTableAttachmentViewController *)self view];
+    view = [(ICTableAttachmentViewController *)self view];
     v41 = ICDynamicCast();
 
     if (![(ICTableAttachmentViewController *)self isPerformingInitialLayout])
@@ -631,10 +631,10 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
       [v41 didChangeSize];
     }
 
-    v10 = [(ICAttachmentViewController *)self textAttachment];
-    v11 = [(ICTableAttachmentViewController *)self noteTextView];
-    v12 = [v11 textContainer];
-    [v10 attachmentSizeForTextContainer:v12];
+    textAttachment = [(ICAttachmentViewController *)self textAttachment];
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    textContainer = [noteTextView textContainer];
+    [textAttachment attachmentSizeForTextContainer:textContainer];
     v14 = v13;
 
     [v41 frame];
@@ -648,8 +648,8 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
     v22 = v21;
     [(ICTableAttachmentViewController *)self scrollerOutset];
     v24 = v23 + v22;
-    v25 = [(ICTableAttachmentViewController *)self scrollView];
-    [v25 setFrame:{v16, v18, v20, v24}];
+    scrollView = [(ICTableAttachmentViewController *)self scrollView];
+    [scrollView setFrame:{v16, v18, v20, v24}];
 
     if (vabdd_f64(v14, v4) >= 0.00999999978)
     {
@@ -658,8 +658,8 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
       v35 = v34;
       v37 = v36;
       v39 = v38;
-      v26 = [(ICTableAttachmentViewController *)self tableContentView];
-      v27 = v26;
+      tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+      v27 = tableContentView2;
       v28 = v33;
       v29 = v35;
       v30 = v37;
@@ -668,18 +668,18 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
 
     else
     {
-      v26 = [(ICTableAttachmentViewController *)self tableContentView];
-      v27 = v26;
+      tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+      v27 = tableContentView2;
       v28 = 0.0;
       v29 = 0.0;
       v30 = v14;
       v31 = v6;
     }
 
-    [v26 setFrame:{v28, v29, v30, v31}];
+    [tableContentView2 setFrame:{v28, v29, v30, v31}];
 
-    v40 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v40 ic_setNeedsLayout];
+    tableContentView3 = [(ICTableAttachmentViewController *)self tableContentView];
+    [tableContentView3 ic_setNeedsLayout];
 
     [(ICTableAttachmentViewController *)self didUpdateContentSize];
   }
@@ -688,9 +688,9 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
 - (void)redraw
 {
   [(ICTableAttachmentViewController *)self setShouldPreventUndoCommands:1];
-  v3 = [(ICTableAttachmentViewController *)self textViewManager];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
   [(ICTableAttachmentViewController *)self viewport];
-  [v3 redrawAllWithViewport:?];
+  [textViewManager redrawAllWithViewport:?];
 
   [(ICTableAttachmentViewController *)self updateContentSize];
   [(ICTableAttachmentViewController *)self updateChrome];
@@ -705,33 +705,33 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
   [(ICTableAttachmentViewController *)self save];
 }
 
-- (void)updateHeightCacheForColumn:(id)a3 row:(id)a4
+- (void)updateHeightCacheForColumn:(id)column row:(id)row
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(ICTableAttachmentViewController *)self textViewManager];
-  v8 = [v7 rowIDs];
-  v9 = [v8 containsObject:v6];
+  columnCopy = column;
+  rowCopy = row;
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  rowIDs = [textViewManager rowIDs];
+  v9 = [rowIDs containsObject:rowCopy];
 
   if (v9)
   {
-    v10 = [(ICTableAttachmentViewController *)self cellHeightCache];
-    v11 = [v10 objectForKey:v6];
+    cellHeightCache = [(ICTableAttachmentViewController *)self cellHeightCache];
+    v11 = [cellHeightCache objectForKey:rowCopy];
 
     if (!v11)
     {
       v11 = [objc_alloc(MEMORY[0x277D35EB0]) initWithComparator:&__block_literal_global_14];
-      v12 = [(ICTableAttachmentViewController *)self cellHeightCache];
-      [v12 setObject:v11 forKey:v6];
+      cellHeightCache2 = [(ICTableAttachmentViewController *)self cellHeightCache];
+      [cellHeightCache2 setObject:v11 forKey:rowCopy];
     }
 
-    if (v15)
+    if (columnCopy)
     {
-      v13 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-      v14 = [v13 columnLayoutManagerForColumn:v15];
+      tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+      v14 = [tableLayoutManager columnLayoutManagerForColumn:columnCopy];
 
-      [v14 heightOfCellAtRowID:v6];
-      [v11 setDimension:v15 forKey:?];
+      [v14 heightOfCellAtRowID:rowCopy];
+      [v11 setDimension:columnCopy forKey:?];
     }
   }
 }
@@ -743,37 +743,37 @@ void __46__ICTableAttachmentViewController_updateTiles__block_invoke(uint64_t a1
     [(ICTableAttachmentViewController *)self setPerformedInitialLayout:1];
     [(ICTableAttachmentViewController *)self setIsPerformingInitialLayout:1];
     [(ICTableAttachmentViewController *)self updateAvailableWidth];
-    v3 = [(ICTableAttachmentViewController *)self textViewManager];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
     [(ICTableAttachmentViewController *)self viewport];
-    [v3 initialScrollPointForViewport:?];
+    [textViewManager initialScrollPointForViewport:?];
     v5 = v4;
     v7 = v6;
 
     [(ICTableAttachmentViewController *)self updateContentSize];
-    v8 = [(ICTableAttachmentViewController *)self scrollView];
-    [v8 setContentOffset:{v5, v7}];
+    scrollView = [(ICTableAttachmentViewController *)self scrollView];
+    [scrollView setContentOffset:{v5, v7}];
 
     [(ICTableAttachmentViewController *)self setIsPerformingInitialLayout:0];
   }
 }
 
-- (void)tableValueDidChangeAtColumnID:(id)a3 rowID:(id)a4 delta:(int64_t)a5
+- (void)tableValueDidChangeAtColumnID:(id)d rowID:(id)iD delta:(int64_t)delta
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
-  [v10 addObject:v8];
+  dCopy = d;
+  iDCopy = iD;
+  columnsNeedingWidthUpdate = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
+  [columnsNeedingWidthUpdate addObject:dCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__ICTableAttachmentViewController_tableValueDidChangeAtColumnID_rowID_delta___block_invoke;
   v13[3] = &unk_2781ADF40;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  v15 = iDCopy;
+  deltaCopy = delta;
+  v11 = iDCopy;
+  v12 = dCopy;
   dispatch_async(MEMORY[0x277D85CD0], v13);
 }
 
@@ -788,20 +788,20 @@ uint64_t __77__ICTableAttachmentViewController_tableValueDidChangeAtColumnID_row
   return [*(a1 + 32) updateCellSizeAtColumn:*(a1 + 40) row:*(a1 + 48) immediateWidthUpdate:v1 > 2];
 }
 
-- (void)updateCellSizeAtColumn:(id)a3 row:(id)a4 immediateWidthUpdate:(BOOL)a5
+- (void)updateCellSizeAtColumn:(id)column row:(id)row immediateWidthUpdate:(BOOL)update
 {
-  v5 = a5;
-  v21 = a3;
-  v8 = a4;
-  v9 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  v10 = [v9 columnID];
-  v11 = [v10 isEqual:v21];
+  updateCopy = update;
+  columnCopy = column;
+  rowCopy = row;
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  columnID = [currentlyEditingTextView columnID];
+  v11 = [columnID isEqual:columnCopy];
 
   if (v11)
   {
-    if (v5)
+    if (updateCopy)
     {
-      [(ICTableAttachmentViewController *)self updateColumnWidthForColumn:v21];
+      [(ICTableAttachmentViewController *)self updateColumnWidthForColumn:columnCopy];
     }
 
     else
@@ -815,68 +815,68 @@ uint64_t __77__ICTableAttachmentViewController_tableValueDidChangeAtColumnID_row
     [(ICTableAttachmentViewController *)self updateEditedColumnWidths];
   }
 
-  [(ICTableAttachmentViewController *)self updateHeightCacheForColumn:v21 row:v8];
-  v12 = [(ICTableAttachmentViewController *)self rowHeightCache];
-  [v12 dimensionForKey:v8];
+  [(ICTableAttachmentViewController *)self updateHeightCacheForColumn:columnCopy row:rowCopy];
+  rowHeightCache = [(ICTableAttachmentViewController *)self rowHeightCache];
+  [rowHeightCache dimensionForKey:rowCopy];
   v14 = v13;
 
-  v15 = [(ICTableAttachmentViewController *)self cellHeightCache];
-  v16 = [v15 objectForKey:v8];
+  cellHeightCache = [(ICTableAttachmentViewController *)self cellHeightCache];
+  v16 = [cellHeightCache objectForKey:rowCopy];
   [v16 max];
   v18 = v17;
 
   if (v14 != v18)
   {
-    v19 = [(ICTableAttachmentViewController *)self rowHeightCache];
-    [v19 setDimension:v8 forKey:v18];
+    rowHeightCache2 = [(ICTableAttachmentViewController *)self rowHeightCache];
+    [rowHeightCache2 setDimension:rowCopy forKey:v18];
 
-    v20 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v20 heightChangedForRow:v8 by:v18 - v14];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager heightChangedForRow:rowCopy by:v18 - v14];
 
     [(ICTableAttachmentViewController *)self updateContentSize];
   }
 }
 
-- (void)textStorage:(id)a3 didProcessEditing:(unint64_t)a4 range:(_NSRange)a5 changeInLength:(int64_t)a6
+- (void)textStorage:(id)storage didProcessEditing:(unint64_t)editing range:(_NSRange)range changeInLength:(int64_t)length
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   objc_opt_class();
   v13 = ICDynamicCast();
-  v12 = [(ICAttachmentViewController *)self attachment];
-  [v12 filterInlineAttachmentsInTableColumnTextStorage:v13 range:{location, length}];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  [attachment filterInlineAttachmentsInTableColumnTextStorage:v13 range:{location, length}];
 
-  [v13 textStorage:v11 didProcessEditing:a4 range:location changeInLength:{length, a6}];
+  [v13 textStorage:storageCopy didProcessEditing:editing range:location changeInLength:{length, length}];
 }
 
-- (void)textStorage:(id)a3 didReplace:(id)a4 with:(id)a5
+- (void)textStorage:(id)storage didReplace:(id)replace with:(id)with
 {
-  v12 = a4;
-  v7 = a5;
-  if ([v12 length])
+  replaceCopy = replace;
+  withCopy = with;
+  if ([replaceCopy length])
   {
-    v8 = [(ICAttachmentViewController *)self attachment];
-    v9 = [v8 note];
-    [v9 markBlockAndInlineAttachmentsForDeletion:1 inAttributedString:v12];
+    attachment = [(ICAttachmentViewController *)self attachment];
+    note = [attachment note];
+    [note markBlockAndInlineAttachmentsForDeletion:1 inAttributedString:replaceCopy];
   }
 
-  if ([v7 length])
+  if ([withCopy length])
   {
-    v10 = [(ICAttachmentViewController *)self attachment];
-    v11 = [v10 note];
-    [v11 markBlockAndInlineAttachmentsForDeletion:0 inAttributedString:v7];
+    attachment2 = [(ICAttachmentViewController *)self attachment];
+    note2 = [attachment2 note];
+    [note2 markBlockAndInlineAttachmentsForDeletion:0 inAttributedString:withCopy];
   }
 }
 
-- (void)tappedTableAtLocation:(CGPoint)a3
+- (void)tappedTableAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(ICTableAttachmentViewController *)self textViewManager];
+  y = location.y;
+  x = location.x;
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
   v22 = 0;
   v23 = 0;
-  v7 = [v6 cellContainingPoint:&v23 columnID:&v22 rowID:{x, y}];
+  v7 = [textViewManager cellContainingPoint:&v23 columnID:&v22 rowID:{x, y}];
   v8 = v23;
   v9 = v22;
 
@@ -886,39 +886,39 @@ uint64_t __77__ICTableAttachmentViewController_tableValueDidChangeAtColumnID_row
     goto LABEL_14;
   }
 
-  v10 = [(ICTableAttachmentViewController *)self table];
-  if (!v10)
+  table = [(ICTableAttachmentViewController *)self table];
+  if (!table)
   {
     goto LABEL_6;
   }
 
-  v11 = v10;
-  v12 = [(ICTableAttachmentViewController *)self table];
-  if (![v12 columnCount])
+  v11 = table;
+  table2 = [(ICTableAttachmentViewController *)self table];
+  if (![table2 columnCount])
   {
 
     goto LABEL_10;
   }
 
-  v13 = [(ICTableAttachmentViewController *)self table];
-  v14 = [v13 rowCount];
+  table3 = [(ICTableAttachmentViewController *)self table];
+  rowCount = [table3 rowCount];
 
-  if (!v14)
+  if (!rowCount)
   {
 LABEL_10:
-    v16 = [(ICTableAttachmentViewController *)self table];
-    v17 = [v16 columnCount];
+    table4 = [(ICTableAttachmentViewController *)self table];
+    columnCount = [table4 columnCount];
 
-    v18 = [(ICTableAttachmentViewController *)self table];
-    v19 = v18;
-    if (v17)
+    table5 = [(ICTableAttachmentViewController *)self table];
+    v19 = table5;
+    if (columnCount)
     {
-      v20 = [v18 insertRowAtIndex:0];
+      v20 = [table5 insertRowAtIndex:0];
     }
 
     else
     {
-      v21 = [v18 insertColumnAtIndex:0];
+      v21 = [table5 insertColumnAtIndex:0];
     }
 
     [(ICTableAttachmentViewController *)self redrawAndSave];
@@ -936,15 +936,15 @@ LABEL_6:
 LABEL_14:
 }
 
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 touchPoint:(CGPoint)a5
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD touchPoint:(CGPoint)point
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __84__ICTableAttachmentViewController_beginEditingCellWithColumnID_andRowID_touchPoint___block_invoke;
   v5[3] = &unk_2781ADF68;
   v5[4] = self;
-  v6 = a5;
-  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:a3 andRowID:a4 textRange:v5];
+  pointCopy = point;
+  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:d andRowID:iD textRange:v5];
 }
 
 uint64_t __84__ICTableAttachmentViewController_beginEditingCellWithColumnID_andRowID_touchPoint___block_invoke(uint64_t a1, void *a2)
@@ -958,17 +958,17 @@ uint64_t __84__ICTableAttachmentViewController_beginEditingCellWithColumnID_andR
   return v6;
 }
 
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 location:(unint64_t)a5
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD location:(unint64_t)location
 {
-  v8 = a4;
+  iDCopy = iD;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __82__ICTableAttachmentViewController_beginEditingCellWithColumnID_andRowID_location___block_invoke;
   v14 = &unk_2781ADF90;
-  v15 = v8;
-  v16 = a5;
-  v9 = v8;
-  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:a3 andRowID:v9 textRange:&v11];
+  v15 = iDCopy;
+  locationCopy = location;
+  v9 = iDCopy;
+  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:d andRowID:v9 textRange:&v11];
   v10 = [(ICTableAttachmentViewController *)self tableAXController:v11];
   [v10 tableRowOrColumnSelectionDidChange];
 }
@@ -1013,53 +1013,53 @@ uint64_t __82__ICTableAttachmentViewController_beginEditingCellWithColumnID_andR
 
 - (void)beginEditingInitialCell
 {
-  v3 = [(ICTableAttachmentViewController *)self table];
-  v9 = [v3 stringForColumnIndex:0 rowIndex:0];
+  table = [(ICTableAttachmentViewController *)self table];
+  v9 = [table stringForColumnIndex:0 rowIndex:0];
 
   v4 = [v9 length] != 0;
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v6 = [v5 identifierForColumnAtIndex:v4];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  v6 = [table2 identifierForColumnAtIndex:v4];
 
-  v7 = [(ICTableAttachmentViewController *)self table];
-  v8 = [v7 identifierForRowAtIndex:0];
+  table3 = [(ICTableAttachmentViewController *)self table];
+  v8 = [table3 identifierForRowAtIndex:0];
 
   [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v6 andRowID:v8 location:2];
 }
 
-- (void)beginEditingSelectedRangeInTextView:(id)a3
+- (void)beginEditingSelectedRangeInTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v5 = [v4 textStorage];
+  textStorage = [viewCopy textStorage];
   v8 = ICDynamicCast();
 
-  v6 = [v8 rowAtIndex:objc_msgSend(v4 rowRange:{"selectedRange"), 0}];
-  v7 = [v4 columnID];
+  v6 = [v8 rowAtIndex:objc_msgSend(viewCopy rowRange:{"selectedRange"), 0}];
+  columnID = [viewCopy columnID];
 
-  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v7 andRowID:v6 textRange:&__block_literal_global_69];
+  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:columnID andRowID:v6 textRange:&__block_literal_global_69];
 }
 
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 textRange:(id)a5
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD textRange:(id)range
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICTableAttachmentViewController *)self textViewManager];
-  v12 = [v11 textViewForColumn:v8 createIfNeeded:1];
+  dCopy = d;
+  iDCopy = iD;
+  rangeCopy = range;
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  v12 = [textViewManager textViewForColumn:dCopy createIfNeeded:1];
 
   if (v12)
   {
     [(ICTableAttachmentViewController *)self setPreventScrolling:1];
     [(ICTableAttachmentViewController *)self setDidRecentlyAutoAddRow:0];
     [(ICTableAttachmentViewController *)self willBeginEditingWithTextView:v12];
-    v13 = v10[2](v10, v12);
+    v13 = rangeCopy[2](rangeCopy, v12);
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v12 setSelectedRange:{v13, v14}];
     }
 
-    v15 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v15 ensureCellPositionForColumn:v8 andRow:v9];
+    textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager2 ensureCellPositionForColumn:dCopy andRow:iDCopy];
 
     if (([v12 ic_isFirstResponder] & 1) == 0)
     {
@@ -1069,36 +1069,36 @@ uint64_t __82__ICTableAttachmentViewController_beginEditingCellWithColumnID_andR
       v18 = 3221225472;
       v19 = __83__ICTableAttachmentViewController_beginEditingCellWithColumnID_andRowID_textRange___block_invoke;
       v20 = &unk_2781ABEB8;
-      v21 = self;
+      selfCopy = self;
       v22 = v12;
       [v16 ic_performWithoutAnimation:&v17];
-      [(ICTableAttachmentViewController *)self setMakingCellFirstResponder:0, v17, v18, v19, v20, v21];
+      [(ICTableAttachmentViewController *)self setMakingCellFirstResponder:0, v17, v18, v19, v20, selfCopy];
     }
 
     [(ICTableAttachmentViewController *)self didBeginEditingWithTextView:v12];
   }
 }
 
-- (void)moveIntoTableWithDirection:(unint64_t)a3
+- (void)moveIntoTableWithDirection:(unint64_t)direction
 {
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v6 = v5;
-  if (a3 == 1)
+  table = [(ICTableAttachmentViewController *)self table];
+  v6 = table;
+  if (direction == 1)
   {
-    v7 = [v5 isLeftToRight];
+    isLeftToRight = [table isLeftToRight];
 
-    if ((v7 & 1) == 0)
+    if ((isLeftToRight & 1) == 0)
     {
 LABEL_3:
-      v8 = [(ICTableAttachmentViewController *)self table];
-      v9 = [(ICTableAttachmentViewController *)self table];
-      v20 = [v8 identifierForColumnAtIndex:{objc_msgSend(v9, "columnCount") - 1}];
+      table2 = [(ICTableAttachmentViewController *)self table];
+      table3 = [(ICTableAttachmentViewController *)self table];
+      v20 = [table2 identifierForColumnAtIndex:{objc_msgSend(table3, "columnCount") - 1}];
 
-      v10 = [(ICTableAttachmentViewController *)self table];
-      v11 = [(ICTableAttachmentViewController *)self table];
-      v12 = [v10 identifierForRowAtIndex:{objc_msgSend(v11, "rowCount") - 1}];
+      table4 = [(ICTableAttachmentViewController *)self table];
+      table5 = [(ICTableAttachmentViewController *)self table];
+      v12 = [table4 identifierForRowAtIndex:{objc_msgSend(table5, "rowCount") - 1}];
 
-      v13 = self;
+      selfCopy2 = self;
       v14 = v20;
       v15 = v12;
       v16 = 2;
@@ -1108,102 +1108,102 @@ LABEL_3:
 
   else
   {
-    v17 = [v5 isRightToLeft];
+    isRightToLeft = [table isRightToLeft];
 
-    if (!v17)
+    if (!isRightToLeft)
     {
       goto LABEL_3;
     }
   }
 
-  v18 = [(ICTableAttachmentViewController *)self table];
-  v20 = [v18 identifierForColumnAtIndex:0];
+  table6 = [(ICTableAttachmentViewController *)self table];
+  v20 = [table6 identifierForColumnAtIndex:0];
 
-  v19 = [(ICTableAttachmentViewController *)self table];
-  v12 = [v19 identifierForRowAtIndex:0];
+  table7 = [(ICTableAttachmentViewController *)self table];
+  v12 = [table7 identifierForRowAtIndex:0];
 
-  v13 = self;
+  selfCopy2 = self;
   v14 = v20;
   v15 = v12;
   v16 = 0;
 LABEL_6:
-  [(ICTableAttachmentViewController *)v13 beginEditingCellWithColumnID:v14 andRowID:v15 location:v16];
+  [(ICTableAttachmentViewController *)selfCopy2 beginEditingCellWithColumnID:v14 andRowID:v15 location:v16];
 }
 
-- (void)willBeginEditingWithTextView:(id)a3
+- (void)willBeginEditingWithTextView:(id)view
 {
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
-  [v5 setAuxiliaryResponder:v4];
+  viewCopy = view;
+  auxiliaryTextViewHost = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
+  [auxiliaryTextViewHost setAuxiliaryResponder:viewCopy];
 
-  v6 = [v4 TTTextStorage];
+  tTTextStorage = [viewCopy TTTextStorage];
 
-  [v6 breakUndoCoalescing];
+  [tTTextStorage breakUndoCoalescing];
 
   [(ICTableAttachmentViewController *)self updateEditedColumnWidths];
 }
 
-- (void)didBeginEditingWithTextView:(id)a3
+- (void)didBeginEditingWithTextView:(id)view
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEditable])
+  viewCopy = view;
+  if ([viewCopy isEditable])
   {
     objc_opt_class();
-    v5 = [v4 textStorage];
+    textStorage = [viewCopy textStorage];
     v6 = ICDynamicCast();
 
-    v7 = [v6 columnID];
-    v8 = [v6 rowAtIndex:objc_msgSend(v4 rowRange:{"selectedRange"), 0}];
+    columnID = [v6 columnID];
+    v8 = [v6 rowAtIndex:objc_msgSend(viewCopy rowRange:{"selectedRange"), 0}];
     v9 = objc_alloc_init(MEMORY[0x277D36920]);
-    [v9 selectCellAtColumn:v7 row:v8];
-    v10 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    [v10 setTextSelectionHidden:0];
+    [v9 selectCellAtColumn:columnID row:v8];
+    currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    [currentlyEditingTextView setTextSelectionHidden:0];
 
-    v11 = [(ICTableAttachmentViewController *)self tableSelection];
-    v12 = [v11 isEqual:v9];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    v12 = [tableSelection isEqual:v9];
 
     if (v12)
     {
 LABEL_8:
-      [(ICTableAttachmentViewController *)self setTypingAttributesForTextView:v4];
+      [(ICTableAttachmentViewController *)self setTypingAttributesForTextView:viewCopy];
       [(ICTableAttachmentViewController *)self updateChrome];
 
       goto LABEL_9;
     }
 
-    v13 = [(ICTableAttachmentViewController *)self undoTarget];
-    [v6 setOverrideUndoTarget:v13];
+    undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+    [v6 setOverrideUndoTarget:undoTarget];
 
-    [(ICTableAttachmentViewController *)self setCurrentlyEditingTextView:v4];
+    [(ICTableAttachmentViewController *)self setCurrentlyEditingTextView:viewCopy];
     [(ICTableAttachmentViewController *)self setCurrentlyEditingTextStorage:v6];
-    v14 = [(ICTableAttachmentViewController *)self tableSelection];
-    [v14 selectCellAtColumn:v7 row:v8];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    [tableSelection2 selectCellAtColumn:columnID row:v8];
 
     [(ICTableAttachmentViewController *)self cellFirstResponderChanged];
-    v23[0] = v7;
+    v23[0] = columnID;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     v22 = v8;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
     [(ICTableAttachmentViewController *)self showButtonsAtColumns:v15 rows:v16];
 
-    v17 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v17 selectedRange];
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView selectedRange];
     if (v18)
     {
-      v19 = [v4 window];
+      window = [viewCopy window];
 
-      if (!v19)
+      if (!window)
       {
 LABEL_7:
-        [(ICTableAttachmentViewController *)self setTypingAttributesForTextView:v4];
+        [(ICTableAttachmentViewController *)self setTypingAttributesForTextView:viewCopy];
         goto LABEL_8;
       }
 
-      v17 = [(ICTableAttachmentViewController *)self noteTextView];
-      v20 = [v17 selectedRange];
-      v21 = [(ICTableAttachmentViewController *)self noteTextView];
-      [v21 setSelectedRange:{v20, 0}];
+      noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+      selectedRange = [noteTextView selectedRange];
+      noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+      [noteTextView2 setSelectedRange:{selectedRange, 0}];
     }
 
     goto LABEL_7;
@@ -1212,62 +1212,62 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)endCellEditingSessionWithTextView:(id)a3
+- (void)endCellEditingSessionWithTextView:(id)view
 {
-  v13 = a3;
-  if ([v13 ic_isFirstResponder])
+  viewCopy = view;
+  if ([viewCopy ic_isFirstResponder])
   {
-    [(ICTableAttachmentViewController *)self ic_resignFirstResponder:v13];
+    [(ICTableAttachmentViewController *)self ic_resignFirstResponder:viewCopy];
   }
 
   [(ICTableAttachmentViewController *)self cellFirstResponderChanged];
   [(ICTableAttachmentViewController *)self setCurrentlyEditingTextView:0];
   [(ICTableAttachmentViewController *)self setCurrentlyEditingTextStorage:0];
-  v4 = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
-  [v4 updateTableFromMOC];
+  tableAttachmentProvider = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
+  [tableAttachmentProvider updateTableFromMOC];
 
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 isRangeOrSpanningSelection];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  isRangeOrSpanningSelection = [tableSelection isRangeOrSpanningSelection];
 
-  if ((v6 & 1) == 0)
+  if ((isRangeOrSpanningSelection & 1) == 0)
   {
     [(ICTableAttachmentViewController *)self hideColumnRowButtons];
   }
 
-  v7 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
-  v8 = [v7 auxiliaryResponder];
+  auxiliaryTextViewHost = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
+  auxiliaryResponder = [auxiliaryTextViewHost auxiliaryResponder];
 
-  if (v8 == v13)
+  if (auxiliaryResponder == viewCopy)
   {
-    v9 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
-    [v9 setAuxiliaryResponder:0];
+    auxiliaryTextViewHost2 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
+    [auxiliaryTextViewHost2 setAuxiliaryResponder:0];
   }
 
-  v10 = [(ICTableAttachmentViewController *)self textViewManager];
-  v11 = [v13 columnID];
-  v12 = [v10 textViewForColumn:v11];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  columnID = [viewCopy columnID];
+  v12 = [textViewManager textViewForColumn:columnID];
 
   [v12 ic_setNeedsDisplay];
 }
 
-- (void)setTypingAttributesForTextView:(id)a3
+- (void)setTypingAttributesForTextView:(id)view
 {
-  v12 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v3 = [v12 textStorage];
+  textStorage = [viewCopy textStorage];
   v4 = ICDynamicCast();
 
   objc_opt_class();
-  v5 = [v4 styler];
+  styler = [v4 styler];
   v6 = ICDynamicCast();
 
   if (v6)
   {
-    v7 = [v12 selectedRange];
+    selectedRange = [viewCopy selectedRange];
     v9 = v8;
-    v10 = [v12 typingAttributes];
-    v11 = [v6 typingAttributesForRange:v7 forSelectionChange:v9 currentTypingAttributes:1 inTextStorage:{v10, v4}];
-    [v12 setTypingAttributes:v11];
+    typingAttributes = [viewCopy typingAttributes];
+    v11 = [v6 typingAttributesForRange:selectedRange forSelectionChange:v9 currentTypingAttributes:1 inTextStorage:{typingAttributes, v4}];
+    [viewCopy setTypingAttributes:v11];
   }
 }
 
@@ -1279,31 +1279,31 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [(ICTableAttachmentViewController *)self noteTextView];
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    [v4 textLayoutManager];
+    [noteTextView textLayoutManager];
   }
 
   else
   {
     objc_opt_class();
-    [v4 layoutManager];
+    [noteTextView layoutManager];
   }
   v5 = ;
   v6 = ICCheckedDynamicCast();
 
-  v7 = [(ICAttachmentViewController *)self attachment];
-  v8 = [v6 rangeForAttachment:v7 withTextAttachment:0];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  v8 = [v6 rangeForAttachment:attachment withTextAttachment:0];
   v10 = v9;
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = [v4 ic_selectedRanges];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  ic_selectedRanges = [noteTextView ic_selectedRanges];
+  v12 = [ic_selectedRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1314,7 +1314,7 @@ LABEL_9:
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(ic_selectedRanges);
         }
 
         v23.location = [*(*(&v17 + 1) + 8 * i) rangeValue];
@@ -1327,7 +1327,7 @@ LABEL_9:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [ic_selectedRanges countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v13)
       {
         continue;
@@ -1345,40 +1345,40 @@ LABEL_17:
 
 - (BOOL)acceptsKeystrokes
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  if ([v3 moving])
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if ([tableSelection moving])
   {
-    v4 = 0;
+    isEditable = 0;
   }
 
   else
   {
-    v5 = [(ICAttachmentViewController *)self attachment];
-    v6 = [v5 note];
-    v4 = [v6 isEditable];
+    attachment = [(ICAttachmentViewController *)self attachment];
+    note = [attachment note];
+    isEditable = [note isEditable];
   }
 
-  return v4;
+  return isEditable;
 }
 
-- (unint64_t)cursorPositionForLocation:(CGPoint)a3 inTextView:(id)a4
+- (unint64_t)cursorPositionForLocation:(CGPoint)location inTextView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 closestPositionToPoint:{x, y}];
-  v9 = [v7 beginningOfDocument];
-  v10 = [v7 offsetFromPosition:v9 toPosition:v8];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  v8 = [viewCopy closestPositionToPoint:{x, y}];
+  beginningOfDocument = [viewCopy beginningOfDocument];
+  v10 = [viewCopy offsetFromPosition:beginningOfDocument toPosition:v8];
 
   if ([(ICTableAttachmentViewController *)self cursorPrefersWordBoundary])
   {
-    v11 = [v7 textStorage];
-    v12 = [v11 string];
+    textStorage = [viewCopy textStorage];
+    string = [textStorage string];
 
     if (v10)
     {
-      v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      if (![v11 characterIsMember:{objc_msgSend(v12, "characterAtIndex:", v10 - 1)}])
+      textStorage = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      if (![textStorage characterIsMember:{objc_msgSend(string, "characterAtIndex:", v10 - 1)}])
       {
 LABEL_7:
 
@@ -1386,9 +1386,9 @@ LABEL_7:
       }
     }
 
-    if ([v12 length] <= v10 + 1)
+    if ([string length] <= v10 + 1)
     {
-      v14 = [v12 length] > 1;
+      v14 = [string length] > 1;
       if (!v10)
       {
         goto LABEL_12;
@@ -1397,8 +1397,8 @@ LABEL_7:
 
     else
     {
-      v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      if ([v13 characterIsMember:{objc_msgSend(v12, "characterAtIndex:", v10 + 1)}])
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      if ([whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", v10 + 1)}])
       {
 
         if (!v10)
@@ -1409,7 +1409,7 @@ LABEL_7:
         goto LABEL_7;
       }
 
-      v14 = [v12 length] > 1;
+      v14 = [string length] > 1;
 
       if (!v10)
       {
@@ -1423,12 +1423,12 @@ LABEL_16:
         }
 
 LABEL_14:
-        v15 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v10 = [v12 rangeOfCharacterFromSet:v15 options:0 range:{v10, objc_msgSend(v12, "length") - v10}];
+        whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v10 = [string rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet2 options:0 range:{v10, objc_msgSend(string, "length") - v10}];
 
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v10 = [v12 length];
+          v10 = [string length];
         }
 
         goto LABEL_16;
@@ -1448,27 +1448,27 @@ LABEL_17:
   return v10;
 }
 
-- (void)scrollToSelectionInTextView:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)scrollToSelectionInTextView:(id)view animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v39 = a5;
-  v8 = a3;
-  [v8 selectionRect];
+  animatedCopy = animated;
+  completionCopy = completion;
+  viewCopy = view;
+  [viewCopy selectionRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v17 convertRect:v8 fromView:{v10, v12, v14, v16}];
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView convertRect:viewCopy fromView:{v10, v12, v14, v16}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(ICTableAttachmentViewController *)self textViewManager];
-  v27 = [v8 columnID];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  columnID = [viewCopy columnID];
 
-  [v26 frameOfColumn:v27];
+  [textViewManager frameOfColumn:columnID];
   v29 = v28;
   v31 = v30;
   v33 = v32;
@@ -1493,27 +1493,27 @@ LABEL_17:
   v44.origin.y = v21;
   v44.size.width = v23;
   v44.size.height = v25;
-  [(ICTableAttachmentViewController *)self scrollToRect:v5 animated:v39 completion:MinX, MinY, Width, CGRectGetHeight(v44)];
+  [(ICTableAttachmentViewController *)self scrollToRect:animatedCopy animated:completionCopy completion:MinX, MinY, Width, CGRectGetHeight(v44)];
 }
 
-- (void)beginEditingNoteAtOffset:(int64_t)a3
+- (void)beginEditingNoteAtOffset:(int64_t)offset
 {
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v5 unselect];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  [tableSelection unselect];
 
-  v6 = [(ICAttachmentViewController *)self attachment];
-  v7 = [v6 note];
-  v8 = [(ICAttachmentViewController *)self attachment];
-  v9 = [v7 rangeForAttachment:v8];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  attachment2 = [(ICAttachmentViewController *)self attachment];
+  v9 = [note rangeForAttachment:attachment2];
 
-  if (v9 <= -a3 && a3 <= 0)
+  if (v9 <= -offset && offset <= 0)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v9 + a3;
+    v11 = v9 + offset;
   }
 
   [(ICTableAttachmentViewController *)self beginEditingNoteAtRange:v11, 0];
@@ -1521,19 +1521,19 @@ LABEL_17:
 
 - (void)selectTable
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v3 unselect];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  [tableSelection unselect];
 
-  v4 = [(ICAttachmentViewController *)self attachment];
-  v5 = [v4 note];
-  v6 = [(ICAttachmentViewController *)self attachment];
-  v7 = [v5 rangeForAttachment:v6];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  attachment2 = [(ICAttachmentViewController *)self attachment];
+  v7 = [note rangeForAttachment:attachment2];
   v9 = v8;
 
   [(ICTableAttachmentViewController *)self beginEditingNoteAtRange:v7, v9];
 }
 
-- (id)dragSnapshotFromRect:(CGRect)a3 afterScreenUpdates:(BOOL)a4
+- (id)dragSnapshotFromRect:(CGRect)rect afterScreenUpdates:(BOOL)updates
 {
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
 
@@ -1542,35 +1542,35 @@ LABEL_17:
 
 - (id)account
 {
-  v2 = [(ICAttachmentViewController *)self attachment];
-  v3 = [v2 note];
-  v4 = [v3 account];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  account = [note account];
 
-  return v4;
+  return account;
 }
 
 - (id)note
 {
-  v2 = [(ICAttachmentViewController *)self attachment];
-  v3 = [v2 note];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
 
-  return v3;
+  return note;
 }
 
-- (CGRect)frameOfCellForColumnTextView:(id)a3 row:(id)a4
+- (CGRect)frameOfCellForColumnTextView:(id)view row:(id)row
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICTableAttachmentViewController *)self textViewManager];
-  v9 = [v7 columnID];
-  [v8 frameOfCellAtColumn:v9 row:v6];
+  rowCopy = row;
+  viewCopy = view;
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  columnID = [viewCopy columnID];
+  [textViewManager frameOfCellAtColumn:columnID row:rowCopy];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [v7 superview];
-  [v18 convertRect:v7 toView:{v11, v13, v15, v17}];
+  superview = [viewCopy superview];
+  [superview convertRect:viewCopy toView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -1589,31 +1589,31 @@ LABEL_17:
 
 - (void)movePrevCell
 {
-  v3 = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
+  preferredNavigationSelection = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
 
-  [(ICTableAttachmentViewController *)self movePrevCellAtLocation:v3];
+  [(ICTableAttachmentViewController *)self movePrevCellAtLocation:preferredNavigationSelection];
 }
 
 - (void)moveNextCell
 {
-  v3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (!v3)
+  if (!currentlyEditingTextView)
   {
     return;
   }
 
-  v4 = [(ICTableAttachmentViewController *)self table];
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 columns];
-  v7 = [v6 firstObject];
-  v8 = [v4 columnIndexForIdentifier:v7];
+  table = [(ICTableAttachmentViewController *)self table];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
+  firstObject = [columns firstObject];
+  v8 = [table columnIndexForIdentifier:firstObject];
 
-  v9 = [(ICTableAttachmentViewController *)self table];
-  v10 = [(ICTableAttachmentViewController *)self tableSelection];
-  v11 = [v10 rows];
-  v12 = [v11 firstObject];
-  v13 = [v9 rowIndexForIdentifier:v12];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection2 rows];
+  firstObject2 = [rows firstObject];
+  v13 = [table2 rowIndexForIdentifier:firstObject2];
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL || v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1626,11 +1626,11 @@ LABEL_17:
 
   else
   {
-    v14 = [(ICTableAttachmentViewController *)self table];
-    if (v13 == [v14 rowCount] - 1 && -[ICTableAttachmentViewController didRecentlyAutoAddRow](self, "didRecentlyAutoAddRow"))
+    table3 = [(ICTableAttachmentViewController *)self table];
+    if (v13 == [table3 rowCount] - 1 && -[ICTableAttachmentViewController didRecentlyAutoAddRow](self, "didRecentlyAutoAddRow"))
     {
-      v15 = [(ICTableAttachmentViewController *)self table];
-      v16 = [v15 rowIsEmptyAtIndex:v13];
+      table4 = [(ICTableAttachmentViewController *)self table];
+      v16 = [table4 rowIsEmptyAtIndex:v13];
 
       if (v16)
       {
@@ -1645,13 +1645,13 @@ LABEL_17:
     {
     }
 
-    v18 = [(ICTableAttachmentViewController *)self table];
-    v19 = [v18 columnCount] - 1;
+    table5 = [(ICTableAttachmentViewController *)self table];
+    v19 = [table5 columnCount] - 1;
 
     if (v8 >= v19)
     {
-      v21 = [(ICTableAttachmentViewController *)self table];
-      v22 = [v21 rowCount] - 1;
+      table6 = [(ICTableAttachmentViewController *)self table];
+      v22 = [table6 rowCount] - 1;
 
       if (v13 == v22)
       {
@@ -1661,40 +1661,40 @@ LABEL_17:
 
       else
       {
-        v23 = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
+        preferredNavigationSelection = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
 
-        [(ICTableAttachmentViewController *)self moveNextLineAtLocation:v23];
+        [(ICTableAttachmentViewController *)self moveNextLineAtLocation:preferredNavigationSelection];
       }
     }
 
     else
     {
-      v20 = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
+      preferredNavigationSelection2 = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
 
-      [(ICTableAttachmentViewController *)self moveNextCellAtLocation:v20];
+      [(ICTableAttachmentViewController *)self moveNextCellAtLocation:preferredNavigationSelection2];
     }
   }
 }
 
 - (void)moveShiftReturnCell
 {
-  v3 = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
+  preferredNavigationSelection = [(ICTableAttachmentViewController *)self preferredNavigationSelection];
 
-  [(ICTableAttachmentViewController *)self moveUpCellAtLocation:v3];
+  [(ICTableAttachmentViewController *)self moveUpCellAtLocation:preferredNavigationSelection];
 }
 
 - (void)moveReturnCell
 {
-  v3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (v3)
+  if (currentlyEditingTextView)
   {
-    v4 = [(ICTableAttachmentViewController *)self tableSelection];
-    v5 = [v4 rows];
-    v6 = [v5 firstObject];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection rows];
+    firstObject = [rows firstObject];
 
-    v7 = [(ICTableAttachmentViewController *)self table];
-    v8 = [v7 rowIndexForIdentifier:v6];
+    table = [(ICTableAttachmentViewController *)self table];
+    v8 = [table rowIndexForIdentifier:firstObject];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1707,42 +1707,42 @@ LABEL_17:
 
     else
     {
-      v10 = [(ICTableAttachmentViewController *)self table];
-      v11 = [v10 rowCount] - 1;
+      table2 = [(ICTableAttachmentViewController *)self table];
+      v11 = [table2 rowCount] - 1;
 
       if (v8 >= v11)
       {
-        v12 = [(ICTableAttachmentViewController *)self table];
-        v13 = [(ICTableAttachmentViewController *)self table];
-        v14 = [v12 rowIsEmptyAtIndex:{objc_msgSend(v13, "rowCount") - 1}];
+        table3 = [(ICTableAttachmentViewController *)self table];
+        table4 = [(ICTableAttachmentViewController *)self table];
+        v14 = [table3 rowIsEmptyAtIndex:{objc_msgSend(table4, "rowCount") - 1}];
 
-        v15 = [(ICTableAttachmentViewController *)self didRecentlyAutoAddRow];
-        v16 = [(ICTableAttachmentViewController *)self table];
-        v17 = [v16 rowCount];
-        if (v15 && (v14 & 1) != 0)
+        didRecentlyAutoAddRow = [(ICTableAttachmentViewController *)self didRecentlyAutoAddRow];
+        table5 = [(ICTableAttachmentViewController *)self table];
+        rowCount = [table5 rowCount];
+        if (didRecentlyAutoAddRow && (v14 & 1) != 0)
         {
 
-          if (v17 >= 2)
+          if (rowCount >= 2)
           {
-            v18 = [(ICTableAttachmentViewController *)self table];
-            [v18 removeRowAtIndex:v8];
+            table6 = [(ICTableAttachmentViewController *)self table];
+            [table6 removeRowAtIndex:v8];
 
-            [(ICTableAttachmentViewController *)self cleanDeletedRow:v6];
+            [(ICTableAttachmentViewController *)self cleanDeletedRow:firstObject];
             [(ICTableAttachmentViewController *)self redrawAndSave];
           }
 
           [(ICTableAttachmentViewController *)self beginEditingNoteAtOffset:2];
-          [(ICTableAttachmentViewController *)self speakAccessibilityExitedTableAnnouncementAndDidRemoveRow:v17 > 1];
+          [(ICTableAttachmentViewController *)self speakAccessibilityExitedTableAnnouncementAndDidRemoveRow:rowCount > 1];
         }
 
         else
         {
-          [(ICTableAttachmentViewController *)self addRowAtIndex:v17];
+          [(ICTableAttachmentViewController *)self addRowAtIndex:rowCount];
 
           [(ICTableAttachmentViewController *)self setDidRecentlyAutoAddRow:1];
           v19 = *MEMORY[0x277D76438];
-          v20 = [MEMORY[0x277CCA8D8] mainBundle];
-          v21 = [v20 localizedStringForKey:@"Added new row" value:&stru_282757698 table:0];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          v21 = [mainBundle localizedStringForKey:@"Added new row" value:&stru_282757698 table:0];
           UIAccessibilityPostNotification(v19, v21);
         }
       }
@@ -1757,10 +1757,10 @@ LABEL_17:
 
 - (void)moveLeftCell
 {
-  v3 = [(ICTableAttachmentViewController *)self table];
-  v4 = [v3 isLeftToRight];
+  table = [(ICTableAttachmentViewController *)self table];
+  isLeftToRight = [table isLeftToRight];
 
-  if (v4)
+  if (isLeftToRight)
   {
 
     [(ICTableAttachmentViewController *)self movePrevCellAtLocation:2];
@@ -1775,10 +1775,10 @@ LABEL_17:
 
 - (void)moveRightCell
 {
-  v3 = [(ICTableAttachmentViewController *)self table];
-  v4 = [v3 isLeftToRight];
+  table = [(ICTableAttachmentViewController *)self table];
+  isLeftToRight = [table isLeftToRight];
 
-  if (v4)
+  if (isLeftToRight)
   {
 
     [(ICTableAttachmentViewController *)self moveNextCellAtLocation:0];
@@ -1793,72 +1793,72 @@ LABEL_17:
 
 - (BOOL)pasteCellRange
 {
-  v3 = [(ICTableAttachmentViewController *)self icTableFromPasteboard];
-  if (v3)
+  icTableFromPasteboard = [(ICTableAttachmentViewController *)self icTableFromPasteboard];
+  if (icTableFromPasteboard)
   {
-    v4 = [(ICTableAttachmentViewController *)self table];
-    v5 = [(ICTableAttachmentViewController *)self tableSelection];
-    v6 = [v5 type];
-    v7 = v6 != 0;
+    table = [(ICTableAttachmentViewController *)self table];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    type = [tableSelection type];
+    v7 = type != 0;
 
-    if (v6)
+    if (type)
     {
-      v8 = [(ICTableAttachmentViewController *)self tableSelection];
-      v9 = [v8 rows];
-      v10 = [v9 firstObject];
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      rows = [tableSelection2 rows];
+      firstObject = [rows firstObject];
 
-      if (!v10)
+      if (!firstObject)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((selectedRow) != nil)" functionName:"-[ICTableAttachmentViewController pasteCellRange]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "selectedRow"}];
       }
 
-      v11 = [v4 rowIndexForIdentifier:v10];
-      v12 = [(ICTableAttachmentViewController *)self tableSelection];
-      v13 = [v12 columns];
-      v14 = [v13 firstObject];
+      v11 = [table rowIndexForIdentifier:firstObject];
+      tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+      columns = [tableSelection3 columns];
+      firstObject2 = [columns firstObject];
 
-      if (!v14)
+      if (!firstObject2)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((selectedColumn) != nil)" functionName:"-[ICTableAttachmentViewController pasteCellRange]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "selectedColumn"}];
       }
 
-      v15 = [v4 columnIndexForIdentifier:v14];
-      if ([(ICTableAttachmentViewController *)self makeSpaceToPasteSourceTable:v3])
+      v15 = [table columnIndexForIdentifier:firstObject2];
+      if ([(ICTableAttachmentViewController *)self makeSpaceToPasteSourceTable:icTableFromPasteboard])
       {
-        [(ICTableAttachmentViewController *)self pasteTable:v3 atColumnIndex:v15 rowIndex:v11 shouldSetSelectionToPastedRange:0];
+        [(ICTableAttachmentViewController *)self pasteTable:icTableFromPasteboard atColumnIndex:v15 rowIndex:v11 shouldSetSelectionToPastedRange:0];
       }
 
       else
       {
-        v16 = [v3 joinedAttributedStringForColumns:0 rows:0];
-        v17 = [(ICAttachmentViewController *)self attachment];
-        v18 = [v17 managedObjectContext];
-        v19 = [v16 ic_attributedStringByFlatteningUnsupportedInlineAttachmentsWithContext:v18];
+        v16 = [icTableFromPasteboard joinedAttributedStringForColumns:0 rows:0];
+        attachment = [(ICAttachmentViewController *)self attachment];
+        managedObjectContext = [attachment managedObjectContext];
+        v19 = [v16 ic_attributedStringByFlatteningUnsupportedInlineAttachmentsWithContext:managedObjectContext];
 
-        v20 = [(ICAttachmentViewController *)self attachment];
-        v21 = [v20 managedObjectContext];
-        v22 = [v19 ic_attributedStringByCopyingInlineAttachmentsAndUpdatingChangeCountWithContext:v21];
+        attachment2 = [(ICAttachmentViewController *)self attachment];
+        managedObjectContext2 = [attachment2 managedObjectContext];
+        v22 = [v19 ic_attributedStringByCopyingInlineAttachmentsAndUpdatingChangeCountWithContext:managedObjectContext2];
 
-        v23 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        v33 = [v23 ic_selectedRanges];
+        currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        ic_selectedRanges = [currentlyEditingTextView ic_selectedRanges];
 
-        v24 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-        [v24 setIsReadingSelectionFromPasteboard:1];
+        currentlyEditingTextStorage = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+        [currentlyEditingTextStorage setIsReadingSelectionFromPasteboard:1];
 
-        v25 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-        v26 = [v33 firstObject];
-        v27 = [v26 rangeValue];
-        [v25 replaceCharactersInRange:v27 withAttributedString:{v28, v22}];
+        currentlyEditingTextStorage2 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+        firstObject3 = [ic_selectedRanges firstObject];
+        rangeValue = [firstObject3 rangeValue];
+        [currentlyEditingTextStorage2 replaceCharactersInRange:rangeValue withAttributedString:{v28, v22}];
 
-        v29 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        v30 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        [v29 setSelectedRange:{objc_msgSend(v30, "selectedRange") + objc_msgSend(v22, "length"), 0}];
+        currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        currentlyEditingTextView3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        [currentlyEditingTextView2 setSelectedRange:{objc_msgSend(currentlyEditingTextView3, "selectedRange") + objc_msgSend(v22, "length"), 0}];
 
-        v31 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-        [v31 setIsReadingSelectionFromPasteboard:0];
+        currentlyEditingTextStorage3 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+        [currentlyEditingTextStorage3 setIsReadingSelectionFromPasteboard:0];
 
         [(ICTableAttachmentViewController *)self save];
-        [(ICTableAttachmentViewController *)self updateCellSizeAtColumn:v14 row:v10 immediateWidthUpdate:1];
+        [(ICTableAttachmentViewController *)self updateCellSizeAtColumn:firstObject2 row:firstObject immediateWidthUpdate:1];
       }
     }
   }
@@ -1871,25 +1871,25 @@ LABEL_17:
   return v7;
 }
 
-- (void)didPasteOrDropTextForTableColumnTextView:(id)a3
+- (void)didPasteOrDropTextForTableColumnTextView:(id)view
 {
-  v4 = [a3 columnID];
-  [(ICTableAttachmentViewController *)self updateColumnWidthForColumn:v4];
+  columnID = [view columnID];
+  [(ICTableAttachmentViewController *)self updateColumnWidthForColumn:columnID];
 
   [(ICTableAttachmentViewController *)self save];
 }
 
-- (void)moveNextLineAtLocation:(unint64_t)a3
+- (void)moveNextLineAtLocation:(unint64_t)location
 {
-  v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (v5)
+  if (currentlyEditingTextView)
   {
-    v6 = [(ICTableAttachmentViewController *)self table];
-    v7 = [(ICTableAttachmentViewController *)self tableSelection];
-    v8 = [v7 rows];
-    v9 = [v8 firstObject];
-    v10 = [v6 rowIndexForIdentifier:v9];
+    table = [(ICTableAttachmentViewController *)self table];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection rows];
+    firstObject = [rows firstObject];
+    v10 = [table rowIndexForIdentifier:firstObject];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1902,41 +1902,41 @@ LABEL_17:
 
     else
     {
-      v12 = [(ICTableAttachmentViewController *)self table];
-      v13 = [v12 rowCount] - 1;
+      table2 = [(ICTableAttachmentViewController *)self table];
+      v13 = [table2 rowCount] - 1;
 
       if (v10 < v13)
       {
-        v14 = [(ICTableAttachmentViewController *)self table];
-        v17 = [v14 identifierForRowAtIndex:v10 + 1];
+        table3 = [(ICTableAttachmentViewController *)self table];
+        v17 = [table3 identifierForRowAtIndex:v10 + 1];
 
-        v15 = [(ICTableAttachmentViewController *)self table];
-        v16 = [v15 identifierForColumnAtIndex:0];
+        table4 = [(ICTableAttachmentViewController *)self table];
+        v16 = [table4 identifierForColumnAtIndex:0];
 
-        [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v16 andRowID:v17 location:a3];
+        [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v16 andRowID:v17 location:location];
         [(ICTableAttachmentViewController *)self speakAccessibilityAnnouncementForMoveToCellWithColumnID:v16 rowID:v17];
       }
     }
   }
 }
 
-- (void)moveUpCellAtLocation:(unint64_t)a3
+- (void)moveUpCellAtLocation:(unint64_t)location
 {
-  v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (v5)
+  if (currentlyEditingTextView)
   {
-    v6 = [(ICTableAttachmentViewController *)self table];
-    v7 = [(ICTableAttachmentViewController *)self tableSelection];
-    v8 = [v7 columns];
-    v9 = [v8 firstObject];
-    v10 = [v6 columnIndexForIdentifier:v9];
+    table = [(ICTableAttachmentViewController *)self table];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection columns];
+    firstObject = [columns firstObject];
+    v10 = [table columnIndexForIdentifier:firstObject];
 
-    v11 = [(ICTableAttachmentViewController *)self table];
-    v12 = [(ICTableAttachmentViewController *)self tableSelection];
-    v13 = [v12 rows];
-    v14 = [v13 firstObject];
-    v15 = [v11 rowIndexForIdentifier:v14];
+    table2 = [(ICTableAttachmentViewController *)self table];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection2 rows];
+    firstObject2 = [rows firstObject];
+    v15 = [table2 rowIndexForIdentifier:firstObject2];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL || v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1949,13 +1949,13 @@ LABEL_17:
 
     else if (v15)
     {
-      v16 = [(ICTableAttachmentViewController *)self table];
-      v20 = [v16 identifierForColumnAtIndex:v10];
+      table3 = [(ICTableAttachmentViewController *)self table];
+      v20 = [table3 identifierForColumnAtIndex:v10];
 
-      v17 = [(ICTableAttachmentViewController *)self table];
-      v18 = [v17 identifierForRowAtIndex:v15 - 1];
+      table4 = [(ICTableAttachmentViewController *)self table];
+      v18 = [table4 identifierForRowAtIndex:v15 - 1];
 
-      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v20 andRowID:v18 location:a3];
+      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v20 andRowID:v18 location:location];
       [(ICTableAttachmentViewController *)self speakAccessibilityAnnouncementForMoveToCellWithColumnID:v20 rowID:v18];
     }
 
@@ -1967,23 +1967,23 @@ LABEL_17:
   }
 }
 
-- (void)moveDownCellAtLocation:(unint64_t)a3
+- (void)moveDownCellAtLocation:(unint64_t)location
 {
-  v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (v5)
+  if (currentlyEditingTextView)
   {
-    v6 = [(ICTableAttachmentViewController *)self table];
-    v7 = [(ICTableAttachmentViewController *)self tableSelection];
-    v8 = [v7 columns];
-    v9 = [v8 firstObject];
-    v10 = [v6 columnIndexForIdentifier:v9];
+    table = [(ICTableAttachmentViewController *)self table];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection columns];
+    firstObject = [columns firstObject];
+    v10 = [table columnIndexForIdentifier:firstObject];
 
-    v11 = [(ICTableAttachmentViewController *)self table];
-    v12 = [(ICTableAttachmentViewController *)self tableSelection];
-    v13 = [v12 rows];
-    v14 = [v13 firstObject];
-    v15 = [v11 rowIndexForIdentifier:v14];
+    table2 = [(ICTableAttachmentViewController *)self table];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection2 rows];
+    firstObject2 = [rows firstObject];
+    v15 = [table2 rowIndexForIdentifier:firstObject2];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL || v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1996,8 +1996,8 @@ LABEL_17:
 
     else
     {
-      v16 = [(ICTableAttachmentViewController *)self table];
-      v17 = [v16 rowCount] - 1;
+      table3 = [(ICTableAttachmentViewController *)self table];
+      v17 = [table3 rowCount] - 1;
 
       if (v15 >= v17)
       {
@@ -2007,38 +2007,38 @@ LABEL_17:
 
       else
       {
-        v18 = [(ICTableAttachmentViewController *)self table];
-        v22 = [v18 identifierForColumnAtIndex:v10];
+        table4 = [(ICTableAttachmentViewController *)self table];
+        v22 = [table4 identifierForColumnAtIndex:v10];
 
-        v19 = [(ICTableAttachmentViewController *)self table];
-        v20 = [v19 identifierForRowAtIndex:v15 + 1];
+        table5 = [(ICTableAttachmentViewController *)self table];
+        v20 = [table5 identifierForRowAtIndex:v15 + 1];
 
-        [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v22 andRowID:v20 location:a3];
+        [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v22 andRowID:v20 location:location];
         [(ICTableAttachmentViewController *)self speakAccessibilityAnnouncementForMoveToCellWithColumnID:v22 rowID:v20];
       }
     }
   }
 }
 
-- (void)movePrevCellAtLocation:(unint64_t)a3
+- (void)movePrevCellAtLocation:(unint64_t)location
 {
-  v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (v5)
+  if (currentlyEditingTextView)
   {
-    v6 = [(ICTableAttachmentViewController *)self table];
-    v7 = [(ICTableAttachmentViewController *)self tableSelection];
-    v8 = [v7 columns];
-    v9 = [v8 firstObject];
-    v10 = [v6 columnIndexForIdentifier:v9];
+    table = [(ICTableAttachmentViewController *)self table];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection columns];
+    firstObject = [columns firstObject];
+    columnCount = [table columnIndexForIdentifier:firstObject];
 
-    v11 = [(ICTableAttachmentViewController *)self table];
-    v12 = [(ICTableAttachmentViewController *)self tableSelection];
-    v13 = [v12 rows];
-    v14 = [v13 firstObject];
-    v15 = [v11 rowIndexForIdentifier:v14];
+    table2 = [(ICTableAttachmentViewController *)self table];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection2 rows];
+    firstObject2 = [rows firstObject];
+    v15 = [table2 rowIndexForIdentifier:firstObject2];
 
-    if (v10 == 0x7FFFFFFFFFFFFFFFLL || v15 == 0x7FFFFFFFFFFFFFFFLL)
+    if (columnCount == 0x7FFFFFFFFFFFFFFFLL || v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v20 = os_log_create("com.apple.notes", "UI");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -2047,23 +2047,23 @@ LABEL_17:
       }
     }
 
-    else if (v10 | v15)
+    else if (columnCount | v15)
     {
-      if (!v10)
+      if (!columnCount)
       {
-        v16 = [(ICTableAttachmentViewController *)self table];
-        v10 = [v16 columnCount];
+        table3 = [(ICTableAttachmentViewController *)self table];
+        columnCount = [table3 columnCount];
 
         --v15;
       }
 
-      v17 = [(ICTableAttachmentViewController *)self table];
-      v21 = [v17 identifierForColumnAtIndex:v10 - 1];
+      table4 = [(ICTableAttachmentViewController *)self table];
+      v21 = [table4 identifierForColumnAtIndex:columnCount - 1];
 
-      v18 = [(ICTableAttachmentViewController *)self table];
-      v19 = [v18 identifierForRowAtIndex:v15];
+      table5 = [(ICTableAttachmentViewController *)self table];
+      v19 = [table5 identifierForRowAtIndex:v15];
 
-      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v21 andRowID:v19 location:a3];
+      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v21 andRowID:v19 location:location];
       [(ICTableAttachmentViewController *)self speakAccessibilityAnnouncementForMoveToCellWithColumnID:v21 rowID:v19];
     }
 
@@ -2075,26 +2075,26 @@ LABEL_17:
   }
 }
 
-- (void)moveNextCellAtLocation:(unint64_t)a3
+- (void)moveNextCellAtLocation:(unint64_t)location
 {
-  v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (!v5)
+  if (!currentlyEditingTextView)
   {
     return;
   }
 
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [(ICTableAttachmentViewController *)self tableSelection];
-  v8 = [v7 columns];
-  v9 = [v8 firstObject];
-  v10 = [v6 columnIndexForIdentifier:v9];
+  table = [(ICTableAttachmentViewController *)self table];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
+  firstObject = [columns firstObject];
+  v10 = [table columnIndexForIdentifier:firstObject];
 
-  v11 = [(ICTableAttachmentViewController *)self table];
-  v12 = [(ICTableAttachmentViewController *)self tableSelection];
-  v13 = [v12 rows];
-  v14 = [v13 firstObject];
-  v15 = [v11 rowIndexForIdentifier:v14];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection2 rows];
+  firstObject2 = [rows firstObject];
+  v15 = [table2 rowIndexForIdentifier:firstObject2];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL || v15 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2107,13 +2107,13 @@ LABEL_17:
 
   else
   {
-    v16 = [(ICTableAttachmentViewController *)self table];
-    if (v10 < [v16 columnCount] - 1)
+    table3 = [(ICTableAttachmentViewController *)self table];
+    if (v10 < [table3 columnCount] - 1)
     {
 
 LABEL_11:
-      v20 = [(ICTableAttachmentViewController *)self table];
-      v21 = [v20 columnCount] - 1;
+      table4 = [(ICTableAttachmentViewController *)self table];
+      v21 = [table4 columnCount] - 1;
 
       if (v10 < v21)
       {
@@ -2126,20 +2126,20 @@ LABEL_11:
         v22 = 0;
       }
 
-      v23 = [(ICTableAttachmentViewController *)self table];
-      v26 = [v23 identifierForColumnAtIndex:v22];
+      table5 = [(ICTableAttachmentViewController *)self table];
+      v26 = [table5 identifierForColumnAtIndex:v22];
 
-      v24 = [(ICTableAttachmentViewController *)self table];
-      v25 = [v24 identifierForRowAtIndex:v15];
+      table6 = [(ICTableAttachmentViewController *)self table];
+      v25 = [table6 identifierForRowAtIndex:v15];
 
-      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v26 andRowID:v25 location:a3];
+      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v26 andRowID:v25 location:location];
       [(ICTableAttachmentViewController *)self speakAccessibilityAnnouncementForMoveToCellWithColumnID:v26 rowID:v25];
 
       return;
     }
 
-    v18 = [(ICTableAttachmentViewController *)self table];
-    v19 = [v18 rowCount] - 1;
+    table7 = [(ICTableAttachmentViewController *)self table];
+    v19 = [table7 rowCount] - 1;
 
     if (v15 < v19)
     {
@@ -2150,73 +2150,73 @@ LABEL_11:
   }
 }
 
-- (BOOL)makeSpaceToPasteSourceTable:(id)a3
+- (BOOL)makeSpaceToPasteSourceTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   [(ICTableAttachmentViewController *)self beginEditing];
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v6 = [(ICTableAttachmentViewController *)self tableSelection];
-  if ([v6 type] != 1)
+  table = [(ICTableAttachmentViewController *)self table];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if ([tableSelection type] != 1)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"ICTableAttachmentSelectionTypeCell == tableSelection.type" functionName:"-[ICTableAttachmentViewController makeSpaceToPasteSourceTable:]" simulateCrash:1 showAlert:0 format:@"Expected a cell editing selection when pasting a cell range"];
   }
 
-  v7 = [v6 columns];
-  v8 = [v5 columnIndexesForIdentifiers:v7];
+  columns = [tableSelection columns];
+  v8 = [table columnIndexesForIdentifiers:columns];
 
   if ([v8 count] != 1)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"1 == selectedColumnIndexes.count" functionName:"-[ICTableAttachmentViewController makeSpaceToPasteSourceTable:]" simulateCrash:1 showAlert:0 format:@"Expected a single column in this selection"];
   }
 
-  v9 = [v6 rows];
-  v10 = [v5 rowIndexesForIdentifiers:v9];
+  rows = [tableSelection rows];
+  v10 = [table rowIndexesForIdentifiers:rows];
 
   if ([v10 count] != 1)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"1 == selectedRowIndexes.count" functionName:"-[ICTableAttachmentViewController makeSpaceToPasteSourceTable:]" simulateCrash:1 showAlert:0 format:@"Expected a single row in this selection"];
   }
 
-  v11 = [v8 firstIndex];
-  v12 = [v10 firstIndex];
-  v48 = [v4 columnCount];
-  v47 = [v4 rowCount];
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [v8 firstIndex];
+  firstIndex2 = [v10 firstIndex];
+  columnCount = [tableCopy columnCount];
+  rowCount = [tableCopy rowCount];
+  if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"selectedColumnIndex >= 0 && selectedColumnIndex != NSNotFound" functionName:"-[ICTableAttachmentViewController makeSpaceToPasteSourceTable:]" simulateCrash:1 showAlert:0 format:{@"Expected valid selected column index, got %lu.", 0x7FFFFFFFFFFFFFFFLL}];
   }
 
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+  if (firstIndex2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"selectedRowIndex >= 0 && selectedRowIndex != NSNotFound" functionName:"-[ICTableAttachmentViewController makeSpaceToPasteSourceTable:]" simulateCrash:1 showAlert:0 format:{@"Expected valid selected row index, got %lu.", 0x7FFFFFFFFFFFFFFFLL}];
   }
 
-  v13 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v11, v48}];
-  v46 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v12, v47}];
-  if (([v5 isEmptyAtColumnIndexes:v13 rowIndexes:v46] & 1) == 0)
+  v13 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{firstIndex, columnCount}];
+  v46 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{firstIndex2, rowCount}];
+  if (([table isEmptyAtColumnIndexes:v13 rowIndexes:v46] & 1) == 0)
   {
     v44 = v13;
     v45 = v10;
-    v15 = [v5 rowCount];
-    v16 = [v5 columnCount];
-    if ([v5 rowIsEmptyAtIndex:v12])
+    rowCount2 = [table rowCount];
+    columnCount2 = [table columnCount];
+    if ([table rowIsEmptyAtIndex:firstIndex2])
     {
       v40 = v8;
-      v41 = v6;
-      v42 = v4;
-      v17 = v47 - 1;
-      v18 = v12 + 1;
+      v41 = tableSelection;
+      v42 = tableCopy;
+      v17 = rowCount - 1;
+      v18 = firstIndex2 + 1;
       while (1)
       {
         v19 = v17;
         v20 = v17-- != 0;
         v21 = v20;
-        if (!v20 || v18 >= v15)
+        if (!v20 || v18 >= rowCount2)
         {
           break;
         }
 
-        v22 = [v5 rowIsEmptyAtIndex:v18++];
+        v22 = [table rowIsEmptyAtIndex:v18++];
         if ((v22 & 1) == 0)
         {
           v21 = 1;
@@ -2224,10 +2224,10 @@ LABEL_11:
         }
       }
 
-      v23 = [v5 insertRows:v19 atIndex:v12];
-      if (v48 >= v16 - v11)
+      v23 = [table insertRows:v19 atIndex:firstIndex2];
+      if (columnCount >= columnCount2 - firstIndex)
       {
-        v24 = v48 - (v16 - v11);
+        v24 = columnCount - (columnCount2 - firstIndex);
       }
 
       else
@@ -2235,15 +2235,15 @@ LABEL_11:
         v24 = 0;
       }
 
-      v25 = [(ICTableAttachmentViewController *)self table];
+      table2 = [(ICTableAttachmentViewController *)self table];
 
-      if (v5 != v25)
+      if (table != table2)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"destinationTable == self.table" functionName:"-[ICTableAttachmentViewController makeSpaceToPasteSourceTable:]" simulateCrash:1 showAlert:0 format:@"destination table should be self.table"];
       }
 
-      v26 = [(ICTableAttachmentViewController *)self insertColumns:v24 atIndex:v16];
-      if (v48 > v16 - v11)
+      v26 = [(ICTableAttachmentViewController *)self insertColumns:v24 atIndex:columnCount2];
+      if (columnCount > columnCount2 - firstIndex)
       {
         v27 = 1;
       }
@@ -2253,7 +2253,7 @@ LABEL_11:
         v27 = v21;
       }
 
-      v4 = v42;
+      tableCopy = v42;
       v13 = v44;
       if ((v27 & 1) == 0)
       {
@@ -2263,7 +2263,7 @@ LABEL_11:
 
     else
     {
-      if (![v5 columnIsEmptyAtIndex:v11])
+      if (![table columnIsEmptyAtIndex:firstIndex])
       {
         v14 = 0;
         v13 = v44;
@@ -2272,21 +2272,21 @@ LABEL_11:
       }
 
       v40 = v8;
-      v41 = v6;
-      v43 = v4;
-      v28 = v48 - 1;
-      v29 = v11 + 1;
+      v41 = tableSelection;
+      v43 = tableCopy;
+      v28 = columnCount - 1;
+      v29 = firstIndex + 1;
       while (1)
       {
         v30 = v28;
         v31 = v28-- != 0;
         v32 = v31;
-        if (!v31 || v29 >= v16)
+        if (!v31 || v29 >= columnCount2)
         {
           break;
         }
 
-        v33 = [v5 rowIsEmptyAtIndex:v29++];
+        v33 = [table rowIsEmptyAtIndex:v29++];
         if ((v33 & 1) == 0)
         {
           v32 = 1;
@@ -2294,17 +2294,17 @@ LABEL_11:
         }
       }
 
-      v34 = [(ICTableAttachmentViewController *)self table];
+      table3 = [(ICTableAttachmentViewController *)self table];
 
-      if (v5 != v34)
+      if (table != table3)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"destinationTable == self.table" functionName:"-[ICTableAttachmentViewController makeSpaceToPasteSourceTable:]" simulateCrash:1 showAlert:0 format:@"destination table should be self.table"];
       }
 
-      v35 = [(ICTableAttachmentViewController *)self insertColumns:v30 atIndex:v11];
-      if (v47 >= v15 - v12)
+      v35 = [(ICTableAttachmentViewController *)self insertColumns:v30 atIndex:firstIndex];
+      if (rowCount >= rowCount2 - firstIndex2)
       {
-        v36 = v47 - (v15 - v12);
+        v36 = rowCount - (rowCount2 - firstIndex2);
       }
 
       else
@@ -2312,7 +2312,7 @@ LABEL_11:
         v36 = 0;
       }
 
-      if (v47 > v15 - v12)
+      if (rowCount > rowCount2 - firstIndex2)
       {
         v37 = 1;
       }
@@ -2322,8 +2322,8 @@ LABEL_11:
         v37 = v32;
       }
 
-      v38 = [v5 insertRows:v36 atIndex:v15];
-      v4 = v43;
+      v38 = [table insertRows:v36 atIndex:rowCount2];
+      tableCopy = v43;
       v13 = v44;
       if (v37 != 1)
       {
@@ -2336,7 +2336,7 @@ LABEL_11:
 LABEL_33:
     v14 = 1;
     v8 = v40;
-    v6 = v41;
+    tableSelection = v41;
     v10 = v45;
     goto LABEL_55;
   }
@@ -2364,25 +2364,25 @@ LABEL_55:
 
   if (![(ICTableAttachmentViewController *)self editingCount])
   {
-    v3 = [(ICTableAttachmentViewController *)self undoCommands];
-    v4 = [v3 count];
+    undoCommands = [(ICTableAttachmentViewController *)self undoCommands];
+    v4 = [undoCommands count];
 
     if (v4)
     {
-      v5 = [(ICTableAttachmentViewController *)self undoCommands];
-      v6 = [v5 copy];
+      undoCommands2 = [(ICTableAttachmentViewController *)self undoCommands];
+      v6 = [undoCommands2 copy];
 
-      v7 = [(ICTableAttachmentViewController *)self undoTarget];
-      v8 = [(ICTableAttachmentViewController *)self undoManager];
+      undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+      undoManager = [(ICTableAttachmentViewController *)self undoManager];
       v12 = MEMORY[0x277D85DD0];
       v13 = 3221225472;
       v14 = __45__ICTableAttachmentViewController_endEditing__block_invoke;
       v15 = &unk_2781ADFD8;
-      v16 = v7;
+      v16 = undoTarget;
       v17 = v6;
       v9 = v6;
-      v10 = v7;
-      [v8 registerUndoWithTarget:v10 handler:&v12];
+      v10 = undoTarget;
+      [undoManager registerUndoWithTarget:v10 handler:&v12];
 
       v11 = [(ICTableAttachmentViewController *)self undoCommands:v12];
       [v11 removeAllObjects];
@@ -2439,10 +2439,10 @@ void __45__ICTableAttachmentViewController_endEditing__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)toggleTodoStyle:(id)a3
+- (void)toggleTodoStyle:(id)style
 {
-  v4 = [(ICTableAttachmentViewController *)self selectedStyles];
-  v5 = [v4 containsIndex:103];
+  selectedStyles = [(ICTableAttachmentViewController *)self selectedStyles];
+  v5 = [selectedStyles containsIndex:103];
 
   if (v5)
   {
@@ -2457,159 +2457,159 @@ void __45__ICTableAttachmentViewController_endEditing__block_invoke(uint64_t a1)
   [(ICTableAttachmentViewController *)self setSelectionNamedStyle:v6];
 }
 
-- (void)toggleBIUS:(unint64_t)a3 onValue:(id)a4
+- (void)toggleBIUS:(unint64_t)s onValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v10 = 0;
   v11 = 0;
   v7 = [(ICTableAttachmentViewController *)self namedStylesForCurrentSelectionAndBIUS:&v11 emphasisColorType:&v10];
-  v8 = (v11 & a3) != a3;
-  if ((v11 & 0x10) != 0 && v6 && (v11 & a3) == a3 && v10 != 0)
+  v8 = (v11 & s) != s;
+  if ((v11 & 0x10) != 0 && valueCopy && (v11 & s) == s && v10 != 0)
   {
-    [v6 intValue];
+    [valueCopy intValue];
     v8 = ICEmphasisColorTypeForTag() != v10;
   }
 
-  [(ICTableAttachmentViewController *)self setSelectionBIUSStyle:a3 toggleOn:v8 onValue:v6];
+  [(ICTableAttachmentViewController *)self setSelectionBIUSStyle:s toggleOn:v8 onValue:valueCopy];
 }
 
-- (void)copyTable:(id)a3
+- (void)copyTable:(id)table
 {
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 copy];
+  tableCopy = table;
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  v6 = [tableSelection copy];
 
   v7 = MEMORY[0x277CBEB18];
-  v8 = [(ICTableAttachmentViewController *)self table];
-  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "columnCount")}];
+  table = [(ICTableAttachmentViewController *)self table];
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(table, "columnCount")}];
 
-  v10 = [(ICTableAttachmentViewController *)self table];
+  table2 = [(ICTableAttachmentViewController *)self table];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __45__ICTableAttachmentViewController_copyTable___block_invoke;
   v24[3] = &unk_2781AE000;
   v25 = v9;
   v11 = v9;
-  [v10 enumerateColumnsWithBlock:v24];
+  [table2 enumerateColumnsWithBlock:v24];
 
   v12 = MEMORY[0x277CBEB18];
-  v13 = [(ICTableAttachmentViewController *)self table];
-  v14 = [v12 arrayWithCapacity:{objc_msgSend(v13, "rowCount")}];
+  table3 = [(ICTableAttachmentViewController *)self table];
+  v14 = [v12 arrayWithCapacity:{objc_msgSend(table3, "rowCount")}];
 
-  v15 = [(ICTableAttachmentViewController *)self table];
+  table4 = [(ICTableAttachmentViewController *)self table];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __45__ICTableAttachmentViewController_copyTable___block_invoke_2;
   v22 = &unk_2781AE000;
   v23 = v14;
   v16 = v14;
-  [v15 enumerateRowsWithBlock:&v19];
+  [table4 enumerateRowsWithBlock:&v19];
 
   v17 = [(ICTableAttachmentViewController *)self tableSelection:v19];
   [v17 selectCellRangeAtColumns:v11 rows:v16];
 
-  [(ICTableAttachmentViewController *)self copySelection:v4];
-  v18 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v18 setSelectionEqualTo:v6];
+  [(ICTableAttachmentViewController *)self copySelection:tableCopy];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  [tableSelection2 setSelectionEqualTo:v6];
 }
 
-- (void)convertTableToText:(id)a3
+- (void)convertTableToText:(id)text
 {
-  v4 = [(ICTableAttachmentViewController *)self table];
-  v5 = [(ICAttachmentViewController *)self attachment];
-  v6 = [v5 note];
-  v25 = [v4 joinedAttributedStringForColumns:0 rows:0 deepCopyInlineAttachments:1 note:v6 parentAttachment:0];
+  table = [(ICTableAttachmentViewController *)self table];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  v25 = [table joinedAttributedStringForColumns:0 rows:0 deepCopyInlineAttachments:1 note:note parentAttachment:0];
 
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v7 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v7 textLayoutManager];
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView textLayoutManager];
   }
 
   else
   {
     objc_opt_class();
-    v7 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v7 layoutManager];
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView layoutManager];
   }
   v8 = ;
   v9 = ICDynamicCast();
 
-  v10 = [(ICAttachmentViewController *)self attachment];
-  v11 = [v9 rangeForAttachment:v10 withTextAttachment:0];
+  attachment2 = [(ICAttachmentViewController *)self attachment];
+  v11 = [v9 rangeForAttachment:attachment2 withTextAttachment:0];
   v13 = v12;
 
-  v14 = [(ICTableAttachmentViewController *)self noteTextView];
-  v15 = [v14 textStorage];
-  [v15 beginEditing];
+  noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+  textStorage = [noteTextView2 textStorage];
+  [textStorage beginEditing];
 
-  v16 = [(ICTableAttachmentViewController *)self noteTextView];
-  v17 = [v16 textStorage];
-  [v17 replaceCharactersInRange:v11 withAttributedString:{v13, v25}];
+  noteTextView3 = [(ICTableAttachmentViewController *)self noteTextView];
+  textStorage2 = [noteTextView3 textStorage];
+  [textStorage2 replaceCharactersInRange:v11 withAttributedString:{v13, v25}];
 
-  v18 = [(ICTableAttachmentViewController *)self noteTextView];
-  v19 = [v18 textStorage];
-  [v19 endEditing];
+  noteTextView4 = [(ICTableAttachmentViewController *)self noteTextView];
+  textStorage3 = [noteTextView4 textStorage];
+  [textStorage3 endEditing];
 
-  v20 = [(ICTableAttachmentViewController *)self noteTextView];
-  v21 = [v20 delegate];
-  v22 = [(ICTableAttachmentViewController *)self noteTextView];
-  [v21 textViewDidChange:v22];
+  noteTextView5 = [(ICTableAttachmentViewController *)self noteTextView];
+  delegate = [noteTextView5 delegate];
+  noteTextView6 = [(ICTableAttachmentViewController *)self noteTextView];
+  [delegate textViewDidChange:noteTextView6];
 
   v23 = [v25 length];
-  v24 = [(ICTableAttachmentViewController *)self noteTextView];
-  [v24 setSelectedRange:{v11, v23}];
+  noteTextView7 = [(ICTableAttachmentViewController *)self noteTextView];
+  [noteTextView7 setSelectedRange:{v11, v23}];
 }
 
-- (void)updateTableColumnDirectionForWritingDirection:(int64_t)a3
+- (void)updateTableColumnDirectionForWritingDirection:(int64_t)direction
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a3 == 1;
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [v6 isRightToLeft];
+  v5 = direction == 1;
+  table = [(ICTableAttachmentViewController *)self table];
+  isRightToLeft = [table isRightToLeft];
 
-  if (v5 != v7)
+  if (v5 != isRightToLeft)
   {
-    v8 = [(ICTableAttachmentViewController *)self tableSelection];
-    v9 = [v8 columns];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection columns];
 
-    v10 = [(ICTableAttachmentViewController *)self tableSelection];
-    v11 = [v10 rows];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection2 rows];
 
-    if (![v11 count])
+    if (![rows count])
     {
-      v12 = [(ICTableAttachmentViewController *)self table];
-      v13 = [v12 identifierForRowAtIndex:0];
+      table2 = [(ICTableAttachmentViewController *)self table];
+      v13 = [table2 identifierForRowAtIndex:0];
       v17[0] = v13;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
 
-      v11 = v14;
+      rows = v14;
     }
 
     [(ICTableAttachmentViewController *)self hideColumnRowButtons];
-    v15 = [(ICTableAttachmentViewController *)self table];
-    [v15 reverseColumnDirection];
+    table3 = [(ICTableAttachmentViewController *)self table];
+    [table3 reverseColumnDirection];
 
-    [(ICTableAttachmentViewController *)self updateTableCellsWithDirection:a3 columnIndexes:0 rowIndexes:0];
-    v16 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    [(ICTableAttachmentViewController *)self updateTableCellsWithDirection:direction columnIndexes:0 rowIndexes:0];
+    currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-    if (v16)
+    if (currentlyEditingTextView)
     {
       [(ICTableAttachmentViewController *)self setRowButton:0];
       [(ICTableAttachmentViewController *)self setColumnButton:0];
-      [(ICTableAttachmentViewController *)self showButtonsAtColumns:v9 rows:v11];
+      [(ICTableAttachmentViewController *)self showButtonsAtColumns:columns rows:rows];
     }
 
     [(ICTableAttachmentViewController *)self redrawAndSave];
-    [(ICTableAttachmentViewController *)self updateAttachmentParagraphForWritingDirection:a3];
+    [(ICTableAttachmentViewController *)self updateAttachmentParagraphForWritingDirection:direction];
   }
 }
 
-- (void)reverseTableColumnDirection:(id)a3
+- (void)reverseTableColumnDirection:(id)direction
 {
-  v4 = [(ICTableAttachmentViewController *)self table];
-  if ([v4 isRightToLeft])
+  table = [(ICTableAttachmentViewController *)self table];
+  if ([table isRightToLeft])
   {
     v5 = -1;
   }
@@ -2622,43 +2622,43 @@ void __45__ICTableAttachmentViewController_endEditing__block_invoke(uint64_t a1)
   [(ICTableAttachmentViewController *)self updateTableColumnDirectionForWritingDirection:v5];
 }
 
-- (void)updateAttachmentParagraphForWritingDirection:(int64_t)a3
+- (void)updateAttachmentParagraphForWritingDirection:(int64_t)direction
 {
-  v17 = [(ICAttachmentViewController *)self attachment];
-  v5 = [v17 note];
-  v6 = [v5 textStorage];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  textStorage = [note textStorage];
 
   objc_opt_class();
-  v7 = [v6 styler];
+  styler = [textStorage styler];
   v8 = ICDynamicCast();
 
-  v9 = [v17 rangeInNote];
+  rangeInNote = [attachment rangeInNote];
   v11 = v10;
-  v12 = [v6 string];
-  v13 = [v12 paragraphRangeForRange:{v9, v11}];
+  string = [textStorage string];
+  v13 = [string paragraphRangeForRange:{rangeInNote, v11}];
   v15 = v14;
 
-  v16 = [(ICTableAttachmentViewController *)self noteTextView];
-  [v8 setParagraphWritingDirectionInRange:v13 toDirection:v15 inTextView:{a3, v16}];
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+  [v8 setParagraphWritingDirectionInRange:v13 toDirection:v15 inTextView:{direction, noteTextView}];
 }
 
-- (void)applyUndoGroup:(id)a3
+- (void)applyUndoGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
-  v6 = [v5 columnID];
-  v7 = [v5 rowID];
-  v8 = [(ICTableAttachmentViewController *)self table];
-  if ([v8 containsColumn:v6] && objc_msgSend(v8, "containsRow:", v7))
+  columnID = [v5 columnID];
+  rowID = [v5 rowID];
+  table = [(ICTableAttachmentViewController *)self table];
+  if ([table containsColumn:columnID] && objc_msgSend(table, "containsRow:", rowID))
   {
-    v9 = [(ICTableAttachmentViewController *)self tableSelection];
-    v10 = [(ICTableAttachmentViewController *)self textViewManager];
-    v11 = [v10 textViewForColumn:v6];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+    v11 = [textViewManager textViewForColumn:columnID];
 
     objc_opt_class();
     v41 = v11;
-    v12 = [v11 textStorage];
+    textStorage = [v11 textStorage];
     v13 = ICDynamicCast();
 
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -2666,42 +2666,42 @@ void __45__ICTableAttachmentViewController_endEditing__block_invoke(uint64_t a1)
     aBlock[2] = __50__ICTableAttachmentViewController_applyUndoGroup___block_invoke;
     aBlock[3] = &unk_2781AE028;
     aBlock[4] = self;
-    v42 = v6;
+    v42 = columnID;
     v47 = v42;
-    v38 = v7;
+    v38 = rowID;
     v48 = v38;
     v39 = v13;
     v49 = v39;
-    v50 = v4;
+    v50 = groupCopy;
     v14 = _Block_copy(aBlock);
-    v15 = [v5 tableSelection];
-    v16 = [v15 type];
+    tableSelection2 = [v5 tableSelection];
+    type = [tableSelection2 type];
 
-    v40 = v9;
-    if (v16 != 1)
+    v40 = tableSelection;
+    if (type != 1)
     {
-      v21 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+      currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-      if (v21)
+      if (currentlyEditingTextView)
       {
-        v22 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        [(ICTableAttachmentViewController *)self endCellEditingSessionWithTextView:v22];
+        currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        [(ICTableAttachmentViewController *)self endCellEditingSessionWithTextView:currentlyEditingTextView2];
       }
 
       v14[2](v14);
-      v23 = [(ICTableAttachmentViewController *)self tableSelection];
-      v24 = [v5 tableSelection];
-      [v23 setSelectionEqualTo:v24];
+      tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+      tableSelection4 = [v5 tableSelection];
+      [tableSelection3 setSelectionEqualTo:tableSelection4];
 
       [(ICTableAttachmentViewController *)self updateChrome];
-      v25 = [v5 tableSelection];
-      if (![v25 type])
+      tableSelection5 = [v5 tableSelection];
+      if (![tableSelection5 type])
       {
-        v32 = [(ICTableAttachmentViewController *)self noteTextView];
-        v33 = [v32 isEditable];
+        noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+        isEditable = [noteTextView isEditable];
 
         v31 = v39;
-        if (v33)
+        if (isEditable)
         {
           v43[0] = MEMORY[0x277D85DD0];
           v43[1] = 3221225472;
@@ -2724,44 +2724,44 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    if ([v9 type] == 1)
+    if ([tableSelection type] == 1)
     {
-      v17 = [v9 columns];
-      v18 = [v17 objectAtIndexedSubscript:0];
+      columns = [tableSelection columns];
+      v18 = [columns objectAtIndexedSubscript:0];
       if ([v42 isEqual:v18])
       {
         v35 = v18;
-        v36 = v17;
-        v19 = [v9 rows];
-        v20 = [v19 objectAtIndexedSubscript:0];
+        v36 = columns;
+        rows = [tableSelection rows];
+        v20 = [rows objectAtIndexedSubscript:0];
         if ([v38 isEqual:v20])
         {
 
           goto LABEL_14;
         }
 
-        v34 = [v41 isEditable];
+        isEditable2 = [v41 isEditable];
 
-        if ((v34 & 1) == 0)
+        if ((isEditable2 & 1) == 0)
         {
 LABEL_14:
-          v26 = [(ICTableAttachmentViewController *)self tableSelection];
-          v27 = [v26 type];
+          tableSelection6 = [(ICTableAttachmentViewController *)self tableSelection];
+          type2 = [tableSelection6 type];
 
-          if (v27 == 1)
+          if (type2 == 1)
           {
             v14[2](v14);
           }
 
           else
           {
-            v28 = [(ICTableAttachmentViewController *)self tableSelection];
-            v29 = [v5 tableSelection];
-            [v28 setSelectionEqualTo:v29];
+            tableSelection7 = [(ICTableAttachmentViewController *)self tableSelection];
+            tableSelection8 = [v5 tableSelection];
+            [tableSelection7 setSelectionEqualTo:tableSelection8];
 
             v14[2](v14);
-            v30 = [(ICTableAttachmentViewController *)self tableSelection];
-            [v30 unselect];
+            tableSelection9 = [(ICTableAttachmentViewController *)self tableSelection];
+            [tableSelection9 unselect];
           }
 
           goto LABEL_17;
@@ -2770,9 +2770,9 @@ LABEL_14:
 
       else
       {
-        v37 = [v41 isEditable];
+        isEditable3 = [v41 isEditable];
 
-        if (!v37)
+        if (!isEditable3)
         {
           goto LABEL_14;
         }
@@ -2807,27 +2807,27 @@ void __50__ICTableAttachmentViewController_applyUndoGroup___block_invoke(uint64_
   [v4 applyUndoWithBlock:v6];
 }
 
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4
+- (void)addUndoCommandsForObject:(id)object block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   [(ICTableAttachmentViewController *)self beginEditing];
-  v6 = [(ICTableAttachmentViewController *)self undoCommands];
-  v7 = _Block_copy(v5);
+  undoCommands = [(ICTableAttachmentViewController *)self undoCommands];
+  v7 = _Block_copy(blockCopy);
 
-  [v6 addObject:v7];
+  [undoCommands addObject:v7];
 
   [(ICTableAttachmentViewController *)self endEditing];
 }
 
 - (id)attributedStringFromPasteboard
 {
-  v3 = [(ICTableAttachmentViewController *)self notesDataFromPasteboard];
-  if (!v3 || ([MEMORY[0x277D35F38] pasteboardDataFromPersistenceData:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0) || (v5 = v4, v6 = MEMORY[0x277CCA898], objc_msgSend(v4, "attributedStringData"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "dataPersister"), v8 = objc_claimAutoreleasedReturnValue(), -[ICAttachmentViewController attachment](self, "attachment"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "note"), v10 = objc_claimAutoreleasedReturnValue(), -[ICAttachmentViewController attachment](self, "attachment"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "ic_attributedStringWithData:dataPersister:createNewAttachmentsInNote:forParentAttachment:error:", v7, v8, v10, v11, 0), v12 = objc_claimAutoreleasedReturnValue(), v11, v10, v9, v8, v7, v5, !v12))
+  notesDataFromPasteboard = [(ICTableAttachmentViewController *)self notesDataFromPasteboard];
+  if (!notesDataFromPasteboard || ([MEMORY[0x277D35F38] pasteboardDataFromPersistenceData:notesDataFromPasteboard], (v4 = objc_claimAutoreleasedReturnValue()) == 0) || (v5 = v4, v6 = MEMORY[0x277CCA898], objc_msgSend(v4, "attributedStringData"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "dataPersister"), v8 = objc_claimAutoreleasedReturnValue(), -[ICAttachmentViewController attachment](self, "attachment"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "note"), v10 = objc_claimAutoreleasedReturnValue(), -[ICAttachmentViewController attachment](self, "attachment"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "ic_attributedStringWithData:dataPersister:createNewAttachmentsInNote:forParentAttachment:error:", v7, v8, v10, v11, 0), v12 = objc_claimAutoreleasedReturnValue(), v11, v10, v9, v8, v7, v5, !v12))
   {
-    v13 = [(ICTableAttachmentViewController *)self soloPlainTextStringFromPasteboard];
-    if (v13)
+    soloPlainTextStringFromPasteboard = [(ICTableAttachmentViewController *)self soloPlainTextStringFromPasteboard];
+    if (soloPlainTextStringFromPasteboard)
     {
-      v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v13];
+      v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:soloPlainTextStringFromPasteboard];
     }
 
     else
@@ -2841,70 +2841,70 @@ void __50__ICTableAttachmentViewController_applyUndoGroup___block_invoke(uint64_
 
 - (id)icTableFromPasteboard
 {
-  v3 = [(ICTableAttachmentViewController *)self icTableDataFromPasteboard];
-  if (!v3)
+  icTableDataFromPasteboard = [(ICTableAttachmentViewController *)self icTableDataFromPasteboard];
+  if (!icTableDataFromPasteboard)
   {
     goto LABEL_6;
   }
 
   v4 = objc_alloc(MEMORY[0x277D35FD0]);
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v6 = [v5 document];
-  v7 = [v6 replica];
-  if (v7)
+  table = [(ICTableAttachmentViewController *)self table];
+  document = [table document];
+  replica = [document replica];
+  if (replica)
   {
-    v8 = [v4 initWithData:v3 replicaID:v7];
+    v8 = [v4 initWithData:icTableDataFromPasteboard replicaID:replica];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v4 initWithData:v3 replicaID:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v8 = [v4 initWithData:icTableDataFromPasteboard replicaID:uUID];
   }
 
-  v10 = [v8 table];
+  table2 = [v8 table];
 
-  if (!v10)
+  if (!table2)
   {
 LABEL_6:
-    v11 = [(ICTableAttachmentViewController *)self attributedStringFromPasteboard];
-    v12 = [(ICAttachmentViewController *)self attachment];
-    v13 = [v12 managedObjectContext];
-    v14 = [v11 ic_attributedStringByFlatteningCalculateAttachmentsWithContext:v13];
+    attributedStringFromPasteboard = [(ICTableAttachmentViewController *)self attributedStringFromPasteboard];
+    attachment = [(ICAttachmentViewController *)self attachment];
+    managedObjectContext = [attachment managedObjectContext];
+    v14 = [attributedStringFromPasteboard ic_attributedStringByFlatteningCalculateAttachmentsWithContext:managedObjectContext];
 
     v15 = MEMORY[0x277D35E48];
-    v16 = [(ICAttachmentViewController *)self attachment];
-    v17 = [v16 managedObjectContext];
-    v18 = [(ICTableAttachmentViewController *)self table];
-    v19 = [v18 document];
-    v20 = [v19 replica];
-    if (v20)
+    attachment2 = [(ICAttachmentViewController *)self attachment];
+    managedObjectContext2 = [attachment2 managedObjectContext];
+    table3 = [(ICTableAttachmentViewController *)self table];
+    document2 = [table3 document];
+    replica2 = [document2 replica];
+    if (replica2)
     {
-      v21 = [v15 tableFromAttributedString:v14 managedObjectContext:v17 replicaID:v20];
+      v21 = [v15 tableFromAttributedString:v14 managedObjectContext:managedObjectContext2 replicaID:replica2];
     }
 
     else
     {
-      v22 = [MEMORY[0x277CCAD78] UUID];
-      v21 = [v15 tableFromAttributedString:v14 managedObjectContext:v17 replicaID:v22];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      v21 = [v15 tableFromAttributedString:v14 managedObjectContext:managedObjectContext2 replicaID:uUID2];
     }
 
-    v10 = [v21 table];
+    table2 = [v21 table];
   }
 
-  return v10;
+  return table2;
 }
 
 - (id)icTableDataForSelection
 {
-  v3 = [(ICTableAttachmentViewController *)self table];
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 type];
-  v6 = v5;
-  if (v5 == 4 || v5 == 2)
+  table = [(ICTableAttachmentViewController *)self table];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
+  v6 = type;
+  if (type == 4 || type == 2)
   {
-    v7 = [v4 columns];
-    v8 = [v3 columnIndexesForIdentifiers:v7];
+    columns = [tableSelection columns];
+    v8 = [table columnIndexesForIdentifiers:columns];
   }
 
   else
@@ -2919,57 +2919,57 @@ LABEL_6:
 
   else
   {
-    v9 = [v4 rows];
-    v10 = [v3 rowIndexesForIdentifiers:v9];
+    rows = [tableSelection rows];
+    v10 = [table rowIndexesForIdentifiers:rows];
   }
 
-  v28 = v3;
+  v28 = table;
   v11 = objc_alloc(MEMORY[0x277D35E68]);
-  v12 = [(ICTableAttachmentViewController *)self table];
-  v13 = [v12 document];
-  v14 = [v13 replica];
-  v15 = [v11 initWithReplica:v14];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  document = [table2 document];
+  replica = [document replica];
+  v15 = [v11 initWithReplica:replica];
 
-  v16 = [(ICTableAttachmentViewController *)self table];
-  v17 = [v16 subtableWithDocument:v15 forSelectionContainingColumnIndices:v8 rowIndices:v10];
+  table3 = [(ICTableAttachmentViewController *)self table];
+  v17 = [table3 subtableWithDocument:v15 forSelectionContainingColumnIndices:v8 rowIndices:v10];
 
   [v15 setRootObject:v17];
   v18 = objc_alloc(MEMORY[0x277D35FD0]);
-  v19 = [(ICTableAttachmentViewController *)self table];
-  v20 = [v19 document];
-  v21 = [v20 replica];
-  if (v21)
+  table4 = [(ICTableAttachmentViewController *)self table];
+  document2 = [table4 document];
+  replica2 = [document2 replica];
+  if (replica2)
   {
-    v22 = [v18 initWithData:0 replicaID:v21];
+    v22 = [v18 initWithData:0 replicaID:replica2];
   }
 
   else
   {
-    v23 = [MEMORY[0x277CCAD78] UUID];
-    v22 = [v18 initWithData:0 replicaID:v23];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v22 = [v18 initWithData:0 replicaID:uUID];
   }
 
-  v24 = [MEMORY[0x277D35FD0] serializationVersion];
-  v25 = [v15 archivedData];
-  [v22 mergeVersion:v24 fromData:v25];
+  serializationVersion = [MEMORY[0x277D35FD0] serializationVersion];
+  archivedData = [v15 archivedData];
+  [v22 mergeVersion:serializationVersion fromData:archivedData];
 
-  v26 = [v22 serialize];
+  serialize = [v22 serialize];
 
-  return v26;
+  return serialize;
 }
 
-- (id)attributedStringForTableSelectionInContext:(id)a3
+- (id)attributedStringForTableSelectionInContext:(id)context
 {
   v4 = MEMORY[0x277D35E00];
   v5 = MEMORY[0x277CCAD78];
-  v6 = a3;
-  v7 = [v5 UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v4 newObjectWithIdentifier:v8 context:v6];
+  contextCopy = context;
+  uUID = [v5 UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v4 newObjectWithIdentifier:uUIDString context:contextCopy];
 
   [v9 setTypeUTI:*MEMORY[0x277D35C08]];
-  v10 = [(ICTableAttachmentViewController *)self icTableDataForSelection];
-  [v9 setMergeableData:v10];
+  icTableDataForSelection = [(ICTableAttachmentViewController *)self icTableDataForSelection];
+  [v9 setMergeableData:icTableDataForSelection];
 
   v11 = [MEMORY[0x277D36950] textAttachmentWithAttachment:v9];
   v12 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v11];
@@ -2977,8 +2977,8 @@ LABEL_6:
 
   [v13 addAttribute:*MEMORY[0x277D74060] value:v11 range:{0, objc_msgSend(v13, "length")}];
   v14 = [MEMORY[0x277D35F90] paragraphStyleNamed:3];
-  v15 = [(ICTableAttachmentViewController *)self table];
-  [v14 setWritingDirection:{objc_msgSend(v15, "isRightToLeft")}];
+  table = [(ICTableAttachmentViewController *)self table];
+  [v14 setWritingDirection:{objc_msgSend(table, "isRightToLeft")}];
 
   v16 = *MEMORY[0x277D35DA8];
   v17 = [v14 copy];
@@ -3006,19 +3006,19 @@ LABEL_6:
 
 - (id)webArchiveDataForSelection
 {
-  v3 = [*MEMORY[0x277CE1ED8] identifier];
-  v4 = [(ICTableAttachmentViewController *)self dataForSelectionOfType:v3];
+  identifier = [*MEMORY[0x277CE1ED8] identifier];
+  v4 = [(ICTableAttachmentViewController *)self dataForSelectionOfType:identifier];
 
   return v4;
 }
 
-- (id)dataForSelectionOfType:(id)a3
+- (id)dataForSelectionOfType:(id)type
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = *MEMORY[0x277D74098];
-  v10[0] = a3;
+  v10[0] = type;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  typeCopy = type;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = [(ICTableAttachmentViewController *)self dataForSelectionWithDocumentAttributes:v6];
@@ -3026,26 +3026,26 @@ LABEL_6:
   return v7;
 }
 
-- (id)dataForSelectionWithDocumentAttributes:(id)a3
+- (id)dataForSelectionWithDocumentAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__10;
   v19 = __Block_byref_object_dispose__10;
   v20 = 0;
-  v5 = [MEMORY[0x277D35F30] sharedContext];
-  v6 = [v5 snapshotManagedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  snapshotManagedObjectContext = [mEMORY[0x277D35F30] snapshotManagedObjectContext];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__ICTableAttachmentViewController_dataForSelectionWithDocumentAttributes___block_invoke;
   v11[3] = &unk_2781AC600;
   v11[4] = self;
-  v7 = v6;
+  v7 = snapshotManagedObjectContext;
   v12 = v7;
-  v8 = v4;
+  v8 = attributesCopy;
   v13 = v8;
   v14 = &v15;
   [v7 performBlockAndWait:v11];
@@ -3088,19 +3088,19 @@ void __74__ICTableAttachmentViewController_dataForSelectionWithDocumentAttribute
   v26 = __Block_byref_object_dispose__10;
   v27 = 0;
   v3 = objc_alloc(MEMORY[0x277D35EA0]);
-  v4 = [(ICAttachmentViewController *)self attachment];
-  v5 = [v4 identifier];
-  v6 = [v3 initWithObjectIdentifier:v5 forPasteboard:1];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  identifier = [attachment identifier];
+  v6 = [v3 initWithObjectIdentifier:identifier forPasteboard:1];
 
-  v7 = [MEMORY[0x277D35F30] sharedContext];
-  v8 = [v7 snapshotManagedObjectContext];
+  mEMORY[0x277D35F30] = [MEMORY[0x277D35F30] sharedContext];
+  snapshotManagedObjectContext = [mEMORY[0x277D35F30] snapshotManagedObjectContext];
 
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __67__ICTableAttachmentViewController_customPasteboardDataForSelection__block_invoke;
   v17 = &unk_2781AC4C0;
-  v18 = self;
-  v9 = v8;
+  selfCopy = self;
+  v9 = snapshotManagedObjectContext;
   v19 = v9;
   v21 = &v22;
   v10 = v6;
@@ -3109,7 +3109,7 @@ void __74__ICTableAttachmentViewController_dataForSelectionWithDocumentAttribute
   if (v23[5])
   {
     v11 = objc_alloc(MEMORY[0x277D35F38]);
-    v12 = [v11 initWithAttributedStringData:v23[5] dataPersister:{v10, v14, v15, v16, v17, v18, v19}];
+    v12 = [v11 initWithAttributedStringData:v23[5] dataPersister:{v10, v14, v15, v16, v17, selfCopy, v19}];
   }
 
   else
@@ -3133,67 +3133,67 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
 
 - (id)pasteboardItemsForSelection
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(ICTableAttachmentViewController *)self webArchiveDataForSelection];
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  webArchiveDataForSelection = [(ICTableAttachmentViewController *)self webArchiveDataForSelection];
+  if (webArchiveDataForSelection)
   {
-    v5 = [*MEMORY[0x277CE1ED8] identifier];
-    [v3 setObject:v4 forKeyedSubscript:v5];
+    identifier = [*MEMORY[0x277CE1ED8] identifier];
+    [dictionary setObject:webArchiveDataForSelection forKeyedSubscript:identifier];
   }
 
-  v6 = [(ICTableAttachmentViewController *)self htmlDataForSelection];
+  htmlDataForSelection = [(ICTableAttachmentViewController *)self htmlDataForSelection];
 
-  if (v6)
+  if (htmlDataForSelection)
   {
-    v7 = [*MEMORY[0x277CE1DA0] identifier];
-    [v3 setObject:v6 forKeyedSubscript:v7];
+    identifier2 = [*MEMORY[0x277CE1DA0] identifier];
+    [dictionary setObject:htmlDataForSelection forKeyedSubscript:identifier2];
   }
 
-  v8 = [(ICTableAttachmentViewController *)self RTFDataForSelection];
+  rTFDataForSelection = [(ICTableAttachmentViewController *)self RTFDataForSelection];
 
-  if (v8)
+  if (rTFDataForSelection)
   {
-    v9 = [*MEMORY[0x277CE1D78] identifier];
-    [v3 setObject:v8 forKeyedSubscript:v9];
+    identifier3 = [*MEMORY[0x277CE1D78] identifier];
+    [dictionary setObject:rTFDataForSelection forKeyedSubscript:identifier3];
   }
 
-  v10 = [(ICTableAttachmentViewController *)self plainTextDataForSelection];
+  plainTextDataForSelection = [(ICTableAttachmentViewController *)self plainTextDataForSelection];
 
-  if (v10)
+  if (plainTextDataForSelection)
   {
-    v11 = [*MEMORY[0x277CE1EB0] identifier];
-    [v3 setObject:v10 forKeyedSubscript:v11];
+    identifier4 = [*MEMORY[0x277CE1EB0] identifier];
+    [dictionary setObject:plainTextDataForSelection forKeyedSubscript:identifier4];
   }
 
-  v12 = [(ICTableAttachmentViewController *)self icTableDataForSelection];
-  [v3 setObject:v12 forKeyedSubscript:@"com.apple.notes.table"];
+  icTableDataForSelection = [(ICTableAttachmentViewController *)self icTableDataForSelection];
+  [dictionary setObject:icTableDataForSelection forKeyedSubscript:@"com.apple.notes.table"];
 
-  v13 = [(ICTableAttachmentViewController *)self customPasteboardDataForSelection];
-  v14 = v13;
-  if (v13)
+  customPasteboardDataForSelection = [(ICTableAttachmentViewController *)self customPasteboardDataForSelection];
+  v14 = customPasteboardDataForSelection;
+  if (customPasteboardDataForSelection)
   {
-    v15 = [v13 persistenceData];
-    [v3 setObject:v15 forKeyedSubscript:*MEMORY[0x277D35D08]];
+    persistenceData = [customPasteboardDataForSelection persistenceData];
+    [dictionary setObject:persistenceData forKeyedSubscript:*MEMORY[0x277D35D08]];
   }
 
-  v16 = [v3 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
-- (void)tableDidPopulateCellAtColumnIndex:(unint64_t)a3 rowIndex:(unint64_t)a4
+- (void)tableDidPopulateCellAtColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex
 {
-  v7 = [(ICTableAttachmentViewController *)self table];
-  v8 = [v7 identifierForColumnAtIndex:a3];
+  table = [(ICTableAttachmentViewController *)self table];
+  v8 = [table identifierForColumnAtIndex:index];
 
-  v9 = [(ICTableAttachmentViewController *)self table];
-  v10 = [v9 identifierForRowAtIndex:a4];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  v10 = [table2 identifierForRowAtIndex:rowIndex];
 
-  v11 = [(ICTableAttachmentViewController *)self table];
-  v12 = [v11 textStorageForColumn:v8];
-  v13 = [v12 isEditing];
+  table3 = [(ICTableAttachmentViewController *)self table];
+  v12 = [table3 textStorageForColumn:v8];
+  isEditing = [v12 isEditing];
 
-  if (v13)
+  if (isEditing)
   {
     v14 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -3205,83 +3205,83 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
 
   else
   {
-    v15 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-    v16 = [v15 columnLayoutManagerForColumn:v8];
+    tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+    v16 = [tableLayoutManager columnLayoutManagerForColumn:v8];
 
     [v16 ensureCellExistsAtRowID:v10];
   }
 }
 
-- (void)tableWillRemoveColumnID:(id)a3
+- (void)tableWillRemoveColumnID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v9 = [v5 textStorageForColumn:v4];
+  dCopy = d;
+  table = [(ICTableAttachmentViewController *)self table];
+  v9 = [table textStorageForColumn:dCopy];
 
   if (!v9)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((storage) != nil)" functionName:"-[ICTableAttachmentViewController tableWillRemoveColumnID:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "storage"}];
   }
 
-  v6 = [(ICAttachmentViewController *)self attachment];
-  v7 = [v6 note];
-  v8 = [v9 attributedString];
-  [v7 markBlockAndInlineAttachmentsForDeletion:1 inAttributedString:v8];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  attributedString = [v9 attributedString];
+  [note markBlockAndInlineAttachmentsForDeletion:1 inAttributedString:attributedString];
 }
 
-- (void)tableDidInsertColumnID:(id)a3
+- (void)tableDidInsertColumnID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v9 = [v5 textStorageForColumn:v4];
+  dCopy = d;
+  table = [(ICTableAttachmentViewController *)self table];
+  v9 = [table textStorageForColumn:dCopy];
 
   if (!v9)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((storage) != nil)" functionName:"-[ICTableAttachmentViewController tableDidInsertColumnID:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "storage"}];
   }
 
-  v6 = [(ICAttachmentViewController *)self attachment];
-  v7 = [v6 note];
-  v8 = [v9 attributedString];
-  [v7 markBlockAndInlineAttachmentsForDeletion:0 inAttributedString:v8];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  attributedString = [v9 attributedString];
+  [note markBlockAndInlineAttachmentsForDeletion:0 inAttributedString:attributedString];
 }
 
 - (void)showColumnRowButtons
 {
-  v3 = [(ICAttachmentViewController *)self attachment];
-  v4 = [v3 note];
-  v5 = [v4 isEditable];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  isEditable = [note isEditable];
 
-  v6 = [(ICTableAttachmentViewController *)self columnButton];
-  [v6 setHidden:v5 ^ 1u];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton setHidden:isEditable ^ 1u];
 
-  v7 = [(ICTableAttachmentViewController *)self rowButton];
-  [v7 setHidden:v5 ^ 1u];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton setHidden:isEditable ^ 1u];
 }
 
 - (void)hideColumnRowButtons
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v3 unselect];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  [tableSelection unselect];
 
-  v4 = [(ICTableAttachmentViewController *)self columnButton];
-  [v4 setHidden:1];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton setHidden:1];
 
-  v5 = [(ICTableAttachmentViewController *)self rowButton];
-  [v5 setHidden:1];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton setHidden:1];
 
   [(ICTableAttachmentViewController *)self unselectColumnRow];
 }
 
-- (CGRect)selectionFrameFromContentFrame:(CGRect)a3
+- (CGRect)selectionFrameFromContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  v9 = [v8 layer];
-  [v9 borderWidth];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  layer = [selectionHighlightView layer];
+  [layer borderWidth];
   v11 = v10 * -0.5;
 
   v29.origin.x = x;
@@ -3293,8 +3293,8 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
   v13 = v30.origin.y;
   v14 = v30.size.width;
   v15 = v30.size.height;
-  v16 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v16 bounds];
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView bounds];
   v34.origin.x = v17;
   v34.origin.y = v18;
   v34.size.width = v19;
@@ -3323,64 +3323,64 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
 - (void)updateChrome
 {
   v326[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [v3 type];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 type];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  type2 = [tableSelection2 type];
 
-  if ((v6 - 2) >= 2)
+  if ((type2 - 2) >= 2)
   {
-    if (v6 == 4)
+    if (type2 == 4)
     {
-      v62 = [(ICTableAttachmentViewController *)self tableSelection];
-      v63 = [v62 columns];
-      if ([v63 count])
+      tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+      columns = [tableSelection3 columns];
+      if ([columns count])
       {
-        v64 = [(ICTableAttachmentViewController *)self tableSelection];
-        v65 = [v64 rows];
-        v66 = [v65 count];
+        tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+        rows = [tableSelection4 rows];
+        v66 = [rows count];
 
         if (!v66)
         {
           goto LABEL_92;
         }
 
-        v67 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-        v68 = [v67 superview];
+        selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+        superview = [selectionHighlightView superview];
 
-        if (!v68)
+        if (!superview)
         {
-          v69 = [(ICTableAttachmentViewController *)self scrollView];
-          v70 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-          [v69 addSubview:v70];
+          scrollView = [(ICTableAttachmentViewController *)self scrollView];
+          selectionHighlightView2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+          [scrollView addSubview:selectionHighlightView2];
         }
 
-        v71 = [(ICTableAttachmentViewController *)self tableSelection];
-        v72 = [v71 columns];
-        v62 = [v72 firstObject];
+        tableSelection5 = [(ICTableAttachmentViewController *)self tableSelection];
+        columns2 = [tableSelection5 columns];
+        tableSelection3 = [columns2 firstObject];
 
-        v73 = [(ICTableAttachmentViewController *)self tableSelection];
-        v74 = [v73 rows];
-        v63 = [v74 firstObject];
+        tableSelection6 = [(ICTableAttachmentViewController *)self tableSelection];
+        rows2 = [tableSelection6 rows];
+        columns = [rows2 firstObject];
 
-        v75 = [(ICTableAttachmentViewController *)self tableSelection];
-        v76 = [v75 columns];
-        v77 = [v76 lastObject];
+        tableSelection7 = [(ICTableAttachmentViewController *)self tableSelection];
+        columns3 = [tableSelection7 columns];
+        lastObject = [columns3 lastObject];
 
-        v78 = [(ICTableAttachmentViewController *)self tableSelection];
-        v79 = [v78 rows];
-        v80 = [v79 lastObject];
+        tableSelection8 = [(ICTableAttachmentViewController *)self tableSelection];
+        rows3 = [tableSelection8 rows];
+        lastObject2 = [rows3 lastObject];
 
-        v81 = [(ICTableAttachmentViewController *)self textViewManager];
-        [v81 frameOfCellAtColumn:v62 row:v63];
+        textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+        [textViewManager frameOfCellAtColumn:tableSelection3 row:columns];
         v83 = v82;
         v85 = v84;
         v87 = v86;
         v89 = v88;
 
-        v90 = [(ICTableAttachmentViewController *)self textViewManager];
-        [v90 frameOfCellAtColumn:v77 row:v80];
+        textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+        [textViewManager2 frameOfCellAtColumn:lastObject row:lastObject2];
         v92 = v91;
         v94 = v93;
         v96 = v95;
@@ -3401,44 +3401,44 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
         v102 = v101;
         v104 = v103;
         v106 = v105;
-        v107 = [(ICTableAttachmentViewController *)self tableContentView];
-        v108 = [(ICTableAttachmentViewController *)self scrollView];
-        [v107 convertRect:v108 toView:{v100, v102, v104, v106}];
+        tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+        scrollView2 = [(ICTableAttachmentViewController *)self scrollView];
+        [tableContentView convertRect:scrollView2 toView:{v100, v102, v104, v106}];
         v110 = v109;
         v112 = v111;
         v114 = v113;
         v116 = v115;
-        v117 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-        [v117 setFrame:{v110, v112, v114, v116}];
+        selectionHighlightView3 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+        [selectionHighlightView3 setFrame:{v110, v112, v114, v116}];
 
-        v118 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-        v119 = [v118 layer];
-        [v119 setMaskedCorners:15];
+        selectionHighlightView4 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+        layer = [selectionHighlightView4 layer];
+        [layer setMaskedCorners:15];
 
-        v120 = [(ICTableAttachmentViewController *)self startKnob];
-        v121 = [v120 superview];
+        startKnob = [(ICTableAttachmentViewController *)self startKnob];
+        superview2 = [startKnob superview];
 
-        if (!v121)
+        if (!superview2)
         {
-          v122 = [(ICTableAttachmentViewController *)self view];
-          v123 = [(ICTableAttachmentViewController *)self startKnob];
-          [v122 addSubview:v123];
+          view = [(ICTableAttachmentViewController *)self view];
+          startKnob2 = [(ICTableAttachmentViewController *)self startKnob];
+          [view addSubview:startKnob2];
         }
 
-        v124 = [(ICTableAttachmentViewController *)self endKnob];
-        v125 = [v124 superview];
+        endKnob = [(ICTableAttachmentViewController *)self endKnob];
+        superview3 = [endKnob superview];
 
-        if (!v125)
+        if (!superview3)
         {
-          v126 = [(ICTableAttachmentViewController *)self view];
-          v127 = [(ICTableAttachmentViewController *)self endKnob];
-          [v126 addSubview:v127];
+          view2 = [(ICTableAttachmentViewController *)self view];
+          endKnob2 = [(ICTableAttachmentViewController *)self endKnob];
+          [view2 addSubview:endKnob2];
         }
 
         v128 = *MEMORY[0x277D36628];
-        v129 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-        v130 = [v129 layer];
-        [v130 borderWidth];
+        selectionHighlightView5 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+        layer2 = [selectionHighlightView5 layer];
+        [layer2 borderWidth];
         v132 = v131;
 
         if (v132 >= v104)
@@ -3452,9 +3452,9 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
         }
 
         v134 = v133 * 0.5;
-        v135 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-        v136 = [v135 layer];
-        [v136 borderWidth];
+        selectionHighlightView6 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+        layer3 = [selectionHighlightView6 layer];
+        [layer3 borderWidth];
         v138 = v137;
 
         if (v138 >= v106)
@@ -3477,14 +3477,14 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
         y = v333.origin.y;
         width = v333.size.width;
         height = v333.size.height;
-        v145 = [(ICTableAttachmentViewController *)self table];
-        v146 = [v145 isLeftToRight];
+        table = [(ICTableAttachmentViewController *)self table];
+        isLeftToRight = [table isLeftToRight];
 
         v147 = x;
         v148 = y;
         v149 = width;
         v150 = height;
-        if (v146)
+        if (isLeftToRight)
         {
           MinX = CGRectGetMinX(*&v147);
           v334.origin.x = x;
@@ -3521,30 +3521,30 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
         v352.size.height = height;
         v281 = CGRectGetMaxY(v352) - v128;
         v282 = v280 - v128;
-        v283 = [(ICTableAttachmentViewController *)self startKnob];
-        v284 = [v283 superview];
-        v285 = [(ICTableAttachmentViewController *)self tableContentView];
-        [v284 convertRect:v285 fromView:{MinX - v128, MinY - v128, v128 + v128, v128 + v128}];
+        startKnob3 = [(ICTableAttachmentViewController *)self startKnob];
+        superview4 = [startKnob3 superview];
+        tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+        [superview4 convertRect:tableContentView2 fromView:{MinX - v128, MinY - v128, v128 + v128, v128 + v128}];
         v287 = v286;
         v289 = v288;
         v291 = v290;
         v293 = v292;
-        v294 = [(ICTableAttachmentViewController *)self startKnob];
-        [v294 setFrame:{v287, v289, v291, v293}];
+        startKnob4 = [(ICTableAttachmentViewController *)self startKnob];
+        [startKnob4 setFrame:{v287, v289, v291, v293}];
 
-        v295 = [(ICTableAttachmentViewController *)self endKnob];
-        v296 = [v295 superview];
-        v297 = [(ICTableAttachmentViewController *)self tableContentView];
-        [v296 convertRect:v297 fromView:{v282, v281, v128 + v128, v128 + v128}];
+        endKnob3 = [(ICTableAttachmentViewController *)self endKnob];
+        superview5 = [endKnob3 superview];
+        tableContentView3 = [(ICTableAttachmentViewController *)self tableContentView];
+        [superview5 convertRect:tableContentView3 fromView:{v282, v281, v128 + v128, v128 + v128}];
         v299 = v298;
         v301 = v300;
         v303 = v302;
         v305 = v304;
-        v306 = [(ICTableAttachmentViewController *)self endKnob];
-        [v306 setFrame:{v299, v301, v303, v305}];
+        endKnob4 = [(ICTableAttachmentViewController *)self endKnob];
+        [endKnob4 setFrame:{v299, v301, v303, v305}];
 
-        v307 = [(ICTableAttachmentViewController *)self startKnob];
-        [v307 frame];
+        startKnob5 = [(ICTableAttachmentViewController *)self startKnob];
+        [startKnob5 frame];
         MidX = CGRectGetMidX(v353);
         if (MidX < 0.0)
         {
@@ -3553,23 +3553,23 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
 
         else
         {
-          v296 = [(ICTableAttachmentViewController *)self startKnob];
-          [v296 frame];
+          superview5 = [(ICTableAttachmentViewController *)self startKnob];
+          [superview5 frame];
           v309 = CGRectGetMidX(v354);
-          v297 = [(ICTableAttachmentViewController *)self view];
-          [v297 bounds];
+          tableContentView3 = [(ICTableAttachmentViewController *)self view];
+          [tableContentView3 bounds];
           v311 = v309 > v310;
         }
 
-        v312 = [(ICTableAttachmentViewController *)self startKnob];
-        [v312 setHidden:v311];
+        startKnob6 = [(ICTableAttachmentViewController *)self startKnob];
+        [startKnob6 setHidden:v311];
 
         if (MidX >= 0.0)
         {
         }
 
-        v313 = [(ICTableAttachmentViewController *)self endKnob];
-        [v313 frame];
+        endKnob5 = [(ICTableAttachmentViewController *)self endKnob];
+        [endKnob5 frame];
         v314 = CGRectGetMidX(v355);
         if (v314 < 0.0)
         {
@@ -3578,83 +3578,83 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
 
         else
         {
-          v296 = [(ICTableAttachmentViewController *)self endKnob];
-          [v296 frame];
+          superview5 = [(ICTableAttachmentViewController *)self endKnob];
+          [superview5 frame];
           v315 = CGRectGetMidX(v356);
-          v297 = [(ICTableAttachmentViewController *)self view];
-          [v297 bounds];
+          tableContentView3 = [(ICTableAttachmentViewController *)self view];
+          [tableContentView3 bounds];
           v317 = v315 > v316;
         }
 
-        v318 = [(ICTableAttachmentViewController *)self endKnob];
-        [v318 setHidden:v317];
+        endKnob6 = [(ICTableAttachmentViewController *)self endKnob];
+        [endKnob6 setHidden:v317];
 
         if (v314 >= 0.0)
         {
         }
 
-        v319 = [(ICTableAttachmentViewController *)self columnButton];
-        [v319 setHidden:1];
+        columnButton = [(ICTableAttachmentViewController *)self columnButton];
+        [columnButton setHidden:1];
 
-        v320 = [(ICTableAttachmentViewController *)self rowButton];
-        [v320 setHidden:1];
+        rowButton = [(ICTableAttachmentViewController *)self rowButton];
+        [rowButton setHidden:1];
       }
     }
 
     else
     {
-      v189 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-      [v189 removeFromSuperview];
+      selectionHighlightView7 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+      [selectionHighlightView7 removeFromSuperview];
 
-      v190 = [(ICTableAttachmentViewController *)self startKnob];
-      [v190 removeFromSuperview];
+      startKnob7 = [(ICTableAttachmentViewController *)self startKnob];
+      [startKnob7 removeFromSuperview];
 
-      v62 = [(ICTableAttachmentViewController *)self endKnob];
-      [v62 removeFromSuperview];
+      tableSelection3 = [(ICTableAttachmentViewController *)self endKnob];
+      [tableSelection3 removeFromSuperview];
     }
 
     goto LABEL_92;
   }
 
-  v7 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  v8 = [v7 superview];
+  selectionHighlightView8 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  superview6 = [selectionHighlightView8 superview];
 
-  if (!v8)
+  if (!superview6)
   {
-    v9 = [(ICTableAttachmentViewController *)self scrollView];
-    v10 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v9 addSubview:v10];
+    scrollView3 = [(ICTableAttachmentViewController *)self scrollView];
+    selectionHighlightView9 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [scrollView3 addSubview:selectionHighlightView9];
   }
 
-  v11 = [(ICTableAttachmentViewController *)self tableSelection];
-  v12 = [v11 columns];
-  v13 = [v12 firstObject];
+  tableSelection9 = [(ICTableAttachmentViewController *)self tableSelection];
+  columns4 = [tableSelection9 columns];
+  firstObject = [columns4 firstObject];
 
-  v14 = [(ICTableAttachmentViewController *)self tableSelection];
-  v15 = [v14 rows];
-  v16 = [v15 firstObject];
+  tableSelection10 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows4 = [tableSelection10 rows];
+  firstObject2 = [rows4 firstObject];
 
-  v17 = [(ICTableAttachmentViewController *)self tableSelection];
-  v18 = [v17 columns];
-  v19 = [v18 lastObject];
+  tableSelection11 = [(ICTableAttachmentViewController *)self tableSelection];
+  columns5 = [tableSelection11 columns];
+  lastObject3 = [columns5 lastObject];
 
-  v20 = [(ICTableAttachmentViewController *)self tableSelection];
-  v21 = [v20 rows];
-  v22 = [v21 lastObject];
+  tableSelection12 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows5 = [tableSelection12 rows];
+  lastObject4 = [rows5 lastObject];
 
-  v323 = v22;
-  v324 = v16;
-  if (v4 == 2)
+  v323 = lastObject4;
+  v324 = firstObject2;
+  if (type == 2)
   {
-    v23 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v23 frameOfColumn:v13];
+    textViewManager3 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager3 frameOfColumn:firstObject];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
-    v32 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v32 frameOfColumn:v19];
+    textViewManager4 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager4 frameOfColumn:lastObject3];
     v34 = v33;
     v36 = v35;
     v38 = v37;
@@ -3674,35 +3674,35 @@ void __67__ICTableAttachmentViewController_customPasteboardDataForSelection__blo
     v44 = v43;
     v46 = v45;
     v48 = v47;
-    v49 = [(ICTableAttachmentViewController *)self tableContentView];
-    v50 = [(ICTableAttachmentViewController *)self scrollView];
-    [v49 convertRect:v50 toView:{v42, v44, v46, v48}];
+    tableContentView4 = [(ICTableAttachmentViewController *)self tableContentView];
+    scrollView4 = [(ICTableAttachmentViewController *)self scrollView];
+    [tableContentView4 convertRect:scrollView4 toView:{v42, v44, v46, v48}];
     v52 = v51;
     v54 = v53;
     v56 = v55;
     v58 = v57;
-    v59 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v59 setFrame:{v52, v54, v56, v58}];
+    selectionHighlightView10 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView10 setFrame:{v52, v54, v56, v58}];
 
-    v60 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    v61 = [v60 layer];
-    [v61 setMaskedCorners:12];
+    selectionHighlightView11 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    layer4 = [selectionHighlightView11 layer];
+    [layer4 setMaskedCorners:12];
 LABEL_28:
 
     goto LABEL_31;
   }
 
-  if (v4 == 3)
+  if (type == 3)
   {
-    v154 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v154 frameOfRow:v16];
+    textViewManager5 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager5 frameOfRow:firstObject2];
     v156 = v155;
     v158 = v157;
     v160 = v159;
     v162 = v161;
 
-    v163 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v163 frameOfRow:v22];
+    textViewManager6 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager6 frameOfRow:lastObject4];
     v165 = v164;
     v167 = v166;
     v169 = v168;
@@ -3722,18 +3722,18 @@ LABEL_28:
     v44 = v173;
     v46 = v174;
     v48 = v175;
-    v176 = [(ICTableAttachmentViewController *)self tableContentView];
-    v177 = [(ICTableAttachmentViewController *)self scrollView];
-    [v176 convertRect:v177 toView:{v42, v44, v46, v48}];
+    tableContentView5 = [(ICTableAttachmentViewController *)self tableContentView];
+    scrollView5 = [(ICTableAttachmentViewController *)self scrollView];
+    [tableContentView5 convertRect:scrollView5 toView:{v42, v44, v46, v48}];
     v179 = v178;
     v181 = v180;
     v183 = v182;
     v185 = v184;
-    v186 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v186 setFrame:{v179, v181, v183, v185}];
+    selectionHighlightView12 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView12 setFrame:{v179, v181, v183, v185}];
 
-    v60 = [(ICTableAttachmentViewController *)self table];
-    if ([v60 isLeftToRight])
+    selectionHighlightView11 = [(ICTableAttachmentViewController *)self table];
+    if ([selectionHighlightView11 isLeftToRight])
     {
       v187 = 10;
     }
@@ -3743,9 +3743,9 @@ LABEL_28:
       v187 = 5;
     }
 
-    v61 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    v188 = [v61 layer];
-    [v188 setMaskedCorners:v187];
+    layer4 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    v61Layer = [layer4 layer];
+    [v61Layer setMaskedCorners:v187];
 
     goto LABEL_28;
   }
@@ -3755,103 +3755,103 @@ LABEL_28:
   v42 = *MEMORY[0x277CBF3A0];
   v44 = *(MEMORY[0x277CBF3A0] + 8);
 LABEL_31:
-  v191 = [(ICTableAttachmentViewController *)self table];
-  v192 = [(ICTableAttachmentViewController *)self tableSelection];
-  v193 = [v192 columns];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  tableSelection13 = [(ICTableAttachmentViewController *)self tableSelection];
+  columns6 = [tableSelection13 columns];
 
-  if ([v193 count])
+  if ([columns6 count])
   {
     goto LABEL_37;
   }
 
-  v194 = [(ICTableAttachmentViewController *)self columnButton];
-  v195 = [v194 columnOrRowIdentifiers];
-  v196 = [v195 count];
+  columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+  columnOrRowIdentifiers = [columnButton2 columnOrRowIdentifiers];
+  v196 = [columnOrRowIdentifiers count];
 
   if (v196)
   {
-    v197 = [(ICTableAttachmentViewController *)self columnButton];
-    v198 = [v197 columnOrRowIdentifiers];
+    columnButton3 = [(ICTableAttachmentViewController *)self columnButton];
+    columnOrRowIdentifiers2 = [columnButton3 columnOrRowIdentifiers];
 LABEL_36:
-    v199 = v198;
+    v199 = columnOrRowIdentifiers2;
 
-    v193 = v199;
+    columns6 = v199;
     goto LABEL_37;
   }
 
-  if ([v191 columnCount])
+  if ([table2 columnCount])
   {
-    v197 = [v191 identifierForColumnAtIndex:0];
-    v326[0] = v197;
-    v198 = [MEMORY[0x277CBEA60] arrayWithObjects:v326 count:1];
+    columnButton3 = [table2 identifierForColumnAtIndex:0];
+    v326[0] = columnButton3;
+    columnOrRowIdentifiers2 = [MEMORY[0x277CBEA60] arrayWithObjects:v326 count:1];
     goto LABEL_36;
   }
 
-  v193 = 0;
+  columns6 = 0;
 LABEL_37:
-  v200 = [(ICTableAttachmentViewController *)self tableSelection];
-  v201 = [v200 rows];
+  tableSelection14 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows6 = [tableSelection14 rows];
 
-  if ([v201 count])
+  if ([rows6 count])
   {
 LABEL_43:
-    if (v193 && v201)
+    if (columns6 && rows6)
     {
-      [(ICTableAttachmentViewController *)self showButtonsAtColumns:v193 rows:v201];
+      [(ICTableAttachmentViewController *)self showButtonsAtColumns:columns6 rows:rows6];
     }
 
     goto LABEL_46;
   }
 
-  v202 = [(ICTableAttachmentViewController *)self rowButton];
-  v203 = [v202 columnOrRowIdentifiers];
-  v204 = [v203 count];
+  rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers3 = [rowButton2 columnOrRowIdentifiers];
+  v204 = [columnOrRowIdentifiers3 count];
 
   if (v204)
   {
-    v205 = [(ICTableAttachmentViewController *)self rowButton];
-    v206 = [v205 columnOrRowIdentifiers];
+    rowButton3 = [(ICTableAttachmentViewController *)self rowButton];
+    columnOrRowIdentifiers4 = [rowButton3 columnOrRowIdentifiers];
 LABEL_42:
-    v207 = v206;
+    v207 = columnOrRowIdentifiers4;
 
-    v201 = v207;
+    rows6 = v207;
     goto LABEL_43;
   }
 
-  if ([v191 rowCount])
+  if ([table2 rowCount])
   {
-    v205 = [v191 identifierForRowAtIndex:0];
-    v325 = v205;
-    v206 = [MEMORY[0x277CBEA60] arrayWithObjects:&v325 count:1];
+    rowButton3 = [table2 identifierForRowAtIndex:0];
+    v325 = rowButton3;
+    columnOrRowIdentifiers4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v325 count:1];
     goto LABEL_42;
   }
 
-  v201 = 0;
+  rows6 = 0;
 LABEL_46:
-  v208 = [(ICTableAttachmentViewController *)self startKnob];
-  v209 = [v208 superview];
+  startKnob8 = [(ICTableAttachmentViewController *)self startKnob];
+  superview7 = [startKnob8 superview];
 
-  if (!v209)
+  if (!superview7)
   {
-    v210 = [(ICTableAttachmentViewController *)self view];
-    v211 = [(ICTableAttachmentViewController *)self startKnob];
-    [v210 addSubview:v211];
+    view3 = [(ICTableAttachmentViewController *)self view];
+    startKnob9 = [(ICTableAttachmentViewController *)self startKnob];
+    [view3 addSubview:startKnob9];
   }
 
-  v212 = [(ICTableAttachmentViewController *)self endKnob];
-  v213 = [v212 superview];
+  endKnob7 = [(ICTableAttachmentViewController *)self endKnob];
+  superview8 = [endKnob7 superview];
 
-  if (!v213)
+  if (!superview8)
   {
-    v214 = [(ICTableAttachmentViewController *)self view];
-    v215 = [(ICTableAttachmentViewController *)self endKnob];
-    [v214 addSubview:v215];
+    view4 = [(ICTableAttachmentViewController *)self view];
+    endKnob8 = [(ICTableAttachmentViewController *)self endKnob];
+    [view4 addSubview:endKnob8];
   }
 
   v216 = *MEMORY[0x277D36628];
-  v217 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  v218 = [v217 layer];
-  [v218 borderWidth];
+  selectionHighlightView13 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  layer5 = [selectionHighlightView13 layer];
+  [layer5 borderWidth];
   v220 = v219;
 
   if (v220 >= v46)
@@ -3865,9 +3865,9 @@ LABEL_46:
   }
 
   v222 = v221 * 0.5;
-  v223 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  v224 = [v223 layer];
-  [v224 borderWidth];
+  selectionHighlightView14 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  layer6 = [selectionHighlightView14 layer];
+  [layer6 borderWidth];
   v226 = v225;
 
   if (v226 >= v48)
@@ -3890,8 +3890,8 @@ LABEL_46:
   v230 = v339.origin.y;
   v231 = v339.size.width;
   v232 = v339.size.height;
-  v321 = v191;
-  if (v4 == 2)
+  v321 = table2;
+  if (type == 2)
   {
     v233 = CGRectGetMinX(v339) - v216;
     v340.origin.x = v229;
@@ -3909,10 +3909,10 @@ LABEL_46:
     v342.size.width = v231;
     v342.size.height = v232;
     v236 = CGRectGetMidY(v342) - v216;
-    v237 = [(ICTableAttachmentViewController *)self table:v191];
-    v238 = [v237 isLeftToRight];
+    v237 = [(ICTableAttachmentViewController *)self table:table2];
+    isLeftToRight2 = [v237 isLeftToRight];
 
-    if (v238)
+    if (isLeftToRight2)
     {
       v239 = v236;
     }
@@ -3922,7 +3922,7 @@ LABEL_46:
       v239 = v234;
     }
 
-    if (v238)
+    if (isLeftToRight2)
     {
       v240 = v235;
     }
@@ -3932,7 +3932,7 @@ LABEL_46:
       v240 = v233;
     }
 
-    if (!v238)
+    if (!isLeftToRight2)
     {
       v234 = v236;
       v233 = v235;
@@ -3961,33 +3961,33 @@ LABEL_46:
     v239 = CGRectGetMaxY(v345) - v216;
   }
 
-  v242 = v19;
-  v243 = [(ICTableAttachmentViewController *)self startKnob];
-  v244 = [v243 superview];
-  v245 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v244 convertRect:v245 fromView:{v233, v234, v216 + v216, v216 + v216}];
+  v242 = lastObject3;
+  startKnob10 = [(ICTableAttachmentViewController *)self startKnob];
+  superview9 = [startKnob10 superview];
+  tableContentView6 = [(ICTableAttachmentViewController *)self tableContentView];
+  [superview9 convertRect:tableContentView6 fromView:{v233, v234, v216 + v216, v216 + v216}];
   v247 = v246;
   v249 = v248;
   v251 = v250;
   v253 = v252;
-  v254 = [(ICTableAttachmentViewController *)self startKnob];
-  [v254 setFrame:{v247, v249, v251, v253}];
+  startKnob11 = [(ICTableAttachmentViewController *)self startKnob];
+  [startKnob11 setFrame:{v247, v249, v251, v253}];
 
-  v255 = [(ICTableAttachmentViewController *)self endKnob];
-  v256 = [v255 superview];
-  v257 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v256 convertRect:v257 fromView:{v241, v239, v216 + v216, v216 + v216}];
+  endKnob9 = [(ICTableAttachmentViewController *)self endKnob];
+  superview10 = [endKnob9 superview];
+  tableContentView7 = [(ICTableAttachmentViewController *)self tableContentView];
+  [superview10 convertRect:tableContentView7 fromView:{v241, v239, v216 + v216, v216 + v216}];
   v259 = v258;
   v261 = v260;
   v263 = v262;
   v265 = v264;
-  v266 = [(ICTableAttachmentViewController *)self endKnob];
-  [v266 setFrame:{v259, v261, v263, v265}];
+  endKnob10 = [(ICTableAttachmentViewController *)self endKnob];
+  [endKnob10 setFrame:{v259, v261, v263, v265}];
 
-  v267 = [(ICTableAttachmentViewController *)self startKnob];
-  [v267 frame];
+  startKnob12 = [(ICTableAttachmentViewController *)self startKnob];
+  [startKnob12 frame];
   v268 = CGRectGetMidX(v346);
-  v269 = v13;
+  v269 = firstObject;
   if (v268 < 0.0)
   {
     v272 = 1;
@@ -3995,23 +3995,23 @@ LABEL_46:
 
   else
   {
-    v266 = [(ICTableAttachmentViewController *)self startKnob];
-    [v266 frame];
+    endKnob10 = [(ICTableAttachmentViewController *)self startKnob];
+    [endKnob10 frame];
     v270 = CGRectGetMidX(v347);
-    v255 = [(ICTableAttachmentViewController *)self view];
-    [v255 bounds];
+    endKnob9 = [(ICTableAttachmentViewController *)self view];
+    [endKnob9 bounds];
     v272 = v270 > v271;
   }
 
-  v273 = [(ICTableAttachmentViewController *)self startKnob];
-  [v273 setHidden:v272];
+  startKnob13 = [(ICTableAttachmentViewController *)self startKnob];
+  [startKnob13 setHidden:v272];
 
   if (v268 >= 0.0)
   {
   }
 
-  v274 = [(ICTableAttachmentViewController *)self endKnob];
-  [v274 frame];
+  endKnob11 = [(ICTableAttachmentViewController *)self endKnob];
+  [endKnob11 frame];
   v275 = CGRectGetMidX(v348);
   if (v275 < 0.0)
   {
@@ -4020,16 +4020,16 @@ LABEL_46:
 
   else
   {
-    v266 = [(ICTableAttachmentViewController *)self endKnob];
-    [v266 frame];
+    endKnob10 = [(ICTableAttachmentViewController *)self endKnob];
+    [endKnob10 frame];
     v276 = CGRectGetMidX(v349);
-    v255 = [(ICTableAttachmentViewController *)self view];
-    [v255 bounds];
+    endKnob9 = [(ICTableAttachmentViewController *)self view];
+    [endKnob9 bounds];
     v278 = v276 > v277;
   }
 
-  v279 = [(ICTableAttachmentViewController *)self endKnob];
-  [v279 setHidden:v278];
+  endKnob12 = [(ICTableAttachmentViewController *)self endKnob];
+  [endKnob12 setHidden:v278];
 
   if (v275 >= 0.0)
   {
@@ -4041,62 +4041,62 @@ LABEL_92:
 
 - (void)updateButtonFrames
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [v3 columns];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
+  firstObject = [columns firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
-    v139 = v5;
+    firstObject2 = firstObject;
   }
 
   else
   {
-    v7 = [(ICTableAttachmentViewController *)self columnButton];
-    v8 = [v7 columnOrRowIdentifiers];
-    v139 = [v8 firstObject];
+    columnButton = [(ICTableAttachmentViewController *)self columnButton];
+    columnOrRowIdentifiers = [columnButton columnOrRowIdentifiers];
+    firstObject2 = [columnOrRowIdentifiers firstObject];
   }
 
-  v9 = [(ICTableAttachmentViewController *)self tableSelection];
-  v10 = [v9 columns];
-  v11 = [v10 lastObject];
-  v12 = v11;
-  if (v11)
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  columns2 = [tableSelection2 columns];
+  lastObject = [columns2 lastObject];
+  v12 = lastObject;
+  if (lastObject)
   {
-    v13 = v11;
+    lastObject2 = lastObject;
   }
 
   else
   {
-    v14 = [(ICTableAttachmentViewController *)self columnButton];
-    v15 = [v14 columnOrRowIdentifiers];
-    v13 = [v15 lastObject];
+    columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+    columnOrRowIdentifiers2 = [columnButton2 columnOrRowIdentifiers];
+    lastObject2 = [columnOrRowIdentifiers2 lastObject];
   }
 
-  if (v139)
+  if (firstObject2)
   {
-    v16 = [(ICTableAttachmentViewController *)self columnButton];
-    if ([v16 isHidden])
+    columnButton3 = [(ICTableAttachmentViewController *)self columnButton];
+    if ([columnButton3 isHidden])
     {
     }
 
     else
     {
-      v17 = [(ICTableAttachmentViewController *)self textViewManager];
-      v18 = [v17 columnIDs];
-      v19 = [v18 containsObject:v139];
+      textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+      columnIDs = [textViewManager columnIDs];
+      v19 = [columnIDs containsObject:firstObject2];
 
       if (v19)
       {
-        v20 = [(ICTableAttachmentViewController *)self textViewManager];
-        [v20 frameOfColumn:v139];
+        textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+        [textViewManager2 frameOfColumn:firstObject2];
         v22 = v21;
         v24 = v23;
         v26 = v25;
         v28 = v27;
 
-        v29 = [(ICTableAttachmentViewController *)self textViewManager];
-        [v29 frameOfColumn:v13];
+        textViewManager3 = [(ICTableAttachmentViewController *)self textViewManager];
+        [textViewManager3 frameOfColumn:lastObject2];
         v31 = v30;
         v33 = v32;
         v35 = v34;
@@ -4116,89 +4116,89 @@ LABEL_92:
         MinX = CGRectGetMinX(v143);
         v40 = *MEMORY[0x277D365D8];
         v41 = -*MEMORY[0x277D365D8];
-        v42 = [(ICTableAttachmentViewController *)self tableContentView];
-        v43 = [(ICTableAttachmentViewController *)self headerClipView];
-        [v42 convertRect:v43 toView:{MinX, v41, width, v40}];
+        tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+        headerClipView = [(ICTableAttachmentViewController *)self headerClipView];
+        [tableContentView convertRect:headerClipView toView:{MinX, v41, width, v40}];
         v45 = v44;
         v47 = v46;
         v49 = v48;
         v51 = v50;
-        v52 = [(ICTableAttachmentViewController *)self columnButton];
-        [v52 setFrame:{v45, v47, v49, v51}];
+        columnButton4 = [(ICTableAttachmentViewController *)self columnButton];
+        [columnButton4 setFrame:{v45, v47, v49, v51}];
 
         goto LABEL_13;
       }
     }
   }
 
-  v42 = [(ICTableAttachmentViewController *)self headerClipView];
-  [v42 bounds];
+  tableContentView = [(ICTableAttachmentViewController *)self headerClipView];
+  [tableContentView bounds];
   v54 = v53;
-  v43 = [(ICTableAttachmentViewController *)self columnButton];
-  [v43 setFrame:{v54, 0.0, 0.0, 0.0}];
+  headerClipView = [(ICTableAttachmentViewController *)self columnButton];
+  [headerClipView setFrame:{v54, 0.0, 0.0, 0.0}];
 LABEL_13:
 
-  v55 = [(ICTableAttachmentViewController *)self tableSelection];
-  v56 = [v55 rows];
-  v57 = [v56 firstObject];
-  v58 = v57;
-  if (v57)
+  tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection3 rows];
+  firstObject3 = [rows firstObject];
+  v58 = firstObject3;
+  if (firstObject3)
   {
-    v59 = v57;
+    firstObject4 = firstObject3;
   }
 
   else
   {
-    v60 = [(ICTableAttachmentViewController *)self rowButton];
-    v61 = [v60 columnOrRowIdentifiers];
-    v59 = [v61 firstObject];
+    rowButton = [(ICTableAttachmentViewController *)self rowButton];
+    columnOrRowIdentifiers3 = [rowButton columnOrRowIdentifiers];
+    firstObject4 = [columnOrRowIdentifiers3 firstObject];
   }
 
-  v62 = [(ICTableAttachmentViewController *)self tableSelection];
-  v63 = [v62 rows];
-  v64 = [v63 lastObject];
-  v65 = v64;
-  if (v64)
+  tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows2 = [tableSelection4 rows];
+  lastObject3 = [rows2 lastObject];
+  v65 = lastObject3;
+  if (lastObject3)
   {
-    v66 = v64;
+    lastObject4 = lastObject3;
   }
 
   else
   {
-    v67 = [(ICTableAttachmentViewController *)self rowButton];
-    v68 = [v67 columnOrRowIdentifiers];
-    v66 = [v68 lastObject];
+    rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+    columnOrRowIdentifiers4 = [rowButton2 columnOrRowIdentifiers];
+    lastObject4 = [columnOrRowIdentifiers4 lastObject];
   }
 
-  if (!v59)
+  if (!firstObject4)
   {
     goto LABEL_33;
   }
 
-  v69 = [(ICTableAttachmentViewController *)self rowButton];
-  if ([v69 isHidden])
+  rowButton3 = [(ICTableAttachmentViewController *)self rowButton];
+  if ([rowButton3 isHidden])
   {
     goto LABEL_32;
   }
 
-  v70 = [(ICTableAttachmentViewController *)self textViewManager];
-  v71 = [v70 rowIDs];
-  v72 = [v71 containsObject:v59];
+  textViewManager4 = [(ICTableAttachmentViewController *)self textViewManager];
+  rowIDs = [textViewManager4 rowIDs];
+  v72 = [rowIDs containsObject:firstObject4];
 
   if (!v72)
   {
     goto LABEL_33;
   }
 
-  v73 = [(ICTableAttachmentViewController *)self textViewManager];
-  [v73 frameOfRow:v59];
+  textViewManager5 = [(ICTableAttachmentViewController *)self textViewManager];
+  [textViewManager5 frameOfRow:firstObject4];
   v75 = v74;
   v77 = v76;
   v79 = v78;
   v81 = v80;
 
-  v82 = [(ICTableAttachmentViewController *)self textViewManager];
-  [v82 frameOfRow:v66];
+  textViewManager6 = [(ICTableAttachmentViewController *)self textViewManager];
+  [textViewManager6 frameOfRow:lastObject4];
   v84 = v83;
   v86 = v85;
   v88 = v87;
@@ -4218,10 +4218,10 @@ LABEL_13:
   v94 = v93;
   v96 = v95;
   v98 = v97;
-  v99 = [(ICTableAttachmentViewController *)self table];
-  v100 = [v99 isLeftToRight];
+  table = [(ICTableAttachmentViewController *)self table];
+  isLeftToRight = [table isLeftToRight];
 
-  if (!v100)
+  if (!isLeftToRight)
   {
     v149.origin.x = v92;
     v149.origin.y = v94;
@@ -4234,9 +4234,9 @@ LABEL_13:
     v150.size.height = v98;
     MinY = CGRectGetMinY(v150);
     v122 = *MEMORY[0x277D365D8];
-    v123 = [(ICTableAttachmentViewController *)self tableContentView];
-    v124 = [(ICTableAttachmentViewController *)self view];
-    [v123 convertRect:v124 toView:{MaxX, MinY, v122, v98}];
+    tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+    view = [(ICTableAttachmentViewController *)self view];
+    [tableContentView2 convertRect:view toView:{MaxX, MinY, v122, v98}];
     v126 = v125;
     v128 = v127;
     v130 = v129;
@@ -4254,8 +4254,8 @@ LABEL_13:
     v152.size.width = v122;
     v152.size.height = v98;
     v133 = CGRectGetMaxX(v152);
-    v116 = [(ICTableAttachmentViewController *)self rowButton];
-    v69 = v116;
+    rowButton4 = [(ICTableAttachmentViewController *)self rowButton];
+    rowButton3 = rowButton4;
     if (v132 < v133)
     {
       v119 = v135;
@@ -4279,9 +4279,9 @@ LABEL_30:
   v146.size.width = v96;
   v146.size.height = v98;
   v103 = CGRectGetMinY(v146);
-  v104 = [(ICTableAttachmentViewController *)self tableContentView];
-  v105 = [(ICTableAttachmentViewController *)self view];
-  [v104 convertRect:v105 toView:{v102, v103, v101, v98}];
+  tableContentView3 = [(ICTableAttachmentViewController *)self tableContentView];
+  view2 = [(ICTableAttachmentViewController *)self view];
+  [tableContentView3 convertRect:view2 toView:{v102, v103, v101, v98}];
   v107 = v106;
   v109 = v108;
   v111 = v110;
@@ -4299,8 +4299,8 @@ LABEL_30:
   v148.size.width = v101;
   v148.size.height = v98;
   v115 = CGRectGetMinX(v148);
-  v116 = [(ICTableAttachmentViewController *)self rowButton];
-  v69 = v116;
+  rowButton4 = [(ICTableAttachmentViewController *)self rowButton];
+  rowButton3 = rowButton4;
   if (v114 <= v115)
   {
     v117 = v102;
@@ -4315,20 +4315,20 @@ LABEL_30:
 LABEL_27:
   v134 = v113;
 LABEL_31:
-  [v116 setFrame:{v117, v118, v119, v134, *&v135}];
+  [rowButton4 setFrame:{v117, v118, v119, v134, *&v135}];
 LABEL_32:
 
 LABEL_33:
 }
 
-- (void)addColumnLeftOfSelection:(id)a3
+- (void)addColumnLeftOfSelection:(id)selection
 {
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 columns];
-  v8 = [v5 firstObject];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
+  firstObject = [columns firstObject];
 
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [v6 columnIndexForIdentifier:v8];
+  table = [(ICTableAttachmentViewController *)self table];
+  v7 = [table columnIndexForIdentifier:firstObject];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4336,14 +4336,14 @@ LABEL_33:
   }
 }
 
-- (void)addColumnRightOfSelection:(id)a3
+- (void)addColumnRightOfSelection:(id)selection
 {
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 columns];
-  v8 = [v5 lastObject];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
+  lastObject = [columns lastObject];
 
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [v6 columnIndexForIdentifier:v8];
+  table = [(ICTableAttachmentViewController *)self table];
+  v7 = [table columnIndexForIdentifier:lastObject];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4351,45 +4351,45 @@ LABEL_33:
   }
 }
 
-- (void)addColumnBeforeSelection:(id)a3
+- (void)addColumnBeforeSelection:(id)selection
 {
-  v6 = a3;
-  v4 = [(ICTableAttachmentViewController *)self table];
-  v5 = [v4 isLeftToRight];
+  selectionCopy = selection;
+  table = [(ICTableAttachmentViewController *)self table];
+  isLeftToRight = [table isLeftToRight];
 
-  if (v5)
+  if (isLeftToRight)
   {
-    [(ICTableAttachmentViewController *)self addColumnLeftOfSelection:v6];
+    [(ICTableAttachmentViewController *)self addColumnLeftOfSelection:selectionCopy];
   }
 
   else
   {
-    [(ICTableAttachmentViewController *)self addColumnRightOfSelection:v6];
+    [(ICTableAttachmentViewController *)self addColumnRightOfSelection:selectionCopy];
   }
 }
 
-- (void)addColumnAfterSelection:(id)a3
+- (void)addColumnAfterSelection:(id)selection
 {
-  v6 = a3;
-  v4 = [(ICTableAttachmentViewController *)self table];
-  v5 = [v4 isLeftToRight];
+  selectionCopy = selection;
+  table = [(ICTableAttachmentViewController *)self table];
+  isLeftToRight = [table isLeftToRight];
 
-  if (v5)
+  if (isLeftToRight)
   {
-    [(ICTableAttachmentViewController *)self addColumnRightOfSelection:v6];
+    [(ICTableAttachmentViewController *)self addColumnRightOfSelection:selectionCopy];
   }
 
   else
   {
-    [(ICTableAttachmentViewController *)self addColumnLeftOfSelection:v6];
+    [(ICTableAttachmentViewController *)self addColumnLeftOfSelection:selectionCopy];
   }
 }
 
-- (id)insertColumns:(unint64_t)a3 atIndex:(unint64_t)a4
+- (id)insertColumns:(unint64_t)columns atIndex:(unint64_t)index
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = [(ICTableAttachmentViewController *)self table];
-  v8 = [v7 insertColumns:a3 atIndex:a4];
+  table = [(ICTableAttachmentViewController *)self table];
+  v8 = [table insertColumns:columns atIndex:index];
 
   v28 = 0u;
   v29 = 0u;
@@ -4411,19 +4411,19 @@ LABEL_33:
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-        v16 = [v15 columnWidthManager];
+        tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+        columnWidthManager = [tableLayoutManager columnWidthManager];
         v31 = v14;
         v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-        v18 = [v16 invalidateWidthForColumns:v17];
+        v18 = [columnWidthManager invalidateWidthForColumns:v17];
 
-        v19 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-        v20 = [v19 columnWidthManager];
-        [v20 widthOfColumn:v14];
+        tableLayoutManager2 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+        columnWidthManager2 = [tableLayoutManager2 columnWidthManager];
+        [columnWidthManager2 widthOfColumn:v14];
         v22 = v21;
 
-        v23 = [(ICTableAttachmentViewController *)self columnWidthCache];
-        [v23 setDimension:v14 forKey:v22];
+        columnWidthCache = [(ICTableAttachmentViewController *)self columnWidthCache];
+        [columnWidthCache setDimension:v14 forKey:v22];
 
         v30 = v14;
         v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
@@ -4439,32 +4439,32 @@ LABEL_33:
   return v9;
 }
 
-- (void)addColumnAtIndex:(unint64_t)a3
+- (void)addColumnAtIndex:(unint64_t)index
 {
   [(ICTableAttachmentViewController *)self beginEditing];
-  v11 = [(ICTableAttachmentViewController *)self insertColumns:1 atIndex:a3];
-  v5 = [v11 firstObject];
+  v11 = [(ICTableAttachmentViewController *)self insertColumns:1 atIndex:index];
+  firstObject = [v11 firstObject];
   [(ICTableAttachmentViewController *)self redrawAndSave];
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [v6 identifierForRowAtIndex:0];
+  table = [(ICTableAttachmentViewController *)self table];
+  v7 = [table identifierForRowAtIndex:0];
 
-  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v5 andRowID:v7 location:0];
+  [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:firstObject andRowID:v7 location:0];
   [(ICTableAttachmentViewController *)self endEditing];
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 localizedStringForKey:@"ADD_COLUMN_UNDO_STRING" value:@"Add Column" table:@"Localizable"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = [mainBundle localizedStringForKey:@"ADD_COLUMN_UNDO_STRING" value:@"Add Column" table:@"Localizable"];
 
-  v10 = [(ICTableAttachmentViewController *)self undoManager];
-  [v10 setActionName:v9];
+  undoManager = [(ICTableAttachmentViewController *)self undoManager];
+  [undoManager setActionName:v9];
 }
 
-- (void)addRowAboveSelection:(id)a3
+- (void)addRowAboveSelection:(id)selection
 {
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 rows];
-  v8 = [v5 firstObject];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection rows];
+  firstObject = [rows firstObject];
 
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [v6 rowIndexForIdentifier:v8];
+  table = [(ICTableAttachmentViewController *)self table];
+  v7 = [table rowIndexForIdentifier:firstObject];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4472,14 +4472,14 @@ LABEL_33:
   }
 }
 
-- (void)addRowBelowSelection:(id)a3
+- (void)addRowBelowSelection:(id)selection
 {
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 rows];
-  v8 = [v5 lastObject];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection rows];
+  lastObject = [rows lastObject];
 
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [v6 rowIndexForIdentifier:v8];
+  table = [(ICTableAttachmentViewController *)self table];
+  v7 = [table rowIndexForIdentifier:lastObject];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4487,83 +4487,83 @@ LABEL_33:
   }
 }
 
-- (void)addRowAtIndex:(unint64_t)a3
+- (void)addRowAtIndex:(unint64_t)index
 {
   [(ICTableAttachmentViewController *)self willAddRow];
   [(ICTableAttachmentViewController *)self beginEditing];
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v11 = [v5 insertRowAtIndex:a3];
+  table = [(ICTableAttachmentViewController *)self table];
+  v11 = [table insertRowAtIndex:index];
 
   [(ICTableAttachmentViewController *)self redrawAndSave];
   [(ICTableAttachmentViewController *)self postChangeNotification:1 columnOrRowUUIDs:0];
-  v6 = [(ICTableAttachmentViewController *)self table];
-  v7 = [v6 identifierForColumnAtIndex:0];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  v7 = [table2 identifierForColumnAtIndex:0];
 
   [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v7 andRowID:v11 location:0];
   [(ICTableAttachmentViewController *)self endEditing];
-  v8 = [(ICTableAttachmentViewController *)self undoManager];
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:@"Add Row" value:&stru_282757698 table:0];
-  [v8 setActionName:v10];
+  undoManager = [(ICTableAttachmentViewController *)self undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle localizedStringForKey:@"Add Row" value:&stru_282757698 table:0];
+  [undoManager setActionName:v10];
 }
 
-- (void)deleteTable:(id)a3
+- (void)deleteTable:(id)table
 {
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v4 unselect];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  [tableSelection unselect];
 
-  v5 = [(ICAttachmentViewController *)self attachment];
-  v6 = [v5 note];
-  v7 = [(ICAttachmentViewController *)self attachment];
-  v8 = [v6 rangeForAttachment:v7];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  attachment2 = [(ICAttachmentViewController *)self attachment];
+  v8 = [note rangeForAttachment:attachment2];
   v10 = v9;
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v11 setSelectedRange:{v8, 0}];
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView setSelectedRange:{v8, 0}];
 
-    LOBYTE(v11) = ICInternalSettingsIsTextKit2Enabled();
+    LOBYTE(noteTextView) = ICInternalSettingsIsTextKit2Enabled();
     objc_opt_class();
-    if (v11)
+    if (noteTextView)
     {
       objc_opt_class();
-      v12 = [(ICTableAttachmentViewController *)self noteTextView];
-      v13 = [v12 textLayoutManager];
-      v14 = ICDynamicCast();
-      v15 = [v14 textContentStorage];
-      v16 = [v15 textStorage];
+      noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+      textLayoutManager = [noteTextView2 textLayoutManager];
+      textStorage2 = ICDynamicCast();
+      textContentStorage = [textStorage2 textContentStorage];
+      textStorage = [textContentStorage textStorage];
       v20 = ICDynamicCast();
     }
 
     else
     {
-      v12 = [(ICTableAttachmentViewController *)self noteTextView];
-      v13 = [v12 layoutManager];
-      v14 = [v13 textStorage];
+      noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+      textLayoutManager = [noteTextView2 layoutManager];
+      textStorage2 = [textLayoutManager textStorage];
       v20 = ICDynamicCast();
     }
 
     [v20 beginEditing];
     [v20 replaceCharactersInRange:v8 withString:{v10, &stru_282757698}];
     [v20 endEditing];
-    v17 = [(ICTableAttachmentViewController *)self noteTextView];
-    v18 = [v17 delegate];
-    v19 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v18 textViewDidChange:v19];
+    noteTextView3 = [(ICTableAttachmentViewController *)self noteTextView];
+    delegate = [noteTextView3 delegate];
+    noteTextView4 = [(ICTableAttachmentViewController *)self noteTextView];
+    [delegate textViewDidChange:noteTextView4];
   }
 }
 
-- (void)deleteColumns:(id)a3
+- (void)deleteColumns:(id)columns
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v6 = [v5 columnsIntersectingWithColumns:v4];
+  columnsCopy = columns;
+  table = [(ICTableAttachmentViewController *)self table];
+  v6 = [table columnsIntersectingWithColumns:columnsCopy];
 
   v7 = [v6 count];
-  v8 = [v5 columnCount];
-  if (v7 && v7 < v8)
+  columnCount = [table columnCount];
+  if (v7 && v7 < columnCount)
   {
     [(ICTableAttachmentViewController *)self beginEditing];
     v35 = 0u;
@@ -4588,16 +4588,16 @@ LABEL_33:
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
-          v16 = [v5 columnIndexForIdentifier:v15];
-          [v5 removeColumnAtIndex:v16];
+          v16 = [table columnIndexForIdentifier:v15];
+          [table removeColumnAtIndex:v16];
           [(ICTableAttachmentViewController *)self cleanDeletedColumn:v15];
           if (v13 >= v16)
           {
             v13 = v16;
           }
 
-          v17 = [(ICTableAttachmentViewController *)self tableAXController];
-          [v17 invalidateAXElementsForColumnID:v15];
+          tableAXController = [(ICTableAttachmentViewController *)self tableAXController];
+          [tableAXController invalidateAXElementsForColumnID:v15];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -4612,18 +4612,18 @@ LABEL_33:
     }
 
     [(ICTableAttachmentViewController *)self postChangeNotification:3 columnOrRowUUIDs:v9];
-    v18 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-    v19 = [v18 columnWidthManager];
-    v20 = [v19 invalidateWidthForColumns:v9];
+    tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+    columnWidthManager = [tableLayoutManager columnWidthManager];
+    v20 = [columnWidthManager invalidateWidthForColumns:v9];
 
     [(ICTableAttachmentViewController *)self hideColumnRowButtons];
     [(ICTableAttachmentViewController *)self redrawAndSave];
-    if ([v5 columnCount] && objc_msgSend(v5, "rowCount"))
+    if ([table columnCount] && objc_msgSend(table, "rowCount"))
     {
-      v21 = [v5 columnCount];
-      if (v13 >= v21 - 1)
+      columnCount2 = [table columnCount];
+      if (v13 >= columnCount2 - 1)
       {
-        v22 = v21 - 1;
+        v22 = columnCount2 - 1;
       }
 
       else
@@ -4631,49 +4631,49 @@ LABEL_33:
         v22 = v13;
       }
 
-      v23 = [v5 identifierForColumnAtIndex:v22];
-      v24 = [(ICTableAttachmentViewController *)self rowButton];
-      v25 = [v24 columnOrRowIdentifiers];
-      v26 = [v25 firstObject];
+      v23 = [table identifierForColumnAtIndex:v22];
+      rowButton = [(ICTableAttachmentViewController *)self rowButton];
+      columnOrRowIdentifiers = [rowButton columnOrRowIdentifiers];
+      firstObject = [columnOrRowIdentifiers firstObject];
 
-      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v23 andRowID:v26 location:2];
+      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v23 andRowID:firstObject location:2];
     }
 
     [(ICTableAttachmentViewController *)self endEditing];
-    v27 = [(ICTableAttachmentViewController *)self undoManager];
+    undoManager = [(ICTableAttachmentViewController *)self undoManager];
     v28 = MEMORY[0x277CCACA8];
-    v29 = [MEMORY[0x277CCA8D8] mainBundle];
-    v30 = [v29 localizedStringForKey:@"Delete %lu Column" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v30 = [mainBundle localizedStringForKey:@"Delete %lu Column" value:&stru_282757698 table:0];
     v31 = [v28 localizedStringWithFormat:v30, v7];
-    [v27 setActionName:v31];
+    [undoManager setActionName:v31];
 
     v6 = v32;
   }
 
-  else if (v7 == [v5 columnCount])
+  else if (v7 == [table columnCount])
   {
     [(ICTableAttachmentViewController *)self deleteTable:self];
   }
 }
 
-- (void)deleteSelectedColumns:(id)a3
+- (void)deleteSelectedColumns:(id)columns
 {
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 columns];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
 
-  [(ICTableAttachmentViewController *)self deleteColumns:v5];
+  [(ICTableAttachmentViewController *)self deleteColumns:columns];
 }
 
-- (void)deleteRows:(id)a3
+- (void)deleteRows:(id)rows
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v6 = [v5 rowsIntersectingWithRows:v4];
+  rowsCopy = rows;
+  table = [(ICTableAttachmentViewController *)self table];
+  v6 = [table rowsIntersectingWithRows:rowsCopy];
 
   v7 = [v6 count];
-  v8 = [v5 rowCount];
-  if (v7 && v7 < v8)
+  rowCount = [table rowCount];
+  if (v7 && v7 < rowCount)
   {
     [(ICTableAttachmentViewController *)self beginEditing];
     v32 = 0u;
@@ -4698,16 +4698,16 @@ LABEL_33:
           }
 
           v15 = *(*(&v30 + 1) + 8 * i);
-          v16 = [v5 rowIndexForIdentifier:v15];
-          [v5 removeRowAtIndex:v16];
+          v16 = [table rowIndexForIdentifier:v15];
+          [table removeRowAtIndex:v16];
           [(ICTableAttachmentViewController *)self cleanDeletedRow:v15];
           if (v13 >= v16)
           {
             v13 = v16;
           }
 
-          v17 = [(ICTableAttachmentViewController *)self tableAXController];
-          [v17 invalidateAXElementsForRowID:v15];
+          tableAXController = [(ICTableAttachmentViewController *)self tableAXController];
+          [tableAXController invalidateAXElementsForRowID:v15];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -4724,10 +4724,10 @@ LABEL_33:
     [(ICTableAttachmentViewController *)self postChangeNotification:4 columnOrRowUUIDs:v9];
     [(ICTableAttachmentViewController *)self hideColumnRowButtons];
     [(ICTableAttachmentViewController *)self redrawAndSave];
-    v18 = [v5 rowCount];
-    if (v13 >= v18 - 1)
+    rowCount2 = [table rowCount];
+    if (v13 >= rowCount2 - 1)
     {
-      v19 = v18 - 1;
+      v19 = rowCount2 - 1;
     }
 
     else
@@ -4735,56 +4735,56 @@ LABEL_33:
       v19 = v13;
     }
 
-    v20 = [v5 identifierForRowAtIndex:v19];
-    if ([v5 columnCount] && objc_msgSend(v5, "rowCount"))
+    v20 = [table identifierForRowAtIndex:v19];
+    if ([table columnCount] && objc_msgSend(table, "rowCount"))
     {
-      v21 = [(ICTableAttachmentViewController *)self columnButton];
-      v22 = [v21 columnOrRowIdentifiers];
-      v23 = [v22 firstObject];
+      columnButton = [(ICTableAttachmentViewController *)self columnButton];
+      columnOrRowIdentifiers = [columnButton columnOrRowIdentifiers];
+      firstObject = [columnOrRowIdentifiers firstObject];
 
-      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v23 andRowID:v20 location:2];
+      [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:firstObject andRowID:v20 location:2];
     }
 
     [(ICTableAttachmentViewController *)self endEditing];
-    v24 = [(ICTableAttachmentViewController *)self undoManager];
+    undoManager = [(ICTableAttachmentViewController *)self undoManager];
     v25 = MEMORY[0x277CCACA8];
-    v26 = [MEMORY[0x277CCA8D8] mainBundle];
-    v27 = [v26 localizedStringForKey:@"Delete %lu Row" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v27 = [mainBundle localizedStringForKey:@"Delete %lu Row" value:&stru_282757698 table:0];
     v28 = [v25 localizedStringWithFormat:v27, v7];
-    [v24 setActionName:v28];
+    [undoManager setActionName:v28];
 
     v6 = v29;
   }
 
-  else if (v7 == [v5 rowCount])
+  else if (v7 == [table rowCount])
   {
     [(ICTableAttachmentViewController *)self deleteTable:self];
   }
 }
 
-- (void)deleteSelectedRows:(id)a3
+- (void)deleteSelectedRows:(id)rows
 {
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 rows];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection rows];
 
-  [(ICTableAttachmentViewController *)self deleteRows:v5];
+  [(ICTableAttachmentViewController *)self deleteRows:rows];
 }
 
-- (void)cleanDeletedColumn:(id)a3
+- (void)cleanDeletedColumn:(id)column
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self columnWidthCache];
-  [v5 removeDimensionForKey:v4];
+  columnCopy = column;
+  columnWidthCache = [(ICTableAttachmentViewController *)self columnWidthCache];
+  [columnWidthCache removeDimensionForKey:columnCopy];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(ICTableAttachmentViewController *)self cellHeightCache];
-  v7 = [v6 allValues];
+  cellHeightCache = [(ICTableAttachmentViewController *)self cellHeightCache];
+  allValues = [cellHeightCache allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4796,86 +4796,86 @@ LABEL_33:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v15 + 1) + 8 * v11++) removeDimensionForKey:v4];
+        [*(*(&v15 + 1) + 8 * v11++) removeDimensionForKey:columnCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 
-  v12 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-  [v12 removeColumnLayoutManagerForColumn:v4];
+  tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+  [tableLayoutManager removeColumnLayoutManagerForColumn:columnCopy];
 
-  v13 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v13 setVerticalLinePosition:0 forKey:v4];
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView setVerticalLinePosition:0 forKey:columnCopy];
 
-  v14 = [(ICTableAttachmentViewController *)self textViewManager];
-  [v14 removeColumn:v4];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  [textViewManager removeColumn:columnCopy];
 }
 
-- (void)cleanDeletedRow:(id)a3
+- (void)cleanDeletedRow:(id)row
 {
-  v18 = a3;
-  v4 = [(ICTableAttachmentViewController *)self rowHeightCache];
-  [v4 removeDimensionForKey:v18];
+  rowCopy = row;
+  rowHeightCache = [(ICTableAttachmentViewController *)self rowHeightCache];
+  [rowHeightCache removeDimensionForKey:rowCopy];
 
-  v5 = [(ICTableAttachmentViewController *)self cellHeightCache];
-  [v5 removeObjectForKey:v18];
+  cellHeightCache = [(ICTableAttachmentViewController *)self cellHeightCache];
+  [cellHeightCache removeObjectForKey:rowCopy];
 
-  v6 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-  v7 = [v6 rowPositions];
-  [v7 removeObjectForKey:v18];
+  tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+  rowPositions = [tableLayoutManager rowPositions];
+  [rowPositions removeObjectForKey:rowCopy];
 
-  v8 = [(ICTableAttachmentViewController *)self table];
-  v9 = [v8 columnCount];
+  table = [(ICTableAttachmentViewController *)self table];
+  columnCount = [table columnCount];
 
-  if (v9)
+  if (columnCount)
   {
     v10 = 0;
     do
     {
-      v11 = [(ICTableAttachmentViewController *)self table];
-      v12 = [v11 identifierForColumnAtIndex:v10];
+      table2 = [(ICTableAttachmentViewController *)self table];
+      v12 = [table2 identifierForColumnAtIndex:v10];
 
-      v13 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-      v14 = [v13 columnLayoutManagerForColumn:v12];
+      tableLayoutManager2 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+      v14 = [tableLayoutManager2 columnLayoutManagerForColumn:v12];
 
-      [v14 removeRow:v18];
+      [v14 removeRow:rowCopy];
       ++v10;
-      v15 = [(ICTableAttachmentViewController *)self table];
-      v16 = [v15 columnCount];
+      table3 = [(ICTableAttachmentViewController *)self table];
+      columnCount2 = [table3 columnCount];
     }
 
-    while (v10 < v16);
+    while (v10 < columnCount2);
   }
 
-  v17 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v17 setHorizontalLinePosition:0 forKey:v18];
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView setHorizontalLinePosition:0 forKey:rowCopy];
 }
 
-- (void)dragBeganOnColumnOrRow:(BOOL)a3 atLocation:(CGPoint)a4
+- (void)dragBeganOnColumnOrRow:(BOOL)row atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [MEMORY[0x277D35DF8] currentInfo];
-  [(ICTableAttachmentViewController *)self setDraggingAppearance:v8];
+  y = location.y;
+  x = location.x;
+  currentInfo = [MEMORY[0x277D35DF8] currentInfo];
+  [(ICTableAttachmentViewController *)self setDraggingAppearance:currentInfo];
 
-  v9 = [(ICTableAttachmentViewController *)self draggingAppearance];
+  draggingAppearance = [(ICTableAttachmentViewController *)self draggingAppearance];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__ICTableAttachmentViewController_dragBeganOnColumnOrRow_atLocation___block_invoke;
   v10[3] = &unk_2781AE078;
   v10[4] = self;
-  v11 = a3;
+  rowCopy = row;
   *&v10[5] = x;
   *&v10[6] = y;
-  [v9 performAsDefaultAppearance:v10];
+  [draggingAppearance performAsDefaultAppearance:v10];
 }
 
 void __69__ICTableAttachmentViewController_dragBeganOnColumnOrRow_atLocation___block_invoke(uint64_t a1)
@@ -5303,11 +5303,11 @@ void __69__ICTableAttachmentViewController_dragBeganOnColumnOrRow_atLocation___b
   }
 }
 
-- (void)dragMovedOnColumnOrRow:(BOOL)a3 atLocation:(CGPoint)a4
+- (void)dragMovedOnColumnOrRow:(BOOL)row atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(ICTableAttachmentViewController *)self draggingAppearance];
+  y = location.y;
+  x = location.x;
+  draggingAppearance = [(ICTableAttachmentViewController *)self draggingAppearance];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__ICTableAttachmentViewController_dragMovedOnColumnOrRow_atLocation___block_invoke;
@@ -5315,8 +5315,8 @@ void __69__ICTableAttachmentViewController_dragBeganOnColumnOrRow_atLocation___b
   v9[4] = self;
   *&v9[5] = x;
   *&v9[6] = y;
-  v10 = a3;
-  [v8 performAsDefaultAppearance:v9];
+  rowCopy = row;
+  [draggingAppearance performAsDefaultAppearance:v9];
 }
 
 void __69__ICTableAttachmentViewController_dragMovedOnColumnOrRow_atLocation___block_invoke(uint64_t a1)
@@ -7135,15 +7135,15 @@ void __69__ICTableAttachmentViewController_dragMovedOnColumnOrRow_atLocation___b
   }
 }
 
-- (void)dragEndedOnColumnOrRow:(BOOL)a3 atLocation:(CGPoint)a4
+- (void)dragEndedOnColumnOrRow:(BOOL)row atLocation:(CGPoint)location
 {
-  v6 = [(ICTableAttachmentViewController *)self draggingAppearance:a4.x];
+  v6 = [(ICTableAttachmentViewController *)self draggingAppearance:location.x];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__ICTableAttachmentViewController_dragEndedOnColumnOrRow_atLocation___block_invoke;
   v7[3] = &unk_2781ACFF8;
   v7[4] = self;
-  v8 = a3;
+  rowCopy = row;
   [v6 performAsDefaultAppearance:v7];
 
   [(ICTableAttachmentViewController *)self setDraggingAppearance:0];
@@ -7158,42 +7158,42 @@ uint64_t __69__ICTableAttachmentViewController_dragEndedOnColumnOrRow_atLocation
   return [v1 moveCurrentColumnOrRow:v2 toIndex:v3];
 }
 
-- (void)moveCurrentColumnOrRow:(BOOL)a3 toIndex:(unint64_t)a4
+- (void)moveCurrentColumnOrRow:(BOOL)row toIndex:(unint64_t)index
 {
-  v5 = a3;
+  rowCopy = row;
   v137 = *MEMORY[0x277D85DE8];
-  v7 = [(ICTableAttachmentViewController *)self table];
-  if (v5)
+  table = [(ICTableAttachmentViewController *)self table];
+  if (rowCopy)
   {
-    v8 = [(ICTableAttachmentViewController *)self columnButton];
-    v9 = [v8 columnOrRowIdentifiers];
-    v10 = [v9 firstObject];
-    v11 = [v7 columnIndexForIdentifier:v10];
+    columnButton = [(ICTableAttachmentViewController *)self columnButton];
+    columnOrRowIdentifiers = [columnButton columnOrRowIdentifiers];
+    firstObject = [columnOrRowIdentifiers firstObject];
+    v11 = [table columnIndexForIdentifier:firstObject];
   }
 
   else
   {
-    v8 = [(ICTableAttachmentViewController *)self rowButton];
-    v9 = [v8 columnOrRowIdentifiers];
-    v10 = [v9 firstObject];
-    v11 = [v7 rowIndexForIdentifier:v10];
+    columnButton = [(ICTableAttachmentViewController *)self rowButton];
+    columnOrRowIdentifiers = [columnButton columnOrRowIdentifiers];
+    firstObject = [columnOrRowIdentifiers firstObject];
+    v11 = [table rowIndexForIdentifier:firstObject];
   }
 
   v115 = v11;
 
-  v12 = [(ICTableAttachmentViewController *)self textViewManager];
-  [v12 setDraggedColumns:0];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  [textViewManager setDraggedColumns:0];
 
-  v13 = [(ICTableAttachmentViewController *)self textViewManager];
-  [v13 setDraggedRows:0];
+  textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+  [textViewManager2 setDraggedRows:0];
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL || v115 == a4)
+  if (index == 0x7FFFFFFFFFFFFFFFLL || v115 == index)
   {
-    v19 = [(ICTableAttachmentViewController *)self textViewManager];
+    textViewManager3 = [(ICTableAttachmentViewController *)self textViewManager];
     [(ICTableAttachmentViewController *)self viewport];
-    [v19 redrawAllWithViewport:?];
+    [textViewManager3 redrawAllWithViewport:?];
 
-    if (v5)
+    if (rowCopy)
     {
       goto LABEL_9;
     }
@@ -7201,34 +7201,34 @@ uint64_t __69__ICTableAttachmentViewController_dragEndedOnColumnOrRow_atLocation
 
   else
   {
-    v14 = 2 * (v115 < a4);
-    if (v5)
+    v14 = 2 * (v115 < index);
+    if (rowCopy)
     {
-      v15 = [(ICTableAttachmentViewController *)self columnButton];
-      v16 = [v15 columnOrRowIdentifiers];
+      columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+      columnOrRowIdentifiers2 = [columnButton2 columnOrRowIdentifiers];
       v133[0] = MEMORY[0x277D85DD0];
       v133[1] = 3221225472;
       v133[2] = __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___block_invoke;
       v133[3] = &unk_2781AE0C8;
       v133[4] = self;
-      v133[5] = a4;
+      v133[5] = index;
       v133[6] = v115;
-      [v16 enumerateObjectsWithOptions:v14 usingBlock:v133];
+      [columnOrRowIdentifiers2 enumerateObjectsWithOptions:v14 usingBlock:v133];
 
       [(ICTableAttachmentViewController *)self redrawAndSave];
-      v17 = [(ICTableAttachmentViewController *)self columnButton];
-      v18 = [v17 columnOrRowIdentifiers];
-      [(ICTableAttachmentViewController *)self postChangeNotification:5 columnOrRowUUIDs:v18];
+      columnButton3 = [(ICTableAttachmentViewController *)self columnButton];
+      columnOrRowIdentifiers3 = [columnButton3 columnOrRowIdentifiers];
+      [(ICTableAttachmentViewController *)self postChangeNotification:5 columnOrRowUUIDs:columnOrRowIdentifiers3];
 
 LABEL_9:
       v130 = 0u;
       v131 = 0u;
       v128 = 0u;
       v129 = 0u;
-      v20 = [(ICTableAttachmentViewController *)self columnButton];
-      v21 = [v20 columnOrRowIdentifiers];
+      columnButton4 = [(ICTableAttachmentViewController *)self columnButton];
+      columnOrRowIdentifiers4 = [columnButton4 columnOrRowIdentifiers];
 
-      v22 = [v21 countByEnumeratingWithState:&v128 objects:v136 count:16];
+      v22 = [columnOrRowIdentifiers4 countByEnumeratingWithState:&v128 objects:v136 count:16];
       if (v22)
       {
         v23 = v22;
@@ -7239,33 +7239,33 @@ LABEL_9:
           {
             if (*v129 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(columnOrRowIdentifiers4);
             }
 
             [(ICTableAttachmentViewController *)self setHidden:1 forColumn:*(*(&v128 + 1) + 8 * i)];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v128 objects:v136 count:16];
+          v23 = [columnOrRowIdentifiers4 countByEnumeratingWithState:&v128 objects:v136 count:16];
         }
 
         while (v23);
       }
 
-      v26 = [(ICTableAttachmentViewController *)self textViewManager];
-      v27 = [(ICTableAttachmentViewController *)self columnButton];
-      v28 = [v27 columnOrRowIdentifiers];
-      v29 = [v28 firstObject];
-      [v26 frameOfColumn:v29];
+      textViewManager4 = [(ICTableAttachmentViewController *)self textViewManager];
+      columnButton5 = [(ICTableAttachmentViewController *)self columnButton];
+      columnOrRowIdentifiers5 = [columnButton5 columnOrRowIdentifiers];
+      firstObject2 = [columnOrRowIdentifiers5 firstObject];
+      [textViewManager4 frameOfColumn:firstObject2];
       v31 = v30;
       v33 = v32;
       v35 = v34;
       v37 = v36;
 
-      v38 = [(ICTableAttachmentViewController *)self textViewManager];
-      v39 = [(ICTableAttachmentViewController *)self columnButton];
-      v40 = [v39 columnOrRowIdentifiers];
-      v41 = [v40 lastObject];
-      [v38 frameOfColumn:v41];
+      textViewManager5 = [(ICTableAttachmentViewController *)self textViewManager];
+      columnButton6 = [(ICTableAttachmentViewController *)self columnButton];
+      columnOrRowIdentifiers6 = [columnButton6 columnOrRowIdentifiers];
+      lastObject = [columnOrRowIdentifiers6 lastObject];
+      [textViewManager5 frameOfColumn:lastObject];
       v43 = v42;
       v45 = v44;
       v47 = v46;
@@ -7287,31 +7287,31 @@ LABEL_9:
       goto LABEL_36;
     }
 
-    v54 = [(ICTableAttachmentViewController *)self rowButton];
-    v55 = [v54 columnOrRowIdentifiers];
+    rowButton = [(ICTableAttachmentViewController *)self rowButton];
+    columnOrRowIdentifiers7 = [rowButton columnOrRowIdentifiers];
     v132[0] = MEMORY[0x277D85DD0];
     v132[1] = 3221225472;
     v132[2] = __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___block_invoke_2;
     v132[3] = &unk_2781AE0C8;
     v132[4] = self;
-    v132[5] = a4;
+    v132[5] = index;
     v132[6] = v115;
-    [v55 enumerateObjectsWithOptions:v14 usingBlock:v132];
+    [columnOrRowIdentifiers7 enumerateObjectsWithOptions:v14 usingBlock:v132];
 
     [(ICTableAttachmentViewController *)self redrawAndSave];
-    v56 = [(ICTableAttachmentViewController *)self rowButton];
-    v57 = [v56 columnOrRowIdentifiers];
-    [(ICTableAttachmentViewController *)self postChangeNotification:6 columnOrRowUUIDs:v57];
+    rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+    columnOrRowIdentifiers8 = [rowButton2 columnOrRowIdentifiers];
+    [(ICTableAttachmentViewController *)self postChangeNotification:6 columnOrRowUUIDs:columnOrRowIdentifiers8];
   }
 
   v126 = 0u;
   v127 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v58 = [(ICTableAttachmentViewController *)self rowButton];
-  v59 = [v58 columnOrRowIdentifiers];
+  rowButton3 = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers9 = [rowButton3 columnOrRowIdentifiers];
 
-  v60 = [v59 countByEnumeratingWithState:&v124 objects:v135 count:16];
+  v60 = [columnOrRowIdentifiers9 countByEnumeratingWithState:&v124 objects:v135 count:16];
   if (v60)
   {
     v61 = v60;
@@ -7322,33 +7322,33 @@ LABEL_9:
       {
         if (*v125 != v62)
         {
-          objc_enumerationMutation(v59);
+          objc_enumerationMutation(columnOrRowIdentifiers9);
         }
 
         [(ICTableAttachmentViewController *)self setHidden:1 forColumn:*(*(&v124 + 1) + 8 * j)];
       }
 
-      v61 = [v59 countByEnumeratingWithState:&v124 objects:v135 count:16];
+      v61 = [columnOrRowIdentifiers9 countByEnumeratingWithState:&v124 objects:v135 count:16];
     }
 
     while (v61);
   }
 
-  v64 = [(ICTableAttachmentViewController *)self textViewManager];
-  v65 = [(ICTableAttachmentViewController *)self rowButton];
-  v66 = [v65 columnOrRowIdentifiers];
-  v67 = [v66 firstObject];
-  [v64 frameOfRow:v67];
+  textViewManager6 = [(ICTableAttachmentViewController *)self textViewManager];
+  rowButton4 = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers10 = [rowButton4 columnOrRowIdentifiers];
+  firstObject3 = [columnOrRowIdentifiers10 firstObject];
+  [textViewManager6 frameOfRow:firstObject3];
   v69 = v68;
   v71 = v70;
   v73 = v72;
   v75 = v74;
 
-  v76 = [(ICTableAttachmentViewController *)self textViewManager];
-  v77 = [(ICTableAttachmentViewController *)self rowButton];
-  v78 = [v77 columnOrRowIdentifiers];
-  v79 = [v78 lastObject];
-  [v76 frameOfRow:v79];
+  textViewManager7 = [(ICTableAttachmentViewController *)self textViewManager];
+  rowButton5 = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers11 = [rowButton5 columnOrRowIdentifiers];
+  lastObject2 = [columnOrRowIdentifiers11 lastObject];
+  [textViewManager7 frameOfRow:lastObject2];
   v81 = v80;
   v83 = v82;
   v85 = v84;
@@ -7367,25 +7367,25 @@ LABEL_9:
   y = v141.origin.y;
   width = v141.size.width;
   height = v141.size.height;
-  v88 = [(ICTableAttachmentViewController *)self rowButton];
-  v89 = [v88 columnOrRowIdentifiers];
-  v90 = [v89 count] + v115;
-  v91 = [(ICTableAttachmentViewController *)self table];
-  v92 = [v91 rowCount];
+  rowButton6 = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers12 = [rowButton6 columnOrRowIdentifiers];
+  v90 = [columnOrRowIdentifiers12 count] + v115;
+  table2 = [(ICTableAttachmentViewController *)self table];
+  rowCount = [table2 rowCount];
 
-  if (v90 < v92)
+  if (v90 < rowCount)
   {
-    v112 = v5;
-    v113 = a4;
+    v112 = rowCopy;
+    indexCopy = index;
     v122 = 0u;
     v123 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v93 = [(ICTableAttachmentViewController *)self textViewManager];
-    v94 = [v93 columnIDs];
+    textViewManager8 = [(ICTableAttachmentViewController *)self textViewManager];
+    columnIDs = [textViewManager8 columnIDs];
 
-    obj = v94;
-    v95 = [v94 countByEnumeratingWithState:&v120 objects:v134 count:16];
+    obj = columnIDs;
+    v95 = [columnIDs countByEnumeratingWithState:&v120 objects:v134 count:16];
     if (v95)
     {
       v96 = v95;
@@ -7400,24 +7400,24 @@ LABEL_9:
           }
 
           v99 = *(*(&v120 + 1) + 8 * k);
-          v100 = [(ICTableAttachmentViewController *)self textViewManager];
-          v101 = [v100 textViewForColumn:v99];
+          textViewManager9 = [(ICTableAttachmentViewController *)self textViewManager];
+          v101 = [textViewManager9 textViewForColumn:v99];
 
           objc_opt_class();
-          v102 = [v101 textStorage];
+          textStorage = [v101 textStorage];
           v103 = ICDynamicCast();
 
-          v104 = [(ICTableAttachmentViewController *)self table];
-          v105 = [(ICTableAttachmentViewController *)self rowButton];
-          v106 = [v105 columnOrRowIdentifiers];
-          v107 = [v104 identifierForRowAtIndex:{objc_msgSend(v106, "count") + v115}];
+          table3 = [(ICTableAttachmentViewController *)self table];
+          rowButton7 = [(ICTableAttachmentViewController *)self rowButton];
+          columnOrRowIdentifiers13 = [rowButton7 columnOrRowIdentifiers];
+          v107 = [table3 identifierForRowAtIndex:{objc_msgSend(columnOrRowIdentifiers13, "count") + v115}];
 
           v108 = [v103 characterRangeForRowID:v107];
           if (v108 != 0x7FFFFFFFFFFFFFFFLL)
           {
             v109 = v108;
-            v110 = [v101 layoutManager];
-            [v110 invalidateLayoutForCharacterRange:v109 actualCharacterRange:{1, 0}];
+            layoutManager = [v101 layoutManager];
+            [layoutManager invalidateLayoutForCharacterRange:v109 actualCharacterRange:{1, 0}];
           }
         }
 
@@ -7427,13 +7427,13 @@ LABEL_9:
       while (v96);
     }
 
-    a4 = v113;
-    LOBYTE(v5) = v112;
+    index = indexCopy;
+    LOBYTE(rowCopy) = v112;
   }
 
 LABEL_36:
-  v111 = [(ICTableAttachmentViewController *)self tableAutoScroller];
-  [v111 stopAndInvalidate];
+  tableAutoScroller = [(ICTableAttachmentViewController *)self tableAutoScroller];
+  [tableAutoScroller stopAndInvalidate];
 
   [(ICTableAttachmentViewController *)self setTableAutoScroller:0];
   v118[0] = MEMORY[0x277D85DD0];
@@ -7445,15 +7445,15 @@ LABEL_36:
   *&v118[6] = y;
   *&v118[7] = width;
   *&v118[8] = height;
-  v119 = v5;
+  v119 = rowCopy;
   v116[0] = MEMORY[0x277D85DD0];
   v116[1] = 3221225472;
   v116[2] = __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___block_invoke_4;
   v116[3] = &unk_2781AE078;
-  v117 = v5;
+  v117 = rowCopy;
   v116[4] = self;
   v116[5] = v115;
-  v116[6] = a4;
+  v116[6] = index;
   [MEMORY[0x277D75D18] ic_animateWithDuration:v118 animations:v116 completion:0.2];
   [(ICTableAttachmentViewController *)self setLastDraggedOverColumnOrRowIndex:0x7FFFFFFFFFFFFFFFLL];
 }
@@ -7737,16 +7737,16 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
   dispatchMainAfterDelay();
 }
 
-- (void)setHidden:(BOOL)a3 forColumn:(id)a4
+- (void)setHidden:(BOOL)hidden forColumn:(id)column
 {
-  v4 = a3;
-  v27 = a4;
-  v6 = [(ICTableAttachmentViewController *)self textViewManager];
-  v7 = [v6 textViewForColumn:v27];
+  hiddenCopy = hidden;
+  columnCopy = column;
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  v7 = [textViewManager textViewForColumn:columnCopy];
 
-  v4 ^= 1u;
-  [v7 ic_setAlpha:v4];
-  if (v4)
+  hiddenCopy ^= 1u;
+  [v7 ic_setAlpha:hiddenCopy];
+  if (hiddenCopy)
   {
     x = *MEMORY[0x277CBF398];
     y = *(MEMORY[0x277CBF398] + 8);
@@ -7756,15 +7756,15 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
 
   else
   {
-    v8 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v8 frameOfColumn:v27];
+    textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager2 frameOfColumn:columnCopy];
     x = v9;
     y = v11;
     width = v13;
     height = v15;
 
-    v17 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v17 exclusionRect];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [tableContentView exclusionRect];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -7792,25 +7792,25 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
     }
   }
 
-  v26 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v26 setExclusionRect:{x, y, width, height}];
+  tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView2 setExclusionRect:{x, y, width, height}];
 }
 
-- (void)setHidden:(BOOL)a3 forRow:(id)a4
+- (void)setHidden:(BOOL)hidden forRow:(id)row
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v4)
+  rowCopy = row;
+  if (hiddenCopy)
   {
     v55 = 0uLL;
     v56 = 0uLL;
     v53 = 0uLL;
     v54 = 0uLL;
-    v7 = [(ICTableAttachmentViewController *)self textViewManager];
-    v8 = [v7 columnIDs];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+    columnIDs = [textViewManager columnIDs];
 
-    v9 = [v8 countByEnumeratingWithState:&v53 objects:v58 count:16];
+    v9 = [columnIDs countByEnumeratingWithState:&v53 objects:v58 count:16];
     if (v9)
     {
       v10 = v9;
@@ -7821,47 +7821,47 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
         {
           if (*v54 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(columnIDs);
           }
 
           v13 = *(*(&v53 + 1) + 8 * i);
-          v14 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-          v15 = [v14 columnLayoutManagerForColumn:v13];
+          tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+          v15 = [tableLayoutManager columnLayoutManagerForColumn:v13];
 
-          v16 = [v15 hiddenRows];
-          v17 = [v16 mutableCopy];
+          hiddenRows = [v15 hiddenRows];
+          v17 = [hiddenRows mutableCopy];
           v18 = v17;
           if (v17)
           {
-            v19 = v17;
+            array = v17;
           }
 
           else
           {
-            v19 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          v20 = v19;
+          v20 = array;
 
-          [v20 addObject:v6];
+          [v20 addObject:rowCopy];
           [v15 setHiddenRows:v20];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v53 objects:v58 count:16];
+        v10 = [columnIDs countByEnumeratingWithState:&v53 objects:v58 count:16];
       }
 
       while (v10);
     }
 
-    v21 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v21 frameOfRow:v6];
+    textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager2 frameOfRow:rowCopy];
     x = v22;
     y = v24;
     width = v26;
     height = v28;
 
-    v30 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v30 exclusionRect];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [tableContentView exclusionRect];
     v32 = v31;
     v34 = v33;
     v36 = v35;
@@ -7895,10 +7895,10 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
     v52 = 0uLL;
     *(&v49 + 1) = 0;
     v50 = 0uLL;
-    v39 = [(ICTableAttachmentViewController *)self textViewManager];
-    v40 = [v39 columnIDs];
+    textViewManager3 = [(ICTableAttachmentViewController *)self textViewManager];
+    columnIDs2 = [textViewManager3 columnIDs];
 
-    v41 = [v40 countByEnumeratingWithState:&v49 objects:v57 count:16];
+    v41 = [columnIDs2 countByEnumeratingWithState:&v49 objects:v57 count:16];
     if (v41)
     {
       v42 = v41;
@@ -7909,17 +7909,17 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
         {
           if (*v50 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(columnIDs2);
           }
 
           v45 = *(*(&v49 + 1) + 8 * j);
-          v46 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-          v47 = [v46 columnLayoutManagerForColumn:v45];
+          tableLayoutManager2 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+          v47 = [tableLayoutManager2 columnLayoutManagerForColumn:v45];
 
           [v47 setHiddenRows:0];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v49 objects:v57 count:16];
+        v42 = [columnIDs2 countByEnumeratingWithState:&v49 objects:v57 count:16];
       }
 
       while (v42);
@@ -7931,16 +7931,16 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
     height = *(MEMORY[0x277CBF398] + 24);
   }
 
-  v48 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v48 setExclusionRect:{x, y, width, height}];
+  tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView2 setExclusionRect:{x, y, width, height}];
 }
 
-- (void)tableAutoScroller:(id)a3 scrollOffsetDelta:(CGPoint)a4
+- (void)tableAutoScroller:(id)scroller scrollOffsetDelta:(CGPoint)delta
 {
-  y = a4.y;
-  v6 = [a3 scrollDirectionMode];
+  y = delta.y;
+  scrollDirectionMode = [scroller scrollDirectionMode];
   [(ICTableAttachmentViewController *)self currentDragGestureLocation];
-  if (v6 == 1)
+  if (scrollDirectionMode == 1)
   {
     v9 = v7;
   }
@@ -7953,36 +7953,36 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
     v8 = y + v11;
   }
 
-  [(ICTableAttachmentViewController *)self dragMovedOnColumnOrRow:v6 == 1 atLocation:v9, v8];
+  [(ICTableAttachmentViewController *)self dragMovedOnColumnOrRow:scrollDirectionMode == 1 atLocation:v9, v8];
 }
 
-- (void)textRangeDraggedAtLocation:(CGPoint)a3
+- (void)textRangeDraggedAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = [(ICTableAttachmentViewController *)self columnButton];
-  v7 = [v6 columnOrRowIdentifiers];
-  v8 = [v7 firstObject];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  columnOrRowIdentifiers = [columnButton columnOrRowIdentifiers];
+  firstObject = [columnOrRowIdentifiers firstObject];
 
-  v9 = [(ICTableAttachmentViewController *)self rowButton];
-  v10 = [v9 columnOrRowIdentifiers];
-  v11 = [v10 firstObject];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers2 = [rowButton columnOrRowIdentifiers];
+  firstObject2 = [columnOrRowIdentifiers2 firstObject];
 
-  v12 = [(ICTableAttachmentViewController *)self textViewManager];
-  [v12 frameOfCellAtColumn:v8 row:v11];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  [textViewManager frameOfCellAtColumn:firstObject row:firstObject2];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v21 setDraggingText:1];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  [tableSelection setDraggingText:1];
 
-  v22 = [(ICTableAttachmentViewController *)self tableSelection];
-  v23 = [v22 type];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection2 type];
 
-  if (v23 == 1)
+  if (type == 1)
   {
     v37.origin.x = v14;
     v37.origin.y = v16;
@@ -7993,20 +7993,20 @@ void __66__ICTableAttachmentViewController_moveCurrentColumnOrRow_toIndex___bloc
     v35.y = y;
     if (!CGRectContainsPoint(v38, v35))
     {
-      v24 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-      [v24 setTextSelectionHidden:1];
+      currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+      [currentlyEditingTextView setTextSelectionHidden:1];
 
-      v25 = v11;
-      v26 = v8;
-      v27 = [(ICTableAttachmentViewController *)self tableSelection];
+      currentlyEditingTextView2 = firstObject2;
+      v26 = firstObject;
+      tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
       v34[0] = v26;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-      v33 = v25;
+      v33 = currentlyEditingTextView2;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
-      [v27 selectCellRangeAtColumns:v28 rows:v29];
+      [tableSelection3 selectCellRangeAtColumns:v28 rows:v29];
 
       [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:v26];
-      [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:v25];
+      [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:currentlyEditingTextView2];
 LABEL_7:
 
       [(ICTableAttachmentViewController *)self updateChrome];
@@ -8015,10 +8015,10 @@ LABEL_7:
 
   else
   {
-    v30 = [(ICTableAttachmentViewController *)self tableSelection];
-    v31 = [v30 type];
+    tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+    type2 = [tableSelection4 type];
 
-    if (v31 == 4)
+    if (type2 == 4)
     {
       v39.origin.x = v14;
       v39.origin.y = v16;
@@ -8032,11 +8032,11 @@ LABEL_7:
         goto LABEL_9;
       }
 
-      v32 = [(ICTableAttachmentViewController *)self tableSelection];
-      [v32 selectCellAtColumn:v8 row:v11];
+      tableSelection5 = [(ICTableAttachmentViewController *)self tableSelection];
+      [tableSelection5 selectCellAtColumn:firstObject row:firstObject2];
 
-      v25 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-      [v25 setTextSelectionHidden:0];
+      currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+      [currentlyEditingTextView2 setTextSelectionHidden:0];
       goto LABEL_7;
     }
   }
@@ -8046,181 +8046,181 @@ LABEL_9:
 
 - (void)textRangeDragEnded
 {
-  v3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  [v3 setTextSelectionHidden:0];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  [currentlyEditingTextView setTextSelectionHidden:0];
 
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 type];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v5 == 4)
+  if (type == 4)
   {
-    v6 = [(ICTableAttachmentViewController *)self tableSelection];
-    v7 = [v6 columns];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection2 columns];
 
-    v8 = [(ICTableAttachmentViewController *)self tableSelection];
-    v9 = [v8 rows];
+    tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection3 rows];
 
-    v10 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v10 removeFromSuperview];
+    selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView removeFromSuperview];
 
-    v11 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    [(ICTableAttachmentViewController *)self endCellEditingSessionWithTextView:v11];
+    currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    [(ICTableAttachmentViewController *)self endCellEditingSessionWithTextView:currentlyEditingTextView2];
 
-    v12 = [(ICTableAttachmentViewController *)self tableSelection];
-    [v12 selectCellRangeAtColumns:v7 rows:v9];
+    tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+    [tableSelection4 selectCellRangeAtColumns:columns rows:rows];
 
     [(ICTableAttachmentViewController *)self updateChrome];
-    v13 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [(ICTableAttachmentViewController *)self ic_makeFirstResponder:v13];
+    selectionHighlightView2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [(ICTableAttachmentViewController *)self ic_makeFirstResponder:selectionHighlightView2];
   }
 
-  v14 = [(ICTableAttachmentViewController *)self tableSelection];
-  [v14 setDraggingText:0];
+  tableSelection5 = [(ICTableAttachmentViewController *)self tableSelection];
+  [tableSelection5 setDraggingText:0];
 }
 
-- (void)cellRangeDragBeganOnView:(id)a3
+- (void)cellRangeDragBeganOnView:(id)view
 {
-  v37 = a3;
-  v4 = [(ICTableAttachmentViewController *)self startKnob];
-  if (v4 == v37)
+  viewCopy = view;
+  startKnob = [(ICTableAttachmentViewController *)self startKnob];
+  if (startKnob == viewCopy)
   {
   }
 
   else
   {
-    v5 = [(ICTableAttachmentViewController *)self endKnob];
+    endKnob = [(ICTableAttachmentViewController *)self endKnob];
 
-    v6 = v37;
-    if (v5 != v37)
+    v6 = viewCopy;
+    if (endKnob != viewCopy)
     {
       goto LABEL_26;
     }
   }
 
-  v7 = [(ICTableAttachmentViewController *)self tableSelection];
-  v8 = [v7 type];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v8 == 4)
+  if (type == 4)
   {
-    v9 = [(ICTableAttachmentViewController *)self startKnob];
+    startKnob2 = [(ICTableAttachmentViewController *)self startKnob];
 
-    if (v9 == v37)
+    if (startKnob2 == viewCopy)
     {
-      v31 = [(ICTableAttachmentViewController *)self tableSelection];
-      v32 = [v31 columns];
-      v33 = [v32 lastObject];
-      [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:v33];
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      columns = [tableSelection2 columns];
+      lastObject = [columns lastObject];
+      [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:lastObject];
 
-      v14 = [(ICTableAttachmentViewController *)self tableSelection];
-      v15 = [v14 rows];
-      v16 = [v15 lastObject];
+      tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+      rows = [tableSelection3 rows];
+      lastObject2 = [rows lastObject];
     }
 
     else
     {
-      v10 = [(ICTableAttachmentViewController *)self endKnob];
+      endKnob2 = [(ICTableAttachmentViewController *)self endKnob];
 
-      v6 = v37;
-      if (v10 != v37)
+      v6 = viewCopy;
+      if (endKnob2 != viewCopy)
       {
         goto LABEL_26;
       }
 
-      v11 = [(ICTableAttachmentViewController *)self tableSelection];
-      v12 = [v11 columns];
-      v13 = [v12 firstObject];
-      [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:v13];
+      tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+      columns2 = [tableSelection4 columns];
+      firstObject = [columns2 firstObject];
+      [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:firstObject];
 
-      v14 = [(ICTableAttachmentViewController *)self tableSelection];
-      v15 = [v14 rows];
-      v16 = [v15 firstObject];
+      tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+      rows = [tableSelection3 rows];
+      lastObject2 = [rows firstObject];
     }
 
-    v34 = v16;
-    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:v16];
+    v34 = lastObject2;
+    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:lastObject2];
 
     goto LABEL_25;
   }
 
-  v17 = [(ICTableAttachmentViewController *)self tableSelection];
-  v18 = [v17 type];
+  tableSelection5 = [(ICTableAttachmentViewController *)self tableSelection];
+  type2 = [tableSelection5 type];
 
-  if (v18 != 2)
+  if (type2 != 2)
   {
-    v24 = [(ICTableAttachmentViewController *)self tableSelection];
-    v25 = [v24 type];
+    tableSelection6 = [(ICTableAttachmentViewController *)self tableSelection];
+    type3 = [tableSelection6 type];
 
-    v6 = v37;
-    if (v25 != 3)
+    v6 = viewCopy;
+    if (type3 != 3)
     {
       goto LABEL_26;
     }
 
-    v26 = [(ICTableAttachmentViewController *)self startKnob];
+    startKnob3 = [(ICTableAttachmentViewController *)self startKnob];
 
-    if (v26 == v37)
+    if (startKnob3 == viewCopy)
     {
-      v28 = [(ICTableAttachmentViewController *)self tableSelection];
-      v29 = [v28 rows];
-      v30 = [v29 lastObject];
+      tableSelection7 = [(ICTableAttachmentViewController *)self tableSelection];
+      rows2 = [tableSelection7 rows];
+      lastObject3 = [rows2 lastObject];
     }
 
     else
     {
-      v27 = [(ICTableAttachmentViewController *)self endKnob];
+      endKnob3 = [(ICTableAttachmentViewController *)self endKnob];
 
-      if (v27 != v37)
+      if (endKnob3 != viewCopy)
       {
 LABEL_24:
         [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:0];
         goto LABEL_25;
       }
 
-      v28 = [(ICTableAttachmentViewController *)self tableSelection];
-      v29 = [v28 rows];
-      v30 = [v29 firstObject];
+      tableSelection7 = [(ICTableAttachmentViewController *)self tableSelection];
+      rows2 = [tableSelection7 rows];
+      lastObject3 = [rows2 firstObject];
     }
 
-    v36 = v30;
-    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:v30];
+    v36 = lastObject3;
+    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:lastObject3];
 
     goto LABEL_24;
   }
 
-  v19 = [(ICTableAttachmentViewController *)self startKnob];
+  startKnob4 = [(ICTableAttachmentViewController *)self startKnob];
 
-  if (v19 == v37)
+  if (startKnob4 == viewCopy)
   {
-    v21 = [(ICTableAttachmentViewController *)self tableSelection];
-    v22 = [v21 columns];
-    v23 = [v22 lastObject];
+    tableSelection8 = [(ICTableAttachmentViewController *)self tableSelection];
+    columns3 = [tableSelection8 columns];
+    lastObject4 = [columns3 lastObject];
     goto LABEL_20;
   }
 
-  v20 = [(ICTableAttachmentViewController *)self endKnob];
+  endKnob4 = [(ICTableAttachmentViewController *)self endKnob];
 
-  if (v20 == v37)
+  if (endKnob4 == viewCopy)
   {
-    v21 = [(ICTableAttachmentViewController *)self tableSelection];
-    v22 = [v21 columns];
-    v23 = [v22 firstObject];
+    tableSelection8 = [(ICTableAttachmentViewController *)self tableSelection];
+    columns3 = [tableSelection8 columns];
+    lastObject4 = [columns3 firstObject];
 LABEL_20:
-    v35 = v23;
-    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:v23];
+    v35 = lastObject4;
+    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:lastObject4];
   }
 
   [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:0];
 LABEL_25:
-  v6 = v37;
+  v6 = viewCopy;
 LABEL_26:
 }
 
-- (void)cellRangeDraggedAtLocation:(CGPoint)a3
+- (void)cellRangeDraggedAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  v5 = fmax(a3.x, 0.0);
-  v6 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v6 bounds];
+  y = location.y;
+  v5 = fmax(location.x, 0.0);
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView bounds];
   v8 = v7 + -1.0;
 
   if (v5 >= v8)
@@ -8229,8 +8229,8 @@ LABEL_26:
   }
 
   v9 = fmax(y, 0.0);
-  v10 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v10 bounds];
+  tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView2 bounds];
   v12 = v11 + -1.0;
 
   if (v9 >= v12)
@@ -8238,21 +8238,21 @@ LABEL_26:
     v9 = v12;
   }
 
-  v13 = [(ICTableAttachmentViewController *)self textViewManager];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
   v46 = 0;
   v47 = 0;
-  v14 = [v13 cellContainingPoint:&v47 columnID:&v46 rowID:{v5, v9}];
+  v14 = [textViewManager cellContainingPoint:&v47 columnID:&v46 rowID:{v5, v9}];
   v15 = v47;
   v16 = v46;
 
-  v17 = [(ICTableAttachmentViewController *)self table];
+  table = [(ICTableAttachmentViewController *)self table];
   if (v14)
   {
-    v18 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorColumn];
-    if (v18)
+    rangeSelectionAnchorColumn = [(ICTableAttachmentViewController *)self rangeSelectionAnchorColumn];
+    if (rangeSelectionAnchorColumn)
     {
-      v19 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorColumn];
-      v20 = [v17 columnIndexForIdentifier:v19];
+      rangeSelectionAnchorColumn2 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorColumn];
+      v20 = [table columnIndexForIdentifier:rangeSelectionAnchorColumn2];
     }
 
     else
@@ -8260,11 +8260,11 @@ LABEL_26:
       v20 = 0;
     }
 
-    v21 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorRow];
-    if (v21)
+    rangeSelectionAnchorRow = [(ICTableAttachmentViewController *)self rangeSelectionAnchorRow];
+    if (rangeSelectionAnchorRow)
     {
-      v22 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorRow];
-      v23 = [v17 rowIndexForIdentifier:v22];
+      rangeSelectionAnchorRow2 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorRow];
+      v23 = [table rowIndexForIdentifier:rangeSelectionAnchorRow2];
     }
 
     else
@@ -8272,16 +8272,16 @@ LABEL_26:
       v23 = 0;
     }
 
-    v24 = [v17 columnIndexForIdentifier:v15];
-    v25 = [v17 rowIndexForIdentifier:v16];
-    v26 = [(ICTableAttachmentViewController *)self tableSelection];
-    v27 = [v26 type];
+    v24 = [table columnIndexForIdentifier:v15];
+    v25 = [table rowIndexForIdentifier:v16];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    type = [tableSelection type];
 
-    if (v27 == 4)
+    if (type == 4)
     {
       v45 = v15;
-      v28 = [MEMORY[0x277CBEB18] array];
-      v29 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       if (v20 >= v24)
       {
         v30 = v24;
@@ -8299,8 +8299,8 @@ LABEL_26:
 
       do
       {
-        v31 = [v17 identifierForColumnAtIndex:v30];
-        [v28 addObject:v31];
+        v31 = [table identifierForColumnAtIndex:v30];
+        [array addObject:v31];
 
         ++v30;
       }
@@ -8328,27 +8328,27 @@ LABEL_26:
 
       do
       {
-        v34 = [v17 identifierForRowAtIndex:v32];
-        [v29 addObject:v34];
+        v34 = [table identifierForRowAtIndex:v32];
+        [array2 addObject:v34];
 
         ++v32;
       }
 
       while (v32 <= v33);
-      v35 = [(ICTableAttachmentViewController *)self tableSelection];
-      [v35 selectCellRangeAtColumns:v28 rows:v29];
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      [tableSelection2 selectCellRangeAtColumns:array rows:array2];
 
       [(ICTableAttachmentViewController *)self announceCellRangeSelectionChangeForAccessibilityIfNecessary];
       goto LABEL_44;
     }
 
-    v36 = [(ICTableAttachmentViewController *)self tableSelection];
-    v37 = [v36 type];
+    tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+    type2 = [tableSelection3 type];
 
-    if (v37 == 2)
+    if (type2 == 2)
     {
       v45 = v15;
-      v28 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v20 >= v24)
       {
         v38 = v24;
@@ -8366,25 +8366,25 @@ LABEL_26:
 
       do
       {
-        v39 = [v17 identifierForColumnAtIndex:v38];
-        [v28 addObject:v39];
+        v39 = [table identifierForColumnAtIndex:v38];
+        [array addObject:v39];
 
         ++v38;
       }
 
       while (v38 <= v20);
-      v29 = [(ICTableAttachmentViewController *)self tableSelection];
-      [v29 selectColumns:v28];
+      array2 = [(ICTableAttachmentViewController *)self tableSelection];
+      [array2 selectColumns:array];
       goto LABEL_44;
     }
 
-    v40 = [(ICTableAttachmentViewController *)self tableSelection];
-    v41 = [v40 type];
+    tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+    type3 = [tableSelection4 type];
 
-    if (v41 == 3)
+    if (type3 == 3)
     {
       v45 = v15;
-      v28 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v23 >= v25)
       {
         v42 = v25;
@@ -8407,15 +8407,15 @@ LABEL_26:
 
       do
       {
-        v44 = [v17 identifierForRowAtIndex:v42];
-        [v28 addObject:v44];
+        v44 = [table identifierForRowAtIndex:v42];
+        [array addObject:v44];
 
         ++v42;
       }
 
       while (v42 <= v43);
-      v29 = [(ICTableAttachmentViewController *)self tableSelection];
-      [v29 selectRows:v28];
+      array2 = [(ICTableAttachmentViewController *)self tableSelection];
+      [array2 selectRows:array];
 LABEL_44:
 
       v15 = v45;
@@ -8425,21 +8425,21 @@ LABEL_44:
   [(ICTableAttachmentViewController *)self updateChrome];
 }
 
-- (id)namedStylesForCurrentSelectionAndBIUS:(unint64_t *)a3 emphasisColorType:(int64_t *)a4
+- (id)namedStylesForCurrentSelectionAndBIUS:(unint64_t *)s emphasisColorType:(int64_t *)type
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = [(ICTableAttachmentViewController *)self table];
-  v24 = [(ICTableAttachmentViewController *)self tableSelection];
+  table = [(ICTableAttachmentViewController *)self table];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
   v22 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  if ([v24 type] || -[ICTableAttachmentViewController containedInNoteSelection](self, "containedInNoteSelection"))
+  if ([tableSelection type] || -[ICTableAttachmentViewController containedInNoteSelection](self, "containedInNoteSelection"))
   {
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v5 = [v24 columns];
-    v6 = 0;
-    v7 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    columns = [tableSelection columns];
+    indexSet = 0;
+    v7 = [columns countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v7)
     {
       v8 = *v44;
@@ -8449,23 +8449,23 @@ LABEL_44:
         {
           if (*v44 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(columns);
           }
 
           v10 = *(*(&v43 + 1) + 8 * i);
-          if (!v6)
+          if (!indexSet)
           {
-            v6 = [MEMORY[0x277CCAB58] indexSet];
+            indexSet = [MEMORY[0x277CCAB58] indexSet];
           }
 
-          v11 = [v4 columnIndexForIdentifier:v10];
+          v11 = [table columnIndexForIdentifier:v10];
           if (v11 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v6 addIndex:v11];
+            [indexSet addIndex:v11];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v43 objects:v48 count:16];
+        v7 = [columns countByEnumeratingWithState:&v43 objects:v48 count:16];
       }
 
       while (v7);
@@ -8475,9 +8475,9 @@ LABEL_44:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v12 = [v24 rows];
-    v13 = 0;
-    v14 = [v12 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    rows = [tableSelection rows];
+    indexSet2 = 0;
+    v14 = [rows countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v14)
     {
       v15 = *v40;
@@ -8487,23 +8487,23 @@ LABEL_44:
         {
           if (*v40 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(rows);
           }
 
           v17 = *(*(&v39 + 1) + 8 * j);
-          if (!v13)
+          if (!indexSet2)
           {
-            v13 = [MEMORY[0x277CCAB58] indexSet];
+            indexSet2 = [MEMORY[0x277CCAB58] indexSet];
           }
 
-          v18 = [v4 rowIndexForIdentifier:v17];
+          v18 = [table rowIndexForIdentifier:v17];
           if (v18 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v13 addIndex:v18];
+            [indexSet2 addIndex:v18];
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        v14 = [rows countByEnumeratingWithState:&v39 objects:v47 count:16];
       }
 
       while (v14);
@@ -8521,20 +8521,20 @@ LABEL_44:
     v25[1] = 3221225472;
     v25[2] = __91__ICTableAttachmentViewController_namedStylesForCurrentSelectionAndBIUS_emphasisColorType___block_invoke;
     v25[3] = &unk_2781AE118;
-    v26 = v24;
-    v27 = self;
+    v26 = tableSelection;
+    selfCopy = self;
     v28 = v22;
     v29 = &v35;
     v30 = &v31;
-    [v4 enumerateCellObjectsInCellSelectionContainingColumnIndices:v6 rowIndices:v13 copyItems:0 usingBlock:v25];
-    if (a3)
+    [table enumerateCellObjectsInCellSelectionContainingColumnIndices:indexSet rowIndices:indexSet2 copyItems:0 usingBlock:v25];
+    if (s)
     {
-      *a3 = v36[3];
+      *s = v36[3];
     }
 
-    if (a4)
+    if (type)
     {
-      *a4 = v32[3];
+      *type = v32[3];
     }
 
     _Block_object_dispose(&v31, 8);
@@ -8665,30 +8665,30 @@ LABEL_8:
   return 0;
 }
 
-- (void)setSelectionBIUSStyle:(unint64_t)a3 toggleOn:(BOOL)a4 onValue:(id)a5
+- (void)setSelectionBIUSStyle:(unint64_t)style toggleOn:(BOOL)on onValue:(id)value
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(ICTableAttachmentViewController *)self tableSelection];
-  [(ICTableAttachmentViewController *)self setSelectionBIUSStyle:a3 toggleOn:v5 onValue:v8 withSelection:v9];
+  onCopy = on;
+  valueCopy = value;
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  [(ICTableAttachmentViewController *)self setSelectionBIUSStyle:style toggleOn:onCopy onValue:valueCopy withSelection:tableSelection];
 }
 
-- (void)setSelectionBIUSStyle:(unint64_t)a3 toggleOn:(BOOL)a4 onValue:(id)a5 withSelection:(id)a6
+- (void)setSelectionBIUSStyle:(unint64_t)style toggleOn:(BOOL)on onValue:(id)value withSelection:(id)selection
 {
   v50 = *MEMORY[0x277D85DE8];
-  v32 = a5;
-  v8 = a6;
-  v9 = [(ICTableAttachmentViewController *)self table];
+  valueCopy = value;
+  selectionCopy = selection;
+  table = [(ICTableAttachmentViewController *)self table];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v10 = [v8 columns];
-  v11 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  columns = [selectionCopy columns];
+  v11 = [columns countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v11)
   {
     v12 = v11;
-    v13 = 0;
+    indexSet = 0;
     v14 = *v45;
     do
     {
@@ -8696,19 +8696,19 @@ LABEL_8:
       {
         if (*v45 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(columns);
         }
 
         v16 = *(*(&v44 + 1) + 8 * i);
-        if (!v13)
+        if (!indexSet)
         {
-          v13 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v13 addIndex:{objc_msgSend(v9, "columnIndexForIdentifier:", v16)}];
+        [indexSet addIndex:{objc_msgSend(table, "columnIndexForIdentifier:", v16)}];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v12 = [columns countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v12);
@@ -8716,20 +8716,20 @@ LABEL_8:
 
   else
   {
-    v13 = 0;
+    indexSet = 0;
   }
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v31 = v8;
-  v17 = [v8 rows];
-  v18 = [v17 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  v31 = selectionCopy;
+  rows = [selectionCopy rows];
+  v18 = [rows countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v18)
   {
     v19 = v18;
-    v20 = 0;
+    indexSet2 = 0;
     v21 = *v41;
     do
     {
@@ -8737,19 +8737,19 @@ LABEL_8:
       {
         if (*v41 != v21)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(rows);
         }
 
         v23 = *(*(&v40 + 1) + 8 * j);
-        if (!v20)
+        if (!indexSet2)
         {
-          v20 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet2 = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v20 addIndex:{objc_msgSend(v9, "rowIndexForIdentifier:", v23)}];
+        [indexSet2 addIndex:{objc_msgSend(table, "rowIndexForIdentifier:", v23)}];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v19 = [rows countByEnumeratingWithState:&v40 objects:v48 count:16];
     }
 
     while (v19);
@@ -8757,29 +8757,29 @@ LABEL_8:
 
   else
   {
-    v20 = 0;
+    indexSet2 = 0;
   }
 
-  v24 = [(ICTableAttachmentViewController *)self undoTarget];
-  v25 = [(ICTableAttachmentViewController *)self undoManager];
+  undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+  undoManager = [(ICTableAttachmentViewController *)self undoManager];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __88__ICTableAttachmentViewController_setSelectionBIUSStyle_toggleOn_onValue_withSelection___block_invoke;
   v35[3] = &unk_2781AE190;
-  v39 = a4;
+  onCopy = on;
   v35[4] = self;
-  v36 = v32;
+  v36 = valueCopy;
   v37 = v31;
-  v38 = a3;
+  styleCopy = style;
   v26 = v31;
-  v27 = v32;
-  [v9 enumerateTextStoragesForColumnIndexes:v13 rowIndexes:v20 undoTarget:v24 undoManager:v25 usingBlock:v35];
+  v27 = valueCopy;
+  [table enumerateTextStoragesForColumnIndexes:indexSet rowIndexes:indexSet2 undoTarget:undoTarget undoManager:undoManager usingBlock:v35];
 
   [(ICTableAttachmentViewController *)self save];
-  v28 = [(ICTableAttachmentViewController *)self undoManager];
-  v29 = [MEMORY[0x277CCA8D8] mainBundle];
-  v30 = [v29 localizedStringForKey:@"Styling" value:&stru_282757698 table:0];
-  [v28 setActionName:v30];
+  undoManager2 = [(ICTableAttachmentViewController *)self undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v30 = [mainBundle localizedStringForKey:@"Styling" value:&stru_282757698 table:0];
+  [undoManager2 setActionName:v30];
 }
 
 void __88__ICTableAttachmentViewController_setSelectionBIUSStyle_toggleOn_onValue_withSelection___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -8988,35 +8988,35 @@ void __88__ICTableAttachmentViewController_setSelectionBIUSStyle_toggleOn_onValu
   [*(a1 + 32) setAttributes:v7 range:{a3, a4}];
 }
 
-- (void)setSelectionNamedStyle:(unsigned int)a3
+- (void)setSelectionNamedStyle:(unsigned int)style
 {
-  v3 = *&a3;
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v8 = [v5 columns];
+  v3 = *&style;
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
 
-  v6 = [(ICTableAttachmentViewController *)self tableSelection];
-  v7 = [v6 rows];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection2 rows];
 
-  [(ICTableAttachmentViewController *)self setSelectionNamedStyle:v3 withColumns:v8 rows:v7];
+  [(ICTableAttachmentViewController *)self setSelectionNamedStyle:v3 withColumns:columns rows:rows];
 }
 
-- (void)setSelectionNamedStyle:(unsigned int)a3 withColumns:(id)a4 rows:(id)a5
+- (void)setSelectionNamedStyle:(unsigned int)style withColumns:(id)columns rows:(id)rows
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v32 = self;
-  v9 = [(ICTableAttachmentViewController *)self table];
+  columnsCopy = columns;
+  rowsCopy = rows;
+  selfCopy = self;
+  table = [(ICTableAttachmentViewController *)self table];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v7;
+  v10 = columnsCopy;
   v11 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v11)
   {
     v12 = v11;
-    v13 = 0;
+    indexSet = 0;
     v14 = *v41;
     do
     {
@@ -9028,12 +9028,12 @@ void __88__ICTableAttachmentViewController_setSelectionBIUSStyle_toggleOn_onValu
         }
 
         v16 = *(*(&v40 + 1) + 8 * i);
-        if (!v13)
+        if (!indexSet)
         {
-          v13 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v13 addIndex:{objc_msgSend(v9, "columnIndexForIdentifier:", v16)}];
+        [indexSet addIndex:{objc_msgSend(table, "columnIndexForIdentifier:", v16)}];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
@@ -9044,19 +9044,19 @@ void __88__ICTableAttachmentViewController_setSelectionBIUSStyle_toggleOn_onValu
 
   else
   {
-    v13 = 0;
+    indexSet = 0;
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v17 = v8;
+  v17 = rowsCopy;
   v18 = [v17 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v18)
   {
     v19 = v18;
-    v20 = 0;
+    indexSet2 = 0;
     v21 = *v37;
     do
     {
@@ -9068,12 +9068,12 @@ void __88__ICTableAttachmentViewController_setSelectionBIUSStyle_toggleOn_onValu
         }
 
         v23 = *(*(&v36 + 1) + 8 * j);
-        if (!v20)
+        if (!indexSet2)
         {
-          v20 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet2 = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v20 addIndex:{objc_msgSend(v9, "rowIndexForIdentifier:", v23)}];
+        [indexSet2 addIndex:{objc_msgSend(table, "rowIndexForIdentifier:", v23)}];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v36 objects:v44 count:16];
@@ -9084,27 +9084,27 @@ void __88__ICTableAttachmentViewController_setSelectionBIUSStyle_toggleOn_onValu
 
   else
   {
-    v20 = 0;
+    indexSet2 = 0;
   }
 
-  v24 = [MEMORY[0x277D35F98] paragraphStyleNamed:a3];
-  v25 = [(ICTableAttachmentViewController *)v32 undoTarget];
-  v26 = [(ICTableAttachmentViewController *)v32 undoManager];
+  v24 = [MEMORY[0x277D35F98] paragraphStyleNamed:style];
+  undoTarget = [(ICTableAttachmentViewController *)selfCopy undoTarget];
+  undoManager = [(ICTableAttachmentViewController *)selfCopy undoManager];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __75__ICTableAttachmentViewController_setSelectionNamedStyle_withColumns_rows___block_invoke;
   v33[3] = &unk_2781AE1E0;
-  v35 = a3;
-  v33[4] = v32;
+  styleCopy = style;
+  v33[4] = selfCopy;
   v34 = v24;
   v27 = v24;
-  [v9 enumerateTextStoragesForColumnIndexes:v13 rowIndexes:v20 undoTarget:v25 undoManager:v26 usingBlock:v33];
+  [table enumerateTextStoragesForColumnIndexes:indexSet rowIndexes:indexSet2 undoTarget:undoTarget undoManager:undoManager usingBlock:v33];
 
-  [(ICTableAttachmentViewController *)v32 save];
-  v28 = [(ICTableAttachmentViewController *)v32 undoManager];
-  v29 = [MEMORY[0x277CCA8D8] mainBundle];
-  v30 = [v29 localizedStringForKey:@"Styling" value:&stru_282757698 table:0];
-  [v28 setActionName:v30];
+  [(ICTableAttachmentViewController *)selfCopy save];
+  undoManager2 = [(ICTableAttachmentViewController *)selfCopy undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v30 = [mainBundle localizedStringForKey:@"Styling" value:&stru_282757698 table:0];
+  [undoManager2 setActionName:v30];
 }
 
 void __75__ICTableAttachmentViewController_setSelectionNamedStyle_withColumns_rows___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -9168,78 +9168,78 @@ void __75__ICTableAttachmentViewController_setSelectionNamedStyle_withColumns_ro
 
 - (int64_t)textAlignmentForCurrentSelection
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [(ICTableAttachmentViewController *)self table];
-  if ([v3 isRangeOrSpanningSelection] && objc_msgSend(v4, "columnCount") && objc_msgSend(v4, "rowCount"))
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  table = [(ICTableAttachmentViewController *)self table];
+  if ([tableSelection isRangeOrSpanningSelection] && objc_msgSend(table, "columnCount") && objc_msgSend(table, "rowCount"))
   {
-    v5 = [v3 columns];
-    v6 = [v5 firstObject];
-    v7 = v6;
-    if (v6)
+    columns = [tableSelection columns];
+    firstObject = [columns firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = v6;
+      v8 = firstObject;
     }
 
     else
     {
-      v8 = [v4 identifierForColumnAtIndex:0];
+      v8 = [table identifierForColumnAtIndex:0];
     }
 
     v11 = v8;
 
-    v12 = [v3 rows];
-    v13 = [v12 firstObject];
-    v14 = v13;
-    if (v13)
+    rows = [tableSelection rows];
+    firstObject2 = [rows firstObject];
+    v14 = firstObject2;
+    if (firstObject2)
     {
-      v15 = v13;
+      v15 = firstObject2;
     }
 
     else
     {
-      v15 = [v4 identifierForRowAtIndex:0];
+      v15 = [table identifierForRowAtIndex:0];
     }
 
     v16 = v15;
 
-    v17 = [v4 stringForColumnID:v11 rowID:v16];
+    v17 = [table stringForColumnID:v11 rowID:v16];
     if ([v17 length])
     {
       v18 = [v17 attributesAtIndex:0 effectiveRange:0];
       v19 = [v18 objectForKey:*MEMORY[0x277D35DA8]];
-      v9 = [v19 alignment];
+      alignment = [v19 alignment];
     }
 
     else
     {
-      v9 = 0;
+      alignment = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    alignment = 0;
   }
 
-  return v9;
+  return alignment;
 }
 
-- (void)setSelectionAlignment:(int64_t)a3
+- (void)setSelectionAlignment:(int64_t)alignment
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [(ICTableAttachmentViewController *)self table];
+  table = [(ICTableAttachmentViewController *)self table];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 columns];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
 
-  v7 = [v6 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  v7 = [columns countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
-    v9 = 0;
+    indexSet = 0;
     v10 = *v37;
     do
     {
@@ -9247,19 +9247,19 @@ void __75__ICTableAttachmentViewController_setSelectionNamedStyle_withColumns_ro
       {
         if (*v37 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(columns);
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
-        if (!v9)
+        if (!indexSet)
         {
-          v9 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v9 addIndex:{objc_msgSend(v4, "columnIndexForIdentifier:", v12)}];
+        [indexSet addIndex:{objc_msgSend(table, "columnIndexForIdentifier:", v12)}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v8 = [columns countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v8);
@@ -9267,21 +9267,21 @@ void __75__ICTableAttachmentViewController_setSelectionNamedStyle_withColumns_ro
 
   else
   {
-    v9 = 0;
+    indexSet = 0;
   }
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = [(ICTableAttachmentViewController *)self tableSelection];
-  v14 = [v13 rows];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection2 rows];
 
-  v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v15 = [rows countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v15)
   {
     v16 = v15;
-    v17 = 0;
+    indexSet2 = 0;
     v18 = *v33;
     do
     {
@@ -9289,19 +9289,19 @@ void __75__ICTableAttachmentViewController_setSelectionNamedStyle_withColumns_ro
       {
         if (*v33 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(rows);
         }
 
         v20 = *(*(&v32 + 1) + 8 * j);
-        if (!v17)
+        if (!indexSet2)
         {
-          v17 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet2 = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v17 addIndex:{objc_msgSend(v4, "rowIndexForIdentifier:", v20)}];
+        [indexSet2 addIndex:{objc_msgSend(table, "rowIndexForIdentifier:", v20)}];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v16 = [rows countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v16);
@@ -9309,26 +9309,26 @@ void __75__ICTableAttachmentViewController_setSelectionNamedStyle_withColumns_ro
 
   else
   {
-    v17 = 0;
+    indexSet2 = 0;
   }
 
-  v21 = [(ICTableAttachmentViewController *)self undoTarget];
-  v22 = [(ICTableAttachmentViewController *)self undoManager];
+  undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+  undoManager = [(ICTableAttachmentViewController *)self undoManager];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __57__ICTableAttachmentViewController_setSelectionAlignment___block_invoke;
   v28[3] = &unk_2781AE230;
-  v29 = v4;
-  v30 = self;
-  v31 = a3;
-  v23 = v4;
-  [v23 enumerateTextStoragesForColumnIndexes:v9 rowIndexes:v17 undoTarget:v21 undoManager:v22 usingBlock:v28];
+  v29 = table;
+  selfCopy = self;
+  alignmentCopy = alignment;
+  v23 = table;
+  [v23 enumerateTextStoragesForColumnIndexes:indexSet rowIndexes:indexSet2 undoTarget:undoTarget undoManager:undoManager usingBlock:v28];
 
   [(ICTableAttachmentViewController *)self save];
-  v24 = [(ICTableAttachmentViewController *)self undoManager];
-  v25 = [MEMORY[0x277CCA8D8] mainBundle];
-  v26 = [v25 localizedStringForKey:@"Format" value:&stru_282757698 table:0];
-  [v24 setActionName:v26];
+  undoManager2 = [(ICTableAttachmentViewController *)self undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v26 = [mainBundle localizedStringForKey:@"Format" value:&stru_282757698 table:0];
+  [undoManager2 setActionName:v26];
 }
 
 void __57__ICTableAttachmentViewController_setSelectionAlignment___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -9389,69 +9389,69 @@ void __57__ICTableAttachmentViewController_setSelectionAlignment___block_invoke_
 
 - (int64_t)textDirectionForCurrentSelection
 {
-  v3 = [MEMORY[0x277D74248] defaultWritingDirectionForLanguage:0];
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [(ICTableAttachmentViewController *)self table];
-  if ([v4 isRangeOrSpanningSelection] && objc_msgSend(v5, "columnCount") && objc_msgSend(v5, "rowCount"))
+  writingDirection = [MEMORY[0x277D74248] defaultWritingDirectionForLanguage:0];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  table = [(ICTableAttachmentViewController *)self table];
+  if ([tableSelection isRangeOrSpanningSelection] && objc_msgSend(table, "columnCount") && objc_msgSend(table, "rowCount"))
   {
-    v6 = [v4 columns];
-    v7 = [v6 firstObject];
-    v8 = v7;
-    if (v7)
+    columns = [tableSelection columns];
+    firstObject = [columns firstObject];
+    v8 = firstObject;
+    if (firstObject)
     {
-      v9 = v7;
+      v9 = firstObject;
     }
 
     else
     {
-      v9 = [v5 identifierForColumnAtIndex:0];
+      v9 = [table identifierForColumnAtIndex:0];
     }
 
     v10 = v9;
 
-    v11 = [v4 rows];
-    v12 = [v11 firstObject];
-    v13 = v12;
-    if (v12)
+    rows = [tableSelection rows];
+    firstObject2 = [rows firstObject];
+    v13 = firstObject2;
+    if (firstObject2)
     {
-      v14 = v12;
+      v14 = firstObject2;
     }
 
     else
     {
-      v14 = [v5 identifierForRowAtIndex:0];
+      v14 = [table identifierForRowAtIndex:0];
     }
 
     v15 = v14;
 
-    v16 = [v5 stringForColumnID:v10 rowID:v15];
+    v16 = [table stringForColumnID:v10 rowID:v15];
     if ([v16 length])
     {
       v17 = [v16 attributesAtIndex:0 effectiveRange:0];
       v18 = [v17 objectForKey:*MEMORY[0x277D35DA8]];
-      v3 = [v18 writingDirection];
+      writingDirection = [v18 writingDirection];
     }
   }
 
-  return v3;
+  return writingDirection;
 }
 
-- (void)setSelectionDirection:(int64_t)a3
+- (void)setSelectionDirection:(int64_t)direction
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = [(ICTableAttachmentViewController *)self table];
+  table = [(ICTableAttachmentViewController *)self table];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 columns];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
 
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v7 = [columns countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
-    v9 = 0;
+    indexSet = 0;
     v10 = *v30;
     do
     {
@@ -9459,19 +9459,19 @@ void __57__ICTableAttachmentViewController_setSelectionAlignment___block_invoke_
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(columns);
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        if (!v9)
+        if (!indexSet)
         {
-          v9 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v9 addIndex:{objc_msgSend(v4, "columnIndexForIdentifier:", v12)}];
+        [indexSet addIndex:{objc_msgSend(table, "columnIndexForIdentifier:", v12)}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [columns countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v8);
@@ -9479,21 +9479,21 @@ void __57__ICTableAttachmentViewController_setSelectionAlignment___block_invoke_
 
   else
   {
-    v9 = 0;
+    indexSet = 0;
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [(ICTableAttachmentViewController *)self tableSelection];
-  v14 = [v13 rows];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection2 rows];
 
-  v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v15 = [rows countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v15)
   {
     v16 = v15;
-    v17 = 0;
+    indexSet2 = 0;
     v18 = *v26;
     do
     {
@@ -9501,19 +9501,19 @@ void __57__ICTableAttachmentViewController_setSelectionAlignment___block_invoke_
       {
         if (*v26 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(rows);
         }
 
         v20 = *(*(&v25 + 1) + 8 * j);
-        if (!v17)
+        if (!indexSet2)
         {
-          v17 = [MEMORY[0x277CCAB58] indexSet];
+          indexSet2 = [MEMORY[0x277CCAB58] indexSet];
         }
 
-        [v17 addIndex:{objc_msgSend(v4, "rowIndexForIdentifier:", v20)}];
+        [indexSet2 addIndex:{objc_msgSend(table, "rowIndexForIdentifier:", v20)}];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v16 = [rows countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v16);
@@ -9521,33 +9521,33 @@ void __57__ICTableAttachmentViewController_setSelectionAlignment___block_invoke_
 
   else
   {
-    v17 = 0;
+    indexSet2 = 0;
   }
 
-  [(ICTableAttachmentViewController *)self updateTableCellsWithDirection:a3 columnIndexes:v9 rowIndexes:v17];
+  [(ICTableAttachmentViewController *)self updateTableCellsWithDirection:direction columnIndexes:indexSet rowIndexes:indexSet2];
   [(ICTableAttachmentViewController *)self save];
-  v21 = [(ICTableAttachmentViewController *)self undoManager];
-  v22 = [MEMORY[0x277CCA8D8] mainBundle];
-  v23 = [v22 localizedStringForKey:@"Format" value:&stru_282757698 table:0];
-  [v21 setActionName:v23];
+  undoManager = [(ICTableAttachmentViewController *)self undoManager];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v23 = [mainBundle localizedStringForKey:@"Format" value:&stru_282757698 table:0];
+  [undoManager setActionName:v23];
 }
 
-- (void)updateTableCellsWithDirection:(int64_t)a3 columnIndexes:(id)a4 rowIndexes:(id)a5
+- (void)updateTableCellsWithDirection:(int64_t)direction columnIndexes:(id)indexes rowIndexes:(id)rowIndexes
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ICTableAttachmentViewController *)self table];
-  v11 = [(ICTableAttachmentViewController *)self undoTarget];
-  v12 = [(ICTableAttachmentViewController *)self undoManager];
+  rowIndexesCopy = rowIndexes;
+  indexesCopy = indexes;
+  table = [(ICTableAttachmentViewController *)self table];
+  undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+  undoManager = [(ICTableAttachmentViewController *)self undoManager];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __90__ICTableAttachmentViewController_updateTableCellsWithDirection_columnIndexes_rowIndexes___block_invoke;
   v14[3] = &unk_2781AE230;
-  v15 = v10;
-  v16 = self;
-  v17 = a3;
-  v13 = v10;
-  [v13 enumerateTextStoragesForColumnIndexes:v9 rowIndexes:v8 undoTarget:v11 undoManager:v12 usingBlock:v14];
+  v15 = table;
+  selfCopy = self;
+  directionCopy = direction;
+  v13 = table;
+  [v13 enumerateTextStoragesForColumnIndexes:indexesCopy rowIndexes:rowIndexesCopy undoTarget:undoTarget undoManager:undoManager usingBlock:v14];
 }
 
 void __90__ICTableAttachmentViewController_updateTableCellsWithDirection_columnIndexes_rowIndexes___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -9607,70 +9607,70 @@ void __90__ICTableAttachmentViewController_updateTableCellsWithDirection_columnI
   [*(a1 + 32) setAttributes:v9 range:{a3, a4}];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v4 = a3;
-  v5 = [(ICAbstractAttachmentViewController *)self highlightColor];
-  v6 = [v4 isEqual:v5];
+  colorCopy = color;
+  highlightColor = [(ICAbstractAttachmentViewController *)self highlightColor];
+  v6 = [colorCopy isEqual:highlightColor];
 
   if ((v6 & 1) == 0)
   {
     v9.receiver = self;
     v9.super_class = ICTableAttachmentViewController;
-    [(ICAbstractAttachmentViewController *)&v9 setHighlightColor:v4];
-    v7 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v7 setHighlightColor:v4];
+    [(ICAbstractAttachmentViewController *)&v9 setHighlightColor:colorCopy];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [tableContentView setHighlightColor:colorCopy];
 
-    v8 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v8 ic_setNeedsLayout];
+    tableContentView2 = [(ICTableAttachmentViewController *)self tableContentView];
+    [tableContentView2 ic_setNeedsLayout];
   }
 }
 
-- (void)setHighlightPatternRegexFinder:(id)a3
+- (void)setHighlightPatternRegexFinder:(id)finder
 {
   v6.receiver = self;
   v6.super_class = ICTableAttachmentViewController;
-  v4 = a3;
-  [(ICAbstractAttachmentViewController *)&v6 setHighlightPatternRegexFinder:v4];
+  finderCopy = finder;
+  [(ICAbstractAttachmentViewController *)&v6 setHighlightPatternRegexFinder:finderCopy];
   v5 = [(ICTableAttachmentViewController *)self tableLayoutManager:v6.receiver];
-  [v5 setHighlightPatternRegexFinder:v4];
+  [v5 setHighlightPatternRegexFinder:finderCopy];
 }
 
-- (void)setupTableTextView:(id)a3
+- (void)setupTableTextView:(id)view
 {
-  v25 = a3;
-  [(ICTableAttachmentViewController *)self makeDelegateOfTextView:v25];
-  [v25 setCellDelegate:self];
-  [v25 setSelectionDelegate:self];
+  viewCopy = view;
+  [(ICTableAttachmentViewController *)self makeDelegateOfTextView:viewCopy];
+  [viewCopy setCellDelegate:self];
+  [viewCopy setSelectionDelegate:self];
   objc_opt_class();
-  v4 = [v25 textStorage];
+  textStorage = [viewCopy textStorage];
   v5 = ICDynamicCast();
 
-  v6 = [(ICAttachmentViewController *)self attachment];
-  v7 = [v6 note];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
 
-  v8 = [v7 textStorage];
-  v9 = [v8 undoManager];
-  [v5 setUndoManager:v9];
+  textStorage2 = [note textStorage];
+  undoManager = [textStorage2 undoManager];
+  [v5 setUndoManager:undoManager];
 
-  v10 = [(ICTableAttachmentViewController *)self undoTarget];
-  [v5 setOverrideUndoTarget:v10];
+  undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+  [v5 setOverrideUndoTarget:undoTarget];
 
   [v5 setUndoHelper:self];
   objc_opt_class();
-  v11 = [v5 styler];
+  styler = [v5 styler];
   v12 = ICCheckedDynamicCast();
 
-  v13 = [(ICAttachmentViewController *)self attachment];
-  v14 = [v13 note];
-  [v12 setNote:v14];
+  attachment2 = [(ICAttachmentViewController *)self attachment];
+  note2 = [attachment2 note];
+  [v12 setNote:note2];
 
-  [(ICTableAttachmentViewController *)self setTypingAttributesForTextView:v25];
+  [(ICTableAttachmentViewController *)self setTypingAttributesForTextView:viewCopy];
   objc_opt_class();
-  v15 = [(ICAttachmentViewController *)self attachment];
-  v16 = [v15 note];
-  v17 = [v16 textStorage];
-  v18 = [v17 styler];
+  attachment3 = [(ICAttachmentViewController *)self attachment];
+  note3 = [attachment3 note];
+  textStorage3 = [note3 textStorage];
+  styler2 = [textStorage3 styler];
   v19 = ICCheckedDynamicCast();
 
   if (!v19)
@@ -9679,85 +9679,85 @@ void __90__ICTableAttachmentViewController_updateTableCellsWithDirection_columnI
   }
 
   objc_opt_class();
-  v20 = [v25 columnTextStorage];
-  v21 = [v20 styler];
+  columnTextStorage = [viewCopy columnTextStorage];
+  styler3 = [columnTextStorage styler];
   v22 = ICCheckedDynamicCast();
 
-  v23 = [v19 authorHighlightsController];
-  [v22 setAuthorHighlightsController:v23];
+  authorHighlightsController = [v19 authorHighlightsController];
+  [v22 setAuthorHighlightsController:authorHighlightsController];
 
-  v24 = [v19 zoomController];
-  [v22 setZoomController:v24];
+  zoomController = [v19 zoomController];
+  [v22 setZoomController:zoomController];
 }
 
-- (BOOL)allowsNewTextLength:(unint64_t)a3
+- (BOOL)allowsNewTextLength:(unint64_t)length
 {
-  v4 = [(ICAttachmentViewController *)self attachment];
-  v5 = [v4 note];
-  LOBYTE(a3) = [v5 allowsNewTextLength:a3];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  LOBYTE(length) = [note allowsNewTextLength:length];
 
-  return a3;
+  return length;
 }
 
-- (void)selectionWillBecomeFirstResponder:(id)a3
+- (void)selectionWillBecomeFirstResponder:(id)responder
 {
-  v5 = a3;
+  responderCopy = responder;
   if (![(ICTableAttachmentViewController *)self lockSelection])
   {
-    v4 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
-    [v4 setAuxiliaryResponder:v5];
+    auxiliaryTextViewHost = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
+    [auxiliaryTextViewHost setAuxiliaryResponder:responderCopy];
   }
 }
 
-- (void)selectionDidResignFirstResponder:(id)a3
+- (void)selectionDidResignFirstResponder:(id)responder
 {
-  v7 = a3;
+  responderCopy = responder;
   if (![(ICTableAttachmentViewController *)self lockSelection])
   {
     [(ICTableAttachmentViewController *)self hideColumnRowButtons];
-    v4 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
-    v5 = [v4 auxiliaryResponder];
+    auxiliaryTextViewHost = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
+    auxiliaryResponder = [auxiliaryTextViewHost auxiliaryResponder];
 
-    if (v5 == v7)
+    if (auxiliaryResponder == responderCopy)
     {
-      v6 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
-      [v6 setAuxiliaryResponder:0];
+      auxiliaryTextViewHost2 = [(ICTableAttachmentViewController *)self auxiliaryTextViewHost];
+      [auxiliaryTextViewHost2 setAuxiliaryResponder:0];
     }
   }
 }
 
-- (void)deleteSelection:(id)a3
+- (void)deleteSelection:(id)selection
 {
-  v15 = a3;
-  v4 = [(ICTableAttachmentViewController *)self table];
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 rows];
-  v7 = [v4 rowsIntersectingWithRows:v6];
+  selectionCopy = selection;
+  table = [(ICTableAttachmentViewController *)self table];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection rows];
+  v7 = [table rowsIntersectingWithRows:rows];
 
-  v8 = [v5 columns];
-  v9 = [v4 columnsIntersectingWithColumns:v8];
+  columns = [tableSelection columns];
+  v9 = [table columnsIntersectingWithColumns:columns];
 
-  if ([v5 type] != 4)
+  if ([tableSelection type] != 4)
   {
-    if ([v5 type] == 2)
+    if ([tableSelection type] == 2)
     {
-      if ([v4 isEmptyAtColumnIdentifiers:v9 rowIdentifiers:0])
+      if ([table isEmptyAtColumnIdentifiers:v9 rowIdentifiers:0])
       {
-        [(ICTableAttachmentViewController *)self deleteSelectedColumns:v15];
+        [(ICTableAttachmentViewController *)self deleteSelectedColumns:selectionCopy];
         goto LABEL_14;
       }
     }
 
     else
     {
-      if ([v5 type] != 3)
+      if ([tableSelection type] != 3)
       {
         goto LABEL_14;
       }
 
-      if ([v4 isEmptyAtColumnIdentifiers:0 rowIdentifiers:v7])
+      if ([table isEmptyAtColumnIdentifiers:0 rowIdentifiers:v7])
       {
-        [(ICTableAttachmentViewController *)self deleteSelectedRows:v15];
+        [(ICTableAttachmentViewController *)self deleteSelectedRows:selectionCopy];
         goto LABEL_14;
       }
     }
@@ -9766,18 +9766,18 @@ void __90__ICTableAttachmentViewController_updateTableCellsWithDirection_columnI
   }
 
   v10 = [v7 count];
-  v11 = [v4 rowCount];
+  rowCount = [table rowCount];
   v12 = [v9 count];
-  v13 = [v4 columnCount];
-  v14 = v13;
-  if (v10 != v11 && v12 != v13 || ![v4 isEmptyAtColumnIdentifiers:v9 rowIdentifiers:v7])
+  columnCount = [table columnCount];
+  v14 = columnCount;
+  if (v10 != rowCount && v12 != columnCount || ![table isEmptyAtColumnIdentifiers:v9 rowIdentifiers:v7])
   {
 LABEL_13:
     [(ICTableAttachmentViewController *)self deleteSelectionCellContents];
     goto LABEL_14;
   }
 
-  if (v10 == v11)
+  if (v10 == rowCount)
   {
     [(ICTableAttachmentViewController *)self deleteColumns:v9];
   }
@@ -9790,60 +9790,60 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)cutSelection:(id)a3
+- (void)cutSelection:(id)selection
 {
   [(ICTableAttachmentViewController *)self copySelection:self];
 
   [(ICTableAttachmentViewController *)self deleteSelectionCellContents];
 }
 
-- (void)pasteIntoSelection:(id)a3
+- (void)pasteIntoSelection:(id)selection
 {
-  v39 = [(ICTableAttachmentViewController *)self tableSelection];
-  if ([v39 type] == 1)
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if ([tableSelection type] == 1)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"ICTableAttachmentSelectionTypeCell != tableSelection.type" functionName:"-[ICTableAttachmentViewController pasteIntoSelection:]" simulateCrash:1 showAlert:0 format:@"Not expecting a call to -pasteIntoSelection: when editing a cell."];
   }
 
-  v4 = [(ICTableAttachmentViewController *)self icTableFromPasteboard];
-  if (!v4)
+  icTableFromPasteboard = [(ICTableAttachmentViewController *)self icTableFromPasteboard];
+  if (!icTableFromPasteboard)
   {
-    v5 = [(ICTableAttachmentViewController *)self soloPlainTextStringFromPasteboard];
-    if (!v5)
+    soloPlainTextStringFromPasteboard = [(ICTableAttachmentViewController *)self soloPlainTextStringFromPasteboard];
+    if (!soloPlainTextStringFromPasteboard)
     {
       goto LABEL_31;
     }
 
-    v6 = v5;
+    v6 = soloPlainTextStringFromPasteboard;
     v7 = objc_alloc(MEMORY[0x277D35FD0]);
-    v8 = [(ICTableAttachmentViewController *)self table];
-    v9 = [v8 document];
-    v10 = [v9 replica];
-    if (v10)
+    table = [(ICTableAttachmentViewController *)self table];
+    document = [table document];
+    replica = [document replica];
+    if (replica)
     {
-      v11 = [v7 initWithData:0 replicaID:v10];
+      v11 = [v7 initWithData:0 replicaID:replica];
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCAD78] UUID];
-      v11 = [v7 initWithData:0 replicaID:v12];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      v11 = [v7 initWithData:0 replicaID:uUID];
     }
 
-    v4 = [v11 table];
-    v13 = [v4 insertRowAtIndex:0];
-    v14 = [v4 insertColumnAtIndex:0];
+    icTableFromPasteboard = [v11 table];
+    v13 = [icTableFromPasteboard insertRowAtIndex:0];
+    v14 = [icTableFromPasteboard insertColumnAtIndex:0];
     v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v6];
-    [v4 setAttributedString:v15 columnIndex:0 rowIndex:0];
+    [icTableFromPasteboard setAttributedString:v15 columnIndex:0 rowIndex:0];
   }
 
-  v16 = [(ICTableAttachmentViewController *)self table];
-  v17 = [v39 columns];
-  if ([v17 count])
+  table2 = [(ICTableAttachmentViewController *)self table];
+  columns = [tableSelection columns];
+  if ([columns count])
   {
-    v18 = [v39 columns];
-    v19 = [v18 objectAtIndexedSubscript:0];
-    v20 = [v16 columnIndexForIdentifier:v19];
+    columns2 = [tableSelection columns];
+    v19 = [columns2 objectAtIndexedSubscript:0];
+    v20 = [table2 columnIndexForIdentifier:v19];
   }
 
   else
@@ -9851,12 +9851,12 @@ LABEL_14:
     v20 = 0;
   }
 
-  v21 = [v39 rows];
-  if ([v21 count])
+  rows = [tableSelection rows];
+  if ([rows count])
   {
-    v22 = [v39 rows];
-    v23 = [v22 objectAtIndexedSubscript:0];
-    v24 = [v16 rowIndexForIdentifier:v23];
+    rows2 = [tableSelection rows];
+    v23 = [rows2 objectAtIndexedSubscript:0];
+    v24 = [table2 rowIndexForIdentifier:v23];
   }
 
   else
@@ -9866,27 +9866,27 @@ LABEL_14:
 
   v37 = v24;
 
-  v25 = [v4 columnCount];
-  v26 = [v4 rowCount];
-  v27 = [v39 columns];
-  v28 = [v27 count];
-  if (!v28)
+  columnCount = [icTableFromPasteboard columnCount];
+  rowCount = [icTableFromPasteboard rowCount];
+  columns3 = [tableSelection columns];
+  columnCount2 = [columns3 count];
+  if (!columnCount2)
   {
-    v28 = [v16 columnCount];
+    columnCount2 = [table2 columnCount];
   }
 
   v29 = v20;
 
-  v30 = [v39 rows];
-  v31 = [v30 count];
-  if (!v31)
+  rows3 = [tableSelection rows];
+  rowCount2 = [rows3 count];
+  if (!rowCount2)
   {
-    v31 = [v16 rowCount];
+    rowCount2 = [table2 rowCount];
   }
 
-  if (v25 >= v28)
+  if (columnCount >= columnCount2)
   {
-    v32 = v25 - v28;
+    v32 = columnCount - columnCount2;
   }
 
   else
@@ -9894,17 +9894,17 @@ LABEL_14:
     v32 = 0;
   }
 
-  v33 = [(ICTableAttachmentViewController *)self table];
+  table3 = [(ICTableAttachmentViewController *)self table];
 
-  if (v16 != v33)
+  if (table2 != table3)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"destinationTable == self.table" functionName:"-[ICTableAttachmentViewController pasteIntoSelection:]" simulateCrash:1 showAlert:0 format:@"destination table should be self.table"];
   }
 
-  v34 = [(ICTableAttachmentViewController *)self insertColumns:v32 atIndex:v28 + v29];
-  if (v26 >= v31)
+  v34 = [(ICTableAttachmentViewController *)self insertColumns:v32 atIndex:columnCount2 + v29];
+  if (rowCount >= rowCount2)
   {
-    v35 = v26 - v31;
+    v35 = rowCount - rowCount2;
   }
 
   else
@@ -9912,14 +9912,14 @@ LABEL_14:
     v35 = 0;
   }
 
-  v36 = [v16 insertRows:v35 atIndex:v31 + v38];
-  if (v25 > v28 || v26 > v31)
+  v36 = [table2 insertRows:v35 atIndex:rowCount2 + v38];
+  if (columnCount > columnCount2 || rowCount > rowCount2)
   {
     [(ICTableAttachmentViewController *)self postChangeNotification:2 columnOrRowUUIDs:0];
     [(ICTableAttachmentViewController *)self redrawAndSave];
   }
 
-  [(ICTableAttachmentViewController *)self pasteTable:v4 atColumnIndex:v29 rowIndex:v38 shouldSetSelectionToPastedRange:1];
+  [(ICTableAttachmentViewController *)self pasteTable:icTableFromPasteboard atColumnIndex:v29 rowIndex:v38 shouldSetSelectionToPastedRange:1];
 
 LABEL_31:
 }
@@ -9927,17 +9927,17 @@ LABEL_31:
 - (void)deleteSelectionCellContents
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = [(ICTableAttachmentViewController *)self table];
-  v4 = [MEMORY[0x277CCAB58] indexSet];
-  v5 = [MEMORY[0x277CCAB58] indexSet];
+  table = [(ICTableAttachmentViewController *)self table];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = [(ICTableAttachmentViewController *)self tableSelection];
-  v7 = [v6 columns];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
 
-  v8 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v8 = [columns countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v8)
   {
     v9 = v8;
@@ -9948,13 +9948,13 @@ LABEL_31:
       {
         if (*v39 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(columns);
         }
 
-        [v4 addIndex:{objc_msgSend(v3, "columnIndexForIdentifier:", *(*(&v38 + 1) + 8 * i))}];
+        [indexSet addIndex:{objc_msgSend(table, "columnIndexForIdentifier:", *(*(&v38 + 1) + 8 * i))}];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v9 = [columns countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v9);
@@ -9964,10 +9964,10 @@ LABEL_31:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v12 = [(ICTableAttachmentViewController *)self tableSelection];
-  v13 = [v12 rows];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection2 rows];
 
-  v14 = [v13 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v14 = [rows countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v14)
   {
     v15 = v14;
@@ -9978,68 +9978,68 @@ LABEL_31:
       {
         if (*v35 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(rows);
         }
 
-        [v5 addIndex:{objc_msgSend(v3, "rowIndexForIdentifier:", *(*(&v34 + 1) + 8 * j))}];
+        [indexSet2 addIndex:{objc_msgSend(table, "rowIndexForIdentifier:", *(*(&v34 + 1) + 8 * j))}];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v15 = [rows countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v15);
   }
 
-  v18 = [(ICTableAttachmentViewController *)self tableSelection];
-  v19 = [v18 type];
+  tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection3 type];
 
-  if (v19 == 2)
+  if (type == 2)
   {
-    v20 = [(ICTableAttachmentViewController *)self table];
-    v21 = [v20 rowCount];
+    table2 = [(ICTableAttachmentViewController *)self table];
+    rowCount = [table2 rowCount];
 
-    if (v21)
+    if (rowCount)
     {
       v22 = 0;
       do
       {
-        [v5 addIndex:v22++];
-        v23 = [(ICTableAttachmentViewController *)self table];
-        v24 = [v23 rowCount];
+        [indexSet2 addIndex:v22++];
+        table3 = [(ICTableAttachmentViewController *)self table];
+        rowCount2 = [table3 rowCount];
       }
 
-      while (v22 < v24);
+      while (v22 < rowCount2);
     }
   }
 
   else
   {
-    v25 = [(ICTableAttachmentViewController *)self tableSelection];
-    v26 = [v25 type];
+    tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+    type2 = [tableSelection4 type];
 
-    if (v26 == 3)
+    if (type2 == 3)
     {
-      v27 = [(ICTableAttachmentViewController *)self table];
-      v28 = [v27 columnCount];
+      table4 = [(ICTableAttachmentViewController *)self table];
+      columnCount = [table4 columnCount];
 
-      if (v28)
+      if (columnCount)
       {
         v29 = 0;
         do
         {
-          [v4 addIndex:v29++];
-          v30 = [(ICTableAttachmentViewController *)self table];
-          v31 = [v30 columnCount];
+          [indexSet addIndex:v29++];
+          table5 = [(ICTableAttachmentViewController *)self table];
+          columnCount2 = [table5 columnCount];
         }
 
-        while (v29 < v31);
+        while (v29 < columnCount2);
       }
     }
   }
 
-  v32 = [(ICTableAttachmentViewController *)self undoTarget];
-  v33 = [(ICTableAttachmentViewController *)self undoManager];
-  [v3 enumerateTextStoragesForColumnIndexes:v4 rowIndexes:v5 undoTarget:v32 undoManager:v33 usingBlock:&__block_literal_global_218];
+  undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+  undoManager = [(ICTableAttachmentViewController *)self undoManager];
+  [table enumerateTextStoragesForColumnIndexes:indexSet rowIndexes:indexSet2 undoTarget:undoTarget undoManager:undoManager usingBlock:&__block_literal_global_218];
 
   [(ICTableAttachmentViewController *)self save];
 }
@@ -10050,58 +10050,58 @@ void __62__ICTableAttachmentViewController_deleteSelectionCellContents__block_in
   [v2 replaceCharactersInRange:0 withString:{objc_msgSend(v2, "length"), &stru_282757698}];
 }
 
-- (void)pasteTable:(id)a3 atColumnIndex:(unint64_t)a4 rowIndex:(unint64_t)a5 shouldSetSelectionToPastedRange:(BOOL)a6
+- (void)pasteTable:(id)table atColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex shouldSetSelectionToPastedRange:(BOOL)range
 {
-  v6 = a6;
-  v10 = a3;
-  if (v10)
+  rangeCopy = range;
+  tableCopy = table;
+  if (tableCopy)
   {
     [(ICTableAttachmentViewController *)self beginEditing];
     [(ICTableAttachmentViewController *)self table];
-    v11 = v27 = v6;
-    v12 = [v10 columnCount];
-    v13 = [v10 rowCount];
-    v25 = v12;
-    v14 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{a4, v12}];
-    v26 = v13;
-    v15 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{a5, v13}];
-    v16 = [(ICTableAttachmentViewController *)self undoTarget];
-    v17 = [(ICTableAttachmentViewController *)self undoManager];
+    v11 = v27 = rangeCopy;
+    columnCount = [tableCopy columnCount];
+    rowCount = [tableCopy rowCount];
+    v25 = columnCount;
+    v14 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{index, columnCount}];
+    v26 = rowCount;
+    v15 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{rowIndex, rowCount}];
+    undoTarget = [(ICTableAttachmentViewController *)self undoTarget];
+    undoManager = [(ICTableAttachmentViewController *)self undoManager];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __101__ICTableAttachmentViewController_pasteTable_atColumnIndex_rowIndex_shouldSetSelectionToPastedRange___block_invoke;
     v28[3] = &unk_2781AE278;
-    v31 = a4;
-    v32 = a5;
-    v29 = v10;
-    v30 = self;
-    [v11 enumerateTextStoragesForColumnIndexes:v14 rowIndexes:v15 undoTarget:v16 undoManager:v17 usingBlock:v28];
+    indexCopy = index;
+    rowIndexCopy = rowIndex;
+    v29 = tableCopy;
+    selfCopy = self;
+    [v11 enumerateTextStoragesForColumnIndexes:v14 rowIndexes:v15 undoTarget:undoTarget undoManager:undoManager usingBlock:v28];
 
     [(ICTableAttachmentViewController *)self endEditing];
-    v18 = [(ICTableAttachmentViewController *)self undoManager];
-    v19 = [MEMORY[0x277CCA8D8] mainBundle];
-    v20 = [v19 localizedStringForKey:@"Paste" value:&stru_282757698 table:0];
-    [v18 setActionName:v20];
+    undoManager2 = [(ICTableAttachmentViewController *)self undoManager];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v20 = [mainBundle localizedStringForKey:@"Paste" value:&stru_282757698 table:0];
+    [undoManager2 setActionName:v20];
 
     if (v27)
     {
       v21 = [v11 identifiersForColumnIndexes:v14];
       v22 = [v11 identifiersForRowIndexes:v15];
-      v23 = [(ICTableAttachmentViewController *)self tableSelection];
-      [v23 selectCellRangeAtColumns:v21 rows:v22];
+      tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+      [tableSelection selectCellRangeAtColumns:v21 rows:v22];
 
       [(ICTableAttachmentViewController *)self updateChrome];
     }
 
     else
     {
-      v21 = [v11 identifierForColumnAtIndex:a4 + v25 - 1];
-      v22 = [v11 identifierForRowAtIndex:a5 + v26 - 1];
+      v21 = [v11 identifierForColumnAtIndex:index + v25 - 1];
+      v22 = [v11 identifierForRowAtIndex:rowIndex + v26 - 1];
       [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v21 andRowID:v22 location:2];
     }
 
-    v24 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v24 updateAuthorHighlights];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager updateAuthorHighlights];
 
     [(ICTableAttachmentViewController *)self save];
   }
@@ -10132,174 +10132,174 @@ void __101__ICTableAttachmentViewController_pasteTable_atColumnIndex_rowIndex_sh
   [v8 setIsReadingSelectionFromPasteboard:0];
 }
 
-- (void)extendCellRangeSelectionInDirection:(unint64_t)a3 toEnd:(BOOL)a4
+- (void)extendCellRangeSelectionInDirection:(unint64_t)direction toEnd:(BOOL)end
 {
-  v4 = a4;
+  endCopy = end;
   v114[1] = *MEMORY[0x277D85DE8];
-  v7 = [(ICTableAttachmentViewController *)self tableSelection];
-  v8 = [v7 copy];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  v8 = [tableSelection copy];
 
   if ([v8 type] != 4)
   {
-    v9 = [(ICTableAttachmentViewController *)self tableSelection];
-    v10 = [v9 columns];
-    v11 = [v10 firstObject];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection2 columns];
+    firstObject = [columns firstObject];
 
-    v12 = [(ICTableAttachmentViewController *)self tableSelection];
-    v13 = [v12 rows];
-    v14 = [v13 firstObject];
+    tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection3 rows];
+    firstObject2 = [rows firstObject];
 
-    if (!v11 || !v14)
+    if (!firstObject || !firstObject2)
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICTableAttachmentViewController extendCellRangeSelectionInDirection:toEnd:]" simulateCrash:1 showAlert:0 format:@"We tried to extend an invalid selection"];
 
       goto LABEL_54;
     }
 
-    v15 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v15 removeFromSuperview];
+    selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView removeFromSuperview];
 
-    v16 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    [(ICTableAttachmentViewController *)self endCellEditingSessionWithTextView:v16];
+    currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    [(ICTableAttachmentViewController *)self endCellEditingSessionWithTextView:currentlyEditingTextView];
 
-    v17 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    [v17 setTextSelectionHidden:1];
+    currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    [currentlyEditingTextView2 setTextSelectionHidden:1];
 
-    v18 = [(ICTableAttachmentViewController *)self tableSelection];
-    v114[0] = v11;
+    tableSelection4 = [(ICTableAttachmentViewController *)self tableSelection];
+    v114[0] = firstObject;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v114 count:1];
-    v113 = v14;
+    v113 = firstObject2;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v113 count:1];
-    [v18 selectCellRangeAtColumns:v19 rows:v20];
+    [tableSelection4 selectCellRangeAtColumns:v19 rows:v20];
   }
 
-  v21 = [v8 columns];
-  v22 = [v21 count];
+  columns2 = [v8 columns];
+  v22 = [columns2 count];
 
   if (v22 == 1)
   {
-    v23 = [v8 columns];
-    v24 = [v23 firstObject];
-    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:v24];
+    columns3 = [v8 columns];
+    firstObject3 = [columns3 firstObject];
+    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorColumn:firstObject3];
   }
 
-  v25 = [v8 rows];
-  v26 = [v25 count];
+  rows2 = [v8 rows];
+  v26 = [rows2 count];
 
   if (v26 == 1)
   {
-    v27 = [v8 rows];
-    v28 = [v27 firstObject];
-    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:v28];
+    rows3 = [v8 rows];
+    firstObject4 = [rows3 firstObject];
+    [(ICTableAttachmentViewController *)self setRangeSelectionAnchorRow:firstObject4];
   }
 
-  v29 = [(ICTableAttachmentViewController *)self table];
-  v30 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorColumn];
-  v31 = [v29 columnIndexForIdentifier:v30];
+  table = [(ICTableAttachmentViewController *)self table];
+  rangeSelectionAnchorColumn = [(ICTableAttachmentViewController *)self rangeSelectionAnchorColumn];
+  v31 = [table columnIndexForIdentifier:rangeSelectionAnchorColumn];
 
-  v32 = [(ICTableAttachmentViewController *)self table];
-  v33 = [(ICTableAttachmentViewController *)self rangeSelectionAnchorRow];
-  v34 = [v32 rowIndexForIdentifier:v33];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  rangeSelectionAnchorRow = [(ICTableAttachmentViewController *)self rangeSelectionAnchorRow];
+  v34 = [table2 rowIndexForIdentifier:rangeSelectionAnchorRow];
 
-  if (a3 > 1)
+  if (direction > 1)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
-      if (v4)
+      if (endCopy)
       {
         v41 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v34 + 1}];
         goto LABEL_25;
       }
 
-      v67 = [(ICTableAttachmentViewController *)self table];
-      v68 = [v8 rows];
-      v69 = [v68 lastObject];
-      v70 = [v67 rowIndexForIdentifier:v69];
+      table3 = [(ICTableAttachmentViewController *)self table];
+      rows4 = [v8 rows];
+      lastObject = [rows4 lastObject];
+      v70 = [table3 rowIndexForIdentifier:lastObject];
 
       if (v70 <= v34)
       {
-        v98 = [(ICTableAttachmentViewController *)self table];
-        v99 = [v8 rows];
-        v100 = [v99 firstObject];
-        v101 = [v98 rowIndexForIdentifier:v100];
+        table4 = [(ICTableAttachmentViewController *)self table];
+        rows5 = [v8 rows];
+        firstObject5 = [rows5 firstObject];
+        v101 = [table4 rowIndexForIdentifier:firstObject5];
 
         if (!v101)
         {
           goto LABEL_51;
         }
 
-        v102 = [(ICTableAttachmentViewController *)self table];
-        v41 = [v102 identifierForRowAtIndex:v101 - 1];
+        table5 = [(ICTableAttachmentViewController *)self table];
+        v41 = [table5 identifierForRowAtIndex:v101 - 1];
 
         v111 = v41;
-        v44 = [MEMORY[0x277CBEA60] arrayWithObjects:&v111 count:1];
-        v103 = [v8 rows];
-        v45 = [v44 arrayByAddingObjectsFromArray:v103];
+        table7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v111 count:1];
+        rows6 = [v8 rows];
+        tableSelection6 = [table7 arrayByAddingObjectsFromArray:rows6];
 
         goto LABEL_26;
       }
 
-      v71 = [v8 rows];
-      v41 = [v71 mutableCopy];
+      rows7 = [v8 rows];
+      v41 = [rows7 mutableCopy];
 
       [v41 removeLastObject];
     }
 
     else
     {
-      if (a3 != 3)
+      if (direction != 3)
       {
         goto LABEL_51;
       }
 
-      if (v4)
+      if (endCopy)
       {
         v39 = MEMORY[0x277CCAA78];
-        v40 = [(ICTableAttachmentViewController *)self table];
-        v41 = [v39 indexSetWithIndexesInRange:{v34, objc_msgSend(v40, "rowCount") - v34}];
+        table6 = [(ICTableAttachmentViewController *)self table];
+        v41 = [v39 indexSetWithIndexesInRange:{v34, objc_msgSend(table6, "rowCount") - v34}];
 
 LABEL_25:
-        v44 = [(ICTableAttachmentViewController *)self table];
-        v45 = [v44 identifiersForRowIndexes:v41];
+        table7 = [(ICTableAttachmentViewController *)self table];
+        tableSelection6 = [table7 identifiersForRowIndexes:v41];
 LABEL_26:
 
-        v46 = [(ICTableAttachmentViewController *)self tableSelection];
-        v47 = [v8 columns];
-        v48 = v46;
-        v49 = v47;
-        v50 = v45;
+        tableSelection5 = [(ICTableAttachmentViewController *)self tableSelection];
+        columns4 = [v8 columns];
+        v48 = tableSelection5;
+        v49 = columns4;
+        v50 = tableSelection6;
 LABEL_49:
         [v48 selectCellRangeAtColumns:v49 rows:v50];
         goto LABEL_50;
       }
 
-      v51 = [(ICTableAttachmentViewController *)self table];
-      v52 = [v8 rows];
-      v53 = [v52 firstObject];
-      v54 = [v51 rowIndexForIdentifier:v53];
+      table8 = [(ICTableAttachmentViewController *)self table];
+      rows8 = [v8 rows];
+      firstObject6 = [rows8 firstObject];
+      v54 = [table8 rowIndexForIdentifier:firstObject6];
 
       if (v54 >= v34)
       {
-        v73 = [(ICTableAttachmentViewController *)self table];
-        v74 = [v8 rows];
-        v75 = [v74 lastObject];
-        v76 = [v73 rowIndexForIdentifier:v75];
+        table9 = [(ICTableAttachmentViewController *)self table];
+        rows9 = [v8 rows];
+        lastObject2 = [rows9 lastObject];
+        v76 = [table9 rowIndexForIdentifier:lastObject2];
 
-        v77 = [(ICTableAttachmentViewController *)self table];
-        v78 = [v77 rowCount] - 1;
+        table10 = [(ICTableAttachmentViewController *)self table];
+        v78 = [table10 rowCount] - 1;
 
         if (v76 < v78)
         {
-          v79 = [(ICTableAttachmentViewController *)self table];
-          v41 = [v79 identifierForRowAtIndex:v76 + 1];
+          table11 = [(ICTableAttachmentViewController *)self table];
+          v41 = [table11 identifierForRowAtIndex:v76 + 1];
 
-          v80 = [v8 rows];
-          v45 = [v80 arrayByAddingObject:v41];
+          rows10 = [v8 rows];
+          tableSelection6 = [rows10 arrayByAddingObject:v41];
 
-          v46 = [(ICTableAttachmentViewController *)self tableSelection];
-          v47 = [v8 columns];
-          v81 = [v45 copy];
-          [v46 selectCellRangeAtColumns:v47 rows:v81];
+          tableSelection5 = [(ICTableAttachmentViewController *)self tableSelection];
+          columns4 = [v8 columns];
+          v81 = [tableSelection6 copy];
+          [tableSelection5 selectCellRangeAtColumns:columns4 rows:v81];
 
 LABEL_50:
           goto LABEL_51;
@@ -10308,38 +10308,38 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v55 = [v8 rows];
-      v41 = [v55 mutableCopy];
+      rows11 = [v8 rows];
+      v41 = [rows11 mutableCopy];
 
       [v41 removeObjectAtIndex:0];
     }
 
-    v45 = [(ICTableAttachmentViewController *)self tableSelection];
-    v46 = [v8 columns];
-    v72 = [v41 copy];
+    tableSelection6 = [(ICTableAttachmentViewController *)self tableSelection];
+    tableSelection5 = [v8 columns];
+    rows12 = [v41 copy];
 LABEL_47:
-    v47 = v72;
-    v48 = v45;
-    v49 = v46;
+    columns4 = rows12;
+    v48 = tableSelection6;
+    v49 = tableSelection5;
     goto LABEL_48;
   }
 
-  if (a3)
+  if (direction)
   {
-    if (a3 != 1)
+    if (direction != 1)
     {
       goto LABEL_51;
     }
 
-    v35 = [(ICTableAttachmentViewController *)self table];
-    v36 = [v35 isRightToLeft];
+    table12 = [(ICTableAttachmentViewController *)self table];
+    isRightToLeft = [table12 isRightToLeft];
 
-    if (!v36)
+    if (!isRightToLeft)
     {
-      v37 = [(ICTableAttachmentViewController *)self table];
-      v38 = [v37 isLeftToRight];
+      table13 = [(ICTableAttachmentViewController *)self table];
+      isLeftToRight = [table13 isLeftToRight];
 
-      if ((v38 & 1) == 0)
+      if ((isLeftToRight & 1) == 0)
       {
         goto LABEL_51;
       }
@@ -10350,63 +10350,63 @@ LABEL_47:
     goto LABEL_21;
   }
 
-  v42 = [(ICTableAttachmentViewController *)self table];
-  v43 = [v42 isLeftToRight];
+  table14 = [(ICTableAttachmentViewController *)self table];
+  isLeftToRight2 = [table14 isLeftToRight];
 
-  if (v43)
+  if (isLeftToRight2)
   {
 LABEL_21:
-    if (v4)
+    if (endCopy)
     {
       v41 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v31 + 1}];
 LABEL_34:
-      v65 = [(ICTableAttachmentViewController *)self table];
-      v66 = [v65 identifiersForColumnIndexes:v41];
+      table15 = [(ICTableAttachmentViewController *)self table];
+      v66 = [table15 identifiersForColumnIndexes:v41];
 LABEL_35:
-      v45 = v66;
+      tableSelection6 = v66;
 LABEL_36:
 
-      v46 = [(ICTableAttachmentViewController *)self tableSelection];
-      v47 = [v8 rows];
-      v48 = v46;
-      v49 = v45;
+      tableSelection5 = [(ICTableAttachmentViewController *)self tableSelection];
+      columns4 = [v8 rows];
+      v48 = tableSelection5;
+      v49 = tableSelection6;
 LABEL_48:
-      v50 = v47;
+      v50 = columns4;
       goto LABEL_49;
     }
 
-    v56 = [(ICTableAttachmentViewController *)self table];
-    v57 = [v8 columns];
-    v58 = [v57 lastObject];
-    v59 = [v56 columnIndexForIdentifier:v58];
+    table16 = [(ICTableAttachmentViewController *)self table];
+    columns5 = [v8 columns];
+    lastObject3 = [columns5 lastObject];
+    v59 = [table16 columnIndexForIdentifier:lastObject3];
 
     if (v59 > v31)
     {
-      v60 = [v8 columns];
-      v41 = [v60 mutableCopy];
+      columns6 = [v8 columns];
+      v41 = [columns6 mutableCopy];
 
       [v41 removeLastObject];
 LABEL_46:
-      v45 = [(ICTableAttachmentViewController *)self tableSelection];
-      v46 = [v41 copy];
-      v72 = [v8 rows];
+      tableSelection6 = [(ICTableAttachmentViewController *)self tableSelection];
+      tableSelection5 = [v41 copy];
+      rows12 = [v8 rows];
       goto LABEL_47;
     }
 
-    v82 = [(ICTableAttachmentViewController *)self table];
-    v83 = [v8 columns];
-    v84 = [v83 firstObject];
-    v85 = [v82 columnIndexForIdentifier:v84];
+    table17 = [(ICTableAttachmentViewController *)self table];
+    columns7 = [v8 columns];
+    firstObject7 = [columns7 firstObject];
+    v85 = [table17 columnIndexForIdentifier:firstObject7];
 
     if (v85)
     {
-      v86 = [(ICTableAttachmentViewController *)self table];
-      v41 = [v86 identifierForColumnAtIndex:v85 - 1];
+      table18 = [(ICTableAttachmentViewController *)self table];
+      v41 = [table18 identifierForColumnAtIndex:v85 - 1];
 
       v112 = v41;
-      v65 = [MEMORY[0x277CBEA60] arrayWithObjects:&v112 count:1];
-      v87 = [v8 columns];
-      v45 = [v65 arrayByAddingObjectsFromArray:v87];
+      table15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v112 count:1];
+      columns8 = [v8 columns];
+      tableSelection6 = [table15 arrayByAddingObjectsFromArray:columns8];
 
       goto LABEL_36;
     }
@@ -10414,95 +10414,95 @@ LABEL_46:
     goto LABEL_51;
   }
 
-  v61 = [(ICTableAttachmentViewController *)self table];
-  v62 = [v61 isRightToLeft];
+  table19 = [(ICTableAttachmentViewController *)self table];
+  isRightToLeft2 = [table19 isRightToLeft];
 
-  if (v62)
+  if (isRightToLeft2)
   {
 LABEL_32:
-    if (v4)
+    if (endCopy)
     {
       v63 = MEMORY[0x277CCAA78];
-      v64 = [(ICTableAttachmentViewController *)self table];
-      v41 = [v63 indexSetWithIndexesInRange:{v31, objc_msgSend(v64, "columnCount") - v31}];
+      table20 = [(ICTableAttachmentViewController *)self table];
+      v41 = [v63 indexSetWithIndexesInRange:{v31, objc_msgSend(table20, "columnCount") - v31}];
 
       goto LABEL_34;
     }
 
-    v88 = [(ICTableAttachmentViewController *)self table];
-    v89 = [v8 columns];
-    v90 = [v89 firstObject];
-    v91 = [v88 columnIndexForIdentifier:v90];
+    table21 = [(ICTableAttachmentViewController *)self table];
+    columns9 = [v8 columns];
+    firstObject8 = [columns9 firstObject];
+    v91 = [table21 columnIndexForIdentifier:firstObject8];
 
     if (v91 >= v31)
     {
-      v104 = [(ICTableAttachmentViewController *)self table];
-      v105 = [v8 columns];
-      v106 = [v105 lastObject];
-      v107 = [v104 columnIndexForIdentifier:v106];
+      table22 = [(ICTableAttachmentViewController *)self table];
+      columns10 = [v8 columns];
+      lastObject4 = [columns10 lastObject];
+      v107 = [table22 columnIndexForIdentifier:lastObject4];
 
-      v108 = [(ICTableAttachmentViewController *)self table];
-      v109 = [v108 columnCount] - 1;
+      table23 = [(ICTableAttachmentViewController *)self table];
+      v109 = [table23 columnCount] - 1;
 
       if (v107 >= v109)
       {
         goto LABEL_51;
       }
 
-      v110 = [(ICTableAttachmentViewController *)self table];
-      v41 = [v110 identifierForColumnAtIndex:v107 + 1];
+      table24 = [(ICTableAttachmentViewController *)self table];
+      v41 = [table24 identifierForColumnAtIndex:v107 + 1];
 
-      v65 = [v8 columns];
-      v66 = [v65 arrayByAddingObject:v41];
+      table15 = [v8 columns];
+      v66 = [table15 arrayByAddingObject:v41];
       goto LABEL_35;
     }
 
-    v92 = [v8 columns];
-    v41 = [v92 mutableCopy];
+    columns11 = [v8 columns];
+    v41 = [columns11 mutableCopy];
 
     [v41 removeObjectAtIndex:0];
     goto LABEL_46;
   }
 
 LABEL_51:
-  v93 = [(ICTableAttachmentViewController *)self tableSelection];
-  v94 = [v8 isEqual:v93];
+  tableSelection7 = [(ICTableAttachmentViewController *)self tableSelection];
+  v94 = [v8 isEqual:tableSelection7];
 
   if ((v94 & 1) == 0)
   {
     [(ICTableAttachmentViewController *)self announceCellRangeSelectionChangeForAccessibilityIfNecessary];
     [(ICTableAttachmentViewController *)self updateChrome];
-    v95 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    v96 = [v95 ic_isFirstResponder];
+    selectionHighlightView2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    ic_isFirstResponder = [selectionHighlightView2 ic_isFirstResponder];
 
-    if ((v96 & 1) == 0)
+    if ((ic_isFirstResponder & 1) == 0)
     {
-      v97 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-      [(ICTableAttachmentViewController *)self ic_makeFirstResponder:v97];
+      selectionHighlightView3 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+      [(ICTableAttachmentViewController *)self ic_makeFirstResponder:selectionHighlightView3];
     }
   }
 
 LABEL_54:
 }
 
-- (void)saveAttachmentChangesInBackground:(BOOL)a3
+- (void)saveAttachmentChangesInBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_save object:0];
-  v5 = [(ICTableAttachmentViewController *)self table];
-  v6 = [v5 document];
-  v7 = [v6 archivedData];
+  table = [(ICTableAttachmentViewController *)self table];
+  document = [table document];
+  archivedData = [document archivedData];
 
-  v8 = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
-  v9 = v8;
-  if (v3)
+  tableAttachmentProvider = [(ICTableAttachmentViewController *)self tableAttachmentProvider];
+  v9 = tableAttachmentProvider;
+  if (backgroundCopy)
   {
-    [v8 backgroundAttachment];
+    [tableAttachmentProvider backgroundAttachment];
   }
 
   else
   {
-    [v8 attachment];
+    [tableAttachmentProvider attachment];
   }
   v10 = ;
 
@@ -10512,19 +10512,19 @@ LABEL_54:
   v19 = &unk_2781ABEB8;
   v11 = v10;
   v20 = v11;
-  v21 = v7;
-  v12 = v7;
+  v21 = archivedData;
+  v12 = archivedData;
   v13 = _Block_copy(&v16);
-  v14 = [v11 managedObjectContext];
-  v15 = v14;
-  if (v3)
+  managedObjectContext = [v11 managedObjectContext];
+  v15 = managedObjectContext;
+  if (backgroundCopy)
   {
-    [v14 performBlock:v13];
+    [managedObjectContext performBlock:v13];
   }
 
   else
   {
-    [v14 performBlockAndWait:v13];
+    [managedObjectContext performBlockAndWait:v13];
   }
 }
 
@@ -10555,14 +10555,14 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
   [v7 ic_save];
 }
 
-- (void)tableAttachmentProviderWillMergeTable:(id)a3
+- (void)tableAttachmentProviderWillMergeTable:(id)table
 {
   [(ICTableAttachmentViewController *)self tableAttachmentWillChange];
 
   [(ICTableAttachmentViewController *)self willFlashAuthorHighlights];
 }
 
-- (void)tableAttachmentProviderDidMergeTable:(id)a3
+- (void)tableAttachmentProviderDidMergeTable:(id)table
 {
   [(ICTableAttachmentViewController *)self tableAttachmentDidChange];
 
@@ -10577,46 +10577,46 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICTableAttachmentViewController tableAttachmentWillChange]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
   }
 
-  v3 = [(ICTableAttachmentViewController *)self table];
-  if ([v3 columnCount])
+  table = [(ICTableAttachmentViewController *)self table];
+  if ([table columnCount])
   {
     v4 = 0;
     do
     {
-      v5 = [v3 identifierForColumnAtIndex:v4];
-      v6 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
-      [v6 ic_addNonNilObject:v5];
+      v5 = [table identifierForColumnAtIndex:v4];
+      columnsBeforeMerge = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
+      [columnsBeforeMerge ic_addNonNilObject:v5];
 
       ++v4;
     }
 
-    while (v4 < [v3 columnCount]);
+    while (v4 < [table columnCount]);
   }
 
-  if ([v3 rowCount])
+  if ([table rowCount])
   {
     v7 = 0;
     do
     {
-      v8 = [v3 identifierForRowAtIndex:v7];
-      v9 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
-      [v9 ic_addNonNilObject:v8];
+      v8 = [table identifierForRowAtIndex:v7];
+      rowsBeforeMerge = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
+      [rowsBeforeMerge ic_addNonNilObject:v8];
 
       ++v7;
     }
 
-    while (v7 < [v3 rowCount]);
+    while (v7 < [table rowCount]);
   }
 
-  v10 = [(ICTableAttachmentViewController *)self textViewManager];
-  v26 = self;
-  v11 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  selfCopy = self;
+  visibleEmptyCellsBeforeMerge = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v29 = v10;
-  obj = [v10 columnIDs];
+  v29 = textViewManager;
+  obj = [textViewManager columnIDs];
   v30 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v30)
   {
@@ -10637,8 +10637,8 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v14 = [v29 rowIDs];
-        v15 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        rowIDs = [v29 rowIDs];
+        v15 = [rowIDs countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v15)
         {
           v16 = v15;
@@ -10649,25 +10649,25 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
             {
               if (*v33 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(rowIDs);
               }
 
               v19 = *(*(&v32 + 1) + 8 * i);
-              v20 = [v3 mergeableStringForColumnID:v13 rowID:v19];
+              v20 = [table mergeableStringForColumnID:v13 rowID:v19];
               if (!v20)
               {
-                v21 = [v11 objectForKeyedSubscript:v13];
+                v21 = [visibleEmptyCellsBeforeMerge objectForKeyedSubscript:v13];
                 if (!v21)
                 {
                   v21 = [MEMORY[0x277CBEB58] set];
-                  [v11 setObject:v21 forKeyedSubscript:v13];
+                  [visibleEmptyCellsBeforeMerge setObject:v21 forKeyedSubscript:v13];
                 }
 
                 [v21 ic_addNonNilObject:v19];
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v16 = [rowIDs countByEnumeratingWithState:&v32 objects:v40 count:16];
           }
 
           while (v16);
@@ -10683,13 +10683,13 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
     while (v30);
   }
 
-  v22 = [(ICTableAttachmentViewController *)v26 tableSelection];
-  v23 = [v22 copy];
-  [(ICTableAttachmentViewController *)v26 setTableSelectionBeforeMerge:v23];
+  tableSelection = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+  v23 = [tableSelection copy];
+  [(ICTableAttachmentViewController *)selfCopy setTableSelectionBeforeMerge:v23];
 
-  v24 = [(ICTableAttachmentViewController *)v26 currentlyEditingTextStorage];
-  v25 = [v24 savedSelectionWithSelectionAffinity:0];
-  [(ICTableAttachmentViewController *)v26 setStringSelectionBeforeMerge:v25];
+  currentlyEditingTextStorage = [(ICTableAttachmentViewController *)selfCopy currentlyEditingTextStorage];
+  v25 = [currentlyEditingTextStorage savedSelectionWithSelectionAffinity:0];
+  [(ICTableAttachmentViewController *)selfCopy setStringSelectionBeforeMerge:v25];
 }
 
 - (void)tableAttachmentDidChange
@@ -10700,43 +10700,43 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICTableAttachmentViewController tableAttachmentDidChange]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
   }
 
-  v3 = [(ICTableAttachmentViewController *)self table];
-  v4 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v3, "columnCount")}];
-  if ([v3 columnCount])
+  table = [(ICTableAttachmentViewController *)self table];
+  v4 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(table, "columnCount")}];
+  if ([table columnCount])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 identifierForColumnAtIndex:v5];
+      v6 = [table identifierForColumnAtIndex:v5];
       [v4 addObject:v6];
 
       ++v5;
     }
 
-    while (v5 < [v3 columnCount]);
+    while (v5 < [table columnCount]);
   }
 
-  v7 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v3, "rowCount")}];
-  if ([v3 rowCount])
+  v7 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(table, "rowCount")}];
+  if ([table rowCount])
   {
     v8 = 0;
     do
     {
-      v9 = [v3 identifierForRowAtIndex:v8];
+      v9 = [table identifierForRowAtIndex:v8];
       [v7 addObject:v9];
 
       ++v8;
     }
 
-    while (v8 < [v3 rowCount]);
+    while (v8 < [table rowCount]);
   }
 
-  v10 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
+  columnsBeforeMerge = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
   v107 = v7;
-  if ([v4 isEqual:v10])
+  if ([v4 isEqual:columnsBeforeMerge])
   {
-    v11 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
-    v12 = [v7 isEqual:v11];
+    rowsBeforeMerge = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
+    v12 = [v7 isEqual:rowsBeforeMerge];
 
     if (v12)
     {
@@ -10748,25 +10748,25 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
   {
   }
 
-  v105 = v3;
-  v13 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
-  v14 = [v13 mutableCopy];
+  v105 = table;
+  columnsBeforeMerge2 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
+  v14 = [columnsBeforeMerge2 mutableCopy];
 
   v106 = v4;
   [v14 minusOrderedSet:v4];
-  v15 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
-  v16 = [v15 mutableCopy];
+  rowsBeforeMerge2 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
+  v16 = [rowsBeforeMerge2 mutableCopy];
 
   [v16 minusOrderedSet:v7];
-  v17 = [(ICTableAttachmentViewController *)self tableSelection];
-  v18 = [v14 array];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  array = [v14 array];
   v108 = v16;
-  v19 = [v16 array];
-  v20 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
-  v21 = [v20 array];
-  v22 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
-  v23 = [v22 array];
-  v24 = [v17 removeColumns:v18 rows:v19 previousColumns:v21 previousRows:v23];
+  array2 = [v16 array];
+  columnsBeforeMerge3 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
+  array3 = [columnsBeforeMerge3 array];
+  rowsBeforeMerge3 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
+  array4 = [rowsBeforeMerge3 array];
+  v24 = [tableSelection removeColumns:array rows:array2 previousColumns:array3 previousRows:array4];
 
   if ((v24 & 1) == 0)
   {
@@ -10794,8 +10794,8 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
 
         v30 = *(*(&v133 + 1) + 8 * i);
         [(ICTableAttachmentViewController *)self cleanDeletedColumn:v30];
-        v31 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
-        [v31 removeObjectForKey:v30];
+        visibleEmptyCellsBeforeMerge = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
+        [visibleEmptyCellsBeforeMerge removeObjectForKey:v30];
       }
 
       v27 = [v25 countByEnumeratingWithState:&v133 objects:v142 count:16];
@@ -10838,10 +10838,10 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
   v128 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v37 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
-  v38 = [v37 allKeys];
+  visibleEmptyCellsBeforeMerge2 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
+  allKeys = [visibleEmptyCellsBeforeMerge2 allKeys];
 
-  v39 = [v38 countByEnumeratingWithState:&v125 objects:v140 count:16];
+  v39 = [allKeys countByEnumeratingWithState:&v125 objects:v140 count:16];
   v109 = v32;
   if (v39)
   {
@@ -10853,12 +10853,12 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
       {
         if (*v126 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(allKeys);
         }
 
         v43 = *(*(&v125 + 1) + 8 * k);
-        v44 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
-        v45 = [v44 objectForKeyedSubscript:v43];
+        visibleEmptyCellsBeforeMerge3 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
+        v45 = [visibleEmptyCellsBeforeMerge3 objectForKeyedSubscript:v43];
 
         v123 = 0u;
         v124 = 0u;
@@ -10891,7 +10891,7 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
         v32 = v109;
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v125 objects:v140 count:16];
+      v40 = [allKeys countByEnumeratingWithState:&v125 objects:v140 count:16];
     }
 
     while (v40);
@@ -10899,54 +10899,54 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
 
   if ([v104 count])
   {
-    v51 = [v104 array];
-    [(ICTableAttachmentViewController *)self postChangeNotification:3 columnOrRowUUIDs:v51];
+    array5 = [v104 array];
+    [(ICTableAttachmentViewController *)self postChangeNotification:3 columnOrRowUUIDs:array5];
   }
 
   if ([v32 count])
   {
-    v52 = [v32 array];
-    [(ICTableAttachmentViewController *)self postChangeNotification:4 columnOrRowUUIDs:v52];
+    array6 = [v32 array];
+    [(ICTableAttachmentViewController *)self postChangeNotification:4 columnOrRowUUIDs:array6];
   }
 
   v53 = [v106 mutableCopy];
-  v54 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
-  [v53 minusOrderedSet:v54];
+  columnsBeforeMerge4 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
+  [v53 minusOrderedSet:columnsBeforeMerge4];
 
   if ([v53 count])
   {
-    v55 = [v53 array];
-    [(ICTableAttachmentViewController *)self postChangeNotification:0 columnOrRowUUIDs:v55];
+    array7 = [v53 array];
+    [(ICTableAttachmentViewController *)self postChangeNotification:0 columnOrRowUUIDs:array7];
   }
 
   v56 = [v107 mutableCopy];
-  v57 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
-  [v56 minusOrderedSet:v57];
+  rowsBeforeMerge4 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
+  [v56 minusOrderedSet:rowsBeforeMerge4];
 
   if ([v56 count])
   {
-    v58 = [v56 array];
-    [(ICTableAttachmentViewController *)self postChangeNotification:1 columnOrRowUUIDs:v58];
+    array8 = [v56 array];
+    [(ICTableAttachmentViewController *)self postChangeNotification:1 columnOrRowUUIDs:array8];
   }
 
-  v59 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
-  v60 = [v106 ic_objectsMovedFromOrderedSet:v59];
+  columnsBeforeMerge5 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
+  v60 = [v106 ic_objectsMovedFromOrderedSet:columnsBeforeMerge5];
 
   if ([v60 count])
   {
-    v61 = [v60 allObjects];
-    [(ICTableAttachmentViewController *)self postChangeNotification:5 columnOrRowUUIDs:v61];
+    allObjects = [v60 allObjects];
+    [(ICTableAttachmentViewController *)self postChangeNotification:5 columnOrRowUUIDs:allObjects];
   }
 
   v102 = v60;
   v103 = v56;
-  v62 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
-  v63 = [v107 ic_objectsMovedFromOrderedSet:v62];
+  rowsBeforeMerge5 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
+  v63 = [v107 ic_objectsMovedFromOrderedSet:rowsBeforeMerge5];
 
   if ([v63 count])
   {
-    v64 = [v63 allObjects];
-    [(ICTableAttachmentViewController *)self postChangeNotification:6 columnOrRowUUIDs:v64];
+    allObjects2 = [v63 allObjects];
+    [(ICTableAttachmentViewController *)self postChangeNotification:6 columnOrRowUUIDs:allObjects2];
 
     v119 = 0u;
     v120 = 0u;
@@ -10968,8 +10968,8 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
           }
 
           v70 = *(*(&v117 + 1) + 8 * n);
-          v71 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-          [v71 updateForMovedRow:v70];
+          tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+          [tableLayoutManager updateForMovedRow:v70];
         }
 
         v67 = [v65 countByEnumeratingWithState:&v117 objects:v138 count:16];
@@ -10982,15 +10982,15 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
   if ([v53 count] || objc_msgSend(v104, "count"))
   {
     v72 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v104, "count") + objc_msgSend(v53, "count")}];
-    v73 = [v53 array];
-    [v72 addObjectsFromArray:v73];
+    array9 = [v53 array];
+    [v72 addObjectsFromArray:array9];
 
-    v74 = [v104 array];
-    [v72 addObjectsFromArray:v74];
+    array10 = [v104 array];
+    [v72 addObjectsFromArray:array10];
 
-    v75 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-    v76 = [v75 columnWidthManager];
-    v77 = [v76 invalidateWidthForColumns:v72];
+    tableLayoutManager2 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+    columnWidthManager = [tableLayoutManager2 columnWidthManager];
+    v77 = [columnWidthManager invalidateWidthForColumns:v72];
   }
 
   v115 = 0u;
@@ -11013,13 +11013,13 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
         }
 
         v83 = *(*(&v113 + 1) + 8 * ii);
-        v84 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-        v85 = [v84 columnWidthManager];
-        [v85 widthOfColumn:v83];
+        tableLayoutManager3 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+        columnWidthManager2 = [tableLayoutManager3 columnWidthManager];
+        [columnWidthManager2 widthOfColumn:v83];
         v87 = v86;
 
-        v88 = [(ICTableAttachmentViewController *)self columnWidthCache];
-        [v88 setDimension:v83 forKey:v87];
+        columnWidthCache = [(ICTableAttachmentViewController *)self columnWidthCache];
+        [columnWidthCache setDimension:v83 forKey:v87];
       }
 
       v80 = [v78 countByEnumeratingWithState:&v113 objects:v137 count:16];
@@ -11031,53 +11031,53 @@ void __69__ICTableAttachmentViewController_saveAttachmentChangesInBackground___b
   [(ICTableAttachmentViewController *)self redraw];
   v4 = v106;
   v7 = v107;
-  v3 = v105;
+  table = v105;
 LABEL_73:
-  v89 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
-  [v89 removeAllObjects];
+  columnsBeforeMerge6 = [(ICTableAttachmentViewController *)self columnsBeforeMerge];
+  [columnsBeforeMerge6 removeAllObjects];
 
-  v90 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
-  [v90 removeAllObjects];
+  rowsBeforeMerge6 = [(ICTableAttachmentViewController *)self rowsBeforeMerge];
+  [rowsBeforeMerge6 removeAllObjects];
 
-  v91 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
+  visibleEmptyCellsBeforeMerge4 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
   v110[0] = MEMORY[0x277D85DD0];
   v110[1] = 3221225472;
   v110[2] = __59__ICTableAttachmentViewController_tableAttachmentDidChange__block_invoke;
   v110[3] = &unk_2781AE2A0;
-  v111 = v3;
-  v112 = self;
-  v92 = v3;
-  [v91 enumerateKeysAndObjectsUsingBlock:v110];
+  v111 = table;
+  selfCopy = self;
+  v92 = table;
+  [visibleEmptyCellsBeforeMerge4 enumerateKeysAndObjectsUsingBlock:v110];
 
-  v93 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
-  [v93 removeAllObjects];
+  visibleEmptyCellsBeforeMerge5 = [(ICTableAttachmentViewController *)self visibleEmptyCellsBeforeMerge];
+  [visibleEmptyCellsBeforeMerge5 removeAllObjects];
 
-  v94 = [(ICTableAttachmentViewController *)self tableSelection];
-  v95 = [(ICTableAttachmentViewController *)self tableSelectionBeforeMerge];
-  v96 = [v94 isEqual:v95];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  tableSelectionBeforeMerge = [(ICTableAttachmentViewController *)self tableSelectionBeforeMerge];
+  v96 = [tableSelection2 isEqual:tableSelectionBeforeMerge];
 
   if (v96)
   {
-    v97 = [(ICTableAttachmentViewController *)self stringSelectionBeforeMerge];
+    stringSelectionBeforeMerge = [(ICTableAttachmentViewController *)self stringSelectionBeforeMerge];
 
-    if (v97)
+    if (stringSelectionBeforeMerge)
     {
-      v98 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-      v99 = [(ICTableAttachmentViewController *)self stringSelectionBeforeMerge];
-      [v98 restoreSelection:v99];
+      currentlyEditingTextStorage = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+      stringSelectionBeforeMerge2 = [(ICTableAttachmentViewController *)self stringSelectionBeforeMerge];
+      [currentlyEditingTextStorage restoreSelection:stringSelectionBeforeMerge2];
 LABEL_78:
 
       v7 = v107;
     }
   }
 
-  else if ([v94 type] == 1)
+  else if ([tableSelection2 type] == 1)
   {
-    v98 = [v94 columns];
-    v99 = [v98 objectAtIndexedSubscript:0];
-    v100 = [v94 rows];
-    v101 = [v100 objectAtIndexedSubscript:0];
-    [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:v99 andRowID:v101 location:[(ICTableAttachmentViewController *)self preferredNavigationSelection]];
+    currentlyEditingTextStorage = [tableSelection2 columns];
+    stringSelectionBeforeMerge2 = [currentlyEditingTextStorage objectAtIndexedSubscript:0];
+    rows = [tableSelection2 rows];
+    v101 = [rows objectAtIndexedSubscript:0];
+    [(ICTableAttachmentViewController *)self beginEditingCellWithColumnID:stringSelectionBeforeMerge2 andRowID:v101 location:[(ICTableAttachmentViewController *)self preferredNavigationSelection]];
 
     goto LABEL_78;
   }
@@ -11125,42 +11125,42 @@ void __59__ICTableAttachmentViewController_tableAttachmentDidChange__block_invok
   }
 }
 
-- (void)postChangeNotification:(unint64_t)a3 columnOrRowUUIDs:(id)a4
+- (void)postChangeNotification:(unint64_t)notification columnOrRowUUIDs:(id)ds
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dsCopy = ds;
   v13[0] = @"ICTableAttachmentViewControllerKey";
   v13[1] = @"ICTableAttachmentViewControllerChangeKindKey";
   v14[0] = self;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:notification];
   v14[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  if (v6)
+  if (dsCopy)
   {
     v9 = [v8 mutableCopy];
-    [v9 setObject:v6 forKeyedSubscript:@"ICTableAttachmentViewControllerColumnOrRowUUIDsKey"];
+    [v9 setObject:dsCopy forKeyedSubscript:@"ICTableAttachmentViewControllerColumnOrRowUUIDsKey"];
     v10 = [v9 copy];
 
     v8 = v10;
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  v12 = [(ICTableAttachmentViewController *)self table];
-  [v11 postNotificationName:@"ICTableAttachmentViewControllerDidChangeNotification" object:v12 userInfo:v8];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  table = [(ICTableAttachmentViewController *)self table];
+  [defaultCenter postNotificationName:@"ICTableAttachmentViewControllerDidChangeNotification" object:table userInfo:v8];
 }
 
-- (void)tableAttachmentViewControllerDidChange:(id)a3
+- (void)tableAttachmentViewControllerDidChange:(id)change
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(ICTableAttachmentViewController *)self table];
+  changeCopy = change;
+  object = [changeCopy object];
+  table = [(ICTableAttachmentViewController *)self table];
 
-  if (v5 == v6)
+  if (object == table)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"ICTableAttachmentViewControllerKey"];
+    userInfo = [changeCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"ICTableAttachmentViewControllerKey"];
     if (v8 == self)
     {
 LABEL_45:
@@ -11168,17 +11168,17 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v9 = [v7 objectForKeyedSubscript:@"ICTableAttachmentViewControllerChangeKindKey"];
-    v10 = [v9 unsignedIntegerValue];
+    v9 = [userInfo objectForKeyedSubscript:@"ICTableAttachmentViewControllerChangeKindKey"];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    v11 = [v7 objectForKeyedSubscript:@"ICTableAttachmentViewControllerColumnOrRowUUIDsKey"];
+    v11 = [userInfo objectForKeyedSubscript:@"ICTableAttachmentViewControllerColumnOrRowUUIDsKey"];
     v12 = v11;
     v45 = v8;
-    if (v10 > 3)
+    if (unsignedIntegerValue > 3)
     {
-      if (v10 != 4)
+      if (unsignedIntegerValue != 4)
       {
-        if (v10 == 6)
+        if (unsignedIntegerValue == 6)
         {
           v48 = 0u;
           v49 = 0u;
@@ -11199,8 +11199,8 @@ LABEL_45:
                 }
 
                 v24 = *(*(&v46 + 1) + 8 * i);
-                v25 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-                [v25 updateForMovedRow:v24];
+                tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+                [tableLayoutManager updateForMovedRow:v24];
               }
 
               v21 = [v12 countByEnumeratingWithState:&v46 objects:v62 count:16];
@@ -11213,8 +11213,8 @@ LABEL_45:
         goto LABEL_44;
       }
 
-      v38 = [(ICTableAttachmentViewController *)self tableSelection];
-      v39 = [v38 removeColumns:MEMORY[0x277CBEBF8] rows:v12];
+      tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+      v39 = [tableSelection removeColumns:MEMORY[0x277CBEBF8] rows:v12];
 
       if ((v39 & 1) == 0)
       {
@@ -11225,8 +11225,8 @@ LABEL_45:
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v15 = v12;
-      v40 = [v15 countByEnumeratingWithState:&v50 objects:v63 count:16];
+      tableLayoutManager3 = v12;
+      v40 = [tableLayoutManager3 countByEnumeratingWithState:&v50 objects:v63 count:16];
       if (v40)
       {
         v41 = v40;
@@ -11237,22 +11237,22 @@ LABEL_45:
           {
             if (*v51 != v42)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(tableLayoutManager3);
             }
 
             [(ICTableAttachmentViewController *)self cleanDeletedRow:*(*(&v50 + 1) + 8 * j)];
           }
 
-          v41 = [v15 countByEnumeratingWithState:&v50 objects:v63 count:16];
+          v41 = [tableLayoutManager3 countByEnumeratingWithState:&v50 objects:v63 count:16];
         }
 
         while (v41);
       }
     }
 
-    else if (v10)
+    else if (unsignedIntegerValue)
     {
-      if (v10 != 3)
+      if (unsignedIntegerValue != 3)
       {
 LABEL_44:
         [(ICTableAttachmentViewController *)self redraw];
@@ -11261,8 +11261,8 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v13 = [(ICTableAttachmentViewController *)self tableSelection];
-      v14 = [v13 removeColumns:v12 rows:MEMORY[0x277CBEBF8]];
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      v14 = [tableSelection2 removeColumns:v12 rows:MEMORY[0x277CBEBF8]];
 
       if ((v14 & 1) == 0)
       {
@@ -11273,8 +11273,8 @@ LABEL_44:
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v15 = v12;
-      v16 = [v15 countByEnumeratingWithState:&v54 objects:v64 count:16];
+      tableLayoutManager3 = v12;
+      v16 = [tableLayoutManager3 countByEnumeratingWithState:&v54 objects:v64 count:16];
       if (v16)
       {
         v17 = v16;
@@ -11285,13 +11285,13 @@ LABEL_44:
           {
             if (*v55 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(tableLayoutManager3);
             }
 
             [(ICTableAttachmentViewController *)self cleanDeletedColumn:*(*(&v54 + 1) + 8 * k)];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v54 objects:v64 count:16];
+          v17 = [tableLayoutManager3 countByEnumeratingWithState:&v54 objects:v64 count:16];
         }
 
         while (v17);
@@ -11300,7 +11300,7 @@ LABEL_44:
 
     else
     {
-      v44 = v7;
+      v44 = userInfo;
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
@@ -11320,13 +11320,13 @@ LABEL_44:
             }
 
             v30 = *(*(&v58 + 1) + 8 * m);
-            v31 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-            v32 = [v31 columnWidthManager];
-            [v32 widthOfColumn:v30];
+            tableLayoutManager2 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+            columnWidthManager = [tableLayoutManager2 columnWidthManager];
+            [columnWidthManager widthOfColumn:v30];
             v34 = v33;
 
-            v35 = [(ICTableAttachmentViewController *)self columnWidthCache];
-            [v35 setDimension:v30 forKey:v34];
+            columnWidthCache = [(ICTableAttachmentViewController *)self columnWidthCache];
+            [columnWidthCache setDimension:v30 forKey:v34];
           }
 
           v27 = [v12 countByEnumeratingWithState:&v58 objects:v65 count:16];
@@ -11335,11 +11335,11 @@ LABEL_44:
         while (v27);
       }
 
-      v15 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-      v36 = [v15 columnWidthManager];
-      v37 = [v36 invalidateAvailableWidth];
+      tableLayoutManager3 = [(ICTableAttachmentViewController *)self tableLayoutManager];
+      columnWidthManager2 = [tableLayoutManager3 columnWidthManager];
+      invalidateAvailableWidth = [columnWidthManager2 invalidateAvailableWidth];
 
-      v7 = v44;
+      userInfo = v44;
     }
 
     goto LABEL_44;
@@ -11350,23 +11350,23 @@ LABEL_46:
 
 - (void)willFlashAuthorHighlights
 {
-  v3 = [(ICTableAttachmentViewController *)self cellTimestampsBeforeMerge];
+  cellTimestampsBeforeMerge = [(ICTableAttachmentViewController *)self cellTimestampsBeforeMerge];
 
-  if (!v3)
+  if (!cellTimestampsBeforeMerge)
   {
     v4 = MEMORY[0x277CBEB38];
-    v5 = [(ICTableAttachmentViewController *)self table];
-    v6 = [v4 dictionaryWithCapacity:{objc_msgSend(v5, "columnCount")}];
+    table = [(ICTableAttachmentViewController *)self table];
+    v6 = [v4 dictionaryWithCapacity:{objc_msgSend(table, "columnCount")}];
 
-    v7 = [(ICTableAttachmentViewController *)self table];
+    table2 = [(ICTableAttachmentViewController *)self table];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __60__ICTableAttachmentViewController_willFlashAuthorHighlights__block_invoke;
     v13 = &unk_2781AE2C8;
-    v14 = self;
+    selfCopy = self;
     v15 = v6;
     v8 = v6;
-    [v7 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:&v10];
+    [table2 enumerateCellObjectsInCellSelectionContainingColumnIndices:0 rowIndices:0 copyItems:0 usingBlock:&v10];
 
     v9 = [v8 copy];
     [(ICTableAttachmentViewController *)self setCellTimestampsBeforeMerge:v9];
@@ -11408,31 +11408,31 @@ uint64_t __60__ICTableAttachmentViewController_willFlashAuthorHighlights__block_
 
 - (void)flashAuthorHighlightsIfNeeded
 {
-  v3 = [(ICTableAttachmentViewController *)self cellTimestampsBeforeMerge];
-  if (v3)
+  cellTimestampsBeforeMerge = [(ICTableAttachmentViewController *)self cellTimestampsBeforeMerge];
+  if (cellTimestampsBeforeMerge)
   {
-    v4 = v3;
-    v5 = [(ICAttachmentViewController *)self attachment];
-    v6 = [v5 note];
-    v7 = [v6 isSharedViaICloud];
+    v4 = cellTimestampsBeforeMerge;
+    attachment = [(ICAttachmentViewController *)self attachment];
+    note = [attachment note];
+    isSharedViaICloud = [note isSharedViaICloud];
 
-    if (v7)
+    if (isSharedViaICloud)
     {
       v12[0] = 0;
       v12[1] = v12;
       v12[2] = 0x2020000000;
-      v8 = [(ICTableAttachmentViewController *)self textViewManager];
-      v9 = [v8 anchorColumn];
+      textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+      anchorColumn = [textViewManager anchorColumn];
 
-      v12[3] = v9;
-      v10 = [(ICTableAttachmentViewController *)self textViewManager];
+      v12[3] = anchorColumn;
+      textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __64__ICTableAttachmentViewController_flashAuthorHighlightsIfNeeded__block_invoke;
       v11[3] = &unk_2781AE368;
       v11[4] = self;
       v11[5] = v12;
-      [v10 enumerateTextViewsWithBlock:v11];
+      [textViewManager2 enumerateTextViewsWithBlock:v11];
 
       [(ICTableAttachmentViewController *)self setCellTimestampsBeforeMerge:0];
       _Block_object_dispose(v12, 8);
@@ -11585,30 +11585,30 @@ LABEL_10:
 
 - (double)availableWidth
 {
-  v3 = [(ICAttachmentViewController *)self textAttachment];
-  if (!v3)
+  textAttachment = [(ICAttachmentViewController *)self textAttachment];
+  if (!textAttachment)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((textAttachment) != nil)" functionName:"-[ICTableAttachmentViewController availableWidth]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "textAttachment"}];
   }
 
   if (![(ICAttachmentViewController *)self forManualRendering])
   {
-    v6 = [(ICTableAttachmentViewController *)self noteTextView];
-    v7 = [v6 textContainer];
-    if (v7)
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    textContainer = [noteTextView textContainer];
+    if (textContainer)
     {
-      v8 = v7;
+      firstObject = textContainer;
     }
 
     else
     {
-      v9 = [(ICTableAttachmentViewController *)self noteLayoutManager];
-      v10 = [v9 textContainers];
-      v8 = [v10 firstObject];
+      noteLayoutManager = [(ICTableAttachmentViewController *)self noteLayoutManager];
+      textContainers = [noteLayoutManager textContainers];
+      firstObject = [textContainers firstObject];
 
-      if (!v8)
+      if (!firstObject)
       {
-        [v3 lastAvailableWidth];
+        [textAttachment lastAvailableWidth];
         if (v13 == 0.0)
         {
           v5 = 42.0;
@@ -11623,30 +11623,30 @@ LABEL_10:
       }
     }
 
-    [v3 availableWidthForTextContainer:v8];
+    [textAttachment availableWidthForTextContainer:firstObject];
     v5 = v11;
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  [v3 lastAvailableWidth];
+  [textAttachment lastAvailableWidth];
   v5 = v4;
 LABEL_10:
 
   return v5;
 }
 
-- (void)updateWidthsForChangeInColumn:(id)a3
+- (void)updateWidthsForChangeInColumn:(id)column
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-  v6 = [v5 columnWidthManager];
-  v9[0] = v4;
+  columnCopy = column;
+  tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+  columnWidthManager = [tableLayoutManager columnWidthManager];
+  v9[0] = columnCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
-  v8 = [v6 invalidateWidthForColumns:v7];
+  v8 = [columnWidthManager invalidateWidthForColumns:v7];
 
   if ([v8 count])
   {
@@ -11654,20 +11654,20 @@ LABEL_10:
   }
 }
 
-- (void)updateColumnWidthForColumn:(id)a3
+- (void)updateColumnWidthForColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
-  [v5 addObject:v4];
+  columnCopy = column;
+  columnsNeedingWidthUpdate = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
+  [columnsNeedingWidthUpdate addObject:columnCopy];
 
   [(ICTableAttachmentViewController *)self updateEditedColumnWidths];
 }
 
 - (BOOL)updateAllColumnWidths
 {
-  v3 = [(ICTableAttachmentViewController *)self textViewManager];
-  v4 = [v3 columnIDs];
-  v5 = [v4 count];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  columnIDs = [textViewManager columnIDs];
+  v5 = [columnIDs count];
 
   if (v5 <= *MEMORY[0x277D36600])
   {
@@ -11679,14 +11679,14 @@ LABEL_10:
     v6 = v5;
   }
 
-  v7 = [(ICTableAttachmentViewController *)self table];
+  table = [(ICTableAttachmentViewController *)self table];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke;
   v9[3] = &unk_2781AE390;
   v9[4] = self;
   v9[5] = v6;
-  [v7 enumerateColumnsWithBlock:v9];
+  [table enumerateColumnsWithBlock:v9];
 
   return [(ICTableAttachmentViewController *)self updateEditedColumnWidths];
 }
@@ -11720,8 +11720,8 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICTableAttachmentViewController updateEditedColumnWidths]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
   }
 
-  v3 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-  v4 = [v3 isEditingOrConvertingMarkedText:0];
+  currentlyEditingTextStorage = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+  v4 = [currentlyEditingTextStorage isEditingOrConvertingMarkedText:0];
 
   if (v4)
   {
@@ -11730,44 +11730,44 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   }
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_updateEditedColumnWidths object:0];
-  v5 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
-  v6 = [v5 count];
+  columnsNeedingWidthUpdate = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
+  v6 = [columnsNeedingWidthUpdate count];
 
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-  v8 = [v7 columnWidthManager];
+  tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+  columnWidthManager = [tableLayoutManager columnWidthManager];
 
-  v9 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
-  v10 = [v9 allObjects];
-  v11 = [v8 invalidateWidthForColumns:v10];
+  columnsNeedingWidthUpdate2 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
+  allObjects = [columnsNeedingWidthUpdate2 allObjects];
+  v11 = [columnWidthManager invalidateWidthForColumns:allObjects];
 
   if (![v11 count])
   {
-    v18 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
-    [v18 removeAllObjects];
+    columnsNeedingWidthUpdate3 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
+    [columnsNeedingWidthUpdate3 removeAllObjects];
 
     return 0;
   }
 
   [(ICTableAttachmentViewController *)self redraw];
-  v12 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
 
-  if (v12)
+  if (currentlyEditingTextView)
   {
-    v13 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    [(ICTableAttachmentViewController *)self scrollToCaretIfNeededForTextView:v13];
+    currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    [(ICTableAttachmentViewController *)self scrollToCaretIfNeededForTextView:currentlyEditingTextView2];
   }
 
-  v14 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
-  [v14 removeAllObjects];
+  columnsNeedingWidthUpdate4 = [(ICTableAttachmentViewController *)self columnsNeedingWidthUpdate];
+  [columnsNeedingWidthUpdate4 removeAllObjects];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  v16 = [(ICTableAttachmentViewController *)self noteTextView];
-  [v15 postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:v16];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+  [defaultCenter postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:noteTextView];
 
   return 1;
 }
@@ -11788,9 +11788,9 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   if (v4 != v5)
   {
     [(ICTableAttachmentViewController *)self setPreviousAvailableWidth:v4];
-    v6 = [(ICTableAttachmentViewController *)self tableLayoutManager];
-    v7 = [v6 columnWidthManager];
-    v8 = [v7 invalidateAvailableWidth];
+    tableLayoutManager = [(ICTableAttachmentViewController *)self tableLayoutManager];
+    columnWidthManager = [tableLayoutManager columnWidthManager];
+    invalidateAvailableWidth = [columnWidthManager invalidateAvailableWidth];
 
     [(ICTableAttachmentViewController *)self redraw];
   }
@@ -11809,9 +11809,9 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   [(ICTableAttachmentViewController *)self setNumberOfBouncedMainThreadSaves:[(ICTableAttachmentViewController *)self numberOfBouncedMainThreadSaves]+ 1];
   if ([(ICTableAttachmentViewController *)self numberOfBouncedMainThreadSaves]< 0xF)
   {
-    v3 = [(ICAttachmentViewController *)self attachment];
-    v4 = [v3 note];
-    if ([v4 isFastSyncSessionActive])
+    attachment = [(ICAttachmentViewController *)self attachment];
+    note = [attachment note];
+    if ([note isFastSyncSessionActive])
     {
       v5 = *MEMORY[0x277D36A00];
     }
@@ -11833,13 +11833,13 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
 
 - (void)save
 {
-  v3 = [(ICAttachmentViewController *)self attachment];
-  v4 = [v3 isReadOnly];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  isReadOnly = [attachment isReadOnly];
 
-  if ((v4 & 1) == 0)
+  if ((isReadOnly & 1) == 0)
   {
-    v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-    v6 = [v5 isEditingOrConvertingMarkedText:0];
+    currentlyEditingTextStorage = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+    v6 = [currentlyEditingTextStorage isEditingOrConvertingMarkedText:0];
 
     if (v6)
     {
@@ -11858,11 +11858,11 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
 - (void)saveAfterDelay
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_save object:0];
-  v3 = [(ICAttachmentViewController *)self attachment];
-  v4 = [v3 note];
-  v5 = [v4 isFastSyncSessionActive];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  note = [attachment note];
+  isFastSyncSessionActive = [note isFastSyncSessionActive];
   v6 = MEMORY[0x277D36A00];
-  if (!v5)
+  if (!isFastSyncSessionActive)
   {
     v6 = MEMORY[0x277D369F8];
   }
@@ -11874,9 +11874,9 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
 
 - (void)initializeTableAccessibilityControllerIfNecessary
 {
-  v3 = [(ICTableAttachmentViewController *)self tableAXController];
+  tableAXController = [(ICTableAttachmentViewController *)self tableAXController];
 
-  if (!v3)
+  if (!tableAXController)
   {
     v4 = [[ICTableAccessibilityController alloc] initWithTableAttachmentViewController:self];
     [(ICTableAttachmentViewController *)self setTableAXController:v4];
@@ -11885,56 +11885,56 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
 
 - (void)announceCellRangeSelectionChangeForAccessibilityIfNecessary
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [(ICTableAttachmentViewController *)self previousAXTableSelection];
-  v5 = [v3 isEqual:v4];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  previousAXTableSelection = [(ICTableAttachmentViewController *)self previousAXTableSelection];
+  v5 = [tableSelection isEqual:previousAXTableSelection];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(ICTableAttachmentViewController *)self tableAXController];
-    v7 = [(ICTableAttachmentViewController *)self tableSelection];
-    [v6 speakCellRangeSelection:v7];
+    tableAXController = [(ICTableAttachmentViewController *)self tableAXController];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    [tableAXController speakCellRangeSelection:tableSelection2];
 
-    v9 = [(ICTableAttachmentViewController *)self tableSelection];
-    v8 = [v9 copy];
+    tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+    v8 = [tableSelection3 copy];
     [(ICTableAttachmentViewController *)self setPreviousAXTableSelection:v8];
   }
 }
 
 - (void)initializeTableLayout
 {
-  v33 = [(ICTableAttachmentViewController *)self table];
-  v3 = [[ICTableLayoutManager alloc] initWithTable:v33 delegate:self];
+  table = [(ICTableAttachmentViewController *)self table];
+  v3 = [[ICTableLayoutManager alloc] initWithTable:table delegate:self];
   tableLayoutManager = self->_tableLayoutManager;
   self->_tableLayoutManager = v3;
 
-  v5 = [v33 cellChangeNotifier];
-  [v5 addObserver:self];
+  cellChangeNotifier = [table cellChangeNotifier];
+  [cellChangeNotifier addObserver:self];
 
-  v6 = [v33 columnCount];
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:v6];
-  if (v6)
+  columnCount = [table columnCount];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:columnCount];
+  if (columnCount)
   {
-    for (i = 0; i != v6; ++i)
+    for (i = 0; i != columnCount; ++i)
     {
-      v9 = [v33 identifierForColumnAtIndex:i];
+      v9 = [table identifierForColumnAtIndex:i];
       [v7 addObject:v9];
     }
   }
 
-  v10 = [v33 rowCount];
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v10];
-  if (v10)
+  rowCount = [table rowCount];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:rowCount];
+  if (rowCount)
   {
-    for (j = 0; j != v10; ++j)
+    for (j = 0; j != rowCount; ++j)
     {
-      v13 = [v33 identifierForRowAtIndex:j];
+      v13 = [table identifierForRowAtIndex:j];
       [v11 addObject:v13];
     }
   }
 
-  v14 = [(ICTableLayoutManager *)self->_tableLayoutManager columnWidthManager];
-  [v14 singleColumnTableWidth];
+  columnWidthManager = [(ICTableLayoutManager *)self->_tableLayoutManager columnWidthManager];
+  [columnWidthManager singleColumnTableWidth];
   v16 = v15;
 
   v17 = [objc_alloc(MEMORY[0x277D35EB8]) initWithKeys:v7 andEstimateDimension:v16];
@@ -11945,23 +11945,23 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   rowHeightCache = self->_rowHeightCache;
   self->_rowHeightCache = v19;
 
-  v21 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v33, "rowCount")}];
+  v21 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(table, "rowCount")}];
   cellHeightCache = self->_cellHeightCache;
   self->_cellHeightCache = v21;
 
-  v23 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   visibleEmptyCellsBeforeMerge = self->_visibleEmptyCellsBeforeMerge;
-  self->_visibleEmptyCellsBeforeMerge = v23;
+  self->_visibleEmptyCellsBeforeMerge = dictionary;
 
   v25 = MEMORY[0x277CBEB40];
-  v26 = [(ICTableAttachmentViewController *)self table];
-  v27 = [v25 orderedSetWithCapacity:{objc_msgSend(v26, "columnCount")}];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  v27 = [v25 orderedSetWithCapacity:{objc_msgSend(table2, "columnCount")}];
   columnsBeforeMerge = self->_columnsBeforeMerge;
   self->_columnsBeforeMerge = v27;
 
   v29 = MEMORY[0x277CBEB40];
-  v30 = [(ICTableAttachmentViewController *)self table];
-  v31 = [v29 orderedSetWithCapacity:{objc_msgSend(v30, "rowCount")}];
+  table3 = [(ICTableAttachmentViewController *)self table];
+  v31 = [v29 orderedSetWithCapacity:{objc_msgSend(table3, "rowCount")}];
   rowsBeforeMerge = self->_rowsBeforeMerge;
   self->_rowsBeforeMerge = v31;
 }
@@ -12037,26 +12037,26 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   return result;
 }
 
-- (_NSRange)characterRangeForRange:(_NSRange)a3 inString:(id)a4 forLayoutManager:(id)a5
+- (_NSRange)characterRangeForRange:(_NSRange)range inString:(id)string forLayoutManager:(id)manager
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 attribute:@"SearchTableRow" atIndex:location effectiveRange:0];
-  v12 = [(ICTableAttachmentViewController *)self table];
-  v13 = [v12 identifierForRowAtIndex:{objc_msgSend(v11, "unsignedIntegerValue")}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  managerCopy = manager;
+  v11 = [stringCopy attribute:@"SearchTableRow" atIndex:location effectiveRange:0];
+  table = [(ICTableAttachmentViewController *)self table];
+  v13 = [table identifierForRowAtIndex:{objc_msgSend(v11, "unsignedIntegerValue")}];
 
   if ((ICInternalSettingsIsAsyncFindEnabled() & 1) == 0)
   {
     v19[0] = 0;
     v19[1] = 0;
-    v14 = [v9 attribute:@"SearchTableColumn" atIndex:location effectiveRange:v19];
+    v14 = [stringCopy attribute:@"SearchTableColumn" atIndex:location effectiveRange:v19];
     location -= v19[0];
   }
 
-  v15 = [v10 columnTextStorage];
-  v16 = [v15 characterRangeForRowID:v13];
+  columnTextStorage = [managerCopy columnTextStorage];
+  v16 = [columnTextStorage characterRangeForRowID:v13];
 
   v17 = v16 + location;
   v18 = length;
@@ -12065,13 +12065,13 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   return result;
 }
 
-- (_NSRange)columnGlyphRangeForRange:(_NSRange)a3 inString:(id)a4 forLayoutManager:(id)a5
+- (_NSRange)columnGlyphRangeForRange:(_NSRange)range inString:(id)string forLayoutManager:(id)manager
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
-  v10 = [(ICTableAttachmentViewController *)self characterRangeForRange:location inString:length forLayoutManager:a4, v9];
-  v12 = [v9 glyphRangeForCharacterRange:v10 actualCharacterRange:{v11, 0}];
+  length = range.length;
+  location = range.location;
+  managerCopy = manager;
+  managerCopy = [(ICTableAttachmentViewController *)self characterRangeForRange:location inString:length forLayoutManager:string, managerCopy];
+  v12 = [managerCopy glyphRangeForCharacterRange:managerCopy actualCharacterRange:{v11, 0}];
   v14 = v13;
 
   v15 = v12;
@@ -12081,38 +12081,38 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   return result;
 }
 
-- (id)viewForRange:(_NSRange)a3 inFindableString:(id)a4
+- (id)viewForRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  if (location + length <= [v7 length])
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  if (location + length <= [stringCopy length])
   {
-    v9 = [v7 attribute:@"SearchTableColumn" atIndex:location effectiveRange:0];
+    v9 = [stringCopy attribute:@"SearchTableColumn" atIndex:location effectiveRange:0];
     v10 = v9;
     if (v9 && (v11 = [v9 unsignedIntegerValue], -[ICTableAttachmentViewController table](self, "table"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "columnCount"), v12, v11 < v13))
     {
-      v14 = [(ICTableAttachmentViewController *)self table];
-      v15 = [v14 identifierForColumnAtIndex:{objc_msgSend(v10, "unsignedIntegerValue")}];
+      table = [(ICTableAttachmentViewController *)self table];
+      v15 = [table identifierForColumnAtIndex:{objc_msgSend(v10, "unsignedIntegerValue")}];
 
-      v16 = [(ICTableAttachmentViewController *)self textViewManager];
-      v8 = [v16 textViewForColumn:v15 createIfNeeded:1];
+      textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+      view = [textViewManager textViewForColumn:v15 createIfNeeded:1];
 
-      v17 = [v7 attribute:@"SearchTableRow" atIndex:location effectiveRange:0];
+      v17 = [stringCopy attribute:@"SearchTableRow" atIndex:location effectiveRange:0];
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 unsignedIntegerValue];
-        v20 = [(ICTableAttachmentViewController *)self table];
-        v21 = [v20 rowCount];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
+        table2 = [(ICTableAttachmentViewController *)self table];
+        rowCount = [table2 rowCount];
 
-        if (v19 < v21)
+        if (unsignedIntegerValue < rowCount)
         {
-          v22 = [(ICTableAttachmentViewController *)self table];
-          v23 = [v22 identifierForRowAtIndex:{objc_msgSend(v18, "unsignedIntegerValue")}];
+          table3 = [(ICTableAttachmentViewController *)self table];
+          v23 = [table3 identifierForRowAtIndex:{objc_msgSend(v18, "unsignedIntegerValue")}];
 
-          v24 = [(ICTableAttachmentViewController *)self textViewManager];
-          [v24 ensureCellPositionForColumn:v15 andRow:v23];
+          textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+          [textViewManager2 ensureCellPositionForColumn:v15 andRow:v23];
         }
       }
     }
@@ -12120,32 +12120,32 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
     else
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICTableAttachmentViewController(Findable) viewForRange:inFindableString:]" simulateCrash:1 showAlert:0 format:{@"No findable view found, since string lacks column attribute"}];
-      v8 = [(ICTableAttachmentViewController *)self view];
+      view = [(ICTableAttachmentViewController *)self view];
     }
   }
 
   else
   {
-    v8 = 0;
+    view = 0;
   }
 
-  return v8;
+  return view;
 }
 
-- (id)rectsForRange:(_NSRange)a3 inFindableString:(id)a4
+- (id)rectsForRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   objc_opt_class();
-  v8 = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, v7];
+  stringCopy = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, stringCopy];
   v9 = ICDynamicCast();
 
   objc_opt_class();
-  v10 = [v9 layoutManager];
+  layoutManager = [v9 layoutManager];
   v11 = ICDynamicCast();
 
-  v12 = [(ICTableAttachmentViewController *)self columnGlyphRangeForRange:location inString:length forLayoutManager:v7, v11];
+  v12 = [(ICTableAttachmentViewController *)self columnGlyphRangeForRange:location inString:length forLayoutManager:stringCopy, v11];
   v14 = v13;
 
   v15 = [v11 rectsForGlyphRange:{v12, v14}];
@@ -12153,14 +12153,14 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   return v15;
 }
 
-- (void)scrollToRange:(_NSRange)a3 inFindableString:(id)a4
+- (void)scrollToRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  stringCopy = string;
   objc_opt_class();
-  v8 = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, v7];
+  stringCopy = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, stringCopy];
   v9 = ICDynamicCast();
 
   if (v9)
@@ -12169,12 +12169,12 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
     y = *(MEMORY[0x277CBF398] + 8);
     width = *(MEMORY[0x277CBF398] + 16);
     height = *(MEMORY[0x277CBF398] + 24);
-    v14 = [(ICTableAttachmentViewController *)self rectsForRange:location inFindableString:length, v7];
+    stringCopy2 = [(ICTableAttachmentViewController *)self rectsForRange:location inFindableString:length, stringCopy];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    v15 = [stringCopy2 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v15)
     {
       v16 = v15;
@@ -12186,7 +12186,7 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
         {
           if (*v33 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(stringCopy2);
           }
 
           [*(*(&v32 + 1) + 8 * v18) CGRectValue];
@@ -12207,14 +12207,14 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v16 = [stringCopy2 countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v16);
     }
 
-    v23 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v23 convertRect:v9 fromView:{x, y, width, height}];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [tableContentView convertRect:v9 fromView:{x, y, width, height}];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -12224,22 +12224,22 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   }
 }
 
-- (void)drawCharactersInRange:(_NSRange)a3 inFindableString:(id)a4 forContentView:(id)a5
+- (void)drawCharactersInRange:(_NSRange)range inFindableString:(id)string forContentView:(id)view
 {
-  length = a3.length;
-  location = a3.location;
-  v19 = a4;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  viewCopy = view;
   objc_opt_class();
   v10 = ICDynamicCast();
 
   objc_opt_class();
-  v11 = [v10 layoutManager];
+  layoutManager = [v10 layoutManager];
   v12 = ICDynamicCast();
 
   if (v12)
   {
-    v13 = [(ICTableAttachmentViewController *)self columnGlyphRangeForRange:location inString:length forLayoutManager:v19, v12];
+    v13 = [(ICTableAttachmentViewController *)self columnGlyphRangeForRange:location inString:length forLayoutManager:stringCopy, v12];
     v15 = v14;
     [v10 textContainerInset];
     v17 = v16;
@@ -12248,62 +12248,62 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
   }
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4 inFindableString:(id)a5
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string inFindableString:(id)findableString
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
-  v10 = a4;
+  length = range.length;
+  location = range.location;
+  findableStringCopy = findableString;
+  stringCopy = string;
   objc_opt_class();
-  v11 = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, v9];
+  findableStringCopy = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, findableStringCopy];
   v18 = ICDynamicCast();
 
   objc_opt_class();
-  v12 = [v18 layoutManager];
+  layoutManager = [v18 layoutManager];
   v13 = ICDynamicCast();
 
-  v14 = [(ICTableAttachmentViewController *)self characterRangeForRange:location inString:length forLayoutManager:v9, v13];
+  v14 = [(ICTableAttachmentViewController *)self characterRangeForRange:location inString:length forLayoutManager:findableStringCopy, v13];
   v16 = v15;
 
-  v17 = [v18 textStorage];
-  [v17 replaceCharactersInRange:v14 withString:{v16, v10}];
+  textStorage = [v18 textStorage];
+  [textStorage replaceCharactersInRange:v14 withString:{v16, stringCopy}];
 
   [(ICTableAttachmentViewController *)self saveOnMainThread];
 }
 
-- (void)setSelectedRange:(_NSRange)a3 inFindableString:(id)a4
+- (void)setSelectedRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   objc_opt_class();
-  v8 = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, v7];
+  stringCopy = [(ICTableAttachmentViewController *)self viewForRange:location inFindableString:length, stringCopy];
   v14 = ICDynamicCast();
 
   objc_opt_class();
-  v9 = [v14 layoutManager];
+  layoutManager = [v14 layoutManager];
   v10 = ICDynamicCast();
 
-  v11 = [(ICTableAttachmentViewController *)self characterRangeForRange:location inString:length forLayoutManager:v7, v10];
+  v11 = [(ICTableAttachmentViewController *)self characterRangeForRange:location inString:length forLayoutManager:stringCopy, v10];
   v13 = v12;
 
   [v14 setSelectedRange:{v11, v13}];
 }
 
-- (_NSRange)selectedRangeWithinRange:(_NSRange)a3 inFindableString:(id)a4
+- (_NSRange)selectedRangeWithinRange:(_NSRange)range inFindableString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  stringCopy = string;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = [(ICTableAttachmentViewController *)self textViewManager];
-  v8 = [v7 columnIDs];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+  columnIDs = [textViewManager columnIDs];
 
-  v9 = [v8 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  v9 = [columnIDs countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v9)
   {
     v10 = *v44;
@@ -12314,12 +12314,12 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
       {
         if (*v44 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(columnIDs);
         }
 
         v12 = *(*(&v43 + 1) + 8 * v11);
-        v13 = [(ICTableAttachmentViewController *)self textViewManager];
-        v14 = [v13 textViewForColumn:v12];
+        textViewManager2 = [(ICTableAttachmentViewController *)self textViewManager];
+        v14 = [textViewManager2 textViewForColumn:v12];
 
         [v14 selectedRange];
         if (v15)
@@ -12327,15 +12327,15 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
           v9 = v12;
           v38 = 0;
           v39 = 0;
-          v19 = [v14 columnTextStorage];
-          v16 = [v19 rowAtIndex:objc_msgSend(v14 rowRange:{"selectedRange"), &v38}];
+          columnTextStorage = [v14 columnTextStorage];
+          v16 = [columnTextStorage rowAtIndex:objc_msgSend(v14 rowRange:{"selectedRange"), &v38}];
 
-          v20 = [v14 selectedRange];
+          selectedRange = [v14 selectedRange];
           v21 = v38;
           [v14 selectedRange];
           v17 = v22;
 
-          v18 = v20 - v21;
+          v18 = selectedRange - v21;
           goto LABEL_11;
         }
 
@@ -12343,7 +12343,7 @@ void __56__ICTableAttachmentViewController_updateAllColumnWidths__block_invoke(u
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v9 = [columnIDs countByEnumeratingWithState:&v43 objects:v47 count:16];
       if (v9)
       {
         continue;
@@ -12365,13 +12365,13 @@ LABEL_11:
   v42 = xmmword_2154BBE70;
   if (v17)
   {
-    v23 = [(ICTableAttachmentViewController *)self table];
+    table = [(ICTableAttachmentViewController *)self table];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __87__ICTableAttachmentViewController_Findable__selectedRangeWithinRange_inFindableString___block_invoke;
     v30[3] = &unk_2781AF678;
-    v31 = v6;
-    v24 = v23;
+    v31 = stringCopy;
+    v24 = table;
     v32 = v24;
     v33 = v9;
     v34 = v16;

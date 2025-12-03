@@ -11,18 +11,18 @@
 - (int)_runSendCredentials;
 - (int)_runSessionStart;
 - (void)_cleanup;
-- (void)_completedWithError:(id)a3;
-- (void)_handleContextRequestResponse:(id)a3 error:(id)a4;
-- (void)_handlePasswordPickerResponse:(id)a3 password:(id)a4 error:(id)a5;
-- (void)_handleSendCredentialsResponse:(id)a3 error:(id)a4;
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4;
+- (void)_completedWithError:(id)error;
+- (void)_handleContextRequestResponse:(id)response error:(id)error;
+- (void)_handlePasswordPickerResponse:(id)response password:(id)password error:(id)error;
+- (void)_handleSendCredentialsResponse:(id)response error:(id)error;
+- (void)_receivedObject:(id)object flags:(unsigned int)flags;
 - (void)_run;
 - (void)_runContextRequest;
 - (void)_runSendCredentials;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)tryPIN:(id)a3;
+- (void)tryPIN:(id)n;
 @end
 
 @implementation SFRemoteAutoFillSession
@@ -163,17 +163,17 @@ uint64_t __37__SFRemoteAutoFillSession_invalidate__block_invoke(uint64_t a1)
   self->_sessionState = 0;
 }
 
-- (void)tryPIN:(id)a3
+- (void)tryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SFRemoteAutoFillSession_tryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -190,12 +190,12 @@ uint64_t __34__SFRemoteAutoFillSession_tryPIN___block_invoke(uint64_t a1)
   return [v3 pairSetupTryPIN:v2];
 }
 
-- (void)_completedWithError:(id)a3
+- (void)_completedWithError:(id)error
 {
   v14[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v4)
+  if (errorCopy)
   {
     if (gLogCategory_SFRemoteAutoFillSession <= 60 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
     {
@@ -211,7 +211,7 @@ uint64_t __34__SFRemoteAutoFillSession_tryPIN___block_invoke(uint64_t a1)
   completedHandler = self->_completedHandler;
   if (completedHandler)
   {
-    completedHandler[2](completedHandler, v4);
+    completedHandler[2](completedHandler, errorCopy);
   }
 
   v13[0] = @"contextRequestState";
@@ -277,8 +277,8 @@ uint64_t __34__SFRemoteAutoFillSession_tryPIN___block_invoke(uint64_t a1)
     [(SFSession *)self->_session setDispatchQueue:self->_dispatchQueue];
     [(SFSession *)self->_session setPeerDevice:self->_peerDevice];
     [(SFSession *)self->_session setServiceIdentifier:@"com.apple.sharing.RemoteAutoFill"];
-    v6 = [(SFDevice *)self->_peerDevice contactIdentifier];
-    [(SFSession *)self->_session setPeerContactIdentifier:v6];
+    contactIdentifier = [(SFDevice *)self->_peerDevice contactIdentifier];
+    [(SFSession *)self->_session setPeerContactIdentifier:contactIdentifier];
 
     [(SFSession *)self->_session setSessionFlags:12];
     v14[0] = MEMORY[0x1E69E9820];
@@ -423,9 +423,9 @@ void __43__SFRemoteAutoFillSession__runSessionStart__block_invoke_6(uint64_t a1,
         LogPrintF();
       }
 
-      v5 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v6 = v10[5];
-      v10[5] = v5;
+      v10[5] = date;
 
       self->_pairSubstate.contacts = 1;
       session = self->_session;
@@ -516,9 +516,9 @@ void __43__SFRemoteAutoFillSession__runPairContacts__block_invoke(uint64_t a1, v
         LogPrintF();
       }
 
-      v4 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v5 = v9[5];
-      v9[5] = v4;
+      v9[5] = date;
 
       self->_pairSubstate.homeKit = 1;
       session = self->_session;
@@ -609,9 +609,9 @@ void __42__SFRemoteAutoFillSession__runPairHomeKit__block_invoke(uint64_t a1, vo
         LogPrintF();
       }
 
-      v4 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v5 = v9[5];
-      v9[5] = v4;
+      v9[5] = date;
 
       self->_pairSubstate.pairVerify = 1;
       session = self->_session;
@@ -699,9 +699,9 @@ void __41__SFRemoteAutoFillSession__runPairVerify__block_invoke(uint64_t a1, voi
       LogPrintF();
     }
 
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v5 = v9[5];
-    v9[5] = v4;
+    v9[5] = date;
 
     self->_pairSubstate.pin = 1;
     session = self->_session;
@@ -779,9 +779,9 @@ void __38__SFRemoteAutoFillSession__runPairPIN__block_invoke(uint64_t a1, void *
         LogPrintF();
       }
 
-      v4 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v5 = v9[5];
-      v9[5] = v4;
+      v9[5] = date;
 
       self->_pairSubstate.visual = 1;
       session = self->_session;
@@ -899,15 +899,15 @@ void __41__SFRemoteAutoFillSession__runPairVisual__block_invoke(uint64_t a1, voi
   return self->_contextRequestState;
 }
 
-- (void)_handleContextRequestResponse:(id)a3 error:(id)a4
+- (void)_handleContextRequestResponse:(id)response error:(id)error
 {
-  v21 = a3;
-  v6 = a4;
+  responseCopy = response;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (gLogCategory_SFRemoteAutoFillSession <= 30 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
   {
     [SFRemoteAutoFillSession _handleContextRequestResponse:error:];
-    if (v6)
+    if (errorCopy)
     {
 LABEL_5:
       if (gLogCategory_SFRemoteAutoFillSession <= 60 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
@@ -916,17 +916,17 @@ LABEL_5:
       }
 
       self->_contextRequestState = 3;
-      [(SFRemoteAutoFillSession *)self _completedWithError:v6];
+      [(SFRemoteAutoFillSession *)self _completedWithError:errorCopy];
       goto LABEL_45;
     }
   }
 
-  else if (v6)
+  else if (errorCopy)
   {
     goto LABEL_5;
   }
 
-  if (!v21 && gLogCategory_SFRemoteAutoFillSession <= 60 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
+  if (!responseCopy && gLogCategory_SFRemoteAutoFillSession <= 60 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
   {
     [SFRemoteAutoFillSession _handleContextRequestResponse:error:];
   }
@@ -1057,13 +1057,13 @@ LABEL_45:
       contextURL = self->_contextURL;
       contextAppIconData = self->_contextAppIconData;
       contextAssociatedDomains = self->_contextAssociatedDomains;
-      v11 = [(SFDevice *)self->_peerDevice name];
+      name = [(SFDevice *)self->_peerDevice name];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke;
       v14[3] = &unk_1E7890338;
       v14[4] = self;
-      promptForPickerHandler[2](promptForPickerHandler, contextURL, contextBundleID, contextLocalizedAppName, contextUnlocalizedAppName, contextAssociatedDomains, contextAppIconData, v11, v14);
+      promptForPickerHandler[2](promptForPickerHandler, contextURL, contextBundleID, contextLocalizedAppName, contextUnlocalizedAppName, contextAssociatedDomains, contextAppIconData, name, v14);
     }
   }
 
@@ -1091,13 +1091,13 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
   dispatch_async(v11, v15);
 }
 
-- (void)_handlePasswordPickerResponse:(id)a3 password:(id)a4 error:(id)a5
+- (void)_handlePasswordPickerResponse:(id)response password:(id)password error:(id)error
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  passwordCopy = password;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v10)
+  if (errorCopy)
   {
     if (gLogCategory_SFRemoteAutoFillSession <= 60 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
     {
@@ -1105,29 +1105,29 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
     }
 
     self->_passwordPickerState = 3;
-    [(SFRemoteAutoFillSession *)self _completedWithError:v10];
+    [(SFRemoteAutoFillSession *)self _completedWithError:errorCopy];
   }
 
   else
   {
-    if (v12)
+    if (responseCopy)
     {
       if (gLogCategory_SFRemoteAutoFillSession <= 10 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
       {
         [SFRemoteAutoFillSession _handlePasswordPickerResponse:password:error:];
       }
 
-      objc_storeStrong(&self->_pickedUsername, a3);
+      objc_storeStrong(&self->_pickedUsername, response);
     }
 
-    if (v9)
+    if (passwordCopy)
     {
       if (gLogCategory_SFRemoteAutoFillSession <= 10 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
       {
         [SFRemoteAutoFillSession _handlePasswordPickerResponse:password:error:];
       }
 
-      objc_storeStrong(&self->_pickedPassword, a4);
+      objc_storeStrong(&self->_pickedPassword, password);
     }
 
     if (self->_pickedUsername || self->_pickedPassword)
@@ -1218,12 +1218,12 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
   return self->_sendCredentialsState;
 }
 
-- (void)_handleSendCredentialsResponse:(id)a3 error:(id)a4
+- (void)_handleSendCredentialsResponse:(id)response error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
+  responseCopy = response;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v6)
+  if (errorCopy)
   {
     if (gLogCategory_SFRemoteAutoFillSession <= 60 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
     {
@@ -1247,7 +1247,7 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
   [(SFRemoteAutoFillSession *)self _run];
 }
 
-- (void)_receivedObject:(id)a3 flags:(unsigned int)a4
+- (void)_receivedObject:(id)object flags:(unsigned int)flags
 {
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SFRemoteAutoFillSession <= 50 && (gLogCategory_SFRemoteAutoFillSession != -1 || _LogCategory_Initialize()))
@@ -1282,8 +1282,8 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
       }
     }
 
-    v4 = [(SFRemoteAutoFillSession *)self _runContextRequest];
-    v5 = v4 == 4 || v4 == 2;
+    _runContextRequest = [(SFRemoteAutoFillSession *)self _runContextRequest];
+    v5 = _runContextRequest == 4 || _runContextRequest == 2;
     if (v5 && [(SFRemoteAutoFillSession *)self _runPasswordPicker]== 4 && [(SFRemoteAutoFillSession *)self _runSendCredentials]== 4)
     {
 
@@ -1305,13 +1305,13 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
         LogPrintF();
       }
 
-      v4 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       pairClock = self->_pairClock;
-      self->_pairClock = v4;
+      self->_pairClock = date;
     }
 
-    v6 = [(SFRemoteAutoFillSession *)self _runPairVerify];
-    if (v6 != 4)
+    _runPairVerify = [(SFRemoteAutoFillSession *)self _runPairVerify];
+    if (_runPairVerify != 4)
     {
       OUTLINED_FUNCTION_5_5();
       if (!v7)
@@ -1319,8 +1319,8 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
         return self->_pairState;
       }
 
-      v6 = [(SFRemoteAutoFillSession *)self _runPairHomeKit];
-      if (v6 != 4)
+      _runPairVerify = [(SFRemoteAutoFillSession *)self _runPairHomeKit];
+      if (_runPairVerify != 4)
       {
         OUTLINED_FUNCTION_5_5();
         if (!v7)
@@ -1328,8 +1328,8 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
           return self->_pairState;
         }
 
-        v6 = [(SFRemoteAutoFillSession *)self _runPairContacts];
-        if (v6 != 4)
+        _runPairVerify = [(SFRemoteAutoFillSession *)self _runPairContacts];
+        if (_runPairVerify != 4)
         {
           OUTLINED_FUNCTION_5_5();
           if (!v7)
@@ -1337,8 +1337,8 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
             return self->_pairState;
           }
 
-          v6 = [(SFRemoteAutoFillSession *)self _runPairVisual];
-          if (v6 != 4)
+          _runPairVerify = [(SFRemoteAutoFillSession *)self _runPairVisual];
+          if (_runPairVerify != 4)
           {
             OUTLINED_FUNCTION_5_5();
             if (!v7)
@@ -1346,8 +1346,8 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
               return self->_pairState;
             }
 
-            v6 = [(SFRemoteAutoFillSession *)self _runPairPIN];
-            if (v6 != 4)
+            _runPairVerify = [(SFRemoteAutoFillSession *)self _runPairPIN];
+            if (_runPairVerify != 4)
             {
               OUTLINED_FUNCTION_5_5();
               if (!v7)
@@ -1360,7 +1360,7 @@ void __45__SFRemoteAutoFillSession__runPasswordPicker__block_invoke(uint64_t a1,
       }
     }
 
-    v7 = v6 == 4 || v6 == 2;
+    v7 = _runPairVerify == 4 || _runPairVerify == 2;
     if (v7)
     {
       pairState = 4;

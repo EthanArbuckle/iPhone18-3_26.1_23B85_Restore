@@ -1,7 +1,7 @@
 @interface ICEResultWaitQueue
 - (ICEResultWaitQueue)init;
-- (id)copyResultForCallID:(unsigned int)a3;
-- (void)addResult:(tagCONNRESULT *)a3 forCallID:(unsigned int)a4;
+- (id)copyResultForCallID:(unsigned int)d;
+- (void)addResult:(tagCONNRESULT *)result forCallID:(unsigned int)d;
 - (void)dealloc;
 @end
 
@@ -31,9 +31,9 @@
   [(ICEResultWaitQueue *)&v3 dealloc];
 }
 
-- (id)copyResultForCallID:(unsigned int)a3
+- (id)copyResultForCallID:(unsigned int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v28 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->resMutex);
   v5 = 0;
@@ -136,9 +136,9 @@ LABEL_18:
   return 0;
 }
 
-- (void)addResult:(tagCONNRESULT *)a3 forCallID:(unsigned int)a4
+- (void)addResult:(tagCONNRESULT *)result forCallID:(unsigned int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   v21 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->resMutex);
   v17 = 0u;
@@ -177,15 +177,15 @@ LABEL_18:
   while (v9);
   if (v10)
   {
-    [v10 setResult:a3];
+    [v10 setResult:result];
   }
 
   else
   {
 LABEL_12:
-    v14 = [[ICEResultQuery alloc] initWithResult:a3];
+    v14 = [[ICEResultQuery alloc] initWithResult:result];
     v15 = v14;
-    if (!a3)
+    if (!result)
     {
       [(ICEResultQuery *)v14 setCallID:v4];
     }

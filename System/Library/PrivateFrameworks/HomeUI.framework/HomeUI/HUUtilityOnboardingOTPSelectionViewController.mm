@@ -1,25 +1,25 @@
 @interface HUUtilityOnboardingOTPSelectionViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingOTPSelectionViewController)initWithContext:(id)a3;
+- (HUUtilityOnboardingOTPSelectionViewController)initWithContext:(id)context;
 - (id)_requestOTP;
-- (void)_sendCode:(id)a3;
-- (void)tableView:(id)a3 didSelectOTPMethod:(id)a4;
+- (void)_sendCode:(id)code;
+- (void)tableView:(id)view didSelectOTPMethod:(id)method;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUUtilityOnboardingOTPSelectionViewController
 
-- (HUUtilityOnboardingOTPSelectionViewController)initWithContext:(id)a3
+- (HUUtilityOnboardingOTPSelectionViewController)initWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 otpFactors];
-  v6 = [[HUUtilityOnboardingOTPSelectionItemManager alloc] initWithDelegate:self context:v4];
+  contextCopy = context;
+  otpFactors = [contextCopy otpFactors];
+  v6 = [[HUUtilityOnboardingOTPSelectionItemManager alloc] initWithDelegate:self context:contextCopy];
   v7 = [[HUUtilityOnboardingOTPSelectionTableViewController alloc] initWithItemManager:v6];
   [(HUUtilityOnboardingOTPSelectionViewController *)self setTableView:v7];
 
-  if ([v5 count] > 1)
+  if ([otpFactors count] > 1)
   {
     v8 = @"HUUtilityOnboardingOTPSelectionDetail";
 LABEL_7:
@@ -27,9 +27,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [v5 na_firstObjectPassingTest:&__block_literal_global_43];
+  v9 = [otpFactors na_firstObjectPassingTest:&__block_literal_global_43];
 
-  v10 = [v5 na_firstObjectPassingTest:&__block_literal_global_88];
+  v10 = [otpFactors na_firstObjectPassingTest:&__block_literal_global_88];
 
   if (v9)
   {
@@ -45,14 +45,14 @@ LABEL_7:
 
 LABEL_8:
   v11 = _HULocalizedStringWithDefaultValue(@"HUUtilityOnboardingOTPSelectionTitle", @"HUUtilityOnboardingOTPSelectionTitle", 1);
-  v12 = [(HUUtilityOnboardingOTPSelectionViewController *)self tableView];
+  tableView = [(HUUtilityOnboardingOTPSelectionViewController *)self tableView];
   v16.receiver = self;
   v16.super_class = HUUtilityOnboardingOTPSelectionViewController;
-  v13 = [(HUItemTableOBWelcomeController *)&v16 initWithTitle:v11 detailText:v10 icon:0 contentLayout:2 itemTableViewController:v12];
+  v13 = [(HUItemTableOBWelcomeController *)&v16 initWithTitle:v11 detailText:v10 icon:0 contentLayout:2 itemTableViewController:tableView];
 
-  [(HUUtilityOnboardingOTPSelectionViewController *)v13 setContext:v4];
-  v14 = [(HUUtilityOnboardingOTPSelectionViewController *)v13 tableView];
-  [v14 setDelegate:v13];
+  [(HUUtilityOnboardingOTPSelectionViewController *)v13 setContext:contextCopy];
+  tableView2 = [(HUUtilityOnboardingOTPSelectionViewController *)v13 tableView];
+  [tableView2 setDelegate:v13];
 
   return v13;
 }
@@ -78,57 +78,57 @@ uint64_t __65__HUUtilityOnboardingOTPSelectionViewController_initWithContext___b
   v17.receiver = self;
   v17.super_class = HUUtilityOnboardingOTPSelectionViewController;
   [(HUItemTableOBWelcomeController *)&v17 viewDidLoad];
-  v3 = [(HUUtilityOnboardingOTPSelectionViewController *)self headerView];
-  v4 = [v3 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v4 withIDDictionary:&unk_282492DB0];
+  headerView = [(HUUtilityOnboardingOTPSelectionViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492DB0];
 
-  v5 = [MEMORY[0x277D37618] boldButton];
-  [(HUUtilityOnboardingOTPSelectionViewController *)self setContinueButton:v5];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUUtilityOnboardingOTPSelectionViewController *)self setContinueButton:boldButton];
 
-  v6 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  continueButton = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
+  [continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
+  continueButton2 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
   v8 = _HULocalizedStringWithDefaultValue(@"HUUtilityOnboardingOTPSelectionTitle", @"HUUtilityOnboardingOTPSelectionTitle", 1);
-  [v7 setTitle:v8 forState:0];
+  [continueButton2 setTitle:v8 forState:0];
 
-  v9 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
-  [v9 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.OTPSelection.SendCodeButton"];
+  continueButton3 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
+  [continueButton3 setAccessibilityIdentifier:@"Home.OnboardingView.Utility.OTPSelection.SendCodeButton"];
 
-  v10 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
-  [v10 addTarget:self action:sel__sendCode_ forControlEvents:64];
+  continueButton4 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
+  [continueButton4 addTarget:self action:sel__sendCode_ forControlEvents:64];
 
-  v11 = [(HUUtilityOnboardingOTPSelectionViewController *)self buttonTray];
-  v12 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
-  [v11 addButton:v12];
+  buttonTray = [(HUUtilityOnboardingOTPSelectionViewController *)self buttonTray];
+  continueButton5 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
+  [buttonTray addButton:continueButton5];
 
-  v13 = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
-  v14 = [v13 utilityID];
-  v15 = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
-  v16 = [v15 otpFactors];
-  +[HUHomeEnergyAnalyticsHelper sendUtilityOTPMethodSelectionSheetViewEventWithUtilityID:numOfMethods:](HUHomeEnergyAnalyticsHelper, "sendUtilityOTPMethodSelectionSheetViewEventWithUtilityID:numOfMethods:", v14, [v16 count]);
+  context = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
+  utilityID = [context utilityID];
+  context2 = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
+  otpFactors = [context2 otpFactors];
+  +[HUHomeEnergyAnalyticsHelper sendUtilityOTPMethodSelectionSheetViewEventWithUtilityID:numOfMethods:](HUHomeEnergyAnalyticsHelper, "sendUtilityOTPMethodSelectionSheetViewEventWithUtilityID:numOfMethods:", utilityID, [otpFactors count]);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v5 = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
-  v4 = [(HUUtilityOnboardingOTPSelectionViewController *)self headerView];
-  [v5 updateIconWithHeaderView:v4 axID:@"Home.OnboardingView.Utility.OTPSelection.Icon"];
+  context = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
+  headerView = [(HUUtilityOnboardingOTPSelectionViewController *)self headerView];
+  [context updateIconWithHeaderView:headerView axID:@"Home.OnboardingView.Utility.OTPSelection.Icon"];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v11 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = HUUtilityOnboardingOTPSelectionViewController;
-  [(OBBaseWelcomeController *)&v6 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v6 viewWillDisappear:disappear];
   if ([(HUUtilityOnboardingOTPSelectionViewController *)self isMovingFromParentViewController])
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2080;
       v10 = "[HUUtilityOnboardingOTPSelectionViewController viewWillDisappear:]";
       _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped BACK button", buf, 0x16u);
@@ -136,8 +136,8 @@ uint64_t __65__HUUtilityOnboardingOTPSelectionViewController_initWithContext___b
 
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      v5 = [(HUUtilityOnboardingOTPSelectionViewController *)self delegate];
-      [v5 viewControllerDidGoBack:self];
+      delegate = [(HUUtilityOnboardingOTPSelectionViewController *)self delegate];
+      [delegate viewControllerDidGoBack:self];
     }
   }
 }
@@ -150,8 +150,8 @@ uint64_t __65__HUUtilityOnboardingOTPSelectionViewController_initWithContext___b
   v6[3] = &unk_277DB7580;
   v6[4] = self;
   v2 = [MEMORY[0x277D2C900] futureWithBlock:v6];
-  v3 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v4 = [v2 reschedule:v3];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v4 = [v2 reschedule:mainThreadScheduler];
 
   return v4;
 }
@@ -211,16 +211,16 @@ void __60__HUUtilityOnboardingOTPSelectionViewController__requestOTP__block_invo
   }
 }
 
-- (void)_sendCode:(id)a3
+- (void)_sendCode:(id)code
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  codeCopy = code;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
+    continueButton = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
     v7 = @"Cancel";
-    if (v6 == v4)
+    if (continueButton == codeCopy)
     {
       v7 = @"Send";
     }
@@ -238,31 +238,31 @@ void __60__HUUtilityOnboardingOTPSelectionViewController__requestOTP__block_invo
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v21 = 13;
-  v8 = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
-  v9 = [(HUUtilityOnboardingOTPSelectionViewController *)self selectedOTPMethod];
-  [v8 setSelectedOTPMethodWithFactor:v9];
+  context = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
+  selectedOTPMethod = [(HUUtilityOnboardingOTPSelectionViewController *)self selectedOTPMethod];
+  [context setSelectedOTPMethodWithFactor:selectedOTPMethod];
 
-  v10 = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
-  v11 = [v10 utilityID];
-  v12 = [(HUUtilityOnboardingOTPSelectionViewController *)self selectedOTPMethod];
-  v13 = [v12 latestResults];
-  v14 = [v13 objectForKeyedSubscript:@"factor-type"];
-  [HUHomeEnergyAnalyticsHelper sendUtilityOTPMethodSelectedByUserEventWithUtilityID:v11 selectedOTPMethod:v14];
+  context2 = [(HUUtilityOnboardingOTPSelectionViewController *)self context];
+  utilityID = [context2 utilityID];
+  selectedOTPMethod2 = [(HUUtilityOnboardingOTPSelectionViewController *)self selectedOTPMethod];
+  latestResults = [selectedOTPMethod2 latestResults];
+  v14 = [latestResults objectForKeyedSubscript:@"factor-type"];
+  [HUHomeEnergyAnalyticsHelper sendUtilityOTPMethodSelectedByUserEventWithUtilityID:utilityID selectedOTPMethod:v14];
 
-  v15 = [(OBBaseWelcomeController *)self navigationItem];
-  [v15 setHidesBackButton:1];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v16 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
-  [v16 showsBusyIndicator];
+  continueButton2 = [(HUUtilityOnboardingOTPSelectionViewController *)self continueButton];
+  [continueButton2 showsBusyIndicator];
 
-  v17 = [(HUUtilityOnboardingOTPSelectionViewController *)self _requestOTP];
+  _requestOTP = [(HUUtilityOnboardingOTPSelectionViewController *)self _requestOTP];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __59__HUUtilityOnboardingOTPSelectionViewController__sendCode___block_invoke;
   v19[3] = &unk_277DB9C80;
   v19[4] = self;
   v19[5] = buf;
-  v18 = [v17 addCompletionBlock:v19];
+  v18 = [_requestOTP addCompletionBlock:v19];
 
   _Block_object_dispose(buf, 8);
 }
@@ -354,23 +354,23 @@ void __59__HUUtilityOnboardingOTPSelectionViewController__sendCode___block_invok
   [v20 viewController:*(a1 + 32) didFinishWithConfigurationResults:v8];
 }
 
-- (void)tableView:(id)a3 didSelectOTPMethod:(id)a4
+- (void)tableView:(id)view didSelectOTPMethod:(id)method
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  methodCopy = method;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412802;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[HUUtilityOnboardingOTPSelectionViewController tableView:didSelectOTPMethod:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = methodCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%s SELECTED METHOD: %@", &v7, 0x20u);
   }
 
-  [(HUUtilityOnboardingOTPSelectionViewController *)self setSelectedOTPMethod:v5];
+  [(HUUtilityOnboardingOTPSelectionViewController *)self setSelectedOTPMethod:methodCopy];
 }
 
 - (HUConfigurationViewControllerDelegate)delegate

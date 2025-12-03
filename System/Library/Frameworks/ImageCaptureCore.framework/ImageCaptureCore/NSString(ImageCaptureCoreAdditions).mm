@@ -25,8 +25,8 @@
 - (id)asciiString
 {
   v2 = [MEMORY[0x1E696AB08] characterSetWithRange:{0, 128}];
-  v3 = [v2 invertedSet];
-  v4 = [a1 componentsSeparatedByCharactersInSet:v3];
+  invertedSet = [v2 invertedSet];
+  v4 = [self componentsSeparatedByCharactersInSet:invertedSet];
   v5 = [v4 componentsJoinedByString:@" "];
 
   if ([v5 length])

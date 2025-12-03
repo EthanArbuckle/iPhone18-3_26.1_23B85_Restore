@@ -1,14 +1,14 @@
 @interface PMLAWDSessionTrackerMock
-- (PMLAWDSessionTrackerMock)initWithModel:(id)a3;
+- (PMLAWDSessionTrackerMock)initWithModel:(id)model;
 @end
 
 @implementation PMLAWDSessionTrackerMock
 
-- (PMLAWDSessionTrackerMock)initWithModel:(id)a3
+- (PMLAWDSessionTrackerMock)initWithModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = PMLAWDSessionTrackerMock;
-  v3 = [(PMLAWDBaseTracker *)&v7 initWithModel:a3];
+  v3 = [(PMLAWDBaseTracker *)&v7 initWithModel:model];
   if (v3)
   {
     v4 = objc_opt_new();

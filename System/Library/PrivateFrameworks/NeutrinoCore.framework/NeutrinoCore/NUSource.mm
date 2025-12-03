@@ -1,24 +1,24 @@
 @interface NUSource
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSource:(id)source;
 - (BOOL)isResolved;
-- (BOOL)resolve:(id)a3 error:(id *)a4;
+- (BOOL)resolve:(id)resolve error:(id *)error;
 - (NSString)description;
 - (NUSource)init;
-- (NUSource)initWithIdentifier:(id)a3;
-- (NUSource)initWithSourceSchema:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NUSource)initWithIdentifier:(id)identifier;
+- (NUSource)initWithSourceSchema:(id)schema;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation NUSource
 
-- (BOOL)resolve:(id)a3 error:(id *)a4
+- (BOOL)resolve:(id)resolve error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  resolveCopy = resolve;
+  if (!resolveCopy)
   {
     v11 = NUAssertLogger_9314();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -39,8 +39,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
@@ -51,8 +51,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -61,49 +61,49 @@
     _NUAssertFailHandler("[NUSource resolve:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 496, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "resolver != nil");
   }
 
-  v7 = v6;
+  v7 = resolveCopy;
   if (![(NUSource *)self isResolved])
   {
-    v8 = [v7 resolveSource:self error:a4];
+    v8 = [v7 resolveSource:self error:error];
     [(NUSource *)self setDefinition:v8];
   }
 
-  v9 = [(NUSource *)self isResolved];
+  isResolved = [(NUSource *)self isResolved];
 
-  return v9;
+  return isResolved;
 }
 
 - (BOOL)isResolved
 {
-  v2 = [(NUSource *)self definition];
-  v3 = v2 != 0;
+  definition = [(NUSource *)self definition];
+  v3 = definition != 0;
 
   return v3;
 }
 
-- (BOOL)isEqualToSource:(id)a3
+- (BOOL)isEqualToSource:(id)source
 {
-  v4 = a3;
-  v5 = [(NUSource *)self identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqualToIdentifier:v6];
+  sourceCopy = source;
+  identifier = [(NUSource *)self identifier];
+  identifier2 = [sourceCopy identifier];
+  v7 = [identifier isEqualToIdentifier:identifier2];
 
-  if (v7 && (-[NUSource assetIdentifier](self, "assetIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), [v4 assetIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
+  if (v7 && (-[NUSource assetIdentifier](self, "assetIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), [sourceCopy assetIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqual:", v9), v9, v8, v10))
   {
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 1;
-    v11 = [(NUSource *)self schema];
-    v12 = [v11 settings];
+    schema = [(NUSource *)self schema];
+    settings = [schema settings];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __28__NUSource_isEqualToSource___block_invoke;
     v15[3] = &unk_1E810A8D0;
     v15[4] = self;
-    v16 = v4;
+    v16 = sourceCopy;
     v17 = &v18;
-    [v12 enumerateKeysAndObjectsUsingBlock:v15];
+    [settings enumerateKeysAndObjectsUsingBlock:v15];
 
     v13 = *(v19 + 24);
     _Block_object_dispose(&v18, 8);
@@ -167,22 +167,22 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSource *)self isEqualToSource:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSource *)self isEqualToSource:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NUSource *)self identifier];
-  v4 = 0x192B6B3B458B45 * [v3 hash];
+  identifier = [(NUSource *)self identifier];
+  v4 = 0x192B6B3B458B45 * [identifier hash];
 
-  v5 = [(NUSource *)self assetIdentifier];
-  v6 = 0xA084B4AF59895 * [v5 hash];
+  assetIdentifier = [(NUSource *)self assetIdentifier];
+  v6 = 0xA084B4AF59895 * [assetIdentifier hash];
 
   return v6 ^ v4;
 }
@@ -191,18 +191,18 @@ LABEL_11:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUSource *)self identifier];
-  v6 = [(NUSource *)self assetIdentifier];
-  v7 = [(NUSource *)self settings];
-  v8 = [(NUSource *)self definition];
-  v9 = [v3 stringWithFormat:@"<%@:%p id=%@ assetIdentifier=%@ settings=%@ definition=%@>", v4, self, v5, v6, v7, v8];
+  identifier = [(NUSource *)self identifier];
+  assetIdentifier = [(NUSource *)self assetIdentifier];
+  settings = [(NUSource *)self settings];
+  definition = [(NUSource *)self definition];
+  v9 = [v3 stringWithFormat:@"<%@:%p id=%@ assetIdentifier=%@ settings=%@ definition=%@>", v4, self, identifier, assetIdentifier, settings, definition];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   objc_storeStrong((v4 + 16), self->_schema);
   v5 = [(NSString *)self->_assetIdentifier copy];
   v6 = *(v4 + 24);
@@ -216,25 +216,25 @@ LABEL_11:
   return v4;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   settings = self->_settings;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)settings setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)settings setObject:value forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)settings removeObjectForKey:a4];
+    [(NSMutableDictionary *)settings removeObjectForKey:key];
   }
 }
 
-- (NUSource)initWithIdentifier:(id)a3
+- (NUSource)initWithIdentifier:(id)identifier
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v10 = NUAssertLogger_9314();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -255,8 +255,8 @@ LABEL_11:
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v32 callStackSymbols];
+        v35 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v31;
         v60 = 2114;
@@ -267,8 +267,8 @@ LABEL_11:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -277,7 +277,7 @@ LABEL_11:
     _NUAssertFailHandler("[NUSource initWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 401, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "identifier != nil");
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v6 = +[NUSchemaRegistry sharedRegistry];
   v7 = [v6 schemaWithIdentifier:v5];
 
@@ -302,8 +302,8 @@ LABEL_11:
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v41 callStackSymbols];
+        v44 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v40;
         v60 = 2114;
@@ -314,8 +314,8 @@ LABEL_11:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -345,8 +345,8 @@ LABEL_11:
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v50 callStackSymbols];
+        v53 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v49;
         v60 = 2114;
@@ -357,8 +357,8 @@ LABEL_11:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -372,11 +372,11 @@ LABEL_11:
   return v8;
 }
 
-- (NUSource)initWithSourceSchema:(id)a3
+- (NUSource)initWithSourceSchema:(id)schema
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  schemaCopy = schema;
+  if (!schemaCopy)
   {
     v14 = NUAssertLogger_9314();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -397,8 +397,8 @@ LABEL_11:
         v21 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v32 = v21;
         v33 = 2114;
@@ -409,8 +409,8 @@ LABEL_11:
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -419,7 +419,7 @@ LABEL_11:
     _NUAssertFailHandler("[NUSource initWithSourceSchema:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUSource.m", 393, @"Invalid parameter not satisfying: %s", v26, v27, v28, v29, "sourceSchema != nil");
   }
 
-  v5 = v4;
+  v5 = schemaCopy;
   v30.receiver = self;
   v30.super_class = NUSource;
   v6 = [(NUSource *)&v30 init];
@@ -428,8 +428,8 @@ LABEL_11:
   v8 = v5;
 
   v9 = objc_alloc(MEMORY[0x1E695DF90]);
-  v10 = [(NUSourceSchema *)v8 settings];
-  v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count")}];
+  settings = [(NUSourceSchema *)v8 settings];
+  v11 = [v9 initWithCapacity:{objc_msgSend(settings, "count")}];
   settings = v6->_settings;
   v6->_settings = v11;
 

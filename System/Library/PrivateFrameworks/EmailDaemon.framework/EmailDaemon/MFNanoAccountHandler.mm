@@ -1,38 +1,38 @@
 @interface MFNanoAccountHandler
-- (MFNanoAccountHandler)initWithExecutionQueue:(id)a3 syncProvider:(id)a4;
+- (MFNanoAccountHandler)initWithExecutionQueue:(id)queue syncProvider:(id)provider;
 - (NSArray)activeAccounts;
-- (id)_nanoMailboxesFromMailAccount:(id)a3;
-- (id)accountWithId:(id)a3;
+- (id)_nanoMailboxesFromMailAccount:(id)account;
+- (id)accountWithId:(id)id;
 - (id)favoriteMailboxUidList;
-- (id)nanoAccountFromMailAccount:(id)a3;
-- (void)_accountsChanged:(id)a3;
+- (id)nanoAccountFromMailAccount:(id)account;
+- (void)_accountsChanged:(id)changed;
 - (void)_addObservers;
 - (void)_checkIfSettingsChanged;
 - (void)_handleAccountEmailTokenHasChanged;
 - (void)_handleImportantBridgeSettingHasChanged;
 - (void)_handleNewAccountIdentityAvailable;
 - (void)_notifyFavoritesManagerSelectedMailboxesChanged;
-- (void)_settingsChanged:(id)a3;
+- (void)_settingsChanged:(id)changed;
 - (void)dealloc;
 - (void)handleWatchAccountsUpdated;
-- (void)notifyAuthenticationFailedForAccount:(id)a3;
-- (void)updateBridgeSettingsWithMailboxSelection:(id)a3;
+- (void)notifyAuthenticationFailedForAccount:(id)account;
+- (void)updateBridgeSettingsWithMailboxSelection:(id)selection;
 @end
 
 @implementation MFNanoAccountHandler
 
-- (MFNanoAccountHandler)initWithExecutionQueue:(id)a3 syncProvider:(id)a4
+- (MFNanoAccountHandler)initWithExecutionQueue:(id)queue syncProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = MFNanoAccountHandler;
   v9 = [(MFNanoAccountHandler *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_executionQueue, a3);
-    objc_storeStrong(&v10->_syncProvider, a4);
+    objc_storeStrong(&v9->_executionQueue, queue);
+    objc_storeStrong(&v10->_syncProvider, provider);
     [(MFNanoAccountHandler *)v10 _checkIfSettingsChanged];
     [(MFNanoAccountHandler *)v10 _addObservers];
     [(MFNanoAccountHandler *)v10 _handleNewAccountIdentityAvailable];
@@ -47,12 +47,12 @@
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 addObserver:self selector:"_accountsChanged:" name:ECMailAccountsDidChangeNotification object:0];
   v3 = +[PDRRegistry sharedInstance];
-  v4 = [v3 devices];
-  v5 = [v4 active];
-  v6 = [v5 notAltAccount];
-  v7 = [v6 final];
+  devices = [v3 devices];
+  active = [devices active];
+  notAltAccount = [active notAltAccount];
+  final = [notAltAccount final];
 
-  if ([v7 supportsCapability:3634739697])
+  if ([final supportsCapability:3634739697])
   {
     [v9 addObserver:self selector:"_accountsChanged:" name:AccountMailboxListingDidChange object:0];
   }
@@ -76,9 +76,9 @@
   [(MFNanoAccountHandler *)&v4 dealloc];
 }
 
-- (id)accountWithId:(id)a3
+- (id)accountWithId:(id)id
 {
-  v4 = [MailAccount accountWithUniqueId:a3];
+  v4 = [MailAccount accountWithUniqueId:id];
   v5 = [(MFNanoAccountHandler *)self nanoAccountFromMailAccount:v4];
 
   return v5;
@@ -130,15 +130,15 @@
 
 - (void)handleWatchAccountsUpdated
 {
-  v2 = [(MFNanoAccountHandler *)self syncProvider];
-  v17 = [v2 watchAccounts];
+  syncProvider = [(MFNanoAccountHandler *)self syncProvider];
+  watchAccounts = [syncProvider watchAccounts];
 
   v3 = +[NSMutableDictionary dictionary];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = v17;
+  v4 = watchAccounts;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v5)
   {
@@ -154,18 +154,18 @@
 
         v8 = *(*(&v18 + 1) + 8 * i);
         v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 standaloneState]);
-        v10 = [v8 localId];
-        [v3 setObject:v9 forKeyedSubscript:v10];
+        localId = [v8 localId];
+        [v3 setObject:v9 forKeyedSubscript:localId];
 
         v11 = MFLogGeneral();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v8 localId];
-          v13 = [v8 standaloneState];
+          localId2 = [v8 localId];
+          standaloneState = [v8 standaloneState];
           *buf = 138543618;
-          v23 = v12;
+          v23 = localId2;
           v24 = 2048;
-          v25 = v13;
+          v25 = standaloneState;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "#Nano Account %{public}@, State: %lu", buf, 0x16u);
         }
       }
@@ -190,11 +190,11 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"MFNanoWatchAccountStatusChanged", 0, 0, 1u);
 }
 
-- (void)notifyAuthenticationFailedForAccount:(id)a3
+- (void)notifyAuthenticationFailedForAccount:(id)account
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 localId], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  accountCopy = account;
+  v4 = accountCopy;
+  if (accountCopy && ([accountCopy localId], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = MFLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -205,8 +205,8 @@
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     v11 = @"MFNanoWatchAuthenticationFailedAccountIdDarwinNotificationUserInfoKey";
-    v8 = [v4 localId];
-    v12 = v8;
+    localId = [v4 localId];
+    v12 = localId;
     v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"MFNanoWatchAuthenticationFailedDarwinNotification", v9, 0, 1u);
@@ -222,16 +222,16 @@
   }
 }
 
-- (void)updateBridgeSettingsWithMailboxSelection:(id)a3
+- (void)updateBridgeSettingsWithMailboxSelection:(id)selection
 {
-  v5 = a3;
+  selectionCopy = selection;
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v4 setUpdateMailboxSelection:v5];
+  [v4 setUpdateMailboxSelection:selectionCopy];
 
   [(MFNanoAccountHandler *)self _notifyFavoritesManagerSelectedMailboxesChanged];
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
   executionQueue = self->_executionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -242,55 +242,55 @@
   dispatch_async(executionQueue, block);
 }
 
-- (void)_settingsChanged:(id)a3
+- (void)_settingsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   executionQueue = self->_executionQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007B2EC;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(executionQueue, v7);
 }
 
-- (id)nanoAccountFromMailAccount:(id)a3
+- (id)nanoAccountFromMailAccount:(id)account
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  accountCopy = account;
+  v5 = accountCopy;
+  if (accountCopy)
   {
-    v6 = [v4 nano_account];
+    nano_account = [accountCopy nano_account];
     v7 = [(MFNanoAccountHandler *)self _nanoMailboxesFromMailAccount:v5];
-    [v6 setMailboxes:v7];
+    [nano_account setMailboxes:v7];
   }
 
   else
   {
-    v6 = 0;
+    nano_account = 0;
   }
 
-  return v6;
+  return nano_account;
 }
 
-- (id)_nanoMailboxesFromMailAccount:(id)a3
+- (id)_nanoMailboxesFromMailAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v5 = [v4 bridgeSettingsMailboxSelection];
+  bridgeSettingsMailboxSelection = [v4 bridgeSettingsMailboxSelection];
 
-  v6 = [v3 allMailboxUids];
+  allMailboxUids = [accountCopy allMailboxUids];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10007B62C;
   v11[3] = &unk_100159550;
-  v7 = v3;
+  v7 = accountCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = bridgeSettingsMailboxSelection;
   v13 = v8;
-  v9 = [v6 ef_map:v11];
+  v9 = [allMailboxUids ef_map:v11];
 
   return v9;
 }
@@ -300,11 +300,11 @@
   if ([(NNMKSyncProvider *)self->_syncProvider isPaired])
   {
     v3 = [NNMKMailboxSelection alloc];
-    v4 = [(MFNanoAccountHandler *)self activeAccounts];
-    v8 = [v3 initWithAccounts:v4];
+    activeAccounts = [(MFNanoAccountHandler *)self activeAccounts];
+    v8 = [v3 initWithAccounts:activeAccounts];
 
-    v5 = [(NNMKSyncProvider *)self->_syncProvider mailboxSelection];
-    LOBYTE(v3) = [v8 isEqual:v5];
+    mailboxSelection = [(NNMKSyncProvider *)self->_syncProvider mailboxSelection];
+    LOBYTE(v3) = [v8 isEqual:mailboxSelection];
 
     if ((v3 & 1) == 0)
     {
@@ -313,11 +313,11 @@
     }
 
     v6 = +[MFNanoBridgeSettingsManager sharedInstance];
-    v7 = [v6 organizeByThread];
+    organizeByThread = [v6 organizeByThread];
 
-    if (v7 != [(NNMKSyncProvider *)self->_syncProvider organizeByThread])
+    if (organizeByThread != [(NNMKSyncProvider *)self->_syncProvider organizeByThread])
     {
-      [(NNMKSyncProvider *)self->_syncProvider setOrganizeByThread:v7];
+      [(NNMKSyncProvider *)self->_syncProvider setOrganizeByThread:organizeByThread];
     }
   }
 }
@@ -332,10 +332,10 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(NNMKSyncProvider *)self->_syncProvider mailboxSelection];
-    v6 = [v5 allMailboxesSyncEnabled];
+    mailboxSelection = [(NNMKSyncProvider *)self->_syncProvider mailboxSelection];
+    allMailboxesSyncEnabled = [mailboxSelection allMailboxesSyncEnabled];
 
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v7 = [allMailboxesSyncEnabled countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = *v20;
@@ -345,28 +345,28 @@
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allMailboxesSyncEnabled);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
-          v11 = [v10 accountId];
-          v12 = [v4 objectForKeyedSubscript:v11];
+          accountId = [v10 accountId];
+          v12 = [v4 objectForKeyedSubscript:accountId];
 
           if (!v12)
           {
-            v13 = [v10 accountId];
-            v12 = [MailAccount accountWithUniqueId:v13];
+            accountId2 = [v10 accountId];
+            v12 = [MailAccount accountWithUniqueId:accountId2];
 
             if (v12)
             {
-              v14 = [v10 accountId];
-              [v4 setObject:v12 forKeyedSubscript:v14];
+              accountId3 = [v10 accountId];
+              [v4 setObject:v12 forKeyedSubscript:accountId3];
             }
           }
 
           v15 = [v10 url];
-          v16 = [v15 absoluteString];
-          v17 = [v12 mailboxUidForURL:v16];
+          absoluteString = [v15 absoluteString];
+          v17 = [v12 mailboxUidForURL:absoluteString];
 
           if (v17)
           {
@@ -374,7 +374,7 @@
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [allMailboxesSyncEnabled countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v7);

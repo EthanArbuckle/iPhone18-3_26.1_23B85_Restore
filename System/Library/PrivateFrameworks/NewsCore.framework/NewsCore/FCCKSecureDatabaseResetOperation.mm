@@ -8,7 +8,7 @@
 - (id)_recreateZones;
 - (id)_restoreSecureSentinel;
 - (id)_restoreZoneContents;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -32,9 +32,9 @@
 - (BOOL)validateOperation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(FCCKSecureDatabaseResetOperation *)self database];
+  database = [(FCCKSecureDatabaseResetOperation *)self database];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!database && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"zone reset operation requires a private database"];
     v11 = 136315906;
@@ -48,8 +48,8 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v11, 0x26u);
   }
 
-  v4 = [(FCCKSecureDatabaseResetOperation *)self database];
-  if (v4 && (v5 = v4[5], v4, v5 > 0))
+  database2 = [(FCCKSecureDatabaseResetOperation *)self database];
+  if (database2 && (v5 = database2[5], database2, v5 > 0))
   {
     v6 = 1;
   }
@@ -73,7 +73,7 @@
     v6 = 0;
   }
 
-  if (v3)
+  if (database)
   {
     result = v6;
   }
@@ -132,15 +132,15 @@
   v12 = [v10 errorOn:v11 error:v14];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FCCKSecureDatabaseResetOperation *)self resetCompletionHandler];
+  errorCopy = error;
+  resetCompletionHandler = [(FCCKSecureDatabaseResetOperation *)self resetCompletionHandler];
 
-  if (v4)
+  if (resetCompletionHandler)
   {
-    v5 = [(FCCKSecureDatabaseResetOperation *)self resetCompletionHandler];
-    (v5)[2](v5, v6);
+    resetCompletionHandler2 = [(FCCKSecureDatabaseResetOperation *)self resetCompletionHandler];
+    (resetCompletionHandler2)[2](resetCompletionHandler2, errorCopy);
   }
 }
 
@@ -154,15 +154,15 @@
     v6[2] = __48__FCCKSecureDatabaseResetOperation__deleteZones__block_invoke_2;
     v6[3] = &unk_1E7C39ED0;
     v6[4] = self;
-    v4 = [v3 initWithResolver:v6];
+    asVoid = [v3 initWithResolver:v6];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B68F8] asVoid];
+    asVoid = [MEMORY[0x1E69B68F8] asVoid];
   }
 
-  return v4;
+  return asVoid;
 }
 
 void __48__FCCKSecureDatabaseResetOperation__deleteZones__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -221,15 +221,15 @@ void __48__FCCKSecureDatabaseResetOperation__deleteZones__block_invoke_3(uint64_
     v6[2] = __50__FCCKSecureDatabaseResetOperation__recreateZones__block_invoke_2;
     v6[3] = &unk_1E7C39ED0;
     v6[4] = self;
-    v4 = [v3 initWithResolver:v6];
+    asVoid = [v3 initWithResolver:v6];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B68F8] asVoid];
+    asVoid = [MEMORY[0x1E69B68F8] asVoid];
   }
 
-  return v4;
+  return asVoid;
 }
 
 void __50__FCCKSecureDatabaseResetOperation__recreateZones__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -282,15 +282,15 @@ uint64_t __50__FCCKSecureDatabaseResetOperation__recreateZones__block_invoke_3(u
     v6[2] = __58__FCCKSecureDatabaseResetOperation__restoreSecureSentinel__block_invoke_2;
     v6[3] = &unk_1E7C39ED0;
     v6[4] = self;
-    v4 = [v3 initWithResolver:v6];
+    asVoid = [v3 initWithResolver:v6];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B68F8] asVoid];
+    asVoid = [MEMORY[0x1E69B68F8] asVoid];
   }
 
-  return v4;
+  return asVoid;
 }
 
 void __58__FCCKSecureDatabaseResetOperation__restoreSecureSentinel__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -359,15 +359,15 @@ uint64_t __58__FCCKSecureDatabaseResetOperation__restoreSecureSentinel__block_in
     v6[2] = __56__FCCKSecureDatabaseResetOperation__restoreZoneContents__block_invoke_2;
     v6[3] = &unk_1E7C39ED0;
     v6[4] = self;
-    v4 = [v3 initWithResolver:v6];
+    asVoid = [v3 initWithResolver:v6];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B68F8] asVoid];
+    asVoid = [MEMORY[0x1E69B68F8] asVoid];
   }
 
-  return v4;
+  return asVoid;
 }
 
 void __56__FCCKSecureDatabaseResetOperation__restoreZoneContents__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -411,14 +411,14 @@ uint64_t __56__FCCKSecureDatabaseResetOperation__restoreZoneContents__block_invo
 
 - (id)_rawZoneIDsToDelete
 {
-  v3 = [(FCCKSecureDatabaseResetOperation *)self database];
-  v4 = [(FCCKPrivateDatabase *)v3 zoneIDsUsingSecureContainer];
+  database = [(FCCKSecureDatabaseResetOperation *)self database];
+  zoneIDsUsingSecureContainer = [(FCCKPrivateDatabase *)database zoneIDsUsingSecureContainer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__FCCKSecureDatabaseResetOperation__rawZoneIDsToDelete__block_invoke;
   v7[3] = &unk_1E7C3FAE8;
   v7[4] = self;
-  v5 = [v4 fc_arrayByTransformingWithBlock:v7];
+  v5 = [zoneIDsUsingSecureContainer fc_arrayByTransformingWithBlock:v7];
 
   return v5;
 }
@@ -445,8 +445,8 @@ id __55__FCCKSecureDatabaseResetOperation__rawZoneIDsToDelete__block_invoke(uint
 
 - (id)_rawZonesToRecreate
 {
-  v2 = [(FCCKSecureDatabaseResetOperation *)self _rawZoneIDsToDelete];
-  v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_26_1];
+  _rawZoneIDsToDelete = [(FCCKSecureDatabaseResetOperation *)self _rawZoneIDsToDelete];
+  v3 = [_rawZoneIDsToDelete fc_arrayByTransformingWithBlock:&__block_literal_global_26_1];
 
   return v3;
 }

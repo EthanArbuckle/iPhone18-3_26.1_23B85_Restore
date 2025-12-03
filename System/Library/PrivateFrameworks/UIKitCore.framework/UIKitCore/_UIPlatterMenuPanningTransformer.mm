@@ -1,5 +1,5 @@
 @interface _UIPlatterMenuPanningTransformer
-+ (_UIPlatterMenuPanningTransformer)transformerWithAxisTransitionZonePosition:(CGPoint)a3 axisTransitionZoneSize:(CGSize)a4;
++ (_UIPlatterMenuPanningTransformer)transformerWithAxisTransitionZonePosition:(CGPoint)position axisTransitionZoneSize:(CGSize)size;
 - (CGPoint)lastDirectionChangeTouchPosition;
 - (CGPoint)lastTouchPosition;
 - (CGPoint)lastTransformedPoint;
@@ -10,22 +10,22 @@
 - (CGVector)lastOffset;
 - (CGVector)offset;
 - (CGVector)velocity;
-- (_UIPlatterMenuPanningTransformer)initWithAxisTransitionZonePosition:(CGPoint)a3 axisTransitionZoneSize:(CGSize)a4;
+- (_UIPlatterMenuPanningTransformer)initWithAxisTransitionZonePosition:(CGPoint)position axisTransitionZoneSize:(CGSize)size;
 - (_UIPlatterMenuPanningTransformerDelegate)delegate;
 - (double)timeIntervalSinceLastDirectionChange;
-- (void)didBeginPanningWithTouchPosition:(CGPoint)a3 currentTransformedPosition:(CGPoint)a4;
-- (void)didEndPanningWithTouchPosition:(CGPoint)a3 currentTransformedPosition:(CGPoint)a4;
-- (void)didPanWithTouchPosition:(CGPoint)a3 currentTransformedPosition:(CGPoint)a4;
+- (void)didBeginPanningWithTouchPosition:(CGPoint)position currentTransformedPosition:(CGPoint)transformedPosition;
+- (void)didEndPanningWithTouchPosition:(CGPoint)position currentTransformedPosition:(CGPoint)transformedPosition;
+- (void)didPanWithTouchPosition:(CGPoint)position currentTransformedPosition:(CGPoint)transformedPosition;
 @end
 
 @implementation _UIPlatterMenuPanningTransformer
 
-- (_UIPlatterMenuPanningTransformer)initWithAxisTransitionZonePosition:(CGPoint)a3 axisTransitionZoneSize:(CGSize)a4
+- (_UIPlatterMenuPanningTransformer)initWithAxisTransitionZonePosition:(CGPoint)position axisTransitionZoneSize:(CGSize)size
 {
-  height = a4.height;
-  y = a3.y;
-  width = a4.width;
-  x = a3.x;
+  height = size.height;
+  y = position.y;
+  width = size.width;
+  x = position.x;
   v20.receiver = self;
   v20.super_class = _UIPlatterMenuPanningTransformer;
   v5 = [(_UIPlatterMenuPanningTransformer *)&v20 init];
@@ -54,25 +54,25 @@
   return v6;
 }
 
-+ (_UIPlatterMenuPanningTransformer)transformerWithAxisTransitionZonePosition:(CGPoint)a3 axisTransitionZoneSize:(CGSize)a4
++ (_UIPlatterMenuPanningTransformer)transformerWithAxisTransitionZonePosition:(CGPoint)position axisTransitionZoneSize:(CGSize)size
 {
-  v4 = [[a1 alloc] initWithAxisTransitionZonePosition:a3.x axisTransitionZoneSize:{a3.y, a4.width, a4.height}];
+  v4 = [[self alloc] initWithAxisTransitionZonePosition:position.x axisTransitionZoneSize:{position.y, size.width, size.height}];
 
   return v4;
 }
 
 - (double)timeIntervalSinceLastDirectionChange
 {
-  v3 = [(_UIPlatterMenuPanningTransformer *)self timeForLastDirectionalChange];
+  timeForLastDirectionalChange = [(_UIPlatterMenuPanningTransformer *)self timeForLastDirectionalChange];
 
-  if (!v3)
+  if (!timeForLastDirectionalChange)
   {
     return 0.0;
   }
 
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [(_UIPlatterMenuPanningTransformer *)self timeForLastDirectionalChange];
-  [v4 timeIntervalSinceDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  timeForLastDirectionalChange2 = [(_UIPlatterMenuPanningTransformer *)self timeForLastDirectionalChange];
+  [date timeIntervalSinceDate:timeForLastDirectionalChange2];
   v7 = v6;
 
   return v7;
@@ -112,8 +112,8 @@
 
 - (CGVector)velocity
 {
-  v2 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-  [v2 velocity];
+  velocityIntegrator = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+  [velocityIntegrator velocity];
   v4 = v3;
   v6 = v5;
 
@@ -124,42 +124,42 @@
   return result;
 }
 
-- (void)didBeginPanningWithTouchPosition:(CGPoint)a3 currentTransformedPosition:(CGPoint)a4
+- (void)didBeginPanningWithTouchPosition:(CGPoint)position currentTransformedPosition:(CGPoint)transformedPosition
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = transformedPosition.y;
+  x = transformedPosition.x;
+  v6 = position.y;
+  v7 = position.x;
   [(_UIPlatterMenuPanningTransformer *)self setLastDirectionChangeTouchPosition:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   [(_UIPlatterMenuPanningTransformer *)self setPanBeginTouchPosition:v7, v6];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(_UIPlatterMenuPanningTransformer *)self setPanBeginTime:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  [(_UIPlatterMenuPanningTransformer *)self setPanBeginTime:date];
 
   if ([(_UIPlatterMenuPanningTransformer *)self overrideLockAxis])
   {
     [(_UIPlatterMenuPanningTransformer *)self setAxisLock:[(_UIPlatterMenuPanningTransformer *)self overrideLockAxis]];
   }
 
-  v10 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-  [v10 reset];
+  velocityIntegrator = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+  [velocityIntegrator reset];
 
-  v11 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-  [v11 addSample:{v7, v6}];
+  velocityIntegrator2 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+  [velocityIntegrator2 addSample:{v7, v6}];
 
   [(_UIPlatterMenuPanningTransformer *)self setTimeForLastDirectionalChange:0];
   [(_UIPlatterMenuPanningTransformer *)self setLastTransformedPoint:x, y];
   [(_UIPlatterMenuPanningTransformer *)self setLastTouchPosition:v7, v6];
   [(_UIPlatterMenuPanningTransformer *)self setLastOffset:0.0, 0.0];
-  v12 = [(_UIPlatterMenuPanningTransformer *)self delegate];
-  [v12 panningTransformer:self didBeginPanToTransformedPosition:{x, y}];
+  delegate = [(_UIPlatterMenuPanningTransformer *)self delegate];
+  [delegate panningTransformer:self didBeginPanToTransformedPosition:{x, y}];
 }
 
-- (void)didPanWithTouchPosition:(CGPoint)a3 currentTransformedPosition:(CGPoint)a4
+- (void)didPanWithTouchPosition:(CGPoint)position currentTransformedPosition:(CGPoint)transformedPosition
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = transformedPosition.y;
+  x = transformedPosition.x;
+  v6 = position.y;
+  v7 = position.x;
   [(_UIPlatterMenuPanningTransformer *)self lastTouchPosition];
   v10 = v9;
   [(_UIPlatterMenuPanningTransformer *)self lastTouchPosition];
@@ -170,7 +170,7 @@
   }
 
   v13 = v6 - v12;
-  v14 = [(_UIPlatterMenuPanningTransformer *)self axisLock];
+  axisLock = [(_UIPlatterMenuPanningTransformer *)self axisLock];
   if ([(_UIPlatterMenuPanningTransformer *)self overrideLockAxis])
   {
     goto LABEL_4;
@@ -267,8 +267,8 @@ LABEL_69:
     goto LABEL_80;
   }
 
-  v61 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-  [v61 velocity];
+  velocityIntegrator = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+  [velocityIntegrator velocity];
   v63 = v62;
 
   if (v63 < 0.0)
@@ -308,8 +308,8 @@ LABEL_4:
   [(_UIPlatterMenuPanningTransformer *)self setLastTouchPosition:v7, v6];
   if ([(_UIPlatterMenuPanningTransformer *)self axisLock])
   {
-    v20 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-    [v20 velocity];
+    velocityIntegrator2 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+    [velocityIntegrator2 velocity];
     v22 = v21;
     v24 = v23;
 
@@ -371,50 +371,50 @@ LABEL_4:
     }
 
     [(_UIPlatterMenuPanningTransformer *)self setLastDirectionChangeTouchPosition:v7, v6];
-    v45 = [MEMORY[0x1E695DF00] date];
-    [(_UIPlatterMenuPanningTransformer *)self setTimeForLastDirectionalChange:v45];
+    date = [MEMORY[0x1E695DF00] date];
+    [(_UIPlatterMenuPanningTransformer *)self setTimeForLastDirectionalChange:date];
 
-    v46 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-    [v46 reset];
+    velocityIntegrator3 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+    [velocityIntegrator3 reset];
 
 LABEL_57:
     [(_UIPlatterMenuPanningTransformer *)self setLastOffset:v18, v13];
     [(_UIPlatterMenuPanningTransformer *)self setLastTransformedPoint:v17, v15];
-    v47 = [(_UIPlatterMenuPanningTransformer *)self axisLock];
-    if (v47 != v14)
+    axisLock2 = [(_UIPlatterMenuPanningTransformer *)self axisLock];
+    if (axisLock2 != axisLock)
     {
       [(_UIPlatterMenuPanningTransformer *)self setLastDirectionChangeTouchPosition:v7, v6];
-      v48 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-      [v48 reset];
+      velocityIntegrator4 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+      [velocityIntegrator4 reset];
     }
 
-    v49 = v47 != v14;
-    v50 = [(_UIPlatterMenuPanningTransformer *)self delegate];
-    v51 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-    [v51 velocity];
-    [v50 panningTransformer:self didPanToTransformedPosition:v49 offsetFromPrevious:-[_UIPlatterMenuPanningTransformer axisLock](self touchPosition:"axisLock") velocity:v17 didChangeAxis:v15 axisLock:{v18, v13, v7, v6, v52, v53}];
+    v49 = axisLock2 != axisLock;
+    delegate = [(_UIPlatterMenuPanningTransformer *)self delegate];
+    velocityIntegrator5 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+    [velocityIntegrator5 velocity];
+    [delegate panningTransformer:self didPanToTransformedPosition:v49 offsetFromPrevious:-[_UIPlatterMenuPanningTransformer axisLock](self touchPosition:"axisLock") velocity:v17 didChangeAxis:v15 axisLock:{v18, v13, v7, v6, v52, v53}];
   }
 
-  v65 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-  [v65 addSample:{v7, v6}];
+  velocityIntegrator6 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+  [velocityIntegrator6 addSample:{v7, v6}];
 }
 
-- (void)didEndPanningWithTouchPosition:(CGPoint)a3 currentTransformedPosition:(CGPoint)a4
+- (void)didEndPanningWithTouchPosition:(CGPoint)position currentTransformedPosition:(CGPoint)transformedPosition
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-  [v9 addSample:{v7, v6}];
+  y = transformedPosition.y;
+  x = transformedPosition.x;
+  v6 = position.y;
+  v7 = position.x;
+  velocityIntegrator = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+  [velocityIntegrator addSample:{v7, v6}];
 
-  v17 = [(_UIPlatterMenuPanningTransformer *)self delegate];
+  delegate = [(_UIPlatterMenuPanningTransformer *)self delegate];
   [(_UIPlatterMenuPanningTransformer *)self lastOffset];
   v11 = v10;
   v13 = v12;
-  v14 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
-  [v14 velocity];
-  [v17 panningTransformer:self didEndPanToTransformedPosition:x offsetFromPrevious:y velocity:{v11, v13, v15, v16}];
+  velocityIntegrator2 = [(_UIPlatterMenuPanningTransformer *)self velocityIntegrator];
+  [velocityIntegrator2 velocity];
+  [delegate panningTransformer:self didEndPanToTransformedPosition:x offsetFromPrevious:y velocity:{v11, v13, v15, v16}];
 }
 
 - (_UIPlatterMenuPanningTransformerDelegate)delegate

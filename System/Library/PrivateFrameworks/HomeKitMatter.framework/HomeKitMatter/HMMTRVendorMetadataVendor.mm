@@ -1,12 +1,12 @@
 @interface HMMTRVendorMetadataVendor
-- (BOOL)isEqual:(id)a3;
-- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)a3;
-- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)identifier;
+- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
 - (NSSet)products;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)productWithID:(id)a3 includeInvalids:(BOOL)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)productWithID:(id)d includeInvalids:(BOOL)invalids;
 - (unint64_t)hash;
 @end
 
@@ -14,55 +14,55 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMMTRVendorMetadataVendor *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(HMMTRVendorMetadataVendor *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
-  v7 = [(HMMTRVendorMetadataVendor *)self name];
+  name = [(HMMTRVendorMetadataVendor *)self name];
 
-  if (v7)
+  if (name)
   {
     v8 = objc_alloc(MEMORY[0x277D0F778]);
-    v9 = [(HMMTRVendorMetadataVendor *)self name];
-    v10 = [v8 initWithName:@"Name" value:v9];
-    [v3 addObject:v10];
+    name2 = [(HMMTRVendorMetadataVendor *)self name];
+    v10 = [v8 initWithName:@"Name" value:name2];
+    [array addObject:v10];
   }
 
-  v11 = [(HMMTRVendorMetadataVendor *)self products];
-  v12 = [v11 count];
+  products = [(HMMTRVendorMetadataVendor *)self products];
+  v12 = [products count];
 
   if (v12)
   {
     v13 = objc_alloc(MEMORY[0x277D0F778]);
-    v14 = [(HMMTRVendorMetadataVendor *)self products];
-    v15 = [v13 initWithName:@"Products" value:v14];
-    [v3 addObject:v15];
+    products2 = [(HMMTRVendorMetadataVendor *)self products];
+    v15 = [v13 initWithName:@"Products" value:products2];
+    [array addObject:v15];
   }
 
   v16 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMMTRVendorMetadataVendor *)self invalid];
   v17 = HMFBooleanToString();
   v18 = [v16 initWithName:@"invalid" value:v17];
-  [v3 addObject:v18];
+  [array addObject:v18];
 
-  v19 = [v3 copy];
+  v19 = [array copy];
 
   return v19;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMTRMutableVendorMetadataVendor allocWithZone:a3];
-  v5 = [(HMMTRVendorMetadataVendor *)self identifier];
-  v6 = [(HMMTRVendorMetadataVendor *)v4 initWithIdentifier:v5];
+  v4 = [HMMTRMutableVendorMetadataVendor allocWithZone:zone];
+  identifier = [(HMMTRVendorMetadataVendor *)self identifier];
+  v6 = [(HMMTRVendorMetadataVendor *)v4 initWithIdentifier:identifier];
 
-  v7 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-  [(HMMTRVendorMetadataVendor *)v6 setProductsByProductID:v7];
+  productsByProductID = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+  [(HMMTRVendorMetadataVendor *)v6 setProductsByProductID:productsByProductID];
 
-  v8 = [(HMMTRVendorMetadataVendor *)self name];
-  [(HMMTRVendorMetadataVendor *)v6 setName:v8];
+  name = [(HMMTRVendorMetadataVendor *)self name];
+  [(HMMTRVendorMetadataVendor *)v6 setName:name];
 
   [(HMMTRVendorMetadataVendor *)v6 setInvalid:[(HMMTRVendorMetadataVendor *)self invalid]];
   return v6;
@@ -70,19 +70,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMMTRVendorMetadataVendor *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMMTRVendorMetadataVendor *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -94,16 +94,16 @@
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 identifier];
-    v9 = [(HMMTRVendorMetadataVendor *)self identifier];
-    if ([v8 isEqualToNumber:v9])
+    identifier = [v6 identifier];
+    identifier2 = [(HMMTRVendorMetadataVendor *)self identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v10 = [v7 productsByProductID];
-      v11 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-      if ([v10 isEqualToDictionary:v11])
+      productsByProductID = [v7 productsByProductID];
+      productsByProductID2 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+      if ([productsByProductID isEqualToDictionary:productsByProductID2])
       {
-        v12 = [v7 name];
-        v13 = [(HMMTRVendorMetadataVendor *)self name];
+        name = [v7 name];
+        name2 = [(HMMTRVendorMetadataVendor *)self name];
         v14 = HMFEqualObjects();
       }
 
@@ -127,17 +127,17 @@
   return v14;
 }
 
-- (id)productWithID:(id)a3 includeInvalids:(BOOL)a4
+- (id)productWithID:(id)d includeInvalids:(BOOL)invalids
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  invalidsCopy = invalids;
+  dCopy = d;
+  productsByProductID = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+  v8 = [productsByProductID objectForKeyedSubscript:dCopy];
 
-  if (![v8 isInvalid] || v4)
+  if (![v8 isInvalid] || invalidsCopy)
   {
-    v10 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-    v9 = [v10 objectForKeyedSubscript:v6];
+    productsByProductID2 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+    v9 = [productsByProductID2 objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -151,20 +151,20 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMMTRVendorMetadataVendor *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"Name"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  name = [(HMMTRVendorMetadataVendor *)self name];
+  [dictionary setObject:name forKeyedSubscript:@"Name"];
 
   v5 = MEMORY[0x277CBEB38];
-  v6 = [(HMMTRVendorMetadataVendor *)self products];
-  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  products = [(HMMTRVendorMetadataVendor *)self products];
+  v7 = [v5 dictionaryWithCapacity:{objc_msgSend(products, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(HMMTRVendorMetadataVendor *)self products];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  products2 = [(HMMTRVendorMetadataVendor *)self products];
+  v9 = [products2 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -175,26 +175,26 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(products2);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 dictionaryRepresentation];
-        v15 = [v13 identifier];
-        v16 = [v15 stringValue];
-        [v7 setObject:v14 forKeyedSubscript:v16];
+        dictionaryRepresentation = [v13 dictionaryRepresentation];
+        identifier = [v13 identifier];
+        stringValue = [identifier stringValue];
+        [v7 setObject:dictionaryRepresentation forKeyedSubscript:stringValue];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [products2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
   v17 = [v7 copy];
-  [v3 setObject:v17 forKeyedSubscript:@"Products"];
+  [dictionary setObject:v17 forKeyedSubscript:@"Products"];
 
-  v18 = [v3 copy];
+  v18 = [dictionary copy];
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
@@ -203,19 +203,19 @@
 - (NSSet)products
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HMMTRVendorMetadataVendor *)self productsByProductID];
-  v4 = [v3 allValues];
-  v5 = [v2 setWithArray:v4];
+  productsByProductID = [(HMMTRVendorMetadataVendor *)self productsByProductID];
+  allValues = [productsByProductID allValues];
+  v5 = [v2 setWithArray:allValues];
 
   return v5;
 }
 
-- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)a3
+- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
     v15.receiver = self;
     v15.super_class = HMMTRVendorMetadataVendor;
     v6 = [(HMMTRVendorMetadataVendor *)&v15 init];
@@ -241,29 +241,29 @@
   }
 }
 
-- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)a3 dictionaryRepresentation:(id)a4
+- (HMMTRVendorMetadataVendor)initWithIdentifier:(id)identifier dictionaryRepresentation:(id)representation
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  representationCopy = representation;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
 LABEL_24:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = representationCopy;
+  if (!representationCopy)
   {
     goto LABEL_24;
   }
 
-  v9 = [v7 hmf_dictionaryForKey:@"Products"];
+  v9 = [representationCopy hmf_dictionaryForKey:@"Products"];
   if (v9)
   {
-    v38 = v6;
-    v40 = [(HMMTRVendorMetadataVendor *)self initWithIdentifier:v6];
+    v38 = identifierCopy;
+    v40 = [(HMMTRVendorMetadataVendor *)self initWithIdentifier:identifierCopy];
     v10 = [(HMMTRVendorMetadataVendor *)v40 mutableCopy];
     v37 = v8;
     v11 = [v8 hmf_stringForKey:@"Name"];
@@ -343,16 +343,16 @@ LABEL_24:
     }
 
     v29 = [v10 copy];
-    v30 = v40;
+    selfCopy = v40;
     v8 = v37;
-    v6 = v38;
+    identifierCopy = v38;
     v9 = v36;
   }
 
   else
   {
     v31 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {

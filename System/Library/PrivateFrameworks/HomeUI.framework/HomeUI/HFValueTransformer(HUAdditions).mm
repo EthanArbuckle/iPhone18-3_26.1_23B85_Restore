@@ -9,18 +9,18 @@
   v57 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a4;
-  v7 = [v6 latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13818]];
+  latestResults = [v6 latestResults];
+  v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13818]];
 
-  v9 = [MEMORY[0x277D14BF8] sharedCoordinator];
-  v10 = [v9 isCelsius];
+  mEMORY[0x277D14BF8] = [MEMORY[0x277D14BF8] sharedCoordinator];
+  isCelsius = [mEMORY[0x277D14BF8] isCelsius];
 
   if ([v8 mode] == 1)
   {
     v11 = MEMORY[0x277D14BE0];
-    v12 = [v6 targetValueConstraints];
-    v13 = [v12 validRange];
-    v14 = [v11 integerTemperatureRangeWithinNumberRange:v13 representsCelsius:v10];
+    targetValueConstraints = [v6 targetValueConstraints];
+    validRange = [targetValueConstraints validRange];
+    v14 = [v11 integerTemperatureRangeWithinNumberRange:validRange representsCelsius:isCelsius];
 
     v15 = MEMORY[0x277D14CF0];
     v16 = objc_opt_class();
@@ -43,20 +43,20 @@
   else if ([v8 mode] == 2)
   {
     v19 = MEMORY[0x277D14BE0];
-    v20 = [v6 maximumValueConstraints];
-    v21 = [v20 validRange];
-    v22 = [v19 integerTemperatureRangeWithinNumberRange:v21 representsCelsius:v10];
+    maximumValueConstraints = [v6 maximumValueConstraints];
+    validRange2 = [maximumValueConstraints validRange];
+    v22 = [v19 integerTemperatureRangeWithinNumberRange:validRange2 representsCelsius:isCelsius];
 
     v23 = MEMORY[0x277D14BE0];
-    v24 = [v6 minimumValueConstraints];
-    v25 = [v24 validRange];
-    v26 = [v23 integerTemperatureRangeWithinNumberRange:v25 representsCelsius:v10];
+    minimumValueConstraints = [v6 minimumValueConstraints];
+    validRange3 = [minimumValueConstraints validRange];
+    v26 = [v23 integerTemperatureRangeWithinNumberRange:validRange3 representsCelsius:isCelsius];
 
-    v27 = [v5 primaryValueConstraints];
-    v28 = [v27 validRange];
+    primaryValueConstraints = [v5 primaryValueConstraints];
+    validRange4 = [primaryValueConstraints validRange];
 
-    v29 = [v5 secondaryValueConstraints];
-    v30 = [v29 validRange];
+    secondaryValueConstraints = [v5 secondaryValueConstraints];
+    validRange5 = [secondaryValueConstraints validRange];
 
     v31 = MEMORY[0x277D14CF0];
     v32 = objc_opt_class();
@@ -64,9 +64,9 @@
     v42[1] = 3221225472;
     v42[2] = __88__HFValueTransformer_HUAdditions__transformerForRingSliderViewProfile_rangeControlItem___block_invoke_3;
     v42[3] = &unk_277DBE670;
-    v43 = v28;
+    v43 = validRange4;
     v44 = v22;
-    v45 = v30;
+    v45 = validRange5;
     v46 = v26;
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -91,7 +91,7 @@
       *buf = 136315394;
       v54 = "+[HFValueTransformer(HUAdditions) transformerForRingSliderViewProfile:rangeControlItem:]";
       v55 = 2048;
-      v56 = [v8 mode];
+      mode = [v8 mode];
       _os_log_debug_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEBUG, "(%s) %lu is an unsupported mode for HUQuickControlRingSliderRangeViewController. Only HFRangeControlItemModeTarget and HFRangeControlItemModeThreshold are valid. (HFTemperatureModeTarget and HFTemperatureModeThreshold are deprecated)", buf, 0x16u);
     }
 

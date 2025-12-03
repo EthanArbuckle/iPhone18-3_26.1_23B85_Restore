@@ -1,6 +1,6 @@
 @interface MPSCNNSoftMaxGradientNode
 + (MPSCNNSoftMaxGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState;
-- (MPSCNNSoftMaxGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNSoftMaxGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNSoftMaxGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNSoftMaxGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v13 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_(v8, v9, sourceGradient, sourceImage, gradientState, v10, v11, v12);
 
   return v13;
@@ -26,11 +26,11 @@
   return [(MPSNNGradientFilterNode *)&v19 initWithGradientImages:v11 sourceImages:v17 gradientState:gradientState paddingPolicy:0];
 }
 
-- (MPSCNNSoftMaxGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNSoftMaxGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
-  v10 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4, v4, v5, v6, v7);
-  v18 = objc_msgSend_resultImage(a4, v11, v12, v13, v14, v15, v16, v17);
-  v27 = objc_msgSend_resultState(a4, v19, v20, v21, v22, v23, v24, v25);
+  v10 = objc_msgSend_objectAtIndexedSubscript_(images, a2, 0, filter, v4, v5, v6, v7);
+  v18 = objc_msgSend_resultImage(filter, v11, v12, v13, v14, v15, v16, v17);
+  v27 = objc_msgSend_resultState(filter, v19, v20, v21, v22, v23, v24, v25);
 
   return objc_msgSend_initWithSourceGradient_sourceImage_gradientState_(self, v26, v10, v18, v27, v28, v29, v30);
 }

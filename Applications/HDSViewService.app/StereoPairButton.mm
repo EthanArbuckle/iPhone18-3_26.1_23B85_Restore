@@ -1,6 +1,6 @@
 @interface StereoPairButton
 - (BOOL)isHighlighted;
-- (_TtC14HDSViewService16StereoPairButton)initWithFrame:(CGRect)a3;
+- (_TtC14HDSViewService16StereoPairButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -19,14 +19,14 @@
   v4.super_class = type metadata accessor for StereoPairButton();
   v2 = v4.receiver;
   [(StereoPairButton *)&v4 layoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC14HDSViewService16StereoPairButton_circle] layer];
+  layer = [*&v2[OBJC_IVAR____TtC14HDSViewService16StereoPairButton_circle] layer];
   [v2 frame];
-  [v3 setCornerRadius:CGRectGetWidth(v5) * 0.5];
+  [layer setCornerRadius:CGRectGetWidth(v5) * 0.5];
 
   sub_100061C28();
 }
 
-- (_TtC14HDSViewService16StereoPairButton)initWithFrame:(CGRect)a3
+- (_TtC14HDSViewService16StereoPairButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,19 +1,19 @@
 @interface VehicleCell
-- (VehicleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (VehicleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupConstraints;
 - (void)_setupStyling;
-- (void)setupWithVehicle:(id)a3 cellStyle:(int64_t)a4 isSelected:(BOOL)a5;
+- (void)setupWithVehicle:(id)vehicle cellStyle:(int64_t)style isSelected:(BOOL)selected;
 @end
 
 @implementation VehicleCell
 
-- (void)setupWithVehicle:(id)a3 cellStyle:(int64_t)a4 isSelected:(BOOL)a5
+- (void)setupWithVehicle:(id)vehicle cellStyle:(int64_t)style isSelected:(BOOL)selected
 {
-  v5 = a5;
-  v39 = a3;
-  v8 = [v39 isPureElectricVehicle];
+  selectedCopy = selected;
+  vehicleCopy = vehicle;
+  isPureElectricVehicle = [vehicleCopy isPureElectricVehicle];
   v9 = [UIImageSymbolConfiguration configurationWithPointSize:28.0];
-  if (v8)
+  if (isPureElectricVehicle)
   {
     v10 = @"bolt.car.fill";
   }
@@ -24,13 +24,13 @@
   }
 
   v11 = [UIImage systemImageNamed:v10 withConfiguration:v9];
-  v12 = [v11 imageWithoutBaseline];
+  imageWithoutBaseline = [v11 imageWithoutBaseline];
 
-  v13 = [v12 imageWithRenderingMode:2];
+  v13 = [imageWithoutBaseline imageWithRenderingMode:2];
   [(UIImageView *)self->_iconImageView setImage:v13];
 
-  v14 = [v39 colorHex];
-  v15 = [UIColor _maps_colorFromHexRepresentation:v14];
+  colorHex = [vehicleCopy colorHex];
+  v15 = [UIColor _maps_colorFromHexRepresentation:colorHex];
   if (v15)
   {
     p_iconImageContainerView = &self->_iconImageContainerView;
@@ -44,9 +44,9 @@
     [(UIView *)self->_iconImageContainerView setBackgroundColor:v17];
   }
 
-  v18 = [(UIView *)*p_iconImageContainerView backgroundColor];
+  backgroundColor = [(UIView *)*p_iconImageContainerView backgroundColor];
   v19 = +[UIColor whiteColor];
-  [v18 _maps_euclideanDistanceFromColor:v19];
+  [backgroundColor _maps_euclideanDistanceFromColor:v19];
   v21 = v20;
 
   if (v21 >= 0.1)
@@ -58,15 +58,15 @@
   else
   {
     v22 = [NSBundle bundleForClass:objc_opt_class()];
-    v23 = [(VehicleCell *)self traitCollection];
-    v24 = [UIColor colorNamed:@"TertiaryVehicleTint" inBundle:v22 compatibleWithTraitCollection:v23];
+    traitCollection = [(VehicleCell *)self traitCollection];
+    v24 = [UIColor colorNamed:@"TertiaryVehicleTint" inBundle:v22 compatibleWithTraitCollection:traitCollection];
     [(UIImageView *)self->_iconImageView setTintColor:v24];
   }
 
-  v25 = [v39 combinedDisplayName];
-  if (v25)
+  combinedDisplayName = [vehicleCopy combinedDisplayName];
+  if (combinedDisplayName)
   {
-    [(UILabel *)self->_titleLabel setText:v25];
+    [(UILabel *)self->_titleLabel setText:combinedDisplayName];
   }
 
   else
@@ -76,19 +76,19 @@
     [(UILabel *)self->_titleLabel setText:v27];
   }
 
-  v28 = [v39 isPureElectricVehicle];
+  isPureElectricVehicle2 = [vehicleCopy isPureElectricVehicle];
   batteryChargeView = self->_batteryChargeView;
-  if (v28)
+  if (isPureElectricVehicle2)
   {
-    [(VehicleBatteryView *)batteryChargeView setVehicle:v39];
+    [(VehicleBatteryView *)batteryChargeView setVehicle:vehicleCopy];
     [(VehicleBatteryView *)self->_batteryChargeView setHidden:0];
-    v30 = [v39 applicationRecord];
-    if (v30)
+    applicationRecord = [vehicleCopy applicationRecord];
+    if (applicationRecord)
     {
-      v31 = v30;
-      v32 = [v39 currentVehicleState];
-      v33 = [v32 dateOfUpdate];
-      [v33 timeIntervalSinceNow];
+      v31 = applicationRecord;
+      currentVehicleState = [vehicleCopy currentVehicleState];
+      dateOfUpdate = [currentVehicleState dateOfUpdate];
+      [dateOfUpdate timeIntervalSinceNow];
       v35 = v34;
 
       if (v35 < -60.0)
@@ -103,7 +103,7 @@
     [(VehicleBatteryView *)batteryChargeView setHidden:1];
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
     [(VehicleCell *)self setAccessoryType:1];
     v37 = +[UIColor tableCellGroupedBackgroundColor];
@@ -111,12 +111,12 @@
 
   else
   {
-    if (a4)
+    if (style)
     {
       goto LABEL_26;
     }
 
-    if (v5)
+    if (selectedCopy)
     {
       v36 = 3;
     }
@@ -138,14 +138,14 @@ LABEL_26:
 
 - (void)_setupStyling
 {
-  v3 = [(UIView *)self->_iconImageContainerView layer];
-  [v3 setCornerRadius:20.0];
+  layer = [(UIView *)self->_iconImageContainerView layer];
+  [layer setCornerRadius:20.0];
 
-  v4 = [(UIView *)self->_iconImageContainerView layer];
-  [v4 setCornerCurve:kCACornerCurveCircular];
+  layer2 = [(UIView *)self->_iconImageContainerView layer];
+  [layer2 setCornerCurve:kCACornerCurveCircular];
 
-  v5 = [(UIView *)self->_iconImageContainerView layer];
-  [v5 setMaskedCorners:15];
+  layer3 = [(UIView *)self->_iconImageContainerView layer];
+  [layer3 setMaskedCorners:15];
 
   v6 = +[UIColor labelColor];
   [(UILabel *)self->_titleLabel setTextColor:v6];
@@ -157,72 +157,72 @@ LABEL_26:
 
 - (void)_setupConstraints
 {
-  v46 = [(VehicleCell *)self contentView];
-  v45 = [v46 heightAnchor];
-  v44 = [v45 constraintGreaterThanOrEqualToConstant:80.0];
+  contentView = [(VehicleCell *)self contentView];
+  heightAnchor = [contentView heightAnchor];
+  v44 = [heightAnchor constraintGreaterThanOrEqualToConstant:80.0];
   v47[0] = v44;
-  v43 = [(UIView *)self->_iconImageContainerView heightAnchor];
-  v42 = [v43 constraintEqualToConstant:40.0];
+  heightAnchor2 = [(UIView *)self->_iconImageContainerView heightAnchor];
+  v42 = [heightAnchor2 constraintEqualToConstant:40.0];
   v47[1] = v42;
-  v41 = [(UIView *)self->_iconImageContainerView widthAnchor];
-  v40 = [v41 constraintEqualToConstant:40.0];
+  widthAnchor = [(UIView *)self->_iconImageContainerView widthAnchor];
+  v40 = [widthAnchor constraintEqualToConstant:40.0];
   v47[2] = v40;
-  v38 = [(UIView *)self->_iconImageContainerView leadingAnchor];
-  v39 = [(VehicleCell *)self contentView];
-  v37 = [v39 leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:16.0];
+  leadingAnchor = [(UIView *)self->_iconImageContainerView leadingAnchor];
+  contentView2 = [(VehicleCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v47[3] = v36;
-  v34 = [(UIView *)self->_iconImageContainerView centerYAnchor];
-  v35 = [(VehicleCell *)self contentView];
-  v33 = [v35 centerYAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  centerYAnchor = [(UIView *)self->_iconImageContainerView centerYAnchor];
+  contentView3 = [(VehicleCell *)self contentView];
+  centerYAnchor2 = [contentView3 centerYAnchor];
+  v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v47[4] = v32;
-  v31 = [(UIImageView *)self->_iconImageView centerXAnchor];
-  v30 = [(UIView *)self->_iconImageContainerView centerXAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  centerXAnchor = [(UIImageView *)self->_iconImageView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_iconImageContainerView centerXAnchor];
+  v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v47[5] = v29;
-  v28 = [(UIImageView *)self->_iconImageView centerYAnchor];
-  v27 = [(UIView *)self->_iconImageContainerView centerYAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerYAnchor3 = [(UIImageView *)self->_iconImageView centerYAnchor];
+  centerYAnchor4 = [(UIView *)self->_iconImageContainerView centerYAnchor];
+  v26 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v47[6] = v26;
-  v25 = [(UIImageView *)self->_iconImageView widthAnchor];
-  v24 = [v25 constraintLessThanOrEqualToConstant:28.0];
+  widthAnchor2 = [(UIImageView *)self->_iconImageView widthAnchor];
+  v24 = [widthAnchor2 constraintLessThanOrEqualToConstant:28.0];
   v47[7] = v24;
-  v23 = [(UIImageView *)self->_iconImageView heightAnchor];
-  v22 = [v23 constraintLessThanOrEqualToConstant:28.0];
+  heightAnchor3 = [(UIImageView *)self->_iconImageView heightAnchor];
+  v22 = [heightAnchor3 constraintLessThanOrEqualToConstant:28.0];
   v47[8] = v22;
-  v21 = [(UIStackView *)self->_stackView centerYAnchor];
-  v20 = [(UIImageView *)self->_iconImageView centerYAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  centerYAnchor5 = [(UIStackView *)self->_stackView centerYAnchor];
+  centerYAnchor6 = [(UIImageView *)self->_iconImageView centerYAnchor];
+  v19 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v47[9] = v19;
-  v18 = [(UIStackView *)self->_stackView leadingAnchor];
-  v17 = [(UIView *)self->_iconImageContainerView trailingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17 constant:12.0];
+  leadingAnchor3 = [(UIStackView *)self->_stackView leadingAnchor];
+  trailingAnchor = [(UIView *)self->_iconImageContainerView trailingAnchor];
+  v16 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
   v47[10] = v16;
-  v15 = [(VehicleCell *)self contentView];
-  v14 = [v15 trailingAnchor];
-  v13 = [(UIStackView *)self->_stackView trailingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13 constant:16.0];
+  contentView4 = [(VehicleCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  trailingAnchor3 = [(UIStackView *)self->_stackView trailingAnchor];
+  v3 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:16.0];
   v47[11] = v3;
-  v4 = [(UIStackView *)self->_stackView topAnchor];
-  v5 = [(VehicleCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:20.0];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  contentView5 = [(VehicleCell *)self contentView];
+  topAnchor2 = [contentView5 topAnchor];
+  v7 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   v47[12] = v7;
-  v8 = [(VehicleCell *)self contentView];
-  v9 = [v8 bottomAnchor];
-  v10 = [(UIStackView *)self->_stackView bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:20.0];
+  contentView6 = [(VehicleCell *)self contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  bottomAnchor2 = [(UIStackView *)self->_stackView bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:20.0];
   v47[13] = v11;
   v12 = [NSArray arrayWithObjects:v47 count:14];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
-- (VehicleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VehicleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = VehicleCell;
-  v4 = [(VehicleCell *)&v34 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(VehicleCell *)&v34 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_class();
@@ -239,8 +239,8 @@ LABEL_26:
     v4->_iconImageContainerView = v11;
 
     [(UIView *)v4->_iconImageContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(VehicleCell *)v4 contentView];
-    [v13 addSubview:v4->_iconImageContainerView];
+    contentView = [(VehicleCell *)v4 contentView];
+    [contentView addSubview:v4->_iconImageContainerView];
 
     v14 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     iconImageView = v4->_iconImageView;
@@ -260,8 +260,8 @@ LABEL_26:
 
     [(UIStackView *)v4->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4->_stackView setAxis:1];
-    v20 = [(VehicleCell *)v4 contentView];
-    [v20 addSubview:v4->_stackView];
+    contentView2 = [(VehicleCell *)v4 contentView];
+    [contentView2 addSubview:v4->_stackView];
 
     v21 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     titleLabel = v4->_titleLabel;

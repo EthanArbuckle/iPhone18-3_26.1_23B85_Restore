@@ -1,23 +1,23 @@
 @interface CPSRouteOverviewView
 + (id)_multilineLabel;
-+ (id)_nameForMapItem:(id)a3;
-+ (id)_shortenedAddressForAddress:(id)a3;
-+ (void)_applySemiBoldText:(id)a3 fontSize:(double)a4 color:(id)a5 toLabel:(id)a6;
-+ (void)_applyText:(id)a3 fontSize:(double)a4 color:(id)a5 toLabel:(id)a6;
-- (CPSRouteOverviewView)initWithFrame:(CGRect)a3;
++ (id)_nameForMapItem:(id)item;
++ (id)_shortenedAddressForAddress:(id)address;
++ (void)_applySemiBoldText:(id)text fontSize:(double)size color:(id)color toLabel:(id)label;
++ (void)_applyText:(id)text fontSize:(double)size color:(id)color toLabel:(id)label;
+- (CPSRouteOverviewView)initWithFrame:(CGRect)frame;
 - (void)_updateTripEstimateStyle;
-- (void)label:(id)a3 hidden:(BOOL)a4;
-- (void)setCurrentTravelEstimates:(id)a3;
-- (void)setRepresentedTrip:(id)a3;
-- (void)setRouteNote:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)label:(id)label hidden:(BOOL)hidden;
+- (void)setCurrentTravelEstimates:(id)estimates;
+- (void)setRepresentedTrip:(id)trip;
+- (void)setRouteNote:(id)note;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPSRouteOverviewView
 
 + (id)_multilineLabel
 {
-  v4[2] = a1;
+  v4[2] = self;
   v4[1] = a2;
   v4[0] = objc_alloc_init(MEMORY[0x277D756B8]);
   [v4[0] setNumberOfLines:0];
@@ -28,24 +28,24 @@
   return v3;
 }
 
-+ (void)_applySemiBoldText:(id)a3 fontSize:(double)a4 color:(id)a5 toLabel:(id)a6
++ (void)_applySemiBoldText:(id)text fontSize:(double)size color:(id)color toLabel:(id)label
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, text);
+  sizeCopy = size;
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, color);
   v15 = 0;
-  objc_storeStrong(&v15, a6);
+  objc_storeStrong(&v15, label);
   if (location[0])
   {
     v8 = objc_alloc(MEMORY[0x277CCA898]);
     v7 = location[0];
     v19[0] = *MEMORY[0x277D740A8];
-    v10 = [MEMORY[0x277D74300] systemFontOfSize:v17 weight:*MEMORY[0x277D74420]];
+    v10 = [MEMORY[0x277D74300] systemFontOfSize:sizeCopy weight:*MEMORY[0x277D74420]];
     v20[0] = v10;
     v19[1] = *MEMORY[0x277D740C0];
     v20[1] = v16;
@@ -62,24 +62,24 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)_applyText:(id)a3 fontSize:(double)a4 color:(id)a5 toLabel:(id)a6
++ (void)_applyText:(id)text fontSize:(double)size color:(id)color toLabel:(id)label
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, text);
+  sizeCopy = size;
   v16 = 0;
-  objc_storeStrong(&v16, a5);
+  objc_storeStrong(&v16, color);
   v15 = 0;
-  objc_storeStrong(&v15, a6);
+  objc_storeStrong(&v15, label);
   if (location[0])
   {
     v8 = objc_alloc(MEMORY[0x277CCA898]);
     v7 = location[0];
     v19[0] = *MEMORY[0x277D740A8];
-    v10 = [MEMORY[0x277D74300] systemFontOfSize:v17];
+    v10 = [MEMORY[0x277D74300] systemFontOfSize:sizeCopy];
     v20[0] = v10;
     v19[1] = *MEMORY[0x277D740C0];
     v20[1] = v16;
@@ -96,12 +96,12 @@
   objc_storeStrong(location, 0);
 }
 
-+ (id)_shortenedAddressForAddress:(id)a3
++ (id)_shortenedAddressForAddress:(id)address
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, address);
   v5 = [location[0] mutableCopy];
   [v5 setSubAdministrativeArea:?];
   [v5 setState:&stru_2855A5FC8];
@@ -114,46 +114,46 @@
   return v4;
 }
 
-+ (id)_nameForMapItem:(id)a3
++ (id)_nameForMapItem:(id)item
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [location[0] name];
+  objc_storeStrong(location, item);
+  name = [location[0] name];
   *&v3 = MEMORY[0x277D82BD8](0).n128_u64[0];
-  if (!v7)
+  if (!name)
   {
-    v6 = [location[0] placemark];
-    v7 = [v6 name];
+    placemark = [location[0] placemark];
+    name = [placemark name];
     MEMORY[0x277D82BD8](0);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](placemark);
   }
 
-  v5 = MEMORY[0x277D82BE0](v7);
-  objc_storeStrong(&v7, 0);
+  v5 = MEMORY[0x277D82BE0](name);
+  objc_storeStrong(&name, 0);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (CPSRouteOverviewView)initWithFrame:(CGRect)a3
+- (CPSRouteOverviewView)initWithFrame:(CGRect)frame
 {
   v58[13] = *MEMORY[0x277D85DE8];
-  v57 = a3;
+  frameCopy = frame;
   v55 = a2;
   v56 = 0;
   v54.receiver = self;
   v54.super_class = CPSRouteOverviewView;
-  v56 = [(CPSRouteOverviewView *)&v54 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v56 = [(CPSRouteOverviewView *)&v54 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v56, v56);
   if (v56)
   {
     [(CPSRouteOverviewView *)v56 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v53 = [objc_opt_class() _multilineLabel];
-    [(CPSRouteOverviewView *)v56 addSubview:v53];
-    [v53 setContentCompressionResistancePriority:? forAxis:?];
-    objc_storeStrong(&v56->_destinationName, v53);
+    _multilineLabel = [objc_opt_class() _multilineLabel];
+    [(CPSRouteOverviewView *)v56 addSubview:_multilineLabel];
+    [_multilineLabel setContentCompressionResistancePriority:? forAxis:?];
+    objc_storeStrong(&v56->_destinationName, _multilineLabel);
     v52 = objc_alloc_init(CPSHidingLabel);
     [(CPSHidingLabel *)v52 setNumberOfLines:?];
     [(CPSHidingLabel *)v52 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -178,104 +178,104 @@
     objc_storeStrong(&v56->_estimatesView, v50);
     [(CPSRouteOverviewView *)v56 _updateTripEstimateStyle];
     v9 = MEMORY[0x277CCAAD0];
-    v49 = [v53 leadingAnchor];
-    v48 = [(CPSRouteOverviewView *)v56 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:? constant:?];
+    leadingAnchor = [_multilineLabel leadingAnchor];
+    leadingAnchor2 = [(CPSRouteOverviewView *)v56 leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:? constant:?];
     v58[0] = v47;
-    v46 = [(CPSRouteOverviewView *)v56 trailingAnchor];
-    v45 = [v53 trailingAnchor];
-    v44 = [v46 constraintEqualToAnchor:6.0 constant:?];
+    trailingAnchor = [(CPSRouteOverviewView *)v56 trailingAnchor];
+    trailingAnchor2 = [_multilineLabel trailingAnchor];
+    v44 = [trailingAnchor constraintEqualToAnchor:6.0 constant:?];
     v58[1] = v44;
-    v43 = [(CPSHidingLabel *)v52 leadingAnchor];
-    v42 = [(CPSRouteOverviewView *)v56 leadingAnchor];
-    v41 = [v43 constraintEqualToAnchor:6.0 constant:?];
+    leadingAnchor3 = [(CPSHidingLabel *)v52 leadingAnchor];
+    leadingAnchor4 = [(CPSRouteOverviewView *)v56 leadingAnchor];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:6.0 constant:?];
     v58[2] = v41;
-    v40 = [(CPSRouteOverviewView *)v56 trailingAnchor];
-    v39 = [(CPSHidingLabel *)v52 trailingAnchor];
-    v38 = [v40 constraintEqualToAnchor:6.0 constant:?];
+    trailingAnchor3 = [(CPSRouteOverviewView *)v56 trailingAnchor];
+    trailingAnchor4 = [(CPSHidingLabel *)v52 trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:6.0 constant:?];
     v58[3] = v38;
-    v37 = [(CPSHidingLabel *)v51 leadingAnchor];
-    v36 = [(CPSRouteOverviewView *)v56 leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:6.0 constant:?];
+    leadingAnchor5 = [(CPSHidingLabel *)v51 leadingAnchor];
+    leadingAnchor6 = [(CPSRouteOverviewView *)v56 leadingAnchor];
+    v35 = [leadingAnchor5 constraintEqualToAnchor:6.0 constant:?];
     v58[4] = v35;
-    v34 = [(CPSRouteOverviewView *)v56 trailingAnchor];
-    v33 = [(CPSHidingLabel *)v51 trailingAnchor];
-    v32 = [v34 constraintEqualToAnchor:6.0 constant:?];
+    trailingAnchor5 = [(CPSRouteOverviewView *)v56 trailingAnchor];
+    trailingAnchor6 = [(CPSHidingLabel *)v51 trailingAnchor];
+    v32 = [trailingAnchor5 constraintEqualToAnchor:6.0 constant:?];
     v58[5] = v32;
-    v31 = [(CPSRouteEstimatesView *)v50 leadingAnchor];
-    v30 = [(CPSRouteOverviewView *)v56 leadingAnchor];
-    v29 = [v31 constraintEqualToAnchor:?];
+    leadingAnchor7 = [(CPSRouteEstimatesView *)v50 leadingAnchor];
+    leadingAnchor8 = [(CPSRouteOverviewView *)v56 leadingAnchor];
+    v29 = [leadingAnchor7 constraintEqualToAnchor:?];
     v58[6] = v29;
-    v28 = [(CPSRouteOverviewView *)v56 trailingAnchor];
-    v27 = [(CPSRouteEstimatesView *)v50 trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:?];
+    trailingAnchor7 = [(CPSRouteOverviewView *)v56 trailingAnchor];
+    trailingAnchor8 = [(CPSRouteEstimatesView *)v50 trailingAnchor];
+    v26 = [trailingAnchor7 constraintEqualToAnchor:?];
     v58[7] = v26;
-    v25 = [v53 topAnchor];
-    v24 = [(CPSRouteOverviewView *)v56 topAnchor];
-    v23 = [v25 constraintEqualToAnchor:?];
+    topAnchor = [_multilineLabel topAnchor];
+    topAnchor2 = [(CPSRouteOverviewView *)v56 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:?];
     v58[8] = v23;
-    v22 = [(CPSHidingLabel *)v52 topAnchor];
-    v21 = [v53 bottomAnchor];
-    v20 = [v22 constraintEqualToAnchor:? constant:?];
+    topAnchor3 = [(CPSHidingLabel *)v52 topAnchor];
+    bottomAnchor = [_multilineLabel bottomAnchor];
+    v20 = [topAnchor3 constraintEqualToAnchor:? constant:?];
     v58[9] = v20;
-    v19 = [(CPSHidingLabel *)v51 topAnchor];
-    v18 = [(CPSHidingLabel *)v52 bottomAnchor];
-    v17 = [v19 constraintEqualToAnchor:2.0 constant:?];
+    topAnchor4 = [(CPSHidingLabel *)v51 topAnchor];
+    bottomAnchor2 = [(CPSHidingLabel *)v52 bottomAnchor];
+    v17 = [topAnchor4 constraintEqualToAnchor:2.0 constant:?];
     v58[10] = v17;
-    v16 = [(CPSRouteEstimatesView *)v50 topAnchor];
-    v15 = [(CPSHidingLabel *)v51 bottomAnchor];
-    v14 = [v16 constraintGreaterThanOrEqualToAnchor:?];
+    topAnchor5 = [(CPSRouteEstimatesView *)v50 topAnchor];
+    bottomAnchor3 = [(CPSHidingLabel *)v51 bottomAnchor];
+    v14 = [topAnchor5 constraintGreaterThanOrEqualToAnchor:?];
     v58[11] = v14;
-    v13 = [(CPSRouteOverviewView *)v56 bottomAnchor];
-    v12 = [(CPSRouteEstimatesView *)v50 bottomAnchor];
-    v11 = [v13 constraintEqualToAnchor:?];
+    bottomAnchor4 = [(CPSRouteOverviewView *)v56 bottomAnchor];
+    bottomAnchor5 = [(CPSRouteEstimatesView *)v50 bottomAnchor];
+    v11 = [bottomAnchor4 constraintEqualToAnchor:?];
     v58[12] = v11;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:13];
     [v9 activateConstraints:?];
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](bottomAnchor5);
+    MEMORY[0x277D82BD8](bottomAnchor4);
     MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](bottomAnchor3);
+    MEMORY[0x277D82BD8](topAnchor5);
     MEMORY[0x277D82BD8](v17);
-    MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](topAnchor4);
     MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    MEMORY[0x277D82BD8](bottomAnchor);
+    MEMORY[0x277D82BD8](topAnchor3);
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](topAnchor);
     MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    MEMORY[0x277D82BD8](v28);
+    MEMORY[0x277D82BD8](trailingAnchor8);
+    MEMORY[0x277D82BD8](trailingAnchor7);
     MEMORY[0x277D82BD8](v29);
-    MEMORY[0x277D82BD8](v30);
-    MEMORY[0x277D82BD8](v31);
+    MEMORY[0x277D82BD8](leadingAnchor8);
+    MEMORY[0x277D82BD8](leadingAnchor7);
     MEMORY[0x277D82BD8](v32);
-    MEMORY[0x277D82BD8](v33);
-    MEMORY[0x277D82BD8](v34);
+    MEMORY[0x277D82BD8](trailingAnchor6);
+    MEMORY[0x277D82BD8](trailingAnchor5);
     MEMORY[0x277D82BD8](v35);
-    MEMORY[0x277D82BD8](v36);
-    MEMORY[0x277D82BD8](v37);
+    MEMORY[0x277D82BD8](leadingAnchor6);
+    MEMORY[0x277D82BD8](leadingAnchor5);
     MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
-    MEMORY[0x277D82BD8](v40);
+    MEMORY[0x277D82BD8](trailingAnchor4);
+    MEMORY[0x277D82BD8](trailingAnchor3);
     MEMORY[0x277D82BD8](v41);
-    MEMORY[0x277D82BD8](v42);
-    MEMORY[0x277D82BD8](v43);
+    MEMORY[0x277D82BD8](leadingAnchor4);
+    MEMORY[0x277D82BD8](leadingAnchor3);
     MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
-    MEMORY[0x277D82BD8](v46);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
     MEMORY[0x277D82BD8](v47);
-    MEMORY[0x277D82BD8](v48);
-    MEMORY[0x277D82BD8](v49);
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    MEMORY[0x277D82BD8](leadingAnchor);
     objc_storeStrong(&v50, 0);
     objc_storeStrong(&v51, 0);
     objc_storeStrong(&v52, 0);
-    objc_storeStrong(&v53, 0);
+    objc_storeStrong(&_multilineLabel, 0);
   }
 
   v8 = MEMORY[0x277D82BE0](v56);
@@ -283,19 +283,19 @@
   return v8;
 }
 
-- (void)label:(id)a3 hidden:(BOOL)a4
+- (void)label:(id)label hidden:(BOOL)hidden
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = 0;
-  if (([(CPSHidingLabel *)v7->_destinationAddress isHidden]& 1) != 0)
+  objc_storeStrong(location, label);
+  isHidden = 0;
+  if (([(CPSHidingLabel *)selfCopy->_destinationAddress isHidden]& 1) != 0)
   {
-    v5 = [(CPSHidingLabel *)v7->_routeNoteLabel isHidden];
+    isHidden = [(CPSHidingLabel *)selfCopy->_routeNoteLabel isHidden];
   }
 
-  if (v5)
+  if (isHidden)
   {
     v4 = 1;
   }
@@ -305,88 +305,88 @@
     v4 = 4;
   }
 
-  [(UILabel *)v7->_destinationName setTextAlignment:v4];
+  [(UILabel *)selfCopy->_destinationName setTextAlignment:v4];
   objc_storeStrong(location, 0);
 }
 
 - (void)_updateTripEstimateStyle
 {
-  v5 = [(CPSRouteOverviewView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
-  *&v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  if (v6 == 1)
+  traitCollection = [(CPSRouteOverviewView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  *&v2 = MEMORY[0x277D82BD8](traitCollection).n128_u64[0];
+  if (userInterfaceStyle == 1)
   {
-    v4 = [(CPSRouteOverviewView *)self estimatesView];
-    [(CPSRouteEstimatesView *)v4 setTripEstimateStyle:0];
-    MEMORY[0x277D82BD8](v4);
+    estimatesView = [(CPSRouteOverviewView *)self estimatesView];
+    [(CPSRouteEstimatesView *)estimatesView setTripEstimateStyle:0];
+    MEMORY[0x277D82BD8](estimatesView);
   }
 
   else
   {
-    v3 = [(CPSRouteOverviewView *)self estimatesView];
-    [(CPSRouteEstimatesView *)v3 setTripEstimateStyle:1];
-    MEMORY[0x277D82BD8](v3);
+    estimatesView2 = [(CPSRouteOverviewView *)self estimatesView];
+    [(CPSRouteEstimatesView *)estimatesView2 setTripEstimateStyle:1];
+    MEMORY[0x277D82BD8](estimatesView2);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = CPSRouteOverviewView;
   [(CPSRouteOverviewView *)&v3 traitCollectionDidChange:location[0]];
-  [(CPSRouteOverviewView *)v5 _updateTripEstimateStyle];
+  [(CPSRouteOverviewView *)selfCopy _updateTripEstimateStyle];
   objc_storeStrong(location, 0);
 }
 
-- (void)setRepresentedTrip:(id)a3
+- (void)setRepresentedTrip:(id)trip
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v20->_representedTrip, location[0]);
-  v18 = [location[0] destination];
-  v17 = [objc_opt_class() _nameForMapItem:v18];
+  objc_storeStrong(location, trip);
+  objc_storeStrong(&selfCopy->_representedTrip, location[0]);
+  destination = [location[0] destination];
+  v17 = [objc_opt_class() _nameForMapItem:destination];
   v5 = objc_opt_class();
   v4 = v17;
-  v7 = [MEMORY[0x277D75348] labelColor];
-  v6 = [(CPSRouteOverviewView *)v20 destinationName];
-  [v5 _applySemiBoldText:v4 fontSize:v7 color:16.0 toLabel:?];
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  destinationName = [(CPSRouteOverviewView *)selfCopy destinationName];
+  [v5 _applySemiBoldText:v4 fontSize:labelColor color:16.0 toLabel:?];
+  MEMORY[0x277D82BD8](destinationName);
+  MEMORY[0x277D82BD8](labelColor);
   v8 = objc_opt_class();
-  v10 = [v18 placemark];
-  v9 = [v10 postalAddress];
+  placemark = [destination placemark];
+  postalAddress = [placemark postalAddress];
   v16 = [v8 _shortenedAddressForAddress:?];
-  MEMORY[0x277D82BD8](v9);
-  *&v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  MEMORY[0x277D82BD8](postalAddress);
+  *&v3 = MEMORY[0x277D82BD8](placemark).n128_u64[0];
   v15 = [MEMORY[0x277CBDB80] stringFromPostalAddress:v16 style:{0, v3}];
   v12 = objc_opt_class();
   v11 = v15;
-  v14 = [MEMORY[0x277D75348] _carSystemSecondaryColor];
-  v13 = [(CPSRouteOverviewView *)v20 destinationAddress];
-  [v12 _applyText:v11 fontSize:v14 color:12.0 toLabel:?];
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  _carSystemSecondaryColor = [MEMORY[0x277D75348] _carSystemSecondaryColor];
+  destinationAddress = [(CPSRouteOverviewView *)selfCopy destinationAddress];
+  [v12 _applyText:v11 fontSize:_carSystemSecondaryColor color:12.0 toLabel:?];
+  MEMORY[0x277D82BD8](destinationAddress);
+  MEMORY[0x277D82BD8](_carSystemSecondaryColor);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&destination, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setRouteNote:(id)a3
+- (void)setRouteNote:(id)note
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v17->_routeNote, location[0]);
+  objc_storeStrong(location, note);
+  objc_storeStrong(&selfCopy->_routeNote, location[0]);
   v13 = 0;
   v11 = 0;
   v9 = 0;
@@ -400,9 +400,9 @@
     v13 = 1;
     v19[0] = v14;
     v18[1] = *MEMORY[0x277D740C0];
-    v12 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v11 = 1;
-    v19[1] = v12;
+    v19[1] = labelColor;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
     v9 = 1;
     v8 = [v6 initWithString:v5 attributes:?];
@@ -428,7 +428,7 @@
 
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](labelColor);
   }
 
   if (v13)
@@ -436,36 +436,36 @@
     MEMORY[0x277D82BD8](v14);
   }
 
-  v4 = [(CPSRouteOverviewView *)v17 routeNoteLabel];
-  [(CPSHidingLabel *)v4 setAttributedText:v15];
-  MEMORY[0x277D82BD8](v4);
+  routeNoteLabel = [(CPSRouteOverviewView *)selfCopy routeNoteLabel];
+  [(CPSHidingLabel *)routeNoteLabel setAttributedText:v15];
+  MEMORY[0x277D82BD8](routeNoteLabel);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setCurrentTravelEstimates:(id)a3
+- (void)setCurrentTravelEstimates:(id)estimates
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v10->_currentTravelEstimates, location[0]);
-  v7 = [(CPSRouteOverviewView *)v10 representedTrip];
-  v6 = [(CPTrip *)v7 destination];
-  v8 = [(MKMapItem *)v6 timeZone];
-  MEMORY[0x277D82BD8](v6);
-  v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v8)
+  objc_storeStrong(location, estimates);
+  objc_storeStrong(&selfCopy->_currentTravelEstimates, location[0]);
+  representedTrip = [(CPSRouteOverviewView *)selfCopy representedTrip];
+  destination = [(CPTrip *)representedTrip destination];
+  timeZone = [(MKMapItem *)destination timeZone];
+  MEMORY[0x277D82BD8](destination);
+  v3 = MEMORY[0x277D82BD8](representedTrip).n128_u64[0];
+  if (timeZone)
   {
-    v5 = [(CPSRouteOverviewView *)v10 estimatesView];
-    [(CPSRouteEstimatesView *)v5 setArrivalTimeZone:v8];
-    v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+    estimatesView = [(CPSRouteOverviewView *)selfCopy estimatesView];
+    [(CPSRouteEstimatesView *)estimatesView setArrivalTimeZone:timeZone];
+    v3 = MEMORY[0x277D82BD8](estimatesView).n128_u64[0];
   }
 
-  v4 = [(CPSRouteOverviewView *)v10 estimatesView];
-  [(CPSRouteEstimatesView *)v4 setCurrentTravelEstimates:location[0]];
-  MEMORY[0x277D82BD8](v4);
-  objc_storeStrong(&v8, 0);
+  estimatesView2 = [(CPSRouteOverviewView *)selfCopy estimatesView];
+  [(CPSRouteEstimatesView *)estimatesView2 setCurrentTravelEstimates:location[0]];
+  MEMORY[0x277D82BD8](estimatesView2);
+  objc_storeStrong(&timeZone, 0);
   objc_storeStrong(location, 0);
 }
 

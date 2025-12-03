@@ -1,15 +1,15 @@
 @interface SSUAssetManager
 + (id)sharedInstance;
 - (SSUAssetManager)init;
-- (id)_getAssetURLFuture:(id)a3;
-- (id)combineAllFutures:(id)a3;
-- (unint64_t)getAssetVersion:(id)a3 forKey:(id)a4;
-- (void)_downloadAssetForCompabilityVersions:(id)a3 withCompleteHandler:(id)a4;
-- (void)_fetchAssetCatalog:(id)a3;
-- (void)_getSystemVersionsMappingWithCompleteHandler:(id)a3;
-- (void)downloadAssetForCompabilityVersions:(id)a3 withCompleteHandler:(id)a4;
-- (void)downloadCatalogWithCompleteHandler:(id)a3;
-- (void)getSystemVersionsMappingWithCompleteHandler:(id)a3;
+- (id)_getAssetURLFuture:(id)future;
+- (id)combineAllFutures:(id)futures;
+- (unint64_t)getAssetVersion:(id)version forKey:(id)key;
+- (void)_downloadAssetForCompabilityVersions:(id)versions withCompleteHandler:(id)handler;
+- (void)_fetchAssetCatalog:(id)catalog;
+- (void)_getSystemVersionsMappingWithCompleteHandler:(id)handler;
+- (void)downloadAssetForCompabilityVersions:(id)versions withCompleteHandler:(id)handler;
+- (void)downloadCatalogWithCompleteHandler:(id)handler;
+- (void)getSystemVersionsMappingWithCompleteHandler:(id)handler;
 @end
 
 @implementation SSUAssetManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001E10;
   block[3] = &unk_100035338;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003A268[0] != -1)
   {
     dispatch_once(qword_10003A268, block);
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (void)downloadCatalogWithCompleteHandler:(id)a3
+- (void)downloadCatalogWithCompleteHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MADownloadOptions);
   [v5 setTimeoutIntervalForResource:5];
@@ -69,7 +69,7 @@
   v8[2] = sub_100002038;
   v8[3] = &unk_100035388;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
   [MAAsset startCatalogDownload:@"com.apple.MobileAsset.SoundScapesPickerAssets" options:v5 completionWithError:v8];
 
@@ -77,9 +77,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_fetchAssetCatalog:(id)a3
+- (void)_fetchAssetCatalog:(id)catalog
 {
-  v4 = a3;
+  catalogCopy = catalog;
   v5 = sub_100001CE8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -95,7 +95,7 @@
       sub_1000295DC();
     }
 
-    v4[2](v4, 1, 0);
+    catalogCopy[2](catalogCopy, 1, 0);
   }
 
   else
@@ -111,7 +111,7 @@
     v8[2] = sub_100002484;
     v8[3] = &unk_1000353B0;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = catalogCopy;
     [(SSUAssetManager *)self downloadCatalogWithCompleteHandler:v8];
 
     objc_destroyWeak(&v10);
@@ -120,9 +120,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_getSystemVersionsMappingWithCompleteHandler:(id)a3
+- (void)_getSystemVersionsMappingWithCompleteHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100001CE8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -133,17 +133,17 @@
   v8[1] = 3221225472;
   v8[2] = sub_100002648;
   v8[3] = &unk_100035400;
-  v10 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = handlerCopy;
   v9 = [[MAAssetQuery alloc] initWithType:@"com.apple.MobileAsset.SoundScapesPickerAssets"];
   v6 = v9;
-  v7 = v4;
+  v7 = handlerCopy;
   [v6 queryMetaDataWithError:v8];
 }
 
-- (void)getSystemVersionsMappingWithCompleteHandler:(id)a3
+- (void)getSystemVersionsMappingWithCompleteHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100001CE8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -155,28 +155,28 @@
   v7[2] = sub_100002B04;
   v7[3] = &unk_100035428;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(SSUAssetManager *)self _fetchAssetCatalog:v7];
 }
 
-- (id)_getAssetURLFuture:(id)a3
+- (id)_getAssetURLFuture:(id)future
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100002C28;
   v6[3] = &unk_100035478;
-  v7 = a3;
-  v3 = v7;
+  futureCopy = future;
+  v3 = futureCopy;
   v4 = [NAFuture futureWithBlock:v6];
 
   return v4;
 }
 
-- (void)downloadAssetForCompabilityVersions:(id)a3 withCompleteHandler:(id)a4
+- (void)downloadAssetForCompabilityVersions:(id)versions withCompleteHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  versionsCopy = versions;
+  handlerCopy = handler;
   v8 = sub_100001CE8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -188,17 +188,17 @@
   v11[2] = sub_100002FC4;
   v11[3] = &unk_1000354A0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = versionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = versionsCopy;
   [(SSUAssetManager *)self _fetchAssetCatalog:v11];
 }
 
-- (void)_downloadAssetForCompabilityVersions:(id)a3 withCompleteHandler:(id)a4
+- (void)_downloadAssetForCompabilityVersions:(id)versions withCompleteHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  versionsCopy = versions;
+  handlerCopy = handler;
   v8 = sub_100001CE8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -210,22 +210,22 @@
   v12[2] = sub_10000315C;
   v12[3] = &unk_100035540;
   v13 = [[MAAssetQuery alloc] initWithType:@"com.apple.MobileAsset.SoundScapesPickerAssets"];
-  v14 = self;
-  v15 = v6;
-  v16 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v15 = versionsCopy;
+  v16 = handlerCopy;
+  v9 = versionsCopy;
   v10 = v13;
-  v11 = v7;
+  v11 = handlerCopy;
   [v10 queryMetaDataWithError:v12];
 }
 
-- (id)combineAllFutures:(id)a3
+- (id)combineAllFutures:(id)futures
 {
-  v3 = a3;
-  if ([v3 count])
+  futuresCopy = futures;
+  if ([futuresCopy count])
   {
     v4 = objc_alloc_init(NAFuture);
-    v5 = [v3 count];
+    v5 = [futuresCopy count];
     v6 = +[NAScheduler mainThreadScheduler];
     v31[0] = 0;
     v31[1] = v31;
@@ -272,7 +272,7 @@
     v16 = v9;
     v10 = v7;
     v17 = v10;
-    [v3 enumerateObjectsUsingBlock:v14];
+    [futuresCopy enumerateObjectsUsingBlock:v14];
     v11 = v17;
     v12 = v8;
 
@@ -292,20 +292,20 @@
   return v12;
 }
 
-- (unint64_t)getAssetVersion:(id)a3 forKey:(id)a4
+- (unint64_t)getAssetVersion:(id)version forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  versionCopy = version;
+  keyCopy = key;
+  if (versionCopy)
   {
-    v7 = [v5 attributes];
-    v8 = [v7 objectForKey:v6];
+    attributes = [versionCopy attributes];
+    v8 = [attributes objectForKey:keyCopy];
 
     if (v8)
     {
-      v9 = [v5 attributes];
-      v10 = [v9 objectForKey:v6];
-      v11 = [v10 integerValue];
+      attributes2 = [versionCopy attributes];
+      v10 = [attributes2 objectForKey:keyCopy];
+      integerValue = [v10 integerValue];
     }
 
     else
@@ -316,16 +316,16 @@
         sub_100029D28();
       }
 
-      v11 = -1;
+      integerValue = -1;
     }
   }
 
   else
   {
-    v11 = 0;
+    integerValue = 0;
   }
 
-  return v11;
+  return integerValue;
 }
 
 @end

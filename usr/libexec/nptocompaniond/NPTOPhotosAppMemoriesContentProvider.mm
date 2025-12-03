@@ -2,8 +2,8 @@
 - (NPTOPhotosAppMemoriesContentProvider)init;
 - (NPTOSyncContentProviderDelegate)delegate;
 - (id)assetCollections;
-- (id)assetsForAssetCollection:(id)a3;
-- (id)keyAssetsForAssetCollection:(id)a3;
+- (id)assetsForAssetCollection:(id)collection;
+- (id)keyAssetsForAssetCollection:(id)collection;
 @end
 
 @implementation NPTOPhotosAppMemoriesContentProvider
@@ -18,25 +18,25 @@
 
 - (id)assetCollections
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000FC30();
 
   return v3;
 }
 
-- (id)assetsForAssetCollection:(id)a3
+- (id)assetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = sub_1000133CC(sub_10000ED14, "SyncedMemory selected %s assets.");
 
   return v6;
 }
 
-- (id)keyAssetsForAssetCollection:(id)a3
+- (id)keyAssetsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = sub_1000133CC(sub_10000EE78, "SyncedMemory selected %s key assets.");
 
   return v6;

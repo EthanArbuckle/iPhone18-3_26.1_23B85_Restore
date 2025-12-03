@@ -1,7 +1,7 @@
 @interface TSDClockSyncManager
 + (id)sharedClockSyncManager;
 - (TSDClockSyncManager)init;
-- (void)releaseClockSyncForClockIdentifier:(unint64_t)a3;
+- (void)releaseClockSyncForClockIdentifier:(unint64_t)identifier;
 @end
 
 @implementation TSDClockSyncManager
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)releaseClockSyncForClockIdentifier:(unint64_t)a3
+- (void)releaseClockSyncForClockIdentifier:(unint64_t)identifier
 {
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v6 = [NSNumber numberWithUnsignedLongLong:identifier];
   os_unfair_lock_lock(&self->_clockSyncsLock);
   v4 = [(NSMutableDictionary *)self->_clockSyncs objectForKeyedSubscript:v6];
   v5 = v4;

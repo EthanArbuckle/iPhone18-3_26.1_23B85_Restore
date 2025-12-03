@@ -1,30 +1,30 @@
 @interface DBGCustomValue
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(id)a3;
-- (DBGCustomValue)initWithCustomValue:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(id)value;
+- (DBGCustomValue)initWithCustomValue:(id)value;
 - (NSString)description;
 @end
 
 @implementation DBGCustomValue
 
-+ (id)withValue:(id)a3
++ (id)withValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCustomValue:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithCustomValue:valueCopy];
 
   return v5;
 }
 
-- (DBGCustomValue)initWithCustomValue:(id)a3
+- (DBGCustomValue)initWithCustomValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = DBGCustomValue;
   v6 = [(DBGCustomValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_customValue, a3);
+    objc_storeStrong(&v6->_customValue, value);
   }
 
   return v7;
@@ -34,24 +34,24 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DBGCustomValue *)self customValue];
-  v6 = [NSString stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  customValue = [(DBGCustomValue *)self customValue];
+  v6 = [NSString stringWithFormat:@"<%@: %p %@>", v4, self, customValue];
 
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
   v7 = DBGDecodeValueFromJSONCompatibleValue();
   v8 = 0;
   if (v8)
   {
 
-    if (a5)
+    if (error)
     {
       v9 = v8;
       v7 = 0;
-      *a5 = v8;
+      *error = v8;
     }
 
     else
@@ -60,7 +60,7 @@
     }
   }
 
-  v10 = [a1 withValue:v7];
+  v10 = [self withValue:v7];
 
   return v10;
 }

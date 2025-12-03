@@ -2,29 +2,29 @@
 + (void)connectIfNeeded;
 + (void)initialize;
 - (BOOL)canBecomeFirstResponder;
-- (CKNotificationContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)a3;
-- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)a3;
-- (void)_adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:(id)a3;
-- (void)_displayNameUpdatedNotification:(id)a3;
-- (void)_keyboardDidShow:(id)a3;
-- (void)chatController:(id)a3 didSendCompositionInConversation:(id)a4;
-- (void)chatControllerDidChangeBackground:(id)a3;
+- (CKNotificationContentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)controller;
+- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)controller;
+- (void)_adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:(id)background;
+- (void)_displayNameUpdatedNotification:(id)notification;
+- (void)_keyboardDidShow:(id)show;
+- (void)chatController:(id)controller didSendCompositionInConversation:(id)conversation;
+- (void)chatControllerDidChangeBackground:(id)background;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)didReceiveNotification:(id)a3;
+- (void)didReceiveNotification:(id)notification;
 - (void)grabFocus;
-- (void)notificationChatControllerRequestDismissNotificationContentExtension:(id)a3;
-- (void)setupChatControllerForConversation:(id)a3;
-- (void)transcriptBackgroundTapped:(id)a3;
+- (void)notificationChatControllerRequestDismissNotificationContentExtension:(id)extension;
+- (void)setupChatControllerForConversation:(id)conversation;
+- (void)transcriptBackgroundTapped:(id)tapped;
 - (void)updateContentExtensionSize;
-- (void)updateNotificationTitleFromConversation:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateNotificationTitleFromConversation:(id)conversation;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKNotificationContentViewController
@@ -103,26 +103,26 @@ void __54__CKNotificationContentViewController_connectIfNeeded__block_invoke()
   }
 }
 
-- (CKNotificationContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKNotificationContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = CKNotificationContentViewController;
-  v4 = [(CKNotificationContentViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(CKNotificationContentViewController *)&v12 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
     [(CKNotificationContentViewController *)v4 setCanUpdateContentExtensionSize:1];
     [objc_opt_class() connectIfNeeded];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v5 selector:sel__displayNameUpdatedNotification_ name:*MEMORY[0x1E69A5700] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__displayNameUpdatedNotification_ name:*MEMORY[0x1E69A5700] object:0];
     v7 = dispatch_time(0, 0);
     dispatch_after(v7, MEMORY[0x1E69E96A0], &__block_literal_global_220_1);
-    v8 = [MEMORY[0x1E69A60F0] sharedInstance];
-    v9 = [v8 isInternalInstall];
+    mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+    isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-    if (v9)
+    if (isInternalInstall)
     {
-      [v6 addObserver:v5 selector:sel__keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
+      [defaultCenter addObserver:v5 selector:sel__keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
       v10 = objc_alloc_init(MEMORY[0x1E69A6170]);
       [v10 startTimingForKey:@"longlook-launch-to-keyboard"];
       [(CKNotificationContentViewController *)v5 setLaunchTokeyboardBringUpTC:v10];
@@ -143,18 +143,18 @@ void __62__CKNotificationContentViewController_initWithNibName_bundle___block_in
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKNotificationContentViewController;
   [(CKNotificationContentViewController *)&v4 dealloc];
 }
 
-- (void)_displayNameUpdatedNotification:(id)a3
+- (void)_displayNameUpdatedNotification:(id)notification
 {
-  v5 = [a3 object];
-  v4 = [[CKConversation alloc] initWithChat:v5];
+  object = [notification object];
+  v4 = [[CKConversation alloc] initWithChat:object];
   if (v4)
   {
     [(CKNotificationContentViewController *)self updateNotificationTitleFromConversation:v4];
@@ -170,10 +170,10 @@ void __62__CKNotificationContentViewController_initWithNibName_bundle___block_in
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(CKNotificationContentViewController *)self chatController];
-  v3 = [v2 shouldDisplayTextEntry];
+  chatController = [(CKNotificationContentViewController *)self chatController];
+  shouldDisplayTextEntry = [chatController shouldDisplayTextEntry];
 
-  return v3;
+  return shouldDisplayTextEntry;
 }
 
 - (void)viewDidLoad
@@ -183,20 +183,20 @@ void __62__CKNotificationContentViewController_initWithNibName_bundle___block_in
   [(CKNotificationContentViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v8.receiver = self;
   v8.super_class = CKNotificationContentViewController;
-  [(CKNotificationContentViewController *)&v8 viewIsAppearing:a3];
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isTranscriptBackgroundsEnabled];
+  [(CKNotificationContentViewController *)&v8 viewIsAppearing:appearing];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptBackgroundsEnabled = [mEMORY[0x1E69A8070] isTranscriptBackgroundsEnabled];
 
-  if (v5)
+  if (isTranscriptBackgroundsEnabled)
   {
-    v6 = [(CKNotificationContentViewController *)self chatController];
-    v7 = [v6 transcriptBackground];
+    chatController = [(CKNotificationContentViewController *)self chatController];
+    transcriptBackground = [chatController transcriptBackground];
 
-    [(CKNotificationContentViewController *)self _adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:v7];
+    [(CKNotificationContentViewController *)self _adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:transcriptBackground];
   }
 }
 
@@ -205,14 +205,14 @@ void __62__CKNotificationContentViewController_initWithNibName_bundle___block_in
   v16 = *MEMORY[0x1E69E9840];
   if ([(CKNotificationContentViewController *)self canUpdateContentExtensionSize])
   {
-    v3 = [(CKNotificationContentViewController *)self chatController];
-    v4 = [v3 collectionView];
-    [v4 __ck_contentSize];
+    chatController = [(CKNotificationContentViewController *)self chatController];
+    collectionView = [chatController collectionView];
+    [collectionView __ck_contentSize];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(CKNotificationContentViewController *)self view];
-    [v9 frame];
+    view = [(CKNotificationContentViewController *)self view];
+    [view frame];
     v11 = v10;
 
     if (v8 > v11)
@@ -235,78 +235,78 @@ void __62__CKNotificationContentViewController_initWithNibName_bundle___block_in
   }
 }
 
-- (void)updateNotificationTitleFromConversation:(id)a3
+- (void)updateNotificationTitleFromConversation:(id)conversation
 {
-  v8 = a3;
-  v4 = [v8 displayName];
+  conversationCopy = conversation;
+  displayName = [conversationCopy displayName];
 
-  if (v4)
+  if (displayName)
   {
-    v5 = [v8 displayName];
+    displayName2 = [conversationCopy displayName];
   }
 
   else
   {
-    v6 = [v8 name];
+    name = [conversationCopy name];
 
-    if (!v6)
+    if (!name)
     {
       goto LABEL_6;
     }
 
-    v5 = [v8 name];
+    displayName2 = [conversationCopy name];
   }
 
-  v7 = v5;
-  [(CKNotificationContentViewController *)self setTitle:v5];
+  v7 = displayName2;
+  [(CKNotificationContentViewController *)self setTitle:displayName2];
 
 LABEL_6:
 }
 
-- (void)_keyboardDidShow:(id)a3
+- (void)_keyboardDidShow:(id)show
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKNotificationContentViewController *)self launchTokeyboardBringUpTC];
+  showCopy = show;
+  launchTokeyboardBringUpTC = [(CKNotificationContentViewController *)self launchTokeyboardBringUpTC];
 
-  if (v5)
+  if (launchTokeyboardBringUpTC)
   {
-    v6 = [(CKNotificationContentViewController *)self launchTokeyboardBringUpTC];
-    [v6 stopTimingForKey:@"longlook-launch-to-keyboard"];
+    launchTokeyboardBringUpTC2 = [(CKNotificationContentViewController *)self launchTokeyboardBringUpTC];
+    [launchTokeyboardBringUpTC2 stopTimingForKey:@"longlook-launch-to-keyboard"];
 
     if (IMOSLoggingEnabled())
     {
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [(CKNotificationContentViewController *)self launchTokeyboardBringUpTC];
+        launchTokeyboardBringUpTC3 = [(CKNotificationContentViewController *)self launchTokeyboardBringUpTC];
         v10 = 138412290;
-        v11 = v8;
+        v11 = launchTokeyboardBringUpTC3;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "From launch to keyboard bring up %@", &v10, 0xCu);
       }
     }
 
     [(CKNotificationContentViewController *)self setLaunchTokeyboardBringUpTC:0];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
   }
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(CKNotificationContentViewController *)self setNotification:v4];
+  notificationCopy = notification;
+  [(CKNotificationContentViewController *)self setNotification:notificationCopy];
   if ([MEMORY[0x1E6983308] supportsContentExtensions])
   {
-    v5 = [(CKNotificationContentViewController *)self chatController];
+    chatController = [(CKNotificationContentViewController *)self chatController];
 
-    if (!v5)
+    if (!chatController)
     {
-      v6 = [v4 request];
-      v7 = [v6 content];
-      v8 = [v7 userInfo];
-      v9 = [v8 objectForKeyedSubscript:@"CKBBUserInfoKeyChatIdentifier"];
+      request = [notificationCopy request];
+      content = [request content];
+      userInfo = [content userInfo];
+      v9 = [userInfo objectForKeyedSubscript:@"CKBBUserInfoKeyChatIdentifier"];
 
       if (IMOSLoggingEnabled())
       {
@@ -319,8 +319,8 @@ LABEL_6:
         }
       }
 
-      v11 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-      v12 = [v11 existingChatWithChatIdentifier:v9];
+      mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+      v12 = [mEMORY[0x1E69A5AF8] existingChatWithChatIdentifier:v9];
 
       v13 = [[CKConversation alloc] initWithChat:v12];
       [(CKNotificationContentViewController *)self updateNotificationTitleFromConversation:v13];
@@ -329,9 +329,9 @@ LABEL_6:
       if (CKIsScreenLocked())
       {
         [(CKConversation *)v13 setLoadedMessageCount:5 loadImmediately:0];
-        v14 = [v4 request];
-        v15 = [v14 identifier];
-        [(CKConversation *)v13 loadAllUnreadMessagesUpToMessageGUID:v15];
+        request2 = [notificationCopy request];
+        identifier = [request2 identifier];
+        [(CKConversation *)v13 loadAllUnreadMessagesUpToMessageGUID:identifier];
       }
 
       else
@@ -346,9 +346,9 @@ LABEL_6:
   }
 }
 
-- (void)setupChatControllerForConversation:(id)a3
+- (void)setupChatControllerForConversation:(id)conversation
 {
-  v15 = a3;
+  conversationCopy = conversation;
   [(CKNotificationContentViewController *)self chatController];
   if (objc_claimAutoreleasedReturnValue())
   {
@@ -356,41 +356,41 @@ LABEL_6:
   }
 
   v4 = [CKNotificationChatController alloc];
-  v5 = [(CKNotificationContentViewController *)self traitCollection];
-  v6 = [(CKNotificationChatController *)v4 initWithConversation:v15 entryViewTraitCollection:v5];
+  traitCollection = [(CKNotificationContentViewController *)self traitCollection];
+  v6 = [(CKNotificationChatController *)v4 initWithConversation:conversationCopy entryViewTraitCollection:traitCollection];
 
   [(CKCoreChatController *)v6 setDelegate:self];
-  v7 = [MEMORY[0x1E69DD2E8] keyWindow];
-  v8 = [v7 windowScene];
-  v9 = [v8 _enhancedWindowingEnabled];
+  keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+  windowScene = [keyWindow windowScene];
+  _enhancedWindowingEnabled = [windowScene _enhancedWindowingEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((_enhancedWindowingEnabled & 1) == 0)
   {
     [(CKScrollViewController *)v6 beginHoldingScrollGeometryUpdatesForReason:@"NotificationChatControllerFixedLayout"];
   }
 
-  v10 = [(CKNotificationChatController *)v6 view];
-  v11 = [(CKNotificationContentViewController *)self view];
-  [v11 frame];
-  [v10 setFrame:?];
+  view = [(CKNotificationChatController *)v6 view];
+  view2 = [(CKNotificationContentViewController *)self view];
+  [view2 frame];
+  [view setFrame:?];
 
-  v12 = [(CKNotificationContentViewController *)self extensionContext];
-  [(CKNotificationChatController *)v6 setUrlOpenContext:v12];
+  extensionContext = [(CKNotificationContentViewController *)self extensionContext];
+  [(CKNotificationChatController *)v6 setUrlOpenContext:extensionContext];
 
   [(CKNotificationContentViewController *)self addChildViewController:v6];
-  v13 = [(CKNotificationContentViewController *)self view];
-  v14 = [(CKNotificationChatController *)v6 view];
-  [v13 addSubview:v14];
+  view3 = [(CKNotificationContentViewController *)self view];
+  view4 = [(CKNotificationChatController *)v6 view];
+  [view3 addSubview:view4];
 
   [(CKNotificationChatController *)v6 didMoveToParentViewController:self];
   [(CKNotificationContentViewController *)self setChatController:v6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CKNotificationContentViewController;
-  [(CKNotificationContentViewController *)&v5 viewWillAppear:a3];
+  [(CKNotificationContentViewController *)&v5 viewWillAppear:appear];
   if (IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
@@ -404,11 +404,11 @@ LABEL_6:
   [CKApplicationState setMainWindowForegroundActive:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CKNotificationContentViewController;
-  [(CKNotificationContentViewController *)&v8 viewDidAppear:a3];
+  [(CKNotificationContentViewController *)&v8 viewDidAppear:appear];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -419,9 +419,9 @@ LABEL_6:
     }
   }
 
-  v5 = [(CKNotificationContentViewController *)self chatController];
+  chatController = [(CKNotificationContentViewController *)self chatController];
 
-  if (v5)
+  if (chatController)
   {
     [(CKNotificationContentViewController *)self updateContentExtensionSize];
   }
@@ -435,18 +435,18 @@ LABEL_6:
 - (void)grabFocus
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CKNotificationContentViewController *)self chatController];
+  chatController = [(CKNotificationContentViewController *)self chatController];
 
-  if (v3)
+  if (chatController)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69A6170]);
     [v4 startTimingForKey:@"longlook-becomeFirstResponder"];
-    v5 = [(CKNotificationContentViewController *)self chatController];
-    v6 = [v5 entryView];
-    [v6 setHidden:0];
+    chatController2 = [(CKNotificationContentViewController *)self chatController];
+    entryView = [chatController2 entryView];
+    [entryView setHidden:0];
 
-    v7 = [(CKNotificationContentViewController *)self chatController];
-    [v7 becomeFirstResponder];
+    chatController3 = [(CKNotificationContentViewController *)self chatController];
+    [chatController3 becomeFirstResponder];
 
     [v4 stopTimingForKey:@"longlook-becomeFirstResponder"];
     if (IMOSLoggingEnabled())
@@ -462,11 +462,11 @@ LABEL_6:
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = CKNotificationContentViewController;
-  [(CKNotificationContentViewController *)&v8 viewWillDisappear:a3];
+  [(CKNotificationContentViewController *)&v8 viewWillDisappear:disappear];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -495,15 +495,15 @@ void __57__CKNotificationContentViewController_viewWillDisappear___block_invoke(
   [v1 setHidden:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = CKNotificationContentViewController;
-  [(CKNotificationContentViewController *)&v3 viewDidDisappear:a3];
+  [(CKNotificationContentViewController *)&v3 viewDidDisappear:disappear];
   [CKApplicationState setMainWindowForegroundActive:0];
 }
 
-- (void)chatController:(id)a3 didSendCompositionInConversation:(id)a4
+- (void)chatController:(id)controller didSendCompositionInConversation:(id)conversation
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -521,7 +521,7 @@ uint64_t __87__CKNotificationContentViewController_chatController_didSendComposi
   return [v2 updateContentExtensionSize];
 }
 
-- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)a3
+- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)controller
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -534,7 +534,7 @@ uint64_t __87__CKNotificationContentViewController_chatController_didSendComposi
   return result;
 }
 
-- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)a3
+- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)controller
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -547,71 +547,71 @@ uint64_t __87__CKNotificationContentViewController_chatController_didSendComposi
   return result;
 }
 
-- (void)chatControllerDidChangeBackground:(id)a3
+- (void)chatControllerDidChangeBackground:(id)background
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgroundCopy = background;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = backgroundCopy;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Did change background on chat controller: %@", &v9, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isTranscriptBackgroundsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptBackgroundsEnabled = [mEMORY[0x1E69A8070] isTranscriptBackgroundsEnabled];
 
-  if (v7)
+  if (isTranscriptBackgroundsEnabled)
   {
-    v8 = [v4 transcriptBackground];
-    [(CKNotificationContentViewController *)self _adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:v8];
+    transcriptBackground = [backgroundCopy transcriptBackground];
+    [(CKNotificationContentViewController *)self _adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:transcriptBackground];
   }
 }
 
-- (void)_adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:(id)a3
+- (void)_adjustTraitOverridesAndUserInterfaceStyleForTranscriptBackground:(id)background
 {
-  v11 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isTranscriptBackgroundsEnabled];
+  backgroundCopy = background;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptBackgroundsEnabled = [mEMORY[0x1E69A8070] isTranscriptBackgroundsEnabled];
 
-  v6 = v11;
-  if (v5)
+  v6 = backgroundCopy;
+  if (isTranscriptBackgroundsEnabled)
   {
-    v7 = v11;
+    v7 = backgroundCopy;
     -[CKNotificationContentViewController setOverrideUserInterfaceStyle:](self, "setOverrideUserInterfaceStyle:", [v7 contentDerivedUserInterfaceStyle]);
-    v8 = [(CKNotificationContentViewController *)self traitOverrides];
+    traitOverrides = [(CKNotificationContentViewController *)self traitOverrides];
     if (v7)
     {
-      [v8 setNSIntegerValue:objc_msgSend(MEMORY[0x1E695E118] forTrait:{"integerValue"), objc_opt_class()}];
+      [traitOverrides setNSIntegerValue:objc_msgSend(MEMORY[0x1E695E118] forTrait:{"integerValue"), objc_opt_class()}];
 
-      v9 = [(CKNotificationContentViewController *)self traitOverrides];
+      traitOverrides2 = [(CKNotificationContentViewController *)self traitOverrides];
       [v7 luminance];
-      [v9 setCGFloatValue:objc_opt_class() forTrait:v10];
+      [traitOverrides2 setCGFloatValue:objc_opt_class() forTrait:v10];
     }
 
     else
     {
-      [v8 removeTrait:objc_opt_class()];
+      [traitOverrides removeTrait:objc_opt_class()];
 
-      v9 = [(CKNotificationContentViewController *)self traitOverrides];
-      [v9 removeTrait:objc_opt_class()];
+      traitOverrides2 = [(CKNotificationContentViewController *)self traitOverrides];
+      [traitOverrides2 removeTrait:objc_opt_class()];
     }
 
-    v6 = v11;
+    v6 = backgroundCopy;
   }
 }
 
-- (void)transcriptBackgroundTapped:(id)a3
+- (void)transcriptBackgroundTapped:(id)tapped
 {
-  v3 = [(CKNotificationContentViewController *)self extensionContext];
-  [v3 performNotificationDefaultAction];
+  extensionContext = [(CKNotificationContentViewController *)self extensionContext];
+  [extensionContext performNotificationDefaultAction];
 }
 
-- (void)notificationChatControllerRequestDismissNotificationContentExtension:(id)a3
+- (void)notificationChatControllerRequestDismissNotificationContentExtension:(id)extension
 {
-  v3 = [(CKNotificationContentViewController *)self extensionContext];
-  [v3 dismissNotificationContentExtension];
+  extensionContext = [(CKNotificationContentViewController *)self extensionContext];
+  [extensionContext dismissNotificationContentExtension];
 }
 
 @end

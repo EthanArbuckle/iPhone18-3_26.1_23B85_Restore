@@ -2,8 +2,8 @@
 - (ATXLockScreenNotificationRankerClient)init;
 - (void)dealloc;
 - (void)init;
-- (void)rankNewNotificationIntoNotificationArrays:(id)a3 newNotification:(id)a4 notificationArrayIndex:(unint64_t)a5 reply:(id)a6;
-- (void)rankNotificationArrays:(id)a3 reply:(id)a4;
+- (void)rankNewNotificationIntoNotificationArrays:(id)arrays newNotification:(id)notification notificationArrayIndex:(unint64_t)index reply:(id)reply;
+- (void)rankNotificationArrays:(id)arrays reply:(id)reply;
 @end
 
 @implementation ATXLockScreenNotificationRankerClient
@@ -87,21 +87,21 @@ void __45__ATXLockScreenNotificationRankerClient_init__block_invoke_67(uint64_t 
   [(ATXLockScreenNotificationRankerClient *)&v3 dealloc];
 }
 
-- (void)rankNotificationArrays:(id)a3 reply:(id)a4
+- (void)rankNotificationArrays:(id)arrays reply:(id)reply
 {
-  v7 = a4;
+  replyCopy = reply;
   xpcConnection = self->_xpcConnection;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__ATXLockScreenNotificationRankerClient_rankNotificationArrays_reply___block_invoke;
   v12[3] = &unk_1E80C1100;
-  v13 = v7;
+  v13 = replyCopy;
   v14 = a2;
   v12[4] = self;
-  v9 = v7;
-  v10 = a3;
+  v9 = replyCopy;
+  arraysCopy = arrays;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
-  [v11 rankNotificationArrays:v10 reply:v9];
+  [v11 rankNotificationArrays:arraysCopy reply:v9];
 }
 
 void __70__ATXLockScreenNotificationRankerClient_rankNotificationArrays_reply___block_invoke(uint64_t a1, void *a2)
@@ -116,22 +116,22 @@ void __70__ATXLockScreenNotificationRankerClient_rankNotificationArrays_reply___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)rankNewNotificationIntoNotificationArrays:(id)a3 newNotification:(id)a4 notificationArrayIndex:(unint64_t)a5 reply:(id)a6
+- (void)rankNewNotificationIntoNotificationArrays:(id)arrays newNotification:(id)notification notificationArrayIndex:(unint64_t)index reply:(id)reply
 {
-  v11 = a6;
+  replyCopy = reply;
   xpcConnection = self->_xpcConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __128__ATXLockScreenNotificationRankerClient_rankNewNotificationIntoNotificationArrays_newNotification_notificationArrayIndex_reply___block_invoke;
   v17[3] = &unk_1E80C1100;
-  v18 = v11;
+  v18 = replyCopy;
   v19 = a2;
   v17[4] = self;
-  v13 = v11;
-  v14 = a4;
-  v15 = a3;
+  v13 = replyCopy;
+  notificationCopy = notification;
+  arraysCopy = arrays;
   v16 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v17];
-  [v16 rankNewNotificationIntoNotificationArrays:v15 newNotification:v14 notificationArrayIndex:a5 reply:v13];
+  [v16 rankNewNotificationIntoNotificationArrays:arraysCopy newNotification:notificationCopy notificationArrayIndex:index reply:v13];
 }
 
 void __128__ATXLockScreenNotificationRankerClient_rankNewNotificationIntoNotificationArrays_newNotification_notificationArrayIndex_reply___block_invoke(uint64_t a1, void *a2)
@@ -149,8 +149,8 @@ void __128__ATXLockScreenNotificationRankerClient_rankNewNotificationIntoNotific
 - (void)init
 {
   *a2 = 138412290;
-  *(a2 + 4) = a1;
-  v7 = a1;
+  *(a2 + 4) = self;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1BF549000, a3, OS_LOG_TYPE_DEBUG, "[%@] Connection established", a2, 0xCu);
 }
 

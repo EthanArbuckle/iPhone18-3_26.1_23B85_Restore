@@ -1,61 +1,61 @@
 @interface HKNanoSyncPairedDeviceInfo
-- (BOOL)isEqual:(id)a3;
-- (HKNanoSyncPairedDeviceInfo)initWithCoder:(id)a3;
-- (HKNanoSyncPairedDeviceInfo)initWithSourceBundleIdentifier:(id)a3 systemBuildVersion:(id)a4 productType:(id)a5 active:(BOOL)a6 restoreComplete:(BOOL)a7 protocolVersion:(int)a8;
+- (BOOL)isEqual:(id)equal;
+- (HKNanoSyncPairedDeviceInfo)initWithCoder:(id)coder;
+- (HKNanoSyncPairedDeviceInfo)initWithSourceBundleIdentifier:(id)identifier systemBuildVersion:(id)version productType:(id)type active:(BOOL)active restoreComplete:(BOOL)complete protocolVersion:(int)protocolVersion;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKNanoSyncPairedDeviceInfo
 
-- (HKNanoSyncPairedDeviceInfo)initWithSourceBundleIdentifier:(id)a3 systemBuildVersion:(id)a4 productType:(id)a5 active:(BOOL)a6 restoreComplete:(BOOL)a7 protocolVersion:(int)a8
+- (HKNanoSyncPairedDeviceInfo)initWithSourceBundleIdentifier:(id)identifier systemBuildVersion:(id)version productType:(id)type active:(BOOL)active restoreComplete:(BOOL)complete protocolVersion:(int)protocolVersion
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  completeCopy = complete;
+  activeCopy = active;
+  identifierCopy = identifier;
+  versionCopy = version;
+  typeCopy = type;
   v25.receiver = self;
   v25.super_class = HKNanoSyncPairedDeviceInfo;
   v17 = [(HKNanoSyncPairedDeviceInfo *)&v25 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [identifierCopy copy];
     sourceBundleIdentifier = v17->_sourceBundleIdentifier;
     v17->_sourceBundleIdentifier = v18;
 
-    v20 = [v15 copy];
+    v20 = [versionCopy copy];
     systemBuildVersion = v17->_systemBuildVersion;
     v17->_systemBuildVersion = v20;
 
-    v22 = [v16 copy];
+    v22 = [typeCopy copy];
     productType = v17->_productType;
     v17->_productType = v22;
 
-    if (v10)
+    if (activeCopy)
     {
       v17->_state |= 1uLL;
     }
 
-    if (v9)
+    if (completeCopy)
     {
       v17->_state |= 2uLL;
     }
 
-    v17->_protocolVersion = a8;
+    v17->_protocolVersion = protocolVersion;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     sourceBundleIdentifier = self->_sourceBundleIdentifier;
     v7 = v5[1];
     v12 = (sourceBundleIdentifier == v7 || v7 && [(NSString *)sourceBundleIdentifier isEqualToString:?]) && ((systemBuildVersion = self->_systemBuildVersion, v9 = v5[2], systemBuildVersion == v9) || v9 && [(NSString *)systemBuildVersion isEqualToString:?]) && ((productType = self->_productType, v11 = v5[3], productType == v11) || v11 && [(NSString *)productType isEqualToString:?]) && self->_state == v5[4] && self->_protocolVersion == *(v5 + 10);
@@ -82,9 +82,9 @@
   v4 = objc_opt_class();
   v9 = *&self->_sourceBundleIdentifier;
   productType = self->_productType;
-  v6 = [(HKNanoSyncPairedDeviceInfo *)self isRestoreComplete];
+  isRestoreComplete = [(HKNanoSyncPairedDeviceInfo *)self isRestoreComplete];
   v7 = "NO";
-  if (v6)
+  if (isRestoreComplete)
   {
     v7 = "YES";
   }
@@ -92,42 +92,42 @@
   return [v3 stringWithFormat:@"<%@:%p source=%@ build=%@ product=%@ restored=%s protocol=%d>", v4, self, v9, productType, v7, self->_protocolVersion, 0];
 }
 
-- (HKNanoSyncPairedDeviceInfo)initWithCoder:(id)a3
+- (HKNanoSyncPairedDeviceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKNanoSyncPairedDeviceInfo;
   v5 = [(HKNanoSyncPairedDeviceInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
     sourceBundleIdentifier = v5->_sourceBundleIdentifier;
     v5->_sourceBundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"build"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"build"];
     systemBuildVersion = v5->_systemBuildVersion;
     v5->_systemBuildVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
     productType = v5->_productType;
     v5->_productType = v10;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v5->_protocolVersion = [v4 decodeIntForKey:@"protocol"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v5->_protocolVersion = [coderCopy decodeIntForKey:@"protocol"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceBundleIdentifier = self->_sourceBundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sourceBundleIdentifier forKey:@"source"];
-  [v5 encodeObject:self->_systemBuildVersion forKey:@"build"];
-  [v5 encodeObject:self->_productType forKey:@"productType"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeInt:self->_protocolVersion forKey:@"protocol"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceBundleIdentifier forKey:@"source"];
+  [coderCopy encodeObject:self->_systemBuildVersion forKey:@"build"];
+  [coderCopy encodeObject:self->_productType forKey:@"productType"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeInt:self->_protocolVersion forKey:@"protocol"];
 }
 
 @end

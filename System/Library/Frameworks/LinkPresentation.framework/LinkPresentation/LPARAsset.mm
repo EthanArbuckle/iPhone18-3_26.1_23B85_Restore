@@ -1,21 +1,21 @@
 @interface LPARAsset
-- (BOOL)isEqual:(id)a3;
-- (LPARAsset)initWithCoder:(id)a3;
-- (LPARAsset)initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LPARAsset)initWithCoder:(id)coder;
+- (LPARAsset)initWithData:(id)data MIMEType:(id)type properties:(id)properties;
 - (id)_createTemporaryFileAndWriteData;
 - (id)_ensureTemporaryAssetURL;
-- (id)_initWithARAsset:(id)a3;
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithARAsset:(id)asset;
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPARAsset
 
-- (id)initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (id)initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties
 {
   v9.receiver = self;
   v9.super_class = LPARAsset;
-  v5 = [(LPVisualMedia *)&v9 _initByReferencingFileURL:a3 MIMEType:a4 properties:a5];
+  v5 = [(LPVisualMedia *)&v9 _initByReferencingFileURL:l MIMEType:type properties:properties];
   v6 = v5;
   if (v5)
   {
@@ -25,11 +25,11 @@
   return v6;
 }
 
-- (LPARAsset)initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (LPARAsset)initWithData:(id)data MIMEType:(id)type properties:(id)properties
 {
   v9.receiver = self;
   v9.super_class = LPARAsset;
-  v5 = [(LPVisualMedia *)&v9 _initWithData:a3 MIMEType:a4 properties:a5];
+  v5 = [(LPVisualMedia *)&v9 _initWithData:data MIMEType:type properties:properties];
   v6 = v5;
   if (v5)
   {
@@ -39,16 +39,16 @@
   return v6;
 }
 
-- (id)_initWithARAsset:(id)a3
+- (id)_initWithARAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = [v4 fileURL];
-  v7 = [v4 MIMEType];
-  v8 = [v4 properties];
+  assetCopy = asset;
+  data = [assetCopy data];
+  fileURL = [assetCopy fileURL];
+  mIMEType = [assetCopy MIMEType];
+  properties = [assetCopy properties];
   v12.receiver = self;
   v12.super_class = LPARAsset;
-  v9 = [(LPVisualMedia *)&v12 _initWithData:v5 fileURL:v6 MIMEType:v7 properties:v8];
+  v9 = [(LPVisualMedia *)&v12 _initWithData:data fileURL:fileURL MIMEType:mIMEType properties:properties];
 
   if (v9)
   {
@@ -62,15 +62,15 @@
 {
   v3 = MEMORY[0x1E695DFF8];
   v4 = NSTemporaryDirectory();
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v4 stringByAppendingPathComponent:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [v4 stringByAppendingPathComponent:uUIDString];
   v8 = [v3 fileURLWithPath:v7];
 
   v9 = [v8 URLByAppendingPathExtension:@"usdz"];
 
-  v10 = [(LPVisualMedia *)self data];
-  [v10 writeToURL:v9 atomically:1];
+  data = [(LPVisualMedia *)self data];
+  [data writeToURL:v9 atomically:1];
 
   objc_storeStrong(&self->_temporaryFileURL, v9);
 
@@ -81,34 +81,34 @@
 {
   if ([(NSURL *)self->_temporaryFileURL isFileURL])
   {
-    v3 = self->_temporaryFileURL;
+    _createTemporaryFileAndWriteData = self->_temporaryFileURL;
   }
 
   else
   {
-    v3 = [(LPARAsset *)self _createTemporaryFileAndWriteData];
+    _createTemporaryFileAndWriteData = [(LPARAsset *)self _createTemporaryFileAndWriteData];
   }
 
-  return v3;
+  return _createTemporaryFileAndWriteData;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = LPARAsset;
-  [(LPVisualMedia *)&v3 encodeWithCoder:a3];
+  [(LPVisualMedia *)&v3 encodeWithCoder:coder];
 }
 
-- (LPARAsset)initWithCoder:(id)a3
+- (LPARAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(LPARAssetProperties);
-  v6 = [v4 _lp_strictlyDecodeNSStringForKey:@"accessibilityText"];
+  v6 = [coderCopy _lp_strictlyDecodeNSStringForKey:@"accessibilityText"];
   [(LPVisualMediaProperties *)v5 setAccessibilityText:v6];
 
   v11.receiver = self;
   v11.super_class = LPARAsset;
-  v7 = [(LPVisualMedia *)&v11 initWithCoder:v4 properties:v5];
+  v7 = [(LPVisualMedia *)&v11 initWithCoder:coderCopy properties:v5];
   v8 = v7;
   if (v7)
   {
@@ -118,12 +118,12 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = LPARAsset;
-  if ([(LPVisualMedia *)&v7 isEqual:v4])
+  if ([(LPVisualMedia *)&v7 isEqual:equalCopy])
   {
     isKindOfClass = 1;
   }

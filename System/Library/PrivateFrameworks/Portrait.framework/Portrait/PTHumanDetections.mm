@@ -1,18 +1,18 @@
 @interface PTHumanDetections
-- (PTHumanDetections)initWithMetalContext:(id)a3;
-- (int)faceDetectionsFilteredState:(BOOL)a3;
+- (PTHumanDetections)initWithMetalContext:(id)context;
+- (int)faceDetectionsFilteredState:(BOOL)state;
 - (void)clearFilterDetections;
 - (void)filterDetections;
-- (void)renderDebugRects:(id)a3 outTexture:(id)a4 debugFaceRects:(BOOL)a5;
+- (void)renderDebugRects:(id)rects outTexture:(id)texture debugFaceRects:(BOOL)faceRects;
 - (void)reset;
-- (void)unpackDetections:(id)a3;
+- (void)unpackDetections:(id)detections;
 @end
 
 @implementation PTHumanDetections
 
-- (PTHumanDetections)initWithMetalContext:(id)a3
+- (PTHumanDetections)initWithMetalContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = PTHumanDetections;
   v5 = [(PTHumanDetections *)&v11 init];
@@ -23,7 +23,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [[PTUtil alloc] initWithMetalContext:v4];
+  v6 = [[PTUtil alloc] initWithMetalContext:contextCopy];
   util = v5->_util;
   v5->_util = v6;
 
@@ -45,9 +45,9 @@ LABEL_8:
   return v8;
 }
 
-- (int)faceDetectionsFilteredState:(BOOL)a3
+- (int)faceDetectionsFilteredState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = *self->_faceDetectionsFilteredState;
     v4.i64[0] = 0x200000002;
@@ -80,10 +80,10 @@ LABEL_8:
   return self->_faceDetectionsFilteredState;
 }
 
-- (void)unpackDetections:(id)a3
+- (void)unpackDetections:(id)detections
 {
-  v57 = a3;
-  v4 = [v57 objectForKeyedSubscript:@"DetectedObjectsInfo"];
+  detectionsCopy = detections;
+  v4 = [detectionsCopy objectForKeyedSubscript:@"DetectedObjectsInfo"];
   v55 = v4;
   if (v4)
   {
@@ -94,7 +94,7 @@ LABEL_8:
 
   else
   {
-    v6 = v57;
+    v6 = detectionsCopy;
   }
 
   v58 = v6;
@@ -789,11 +789,11 @@ LABEL_9:
   while (v4);
 }
 
-- (void)renderDebugRects:(id)a3 outTexture:(id)a4 debugFaceRects:(BOOL)a5
+- (void)renderDebugRects:(id)rects outTexture:(id)texture debugFaceRects:(BOOL)faceRects
 {
   v56 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v7 = a4;
+  rectsCopy = rects;
+  textureCopy = texture;
   if (self->_detectionsRawCount >= 1)
   {
     v9 = 0;
@@ -809,15 +809,15 @@ LABEL_9:
       do
       {
         v49 = *(&v53 + v10);
-        v14 = [v7 width];
-        v15 = [v7 height];
-        v16 = [v7 width];
-        v17 = [v7 height];
-        v18.i64[0] = v16;
-        v18.i64[1] = v17;
-        v19.i64[0] = v14;
-        v19.i64[1] = v15;
-        [(PTUtil *)self->_util renderRect:v48 rect:0 color:v7 fill:*vcvtq_s32_f32(vmulq_f32(v49 outTexture:vcvt_hight_f32_f64(vcvt_f32_f64(vcvtq_f64_u64(v19)), vcvtq_f64_u64(v18)))).i64, 0.0000305175853];
+        width = [textureCopy width];
+        height = [textureCopy height];
+        width2 = [textureCopy width];
+        height2 = [textureCopy height];
+        v18.i64[0] = width2;
+        v18.i64[1] = height2;
+        v19.i64[0] = width;
+        v19.i64[1] = height;
+        [(PTUtil *)self->_util renderRect:rectsCopy rect:0 color:textureCopy fill:*vcvtq_s32_f32(vmulq_f32(v49 outTexture:vcvt_hight_f32_f64(vcvt_f32_f64(vcvtq_f64_u64(v19)), vcvtq_f64_u64(v18)))).i64, 0.0000305175853];
         v10 += 16;
       }
 
@@ -849,40 +849,40 @@ LABEL_9:
       do
       {
         v50 = *(&v53 + v27);
-        v30 = [v7 width];
-        v31 = [v7 height];
-        v32 = [v7 width];
-        v33 = [v7 height];
-        v34.i64[0] = v32;
-        v34.i64[1] = v33;
-        v35.i64[0] = v30;
-        v35.i64[1] = v31;
-        [(PTUtil *)self->_util renderRect:v48 rect:0 color:v7 fill:*vcvtq_s32_f32(vmulq_f32(v50 outTexture:vcvt_hight_f32_f64(vcvt_f32_f64(vcvtq_f64_u64(v35)), vcvtq_f64_u64(v34)))).i64, v47];
+        width3 = [textureCopy width];
+        height3 = [textureCopy height];
+        width4 = [textureCopy width];
+        height4 = [textureCopy height];
+        v34.i64[0] = width4;
+        v34.i64[1] = height4;
+        v35.i64[0] = width3;
+        v35.i64[1] = height3;
+        [(PTUtil *)self->_util renderRect:rectsCopy rect:0 color:textureCopy fill:*vcvtq_s32_f32(vmulq_f32(v50 outTexture:vcvt_hight_f32_f64(vcvt_f32_f64(vcvtq_f64_u64(v35)), vcvtq_f64_u64(v34)))).i64, v47];
         v27 += 16;
       }
 
       while (v27 != 48);
-      v36 = [v7 width];
-      v37 = [v7 height];
-      v38.i64[0] = v36;
-      v38.i64[1] = v37;
+      width5 = [textureCopy width];
+      height5 = [textureCopy height];
+      v38.i64[0] = width5;
+      v38.i64[1] = height5;
       *&v51 = vcvt_s32_f32(vmul_f32(*&v46, vcvt_f32_f64(vcvtq_f64_u64(v38))));
-      [(PTUtil *)self->_util renderRect:v48 rect:0 color:v7 fill:v51 outTexture:v47];
-      [(PTUtil *)self->_util renderRect:v48 rect:1 color:v7 fill:COERCE_DOUBLE(vadd_s32(*&v51 outTexture:0x200000002)), v47];
-      *&v51 = [v7 width] * *&v46;
-      _S0 = [v7 height];
+      [(PTUtil *)self->_util renderRect:rectsCopy rect:0 color:textureCopy fill:v51 outTexture:v47];
+      [(PTUtil *)self->_util renderRect:rectsCopy rect:1 color:textureCopy fill:COERCE_DOUBLE(vadd_s32(*&v51 outTexture:0x200000002)), v47];
+      *&v51 = [textureCopy width] * *&v46;
+      _S0 = [textureCopy height];
       _V2.S[1] = DWORD1(v46);
       __asm { FMLA            S1, S0, V2.S[1] }
 
-      [(PTUtil *)self->_util renderRect:v48 rect:0 color:v7 fill:COERCE_DOUBLE(vcvt_s32_f32(__PAIR64__(_S1 outTexture:LODWORD(v51)))), v47];
-      *&v51 = [v7 width] * *&v46;
-      _S0 = [v7 height];
+      [(PTUtil *)self->_util renderRect:rectsCopy rect:0 color:textureCopy fill:COERCE_DOUBLE(vcvt_s32_f32(__PAIR64__(_S1 outTexture:LODWORD(v51)))), v47];
+      *&v51 = [textureCopy width] * *&v46;
+      _S0 = [textureCopy height];
       _V2.S[1] = DWORD1(v46);
       __asm { FMLA            S1, S0, V2.S[1] }
 
       v52 = vcvt_s32_f32(__PAIR64__(_S1, LODWORD(v51)));
-      [(PTUtil *)self->_util renderRect:v48 rect:0 color:v7 fill:*&v52 outTexture:v47];
-      [(PTUtil *)self->_util renderRect:v48 rect:1 color:v7 fill:COERCE_DOUBLE(vadd_s32(v52 outTexture:0x200000002)), v47];
+      [(PTUtil *)self->_util renderRect:rectsCopy rect:0 color:textureCopy fill:*&v52 outTexture:v47];
+      [(PTUtil *)self->_util renderRect:rectsCopy rect:1 color:textureCopy fill:COERCE_DOUBLE(vadd_s32(v52 outTexture:0x200000002)), v47];
     }
 
     ++v20;

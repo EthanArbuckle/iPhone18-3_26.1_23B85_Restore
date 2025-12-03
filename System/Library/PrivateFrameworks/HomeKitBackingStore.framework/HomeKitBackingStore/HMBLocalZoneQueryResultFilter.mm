@@ -1,27 +1,27 @@
 @interface HMBLocalZoneQueryResultFilter
-- (HMBLocalZoneQueryResultFilter)initWithLocalZone:(id)a3 statement:(id)a4 columns:(id)a5 filter:(id)a6;
-- (id)fetchRowFromStatement:(sqlite3_stmt *)a3 skip:(BOOL *)a4 updatedSequence:(unint64_t *)a5 error:(id *)a6;
+- (HMBLocalZoneQueryResultFilter)initWithLocalZone:(id)zone statement:(id)statement columns:(id)columns filter:(id)filter;
+- (id)fetchRowFromStatement:(sqlite3_stmt *)statement skip:(BOOL *)skip updatedSequence:(unint64_t *)sequence error:(id *)error;
 @end
 
 @implementation HMBLocalZoneQueryResultFilter
 
-- (id)fetchRowFromStatement:(sqlite3_stmt *)a3 skip:(BOOL *)a4 updatedSequence:(unint64_t *)a5 error:(id *)a6
+- (id)fetchRowFromStatement:(sqlite3_stmt *)statement skip:(BOOL *)skip updatedSequence:(unint64_t *)sequence error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
   v11 = MEMORY[0x277CBEB38];
-  v12 = [(HMBLocalZoneQueryResultFilter *)self columns];
-  v13 = [v11 dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+  columns = [(HMBLocalZoneQueryResultFilter *)self columns];
+  v13 = [v11 dictionaryWithCapacity:{objc_msgSend(columns, "count")}];
 
-  *a5 = sqlite3_column_int64(a3, 0);
-  v14 = [(HMBLocalZoneQueryResultFilter *)self columns];
+  *sequence = sqlite3_column_int64(statement, 0);
+  columns2 = [(HMBLocalZoneQueryResultFilter *)self columns];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __82__HMBLocalZoneQueryResultFilter_fetchRowFromStatement_skip_updatedSequence_error___block_invoke;
   v28 = &unk_2786E1350;
-  v30 = a3;
+  statementCopy = statement;
   v15 = v13;
   v29 = v15;
-  [v14 hmf_enumerateWithAutoreleasePoolUsingBlock:&v25];
+  [columns2 hmf_enumerateWithAutoreleasePoolUsingBlock:&v25];
 
   v16 = [(HMBLocalZoneQueryResultFilter *)self filter:v25];
   v17 = (v16)[2](v16, v15);
@@ -35,12 +35,12 @@
 
     if (v17 == 1)
     {
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*a5];
+      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:*sequence];
       goto LABEL_11;
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -53,7 +53,7 @@
     }
 
     objc_autoreleasePoolPop(v19);
-    if (!a6)
+    if (!error)
     {
 LABEL_10:
       v18 = 0;
@@ -62,13 +62,13 @@ LABEL_10:
     else
     {
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      *a6 = v18 = 0;
+      *error = v18 = 0;
     }
   }
 
   else
   {
-    *a4 = 1;
+    *skip = 1;
     v18 = &unk_283EB9DF8;
   }
 
@@ -93,21 +93,21 @@ void __82__HMBLocalZoneQueryResultFilter_fetchRowFromStatement_skip_updatedSeque
   }
 }
 
-- (HMBLocalZoneQueryResultFilter)initWithLocalZone:(id)a3 statement:(id)a4 columns:(id)a5 filter:(id)a6
+- (HMBLocalZoneQueryResultFilter)initWithLocalZone:(id)zone statement:(id)statement columns:(id)columns filter:(id)filter
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  columnsCopy = columns;
+  filterCopy = filter;
+  statementCopy = statement;
+  zoneCopy = zone;
   v15 = +[HMBSQLQueryIterator maximumRowsPerSelect];
   v20.receiver = self;
   v20.super_class = HMBLocalZoneQueryResultFilter;
-  v16 = [(HMBLocalZoneQueryResult *)&v20 initWithLocalZone:v14 statement:v13 initialSequence:&unk_283EB9DF8 arguments:MEMORY[0x277CBEC10] maximumRowsPerSelect:v15];
+  v16 = [(HMBLocalZoneQueryResult *)&v20 initWithLocalZone:zoneCopy statement:statementCopy initialSequence:&unk_283EB9DF8 arguments:MEMORY[0x277CBEC10] maximumRowsPerSelect:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_columns, a5);
-    v17 = MEMORY[0x231885A30](v12);
+    objc_storeStrong(&v16->_columns, columns);
+    v17 = MEMORY[0x231885A30](filterCopy);
     filter = v16->_filter;
     v16->_filter = v17;
   }

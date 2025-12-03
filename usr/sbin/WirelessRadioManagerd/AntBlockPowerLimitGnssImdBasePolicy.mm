@@ -1,6 +1,6 @@
 @interface AntBlockPowerLimitGnssImdBasePolicy
 - (AntBlockPowerLimitGnssImdBasePolicy)init;
-- (void)setParameter:(BOOL)a3 ImdType:(unsigned int)a4 GnssL5TunerAllowed:(BOOL)a5 ParallelMitigationAllowed:(BOOL)a6 GnssVictimFreq_KHz:(unsigned int)a7 GnssVictimBw_KHz:(unsigned int)a8;
+- (void)setParameter:(BOOL)parameter ImdType:(unsigned int)type GnssL5TunerAllowed:(BOOL)allowed ParallelMitigationAllowed:(BOOL)mitigationAllowed GnssVictimFreq_KHz:(unsigned int)hz GnssVictimBw_KHz:(unsigned int)kHz;
 @end
 
 @implementation AntBlockPowerLimitGnssImdBasePolicy
@@ -23,14 +23,14 @@
   return v2;
 }
 
-- (void)setParameter:(BOOL)a3 ImdType:(unsigned int)a4 GnssL5TunerAllowed:(BOOL)a5 ParallelMitigationAllowed:(BOOL)a6 GnssVictimFreq_KHz:(unsigned int)a7 GnssVictimBw_KHz:(unsigned int)a8
+- (void)setParameter:(BOOL)parameter ImdType:(unsigned int)type GnssL5TunerAllowed:(BOOL)allowed ParallelMitigationAllowed:(BOOL)mitigationAllowed GnssVictimFreq_KHz:(unsigned int)hz GnssVictimBw_KHz:(unsigned int)kHz
 {
-  self->_mEnable = a3;
-  self->_mGnssL5TunerAllowed = a5;
-  self->_mImdType = a4;
-  self->_mGnssVictimFreq_KHz = a7;
-  self->_mGnssVictimBw_KHz = a8;
-  self->_mParallelMitigationAllowed = a6;
+  self->_mEnable = parameter;
+  self->_mGnssL5TunerAllowed = allowed;
+  self->_mImdType = type;
+  self->_mGnssVictimFreq_KHz = hz;
+  self->_mGnssVictimBw_KHz = kHz;
+  self->_mParallelMitigationAllowed = mitigationAllowed;
 }
 
 @end

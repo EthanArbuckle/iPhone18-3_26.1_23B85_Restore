@@ -1,5 +1,5 @@
 @interface GCGenericDeviceDataProcessorExpressionModelBuilder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GCGenericDeviceDataProcessorExpressionModelBuilder)init;
 - (id)build;
 - (unint64_t)hash;
@@ -31,25 +31,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [objc_opt_class() modelClass];
+  modelClass = [objc_opt_class() modelClass];
 
-  return [v2 hash];
+  return [modelClass hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 isEqual:self];
+    v5 = [equalCopy isEqual:self];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = GCGenericDeviceDataProcessorExpressionModelBuilder;
-    v5 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v8 isEqual:v4];
+    v5 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v8 isEqual:equalCopy];
   }
 
   v6 = v5;

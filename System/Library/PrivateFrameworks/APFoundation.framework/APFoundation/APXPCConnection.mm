@@ -1,7 +1,7 @@
 @interface APXPCConnection
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (APXPCConnection)initWithConnection:(id)a3;
-- (BOOL)hasEntitlement:(id)a3;
+- (APXPCConnection)initWithConnection:(id)connection;
+- (BOOL)hasEntitlement:(id)entitlement;
 - (NSString)bundleID;
 - (id)auditTokenString;
 - (id)remoteObjectProxy;
@@ -158,10 +158,10 @@ LABEL_25:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (APXPCConnection)initWithConnection:(id)a3
+- (APXPCConnection)initWithConnection:(id)connection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = APXPCConnection;
   v6 = [(APXPCConnection *)&v10 self];
@@ -174,11 +174,11 @@ LABEL_25:
       *buf = 136643075;
       v12 = "[APXPCConnection initWithConnection:]";
       v13 = 2048;
-      v14 = v5;
+      v14 = connectionCopy;
       _os_log_impl(&dword_1BADC1000, v7, OS_LOG_TYPE_INFO, "%{sensitive}s: Initializing connection %p", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -211,14 +211,14 @@ LABEL_25:
   return v5;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  entitlementCopy = entitlement;
+  if (entitlementCopy)
   {
     v8 = objc_msgSend_connection(self, v4, v5, v6);
-    v11 = objc_msgSend_valueForEntitlement_(v8, v9, v7, v10);
+    v11 = objc_msgSend_valueForEntitlement_(v8, v9, entitlementCopy, v10);
     v15 = objc_msgSend_BOOLValue(v11, v12, v13, v14);
   }
 

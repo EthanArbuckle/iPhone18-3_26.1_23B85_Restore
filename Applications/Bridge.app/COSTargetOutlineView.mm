@@ -1,13 +1,13 @@
 @interface COSTargetOutlineView
-- (COSTargetOutlineView)initWithOutlinePath:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (COSTargetOutlineView)initWithOutlinePath:(id)path;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation COSTargetOutlineView
 
-- (COSTargetOutlineView)initWithOutlinePath:(id)a3
+- (COSTargetOutlineView)initWithOutlinePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = COSTargetOutlineView;
   v6 = [(COSTargetOutlineView *)&v9 init];
@@ -16,17 +16,17 @@
     v7 = +[UIColor clearColor];
     [(COSTargetOutlineView *)v6 setBackgroundColor:v7];
 
-    objc_storeStrong(&v6->_outlinePath, a3);
+    objc_storeStrong(&v6->_outlinePath, path);
   }
 
   return v6;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v5.receiver = self;
   v5.super_class = COSTargetOutlineView;
-  [(COSTargetOutlineView *)&v5 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(COSTargetOutlineView *)&v5 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (self->_outlinePath)
   {
     v4 = +[UIColor systemYellowColor];

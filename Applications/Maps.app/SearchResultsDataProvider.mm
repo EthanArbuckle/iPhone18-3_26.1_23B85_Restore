@@ -1,38 +1,38 @@
 @interface SearchResultsDataProvider
 - (ActionCoordination)actionCoordinator;
-- (BOOL)_isItemVenue:(id)a3;
+- (BOOL)_isItemVenue:(id)venue;
 - (GEOObserverHashTable)observers;
 - (NSArray)searchResults;
 - (SearchResultsDataProvider)init;
-- (id)_identifierForMapItem:(id)a3;
-- (id)_identifierForVenueCardItem:(id)a3;
+- (id)_identifierForMapItem:(id)item;
+- (id)_identifierForVenueCardItem:(id)item;
 - (id)_orderedCurrentSearchResults;
 - (id)_searchSessionErrorString;
-- (id)venueProviderForMapItem:(id)a3;
+- (id)venueProviderForMapItem:(id)item;
 - (void)_notifyObservers;
-- (void)_setSearchSession:(id)a3;
-- (void)_updateAndNotifyObservers:(BOOL)a3;
+- (void)_setSearchSession:(id)session;
+- (void)_updateAndNotifyObservers:(BOOL)observers;
 - (void)_updateCurrentSearchSession;
-- (void)addVenueProviderForMapItem:(id)a3;
+- (void)addVenueProviderForMapItem:(id)item;
 - (void)dealloc;
-- (void)downloadVenueInfoForMapItem:(id)a3;
-- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)a3 searchFieldItem:(id)a4 browseCategories:(id)a5;
-- (void)performSearchForSuggestion:(id)a3;
-- (void)presentVenueWithVenueCardItem:(id)a3;
+- (void)downloadVenueInfoForMapItem:(id)item;
+- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)result searchFieldItem:(id)item browseCategories:(id)categories;
+- (void)performSearchForSuggestion:(id)suggestion;
+- (void)presentVenueWithVenueCardItem:(id)item;
 - (void)searchSessionManagerSessionDidFail;
 - (void)searchSessionManagerSessionDidInvalidate;
 - (void)searchSessionManagerSessionDidReceiveUpdate;
 - (void)searchSessionManagerSessionWillPerformSearch;
-- (void)selectCategory:(id)a3 forVenueWithVenueIdentifier:(id)a4;
-- (void)setActionCoordinator:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)venueCategoryContentDownloader:(id)a3 didChangeMapItem:(id)a4;
-- (void)venueCategoryContentDownloader:(id)a3 didFailToFetchMapItemWithError:(id)a4;
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveAutoCompleteSubcategories:(id)a4 subcategoriesType:(int)a5;
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveSearchResults:(id)a4 shouldSwitchToBestFloor:(BOOL)a5;
-- (void)venueCategoryContentDownloaderDidCancel:(id)a3;
-- (void)venueCategoryContentDownloaderDidFail:(id)a3;
-- (void)venueCategoryContentDownloaderDidStart:(id)a3;
+- (void)selectCategory:(id)category forVenueWithVenueIdentifier:(id)identifier;
+- (void)setActionCoordinator:(id)coordinator;
+- (void)setActive:(BOOL)active;
+- (void)venueCategoryContentDownloader:(id)downloader didChangeMapItem:(id)item;
+- (void)venueCategoryContentDownloader:(id)downloader didFailToFetchMapItemWithError:(id)error;
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveAutoCompleteSubcategories:(id)subcategories subcategoriesType:(int)type;
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveSearchResults:(id)results shouldSwitchToBestFloor:(BOOL)floor;
+- (void)venueCategoryContentDownloaderDidCancel:(id)cancel;
+- (void)venueCategoryContentDownloaderDidFail:(id)fail;
+- (void)venueCategoryContentDownloaderDidStart:(id)start;
 @end
 
 @implementation SearchResultsDataProvider
@@ -103,7 +103,7 @@
   [(SearchResultsDataProvider *)self _updateCurrentSearchSession];
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveAutoCompleteSubcategories:(id)a4 subcategoriesType:(int)a5
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveAutoCompleteSubcategories:(id)subcategories subcategoriesType:(int)type
 {
   v6 = sub_1000410AC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -119,10 +119,10 @@
   }
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didReceiveSearchResults:(id)a4 shouldSwitchToBestFloor:(BOOL)a5
+- (void)venueCategoryContentDownloader:(id)downloader didReceiveSearchResults:(id)results shouldSwitchToBestFloor:(BOOL)floor
 {
-  v8 = a3;
-  v9 = a4;
+  downloaderCopy = downloader;
+  resultsCopy = results;
   v10 = sub_1000410AC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -136,21 +136,21 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%@ %@", buf, 0x16u);
   }
 
-  if (v8)
+  if (downloaderCopy)
   {
     venues = self->_venues;
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10069B74C;
     v15[3] = &unk_101625DF8;
-    v16 = v8;
-    v17 = v9;
-    v18 = self;
+    v16 = downloaderCopy;
+    v17 = resultsCopy;
+    selfCopy = self;
     [(NSMutableDictionary *)venues enumerateKeysAndObjectsUsingBlock:v15];
   }
 }
 
-- (void)venueCategoryContentDownloaderDidCancel:(id)a3
+- (void)venueCategoryContentDownloaderDidCancel:(id)cancel
 {
   v4 = sub_1000410AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -166,7 +166,7 @@
   }
 }
 
-- (void)venueCategoryContentDownloaderDidFail:(id)a3
+- (void)venueCategoryContentDownloaderDidFail:(id)fail
 {
   v4 = sub_1000410AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -182,24 +182,24 @@
   }
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didFailToFetchMapItemWithError:(id)a4
+- (void)venueCategoryContentDownloader:(id)downloader didFailToFetchMapItemWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = sub_1000410AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2114;
-    v10 = v4;
+    v10 = errorCopy;
     v6 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%@ failed to download venue info with error: %{public}@", &v7, 0x16u);
   }
 }
 
-- (void)venueCategoryContentDownloader:(id)a3 didChangeMapItem:(id)a4
+- (void)venueCategoryContentDownloader:(id)downloader didChangeMapItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v7 = sub_1000410AC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -213,24 +213,24 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ %@", &v18, 0x16u);
   }
 
-  v11 = [(SearchResultsDataProvider *)self _identifierForMapItem:v6];
+  v11 = [(SearchResultsDataProvider *)self _identifierForMapItem:itemCopy];
   v12 = [(NSMutableDictionary *)self->_venues objectForKeyedSubscript:v11];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 venueCardItem];
+    venueCardItem = [v12 venueCardItem];
 
-    if (!v14)
+    if (!venueCardItem)
     {
       v15 = [VenueSearchCardItem alloc];
-      v16 = [v13 currentCategory];
-      v17 = [(VenueSearchCardItem *)v15 initWithMapItem:v6 searchCategory:v16];
+      currentCategory = [v13 currentCategory];
+      v17 = [(VenueSearchCardItem *)v15 initWithMapItem:itemCopy searchCategory:currentCategory];
       [v13 setVenueCardItem:v17];
     }
   }
 }
 
-- (void)venueCategoryContentDownloaderDidStart:(id)a3
+- (void)venueCategoryContentDownloaderDidStart:(id)start
 {
   v4 = sub_1000410AC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -246,11 +246,11 @@
   }
 }
 
-- (void)_setSearchSession:(id)a3
+- (void)_setSearchSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_searchSession != v4 && ([(SearchSession *)v4 isEqual:?]& 1) == 0)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (self->_searchSession != sessionCopy && ([(SearchSession *)sessionCopy isEqual:?]& 1) == 0)
   {
     if ([(SearchSession *)v5 isInvalidated])
     {
@@ -289,76 +289,76 @@
 
 - (void)_updateCurrentSearchSession
 {
-  v3 = [(SearchResultsDataProvider *)self actionCoordinator];
-  v4 = [v3 currentSearchSession];
+  actionCoordinator = [(SearchResultsDataProvider *)self actionCoordinator];
+  currentSearchSession = [actionCoordinator currentSearchSession];
 
-  [(SearchResultsDataProvider *)self _setSearchSession:v4];
+  [(SearchResultsDataProvider *)self _setSearchSession:currentSearchSession];
 }
 
-- (void)performSearchForSuggestion:(id)a3
+- (void)performSearchForSuggestion:(id)suggestion
 {
-  if (a3)
+  if (suggestion)
   {
-    v4 = a3;
+    suggestionCopy = suggestion;
     v8 = objc_alloc_init(SearchFieldItem);
-    [(SearchFieldItem *)v8 setSuggestion:v4];
+    [(SearchFieldItem *)v8 setSuggestion:suggestionCopy];
     WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
     [WeakRetained viewController:0 doSearchItem:v8 withUserInfo:0];
 
     [(SearchResultsDataProvider *)self _updateCurrentSearchSession];
     v6 = +[MKMapService sharedService];
-    v7 = [v4 searchBarDisplayToken];
+    searchBarDisplayToken = [suggestionCopy searchBarDisplayToken];
 
-    [v6 captureUserAction:2020 onTarget:101 eventValue:v7];
+    [v6 captureUserAction:2020 onTarget:101 eventValue:searchBarDisplayToken];
   }
 }
 
-- (void)selectCategory:(id)a3 forVenueWithVenueIdentifier:(id)a4
+- (void)selectCategory:(id)category forVenueWithVenueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [a4 venueID]);
+  categoryCopy = category;
+  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [identifier venueID]);
   v7 = [(NSMutableDictionary *)self->_venues objectForKeyedSubscript:v9];
-  [v7 setCurrentCategory:v6];
+  [v7 setCurrentCategory:categoryCopy];
 
-  v8 = [(SearchResultsDataProvider *)self actionCoordinator];
-  [v7 performSearchWithActionCoordination:v8];
+  actionCoordinator = [(SearchResultsDataProvider *)self actionCoordinator];
+  [v7 performSearchWithActionCoordination:actionCoordinator];
 }
 
-- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)a3 searchFieldItem:(id)a4 browseCategories:(id)a5
+- (void)handleVenueSearchResultsWithSelectedSearchResult:(id)result searchFieldItem:(id)item browseCategories:(id)categories
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 venueCategoryItem];
-  v11 = [v10 venueIdentifier];
+  resultCopy = result;
+  itemCopy = item;
+  categoriesCopy = categories;
+  venueCategoryItem = [itemCopy venueCategoryItem];
+  venueIdentifier = [venueCategoryItem venueIdentifier];
 
-  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v11 venueID]);
+  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [venueIdentifier venueID]);
   v13 = v12;
   if (v12 && [v12 integerValue])
   {
     v14 = [(NSMutableDictionary *)self->_venues objectForKeyedSubscript:v13];
-    v15 = [v14 contentDownloader];
-    if (v15)
+    contentDownloader = [v14 contentDownloader];
+    if (contentDownloader)
     {
-      v16 = [v8 venueCategoryItem];
-      v17 = [v16 isAutoCompleteCategory];
+      venueCategoryItem2 = [itemCopy venueCategoryItem];
+      isAutoCompleteCategory = [venueCategoryItem2 isAutoCompleteCategory];
 
-      if (v17)
+      if (isAutoCompleteCategory)
       {
-        [v15 searchDidReceiveAutoCompleteSubcategories:v9];
+        [contentDownloader searchDidReceiveAutoCompleteSubcategories:categoriesCopy];
       }
 
-      [v15 searchDidReceiveResults:v18];
+      [contentDownloader searchDidReceiveResults:resultCopy];
     }
   }
 }
 
-- (void)presentVenueWithVenueCardItem:(id)a3
+- (void)presentVenueWithVenueCardItem:(id)item
 {
-  v7 = a3;
-  if ([v7 conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem])
   {
-    v4 = [(SearchResultsDataProvider *)self _identifierForVenueCardItem:v7];
+    v4 = [(SearchResultsDataProvider *)self _identifierForVenueCardItem:itemCopy];
     if (v4)
     {
       v5 = [(NSMutableDictionary *)self->_venues objectForKeyedSubscript:v4];
@@ -374,20 +374,20 @@
       v5 = 0;
     }
 
-    [(SearchResultVenueSubDataProvider *)v5 setVenueCardItem:v7];
-    v6 = [(SearchResultsDataProvider *)self actionCoordinator];
-    [(SearchResultVenueSubDataProvider *)v5 performSearchWithActionCoordination:v6];
+    [(SearchResultVenueSubDataProvider *)v5 setVenueCardItem:itemCopy];
+    actionCoordinator = [(SearchResultsDataProvider *)self actionCoordinator];
+    [(SearchResultVenueSubDataProvider *)v5 performSearchWithActionCoordination:actionCoordinator];
   }
 
   else
   {
-    [v7 conformsToProtocol:&OBJC_PROTOCOL___VenueAutoCompleteCategoryCardItem];
+    [itemCopy conformsToProtocol:&OBJC_PROTOCOL___VenueAutoCompleteCategoryCardItem];
   }
 }
 
-- (void)addVenueProviderForMapItem:(id)a3
+- (void)addVenueProviderForMapItem:(id)item
 {
-  v10 = a3;
+  itemCopy = item;
   v4 = [(SearchResultsDataProvider *)self _identifierForMapItem:?];
   v5 = [(NSMutableDictionary *)self->_venues objectForKeyedSubscript:v4];
   if (!v5)
@@ -396,28 +396,28 @@
     [(NSMutableDictionary *)self->_venues setObject:v5 forKeyedSubscript:v4];
   }
 
-  v6 = [(SearchResultVenueSubDataProvider *)v5 venueCardItem];
+  venueCardItem = [(SearchResultVenueSubDataProvider *)v5 venueCardItem];
 
-  if (!v6)
+  if (!venueCardItem)
   {
-    v7 = [v10 _browseCategories];
-    v8 = [v7 firstObject];
+    _browseCategories = [itemCopy _browseCategories];
+    firstObject = [_browseCategories firstObject];
 
-    v9 = [[VenueSearchCardItem alloc] initWithMapItem:v10 searchCategory:v8];
+    v9 = [[VenueSearchCardItem alloc] initWithMapItem:itemCopy searchCategory:firstObject];
     [(SearchResultVenueSubDataProvider *)v5 setVenueCardItem:v9];
   }
 }
 
-- (void)downloadVenueInfoForMapItem:(id)a3
+- (void)downloadVenueInfoForMapItem:(id)item
 {
-  v5 = [(SearchResultsDataProvider *)self venueProviderForMapItem:a3];
-  v4 = [(SearchResultsDataProvider *)self actionCoordinator];
-  [v5 performSearchWithActionCoordination:v4];
+  v5 = [(SearchResultsDataProvider *)self venueProviderForMapItem:item];
+  actionCoordinator = [(SearchResultsDataProvider *)self actionCoordinator];
+  [v5 performSearchWithActionCoordination:actionCoordinator];
 }
 
-- (id)venueProviderForMapItem:(id)a3
+- (id)venueProviderForMapItem:(id)item
 {
-  v4 = [(SearchResultsDataProvider *)self _identifierForMapItem:a3];
+  v4 = [(SearchResultsDataProvider *)self _identifierForMapItem:item];
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_venues objectForKeyedSubscript:v4];
@@ -431,12 +431,12 @@
   return v5;
 }
 
-- (id)_identifierForVenueCardItem:(id)a3
+- (id)_identifierForVenueCardItem:(id)item
 {
-  v3 = a3;
-  if ([v3 isVenueItem])
+  itemCopy = item;
+  if ([itemCopy isVenueItem])
   {
-    v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 venueID]);
+    v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [itemCopy venueID]);
   }
 
   else
@@ -447,14 +447,14 @@
   return v4;
 }
 
-- (id)_identifierForMapItem:(id)a3
+- (id)_identifierForMapItem:(id)item
 {
-  v3 = a3;
-  if ([v3 _maps_isVenueOrBuilding] && (objc_msgSend(v3, "_venueInfo"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "venueIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "_hasVenueID"), v5, v4, v6))
+  itemCopy = item;
+  if ([itemCopy _maps_isVenueOrBuilding] && (objc_msgSend(itemCopy, "_venueInfo"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "venueIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "_hasVenueID"), v5, v4, v6))
   {
-    v7 = [v3 _venueInfo];
-    v8 = [v7 venueIdentifier];
-    v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 venueID]);
+    _venueInfo = [itemCopy _venueInfo];
+    venueIdentifier = [_venueInfo venueIdentifier];
+    v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [venueIdentifier venueID]);
   }
 
   else
@@ -495,22 +495,22 @@
 
 - (id)_orderedCurrentSearchResults
 {
-  v3 = [(SearchSession *)self->_searchSession currentResults];
-  v4 = [(SearchSession *)self->_searchSession currentResultsSearchInfo];
+  currentResults = [(SearchSession *)self->_searchSession currentResults];
+  currentResultsSearchInfo = [(SearchSession *)self->_searchSession currentResultsSearchInfo];
   v5 = sub_100067540();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v22 = 134218242;
-    v23 = [v3 count];
+    v23 = [currentResults count];
     v24 = 2112;
-    v25 = v4;
+    v25 = currentResultsSearchInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[SearchResultsDataProvider] SearchResultsCount:%ld searchInfo: %@", &v22, 0x16u);
   }
 
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v6 = [v4 searchSectionList];
-    if (!v6 || (v7 = v6, [v4 searchSectionList], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "searchSections"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v7, !v10))
+    searchSectionList = [currentResultsSearchInfo searchSectionList];
+    if (!searchSectionList || (v7 = searchSectionList, [currentResultsSearchInfo searchSectionList], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "searchSections"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v7, !v10))
     {
       v17 = sub_100067540();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -521,15 +521,15 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[SearchResultsDataProvider] Search session is missing section list: %@. Using alphabetical ordering.", &v22, 0xCu);
       }
 
-      v13 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:v3];
+      v13 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:currentResults];
       v14 = sub_100067540();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         goto LABEL_16;
       }
 
-      v15 = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
-      v19 = [(SearchSession *)v15 count];
+      orderedObjects = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
+      v19 = [(SearchSession *)orderedObjects count];
       v22 = 134217984;
       v23 = v19;
       v16 = "[SearchResultsDataProvider] AlphabeticallyOrderedDataSource objects count: %ld";
@@ -537,15 +537,15 @@
     }
 
     v11 = [SearchListOrderedDataSource alloc];
-    v12 = [v4 searchSectionList];
-    v13 = [(SearchListOrderedDataSource *)v11 initWithObjects:v3 searchSectionList:v12];
+    searchSectionList2 = [currentResultsSearchInfo searchSectionList];
+    v13 = [(SearchListOrderedDataSource *)v11 initWithObjects:currentResults searchSectionList:searchSectionList2];
 
     v14 = sub_1000410AC();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
+      orderedObjects = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
       v22 = 138412290;
-      v23 = v15;
+      v23 = orderedObjects;
       v16 = "[SearchResultsDataProvider] ListOrderedDataSource objects: %@)";
 LABEL_15:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, v16, &v22, 0xCu);
@@ -556,30 +556,30 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v4 sortOrder] == 1)
+  if ([currentResultsSearchInfo sortOrder] == 1)
   {
-    v13 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:v3];
+    v13 = [[AlphabeticallyOrderedDataSource alloc] initWithAlphabeticallySortableObject:currentResults];
     v14 = sub_1000410AC();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
+      orderedObjects = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
       v22 = 138412290;
-      v23 = v15;
+      v23 = orderedObjects;
       v16 = "[SearchResultsDataProvider] AlphabeticallyOrderedDataSource objects: %@)";
       goto LABEL_15;
     }
 
 LABEL_16:
 
-    v20 = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
+    orderedObjects2 = [(AlphabeticallyOrderedDataSource *)v13 orderedObjects];
 
     goto LABEL_18;
   }
 
-  v20 = v3;
+  orderedObjects2 = currentResults;
 LABEL_18:
 
-  return v20;
+  return orderedObjects2;
 }
 
 - (void)_notifyObservers
@@ -605,9 +605,9 @@ LABEL_18:
   }
 }
 
-- (void)_updateAndNotifyObservers:(BOOL)a3
+- (void)_updateAndNotifyObservers:(BOOL)observers
 {
-  v77 = a3;
+  observersCopy = observers;
   v5 = sub_1000410AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -623,23 +623,23 @@ LABEL_18:
   if (self->_active)
   {
     isLoading = self->_isLoading;
-    v73 = [(SearchSession *)self->_searchSession isLoading];
-    if (isLoading != v73)
+    isLoading = [(SearchSession *)self->_searchSession isLoading];
+    if (isLoading != isLoading)
     {
       self->_isLoading = [(SearchSession *)self->_searchSession isLoading];
     }
 
-    v9 = [(SearchSession *)self->_searchSession currentResultsSearchInfo];
+    currentResultsSearchInfo = [(SearchSession *)self->_searchSession currentResultsSearchInfo];
     aSelector = a2;
-    if ([(SearchInfo *)v9 singleResultMode])
+    if ([(SearchInfo *)currentResultsSearchInfo singleResultMode])
     {
-      v10 = [(SearchInfo *)v9 results];
-      v11 = [v10 firstObject];
-      v12 = [(SearchResultsDataProvider *)self _isItemVenue:v11];
+      results = [(SearchInfo *)currentResultsSearchInfo results];
+      firstObject = [results firstObject];
+      v12 = [(SearchResultsDataProvider *)self _isItemVenue:firstObject];
 
-      v13 = [(SearchSession *)self->_searchSession suggestion];
+      suggestion = [(SearchSession *)self->_searchSession suggestion];
 
-      v14 = (v13 == 0) & ~v12;
+      v14 = (suggestion == 0) & ~v12;
     }
 
     else
@@ -655,61 +655,61 @@ LABEL_18:
       v14 &= v16;
     }
 
-    if (v9 == self->_searchInfo)
+    if (currentResultsSearchInfo == self->_searchInfo)
     {
       v75 = 1;
     }
 
     else
     {
-      v75 = [(SearchInfo *)v9 isEqual:?];
+      v75 = [(SearchInfo *)currentResultsSearchInfo isEqual:?];
       if (((v75 | v14) & 1) == 0)
       {
-        objc_storeStrong(&self->_searchInfo, v9);
+        objc_storeStrong(&self->_searchInfo, currentResultsSearchInfo);
         if (!self->_originalSearchInfo)
         {
-          objc_storeStrong(&self->_originalSearchInfo, v9);
+          objc_storeStrong(&self->_originalSearchInfo, currentResultsSearchInfo);
         }
 
         v75 = 0;
       }
     }
 
-    v17 = [(SearchSession *)self->_searchSession lastError];
-    if (v17)
+    lastError = [(SearchSession *)self->_searchSession lastError];
+    if (lastError)
     {
     }
 
-    else if ([(SearchInfo *)v9 searchResultType]!= 2)
+    else if ([(SearchInfo *)currentResultsSearchInfo searchResultType]!= 2)
     {
-      v18 = 0;
+      _searchSessionErrorString = 0;
       goto LABEL_21;
     }
 
-    v18 = [(SearchResultsDataProvider *)self _searchSessionErrorString];
+    _searchSessionErrorString = [(SearchResultsDataProvider *)self _searchSessionErrorString];
 LABEL_21:
     errorString = self->_errorString;
-    if (errorString == v18 || ([(NSString *)errorString isEqual:v18]& 1) != 0)
+    if (errorString == _searchSessionErrorString || ([(NSString *)errorString isEqual:_searchSessionErrorString]& 1) != 0)
     {
       v65 = 1;
     }
 
     else
     {
-      objc_storeStrong(&self->_errorString, v18);
+      objc_storeStrong(&self->_errorString, _searchSessionErrorString);
       v65 = 0;
     }
 
-    v20 = [(SearchResultsDataProvider *)self _orderedCurrentSearchResults];
-    v76 = v20;
-    if (v20 == self->_searchResults)
+    _orderedCurrentSearchResults = [(SearchResultsDataProvider *)self _orderedCurrentSearchResults];
+    v76 = _orderedCurrentSearchResults;
+    if (_orderedCurrentSearchResults == self->_searchResults)
     {
       v74 = 1;
     }
 
     else
     {
-      v74 = [(NSArray *)v20 isEqual:?];
+      v74 = [(NSArray *)_orderedCurrentSearchResults isEqual:?];
       if (((v74 | v14) & 1) == 0)
       {
         v21 = [(NSArray *)v76 copy];
@@ -719,39 +719,39 @@ LABEL_21:
         [(NSMutableDictionary *)self->_venues removeAllObjects];
         v74 = 0;
 LABEL_32:
-        if ([(SearchInfo *)v9 hasRelatedSearchSuggestion])
+        if ([(SearchInfo *)currentResultsSearchInfo hasRelatedSearchSuggestion])
         {
           v23 = [RelatedSearchSuggestion alloc];
-          v24 = [(SearchInfo *)v9 resultDisplayHeader];
-          [(SearchInfo *)v9 substitutes];
+          resultDisplayHeader = [(SearchInfo *)currentResultsSearchInfo resultDisplayHeader];
+          [(SearchInfo *)currentResultsSearchInfo substitutes];
           v26 = v25 = v14;
-          [(SearchInfo *)v9 dymSuggestionVisibleTime];
-          v28 = [(RelatedSearchSuggestion *)v23 initWithResultDisplayHeader:v24 substitutes:v26 visibleTime:[(SearchInfo *)v9 showDymSuggestionCloseButton] showCloseButton:v27];
+          [(SearchInfo *)currentResultsSearchInfo dymSuggestionVisibleTime];
+          v28 = [(RelatedSearchSuggestion *)v23 initWithResultDisplayHeader:resultDisplayHeader substitutes:v26 visibleTime:[(SearchInfo *)currentResultsSearchInfo showDymSuggestionCloseButton] showCloseButton:v27];
           relatedSuggestion = self->_relatedSuggestion;
           self->_relatedSuggestion = v28;
 
           v14 = v25;
         }
 
-        v30 = [self->_originalSearchInfo suggestions];
-        v31 = [self->_originalSearchInfo defaultSuggestion];
-        if (v31 && [v30 count])
+        suggestions = [self->_originalSearchInfo suggestions];
+        defaultSuggestion = [self->_originalSearchInfo defaultSuggestion];
+        if (defaultSuggestion && [suggestions count])
         {
-          v92 = v31;
+          v92 = defaultSuggestion;
           v32 = [NSArray arrayWithObjects:&v92 count:1];
-          v33 = [v32 arrayByAddingObjectsFromArray:v30];
+          v33 = [v32 arrayByAddingObjectsFromArray:suggestions];
 
           v34 = v33;
-          v35 = [(SearchSession *)self->_searchSession suggestion];
-          v36 = v35;
-          if (v35)
+          suggestion2 = [(SearchSession *)self->_searchSession suggestion];
+          v36 = suggestion2;
+          if (suggestion2)
           {
-            v37 = v35;
+            v37 = suggestion2;
           }
 
           else
           {
-            v37 = v31;
+            v37 = defaultSuggestion;
           }
 
           v38 = v37;
@@ -763,7 +763,7 @@ LABEL_32:
           v34 = 0;
         }
 
-        v71 = v30;
+        v71 = suggestions;
         v68 = v38;
         if (v38 == self->_currentSuggestion || ([(GEORelatedSearchSuggestion *)v38 isEqual:?]& 1) != 0)
         {
@@ -776,7 +776,7 @@ LABEL_32:
           v39 = @"YES";
         }
 
-        v72 = v18;
+        v72 = _searchSessionErrorString;
         v69 = v34;
         if (v34 == self->_suggestions)
         {
@@ -797,7 +797,7 @@ LABEL_32:
           v40 = @"YES";
         }
 
-        v70 = v31;
+        v70 = defaultSuggestion;
         v43 = sub_1000410AC();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
         {
@@ -820,7 +820,7 @@ LABEL_32:
             v50 = @"YES";
           }
 
-          aSelectora = v9;
+          aSelectora = currentResultsSearchInfo;
           v51 = v50;
           v52 = v39;
           v53 = v40;
@@ -844,12 +844,12 @@ LABEL_32:
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "%@ %@, # searchResults = %d, searchInfoDidChange = %@, searchResultsDidChange = %@, currentSuggetionDidChange = %@, suggestionsDidChange = %@, Error String: %@", buf, 0x4Eu);
 
           v14 = v63;
-          v9 = aSelectora;
+          currentResultsSearchInfo = aSelectora;
 
           isLoading = v64;
         }
 
-        if (isLoading == v73 && ((v14 | v75 & v65 & v74) & 1) != 0)
+        if (isLoading == isLoading && ((v14 | v75 & v65 & v74) & 1) != 0)
         {
           [(SearchResultsDataProvider *)self _notifyObservers];
           v55 = sub_1000410AC();
@@ -883,7 +883,7 @@ LABEL_32:
           v62 = v71;
           v56 = v72;
           v57 = v69;
-          if (v77)
+          if (observersCopy)
           {
             [(SearchResultsDataProvider *)self _notifyObservers];
           }
@@ -907,15 +907,15 @@ LABEL_32:
 {
   if ([(SearchResultsDataProvider *)self isInVenueBrowseMode])
   {
-    v3 = [(NSMutableDictionary *)self->_venues allValues];
-    v4 = [v3 firstObject];
+    allValues = [(NSMutableDictionary *)self->_venues allValues];
+    firstObject = [allValues firstObject];
 
-    v5 = [v4 venueCardItem];
-    v6 = [v5 venueMapItem];
+    venueCardItem = [firstObject venueCardItem];
+    venueMapItem = [venueCardItem venueMapItem];
 
-    if (v6)
+    if (venueMapItem)
     {
-      v7 = [[SearchResult alloc] initWithMapItem:v6];
+      v7 = [[SearchResult alloc] initWithMapItem:venueMapItem];
       v10 = v7;
       v8 = [NSArray arrayWithObjects:&v10 count:1];
 
@@ -929,14 +929,14 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_isItemVenue:(id)a3
+- (BOOL)_isItemVenue:(id)venue
 {
-  v3 = a3;
+  venueCopy = venue;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 mapItem];
-    v5 = [v4 _venueFeatureType] == 1;
+    mapItem = [venueCopy mapItem];
+    v5 = [mapItem _venueFeatureType] == 1;
   }
 
   else
@@ -947,12 +947,12 @@ LABEL_6:
   return v5;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (!a3)
+    self->_active = active;
+    if (!active)
     {
       [(NSMutableDictionary *)self->_venues removeAllObjects];
     }
@@ -962,28 +962,28 @@ LABEL_6:
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
-  v4 = [WeakRetained searchSessionManager];
-  [v4 removeObserver:self];
+  searchSessionManager = [WeakRetained searchSessionManager];
+  [searchSessionManager removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = SearchResultsDataProvider;
   [(SearchResultsDataProvider *)&v5 dealloc];
 }
 
-- (void)setActionCoordinator:(id)a3
+- (void)setActionCoordinator:(id)coordinator
 {
-  obj = a3;
+  obj = coordinator;
   WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
 
   if (WeakRetained != obj)
   {
     v5 = objc_loadWeakRetained(&self->_actionCoordinator);
-    v6 = [v5 searchSessionManager];
-    [v6 removeObserver:self];
+    searchSessionManager = [v5 searchSessionManager];
+    [searchSessionManager removeObserver:self];
 
     v7 = objc_storeWeak(&self->_actionCoordinator, obj);
-    v8 = [obj searchSessionManager];
-    [v8 addObserver:self];
+    searchSessionManager2 = [obj searchSessionManager];
+    [searchSessionManager2 addObserver:self];
 
     [(SearchResultsDataProvider *)self _updateCurrentSearchSession];
   }

@@ -1,23 +1,23 @@
 @interface PSSGMessagePublishResourceKeysAndStrides
-+ (id)messageWithKeysAndStrides:(id)a3 sender:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)messageWithKeysAndStrides:(id)strides sender:(id)sender;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)resourceOptions;
 - (id)description;
 @end
 
 @implementation PSSGMessagePublishResourceKeysAndStrides
 
-+ (id)messageWithKeysAndStrides:(id)a3 sender:(id)a4
++ (id)messageWithKeysAndStrides:(id)strides sender:(id)sender
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v29 = a4;
-  v32 = [MEMORY[0x277CBEB28] data];
+  stridesCopy = strides;
+  senderCopy = sender;
+  data = [MEMORY[0x277CBEB28] data];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v6 = v5;
+  v6 = stridesCopy;
   v33 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v33)
   {
@@ -34,12 +34,12 @@
 
         v8 = *(*(&v39 + 1) + 8 * i);
         v9 = [MEMORY[0x277CBEB28] dataWithLength:272];
-        v10 = [v9 mutableBytes];
+        mutableBytes = [v9 mutableBytes];
         [v8 UTF8String];
         __strlcpy_chk();
         v11 = [v6 objectForKeyedSubscript:v8];
-        v12 = [v11 supportedStrides];
-        v13 = [v12 count];
+        supportedStrides = [v11 supportedStrides];
+        v13 = [supportedStrides count];
 
         if (v13)
         {
@@ -47,8 +47,8 @@
           v38 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v14 = [v11 supportedStrides];
-          v15 = [v14 countByEnumeratingWithState:&v35 objects:v43 count:16];
+          supportedStrides2 = [v11 supportedStrides];
+          v15 = [supportedStrides2 countByEnumeratingWithState:&v35 objects:v43 count:16];
           if (v15)
           {
             v16 = v15;
@@ -59,7 +59,7 @@
               {
                 if (*v36 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(supportedStrides2);
                 }
 
                 v19 = *(*(&v35 + 1) + 8 * j);
@@ -72,38 +72,38 @@
                 [v9 appendBytes:&v34 length:8];
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v35 objects:v43 count:16];
+              v16 = [supportedStrides2 countByEnumeratingWithState:&v35 objects:v43 count:16];
             }
 
             while (v16);
           }
 
-          v22 = [v11 supportedStrides];
-          *(v10 + 256) = [v22 count];
+          supportedStrides3 = [v11 supportedStrides];
+          *(mutableBytes + 256) = [supportedStrides3 count];
 
-          v23 = [v11 defaultStride];
+          defaultStride = [v11 defaultStride];
           v6 = v30;
         }
 
         else
         {
-          v23 = 0;
-          *(v10 + 256) = 0;
+          defaultStride = 0;
+          *(mutableBytes + 256) = 0;
         }
 
-        *(v10 + 260) = v23;
-        v24 = [v11 baseMSGSyncID];
+        *(mutableBytes + 260) = defaultStride;
+        baseMSGSyncID = [v11 baseMSGSyncID];
 
-        if (!v24)
+        if (!baseMSGSyncID)
         {
           [v11 setBaseMSGSyncID:&unk_2870DE248];
         }
 
-        v25 = [v11 baseMSGSyncID];
-        *(v10 + 264) = [v25 unsignedIntValue];
+        baseMSGSyncID2 = [v11 baseMSGSyncID];
+        *(mutableBytes + 264) = [baseMSGSyncID2 unsignedIntValue];
 
-        *(v10 + 268) = [v11 setupResumeSupported];
-        [v32 appendData:v9];
+        *(mutableBytes + 268) = [v11 setupResumeSupported];
+        [data appendData:v9];
       }
 
       v33 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -112,7 +112,7 @@
     while (v33);
   }
 
-  v26 = [(PSSGMessageBase *)[PSSGMessagePublishResourceKeysAndStrides alloc] initWithType:24 string1:v29 data:v32];
+  v26 = [(PSSGMessageBase *)[PSSGMessagePublishResourceKeysAndStrides alloc] initWithType:24 string1:senderCopy data:data];
   v27 = *MEMORY[0x277D85DE8];
 
   return v26;
@@ -121,25 +121,25 @@
 - (NSDictionary)resourceOptions
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v25 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [(PSSGMessageBase *)self data];
-  v4 = [v3 bytes];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  data = [(PSSGMessageBase *)self data];
+  bytes = [data bytes];
 
-  v5 = [(PSSGMessageBase *)self data];
-  v6 = [v5 bytes];
-  v7 = v6 + [(PSSGMessageBase *)self dataLength];
+  data2 = [(PSSGMessageBase *)self data];
+  bytes2 = [data2 bytes];
+  v7 = bytes2 + [(PSSGMessageBase *)self dataLength];
 
-  if (v4 < v7)
+  if (bytes < v7)
   {
     do
     {
-      if (*(v4 + 256))
+      if (*(bytes + 256))
       {
         v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-        if (*(v4 + 256))
+        if (*(bytes + 256))
         {
           v9 = 0;
-          v10 = (v4 + 276);
+          v10 = (bytes + 276);
           do
           {
             v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v10 - 1)];
@@ -154,7 +154,7 @@
             ++v9;
           }
 
-          while (v9 < *(v4 + 256));
+          while (v9 < *(bytes + 256));
         }
       }
 
@@ -163,49 +163,49 @@
         v8 = 0;
       }
 
-      v15 = *(v4 + 260);
-      v16 = *(v4 + 268);
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(v4 + 264)];
+      v15 = *(bytes + 260);
+      v16 = *(bytes + 268);
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(bytes + 264)];
       v18 = [PSSGResourceOptions optionsWithDefaultStride:v15 supportedStrides:v8 setupSupported:v16 baseMSGSyncID:v17];
-      v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:v4];
-      [v25 setObject:v18 forKeyedSubscript:v19];
+      v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:bytes];
+      [dictionary setObject:v18 forKeyedSubscript:v19];
 
-      v4 += 8 * *(v4 + 256) + 272;
-      v20 = [(PSSGMessageBase *)self data];
-      v21 = [v20 bytes];
-      v22 = v21 + [(PSSGMessageBase *)self dataLength];
+      bytes += 8 * *(bytes + 256) + 272;
+      data3 = [(PSSGMessageBase *)self data];
+      bytes3 = [data3 bytes];
+      v22 = bytes3 + [(PSSGMessageBase *)self dataLength];
     }
 
-    while (v4 < v22);
+    while (bytes < v22);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if ([(PSSGMessageBase *)v6 type]== 24)
     {
       v7 = v6;
-      v8 = [(PSSGMessagePublishResourceKeysAndStrides *)self sender];
-      v9 = [(PSSGMessagePublishResourceKeysAndStrides *)v7 sender];
-      if ([v8 isEqual:v9])
+      sender = [(PSSGMessagePublishResourceKeysAndStrides *)self sender];
+      sender2 = [(PSSGMessagePublishResourceKeysAndStrides *)v7 sender];
+      if ([sender isEqual:sender2])
       {
-        v10 = [(PSSGMessagePublishResourceKeysAndStrides *)self resourceOptions];
-        v11 = [(PSSGMessagePublishResourceKeysAndStrides *)v7 resourceOptions];
-        v12 = [v10 isEqual:v11];
+        resourceOptions = [(PSSGMessagePublishResourceKeysAndStrides *)self resourceOptions];
+        resourceOptions2 = [(PSSGMessagePublishResourceKeysAndStrides *)v7 resourceOptions];
+        v12 = [resourceOptions isEqual:resourceOptions2];
       }
 
       else
@@ -226,9 +226,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PSSGMessagePublishResourceKeysAndStrides *)self sender];
-  v5 = [(PSSGMessagePublishResourceKeysAndStrides *)self resourceOptions];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  sender = [(PSSGMessagePublishResourceKeysAndStrides *)self sender];
+  resourceOptions = [(PSSGMessagePublishResourceKeysAndStrides *)self resourceOptions];
+  v6 = [v3 stringWithFormat:@"%@: %@", sender, resourceOptions];
 
   return v6;
 }

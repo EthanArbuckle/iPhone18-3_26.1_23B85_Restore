@@ -1,34 +1,34 @@
 @interface TSTTableDataListCache
-+ (id)cacheWithDataStore:(id)a3;
-- (TSTTableDataListCache)initWithDataStore:(id)a3;
++ (id)cacheWithDataStore:(id)store;
+- (TSTTableDataListCache)initWithDataStore:(id)store;
 - (TSULocale)locale;
-- (id)cellStyleHandleForKey:(unsigned int)a3;
-- (id)formatForKey:(unsigned int)a3;
-- (id)stringForKey:(unsigned int)a3 shouldWrap:(BOOL *)a4;
-- (id)textStyleHandleForKey:(unsigned int)a3;
+- (id)cellStyleHandleForKey:(unsigned int)key;
+- (id)formatForKey:(unsigned int)key;
+- (id)stringForKey:(unsigned int)key shouldWrap:(BOOL *)wrap;
+- (id)textStyleHandleForKey:(unsigned int)key;
 @end
 
 @implementation TSTTableDataListCache
 
-+ (id)cacheWithDataStore:(id)a3
++ (id)cacheWithDataStore:(id)store
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v9 = objc_msgSend_initWithDataStore_(v5, v6, v4, v7, v8);
+  storeCopy = store;
+  v5 = [self alloc];
+  v9 = objc_msgSend_initWithDataStore_(v5, v6, storeCopy, v7, v8);
 
   return v9;
 }
 
-- (TSTTableDataListCache)initWithDataStore:(id)a3
+- (TSTTableDataListCache)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v29.receiver = self;
   v29.super_class = TSTTableDataListCache;
   v6 = [(TSTTableDataListCache *)&v29 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStore, a3);
+    objc_storeStrong(&v6->_dataStore, store);
     v12 = objc_msgSend_cache(TSTTableDataListItemCache, v8, v9, v10, v11);
     formats = v7->_formats;
     v7->_formats = v12;
@@ -65,10 +65,10 @@
   return locale;
 }
 
-- (id)formatForKey:(unsigned int)a3
+- (id)formatForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  v10 = objc_msgSend_objectForKey_(self->_formats, a2, *&a3, v3, v4);
+  v5 = *&key;
+  v10 = objc_msgSend_objectForKey_(self->_formats, a2, *&key, v3, v4);
   if (!v10)
   {
     v10 = objc_msgSend_i_formatForDataListKey_(self->_dataStore, v7, v5, v8, v9);
@@ -81,10 +81,10 @@
   return v10;
 }
 
-- (id)cellStyleHandleForKey:(unsigned int)a3
+- (id)cellStyleHandleForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  v10 = objc_msgSend_objectForKey_(self->_cellStyleHandles, a2, *&a3, v3, v4);
+  v5 = *&key;
+  v10 = objc_msgSend_objectForKey_(self->_cellStyleHandles, a2, *&key, v3, v4);
   if (!v10)
   {
     v10 = objc_msgSend_i_cellStyleHandleForDataListKey_(self->_dataStore, v7, v5, v8, v9);
@@ -97,10 +97,10 @@
   return v10;
 }
 
-- (id)textStyleHandleForKey:(unsigned int)a3
+- (id)textStyleHandleForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  v10 = objc_msgSend_objectForKey_(self->_textStyleHandles, a2, *&a3, v3, v4);
+  v5 = *&key;
+  v10 = objc_msgSend_objectForKey_(self->_textStyleHandles, a2, *&key, v3, v4);
   if (!v10)
   {
     v10 = objc_msgSend_i_textStyleHandleForDataListKey_(self->_dataStore, v7, v5, v8, v9);
@@ -113,12 +113,12 @@
   return v10;
 }
 
-- (id)stringForKey:(unsigned int)a3 shouldWrap:(BOOL *)a4
+- (id)stringForKey:(unsigned int)key shouldWrap:(BOOL *)wrap
 {
-  v6 = *&a3;
+  v6 = *&key;
   v43 = 0;
-  v8 = a3;
-  v9 = objc_msgSend_objectForKey_(self->_strings, a2, a3, a4, v4);
+  keyCopy = key;
+  v9 = objc_msgSend_objectForKey_(self->_strings, a2, key, wrap, v4);
   v14 = v9;
   if (v9)
   {
@@ -146,15 +146,15 @@
         objc_msgSend_pairWithFirst_second_(MEMORY[0x277D812A8], v35, v37, MEMORY[0x277CBEC28], v36);
       }
       v39 = ;
-      objc_msgSend_setObject_forKey_(strings, v40, v39, v8, v41);
+      objc_msgSend_setObject_forKey_(strings, v40, v39, keyCopy, v41);
 
       v15 = v37;
     }
   }
 
-  if (a4)
+  if (wrap)
   {
-    *a4 = HIBYTE(v43);
+    *wrap = HIBYTE(v43);
   }
 
   return v15;

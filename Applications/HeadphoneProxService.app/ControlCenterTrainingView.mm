@@ -16,9 +16,9 @@
 
   v4 = v3;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = "ipad";
   }
@@ -40,10 +40,10 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  v4 = dbl_1000D5210[(v3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-  v5 = dbl_1000D5220[(v3 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v4 = dbl_1000D5210[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  v5 = dbl_1000D5220[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
   result.height = v5;
   result.width = v4;
   return result;

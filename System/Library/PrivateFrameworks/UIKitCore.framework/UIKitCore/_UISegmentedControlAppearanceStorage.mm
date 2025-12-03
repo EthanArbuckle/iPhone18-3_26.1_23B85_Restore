@@ -1,21 +1,21 @@
 @interface _UISegmentedControlAppearanceStorage
 - (BOOL)wantsTrackingSuppressed;
 - (_UISegmentedControlAppearanceStorage)init;
-- (double)backgroundPositionAdjustmentForBarMetrics:(int64_t)a3;
+- (double)backgroundPositionAdjustmentForBarMetrics:(int64_t)metrics;
 - (id)anyDividerImage;
-- (id)anyDividerImageForMini:(BOOL)a3;
-- (id)backgroundImageForState:(unint64_t)a3 isMini:(BOOL)a4 withFallback:(BOOL)a5;
-- (id)contentPositionOffsetForSegment:(int64_t)a3 inMiniBar:(BOOL)a4 noFallback:(BOOL)a5;
-- (id)dividerImageForLeftSegmentState:(unint64_t)a3 rightSegmentState:(unint64_t)a4 isMini:(BOOL)a5 withFallback:(BOOL)a6;
-- (id)textAttributesForState:(unint64_t)a3;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 isMini:(BOOL)a5;
-- (void)setBackgroundPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)setContentPositionOffset:(id)a3 forSegment:(int64_t)a4 inMiniBar:(BOOL)a5;
-- (void)setDetail:(id *)a3;
-- (void)setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5 isMini:(BOOL)a6;
-- (void)setIsTiled:(BOOL)a3 leftCapWidth:(unint64_t)a4 rightCapWidth:(unint64_t)a5;
-- (void)setTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)takeTextAttributesFrom:(id *)a3 forState:(unint64_t)a4;
+- (id)anyDividerImageForMini:(BOOL)mini;
+- (id)backgroundImageForState:(unint64_t)state isMini:(BOOL)mini withFallback:(BOOL)fallback;
+- (id)contentPositionOffsetForSegment:(int64_t)segment inMiniBar:(BOOL)bar noFallback:(BOOL)fallback;
+- (id)dividerImageForLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState isMini:(BOOL)mini withFallback:(BOOL)fallback;
+- (id)textAttributesForState:(unint64_t)state;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state isMini:(BOOL)mini;
+- (void)setBackgroundPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
+- (void)setContentPositionOffset:(id)offset forSegment:(int64_t)segment inMiniBar:(BOOL)bar;
+- (void)setDetail:(id *)detail;
+- (void)setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState isMini:(BOOL)mini;
+- (void)setIsTiled:(BOOL)tiled leftCapWidth:(unint64_t)width rightCapWidth:(unint64_t)capWidth;
+- (void)setTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)takeTextAttributesFrom:(id *)from forState:(unint64_t)state;
 @end
 
 @implementation _UISegmentedControlAppearanceStorage
@@ -80,14 +80,14 @@
   return v2;
 }
 
-- (void)setBackgroundPositionAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)setBackgroundPositionAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
   v6 = [(NSMutableDictionary *)self->_backgroundPositionAdjustmentsForBarMetrics objectForKey:?];
   [v6 floatValue];
   v8 = v7;
 
-  if (v8 != a3)
+  if (v8 != adjustment)
   {
     backgroundPositionAdjustmentsForBarMetrics = self->_backgroundPositionAdjustmentsForBarMetrics;
     if (!backgroundPositionAdjustmentsForBarMetrics)
@@ -99,16 +99,16 @@
       backgroundPositionAdjustmentsForBarMetrics = self->_backgroundPositionAdjustmentsForBarMetrics;
     }
 
-    *&v9 = a3;
+    *&v9 = adjustment;
     v13 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
     [(NSMutableDictionary *)backgroundPositionAdjustmentsForBarMetrics setObject:v13 forKey:v14];
   }
 }
 
-- (double)backgroundPositionAdjustmentForBarMetrics:(int64_t)a3
+- (double)backgroundPositionAdjustmentForBarMetrics:(int64_t)metrics
 {
   backgroundPositionAdjustmentsForBarMetrics = self->_backgroundPositionAdjustmentsForBarMetrics;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
   v5 = [(NSMutableDictionary *)backgroundPositionAdjustmentsForBarMetrics objectForKey:v4];
   [v5 floatValue];
   v7 = v6;
@@ -116,11 +116,11 @@
   return v7;
 }
 
-- (void)setContentPositionOffset:(id)a3 forSegment:(int64_t)a4 inMiniBar:(BOOL)a5
+- (void)setContentPositionOffset:(id)offset forSegment:(int64_t)segment inMiniBar:(BOOL)bar
 {
-  v5 = a5;
-  v15 = a3;
-  if (v5)
+  barCopy = bar;
+  offsetCopy = offset;
+  if (barCopy)
   {
     v8 = 64;
   }
@@ -131,8 +131,8 @@
   }
 
   v9 = *(&self->super.isa + v8);
-  v10 = v15;
-  if (v15 | v9)
+  v10 = offsetCopy;
+  if (offsetCopy | v9)
   {
     v11 = v9;
     if (!v9)
@@ -144,10 +144,10 @@
       v11 = *(&self->super.isa + v8);
     }
 
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    if (v15)
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:segment];
+    if (offsetCopy)
     {
-      [v11 setObject:v15 forKey:v14];
+      [v11 setObject:offsetCopy forKey:v14];
     }
 
     else
@@ -155,23 +155,23 @@
       [v11 removeObjectForKey:v14];
     }
 
-    v10 = v15;
+    v10 = offsetCopy;
   }
 }
 
-- (id)contentPositionOffsetForSegment:(int64_t)a3 inMiniBar:(BOOL)a4 noFallback:(BOOL)a5
+- (id)contentPositionOffsetForSegment:(int64_t)segment inMiniBar:(BOOL)bar noFallback:(BOOL)fallback
 {
   v7 = 56;
-  if (a4)
+  if (bar)
   {
     v7 = 64;
   }
 
   v8 = *(&self->super.isa + v7);
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:segment];
   v10 = [v8 objectForKey:v9];
 
-  if (!a5 && !v10)
+  if (!fallback && !v10)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:0];
     v10 = [v8 objectForKey:v11];
@@ -180,11 +180,11 @@
   return v10;
 }
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 isMini:(BOOL)a5
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state isMini:(BOOL)mini
 {
-  v5 = a5;
-  v15 = a3;
-  if (v5)
+  miniCopy = mini;
+  imageCopy = image;
+  if (miniCopy)
   {
     v8 = 16;
   }
@@ -195,8 +195,8 @@
   }
 
   v9 = *(&self->super.isa + v8);
-  v10 = v15;
-  if (v15 | v9)
+  v10 = imageCopy;
+  if (imageCopy | v9)
   {
     v11 = v9;
     if (!v9)
@@ -208,10 +208,10 @@
       v11 = *(&self->super.isa + v8);
     }
 
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    if (v15)
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+    if (imageCopy)
     {
-      [v11 setObject:v15 forKey:v14];
+      [v11 setObject:imageCopy forKey:v14];
     }
 
     else
@@ -219,16 +219,16 @@
       [v11 removeObjectForKey:v14];
     }
 
-    v10 = v15;
+    v10 = imageCopy;
   }
 }
 
-- (id)backgroundImageForState:(unint64_t)a3 isMini:(BOOL)a4 withFallback:(BOOL)a5
+- (id)backgroundImageForState:(unint64_t)state isMini:(BOOL)mini withFallback:(BOOL)fallback
 {
-  v5 = a5;
-  v6 = a4;
+  fallbackCopy = fallback;
+  miniCopy = mini;
   v9 = 8;
-  if (a4)
+  if (mini)
   {
     v9 = 16;
   }
@@ -241,15 +241,15 @@
 
   else
   {
-    v11 = !v6;
+    v11 = !miniCopy;
   }
 
-  if (!v11 && v5)
+  if (!v11 && fallbackCopy)
   {
     v10 = self->_backgroundImages;
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   v14 = [(NSMutableDictionary *)v10 objectForKey:v13];
   if (v14)
   {
@@ -258,7 +258,7 @@
 
   else
   {
-    v15 = !v5;
+    v15 = !fallbackCopy;
   }
 
   if (!v15)
@@ -277,11 +277,11 @@
   return v14;
 }
 
-- (void)setDividerImage:(id)a3 forLeftSegmentState:(unint64_t)a4 rightSegmentState:(unint64_t)a5 isMini:(BOOL)a6
+- (void)setDividerImage:(id)image forLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState isMini:(BOOL)mini
 {
-  v6 = a6;
-  v17 = a3;
-  if (v6)
+  miniCopy = mini;
+  imageCopy = image;
+  if (miniCopy)
   {
     v10 = 32;
   }
@@ -292,8 +292,8 @@
   }
 
   v11 = *(&self->super.isa + v10);
-  v12 = v17;
-  if (v17 | v11)
+  v12 = imageCopy;
+  if (imageCopy | v11)
   {
     v13 = v11;
     if (!v11)
@@ -305,27 +305,27 @@
       v13 = *(&self->super.isa + v10);
     }
 
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:a5 + 100 * a4];
-    if (v17)
+    state = [MEMORY[0x1E696AD98] numberWithInteger:segmentState + 100 * state];
+    if (imageCopy)
     {
-      [v13 setObject:v17 forKey:v16];
+      [v13 setObject:imageCopy forKey:state];
     }
 
     else
     {
-      [v13 removeObjectForKey:v16];
+      [v13 removeObjectForKey:state];
     }
 
-    v12 = v17;
+    v12 = imageCopy;
   }
 }
 
-- (id)dividerImageForLeftSegmentState:(unint64_t)a3 rightSegmentState:(unint64_t)a4 isMini:(BOOL)a5 withFallback:(BOOL)a6
+- (id)dividerImageForLeftSegmentState:(unint64_t)state rightSegmentState:(unint64_t)segmentState isMini:(BOOL)mini withFallback:(BOOL)fallback
 {
-  v6 = a6;
-  v7 = a5;
+  fallbackCopy = fallback;
+  miniCopy = mini;
   v11 = 24;
-  if (a5)
+  if (mini)
   {
     v11 = 32;
   }
@@ -338,16 +338,16 @@
 
   else
   {
-    v13 = !v7;
+    v13 = !miniCopy;
   }
 
-  if (!v13 && v6)
+  if (!v13 && fallbackCopy)
   {
     v12 = self->_dividerImages;
   }
 
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4 + 100 * a3];
-  v16 = [(NSMutableDictionary *)v12 objectForKey:v15];
+  state = [MEMORY[0x1E696AD98] numberWithInteger:segmentState + 100 * state];
+  v16 = [(NSMutableDictionary *)v12 objectForKey:state];
   if (v16)
   {
     v17 = 1;
@@ -355,7 +355,7 @@
 
   else
   {
-    v17 = !v6;
+    v17 = !fallbackCopy;
   }
 
   if (!v17)
@@ -368,17 +368,17 @@
 
     else
     {
-      v16 = [(NSMutableDictionary *)dividerImages objectForKey:v15];
+      v16 = [(NSMutableDictionary *)dividerImages objectForKey:state];
     }
   }
 
   return v16;
 }
 
-- (id)anyDividerImageForMini:(BOOL)a3
+- (id)anyDividerImageForMini:(BOOL)mini
 {
   v4 = 24;
-  if (a3)
+  if (mini)
   {
     v4 = 32;
   }
@@ -394,37 +394,37 @@
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    lastObject = v7;
   }
 
   else
   {
-    v10 = [(NSMutableDictionary *)v5 allValues];
-    v9 = [v10 lastObject];
+    allValues = [(NSMutableDictionary *)v5 allValues];
+    lastObject = [allValues lastObject];
   }
 
-  return v9;
+  return lastObject;
 }
 
-- (void)setTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)setTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = a3;
+  attributesCopy = attributes;
   textAttributesForState = self->_textAttributesForState;
-  if (v6)
+  if (attributesCopy)
   {
-    v13 = v6;
+    v13 = attributesCopy;
     if (!textAttributesForState)
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v9 = self->_textAttributesForState;
       self->_textAttributesForState = v8;
 
-      v6 = v13;
+      attributesCopy = v13;
     }
 
-    v10 = [v6 copy];
+    v10 = [attributesCopy copy];
     v11 = self->_textAttributesForState;
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(NSMutableDictionary *)v11 setObject:v10 forKey:v12];
   }
 
@@ -436,26 +436,26 @@
     }
 
     v13 = 0;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(NSMutableDictionary *)textAttributesForState removeObjectForKey:v10];
   }
 
-  v6 = v13;
+  attributesCopy = v13;
 LABEL_8:
 }
 
-- (id)textAttributesForState:(unint64_t)a3
+- (id)textAttributesForState:(unint64_t)state
 {
   textAttributesForState = self->_textAttributesForState;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   v5 = [(NSMutableDictionary *)textAttributesForState objectForKey:v4];
 
   return v5;
 }
 
-- (void)takeTextAttributesFrom:(id *)a3 forState:(unint64_t)a4
+- (void)takeTextAttributesFrom:(id *)from forState:(unint64_t)state
 {
-  v7 = [(_UISegmentedControlAppearanceStorage *)self textAttributesForState:a4];
+  v7 = [(_UISegmentedControlAppearanceStorage *)self textAttributesForState:state];
   v8 = [v7 mutableCopy];
   v9 = v8;
   if (v8)
@@ -470,12 +470,12 @@ LABEL_8:
 
   v12 = v10;
 
-  [v12 setValue:a3->var3 forKey:*off_1E70EC920];
-  if (a3->var4)
+  [v12 setValue:from->var3 forKey:*off_1E70EC920];
+  if (from->var4)
   {
     v11 = objc_alloc_init(off_1E70ECB90);
-    [v11 setShadowColor:a3->var4];
-    [v11 setShadowOffset:{a3->var5.width, a3->var5.height}];
+    [v11 setShadowColor:from->var4];
+    [v11 setShadowOffset:{from->var5.width, from->var5.height}];
   }
 
   else
@@ -484,26 +484,26 @@ LABEL_8:
   }
 
   [v12 setValue:v11 forKey:*off_1E70EC9B0];
-  [(_UISegmentedControlAppearanceStorage *)self setTextAttributes:v12 forState:a4];
+  [(_UISegmentedControlAppearanceStorage *)self setTextAttributes:v12 forState:state];
 }
 
-- (void)setDetail:(id *)a3
+- (void)setDetail:(id *)detail
 {
-  if (a3)
+  if (detail)
   {
     self->_legacySuppressOptionsBackground = 1;
-    self->_legacyDontHighlight = a3->var7;
-    var1 = a3->var1;
-    if (a3->var2 != 0.0 || var1 != 0.0)
+    self->_legacyDontHighlight = detail->var7;
+    var1 = detail->var1;
+    if (detail->var2 != 0.0 || var1 != 0.0)
     {
-      v23[0] = *&a3->var2;
+      v23[0] = *&detail->var2;
       *&v23[1] = var1;
       v6 = [MEMORY[0x1E696B098] valueWithBytes:v23 objCType:"{UIOffset=dd}"];
-      v7 = a3->var1;
-      v22[0] = -a3->var2;
+      v7 = detail->var1;
+      v22[0] = -detail->var2;
       v22[1] = v7;
       v8 = [MEMORY[0x1E696B098] valueWithBytes:v22 objCType:"{UIOffset=dd}"];
-      v9 = a3->var1;
+      v9 = detail->var1;
       v21[0] = 0;
       *&v21[1] = v9;
       v10 = [MEMORY[0x1E696B098] valueWithBytes:v21 objCType:"{UIOffset=dd}"];
@@ -513,66 +513,66 @@ LABEL_8:
       [(_UISegmentedControlAppearanceStorage *)self setContentPositionOffset:v10 forSegment:2 inMiniBar:0];
     }
 
-    [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:a3->var3.var0 forState:0 isMini:0];
-    [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:a3->var4.var0 forState:4 isMini:0];
-    [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:a3->var6.var0 forState:2 isMini:0];
-    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:a3->var3.var1 forLeftSegmentState:0 rightSegmentState:0 isMini:0];
-    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:a3->var4.var1 forLeftSegmentState:0 rightSegmentState:4 isMini:0];
-    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:a3->var4.var2 forLeftSegmentState:4 rightSegmentState:0 isMini:0];
-    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:a3->var6.var1 forLeftSegmentState:0 rightSegmentState:2 isMini:0];
-    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:a3->var6.var2 forLeftSegmentState:2 rightSegmentState:0 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:detail->var3.var0 forState:0 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:detail->var4.var0 forState:4 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:detail->var6.var0 forState:2 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:detail->var3.var1 forLeftSegmentState:0 rightSegmentState:0 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:detail->var4.var1 forLeftSegmentState:0 rightSegmentState:4 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:detail->var4.var2 forLeftSegmentState:4 rightSegmentState:0 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:detail->var6.var1 forLeftSegmentState:0 rightSegmentState:2 isMini:0];
+    [(_UISegmentedControlAppearanceStorage *)self setDividerImage:detail->var6.var2 forLeftSegmentState:2 rightSegmentState:0 isMini:0];
     v11 = [(_UISegmentedControlAppearanceStorage *)self textAttributesForState:0];
     v12 = [v11 mutableCopy];
 
-    if (a3->var0 && !v12)
+    if (detail->var0 && !v12)
     {
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     }
 
     [v12 setValue:? forKey:?];
     [(_UISegmentedControlAppearanceStorage *)self setTextAttributes:v12 forState:0];
-    if (a3->var3.var3 || a3->var3.var4)
+    if (detail->var3.var3 || detail->var3.var4)
     {
-      v13 = *&a3->var3.var2;
-      v17 = *&a3->var3.var0;
+      v13 = *&detail->var3.var2;
+      v17 = *&detail->var3.var0;
       v18 = v13;
-      v19 = *&a3->var3.var4;
-      height = a3->var3.var5.height;
+      v19 = *&detail->var3.var4;
+      height = detail->var3.var5.height;
       [(_UISegmentedControlAppearanceStorage *)self takeTextAttributesFrom:&v17 forState:0];
     }
 
-    if (a3->var4.var3 || a3->var4.var4)
+    if (detail->var4.var3 || detail->var4.var4)
     {
-      v14 = *&a3->var4.var2;
-      v17 = *&a3->var4.var0;
+      v14 = *&detail->var4.var2;
+      v17 = *&detail->var4.var0;
       v18 = v14;
-      v19 = *&a3->var4.var4;
-      height = a3->var4.var5.height;
+      v19 = *&detail->var4.var4;
+      height = detail->var4.var5.height;
       [(_UISegmentedControlAppearanceStorage *)self takeTextAttributesFrom:&v17 forState:4];
     }
 
-    if (a3->var6.var3 || a3->var6.var4)
+    if (detail->var6.var3 || detail->var6.var4)
     {
-      v15 = *&a3->var6.var2;
-      v17 = *&a3->var6.var0;
+      v15 = *&detail->var6.var2;
+      v17 = *&detail->var6.var0;
       v18 = v15;
-      v19 = *&a3->var6.var4;
-      height = a3->var6.var5.height;
+      v19 = *&detail->var6.var4;
+      height = detail->var6.var5.height;
       [(_UISegmentedControlAppearanceStorage *)self takeTextAttributesFrom:&v17 forState:2];
     }
 
-    if (!a3->var7)
+    if (!detail->var7)
     {
-      [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:a3->var5.var0 forState:1 isMini:0];
-      [(_UISegmentedControlAppearanceStorage *)self setDividerImage:a3->var5.var1 forLeftSegmentState:0 rightSegmentState:1 isMini:0];
-      [(_UISegmentedControlAppearanceStorage *)self setDividerImage:a3->var5.var2 forLeftSegmentState:1 rightSegmentState:0 isMini:0];
-      if (a3->var5.var3 || a3->var5.var4)
+      [(_UISegmentedControlAppearanceStorage *)self setBackgroundImage:detail->var5.var0 forState:1 isMini:0];
+      [(_UISegmentedControlAppearanceStorage *)self setDividerImage:detail->var5.var1 forLeftSegmentState:0 rightSegmentState:1 isMini:0];
+      [(_UISegmentedControlAppearanceStorage *)self setDividerImage:detail->var5.var2 forLeftSegmentState:1 rightSegmentState:0 isMini:0];
+      if (detail->var5.var3 || detail->var5.var4)
       {
-        v16 = *&a3->var5.var2;
-        v17 = *&a3->var5.var0;
+        v16 = *&detail->var5.var2;
+        v17 = *&detail->var5.var0;
         v18 = v16;
-        v19 = *&a3->var5.var4;
-        height = a3->var5.var5.height;
+        v19 = *&detail->var5.var4;
+        height = detail->var5.var5.height;
         [(_UISegmentedControlAppearanceStorage *)self takeTextAttributesFrom:&v17 forState:1];
       }
     }
@@ -586,11 +586,11 @@ LABEL_8:
   }
 }
 
-- (void)setIsTiled:(BOOL)a3 leftCapWidth:(unint64_t)a4 rightCapWidth:(unint64_t)a5
+- (void)setIsTiled:(BOOL)tiled leftCapWidth:(unint64_t)width rightCapWidth:(unint64_t)capWidth
 {
-  self->_isTiled = a3;
-  self->_leftCapWidth = a4;
-  self->_rightCapWidth = a5;
+  self->_isTiled = tiled;
+  self->_leftCapWidth = width;
+  self->_rightCapWidth = capWidth;
 }
 
 @end

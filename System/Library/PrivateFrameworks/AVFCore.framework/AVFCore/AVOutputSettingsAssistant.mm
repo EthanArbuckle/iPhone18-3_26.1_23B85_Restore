@@ -1,10 +1,10 @@
 @interface AVOutputSettingsAssistant
 + (AVOutputSettingsAssistant)outputSettingsAssistantWithPreset:(AVOutputSettingsPreset)presetIdentifier;
 + (NSArray)availableOutputSettingsPresets;
-+ (id)baseSettingsProviderForPreset:(id)a3;
++ (id)baseSettingsProviderForPreset:(id)preset;
 + (id)videoEncoderCapabilities;
-+ (id)videoSettingsAdjusterForPreset:(id)a3;
-- (AVOutputSettingsAssistant)initWithPreset:(id)a3;
++ (id)videoSettingsAdjusterForPreset:(id)preset;
+- (AVOutputSettingsAssistant)initWithPreset:(id)preset;
 - (NSDictionary)audioSettings;
 - (NSDictionary)videoSettings;
 - (void)dealloc;
@@ -12,7 +12,7 @@
 - (void)setSourceVideoAverageFrameDuration:(CMTime *)sourceVideoAverageFrameDuration;
 - (void)setSourceVideoFormat:(CMVideoFormatDescriptionRef)sourceVideoFormat;
 - (void)setSourceVideoMinFrameDuration:(CMTime *)sourceVideoMinFrameDuration;
-- (void)setVideoEncoderSpecification:(id)a3;
+- (void)setVideoEncoderSpecification:(id)specification;
 @end
 
 @implementation AVOutputSettingsAssistant
@@ -20,13 +20,13 @@
 + (NSArray)availableOutputSettingsPresets
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a1 _allOutputSettingsPresets];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _allOutputSettingsPresets = [self _allOutputSettingsPresets];
+  v5 = [_allOutputSettingsPresets countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -38,36 +38,36 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allOutputSettingsPresets);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if ([objc_opt_class() baseSettingsProviderForPreset:v9])
         {
-          [(NSArray *)v3 addObject:v9];
+          [(NSArray *)array addObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_allOutputSettingsPresets countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 + (AVOutputSettingsAssistant)outputSettingsAssistantWithPreset:(AVOutputSettingsPreset)presetIdentifier
 {
-  v3 = [[a1 alloc] initWithPreset:presetIdentifier];
+  v3 = [[self alloc] initWithPreset:presetIdentifier];
 
   return v3;
 }
 
-- (AVOutputSettingsAssistant)initWithPreset:(id)a3
+- (AVOutputSettingsAssistant)initWithPreset:(id)preset
 {
   v10.receiver = self;
   v10.super_class = AVOutputSettingsAssistant;
@@ -76,7 +76,7 @@
   {
     v5 = objc_alloc_init(AVOutputSettingsAssistantInternal);
     v4->_internal = v5;
-    if (v5 && (CFRetain(v5), v4->_internal->baseSettingsProvider = [objc_opt_class() baseSettingsProviderForPreset:a3], v4->_internal->videoSettingsAdjuster = objc_msgSend(objc_opt_class(), "videoSettingsAdjusterForPreset:", a3), v6 = v4->_internal, v6->baseSettingsProvider) && v6->videoSettingsAdjuster)
+    if (v5 && (CFRetain(v5), v4->_internal->baseSettingsProvider = [objc_opt_class() baseSettingsProviderForPreset:preset], v4->_internal->videoSettingsAdjuster = objc_msgSend(objc_opt_class(), "videoSettingsAdjusterForPreset:", preset), v6 = v4->_internal, v6->baseSettingsProvider) && v6->videoSettingsAdjuster)
     {
       CMTimeMake(&v9, 1, 30);
       v6->sourceVideoAverageFrameDuration = v9;
@@ -124,28 +124,28 @@
 
 - (NSDictionary)audioSettings
 {
-  v3 = [(AVOutputSettingsAssistantBaseSettingsProvider *)self->_internal->baseSettingsProvider baseAudioSettings];
+  baseAudioSettings = [(AVOutputSettingsAssistantBaseSettingsProvider *)self->_internal->baseSettingsProvider baseAudioSettings];
   if ([(AVOutputSettingsAssistant *)self sourceAudioFormat])
   {
-    v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v3];
+    baseAudioSettings = [MEMORY[0x1E695DF90] dictionaryWithDictionary:baseAudioSettings];
     *&v15[0] = 0;
     inSpecifier = 0;
     RichestDecodableFormatAndChannelLayout = FigAudioFormatDescriptionGetRichestDecodableFormatAndChannelLayout();
     v5 = *MEMORY[0x1E6958348];
-    [-[NSDictionary objectForKey:](v3 objectForKey:{*MEMORY[0x1E6958348]), "doubleValue"}];
+    [-[NSDictionary objectForKey:](baseAudioSettings objectForKey:{*MEMORY[0x1E6958348]), "doubleValue"}];
     if (v6 > *RichestDecodableFormatAndChannelLayout)
     {
       v6 = *RichestDecodableFormatAndChannelLayout;
     }
 
-    -[NSDictionary setObject:forKey:](v3, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithDouble:{v6, *&v15[0]}], v5);
+    -[NSDictionary setObject:forKey:](baseAudioSettings, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithDouble:{v6, *&v15[0]}], v5);
     v9 = *(RichestDecodableFormatAndChannelLayout + 28);
     v10 = *MEMORY[0x1E6958300];
-    v11 = [-[NSDictionary objectForKey:](v3 objectForKey:{*MEMORY[0x1E6958300]), "integerValue"}];
-    v7 = [MEMORY[0x1E695DEF0] data];
+    v11 = [-[NSDictionary objectForKey:](baseAudioSettings objectForKey:{*MEMORY[0x1E6958300]), "integerValue"}];
+    data = [MEMORY[0x1E695DEF0] data];
     if (v11 == v9)
     {
-      v8 = [-[NSDictionary objectForKey:](v3 objectForKey:{v10), "integerValue"}];
+      v8 = [-[NSDictionary objectForKey:](baseAudioSettings objectForKey:{v10), "integerValue"}];
     }
 
     else
@@ -158,31 +158,31 @@
   {
     v15[0] = xmmword_1962574F8;
     v15[1] = unk_196257508;
-    v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v15 length:32];
+    data = [MEMORY[0x1E695DEF0] dataWithBytes:v15 length:32];
     v8 = 2;
   }
 
   v12 = *MEMORY[0x1E6958258];
-  if (![(NSDictionary *)v3 objectForKey:*MEMORY[0x1E6958258]])
+  if (![(NSDictionary *)baseAudioSettings objectForKey:*MEMORY[0x1E6958258]])
   {
-    v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v3];
-    [(NSDictionary *)v3 setObject:v7 forKey:v12];
+    baseAudioSettings = [MEMORY[0x1E695DF90] dictionaryWithDictionary:baseAudioSettings];
+    [(NSDictionary *)baseAudioSettings setObject:data forKey:v12];
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-    [(NSDictionary *)v3 setObject:v13 forKey:*MEMORY[0x1E6958300]];
+    [(NSDictionary *)baseAudioSettings setObject:v13 forKey:*MEMORY[0x1E6958300]];
   }
 
-  return v3;
+  return baseAudioSettings;
 }
 
 - (NSDictionary)videoSettings
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{-[AVOutputSettingsAssistantBaseSettingsProvider baseVideoSettings](self->_internal->baseSettingsProvider, "baseVideoSettings")}];
-  v4 = [(AVOutputSettingsAssistant *)self sourceVideoFormat];
-  v5 = v4;
-  if (v4)
+  sourceVideoFormat = [(AVOutputSettingsAssistant *)self sourceVideoFormat];
+  v5 = sourceVideoFormat;
+  if (sourceVideoFormat)
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(v4);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(sourceVideoFormat);
     v7 = [-[NSDictionary objectForKey:](v3 objectForKey:{@"AVVideoWidthKey", "integerValue"}];
     v8 = [-[NSDictionary objectForKey:](v3 objectForKey:{@"AVVideoHeightKey", "integerValue"}];
     v9 = v8;
@@ -399,25 +399,25 @@ LABEL_4:
   *&internal->sourceVideoMinFrameDuration.value = v12;
 }
 
-- (void)setVideoEncoderSpecification:(id)a3
+- (void)setVideoEncoderSpecification:(id)specification
 {
   v5 = *MEMORY[0x1E6984270];
-  if (a3 && [a3 objectForKeyedSubscript:*MEMORY[0x1E6984270]])
+  if (specification && [specification objectForKeyedSubscript:*MEMORY[0x1E6984270]])
   {
     internal = self->_internal;
     p_internal = &self->_internal;
     videoEncoderSpecification = internal->videoEncoderSpecification;
-    if (videoEncoderSpecification == a3)
+    if (videoEncoderSpecification == specification)
     {
       return;
     }
 
-    v9 = [a3 copy];
+    v9 = [specification copy];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:specification];
     [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v5];
     v11 = self->_internal;
     p_internal = &self->_internal;
@@ -428,16 +428,16 @@ LABEL_4:
   (*p_internal)->videoEncoderSpecification = v9;
 }
 
-+ (id)baseSettingsProviderForPreset:(id)a3
++ (id)baseSettingsProviderForPreset:(id)preset
 {
-  v3 = [[AVExportSettingsOutputSettingsAssistantBaseSettings alloc] initWithOutputSettingsPreset:a3];
+  v3 = [[AVExportSettingsOutputSettingsAssistantBaseSettings alloc] initWithOutputSettingsPreset:preset];
 
   return v3;
 }
 
-+ (id)videoSettingsAdjusterForPreset:(id)a3
++ (id)videoSettingsAdjusterForPreset:(id)preset
 {
-  v3 = [[AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster alloc] initWithOutputSettingsPreset:a3];
+  v3 = [[AVExportSettingsOutputSettingsAssistantVideoSettingsAdjuster alloc] initWithOutputSettingsPreset:preset];
 
   return v3;
 }

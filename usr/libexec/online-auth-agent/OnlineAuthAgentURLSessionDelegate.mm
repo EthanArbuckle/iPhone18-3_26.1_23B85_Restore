@@ -1,14 +1,14 @@
 @interface OnlineAuthAgentURLSessionDelegate
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation OnlineAuthAgentURLSessionDelegate
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if (!sub_100003F60() || (v10 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.mis"], v11 = objc_msgSend(v10, "BOOLForKey:", @"disableServerPinning"), v10, !v11))
   {
     v34 = 0;
@@ -31,13 +31,13 @@
     v26[3] = &unk_10005DC50;
     v12 = objc_retainBlock(v29);
     v27 = v12;
-    v13 = v9;
+    v13 = handlerCopy;
     v28 = v13;
     v14 = objc_retainBlock(v26);
-    v15 = [v8 protectionSpace];
-    v16 = [v15 serverTrust];
+    protectionSpace = [challengeCopy protectionSpace];
+    serverTrust = [protectionSpace serverTrust];
 
-    if (!v16)
+    if (!serverTrust)
     {
       v22 = sub_100006750();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -49,13 +49,13 @@
       goto LABEL_30;
     }
 
-    CertificateCount = SecTrustGetCertificateCount(v16);
+    CertificateCount = SecTrustGetCertificateCount(serverTrust);
     v18 = [[NSMutableArray alloc] initWithCapacity:CertificateCount];
     if (CertificateCount)
     {
       for (i = 0; i != CertificateCount; ++i)
       {
-        [v18 addObject:{SecTrustGetCertificateAtIndex(v16, i)}];
+        [v18 addObject:{SecTrustGetCertificateAtIndex(serverTrust, i)}];
       }
     }
 
@@ -133,7 +133,7 @@ LABEL_30:
     goto LABEL_29;
   }
 
-  (*(v9 + 2))(v9, 1, 0);
+  (*(handlerCopy + 2))(handlerCopy, 1, 0);
 LABEL_31:
 }
 

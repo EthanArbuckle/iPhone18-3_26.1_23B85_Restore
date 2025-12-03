@@ -1,27 +1,27 @@
 @interface OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector
-- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector)initWithOrgApacheLuceneSearchSort:(id)a3 withOrgApacheLuceneSearchFieldValueHitQueue:(id)a4 withInt:(int)a5 withBoolean:(BOOL)a6;
-- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector)initWithOrgApacheLuceneSearchSort:(id)sort withOrgApacheLuceneSearchFieldValueHitQueue:(id)queue withInt:(int)int withBoolean:(BOOL)boolean;
+- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector
 
-- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector)initWithOrgApacheLuceneSearchSort:(id)a3 withOrgApacheLuceneSearchFieldValueHitQueue:(id)a4 withInt:(int)a5 withBoolean:(BOOL)a6
+- (OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector)initWithOrgApacheLuceneSearchSort:(id)sort withOrgApacheLuceneSearchFieldValueHitQueue:(id)queue withInt:(int)int withBoolean:(BOOL)boolean
 {
-  sub_1000944EC(self, a4, a5, a6, 1);
-  JreStrongAssign(&self->queue_, a4);
+  sub_1000944EC(self, queue, int, boolean, 1);
+  JreStrongAssign(&self->queue_, queue);
   *(&self->super.super.totalHits_ + 1) = 0x800000;
   return self;
 }
 
-- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  if (!a3)
+  if (!context)
   {
     goto LABEL_12;
   }
 
-  self->super.docBase_ = *(a3 + 8);
+  self->super.docBase_ = *(context + 8);
   queue = self->queue_;
   if (!queue)
   {
@@ -29,13 +29,13 @@
   }
 
   v5 = [(OrgApacheLuceneSearchFieldValueHitQueue *)queue getComparatorsWithOrgApacheLuceneIndexLeafReaderContext:?];
-  v6 = [(OrgApacheLuceneSearchFieldValueHitQueue *)self->queue_ getReverseMul];
+  getReverseMul = [(OrgApacheLuceneSearchFieldValueHitQueue *)self->queue_ getReverseMul];
   if (!v5)
   {
     goto LABEL_12;
   }
 
-  v7 = v6;
+  v7 = getReverseMul;
   if (v5[2] != 1)
   {
     v11 = [OrgApacheLuceneSearchTopFieldCollector_ScoringMaxScoreCollector__2 alloc];
@@ -44,14 +44,14 @@
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!getReverseMul)
   {
 LABEL_12:
     JreThrowNullPointerException();
   }
 
   v8 = *(v5 + 3);
-  v9 = v6[2];
+  v9 = getReverseMul[2];
   if (v9 <= 0)
   {
     IOSArray_throwOutOfBoundsWithMsg(v9, 0);

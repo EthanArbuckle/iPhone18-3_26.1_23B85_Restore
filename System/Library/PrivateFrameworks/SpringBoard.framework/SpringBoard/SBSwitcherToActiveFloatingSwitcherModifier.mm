@@ -1,8 +1,8 @@
 @interface SBSwitcherToActiveFloatingSwitcherModifier
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (SBSwitcherToActiveFloatingSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 floatingDeckModifier:(id)a6;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (SBSwitcherToActiveFloatingSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout floatingDeckModifier:(id)modifier;
 - (id)_layoutSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutsToCacheSnapshots;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
@@ -10,19 +10,19 @@
 
 @implementation SBSwitcherToActiveFloatingSwitcherModifier
 
-- (SBSwitcherToActiveFloatingSwitcherModifier)initWithTransitionID:(id)a3 direction:(int64_t)a4 fullScreenAppLayout:(id)a5 floatingDeckModifier:(id)a6
+- (SBSwitcherToActiveFloatingSwitcherModifier)initWithTransitionID:(id)d direction:(int64_t)direction fullScreenAppLayout:(id)layout floatingDeckModifier:(id)modifier
 {
-  v11 = a5;
-  v12 = a6;
+  layoutCopy = layout;
+  modifierCopy = modifier;
   v16.receiver = self;
   v16.super_class = SBSwitcherToActiveFloatingSwitcherModifier;
-  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   v14 = v13;
   if (v13)
   {
-    v13->_direction = a4;
-    objc_storeStrong(&v13->_fullScreenAppLayout, a5);
-    objc_storeStrong(&v14->_floatingDeckModifier, a6);
+    v13->_direction = direction;
+    objc_storeStrong(&v13->_fullScreenAppLayout, layout);
+    objc_storeStrong(&v14->_floatingDeckModifier, modifier);
   }
 
   return v14;
@@ -32,7 +32,7 @@
 {
   v11.receiver = self;
   v11.super_class = SBSwitcherToActiveFloatingSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
   if (self->_direction == 1)
   {
@@ -62,7 +62,7 @@
   v8 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:v7 updateMode:2];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v8];
 
-  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   return v9;
 }
@@ -86,8 +86,8 @@
   v4 = v11[5];
   v8.receiver = self;
   v8.super_class = SBSwitcherToActiveFloatingSwitcherModifier;
-  v5 = [(SBSwitcherToActiveFloatingSwitcherModifier *)&v8 visibleAppLayouts];
-  v6 = [v4 setByAddingObjectsFromSet:v5];
+  visibleAppLayouts = [(SBSwitcherToActiveFloatingSwitcherModifier *)&v8 visibleAppLayouts];
+  v6 = [v4 setByAddingObjectsFromSet:visibleAppLayouts];
 
   _Block_object_dispose(&v10, 8);
 
@@ -102,26 +102,26 @@ void __63__SBSwitcherToActiveFloatingSwitcherModifier_visibleAppLayouts__block_i
   *(v3 + 40) = v2;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBSwitcherToActiveFloatingSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBSwitcherToActiveFloatingSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBSwitcherToActiveFloatingSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }
 
 - (id)_layoutSettings
 {
-  v2 = [(SBSwitcherToActiveFloatingSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 launchAppFromSwitcherSettings];
+  switcherSettings = [(SBSwitcherToActiveFloatingSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  launchAppFromSwitcherSettings = [animationSettings launchAppFromSwitcherSettings];
 
-  return v4;
+  return launchAppFromSwitcherSettings;
 }
 
 - (id)appLayoutsToCacheSnapshots
@@ -154,11 +154,11 @@ void __72__SBSwitcherToActiveFloatingSwitcherModifier_appLayoutsToCacheSnapshots
   *(v3 + 40) = v2;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = SBSwitcherToActiveFloatingSwitcherModifier;
-  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:a3]| 0x100);
+  return ([(SBTransitionSwitcherModifier *)&v4 asyncRenderingAttributesForAppLayout:layout]| 0x100);
 }
 
 @end

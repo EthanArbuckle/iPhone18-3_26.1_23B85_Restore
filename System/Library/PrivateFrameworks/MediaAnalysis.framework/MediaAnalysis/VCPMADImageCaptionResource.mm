@@ -1,7 +1,7 @@
 @interface VCPMADImageCaptionResource
-+ (id)sharedResourceForModelType:(int64_t)a3 safetyType:(int64_t)a4;
++ (id)sharedResourceForModelType:(int64_t)type safetyType:(int64_t)safetyType;
 - (VCPImageCaptionAnalyzer)imageCaptionAnalyzer;
-- (VCPMADImageCaptionResource)initWithModelType:(int64_t)a3 safetyType:(int64_t)a4;
+- (VCPMADImageCaptionResource)initWithModelType:(int64_t)type safetyType:(int64_t)safetyType;
 - (int64_t)activeCost;
 - (int64_t)inactiveCost;
 - (void)purge;
@@ -9,7 +9,7 @@
 
 @implementation VCPMADImageCaptionResource
 
-- (VCPMADImageCaptionResource)initWithModelType:(int64_t)a3 safetyType:(int64_t)a4
+- (VCPMADImageCaptionResource)initWithModelType:(int64_t)type safetyType:(int64_t)safetyType
 {
   v11.receiver = self;
   v11.super_class = VCPMADImageCaptionResource;
@@ -21,29 +21,29 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    v6->_modelType = a3;
-    v6->_safetyType = a4;
+    v6->_modelType = type;
+    v6->_safetyType = safetyType;
   }
 
   return v6;
 }
 
-+ (id)sharedResourceForModelType:(int64_t)a3 safetyType:(int64_t)a4
++ (id)sharedResourceForModelType:(int64_t)type safetyType:(int64_t)safetyType
 {
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v10 = [v9 stringValue];
-  v11 = [v6 stringWithFormat:@"%@_%@", v8, v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  stringValue = [v9 stringValue];
+  v11 = [v6 stringWithFormat:@"%@_%@", v8, stringValue];
 
   v12 = +[VCPSharedInstanceManager sharedManager];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __68__VCPMADImageCaptionResource_sharedResourceForModelType_safetyType___block_invoke;
   v15[3] = &__block_descriptor_48_e33___VCPMADImageCaptionResource_8__0l;
-  v15[4] = a3;
-  v15[5] = a4;
+  v15[4] = type;
+  v15[5] = safetyType;
   v13 = [v12 sharedInstanceWithIdentifier:v11 andCreationBlock:v15];
 
   return v13;

@@ -1,15 +1,15 @@
 @interface PXStoryTimelineManager
-+ (PXStoryTimelineManager)timelineManagerWithTimelineProducer:(id)a3 resourcesDataSourceManager:(id)a4 styleManager:(id)a5 specManager:(id)a6 configuration:(id)a7 loadingCoordinator:(id)a8 paperTrailOptions:(unint64_t)a9;
++ (PXStoryTimelineManager)timelineManagerWithTimelineProducer:(id)producer resourcesDataSourceManager:(id)manager styleManager:(id)styleManager specManager:(id)specManager configuration:(id)configuration loadingCoordinator:(id)coordinator paperTrailOptions:(unint64_t)options;
 - (BOOL)requiresUpdatedTargetTimelineImmediately;
 - (PXStoryTimelineManager)init;
-- (PXStoryTimelineManager)initWithTimelineProducer:(id)a3 resourcesDataSourceManager:(id)a4 styleManager:(id)a5 specManager:(id)a6 loadingCoordinator:(id)a7 errorReporter:(id)a8 options:(unint64_t)a9 paperTrailOptions:(unint64_t)a10;
-- (_NSRange)_rangeOfVisibleDisplayAssetsInResourcesDataSource:(id)a3;
-- (id)_diagnosticMovementTextForClipInfo:(id *)a3 segmentClipCount:(int)a4 autoEditClip:(id)a5;
-- (id)_diagnosticStyleTextForClipInfo:(id *)a3 segmentClipCount:(int)a4 autoEditClip:(id)a5;
-- (id)_diagnosticTextForSegmentIdentifier:(int64_t)a3 segmentTimeRange:(id *)a4 HUDType:(int64_t)a5 decisionList:(id)a6;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
+- (PXStoryTimelineManager)initWithTimelineProducer:(id)producer resourcesDataSourceManager:(id)manager styleManager:(id)styleManager specManager:(id)specManager loadingCoordinator:(id)coordinator errorReporter:(id)reporter options:(unint64_t)options paperTrailOptions:(unint64_t)self0;
+- (_NSRange)_rangeOfVisibleDisplayAssetsInResourcesDataSource:(id)source;
+- (id)_diagnosticMovementTextForClipInfo:(id *)info segmentClipCount:(int)count autoEditClip:(id)clip;
+- (id)_diagnosticStyleTextForClipInfo:(id *)info segmentClipCount:(int)count autoEditClip:(id)clip;
+- (id)_diagnosticTextForSegmentIdentifier:(int64_t)identifier segmentTimeRange:(id *)range HUDType:(int64_t)type decisionList:(id)list;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
 - (void)_applyPendingVisibleSegmentIdentifiers;
-- (void)_handleUpdatedTargetTimelineResult:(id)a3;
+- (void)_handleUpdatedTargetTimelineResult:(id)result;
 - (void)_invalidatePendingVisibleSegmentIdentifiers;
 - (void)_invalidateTargetTimeline;
 - (void)_invalidateTimeline;
@@ -18,34 +18,34 @@
 - (void)_updateTargetTimeline;
 - (void)_updateTimeline;
 - (void)_updateTimelineAttributes;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setIsTargetTimelineFinal:(BOOL)a3;
-- (void)setIsTimelineFinal:(BOOL)a3;
-- (void)setTargetTimelineProgress:(id)a3;
-- (void)setTargetTimelineResult:(id)a3;
-- (void)setTimeline:(id)a3;
-- (void)setTimelineAttributes:(unint64_t)a3;
-- (void)setVisibleSegmentIdentifiers:(id)a3;
-- (void)setVisibleSegmentIdentifiers:(id)a3 afterUpdatePass:(BOOL)a4;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setIsTargetTimelineFinal:(BOOL)final;
+- (void)setIsTimelineFinal:(BOOL)final;
+- (void)setTargetTimelineProgress:(id)progress;
+- (void)setTargetTimelineResult:(id)result;
+- (void)setTimeline:(id)timeline;
+- (void)setTimelineAttributes:(unint64_t)attributes;
+- (void)setVisibleSegmentIdentifiers:(id)identifiers;
+- (void)setVisibleSegmentIdentifiers:(id)identifiers afterUpdatePass:(BOOL)pass;
 @end
 
 @implementation PXStoryTimelineManager
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   v34 = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  containerCopy = container;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v23 = objc_alloc_init(PXStoryDurationFormatter);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v21 = self;
+  selfCopy = self;
   v5 = self->_targetTimelineResultsPaperTrail;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
@@ -62,12 +62,12 @@
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 object];
-        v12 = [v11 diagnosticDescription];
-        v13 = [v10 isDegraded];
+        object = [v10 object];
+        diagnosticDescription = [object diagnosticDescription];
+        isDegraded = [v10 isDegraded];
         [v10 productionDuration];
         v14 = [(PXStoryDurationFormatter *)v23 stringFromTimeInterval:?];
-        [v4 appendFormat:@"Timeline: %@\n Is Degraded: %d\nProduction Duration: %@\n\n\n", v12, v13, v14, v21];
+        [v4 appendFormat:@"Timeline: %@\n Is Degraded: %d\nProduction Duration: %@\n\n\n", diagnosticDescription, isDegraded, v14, selfCopy];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -76,13 +76,13 @@
     while (v7);
   }
 
-  [v22 addAttachmentWithText:v4 name:@"TimelineManagerTargetTimelineResults"];
+  [containerCopy addAttachmentWithText:v4 name:@"TimelineManagerTargetTimelineResults"];
   v15 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v21->_timelinesPaperTrail;
+  v16 = selfCopy->_timelinesPaperTrail;
   v17 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v17)
   {
@@ -106,18 +106,18 @@
     while (v18);
   }
 
-  [v22 addAttachmentWithText:v4 name:@"TimelineManagerTimelines"];
+  [containerCopy addAttachmentWithText:v4 name:@"TimelineManagerTimelines"];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__PXStoryTimelineManager_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E7746748;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryTimelineManager *)self performChanges:v5];
 }
@@ -187,33 +187,33 @@ LABEL_15:
 
 - (void)_updateTimelineAttributes
 {
-  v3 = [(PXStoryTimelineManager *)self targetTimelineProgress];
+  targetTimelineProgress = [(PXStoryTimelineManager *)self targetTimelineProgress];
 
-  if (v3)
+  if (targetTimelineProgress)
   {
     return;
   }
 
-  v4 = [(PXStoryTimelineManager *)self resourcesDataSourceManager];
-  if (![v4 isDataSourceFinal])
+  resourcesDataSourceManager = [(PXStoryTimelineManager *)self resourcesDataSourceManager];
+  if (![resourcesDataSourceManager isDataSourceFinal])
   {
 
     goto LABEL_6;
   }
 
-  v5 = [(PXStoryTimelineManager *)self isTargetTimelineFinal];
+  isTargetTimelineFinal = [(PXStoryTimelineManager *)self isTargetTimelineFinal];
 
-  if (!v5)
+  if (!isTargetTimelineFinal)
   {
 LABEL_6:
     v8 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(PXStoryTimelineManager *)self styleManager];
-  v7 = [v6 currentStyleAttributes];
+  styleManager = [(PXStoryTimelineManager *)self styleManager];
+  currentStyleAttributes = [styleManager currentStyleAttributes];
 
-  v8 = v7 & 3;
+  v8 = currentStyleAttributes & 3;
 LABEL_7:
 
   [(PXStoryTimelineManager *)self setTimelineAttributes:v8];
@@ -221,21 +221,21 @@ LABEL_7:
 
 - (void)_invalidateTimelineAttributes
 {
-  v2 = [(PXStoryTimelineManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTimelineAttributes];
+  updater = [(PXStoryTimelineManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTimelineAttributes];
 }
 
 - (void)_updateTimeline
 {
   isUpdatingTimeline = self->_isUpdatingTimeline;
   self->_isUpdatingTimeline = 1;
-  v4 = [(PXStoryTimelineManager *)self timeline];
-  v5 = [(PXStoryTimelineManager *)self visibleSegmentIdentifiers];
-  v6 = [(PXStoryTimelineManager *)self targetTimelineResult];
-  v7 = [v6 object];
+  timeline = [(PXStoryTimelineManager *)self timeline];
+  visibleSegmentIdentifiers = [(PXStoryTimelineManager *)self visibleSegmentIdentifiers];
+  targetTimelineResult = [(PXStoryTimelineManager *)self targetTimelineResult];
+  object = [targetTimelineResult object];
 
-  v8 = [PXStoryRecombinedTimeline timelineByRecombiningSourceTimeline:v4 withTargetTimeline:v7 visibleSegmentIdentifiers:v5];
-  v9 = v5;
+  v8 = [PXStoryRecombinedTimeline timelineByRecombiningSourceTimeline:timeline withTargetTimeline:object visibleSegmentIdentifiers:visibleSegmentIdentifiers];
+  v9 = visibleSegmentIdentifiers;
   v10 = v9;
   if ([v9 count])
   {
@@ -248,7 +248,7 @@ LABEL_7:
       v13[2] = __41__PXStoryTimelineManager__updateTimeline__block_invoke;
       v13[3] = &unk_1E774C1B0;
       v14 = v8;
-      v15 = v4;
+      v15 = timeline;
       v16 = v11;
       v12 = v11;
       [v9 enumerateIndexesUsingBlock:v13];
@@ -277,40 +277,40 @@ uint64_t __41__PXStoryTimelineManager__updateTimeline__block_invoke(uint64_t a1,
 
 - (void)_invalidateTimeline
 {
-  v2 = [(PXStoryTimelineManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTimeline];
+  updater = [(PXStoryTimelineManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTimeline];
 }
 
 - (void)_updatePendingVisibleSegmentIdentifiers
 {
-  v3 = [(PXStoryTimelineManager *)self pendingVisibleSegmentIdentifiers];
-  if (v3)
+  pendingVisibleSegmentIdentifiers = [(PXStoryTimelineManager *)self pendingVisibleSegmentIdentifiers];
+  if (pendingVisibleSegmentIdentifiers)
   {
-    v4 = v3;
-    [(PXStoryTimelineManager *)self setVisibleSegmentIdentifiers:v3];
+    v4 = pendingVisibleSegmentIdentifiers;
+    [(PXStoryTimelineManager *)self setVisibleSegmentIdentifiers:pendingVisibleSegmentIdentifiers];
     [(PXStoryTimelineManager *)self setPendingVisibleSegmentIdentifiers:0];
-    v3 = v4;
+    pendingVisibleSegmentIdentifiers = v4;
   }
 }
 
 - (void)_invalidatePendingVisibleSegmentIdentifiers
 {
-  v2 = [(PXStoryTimelineManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePendingVisibleSegmentIdentifiers];
+  updater = [(PXStoryTimelineManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePendingVisibleSegmentIdentifiers];
 }
 
-- (void)_handleUpdatedTargetTimelineResult:(id)a3
+- (void)_handleUpdatedTargetTimelineResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __61__PXStoryTimelineManager__handleUpdatedTargetTimelineResult___block_invoke;
   v9 = &unk_1E773BF10;
-  v10 = self;
-  v11 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v11 = resultCopy;
+  v5 = resultCopy;
   [(PXStoryTimelineManager *)self performChanges:&v6];
-  [(NSMutableArray *)self->_targetTimelineResultsPaperTrail px_addObject:v5 removingFirstObjectIfNeededToKeepMaximumCount:self->_paperTrailLength, v6, v7, v8, v9, v10];
+  [(NSMutableArray *)self->_targetTimelineResultsPaperTrail px_addObject:v5 removingFirstObjectIfNeededToKeepMaximumCount:self->_paperTrailLength, v6, v7, v8, v9, selfCopy];
 }
 
 uint64_t __61__PXStoryTimelineManager__handleUpdatedTargetTimelineResult___block_invoke(uint64_t a1)
@@ -337,10 +337,10 @@ uint64_t __61__PXStoryTimelineManager__handleUpdatedTargetTimelineResult___block
     v5[3] = __Block_byref_object_copy__133819;
     v5[4] = __Block_byref_object_dispose__133820;
     v5[5] = 0;
-    v3 = [(PXStoryTimelineManager *)self specManager];
-    v4 = [v3 timelineSpec];
+    specManager = [(PXStoryTimelineManager *)self specManager];
+    timelineSpec = [specManager timelineSpec];
 
-    [v4 viewportSize];
+    [timelineSpec viewportSize];
     PXSizeIsNull();
   }
 }
@@ -356,8 +356,8 @@ void __47__PXStoryTimelineManager__updateTargetTimeline__block_invoke_32(uint64_
 
 - (void)_invalidateTargetTimeline
 {
-  v2 = [(PXStoryTimelineManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTargetTimeline];
+  updater = [(PXStoryTimelineManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTargetTimeline];
 }
 
 - (void)_applyPendingVisibleSegmentIdentifiers
@@ -370,16 +370,16 @@ void __47__PXStoryTimelineManager__updateTargetTimeline__block_invoke_32(uint64_
   [(PXStoryTimelineManager *)self performChanges:v2];
 }
 
-- (void)setVisibleSegmentIdentifiers:(id)a3 afterUpdatePass:(BOOL)a4
+- (void)setVisibleSegmentIdentifiers:(id)identifiers afterUpdatePass:(BOOL)pass
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  passCopy = pass;
+  identifiersCopy = identifiers;
+  v7 = identifiersCopy;
+  if (passCopy)
   {
-    if (v6)
+    if (identifiersCopy)
     {
-      [(PXStoryTimelineManager *)self setPendingVisibleSegmentIdentifiers:v6];
+      [(PXStoryTimelineManager *)self setPendingVisibleSegmentIdentifiers:identifiersCopy];
     }
 
     else
@@ -389,13 +389,13 @@ void __47__PXStoryTimelineManager__updateTargetTimeline__block_invoke_32(uint64_
     }
 
     objc_initWeak(&location, self);
-    v9 = [(PXStoryTimelineManager *)self storyQueue];
+    storyQueue = [(PXStoryTimelineManager *)self storyQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __71__PXStoryTimelineManager_setVisibleSegmentIdentifiers_afterUpdatePass___block_invoke;
     v10[3] = &unk_1E774C318;
     objc_copyWeak(&v11, &location);
-    dispatch_async(v9, v10);
+    dispatch_async(storyQueue, v10);
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -403,7 +403,7 @@ void __47__PXStoryTimelineManager__updateTargetTimeline__block_invoke_32(uint64_
 
   else
   {
-    [(PXStoryTimelineManager *)self setVisibleSegmentIdentifiers:v6];
+    [(PXStoryTimelineManager *)self setVisibleSegmentIdentifiers:identifiersCopy];
   }
 }
 
@@ -413,14 +413,14 @@ void __71__PXStoryTimelineManager_setVisibleSegmentIdentifiers_afterUpdatePass__
   [WeakRetained _applyPendingVisibleSegmentIdentifiers];
 }
 
-- (void)setVisibleSegmentIdentifiers:(id)a3
+- (void)setVisibleSegmentIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_visibleSegmentIdentifiers != v4)
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (self->_visibleSegmentIdentifiers != identifiersCopy)
   {
-    v9 = v4;
-    v6 = [(NSIndexSet *)v4 isEqual:?];
+    v9 = identifiersCopy;
+    v6 = [(NSIndexSet *)identifiersCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -439,26 +439,26 @@ void __71__PXStoryTimelineManager_setVisibleSegmentIdentifiers_afterUpdatePass__
   }
 }
 
-- (_NSRange)_rangeOfVisibleDisplayAssetsInResourcesDataSource:(id)a3
+- (_NSRange)_rangeOfVisibleDisplayAssetsInResourcesDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3010000000;
   v20 = &unk_1A561E057;
   v21 = xmmword_1A5380D90;
-  v5 = [(PXStoryTimelineManager *)self timeline];
-  v6 = [(PXStoryTimelineManager *)self visibleSegmentIdentifiers];
+  timeline = [(PXStoryTimelineManager *)self timeline];
+  visibleSegmentIdentifiers = [(PXStoryTimelineManager *)self visibleSegmentIdentifiers];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__PXStoryTimelineManager__rangeOfVisibleDisplayAssetsInResourcesDataSource___block_invoke;
   v13[3] = &unk_1E773BE98;
-  v7 = v5;
+  v7 = timeline;
   v14 = v7;
-  v8 = v4;
+  v8 = sourceCopy;
   v15 = v8;
   v16 = &v17;
-  [v6 enumerateIndexesUsingBlock:v13];
+  [visibleSegmentIdentifiers enumerateIndexesUsingBlock:v13];
 
   v9 = v18[4];
   v10 = v18[5];
@@ -487,42 +487,42 @@ void __76__PXStoryTimelineManager__rangeOfVisibleDisplayAssetsInResourcesDataSou
   }
 }
 
-- (void)setTargetTimelineProgress:(id)a3
+- (void)setTargetTimelineProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   targetTimelineProgress = self->_targetTimelineProgress;
-  if (targetTimelineProgress != v5)
+  if (targetTimelineProgress != progressCopy)
   {
-    v7 = v5;
+    v7 = progressCopy;
     [(NSProgress *)targetTimelineProgress cancel];
-    objc_storeStrong(&self->_targetTimelineProgress, a3);
+    objc_storeStrong(&self->_targetTimelineProgress, progress);
     [(PXStoryTimelineManager *)self _invalidateTimelineAttributes];
-    v5 = v7;
+    progressCopy = v7;
   }
 }
 
 - (BOOL)requiresUpdatedTargetTimelineImmediately
 {
-  v3 = [(PXStoryTimelineManager *)self targetTimelineResult];
-  v4 = [v3 object];
+  targetTimelineResult = [(PXStoryTimelineManager *)self targetTimelineResult];
+  object = [targetTimelineResult object];
 
-  if (!v4)
+  if (!object)
   {
     goto LABEL_11;
   }
 
-  [v4 size];
+  [object size];
   if (v6 == *MEMORY[0x1E695F060] && v5 == *(MEMORY[0x1E695F060] + 8))
   {
     goto LABEL_11;
   }
 
-  [v4 size];
+  [object size];
   v9 = v8;
   v11 = v10;
-  v12 = [(PXStoryTimelineManager *)self specManager];
-  v13 = [v12 timelineSpec];
-  [v13 viewportSize];
+  specManager = [(PXStoryTimelineManager *)self specManager];
+  timelineSpec = [specManager timelineSpec];
+  [timelineSpec viewportSize];
   if (v9 == v15 && v11 == v14)
   {
 
@@ -531,9 +531,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [(PXStoryTimelineManager *)self options];
+  options = [(PXStoryTimelineManager *)self options];
 
-  if ((v16 & 4) != 0)
+  if ((options & 4) != 0)
   {
     goto LABEL_11;
   }
@@ -544,20 +544,20 @@ LABEL_12:
   return v17;
 }
 
-- (void)setIsTimelineFinal:(BOOL)a3
+- (void)setIsTimelineFinal:(BOOL)final
 {
-  if (self->_isTimelineFinal != a3)
+  if (self->_isTimelineFinal != final)
   {
-    self->_isTimelineFinal = a3;
+    self->_isTimelineFinal = final;
     [(PXStoryTimelineManager *)self signalChange:2];
   }
 }
 
-- (void)setTimelineAttributes:(unint64_t)a3
+- (void)setTimelineAttributes:(unint64_t)attributes
 {
-  if (self->_timelineAttributes != a3)
+  if (self->_timelineAttributes != attributes)
   {
-    self->_timelineAttributes = a3;
+    self->_timelineAttributes = attributes;
     [(PXStoryTimelineManager *)self signalChange:4];
     v4 = (self->_timelineAttributes >> 1) & 1;
 
@@ -565,18 +565,18 @@ LABEL_12:
   }
 }
 
-- (void)setTimeline:(id)a3
+- (void)setTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_timeline != v5)
+  timelineCopy = timeline;
+  v6 = timelineCopy;
+  if (self->_timeline != timelineCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryTimeline *)v5 isEqual:?];
+    v8 = timelineCopy;
+    v7 = [(PXStoryTimeline *)timelineCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_timeline, a3);
+      objc_storeStrong(&self->_timeline, timeline);
       [(PXStoryTimelineManager *)self signalChange:1];
       [(NSMutableArray *)self->_timelinesPaperTrail px_addObject:self->_timeline removingFirstObjectIfNeededToKeepMaximumCount:self->_paperTrailLength];
       v6 = v8;
@@ -584,27 +584,27 @@ LABEL_12:
   }
 }
 
-- (void)setIsTargetTimelineFinal:(BOOL)a3
+- (void)setIsTargetTimelineFinal:(BOOL)final
 {
-  if (self->_isTargetTimelineFinal != a3)
+  if (self->_isTargetTimelineFinal != final)
   {
-    self->_isTargetTimelineFinal = a3;
+    self->_isTargetTimelineFinal = final;
     [(PXStoryTimelineManager *)self _invalidateTimelineAttributes];
   }
 }
 
-- (void)setTargetTimelineResult:(id)a3
+- (void)setTargetTimelineResult:(id)result
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_targetTimelineResult != v5)
+  resultCopy = result;
+  v6 = resultCopy;
+  if (self->_targetTimelineResult != resultCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryProducerResult *)v5 isEqual:?];
+    v8 = resultCopy;
+    v7 = [(PXStoryProducerResult *)resultCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_targetTimelineResult, a3);
+      objc_storeStrong(&self->_targetTimelineResult, result);
       [(PXStoryTimelineManager *)self setIsTargetTimelineFinal:[(PXStoryProducerResult *)v8 isDegraded]^ 1];
       [(PXStoryTimelineManager *)self _invalidatePendingVisibleSegmentIdentifiers];
       [(PXStoryTimelineManager *)self _invalidateTimeline];
@@ -618,19 +618,19 @@ LABEL_12:
   v4.receiver = self;
   v4.super_class = PXStoryTimelineManager;
   [(PXStoryTimelineManager *)&v4 didPerformChanges];
-  v3 = [(PXStoryTimelineManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryTimelineManager *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXStoryTimelineManager *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  storyQueue = [(PXStoryTimelineManager *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   v6.receiver = self;
   v6.super_class = PXStoryTimelineManager;
-  [(PXStoryTimelineManager *)&v6 performChanges:v4];
+  [(PXStoryTimelineManager *)&v6 performChanges:changesCopy];
 }
 
 - (void)dealloc
@@ -641,36 +641,36 @@ LABEL_12:
   [(PXStoryTimelineManager *)&v3 dealloc];
 }
 
-- (PXStoryTimelineManager)initWithTimelineProducer:(id)a3 resourcesDataSourceManager:(id)a4 styleManager:(id)a5 specManager:(id)a6 loadingCoordinator:(id)a7 errorReporter:(id)a8 options:(unint64_t)a9 paperTrailOptions:(unint64_t)a10
+- (PXStoryTimelineManager)initWithTimelineProducer:(id)producer resourcesDataSourceManager:(id)manager styleManager:(id)styleManager specManager:(id)specManager loadingCoordinator:(id)coordinator errorReporter:(id)reporter options:(unint64_t)options paperTrailOptions:(unint64_t)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
+  producerCopy = producer;
+  managerCopy = manager;
+  styleManagerCopy = styleManager;
+  specManagerCopy = specManager;
+  coordinatorCopy = coordinator;
+  reporterCopy = reporter;
   v37.receiver = self;
   v37.super_class = PXStoryTimelineManager;
   v20 = [(PXStoryTimelineManager *)&v37 init];
   v21 = v20;
   if (v20)
   {
-    [(PXStoryTimelineManager *)v20 copyLogConfigurationFrom:v18];
-    objc_storeStrong(&v21->_timelineProducer, a3);
-    objc_storeStrong(&v21->_resourcesDataSourceManager, a4);
+    [(PXStoryTimelineManager *)v20 copyLogConfigurationFrom:managerCopy];
+    objc_storeStrong(&v21->_timelineProducer, producer);
+    objc_storeStrong(&v21->_resourcesDataSourceManager, manager);
     [(PXStoryResourcesDataSourceManager *)v21->_resourcesDataSourceManager registerChangeObserver:v21 context:ResourcesDataSourceManagerObservationContext_133803];
-    objc_storeStrong(&v21->_styleManager, a5);
+    objc_storeStrong(&v21->_styleManager, styleManager);
     [(PXStoryStyleManager *)v21->_styleManager registerChangeObserver:v21 context:StyleManagerObservationContext_133804];
-    objc_storeStrong(&v21->_specManager, a6);
+    objc_storeStrong(&v21->_specManager, specManager);
     [(PXStoryTimelineSpecManager *)v21->_specManager registerChangeObserver:v21 context:SpecManagerObservationContext_133805];
-    v22 = [v18 storyQueue];
+    storyQueue = [managerCopy storyQueue];
     storyQueue = v21->_storyQueue;
-    v21->_storyQueue = v22;
+    v21->_storyQueue = storyQueue;
 
-    objc_storeStrong(&v21->_loadingCoordinator, a7);
-    objc_storeStrong(&v21->_errorReporter, a8);
-    v21->_options = a9;
-    v21->_paperTrailOptions = a10;
+    objc_storeStrong(&v21->_loadingCoordinator, coordinator);
+    objc_storeStrong(&v21->_errorReporter, reporter);
+    v21->_options = options;
+    v21->_paperTrailOptions = trailOptions;
     v24 = [[off_1E7721940 alloc] initWithTarget:v21 needsUpdateSelector:sel__setNeedsUpdate];
     updater = v21->_updater;
     v21->_updater = v24;
@@ -679,7 +679,7 @@ LABEL_12:
     [(PXUpdater *)v21->_updater addUpdateSelector:sel__updatePendingVisibleSegmentIdentifiers];
     [(PXUpdater *)v21->_updater addUpdateSelector:sel__updateTimeline];
     [(PXUpdater *)v21->_updater addUpdateSelector:sel__updateTimelineAttributes];
-    if (a10)
+    if (trailOptions)
     {
       v26 = +[PXStorySettings sharedInstance];
       v21->_paperTrailLength = [v26 timelineManagerPaperTrailLength];
@@ -706,82 +706,82 @@ LABEL_12:
 
 - (PXStoryTimelineManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTimelineManager.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXStoryTimelineManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTimelineManager.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXStoryTimelineManager init]"}];
 
   abort();
 }
 
-+ (PXStoryTimelineManager)timelineManagerWithTimelineProducer:(id)a3 resourcesDataSourceManager:(id)a4 styleManager:(id)a5 specManager:(id)a6 configuration:(id)a7 loadingCoordinator:(id)a8 paperTrailOptions:(unint64_t)a9
++ (PXStoryTimelineManager)timelineManagerWithTimelineProducer:(id)producer resourcesDataSourceManager:(id)manager styleManager:(id)styleManager specManager:(id)specManager configuration:(id)configuration loadingCoordinator:(id)coordinator paperTrailOptions:(unint64_t)options
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [v15 options];
-  if (([v15 options] & 0xC) != 0)
+  coordinatorCopy = coordinator;
+  configurationCopy = configuration;
+  specManagerCopy = specManager;
+  styleManagerCopy = styleManager;
+  managerCopy = manager;
+  producerCopy = producer;
+  options = [configurationCopy options];
+  if (([configurationCopy options] & 0xC) != 0)
   {
-    v21 = v20 & 3 | 8;
+    v21 = options & 3 | 8;
   }
 
   else
   {
-    v21 = v20 & 3;
+    v21 = options & 3;
   }
 
   v22 = [PXStoryTimelineManager alloc];
-  v23 = [v15 errorReporter];
+  errorReporter = [configurationCopy errorReporter];
 
-  v24 = [(PXStoryTimelineManager *)v22 initWithTimelineProducer:v19 resourcesDataSourceManager:v18 styleManager:v17 specManager:v16 loadingCoordinator:v14 errorReporter:v23 options:v21 paperTrailOptions:a9];
+  v24 = [(PXStoryTimelineManager *)v22 initWithTimelineProducer:producerCopy resourcesDataSourceManager:managerCopy styleManager:styleManagerCopy specManager:specManagerCopy loadingCoordinator:coordinatorCopy errorReporter:errorReporter options:v21 paperTrailOptions:options];
 
   return v24;
 }
 
-- (id)_diagnosticMovementTextForClipInfo:(id *)a3 segmentClipCount:(int)a4 autoEditClip:(id)a5
+- (id)_diagnosticMovementTextForClipInfo:(id *)info segmentClipCount:(int)count autoEditClip:(id)clip
 {
-  v6 = a5;
+  clipCopy = clip;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = *&a3->var9.var0.var0.a;
-  v9 = *&a3->var9.var0.var0.tx;
-  v20 = *&a3->var9.var0.var0.c;
+  v8 = *&info->var9.var0.var0.a;
+  v9 = *&info->var9.var0.var0.tx;
+  v20 = *&info->var9.var0.var0.c;
   v21 = v9;
-  v10 = *&a3->var9.var1.var0.c;
-  v16 = *&a3->var9.var1.var0.a;
+  v10 = *&info->var9.var1.var0.c;
+  v16 = *&info->var9.var1.var0.a;
   v17 = v10;
-  v18 = *&a3->var9.var1.var0.tx;
+  v18 = *&info->var9.var1.var0.tx;
   v19 = v8;
   v13 = v8;
-  v11 = *&a3->var9.var0.var0.tx;
+  v11 = *&info->var9.var0.var0.tx;
   v14 = v20;
   v15 = v11;
   PXStoryRectIsEmpty();
 }
 
-- (id)_diagnosticStyleTextForClipInfo:(id *)a3 segmentClipCount:(int)a4 autoEditClip:(id)a5
+- (id)_diagnosticStyleTextForClipInfo:(id *)info segmentClipCount:(int)count autoEditClip:(id)clip
 {
-  v6 = a5;
+  clipCopy = clip;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v21 = *&a3->var4.var1.var0;
-  *&v22 = a3->var4.var1.var3;
+  v21 = *&info->var4.var1.var0;
+  *&v22 = info->var4.var1.var3;
   v8 = PXStoryTimeDescription(&v21);
   [v7 appendFormat:@"    Duration=%@", v8];
 
-  if (v6)
+  if (clipCopy)
   {
     v23 = 0u;
     memset(&v24, 0, sizeof(v24));
     v21 = 0u;
     v22 = 0u;
-    [v6 durationInfo];
-    var1 = a3->var4.var1;
+    [clipCopy durationInfo];
+    var1 = info->var4.var1;
     *&v19.value = v21;
     v19.epoch = v22;
     v18 = v24;
     *&time1.value = v21;
     time1.epoch = v22;
-    time2 = a3->var4.var1;
+    time2 = info->var4.var1;
     v9 = @"🟥";
     if (CMTimeCompare(&time1, &time2) <= 0)
     {
@@ -797,7 +797,7 @@ LABEL_12:
     v11 = PXStoryTimeDescription(&v18);
     [v7 appendFormat:@", AE (min=%@/max=%@): %@", v10, v11, v9];
 
-    v12 = v6;
+    v12 = clipCopy;
     [v12 durationMultiplier];
     v14 = v13;
 
@@ -813,10 +813,10 @@ LABEL_12:
   PXDisplayAssetPlaybackStyleDescription();
 }
 
-- (id)_diagnosticTextForSegmentIdentifier:(int64_t)a3 segmentTimeRange:(id *)a4 HUDType:(int64_t)a5 decisionList:(id)a6
+- (id)_diagnosticTextForSegmentIdentifier:(int64_t)identifier segmentTimeRange:(id *)range HUDType:(int64_t)type decisionList:(id)list
 {
-  v8 = a6;
-  [objc_alloc_init(MEMORY[0x1E696AD60]) appendFormat:@"Segment: %ld\n", a3];
+  listCopy = list;
+  [objc_alloc_init(MEMORY[0x1E696AD60]) appendFormat:@"Segment: %ld\n", identifier];
   [(PXStoryTimelineManager *)self timeline];
   [objc_claimAutoreleasedReturnValue() size];
   PXRectWithOriginAndSize();
@@ -949,19 +949,19 @@ LABEL_14:
   }
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
-  v6 = [(PXStoryTimelineManager *)self styleManager:a4.width];
-  v7 = [v6 currentStyle];
+  v6 = [(PXStoryTimelineManager *)self styleManager:size.width];
+  currentStyle = [v6 currentStyle];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 autoEditDecisionList];
+    autoEditDecisionList = [currentStyle autoEditDecisionList];
     v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    if (v8)
+    if (autoEditDecisionList)
     {
-      [v9 appendFormat:@"Auto-Edit decision list contains: %ld clips\n", objc_msgSend(v8, "numberOfClips")];
+      [v9 appendFormat:@"Auto-Edit decision list contains: %ld clips\n", objc_msgSend(autoEditDecisionList, "numberOfClips")];
       goto LABEL_6;
     }
   }
@@ -972,25 +972,25 @@ LABEL_14:
   }
 
   [v9 appendString:@"No Auto-Edit decision list present\n"];
-  v8 = 0;
+  autoEditDecisionList = 0;
 LABEL_6:
-  v10 = [v7 originalColorGradeCategory];
-  v11 = v10;
+  originalColorGradeCategory = [currentStyle originalColorGradeCategory];
+  v11 = originalColorGradeCategory;
   v12 = @"-";
-  if (v10)
+  if (originalColorGradeCategory)
   {
-    v12 = v10;
+    v12 = originalColorGradeCategory;
   }
 
   [v9 appendFormat:@"Color grade category: %@\n", v12];
   [v9 appendString:@"\n"];
-  v13 = [(PXStoryTimelineManager *)self timeline];
+  timeline = [(PXStoryTimelineManager *)self timeline];
   v14 = +[PXStorySettings sharedInstance];
   if ([v14 useVerboseStyleHUDText])
   {
-    if (v13)
+    if (timeline)
     {
-      [v13 timeRange];
+      [timeline timeRange];
     }
 
     else
@@ -1003,31 +1003,31 @@ LABEL_6:
     v29[2] = __76__PXStoryTimelineManager_Diagnostics__diagnosticTextForHUDType_displaySize___block_invoke;
     v29[3] = &unk_1E773FA98;
     v29[4] = self;
-    v30 = v8;
+    v30 = autoEditDecisionList;
     v31 = v9;
-    v32 = a3;
+    typeCopy = type;
     v19 = v9;
-    v20 = v8;
-    [v13 enumerateSegmentsInTimeRange:v33 usingBlock:v29];
+    v20 = autoEditDecisionList;
+    [timeline enumerateSegmentsInTimeRange:v33 usingBlock:v29];
 
     v18 = v30;
   }
 
   else
   {
-    v15 = [(PXStoryTimelineManager *)self visibleSegmentIdentifiers];
+    visibleSegmentIdentifiers = [(PXStoryTimelineManager *)self visibleSegmentIdentifiers];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __76__PXStoryTimelineManager_Diagnostics__diagnosticTextForHUDType_displaySize___block_invoke_2;
     v23[3] = &unk_1E773FAC0;
-    v24 = v13;
-    v25 = self;
+    v24 = timeline;
+    selfCopy = self;
     v27 = v9;
-    v28 = a3;
-    v26 = v8;
+    typeCopy2 = type;
+    v26 = autoEditDecisionList;
     v16 = v9;
-    v17 = v8;
-    [v15 enumerateIndexesUsingBlock:v23];
+    v17 = autoEditDecisionList;
+    [visibleSegmentIdentifiers enumerateIndexesUsingBlock:v23];
 
     v18 = v24;
   }

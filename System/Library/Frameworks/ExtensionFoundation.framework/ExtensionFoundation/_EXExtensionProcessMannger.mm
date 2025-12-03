@@ -1,6 +1,6 @@
 @interface _EXExtensionProcessMannger
 - (_EXExtensionProcessMannger)init;
-- (void)processDidInvalidate:(id)a3;
+- (void)processDidInvalidate:(id)invalidate;
 @end
 
 @implementation _EXExtensionProcessMannger
@@ -19,11 +19,11 @@
   return [(_EXExtensionProcessMannger *)&v7 init];
 }
 
-- (void)processDidInvalidate:(id)a3
+- (void)processDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
-  _EXExtensionProcessMannger.processDidInvalidate(_:)(v4);
+  invalidateCopy = invalidate;
+  selfCopy = self;
+  _EXExtensionProcessMannger.processDidInvalidate(_:)(invalidateCopy);
 }
 
 @end

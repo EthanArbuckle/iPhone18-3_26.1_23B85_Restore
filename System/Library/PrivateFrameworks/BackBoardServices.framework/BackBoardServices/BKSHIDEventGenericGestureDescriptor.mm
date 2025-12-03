@@ -1,26 +1,26 @@
 @interface BKSHIDEventGenericGestureDescriptor
 + (id)descriptorForAnyGenericGestureType;
 - (BKSHIDEventGenericGestureDescriptor)init;
-- (BKSHIDEventGenericGestureDescriptor)initWithCoder:(id)a3;
-- (BKSHIDEventGenericGestureDescriptor)initWithGenericGestureType:(unsigned int)a3;
-- (BOOL)describes:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BKSHIDEventGenericGestureDescriptor)initWithCoder:(id)coder;
+- (BKSHIDEventGenericGestureDescriptor)initWithGenericGestureType:(unsigned int)type;
+- (BOOL)describes:(id)describes;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventGenericGestureDescriptor
 
-- (BKSHIDEventGenericGestureDescriptor)initWithCoder:(id)a3
+- (BKSHIDEventGenericGestureDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeBoolForKey:@"genericGestureIsWildcardType"])
+  coderCopy = coder;
+  if ([coderCopy decodeBoolForKey:@"genericGestureIsWildcardType"])
   {
     v5 = [(BKSHIDEventGenericGestureDescriptor *)self init];
   }
 
   else
   {
-    v5 = -[BKSHIDEventGenericGestureDescriptor initWithGenericGestureType:](self, "initWithGenericGestureType:", [v4 decodeIntegerForKey:@"genericGestureType"]);
+    v5 = -[BKSHIDEventGenericGestureDescriptor initWithGenericGestureType:](self, "initWithGenericGestureType:", [coderCopy decodeIntegerForKey:@"genericGestureType"]);
   }
 
   v6 = v5;
@@ -28,35 +28,35 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (*(&self->super._hidEventType + 4) == 1)
   {
-    [a3 encodeBool:1 forKey:@"genericGestureIsWildcardType"];
+    [coder encodeBool:1 forKey:@"genericGestureIsWildcardType"];
   }
 
   else
   {
-    [a3 encodeInteger:*&self->_isWildcard forKey:@"genericGestureType"];
+    [coder encodeInteger:*&self->_isWildcard forKey:@"genericGestureType"];
   }
 }
 
-- (BOOL)describes:(id)a3
+- (BOOL)describes:(id)describes
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(&self->super._hidEventType + 4) == 1 && [v4 hidEventType] == 39 || -[BKSHIDEventGenericGestureDescriptor isEqual:](self, "isEqual:", v5);
+  describesCopy = describes;
+  v5 = describesCopy;
+  v6 = *(&self->super._hidEventType + 4) == 1 && [describesCopy hidEventType] == 39 || -[BKSHIDEventGenericGestureDescriptor isEqual:](self, "isEqual:", v5);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -83,14 +83,14 @@
   return result;
 }
 
-- (BKSHIDEventGenericGestureDescriptor)initWithGenericGestureType:(unsigned int)a3
+- (BKSHIDEventGenericGestureDescriptor)initWithGenericGestureType:(unsigned int)type
 {
   v5.receiver = self;
   v5.super_class = BKSHIDEventGenericGestureDescriptor;
   result = [(BKSHIDEventDescriptor *)&v5 _initWithEventType:39];
   if (result)
   {
-    *&result->_isWildcard = a3;
+    *&result->_isWildcard = type;
   }
 
   return result;

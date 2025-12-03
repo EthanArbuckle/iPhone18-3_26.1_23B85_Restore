@@ -4,7 +4,7 @@
 - (NSArray)forwardListWithLimit:(int)limit;
 - (NSUInteger)pageCacheSize;
 - (WebBackForwardList)init;
-- (WebBackForwardList)initWithBackForwardList:(void *)a3;
+- (WebBackForwardList)initWithBackForwardList:(void *)list;
 - (WebHistoryItem)backItem;
 - (WebHistoryItem)currentItem;
 - (WebHistoryItem)forwardItem;
@@ -16,14 +16,14 @@
 - (void)goBack;
 - (void)goForward;
 - (void)goToItem:(WebHistoryItem *)item;
-- (void)removeItem:(id)a3;
+- (void)removeItem:(id)item;
 - (void)setCapacity:(int)capacity;
-- (void)setToMatchDictionaryRepresentation:(id)a3;
+- (void)setToMatchDictionaryRepresentation:(id)representation;
 @end
 
 @implementation WebBackForwardList
 
-- (WebBackForwardList)initWithBackForwardList:(void *)a3
+- (WebBackForwardList)initWithBackForwardList:(void *)list
 {
   v30.receiver = self;
   v30.super_class = WebBackForwardList;
@@ -34,8 +34,8 @@
     return v5;
   }
 
-  v6 = *a3;
-  *a3 = 0;
+  v6 = *list;
+  *list = 0;
   v4->_private = v6;
   if (_MergedGlobals_9)
   {
@@ -402,9 +402,9 @@ LABEL_25:
   v9 = item;
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  if (a3)
+  if (item)
   {
     if (self)
     {
@@ -427,7 +427,7 @@ LABEL_25:
     }
 
     v5 = 0;
-    v6 = *(*(a3 + 1) + 8);
+    v6 = *(*(item + 1) + 8);
     v7 = *(v3 + 4);
     for (i = v7 + 8; ; i += 8)
     {
@@ -523,7 +523,7 @@ LABEL_25:
   return result;
 }
 
-- (void)setToMatchDictionaryRepresentation:(id)a3
+- (void)setToMatchDictionaryRepresentation:(id)representation
 {
   v24 = *MEMORY[0x1E69E9840];
   if (self)
@@ -536,12 +536,12 @@ LABEL_25:
     v4 = 0;
   }
 
-  BackForwardList::setCapacity(v4, [objc_msgSend(a3 objectForKey:{@"capacity", "unsignedIntValue"}]);
+  BackForwardList::setCapacity(v4, [objc_msgSend(representation objectForKey:{@"capacity", "unsignedIntValue"}]);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 objectForKey:@"entries"];
+  v5 = [representation objectForKey:@"entries"];
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v6)
   {
@@ -607,7 +607,7 @@ LABEL_17:
 
   while (v6);
 LABEL_21:
-  v15 = [objc_msgSend(a3 objectForKey:{@"current", "unsignedIntValue"}];
+  v15 = [objc_msgSend(representation objectForKey:{@"current", "unsignedIntValue"}];
   v16 = *(v4 + 11);
   if (v16 <= v15)
   {
@@ -1131,10 +1131,10 @@ LABEL_19:
 
 - (NSUInteger)pageCacheSize
 {
-  v2 = [*(self->_private + 3) usesPageCache];
-  if (v2)
+  usesPageCache = [*(self->_private + 3) usesPageCache];
+  if (usesPageCache)
   {
-    return *(WebCore::BackForwardCache::singleton(v2) + 32);
+    return *(WebCore::BackForwardCache::singleton(usesPageCache) + 32);
   }
 
   else
@@ -1145,8 +1145,8 @@ LABEL_19:
 
 - (WebHistoryItem)itemAtIndex:(int)index
 {
-  v4 = [*(self->_private + 3) mainFrame];
-  if (!v4 || !*(*(v4 + 8) + 8))
+  mainFrame = [*(self->_private + 3) mainFrame];
+  if (!mainFrame || !*(*(mainFrame + 8) + 8))
   {
     return 0;
   }

@@ -1,16 +1,16 @@
 @interface TextLineLayer
 - (UIEdgeInsets)insets;
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation TextLineLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   v24.receiver = self;
   v24.super_class = TextLineLayer;
   [(TextLineLayer *)&v24 drawInContext:?];
-  UIGraphicsPushContext(a3);
+  UIGraphicsPushContext(context);
   [(TextLineLayer *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -20,8 +20,8 @@
   v14 = v13;
   [(TextLineLayer *)self centerOffset];
   v16 = v15;
-  v17 = [(TextLineLayer *)self lineColor];
-  [v17 setFill];
+  lineColor = [(TextLineLayer *)self lineColor];
+  [lineColor setFill];
 
   [(TextLineLayer *)self insets];
   v19 = v18;
@@ -40,7 +40,7 @@
   v27.origin.x = v19;
   v27.origin.y = v23;
   v27.size.height = v14;
-  CGContextFillRect(a3, v27);
+  CGContextFillRect(context, v27);
   UIGraphicsPopContext();
 }
 

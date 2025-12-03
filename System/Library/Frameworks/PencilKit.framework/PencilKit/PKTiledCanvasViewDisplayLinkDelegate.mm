@@ -1,16 +1,16 @@
 @interface PKTiledCanvasViewDisplayLinkDelegate
 - (PKTiledCanvasView)view;
-- (void)display:(id)a3;
+- (void)display:(id)display;
 @end
 
 @implementation PKTiledCanvasViewDisplayLinkDelegate
 
-- (void)display:(id)a3
+- (void)display:(id)display
 {
-  v5 = a3;
-  v4 = [(PKTiledCanvasViewDisplayLinkDelegate *)self view];
-  [v5 targetTimestamp];
-  [v4 _drawingDisplay:?];
+  displayCopy = display;
+  view = [(PKTiledCanvasViewDisplayLinkDelegate *)self view];
+  [displayCopy targetTimestamp];
+  [view _drawingDisplay:?];
 }
 
 - (PKTiledCanvasView)view

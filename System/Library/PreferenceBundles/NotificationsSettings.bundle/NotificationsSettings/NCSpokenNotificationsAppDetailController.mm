@@ -1,13 +1,13 @@
 @interface NCSpokenNotificationsAppDetailController
 + (BOOL)_isPriorityNotificationSupported;
-+ (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)a3;
-+ (BOOL)isDirectMessagesAnnounceSupportedForSectionInfo:(id)a3;
-+ (id)spokenNotificationsEnabled:(id)a3;
-+ (id)spokenNotificationsSpecifierNamed:(id)a3 sectionInfo:(id)a4 showIcon:(BOOL)a5 class:(Class)a6;
-- (BOOL)_isDirectMessagesAnnounceSupportedForSectionInfo:(id)a3;
++ (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)enabled;
++ (BOOL)isDirectMessagesAnnounceSupportedForSectionInfo:(id)info;
++ (id)spokenNotificationsEnabled:(id)enabled;
++ (id)spokenNotificationsSpecifierNamed:(id)named sectionInfo:(id)info showIcon:(BOOL)icon class:(Class)class;
+- (BOOL)_isDirectMessagesAnnounceSupportedForSectionInfo:(id)info;
 - (BOOL)_isPriorityNotificationSupported;
-- (BOOL)_isTimeSensitiveAnnounceSupportedForSectionInfo:(id)a3;
-- (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)a3;
+- (BOOL)_isTimeSensitiveAnnounceSupportedForSectionInfo:(id)info;
+- (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)enabled;
 - (NCSpokenNotificationsAppDetailControllerDelegate)delegate;
 - (id)_spokenNoOptionsGroupSpecifier;
 - (id)_spokenOptionsAllSpecifier;
@@ -15,46 +15,46 @@
 - (id)_spokenOptionsPriorityNotificationsSpecifier;
 - (id)_spokenOptionsTimeSensitiveSpecifier;
 - (id)specifiers;
-- (id)spokenNotificationsEnabled:(id)a3;
-- (id)spokenOptionPriority:(id)a3;
-- (id)spokenOptionsAllNotifications:(id)a3;
-- (id)spokenOptionsTimeSensitiveDMs:(id)a3;
-- (void)_setTimeSensitiveAndPriorityEnabled:(BOOL)a3;
+- (id)spokenNotificationsEnabled:(id)enabled;
+- (id)spokenOptionPriority:(id)priority;
+- (id)spokenOptionsAllNotifications:(id)notifications;
+- (id)spokenOptionsTimeSensitiveDMs:(id)ms;
+- (void)_setTimeSensitiveAndPriorityEnabled:(BOOL)enabled;
 - (void)_signalDelegateSettingsChanged;
 - (void)_updateOptionsGroupSpecifiers;
 - (void)_updateSwitchStates;
-- (void)didChangeSettingForSpokenNotificationsAppDetailController:(id)a3 withSpecifierIdentifier:(id)a4;
-- (void)setSpokenNotificationsEnabled:(id)a3 specifier:(id)a4;
-- (void)setSpokenOptionAllNotifications:(id)a3 specifier:(id)a4;
-- (void)setSpokenOptionPriority:(id)a3 specifier:(id)a4;
-- (void)setSpokenOptionTimeSensitiveDMs:(id)a3 specifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didChangeSettingForSpokenNotificationsAppDetailController:(id)controller withSpecifierIdentifier:(id)identifier;
+- (void)setSpokenNotificationsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setSpokenOptionAllNotifications:(id)notifications specifier:(id)specifier;
+- (void)setSpokenOptionPriority:(id)priority specifier:(id)specifier;
+- (void)setSpokenOptionTimeSensitiveDMs:(id)ms specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation NCSpokenNotificationsAppDetailController
 
 - (NCSpokenNotificationsAppDetailControllerDelegate)delegate
 {
-  v2 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v3 = [v2 propertyForKey:kNotificationsSettingsDetailControllerDelegate];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v3 = [specifier propertyForKey:kNotificationsSettingsDetailControllerDelegate];
 
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = NCSpokenNotificationsAppDetailController;
-  [(NCSpokenNotificationsAppDetailController *)&v5 viewDidAppear:a3];
-  v4 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  [BulletinBoardController emitNavigationEventForSpecifier:v4 viewController:self];
+  [(NCSpokenNotificationsAppDetailController *)&v5 viewDidAppear:appear];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  [BulletinBoardController emitNavigationEventForSpecifier:specifier viewController:self];
 }
 
-+ (id)spokenNotificationsSpecifierNamed:(id)a3 sectionInfo:(id)a4 showIcon:(BOOL)a5 class:(Class)a6
++ (id)spokenNotificationsSpecifierNamed:(id)named sectionInfo:(id)info showIcon:(BOOL)icon class:(Class)class
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = [PSSpecifier preferenceSpecifierNamed:a3 target:a1 set:0 get:"spokenNotificationsEnabled:" detail:a6 cell:2 edit:0];
+  iconCopy = icon;
+  infoCopy = info;
+  v11 = [PSSpecifier preferenceSpecifierNamed:named target:self set:0 get:"spokenNotificationsEnabled:" detail:class cell:2 edit:0];
   v12 = [NSMutableArray alloc];
   v13 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
   v14 = [v13 localizedStringForKey:@"OFF" value:&stru_4E3F0 table:@"NotificationsSettings"];
@@ -66,32 +66,32 @@
   v18 = [v12 initWithArray:v17];
 
   [v11 setValues:&off_516C0 titles:v18];
-  v19 = [v10 sectionID];
-  v20 = [NSString stringWithFormat:@"SPOKEN_NOTIFICATIONS_APP_ID:%@", v19];
+  sectionID = [infoCopy sectionID];
+  v20 = [NSString stringWithFormat:@"SPOKEN_NOTIFICATIONS_APP_ID:%@", sectionID];
   [v11 setIdentifier:v20];
 
-  [v11 setProperty:v10 forKey:@"BBSECTION_INFO_KEY"];
-  if (v7)
+  [v11 setProperty:infoCopy forKey:@"BBSECTION_INFO_KEY"];
+  if (iconCopy)
   {
-    v21 = [v10 icon];
-    v22 = [v21 _bestVariantForFormat:1];
+    icon = [infoCopy icon];
+    v22 = [icon _bestVariantForFormat:1];
 
-    v23 = [v22 applicationIdentifier];
+    applicationIdentifier = [v22 applicationIdentifier];
     v24 = [v22 uti];
-    v25 = [v10 nc_settingsIconImage];
-    if (v25)
+    nc_settingsIconImage = [infoCopy nc_settingsIconImage];
+    if (nc_settingsIconImage)
     {
       v26 = PSIconImageKey;
       v27 = v11;
-      v28 = v25;
+      v28 = nc_settingsIconImage;
     }
 
-    else if ([v23 length])
+    else if ([applicationIdentifier length])
     {
       [v11 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
       v26 = PSLazyIconAppID;
       v27 = v11;
-      v28 = v23;
+      v28 = applicationIdentifier;
     }
 
     else
@@ -99,8 +99,8 @@
       if (![v24 length])
       {
         [v11 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
-        v30 = [v10 sectionID];
-        v31 = [v30 copy];
+        sectionID2 = [infoCopy sectionID];
+        v31 = [sectionID2 copy];
         [v11 setProperty:v31 forKey:PSLazyIconAppID];
 
         goto LABEL_9;
@@ -125,8 +125,8 @@ LABEL_9:
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-    v6 = [v5 propertyForKey:@"BBSECTION_INFO_KEY"];
+    specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+    v6 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
     v7 = BBSettingsDisplayNameForBBSection(v6);
     [(NCSpokenNotificationsAppDetailController *)self setTitle:v7];
@@ -135,8 +135,8 @@ LABEL_9:
     v9 = [PSSpecifier groupSpecifierWithID:@"SPOKEN_NOTIFICATIONS_SWITCH_MESSAGES_GROUP_ID"];
     v10 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v11 = [v10 localizedStringForKey:@"SPOKEN_NOTIFICATIONS_APP_FOOTER" value:&stru_4E3F0 table:@"NotificationsSettings"];
-    v12 = [(NCSpokenNotificationsAppDetailController *)self title];
-    v13 = [NSString stringWithFormat:v11, v12];
+    title = [(NCSpokenNotificationsAppDetailController *)self title];
+    v13 = [NSString stringWithFormat:v11, title];
     [v9 setProperty:v13 forKey:PSFooterTextGroupKey];
 
     [v8 addObject:v9];
@@ -158,18 +158,18 @@ LABEL_9:
   return v4;
 }
 
-+ (id)spokenNotificationsEnabled:(id)a3
++ (id)spokenNotificationsEnabled:(id)enabled
 {
-  v4 = [a3 propertyForKey:@"BBSECTION_INFO_KEY"];
-  v5 = [v4 nc_effectiveAnnounceSetting];
-  if (v5 == &dword_0 + 3 || (v6 = v5, v7 = [objc_opt_class() isTimeSensitiveAnnounceSupportedForSectionInfo:v4], v8 = objc_msgSend(objc_opt_class(), "isDirectMessagesAnnounceSupportedForSectionInfo:", v4), v6 == &dword_0 + 2) && ((v7 | v8) & 1) != 0)
+  v4 = [enabled propertyForKey:@"BBSECTION_INFO_KEY"];
+  nc_effectiveAnnounceSetting = [v4 nc_effectiveAnnounceSetting];
+  if (nc_effectiveAnnounceSetting == &dword_0 + 3 || (v6 = nc_effectiveAnnounceSetting, v7 = [objc_opt_class() isTimeSensitiveAnnounceSupportedForSectionInfo:v4], v8 = objc_msgSend(objc_opt_class(), "isDirectMessagesAnnounceSupportedForSectionInfo:", v4), v6 == &dword_0 + 2) && ((v7 | v8) & 1) != 0)
   {
     v9 = &dword_0 + 1;
   }
 
   else
   {
-    v9 = [a1 _sectionInfoHasAnyAnnounceEnabled:v4];
+    v9 = [self _sectionInfoHasAnyAnnounceEnabled:v4];
   }
 
   v10 = [NSNumber numberWithBool:v9];
@@ -177,33 +177,33 @@ LABEL_9:
   return v10;
 }
 
-- (id)spokenNotificationsEnabled:(id)a3
+- (id)spokenNotificationsEnabled:(id)enabled
 {
   v4 = objc_opt_class();
-  v5 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v6 = [v4 spokenNotificationsEnabled:v5];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v6 = [v4 spokenNotificationsEnabled:specifier];
 
   return v6;
 }
 
-- (void)setSpokenNotificationsEnabled:(id)a3 specifier:(id)a4
+- (void)setSpokenNotificationsEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v16 = [v6 propertyForKey:@"BBSECTION_INFO_KEY"];
+  enabledCopy = enabled;
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v16 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  LOBYTE(v6) = [(NCSpokenNotificationsAppDetailController *)self _isTimeSensitiveAnnounceSupportedForSectionInfo:v16];
+  LOBYTE(specifier) = [(NCSpokenNotificationsAppDetailController *)self _isTimeSensitiveAnnounceSupportedForSectionInfo:v16];
   v7 = [(NCSpokenNotificationsAppDetailController *)self _isDirectMessagesAnnounceSupportedForSectionInfo:v16];
-  v8 = [(NCSpokenNotificationsAppDetailController *)self _isPriorityNotificationSupported];
-  v9 = [v5 BOOLValue];
+  _isPriorityNotificationSupported = [(NCSpokenNotificationsAppDetailController *)self _isPriorityNotificationSupported];
+  bOOLValue = [enabledCopy BOOLValue];
 
   v10 = 2;
-  if (((v6 | v7) & 1) == 0)
+  if (((specifier | v7) & 1) == 0)
   {
     v10 = 3;
   }
 
-  if ((v9 & v8) != 0)
+  if ((bOOLValue & _isPriorityNotificationSupported) != 0)
   {
     v11 = 2;
   }
@@ -213,7 +213,7 @@ LABEL_9:
     v11 = 1;
   }
 
-  if (v9)
+  if (bOOLValue)
   {
     v12 = v10;
   }
@@ -223,18 +223,18 @@ LABEL_9:
     v12 = 1;
   }
 
-  v13 = [v16 sectionInfoSettings];
-  [v13 setAnnouncePriorityNotificationsSetting:v11];
-  [v16 setSectionInfoSettings:v13];
+  sectionInfoSettings = [v16 sectionInfoSettings];
+  [sectionInfoSettings setAnnouncePriorityNotificationsSetting:v11];
+  [v16 setSectionInfoSettings:sectionInfoSettings];
   [v16 setAnnounceSetting:v12];
-  if (v9 && ([v16 allowsNotifications] & 1) == 0)
+  if (bOOLValue && ([v16 allowsNotifications] & 1) == 0)
   {
     [v16 setAllowsNotifications:1];
   }
 
   v14 = +[NCSettingsGatewayController sharedInstance];
-  v15 = [v16 sectionID];
-  [v14 setSectionInfo:v16 forSectionID:v15];
+  sectionID = [v16 sectionID];
+  [v14 setSectionInfo:v16 forSectionID:sectionID];
 
   [(NCSpokenNotificationsAppDetailController *)self _updateOptionsGroupSpecifiers];
   [(NCSpokenNotificationsAppDetailController *)self _signalDelegateSettingsChanged];
@@ -242,43 +242,43 @@ LABEL_9:
 
 - (void)_updateOptionsGroupSpecifiers
 {
-  v3 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v4 = [v3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v4 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v5 = [v4 nc_effectiveAnnounceSetting];
+  nc_effectiveAnnounceSetting = [v4 nc_effectiveAnnounceSetting];
   v6 = [(NCSpokenNotificationsAppDetailController *)self _isTimeSensitiveAnnounceSupportedForSectionInfo:v4];
   v7 = [(NCSpokenNotificationsAppDetailController *)self _isDirectMessagesAnnounceSupportedForSectionInfo:v4];
-  v8 = [(NCSpokenNotificationsAppDetailController *)self _isPriorityNotificationSupported];
+  _isPriorityNotificationSupported = [(NCSpokenNotificationsAppDetailController *)self _isPriorityNotificationSupported];
   v9 = v6 | v7;
   v10 = +[NSMutableArray array];
-  if ((v9 & 1) != 0 || v8)
+  if ((v9 & 1) != 0 || _isPriorityNotificationSupported)
   {
-    v12 = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsGroupSpecifier];
-    v19[0] = v12;
-    v13 = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsAllSpecifier];
-    v19[1] = v13;
+    _spokenOptionsGroupSpecifier = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsGroupSpecifier];
+    v19[0] = _spokenOptionsGroupSpecifier;
+    _spokenOptionsAllSpecifier = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsAllSpecifier];
+    v19[1] = _spokenOptionsAllSpecifier;
     v14 = [NSArray arrayWithObjects:v19 count:2];
     [v10 addObjectsFromArray:v14];
 
-    if (v8)
+    if (_isPriorityNotificationSupported)
     {
-      v15 = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsPriorityNotificationsSpecifier];
-      [v10 addObject:v15];
+      _spokenOptionsPriorityNotificationsSpecifier = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsPriorityNotificationsSpecifier];
+      [v10 addObject:_spokenOptionsPriorityNotificationsSpecifier];
     }
 
     if (v9)
     {
-      v16 = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsTimeSensitiveSpecifier];
-      [v10 addObject:v16];
+      _spokenOptionsTimeSensitiveSpecifier = [(NCSpokenNotificationsAppDetailController *)self _spokenOptionsTimeSensitiveSpecifier];
+      [v10 addObject:_spokenOptionsTimeSensitiveSpecifier];
     }
   }
 
   else
   {
-    v11 = [(NCSpokenNotificationsAppDetailController *)self _spokenNoOptionsGroupSpecifier];
-    [v10 addObject:v11];
+    _spokenNoOptionsGroupSpecifier = [(NCSpokenNotificationsAppDetailController *)self _spokenNoOptionsGroupSpecifier];
+    [v10 addObject:_spokenNoOptionsGroupSpecifier];
 
-    if (v5 == &dword_0 + 2)
+    if (nc_effectiveAnnounceSetting == &dword_0 + 2)
     {
       goto LABEL_12;
     }
@@ -303,13 +303,13 @@ LABEL_12:
   }
 
 LABEL_13:
-  [(NCSpokenNotificationsAppDetailController *)self _setTimeSensitiveAndPriorityEnabled:v5 != &dword_0 + 3];
+  [(NCSpokenNotificationsAppDetailController *)self _setTimeSensitiveAndPriorityEnabled:nc_effectiveAnnounceSetting != &dword_0 + 3];
 }
 
 - (void)_updateSwitchStates
 {
-  v3 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v5 = [v3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v5 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
   if ([(NCSpokenNotificationsAppDetailController *)self _sectionInfoHasAnyAnnounceEnabled:v5])
   {
@@ -325,20 +325,20 @@ LABEL_13:
   [(NCSpokenNotificationsAppDetailController *)self reloadSpecifier:self->_spokenNotificationsSwitchSpecifier];
 }
 
-+ (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)a3
++ (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [v3 nc_effectiveAnnounceSetting] & 0xFFFFFFFFFFFFFFFELL;
-  v5 = [v3 sectionInfoSettings];
+  enabledCopy = enabled;
+  v4 = [enabledCopy nc_effectiveAnnounceSetting] & 0xFFFFFFFFFFFFFFFELL;
+  sectionInfoSettings = [enabledCopy sectionInfoSettings];
 
-  v6 = [v5 announcePriorityNotificationsSetting];
-  return v4 == 2 || v6 == &dword_0 + 2;
+  announcePriorityNotificationsSetting = [sectionInfoSettings announcePriorityNotificationsSetting];
+  return v4 == 2 || announcePriorityNotificationsSetting == &dword_0 + 2;
 }
 
-- (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)a3
+- (BOOL)_sectionInfoHasAnyAnnounceEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _sectionInfoHasAnyAnnounceEnabled:v3];
+  enabledCopy = enabled;
+  v4 = [objc_opt_class() _sectionInfoHasAnyAnnounceEnabled:enabledCopy];
 
   return v4;
 }
@@ -355,8 +355,8 @@ LABEL_13:
     self->_spokenOptionsGroupSpecifier = v6;
 
     [(PSSpecifier *)self->_spokenOptionsGroupSpecifier setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
-    v8 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-    v9 = [v8 propertyForKey:@"BBSECTION_INFO_KEY"];
+    specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+    v9 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
     v10 = [(NCSpokenNotificationsAppDetailController *)self _isTimeSensitiveAnnounceSupportedForSectionInfo:v9];
     v11 = [(NCSpokenNotificationsAppDetailController *)self _isDirectMessagesAnnounceSupportedForSectionInfo:v9];
@@ -380,8 +380,8 @@ LABEL_13:
 
       v15 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
       v16 = [v15 localizedStringForKey:v14 value:&stru_4E3F0 table:@"NotificationsSettings"];
-      v17 = [(NCSpokenNotificationsAppDetailController *)self title];
-      v12 = [NSString stringWithFormat:v16, v17];
+      title = [(NCSpokenNotificationsAppDetailController *)self title];
+      v12 = [NSString stringWithFormat:v16, title];
     }
 
     else
@@ -410,8 +410,8 @@ LABEL_13:
     v6 = self->_spokenNoOptionsGroupSpecifier;
     v7 = [NSBundle bundleWithIdentifier:@"com.apple.NotificationsSettings"];
     v8 = [v7 localizedStringForKey:@"SPOKEN_NOTIFICATIONS_APP_NO_OPTIONS_FOOTER" value:&stru_4E3F0 table:@"NotificationsSettings"];
-    v9 = [(NCSpokenNotificationsAppDetailController *)self title];
-    v10 = [NSString stringWithFormat:v8, v9];
+    title = [(NCSpokenNotificationsAppDetailController *)self title];
+    v10 = [NSString stringWithFormat:v8, title];
     [(PSSpecifier *)v6 setProperty:v10 forKey:PSFooterTextGroupKey];
 
     spokenNoOptionsGroupSpecifier = self->_spokenNoOptionsGroupSpecifier;
@@ -440,29 +440,29 @@ LABEL_13:
   return spokenOptionsPrioritySpecifier;
 }
 
-- (id)spokenOptionPriority:(id)a3
+- (id)spokenOptionPriority:(id)priority
 {
-  v3 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v4 = [v3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v4 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v5 = [v4 sectionInfoSettings];
-  v6 = [v5 announcePriorityNotificationsSetting];
+  sectionInfoSettings = [v4 sectionInfoSettings];
+  announcePriorityNotificationsSetting = [sectionInfoSettings announcePriorityNotificationsSetting];
 
-  v7 = [NSNumber numberWithInt:v6 == &dword_0 + 2];
+  v7 = [NSNumber numberWithInt:announcePriorityNotificationsSetting == &dword_0 + 2];
 
   return v7;
 }
 
-- (void)setSpokenOptionPriority:(id)a3 specifier:(id)a4
+- (void)setSpokenOptionPriority:(id)priority specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v12 = [v6 propertyForKey:@"BBSECTION_INFO_KEY"];
+  priorityCopy = priority;
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v12 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v7 = [v12 sectionInfoSettings];
-  v8 = [v5 BOOLValue];
+  sectionInfoSettings = [v12 sectionInfoSettings];
+  bOOLValue = [priorityCopy BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 2;
   }
@@ -472,11 +472,11 @@ LABEL_13:
     v9 = 1;
   }
 
-  [v7 setAnnouncePriorityNotificationsSetting:v9];
-  [v12 setSectionInfoSettings:v7];
+  [sectionInfoSettings setAnnouncePriorityNotificationsSetting:v9];
+  [v12 setSectionInfoSettings:sectionInfoSettings];
   v10 = +[NCSettingsGatewayController sharedInstance];
-  v11 = [v12 sectionID];
-  [v10 setSectionInfo:v12 forSectionID:v11];
+  sectionID = [v12 sectionID];
+  [v10 setSectionInfo:v12 forSectionID:sectionID];
 
   [(NCSpokenNotificationsAppDetailController *)self _signalDelegateSettingsChanged];
   [(NCSpokenNotificationsAppDetailController *)self _updateSwitchStates];
@@ -487,8 +487,8 @@ LABEL_13:
   spokenOptionsTimeSensitiveSpecifier = self->_spokenOptionsTimeSensitiveSpecifier;
   if (!spokenOptionsTimeSensitiveSpecifier)
   {
-    v4 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-    v5 = [v4 propertyForKey:@"BBSECTION_INFO_KEY"];
+    specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+    v5 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
     v6 = [(NCSpokenNotificationsAppDetailController *)self _isTimeSensitiveAnnounceSupportedForSectionInfo:v5];
     v7 = [(NCSpokenNotificationsAppDetailController *)self _isDirectMessagesAnnounceSupportedForSectionInfo:v5];
@@ -533,29 +533,29 @@ LABEL_13:
   return spokenOptionsTimeSensitiveSpecifier;
 }
 
-- (id)spokenOptionsTimeSensitiveDMs:(id)a3
+- (id)spokenOptionsTimeSensitiveDMs:(id)ms
 {
-  v3 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v4 = [v3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v4 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v5 = [v4 sectionInfoSettings];
-  v6 = [v5 announceSetting];
+  sectionInfoSettings = [v4 sectionInfoSettings];
+  announceSetting = [sectionInfoSettings announceSetting];
 
-  v7 = [NSNumber numberWithInt:v6 == &dword_0 + 2];
+  v7 = [NSNumber numberWithInt:announceSetting == &dword_0 + 2];
 
   return v7;
 }
 
-- (void)setSpokenOptionTimeSensitiveDMs:(id)a3 specifier:(id)a4
+- (void)setSpokenOptionTimeSensitiveDMs:(id)ms specifier:(id)specifier
 {
-  v11 = a3;
-  v5 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v6 = [v5 propertyForKey:@"BBSECTION_INFO_KEY"];
+  msCopy = ms;
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v6 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v7 = [v6 sectionInfoSettings];
-  if ([v7 announceSetting] != &dword_0 + 3)
+  sectionInfoSettings = [v6 sectionInfoSettings];
+  if ([sectionInfoSettings announceSetting] != &dword_0 + 3)
   {
-    if ([v11 BOOLValue])
+    if ([msCopy BOOLValue])
     {
       v8 = 2;
     }
@@ -565,13 +565,13 @@ LABEL_13:
       v8 = 1;
     }
 
-    [v7 setAnnounceSetting:v8];
+    [sectionInfoSettings setAnnounceSetting:v8];
   }
 
-  [v6 setSectionInfoSettings:v7];
+  [v6 setSectionInfoSettings:sectionInfoSettings];
   v9 = +[NCSettingsGatewayController sharedInstance];
-  v10 = [v6 sectionID];
-  [v9 setSectionInfo:v6 forSectionID:v10];
+  sectionID = [v6 sectionID];
+  [v9 setSectionInfo:v6 forSectionID:sectionID];
 
   [(NCSpokenNotificationsAppDetailController *)self _signalDelegateSettingsChanged];
   [(NCSpokenNotificationsAppDetailController *)self _updateSwitchStates];
@@ -596,59 +596,59 @@ LABEL_13:
   return spokenOptionsAllSpecifier;
 }
 
-- (id)spokenOptionsAllNotifications:(id)a3
+- (id)spokenOptionsAllNotifications:(id)notifications
 {
-  v3 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v4 = [v3 propertyForKey:@"BBSECTION_INFO_KEY"];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v4 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v5 = [v4 sectionInfoSettings];
-  v6 = [v5 announceSetting];
+  sectionInfoSettings = [v4 sectionInfoSettings];
+  announceSetting = [sectionInfoSettings announceSetting];
 
-  v7 = [NSNumber numberWithInt:v6 == &dword_0 + 3];
+  v7 = [NSNumber numberWithInt:announceSetting == &dword_0 + 3];
 
   return v7;
 }
 
-- (void)setSpokenOptionAllNotifications:(id)a3 specifier:(id)a4
+- (void)setSpokenOptionAllNotifications:(id)notifications specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v11 = [v6 propertyForKey:@"BBSECTION_INFO_KEY"];
+  notificationsCopy = notifications;
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  v11 = [specifier propertyForKey:@"BBSECTION_INFO_KEY"];
 
-  v7 = [v11 sectionInfoSettings];
-  v8 = [v5 BOOLValue];
+  sectionInfoSettings = [v11 sectionInfoSettings];
+  bOOLValue = [notificationsCopy BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    [v7 setAnnounceSetting:3];
-    [v7 setAnnouncePriorityNotificationsSetting:1];
+    [sectionInfoSettings setAnnounceSetting:3];
+    [sectionInfoSettings setAnnouncePriorityNotificationsSetting:1];
   }
 
   else
   {
-    [v7 setAnnounceSetting:1];
+    [sectionInfoSettings setAnnounceSetting:1];
   }
 
-  [(NCSpokenNotificationsAppDetailController *)self _setTimeSensitiveAndPriorityEnabled:v8 ^ 1];
-  [v11 setSectionInfoSettings:v7];
+  [(NCSpokenNotificationsAppDetailController *)self _setTimeSensitiveAndPriorityEnabled:bOOLValue ^ 1];
+  [v11 setSectionInfoSettings:sectionInfoSettings];
   v9 = +[NCSettingsGatewayController sharedInstance];
-  v10 = [v11 sectionID];
-  [v9 setSectionInfo:v11 forSectionID:v10];
+  sectionID = [v11 sectionID];
+  [v9 setSectionInfo:v11 forSectionID:sectionID];
 
   [(NCSpokenNotificationsAppDetailController *)self _signalDelegateSettingsChanged];
   [(NCSpokenNotificationsAppDetailController *)self _updateSwitchStates];
 }
 
-- (void)_setTimeSensitiveAndPriorityEnabled:(BOOL)a3
+- (void)_setTimeSensitiveAndPriorityEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   spokenOptionsPrioritySpecifier = self->_spokenOptionsPrioritySpecifier;
   v6 = [NSNumber numberWithBool:?];
   v7 = PSEnabledKey;
   [(PSSpecifier *)spokenOptionsPrioritySpecifier setProperty:v6 forKey:PSEnabledKey];
 
   spokenOptionsTimeSensitiveSpecifier = self->_spokenOptionsTimeSensitiveSpecifier;
-  v9 = [NSNumber numberWithBool:v3];
+  v9 = [NSNumber numberWithBool:enabledCopy];
   [(PSSpecifier *)spokenOptionsTimeSensitiveSpecifier setProperty:v9 forKey:v7];
 
   [(NCSpokenNotificationsAppDetailController *)self reloadSpecifier:self->_spokenOptionsPrioritySpecifier];
@@ -659,38 +659,38 @@ LABEL_13:
 
 - (void)_signalDelegateSettingsChanged
 {
-  v3 = [(NCSpokenNotificationsAppDetailController *)self delegate];
-  if (v3)
+  delegate = [(NCSpokenNotificationsAppDetailController *)self delegate];
+  if (delegate)
   {
-    v6 = v3;
-    v4 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-    v5 = [v4 identifier];
-    [v6 didChangeSettingForSpokenNotificationsAppDetailController:self withSpecifierIdentifier:v5];
+    v6 = delegate;
+    specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+    identifier = [specifier identifier];
+    [v6 didChangeSettingForSpokenNotificationsAppDetailController:self withSpecifierIdentifier:identifier];
 
-    v3 = v6;
+    delegate = v6;
   }
 }
 
-+ (BOOL)isDirectMessagesAnnounceSupportedForSectionInfo:(id)a3
++ (BOOL)isDirectMessagesAnnounceSupportedForSectionInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 scheduledDeliverySetting] != &dword_0 + 2 && objc_msgSend(v3, "directMessagesSetting") || objc_msgSend(v3, "scheduledDeliverySetting") == &dword_0 + 2 && objc_msgSend(v3, "directMessagesSetting") == &dword_0 + 2;
+  infoCopy = info;
+  v4 = [infoCopy scheduledDeliverySetting] != &dword_0 + 2 && objc_msgSend(infoCopy, "directMessagesSetting") || objc_msgSend(infoCopy, "scheduledDeliverySetting") == &dword_0 + 2 && objc_msgSend(infoCopy, "directMessagesSetting") == &dword_0 + 2;
 
   return v4;
 }
 
-- (BOOL)_isTimeSensitiveAnnounceSupportedForSectionInfo:(id)a3
+- (BOOL)_isTimeSensitiveAnnounceSupportedForSectionInfo:(id)info
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isTimeSensitiveAnnounceSupportedForSectionInfo:v3];
+  infoCopy = info;
+  v4 = [objc_opt_class() isTimeSensitiveAnnounceSupportedForSectionInfo:infoCopy];
 
   return v4;
 }
 
-- (BOOL)_isDirectMessagesAnnounceSupportedForSectionInfo:(id)a3
+- (BOOL)_isDirectMessagesAnnounceSupportedForSectionInfo:(id)info
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isDirectMessagesAnnounceSupportedForSectionInfo:v3];
+  infoCopy = info;
+  v4 = [objc_opt_class() isDirectMessagesAnnounceSupportedForSectionInfo:infoCopy];
 
   return v4;
 }
@@ -714,13 +714,13 @@ LABEL_13:
   return v2;
 }
 
-- (void)didChangeSettingForSpokenNotificationsAppDetailController:(id)a3 withSpecifierIdentifier:(id)a4
+- (void)didChangeSettingForSpokenNotificationsAppDetailController:(id)controller withSpecifierIdentifier:(id)identifier
 {
-  [(NCSpokenNotificationsAppDetailController *)self reloadSpecifierID:a4];
-  v7 = [(NCSpokenNotificationsAppDetailController *)self delegate];
-  v5 = [(NCSpokenNotificationsAppDetailController *)self specifier];
-  v6 = [v5 identifier];
-  [v7 didChangeSettingForSpokenNotificationsAppDetailController:self withSpecifierIdentifier:v6];
+  [(NCSpokenNotificationsAppDetailController *)self reloadSpecifierID:identifier];
+  delegate = [(NCSpokenNotificationsAppDetailController *)self delegate];
+  specifier = [(NCSpokenNotificationsAppDetailController *)self specifier];
+  identifier = [specifier identifier];
+  [delegate didChangeSettingForSpokenNotificationsAppDetailController:self withSpecifierIdentifier:identifier];
 }
 
 @end

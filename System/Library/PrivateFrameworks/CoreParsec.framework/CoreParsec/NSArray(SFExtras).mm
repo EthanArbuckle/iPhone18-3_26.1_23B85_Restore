@@ -13,7 +13,7 @@
   v8[3] = &unk_1E7AC5F00;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 parsec_mapAndFilterObjectsUsingBlock:v8];
+  v6 = [self parsec_mapAndFilterObjectsUsingBlock:v8];
 
   return v6;
 }

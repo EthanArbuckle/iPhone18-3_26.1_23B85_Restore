@@ -1,17 +1,17 @@
 @interface ICMusicSubscriptionStatus
-+ (id)dateFromMilliseconds:(id)a3;
-+ (unint64_t)_capabilitiesForStatusType:(int64_t)a3 carrierBundlingStatusType:(int64_t)a4 isMatchEnabled:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStatus:(id)a3;
-- (ICMusicSubscriptionStatus)initWithCoder:(id)a3;
-- (ICMusicSubscriptionStatus)initWithResponseDictionary:(id)a3;
++ (id)dateFromMilliseconds:(id)milliseconds;
++ (unint64_t)_capabilitiesForStatusType:(int64_t)type carrierBundlingStatusType:(int64_t)statusType isMatchEnabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStatus:(id)status;
+- (ICMusicSubscriptionStatus)initWithCoder:(id)coder;
+- (ICMusicSubscriptionStatus)initWithResponseDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)_init;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)capabilities;
-- (void)_copySubscriptionStatusPropertiesToStatus:(id)a3 withZone:(_NSZone *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_copySubscriptionStatusPropertiesToStatus:(id)status withZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICMusicSubscriptionStatus
@@ -135,81 +135,81 @@
   return [(ICMusicSubscriptionStatus *)&v3 init];
 }
 
-- (void)_copySubscriptionStatusPropertiesToStatus:(id)a3 withZone:(_NSZone *)a4
+- (void)_copySubscriptionStatusPropertiesToStatus:(id)status withZone:(_NSZone *)zone
 {
   responseDictionary = self->_responseDictionary;
-  v7 = a3;
-  v8 = [(NSDictionary *)responseDictionary copyWithZone:a4];
-  v9 = v7[1];
-  v7[1] = v8;
+  statusCopy = status;
+  v8 = [(NSDictionary *)responseDictionary copyWithZone:zone];
+  v9 = statusCopy[1];
+  statusCopy[1] = v8;
 
-  *(v7 + 16) = self->_isMinorAccountHolder;
-  v10 = [(NSDate *)self->_studentExpirationDate copyWithZone:a4];
-  v11 = v7[3];
-  v7[3] = v10;
+  *(statusCopy + 16) = self->_isMinorAccountHolder;
+  v10 = [(NSDate *)self->_studentExpirationDate copyWithZone:zone];
+  v11 = statusCopy[3];
+  statusCopy[3] = v10;
 
-  v12 = [(NSString *)self->_studentVerificationId copyWithZone:a4];
-  v13 = v7[4];
-  v7[4] = v12;
+  v12 = [(NSString *)self->_studentVerificationId copyWithZone:zone];
+  v13 = statusCopy[4];
+  statusCopy[4] = v12;
 
-  v14 = [(NSString *)self->_studentVerifier copyWithZone:a4];
-  v15 = v7[5];
-  v7[5] = v14;
+  v14 = [(NSString *)self->_studentVerifier copyWithZone:zone];
+  v15 = statusCopy[5];
+  statusCopy[5] = v14;
 
-  *(v7 + 48) = self->_hasFamily;
-  *(v7 + 49) = self->_hasFamilyGreaterThanOneMember;
-  *(v7 + 50) = self->_isHeadOfHousehold;
-  *(v7 + 51) = self->_isMatchEnabled;
-  v16 = [(NSDate *)self->_expirationDate copyWithZone:a4];
-  v17 = v7[7];
-  v7[7] = v16;
+  *(statusCopy + 48) = self->_hasFamily;
+  *(statusCopy + 49) = self->_hasFamilyGreaterThanOneMember;
+  *(statusCopy + 50) = self->_isHeadOfHousehold;
+  *(statusCopy + 51) = self->_isMatchEnabled;
+  v16 = [(NSDate *)self->_expirationDate copyWithZone:zone];
+  v17 = statusCopy[7];
+  statusCopy[7] = v16;
 
-  v18 = [(NSDate *)self->_initialPurchaseTimestamp copyWithZone:a4];
-  v19 = v7[8];
-  v7[8] = v18;
+  v18 = [(NSDate *)self->_initialPurchaseTimestamp copyWithZone:zone];
+  v19 = statusCopy[8];
+  statusCopy[8] = v18;
 
-  v20 = [(NSDate *)self->_serviceBeginsTimestamp copyWithZone:a4];
-  v21 = v7[9];
-  v7[9] = v20;
+  v20 = [(NSDate *)self->_serviceBeginsTimestamp copyWithZone:zone];
+  v21 = statusCopy[9];
+  statusCopy[9] = v20;
 
-  *(v7 + 80) = self->_hasOfflineSlots;
-  *(v7 + 81) = self->_isAutoRenewEnabled;
-  *(v7 + 82) = self->_isInFreePeriod;
-  *(v7 + 83) = self->_isInFreeTrial;
-  *(v7 + 84) = self->_isEligibleForFreeTrial;
-  *(v7 + 85) = self->_isPurchaser;
-  v22 = [(NSString *)self->_partner copyWithZone:a4];
-  v23 = v7[11];
-  v7[11] = v22;
+  *(statusCopy + 80) = self->_hasOfflineSlots;
+  *(statusCopy + 81) = self->_isAutoRenewEnabled;
+  *(statusCopy + 82) = self->_isInFreePeriod;
+  *(statusCopy + 83) = self->_isInFreeTrial;
+  *(statusCopy + 84) = self->_isEligibleForFreeTrial;
+  *(statusCopy + 85) = self->_isPurchaser;
+  v22 = [(NSString *)self->_partner copyWithZone:zone];
+  v23 = statusCopy[11];
+  statusCopy[11] = v22;
 
-  v7[12] = self->_carrierBundlingStatusType;
-  v7[13] = self->_reasonType;
-  v7[14] = self->_sourceType;
-  v7[15] = self->_statusType;
-  *(v7 + 128) = self->_isAdministrator;
-  *(v7 + 129) = self->_isDiscoveryModeEligible;
-  v24 = [(NSArray *)self->_termsStatusList copyWithZone:a4];
-  v25 = v7[17];
-  v7[17] = v24;
+  statusCopy[12] = self->_carrierBundlingStatusType;
+  statusCopy[13] = self->_reasonType;
+  statusCopy[14] = self->_sourceType;
+  statusCopy[15] = self->_statusType;
+  *(statusCopy + 128) = self->_isAdministrator;
+  *(statusCopy + 129) = self->_isDiscoveryModeEligible;
+  v24 = [(NSArray *)self->_termsStatusList copyWithZone:zone];
+  v25 = statusCopy[17];
+  statusCopy[17] = v24;
 
-  v26 = [(NSString *)self->_phoneNumber copyWithZone:a4];
-  v27 = v7[18];
-  v7[18] = v26;
+  v26 = [(NSString *)self->_phoneNumber copyWithZone:zone];
+  v27 = statusCopy[18];
+  statusCopy[18] = v26;
 
-  v28 = [(NSString *)self->_cellularOperatorName copyWithZone:a4];
-  v29 = v7[19];
-  v7[19] = v28;
+  v28 = [(NSString *)self->_cellularOperatorName copyWithZone:zone];
+  v29 = statusCopy[19];
+  statusCopy[19] = v28;
 
-  v30 = [(NSString *)self->_sessionIdentifier copyWithZone:a4];
-  v31 = v7[20];
-  v7[20] = v30;
+  v30 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
+  v31 = statusCopy[20];
+  statusCopy[20] = v30;
 
-  v7[21] = self->_carrierBundlingErrorCode;
-  *(v7 + 176) = self->_isPartOfBundle;
-  *(v7 + 177) = self->_isBundleOwner;
-  v32 = [(NSArray *)self->_eligibleOffers copyWithZone:a4];
-  v33 = v7[23];
-  v7[23] = v32;
+  statusCopy[21] = self->_carrierBundlingErrorCode;
+  *(statusCopy + 176) = self->_isPartOfBundle;
+  *(statusCopy + 177) = self->_isBundleOwner;
+  v32 = [(NSArray *)self->_eligibleOffers copyWithZone:zone];
+  v33 = statusCopy[23];
+  statusCopy[23] = v32;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -257,48 +257,48 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   responseDictionary = self->_responseDictionary;
-  v5 = a3;
-  [v5 encodeObject:responseDictionary forKey:@"responseDictionary"];
-  [v5 encodeBool:self->_isMinorAccountHolder forKey:@"isMinorAccountHolder"];
-  [v5 encodeObject:self->_studentVerificationId forKey:@"studentVerificationId"];
-  [v5 encodeObject:self->_studentVerifier forKey:@"studentVerifier"];
-  [v5 encodeObject:self->_studentExpirationDate forKey:@"studentExpirationDate"];
-  [v5 encodeBool:self->_hasFamily forKey:@"hasFamily"];
-  [v5 encodeBool:self->_hasFamilyGreaterThanOneMember forKey:@"hasFamilyGreaterThanOneMember"];
-  [v5 encodeBool:self->_isHeadOfHousehold forKey:@"isHeadOfHousehold"];
-  [v5 encodeBool:self->_isMatchEnabled forKey:@"isMatchEnabled"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeObject:self->_initialPurchaseTimestamp forKey:@"initialPurchaseTimestamp"];
-  [v5 encodeObject:self->_serviceBeginsTimestamp forKey:@"serviceBeginsTimestamp"];
-  [v5 encodeBool:self->_hasOfflineSlots forKey:@"hasOfflineSlots"];
-  [v5 encodeBool:self->_isAutoRenewEnabled forKey:@"isAutoRenewEnabled"];
-  [v5 encodeBool:self->_isInFreePeriod forKey:@"isInFreePeriod"];
-  [v5 encodeBool:self->_isInFreeTrial forKey:@"isInFreeTrial"];
-  [v5 encodeBool:self->_isEligibleForFreeTrial forKey:@"isEligibleForFreeTrial"];
-  [v5 encodeBool:self->_isPurchaser forKey:@"isPurchaser"];
-  [v5 encodeObject:self->_partner forKey:@"partner"];
-  [v5 encodeInteger:self->_carrierBundlingStatusType forKey:@"carrierBundlingStatusType"];
-  [v5 encodeInteger:self->_reasonType forKey:@"reasonType"];
-  [v5 encodeInteger:self->_sourceType forKey:@"sourceType"];
-  [v5 encodeInteger:self->_statusType forKey:@"statusType"];
-  [v5 encodeBool:self->_isAdministrator forKey:@"isAdministrator"];
-  [v5 encodeBool:self->_isDiscoveryModeEligible forKey:@"isDiscoveryModeEligible"];
-  [v5 encodeObject:self->_termsStatusList forKey:@"termsStatusList"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_cellularOperatorName forKey:@"cellularOperatorName"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
-  [v5 encodeInteger:self->_carrierBundlingErrorCode forKey:@"carrierBundlingErrorCode"];
-  [v5 encodeBool:self->_isPartOfBundle forKey:@"isPartOfBundle"];
-  [v5 encodeBool:self->_isBundleOwner forKey:@"isBundleOwner"];
-  [v5 encodeObject:self->_eligibleOffers forKey:@"eligibleOffers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:responseDictionary forKey:@"responseDictionary"];
+  [coderCopy encodeBool:self->_isMinorAccountHolder forKey:@"isMinorAccountHolder"];
+  [coderCopy encodeObject:self->_studentVerificationId forKey:@"studentVerificationId"];
+  [coderCopy encodeObject:self->_studentVerifier forKey:@"studentVerifier"];
+  [coderCopy encodeObject:self->_studentExpirationDate forKey:@"studentExpirationDate"];
+  [coderCopy encodeBool:self->_hasFamily forKey:@"hasFamily"];
+  [coderCopy encodeBool:self->_hasFamilyGreaterThanOneMember forKey:@"hasFamilyGreaterThanOneMember"];
+  [coderCopy encodeBool:self->_isHeadOfHousehold forKey:@"isHeadOfHousehold"];
+  [coderCopy encodeBool:self->_isMatchEnabled forKey:@"isMatchEnabled"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_initialPurchaseTimestamp forKey:@"initialPurchaseTimestamp"];
+  [coderCopy encodeObject:self->_serviceBeginsTimestamp forKey:@"serviceBeginsTimestamp"];
+  [coderCopy encodeBool:self->_hasOfflineSlots forKey:@"hasOfflineSlots"];
+  [coderCopy encodeBool:self->_isAutoRenewEnabled forKey:@"isAutoRenewEnabled"];
+  [coderCopy encodeBool:self->_isInFreePeriod forKey:@"isInFreePeriod"];
+  [coderCopy encodeBool:self->_isInFreeTrial forKey:@"isInFreeTrial"];
+  [coderCopy encodeBool:self->_isEligibleForFreeTrial forKey:@"isEligibleForFreeTrial"];
+  [coderCopy encodeBool:self->_isPurchaser forKey:@"isPurchaser"];
+  [coderCopy encodeObject:self->_partner forKey:@"partner"];
+  [coderCopy encodeInteger:self->_carrierBundlingStatusType forKey:@"carrierBundlingStatusType"];
+  [coderCopy encodeInteger:self->_reasonType forKey:@"reasonType"];
+  [coderCopy encodeInteger:self->_sourceType forKey:@"sourceType"];
+  [coderCopy encodeInteger:self->_statusType forKey:@"statusType"];
+  [coderCopy encodeBool:self->_isAdministrator forKey:@"isAdministrator"];
+  [coderCopy encodeBool:self->_isDiscoveryModeEligible forKey:@"isDiscoveryModeEligible"];
+  [coderCopy encodeObject:self->_termsStatusList forKey:@"termsStatusList"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_cellularOperatorName forKey:@"cellularOperatorName"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
+  [coderCopy encodeInteger:self->_carrierBundlingErrorCode forKey:@"carrierBundlingErrorCode"];
+  [coderCopy encodeBool:self->_isPartOfBundle forKey:@"isPartOfBundle"];
+  [coderCopy encodeBool:self->_isBundleOwner forKey:@"isBundleOwner"];
+  [coderCopy encodeObject:self->_eligibleOffers forKey:@"eligibleOffers"];
 }
 
-- (ICMusicSubscriptionStatus)initWithCoder:(id)a3
+- (ICMusicSubscriptionStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (initWithCoder__sAllowedClassesForPropertyListRepresentationOnceToken != -1)
   {
     dispatch_once(&initWithCoder__sAllowedClassesForPropertyListRepresentationOnceToken, &__block_literal_global_41211);
@@ -309,83 +309,83 @@
     dispatch_once(&initWithCoder__sAllowedClassesForTermsStatusListOnceToken, &__block_literal_global_230);
   }
 
-  v5 = [(ICMusicSubscriptionStatus *)self _init];
-  if (v5)
+  _init = [(ICMusicSubscriptionStatus *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClasses:initWithCoder__sAllowedClassesForPropertyListRepresentation forKey:@"responseDictionary"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder__sAllowedClassesForPropertyListRepresentation forKey:@"responseDictionary"];
     v7 = [v6 copy];
-    responseDictionary = v5->_responseDictionary;
-    v5->_responseDictionary = v7;
+    responseDictionary = _init->_responseDictionary;
+    _init->_responseDictionary = v7;
 
-    v5->_isMinorAccountHolder = [v4 decodeBoolForKey:@"isMinorAccountHolder"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"studentExpirationDate"];
-    studentExpirationDate = v5->_studentExpirationDate;
-    v5->_studentExpirationDate = v9;
+    _init->_isMinorAccountHolder = [coderCopy decodeBoolForKey:@"isMinorAccountHolder"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"studentExpirationDate"];
+    studentExpirationDate = _init->_studentExpirationDate;
+    _init->_studentExpirationDate = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"studentVerificationId"];
-    studentVerificationId = v5->_studentVerificationId;
-    v5->_studentVerificationId = v11;
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"studentVerificationId"];
+    studentVerificationId = _init->_studentVerificationId;
+    _init->_studentVerificationId = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"studentVerifier"];
-    studentVerifier = v5->_studentVerifier;
-    v5->_studentVerifier = v13;
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"studentVerifier"];
+    studentVerifier = _init->_studentVerifier;
+    _init->_studentVerifier = v13;
 
-    v5->_hasFamily = [v4 decodeBoolForKey:@"hasFamily"];
-    v5->_hasFamilyGreaterThanOneMember = [v4 decodeBoolForKey:@"hasFamilyGreaterThanOneMember"];
-    v5->_isHeadOfHousehold = [v4 decodeBoolForKey:@"isHeadOfHousehold"];
-    v5->_isMatchEnabled = [v4 decodeBoolForKey:@"isMatchEnabled"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-    expirationDate = v5->_expirationDate;
-    v5->_expirationDate = v15;
+    _init->_hasFamily = [coderCopy decodeBoolForKey:@"hasFamily"];
+    _init->_hasFamilyGreaterThanOneMember = [coderCopy decodeBoolForKey:@"hasFamilyGreaterThanOneMember"];
+    _init->_isHeadOfHousehold = [coderCopy decodeBoolForKey:@"isHeadOfHousehold"];
+    _init->_isMatchEnabled = [coderCopy decodeBoolForKey:@"isMatchEnabled"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    expirationDate = _init->_expirationDate;
+    _init->_expirationDate = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initialPurchaseTimestamp"];
-    initialPurchaseTimestamp = v5->_initialPurchaseTimestamp;
-    v5->_initialPurchaseTimestamp = v17;
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialPurchaseTimestamp"];
+    initialPurchaseTimestamp = _init->_initialPurchaseTimestamp;
+    _init->_initialPurchaseTimestamp = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceBeginsTimestamp"];
-    serviceBeginsTimestamp = v5->_serviceBeginsTimestamp;
-    v5->_serviceBeginsTimestamp = v19;
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceBeginsTimestamp"];
+    serviceBeginsTimestamp = _init->_serviceBeginsTimestamp;
+    _init->_serviceBeginsTimestamp = v19;
 
-    v5->_hasOfflineSlots = [v4 decodeBoolForKey:@"hasOfflineSlots"];
-    v5->_isAutoRenewEnabled = [v4 decodeBoolForKey:@"isAutoRenewEnabled"];
-    v5->_isInFreePeriod = [v4 decodeBoolForKey:@"isInFreePeriod"];
-    v5->_isInFreeTrial = [v4 decodeBoolForKey:@"isInFreeTrial"];
-    v5->_isEligibleForFreeTrial = [v4 decodeBoolForKey:@"isEligibleForFreeTrial"];
-    v5->_isPurchaser = [v4 decodeBoolForKey:@"isPurchaser"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partner"];
-    partner = v5->_partner;
-    v5->_partner = v21;
+    _init->_hasOfflineSlots = [coderCopy decodeBoolForKey:@"hasOfflineSlots"];
+    _init->_isAutoRenewEnabled = [coderCopy decodeBoolForKey:@"isAutoRenewEnabled"];
+    _init->_isInFreePeriod = [coderCopy decodeBoolForKey:@"isInFreePeriod"];
+    _init->_isInFreeTrial = [coderCopy decodeBoolForKey:@"isInFreeTrial"];
+    _init->_isEligibleForFreeTrial = [coderCopy decodeBoolForKey:@"isEligibleForFreeTrial"];
+    _init->_isPurchaser = [coderCopy decodeBoolForKey:@"isPurchaser"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partner"];
+    partner = _init->_partner;
+    _init->_partner = v21;
 
-    v5->_carrierBundlingStatusType = [v4 decodeIntegerForKey:@"carrierBundlingStatusType"];
-    v5->_reasonType = [v4 decodeIntegerForKey:@"reasonType"];
-    v5->_sourceType = [v4 decodeIntegerForKey:@"sourceType"];
-    v5->_isAdministrator = [v4 decodeBoolForKey:@"isAdministrator"];
-    v5->_isDiscoveryModeEligible = [v4 decodeBoolForKey:@"isDiscoveryModeEligible"];
-    v23 = [v4 decodeObjectOfClasses:initWithCoder__sAllowedClassesForTermsStatusList forKey:@"termsStatusList"];
-    termsStatusList = v5->_termsStatusList;
-    v5->_termsStatusList = v23;
+    _init->_carrierBundlingStatusType = [coderCopy decodeIntegerForKey:@"carrierBundlingStatusType"];
+    _init->_reasonType = [coderCopy decodeIntegerForKey:@"reasonType"];
+    _init->_sourceType = [coderCopy decodeIntegerForKey:@"sourceType"];
+    _init->_isAdministrator = [coderCopy decodeBoolForKey:@"isAdministrator"];
+    _init->_isDiscoveryModeEligible = [coderCopy decodeBoolForKey:@"isDiscoveryModeEligible"];
+    v23 = [coderCopy decodeObjectOfClasses:initWithCoder__sAllowedClassesForTermsStatusList forKey:@"termsStatusList"];
+    termsStatusList = _init->_termsStatusList;
+    _init->_termsStatusList = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
-    phoneNumber = v5->_phoneNumber;
-    v5->_phoneNumber = v25;
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    phoneNumber = _init->_phoneNumber;
+    _init->_phoneNumber = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cellularOperatorName"];
-    cellularOperatorName = v5->_cellularOperatorName;
-    v5->_cellularOperatorName = v27;
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cellularOperatorName"];
+    cellularOperatorName = _init->_cellularOperatorName;
+    _init->_cellularOperatorName = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
-    sessionIdentifier = v5->_sessionIdentifier;
-    v5->_sessionIdentifier = v29;
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    sessionIdentifier = _init->_sessionIdentifier;
+    _init->_sessionIdentifier = v29;
 
-    v5->_carrierBundlingErrorCode = [v4 decodeIntegerForKey:@"carrierBundlingErrorCode"];
-    v5->_isPartOfBundle = [v4 decodeBoolForKey:@"isPartOfBundle"];
-    v5->_isBundleOwner = [v4 decodeBoolForKey:@"isBundleOwner"];
-    v31 = [v4 decodeObjectOfClasses:initWithCoder__sAllowedClassesForPropertyListRepresentation forKey:@"eligibleOffers"];
+    _init->_carrierBundlingErrorCode = [coderCopy decodeIntegerForKey:@"carrierBundlingErrorCode"];
+    _init->_isPartOfBundle = [coderCopy decodeBoolForKey:@"isPartOfBundle"];
+    _init->_isBundleOwner = [coderCopy decodeBoolForKey:@"isBundleOwner"];
+    v31 = [coderCopy decodeObjectOfClasses:initWithCoder__sAllowedClassesForPropertyListRepresentation forKey:@"eligibleOffers"];
     v32 = [v31 copy];
-    eligibleOffers = v5->_eligibleOffers;
-    v5->_eligibleOffers = v32;
+    eligibleOffers = _init->_eligibleOffers;
+    _init->_eligibleOffers = v32;
 
-    v34 = [v4 decodeIntegerForKey:@"statusType"];
+    v34 = [coderCopy decodeIntegerForKey:@"statusType"];
     if (v34 >= 4)
     {
       v35 = 0;
@@ -396,10 +396,10 @@
       v35 = v34;
     }
 
-    v5->_statusType = v35;
+    _init->_statusType = v35;
   }
 
-  return v5;
+  return _init;
 }
 
 uint64_t __43__ICMusicSubscriptionStatus_initWithCoder___block_invoke_2()
@@ -428,27 +428,27 @@ uint64_t __43__ICMusicSubscriptionStatus_initWithCoder___block_invoke()
   return MEMORY[0x1EEE66BB8](v6, v7);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [(ICMusicSubscriptionStatus *)[ICMutableMusicSubscriptionStatus alloc] _init];
-  [(ICMusicSubscriptionStatus *)self _copySubscriptionStatusPropertiesToStatus:v5 withZone:a3];
-  return v5;
+  _init = [(ICMusicSubscriptionStatus *)[ICMutableMusicSubscriptionStatus alloc] _init];
+  [(ICMusicSubscriptionStatus *)self _copySubscriptionStatusPropertiesToStatus:_init withZone:zone];
+  return _init;
 }
 
-+ (unint64_t)_capabilitiesForStatusType:(int64_t)a3 carrierBundlingStatusType:(int64_t)a4 isMatchEnabled:(BOOL)a5
++ (unint64_t)_capabilitiesForStatusType:(int64_t)type carrierBundlingStatusType:(int64_t)statusType isMatchEnabled:(BOOL)enabled
 {
-  v6 = a3 == 1 && a4 != 2;
-  v7 = a5 || v6;
-  v8 = a4 != 2 && a3 == 1;
-  if (a4 == 1)
+  v6 = type == 1 && statusType != 2;
+  v7 = enabled || v6;
+  v8 = statusType != 2 && type == 1;
+  if (statusType == 1)
   {
     v7 = 1;
     v8 = 1;
   }
 
-  v9 = (a4 - 1) < 2 || a3 == 1;
+  v9 = (statusType - 1) < 2 || type == 1;
   v10 = v9 | 0x82;
-  if (a3 != 3 && !v9)
+  if (type != 3 && !v9)
   {
     v10 = v9;
   }
@@ -479,12 +479,12 @@ uint64_t __43__ICMusicSubscriptionStatus_initWithCoder___block_invoke()
   }
 }
 
-+ (id)dateFromMilliseconds:(id)a3
++ (id)dateFromMilliseconds:(id)milliseconds
 {
-  v3 = a3;
+  millisecondsCopy = milliseconds;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [millisecondsCopy unsignedLongLongValue];
   }
 
   else
@@ -495,13 +495,13 @@ uint64_t __43__ICMusicSubscriptionStatus_initWithCoder___block_invoke()
       goto LABEL_8;
     }
 
-    v4 = strtoull([v3 UTF8String], 0, 10);
+    unsignedLongLongValue = strtoull([millisecondsCopy UTF8String], 0, 10);
   }
 
-  v5 = v4;
-  if (v4)
+  v5 = unsignedLongLongValue;
+  if (unsignedLongLongValue)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:v4 / 1000.0];
+    v5 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:unsignedLongLongValue / 1000.0];
   }
 
 LABEL_8:
@@ -509,10 +509,10 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqualToStatus:(id)a3
+- (BOOL)isEqualToStatus:(id)status
 {
-  v4 = a3;
-  if (self == v4)
+  statusCopy = status;
+  if (self == statusCopy)
   {
     v21 = 1;
   }
@@ -520,10 +520,10 @@ LABEL_8:
   else
   {
     responseDictionary = self->_responseDictionary;
-    if ((responseDictionary == v4->_responseDictionary || [(NSDictionary *)responseDictionary isEqualToDictionary:?]) && self->_isMinorAccountHolder == v4->_isMinorAccountHolder && ((studentExpirationDate = self->_studentExpirationDate, studentExpirationDate == v4->_studentExpirationDate) || [(NSDate *)studentExpirationDate isEqualToDate:?]) && ((studentVerificationId = self->_studentVerificationId, studentVerificationId == v4->_studentVerificationId) || [(NSString *)studentVerificationId isEqualToString:?]) && ((studentVerifier = self->_studentVerifier, studentVerifier == v4->_studentVerifier) || [(NSString *)studentVerifier isEqualToString:?]) && self->_hasFamily == v4->_hasFamily && self->_hasFamilyGreaterThanOneMember == v4->_hasFamilyGreaterThanOneMember && self->_isHeadOfHousehold == v4->_isHeadOfHousehold && self->_isMatchEnabled == v4->_isMatchEnabled && ((expirationDate = self->_expirationDate, expirationDate == v4->_expirationDate) || [(NSDate *)expirationDate isEqualToDate:?]) && ((initialPurchaseTimestamp = self->_initialPurchaseTimestamp, initialPurchaseTimestamp == v4->_initialPurchaseTimestamp) || [(NSDate *)initialPurchaseTimestamp isEqualToDate:?]) && ((serviceBeginsTimestamp = self->_serviceBeginsTimestamp, serviceBeginsTimestamp == v4->_serviceBeginsTimestamp) || [(NSDate *)serviceBeginsTimestamp isEqualToDate:?]) && self->_hasOfflineSlots == v4->_hasOfflineSlots && self->_isAutoRenewEnabled == v4->_isAutoRenewEnabled && self->_isInFreePeriod == v4->_isInFreePeriod && self->_isInFreeTrial == v4->_isInFreeTrial && self->_isEligibleForFreeTrial == v4->_isEligibleForFreeTrial && self->_isPurchaser == v4->_isPurchaser && ((partner = self->_partner, partner == v4->_partner) || [(NSString *)partner isEqualToString:?]) && self->_carrierBundlingStatusType == v4->_carrierBundlingStatusType && self->_reasonType == v4->_reasonType && self->_sourceType == v4->_sourceType && self->_statusType == v4->_statusType && self->_isAdministrator == v4->_isAdministrator && self->_isDiscoveryModeEligible == v4->_isDiscoveryModeEligible && ((termsStatusList = self->_termsStatusList, termsStatusList == v4->_termsStatusList) || [(NSArray *)termsStatusList isEqualToArray:?]) && ((phoneNumber = self->_phoneNumber, phoneNumber == v4->_phoneNumber) || [(NSString *)phoneNumber isEqualToString:?]) && ((cellularOperatorName = self->_cellularOperatorName, cellularOperatorName == v4->_cellularOperatorName) || [(NSString *)cellularOperatorName isEqualToString:?]) && ((sessionIdentifier = self->_sessionIdentifier, sessionIdentifier == v4->_sessionIdentifier) || [(NSString *)sessionIdentifier isEqualToString:?]) && self->_carrierBundlingErrorCode == v4->_carrierBundlingErrorCode && self->_isPartOfBundle == v4->_isPartOfBundle && self->_isBundleOwner == v4->_isBundleOwner)
+    if ((responseDictionary == statusCopy->_responseDictionary || [(NSDictionary *)responseDictionary isEqualToDictionary:?]) && self->_isMinorAccountHolder == statusCopy->_isMinorAccountHolder && ((studentExpirationDate = self->_studentExpirationDate, studentExpirationDate == statusCopy->_studentExpirationDate) || [(NSDate *)studentExpirationDate isEqualToDate:?]) && ((studentVerificationId = self->_studentVerificationId, studentVerificationId == statusCopy->_studentVerificationId) || [(NSString *)studentVerificationId isEqualToString:?]) && ((studentVerifier = self->_studentVerifier, studentVerifier == statusCopy->_studentVerifier) || [(NSString *)studentVerifier isEqualToString:?]) && self->_hasFamily == statusCopy->_hasFamily && self->_hasFamilyGreaterThanOneMember == statusCopy->_hasFamilyGreaterThanOneMember && self->_isHeadOfHousehold == statusCopy->_isHeadOfHousehold && self->_isMatchEnabled == statusCopy->_isMatchEnabled && ((expirationDate = self->_expirationDate, expirationDate == statusCopy->_expirationDate) || [(NSDate *)expirationDate isEqualToDate:?]) && ((initialPurchaseTimestamp = self->_initialPurchaseTimestamp, initialPurchaseTimestamp == statusCopy->_initialPurchaseTimestamp) || [(NSDate *)initialPurchaseTimestamp isEqualToDate:?]) && ((serviceBeginsTimestamp = self->_serviceBeginsTimestamp, serviceBeginsTimestamp == statusCopy->_serviceBeginsTimestamp) || [(NSDate *)serviceBeginsTimestamp isEqualToDate:?]) && self->_hasOfflineSlots == statusCopy->_hasOfflineSlots && self->_isAutoRenewEnabled == statusCopy->_isAutoRenewEnabled && self->_isInFreePeriod == statusCopy->_isInFreePeriod && self->_isInFreeTrial == statusCopy->_isInFreeTrial && self->_isEligibleForFreeTrial == statusCopy->_isEligibleForFreeTrial && self->_isPurchaser == statusCopy->_isPurchaser && ((partner = self->_partner, partner == statusCopy->_partner) || [(NSString *)partner isEqualToString:?]) && self->_carrierBundlingStatusType == statusCopy->_carrierBundlingStatusType && self->_reasonType == statusCopy->_reasonType && self->_sourceType == statusCopy->_sourceType && self->_statusType == statusCopy->_statusType && self->_isAdministrator == statusCopy->_isAdministrator && self->_isDiscoveryModeEligible == statusCopy->_isDiscoveryModeEligible && ((termsStatusList = self->_termsStatusList, termsStatusList == statusCopy->_termsStatusList) || [(NSArray *)termsStatusList isEqualToArray:?]) && ((phoneNumber = self->_phoneNumber, phoneNumber == statusCopy->_phoneNumber) || [(NSString *)phoneNumber isEqualToString:?]) && ((cellularOperatorName = self->_cellularOperatorName, cellularOperatorName == statusCopy->_cellularOperatorName) || [(NSString *)cellularOperatorName isEqualToString:?]) && ((sessionIdentifier = self->_sessionIdentifier, sessionIdentifier == statusCopy->_sessionIdentifier) || [(NSString *)sessionIdentifier isEqualToString:?]) && self->_carrierBundlingErrorCode == statusCopy->_carrierBundlingErrorCode && self->_isPartOfBundle == statusCopy->_isPartOfBundle && self->_isBundleOwner == statusCopy->_isBundleOwner)
     {
       eligibleOffers = self->_eligibleOffers;
-      v18 = v4->_eligibleOffers;
+      v18 = statusCopy->_eligibleOffers;
       v19 = eligibleOffers;
       v20 = v19;
       if (v19 == v18)
@@ -546,10 +546,10 @@ LABEL_8:
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -557,25 +557,25 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICMusicSubscriptionStatus *)self isEqualToStatus:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICMusicSubscriptionStatus *)self isEqualToStatus:equalCopy];
   }
 
   return v5;
 }
 
-- (ICMusicSubscriptionStatus)initWithResponseDictionary:(id)a3
+- (ICMusicSubscriptionStatus)initWithResponseDictionary:(id)dictionary
 {
   v140 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ICMusicSubscriptionStatus *)self _init];
+  dictionaryCopy = dictionary;
+  _init = [(ICMusicSubscriptionStatus *)self _init];
 
-  v125 = v5;
-  if (!v5)
+  v125 = _init;
+  if (!_init)
   {
     goto LABEL_135;
   }
 
-  v6 = v4;
+  v6 = dictionaryCopy;
   v7 = [v6 objectForKey:@"_ICMusicSubscriptionStatusAdditionalProperties"];
   v8 = v6;
   if (v7)
@@ -614,7 +614,7 @@ LABEL_8:
           *(v125 + 4) = v18;
         }
 
-        v117 = v4;
+        v117 = dictionaryCopy;
         v20 = [v16 objectForKey:@"verifier"];
         if (_NSIsNSString())
         {
@@ -627,7 +627,7 @@ LABEL_8:
 
         v14 = v23;
         v6 = v95;
-        v4 = v117;
+        dictionaryCopy = v117;
       }
     }
 
@@ -723,7 +723,7 @@ LABEL_8:
       *(v125 + 82) = [v111 BOOLValue];
     }
 
-    v37 = v4;
+    v37 = dictionaryCopy;
     v110 = [v32 objectForKey:@"isInFreeTrial"];
     if (objc_opt_respondsToSelector())
     {
@@ -937,7 +937,7 @@ LABEL_89:
           }
 
           v7 = v38;
-          v4 = v37;
+          dictionaryCopy = v37;
           v12 = v53;
           goto LABEL_104;
         }
@@ -1075,7 +1075,7 @@ LABEL_104:
       *(v125 + 19) = v85;
     }
 
-    v118 = v4;
+    v118 = dictionaryCopy;
     v87 = [v80 objectForKey:@"sessionIdentifier"];
     if (_NSIsNSString())
     {
@@ -1101,7 +1101,7 @@ LABEL_104:
     v12 = v90;
     v29 = v120;
     v25 = v121;
-    v4 = v118;
+    dictionaryCopy = v118;
   }
 
 LABEL_135:

@@ -17,14 +17,14 @@
     spinnerSpecifier = v2->_spinnerSpecifier;
     v2->_spinnerSpecifier = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x277D4D880] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x277D4D880] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x277D4D8A8] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x277D4D8A8] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x277D4D8A0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_reloadSpecifiers name:*MEMORY[0x277D4D8A0] object:0];
   }
 
   return v2;
@@ -48,9 +48,9 @@
     else
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v8 = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
-      v9 = [v8 subcategorySpecifiers];
-      v10 = [v9 mutableCopy];
+      parentSpecifier = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
+      subcategorySpecifiers = [parentSpecifier subcategorySpecifiers];
+      v10 = [subcategorySpecifiers mutableCopy];
 
       v11 = +[CTUIDataUsageSorting userSelectedComparator];
       [v10 sortUsingComparator:v11];
@@ -71,22 +71,22 @@
 
 - (BOOL)shouldShowSpinner
 {
-  v3 = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
-  if ([v3 appType] != 2)
+  parentSpecifier = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
+  if ([parentSpecifier appType] != 2)
   {
 
     goto LABEL_5;
   }
 
-  v4 = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
-  v5 = [v4 subcategorySpecifiers];
-  v6 = [v5 count];
+  parentSpecifier2 = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
+  subcategorySpecifiers = [parentSpecifier2 subcategorySpecifiers];
+  v6 = [subcategorySpecifiers count];
 
   if (!v6)
   {
 LABEL_5:
-    v8 = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
-    v7 = [v8 dataUsage] == 0;
+    parentSpecifier3 = [(PSUIDataUsageCategoryListController *)self parentSpecifier];
+    v7 = [parentSpecifier3 dataUsage] == 0;
 
     return v7;
   }

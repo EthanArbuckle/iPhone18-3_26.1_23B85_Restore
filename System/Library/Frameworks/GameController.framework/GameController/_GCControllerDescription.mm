@@ -1,33 +1,33 @@
 @interface _GCControllerDescription
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDescription:(id)a3;
-- (BOOL)update:(id)a3 withContext:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDescription:(id)description;
+- (BOOL)update:(id)update withContext:(id)context;
 - (NSString)debugDescription;
 - (NSString)description;
 - (_GCControllerDescription)init;
-- (_GCControllerDescription)initWithCoder:(id)a3;
-- (_GCControllerDescription)initWithIdentifier:(id)a3 components:(id)a4;
-- (id)materializeWithContext:(id)a3;
+- (_GCControllerDescription)initWithCoder:(id)coder;
+- (_GCControllerDescription)initWithIdentifier:(id)identifier components:(id)components;
+- (id)materializeWithContext:(id)context;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _GCControllerDescription
 
-- (_GCControllerDescription)initWithIdentifier:(id)a3 components:(id)a4
+- (_GCControllerDescription)initWithIdentifier:(id)identifier components:(id)components
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  componentsCopy = components;
   v14.receiver = self;
   v14.super_class = _GCControllerDescription;
   v8 = [(_GCControllerDescription *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [identifierCopy copyWithZone:0];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [componentsCopy copy];
     componentDescriptions = v8->_componentDescriptions;
     v8->_componentDescriptions = v11;
   }
@@ -42,22 +42,22 @@
   return 0;
 }
 
-- (_GCControllerDescription)initWithCoder:(id)a3
+- (_GCControllerDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _GCControllerDescription;
   v5 = [(_GCControllerDescription *)&v14 init];
   if (v5)
   {
     v6 = GCIPCObjectIdentifier_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
     v9 = _GCControllerComponentDescription_Classes();
     v10 = [v9 setByAddingObject:objc_opt_class()];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"components"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"components"];
     componentDescriptions = v5->_componentDescriptions;
     v5->_componentDescriptions = v11;
   }
@@ -65,20 +65,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   componentDescriptions = self->_componentDescriptions;
-  v5 = a3;
-  [v5 encodeObject:componentDescriptions forKey:@"components"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:componentDescriptions forKey:@"components"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (BOOL)isEqualToDescription:(id)a3
+- (BOOL)isEqualToDescription:(id)description
 {
-  v4 = a3;
-  if ([(NSCopying *)self->_identifier isEqual:v4[1]])
+  descriptionCopy = description;
+  if ([(NSCopying *)self->_identifier isEqual:descriptionCopy[1]])
   {
-    v5 = [(NSArray *)self->_componentDescriptions isEqualToArray:v4[2]];
+    v5 = [(NSArray *)self->_componentDescriptions isEqualToArray:descriptionCopy[2]];
   }
 
   else
@@ -89,13 +89,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_GCControllerDescription *)self isEqualToDescription:v4];
+    v5 = [(_GCControllerDescription *)self isEqualToDescription:equalCopy];
   }
 
   else
@@ -108,7 +108,7 @@
       goto LABEL_7;
     }
 
-    v5 = [(NSCopying *)self->_identifier isEqual:v4];
+    v5 = [(NSCopying *)self->_identifier isEqual:equalCopy];
   }
 
   v7 = v5;
@@ -147,10 +147,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   materializedController = self->_materializedController;
   if (!materializedController)
   {
@@ -160,8 +160,8 @@ LABEL_7:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = self->_componentDescriptions;
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    targetQueue = self->_componentDescriptions;
+    v9 = [(NSArray *)targetQueue countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -172,10 +172,10 @@ LABEL_4:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(targetQueue);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * v12) materializeWithContext:{v4, v21}];
+        v13 = [*(*(&v21 + 1) + 8 * v12) materializeWithContext:{contextCopy, v21}];
         if (!v13)
         {
           break;
@@ -186,7 +186,7 @@ LABEL_4:
 
         if (v10 == ++v12)
         {
-          v10 = [(NSArray *)v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v10 = [(NSArray *)targetQueue countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v10)
           {
             goto LABEL_4;
@@ -203,22 +203,22 @@ LABEL_10:
 
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v4 targetQueue];
+        targetQueue = [contextCopy targetQueue];
       }
 
       else
       {
-        v8 = 0;
+        targetQueue = 0;
       }
 
       v15 = [objc_alloc(objc_msgSend(objc_opt_class() "controllerClass"))];
       v16 = self->_materializedController;
       self->_materializedController = v15;
 
-      if (self->_materializedController && [v4 conformsToProtocol:&unk_1F4EA1E20])
+      if (self->_materializedController && [contextCopy conformsToProtocol:&unk_1F4EA1E20])
       {
-        v17 = [v4 IPCObjectRegistry];
-        [v17 registerIPCObject:self->_materializedController];
+        iPCObjectRegistry = [contextCopy IPCObjectRegistry];
+        [iPCObjectRegistry registerIPCObject:self->_materializedController];
       }
     }
 
@@ -231,28 +231,28 @@ LABEL_10:
   return materializedController;
 }
 
-- (BOOL)update:(id)a3 withContext:(id)a4
+- (BOOL)update:(id)update withContext:(id)context
 {
   v63 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v40 = a4;
-  v8 = [v7 identifier];
-  v46 = self;
-  v9 = [v8 isEqual:self->_identifier];
+  updateCopy = update;
+  contextCopy = context;
+  identifier = [updateCopy identifier];
+  selfCopy = self;
+  v9 = [identifier isEqual:self->_identifier];
 
   if ((v9 & 1) == 0)
   {
     [_GCControllerDescription update:a2 withContext:self];
   }
 
-  v41 = v7;
-  v10 = [v7 components];
-  v42 = [v10 mutableCopy];
+  v41 = updateCopy;
+  components = [updateCopy components];
+  v42 = [components mutableCopy];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v10;
+  obj = components;
   v11 = [obj countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (v11)
   {
@@ -268,12 +268,12 @@ LABEL_10:
         }
 
         v14 = *(*(&v56 + 1) + 8 * i);
-        v15 = [v14 identifier];
+        identifier2 = [v14 identifier];
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v16 = v46->_componentDescriptions;
+        v16 = selfCopy->_componentDescriptions;
         v17 = [(NSArray *)v16 countByEnumeratingWithState:&v52 objects:v61 count:16];
         if (v17)
         {
@@ -288,8 +288,8 @@ LABEL_10:
                 objc_enumerationMutation(v16);
               }
 
-              v21 = [*(*(&v52 + 1) + 8 * j) identifier];
-              v22 = [v15 isEqual:v21];
+              identifier3 = [*(*(&v52 + 1) + 8 * j) identifier];
+              v22 = [identifier2 isEqual:identifier3];
 
               if (v22)
               {
@@ -322,7 +322,7 @@ LABEL_18:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v45 = v46->_componentDescriptions;
+  v45 = selfCopy->_componentDescriptions;
   v23 = [(NSArray *)v45 countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (v23)
   {
@@ -339,7 +339,7 @@ LABEL_18:
         }
 
         v26 = *(*(&v48 + 1) + 8 * v25);
-        v27 = [v26 identifier];
+        identifier4 = [v26 identifier];
         if (![v42 count])
         {
           goto LABEL_34;
@@ -349,8 +349,8 @@ LABEL_18:
         while (1)
         {
           v29 = [obj objectAtIndexedSubscript:v28];
-          v30 = [v29 identifier];
-          v31 = [v27 isEqual:v30];
+          identifier5 = [v29 identifier];
+          v31 = [identifier4 isEqual:identifier5];
 
           if (v31)
           {
@@ -366,7 +366,7 @@ LABEL_18:
         if (!v29)
         {
 LABEL_34:
-          v32 = [v26 materializeWithContext:v40];
+          v32 = [v26 materializeWithContext:contextCopy];
           if (!v32)
           {
             goto LABEL_44;
@@ -382,7 +382,7 @@ LABEL_36:
 
         if (![v26 conformsToProtocol:&unk_1F4E98670])
         {
-          v34 = [v26 materializeWithContext:v40];
+          v34 = [v26 materializeWithContext:contextCopy];
           if (!v34)
           {
 LABEL_43:
@@ -398,7 +398,7 @@ LABEL_44:
           goto LABEL_36;
         }
 
-        if (([v26 update:v29 withContext:v40] & 1) == 0)
+        if (([v26 update:v29 withContext:contextCopy] & 1) == 0)
         {
           goto LABEL_43;
         }

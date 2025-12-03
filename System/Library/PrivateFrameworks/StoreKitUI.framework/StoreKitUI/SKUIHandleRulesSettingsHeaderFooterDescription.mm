@@ -1,13 +1,13 @@
 @interface SKUIHandleRulesSettingsHeaderFooterDescription
-- (SKUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)a3;
+- (SKUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)context;
 - (id)text;
 @end
 
 @implementation SKUIHandleRulesSettingsHeaderFooterDescription
 
-- (SKUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)a3
+- (SKUIHandleRulesSettingsHeaderFooterDescription)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIHandleRulesSettingsHeaderFooterDescription initWithClientContext:];
@@ -17,7 +17,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;

@@ -1,16 +1,16 @@
 @interface PTTapToTrack
-- (BOOL)addDetectionAndStartTrackingRect:(CGRect)a3 time:(id *)a4 colorBuffer:(__CVBuffer *)a5 disparityBuffer:(__CVBuffer *)a6;
-- (PTTapToTrack)initWithCommandQueue:(id)a3;
-- (id)addDetectionForNextFrameAt:(id *)a3 colorBuffer:(__CVBuffer *)a4 disparityBuffer:(__CVBuffer *)a5;
+- (BOOL)addDetectionAndStartTrackingRect:(CGRect)rect time:(id *)time colorBuffer:(__CVBuffer *)buffer disparityBuffer:(__CVBuffer *)disparityBuffer;
+- (PTTapToTrack)initWithCommandQueue:(id)queue;
+- (id)addDetectionForNextFrameAt:(id *)at colorBuffer:(__CVBuffer *)buffer disparityBuffer:(__CVBuffer *)disparityBuffer;
 - (id)finalizeTrack;
-- (id)getRectForPoint:(CGPoint)a3 colorBuffer:(__CVBuffer *)a4;
-- (void)addDetectionAtTime:(id *)a3 rect:(CGRect)a4 disparityBuffer:(__CVBuffer *)a5;
+- (id)getRectForPoint:(CGPoint)point colorBuffer:(__CVBuffer *)buffer;
+- (void)addDetectionAtTime:(id *)time rect:(CGRect)rect disparityBuffer:(__CVBuffer *)buffer;
 - (void)resetTrack;
 @end
 
 @implementation PTTapToTrack
 
-- (PTTapToTrack)initWithCommandQueue:(id)a3
+- (PTTapToTrack)initWithCommandQueue:(id)queue
 {
   if ([objc_opt_class() isSupported])
   {
@@ -19,31 +19,31 @@
     v4 = [(PTTapToTrack *)&v9 init];
     if (v4)
     {
-      v5 = [MEMORY[0x277D0AE48] tracker];
+      tracker = [MEMORY[0x277D0AE48] tracker];
       tracker = v4->_tracker;
-      v4->_tracker = v5;
+      v4->_tracker = tracker;
 
       [(PTTapToTrack *)v4 resetTrack];
     }
 
     self = v4;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)getRectForPoint:(CGPoint)a3 colorBuffer:(__CVBuffer *)a4
+- (id)getRectForPoint:(CGPoint)point colorBuffer:(__CVBuffer *)buffer
 {
   tracker = self->_tracker;
   if (tracker)
   {
-    [(FTCinematicTapToTrack *)tracker predictRectForPoint:a4 inColorBuffer:a3.x, a3.y];
+    [(FTCinematicTapToTrack *)tracker predictRectForPoint:buffer inColorBuffer:point.x, point.y];
     v6 = 0;
     v5 = 0;
     v8 = 0;
@@ -73,24 +73,24 @@
   return v9;
 }
 
-- (BOOL)addDetectionAndStartTrackingRect:(CGRect)a3 time:(id *)a4 colorBuffer:(__CVBuffer *)a5 disparityBuffer:(__CVBuffer *)a6
+- (BOOL)addDetectionAndStartTrackingRect:(CGRect)rect time:(id *)time colorBuffer:(__CVBuffer *)buffer disparityBuffer:(__CVBuffer *)disparityBuffer
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = [(FTCinematicTapToTrack *)self->_tracker startTrackingRect:a5 colorBuffer:?];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = [(FTCinematicTapToTrack *)self->_tracker startTrackingRect:buffer colorBuffer:?];
   if (v13)
   {
-    v15 = *&a4->var0;
-    var3 = a4->var3;
-    [(PTTapToTrack *)self addDetectionAtTime:&v15 rect:a6 disparityBuffer:x, y, width, height];
+    v15 = *&time->var0;
+    var3 = time->var3;
+    [(PTTapToTrack *)self addDetectionAtTime:&v15 rect:disparityBuffer disparityBuffer:x, y, width, height];
   }
 
   return v13;
 }
 
-- (id)addDetectionForNextFrameAt:(id *)a3 colorBuffer:(__CVBuffer *)a4 disparityBuffer:(__CVBuffer *)a5
+- (id)addDetectionForNextFrameAt:(id *)at colorBuffer:(__CVBuffer *)buffer disparityBuffer:(__CVBuffer *)disparityBuffer
 {
   v21 = 0.0;
   v19 = 0u;
@@ -98,7 +98,7 @@
   tracker = self->_tracker;
   if (tracker)
   {
-    [(FTCinematicTapToTrack *)tracker stepTrackingWithFrame:a4];
+    [(FTCinematicTapToTrack *)tracker stepTrackingWithFrame:buffer];
     v10 = *(&v19 + 1);
     v9 = v19;
     v12 = *(&v20 + 1);
@@ -120,9 +120,9 @@
 
   else
   {
-    v17 = *&a3->var0;
-    var3 = a3->var3;
-    [(PTTapToTrack *)self addDetectionAtTime:&v17 rect:a5 disparityBuffer:v19, v20];
+    v17 = *&at->var0;
+    var3 = at->var3;
+    [(PTTapToTrack *)self addDetectionAtTime:&v17 rect:disparityBuffer disparityBuffer:v19, v20];
     v14 = [PTTapToTrackPrediction alloc];
     *&v15 = v21;
     v13 = [(PTTapToTrackPrediction *)v14 initWithRect:v19 confidence:v20, v15];
@@ -134,8 +134,8 @@
 - (id)finalizeTrack
 {
   v3 = [PTCinematographyCustomTrack alloc];
-  v4 = [(PTTapToTrack *)self detections];
-  v5 = [(PTCinematographyCustomTrack *)v3 initWithDetections:v4];
+  detections = [(PTTapToTrack *)self detections];
+  v5 = [(PTCinematographyCustomTrack *)v3 initWithDetections:detections];
 
   [(PTCinematographyCustomTrack *)v5 applyDetectionSmoothing];
   [(PTTapToTrack *)self resetTrack];
@@ -150,15 +150,15 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)addDetectionAtTime:(id *)a3 rect:(CGRect)a4 disparityBuffer:(__CVBuffer *)a5
+- (void)addDetectionAtTime:(id *)time rect:(CGRect)rect disparityBuffer:(__CVBuffer *)buffer
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12 = [(NSMutableArray *)self->_detections count];
-  v13 = [(NSMutableArray *)self->_detections lastObject];
-  [v13 focusDistance];
+  lastObject = [(NSMutableArray *)self->_detections lastObject];
+  [lastObject focusDistance];
   v15 = v14;
 
   v23 = v15;
@@ -172,10 +172,10 @@
     v16 = 0;
   }
 
-  v17 = PTDisparityInNormalizedRectFromPixelBufferWithPrior(102, a5, v16, x, y, width, height);
+  v17 = PTDisparityInNormalizedRectFromPixelBufferWithPrior(102, buffer, v16, x, y, width, height);
   v18 = [PTCinematographyDetection alloc];
-  v21 = *&a3->var0;
-  var3 = a3->var3;
+  v21 = *&time->var0;
+  var3 = time->var3;
   *&v19 = v17;
   v20 = [(PTCinematographyDetection *)v18 initWithTime:&v21 rect:x focusDistance:y, width, height, v19];
   [(PTCinematographyDetection *)v20 setDetectionType:102];

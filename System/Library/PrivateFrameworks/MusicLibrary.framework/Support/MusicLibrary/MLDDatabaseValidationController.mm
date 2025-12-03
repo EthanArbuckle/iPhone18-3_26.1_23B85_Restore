@@ -1,6 +1,6 @@
 @interface MLDDatabaseValidationController
-- (BOOL)isValidatedPath:(id)a3;
-- (BOOL)shouldValidateDatabaseForLibrary:(id)a3;
+- (BOOL)isValidatedPath:(id)path;
+- (BOOL)shouldValidateDatabaseForLibrary:(id)library;
 - (MLDDatabaseValidationController)init;
 - (void)_exitForLocalizationChange;
 - (void)_purgePendingDatabaseValidations;
@@ -69,8 +69,8 @@
 - (void)_purgePendingDatabaseValidations
 {
   dispatch_assert_queue_V2(self->_validationQueue);
-  v3 = [(MLDDatabaseValidationController *)self suspendedValidations];
-  v4 = [v3 copy];
+  suspendedValidations = [(MLDDatabaseValidationController *)self suspendedValidations];
+  v4 = [suspendedValidations copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -93,8 +93,8 @@
 
         v10 = *(*(&v12 + 1) + 8 * i);
         [v10 runValidation];
-        v11 = [(MLDDatabaseValidationController *)self suspendedValidations];
-        [v11 removeObject:v10];
+        suspendedValidations2 = [(MLDDatabaseValidationController *)self suspendedValidations];
+        [suspendedValidations2 removeObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -104,12 +104,12 @@
   }
 }
 
-- (BOOL)shouldValidateDatabaseForLibrary:(id)a3
+- (BOOL)shouldValidateDatabaseForLibrary:(id)library
 {
   validationQueue = self->_validationQueue;
-  v5 = a3;
+  libraryCopy = library;
   dispatch_assert_queue_V2(validationQueue);
-  v6 = [v5 databasePath];
+  databasePath = [libraryCopy databasePath];
 
   if ([(MLDDatabaseValidationController *)self isSuspended])
   {
@@ -117,7 +117,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v6;
+      v13 = databasePath;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Validations are suspended: will require validation of library at - %{public}@", &v12, 0xCu);
     }
 
@@ -125,7 +125,7 @@
   }
 
   v8 = +[NSFileManager defaultManager];
-  v9 = [v8 fileExistsAtPath:v6];
+  v9 = [v8 fileExistsAtPath:databasePath];
 
   if (!v9)
   {
@@ -134,7 +134,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [(NSMutableSet *)self->_validatedDatabasePaths containsObject:v6]^ 1;
+  v10 = [(NSMutableSet *)self->_validatedDatabasePaths containsObject:databasePath]^ 1;
 LABEL_8:
 
   return v10;
@@ -180,9 +180,9 @@ LABEL_8:
   dispatch_sync(validationQueue, block);
 }
 
-- (BOOL)isValidatedPath:(id)a3
+- (BOOL)isValidatedPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -192,10 +192,10 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_100008620;
   block[3] = &unk_1000318F0;
-  v9 = v4;
+  v9 = pathCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   dispatch_sync(validationQueue, block);
   LOBYTE(validationQueue) = *(v12 + 24);
 

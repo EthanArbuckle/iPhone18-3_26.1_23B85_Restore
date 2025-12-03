@@ -1,11 +1,11 @@
 @interface SignInOptionsCreateAccountController
 - (_TtC14AppleIDSetupUI36SignInOptionsCreateAccountController)init;
-- (void)performAIDASignInWith:(NSDictionary *)a3 completion:(id)a4;
-- (void)setupLocationServicesWithCompletion:(id)a3;
-- (void)setupPasscodeAndBiometricWithCompletion:(id)a3;
-- (void)shieldSetupDidFinishWithResult:(id)a3 error:(id)a4;
-- (void)shieldSetupDidFinishWithResult:(id)a3 viewControllersToRemove:(id)a4 error:(id)a5;
-- (void)shieldSetupSelectedAccount:(int64_t)a3 completion:(id)a4;
+- (void)performAIDASignInWith:(NSDictionary *)with completion:(id)completion;
+- (void)setupLocationServicesWithCompletion:(id)completion;
+- (void)setupPasscodeAndBiometricWithCompletion:(id)completion;
+- (void)shieldSetupDidFinishWithResult:(id)result error:(id)error;
+- (void)shieldSetupDidFinishWithResult:(id)result viewControllersToRemove:(id)remove error:(id)error;
+- (void)shieldSetupSelectedAccount:(int64_t)account completion:(id)completion;
 @end
 
 @implementation SignInOptionsCreateAccountController
@@ -17,15 +17,15 @@
   return result;
 }
 
-- (void)shieldSetupSelectedAccount:(int64_t)a3 completion:(id)a4
+- (void)shieldSetupSelectedAccount:(int64_t)account completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50B420, &qword_240A30800);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = account;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_240A2C24C();
@@ -40,17 +40,17 @@
   v16[3] = 0;
   v16[4] = &unk_240A308C0;
   v16[5] = v15;
-  v17 = self;
+  selfCopy = self;
   sub_240A0B0A4(0, 0, v11, &unk_240A308C8, v16);
 }
 
-- (void)setupPasscodeAndBiometricWithCompletion:(id)a3
+- (void)setupPasscodeAndBiometricWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50B420, &qword_240A30800);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -66,17 +66,17 @@
   v14[3] = 0;
   v14[4] = &unk_240A308A0;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_240A0B0A4(0, 0, v9, &unk_240A308A8, v14);
 }
 
-- (void)setupLocationServicesWithCompletion:(id)a3
+- (void)setupLocationServicesWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50B420, &qword_240A30800);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -92,19 +92,19 @@
   v14[3] = 0;
   v14[4] = &unk_240A30880;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_240A0B0A4(0, 0, v9, &unk_240A30888, v14);
 }
 
-- (void)performAIDASignInWith:(NSDictionary *)a3 completion:(id)a4
+- (void)performAIDASignInWith:(NSDictionary *)with completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50B420, &qword_240A30800);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = with;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_240A2C24C();
@@ -119,12 +119,12 @@
   v16[3] = 0;
   v16[4] = &unk_240A30840;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_240A0B0A4(0, 0, v11, &unk_240A33600, v16);
 }
 
-- (void)shieldSetupDidFinishWithResult:(id)a3 error:(id)a4
+- (void)shieldSetupDidFinishWithResult:(id)result error:(id)error
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50B420, &qword_240A30800);
   v8 = *(*(v7 - 8) + 64);
@@ -135,16 +135,16 @@
   v13 = swift_allocObject();
   v13[2] = 0;
   v13[3] = 0;
-  v13[4] = a4;
+  v13[4] = error;
   v13[5] = self;
-  v13[6] = a3;
-  v14 = a3;
-  v15 = self;
-  v16 = a4;
+  v13[6] = result;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
   sub_2409230D4(0, 0, v11, &unk_240A30828, v13);
 }
 
-- (void)shieldSetupDidFinishWithResult:(id)a3 viewControllersToRemove:(id)a4 error:(id)a5
+- (void)shieldSetupDidFinishWithResult:(id)result viewControllersToRemove:(id)remove error:(id)error
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50B420, &qword_240A30800);
   v9 = *(*(v8 - 8) + 64);
@@ -155,12 +155,12 @@
   v14 = swift_allocObject();
   v14[2] = 0;
   v14[3] = 0;
-  v14[4] = a5;
+  v14[4] = error;
   v14[5] = self;
-  v14[6] = a3;
-  v15 = a3;
-  v16 = self;
-  v17 = a5;
+  v14[6] = result;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
   sub_2409230D4(0, 0, v12, &unk_240A30810, v14);
 }
 

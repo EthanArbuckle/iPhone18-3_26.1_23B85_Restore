@@ -1,8 +1,8 @@
 @interface TextViewTableViewCell
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (TextViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (TextViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)configureToolbar;
-- (void)doneButtonTapped:(id)a3;
+- (void)doneButtonTapped:(id)tapped;
 - (void)setupConstraints;
 @end
 
@@ -11,35 +11,35 @@
 - (void)setupConstraints
 {
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(TextViewTableViewCell *)self textView];
-  v4 = [v3 firstBaselineAnchor];
-  v5 = [(TextViewTableViewCell *)self contentView];
-  v6 = [v5 topAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:18.0];
+  textView = [(TextViewTableViewCell *)self textView];
+  firstBaselineAnchor = [textView firstBaselineAnchor];
+  contentView = [(TextViewTableViewCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  v7 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:18.0];
 
-  v8 = [(TextViewTableViewCell *)self contentView];
-  v9 = [v8 layoutMarginsGuide];
-  v10 = [v9 leftAnchor];
-  v11 = [(TextViewTableViewCell *)self textView];
-  v12 = [v11 leftAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  contentView2 = [(TextViewTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leftAnchor = [layoutMarginsGuide leftAnchor];
+  textView2 = [(TextViewTableViewCell *)self textView];
+  leftAnchor2 = [textView2 leftAnchor];
+  v13 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
-  v14 = [(TextViewTableViewCell *)self contentView];
-  v15 = [v14 layoutMarginsGuide];
-  v16 = [v15 rightAnchor];
-  v17 = [(TextViewTableViewCell *)self textView];
-  v18 = [v17 rightAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  contentView3 = [(TextViewTableViewCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  rightAnchor = [layoutMarginsGuide2 rightAnchor];
+  textView3 = [(TextViewTableViewCell *)self textView];
+  rightAnchor2 = [textView3 rightAnchor];
+  v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
-  v20 = [(TextViewTableViewCell *)self contentView];
-  v21 = [v20 bottomAnchor];
-  v22 = [(TextViewTableViewCell *)self textView];
-  v23 = [v22 bottomAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  contentView4 = [(TextViewTableViewCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  textView4 = [(TextViewTableViewCell *)self textView];
+  bottomAnchor2 = [textView4 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v25 = [(TextViewTableViewCell *)self contentView];
-  v26 = [v25 heightAnchor];
-  v27 = [v26 constraintEqualToConstant:200.0];
+  contentView5 = [(TextViewTableViewCell *)self contentView];
+  heightAnchor = [contentView5 heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:200.0];
 
   v29[0] = v7;
   v29[1] = v13;
@@ -63,32 +63,32 @@
   [v3 setItems:v8];
 
   [v3 sizeToFit];
-  v9 = [(TextViewTableViewCell *)self textView];
-  [v9 setInputAccessoryView:v3];
+  textView = [(TextViewTableViewCell *)self textView];
+  [textView setInputAccessoryView:v3];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v3 = [(TextViewTableViewCell *)self textView];
-  [v3 resignFirstResponder];
+  textView = [(TextViewTableViewCell *)self textView];
+  [textView resignFirstResponder];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  v6 = a3;
-  if ([a5 isEqualToString:@"\n"])
+  viewCopy = view;
+  if ([text isEqualToString:@"\n"])
   {
-    [v6 resignFirstResponder];
+    [viewCopy resignFirstResponder];
   }
 
   return 1;
 }
 
-- (TextViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TextViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = TextViewTableViewCell;
-  v4 = [(TextViewTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TextViewTableViewCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -97,8 +97,8 @@
 
     [(UITextView *)v4->_textView setReturnKeyType:9];
     [(UITextView *)v4->_textView setDelegate:v4];
-    v7 = [(TextViewTableViewCell *)v4 contentView];
-    [v7 addSubview:v4->_textView];
+    contentView = [(TextViewTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_textView];
 
     [(TextViewTableViewCell *)v4 configureToolbar];
     [(TextViewTableViewCell *)v4 setupConstraints];

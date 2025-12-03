@@ -1,10 +1,10 @@
 @interface MPMediaLibraryArtworkRequest
-+ (id)artworkTokenWithParameters:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)artworkTokenWithParameters:(id)parameters;
+- (BOOL)isEqual:(id)equal;
 - (ML3MusicLibrary)musicLibrary;
 - (MPMediaLibraryArtwork)libraryArtwork;
-- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)a3 identifier:(unint64_t)a4 entityType:(int64_t)a5 artworkType:(int64_t)a6;
-- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)a3 identifier:(unint64_t)a4 entityType:(int64_t)a5 artworkType:(int64_t)a6 mediaType:(unint64_t)a7 variantType:(int64_t)a8;
+- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)library identifier:(unint64_t)identifier entityType:(int64_t)type artworkType:(int64_t)artworkType;
+- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)library identifier:(unint64_t)identifier entityType:(int64_t)type artworkType:(int64_t)artworkType mediaType:(unint64_t)mediaType variantType:(int64_t)variantType;
 - (NSNumber)fetchableArtworkSource;
 - (NSString)availableArtworkToken;
 - (NSString)description;
@@ -21,11 +21,11 @@
 - (void)_onQueue_updateTokens;
 - (void)clearFailedFetchableToken;
 - (void)promoteFetchableArtworkTokenIfNeeded;
-- (void)setAvailableArtworkToken:(id)a3;
-- (void)setFetchableArtworkSource:(id)a3;
-- (void)setFetchableArtworkToken:(id)a3;
-- (void)setLibraryArtwork:(id)a3;
-- (void)setRetrievalTime:(double)a3;
+- (void)setAvailableArtworkToken:(id)token;
+- (void)setFetchableArtworkSource:(id)source;
+- (void)setFetchableArtworkToken:(id)token;
+- (void)setLibraryArtwork:(id)artwork;
+- (void)setRetrievalTime:(double)time;
 @end
 
 @implementation MPMediaLibraryArtworkRequest
@@ -33,7 +33,7 @@
 - (void)_onQueue_updateTokens
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(MPMediaLibraryArtworkRequest *)self _onQueue_musicLibrary];
+  _onQueue_musicLibrary = [(MPMediaLibraryArtworkRequest *)self _onQueue_musicLibrary];
   entityType = self->_entityType;
   libraryID = self->_libraryID;
   artworkType = self->_artworkType;
@@ -44,7 +44,7 @@
   v9[2] = __53__MPMediaLibraryArtworkRequest__onQueue_updateTokens__block_invoke;
   v9[3] = &unk_1E7675420;
   v9[4] = self;
-  [v3 retrieveBestArtworkTokensForEntityPersistentID:libraryID entityType:entityType artworkType:artworkType variantType:variantType retrievalTime:v9 completionHandler:retrievalTime];
+  [_onQueue_musicLibrary retrieveBestArtworkTokensForEntityPersistentID:libraryID entityType:entityType artworkType:artworkType variantType:variantType retrievalTime:v9 completionHandler:retrievalTime];
 }
 
 void __53__MPMediaLibraryArtworkRequest__onQueue_updateTokens__block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -73,19 +73,19 @@ void __53__MPMediaLibraryArtworkRequest__onQueue_updateTokens__block_invoke(uint
 - (id)_onQueue_musicLibrary
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(MPMediaLibrary *)self->_library libraryDataProvider];
+  libraryDataProvider = [(MPMediaLibrary *)self->_library libraryDataProvider];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 library];
+    library = [libraryDataProvider library];
   }
 
   else
   {
-    v4 = 0;
+    library = 0;
   }
 
-  return v4;
+  return library;
 }
 
 - (void)promoteFetchableArtworkTokenIfNeeded
@@ -120,10 +120,10 @@ void __53__MPMediaLibraryArtworkRequest__onQueue_updateTokens__block_invoke(uint
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(MPMediaLibrary *)self->_library uniqueIdentifier];
-  if (v4)
+  uniqueIdentifier = [(MPMediaLibrary *)self->_library uniqueIdentifier];
+  if (uniqueIdentifier)
   {
-    [v3 setObject:v4 forKey:@"lid"];
+    [v3 setObject:uniqueIdentifier forKey:@"lid"];
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", self->_libraryID];
@@ -190,12 +190,12 @@ void __53__MPMediaLibraryArtworkRequest__onQueue_updateTokens__block_invoke(uint
     [v3 setObject:fetchableArtworkToken forKey:@"fat"];
   }
 
-  v17 = [(NSNumber *)self->_fetchableArtworkSource integerValue];
-  if (v17)
+  integerValue = [(NSNumber *)self->_fetchableArtworkSource integerValue];
+  if (integerValue)
   {
     v18 = &_MPMediaLibraryArtworkSourceTypeDescriptions;
     v19 = 7;
-    while (*v18 != v17)
+    while (*v18 != integerValue)
     {
       v18 += 2;
       if (!--v19)
@@ -222,11 +222,11 @@ LABEL_33:
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(MPMediaLibraryArtworkRequest *)self libraryID];
+  libraryID = [(MPMediaLibraryArtworkRequest *)self libraryID];
   v6 = _NSStringFromMPMediaEntityType([(MPMediaLibraryArtworkRequest *)self entityType]);
   v7 = _NSStringFromMPMediaLibraryArtworkType([(MPMediaLibraryArtworkRequest *)self artworkType]);
   v8 = _NSStringFromMPMediaLibraryArtworkVariantType([(MPMediaLibraryArtworkRequest *)self variantType]);
-  v9 = [v3 stringWithFormat:@"<%@:%p libraryID=%llu entityType=%@ artworkType=%@ variantType=%@", v4, self, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@:%p libraryID=%llu entityType=%@ artworkType=%@ variantType=%@", v4, self, libraryID, v6, v7, v8];
 
   [(MPMediaLibraryArtworkRequest *)self retrievalTime];
   if (v10 > 0.0)
@@ -240,29 +240,29 @@ LABEL_33:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 libraryID];
-    v7 = [(MPMediaLibraryArtworkRequest *)self libraryID];
-    v8 = [v5 entityType];
-    v9 = [(MPMediaLibraryArtworkRequest *)self entityType];
-    v10 = [v5 artworkType];
-    v11 = [(MPMediaLibraryArtworkRequest *)self artworkType];
+    v5 = equalCopy;
+    libraryID = [v5 libraryID];
+    libraryID2 = [(MPMediaLibraryArtworkRequest *)self libraryID];
+    entityType = [v5 entityType];
+    entityType2 = [(MPMediaLibraryArtworkRequest *)self entityType];
+    artworkType = [v5 artworkType];
+    artworkType2 = [(MPMediaLibraryArtworkRequest *)self artworkType];
     [v5 retrievalTime];
     v13 = v12;
     [(MPMediaLibraryArtworkRequest *)self retrievalTime];
-    v16 = v13 == v14 && v10 == v11;
-    if (v8 != v9)
+    v16 = v13 == v14 && artworkType == artworkType2;
+    if (entityType != entityType2)
     {
       v16 = 0;
     }
 
-    v17 = v6 == v7 && v16;
+    v17 = libraryID == libraryID2 && v16;
   }
 
   else
@@ -359,10 +359,10 @@ LABEL_33:
 - (ML3MusicLibrary)musicLibrary
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(MPMediaLibraryArtworkRequest *)self _onQueue_musicLibrary];
+  _onQueue_musicLibrary = [(MPMediaLibraryArtworkRequest *)self _onQueue_musicLibrary];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _onQueue_musicLibrary;
 }
 
 - (int64_t)variantType
@@ -397,10 +397,10 @@ LABEL_33:
   return entityType;
 }
 
-- (void)setRetrievalTime:(double)a3
+- (void)setRetrievalTime:(double)time
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_retrievalTime = a3;
+  self->_retrievalTime = time;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -413,12 +413,12 @@ LABEL_33:
   return retrievalTime;
 }
 
-- (void)setLibraryArtwork:(id)a3
+- (void)setLibraryArtwork:(id)artwork
 {
-  v4 = a3;
+  artworkCopy = artwork;
   os_unfair_lock_lock(&self->_lock);
   libraryArtwork = self->_libraryArtwork;
-  self->_libraryArtwork = v4;
+  self->_libraryArtwork = artworkCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -432,11 +432,11 @@ LABEL_33:
   return v3;
 }
 
-- (void)setFetchableArtworkSource:(id)a3
+- (void)setFetchableArtworkSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [sourceCopy copy];
 
   fetchableArtworkSource = self->_fetchableArtworkSource;
   self->_fetchableArtworkSource = v5;
@@ -468,11 +468,11 @@ LABEL_33:
   return v4;
 }
 
-- (void)setFetchableArtworkToken:(id)a3
+- (void)setFetchableArtworkToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [tokenCopy copy];
 
   fetchableArtworkToken = self->_fetchableArtworkToken;
   self->_fetchableArtworkToken = v5;
@@ -504,11 +504,11 @@ LABEL_33:
   return v4;
 }
 
-- (void)setAvailableArtworkToken:(id)a3
+- (void)setAvailableArtworkToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [tokenCopy copy];
 
   availableArtworkToken = self->_availableArtworkToken;
   self->_availableArtworkToken = v5;
@@ -555,26 +555,26 @@ LABEL_33:
     {
       v4 = objc_alloc(MEMORY[0x1E69B3538]);
       libraryID = self->_libraryID;
-      v6 = [(MPMediaLibraryArtworkRequest *)self _onQueue_musicLibrary];
-      v7 = [v4 initWithPersistentID:libraryID inLibrary:v6];
+      _onQueue_musicLibrary = [(MPMediaLibraryArtworkRequest *)self _onQueue_musicLibrary];
+      v7 = [v4 initWithPersistentID:libraryID inLibrary:_onQueue_musicLibrary];
 
       v8 = [v7 valueForProperty:*MEMORY[0x1E69B3138]];
-      v9 = [v8 unsignedIntValue];
+      unsignedIntValue = [v8 unsignedIntValue];
 
       v10 = 255;
-      if (v9 != 0xFF)
+      if (unsignedIntValue != 0xFF)
       {
         v10 = 0;
       }
 
-      if ((~v9 & 0xFF00) == 0)
+      if ((~unsignedIntValue & 0xFF00) == 0)
       {
         v10 |= 0xFF00uLL;
       }
 
-      v11 = vandq_s8(vshlq_u32(vdupq_n_s32(v9), xmmword_1A273DD80), xmmword_1A273DD90);
+      v11 = vandq_s8(vshlq_u32(vdupq_n_s32(unsignedIntValue), xmmword_1A273DD80), xmmword_1A273DD90);
       *v11.i8 = vorr_s8(*v11.i8, *&vextq_s8(v11, v11, 8uLL));
-      self->_mediaType = v10 | v11.i32[0] | v9 & 0x3210 | v11.i32[1] | (4 * v9) & 0x400 | (4 * ((v9 >> 1) & 1)) | (2 * v9) & 0x800;
+      self->_mediaType = v10 | v11.i32[0] | unsignedIntValue & 0x3210 | v11.i32[1] | (4 * unsignedIntValue) & 0x400 | (4 * ((unsignedIntValue >> 1) & 1)) | (2 * unsignedIntValue) & 0x800;
 
       mediaType = self->_mediaType;
     }
@@ -584,9 +584,9 @@ LABEL_33:
   return mediaType;
 }
 
-- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)a3 identifier:(unint64_t)a4 entityType:(int64_t)a5 artworkType:(int64_t)a6 mediaType:(unint64_t)a7 variantType:(int64_t)a8
+- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)library identifier:(unint64_t)identifier entityType:(int64_t)type artworkType:(int64_t)artworkType mediaType:(unint64_t)mediaType variantType:(int64_t)variantType
 {
-  v15 = a3;
+  libraryCopy = library;
   v21.receiver = self;
   v21.super_class = MPMediaLibraryArtworkRequest;
   v16 = [(MPMediaLibraryArtworkRequest *)&v21 init];
@@ -594,50 +594,50 @@ LABEL_33:
   if (v16)
   {
     v16->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v16->_library, a3);
-    v17->_libraryID = a4;
-    v17->_artworkType = a6;
-    v17->_entityType = a5;
-    v17->_mediaType = a7;
-    v18 = [v15 userIdentity];
+    objc_storeStrong(&v16->_library, library);
+    v17->_libraryID = identifier;
+    v17->_artworkType = artworkType;
+    v17->_entityType = type;
+    v17->_mediaType = mediaType;
+    userIdentity = [libraryCopy userIdentity];
     userIdentity = v17->_userIdentity;
-    v17->_userIdentity = v18;
+    v17->_userIdentity = userIdentity;
 
-    v17->_variantType = a8;
+    v17->_variantType = variantType;
   }
 
   return v17;
 }
 
-- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)a3 identifier:(unint64_t)a4 entityType:(int64_t)a5 artworkType:(int64_t)a6
+- (MPMediaLibraryArtworkRequest)initWithLibrary:(id)library identifier:(unint64_t)identifier entityType:(int64_t)type artworkType:(int64_t)artworkType
 {
-  v10 = a3;
-  v11 = v10;
-  if (a6 == 4)
+  libraryCopy = library;
+  v11 = libraryCopy;
+  if (artworkType == 4)
   {
-    v12 = 0;
+    mediaType = 0;
   }
 
   else
   {
-    v13 = [v10 itemWithPersistentID:a4 verifyExistence:0];
-    v12 = [v13 mediaType];
+    v13 = [libraryCopy itemWithPersistentID:identifier verifyExistence:0];
+    mediaType = [v13 mediaType];
   }
 
-  v14 = [(MPMediaLibraryArtworkRequest *)self initWithLibrary:v11 identifier:a4 entityType:a5 artworkType:a6 mediaType:v12];
+  v14 = [(MPMediaLibraryArtworkRequest *)self initWithLibrary:v11 identifier:identifier entityType:type artworkType:artworkType mediaType:mediaType];
 
   return v14;
 }
 
-+ (id)artworkTokenWithParameters:(id)a3
++ (id)artworkTokenWithParameters:(id)parameters
 {
   v81 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKey:@"lid"];
+  parametersCopy = parameters;
+  v4 = [parametersCopy objectForKey:@"lid"];
   v5 = [MPMediaLibrary mediaLibraryWithUniqueIdentifier:v4 allowsLoadingFromDisk:1];
-  v6 = [v3 objectForKey:@"id"];
+  v6 = [parametersCopy objectForKey:@"id"];
   v69 = strtoull([v6 UTF8String], 0, 0);
-  v7 = [v3 objectForKey:@"et"];
+  v7 = [parametersCopy objectForKey:@"et"];
   v8 = &_MPMediaEntityTypeDescriptions;
   v9 = 7;
   while (1)
@@ -668,7 +668,7 @@ LABEL_7:
   v68 = *v8;
 LABEL_8:
 
-  v13 = [v3 objectForKey:@"at"];
+  v13 = [parametersCopy objectForKey:@"at"];
   v14 = &_MPMediaLibraryArtworkTypeDescriptions;
   v15 = 6;
   while (1)
@@ -699,17 +699,17 @@ LABEL_14:
   v19 = *v14;
 LABEL_15:
 
-  v20 = [v3 objectForKey:@"mt"];
+  v20 = [parametersCopy objectForKey:@"mt"];
   v21 = @",";
   v72 = v4;
-  v73 = v3;
+  v73 = parametersCopy;
   v74 = v5;
   v71 = v6;
   if ([v20 isEqualToString:@"anyMedia"])
   {
     v22 = -1;
     v24 = v69;
-    v23 = a1;
+    selfCopy2 = self;
     v25 = v68;
   }
 
@@ -771,13 +771,13 @@ LABEL_15:
     }
 
     v24 = v69;
-    v23 = a1;
+    selfCopy2 = self;
     v19 = v67;
     v25 = v68;
     v20 = v66;
   }
 
-  v33 = [v3 objectForKey:@"avt"];
+  v33 = [parametersCopy objectForKey:@"avt"];
   v34 = v33;
   if (v33 == @"default" || (v35 = [(__CFString *)v33 isEqual:@"default"], v34, (v35 & 1) != 0))
   {
@@ -839,8 +839,8 @@ LABEL_15:
     }
   }
 
-  v50 = [[v23 alloc] initWithLibrary:v5 identifier:v24 entityType:v25 artworkType:v19 mediaType:v22 variantType:v36];
-  v51 = [v3 objectForKey:@"rt"];
+  v50 = [[selfCopy2 alloc] initWithLibrary:v5 identifier:v24 entityType:v25 artworkType:v19 mediaType:v22 variantType:v36];
+  v51 = [parametersCopy objectForKey:@"rt"];
   v52 = v51;
   if (v51)
   {
@@ -848,19 +848,19 @@ LABEL_15:
     [v50 setRetrievalTime:?];
   }
 
-  v53 = [v3 objectForKey:@"aat"];
+  v53 = [parametersCopy objectForKey:@"aat"];
   if (v53)
   {
     [v50 setAvailableArtworkToken:v53];
   }
 
-  v54 = [v3 objectForKey:@"fat"];
+  v54 = [parametersCopy objectForKey:@"fat"];
   if (v54)
   {
     [v50 setFetchableArtworkToken:v54];
   }
 
-  v55 = [v3 objectForKey:@"fas"];
+  v55 = [parametersCopy objectForKey:@"fas"];
   v56 = v55;
   if (v55)
   {
@@ -898,7 +898,7 @@ LABEL_67:
     v64 = [MEMORY[0x1E696AD98] numberWithInteger:v63];
     [v50 setFetchableArtworkSource:v64];
 
-    v3 = v73;
+    parametersCopy = v73;
   }
 
   return v50;

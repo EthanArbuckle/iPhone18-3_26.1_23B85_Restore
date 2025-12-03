@@ -1,22 +1,22 @@
 @interface FPImportItemPendingReconciliation
-- (FPImportItemPendingReconciliation)initWithCoder:(id)a3;
-- (FPImportItemPendingReconciliation)initWithItemIdentifier:(id)a3;
+- (FPImportItemPendingReconciliation)initWithCoder:(id)coder;
+- (FPImportItemPendingReconciliation)initWithItemIdentifier:(id)identifier;
 - (id)json;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPImportItemPendingReconciliation
 
-- (FPImportItemPendingReconciliation)initWithItemIdentifier:(id)a3
+- (FPImportItemPendingReconciliation)initWithItemIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FPImportItemPendingReconciliation;
   v6 = [(FPImportItemPendingReconciliation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemIdentifier, a3);
+    objc_storeStrong(&v6->_itemIdentifier, identifier);
     v7->_itemPendingReconciliationIsLocked = 0;
     v7->_itemPendingReconciliationJobBlockingCode = -1;
   }
@@ -24,40 +24,40 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIdentifier = self->_itemIdentifier;
-  v5 = a3;
-  [v5 encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
-  [v5 encodeObject:self->_diagnosticAttributes forKey:@"_diagnosticAttributes"];
-  [v5 encodeBool:self->_itemPendingReconciliationIsLocked forKey:@"_itemPendingReconciliationIsLocked"];
-  [v5 encodeBool:self->_itemPendingReconciliationIsLockedInDB forKey:@"_itemPendingReconciliationIsLockedInDB"];
-  [v5 encodeInteger:self->_itemPendingReconciliationJobCode forKey:@"_itemPendingReconciliationJobCode"];
-  [v5 encodeInteger:self->_itemPendingReconciliationJobSchedulingState forKey:@"_itemPendingReconciliationJobSchedulingState"];
-  [v5 encodeInteger:self->_itemPendingReconciliationJobBlockingCode forKey:@"_itemPendingReconciliationJobBlockingCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
+  [coderCopy encodeObject:self->_diagnosticAttributes forKey:@"_diagnosticAttributes"];
+  [coderCopy encodeBool:self->_itemPendingReconciliationIsLocked forKey:@"_itemPendingReconciliationIsLocked"];
+  [coderCopy encodeBool:self->_itemPendingReconciliationIsLockedInDB forKey:@"_itemPendingReconciliationIsLockedInDB"];
+  [coderCopy encodeInteger:self->_itemPendingReconciliationJobCode forKey:@"_itemPendingReconciliationJobCode"];
+  [coderCopy encodeInteger:self->_itemPendingReconciliationJobSchedulingState forKey:@"_itemPendingReconciliationJobSchedulingState"];
+  [coderCopy encodeInteger:self->_itemPendingReconciliationJobBlockingCode forKey:@"_itemPendingReconciliationJobBlockingCode"];
 }
 
-- (FPImportItemPendingReconciliation)initWithCoder:(id)a3
+- (FPImportItemPendingReconciliation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FPImportItemPendingReconciliation;
   v5 = [(FPImportItemPendingReconciliation *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_diagnosticAttributes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_diagnosticAttributes"];
     diagnosticAttributes = v5->_diagnosticAttributes;
     v5->_diagnosticAttributes = v8;
 
-    v5->_itemPendingReconciliationIsLocked = [v4 decodeBoolForKey:@"_itemPendingReconciliationIsLocked"];
-    v5->_itemPendingReconciliationIsLockedInDB = [v4 decodeBoolForKey:@"_itemPendingReconciliationIsLockedInDB"];
-    v5->_itemPendingReconciliationJobCode = [v4 decodeIntegerForKey:@"_itemPendingReconciliationJobCode"];
-    v5->_itemPendingReconciliationJobSchedulingState = [v4 decodeIntegerForKey:@"_itemPendingReconciliationJobSchedulingState"];
-    v5->_itemPendingReconciliationJobBlockingCode = [v4 decodeIntegerForKey:@"_itemPendingReconciliationJobBlockingCode"];
+    v5->_itemPendingReconciliationIsLocked = [coderCopy decodeBoolForKey:@"_itemPendingReconciliationIsLocked"];
+    v5->_itemPendingReconciliationIsLockedInDB = [coderCopy decodeBoolForKey:@"_itemPendingReconciliationIsLockedInDB"];
+    v5->_itemPendingReconciliationJobCode = [coderCopy decodeIntegerForKey:@"_itemPendingReconciliationJobCode"];
+    v5->_itemPendingReconciliationJobSchedulingState = [coderCopy decodeIntegerForKey:@"_itemPendingReconciliationJobSchedulingState"];
+    v5->_itemPendingReconciliationJobBlockingCode = [coderCopy decodeIntegerForKey:@"_itemPendingReconciliationJobBlockingCode"];
   }
 
   return v5;

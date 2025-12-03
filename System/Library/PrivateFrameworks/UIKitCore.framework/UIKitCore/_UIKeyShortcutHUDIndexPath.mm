@@ -1,28 +1,28 @@
 @interface _UIKeyShortcutHUDIndexPath
-+ (id)hudIndexPathWithClient:(id)a3 indexPath:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)hudIndexPathWithClient:(id)client indexPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (_UIKeyShortcutHUDCollectionViewManagerClient)client;
 - (unint64_t)hash;
 @end
 
 @implementation _UIKeyShortcutHUDIndexPath
 
-+ (id)hudIndexPathWithClient:(id)a3 indexPath:(id)a4
++ (id)hudIndexPathWithClient:(id)client indexPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
+  pathCopy = path;
+  clientCopy = client;
   v7 = objc_opt_new();
-  [v7 setClient:v6];
+  [v7 setClient:clientCopy];
 
-  [v7 setIndexPath:v5];
+  [v7 setIndexPath:pathCopy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(_UIKeyShortcutHUDIndexPath *)self client];
-      v9 = [(_UIKeyShortcutHUDIndexPath *)v7 client];
-      if (v8 == v9)
+      v7 = equalCopy;
+      client = [(_UIKeyShortcutHUDIndexPath *)self client];
+      client2 = [(_UIKeyShortcutHUDIndexPath *)v7 client];
+      if (client == client2)
       {
-        v11 = [(_UIKeyShortcutHUDIndexPath *)self indexPath];
-        v12 = [(_UIKeyShortcutHUDIndexPath *)v7 indexPath];
-        v10 = [v11 isEqual:v12];
+        indexPath = [(_UIKeyShortcutHUDIndexPath *)self indexPath];
+        indexPath2 = [(_UIKeyShortcutHUDIndexPath *)v7 indexPath];
+        v10 = [indexPath isEqual:indexPath2];
       }
 
       else

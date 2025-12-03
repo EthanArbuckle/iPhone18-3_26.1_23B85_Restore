@@ -1,25 +1,25 @@
 @interface WLDataMigrationControllerSurrogate
-- (WLDataMigrationControllerSurrogate)initWithDelegate:(id)a3 forceDownloadError:(BOOL)a4;
-- (void)_startMigrationUsingRetryPolicies:(BOOL)a3;
-- (void)startMigrationUsingRetryPolicies:(BOOL)a3;
+- (WLDataMigrationControllerSurrogate)initWithDelegate:(id)delegate forceDownloadError:(BOOL)error;
+- (void)_startMigrationUsingRetryPolicies:(BOOL)policies;
+- (void)startMigrationUsingRetryPolicies:(BOOL)policies;
 @end
 
 @implementation WLDataMigrationControllerSurrogate
 
-- (WLDataMigrationControllerSurrogate)initWithDelegate:(id)a3 forceDownloadError:(BOOL)a4
+- (WLDataMigrationControllerSurrogate)initWithDelegate:(id)delegate forceDownloadError:(BOOL)error
 {
   v6.receiver = self;
   v6.super_class = WLDataMigrationControllerSurrogate;
-  result = [(WLDataMigrationController *)&v6 initWithDelegate:a3];
+  result = [(WLDataMigrationController *)&v6 initWithDelegate:delegate];
   if (result)
   {
-    result->_forceDownloadError = a4;
+    result->_forceDownloadError = error;
   }
 
   return result;
 }
 
-- (void)startMigrationUsingRetryPolicies:(BOOL)a3
+- (void)startMigrationUsingRetryPolicies:(BOOL)policies
 {
   objc_initWeak(&location, self);
   v4 = dispatch_get_global_queue(33, 0);
@@ -28,7 +28,7 @@
   block[2] = __71__WLDataMigrationControllerSurrogate_startMigrationUsingRetryPolicies___block_invoke;
   block[3] = &unk_279EB4178;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  policiesCopy = policies;
   dispatch_async(v4, block);
 
   objc_destroyWeak(&v6);
@@ -41,17 +41,17 @@ void __71__WLDataMigrationControllerSurrogate_startMigrationUsingRetryPolicies__
   [WeakRetained _startMigrationUsingRetryPolicies:*(a1 + 40)];
 }
 
-- (void)_startMigrationUsingRetryPolicies:(BOOL)a3
+- (void)_startMigrationUsingRetryPolicies:(BOOL)policies
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!policies)
   {
-    v4 = [(WLDataMigrationController *)self delegate];
-    [v4 dataMigrator:0 didUpdateMigrationState:1];
+    delegate = [(WLDataMigrationController *)self delegate];
+    [delegate dataMigrator:0 didUpdateMigrationState:1];
 
     sleep(1u);
-    v5 = [(WLDataMigrationController *)self delegate];
-    [v5 dataMigrator:0 didUpdateMigrationState:2];
+    delegate2 = [(WLDataMigrationController *)self delegate];
+    [delegate2 dataMigrator:0 didUpdateMigrationState:2];
 
     sleep(2u);
   }
@@ -63,27 +63,27 @@ void __71__WLDataMigrationControllerSurrogate_startMigrationUsingRetryPolicies__
   {
     if (v7 == 0.0)
     {
-      v9 = [(WLDataMigrationController *)self delegate];
-      [v9 dataMigrator:0 didUpdateMigrationState:3];
+      delegate3 = [(WLDataMigrationController *)self delegate];
+      [delegate3 dataMigrator:0 didUpdateMigrationState:3];
     }
 
-    v10 = [(WLDataMigrationController *)self delegate];
+    delegate4 = [(WLDataMigrationController *)self delegate];
     *&v11 = v7;
-    [v10 dataMigrator:0 didUpdateProgressPercentage:v11];
+    [delegate4 dataMigrator:0 didUpdateProgressPercentage:v11];
 
     if (v8 < 0.8)
     {
-      v12 = [(WLDataMigrationController *)self delegate];
-      [v12 dataMigrator:0 didUpdateRemainingDownloadTime:{pow(20.0, (0.8 - v8) * 10.0 * 0.5 / 0.8)}];
+      delegate5 = [(WLDataMigrationController *)self delegate];
+      [delegate5 dataMigrator:0 didUpdateRemainingDownloadTime:{pow(20.0, (0.8 - v8) * 10.0 * 0.5 / 0.8)}];
     }
 
     if (!(v6 & 1 | (v8 < 0.8)))
     {
-      v13 = [(WLDataMigrationController *)self delegate];
-      [v13 dataMigrator:0 didUpdateMigrationState:4];
+      delegate6 = [(WLDataMigrationController *)self delegate];
+      [delegate6 dataMigrator:0 didUpdateMigrationState:4];
 
-      v14 = [(WLDataMigrationController *)self delegate];
-      [v14 dataMigratorDidBecomeRestartable:0];
+      delegate7 = [(WLDataMigrationController *)self delegate];
+      [delegate7 dataMigratorDidBecomeRestartable:0];
 
       v6 = 1;
     }
@@ -108,19 +108,19 @@ LABEL_15:
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v17 = [v15 errorWithDomain:@"com.apple.welcomekit" code:2 userInfo:v16];
 
-    v18 = [(WLDataMigrationController *)self delegate];
-    [v18 dataMigrator:0 didFailWithError:v17];
+    delegate8 = [(WLDataMigrationController *)self delegate];
+    [delegate8 dataMigrator:0 didFailWithError:v17];
 
     v19 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  v20 = [(WLDataMigrationController *)self delegate];
+  delegate9 = [(WLDataMigrationController *)self delegate];
   LODWORD(v21) = 1.0;
-  [v20 dataMigrator:0 didUpdateProgressPercentage:v21];
+  [delegate9 dataMigrator:0 didUpdateProgressPercentage:v21];
 
-  v23 = [(WLDataMigrationController *)self delegate];
-  [v23 dataMigratorDidFinish:0 withImportErrors:0 context:0];
+  delegate10 = [(WLDataMigrationController *)self delegate];
+  [delegate10 dataMigratorDidFinish:0 withImportErrors:0 context:0];
   v22 = *MEMORY[0x277D85DE8];
 }
 

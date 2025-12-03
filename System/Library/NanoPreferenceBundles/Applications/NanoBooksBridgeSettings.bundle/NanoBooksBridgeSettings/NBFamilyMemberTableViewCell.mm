@@ -1,17 +1,17 @@
 @interface NBFamilyMemberTableViewCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation NBFamilyMemberTableViewCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v13.receiver = self;
   v13.super_class = NBFamilyMemberTableViewCell;
-  v4 = a3;
-  [(NBFamilyMemberTableViewCell *)&v13 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(NBFamilyMemberTableViewCell *)&v13 refreshCellContentsWithSpecifier:specifierCopy];
   objc_opt_class();
-  v5 = [v4 propertyForKey:@"NBUISpecifierAudiobookCountKey"];
+  v5 = [specifierCopy propertyForKey:@"NBUISpecifierAudiobookCountKey"];
 
   v6 = BUDynamicCast();
 
@@ -39,8 +39,8 @@ LABEL_5:
   }
 
 LABEL_6:
-  v12 = [(NBFamilyMemberTableViewCell *)self detailTextLabel];
-  [v12 setText:v8];
+  detailTextLabel = [(NBFamilyMemberTableViewCell *)self detailTextLabel];
+  [detailTextLabel setText:v8];
 }
 
 @end

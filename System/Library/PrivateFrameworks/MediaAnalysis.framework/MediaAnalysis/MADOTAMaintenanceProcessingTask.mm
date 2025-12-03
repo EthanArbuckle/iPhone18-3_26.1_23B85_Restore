@@ -1,29 +1,29 @@
 @interface MADOTAMaintenanceProcessingTask
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (MADOTAMaintenanceProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADOTAMaintenanceProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation MADOTAMaintenanceProcessingTask
 
-- (MADOTAMaintenanceProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (MADOTAMaintenanceProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001AC838;
   v17[3] = &unk_100284038;
-  v10 = a5;
-  v18 = v10;
+  completionHandlerCopy = completionHandler;
+  v18 = completionHandlerCopy;
   v16.receiver = self;
   v16.super_class = MADOTAMaintenanceProcessingTask;
   v11 = [(MADOTAMaintenanceProcessingTask *)&v16 initWithCompletionHandler:v17];
   if (v11)
   {
-    if (v9)
+    if (handlerCopy)
     {
-      v12 = v9;
+      v12 = handlerCopy;
     }
 
     else
@@ -35,23 +35,23 @@
     progressHandler = v11->_progressHandler;
     v11->_progressHandler = v13;
 
-    [(MADOTAMaintenanceProcessingTask *)v11 setCancelBlock:v8];
+    [(MADOTAMaintenanceProcessingTask *)v11 setCancelBlock:blockCopy];
   }
 
   return v11;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithCancelBlock:v8 progressHandler:v9 completionHandler:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [[self alloc] initWithCancelBlock:blockCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (MediaAnalysisLogLevel() >= 5)
   {
@@ -64,8 +64,8 @@
     }
   }
 
-  v6 = [(MADOTAMaintenanceProcessingTask *)self isCanceled];
-  if (!v6)
+  isCanceled = [(MADOTAMaintenanceProcessingTask *)self isCanceled];
+  if (!isCanceled)
   {
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
@@ -134,10 +134,10 @@
     }
 
 LABEL_26:
-    v26 = [(MADOTAMaintenanceProcessingTask *)self completionHandler];
-    v26[2](v26, 0, 0);
+    completionHandler = [(MADOTAMaintenanceProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
 
-    return v6 ^ 1;
+    return isCanceled ^ 1;
   }
 
   if (MediaAnalysisLogLevel() >= 6)
@@ -151,18 +151,18 @@ LABEL_26:
     }
   }
 
-  if (a3)
+  if (run)
   {
     v30 = NSLocalizedDescriptionKey;
     v8 = [NSString stringWithFormat:@"Request was canceled"];
     v31 = v8;
     v9 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v10 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v9];
-    v11 = *a3;
-    *a3 = v10;
+    v11 = *run;
+    *run = v10;
   }
 
-  return v6 ^ 1;
+  return isCanceled ^ 1;
 }
 
 @end

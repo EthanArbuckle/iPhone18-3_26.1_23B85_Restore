@@ -4,11 +4,11 @@
 - (id)_sectionProperties;
 - (void)_executeLegacyRequest;
 - (void)_executeNewRequest;
-- (void)_insertPropertyCacheForEntityPID:(int64_t)a3 entityClass:(void *)a4 entityTranslator:(id)a5 translationContext:(id)a6 propertyCachesVector:(const void *)a7;
+- (void)_insertPropertyCacheForEntityPID:(int64_t)d entityClass:(void *)class entityTranslator:(id)translator translationContext:(id)context propertyCachesVector:(const void *)vector;
 - (void)_modifyRequestByAddingExplicitContentPropertiesForPinnedItems;
 - (void)_sanityCheckRequest;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation MPModelLibraryRequestOperation
@@ -20,20 +20,20 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     request = self->_request;
-    v5 = [(MPModelLibraryRequest *)request mediaLibrary];
+    mediaLibrary = [(MPModelLibraryRequest *)request mediaLibrary];
     *buf = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = request;
     v18 = 2114;
-    v19 = v5;
+    v19 = mediaLibrary;
     _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Executing request %{public}@ against library %{public}@", buf, 0x20u);
   }
 
   if ([(MPModelLibraryRequestOperation *)self _validateRequest])
   {
-    v6 = [(MPModelLibraryRequest *)self->_request legacyMediaQuery];
-    v7 = v6 == 0;
+    legacyMediaQuery = [(MPModelLibraryRequest *)self->_request legacyMediaQuery];
+    v7 = legacyMediaQuery == 0;
 
     if (v7)
     {
@@ -50,11 +50,11 @@
   else
   {
     v8 = MEMORY[0x1E696ABC0];
-    v9 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-    v10 = [v9 databasePath];
-    v11 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-    v12 = [v11 description];
-    v13 = [v8 msv_errorWithDomain:@"MPRequestErrorDomain" code:1 debugDescription:{@"Invalid request database path=%@, mediaLibrary=%@", v10, v12}];
+    mediaLibrary2 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+    databasePath = [mediaLibrary2 databasePath];
+    mediaLibrary3 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+    v12 = [mediaLibrary3 description];
+    v13 = [v8 msv_errorWithDomain:@"MPRequestErrorDomain" code:1 debugDescription:{@"Invalid request database path=%@, mediaLibrary=%@", databasePath, v12}];
 
     (*(self->_responseHandler + 2))();
     [(MPModelLibraryRequestOperation *)self finishWithError:v13];
@@ -63,11 +63,11 @@
 
 - (BOOL)_validateRequest
 {
-  v2 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-  v3 = [v2 databasePath];
+  mediaLibrary = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+  databasePath = [mediaLibrary databasePath];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:databasePath];
 
   return v5;
 }
@@ -75,16 +75,16 @@
 - (void)_sanityCheckRequest
 {
   v53 = *MEMORY[0x1E69E9840];
-  v38 = [(MPModelLibraryRequestOperation *)self request];
-  v2 = [v38 itemKind];
-  v31 = [v2 modelClass];
+  request = [(MPModelLibraryRequestOperation *)self request];
+  itemKind = [request itemKind];
+  modelClass = [itemKind modelClass];
 
   v35 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = [v38 scopedContainers];
+  obj = [request scopedContainers];
   v3 = [obj countByEnumeratingWithState:&v41 objects:v52 count:16];
   if (v3)
   {
@@ -112,25 +112,25 @@
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218498;
-            v47 = self;
+            selfCopy2 = self;
             v48 = 2114;
-            v49 = v38;
+            v49 = request;
             v50 = 2114;
             v51 = v6;
             _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_ERROR, "MPModelLibraryRequestOperation: %p _sanityCheckRequest: nil container class request=%{public}@ scopedContainer=%{public}@", buf, 0x20u);
           }
 
-          v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"request:%@", v38];
+          v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"request:%@", request];
           v9 = MEMORY[0x1E696AEC0];
-          v10 = [v38 scopedContainers];
-          v36 = [v9 stringWithFormat:@"scopedContainers:%@", v10];
+          scopedContainers = [request scopedContainers];
+          v36 = [v9 stringWithFormat:@"scopedContainers:%@", scopedContainers];
 
           v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"container:%@", v6];
           v12 = dispatch_semaphore_create(0);
           v13 = MEMORY[0x1E69B13D8];
           v14 = MEMORY[0x1E696AEC0];
-          v15 = [v38 label];
-          v16 = [v14 stringWithFormat:@"%@", v15];
+          label = [request label];
+          v16 = [v14 stringWithFormat:@"%@", label];
           v45[0] = v37;
           v45[1] = v36;
           v45[2] = v11;
@@ -153,25 +153,25 @@
     while (v3);
   }
 
-  v19 = v38;
-  if ([v35 containsObject:v31] && v31 != objc_opt_class() && v31 != objc_opt_class())
+  v19 = request;
+  if ([v35 containsObject:modelClass] && modelClass != objc_opt_class() && modelClass != objc_opt_class())
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    v29 = [v38 label];
-    [v28 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:355 description:{@"scopedContainers cannot contain a MPModelObject subclass matching the itemKind's modelClass. label=%@", v29}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    label2 = [request label];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:355 description:{@"scopedContainers cannot contain a MPModelObject subclass matching the itemKind's modelClass. label=%@", label2}];
 
-    v19 = v38;
+    v19 = request;
   }
 
-  v20 = [v19 allowedItemIdentifiers];
-  for (j = 0; j < [v20 count]; ++j)
+  allowedItemIdentifiers = [v19 allowedItemIdentifiers];
+  for (j = 0; j < [allowedItemIdentifiers count]; ++j)
   {
-    for (k = 0; k < [v20 count]; ++k)
+    for (k = 0; k < [allowedItemIdentifiers count]; ++k)
     {
       if (j != k)
       {
-        v23 = [v20 objectAtIndexedSubscript:j];
-        v24 = [v20 objectAtIndexedSubscript:k];
+        v23 = [allowedItemIdentifiers objectAtIndexedSubscript:j];
+        v24 = [allowedItemIdentifiers objectAtIndexedSubscript:k];
         v25 = [v23 intersectsSet:v24];
 
         if (v25)
@@ -179,13 +179,13 @@
           v26 = os_log_create("com.apple.amp.mediaplayer", "Library");
           if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
           {
-            v27 = [v38 label];
+            label3 = [request label];
             *buf = 134218498;
-            v47 = self;
+            selfCopy2 = self;
             v48 = 2114;
-            v49 = v27;
+            v49 = label3;
             v50 = 2114;
-            v51 = v20;
+            v51 = allowedItemIdentifiers;
             _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_FAULT, "MPModelLibraryRequestOperation: %p _sanityCheckRequest: allowedItemIdentifiers must contain unique array elements -- cannot contain duplicates. label=%{public}@ allowedItemIdentifiers=%{public}@", buf, 0x20u);
           }
         }
@@ -197,45 +197,45 @@
 - (void)_executeNewRequest
 {
   v177 = *MEMORY[0x1E69E9840];
-  v3 = [(MPModelLibraryRequestOperation *)self request];
-  v4 = [v3 mediaLibrary];
-  v5 = [(MPModelLibraryRequestOperation *)self request];
-  v6 = [v5 label];
-  v7 = v6;
-  if (!v6)
+  request = [(MPModelLibraryRequestOperation *)self request];
+  mediaLibrary = [request mediaLibrary];
+  request2 = [(MPModelLibraryRequestOperation *)self request];
+  label = [request2 label];
+  v7 = label;
+  if (!label)
   {
-    v2 = [(MPModelLibraryRequestOperation *)self request];
-    v7 = [v2 description];
+    request3 = [(MPModelLibraryRequestOperation *)self request];
+    v7 = [request3 description];
   }
 
-  v104 = [v4 connectionAssertionWithIdentifier:v7];
-  if (!v6)
+  v104 = [mediaLibrary connectionAssertionWithIdentifier:v7];
+  if (!label)
   {
   }
 
-  v114 = [(MPModelLibraryRequestOperation *)self _libraryView];
-  v8 = [(MPModelRequest *)self->_request sectionKind];
-  v105 = [v8 modelClass];
+  _libraryView = [(MPModelLibraryRequestOperation *)self _libraryView];
+  sectionKind = [(MPModelRequest *)self->_request sectionKind];
+  modelClass = [sectionKind modelClass];
 
-  v9 = [(MPModelRequest *)self->_request itemKind];
-  v10 = [v9 modelClass];
+  itemKind = [(MPModelRequest *)self->_request itemKind];
+  modelClass2 = [itemKind modelClass];
 
-  v99 = [(MPModelLibraryRequest *)self->_request contentRange];
+  contentRange = [(MPModelLibraryRequest *)self->_request contentRange];
   v100 = v11;
-  v101 = [v10 isSubclassOfClass:objc_opt_class()];
+  v101 = [modelClass2 isSubclassOfClass:objc_opt_class()];
   v12 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v114;
+    *&buf[14] = _libraryView;
     _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Executing request using view %{public}@", buf, 0x16u);
   }
 
-  if (v10)
+  if (modelClass2)
   {
-    v102 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:v10];
+    v102 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:modelClass2];
   }
 
   else
@@ -250,30 +250,30 @@
 
   v103 = [[MPModelLibraryResponse alloc] initWithRequest:self->_request];
   [(MPModelLibraryResponse *)v103 setLibraryAssertion:v104];
-  v111 = [(MPModelLibraryRequest *)self->_request scopedContainersPropertySet];
-  if (v111)
+  scopedContainersPropertySet = [(MPModelLibraryRequest *)self->_request scopedContainersPropertySet];
+  if (scopedContainersPropertySet)
   {
-    v13 = [(MPModelLibraryRequest *)self->_request scopedContainers];
-    v14 = [v13 count] == 0;
+    scopedContainers = [(MPModelLibraryRequest *)self->_request scopedContainers];
+    v14 = [scopedContainers count] == 0;
 
     if (!v14)
     {
       v15 = MEMORY[0x1E695DF70];
-      v16 = [(MPModelLibraryRequest *)self->_request scopedContainers];
-      v107 = [v15 arrayWithCapacity:{objc_msgSend(v16, "count")}];
+      scopedContainers2 = [(MPModelLibraryRequest *)self->_request scopedContainers];
+      v107 = [v15 arrayWithCapacity:{objc_msgSend(scopedContainers2, "count")}];
 
-      v17 = [v111 properties];
-      LOBYTE(v15) = [v17 count] == 0;
+      properties = [scopedContainersPropertySet properties];
+      LOBYTE(v15) = [properties count] == 0;
 
       if ((v15 & 1) == 0)
       {
-        v94 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v94 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:406 description:{@"scopedContainersPropertySet must be a generic object property set: %@", v111}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:406 description:{@"scopedContainersPropertySet must be a generic object property set: %@", scopedContainersPropertySet}];
       }
 
       v112 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
-      v18 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-      [(MPMediaLibraryEntityTranslationContext *)v112 setMediaLibrary:v18];
+      mediaLibrary2 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+      [(MPMediaLibraryEntityTranslationContext *)v112 setMediaLibrary:mediaLibrary2];
 
       v167 = 0u;
       v168 = 0u;
@@ -295,13 +295,13 @@
             }
 
             v22 = *(*(&v165 + 1) + 8 * v21);
-            v23 = [v22 identifiers];
-            v24 = [v23 modelKind];
-            [(MPMediaLibraryEntityTranslationContext *)v112 setModelKind:v24];
+            identifiers = [v22 identifiers];
+            modelKind = [identifiers modelKind];
+            [(MPMediaLibraryEntityTranslationContext *)v112 setModelKind:modelKind];
 
             v25 = +[MPModelGenericObject relationshipKeyForGenericObjectType:](MPModelGenericObject, "relationshipKeyForGenericObjectType:", [objc_opt_class() genericObjectType]);
-            v26 = [v111 relationships];
-            v27 = [v26 objectForKeyedSubscript:v25];
+            relationships = [scopedContainersPropertySet relationships];
+            v27 = [relationships objectForKeyedSubscript:v25];
             v28 = v27;
             if (v27)
             {
@@ -314,12 +314,12 @@
             }
 
             v30 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:objc_opt_class()];
-            v31 = [v22 identifiers];
-            v175 = v31;
+            identifiers2 = [v22 identifiers];
+            v175 = identifiers2;
             v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v175 count:1];
             if (v30)
             {
-              [v30 propertiesQueryForPropertySet:v29 scopedContainers:MEMORY[0x1E695E0F0] allowedItemIdentifiers:v32 view:v114];
+              [v30 propertiesQueryForPropertySet:v29 scopedContainers:MEMORY[0x1E695E0F0] allowedItemIdentifiers:v32 view:_libraryView];
             }
 
             else
@@ -331,8 +331,8 @@
             v33 = v145;
             if (!v145)
             {
-              v39 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v39 handleFailureInMethod:a2 object:self->_request file:v22 lineNumber:? description:?];
+              currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler2 handleFailureInMethod:a2 object:self->_request file:v22 lineNumber:? description:?];
 
               v33 = 0;
             }
@@ -345,9 +345,9 @@
             }
 
             v162 = 0;
-            if (v114)
+            if (_libraryView)
             {
-              [v114 resultsForCoreQuery:&v163 error:&v162];
+              [_libraryView resultsForCoreQuery:&v163 error:&v162];
               v34 = v162;
             }
 
@@ -375,13 +375,13 @@
               std::vector<mlcore::PropertyCache>::__init_with_size[abi:ne200100]<mlcore::PropertyCache*,mlcore::PropertyCache*>(buf, *v35, v35[1], 0x84BDA12F684BDA13 * ((v35[1] - *v35) >> 3));
               if (*&buf[8] - *buf == 216)
               {
-                v36 = [v30 entityClass];
+                entityClass = [v30 entityClass];
                 if (*&buf[8] == *buf)
                 {
                   std::vector<mlcore::PropertyCache>::__throw_out_of_range[abi:ne200100]();
                 }
 
-                v37 = [v30 objectForPropertySet:v29 entityClass:v36 propertyCache:? context:?];
+                v37 = [v30 objectForPropertySet:v29 entityClass:entityClass propertyCache:? context:?];
                 v38 = [MPModelGenericObject genericObjectWithModelObject:v37];
                 if (v38)
                 {
@@ -422,15 +422,15 @@
     }
   }
 
-  if (!v105)
+  if (!modelClass)
   {
-    v43 = [(MPModelLibraryRequest *)self->_request itemTranslationContext];
-    v44 = [v114 copy];
-    v45 = [(MPModelRequest *)self->_request itemProperties];
-    v46 = [(MPModelRequest *)self->_request itemSortDescriptors];
+    itemTranslationContext = [(MPModelLibraryRequest *)self->_request itemTranslationContext];
+    v44 = [_libraryView copy];
+    itemProperties = [(MPModelRequest *)self->_request itemProperties];
+    itemSortDescriptors = [(MPModelRequest *)self->_request itemSortDescriptors];
     if (v102)
     {
-      [v102 entityQueryForPropertySet:v45 sortDescriptors:v46 context:v43 view:v44 deferLoadingRelationProperties:v101];
+      [v102 entityQueryForPropertySet:itemProperties sortDescriptors:itemSortDescriptors context:itemTranslationContext view:v44 deferLoadingRelationProperties:v101];
     }
 
     else
@@ -442,15 +442,15 @@
     v63 = *buf;
     if (!*buf)
     {
-      v95 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v95 handleFailureInMethod:a2 object:self->_request file:? lineNumber:? description:?];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self->_request file:? lineNumber:? description:?];
 
       v63 = *buf;
     }
 
     if (v100)
     {
-      v145 = v99;
+      v145 = contentRange;
       v146 = v100;
       mlcore::RangeQuery::setRange();
       v63 = *buf;
@@ -492,8 +492,8 @@
       v65 = v145;
       if (!v145)
       {
-        v97 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v97 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:630 description:@"item query did not produce error or result"];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:630 description:@"item query did not produce error or result"];
 
         v65 = v145;
       }
@@ -547,12 +547,12 @@
   }
 
   obja = [(MPModelLibraryRequestOperation *)self _sectionProperties];
-  v41 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:v105];
-  v113 = [(MPModelLibraryRequest *)self->_request sectionTranslationContext];
-  v42 = [(MPModelRequest *)self->_request sectionSortDescriptors];
+  v41 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:modelClass];
+  sectionTranslationContext = [(MPModelLibraryRequest *)self->_request sectionTranslationContext];
+  sectionSortDescriptors = [(MPModelRequest *)self->_request sectionSortDescriptors];
   if (v41)
   {
-    [v41 entityQueryForPropertySet:obja sortDescriptors:v42 context:v113 view:v114];
+    [v41 entityQueryForPropertySet:obja sortDescriptors:sectionSortDescriptors context:sectionTranslationContext view:_libraryView];
   }
 
   else
@@ -563,21 +563,21 @@
 
   if (!v160)
   {
-    v93 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v93 handleFailureInMethod:a2 object:self->_request file:? lineNumber:? description:?];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self->_request file:? lineNumber:? description:?];
   }
 
-  v47 = [(MPModelLibraryRequest *)self->_request filterText];
-  if (![v47 length])
+  filterText = [(MPModelLibraryRequest *)self->_request filterText];
+  if (![filterText length])
   {
 
     goto LABEL_68;
   }
 
-  v48 = [(MPModelRequest *)self->_request sectionKind];
-  v49 = [v48 identityKind];
+  sectionKind2 = [(MPModelRequest *)self->_request sectionKind];
+  identityKind = [sectionKind2 identityKind];
   v50 = +[MPModelPlaylistKind identityKind];
-  v51 = v49;
+  v51 = identityKind;
   v52 = v50;
   v53 = v52;
   if (v51 != v52)
@@ -673,7 +673,7 @@ LABEL_70:
 LABEL_117:
   if (v100)
   {
-    *buf = v99;
+    *buf = contentRange;
     *&buf[8] = v100;
     mlcore::RangeQuery::setRange();
   }
@@ -686,9 +686,9 @@ LABEL_117:
   }
 
   v152 = 0;
-  if (v114)
+  if (_libraryView)
   {
-    [v114 resultsForCoreQuery:&v153 error:&v152];
+    [_libraryView resultsForCoreQuery:&v153 error:&v152];
     v77 = v152;
   }
 
@@ -723,8 +723,8 @@ LABEL_117:
   v78 = v155;
   if (!v155)
   {
-    v96 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v96 handleFailureInMethod:a2 object:self->_request file:? lineNumber:? description:?];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self->_request file:? lineNumber:? description:?];
 
     v78 = v155;
   }
@@ -749,8 +749,8 @@ LABEL_117:
     goto LABEL_146;
   }
 
-  v80 = [(MPModelLibraryRequest *)self->_request itemTranslationContext];
-  v81 = [v80 scopedContainers];
+  itemTranslationContext2 = [(MPModelLibraryRequest *)self->_request itemTranslationContext];
+  scopedContainers3 = [itemTranslationContext2 scopedContainers];
   v108 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v145 = 0;
   v146 = &v145;
@@ -781,18 +781,18 @@ LABEL_117:
     atomic_fetch_add_explicit(&v79->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v83 = v80;
+  v83 = itemTranslationContext2;
   v123 = v83;
-  v124 = v113;
-  v134 = v105;
-  v84 = v81;
+  v124 = sectionTranslationContext;
+  v134 = modelClass;
+  v84 = scopedContainers3;
   v125 = v84;
-  v126 = v114;
+  v126 = _libraryView;
   v137 = v101;
   v135 = a2;
   v127 = v102;
   v131 = buf;
-  v138 = v105 != 0;
+  v138 = modelClass != 0;
   v85 = v108;
   v128 = v85;
   dispatch_apply(v82, 0, block);
@@ -874,19 +874,19 @@ LABEL_159:
 
 - (id)_libraryView
 {
-  v3 = [(MPModelLibraryRequest *)self->_request filteringOptions];
-  v4 = [(MPModelRequest *)self->_request itemKind];
-  v5 = [v4 modelClass];
+  filteringOptions = [(MPModelLibraryRequest *)self->_request filteringOptions];
+  itemKind = [(MPModelRequest *)self->_request itemKind];
+  modelClass = [itemKind modelClass];
   v6 = objc_opt_class();
 
-  if (v5 == v6)
+  if (modelClass == v6)
   {
-    v3 |= 4uLL;
+    filteringOptions |= 4uLL;
   }
 
   v7 = [MPMediaLibraryView alloc];
-  v8 = [(MPModelLibraryRequest *)self->_request mediaLibrary];
-  v9 = [(MPMediaLibraryView *)v7 initWithLibrary:v8 filteringOptions:v3];
+  mediaLibrary = [(MPModelLibraryRequest *)self->_request mediaLibrary];
+  v9 = [(MPMediaLibraryView *)v7 initWithLibrary:mediaLibrary filteringOptions:filteringOptions];
 
   return v9;
 }
@@ -894,16 +894,16 @@ LABEL_159:
 - (void)_modifyRequestByAddingExplicitContentPropertiesForPinnedItems
 {
   v20[6] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(MPModelRequest *)self->_request itemProperties];
-  v5 = [v4 relationships];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  itemProperties = [(MPModelRequest *)self->_request itemProperties];
+  relationships = [itemProperties relationships];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __95__MPModelLibraryRequestOperation__modifyRequestByAddingExplicitContentPropertiesForPinnedItems__block_invoke;
   v18 = &unk_1E767A888;
-  v6 = v3;
+  v6 = dictionary;
   v19 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v15];
+  [relationships enumerateKeysAndObjectsUsingBlock:&v15];
 
   v7 = [(MPModelRequest *)self->_request itemProperties:v15];
   v20[0] = @"MPModelPropertyLibraryPinEntityType";
@@ -917,9 +917,9 @@ LABEL_159:
   v10 = [v7 propertySetByCombiningWithPropertySet:v9];
 
   v11 = [MPPropertySet alloc];
-  v12 = [v10 properties];
-  v13 = [v12 allObjects];
-  v14 = [(MPPropertySet *)v11 initWithProperties:v13 relationships:v6];
+  properties = [v10 properties];
+  allObjects = [properties allObjects];
+  v14 = [(MPPropertySet *)v11 initWithProperties:allObjects relationships:v6];
   [(MPModelRequest *)self->_request setItemProperties:v14];
 }
 
@@ -1294,34 +1294,34 @@ void __52__MPModelLibraryRequestOperation__executeNewRequest__block_invoke_5(voi
 
 - (id)_sectionProperties
 {
-  v3 = [(MPModelRequest *)self->_request sectionProperties];
+  sectionProperties = [(MPModelRequest *)self->_request sectionProperties];
   if ([(MPModelLibraryRequest *)self->_request wantsDetailedKeepLocalRequestableResponse])
   {
-    v4 = [(MPModelRequest *)self->_request sectionKind];
-    v5 = [v4 modelClass];
+    sectionKind = [(MPModelRequest *)self->_request sectionKind];
+    modelClass = [sectionKind modelClass];
 
-    if ([v5 supportsKeepLocalStatusObservation])
+    if ([modelClass supportsKeepLocalStatusObservation])
     {
-      v6 = [v5 requiredKeepLocalStatusObservationProperties];
-      v7 = [v6 propertySetByCombiningWithPropertySet:v3];
+      requiredKeepLocalStatusObservationProperties = [modelClass requiredKeepLocalStatusObservationProperties];
+      v7 = [requiredKeepLocalStatusObservationProperties propertySetByCombiningWithPropertySet:sectionProperties];
 
-      v3 = v7;
+      sectionProperties = v7;
     }
   }
 
-  return v3;
+  return sectionProperties;
 }
 
-- (void)_insertPropertyCacheForEntityPID:(int64_t)a3 entityClass:(void *)a4 entityTranslator:(id)a5 translationContext:(id)a6 propertyCachesVector:(const void *)a7
+- (void)_insertPropertyCacheForEntityPID:(int64_t)d entityClass:(void *)class entityTranslator:(id)translator translationContext:(id)context propertyCachesVector:(const void *)vector
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MPModelLibraryRequestOperation *)self _libraryView];
+  translatorCopy = translator;
+  contextCopy = context;
+  _libraryView = [(MPModelLibraryRequestOperation *)self _libraryView];
   v13 = +[MPPropertySet emptyPropertySet];
-  if (v10)
+  if (translatorCopy)
   {
-    [v10 entityQueryForPropertySet:v13 sortDescriptors:MEMORY[0x1E695E0F0] context:v11 view:v12];
+    [translatorCopy entityQueryForPropertySet:v13 sortDescriptors:MEMORY[0x1E695E0F0] context:contextCopy view:_libraryView];
   }
 
   else
@@ -1330,7 +1330,7 @@ void __52__MPModelLibraryRequestOperation__executeNewRequest__block_invoke_5(voi
   }
 
   mlcore::Query::predicate(v15, v14);
-  (*(*a4 + 120))(a4);
+  (*(*class + 120))(class);
   std::allocate_shared[abi:ne200100]<mlcore::ComparisonPredicate<long long>,std::allocator<mlcore::ComparisonPredicate<long long>>,mlcore::ModelProperty<long long> *&,mlcore::ComparisonOperator,long long const&,0>();
 }
 
@@ -1427,22 +1427,22 @@ void __136__MPModelLibraryRequestOperation__insertPropertyCacheForEntityPID_enti
 - (void)_executeLegacyRequest
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = [(MPModelLibraryRequest *)self->_request legacyMediaQuery];
-  v5 = [(MPModelLibraryRequestOperation *)self request];
-  v31 = [v5 mediaLibrary];
+  legacyMediaQuery = [(MPModelLibraryRequest *)self->_request legacyMediaQuery];
+  request = [(MPModelLibraryRequestOperation *)self request];
+  mediaLibrary = [request mediaLibrary];
 
-  v6 = [(MPModelLibraryRequestOperation *)self request];
-  v7 = [v6 label];
-  v8 = v7;
-  if (!v7)
+  request2 = [(MPModelLibraryRequestOperation *)self request];
+  label = [request2 label];
+  v8 = label;
+  if (!label)
   {
-    v2 = [(MPModelLibraryRequestOperation *)self request];
-    v8 = [v2 description];
+    request3 = [(MPModelLibraryRequestOperation *)self request];
+    v8 = [request3 description];
   }
 
-  [v31 connectionAssertionWithIdentifier:v8];
+  [mediaLibrary connectionAssertionWithIdentifier:v8];
   objc_claimAutoreleasedReturnValue();
-  if (!v7)
+  if (!label)
   {
   }
 
@@ -1452,26 +1452,26 @@ void __136__MPModelLibraryRequestOperation__insertPropertyCacheForEntityPID_enti
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = legacyMediaQuery;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Executing legacy request query %{public}@", buf, 0x16u);
   }
 
-  v10 = [(MPModelLibraryRequestOperation *)self _libraryView];
-  if (v10)
+  _libraryView = [(MPModelLibraryRequestOperation *)self _libraryView];
+  if (_libraryView)
   {
-    [v10 mlCoreView];
+    [_libraryView mlCoreView];
   }
 
-  v29 = [(MPModelLibraryRequestOperation *)self _itemProperties];
-  v11 = [(MPModelRequest *)self->_request sectionKind];
-  v12 = [v11 modelClass];
+  _itemProperties = [(MPModelLibraryRequestOperation *)self _itemProperties];
+  sectionKind = [(MPModelRequest *)self->_request sectionKind];
+  modelClass = [sectionKind modelClass];
 
-  v13 = [(MPModelRequest *)self->_request itemKind];
-  v14 = [v13 modelClass];
+  itemKind = [(MPModelRequest *)self->_request itemKind];
+  modelClass2 = [itemKind modelClass];
 
-  if (v14 && ([MPMediaLibraryEntityTranslator translatorForMPModelClass:v14], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+  if (modelClass2 && ([MPMediaLibraryEntityTranslator translatorForMPModelClass:modelClass2], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
-    [v15 MLCorePropertiesForPropertySet:v29 deferLoadingRelationProperties:0];
+    [v15 MLCorePropertiesForPropertySet:_itemProperties deferLoadingRelationProperties:0];
   }
 
   else
@@ -1482,68 +1482,68 @@ void __136__MPModelLibraryRequestOperation__insertPropertyCacheForEntityPID_enti
 
   if (![v15 entityClass])
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    v25 = [(MPModelLibraryRequestOperation *)self request];
-    v26 = [v25 label];
-    [v24 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:107 description:{@"Request did not provide an entity class for %@ %@. label=%@", v14, v15, v26}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    request4 = [(MPModelLibraryRequestOperation *)self request];
+    label2 = [request4 label];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryRequestOperation.mm" lineNumber:107 description:{@"Request did not provide an entity class for %@ %@. label=%@", modelClass2, v15, label2}];
   }
 
   v16 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
-  [(MPMediaLibraryEntityTranslationContext *)v16 setMediaLibrary:v31];
-  v17 = [(MPModelRequest *)self->_request itemKind];
-  [(MPMediaLibraryEntityTranslationContext *)v16 setModelKind:v17];
+  [(MPMediaLibraryEntityTranslationContext *)v16 setMediaLibrary:mediaLibrary];
+  itemKind2 = [(MPModelRequest *)self->_request itemKind];
+  [(MPMediaLibraryEntityTranslationContext *)v16 setModelKind:itemKind2];
 
-  if (v12)
+  if (modelClass)
   {
     v32 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
-    [(MPMediaLibraryEntityTranslationContext *)v32 setMediaLibrary:v31];
-    v18 = [(MPModelRequest *)self->_request sectionKind];
-    [(MPMediaLibraryEntityTranslationContext *)v32 setModelKind:v18];
+    [(MPMediaLibraryEntityTranslationContext *)v32 setMediaLibrary:mediaLibrary];
+    sectionKind2 = [(MPModelRequest *)self->_request sectionKind];
+    [(MPMediaLibraryEntityTranslationContext *)v32 setModelKind:sectionKind2];
 
-    v30 = [(MPModelLibraryRequestOperation *)self _sectionProperties];
-    v19 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:v12];
+    _sectionProperties = [(MPModelLibraryRequestOperation *)self _sectionProperties];
+    v19 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:modelClass];
     if (v19)
     {
-      [v19 MLCorePropertiesForPropertySet:v30];
+      [v19 MLCorePropertiesForPropertySet:_sectionProperties];
     }
 
-    if ([v4 groupingType])
+    if ([legacyMediaQuery groupingType])
     {
-      [v4 collections];
+      [legacyMediaQuery collections];
       [objc_claimAutoreleasedReturnValue() resultSet];
     }
 
     else
     {
-      if (v12 == objc_opt_class())
+      if (modelClass == objc_opt_class())
       {
-        v20 = [v4 copy];
+        v20 = [legacyMediaQuery copy];
         [v20 setGroupingType:6];
       }
 
       else
       {
-        v20 = [v4 copy];
-        [v20 setGroupingType:{objc_msgSend(v4, "_representativeCollectionGroupingType")}];
+        v20 = [legacyMediaQuery copy];
+        [v20 setGroupingType:{objc_msgSend(legacyMediaQuery, "_representativeCollectionGroupingType")}];
       }
 
-      v28 = [v20 collections];
+      collections = [v20 collections];
 
-      [v28 resultSet];
+      [collections resultSet];
     }
 
     objc_claimAutoreleasedReturnValue();
     operator new();
   }
 
-  if ([v14 isSubclassOfClass:objc_opt_class()])
+  if ([modelClass2 isSubclassOfClass:objc_opt_class()])
   {
-    [v4 items];
+    [legacyMediaQuery items];
   }
 
   else
   {
-    [v4 collections];
+    [legacyMediaQuery collections];
   }
   v33 = ;
 
@@ -1551,17 +1551,17 @@ void __136__MPModelLibraryRequestOperation__insertPropertyCacheForEntityPID_enti
   if (objc_opt_isKindOfClass())
   {
     v21 = v33;
-    v22 = [v21 resultSet];
-    [v22 revision];
-    v23 = [v21 sectionInfo];
+    resultSet = [v21 resultSet];
+    [resultSet revision];
+    sectionInfo = [v21 sectionInfo];
   }
 
   else
   {
-    v23 = 0;
+    sectionInfo = 0;
   }
 
-  [v23 sections];
+  [sectionInfo sections];
   objc_claimAutoreleasedReturnValue();
   operator new();
 }
@@ -1760,21 +1760,21 @@ void __55__MPModelLibraryRequestOperation__executeLegacyRequest__block_invoke_2(
   [v3 setPersistentID:{objc_msgSend(*(a1 + 32), "persistentID")}];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.amp.mediaplayer", "Library");
   v6 = v5;
-  if (v4)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v4 msv_description];
+      msv_description = [errorCopy msv_description];
       *buf = 138543618;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2114;
-      v12 = v7;
+      v12 = msv_description;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_ERROR, "%{public}@ Finished error=%{public}@", buf, 0x16u);
     }
   }
@@ -1782,13 +1782,13 @@ void __55__MPModelLibraryRequestOperation__executeLegacyRequest__block_invoke_2(
   else if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Finished", buf, 0xCu);
   }
 
   v8.receiver = self;
   v8.super_class = MPModelLibraryRequestOperation;
-  [(MPAsyncOperation *)&v8 finishWithError:v4];
+  [(MPAsyncOperation *)&v8 finishWithError:errorCopy];
 }
 
 @end

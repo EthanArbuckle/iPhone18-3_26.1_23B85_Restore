@@ -1,115 +1,115 @@
 @interface UIWritingToolsCoordinator
-- (BOOL)_hasLandedAllReplacementsForDelivery:(id)a3 inContext:(id)a4;
-- (BOOL)_hasStoredTargetedPreviewForInsertionInContextID:(id)a3 previewSubrangeIndex:(unint64_t)a4;
+- (BOOL)_hasLandedAllReplacementsForDelivery:(id)delivery inContext:(id)context;
+- (BOOL)_hasStoredTargetedPreviewForInsertionInContextID:(id)d previewSubrangeIndex:(unint64_t)index;
 - (BOOL)isEditable;
-- (BOOL)proofreadingInteraction:(id)a3 shouldRespondToTapAtPoint:(CGPoint)a4;
+- (BOOL)proofreadingInteraction:(id)interaction shouldRespondToTapAtPoint:(CGPoint)point;
 - (NSString)description;
 - (UITextView)_associatedTextView;
 - (UIView)decorationContainerView;
 - (UIView)effectContainerView;
 - (UIView)view;
 - (UIWritingToolsCoordinator)init;
-- (UIWritingToolsCoordinator)initWithDelegate:(id)a3;
+- (UIWritingToolsCoordinator)initWithDelegate:(id)delegate;
 - (UIWritingToolsCoordinatorDelegate)delegate;
 - (WTTextViewDelegate_Proposed_v1)_sessionTextViewDelegate;
-- (_NSRange)_adjustedResolvedRangeForContextWithIdentifier:(id)a3;
-- (_UIWTCProofreadingDecorationView)_preparedProofreadingDecorationViewInContainer:(uint64_t)a1;
-- (id)_bufferInvocationForSelector:(SEL)a3 arguments:(id)a4;
-- (id)_lastProofreadingSuggestionWithUnderlineFromProofreadingController:(uint64_t)a1;
+- (_NSRange)_adjustedResolvedRangeForContextWithIdentifier:(id)identifier;
+- (_UIWTCProofreadingDecorationView)_preparedProofreadingDecorationViewInContainer:(uint64_t)container;
+- (id)_bufferInvocationForSelector:(SEL)selector arguments:(id)arguments;
+- (id)_lastProofreadingSuggestionWithUnderlineFromProofreadingController:(uint64_t)controller;
 - (id)_replacementTracker;
-- (id)_replacementTrackerForContextID:(id)a3;
+- (id)_replacementTrackerForContextID:(id)d;
 - (int64_t)behavior;
 - (int64_t)preferredBehavior;
-- (uint64_t)_trailingCursorLocationRangeForProofreadingSuggestion:(void *)a3 inContextID:;
-- (uint64_t)_validSubrangeForTextAnimation:(unint64_t)a3 withIndex:(void *)a4 contextID:;
+- (uint64_t)_trailingCursorLocationRangeForProofreadingSuggestion:(void *)suggestion inContextID:;
+- (uint64_t)_validSubrangeForTextAnimation:(unint64_t)animation withIndex:(void *)index contextID:;
 - (unint64_t)preferredResultOptions;
 - (unint64_t)resultOptions;
-- (void)_addProofreadSuggestionPendingUnderlineForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5 completion:(id)a6;
-- (void)_addProofreadingSuggestionReviewingHighlightForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5;
-- (void)_animateRewrittenTextForDeliveryID:(id)a3 contextID:(id)a4 subrangeIndex:(int64_t)a5 customFillColor:(id)a6;
-- (void)_beginAnimatedTextReplacementForInFlightDeliveryInContextID:(id)a3;
-- (void)_beginTextAssistantAnticipationInContext:(id)a3 animationCharacterRange:(_NSRange)a4 subrangeIndex:(int64_t)a5 customFillColor:(id)a6;
-- (void)_beginTextAssistantAnticipationsForRange:(_NSRange)a3 inContext:(id)a4;
-- (void)_changeToState:(void *)a3 postStateChangeActions:;
-- (void)_cleanUpAnticipationAnimationTrackingInfoForContextID:(id)a3;
-- (void)_cleanUpReplacementAnimationTrackingInfoForContextID:(id)a3;
-- (void)_completeReceivingSuggestions:(id)a3 processedRange:(_NSRange)a4 inContext:(id)a5 finished:(BOOL)a6;
-- (void)_delegateUpdateTextAccordingToProofreadingSuggestionInfoWithIdentifier:(id)a3 replacingCharactersInRange:(_NSRange)a4 newState:(int64_t)a5 contextID:(id)a6 updateCompletion:(id)a7;
+- (void)_addProofreadSuggestionPendingUnderlineForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d completion:(id)completion;
+- (void)_addProofreadingSuggestionReviewingHighlightForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d;
+- (void)_animateRewrittenTextForDeliveryID:(id)d contextID:(id)iD subrangeIndex:(int64_t)index customFillColor:(id)color;
+- (void)_beginAnimatedTextReplacementForInFlightDeliveryInContextID:(id)d;
+- (void)_beginTextAssistantAnticipationInContext:(id)context animationCharacterRange:(_NSRange)range subrangeIndex:(int64_t)index customFillColor:(id)color;
+- (void)_beginTextAssistantAnticipationsForRange:(_NSRange)range inContext:(id)context;
+- (void)_changeToState:(void *)state postStateChangeActions:;
+- (void)_cleanUpAnticipationAnimationTrackingInfoForContextID:(id)d;
+- (void)_cleanUpReplacementAnimationTrackingInfoForContextID:(id)d;
+- (void)_completeReceivingSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)_delegateUpdateTextAccordingToProofreadingSuggestionInfoWithIdentifier:(id)identifier replacingCharactersInRange:(_NSRange)range newState:(int64_t)state contextID:(id)d updateCompletion:(id)completion;
 - (void)_didDismissWritingTools;
-- (void)_didEndProofreadingSession:(id)a3 accepted:(BOOL)a4 completion:(id)a5;
-- (void)_didEndRewritingSession:(id)a3 accepted:(BOOL)a4;
-- (void)_drawProofreadingHighlightsForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5;
-- (void)_drawProofreadingUnderlinesForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5 recordDecorationInfo:(id)a6;
+- (void)_didEndProofreadingSession:(id)session accepted:(BOOL)accepted completion:(id)completion;
+- (void)_didEndRewritingSession:(id)session accepted:(BOOL)accepted;
+- (void)_drawProofreadingHighlightsForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d;
+- (void)_drawProofreadingUnderlinesForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d recordDecorationInfo:(id)info;
 - (void)_effectContainerCleanup;
-- (void)_endTextAssistantAnticipationInContextID:(id)a3 animationCharacterRange:(_NSRange)a4;
-- (void)_endTextAssistantAnticipationsForContextIDs:(id)a3;
+- (void)_endTextAssistantAnticipationInContextID:(id)d animationCharacterRange:(_NSRange)range;
+- (void)_endTextAssistantAnticipationsForContextIDs:(id)ds;
 - (void)_executeForSubrangesOfRange:(uint64_t *)(a3 inContext:actions:recordingCustomFillColors:;
-- (void)_fetchPreviewAndSendPrepareForInsertionWithSubrangeIndex:(void *)a3 maximumSubrangeIndex:(void *)a4 contextID:(void *)a5 completion:;
-- (void)_fetchStoredTargetedPreviewForContextID:(id)a3 previewSubrangeIndex:(unint64_t)a4 textAnimation:(int64_t)a5 completion:(id)a6;
-- (void)_finishNextReplacementAnimation:(char *)a3 withSubrangeIndex:(void *)a4 finishedIndexes:(char *)a5 numberOfIndexes:(void *)a6 contextID:(void *)a7 completion:;
-- (void)_finishUndoRedoChangesIfNecessaryForContextID:(_BYTE *)a1;
+- (void)_fetchPreviewAndSendPrepareForInsertionWithSubrangeIndex:(void *)index maximumSubrangeIndex:(void *)subrangeIndex contextID:(void *)d completion:;
+- (void)_fetchStoredTargetedPreviewForContextID:(id)d previewSubrangeIndex:(unint64_t)index textAnimation:(int64_t)animation completion:(id)completion;
+- (void)_finishNextReplacementAnimation:(char *)animation withSubrangeIndex:(void *)index finishedIndexes:(char *)indexes numberOfIndexes:(void *)ofIndexes contextID:(void *)d completion:;
+- (void)_finishUndoRedoChangesIfNecessaryForContextID:(_BYTE *)d;
 - (void)_finishUndoRedoChangesInAllContextsIfNecessary;
-- (void)_invalidateProofreadingSuggestionWithUUID:(id)a3 contextID:(id)a4;
-- (void)_invalidateReplacementForDeliveryID:(id)a3 subrangeIndex:(int64_t)a4 animated:(BOOL)a5;
-- (void)_populateDecorationContainerViewsForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5 completion:(id)a6;
-- (void)_proofreadingOrCompositionFinishedInContext:(id)a3;
-- (void)_recursiveUpdateProofreadingTextAndTrackerToShowOriginal:(BOOL)a3 withContextIDEnumerator:(id)a4 completion:(id)a5;
+- (void)_invalidateProofreadingSuggestionWithUUID:(id)d contextID:(id)iD;
+- (void)_invalidateReplacementForDeliveryID:(id)d subrangeIndex:(int64_t)index animated:(BOOL)animated;
+- (void)_populateDecorationContainerViewsForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d completion:(id)completion;
+- (void)_proofreadingOrCompositionFinishedInContext:(id)context;
+- (void)_recursiveUpdateProofreadingTextAndTrackerToShowOriginal:(BOOL)original withContextIDEnumerator:(id)enumerator completion:(id)completion;
 - (void)_removeAllProofreadingDecorations;
-- (void)_removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:(id)a3;
-- (void)_removeProofreadingSuggestionReviewingHighlightForProofreadingSuggestionID:(id)a3;
-- (void)_replacementEffectDidLandInFlightDelivery:(id)a3 inContext:(id)a4 subrangeIndex:(unint64_t)a5;
-- (void)_resetFinishedRangeCountsForTextAnimation:(void *)a3 contextID:;
-- (void)_resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:(unint64_t)a3 inContext:(id)a4 completion:(id)a5;
-- (void)_sendDelegateFinishAnticipationForNextSubrangeIndex:(uint64_t)a3 inTotalSubranges:(void *)a4 contextID:(void *)a5 wrapUpFinishingHandler:;
-- (void)_sendDelegateFinishTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4 contextID:(id)a5 completion:(id)a6;
-- (void)_sendDelegatePrepareForTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4 contextID:(id)a5 completion:(id)a6;
-- (void)_sendDelegateTargetedPreviewOfActiveRangeForTextAnimation:(int64_t)a3 previewSubrangeIndex:(unint64_t)a4 contextID:(id)a5 completion:(id)a6;
-- (void)_sendDelegatedAnimatedReplacementWithDelay:(double)a3 duration:(double)a4 deliveryID:(id)a5 contextID:(id)a6 completion:(id)a7;
-- (void)_sendFinishRemoveAnimationForNextSubrangeIndex:(void *)a3 maximumSubrangeIndex:(void *)a4 contextID:(void *)a5 completion:;
+- (void)_removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:(id)d;
+- (void)_removeProofreadingSuggestionReviewingHighlightForProofreadingSuggestionID:(id)d;
+- (void)_replacementEffectDidLandInFlightDelivery:(id)delivery inContext:(id)context subrangeIndex:(unint64_t)index;
+- (void)_resetFinishedRangeCountsForTextAnimation:(void *)animation contextID:;
+- (void)_resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:(unint64_t)index inContext:(id)context completion:(id)completion;
+- (void)_sendDelegateFinishAnticipationForNextSubrangeIndex:(uint64_t)index inTotalSubranges:(void *)subranges contextID:(void *)d wrapUpFinishingHandler:;
+- (void)_sendDelegateFinishTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index contextID:(id)d completion:(id)completion;
+- (void)_sendDelegatePrepareForTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index contextID:(id)d completion:(id)completion;
+- (void)_sendDelegateTargetedPreviewOfActiveRangeForTextAnimation:(int64_t)animation previewSubrangeIndex:(unint64_t)index contextID:(id)d completion:(id)completion;
+- (void)_sendDelegatedAnimatedReplacementWithDelay:(double)delay duration:(double)duration deliveryID:(id)d contextID:(id)iD completion:(id)completion;
+- (void)_sendFinishRemoveAnimationForNextSubrangeIndex:(void *)index maximumSubrangeIndex:(void *)subrangeIndex contextID:(void *)d completion:;
 - (void)_sessionCleanup;
-- (void)_setInFlightDeliveryID:(id)a3;
+- (void)_setInFlightDeliveryID:(id)d;
 - (void)_setUpTextEffectView;
-- (void)_synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:(uint64_t)a3 state:;
-- (void)_undrawProofreadingHighlightsForProofreadingSuggestionID:(id)a3;
-- (void)_undrawProofreadingUnderlinesForProofreadingSuggestionID:(id)a3;
+- (void)_synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:(uint64_t)identifier state:;
+- (void)_undrawProofreadingHighlightsForProofreadingSuggestionID:(id)d;
+- (void)_undrawProofreadingUnderlinesForProofreadingSuggestionID:(id)d;
 - (void)_updateDelegateRespondsToFlags;
-- (void)_updateForProofreadingSuggestion:(id)a3 state:(int64_t)a4 saveState:(BOOL)a5 inContext:(id)a6;
-- (void)_updateProofreadingDecorationViewsWithUnderlineInfo:(uint64_t)a1;
-- (void)_updateProofreadingDeliveryWithReplacement:(id)a3 accordingToProofreadingSuggestionWithIdentifier:(id)a4 replacingCharactersInRange:(_NSRange)a5 newState:(int64_t)a6 contextID:(id)a7;
-- (void)_updateProofreadingTextAndTrackerToShowOriginal:(BOOL)a3 inContextID:(id)a4;
-- (void)_updateReplacementTrackerStartingAnimationsWithText:(id)a3 forRange:(_NSRange)a4 inContextWithID:(id)a5 finished:(BOOL)a6;
-- (void)_updateReplacementTrackerWithText:(id)a3 forRange:(_NSRange)a4 inContext:(id)a5 finished:(BOOL)a6;
-- (void)_updateSelectedRangeForCompositionIfFinishedInContext:(id)a3 force:(BOOL)a4;
-- (void)_updateTextViewAndTrackerWithIncomingCompositionSessionState:(int64_t)a3 forDelivery:(id)a4 animationParameters:(id)a5 contextID:(id)a6 completion:(id)a7;
-- (void)_updateToCompositionSessionState:(int64_t)a3 contextID:(id)a4;
-- (void)_updateVisualizationForProofreadingSuggestionID:(id)a3 previousState:(int64_t)a4 delta:(int64_t)a5 resetFollowingIfNecessary:(BOOL)a6 inContext:(id)a7 completion:(id)a8;
-- (void)_updateVisualizationForProofreadingSuggestionsIfNecessaryForDelivery:(id)a3 inContext:(id)a4 completion:(id)a5;
-- (void)canGenerateTargetedPreviewForChunk:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4;
-- (void)canGenerateTargetedPreviewsWithCompletionHandler:(id)a3;
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4;
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4;
-- (void)didMoveToView:(id)a3;
-- (void)finishAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4;
-- (void)prepareForAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4;
-- (void)proofreadingController:(id)a3 replaceCharactersInRange:(_NSRange)a4 attributedString:(id)a5 state:(int64_t)a6 identifier:(id)a7 completion:(id)a8;
-- (void)proofreadingInteraction:(id)a3 receivedTapAtLocation:(CGPoint)a4;
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7;
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6;
-- (void)setDecorationContainerView:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEffectContainerView:(id)a3;
-- (void)setPreferredBehavior:(int64_t)a3;
-- (void)setPreferredResultOptions:(unint64_t)a3;
+- (void)_updateForProofreadingSuggestion:(id)suggestion state:(int64_t)state saveState:(BOOL)saveState inContext:(id)context;
+- (void)_updateProofreadingDecorationViewsWithUnderlineInfo:(uint64_t)info;
+- (void)_updateProofreadingDeliveryWithReplacement:(id)replacement accordingToProofreadingSuggestionWithIdentifier:(id)identifier replacingCharactersInRange:(_NSRange)range newState:(int64_t)state contextID:(id)d;
+- (void)_updateProofreadingTextAndTrackerToShowOriginal:(BOOL)original inContextID:(id)d;
+- (void)_updateReplacementTrackerStartingAnimationsWithText:(id)text forRange:(_NSRange)range inContextWithID:(id)d finished:(BOOL)finished;
+- (void)_updateReplacementTrackerWithText:(id)text forRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)_updateSelectedRangeForCompositionIfFinishedInContext:(id)context force:(BOOL)force;
+- (void)_updateTextViewAndTrackerWithIncomingCompositionSessionState:(int64_t)state forDelivery:(id)delivery animationParameters:(id)parameters contextID:(id)d completion:(id)completion;
+- (void)_updateToCompositionSessionState:(int64_t)state contextID:(id)d;
+- (void)_updateVisualizationForProofreadingSuggestionID:(id)d previousState:(int64_t)state delta:(int64_t)delta resetFollowingIfNecessary:(BOOL)necessary inContext:(id)context completion:(id)completion;
+- (void)_updateVisualizationForProofreadingSuggestionsIfNecessaryForDelivery:(id)delivery inContext:(id)context completion:(id)completion;
+- (void)canGenerateTargetedPreviewForChunk:(_TtC5UIKit21UITextEffectTextChunk *)chunk completionHandler:(id)handler;
+- (void)canGenerateTargetedPreviewsWithCompletionHandler:(id)handler;
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts;
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted;
+- (void)didMoveToView:(id)view;
+- (void)finishAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler;
+- (void)prepareForAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler;
+- (void)proofreadingController:(id)controller replaceCharactersInRange:(_NSRange)range attributedString:(id)string state:(int64_t)state identifier:(id)identifier completion:(id)completion;
+- (void)proofreadingInteraction:(id)interaction receivedTapAtLocation:(CGPoint)location;
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished;
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context;
+- (void)setDecorationContainerView:(id)view;
+- (void)setDelegate:(id)delegate;
+- (void)setEffectContainerView:(id)view;
+- (void)setPreferredBehavior:(int64_t)behavior;
+- (void)setPreferredResultOptions:(unint64_t)options;
 - (void)stopWritingTools;
-- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4;
-- (void)updateForReflowedTextInContextWithIdentifier:(id)a3;
-- (void)updateRange:(_NSRange)a3 withText:(id)a4 reason:(int64_t)a5 forContextWithIdentifier:(id)a6;
-- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)a3 visible:(BOOL)a4 completionHandler:(id)a5;
-- (void)updatedTargetedPreviewGeometryFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 previous:(CGRect)a4 completionHandler:(id)a5;
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4;
-- (void)willMoveToView:(id)a3;
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4;
+- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler;
+- (void)updateForReflowedTextInContextWithIdentifier:(id)identifier;
+- (void)updateRange:(_NSRange)range withText:(id)text reason:(int64_t)reason forContextWithIdentifier:(id)identifier;
+- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)animation visible:(BOOL)visible completionHandler:(id)handler;
+- (void)updatedTargetedPreviewGeometryFor:(_TtC5UIKit21UITextEffectTextChunk *)for previous:(CGRect)previous completionHandler:(id)handler;
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts;
+- (void)willMoveToView:(id)view;
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action;
 @end
 
 @implementation UIWritingToolsCoordinator
@@ -139,10 +139,10 @@
     return self->_preferredBehavior;
   }
 
-  v2 = [(UIWritingToolsCoordinator *)self _associatedTextView];
-  v3 = [v2 writingToolsBehavior];
+  _associatedTextView = [(UIWritingToolsCoordinator *)self _associatedTextView];
+  writingToolsBehavior = [_associatedTextView writingToolsBehavior];
 
-  return v3;
+  return writingToolsBehavior;
 }
 
 - (UIWritingToolsCoordinator)init
@@ -152,13 +152,13 @@
   v2 = [(UIWritingToolsCoordinator *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     trackingInfos = v2->_trackingInfos;
-    v2->_trackingInfos = v3;
+    v2->_trackingInfos = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     proofreadingSuggestionInfos = v2->_proofreadingSuggestionInfos;
-    v2->_proofreadingSuggestionInfos = v5;
+    v2->_proofreadingSuggestionInfos = dictionary2;
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     writingToolsDelegateMessageInvocationBuffer = v2->_writingToolsDelegateMessageInvocationBuffer;
@@ -247,14 +247,14 @@
   return WeakRetained;
 }
 
-- (void)prepareForAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4
+- (void)prepareForAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18A4A76C8();
@@ -269,19 +269,19 @@
   v14[3] = 0;
   v14[4] = &unk_18A65F058;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_189162B34(0, 0, v9, &unk_18A65F060, v14);
 }
 
-- (void)finishAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4
+- (void)finishAnimationFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18A4A76C8();
@@ -296,17 +296,17 @@
   v14[3] = 0;
   v14[4] = &unk_18A65F038;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_189162B34(0, 0, v9, &unk_18A65F040, v14);
 }
 
-- (void)canGenerateTargetedPreviewsWithCompletionHandler:(id)a3
+- (void)canGenerateTargetedPreviewsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -322,18 +322,18 @@
   v12[3] = 0;
   v12[4] = &unk_18A65F018;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_189162B34(0, 0, v7, &unk_18A65F020, v12);
 }
 
-- (void)canGenerateTargetedPreviewForChunk:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4
+- (void)canGenerateTargetedPreviewForChunk:(_TtC5UIKit21UITextEffectTextChunk *)chunk completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = chunk;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18A4A76C8();
@@ -348,19 +348,19 @@
   v14[3] = 0;
   v14[4] = &unk_18A65EFF8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  chunkCopy = chunk;
+  selfCopy = self;
   sub_189162B34(0, 0, v9, &unk_18A65F000, v14);
 }
 
-- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 completionHandler:(id)a4
+- (void)targetedPreviewFor:(_TtC5UIKit21UITextEffectTextChunk *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18A4A76C8();
@@ -375,20 +375,20 @@
   v14[3] = 0;
   v14[4] = &unk_18A65EFD8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_189162B34(0, 0, v9, &unk_18A65EFE0, v14);
 }
 
-- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)a3 visible:(BOOL)a4 completionHandler:(id)a5
+- (void)updateTextChunkVisibilityForAnimation:(_TtC5UIKit21UITextEffectTextChunk *)animation visible:(BOOL)visible completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = animation;
+  *(v13 + 24) = visible;
   *(v13 + 32) = v12;
   *(v13 + 40) = self;
   v14 = sub_18A4A76C8();
@@ -403,23 +403,23 @@
   v16[3] = 0;
   v16[4] = &unk_18A65EFB8;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  animationCopy = animation;
+  selfCopy = self;
   sub_189162B34(0, 0, v11, &unk_18A65EFC0, v16);
 }
 
-- (void)updatedTargetedPreviewGeometryFor:(_TtC5UIKit21UITextEffectTextChunk *)a3 previous:(CGRect)a4 completionHandler:(id)a5
+- (void)updatedTargetedPreviewGeometryFor:(_TtC5UIKit21UITextEffectTextChunk *)for previous:(CGRect)previous completionHandler:(id)handler
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = previous.size.height;
+  width = previous.size.width;
+  y = previous.origin.y;
+  x = previous.origin.x;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v12 - 8);
   v14 = &v22 - v13;
-  v15 = _Block_copy(a5);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 2) = a3;
+  *(v16 + 2) = for;
   v16[3] = x;
   v16[4] = y;
   v16[5] = width;
@@ -438,43 +438,43 @@
   v19[3] = 0;
   v19[4] = &unk_18A650930;
   v19[5] = v18;
-  v20 = a3;
-  v21 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_189162B34(0, 0, v14, &unk_18A65EFA0, v19);
 }
 
 - (void)_setUpTextEffectView
 {
-  v2 = self;
+  selfCopy = self;
   sub_18903EE58();
 }
 
-- (void)_beginTextAssistantAnticipationInContext:(id)a3 animationCharacterRange:(_NSRange)a4 subrangeIndex:(int64_t)a5 customFillColor:(id)a6
+- (void)_beginTextAssistantAnticipationInContext:(id)context animationCharacterRange:(_NSRange)range subrangeIndex:(int64_t)index customFillColor:(id)color
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a6;
-  v13 = self;
-  sub_18903F26C(v11, location, length, a5, a6);
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  colorCopy = color;
+  selfCopy = self;
+  sub_18903F26C(contextCopy, location, length, index, color);
 }
 
-- (void)_endTextAssistantAnticipationInContextID:(id)a3 animationCharacterRange:(_NSRange)a4
+- (void)_endTextAssistantAnticipationInContextID:(id)d animationCharacterRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = sub_18A4A29D8();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18A4A29B8();
-  v11 = self;
+  selfCopy = self;
   sub_18903FA54(v10, location, length);
 
   (*(v8 + 8))(v10, v7);
 }
 
-- (void)_animateRewrittenTextForDeliveryID:(id)a3 contextID:(id)a4 subrangeIndex:(int64_t)a5 customFillColor:(id)a6
+- (void)_animateRewrittenTextForDeliveryID:(id)d contextID:(id)iD subrangeIndex:(int64_t)index customFillColor:(id)color
 {
   v9 = sub_18A4A29D8();
   v10 = *(v9 - 8);
@@ -484,16 +484,16 @@
   v15 = &v19 - v14;
   sub_18A4A29B8();
   sub_18A4A29B8();
-  v16 = a6;
-  v17 = self;
-  sub_18903FDF4(v15, v12, a5, a6);
+  colorCopy = color;
+  selfCopy = self;
+  sub_18903FDF4(v15, v12, index, color);
 
   v18 = *(v10 + 8);
   v18(v12, v9);
   v18(v15, v9);
 }
 
-- (void)_invalidateReplacementForDeliveryID:(id)a3 subrangeIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)_invalidateReplacementForDeliveryID:(id)d subrangeIndex:(int64_t)index animated:(BOOL)animated
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA934728);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -503,8 +503,8 @@
   MEMORY[0x1EEE9AC00](v10);
   v13 = &v21 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18A4A29B8();
-  v14 = self;
-  v15 = sub_1890421A0(v13, a4, v14);
+  selfCopy = self;
+  v15 = sub_1890421A0(v13, index, selfCopy);
   if (v15)
   {
     v16 = v15;
@@ -531,42 +531,42 @@
 - (void)_effectContainerCleanup
 {
   v2 = qword_1EA92E9E0;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
   swift_beginAccess();
-  v4 = sub_18903AA40(v3, qword_1EA92E9E8, sub_188E8B9AC, type metadata accessor for UITextEffectView);
+  v4 = sub_18903AA40(selfCopy, qword_1EA92E9E8, sub_188E8B9AC, type metadata accessor for UITextEffectView);
   swift_endAccess();
   if (v4)
   {
     [v4 removeFromSuperview];
   }
 
-  sub_189041A94(0, v3);
+  sub_189041A94(0, selfCopy);
   if (qword_1EA92E9D0 != -1)
   {
     swift_once();
   }
 
   swift_beginAccess();
-  sub_1891E9A94(v3);
+  sub_1891E9A94(selfCopy);
   swift_endAccess();
 }
 
-- (void)_setInFlightDeliveryID:(id)a3
+- (void)_setInFlightDeliveryID:(id)d
 {
-  v5 = a3;
-  if (v5 && self->_inFlightDeliveryID)
+  dCopy = d;
+  if (dCopy && self->_inFlightDeliveryID)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:259 description:@"Only one in-flight delivery at a time"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:259 description:@"Only one in-flight delivery at a time"];
   }
 
   inFlightDeliveryID = self->_inFlightDeliveryID;
-  self->_inFlightDeliveryID = v5;
+  self->_inFlightDeliveryID = dCopy;
 }
 
 - (void)_sessionCleanup
@@ -665,16 +665,16 @@ void __44__UIWritingToolsCoordinator__sessionCleanup__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_changeToState:(void *)a3 postStateChangeActions:
+- (void)_changeToState:(void *)state postStateChangeActions:
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (self)
   {
-    if (*(a1 + 208) == a2)
+    if (*(self + 208) == a2)
     {
-      (*(v5 + 2))(v5);
+      (*(stateCopy + 2))(stateCopy);
     }
 
     else
@@ -686,7 +686,7 @@ void __44__UIWritingToolsCoordinator__sessionCleanup__block_invoke(uint64_t a1)
         {
           v11 = off_1E70F93A8[a2];
           *location = 138412546;
-          *&location[4] = a1;
+          *&location[4] = self;
           v17 = 2112;
           v18 = v11;
           v12 = v10;
@@ -694,7 +694,7 @@ void __44__UIWritingToolsCoordinator__sessionCleanup__block_invoke(uint64_t a1)
         }
       }
 
-      objc_initWeak(location, a1);
+      objc_initWeak(location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __67__UIWritingToolsCoordinator__changeToState_postStateChangeActions___block_invoke;
@@ -704,10 +704,10 @@ void __44__UIWritingToolsCoordinator__sessionCleanup__block_invoke(uint64_t a1)
       v14 = v6;
       v7 = _Block_copy(aBlock);
       v8 = v7;
-      if (*(a1 + 16))
+      if (*(self + 16))
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 200));
-        [WeakRetained writingToolsCoordinator:a1 willChangeToState:a2 completion:v8];
+        WeakRetained = objc_loadWeakRetained((self + 200));
+        [WeakRetained writingToolsCoordinator:self willChangeToState:a2 completion:v8];
       }
 
       else
@@ -745,23 +745,23 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
   }
 }
 
-- (UIWritingToolsCoordinator)initWithDelegate:(id)a3
+- (UIWritingToolsCoordinator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(UIWritingToolsCoordinator *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(UIWritingToolsCoordinator *)v6 _updateDelegateRespondsToFlags];
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -773,9 +773,9 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
   }
 }
 
-- (void)setEffectContainerView:(id)a3
+- (void)setEffectContainerView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_effectContainerView);
 
   v5 = obj;
@@ -797,22 +797,22 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    view = WeakRetained;
   }
 
   else
   {
-    v5 = [(UIWritingToolsCoordinator *)self view];
+    view = [(UIWritingToolsCoordinator *)self view];
   }
 
-  v6 = v5;
+  v6 = view;
 
   return v6;
 }
 
-- (void)setDecorationContainerView:(id)a3
+- (void)setDecorationContainerView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_decorationContainerView);
 
   v5 = obj;
@@ -834,31 +834,31 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    view = WeakRetained;
   }
 
   else
   {
-    v5 = [(UIWritingToolsCoordinator *)self view];
+    view = [(UIWritingToolsCoordinator *)self view];
   }
 
-  v6 = v5;
+  v6 = view;
 
   return v6;
 }
 
-- (void)setPreferredBehavior:(int64_t)a3
+- (void)setPreferredBehavior:(int64_t)behavior
 {
-  self->_preferredBehavior = a3;
-  v4 = [(UIWritingToolsCoordinator *)self _associatedTextView];
-  [v4 setWritingToolsBehavior:a3];
+  self->_preferredBehavior = behavior;
+  _associatedTextView = [(UIWritingToolsCoordinator *)self _associatedTextView];
+  [_associatedTextView setWritingToolsBehavior:behavior];
 }
 
-- (void)setPreferredResultOptions:(unint64_t)a3
+- (void)setPreferredResultOptions:(unint64_t)options
 {
-  self->_preferredResultOptions = a3;
-  v4 = [(UIWritingToolsCoordinator *)self _associatedTextView];
-  [v4 setAllowedWritingToolsResultOptions:a3];
+  self->_preferredResultOptions = options;
+  _associatedTextView = [(UIWritingToolsCoordinator *)self _associatedTextView];
+  [_associatedTextView setAllowedWritingToolsResultOptions:options];
 }
 
 - (unint64_t)preferredResultOptions
@@ -868,10 +868,10 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
     return self->_preferredResultOptions;
   }
 
-  v2 = [(UIWritingToolsCoordinator *)self _associatedTextView];
-  v3 = [v2 allowedWritingToolsResultOptions];
+  _associatedTextView = [(UIWritingToolsCoordinator *)self _associatedTextView];
+  allowedWritingToolsResultOptions = [_associatedTextView allowedWritingToolsResultOptions];
 
-  return v3;
+  return allowedWritingToolsResultOptions;
 }
 
 - (unint64_t)resultOptions
@@ -879,36 +879,36 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
   result = [(UIWritingToolsCoordinator *)self preferredResultOptions];
   if (!result)
   {
-    v4 = [(UIWritingToolsCoordinator *)self view];
-    v5 = [v4 _defaultWritingToolsResultOptions];
+    view = [(UIWritingToolsCoordinator *)self view];
+    _defaultWritingToolsResultOptions = [view _defaultWritingToolsResultOptions];
 
-    return v5;
+    return _defaultWritingToolsResultOptions;
   }
 
   return result;
 }
 
-- (void)updateRange:(_NSRange)a3 withText:(id)a4 reason:(int64_t)a5 forContextWithIdentifier:(id)a6
+- (void)updateRange:(_NSRange)range withText:(id)text reason:(int64_t)reason forContextWithIdentifier:(id)identifier
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v72 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a6;
-  v55 = self;
-  v14 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v56 = v13;
-  v15 = [v14 objectForKeyedSubscript:v13];
+  textCopy = text;
+  identifierCopy = identifier;
+  selfCopy = self;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v56 = identifierCopy;
+  v15 = [_trackingInfos objectForKeyedSubscript:identifierCopy];
 
-  v16 = [v15 undoRoller];
-  v17 = v16;
-  if (a5 == 1 || !v16 || ([(UIWritingToolsCoordinator *)v55 _finishUndoRedoChangesIfNecessaryForContextID:v56], v55->_activeSessionUUID))
+  undoRoller = [v15 undoRoller];
+  v17 = undoRoller;
+  if (reason == 1 || !undoRoller || ([(UIWritingToolsCoordinator *)selfCopy _finishUndoRedoChangesIfNecessaryForContextID:v56], selfCopy->_activeSessionUUID))
   {
-    if (length || [v12 length])
+    if (length || [textCopy length])
     {
       v53 = v17;
-      v52 = [v15 acceptedEvaluationContext];
-      v19 = [(UIWritingToolsCoordinator *)v55 _adjustedResolvedRangeForContextWithIdentifier:v56];
+      acceptedEvaluationContext = [v15 acceptedEvaluationContext];
+      v19 = [(UIWritingToolsCoordinator *)selfCopy _adjustedResolvedRangeForContextWithIdentifier:v56];
       v20 = v18;
       if (location > v19 + v18)
       {
@@ -918,7 +918,7 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
           v22 = v21;
           NSStringFromSelector(a2);
           v23 = v15;
-          v25 = v24 = v12;
+          v25 = v24 = textCopy;
           *buf = 134219010;
           v63 = location;
           v64 = 2048;
@@ -931,30 +931,30 @@ void __33__UIWritingToolsCoordinator_init__block_invoke()
           v71 = v20;
           _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "UIWritingToolsCoordinator ignoring range, {%lu, %lu}, passed in %@ that's after the adjusted resolvedRange, {%lu, %lu}.", buf, 0x34u);
 
-          v12 = v24;
+          textCopy = v24;
           v15 = v23;
         }
 
 LABEL_18:
-        v32 = v52;
+        v32 = acceptedEvaluationContext;
 LABEL_23:
 
         goto LABEL_24;
       }
 
-      if (a5 == 1)
+      if (reason == 1)
       {
-        v26 = [v15 replacementTracker];
+        replacementTracker = [v15 replacementTracker];
         if (!v17)
         {
           v27 = [_UIWTCUndoRoller alloc];
-          v28 = [v26 activeText];
-          v17 = [(_UIWTCUndoRoller *)v27 initWithEvaluatedText:v28 offset:v19];
+          activeText = [replacementTracker activeText];
+          v17 = [(_UIWTCUndoRoller *)v27 initWithEvaluatedText:activeText offset:v19];
 
           [v15 setUndoRoller:v17];
         }
 
-        [(_UIWTCUndoRoller *)v17 replaceRange:location withText:length, v12];
+        [(_UIWTCUndoRoller *)v17 replaceRange:location withText:length, textCopy];
         if (![(_UIWTCUndoRoller *)v17 hasFouled])
         {
           goto LABEL_21;
@@ -983,28 +983,28 @@ LABEL_23:
             _os_log_impl(&dword_188A29000, v30, OS_LOG_TYPE_ERROR, "UIWritingToolsCoordinator can't update for range, {%lu, %lu}, passed in %@ that overflows the adjusted resolvedRange, {%lu, %lu}. Stopping Writing Tools", buf, 0x34u);
           }
 
-          [(UIWritingToolsCoordinator *)v55 stopWritingTools];
+          [(UIWritingToolsCoordinator *)selfCopy stopWritingTools];
           goto LABEL_18;
         }
 
-        v26 = [v15 replacementTracker];
-        if (![v26 isRewriting])
+        replacementTracker = [v15 replacementTracker];
+        if (![replacementTracker isRewriting])
         {
           v51 = v15;
-          v49 = [v15 currentProofreadingText];
-          [v49 replaceCharactersInRange:location withAttributedString:{length, v12}];
-          v50 = v26;
-          v33 = [v26 proofreadingController];
-          v34 = [v12 length] - length;
-          v35 = [v33 editTracker];
-          [v35 addEditForRange:location lengthDelta:{length, v34}];
+          currentProofreadingText = [v15 currentProofreadingText];
+          [currentProofreadingText replaceCharactersInRange:location withAttributedString:{length, textCopy}];
+          v50 = replacementTracker;
+          proofreadingController = [replacementTracker proofreadingController];
+          v34 = [textCopy length] - length;
+          editTracker = [proofreadingController editTracker];
+          [editTracker addEditForRange:location lengthDelta:{length, v34}];
 
           v59 = 0u;
           v60 = 0u;
           v48 = (v34 + location) & ~((v34 + location) >> 63);
           v57 = 0u;
           v58 = 0u;
-          obj = [v33 suggestions];
+          obj = [proofreadingController suggestions];
           v36 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
           if (v36)
           {
@@ -1020,16 +1020,16 @@ LABEL_23:
                 }
 
                 v40 = *(*(&v57 + 1) + 8 * i);
-                v41 = [v33 editTracker];
-                v42 = [v40 originalRange];
+                editTracker2 = [proofreadingController editTracker];
+                originalRange = [v40 originalRange];
                 v44 = v43;
-                v45 = [v40 uuid];
-                v46 = [v41 rangeOfSuggestionWithRange:v42 UUID:v44 applyDelta:{v45, 0}];
+                uuid = [v40 uuid];
+                v46 = [editTracker2 rangeOfSuggestionWithRange:originalRange UUID:v44 applyDelta:{uuid, 0}];
 
                 if (v46 == 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  v47 = [v40 uuid];
-                  [(UIWritingToolsCoordinator *)v55 _invalidateProofreadingSuggestionWithUUID:v47 contextID:v56];
+                  uuid2 = [v40 uuid];
+                  [(UIWritingToolsCoordinator *)selfCopy _invalidateProofreadingSuggestionWithUUID:uuid2 contextID:v56];
                 }
               }
 
@@ -1039,18 +1039,18 @@ LABEL_23:
             while (v37);
           }
 
-          [(UIWritingToolsCoordinator *)v55 _resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:v48 inContext:v56 completion:&__block_literal_global_65_0];
+          [(UIWritingToolsCoordinator *)selfCopy _resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:v48 inContext:v56 completion:&__block_literal_global_65_0];
           v15 = v51;
-          v32 = v52;
+          v32 = acceptedEvaluationContext;
           v17 = v53;
-          v26 = v50;
+          replacementTracker = v50;
           goto LABEL_22;
         }
       }
 
-      [(UIWritingToolsCoordinator *)v55 stopWritingTools];
+      [(UIWritingToolsCoordinator *)selfCopy stopWritingTools];
 LABEL_21:
-      v32 = v52;
+      v32 = acceptedEvaluationContext;
 LABEL_22:
 
       goto LABEL_23;
@@ -1060,19 +1060,19 @@ LABEL_22:
 LABEL_24:
 }
 
-- (void)_finishUndoRedoChangesIfNecessaryForContextID:(_BYTE *)a1
+- (void)_finishUndoRedoChangesIfNecessaryForContextID:(_BYTE *)d
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = [a1 _trackingInfos];
-    v5 = [v4 objectForKeyedSubscript:v3];
+    _trackingInfos = [d _trackingInfos];
+    v5 = [_trackingInfos objectForKeyedSubscript:v3];
 
-    v6 = [v5 replacementTracker];
-    v7 = [v5 showingOriginal];
-    v8 = [v5 undoRoller];
-    if (!v8)
+    replacementTracker = [v5 replacementTracker];
+    showingOriginal = [v5 showingOriginal];
+    undoRoller = [v5 undoRoller];
+    if (!undoRoller)
     {
 LABEL_7:
 
@@ -1080,8 +1080,8 @@ LABEL_7:
     }
 
     [v5 setUndoRoller:0];
-    a1[26] = 1;
-    if ([v8 hasFouled])
+    d[26] = 1;
+    if ([undoRoller hasFouled])
     {
       if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
       {
@@ -1096,22 +1096,22 @@ LABEL_7:
       goto LABEL_5;
     }
 
-    v9 = [v6 isProofreading];
-    v10 = [v8 rolledReplacement];
-    v11 = v10;
-    if (v9)
+    isProofreading = [replacementTracker isProofreading];
+    rolledReplacement = [undoRoller rolledReplacement];
+    v11 = rolledReplacement;
+    if (isProofreading)
     {
-      v12 = [v10 string];
-      v32 = v7;
-      if (v7)
+      string = [rolledReplacement string];
+      v32 = showingOriginal;
+      if (showingOriginal)
       {
-        v13 = [v6 activeText];
-        v14 = [v13 string];
-        v15 = [v12 isEqualToString:v14];
+        activeText = [replacementTracker activeText];
+        string2 = [activeText string];
+        v15 = [string isEqualToString:string2];
 
         if (v15)
         {
-          [a1 _updateProofreadingTextAndTrackerToShowOriginal:0 inContextID:v3];
+          [d _updateProofreadingTextAndTrackerToShowOriginal:0 inContextID:v3];
           goto LABEL_6;
         }
 
@@ -1137,76 +1137,76 @@ LABEL_22:
           v27 = @"original text";
         }
 
-        v28 = v6;
+        v28 = replacementTracker;
         if (v32)
         {
 LABEL_44:
           [v28 rewrittenText];
           v30 = LABEL_52:;
-          v31 = [v8 rolledReplacement];
+          rolledReplacement2 = [undoRoller rolledReplacement];
           *buf = 138412802;
           v35 = v27;
           v36 = 2112;
           v37 = v30;
           v38 = 2112;
-          v39 = v31;
+          v39 = rolledReplacement2;
           _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_ERROR, "_undoRoller failed to synchronize with original vs. rewritten text.\nExpected a match to %@\n%@\nReceived\n%@", buf, 0x20u);
 
           goto LABEL_53;
         }
 
 LABEL_51:
-        [v6 originalText];
+        [replacementTracker originalText];
         goto LABEL_52;
       }
 
-      v18 = [v6 originalText];
-      v19 = [v18 string];
-      v20 = [v12 isEqualToString:v19];
+      originalText = [replacementTracker originalText];
+      string3 = [originalText string];
+      v20 = [string isEqualToString:string3];
 
       if (!v20)
       {
         goto LABEL_22;
       }
 
-      [a1 _updateProofreadingTextAndTrackerToShowOriginal:1 inContextID:v3];
+      [d _updateProofreadingTextAndTrackerToShowOriginal:1 inContextID:v3];
     }
 
     else
     {
-      v16 = [v6 selectRewriteMatchingUndoRedoReplacementText:v10];
+      v16 = [replacementTracker selectRewriteMatchingUndoRedoReplacementText:rolledReplacement];
 
       if (v16)
       {
-        if (!v7)
+        if (!showingOriginal)
         {
-          [a1 _updateToCompositionSessionState:2 contextID:v3];
+          [d _updateToCompositionSessionState:2 contextID:v3];
           goto LABEL_6;
         }
 
-        v17 = [v6 numberOfPreviousRewrittenTexts];
-        [a1 _updateToCompositionSessionState:2 contextID:v3];
-        if (v17)
+        numberOfPreviousRewrittenTexts = [replacementTracker numberOfPreviousRewrittenTexts];
+        [d _updateToCompositionSessionState:2 contextID:v3];
+        if (numberOfPreviousRewrittenTexts)
         {
 LABEL_6:
-          a1[26] = 0;
+          d[26] = 0;
           goto LABEL_7;
         }
       }
 
       else
       {
-        v33 = v7;
-        v21 = [v8 rolledReplacement];
-        v22 = [v21 string];
-        v23 = [v6 originalText];
-        v24 = [v23 string];
-        v25 = [v22 isEqualToString:v24];
+        v33 = showingOriginal;
+        rolledReplacement3 = [undoRoller rolledReplacement];
+        string4 = [rolledReplacement3 string];
+        originalText2 = [replacementTracker originalText];
+        string5 = [originalText2 string];
+        v25 = [string4 isEqualToString:string5];
 
         if (v25)
         {
-          [a1 _updateToCompositionSessionState:1 contextID:v3];
-          if (a1[29])
+          [d _updateToCompositionSessionState:1 contextID:v3];
+          if (d[29])
           {
             goto LABEL_6;
           }
@@ -1234,7 +1234,7 @@ LABEL_53:
             v27 = @"original text";
           }
 
-          v28 = v6;
+          v28 = replacementTracker;
           if (v33)
           {
             goto LABEL_44;
@@ -1246,7 +1246,7 @@ LABEL_53:
     }
 
 LABEL_5:
-    [a1 stopWritingTools];
+    [d stopWritingTools];
     goto LABEL_6;
   }
 
@@ -1256,14 +1256,14 @@ LABEL_8:
 - (void)_finishUndoRedoChangesInAllContextsIfNecessary
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v2 = [a1[4] keyEnumerator];
-    v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    keyEnumerator = [self[4] keyEnumerator];
+    v3 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v3)
     {
       v4 = v3;
@@ -1275,19 +1275,19 @@ LABEL_8:
         {
           if (*v11 != v5)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v7 = *(*(&v10 + 1) + 8 * v6);
-          v8 = [a1 _trackingInfos];
-          v9 = [v8 objectForKeyedSubscript:v7];
+          _trackingInfos = [self _trackingInfos];
+          v9 = [_trackingInfos objectForKeyedSubscript:v7];
 
-          [(UIWritingToolsCoordinator *)a1 _finishUndoRedoChangesIfNecessaryForContextID:v7];
+          [(UIWritingToolsCoordinator *)self _finishUndoRedoChangesIfNecessaryForContextID:v7];
           ++v6;
         }
 
         while (v4 != v6);
-        v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v4);
@@ -1295,27 +1295,27 @@ LABEL_8:
   }
 }
 
-- (void)updateForReflowedTextInContextWithIdentifier:(id)a3
+- (void)updateForReflowedTextInContextWithIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  identifierCopy = identifier;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v7 = [_trackingInfos objectForKeyedSubscript:identifierCopy];
 
-  v8 = [v7 replacementTracker];
-  if ([v8 isProofreading])
+  replacementTracker = [v7 replacementTracker];
+  if ([replacementTracker isProofreading])
   {
     if (self->_inFlightDeliveryID)
     {
-      v12[0] = v5;
+      v12[0] = identifierCopy;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
       v10 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v9];
     }
 
     else
     {
-      v11 = [v7 acceptedEvaluationContext];
-      -[UIWritingToolsCoordinator _resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:inContext:completion:](self, "_resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:inContext:completion:", [v11 evaluatedRange], v5, &__block_literal_global_78);
+      acceptedEvaluationContext = [v7 acceptedEvaluationContext];
+      -[UIWritingToolsCoordinator _resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:inContext:completion:](self, "_resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:inContext:completion:", [acceptedEvaluationContext evaluatedRange], identifierCopy, &__block_literal_global_78);
     }
   }
 }
@@ -1344,34 +1344,34 @@ LABEL_8:
   return v9;
 }
 
-- (_NSRange)_adjustedResolvedRangeForContextWithIdentifier:(id)a3
+- (_NSRange)_adjustedResolvedRangeForContextWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v6 = [_trackingInfos objectForKeyedSubscript:identifierCopy];
 
-  v7 = [v6 acceptedEvaluationContext];
-  v8 = [v6 replacementTracker];
-  v9 = [v7 resolvedRange];
+  acceptedEvaluationContext = [v6 acceptedEvaluationContext];
+  replacementTracker = [v6 replacementTracker];
+  resolvedRange = [acceptedEvaluationContext resolvedRange];
   v11 = v10;
   if (([v6 showingOriginal] & 1) == 0)
   {
-    if ([v8 isProofreading])
+    if ([replacementTracker isProofreading])
     {
-      v12 = [v8 proofreadingController];
-      v13 = [v12 editTracker];
-      [v13 currentContextRange];
+      proofreadingController = [replacementTracker proofreadingController];
+      editTracker = [proofreadingController editTracker];
+      [editTracker currentContextRange];
       v11 = v14;
     }
 
     else
     {
-      v12 = [v8 activeText];
-      v11 = [v12 length];
+      proofreadingController = [replacementTracker activeText];
+      v11 = [proofreadingController length];
     }
   }
 
-  v15 = v9;
+  v15 = resolvedRange;
   v16 = v11;
   result.length = v16;
   result.location = v15;
@@ -1389,9 +1389,9 @@ LABEL_8:
   }
 
   v5 = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 isEditable];
+  isEditable = [v5 isEditable];
 
-  return v6;
+  return isEditable;
 }
 
 void __43__UIWritingToolsCoordinator__isIAWriterApp__block_invoke()
@@ -1400,9 +1400,9 @@ void __43__UIWritingToolsCoordinator__isIAWriterApp__block_invoke()
   byte_1ED49CA79 = [v0 isEqualToString:@"pro.writer"];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  obj = a3;
+  obj = view;
   [obj _setWritingToolsCoordinator:self];
   WeakRetained = objc_loadWeakRetained(&self->_effectContainerView);
 
@@ -1418,11 +1418,11 @@ void __43__UIWritingToolsCoordinator__isIAWriterApp__block_invoke()
     objc_storeWeak(&self->_decorationContainerView, obj);
   }
 
-  v6 = [(UIWritingToolsCoordinator *)self _associatedTextView];
-  v7 = v6;
-  if (v6)
+  _associatedTextView = [(UIWritingToolsCoordinator *)self _associatedTextView];
+  v7 = _associatedTextView;
+  if (_associatedTextView)
   {
-    [v6 setWritingToolsBehavior:self->_preferredBehavior];
+    [_associatedTextView setWritingToolsBehavior:self->_preferredBehavior];
     [v7 setAllowedWritingToolsResultOptions:self->_preferredResultOptions];
     self->_isEndingSession = 1;
     if ((dyld_program_sdk_at_least() & 1) == 0 && ([v7 isMemberOfClass:objc_opt_class()] & 1) == 0)
@@ -1442,9 +1442,9 @@ void __43__UIWritingToolsCoordinator__isIAWriterApp__block_invoke()
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  obj = a3;
+  obj = view;
   if (self->_proofreadingInteraction)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
@@ -1473,24 +1473,24 @@ void __43__UIWritingToolsCoordinator__isIAWriterApp__block_invoke()
   objc_storeWeak(&self->_view, obj);
 }
 
-- (void)willBeginWritingToolsSession:(id)a3 requestContexts:(id)a4
+- (void)willBeginWritingToolsSession:(id)session requestContexts:(id)contexts
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  contextsCopy = contexts;
   if (objc_opt_class())
   {
     if (self->_inFlightDeliveryID)
     {
-      [(UIWritingToolsCoordinator *)self _setPendingCompletionForWritingToolsWillBegin:v8];
-      [(UIWritingToolsCoordinator *)self _setPendingSessionForWritingToolsWillBegin:v7];
+      [(UIWritingToolsCoordinator *)self _setPendingCompletionForWritingToolsWillBegin:contextsCopy];
+      [(UIWritingToolsCoordinator *)self _setPendingSessionForWritingToolsWillBegin:sessionCopy];
     }
 
     else
     {
       if (self->_activeSessionUUID)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:687 description:@"New writing tools session starting without having ended the previous session"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:687 description:@"New writing tools session starting without having ended the previous session"];
       }
 
       [(UIWritingToolsCoordinator *)self _setPendingCompletionForWritingToolsWillBegin:0];
@@ -1501,14 +1501,14 @@ void __43__UIWritingToolsCoordinator__isIAWriterApp__block_invoke()
       v18 = __74__UIWritingToolsCoordinator_willBeginWritingToolsSession_requestContexts___block_invoke;
       v19 = &unk_1E70F8DA0;
       objc_copyWeak(&v23, buf);
-      v22 = v8;
-      v10 = v7;
+      v22 = contextsCopy;
+      v10 = sessionCopy;
       v20 = v10;
-      v21 = self;
+      selfCopy = self;
       v11 = _Block_copy(&v16);
-      v12 = [v10 uuid];
+      uuid = [v10 uuid];
       activeSessionUUID = self->_activeSessionUUID;
-      self->_activeSessionUUID = v12;
+      self->_activeSessionUUID = uuid;
 
       if (v10)
       {
@@ -1676,23 +1676,23 @@ void __74__UIWritingToolsCoordinator_willBeginWritingToolsSession_requestContext
   }
 }
 
-- (void)didBeginWritingToolsSession:(id)a3 contexts:(id)a4
+- (void)didBeginWritingToolsSession:(id)session contexts:(id)contexts
 {
   v64 = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  v7 = a4;
-  if (![v7 count])
+  sessionCopy = session;
+  contextsCopy = contexts;
+  if (![contextsCopy count])
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:768 description:@"Can't have begun a writing tools session without any contexts"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:768 description:@"Can't have begun a writing tools session without any contexts"];
   }
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v7;
+  obj = contextsCopy;
   v9 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v9)
   {
@@ -1709,18 +1709,18 @@ void __74__UIWritingToolsCoordinator_willBeginWritingToolsSession_requestContext
         }
 
         v13 = *(*(&v56 + 1) + 8 * v12);
-        v14 = [v13 uuid];
-        v15 = self;
-        v16 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:v14];
-        v17 = [v16 proposedEvaluationContext];
-        v18 = v17;
-        if (v17)
+        uuid = [v13 uuid];
+        selfCopy = self;
+        v16 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:uuid];
+        proposedEvaluationContext = [v16 proposedEvaluationContext];
+        v18 = proposedEvaluationContext;
+        if (proposedEvaluationContext)
         {
-          [v17 _setWTContext:v13];
-          v19 = [v13 range];
-          [v18 _setEvaluatedRange:{v19, v20}];
+          [proposedEvaluationContext _setWTContext:v13];
+          range = [v13 range];
+          [v18 _setEvaluatedRange:{range, v20}];
           [v16 setAcceptedEvaluationContext:v18];
-          [v8 addObject:v18];
+          [array addObject:v18];
         }
 
         else if (os_variant_has_internal_diagnostics())
@@ -1729,7 +1729,7 @@ void __74__UIWritingToolsCoordinator_willBeginWritingToolsSession_requestContext
           if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412290;
-            v62 = v14;
+            v62 = uuid;
             _os_log_fault_impl(&dword_188A29000, v22, OS_LOG_TYPE_FAULT, "Couldn't match up evaluation context with identifier: %@", buf, 0xCu);
           }
         }
@@ -1740,13 +1740,13 @@ void __74__UIWritingToolsCoordinator_willBeginWritingToolsSession_requestContext
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v62 = v14;
+            v62 = uuid;
             _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "Couldn't match up evaluation context with identifier: %@", buf, 0xCu);
           }
         }
 
         ++v12;
-        self = v15;
+        self = selfCopy;
       }
 
       while (v10 != v12);
@@ -1757,12 +1757,12 @@ void __74__UIWritingToolsCoordinator_willBeginWritingToolsSession_requestContext
     while (v23);
   }
 
-  v24 = [v46 textViewDelegate];
-  [(UIWritingToolsCoordinator *)self _setSetSessionTextViewDelegate:v24];
+  textViewDelegate = [sessionCopy textViewDelegate];
+  [(UIWritingToolsCoordinator *)self _setSetSessionTextViewDelegate:textViewDelegate];
 
-  v25 = [v46 type];
-  v26 = v25;
-  if (v25 == 1)
+  type = [sessionCopy type];
+  v26 = type;
+  if (type == 1)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -1774,7 +1774,7 @@ void __74__UIWritingToolsCoordinator_willBeginWritingToolsSession_requestContext
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v62 = v8;
+            v62 = array;
             v28 = "Begin proofread of evaluation contexts, %@";
 LABEL_31:
             _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, v28, buf, 0xCu);
@@ -1784,7 +1784,7 @@ LABEL_31:
     }
   }
 
-  else if (v25 == 2)
+  else if (type == 2)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -1796,7 +1796,7 @@ LABEL_31:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v62 = v8;
+            v62 = array;
             v28 = "Begin rewrite of evaluation contexts, %@";
             goto LABEL_31;
           }
@@ -1807,15 +1807,15 @@ LABEL_31:
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:793 description:{@"Unimplemented writing tools session type, %li", v26}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:793 description:{@"Unimplemented writing tools session type, %li", v26}];
   }
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v47 = v8;
+  v47 = array;
   v51 = [v47 countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v51)
   {
@@ -1831,19 +1831,19 @@ LABEL_31:
         }
 
         v31 = *(*(&v52 + 1) + 8 * i);
-        v32 = [v31 identifier];
-        v33 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-        v34 = [v33 objectForKeyedSubscript:v32];
+        identifier = [v31 identifier];
+        _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+        v34 = [_trackingInfos objectForKeyedSubscript:identifier];
 
-        v35 = [v31 evaluatedRange];
+        evaluatedRange = [v31 evaluatedRange];
         v37 = v36;
         if (v26 == 1)
         {
           v38 = [off_1E70ECC10 alloc];
-          v39 = [v31 attributedString];
-          v40 = [v38 initWithContextString:v39 contextRange:v35 delegate:{v37, self}];
+          attributedString = [v31 attributedString];
+          v40 = [v38 initWithContextString:attributedString contextRange:evaluatedRange delegate:{v37, self}];
 
-          [v40 _setWritingToolsContextID:v32];
+          [v40 _setWritingToolsContextID:identifier];
         }
 
         else
@@ -1851,15 +1851,15 @@ LABEL_31:
           v40 = 0;
         }
 
-        v41 = self;
+        selfCopy2 = self;
         v42 = [_UITextAssistantReplacementTracker alloc];
-        v43 = [v31 _wtContext];
-        v44 = [(_UITextAssistantReplacementTracker *)v42 initFromSessionContext:v43 offsetForSessionRange:0 withProofreadingController:v40];
+        _wtContext = [v31 _wtContext];
+        v44 = [(_UITextAssistantReplacementTracker *)v42 initFromSessionContext:_wtContext offsetForSessionRange:0 withProofreadingController:v40];
         [v34 setReplacementTracker:v44];
 
-        [(UIWritingToolsCoordinator *)v41 _beginTextAssistantAnticipationsForRange:v35 inContext:v37, v31];
+        [(UIWritingToolsCoordinator *)selfCopy2 _beginTextAssistantAnticipationsForRange:evaluatedRange inContext:v37, v31];
         v26 = v50;
-        self = v41;
+        self = selfCopy2;
       }
 
       v51 = [v47 countByEnumeratingWithState:&v52 objects:v60 count:16];
@@ -1871,14 +1871,14 @@ LABEL_31:
   [(UIWritingToolsCoordinator *)self _changeToState:&__block_literal_global_112 postStateChangeActions:?];
 }
 
-- (void)didEndWritingToolsSession:(id)a3 accepted:(BOOL)a4
+- (void)didEndWritingToolsSession:(id)session accepted:(BOOL)accepted
 {
-  v4 = a4;
+  acceptedCopy = accepted;
   v40[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)self->_trackingInfos keyEnumerator];
-  v9 = [v8 allObjects];
-  [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:v9];
+  sessionCopy = session;
+  keyEnumerator = [(NSMutableDictionary *)self->_trackingInfos keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
+  [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:allObjects];
 
   [(NSMutableArray *)self->_writingToolsDelegateMessageInvocationBuffer removeAllObjects];
   if (!self->_inFlightDeliveryID)
@@ -1892,16 +1892,16 @@ LABEL_31:
     v13 = _Block_copy(&v30);
     *(&self->_includesTextListMarkers + 2) = 1;
     [(UIWritingToolsCoordinator *)&self->super.isa _finishUndoRedoChangesInAllContextsIfNecessary];
-    if ([v7 type] == 1)
+    if ([sessionCopy type] == 1)
     {
-      [(UIWritingToolsCoordinator *)self _didEndProofreadingSession:v7 accepted:v4 completion:v13];
+      [(UIWritingToolsCoordinator *)self _didEndProofreadingSession:sessionCopy accepted:acceptedCopy completion:v13];
     }
 
     else
     {
-      if ([v7 type] == 2)
+      if ([sessionCopy type] == 2)
       {
-        [(UIWritingToolsCoordinator *)self _didEndRewritingSession:v7 accepted:v4];
+        [(UIWritingToolsCoordinator *)self _didEndRewritingSession:sessionCopy accepted:acceptedCopy];
       }
 
       else
@@ -1932,11 +1932,11 @@ LABEL_31:
             v28 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &qword_1ED49CAD8) + 8);
             if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
             {
-              v29 = [v7 type];
+              type = [sessionCopy type];
               *buf = 134218242;
-              v37 = v29;
+              v37 = type;
               v38 = 2112;
-              v39 = self;
+              selfCopy = self;
               _os_log_impl(&dword_188A29000, v28, OS_LOG_TYPE_ERROR, "Could not end unexpected Writing Tools session type, %lu, for %@", buf, 0x16u);
             }
           }
@@ -1953,8 +1953,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v40[0] = v7;
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v40[0] = sessionCopy;
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:acceptedCopy];
   v40[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
   v12 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v11];
@@ -1969,7 +1969,7 @@ LABEL_10:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         v19 = @"reverted";
-        if (v4)
+        if (acceptedCopy)
         {
           v19 = @"accepted";
         }
@@ -1977,7 +1977,7 @@ LABEL_10:
         *buf = 138412546;
         v37 = v19;
         v38 = 2112;
-        v39 = v12;
+        selfCopy = v12;
         _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "Ending session with delivery in flight, %@. Deferring until most recent delivery lands. %@", buf, 0x16u);
       }
     }
@@ -1997,19 +1997,19 @@ void __64__UIWritingToolsCoordinator_didEndWritingToolsSession_accepted___block_
   }
 }
 
-- (void)writingToolsSession:(id)a3 didReceiveAction:(int64_t)a4
+- (void)writingToolsSession:(id)session didReceiveAction:(int64_t)action
 {
   v48[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  sessionCopy = session;
   activeSessionUUID = self->_activeSessionUUID;
-  v36 = v7;
-  v9 = [v7 uuid];
-  _confirmMatchingWritingToolsSession(activeSessionUUID, v9, a2);
+  v36 = sessionCopy;
+  uuid = [sessionCopy uuid];
+  _confirmMatchingWritingToolsSession(activeSessionUUID, uuid, a2);
 
   if (self->_inFlightDeliveryID)
   {
     v48[0] = v36;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:action];
     v48[1] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
     v12 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v11];
@@ -2023,12 +2023,12 @@ void __64__UIWritingToolsCoordinator_didEndWritingToolsSession_accepted___block_
         v32 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &writingToolsSession_didReceiveAction____s_category) + 8);
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          if (a4 == 1)
+          if (action == 1)
           {
             v33 = @"ShowOriginal";
           }
 
-          else if (a4 == 2)
+          else if (action == 2)
           {
             v33 = @"ShowRewritten";
           }
@@ -2036,7 +2036,7 @@ void __64__UIWritingToolsCoordinator_didEndWritingToolsSession_accepted___block_
           else
           {
             v33 = @"<unrecognized>";
-            if (a4 == 3)
+            if (action == 3)
             {
               v33 = @"CompositionRestart";
             }
@@ -2054,27 +2054,27 @@ void __64__UIWritingToolsCoordinator_didEndWritingToolsSession_accepted___block_
 
   else if ([v36 type] == 2)
   {
-    [(UIWritingToolsCoordinator *)self _setIsStartingRetry:a4 == 3];
-    v13 = a4 - 1;
-    if ((a4 - 1) >= 2)
+    [(UIWritingToolsCoordinator *)self _setIsStartingRetry:action == 3];
+    v13 = action - 1;
+    if ((action - 1) >= 2)
     {
-      a4 = 0;
+      action = 0;
     }
 
     if (v13 >= 3)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:865 description:@"UITextAssistantManager received unknown composition action"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:865 description:@"UITextAssistantManager received unknown composition action"];
 
-      a4 = -1;
+      action = -1;
     }
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v15 = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
-    v16 = [v15 countByEnumeratingWithState:&v39 objects:v44 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
+    v16 = [objectEnumerator countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v16)
     {
       v17 = *v40;
@@ -2084,36 +2084,36 @@ void __64__UIWritingToolsCoordinator_didEndWritingToolsSession_accepted___block_
         {
           if (*v40 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v19 = *(*(&v39 + 1) + 8 * i);
-          v20 = [v19 acceptedEvaluationContext];
-          v21 = v20 == 0;
+          acceptedEvaluationContext = [v19 acceptedEvaluationContext];
+          v21 = acceptedEvaluationContext == 0;
 
           if (!v21)
           {
-            v22 = [v19 contextID];
-            [(UIWritingToolsCoordinator *)self _finishUndoRedoChangesIfNecessaryForContextID:v22];
+            contextID = [v19 contextID];
+            [(UIWritingToolsCoordinator *)self _finishUndoRedoChangesIfNecessaryForContextID:contextID];
             if (!self->_activeSessionUUID)
             {
 
               goto LABEL_4;
             }
 
-            v23 = [v19 replacementTracker];
-            if ([v23 compositionSessionState] | a4)
+            replacementTracker = [v19 replacementTracker];
+            if ([replacementTracker compositionSessionState] | action)
             {
-              v43 = v22;
+              v43 = contextID;
               v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
               [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:v24];
 
-              [(UIWritingToolsCoordinator *)self _updateToCompositionSessionState:a4 contextID:v22];
+              [(UIWritingToolsCoordinator *)self _updateToCompositionSessionState:action contextID:contextID];
             }
           }
         }
 
-        v16 = [v15 countByEnumeratingWithState:&v39 objects:v44 count:16];
+        v16 = [objectEnumerator countByEnumeratingWithState:&v39 objects:v44 count:16];
         if (v16)
         {
           continue;
@@ -2128,20 +2128,20 @@ void __64__UIWritingToolsCoordinator_didEndWritingToolsSession_accepted___block_
 
   else
   {
-    v25 = [(NSMutableDictionary *)self->_trackingInfos keyEnumerator];
-    v26 = [v25 allObjects];
-    [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:v26];
+    keyEnumerator = [(NSMutableDictionary *)self->_trackingInfos keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
+    [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:allObjects];
 
     if ([v36 type] != 1)
     {
-      v34 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v34 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:889 description:@"UITextAssistantManager received action for unknown session type"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:889 description:@"UITextAssistantManager received action for unknown session type"];
     }
 
-    if ((a4 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+    if ((action - 3) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:890 description:@"UITextAssistantManager received unknown proofreading action"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:890 description:@"UITextAssistantManager received unknown proofreading action"];
     }
 
     else
@@ -2155,7 +2155,7 @@ void __64__UIWritingToolsCoordinator_didEndWritingToolsSession_accepted___block_
         aBlock[2] = __66__UIWritingToolsCoordinator_writingToolsSession_didReceiveAction___block_invoke;
         aBlock[3] = &unk_1E70F8DC8;
         objc_copyWeak(v38, location);
-        v38[1] = a4;
+        v38[1] = action;
         v27 = _Block_copy(aBlock);
         [(UIWritingToolsCoordinator *)self _changeToState:v27 postStateChangeActions:?];
 
@@ -2187,33 +2187,33 @@ void __66__UIWritingToolsCoordinator_writingToolsSession_didReceiveAction___bloc
   }
 }
 
-- (void)_recursiveUpdateProofreadingTextAndTrackerToShowOriginal:(BOOL)a3 withContextIDEnumerator:(id)a4 completion:(id)a5
+- (void)_recursiveUpdateProofreadingTextAndTrackerToShowOriginal:(BOOL)original withContextIDEnumerator:(id)enumerator completion:(id)completion
 {
-  v6 = a3;
+  originalCopy = original;
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 nextObject];
-  if (v10)
+  enumeratorCopy = enumerator;
+  completionCopy = completion;
+  nextObject = [enumeratorCopy nextObject];
+  if (nextObject)
   {
-    v11 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-    v12 = [v11 objectForKeyedSubscript:v10];
+    _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+    v12 = [_trackingInfos objectForKeyedSubscript:nextObject];
 
-    v13 = [v12 acceptedEvaluationContext];
-    if (v13)
+    acceptedEvaluationContext = [v12 acceptedEvaluationContext];
+    if (acceptedEvaluationContext)
     {
-      v40 = v6;
-      if (v6)
+      v40 = originalCopy;
+      if (originalCopy)
       {
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v14 = [v12 replacementTracker];
-        v15 = [v14 proofreadingController];
-        v16 = [v15 suggestions];
+        replacementTracker = [v12 replacementTracker];
+        proofreadingController = [replacementTracker proofreadingController];
+        suggestions = [proofreadingController suggestions];
 
-        v17 = [v16 countByEnumeratingWithState:&v45 objects:v52 count:16];
+        v17 = [suggestions countByEnumeratingWithState:&v45 objects:v52 count:16];
         if (v17)
         {
           v18 = v17;
@@ -2225,16 +2225,16 @@ void __66__UIWritingToolsCoordinator_writingToolsSession_didReceiveAction___bloc
             {
               if (*v46 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(suggestions);
               }
 
               v21 = *(*(&v45 + 1) + 8 * i);
               if ([v21 state] == 1)
               {
-                v22 = [v21 uuid];
+                uuid = [v21 uuid];
                 v12 = v39;
-                [v39 setSavedReviewingProofreadingSuggestionID:v22];
-                [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:v22 state:0];
+                [v39 setSavedReviewingProofreadingSuggestionID:uuid];
+                [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:uuid state:0];
                 if (os_variant_has_internal_diagnostics())
                 {
                   if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0)
@@ -2245,7 +2245,7 @@ void __66__UIWritingToolsCoordinator_writingToolsSession_didReceiveAction___bloc
                       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138412290;
-                        v51 = v22;
+                        v51 = uuid;
                         _os_log_impl(&dword_188A29000, v38, OS_LOG_TYPE_ERROR, "Tell Writing Tools to update proofreading suggestion to Pending so that the popover will dismiss. suggestionID = %@", buf, 0xCu);
                       }
                     }
@@ -2253,13 +2253,13 @@ void __66__UIWritingToolsCoordinator_writingToolsSession_didReceiveAction___bloc
                 }
 
                 WeakRetained = objc_loadWeakRetained(&self->_sessionTextViewDelegate);
-                [WeakRetained proofreadingSessionWithUUID:self->_activeSessionUUID updateState:0 forSuggestionWithUUID:v22];
+                [WeakRetained proofreadingSessionWithUUID:self->_activeSessionUUID updateState:0 forSuggestionWithUUID:uuid];
 
                 goto LABEL_16;
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v45 objects:v52 count:16];
+            v18 = [suggestions countByEnumeratingWithState:&v45 objects:v52 count:16];
             v12 = v39;
             if (v18)
             {
@@ -2272,36 +2272,36 @@ void __66__UIWritingToolsCoordinator_writingToolsSession_didReceiveAction___bloc
 
 LABEL_16:
 
-        v6 = v40;
+        originalCopy = v40;
       }
 
-      [(UIWritingToolsCoordinator *)self _updateProofreadingTextAndTrackerToShowOriginal:v6 inContextID:v10];
-      v24 = [v13 range];
+      [(UIWritingToolsCoordinator *)self _updateProofreadingTextAndTrackerToShowOriginal:originalCopy inContextID:nextObject];
+      range = [acceptedEvaluationContext range];
       v26 = v25;
-      if ((v6 & 1) == 0)
+      if ((originalCopy & 1) == 0)
       {
-        v27 = [v12 replacementTracker];
-        v28 = [v27 proofreadingController];
+        replacementTracker2 = [v12 replacementTracker];
+        proofreadingController2 = [replacementTracker2 proofreadingController];
 
-        v29 = [(UIWritingToolsCoordinator *)self _lastProofreadingSuggestionWithUnderlineFromProofreadingController:v28];
+        v29 = [(UIWritingToolsCoordinator *)self _lastProofreadingSuggestionWithUnderlineFromProofreadingController:proofreadingController2];
         if (v29)
         {
-          v30 = [v28 editTracker];
-          v31 = [v29 originalRange];
-          v33 = [v30 adjustRange:{v31, v32}];
-          v24 = v33 + v34;
+          editTracker = [proofreadingController2 editTracker];
+          originalRange = [v29 originalRange];
+          v33 = [editTracker adjustRange:{originalRange, v32}];
+          range = v33 + v34;
         }
 
         else
         {
-          v24 += v26;
+          range += v26;
         }
 
         v26 = 0;
       }
 
-      v35 = [(UIWritingToolsCoordinator *)self delegate];
-      v36 = [MEMORY[0x1E696B098] valueWithRange:{v24, v26}];
+      delegate = [(UIWritingToolsCoordinator *)self delegate];
+      v36 = [MEMORY[0x1E696B098] valueWithRange:{range, v26}];
       v49 = v36;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
       v41[0] = MEMORY[0x1E69E9820];
@@ -2310,56 +2310,56 @@ LABEL_16:
       v41[3] = &unk_1E70F3798;
       v41[4] = self;
       v44 = v40;
-      v42 = v8;
-      v43 = v9;
-      [v35 writingToolsCoordinator:self selectRanges:v37 inContext:v13 completion:v41];
+      v42 = enumeratorCopy;
+      v43 = completionCopy;
+      [delegate writingToolsCoordinator:self selectRanges:v37 inContext:acceptedEvaluationContext completion:v41];
     }
   }
 
   else
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:(uint64_t)a3 state:
+- (void)_synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:(uint64_t)identifier state:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v10 = v5;
-    v6 = [a1 _proofreadingSuggestionInfos];
-    v7 = [v6 objectForKeyedSubscript:v10];
+    _proofreadingSuggestionInfos = [self _proofreadingSuggestionInfos];
+    v7 = [_proofreadingSuggestionInfos objectForKeyedSubscript:v10];
 
     if (!v7)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:sel__synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier_state_ object:a1 file:@"UIWritingToolsCoordinator.m" lineNumber:2423 description:@"Proofreading suggestion tracking breakdown"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier_state_ object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2423 description:@"Proofreading suggestion tracking breakdown"];
     }
 
-    if ([v7 state] != a3)
+    if ([v7 state] != identifier)
     {
-      v8 = [[_UIWTCProofreadingSuggestionInfo alloc] initWithProofreadingSuggestionInfo:v7 state:a3];
-      [a1[5] setObject:v8 forKeyedSubscript:v10];
+      v8 = [[_UIWTCProofreadingSuggestionInfo alloc] initWithProofreadingSuggestionInfo:v7 state:identifier];
+      [self[5] setObject:v8 forKeyedSubscript:v10];
     }
 
     v5 = v10;
   }
 }
 
-- (id)_lastProofreadingSuggestionWithUnderlineFromProofreadingController:(uint64_t)a1
+- (id)_lastProofreadingSuggestionWithUnderlineFromProofreadingController:(uint64_t)controller
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (controller)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v2 = [a2 suggestions];
-    v3 = [v2 reverseObjectEnumerator];
+    suggestions = [a2 suggestions];
+    reverseObjectEnumerator = [suggestions reverseObjectEnumerator];
 
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = *v10;
@@ -2369,7 +2369,7 @@ LABEL_16:
         {
           if (*v10 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v7 = *(*(&v9 + 1) + 8 * i);
@@ -2380,7 +2380,7 @@ LABEL_16:
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           continue;
@@ -2401,44 +2401,44 @@ LABEL_12:
   return v4;
 }
 
-- (void)compositionSession:(id)a3 didReceiveText:(id)a4 replacementRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)compositionSession:(id)session didReceiveText:(id)text replacementRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v36 = a7;
+  finishedCopy = finished;
   v56[5] = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v11 = a4;
-  v12 = a6;
-  v39 = [v12 uuid];
-  v13 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v14 = [v13 objectForKeyedSubscript:v39];
+  sessionCopy = session;
+  textCopy = text;
+  contextCopy = context;
+  uuid = [contextCopy uuid];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v14 = [_trackingInfos objectForKeyedSubscript:uuid];
 
-  v15 = [v14 acceptedEvaluationContext];
+  acceptedEvaluationContext = [v14 acceptedEvaluationContext];
 
-  if (v15)
+  if (acceptedEvaluationContext)
   {
     activeSessionUUID = self->_activeSessionUUID;
-    v17 = [v38 uuid];
-    _confirmMatchingWritingToolsSession(activeSessionUUID, v17, a2);
+    uuid2 = [sessionCopy uuid];
+    _confirmMatchingWritingToolsSession(activeSessionUUID, uuid2, a2);
 
     if (self->_inFlightDeliveryID)
     {
-      v56[0] = v38;
-      v18 = v11;
-      if (!v11)
+      v56[0] = sessionCopy;
+      v18 = textCopy;
+      if (!textCopy)
       {
         v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1EFB14550];
       }
 
       v56[1] = v18;
-      v19 = [MEMORY[0x1E696B098] valueWithRange:{a5.location, a5.length}];
+      v19 = [MEMORY[0x1E696B098] valueWithRange:{range.location, range.length}];
       v56[2] = v19;
-      v56[3] = v12;
-      v20 = [MEMORY[0x1E696AD98] numberWithBool:v36];
+      v56[3] = contextCopy;
+      v20 = [MEMORY[0x1E696AD98] numberWithBool:finishedCopy];
       v56[4] = v20;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:5];
-      v22 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v21];
+      replacementTracker = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v21];
 
-      if (!v11)
+      if (!textCopy)
       {
       }
 
@@ -2453,18 +2453,18 @@ LABEL_12:
           {
             v26 = &stru_1EFB14550;
             *buf = 138413314;
-            v47 = v22;
+            v47 = replacementTracker;
             v48 = 2048;
-            if (v36)
+            if (finishedCopy)
             {
               v26 = @" [FINISHED]";
             }
 
-            location = a5.location;
+            location = range.location;
             v50 = 2048;
-            length = a5.length;
+            length = range.length;
             v52 = 2112;
-            v53 = v11;
+            v53 = textCopy;
             v54 = 2112;
             v55 = v26;
             _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "Packaged up composition replacement to deliver after animation finishes, %@\n\trange={%lu, %lu} replacement=%@%@", buf, 0x34u);
@@ -2475,8 +2475,8 @@ LABEL_12:
 
     else
     {
-      v22 = [v14 replacementTracker];
-      if ([v22 isFinished])
+      replacementTracker = [v14 replacementTracker];
+      if ([replacementTracker isFinished])
       {
         if (os_variant_has_internal_diagnostics())
         {
@@ -2509,17 +2509,17 @@ LABEL_12:
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
           {
             v32 = v31;
-            v33 = [(__CFString *)v11 length];
+            v33 = [(__CFString *)textCopy length];
             v34 = &stru_1EFB14550;
             *buf = 134218754;
-            v47 = a5.location;
-            if (v36)
+            v47 = range.location;
+            if (finishedCopy)
             {
               v34 = @" FINISHED";
             }
 
             v48 = 2048;
-            location = a5.length;
+            location = range.length;
             v50 = 2048;
             length = v33;
             v52 = 2112;
@@ -2536,10 +2536,10 @@ LABEL_12:
       aBlock[2] = __99__UIWritingToolsCoordinator_compositionSession_didReceiveText_replacementRange_inContext_finished___block_invoke;
       aBlock[3] = &unk_1E70F8DF0;
       objc_copyWeak(&v43, buf);
-      v41 = v11;
-      v44 = a5;
-      v42 = v39;
-      v45 = v36;
+      v41 = textCopy;
+      rangeCopy = range;
+      v42 = uuid;
+      v45 = finishedCopy;
       v27 = _Block_copy(aBlock);
       [(UIWritingToolsCoordinator *)self _changeToState:v27 postStateChangeActions:?];
 
@@ -2565,28 +2565,28 @@ void __99__UIWritingToolsCoordinator_compositionSession_didReceiveText_replaceme
   }
 }
 
-- (void)proofreadingSession:(id)a3 didReceiveSuggestions:(id)a4 processedRange:(_NSRange)a5 inContext:(id)a6 finished:(BOOL)a7
+- (void)proofreadingSession:(id)session didReceiveSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v7 = a7;
-  length = a5.length;
-  location = a5.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v63[5] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = v14;
-  v18 = v16;
+  sessionCopy = session;
+  suggestionsCopy = suggestions;
+  contextCopy = context;
+  v17 = sessionCopy;
+  v18 = contextCopy;
   activeSessionUUID = self->_activeSessionUUID;
-  v20 = [v17 uuid];
-  _confirmMatchingWritingToolsSession(activeSessionUUID, v20, a2);
+  uuid = [v17 uuid];
+  _confirmMatchingWritingToolsSession(activeSessionUUID, uuid, a2);
 
   if (self->_inFlightDeliveryID)
   {
     v21 = MEMORY[0x1E695E0F0];
-    v46 = v15;
-    if (v15)
+    v46 = suggestionsCopy;
+    if (suggestionsCopy)
     {
-      v21 = v15;
+      v21 = suggestionsCopy;
     }
 
     v22 = v17;
@@ -2596,12 +2596,12 @@ void __99__UIWritingToolsCoordinator_compositionSession_didReceiveText_replaceme
     v63[2] = v23;
     v63[3] = v18;
     v24 = v18;
-    v25 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+    v25 = [MEMORY[0x1E696AD98] numberWithBool:finishedCopy];
     v63[4] = v25;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:5];
     v26 = location;
     v27 = length;
-    v29 = v28 = v7;
+    v29 = v28 = finishedCopy;
     v30 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v29];
 
     if (!os_variant_has_internal_diagnostics() || (v34 = v26, v35 = v28, (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) != 0))
@@ -2619,7 +2619,7 @@ void __99__UIWritingToolsCoordinator_compositionSession_didReceiveText_replaceme
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           v37 = v36;
-          v15 = v46;
+          suggestionsCopy = v46;
           v38 = [v46 count];
           *buf = 134219010;
           v39 = &stru_1EFB14550;
@@ -2643,7 +2643,7 @@ void __99__UIWritingToolsCoordinator_compositionSession_didReceiveText_replaceme
         }
 
 LABEL_7:
-        v15 = v46;
+        suggestionsCopy = v46;
         goto LABEL_10;
       }
     }
@@ -2652,7 +2652,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v31 = v7;
+  v31 = finishedCopy;
   if (os_variant_has_internal_diagnostics())
   {
     if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0)
@@ -2663,9 +2663,9 @@ LABEL_7:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
           v41 = v40;
-          v42 = [v15 count];
-          v43 = [v17 uuid];
-          v44 = v43;
+          v42 = [suggestionsCopy count];
+          uuid2 = [v17 uuid];
+          v44 = uuid2;
           *buf = 134219010;
           v45 = &stru_1EFB14550;
           v54 = v42;
@@ -2675,7 +2675,7 @@ LABEL_7:
             v45 = @" [FINISHED]";
           }
 
-          v56 = v43;
+          v56 = uuid2;
           v57 = 2048;
           v58 = location;
           v59 = 2048;
@@ -2689,8 +2689,8 @@ LABEL_7:
   }
 
   trackingInfos = self->_trackingInfos;
-  v33 = [v18 uuid];
-  v30 = [(NSMutableDictionary *)trackingInfos objectForKeyedSubscript:v33];
+  uuid3 = [v18 uuid];
+  v30 = [(NSMutableDictionary *)trackingInfos objectForKeyedSubscript:uuid3];
 
   [v30 setStreaming:1];
   v47[0] = MEMORY[0x1E69E9820];
@@ -2698,7 +2698,7 @@ LABEL_7:
   v47[2] = __105__UIWritingToolsCoordinator_proofreadingSession_didReceiveSuggestions_processedRange_inContext_finished___block_invoke;
   v47[3] = &unk_1E70F8E18;
   v47[4] = self;
-  v48 = v15;
+  v48 = suggestionsCopy;
   v50 = location;
   v51 = length;
   v49 = v18;
@@ -2708,29 +2708,29 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_completeReceivingSuggestions:(id)a3 processedRange:(_NSRange)a4 inContext:(id)a5 finished:(BOOL)a6
+- (void)_completeReceivingSuggestions:(id)suggestions processedRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v37 = a6;
+  finishedCopy = finished;
   v62[1] = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v39 = a5;
-  v8 = [v39 uuid];
-  v9 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v42 = [v9 objectForKeyedSubscript:v8];
+  suggestionsCopy = suggestions;
+  contextCopy = context;
+  uuid = [contextCopy uuid];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v42 = [_trackingInfos objectForKeyedSubscript:uuid];
 
-  v10 = [v39 attributedText];
-  v11 = [v10 attributedSubstringFromRange:{a4.location, a4.length}];
+  attributedText = [contextCopy attributedText];
+  v11 = [attributedText attributedSubstringFromRange:{range.location, range.length}];
   v12 = [v11 mutableCopy];
   proofreadingDeliveryReplacement = self->_proofreadingDeliveryReplacement;
   self->_proofreadingDeliveryReplacement = v12;
 
-  if ([v41 count] || v37)
+  if ([suggestionsCopy count] || finishedCopy)
   {
-    v62[0] = v8;
+    v62[0] = uuid;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:1];
     [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:v14];
 
-    if ([v41 count])
+    if ([suggestionsCopy count])
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
       proofreadingDeliverySuggestionIDs = self->_proofreadingDeliverySuggestionIDs;
@@ -2748,22 +2748,22 @@ LABEL_10:
     }
   }
 
-  v38 = [v42 replacementTracker];
-  v20 = [v42 acceptedEvaluationContext];
-  v21 = [v20 evaluatedRange];
+  replacementTracker = [v42 replacementTracker];
+  acceptedEvaluationContext = [v42 acceptedEvaluationContext];
+  evaluatedRange = [acceptedEvaluationContext evaluatedRange];
   v23 = v22;
-  v24 = [v38 proofreadingController];
-  v25 = [v42 backingProofreadingSuggestionStatePerSuggestionID];
-  v26 = [v42 currentProofreadingText];
-  if (!v26)
+  proofreadingController = [replacementTracker proofreadingController];
+  backingProofreadingSuggestionStatePerSuggestionID = [v42 backingProofreadingSuggestionStatePerSuggestionID];
+  currentProofreadingText = [v42 currentProofreadingText];
+  if (!currentProofreadingText)
   {
-    v27 = [v20 attributedString];
-    v26 = [v27 mutableCopy];
+    attributedString = [acceptedEvaluationContext attributedString];
+    currentProofreadingText = [attributedString mutableCopy];
 
-    [v42 setCurrentProofreadingText:v26];
+    [v42 setCurrentProofreadingText:currentProofreadingText];
   }
 
-  v28 = [v41 objectEnumerator];
+  objectEnumerator = [suggestionsCopy objectEnumerator];
   objc_initWeak(&location, self);
   v55 = 0;
   v56 = &v55;
@@ -2777,23 +2777,23 @@ LABEL_10:
   aBlock[3] = &unk_1E70F8E40;
   v51 = &v55;
   objc_copyWeak(v52, &location);
-  v29 = v25;
+  v29 = backingProofreadingSuggestionStatePerSuggestionID;
   v44 = v29;
-  v30 = v28;
+  v30 = objectEnumerator;
   v45 = v30;
-  v52[1] = v21;
+  v52[1] = evaluatedRange;
   v52[2] = v23;
-  v31 = v24;
+  v31 = proofreadingController;
   v46 = v31;
-  v32 = v8;
+  v32 = uuid;
   v47 = v32;
-  v48 = self;
+  selfCopy = self;
   v52[3] = a2;
-  v53 = a4;
-  v33 = v20;
+  rangeCopy = range;
+  v33 = acceptedEvaluationContext;
   v49 = v33;
-  v54 = v37;
-  v34 = v26;
+  v54 = finishedCopy;
+  v34 = currentProofreadingText;
   v50 = v34;
   v35 = _Block_copy(aBlock);
   objc_storeWeak(v56 + 5, v35);
@@ -2874,26 +2874,26 @@ void __93__UIWritingToolsCoordinator__completeReceivingSuggestions_processedRang
   }
 }
 
-- (void)proofreadingSession:(id)a3 didUpdateState:(int64_t)a4 forSuggestionWithUUID:(id)a5 inContext:(id)a6
+- (void)proofreadingSession:(id)session didUpdateState:(int64_t)state forSuggestionWithUUID:(id)d inContext:(id)context
 {
   v70[4] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  dCopy = d;
+  contextCopy = context;
   activeSessionUUID = self->_activeSessionUUID;
-  v15 = [v11 uuid];
-  _confirmMatchingWritingToolsSession(activeSessionUUID, v15, a2);
+  uuid = [sessionCopy uuid];
+  _confirmMatchingWritingToolsSession(activeSessionUUID, uuid, a2);
 
   if (!self->_inFlightDeliveryID)
   {
-    v18 = [v13 uuid];
-    v23 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-    v24 = [v23 objectForKeyedSubscript:v18];
+    uuid2 = [contextCopy uuid];
+    _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+    v24 = [_trackingInfos objectForKeyedSubscript:uuid2];
 
     if ([v24 showingOriginal])
     {
-      v25 = [v24 savedReviewingProofreadingSuggestionID];
-      v26 = [v12 isEqual:v25];
+      savedReviewingProofreadingSuggestionID = [v24 savedReviewingProofreadingSuggestionID];
+      v26 = [dCopy isEqual:savedReviewingProofreadingSuggestionID];
 
       if (v26)
       {
@@ -2901,17 +2901,17 @@ void __93__UIWritingToolsCoordinator__completeReceivingSuggestions_processedRang
       }
     }
 
-    v54 = [v24 replacementTracker];
-    v55 = [v54 proofreadingController];
-    v53 = [v55 suggestionWithUUID:v12];
+    replacementTracker = [v24 replacementTracker];
+    proofreadingController = [replacementTracker proofreadingController];
+    v53 = [proofreadingController suggestionWithUUID:dCopy];
     v27 = v53;
-    v28 = [v53 state];
-    if (v28 != a4)
+    state = [v53 state];
+    if (state != state)
     {
-      v29 = v28;
-      if (v28 == 4)
+      v29 = state;
+      if (state == 4)
       {
-        [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:v12 state:4];
+        [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:dCopy state:4];
         if (!os_variant_has_internal_diagnostics())
         {
           goto LABEL_26;
@@ -2934,16 +2934,16 @@ void __93__UIWritingToolsCoordinator__completeReceivingSuggestions_processedRang
         }
 
         loga = v30;
-        v31 = [v55 contextString];
-        v32 = [v31 string];
-        v33 = [v53 originalRange];
-        v35 = [v32 substringWithRange:{v33, v34}];
-        v36 = [v53 originalRange];
+        contextString = [proofreadingController contextString];
+        string = [contextString string];
+        originalRange = [v53 originalRange];
+        v35 = [string substringWithRange:{originalRange, v34}];
+        originalRange2 = [v53 originalRange];
         [v53 originalRange];
         *buf = 138412802;
         v65 = v35;
         v66 = 2048;
-        v67 = v36;
+        v67 = originalRange2;
         v68 = 2048;
         v69 = v37;
         _os_log_impl(&dword_188A29000, loga, OS_LOG_TYPE_ERROR, "Invalidated proofreading suggestion for %@ from {.loc=%lu, .len=%lu} in context", buf, 0x20u);
@@ -2951,7 +2951,7 @@ void __93__UIWritingToolsCoordinator__completeReceivingSuggestions_processedRang
 
       else
       {
-        v38 = a4 == 1;
+        v38 = state == 1;
         objc_initWeak(buf, self);
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
@@ -2960,12 +2960,12 @@ void __93__UIWritingToolsCoordinator__completeReceivingSuggestions_processedRang
         objc_copyWeak(v61, buf);
         v39 = v53;
         v57 = v39;
-        v61[1] = a4;
-        v40 = v18;
+        v61[1] = state;
+        v40 = uuid2;
         v58 = v40;
         v62 = v38;
-        v59 = v12;
-        v60 = self;
+        v59 = dCopy;
+        selfCopy = self;
         log = _Block_copy(aBlock);
         v41 = !v38;
         if (v29)
@@ -2983,12 +2983,12 @@ void __93__UIWritingToolsCoordinator__completeReceivingSuggestions_processedRang
         {
           v42 = [(UIWritingToolsCoordinator *)self _trailingCursorLocationRangeForProofreadingSuggestion:v39 inContextID:v40];
           v44 = v43;
-          v50 = [(UIWritingToolsCoordinator *)self delegate];
+          delegate = [(UIWritingToolsCoordinator *)self delegate];
           v45 = [MEMORY[0x1E696B098] valueWithRange:{v42, v44}];
           v63 = v45;
           v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
-          v47 = [v24 acceptedEvaluationContext];
-          [v50 writingToolsCoordinator:self selectRanges:v46 inContext:v47 completion:log];
+          acceptedEvaluationContext = [v24 acceptedEvaluationContext];
+          [delegate writingToolsCoordinator:self selectRanges:v46 inContext:acceptedEvaluationContext completion:log];
 
           v48 = log;
         }
@@ -3006,13 +3006,13 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v70[0] = v11;
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v70[0] = sessionCopy;
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   v70[1] = v16;
-  v70[2] = v12;
-  v70[3] = v13;
+  v70[2] = dCopy;
+  v70[3] = contextCopy;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:4];
-  v18 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v17];
+  uuid2 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v17];
 
   if (os_variant_has_internal_diagnostics())
   {
@@ -3023,20 +3023,20 @@ LABEL_27:
       v21 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &qword_1ED49CB08) + 8);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        if (a4 > 4)
+        if (state > 4)
         {
           v22 = @"unknown";
         }
 
         else
         {
-          v22 = off_1E70F93E0[a4];
+          v22 = off_1E70F93E0[state];
         }
 
         *buf = 134218498;
-        v65 = v18;
+        v65 = uuid2;
         v66 = 2112;
-        v67 = v12;
+        v67 = dCopy;
         v68 = 2112;
         v69 = v22;
         v49 = v21;
@@ -3089,24 +3089,24 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
   }
 }
 
-- (uint64_t)_trailingCursorLocationRangeForProofreadingSuggestion:(void *)a3 inContextID:
+- (uint64_t)_trailingCursorLocationRangeForProofreadingSuggestion:(void *)suggestion inContextID:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v5 = a3;
+  suggestionCopy = suggestion;
   v6 = a2;
-  v7 = [a1 _trackingInfos];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  _trackingInfos = [self _trackingInfos];
+  v8 = [_trackingInfos objectForKeyedSubscript:suggestionCopy];
 
-  if (!v6 || !v5)
+  if (!v6 || !suggestionCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    v22 = v21;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v22 = currentHandler;
     v23 = @"proofreadingSuggestion and contextID are both null";
-    if (v5)
+    if (suggestionCopy)
     {
       v23 = @"proofreadingSuggestion is null";
     }
@@ -3116,29 +3116,29 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
       v23 = @"contextID is null";
     }
 
-    [v21 handleFailureInMethod:sel__trailingCursorLocationRangeForProofreadingSuggestion_inContextID_ object:a1 file:@"UIWritingToolsCoordinator.m" lineNumber:2262 description:{@"Internal UIWritingToolsCoordinator error. Method called with null argument. %s\n\t%@", "-[UIWritingToolsCoordinator _trailingCursorLocationRangeForProofreadingSuggestion:inContextID:]", v23}];
+    [currentHandler handleFailureInMethod:sel__trailingCursorLocationRangeForProofreadingSuggestion_inContextID_ object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2262 description:{@"Internal UIWritingToolsCoordinator error. Method called with null argument. %s\n\t%@", "-[UIWritingToolsCoordinator _trailingCursorLocationRangeForProofreadingSuggestion:inContextID:]", v23}];
   }
 
-  v9 = [v8 replacementTracker];
-  v10 = [v9 proofreadingController];
-  v11 = [v10 editTracker];
-  v12 = [v6 originalRange];
+  replacementTracker = [v8 replacementTracker];
+  proofreadingController = [replacementTracker proofreadingController];
+  editTracker = [proofreadingController editTracker];
+  originalRange = [v6 originalRange];
   v14 = v13;
-  v15 = [v6 uuid];
+  uuid = [v6 uuid];
 
-  v16 = [v11 rangeOfSuggestionWithRange:v12 UUID:v14 applyDelta:{v15, 1}];
+  v16 = [editTracker rangeOfSuggestionWithRange:originalRange UUID:v14 applyDelta:{uuid, 1}];
   v18 = v17;
 
   v19 = v16 + v18;
   return v19;
 }
 
-- (BOOL)proofreadingInteraction:(id)a3 shouldRespondToTapAtPoint:(CGPoint)a4
+- (BOOL)proofreadingInteraction:(id)interaction shouldRespondToTapAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v75 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  interactionCopy = interaction;
   if (*&self->_chosenSuggestion != 0)
   {
     if (os_variant_has_internal_diagnostics())
@@ -3164,19 +3164,19 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
     self->_contextIDForChosenSuggestion = 0;
   }
 
-  v49 = [v7 view];
+  view = [interactionCopy view];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v10 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-  v11 = [v10 keyEnumerator];
+  _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+  keyEnumerator = [_proofreadingSuggestionInfos keyEnumerator];
 
-  obj = v11;
-  v46 = [v11 countByEnumeratingWithState:&v67 objects:v74 count:16];
+  obj = keyEnumerator;
+  v46 = [keyEnumerator countByEnumeratingWithState:&v67 objects:v74 count:16];
   if (v46)
   {
-    v56 = self;
+    selfCopy = self;
     LOBYTE(v12) = 0;
     v45 = *v68;
     while (2)
@@ -3199,9 +3199,9 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
 
         v47 = v13;
         v15 = *(*(&v67 + 1) + 8 * v13);
-        v16 = [(UIWritingToolsCoordinator *)v56 _proofreadingSuggestionInfos];
+        _proofreadingSuggestionInfos2 = [(UIWritingToolsCoordinator *)selfCopy _proofreadingSuggestionInfos];
         v55 = v15;
-        v17 = [v16 objectForKeyedSubscript:v15];
+        v17 = [_proofreadingSuggestionInfos2 objectForKeyedSubscript:v15];
 
         if ([v17 state] && objc_msgSend(v17, "state") != 1)
         {
@@ -3210,16 +3210,16 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
 
         else
         {
-          v18 = [v17 highlightInfo];
-          v19 = v18;
-          if (v18)
+          highlightInfo = [v17 highlightInfo];
+          v19 = highlightInfo;
+          if (highlightInfo)
           {
             v65 = 0u;
             v66 = 0u;
             v63 = 0u;
             v64 = 0u;
-            v48 = [v18 ranges];
-            v52 = [v48 countByEnumeratingWithState:&v63 objects:v73 count:16];
+            ranges = [highlightInfo ranges];
+            v52 = [ranges countByEnumeratingWithState:&v63 objects:v73 count:16];
             LOBYTE(v12) = 0;
             if (v52)
             {
@@ -3232,7 +3232,7 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
                 {
                   if (*v64 != v51)
                   {
-                    objc_enumerationMutation(v48);
+                    objc_enumerationMutation(ranges);
                   }
 
                   if (v12)
@@ -3243,19 +3243,19 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
 
                   v54 = v20;
                   v21 = *(*(&v63 + 1) + 8 * v20);
-                  v22 = [v19 containers];
-                  v23 = [v22 objectForKey:v21];
+                  containers = [v19 containers];
+                  v23 = [containers objectForKey:v21];
 
                   v53 = v23;
-                  [v23 convertPoint:v49 fromView:{x, y}];
+                  [v23 convertPoint:view fromView:{x, y}];
                   v25 = v24;
                   v27 = v26;
                   v59 = 0u;
                   v60 = 0u;
                   v61 = 0u;
                   v62 = 0u;
-                  v28 = [v19 paths];
-                  v29 = [v28 objectForKeyedSubscript:v21];
+                  paths = [v19 paths];
+                  v29 = [paths objectForKeyedSubscript:v21];
 
                   v58 = v29;
                   v30 = [v29 countByEnumeratingWithState:&v59 objects:v72 count:16];
@@ -3284,16 +3284,16 @@ void __96__UIWritingToolsCoordinator_proofreadingSession_didUpdateState_forSugge
                         v12 = [*(*(&v59 + 1) + 8 * v33) containsPoint:{v25, v27}];
                         if (v12)
                         {
-                          v34 = [v17 contextID];
-                          [(UIWritingToolsCoordinator *)v56 _trackingInfos];
+                          contextID = [v17 contextID];
+                          [(UIWritingToolsCoordinator *)selfCopy _trackingInfos];
                           v36 = v35 = v32;
-                          v37 = [v36 objectForKeyedSubscript:v34];
+                          v37 = [v36 objectForKeyedSubscript:contextID];
 
-                          [(UIWritingToolsCoordinator *)v56 _setContextIDForChosenSuggestion:v34];
-                          v38 = [v37 replacementTracker];
-                          v39 = [v38 proofreadingController];
-                          v40 = [v39 suggestionWithUUID:v55];
-                          [(UIWritingToolsCoordinator *)v56 _setChosenSuggestion:v40];
+                          [(UIWritingToolsCoordinator *)selfCopy _setContextIDForChosenSuggestion:contextID];
+                          replacementTracker = [v37 replacementTracker];
+                          proofreadingController = [replacementTracker proofreadingController];
+                          v40 = [proofreadingController suggestionWithUUID:v55];
+                          [(UIWritingToolsCoordinator *)selfCopy _setChosenSuggestion:v40];
 
                           v32 = v35;
                           v31 = v57;
@@ -3325,7 +3325,7 @@ LABEL_32:
                 }
 
                 while (v54 + 1 != v52);
-                v52 = [v48 countByEnumeratingWithState:&v63 objects:v73 count:16];
+                v52 = [ranges countByEnumeratingWithState:&v63 objects:v73 count:16];
                 if (v52)
                 {
                   continue;
@@ -3368,15 +3368,15 @@ LABEL_45:
   return v12;
 }
 
-- (void)proofreadingInteraction:(id)a3 receivedTapAtLocation:(CGPoint)a4
+- (void)proofreadingInteraction:(id)interaction receivedTapAtLocation:(CGPoint)location
 {
   v19 = *MEMORY[0x1E69E9840];
   chosenSuggestion = self->_chosenSuggestion;
   if (chosenSuggestion)
   {
-    v6 = [(NSWritingToolsProofreadingSuggestion *)chosenSuggestion uuid:a3];
-    v7 = [(NSWritingToolsProofreadingSuggestion *)self->_chosenSuggestion state];
-    v8 = v7 == 0;
+    v6 = [(NSWritingToolsProofreadingSuggestion *)chosenSuggestion uuid:interaction];
+    state = [(NSWritingToolsProofreadingSuggestion *)self->_chosenSuggestion state];
+    v8 = state == 0;
     if (os_variant_has_internal_diagnostics())
     {
       if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0)
@@ -3387,7 +3387,7 @@ LABEL_45:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
             v12 = @"Pending";
-            if (!v7)
+            if (!state)
             {
               v12 = @"Reviewing";
             }
@@ -3413,35 +3413,35 @@ LABEL_45:
   }
 }
 
-- (void)proofreadingController:(id)a3 replaceCharactersInRange:(_NSRange)a4 attributedString:(id)a5 state:(int64_t)a6 identifier:(id)a7 completion:(id)a8
+- (void)proofreadingController:(id)controller replaceCharactersInRange:(_NSRange)range attributedString:(id)string state:(int64_t)state identifier:(id)identifier completion:(id)completion
 {
-  length = a4.length;
-  v12 = a4.location;
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = v17;
+  length = range.length;
+  v12 = range.location;
+  controllerCopy = controller;
+  stringCopy = string;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v18 = completionCopy;
   if (*(&self->_includesTextListMarkers + 1))
   {
-    (*(v17 + 2))(v17, v16, v15, 0);
+    (*(completionCopy + 2))(completionCopy, identifierCopy, stringCopy, 0);
   }
 
   else
   {
     v25 = length;
-    v19 = [v14 _writingToolsContextID];
-    v20 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-    v21 = [v20 objectForKeyedSubscript:v19];
+    _writingToolsContextID = [controllerCopy _writingToolsContextID];
+    _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+    v21 = [_trackingInfos objectForKeyedSubscript:_writingToolsContextID];
 
     v24 = v21;
-    v22 = [v21 acceptedEvaluationContext];
-    v23 = [v22 resolvedRange];
+    acceptedEvaluationContext = [v21 acceptedEvaluationContext];
+    resolvedRange = [acceptedEvaluationContext resolvedRange];
 
     if (self->_proofreadingDeliveryReplacement)
     {
-      [(UIWritingToolsCoordinator *)self _updateProofreadingDeliveryWithReplacement:v15 accordingToProofreadingSuggestionWithIdentifier:v16 replacingCharactersInRange:v12 - v23 newState:v25 contextID:a6, v19];
-      (v18)[2](v18, v16, v15, 1);
+      [(UIWritingToolsCoordinator *)self _updateProofreadingDeliveryWithReplacement:stringCopy accordingToProofreadingSuggestionWithIdentifier:identifierCopy replacingCharactersInRange:v12 - resolvedRange newState:v25 contextID:state, _writingToolsContextID];
+      (v18)[2](v18, identifierCopy, stringCopy, 1);
     }
 
     else
@@ -3453,9 +3453,9 @@ LABEL_45:
       v26[3] = &unk_1E70F8E90;
       objc_copyWeak(v29, &location);
       v28 = v18;
-      v27 = v16;
-      v29[1] = a6;
-      [(UIWritingToolsCoordinator *)self _delegateUpdateTextAccordingToProofreadingSuggestionInfoWithIdentifier:v27 replacingCharactersInRange:v12 newState:v25 contextID:a6 updateCompletion:v19, v26];
+      v27 = identifierCopy;
+      v29[1] = state;
+      [(UIWritingToolsCoordinator *)self _delegateUpdateTextAccordingToProofreadingSuggestionInfoWithIdentifier:v27 replacingCharactersInRange:v12 newState:v25 contextID:state updateCompletion:_writingToolsContextID, v26];
 
       objc_destroyWeak(v29);
       objc_destroyWeak(&location);
@@ -3476,14 +3476,14 @@ void __122__UIWritingToolsCoordinator_proofreadingController_replaceCharactersIn
   (*(*(a1 + 40) + 16))(*(a1 + 40), *(a1 + 32));
 }
 
-- (void)_endTextAssistantAnticipationsForContextIDs:(id)a3
+- (void)_endTextAssistantAnticipationsForContextIDs:(id)ds
 {
   v32 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
+  obj = ds;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v4)
   {
@@ -3500,15 +3500,15 @@ void __122__UIWritingToolsCoordinator_proofreadingController_replaceCharactersIn
         }
 
         v8 = *(*(&v26 + 1) + 8 * v7);
-        v9 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+        v10 = [_trackingInfos objectForKeyedSubscript:v8];
 
-        v11 = [v10 acceptedEvaluationContext];
+        acceptedEvaluationContext = [v10 acceptedEvaluationContext];
 
-        if (v11)
+        if (acceptedEvaluationContext)
         {
-          v12 = [v10 anticipationAnimationSubranges];
-          v13 = [v12 copy];
+          anticipationAnimationSubranges = [v10 anticipationAnimationSubranges];
+          v13 = [anticipationAnimationSubranges copy];
 
           v24 = 0u;
           v25 = 0u;
@@ -3530,8 +3530,8 @@ void __122__UIWritingToolsCoordinator_proofreadingController_replaceCharactersIn
                   objc_enumerationMutation(v14);
                 }
 
-                v19 = [*(*(&v22 + 1) + 8 * v18) rangeValue];
-                [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationInContextID:v8 animationCharacterRange:v19, v20];
+                rangeValue = [*(*(&v22 + 1) + 8 * v18) rangeValue];
+                [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationInContextID:v8 animationCharacterRange:rangeValue, v20];
                 ++v18;
               }
 
@@ -3560,22 +3560,22 @@ void __122__UIWritingToolsCoordinator_proofreadingController_replaceCharactersIn
   v10 = a4;
   v11 = a5;
   v12 = v11;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_18;
   }
 
   v39 = v11;
-  v13 = [v10 identifier];
-  v14 = [a1 _trackingInfos];
-  v38 = v13;
-  v15 = [v14 objectForKeyedSubscript:v13];
+  identifier = [v10 identifier];
+  _trackingInfos = [self _trackingInfos];
+  v38 = identifier;
+  v15 = [_trackingInfos objectForKeyedSubscript:identifier];
 
-  v16 = [v15 replacementTracker];
-  v17 = [v16 processedOriginalCharacterRange];
+  replacementTracker = [v15 replacementTracker];
+  processedOriginalCharacterRange = [replacementTracker processedOriginalCharacterRange];
   v19 = v18;
-  v20 = [v16 activeCharacterRange];
-  v22 = v17 + v19 - (v20 + v21);
+  activeCharacterRange = [replacementTracker activeCharacterRange];
+  v22 = processedOriginalCharacterRange + v19 - (activeCharacterRange + v21);
   v23 = v22 + a2;
   if (!a6)
   {
@@ -3584,23 +3584,23 @@ void __122__UIWritingToolsCoordinator_proofreadingController_replaceCharactersIn
     goto LABEL_13;
   }
 
-  v24 = [v10 attributedString];
-  v25 = v24;
-  if (!v24)
+  attributedString = [v10 attributedString];
+  v25 = attributedString;
+  if (!attributedString)
   {
     goto LABEL_11;
   }
 
-  if (v23 < 0 || a3 + v23 > [v24 length])
+  if (v23 < 0 || a3 + v23 > [attributedString length])
   {
     if (os_variant_has_internal_diagnostics())
     {
       v36 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
       {
-        v37 = [v25 string];
+        string = [v25 string];
         *buf = 138412802;
-        v53 = v37;
+        v53 = string;
         v54 = 2048;
         v55 = v22 + a2;
         v56 = 2048;
@@ -3615,9 +3615,9 @@ void __122__UIWritingToolsCoordinator_proofreadingController_replaceCharactersIn
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         v29 = v28;
-        v30 = [v25 string];
+        string2 = [v25 string];
         *buf = 138412802;
-        v53 = v30;
+        v53 = string2;
         v54 = 2048;
         v55 = v22 + a2;
         v56 = 2048;
@@ -3644,11 +3644,11 @@ LABEL_13:
   v47 = &unk_1E70F8EE0;
   v31 = v26;
   v48 = v31;
-  v49 = a1;
+  selfCopy = self;
   v32 = v15;
   v50 = v32;
-  v33 = [a1 delegate];
-  if (v33 && (a1[16] & 2) != 0)
+  delegate = [self delegate];
+  if (delegate && (self[16] & 2) != 0)
   {
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
@@ -3659,7 +3659,7 @@ LABEL_13:
     v12 = v39;
     v42 = v39;
     v10 = v27;
-    [v33 writingToolsCoordinator:a1 requestsSingleContainerSubrangesOfRange:a2 inContext:a3 completion:{v27, v41}];
+    [delegate writingToolsCoordinator:self requestsSingleContainerSubrangesOfRange:a2 inContext:a3 completion:{v27, v41}];
     v34 = v42;
   }
 
@@ -3897,20 +3897,20 @@ void __101__UIWritingToolsCoordinator__executeForSubrangesOfRange_inContext_acti
   (*(a1[4] + 16))();
 }
 
-- (void)_beginTextAssistantAnticipationsForRange:(_NSRange)a3 inContext:(id)a4
+- (void)_beginTextAssistantAnticipationsForRange:(_NSRange)range inContext:(id)context
 {
-  length = a3.length;
-  v5 = a3.location;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  length = range.length;
+  v5 = range.location;
+  contextCopy = context;
+  v8 = contextCopy;
+  if (contextCopy)
   {
-    v9 = [v7 identifier];
-    v10 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    identifier = [contextCopy identifier];
+    _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+    v11 = [_trackingInfos objectForKeyedSubscript:identifier];
 
-    [(UIWritingToolsCoordinator *)self _cleanUpAnticipationAnimationTrackingInfoForContextID:v9];
-    v12 = [v11 anticipationAnimationSubranges];
+    [(UIWritingToolsCoordinator *)self _cleanUpAnticipationAnimationTrackingInfoForContextID:identifier];
+    anticipationAnimationSubranges = [v11 anticipationAnimationSubranges];
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -3919,7 +3919,7 @@ void __101__UIWritingToolsCoordinator__executeForSubrangesOfRange_inContext_acti
     objc_copyWeak(v21, &location);
     v21[1] = v5;
     v21[2] = length;
-    v13 = v12;
+    v13 = anticipationAnimationSubranges;
     v18 = v13;
     v14 = v8;
     v19 = v14;
@@ -3985,37 +3985,37 @@ void __80__UIWritingToolsCoordinator__beginTextAssistantAnticipationsForRange_in
   }
 }
 
-- (void)_beginAnimatedTextReplacementForInFlightDeliveryInContextID:(id)a3
+- (void)_beginAnimatedTextReplacementForInFlightDeliveryInContextID:(id)d
 {
-  v4 = a3;
-  v5 = [(UIWritingToolsCoordinator *)self _inFlightDeliveryID];
-  v6 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  dCopy = d;
+  _inFlightDeliveryID = [(UIWritingToolsCoordinator *)self _inFlightDeliveryID];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v7 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  [(UIWritingToolsCoordinator *)self _cleanUpReplacementAnimationTrackingInfoForContextID:v4];
-  v8 = [v7 replacementTracker];
-  v9 = [v8 initialCurrentChunkCharacterRange];
+  [(UIWritingToolsCoordinator *)self _cleanUpReplacementAnimationTrackingInfoForContextID:dCopy];
+  replacementTracker = [v7 replacementTracker];
+  initialCurrentChunkCharacterRange = [replacementTracker initialCurrentChunkCharacterRange];
   v11 = v10;
-  v12 = [v7 removalAnimationSubranges];
+  removalAnimationSubranges = [v7 removalAnimationSubranges];
   objc_initWeak(&location, self);
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __89__UIWritingToolsCoordinator__beginAnimatedTextReplacementForInFlightDeliveryInContextID___block_invoke;
   v22 = &unk_1E70F8F58;
   objc_copyWeak(v27, &location);
-  v27[1] = v9;
+  v27[1] = initialCurrentChunkCharacterRange;
   v27[2] = v11;
-  v13 = v12;
+  v13 = removalAnimationSubranges;
   v23 = v13;
-  v14 = v5;
+  v14 = _inFlightDeliveryID;
   v24 = v14;
-  v15 = v4;
+  v15 = dCopy;
   v25 = v15;
   v16 = v7;
   v26 = v16;
   v17 = _Block_copy(&v19);
-  v18 = [v16 acceptedEvaluationContext];
-  [(UIWritingToolsCoordinator *)self _executeForSubrangesOfRange:v9 inContext:v11 actions:v18 recordingCustomFillColors:v17, 0];
+  acceptedEvaluationContext = [v16 acceptedEvaluationContext];
+  [(UIWritingToolsCoordinator *)self _executeForSubrangesOfRange:initialCurrentChunkCharacterRange inContext:v11 actions:acceptedEvaluationContext recordingCustomFillColors:v17, 0];
 
   objc_destroyWeak(v27);
   objc_destroyWeak(&location);
@@ -4073,22 +4073,22 @@ void __89__UIWritingToolsCoordinator__beginAnimatedTextReplacementForInFlightDel
   }
 }
 
-- (uint64_t)_validSubrangeForTextAnimation:(unint64_t)a3 withIndex:(void *)a4 contextID:
+- (uint64_t)_validSubrangeForTextAnimation:(unint64_t)animation withIndex:(void *)index contextID:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7 = a4;
-  v8 = [a1 _trackingInfos];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  indexCopy = index;
+  _trackingInfos = [self _trackingInfos];
+  v9 = [_trackingInfos objectForKeyedSubscript:indexCopy];
 
   v10 = [v9 subrangesForTextAnimation:a2];
   if (![v10 count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    v18 = v17;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v18 = currentHandler;
     if (a2 > 2)
     {
       v19 = @"Unknown text animation";
@@ -4099,61 +4099,61 @@ void __89__UIWritingToolsCoordinator__beginAnimatedTextReplacementForInFlightDel
       v19 = off_1E70F93C8[a2];
     }
 
-    [v17 handleFailureInMethod:sel__validSubrangeForTextAnimation_withIndex_contextID_ object:a1 file:@"UIWritingToolsCoordinator.m" lineNumber:1472 description:{@"No ranges are available for %@", v19}];
+    [currentHandler handleFailureInMethod:sel__validSubrangeForTextAnimation_withIndex_contextID_ object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1472 description:{@"No ranges are available for %@", v19}];
   }
 
   if (a2 == 2)
   {
-    if ([v10 count] <= a3)
+    if ([v10 count] <= animation)
     {
-      v11 = [v10 lastObject];
-      v15 = [v11 rangeValue];
-      v13 = v15 + v16;
+      lastObject = [v10 lastObject];
+      rangeValue = [lastObject rangeValue];
+      rangeValue2 = rangeValue + v16;
       goto LABEL_11;
     }
   }
 
-  else if (a2 == 1 && [v10 count] <= a3)
+  else if (a2 == 1 && [v10 count] <= animation)
   {
-    v11 = [v9 insertionAnimationSubranges];
-    if ([v11 count] <= a3)
+    lastObject = [v9 insertionAnimationSubranges];
+    if ([lastObject count] <= animation)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:sel__validSubrangeForTextAnimation_withIndex_contextID_ object:a1 file:@"UIWritingToolsCoordinator.m" lineNumber:1479 description:{@"%lu does not index into the available insertion ranges\n%@", a3, v11}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__validSubrangeForTextAnimation_withIndex_contextID_ object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1479 description:{@"%lu does not index into the available insertion ranges\n%@", animation, lastObject}];
     }
 
-    v12 = [v11 objectAtIndexedSubscript:a3];
-    v13 = [v12 rangeValue];
+    v12 = [lastObject objectAtIndexedSubscript:animation];
+    rangeValue2 = [v12 rangeValue];
 
     goto LABEL_11;
   }
 
-  v11 = [v10 objectAtIndexedSubscript:a3];
-  v13 = [v11 rangeValue];
+  lastObject = [v10 objectAtIndexedSubscript:animation];
+  rangeValue2 = [lastObject rangeValue];
 LABEL_11:
 
-  return v13;
+  return rangeValue2;
 }
 
-- (void)_sendDelegatePrepareForTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4 contextID:(id)a5 completion:(id)a6
+- (void)_sendDelegatePrepareForTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index contextID:(id)d completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  dCopy = d;
+  completionCopy = completion;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v13 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v14 = [v13 acceptedEvaluationContext];
-  if (v14 && ([v13 targetedPreviewForTextAnimation:a3 subrangeIndex:a4], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+  acceptedEvaluationContext = [v13 acceptedEvaluationContext];
+  if (acceptedEvaluationContext && ([v13 targetedPreviewForTextAnimation:animation subrangeIndex:index], v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __101__UIWritingToolsCoordinator__sendDelegatePrepareForTextAnimation_subrangeIndex_contextID_completion___block_invoke;
     aBlock[3] = &unk_1E70F0F78;
-    v16 = v11;
+    v16 = completionCopy;
     v28 = v16;
     v26 = _Block_copy(aBlock);
-    v17 = [(UIWritingToolsCoordinator *)self _validSubrangeForTextAnimation:a3 withIndex:a4 contextID:v10];
+    v17 = [(UIWritingToolsCoordinator *)self _validSubrangeForTextAnimation:animation withIndex:index contextID:dCopy];
     v19 = v18;
     if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
     {
@@ -4161,20 +4161,20 @@ LABEL_11:
       v21 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &_sendDelegatePrepareForTextAnimation_subrangeIndex_contextID_completion____s_category) + 8);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [MEMORY[0x1E695DF00] date];
-        v23 = v22;
-        if (a3 > 2)
+        date = [MEMORY[0x1E695DF00] date];
+        v23 = date;
+        if (animation > 2)
         {
           v24 = @"Unknown text animation";
         }
 
         else
         {
-          v24 = off_1E70F93C8[a3];
+          v24 = off_1E70F93C8[animation];
         }
 
         *buf = 138413058;
-        v30 = v22;
+        v30 = date;
         v31 = 2112;
         v32 = v24;
         v33 = 2048;
@@ -4188,28 +4188,28 @@ LABEL_11:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained writingToolsCoordinator:self prepareForTextAnimation:a3 forRange:v17 inContext:v19 completion:{v14, v16}];
+    [WeakRetained writingToolsCoordinator:self prepareForTextAnimation:animation forRange:v17 inContext:v19 completion:{acceptedEvaluationContext, v16}];
   }
 
   else
   {
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_fetchStoredTargetedPreviewForContextID:(id)a3 previewSubrangeIndex:(unint64_t)a4 textAnimation:(int64_t)a5 completion:(id)a6
+- (void)_fetchStoredTargetedPreviewForContextID:(id)d previewSubrangeIndex:(unint64_t)index textAnimation:(int64_t)animation completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a3;
-  v13 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  completionCopy = completion;
+  dCopy = d;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v14 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v15 = [v14 targetedPreviewForTextAnimation:a5 subrangeIndex:a4];
+  v15 = [v14 targetedPreviewForTextAnimation:animation subrangeIndex:index];
   if (!v15)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1528 description:@"Expected stored targeted preview is missing"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1528 description:@"Expected stored targeted preview is missing"];
   }
 
   if ([v14 isMarkedForRemovalTargetedPreview:v15])
@@ -4219,14 +4219,14 @@ LABEL_11:
       v19 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &_fetchStoredTargetedPreviewForContextID_previewSubrangeIndex_textAnimation_completion____s_category) + 8);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        if (a5 > 2)
+        if (animation > 2)
         {
           v20 = @"Unknown text animation";
         }
 
         else
         {
-          v20 = off_1E70F93C8[a5];
+          v20 = off_1E70F93C8[animation];
         }
 
         v22 = 138412290;
@@ -4236,74 +4236,74 @@ LABEL_11:
       }
     }
 
-    v11[2](v11, v15);
-    v16 = [v14 targetedPreviewsForTextAnimation:a5];
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    completionCopy[2](completionCopy, v15);
+    v16 = [v14 targetedPreviewsForTextAnimation:animation];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     [v16 removeObjectForKey:v17];
   }
 
   else
   {
-    v11[2](v11, v15);
+    completionCopy[2](completionCopy, v15);
   }
 }
 
-- (void)_resetFinishedRangeCountsForTextAnimation:(void *)a3 contextID:
+- (void)_resetFinishedRangeCountsForTextAnimation:(void *)animation contextID:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
-    v6 = [a1 _trackingInfos];
-    v8 = [v6 objectForKeyedSubscript:v5];
+    animationCopy = animation;
+    _trackingInfos = [self _trackingInfos];
+    v8 = [_trackingInfos objectForKeyedSubscript:animationCopy];
 
     v7 = [v8 finishedSubrangeIndexesForTextAnimation:a2];
     [v7 removeAllIndexes];
   }
 }
 
-- (void)_sendDelegateFinishTextAnimation:(int64_t)a3 subrangeIndex:(unint64_t)a4 contextID:(id)a5 completion:(id)a6
+- (void)_sendDelegateFinishTextAnimation:(int64_t)animation subrangeIndex:(unint64_t)index contextID:(id)d completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v13 = [v12 objectForKeyedSubscript:v10];
+  dCopy = d;
+  completionCopy = completion;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v13 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v14 = [v13 finishedSubrangeIndexesForTextAnimation:a3];
-  if (![v14 containsIndex:a4])
+  v14 = [v13 finishedSubrangeIndexesForTextAnimation:animation];
+  if (![v14 containsIndex:index])
   {
-    v15 = [v13 subrangesForTextAnimation:a3];
+    v15 = [v13 subrangesForTextAnimation:animation];
     if ([v15 count])
     {
-      v16 = [v13 targetedPreviewForTextAnimation:a3 subrangeIndex:a4];
+      v16 = [v13 targetedPreviewForTextAnimation:animation subrangeIndex:index];
 
       if (v16)
       {
-        [v13 markForRemovalTargetedPreviewForTextAnimation:a3 subrangeIndex:a4];
-        v17 = [v13 acceptedEvaluationContext];
-        if (v17)
+        [v13 markForRemovalTargetedPreviewForTextAnimation:animation subrangeIndex:index];
+        acceptedEvaluationContext = [v13 acceptedEvaluationContext];
+        if (acceptedEvaluationContext)
         {
-          v24 = [(UIWritingToolsCoordinator *)self _validSubrangeForTextAnimation:a3 withIndex:a4 contextID:v10];
+          v24 = [(UIWritingToolsCoordinator *)self _validSubrangeForTextAnimation:animation withIndex:index contextID:dCopy];
           v25 = v18;
           if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
           {
             v23 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &_sendDelegateFinishTextAnimation_subrangeIndex_contextID_completion____s_category) + 8);
             if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
             {
-              v20 = [MEMORY[0x1E695DF00] date];
-              v21 = v20;
-              if (a3 > 2)
+              date = [MEMORY[0x1E695DF00] date];
+              v21 = date;
+              if (animation > 2)
               {
                 v22 = @"Unknown text animation";
               }
 
               else
               {
-                v22 = off_1E70F93C8[a3];
+                v22 = off_1E70F93C8[animation];
               }
 
               *buf = 138413058;
-              v31 = v20;
+              v31 = date;
               v32 = 2112;
               v33 = v22;
               v34 = 2048;
@@ -4320,29 +4320,29 @@ LABEL_11:
           v26[2] = __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subrangeIndex_contextID_completion___block_invoke;
           v26[3] = &unk_1E70F5FA8;
           v27 = v14;
-          v29 = a4;
-          v28 = v11;
-          [WeakRetained writingToolsCoordinator:self finishTextAnimation:a3 forRange:v24 inContext:v25 completion:{v17, v26}];
+          indexCopy = index;
+          v28 = completionCopy;
+          [WeakRetained writingToolsCoordinator:self finishTextAnimation:animation forRange:v24 inContext:v25 completion:{acceptedEvaluationContext, v26}];
         }
 
         else
         {
-          v11[2](v11);
+          completionCopy[2](completionCopy);
         }
 
         goto LABEL_12;
       }
 
-      [v14 addIndex:a4];
+      [v14 addIndex:index];
     }
 
-    v11[2](v11);
+    completionCopy[2](completionCopy);
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v11[2](v11);
+  completionCopy[2](completionCopy);
 LABEL_13:
 }
 
@@ -4354,13 +4354,13 @@ uint64_t __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subran
   return v2();
 }
 
-- (BOOL)_hasStoredTargetedPreviewForInsertionInContextID:(id)a3 previewSubrangeIndex:(unint64_t)a4
+- (BOOL)_hasStoredTargetedPreviewForInsertionInContextID:(id)d previewSubrangeIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v8 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v9 = [v8 targetedPreviewForTextAnimation:2 subrangeIndex:a4];
+  v9 = [v8 targetedPreviewForTextAnimation:2 subrangeIndex:index];
   if (v9)
   {
     v10 = [v8 isMarkedForRemovalTargetedPreview:v9] ^ 1;
@@ -4374,19 +4374,19 @@ uint64_t __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subran
   return v10;
 }
 
-- (void)_sendDelegateTargetedPreviewOfActiveRangeForTextAnimation:(int64_t)a3 previewSubrangeIndex:(unint64_t)a4 contextID:(id)a5 completion:(id)a6
+- (void)_sendDelegateTargetedPreviewOfActiveRangeForTextAnimation:(int64_t)animation previewSubrangeIndex:(unint64_t)index contextID:(id)d completion:(id)completion
 {
   v70 = *MEMORY[0x1E69E9840];
-  v56 = a5;
-  v55 = a6;
-  v10 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v11 = [v10 objectForKeyedSubscript:v56];
+  dCopy = d;
+  completionCopy = completion;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v11 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v12 = [v11 targetedPreviewForTextAnimation:a3 subrangeIndex:a4];
+  v12 = [v11 targetedPreviewForTextAnimation:animation subrangeIndex:index];
   if ([v11 isMarkedForRemovalTargetedPreview:v12])
   {
-    v13 = [v11 targetedPreviewsForTextAnimation:a3];
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v13 = [v11 targetedPreviewsForTextAnimation:animation];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     [v13 removeObjectForKey:v14];
 
     v12 = 0;
@@ -4399,26 +4399,26 @@ uint64_t __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subran
       v43 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_FAULT))
       {
-        if (a3 > 2)
+        if (animation > 2)
         {
           v44 = @"Unknown text animation";
         }
 
         else
         {
-          v44 = off_1E70F93C8[a3];
+          v44 = off_1E70F93C8[animation];
         }
 
-        logb = [v11 subrangesForTextAnimation:{a3, v44}];
-        v45 = [logb objectAtIndexedSubscript:a4];
-        v46 = [v45 rangeValue];
-        v47 = [v11 subrangesForTextAnimation:a3];
-        v48 = [v47 objectAtIndexedSubscript:a4];
+        logb = [v11 subrangesForTextAnimation:{animation, v44}];
+        v45 = [logb objectAtIndexedSubscript:index];
+        rangeValue = [v45 rangeValue];
+        v47 = [v11 subrangesForTextAnimation:animation];
+        v48 = [v47 objectAtIndexedSubscript:index];
         [v48 rangeValue];
         *buf = 138412802;
         v63 = v50;
         v64 = 2048;
-        v65 = v46;
+        v65 = rangeValue;
         v66 = 2048;
         v67 = v49;
         _os_log_fault_impl(&dword_188A29000, v43, OS_LOG_TYPE_FAULT, "Stored targeted preview for %@, subrange {%lu, %lu}, hasn't been consumed before storing another. Should have been cleared when finishing", buf, 0x20u);
@@ -4430,61 +4430,61 @@ uint64_t __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subran
       v25 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED49CB18) + 8);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        if (a3 > 2)
+        if (animation > 2)
         {
           v26 = @"Unknown text animation";
         }
 
         else
         {
-          v26 = off_1E70F93C8[a3];
+          v26 = off_1E70F93C8[animation];
         }
 
         v50 = v26;
         loga = v25;
-        v35 = [v11 subrangesForTextAnimation:a3];
-        v36 = [v35 objectAtIndexedSubscript:a4];
-        v37 = [v36 rangeValue];
-        v38 = [v11 subrangesForTextAnimation:a3];
-        v39 = [v38 objectAtIndexedSubscript:a4];
+        v35 = [v11 subrangesForTextAnimation:animation];
+        v36 = [v35 objectAtIndexedSubscript:index];
+        rangeValue2 = [v36 rangeValue];
+        v38 = [v11 subrangesForTextAnimation:animation];
+        v39 = [v38 objectAtIndexedSubscript:index];
         [v39 rangeValue];
         *buf = 138412802;
         v63 = v50;
         v64 = 2048;
-        v65 = v37;
+        v65 = rangeValue2;
         v66 = 2048;
         v67 = v40;
         _os_log_impl(&dword_188A29000, loga, OS_LOG_TYPE_ERROR, "Stored targeted preview for %@, subrange {%lu, %lu}, hasn't been consumed before storing another. Should have been cleared when finishing", buf, 0x20u);
       }
     }
 
-    v41 = [v11 targetedPreviewsForTextAnimation:{a3, v50}];
-    v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v41 = [v11 targetedPreviewsForTextAnimation:{animation, v50}];
+    v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
     [v41 setObject:0 forKeyedSubscript:v42];
   }
 
-  v15 = [v11 acceptedEvaluationContext];
-  if (v15)
+  acceptedEvaluationContext = [v11 acceptedEvaluationContext];
+  if (acceptedEvaluationContext)
   {
-    v51 = [v11 replacementTracker];
-    v16 = [v11 subrangesForTextAnimation:a3];
+    replacementTracker = [v11 replacementTracker];
+    v16 = [v11 subrangesForTextAnimation:animation];
     v17 = [v16 count];
     if (v17)
     {
-      if (v17 <= a4)
+      if (v17 <= index)
       {
         v18 = [v16 objectAtIndexedSubscript:v17 - 1];
-        v22 = [v18 rangeValue];
+        rangeValue3 = [v18 rangeValue];
         log = 0;
-        v21 = v22 + v23;
+        v21 = rangeValue3 + v23;
       }
 
       else
       {
-        v18 = [v16 objectAtIndexedSubscript:a4];
-        v19 = [v18 rangeValue];
+        v18 = [v16 objectAtIndexedSubscript:index];
+        rangeValue4 = [v18 rangeValue];
         log = v20;
-        v21 = v19;
+        v21 = rangeValue4;
       }
     }
 
@@ -4504,20 +4504,20 @@ uint64_t __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subran
         v31 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &qword_1ED49CB20) + 8);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
-          v32 = [MEMORY[0x1E695DF00] date];
-          v33 = v32;
-          if (a3 > 2)
+          date = [MEMORY[0x1E695DF00] date];
+          v33 = date;
+          if (animation > 2)
           {
             v34 = @"Unknown text animation";
           }
 
           else
           {
-            v34 = off_1E70F93C8[a3];
+            v34 = off_1E70F93C8[animation];
           }
 
           *buf = 138413058;
-          v63 = v32;
+          v63 = date;
           v64 = 2112;
           v65 = v34;
           v66 = 2048;
@@ -4535,11 +4535,11 @@ uint64_t __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subran
     v57[2] = __129__UIWritingToolsCoordinator__sendDelegateTargetedPreviewOfActiveRangeForTextAnimation_previewSubrangeIndex_contextID_completion___block_invoke;
     v57[3] = &unk_1E70F8F80;
     objc_copyWeak(v60, &location);
-    v59 = v55;
+    v59 = completionCopy;
     v58 = v11;
-    v60[1] = a3;
-    v60[2] = a4;
-    [WeakRetained writingToolsCoordinator:self requestsPreviewForTextAnimation:a3 ofRange:v21 inContext:log completion:{v15, v57}];
+    v60[1] = animation;
+    v60[2] = index;
+    [WeakRetained writingToolsCoordinator:self requestsPreviewForTextAnimation:animation ofRange:v21 inContext:log completion:{acceptedEvaluationContext, v57}];
 
     objc_destroyWeak(v60);
     objc_destroyWeak(&location);
@@ -4547,7 +4547,7 @@ uint64_t __97__UIWritingToolsCoordinator__sendDelegateFinishTextAnimation_subran
 
   else
   {
-    (*(v55 + 2))(v55, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -4575,16 +4575,16 @@ void __129__UIWritingToolsCoordinator__sendDelegateTargetedPreviewOfActiveRangeF
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_sendDelegatedAnimatedReplacementWithDelay:(double)a3 duration:(double)a4 deliveryID:(id)a5 contextID:(id)a6 completion:(id)a7
+- (void)_sendDelegatedAnimatedReplacementWithDelay:(double)delay duration:(double)duration deliveryID:(id)d contextID:(id)iD completion:(id)completion
 {
   trackingInfos = self->_trackingInfos;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = [(NSMutableDictionary *)trackingInfos objectForKeyedSubscript:v14];
-  v19 = [v16 replacementTracker];
+  completionCopy = completion;
+  iDCopy = iD;
+  dCopy = d;
+  v16 = [(NSMutableDictionary *)trackingInfos objectForKeyedSubscript:iDCopy];
+  replacementTracker = [v16 replacementTracker];
 
-  if ([v19 isProofreading])
+  if ([replacementTracker isProofreading])
   {
     v17 = -1;
   }
@@ -4594,20 +4594,20 @@ void __129__UIWritingToolsCoordinator__sendDelegateTargetedPreviewOfActiveRangeF
     v17 = 2;
   }
 
-  v18 = [[UIWritingToolsCoordinatorAnimationParameters alloc] initWithDelay:a3 duration:a4];
-  [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:v17 forDelivery:v15 animationParameters:v18 contextID:v14 completion:v13];
+  v18 = [[UIWritingToolsCoordinatorAnimationParameters alloc] initWithDelay:delay duration:duration];
+  [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:v17 forDelivery:dCopy animationParameters:v18 contextID:iDCopy completion:completionCopy];
 }
 
-- (void)_fetchPreviewAndSendPrepareForInsertionWithSubrangeIndex:(void *)a3 maximumSubrangeIndex:(void *)a4 contextID:(void *)a5 completion:
+- (void)_fetchPreviewAndSendPrepareForInsertionWithSubrangeIndex:(void *)index maximumSubrangeIndex:(void *)subrangeIndex contextID:(void *)d completion:
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a1)
+  subrangeIndexCopy = subrangeIndex;
+  dCopy = d;
+  v11 = dCopy;
+  if (self)
   {
-    if (a2 <= a3)
+    if (a2 <= index)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __128__UIWritingToolsCoordinator__fetchPreviewAndSendPrepareForInsertionWithSubrangeIndex_maximumSubrangeIndex_contextID_completion___block_invoke;
@@ -4615,9 +4615,9 @@ void __129__UIWritingToolsCoordinator__sendDelegateTargetedPreviewOfActiveRangeF
       objc_copyWeak(v15, &location);
       v14 = v11;
       v15[1] = a2;
-      v13 = v9;
-      v15[2] = a3;
-      [a1 _sendDelegateTargetedPreviewOfActiveRangeForTextAnimation:2 previewSubrangeIndex:a2 contextID:v13 completion:v12];
+      v13 = subrangeIndexCopy;
+      v15[2] = index;
+      [self _sendDelegateTargetedPreviewOfActiveRangeForTextAnimation:2 previewSubrangeIndex:a2 contextID:v13 completion:v12];
 
       objc_destroyWeak(v15);
       objc_destroyWeak(&location);
@@ -4625,7 +4625,7 @@ void __129__UIWritingToolsCoordinator__sendDelegateTargetedPreviewOfActiveRangeF
 
     else
     {
-      (*(v10 + 2))(v10);
+      (*(dCopy + 2))(dCopy);
     }
   }
 }
@@ -4665,23 +4665,23 @@ void __128__UIWritingToolsCoordinator__fetchPreviewAndSendPrepareForInsertionWit
   }
 }
 
-- (void)_sendFinishRemoveAnimationForNextSubrangeIndex:(void *)a3 maximumSubrangeIndex:(void *)a4 contextID:(void *)a5 completion:
+- (void)_sendFinishRemoveAnimationForNextSubrangeIndex:(void *)index maximumSubrangeIndex:(void *)subrangeIndex contextID:(void *)d completion:
 {
-  v9 = a4;
-  v10 = a5;
-  if (a2 <= a3)
+  subrangeIndexCopy = subrangeIndex;
+  dCopy = d;
+  if (a2 <= index)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __118__UIWritingToolsCoordinator__sendFinishRemoveAnimationForNextSubrangeIndex_maximumSubrangeIndex_contextID_completion___block_invoke;
     v11[3] = &unk_1E70F8FF8;
     objc_copyWeak(v14, &location);
-    v13 = v10;
+    v13 = dCopy;
     v14[1] = a2;
-    v14[2] = a3;
-    v12 = v9;
-    [a1 _sendDelegateFinishTextAnimation:1 subrangeIndex:a2 contextID:v12 completion:v11];
+    v14[2] = index;
+    v12 = subrangeIndexCopy;
+    [self _sendDelegateFinishTextAnimation:1 subrangeIndex:a2 contextID:v12 completion:v11];
 
     objc_destroyWeak(v14);
     objc_destroyWeak(&location);
@@ -4689,7 +4689,7 @@ void __128__UIWritingToolsCoordinator__fetchPreviewAndSendPrepareForInsertionWit
 
   else
   {
-    [(UIWritingToolsCoordinator *)a1 _fetchPreviewAndSendPrepareForInsertionWithSubrangeIndex:a3 maximumSubrangeIndex:v9 contextID:v10 completion:?];
+    [(UIWritingToolsCoordinator *)self _fetchPreviewAndSendPrepareForInsertionWithSubrangeIndex:index maximumSubrangeIndex:subrangeIndexCopy contextID:dCopy completion:?];
   }
 }
 
@@ -4708,16 +4708,16 @@ void __118__UIWritingToolsCoordinator__sendFinishRemoveAnimationForNextSubrangeI
   }
 }
 
-- (void)_updateTextViewAndTrackerWithIncomingCompositionSessionState:(int64_t)a3 forDelivery:(id)a4 animationParameters:(id)a5 contextID:(id)a6 completion:(id)a7
+- (void)_updateTextViewAndTrackerWithIncomingCompositionSessionState:(int64_t)state forDelivery:(id)delivery animationParameters:(id)parameters contextID:(id)d completion:(id)completion
 {
   v73 = *MEMORY[0x1E69E9840];
-  v48 = a4;
-  v12 = a5;
-  v50 = a6;
-  v13 = a7;
-  if (v12)
+  deliveryCopy = delivery;
+  parametersCopy = parameters;
+  dCopy = d;
+  completionCopy = completion;
+  if (parametersCopy)
   {
-    v14 = v12;
+    v14 = parametersCopy;
   }
 
   else
@@ -4726,20 +4726,20 @@ void __118__UIWritingToolsCoordinator__sendFinishRemoveAnimationForNextSubrangeI
   }
 
   v49 = v14;
-  v15 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v16 = [v15 objectForKeyedSubscript:v50];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v16 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v17 = [v16 acceptedEvaluationContext];
-  if (v17)
+  acceptedEvaluationContext = [v16 acceptedEvaluationContext];
+  if (acceptedEvaluationContext)
   {
-    v18 = [v16 replacementTracker];
-    v19 = v18;
+    replacementTracker = [v16 replacementTracker];
+    v19 = replacementTracker;
     if (self->_includesTextListMarkers)
     {
-      [v18 setCompositionSessionState:a3];
-      if (v13)
+      [replacementTracker setCompositionSessionState:state];
+      if (completionCopy)
       {
-        v13[2](v13, v49);
+        completionCopy[2](completionCopy, v49);
       }
 
 LABEL_28:
@@ -4747,46 +4747,46 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v20 = [v18 isProofreading];
-    v21 = v48;
-    if (!v48 && v20)
+    isProofreading = [replacementTracker isProofreading];
+    v21 = deliveryCopy;
+    if (!deliveryCopy && isProofreading)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1743 description:@"Full-text updates are not supported by the replacement tracker when proofreading"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1743 description:@"Full-text updates are not supported by the replacement tracker when proofreading"];
 
       v21 = 0;
     }
 
-    else if (v48)
+    else if (deliveryCopy)
     {
-      v22 = [v19 sourceRangeForChunkFromDelivery:v48];
+      activeCharacterRange = [v19 sourceRangeForChunkFromDelivery:deliveryCopy];
 LABEL_15:
       v45 = v23;
-      v46 = v22;
-      if (v22 == 0x7FFFFFFFFFFFFFFFLL)
+      v46 = activeCharacterRange;
+      if (activeCharacterRange == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v34 = [MEMORY[0x1E696AAA8] currentHandler];
-        v35 = _UICompositionSessionStateDescription(a3);
-        v21 = v48;
-        [v34 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1746 description:{@"Can't update text view with %@. Lost track of delivery when calculating source range. %@", v35, v48}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        v35 = _UICompositionSessionStateDescription(state);
+        v21 = deliveryCopy;
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1746 description:{@"Can't update text view with %@. Lost track of delivery when calculating source range. %@", v35, deliveryCopy}];
       }
 
-      [v19 setCompositionSessionState:a3];
+      [v19 setCompositionSessionState:state];
       if (v21)
       {
-        v25 = [v19 rewrittenChunkTextForDelivery:v21];
-        inFlightDeliveryID = v48;
+        activeText = [v19 rewrittenChunkTextForDelivery:v21];
+        inFlightDeliveryID = deliveryCopy;
       }
 
       else
       {
-        v25 = [v19 activeText];
+        activeText = [v19 activeText];
         inFlightDeliveryID = self->_inFlightDeliveryID;
       }
 
       v27 = inFlightDeliveryID;
       v28 = v27;
-      if (v12)
+      if (parametersCopy)
       {
         v29 = v27 == 0;
       }
@@ -4805,18 +4805,18 @@ LABEL_15:
       objc_copyWeak(v60, &location);
       v61 = v30;
       v52 = v19;
-      v53 = v48;
+      v53 = deliveryCopy;
       v44 = v28;
       v54 = v44;
-      v31 = v25;
+      v31 = activeText;
       v55 = v31;
       v60[1] = a2;
-      v60[2] = a3;
+      v60[2] = state;
       v60[3] = v46;
       v60[4] = v45;
       v56 = v16;
-      v57 = v50;
-      v59 = v13;
+      v57 = dCopy;
+      v59 = completionCopy;
       v58 = v49;
       v32 = _Block_copy(aBlock);
       if (os_variant_has_internal_diagnostics())
@@ -4828,12 +4828,12 @@ LABEL_15:
           v40 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &_updateTextViewAndTrackerWithIncomingCompositionSessionState_forDelivery_animationParameters_contextID_completion____s_category) + 8);
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
-            v41 = [MEMORY[0x1E695DF00] date];
+            date = [MEMORY[0x1E695DF00] date];
             v42 = [v31 length];
             *buf = 138413314;
             v43 = @"no";
-            v64 = v41;
-            if (v12)
+            v64 = date;
+            if (parametersCopy)
             {
               v43 = @"yes";
             }
@@ -4852,7 +4852,7 @@ LABEL_15:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained writingToolsCoordinator:self replaceRange:v46 inContext:v45 proposedText:v17 reason:v31 animationParameters:v12 == 0 completion:{v12, v32}];
+      [WeakRetained writingToolsCoordinator:self replaceRange:v46 inContext:v45 proposedText:acceptedEvaluationContext reason:v31 animationParameters:parametersCopy == 0 completion:{parametersCopy, v32}];
 
       objc_destroyWeak(v60);
       objc_destroyWeak(&location);
@@ -4860,11 +4860,11 @@ LABEL_15:
       goto LABEL_28;
     }
 
-    v22 = [v19 activeCharacterRange];
+    activeCharacterRange = [v19 activeCharacterRange];
     goto LABEL_15;
   }
 
-  v13[2](v13, v49);
+  completionCopy[2](completionCopy, v49);
 LABEL_29:
 }
 
@@ -5071,17 +5071,17 @@ uint64_t __143__UIWritingToolsCoordinator__updateTextViewAndTrackerWithIncomingC
   return result;
 }
 
-- (void)_sendDelegateFinishAnticipationForNextSubrangeIndex:(uint64_t)a3 inTotalSubranges:(void *)a4 contextID:(void *)a5 wrapUpFinishingHandler:
+- (void)_sendDelegateFinishAnticipationForNextSubrangeIndex:(uint64_t)index inTotalSubranges:(void *)subranges contextID:(void *)d wrapUpFinishingHandler:
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a1)
+  subrangesCopy = subranges;
+  dCopy = d;
+  v11 = dCopy;
+  if (self)
   {
     v12 = a2 + 1;
-    if (v12 >= a3)
+    if (v12 >= index)
     {
-      (*(v10 + 2))(v10);
+      (*(dCopy + 2))(dCopy);
     }
 
     else
@@ -5090,33 +5090,33 @@ uint64_t __143__UIWritingToolsCoordinator__updateTextViewAndTrackerWithIncomingC
       v13[1] = 3221225472;
       v13[2] = __131__UIWritingToolsCoordinator__sendDelegateFinishAnticipationForNextSubrangeIndex_inTotalSubranges_contextID_wrapUpFinishingHandler___block_invoke;
       v13[3] = &unk_1E70F8FA8;
-      v13[4] = a1;
+      v13[4] = self;
       v16 = v12;
-      v17 = a3;
-      v14 = v9;
+      indexCopy = index;
+      v14 = subrangesCopy;
       v15 = v11;
-      [a1 _sendDelegateFinishTextAnimation:0 subrangeIndex:v12 contextID:v14 completion:v13];
+      [self _sendDelegateFinishTextAnimation:0 subrangeIndex:v12 contextID:v14 completion:v13];
     }
   }
 }
 
-- (void)_cleanUpAnticipationAnimationTrackingInfoForContextID:(id)a3
+- (void)_cleanUpAnticipationAnimationTrackingInfoForContextID:(id)d
 {
-  v4 = a3;
-  v5 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v6 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v7 = [v6 anticipationAnimationSubranges];
-  v8 = [v7 count];
+  anticipationAnimationSubranges = [v6 anticipationAnimationSubranges];
+  v8 = [anticipationAnimationSubranges count];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__UIWritingToolsCoordinator__cleanUpAnticipationAnimationTrackingInfoForContextID___block_invoke;
   v11[3] = &unk_1E70F6228;
   v12 = v6;
-  v13 = self;
-  v14 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v14 = dCopy;
+  v9 = dCopy;
   v10 = v6;
   [(UIWritingToolsCoordinator *)self _sendDelegateFinishAnticipationForNextSubrangeIndex:v8 inTotalSubranges:v9 contextID:v11 wrapUpFinishingHandler:?];
 }
@@ -5132,47 +5132,47 @@ void __83__UIWritingToolsCoordinator__cleanUpAnticipationAnimationTrackingInfoFo
   [(UIWritingToolsCoordinator *)v3 _resetFinishedRangeCountsForTextAnimation:v4 contextID:?];
 }
 
-- (void)_cleanUpReplacementAnimationTrackingInfoForContextID:(id)a3
+- (void)_cleanUpReplacementAnimationTrackingInfoForContextID:(id)d
 {
-  v11 = a3;
-  v5 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v6 = [v5 objectForKeyedSubscript:v11];
+  dCopy = d;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v6 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  if (![(UIWritingToolsCoordinator *)self _hasLandedAllReplacementsForDelivery:self->_inFlightDeliveryID inContext:v11])
+  if (![(UIWritingToolsCoordinator *)self _hasLandedAllReplacementsForDelivery:self->_inFlightDeliveryID inContext:dCopy])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1857 description:@"Cleanup for replacement animation attempted before all animations have landed."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1857 description:@"Cleanup for replacement animation attempted before all animations have landed."];
   }
 
-  v7 = [v6 removalAnimationSubranges];
-  [v7 removeAllObjects];
+  removalAnimationSubranges = [v6 removalAnimationSubranges];
+  [removalAnimationSubranges removeAllObjects];
 
-  v8 = [v6 insertionAnimationSubranges];
-  [v8 removeAllObjects];
+  insertionAnimationSubranges = [v6 insertionAnimationSubranges];
+  [insertionAnimationSubranges removeAllObjects];
 
-  v9 = [v6 landedReplacementSubrangeIndexes];
-  [v9 removeAllIndexes];
+  landedReplacementSubrangeIndexes = [v6 landedReplacementSubrangeIndexes];
+  [landedReplacementSubrangeIndexes removeAllIndexes];
 
-  [(UIWritingToolsCoordinator *)self _resetFinishedRangeCountsForTextAnimation:v11 contextID:?];
-  [(UIWritingToolsCoordinator *)self _resetFinishedRangeCountsForTextAnimation:v11 contextID:?];
+  [(UIWritingToolsCoordinator *)self _resetFinishedRangeCountsForTextAnimation:dCopy contextID:?];
+  [(UIWritingToolsCoordinator *)self _resetFinishedRangeCountsForTextAnimation:dCopy contextID:?];
 }
 
-- (BOOL)_hasLandedAllReplacementsForDelivery:(id)a3 inContext:(id)a4
+- (BOOL)_hasLandedAllReplacementsForDelivery:(id)delivery inContext:(id)context
 {
-  if (!a3)
+  if (!delivery)
   {
     return 1;
   }
 
-  v5 = a4;
-  v6 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  contextCopy = context;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v7 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-  v8 = [v7 insertionAnimationSubranges];
-  v9 = [v8 count];
+  insertionAnimationSubranges = [v7 insertionAnimationSubranges];
+  v9 = [insertionAnimationSubranges count];
 
-  v10 = [v7 removalAnimationSubranges];
-  v11 = [v10 count];
+  removalAnimationSubranges = [v7 removalAnimationSubranges];
+  v11 = [removalAnimationSubranges count];
 
   if (v9 <= v11)
   {
@@ -5184,43 +5184,43 @@ void __83__UIWritingToolsCoordinator__cleanUpAnticipationAnimationTrackingInfoFo
     v12 = v9;
   }
 
-  v13 = [v7 landedReplacementSubrangeIndexes];
-  v14 = [v13 count] >= v12;
+  landedReplacementSubrangeIndexes = [v7 landedReplacementSubrangeIndexes];
+  v14 = [landedReplacementSubrangeIndexes count] >= v12;
 
   return v14;
 }
 
-- (void)_finishNextReplacementAnimation:(char *)a3 withSubrangeIndex:(void *)a4 finishedIndexes:(char *)a5 numberOfIndexes:(void *)a6 contextID:(void *)a7 completion:
+- (void)_finishNextReplacementAnimation:(char *)animation withSubrangeIndex:(void *)index finishedIndexes:(char *)indexes numberOfIndexes:(void *)ofIndexes contextID:(void *)d completion:
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (a3 >= a5)
+  indexCopy = index;
+  ofIndexesCopy = ofIndexes;
+  dCopy = d;
+  v16 = dCopy;
+  if (animation >= indexes)
   {
-    (*(v15 + 2))(v15);
+    (*(dCopy + 2))(dCopy);
   }
 
-  else if ([v13 containsIndex:a3])
+  else if ([indexCopy containsIndex:animation])
   {
-    [(UIWritingToolsCoordinator *)a1 _finishNextReplacementAnimation:a2 withSubrangeIndex:a3 + 1 finishedIndexes:v13 numberOfIndexes:a5 contextID:v14 completion:v16];
+    [(UIWritingToolsCoordinator *)self _finishNextReplacementAnimation:a2 withSubrangeIndex:animation + 1 finishedIndexes:indexCopy numberOfIndexes:indexes contextID:ofIndexesCopy completion:v16];
   }
 
   else
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __132__UIWritingToolsCoordinator__finishNextReplacementAnimation_withSubrangeIndex_finishedIndexes_numberOfIndexes_contextID_completion___block_invoke;
     v17[3] = &unk_1E70F9048;
     objc_copyWeak(v21, &location);
     v21[1] = a2;
-    v21[2] = a3;
-    v18 = v13;
-    v21[3] = a5;
-    v19 = v14;
+    v21[2] = animation;
+    v18 = indexCopy;
+    v21[3] = indexes;
+    v19 = ofIndexesCopy;
     v20 = v16;
-    [a1 _sendDelegateFinishTextAnimation:a2 subrangeIndex:a3 contextID:v19 completion:v17];
+    [self _sendDelegateFinishTextAnimation:a2 subrangeIndex:animation contextID:v19 completion:v17];
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&location);
@@ -5253,29 +5253,29 @@ void __70__UIWritingToolsCoordinator__finishAllReplacementAnimationsInContext___
   }
 }
 
-- (void)_replacementEffectDidLandInFlightDelivery:(id)a3 inContext:(id)a4 subrangeIndex:(unint64_t)a5
+- (void)_replacementEffectDidLandInFlightDelivery:(id)delivery inContext:(id)context subrangeIndex:(unint64_t)index
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  deliveryCopy = delivery;
+  contextCopy = context;
   if (self->_inFlightDeliveryID)
   {
     v37 = a2;
-    if (([v9 isEqual:?] & 1) == 0)
+    if (([deliveryCopy isEqual:?] & 1) == 0)
     {
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:v37 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1922 description:{@"Replacement animation landed mismatched delivery, %@. _inFlightDeliveryID=%@", v9, self->_inFlightDeliveryID}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:v37 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1922 description:{@"Replacement animation landed mismatched delivery, %@. _inFlightDeliveryID=%@", deliveryCopy, self->_inFlightDeliveryID}];
     }
 
-    v11 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-    v38 = [v11 objectForKeyedSubscript:v10];
+    _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+    v38 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-    v12 = [v38 landedReplacementSubrangeIndexes];
-    [v12 addIndex:a5];
+    landedReplacementSubrangeIndexes = [v38 landedReplacementSubrangeIndexes];
+    [landedReplacementSubrangeIndexes addIndex:index];
 
-    LOBYTE(v12) = [(UIWritingToolsCoordinator *)self _hasLandedAllReplacementsForDelivery:v9 inContext:v10];
+    LOBYTE(landedReplacementSubrangeIndexes) = [(UIWritingToolsCoordinator *)self _hasLandedAllReplacementsForDelivery:deliveryCopy inContext:contextCopy];
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    if (v12)
+    if (landedReplacementSubrangeIndexes)
     {
       if (has_internal_diagnostics && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
       {
@@ -5284,28 +5284,28 @@ void __70__UIWritingToolsCoordinator__finishAllReplacementAnimationsInContext___
         {
           inFlightDeliveryID = self->_inFlightDeliveryID;
           *from = 134218242;
-          *&from[4] = a5;
+          *&from[4] = index;
           *&from[12] = 2112;
           *&from[14] = inFlightDeliveryID;
           _os_log_impl(&dword_188A29000, v32, OS_LOG_TYPE_ERROR, "In-flight delivery has landed final subrangeIndex %lu. %@", from, 0x16u);
         }
       }
 
-      v14 = v10;
-      v15 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-      v16 = [v15 objectForKeyedSubscript:v14];
+      v14 = contextCopy;
+      _trackingInfos2 = [(UIWritingToolsCoordinator *)self _trackingInfos];
+      v16 = [_trackingInfos2 objectForKeyedSubscript:v14];
 
-      v17 = [v16 removalAnimationSubranges];
-      v18 = [v17 count];
+      removalAnimationSubranges = [v16 removalAnimationSubranges];
+      v18 = [removalAnimationSubranges count];
 
-      v19 = [v16 finishedRemovalSubrangeIndexes];
-      v20 = [v19 copy];
+      finishedRemovalSubrangeIndexes = [v16 finishedRemovalSubrangeIndexes];
+      v20 = [finishedRemovalSubrangeIndexes copy];
 
-      v21 = [v16 insertionAnimationSubranges];
-      v22 = [v21 count];
+      insertionAnimationSubranges = [v16 insertionAnimationSubranges];
+      v22 = [insertionAnimationSubranges count];
 
-      v23 = [v16 finishedInsertionSubrangeIndexes];
-      v24 = [v23 copy];
+      finishedInsertionSubrangeIndexes = [v16 finishedInsertionSubrangeIndexes];
+      v24 = [finishedInsertionSubrangeIndexes copy];
 
       objc_initWeak(&location, self);
       *from = MEMORY[0x1E69E9820];
@@ -5324,15 +5324,15 @@ void __70__UIWritingToolsCoordinator__finishAllReplacementAnimationsInContext___
       objc_destroyWeak(&location);
 
       v27 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:v26];
-      v28 = [v27 replacementTracker];
+      replacementTracker = [v27 replacementTracker];
 
-      v29 = [v28 nextDeliveryForDelivery:self->_inFlightDeliveryID];
+      v29 = [replacementTracker nextDeliveryForDelivery:self->_inFlightDeliveryID];
       LOBYTE(v27) = v29 == 0;
 
       if ((v27 & 1) == 0)
       {
-        v36 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v36 handleFailureInMethod:v37 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1936 description:@"replacement tracker should not have to queue deliveries"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:v37 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:1936 description:@"replacement tracker should not have to queue deliveries"];
       }
 
       objc_initWeak(from, self);
@@ -5342,8 +5342,8 @@ void __70__UIWritingToolsCoordinator__finishAllReplacementAnimationsInContext___
       v39[3] = &unk_1E70F9098;
       objc_copyWeak(&v44, from);
       v40 = v26;
-      v41 = v9;
-      v30 = v28;
+      v41 = deliveryCopy;
+      v30 = replacementTracker;
       v42 = v30;
       v43 = v38;
       [(UIWritingToolsCoordinator *)self _updateVisualizationForProofreadingSuggestionsIfNecessaryForDelivery:v41 inContext:v40 completion:v39];
@@ -5359,7 +5359,7 @@ void __70__UIWritingToolsCoordinator__finishAllReplacementAnimationsInContext___
       {
         v35 = self->_inFlightDeliveryID;
         *from = 134218242;
-        *&from[4] = a5;
+        *&from[4] = index;
         *&from[12] = 2112;
         *&from[14] = v35;
         _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_ERROR, "In-flight delivery has landed preliminary subrangeIndex %lu. Ignoring. %@", from, 0x16u);
@@ -5494,14 +5494,14 @@ void __67__UIWritingToolsCoordinator__changeToState_postStateChangeActions___blo
   }
 }
 
-- (id)_bufferInvocationForSelector:(SEL)a3 arguments:(id)a4
+- (id)_bufferInvocationForSelector:(SEL)selector arguments:(id)arguments
 {
-  v6 = a4;
-  v7 = [(UIWritingToolsCoordinator *)self methodSignatureForSelector:a3];
+  argumentsCopy = arguments;
+  v7 = [(UIWritingToolsCoordinator *)self methodSignatureForSelector:selector];
   v8 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v7];
   [v8 retainArguments];
-  [v8 setSelector:a3];
-  v9 = [v6 count];
+  [v8 setSelector:selector];
+  v9 = [argumentsCopy count];
   if (v9 >= 1)
   {
     v10 = v9;
@@ -5514,10 +5514,10 @@ void __67__UIWritingToolsCoordinator__changeToState_postStateChangeActions___blo
       {
         if ((v14 == 81 || v14 == 113) && !v12[1])
         {
-          v17 = [v6 objectAtIndexedSubscript:i];
-          v18 = [v17 integerValue];
+          v17 = [argumentsCopy objectAtIndexedSubscript:i];
+          integerValue = [v17 integerValue];
 
-          v25 = v18;
+          rangeValue = integerValue;
           goto LABEL_16;
         }
       }
@@ -5526,8 +5526,8 @@ void __67__UIWritingToolsCoordinator__changeToState_postStateChangeActions___blo
       {
         if (!v12[1])
         {
-          v25 = [v6 objectAtIndexedSubscript:i];
-          [v8 setArgument:&v25 atIndex:i + 2];
+          rangeValue = [argumentsCopy objectAtIndexedSubscript:i];
+          [v8 setArgument:&rangeValue atIndex:i + 2];
 
           continue;
         }
@@ -5535,29 +5535,29 @@ void __67__UIWritingToolsCoordinator__changeToState_postStateChangeActions___blo
 
       else if (v14 == 66 && !v12[1])
       {
-        v15 = [v6 objectAtIndexedSubscript:i];
-        v16 = [v15 BOOLValue];
+        v15 = [argumentsCopy objectAtIndexedSubscript:i];
+        bOOLValue = [v15 BOOLValue];
 
-        LOBYTE(v25) = v16;
+        LOBYTE(rangeValue) = bOOLValue;
 LABEL_16:
-        [v8 setArgument:&v25 atIndex:i + 2];
+        [v8 setArgument:&rangeValue atIndex:i + 2];
         continue;
       }
 
       if (!strcmp(v12, "{_NSRange=QQ}"))
       {
-        v25 = 0;
+        rangeValue = 0;
         v26 = 0;
-        v21 = [v6 objectAtIndexedSubscript:i];
-        v25 = [v21 rangeValue];
+        v21 = [argumentsCopy objectAtIndexedSubscript:i];
+        rangeValue = [v21 rangeValue];
         v26 = v22;
 
         goto LABEL_16;
       }
 
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      v20 = NSStringFromSelector(a3);
-      [v19 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2097 description:{@"Packaging implementation required for invocation argument type, %s in %@", v13, v20}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v20 = NSStringFromSelector(selector);
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2097 description:{@"Packaging implementation required for invocation argument type, %s in %@", v13, v20}];
     }
   }
 
@@ -5566,35 +5566,35 @@ LABEL_16:
   return v8;
 }
 
-- (void)_updateToCompositionSessionState:(int64_t)a3 contextID:(id)a4
+- (void)_updateToCompositionSessionState:(int64_t)state contextID:(id)d
 {
-  v6 = a4;
-  v7 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v8 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v9 = [v8 replacementTracker];
-  v10 = v9;
-  if (a3)
+  replacementTracker = [v8 replacementTracker];
+  v10 = replacementTracker;
+  if (state)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      if ([v9 compositionSessionState] != 2)
+      if ([replacementTracker compositionSessionState] != 2)
       {
-        [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:2 forDelivery:0 animationParameters:0 contextID:v6 completion:0];
+        [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:2 forDelivery:0 animationParameters:0 contextID:dCopy completion:0];
       }
 
-      [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:v6 force:0];
+      [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:dCopy force:0];
       v11 = v8;
       v12 = 0;
       goto LABEL_10;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
-      if ([v9 compositionSessionState] == 2)
+      if ([replacementTracker compositionSessionState] == 2)
       {
-        [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:1 forDelivery:0 animationParameters:0 contextID:v6 completion:0];
-        [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:v6 force:0];
+        [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:1 forDelivery:0 animationParameters:0 contextID:dCopy completion:0];
+        [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:dCopy force:0];
       }
 
       v11 = v8;
@@ -5606,9 +5606,9 @@ LABEL_10:
 
   else
   {
-    if ([v9 compositionSessionState] == 2)
+    if ([replacementTracker compositionSessionState] == 2)
     {
-      [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:1 forDelivery:0 animationParameters:0 contextID:v6 completion:0];
+      [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:1 forDelivery:0 animationParameters:0 contextID:dCopy completion:0];
     }
 
     [v10 setCompositionSessionState:0];
@@ -5619,7 +5619,7 @@ LABEL_10:
     v13[2] = __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID___block_invoke;
     v13[3] = &unk_1E70F2F80;
     objc_copyWeak(&v15, &location);
-    v14 = v6;
+    v14 = dCopy;
     [(UIWritingToolsCoordinator *)self _changeToState:v13 postStateChangeActions:?];
 
     objc_destroyWeak(&v15);
@@ -5644,37 +5644,37 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
   }
 }
 
-- (void)_updateReplacementTrackerStartingAnimationsWithText:(id)a3 forRange:(_NSRange)a4 inContextWithID:(id)a5 finished:(BOOL)a6
+- (void)_updateReplacementTrackerStartingAnimationsWithText:(id)text forRange:(_NSRange)range inContextWithID:(id)d finished:(BOOL)finished
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  textCopy = text;
+  dCopy = d;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v15 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v16 = [v15 acceptedEvaluationContext];
-  if (!v16)
+  acceptedEvaluationContext = [v15 acceptedEvaluationContext];
+  if (!acceptedEvaluationContext)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2156 description:{@"Lost UIWritingToolsCoordinatorContext for ID = %@", v13}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2156 description:{@"Lost UIWritingToolsCoordinatorContext for ID = %@", dCopy}];
   }
 
-  v17 = [v16 evaluatedRange];
-  v18 = location - v17;
-  if (location < v17)
+  evaluatedRange = [acceptedEvaluationContext evaluatedRange];
+  v18 = location - evaluatedRange;
+  if (location < evaluatedRange)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v30 = NSStringFromSelector(a2);
-    [v26 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2159 description:{@"%@ - range argument location is out of bounds", v30}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2159 description:{@"%@ - range argument location is out of bounds", v30}];
   }
 
   v29 = a2;
-  v19 = [v15 replacementTracker];
-  v20 = [v16 _wtContext];
-  v21 = [v19 recordRewrittenText:v12 forRange:v18 withContext:length finished:{v20, v6}];
+  replacementTracker = [v15 replacementTracker];
+  _wtContext = [acceptedEvaluationContext _wtContext];
+  v21 = [replacementTracker recordRewrittenText:textCopy forRange:v18 withContext:length finished:{_wtContext, finishedCopy}];
 
   if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
   {
@@ -5684,7 +5684,7 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
       *buf = 138412546;
       v33 = v21;
       v34 = 2112;
-      v35 = v12;
+      v35 = textCopy;
       _os_log_impl(&dword_188A29000, v27, OS_LOG_TYPE_ERROR, "Replacement tracker recorded delivery %@\n%@", buf, 0x16u);
     }
   }
@@ -5694,50 +5694,50 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
     proofreadingDeliverySuggestionIDs = self->_proofreadingDeliverySuggestionIDs;
     if (proofreadingDeliverySuggestionIDs)
     {
-      v23 = [v15 proofreadingSuggestionIDsPerDeliveryID];
-      [v23 setObject:proofreadingDeliverySuggestionIDs forKeyedSubscript:v21];
+      proofreadingSuggestionIDsPerDeliveryID = [v15 proofreadingSuggestionIDsPerDeliveryID];
+      [proofreadingSuggestionIDsPerDeliveryID setObject:proofreadingDeliverySuggestionIDs forKeyedSubscript:v21];
     }
 
     if (self->_inFlightDeliveryID)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:v29 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2168 description:@"It should no longer be necessary to queue replacement deliveries"];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:v29 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2168 description:@"It should no longer be necessary to queue replacement deliveries"];
     }
 
     [(UIWritingToolsCoordinator *)self _setInFlightDeliveryID:v21];
-    v31 = v13;
+    v31 = dCopy;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
     [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:v24];
 
-    [(UIWritingToolsCoordinator *)self _beginAnimatedTextReplacementForInFlightDeliveryInContextID:v13];
+    [(UIWritingToolsCoordinator *)self _beginAnimatedTextReplacementForInFlightDeliveryInContextID:dCopy];
   }
 }
 
-- (void)_updateReplacementTrackerWithText:(id)a3 forRange:(_NSRange)a4 inContext:(id)a5 finished:(BOOL)a6
+- (void)_updateReplacementTrackerWithText:(id)text forRange:(_NSRange)range inContext:(id)context finished:(BOOL)finished
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
+  finishedCopy = finished;
+  length = range.length;
+  location = range.location;
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = [v12 uuid];
-  v14 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  textCopy = text;
+  contextCopy = context;
+  uuid = [contextCopy uuid];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v15 = [_trackingInfos objectForKeyedSubscript:uuid];
 
-  v16 = [v15 acceptedEvaluationContext];
-  v17 = [v16 evaluatedRange];
-  v18 = location >= v17;
-  v19 = location - v17;
+  acceptedEvaluationContext = [v15 acceptedEvaluationContext];
+  evaluatedRange = [acceptedEvaluationContext evaluatedRange];
+  v18 = location >= evaluatedRange;
+  v19 = location - evaluatedRange;
   if (!v18)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v26 = NSStringFromSelector(a2);
-    [v27 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2182 description:{@"%@ - range argument location is out of bounds", v26}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2182 description:{@"%@ - range argument location is out of bounds", v26}];
   }
 
-  v20 = [v15 replacementTracker];
-  v21 = [v20 recordRewrittenText:v11 forRange:v19 withContext:length finished:{v12, v6}];
+  replacementTracker = [v15 replacementTracker];
+  v21 = [replacementTracker recordRewrittenText:textCopy forRange:v19 withContext:length finished:{contextCopy, finishedCopy}];
 
   if (os_variant_has_internal_diagnostics() && ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0 && byte_1EA95E17C || (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184))
   {
@@ -5747,7 +5747,7 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
       *buf = 138412546;
       v31 = v21;
       v32 = 2112;
-      v33 = v11;
+      v33 = textCopy;
       _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_ERROR, "Replacement tracker recorded delivery %@\n%@", buf, 0x16u);
     }
   }
@@ -5756,37 +5756,37 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
   {
     if (self->_proofreadingDeliverySuggestionIDs)
     {
-      v22 = [v15 proofreadingSuggestionIDsPerDeliveryID];
-      [v22 setObject:self->_proofreadingDeliverySuggestionIDs forKeyedSubscript:v21];
+      proofreadingSuggestionIDsPerDeliveryID = [v15 proofreadingSuggestionIDsPerDeliveryID];
+      [proofreadingSuggestionIDsPerDeliveryID setObject:self->_proofreadingDeliverySuggestionIDs forKeyedSubscript:v21];
     }
 
     if (self->_inFlightDeliveryID)
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2192 description:@"It should no longer be necessary to queue replacement deliveries"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2192 description:@"It should no longer be necessary to queue replacement deliveries"];
     }
 
     [(UIWritingToolsCoordinator *)self _setInFlightDeliveryID:v21];
-    v29 = v13;
+    v29 = uuid;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
     [(UIWritingToolsCoordinator *)self _endTextAssistantAnticipationsForContextIDs:v23];
 
-    [(UIWritingToolsCoordinator *)self _beginAnimatedTextReplacementForInFlightDeliveryInContextID:v13];
+    [(UIWritingToolsCoordinator *)self _beginAnimatedTextReplacementForInFlightDeliveryInContextID:uuid];
   }
 }
 
-- (void)_updateSelectedRangeForCompositionIfFinishedInContext:(id)a3 force:(BOOL)a4
+- (void)_updateSelectedRangeForCompositionIfFinishedInContext:(id)context force:(BOOL)force
 {
-  v4 = a4;
+  forceCopy = force;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  contextCopy = context;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v9 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-  v10 = [v9 replacementTracker];
-  if (([v10 isProofreading] & 1) == 0)
+  replacementTracker = [v9 replacementTracker];
+  if (([replacementTracker isProofreading] & 1) == 0)
   {
-    v11 = [v10 isFinished];
+    isFinished = [replacementTracker isFinished];
     if (os_variant_has_internal_diagnostics())
     {
       if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantRewriteLogging, @"UITextAssistantRewriteLogging") & 1) == 0)
@@ -5800,7 +5800,7 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
             v22 = NSStringFromSelector(a2);
             v23 = v22;
             v24 = @"NO";
-            if (v4)
+            if (forceCopy)
             {
               v25 = @"YES";
             }
@@ -5814,7 +5814,7 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
             v28 = v22;
             v30 = v25;
             v29 = 2112;
-            if (v11)
+            if (isFinished)
             {
               v24 = @"YES";
             }
@@ -5827,34 +5827,34 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
       }
     }
 
-    if ((v4 | v11))
+    if ((forceCopy | isFinished))
     {
-      v12 = [v10 originalCharacterRange];
+      originalCharacterRange = [replacementTracker originalCharacterRange];
       v14 = v13;
-      if ([v10 compositionSessionState] == 2)
+      if ([replacementTracker compositionSessionState] == 2)
       {
-        v15 = [v10 activeText];
-        v14 = [v15 length];
+        activeText = [replacementTracker activeText];
+        v14 = [activeText length];
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v17 = [MEMORY[0x1E696B098] valueWithRange:{v12, v14}];
+      v17 = [MEMORY[0x1E696B098] valueWithRange:{originalCharacterRange, v14}];
       v26 = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-      v19 = [v9 acceptedEvaluationContext];
-      [WeakRetained writingToolsCoordinator:self selectRanges:v18 inContext:v19 completion:&__block_literal_global_248];
+      acceptedEvaluationContext = [v9 acceptedEvaluationContext];
+      [WeakRetained writingToolsCoordinator:self selectRanges:v18 inContext:acceptedEvaluationContext completion:&__block_literal_global_248];
     }
   }
 }
 
-- (void)_proofreadingOrCompositionFinishedInContext:(id)a3
+- (void)_proofreadingOrCompositionFinishedInContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   if (self->_inFlightDeliveryID)
   {
-    v21 = v5;
+    v21 = contextCopy;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
     v8 = [(UIWritingToolsCoordinator *)self _bufferInvocationForSelector:a2 arguments:v7];
 
@@ -5872,7 +5872,7 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
     goto LABEL_16;
   }
 
-  [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:v5 force:0];
+  [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:contextCopy force:0];
   v9 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:v6];
   [v9 setStreaming:0];
 
@@ -5885,8 +5885,8 @@ void __72__UIWritingToolsCoordinator__updateToCompositionSessionState_contextID_
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:buf count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
+  v11 = [objectEnumerator countByEnumeratingWithState:&v17 objects:buf count:16];
   if (!v11)
   {
 
@@ -5904,13 +5904,13 @@ LABEL_15:
     {
       if (*v18 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(objectEnumerator);
       }
 
       v13 += [*(*(&v17 + 1) + 8 * i) isStreaming];
     }
 
-    v12 = [v10 countByEnumeratingWithState:&v17 objects:buf count:16];
+    v12 = [objectEnumerator countByEnumeratingWithState:&v17 objects:buf count:16];
   }
 
   while (v12);
@@ -5923,21 +5923,21 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_updateVisualizationForProofreadingSuggestionsIfNecessaryForDelivery:(id)a3 inContext:(id)a4 completion:(id)a5
+- (void)_updateVisualizationForProofreadingSuggestionsIfNecessaryForDelivery:(id)delivery inContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  deliveryCopy = delivery;
+  contextCopy = context;
+  completionCopy = completion;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v12 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-  v13 = [v12 proofreadingSuggestionIDsPerDeliveryID];
-  v14 = [v13 objectForKeyedSubscript:v8];
-  v15 = [v12 replacementTracker];
-  v16 = [v15 proofreadingController];
-  if (v16)
+  proofreadingSuggestionIDsPerDeliveryID = [v12 proofreadingSuggestionIDsPerDeliveryID];
+  v14 = [proofreadingSuggestionIDsPerDeliveryID objectForKeyedSubscript:deliveryCopy];
+  replacementTracker = [v12 replacementTracker];
+  proofreadingController = [replacementTracker proofreadingController];
+  if (proofreadingController)
   {
-    v17 = [v14 objectEnumerator];
+    objectEnumerator = [v14 objectEnumerator];
     objc_initWeak(location, self);
     v28 = 0;
     v29 = &v28;
@@ -5951,11 +5951,11 @@ LABEL_16:
     aBlock[3] = &unk_1E70F90E8;
     v26 = &v28;
     objc_copyWeak(&v27, location);
-    v25 = v10;
-    v18 = v17;
+    v25 = completionCopy;
+    v18 = objectEnumerator;
     v21 = v18;
-    v22 = v9;
-    v23 = v15;
+    v22 = contextCopy;
+    v23 = replacementTracker;
     v24 = v12;
     v19 = _Block_copy(aBlock);
     objc_storeWeak(v29 + 5, v19);
@@ -5969,7 +5969,7 @@ LABEL_16:
 
   else
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -6048,11 +6048,11 @@ void __119__UIWritingToolsCoordinator__updateVisualizationForProofreadingSuggest
   }
 }
 
-- (void)_didEndProofreadingSession:(id)a3 accepted:(BOOL)a4 completion:(id)a5
+- (void)_didEndProofreadingSession:(id)session accepted:(BOOL)accepted completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
+  sessionCopy = session;
+  completionCopy = completion;
+  objectEnumerator = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -6074,10 +6074,10 @@ void __119__UIWritingToolsCoordinator__updateVisualizationForProofreadingSuggest
   v17 = &v21;
   objc_copyWeak(&v19, &location);
   v18 = v28;
-  v11 = v10;
+  v11 = objectEnumerator;
   v15 = v11;
-  v20 = a4;
-  v12 = v9;
+  acceptedCopy = accepted;
+  v12 = completionCopy;
   v16 = v12;
   v13 = _Block_copy(aBlock);
   objc_storeWeak(v22 + 5, v13);
@@ -6124,41 +6124,41 @@ void __76__UIWritingToolsCoordinator__didEndProofreadingSession_accepted_complet
   }
 }
 
-- (void)_didEndRewritingSession:(id)a3 accepted:(BOOL)a4
+- (void)_didEndRewritingSession:(id)session accepted:(BOOL)accepted
 {
-  v4 = a4;
+  acceptedCopy = accepted;
   v30 = *MEMORY[0x1E69E9840];
   v6 = *(&self->_includesTextListMarkers + 1);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v25;
-    v11 = !v4 | v6;
-    v12 = v4 | v6;
-    v23 = v7;
+    v11 = !acceptedCopy | v6;
+    v12 = acceptedCopy | v6;
+    v23 = objectEnumerator;
     do
     {
       for (i = 0; i != v9; ++i)
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 acceptedEvaluationContext];
-        v16 = v15;
-        if (v15)
+        acceptedEvaluationContext = [v14 acceptedEvaluationContext];
+        v16 = acceptedEvaluationContext;
+        if (acceptedEvaluationContext)
         {
-          v17 = [v15 identifier];
-          v18 = [v14 replacementTracker];
-          if ([v18 compositionSessionState] == 2)
+          identifier = [acceptedEvaluationContext identifier];
+          replacementTracker = [v14 replacementTracker];
+          if ([replacementTracker compositionSessionState] == 2)
           {
             if ((v12 & 1) == 0)
             {
@@ -6169,12 +6169,12 @@ void __76__UIWritingToolsCoordinator__didEndProofreadingSession_accepted_complet
 
           else
           {
-            if ([v18 compositionSessionState] && objc_msgSend(v18, "compositionSessionState") != 1)
+            if ([replacementTracker compositionSessionState] && objc_msgSend(replacementTracker, "compositionSessionState") != 1)
             {
               goto LABEL_18;
             }
 
-            if ([v18 compositionSessionState])
+            if ([replacementTracker compositionSessionState])
             {
               if (v11)
               {
@@ -6184,7 +6184,7 @@ void __76__UIWritingToolsCoordinator__didEndProofreadingSession_accepted_complet
 
             else
             {
-              v28 = v17;
+              v28 = identifier;
               [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
               v20 = v12;
               v22 = v21 = v11;
@@ -6192,7 +6192,7 @@ void __76__UIWritingToolsCoordinator__didEndProofreadingSession_accepted_complet
 
               v11 = v21;
               v12 = v20;
-              v7 = v23;
+              objectEnumerator = v23;
               if (v11)
               {
                 goto LABEL_18;
@@ -6201,15 +6201,15 @@ void __76__UIWritingToolsCoordinator__didEndProofreadingSession_accepted_complet
 
             v19 = 2;
 LABEL_17:
-            [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:v19 forDelivery:0 animationParameters:0 contextID:v17 completion:0];
-            [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:v17 force:1];
+            [(UIWritingToolsCoordinator *)self _updateTextViewAndTrackerWithIncomingCompositionSessionState:v19 forDelivery:0 animationParameters:0 contextID:identifier completion:0];
+            [(UIWritingToolsCoordinator *)self _updateSelectedRangeForCompositionIfFinishedInContext:identifier force:1];
           }
 
 LABEL_18:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v9);
@@ -6223,8 +6223,8 @@ LABEL_18:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -6236,23 +6236,23 @@ LABEL_18:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+        v10 = [_proofreadingSuggestionInfos objectForKeyedSubscript:v8];
 
-        v11 = [v10 underlineInfo];
+        underlineInfo = [v10 underlineInfo];
 
-        if (v11)
+        if (underlineInfo)
         {
           [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:v8];
         }
 
-        v12 = [v10 highlightInfo];
+        highlightInfo = [v10 highlightInfo];
 
-        if (v12)
+        if (highlightInfo)
         {
           [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionReviewingHighlightForProofreadingSuggestionID:v8];
         }
@@ -6261,37 +6261,37 @@ LABEL_18:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_updateProofreadingTextAndTrackerToShowOriginal:(BOOL)a3 inContextID:(id)a4
+- (void)_updateProofreadingTextAndTrackerToShowOriginal:(BOOL)original inContextID:(id)d
 {
-  v4 = a3;
+  originalCopy = original;
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v8 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  if ([v8 showingOriginal] != v4)
+  if ([v8 showingOriginal] != originalCopy)
   {
-    v27 = [v8 replacementTracker];
-    [v27 proofreadingController];
+    replacementTracker = [v8 replacementTracker];
+    [replacementTracker proofreadingController];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v26 = v34 = 0u;
-    v9 = [v26 suggestions];
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    suggestions = [v26 suggestions];
+    v10 = [suggestions countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
       v12 = *v32;
       v13 = 3;
-      v28 = v9;
+      v28 = suggestions;
       do
       {
         v14 = 0;
@@ -6300,32 +6300,32 @@ LABEL_18:
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(suggestions);
           }
 
           v15 = *(*(&v31 + 1) + 8 * v14);
           if ([v15 state] != 4)
           {
-            if (!v4)
+            if (!originalCopy)
             {
-              v16 = [v15 uuid];
-              v30 = [v8 backingProofreadingSuggestionStateForSuggestion:v16];
+              uuid = [v15 uuid];
+              v30 = [v8 backingProofreadingSuggestionStateForSuggestion:uuid];
 
-              v17 = [v8 savedReviewingProofreadingSuggestionID];
+              savedReviewingProofreadingSuggestionID = [v8 savedReviewingProofreadingSuggestionID];
               [v15 uuid];
-              v18 = self;
-              v20 = v19 = v4;
+              selfCopy = self;
+              v20 = v19 = originalCopy;
               v21 = v12;
               v22 = v8;
-              v23 = v6;
-              v24 = [v17 isEqual:v20];
+              v23 = dCopy;
+              v24 = [savedReviewingProofreadingSuggestionID isEqual:v20];
 
-              v4 = v19;
-              self = v18;
+              originalCopy = v19;
+              self = selfCopy;
               v11 = v29;
 
               v25 = v24 == 0;
-              v6 = v23;
+              dCopy = v23;
               v8 = v22;
               v12 = v21;
               if (v25)
@@ -6338,65 +6338,65 @@ LABEL_18:
                 v13 = 1;
               }
 
-              v9 = v28;
+              suggestions = v28;
             }
 
-            [(UIWritingToolsCoordinator *)self _updateForProofreadingSuggestion:v15 state:v13 saveState:0 inContext:v6];
+            [(UIWritingToolsCoordinator *)self _updateForProofreadingSuggestion:v15 state:v13 saveState:0 inContext:dCopy];
           }
 
           ++v14;
         }
 
         while (v11 != v14);
-        v11 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v11 = [suggestions countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v11);
     }
 
-    [v8 setShowingOriginal:v4];
-    if (!v4)
+    [v8 setShowingOriginal:originalCopy];
+    if (!originalCopy)
     {
       [v8 setSavedReviewingProofreadingSuggestionID:0];
     }
   }
 }
 
-- (void)_updateForProofreadingSuggestion:(id)a3 state:(int64_t)a4 saveState:(BOOL)a5 inContext:(id)a6
+- (void)_updateForProofreadingSuggestion:(id)suggestion state:(int64_t)state saveState:(BOOL)saveState inContext:(id)context
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 state];
-  v13 = [v10 uuid];
-  v14 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v15 = [v14 objectForKeyedSubscript:v11];
+  suggestionCopy = suggestion;
+  contextCopy = context;
+  state = [suggestionCopy state];
+  uuid = [suggestionCopy uuid];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v15 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-  v16 = [v15 replacementTracker];
-  v17 = [v16 proofreadingController];
-  [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:v13 state:v12];
+  replacementTracker = [v15 replacementTracker];
+  proofreadingController = [replacementTracker proofreadingController];
+  [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:uuid state:state];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_saveState_inContext___block_invoke;
   aBlock[3] = &unk_1E70F9188;
   objc_copyWeak(v32, &location);
-  v18 = v13;
+  v18 = uuid;
   v26 = v18;
-  v32[1] = a4;
-  v33 = a5;
+  v32[1] = state;
+  saveStateCopy = saveState;
   v19 = v15;
   v27 = v19;
-  v20 = v10;
-  v32[2] = v12;
+  v20 = suggestionCopy;
+  v32[2] = state;
   v28 = v20;
-  v29 = self;
-  v21 = v11;
+  selfCopy = self;
+  v21 = contextCopy;
   v30 = v21;
   v32[3] = a2;
-  v22 = v17;
+  v22 = proofreadingController;
   v31 = v22;
   v23 = _Block_copy(aBlock);
-  [v22 updateSuggestionWithUUID:v18 state:a4 completion:v23];
+  [v22 updateSuggestionWithUUID:v18 state:state completion:v23];
 
   objc_destroyWeak(v32);
   objc_destroyWeak(&location);
@@ -6534,33 +6534,33 @@ void __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_save
   }
 }
 
-- (void)_updateVisualizationForProofreadingSuggestionID:(id)a3 previousState:(int64_t)a4 delta:(int64_t)a5 resetFollowingIfNecessary:(BOOL)a6 inContext:(id)a7 completion:(id)a8
+- (void)_updateVisualizationForProofreadingSuggestionID:(id)d previousState:(int64_t)state delta:(int64_t)delta resetFollowingIfNecessary:(BOOL)necessary inContext:(id)context completion:(id)completion
 {
   v76 = *MEMORY[0x1E69E9840];
-  v51 = a3;
-  v12 = a7;
-  v13 = a8;
-  v14 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-  v15 = [v14 objectForKeyedSubscript:v51];
+  dCopy = d;
+  contextCopy = context;
+  completionCopy = completion;
+  _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+  v15 = [_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
 
-  v16 = [v15 contextID];
-  LOBYTE(a7) = [v16 isEqual:v12];
+  contextID = [v15 contextID];
+  LOBYTE(context) = [contextID isEqual:contextCopy];
 
-  if ((a7 & 1) == 0)
+  if ((context & 1) == 0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2500 description:{@"Mismatched context for proofreading suggestion. %@", v15}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2500 description:{@"Mismatched context for proofreading suggestion. %@", v15}];
   }
 
-  v17 = [v15 state];
-  v18 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v50 = [v18 objectForKeyedSubscript:v12];
+  state = [v15 state];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v50 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-  v49 = [v50 replacementTracker];
-  v19 = [v49 proofreadingController];
-  v20 = [v19 editTracker];
-  v21 = [v15 originalRange];
-  v45 = [v20 rangeOfSuggestionWithRange:v21 UUID:v22 applyDelta:{v51, v17 < 2}];
+  replacementTracker = [v50 replacementTracker];
+  proofreadingController = [replacementTracker proofreadingController];
+  editTracker = [proofreadingController editTracker];
+  originalRange = [v15 originalRange];
+  v45 = [editTracker rangeOfSuggestionWithRange:originalRange UUID:v22 applyDelta:{dCopy, state < 2}];
   v24 = v23;
 
   if (os_variant_has_internal_diagnostics() && (_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0 && byte_1EA95E184)
@@ -6570,24 +6570,24 @@ void __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_save
     {
       v35 = NSStringFromSelector(a2);
       v36 = v35;
-      if (v17 > 4)
+      if (state > 4)
       {
         v37 = @"unknown";
       }
 
       else
       {
-        v37 = off_1E70F93E0[v17];
+        v37 = off_1E70F93E0[state];
       }
 
-      if (a4 > 4)
+      if (state > 4)
       {
         v42 = @"unknown";
       }
 
       else
       {
-        v42 = off_1E70F93E0[a4];
+        v42 = off_1E70F93E0[state];
       }
 
       *from = 138413570;
@@ -6601,7 +6601,7 @@ void __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_save
       v72 = 2048;
       v73 = v24;
       v74 = 2048;
-      v75 = a5;
+      deltaCopy = delta;
       _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_ERROR, "%@, state=%@, previousState=%@, range={%lu, %lu} delta=%li", from, 0x3Eu);
     }
   }
@@ -6612,18 +6612,18 @@ void __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_save
   aBlock[2] = __144__UIWritingToolsCoordinator__updateVisualizationForProofreadingSuggestionID_previousState_delta_resetFollowingIfNecessary_inContext_completion___block_invoke;
   aBlock[3] = &unk_1E70F91B0;
   objc_copyWeak(v62, &location);
-  aSelectora = v13;
+  aSelectora = completionCopy;
   v61 = aSelectora;
-  v62[1] = a5;
-  v63 = a6;
+  v62[1] = delta;
+  necessaryCopy = necessary;
   v25 = v15;
   v59 = v25;
-  v26 = v12;
+  v26 = contextCopy;
   v60 = v26;
   v27 = _Block_copy(aBlock);
   if (v24)
   {
-    v28 = v17 < 2;
+    v28 = state < 2;
     objc_initWeak(from, self);
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
@@ -6631,9 +6631,9 @@ void __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_save
     v52[3] = &unk_1E70F91D8;
     objc_copyWeak(v57, from);
     v56 = v27;
-    v57[1] = a4;
-    v57[2] = v17;
-    v29 = v51;
+    v57[1] = state;
+    v57[2] = state;
+    v29 = dCopy;
     v53 = v29;
     v57[3] = v45;
     v57[4] = v24;
@@ -6667,14 +6667,14 @@ void __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_save
         v40 = *(__UILogGetCategoryCachedImpl("UIWritingToolsCoordinator", &qword_1ED49CB50) + 8);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          if (v17 > 4)
+          if (state > 4)
           {
             v41 = @"unknown";
           }
 
           else
           {
-            v41 = off_1E70F93E0[v17];
+            v41 = off_1E70F93E0[state];
           }
 
           *from = 138412290;
@@ -6685,13 +6685,13 @@ void __88__UIWritingToolsCoordinator__updateForProofreadingSuggestion_state_save
       }
     }
 
-    if ([(NSUUID *)self->_activeReviewingUUID isEqual:v51])
+    if ([(NSUUID *)self->_activeReviewingUUID isEqual:dCopy])
     {
       activeReviewingUUID = self->_activeReviewingUUID;
       self->_activeReviewingUUID = 0;
     }
 
-    [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:v51];
+    [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:dCopy];
     v27[2](v27);
   }
 
@@ -6753,11 +6753,11 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_invalidateProofreadingSuggestionWithUUID:(id)a3 contextID:(id)a4
+- (void)_invalidateProofreadingSuggestionWithUUID:(id)d contextID:(id)iD
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (os_variant_has_internal_diagnostics())
   {
     if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_UITextAssistantProofreadLogging, @"UITextAssistantProofreadLogging") & 1) == 0)
@@ -6768,7 +6768,7 @@ LABEL_10:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
           v13 = 138412290;
-          v14 = v6;
+          v14 = dCopy;
           _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Tell Writing Tools to update proofreading suggestion to Invalid. suggestionID = %@", &v13, 0xCu);
         }
       }
@@ -6776,33 +6776,33 @@ LABEL_10:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_sessionTextViewDelegate);
-  [WeakRetained proofreadingSessionWithUUID:self->_activeSessionUUID updateState:4 forSuggestionWithUUID:v6];
+  [WeakRetained proofreadingSessionWithUUID:self->_activeSessionUUID updateState:4 forSuggestionWithUUID:dCopy];
 
-  v9 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:v7];
+  v9 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:iDCopy];
 
-  v10 = [v9 replacementTracker];
+  replacementTracker = [v9 replacementTracker];
 
-  v11 = [v10 proofreadingController];
-  [v11 updateSuggestionWithUUID:v6 state:4 completion:&__block_literal_global_278];
+  proofreadingController = [replacementTracker proofreadingController];
+  [proofreadingController updateSuggestionWithUUID:dCopy state:4 completion:&__block_literal_global_278];
 }
 
-- (void)_resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:(unint64_t)a3 inContext:(id)a4 completion:(id)a5
+- (void)_resetProofreadingDecorationsForSuggestionsFollowingChangeLocationIndex:(unint64_t)index inContext:(id)context completion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v30 = a5;
-  v34 = v7;
-  v8 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:v7];
-  v31 = [v8 replacementTracker];
+  contextCopy = context;
+  completionCopy = completion;
+  v34 = contextCopy;
+  v8 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:contextCopy];
+  replacementTracker = [v8 replacementTracker];
 
-  v9 = [v31 proofreadingController];
-  v10 = [v9 suggestions];
-  v32 = [MEMORY[0x1E695DF70] array];
+  proofreadingController = [replacementTracker proofreadingController];
+  suggestions = [proofreadingController suggestions];
+  array = [MEMORY[0x1E695DF70] array];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v11 = v10;
+  v11 = suggestions;
   v12 = [v11 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v12)
   {
@@ -6817,33 +6817,33 @@ LABEL_10:
         }
 
         v15 = *(*(&v48 + 1) + 8 * i);
-        v16 = [v15 uuid];
+        uuid = [v15 uuid];
         if ([v15 state] == 4)
         {
-          [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:v16 state:4];
-          [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:v16];
-          [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionReviewingHighlightForProofreadingSuggestionID:v16];
+          [(UIWritingToolsCoordinator *)&self->super.isa _synchronizeSuggestionInfoStateForProofreadingSuggestionWithIdentifier:uuid state:4];
+          [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:uuid];
+          [(UIWritingToolsCoordinator *)self _removeProofreadingSuggestionReviewingHighlightForProofreadingSuggestionID:uuid];
         }
 
         if ([v15 state] <= 1)
         {
-          v17 = [v9 editTracker];
-          v18 = [v15 originalRange];
-          v20 = [v17 rangeOfSuggestionWithRange:v18 UUID:v19 applyDelta:{v16, 1}];
+          editTracker = [proofreadingController editTracker];
+          originalRange = [v15 originalRange];
+          v20 = [editTracker rangeOfSuggestionWithRange:originalRange UUID:v19 applyDelta:{uuid, 1}];
           v22 = v21;
 
           if (v20 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            [(UIWritingToolsCoordinator *)self _invalidateProofreadingSuggestionWithUUID:v16 contextID:v34];
+            [(UIWritingToolsCoordinator *)self _invalidateProofreadingSuggestionWithUUID:uuid contextID:v34];
           }
 
-          else if (v20 >= a3)
+          else if (v20 >= index)
           {
-            v52[0] = v16;
+            v52[0] = uuid;
             v23 = [MEMORY[0x1E696B098] valueWithRange:{v20, v22}];
             v52[1] = v23;
             v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
-            [v32 addObject:v24];
+            [array addObject:v24];
           }
         }
       }
@@ -6854,7 +6854,7 @@ LABEL_10:
     while (v12);
   }
 
-  v25 = [v32 objectEnumerator];
+  objectEnumerator = [array objectEnumerator];
   objc_initWeak(&location, self);
   v41 = 0;
   v42 = &v41;
@@ -6868,9 +6868,9 @@ LABEL_10:
   aBlock[3] = &unk_1E70F9220;
   v39 = &v41;
   objc_copyWeak(&v40, &location);
-  v26 = v30;
+  v26 = completionCopy;
   v38 = v26;
-  v27 = v25;
+  v27 = objectEnumerator;
   v36 = v27;
   v28 = v34;
   v37 = v28;
@@ -6929,25 +6929,25 @@ void __122__UIWritingToolsCoordinator__resetProofreadingDecorationsForSuggestion
   }
 }
 
-- (void)_addProofreadSuggestionPendingUnderlineForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5 completion:(id)a6
+- (void)_addProofreadSuggestionPendingUnderlineForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d completion:(id)completion
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-  v15 = [v14 objectForKeyedSubscript:v12];
+  length = range.length;
+  location = range.location;
+  completionCopy = completion;
+  dCopy = d;
+  contextCopy = context;
+  _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+  v15 = [_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __126__UIWritingToolsCoordinator__addProofreadSuggestionPendingUnderlineForRange_inContext_forProofreadingSuggestionID_completion___block_invoke;
   v18[3] = &unk_1E70F9248;
   v19 = v15;
-  v20 = v11;
-  v16 = v11;
+  v20 = completionCopy;
+  v16 = completionCopy;
   v17 = v15;
-  [(UIWritingToolsCoordinator *)self _drawProofreadingUnderlinesForRange:location inContext:length forProofreadingSuggestionID:v13 recordDecorationInfo:v12, v18];
+  [(UIWritingToolsCoordinator *)self _drawProofreadingUnderlinesForRange:location inContext:length forProofreadingSuggestionID:contextCopy recordDecorationInfo:dCopy, v18];
 }
 
 uint64_t __126__UIWritingToolsCoordinator__addProofreadSuggestionPendingUnderlineForRange_inContext_forProofreadingSuggestionID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -6962,82 +6962,82 @@ uint64_t __126__UIWritingToolsCoordinator__addProofreadSuggestionPendingUnderlin
   return v7();
 }
 
-- (void)_addProofreadingSuggestionReviewingHighlightForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5
+- (void)_addProofreadingSuggestionReviewingHighlightForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d
 {
-  length = a3.length;
-  location = a3.location;
-  v13 = a4;
-  v9 = a5;
-  v10 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  dCopy = d;
+  _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+  v11 = [_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
 
-  v12 = [v11 highlightInfo];
-  if (v12)
+  highlightInfo = [v11 highlightInfo];
+  if (highlightInfo)
   {
-    [(UIWritingToolsCoordinator *)self _drawProofreadingHighlightsForRange:location inContext:length forProofreadingSuggestionID:v13, v9];
+    [(UIWritingToolsCoordinator *)self _drawProofreadingHighlightsForRange:location inContext:length forProofreadingSuggestionID:contextCopy, dCopy];
   }
 }
 
-- (void)_removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:(id)a3
+- (void)_removeProofreadingSuggestionPendingUnderlineForPoofreadingSuggestionID:(id)d
 {
-  v4 = a3;
-  [(UIWritingToolsCoordinator *)self _undrawProofreadingUnderlinesForProofreadingSuggestionID:v4];
-  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:v4];
+  dCopy = d;
+  [(UIWritingToolsCoordinator *)self _undrawProofreadingUnderlinesForProofreadingSuggestionID:dCopy];
+  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
 
   [v5 setUnderlineInfo:0];
 }
 
-- (void)_removeProofreadingSuggestionReviewingHighlightForProofreadingSuggestionID:(id)a3
+- (void)_removeProofreadingSuggestionReviewingHighlightForProofreadingSuggestionID:(id)d
 {
-  v4 = a3;
-  [(UIWritingToolsCoordinator *)self _undrawProofreadingHighlightsForProofreadingSuggestionID:v4];
-  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:v4];
+  dCopy = d;
+  [(UIWritingToolsCoordinator *)self _undrawProofreadingHighlightsForProofreadingSuggestionID:dCopy];
+  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
 
   [v5 setHighlightInfo:0];
 }
 
-- (void)_populateDecorationContainerViewsForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5 completion:(id)a6
+- (void)_populateDecorationContainerViewsForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d completion:(id)completion
 {
-  length = a3.length;
-  v9 = a3.location;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  length = range.length;
+  v9 = range.location;
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
   if ((*&self->_delegateRespondsTo & 4) == 0)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2669 description:@"Don't do this work for single containers"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2669 description:@"Don't do this work for single containers"];
   }
 
-  v15 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v16 = [v15 objectForKeyedSubscript:v12];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v16 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-  v17 = [v16 acceptedEvaluationContext];
-  if (v17)
+  acceptedEvaluationContext = [v16 acceptedEvaluationContext];
+  if (acceptedEvaluationContext)
   {
     v29 = v9;
     v30 = length;
-    v18 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-    v31 = v13;
-    v19 = [v18 objectForKeyedSubscript:v13];
+    _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+    v31 = dCopy;
+    v19 = [_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
 
-    v20 = [v19 singleContainerSubrangesOfAdjustedOriginalRange];
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    singleContainerSubrangesOfAdjustedOriginalRange = [v19 singleContainerSubrangesOfAdjustedOriginalRange];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __120__UIWritingToolsCoordinator__populateDecorationContainerViewsForRange_inContext_forProofreadingSuggestionID_completion___block_invoke;
     aBlock[3] = &unk_1E70F9298;
     objc_copyWeak(&v39, &location);
-    v38 = v14;
-    v22 = v21;
+    v38 = completionCopy;
+    v22 = dictionary;
     v33 = v22;
-    v23 = v20;
+    v23 = singleContainerSubrangesOfAdjustedOriginalRange;
     v34 = v23;
     v24 = v19;
     v35 = v24;
-    v36 = self;
-    v25 = v17;
+    selfCopy = self;
+    v25 = acceptedEvaluationContext;
     v37 = v25;
     v26 = _Block_copy(aBlock);
     v27 = v26;
@@ -7054,12 +7054,12 @@ uint64_t __126__UIWritingToolsCoordinator__addProofreadSuggestionPendingUnderlin
     objc_destroyWeak(&v39);
     objc_destroyWeak(&location);
 
-    v13 = v31;
+    dCopy = v31;
   }
 
   else
   {
-    (*(v14 + 2))(v14, MEMORY[0x1E695E0F8]);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F8]);
   }
 }
 
@@ -7170,21 +7170,21 @@ LABEL_9:
   }
 }
 
-- (void)_updateProofreadingDecorationViewsWithUnderlineInfo:(uint64_t)a1
+- (void)_updateProofreadingDecorationViewsWithUnderlineInfo:(uint64_t)info
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (info)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v3 containers];
-    v6 = [v5 objectEnumerator];
+    containers = [v3 containers];
+    objectEnumerator = [containers objectEnumerator];
 
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -7196,17 +7196,17 @@ LABEL_9:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          v11 = [*(*(&v12 + 1) + 8 * v10) _proofreadingDecorationView];
-          [v11 addDecorationInfo:v4];
+          _proofreadingDecorationView = [*(*(&v12 + 1) + 8 * v10) _proofreadingDecorationView];
+          [_proofreadingDecorationView addDecorationInfo:v4];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -7214,67 +7214,67 @@ LABEL_9:
   }
 }
 
-- (_UIWTCProofreadingDecorationView)_preparedProofreadingDecorationViewInContainer:(uint64_t)a1
+- (_UIWTCProofreadingDecorationView)_preparedProofreadingDecorationViewInContainer:(uint64_t)container
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (container)
   {
-    v5 = [v3 _proofreadingDecorationView];
-    if (!v5)
+    _proofreadingDecorationView = [v3 _proofreadingDecorationView];
+    if (!_proofreadingDecorationView)
     {
       v6 = [_UIWTCProofreadingDecorationView alloc];
       [v4 bounds];
-      v5 = [(_UIWTCProofreadingDecorationView *)v6 initWithFrame:?];
-      [(UIView *)v5 setAutoresizingMask:18];
-      [v4 _setProofreadingDecorationView:v5];
+      _proofreadingDecorationView = [(_UIWTCProofreadingDecorationView *)v6 initWithFrame:?];
+      [(UIView *)_proofreadingDecorationView setAutoresizingMask:18];
+      [v4 _setProofreadingDecorationView:_proofreadingDecorationView];
     }
 
-    v7 = [(UIView *)v5 superview];
+    superview = [(UIView *)_proofreadingDecorationView superview];
 
-    if (v7 != v4)
+    if (superview != v4)
     {
       [v4 bounds];
-      [(UIView *)v5 setFrame:?];
-      [v4 addSubview:v5];
-      v8 = *(a1 + 8);
+      [(UIView *)_proofreadingDecorationView setFrame:?];
+      [v4 addSubview:_proofreadingDecorationView];
+      v8 = *(container + 8);
       if (!v8)
       {
         v9 = [MEMORY[0x1E695DFA8] set];
-        v10 = *(a1 + 8);
-        *(a1 + 8) = v9;
+        v10 = *(container + 8);
+        *(container + 8) = v9;
 
-        v8 = *(a1 + 8);
+        v8 = *(container + 8);
       }
 
-      [v8 addObject:v5];
+      [v8 addObject:_proofreadingDecorationView];
     }
   }
 
   else
   {
-    v5 = 0;
+    _proofreadingDecorationView = 0;
   }
 
-  return v5;
+  return _proofreadingDecorationView;
 }
 
-- (void)_drawProofreadingUnderlinesForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5 recordDecorationInfo:(id)a6
+- (void)_drawProofreadingUnderlinesForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d recordDecorationInfo:(id)info
 {
-  length = a3.length;
-  v9 = a3.location;
+  length = range.length;
+  v9 = range.location;
   location[3] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v30 = a5;
-  v31 = a6;
-  v12 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  contextCopy = context;
+  dCopy = d;
+  infoCopy = info;
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v13 = [_trackingInfos objectForKeyedSubscript:contextCopy];
 
-  v14 = [v13 acceptedEvaluationContext];
+  acceptedEvaluationContext = [v13 acceptedEvaluationContext];
   if ((*&self->_delegateRespondsTo & 4) != 0)
   {
-    v22 = [(UIWritingToolsCoordinator *)self delegate];
-    objc_initWeak(location, v22);
+    delegate = [(UIWritingToolsCoordinator *)self delegate];
+    objc_initWeak(location, delegate);
     objc_initWeak(&from, self);
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -7282,10 +7282,10 @@ LABEL_9:
     v39[3] = &unk_1E70F9310;
     objc_copyWeak(&v43, location);
     objc_copyWeak(&v44, &from);
-    v42 = v31;
-    v40 = v30;
-    v41 = v14;
-    [(UIWritingToolsCoordinator *)self _populateDecorationContainerViewsForRange:v9 inContext:length forProofreadingSuggestionID:v11 completion:v40, v39];
+    v42 = infoCopy;
+    v40 = dCopy;
+    v41 = acceptedEvaluationContext;
+    [(UIWritingToolsCoordinator *)self _populateDecorationContainerViewsForRange:v9 inContext:length forProofreadingSuggestionID:contextCopy completion:v40, v39];
 
     objc_destroyWeak(&v44);
     objc_destroyWeak(&v43);
@@ -7295,16 +7295,16 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v15 = [(UIWritingToolsCoordinator *)self decorationContainerView];
-  v16 = [v15 _window];
+  decorationContainerView = [(UIWritingToolsCoordinator *)self decorationContainerView];
+  _window = [decorationContainerView _window];
 
-  if (v16)
+  if (_window)
   {
     goto LABEL_5;
   }
 
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
-  if (v15)
+  if (decorationContainerView)
   {
     if (has_internal_diagnostics)
     {
@@ -7316,7 +7316,7 @@ LABEL_9:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
             LODWORD(location[0]) = 138412290;
-            *(location + 4) = v15;
+            *(location + 4) = decorationContainerView;
             _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_ERROR, "***WARNING*** decorationContainerView is not yet in the window hierarchy. Proofreading underlines will not appear until the client moves it into the hierarchy. decorationContainerView=%@", location, 0xCu);
           }
         }
@@ -7324,7 +7324,7 @@ LABEL_9:
     }
 
 LABEL_5:
-    v29 = [(UIWritingToolsCoordinator *)self _preparedProofreadingDecorationViewInContainer:v15];
+    v29 = [(UIWritingToolsCoordinator *)self _preparedProofreadingDecorationViewInContainer:decorationContainerView];
     v18 = [MEMORY[0x1E696B098] valueWithRange:{v9, length}];
     objc_initWeak(location, self);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -7333,15 +7333,15 @@ LABEL_5:
     v32[2] = __124__UIWritingToolsCoordinator__drawProofreadingUnderlinesForRange_inContext_forProofreadingSuggestionID_recordDecorationInfo___block_invoke_290;
     v32[3] = &unk_1E70F9360;
     objc_copyWeak(v38, location);
-    v37 = v31;
-    v33 = v30;
+    v37 = infoCopy;
+    v33 = dCopy;
     v20 = v18;
     v34 = v20;
-    v21 = v15;
+    v21 = decorationContainerView;
     v35 = v21;
     v38[1] = v9;
     v38[2] = length;
-    v36 = v14;
+    v36 = acceptedEvaluationContext;
     [WeakRetained writingToolsCoordinator:self requestsUnderlinePathsForRange:v9 inContext:length completion:{v36, v32}];
 
     objc_destroyWeak(v38);
@@ -7355,9 +7355,9 @@ LABEL_5:
     v27 = __UIFaultDebugAssertLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
     {
-      v28 = [(UIWritingToolsCoordinator *)self delegate];
+      delegate2 = [(UIWritingToolsCoordinator *)self delegate];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v28;
+      *(location + 4) = delegate2;
       _os_log_fault_impl(&dword_188A29000, v27, OS_LOG_TYPE_FAULT, "No view available for drawing proofreading underlines. UIWritingToolsCoordinatorDelegate %@ does not respond to -writingToolsCoordinator:requestsDecorationContainerViewForRange:inContext:completion: and therefore must assign a non-nil value to the coordinator's decorationContainerView property.", location, 0xCu);
     }
   }
@@ -7368,14 +7368,14 @@ LABEL_5:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       v24 = v23;
-      v25 = [(UIWritingToolsCoordinator *)self delegate];
+      delegate3 = [(UIWritingToolsCoordinator *)self delegate];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v25;
+      *(location + 4) = delegate3;
       _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_ERROR, "No view available for drawing proofreading underlines. UIWritingToolsCoordinatorDelegate %@ does not respond to -writingToolsCoordinator:requestsDecorationContainerViewForRange:inContext:completion: and therefore must assign a non-nil value to the coordinator's decorationContainerView property.", location, 0xCu);
     }
   }
 
-  (*(v31 + 2))(v31, 0, 0);
+  (*(infoCopy + 2))(infoCopy, 0, 0);
 LABEL_7:
 }
 
@@ -7649,23 +7649,23 @@ void __124__UIWritingToolsCoordinator__drawProofreadingUnderlinesForRange_inCont
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)_drawProofreadingHighlightsForRange:(_NSRange)a3 inContext:(id)a4 forProofreadingSuggestionID:(id)a5
+- (void)_drawProofreadingHighlightsForRange:(_NSRange)range inContext:(id)context forProofreadingSuggestionID:(id)d
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-  v27 = v6;
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+  v27 = dCopy;
+  v8 = [_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
 
   v28 = v8;
-  v9 = [v8 highlightInfo];
-  v10 = [v9 containers];
+  highlightInfo = [v8 highlightInfo];
+  containers = [highlightInfo containers];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v11 = [v9 ranges];
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  ranges = [highlightInfo ranges];
+  v12 = [ranges countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v12)
   {
     v14 = v12;
@@ -7679,14 +7679,14 @@ void __124__UIWritingToolsCoordinator__drawProofreadingUnderlinesForRange_inCont
       {
         if (*v30 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(ranges);
         }
 
         v17 = *(*(&v29 + 1) + 8 * v16);
-        v18 = [v10 objectForKey:{v17, v26}];
-        v19 = [v18 _window];
+        v18 = [containers objectForKey:{v17, v26}];
+        _window = [v18 _window];
 
-        if (v19)
+        if (_window)
         {
           goto LABEL_9;
         }
@@ -7713,7 +7713,7 @@ void __124__UIWritingToolsCoordinator__drawProofreadingUnderlinesForRange_inCont
 
 LABEL_9:
           v21 = [(UIWritingToolsCoordinator *)self _preparedProofreadingDecorationViewInContainer:v18];
-          [v21 addDecorationInfo:v9];
+          [v21 addDecorationInfo:highlightInfo];
 
           goto LABEL_10;
         }
@@ -7750,7 +7750,7 @@ LABEL_10:
       }
 
       while (v14 != v16);
-      v25 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v25 = [ranges countByEnumeratingWithState:&v29 objects:v37 count:16];
       v14 = v25;
     }
 
@@ -7758,20 +7758,20 @@ LABEL_10:
   }
 }
 
-- (void)_undrawProofreadingUnderlinesForProofreadingSuggestionID:(id)a3
+- (void)_undrawProofreadingUnderlinesForProofreadingSuggestionID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:v4];
-  v6 = [v5 underlineInfo];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
+  underlineInfo = [v5 underlineInfo];
 
-  if (v6)
+  if (underlineInfo)
   {
     v7 = MEMORY[0x1E695DFD8];
-    v8 = [v6 containers];
-    v9 = [v8 objectEnumerator];
-    v10 = [v9 allObjects];
-    v11 = [v7 setWithArray:v10];
+    containers = [underlineInfo containers];
+    objectEnumerator = [containers objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
+    v11 = [v7 setWithArray:allObjects];
 
     v21 = 0u;
     v22 = 0u;
@@ -7793,8 +7793,8 @@ LABEL_10:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * v16) _proofreadingDecorationView];
-          [v17 removeDecorationInfo:v6];
+          _proofreadingDecorationView = [*(*(&v19 + 1) + 8 * v16) _proofreadingDecorationView];
+          [_proofreadingDecorationView removeDecorationInfo:underlineInfo];
 
           ++v16;
         }
@@ -7817,7 +7817,7 @@ LABEL_10:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v24 = v4;
+          v24 = dCopy;
           _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "Asked to undraw an underline that's missing from the index. Hopefully it's already been undrawn. Associated proofreadingSuggestionID = %@", buf, 0xCu);
         }
       }
@@ -7825,20 +7825,20 @@ LABEL_10:
   }
 }
 
-- (void)_undrawProofreadingHighlightsForProofreadingSuggestionID:(id)a3
+- (void)_undrawProofreadingHighlightsForProofreadingSuggestionID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:v4];
-  v6 = [v5 highlightInfo];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_proofreadingSuggestionInfos objectForKeyedSubscript:dCopy];
+  highlightInfo = [v5 highlightInfo];
 
-  if (v6)
+  if (highlightInfo)
   {
     v7 = MEMORY[0x1E695DFD8];
-    v8 = [v6 containers];
-    v9 = [v8 objectEnumerator];
-    v10 = [v9 allObjects];
-    v11 = [v7 setWithArray:v10];
+    containers = [highlightInfo containers];
+    objectEnumerator = [containers objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
+    v11 = [v7 setWithArray:allObjects];
 
     v21 = 0u;
     v22 = 0u;
@@ -7860,8 +7860,8 @@ LABEL_10:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * v16) _proofreadingDecorationView];
-          [v17 removeDecorationInfo:v6];
+          _proofreadingDecorationView = [*(*(&v19 + 1) + 8 * v16) _proofreadingDecorationView];
+          [_proofreadingDecorationView removeDecorationInfo:highlightInfo];
 
           ++v16;
         }
@@ -7884,7 +7884,7 @@ LABEL_10:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v24 = v4;
+          v24 = dCopy;
           _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "Asked to undraw a highlight that's missing from the index. Hopefully it's already been undrawn. Associated proofreadingSuggestionID = %@", buf, 0xCu);
         }
       }
@@ -7892,76 +7892,76 @@ LABEL_10:
   }
 }
 
-- (id)_replacementTrackerForContextID:(id)a3
+- (id)_replacementTrackerForContextID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:a3];
-  v4 = [v3 replacementTracker];
+  v3 = [(NSMutableDictionary *)self->_trackingInfos objectForKeyedSubscript:d];
+  replacementTracker = [v3 replacementTracker];
 
-  return v4;
+  return replacementTracker;
 }
 
-- (void)_updateProofreadingDeliveryWithReplacement:(id)a3 accordingToProofreadingSuggestionWithIdentifier:(id)a4 replacingCharactersInRange:(_NSRange)a5 newState:(int64_t)a6 contextID:(id)a7
+- (void)_updateProofreadingDeliveryWithReplacement:(id)replacement accordingToProofreadingSuggestionWithIdentifier:(id)identifier replacingCharactersInRange:(_NSRange)range newState:(int64_t)state contextID:(id)d
 {
-  length = a5.length;
-  location = a5.location;
-  v14 = a3;
-  [(NSMutableArray *)self->_proofreadingDeliverySuggestionIDs addObject:a4];
+  length = range.length;
+  location = range.location;
+  replacementCopy = replacement;
+  [(NSMutableArray *)self->_proofreadingDeliverySuggestionIDs addObject:identifier];
   v12 = location - self->_proofreadingDeliveryOffset;
   if (v12 < 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2951 description:@"Range calculation error for accumulating proofreading replacements"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIWritingToolsCoordinator.m" lineNumber:2951 description:@"Range calculation error for accumulating proofreading replacements"];
   }
 
-  [(NSMutableAttributedString *)self->_proofreadingDeliveryReplacement replaceCharactersInRange:v12 withAttributedString:length, v14];
+  [(NSMutableAttributedString *)self->_proofreadingDeliveryReplacement replaceCharactersInRange:v12 withAttributedString:length, replacementCopy];
 }
 
-- (void)_delegateUpdateTextAccordingToProofreadingSuggestionInfoWithIdentifier:(id)a3 replacingCharactersInRange:(_NSRange)a4 newState:(int64_t)a5 contextID:(id)a6 updateCompletion:(id)a7
+- (void)_delegateUpdateTextAccordingToProofreadingSuggestionInfoWithIdentifier:(id)identifier replacingCharactersInRange:(_NSRange)range newState:(int64_t)state contextID:(id)d updateCompletion:(id)completion
 {
-  length = a4.length;
-  v11 = a4.location;
-  v13 = a3;
-  v14 = a6;
-  v45 = a7;
+  length = range.length;
+  v11 = range.location;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   self->_proofreadingVisualizationReplacementDelta = 0;
-  v15 = [(UIWritingToolsCoordinator *)self _trackingInfos];
-  v16 = [v15 objectForKeyedSubscript:v14];
+  _trackingInfos = [(UIWritingToolsCoordinator *)self _trackingInfos];
+  v16 = [_trackingInfos objectForKeyedSubscript:dCopy];
 
-  v44 = [v16 replacementTracker];
-  v17 = [v16 acceptedEvaluationContext];
-  v41 = [v17 evaluatedRange];
-  v18 = [v16 currentProofreadingText];
+  replacementTracker = [v16 replacementTracker];
+  acceptedEvaluationContext = [v16 acceptedEvaluationContext];
+  evaluatedRange = [acceptedEvaluationContext evaluatedRange];
+  currentProofreadingText = [v16 currentProofreadingText];
   v39 = v11;
   v40 = length;
-  v46 = [v18 attributedSubstringFromRange:{v11, length}];
-  v19 = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
-  v20 = v13;
-  v21 = [v19 objectForKeyedSubscript:v13];
+  v46 = [currentProofreadingText attributedSubstringFromRange:{v11, length}];
+  _proofreadingSuggestionInfos = [(UIWritingToolsCoordinator *)self _proofreadingSuggestionInfos];
+  v20 = identifierCopy;
+  v21 = [_proofreadingSuggestionInfos objectForKeyedSubscript:identifierCopy];
 
-  v22 = a5;
+  stateCopy = state;
   v43 = v21;
-  if (a5 == 3)
+  if (state == 3)
   {
-    v23 = [v21 originalRange];
+    originalRange = [v21 originalRange];
     v25 = v24;
-    [v44 proofreadingController];
-    v36 = v17;
-    v27 = v26 = v14;
+    [replacementTracker proofreadingController];
+    v36 = acceptedEvaluationContext;
+    v27 = v26 = dCopy;
     [v27 contextString];
-    v28 = v18;
+    v28 = currentProofreadingText;
     v30 = v29 = v20;
-    v31 = [v30 attributedSubstringFromRange:{v23 + v41, v25}];
+    attributedString = [v30 attributedSubstringFromRange:{originalRange + evaluatedRange, v25}];
 
     v20 = v29;
-    v18 = v28;
+    currentProofreadingText = v28;
 
-    v14 = v26;
-    v17 = v36;
+    dCopy = v26;
+    acceptedEvaluationContext = v36;
   }
 
   else
   {
-    v31 = [v21 attributedString];
+    attributedString = [v21 attributedString];
   }
 
   if (self->_includesTextListMarkers)
@@ -7969,43 +7969,43 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  if (![v46 isEqualToAttributedString:v31])
+  if (![v46 isEqualToAttributedString:attributedString])
   {
-    v42 = v14;
+    v42 = dCopy;
     objc_initWeak(location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __163__UIWritingToolsCoordinator__delegateUpdateTextAccordingToProofreadingSuggestionInfoWithIdentifier_replacingCharactersInRange_newState_contextID_updateCompletion___block_invoke;
     aBlock[3] = &unk_1E70F9388;
     objc_copyWeak(v52, location);
-    v33 = v31;
+    v33 = attributedString;
     v48 = v33;
     v52[1] = a2;
-    v38 = v18;
-    v49 = v18;
+    v38 = currentProofreadingText;
+    v49 = currentProofreadingText;
     v52[2] = v39;
     v52[3] = v40;
     v50 = v46;
-    v51 = v45;
+    v51 = completionCopy;
     v34 = _Block_copy(aBlock);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained writingToolsCoordinator:self replaceRange:v39 inContext:v40 proposedText:v17 reason:v33 animationParameters:1 completion:{0, v34}];
+    [WeakRetained writingToolsCoordinator:self replaceRange:v39 inContext:v40 proposedText:acceptedEvaluationContext reason:v33 animationParameters:1 completion:{0, v34}];
 
     objc_destroyWeak(v52);
     objc_destroyWeak(location);
-    v14 = v42;
-    v18 = v38;
+    dCopy = v42;
+    currentProofreadingText = v38;
     goto LABEL_12;
   }
 
-  if (self->_includesTextListMarkers || [v43 state] != v22)
+  if (self->_includesTextListMarkers || [v43 state] != stateCopy)
   {
 LABEL_5:
-    v32 = [v31 length];
+    v32 = [attributedString length];
     self->_proofreadingVisualizationReplacementDelta = v32 - [v46 length];
   }
 
-  (*(v45 + 2))(v45, v31);
+  (*(completionCopy + 2))(completionCopy, attributedString);
 LABEL_12:
 }
 
@@ -8056,12 +8056,12 @@ LABEL_12:
 
 - (id)_replacementTracker
 {
-  v2 = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
-  v3 = [v2 allObjects];
-  v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 replacementTracker];
+  objectEnumerator = [(NSMutableDictionary *)self->_trackingInfos objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v4 = [allObjects objectAtIndexedSubscript:0];
+  replacementTracker = [v4 replacementTracker];
 
-  return v5;
+  return replacementTracker;
 }
 
 - (WTTextViewDelegate_Proposed_v1)_sessionTextViewDelegate

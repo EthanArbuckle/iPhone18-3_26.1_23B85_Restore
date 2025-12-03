@@ -1,16 +1,16 @@
 @interface AXSettingsProfileManager
 - (AXSettingsProfileManager)init;
-- (BOOL)handleUserProfileDidChangeToUser:(id)a3;
-- (BOOL)handleUserProfileWillChangeFromUser:(id)a3;
-- (BOOL)startGuestModeSessionWithData:(id)a3;
-- (BOOL)updateProfileFor:(id)a3 withProperties:(id)a4;
+- (BOOL)handleUserProfileDidChangeToUser:(id)user;
+- (BOOL)handleUserProfileWillChangeFromUser:(id)user;
+- (BOOL)startGuestModeSessionWithData:(id)data;
+- (BOOL)updateProfileFor:(id)for withProperties:(id)properties;
 - (NSURL)guestPassLocalStorageURL;
-- (id)_getAXFileURLForPersona:(id)a3;
-- (void)createPreferencesStorageFileIfNeededAtPath:(id)a3;
+- (id)_getAXFileURLForPersona:(id)persona;
+- (void)createPreferencesStorageFileIfNeededAtPath:(id)path;
 - (void)deleteAllGuestPassProfiles;
-- (void)deleteGuestPassProfile:(id)a3;
+- (void)deleteGuestPassProfile:(id)profile;
 - (void)endGuestModeSession;
-- (void)storeGuestPassProfile:(id)a3 name:(id)a4;
+- (void)storeGuestPassProfile:(id)profile name:(id)name;
 @end
 
 @implementation AXSettingsProfileManager
@@ -28,13 +28,13 @@
   return result;
 }
 
-- (void)createPreferencesStorageFileIfNeededAtPath:(id)a3
+- (void)createPreferencesStorageFileIfNeededAtPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v4 = MEMORY[0x1E696AC00];
-    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
+    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
     v15 = 0;
     v6 = [v4 fileHandleForReadingFromURL:v5 error:&v15];
     v7 = v15;
@@ -52,8 +52,8 @@
         _os_log_impl(&dword_18B15E000, v10, OS_LOG_TYPE_DEFAULT, "No saved settings existed for current profile, creating storage", buf, 2u);
       }
 
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      [v11 createFileAtPath:v3 contents:0 attributes:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager createFileAtPath:pathCopy contents:0 attributes:0];
     }
 
     v12 = 0;
@@ -61,13 +61,13 @@
   }
 }
 
-- (BOOL)handleUserProfileDidChangeToUser:(id)a3
+- (BOOL)handleUserProfileDidChangeToUser:(id)user
 {
-  v4 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:a3];
+  v4 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:user];
   v5 = [v4 URLByAppendingPathComponent:@"Accessibility.plist"];
 
-  v6 = [v5 path];
-  [(AXSettingsProfileManager *)self createPreferencesStorageFileIfNeededAtPath:v6];
+  path = [v5 path];
+  [(AXSettingsProfileManager *)self createPreferencesStorageFileIfNeededAtPath:path];
 
   v38 = 0;
   v7 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:v5 error:&v38];
@@ -130,10 +130,10 @@ LABEL_15:
   }
 
   v16 = +[AXSettings sharedInstance];
-  v17 = [v16 managedAssetsRepresentation];
+  managedAssetsRepresentation = [v16 managedAssetsRepresentation];
 
   v34 = 0;
-  v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:v17 format:100 options:0 error:&v34];
+  v13 = [MEMORY[0x1E696AE40] dataWithPropertyList:managedAssetsRepresentation format:100 options:0 error:&v34];
   v14 = v34;
 
   if (v13)
@@ -169,7 +169,7 @@ LABEL_15:
     }
 
     v26 = 0;
-    v25 = v17;
+    v25 = managedAssetsRepresentation;
   }
 
   else
@@ -181,7 +181,7 @@ LABEL_15:
     }
 
     v26 = 0;
-    v13 = v17;
+    v13 = managedAssetsRepresentation;
   }
 
 LABEL_28:
@@ -189,24 +189,24 @@ LABEL_28:
   return v26;
 }
 
-- (BOOL)handleUserProfileWillChangeFromUser:(id)a3
+- (BOOL)handleUserProfileWillChangeFromUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 managedAssetsRepresentation];
+  managedAssetsRepresentation = [v5 managedAssetsRepresentation];
 
-  v7 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:v4];
+  v7 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:userCopy];
 
   v8 = [v7 URLByAppendingPathComponent:@"Accessibility.plist"];
 
-  v9 = [v8 path];
-  [(AXSettingsProfileManager *)self createPreferencesStorageFileIfNeededAtPath:v9];
+  path = [v8 path];
+  [(AXSettingsProfileManager *)self createPreferencesStorageFileIfNeededAtPath:path];
 
   v20 = 0;
   v10 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:v8 error:&v20];
   v11 = v20;
   v19 = 0;
-  v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:100 options:0 error:&v19];
+  v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:managedAssetsRepresentation format:100 options:0 error:&v19];
   v13 = v19;
 
   v18 = 0;
@@ -230,20 +230,20 @@ LABEL_28:
   return v14;
 }
 
-- (BOOL)updateProfileFor:(id)a3 withProperties:(id)a4
+- (BOOL)updateProfileFor:(id)for withProperties:(id)properties
 {
-  v6 = a4;
-  v7 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:a3];
+  propertiesCopy = properties;
+  v7 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:for];
   v8 = [v7 URLByAppendingPathComponent:@"Accessibility.plist"];
 
-  v9 = [v8 path];
-  [(AXSettingsProfileManager *)self createPreferencesStorageFileIfNeededAtPath:v9];
+  path = [v8 path];
+  [(AXSettingsProfileManager *)self createPreferencesStorageFileIfNeededAtPath:path];
 
   v20 = 0;
   v10 = [MEMORY[0x1E696AC00] fileHandleForWritingToURL:v8 error:&v20];
   v11 = v20;
   v19 = 0;
-  v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v6 format:100 options:0 error:&v19];
+  v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:propertiesCopy format:100 options:0 error:&v19];
 
   v13 = v19;
   v18 = 0;
@@ -267,16 +267,16 @@ LABEL_28:
   return v14;
 }
 
-- (id)_getAXFileURLForPersona:(id)a3
+- (id)_getAXFileURLForPersona:(id)persona
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  personaCopy = persona;
   v4 = container_query_create();
   if (v4)
   {
     container_query_set_class();
     container_query_operation_set_flags();
-    [v3 UTF8String];
+    [personaCopy UTF8String];
     container_query_set_persona_unique_string();
     if (container_query_get_single_result())
     {
@@ -356,16 +356,16 @@ uint64_t __52__AXSettingsProfileManager__getAXFileURLForPersona___block_invoke(u
   return result;
 }
 
-- (BOOL)startGuestModeSessionWithData:(id)a3
+- (BOOL)startGuestModeSessionWithData:(id)data
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
   v5 = *MEMORY[0x1E69E9980];
-  v6 = a3;
+  dataCopy = data;
   v7 = [v4 stringWithUTF8String:v5];
   [(AXSettingsProfileManager *)self handleUserProfileWillChangeFromUser:v7];
 
-  v8 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:0];
+  v8 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:0];
 
   v9 = +[AXSettings sharedInstance];
   v10 = [v9 updateWithManagedAssetsRepresentation:v8 forGuest:1];
@@ -394,20 +394,20 @@ uint64_t __52__AXSettingsProfileManager__getAXFileURLForPersona___block_invoke(u
   [v4 setGuestPassSessionIsActive:0];
 }
 
-- (void)storeGuestPassProfile:(id)a3 name:(id)a4
+- (void)storeGuestPassProfile:(id)profile name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = MEMORY[0x1E696AEC0];
   v8 = *MEMORY[0x1E69E9980];
-  v9 = a3;
+  profileCopy = profile;
   v10 = [v7 stringWithUTF8String:v8];
   v11 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:v10];
 
   v12 = [v11 URLByAppendingPathComponent:AXGuestPassProfilesPathComponent];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  [v13 createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v20];
+  [defaultManager createDirectoryAtURL:v12 withIntermediateDirectories:1 attributes:0 error:&v20];
   v14 = v20;
 
   if (v14)
@@ -419,31 +419,31 @@ uint64_t __52__AXSettingsProfileManager__getAXFileURLForPersona___block_invoke(u
     }
   }
 
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v6];
-  v17 = [v12 URLByAppendingPathComponent:v16];
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", nameCopy];
+  v17 = [v12 URLByAppendingPathComponent:nameCopy];
 
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
-  v19 = [v17 path];
-  [v18 createFileAtPath:v19 contents:v9 attributes:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v17 path];
+  [defaultManager2 createFileAtPath:path contents:profileCopy attributes:0];
 }
 
-- (void)deleteGuestPassProfile:(id)a3
+- (void)deleteGuestPassProfile:(id)profile
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = *MEMORY[0x1E69E9980];
-  v6 = a3;
+  profileCopy = profile;
   v7 = [v4 stringWithUTF8String:v5];
   v8 = [(AXSettingsProfileManager *)self _getAXFileURLForPersona:v7];
 
   v9 = MEMORY[0x1E696AEC0];
   v10 = [AXGuestPassProfilesPathComponent stringByAppendingString:@"/%@"];
-  v11 = [v9 stringWithFormat:v10, v6];
+  profileCopy = [v9 stringWithFormat:v10, profileCopy];
 
-  v12 = [v8 URLByAppendingPathComponent:v11];
+  v12 = [v8 URLByAppendingPathComponent:profileCopy];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v16 = 0;
-  [v13 removeItemAtURL:v12 error:&v16];
+  [defaultManager removeItemAtURL:v12 error:&v16];
   v14 = v16;
 
   if (v14)
@@ -470,9 +470,9 @@ uint64_t __52__AXSettingsProfileManager__getAXFileURLForPersona___block_invoke(u
 
   v6 = [v5 URLByAppendingPathComponent:AXGuestPassProfilesPathComponent];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = 0;
-  [v7 removeItemAtURL:v6 error:&v10];
+  [defaultManager removeItemAtURL:v6 error:&v10];
   v8 = v10;
 
   if (v8)

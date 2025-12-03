@@ -77,7 +77,7 @@
   {
     identifier = 0;
 LABEL_13:
-    v6 = @"Invalid";
+    state = @"Invalid";
     goto LABEL_14;
   }
 
@@ -87,7 +87,7 @@ LABEL_13:
   {
     if (state)
     {
-      v6 = @"Preparing";
+      state = @"Preparing";
       goto LABEL_14;
     }
 
@@ -97,23 +97,23 @@ LABEL_13:
   switch(state)
   {
     case 2:
-      v6 = @"Ready";
+      state = @"Ready";
       break;
     case 3:
-      v6 = @"Restarting";
+      state = @"Restarting";
       break;
     case 4:
-      v6 = @"Failed";
+      state = @"Failed";
       break;
     default:
       v7 = v3;
-      v6 = [[NSString alloc] initWithFormat:@"Unknown(%u)", state];
+      state = [[NSString alloc] initWithFormat:@"Unknown(%u)", state];
       v3 = v7;
       break;
   }
 
 LABEL_14:
-  v8 = [v3 initWithFormat:@"NRDiscoveryProxyServer[%llu, %@]", identifier, v6];
+  v8 = [v3 initWithFormat:@"NRDiscoveryProxyServer[%llu, %@]", identifier, state];
 
   return v8;
 }

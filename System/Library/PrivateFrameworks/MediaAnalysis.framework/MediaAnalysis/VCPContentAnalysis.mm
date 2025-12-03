@@ -1,9 +1,9 @@
 @interface VCPContentAnalysis
 + (id)contentAnalysis;
 - (VCPContentAnalysis)init;
-- (int)blockContentDetection:(unint64_t *)a3;
-- (int)detectPixelBuffer:(__CVBuffer *)a3 contentType:(unint64_t *)a4;
-- (void)copyBlock:(char *)a3 withStride:(unint64_t)a4 toBlock:(float *)a5;
+- (int)blockContentDetection:(unint64_t *)detection;
+- (int)detectPixelBuffer:(__CVBuffer *)buffer contentType:(unint64_t *)type;
+- (void)copyBlock:(char *)block withStride:(unint64_t)stride toBlock:(float *)toBlock;
 - (void)dealloc;
 @end
 
@@ -113,17 +113,17 @@ LABEL_15:
 
     else
     {
-      v20 = [(VCPCNNModel *)v5->_model getGPUContext];
-      v21 = [VCPCNNData cnnDataWithPlane:4 height:64 width:64 context:v20];
+      getGPUContext = [(VCPCNNModel *)v5->_model getGPUContext];
+      v21 = [VCPCNNData cnnDataWithPlane:4 height:64 width:64 context:getGPUContext];
       input = v5->_input;
       v5->_input = v21;
 
       [(VCPCNNData *)v5->_input allocBuffers:1];
-      v23 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-      v24 = [v23 resourceURL];
+      vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+      resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-      v29 = v24;
-      v30 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_content.dat" relativeToURL:v24];
+      v29 = resourceURL;
+      v30 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_content.dat" relativeToURL:resourceURL];
       v25 = v5->_model;
       v26 = [(VCPCNNData *)v5->_input size];
       LODWORD(v25) = [(VCPCNNModel *)v25 prepareNetworkFromURL:v30 withInputSize:v26];
@@ -188,24 +188,24 @@ LABEL_36:
   [(VCPContentAnalysis *)&v5 dealloc];
 }
 
-- (void)copyBlock:(char *)a3 withStride:(unint64_t)a4 toBlock:(float *)a5
+- (void)copyBlock:(char *)block withStride:(unint64_t)stride toBlock:(float *)toBlock
 {
   for (i = 0; i != 64; ++i)
   {
     for (j = 0; j != 256; ++j)
     {
-      LOBYTE(v5) = a3[j];
+      LOBYTE(v5) = block[j];
       v5 = (*&v5 / 255.0 + -0.444431007) / 0.339706987;
       *&v5 = v5;
-      a5[j] = *&v5;
+      toBlock[j] = *&v5;
     }
 
-    a3 += a4;
-    a5 += 256;
+    block += stride;
+    toBlock += 256;
   }
 }
 
-- (int)blockContentDetection:(unint64_t *)a3
+- (int)blockContentDetection:(unint64_t *)detection
 {
   v45 = *MEMORY[0x1E69E9840];
   Width = CVPixelBufferGetWidth(self->_argbPixelBuffer);
@@ -223,10 +223,10 @@ LABEL_36:
   pixelBuffer = argbPixelBuffer;
   if (argbPixelBuffer)
   {
-    v34 = a3;
+    detectionCopy = detection;
     v8 = CVPixelBufferLockBaseAddress(argbPixelBuffer, 0);
     v35 = v8;
-    if (!v8 || (v9 = v8, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v42 = argbPixelBuffer, v43 = 1024, v44 = v9, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v9 = v35) == 0))
+    if (!v8 || (softmax = v8, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v42 = argbPixelBuffer, v43 = 1024, v44 = softmax, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (softmax = v35) == 0))
     {
       BaseAddress = CVPixelBufferGetBaseAddress(self->_argbPixelBuffer);
       BytesPerRow = CVPixelBufferGetBytesPerRow(self->_argbPixelBuffer);
@@ -241,37 +241,37 @@ LABEL_6:
       while (1)
       {
         [(VCPContentAnalysis *)self copyBlock:&v17[v40[v16]] withStride:BytesPerRow toBlock:[(VCPCNNData *)self->_input data]];
-        v9 = [(VCPCNNModel *)self->_model forward:self->_input];
-        if (v9)
+        softmax = [(VCPCNNModel *)self->_model forward:self->_input];
+        if (softmax)
         {
           break;
         }
 
-        v18 = [(VCPCNNModel *)self->_model output];
-        v9 = [v18 softmax];
+        output = [(VCPCNNModel *)self->_model output];
+        softmax = [output softmax];
 
-        if (v9)
+        if (softmax)
         {
           break;
         }
 
-        v19 = [(VCPCNNModel *)self->_model output];
-        v20 = *[v19 data];
-        v21 = [(VCPCNNModel *)self->_model output];
-        v22 = *([v21 data] + 4);
+        output2 = [(VCPCNNModel *)self->_model output];
+        v20 = *[output2 data];
+        output3 = [(VCPCNNModel *)self->_model output];
+        v22 = *([output3 data] + 4);
         ++*(&v38 | (4 * (v20 <= v22)));
 
-        v23 = [(VCPCNNModel *)self->_model output];
-        v24 = *[v23 data];
+        output4 = [(VCPCNNModel *)self->_model output];
+        v24 = *[output4 data];
 
-        v25 = [(VCPCNNModel *)self->_model output];
-        v26 = *([v25 data] + 4);
+        output5 = [(VCPCNNModel *)self->_model output];
+        v26 = *([output5 data] + 4);
 
-        v27 = [(VCPCNNModel *)self->_model output];
-        [v27 data];
+        output6 = [(VCPCNNModel *)self->_model output];
+        [output6 data];
 
-        v28 = [(VCPCNNModel *)self->_model output];
-        if (*([v28 data] + 4) > 0.95)
+        output7 = [(VCPCNNModel *)self->_model output];
+        if (*([output7 data] + 4) > 0.95)
         {
           ++v13;
         }
@@ -288,8 +288,8 @@ LABEL_6:
             goto LABEL_6;
           }
 
-          v9 = CVPixelBufferLock::Unlock(&v35);
-          if (!v9)
+          softmax = CVPixelBufferLock::Unlock(&v35);
+          if (!softmax)
           {
             if (vabds_f32(v14, v15) <= 2.0)
             {
@@ -318,8 +318,8 @@ LABEL_33:
               }
             }
 
-            v9 = 0;
-            *v34 = previousContentType;
+            softmax = 0;
+            *detectionCopy = previousContentType;
             self->_previousContentType = previousContentType;
           }
 
@@ -336,7 +336,7 @@ LABEL_33:
       [VCPVideoCNNAnalyzer copyImage:withChannels:settling:];
     }
 
-    v9 = -50;
+    softmax = -50;
     v35 = -50;
   }
 
@@ -345,19 +345,19 @@ LABEL_33:
     [VCPImageExposurePreAnalyzer analyzePixelBuffer:flags:results:cancel:];
   }
 
-  return v9;
+  return softmax;
 }
 
-- (int)detectPixelBuffer:(__CVBuffer *)a3 contentType:(unint64_t *)a4
+- (int)detectPixelBuffer:(__CVBuffer *)buffer contentType:(unint64_t *)type
 {
   result = -50;
-  if (!a3 || !a4)
+  if (!buffer || !type)
   {
     return result;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   if (Width >= Height)
   {
     v10 = Height;
@@ -400,11 +400,11 @@ LABEL_13:
     }
   }
 
-  result = VTPixelTransferSessionTransferImage(self->_argbTransferSession, a3, self->_argbPixelBuffer);
+  result = VTPixelTransferSessionTransferImage(self->_argbTransferSession, buffer, self->_argbPixelBuffer);
   if (!result)
   {
 
-    return [(VCPContentAnalysis *)self blockContentDetection:a4];
+    return [(VCPContentAnalysis *)self blockContentDetection:type];
   }
 
   return result;

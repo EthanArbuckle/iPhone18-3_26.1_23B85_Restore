@@ -1,18 +1,18 @@
 @interface misCTClientDelegates
 - (void)subscriptionInfoDidChange;
-- (void)tetheringStatus:(id)a3 connectionType:(int)a4;
+- (void)tetheringStatus:(id)status connectionType:(int)type;
 @end
 
 @implementation misCTClientDelegates
 
-- (void)tetheringStatus:(id)a3 connectionType:(int)a4
+- (void)tetheringStatus:(id)status connectionType:(int)type
 {
   sub_100001108();
-  if (a4 == 4)
+  if (type == 4)
   {
     v7 = +[misCTClientSharedInstance sharedInstance];
 
-    [(misCTClientSharedInstance *)v7 processCTTetheringStatusChangeNotification:a3];
+    [(misCTClientSharedInstance *)v7 processCTTetheringStatusChangeNotification:status];
   }
 
   else

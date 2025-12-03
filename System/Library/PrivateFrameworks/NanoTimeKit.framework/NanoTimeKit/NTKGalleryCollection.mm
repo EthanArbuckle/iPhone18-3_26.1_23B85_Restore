@@ -1,31 +1,31 @@
 @interface NTKGalleryCollection
-+ (id)_blackcombFacesForDevice:(id)a3;
-+ (id)_newFacesExcludingRestrictedForDevice:(id)a3;
-+ (id)_newFacesForDevice:(id)a3;
-+ (id)_photoFacesForDevice:(id)a3;
-+ (id)_whistlerSubdialsFacesForDevice:(id)a3;
-+ (id)galleryCollectionsForDevice:(id)a3;
++ (id)_blackcombFacesForDevice:(id)device;
++ (id)_newFacesExcludingRestrictedForDevice:(id)device;
++ (id)_newFacesForDevice:(id)device;
++ (id)_photoFacesForDevice:(id)device;
++ (id)_whistlerSubdialsFacesForDevice:(id)device;
++ (id)galleryCollectionsForDevice:(id)device;
 - (NTKGalleryCollectionDelegate)delegate;
-- (id)faceAtIndex:(unint64_t)a3;
-- (id)identifierForFaceAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfFace:(id)a3;
+- (id)faceAtIndex:(unint64_t)index;
+- (id)identifierForFaceAtIndex:(unint64_t)index;
+- (unint64_t)indexOfFace:(id)face;
 - (unint64_t)numberOfFaces;
-- (void)enumerateFaceNamesUsingBlock:(id)a3;
+- (void)enumerateFaceNamesUsingBlock:(id)block;
 @end
 
 @implementation NTKGalleryCollection
 
-+ (id)galleryCollectionsForDevice:(id)a3
++ (id)galleryCollectionsForDevice:(id)device
 {
   v77 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v6 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 pairingID];
+    pairingID = [deviceCopy pairingID];
     *buf = 138412290;
-    v76 = v7;
+    v76 = pairingID;
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Adding galleryCollectionsForDevice with uuid:%@", buf, 0xCu);
   }
 
@@ -35,7 +35,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __52__NTKGalleryCollection_galleryCollectionsForDevice___block_invoke;
   aBlock[3] = &unk_278784078;
-  v9 = v4;
+  v9 = deviceCopy;
   v72 = v9;
   v73 = v8;
   v10 = _Block_copy(aBlock);
@@ -48,10 +48,10 @@
       _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "Adding Subdials/California/FullScreen faces collection", buf, 2u);
     }
 
-    v12 = [a1 _whistlerSubdialsFacesForDevice:v9];
+    v12 = [self _whistlerSubdialsFacesForDevice:v9];
     [v5 addObject:v12];
 
-    v13 = [a1 _blackcombFacesForDevice:v9];
+    v13 = [self _blackcombFacesForDevice:v9];
     [v5 addObject:v13];
   }
 
@@ -81,7 +81,7 @@
         _os_log_impl(&dword_22D9C5000, v20, OS_LOG_TYPE_DEFAULT, "Adding Photos faces collection", buf, 2u);
       }
 
-      v21 = [a1 _photoFacesForDevice:v15];
+      v21 = [self _photoFacesForDevice:v15];
       [v17 addObject:v21];
     }
   }
@@ -89,7 +89,7 @@
   [v17 sortUsingComparator:&__block_literal_global_115];
   if ([v15 collectionType] == 5 || NTKShowHardwareSpecificFaces())
   {
-    v60 = a1;
+    selfCopy = self;
     v22 = _NTKLoggingObjectForDomain(10, "NTKLoggingDomainCollection");
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -226,17 +226,17 @@
       }
     }
 
-    a1 = v61;
+    self = v61;
   }
 
   if (NTKGizmoOrCompanionAreRussian(v15))
   {
-    v50 = [a1 _newFacesExcludingRestrictedForDevice:v15];
+    v50 = [self _newFacesExcludingRestrictedForDevice:v15];
   }
 
   else
   {
-    v50 = [a1 _newFacesForDevice:v15];
+    v50 = [self _newFacesForDevice:v15];
   }
 
   v51 = v50;
@@ -375,78 +375,78 @@ uint64_t __52__NTKGalleryCollection_galleryCollectionsForDevice___block_invoke_1
   return v7;
 }
 
-+ (id)_newFacesExcludingRestrictedForDevice:(id)a3
++ (id)_newFacesExcludingRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKWhatsNewFacesGalleryCollectionExcludingRestricted alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKWhatsNewFacesGalleryCollectionExcludingRestricted alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-+ (id)_newFacesForDevice:(id)a3
++ (id)_newFacesForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKWhatsNewFacesGalleryCollection alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKWhatsNewFacesGalleryCollection alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-+ (id)_photoFacesForDevice:(id)a3
++ (id)_photoFacesForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKCPhotoFaceCollectionGalleryCollection alloc] initForDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKCPhotoFaceCollectionGalleryCollection alloc] initForDevice:deviceCopy];
 
   return v4;
 }
 
-+ (id)_whistlerSubdialsFacesForDevice:(id)a3
++ (id)_whistlerSubdialsFacesForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)[NTKWhistlerSubdialsFacesGalleryCollection alloc] initWithDevice:v3];
+    v4 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)[NTKWhistlerSubdialsFacesGalleryCollection alloc] initWithDevice:deviceCopy];
   }
 
   return v4;
 }
 
-+ (id)_blackcombFacesForDevice:(id)a3
++ (id)_blackcombFacesForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 deviceCategory] == 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)[NTKBlackcombFacesGalleryCollection alloc] initWithDevice:v3];
+    v4 = [(NTKDeviceSpecificFacesArrayGalleryCollection *)[NTKBlackcombFacesGalleryCollection alloc] initWithDevice:deviceCopy];
   }
 
   return v4;
 }
 
-- (void)enumerateFaceNamesUsingBlock:(id)a3
+- (void)enumerateFaceNamesUsingBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   if ([(NTKGalleryCollection *)self numberOfFaces])
   {
     v4 = 0;
     do
     {
-      v5 = [(NTKGalleryCollection *)self calloutName];
+      calloutName = [(NTKGalleryCollection *)self calloutName];
 
-      if (v5)
+      if (calloutName)
       {
-        v6 = [(NTKGalleryCollection *)self calloutName];
+        calloutName2 = [(NTKGalleryCollection *)self calloutName];
         v7 = [(NTKGalleryCollection *)self faceAtIndex:v4];
-        v8 = (v6)[2](v6, v7);
-        v9[2](v9, v8);
+        v8 = (calloutName2)[2](calloutName2, v7);
+        blockCopy[2](blockCopy, v8);
       }
 
       ++v4;
@@ -456,9 +456,9 @@ uint64_t __52__NTKGalleryCollection_galleryCollectionsForDevice___block_invoke_1
   }
 }
 
-- (id)identifierForFaceAtIndex:(unint64_t)a3
+- (id)identifierForFaceAtIndex:(unint64_t)index
 {
-  v3 = [(NTKGalleryCollection *)self faceAtIndex:a3];
+  v3 = [(NTKGalleryCollection *)self faceAtIndex:index];
   v4 = v3;
   if (v3)
   {
@@ -472,12 +472,12 @@ uint64_t __52__NTKGalleryCollection_galleryCollectionsForDevice___block_invoke_1
       [MEMORY[0x277CCACA8] stringWithFormat:@"face%lld", objc_msgSend(v4, "faceStyle")];
     }
     v6 = ;
-    v7 = [v4 configuration];
-    v8 = [v7 validationString];
-    v9 = [v8 copy];
+    configuration = [v4 configuration];
+    validationString = [configuration validationString];
+    v9 = [validationString copy];
 
-    v10 = [v4 resourceDirectory];
-    v11 = [v10 copy];
+    resourceDirectory = [v4 resourceDirectory];
+    v11 = [resourceDirectory copy];
 
     v12 = @"<nil>";
     if (v9)
@@ -520,14 +520,14 @@ uint64_t __52__NTKGalleryCollection_galleryCollectionsForDevice___block_invoke_1
   return 0;
 }
 
-- (id)faceAtIndex:(unint64_t)a3
+- (id)faceAtIndex:(unint64_t)index
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_5();
   return 0;
 }
 
-- (unint64_t)indexOfFace:(id)a3
+- (unint64_t)indexOfFace:(id)face
 {
   objc_opt_class();
   OUTLINED_FUNCTION_0_5();

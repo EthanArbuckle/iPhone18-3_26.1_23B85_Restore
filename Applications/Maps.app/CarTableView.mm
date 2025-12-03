@@ -2,8 +2,8 @@
 - (UIEdgeInsets)_sectionContentInset;
 - (id)_car_indexPathsForVisibleRows;
 - (id)_car_visibleCells;
-- (id)accessoryViewAtEdge:(int64_t)a3;
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4;
+- (id)accessoryViewAtEdge:(int64_t)edge;
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge;
 @end
 
 @implementation CarTableView
@@ -23,22 +23,22 @@
 
 - (id)_car_indexPathsForVisibleRows
 {
-  v3 = [(CarTableView *)self _car_visibleCells];
+  _car_visibleCells = [(CarTableView *)self _car_visibleCells];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100F00B30;
   v6[3] = &unk_10165CB50;
   v6[4] = self;
-  v4 = sub_100021DB0(v3, v6);
+  v4 = sub_100021DB0(_car_visibleCells, v6);
 
   return v4;
 }
 
 - (id)_car_visibleCells
 {
-  v3 = [(CarTableView *)self visibleCells];
-  v4 = v3;
-  if (v3 && [v3 count])
+  visibleCells = [(CarTableView *)self visibleCells];
+  v4 = visibleCells;
+  if (visibleCells && [visibleCells count])
   {
     [(CarTableView *)self frame];
     v6 = v5;
@@ -69,7 +69,7 @@
   return v19;
 }
 
-- (id)accessoryViewAtEdge:(int64_t)a3
+- (id)accessoryViewAtEdge:(int64_t)edge
 {
   v5.receiver = self;
   v5.super_class = CarTableView;
@@ -78,22 +78,22 @@
   return v3;
 }
 
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge
 {
-  v5 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = CarTableView;
-  [(CarTableView *)&v16 setAccessoryView:v5 atEdge:4];
+  [(CarTableView *)&v16 setAccessoryView:viewCopy atEdge:4];
   if (GEOConfigGetBOOL())
   {
-    v6 = [v5 _mapsCar_injectBlurView];
+    _mapsCar_injectBlurView = [viewCopy _mapsCar_injectBlurView];
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [v5 _mapsCar_recursiveSubviewsWithClass:{objc_opt_class(), 0}];
+  v7 = [viewCopy _mapsCar_recursiveSubviewsWithClass:{objc_opt_class(), 0}];
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v8)
   {

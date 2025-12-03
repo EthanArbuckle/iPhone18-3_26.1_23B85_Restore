@@ -1,61 +1,61 @@
 @interface SSRVoiceProfile
-- (BOOL)_isSATMarkedWithMarker:(id)a3;
-- (BOOL)_markSATEnrollmentWithMarker:(id)a3;
-- (BOOL)deleteModelForSpidType:(unint64_t)a3 recognizerType:(unint64_t)a4;
-- (BOOL)isValidForRPIWithError:(id *)a3;
+- (BOOL)_isSATMarkedWithMarker:(id)marker;
+- (BOOL)_markSATEnrollmentWithMarker:(id)marker;
+- (BOOL)deleteModelForSpidType:(unint64_t)type recognizerType:(unint64_t)recognizerType;
+- (BOOL)isValidForRPIWithError:(id *)error;
 - (BOOL)markSATEnrollmentSuccess;
 - (BOOL)profileLocallyAvailable;
-- (BOOL)updatePruningCookie:(id)a3;
+- (BOOL)updatePruningCookie:(id)cookie;
 - (NSString)pruningCookie;
 - (NSString)voiceProfileIdentity;
-- (SSRVoiceProfile)initWithCoder:(id)a3;
-- (SSRVoiceProfile)initWithDictionary:(id)a3;
-- (id)_getEnrollmentUtterancesForType:(unint64_t)a3;
-- (id)_voiceProfilePathForSpidType:(unint64_t)a3;
-- (id)addUtterances:(id)a3 spIdType:(unint64_t)a4;
+- (SSRVoiceProfile)initWithCoder:(id)coder;
+- (SSRVoiceProfile)initWithDictionary:(id)dictionary;
+- (id)_getEnrollmentUtterancesForType:(unint64_t)type;
+- (id)_voiceProfilePathForSpidType:(unint64_t)type;
+- (id)addUtterances:(id)utterances spIdType:(unint64_t)type;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)exclaveVoiceProfileModelFilePathForRecognizerType:(unint64_t)a3 spIdType:(unint64_t)a4;
-- (id)getEnrollmentUtterancesForModelType:(unint64_t)a3;
-- (id)getExplicitEnrollmentUtterancesForType:(unint64_t)a3;
-- (id)getExplicitMarkedEnrollmentUtterancesForType:(unint64_t)a3;
-- (id)getImplicitEnrollmentUtterancesForType:(unint64_t)a3;
-- (id)getImplicitEnrollmentUtterancesPriorTo:(id)a3 forType:(unint64_t)a4;
-- (id)importVoiceProfileAtPath:(id)a3;
-- (id)initNewVoiceProfileWithLocale:(id)a3 withAppDomain:(id)a4;
-- (id)voiceProfileAudioDirPathForSpidType:(unint64_t)a3;
-- (id)voiceProfileModelDirForSpidType:(unint64_t)a3 recognizerType:(unint64_t)a4;
-- (id)voiceProfileModelFilePathForRecognizerType:(unint64_t)a3 spIdType:(unint64_t)a4;
-- (unint64_t)_copyExplicitAudio:(id)a3 withSpIdType:(unint64_t)a4;
+- (id)exclaveVoiceProfileModelFilePathForRecognizerType:(unint64_t)type spIdType:(unint64_t)idType;
+- (id)getEnrollmentUtterancesForModelType:(unint64_t)type;
+- (id)getExplicitEnrollmentUtterancesForType:(unint64_t)type;
+- (id)getExplicitMarkedEnrollmentUtterancesForType:(unint64_t)type;
+- (id)getImplicitEnrollmentUtterancesForType:(unint64_t)type;
+- (id)getImplicitEnrollmentUtterancesPriorTo:(id)to forType:(unint64_t)type;
+- (id)importVoiceProfileAtPath:(id)path;
+- (id)initNewVoiceProfileWithLocale:(id)locale withAppDomain:(id)domain;
+- (id)voiceProfileAudioDirPathForSpidType:(unint64_t)type;
+- (id)voiceProfileModelDirForSpidType:(unint64_t)type recognizerType:(unint64_t)recognizerType;
+- (id)voiceProfileModelFilePathForRecognizerType:(unint64_t)type spIdType:(unint64_t)idType;
+- (unint64_t)_copyExplicitAudio:(id)audio withSpIdType:(unint64_t)type;
 - (unint64_t)copyTDAudioToTDTI;
 - (unint64_t)getTDAudioCount;
 - (unint64_t)productCategory;
 - (unint64_t)voiceProfileVersion;
 - (void)_updateVoiceProfileVersionFile;
-- (void)addDonationId:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addDonationId:(id)id;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SSRVoiceProfile
 
-- (id)_getEnrollmentUtterancesForType:(unint64_t)a3
+- (id)_getEnrollmentUtterancesForType:(unint64_t)type
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = [(SSRVoiceProfile *)self profileBasePath];
-  v5 = [SSRUtils stringForCSSpIdType:a3];
+  profileBasePath = [(SSRVoiceProfile *)self profileBasePath];
+  v5 = [SSRUtils stringForCSSpIdType:type];
   v6 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v7 = [v4 stringByAppendingPathComponent:v5];
+  v7 = [profileBasePath stringByAppendingPathComponent:v5];
   v8 = [v7 stringByAppendingPathComponent:@"audio"];
   v9 = [v6 initWithString:v8];
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v10 enumeratorAtURL:v9 includingPropertiesForKeys:0 options:0 errorHandler:&__block_literal_global_4466];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v11 = [defaultManager enumeratorAtURL:v9 includingPropertiesForKeys:0 options:0 errorHandler:&__block_literal_global_4466];
 
   if (v11)
   {
     v27 = v5;
-    v28 = v4;
-    v12 = [MEMORY[0x277CBEB18] array];
+    v28 = profileBasePath;
+    array = [MEMORY[0x277CBEB18] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -77,8 +77,8 @@
           }
 
           v18 = *(*(&v29 + 1) + 8 * i);
-          v19 = [v18 path];
-          v20 = [v19 hasSuffix:@".wav"];
+          path = [v18 path];
+          v20 = [path hasSuffix:@".wav"];
 
           if (v20)
           {
@@ -86,7 +86,7 @@
             v22 = v21;
             if (v21 && [(SSREnrollmentUtterance *)v21 isExplicit])
             {
-              [v12 addObject:v22];
+              [array addObject:v22];
             }
           }
         }
@@ -98,7 +98,7 @@
     }
 
     v5 = v27;
-    v4 = v28;
+    profileBasePath = v28;
     v11 = v26;
   }
 
@@ -112,12 +112,12 @@
       _os_log_error_impl(&dword_225E12000, v23, OS_LOG_TYPE_ERROR, "%s Enumator being nil for TDTI enrollment folder", buf, 0xCu);
     }
 
-    v12 = 0;
+    array = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
 uint64_t __51__SSRVoiceProfile__getEnrollmentUtterancesForType___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -141,19 +141,19 @@ uint64_t __51__SSRVoiceProfile__getEnrollmentUtterancesForType___block_invoke(ui
   return 1;
 }
 
-- (BOOL)updatePruningCookie:(id)a3
+- (BOOL)updatePruningCookie:(id)cookie
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
-  v7 = [SSRUtils readJsonFileAtPath:v6];
+  cookieCopy = cookie;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _getProfileVersionFilePath = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
+  v7 = [SSRUtils readJsonFileAtPath:_getProfileVersionFilePath];
   v8 = v7;
   v27 = 0;
   if (v7)
   {
     v9 = [v7 mutableCopy];
-    [v9 setObject:v4 forKeyedSubscript:@"VoiceProfilePruningCookie"];
+    [v9 setObject:cookieCopy forKeyedSubscript:@"VoiceProfilePruningCookie"];
     v10 = MEMORY[0x277CCAAA0];
     v11 = [v9 copy];
     v26 = 0;
@@ -190,10 +190,10 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if ([v5 fileExistsAtPath:v6 isDirectory:&v27])
+    if ([defaultManager fileExistsAtPath:_getProfileVersionFilePath isDirectory:&v27])
     {
       v25 = 0;
-      v19 = [v5 removeItemAtPath:v6 error:&v25];
+      v19 = [defaultManager removeItemAtPath:_getProfileVersionFilePath error:&v25];
       v13 = v25;
       if ((v19 & 1) == 0)
       {
@@ -203,7 +203,7 @@ LABEL_21:
           *buf = 136315650;
           v29 = "[SSRVoiceProfile updatePruningCookie:]";
           v30 = 2112;
-          v31 = v6;
+          v31 = _getProfileVersionFilePath;
           v32 = 2112;
           v33 = v13;
           v16 = "%s ERR: error removing voice profile version file at: %@, err: %@";
@@ -223,7 +223,7 @@ LABEL_22:
 
     v20 = v13;
     v24 = v13;
-    v21 = [v12 writeToFile:v6 options:0 error:&v24];
+    v21 = [v12 writeToFile:_getProfileVersionFilePath options:0 error:&v24];
     v13 = v24;
 
     if (v21 && !v13)
@@ -240,7 +240,7 @@ LABEL_23:
       *buf = 136315650;
       v29 = "[SSRVoiceProfile updatePruningCookie:]";
       v30 = 2112;
-      v31 = v6;
+      v31 = _getProfileVersionFilePath;
       v32 = 2112;
       v33 = v13;
       v16 = "%s ERR: Error writing voice profile version file at: %@, err:%@";
@@ -269,8 +269,8 @@ LABEL_24:
 
 - (NSString)pruningCookie
 {
-  v2 = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
-  v3 = [SSRUtils readJsonFileAtPath:v2];
+  _getProfileVersionFilePath = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
+  v3 = [SSRUtils readJsonFileAtPath:_getProfileVersionFilePath];
 
   v4 = [v3 objectForKeyedSubscript:@"VoiceProfilePruningCookie"];
 
@@ -285,11 +285,11 @@ LABEL_24:
 - (void)_updateVoiceProfileVersionFile
 {
   v46 = *MEMORY[0x277D85DE8];
-  v2 = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  _getProfileVersionFilePath = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v37 = 0;
-  v4 = [MEMORY[0x277D018F8] deviceProductType];
-  if (!v4 || (v5 = [SSRUtils deviceCategoryForDeviceProductType:v4]) == 0)
+  deviceProductType = [MEMORY[0x277D018F8] deviceProductType];
+  if (!deviceProductType || (v5 = [SSRUtils deviceCategoryForDeviceProductType:deviceProductType]) == 0)
   {
     v6 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
@@ -297,31 +297,31 @@ LABEL_24:
       *buf = 136315394;
       v41 = "[SSRVoiceProfile _updateVoiceProfileVersionFile]";
       v42 = 2114;
-      v43 = v4;
+      v43 = deviceProductType;
       _os_log_error_impl(&dword_225E12000, v6, OS_LOG_TYPE_ERROR, "%s ERR: Unknown device-category for device: %{public}@", buf, 0x16u);
     }
 
     v5 = 0;
   }
 
-  if (![v3 fileExistsAtPath:v2 isDirectory:&v37] || (v37 & 1) != 0)
+  if (![defaultManager fileExistsAtPath:_getProfileVersionFilePath isDirectory:&v37] || (v37 & 1) != 0)
   {
     v38[0] = @"VoiceProfileCompatabiltyVersion";
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 1];
     v39[0] = v7;
     v38[1] = @"VoiceProfileProductType";
-    v8 = [MEMORY[0x277D018F8] deviceProductType];
-    v39[1] = v8;
+    deviceProductType2 = [MEMORY[0x277D018F8] deviceProductType];
+    v39[1] = deviceProductType2;
     v38[2] = @"VoiceProfileSWVersion";
-    v9 = [MEMORY[0x277D018F8] deviceBuildVersion];
-    v39[2] = v9;
+    deviceBuildVersion = [MEMORY[0x277D018F8] deviceBuildVersion];
+    v39[2] = deviceBuildVersion;
     v38[3] = @"VoiceProfileCategoryType";
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v5];
     v39[3] = v10;
     v38[4] = @"VoiceProfileIdentifier";
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    v39[4] = v12;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v39[4] = uUIDString;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:5];
 
 LABEL_9:
@@ -347,10 +347,10 @@ LABEL_9:
       goto LABEL_19;
     }
 
-    if ([v3 fileExistsAtPath:v2 isDirectory:&v37] && (v37 & 1) == 0)
+    if ([defaultManager fileExistsAtPath:_getProfileVersionFilePath isDirectory:&v37] && (v37 & 1) == 0)
     {
       v34 = 0;
-      v30 = [v3 removeItemAtPath:v2 error:&v34];
+      v30 = [defaultManager removeItemAtPath:_getProfileVersionFilePath error:&v34];
       v16 = v34;
       if ((v30 & 1) == 0)
       {
@@ -360,7 +360,7 @@ LABEL_9:
           *buf = 136315650;
           v41 = "[SSRVoiceProfile _updateVoiceProfileVersionFile]";
           v42 = 2112;
-          v43 = v2;
+          v43 = _getProfileVersionFilePath;
           v44 = 2112;
           v45 = v16;
           v20 = "%s ERR: error removing voice profile version file at: %@, err: %@";
@@ -381,7 +381,7 @@ LABEL_20:
 
     v17 = v16;
     v33 = v16;
-    v18 = [v14 writeToFile:v2 options:0 error:&v33];
+    v18 = [v14 writeToFile:_getProfileVersionFilePath options:0 error:&v33];
     v16 = v33;
 
     if (v18 && !v16)
@@ -395,7 +395,7 @@ LABEL_20:
       *buf = 136315650;
       v41 = "[SSRVoiceProfile _updateVoiceProfileVersionFile]";
       v42 = 2112;
-      v43 = v2;
+      v43 = _getProfileVersionFilePath;
       v44 = 2112;
       v45 = v16;
       v20 = "%s ERR: Error writing voice profile version file at: %@, err:%@";
@@ -407,26 +407,26 @@ LABEL_35:
     goto LABEL_19;
   }
 
-  v22 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v2];
+  v22 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:_getProfileVersionFilePath];
   if (v22)
   {
     v23 = v22;
     v36 = 0;
-    v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v22 options:0 error:&v36];
+    deviceProductType2 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v22 options:0 error:&v36];
     v24 = v36;
     v25 = v24;
-    if (v8 && !v24)
+    if (deviceProductType2 && !v24)
     {
 
-      v7 = [v8 mutableCopy];
+      v7 = [deviceProductType2 mutableCopy];
       v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", 1];
       [v7 setValue:v26 forKey:@"VoiceProfileCompatabiltyVersion"];
 
-      v27 = [MEMORY[0x277D018F8] deviceProductType];
-      [v7 setValue:v27 forKey:@"VoiceProfileProductType"];
+      deviceProductType3 = [MEMORY[0x277D018F8] deviceProductType];
+      [v7 setValue:deviceProductType3 forKey:@"VoiceProfileProductType"];
 
-      v28 = [MEMORY[0x277D018F8] deviceBuildVersion];
-      [v7 setValue:v28 forKey:@"VoiceProfileSWVersion"];
+      deviceBuildVersion2 = [MEMORY[0x277D018F8] deviceBuildVersion];
+      [v7 setValue:deviceBuildVersion2 forKey:@"VoiceProfileSWVersion"];
 
       v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v5];
       [v7 setValue:v29 forKey:@"VoiceProfileCategoryType"];
@@ -441,7 +441,7 @@ LABEL_35:
       *buf = 136315650;
       v41 = "[SSRVoiceProfile _updateVoiceProfileVersionFile]";
       v42 = 2112;
-      v43 = v2;
+      v43 = _getProfileVersionFilePath;
       v44 = 2112;
       v45 = v25;
       _os_log_error_impl(&dword_225E12000, v32, OS_LOG_TYPE_ERROR, "%s Could not read existing %@ file: err: %@", buf, 0x20u);
@@ -456,7 +456,7 @@ LABEL_35:
       *buf = 136315394;
       v41 = "[SSRVoiceProfile _updateVoiceProfileVersionFile]";
       v42 = 2112;
-      v43 = v2;
+      v43 = _getProfileVersionFilePath;
       _os_log_error_impl(&dword_225E12000, v31, OS_LOG_TYPE_ERROR, "%s Unable to read data from file: %@", buf, 0x16u);
     }
   }
@@ -466,18 +466,18 @@ LABEL_21:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_markSATEnrollmentWithMarker:(id)a3
+- (BOOL)_markSATEnrollmentWithMarker:(id)marker
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  markerCopy = marker;
+  if (markerCopy)
   {
     v5 = self->_profileBasePath;
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v6 fileExistsAtPath:v5 isDirectory:0])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:v5 isDirectory:0])
     {
-      v7 = [(NSString *)v5 stringByAppendingPathComponent:v4];
-      v8 = [v6 createFileAtPath:v7 contents:0 attributes:0];
+      v7 = [(NSString *)v5 stringByAppendingPathComponent:markerCopy];
+      v8 = [defaultManager createFileAtPath:v7 contents:0 attributes:0];
       v9 = *MEMORY[0x277D01970];
       if (v8)
       {
@@ -486,7 +486,7 @@ LABEL_21:
           v14 = 136315650;
           v15 = "[SSRVoiceProfile _markSATEnrollmentWithMarker:]";
           v16 = 2114;
-          v17 = v4;
+          v17 = markerCopy;
           v18 = 2114;
           v19 = v7;
           _os_log_impl(&dword_225E12000, v9, OS_LOG_TYPE_DEFAULT, "%s Marked SAT enrollment %{public}@ at path %{public}@", &v14, 0x20u);
@@ -501,7 +501,7 @@ LABEL_21:
         v14 = 136315650;
         v15 = "[SSRVoiceProfile _markSATEnrollmentWithMarker:]";
         v16 = 2114;
-        v17 = v4;
+        v17 = markerCopy;
         v18 = 2114;
         v19 = v7;
         _os_log_error_impl(&dword_225E12000, v9, OS_LOG_TYPE_ERROR, "%s Coudn't mark SAT enrollment %{public}@ at path %{public}@", &v14, 0x20u);
@@ -516,7 +516,7 @@ LABEL_21:
         v14 = 136315394;
         v15 = "[SSRVoiceProfile _markSATEnrollmentWithMarker:]";
         v16 = 2114;
-        v17 = v4;
+        v17 = markerCopy;
         _os_log_error_impl(&dword_225E12000, v11, OS_LOG_TYPE_ERROR, "%s We can't mark SAT %{public}@ when there is no audio directory", &v14, 0x16u);
       }
     }
@@ -542,16 +542,16 @@ LABEL_15:
   return v3;
 }
 
-- (BOOL)_isSATMarkedWithMarker:(id)a3
+- (BOOL)_isSATMarkedWithMarker:(id)marker
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  markerCopy = marker;
   v5 = self->_profileBasePath;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v6 fileExistsAtPath:v5 isDirectory:0])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:v5 isDirectory:0])
   {
-    v7 = [(NSString *)v5 stringByAppendingPathComponent:v4];
-    if ([v6 fileExistsAtPath:v7 isDirectory:0])
+    v7 = [(NSString *)v5 stringByAppendingPathComponent:markerCopy];
+    if ([defaultManager fileExistsAtPath:v7 isDirectory:0])
     {
       if ((CSIsIOS() & 1) != 0 || CSIsCommunalDevice())
       {
@@ -566,7 +566,7 @@ LABEL_15:
       }
 
       v12 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:v9];
-      v13 = [v6 contentsOfDirectoryAtPath:v12 error:0];
+      v13 = [defaultManager contentsOfDirectoryAtPath:v12 error:0];
       v14 = [(SSRVoiceProfile *)self getEnrollmentUtterancesForModelType:v9];
       v15 = [v14 count];
       v16 = v15;
@@ -574,8 +574,8 @@ LABEL_15:
       {
         if ([(SSRVoiceProfile *)self getTDAudioCount])
         {
-          v17 = [MEMORY[0x277CCA9A0] defaultCenter];
-          [v17 postNotificationName:@"com.apple.speakerrecognition.migrateTDprofile" object:0];
+          defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+          [defaultCenter postNotificationName:@"com.apple.speakerrecognition.migrateTDprofile" object:0];
 
           v18 = *MEMORY[0x277D01970];
           if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -603,7 +603,7 @@ LABEL_16:
         v22 = 136315906;
         v23 = "[SSRVoiceProfile _isSATMarkedWithMarker:]";
         v24 = 2114;
-        v25 = v4;
+        v25 = markerCopy;
         v26 = 1026;
         v27 = 0;
         v28 = 2114;
@@ -611,7 +611,7 @@ LABEL_16:
         _os_log_error_impl(&dword_225E12000, v19, OS_LOG_TYPE_ERROR, "%s ERR: Removing %{public}@ as explicit utterances %{public}d from audio dir - %{public}@", &v22, 0x26u);
       }
 
-      [v6 removeItemAtPath:v7 error:0];
+      [defaultManager removeItemAtPath:v7 error:0];
     }
 
 LABEL_21:
@@ -646,48 +646,48 @@ LABEL_22:
 
 - (unint64_t)productCategory
 {
-  v2 = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
-  v3 = [SSRUtils getVoiceProfileProductCategoryFromVersionFilePath:v2];
+  _getProfileVersionFilePath = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
+  v3 = [SSRUtils getVoiceProfileProductCategoryFromVersionFilePath:_getProfileVersionFilePath];
 
   return v3;
 }
 
 - (NSString)voiceProfileIdentity
 {
-  v2 = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
-  v3 = [SSRUtils getVoiceProfileIdentityFromVersionFilePath:v2];
+  _getProfileVersionFilePath = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
+  v3 = [SSRUtils getVoiceProfileIdentityFromVersionFilePath:_getProfileVersionFilePath];
 
   return v3;
 }
 
 - (unint64_t)voiceProfileVersion
 {
-  v2 = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
-  v3 = [SSRUtils readJsonFileAtPath:v2];
+  _getProfileVersionFilePath = [(SSRVoiceProfile *)self _getProfileVersionFilePath];
+  v3 = [SSRUtils readJsonFileAtPath:_getProfileVersionFilePath];
 
-  v4 = [v3 objectForKeyedSubscript:@"VoiceProfileCompatabiltyVersion"];
+  intValue = [v3 objectForKeyedSubscript:@"VoiceProfileCompatabiltyVersion"];
 
-  if (v4)
+  if (intValue)
   {
     v5 = [v3 objectForKeyedSubscript:@"VoiceProfileCompatabiltyVersion"];
-    v4 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
-  return v4;
+  return intValue;
 }
 
-- (BOOL)deleteModelForSpidType:(unint64_t)a3 recognizerType:(unint64_t)a4
+- (BOOL)deleteModelForSpidType:(unint64_t)type recognizerType:(unint64_t)recognizerType
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = [(SSRVoiceProfile *)self voiceProfileModelDirForSpidType:a3 recognizerType:a4];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:0];
+  v4 = [(SSRVoiceProfile *)self voiceProfileModelDirForSpidType:type recognizerType:recognizerType];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4 isDirectory:0];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v33 = 0;
-    v8 = [v7 contentsOfDirectoryAtPath:v4 error:&v33];
+    v8 = [defaultManager2 contentsOfDirectoryAtPath:v4 error:&v33];
     v9 = v33;
 
     if (v9 || !v8)
@@ -696,13 +696,13 @@ LABEL_22:
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
       {
         v25 = v22;
-        v26 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 136315650;
         v35 = "[SSRVoiceProfile deleteModelForSpidType:recognizerType:]";
         v36 = 2114;
         v37 = v4;
         v38 = 2114;
-        v39 = v26;
+        v39 = localizedDescription;
         _os_log_error_impl(&dword_225E12000, v25, OS_LOG_TYPE_ERROR, "%s Couldn't delete invalidated speaker model at path %{public}@ %{public}@", buf, 0x20u);
       }
     }
@@ -734,9 +734,9 @@ LABEL_22:
             if (*(*(&v29 + 1) + 8 * v15))
             {
               v16 = [v4 stringByAppendingPathComponent:?];
-              v17 = [MEMORY[0x277CCAA00] defaultManager];
+              defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
               v28 = 0;
-              [v17 removeItemAtPath:v16 error:&v28];
+              [defaultManager3 removeItemAtPath:v16 error:&v28];
               v18 = v28;
 
               if (v18)
@@ -745,13 +745,13 @@ LABEL_22:
                 if (os_log_type_enabled(*v14, OS_LOG_TYPE_ERROR))
                 {
                   v20 = v19;
-                  v21 = [v18 localizedDescription];
+                  localizedDescription2 = [v18 localizedDescription];
                   *buf = 136315650;
                   v35 = "[SSRVoiceProfile deleteModelForSpidType:recognizerType:]";
                   v36 = 2114;
                   v37 = v16;
                   v38 = 2114;
-                  v39 = v21;
+                  v39 = localizedDescription2;
                   _os_log_error_impl(&dword_225E12000, v20, OS_LOG_TYPE_ERROR, "%s Couldn't delete invalidated speaker model at path %{public}@ %{public}@", buf, 0x20u);
 
                   v14 = MEMORY[0x277D01970];
@@ -778,7 +778,7 @@ LABEL_22:
   return 1;
 }
 
-- (id)_voiceProfilePathForSpidType:(unint64_t)a3
+- (id)_voiceProfilePathForSpidType:(unint64_t)type
 {
   if ([MEMORY[0x277D018F8] isDarwinOS])
   {
@@ -787,24 +787,24 @@ LABEL_22:
 
   else
   {
-    v6 = [SSRUtils stringForCSSpIdType:a3];
+    v6 = [SSRUtils stringForCSSpIdType:type];
     v5 = [(NSString *)self->_profileBasePath stringByAppendingPathComponent:v6];
   }
 
   return v5;
 }
 
-- (id)voiceProfileModelDirForSpidType:(unint64_t)a3 recognizerType:(unint64_t)a4
+- (id)voiceProfileModelDirForSpidType:(unint64_t)type recognizerType:(unint64_t)recognizerType
 {
-  v5 = [(SSRVoiceProfile *)self _voiceProfilePathForSpidType:a3];
+  v5 = [(SSRVoiceProfile *)self _voiceProfilePathForSpidType:type];
   v6 = v5;
-  if (a4 == 1)
+  if (recognizerType == 1)
   {
     v7 = @"td-sr-model";
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (recognizerType == 2)
   {
     v7 = @"model";
 LABEL_5:
@@ -818,22 +818,22 @@ LABEL_7:
   return v8;
 }
 
-- (id)voiceProfileAudioDirPathForSpidType:(unint64_t)a3
+- (id)voiceProfileAudioDirPathForSpidType:(unint64_t)type
 {
-  v3 = 3;
-  if (a3 != 4)
+  typeCopy = 3;
+  if (type != 4)
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = typeCopy;
   }
 
   v5 = [(SSRVoiceProfile *)self _voiceProfilePathForSpidType:v4];
@@ -856,9 +856,9 @@ LABEL_7:
   return v4 != 0;
 }
 
-- (id)getImplicitEnrollmentUtterancesForType:(unint64_t)a3
+- (id)getImplicitEnrollmentUtterancesForType:(unint64_t)type
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     v3 = 0;
   }
@@ -873,13 +873,13 @@ LABEL_7:
   return v3;
 }
 
-- (id)getImplicitEnrollmentUtterancesPriorTo:(id)a3 forType:(unint64_t)a4
+- (id)getImplicitEnrollmentUtterancesPriorTo:(id)to forType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  toCopy = to;
+  if (toCopy)
   {
-    v7 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:a4];
+    v7 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:type];
     v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
     v9 = [SSRUtils getImplicitEnrollmentUtterancesFromDirectory:v8];
 
@@ -888,7 +888,7 @@ LABEL_7:
     v16[1] = 3221225472;
     v16[2] = __66__SSRVoiceProfile_getImplicitEnrollmentUtterancesPriorTo_forType___block_invoke;
     v16[3] = &unk_278578638;
-    v17 = v6;
+    v17 = toCopy;
     v11 = [v10 predicateWithBlock:v16];
     v12 = [v9 filteredArrayUsingPredicate:v11];
   }
@@ -954,15 +954,15 @@ LABEL_10:
   return v11;
 }
 
-- (id)getEnrollmentUtterancesForModelType:(unint64_t)a3
+- (id)getEnrollmentUtterancesForModelType:(unint64_t)type
 {
-  if (a3 == 4)
+  if (type == 4)
   {
     v3 = 3;
     goto LABEL_5;
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
     v3 = 1;
 LABEL_5:
@@ -981,37 +981,37 @@ LABEL_7:
   return v7;
 }
 
-- (id)getExplicitMarkedEnrollmentUtterancesForType:(unint64_t)a3
+- (id)getExplicitMarkedEnrollmentUtterancesForType:(unint64_t)type
 {
-  v3 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:a3];
+  v3 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:type];
   v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
   v5 = [SSRUtils getExplicitMarkedEnrollmentUtterancesFromDirectory:v4];
 
   return v5;
 }
 
-- (id)getExplicitEnrollmentUtterancesForType:(unint64_t)a3
+- (id)getExplicitEnrollmentUtterancesForType:(unint64_t)type
 {
-  v3 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:a3];
+  v3 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:type];
   v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
   v5 = [SSRUtils getExplicitEnrollmentUtterancesFromDirectory:v4];
 
   return v5;
 }
 
-- (id)addUtterances:(id)a3 spIdType:(unint64_t)a4
+- (id)addUtterances:(id)utterances spIdType:(unint64_t)type
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  utterancesCopy = utterances;
+  v7 = utterancesCopy;
+  if (utterancesCopy && [utterancesCopy count])
   {
-    v51 = self;
-    v8 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:a4];
+    selfCopy = self;
+    v8 = [(SSRVoiceProfile *)self voiceProfileAudioDirPathForSpidType:type];
     v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
     v52 = v8;
     v10 = [SSRUtils createDirectoryIfDoesNotExist:v8];
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -1025,7 +1025,7 @@ LABEL_7:
       v55 = 0;
       v15 = 0;
       v57 = *v61;
-      v54 = v11;
+      v54 = defaultManager;
       obj = v12;
       do
       {
@@ -1037,17 +1037,17 @@ LABEL_7:
           }
 
           v17 = *(*(&v60 + 1) + 8 * i);
-          v18 = [v17 lastPathComponent];
-          v19 = [v9 URLByAppendingPathComponent:v18];
+          lastPathComponent = [v17 lastPathComponent];
+          v19 = [v9 URLByAppendingPathComponent:lastPathComponent];
 
-          v20 = [v17 URLByDeletingPathExtension];
-          v21 = [v20 URLByAppendingPathExtension:@"json"];
+          uRLByDeletingPathExtension = [v17 URLByDeletingPathExtension];
+          v21 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"json"];
 
-          v22 = [v21 lastPathComponent];
-          v23 = [v9 URLByAppendingPathComponent:v22];
+          lastPathComponent2 = [v21 lastPathComponent];
+          v23 = [v9 URLByAppendingPathComponent:lastPathComponent2];
 
           v59 = v15;
-          [v11 copyItemAtURL:v17 toURL:v19 error:&v59];
+          [defaultManager copyItemAtURL:v17 toURL:v19 error:&v59];
           v24 = v59;
 
           v25 = *MEMORY[0x277D01970];
@@ -1057,7 +1057,7 @@ LABEL_7:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
               v33 = v25;
-              v34 = [v24 localizedDescription];
+              localizedDescription = [v24 localizedDescription];
               *buf = 136315906;
               v67 = "[SSRVoiceProfile addUtterances:spIdType:]";
               v68 = 2114;
@@ -1065,10 +1065,10 @@ LABEL_7:
               v70 = 2114;
               v71 = v19;
               v72 = 2114;
-              v73 = v34;
+              v73 = localizedDescription;
               _os_log_error_impl(&dword_225E12000, v33, OS_LOG_TYPE_ERROR, "%s Error to copy utterance from %{public}@ to %{public}@, error: %{public}@", buf, 0x2Au);
 
-              v11 = v54;
+              defaultManager = v54;
             }
 
             v15 = v24;
@@ -1087,17 +1087,17 @@ LABEL_7:
               _os_log_impl(&dword_225E12000, v25, OS_LOG_TYPE_DEFAULT, "%s Copied Utterance from %{public}@ to %{public}@", buf, 0x20u);
             }
 
-            v27 = [v21 path];
-            v28 = [v11 fileExistsAtPath:v27];
+            path = [v21 path];
+            v28 = [defaultManager fileExistsAtPath:path];
 
-            if (v28 && (v58 = 0, [v11 copyItemAtURL:v21 toURL:v23 error:&v58], (v29 = v58) != 0))
+            if (v28 && (v58 = 0, [defaultManager copyItemAtURL:v21 toURL:v23 error:&v58], (v29 = v58) != 0))
             {
               v15 = v29;
               v30 = *MEMORY[0x277D01970];
               if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
               {
                 v35 = v30;
-                v36 = [v15 localizedDescription];
+                localizedDescription2 = [v15 localizedDescription];
                 *buf = 136315906;
                 v67 = "[SSRVoiceProfile addUtterances:spIdType:]";
                 v68 = 2114;
@@ -1105,14 +1105,14 @@ LABEL_7:
                 v70 = 2114;
                 v71 = v23;
                 v72 = 2114;
-                v73 = v36;
+                v73 = localizedDescription2;
                 _os_log_error_impl(&dword_225E12000, v35, OS_LOG_TYPE_ERROR, "%s Error to copy jsonFile from %{public}@ to %{public}@, error: %{public}@", buf, 0x2Au);
               }
 
-              v31 = [v19 path];
-              v32 = [SSRUtils removeItemAtPath:v31];
+              path2 = [v19 path];
+              v32 = [SSRUtils removeItemAtPath:path2];
 
-              v11 = v54;
+              defaultManager = v54;
             }
 
             else
@@ -1141,7 +1141,7 @@ LABEL_7:
     {
       v42 = v41;
       v43 = [v12 count];
-      profileID = v51->_profileID;
+      profileID = selfCopy->_profileID;
       *buf = 136315906;
       v67 = "[SSRVoiceProfile addUtterances:spIdType:]";
       v68 = 2050;
@@ -1207,16 +1207,16 @@ LABEL_7:
   return v40;
 }
 
-- (id)importVoiceProfileAtPath:(id)a3
+- (id)importVoiceProfileAtPath:(id)path
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v43 = [MEMORY[0x277CBEBC0] fileURLWithPath:self->_profileBasePath];
-  v5 = [v43 path];
-  v6 = [SSRUtils createDirectoryIfDoesNotExist:v5];
+  path = [v43 path];
+  v6 = [SSRUtils createDirectoryIfDoesNotExist:path];
 
-  v39 = v4;
-  [SSRUtils getContentsOfDirectory:v4];
+  v39 = pathCopy;
+  [SSRUtils getContentsOfDirectory:pathCopy];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -1240,14 +1240,14 @@ LABEL_7:
         }
 
         v12 = *(*(&v45 + 1) + 8 * v11);
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
         v14 = [SSRUtils stringForCSSpIdType:2];
-        v15 = [v13 isEqualToString:v14];
+        v15 = [lastPathComponent isEqualToString:v14];
 
         if ((v15 & 1) == 0)
         {
           v16 = [SSRUtils stringForCSSpIdType:1];
-          v17 = [v13 isEqualToString:v16];
+          v17 = [lastPathComponent isEqualToString:v16];
 
           if (v17)
           {
@@ -1260,7 +1260,7 @@ LABEL_7:
           else
           {
             v18 = [SSRUtils stringForCSSpIdType:3];
-            v19 = [v13 isEqualToString:v18];
+            v19 = [lastPathComponent isEqualToString:v18];
 
             if (v19)
             {
@@ -1269,13 +1269,13 @@ LABEL_7:
 
             else
             {
-              v20 = self;
-              v21 = [v12 lastPathComponent];
-              v22 = [v43 URLByAppendingPathComponent:v21];
+              selfCopy = self;
+              lastPathComponent2 = [v12 lastPathComponent];
+              v22 = [v43 URLByAppendingPathComponent:lastPathComponent2];
 
-              v23 = [MEMORY[0x277CCAA00] defaultManager];
+              defaultManager = [MEMORY[0x277CCAA00] defaultManager];
               v44 = 0;
-              [v23 copyItemAtURL:v12 toURL:v22 error:&v44];
+              [defaultManager copyItemAtURL:v12 toURL:v22 error:&v44];
               v24 = v44;
 
               v25 = *MEMORY[0x277D01970];
@@ -1294,7 +1294,7 @@ LABEL_7:
 
               if (v24)
               {
-                v27 = [SSRUtils removeItemAtPath:v20->_profileBasePath];
+                v27 = [SSRUtils removeItemAtPath:selfCopy->_profileBasePath];
 
                 v7 = v40;
                 v28 = v40;
@@ -1302,7 +1302,7 @@ LABEL_7:
                 goto LABEL_21;
               }
 
-              self = v20;
+              self = selfCopy;
               v7 = v40;
             }
           }
@@ -1371,8 +1371,8 @@ LABEL_7:
         v38 = MEMORY[0x277CCA9B8];
         v49 = @"reason";
         v50 = v28;
-        v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-        v24 = [v38 errorWithDomain:@"com.apple.speakerrecognition" code:733 userInfo:v13];
+        lastPathComponent = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
+        v24 = [v38 errorWithDomain:@"com.apple.speakerrecognition" code:733 userInfo:lastPathComponent];
 LABEL_21:
       }
     }
@@ -1388,20 +1388,20 @@ LABEL_21:
   return v24;
 }
 
-- (unint64_t)_copyExplicitAudio:(id)a3 withSpIdType:(unint64_t)a4
+- (unint64_t)_copyExplicitAudio:(id)audio withSpIdType:(unint64_t)type
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 URLByAppendingPathComponent:@"audio"];
+  audioCopy = audio;
+  v7 = [audioCopy URLByAppendingPathComponent:@"audio"];
   v8 = [SSRUtils getExplicitEnrollmentUtterancesFromDirectory:v7];
-  v9 = [SSRUtils stringForCSSpIdType:a4];
+  v9 = [SSRUtils stringForCSSpIdType:type];
   v10 = MEMORY[0x277D01970];
   v11 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
   {
     profileID = self->_profileID;
     v13 = v11;
-    v14 = [v6 path];
+    path = [audioCopy path];
     v28 = 136315906;
     v29 = "[SSRVoiceProfile _copyExplicitAudio:withSpIdType:]";
     v30 = 2114;
@@ -1409,11 +1409,11 @@ LABEL_21:
     v32 = 2114;
     v33 = profileID;
     v34 = 2114;
-    v35 = v14;
+    v35 = path;
     _os_log_impl(&dword_225E12000, v13, OS_LOG_TYPE_DEFAULT, "%s Importing %{public}@ of %{public}@ from import Dir %{public}@", &v28, 0x2Au);
   }
 
-  v15 = [(SSRVoiceProfile *)self addUtterances:v8 spIdType:a4];
+  v15 = [(SSRVoiceProfile *)self addUtterances:v8 spIdType:type];
   if (v15)
   {
     v16 = *v10;
@@ -1421,7 +1421,7 @@ LABEL_21:
     {
       v17 = self->_profileID;
       v18 = v16;
-      v19 = [v6 path];
+      path2 = [audioCopy path];
       v28 = 136315906;
       v29 = "[SSRVoiceProfile _copyExplicitAudio:withSpIdType:]";
       v30 = 2114;
@@ -1429,7 +1429,7 @@ LABEL_21:
       v32 = 2114;
       v33 = v17;
       v34 = 2114;
-      v35 = v19;
+      v35 = path2;
       _os_log_impl(&dword_225E12000, v18, OS_LOG_TYPE_DEFAULT, "%s Failed in importing %{public}@ of %{public}@ from import Dir %{public}@", &v28, 0x2Au);
     }
 
@@ -1438,7 +1438,7 @@ LABEL_21:
 
   else
   {
-    v21 = [(SSRVoiceProfile *)self getExplicitEnrollmentUtterancesForType:a4];
+    v21 = [(SSRVoiceProfile *)self getExplicitEnrollmentUtterancesForType:type];
     v20 = [v21 count];
 
     v22 = *v10;
@@ -1507,7 +1507,7 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)isValidForRPIWithError:(id *)a3
+- (BOOL)isValidForRPIWithError:(id *)error
 {
   if ([(NSString *)self->_appDomain isEqualToString:@"com.apple.siri"])
   {
@@ -1516,34 +1516,34 @@ LABEL_21:
       return 1;
     }
 
-    if (a3)
+    if (error)
     {
       v6 = 1265;
       goto LABEL_8;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v6 = 1264;
 LABEL_8:
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:v6 userInfo:0];
     v8 = v7;
     result = 0;
-    *a3 = v7;
+    *error = v7;
     return result;
   }
 
   return 0;
 }
 
-- (void)addDonationId:(id)a3
+- (void)addDonationId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
     donationIds = self->_donationIds;
-    v8 = v4;
+    v8 = idCopy;
     if (!donationIds)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1559,17 +1559,17 @@ LABEL_8:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)exclaveVoiceProfileModelFilePathForRecognizerType:(unint64_t)a3 spIdType:(unint64_t)a4
+- (id)exclaveVoiceProfileModelFilePathForRecognizerType:(unint64_t)type spIdType:(unint64_t)idType
 {
-  v4 = [(SSRVoiceProfile *)self voiceProfileModelFilePathForRecognizerType:a3 spIdType:a4];
+  v4 = [(SSRVoiceProfile *)self voiceProfileModelFilePathForRecognizerType:type spIdType:idType];
   v5 = [v4 URLByAppendingPathExtension:@"exclave"];
 
   return v5;
 }
 
-- (id)voiceProfileModelFilePathForRecognizerType:(unint64_t)a3 spIdType:(unint64_t)a4
+- (id)voiceProfileModelFilePathForRecognizerType:(unint64_t)type spIdType:(unint64_t)idType
 {
-  v4 = [(SSRVoiceProfile *)self voiceProfileModelDirForSpidType:a4 recognizerType:a3];
+  v4 = [(SSRVoiceProfile *)self voiceProfileModelDirForSpidType:idType recognizerType:type];
   v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
 
   return v5;
@@ -1577,8 +1577,8 @@ LABEL_8:
 
 - (id)description
 {
-  v2 = [(SSRVoiceProfile *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(SSRVoiceProfile *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
@@ -1629,122 +1629,122 @@ LABEL_8:
   return v13;
 }
 
-- (SSRVoiceProfile)initWithDictionary:(id)a3
+- (SSRVoiceProfile)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v40.receiver = self;
     v40.super_class = SSRVoiceProfile;
     self = [(SSRVoiceProfile *)&v40 init];
     if (self)
     {
-      v5 = [v4 objectForKeyedSubscript:@"UserVoiceProfileID"];
+      selfCopy = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfileID"];
       profileID = self->_profileID;
-      self->_profileID = &v5->super.isa;
+      self->_profileID = &selfCopy->super.isa;
 
-      if (!v5)
+      if (!selfCopy)
       {
-        NSLog(&cfstr_CreatingSsrvoi.isa, v4);
+        NSLog(&cfstr_CreatingSsrvoi.isa, dictionaryCopy);
         goto LABEL_16;
       }
 
       v7 = MEMORY[0x277CBEAA8];
-      v8 = [v4 objectForKeyedSubscript:@"UserVoiceProfileDateTrained"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfileDateTrained"];
       [v8 doubleValue];
       v9 = [v7 dateWithTimeIntervalSince1970:?];
       dateAdded = self->_dateAdded;
       self->_dateAdded = v9;
 
-      v11 = [v4 objectForKeyedSubscript:@"UserVoiceProfilePath"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfilePath"];
       profileBasePath = self->_profileBasePath;
       self->_profileBasePath = v11;
 
-      v13 = [v4 objectForKeyedSubscript:@"UserVoiceProfilePathExclave"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfilePathExclave"];
       profileBasePathExclave = self->_profileBasePathExclave;
       self->_profileBasePathExclave = v13;
 
-      v15 = [v4 objectForKeyedSubscript:@"UserVoiceProfileID"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfileID"];
       v16 = self->_profileID;
       self->_profileID = v15;
 
-      v17 = [v4 objectForKeyedSubscript:@"UserVoiceProfileLocale"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfileLocale"];
       locale = self->_locale;
       self->_locale = v17;
 
-      v19 = [v4 objectForKeyedSubscript:@"UserSharedSiriID"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"UserSharedSiriID"];
       siriProfileId = self->_siriProfileId;
       self->_siriProfileId = v19;
 
-      v21 = [v4 objectForKeyedSubscript:@"UserVoiceProfileAppDomain"];
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfileAppDomain"];
       appDomain = self->_appDomain;
       self->_appDomain = v21;
 
-      v23 = [v4 objectForKeyedSubscript:@"UserVoiceProfileEnrollmentId"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfileEnrollmentId"];
       enrollmentId = self->_enrollmentId;
       self->_enrollmentId = v23;
 
-      v25 = [v4 objectForKey:@"UserVoiceProfilePitch"];
+      v25 = [dictionaryCopy objectForKey:@"UserVoiceProfilePitch"];
 
       if (v25)
       {
-        v26 = [v4 objectForKey:@"UserVoiceProfilePitch"];
+        v26 = [dictionaryCopy objectForKey:@"UserVoiceProfilePitch"];
         profilePitch = self->_profilePitch;
         self->_profilePitch = v26;
       }
 
       if (CSIsInternalBuild())
       {
-        v28 = [v4 objectForKeyedSubscript:@"UserVoiceProfileUserName"];
+        v28 = [dictionaryCopy objectForKeyedSubscript:@"UserVoiceProfileUserName"];
         userName = self->_userName;
         self->_userName = v28;
       }
 
-      v30 = [v4 objectForKey:@"VoiceProfileEnrollmentDonationIds"];
+      v30 = [dictionaryCopy objectForKey:@"VoiceProfileEnrollmentDonationIds"];
       if (v30)
       {
         v31 = v30;
-        v32 = [v4 objectForKeyedSubscript:@"VoiceProfileEnrollmentDonationIds"];
+        v32 = [dictionaryCopy objectForKeyedSubscript:@"VoiceProfileEnrollmentDonationIds"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v34 = [v4 objectForKey:@"VoiceProfileEnrollmentDonationIds"];
+          v34 = [dictionaryCopy objectForKey:@"VoiceProfileEnrollmentDonationIds"];
           donationIds = self->_donationIds;
           self->_donationIds = v34;
         }
       }
 
-      v36 = [v4 objectForKey:@"UserPersonaID"];
+      v36 = [dictionaryCopy objectForKey:@"UserPersonaID"];
 
       if (v36)
       {
-        v37 = [v4 objectForKey:@"UserPersonaID"];
+        v37 = [dictionaryCopy objectForKey:@"UserPersonaID"];
         personaID = self->_personaID;
         self->_personaID = v37;
       }
     }
 
     self = self;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
 LABEL_16:
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)initNewVoiceProfileWithLocale:(id)a3 withAppDomain:(id)a4
+- (id)initNewVoiceProfileWithLocale:(id)locale withAppDomain:(id)domain
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  domainCopy = domain;
   v30.receiver = self;
   v30.super_class = SSRVoiceProfile;
   v9 = [(SSRVoiceProfile *)&v30 init];
@@ -1753,28 +1753,28 @@ LABEL_16:
     goto LABEL_5;
   }
 
-  if (v7 && v8)
+  if (localeCopy && domainCopy)
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     profileID = v9->_profileID;
-    v9->_profileID = v11;
+    v9->_profileID = uUIDString;
 
-    v13 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     dateAdded = v9->_dateAdded;
-    v9->_dateAdded = v13;
+    v9->_dateAdded = date;
 
     v15 = +[SSRVoiceProfileManager sharedInstance];
-    v16 = [v15 SSRSpeakerProfilesBasePath];
+    sSRSpeakerProfilesBasePath = [v15 SSRSpeakerProfilesBasePath];
 
-    v17 = [v16 stringByAppendingPathComponent:v8];
-    v18 = [v17 stringByAppendingPathComponent:v7];
+    v17 = [sSRSpeakerProfilesBasePath stringByAppendingPathComponent:domainCopy];
+    v18 = [v17 stringByAppendingPathComponent:localeCopy];
     v19 = [v18 stringByAppendingPathComponent:v9->_profileID];
     profileBasePath = v9->_profileBasePath;
     v9->_profileBasePath = v19;
 
-    objc_storeStrong(&v9->_appDomain, a4);
-    objc_storeStrong(&v9->_locale, a3);
+    objc_storeStrong(&v9->_appDomain, domain);
+    objc_storeStrong(&v9->_locale, locale);
     v21 = [MEMORY[0x277CCABB0] numberWithFloat:0.0];
     profilePitch = v9->_profilePitch;
     v9->_profilePitch = v21;
@@ -1806,75 +1806,75 @@ LABEL_9:
   return v26;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   locale = self->_locale;
-  v5 = a3;
-  [v5 encodeObject:locale forKey:@"UserVoiceProfileLocale"];
-  [v5 encodeObject:self->_appDomain forKey:@"UserVoiceProfileAppDomain"];
-  [v5 encodeObject:self->_profileID forKey:@"UserVoiceProfileID"];
-  [v5 encodeObject:self->_siriProfileId forKey:@"UserSharedSiriID"];
-  [v5 encodeObject:self->_dateAdded forKey:@"UserVoiceProfileDateTrained"];
-  [v5 encodeObject:self->_profileBasePath forKey:@"UserVoiceProfilePath"];
-  [v5 encodeObject:self->_profileBasePathExclave forKey:@"UserVoiceProfilePathExclave"];
-  [v5 encodeObject:self->_profilePitch forKey:@"UserVoiceProfilePitch"];
-  [v5 encodeObject:self->_donationIds forKey:@"VoiceProfileEnrollmentDonationIds"];
-  [v5 encodeObject:self->_enrollmentId forKey:@"UserVoiceProfileEnrollmentId"];
-  [v5 encodeObject:self->_personaID forKey:@"UserPersonaID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:locale forKey:@"UserVoiceProfileLocale"];
+  [coderCopy encodeObject:self->_appDomain forKey:@"UserVoiceProfileAppDomain"];
+  [coderCopy encodeObject:self->_profileID forKey:@"UserVoiceProfileID"];
+  [coderCopy encodeObject:self->_siriProfileId forKey:@"UserSharedSiriID"];
+  [coderCopy encodeObject:self->_dateAdded forKey:@"UserVoiceProfileDateTrained"];
+  [coderCopy encodeObject:self->_profileBasePath forKey:@"UserVoiceProfilePath"];
+  [coderCopy encodeObject:self->_profileBasePathExclave forKey:@"UserVoiceProfilePathExclave"];
+  [coderCopy encodeObject:self->_profilePitch forKey:@"UserVoiceProfilePitch"];
+  [coderCopy encodeObject:self->_donationIds forKey:@"VoiceProfileEnrollmentDonationIds"];
+  [coderCopy encodeObject:self->_enrollmentId forKey:@"UserVoiceProfileEnrollmentId"];
+  [coderCopy encodeObject:self->_personaID forKey:@"UserPersonaID"];
 }
 
-- (SSRVoiceProfile)initWithCoder:(id)a3
+- (SSRVoiceProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = SSRVoiceProfile;
   v5 = [(SSRVoiceProfile *)&v32 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileLocale"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileLocale"];
     locale = v5->_locale;
     v5->_locale = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileAppDomain"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileAppDomain"];
     appDomain = v5->_appDomain;
     v5->_appDomain = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileID"];
     profileID = v5->_profileID;
     v5->_profileID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserSharedSiriID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserSharedSiriID"];
     siriProfileId = v5->_siriProfileId;
     v5->_siriProfileId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileDateTrained"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileDateTrained"];
     dateAdded = v5->_dateAdded;
     v5->_dateAdded = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfilePath"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfilePath"];
     profileBasePath = v5->_profileBasePath;
     v5->_profileBasePath = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfilePathExclave"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfilePathExclave"];
     profileBasePathExclave = v5->_profileBasePathExclave;
     v5->_profileBasePathExclave = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfilePitch"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfilePitch"];
     profilePitch = v5->_profilePitch;
     v5->_profilePitch = v20;
 
     v22 = MEMORY[0x277CBEB98];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"VoiceProfileEnrollmentDonationIds"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"VoiceProfileEnrollmentDonationIds"];
     donationIds = v5->_donationIds;
     v5->_donationIds = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileEnrollmentId"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserVoiceProfileEnrollmentId"];
     enrollmentId = v5->_enrollmentId;
     v5->_enrollmentId = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserPersonaID"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserPersonaID"];
     personaID = v5->_personaID;
     v5->_personaID = v29;
   }

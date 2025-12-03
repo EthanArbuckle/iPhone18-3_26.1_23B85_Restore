@@ -23,8 +23,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p", objc_opt_class(), self];
-  v4 = [(_UIContextMenuNode *)self listView];
-  [v4 frame];
+  listView = [(_UIContextMenuNode *)self listView];
+  [listView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;

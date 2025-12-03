@@ -1,15 +1,15 @@
 @interface UIStatusBarSecondaryDataNetworkItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 @end
 
 @implementation UIStatusBarSecondaryDataNetworkItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
-  v6 = *(v5 + 2100);
+  rawData = [data rawData];
+  v6 = *(rawData + 2100);
 
-  return [(UIStatusBarDataNetworkItemView *)self _updateWithData:v5 networkType:v6];
+  return [(UIStatusBarDataNetworkItemView *)self _updateWithData:rawData networkType:v6];
 }
 
 @end

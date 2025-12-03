@@ -1,47 +1,47 @@
 @interface TSUFormattingSymbols
-+ (BOOL)isADummyDataSetVersion:(id)a3;
-+ (BOOL)p_localeIsCustomized:(id)a3;
-+ (BOOL)p_patternsDifferForDF:(id)a3 uncustomizedDF:(id)a4 dateStyle:(unint64_t)a5 timeStyle:(unint64_t)a6;
-+ (id)defaultFormattingSymbolsForLocale:(id)a3;
-+ (id)defaultFormattingSymbolsVersionForLocale:(id)a3;
-+ (id)dummyFormattingSymbolsForTesting:(int64_t)a3;
-+ (id)numberingSystemForLocale:(id)a3;
-+ (unint64_t)locationOfFirstDateFormatCharacter:(id)a3;
-+ (void)p_setAllSpaceVariantsOfString:(id)a3 toCode:(id)a4 inSymbolToCodeDictionary:(id)a5;
++ (BOOL)isADummyDataSetVersion:(id)version;
++ (BOOL)p_localeIsCustomized:(id)customized;
++ (BOOL)p_patternsDifferForDF:(id)f uncustomizedDF:(id)dF dateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle;
++ (id)defaultFormattingSymbolsForLocale:(id)locale;
++ (id)defaultFormattingSymbolsVersionForLocale:(id)locale;
++ (id)dummyFormattingSymbolsForTesting:(int64_t)testing;
++ (id)numberingSystemForLocale:(id)locale;
++ (unint64_t)locationOfFirstDateFormatCharacter:(id)character;
++ (void)p_setAllSpaceVariantsOfString:(id)string toCode:(id)code inSymbolToCodeDictionary:(id)dictionary;
 - (BOOL)hasUserCustomizations;
-- (BOOL)isEqual:(id)a3;
-- (TSUFormattingSymbols)initWithDummyDataSet:(int64_t)a3;
-- (TSUFormattingSymbols)initWithLocale:(id)a3;
-- (TSUFormattingSymbols)initWithVersion:(id)a3 calendar:(id)a4 numberingSystem:(id)a5 months:(id)a6 standaloneMonths:(id)a7 shortMonths:(id)a8 standaloneShortMonths:(id)a9 tinyMonths:(id)a10 standaloneTinyMonths:(id)a11 weekdays:(id)a12 standaloneWeekdays:(id)a13 shortWeekdays:(id)a14 standaloneShortWeekdays:(id)a15 tinyWeekdays:(id)a16 standaloneTinyWeekdays:(id)a17 quarters:(id)a18 standaloneQuarters:(id)a19 shortQuarters:(id)a20 standaloneShortQuarters:(id)a21 eras:(id)a22 longEras:(id)a23 amSymbol:(id)a24 pmSymbol:(id)a25 shortDatePattern:(id)a26 mediumDatePattern:(id)a27 longDatePattern:(id)a28 fullDatePattern:(id)a29 shortTimePattern:(id)a30 mediumTimePattern:(id)a31 longTimePattern:(id)a32 fullTimePattern:(id)a33 decimalSeparator:(id)a34 groupingSeparator:(id)a35 currencyDecimalSeparator:(id)a36 currencyGroupingSeparator:(id)a37 plusSign:(id)a38 minusSign:(id)a39 exponentialSymbol:(id)a40 percentSymbol:(id)a41 perMilleSymbol:(id)a42 infinitySymbol:(id)a43 nanSymbol:(id)a44 decimalPattern:(id)a45 scientificPattern:(id)a46 percentPattern:(id)a47 currencyPattern:(id)a48 currencyCode:(id)a49 currencySymbols:(id)a50;
-- (id)currencyCodeForCurrencySymbol:(id)a3;
-- (id)currencySymbolForCurrencyCode:(id)a3;
-- (id)halfwidthCurrencySymbolForCurrencyCode:(id)a3;
-- (id)p_negativeNumberKeyForNumberStyle:(unsigned int)a3 negativeStyle:(unsigned __int8)a4;
-- (id)patternStringForDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4;
-- (id)patternStringForNumberStyle:(unsigned int)a3 negativeStyle:(unsigned __int8)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSUFormattingSymbols)initWithDummyDataSet:(int64_t)set;
+- (TSUFormattingSymbols)initWithLocale:(id)locale;
+- (TSUFormattingSymbols)initWithVersion:(id)version calendar:(id)calendar numberingSystem:(id)system months:(id)months standaloneMonths:(id)standaloneMonths shortMonths:(id)shortMonths standaloneShortMonths:(id)standaloneShortMonths tinyMonths:(id)self0 standaloneTinyMonths:(id)self1 weekdays:(id)self2 standaloneWeekdays:(id)self3 shortWeekdays:(id)self4 standaloneShortWeekdays:(id)self5 tinyWeekdays:(id)self6 standaloneTinyWeekdays:(id)self7 quarters:(id)self8 standaloneQuarters:(id)self9 shortQuarters:(id)shortQuarters standaloneShortQuarters:(id)standaloneShortQuarters eras:(id)eras longEras:(id)longEras amSymbol:(id)symbol pmSymbol:(id)pmSymbol shortDatePattern:(id)pattern mediumDatePattern:(id)datePattern longDatePattern:(id)longDatePattern fullDatePattern:(id)fullDatePattern shortTimePattern:(id)version0 mediumTimePattern:(id)version1 longTimePattern:(id)version2 fullTimePattern:(id)version3 decimalSeparator:(id)version4 groupingSeparator:(id)version5 currencyDecimalSeparator:(id)version6 currencyGroupingSeparator:(id)version7 plusSign:(id)version8 minusSign:(id)version9 exponentialSymbol:(id)calendar0 percentSymbol:(id)calendar1 perMilleSymbol:(id)calendar2 infinitySymbol:(id)calendar3 nanSymbol:(id)calendar4 decimalPattern:(id)calendar5 scientificPattern:(id)calendar6 percentPattern:(id)calendar7 currencyPattern:(id)calendar8 currencyCode:(id)calendar9 currencySymbols:(id)system0;
+- (id)currencyCodeForCurrencySymbol:(id)symbol;
+- (id)currencySymbolForCurrencyCode:(id)code;
+- (id)halfwidthCurrencySymbolForCurrencyCode:(id)code;
+- (id)p_negativeNumberKeyForNumberStyle:(unsigned int)style negativeStyle:(unsigned __int8)negativeStyle;
+- (id)patternStringForDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle;
+- (id)patternStringForNumberStyle:(unsigned int)style negativeStyle:(unsigned __int8)negativeStyle;
 - (unint64_t)hash;
 - (void)p_deriveCalculatedPropertyValues;
-- (void)setForTestingShortDatePattern:(id)a3 mediumDatePattern:(id)a4 longDatePattern:(id)a5 fullDatePattern:(id)a6 shortTimePattern:(id)a7 mediumTimePattern:(id)a8 longTimePattern:(id)a9 fullTimePattern:(id)a10;
-- (void)upgradeIfNecessary:(id)a3;
+- (void)setForTestingShortDatePattern:(id)pattern mediumDatePattern:(id)datePattern longDatePattern:(id)longDatePattern fullDatePattern:(id)fullDatePattern shortTimePattern:(id)timePattern mediumTimePattern:(id)mediumTimePattern longTimePattern:(id)longTimePattern fullTimePattern:(id)self0;
+- (void)upgradeIfNecessary:(id)necessary;
 @end
 
 @implementation TSUFormattingSymbols
 
-+ (id)defaultFormattingSymbolsForLocale:(id)a3
++ (id)defaultFormattingSymbolsForLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [[TSUFormattingSymbols alloc] initWithLocale:v3];
+  localeCopy = locale;
+  v4 = [[TSUFormattingSymbols alloc] initWithLocale:localeCopy];
 
   return v4;
 }
 
-+ (id)defaultFormattingSymbolsVersionForLocale:(id)a3
++ (id)defaultFormattingSymbolsVersionForLocale:(id)locale
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = *MEMORY[0x277CBED68];
-  v5 = a3;
+  localeCopy = locale;
   v6 = [v3 stringWithFormat:@"%07.2f", v4];
-  v7 = [TSUFormattingSymbols p_localeIsCustomized:v5];
+  v7 = [TSUFormattingSymbols p_localeIsCustomized:localeCopy];
 
   if (v7)
   {
@@ -53,17 +53,17 @@
   return v6;
 }
 
-+ (id)numberingSystemForLocale:(id)a3
++ (id)numberingSystemForLocale:(id)locale
 {
   v3 = qword_280A63CF0;
-  v4 = a3;
+  localeCopy = locale;
   if (v3 != -1)
   {
     sub_2771140AC();
   }
 
   v5 = objc_opt_new();
-  [v5 setLocale:v4];
+  [v5 setLocale:localeCopy];
 
   v6 = [v5 stringFromNumber:&unk_28864BCC8];
   v7 = [v6 substringToIndex:1];
@@ -85,31 +85,31 @@
   return v10;
 }
 
-+ (id)dummyFormattingSymbolsForTesting:(int64_t)a3
++ (id)dummyFormattingSymbolsForTesting:(int64_t)testing
 {
-  v3 = [[TSUFormattingSymbols alloc] initWithDummyDataSet:a3];
+  v3 = [[TSUFormattingSymbols alloc] initWithDummyDataSet:testing];
 
   return v3;
 }
 
-- (void)setForTestingShortDatePattern:(id)a3 mediumDatePattern:(id)a4 longDatePattern:(id)a5 fullDatePattern:(id)a6 shortTimePattern:(id)a7 mediumTimePattern:(id)a8 longTimePattern:(id)a9 fullTimePattern:(id)a10
+- (void)setForTestingShortDatePattern:(id)pattern mediumDatePattern:(id)datePattern longDatePattern:(id)longDatePattern fullDatePattern:(id)fullDatePattern shortTimePattern:(id)timePattern mediumTimePattern:(id)mediumTimePattern longTimePattern:(id)longTimePattern fullTimePattern:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
-  v20 = a9;
-  v17 = a10;
-  objc_storeStrong(&self->_shortDatePattern, a3);
-  objc_storeStrong(&self->_mediumDatePattern, a4);
-  objc_storeStrong(&self->_longDatePattern, a5);
-  objc_storeStrong(&self->_fullDatePattern, a6);
-  objc_storeStrong(&self->_shortTimePattern, a7);
-  objc_storeStrong(&self->_mediumTimePattern, a8);
-  objc_storeStrong(&self->_longTimePattern, a9);
-  objc_storeStrong(&self->_fullTimePattern, a10);
+  patternCopy = pattern;
+  datePatternCopy = datePattern;
+  longDatePatternCopy = longDatePattern;
+  fullDatePatternCopy = fullDatePattern;
+  timePatternCopy = timePattern;
+  mediumTimePatternCopy = mediumTimePattern;
+  longTimePatternCopy = longTimePattern;
+  fullTimePatternCopy = fullTimePattern;
+  objc_storeStrong(&self->_shortDatePattern, pattern);
+  objc_storeStrong(&self->_mediumDatePattern, datePattern);
+  objc_storeStrong(&self->_longDatePattern, longDatePattern);
+  objc_storeStrong(&self->_fullDatePattern, fullDatePattern);
+  objc_storeStrong(&self->_shortTimePattern, timePattern);
+  objc_storeStrong(&self->_mediumTimePattern, mediumTimePattern);
+  objc_storeStrong(&self->_longTimePattern, longTimePattern);
+  objc_storeStrong(&self->_fullTimePattern, fullTimePattern);
   if (![(TSUFormattingSymbols *)self hasUserCustomizations])
   {
     v18 = [(NSString *)self->_version stringByAppendingString:@"*"];
@@ -118,85 +118,85 @@
   }
 }
 
-- (TSUFormattingSymbols)initWithLocale:(id)a3
+- (TSUFormattingSymbols)initWithLocale:(id)locale
 {
   v92 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 calendarIdentifier];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CBE5C0]];
+  localeCopy = locale;
+  calendarIdentifier = [localeCopy calendarIdentifier];
+  v5 = [calendarIdentifier isEqualToString:*MEMORY[0x277CBE5C0]];
 
-  v6 = v3;
+  v6 = localeCopy;
   if ((v5 & 1) == 0)
   {
-    v6 = sub_2770303F8(v3);
+    v6 = sub_2770303F8(localeCopy);
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v7 setLocale:v6];
   [v7 setTimeStyle:0];
   [v7 setDateStyle:1];
-  v8 = [v7 dateFormat];
+  dateFormat = [v7 dateFormat];
   [v7 setDateStyle:2];
-  v9 = [v7 dateFormat];
+  dateFormat2 = [v7 dateFormat];
   [v7 setDateStyle:3];
-  v82 = [v7 dateFormat];
+  dateFormat3 = [v7 dateFormat];
   [v7 setDateStyle:4];
-  v81 = [v7 dateFormat];
+  dateFormat4 = [v7 dateFormat];
   [v7 setDateStyle:0];
   [v7 setTimeStyle:1];
-  v80 = [v7 dateFormat];
+  dateFormat5 = [v7 dateFormat];
   [v7 setTimeStyle:2];
-  v79 = [v7 dateFormat];
+  dateFormat6 = [v7 dateFormat];
   [v7 setTimeStyle:3];
-  v78 = [v7 dateFormat];
+  dateFormat7 = [v7 dateFormat];
   [v7 setTimeStyle:4];
-  v77 = [v7 dateFormat];
+  dateFormat8 = [v7 dateFormat];
   v10 = objc_alloc_init(MEMORY[0x277CCABB8]);
-  [v10 setLocale:v3];
+  [v10 setLocale:localeCopy];
   [v10 setNumberStyle:1];
-  v76 = [v10 positiveFormat];
+  positiveFormat = [v10 positiveFormat];
   [v10 setNumberStyle:4];
-  v75 = [v10 positiveFormat];
+  positiveFormat2 = [v10 positiveFormat];
   [v10 setNumberStyle:3];
-  v74 = [v10 positiveFormat];
+  positiveFormat3 = [v10 positiveFormat];
   [v10 setNumberStyle:2];
   v46 = v10;
-  v11 = [v10 positiveFormat];
-  v12 = [v3 languageCode];
-  v13 = [v12 isEqualToString:@"he"];
+  positiveFormat4 = [v10 positiveFormat];
+  languageCode = [localeCopy languageCode];
+  v13 = [languageCode isEqualToString:@"he"];
 
   v47 = v7;
   v48 = v6;
-  v84 = v8;
-  v83 = v9;
-  if (v13 && [(__CFString *)v11 isEqualToString:@"\u200F#, ##0.00 \u200F¤"])
+  v84 = dateFormat;
+  v83 = dateFormat2;
+  if (v13 && [(__CFString *)positiveFormat4 isEqualToString:@"\u200F#, ##0.00 \u200F¤"])
   {
-    v14 = [v3 countryCode];
-    v15 = [v14 isEqualToString:@"IL"];
+    countryCode = [localeCopy countryCode];
+    v15 = [countryCode isEqualToString:@"IL"];
 
     if (v15)
     {
-      v11 = @"\u200F#,##0.00 ¤";
+      positiveFormat4 = @"\u200F#,##0.00 ¤";
     }
 
     else
     {
-      v11 = @"¤#,##0.00";
+      positiveFormat4 = @"¤#,##0.00";
     }
   }
 
-  v73 = v11;
+  v73 = positiveFormat4;
   v85 = objc_opt_new();
-  v16 = [v3 localeIdentifier];
-  v17 = [TSULocale regionSubtagAwareComponentsFromLocaleIdentifier:v16];
+  localeIdentifier = [localeCopy localeIdentifier];
+  v17 = [TSULocale regionSubtagAwareComponentsFromLocaleIdentifier:localeIdentifier];
   v86 = [v17 mutableCopy];
 
   v89 = 0u;
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v18 = [MEMORY[0x277CBEAF8] ISOCurrencyCodes];
-  v19 = [v18 countByEnumeratingWithState:&v87 objects:v91 count:16];
+  iSOCurrencyCodes = [MEMORY[0x277CBEAF8] ISOCurrencyCodes];
+  v19 = [iSOCurrencyCodes countByEnumeratingWithState:&v87 objects:v91 count:16];
   if (v19)
   {
     v20 = v19;
@@ -208,66 +208,66 @@
       {
         if (*v88 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(iSOCurrencyCodes);
         }
 
         v24 = *(*(&v87 + 1) + 8 * i);
         [v86 setObject:v24 forKey:v22];
         v25 = [MEMORY[0x277CBEAF8] localeIdentifierFromComponents:v86];
         v26 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v25];
-        v27 = [v26 currencySymbol];
-        if (([v27 isEqualToString:v24] & 1) == 0)
+        currencySymbol = [v26 currencySymbol];
+        if (([currencySymbol isEqualToString:v24] & 1) == 0)
         {
-          [v85 setObject:v27 forKey:v24];
+          [v85 setObject:currencySymbol forKey:v24];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v87 objects:v91 count:16];
+      v20 = [iSOCurrencyCodes countByEnumeratingWithState:&v87 objects:v91 count:16];
     }
 
     while (v20);
   }
 
-  v72 = [TSUFormattingSymbols defaultFormattingSymbolsVersionForLocale:v3];
-  v43 = [v47 calendar];
-  v71 = [v43 calendarIdentifier];
-  v70 = [TSUFormattingSymbols numberingSystemForLocale:v3];
-  v69 = [v47 monthSymbols];
-  v67 = [v47 standaloneMonthSymbols];
-  v64 = [v47 shortMonthSymbols];
-  v66 = [v47 shortStandaloneMonthSymbols];
-  v68 = [v47 veryShortMonthSymbols];
-  v63 = [v47 veryShortStandaloneMonthSymbols];
-  v65 = [v47 weekdaySymbols];
-  v60 = [v47 standaloneWeekdaySymbols];
-  v62 = [v47 shortWeekdaySymbols];
-  v59 = [v47 shortStandaloneWeekdaySymbols];
-  v61 = [v47 veryShortWeekdaySymbols];
-  v57 = [v47 veryShortStandaloneWeekdaySymbols];
-  v58 = [v47 quarterSymbols];
-  v56 = [v47 standaloneQuarterSymbols];
-  v42 = [v47 shortQuarterSymbols];
-  v55 = [v47 shortStandaloneQuarterSymbols];
-  v41 = [v47 eraSymbols];
-  v54 = [v47 longEraSymbols];
-  v40 = [v47 AMSymbol];
-  v39 = [v47 PMSymbol];
-  v53 = [v46 decimalSeparator];
-  v52 = [v46 groupingSeparator];
-  v51 = [v46 currencyDecimalSeparator];
-  v50 = [v46 currencyGroupingSeparator];
-  v49 = [v46 plusSign];
-  v28 = [v46 minusSign];
-  v29 = [v46 exponentSymbol];
-  v30 = [v46 percentSymbol];
-  v31 = [v46 perMillSymbol];
-  v32 = [v46 positiveInfinitySymbol];
-  v33 = [v46 notANumberSymbol];
-  v34 = [v3 currencyCode];
-  v35 = v34;
-  if (v34)
+  v72 = [TSUFormattingSymbols defaultFormattingSymbolsVersionForLocale:localeCopy];
+  calendar = [v47 calendar];
+  calendarIdentifier2 = [calendar calendarIdentifier];
+  v70 = [TSUFormattingSymbols numberingSystemForLocale:localeCopy];
+  monthSymbols = [v47 monthSymbols];
+  standaloneMonthSymbols = [v47 standaloneMonthSymbols];
+  shortMonthSymbols = [v47 shortMonthSymbols];
+  shortStandaloneMonthSymbols = [v47 shortStandaloneMonthSymbols];
+  veryShortMonthSymbols = [v47 veryShortMonthSymbols];
+  veryShortStandaloneMonthSymbols = [v47 veryShortStandaloneMonthSymbols];
+  weekdaySymbols = [v47 weekdaySymbols];
+  standaloneWeekdaySymbols = [v47 standaloneWeekdaySymbols];
+  shortWeekdaySymbols = [v47 shortWeekdaySymbols];
+  shortStandaloneWeekdaySymbols = [v47 shortStandaloneWeekdaySymbols];
+  veryShortWeekdaySymbols = [v47 veryShortWeekdaySymbols];
+  veryShortStandaloneWeekdaySymbols = [v47 veryShortStandaloneWeekdaySymbols];
+  quarterSymbols = [v47 quarterSymbols];
+  standaloneQuarterSymbols = [v47 standaloneQuarterSymbols];
+  shortQuarterSymbols = [v47 shortQuarterSymbols];
+  shortStandaloneQuarterSymbols = [v47 shortStandaloneQuarterSymbols];
+  eraSymbols = [v47 eraSymbols];
+  longEraSymbols = [v47 longEraSymbols];
+  aMSymbol = [v47 AMSymbol];
+  pMSymbol = [v47 PMSymbol];
+  decimalSeparator = [v46 decimalSeparator];
+  groupingSeparator = [v46 groupingSeparator];
+  currencyDecimalSeparator = [v46 currencyDecimalSeparator];
+  currencyGroupingSeparator = [v46 currencyGroupingSeparator];
+  plusSign = [v46 plusSign];
+  minusSign = [v46 minusSign];
+  exponentSymbol = [v46 exponentSymbol];
+  percentSymbol = [v46 percentSymbol];
+  perMillSymbol = [v46 perMillSymbol];
+  positiveInfinitySymbol = [v46 positiveInfinitySymbol];
+  notANumberSymbol = [v46 notANumberSymbol];
+  currencyCode = [localeCopy currencyCode];
+  v35 = currencyCode;
+  if (currencyCode)
   {
-    v36 = v34;
+    v36 = currencyCode;
   }
 
   else
@@ -276,35 +276,35 @@
   }
 
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v85];
-  v45 = [(TSUFormattingSymbols *)self initWithVersion:v72 calendar:v71 numberingSystem:v70 months:v69 standaloneMonths:v67 shortMonths:v64 standaloneShortMonths:v66 tinyMonths:v68 standaloneTinyMonths:v63 weekdays:v65 standaloneWeekdays:v60 shortWeekdays:v62 standaloneShortWeekdays:v59 tinyWeekdays:v61 standaloneTinyWeekdays:v57 quarters:v58 standaloneQuarters:v56 shortQuarters:v42 standaloneShortQuarters:v55 eras:v41 longEras:v54 amSymbol:v40 pmSymbol:v39 shortDatePattern:v84 mediumDatePattern:v83 longDatePattern:v82 fullDatePattern:v81 shortTimePattern:v80 mediumTimePattern:v79 longTimePattern:v78 fullTimePattern:v77 decimalSeparator:v53 groupingSeparator:v52 currencyDecimalSeparator:v51 currencyGroupingSeparator:v50 plusSign:v49 minusSign:v28 exponentialSymbol:v29 percentSymbol:v30 perMilleSymbol:v31 infinitySymbol:v32 nanSymbol:v33 decimalPattern:v76 scientificPattern:v75 percentPattern:v74 currencyPattern:v73 currencyCode:v36 currencySymbols:v38];
+  v45 = [(TSUFormattingSymbols *)self initWithVersion:v72 calendar:calendarIdentifier2 numberingSystem:v70 months:monthSymbols standaloneMonths:standaloneMonthSymbols shortMonths:shortMonthSymbols standaloneShortMonths:shortStandaloneMonthSymbols tinyMonths:veryShortMonthSymbols standaloneTinyMonths:veryShortStandaloneMonthSymbols weekdays:weekdaySymbols standaloneWeekdays:standaloneWeekdaySymbols shortWeekdays:shortWeekdaySymbols standaloneShortWeekdays:shortStandaloneWeekdaySymbols tinyWeekdays:veryShortWeekdaySymbols standaloneTinyWeekdays:veryShortStandaloneWeekdaySymbols quarters:quarterSymbols standaloneQuarters:standaloneQuarterSymbols shortQuarters:shortQuarterSymbols standaloneShortQuarters:shortStandaloneQuarterSymbols eras:eraSymbols longEras:longEraSymbols amSymbol:aMSymbol pmSymbol:pMSymbol shortDatePattern:v84 mediumDatePattern:v83 longDatePattern:dateFormat3 fullDatePattern:dateFormat4 shortTimePattern:dateFormat5 mediumTimePattern:dateFormat6 longTimePattern:dateFormat7 fullTimePattern:dateFormat8 decimalSeparator:decimalSeparator groupingSeparator:groupingSeparator currencyDecimalSeparator:currencyDecimalSeparator currencyGroupingSeparator:currencyGroupingSeparator plusSign:plusSign minusSign:minusSign exponentialSymbol:exponentSymbol percentSymbol:percentSymbol perMilleSymbol:perMillSymbol infinitySymbol:positiveInfinitySymbol nanSymbol:notANumberSymbol decimalPattern:positiveFormat scientificPattern:positiveFormat2 percentPattern:positiveFormat3 currencyPattern:v73 currencyCode:v36 currencySymbols:v38];
 
   return v45;
 }
 
-+ (BOOL)isADummyDataSetVersion:(id)a3
++ (BOOL)isADummyDataSetVersion:(id)version
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"0001.00"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"0001.10"))
+  versionCopy = version;
+  if ([versionCopy isEqualToString:@"0001.00"] & 1) != 0 || (objc_msgSend(versionCopy, "isEqualToString:", @"0001.10"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"0000.00"];
+    v4 = [versionCopy isEqualToString:@"0000.00"];
   }
 
   return v4;
 }
 
-- (TSUFormattingSymbols)initWithDummyDataSet:(int64_t)a3
+- (TSUFormattingSymbols)initWithDummyDataSet:(int64_t)set
 {
-  if (a3 == 1)
+  if (set == 1)
   {
     v3 = [(TSUFormattingSymbols *)self initWithVersion:@"0001.10" calendar:@"gregorian" numberingSystem:@"latn" months:&unk_28864B848 standaloneMonths:&unk_28864B860 shortMonths:&unk_28864B878 standaloneShortMonths:&unk_28864B890 tinyMonths:&unk_28864B8A8 standaloneTinyMonths:&unk_28864B8C0 weekdays:&unk_28864B8D8 standaloneWeekdays:&unk_28864B8F0 shortWeekdays:&unk_28864B908 standaloneShortWeekdays:&unk_28864B920 tinyWeekdays:&unk_28864B938 standaloneTinyWeekdays:&unk_28864B950 quarters:&unk_28864B968 standaloneQuarters:&unk_28864B980 shortQuarters:&unk_28864B998 standaloneShortQuarters:&unk_28864B9B0 eras:&unk_28864B9C8 longEras:&unk_28864B9E0 amSymbol:@"AX" pmSymbol:@"PX" shortDatePattern:@"d!yy!MM" mediumDatePattern:@"d!yyyy!MMM" longDatePattern:@"d☺yyyy☺MMMM" fullDatePattern:@"d☺yyyy☺MMMM☺EEEE" shortTimePattern:@"a•h•mm" mediumTimePattern:@"a•h•mm" longTimePattern:@"a•h•mm•ss" fullTimePattern:@"a•h•mm•ss" decimalSeparator:@"•" groupingSeparator:@"|" currencyDecimalSeparator:@"•" currencyGroupingSeparator:@"|" plusSign:@"⊕" minusSign:@"⊖" exponentialSymbol:@"↑" percentSymbol:@"％" perMilleSymbol:@"‰" infinitySymbol:@"INFINITY!" nanSymbol:@"😱" decimalPattern:@"# scientificPattern:#0.000" percentPattern:@"# currencyPattern:#0.###E00" currencyCode:@"#0.00%" currencySymbols:@"¤#, #0.00", @"CAD", &unk_28864C738];
   }
 
-  else if (a3)
+  else if (set)
   {
     v3 = [(TSUFormattingSymbols *)self initWithVersion:@"0000.00" calendar:@"gregorian" numberingSystem:@"latn" months:&unk_28864B9F8 standaloneMonths:&unk_28864BA10 shortMonths:&unk_28864BA28 standaloneShortMonths:&unk_28864BA40 tinyMonths:&unk_28864BA58 standaloneTinyMonths:&unk_28864BA70 weekdays:&unk_28864BA88 standaloneWeekdays:&unk_28864BAA0 shortWeekdays:&unk_28864BAB8 standaloneShortWeekdays:&unk_28864BAD0 tinyWeekdays:&unk_28864BAE8 standaloneTinyWeekdays:&unk_28864BB00 quarters:&unk_28864BB18 standaloneQuarters:&unk_28864BB30 shortQuarters:&unk_28864BB48 standaloneShortQuarters:&unk_28864BB60 eras:&unk_28864BB78 longEras:&unk_28864BB90 amSymbol:@"A" pmSymbol:@"P" shortDatePattern:@"d yy MM" mediumDatePattern:@"d yyyy MMM" longDatePattern:@"d yyyy MMMM" fullDatePattern:@"d yyyy MMMM EEEE" shortTimePattern:@"h a mm" mediumTimePattern:@"h a mm" longTimePattern:@"h a mm ss" fullTimePattern:@"h a mm ss" decimalSeparator:@"•" groupingSeparator:@"|" currencyDecimalSeparator:@"•" currencyGroupingSeparator:@"|" plusSign:@"⊕" minusSign:@"⊖" exponentialSymbol:@"↑" percentSymbol:@"％" perMilleSymbol:@"‰" infinitySymbol:@"INFINITY!" nanSymbol:@"😱" decimalPattern:@"# scientificPattern:#0.000" percentPattern:@"# currencyPattern:#0.###E00" currencyCode:@"#0.00%" currencySymbols:@"¤#, #0.00", @"CAD", &unk_28864C760];
   }
@@ -319,124 +319,124 @@
   return v4;
 }
 
-- (TSUFormattingSymbols)initWithVersion:(id)a3 calendar:(id)a4 numberingSystem:(id)a5 months:(id)a6 standaloneMonths:(id)a7 shortMonths:(id)a8 standaloneShortMonths:(id)a9 tinyMonths:(id)a10 standaloneTinyMonths:(id)a11 weekdays:(id)a12 standaloneWeekdays:(id)a13 shortWeekdays:(id)a14 standaloneShortWeekdays:(id)a15 tinyWeekdays:(id)a16 standaloneTinyWeekdays:(id)a17 quarters:(id)a18 standaloneQuarters:(id)a19 shortQuarters:(id)a20 standaloneShortQuarters:(id)a21 eras:(id)a22 longEras:(id)a23 amSymbol:(id)a24 pmSymbol:(id)a25 shortDatePattern:(id)a26 mediumDatePattern:(id)a27 longDatePattern:(id)a28 fullDatePattern:(id)a29 shortTimePattern:(id)a30 mediumTimePattern:(id)a31 longTimePattern:(id)a32 fullTimePattern:(id)a33 decimalSeparator:(id)a34 groupingSeparator:(id)a35 currencyDecimalSeparator:(id)a36 currencyGroupingSeparator:(id)a37 plusSign:(id)a38 minusSign:(id)a39 exponentialSymbol:(id)a40 percentSymbol:(id)a41 perMilleSymbol:(id)a42 infinitySymbol:(id)a43 nanSymbol:(id)a44 decimalPattern:(id)a45 scientificPattern:(id)a46 percentPattern:(id)a47 currencyPattern:(id)a48 currencyCode:(id)a49 currencySymbols:(id)a50
+- (TSUFormattingSymbols)initWithVersion:(id)version calendar:(id)calendar numberingSystem:(id)system months:(id)months standaloneMonths:(id)standaloneMonths shortMonths:(id)shortMonths standaloneShortMonths:(id)standaloneShortMonths tinyMonths:(id)self0 standaloneTinyMonths:(id)self1 weekdays:(id)self2 standaloneWeekdays:(id)self3 shortWeekdays:(id)self4 standaloneShortWeekdays:(id)self5 tinyWeekdays:(id)self6 standaloneTinyWeekdays:(id)self7 quarters:(id)self8 standaloneQuarters:(id)self9 shortQuarters:(id)shortQuarters standaloneShortQuarters:(id)standaloneShortQuarters eras:(id)eras longEras:(id)longEras amSymbol:(id)symbol pmSymbol:(id)pmSymbol shortDatePattern:(id)pattern mediumDatePattern:(id)datePattern longDatePattern:(id)longDatePattern fullDatePattern:(id)fullDatePattern shortTimePattern:(id)version0 mediumTimePattern:(id)version1 longTimePattern:(id)version2 fullTimePattern:(id)version3 decimalSeparator:(id)version4 groupingSeparator:(id)version5 currencyDecimalSeparator:(id)version6 currencyGroupingSeparator:(id)version7 plusSign:(id)version8 minusSign:(id)version9 exponentialSymbol:(id)calendar0 percentSymbol:(id)calendar1 perMilleSymbol:(id)calendar2 infinitySymbol:(id)calendar3 nanSymbol:(id)calendar4 decimalPattern:(id)calendar5 scientificPattern:(id)calendar6 percentPattern:(id)calendar7 currencyPattern:(id)calendar8 currencyCode:(id)calendar9 currencySymbols:(id)system0
 {
-  v107 = a3;
-  v106 = a4;
-  v63 = a5;
-  v105 = a5;
-  v104 = a6;
-  v103 = a7;
-  v102 = a8;
-  v101 = a9;
-  v100 = a10;
-  v99 = a11;
-  v98 = a12;
-  v97 = a13;
-  v96 = a14;
-  v95 = a15;
-  v94 = a16;
-  v93 = a17;
-  v92 = a18;
-  v91 = a19;
-  v90 = a20;
-  v89 = a21;
-  v88 = a22;
-  v87 = a23;
-  v86 = a24;
-  v85 = a25;
-  v84 = a26;
-  v83 = a27;
-  v82 = a28;
-  v81 = a29;
-  v80 = a30;
-  v54 = a31;
-  v55 = a32;
-  v56 = a33;
-  v78 = a34;
-  v75 = a35;
-  v57 = a36;
-  v58 = a37;
-  v77 = a38;
-  v79 = a39;
-  v76 = a40;
-  v74 = a41;
-  v73 = a42;
-  v72 = a43;
-  v71 = a44;
-  v70 = a45;
-  v69 = a46;
-  v68 = a47;
-  v66 = a48;
-  v65 = a49;
-  v64 = a50;
+  versionCopy = version;
+  calendarCopy = calendar;
+  systemCopy = system;
+  systemCopy2 = system;
+  monthsCopy = months;
+  standaloneMonthsCopy = standaloneMonths;
+  shortMonthsCopy = shortMonths;
+  standaloneShortMonthsCopy = standaloneShortMonths;
+  tinyMonthsCopy = tinyMonths;
+  standaloneTinyMonthsCopy = standaloneTinyMonths;
+  weekdaysCopy = weekdays;
+  standaloneWeekdaysCopy = standaloneWeekdays;
+  shortWeekdaysCopy = shortWeekdays;
+  standaloneShortWeekdaysCopy = standaloneShortWeekdays;
+  tinyWeekdaysCopy = tinyWeekdays;
+  standaloneTinyWeekdaysCopy = standaloneTinyWeekdays;
+  quartersCopy = quarters;
+  standaloneQuartersCopy = standaloneQuarters;
+  shortQuartersCopy = shortQuarters;
+  standaloneShortQuartersCopy = standaloneShortQuarters;
+  erasCopy = eras;
+  longErasCopy = longEras;
+  symbolCopy = symbol;
+  pmSymbolCopy = pmSymbol;
+  patternCopy = pattern;
+  datePatternCopy = datePattern;
+  longDatePatternCopy = longDatePattern;
+  fullDatePatternCopy = fullDatePattern;
+  timePatternCopy = timePattern;
+  mediumTimePatternCopy = mediumTimePattern;
+  longTimePatternCopy = longTimePattern;
+  fullTimePatternCopy = fullTimePattern;
+  separatorCopy = separator;
+  groupingSeparatorCopy = groupingSeparator;
+  decimalSeparatorCopy = decimalSeparator;
+  currencyGroupingSeparatorCopy = currencyGroupingSeparator;
+  signCopy = sign;
+  minusSignCopy = minusSign;
+  exponentialSymbolCopy = exponentialSymbol;
+  percentSymbolCopy = percentSymbol;
+  milleSymbolCopy = milleSymbol;
+  infinitySymbolCopy = infinitySymbol;
+  nanSymbolCopy = nanSymbol;
+  decimalPatternCopy = decimalPattern;
+  scientificPatternCopy = scientificPattern;
+  percentPatternCopy = percentPattern;
+  currencyPatternCopy = currencyPattern;
+  codeCopy = code;
+  symbolsCopy = symbols;
   v109.receiver = self;
   v109.super_class = TSUFormattingSymbols;
   v59 = [(TSUFormattingSymbols *)&v109 init];
   v60 = v59;
   if (v59)
   {
-    objc_storeStrong(&v59->_version, a3);
-    objc_storeStrong(&v60->_calendar, a4);
-    objc_storeStrong(&v60->_numberingSystem, v63);
-    objc_storeStrong(&v60->_months, a6);
-    objc_storeStrong(&v60->_standaloneMonths, a7);
-    objc_storeStrong(&v60->_shortMonths, a8);
-    objc_storeStrong(&v60->_standaloneShortMonths, a9);
-    objc_storeStrong(&v60->_tinyMonths, a10);
-    objc_storeStrong(&v60->_standaloneTinyMonths, a11);
-    objc_storeStrong(&v60->_weekdays, a12);
-    objc_storeStrong(&v60->_standaloneWeekdays, a13);
-    objc_storeStrong(&v60->_shortWeekdays, a14);
-    objc_storeStrong(&v60->_standaloneShortWeekdays, a15);
-    objc_storeStrong(&v60->_tinyWeekdays, a16);
-    objc_storeStrong(&v60->_standaloneTinyWeekdays, a17);
-    objc_storeStrong(&v60->_quarters, a18);
-    objc_storeStrong(&v60->_standaloneQuarters, a19);
-    objc_storeStrong(&v60->_shortQuarters, a20);
-    objc_storeStrong(&v60->_standaloneShortQuarters, a21);
-    objc_storeStrong(&v60->_eras, a22);
-    objc_storeStrong(&v60->_longEras, a23);
-    objc_storeStrong(&v60->_amSymbol, a24);
-    objc_storeStrong(&v60->_pmSymbol, a25);
-    objc_storeStrong(&v60->_shortDatePattern, a26);
-    objc_storeStrong(&v60->_mediumDatePattern, a27);
-    objc_storeStrong(&v60->_longDatePattern, a28);
-    objc_storeStrong(&v60->_fullDatePattern, a29);
-    objc_storeStrong(&v60->_shortTimePattern, a30);
-    objc_storeStrong(&v60->_mediumTimePattern, a31);
-    objc_storeStrong(&v60->_longTimePattern, a32);
-    objc_storeStrong(&v60->_fullTimePattern, a33);
-    objc_storeStrong(&v60->_decimalSeparator, a34);
-    objc_storeStrong(&v60->_groupingSeparator, a35);
-    objc_storeStrong(&v60->_currencyDecimalSeparator, a36);
-    objc_storeStrong(&v60->_currencyGroupingSeparator, a37);
-    objc_storeStrong(&v60->_plusSign, a38);
-    objc_storeStrong(&v60->_minusSign, a39);
-    objc_storeStrong(&v60->_exponentialSymbol, a40);
-    objc_storeStrong(&v60->_percentSymbol, a41);
-    objc_storeStrong(&v60->_perMilleSymbol, a42);
-    objc_storeStrong(&v60->_infinitySymbol, a43);
-    objc_storeStrong(&v60->_nanSymbol, a44);
-    objc_storeStrong(&v60->_decimalPattern, a45);
-    objc_storeStrong(&v60->_scientificPattern, a46);
-    objc_storeStrong(&v60->_percentPattern, a47);
-    objc_storeStrong(&v60->_currencyPattern, a48);
-    objc_storeStrong(&v60->_currencyCode, a49);
-    objc_storeStrong(&v60->_currencySymbols, a50);
+    objc_storeStrong(&v59->_version, version);
+    objc_storeStrong(&v60->_calendar, calendar);
+    objc_storeStrong(&v60->_numberingSystem, systemCopy);
+    objc_storeStrong(&v60->_months, months);
+    objc_storeStrong(&v60->_standaloneMonths, standaloneMonths);
+    objc_storeStrong(&v60->_shortMonths, shortMonths);
+    objc_storeStrong(&v60->_standaloneShortMonths, standaloneShortMonths);
+    objc_storeStrong(&v60->_tinyMonths, tinyMonths);
+    objc_storeStrong(&v60->_standaloneTinyMonths, standaloneTinyMonths);
+    objc_storeStrong(&v60->_weekdays, weekdays);
+    objc_storeStrong(&v60->_standaloneWeekdays, standaloneWeekdays);
+    objc_storeStrong(&v60->_shortWeekdays, shortWeekdays);
+    objc_storeStrong(&v60->_standaloneShortWeekdays, standaloneShortWeekdays);
+    objc_storeStrong(&v60->_tinyWeekdays, tinyWeekdays);
+    objc_storeStrong(&v60->_standaloneTinyWeekdays, standaloneTinyWeekdays);
+    objc_storeStrong(&v60->_quarters, quarters);
+    objc_storeStrong(&v60->_standaloneQuarters, standaloneQuarters);
+    objc_storeStrong(&v60->_shortQuarters, shortQuarters);
+    objc_storeStrong(&v60->_standaloneShortQuarters, standaloneShortQuarters);
+    objc_storeStrong(&v60->_eras, eras);
+    objc_storeStrong(&v60->_longEras, longEras);
+    objc_storeStrong(&v60->_amSymbol, symbol);
+    objc_storeStrong(&v60->_pmSymbol, pmSymbol);
+    objc_storeStrong(&v60->_shortDatePattern, pattern);
+    objc_storeStrong(&v60->_mediumDatePattern, datePattern);
+    objc_storeStrong(&v60->_longDatePattern, longDatePattern);
+    objc_storeStrong(&v60->_fullDatePattern, fullDatePattern);
+    objc_storeStrong(&v60->_shortTimePattern, timePattern);
+    objc_storeStrong(&v60->_mediumTimePattern, mediumTimePattern);
+    objc_storeStrong(&v60->_longTimePattern, longTimePattern);
+    objc_storeStrong(&v60->_fullTimePattern, fullTimePattern);
+    objc_storeStrong(&v60->_decimalSeparator, separator);
+    objc_storeStrong(&v60->_groupingSeparator, groupingSeparator);
+    objc_storeStrong(&v60->_currencyDecimalSeparator, decimalSeparator);
+    objc_storeStrong(&v60->_currencyGroupingSeparator, currencyGroupingSeparator);
+    objc_storeStrong(&v60->_plusSign, sign);
+    objc_storeStrong(&v60->_minusSign, minusSign);
+    objc_storeStrong(&v60->_exponentialSymbol, exponentialSymbol);
+    objc_storeStrong(&v60->_percentSymbol, percentSymbol);
+    objc_storeStrong(&v60->_perMilleSymbol, milleSymbol);
+    objc_storeStrong(&v60->_infinitySymbol, infinitySymbol);
+    objc_storeStrong(&v60->_nanSymbol, nanSymbol);
+    objc_storeStrong(&v60->_decimalPattern, decimalPattern);
+    objc_storeStrong(&v60->_scientificPattern, scientificPattern);
+    objc_storeStrong(&v60->_percentPattern, percentPattern);
+    objc_storeStrong(&v60->_currencyPattern, currencyPattern);
+    objc_storeStrong(&v60->_currencyCode, code);
+    objc_storeStrong(&v60->_currencySymbols, symbols);
     [(TSUFormattingSymbols *)v60 p_deriveCalculatedPropertyValues];
   }
 
   return v60;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     v5 = objc_opt_class();
-    v6 = TSUDynamicCast(v5, v4);
+    v6 = TSUDynamicCast(v5, equalCopy);
     if (!v6)
     {
       v57 = 0;
@@ -445,247 +445,247 @@
 
     if (!-[TSUFormattingSymbols hasUserCustomizations](self, "hasUserCustomizations") || ![v6 hasUserCustomizations])
     {
-      v7 = [(TSUFormattingSymbols *)self version];
-      v8 = [v6 version];
-      v57 = [v7 isEqualToString:v8];
+      version = [(TSUFormattingSymbols *)self version];
+      version2 = [v6 version];
+      v57 = [version isEqualToString:version2];
 LABEL_54:
 
 LABEL_56:
       goto LABEL_57;
     }
 
-    v7 = [(TSUFormattingSymbols *)self calendar];
-    v8 = [v6 calendar];
-    v194 = [v7 isEqualToString:v8];
+    version = [(TSUFormattingSymbols *)self calendar];
+    version2 = [v6 calendar];
+    v194 = [version isEqualToString:version2];
     if (v194 && (-[TSUFormattingSymbols numberingSystem](self, "numberingSystem"), v10 = objc_claimAutoreleasedReturnValue(), [v6 numberingSystem], v169 = v10, v168 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "isEqualToString:")))
     {
-      v11 = [(TSUFormattingSymbols *)self months];
+      months = [(TSUFormattingSymbols *)self months];
       [v6 months];
-      v164 = v165 = v11;
-      if ([v11 isEqualToArray:?])
+      v164 = v165 = months;
+      if ([months isEqualToArray:?])
       {
-        v12 = [(TSUFormattingSymbols *)self standaloneMonths];
+        standaloneMonths = [(TSUFormattingSymbols *)self standaloneMonths];
         [v6 standaloneMonths];
-        v162 = v163 = v12;
-        if ([v12 isEqualToArray:?])
+        v162 = v163 = standaloneMonths;
+        if ([standaloneMonths isEqualToArray:?])
         {
-          v13 = [(TSUFormattingSymbols *)self shortMonths];
+          shortMonths = [(TSUFormattingSymbols *)self shortMonths];
           [v6 shortMonths];
-          v160 = v161 = v13;
-          if ([v13 isEqualToArray:?])
+          v160 = v161 = shortMonths;
+          if ([shortMonths isEqualToArray:?])
           {
-            v14 = [(TSUFormattingSymbols *)self standaloneShortMonths];
+            standaloneShortMonths = [(TSUFormattingSymbols *)self standaloneShortMonths];
             [v6 standaloneShortMonths];
-            v158 = v159 = v14;
-            if ([v14 isEqualToArray:?])
+            v158 = v159 = standaloneShortMonths;
+            if ([standaloneShortMonths isEqualToArray:?])
             {
-              v15 = [(TSUFormattingSymbols *)self tinyMonths];
+              tinyMonths = [(TSUFormattingSymbols *)self tinyMonths];
               [v6 tinyMonths];
-              v156 = v157 = v15;
-              if ([v15 isEqualToArray:?])
+              v156 = v157 = tinyMonths;
+              if ([tinyMonths isEqualToArray:?])
               {
-                v16 = [(TSUFormattingSymbols *)self standaloneTinyMonths];
+                standaloneTinyMonths = [(TSUFormattingSymbols *)self standaloneTinyMonths];
                 [v6 standaloneTinyMonths];
-                v154 = v155 = v16;
-                if ([v16 isEqualToArray:?])
+                v154 = v155 = standaloneTinyMonths;
+                if ([standaloneTinyMonths isEqualToArray:?])
                 {
-                  v17 = [(TSUFormattingSymbols *)self weekdays];
+                  weekdays = [(TSUFormattingSymbols *)self weekdays];
                   [v6 weekdays];
-                  v152 = v153 = v17;
-                  if ([v17 isEqualToArray:?])
+                  v152 = v153 = weekdays;
+                  if ([weekdays isEqualToArray:?])
                   {
-                    v18 = [(TSUFormattingSymbols *)self standaloneWeekdays];
+                    standaloneWeekdays = [(TSUFormattingSymbols *)self standaloneWeekdays];
                     [v6 standaloneWeekdays];
-                    v150 = v151 = v18;
-                    if ([v18 isEqualToArray:?])
+                    v150 = v151 = standaloneWeekdays;
+                    if ([standaloneWeekdays isEqualToArray:?])
                     {
-                      v19 = [(TSUFormattingSymbols *)self shortWeekdays];
+                      shortWeekdays = [(TSUFormattingSymbols *)self shortWeekdays];
                       [v6 shortWeekdays];
-                      v148 = v149 = v19;
-                      if ([v19 isEqualToArray:?])
+                      v148 = v149 = shortWeekdays;
+                      if ([shortWeekdays isEqualToArray:?])
                       {
-                        v20 = [(TSUFormattingSymbols *)self standaloneShortWeekdays];
+                        standaloneShortWeekdays = [(TSUFormattingSymbols *)self standaloneShortWeekdays];
                         v166 = v6;
                         [v6 standaloneShortWeekdays];
-                        v146 = v147 = v20;
-                        if ([v20 isEqualToArray:?])
+                        v146 = v147 = standaloneShortWeekdays;
+                        if ([standaloneShortWeekdays isEqualToArray:?])
                         {
-                          v21 = [(TSUFormattingSymbols *)self tinyWeekdays];
+                          tinyWeekdays = [(TSUFormattingSymbols *)self tinyWeekdays];
                           [v6 tinyWeekdays];
-                          v144 = v145 = v21;
-                          if ([v21 isEqualToArray:?])
+                          v144 = v145 = tinyWeekdays;
+                          if ([tinyWeekdays isEqualToArray:?])
                           {
-                            v22 = [(TSUFormattingSymbols *)self standaloneTinyWeekdays];
+                            standaloneTinyWeekdays = [(TSUFormattingSymbols *)self standaloneTinyWeekdays];
                             [v6 standaloneTinyWeekdays];
-                            v142 = v143 = v22;
-                            if ([v22 isEqualToArray:?])
+                            v142 = v143 = standaloneTinyWeekdays;
+                            if ([standaloneTinyWeekdays isEqualToArray:?])
                             {
-                              v23 = [(TSUFormattingSymbols *)self quarters];
+                              quarters = [(TSUFormattingSymbols *)self quarters];
                               [v6 quarters];
-                              v140 = v141 = v23;
-                              if ([v23 isEqualToArray:?])
+                              v140 = v141 = quarters;
+                              if ([quarters isEqualToArray:?])
                               {
-                                v24 = [(TSUFormattingSymbols *)self standaloneQuarters];
-                                v138 = [v6 standaloneQuarters];
-                                v139 = v24;
-                                if ([v24 isEqualToArray:?])
+                                standaloneQuarters = [(TSUFormattingSymbols *)self standaloneQuarters];
+                                standaloneQuarters2 = [v6 standaloneQuarters];
+                                v139 = standaloneQuarters;
+                                if ([standaloneQuarters isEqualToArray:?])
                                 {
-                                  v25 = [(TSUFormattingSymbols *)self shortQuarters];
-                                  v136 = [v6 shortQuarters];
-                                  v137 = v25;
-                                  if ([v25 isEqualToArray:?])
+                                  shortQuarters = [(TSUFormattingSymbols *)self shortQuarters];
+                                  shortQuarters2 = [v6 shortQuarters];
+                                  v137 = shortQuarters;
+                                  if ([shortQuarters isEqualToArray:?])
                                   {
-                                    v26 = [(TSUFormattingSymbols *)self standaloneShortQuarters];
-                                    v134 = [v6 standaloneShortQuarters];
-                                    v135 = v26;
-                                    if ([v26 isEqualToArray:?])
+                                    standaloneShortQuarters = [(TSUFormattingSymbols *)self standaloneShortQuarters];
+                                    standaloneShortQuarters2 = [v6 standaloneShortQuarters];
+                                    v135 = standaloneShortQuarters;
+                                    if ([standaloneShortQuarters isEqualToArray:?])
                                     {
-                                      v27 = [(TSUFormattingSymbols *)self eras];
-                                      v132 = [v6 eras];
-                                      v133 = v27;
-                                      if ([v27 isEqualToArray:?])
+                                      eras = [(TSUFormattingSymbols *)self eras];
+                                      eras2 = [v6 eras];
+                                      v133 = eras;
+                                      if ([eras isEqualToArray:?])
                                       {
-                                        v28 = [(TSUFormattingSymbols *)self longEras];
-                                        v130 = [v6 longEras];
-                                        v131 = v28;
-                                        if ([v28 isEqualToArray:?])
+                                        longEras = [(TSUFormattingSymbols *)self longEras];
+                                        longEras2 = [v6 longEras];
+                                        v131 = longEras;
+                                        if ([longEras isEqualToArray:?])
                                         {
-                                          v29 = [(TSUFormattingSymbols *)self amSymbol];
-                                          v128 = [v6 amSymbol];
-                                          v129 = v29;
-                                          if ([v29 isEqualToString:?])
+                                          amSymbol = [(TSUFormattingSymbols *)self amSymbol];
+                                          amSymbol2 = [v6 amSymbol];
+                                          v129 = amSymbol;
+                                          if ([amSymbol isEqualToString:?])
                                           {
-                                            v30 = [(TSUFormattingSymbols *)self pmSymbol];
-                                            v126 = [v6 pmSymbol];
-                                            v127 = v30;
-                                            if ([v30 isEqualToString:?])
+                                            pmSymbol = [(TSUFormattingSymbols *)self pmSymbol];
+                                            pmSymbol2 = [v6 pmSymbol];
+                                            v127 = pmSymbol;
+                                            if ([pmSymbol isEqualToString:?])
                                             {
-                                              v31 = [(TSUFormattingSymbols *)self shortDatePattern];
-                                              v124 = [v6 shortDatePattern];
-                                              v125 = v31;
-                                              if ([v31 isEqualToString:?])
+                                              shortDatePattern = [(TSUFormattingSymbols *)self shortDatePattern];
+                                              shortDatePattern2 = [v6 shortDatePattern];
+                                              v125 = shortDatePattern;
+                                              if ([shortDatePattern isEqualToString:?])
                                               {
-                                                v32 = [(TSUFormattingSymbols *)self mediumDatePattern];
-                                                v122 = [v166 mediumDatePattern];
-                                                v123 = v32;
-                                                if ([v32 isEqualToString:?])
+                                                mediumDatePattern = [(TSUFormattingSymbols *)self mediumDatePattern];
+                                                mediumDatePattern2 = [v166 mediumDatePattern];
+                                                v123 = mediumDatePattern;
+                                                if ([mediumDatePattern isEqualToString:?])
                                                 {
-                                                  v33 = [(TSUFormattingSymbols *)self longDatePattern];
-                                                  v120 = [v166 longDatePattern];
-                                                  v121 = v33;
-                                                  if ([v33 isEqualToString:?])
+                                                  longDatePattern = [(TSUFormattingSymbols *)self longDatePattern];
+                                                  longDatePattern2 = [v166 longDatePattern];
+                                                  v121 = longDatePattern;
+                                                  if ([longDatePattern isEqualToString:?])
                                                   {
-                                                    v34 = [(TSUFormattingSymbols *)self fullDatePattern];
-                                                    v118 = [v166 fullDatePattern];
-                                                    v119 = v34;
-                                                    if ([v34 isEqualToString:?])
+                                                    fullDatePattern = [(TSUFormattingSymbols *)self fullDatePattern];
+                                                    fullDatePattern2 = [v166 fullDatePattern];
+                                                    v119 = fullDatePattern;
+                                                    if ([fullDatePattern isEqualToString:?])
                                                     {
-                                                      v35 = [(TSUFormattingSymbols *)self shortTimePattern];
-                                                      v116 = [v166 shortTimePattern];
-                                                      v117 = v35;
-                                                      if ([v35 isEqualToString:?])
+                                                      shortTimePattern = [(TSUFormattingSymbols *)self shortTimePattern];
+                                                      shortTimePattern2 = [v166 shortTimePattern];
+                                                      v117 = shortTimePattern;
+                                                      if ([shortTimePattern isEqualToString:?])
                                                       {
-                                                        v36 = [(TSUFormattingSymbols *)self mediumTimePattern];
-                                                        v114 = [v166 mediumTimePattern];
-                                                        v115 = v36;
-                                                        if ([v36 isEqualToString:?])
+                                                        mediumTimePattern = [(TSUFormattingSymbols *)self mediumTimePattern];
+                                                        mediumTimePattern2 = [v166 mediumTimePattern];
+                                                        v115 = mediumTimePattern;
+                                                        if ([mediumTimePattern isEqualToString:?])
                                                         {
-                                                          v37 = [(TSUFormattingSymbols *)self longTimePattern];
-                                                          v112 = [v166 longTimePattern];
-                                                          v113 = v37;
-                                                          if ([v37 isEqualToString:?])
+                                                          longTimePattern = [(TSUFormattingSymbols *)self longTimePattern];
+                                                          longTimePattern2 = [v166 longTimePattern];
+                                                          v113 = longTimePattern;
+                                                          if ([longTimePattern isEqualToString:?])
                                                           {
-                                                            v38 = [(TSUFormattingSymbols *)self fullTimePattern];
-                                                            v110 = [v166 fullTimePattern];
-                                                            v111 = v38;
-                                                            if ([v38 isEqualToString:?])
+                                                            fullTimePattern = [(TSUFormattingSymbols *)self fullTimePattern];
+                                                            fullTimePattern2 = [v166 fullTimePattern];
+                                                            v111 = fullTimePattern;
+                                                            if ([fullTimePattern isEqualToString:?])
                                                             {
-                                                              v39 = [(TSUFormattingSymbols *)self decimalSeparator];
-                                                              v108 = [v166 decimalSeparator];
-                                                              v109 = v39;
-                                                              if ([v39 isEqualToString:?])
+                                                              decimalSeparator = [(TSUFormattingSymbols *)self decimalSeparator];
+                                                              decimalSeparator2 = [v166 decimalSeparator];
+                                                              v109 = decimalSeparator;
+                                                              if ([decimalSeparator isEqualToString:?])
                                                               {
-                                                                v40 = [(TSUFormattingSymbols *)self groupingSeparator];
-                                                                v106 = [v166 groupingSeparator];
-                                                                v107 = v40;
-                                                                if ([v40 isEqualToString:?])
+                                                                groupingSeparator = [(TSUFormattingSymbols *)self groupingSeparator];
+                                                                groupingSeparator2 = [v166 groupingSeparator];
+                                                                v107 = groupingSeparator;
+                                                                if ([groupingSeparator isEqualToString:?])
                                                                 {
-                                                                  v41 = [(TSUFormattingSymbols *)self currencyDecimalSeparator];
-                                                                  v104 = [v166 currencyDecimalSeparator];
-                                                                  v105 = v41;
-                                                                  if ([v41 isEqualToString:?])
+                                                                  currencyDecimalSeparator = [(TSUFormattingSymbols *)self currencyDecimalSeparator];
+                                                                  currencyDecimalSeparator2 = [v166 currencyDecimalSeparator];
+                                                                  v105 = currencyDecimalSeparator;
+                                                                  if ([currencyDecimalSeparator isEqualToString:?])
                                                                   {
-                                                                    v42 = [(TSUFormattingSymbols *)self currencyGroupingSeparator];
-                                                                    v102 = [v166 currencyGroupingSeparator];
-                                                                    v103 = v42;
-                                                                    if ([v42 isEqualToString:?])
+                                                                    currencyGroupingSeparator = [(TSUFormattingSymbols *)self currencyGroupingSeparator];
+                                                                    currencyGroupingSeparator2 = [v166 currencyGroupingSeparator];
+                                                                    v103 = currencyGroupingSeparator;
+                                                                    if ([currencyGroupingSeparator isEqualToString:?])
                                                                     {
-                                                                      v43 = [(TSUFormattingSymbols *)self plusSign];
-                                                                      v100 = [v166 plusSign];
-                                                                      v101 = v43;
-                                                                      if ([v43 isEqualToString:?])
+                                                                      plusSign = [(TSUFormattingSymbols *)self plusSign];
+                                                                      plusSign2 = [v166 plusSign];
+                                                                      v101 = plusSign;
+                                                                      if ([plusSign isEqualToString:?])
                                                                       {
-                                                                        v44 = [(TSUFormattingSymbols *)self minusSign];
-                                                                        v98 = [v166 minusSign];
-                                                                        v99 = v44;
-                                                                        if ([v44 isEqualToString:?])
+                                                                        minusSign = [(TSUFormattingSymbols *)self minusSign];
+                                                                        minusSign2 = [v166 minusSign];
+                                                                        v99 = minusSign;
+                                                                        if ([minusSign isEqualToString:?])
                                                                         {
-                                                                          v45 = [(TSUFormattingSymbols *)self exponentialSymbol];
-                                                                          v96 = [v166 exponentialSymbol];
-                                                                          v97 = v45;
-                                                                          if ([v45 isEqualToString:?])
+                                                                          exponentialSymbol = [(TSUFormattingSymbols *)self exponentialSymbol];
+                                                                          exponentialSymbol2 = [v166 exponentialSymbol];
+                                                                          v97 = exponentialSymbol;
+                                                                          if ([exponentialSymbol isEqualToString:?])
                                                                           {
-                                                                            v46 = [(TSUFormattingSymbols *)self percentSymbol];
-                                                                            v94 = [v166 percentSymbol];
-                                                                            v95 = v46;
-                                                                            if ([v46 isEqualToString:?])
+                                                                            percentSymbol = [(TSUFormattingSymbols *)self percentSymbol];
+                                                                            percentSymbol2 = [v166 percentSymbol];
+                                                                            v95 = percentSymbol;
+                                                                            if ([percentSymbol isEqualToString:?])
                                                                             {
-                                                                              v47 = [(TSUFormattingSymbols *)self perMilleSymbol];
-                                                                              v92 = [v166 perMilleSymbol];
-                                                                              v93 = v47;
-                                                                              if ([v47 isEqualToString:?])
+                                                                              perMilleSymbol = [(TSUFormattingSymbols *)self perMilleSymbol];
+                                                                              perMilleSymbol2 = [v166 perMilleSymbol];
+                                                                              v93 = perMilleSymbol;
+                                                                              if ([perMilleSymbol isEqualToString:?])
                                                                               {
-                                                                                v48 = [(TSUFormattingSymbols *)self infinitySymbol];
-                                                                                v90 = [v166 infinitySymbol];
-                                                                                v91 = v48;
-                                                                                if ([v48 isEqualToString:?])
+                                                                                infinitySymbol = [(TSUFormattingSymbols *)self infinitySymbol];
+                                                                                infinitySymbol2 = [v166 infinitySymbol];
+                                                                                v91 = infinitySymbol;
+                                                                                if ([infinitySymbol isEqualToString:?])
                                                                                 {
-                                                                                  v49 = [(TSUFormattingSymbols *)self nanSymbol];
-                                                                                  v88 = [v166 nanSymbol];
-                                                                                  v89 = v49;
-                                                                                  if ([v49 isEqualToString:?])
+                                                                                  nanSymbol = [(TSUFormattingSymbols *)self nanSymbol];
+                                                                                  nanSymbol2 = [v166 nanSymbol];
+                                                                                  v89 = nanSymbol;
+                                                                                  if ([nanSymbol isEqualToString:?])
                                                                                   {
-                                                                                    v50 = [(TSUFormattingSymbols *)self decimalPattern];
-                                                                                    v86 = [v166 decimalPattern];
-                                                                                    v87 = v50;
-                                                                                    if ([v50 isEqualToString:?])
+                                                                                    decimalPattern = [(TSUFormattingSymbols *)self decimalPattern];
+                                                                                    decimalPattern2 = [v166 decimalPattern];
+                                                                                    v87 = decimalPattern;
+                                                                                    if ([decimalPattern isEqualToString:?])
                                                                                     {
-                                                                                      v51 = [(TSUFormattingSymbols *)self scientificPattern];
-                                                                                      v84 = [v166 scientificPattern];
-                                                                                      v85 = v51;
-                                                                                      if ([v51 isEqualToString:?])
+                                                                                      scientificPattern = [(TSUFormattingSymbols *)self scientificPattern];
+                                                                                      scientificPattern2 = [v166 scientificPattern];
+                                                                                      v85 = scientificPattern;
+                                                                                      if ([scientificPattern isEqualToString:?])
                                                                                       {
-                                                                                        v52 = [(TSUFormattingSymbols *)self percentPattern];
-                                                                                        v82 = [v166 percentPattern];
-                                                                                        v83 = v52;
-                                                                                        if ([v52 isEqualToString:?])
+                                                                                        percentPattern = [(TSUFormattingSymbols *)self percentPattern];
+                                                                                        percentPattern2 = [v166 percentPattern];
+                                                                                        v83 = percentPattern;
+                                                                                        if ([percentPattern isEqualToString:?])
                                                                                         {
-                                                                                          v53 = [(TSUFormattingSymbols *)self currencyPattern];
-                                                                                          v80 = [v166 currencyPattern];
-                                                                                          v81 = v53;
-                                                                                          if ([v53 isEqualToString:?])
+                                                                                          currencyPattern = [(TSUFormattingSymbols *)self currencyPattern];
+                                                                                          currencyPattern2 = [v166 currencyPattern];
+                                                                                          v81 = currencyPattern;
+                                                                                          if ([currencyPattern isEqualToString:?])
                                                                                           {
-                                                                                            v54 = [(TSUFormattingSymbols *)self currencyCode];
-                                                                                            v78 = [v166 currencyCode];
-                                                                                            v79 = v54;
-                                                                                            if ([v54 isEqualToString:?])
+                                                                                            currencyCode = [(TSUFormattingSymbols *)self currencyCode];
+                                                                                            currencyCode2 = [v166 currencyCode];
+                                                                                            v79 = currencyCode;
+                                                                                            if ([currencyCode isEqualToString:?])
                                                                                             {
-                                                                                              v55 = [(TSUFormattingSymbols *)self currencySymbols];
+                                                                                              currencySymbols = [(TSUFormattingSymbols *)self currencySymbols];
                                                                                               v6 = v166;
-                                                                                              v56 = [v166 currencySymbols];
-                                                                                              v77 = v55;
-                                                                                              v57 = [v55 isEqualToDictionary:v56];
-                                                                                              v9 = v56;
+                                                                                              currencySymbols2 = [v166 currencySymbols];
+                                                                                              v77 = currencySymbols;
+                                                                                              v57 = [currencySymbols isEqualToDictionary:currencySymbols2];
+                                                                                              v9 = currencySymbols2;
                                                                                               v58 = 1;
                                                                                               *(&v193 + 1) = 0x100000001;
                                                                                               *&v193 = 0x100000001;
@@ -2455,11 +2455,11 @@ LABEL_56:
 LABEL_59:
     if (v58)
     {
-      v167 = v4;
+      v167 = equalCopy;
       v66 = v6;
       v67 = v57;
-      v68 = v8;
-      v69 = v7;
+      v68 = version2;
+      v69 = version;
       v70 = v61;
       v71 = v62;
       v72 = v60;
@@ -2473,11 +2473,11 @@ LABEL_59:
       v60 = v72;
       v62 = v71;
       v61 = v70;
-      v7 = v69;
-      v8 = v68;
+      version = v69;
+      version2 = v68;
       v57 = v67;
       v6 = v66;
-      v4 = v167;
+      equalCopy = v167;
       if (!v76)
       {
         goto LABEL_61;
@@ -2721,173 +2721,173 @@ LABEL_57:
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(TSUHasher);
-  v4 = [(TSUFormattingSymbols *)self calendar];
-  [(TSUHasher *)v3 addObject:v4];
+  calendar = [(TSUFormattingSymbols *)self calendar];
+  [(TSUHasher *)v3 addObject:calendar];
 
-  v5 = [(TSUFormattingSymbols *)self numberingSystem];
-  [(TSUHasher *)v3 addObject:v5];
+  numberingSystem = [(TSUFormattingSymbols *)self numberingSystem];
+  [(TSUHasher *)v3 addObject:numberingSystem];
 
-  v6 = [(TSUFormattingSymbols *)self months];
-  [(TSUHasher *)v3 addObject:v6];
+  months = [(TSUFormattingSymbols *)self months];
+  [(TSUHasher *)v3 addObject:months];
 
-  v7 = [(TSUFormattingSymbols *)self standaloneMonths];
-  [(TSUHasher *)v3 addObject:v7];
+  standaloneMonths = [(TSUFormattingSymbols *)self standaloneMonths];
+  [(TSUHasher *)v3 addObject:standaloneMonths];
 
-  v8 = [(TSUFormattingSymbols *)self shortMonths];
-  [(TSUHasher *)v3 addObject:v8];
+  shortMonths = [(TSUFormattingSymbols *)self shortMonths];
+  [(TSUHasher *)v3 addObject:shortMonths];
 
-  v9 = [(TSUFormattingSymbols *)self standaloneShortMonths];
-  [(TSUHasher *)v3 addObject:v9];
+  standaloneShortMonths = [(TSUFormattingSymbols *)self standaloneShortMonths];
+  [(TSUHasher *)v3 addObject:standaloneShortMonths];
 
-  v10 = [(TSUFormattingSymbols *)self tinyMonths];
-  [(TSUHasher *)v3 addObject:v10];
+  tinyMonths = [(TSUFormattingSymbols *)self tinyMonths];
+  [(TSUHasher *)v3 addObject:tinyMonths];
 
-  v11 = [(TSUFormattingSymbols *)self standaloneTinyMonths];
-  [(TSUHasher *)v3 addObject:v11];
+  standaloneTinyMonths = [(TSUFormattingSymbols *)self standaloneTinyMonths];
+  [(TSUHasher *)v3 addObject:standaloneTinyMonths];
 
-  v12 = [(TSUFormattingSymbols *)self weekdays];
-  [(TSUHasher *)v3 addObject:v12];
+  weekdays = [(TSUFormattingSymbols *)self weekdays];
+  [(TSUHasher *)v3 addObject:weekdays];
 
-  v13 = [(TSUFormattingSymbols *)self standaloneWeekdays];
-  [(TSUHasher *)v3 addObject:v13];
+  standaloneWeekdays = [(TSUFormattingSymbols *)self standaloneWeekdays];
+  [(TSUHasher *)v3 addObject:standaloneWeekdays];
 
-  v14 = [(TSUFormattingSymbols *)self shortWeekdays];
-  [(TSUHasher *)v3 addObject:v14];
+  shortWeekdays = [(TSUFormattingSymbols *)self shortWeekdays];
+  [(TSUHasher *)v3 addObject:shortWeekdays];
 
-  v15 = [(TSUFormattingSymbols *)self standaloneShortWeekdays];
-  [(TSUHasher *)v3 addObject:v15];
+  standaloneShortWeekdays = [(TSUFormattingSymbols *)self standaloneShortWeekdays];
+  [(TSUHasher *)v3 addObject:standaloneShortWeekdays];
 
-  v16 = [(TSUFormattingSymbols *)self tinyWeekdays];
-  [(TSUHasher *)v3 addObject:v16];
+  tinyWeekdays = [(TSUFormattingSymbols *)self tinyWeekdays];
+  [(TSUHasher *)v3 addObject:tinyWeekdays];
 
-  v17 = [(TSUFormattingSymbols *)self standaloneTinyWeekdays];
-  [(TSUHasher *)v3 addObject:v17];
+  standaloneTinyWeekdays = [(TSUFormattingSymbols *)self standaloneTinyWeekdays];
+  [(TSUHasher *)v3 addObject:standaloneTinyWeekdays];
 
-  v18 = [(TSUFormattingSymbols *)self quarters];
-  [(TSUHasher *)v3 addObject:v18];
+  quarters = [(TSUFormattingSymbols *)self quarters];
+  [(TSUHasher *)v3 addObject:quarters];
 
-  v19 = [(TSUFormattingSymbols *)self standaloneQuarters];
-  [(TSUHasher *)v3 addObject:v19];
+  standaloneQuarters = [(TSUFormattingSymbols *)self standaloneQuarters];
+  [(TSUHasher *)v3 addObject:standaloneQuarters];
 
-  v20 = [(TSUFormattingSymbols *)self shortQuarters];
-  [(TSUHasher *)v3 addObject:v20];
+  shortQuarters = [(TSUFormattingSymbols *)self shortQuarters];
+  [(TSUHasher *)v3 addObject:shortQuarters];
 
-  v21 = [(TSUFormattingSymbols *)self standaloneShortQuarters];
-  [(TSUHasher *)v3 addObject:v21];
+  standaloneShortQuarters = [(TSUFormattingSymbols *)self standaloneShortQuarters];
+  [(TSUHasher *)v3 addObject:standaloneShortQuarters];
 
-  v22 = [(TSUFormattingSymbols *)self eras];
-  [(TSUHasher *)v3 addObject:v22];
+  eras = [(TSUFormattingSymbols *)self eras];
+  [(TSUHasher *)v3 addObject:eras];
 
-  v23 = [(TSUFormattingSymbols *)self longEras];
-  [(TSUHasher *)v3 addObject:v23];
+  longEras = [(TSUFormattingSymbols *)self longEras];
+  [(TSUHasher *)v3 addObject:longEras];
 
-  v24 = [(TSUFormattingSymbols *)self amSymbol];
-  [(TSUHasher *)v3 addObject:v24];
+  amSymbol = [(TSUFormattingSymbols *)self amSymbol];
+  [(TSUHasher *)v3 addObject:amSymbol];
 
-  v25 = [(TSUFormattingSymbols *)self pmSymbol];
-  [(TSUHasher *)v3 addObject:v25];
+  pmSymbol = [(TSUFormattingSymbols *)self pmSymbol];
+  [(TSUHasher *)v3 addObject:pmSymbol];
 
-  v26 = [(TSUFormattingSymbols *)self shortDatePattern];
-  [(TSUHasher *)v3 addObject:v26];
+  shortDatePattern = [(TSUFormattingSymbols *)self shortDatePattern];
+  [(TSUHasher *)v3 addObject:shortDatePattern];
 
-  v27 = [(TSUFormattingSymbols *)self mediumDatePattern];
-  [(TSUHasher *)v3 addObject:v27];
+  mediumDatePattern = [(TSUFormattingSymbols *)self mediumDatePattern];
+  [(TSUHasher *)v3 addObject:mediumDatePattern];
 
-  v28 = [(TSUFormattingSymbols *)self longDatePattern];
-  [(TSUHasher *)v3 addObject:v28];
+  longDatePattern = [(TSUFormattingSymbols *)self longDatePattern];
+  [(TSUHasher *)v3 addObject:longDatePattern];
 
-  v29 = [(TSUFormattingSymbols *)self fullDatePattern];
-  [(TSUHasher *)v3 addObject:v29];
+  fullDatePattern = [(TSUFormattingSymbols *)self fullDatePattern];
+  [(TSUHasher *)v3 addObject:fullDatePattern];
 
-  v30 = [(TSUFormattingSymbols *)self shortTimePattern];
-  [(TSUHasher *)v3 addObject:v30];
+  shortTimePattern = [(TSUFormattingSymbols *)self shortTimePattern];
+  [(TSUHasher *)v3 addObject:shortTimePattern];
 
-  v31 = [(TSUFormattingSymbols *)self mediumTimePattern];
-  [(TSUHasher *)v3 addObject:v31];
+  mediumTimePattern = [(TSUFormattingSymbols *)self mediumTimePattern];
+  [(TSUHasher *)v3 addObject:mediumTimePattern];
 
-  v32 = [(TSUFormattingSymbols *)self longTimePattern];
-  [(TSUHasher *)v3 addObject:v32];
+  longTimePattern = [(TSUFormattingSymbols *)self longTimePattern];
+  [(TSUHasher *)v3 addObject:longTimePattern];
 
-  v33 = [(TSUFormattingSymbols *)self fullTimePattern];
-  [(TSUHasher *)v3 addObject:v33];
+  fullTimePattern = [(TSUFormattingSymbols *)self fullTimePattern];
+  [(TSUHasher *)v3 addObject:fullTimePattern];
 
-  v34 = [(TSUFormattingSymbols *)self decimalSeparator];
-  [(TSUHasher *)v3 addObject:v34];
+  decimalSeparator = [(TSUFormattingSymbols *)self decimalSeparator];
+  [(TSUHasher *)v3 addObject:decimalSeparator];
 
-  v35 = [(TSUFormattingSymbols *)self groupingSeparator];
-  [(TSUHasher *)v3 addObject:v35];
+  groupingSeparator = [(TSUFormattingSymbols *)self groupingSeparator];
+  [(TSUHasher *)v3 addObject:groupingSeparator];
 
-  v36 = [(TSUFormattingSymbols *)self currencyDecimalSeparator];
-  [(TSUHasher *)v3 addObject:v36];
+  currencyDecimalSeparator = [(TSUFormattingSymbols *)self currencyDecimalSeparator];
+  [(TSUHasher *)v3 addObject:currencyDecimalSeparator];
 
-  v37 = [(TSUFormattingSymbols *)self currencyGroupingSeparator];
-  [(TSUHasher *)v3 addObject:v37];
+  currencyGroupingSeparator = [(TSUFormattingSymbols *)self currencyGroupingSeparator];
+  [(TSUHasher *)v3 addObject:currencyGroupingSeparator];
 
-  v38 = [(TSUFormattingSymbols *)self plusSign];
-  [(TSUHasher *)v3 addObject:v38];
+  plusSign = [(TSUFormattingSymbols *)self plusSign];
+  [(TSUHasher *)v3 addObject:plusSign];
 
-  v39 = [(TSUFormattingSymbols *)self minusSign];
-  [(TSUHasher *)v3 addObject:v39];
+  minusSign = [(TSUFormattingSymbols *)self minusSign];
+  [(TSUHasher *)v3 addObject:minusSign];
 
-  v40 = [(TSUFormattingSymbols *)self exponentialSymbol];
-  [(TSUHasher *)v3 addObject:v40];
+  exponentialSymbol = [(TSUFormattingSymbols *)self exponentialSymbol];
+  [(TSUHasher *)v3 addObject:exponentialSymbol];
 
-  v41 = [(TSUFormattingSymbols *)self percentSymbol];
-  [(TSUHasher *)v3 addObject:v41];
+  percentSymbol = [(TSUFormattingSymbols *)self percentSymbol];
+  [(TSUHasher *)v3 addObject:percentSymbol];
 
-  v42 = [(TSUFormattingSymbols *)self perMilleSymbol];
-  [(TSUHasher *)v3 addObject:v42];
+  perMilleSymbol = [(TSUFormattingSymbols *)self perMilleSymbol];
+  [(TSUHasher *)v3 addObject:perMilleSymbol];
 
-  v43 = [(TSUFormattingSymbols *)self infinitySymbol];
-  [(TSUHasher *)v3 addObject:v43];
+  infinitySymbol = [(TSUFormattingSymbols *)self infinitySymbol];
+  [(TSUHasher *)v3 addObject:infinitySymbol];
 
-  v44 = [(TSUFormattingSymbols *)self nanSymbol];
-  [(TSUHasher *)v3 addObject:v44];
+  nanSymbol = [(TSUFormattingSymbols *)self nanSymbol];
+  [(TSUHasher *)v3 addObject:nanSymbol];
 
-  v45 = [(TSUFormattingSymbols *)self decimalPattern];
-  [(TSUHasher *)v3 addObject:v45];
+  decimalPattern = [(TSUFormattingSymbols *)self decimalPattern];
+  [(TSUHasher *)v3 addObject:decimalPattern];
 
-  v46 = [(TSUFormattingSymbols *)self scientificPattern];
-  [(TSUHasher *)v3 addObject:v46];
+  scientificPattern = [(TSUFormattingSymbols *)self scientificPattern];
+  [(TSUHasher *)v3 addObject:scientificPattern];
 
-  v47 = [(TSUFormattingSymbols *)self percentPattern];
-  [(TSUHasher *)v3 addObject:v47];
+  percentPattern = [(TSUFormattingSymbols *)self percentPattern];
+  [(TSUHasher *)v3 addObject:percentPattern];
 
-  v48 = [(TSUFormattingSymbols *)self currencyPattern];
-  [(TSUHasher *)v3 addObject:v48];
+  currencyPattern = [(TSUFormattingSymbols *)self currencyPattern];
+  [(TSUHasher *)v3 addObject:currencyPattern];
 
-  v49 = [(TSUFormattingSymbols *)self currencyCode];
-  [(TSUHasher *)v3 addObject:v49];
+  currencyCode = [(TSUFormattingSymbols *)self currencyCode];
+  [(TSUHasher *)v3 addObject:currencyCode];
 
-  v50 = [(TSUFormattingSymbols *)self currencySymbols];
-  [(TSUHasher *)v3 addObject:v50];
+  currencySymbols = [(TSUFormattingSymbols *)self currencySymbols];
+  [(TSUHasher *)v3 addObject:currencySymbols];
 
-  v51 = [(TSUHasher *)v3 hashValue];
-  return v51;
+  hashValue = [(TSUHasher *)v3 hashValue];
+  return hashValue;
 }
 
-- (void)upgradeIfNecessary:(id)a3
+- (void)upgradeIfNecessary:(id)necessary
 {
-  v194 = a3;
-  v4 = [v194 locale];
-  v5 = [TSUFormattingSymbols defaultFormattingSymbolsForLocale:v4];
+  necessaryCopy = necessary;
+  locale = [necessaryCopy locale];
+  v5 = [TSUFormattingSymbols defaultFormattingSymbolsForLocale:locale];
 
   v6 = MEMORY[0x277CBEAF8];
-  v7 = [v194 localeIdentifier];
-  v8 = [v6 localeWithLocaleIdentifier:v7];
+  localeIdentifier = [necessaryCopy localeIdentifier];
+  v8 = [v6 localeWithLocaleIdentifier:localeIdentifier];
   v9 = [TSUFormattingSymbols defaultFormattingSymbolsForLocale:v8];
 
-  v10 = [(TSUFormattingSymbols *)self version];
-  if ([TSUFormattingSymbols isADummyDataSetVersion:v10])
+  version = [(TSUFormattingSymbols *)self version];
+  if ([TSUFormattingSymbols isADummyDataSetVersion:version])
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [v5 standaloneMonths];
-    v13 = [(TSUFormattingSymbols *)self standaloneMonths];
-    v11 = [v12 isEqualToArray:v13] ^ 1;
+    standaloneMonths = [v5 standaloneMonths];
+    standaloneMonths2 = [(TSUFormattingSymbols *)self standaloneMonths];
+    v11 = [standaloneMonths isEqualToArray:standaloneMonths2] ^ 1;
   }
 
   version = self->_version;
@@ -2901,16 +2901,16 @@ LABEL_57:
 
   else
   {
-    v15 = [v5 version];
+    version2 = [v5 version];
     v16 = self->_version;
-    self->_version = v15;
+    self->_version = version2;
 
     if (v11)
     {
 LABEL_11:
-      v18 = [v5 calendar];
+      calendar = [v5 calendar];
       calendar = self->_calendar;
-      self->_calendar = v18;
+      self->_calendar = calendar;
 
       goto LABEL_12;
     }
@@ -2929,9 +2929,9 @@ LABEL_12:
     if (v11)
     {
 LABEL_15:
-      v21 = [v5 months];
+      months = [v5 months];
       months = self->_months;
-      self->_months = v21;
+      self->_months = months;
 
       goto LABEL_22;
     }
@@ -2939,9 +2939,9 @@ LABEL_15:
 
   else
   {
-    v23 = [v5 numberingSystem];
+    numberingSystem = [v5 numberingSystem];
     v24 = self->_numberingSystem;
-    self->_numberingSystem = v23;
+    self->_numberingSystem = numberingSystem;
 
     if (v11)
     {
@@ -2952,9 +2952,9 @@ LABEL_15:
   v25 = self->_months;
   if (!v25 || ![(NSArray *)v25 count])
   {
-    v26 = [v5 months];
+    months2 = [v5 months];
     v27 = self->_months;
-    self->_months = v26;
+    self->_months = months2;
   }
 
   standaloneMonths = self->_standaloneMonths;
@@ -2964,9 +2964,9 @@ LABEL_24:
     shortMonths = self->_shortMonths;
     if (!shortMonths || ![(NSArray *)shortMonths count])
     {
-      v34 = [v5 shortMonths];
+      shortMonths = [v5 shortMonths];
       v35 = self->_shortMonths;
-      self->_shortMonths = v34;
+      self->_shortMonths = shortMonths;
     }
 
     standaloneShortMonths = self->_standaloneShortMonths;
@@ -2979,29 +2979,29 @@ LABEL_24:
   }
 
 LABEL_22:
-  v29 = [v5 standaloneMonths];
+  standaloneMonths3 = [v5 standaloneMonths];
   v30 = self->_standaloneMonths;
-  self->_standaloneMonths = v29;
+  self->_standaloneMonths = standaloneMonths3;
 
   if ((v11 & 1) == 0)
   {
     goto LABEL_24;
   }
 
-  v31 = [v5 shortMonths];
+  shortMonths2 = [v5 shortMonths];
   v32 = self->_shortMonths;
-  self->_shortMonths = v31;
+  self->_shortMonths = shortMonths2;
 
 LABEL_29:
-  v37 = [v5 standaloneShortMonths];
+  standaloneShortMonths = [v5 standaloneShortMonths];
   v38 = self->_standaloneShortMonths;
-  self->_standaloneShortMonths = v37;
+  self->_standaloneShortMonths = standaloneShortMonths;
 
   if (v11)
   {
-    v39 = [v5 tinyMonths];
+    tinyMonths = [v5 tinyMonths];
     tinyMonths = self->_tinyMonths;
-    self->_tinyMonths = v39;
+    self->_tinyMonths = tinyMonths;
 
     goto LABEL_36;
   }
@@ -3010,9 +3010,9 @@ LABEL_31:
   v41 = self->_tinyMonths;
   if (!v41 || ![(NSArray *)v41 count])
   {
-    v42 = [v5 tinyMonths];
+    tinyMonths2 = [v5 tinyMonths];
     v43 = self->_tinyMonths;
-    self->_tinyMonths = v42;
+    self->_tinyMonths = tinyMonths2;
   }
 
   standaloneTinyMonths = self->_standaloneTinyMonths;
@@ -3022,9 +3022,9 @@ LABEL_38:
     weekdays = self->_weekdays;
     if (!weekdays || ![(NSArray *)weekdays count])
     {
-      v50 = [v5 weekdays];
+      weekdays = [v5 weekdays];
       v51 = self->_weekdays;
-      self->_weekdays = v50;
+      self->_weekdays = weekdays;
     }
 
     standaloneWeekdays = self->_standaloneWeekdays;
@@ -3037,29 +3037,29 @@ LABEL_38:
   }
 
 LABEL_36:
-  v45 = [v5 standaloneTinyMonths];
+  standaloneTinyMonths = [v5 standaloneTinyMonths];
   v46 = self->_standaloneTinyMonths;
-  self->_standaloneTinyMonths = v45;
+  self->_standaloneTinyMonths = standaloneTinyMonths;
 
   if ((v11 & 1) == 0)
   {
     goto LABEL_38;
   }
 
-  v47 = [v5 weekdays];
+  weekdays2 = [v5 weekdays];
   v48 = self->_weekdays;
-  self->_weekdays = v47;
+  self->_weekdays = weekdays2;
 
 LABEL_43:
-  v53 = [v5 standaloneWeekdays];
+  standaloneWeekdays = [v5 standaloneWeekdays];
   v54 = self->_standaloneWeekdays;
-  self->_standaloneWeekdays = v53;
+  self->_standaloneWeekdays = standaloneWeekdays;
 
   if (v11)
   {
-    v55 = [v5 shortWeekdays];
+    shortWeekdays = [v5 shortWeekdays];
     shortWeekdays = self->_shortWeekdays;
-    self->_shortWeekdays = v55;
+    self->_shortWeekdays = shortWeekdays;
 
     goto LABEL_50;
   }
@@ -3068,9 +3068,9 @@ LABEL_45:
   v57 = self->_shortWeekdays;
   if (!v57 || ![(NSArray *)v57 count])
   {
-    v58 = [v5 shortWeekdays];
+    shortWeekdays2 = [v5 shortWeekdays];
     v59 = self->_shortWeekdays;
-    self->_shortWeekdays = v58;
+    self->_shortWeekdays = shortWeekdays2;
   }
 
   standaloneShortWeekdays = self->_standaloneShortWeekdays;
@@ -3080,9 +3080,9 @@ LABEL_52:
     tinyWeekdays = self->_tinyWeekdays;
     if (!tinyWeekdays || ![(NSArray *)tinyWeekdays count])
     {
-      v66 = [v5 tinyWeekdays];
+      tinyWeekdays = [v5 tinyWeekdays];
       v67 = self->_tinyWeekdays;
-      self->_tinyWeekdays = v66;
+      self->_tinyWeekdays = tinyWeekdays;
     }
 
     standaloneTinyWeekdays = self->_standaloneTinyWeekdays;
@@ -3095,29 +3095,29 @@ LABEL_52:
   }
 
 LABEL_50:
-  v61 = [v5 standaloneShortWeekdays];
+  standaloneShortWeekdays = [v5 standaloneShortWeekdays];
   v62 = self->_standaloneShortWeekdays;
-  self->_standaloneShortWeekdays = v61;
+  self->_standaloneShortWeekdays = standaloneShortWeekdays;
 
   if ((v11 & 1) == 0)
   {
     goto LABEL_52;
   }
 
-  v63 = [v5 tinyWeekdays];
+  tinyWeekdays2 = [v5 tinyWeekdays];
   v64 = self->_tinyWeekdays;
-  self->_tinyWeekdays = v63;
+  self->_tinyWeekdays = tinyWeekdays2;
 
 LABEL_57:
-  v69 = [v5 standaloneTinyWeekdays];
+  standaloneTinyWeekdays = [v5 standaloneTinyWeekdays];
   v70 = self->_standaloneTinyWeekdays;
-  self->_standaloneTinyWeekdays = v69;
+  self->_standaloneTinyWeekdays = standaloneTinyWeekdays;
 
   if (v11)
   {
-    v71 = [v5 quarters];
+    quarters = [v5 quarters];
     quarters = self->_quarters;
-    self->_quarters = v71;
+    self->_quarters = quarters;
 
     goto LABEL_64;
   }
@@ -3126,9 +3126,9 @@ LABEL_59:
   v73 = self->_quarters;
   if (!v73 || ![(NSArray *)v73 count])
   {
-    v74 = [v5 quarters];
+    quarters2 = [v5 quarters];
     v75 = self->_quarters;
-    self->_quarters = v74;
+    self->_quarters = quarters2;
   }
 
   standaloneQuarters = self->_standaloneQuarters;
@@ -3138,9 +3138,9 @@ LABEL_66:
     shortQuarters = self->_shortQuarters;
     if (!shortQuarters || ![(NSArray *)shortQuarters count])
     {
-      v82 = [v5 shortQuarters];
+      shortQuarters = [v5 shortQuarters];
       v83 = self->_shortQuarters;
-      self->_shortQuarters = v82;
+      self->_shortQuarters = shortQuarters;
     }
 
     standaloneShortQuarters = self->_standaloneShortQuarters;
@@ -3153,29 +3153,29 @@ LABEL_66:
   }
 
 LABEL_64:
-  v77 = [v5 standaloneQuarters];
+  standaloneQuarters = [v5 standaloneQuarters];
   v78 = self->_standaloneQuarters;
-  self->_standaloneQuarters = v77;
+  self->_standaloneQuarters = standaloneQuarters;
 
   if ((v11 & 1) == 0)
   {
     goto LABEL_66;
   }
 
-  v79 = [v5 shortQuarters];
+  shortQuarters2 = [v5 shortQuarters];
   v80 = self->_shortQuarters;
-  self->_shortQuarters = v79;
+  self->_shortQuarters = shortQuarters2;
 
 LABEL_71:
-  v85 = [v5 standaloneShortQuarters];
+  standaloneShortQuarters = [v5 standaloneShortQuarters];
   v86 = self->_standaloneShortQuarters;
-  self->_standaloneShortQuarters = v85;
+  self->_standaloneShortQuarters = standaloneShortQuarters;
 
   if (v11)
   {
-    v87 = [v5 eras];
+    eras = [v5 eras];
     eras = self->_eras;
-    self->_eras = v87;
+    self->_eras = eras;
 
     goto LABEL_78;
   }
@@ -3184,9 +3184,9 @@ LABEL_73:
   v89 = self->_eras;
   if (!v89 || ![(NSArray *)v89 count])
   {
-    v90 = [v5 eras];
+    eras2 = [v5 eras];
     v91 = self->_eras;
-    self->_eras = v90;
+    self->_eras = eras2;
   }
 
   longEras = self->_longEras;
@@ -3196,9 +3196,9 @@ LABEL_80:
     amSymbol = self->_amSymbol;
     if (!amSymbol || ![(NSString *)amSymbol length])
     {
-      v98 = [v5 amSymbol];
+      amSymbol = [v5 amSymbol];
       v99 = self->_amSymbol;
-      self->_amSymbol = v98;
+      self->_amSymbol = amSymbol;
     }
 
     pmSymbol = self->_pmSymbol;
@@ -3211,30 +3211,30 @@ LABEL_80:
   }
 
 LABEL_78:
-  v93 = [v5 longEras];
+  longEras = [v5 longEras];
   v94 = self->_longEras;
-  self->_longEras = v93;
+  self->_longEras = longEras;
 
   if ((v11 & 1) == 0)
   {
     goto LABEL_80;
   }
 
-  v95 = [v5 amSymbol];
+  amSymbol2 = [v5 amSymbol];
   v96 = self->_amSymbol;
-  self->_amSymbol = v95;
+  self->_amSymbol = amSymbol2;
 
 LABEL_85:
-  v101 = [v5 pmSymbol];
+  pmSymbol = [v5 pmSymbol];
   v102 = self->_pmSymbol;
-  self->_pmSymbol = v101;
+  self->_pmSymbol = pmSymbol;
 
   if (v11)
   {
 LABEL_88:
-    v104 = [v5 shortDatePattern];
+    shortDatePattern = [v5 shortDatePattern];
     shortDatePattern = self->_shortDatePattern;
-    self->_shortDatePattern = v104;
+    self->_shortDatePattern = shortDatePattern;
 
     goto LABEL_89;
   }
@@ -3249,243 +3249,243 @@ LABEL_86:
 LABEL_89:
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_shortDatePattern])
   {
-    v106 = [v9 shortDatePattern];
+    shortDatePattern2 = [v9 shortDatePattern];
     v107 = self->_shortDatePattern;
-    self->_shortDatePattern = v106;
+    self->_shortDatePattern = shortDatePattern2;
   }
 
   if ((v11 & 1) != 0 || (v108 = self->_mediumDatePattern) == 0 || ![(NSString *)v108 length])
   {
-    v109 = [v5 mediumDatePattern];
+    mediumDatePattern = [v5 mediumDatePattern];
     mediumDatePattern = self->_mediumDatePattern;
-    self->_mediumDatePattern = v109;
+    self->_mediumDatePattern = mediumDatePattern;
   }
 
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_mediumDatePattern])
   {
-    v111 = [v9 mediumDatePattern];
+    mediumDatePattern2 = [v9 mediumDatePattern];
     v112 = self->_mediumDatePattern;
-    self->_mediumDatePattern = v111;
+    self->_mediumDatePattern = mediumDatePattern2;
   }
 
   if ((v11 & 1) != 0 || (v113 = self->_longDatePattern) == 0 || ![(NSString *)v113 length])
   {
-    v114 = [v5 longDatePattern];
+    longDatePattern = [v5 longDatePattern];
     longDatePattern = self->_longDatePattern;
-    self->_longDatePattern = v114;
+    self->_longDatePattern = longDatePattern;
   }
 
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_longDatePattern])
   {
-    v116 = [v9 longDatePattern];
+    longDatePattern2 = [v9 longDatePattern];
     v117 = self->_longDatePattern;
-    self->_longDatePattern = v116;
+    self->_longDatePattern = longDatePattern2;
   }
 
   if ((v11 & 1) != 0 || (v118 = self->_fullDatePattern) == 0 || ![(NSString *)v118 length])
   {
-    v119 = [v5 fullDatePattern];
+    fullDatePattern = [v5 fullDatePattern];
     fullDatePattern = self->_fullDatePattern;
-    self->_fullDatePattern = v119;
+    self->_fullDatePattern = fullDatePattern;
   }
 
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_fullDatePattern])
   {
-    v121 = [v9 fullDatePattern];
+    fullDatePattern2 = [v9 fullDatePattern];
     v122 = self->_fullDatePattern;
-    self->_fullDatePattern = v121;
+    self->_fullDatePattern = fullDatePattern2;
   }
 
   if ((v11 & 1) != 0 || (v123 = self->_shortTimePattern) == 0 || ![(NSString *)v123 length])
   {
-    v124 = [v5 shortTimePattern];
+    shortTimePattern = [v5 shortTimePattern];
     shortTimePattern = self->_shortTimePattern;
-    self->_shortTimePattern = v124;
+    self->_shortTimePattern = shortTimePattern;
   }
 
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_shortTimePattern])
   {
-    v126 = [v9 shortTimePattern];
+    shortTimePattern2 = [v9 shortTimePattern];
     v127 = self->_shortTimePattern;
-    self->_shortTimePattern = v126;
+    self->_shortTimePattern = shortTimePattern2;
   }
 
   if ((v11 & 1) != 0 || (v128 = self->_mediumTimePattern) == 0 || ![(NSString *)v128 length])
   {
-    v129 = [v5 mediumTimePattern];
+    mediumTimePattern = [v5 mediumTimePattern];
     mediumTimePattern = self->_mediumTimePattern;
-    self->_mediumTimePattern = v129;
+    self->_mediumTimePattern = mediumTimePattern;
   }
 
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_mediumTimePattern])
   {
-    v131 = [v9 mediumTimePattern];
+    mediumTimePattern2 = [v9 mediumTimePattern];
     v132 = self->_mediumTimePattern;
-    self->_mediumTimePattern = v131;
+    self->_mediumTimePattern = mediumTimePattern2;
   }
 
   if ((v11 & 1) != 0 || (v133 = self->_longTimePattern) == 0 || ![(NSString *)v133 length])
   {
-    v134 = [v5 longTimePattern];
+    longTimePattern = [v5 longTimePattern];
     longTimePattern = self->_longTimePattern;
-    self->_longTimePattern = v134;
+    self->_longTimePattern = longTimePattern;
   }
 
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_longTimePattern])
   {
-    v136 = [v9 longTimePattern];
+    longTimePattern2 = [v9 longTimePattern];
     v137 = self->_longTimePattern;
-    self->_longTimePattern = v136;
+    self->_longTimePattern = longTimePattern2;
   }
 
   if ((v11 & 1) != 0 || (v138 = self->_fullTimePattern) == 0 || ![(NSString *)v138 length])
   {
-    v139 = [v5 fullTimePattern];
+    fullTimePattern = [v5 fullTimePattern];
     fullTimePattern = self->_fullTimePattern;
-    self->_fullTimePattern = v139;
+    self->_fullTimePattern = fullTimePattern;
   }
 
   if ([TSUFormattingSymbols dateFormatIsPureLiteral:self->_fullTimePattern])
   {
-    v141 = [v9 fullTimePattern];
+    fullTimePattern2 = [v9 fullTimePattern];
     v142 = self->_fullTimePattern;
-    self->_fullTimePattern = v141;
+    self->_fullTimePattern = fullTimePattern2;
   }
 
   decimalSeparator = self->_decimalSeparator;
   if (!decimalSeparator || ![(NSString *)decimalSeparator length])
   {
-    v144 = [v5 decimalSeparator];
+    decimalSeparator = [v5 decimalSeparator];
     v145 = self->_decimalSeparator;
-    self->_decimalSeparator = v144;
+    self->_decimalSeparator = decimalSeparator;
   }
 
   groupingSeparator = self->_groupingSeparator;
   if (!groupingSeparator || ![(NSString *)groupingSeparator length])
   {
-    v147 = [v5 groupingSeparator];
+    groupingSeparator = [v5 groupingSeparator];
     v148 = self->_groupingSeparator;
-    self->_groupingSeparator = v147;
+    self->_groupingSeparator = groupingSeparator;
   }
 
   currencyDecimalSeparator = self->_currencyDecimalSeparator;
   if (!currencyDecimalSeparator || ![(NSString *)currencyDecimalSeparator length])
   {
-    v150 = [v5 currencyDecimalSeparator];
+    currencyDecimalSeparator = [v5 currencyDecimalSeparator];
     v151 = self->_currencyDecimalSeparator;
-    self->_currencyDecimalSeparator = v150;
+    self->_currencyDecimalSeparator = currencyDecimalSeparator;
   }
 
   currencyGroupingSeparator = self->_currencyGroupingSeparator;
   if (!currencyGroupingSeparator || ![(NSString *)currencyGroupingSeparator length])
   {
-    v153 = [v5 currencyGroupingSeparator];
+    currencyGroupingSeparator = [v5 currencyGroupingSeparator];
     v154 = self->_currencyGroupingSeparator;
-    self->_currencyGroupingSeparator = v153;
+    self->_currencyGroupingSeparator = currencyGroupingSeparator;
   }
 
   plusSign = self->_plusSign;
   if (!plusSign || ![(NSString *)plusSign length])
   {
-    v156 = [v5 plusSign];
+    plusSign = [v5 plusSign];
     v157 = self->_plusSign;
-    self->_plusSign = v156;
+    self->_plusSign = plusSign;
   }
 
   minusSign = self->_minusSign;
   if (!minusSign || ![(NSString *)minusSign length])
   {
-    v159 = [v5 minusSign];
+    minusSign = [v5 minusSign];
     v160 = self->_minusSign;
-    self->_minusSign = v159;
+    self->_minusSign = minusSign;
   }
 
   exponentialSymbol = self->_exponentialSymbol;
   if (!exponentialSymbol || ![(NSString *)exponentialSymbol length])
   {
-    v162 = [v5 exponentialSymbol];
+    exponentialSymbol = [v5 exponentialSymbol];
     v163 = self->_exponentialSymbol;
-    self->_exponentialSymbol = v162;
+    self->_exponentialSymbol = exponentialSymbol;
   }
 
   percentSymbol = self->_percentSymbol;
   if (!percentSymbol || ![(NSString *)percentSymbol length])
   {
-    v165 = [v5 percentSymbol];
+    percentSymbol = [v5 percentSymbol];
     v166 = self->_percentSymbol;
-    self->_percentSymbol = v165;
+    self->_percentSymbol = percentSymbol;
   }
 
   perMilleSymbol = self->_perMilleSymbol;
   if (!perMilleSymbol || ![(NSString *)perMilleSymbol length])
   {
-    v168 = [v5 perMilleSymbol];
+    perMilleSymbol = [v5 perMilleSymbol];
     v169 = self->_perMilleSymbol;
-    self->_perMilleSymbol = v168;
+    self->_perMilleSymbol = perMilleSymbol;
   }
 
   infinitySymbol = self->_infinitySymbol;
   if (!infinitySymbol || ![(NSString *)infinitySymbol length])
   {
-    v171 = [v5 infinitySymbol];
+    infinitySymbol = [v5 infinitySymbol];
     v172 = self->_infinitySymbol;
-    self->_infinitySymbol = v171;
+    self->_infinitySymbol = infinitySymbol;
   }
 
   nanSymbol = self->_nanSymbol;
   if (!nanSymbol || ![(NSString *)nanSymbol length])
   {
-    v174 = [v5 nanSymbol];
+    nanSymbol = [v5 nanSymbol];
     v175 = self->_nanSymbol;
-    self->_nanSymbol = v174;
+    self->_nanSymbol = nanSymbol;
   }
 
   decimalPattern = self->_decimalPattern;
   if (!decimalPattern || ![(NSString *)decimalPattern length])
   {
-    v177 = [v5 decimalPattern];
+    decimalPattern = [v5 decimalPattern];
     v178 = self->_decimalPattern;
-    self->_decimalPattern = v177;
+    self->_decimalPattern = decimalPattern;
   }
 
   scientificPattern = self->_scientificPattern;
   if (!scientificPattern || ![(NSString *)scientificPattern length])
   {
-    v180 = [v5 scientificPattern];
+    scientificPattern = [v5 scientificPattern];
     v181 = self->_scientificPattern;
-    self->_scientificPattern = v180;
+    self->_scientificPattern = scientificPattern;
   }
 
   percentPattern = self->_percentPattern;
   if (!percentPattern || ![(NSString *)percentPattern length])
   {
-    v183 = [v5 percentPattern];
+    percentPattern = [v5 percentPattern];
     v184 = self->_percentPattern;
-    self->_percentPattern = v183;
+    self->_percentPattern = percentPattern;
   }
 
   currencyPattern = self->_currencyPattern;
   if (!currencyPattern || ![(NSString *)currencyPattern length])
   {
-    v186 = [v5 currencyPattern];
+    currencyPattern = [v5 currencyPattern];
     v187 = self->_currencyPattern;
-    self->_currencyPattern = v186;
+    self->_currencyPattern = currencyPattern;
   }
 
   currencyCode = self->_currencyCode;
   if (!currencyCode || ![(NSString *)currencyCode length])
   {
-    v189 = [v5 currencyCode];
+    currencyCode = [v5 currencyCode];
     v190 = self->_currencyCode;
-    self->_currencyCode = v189;
+    self->_currencyCode = currencyCode;
   }
 
   currencySymbols = self->_currencySymbols;
   if (!currencySymbols || ![(NSDictionary *)currencySymbols count])
   {
-    v192 = [v5 currencySymbols];
+    currencySymbols = [v5 currencySymbols];
     v193 = self->_currencySymbols;
-    self->_currencySymbols = v192;
+    self->_currencySymbols = currencySymbols;
   }
 
   [(TSUFormattingSymbols *)self p_deriveCalculatedPropertyValues];
@@ -3493,26 +3493,26 @@ LABEL_89:
 
 - (BOOL)hasUserCustomizations
 {
-  v2 = [(TSUFormattingSymbols *)self version];
-  v3 = [TSUFormattingSymbols versionIsForACustomizedLocale:v2];
+  version = [(TSUFormattingSymbols *)self version];
+  v3 = [TSUFormattingSymbols versionIsForACustomizedLocale:version];
 
   return v3;
 }
 
-- (id)patternStringForDateStyle:(unint64_t)a3 timeStyle:(unint64_t)a4
+- (id)patternStringForDateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle
 {
-  if (!(a4 | a3))
+  if (!(timeStyle | style))
   {
     v9 = &stru_28862C2A0;
     goto LABEL_30;
   }
 
-  if (a4)
+  if (timeStyle)
   {
-    if (a3)
+    if (style)
     {
-      v6 = [(TSUFormattingSymbols *)self patternStringForDateStyle:a3 timeStyle:0];
-      v7 = [(TSUFormattingSymbols *)self patternStringForDateStyle:0 timeStyle:a4];
+      v6 = [(TSUFormattingSymbols *)self patternStringForDateStyle:style timeStyle:0];
+      v7 = [(TSUFormattingSymbols *)self patternStringForDateStyle:0 timeStyle:timeStyle];
       if ([v6 length])
       {
         if ([v7 length])
@@ -3537,99 +3537,99 @@ LABEL_89:
     }
 
     v9 = &stru_28862C2A0;
-    if (a4 > 2)
+    if (timeStyle > 2)
     {
-      if (a4 == 3)
+      if (timeStyle == 3)
       {
-        v10 = [(TSUFormattingSymbols *)self longTimePattern];
+        longTimePattern = [(TSUFormattingSymbols *)self longTimePattern];
       }
 
       else
       {
-        if (a4 != 4)
+        if (timeStyle != 4)
         {
           goto LABEL_30;
         }
 
-        v10 = [(TSUFormattingSymbols *)self fullTimePattern];
+        longTimePattern = [(TSUFormattingSymbols *)self fullTimePattern];
       }
     }
 
-    else if (a4 == 1)
+    else if (timeStyle == 1)
     {
-      v10 = [(TSUFormattingSymbols *)self shortTimePattern];
+      longTimePattern = [(TSUFormattingSymbols *)self shortTimePattern];
     }
 
     else
     {
-      if (a4 != 2)
+      if (timeStyle != 2)
       {
         goto LABEL_30;
       }
 
-      v10 = [(TSUFormattingSymbols *)self mediumTimePattern];
+      longTimePattern = [(TSUFormattingSymbols *)self mediumTimePattern];
     }
   }
 
   else
   {
     v9 = &stru_28862C2A0;
-    if (a3 > 2)
+    if (style > 2)
     {
-      if (a3 == 3)
+      if (style == 3)
       {
-        v10 = [(TSUFormattingSymbols *)self longDatePattern];
+        longTimePattern = [(TSUFormattingSymbols *)self longDatePattern];
       }
 
       else
       {
-        if (a3 != 4)
+        if (style != 4)
         {
           goto LABEL_30;
         }
 
-        v10 = [(TSUFormattingSymbols *)self fullDatePattern];
+        longTimePattern = [(TSUFormattingSymbols *)self fullDatePattern];
       }
     }
 
-    else if (a3 == 1)
+    else if (style == 1)
     {
-      v10 = [(TSUFormattingSymbols *)self shortDatePattern];
+      longTimePattern = [(TSUFormattingSymbols *)self shortDatePattern];
     }
 
     else
     {
-      if (a3 != 2)
+      if (style != 2)
       {
         goto LABEL_30;
       }
 
-      v10 = [(TSUFormattingSymbols *)self mediumDatePattern];
+      longTimePattern = [(TSUFormattingSymbols *)self mediumDatePattern];
     }
   }
 
-  v9 = v10;
+  v9 = longTimePattern;
 LABEL_30:
 
   return v9;
 }
 
-- (id)patternStringForNumberStyle:(unsigned int)a3 negativeStyle:(unsigned __int8)a4
+- (id)patternStringForNumberStyle:(unsigned int)style negativeStyle:(unsigned __int8)negativeStyle
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = [(TSUFormattingSymbols *)self negativeNumberPatterns];
-  v8 = [(TSUFormattingSymbols *)self p_negativeNumberKeyForNumberStyle:v5 negativeStyle:v4];
-  v9 = [v7 objectForKey:v8];
+  negativeStyleCopy = negativeStyle;
+  v5 = *&style;
+  negativeNumberPatterns = [(TSUFormattingSymbols *)self negativeNumberPatterns];
+  v8 = [(TSUFormattingSymbols *)self p_negativeNumberKeyForNumberStyle:v5 negativeStyle:negativeStyleCopy];
+  v9 = [negativeNumberPatterns objectForKey:v8];
 
   return v9;
 }
 
-- (id)currencySymbolForCurrencyCode:(id)a3
+- (id)currencySymbolForCurrencyCode:(id)code
 {
-  v4 = a3;
-  v5 = [(TSUFormattingSymbols *)self currencySymbols];
-  v6 = [v5 objectForKey:v4];
+  codeCopy = code;
+  currencySymbols = [(TSUFormattingSymbols *)self currencySymbols];
+  v6 = [currencySymbols objectForKey:codeCopy];
   v7 = v6;
   if (v6)
   {
@@ -3638,7 +3638,7 @@ LABEL_30:
 
   else
   {
-    v8 = v4;
+    v8 = codeCopy;
   }
 
   v9 = v8;
@@ -3646,11 +3646,11 @@ LABEL_30:
   return v8;
 }
 
-- (id)halfwidthCurrencySymbolForCurrencyCode:(id)a3
+- (id)halfwidthCurrencySymbolForCurrencyCode:(id)code
 {
-  v4 = a3;
-  v5 = [(TSUFormattingSymbols *)self currencyCodesToHalfwidthSymbols];
-  v6 = [v5 objectForKey:v4];
+  codeCopy = code;
+  currencyCodesToHalfwidthSymbols = [(TSUFormattingSymbols *)self currencyCodesToHalfwidthSymbols];
+  v6 = [currencyCodesToHalfwidthSymbols objectForKey:codeCopy];
   v7 = v6;
   if (v6)
   {
@@ -3659,7 +3659,7 @@ LABEL_30:
 
   else
   {
-    v8 = v4;
+    v8 = codeCopy;
   }
 
   v9 = v8;
@@ -3667,11 +3667,11 @@ LABEL_30:
   return v8;
 }
 
-- (id)currencyCodeForCurrencySymbol:(id)a3
+- (id)currencyCodeForCurrencySymbol:(id)symbol
 {
-  v4 = a3;
-  v5 = [(TSUFormattingSymbols *)self currencySymbolsToCodes];
-  v6 = [v5 objectForKey:v4];
+  symbolCopy = symbol;
+  currencySymbolsToCodes = [(TSUFormattingSymbols *)self currencySymbolsToCodes];
+  v6 = [currencySymbolsToCodes objectForKey:symbolCopy];
 
   if (v6)
   {
@@ -3681,9 +3681,9 @@ LABEL_30:
     }
   }
 
-  else if ([TSULocale isValidCurrencyCode:v4])
+  else if ([TSULocale isValidCurrencyCode:symbolCopy])
   {
-    v6 = v4;
+    v6 = symbolCopy;
     goto LABEL_7;
   }
 
@@ -3693,77 +3693,77 @@ LABEL_7:
   return v6;
 }
 
-+ (void)p_setAllSpaceVariantsOfString:(id)a3 toCode:(id)a4 inSymbolToCodeDictionary:(id)a5
++ (void)p_setAllSpaceVariantsOfString:(id)string toCode:(id)code inSymbolToCodeDictionary:(id)dictionary
 {
-  v21 = a3;
-  v7 = a4;
-  v8 = a5;
-  [v8 setObject:v7 forKey:v21];
-  v9 = [v21 stringByReplacingOccurrencesOfString:@" " withString:&stru_28862C2A0];
-  if (([v9 isEqualToString:v21] & 1) == 0)
+  stringCopy = string;
+  codeCopy = code;
+  dictionaryCopy = dictionary;
+  [dictionaryCopy setObject:codeCopy forKey:stringCopy];
+  v9 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_28862C2A0];
+  if (([v9 isEqualToString:stringCopy] & 1) == 0)
   {
-    v10 = [v8 objectForKey:v9];
+    v10 = [dictionaryCopy objectForKey:v9];
 
     if (!v10)
     {
-      [v8 setObject:v7 forKey:v9];
+      [dictionaryCopy setObject:codeCopy forKey:v9];
     }
 
-    v11 = [v21 stringByReplacingOccurrencesOfString:@" " withString:@" "];
-    [v8 setObject:v7 forKey:v11];
-    v12 = [v21 stringByReplacingOccurrencesOfString:@" " withString:@" "];
-    [v8 setObject:v7 forKey:v12];
+    v11 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
+    [dictionaryCopy setObject:codeCopy forKey:v11];
+    v12 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
+    [dictionaryCopy setObject:codeCopy forKey:v12];
   }
 
-  v13 = [v21 stringByReplacingOccurrencesOfString:@" " withString:&stru_28862C2A0];
-  if (([v13 isEqualToString:v21] & 1) == 0)
+  v13 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_28862C2A0];
+  if (([v13 isEqualToString:stringCopy] & 1) == 0)
   {
-    v14 = [v8 objectForKey:v13];
+    v14 = [dictionaryCopy objectForKey:v13];
 
     if (!v14)
     {
-      [v8 setObject:v7 forKey:v13];
+      [dictionaryCopy setObject:codeCopy forKey:v13];
     }
 
-    v15 = [v21 stringByReplacingOccurrencesOfString:@" " withString:@" "];
-    [v8 setObject:v7 forKey:v15];
-    v16 = [v21 stringByReplacingOccurrencesOfString:@" " withString:@" "];
-    [v8 setObject:v7 forKey:v16];
+    v15 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
+    [dictionaryCopy setObject:codeCopy forKey:v15];
+    v16 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
+    [dictionaryCopy setObject:codeCopy forKey:v16];
   }
 
-  v17 = [v21 stringByReplacingOccurrencesOfString:@" " withString:&stru_28862C2A0];
+  v17 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:&stru_28862C2A0];
 
-  if (([v17 isEqualToString:v21] & 1) == 0)
+  if (([v17 isEqualToString:stringCopy] & 1) == 0)
   {
-    v18 = [v8 objectForKey:v17];
+    v18 = [dictionaryCopy objectForKey:v17];
 
     if (!v18)
     {
-      [v8 setObject:v7 forKey:v17];
+      [dictionaryCopy setObject:codeCopy forKey:v17];
     }
 
-    v19 = [v21 stringByReplacingOccurrencesOfString:@" " withString:@" "];
-    [v8 setObject:v7 forKey:v19];
-    v20 = [v21 stringByReplacingOccurrencesOfString:@" " withString:@" "];
-    [v8 setObject:v7 forKey:v20];
+    v19 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
+    [dictionaryCopy setObject:codeCopy forKey:v19];
+    v20 = [stringCopy stringByReplacingOccurrencesOfString:@" " withString:@" "];
+    [dictionaryCopy setObject:codeCopy forKey:v20];
   }
 }
 
-+ (unint64_t)locationOfFirstDateFormatCharacter:(id)a3
++ (unint64_t)locationOfFirstDateFormatCharacter:(id)character
 {
-  v3 = a3;
+  characterCopy = character;
   if (qword_280A63D00 != -1)
   {
     sub_2771140C0();
   }
 
-  v4 = [v3 length];
-  v5 = [v3 rangeOfCharacterFromSet:qword_280A63D08];
+  v4 = [characterCopy length];
+  v5 = [characterCopy rangeOfCharacterFromSet:qword_280A63D08];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v5;
-    v8 = [v3 rangeOfCharacterFromSet:qword_280A63CF8];
+    v8 = [characterCopy rangeOfCharacterFromSet:qword_280A63CF8];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v7;
@@ -3772,16 +3772,16 @@ LABEL_7:
     else
     {
       v9 = v8;
-      v10 = [v3 rangeOfCharacterFromSet:qword_280A63D08 options:0 range:{0, v8}];
+      v10 = [characterCopy rangeOfCharacterFromSet:qword_280A63D08 options:0 range:{0, v8}];
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v11 = v4 - 1;
         while (1)
         {
           v12 = v9 + 1;
-          v13 = [v3 length] - (v9 + 1);
-          v14 = [v3 rangeOfCharacterFromSet:qword_280A63CF8 options:0 range:{v9 + 1, v13}];
-          v15 = [v3 rangeOfCharacterFromSet:qword_280A63D08 options:0 range:{v12, v13}];
+          v13 = [characterCopy length] - (v9 + 1);
+          v14 = [characterCopy rangeOfCharacterFromSet:qword_280A63CF8 options:0 range:{v9 + 1, v13}];
+          v15 = [characterCopy rangeOfCharacterFromSet:qword_280A63D08 options:0 range:{v12, v13}];
           v6 = 0x7FFFFFFFFFFFFFFFLL;
           if (v14 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -3794,8 +3794,8 @@ LABEL_7:
             break;
           }
 
-          v18 = [v3 length];
-          v19 = [v3 rangeOfCharacterFromSet:qword_280A63CF8 options:0 range:{v14 + 1, v18 - (v14 + 1)}];
+          v18 = [characterCopy length];
+          v19 = [characterCopy rangeOfCharacterFromSet:qword_280A63CF8 options:0 range:{v14 + 1, v18 - (v14 + 1)}];
           v9 = v19;
           if (v19 == 0x7FFFFFFFFFFFFFFFLL || v19 > v16)
           {
@@ -3839,15 +3839,15 @@ LABEL_7:
   self->_secondaryGroupingSize = [v5 secondaryGroupingSize];
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSDictionary count](self->_currencySymbols, "count")}];
   v87 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSDictionary count](self->_currencySymbols, "count")}];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  array = [MEMORY[0x277CBEB18] array];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v88 = self;
-  v9 = [(NSDictionary *)self->_currencySymbols allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v93 objects:v100 count:16];
+  selfCopy = self;
+  allKeys = [(NSDictionary *)self->_currencySymbols allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v93 objects:v100 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3858,35 +3858,35 @@ LABEL_7:
       {
         if (*v94 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v93 + 1) + 8 * i);
-        v15 = [(NSDictionary *)v88->_currencySymbols objectForKey:v14];
-        if ([v15 rangeOfCharacterFromSet:v8] == 0x7FFFFFFFFFFFFFFFLL)
+        v15 = [(NSDictionary *)selfCopy->_currencySymbols objectForKey:v14];
+        if ([v15 rangeOfCharacterFromSet:whitespaceCharacterSet] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v7 insertObject:v14 atIndex:0];
+          [array insertObject:v14 atIndex:0];
         }
 
         else
         {
-          [v7 addObject:v14];
+          [array addObject:v14];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v93 objects:v100 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v93 objects:v100 count:16];
     }
 
     while (v11);
   }
 
-  v82 = v8;
+  v82 = whitespaceCharacterSet;
 
   v91 = 0u;
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  obj = v7;
+  obj = array;
   v16 = [obj countByEnumeratingWithState:&v89 objects:v99 count:16];
   if (v16)
   {
@@ -3903,7 +3903,7 @@ LABEL_7:
         }
 
         v20 = *(*(&v89 + 1) + 8 * j);
-        v21 = [(NSDictionary *)v88->_currencySymbols objectForKey:v20];
+        v21 = [(NSDictionary *)selfCopy->_currencySymbols objectForKey:v20];
         [TSUFormattingSymbols p_setAllSpaceVariantsOfString:v21 toCode:v20 inSymbolToCodeDictionary:v6];
         [v6 setObject:&stru_28862C2A0 forKey:v20];
         v22 = [v21 stringByReplacingOccurrencesOfString:@"\u200F" withString:&stru_28862C2A0];
@@ -3935,191 +3935,191 @@ LABEL_7:
 
   v81 = v6;
   v25 = [v6 copy];
-  [(TSUFormattingSymbols *)v88 setCurrencySymbolsToCodes:v25];
+  [(TSUFormattingSymbols *)selfCopy setCurrencySymbolsToCodes:v25];
 
   v26 = [v87 copy];
-  [(TSUFormattingSymbols *)v88 setCurrencyCodesToHalfwidthSymbols:v26];
+  [(TSUFormattingSymbols *)selfCopy setCurrencyCodesToHalfwidthSymbols:v26];
 
-  v27 = [(TSUFormattingSymbols *)v88 version];
-  v86 = [v27 stringByReplacingOccurrencesOfString:@"*" withString:&stru_28862C2A0];
+  version = [(TSUFormattingSymbols *)selfCopy version];
+  v86 = [version stringByReplacingOccurrencesOfString:@"*" withString:&stru_28862C2A0];
 
   v28 = [v86 integerValue] > 1799;
-  v80 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:256 negativeStyle:4];
+  v80 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:256 negativeStyle:4];
   v97[0] = v80;
-  v79 = [(TSUFormattingSymbols *)v88 decimalPattern];
-  v98[0] = v79;
-  v78 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:256 negativeStyle:0];
+  decimalPattern = [(TSUFormattingSymbols *)selfCopy decimalPattern];
+  v98[0] = decimalPattern;
+  v78 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:256 negativeStyle:0];
   v97[1] = v78;
-  v77 = [(TSUFormattingSymbols *)v88 decimalPattern];
-  v76 = [TSUNumberFormatter formatString:v77 transformedForNegativeStyle:0];
+  decimalPattern2 = [(TSUFormattingSymbols *)selfCopy decimalPattern];
+  v76 = [TSUNumberFormatter formatString:decimalPattern2 transformedForNegativeStyle:0];
   v98[1] = v76;
-  v75 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:256 negativeStyle:1];
+  v75 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:256 negativeStyle:1];
   v97[2] = v75;
-  v74 = [(TSUFormattingSymbols *)v88 decimalPattern];
-  v73 = [TSUNumberFormatter formatString:v74 transformedForNegativeStyle:1];
+  decimalPattern3 = [(TSUFormattingSymbols *)selfCopy decimalPattern];
+  v73 = [TSUNumberFormatter formatString:decimalPattern3 transformedForNegativeStyle:1];
   v98[2] = v73;
-  v72 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:256 negativeStyle:2];
+  v72 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:256 negativeStyle:2];
   v97[3] = v72;
-  v71 = [(TSUFormattingSymbols *)v88 decimalPattern];
-  v70 = [TSUNumberFormatter formatString:v71 transformedForNegativeStyle:2];
+  decimalPattern4 = [(TSUFormattingSymbols *)selfCopy decimalPattern];
+  v70 = [TSUNumberFormatter formatString:decimalPattern4 transformedForNegativeStyle:2];
   v98[3] = v70;
-  v69 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:256 negativeStyle:3];
+  v69 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:256 negativeStyle:3];
   v97[4] = v69;
-  v68 = [(TSUFormattingSymbols *)v88 decimalPattern];
-  v67 = [TSUNumberFormatter formatString:v68 transformedForNegativeStyle:3];
+  decimalPattern5 = [(TSUFormattingSymbols *)selfCopy decimalPattern];
+  v67 = [TSUNumberFormatter formatString:decimalPattern5 transformedForNegativeStyle:3];
   v98[4] = v67;
-  v66 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:257 negativeStyle:4];
+  v66 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:257 negativeStyle:4];
   v97[5] = v66;
-  v65 = [(TSUFormattingSymbols *)v88 currencyPattern];
-  v98[5] = v65;
-  v64 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:257 negativeStyle:0];
+  currencyPattern = [(TSUFormattingSymbols *)selfCopy currencyPattern];
+  v98[5] = currencyPattern;
+  v64 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:257 negativeStyle:0];
   v97[6] = v64;
-  v63 = [(TSUFormattingSymbols *)v88 currencyPattern];
-  v62 = [TSUNumberFormatter formatString:v63 transformedForNegativeStyle:0 placeMinusSignAfterRLM:v28];
+  currencyPattern2 = [(TSUFormattingSymbols *)selfCopy currencyPattern];
+  v62 = [TSUNumberFormatter formatString:currencyPattern2 transformedForNegativeStyle:0 placeMinusSignAfterRLM:v28];
   v98[6] = v62;
-  v61 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:257 negativeStyle:1];
+  v61 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:257 negativeStyle:1];
   v97[7] = v61;
-  v60 = [(TSUFormattingSymbols *)v88 currencyPattern];
-  v59 = [TSUNumberFormatter formatString:v60 transformedForNegativeStyle:1];
+  currencyPattern3 = [(TSUFormattingSymbols *)selfCopy currencyPattern];
+  v59 = [TSUNumberFormatter formatString:currencyPattern3 transformedForNegativeStyle:1];
   v98[7] = v59;
-  v58 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:257 negativeStyle:2];
+  v58 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:257 negativeStyle:2];
   v97[8] = v58;
-  v57 = [(TSUFormattingSymbols *)v88 currencyPattern];
-  v56 = [TSUNumberFormatter formatString:v57 transformedForNegativeStyle:2];
+  currencyPattern4 = [(TSUFormattingSymbols *)selfCopy currencyPattern];
+  v56 = [TSUNumberFormatter formatString:currencyPattern4 transformedForNegativeStyle:2];
   v98[8] = v56;
-  v55 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:257 negativeStyle:3];
+  v55 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:257 negativeStyle:3];
   v97[9] = v55;
-  v54 = [(TSUFormattingSymbols *)v88 currencyPattern];
-  v53 = [TSUNumberFormatter formatString:v54 transformedForNegativeStyle:3];
+  currencyPattern5 = [(TSUFormattingSymbols *)selfCopy currencyPattern];
+  v53 = [TSUNumberFormatter formatString:currencyPattern5 transformedForNegativeStyle:3];
   v98[9] = v53;
-  v52 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:258 negativeStyle:4];
+  v52 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:258 negativeStyle:4];
   v97[10] = v52;
-  v51 = [(TSUFormattingSymbols *)v88 percentPattern];
-  v98[10] = v51;
-  v50 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:258 negativeStyle:0];
+  percentPattern = [(TSUFormattingSymbols *)selfCopy percentPattern];
+  v98[10] = percentPattern;
+  v50 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:258 negativeStyle:0];
   v97[11] = v50;
-  v49 = [(TSUFormattingSymbols *)v88 percentPattern];
-  v48 = [TSUNumberFormatter formatString:v49 transformedForNegativeStyle:0];
+  percentPattern2 = [(TSUFormattingSymbols *)selfCopy percentPattern];
+  v48 = [TSUNumberFormatter formatString:percentPattern2 transformedForNegativeStyle:0];
   v98[11] = v48;
-  v47 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:258 negativeStyle:1];
+  v47 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:258 negativeStyle:1];
   v97[12] = v47;
-  v46 = [(TSUFormattingSymbols *)v88 percentPattern];
-  v45 = [TSUNumberFormatter formatString:v46 transformedForNegativeStyle:1];
+  percentPattern3 = [(TSUFormattingSymbols *)selfCopy percentPattern];
+  v45 = [TSUNumberFormatter formatString:percentPattern3 transformedForNegativeStyle:1];
   v98[12] = v45;
-  v44 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:258 negativeStyle:2];
+  v44 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:258 negativeStyle:2];
   v97[13] = v44;
-  v43 = [(TSUFormattingSymbols *)v88 percentPattern];
-  v42 = [TSUNumberFormatter formatString:v43 transformedForNegativeStyle:2];
+  percentPattern4 = [(TSUFormattingSymbols *)selfCopy percentPattern];
+  v42 = [TSUNumberFormatter formatString:percentPattern4 transformedForNegativeStyle:2];
   v98[13] = v42;
-  v41 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:258 negativeStyle:3];
+  v41 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:258 negativeStyle:3];
   v97[14] = v41;
-  v40 = [(TSUFormattingSymbols *)v88 percentPattern];
-  v39 = [TSUNumberFormatter formatString:v40 transformedForNegativeStyle:3];
+  percentPattern5 = [(TSUFormattingSymbols *)selfCopy percentPattern];
+  v39 = [TSUNumberFormatter formatString:percentPattern5 transformedForNegativeStyle:3];
   v98[14] = v39;
-  v38 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:259 negativeStyle:4];
+  v38 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:259 negativeStyle:4];
   v97[15] = v38;
   v98[15] = @"#.##E+00";
-  v29 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:259 negativeStyle:0];
+  v29 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:259 negativeStyle:0];
   v97[16] = v29;
   v30 = [TSUNumberFormatter formatString:@"#.##E+00" transformedForNegativeStyle:0];
   v98[16] = v30;
-  v31 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:259 negativeStyle:1];
+  v31 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:259 negativeStyle:1];
   v97[17] = v31;
   v32 = [TSUNumberFormatter formatString:@"#.##E+00" transformedForNegativeStyle:1];
   v98[17] = v32;
-  v33 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:259 negativeStyle:2];
+  v33 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:259 negativeStyle:2];
   v97[18] = v33;
   v34 = [TSUNumberFormatter formatString:@"#.##E+00" transformedForNegativeStyle:2];
   v98[18] = v34;
-  v35 = [(TSUFormattingSymbols *)v88 p_negativeNumberKeyForNumberStyle:259 negativeStyle:3];
+  v35 = [(TSUFormattingSymbols *)selfCopy p_negativeNumberKeyForNumberStyle:259 negativeStyle:3];
   v97[19] = v35;
   v36 = [TSUNumberFormatter formatString:@"#.##E+00" transformedForNegativeStyle:3];
   v98[19] = v36;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v98 forKeys:v97 count:20];
-  [(TSUFormattingSymbols *)v88 setNegativeNumberPatterns:v37];
+  [(TSUFormattingSymbols *)selfCopy setNegativeNumberPatterns:v37];
 }
 
-- (id)p_negativeNumberKeyForNumberStyle:(unsigned int)a3 negativeStyle:(unsigned __int8)a4
+- (id)p_negativeNumberKeyForNumberStyle:(unsigned int)style negativeStyle:(unsigned __int8)negativeStyle
 {
-  if (a3 - 260 >= 0xFFFFFFFC)
+  if (style - 260 >= 0xFFFFFFFC)
   {
-    v4 = a3;
+    styleCopy = style;
   }
 
   else
   {
-    v4 = 256;
+    styleCopy = 256;
   }
 
-  if (a4 >= 4u)
+  if (negativeStyle >= 4u)
   {
-    v5 = 4;
+    negativeStyleCopy = 4;
   }
 
   else
   {
-    v5 = a4;
+    negativeStyleCopy = negativeStyle;
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"%d-%d", v4, v5];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"%d-%d", styleCopy, negativeStyleCopy];
 }
 
-+ (BOOL)p_localeIsCustomized:(id)a3
++ (BOOL)p_localeIsCustomized:(id)customized
 {
-  v4 = a3;
+  customizedCopy = customized;
   v5 = MEMORY[0x277CBEAF8];
-  v6 = [v4 localeIdentifier];
-  v7 = [v5 localeWithLocaleIdentifier:v6];
+  localeIdentifier = [customizedCopy localeIdentifier];
+  v7 = [v5 localeWithLocaleIdentifier:localeIdentifier];
 
-  v8 = [v4 decimalSeparator];
-  v9 = [v7 decimalSeparator];
-  v10 = [v8 isEqualToString:v9];
+  decimalSeparator = [customizedCopy decimalSeparator];
+  decimalSeparator2 = [v7 decimalSeparator];
+  v10 = [decimalSeparator isEqualToString:decimalSeparator2];
 
   if (!v10)
   {
     goto LABEL_5;
   }
 
-  v11 = [v4 groupingSeparator];
-  v12 = [v7 groupingSeparator];
-  v13 = [v11 isEqualToString:v12];
+  groupingSeparator = [customizedCopy groupingSeparator];
+  groupingSeparator2 = [v7 groupingSeparator];
+  v13 = [groupingSeparator isEqualToString:groupingSeparator2];
 
   if (!v13)
   {
     goto LABEL_5;
   }
 
-  v14 = [v4 currencyCode];
-  v15 = [v7 currencyCode];
-  v16 = [v14 isEqualToString:v15];
+  currencyCode = [customizedCopy currencyCode];
+  currencyCode2 = [v7 currencyCode];
+  v16 = [currencyCode isEqualToString:currencyCode2];
 
   if (!v16)
   {
     goto LABEL_5;
   }
 
-  v17 = [v4 usesMetricSystem];
-  if (v17 != [v7 usesMetricSystem])
+  usesMetricSystem = [customizedCopy usesMetricSystem];
+  if (usesMetricSystem != [v7 usesMetricSystem])
   {
     goto LABEL_5;
   }
 
   v20 = objc_opt_new();
-  [v20 setLocale:v4];
+  [v20 setLocale:customizedCopy];
   v21 = objc_opt_new();
   [v21 setLocale:v7];
-  v22 = [v20 AMSymbol];
-  v23 = [v21 AMSymbol];
-  v24 = [v22 isEqualToString:v23];
+  aMSymbol = [v20 AMSymbol];
+  aMSymbol2 = [v21 AMSymbol];
+  v24 = [aMSymbol isEqualToString:aMSymbol2];
 
   if (!v24)
   {
     goto LABEL_13;
   }
 
-  v25 = [v20 PMSymbol];
-  v26 = [v21 PMSymbol];
-  v27 = [v25 isEqualToString:v26];
+  pMSymbol = [v20 PMSymbol];
+  pMSymbol2 = [v21 PMSymbol];
+  v27 = [pMSymbol isEqualToString:pMSymbol2];
 
   if (!v27)
   {
@@ -4127,48 +4127,48 @@ LABEL_7:
   }
 
   LOBYTE(v18) = 1;
-  if ([a1 p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:1 timeStyle:0])
+  if ([self p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:1 timeStyle:0])
   {
 LABEL_14:
 
     goto LABEL_6;
   }
 
-  if ([a1 p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:2 timeStyle:0] & 1) != 0 || (objc_msgSend(a1, "p_patternsDifferForDF:uncustomizedDF:dateStyle:timeStyle:", v20, v21, 3, 0) & 1) != 0 || (objc_msgSend(a1, "p_patternsDifferForDF:uncustomizedDF:dateStyle:timeStyle:", v20, v21, 4, 0))
+  if ([self p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:2 timeStyle:0] & 1) != 0 || (objc_msgSend(self, "p_patternsDifferForDF:uncustomizedDF:dateStyle:timeStyle:", v20, v21, 3, 0) & 1) != 0 || (objc_msgSend(self, "p_patternsDifferForDF:uncustomizedDF:dateStyle:timeStyle:", v20, v21, 4, 0))
   {
     goto LABEL_13;
   }
 
   LOBYTE(v18) = 1;
-  if ([a1 p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:0 timeStyle:1])
+  if ([self p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:0 timeStyle:1])
   {
     goto LABEL_14;
   }
 
-  if ([a1 p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:0 timeStyle:2] & 1) != 0 || (objc_msgSend(a1, "p_patternsDifferForDF:uncustomizedDF:dateStyle:timeStyle:", v20, v21, 0, 3))
+  if ([self p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:0 timeStyle:2] & 1) != 0 || (objc_msgSend(self, "p_patternsDifferForDF:uncustomizedDF:dateStyle:timeStyle:", v20, v21, 0, 3))
   {
 LABEL_13:
     LOBYTE(v18) = 1;
     goto LABEL_14;
   }
 
-  v28 = [a1 p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:0 timeStyle:4];
+  v28 = [self p_patternsDifferForDF:v20 uncustomizedDF:v21 dateStyle:0 timeStyle:4];
 
   if ((v28 & 1) == 0)
   {
     v20 = objc_opt_new();
-    [v20 setLocale:v4];
+    [v20 setLocale:customizedCopy];
     v21 = objc_opt_new();
     [v21 setLocale:v7];
-    v29 = [v20 currencyDecimalSeparator];
-    v30 = [v21 currencyDecimalSeparator];
-    v31 = [v29 isEqualToString:v30];
+    currencyDecimalSeparator = [v20 currencyDecimalSeparator];
+    currencyDecimalSeparator2 = [v21 currencyDecimalSeparator];
+    v31 = [currencyDecimalSeparator isEqualToString:currencyDecimalSeparator2];
 
     if (v31)
     {
-      v32 = [v20 currencyGroupingSeparator];
-      v33 = [v21 currencyGroupingSeparator];
-      v18 = [v32 isEqualToString:v33] ^ 1;
+      currencyGroupingSeparator = [v20 currencyGroupingSeparator];
+      currencyGroupingSeparator2 = [v21 currencyGroupingSeparator];
+      v18 = [currencyGroupingSeparator isEqualToString:currencyGroupingSeparator2] ^ 1;
 
       goto LABEL_14;
     }
@@ -4183,20 +4183,20 @@ LABEL_6:
   return v18;
 }
 
-+ (BOOL)p_patternsDifferForDF:(id)a3 uncustomizedDF:(id)a4 dateStyle:(unint64_t)a5 timeStyle:(unint64_t)a6
++ (BOOL)p_patternsDifferForDF:(id)f uncustomizedDF:(id)dF dateStyle:(unint64_t)style timeStyle:(unint64_t)timeStyle
 {
-  v9 = a4;
-  v10 = a3;
-  [v10 setDateStyle:a5];
-  [v10 setTimeStyle:a6];
-  [v9 setDateStyle:a5];
-  [v9 setTimeStyle:a6];
-  v11 = [v10 dateFormat];
+  dFCopy = dF;
+  fCopy = f;
+  [fCopy setDateStyle:style];
+  [fCopy setTimeStyle:timeStyle];
+  [dFCopy setDateStyle:style];
+  [dFCopy setTimeStyle:timeStyle];
+  dateFormat = [fCopy dateFormat];
 
-  v12 = [v9 dateFormat];
+  dateFormat2 = [dFCopy dateFormat];
 
-  LOBYTE(v10) = [v11 isEqualToString:v12];
-  return v10 ^ 1;
+  LOBYTE(fCopy) = [dateFormat isEqualToString:dateFormat2];
+  return fCopy ^ 1;
 }
 
 @end

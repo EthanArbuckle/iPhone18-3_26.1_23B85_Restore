@@ -1,6 +1,6 @@
 @interface WBSScribbleQuirksManager
 - (WBSScribbleQuirksManager)init;
-- (id)quirksForHighLevelDomain:(id)a3;
+- (id)quirksForHighLevelDomain:(id)domain;
 @end
 
 @implementation WBSScribbleQuirksManager
@@ -37,13 +37,13 @@
   return v2;
 }
 
-- (id)quirksForHighLevelDomain:(id)a3
+- (id)quirksForHighLevelDomain:(id)domain
 {
-  v4 = a3;
-  if (-[NSDictionary count](self->_quirksDictionary, "count") && [v4 length])
+  domainCopy = domain;
+  if (-[NSDictionary count](self->_quirksDictionary, "count") && [domainCopy length])
   {
-    v5 = [[WBSScribbleQuirks alloc] initWithHighLevelDomain:v4];
-    v6 = [(NSDictionary *)self->_quirksDictionary objectForKeyedSubscript:v4];
+    v5 = [[WBSScribbleQuirks alloc] initWithHighLevelDomain:domainCopy];
+    v6 = [(NSDictionary *)self->_quirksDictionary objectForKeyedSubscript:domainCopy];
     v7 = [v6 safari_numberForKey:@"shouldIgnorePointerEventsNone"];
     [(WBSScribbleQuirks *)v5 setShouldIgnorePointerEventsNone:v7];
 

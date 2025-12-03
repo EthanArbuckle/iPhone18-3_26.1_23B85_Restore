@@ -1,25 +1,25 @@
 @interface HFAccessoryProfileGroupItemProvider
 - (HFAccessoryProfileGroupItemProvider)init;
-- (HFAccessoryProfileGroupItemProvider)initWithHome:(id)a3;
-- (id)_profileGroupItemForProfiles:(id)a3 groupIdentifier:(id)a4;
+- (HFAccessoryProfileGroupItemProvider)initWithHome:(id)home;
+- (id)_profileGroupItemForProfiles:(id)profiles groupIdentifier:(id)identifier;
 - (id)_supportedProfileClasses;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFAccessoryProfileGroupItemProvider
 
-- (HFAccessoryProfileGroupItemProvider)initWithHome:(id)a3
+- (HFAccessoryProfileGroupItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v16.receiver = self;
   v16.super_class = HFAccessoryProfileGroupItemProvider;
   v6 = [(HFItemProvider *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     profileGroupItems = v7->_profileGroupItems;
     v7->_profileGroupItems = v8;
@@ -28,8 +28,8 @@
     filterOptions = v7->_filterOptions;
     v7->_filterOptions = v10;
 
-    v12 = [(HFAccessoryProfileGroupItemProvider *)v7 _supportedProfileClasses];
-    [(HFAccessoryProfileFilterOptions *)v7->_filterOptions setByClasses:v12];
+    _supportedProfileClasses = [(HFAccessoryProfileGroupItemProvider *)v7 _supportedProfileClasses];
+    [(HFAccessoryProfileFilterOptions *)v7->_filterOptions setByClasses:_supportedProfileClasses];
 
     v13 = objc_alloc_init(HFAccessoryProfileGroupOptions);
     groupOptions = v7->_groupOptions;
@@ -41,31 +41,31 @@
 
 - (HFAccessoryProfileGroupItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileGroupItemProvider.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileGroupItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryProfileGroupItemProvider.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryProfileGroupItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFAccessoryProfileGroupItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFAccessoryProfileGroupItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFAccessoryProfileGroupItemProvider *)self home];
-  v4 = [v3 hf_allAccessoryProfiles];
-  v5 = [(HFAccessoryProfileGroupItemProvider *)self filterOptions];
-  v6 = [HFAccessoryProfileFilter filterProfiles:v4 options:v5];
+  home = [(HFAccessoryProfileGroupItemProvider *)self home];
+  hf_allAccessoryProfiles = [home hf_allAccessoryProfiles];
+  filterOptions = [(HFAccessoryProfileGroupItemProvider *)self filterOptions];
+  v6 = [HFAccessoryProfileFilter filterProfiles:hf_allAccessoryProfiles options:filterOptions];
 
-  v7 = [(HFAccessoryProfileGroupItemProvider *)self groupOptions];
-  v8 = [HFAccessoryProfileGroup groupProfiles:v6 options:v7];
+  groupOptions = [(HFAccessoryProfileGroupItemProvider *)self groupOptions];
+  v8 = [HFAccessoryProfileGroup groupProfiles:v6 options:groupOptions];
 
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
@@ -157,11 +157,11 @@ id __50__HFAccessoryProfileGroupItemProvider_reloadItems__block_invoke_4(uint64_
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HFAccessoryProfileGroupItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v8[0] = @"accessory";
   v8[1] = @"service";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [invalidationReasons setByAddingObjectsFromArray:v3];
 
   v5 = *MEMORY[0x277D85DE8];
 
@@ -176,16 +176,16 @@ id __50__HFAccessoryProfileGroupItemProvider_reloadItems__block_invoke_4(uint64_
   return [v2 setWithObject:v3];
 }
 
-- (id)_profileGroupItemForProfiles:(id)a3 groupIdentifier:(id)a4
+- (id)_profileGroupItemForProfiles:(id)profiles groupIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  profilesCopy = profiles;
   v8 = [HFAccessoryProfileGroupItem alloc];
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v7];
+  v9 = [MEMORY[0x277CBEB98] setWithArray:profilesCopy];
 
-  v10 = [(HFAccessoryProfileGroupItemProvider *)self home];
-  v11 = [v10 hf_characteristicValueManager];
-  v12 = [(HFAccessoryProfileGroupItem *)v8 initWithProfiles:v9 groupIdentifier:v6 valueSource:v11];
+  home = [(HFAccessoryProfileGroupItemProvider *)self home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
+  v12 = [(HFAccessoryProfileGroupItem *)v8 initWithProfiles:v9 groupIdentifier:identifierCopy valueSource:hf_characteristicValueManager];
 
   return v12;
 }

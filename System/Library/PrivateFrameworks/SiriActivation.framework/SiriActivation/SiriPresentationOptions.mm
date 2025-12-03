@@ -1,13 +1,13 @@
 @interface SiriPresentationOptions
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SiriPresentationOptions)initWithBuilder:(id)a3;
-- (SiriPresentationOptions)initWithCoder:(id)a3;
-- (SiriPresentationOptions)initWithWakeScreen:(BOOL)a3 hideOtherWindowsDuringAppearance:(BOOL)a4 shouldAllowBiometricAutoUnlock:(BOOL)a5 shouldDeactivateScenesBelow:(BOOL)a6 rotationStyle:(int64_t)a7 requestSource:(int64_t)a8 inputType:(int64_t)a9 launchActions:(id)a10;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SiriPresentationOptions)initWithBuilder:(id)builder;
+- (SiriPresentationOptions)initWithCoder:(id)coder;
+- (SiriPresentationOptions)initWithWakeScreen:(BOOL)screen hideOtherWindowsDuringAppearance:(BOOL)appearance shouldAllowBiometricAutoUnlock:(BOOL)unlock shouldDeactivateScenesBelow:(BOOL)below rotationStyle:(int64_t)style requestSource:(int64_t)source inputType:(int64_t)type launchActions:(id)self0;
 - (id)description;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriPresentationOptions
@@ -97,30 +97,30 @@
   return v25;
 }
 
-- (SiriPresentationOptions)initWithBuilder:(id)a3
+- (SiriPresentationOptions)initWithBuilder:(id)builder
 {
-  v4 = [SiriPresentationOptions newWithBuilder:a3];
+  v4 = [SiriPresentationOptions newWithBuilder:builder];
 
   return v4;
 }
 
-- (SiriPresentationOptions)initWithWakeScreen:(BOOL)a3 hideOtherWindowsDuringAppearance:(BOOL)a4 shouldAllowBiometricAutoUnlock:(BOOL)a5 shouldDeactivateScenesBelow:(BOOL)a6 rotationStyle:(int64_t)a7 requestSource:(int64_t)a8 inputType:(int64_t)a9 launchActions:(id)a10
+- (SiriPresentationOptions)initWithWakeScreen:(BOOL)screen hideOtherWindowsDuringAppearance:(BOOL)appearance shouldAllowBiometricAutoUnlock:(BOOL)unlock shouldDeactivateScenesBelow:(BOOL)below rotationStyle:(int64_t)style requestSource:(int64_t)source inputType:(int64_t)type launchActions:(id)self0
 {
-  v17 = a10;
+  actionsCopy = actions;
   v23.receiver = self;
   v23.super_class = SiriPresentationOptions;
   v18 = [(SiriPresentationOptions *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    v18->_wakeScreen = a3;
-    v18->_hideOtherWindowsDuringAppearance = a4;
-    v18->_shouldAllowBiometricAutoUnlock = a5;
-    v18->_shouldDeactivateScenesBelow = a6;
-    v18->_rotationStyle = a7;
-    v18->_requestSource = a8;
-    v18->_inputType = a9;
-    v20 = [v17 copy];
+    v18->_wakeScreen = screen;
+    v18->_hideOtherWindowsDuringAppearance = appearance;
+    v18->_shouldAllowBiometricAutoUnlock = unlock;
+    v18->_shouldDeactivateScenesBelow = below;
+    v18->_rotationStyle = style;
+    v18->_requestSource = source;
+    v18->_inputType = type;
+    v20 = [actionsCopy copy];
     launchActions = v19->_launchActions;
     v19->_launchActions = v20;
   }
@@ -149,10 +149,10 @@
   return v15 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -162,13 +162,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       wakeScreen = self->_wakeScreen;
       if (wakeScreen == [(SiriPresentationOptions *)v5 wakeScreen]&& (hideOtherWindowsDuringAppearance = self->_hideOtherWindowsDuringAppearance, hideOtherWindowsDuringAppearance == [(SiriPresentationOptions *)v5 hideOtherWindowsDuringAppearance]) && (shouldAllowBiometricAutoUnlock = self->_shouldAllowBiometricAutoUnlock, shouldAllowBiometricAutoUnlock == [(SiriPresentationOptions *)v5 shouldAllowBiometricAutoUnlock]) && (shouldDeactivateScenesBelow = self->_shouldDeactivateScenesBelow, shouldDeactivateScenesBelow == [(SiriPresentationOptions *)v5 shouldDeactivateScenesBelow]) && (rotationStyle = self->_rotationStyle, rotationStyle == [(SiriPresentationOptions *)v5 rotationStyle]) && (requestSource = self->_requestSource, requestSource == [(SiriPresentationOptions *)v5 requestSource]) && (inputType = self->_inputType, inputType == [(SiriPresentationOptions *)v5 inputType]))
       {
-        v13 = [(SiriPresentationOptions *)v5 launchActions];
+        launchActions = [(SiriPresentationOptions *)v5 launchActions];
         launchActions = self->_launchActions;
-        v15 = launchActions == v13 || [(NSSet *)launchActions isEqual:v13];
+        v15 = launchActions == launchActions || [(NSSet *)launchActions isEqual:launchActions];
       }
 
       else
@@ -186,98 +186,98 @@
   return v15;
 }
 
-- (SiriPresentationOptions)initWithCoder:(id)a3
+- (SiriPresentationOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::wakeScreen"];
-  v5 = [v4 BOOLValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::wakeScreen"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::hideOtherWindowsDuringAppearance"];
-  v7 = [v6 BOOLValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::hideOtherWindowsDuringAppearance"];
+  bOOLValue2 = [v6 BOOLValue];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::shouldAllowBiometricAutoUnlock"];
-  v9 = [v8 BOOLValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::shouldAllowBiometricAutoUnlock"];
+  bOOLValue3 = [v8 BOOLValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::shouldDeactivateScenesBelow"];
-  v11 = [v10 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::shouldDeactivateScenesBelow"];
+  bOOLValue4 = [v10 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::rotationStyle"];
-  v13 = [v12 integerValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::rotationStyle"];
+  integerValue = [v12 integerValue];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::requestSource"];
-  v15 = [v14 integerValue];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::requestSource"];
+  integerValue2 = [v14 integerValue];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::inputType"];
-  v17 = [v16 integerValue];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SiriPresentationOptions::inputType"];
+  integerValue3 = [v16 integerValue];
 
   v18 = MEMORY[0x1E695DFD8];
   v19 = objc_opt_class();
   v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-  v21 = [v3 decodeObjectOfClasses:v20 forKey:@"SiriPresentationOptions::launchActions"];
+  v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"SiriPresentationOptions::launchActions"];
 
-  v22 = [(SiriPresentationOptions *)self initWithWakeScreen:v5 hideOtherWindowsDuringAppearance:v7 shouldAllowBiometricAutoUnlock:v9 shouldDeactivateScenesBelow:v11 rotationStyle:v13 requestSource:v15 inputType:v17 launchActions:v21];
+  v22 = [(SiriPresentationOptions *)self initWithWakeScreen:bOOLValue hideOtherWindowsDuringAppearance:bOOLValue2 shouldAllowBiometricAutoUnlock:bOOLValue3 shouldDeactivateScenesBelow:bOOLValue4 rotationStyle:integerValue requestSource:integerValue2 inputType:integerValue3 launchActions:v21];
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   wakeScreen = self->_wakeScreen;
-  v13 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithBool:wakeScreen];
-  [v13 encodeObject:v6 forKey:@"SiriPresentationOptions::wakeScreen"];
+  [coderCopy encodeObject:v6 forKey:@"SiriPresentationOptions::wakeScreen"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_hideOtherWindowsDuringAppearance];
-  [v13 encodeObject:v7 forKey:@"SiriPresentationOptions::hideOtherWindowsDuringAppearance"];
+  [coderCopy encodeObject:v7 forKey:@"SiriPresentationOptions::hideOtherWindowsDuringAppearance"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldAllowBiometricAutoUnlock];
-  [v13 encodeObject:v8 forKey:@"SiriPresentationOptions::shouldAllowBiometricAutoUnlock"];
+  [coderCopy encodeObject:v8 forKey:@"SiriPresentationOptions::shouldAllowBiometricAutoUnlock"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_shouldDeactivateScenesBelow];
-  [v13 encodeObject:v9 forKey:@"SiriPresentationOptions::shouldDeactivateScenesBelow"];
+  [coderCopy encodeObject:v9 forKey:@"SiriPresentationOptions::shouldDeactivateScenesBelow"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:self->_rotationStyle];
-  [v13 encodeObject:v10 forKey:@"SiriPresentationOptions::rotationStyle"];
+  [coderCopy encodeObject:v10 forKey:@"SiriPresentationOptions::rotationStyle"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:self->_requestSource];
-  [v13 encodeObject:v11 forKey:@"SiriPresentationOptions::requestSource"];
+  [coderCopy encodeObject:v11 forKey:@"SiriPresentationOptions::requestSource"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:self->_inputType];
-  [v13 encodeObject:v12 forKey:@"SiriPresentationOptions::inputType"];
+  [coderCopy encodeObject:v12 forKey:@"SiriPresentationOptions::inputType"];
 
-  [v13 encodeObject:self->_launchActions forKey:@"SiriPresentationOptions::launchActions"];
+  [coderCopy encodeObject:self->_launchActions forKey:@"SiriPresentationOptions::launchActions"];
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SiriPresentationOptionsMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SiriPresentationOptionsMutation *)v4 generate];
+  generate = [(_SiriPresentationOptionsMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SiriPresentationOptionsMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SiriPresentationOptionsMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SiriPresentationOptionsMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SiriPresentationOptions *)self copy];
+    generate = [(SiriPresentationOptions *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface NilAsset
 - (NSString)description;
-- (NilAsset)initWithCoder:(id)a3;
+- (NilAsset)initWithCoder:(id)coder;
 - (id)toDictionary;
 @end
 
@@ -9,15 +9,15 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NilAsset *)self getAssetPath];
-  v5 = [(NilAsset *)self getAssetVersion];
-  v6 = [(NilAsset *)self getAssetMetadata];
-  v7 = [v3 stringWithFormat:@"[Nil asset] - Asset path: %@, Asset version: %@, Asset metadata: %@.", v4, v5, v6];
+  getAssetPath = [(NilAsset *)self getAssetPath];
+  getAssetVersion = [(NilAsset *)self getAssetVersion];
+  getAssetMetadata = [(NilAsset *)self getAssetMetadata];
+  v7 = [v3 stringWithFormat:@"[Nil asset] - Asset path: %@, Asset version: %@, Asset metadata: %@.", getAssetPath, getAssetVersion, getAssetMetadata];
 
   return v7;
 }
 
-- (NilAsset)initWithCoder:(id)a3
+- (NilAsset)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = NilAsset;

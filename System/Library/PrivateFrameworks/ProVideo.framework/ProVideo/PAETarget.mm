@@ -1,18 +1,18 @@
 @interface PAETarget
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAETarget)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAETarget)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAETarget
 
-- (PAETarget)initWithAPIManager:(id)a3
+- (PAETarget)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAETarget;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -43,7 +43,7 @@
   return 1;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -65,9 +65,9 @@ LABEL_17:
   }
 
   [v9 versionAtCreation];
-  v11 = [a4 width];
-  v12 = [a4 height];
-  var1 = a5->var0.var1;
+  width = [input width];
+  height = [input height];
+  var1 = info->var0.var1;
   v21 = 0.0;
   v22 = 0.0;
   [v8 getXValue:&v22 YValue:&v21 fromParm:1 atFxTime:var1];
@@ -93,22 +93,22 @@ LABEL_17:
     v15 = 2.0;
   }
 
-  v21 = v15 * v12;
-  v22 = v14 * v11;
+  v21 = v15 * height;
+  v22 = v14 * width;
   v20 = 0.0;
   [v8 getFloatValue:&v20 fromParm:2 atFxTime:var1];
   v19 = 0;
   [v8 getBoolValue:&v19 fromParm:3 atFxTime:var1];
-  [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+  [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
   __sincos_stret(v20);
-  v16 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+  v16 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   if (v16)
   {
-    if ([a4 imageType] == 3)
+    if ([input imageType] == 3)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       v17 = HGObject::operator new(0x1C0uLL);
@@ -121,15 +121,15 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

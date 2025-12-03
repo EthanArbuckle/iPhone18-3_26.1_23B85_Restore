@@ -2,52 +2,52 @@
 - (SHMediaItemPresenter)mediaItemPresenter;
 - (SHMediaLibraryPresenter)mediaLibraryPresenter;
 - (SHServiceDelegate)serviceDelegate;
-- (id)initBundleIdentifier:(id)a3;
-- (id)santizeMediaItem:(id)a3;
-- (void)presentMediaItem:(id)a3 completionHandler:(id)a4;
-- (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5;
-- (void)presentMediaLibraryWithCompletionHandler:(id)a3;
+- (id)initBundleIdentifier:(id)identifier;
+- (id)santizeMediaItem:(id)item;
+- (void)presentMediaItem:(id)item completionHandler:(id)handler;
+- (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler;
+- (void)presentMediaLibraryWithCompletionHandler:(id)handler;
 @end
 
 @implementation SHUIService
 
-- (id)initBundleIdentifier:(id)a3
+- (id)initBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SHUIService;
   v6 = [(SHUIService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (void)presentMediaItem:(id)a3 completionHandler:(id)a4
+- (void)presentMediaItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SHUIService *)self mediaItemPresenter];
-  v8 = [(SHUIService *)self santizeMediaItem:v7];
+  handlerCopy = handler;
+  itemCopy = item;
+  mediaItemPresenter = [(SHUIService *)self mediaItemPresenter];
+  v8 = [(SHUIService *)self santizeMediaItem:itemCopy];
 
-  [v9 presentMediaItem:v8 completionHandler:v6];
+  [mediaItemPresenter presentMediaItem:v8 completionHandler:handlerCopy];
 }
 
-- (id)santizeMediaItem:(id)a3
+- (id)santizeMediaItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 genres];
-  v5 = [v4 firstObject];
+  itemCopy = item;
+  genres = [itemCopy genres];
+  firstObject = [genres firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v3 properties];
-    v8 = [v7 mutableCopy];
+    properties = [itemCopy properties];
+    v8 = [properties mutableCopy];
 
     [v8 setObject:0 forKeyedSubscript:SHMediaItemGenres];
     v9 = [v8 copy];
@@ -56,26 +56,26 @@
 
   else
   {
-    v10 = v3;
+    v10 = itemCopy;
   }
 
   return v10;
 }
 
-- (void)presentMediaItem:(id)a3 presentationSettings:(id)a4 completionHandler:(id)a5
+- (void)presentMediaItem:(id)item presentationSettings:(id)settings completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SHUIService *)self mediaItemPresenter];
-  [v11 presentMediaItem:v10 presentationSettings:v9 completionHandler:v8];
+  handlerCopy = handler;
+  settingsCopy = settings;
+  itemCopy = item;
+  mediaItemPresenter = [(SHUIService *)self mediaItemPresenter];
+  [mediaItemPresenter presentMediaItem:itemCopy presentationSettings:settingsCopy completionHandler:handlerCopy];
 }
 
-- (void)presentMediaLibraryWithCompletionHandler:(id)a3
+- (void)presentMediaLibraryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SHUIService *)self mediaLibraryPresenter];
-  [v5 presentMediaLibraryWithCompletionHandler:v4];
+  handlerCopy = handler;
+  mediaLibraryPresenter = [(SHUIService *)self mediaLibraryPresenter];
+  [mediaLibraryPresenter presentMediaLibraryWithCompletionHandler:handlerCopy];
 }
 
 - (SHMediaItemPresenter)mediaItemPresenter
@@ -84,8 +84,8 @@
   if (!mediaItemPresenter)
   {
     v4 = [SHMediaItemPresenter alloc];
-    v5 = [(SHUIService *)self bundleIdentifier];
-    v6 = [(SHMediaItemPresenter *)v4 initBundleIdentifier:v5];
+    bundleIdentifier = [(SHUIService *)self bundleIdentifier];
+    v6 = [(SHMediaItemPresenter *)v4 initBundleIdentifier:bundleIdentifier];
     v7 = self->_mediaItemPresenter;
     self->_mediaItemPresenter = v6;
 
@@ -101,8 +101,8 @@
   if (!mediaLibraryPresenter)
   {
     v4 = [SHMediaLibraryPresenter alloc];
-    v5 = [(SHUIService *)self bundleIdentifier];
-    v6 = [(SHMediaLibraryPresenter *)v4 initWithBundleIdentifier:v5];
+    bundleIdentifier = [(SHUIService *)self bundleIdentifier];
+    v6 = [(SHMediaLibraryPresenter *)v4 initWithBundleIdentifier:bundleIdentifier];
     v7 = self->_mediaLibraryPresenter;
     self->_mediaLibraryPresenter = v6;
 

@@ -1,7 +1,7 @@
 @interface SUTwoLineTrackCellConfiguration
 + (id)copyDefaultContext;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
@@ -11,7 +11,7 @@
 
 + (id)copyDefaultContext
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SUTwoLineTrackCellConfiguration;
   v2 = objc_msgSendSuper2(&v6, sel_copyDefaultContext);
   v3 = SUTableCellCopyImageProviderForSize(55.0, 55.0);
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if ((a4 & 2) != 0)
+  if ((modifiers & 2) != 0)
   {
 LABEL_8:
     v9 = MEMORY[0x1E69DC888];
@@ -33,11 +33,11 @@ LABEL_8:
     return [v9 grayColor];
   }
 
-  if ((a4 & 1) == 0)
+  if ((modifiers & 1) == 0)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
-      if (a3 == 2)
+      if (index == 2)
       {
         v7 = MEMORY[0x1E69DC888];
 
@@ -62,7 +62,7 @@ LABEL_8:
 
   if ([objc_msgSend(objc_msgSend(self->super.super.super.super.super._representedObject "defaultStoreOffer")])
   {
-    if (a3 == 2)
+    if (index == 2)
     {
 
       return SUTableCellGetHighlightedTextColor();
@@ -71,7 +71,7 @@ LABEL_8:
     else
     {
 
-      return [(SUTwoLineTrackCellConfiguration *)self colorForLabelAtIndex:a3 withModifiers:a4 & 0xFFFFFFFFFFFFFFFCLL];
+      return [(SUTwoLineTrackCellConfiguration *)self colorForLabelAtIndex:index withModifiers:modifiers & 0xFFFFFFFFFFFFFFFCLL];
     }
   }
 
@@ -83,16 +83,16 @@ LABEL_8:
   }
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  if (a3 == 2)
+  if (index == 2)
   {
     v7 = MEMORY[0x1E69DB878];
 
     return [v7 boldSystemFontOfSize:14.0];
   }
 
-  else if (a3 == 1)
+  else if (index == 1)
   {
     v5 = MEMORY[0x1E69DB878];
 
@@ -199,21 +199,21 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = SUTwoLineTrackCellConfiguration;
   [(SUMediaItemCellConfiguration *)&v7 reloadStrings];
-  v3 = [self->super.super.super.super.super._representedObject title];
+  title = [self->super.super.super.super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *(self->super.super.super.super._strings + 2) = v4;
-  v5 = [self->super.super.super.super.super._representedObject artistName];
+  artistName = [self->super.super.super.super.super._representedObject artistName];
 
-  v6 = [v5 length];
+  v6 = [artistName length];
   if (v6)
   {
-    v6 = v5;
+    v6 = artistName;
   }
 
   *(self->super.super.super.super._strings + 1) = v6;

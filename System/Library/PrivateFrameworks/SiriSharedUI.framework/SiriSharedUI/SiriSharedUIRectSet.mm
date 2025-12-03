@@ -1,20 +1,20 @@
 @interface SiriSharedUIRectSet
-- (BOOL)containsPoint:(CGPoint)a3;
-- (SiriSharedUIRectSet)initWithFramesForViews:(id)a3 inCoordinateSpace:(id)a4;
-- (SiriSharedUIRectSet)initWithRectValues:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (SiriSharedUIRectSet)initWithFramesForViews:(id)views inCoordinateSpace:(id)space;
+- (SiriSharedUIRectSet)initWithRectValues:(id)values;
 @end
 
 @implementation SiriSharedUIRectSet
 
-- (SiriSharedUIRectSet)initWithRectValues:(id)a3
+- (SiriSharedUIRectSet)initWithRectValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v9.receiver = self;
   v9.super_class = SiriSharedUIRectSet;
   v5 = [(SiriSharedUIRectSet *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valuesCopy copy];
     rectValues = v5->_rectValues;
     v5->_rectValues = v6;
   }
@@ -22,17 +22,17 @@
   return v5;
 }
 
-- (SiriSharedUIRectSet)initWithFramesForViews:(id)a3 inCoordinateSpace:(id)a4
+- (SiriSharedUIRectSet)initWithFramesForViews:(id)views inCoordinateSpace:(id)space
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  viewsCopy = views;
+  spaceCopy = space;
+  array = [MEMORY[0x277CBEB18] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v6;
+  v9 = viewsCopy;
   v10 = [v9 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v10)
   {
@@ -53,15 +53,15 @@
         v18 = v17;
         v20 = v19;
         v22 = v21;
-        v23 = [v14 superview];
-        [v7 convertRect:v23 fromCoordinateSpace:{v16, v18, v20, v22}];
+        superview = [v14 superview];
+        [spaceCopy convertRect:superview fromCoordinateSpace:{v16, v18, v20, v22}];
         v25 = v24;
         v27 = v26;
         v29 = v28;
         v31 = v30;
 
         v32 = [MEMORY[0x277CCAE60] valueWithCGRect:{v25, v27, v29, v31}];
-        [v8 addObject:v32];
+        [array addObject:v32];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -70,21 +70,21 @@
     while (v11);
   }
 
-  v33 = [(SiriSharedUIRectSet *)self initWithRectValues:v8];
+  v33 = [(SiriSharedUIRectSet *)self initWithRectValues:array];
   return v33;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SiriSharedUIRectSet *)self _rectValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _rectValues = [(SiriSharedUIRectSet *)self _rectValues];
+  v6 = [_rectValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -94,7 +94,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_rectValues);
         }
 
         [*(*(&v10 + 1) + 8 * i) CGRectValue];
@@ -107,7 +107,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [_rectValues countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

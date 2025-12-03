@@ -1,28 +1,28 @@
 @interface WiFiAnalyticsAWDWiFiDPSEpilogue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAction:(id)a3;
-- (int)StringAsAfterRecommendedAction:(id)a3;
-- (int)StringAsBeforeAction:(id)a3;
-- (int)StringAsStudyType:(id)a3;
+- (int)StringAsAction:(id)action;
+- (int)StringAsAfterRecommendedAction:(id)action;
+- (int)StringAsBeforeAction:(id)action;
+- (int)StringAsStudyType:(id)type;
 - (int)action;
 - (int)afterRecommendedAction;
 - (int)beforeAction;
 - (int)studyType;
 - (unint64_t)hash;
-- (void)addAccessPointInfo:(id)a3;
-- (void)addAssociationChanges:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAction:(BOOL)a3;
-- (void)setHasActionIntVal:(BOOL)a3;
-- (void)setHasAfterRecommendedAction:(BOOL)a3;
-- (void)setHasBeforeAction:(BOOL)a3;
-- (void)setHasIsAssociatedAtStudyEnd:(BOOL)a3;
-- (void)setHasStudyType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAccessPointInfo:(id)info;
+- (void)addAssociationChanges:(id)changes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAction:(BOOL)action;
+- (void)setHasActionIntVal:(BOOL)val;
+- (void)setHasAfterRecommendedAction:(BOOL)action;
+- (void)setHasBeforeAction:(BOOL)action;
+- (void)setHasIsAssociatedAtStudyEnd:(BOOL)end;
+- (void)setHasStudyType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWiFiDPSEpilogue
@@ -40,9 +40,9 @@
   }
 }
 
-- (void)setHasBeforeAction:(BOOL)a3
+- (void)setHasBeforeAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 16;
   }
@@ -55,25 +55,25 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsBeforeAction:(id)a3
+- (int)StringAsBeforeAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kAllAcFunctional"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"kAllAcFunctional"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kSomeAcFunctional"])
+  else if ([actionCopy isEqualToString:@"kSomeAcFunctional"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kNoAcFunctional"])
+  else if ([actionCopy isEqualToString:@"kNoAcFunctional"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"kNotAssociated"])
+  else if ([actionCopy isEqualToString:@"kNotAssociated"])
   {
     v4 = 3;
   }
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)setHasAction:(BOOL)a3
+- (void)setHasAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 2;
   }
@@ -114,45 +114,45 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kNone"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"kNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kFullWatchdog"])
+  else if ([actionCopy isEqualToString:@"kFullWatchdog"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"kFastDPSWatchdog"])
+  else if ([actionCopy isEqualToString:@"kFastDPSWatchdog"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"kNoneNoFullWatchdogBudget"])
+  else if ([actionCopy isEqualToString:@"kNoneNoFullWatchdogBudget"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"kNoneNoFastWatchdogBudget"])
+  else if ([actionCopy isEqualToString:@"kNoneNoFastWatchdogBudget"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"kUserChanged"])
+  else if ([actionCopy isEqualToString:@"kUserChanged"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsdDPSWatchdog"])
+  else if ([actionCopy isEqualToString:@"kSymptomsdDPSWatchdog"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"kSymptomsdDPSReassoc"])
+  else if ([actionCopy isEqualToString:@"kSymptomsdDPSReassoc"])
   {
     v4 = 128;
   }
@@ -178,9 +178,9 @@
   }
 }
 
-- (void)setHasAfterRecommendedAction:(BOOL)a3
+- (void)setHasAfterRecommendedAction:(BOOL)action
 {
-  if (a3)
+  if (action)
   {
     v3 = 8;
   }
@@ -193,25 +193,25 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsAfterRecommendedAction:(id)a3
+- (int)StringAsAfterRecommendedAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kAllAcFunctional"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"kAllAcFunctional"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kSomeAcFunctional"])
+  else if ([actionCopy isEqualToString:@"kSomeAcFunctional"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kNoAcFunctional"])
+  else if ([actionCopy isEqualToString:@"kNoAcFunctional"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"kNotAssociated"])
+  else if ([actionCopy isEqualToString:@"kNotAssociated"])
   {
     v4 = 3;
   }
@@ -224,27 +224,27 @@
   return v4;
 }
 
-- (void)addAssociationChanges:(id)a3
+- (void)addAssociationChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   associationChanges = self->_associationChanges;
-  v8 = v4;
+  v8 = changesCopy;
   if (!associationChanges)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_associationChanges;
     self->_associationChanges = v6;
 
-    v4 = v8;
+    changesCopy = v8;
     associationChanges = self->_associationChanges;
   }
 
-  [(NSMutableArray *)associationChanges addObject:v4];
+  [(NSMutableArray *)associationChanges addObject:changesCopy];
 }
 
-- (void)setHasActionIntVal:(BOOL)a3
+- (void)setHasActionIntVal:(BOOL)val
 {
-  if (a3)
+  if (val)
   {
     v3 = 4;
   }
@@ -270,9 +270,9 @@
   }
 }
 
-- (void)setHasStudyType:(BOOL)a3
+- (void)setHasStudyType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -285,25 +285,25 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsStudyType:(id)a3
+- (int)StringAsStudyType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kDPEStudyTypeDataStall"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"kDPEStudyTypeDataStall"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"kDPEStudyTypeSymptomsDps"];
+    v4 = [typeCopy isEqualToString:@"kDPEStudyTypeSymptomsDps"];
   }
 
   return v4;
 }
 
-- (void)setHasIsAssociatedAtStudyEnd:(BOOL)a3
+- (void)setHasIsAssociatedAtStudyEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 64;
   }
@@ -316,22 +316,22 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)addAccessPointInfo:(id)a3
+- (void)addAccessPointInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   accessPointInfos = self->_accessPointInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!accessPointInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_accessPointInfos;
     self->_accessPointInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     accessPointInfos = self->_accessPointInfos;
   }
 
-  [(NSMutableArray *)accessPointInfos addObject:v4];
+  [(NSMutableArray *)accessPointInfos addObject:infoCopy];
 }
 
 - (id)description
@@ -340,8 +340,8 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWiFiDPSEpilogue;
   v4 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -349,12 +349,12 @@
 - (id)dictionaryRepresentation
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -385,7 +385,7 @@ LABEL_3:
     v7 = off_1E830EB78[beforeAction];
   }
 
-  [v3 setObject:v7 forKey:@"beforeAction"];
+  [dictionary setObject:v7 forKey:@"beforeAction"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -466,7 +466,7 @@ LABEL_11:
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_action];
 LABEL_31:
-  [v3 setObject:v9 forKey:@"action"];
+  [dictionary setObject:v9 forKey:@"action"];
 
   if ((*&self->_has & 8) == 0)
   {
@@ -485,14 +485,14 @@ LABEL_32:
     v11 = off_1E830EB78[afterRecommendedAction];
   }
 
-  [v3 setObject:v11 forKey:@"afterRecommendedAction"];
+  [dictionary setObject:v11 forKey:@"afterRecommendedAction"];
 
 LABEL_36:
   changes = self->_changes;
   if (changes)
   {
-    v13 = [(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)changes dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"changes"];
+    dictionaryRepresentation = [(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)changes dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"changes"];
   }
 
   if ([(NSMutableArray *)self->_associationChanges count])
@@ -517,8 +517,8 @@ LABEL_36:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v45 objects:v50 count:16];
@@ -527,21 +527,21 @@ LABEL_36:
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"associationChanges"];
+    [dictionary setObject:v14 forKey:@"associationChanges"];
   }
 
   qDpsStats = self->_qDpsStats;
   if (qDpsStats)
   {
-    v22 = [(WiFiAnalyticsAWDWAQuickDpsStats *)qDpsStats dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"qDpsStats"];
+    dictionaryRepresentation3 = [(WiFiAnalyticsAWDWAQuickDpsStats *)qDpsStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"qDpsStats"];
   }
 
   v23 = self->_has;
   if ((v23 & 4) != 0)
   {
     v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_actionIntVal];
-    [v3 setObject:v38 forKey:@"actionIntVal"];
+    [dictionary setObject:v38 forKey:@"actionIntVal"];
 
     v23 = self->_has;
     if ((v23 & 0x20) == 0)
@@ -580,28 +580,28 @@ LABEL_51:
     v40 = @"kDPEStudyTypeDataStall";
   }
 
-  [v3 setObject:v40 forKey:@"studyType"];
+  [dictionary setObject:v40 forKey:@"studyType"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_52:
     v24 = [MEMORY[0x1E696AD98] numberWithBool:self->_isAssociatedAtStudyEnd];
-    [v3 setObject:v24 forKey:@"isAssociatedAtStudyEnd"];
+    [dictionary setObject:v24 forKey:@"isAssociatedAtStudyEnd"];
   }
 
 LABEL_53:
   symptomsDnsStats = self->_symptomsDnsStats;
   if (symptomsDnsStats)
   {
-    v26 = [(WiFiAnalyticsAWDWASymptomsDnsStats *)symptomsDnsStats dictionaryRepresentation];
-    [v3 setObject:v26 forKey:@"symptomsDnsStats"];
+    dictionaryRepresentation4 = [(WiFiAnalyticsAWDWASymptomsDnsStats *)symptomsDnsStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"symptomsDnsStats"];
   }
 
   discoveredPeerInfo = self->_discoveredPeerInfo;
   if (discoveredPeerInfo)
   {
-    v28 = [(WiFiAnalyticsAWDWAPeerDiscoveryInfo *)discoveredPeerInfo dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"discoveredPeerInfo"];
+    dictionaryRepresentation5 = [(WiFiAnalyticsAWDWAPeerDiscoveryInfo *)discoveredPeerInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"discoveredPeerInfo"];
   }
 
   if ([(NSMutableArray *)self->_accessPointInfos count])
@@ -626,8 +626,8 @@ LABEL_53:
             objc_enumerationMutation(v30);
           }
 
-          v35 = [*(*(&v41 + 1) + 8 * j) dictionaryRepresentation];
-          [v29 addObject:v35];
+          dictionaryRepresentation6 = [*(*(&v41 + 1) + 8 * j) dictionaryRepresentation];
+          [v29 addObject:dictionaryRepresentation6];
         }
 
         v32 = [(NSMutableArray *)v30 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -636,18 +636,18 @@ LABEL_53:
       while (v32);
     }
 
-    [v3 setObject:v29 forKey:@"accessPointInfo"];
+    [dictionary setObject:v29 forKey:@"accessPointInfo"];
   }
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -810,14 +810,14 @@ LABEL_21:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 100) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 100) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -836,8 +836,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 12) = self->_beforeAction;
-  *(v4 + 100) |= 0x10u;
+  *(toCopy + 12) = self->_beforeAction;
+  *(toCopy + 100) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -851,29 +851,29 @@ LABEL_4:
   }
 
 LABEL_31:
-  *(v4 + 6) = self->_action;
-  *(v4 + 100) |= 2u;
+  *(toCopy + 6) = self->_action;
+  *(toCopy + 100) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(v4 + 8) = self->_afterRecommendedAction;
-    *(v4 + 100) |= 8u;
+    *(toCopy + 8) = self->_afterRecommendedAction;
+    *(toCopy + 100) |= 8u;
   }
 
 LABEL_6:
-  v15 = v4;
+  v15 = toCopy;
   if (self->_changes)
   {
-    [v4 setChanges:?];
+    [toCopy setChanges:?];
   }
 
   if ([(WiFiAnalyticsAWDWiFiDPSEpilogue *)self associationChangesCount])
   {
     [v15 clearAssociationChanges];
-    v6 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self associationChangesCount];
-    if (v6)
+    associationChangesCount = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self associationChangesCount];
+    if (associationChangesCount)
     {
-      v7 = v6;
+      v7 = associationChangesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self associationChangesAtIndex:i];
@@ -933,10 +933,10 @@ LABEL_18:
   if ([(WiFiAnalyticsAWDWiFiDPSEpilogue *)self accessPointInfosCount])
   {
     [v15 clearAccessPointInfos];
-    v11 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self accessPointInfosCount];
-    if (v11)
+    accessPointInfosCount = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self accessPointInfosCount];
+    if (accessPointInfosCount)
     {
-      v12 = v11;
+      v12 = accessPointInfosCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(WiFiAnalyticsAWDWiFiDPSEpilogue *)self accessPointInfoAtIndex:j];
@@ -946,10 +946,10 @@ LABEL_18:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -999,7 +999,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)self->_changes copyWithZone:a3];
+  v8 = [(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)self->_changes copyWithZone:zone];
   v9 = *(v6 + 56);
   *(v6 + 56) = v8;
 
@@ -1022,7 +1022,7 @@ LABEL_6:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v35 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v35 + 1) + 8 * i) copyWithZone:zone];
         [v6 addAssociationChanges:v15];
       }
 
@@ -1032,7 +1032,7 @@ LABEL_6:
     while (v12);
   }
 
-  v16 = [(WiFiAnalyticsAWDWAQuickDpsStats *)self->_qDpsStats copyWithZone:a3];
+  v16 = [(WiFiAnalyticsAWDWAQuickDpsStats *)self->_qDpsStats copyWithZone:zone];
   v17 = *(v6 + 72);
   *(v6 + 72) = v16;
 
@@ -1069,11 +1069,11 @@ LABEL_16:
   }
 
 LABEL_17:
-  v19 = [(WiFiAnalyticsAWDWASymptomsDnsStats *)self->_symptomsDnsStats copyWithZone:a3];
+  v19 = [(WiFiAnalyticsAWDWASymptomsDnsStats *)self->_symptomsDnsStats copyWithZone:zone];
   v20 = *(v6 + 88);
   *(v6 + 88) = v19;
 
-  v21 = [(WiFiAnalyticsAWDWAPeerDiscoveryInfo *)self->_discoveredPeerInfo copyWithZone:a3];
+  v21 = [(WiFiAnalyticsAWDWAPeerDiscoveryInfo *)self->_discoveredPeerInfo copyWithZone:zone];
   v22 = *(v6 + 64);
   *(v6 + 64) = v21;
 
@@ -1096,7 +1096,7 @@ LABEL_17:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v31 + 1) + 8 * j) copyWithZone:{a3, v31}];
+        v28 = [*(*(&v31 + 1) + 8 * j) copyWithZone:{zone, v31}];
         [v6 addAccessPointInfo:v28];
       }
 
@@ -1110,75 +1110,75 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = *(v4 + 100);
+  v5 = *(equalCopy + 100);
   if (*&self->_has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 100) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 100) & 0x10) == 0 || self->_beforeAction != *(v4 + 12))
+    if ((*(equalCopy + 100) & 0x10) == 0 || self->_beforeAction != *(equalCopy + 12))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 100) & 0x10) != 0)
+  else if ((*(equalCopy + 100) & 0x10) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_action != *(v4 + 6))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_action != *(equalCopy + 6))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 100) & 8) == 0 || self->_afterRecommendedAction != *(v4 + 8))
+    if ((*(equalCopy + 100) & 8) == 0 || self->_afterRecommendedAction != *(equalCopy + 8))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 100) & 8) != 0)
+  else if ((*(equalCopy + 100) & 8) != 0)
   {
     goto LABEL_47;
   }
 
   changes = self->_changes;
-  if (changes | *(v4 + 7) && ![(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)changes isEqual:?])
+  if (changes | *(equalCopy + 7) && ![(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)changes isEqual:?])
   {
     goto LABEL_47;
   }
 
   associationChanges = self->_associationChanges;
-  if (associationChanges | *(v4 + 5))
+  if (associationChanges | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)associationChanges isEqual:?])
     {
@@ -1187,7 +1187,7 @@ LABEL_17:
   }
 
   qDpsStats = self->_qDpsStats;
-  if (qDpsStats | *(v4 + 9))
+  if (qDpsStats | *(equalCopy + 9))
   {
     if (![(WiFiAnalyticsAWDWAQuickDpsStats *)qDpsStats isEqual:?])
     {
@@ -1195,36 +1195,36 @@ LABEL_17:
     }
   }
 
-  v9 = *(v4 + 100);
+  v9 = *(equalCopy + 100);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_actionIntVal != *(v4 + 7))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_actionIntVal != *(equalCopy + 7))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 100) & 0x20) == 0 || self->_studyType != *(v4 + 20))
+    if ((*(equalCopy + 100) & 0x20) == 0 || self->_studyType != *(equalCopy + 20))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 100) & 0x20) != 0)
+  else if ((*(equalCopy + 100) & 0x20) != 0)
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 0x40) == 0)
   {
-    if ((*(v4 + 100) & 0x40) == 0)
+    if ((*(equalCopy + 100) & 0x40) == 0)
     {
       goto LABEL_40;
     }
@@ -1234,34 +1234,34 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  if ((*(v4 + 100) & 0x40) == 0)
+  if ((*(equalCopy + 100) & 0x40) == 0)
   {
     goto LABEL_47;
   }
 
-  v15 = *(v4 + 96);
+  v15 = *(equalCopy + 96);
   if (self->_isAssociatedAtStudyEnd)
   {
-    if ((*(v4 + 96) & 1) == 0)
+    if ((*(equalCopy + 96) & 1) == 0)
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_47;
   }
 
 LABEL_40:
   symptomsDnsStats = self->_symptomsDnsStats;
-  if (symptomsDnsStats | *(v4 + 11) && ![(WiFiAnalyticsAWDWASymptomsDnsStats *)symptomsDnsStats isEqual:?])
+  if (symptomsDnsStats | *(equalCopy + 11) && ![(WiFiAnalyticsAWDWASymptomsDnsStats *)symptomsDnsStats isEqual:?])
   {
     goto LABEL_47;
   }
 
   discoveredPeerInfo = self->_discoveredPeerInfo;
-  if (discoveredPeerInfo | *(v4 + 8))
+  if (discoveredPeerInfo | *(equalCopy + 8))
   {
     if (![(WiFiAnalyticsAWDWAPeerDiscoveryInfo *)discoveredPeerInfo isEqual:?])
     {
@@ -1270,7 +1270,7 @@ LABEL_40:
   }
 
   accessPointInfos = self->_accessPointInfos;
-  if (accessPointInfos | *(v4 + 2))
+  if (accessPointInfos | *(equalCopy + 2))
   {
     v13 = [(NSMutableArray *)accessPointInfos isEqual:?];
   }
@@ -1382,17 +1382,17 @@ LABEL_17:
   return v15 ^ [(NSMutableArray *)self->_accessPointInfos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 100);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 100);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 100);
+    v6 = *(fromCopy + 100);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -1405,14 +1405,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 100) & 0x10) == 0)
+  else if ((*(fromCopy + 100) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_beforeAction = *(v4 + 12);
+  self->_beforeAction = *(fromCopy + 12);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 100);
+  v6 = *(fromCopy + 100);
   if ((v6 & 2) == 0)
   {
 LABEL_4:
@@ -1425,12 +1425,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_action = *(v4 + 6);
+  self->_action = *(fromCopy + 6);
   *&self->_has |= 2u;
-  if ((*(v4 + 100) & 8) != 0)
+  if ((*(fromCopy + 100) & 8) != 0)
   {
 LABEL_5:
-    self->_afterRecommendedAction = *(v4 + 8);
+    self->_afterRecommendedAction = *(fromCopy + 8);
     *&self->_has |= 8u;
   }
 

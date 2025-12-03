@@ -1,29 +1,29 @@
 @interface _CPVisibleSuggestionsFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPVisibleSuggestionsFeedback)init;
-- (_CPVisibleSuggestionsFeedback)initWithFacade:(id)a3;
-- (void)addSuggestions:(id)a3;
-- (void)setSuggestions:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPVisibleSuggestionsFeedback)initWithFacade:(id)facade;
+- (void)addSuggestions:(id)suggestions;
+- (void)setSuggestions:(id)suggestions;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPVisibleSuggestionsFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
-      v6 = [(_CPVisibleSuggestionsFeedback *)self suggestions];
-      v7 = [v4 suggestions];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      suggestions = [(_CPVisibleSuggestionsFeedback *)self suggestions];
+      suggestions2 = [equalCopy suggestions];
+      v8 = suggestions2;
+      if ((suggestions != 0) != (suggestions2 == 0))
       {
-        v9 = [(_CPVisibleSuggestionsFeedback *)self suggestions];
-        if (!v9)
+        suggestions3 = [(_CPVisibleSuggestionsFeedback *)self suggestions];
+        if (!suggestions3)
         {
 
 LABEL_11:
@@ -31,10 +31,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPVisibleSuggestionsFeedback *)self suggestions];
-        v12 = [v4 suggestions];
-        v13 = [v11 isEqual:v12];
+        v10 = suggestions3;
+        suggestions4 = [(_CPVisibleSuggestionsFeedback *)self suggestions];
+        suggestions5 = [equalCopy suggestions];
+        v13 = [suggestions4 isEqual:suggestions5];
 
         if (v13)
         {
@@ -54,10 +54,10 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPVisibleSuggestionsFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -99,27 +99,27 @@ LABEL_9:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSuggestions:(id)a3
+- (void)addSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   suggestions = self->_suggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!suggestions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_suggestions;
-    self->_suggestions = v6;
+    self->_suggestions = array;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     suggestions = self->_suggestions;
   }
 
-  [(NSArray *)suggestions addObject:v4];
+  [(NSArray *)suggestions addObject:suggestionsCopy];
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
-  v4 = [a3 mutableCopy];
+  v4 = [suggestions mutableCopy];
   suggestions = self->_suggestions;
   self->_suggestions = v4;
 
@@ -140,18 +140,18 @@ LABEL_9:
   return v2;
 }
 
-- (_CPVisibleSuggestionsFeedback)initWithFacade:(id)a3
+- (_CPVisibleSuggestionsFeedback)initWithFacade:(id)facade
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v21.receiver = self;
   v21.super_class = _CPVisibleSuggestionsFeedback;
   v5 = [(_CPVisibleSuggestionsFeedback *)&v21 init];
   if (v5)
   {
-    -[_CPVisibleSuggestionsFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 suggestions];
-    if (v6)
+    -[_CPVisibleSuggestionsFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    suggestions = [facadeCopy suggestions];
+    if (suggestions)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -165,8 +165,8 @@ LABEL_9:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 suggestions];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    suggestions2 = [facadeCopy suggestions];
+    v9 = [suggestions2 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -177,14 +177,14 @@ LABEL_9:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(suggestions2);
           }
 
           v13 = [[_CPSearchSuggestionForFeedback alloc] initWithFacade:*(*(&v17 + 1) + 8 * i)];
           [v7 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v10 = [suggestions2 countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v10);

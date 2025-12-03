@@ -1,43 +1,43 @@
 @interface AVAudioMixInputParameters
 - (AVAudioMixInputParameters)init;
-- (BOOL)getAmbienceLevelRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6;
-- (BOOL)getAmbienceLoudnessRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6;
-- (BOOL)getDialogLevelRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6;
-- (BOOL)getDialogLoudnessRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6;
-- (BOOL)getDialogMixBiasRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6;
-- (BOOL)getRecordingLoudnessRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6;
-- (BOOL)getRenderingStyleRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6;
-- (BOOL)getVolumeRampForTime:(id *)a3 startVolume:(float *)a4 endVolume:(float *)a5 timeRange:(id *)a6 rampMode:(int64_t *)a7;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getAmbienceLevelRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range;
+- (BOOL)getAmbienceLoudnessRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range;
+- (BOOL)getDialogLevelRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range;
+- (BOOL)getDialogLoudnessRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range;
+- (BOOL)getDialogMixBiasRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range;
+- (BOOL)getRecordingLoudnessRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range;
+- (BOOL)getRenderingStyleRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range;
+- (BOOL)getVolumeRampForTime:(id *)time startVolume:(float *)volume endVolume:(float *)endVolume timeRange:(id *)range rampMode:(int64_t *)mode;
+- (BOOL)isEqual:(id)equal;
 - (id)_figAudioCurves;
 - (id)_figProcessingEffectsScheduledParameters;
 - (id)_scheduledAudioParameters;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)effectParameters;
 - (id)effects;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setScheduledAudioParameters:(id)a3;
-- (void)_setVolume:(float)a3 atTime:(id *)a4;
-- (void)_setVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6;
-- (void)addEffect:(id)a3;
-- (void)checkEffectPrecondition:(id)a3;
-- (void)checkEffectsPrecondition:(id)a3;
+- (void)_setScheduledAudioParameters:(id)parameters;
+- (void)_setVolume:(float)volume atTime:(id *)time;
+- (void)_setVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode;
+- (void)addEffect:(id)effect;
+- (void)checkEffectPrecondition:(id)precondition;
+- (void)checkEffectsPrecondition:(id)precondition;
 - (void)dealloc;
-- (void)setAmbienceLevel:(float)a3 atTime:(id *)a4;
-- (void)setAmbienceLoudness:(float)a3 atTime:(id *)a4;
-- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)a3;
-- (void)setAudioTimePitchAlgorithm:(id)a3;
-- (void)setDialogLevel:(float)a3 atTime:(id *)a4;
-- (void)setDialogLoudness:(float)a3 atTime:(id *)a4;
-- (void)setDialogMixBias:(float)a3 atTime:(id *)a4;
-- (void)setEffectParameters:(id)a3;
-- (void)setRecordingLoudness:(float)a3 atTime:(id *)a4;
-- (void)setRenderingStyle:(float)a3 atTime:(id *)a4;
-- (void)setVolume:(float)a3 atTime:(id *)a4;
-- (void)setVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5;
-- (void)setVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6;
+- (void)setAmbienceLevel:(float)level atTime:(id *)time;
+- (void)setAmbienceLoudness:(float)loudness atTime:(id *)time;
+- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)processor;
+- (void)setAudioTimePitchAlgorithm:(id)algorithm;
+- (void)setDialogLevel:(float)level atTime:(id *)time;
+- (void)setDialogLoudness:(float)loudness atTime:(id *)time;
+- (void)setDialogMixBias:(float)bias atTime:(id *)time;
+- (void)setEffectParameters:(id)parameters;
+- (void)setRecordingLoudness:(float)loudness atTime:(id *)time;
+- (void)setRenderingStyle:(float)style atTime:(id *)time;
+- (void)setVolume:(float)volume atTime:(id *)time;
+- (void)setVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range;
+- (void)setVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode;
 @end
 
 @implementation AVAudioMixInputParameters
@@ -97,7 +97,7 @@
   return [v3 stringWithFormat:@"<%@: %p, track ID = %d, audioTimePitchAlgorithm: %@, audioTapProcessor: %p, volume mix: %@>", NSStringFromClass(v4), self, -[AVAudioMixInputParameters trackID](self, "trackID"), -[AVAudioMixInputParameters audioTimePitchAlgorithm](self, "audioTimePitchAlgorithm"), -[AVAudioMixInputParameters audioTapProcessor](self, "audioTapProcessor"), -[AVAudioMixInputParameters _volumeCurveAsString](self, "_volumeCurveAsString")];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
   if ([(AVAudioMixInputParameters *)self isMemberOfClass:objc_opt_class()])
@@ -149,7 +149,7 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = [(AVAudioMixInputParameters *)[AVMutableAudioMixInputParameters allocWithZone:?]];
@@ -194,7 +194,7 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -203,7 +203,7 @@
   }
 
   inputParameters = self->_inputParameters;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   if (inputParameters->trackID != *(v6 + 8))
   {
     goto LABEL_12;
@@ -228,7 +228,7 @@
   }
 
   audioTimePitchAlgorithm = inputParameters->audioTimePitchAlgorithm;
-  v11 = *(a3 + 1);
+  v11 = *(equal + 1);
   v12 = v11[3];
   if (audioTimePitchAlgorithm)
   {
@@ -239,7 +239,7 @@
     }
 
     inputParameters = self->_inputParameters;
-    v11 = *(a3 + 1);
+    v11 = *(equal + 1);
     goto LABEL_11;
   }
 
@@ -287,18 +287,18 @@ LABEL_11:
   return v9 ^ [(NSMutableArray *)self->_inputParameters->effects hash];
 }
 
-- (void)setAudioTimePitchAlgorithm:(id)a3
+- (void)setAudioTimePitchAlgorithm:(id)algorithm
 {
-  v4 = [a3 copy];
+  v4 = [algorithm copy];
 
   self->_inputParameters->audioTimePitchAlgorithm = v4;
 }
 
-- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)a3
+- (void)setAudioTapProcessor:(opaqueMTAudioProcessingTap *)processor
 {
-  if (a3)
+  if (processor)
   {
-    CFRetain(a3);
+    CFRetain(processor);
   }
 
   inputParameters = self->_inputParameters;
@@ -309,12 +309,12 @@ LABEL_11:
     inputParameters = self->_inputParameters;
   }
 
-  inputParameters->tap = a3;
+  inputParameters->tap = processor;
 }
 
-- (void)checkEffectPrecondition:(id)a3
+- (void)checkEffectPrecondition:(id)precondition
 {
-  if (a3 && ([a3 isMemberOfClass:objc_opt_class()] & 1) == 0 && (objc_msgSend(a3, "isMemberOfClass:", objc_opt_class()) & 1) == 0 && (objc_msgSend(a3, "isMemberOfClass:", objc_opt_class()) & 1) == 0)
+  if (precondition && ([precondition isMemberOfClass:objc_opt_class()] & 1) == 0 && (objc_msgSend(precondition, "isMemberOfClass:", objc_opt_class()) & 1) == 0 && (objc_msgSend(precondition, "isMemberOfClass:", objc_opt_class()) & 1) == 0)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Sent unknown effect type", v6, v7, v8, v9, v10, v12), 0}];
     objc_exception_throw(v11);
@@ -334,10 +334,10 @@ LABEL_11:
   return result;
 }
 
-- (void)setEffectParameters:(id)a3
+- (void)setEffectParameters:(id)parameters
 {
   [(AVAudioMixInputParameters *)self checkEffectPrecondition:?];
-  v6 = [a3 copy];
+  v6 = [parameters copy];
   [(NSMutableArray *)self->_inputParameters->effects removeAllObjects];
   v5 = v6;
   if (v6)
@@ -354,18 +354,18 @@ LABEL_11:
   return v2;
 }
 
-- (void)checkEffectsPrecondition:(id)a3
+- (void)checkEffectsPrecondition:(id)precondition
 {
   [(AVAudioMixInputParameters *)self checkEffectPrecondition:?];
-  v6 = [a3 isMemberOfClass:objc_opt_class()];
-  v7 = [(AVAudioMixInputParameters *)self effects];
+  v6 = [precondition isMemberOfClass:objc_opt_class()];
+  effects = [(AVAudioMixInputParameters *)self effects];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke;
   v15[3] = &unk_1E7464B68;
   v16 = v6;
-  v15[4] = a3;
-  if ([objc_msgSend(v7 indexesOfObjectsPassingTest:{v15), "count"}])
+  v15[4] = precondition;
+  if ([objc_msgSend(effects indexesOfObjectsPassingTest:{v15), "count"}])
   {
     if (v6)
     {
@@ -400,14 +400,14 @@ uint64_t __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke
   }
 }
 
-- (void)addEffect:(id)a3
+- (void)addEffect:(id)effect
 {
   [(AVAudioMixInputParameters *)self checkEffectsPrecondition:?];
-  v5 = [a3 copy];
+  v5 = [effect copy];
   [(NSMutableArray *)self->_inputParameters->effects addObject:v5];
 }
 
-- (void)_setVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6
+- (void)_setVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   if (!scheduledAudioParameters)
@@ -416,14 +416,14 @@ uint64_t __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke
     scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   }
 
-  v12 = *&a5->var0.var3;
-  v13[0] = *&a5->var0.var0;
+  v12 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v12;
-  *&v12 = a4;
-  [(AVMutableScheduledAudioParameters *)scheduledAudioParameters setVolumeRampFromStartVolume:v13 toEndVolume:a6 == 1 timeRange:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&a5->var1.var1) rampMode:LODWORD(a3))), *&v12];
+  *&v12 = endVolume;
+  [(AVMutableScheduledAudioParameters *)scheduledAudioParameters setVolumeRampFromStartVolume:v13 toEndVolume:mode == 1 timeRange:COERCE_DOUBLE(__PAIR64__(HIDWORD(*&range->var1.var1) rampMode:LODWORD(volume))), *&v12];
 }
 
-- (void)_setVolume:(float)a3 atTime:(id *)a4
+- (void)_setVolume:(float)volume atTime:(id *)time
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   if (!scheduledAudioParameters)
@@ -432,66 +432,66 @@ uint64_t __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke
     scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   }
 
-  v8 = *&a4->var0;
-  var3 = a4->var3;
-  [(AVMutableScheduledAudioParameters *)scheduledAudioParameters setVolume:&v8 atTime:COERCE_DOUBLE(__PAIR64__(DWORD1(v8), LODWORD(a3)))];
+  v8 = *&time->var0;
+  var3 = time->var3;
+  [(AVMutableScheduledAudioParameters *)scheduledAudioParameters setVolume:&v8 atTime:COERCE_DOUBLE(__PAIR64__(DWORD1(v8), LODWORD(volume)))];
 }
 
-- (void)setVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5
+- (void)setVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range
 {
-  if ((a5->var0.var2 & 0x1D) != 1 || (a5->var1.var2 & 0x1D) != 1)
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of a volume ramp must have a numeric start time and a numeric duration.", v5, v6, v7, v8, v9, *&v12[0]), 0}];
     objc_exception_throw(v11);
   }
 
-  v10 = *&a5->var0.var3;
-  v12[0] = *&a5->var0.var0;
+  v10 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v10;
-  v12[2] = *&a5->var1.var1;
+  v12[2] = *&range->var1.var1;
   [AVAudioMixInputParameters _setVolumeRampFromStartVolume:"_setVolumeRampFromStartVolume:toEndVolume:timeRange:rampMode:" toEndVolume:v12 timeRange:0 rampMode:?];
 }
 
-- (void)setVolumeRampFromStartVolume:(float)a3 toEndVolume:(float)a4 timeRange:(id *)a5 rampMode:(int64_t)a6
+- (void)setVolumeRampFromStartVolume:(float)volume toEndVolume:(float)endVolume timeRange:(id *)range rampMode:(int64_t)mode
 {
-  if ((a5->var0.var2 & 0x1D) != 1 || (a5->var1.var2 & 0x1D) != 1)
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of a volume ramp must have a numeric start time and a numeric duration.", a6, v6, v7, v8, v9, *&v12[0]), 0}];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of a volume ramp must have a numeric start time and a numeric duration.", mode, v6, v7, v8, v9, *&v12[0]), 0}];
     objc_exception_throw(v11);
   }
 
-  v10 = *&a5->var0.var3;
-  v12[0] = *&a5->var0.var0;
+  v10 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v10;
-  v12[2] = *&a5->var1.var1;
-  [AVAudioMixInputParameters _setVolumeRampFromStartVolume:"_setVolumeRampFromStartVolume:toEndVolume:timeRange:rampMode:" toEndVolume:v12 timeRange:a6 rampMode:?];
+  v12[2] = *&range->var1.var1;
+  [AVAudioMixInputParameters _setVolumeRampFromStartVolume:"_setVolumeRampFromStartVolume:toEndVolume:timeRange:rampMode:" toEndVolume:v12 timeRange:mode rampMode:?];
 }
 
-- (void)setVolume:(float)a3 atTime:(id *)a4
+- (void)setVolume:(float)volume atTime:(id *)time
 {
-  if ((a4->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The time of a volume setting must be numeric.", v4, v5, v6, v7, v8, v10.var0), 0}];
     objc_exception_throw(v9);
   }
 
-  v10 = *a4;
+  v10 = *time;
   [(AVAudioMixInputParameters *)self _setVolume:&v10 atTime:?];
 }
 
-- (BOOL)getVolumeRampForTime:(id *)a3 startVolume:(float *)a4 endVolume:(float *)a5 timeRange:(id *)a6 rampMode:(int64_t *)a7
+- (BOOL)getVolumeRampForTime:(id *)time startVolume:(float *)volume endVolume:(float *)endVolume timeRange:(id *)range rampMode:(int64_t *)mode
 {
   v11 = 0;
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   if (scheduledAudioParameters)
   {
-    v10 = *a3;
-    LODWORD(scheduledAudioParameters) = [(AVScheduledAudioParameters *)scheduledAudioParameters getVolumeRampForTime:&v10 startVolume:a4 endVolume:a5 timeRange:a6 rampMode:&v11];
-    if (a7)
+    v10 = *time;
+    LODWORD(scheduledAudioParameters) = [(AVScheduledAudioParameters *)scheduledAudioParameters getVolumeRampForTime:&v10 startVolume:volume endVolume:endVolume timeRange:range rampMode:&v11];
+    if (mode)
     {
       if (scheduledAudioParameters)
       {
-        *a7 = v11 == 1;
+        *mode = v11 == 1;
         LOBYTE(scheduledAudioParameters) = 1;
       }
     }
@@ -500,9 +500,9 @@ uint64_t __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke
   return scheduledAudioParameters;
 }
 
-- (void)setDialogLevel:(float)a3 atTime:(id *)a4
+- (void)setDialogLevel:(float)level atTime:(id *)time
 {
-  time1.start = *a4;
+  time1.start = *time;
   time2 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1.start, &time2))
   {
@@ -515,42 +515,42 @@ uint64_t __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke
     self->_inputParameters->scheduledAudioParameters = objc_alloc_init(AVMutableScheduledAudioParameters);
   }
 
-  time2 = *a4;
+  time2 = *time;
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&time1, &time2, &duration);
-  *&v13 = a3;
-  *&v14 = a3;
+  *&v13 = level;
+  *&v14 = level;
   [(AVScheduledAudioParameters *)self->_inputParameters->scheduledAudioParameters _setRamp:[AVDialogLevelRamp dialogLevelRampWithStartValue:&time1 endValue:v13 timeRange:v14]];
 }
 
-- (BOOL)getDialogLevelRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6
+- (BOOL)getDialogLevelRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   v11 = objc_opt_class();
-  v17 = *a3;
-  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:a6];
+  v17 = *time;
+  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:range];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (value)
     {
       [v12 startFloatValue];
-      *a4 = v14;
+      *value = v14;
     }
 
-    if (a5)
+    if (endValue)
     {
       [v13 endFloatValue];
-      *a5 = v15;
+      *endValue = v15;
     }
   }
 
   return v13 != 0;
 }
 
-- (void)setAmbienceLevel:(float)a3 atTime:(id *)a4
+- (void)setAmbienceLevel:(float)level atTime:(id *)time
 {
-  time1.start = *a4;
+  time1.start = *time;
   time2 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1.start, &time2))
   {
@@ -563,42 +563,42 @@ uint64_t __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke
     self->_inputParameters->scheduledAudioParameters = objc_alloc_init(AVMutableScheduledAudioParameters);
   }
 
-  time2 = *a4;
+  time2 = *time;
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&time1, &time2, &duration);
-  *&v13 = a3;
-  *&v14 = a3;
+  *&v13 = level;
+  *&v14 = level;
   [(AVScheduledAudioParameters *)self->_inputParameters->scheduledAudioParameters _setRamp:[AVAmbienceLevelRamp ambienceLevelRampWithStartValue:&time1 endValue:v13 timeRange:v14]];
 }
 
-- (BOOL)getAmbienceLevelRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6
+- (BOOL)getAmbienceLevelRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   v11 = objc_opt_class();
-  v17 = *a3;
-  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:a6];
+  v17 = *time;
+  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:range];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (value)
     {
       [v12 startFloatValue];
-      *a4 = v14;
+      *value = v14;
     }
 
-    if (a5)
+    if (endValue)
     {
       [v13 endFloatValue];
-      *a5 = v15;
+      *endValue = v15;
     }
   }
 
   return v13 != 0;
 }
 
-- (void)setDialogMixBias:(float)a3 atTime:(id *)a4
+- (void)setDialogMixBias:(float)bias atTime:(id *)time
 {
-  time1.start = *a4;
+  time1.start = *time;
   time2 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1.start, &time2))
   {
@@ -608,7 +608,7 @@ uint64_t __54__AVAudioMixInputParameters_checkEffectsPrecondition___block_invoke
     goto LABEL_9;
   }
 
-  if (a3 < 0.0 || a3 > 1.0)
+  if (bias < 0.0 || bias > 1.0)
   {
     v15 = MEMORY[0x1E695DF30];
     v16 = *MEMORY[0x1E695D940];
@@ -623,42 +623,42 @@ LABEL_9:
     self->_inputParameters->scheduledAudioParameters = objc_alloc_init(AVMutableScheduledAudioParameters);
   }
 
-  time2 = *a4;
+  time2 = *time;
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&time1, &time2, &duration);
-  *&v13 = a3;
-  *&v14 = a3;
+  *&v13 = bias;
+  *&v14 = bias;
   [(AVScheduledAudioParameters *)self->_inputParameters->scheduledAudioParameters _setRamp:[AVDialogMixBiasRamp dialogMixBiasRampWithStartValue:&time1 endValue:v13 timeRange:v14]];
 }
 
-- (BOOL)getDialogMixBiasRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6
+- (BOOL)getDialogMixBiasRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   v11 = objc_opt_class();
-  v17 = *a3;
-  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:a6];
+  v17 = *time;
+  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:range];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (value)
     {
       [v12 startFloatValue];
-      *a4 = v14;
+      *value = v14;
     }
 
-    if (a5)
+    if (endValue)
     {
       [v13 endFloatValue];
-      *a5 = v15;
+      *endValue = v15;
     }
   }
 
   return v13 != 0;
 }
 
-- (void)setDialogLoudness:(float)a3 atTime:(id *)a4
+- (void)setDialogLoudness:(float)loudness atTime:(id *)time
 {
-  time1.start = *a4;
+  time1.start = *time;
   time2 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1.start, &time2))
   {
@@ -671,42 +671,42 @@ LABEL_9:
     self->_inputParameters->scheduledAudioParameters = objc_alloc_init(AVMutableScheduledAudioParameters);
   }
 
-  time2 = *a4;
+  time2 = *time;
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&time1, &time2, &duration);
-  *&v13 = a3;
-  *&v14 = a3;
+  *&v13 = loudness;
+  *&v14 = loudness;
   [(AVScheduledAudioParameters *)self->_inputParameters->scheduledAudioParameters _setRamp:[AVDialogLoudnessRamp dialogLoudnessRampWithStartValue:&time1 endValue:v13 timeRange:v14]];
 }
 
-- (BOOL)getDialogLoudnessRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6
+- (BOOL)getDialogLoudnessRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   v11 = objc_opt_class();
-  v17 = *a3;
-  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:a6];
+  v17 = *time;
+  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:range];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (value)
     {
       [v12 startFloatValue];
-      *a4 = v14;
+      *value = v14;
     }
 
-    if (a5)
+    if (endValue)
     {
       [v13 endFloatValue];
-      *a5 = v15;
+      *endValue = v15;
     }
   }
 
   return v13 != 0;
 }
 
-- (void)setAmbienceLoudness:(float)a3 atTime:(id *)a4
+- (void)setAmbienceLoudness:(float)loudness atTime:(id *)time
 {
-  time1.start = *a4;
+  time1.start = *time;
   time2 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1.start, &time2))
   {
@@ -719,42 +719,42 @@ LABEL_9:
     self->_inputParameters->scheduledAudioParameters = objc_alloc_init(AVMutableScheduledAudioParameters);
   }
 
-  time2 = *a4;
+  time2 = *time;
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&time1, &time2, &duration);
-  *&v13 = a3;
-  *&v14 = a3;
+  *&v13 = loudness;
+  *&v14 = loudness;
   [(AVScheduledAudioParameters *)self->_inputParameters->scheduledAudioParameters _setRamp:[AVAmbienceLoudnessRamp ambienceLoudnessRampWithStartValue:&time1 endValue:v13 timeRange:v14]];
 }
 
-- (BOOL)getAmbienceLoudnessRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6
+- (BOOL)getAmbienceLoudnessRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   v11 = objc_opt_class();
-  v17 = *a3;
-  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:a6];
+  v17 = *time;
+  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:range];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (value)
     {
       [v12 startFloatValue];
-      *a4 = v14;
+      *value = v14;
     }
 
-    if (a5)
+    if (endValue)
     {
       [v13 endFloatValue];
-      *a5 = v15;
+      *endValue = v15;
     }
   }
 
   return v13 != 0;
 }
 
-- (void)setRecordingLoudness:(float)a3 atTime:(id *)a4
+- (void)setRecordingLoudness:(float)loudness atTime:(id *)time
 {
-  time1.start = *a4;
+  time1.start = *time;
   time2 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1.start, &time2))
   {
@@ -767,42 +767,42 @@ LABEL_9:
     self->_inputParameters->scheduledAudioParameters = objc_alloc_init(AVMutableScheduledAudioParameters);
   }
 
-  time2 = *a4;
+  time2 = *time;
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&time1, &time2, &duration);
-  *&v13 = a3;
-  *&v14 = a3;
+  *&v13 = loudness;
+  *&v14 = loudness;
   [(AVScheduledAudioParameters *)self->_inputParameters->scheduledAudioParameters _setRamp:[AVRecordingLoudnessRamp recordingLoudnessRampWithStartValue:&time1 endValue:v13 timeRange:v14]];
 }
 
-- (BOOL)getRecordingLoudnessRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6
+- (BOOL)getRecordingLoudnessRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   v11 = objc_opt_class();
-  v17 = *a3;
-  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:a6];
+  v17 = *time;
+  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:range];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (value)
     {
       [v12 startFloatValue];
-      *a4 = v14;
+      *value = v14;
     }
 
-    if (a5)
+    if (endValue)
     {
       [v13 endFloatValue];
-      *a5 = v15;
+      *endValue = v15;
     }
   }
 
   return v13 != 0;
 }
 
-- (void)setRenderingStyle:(float)a3 atTime:(id *)a4
+- (void)setRenderingStyle:(float)style atTime:(id *)time
 {
-  time1.start = *a4;
+  time1.start = *time;
   time2 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1.start, &time2))
   {
@@ -815,42 +815,42 @@ LABEL_9:
     self->_inputParameters->scheduledAudioParameters = objc_alloc_init(AVMutableScheduledAudioParameters);
   }
 
-  time2 = *a4;
+  time2 = *time;
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&time1, &time2, &duration);
-  *&v13 = a3;
-  *&v14 = a3;
+  *&v13 = style;
+  *&v14 = style;
   [(AVScheduledAudioParameters *)self->_inputParameters->scheduledAudioParameters _setRamp:[AVRenderingStyleRamp renderingStyleRampWithStartValue:&time1 endValue:v13 timeRange:v14]];
 }
 
-- (BOOL)getRenderingStyleRampForTime:(id *)a3 startValue:(float *)a4 endValue:(float *)a5 timeRange:(id *)a6
+- (BOOL)getRenderingStyleRampForTime:(id *)time startValue:(float *)value endValue:(float *)endValue timeRange:(id *)range
 {
   scheduledAudioParameters = self->_inputParameters->scheduledAudioParameters;
   v11 = objc_opt_class();
-  v17 = *a3;
-  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:a6];
+  v17 = *time;
+  v12 = [(AVScheduledAudioParameters *)scheduledAudioParameters _getRampOfClass:v11 forTime:&v17 timeRange:range];
   v13 = v12;
   if (v12)
   {
-    if (a4)
+    if (value)
     {
       [v12 startFloatValue];
-      *a4 = v14;
+      *value = v14;
     }
 
-    if (a5)
+    if (endValue)
     {
       [v13 endFloatValue];
-      *a5 = v15;
+      *endValue = v15;
     }
   }
 
   return v13 != 0;
 }
 
-- (void)_setScheduledAudioParameters:(id)a3
+- (void)_setScheduledAudioParameters:(id)parameters
 {
-  v4 = [a3 mutableCopy];
+  v4 = [parameters mutableCopy];
 
   self->_inputParameters->scheduledAudioParameters = v4;
 }

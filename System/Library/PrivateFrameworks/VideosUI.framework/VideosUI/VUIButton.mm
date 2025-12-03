@@ -5,85 +5,85 @@
 - (BOOL)_hasSubtitle;
 - (BOOL)_hasTitle;
 - (BOOL)onlyHasImage;
-- (CGPoint)_centerWithViewSize:(CGSize)a3 withParentSize:(CGSize)a4;
+- (CGPoint)_centerWithViewSize:(CGSize)size withParentSize:(CGSize)parentSize;
 - (CGRect)_barButtonPointerShapeRect;
 - (CGRect)_symbolButtonPointerShapeRect;
-- (CGSize)_availableSizeForLabelInButtonWithSize:(CGSize)a3;
-- (CGSize)_calculateContentSizeForCustomButtonThatFit:(CGSize)a3;
-- (CGSize)_calculateContentSizeForImageThatFit:(CGSize)a3;
-- (CGSize)_calculateContentSizeForPrimaryButtonThatFit:(CGSize)a3;
-- (CGSize)_computeSizeThatFits:(CGSize)a3;
-- (CGSize)_imageSizeThatFits:(CGSize)a3;
+- (CGSize)_availableSizeForLabelInButtonWithSize:(CGSize)size;
+- (CGSize)_calculateContentSizeForCustomButtonThatFit:(CGSize)fit;
+- (CGSize)_calculateContentSizeForImageThatFit:(CGSize)fit;
+- (CGSize)_calculateContentSizeForPrimaryButtonThatFit:(CGSize)fit;
+- (CGSize)_computeSizeThatFits:(CGSize)fits;
+- (CGSize)_imageSizeThatFits:(CGSize)fits;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (UIEdgeInsets)imageMargin;
 - (UIEdgeInsets)padding;
-- (VUIButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4;
-- (double)bottomMarginWithBaselineMargin:(double)a3;
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4;
-- (double)topMarginWithBaselineMargin:(double)a3;
+- (VUIButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style;
+- (double)bottomMarginWithBaselineMargin:(double)margin;
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin;
+- (double)topMarginWithBaselineMargin:(double)margin;
 - (double)vuiBaselineHeight;
 - (double)vui_baselineOffsetFromBottom;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)largeContentImage;
 - (id)largeContentTitle;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (unint64_t)numberOfLinesRequiredForLabelWithButtonWidth:(double)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (unint64_t)numberOfLinesRequiredForLabelWithButtonWidth:(double)width;
 - (void)_addLongPressGesture;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)_configure;
-- (void)_crossFadeButtonImageTo:(id)a3;
+- (void)_crossFadeButtonImageTo:(id)to;
 - (void)_removeLongPressGestureIfNeeded;
-- (void)_setPointerInteractionEnabled:(BOOL)a3;
+- (void)_setPointerInteractionEnabled:(BOOL)enabled;
 - (void)_setupBarButtonItem;
 - (void)_setupBlurEffectBackdropView;
 - (void)_updateBackdropViewCornerRadius;
 - (void)_updateBorder;
 - (void)_updateLayout;
-- (void)buttonLongPressed:(id)a3;
+- (void)buttonLongPressed:(id)pressed;
 - (void)layoutSubviews;
 - (void)revertTintColor;
 - (void)saturateTintColorAndBackgroundColor;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setBackgroundImage:(id)a3 forHighlightedState:(BOOL)a4;
-- (void)setBackgroundImageView:(id)a3;
-- (void)setBlurEnabled:(BOOL)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setButtonShape:(unint64_t)a3;
-- (void)setButtonType:(unint64_t)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageView:(id)a3;
-- (void)setImageView:(id)a3 forHighlightedState:(BOOL)a4;
-- (void)setProgressBarView:(id)a3;
-- (void)setScrolledNonUberPercentage:(double)a3;
-- (void)setSecondaryBackgroundColor:(id)a3;
-- (void)setSelectActionHandler:(id)a3;
-- (void)setSubtitleContentView:(id)a3;
-- (void)setSupportsLongPress:(BOOL)a3;
-- (void)setTextContentView:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setUberButtonType:(unint64_t)a3;
-- (void)setVuiTag:(int64_t)a3;
+- (void)setBackdropGroupName:(id)name;
+- (void)setBackgroundImage:(id)image forHighlightedState:(BOOL)state;
+- (void)setBackgroundImageView:(id)view;
+- (void)setBlurEnabled:(BOOL)enabled;
+- (void)setBorderColor:(id)color;
+- (void)setButtonShape:(unint64_t)shape;
+- (void)setButtonType:(unint64_t)type;
+- (void)setCornerRadius:(double)radius;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageView:(id)view;
+- (void)setImageView:(id)view forHighlightedState:(BOOL)state;
+- (void)setProgressBarView:(id)view;
+- (void)setScrolledNonUberPercentage:(double)percentage;
+- (void)setSecondaryBackgroundColor:(id)color;
+- (void)setSelectActionHandler:(id)handler;
+- (void)setSubtitleContentView:(id)view;
+- (void)setSupportsLongPress:(BOOL)press;
+- (void)setTextContentView:(id)view;
+- (void)setTintColor:(id)color;
+- (void)setUberButtonType:(unint64_t)type;
+- (void)setVuiTag:(int64_t)tag;
 - (void)tintColorDidChange;
 - (void)vui_prepareForReuse;
 @end
 
 @implementation VUIButton
 
-- (VUIButton)initWithType:(unint64_t)a3 interfaceStyle:(unint64_t)a4
+- (VUIButton)initWithType:(unint64_t)type interfaceStyle:(unint64_t)style
 {
   v21[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = VUIButton;
-  v5 = [(VUIButton *)&v18 initWithFrame:a3, a4, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v5 = [(VUIButton *)&v18 initWithFrame:type, style, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    v5->_buttonType = a3;
+    v5->_buttonType = type;
     v5->_supportsLongPress = 0;
     [(VUIButton *)v5 _configure];
     v6->_allowsUberTinting = 1;
@@ -171,11 +171,11 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     if (self->_backdropView)
     {
       [(VUIButton *)self _updateBackdropViewCornerRadius];
@@ -183,83 +183,83 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
 
     else
     {
-      v5 = [(VUIButton *)self vuiLayer];
-      [v5 setCornerRadius:a3];
+      vuiLayer = [(VUIButton *)self vuiLayer];
+      [vuiLayer setCornerRadius:radius];
     }
 
-    v6 = [(VUIButton *)self secondaryBackgroundView];
+    secondaryBackgroundView = [(VUIButton *)self secondaryBackgroundView];
 
-    if (v6)
+    if (secondaryBackgroundView)
     {
-      v8 = [(VUIButton *)self secondaryBackgroundView];
-      v7 = [v8 vuiLayer];
-      [v7 setCornerRadius:a3];
+      secondaryBackgroundView2 = [(VUIButton *)self secondaryBackgroundView];
+      vuiLayer2 = [secondaryBackgroundView2 vuiLayer];
+      [vuiLayer2 setCornerRadius:radius];
     }
   }
 }
 
-- (void)setSecondaryBackgroundColor:(id)a3
+- (void)setSecondaryBackgroundColor:(id)color
 {
-  v10 = a3;
-  objc_storeStrong(&self->_secondaryBackgroundColor, a3);
-  v5 = [(VUIButton *)self secondaryBackgroundView];
+  colorCopy = color;
+  objc_storeStrong(&self->_secondaryBackgroundColor, color);
+  secondaryBackgroundView = [(VUIButton *)self secondaryBackgroundView];
 
-  if (!v5)
+  if (!secondaryBackgroundView)
   {
     v6 = objc_alloc(MEMORY[0x1E69DD250]);
     v7 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(VUIButton *)self setSecondaryBackgroundView:v7];
-    v8 = [v7 vuiLayer];
+    vuiLayer = [v7 vuiLayer];
     [(VUIButton *)self cornerRadius];
-    [v8 setCornerRadius:?];
+    [vuiLayer setCornerRadius:?];
 
     [(VUIButton *)self insertSubview:v7 atIndex:0];
   }
 
-  v9 = [(VUIButton *)self secondaryBackgroundView];
-  [v9 setBackgroundColor:v10];
+  secondaryBackgroundView2 = [(VUIButton *)self secondaryBackgroundView];
+  [secondaryBackgroundView2 setBackgroundColor:colorCopy];
 
   [(VUIButton *)self setNeedsLayout];
 }
 
-- (void)setBlurEnabled:(BOOL)a3
+- (void)setBlurEnabled:(BOOL)enabled
 {
-  if (self->_blurEnabled != a3)
+  if (self->_blurEnabled != enabled)
   {
-    self->_blurEnabled = a3;
+    self->_blurEnabled = enabled;
     [(VUIButton *)self _setupBlurEffectBackdropView];
   }
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  objc_storeStrong(&self->_borderColor, a3);
+  objc_storeStrong(&self->_borderColor, color);
 
   [(VUIButton *)self _updateBorder];
 }
 
-- (void)setButtonType:(unint64_t)a3
+- (void)setButtonType:(unint64_t)type
 {
-  if (self->_buttonType != a3)
+  if (self->_buttonType != type)
   {
-    if (!a3)
+    if (!type)
     {
       [(UIVisualEffectView *)self->_backdropView removeFromSuperview];
       backdropView = self->_backdropView;
       self->_backdropView = 0;
     }
 
-    self->_buttonType = a3;
+    self->_buttonType = type;
 
     [(VUIButton *)self _configure];
   }
 }
 
-- (void)setUberButtonType:(unint64_t)a3
+- (void)setUberButtonType:(unint64_t)type
 {
-  if (self->_uberButtonType != a3)
+  if (self->_uberButtonType != type)
   {
-    self->_uberButtonType = a3;
+    self->_uberButtonType = type;
     if (self->_buttonType == 3)
     {
       [(VUIButton *)self _setupBlurEffectBackdropView];
@@ -267,29 +267,29 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setSubtitleContentView:(id)a3
+- (void)setSubtitleContentView:(id)view
 {
-  v5 = a3;
-  [(VUIButton *)self vui_addSubview:v5 oldView:self->_subtitleContentView];
-  if (self->_subtitleContentView != v5)
+  viewCopy = view;
+  [(VUIButton *)self vui_addSubview:viewCopy oldView:self->_subtitleContentView];
+  if (self->_subtitleContentView != viewCopy)
   {
-    objc_storeStrong(&self->_subtitleContentView, a3);
+    objc_storeStrong(&self->_subtitleContentView, view);
   }
 
   [(VUIButton *)self vui_setNeedsLayout];
 }
 
-- (void)setTextContentView:(id)a3
+- (void)setTextContentView:(id)view
 {
-  v6 = a3;
-  [(VUIButton *)self vui_addSubview:v6 oldView:self->_textContentView];
-  if (self->_textContentView != v6)
+  viewCopy = view;
+  [(VUIButton *)self vui_addSubview:viewCopy oldView:self->_textContentView];
+  if (self->_textContentView != viewCopy)
   {
-    objc_storeStrong(&self->_textContentView, a3);
+    objc_storeStrong(&self->_textContentView, view);
   }
 
-  v5 = [(VUIButton *)self buttonType];
-  if (v5 == 7 || v5 == 2)
+  buttonType = [(VUIButton *)self buttonType];
+  if (buttonType == 7 || buttonType == 2)
   {
     [(VUILabel *)self->_textContentView _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
   }
@@ -297,79 +297,79 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
   [(VUIButton *)self vui_setNeedsLayout];
 }
 
-- (void)setVuiTag:(int64_t)a3
+- (void)setVuiTag:(int64_t)tag
 {
-  if (self->_vuiTag != a3)
+  if (self->_vuiTag != tag)
   {
-    self->_vuiTag = a3;
+    self->_vuiTag = tag;
     [(VUIButton *)self setTag:?];
   }
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
-  [(VUIButton *)self vui_addSubview:v5 oldView:self->_imageView];
-  if (self->_imageView != v5)
+  viewCopy = view;
+  [(VUIButton *)self vui_addSubview:viewCopy oldView:self->_imageView];
+  if (self->_imageView != viewCopy)
   {
-    objc_storeStrong(&self->_imageView, a3);
-    v6 = [(VUIImageView *)self->_imageView image];
+    objc_storeStrong(&self->_imageView, view);
+    image = [(VUIImageView *)self->_imageView image];
     originalImage = self->_originalImage;
-    self->_originalImage = v6;
+    self->_originalImage = image;
   }
 
   [(VUIButton *)self vui_setNeedsLayout];
   imagesViewDefaultState = self->_imagesViewDefaultState;
-  self->_imagesViewDefaultState = v5;
+  self->_imagesViewDefaultState = viewCopy;
 }
 
-- (void)setProgressBarView:(id)a3
+- (void)setProgressBarView:(id)view
 {
-  v5 = a3;
-  [(VUIButton *)self vui_addSubview:v5 oldView:self->_progressBarView];
-  if (self->_progressBarView != v5)
+  viewCopy = view;
+  [(VUIButton *)self vui_addSubview:viewCopy oldView:self->_progressBarView];
+  if (self->_progressBarView != viewCopy)
   {
-    objc_storeStrong(&self->_progressBarView, a3);
+    objc_storeStrong(&self->_progressBarView, view);
   }
 
   [(VUIButton *)self vui_setNeedsLayout];
 }
 
-- (void)setBackgroundImageView:(id)a3
+- (void)setBackgroundImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundImageView = self->_backgroundImageView;
-  if (backgroundImageView != v5)
+  if (backgroundImageView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)backgroundImageView removeFromSuperview];
-    v7 = [(VUIButton *)self subviews];
-    v8 = [v7 firstObject];
+    subviews = [(VUIButton *)self subviews];
+    firstObject = [subviews firstObject];
 
-    [(VUIButton *)self vui_insertSubview:v9 belowSubview:v8 oldView:self->_backgroundImageView];
-    objc_storeStrong(&self->_backgroundImageView, a3);
-    objc_storeStrong(&self->_backgroundImagesViewDefaultState, a3);
+    [(VUIButton *)self vui_insertSubview:v9 belowSubview:firstObject oldView:self->_backgroundImageView];
+    objc_storeStrong(&self->_backgroundImageView, view);
+    objc_storeStrong(&self->_backgroundImagesViewDefaultState, view);
 
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)setButtonShape:(unint64_t)a3
+- (void)setButtonShape:(unint64_t)shape
 {
-  if (self->_buttonShape != a3)
+  if (self->_buttonShape != shape)
   {
-    self->_buttonShape = a3;
+    self->_buttonShape = shape;
   }
 }
 
-- (void)setImageView:(id)a3 forHighlightedState:(BOOL)a4
+- (void)setImageView:(id)view forHighlightedState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = v6;
-  if (v4)
+  stateCopy = state;
+  viewCopy = view;
+  v11 = viewCopy;
+  if (stateCopy)
   {
-    [v6 bounds];
+    [viewCopy bounds];
     v8 = v7;
     v10 = v9;
     [(VUIImageView *)self->_imagesViewDefaultState bounds];
@@ -379,18 +379,18 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
 
   else
   {
-    [(VUIButton *)self setImageView:v6];
+    [(VUIButton *)self setImageView:viewCopy];
   }
 }
 
-- (void)setBackgroundImage:(id)a3 forHighlightedState:(BOOL)a4
+- (void)setBackgroundImage:(id)image forHighlightedState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = v6;
-  if (v4)
+  stateCopy = state;
+  imageCopy = image;
+  v11 = imageCopy;
+  if (stateCopy)
   {
-    [v6 bounds];
+    [imageCopy bounds];
     v8 = v7;
     v10 = v9;
     [(VUIImageView *)self->_backgroundImagesViewDefaultState bounds];
@@ -400,13 +400,13 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
 
   else
   {
-    [(VUIButton *)self setBackgroundImageView:v6];
+    [(VUIButton *)self setBackgroundImageView:imageCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v18.receiver = self;
   v18.super_class = VUIButton;
   [(VUIButton *)&v18 setHighlighted:?];
@@ -416,7 +416,7 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
     if (v5 != 0.0)
     {
       v6 = [(VUIButton *)self buttonType]== 7;
-      if (v3)
+      if (highlightedCopy)
       {
         if (v6)
         {
@@ -428,8 +428,8 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
 
         else
         {
-          v7 = [(VUIButton *)self highlightColor];
-          [(VUIButton *)self setVuiBackgroundColor:v7];
+          highlightColor = [(VUIButton *)self highlightColor];
+          [(VUIButton *)self setVuiBackgroundColor:highlightColor];
         }
 
         if (self->_imagesViewHighlightedState)
@@ -452,8 +452,8 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
 
         else
         {
-          v9 = [(VUIButton *)self buttonBackgroundColor];
-          [(VUIButton *)self setVuiBackgroundColor:v9];
+          buttonBackgroundColor = [(VUIButton *)self buttonBackgroundColor];
+          [(VUIButton *)self setVuiBackgroundColor:buttonBackgroundColor];
         }
 
         if (self->_imagesViewDefaultState)
@@ -469,45 +469,45 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
         [(VUIButton *)self setBackgroundImageView:?];
       }
 
-      v10 = [(VUIButton *)self textContentView];
-      [v10 setHighlighted:v3];
+      textContentView = [(VUIButton *)self textContentView];
+      [textContentView setHighlighted:highlightedCopy];
 
       if (![(VUIButton *)self buttonType]|| [(VUIButton *)self buttonType]== 3)
       {
-        v11 = [(VUIButton *)self imageView];
-        [v11 vui_setSelected:v3 animated:0 withAnimationCoordinator:0];
+        imageView = [(VUIButton *)self imageView];
+        [imageView vui_setSelected:highlightedCopy animated:0 withAnimationCoordinator:0];
       }
 
       if (self->_backdropView)
       {
-        v12 = [(VUIButton *)self buttonBackgroundColor];
-        if (!v12 || (v13 = v12, -[VUIButton buttonBackgroundColor](self, "buttonBackgroundColor"), v14 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E69DC888] clearColor], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v14 == v15))
+        buttonBackgroundColor2 = [(VUIButton *)self buttonBackgroundColor];
+        if (!buttonBackgroundColor2 || (v13 = buttonBackgroundColor2, -[VUIButton buttonBackgroundColor](self, "buttonBackgroundColor"), v14 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E69DC888] clearColor], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v14 == v15))
         {
-          v16 = [(VUIButton *)self layer];
+          layer = [(VUIButton *)self layer];
           v17 = 0.0;
-          if (v3)
+          if (highlightedCopy)
           {
             [(VUIButton *)self cornerRadius];
           }
 
-          [v16 setCornerRadius:v17];
+          [layer setCornerRadius:v17];
         }
       }
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = VUIButton;
   [(VUIButton *)&v7 setEnabled:?];
-  v5 = [(VUIButton *)self textContentView];
-  [v5 setEnabled:v3];
+  textContentView = [(VUIButton *)self textContentView];
+  [textContentView setEnabled:enabledCopy];
 
-  v6 = [(VUIButton *)self subtitleContentView];
-  [v6 setEnabled:v3];
+  subtitleContentView = [(VUIButton *)self subtitleContentView];
+  [subtitleContentView setEnabled:enabledCopy];
 }
 
 - (CGSize)intrinsicContentSize
@@ -518,9 +518,9 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIButton *)self vui_layoutSubviews:1 computationOnly:a3.width, a3.height];
+  [(VUIButton *)self vui_layoutSubviews:1 computationOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -535,36 +535,36 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
   [(VUIButton *)self vui_layoutSubviews:0 computationOnly:v3, v4];
 }
 
-- (void)setSelectActionHandler:(id)a3
+- (void)setSelectActionHandler:(id)handler
 {
-  if (self->_selectActionHandler != a3)
+  if (self->_selectActionHandler != handler)
   {
-    v4 = _Block_copy(a3);
+    v4 = _Block_copy(handler);
     selectActionHandler = self->_selectActionHandler;
     self->_selectActionHandler = v4;
   }
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v5 = a3;
-  if (self->_backdropGroupName != v5)
+  nameCopy = name;
+  if (self->_backdropGroupName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backdropGroupName, a3);
+    v6 = nameCopy;
+    objc_storeStrong(&self->_backdropGroupName, name);
     [(UIVisualEffectView *)self->_backdropView _setGroupName:v6];
-    v5 = v6;
+    nameCopy = v6;
   }
 }
 
-- (void)setSupportsLongPress:(BOOL)a3
+- (void)setSupportsLongPress:(BOOL)press
 {
-  if (self->_supportsLongPress != a3)
+  if (self->_supportsLongPress != press)
   {
-    v3 = a3;
-    self->_supportsLongPress = a3;
+    pressCopy = press;
+    self->_supportsLongPress = press;
     [(VUIButton *)self _removeLongPressGestureIfNeeded];
-    if (v3)
+    if (pressCopy)
     {
 
       [(VUIButton *)self _addLongPressGesture];
@@ -572,22 +572,22 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  if (self->_highlightColor != v5)
+  colorCopy = color;
+  if (self->_highlightColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_highlightColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_highlightColor, color);
+    colorCopy = v6;
   }
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  if (!a4)
+  height = subviews.height;
+  width = subviews.width;
+  if (!only)
   {
     if (self->_backdropView)
     {
@@ -630,8 +630,8 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
         v30.size.height = v20;
         v21 = CGRectGetHeight(v30) * 0.5;
         [(VUIButton *)self setCornerRadius:v21];
-        v22 = [(VUIButton *)self layer];
-        [v22 setCornerRadius:v21];
+        layer = [(VUIButton *)self layer];
+        [layer setCornerRadius:v21];
 
         backdropView = self->_backdropView;
       }
@@ -652,19 +652,19 @@ void __41__VUIButton_initWithType_interfaceStyle___block_invoke_3(uint64_t a1)
         backdropView = self;
       }
 
-      v25 = [backdropView layer];
-      [v25 setCornerRadius:v21];
+      layer2 = [backdropView layer];
+      [layer2 setCornerRadius:v21];
     }
 
 LABEL_19:
     [(VUIButton *)self _updateLayout];
-    v26 = [(VUIButton *)self buttonBackgroundColor];
-    [(VUIButton *)self setVuiBackgroundColor:v26];
+    buttonBackgroundColor = [(VUIButton *)self buttonBackgroundColor];
+    [(VUIButton *)self setVuiBackgroundColor:buttonBackgroundColor];
 
     goto LABEL_20;
   }
 
-  [(VUIButton *)self _computeSizeThatFits:a3.width, a3.height];
+  [(VUIButton *)self _computeSizeThatFits:subviews.width, subviews.height];
   width = v7;
   height = v8;
 LABEL_20:
@@ -677,7 +677,7 @@ LABEL_20:
 
 - (double)vuiBaselineHeight
 {
-  v3 = [(VUIButton *)self textContentView];
+  textContentView = [(VUIButton *)self textContentView];
   objc_opt_class();
   v4 = 0.0;
   if (objc_opt_isKindOfClass())
@@ -686,22 +686,22 @@ LABEL_20:
     v6 = *(MEMORY[0x1E695F060] + 8);
     [(VUIButton *)self _computeSizeThatFits:*MEMORY[0x1E695F060], v6];
     v8 = v7;
-    [v3 vui_sizeThatFits:{v5, v6}];
+    [textContentView vui_sizeThatFits:{v5, v6}];
     v10 = (v8 - v9) * 0.5;
-    [v3 vuiBaselineHeight];
+    [textContentView vuiBaselineHeight];
     v4 = v11 + v10;
   }
 
   return v4;
 }
 
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin
 {
-  v6 = a3;
+  labelCopy = label;
   if ([(VUIButton *)self buttonType]== 2 && ([(VUIButton *)self textContentView], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, (isKindOfClass & 1) != 0))
   {
-    v9 = [(VUIButton *)self textContentView];
-    [v9 topMarginToLabel:v6 withBaselineMargin:a4];
+    textContentView = [(VUIButton *)self textContentView];
+    [textContentView topMarginToLabel:labelCopy withBaselineMargin:margin];
     v11 = v10;
   }
 
@@ -709,7 +709,7 @@ LABEL_20:
   {
     v14.receiver = self;
     v14.super_class = VUIButton;
-    [(UIView *)&v14 topMarginWithBaselineMargin:a4];
+    [(UIView *)&v14 topMarginWithBaselineMargin:margin];
     v11 = v12;
   }
 
@@ -723,7 +723,7 @@ LABEL_20:
     return 0.0;
   }
 
-  v3 = [(VUIButton *)self textContentView];
+  textContentView = [(VUIButton *)self textContentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -732,8 +732,8 @@ LABEL_20:
     return 0.0;
   }
 
-  v5 = [(VUIButton *)self textContentView];
-  [v5 vui_baselineOffsetFromBottom];
+  textContentView2 = [(VUIButton *)self textContentView];
+  [textContentView2 vui_baselineOffsetFromBottom];
   v7 = v6;
 
   return v7;
@@ -747,49 +747,49 @@ LABEL_20:
   [(VUILabel *)textContentView setVuiText:0];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v7.receiver = self;
   v7.super_class = VUIButton;
-  [(VUIButton *)&v7 setTintColor:v4];
+  [(VUIButton *)&v7 setTintColor:colorCopy];
   if ([(VUIButton *)self tintAdjustmentMode]== 2)
   {
-    [(VUIButton *)self setImageTintColor:v4];
+    [(VUIButton *)self setImageTintColor:colorCopy];
   }
 
   else
   {
-    v5 = [(VUIButton *)self textContentView];
-    [v5 setTextColor:v4];
+    textContentView = [(VUIButton *)self textContentView];
+    [textContentView setTextColor:colorCopy];
 
-    v6 = [(VUILabel *)self->_textContentView textLayout];
-    [v6 setColor:v4];
-    [v6 setDarkColor:v4];
-    [(VUIButton *)self setImageTintColor:v4];
-    [(VUIImageView *)self->_imageView _setTintColor:v4];
+    textLayout = [(VUILabel *)self->_textContentView textLayout];
+    [textLayout setColor:colorCopy];
+    [textLayout setDarkColor:colorCopy];
+    [(VUIButton *)self setImageTintColor:colorCopy];
+    [(VUIImageView *)self->_imageView _setTintColor:colorCopy];
   }
 }
 
 - (void)saturateTintColorAndBackgroundColor
 {
-  v4 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-  v3 = [(VUIButton *)self imageTintColor];
+  systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+  imageTintColor = [(VUIButton *)self imageTintColor];
 
-  if (v3)
+  if (imageTintColor)
   {
-    [(VUIImageView *)self->_imageView _setTintColor:v4];
+    [(VUIImageView *)self->_imageView _setTintColor:systemMidGrayColor];
   }
 
-  [(VUILabel *)self->_textContentView setTextColor:v4];
+  [(VUILabel *)self->_textContentView setTextColor:systemMidGrayColor];
 }
 
 - (void)revertTintColor
 {
   if (self->_imageView)
   {
-    v3 = [(VUIButton *)self imageTintColor];
-    [(VUIImageView *)self->_imageView _setTintColor:v3];
+    imageTintColor = [(VUIButton *)self imageTintColor];
+    [(VUIImageView *)self->_imageView _setTintColor:imageTintColor];
   }
 
   textContentView = self->_textContentView;
@@ -797,12 +797,12 @@ LABEL_20:
   [(VUILabel *)textContentView revertTintColor];
 }
 
-- (double)topMarginWithBaselineMargin:(double)a3
+- (double)topMarginWithBaselineMargin:(double)margin
 {
   if ([(VUIButton *)self buttonType]== 2 && ([(VUIButton *)self textContentView], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = [(VUIButton *)self textContentView];
-    [v7 topMarginWithBaselineMargin:a3];
+    textContentView = [(VUIButton *)self textContentView];
+    [textContentView topMarginWithBaselineMargin:margin];
     v9 = v8;
 
     return v9;
@@ -812,18 +812,18 @@ LABEL_20:
   {
     v11.receiver = self;
     v11.super_class = VUIButton;
-    [(UIView *)&v11 topMarginWithBaselineMargin:a3];
+    [(UIView *)&v11 topMarginWithBaselineMargin:margin];
   }
 
   return result;
 }
 
-- (double)bottomMarginWithBaselineMargin:(double)a3
+- (double)bottomMarginWithBaselineMargin:(double)margin
 {
   if ([(VUIButton *)self buttonType]== 2 && ([(VUIButton *)self textContentView], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = [(VUIButton *)self textContentView];
-    [v7 bottomMarginWithBaselineMargin:a3];
+    textContentView = [(VUIButton *)self textContentView];
+    [textContentView bottomMarginWithBaselineMargin:margin];
     v9 = v8;
 
     return v9;
@@ -833,7 +833,7 @@ LABEL_20:
   {
     v11.receiver = self;
     v11.super_class = VUIButton;
-    [(UIView *)&v11 bottomMarginWithBaselineMargin:a3];
+    [(UIView *)&v11 bottomMarginWithBaselineMargin:margin];
   }
 
   return result;
@@ -841,58 +841,58 @@ LABEL_20:
 
 - (BOOL)onlyHasImage
 {
-  v3 = [(VUIButton *)self _hasImage];
-  if (v3)
+  _hasImage = [(VUIButton *)self _hasImage];
+  if (_hasImage)
   {
     if ([(VUIButton *)self _hasTitle]|| [(VUIButton *)self _hasSubtitle])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_hasImage) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(VUIButton *)self _hasProgressBar];
+      LOBYTE(_hasImage) = ![(VUIButton *)self _hasProgressBar];
     }
   }
 
-  return v3;
+  return _hasImage;
 }
 
-- (unint64_t)numberOfLinesRequiredForLabelWithButtonWidth:(double)a3
+- (unint64_t)numberOfLinesRequiredForLabelWithButtonWidth:(double)width
 {
   if (![(VUIButton *)self _hasTitle])
   {
     return 0;
   }
 
-  [(VUIButton *)self _availableSizeForLabelInButtonWithSize:a3, 1.79769313e308];
+  [(VUIButton *)self _availableSizeForLabelInButtonWithSize:width, 1.79769313e308];
   v6 = v5;
-  v7 = [(VUIButton *)self textContentView];
-  v8 = [v7 numberOfLinesRequiredForTextWidth:v6];
+  textContentView = [(VUIButton *)self textContentView];
+  v8 = [textContentView numberOfLinesRequiredForTextWidth:v6];
 
   return v8;
 }
 
-- (void)_crossFadeButtonImageTo:(id)a3
+- (void)_crossFadeButtonImageTo:(id)to
 {
-  v4 = a3;
-  if (v4)
+  toCopy = to;
+  if (toCopy)
   {
-    v5 = [(VUIButton *)self imageView];
-    v6 = [v5 image];
+    imageView = [(VUIButton *)self imageView];
+    image = [imageView image];
 
-    if (v6 != v4)
+    if (image != toCopy)
     {
       objc_initWeak(&location, self);
-      v7 = [(VUIButton *)self imageView];
+      imageView2 = [(VUIButton *)self imageView];
       v8 = MEMORY[0x1E69DD250];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __37__VUIButton__crossFadeButtonImageTo___block_invoke;
       v9[3] = &unk_1E872F038;
       objc_copyWeak(&v11, &location);
-      v10 = v4;
-      [v8 transitionWithView:v7 duration:5242880 options:v9 animations:0 completion:0.200000003];
+      v10 = toCopy;
+      [v8 transitionWithView:imageView2 duration:5242880 options:v9 animations:0 completion:0.200000003];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
@@ -908,12 +908,12 @@ void __37__VUIButton__crossFadeButtonImageTo___block_invoke(uint64_t a1)
   [v3 setImage:v2];
 }
 
-- (CGSize)_imageSizeThatFits:(CGSize)a3
+- (CGSize)_imageSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(VUIButton *)self imageView];
-  [v5 vui_sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  imageView = [(VUIButton *)self imageView];
+  [imageView vui_sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -924,23 +924,23 @@ void __37__VUIButton__crossFadeButtonImageTo___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)_computeSizeThatFits:(CGSize)a3
+- (CGSize)_computeSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
   [(VUIButton *)self _imageSizeThatFits:?];
   imageMaxHeight = v8;
-  v10 = [(VUIButton *)self buttonType];
-  v11 = [(VUIButton *)self vuiTraitCollection];
-  v12 = [v11 isAXEnabled];
+  buttonType = [(VUIButton *)self buttonType];
+  vuiTraitCollection = [(VUIButton *)self vuiTraitCollection];
+  isAXEnabled = [vuiTraitCollection isAXEnabled];
 
-  v13 = [(VUIButton *)self maxContentSizeCategoryForIdealHeight];
+  maxContentSizeCategoryForIdealHeight = [(VUIButton *)self maxContentSizeCategoryForIdealHeight];
   v14 = _os_feature_enabled_impl();
-  if (v13)
+  if (maxContentSizeCategoryForIdealHeight)
   {
-    v15 = v12;
+    v15 = isAXEnabled;
   }
 
   else
@@ -958,9 +958,9 @@ void __37__VUIButton__crossFadeButtonImageTo___block_invoke(uint64_t a1)
     v16 = 0;
   }
 
-  if (v10 <= 4)
+  if (buttonType <= 4)
   {
-    if (v10 < 2)
+    if (buttonType < 2)
     {
 LABEL_11:
       [(VUIButton *)self _calculateContentSizeForPrimaryButtonThatFit:width, height];
@@ -975,9 +975,9 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    if (v10 != 2)
+    if (buttonType != 2)
     {
-      if (v10 == 3)
+      if (buttonType == 3)
       {
         goto LABEL_11;
       }
@@ -990,14 +990,14 @@ LABEL_28:
     goto LABEL_31;
   }
 
-  if (v10 > 6)
+  if (buttonType > 6)
   {
-    if (v10 == 7)
+    if (buttonType == 7)
     {
       if ([(VUIButton *)self _hasImage]&& [(VUIButton *)self _hasTitle])
       {
-        v27 = [(VUIButton *)self textContentView];
-        [v27 sizeThatFits:{width, height}];
+        textContentView = [(VUIButton *)self textContentView];
+        [textContentView sizeThatFits:{width, height}];
         v29 = v28;
 
         [(VUIButton *)self imageMargin];
@@ -1014,9 +1014,9 @@ LABEL_28:
         }
 
         [(VUIButton *)self imageMargin];
-        v33 = [(VUIButton *)self textContentView];
-        v34 = [v33 textLayout];
-        [v34 margin];
+        textContentView2 = [(VUIButton *)self textContentView];
+        textLayout = [textContentView2 textLayout];
+        [textLayout margin];
 
         goto LABEL_32;
       }
@@ -1028,15 +1028,15 @@ LABEL_28:
       }
 
 LABEL_31:
-      v33 = [(VUIButton *)self textContentView];
-      [v33 sizeThatFits:{width, height}];
+      textContentView2 = [(VUIButton *)self textContentView];
+      [textContentView2 sizeThatFits:{width, height}];
       imageMaxHeight = v35;
 LABEL_32:
 
       goto LABEL_33;
     }
 
-    if (v10 != 9)
+    if (buttonType != 9)
     {
       goto LABEL_28;
     }
@@ -1047,15 +1047,15 @@ LABEL_32:
 
   else
   {
-    if (v10 == 5)
+    if (buttonType == 5)
     {
       goto LABEL_33;
     }
 
     if ([(VUIButton *)self _hasTitle])
     {
-      v18 = [(VUIButton *)self textContentView];
-      [v18 sizeThatFits:{width, height}];
+      textContentView3 = [(VUIButton *)self textContentView];
+      [textContentView3 sizeThatFits:{width, height}];
       imageMaxHeight = v19;
     }
 
@@ -1089,7 +1089,7 @@ LABEL_34:
     }
   }
 
-  v41 = [(VUIButton *)self onlyHasImage];
+  onlyHasImage = [(VUIButton *)self onlyHasImage];
   [(VUIButton *)self width];
   v43 = v42;
   [(VUIButton *)self height];
@@ -1188,8 +1188,8 @@ LABEL_56:
       v58 = MEMORY[0x1E69DF6D0];
       [(VUIButton *)self height];
       v60 = v59;
-      v61 = [(VUIButton *)self vuiTraitCollection];
-      [v58 scaleContentSizeValue:v61 forTraitCollection:-[VUIButton maxContentSizeCategoryForIdealHeight](self maximumContentSizeCategory:{"maxContentSizeCategoryForIdealHeight"), v60}];
+      vuiTraitCollection2 = [(VUIButton *)self vuiTraitCollection];
+      [v58 scaleContentSizeValue:vuiTraitCollection2 forTraitCollection:-[VUIButton maxContentSizeCategoryForIdealHeight](self maximumContentSizeCategory:{"maxContentSizeCategoryForIdealHeight"), v60}];
       v63 = v62;
 
       if (v63 > v46)
@@ -1199,7 +1199,7 @@ LABEL_56:
     }
   }
 
-  if (v41)
+  if (onlyHasImage)
   {
     [(VUIButton *)self height];
     if (v64 > 0.0)
@@ -1218,10 +1218,10 @@ LABEL_56:
   return result;
 }
 
-- (CGSize)_availableSizeForLabelInButtonWithSize:(CGSize)a3
+- (CGSize)_availableSizeForLabelInButtonWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(VUIButton *)self padding];
   v8 = width - v6 - v7;
   if ([(VUIButton *)self _hasImage])
@@ -1232,16 +1232,16 @@ LABEL_56:
       v10 = v8 - v9;
       [(VUIButton *)self imageMargin];
       v12 = v10 - v11;
-      v13 = [(VUIButton *)self textContentView];
-      v14 = [v13 textLayout];
-      [v14 margin];
+      textContentView = [(VUIButton *)self textContentView];
+      textLayout = [textContentView textLayout];
+      [textLayout margin];
       v16 = v15;
 
       v8 = v12 - v16;
       if ([(VUIButton *)self _hasProgressBar])
       {
-        v17 = [(VUIButton *)self progressBarView];
-        [v17 vui_sizeThatFits:{width, height}];
+        progressBarView = [(VUIButton *)self progressBarView];
+        [progressBarView vui_sizeThatFits:{width, height}];
         v19 = v18;
 
         v8 = v8 - v19;
@@ -1256,18 +1256,18 @@ LABEL_56:
   return result;
 }
 
-- (CGSize)_calculateContentSizeForCustomButtonThatFit:(CGSize)a3
+- (CGSize)_calculateContentSizeForCustomButtonThatFit:(CGSize)fit
 {
-  height = a3.height;
-  width = a3.width;
+  height = fit.height;
+  width = fit.width;
   if ([(VUIButton *)self _hasImage]&& [(VUIButton *)self _hasTitle])
   {
     [(VUIButton *)self _calculateContentSizeForImageThatFit:width, height];
     v7 = v6;
     v9 = v8;
     v10 = width - v6;
-    v11 = [(VUIButton *)self textContentView];
-    [v11 sizeThatFits:{v10, height}];
+    textContentView = [(VUIButton *)self textContentView];
+    [textContentView sizeThatFits:{v10, height}];
     v13 = v12;
     v15 = v14;
 
@@ -1278,9 +1278,9 @@ LABEL_56:
 
     [(VUIButton *)self imageMargin];
     v17 = v7 + v16;
-    v18 = [(VUIButton *)self textContentView];
-    v19 = [v18 textLayout];
-    [v19 margin];
+    textContentView2 = [(VUIButton *)self textContentView];
+    textLayout = [textContentView2 textLayout];
+    [textLayout margin];
     v21 = v13 + v17 + v20;
 
     goto LABEL_11;
@@ -1288,8 +1288,8 @@ LABEL_56:
 
   if (![(VUIButton *)self _hasImage])
   {
-    v18 = [(VUIButton *)self textContentView];
-    [v18 sizeThatFits:{width, height}];
+    textContentView2 = [(VUIButton *)self textContentView];
+    [textContentView2 sizeThatFits:{width, height}];
     v21 = v24;
     v15 = v25;
 LABEL_11:
@@ -1306,15 +1306,15 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)_calculateContentSizeForPrimaryButtonThatFit:(CGSize)a3
+- (CGSize)_calculateContentSizeForPrimaryButtonThatFit:(CGSize)fit
 {
-  height = a3.height;
-  width = a3.width;
+  height = fit.height;
+  width = fit.width;
   if ([(VUIButton *)self _hasImage]&& [(VUIButton *)self _hasTitle]&& [(VUIButton *)self _hasProgressBar])
   {
-    v6 = [(VUIButton *)self textContentView];
-    v7 = [v6 textLayout];
-    [v7 margin];
+    textContentView = [(VUIButton *)self textContentView];
+    textLayout = [textContentView textLayout];
+    [textLayout margin];
     v9 = v8;
 
     [(VUIButton *)self imageMargin];
@@ -1322,15 +1322,15 @@ LABEL_12:
     [(VUIButton *)self _calculateContentSizeForImageThatFit:width, height];
     v13 = v12;
     v15 = v14;
-    v16 = [(VUIButton *)self progressBarView];
-    [v16 vui_sizeThatFits:{width, height}];
+    progressBarView = [(VUIButton *)self progressBarView];
+    [progressBarView vui_sizeThatFits:{width, height}];
     v18 = v17;
 
     [(VUIButton *)self _availableSizeForLabelInButtonWithSize:width, height];
     v20 = v19;
     v22 = v21;
-    v23 = [(VUIButton *)self textContentView];
-    [v23 sizeThatFits:{v20, v22}];
+    textContentView2 = [(VUIButton *)self textContentView];
+    [textContentView2 sizeThatFits:{v20, v22}];
     v25 = v24;
     v27 = v26;
 
@@ -1352,9 +1352,9 @@ LABEL_12:
     [(VUIButton *)self _calculateContentSizeForImageThatFit:width, height];
     v31 = v30;
     v33 = v32;
-    v34 = [(VUIButton *)self textContentView];
-    v35 = [v34 textLayout];
-    [v35 margin];
+    textContentView3 = [(VUIButton *)self textContentView];
+    textLayout2 = [textContentView3 textLayout];
+    [textLayout2 margin];
     v37 = v36;
 
     [(VUIButton *)self imageMargin];
@@ -1362,8 +1362,8 @@ LABEL_12:
     [(VUIButton *)self _availableSizeForLabelInButtonWithSize:width, height];
     v41 = v40;
     v43 = v42;
-    v44 = [(VUIButton *)self textContentView];
-    [v44 sizeThatFits:{v41, v43}];
+    textContentView4 = [(VUIButton *)self textContentView];
+    [textContentView4 sizeThatFits:{v41, v43}];
     v46 = v45;
     v48 = v47;
 
@@ -1388,8 +1388,8 @@ LABEL_12:
 
   else
   {
-    v49 = [(VUIButton *)self textContentView];
-    [v49 sizeThatFits:{width, height}];
+    textContentView5 = [(VUIButton *)self textContentView];
+    [textContentView5 sizeThatFits:{width, height}];
     v51 = v50;
     v53 = v52;
 
@@ -1402,9 +1402,9 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)_calculateContentSizeForImageThatFit:(CGSize)a3
+- (CGSize)_calculateContentSizeForImageThatFit:(CGSize)fit
 {
-  [(VUIButton *)self _imageSizeThatFits:a3.width, a3.height];
+  [(VUIButton *)self _imageSizeThatFits:fit.width, fit.height];
   v5 = v4;
   v7 = v6;
   [(VUIButton *)self imageMargin];
@@ -1419,76 +1419,76 @@ LABEL_12:
 
 - (BOOL)_hasSubtitle
 {
-  v2 = [(VUIButton *)self subtitleContentView];
-  v3 = v2 != 0;
+  subtitleContentView = [(VUIButton *)self subtitleContentView];
+  v3 = subtitleContentView != 0;
 
   return v3;
 }
 
 - (BOOL)_hasTitle
 {
-  v2 = [(VUIButton *)self textContentView];
-  v3 = v2 != 0;
+  textContentView = [(VUIButton *)self textContentView];
+  v3 = textContentView != 0;
 
   return v3;
 }
 
 - (BOOL)_hasImage
 {
-  v2 = [(VUIButton *)self imageView];
-  v3 = v2 != 0;
+  imageView = [(VUIButton *)self imageView];
+  v3 = imageView != 0;
 
   return v3;
 }
 
 - (BOOL)_hasProgressBar
 {
-  v2 = [(VUIButton *)self progressBarView];
-  v3 = v2 != 0;
+  progressBarView = [(VUIButton *)self progressBarView];
+  v3 = progressBarView != 0;
 
   return v3;
 }
 
 - (BOOL)_hasBackgroundImage
 {
-  v2 = [(VUIButton *)self backgroundImageView];
-  v3 = v2 != 0;
+  backgroundImageView = [(VUIButton *)self backgroundImageView];
+  v3 = backgroundImageView != 0;
 
   return v3;
 }
 
 - (void)_configure
 {
-  v3 = [(VUIButton *)self buttonBackgroundColor];
-  [(VUIButton *)self setVuiBackgroundColor:v3];
+  buttonBackgroundColor = [(VUIButton *)self buttonBackgroundColor];
+  [(VUIButton *)self setVuiBackgroundColor:buttonBackgroundColor];
 
   [(VUIButton *)self cornerRadius];
   [(VUIButton *)self setCornerRadius:?];
-  v4 = [(VUIButton *)self shadow];
+  shadow = [(VUIButton *)self shadow];
 
-  if (v4)
+  if (shadow)
   {
-    v5 = [(VUIButton *)self layer];
-    v6 = [(VUIButton *)self shadow];
-    [v6 shadowOffset];
-    [v5 setShadowOffset:?];
+    layer = [(VUIButton *)self layer];
+    shadow2 = [(VUIButton *)self shadow];
+    [shadow2 shadowOffset];
+    [layer setShadowOffset:?];
 
-    v7 = [(VUIButton *)self layer];
-    v8 = [(VUIButton *)self shadow];
-    [v8 shadowBlurRadius];
-    [v7 setShadowRadius:?];
+    layer2 = [(VUIButton *)self layer];
+    shadow3 = [(VUIButton *)self shadow];
+    [shadow3 shadowBlurRadius];
+    [layer2 setShadowRadius:?];
 
-    v9 = [(VUIButton *)self layer];
-    v10 = [(VUIButton *)self shadow];
-    v11 = [v10 shadowColor];
-    [v9 setShadowColor:{objc_msgSend(v11, "CGColor")}];
+    layer3 = [(VUIButton *)self layer];
+    shadow4 = [(VUIButton *)self shadow];
+    shadowColor = [shadow4 shadowColor];
+    [layer3 setShadowColor:{objc_msgSend(shadowColor, "CGColor")}];
 
-    v12 = [(VUIButton *)self layer];
-    [v12 setMasksToBounds:0];
+    layer4 = [(VUIButton *)self layer];
+    [layer4 setMasksToBounds:0];
 
-    v13 = [(VUIButton *)self layer];
+    layer5 = [(VUIButton *)self layer];
     LODWORD(v14) = 1.0;
-    [v13 setShadowOpacity:v14];
+    [layer5 setShadowOpacity:v14];
   }
 
   if ([(VUIButton *)self buttonType]== 7 || ![(VUIButton *)self buttonType]|| [(VUIButton *)self buttonType]== 3)
@@ -1539,8 +1539,8 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  if (borderColor == v6)
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  if (borderColor == clearColor)
   {
 
     goto LABEL_7;
@@ -1560,26 +1560,26 @@ LABEL_8:
   backdropView = self->_backdropView;
   if (!backdropView)
   {
-    v14 = [(VUIButton *)self vuiLayer];
-    [v14 setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
+    vuiLayer = [(VUIButton *)self vuiLayer];
+    [vuiLayer setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
 
-    v15 = [(VUIButton *)self vuiLayer];
-    [v15 setBorderWidth:self->_borderWidth];
+    vuiLayer2 = [(VUIButton *)self vuiLayer];
+    [vuiLayer2 setBorderWidth:self->_borderWidth];
 
     goto LABEL_8;
   }
 
-  v9 = [(UIVisualEffectView *)backdropView vuiLayer];
-  [v9 setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
+  vuiLayer3 = [(UIVisualEffectView *)backdropView vuiLayer];
+  [vuiLayer3 setBorderColor:{-[UIColor CGColor](self->_borderColor, "CGColor")}];
 
-  v10 = [(UIVisualEffectView *)self->_backdropView vuiLayer];
-  [v10 setBorderWidth:self->_borderWidth];
+  vuiLayer4 = [(UIVisualEffectView *)self->_backdropView vuiLayer];
+  [vuiLayer4 setBorderWidth:self->_borderWidth];
 
-  v11 = [(UIVisualEffectView *)self->_backdropView vuiLayer];
-  [v11 setCornerRadius:self->_cornerRadius];
+  vuiLayer5 = [(UIVisualEffectView *)self->_backdropView vuiLayer];
+  [vuiLayer5 setCornerRadius:self->_cornerRadius];
 
-  v12 = [(UIVisualEffectView *)self->_backdropView vuiLayer];
-  [v12 setCornerCurve:*MEMORY[0x1E69796E8]];
+  vuiLayer6 = [(UIVisualEffectView *)self->_backdropView vuiLayer];
+  [vuiLayer6 setCornerCurve:*MEMORY[0x1E69796E8]];
 
   v13 = v3;
 LABEL_9:
@@ -1629,60 +1629,60 @@ void __26__VUIButton__updateBorder__block_invoke_2(uint64_t a1)
 
 - (void)_removeLongPressGestureIfNeeded
 {
-  v3 = [(VUIButton *)self longPressGestureRecognizer];
+  longPressGestureRecognizer = [(VUIButton *)self longPressGestureRecognizer];
 
-  if (v3)
+  if (longPressGestureRecognizer)
   {
-    v4 = [(VUIButton *)self longPressGestureRecognizer];
-    [(VUIButton *)self removeGestureRecognizer:v4];
+    longPressGestureRecognizer2 = [(VUIButton *)self longPressGestureRecognizer];
+    [(VUIButton *)self removeGestureRecognizer:longPressGestureRecognizer2];
 
     [(VUIButton *)self setLongPressGestureRecognizer:0];
   }
 }
 
-- (void)buttonLongPressed:(id)a3
+- (void)buttonLongPressed:(id)pressed
 {
-  v8 = a3;
-  v4 = [v8 state] == 1;
-  v5 = v8;
+  pressedCopy = pressed;
+  v4 = [pressedCopy state] == 1;
+  v5 = pressedCopy;
   if (v4)
   {
-    v6 = [(VUIButton *)self longPressGestureRecognizer];
-    if (v6 == v8)
+    longPressGestureRecognizer = [(VUIButton *)self longPressGestureRecognizer];
+    if (longPressGestureRecognizer == pressedCopy)
     {
-      v7 = [(VUIButton *)self longPressActionHandler];
+      longPressActionHandler = [(VUIButton *)self longPressActionHandler];
 
-      v5 = v8;
-      if (!v7)
+      v5 = pressedCopy;
+      if (!longPressActionHandler)
       {
         goto LABEL_7;
       }
 
-      v6 = [(VUIButton *)self longPressActionHandler];
-      (v6)[2](v6, self);
+      longPressGestureRecognizer = [(VUIButton *)self longPressActionHandler];
+      (longPressGestureRecognizer)[2](longPressGestureRecognizer, self);
     }
 
-    v5 = v8;
+    v5 = pressedCopy;
   }
 
 LABEL_7:
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v4 = [(VUIButton *)self selectActionHandler];
+  selectActionHandler = [(VUIButton *)self selectActionHandler];
 
-  if (v4)
+  if (selectActionHandler)
   {
-    v5 = [(VUIButton *)self selectActionHandler];
-    v5[2](v5, self);
+    selectActionHandler2 = [(VUIButton *)self selectActionHandler];
+    selectActionHandler2[2](selectActionHandler2, self);
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   if (([(VUIButton *)self isHidden]& 1) != 0 || ([(VUIButton *)self alpha], v7 == 0.0))
   {
     v8 = 0;
@@ -1699,15 +1699,15 @@ LABEL_7:
     v16.y = y;
     if (CGRectContainsPoint(v18, v16))
     {
-      v14 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v14 = 0;
+      selfCopy = 0;
     }
 
-    v8 = v14;
+    v8 = selfCopy;
   }
 
   return v8;
@@ -1734,14 +1734,14 @@ LABEL_7:
   v16 = MEMORY[0x1E695F058];
   v18 = *(MEMORY[0x1E695F058] + 16);
   v17 = *(MEMORY[0x1E695F058] + 24);
-  v19 = [(VUIButton *)self _hasTitle];
+  _hasTitle = [(VUIButton *)self _hasTitle];
   v153 = v17;
   rect = v17;
   v20 = v18;
-  if (v19)
+  if (_hasTitle)
   {
-    v21 = [(VUIButton *)self textContentView];
-    [v21 sizeThatFits:{v152, v154}];
+    textContentView = [(VUIButton *)self textContentView];
+    [textContentView sizeThatFits:{v152, v154}];
     v23 = v22;
 
     VUICeilValue();
@@ -1754,8 +1754,8 @@ LABEL_7:
   v150 = v18;
   if ([(VUIButton *)self _hasSubtitle])
   {
-    v25 = [(VUIButton *)self subtitleContentView];
-    [v25 sizeThatFits:{v152, v154}];
+    subtitleContentView = [(VUIButton *)self subtitleContentView];
+    [subtitleContentView sizeThatFits:{v152, v154}];
     v27 = v26;
 
     VUICeilValue();
@@ -1769,8 +1769,8 @@ LABEL_7:
   v144 = v29;
   if ([(VUIButton *)self _hasProgressBar])
   {
-    v32 = [(VUIButton *)self progressBarView];
-    [v32 vui_sizeThatFits:{v152, v154}];
+    progressBarView = [(VUIButton *)self progressBarView];
+    [progressBarView vui_sizeThatFits:{v152, v154}];
 
     VUICeilValue();
     v31 = fmin(v152, v33);
@@ -1793,18 +1793,18 @@ LABEL_7:
     [(VUIButton *)self _imageSizeThatFits:v152, v154];
     v18 = v38;
     v153 = v39;
-    v40 = [(VUIButton *)self textContentView];
-    v41 = [v40 textLayout];
-    [v41 margin];
+    textContentView2 = [(VUIButton *)self textContentView];
+    textLayout = [textContentView2 textLayout];
+    [textLayout margin];
     v43 = v42;
     v142 = v44;
 
     [(VUIButton *)self imageMargin];
     v141 = v45;
     v47 = v46;
-    v48 = [(VUIButton *)self _hasProgressBar];
+    _hasProgressBar = [(VUIButton *)self _hasProgressBar];
     v49 = fmax(v43, v47);
-    if (v48)
+    if (_hasProgressBar)
     {
       v49 = v43 + v47;
     }
@@ -1818,8 +1818,8 @@ LABEL_7:
       v53 = v52;
       if ([(VUIButton *)self _hasTitle])
       {
-        v54 = [(VUIButton *)self textContentView];
-        [v54 sizeThatFits:{v53, v154}];
+        textContentView3 = [(VUIButton *)self textContentView];
+        [textContentView3 sizeThatFits:{v53, v154}];
         v56 = v55;
         v58 = v57;
 
@@ -1839,8 +1839,8 @@ LABEL_7:
 
       if ([(VUIButton *)self _hasSubtitle])
       {
-        v60 = [(VUIButton *)self subtitleContentView];
-        [v60 sizeThatFits:{v53, v154}];
+        subtitleContentView2 = [(VUIButton *)self subtitleContentView];
+        [subtitleContentView2 sizeThatFits:{v53, v154}];
         v62 = v61;
         v64 = v63;
 
@@ -1876,8 +1876,8 @@ LABEL_7:
         }
 
         v68 = v51 - v67;
-        v69 = [(VUIButton *)self progressBarView];
-        [v69 vui_sizeThatFits:{v68, v154}];
+        progressBarView2 = [(VUIButton *)self progressBarView];
+        [progressBarView2 vui_sizeThatFits:{v68, v154}];
 
         v30 = v152;
         v50 = v152;
@@ -1907,8 +1907,8 @@ LABEL_7:
       v72 = v71;
       if ([(VUIButton *)self verticallyCenterContent])
       {
-        v73 = [(VUIImageView *)self->_imageView image];
-        [v73 alignmentRectInsets];
+        image = [(VUIImageView *)self->_imageView image];
+        [image alignmentRectInsets];
         v75 = v74;
         v77 = v76;
 
@@ -1917,7 +1917,7 @@ LABEL_7:
         if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v156 = self;
+          selfCopy = self;
           v157 = 2048;
           v158 = v78;
           _os_log_impl(&dword_1E323F000, v79, OS_LOG_TYPE_DEFAULT, "VUIButton(%p):: adjust image to be perfectly center, offset:%f", buf, 0x16u);
@@ -1946,17 +1946,17 @@ LABEL_7:
     [(VUIButton *)self imageMargin];
     if ([(VUIButton *)self _hasTitle])
     {
-      v81 = [(VUIButton *)self textContentView];
-      v82 = [v81 textLayout];
-      [v82 margin];
+      textContentView4 = [(VUIButton *)self textContentView];
+      textLayout2 = [textContentView4 textLayout];
+      [textLayout2 margin];
     }
   }
 
   if ([(VUIButton *)self _hasTitle])
   {
-    v83 = [(VUIButton *)self textContentView];
-    v84 = [v83 textLayout];
-    [v84 margin];
+    textContentView5 = [(VUIButton *)self textContentView];
+    textLayout3 = [textContentView5 textLayout];
+    [textLayout3 margin];
 
     [(VUIButton *)self _hasSubtitle];
     [(VUIButton *)self _hasSubtitle];
@@ -1972,8 +1972,8 @@ LABEL_7:
     v88 = v87;
     v90 = v89;
     v92 = v91;
-    v93 = [(VUIButton *)self imageView];
-    [v93 setFrame:{v86, v88, v90, v92}];
+    imageView = [(VUIButton *)self imageView];
+    [imageView setFrame:{v86, v88, v90, v92}];
   }
 
   if ([(VUIButton *)self _hasProgressBar])
@@ -1985,8 +1985,8 @@ LABEL_7:
     v97 = v96;
     v99 = v98;
     v101 = v100;
-    v102 = [(VUIButton *)self progressBarView];
-    [v102 setFrame:{v95, v97, v99, v101}];
+    progressBarView3 = [(VUIButton *)self progressBarView];
+    [progressBarView3 setFrame:{v95, v97, v99, v101}];
   }
 
   if ([(VUIButton *)self _hasTitle])
@@ -1998,8 +1998,8 @@ LABEL_7:
     v106 = v105;
     v108 = v107;
     v110 = v109;
-    v111 = [(VUIButton *)self textContentView];
-    [v111 setFrame:{v104, v106, v108, v110}];
+    textContentView6 = [(VUIButton *)self textContentView];
+    [textContentView6 setFrame:{v104, v106, v108, v110}];
   }
 
   if ([(VUIButton *)self _hasSubtitle])
@@ -2011,8 +2011,8 @@ LABEL_7:
     v115 = v114;
     v117 = v116;
     v119 = v118;
-    v120 = [(VUIButton *)self subtitleContentView];
-    [v120 setFrame:{v113, v115, v117, v119}];
+    subtitleContentView3 = [(VUIButton *)self subtitleContentView];
+    [subtitleContentView3 setFrame:{v113, v115, v117, v119}];
   }
 
   if ([(VUIButton *)self _hasBackgroundImage])
@@ -2023,8 +2023,8 @@ LABEL_7:
     v124 = v123;
     if (v122 == *MEMORY[0x1E695F060] && v123 == *(MEMORY[0x1E695F060] + 8))
     {
-      v125 = [(VUIButton *)self backgroundImageView];
-      [v125 vui_sizeThatFits:{v30, v154}];
+      backgroundImageView = [(VUIButton *)self backgroundImageView];
+      [backgroundImageView vui_sizeThatFits:{v30, v154}];
       v122 = v126;
       v124 = v127;
     }
@@ -2037,17 +2037,17 @@ LABEL_7:
     v131 = v130;
     v133 = v132;
     v135 = v134;
-    v136 = [(VUIButton *)self backgroundImageView];
-    [v136 setFrame:{v129, v131, v133, v135}];
+    backgroundImageView2 = [(VUIButton *)self backgroundImageView];
+    [backgroundImageView2 setFrame:{v129, v131, v133, v135}];
   }
 
-  v137 = [(VUIButton *)self secondaryBackgroundView];
+  secondaryBackgroundView = [(VUIButton *)self secondaryBackgroundView];
 
-  if (v137)
+  if (secondaryBackgroundView)
   {
-    v138 = [(VUIButton *)self secondaryBackgroundView];
+    secondaryBackgroundView2 = [(VUIButton *)self secondaryBackgroundView];
     [(VUIButton *)self bounds];
-    [v138 setFrame:?];
+    [secondaryBackgroundView2 setFrame:?];
   }
 
   if ([(VUIButton *)self buttonType]== 6 || [(VUIButton *)self buttonShape]== 2 || [(VUIButton *)self buttonShape]== 1)
@@ -2057,10 +2057,10 @@ LABEL_7:
   }
 }
 
-- (CGPoint)_centerWithViewSize:(CGSize)a3 withParentSize:(CGSize)a4
+- (CGPoint)_centerWithViewSize:(CGSize)size withParentSize:(CGSize)parentSize
 {
-  v4 = (a4.width - a3.width) * 0.5;
-  v5 = (a4.height - a3.height) * 0.5;
+  v4 = (parentSize.width - size.width) * 0.5;
+  v5 = (parentSize.height - size.height) * 0.5;
   result.y = v5;
   result.x = v4;
   return result;
@@ -2073,8 +2073,8 @@ LABEL_7:
   {
     v3 = objc_alloc_init(MEMORY[0x1E69DD298]);
     [(VUIButton *)self insertSubview:v3 atIndex:0];
-    v4 = [(VUIButton *)self layer];
-    [v4 setMasksToBounds:1];
+    layer = [(VUIButton *)self layer];
+    [layer setMasksToBounds:1];
 
     [(VUIButton *)self setBackdropView:v3];
   }
@@ -2109,10 +2109,10 @@ LABEL_7:
       }
 
       [(UIVisualEffectView *)self->_backdropView setAllowsBlurring:0];
-      v6 = [(VUIButton *)self traitCollection];
-      v7 = [v6 userInterfaceStyle];
+      traitCollection = [(VUIButton *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v7 == 2)
+      if (userInterfaceStyle == 2)
       {
         v8 = 14;
       }
@@ -2136,17 +2136,17 @@ LABEL_7:
   [(VUIButton *)self cornerRadius];
   v4 = v3;
   [(UIVisualEffectView *)self->_backdropView _setCornerRadius:1 continuous:15 maskedCorners:?];
-  v5 = [(VUIButton *)self buttonBackgroundColor];
-  if (v5)
+  buttonBackgroundColor = [(VUIButton *)self buttonBackgroundColor];
+  if (buttonBackgroundColor)
   {
-    v6 = v5;
-    v7 = [(VUIButton *)self buttonBackgroundColor];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
+    v6 = buttonBackgroundColor;
+    buttonBackgroundColor2 = [(VUIButton *)self buttonBackgroundColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
 
-    if (v7 != v8)
+    if (buttonBackgroundColor2 != clearColor)
     {
-      v9 = [(VUIButton *)self vuiLayer];
-      [v9 setCornerRadius:v4];
+      vuiLayer = [(VUIButton *)self vuiLayer];
+      [vuiLayer setCornerRadius:v4];
     }
   }
 }
@@ -2174,11 +2174,11 @@ LABEL_7:
   }
 }
 
-- (void)_setPointerInteractionEnabled:(BOOL)a3
+- (void)_setPointerInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   pointerInteraction = self->_pointerInteraction;
-  if (v3)
+  if (enabledCopy)
   {
     if (!pointerInteraction)
     {
@@ -2230,9 +2230,9 @@ LABEL_7:
 
 - (CGRect)_symbolButtonPointerShapeRect
 {
-  v3 = [(VUIButton *)self imageView];
-  v4 = [v3 image];
-  [v4 size];
+  imageView = [(VUIButton *)self imageView];
+  image = [imageView image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
@@ -2271,10 +2271,10 @@ LABEL_7:
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [a3 view];
-  if (!v5)
+  view = [interaction view];
+  if (!view)
   {
     v7 = 0;
     goto LABEL_10;
@@ -2290,7 +2290,7 @@ LABEL_7:
   {
     if (![(VUIButton *)self usesSymbolPointerInteraction])
     {
-      v8 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v5];
+      v8 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:view];
       v9 = [MEMORY[0x1E69DCD98] effectWithPreview:v8];
       v7 = [MEMORY[0x1E69DCDD0] styleWithEffect:v9 shape:0];
       goto LABEL_9;
@@ -2303,7 +2303,7 @@ LABEL_7:
   v8 = [v6 bezierPathWithRoundedRect:? cornerRadius:?];
   v9 = objc_alloc_init(MEMORY[0x1E69DCE28]);
   [v9 setVisiblePath:v8];
-  v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v5 parameters:v9];
+  v10 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:view parameters:v9];
   v11 = [MEMORY[0x1E69DCD98] effectWithPreview:v10];
   v7 = [MEMORY[0x1E69DCDD0] styleWithEffect:v11 shape:0];
 
@@ -2315,40 +2315,40 @@ LABEL_10:
 
 - (id)largeContentTitle
 {
-  v3 = [(VUIButton *)self accessibilityLabel];
-  v4 = [v3 length];
+  accessibilityLabel = [(VUIButton *)self accessibilityLabel];
+  v4 = [accessibilityLabel length];
 
   if (v4)
   {
-    v5 = [(VUIButton *)self accessibilityLabel];
+    accessibilityLabel2 = [(VUIButton *)self accessibilityLabel];
   }
 
   else
   {
-    v6 = [(VUIButton *)self textContentView];
+    textContentView = [(VUIButton *)self textContentView];
 
-    if (v6)
+    if (textContentView)
     {
-      v7 = [(VUIButton *)self textContentView];
-      v5 = [v7 text];
+      textContentView2 = [(VUIButton *)self textContentView];
+      accessibilityLabel2 = [textContentView2 text];
     }
 
     else
     {
-      v5 = 0;
+      accessibilityLabel2 = 0;
     }
   }
 
-  return v5;
+  return accessibilityLabel2;
 }
 
 - (id)largeContentImage
 {
-  v3 = [(VUIButton *)self imageView];
+  imageView = [(VUIButton *)self imageView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(VUIButton *)self imageView];
+  imageView2 = [(VUIButton *)self imageView];
   if (isKindOfClass)
   {
     goto LABEL_4;
@@ -2359,22 +2359,22 @@ LABEL_10:
 
   if (v6)
   {
-    v5 = [(VUIButton *)self imageView];
+    imageView2 = [(VUIButton *)self imageView];
 LABEL_4:
-    v7 = [v5 image];
+    image = [imageView2 image];
 
     goto LABEL_6;
   }
 
-  v7 = 0;
+  image = 0;
 LABEL_6:
 
-  return v7;
+  return image;
 }
 
-- (void)setScrolledNonUberPercentage:(double)a3
+- (void)setScrolledNonUberPercentage:(double)percentage
 {
-  if (a3 == 0.0)
+  if (percentage == 0.0)
   {
     [(UIVisualEffectView *)self->_backdropView setHidden:0];
 
@@ -2384,8 +2384,8 @@ LABEL_6:
   else
   {
     [(VUIButton *)self setVuiBackgroundColor:self->_buttonBackgroundColor];
-    v4 = [(VUIButton *)self backdropView];
-    [v4 setHidden:1];
+    backdropView = [(VUIButton *)self backdropView];
+    [backdropView setHidden:1];
   }
 }
 

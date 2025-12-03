@@ -1,10 +1,10 @@
 @interface ProgramDetailHeaderCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)playButtonTapped:(id)a3;
+- (void)playButtonTapped:(id)tapped;
 - (void)prepareForReuse;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ProgramDetailHeaderCell
@@ -15,21 +15,21 @@
   v10.super_class = type metadata accessor for ProgramDetailHeaderCell();
   v2 = v10.receiver;
   [(ProgramDetailHeaderCell *)&v10 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = window;
+    [window bounds];
     v6 = v5;
     v8 = v7;
-    v9 = [v2 traitCollection];
+    traitCollection = [v2 traitCollection];
     sub_20BA7231C(v6, v8);
   }
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BA6E1CC();
 }
 
@@ -41,25 +41,25 @@
   v6 = type metadata accessor for ProgramDetailHeaderCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(ProgramDetailHeaderCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI23ProgramDetailHeaderCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = [(ProgramDetailHeaderCell *)v9 contentView];
-  *&v11 = a4;
-  *&v12 = a5;
-  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  contentView = [(ProgramDetailHeaderCell *)selfCopy contentView];
+  *&v11 = priority;
+  *&v12 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
   v14 = v13;
   v16 = v15;
 
@@ -70,17 +70,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20BA6E4A8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20BA6E4A8(change);
 }
 
-- (void)playButtonTapped:(id)a3
+- (void)playButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_20BA72398();
 }
 

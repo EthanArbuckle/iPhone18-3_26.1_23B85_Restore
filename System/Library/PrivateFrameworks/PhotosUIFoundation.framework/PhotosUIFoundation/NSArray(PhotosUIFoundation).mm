@@ -9,15 +9,15 @@
 
 - (id)px_objectAfterObject:()PhotosUIFoundation
 {
-  v2 = [a1 indexOfObject:?];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL || (v3 = v2 + 1, v2 + 1 >= [a1 count]))
+  v2 = [self indexOfObject:?];
+  if (v2 == 0x7FFFFFFFFFFFFFFFLL || (v3 = v2 + 1, v2 + 1 >= [self count]))
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [a1 objectAtIndexedSubscript:v3];
+    v4 = [self objectAtIndexedSubscript:v3];
   }
 
   return v4;
@@ -27,7 +27,7 @@
 {
   v6 = a4;
   v11 = 0;
-  v7 = [a1 count];
+  v7 = [self count];
   if (v7)
   {
     v8 = v7;
@@ -39,7 +39,7 @@
         a3 = 0;
       }
 
-      v10 = [a1 objectAtIndex:a3];
+      v10 = [self objectAtIndex:a3];
       v6[2](v6, v10, a3, &v11);
 
       if (v9 >= v8)
@@ -58,14 +58,14 @@
 - (id)px_subarrayAfterIndex:()PhotosUIFoundation
 {
   v4 = a3 + 1;
-  if (a3 + 1 >= [a1 count])
+  if (a3 + 1 >= [self count])
   {
     v5 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = [a1 subarrayWithRange:{v4, objc_msgSend(a1, "count") - v4}];
+    v5 = [self subarrayWithRange:{v4, objc_msgSend(self, "count") - v4}];
   }
 
   return v5;
@@ -73,9 +73,9 @@
 
 + (id)px_numbersFrom:()PhotosUIFoundation to:increment:
 {
-  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); a1 <= a2; a1 = round((a1 + a3) / a3) * a3)
+  for (i = objc_alloc_init(MEMORY[0x1E695DF70]); self <= a2; self = round((self + a3) / a3) * a3)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithDouble:a1];
+    v7 = [MEMORY[0x1E696AD98] numberWithDouble:self];
     [i addObject:v7];
   }
 

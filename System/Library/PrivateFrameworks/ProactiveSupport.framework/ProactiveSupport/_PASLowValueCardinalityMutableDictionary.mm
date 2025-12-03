@@ -1,11 +1,11 @@
 @interface _PASLowValueCardinalityMutableDictionary
-- (_PASLowValueCardinalityMutableDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5;
-- (id)allKeysForObject:(id)a3;
+- (_PASLowValueCardinalityMutableDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count;
+- (id)allKeysForObject:(id)object;
 - (id)allValues;
 - (id)keyEnumerator;
-- (id)objectForKey:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _PASLowValueCardinalityMutableDictionary
@@ -15,57 +15,57 @@
   v3 = [(NSMutableArray *)self->_objectsAndKeys count];
   if (v3 == 2)
   {
-    v5 = [(NSMutableArray *)self->_objectsAndKeys objectAtIndexedSubscript:1];
-    v4 = [(_PASLowValueCardinalityMutableDictionary *)v5 objectEnumerator];
+    selfCopy = [(NSMutableArray *)self->_objectsAndKeys objectAtIndexedSubscript:1];
+    objectEnumerator = [(_PASLowValueCardinalityMutableDictionary *)selfCopy objectEnumerator];
   }
 
   else
   {
     if (!v3)
     {
-      v4 = [MEMORY[0x1E695E0F0] objectEnumerator];
+      objectEnumerator = [MEMORY[0x1E695E0F0] objectEnumerator];
       goto LABEL_9;
     }
 
-    v4 = [_PASLowValueCardinalityMutableDictionaryEnumerator alloc];
-    v5 = self;
-    if (v4)
+    objectEnumerator = [_PASLowValueCardinalityMutableDictionaryEnumerator alloc];
+    selfCopy = self;
+    if (objectEnumerator)
     {
-      v8.receiver = v4;
+      v8.receiver = objectEnumerator;
       v8.super_class = _PASLowValueCardinalityMutableDictionaryEnumerator;
       v6 = [(_PASLowValueCardinalityMutableDictionary *)&v8 init];
-      v4 = v6;
+      objectEnumerator = v6;
       if (v6)
       {
         objc_storeStrong(&v6->_objectsAndKeys, self->_objectsAndKeys);
-        v4->_i = [(NSArray *)v4->_objectsAndKeys count];
-        [(_PASLowValueCardinalityMutableDictionaryEnumerator *)v4 _loadNextKeyEnumerator];
+        objectEnumerator->_i = [(NSArray *)objectEnumerator->_objectsAndKeys count];
+        [(_PASLowValueCardinalityMutableDictionaryEnumerator *)objectEnumerator _loadNextKeyEnumerator];
       }
     }
   }
 
 LABEL_9:
 
-  return v4;
+  return objectEnumerator;
 }
 
-- (id)allKeysForObject:(id)a3
+- (id)allKeysForObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_new();
   v6 = [(NSMutableArray *)self->_objectsAndKeys count];
   if (v6)
   {
     v7 = v6;
     v8 = 0;
-    v18 = self;
+    selfCopy = self;
     do
     {
       v9 = [(NSMutableArray *)self->_objectsAndKeys objectAtIndexedSubscript:v8];
-      if ([v9 isEqual:v4])
+      if ([v9 isEqual:objectCopy])
       {
-        v10 = v4;
+        v10 = objectCopy;
         v11 = [(NSMutableArray *)self->_objectsAndKeys objectAtIndexedSubscript:v8 | 1];
         v19 = 0u;
         v20 = 0u;
@@ -94,8 +94,8 @@ LABEL_9:
           while (v13);
         }
 
-        v4 = v10;
-        self = v18;
+        objectCopy = v10;
+        self = selfCopy;
       }
 
       v8 += 2;
@@ -133,9 +133,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v8 = a3;
+  keyCopy = key;
   v4 = [(NSMutableArray *)self->_objectsAndKeys count];
   if (v4)
   {
@@ -144,7 +144,7 @@ LABEL_9:
     while (1)
     {
       v7 = [(NSMutableArray *)self->_objectsAndKeys objectAtIndexedSubscript:v6 + 1];
-      if ([v7 containsObject:v8])
+      if ([v7 containsObject:keyCopy])
       {
         break;
       }
@@ -157,7 +157,7 @@ LABEL_9:
       }
     }
 
-    [v7 removeObject:v8];
+    [v7 removeObject:keyCopy];
     if (![v7 count])
     {
       [(NSMutableArray *)self->_objectsAndKeys removeObjectsInRange:v6, 2];
@@ -169,14 +169,14 @@ LABEL_9:
 LABEL_9:
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v34 = a3;
-  v7 = a4;
-  if (!v34)
+  objectCopy = object;
+  keyCopy = key;
+  if (!objectCopy)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"_PASLowValueCardinalityMutableDictionary.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"anObject"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLowValueCardinalityMutableDictionary.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"anObject"}];
 
     if (self)
     {
@@ -210,7 +210,7 @@ LABEL_6:
   if (v12)
   {
     v13 = v12;
-    v33 = self;
+    selfCopy = self;
     LOBYTE(v14) = 0;
     v15 = 0;
     v16 = 0;
@@ -226,15 +226,15 @@ LABEL_6:
         break;
       }
 
-      v14 = [v20 containsObject:v7];
-      if (v19 == v34)
+      v14 = [v20 containsObject:keyCopy];
+      if (v19 == objectCopy)
       {
         goto LABEL_17;
       }
 
       if (v14)
       {
-        [v21 removeObject:v7];
+        [v21 removeObject:keyCopy];
         if (![v21 count])
         {
           v18 = 2;
@@ -269,9 +269,9 @@ LABEL_19:
 
           else
           {
-            [(NSMutableArray *)v11 setObject:v34 atIndexedSubscript:v16];
+            [(NSMutableArray *)v11 setObject:objectCopy atIndexedSubscript:v16];
             v29 = objc_alloc(MEMORY[0x1E695DFA8]);
-            v30 = [v7 copyWithZone:0];
+            v30 = [keyCopy copyWithZone:0];
             v31 = [v29 initWithObjects:{v30, 0}];
             [(NSMutableArray *)v11 setObject:v31 atIndexedSubscript:v16 + 1];
           }
@@ -279,14 +279,14 @@ LABEL_19:
 
         else if ((v15 & 1) == 0)
         {
-          [(NSMutableArray *)v11 addObject:v34];
+          [(NSMutableArray *)v11 addObject:objectCopy];
           v26 = objc_alloc(MEMORY[0x1E695DFA8]);
-          v27 = [v7 copyWithZone:0];
+          v27 = [keyCopy copyWithZone:0];
           v28 = [v26 initWithObjects:{v27, 0}];
           [(NSMutableArray *)v11 addObject:v28];
         }
 
-        self = v33;
+        self = selfCopy;
         if (v14)
         {
           goto LABEL_31;
@@ -297,13 +297,13 @@ LABEL_19:
     }
 
     v14 = 1;
-    if (v19 != v34)
+    if (v19 != objectCopy)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
-    v22 = [v7 copyWithZone:0];
+    v22 = [keyCopy copyWithZone:0];
     [v21 addObject:v22];
 
     v15 = 1;
@@ -315,9 +315,9 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  [(NSMutableArray *)v11 addObject:v34];
+  [(NSMutableArray *)v11 addObject:objectCopy];
   v23 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v24 = [v7 copyWithZone:0];
+  v24 = [keyCopy copyWithZone:0];
   v25 = [v23 initWithObjects:{v24, 0}];
   [(NSMutableArray *)v11 addObject:v25];
 
@@ -326,9 +326,9 @@ LABEL_30:
 LABEL_31:
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSMutableArray *)self->_objectsAndKeys count];
   v6 = -2;
   while (1)
@@ -340,7 +340,7 @@ LABEL_31:
     }
 
     v8 = [(NSMutableArray *)self->_objectsAndKeys objectAtIndexedSubscript:v6 + 3];
-    v9 = [v8 containsObject:v4];
+    v9 = [v8 containsObject:keyCopy];
 
     v6 = v7;
     if (v9)
@@ -356,14 +356,14 @@ LABEL_6:
   return v10;
 }
 
-- (_PASLowValueCardinalityMutableDictionary)initWithObjects:(const void *)a3 forKeys:(const void *)a4 count:(unint64_t)a5
+- (_PASLowValueCardinalityMutableDictionary)initWithObjects:(const void *)objects forKeys:(const void *)keys count:(unint64_t)count
 {
   v14.receiver = self;
   v14.super_class = _PASLowValueCardinalityMutableDictionary;
   v8 = [(_PASLowValueCardinalityMutableDictionary *)&v14 init];
   if (v8)
   {
-    v9 = a5 == 0;
+    v9 = count == 0;
   }
 
   else
@@ -375,14 +375,14 @@ LABEL_6:
   {
     do
     {
-      v11 = *a3++;
+      v11 = *objects++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *keys++;
       [(_PASLowValueCardinalityMutableDictionary *)v8 setObject:v10 forKeyedSubscript:v12];
-      --a5;
+      --count;
     }
 
-    while (a5);
+    while (count);
   }
 
   return v8;

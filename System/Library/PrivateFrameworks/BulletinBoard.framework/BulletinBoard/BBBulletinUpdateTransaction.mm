@@ -1,27 +1,27 @@
 @interface BBBulletinUpdateTransaction
-+ (id)transactionWithBulletinUpdate:(id)a3 transactionID:(unint64_t)a4;
-- (BBBulletinUpdateTransaction)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithBulletinUpdate:(id)a3 transactionID:(unint64_t)a4;
++ (id)transactionWithBulletinUpdate:(id)update transactionID:(unint64_t)d;
+- (BBBulletinUpdateTransaction)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithBulletinUpdate:(id)update transactionID:(unint64_t)d;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBBulletinUpdateTransaction
 
-+ (id)transactionWithBulletinUpdate:(id)a3 transactionID:(unint64_t)a4
++ (id)transactionWithBulletinUpdate:(id)update transactionID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [[a1 alloc] _initWithBulletinUpdate:v6 transactionID:a4];
+  updateCopy = update;
+  v7 = [[self alloc] _initWithBulletinUpdate:updateCopy transactionID:d];
 
   return v7;
 }
 
-- (id)_initWithBulletinUpdate:(id)a3 transactionID:(unint64_t)a4
+- (id)_initWithBulletinUpdate:(id)update transactionID:(unint64_t)d
 {
-  v7 = a3;
-  if (!a4)
+  updateCopy = update;
+  if (!d)
   {
     [BBBulletinUpdateTransaction _initWithBulletinUpdate:a2 transactionID:self];
   }
@@ -31,11 +31,11 @@
   v8 = [(BBBulletinUpdateTransaction *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [updateCopy copy];
     bulletinUpdate = v8->_bulletinUpdate;
     v8->_bulletinUpdate = v9;
 
-    v8->_transactionID = a4;
+    v8->_transactionID = d;
   }
 
   return v8;
@@ -43,17 +43,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
-  v4 = [v3 hash];
-  v5 = [(BBBulletinUpdateTransaction *)self transactionID];
+  bulletinUpdate = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
+  v4 = [bulletinUpdate hash];
+  transactionID = [(BBBulletinUpdateTransaction *)self transactionID];
 
-  return v5 ^ v4;
+  return transactionID ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -63,13 +63,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
-      v7 = [(BBBulletinUpdateTransaction *)v5 bulletinUpdate];
+      v5 = equalCopy;
+      bulletinUpdate = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
+      bulletinUpdate2 = [(BBBulletinUpdateTransaction *)v5 bulletinUpdate];
       if (BSEqualObjects())
       {
-        v8 = [(BBBulletinUpdateTransaction *)self transactionID];
-        v9 = v8 == [(BBBulletinUpdateTransaction *)v5 transactionID];
+        transactionID = [(BBBulletinUpdateTransaction *)self transactionID];
+        v9 = transactionID == [(BBBulletinUpdateTransaction *)v5 transactionID];
       }
 
       else
@@ -90,29 +90,29 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
-  v5 = [v3 appendObject:v4 withName:@"Bulletin Update"];
+  bulletinUpdate = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
+  v5 = [v3 appendObject:bulletinUpdate withName:@"Bulletin Update"];
 
   v6 = [v3 appendInteger:-[BBBulletinUpdateTransaction transactionID](self withName:{"transactionID"), @"Transaction ID"}];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
-  [v5 encodeObject:v4 forKey:@"bulletinUpdate"];
+  coderCopy = coder;
+  bulletinUpdate = [(BBBulletinUpdateTransaction *)self bulletinUpdate];
+  [coderCopy encodeObject:bulletinUpdate forKey:@"bulletinUpdate"];
 
-  [v5 encodeInteger:-[BBBulletinUpdateTransaction transactionID](self forKey:{"transactionID"), @"transactionID"}];
+  [coderCopy encodeInteger:-[BBBulletinUpdateTransaction transactionID](self forKey:{"transactionID"), @"transactionID"}];
 }
 
-- (BBBulletinUpdateTransaction)initWithCoder:(id)a3
+- (BBBulletinUpdateTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bulletinUpdate"];
-  v6 = [v4 decodeIntegerForKey:@"transactionID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bulletinUpdate"];
+  v6 = [coderCopy decodeIntegerForKey:@"transactionID"];
 
   v7 = [(BBBulletinUpdateTransaction *)self _initWithBulletinUpdate:v5 transactionID:v6];
   return v7;

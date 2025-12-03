@@ -1,29 +1,29 @@
 @interface _UIMultiSelectOneFingerPanGesture
 - (BOOL)_preventsDragInteractionGestures;
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer;
 - (_UIMultiSelectOneFingerPanGestureDelegate)oneFingerPanDelegate;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _UIMultiSelectOneFingerPanGesture
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = _UIMultiSelectOneFingerPanGesture;
-  [(UIPanGestureRecognizer *)&v11 touchesBegan:v6 withEvent:v7];
+  [(UIPanGestureRecognizer *)&v11 touchesBegan:beganCopy withEvent:eventCopy];
   if (!self->_activeTouch)
   {
-    v8 = [v6 anyObject];
+    anyObject = [beganCopy anyObject];
     activeTouch = self->_activeTouch;
-    self->_activeTouch = v8;
+    self->_activeTouch = anyObject;
 
-    objc_storeStrong(&self->_activeEvent, a4);
+    objc_storeStrong(&self->_activeEvent, event);
   }
 
   [(UIPanGestureRecognizer *)self _hysteresis];
@@ -44,21 +44,21 @@
 
 - (BOOL)_preventsDragInteractionGestures
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_oneFingerPanDelegate);
-  LOBYTE(v2) = [WeakRetained multiSelectOneFingerPanGestureShouldPreventDragInteractionGesture:v2];
+  LOBYTE(selfCopy) = [WeakRetained multiSelectOneFingerPanGestureShouldPreventDragInteractionGesture:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  if (-[UIGestureRecognizer state](self, "state") <= UIGestureRecognizerStateBegan && [v4 _isGestureType:8])
+  recognizerCopy = recognizer;
+  if (-[UIGestureRecognizer state](self, "state") <= UIGestureRecognizerStateBegan && [recognizerCopy _isGestureType:8])
   {
     v5 = MEMORY[0x1E695DFD8];
     activeTouch = self->_activeTouch;
-    v7 = v4;
+    v7 = recognizerCopy;
     v8 = [v5 setWithObject:activeTouch];
     [(UIPanGestureRecognizer *)v7 _ignoreTouches:v8 forEvent:self->_activeEvent];
   }
@@ -66,18 +66,18 @@
   return 0;
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = ![(_UIMultiSelectOneFingerPanGesture *)self _preventsDragInteractionGestures]&& (_isDragInteractionGestureRecognizer(v4) & 1) != 0;
+  recognizerCopy = recognizer;
+  v5 = ![(_UIMultiSelectOneFingerPanGesture *)self _preventsDragInteractionGestures]&& (_isDragInteractionGestureRecognizer(recognizerCopy) & 1) != 0;
 
   return v5;
 }
 
-- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)a3
+- (BOOL)shouldBeRequiredToFailByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(_UIMultiSelectOneFingerPanGesture *)self _preventsDragInteractionGestures]&& (_isDragInteractionGestureRecognizer(v4) & 1) != 0;
+  recognizerCopy = recognizer;
+  v5 = [(_UIMultiSelectOneFingerPanGesture *)self _preventsDragInteractionGestures]&& (_isDragInteractionGestureRecognizer(recognizerCopy) & 1) != 0;
 
   return v5;
 }

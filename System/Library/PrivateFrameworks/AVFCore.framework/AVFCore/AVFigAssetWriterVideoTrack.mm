@@ -1,38 +1,38 @@
 @interface AVFigAssetWriterVideoTrack
-- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)a3 sourcePixelBufferAttributes:(id)a4 multiPass:(BOOL)a5 error:(id *)a6;
+- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error;
 @end
 
 @implementation AVFigAssetWriterVideoTrack
 
-- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)a3 sourcePixelBufferAttributes:(id)a4 multiPass:(BOOL)a5 error:(id *)a6
+- (int)_attachToFigAssetWriterUsingFormatSpecification:(id)specification sourcePixelBufferAttributes:(id)attributes multiPass:(BOOL)pass error:(id *)error
 {
-  v7 = a5;
+  passCopy = pass;
   v48 = 0;
   v47 = 0;
-  v11 = [a3 outputSettings];
-  v12 = [a3 sourceFormatDescription];
-  if (!v11)
+  outputSettings = [specification outputSettings];
+  sourceFormatDescription = [specification sourceFormatDescription];
+  if (!outputSettings)
   {
     v46.receiver = self;
     v46.super_class = AVFigAssetWriterVideoTrack;
-    v47 = [(AVFigAssetWriterTrack *)&v46 _attachToFigAssetWriterUsingFormatSpecification:a3 sourcePixelBufferAttributes:a4 multiPass:v7 error:&v48];
+    v47 = [(AVFigAssetWriterTrack *)&v46 _attachToFigAssetWriterUsingFormatSpecification:specification sourcePixelBufferAttributes:attributes multiPass:passCopy error:&v48];
     goto LABEL_37;
   }
 
-  v13 = v12;
-  if (![v11 willYieldCompressedSamples])
+  v13 = sourceFormatDescription;
+  if (![outputSettings willYieldCompressedSamples])
   {
     goto LABEL_37;
   }
 
-  v14 = [v11 height];
-  v45 = [v11 width];
+  height = [outputSettings height];
+  width = [outputSettings width];
   v43 = CMMediaTypeFromAVMediaType([(AVFigAssetWriterTrack *)self mediaType]);
-  v42 = [v11 videoCodecType];
-  v41 = [v11 videoEncoderSpecification];
-  v15 = [v11 pixelTransferProperties];
-  v16 = [v11 videoCompressionProperties];
-  if (v7)
+  videoCodecType = [outputSettings videoCodecType];
+  videoEncoderSpecification = [outputSettings videoEncoderSpecification];
+  pixelTransferProperties = [outputSettings pixelTransferProperties];
+  videoCompressionProperties = [outputSettings videoCompressionProperties];
+  if (passCopy)
   {
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69735B0]];
   }
@@ -42,28 +42,28 @@
     v17 = 0;
   }
 
-  if (v15)
+  if (pixelTransferProperties)
   {
-    v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v16];
-    [v16 setObject:v15 forKey:*MEMORY[0x1E6983798]];
+    videoCompressionProperties = [MEMORY[0x1E695DF90] dictionaryWithDictionary:videoCompressionProperties];
+    [videoCompressionProperties setObject:pixelTransferProperties forKey:*MEMORY[0x1E6983798]];
   }
 
-  if ([v11 shouldPrepareEncodedSampleBuffersForPaddedWrites])
+  if ([outputSettings shouldPrepareEncodedSampleBuffersForPaddedWrites])
   {
-    v16 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v16];
-    [v16 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69837A8]];
+    videoCompressionProperties = [MEMORY[0x1E695DF90] dictionaryWithDictionary:videoCompressionProperties];
+    [videoCompressionProperties setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69837A8]];
   }
 
   if (v13)
   {
     v40 = v17;
-    v44 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v16];
+    v44 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:videoCompressionProperties];
     Dimensions = CMVideoFormatDescriptionGetDimensions(v13);
     Extension = CMFormatDescriptionGetExtension(v13, *MEMORY[0x1E6965EF8]);
     v20 = CMFormatDescriptionGetExtension(v13, *MEMORY[0x1E6965D70]);
-    width = v45;
-    LODWORD(height) = v14;
-    v23 = v14 > 0 && v45 > 0;
+    width = width;
+    LODWORD(height) = height;
+    v23 = height > 0 && width > 0;
     if (v23)
     {
       height = height;
@@ -79,15 +79,15 @@
       width = Dimensions.width;
     }
 
-    v45 = width;
+    width = width;
     v24 = *MEMORY[0x1E6983790];
-    if (![v16 objectForKey:*MEMORY[0x1E6983790]] && Extension)
+    if (![videoCompressionProperties objectForKey:*MEMORY[0x1E6983790]] && Extension)
     {
       [v44 setObject:Extension forKey:v24];
     }
 
     v25 = *MEMORY[0x1E69835A0];
-    if ([v16 objectForKey:*MEMORY[0x1E69835A0]])
+    if ([videoCompressionProperties objectForKey:*MEMORY[0x1E69835A0]])
     {
       v26 = 1;
     }
@@ -103,9 +103,9 @@
       [v44 setObject:v20 forKey:v25];
     }
 
-    if (a4)
+    if (attributes)
     {
-      v14 = height;
+      height = height;
     }
 
     else
@@ -117,16 +117,16 @@
       v32 = *MEMORY[0x1E6966130];
       v33 = [MEMORY[0x1E696AD98] numberWithInteger:v29.width];
       v34 = *MEMORY[0x1E6966208];
-      v14 = height;
+      height = height;
       v35 = [MEMORY[0x1E696AD98] numberWithInteger:*&v29 >> 32];
-      a4 = [v30 dictionaryWithObjectsAndKeys:{v31, v32, v33, v34, v35, *MEMORY[0x1E69660B8], 0}];
+      attributes = [v30 dictionaryWithObjectsAndKeys:{v31, v32, v33, v34, v35, *MEMORY[0x1E69660B8], 0}];
     }
 
-    v16 = v44;
+    videoCompressionProperties = v44;
     v17 = v40;
   }
 
-  v36 = [(AVFigAssetWriterTrack *)self figAssetWriter];
+  figAssetWriter = [(AVFigAssetWriterTrack *)self figAssetWriter];
   v37 = *(*(CMBaseObjectGetVTable() + 16) + 184);
   if (!v37)
   {
@@ -136,7 +136,7 @@
 
   v49 = *MEMORY[0x1E6960C70];
   v50 = *(MEMORY[0x1E6960C70] + 16);
-  v38 = v37(v36, v45, v14, 0, v43, v42, v41, v16, v17, &v49, a4, &v47);
+  v38 = v37(figAssetWriter, width, height, 0, v43, videoCodecType, videoEncoderSpecification, videoCompressionProperties, v17, &v49, attributes, &v47);
   if (v38)
   {
 LABEL_36:
@@ -144,9 +144,9 @@ LABEL_36:
   }
 
 LABEL_37:
-  if (a6)
+  if (error)
   {
-    *a6 = v48;
+    *error = v48;
   }
 
   return v47;

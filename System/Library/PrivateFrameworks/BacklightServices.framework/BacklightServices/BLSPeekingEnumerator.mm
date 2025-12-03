@@ -1,16 +1,16 @@
 @interface BLSPeekingEnumerator
-+ (id)peekingEnumeratorWithEnumerator:(id)a3;
-- (id)initWithEnumerator:(id *)a1;
++ (id)peekingEnumeratorWithEnumerator:(id)enumerator;
+- (id)initWithEnumerator:(id *)enumerator;
 - (id)nextObject;
 - (id)peekNextObject;
 @end
 
 @implementation BLSPeekingEnumerator
 
-+ (id)peekingEnumeratorWithEnumerator:(id)a3
++ (id)peekingEnumeratorWithEnumerator:(id)enumerator
 {
-  v3 = a3;
-  v4 = [[BLSPeekingEnumerator alloc] initWithEnumerator:v3];
+  enumeratorCopy = enumerator;
+  v4 = [[BLSPeekingEnumerator alloc] initWithEnumerator:enumeratorCopy];
 
   return v4;
 }
@@ -20,47 +20,47 @@
   v3 = self->_peekedObject;
   if (v3)
   {
-    v4 = v3;
+    nextObject = v3;
     peekedObject = self->_peekedObject;
     self->_peekedObject = 0;
   }
 
   else
   {
-    v4 = [(NSEnumerator *)self->_enumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_enumerator nextObject];
   }
 
-  return v4;
+  return nextObject;
 }
 
 - (id)peekNextObject
 {
-  v3 = self->_peekedObject;
-  if (!v3)
+  nextObject = self->_peekedObject;
+  if (!nextObject)
   {
-    v3 = [(NSEnumerator *)self->_enumerator nextObject];
-    objc_storeStrong(&self->_peekedObject, v3);
+    nextObject = [(NSEnumerator *)self->_enumerator nextObject];
+    objc_storeStrong(&self->_peekedObject, nextObject);
   }
 
-  return v3;
+  return nextObject;
 }
 
-- (id)initWithEnumerator:(id *)a1
+- (id)initWithEnumerator:(id *)enumerator
 {
   v4 = a2;
-  if (a1)
+  if (enumerator)
   {
-    v7.receiver = a1;
+    v7.receiver = enumerator;
     v7.super_class = BLSPeekingEnumerator;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    enumerator = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return enumerator;
 }
 
 @end

@@ -6,7 +6,7 @@
 - (id)description;
 - (int64_t)accessory;
 - (int64_t)nextAvailableTextState;
-- (void)setText:(id)a3 icon:(id)a4 forState:(int64_t)a5 accessory:(int64_t)a6;
+- (void)setText:(id)text icon:(id)icon forState:(int64_t)state accessory:(int64_t)accessory;
 @end
 
 @implementation MRURoutingSubtitleController
@@ -20,9 +20,9 @@
   if (v2)
   {
     v2->_state = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storage = v3->_storage;
-    v3->_storage = v4;
+    v3->_storage = dictionary;
   }
 
   return v3;
@@ -32,8 +32,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MRURoutingSubtitleController *)self storage];
-  v6 = [v3 stringWithFormat:@"<%@: %p storage=%@ >", v4, self, v5];
+  storage = [(MRURoutingSubtitleController *)self storage];
+  v6 = [v3 stringWithFormat:@"<%@: %p storage=%@ >", v4, self, storage];
 
   return v6;
 }
@@ -43,8 +43,8 @@
   storage = self->_storage;
   v3 = [MEMORY[0x1E696AD98] numberWithInteger:self->_state];
   v4 = [(NSMutableDictionary *)storage objectForKeyedSubscript:v3];
-  v5 = [v4 text];
-  v6 = [v5 copy];
+  text = [v4 text];
+  v6 = [text copy];
 
   return v6;
 }
@@ -54,9 +54,9 @@
   storage = self->_storage;
   v3 = [MEMORY[0x1E696AD98] numberWithInteger:self->_state];
   v4 = [(NSMutableDictionary *)storage objectForKeyedSubscript:v3];
-  v5 = [v4 icon];
+  icon = [v4 icon];
 
-  return v5;
+  return icon;
 }
 
 - (int64_t)accessory
@@ -64,31 +64,31 @@
   storage = self->_storage;
   v3 = [MEMORY[0x1E696AD98] numberWithInteger:self->_state];
   v4 = [(NSMutableDictionary *)storage objectForKeyedSubscript:v3];
-  v5 = [v4 accessory];
+  accessory = [v4 accessory];
 
-  return v5;
+  return accessory;
 }
 
-- (void)setText:(id)a3 icon:(id)a4 forState:(int64_t)a5 accessory:(int64_t)a6
+- (void)setText:(id)text icon:(id)icon forState:(int64_t)state accessory:(int64_t)accessory
 {
-  v21 = a3;
-  v10 = a4;
+  textCopy = text;
+  iconCopy = icon;
   storage = self->_storage;
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:self->_state];
   v13 = [(NSMutableDictionary *)storage objectForKeyedSubscript:v12];
 
-  if ([v21 length])
+  if ([textCopy length])
   {
-    v14 = [[MRUSubtitleValue alloc] initWithText:v21 icon:v10 accessory:a6];
+    v14 = [[MRUSubtitleValue alloc] initWithText:textCopy icon:iconCopy accessory:accessory];
     v15 = self->_storage;
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(NSMutableDictionary *)v15 setObject:v14 forKey:v16];
   }
 
   else
   {
     v17 = self->_storage;
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [(NSMutableDictionary *)v17 removeObjectForKey:v16];
     v14 = 0;
   }
@@ -99,11 +99,11 @@
   }
 
   state = self->_state;
-  if (state && state == a5 && ([v13 isEqualToSubtitleValue:v14] & 1) == 0)
+  if (state && state == state && ([v13 isEqualToSubtitleValue:v14] & 1) == 0)
   {
-    v19 = [(MRURoutingSubtitleController *)self delegate];
-    v20 = [(MRUSubtitleValue *)v14 text];
-    [v19 routingSubtitleStateController:self didUpdateText:v20 icon:v10 accessory:{-[MRUSubtitleValue accessory](v14, "accessory")}];
+    delegate = [(MRURoutingSubtitleController *)self delegate];
+    text = [(MRUSubtitleValue *)v14 text];
+    [delegate routingSubtitleStateController:self didUpdateText:text icon:iconCopy accessory:{-[MRUSubtitleValue accessory](v14, "accessory")}];
   }
 }
 

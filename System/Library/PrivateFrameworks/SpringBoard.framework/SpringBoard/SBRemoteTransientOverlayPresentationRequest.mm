@@ -1,14 +1,14 @@
 @interface SBRemoteTransientOverlayPresentationRequest
-- (SBRemoteTransientOverlayPresentationRequest)initWithViewController:(id)a3;
+- (SBRemoteTransientOverlayPresentationRequest)initWithViewController:(id)controller;
 - (SBWindowScene)windowScene;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBRemoteTransientOverlayPresentationRequest
 
-- (SBRemoteTransientOverlayPresentationRequest)initWithViewController:(id)a3
+- (SBRemoteTransientOverlayPresentationRequest)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBRemoteTransientOverlayPresentationRequest;
   v6 = [(SBRemoteTransientOverlayPresentationRequest *)&v9 init];
@@ -18,13 +18,13 @@
     v6->_animated = 1;
     v6->_shouldDismissSiri = 1;
     v6->_shouldPresentEmbeddedInTargetScene = 1;
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, controller);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithViewController:self->_viewController];
   v5 = v4;

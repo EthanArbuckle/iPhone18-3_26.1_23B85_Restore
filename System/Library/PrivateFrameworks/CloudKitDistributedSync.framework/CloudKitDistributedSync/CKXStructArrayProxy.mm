@@ -1,15 +1,15 @@
 @interface CKXStructArrayProxy
-- (id)proxyAtIndex:(int64_t)a3;
+- (id)proxyAtIndex:(int64_t)index;
 - (int64_t)count;
-- (void)enumerate:(id)a3;
+- (void)enumerate:(id)enumerate;
 @end
 
 @implementation CKXStructArrayProxy
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
-  v10 = a3;
-  if (v10)
+  enumerateCopy = enumerate;
+  if (enumerateCopy)
   {
     v11 = objc_msgSend_count(self, v4, v5, v6, v7, v8, v9);
     v18 = v11 - 1;
@@ -29,7 +29,7 @@
         v27[3] = &unk_278DDB4C8;
         v27[4] = self;
         v30 = v19;
-        v28 = v10;
+        v28 = enumerateCopy;
         v29 = &v31;
         objc_msgSend_proxyScope_(v20, v21, v27, v22, v23, v24, v25);
 
@@ -56,11 +56,11 @@
   return v26;
 }
 
-- (id)proxyAtIndex:(int64_t)a3
+- (id)proxyAtIndex:(int64_t)index
 {
-  v9 = objc_msgSend_backingStore(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_backingStore(self, a2, index, v3, v4, v5, v6);
   objc_msgSend_listInstance(self, v10, v11, v12, v13, v14, v15);
-  v20 = objc_msgSend_structProxyForListInstance_atIndex_(v9, v16, &v22, a3, v17, v18, v19);
+  v20 = objc_msgSend_structProxyForListInstance_atIndex_(v9, v16, &v22, index, v17, v18, v19);
 
   return v20;
 }

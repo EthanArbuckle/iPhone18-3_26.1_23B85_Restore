@@ -2,14 +2,14 @@
 + (void)initialize;
 - (AVRoutingSerializedMostlySynchronousReentrantBlockScheduler)init;
 - (void)dealloc;
-- (void)scheduleBlock:(id)a3;
+- (void)scheduleBlock:(id)block;
 @end
 
 @implementation AVRoutingSerializedMostlySynchronousReentrantBlockScheduler
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -29,12 +29,12 @@
   [(AVRoutingSerializedMostlySynchronousReentrantBlockScheduler *)&v5 dealloc];
 }
 
-- (void)scheduleBlock:(id)a3
+- (void)scheduleBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
   ivarAccessLock = self->_ivarAccessLock;
   FigSimpleMutexLock();
-  v6 = [a3 copy];
+  v6 = [block copy];
   v7 = [(NSArray *)self->_blocks arrayByAddingObject:v6];
 
   self->_blocks = [(NSArray *)v7 copy];
@@ -51,8 +51,8 @@
       while (1)
       {
         v10 = objc_alloc(MEMORY[0x1E696ADD8]);
-        v11 = [MEMORY[0x1E696AC90] indexSet];
-        v12 = [v10 initWithInsertIndexes:v11 insertedObjects:0 removeIndexes:objc_msgSend(MEMORY[0x1E696AC90] removedObjects:{"indexSetWithIndex:", 0), 0}];
+        indexSet = [MEMORY[0x1E696AC90] indexSet];
+        v12 = [v10 initWithInsertIndexes:indexSet insertedObjects:0 removeIndexes:objc_msgSend(MEMORY[0x1E696AC90] removedObjects:{"indexSetWithIndex:", 0), 0}];
         v13 = [-[NSArray firstObject](self->_blocks "firstObject")];
         v14 = [(NSArray *)self->_blocks arrayByApplyingDifference:v12];
 

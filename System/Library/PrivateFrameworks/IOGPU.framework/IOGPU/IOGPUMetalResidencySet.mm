@@ -1,22 +1,22 @@
 @interface IOGPUMetalResidencySet
-- (BOOL)_commitAddedAllocations:(const void *)a3 count:(unint64_t)a4 removedAllocations:(const void *)a5 count:(unint64_t)a6;
-- (BOOL)_commitAddedHeaps:(const void *)a3 count:(unint64_t)a4 removedHeaps:(const void *)a5 count:(unint64_t)a6;
-- (BOOL)_commitAddedResources:(const void *)a3 count:(unint64_t)a4 removedResources:(const void *)a5 count:(unint64_t)a6;
-- (BOOL)containsAllocation:(id)a3;
-- (IOGPUMetalResidencySet)initWithDevice:(id)a3 descriptor:(id)a4 args:(IOGPUNewResourceArgs *)a5 argsSize:(unint64_t)a6;
+- (BOOL)_commitAddedAllocations:(const void *)allocations count:(unint64_t)count removedAllocations:(const void *)removedAllocations count:(unint64_t)a6;
+- (BOOL)_commitAddedHeaps:(const void *)heaps count:(unint64_t)count removedHeaps:(const void *)removedHeaps count:(unint64_t)a6;
+- (BOOL)_commitAddedResources:(const void *)resources count:(unint64_t)count removedResources:(const void *)removedResources count:(unint64_t)a6;
+- (BOOL)containsAllocation:(id)allocation;
+- (IOGPUMetalResidencySet)initWithDevice:(id)device descriptor:(id)descriptor args:(IOGPUNewResourceArgs *)args argsSize:(unint64_t)size;
 - (NSArray)allAllocations;
 - (NSArray)allCommittedAllocations;
 - (id).cxx_construct;
-- (unint64_t)countForAllocation:(id)a3;
-- (unint64_t)generationForAllocation:(id)a3;
-- (void)addAllocation:(id)a3;
-- (void)addAllocations:(const void *)a3 count:(unint64_t)a4;
+- (unint64_t)countForAllocation:(id)allocation;
+- (unint64_t)generationForAllocation:(id)allocation;
+- (void)addAllocation:(id)allocation;
+- (void)addAllocations:(const void *)allocations count:(unint64_t)count;
 - (void)commit;
 - (void)dealloc;
 - (void)endResidency;
 - (void)removeAllAllocations;
-- (void)removeAllocation:(id)a3;
-- (void)removeAllocations:(const void *)a3 count:(unint64_t)a4;
+- (void)removeAllocation:(id)allocation;
+- (void)removeAllocations:(const void *)allocations count:(unint64_t)count;
 - (void)requestResidency;
 @end
 
@@ -208,24 +208,24 @@ LABEL_34:
   }
 }
 
-- (IOGPUMetalResidencySet)initWithDevice:(id)a3 descriptor:(id)a4 args:(IOGPUNewResourceArgs *)a5 argsSize:(unint64_t)a6
+- (IOGPUMetalResidencySet)initWithDevice:(id)device descriptor:(id)descriptor args:(IOGPUNewResourceArgs *)args argsSize:(unint64_t)size
 {
   v23.receiver = self;
   v23.super_class = IOGPUMetalResidencySet;
   v10 = [(_MTLObjectWithLabel *)&v23 init];
   if (v10)
   {
-    v11 = a3;
-    *(v10 + 9) = v11;
-    *(v10 + 6) = IOGPUDeviceGetNextGlobalTraceID([v11 deviceRef]);
+    deviceCopy = device;
+    *(v10 + 9) = deviceCopy;
+    *(v10 + 6) = IOGPUDeviceGetNextGlobalTraceID([deviceCopy deviceRef]);
     [v10 setCurrentGeneration:1];
     [v10 setExpiredGeneration:1];
-    *(v10 + 84) = [a4 evictsImmediately];
-    v12 = [a4 initialCapacity];
+    *(v10 + 84) = [descriptor evictsImmediately];
+    initialCapacity = [descriptor initialCapacity];
     v13 = 128;
-    if (v12)
+    if (initialCapacity)
     {
-      v13 = v12;
+      v13 = initialCapacity;
     }
 
     v14 = 64;
@@ -241,14 +241,14 @@ LABEL_34:
       goto LABEL_14;
     }
 
-    a5->var0.var0 = 3;
+    args->var0.var0 = 3;
     if (*(v10 + 84) == 1)
     {
-      a5->var0.var10 = 0x400000;
+      args->var0.var10 = 0x400000;
     }
 
-    a5->var0.var16.var1.var0 = v15;
-    v16 = IOGPUResourceCreate([*(v10 + 9) deviceRef], a5, a6);
+    args->var0.var16.var1.var0 = v15;
+    v16 = IOGPUResourceCreate([*(v10 + 9) deviceRef], args, size);
     *(v10 + 8) = v16;
     if (v16)
     {
@@ -259,18 +259,18 @@ LABEL_34:
       if (*__globalGPUCommPage)
       {
         v18 = *(v10 + 6);
-        [a4 initialCapacity];
+        [descriptor initialCapacity];
         IOGPUDeviceTraceEvent();
         v17 = __globalGPUCommPage;
       }
 
       if (*v17)
       {
-        v19 = [*(v10 + 9) deviceRef];
+        deviceRef = [*(v10 + 9) deviceRef];
         v20 = *(v10 + 6);
         v21 = *(v10 + 7);
-        [objc_msgSend(a4 "label")];
-        *(v10 + 7) = IOGPUDeviceTraceObjectLabel(v19, 8, 0, v20, v21);
+        [objc_msgSend(descriptor "label")];
+        *(v10 + 7) = IOGPUDeviceTraceObjectLabel(deviceRef, 8, 0, v20, v21);
       }
     }
 
@@ -307,15 +307,15 @@ LABEL_14:
   }
 }
 
-- (void)addAllocations:(const void *)a3 count:(unint64_t)a4
+- (void)addAllocations:(const void *)allocations count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     v4 = 0;
     p_hashTable = &self->_hashTable;
     do
     {
-      v6 = a3[v4];
+      v6 = allocations[v4];
       v7 = 0x9E3779B97F4A7C15 * (v6 & 0xFFFFFFFFFFFFFFFCLL);
       v8 = v7 >> -LOBYTE(p_hashTable->m_hashShift);
       v9 = p_hashTable->m_hopInfo[v8];
@@ -467,21 +467,21 @@ LABEL_34:
       ++v4;
     }
 
-    while (v4 != a4);
+    while (v4 != count);
   }
 }
 
-- (void)removeAllocations:(const void *)a3 count:(unint64_t)a4
+- (void)removeAllocations:(const void *)allocations count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v4 = a4;
-    v5 = a3;
+    countCopy2 = count;
+    allocationsCopy2 = allocations;
     v6 = 0;
     p_hashTable = &self->_hashTable;
     do
     {
-      v8 = v5[v6];
+      v8 = allocationsCopy2[v6];
       v9 = self->_hashTable.m_hashSize - 1;
       v10 = (0x9E3779B97F4A7C15 * (v8 & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
       v11 = v10;
@@ -518,8 +518,8 @@ LABEL_34:
             *(m_keyTable + v16) = 0;
             m_usedInfo = self->_hashTable.m_usedInfo;
             self->_hashTable.m_hopInfo[v11] &= v19;
-            v5 = a3;
-            v4 = a4;
+            allocationsCopy2 = allocations;
+            countCopy2 = count;
             m_usedInfo[self->_hashTable.m_usedMask & (v15 >> 6)] &= ~(1 << v15);
             --self->_hashTable.m_count;
           }
@@ -543,16 +543,16 @@ LABEL_34:
       ++v6;
     }
 
-    while (v6 != v4);
+    while (v6 != countCopy2);
   }
 }
 
-- (void)addAllocation:(id)a3
+- (void)addAllocation:(id)allocation
 {
   p_hashTable = &self->_hashTable;
-  v6 = a3 | 2;
-  v7 = (a3 & 0xFFFFFFFFFFFFFFFCLL);
-  v8 = 0x9E3779B97F4A7C15 * (a3 & 0xFFFFFFFFFFFFFFFCLL);
+  v6 = allocation | 2;
+  v7 = (allocation & 0xFFFFFFFFFFFFFFFCLL);
+  v8 = 0x9E3779B97F4A7C15 * (allocation & 0xFFFFFFFFFFFFFFFCLL);
   v9 = v8 >> -LOBYTE(self->_hashTable.m_hashShift);
   v10 = self->_hashTable.m_hopInfo[v9];
   while (v10)
@@ -561,7 +561,7 @@ LABEL_34:
     v10 &= ~(1 << v11);
     v12 = (v11 + v9) & (self->_hashTable.m_hashSize - 1);
     v13 = *(p_hashTable->m_keyTable + v12);
-    if ((v13 ^ a3) <= 3)
+    if ((v13 ^ allocation) <= 3)
     {
       *(p_hashTable->m_keyTable + v12) = v13 | 2;
       goto LABEL_32;
@@ -689,25 +689,25 @@ LABEL_32:
   if (*__globalGPUCommPage)
   {
     globalTraceObjectID = self->_globalTraceObjectID;
-    v56 = a3;
-    if (*(a3 + *MEMORY[0x1E6974268]) == 2)
+    allocationCopy = allocation;
+    if (*(allocation + *MEMORY[0x1E6974268]) == 2)
     {
-      v56 = *(a3 + 7);
+      allocationCopy = *(allocation + 7);
     }
 
-    v57 = v56[16];
-    [a3 allocatedSize];
+    v57 = allocationCopy[16];
+    [allocation allocatedSize];
 
     IOGPUDeviceTraceEvent();
   }
 }
 
-- (void)removeAllocation:(id)a3
+- (void)removeAllocation:(id)allocation
 {
-  v3 = a3;
+  allocationCopy = allocation;
   p_hashTable = &self->_hashTable;
   v6 = self->_hashTable.m_hashSize - 1;
-  v7 = (0x9E3779B97F4A7C15 * (a3 & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
+  v7 = (0x9E3779B97F4A7C15 * (allocation & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
   v8 = v7;
   v9 = self->_hashTable.m_hopInfo[v7];
   while (v9)
@@ -719,7 +719,7 @@ LABEL_32:
     v13 = v12 & v6;
     m_keyTable = p_hashTable->m_keyTable;
     v15 = *(p_hashTable->m_keyTable + (v12 & v6));
-    if ((v15 ^ a3) <= 3)
+    if ((v15 ^ allocation) <= 3)
     {
       *(m_keyTable + v13) = v15 & 0xFFFFFFFFFFFFFFFDLL;
       if (v15)
@@ -753,12 +753,12 @@ LABEL_32:
   if (*__globalGPUCommPage)
   {
     globalTraceObjectID = self->_globalTraceObjectID;
-    if (*(v3 + *MEMORY[0x1E6974268]) == 2)
+    if (*(allocationCopy + *MEMORY[0x1E6974268]) == 2)
     {
-      v3 = v3[7];
+      allocationCopy = allocationCopy[7];
     }
 
-    v24 = v3[16];
+    v24 = allocationCopy[16];
 
     IOGPUDeviceTraceEvent();
   }
@@ -902,16 +902,16 @@ LABEL_32:
   }
 }
 
-- (BOOL)containsAllocation:(id)a3
+- (BOOL)containsAllocation:(id)allocation
 {
-  v3 = (0x9E3779B97F4A7C15 * (a3 & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
+  v3 = (0x9E3779B97F4A7C15 * (allocation & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
   v4 = self->_hashTable.m_hopInfo[v3];
   while (v4)
   {
     v5 = __clz(__rbit32(v4));
     v4 &= ~(1 << v5);
     v6 = *(self->_hashTable.m_keyTable + ((v5 + v3) & (self->_hashTable.m_hashSize - 1)));
-    if ((v6 ^ a3) <= 3)
+    if ((v6 ^ allocation) <= 3)
     {
       return (v6 >> 1) & 1;
     }
@@ -921,16 +921,16 @@ LABEL_32:
   return v7;
 }
 
-- (unint64_t)countForAllocation:(id)a3
+- (unint64_t)countForAllocation:(id)allocation
 {
-  v3 = (0x9E3779B97F4A7C15 * (a3 & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
+  v3 = (0x9E3779B97F4A7C15 * (allocation & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
   v4 = self->_hashTable.m_hopInfo[v3];
   while (v4)
   {
     v5 = __clz(__rbit32(v4));
     v4 &= ~(1 << v5);
     v6 = *(self->_hashTable.m_keyTable + ((v5 + v3) & (self->_hashTable.m_hashSize - 1)));
-    if ((v6 ^ a3) <= 3)
+    if ((v6 ^ allocation) <= 3)
     {
       return (v6 >> 1) & 1;
     }
@@ -939,16 +939,16 @@ LABEL_32:
   return 0;
 }
 
-- (unint64_t)generationForAllocation:(id)a3
+- (unint64_t)generationForAllocation:(id)allocation
 {
-  v3 = (0x9E3779B97F4A7C15 * (a3 & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
+  v3 = (0x9E3779B97F4A7C15 * (allocation & 0xFFFFFFFFFFFFFFFCLL)) >> -LOBYTE(self->_hashTable.m_hashShift);
   v4 = self->_hashTable.m_hopInfo[v3];
   while (v4)
   {
     v5 = __clz(__rbit32(v4));
     v4 &= ~(1 << v5);
     v6 = (v5 + v3) & (self->_hashTable.m_hashSize - 1);
-    if ((*(self->_hashTable.m_keyTable + v6) ^ a3) <= 3)
+    if ((*(self->_hashTable.m_keyTable + v6) ^ allocation) <= 3)
     {
       if ((*(self->_hashTable.m_keyTable + v6) & 3) == 1)
       {
@@ -962,7 +962,7 @@ LABEL_32:
   return 0;
 }
 
-- (BOOL)_commitAddedAllocations:(const void *)a3 count:(unint64_t)a4 removedAllocations:(const void *)a5 count:(unint64_t)a6
+- (BOOL)_commitAddedAllocations:(const void *)allocations count:(unint64_t)count removedAllocations:(const void *)removedAllocations count:(unint64_t)a6
 {
   v6 = MEMORY[0x1EEE9AC00](self, a2);
   v9 = v8;
@@ -1122,12 +1122,12 @@ LABEL_28:
   return 1;
 }
 
-- (BOOL)_commitAddedResources:(const void *)a3 count:(unint64_t)a4 removedResources:(const void *)a5 count:(unint64_t)a6
+- (BOOL)_commitAddedResources:(const void *)resources count:(unint64_t)count removedResources:(const void *)removedResources count:(unint64_t)a6
 {
-  v8 = a4;
-  if (a4 >= 0x101)
+  countCopy = count;
+  if (count >= 0x101)
   {
-    v11 = malloc_type_malloc(4 * a4, 0x100004052888210uLL);
+    v11 = malloc_type_malloc(4 * count, 0x100004052888210uLL);
     v20 = v11;
   }
 
@@ -1135,7 +1135,7 @@ LABEL_28:
   {
     v11 = v19;
     v20 = v19;
-    if (!a4)
+    if (!count)
     {
       v12 = 0;
       goto LABEL_9;
@@ -1145,16 +1145,16 @@ LABEL_28:
   v12 = 0;
   do
   {
-    if (*(*a3 + 22) != 3)
+    if (*(*resources + 22) != 3)
     {
-      *&v11[4 * v12++] = *(*a3 + 20);
+      *&v11[4 * v12++] = *(*resources + 20);
     }
 
-    ++a3;
-    --v8;
+    ++resources;
+    --countCopy;
   }
 
-  while (v8);
+  while (countCopy);
 LABEL_9:
   if (a6 >= 0x101)
   {
@@ -1176,12 +1176,12 @@ LABEL_9:
   v14 = 0;
   do
   {
-    if (*(*a5 + 22) != 3)
+    if (*(*removedResources + 22) != 3)
     {
-      *&v13[8 * v14++] = *(*a5 + 16);
+      *&v13[8 * v14++] = *(*removedResources + 16);
     }
 
-    ++a5;
+    ++removedResources;
     --a6;
   }
 
@@ -1201,11 +1201,11 @@ LABEL_17:
   return updated == 0;
 }
 
-- (BOOL)_commitAddedHeaps:(const void *)a3 count:(unint64_t)a4 removedHeaps:(const void *)a5 count:(unint64_t)a6
+- (BOOL)_commitAddedHeaps:(const void *)heaps count:(unint64_t)count removedHeaps:(const void *)removedHeaps count:(unint64_t)a6
 {
-  if (a4 >= 0x101)
+  if (count >= 0x101)
   {
-    v11 = malloc_type_malloc(4 * a4, 0x100004052888210uLL);
+    v11 = malloc_type_malloc(4 * count, 0x100004052888210uLL);
     v20 = v11;
   }
 
@@ -1213,7 +1213,7 @@ LABEL_17:
   {
     v11 = v19;
     v20 = v19;
-    if (!a4)
+    if (!count)
     {
       goto LABEL_9;
     }
@@ -1222,15 +1222,15 @@ LABEL_17:
   v12 = 0;
   do
   {
-    if (*(*(a3[v12] + 7) + 176) != 3)
+    if (*(*(heaps[v12] + 7) + 176) != 3)
     {
-      *&v11[4 * v12] = *(*(a3[v12] + 7) + 80);
+      *&v11[4 * v12] = *(*(heaps[v12] + 7) + 80);
     }
 
     ++v12;
   }
 
-  while (a4 != v12);
+  while (count != v12);
 LABEL_9:
   if (a6 >= 0x101)
   {
@@ -1251,9 +1251,9 @@ LABEL_9:
   v14 = 0;
   do
   {
-    if (*(*(a5[v14] + 7) + 176) != 3)
+    if (*(*(removedHeaps[v14] + 7) + 176) != 3)
     {
-      *&v13[8 * v14] = *(*(a5[v14] + 7) + 128);
+      *&v13[8 * v14] = *(*(removedHeaps[v14] + 7) + 128);
     }
 
     ++v14;
@@ -1261,7 +1261,7 @@ LABEL_9:
 
   while (a6 != v14);
 LABEL_17:
-  updated = IOGPUResourceGroupUpdateResources(self->_groupRef, a4, v11, a6, v13);
+  updated = IOGPUResourceGroupUpdateResources(self->_groupRef, count, v11, a6, v13);
   if (v18 != v17)
   {
     free(v18);

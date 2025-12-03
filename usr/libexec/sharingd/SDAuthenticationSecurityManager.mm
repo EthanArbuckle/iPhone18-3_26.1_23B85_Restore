@@ -8,13 +8,13 @@
 
 - (void)handleKeyBagStateChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100013728(sub_100015D14, &unk_1008DD0B8);
 }
 
 - (void)handleOnWristStateChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100013728(sub_100356384, &unk_1008DD090);
 }
 

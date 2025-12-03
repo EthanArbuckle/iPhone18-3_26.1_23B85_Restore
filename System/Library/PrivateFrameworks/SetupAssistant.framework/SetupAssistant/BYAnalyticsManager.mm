@@ -1,20 +1,20 @@
 @interface BYAnalyticsManager
-- (BOOL)sendStashedEventWithName:(id)a3 payload:(id)a4;
+- (BOOL)sendStashedEventWithName:(id)name payload:(id)payload;
 - (BYAnalyticsManager)init;
-- (id)_stashablePayloadForBiomeEvent:(id)a3;
+- (id)_stashablePayloadForBiomeEvent:(id)event;
 - (void)_gatherDataFromProducers;
 - (void)_sendCombinedAnalyticsRepromptCompletedEventIfNecessary;
-- (void)_sendCombinedAnalyticsRepromptNecessaryEventWithRTCReporting:(id)a3;
-- (void)addDidProduceLazyEventsBlock:(id)a3;
-- (void)addEvent:(id)a3;
-- (void)addPowerLogEvent:(unint64_t)a3 withPayload:(id)a4;
+- (void)_sendCombinedAnalyticsRepromptNecessaryEventWithRTCReporting:(id)reporting;
+- (void)addDidProduceLazyEventsBlock:(id)block;
+- (void)addEvent:(id)event;
+- (void)addPowerLogEvent:(unint64_t)event withPayload:(id)payload;
 - (void)commit;
 - (void)commitThenUpload;
-- (void)prepareForCombinedAnalyticsRepromptWithCompletion:(id)a3;
-- (void)removeEventsUsingBlock:(id)a3;
+- (void)prepareForCombinedAnalyticsRepromptWithCompletion:(id)completion;
+- (void)removeEventsUsingBlock:(id)block;
 - (void)removeNonPersistentEvents;
 - (void)reset;
-- (void)stash:(id)a3;
+- (void)stash:(id)stash;
 @end
 
 @implementation BYAnalyticsManager
@@ -48,36 +48,36 @@
   return v2;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(BYAnalyticsManager *)self events];
-  [v5 addObject:v4];
+  eventCopy = event;
+  events = [(BYAnalyticsManager *)self events];
+  [events addObject:eventCopy];
 }
 
-- (void)addPowerLogEvent:(unint64_t)a3 withPayload:(id)a4
+- (void)addPowerLogEvent:(unint64_t)event withPayload:(id)payload
 {
-  v6 = a4;
-  v8 = [[BYPowerLogEvent alloc] initWithType:a3 andPayload:v6];
+  payloadCopy = payload;
+  v8 = [[BYPowerLogEvent alloc] initWithType:event andPayload:payloadCopy];
 
   if (v8)
   {
-    v7 = [(BYAnalyticsManager *)self buddyPowerLogManager];
-    [v7 addEvent:v8];
+    buddyPowerLogManager = [(BYAnalyticsManager *)self buddyPowerLogManager];
+    [buddyPowerLogManager addEvent:v8];
   }
 }
 
-- (void)removeEventsUsingBlock:(id)a3
+- (void)removeEventsUsingBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(BYAnalyticsManager *)self events];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  events = [(BYAnalyticsManager *)self events];
+  v6 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -88,13 +88,13 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(events);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v10 payload];
-        v13 = v4[2](v4, v11, v12);
+        name = [v10 name];
+        payload = [v10 payload];
+        v13 = blockCopy[2](blockCopy, name, payload);
 
         if (v13)
         {
@@ -102,36 +102,36 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [(BYAnalyticsManager *)self events];
-  [v14 removeObjectsInArray:v16];
+  events2 = [(BYAnalyticsManager *)self events];
+  [events2 removeObjectsInArray:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDidProduceLazyEventsBlock:(id)a3
+- (void)addDidProduceLazyEventsBlock:(id)block
 {
-  v4 = a3;
-  v6 = [(BYAnalyticsManager *)self didProduceLazyEventsBlocks];
-  v5 = MEMORY[0x1B8CC28E0](v4);
+  blockCopy = block;
+  didProduceLazyEventsBlocks = [(BYAnalyticsManager *)self didProduceLazyEventsBlocks];
+  v5 = MEMORY[0x1B8CC28E0](blockCopy);
 
-  [v6 addObject:v5];
+  [didProduceLazyEventsBlocks addObject:v5];
 }
 
-- (void)prepareForCombinedAnalyticsRepromptWithCompletion:(id)a3
+- (void)prepareForCombinedAnalyticsRepromptWithCompletion:(id)completion
 {
   v25[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(BYAnalyticsManager *)v5 rtcReporting];
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rtcReporting = [(BYAnalyticsManager *)selfCopy rtcReporting];
 
-  if (v6)
+  if (rtcReporting)
   {
     v7 = _BYLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -140,13 +140,13 @@
       _os_log_impl(&dword_1B862F000, v7, OS_LOG_TYPE_DEFAULT, "Analytics reporting configuration already started", buf, 2u);
     }
 
-    v4[2](v4);
-    objc_sync_exit(v5);
+    completionCopy[2](completionCopy);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v8 = arc4random();
     v9 = *MEMORY[0x1E69C6AB8];
@@ -177,13 +177,13 @@
     v18[1] = 3221225472;
     v18[2] = __72__BYAnalyticsManager_prepareForCombinedAnalyticsRepromptWithCompletion___block_invoke;
     v18[3] = &unk_1E7D03D70;
-    v18[4] = v5;
+    v18[4] = selfCopy;
     v19 = v15;
-    v20 = v4;
+    v20 = completionCopy;
     v16 = v15;
     [v16 startConfigurationWithCompletionHandler:v18];
 
-    v5 = v12;
+    selfCopy = v12;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -240,10 +240,10 @@ LABEL_11:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stash:(id)a3
+- (void)stash:(id)stash
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stashCopy = stash;
   [(BYAnalyticsManager *)self _gatherDataFromProducers];
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -256,8 +256,8 @@ LABEL_11:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(BYAnalyticsManager *)self events];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  events = [(BYAnalyticsManager *)self events];
+  v7 = [events countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -268,31 +268,31 @@ LABEL_11:
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(events);
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v11 payload];
-        [v4 stashAnalyticEvent:v12 payload:v13];
+        name = [v11 name];
+        payload = [v11 payload];
+        [stashCopy stashAnalyticEvent:name payload:payload];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v8 = [events countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(BYAnalyticsManager *)self appearanceSetupEvent];
+  appearanceSetupEvent = [(BYAnalyticsManager *)self appearanceSetupEvent];
 
-  if (v14)
+  if (appearanceSetupEvent)
   {
-    v15 = [(BYAnalyticsManager *)self appearanceSetupEvent];
-    v16 = [(BYAnalyticsManager *)self _stashablePayloadForBiomeEvent:v15];
+    appearanceSetupEvent2 = [(BYAnalyticsManager *)self appearanceSetupEvent];
+    v16 = [(BYAnalyticsManager *)self _stashablePayloadForBiomeEvent:appearanceSetupEvent2];
 
     if (v16)
     {
-      [v4 stashAnalyticEvent:@"biome.appearanceSetup" payload:v16];
+      [stashCopy stashAnalyticEvent:@"biome.appearanceSetup" payload:v16];
     }
 
     else
@@ -305,16 +305,16 @@ LABEL_11:
     }
   }
 
-  v18 = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
+  childMultitaskingSetupEvent = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
 
-  if (v18)
+  if (childMultitaskingSetupEvent)
   {
-    v19 = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
-    v20 = [(BYAnalyticsManager *)self _stashablePayloadForBiomeEvent:v19];
+    childMultitaskingSetupEvent2 = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
+    v20 = [(BYAnalyticsManager *)self _stashablePayloadForBiomeEvent:childMultitaskingSetupEvent2];
 
     if (v20)
     {
-      [v4 stashAnalyticEvent:@"biome.childMultitaskingSetup" payload:v20];
+      [stashCopy stashAnalyticEvent:@"biome.childMultitaskingSetup" payload:v20];
     }
 
     else
@@ -345,8 +345,8 @@ LABEL_11:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [(BYAnalyticsManager *)self events];
-  v5 = [v4 countByEnumeratingWithState:&v42 objects:v51 count:16];
+  events = [(BYAnalyticsManager *)self events];
+  v5 = [events countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v5)
   {
     v7 = v5;
@@ -360,42 +360,42 @@ LABEL_11:
       {
         if (*v43 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(events);
         }
 
         v10 = *(*(&v42 + 1) + 8 * v9);
         v11 = _BYLoggingFacility();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v14 = [v10 name];
-          v15 = [v10 payload];
+          name = [v10 name];
+          payload = [v10 payload];
           *buf = v37;
-          v48 = v14;
+          v48 = name;
           v49 = 2112;
-          v50 = v15;
+          v50 = payload;
           _os_log_debug_impl(&dword_1B862F000, v11, OS_LOG_TYPE_DEBUG, "Sending event %@ with payload: %@", buf, 0x16u);
         }
 
-        v12 = [v10 name];
-        v13 = [v10 payload];
-        [(BYAnalyticsManager *)self _sendEvent:v12 payload:v13];
+        name2 = [v10 name];
+        payload2 = [v10 payload];
+        [(BYAnalyticsManager *)self _sendEvent:name2 payload:payload2];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v42 objects:v51 count:16];
+      v7 = [events countByEnumeratingWithState:&v42 objects:v51 count:16];
     }
 
     while (v7);
   }
 
-  v16 = [(BYAnalyticsManager *)self buddyPowerLogManager];
-  [v16 commit];
+  buddyPowerLogManager = [(BYAnalyticsManager *)self buddyPowerLogManager];
+  [buddyPowerLogManager commit];
 
-  v17 = [(BYAnalyticsManager *)self appearanceSetupEvent];
+  appearanceSetupEvent = [(BYAnalyticsManager *)self appearanceSetupEvent];
 
-  if (v17)
+  if (appearanceSetupEvent)
   {
     v18 = _BYLoggingFacility();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -404,16 +404,16 @@ LABEL_11:
     }
 
     v19 = BiomeLibrary();
-    v20 = [v19 SystemSettings];
-    v21 = [v20 AppearanceSetup];
-    v22 = [v21 source];
-    v23 = [(BYAnalyticsManager *)self appearanceSetupEvent];
-    [v22 sendEvent:v23];
+    systemSettings = [v19 SystemSettings];
+    appearanceSetup = [systemSettings AppearanceSetup];
+    source = [appearanceSetup source];
+    appearanceSetupEvent2 = [(BYAnalyticsManager *)self appearanceSetupEvent];
+    [source sendEvent:appearanceSetupEvent2];
   }
 
-  v24 = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
+  childMultitaskingSetupEvent = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
 
-  if (v24)
+  if (childMultitaskingSetupEvent)
   {
     v25 = _BYLoggingFacility();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -422,11 +422,11 @@ LABEL_11:
     }
 
     v26 = BiomeLibrary();
-    v27 = [v26 SystemSettings];
-    v28 = [v27 ChildMultitaskingSetup];
-    v29 = [v28 source];
-    v30 = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
-    [v29 sendEvent:v30];
+    systemSettings2 = [v26 SystemSettings];
+    childMultitaskingSetup = [systemSettings2 ChildMultitaskingSetup];
+    source2 = [childMultitaskingSetup source];
+    childMultitaskingSetupEvent2 = [(BYAnalyticsManager *)self childMultitaskingSetupEvent];
+    [source2 sendEvent:childMultitaskingSetupEvent2];
   }
 
   [(BYAnalyticsManager *)self _sendCombinedAnalyticsRepromptCompletedEventIfNecessary];
@@ -434,8 +434,8 @@ LABEL_11:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v31 = [(BYAnalyticsManager *)self didProduceLazyEventsBlocks];
-  v32 = [v31 countByEnumeratingWithState:&v38 objects:v46 count:16];
+  didProduceLazyEventsBlocks = [(BYAnalyticsManager *)self didProduceLazyEventsBlocks];
+  v32 = [didProduceLazyEventsBlocks countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v32)
   {
     v33 = v32;
@@ -446,13 +446,13 @@ LABEL_11:
       {
         if (*v39 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(didProduceLazyEventsBlocks);
         }
 
         (*(*(*(&v38 + 1) + 8 * i) + 16))();
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      v33 = [didProduceLazyEventsBlocks countByEnumeratingWithState:&v38 objects:v46 count:16];
     }
 
     while (v33);
@@ -493,8 +493,8 @@ void __38__BYAnalyticsManager_commitThenUpload__block_invoke(uint64_t a1, void *
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(BYAnalyticsManager *)self events];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+  events = [(BYAnalyticsManager *)self events];
+  v6 = [events countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
     v7 = v6;
@@ -505,7 +505,7 @@ void __38__BYAnalyticsManager_commitThenUpload__block_invoke(uint64_t a1, void *
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(events);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
@@ -515,17 +515,17 @@ void __38__BYAnalyticsManager_commitThenUpload__block_invoke(uint64_t a1, void *
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      v7 = [events countByEnumeratingWithState:&v29 objects:v35 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(BYAnalyticsManager *)self events];
-  [v11 removeObjectsInArray:v4];
+  events2 = [(BYAnalyticsManager *)self events];
+  [events2 removeObjectsInArray:v4];
 
-  v12 = [(BYAnalyticsManager *)self lazyEvents];
-  v13 = [v12 copy];
+  lazyEvents = [(BYAnalyticsManager *)self lazyEvents];
+  v13 = [lazyEvents copy];
 
   v27 = 0u;
   v28 = 0u;
@@ -547,14 +547,14 @@ void __38__BYAnalyticsManager_commitThenUpload__block_invoke(uint64_t a1, void *
         }
 
         v19 = *(*(&v25 + 1) + 8 * j);
-        v20 = [(BYAnalyticsManager *)self lazyEvents];
-        v21 = [v20 objectForKeyedSubscript:v19];
+        lazyEvents2 = [(BYAnalyticsManager *)self lazyEvents];
+        v21 = [lazyEvents2 objectForKeyedSubscript:v19];
 
         if (([v21 persist] & 1) == 0)
         {
-          v22 = [(BYAnalyticsManager *)self lazyEvents];
-          v23 = [v21 name];
-          [v22 removeObjectForKey:v23];
+          lazyEvents3 = [(BYAnalyticsManager *)self lazyEvents];
+          name = [v21 name];
+          [lazyEvents3 removeObjectForKey:name];
         }
       }
 
@@ -581,11 +581,11 @@ void __38__BYAnalyticsManager_commitThenUpload__block_invoke(uint64_t a1, void *
     _os_log_impl(&dword_1B862F000, v3, OS_LOG_TYPE_DEFAULT, "Resetting all analytics...", v6, 2u);
   }
 
-  v4 = [(BYAnalyticsManager *)self events];
-  [v4 removeAllObjects];
+  events = [(BYAnalyticsManager *)self events];
+  [events removeAllObjects];
 
-  v5 = [(BYAnalyticsManager *)self lazyEvents];
-  [v5 removeAllObjects];
+  lazyEvents = [(BYAnalyticsManager *)self lazyEvents];
+  [lazyEvents removeAllObjects];
 
   [(BYAnalyticsManager *)self setAppearanceSetupEvent:0];
   [(BYAnalyticsManager *)self setAppearanceSetupEventBlock:0];
@@ -593,14 +593,14 @@ void __38__BYAnalyticsManager_commitThenUpload__block_invoke(uint64_t a1, void *
   [(BYAnalyticsManager *)self setChildMultitaskingSetupEventBlock:0];
 }
 
-- (BOOL)sendStashedEventWithName:(id)a3 payload:(id)a4
+- (BOOL)sendStashedEventWithName:(id)name payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hasPrefix:@"biome."];
+  nameCopy = name;
+  payloadCopy = payload;
+  v8 = [nameCopy hasPrefix:@"biome."];
   if (v8)
   {
-    v9 = [v7 objectForKeyedSubscript:@"data"];
+    v9 = [payloadCopy objectForKeyedSubscript:@"data"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -624,7 +624,7 @@ void __38__BYAnalyticsManager_commitThenUpload__block_invoke(uint64_t a1, void *
     v10 = 0;
     v9 = 0;
 LABEL_9:
-    v12 = [v7 objectForKeyedSubscript:@"dataVersion"];
+    v12 = [payloadCopy objectForKeyedSubscript:@"dataVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -632,12 +632,12 @@ LABEL_9:
       {
         if (v10)
         {
-          if ([v6 isEqualToString:@"biome.appearanceSetup"])
+          if ([nameCopy isEqualToString:@"biome.appearanceSetup"])
           {
             -[BYAnalyticsManager _sendAppearanceSetupEventWithData:dataVersion:](self, "_sendAppearanceSetupEventWithData:dataVersion:", v9, [v12 unsignedIntValue]);
           }
 
-          else if ([v6 isEqualToString:@"biome.childMultitaskingSetup"])
+          else if ([nameCopy isEqualToString:@"biome.childMultitaskingSetup"])
           {
             -[BYAnalyticsManager _sendChildMultitaskingSetupEventWithData:dataVersion:](self, "_sendChildMultitaskingSetupEventWithData:dataVersion:", v9, [v12 unsignedIntValue]);
           }
@@ -691,10 +691,10 @@ LABEL_19:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(BYAnalyticsManager *)self lazyEvents];
-  v5 = [v4 allKeys];
+  lazyEvents = [(BYAnalyticsManager *)self lazyEvents];
+  allKeys = [lazyEvents allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v6)
   {
     v8 = v6;
@@ -708,15 +708,15 @@ LABEL_19:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
-        v12 = [(BYAnalyticsManager *)self lazyEvents];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        lazyEvents2 = [(BYAnalyticsManager *)self lazyEvents];
+        v13 = [lazyEvents2 objectForKeyedSubscript:v11];
 
-        v14 = [v13 payloadBlock];
-        v15 = v14[2]();
+        payloadBlock = [v13 payloadBlock];
+        v15 = payloadBlock[2]();
 
         if (v15)
         {
@@ -739,45 +739,45 @@ LABEL_19:
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v8);
   }
 
-  v17 = [(BYAnalyticsManager *)self appearanceSetupEventBlock];
+  appearanceSetupEventBlock = [(BYAnalyticsManager *)self appearanceSetupEventBlock];
 
-  if (v17)
+  if (appearanceSetupEventBlock)
   {
-    v18 = [(BYAnalyticsManager *)self appearanceSetupEventBlock];
-    v19 = v18[2]();
+    appearanceSetupEventBlock2 = [(BYAnalyticsManager *)self appearanceSetupEventBlock];
+    v19 = appearanceSetupEventBlock2[2]();
     [(BYAnalyticsManager *)self setAppearanceSetupEvent:v19];
   }
 
-  v20 = [(BYAnalyticsManager *)self childMultitaskingSetupEventBlock];
+  childMultitaskingSetupEventBlock = [(BYAnalyticsManager *)self childMultitaskingSetupEventBlock];
 
-  if (v20)
+  if (childMultitaskingSetupEventBlock)
   {
-    v21 = [(BYAnalyticsManager *)self childMultitaskingSetupEventBlock];
-    v22 = v21[2]();
+    childMultitaskingSetupEventBlock2 = [(BYAnalyticsManager *)self childMultitaskingSetupEventBlock];
+    v22 = childMultitaskingSetupEventBlock2[2]();
     [(BYAnalyticsManager *)self setChildMultitaskingSetupEvent:v22];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_stashablePayloadForBiomeEvent:(id)a3
+- (id)_stashablePayloadForBiomeEvent:(id)event
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 serialize];
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  serialize = [eventCopy serialize];
+  v5 = serialize;
+  if (serialize)
   {
     v10[0] = @"data";
     v10[1] = @"dataVersion";
-    v11[0] = v4;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v3, "dataVersion")}];
+    v11[0] = serialize;
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(eventCopy, "dataVersion")}];
     v11[1] = v6;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   }
@@ -792,11 +792,11 @@ LABEL_19:
   return v7;
 }
 
-- (void)_sendCombinedAnalyticsRepromptNecessaryEventWithRTCReporting:(id)a3
+- (void)_sendCombinedAnalyticsRepromptNecessaryEventWithRTCReporting:(id)reporting
 {
   v12 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v3 = [a3 sendMessageWithCategory:1 type:1 payload:0 error:&v7];
+  v3 = [reporting sendMessageWithCategory:1 type:1 payload:0 error:&v7];
   v4 = v7;
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -814,25 +814,25 @@ LABEL_19:
 - (void)_sendCombinedAnalyticsRepromptCompletedEventIfNecessary
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(BYAnalyticsManager *)v2 rtcReporting];
-  v4 = [(BYAnalyticsManager *)v2 combinedAnalyticsRepromptChoiceNumber];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rtcReporting = [(BYAnalyticsManager *)selfCopy rtcReporting];
+  combinedAnalyticsRepromptChoiceNumber = [(BYAnalyticsManager *)selfCopy combinedAnalyticsRepromptChoiceNumber];
+  objc_sync_exit(selfCopy);
 
-  if (v3 && v4)
+  if (rtcReporting && combinedAnalyticsRepromptChoiceNumber)
   {
     v17 = @"enabled";
-    v18[0] = v4;
+    v18[0] = combinedAnalyticsRepromptChoiceNumber;
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v10 = 0;
-    v6 = [v3 sendMessageWithCategory:1 type:2 payload:v5 error:&v10];
+    v6 = [rtcReporting sendMessageWithCategory:1 type:2 payload:v5 error:&v10];
     v7 = v10;
     v8 = _BYLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v12 = v4;
+      v12 = combinedAnalyticsRepromptChoiceNumber;
       v13 = 1024;
       v14 = v6;
       v15 = 2112;

@@ -1,13 +1,13 @@
 @interface PDFTilePool
 + (id)sharedPool;
-- (CGContext)_createContextForTileSurface:(id)a3 ofRequest:(id)a4;
+- (CGContext)_createContextForTileSurface:(id)surface ofRequest:(id)request;
 - (PDFTilePool)init;
-- (id)_createTileSurfaceForRequest:(id)a3;
-- (void)_colorizeTileEdgesForRequest:(id)a3 context:(CGContext *)a4 tileSize:(int)a5;
-- (void)_renderTileForRequest:(id)a3;
+- (id)_createTileSurfaceForRequest:(id)request;
+- (void)_colorizeTileEdgesForRequest:(id)request context:(CGContext *)context tileSize:(int)size;
+- (void)_renderTileForRequest:(id)request;
 - (void)dealloc;
-- (void)releasePDFTileSurface:(id)a3;
-- (void)requestPDFTileSurfaceForTarget:(id)a3 forPage:(id)a4 withRenderingProperties:(id)a5 atZoomFactor:(double)a6 frame:(CGRect)a7 transform:(CGAffineTransform *)a8 tag:(int)a9;
+- (void)releasePDFTileSurface:(id)surface;
+- (void)requestPDFTileSurfaceForTarget:(id)target forPage:(id)page withRenderingProperties:(id)properties atZoomFactor:(double)factor frame:(CGRect)frame transform:(CGAffineTransform *)transform tag:(int)tag;
 @end
 
 @implementation PDFTilePool
@@ -89,34 +89,34 @@ uint64_t __25__PDFTilePool_sharedPool__block_invoke()
   [(PDFTilePool *)&v3 dealloc];
 }
 
-- (void)requestPDFTileSurfaceForTarget:(id)a3 forPage:(id)a4 withRenderingProperties:(id)a5 atZoomFactor:(double)a6 frame:(CGRect)a7 transform:(CGAffineTransform *)a8 tag:(int)a9
+- (void)requestPDFTileSurfaceForTarget:(id)target forPage:(id)page withRenderingProperties:(id)properties atZoomFactor:(double)factor frame:(CGRect)frame transform:(CGAffineTransform *)transform tag:(int)tag
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  propertiesCopy = properties;
+  pageCopy = page;
+  targetCopy = target;
   v22 = objc_alloc_init(TileRenderRequest);
-  objc_storeWeak(&v22->target, v21);
+  objc_storeWeak(&v22->target, targetCopy);
 
-  objc_storeWeak(&v22->page, v20);
+  objc_storeWeak(&v22->page, pageCopy);
   renderingProperties = v22->renderingProperties;
-  v22->renderingProperties = v19;
-  v24 = v19;
+  v22->renderingProperties = propertiesCopy;
+  v24 = propertiesCopy;
 
   v22->tileFrame.origin.x = x;
   v22->tileFrame.origin.y = y;
   v22->tileFrame.size.width = width;
   v22->tileFrame.size.height = height;
-  v22->zoomFactor = a6;
-  v26 = *&a8->c;
-  v25 = *&a8->tx;
-  *&v22->matrix.a = *&a8->a;
+  v22->zoomFactor = factor;
+  v26 = *&transform->c;
+  v25 = *&transform->tx;
+  *&v22->matrix.a = *&transform->a;
   *&v22->matrix.c = v26;
   *&v22->matrix.tx = v25;
-  v22->tag = a9;
+  v22->tag = tag;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -143,22 +143,22 @@ void __111__PDFTilePool_requestPDFTileSurfaceForTarget_forPage_withRenderingProp
   dispatch_semaphore_signal(dsema);
 }
 
-- (id)_createTileSurfaceForRequest:(id)a3
+- (id)_createTileSurfaceForRequest:(id)request
 {
   v29[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(PDFTileSurface);
   v5->tileId = atomic_fetch_add(gPDFTileSurfaceCount, 1u);
-  WeakRetained = objc_loadWeakRetained(v4 + 2);
+  WeakRetained = objc_loadWeakRetained(requestCopy + 2);
 
-  v7 = [WeakRetained document];
-  v5->pageNumber = [v7 indexForPage:WeakRetained];
+  document = [WeakRetained document];
+  v5->pageNumber = [document indexForPage:WeakRetained];
 
   v5->type = [(PDFTilePool *)self tileSurfaceType];
-  v8 = [(PDFTilePool *)self tileSurfaceSize];
-  v9 = [(PDFTilePool *)self tileSurfacePadding];
-  v5->tileSize = v8;
-  v5->tilePadding = v9;
+  tileSurfaceSize = [(PDFTilePool *)self tileSurfaceSize];
+  tileSurfacePadding = [(PDFTilePool *)self tileSurfacePadding];
+  v5->tileSize = tileSurfaceSize;
+  v5->tilePadding = tileSurfacePadding;
   type = v5->type;
   if (!type)
   {
@@ -166,7 +166,7 @@ void __111__PDFTilePool_requestPDFTileSurfaceForTarget_forPage_withRenderingProp
     goto LABEL_19;
   }
 
-  v11 = (v8 + 2 * v9);
+  v11 = (tileSurfaceSize + 2 * tileSurfacePadding);
   if (type == 2)
   {
     v26[0] = *MEMORY[0x1E696D130];
@@ -253,12 +253,12 @@ LABEL_19:
   return v5;
 }
 
-- (CGContext)_createContextForTileSurface:(id)a3 ofRequest:(id)a4
+- (CGContext)_createContextForTileSurface:(id)surface ofRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(PDFTilePool *)self tileSurfaceSize];
-  v7 = [(PDFTilePool *)self tileSurfacePadding];
-  if (MGGetBoolAnswer() && *(v5 + 6) == 2)
+  surfaceCopy = surface;
+  tileSurfaceSize = [(PDFTilePool *)self tileSurfaceSize];
+  tileSurfacePadding = [(PDFTilePool *)self tileSurfacePadding];
+  if (MGGetBoolAnswer() && *(surfaceCopy + 6) == 2)
   {
     DeviceRGB = CGColorSpaceCreateWithName(*MEMORY[0x1E695F110]);
   }
@@ -269,8 +269,8 @@ LABEL_19:
   }
 
   v9 = DeviceRGB;
-  v10 = v6 + 2 * v7;
-  v11 = *(v5 + 6);
+  v10 = tileSurfaceSize + 2 * tileSurfacePadding;
+  v11 = *(surfaceCopy + 6);
   switch(v11)
   {
     case 0:
@@ -298,9 +298,9 @@ LABEL_19:
       v23 = CGIOSurfaceContextCreateWithOptions();
       goto LABEL_22;
     case 1:
-      IOSurfaceLock(*(v5 + 4), 0, 0);
-      BaseAddress = IOSurfaceGetBaseAddress(*(v5 + 4));
-      BytesPerRow = IOSurfaceGetBytesPerRow(*(v5 + 4));
+      IOSurfaceLock(*(surfaceCopy + 4), 0, 0);
+      BaseAddress = IOSurfaceGetBaseAddress(*(surfaceCopy + 4));
+      BytesPerRow = IOSurfaceGetBytesPerRow(*(surfaceCopy + 4));
       v14 = MGGetBoolAnswer();
       v15 = v10;
       if (v14)
@@ -335,28 +335,28 @@ LABEL_23:
   return v22;
 }
 
-- (void)_renderTileForRequest:(id)a3
+- (void)_renderTileForRequest:(id)request
 {
-  v4 = a3;
-  WeakRetained = objc_loadWeakRetained(v4 + 1);
-  v6 = objc_loadWeakRetained(v4 + 2);
-  v7 = [v4[3] pdfView];
-  v8 = v4[3];
+  requestCopy = request;
+  WeakRetained = objc_loadWeakRetained(requestCopy + 1);
+  v6 = objc_loadWeakRetained(requestCopy + 2);
+  pdfView = [requestCopy[3] pdfView];
+  v8 = requestCopy[3];
   if (WeakRetained && v6)
   {
     v35 = WeakRetained;
-    v36 = v7;
+    v36 = pdfView;
     v34 = v6;
     [WeakRetained hasStartedWork];
     MachSeconds = GetMachSeconds();
-    v10 = [(PDFTilePool *)self _createTileSurfaceForRequest:v4];
+    v10 = [(PDFTilePool *)self _createTileSurfaceForRequest:requestCopy];
     os_unfair_lock_lock(&self->_private->surfacesLock);
     surfaces = self->_private->surfaces;
     v12 = [MEMORY[0x1E696AD98] numberWithInt:*(v10 + 8)];
     [(NSMutableDictionary *)surfaces setObject:v10 forKey:v12];
 
     os_unfair_lock_unlock(&self->_private->surfacesLock);
-    v13 = [(PDFTilePool *)self _createContextForTileSurface:v10 ofRequest:v4];
+    v13 = [(PDFTilePool *)self _createContextForTileSurface:v10 ofRequest:requestCopy];
     if ([v8 isDarkMode])
     {
       CGContextSetProperty();
@@ -369,27 +369,27 @@ LABEL_23:
     v30 = +[PDFPage isExcludingAKAnnotationRenderingForThisThread];
     [PDFPage setExcludingAKAnnotationRenderingForThisThread:1];
     v14 = GetDefaultsWriteColorTileEdge();
-    v15 = [(PDFTilePool *)self tileSurfaceSize];
-    v16 = [(PDFTilePool *)self tileSurfacePadding];
+    tileSurfaceSize = [(PDFTilePool *)self tileSurfaceSize];
+    tileSurfacePadding = [(PDFTilePool *)self tileSurfacePadding];
     v33 = v8;
-    v17 = [v8 pageBackgroundColor];
-    v18 = [v17 CGColor];
+    pageBackgroundColor = [v8 pageBackgroundColor];
+    cGColor = [pageBackgroundColor CGColor];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __37__PDFTilePool__renderTileForRequest___block_invoke;
     aBlock[3] = &unk_1E81513A8;
-    v45 = v18;
-    v47 = v15;
-    v48 = v16;
-    v41 = v4;
-    v7 = v36;
+    v45 = cGColor;
+    v47 = tileSurfaceSize;
+    v48 = tileSurfacePadding;
+    v41 = requestCopy;
+    pdfView = v36;
     v42 = v36;
     v6 = v34;
     v19 = v34;
     v49 = v14;
     v43 = v19;
-    v44 = self;
+    selfCopy = self;
     v46 = v13;
     v20 = _Block_copy(aBlock);
     v20[2](v20, v13);
@@ -411,16 +411,16 @@ LABEL_23:
     if (GetDefaultsWriteLogPerfTimes())
     {
       v21 = MachSeconds;
-      v22 = [v19 document];
-      v23 = [v22 indexForPage:v19];
+      document = [v19 document];
+      v23 = [document indexForPage:v19];
 
-      v24 = [MEMORY[0x1E695DF00] date];
-      [v24 timeIntervalSince1970];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
       v26 = (v25 * 1000.0);
 
       v27 = GetMachSeconds();
       v29 = v23;
-      v7 = v36;
+      pdfView = v36;
       NSLog(&cfstr_Pdfkit2Logperf.isa, v29, v26, v27 - v21);
       NSLog(&cfstr_Pdfkit2Logperf_0.isa, [(NSMutableDictionary *)self->_private->surfaces count]);
     }
@@ -480,11 +480,11 @@ void __37__PDFTilePool__renderTileForRequest___block_invoke_2(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_colorizeTileEdgesForRequest:(id)a3 context:(CGContext *)a4 tileSize:(int)a5
+- (void)_colorizeTileEdgesForRequest:(id)request context:(CGContext *)context tileSize:(int)size
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  CGContextSaveGState(a4);
+  requestCopy = request;
+  CGContextSaveGState(context);
   v8 = *(MEMORY[0x1E695EFD0] + 16);
   v21 = *MEMORY[0x1E695EFD0];
   *v22 = *MEMORY[0x1E695EFD0];
@@ -496,16 +496,16 @@ void __37__PDFTilePool__renderTileForRequest___block_invoke_2(uint64_t a1)
   v9 = (rand() % 100) / 100.0;
   v10 = (rand() % 100) / 100.0;
   v11 = (rand() % 100) / 100.0;
-  CGContextSaveGState(a4);
-  CGContextSetLineWidth(a4, 16.0);
-  CGContextSetRGBStrokeColor(a4, v9, v10, v11, 0.8);
-  v12 = a5;
-  v25.size.width = a5 + -16.0;
+  CGContextSaveGState(context);
+  CGContextSetLineWidth(context, 16.0);
+  CGContextSetRGBStrokeColor(context, v9, v10, v11, 0.8);
+  sizeCopy = size;
+  v25.size.width = size + -16.0;
   v25.origin.x = 8.0;
   v25.origin.y = 8.0;
   v25.size.height = v25.size.width;
-  CGContextStrokeRect(a4, v25);
-  CGContextRestoreGState(a4);
+  CGContextStrokeRect(context, v25);
+  CGContextRestoreGState(context);
   if (_colorizeTileEdgesForRequest_context_tileSize__onceToken != -1)
   {
     [PDFTilePool _colorizeTileEdgesForRequest:context:tileSize:];
@@ -513,7 +513,7 @@ void __37__PDFTilePool__renderTileForRequest___block_invoke_2(uint64_t a1)
 
   if (_colorizeTileEdgesForRequest_context_tileSize__stringAttributes)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v7[30]];
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", requestCopy[30]];
     v14 = CFAttributedStringCreate(*MEMORY[0x1E695E480], v13, _colorizeTileEdgesForRequest_context_tileSize__stringAttributes);
     if (v14)
     {
@@ -525,22 +525,22 @@ void __37__PDFTilePool__renderTileForRequest___block_invoke_2(uint64_t a1)
         *v22 = v21;
         *&v22[16] = v20;
         *&v22[32] = v19;
-        CGContextSetTextMatrix(a4, v22);
+        CGContextSetTextMatrix(context, v22);
         BoundsWithOptions = CTLineGetBoundsWithOptions(v17, 0);
         *v22 = 0x4049000000000000;
-        *&v22[8] = v12 + -50.0 - BoundsWithOptions.size.height;
-        *&v22[16] = v12 + -50.0 - BoundsWithOptions.size.width;
+        *&v22[8] = sizeCopy + -50.0 - BoundsWithOptions.size.height;
+        *&v22[16] = sizeCopy + -50.0 - BoundsWithOptions.size.width;
         *&v22[24] = *&v22[8];
         *&v22[32] = *&v22[16];
         *&v22[40] = vdupq_n_s64(0x4049000000000000uLL);
         v23 = 0x4049000000000000;
-        CGContextSetRGBFillColor(a4, v9, v10, v11, 0.8);
+        CGContextSetRGBFillColor(context, v9, v10, v11, 0.8);
         for (i = 0; i != 64; i += 16)
         {
-          CGContextSaveGState(a4);
-          CGContextSetTextPosition(a4, *&v22[i], *&v22[i + 8]);
-          CTLineDraw(v17, a4);
-          CGContextRestoreGState(a4);
+          CGContextSaveGState(context);
+          CGContextSetTextPosition(context, *&v22[i], *&v22[i + 8]);
+          CTLineDraw(v17, context);
+          CGContextRestoreGState(context);
         }
 
         CFRelease(v15);
@@ -549,7 +549,7 @@ void __37__PDFTilePool__renderTileForRequest___block_invoke_2(uint64_t a1)
     }
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 void __61__PDFTilePool__colorizeTileEdgesForRequest_context_tileSize___block_invoke()
@@ -583,18 +583,18 @@ void __61__PDFTilePool__colorizeTileEdgesForRequest_context_tileSize___block_inv
   }
 }
 
-- (void)releasePDFTileSurface:(id)a3
+- (void)releasePDFTileSurface:(id)surface
 {
   v4 = self->_private;
-  v5 = a3;
+  surfaceCopy = surface;
   os_unfair_lock_lock(&v4->surfacesLock);
   surfaces = self->_private->surfaces;
-  v7 = [MEMORY[0x1E696AD98] numberWithInt:v5[2]];
+  v7 = [MEMORY[0x1E696AD98] numberWithInt:surfaceCopy[2]];
   v8 = [(NSMutableDictionary *)surfaces objectForKey:v7];
 
   v9 = self->_private->surfaces;
   v10 = MEMORY[0x1E696AD98];
-  v11 = v5[2];
+  v11 = surfaceCopy[2];
 
   v12 = [v10 numberWithInt:v11];
   [(NSMutableDictionary *)v9 removeObjectForKey:v12];
